@@ -1,4 +1,10 @@
-const list = require('../customers.json');
+//const list = require('../customers.json');
+
+import config from './config.js';
+const CUSTOMERS_URL = config.backend ? config.backend + '/customers' : '/customers';
+
+var list = [];
+fetch(CUSTOMERS_URL).then(r => r.json()).then(data => {list = data});
 
 const index = {};
 

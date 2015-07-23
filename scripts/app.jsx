@@ -51,7 +51,7 @@ getAllPoints().then(data => {
     host = location.origin;
   }
 
-  host = host.replace(/^http/, 'ws');
+  host = host.replace(/^http/, 'ws') + config.ws;
 
   let ws = new WebSocket(host);
 

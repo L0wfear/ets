@@ -52,12 +52,19 @@ class CarInfo extends Component {
 
     let props = [];
 
-    // if (ccar[0] && ccar[0].length) {
-    //   props.push({
-    //     key: 'Гос. номер',
-    //     value: ccar[0]
-    //   });
-    // }
+     if (ccar[0] && ccar[0].length) {
+       props.push({
+         key: 'Гос. номер',
+         value: ccar[0]
+       });
+     }
+
+    if (car['id'] && car['id'].length) {
+      props.push({
+        key: 'ID БНСО',
+        value: car['id']
+      });
+    }
 
     props.push({
       key: 'Статус',

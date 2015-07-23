@@ -9,8 +9,9 @@ export function getModelById(id) {
   var r = index[id];
 
   if (!r) {
-    console.warn(`Model ${id} not found`);
+    //console.warn(`Model ${id} not found, so set to UNKNOWN(id:-1)`);
+    r = getModelById("-1");
   }
 
-  return index[id];
+  return r;
 }

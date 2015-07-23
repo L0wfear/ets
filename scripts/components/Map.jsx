@@ -123,6 +123,18 @@ class Map extends Component {
     for (let i = 0; i < keys.length; i++) {
       let key = keys[i];
       let point = points[key];
+      if (point['timestamp'] == 1420074000000) {
+        continue;
+      }
+      if ((typeof(point['coords']) === 'undefined') || (typeof(point['speed']) === 'undefined')){
+        console.warn('point coords or speed is undefined, so skip! point: ', point);
+        continue;
+      }
+      if ((point['coords'][0] === null) || (point['coords'][1] === null)){
+        console.warn('point lat or long is null, so skip! point: ', point);
+        continue;
+      }
+
       let marker = markers[key];
 
       if (marker) {

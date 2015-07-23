@@ -197,15 +197,16 @@ class Marker {
     let direction = point.direction;
     let type = getTypeById(point.car ? point.car[1] : 5);
     let icon = type.icon;
+    if (!icon) {
+      icon = "drugoe";
+    }
 
     if (point.speed <= 0) {
       this._renderLargeStopped(context, selected);
       return;
     }
-
     let angle = Math.PI * direction / 180 ;
     let tipAngle = normalizeAngle(angle - Math.PI / 2);
-
     let coords = this._getCoords();
 
     context.fillStyle = color;
@@ -224,10 +225,7 @@ class Marker {
       context.lineWidth = 2;
       context.stroke();
     }
-
-
     context.drawImage(icons[icon], -LARGE_RADIUS + coords.x, -LARGE_RADIUS + coords.y, 2 * LARGE_RADIUS, 2 * LARGE_RADIUS);
-
   }
 
   _renderLargeStopped(context, selected) {
@@ -236,23 +234,23 @@ class Marker {
     let color = getStatusById(point.status).color;
     let type = getTypeById(point.car ? point.car[1] : 5);
     let icon = type.icon;
+    if (!icon) {
+      //console.log('icon is not set, so it will be "drugoe"');
+      icon = "drugoe";
+    }
 
 
     let coords = this._getCoords();
-
     context.fillStyle = color;
     context.beginPath();
     context.arc(coords.x, coords.y, LARGE_RADIUS, 0, 2 * Math.PI);
     context.closePath();
     context.fill();
-
     if (selected) {
       context.strokeStyle = 'white';
       context.lineWidth = 2;
       context.stroke();
     }
-
-
     context.drawImage(icons[icon], -LARGE_RADIUS + coords.x, -LARGE_RADIUS + coords.y, 2 * LARGE_RADIUS, 2 * LARGE_RADIUS);
   }
 

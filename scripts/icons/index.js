@@ -25,7 +25,7 @@ function loadIcon(name, data) {
 }
 
 exports.icons = icons;
-
+0
 exports.loadIcons = Promise.all([
   loadIcon('greider', fs.readFileSync(__dirname + '/greider.svg', 'utf8')),
   loadIcon('musorovoz', fs.readFileSync(__dirname + '/musorovoz.svg', 'utf8')),

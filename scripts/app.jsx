@@ -14,6 +14,12 @@ import Modal from 'react-modal';
 import RenderLoop from './RenderLoop.js';
 import Stats from './Stats.js';
 
+import { loadCustomers } from './customers.js';
+import { loadModels } from './models.js';
+import { loadOwners } from './owners.js';
+import { loadOkrugs} from './okrugs.js';
+import { loadTypes } from './types.js';
+
 if (process.env.NODE_ENV !== 'production') {
   window.React = React;
 }
@@ -34,7 +40,15 @@ const renderLoop = new RenderLoop(stats);
 Modal.setAppElement(element);
 Modal.injectCSS();
 
-icons.loadIcons.then(() => {
+
+Promise.all([
+  icons.loadIcons,
+  loadCustomers(),
+  loadModels(),
+  loadOwners(),
+  loadOkrugs(),
+  loadTypes()
+]).then(() => {
   React.render(<App flux={flux} renderLoop={renderLoop}/>, element, () => {
     renderLoop.start();
   });

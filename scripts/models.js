@@ -1,17 +1,49 @@
-const list = require('../models.json');
 
+import config from './config.js';
+const MODELS_URL = config.backend ? config.backend + '/models' : '/models';
+
+const list = [];
 const index = {};
 
-list.forEach(item => index[item.id] = item);
+function makeIndex() {
+  list.forEach(item => index[item.id] = item);
+}
+
+function replaceList(newList) {
+  list.length = 0;
+
+  for (let o of newList) {
+    list.push(o)
+  }
+
+}
+function normalizeArray(objOrArray) {
+
+  if (Array.isArray(objOrArray)) {
+    return objOrArray;
+  }
+
+  return Object.keys(objOrArray)
+               .map(key => objOrArray[key]);
+
+}
 
 export default list;
+
 export function getModelById(id) {
   var r = index[id];
 
   if (!r) {
-    //console.warn(`Model ${id} not found, so set to UNKNOWN(id:-1)`);
-    r = getModelById("-1");
+    console.warn(`Model ${id} not found`);
   }
 
-  return r;
+  return index[id];
+}
+
+export function loadModels() {
+  return fetch(MODELS_URL)
+    .then(r => r.json())
+    .then(normalizeArray)
+    .then(replaceList)
+    .then(makeIndex);
 }

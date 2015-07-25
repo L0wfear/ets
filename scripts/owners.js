@@ -1,21 +1,35 @@
-const list = require('../owners.json');
 
-list.sort(function (a, b) {
-  if (a.title > b.title) {
-    return 1;
-  }
-  if (a.title < b.title) {
-    return -1;
-  }
+import config from './config.js';
+const OWNERS_URL = config.backend ? config.backend + '/owners' : '/owners';
 
-  return 0;
-});
-
+const list = [];
 const index = {};
 
-list.forEach(item => index[item.id] = item);
+function makeIndex() {
+  list.forEach(item => index[item.id] = item);
+}
+
+function replaceList(newList) {
+  list.length = 0;
+
+  for (let o of newList) {
+    list.push(o)
+  }
+
+}
+function normalizeArray(objOrArray) {
+
+  if (Array.isArray(objOrArray)) {
+    return objOrArray;
+  }
+
+  return Object.keys(objOrArray)
+               .map(key => objOrArray[key]);
+
+}
 
 export default list;
+
 export function getOwnerById(id) {
   var r = index[id];
 
@@ -24,4 +38,12 @@ export function getOwnerById(id) {
   }
 
   return index[id];
+}
+
+export function loadOwners() {
+  return fetch(OWNERS_URL)
+    .then(r => r.json())
+    .then(normalizeArray)
+    .then(replaceList)
+    .then(makeIndex);
 }

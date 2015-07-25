@@ -2,13 +2,36 @@ import { getStatusById } from '../../statuses.js';
 import { getTypeById } from '../../types.js';
 import { icons } from '../../icons/index.js';
 
-const SMALL_RADIUS = 3;
-const HOLE_RADIUS = SMALL_RADIUS / 3;
-const LARGE_RADIUS = 10;
+const SMALL_RADIUS = 5;
+const LARGE_RADIUS = 12;
 const ZOOM_THRESHOLD = 13;
 
+const ICON_MAP = {
+  16: 'traktor',
+  11: 'greider',
+  13: 'musorovoz',
+  18: 'musorovoz',
+  19: 'musorovoz',
+  20: 'musorovoz',
+  21: 'musorovoz',
+  22: 'musorovoz',
+  23: 'musorovoz',
+  9: 'podmetalka',
+  1: 'polivalka',
+  6: 'reagent',
+  7: 'reagent_tverd',
+  2: 'samosval',
+  5: 'pogruzchik',
+  8: 'trotuar',
+  4: 'pogruzchik'
+}
+
+function getIcon(id) {
+  const icon = ICON_MAP[id] || 'drugoe';
+  return icons[icon];
+}
+
 var _SMALL_RADIUS = SMALL_RADIUS;
-var _HOLE_RADIUS = HOLE_RADIUS;
 
 function normalizeAngle(angle) {
 
@@ -25,23 +48,19 @@ function getSmallImage(statusId) {
 
   if (!cached) {
     var SMALL_RADIUS = _SMALL_RADIUS * 2; // FIXME detect retina statically
-    var HOLE_RADIUS = _HOLE_RADIUS * 2;
 
     var color = getStatusById(statusId).color;
     var canvas = document.createElement('canvas');
     canvas.width = canvas.height = 2 * SMALL_RADIUS;
     var ctx = canvas.getContext('2d');
     ctx.fillStyle = color;
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.arc(SMALL_RADIUS, SMALL_RADIUS, SMALL_RADIUS,  0, 2 * Math.PI);
     ctx.closePath();
     ctx.fill();
-
-    ctx.fillStyle = 'white';
-    ctx.beginPath();
-    ctx.arc(SMALL_RADIUS, SMALL_RADIUS, HOLE_RADIUS,  0, 2 * Math.PI);
-    ctx.closePath();
-    ctx.fill();
+    ctx.stroke();
 
     cached = smallCache[statusId] = canvas;
   }
@@ -196,18 +215,40 @@ class Marker {
     let color = getStatusById(point.status).color;
     let direction = point.direction;
     let type = getTypeById(point.car ? point.car[1] : 5);
-    let icon = type.icon;
-    if (!icon) {
-      icon = "drugoe";
-    }
+    let icon = type && type.icon;
 
-    if (point.speed <= 0) {
-      this._renderLargeStopped(context, selected);
-      return;
-    }
     let angle = Math.PI * direction / 180 ;
     let tipAngle = normalizeAngle(angle - Math.PI / 2);
     let coords = this._getCoords();
+
+    const title = point.car[0];
+
+    if (title) {
+      const ctx = context;
+      const radius = LARGE_RADIUS;
+
+      ctx.fillStyle = 'white';
+
+      var text = title;
+      var width = ctx.measureText(text).width;
+      var padding = 3;
+
+      var rectWidth = width + 2 * padding + radius;
+      var rectHeight = 2 * radius - 2;
+      var rectOffsetY =  coords.y - radius + 1;
+
+      if (tipAngle >= 0.5 * Math.PI && tipAngle <= 1.5 * Math.PI ) {
+        ctx.fillRect(coords.x, rectOffsetY, rectWidth, rectHeight);
+        ctx.fillStyle = 'black';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(text, coords.x + padding + radius, coords.y);
+      } else {
+        ctx.fillRect(coords.x - rectWidth, rectOffsetY, rectWidth, rectHeight);
+        ctx.fillStyle = 'black';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(text, coords.x - rectWidth + padding, coords.y);
+      }
+    }
 
     context.fillStyle = color;
     context.beginPath();
@@ -225,33 +266,7 @@ class Marker {
       context.lineWidth = 2;
       context.stroke();
     }
-    context.drawImage(icons[icon], -LARGE_RADIUS + coords.x, -LARGE_RADIUS + coords.y, 2 * LARGE_RADIUS, 2 * LARGE_RADIUS);
-  }
-
-  _renderLargeStopped(context, selected) {
-    let map = this._map;
-    let point = this._point;
-    let color = getStatusById(point.status).color;
-    let type = getTypeById(point.car ? point.car[1] : 5);
-    let icon = type.icon;
-    if (!icon) {
-      //console.log('icon is not set, so it will be "drugoe"');
-      icon = "drugoe";
-    }
-
-
-    let coords = this._getCoords();
-    context.fillStyle = color;
-    context.beginPath();
-    context.arc(coords.x, coords.y, LARGE_RADIUS, 0, 2 * Math.PI);
-    context.closePath();
-    context.fill();
-    if (selected) {
-      context.strokeStyle = 'white';
-      context.lineWidth = 2;
-      context.stroke();
-    }
-    context.drawImage(icons[icon], -LARGE_RADIUS + coords.x, -LARGE_RADIUS + coords.y, 2 * LARGE_RADIUS, 2 * LARGE_RADIUS);
+    context.drawImage(getIcon(icon), -LARGE_RADIUS + coords.x, -LARGE_RADIUS + coords.y, 2 * LARGE_RADIUS, 2 * LARGE_RADIUS);
   }
 
   renderTrack(ctx) {

@@ -13,7 +13,7 @@ import config from './config.js';
 import Modal from 'react-modal';
 import RenderLoop from './RenderLoop.js';
 import Stats from './Stats.js';
-import ReconnectingWebSocket from './ReconnectingWebSocket.js';
+import ReconnectingWebSocket from './ReconnectingWebsocket.js';
 
 import { loadCustomers } from './customers.js';
 import { loadModels } from './models.js';

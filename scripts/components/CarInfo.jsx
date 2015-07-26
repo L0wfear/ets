@@ -10,6 +10,19 @@ import config from '../config.js';
 
 class CarInfo extends Component {
 
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      imageUrl: null
+    };
+  }
+
+  componentDidMount() {
+    if (this.props.car && !this.state.imageUrl) {
+      this.fetchImage();
+    }
+  }
+
   render() {
     let car = this.props.car;
 
@@ -18,7 +31,6 @@ class CarInfo extends Component {
     }
 
     let plate = car.car[0];
-
 
     return (
       <div>
@@ -32,16 +44,17 @@ class CarInfo extends Component {
   renderModel() {
     let car = this.props.car;
     let modelId = car.car[2];
+    const imageUrl = this.state.imageUrl;
 
     let model = getModelById(modelId);
-
-    if (!model || !model.image || !model.image.length)
-      return null;
+    const title = model ? model.title : '';
 
     return (
-      <Panel title={model.title}>
-        <img src={config.images + model.image}
-             style={{ margin: 10, width: 400 }}/>
+      <Panel title={title}>
+        {
+         imageUrl ? <img src={config.backend + config.images + imageUrl}
+             style={{ margin: 10, width: 400 }}/> : null
+         }
       </Panel>
     );
   }
@@ -104,6 +117,27 @@ class CarInfo extends Component {
         {props.map(p => <div style={{ textAlign: 'left', fontWeight: 200}}>{p.key}: <span style={{color:'#666', fontSize: 15}}>{p.value}</span></div>)}
       </Panel>
     );
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.car && nextProps.car !== this.props.car) {
+      this.fetchImage();
+    }
+  }
+
+  fetchImage() {
+    this.setState({ imageUrl: null });
+
+    const car = this.props.car;
+
+    fetch(config.backend + `/car_image?model_id=${car.car[2]}&car_id=${car.id}&type_id=${car.car[1]}`)
+      .then(r => r.json())
+      .then(r => {
+        if (this.props.car === car) {
+          this.setState({ imageUrl: r})
+        }
+      });
+
   }
 
 }

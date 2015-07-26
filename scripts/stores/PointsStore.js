@@ -23,6 +23,7 @@ export default class PointsStore extends Store {
       selected: null,
       points: {},
       filter: {
+        connectionStatus: [0, 1],
         status: statuses.map(s => s.id),
         type: [],
         owner: [],
@@ -35,6 +36,10 @@ export default class PointsStore extends Store {
         2: 0,
         3: 0,
         4: 0
+      },
+      byConnectionStatus: {
+        0: 0,
+        1: 1
       }
     };
 
@@ -47,6 +52,10 @@ export default class PointsStore extends Store {
       2: 0,
       3: 0,
       4: 0
+    };
+    let byConnectionStatus = {
+      0: 0,
+      1: 0
     };
 
     let keys = Object.keys(update);
@@ -78,11 +87,12 @@ export default class PointsStore extends Store {
 
       if (this.isPointVisible(point)) {
         byStatus[point.status]++;
+        byConnectionStatus[point['connection_status']]++;
       }
     }
 
 
-    this.setState({ points, byStatus });
+    this.setState({ points, byStatus, byConnectionStatus });
   }
 
   handleSetFilter(update) {
@@ -93,6 +103,10 @@ export default class PointsStore extends Store {
       2: 0,
       3: 0,
       4: 0
+    };
+    let byConnectionStatus = {
+      0: 0,
+      1: 0
     };
 
 
@@ -108,10 +122,11 @@ export default class PointsStore extends Store {
 
       if (this._isPointVisible(point, filter)) {
         byStatus[point.status]++;
+        byConnectionStatus[point['connection_status']]++;
       }
     }
 
-    this.setState({ filter, selected, byStatus });
+    this.setState({ filter, selected, byStatus, byConnectionStatus });
   }
 
   handleSelectPoint(selected) {
@@ -172,6 +187,11 @@ export default class PointsStore extends Store {
       if (!visible) return false;
     }
 
+    if (filter.connectionStatus) {
+      visible = visible && filter.connectionStatus.indexOf(point['connection_status']) !== -1;
+      if (!visible) return false;
+    }
+
     if (filter.type && filter.type.length > 0) {
       visible = visible && point.car && filter.type.indexOf(point.car[1]) !== -1;
       if (!visible) return false;
@@ -197,9 +217,13 @@ export default class PointsStore extends Store {
 
       var ownerId = point.car[3];
       var owner = getOwnerById(ownerId);
-      var okrug = owner.okrug;
 
-      visible = visible && filter.okrug.indexOf(okrug) !== -1;
+      if (!owner) return false;
+
+
+      var okrugs = owner.okrugs;
+
+      visible = visible && okrugs.some(okrug => filter.okrug.indexOf(okrug) !== -1);
 
       if (!visible) return false;
     }

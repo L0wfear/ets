@@ -13,6 +13,7 @@ import config from './config.js';
 import Modal from 'react-modal';
 import RenderLoop from './RenderLoop.js';
 import Stats from './Stats.js';
+import ReconnectingWebSocket from './ReconnectingWebSocket.js';
 
 import { loadCustomers } from './customers.js';
 import { loadModels } from './models.js';
@@ -67,7 +68,7 @@ getAllPoints().then(data => {
 
   host = host.replace(/^http/, 'ws') + config.ws;
 
-  let ws = new WebSocket(host);
+  let ws = new ReconnectingWebSocket(host);
 
   ws.onmessage = ({ data }) => {
    flux.getActions('points').updatePoints(JSON.parse(data));

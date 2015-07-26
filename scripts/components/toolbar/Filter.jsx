@@ -3,6 +3,10 @@ import { DropdownList, Multiselect } from 'react-widgets';
 
 
 function filter(item, search) {
+  if (!item || !item.title) {
+    return false;
+  }
+
   var title = item.title.toLowerCase();
   search = search.toLowerCase();
 

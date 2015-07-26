@@ -1,35 +1,11 @@
 import { getStatusById } from '../../statuses.js';
 import { getTypeById } from '../../types.js';
-import { icons } from '../../icons/index.js';
+import { getIcon } from '../../icons/index.js';
 
 const SMALL_RADIUS = 5;
 const LARGE_RADIUS = 12;
 const ZOOM_THRESHOLD = 13;
 
-const ICON_MAP = {
-  16: 'traktor',
-  11: 'greider',
-  13: 'musorovoz',
-  18: 'musorovoz',
-  19: 'musorovoz',
-  20: 'musorovoz',
-  21: 'musorovoz',
-  22: 'musorovoz',
-  23: 'musorovoz',
-  9: 'podmetalka',
-  1: 'polivalka',
-  6: 'reagent',
-  7: 'reagent_tverd',
-  2: 'samosval',
-  5: 'pogruzchik',
-  8: 'trotuar',
-  4: 'pogruzchik'
-}
-
-function getIcon(id) {
-  const icon = ICON_MAP[id] || 'drugoe';
-  return icons[icon];
-}
 
 var _SMALL_RADIUS = SMALL_RADIUS;
 

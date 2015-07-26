@@ -24,6 +24,32 @@ function loadIcon(name, data) {
 
 }
 
+const ICON_MAP = {
+  16: 'traktor',
+  11: 'greider',
+  13: 'musorovoz',
+  18: 'musorovoz',
+  19: 'musorovoz',
+  20: 'musorovoz',
+  21: 'musorovoz',
+  22: 'musorovoz',
+  23: 'musorovoz',
+  9: 'podmetalka',
+  1: 'polivalka',
+  6: 'reagent',
+  7: 'reagent_tverd',
+  2: 'samosval',
+  5: 'pogruzchik',
+  8: 'trotuar',
+  4: 'pogruzchik'
+}
+
+exports.getIcon = function getIcon(id) {
+  const icon = ICON_MAP[id] || 'drugoe';
+  return icons[icon];
+}
+
+
 exports.icons = icons;
 
 exports.loadIcons = Promise.all([

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Filter from './Filter.jsx';
 
-import { icons } from '../../icons/index.js';
+import { getIcon } from '../../icons/index.js';
 
 import statuses from '../../statuses.js';
 import types from '../../types.js';
@@ -17,7 +17,7 @@ class TypeComponent extends Component {
 
     return (
       <span>
-        {type.icon ? <img className="type-filter-icon" src={icons[type.icon].url}/> : null}
+        {type.icon ? <img className="type-filter-icon" src={getIcon(type.icon).url}/> : null}
         {type.title}
       </span>
     );
@@ -77,7 +77,7 @@ class LegendWrapper extends Component {
       });
 
     return (
-      <div className="col-sm-4 legend-wrapper"><ul>{items}</ul></div>
+      <div className="col-sm-2 legend-wrapper"><ul>{items}</ul></div>
     );
   }
 
@@ -96,6 +96,59 @@ class LegendWrapper extends Component {
 
     this.props.flux.getActions('points').setFilter({
       status: filter
+    });
+
+  }
+
+}
+
+const connectionStatuses = [
+  {
+    id: 0,
+    title: 'Не на связи',
+    color: '#f34b7d'
+  },
+  {
+    id: 1,
+    title: 'На связи',
+    color: '#2ECC40'
+  }
+];
+
+class ConnectionStatusFilter extends Component {
+
+  render() {
+    let byConnectionStatus = this.props.byConnectionStatus;
+    let filter = this.props.filter.connectionStatus;
+    let items = connectionStatuses.map(s => Object.assign({ amount: byConnectionStatus[s.id] }, s))
+      .map(i => {
+        return (
+          <li>
+            <StatusComponent active={filter.indexOf(i.id) !== -1} item={i} onClick={() => this.toggleFilter(i)}/>
+          </li>
+        );
+      });
+
+    return (
+      <div className="col-sm-2 legend-wrapper"><ul>{items}</ul></div>
+    );
+  }
+
+  toggleFilter(i) {
+    let filter = this.props.filter.connectionStatus.slice();
+    let id = i.id;
+
+
+    let index = filter.indexOf(id);
+
+    if (index === -1 ) {
+      filter.push(id);
+    } else {
+      filter.splice(index, 1);
+    }
+
+    this.props.flux.getActions('points').setFilter({
+      connectionStatus: filter
     });
 
   }
@@ -165,6 +218,12 @@ class Toolbar extends Component {
     filters.push(
       <FluxComponent connectToStores={['points']}>
         <LegendWrapper/>
+      </FluxComponent>
+    );
+
+    filters.push(
+      <FluxComponent connectToStores={['points']}>
+        <ConnectionStatusFilter/>
       </FluxComponent>
     );
 

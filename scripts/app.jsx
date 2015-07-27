@@ -58,20 +58,19 @@ Promise.all([
 getAllPoints().then(data => {
   flux.getActions('points').updatePointsInitial(data);
 
-  let host;
+//let host;
+//
+//if (config.backend) {
+//  host = config.backend;
+//} else {
+//  host = location.origin;
+//}
+//
+//host = host.replace(/^http/, 'ws') + config.ws;
 
-  if (config.backend) {
-    host = config.backend;
-  } else {
-    host = location.origin;
-  }
-
-  host = host.replace(/^http/, 'ws') + config.ws;
-
-  let ws = new ReconnectingWebSocket(host);
+  let ws = new WebSocket(config.ws);
 
   ws.onmessage = ({ data }) => {
-   flux.getActions('points').updatePoints(JSON.parse(data));
+    flux.getActions('points').updatePoints(JSON.parse(data));
   };
-
-});
+})

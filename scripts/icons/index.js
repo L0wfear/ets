@@ -41,7 +41,8 @@ const ICON_MAP = {
   2: 'samosval',
   5: 'pogruzchik',
   8: 'trotuar',
-  4: 'pogruzchik'
+  4: 'pogruzchik',
+  1000: 'neizvesten'
 }
 
 exports.getIcon = function getIcon(id) {
@@ -63,5 +64,6 @@ exports.loadIcons = Promise.all([
   loadIcon('samosval', fs.readFileSync(__dirname + '/samosval.svg', 'utf8')),
   loadIcon('traktor', fs.readFileSync(__dirname + '/traktor.svg', 'utf8')),
   loadIcon('trotuar', fs.readFileSync(__dirname + '/trotuar.svg', 'utf8')),
-  loadIcon('drugoe', fs.readFileSync(__dirname + '/drugoe.svg', 'utf8'))
+  loadIcon('drugoe', fs.readFileSync(__dirname + '/drugoe.svg', 'utf8')),
+  loadIcon('neizvesten', fs.readFileSync(__dirname + '/neizvesten.svg', 'utf8'))
 ]);

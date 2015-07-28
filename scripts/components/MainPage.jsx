@@ -20,9 +20,12 @@ class MainPage extends Component {
     this.setState({modalIsOpen: false});
   }
 
-  constructor() {
-    super();
-    this.state = { modalIsOpen: false };
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      modalIsOpen: false,
+      showPlates: false
+    };
   }
 
   render() {
@@ -42,7 +45,8 @@ class MainPage extends Component {
           <Map center={MOSCOW_COORDS}
                zoom={10}
                showAttribution={false}
-               renderLoop={this.props.renderLoop}/>
+               renderLoop={this.props.renderLoop}
+               showPlates={this.state.showPlates}/>
 
           <Sidebar/>
 
@@ -58,6 +62,12 @@ class MainPage extends Component {
 
         <button className="open-modal-button" onClick={this.openModal.bind(this)}><span className="glyphicon glyphicon-stats"></span></button>*/}
         <WeatherWidget/>
+        <button className="plate-btn" onClick={_ => this.setState({ showPlates: !this.state.showPlates })}>
+          { this.state.showPlates ?
+             "Убрать гос.номер" :
+             "Отображать гос.номер"
+              }
+        </button>
       </div>
     );
   }

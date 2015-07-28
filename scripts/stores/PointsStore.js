@@ -196,6 +196,17 @@ export default class PointsStore extends Store {
       if (!visible) return false;
     }
 
+    if (filter.bnso_gos && filter.bnso_gos.length > 0 ){
+      let text = filter.bnso_gos.toLowerCase();
+      visible = visible && (
+              point.car.gps_code.toLowerCase().indexOf(text) + 1 ||
+              point.car.gov_number.toLowerCase().indexOf(text) + 1
+      );
+
+      if (!visible) return false; //console.log( point )
+    }
+
+
     if (filter.connectionStatus) {
       visible = visible && filter.connectionStatus.indexOf(point['connection_status']) !== -1;
       if (!visible) return false;

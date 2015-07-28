@@ -5,6 +5,8 @@ import { getStatusById } from '../statuses.js';
 import { getTypeById } from '../types.js';
 import { getOwnerById } from '../owners.js';
 import { getCustomerById } from '../customers.js';
+import DateTimePicker from 'react-widgets/lib/DateTimePicker';
+
 
 import config from '../config.js';
 
@@ -112,11 +114,37 @@ class CarInfo extends Component {
       });
     }
 
-    return (
-      <Panel title="Данные">
-        {props.map(p => <div style={{ textAlign: 'left', fontWeight: 200}}>{p.key}: <span style={{color:'#666', fontSize: 15}}>{p.value}</span></div>)}
-      </Panel>
+    let now = new Date();
+    let start_of_today = new Date(Date.UTC(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate())
     );
+
+
+    return (
+      <div>
+        <Panel title="Трэкинг" className="chart-datepickers-wrap">
+          С <DateTimePicker className="chart-datepicker" defaultValue={start_of_today} ref="from_dt" onChange={this.handleTrackDatesChange.bind(this)}/> по <DateTimePicker ref="to_dt" className="chart-datepicker" onChange={this.handleTrackDatesChange.bind(this)} defaultValue={now}/>
+        </Panel>
+        <Panel title="Данные">
+          {props.map(p =>
+          <div style={{ textAlign: 'left', fontWeight: 200}}>{p.key}: <span style={{color:'#666', fontSize: 15}}>{p.value}</span>
+
+          </div>)}
+        </Panel>
+      </div>
+    );
+  }
+
+  handleTrackDatesChange(){
+    let refs = this.refs;
+    let from = refs.from_dt.state.value;
+    let to = refs.to_dt.state.value;
+
+    window.handleUpdateTrack(from, to);
+
+    this.props.updateTrack()
   }
 
   componentWillReceiveProps(nextProps) {

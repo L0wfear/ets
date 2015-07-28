@@ -22,7 +22,6 @@ var messages = {
 class Filter extends Component {
 
   constructor(props, context) {
-    console.log(context.flux);
     this.state = { flux: context.flux };
   }
 

@@ -17,6 +17,8 @@ export default React.createClass({
     // let open = !!this.props.selected;
     //
     let className = 'dashboard-sidebar';
+    let store = this.props.flux.getStore('points');
+
     //
     // if (open) {
     //   className += ' dashboard-sidebar--open';
@@ -31,7 +33,7 @@ export default React.createClass({
     else
       c = <div key={this.props.selected.id} className={className} style={{ zIndex: 100, paddingTop: 100 }}>
       <div style={{ height: "100%", overflow: "auto" }}>
-        <CarInfo car={this.props.selected}/>
+        <CarInfo car={this.props.selected} updateTrack={store._pointsActions.updateTrack}/>
       </div>
     </div>
 

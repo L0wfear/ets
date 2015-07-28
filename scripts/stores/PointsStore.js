@@ -45,6 +45,7 @@ export default class PointsStore extends Store {
 
   }
 
+  // @TODO подумать над рефакторингом этого метода и метода ниже
   handleUpdatePoints(update) {
     let points = Object.assign({}, this.state.points);
     let byStatus = {
@@ -90,7 +91,6 @@ export default class PointsStore extends Store {
         byConnectionStatus[point['connection_status']]++;
       }
     }
-
 
     this.setState({ points, byStatus, byConnectionStatus });
   }

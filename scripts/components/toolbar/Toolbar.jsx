@@ -76,16 +76,24 @@ class LegendWrapper extends Component {
         );
       });
 
+    items.push(
+      <li>
+        <FluxComponent connectToStores={['points']}>
+          <ConnectionStatusFilter/>
+        </FluxComponent>
+      </li>)
+
     return (
-      <div className="col-sm-2 legend-wrapper"><ul>{items}</ul></div>
+      <div className="col-sm-2 legend-wrapper">
+        <ul>{items}</ul>
+      </div>
     );
   }
 
   toggleFilter(i) {
+
     let filter = this.props.filter.status.slice();
     let id = i.id;
-
-
     let index = filter.indexOf(id);
 
     if (index === -1 ) {
@@ -108,11 +116,11 @@ const connectionStatuses = [
     title: 'Не на связи',
     color: '#f34b7d'
   },
-  {
+  /*{
     id: 1,
     title: 'На связи',
     color: '#2ECC40'
-  }
+  }*/
 ];
 
 class ConnectionStatusFilter extends Component {
@@ -120,24 +128,18 @@ class ConnectionStatusFilter extends Component {
   render() {
     let byConnectionStatus = this.props.byConnectionStatus;
     let filter = this.props.filter.connectionStatus;
-    let items = connectionStatuses.map(s => Object.assign({ amount: byConnectionStatus[s.id] }, s))
-      .map(i => {
-        return (
-          <li>
-            <StatusComponent active={filter.indexOf(i.id) !== -1} item={i} onClick={() => this.toggleFilter(i)}/>
-          </li>
-        );
-      });
+    let item = connectionStatuses[0];
+
+    item.amount = byConnectionStatus[item.id];
 
     return (
-      <div className="col-sm-2 legend-wrapper"><ul>{items}</ul></div>
+      <StatusComponent active={filter.indexOf(item.id) !== -1} item={item} onClick={() => this.toggleFilter(item)}/>
     );
   }
 
   toggleFilter(i) {
     let filter = this.props.filter.connectionStatus.slice();
     let id = i.id;
-
 
     let index = filter.indexOf(id);
 
@@ -218,12 +220,6 @@ class Toolbar extends Component {
     filters.push(
       <FluxComponent connectToStores={['points']}>
         <LegendWrapper/>
-      </FluxComponent>
-    );
-
-    filters.push(
-      <FluxComponent connectToStores={['points']}>
-        <ConnectionStatusFilter/>
       </FluxComponent>
     );
 

@@ -46,11 +46,6 @@ const list = [
     id: 3,
     title: 'Стоянка',
     color: '#f34b7d'
-  },
-  {
-    id: 4,
-    title: 'Вне границ г. Москвы',
-    color: '#FFDC00'
   }
 ];
 

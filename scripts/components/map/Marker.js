@@ -4,7 +4,7 @@ import { getIcon } from '../../icons/index.js';
 
 const SMALL_RADIUS = 5;
 const LARGE_RADIUS = 12;
-const ZOOM_THRESHOLD = 13;
+const ZOOM_THRESHOLD = 14;
 
 
 var _SMALL_RADIUS = SMALL_RADIUS;

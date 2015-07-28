@@ -4,6 +4,7 @@ import { getIcon } from '../../icons/index.js';
 
 const SMALL_RADIUS = 5;
 const LARGE_RADIUS = 12;
+const LARGE_RADIUS_SELECTED = 14;
 const ZOOM_THRESHOLD = 13;
 
 
@@ -233,23 +234,28 @@ class Marker {
       }
     }
 
+    var radius = LARGE_RADIUS;
+    if (selected) {
+      radius = LARGE_RADIUS_SELECTED;
+    }
+
     context.fillStyle = color;
     context.beginPath();
     context.save();
     context.translate(coords.x, coords.y);
     context.rotate(tipAngle);
-    context.arc(0, 0, LARGE_RADIUS, Math.PI/4, - Math.PI/4);
-    context.lineTo(Math.sqrt(2) * LARGE_RADIUS, 0);
+    context.arc(0, 0, radius, Math.PI/4, - Math.PI/4);
+    context.lineTo(Math.sqrt(2) * radius, 0);
     context.restore();
     context.closePath();
     context.fill();
 
     if (selected) {
       context.strokeStyle = 'white';
-      context.lineWidth = 2;
+      context.lineWidth = 3;
       context.stroke();
     }
-    context.drawImage(getIcon(icon), -LARGE_RADIUS + coords.x, -LARGE_RADIUS + coords.y, 2 * LARGE_RADIUS, 2 * LARGE_RADIUS);
+    context.drawImage(getIcon(icon), -radius + coords.x, -radius + coords.y, 2 * radius, 2 * radius);
   }
 
   renderTrack(ctx) {

@@ -74,6 +74,4 @@ getAllPoints().then(data => {
     flux.getActions('points').updatePoints(JSON.parse(data));
   };
 
-  setInterval(_ => ws.refresh(), 5000);
-
 })

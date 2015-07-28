@@ -26,7 +26,7 @@ export function getTrack(carId) {
   );
 
   let query = '/?from_dt=' + getUTCUnixTime(start_of_today) +
-                 '&to_dt=' + getUTCUnixTime(today.getTime());
+                 '&to_dt=' + getUTCUnixTime(now.getTime());
 
   return fetch(TRACK_URL + carId + query).then(r => r.json());
 

@@ -273,7 +273,13 @@ class Marker {
       ctx.lineTo(coords.x, coords.y);
     }
 
-    ctx.lineTo(this._coords.x, this._coords.y);
+    // если машина в движении - дорисовываем еще одну точку, чтобы трэк не обрывался
+    // получается некрасиво в том случае, если обновление происходит редко
+    // и машина резко перемещается на другую точку
+    if ( point.status === 1 ){
+      let coords = map.latLngToLayerPoint(point.coords);
+      ctx.lineTo(coords.x, coords.y);
+    }
 
     ctx.stroke();
   }

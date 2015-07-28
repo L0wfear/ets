@@ -87,6 +87,7 @@ gulp.task('watchTask', function() {
 });
 
 gulp.task('watch', ['clean'], function() {
+  process.env.NODE_ENV = 'development';
   gulp.start(['browserSync', 'watchTask', 'watchify', 'styles']);
 });
 

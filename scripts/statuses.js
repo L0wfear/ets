@@ -48,9 +48,9 @@ const list = [
     color: '#f34b7d'
   },
   {
-    id: 4,
-    title: 'Вне границ г. Москвы',
-    color: '#FFDC00'
+     id: 4,
+     title: 'Не на связи',
+     color: '#AAAAAA'
   }
 ];
 

@@ -12,9 +12,23 @@ export function getAllPoints() {
 
 }
 
+function getUTCUnixTime( time ){
+  return Math.round( time / 1000 );
+}
+
 export function getTrack(carId) {
 
-  return fetch(TRACK_URL + carId).then(r => r.json());
+  let now = new Date();
+  let start_of_today = new Date(Date.UTC(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate())
+  );
+
+  let query = '/?from_dt=' + getUTCUnixTime(start_of_today) +
+                 '&to_dt=' + getUTCUnixTime(today.getTime());
+
+  return fetch(TRACK_URL + carId + query).then(r => r.json());
 
 }
 

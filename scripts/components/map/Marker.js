@@ -153,7 +153,7 @@ class Marker {
     return coords;
   }
 
-  render(context, selected, time) {
+  render(context, selected, time, options) {
     let store = this._store;
     let point = this._point;
 
@@ -167,9 +167,9 @@ class Marker {
     let zoom = map.getZoom();
 
     if (zoom < ZOOM_THRESHOLD && !selected) {
-      this._renderSmall(context);
+      this._renderSmall(context, options);
     } else {
-      this._renderLarge(context, selected);
+      this._renderLarge(context, selected, options);
     }
   }
 
@@ -192,7 +192,7 @@ class Marker {
     context.drawImage(image, coords.x - SMALL_RADIUS/2, coords.y - SMALL_RADIUS / 2, SMALL_RADIUS * 2, SMALL_RADIUS * 2);
   }
 
-  _renderLarge(context, selected) {
+  _renderLarge(context, selected, options) {
     let map = this._map;
     let point = this._point;
     let color = getStatusById(point.status).color;
@@ -206,7 +206,7 @@ class Marker {
 
     const title = point.car[0];
 
-    if (title) {
+    if (options.showPlates && title) {
       const ctx = context;
       const radius = LARGE_RADIUS;
 

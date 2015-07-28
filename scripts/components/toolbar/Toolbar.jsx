@@ -157,11 +157,12 @@ class Toolbar extends Component {
       );
     }
 
-    filters.push(
+  /*  filters.push(
       <Filter name="own"
               title="Принадлежность"
               options={[{ id: null, title: 'Все'}, { id: 1, title: 'Собственная'}, { id: 0, title: 'Привлеченная'}]}/>
-    );
+    );*/
+
 
     filters.push(
       <FluxComponent connectToStores={['points']}>

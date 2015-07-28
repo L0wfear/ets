@@ -50,7 +50,7 @@ const list = [
   {
      id: 4,
      title: 'Не на связи',
-     color: '#AAAAAA'
+     color: '#888888'
   }
 ];
 

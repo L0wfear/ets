@@ -2,6 +2,10 @@ import { Actions } from 'flummox';
 
 export default class PointsActions extends Actions {
 
+  updateTrack( data ){
+    return data
+  }
+
   updatePoints(data) {
     return data;
   }

@@ -65,7 +65,7 @@ body.application hr {
 
 .chart-wrapper .chart-stage {
   /*min-height: 240px;*/
-  overflow: hidden;
+  /*overflow: hidden;*/
   padding: 5px 10px;
   position: relative;
 }
@@ -78,6 +78,17 @@ body.application hr {
   padding: 8px 10px 5px;
 }
 
+.chart-wrapper .chart-datepicker {
+  width: 200px;
+  display: inline-block;
+}
+.chart-wrapper .chart-datepickers-wrap {
+  font-weight: 200;
+  text-Align: left;
+  margin-bottom: 30px;
+  font-size: 12px;
+  margin-top:10px
+}
 
 body.application {
   padding: 0;

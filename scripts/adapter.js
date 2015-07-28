@@ -5,18 +5,15 @@ const POINTS_URL = config.backend ? config.backend + '/data' : '/data';
 const TRACK_URL = config.backend ? config.backend + '/tracks/' : '/tracks/';
 const WEATHER_URL = config.backend ? config.backend + '/weather/' : '/weather/';
 
-
 export function getAllPoints() {
-
   return fetch(POINTS_URL).then(r => r.json());
-
 }
 
 function getUTCUnixTime( time ){
   return Math.round( time / 1000 );
 }
 
-export function getTrack(carId) {
+export function getTrack(carId, from_dt, to_dt ) {
 
   let now = new Date();
   let start_of_today = new Date(Date.UTC(
@@ -25,8 +22,12 @@ export function getTrack(carId) {
       now.getDate())
   );
 
-  let query = '/?from_dt=' + getUTCUnixTime(start_of_today) +
-                 '&to_dt=' + getUTCUnixTime(now.getTime());
+  from_dt = !!from_dt ? from_dt : start_of_today.getTime();
+  to_dt = !!to_dt ? to_dt : now.getTime();
+
+  console.log( from_dt, to_dt);
+  let query = '/?from_dt=' + getUTCUnixTime(from_dt) +
+                 '&to_dt=' + getUTCUnixTime(to_dt);
 
   return fetch(TRACK_URL + carId + query).then(r => r.json());
 

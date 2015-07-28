@@ -16,6 +16,7 @@ export default class PointsStore extends Store {
     this.register(pointsActions.setFilter, this.handleSetFilter);
     this.register(pointsActions.selectPoint, this.handleSelectPoint);
     this.register(pointsActions.receiveTrack, this.handleReceiveTrack);
+    this.register(pointsActions.updateTrack, this.handleUpdateTrack);
 
     this.register(loginActions.login, this.handleLogin);
 
@@ -129,9 +130,17 @@ export default class PointsStore extends Store {
     this.setState({ filter, selected, byStatus, byConnectionStatus });
   }
 
+
+  handleUpdateTrack( from, to){
+    let id = this.state.selected;
+    getTrack(id.id, from, to ).then(track => this._pointsActions.receiveTrack(id.id, track))
+  }
+
   handleSelectPoint(selected) {
     if (selected && ! selected.car)
       return;
+
+    window.handleUpdateTrack = this.handleUpdateTrack.bind(this);
 
     if (selected && !selected.track) {
       getTrack(selected.id).then(track => this._pointsActions.receiveTrack(selected.id, track));

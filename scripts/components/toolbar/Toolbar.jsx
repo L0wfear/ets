@@ -173,7 +173,32 @@ class Toolbar extends Component {
       );
     }
 
-  /*  filters.push(
+    //some shit
+    let self = this
+    function handleBNSO(){
+      this.props.flux
+        .getActions('points').setFilter({
+          'bnso_gos': self.refs.text_filter.getDOMNode().value
+        })
+    }
+
+    filters.push(
+        <div className="col-sm-2">
+          <FluxComponent connectToStores={['points']}>
+              <div className="tool coordinates">
+                <h5>БНСО/Гос.номер</h5>
+                <input className="bnso-filter" ref="text_filter" name="bnso" onChange={handleBNSO.bind(this)}/>
+            </div>
+          </FluxComponent>
+        </div>
+    );
+
+  /*  <Filter name="bnso"
+   title="БНСО/Гос.номер"
+   onChange={handleBNSO}
+   search={true}/>
+
+   filters.push(
       <Filter name="own"
               title="Принадлежность"
               options={[{ id: null, title: 'Все'}, { id: 1, title: 'Собственная'}, { id: 0, title: 'Привлеченная'}]}/>

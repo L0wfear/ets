@@ -32,7 +32,7 @@ class MainPage extends Component {
     return (
       <div>
 
-        <FluxComponent connectToStores={['login']}>
+        <FluxComponent connectToStores={['login', 'points']}>
           <Toolbar/>
         </FluxComponent>
 

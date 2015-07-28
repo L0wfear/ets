@@ -17,6 +17,7 @@ export default class PointsStore extends Store {
     this.register(pointsActions.selectPoint, this.handleSelectPoint);
     this.register(pointsActions.receiveTrack, this.handleReceiveTrack);
     this.register(pointsActions.updateTrack, this.handleUpdateTrack);
+    this.register(pointsActions.setShowPlates, this.handleSetShowPlates);
 
     this.register(loginActions.login, this.handleLogin);
 
@@ -41,7 +42,8 @@ export default class PointsStore extends Store {
       byConnectionStatus: {
         0: 0,
         1: 1
-      }
+      },
+      showPlates: false // TODO move to separate store
     };
 
   }
@@ -242,6 +244,10 @@ export default class PointsStore extends Store {
 
   getSelectedPoint() {
     return this.state.selected;
+  }
+
+  handleSetShowPlates(showPlates) {
+    this.setState({ showPlates });
   }
 
 

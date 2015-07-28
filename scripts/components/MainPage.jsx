@@ -39,14 +39,14 @@ class MainPage extends Component {
         <FluxComponent connectToStores={{
           points: store => ({
             points: store.getFilteredPoints(),
-            selected: store.getSelectedPoint()
+            selected: store.getSelectedPoint(),
+            showPlates: store.state.showPlates
           })
         }}>
           <Map center={MOSCOW_COORDS}
                zoom={10}
                showAttribution={false}
-               renderLoop={this.props.renderLoop}
-               showPlates={this.state.showPlates}/>
+               renderLoop={this.props.renderLoop}/>
 
           <Sidebar/>
 
@@ -62,12 +62,6 @@ class MainPage extends Component {
 
         <button className="open-modal-button" onClick={this.openModal.bind(this)}><span className="glyphicon glyphicon-stats"></span></button>*/}
         <WeatherWidget/>
-        <button className="plate-btn" onClick={_ => this.setState({ showPlates: !this.state.showPlates })}>
-          { this.state.showPlates ?
-             "Убрать гос.номер" :
-             "Отображать гос.номер"
-              }
-        </button>
       </div>
     );
   }

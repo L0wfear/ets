@@ -124,6 +124,22 @@ class OwnerFilterWrapper extends Component {
 
 }
 
+class ShowPlatesCheckbox {
+
+  render() {
+    return (
+      <div className="col-sm-2">
+        <div className="checkbox" style={{ marginTop: 15 }}>
+          <label>
+            <input type="checkbox" checked={this.props.showPlates} onChange={e => this.props.flux.getActions('points').setShowPlates(e.target.checked)}/> Номер ТС
+          </label>
+        </div>
+      </div>
+    );
+  }
+
+}
+
 class Toolbar extends Component {
 
   render() {
@@ -174,6 +190,9 @@ class Toolbar extends Component {
       <div className="app-toolbar" style={{ paddingLeft: 30 }}>
         <div className="row tools">
           {filters}
+          <FluxComponent connectToStores={['points']}>
+            <ShowPlatesCheckbox/>
+          </FluxComponent>
         </div>
       </div>
     );

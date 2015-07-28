@@ -26,4 +26,8 @@ export default class PointsActions extends Actions {
     return [carId, track];
   }
 
+  setShowPlates(showPlates) {
+    return showPlates;
+  }
+
 }

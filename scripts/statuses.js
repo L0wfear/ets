@@ -46,6 +46,11 @@ const list = [
     id: 3,
     title: 'Стоянка',
     color: '#f34b7d'
+  },
+  {
+     id: 4,
+     title: 'Не на связи',
+     color: '#AAAAAA'
   }
 ];
 

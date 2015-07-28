@@ -67,7 +67,8 @@ class LegendWrapper extends Component {
   render() {
     let byStatus = this.props.byStatus;
     let filter = this.props.filter.status;
-    let items = statuses.map(s => Object.assign({ amount: byStatus[s.id] }, s))
+    let items = statuses //.concat(connectionStatuses)
+      .map(s => Object.assign({ amount: byStatus[s.id] }, s))
       .map(i => {
         return (
           <li>
@@ -75,13 +76,6 @@ class LegendWrapper extends Component {
           </li>
         );
       });
-
-    items.push(
-      <li>
-        <FluxComponent connectToStores={['points']}>
-          <ConnectionStatusFilter/>
-        </FluxComponent>
-      </li>)
 
     return (
       <div className="col-sm-2 legend-wrapper">
@@ -107,54 +101,6 @@ class LegendWrapper extends Component {
     });
 
   }
-
-}
-
-const connectionStatuses = [
-  {
-    id: 0,
-    title: 'Не на связи',
-    color: '#f34b7d'
-  },
-  /*{
-    id: 1,
-    title: 'На связи',
-    color: '#2ECC40'
-  }*/
-];
-
-class ConnectionStatusFilter extends Component {
-
-  render() {
-    let byConnectionStatus = this.props.byConnectionStatus;
-    let filter = this.props.filter.connectionStatus;
-    let item = connectionStatuses[0];
-
-    item.amount = byConnectionStatus[item.id];
-
-    return (
-      <StatusComponent active={filter.indexOf(item.id) !== -1} item={item} onClick={() => this.toggleFilter(item)}/>
-    );
-  }
-
-  toggleFilter(i) {
-    let filter = this.props.filter.connectionStatus.slice();
-    let id = i.id;
-
-    let index = filter.indexOf(id);
-
-    if (index === -1 ) {
-      filter.push(id);
-    } else {
-      filter.splice(index, 1);
-    }
-
-    this.props.flux.getActions('points').setFilter({
-      connectionStatus: filter
-    });
-
-  }
-
 }
 
 class OwnerFilterWrapper extends Component {

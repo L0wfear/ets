@@ -180,6 +180,13 @@ class Marker {
 
     let coords = this._getCoords();
 
+    // SSD-21
+    // если машина неактивна - рисуем серым
+    // TODO убрать этот хак
+    if (point['connection_status'] === 0 ){
+      point.status = 4;
+    }
+
     let image = getSmallImage(point.status);
 
     context.drawImage(image, coords.x - SMALL_RADIUS/2, coords.y - SMALL_RADIUS / 2, SMALL_RADIUS * 2, SMALL_RADIUS * 2);

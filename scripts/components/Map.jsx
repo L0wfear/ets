@@ -81,6 +81,7 @@ class Map extends Component {
     let pointsStore = flux.getStore('points');
     let selected = pointsStore.getSelectedPoint();
     let markers = this._markers;
+    const bounds = map.getBounds();
 
     let keys = Object.keys(markers);
 
@@ -101,7 +102,7 @@ class Map extends Component {
       let key = keys[i];
       let marker = markers[key];
 
-      if (marker._point !== selected) {
+      if (marker._point !== selected && bounds.contains(marker._coords)) { // топорно, но работает
         marker.render(ctx, false, time, options);
       }
     }

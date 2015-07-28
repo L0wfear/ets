@@ -33,7 +33,7 @@ function getSmallImage(statusId) {
     ctx.strokeStyle = 'white';
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.arc(SMALL_RADIUS, SMALL_RADIUS, SMALL_RADIUS,  0, 2 * Math.PI);
+    ctx.arc(SMALL_RADIUS, SMALL_RADIUS, SMALL_RADIUS - 2,  0, 2 * Math.PI);
     ctx.closePath();
     ctx.fill();
     ctx.stroke();

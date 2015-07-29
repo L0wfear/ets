@@ -10,6 +10,8 @@ import customers from '../../customers.js';
 import okrugs from '../../okrugs.js';
 import FluxComponent from 'flummox/component';
 
+var filter_width = '175px';
+
 class TypeComponent extends Component {
 
   render() {
@@ -78,8 +80,8 @@ class LegendWrapper extends Component {
       });
 
     return (
-      <div className="col-sm-2 legend-wrapper">
-        <ul>{items}</ul>
+      <div className="col-xs-2 legend-wrapper"  style={{width: '180px', 'padding-left': '10px'}}>
+        <ul style={{'padding-left': '0'}}>{items}</ul>
       </div>
     );
   }
@@ -128,7 +130,7 @@ class ShowPlatesCheckbox {
 
   render() {
     return (
-      <div className="col-sm-2">
+      <div className="col-xs-2"  style={{width: '110px', 'padding-left': '0'}}>
         <div className="checkbox" style={{ marginTop: 15 }}>
           <label>
             <input type="checkbox" checked={this.props.showPlates} onChange={e => this.props.flux.getActions('points').setShowPlates(e.target.checked)}/> Номер ТС
@@ -183,11 +185,11 @@ class Toolbar extends Component {
     }
 
     filters.push(
-        <div className="col-sm-2">
+        <div className="col-xs-2"  style={{width: filter_width}}>
           <FluxComponent connectToStores={['points']}>
               <div className="tool coordinates">
                 <h5>БНСО/Гос.номер</h5>
-                <input className="bnso-filter" ref="text_filter" name="bnso" onChange={handleBNSO.bind(this)}/>
+                <input className="bnso-filter" ref="text_filter" name="bnso" onChange={handleBNSO.bind(this)} style={{width: '100%'}}/>
             </div>
           </FluxComponent>
         </div>

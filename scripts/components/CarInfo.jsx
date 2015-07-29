@@ -37,7 +37,7 @@ class CarInfo extends Component {
 
     return (
       <div>
-        <h2 style={{ fontWeight: 200, textAlign: 'center' }}>{plate}</h2>
+        <h3 style={{ fontWeight: 200, textAlign: 'center' }}>{plate}</h3>
         {this.renderModel()}
         {this.renderData()}
       </div>
@@ -50,7 +50,9 @@ class CarInfo extends Component {
     const imageUrl = this.state.imageUrl;
 
     let model = getModelById(modelId);
-    const title = model ? model.title : '';
+
+    var title = model ? model.title : '';
+    //title = title + ' (' + car.car[0] +')';
 
     return (
       <Panel title={title}>

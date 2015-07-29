@@ -145,9 +145,10 @@ class CarInfo extends Component {
         </Panel>
         <Panel title="График расхода топлива" ref="fuel_chart">
           { FUEL_DATA.length > 0  ?
-          <Sparklines data={FUEL_DATA} width={400} height={90}>
-            <SparklinesLine color="#253e56" />
-            <SparklinesSpots />
+          <Sparklines data={FUEL_DATA} width={400} height={90} margin={6}>
+            <SparklinesLine style={{ strokeWidth: 3, stroke: "orange", fill: "#909053" , fillOpacity:'0.25'}} />
+            <SparklinesSpots size={5}
+                             style={{ stroke: "orange", strokeWidth: 2, fill: "white" }} />
           </Sparklines>
             : <span> Нет данных </span>
           }
@@ -195,7 +196,6 @@ class CarInfo extends Component {
         this.setState( {
           fuelData: r
         })
-        this.renderData()
       })
   }
 

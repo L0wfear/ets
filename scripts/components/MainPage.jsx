@@ -63,12 +63,6 @@ class MainPage extends Component {
 
         <button className="open-modal-button" onClick={this.openModal.bind(this)}><span className="glyphicon glyphicon-stats"></span></button>*/}
         <WeatherWidget/>
-        <button className="plate-btn" onClick={_ => this.setState({ showPlates: !this.state.showPlates })}>
-          { this.state.showPlates ?
-             "Убрать гос.номер" :
-             "Отображать гос.номер"
-              }
-        </button>
       </div>
     );
   }

@@ -10,8 +10,6 @@ import customers from '../../customers.js';
 import okrugs from '../../okrugs.js';
 import FluxComponent from 'flummox/component';
 
-var filter_width = '175px';
-
 class TypeComponent extends Component {
 
   render() {
@@ -78,6 +76,12 @@ class LegendWrapper extends Component {
           </li>
         );
       });
+
+    let CARS_TOTAL = 0;
+
+    for ( let v in byStatus ){
+      CARS_TOTAL += byStatus[v]
+    }
 
     return (
       <div className="col-xs-2 legend-wrapper"  style={{width: '180px', 'padding-left': '10px'}}>

@@ -56,7 +56,7 @@ class CarInfo extends Component {
       <Panel title={title}>
         {
          imageUrl ? <img src={config.backend + config.images + imageUrl}
-             style={{ margin: 10, width: 400 }}/> : null
+             style={{ margin: 10, width: 250 }}/> : null
          }
       </Panel>
     );

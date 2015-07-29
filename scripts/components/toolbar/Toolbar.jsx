@@ -85,7 +85,13 @@ class LegendWrapper extends Component {
 
     return (
       <div className="col-sm-2 legend-wrapper">
-        <span style={{ position: 'relative', top: '13px', left: '38px', fontSize: '13px'}}>Всего машин: {CARS_TOTAL}</span>
+        <span style={{ position: 'absolute', top: '-3px', right: '-36px', fontSize: '13px', verticalAlign:'middle'}}>
+          <span style={{fontSize:'76px', color:'#aaa', fontWeight:'100'}}>}</span>
+          <span style={{
+    position: 'relative',
+    top: '-17px',
+    fontSize: '13px',
+    fontWeight: '200'}}>{CARS_TOTAL}</span></span>
         <ul>{items}</ul>
       </div>
     );

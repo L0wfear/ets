@@ -85,13 +85,14 @@ class LegendWrapper extends Component {
 
     return (
       <div className="col-xs-2 legend-wrapper"  style={{width: '180px', 'padding-left': '10px'}}>
-        <span style={{ position: 'absolute', top: '-3px', right: '-36px', fontSize: '13px', verticalAlign:'middle'}}>
+        <div style={{ position: 'absolute', top: '-3px', left: '146px', fontSize: '13px', verticalAlign: 'middle', textAlign: 'left'}}>
           <span style={{fontSize:'76px', color:'#aaa', fontWeight:'100'}}>}</span>
           <span style={{
     position: 'relative',
     top: '-17px',
     fontSize: '13px',
-    fontWeight: '200'}}>{CARS_TOTAL}</span></span>
+    fontWeight: '200'}}>{CARS_TOTAL}</span>
+        </div>
         <ul style={{'padding-left': '0'}}>{items}</ul>
       </div>
     );

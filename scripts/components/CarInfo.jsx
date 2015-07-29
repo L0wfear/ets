@@ -153,7 +153,7 @@ class CarInfo extends Component {
 
           </div>)}
         </Panel>
-        <Panel title="График расхода топлива" ref="fuel_chart">
+        <Panel title="График уровня топлива" ref="fuel_chart">
           { FUEL_DATA.length > 0  ?
             <div style={{fontSize:'10px'}}>
               <Sparklines data={FUEL_DATA} width={400} height={90} margin={6} style={{marginBottom:'10px'}}>

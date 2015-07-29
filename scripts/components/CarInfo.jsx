@@ -6,9 +6,10 @@ import { getTypeById } from '../types.js';
 import { getOwnerById } from '../owners.js';
 import { getCustomerById } from '../customers.js';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
-
-
+//import FuelChart from './FuelChart.js';
 import config from '../config.js';
+import { Sparklines, SparklinesBars, SparklinesLine, SparklinesNormalBand, SparklinesReferenceLine, SparklinesSpots } from './Sparklines.js';
+
 
 class CarInfo extends Component {
 
@@ -22,11 +23,13 @@ class CarInfo extends Component {
   componentDidMount() {
     if (this.props.car && !this.state.imageUrl) {
       this.fetchImage();
+      this.fetchFuelData();
     }
   }
 
   render() {
     let car = this.props.car;
+
 
     if (!car) {
       return null;
@@ -124,6 +127,11 @@ class CarInfo extends Component {
     let DATE_FORMAT = "yyyy-MM-d HH:mm",
         TIME_FORMAT = "HH:mm";
 
+    let FUEL_DATA = [];
+    this.state.fuelData && this.state.fuelData.forEach( function (d ){
+      FUEL_DATA.push ( d[1])
+    });
+
     return (
       <div>
         <Panel title="Трэкинг" className="chart-datepickers-wrap">
@@ -134,6 +142,15 @@ class CarInfo extends Component {
           <div style={{ textAlign: 'left', fontWeight: 200}}>{p.key}: <span style={{color:'#666', fontSize: 15}}>{p.value}</span>
 
           </div>)}
+        </Panel>
+        <Panel title="График расхода топлива" ref="fuel_chart">
+          { FUEL_DATA.length > 0  ?
+          <Sparklines data={FUEL_DATA} width={400} height={90}>
+            <SparklinesLine color="#253e56" />
+            <SparklinesSpots />
+          </Sparklines>
+            : <span> Нет данных </span>
+          }
         </Panel>
       </div>
     );
@@ -146,13 +163,40 @@ class CarInfo extends Component {
 
     window.handleUpdateTrack(from, to);
 
-    this.props.updateTrack()
+    this.fetchFuelData(from, to);
+    this.props.updateTrack();
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.car && nextProps.car !== this.props.car) {
       this.fetchImage();
     }
+  }
+
+  fetchFuelData(from_dt, to_dt ) {
+
+    let now = new Date();
+    let start_of_today = new Date(Date.UTC(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate())
+    );
+
+    from_dt = !!from_dt ? from_dt : start_of_today.getTime();
+    to_dt = !!to_dt ? to_dt : now.getTime();
+
+    from_dt = Math.floor( from_dt / 1000)
+    to_dt = Math.floor( to_dt / 1000)
+
+    fetch( config.backend + '/fuel/'+this.props.car.id+'/?from_dt='+from_dt+'&to_dt='+to_dt)
+      .then( r => r.json())
+      .then( r => {
+        if (r.length === 0 ) return;
+        this.setState( {
+          fuelData: r
+        })
+        this.renderData()
+      })
   }
 
   fetchImage() {

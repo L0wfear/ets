@@ -20,9 +20,12 @@ class MainPage extends Component {
     this.setState({modalIsOpen: false});
   }
 
-  constructor() {
-    super();
-    this.state = { modalIsOpen: false };
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      modalIsOpen: false,
+      showPlates: false
+    };
   }
 
   render() {
@@ -36,13 +39,15 @@ class MainPage extends Component {
         <FluxComponent connectToStores={{
           points: store => ({
             points: store.getFilteredPoints(),
-            selected: store.getSelectedPoint()
+            selected: store.getSelectedPoint(),
+            showPlates: store.state.showPlates
           })
         }}>
           <Map center={MOSCOW_COORDS}
                zoom={10}
                showAttribution={false}
-               renderLoop={this.props.renderLoop}/>
+               renderLoop={this.props.renderLoop}
+               showPlates={this.state.showPlates}/>
 
           <Sidebar/>
 

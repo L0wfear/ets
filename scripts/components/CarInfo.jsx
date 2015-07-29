@@ -11,6 +11,7 @@ import config from '../config.js';
 import { Sparklines, SparklinesBars, SparklinesLine, SparklinesNormalBand, SparklinesReferenceLine, SparklinesSpots } from './Sparklines.js';
 
 
+
 class CarInfo extends Component {
 
   constructor(props, context) {
@@ -39,7 +40,7 @@ class CarInfo extends Component {
 
     return (
       <div>
-        <h2 style={{ fontWeight: 200, textAlign: 'center' }}>{plate}</h2>
+        <h3 style={{ fontWeight: 200, textAlign: 'center' }}>{plate}</h3>
         {this.renderModel()}
         {this.renderData()}
       </div>
@@ -52,13 +53,15 @@ class CarInfo extends Component {
     const imageUrl = this.state.imageUrl;
 
     let model = getModelById(modelId);
-    const title = model ? model.title : '';
+
+    var title = model ? model.title : '';
+    //title = title + ' (' + car.car[0] +')';
 
     return (
       <Panel title={title}>
         {
          imageUrl ? <img src={config.backend + config.images + imageUrl}
-             style={{ margin: 10, width: 400 }}/> : null
+             style={{ margin: 10, width: 250 }}/> : null
          }
       </Panel>
     );

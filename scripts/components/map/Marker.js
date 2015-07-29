@@ -4,7 +4,8 @@ import { getIcon } from '../../icons/index.js';
 
 const SMALL_RADIUS = 5;
 const LARGE_RADIUS = 12;
-const ZOOM_THRESHOLD = 13;
+const LARGE_RADIUS_SELECTED = 14;
+const ZOOM_THRESHOLD = 14;
 
 
 var _SMALL_RADIUS = SMALL_RADIUS;
@@ -33,7 +34,7 @@ function getSmallImage(statusId) {
     ctx.strokeStyle = 'white';
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.arc(SMALL_RADIUS, SMALL_RADIUS, SMALL_RADIUS,  0, 2 * Math.PI);
+    ctx.arc(SMALL_RADIUS, SMALL_RADIUS, SMALL_RADIUS - 2,  0, 2 * Math.PI);
     ctx.closePath();
     ctx.fill();
     ctx.stroke();
@@ -153,7 +154,7 @@ class Marker {
     return coords;
   }
 
-  render(context, selected, time) {
+  render(context, selected, time, options) {
     let store = this._store;
     let point = this._point;
 
@@ -167,9 +168,9 @@ class Marker {
     let zoom = map.getZoom();
 
     if (zoom < ZOOM_THRESHOLD && !selected) {
-      this._renderSmall(context);
+      this._renderSmall(context, options);
     } else {
-      this._renderLarge(context, selected);
+      this._renderLarge(context, selected, options);
     }
   }
 
@@ -192,7 +193,7 @@ class Marker {
     context.drawImage(image, coords.x - SMALL_RADIUS/2, coords.y - SMALL_RADIUS / 2, SMALL_RADIUS * 2, SMALL_RADIUS * 2);
   }
 
-  _renderLarge(context, selected) {
+  _renderLarge(context, selected, options) {
     let map = this._map;
     let point = this._point;
     let color = getStatusById(point.status).color;
@@ -206,7 +207,7 @@ class Marker {
 
     const title = point.car[0];
 
-    if (title) {
+    if (options.showPlates && title) {
       const ctx = context;
       const radius = LARGE_RADIUS;
 
@@ -233,23 +234,28 @@ class Marker {
       }
     }
 
+    var radius = LARGE_RADIUS;
+    if (selected) {
+      radius = LARGE_RADIUS_SELECTED;
+    }
+
     context.fillStyle = color;
     context.beginPath();
     context.save();
     context.translate(coords.x, coords.y);
     context.rotate(tipAngle);
-    context.arc(0, 0, LARGE_RADIUS, Math.PI/4, - Math.PI/4);
-    context.lineTo(Math.sqrt(2) * LARGE_RADIUS, 0);
+    context.arc(0, 0, radius, Math.PI/4, - Math.PI/4);
+    context.lineTo(Math.sqrt(2) * radius, 0);
     context.restore();
     context.closePath();
     context.fill();
 
     if (selected) {
       context.strokeStyle = 'white';
-      context.lineWidth = 2;
+      context.lineWidth = 3;
       context.stroke();
     }
-    context.drawImage(getIcon(icon), -LARGE_RADIUS + coords.x, -LARGE_RADIUS + coords.y, 2 * LARGE_RADIUS, 2 * LARGE_RADIUS);
+    context.drawImage(getIcon(icon), -radius + coords.x, -radius + coords.y, 2 * radius, 2 * radius);
   }
 
   renderTrack(ctx) {

@@ -335,8 +335,8 @@ button.rw-input::-moz-focus-inner, input.rw-input::-moz-focus-inner {
 
 @font-face {
   font-family: 'RwWidgets';
-  src: url('/fonts/rw-widgets.eot?v=4.1.0');
-  src: url('/fonts/rw-widgets.eot?#iefix&v=4.1.0') format('embedded-opentype'), url('/fonts/rw-widgets.woff?v=4.1.0') format('woff'), url('/fonts/rw-widgets.ttf?v=4.1.0') format('truetype'), url('/fonts/rw-widgets.svg?v=4.1.0#fontawesomeregular') format('svg');
+  src: url('../../fonts/rw-widgets.eot?v=4.1.0');
+  src: url('../../fonts/rw-widgets.eot?#iefix&v=4.1.0') format('embedded-opentype'), url('../../fonts/rw-widgets.woff?v=4.1.0') format('woff'), url('../../fonts/rw-widgets.ttf?v=4.1.0') format('truetype'), url('../../fonts/rw-widgets.svg?v=4.1.0#fontawesomeregular') format('svg');
   font-weight: normal;
   font-style: normal
 }
@@ -1180,6 +1180,19 @@ body {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+
+.plate-btn {
+  position: absolute;
+  top: 190px;
+  left: 10px;
+  z-index: 100;
+  border-radius: 4px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+  background-color: white;
+  border: none;
+  outline: none;
+  padding: 2px 10px 2px 5px;
 }
 
 

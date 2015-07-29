@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { DropdownList, Multiselect } from 'react-widgets';
 
+var filter_width = '160px';
 
 function filter(item, search) {
   if (!item || !item.title) {
@@ -33,7 +34,7 @@ class Filter extends Component {
     }
 
     return (
-      <div className="col-sm-2">
+      <div className="col-xs-2" style={{width: filter_width, display: 'inline-block'}}>
         <div className="tool coordinates">
           <h5>{this.props.title}</h5>
 
@@ -50,7 +51,7 @@ class Filter extends Component {
 
   renderSearch(options) {
     return (
-      <div className="col-sm-2">
+      <div className="col-xs-2"  style={{width: filter_width, display: 'inline-block'}}>
         <div className="">
           <h5>{this.props.title}</h5>
 

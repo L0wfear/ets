@@ -84,7 +84,7 @@ class LegendWrapper extends Component {
     }
 
     return (
-      <div className="col-sm-2 legend-wrapper">
+      <div className="col-xs-2 legend-wrapper"  style={{width: '180px', 'padding-left': '10px'}}>
         <span style={{ position: 'absolute', top: '-3px', right: '-36px', fontSize: '13px', verticalAlign:'middle'}}>
           <span style={{fontSize:'76px', color:'#aaa', fontWeight:'100'}}>}</span>
           <span style={{
@@ -93,6 +93,8 @@ class LegendWrapper extends Component {
     fontSize: '13px',
     fontWeight: '200'}}>{CARS_TOTAL}</span></span>
         <ul>{items}</ul>
+      <div className="col-xs-2 legend-wrapper"  style={{width: '180px', 'padding-left': '10px'}}>
+        <ul style={{'padding-left': '0'}}>{items}</ul>
       </div>
     );
   }
@@ -132,6 +134,22 @@ class OwnerFilterWrapper extends Component {
               title="Владелец"
               options={options}
               search={true}/>
+    );
+  }
+
+}
+
+class ShowPlatesCheckbox {
+
+  render() {
+    return (
+      <div className="col-xs-2"  style={{width: '110px', 'padding-left': '0'}}>
+        <div className="checkbox" style={{ marginTop: 15 }}>
+          <label>
+            <input type="checkbox" checked={this.props.showPlates} onChange={e => this.props.flux.getActions('points').setShowPlates(e.target.checked)}/> Номер ТС
+          </label>
+        </div>
+      </div>
     );
   }
 
@@ -180,11 +198,11 @@ class Toolbar extends Component {
     }
 
     filters.push(
-        <div className="col-sm-2">
+        <div className="col-xs-2"  style={{width: filter_width}}>
           <FluxComponent connectToStores={['points']}>
               <div className="tool coordinates">
                 <h5>БНСО/Гос.номер</h5>
-                <input className="bnso-filter" ref="text_filter" name="bnso" onChange={handleBNSO.bind(this)}/>
+                <input className="bnso-filter" ref="text_filter" name="bnso" onChange={handleBNSO.bind(this)} style={{width: '100%'}}/>
             </div>
           </FluxComponent>
         </div>
@@ -207,10 +225,14 @@ class Toolbar extends Component {
         <LegendWrapper/>
       </FluxComponent>
     );
+
     return (
       <div className="app-toolbar" style={{ paddingLeft: 30 }}>
         <div className="row tools">
           {filters}
+          <FluxComponent connectToStores={['points']}>
+            <ShowPlatesCheckbox/>
+          </FluxComponent>
         </div>
       </div>
     );

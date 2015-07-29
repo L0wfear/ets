@@ -81,6 +81,7 @@ class Map extends Component {
     let pointsStore = flux.getStore('points');
     let selected = pointsStore.getSelectedPoint();
     let markers = this._markers;
+    const bounds = map.getBounds();
 
     let keys = Object.keys(markers);
 
@@ -95,17 +96,19 @@ class Map extends Component {
       selectedMarker.renderTrack(ctx);
     }
 
+    const options = { showPlates: this.props.showPlates };
+
     for (let i = 0; i < keys.length; i++) {
       let key = keys[i];
       let marker = markers[key];
 
       if (marker._point !== selected) {
-        marker.render(ctx, false, time);
+        marker.render(ctx, false, time, options);
       }
     }
 
     if (selectedMarker) {
-      selectedMarker.render(ctx, true, time);
+      selectedMarker.render(ctx, true, time, options);
     }
   }
 

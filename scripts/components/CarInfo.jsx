@@ -124,8 +124,15 @@ class CarInfo extends Component {
         now.getDate())
     );
 
+    let twoDigits = (v) => v < 10 ? '0'+v : v;
+    let makeDate = (date) => date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate()+' '+twoDigits(date.getHours())+':'+twoDigits(date.getMinutes());
     let DATE_FORMAT = "yyyy-MM-d HH:mm",
-        TIME_FORMAT = "HH:mm";
+        TIME_FORMAT = "HH:mm",
+        _f = this.refs.from_dt ? this.refs.from_dt.state.value : start_of_today,
+        _t = this.refs.to_dt ? this.refs.to_dt.state.value : now;
+
+    _f = makeDate(_f);
+    _t = makeDate(_t);
 
     let FUEL_DATA = [];
     this.state.fuelData && this.state.fuelData.forEach( function (d ){
@@ -145,11 +152,14 @@ class CarInfo extends Component {
         </Panel>
         <Panel title="График расхода топлива" ref="fuel_chart">
           { FUEL_DATA.length > 0  ?
-          <Sparklines data={FUEL_DATA} width={400} height={90} margin={6}>
-            <SparklinesLine style={{ strokeWidth: 3, stroke: "orange", fill: "#909053" , fillOpacity:'0.25'}} />
-            <SparklinesSpots size={5}
-                             style={{ stroke: "orange", strokeWidth: 2, fill: "white" }} />
-          </Sparklines>
+            <div style={{fontSize:'10px'}}>
+              <Sparklines data={FUEL_DATA} width={400} height={90} margin={6} style={{marginBottom:'10px'}}>
+                <SparklinesLine style={{ strokeWidth: 1, stroke: "orange", fill: "orange" , fillOpacity:'0.25'}} />
+              </Sparklines>
+              <span style={{position: 'absolute', left: '10px', transform: 'rotate(-90deg)', top: '46px'}}>% топлива</span>
+              <span style={{position:'absolute',left:'47px',bottom:'5px'}}>{_f}</span>
+              <span style={{position:'absolute',right:'42px',bottom:'5px'}}>{_t}</span>
+            </div>
             : <span> Нет данных </span>
           }
         </Panel>

@@ -122,11 +122,13 @@ class CarInfo extends Component {
         now.getDate())
     );
 
+    let DATE_FORMAT = "yyyy-MM-d HH:mm",
+        TIME_FORMAT = "HH:mm";
 
     return (
       <div>
         <Panel title="Трэкинг" className="chart-datepickers-wrap">
-          С <DateTimePicker className="chart-datepicker" defaultValue={start_of_today} ref="from_dt" onChange={this.handleTrackDatesChange.bind(this)}/> по <DateTimePicker ref="to_dt" className="chart-datepicker" onChange={this.handleTrackDatesChange.bind(this)} defaultValue={now}/>
+          С <DateTimePicker format={DATE_FORMAT} timeFormat={TIME_FORMAT} className="chart-datepicker" defaultValue={start_of_today} ref="from_dt" onChange={this.handleTrackDatesChange.bind(this)}/> по <DateTimePicker  timeFormat={TIME_FORMAT} format={DATE_FORMAT} ref="to_dt" className="chart-datepicker" onChange={this.handleTrackDatesChange.bind(this)} defaultValue={now}/>
         </Panel>
         <Panel title="Данные">
           {props.map(p =>

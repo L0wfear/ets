@@ -92,8 +92,6 @@ class LegendWrapper extends Component {
     top: '-17px',
     fontSize: '13px',
     fontWeight: '200'}}>{CARS_TOTAL}</span></span>
-        <ul>{items}</ul>
-      <div className="col-xs-2 legend-wrapper"  style={{width: '180px', 'padding-left': '10px'}}>
         <ul style={{'padding-left': '0'}}>{items}</ul>
       </div>
     );
@@ -143,9 +141,9 @@ class ShowPlatesCheckbox {
 
   render() {
     return (
-      <div className="col-xs-2"  style={{width: '110px', 'padding-left': '0'}}>
-        <div className="checkbox" style={{ marginTop: 15 }}>
-          <label>
+      <div className="col-xs-2"  style={{'padding-left': '30px'}}>
+        <div className="checkbox" style={{ marginTop: 46, marginLeft: 18}}>
+          <label style={{fontSize:'14px', fontWeight:'200'}}>
             <input type="checkbox" checked={this.props.showPlates} onChange={e => this.props.flux.getActions('points').setShowPlates(e.target.checked)}/> Номер ТС
           </label>
         </div>
@@ -198,7 +196,7 @@ class Toolbar extends Component {
     }
 
     filters.push(
-        <div className="col-xs-2"  style={{width: filter_width}}>
+        <div className="col-xs-2"  style={{width: '180px'}}>
           <FluxComponent connectToStores={['points']}>
               <div className="tool coordinates">
                 <h5>БНСО/Гос.номер</h5>

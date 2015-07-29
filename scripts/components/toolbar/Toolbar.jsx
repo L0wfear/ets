@@ -124,6 +124,22 @@ class OwnerFilterWrapper extends Component {
 
 }
 
+class ShowPlatesCheckbox {
+
+  render() {
+    return (
+      <div className="col-sm-2">
+        <div className="checkbox" style={{ marginTop: 15 }}>
+          <label>
+            <input type="checkbox" checked={this.props.showPlates} onChange={e => this.props.flux.getActions('points').setShowPlates(e.target.checked)}/> Номер ТС
+          </label>
+        </div>
+      </div>
+    );
+  }
+
+}
+
 class Toolbar extends Component {
 
   render() {
@@ -157,7 +173,32 @@ class Toolbar extends Component {
       );
     }
 
-  /*  filters.push(
+    //some shit
+    let self = this
+    function handleBNSO(){
+      this.props.flux
+        .getActions('points').setFilter({
+          'bnso_gos': self.refs.text_filter.getDOMNode().value
+        })
+    }
+
+    filters.push(
+        <div className="col-sm-2">
+          <FluxComponent connectToStores={['points']}>
+              <div className="tool coordinates">
+                <h5>БНСО/Гос.номер</h5>
+                <input className="bnso-filter" ref="text_filter" name="bnso" onChange={handleBNSO.bind(this)}/>
+            </div>
+          </FluxComponent>
+        </div>
+    );
+
+  /*  <Filter name="bnso"
+   title="БНСО/Гос.номер"
+   onChange={handleBNSO}
+   search={true}/>
+
+   filters.push(
       <Filter name="own"
               title="Принадлежность"
               options={[{ id: null, title: 'Все'}, { id: 1, title: 'Собственная'}, { id: 0, title: 'Привлеченная'}]}/>
@@ -174,6 +215,9 @@ class Toolbar extends Component {
       <div className="app-toolbar" style={{ paddingLeft: 30 }}>
         <div className="row tools">
           {filters}
+          <FluxComponent connectToStores={['points']}>
+            <ShowPlatesCheckbox/>
+          </FluxComponent>
         </div>
       </div>
     );

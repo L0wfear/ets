@@ -17,6 +17,7 @@ export default class PointsStore extends Store {
     this.register(pointsActions.selectPoint, this.handleSelectPoint);
     this.register(pointsActions.receiveTrack, this.handleReceiveTrack);
     this.register(pointsActions.updateTrack, this.handleUpdateTrack);
+    this.register(pointsActions.setShowPlates, this.handleSetShowPlates);
 
     this.register(loginActions.login, this.handleLogin);
 
@@ -41,7 +42,8 @@ export default class PointsStore extends Store {
       byConnectionStatus: {
         0: 0,
         1: 1
-      }
+      },
+      showPlates: false // TODO move to separate store
     };
 
   }
@@ -196,6 +198,17 @@ export default class PointsStore extends Store {
       if (!visible) return false;
     }
 
+    if (filter.bnso_gos && filter.bnso_gos.length > 0 ){
+      let text = filter.bnso_gos.toLowerCase();
+      visible = visible && (
+              point.car.gps_code.toLowerCase().indexOf(text) + 1 ||
+              point.car.gov_number.toLowerCase().indexOf(text) + 1
+      );
+
+      if (!visible) return false; //console.log( point )
+    }
+
+
     if (filter.connectionStatus) {
       visible = visible && filter.connectionStatus.indexOf(point['connection_status']) !== -1;
       if (!visible) return false;
@@ -242,6 +255,10 @@ export default class PointsStore extends Store {
 
   getSelectedPoint() {
     return this.state.selected;
+  }
+
+  handleSetShowPlates(showPlates) {
+    this.setState({ showPlates });
   }
 
 

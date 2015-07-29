@@ -81,6 +81,7 @@ class Map extends Component {
     let pointsStore = flux.getStore('points');
     let selected = pointsStore.getSelectedPoint();
     let markers = this._markers;
+    const bounds = map.getBounds();
 
     let keys = Object.keys(markers);
 

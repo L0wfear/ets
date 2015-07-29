@@ -32,14 +32,15 @@ class MainPage extends Component {
     return (
       <div>
 
-        <FluxComponent connectToStores={['login']}>
+        <FluxComponent connectToStores={['login', 'points']}>
           <Toolbar/>
         </FluxComponent>
 
         <FluxComponent connectToStores={{
           points: store => ({
             points: store.getFilteredPoints(),
-            selected: store.getSelectedPoint()
+            selected: store.getSelectedPoint(),
+            showPlates: store.state.showPlates
           })
         }}>
           <Map center={MOSCOW_COORDS}

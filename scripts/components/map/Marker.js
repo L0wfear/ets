@@ -5,7 +5,7 @@ import { getIcon } from '../../icons/index.js';
 const SMALL_RADIUS = 5;
 const LARGE_RADIUS = 12;
 const LARGE_RADIUS_SELECTED = 14;
-const ZOOM_THRESHOLD = 13;
+const ZOOM_THRESHOLD = 14;
 
 
 var _SMALL_RADIUS = SMALL_RADIUS;
@@ -34,7 +34,7 @@ function getSmallImage(statusId) {
     ctx.strokeStyle = 'white';
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.arc(SMALL_RADIUS, SMALL_RADIUS, SMALL_RADIUS,  0, 2 * Math.PI);
+    ctx.arc(SMALL_RADIUS, SMALL_RADIUS, SMALL_RADIUS - 2,  0, 2 * Math.PI);
     ctx.closePath();
     ctx.fill();
     ctx.stroke();

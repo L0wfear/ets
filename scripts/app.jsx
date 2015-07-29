@@ -68,12 +68,9 @@ getAllPoints().then(data => {
 //
 //host = host.replace(/^http/, 'ws') + config.ws;
 
-  let ws = new ReconnectingWebSocket(config.ws);
+  let ws = new WebSocket(config.ws);
 
   ws.onmessage = ({ data }) => {
     flux.getActions('points').updatePoints(JSON.parse(data));
   };
-
-  setInterval(_ => ws.refresh(), 5000);
-
 })

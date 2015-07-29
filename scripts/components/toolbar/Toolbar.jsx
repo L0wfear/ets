@@ -77,23 +77,25 @@ class LegendWrapper extends Component {
         );
       });
 
-    let CARS_TOTAL = 0;
+   /* let CARS_TOTAL = 0;
 
     for ( let v in byStatus ){
       CARS_TOTAL += byStatus[v]
-    }
+    }*/
 
+    let TOTAL_ONLINE = this.props.flux._stores.points.state.totalOnline;
     return (
-      <div className="col-xs-2 legend-wrapper"  style={{width: '180px', 'padding-left': '10px'}}>
-        <div style={{ position: 'absolute', top: '-3px', left: '146px', fontSize: '13px', verticalAlign: 'middle', textAlign: 'left'}}>
-          <span style={{fontSize:'76px', color:'#aaa', fontWeight:'100'}}>}</span>
-          <span style={{
-    position: 'relative',
-    top: '-17px',
-    fontSize: '13px',
-    fontWeight: '200'}}>{CARS_TOTAL}</span>
-        </div>
-        <ul style={{'padding-left': '0'}}>{items}</ul>
+      <div className="col-xs-2 legend-wrapper"  style={{width: '180px', 'padding-left': '10px', marginLeft: '180px'}}>
+        <ul style={{'padding-left': '0'}}>
+          {items}
+          <li>
+          <span>
+            <span className="status-filter-icon">&nbsp;</span>
+            Итого:
+            <span style={{ fontSize: '80%' }}>&nbsp;{TOTAL_ONLINE}</span>
+          </span>
+          </li>
+        </ul>
       </div>
     );
   }
@@ -142,9 +144,9 @@ class ShowPlatesCheckbox {
 
   render() {
     return (
-      <div className="col-xs-2"  style={{'padding-left': '30px'}}>
-        <div className="checkbox" style={{ marginTop: 46, marginLeft: 18}}>
-          <label style={{fontSize:'14px', fontWeight:'200'}}>
+      <div className="col-xs-2" >
+        <div className="checkbox" style={{ marginTop: 16}}>
+          <label style={{fontSize:'13px', fontWeight:'200'}}>
             <input type="checkbox" checked={this.props.showPlates} onChange={e => this.props.flux.getActions('points').setShowPlates(e.target.checked)}/> Номер ТС
           </label>
         </div>

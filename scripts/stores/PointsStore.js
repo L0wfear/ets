@@ -24,6 +24,7 @@ export default class PointsStore extends Store {
     this.state = {
       selected: null,
       points: {},
+      totalOnline: 0,
       filter: {
         connectionStatus: [0, 1],
         status: statuses.map(s => s.id),
@@ -95,7 +96,7 @@ export default class PointsStore extends Store {
       }
     }
 
-    this.setState({ points, byStatus, byConnectionStatus });
+    this.setState({ points, byStatus, byConnectionStatus, totalOnline: this.getTotalOnline() });
   }
 
   handleSetFilter(update) {
@@ -132,6 +133,22 @@ export default class PointsStore extends Store {
     this.setState({ filter, selected, byStatus, byConnectionStatus });
   }
 
+  getTotalOnline(){
+
+    let keys = Object.keys(this.state.points);
+    let count = 0;
+
+    for (let i = 0; i < keys.length; i++) {
+      let key = keys[i];
+      let point = this.state.points[key];
+
+      if (this._isPointVisible(point, {}) && point.connection_status == 1) {
+        count++;
+      }
+    }
+
+    return count
+  }
 
   handleUpdateTrack( from, to){
     let id = this.state.selected;

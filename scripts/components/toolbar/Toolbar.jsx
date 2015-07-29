@@ -77,8 +77,15 @@ class LegendWrapper extends Component {
         );
       });
 
+    let CARS_TOTAL = 0;
+
+    for ( let v in byStatus ){
+      CARS_TOTAL += byStatus[v]
+    }
+
     return (
       <div className="col-sm-2 legend-wrapper">
+        <span style={{ position: 'relative', top: '13px', left: '38px', fontSize: '13px'}}>Всего машин: {CARS_TOTAL}</span>
         <ul>{items}</ul>
       </div>
     );
@@ -194,7 +201,6 @@ class Toolbar extends Component {
         <LegendWrapper/>
       </FluxComponent>
     );
-
     return (
       <div className="app-toolbar" style={{ paddingLeft: 30 }}>
         <div className="row tools">

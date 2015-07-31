@@ -165,7 +165,17 @@ body.application {
     background-image: url('/images/icon1.png');
   }
 }
-
+.toolbar-filters-wrap__close-btn {
+  position: absolute;
+  right:12px;
+  top:4px;
+  font-size:150%;
+  cursor:pointer;
+  color:#ccc;
+  &:hover {
+    color:#fff;
+  }
+}
 .toolbar-search {
   position: absolute;
   left: 184px;

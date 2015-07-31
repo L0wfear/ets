@@ -220,7 +220,7 @@ class ToolbarFilters extends Component {
     return (
       <div className={c}>
         <button className="app-toolbar-btn filters" onClick={this.toggle.bind(this)}></button>
-        <div className="toolbar-filters-wrap app-toolbar-fill" style={{display: this.state.visible ? 'block' : 'none', position:'relative',left:42, top:-42 }}>
+        <div className="toolbar-filters-wrap app-toolbar-fill" style={{display: this.state.visible ? 'block' : 'none', position:'relative',left:42, top:-42, width:'258px'}}>
           {filters}
         </div>
       </div>

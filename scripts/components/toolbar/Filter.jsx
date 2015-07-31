@@ -51,7 +51,6 @@ class Filter extends Component {
 
   renderSearch(options) {
     return (
-      <div style={{width: filter_width }}>
         <div className="">
           <h5>{this.props.title}</h5>
 
@@ -64,7 +63,6 @@ class Filter extends Component {
                         messages={messages}
                         {...this.props}/>
         </div>
-      </div>
     );
   }
 

@@ -163,6 +163,8 @@ export default class PointsStore extends Store {
     if (selected && ! selected.car)
       return;
 
+    if (this.state.selected && this.state.selected.track) this.state.selected.track.length = 0;
+
     if (selected && !selected.track) {
       getTrack(selected.id).then(track => this._pointsActions.receiveTrack(selected.id, track));
     }
@@ -172,6 +174,7 @@ export default class PointsStore extends Store {
 
   handleReceiveTrack([key, track]) {
     let point = this.state.points[key]
+    point.track.length = 0;
     point.track = track;
   }
 

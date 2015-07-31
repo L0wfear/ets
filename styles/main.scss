@@ -158,11 +158,11 @@ body.application {
   border-radius: 5px;
 
   &.filters {
-    background-image: url('/images/icon2.png');
+    background-image: url('../../images/icon2.png');
   }
 
   &.search {
-    background-image: url('/images/icon1.png');
+    background-image: url('../../images/icon1.png');
   }
 }
 .toolbar-filters-wrap__close-btn {
@@ -1353,7 +1353,7 @@ body {
 }
 
 .cssload-loader:after{
-  content: "Загрузка...";
+  content: "Р—Р°РіСЂСѓР·РєР°...";
   text-transform:uppercase;
   color: white;
   font-family:	Lato,"Helvetica Neue" ;

@@ -175,6 +175,11 @@ body.application {
   position:absolute;
   left:184px;
   top:49px;
+
+
+  h5 {
+    font-weight: 200;
+  }
 }
 
 .dashboard-sidebar {
@@ -715,8 +720,8 @@ ul.rw-list.rw-list-grouped > li.rw-list-option {
 }
 
 .rw-multiselect, .rw-combobox input.rw-input, .rw-datetimepicker input.rw-input, .rw-numberpicker input.rw-input {
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075)
+  /*-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075)*/
 }
 
 .rw-combobox:active, .rw-datetimepicker:active, .rw-dropdownlist:active, .rw-header > .rw-btn:active, .rw-numberpicker .rw-btn.rw-state-active, .rw-combobox:active.rw-state-focus, .rw-datetimepicker:active.rw-state-focus, .rw-dropdownlist:active.rw-state-focus, .rw-header > .rw-btn:active.rw-state-focus, .rw-numberpicker .rw-btn.rw-state-active.rw-state-focus {
@@ -985,6 +990,7 @@ ul.rw-list.rw-list-grouped > li.rw-list-option {
   border-bottom-style: solid;
   border-bottom-color: #ccc;
   border-radius: 0;
+  box-shadow:0 !important;
 }
 
 .rw-multiselect:hover {

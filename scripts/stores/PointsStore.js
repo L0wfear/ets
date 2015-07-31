@@ -21,6 +21,8 @@ export default class PointsStore extends Store {
 
     this.register(loginActions.login, this.handleLogin);
 
+    window.handleUpdateTrack = this.handleUpdateTrack.bind(this);
+
     this.state = {
       selected: null,
       points: {},
@@ -160,8 +162,6 @@ export default class PointsStore extends Store {
   handleSelectPoint(selected) {
     if (selected && ! selected.car)
       return;
-
-    window.handleUpdateTrack = this.handleUpdateTrack.bind(this);
 
     if (selected && !selected.track) {
       getTrack(selected.id).then(track => this._pointsActions.receiveTrack(selected.id, track));

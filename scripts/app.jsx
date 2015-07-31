@@ -41,18 +41,25 @@ const renderLoop = new RenderLoop(stats);
 Modal.setAppElement(element);
 Modal.injectCSS();
 
-
 Promise.all([
   icons.loadIcons
 ]).then(() => {
 
-  loadCustomers();
-  loadModels();
-  loadOwners();
-  loadOkrugs();
-  loadTypes();
+  let isReady = false;
 
-  React.render(<App flux={flux} renderLoop={renderLoop}/>, element, () => {
+  Promise.all([
+    loadCustomers(),
+    loadModels(),
+    loadOwners(),
+    loadOkrugs(),
+    loadTypes()]).then(() => {
+      isReady = true;
+      let el = document.getElementsByClassName('cssload-loader')[0];
+      setTimeout(()=>{el.parentNode.removeChild(el);}, 1000)
+
+    });
+
+  React.render(<App ready={isReady} flux={flux} renderLoop={renderLoop}/>, element, () => {
     renderLoop.start();
   });
 });

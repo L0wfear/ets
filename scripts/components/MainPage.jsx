@@ -10,6 +10,18 @@ import Modal from 'react-modal';
 
 const MOSCOW_COORDS = [55.752585, 37.627284];
 
+
+//@TODO убрать хардкод и показывать/убирать по пропсам
+class Preloader extends Component {
+
+  render(){
+    return (
+      <div className="cssload-loader"></div>
+    )
+  }
+}
+
+
 class MainPage extends Component {
 
   openModal() {
@@ -31,6 +43,8 @@ class MainPage extends Component {
   render() {
     return (
       <div>
+
+        <Preloader/>
 
         <FluxComponent connectToStores={['login', 'points']}>
           <Toolbar/>

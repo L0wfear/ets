@@ -82,11 +82,9 @@ class LegendWrapper extends Component {
     return (
       <div className="legend-wrapper app-toolbar-fill">
         <ul style={{'padding-left': '0'}}>
-          <li>
-            <span>
-              <span style={{marginLeft: 20}}>&nbsp;</span>
-              Активно:
-              <span style={{ fontSize: '80%' }}>&nbsp;{TOTAL_ONLINE}</span>
+          <li style={{fontSize: '16px',textAlign: 'center'}}>
+            <span> Активно:
+              <span>&nbsp;{TOTAL_ONLINE}</span>
             </span>
           </li>
           {items}
@@ -156,7 +154,7 @@ class ToolbarSearch extends Component {
 
   constructor(props){
     super(props);
-    this.state = { visible : false }
+    this.state = { visible : true }
   }
 
   render(){
@@ -165,13 +163,14 @@ class ToolbarSearch extends Component {
       <div className={c}>
         <button className="app-toolbar-btn search" onClick={this.toggle.bind(this)}></button>
         <div className="app-toolbar-fill" style={{display: this.state.visible ? 'block' : 'none', position:'relative',left:42, top:-42 }}>
-          <Filter className="bnso-filter" name="bnso_gos"/>
+          <Filter className="bnso-filter" title="гос. номер или номер БНСО" name="bnso_gos"/>
         </div>
       </div>
     )
   }
 
   toggle(){
+    return;
     this.setState({visible: !this.state.visible});
   }
 

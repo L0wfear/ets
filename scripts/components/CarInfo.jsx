@@ -128,7 +128,7 @@ class CarInfo extends Component {
     );
 
     let twoDigits = (v) => v < 10 ? '0'+v : v;
-    let makeDate = (date) => date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate()+' '+twoDigits(date.getHours())+':'+twoDigits(date.getMinutes());
+    let makeDate = (date) => date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+' '+twoDigits(date.getHours())+':'+twoDigits(date.getMinutes());
     let DATE_FORMAT = "yyyy-MM-d HH:mm",
         TIME_FORMAT = "HH:mm",
         _f = this.refs.from_dt ? this.refs.from_dt.state.value : start_of_today,
@@ -145,7 +145,8 @@ class CarInfo extends Component {
     return (
       <div>
         <Panel title="Трэкинг" className="chart-datepickers-wrap">
-          С <DateTimePicker format={DATE_FORMAT} timeFormat={TIME_FORMAT} className="chart-datepicker" defaultValue={start_of_today} ref="from_dt" onChange={this.handleTrackDatesChange.bind(this)}/> по <DateTimePicker  timeFormat={TIME_FORMAT} format={DATE_FORMAT} ref="to_dt" className="chart-datepicker" onChange={this.handleTrackDatesChange.bind(this)} defaultValue={now}/>
+          <DateTimePicker format={DATE_FORMAT} timeFormat={TIME_FORMAT} className="chart-datepicker" defaultValue={start_of_today} ref="from_dt"/> – <DateTimePicker  timeFormat={TIME_FORMAT} format={DATE_FORMAT} ref="to_dt" className="chart-datepicker" defaultValue={now}/>
+          &nbsp;<button title="Перезагрузить данные" className="btn btn-primary btn-sm" type="button" onClick={this.reloadTrack.bind(this)}><span className="glyphicon glyphicon-repeat"></span></button>
         </Panel>
         <Panel title="Данные">
           {props.map(p =>
@@ -170,15 +171,15 @@ class CarInfo extends Component {
     );
   }
 
-  handleTrackDatesChange(){
+  reloadTrack() {
     let refs = this.refs;
     let from = refs.from_dt.state.value;
     let to = refs.to_dt.state.value;
 
     window.handleUpdateTrack(from, to);
 
-    this.fetchFuelData(from, to);
-    this.props.updateTrack();
+    this.fetchFuelData(from, to);/*
+    this.props.updateTrack();*/
   }
 
   componentWillReceiveProps(nextProps) {

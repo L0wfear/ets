@@ -37,16 +37,14 @@ class Filter extends Component {
     }
 
     return (
-      <div style={{width: filter_width}}>
-        <div className="tool coordinates">
-          <h5>{this.props.title}</h5>
-          <DropdownList valueField="id"
-                        textField="title"
-                        defaultValue={null}
-                        data={options}
-                        onChange={(value) => this.onChangeSingle(value)}
-                        {...this.props}/>
-        </div>
+      <div className="tool coordinates">
+        <span className="title">{this.props.title}</span>
+        <DropdownList valueField="id"
+                      textField="title"
+                      defaultValue={null}
+                      data={options}
+                      onChange={(value) => this.onChangeSingle(value)}
+                      {...this.props}/>
       </div>
     );
   }
@@ -73,18 +71,15 @@ class Filter extends Component {
   renderSimpleInput( options ) {
 
     return (
-      <div className="toolbar-filter" style={{width: filter_width}}>
-        <div className="">
-          {this.props.title &&
-          <h3>{this.props.title}</h3>}
-          <input valueField="id"
-                       textField="title"
-                       defaultValue={[]}
-                       onChange={(value) => this.onChangeQuery.bind(this)(value)}
-                       filter={filter}
-                       messages={messages}
-            {...this.props}/>
-        </div>
+      <div className="toolbar-filter">
+        <input valueField="id"
+               textField="title"
+               defaultValue={[]}
+               placeholder={this.props.title}
+               onChange={(value) => this.onChangeQuery.bind(this)(value)}
+               filter={filter}
+               messages={messages}
+          {...this.props}/>
       </div>
     )
   }
@@ -102,10 +97,10 @@ class Filter extends Component {
   }
 
   onChangeQuery(value) {
-    let val = this.getDOMNode().value;
+    let val = value.currentTarget.value;
 
     this.state.flux.getActions('points').setFilter({
-      [this.props.name]: this.getDOMNode().value
+      [this.props.name]: val
     })
   }
 

@@ -187,6 +187,10 @@ body.application {
   top:49px;
 
 
+  &.have-filters:not(.toggled) .filters{
+    background-color: #873838;
+  }
+
   h5 {
     font-weight: 200;
   }

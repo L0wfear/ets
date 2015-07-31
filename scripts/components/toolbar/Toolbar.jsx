@@ -134,6 +134,15 @@ class Toolbar extends Component {
 
     const currentUser = this.props.currentUser;
 
+    let filtersCount = 0;
+    let keys = {'type':1, 'okrug':1, 'owner':1};
+
+    for (let key in this.props.filter) {
+      if (key in keys){
+        filtersCount += this.props.filter[key].length;
+      }
+    }
+
     return (
       <div className="app-toolbar">
         <div className="row">
@@ -143,7 +152,7 @@ class Toolbar extends Component {
           </FluxComponent>
         </div>
         <ToolbarSearch/>
-        <ToolbarFilters currentUser={currentUser}/>
+        <ToolbarFilters haveFilters={filtersCount > 0} currentUser={currentUser}/>
       </div>
     );
   }
@@ -216,6 +225,10 @@ class ToolbarFilters extends Component {
     }
 
     let c = this.state.visible ? 'toolbar-filters toggled' : 'toolbar-filters';
+    if (this.props.haveFilters ){
+      c+= ' have-filters'
+    }
+
     return (
       <div className={c}>
         <button className="app-toolbar-btn filters" onClick={this.toggle.bind(this)}></button>

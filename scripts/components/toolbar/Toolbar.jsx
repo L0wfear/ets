@@ -67,7 +67,7 @@ class LegendWrapper extends Component {
   render() {
     let byStatus = this.props.byStatus;
     let filter = this.props.filter.status;
-    let items = statuses //.concat(connectionStatuses)
+    let items = statuses
       .map(s => Object.assign({ amount: byStatus[s.id] }, s))
       .map(i => {
         return (
@@ -77,24 +77,19 @@ class LegendWrapper extends Component {
         );
       });
 
-   /* let CARS_TOTAL = 0;
 
-    for ( let v in byStatus ){
-      CARS_TOTAL += byStatus[v]
-    }*/
-
-    let TOTAL_ONLINE = this.props.flux._stores.points.state.totalOnline;
+    let TOTAL_ONLINE = this.props.totalOnline;
     return (
-      <div className="col-xs-2 legend-wrapper"  style={{width: '180px', 'padding-left': '10px', marginLeft: '180px'}}>
+      <div className="legend-wrapper app-toolbar-fill">
         <ul style={{'padding-left': '0'}}>
-          {items}
           <li>
-          <span>
-            <span className="status-filter-icon">&nbsp;</span>
-            Итого:
-            <span style={{ fontSize: '80%' }}>&nbsp;{TOTAL_ONLINE}</span>
-          </span>
+            <span>
+              <span style={{marginLeft: 20}}>&nbsp;</span>
+              Активно:
+              <span style={{ fontSize: '80%' }}>&nbsp;{TOTAL_ONLINE}</span>
+            </span>
           </li>
+          {items}
         </ul>
       </div>
     );
@@ -119,33 +114,12 @@ class LegendWrapper extends Component {
   }
 }
 
-class OwnerFilterWrapper extends Component {
-
-  render() {
-    var okrugs = this.props.filter.okrug;
-    var options = owners;
-
-    if (okrugs.length > 0) {
-      options = options.filter(o => okrugs.indexOf(o.okrug) !== -1);
-    }
-
-
-    return (
-      <Filter name="owner"
-              title="Владелец"
-              options={options}
-              search={true}/>
-    );
-  }
-
-}
-
 class ShowPlatesCheckbox {
 
   render() {
     return (
-      <div className="col-xs-2" >
-        <div className="checkbox" style={{ marginTop: 16}}>
+      <div className="app-toolbar-fill" >
+        <div className="checkbox">
           <label style={{fontSize:'13px', fontWeight:'200'}}>
             <input type="checkbox" checked={this.props.showPlates} onChange={e => this.props.flux.getActions('points').setShowPlates(e.target.checked)}/> Номер ТС
           </label>
@@ -159,6 +133,58 @@ class ShowPlatesCheckbox {
 class Toolbar extends Component {
 
   render() {
+
+    const currentUser = this.props.currentUser;
+
+    return (
+      <div className="app-toolbar">
+        <div className="row">
+          <FluxComponent connectToStores={['points']}>
+            <LegendWrapper/>
+            <ShowPlatesCheckbox/>
+          </FluxComponent>
+        </div>
+        <ToolbarSearch/>
+        <ToolbarFilters currentUser={currentUser}/>
+      </div>
+    );
+  }
+
+}
+
+class ToolbarSearch extends Component {
+
+  constructor(props){
+    super(props);
+    this.state = { visible : false }
+  }
+
+  render(){
+    let c = this.state.visible ? 'toolbar-search toggled' : 'toolbar-search';
+    return (
+      <div className={c}>
+        <button className="app-toolbar-btn search" onClick={this.toggle.bind(this)}></button>
+        <div className="app-toolbar-fill" style={{display: this.state.visible ? 'block' : 'none', position:'relative',left:42, top:-42 }}>
+          <Filter className="bnso-filter" name="bnso_gos"/>
+        </div>
+      </div>
+    )
+  }
+
+  toggle(){
+    this.setState({visible: !this.state.visible});
+  }
+
+}
+
+class ToolbarFilters extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {visible: false};
+  }
+
+  render(){
 
     const currentUser = this.props.currentUser;
     const filters = [];
@@ -183,62 +209,29 @@ class Toolbar extends Component {
 
     if (currentUser.role === 'mayor' || currentUser.role === 'prefect') {
       filters.push(
-        <FluxComponent connectToStores={['points']}>
-          <OwnerFilterWrapper/>
-        </FluxComponent>
+        <Filter name="owner"
+                title="Владелец"
+                options={owners}
+                search={true}/>
       );
     }
 
-    //some shit
-    let self = this
-    function handleBNSO(){
-      this.props.flux
-        .getActions('points').setFilter({
-          'bnso_gos': self.refs.text_filter.getDOMNode().value
-        })
-    }
 
-    filters.push(
-        <div className="col-xs-2"  style={{width: '180px'}}>
-          <FluxComponent connectToStores={['points']}>
-              <div className="tool coordinates">
-                <h5>БНСО/Гос.номер</h5>
-                <input className="bnso-filter" ref="text_filter" name="bnso" onChange={handleBNSO.bind(this)} style={{width: '100%'}}/>
-            </div>
-          </FluxComponent>
-        </div>
-    );
-
-  /*  <Filter name="bnso"
-   title="БНСО/Гос.номер"
-   onChange={handleBNSO}
-   search={true}/>
-
-   filters.push(
-      <Filter name="own"
-              title="Принадлежность"
-              options={[{ id: null, title: 'Все'}, { id: 1, title: 'Собственная'}, { id: 0, title: 'Привлеченная'}]}/>
-    );*/
-
-
-    filters.push(
-      <FluxComponent connectToStores={['points']}>
-        <LegendWrapper/>
-      </FluxComponent>
-    );
-
+    let c = this.state.visible ? 'toolbar-filters toggled' : 'toolbar-filters';
     return (
-      <div className="app-toolbar" style={{ paddingLeft: 30 }}>
-        <div className="row tools">
+      <div className={c}>
+        <button className="app-toolbar-btn filters" onClick={this.toggle.bind(this)}></button>
+        <div className="toolbar-filters-wrap app-toolbar-fill" style={{display: this.state.visible ? 'block' : 'none', position:'relative',left:42, top:-42 }}>
           {filters}
-          <FluxComponent connectToStores={['points']}>
-            <ShowPlatesCheckbox/>
-          </FluxComponent>
         </div>
       </div>
-    );
+    )
+
   }
 
+  toggle(){
+    this.setState({visible: !this.state.visible});
+  }
 }
 
 export default Toolbar;

@@ -43,13 +43,15 @@ Modal.injectCSS();
 
 
 Promise.all([
-  icons.loadIcons,
-  loadCustomers(),
-  loadModels(),
-  loadOwners(),
-  loadOkrugs(),
-  loadTypes()
+  icons.loadIcons
 ]).then(() => {
+
+  loadCustomers();
+  loadModels();
+  loadOwners();
+  loadOkrugs();
+  loadTypes();
+
   React.render(<App flux={flux} renderLoop={renderLoop}/>, element, () => {
     renderLoop.start();
   });

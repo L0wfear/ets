@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { DropdownList, Multiselect } from 'react-widgets';
 
-var filter_width = '160px';
+let filter_width = '160px';
 
 function filter(item, search) {
   if (!item || !item.title) {
@@ -29,15 +29,17 @@ class Filter extends Component {
   render() {
     let options = this.props.options;
 
+    if (this.props.search === undefined) {
+      return this.renderSimpleInput(options)
+    }
     if (this.props.search) {
       return this.renderSearch(options);
     }
 
     return (
-      <div className="col-xs-2" style={{width: filter_width, display: 'inline-block'}}>
+      <div style={{width: filter_width}}>
         <div className="tool coordinates">
           <h5>{this.props.title}</h5>
-
           <DropdownList valueField="id"
                         textField="title"
                         defaultValue={null}
@@ -51,7 +53,7 @@ class Filter extends Component {
 
   renderSearch(options) {
     return (
-      <div className="col-xs-2"  style={{width: filter_width, display: 'inline-block'}}>
+      <div style={{width: filter_width }}>
         <div className="">
           <h5>{this.props.title}</h5>
 
@@ -68,6 +70,25 @@ class Filter extends Component {
     );
   }
 
+  renderSimpleInput( options ) {
+
+    return (
+      <div className="toolbar-filter" style={{width: filter_width}}>
+        <div className="">
+          {this.props.title &&
+          <h3>{this.props.title}</h3>}
+          <input valueField="id"
+                       textField="title"
+                       defaultValue={[]}
+                       onChange={(value) => this.onChangeQuery.bind(this)(value)}
+                       filter={filter}
+                       messages={messages}
+            {...this.props}/>
+        </div>
+      </div>
+    )
+  }
+
   onChange(value) {
     this.state.flux.getActions('points').setFilter({
       [this.props.name]: value.map( i => i.id )
@@ -78,6 +99,14 @@ class Filter extends Component {
     this.state.flux.getActions('points').setFilter({
       [this.props.name]: value.id
     });
+  }
+
+  onChangeQuery(value) {
+    let val = this.getDOMNode().value;
+
+    this.state.flux.getActions('points').setFilter({
+      [this.props.name]: this.getDOMNode().value
+    })
   }
 
 }

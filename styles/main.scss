@@ -99,23 +99,71 @@ body.application {
   margin: 0;
 }
 
-.row .tool .bnso-filter {
-
-  padding: 7px;
+.bnso-filter {
+  padding: 3px;
   border-radius: 4px;
-  background-color: white;
+  background-color: #fff;
   color: #111;
   text-shadow: none;
 }
 
+
+
 .app-toolbar {
-  background: rgba(0,0,0,.75);
-  box-shadow: 0 1px 5px rgba(0,0,0,.1);
   color: #fff;
   position: fixed;
-  top: 0px;
-  width: 100%;
+  top: 15px;
   z-index: 1000;
+  left: 11px;
+}
+
+.app-toolbar-fill {
+  background: rgba(0,0,0,.75);
+  box-shadow: 0 1px 5px rgba(0,0,0,.1);
+  border-radius: 6px;
+  padding: 6px 16px;
+  margin-bottom: 8px;
+}
+
+.toggled {
+  .app-toolbar-btn {
+    border-radius: 5px 0 0 5px;
+  }
+  .app-toolbar-fill {
+    border-radius: 0px 6px 6px 6px;
+  }
+
+  &.toolbar-search {
+    .app-toolbar-fill {
+      border-radius: 0px 6px 6px 0px;
+    }
+  }
+}
+.app-toolbar-btn {
+  padding: 21px;
+  background: rgba(0, 0, 0, .75) no-repeat center center;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+
+  &.filters {
+    background-image: url('/images/icon2.png');
+  }
+
+  &.search {
+    background-image: url('/images/icon1.png');
+  }
+}
+
+.toolbar-search {
+  position: absolute;
+  left: 184px;
+  top: 0px;
+}
+.toolbar-filters {
+  position:absolute;
+  left:184px;
+  top:49px;
 }
 
 .dashboard-sidebar {
@@ -168,6 +216,10 @@ body.application {
 .leaflet-control-attribution {
 /*   display: none
  */}
+
+.leaflet-control {
+  top:140px;
+}
 
 .sidebar-hide-button {
   margin-left: -45px;
@@ -1040,7 +1092,7 @@ ul.rw-list.rw-list-grouped > li.rw-list-option {
 
 .weather-widget {
   position: absolute;
-  top: 227px;
+  top: 370px;
   left: 10px;
   z-index: 100;
   border-radius: 4px;
@@ -1109,7 +1161,7 @@ ul.rw-list.rw-list-grouped > li.rw-list-option {
   display: inline-block;
   vertical-align: middle;
   margin-right: 5px;
-  border: none;
+  border: 1px solid white;
   outline: none;
 }
 
@@ -1136,9 +1188,12 @@ ul.rw-list.rw-list-grouped > li.rw-list-option {
   padding-bottom: 10px;
 }
 
-.legend-wrapper > ul {
-  list-style-type: none;
-  margin-top: 15px;
+.legend-wrapper {
+  width: 175px;
+
+  > ul {
+    list-style-type: none;
+  }
 }
 
 body {

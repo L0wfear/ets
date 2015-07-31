@@ -151,8 +151,10 @@ export default class PointsStore extends Store {
   }
 
   handleUpdateTrack( from, to){
-    let id = this.state.selected;
-    getTrack(id.id, from, to ).then(track => this._pointsActions.receiveTrack(id.id, track))
+    let id = this.state.selected.id;
+
+    getTrack(id, from, to )
+      .then(track => this._pointsActions.receiveTrack(id, track))
   }
 
   handleSelectPoint(selected) {

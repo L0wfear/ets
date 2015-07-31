@@ -34,10 +34,11 @@ export function getOwnerById(id) {
   var r = index[id];
 
   if (!r) {
-    console.warn(`Owner ${id} not found`);
+    //console.warn(`Owner ${id} not found`);
+    r = index[0];
   }
 
-  return index[id];
+  return r;
 }
 
 export function loadOwners() {

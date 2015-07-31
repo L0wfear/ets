@@ -34,10 +34,11 @@ export function getModelById(id) {
   var r = index[id];
 
   if (!r) {
-    console.warn(`Model ${id} not found`);
+    //console.warn(`Model ${id} not found`);
+    r = index[0];
   }
 
-  return index[id];
+  return r;
 }
 
 export function loadModels() {

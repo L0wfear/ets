@@ -34,10 +34,11 @@ export function getCustomerById(id) {
   var r = index[id];
 
   if (!r) {
-    console.warn(`Customer ${id} not found`);
+    //console.warn(`Customer ${id} not found`);
+    r = index[0];
   }
 
-  return index[id];
+  return r;
 }
 
 export function loadCustomers() {

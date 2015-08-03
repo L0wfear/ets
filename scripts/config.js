@@ -19,7 +19,10 @@ config = {
   //backend: 'http://10.127.32.23/city-dashboard',
   //ws: 'ws://10.127.32.23/stream',
 
-  images: '/data/images/'
+  images: '/data/images/',
+  REQUEST_PARAMS: {
+    credentials: 'include'
+  }
 };
 
 

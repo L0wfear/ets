@@ -1,5 +1,5 @@
-
 import config from './config.js';
+
 const TYPES_URL = config.backend ? config.backend + '/types' : '/types';
 
 const list = [];

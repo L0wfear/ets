@@ -5,8 +5,9 @@ const POINTS_URL = config.backend ? config.backend + '/data' : '/data';
 const TRACK_URL = config.backend ? config.backend + '/tracks/' : '/tracks/';
 const WEATHER_URL = config.backend ? config.backend + '/weather/' : '/weather/';
 
+
 export function getAllPoints() {
-  return fetch(POINTS_URL, {credentials: 'include'}).then(r => r.json());
+  return fetch(POINTS_URL, config.REQUEST_PARAMS).then(r => r.json());
 }
 
 function getUTCUnixTime( time ){

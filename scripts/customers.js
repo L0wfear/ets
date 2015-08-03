@@ -1,5 +1,5 @@
-
 import config from './config.js';
+
 const CUSTOMERS_URL = config.backend ? config.backend + '/customers' : '/customers';
 
 const list = [];

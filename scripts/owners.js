@@ -42,7 +42,7 @@ export function getOwnerById(id) {
 }
 
 export function loadOwners() {
-  return fetch(OWNERS_URL)
+  return fetch(OWNERS_URL, config.REQUEST_PARAMS)
     .then(r => r.json())
     .then(normalizeArray)
     .then(replaceList)

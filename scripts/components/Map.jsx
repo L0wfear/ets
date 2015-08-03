@@ -53,8 +53,8 @@ class Map extends Component {
     var control = L.control.zoomBox({
       modal: true,  // If false (default), it deactivates after each use.
                     // If true, zoomBox control stays active until you click on the control to deactivate.
-      // position: "topleft",
-       className: "map-zoombox-control"  // Class to use to provide icon instead of Font Awesome
+       position: "topleft",
+       className: "glyphicon glyphicon-zoom-in"  // Class to use to provide icon instead of Font Awesome
     });
     map.addControl(control);
 

@@ -1,0 +1,18 @@
+import React, { Component } from 'react';
+import Filter from './Filter.jsx';
+import { getIcon } from '../../icons/index.js';
+
+class TypeComponent extends Component {
+
+  render() {
+    const type = this.props.item;
+
+    return (
+      <span>
+        {type.icon ? <img className="type-filter-icon" src={getIcon(type.icon).url}/> : null}
+        {type.title}
+      </span>
+    );
+  }
+
+}

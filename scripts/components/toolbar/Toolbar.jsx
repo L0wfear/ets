@@ -1,29 +1,15 @@
 import React, { Component } from 'react';
 import Filter from './Filter.jsx';
 
-import { getIcon } from '../../icons/index.js';
-
 import statuses from '../../statuses.js';
 import types from '../../types.js';
 import owners from '../../owners.js';
 import customers from '../../customers.js';
 import okrugs from '../../okrugs.js';
 import FluxComponent from 'flummox/component';
+import ToolbarSearch from './ToolbarSearch.jsx';
+import ToolbarFilters from './ToolbarFilters.jsx';
 
-class TypeComponent extends Component {
-
-  render() {
-    const type = this.props.item;
-
-    return (
-      <span>
-        {type.icon ? <img className="type-filter-icon" src={getIcon(type.icon).url}/> : null}
-        {type.title}
-      </span>
-    );
-  }
-
-}
 
 class StatusComponent extends Component {
 
@@ -159,91 +145,5 @@ class Toolbar extends Component {
 
 }
 
-class ToolbarSearch extends Component {
-
-  constructor(props){
-    super(props);
-    this.state = { visible : true }
-  }
-
-  render(){
-    let c = this.state.visible ? 'toolbar-search toggled' : 'toolbar-search';
-    return (
-      <div className={c}>
-        <button className="app-toolbar-btn search" onClick={this.toggle.bind(this)}></button>
-        <div className="app-toolbar-fill" style={{display: this.state.visible ? 'block' : 'none', position:'relative',left:42, top:-42 }}>
-          <Filter className="bnso-filter" title="гос. номер или номер БНСО" name="bnso_gos"/>
-        </div>
-      </div>
-    )
-  }
-
-  toggle(){
-    return;
-    this.setState({visible: !this.state.visible});
-  }
-
-}
-
-class ToolbarFilters extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {visible: false};
-  }
-
-  render(){
-
-    const currentUser = this.props.currentUser;
-    const filters = [];
-
-    filters.push(
-      <Filter name="type"
-              title="Тип техники"
-              options={types}
-              search={true}
-              itemComponent={TypeComponent}
-              valueComponent={TypeComponent}/>
-    );
-
-    if (currentUser.role === 'mayor') {
-      filters.push(
-        <Filter name="okrug"
-                title="Округ"
-                options={okrugs}
-                search={true}/>
-      );
-    }
-
-    if (currentUser.role === 'mayor' || currentUser.role === 'prefect') {
-      filters.push(
-        <Filter name="owner"
-                title="Владелец"
-                options={owners}
-                search={true}/>
-      );
-    }
-
-    let c = this.state.visible ? 'toolbar-filters toggled' : 'toolbar-filters';
-    if (this.props.haveFilters ){
-      c+= ' have-filters'
-    }
-
-    return (
-      <div className={c}>
-        <button className="app-toolbar-btn filters" onClick={this.toggle.bind(this)}></button>
-        <div className="toolbar-filters-wrap app-toolbar-fill" style={{display: this.state.visible ? 'block' : 'none', position:'relative',left:42, top:-42, width:'258px'}}>
-          <span className="toolbar-filters-wrap__close-btn" onClick={this.toggle.bind(this)}>×</span>
-          {filters}
-        </div>
-      </div>
-    )
-
-  }
-
-  toggle(){
-    this.setState({visible: !this.state.visible});
-  }
-}
 
 export default Toolbar;

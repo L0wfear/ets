@@ -4,6 +4,10 @@ import { getTypeById } from '../types.js';
 import { icons } from '../icons/index.js';
 import Marker from './map/Marker.js';
 
+// TODO сделать поиск в node_modules при сборке
+import ZoomBox from '../../node_modules/leaflet-zoombox/L.Control.ZoomBox.min.js';
+
+
 class Map extends Component {
 
   constructor(props, context) {
@@ -43,6 +47,17 @@ class Map extends Component {
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       detectRetina: true
     }).addTo(map);
+
+    // zoombox control
+    // hold shift plz
+    var control = L.control.zoomBox({
+      modal: true,  // If false (default), it deactivates after each use.
+                    // If true, zoomBox control stays active until you click on the control to deactivate.
+      // position: "topleft",
+       className: "map-zoombox-control"  // Class to use to provide icon instead of Font Awesome
+    });
+    map.addControl(control);
+
 
     let canvas = this._canvas = new L.canvas(this);
     canvas.addTo(map);

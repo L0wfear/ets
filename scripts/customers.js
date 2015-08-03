@@ -42,7 +42,7 @@ export function getCustomerById(id) {
 }
 
 export function loadCustomers() {
-  return fetch(CUSTOMERS_URL)
+  return fetch(CUSTOMERS_URL, {credentials: 'include'})
     .then(r => r.json())
     .then(normalizeArray)
     .then(replaceList)

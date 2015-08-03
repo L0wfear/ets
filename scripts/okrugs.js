@@ -41,7 +41,7 @@ export function getOkrugById(id) {
 }
 
 export function loadOkrugs() {
-  return fetch(OKRUGS_URL)
+  return fetch(OKRUGS_URL, {credentials: 'include'})
     .then(r => r.json())
     .then(normalizeArray)
     .then(replaceList)

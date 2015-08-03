@@ -6,7 +6,7 @@ const TRACK_URL = config.backend ? config.backend + '/tracks/' : '/tracks/';
 const WEATHER_URL = config.backend ? config.backend + '/weather/' : '/weather/';
 
 export function getAllPoints() {
-  return fetch(POINTS_URL).then(r => r.json());
+  return fetch(POINTS_URL, {credentials: 'include'}).then(r => r.json());
 }
 
 function getUTCUnixTime( time ){
@@ -29,7 +29,7 @@ export function getTrack(carId, from_dt, to_dt ) {
   let query = '/?from_dt=' + getUTCUnixTime(from_dt) +
                  '&to_dt=' + getUTCUnixTime(to_dt);
 
-  return fetch(TRACK_URL + carId + query).then(r => r.json());
+  return fetch(TRACK_URL + carId + query, {credentials: 'include'}).then(r => r.json());
 
 }
 

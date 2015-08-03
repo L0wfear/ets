@@ -42,7 +42,7 @@ export function getModelById(id) {
 }
 
 export function loadModels() {
-  return fetch(MODELS_URL)
+  return fetch(MODELS_URL, {credentials: 'include'})
     .then(r => r.json())
     .then(normalizeArray)
     .then(replaceList)

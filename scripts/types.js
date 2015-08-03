@@ -41,7 +41,7 @@ export function getTypeById(id) {
 }
 
 export function loadTypes() {
-  return fetch(TYPES_URL)
+  return fetch(TYPES_URL, {credentials: 'include'})
     .then(r => r.json())
     .then(normalizeArray)
     .then(replaceList)

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Filter from './Filter.jsx';
 import { getIcon } from '../../icons/index.js';
 
-class TypeComponent extends Component {
+export default class TypeComponent extends Component {
 
   render() {
     const type = this.props.item;

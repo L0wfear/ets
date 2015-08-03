@@ -12,6 +12,7 @@
     "flummox": "^3.1.0",
     "keen-js": "^3.2.3",
     "leaflet": "^0.7.3",
+    "leaflet-zoombox": "^0.1.0",
     "object-assign": "^2.0.0",
     "react": "^0.13.0",
     "react-modal": "^0.1.0",

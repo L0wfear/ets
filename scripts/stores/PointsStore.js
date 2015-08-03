@@ -173,8 +173,10 @@ export default class PointsStore extends Store {
   }
 
   handleReceiveTrack([key, track]) {
-    let point = this.state.points[key]
-    point.track.length = 0;
+    let point = this.state.points[key];
+    if ( point.track ) {
+      point.track.length = 0;
+    }
     point.track = track;
   }
 

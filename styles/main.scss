@@ -1160,11 +1160,13 @@ ul.rw-list.rw-list-grouped > li.rw-list-option {
   z-index: 100;
   border-radius: 4px;
   box-shadow: 0 1px 5px rgba(0,0,0,0.65);
-  background-color: white;
   border: none;
   outline: none;
   padding: 2px 10px 2px 5px;
   font-size: 20px;
+  //background-color: white;
+  background-color: rgba(0,0,0,.75);
+  color: #fff;
 }
 
 .ReactModal__Overlay {
@@ -1443,4 +1445,17 @@ body {
 }
 .leaflet-zoom-box-crosshair {
   cursor: crosshair !important;
+}
+
+.leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar {
+  border: none;
+}
+
+.leaflet-touch .leaflet-bar a {
+  background-color: rgba(0,0,0,.75);
+  color: white;
+}
+
+.app-toolbar-show-govnumber {
+  padding: 1px 16px;
 }

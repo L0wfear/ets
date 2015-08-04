@@ -102,7 +102,7 @@ class ShowPlatesCheckbox {
 
   render() {
     return (
-      <div className="app-toolbar-fill" >
+      <div className="app-toolbar-fill app-toolbar-show-govnumber" >
         <div className="checkbox">
           <label style={{fontSize:'13px', fontWeight:'200'}}>
             <input type="checkbox" checked={this.props.showPlates} onChange={e => this.props.flux.getActions('points').setShowPlates(e.target.checked)}/> Номер ТС

@@ -121,10 +121,10 @@ class CarInfo extends Component {
     }
 
     let now = new Date();
-    let start_of_today = new Date(Date.UTC(
+    let start_of_today = new Date(
         now.getFullYear(),
         now.getMonth(),
-        now.getDate())
+        now.getDate()
     );
 
     let twoDigits = (v) => v < 10 ? '0'+v : v;
@@ -172,9 +172,13 @@ class CarInfo extends Component {
   }
 
   reloadTrack() {
+
+    let makeUTCDate = (date) => new Date(Date.UTC(
+      date.getFullYear(), date.getMonth(), date.getDate(), date.getUTCHours(), date.getUTCMinutes()));
+
     let refs = this.refs;
-    let from = refs.from_dt.state.value;
-    let to = refs.to_dt.state.value;
+    let from = makeUTCDate(refs.from_dt.state.value);
+    let to = makeUTCDate(refs.to_dt.state.value);
 
     window.handleUpdateTrack(from, to);
 

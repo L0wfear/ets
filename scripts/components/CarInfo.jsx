@@ -54,7 +54,7 @@ class CarInfo extends Component {
     let title = model ? model.title : '';
 
     let isTrackingMode =  this.props.flux.getStore('points').state.trackingMode;
-    let trackBtnClass = 'btn-sm btn ' + (isTrackingMode && car.status === 1 ? 'btn-success' : 'btn-default');
+    let trackBtnClass = 'btn-sm btn ' + (isTrackingMode ? 'btn-success' : 'btn-default');
     let trackBtnStyle = {
       position: 'absolute',
       right: 14,
@@ -64,7 +64,7 @@ class CarInfo extends Component {
 
     return (
       <Panel title={title}>
-        <button className={trackBtnClass} onClick={this.toggleCarTracking.bind(this)} style={trackBtnStyle} title="Следить за машиной"><span className="glyphicon glyphicon-screenshot"></span>&nbsp;Следить</button>
+        { car.status === 1 && <button className={trackBtnClass} onClick={this.toggleCarTracking.bind(this)} style={trackBtnStyle} title="Следить за машиной"><span className="glyphicon glyphicon-screenshot"></span>&nbsp;Следить</button>}
         {
          imageUrl ? <img src={config.backend + config.images + imageUrl}
              style={{ margin: 10, width: 250 }}/> : null
@@ -90,7 +90,7 @@ class CarInfo extends Component {
         now.getDate()
     );
 
-    let DATE_FORMAT = "yyyy-MM-d HH:mm";
+    let DATE_FORMAT = "yyyy-MM-dd HH:mm";
     let TIME_FORMAT = "HH:mm";
 
     let twoDigits = (v) => v < 10 ? '0'+v : v;

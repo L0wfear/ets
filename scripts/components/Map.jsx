@@ -109,6 +109,14 @@ class Map extends Component {
 
     if (selectedMarker) {
       selectedMarker.renderTrack(ctx);
+      if (pointsStore.state.trackingMode){
+        if ( selected.status === 1 ) {
+          // смещаем примерно в центр с учетом открытого сайдбара
+          // зумлевел кокрастаке можно смотреть по баундам трэка, если он уже загружен
+          let _coords = [selectedMarker._coords[0], selectedMarker._coords[1] + 0.004];
+          map.setView(_coords, 16)
+        }
+      }
     }
 
     const options = { showPlates: this.props.showPlates };

@@ -10,12 +10,12 @@ export default class PointsActions extends Actions {
     return data;
   }
 
-  updatePointsInitial(data) {
+  setFilter(data) {
     return data;
   }
 
-  setFilter(data) {
-    return data;
+  setTracking(value){
+    return value
   }
 
   selectPoint(point) {

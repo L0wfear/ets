@@ -37,7 +37,6 @@ stats.domElement.style.zIndex = 100;
 
 const renderLoop = new RenderLoop(stats);
 
-
 Modal.setAppElement(element);
 Modal.injectCSS();
 
@@ -55,19 +54,13 @@ Promise.all([
     loadTypes()]).then(() => {
       isReady = true;
       let el = document.getElementsByClassName('cssload-loader')[0];
-      setTimeout(()=>{el.parentNode.removeChild(el);}, 1000)
+      setTimeout(()=>{el.parentNode.removeChild(el);}, 3000)
 
+      //@TODO delete this after websocket fix
+      getAllPoints().then(data=>flux.getActions('points').updatePoints( data ))
     });
 
   React.render(<App ready={isReady} flux={flux} renderLoop={renderLoop}/>, element, () => {
     renderLoop.start();
   });
 });
-
-getAllPoints().then(data => {
-  flux.getActions('points').updatePointsInitial(data);
-  let ws = new WebSocket(config.ws);
-  ws.onmessage = ({ data }) => {
-    flux.getActions('points').updatePoints(JSON.parse(data));
-  };
-})

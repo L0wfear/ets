@@ -1,27 +1,23 @@
 import React, { Component } from 'react';
 import Filter from './Filter.jsx';
+import ToolbarControl from './ToolbarControl.js';
 
 export default class ToolbarSearch extends Component {
-
-  constructor(props){
-    super(props);
-    this.state = { visible : false }
-  }
-
   render(){
-    let c = this.state.visible ? 'toolbar-search toggled' : 'toolbar-search';
+    let text = this.refs.search_text ? React.findDOMNode(this.refs.search_text).firstChild.value : '';
+
     return (
-      <div className={c}>
-        <button className="app-toolbar-btn search" onClick={this.toggle.bind(this)}></button>
-        <div className="app-toolbar-fill" style={{display: this.state.visible ? 'block' : 'none', position:'relative',left:42, top:-42 }}>
-          <Filter className="bnso-filter" title="гос. номер или номер БНСО" name="bnso_gos"/>
-        </div>
-      </div>
+      <ToolbarControl controlType="search" top="0px" btnClass={text.length ? 'have-filter' : ''} onToggle={this.onToggle.bind(this)}>
+        <Filter ref="search_text" className="bnso-filter" title="гос. номер или номер БНСО" name="bnso_gos"/>
+      </ToolbarControl>
     )
   }
 
-  toggle(){
-    this.setState({visible: !this.state.visible});
+  onToggle(){
+      let inputDOM = React.findDOMNode(this.refs.search_text).firstChild;
+      setTimeout( function(){
+        inputDOM.focus()
+      }, 150);
   }
 
 }

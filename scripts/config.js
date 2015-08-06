@@ -1,24 +1,22 @@
-let config = null;
+//let ENV = 'development';
+let ENV = 'production';
 
-config = {
-  //backend: null, // same server
-  //backend: '/ssd/city-dashboard',
-  //ws: 'ws://ods.mos.ru/ssd/city-dashboard/stream',
+let domains =
+      ENV === 'development' ?
 
-  //backend: 'http://37.230.149.142/city-dashboard',
-  //ws: 'ws://37.230.149.142/city-dashboard/stream',
+        {
+          web:'localhost:9001',
+          ws: 'localhost:8016'
+        } :
 
-  //backend: 'http://212.45.30.63/ssd/city-dashboard',
-  //ws: 'ws://212.45.30.63/ssd/city-dashboard/stream',
+        {
+          web:'ods.mos.ru',
+          ws: 'ods.mos.ru'
+        }
 
-  backend: 'http://ods.mos.ru/ssd/city-dashboard',
-  ws: 'ws://ods.mos.ru/ssd/city-dashboard/stream',
-
-
-
-  //backend: 'http://10.127.32.23/city-dashboard',
-  //ws: 'ws://10.127.32.23/stream',
-
+let config = {
+  backend: 'http://'+domains.web+'/ssd/city-dashboard',
+  ws: 'ws://'+domains.ws+'/ssd/city-dashboard/stream',
   images: '/data/images/',
   REQUEST_PARAMS: {
     credentials: 'include'

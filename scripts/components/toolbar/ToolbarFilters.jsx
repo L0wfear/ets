@@ -4,36 +4,14 @@ import types from '../../types.js';
 import okrugs from '../../okrugs.js';
 import owners from '../../owners.js';
 import TypeComponent from './TypeComponent.jsx';
+import ToolbarControl from './ToolbarControl.js';
 
 export default class ToolbarFilters extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {visible: false};
-  }
 
   render(){
 
     const currentUser = this.props.currentUser;
     const filters = [];
-
-    filters.push(
-      <Filter name="type"
-              title="Тип техники"
-              options={types}
-              search={true}
-              itemComponent={TypeComponent}
-              valueComponent={TypeComponent}/>
-    );
-
-    if (currentUser.role === 'mayor') {
-      filters.push(
-        <Filter name="okrug"
-                title="Округ"
-                options={okrugs}
-                search={true}/>
-      );
-    }
 
     if (currentUser.role === 'mayor' || currentUser.role === 'prefect') {
       filters.push(
@@ -44,24 +22,36 @@ export default class ToolbarFilters extends Component {
       );
     }
 
-    let c = this.state.visible ? 'toolbar-filters toggled' : 'toolbar-filters';
-    if (this.props.haveFilters ){
-      c+= ' have-filters'
+    if (currentUser.role === 'mayor') {
+      filters.push(
+        <Filter name="okrug"
+                title="Округ"
+                options={okrugs}
+                search={true}/>
+      );
     }
 
+    filters.push(
+      <Filter name="type"
+              title="Тип техники"
+              options={types}
+              search={true}
+              itemComponent={TypeComponent}
+              valueComponent={TypeComponent}/>
+    );
+
+    let style = {
+      width: '258px',
+      borderRadius: '0px 6px 6px 6px',
+      padding: '18px',
+      paddingRight: '30px'
+    };
+
     return (
-      <div className={c}>
-        <button className="app-toolbar-btn filters" onClick={this.toggle.bind(this)}></button>
-        <div className="toolbar-filters-wrap app-toolbar-fill" style={{display: this.state.visible ? 'block' : 'none', position:'relative',left:42, top:-42, width:'258px'}}>
-          <span className="toolbar-filters-wrap__close-btn" onClick={this.toggle.bind(this)}>×</span>
-          {filters}
-        </div>
-      </div>
+      <ToolbarControl top="49px" controlType="filters" btnClass={this.props.haveFilters ? 'have-filter' : ''} style={style}>
+        {filters}
+      </ToolbarControl>
     )
 
-  }
-
-  toggle(){
-    this.setState({visible: !this.state.visible});
   }
 }

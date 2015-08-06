@@ -11,7 +11,6 @@ import config from '../config.js';
 import { Sparklines, SparklinesBars, SparklinesLine, SparklinesNormalBand, SparklinesReferenceLine, SparklinesSpots } from './Sparklines.js';
 
 
-
 class CarInfo extends Component {
 
   constructor(props, context) {
@@ -31,7 +30,6 @@ class CarInfo extends Component {
   render() {
     let car = this.props.car;
 
-
     if (!car) {
       return null;
     }
@@ -49,77 +47,42 @@ class CarInfo extends Component {
 
   renderModel() {
     let car = this.props.car;
-    let modelId = car.car[2];
+    let modelId = car.model_id;
     const imageUrl = this.state.imageUrl;
 
     let model = getModelById(modelId);
+    let title = model ? model.title : '';
 
-    var title = model ? model.title : '';
-    //title = title + ' (' + car.car[0] +')';
+    let isTrackingMode =  this.props.flux.getStore('points').state.trackingMode;
+    let trackBtnClass = 'btn-sm btn ' + (isTrackingMode && car.status === 1 ? 'btn-success' : 'btn-default');
+    let trackBtnStyle = {
+      position: 'absolute',
+      right: 14,
+      top: 8,
+      padding: '4px 7px'
+    }
 
     return (
       <Panel title={title}>
+        <button className={trackBtnClass} onClick={this.toggleCarTracking.bind(this)} style={trackBtnStyle} title="Следить за машиной"><span className="glyphicon glyphicon-screenshot"></span>&nbsp;Следить</button>
         {
          imageUrl ? <img src={config.backend + config.images + imageUrl}
              style={{ margin: 10, width: 250 }}/> : null
          }
+        {this.renderAttrs()}
       </Panel>
     );
   }
 
+  toggleCarTracking(){
+    let store = this.props.flux.getStore('points');
+    let isTrackingMode = store.state.trackingMode;
+    store.setTracking( !isTrackingMode );
+  }
+
   renderData() {
-    let car = this.props.car;
-    let ccar = car.car;
 
-    let props = [];
-
-     if (ccar[0] && ccar[0].length) {
-       props.push({
-         key: 'Гос. номер',
-         value: ccar[0]
-       });
-     }
-
-    if (car['id'] && car['id'].length) {
-      props.push({
-        key: 'ID БНСО',
-        value: car['id']
-      });
-    }
-
-    props.push({
-      key: 'Статус',
-      value: getStatusById(car.status).title
-    });
-
-    if (ccar[1] && getTypeById(ccar[1])) {
-      props.push({
-        key: 'Тип техники',
-        value: getTypeById(ccar[1]).title
-      });
-    }
-
-    if (ccar[2] && getModelById(ccar[2])) {
-      props.push({
-        key: 'Шасси',
-        value: getModelById(ccar[2]).title
-      });
-    }
-
-    if (ccar[3] && getOwnerById(ccar[3])) {
-      props.push({
-        key: 'Владелец',
-        value: getOwnerById(ccar[3]).title
-      });
-    }
-
-    if (ccar[4] && getCustomerById(ccar[4])) {
-      props.push({
-        key: 'Заказчик',
-        value: getCustomerById(ccar[4]).title
-      });
-    }
-
+    // TODO refactor
     let now = new Date();
     let start_of_today = new Date(
         now.getFullYear(),
@@ -127,48 +90,79 @@ class CarInfo extends Component {
         now.getDate()
     );
 
+    let DATE_FORMAT = "yyyy-MM-d HH:mm";
+    let TIME_FORMAT = "HH:mm";
+
     let twoDigits = (v) => v < 10 ? '0'+v : v;
-    let makeDate = (date) => date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+' '+twoDigits(date.getHours())+':'+twoDigits(date.getMinutes());
-    let DATE_FORMAT = "yyyy-MM-d HH:mm",
-        TIME_FORMAT = "HH:mm",
-        _f = this.refs.from_dt ? this.refs.from_dt.state.value : start_of_today,
-        _t = this.refs.to_dt ? this.refs.to_dt.state.value : now;
+    let makeDate = (date) => date.getFullYear()+'-'+(date.getMonth()+1)+'-'+twoDigits(date.getDate())+' '+twoDigits(date.getHours())+':'+twoDigits(date.getMinutes());
 
-    _f = makeDate(_f);
-    _t = makeDate(_t);
+    let _f = makeDate(this.refs.from_dt ? this.refs.from_dt.state.value : start_of_today);
+    let _t = makeDate(this.refs.to_dt ? this.refs.to_dt.state.value : now);
 
-    let FUEL_DATA = [];
-    this.state.fuelData && this.state.fuelData.forEach( function (d ){
-      FUEL_DATA.push ( d[1])
-    });
+    let reloadBtnStyle = {
+      padding: '6px 9px',
+      height: 34,
+      marginTop: -3
+    };
 
     return (
       <div>
         <Panel title="Трэкинг" className="chart-datepickers-wrap">
           <DateTimePicker format={DATE_FORMAT} timeFormat={TIME_FORMAT} className="chart-datepicker" defaultValue={start_of_today} ref="from_dt"/> – <DateTimePicker  timeFormat={TIME_FORMAT} format={DATE_FORMAT} ref="to_dt" className="chart-datepicker" defaultValue={now}/>
-          &nbsp;<button title="Перезагрузить данные" className="btn btn-primary btn-sm" type="button" onClick={this.reloadTrack.bind(this)}><span className="glyphicon glyphicon-repeat"></span></button>
+          &nbsp;<button title="Перезагрузить данные" style={reloadBtnStyle} className="btn btn-default btn-sm" type="button" onClick={this.reloadTrack.bind(this)}><span className="glyphicon glyphicon-repeat"></span></button>
         </Panel>
-        <Panel title="Данные">
-          {props.map(p =>
-          <div style={{ textAlign: 'left', fontWeight: 200}}>{p.key}: <span style={{color:'#666', fontSize: 15}}>{p.value}</span>
-
-          </div>)}
-        </Panel>
-        <Panel title="График уровня топлива" ref="fuel_chart">
-          { FUEL_DATA.length > 0  ?
-            <div style={{fontSize:'10px'}}>
-              <Sparklines data={FUEL_DATA} width={400} height={90} margin={6} style={{marginBottom:'10px'}}>
-                <SparklinesLine style={{ strokeWidth: 1, stroke: "orange", fill: "orange" , fillOpacity:'0.25'}} />
-              </Sparklines>
-              <span style={{position: 'absolute', left: '10px', transform: 'rotate(-90deg)', top: '46px'}}>% топлива</span>
-              <span style={{position:'absolute',left:'47px',bottom:'5px'}}>{_f}</span>
-              <span style={{position:'absolute',right:'42px',bottom:'5px'}}>{_t}</span>
-            </div>
-            : <span> Нет данных </span>
-          }
-        </Panel>
+        {this.renderFuelData(_f, _t)}
       </div>
     );
+  }
+
+  renderAttrs(){
+    let car = this.props.car.car;
+    let props = [];
+    let addProp = (key, value) => props.push({key, value});
+
+    if (car.gov_number && car.gov_number.length) addProp('Гос. номер', car.gov_number)
+    if (this.props.car.id && this.props.car.id.length) addProp('ID БНСО', this.props.car.id)
+    addProp('Статус', getStatusById(this.props.car.status).title)
+    if (car.type_id && getTypeById(car.type_id)) addProp( 'Тип техники', getTypeById(car.type_id).title)
+    if (car.model_id && getModelById(car.model_id)) addProp('Шасси', getModelById(car.model_id).title)
+    if (car.owner_id && getOwnerById(car.owner_id)) addProp('Владелец', getOwnerById(car.owner_id).title);
+
+    return (
+      <div style={{padding:'10px 0', borderTop:'1px solid #ddd', margin: '0 5px'}}>
+        {props.map(
+            p =>
+              <div style={{ textAlign: 'left', fontWeight: 200, color:'#666'}}>{p.key}: <span style={{color:'black', /*fontSize: 16*/}}>{p.value}</span>
+              </div>)}
+      </div>
+    )
+  }
+
+
+  renderFuelData(from, to){
+
+    let FUEL_DATA = [];
+    if ( this.state.fuelData ){
+      this.state.fuelData.forEach( function (d ){
+        FUEL_DATA.push ( d[1])
+      });
+    }
+
+    return (
+      <Panel title="График уровня топлива">
+        { FUEL_DATA.length > 0  ?
+          <div style={{fontSize:'10px'}}>
+            <Sparklines data={FUEL_DATA} width={400} height={90} margin={6} style={{marginBottom:'10px'}}>
+              <SparklinesLine style={{ strokeWidth: 1, stroke: "orange", fill: "orange" , fillOpacity:'0.25'}} />
+            </Sparklines>
+            <span style={{position: 'absolute', left: '10px', transform: 'rotate(-90deg)', top: '46px'}}>% топлива</span>
+            <span style={{position:'absolute',left:'47px',bottom:'5px'}}>{from}</span>
+            <span style={{position:'absolute',right:'42px',bottom:'5px'}}>{to}</span>
+          </div>
+          : <span> Нет данных </span>
+        }
+      </Panel>
+    )
   }
 
   reloadTrack() {
@@ -180,10 +174,10 @@ class CarInfo extends Component {
     let from = makeUTCDate(refs.from_dt.state.value);
     let to = makeUTCDate(refs.to_dt.state.value);
 
-    window.handleUpdateTrack(from, to);
+    let pointActions = this.props.flux.getActions('points');
 
-    this.fetchFuelData(from, to);/*
-    this.props.updateTrack();*/
+    pointActions.updateTrack(from, to);
+    this.fetchFuelData(from, to);
   }
 
   componentWillReceiveProps(nextProps) {

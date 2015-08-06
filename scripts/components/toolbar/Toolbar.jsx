@@ -10,7 +10,6 @@ import FluxComponent from 'flummox/component';
 import ToolbarSearch from './ToolbarSearch.jsx';
 import ToolbarFilters from './ToolbarFilters.jsx';
 
-
 class StatusComponent extends Component {
 
   render() {
@@ -51,8 +50,13 @@ class StatusComponent extends Component {
 class LegendWrapper extends Component {
 
   render() {
-    let byStatus = this.props.byStatus;
-    let filter = this.props.filter.status;
+
+    let storeState = this.props.flux.getStore('points').state;
+    let totalOnline = storeState.byConnectionStatus[1];
+
+    let byStatus = storeState.byStatus;
+    let filter = storeState.filter.status;
+
     let items = statuses
       .map(s => Object.assign({ amount: byStatus[s.id] }, s))
       .map(i => {
@@ -63,14 +67,12 @@ class LegendWrapper extends Component {
         );
       });
 
-
-    let TOTAL_ONLINE = this.props.totalOnline;
     return (
       <div className="legend-wrapper app-toolbar-fill">
         <ul style={{'padding-left': '0'}}>
           <li style={{fontSize: '16px',textAlign: 'center'}}>
             <span> Активно:
-              <span>&nbsp;{TOTAL_ONLINE}</span>
+              <span>&nbsp;{totalOnline}</span>
             </span>
           </li>
           {items}

@@ -37,7 +37,7 @@ class Filter extends Component {
     }
 
     return (
-      <div className="tool coordinates">
+      <div className="app-toolbar-filter">
         <span className="title">{this.props.title}</span>
         <DropdownList valueField="id"
                       textField="title"
@@ -51,9 +51,7 @@ class Filter extends Component {
 
   renderSearch(options) {
     return (
-        <div className="">
-          <h5>{this.props.title}</h5>
-
+        <div className="app-toolbar-filter">
           <Multiselect valueField="id"
                         textField="title"
                         defaultValue={[]}
@@ -61,6 +59,7 @@ class Filter extends Component {
                         onChange={(value) => this.onChange(value)}
                         filter={filter}
                         messages={messages}
+                        placeholder={this.props.title}
                         {...this.props}/>
         </div>
     );
@@ -69,7 +68,7 @@ class Filter extends Component {
   renderSimpleInput( options ) {
 
     return (
-      <div className="toolbar-filter">
+      <div>
         <input valueField="id"
                textField="title"
                defaultValue={[]}

@@ -213,29 +213,29 @@ export default class PointsStore extends Store {
     }
 
     if (filter.type && filter.type.length > 0) {
-      visible = visible && point.car && filter.type.indexOf(point.car[1]) !== -1;
+      visible = visible && point.car && filter.type.indexOf(point.car.type_id) !== -1;
       if (!visible) return false;
     }
 
     if (filter.owner && filter.owner.length > 0) {
-      visible = visible && point.car && filter.owner.indexOf(Number(point.car[3])) !== -1;
+      visible = visible && point.car && filter.owner.indexOf(Number(point.car.owner_id)) !== -1;
       if (!visible) return false;
     }
 
     if (filter.customer && filter.customer.length > 0) {
-      visible = visible && point.car && filter.customer.indexOf(point.car[4]) !== -1;
+      visible = visible && point.car && filter.customer.indexOf(point.car.customer_id) !== -1;
       if (!visible) return false;
     }
 
     if (filter.own != null) {
-      visible = visible && point.car && filter.own === point.car[5];
+      visible = visible && point.car && filter.own === point.car.owner_id;
       if (!visible) return false;
     }
 
     if (filter.okrug && filter.okrug.length > 0) {
       if (!point.car) return false;
 
-      var ownerId = point.car[3];
+      var ownerId = point.car.owner_id;
       var owner = getOwnerById(ownerId);
 
       if (!owner) return false;

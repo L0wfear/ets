@@ -34,7 +34,7 @@ class CarInfo extends Component {
       return null;
     }
 
-    let plate = car.car[0];
+    let plate = car.car.gov_number;
 
     return (
       <div>
@@ -216,7 +216,7 @@ class CarInfo extends Component {
 
     const car = this.props.car;
 
-    fetch(config.backend + `/car_image?model_id=${car.car[2]}&car_id=${car.id}&type_id=${car.car[1]}`)
+    fetch(config.backend + `/car_image?model_id=${car.car.model_id}&car_id=${car.id}&type_id=${car.car.type_id}`)
       .then(r => r.json())
       .then(r => {
         if (this.props.car === car) {

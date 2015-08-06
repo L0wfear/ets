@@ -198,14 +198,14 @@ class Marker {
     let point = this._point;
     let color = getStatusById(point.status).color;
     let direction = point.direction;
-    let type = getTypeById(point.car ? point.car[1] : 5);
+    let type = getTypeById(point.car ? point.car.type_id : 5);
     let icon = type && type.icon;
 
     let angle = Math.PI * direction / 180 ;
     let tipAngle = normalizeAngle(angle - Math.PI / 2);
     let coords = this._getCoords();
 
-    const title = point.car[0];
+    const title = point.car.gov_number;
 
     if (options.showPlates && title) {
       const ctx = context;

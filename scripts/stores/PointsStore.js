@@ -4,6 +4,7 @@ import types from '../types.js';
 import { getTrack } from '../adapter.js';
 import { getOwnerById } from '../owners.js';
 import config from '../config.js';
+import ReconnectingWebSocket from '../ReconnectingWebsocket.js';
 
 export default class PointsStore extends Store {
 
@@ -50,7 +51,8 @@ export default class PointsStore extends Store {
     };
 
 
-    let ws = new WebSocket(config.ws);
+    //let ws = new WebSocket(config.ws);
+    let ws = new ReconnectingWebSocket(config.ws, null);
     ws.onmessage = ({ data }) => {
       this.handleUpdatePoints(JSON.parse(data));
     };

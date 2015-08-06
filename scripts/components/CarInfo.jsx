@@ -47,7 +47,7 @@ class CarInfo extends Component {
 
   renderModel() {
     let car = this.props.car;
-    let modelId = car.model_id;
+    let modelId = car.car.model_id;
     const imageUrl = this.state.imageUrl;
 
     let model = getModelById(modelId);

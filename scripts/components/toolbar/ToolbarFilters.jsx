@@ -13,6 +13,53 @@ export default class ToolbarFilters extends Component {
 
     const currentUser = this.props.currentUser;
     const filters = [];
+    const additiveFilters = this.doAdditiveFilters();
+
+    if (currentUser.role === 'mayor' || currentUser.role === 'prefect') {
+      filters.push(
+        <Filter name="owner"
+                title="Владелец"
+                options={additiveFilters.owners}
+                search={true}
+          />
+      );
+    }
+
+    if (currentUser.role === 'mayor') {
+      filters.push(
+        <Filter name="okrug"
+                title="Округ"
+                options={additiveFilters.okrugs}
+                search={true}/>
+      );
+    }
+
+    filters.push(
+      <Filter name="type"
+              title="Тип техники"
+              options={additiveFilters.types}
+              search={true}
+              itemComponent={TypeComponent}
+              valueComponent={TypeComponent}/>
+    );
+
+    let style = {
+      width: '258px',
+      borderRadius: '0px 6px 6px 6px',
+      padding: '18px',
+      paddingRight: '30px'
+    };
+
+    return (
+      <ToolbarControl top="49px" controlType="filters" btnClass={this.props.haveFilters ? 'have-filter' : ''} style={style}>
+        {filters}
+      </ToolbarControl>
+    )
+
+  }
+
+  doAdditiveFilters(){
+
     const propsFilters = this.props.filters;
     const cars = this.props.store.getFilteredPoints();
 
@@ -68,7 +115,7 @@ export default class ToolbarFilters extends Component {
           _typeIds.push( car.type_id)
         }
       } else {
-      // если владелец не указан
+        // если владелец не указан
         if ( possibleOwners.indexOf(car.owner_id) > -1 && _typeIds.indexOf(car.type_id) === -1){
           _typeIds.push( car.type_id)
         }
@@ -82,46 +129,10 @@ export default class ToolbarFilters extends Component {
       _types = types;
     }
 
-    if (currentUser.role === 'mayor' || currentUser.role === 'prefect') {
-      filters.push(
-        <Filter name="owner"
-                title="Владелец"
-                options={_owners}
-                search={true}
-          />
-      );
+    return {
+      owners: _owners,
+      types: _types,
+      okrugs: _okrugs
     }
-
-    if (currentUser.role === 'mayor') {
-      filters.push(
-        <Filter name="okrug"
-                title="Округ"
-                options={_okrugs}
-                search={true}/>
-      );
-    }
-
-    filters.push(
-      <Filter name="type"
-              title="Тип техники"
-              options={_types}
-              search={true}
-              itemComponent={TypeComponent}
-              valueComponent={TypeComponent}/>
-    );
-
-    let style = {
-      width: '258px',
-      borderRadius: '0px 6px 6px 6px',
-      padding: '18px',
-      paddingRight: '30px'
-    };
-
-    return (
-      <ToolbarControl top="49px" controlType="filters" btnClass={this.props.haveFilters ? 'have-filter' : ''} style={style}>
-        {filters}
-      </ToolbarControl>
-    )
-
   }
 }

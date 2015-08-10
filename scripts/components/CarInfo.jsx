@@ -74,6 +74,7 @@ class CarInfo extends Component {
       top: 40,
       padding: '4px 7px'
     }
+    let isTrackLoaded = car.track !== null;
 
     return (
       <Panel title={title}>
@@ -84,7 +85,7 @@ class CarInfo extends Component {
                   style={trackBtnStyle}
                   title="Следить за машиной"><span className={trackBtnIconClass}></span>&nbsp;{isTrackingMode ? 'Следим' : 'Следить'}</button>}
           <button className={zoomToTrackClass}
-                  onClick={this.zoomToTrack.bind(this)}
+                  onClick={isTrackLoaded && this.zoomToTrack.bind(this)}
                   style={zoomToTrackStyle}
                   title="Показать маршрут"><span className="glyphicon glyphicon-resize-full"></span>&nbsp;Маршрут</button>
         {
@@ -97,7 +98,6 @@ class CarInfo extends Component {
   }
 
   zoomToTrack(){
-
     let store = this.props.flux.getStore('points');
     store.setTracking( false );
 

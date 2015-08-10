@@ -255,7 +255,7 @@ class Marker {
       context.lineWidth = 3;
       context.stroke();
     }
-    context.drawImage(getIcon(icon), -radius + coords.x, -radius + coords.y, 2 * radius, 2 * radius);
+    context.drawImage(getIcon(icon).canvas, -radius + coords.x, -radius + coords.y, 2 * radius, 2 * radius);
   }
 
   renderTrack(ctx) {

@@ -106,6 +106,8 @@ export default class PointsStore extends Store {
       }
     }
 
+    byStatus[4] = byConnectionStatus[0];
+
     return { byStatus, byConnectionStatus };
   }
 
@@ -206,9 +208,8 @@ export default class PointsStore extends Store {
       if (!visible) return false;
     }
 
-
     if (filter.connectionStatus) {
-      visible = visible && filter.connectionStatus.indexOf(point['connection_status']) !== -1;
+      visible = visible && filter.connectionStatus.indexOf(point.connection_status) !== -1;
       if (!visible) return false;
     }
 

@@ -1,7 +1,9 @@
 require('babel/polyfill');
 require('whatwg-fetch');
 
-require('./leaflet.js'); // TODO use 1.0.0 when released
+import '!style!raw!sass!../styles/main.scss';
+//require('../styles/main.scss');
+
 window.Object.assign = require('object-assign');
 
 import React from 'react';
@@ -39,28 +41,21 @@ const renderLoop = new RenderLoop(stats);
 
 Modal.setAppElement(element);
 Modal.injectCSS();
+//icons.loadIcons();
+
+let isReady = false;
 
 Promise.all([
-  icons.loadIcons
-]).then(() => {
-
-  let isReady = false;
-
-  Promise.all([
-    loadCustomers(),
-    loadModels(),
-    loadOwners(),
-    loadOkrugs(),
-    loadTypes()]).then(() => {
-      isReady = true;
-      let el = document.getElementsByClassName('cssload-loader')[0];
-      setTimeout(()=>{el.parentNode.removeChild(el);}, 3000)
-
-      //@TODO delete this after websocket fix
-      getAllPoints().then(data=>flux.getActions('points').updatePoints( data ))
-    });
-
-  React.render(<App ready={isReady} flux={flux} renderLoop={renderLoop}/>, element, () => {
-    renderLoop.start();
+  loadCustomers(),
+  loadModels(),
+  loadOwners(),
+  loadOkrugs(),
+  loadTypes()]).then(() => {
+    isReady = true;
+    let el = document.getElementsByClassName('cssload-loader')[0];
+    setTimeout(()=>{el.parentNode.removeChild(el);}, 3000)
   });
-});
+
+React.render(<App ready={isReady} flux={flux} renderLoop={renderLoop}/>, element, () => {
+  renderLoop.start();
+})

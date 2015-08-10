@@ -59,12 +59,30 @@ class CarInfo extends Component {
       position: 'absolute',
       right: 14,
       top: 8,
+      padding: '4px 7px',
+      paddingRight: 11
+    }
+
+    let zoomToTrackClass = 'btn-sm btn ' + (this.props.car.track === null ? 'btn-disabled' : 'btn-default');
+    let zoomToTrackStyle = {
+      position: 'absolute',
+      right: 14,
+      top: 40,
       padding: '4px 7px'
     }
 
     return (
       <Panel title={title}>
-        { car.status === 1 && <button className={trackBtnClass} onClick={this.toggleCarTracking.bind(this)} style={trackBtnStyle} title="Следить за машиной"><span className="glyphicon glyphicon-screenshot"></span>&nbsp;Следить</button>}
+        { car.status !== 4
+          &&
+          <button className={trackBtnClass}
+                  onClick={this.toggleCarTracking.bind(this)}
+                  style={trackBtnStyle}
+                  title="Следить за машиной"><span className="glyphicon glyphicon-screenshot"></span>&nbsp;Следить</button>}
+          <button className={zoomToTrackClass}
+                  onClick={this.zoomToTrack.bind(this)}
+                  style={zoomToTrackStyle}
+                  title="Показать маршрут"><span className="glyphicon glyphicon-resize-full"></span>&nbsp;Маршрут</button>
         {
          imageUrl ? <img src={config.backend + config.images + imageUrl}
              style={{ margin: 10, width: 250 }}/> : null
@@ -73,6 +91,17 @@ class CarInfo extends Component {
       </Panel>
     );
   }
+
+  zoomToTrack(){
+
+    let store = this.props.flux.getStore('points');
+    store.setTracking( false );
+
+    let track = this.props.car.track;
+    window.MAP.fitBounds(track, {paddingBottomRight: [400,50]});
+
+  }
+
 
   toggleCarTracking(){
     let store = this.props.flux.getStore('points');
@@ -107,7 +136,7 @@ class CarInfo extends Component {
 
     return (
       <div>
-        <Panel title="Трэкинг" className="chart-datepickers-wrap">
+        <Panel title="Трекинг" className="chart-datepickers-wrap">
           <DateTimePicker format={DATE_FORMAT} timeFormat={TIME_FORMAT} className="chart-datepicker" defaultValue={start_of_today} ref="from_dt"/> – <DateTimePicker  timeFormat={TIME_FORMAT} format={DATE_FORMAT} ref="to_dt" className="chart-datepicker" defaultValue={now}/>
           &nbsp;<button title="Перезагрузить данные" style={reloadBtnStyle} className="btn btn-default btn-sm" type="button" onClick={this.reloadTrack.bind(this)}><span className="glyphicon glyphicon-repeat"></span></button>
         </Panel>
@@ -177,7 +206,13 @@ class CarInfo extends Component {
     let pointActions = this.props.flux.getActions('points');
 
     pointActions.updateTrack(from, to);
+
+    // для отрисовки кнопки "маршрут"
+    // @TODO remove this
+    this.forceUpdate()
+
     this.fetchFuelData(from, to);
+
   }
 
   componentWillReceiveProps(nextProps) {

@@ -121,14 +121,26 @@ class Toolbar extends Component {
   render() {
 
     const currentUser = this.props.currentUser;
+    const filters = this.props.filter;
+    const pointsStore = this.props.flux.getStore('points');
 
     let filtersCount = 0;
-    let keys = {'type':1, 'okrug':1, 'owner':1};
+    let keys = {
+      type:  1,
+      okrug: 1,
+      owner: 1
+    };
 
-    for (let key in this.props.filter) {
+    for (let key in filters) {
       if (key in keys){
-        filtersCount += this.props.filter[key].length;
+        filtersCount += filters[key].length;
       }
+    }
+
+    let additiveFilters = {
+      owner: filters.owner,
+      okrug: filters.okrug,
+      type: filters.type
     }
 
     return (
@@ -140,7 +152,7 @@ class Toolbar extends Component {
           </FluxComponent>
         </div>
         <ToolbarSearch/>
-        <ToolbarFilters haveFilters={filtersCount > 0} currentUser={currentUser}/>
+        <ToolbarFilters store={pointsStore} filters={additiveFilters} haveFilters={filtersCount > 0} currentUser={currentUser}/>
       </div>
     );
   }

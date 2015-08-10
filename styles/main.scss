@@ -1,8 +1,4 @@
-@import "leaflet";
-
-/*
- * Full-page application style
- */
+@import '_leaflet.scss';
 
 body.application {
   background: #f2f2f2;
@@ -227,13 +223,22 @@ body.application {
 
 
     .have-filter::before {
-      border:1px solid #bbb;
+      border:2px solid #bbb;
+      background-position: -2px -4px;
     }
 
   }
 }
 
 
+.list-item-checkbox {
+
+  input[type=checkbox] {
+    position: absolute;
+    left: 7px;
+    top: -1px;
+  }
+}
 
 .toolbar-filters {
   position:absolute;
@@ -643,13 +648,19 @@ ul.rw-list > li.rw-list-option, ul.rw-selectlist > li.rw-list-option {
   text-overflow: ellipsis;
   overflow: hidden;
   position: relative;
-  padding: 1px 6px 2px 25px;
+  padding: 1px 6px 2px 10px;
 
   img {
     position: absolute;
     left: 2px;
   }
 }
+
+span.car-type-component {
+  padding-left: 15px;
+  display: block;
+}
+
 
 ul.rw-list > li.rw-list-option:hover, ul.rw-selectlist > li.rw-list-option:hover {
   background-color: #ddd;
@@ -1133,29 +1144,6 @@ ul.rw-list.rw-list-grouped > li.rw-list-option {
   padding-right: 0
 }
 
-
-.rw-multiselect-taglist > li {
-  max-width: 100px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  position: relative;
-  font-weight: 200;
-  font-size: 12px;
-  color: #fff;
-  display: inline-block;
-  float: left;
-  margin: 1px;
-  padding: .214em 20px .214em .4em;
-  line-height: 1.4em;
-  text-align: center;
-  vertical-align: middle;
-  white-space: nowrap;
-  border-radius: 3px;
-  /* border: 1px solid #787878; */
-  background-color: #999;
-  cursor: pointer;
-}
-
 .rw-multiselect-taglist > li.rw-state-focus {
   background-color: #fff;
   border: #66afe9 1px solid;
@@ -1282,6 +1270,7 @@ ul.rw-list.rw-list-grouped > li.rw-list-option {
   padding: 4px;
   border: 2px solid white;
   outline:none;
+  margin-top: -3px;
 }
 
 .type-filter-icon {
@@ -1289,20 +1278,33 @@ ul.rw-list.rw-list-grouped > li.rw-list-option {
   height: 16px;
   border-radius: 8px;
   display: inline-block;
-  vertical-align: middle;
   margin-right: 5px;
-  background-color: #0074d9;
+  background-color: #ccc;
 }
 
-.rw-multiselect-taglist>li {
+.rw-multiselect-taglist > li {
   max-width: 100px;
   overflow: hidden;
   text-overflow: ellipsis;
-
   position: relative;
-  padding-right: 20px;
   color: black;
   background-color:#ccc;
+  font-weight: 200;
+  font-size: 11px;
+  display: inline-block;
+  float: left;
+  margin: 1px;
+  padding: .214em 15px .214em .4em;
+  line-height: 1.4em;
+  text-align: left;
+  white-space: nowrap;
+  border-radius: 3px;
+  /* border: 1px solid #787878; */
+  cursor: pointer;
+  .rw-tag-btn {
+    position: absolute;
+    right: 3px;
+  }
 }
 
 .tools {
@@ -1512,11 +1514,16 @@ body {
   font-weight:200;
   color: white;
   &:hover {
-    background-color: rgba(0,0,0,.6);
+    background-color: rgba(0,0,0,0.6);
     color:white;
   }
 }
 
 .app-toolbar-show-govnumber {
   padding: 1px 16px;
+}
+
+.zoombox-control {
+  background-position: 2px 3px !important;
+  background-image: url(../images/icon-zoombox.png);
 }

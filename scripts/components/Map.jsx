@@ -3,9 +3,9 @@ import { getStatusById } from '../statuses.js';
 import { getTypeById } from '../types.js';
 import { icons } from '../icons/index.js';
 import Marker from './map/Marker.js';
-
-// TODO сделать поиск в node_modules при сборке
-import ZoomBox from '../../node_modules/leaflet-zoombox/L.Control.ZoomBox.min.js';
+global.L_PREFER_CANVAS = true;
+import L from '../leaflet';
+import ZoomBox from 'leaflet-zoombox/L.Control.ZoomBox.min.js';
 
 
 class Map extends Component {
@@ -16,6 +16,7 @@ class Map extends Component {
     this.adjustHeight = this.adjustHeight.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onClick = this.onClick.bind(this);
+    this.onDragStart = this.onDragStart.bind(this);
   }
 
   getDefaultProps() {
@@ -39,14 +40,23 @@ class Map extends Component {
 
     let el = React.findDOMNode(this);
     let map = this._map = L.map(el, {
-      attributionControl: false
+      attributionControl: false,
+      markerZoomAnimation: false
     });
+
+    // @TODO remove this
+    window.MAP = map;
 
     map.setView(center, zoom);
 
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      detectRetina: true
-    }).addTo(map);
+    /*let tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      detectRetina: true,   // http://leafletjs.com/reference.html#map-stuff-methods
+      bounceAtZoomLimits: true,
+      //minZoom: 12,
+      unloadInvisibleTiles: true,
+      updateWhenIdle: false,
+      reuseTiles: true
+    }).addTo(map);*/
 
     // zoombox control
     // hold shift plz
@@ -54,15 +64,19 @@ class Map extends Component {
       modal: true,  // If false (default), it deactivates after each use.
                     // If true, zoomBox control stays active until you click on the control to deactivate.
        position: "topleft",
-       className: "glyphicon glyphicon-zoom-in"  // Class to use to provide icon instead of Font Awesome
+       className: "zoombox-control"  // Class to use to provide icon instead of Font Awesome
     });
     map.addControl(control);
 
-
-    let canvas = this._canvas = new L.canvas(this);
+    let canvas = new L.Canvas(this);
     canvas.addTo(map);
-    canvas._container.addEventListener('mousemove', this.onMouseMove);
+    this._canvas = canvas._container;
+
+    map.addLayer(canvas);
+
+    canvas.addEventListener('mousemove', this.onMouseMove);
     map.on('click', this.onClick);
+    map.on('dragstart', this.onDragStart)
 
     if (showAttribution) {
 
@@ -88,15 +102,25 @@ class Map extends Component {
     renderLoop.add(this.renderCanvas, this);
   }
 
+  onDragStart(event){
+    let store = this.props.flux.getStore('points');
+    let isTracking = store.state.trackingMode;
+
+    if (isTracking){
+      store.setState({trackingMode: false})
+    }
+
+  }
+
   renderCanvas(time) {
-    let canvas = this._canvas._container;
+    const canvas = this._canvas;
     let ctx = canvas.getContext('2d');
     let map = this._map;
     let flux = this.props.flux;
     let pointsStore = flux.getStore('points');
     let selected = pointsStore.getSelectedPoint();
     let markers = this._markers;
-    const bounds = map.getBounds();
+    //const bounds = map.getBounds();
 
     let keys = Object.keys(markers);
 

@@ -1,27 +1,25 @@
-var fs = require('fs');
+import fs from 'fs';
+
 var DOMURL = window.URL || window.webkitURL || window;
 var icons = {};
 
 function loadIcon(name, data) {
 
-  return new Promise(function(resolve, reject) {
+  var img = new Image();
 
-    var img = new Image();
-    var svg = new Blob([data], { type: 'image/svg+xml' });
-    var url = DOMURL.createObjectURL(svg);
-    img.onload = function () {
-      var canvas = document.createElement('canvas');
-      canvas.width = canvas.height = 40;
-      var ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, 40, 40); // TODO retina + const
-      icons[name] = canvas;
-      icons[name].url = url;
-      resolve(img);
-    };
-    img.src = url;
+  var canvas = document.createElement('canvas');
+  canvas.width = canvas.height = 40;
+  var ctx = canvas.getContext('2d');
 
-  });
+  img.onload = function () {
+    ctx.drawImage(img, 0, 0, 40, 40); // TODO retina + const
+    icons[name] = {
+      canvas: canvas,
+      src: data
+    }
+  }
 
+  img.src = data;
 }
 
 const ICON_MAP = {
@@ -45,25 +43,22 @@ const ICON_MAP = {
   1000: 'neizvesten'
 }
 
-exports.getIcon = function getIcon(id) {
+export function getIcon (id) {
   const icon = ICON_MAP[id] || 'drugoe';
   return icons[icon];
-}
+};
 
+export default icons;
 
-exports.icons = icons;
-
-exports.loadIcons = Promise.all([
-  loadIcon('greider', fs.readFileSync(__dirname + '/greider.svg', 'utf8')),
-  loadIcon('musorovoz', fs.readFileSync(__dirname + '/musorovoz.svg', 'utf8')),
-  loadIcon('podmetalka', fs.readFileSync(__dirname + '/podmetalka.svg', 'utf8')),
-  loadIcon('pogruzchik', fs.readFileSync(__dirname + '/pogruzchik.svg', 'utf8')),
-  loadIcon('polivalka', fs.readFileSync(__dirname + '/polivalka.svg', 'utf8')),
-  loadIcon('reagent', fs.readFileSync(__dirname + '/reagent.svg', 'utf8')),
-  loadIcon('reagent_tverd', fs.readFileSync(__dirname + '/reagent_tverd.svg', 'utf8')),
-  loadIcon('samosval', fs.readFileSync(__dirname + '/samosval.svg', 'utf8')),
-  loadIcon('traktor', fs.readFileSync(__dirname + '/traktor.svg', 'utf8')),
-  loadIcon('trotuar', fs.readFileSync(__dirname + '/trotuar.svg', 'utf8')),
-  loadIcon('drugoe', fs.readFileSync(__dirname + '/drugoe.svg', 'utf8')),
-  loadIcon('neizvesten', fs.readFileSync(__dirname + '/neizvesten.svg', 'utf8'))
-]);
+loadIcon('greider', require('./greider.svg')),
+loadIcon('musorovoz', require('./musorovoz.svg')),
+loadIcon('podmetalka', require('./podmetalka.svg')),
+loadIcon('pogruzchik', require('./pogruzchik.svg')),
+loadIcon('polivalka', require('./polivalka.svg')),
+loadIcon('reagent', require('./reagent.svg')),
+loadIcon('reagent_tverd', require('./reagent_tverd.svg')),
+loadIcon('samosval', require('./samosval.svg')),
+loadIcon('traktor', require('./traktor.svg')),
+loadIcon('trotuar', require('./trotuar.svg')),
+loadIcon('drugoe', require('./drugoe.svg')),
+loadIcon('neizvesten', require('./neizvesten.svg'))

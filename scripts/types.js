@@ -29,15 +29,8 @@ function normalizeArray(objOrArray) {
 }
 
 export default list;
-
 export function getTypeById(id) {
-  var r = index[id];
-
-  if (!r) {
-    console.warn(`Type ${id} not found`);
-  }
-
-  return index[id];
+  return index[id] === undefined ? index[0] : index[id];
 }
 
 export function loadTypes() {

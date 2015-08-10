@@ -20,9 +20,30 @@ var messages = {
   emptyFilter: "Ничего не найдено"
 }
 
+
+/*
+class CheckboxListComponent extends Component {
+
+  render() {
+    const item = this.props.item;
+    const checked = false;
+
+    return (
+      <span className="list-item-checkbox">
+        <input type="checkbox" name="" checked={checked}/>
+        {item.title}
+      </span>
+    );
+  }
+
+}
+*/
+
+
 class Filter extends Component {
 
   constructor(props, context) {
+    super()
     this.state = { flux: context.flux };
   }
 
@@ -60,6 +81,8 @@ class Filter extends Component {
                         filter={filter}
                         messages={messages}
                         placeholder={this.props.title}
+                        /*itemComponent={CheckboxListComponent}
+                        valueComponent={CheckboxListComponent}*/
                         {...this.props}/>
         </div>
     );

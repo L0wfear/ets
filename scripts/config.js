@@ -1,28 +1,32 @@
-//let ENV = 'development';
-let ENV = 'production';
+let ENV = process.env.NODE_ENV || 'development';
 
-let domains =
-      ENV === 'development' ?
-
-        {
-          web:'localhost:9001',
-          ws: 'localhost:8016'
-        } :
-
-        {
-          web:'ods.mos.ru',
-          ws: 'ods.mos.ru'
-        }
+let WEBPACK_CONFIG = {
+  development: {
+    isProduction: false,
+    port: 3000,
+    apiPort: 3030,
+    app: {
+      name: 'Development'
+    }
+  },
+  production: {
+    isProduction: true,
+    port: process.env.PORT,
+    apiPort: 3030,
+    app: {
+      name: 'Production'
+    }
+  }
+}
 
 let config = {
-  backend: 'http://'+domains.web+'/ssd/city-dashboard',
-  ws: 'ws://'+domains.ws+'/ssd/city-dashboard/stream',
+  backend: 'http://ods.mos.ru/ssd/city-dashboard',
+  ws: 'ws://ods.mos.ru/ssd/city-dashboard/stream',
   images: '/data/images/',
   REQUEST_PARAMS: {
     credentials: 'include'
-  }
+  },
+  WEBPACK_CONFIG: WEBPACK_CONFIG[ENV]
 };
-
-
 
 export default config;

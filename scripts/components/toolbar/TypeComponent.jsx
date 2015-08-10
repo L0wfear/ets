@@ -8,8 +8,8 @@ export default class TypeComponent extends Component {
     const type = this.props.item;
 
     return (
-      <span>
-        {type.icon ? <img className="type-filter-icon" src={getIcon(type.icon).url}/> : null}
+      <span className="car-type-component">
+        {type.icon ? <img className="type-filter-icon" src={getIcon(type.icon).src}/> : null}
         {type.title}
       </span>
     );

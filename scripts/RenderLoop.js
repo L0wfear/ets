@@ -22,7 +22,7 @@ class RenderLoop {
     let callbacks = this._callbacks;
 
     stats.begin();
-    for (let i = 0; i < callbacks.length; i++) {
+    for (let i = 0, till = callbacks.length; i < till; i++) {
       let callback = callbacks[i];
       let fn = callback[0];
       let context = callback[1];

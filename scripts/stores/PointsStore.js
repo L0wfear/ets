@@ -48,7 +48,8 @@ export default class PointsStore extends Store {
         1: 1
       },
       showPlates: false, // TODO move to settings store
-      trackingMode: false
+      trackingMode: false,
+      isRenderPaused: false
     };
 
 
@@ -255,6 +256,18 @@ export default class PointsStore extends Store {
 
   getSelectedPoint() {
     return this.state.selected;
+  }
+
+  pauseRendering(){
+    this.setState({isRenderPaused: true})
+  }
+
+  unpauseRendering(){
+    this.setState({isRenderPaused: false})
+  }
+
+  isRenderPaused(){
+    return this.state.isRenderPaused;
   }
 
   handleSetShowPlates(showPlates) {

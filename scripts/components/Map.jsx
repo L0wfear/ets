@@ -99,7 +99,11 @@ class Map extends Component {
 
     window.addEventListener('resize', this.adjustHeight);
     this.updateMarkers(this.props.points);
-    renderLoop.add(this.renderCanvas, this);
+
+    let isRenderPaused = this.props.flux.getStore('points').state.isRenderPaused;
+    if (!isRenderPaused){
+      renderLoop.add(this.renderCanvas, this);
+    }
   }
 
   onDragStart(event){

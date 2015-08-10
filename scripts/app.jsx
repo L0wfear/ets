@@ -22,6 +22,17 @@ import { loadModels } from './models.js';
 import { loadOwners } from './owners.js';
 import { loadOkrugs} from './okrugs.js';
 import { loadTypes } from './types.js';
+import './vendor/onTabUnfocus.js';
+
+window.addEventListener('blur', (ev) => {
+  let store = flux.getStore('points')
+  store.pauseRendering()
+})
+
+window.addEventListener('focus', (ev) => {
+  let store = flux.getStore('points')
+  store.unpauseRendering()
+})
 
 if (process.env.NODE_ENV !== 'production') {
   window.React = React;

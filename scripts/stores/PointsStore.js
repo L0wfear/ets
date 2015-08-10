@@ -152,7 +152,7 @@ export default class PointsStore extends Store {
     if ( point.track ) {
       point.track.length = 0;
     }
-    point.track = simplify(track, .0005);
+    point.track = simplify(track, .0001);
   }
 
   handleLogin(user) {

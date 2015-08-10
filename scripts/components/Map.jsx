@@ -4,7 +4,7 @@ import { getTypeById } from '../types.js';
 import { icons } from '../icons/index.js';
 import Marker from './map/Marker.js';
 global.L_PREFER_CANVAS = true;
-import L from '../leaflet';
+import L from '../vendor/leaflet';
 import ZoomBox from 'leaflet-zoombox/L.Control.ZoomBox.min.js';
 
 

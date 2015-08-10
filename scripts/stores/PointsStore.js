@@ -5,6 +5,7 @@ import { getTrack } from '../adapter.js';
 import { getOwnerById } from '../owners.js';
 import config from '../config.js';
 import ReconnectingWebSocket from '../ReconnectingWebsocket.js';
+import simplify from '../vendor/simplify.js';
 
 export default class PointsStore extends Store {
 
@@ -148,7 +149,7 @@ export default class PointsStore extends Store {
     if ( point.track ) {
       point.track.length = 0;
     }
-    point.track = track;
+    point.track = simplify(track, .0005);
   }
 
   handleLogin(user) {

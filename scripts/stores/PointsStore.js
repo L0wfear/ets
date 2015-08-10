@@ -86,6 +86,8 @@ export default class PointsStore extends Store {
 
   countDimensions(){
 
+    if (this.state.isRenderPaused) return;
+
     let points = this.state.points;
 
     let byStatus = {

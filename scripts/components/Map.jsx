@@ -124,7 +124,10 @@ class Map extends Component {
     let pointsStore = flux.getStore('points');
     let selected = pointsStore.getSelectedPoint();
     let markers = this._markers;
+    let isRenderPaused = pointsStore.state.isRenderPaused;
     const bounds = map.getBounds();
+
+    if ( isRenderPaused ) return;
 
     let keys = Object.keys(markers);
 
@@ -147,14 +150,24 @@ class Map extends Component {
       }
     }
 
-    const options = { showPlates: this.props.showPlates };
+    let optimizedPoints = [];
 
-    for (let i = 0; i < keys.length; i++) {
+    for ( let i = 0, till = keys.length; i < till; i++){
       let key = keys[i];
       let marker = markers[key];
 
-      if (marker._point !== selected && bounds.contains(marker._coords)) {
-        marker.render(ctx, false, time, options);
+      if ( bounds.contains(marker._coords)){
+        optimizedPoints.push(marker)
+      }
+    }
+
+    const options = { showPlates: this.props.showPlates };
+
+    for ( let i = 0, till = optimizedPoints.length; i < till; i++){
+      let marker = optimizedPoints[i];
+
+      if ( marker._point !== selected) {
+        marker.render( ctx, false, time, options)
       }
     }
 

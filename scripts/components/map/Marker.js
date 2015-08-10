@@ -300,9 +300,9 @@ class Marker {
     // this._projectedX = projectedPoint.x;
     // this._projectedY = projectedPoint.y;
 
-    this._animation = new CoordsAnimation(this, projectedPoint.x, projectedPoint.y, 500);
+    let store = this._store;
 
-
+    if ( !store.state.isRenderPaused ) this._animation = new CoordsAnimation(this, projectedPoint.x, projectedPoint.y, 500);
   }
 
   contains(mousePoint) {

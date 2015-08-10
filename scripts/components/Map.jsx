@@ -49,14 +49,14 @@ class Map extends Component {
 
     map.setView(center, zoom);
 
-    /*let tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    let tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       detectRetina: true,   // http://leafletjs.com/reference.html#map-stuff-methods
       bounceAtZoomLimits: true,
       //minZoom: 12,
       unloadInvisibleTiles: true,
       updateWhenIdle: false,
       reuseTiles: true
-    }).addTo(map);*/
+    }).addTo(map);
 
     // zoombox control
     // hold shift plz

@@ -53,14 +53,18 @@ class CarInfo extends Component {
     let model = getModelById(modelId);
     let title = model ? model.title : '';
 
+    // TODO убрать стили в css
     let isTrackingMode =  this.props.flux.getStore('points').state.trackingMode;
     let trackBtnClass = 'btn-sm btn ' + (isTrackingMode ? 'btn-success' : 'btn-default');
+    let trackBtnIconClass = 'glyphicon glyphicon-screenshot ' + (isTrackingMode ? 'tracking-animate' : '');
     let trackBtnStyle = {
       position: 'absolute',
       right: 14,
       top: 8,
       padding: '4px 7px',
-      paddingRight: 11
+      paddingRight: 11,
+      width:83,
+      textAlign: 'center'
     }
 
     let zoomToTrackClass = 'btn-sm btn ' + (this.props.car.track === null ? 'btn-disabled' : 'btn-default');
@@ -78,7 +82,7 @@ class CarInfo extends Component {
           <button className={trackBtnClass}
                   onClick={this.toggleCarTracking.bind(this)}
                   style={trackBtnStyle}
-                  title="Следить за машиной"><span className="glyphicon glyphicon-screenshot"></span>&nbsp;Следить</button>}
+                  title="Следить за машиной"><span className={trackBtnIconClass}></span>&nbsp;{isTrackingMode ? 'Следим' : 'Следить'}</button>}
           <button className={zoomToTrackClass}
                   onClick={this.zoomToTrack.bind(this)}
                   style={zoomToTrackStyle}

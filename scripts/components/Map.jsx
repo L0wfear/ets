@@ -3,7 +3,7 @@ import { getStatusById } from '../statuses.js';
 import { getTypeById } from '../types.js';
 import { icons } from '../icons/index.js';
 import Marker from './map/Marker.js';
-global.L_PREFER_CANVAS = true;
+//global.L_PREFER_CANVAS = true;
 import L from '../vendor/leaflet';
 import ZoomBox from 'leaflet-zoombox/L.Control.ZoomBox.min.js';
 
@@ -41,7 +41,7 @@ class Map extends Component {
     let el = React.findDOMNode(this);
     let map = this._map = L.map(el, {
       attributionControl: false,
-      markerZoomAnimation: false
+      preferCanvas:true
     });
 
     // @TODO remove this
@@ -49,13 +49,13 @@ class Map extends Component {
 
     map.setView(center, zoom);
 
-    let tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       detectRetina: true,   // http://leafletjs.com/reference.html#map-stuff-methods
-      bounceAtZoomLimits: true,
-      //minZoom: 12,
+      /*bounceAtZoomLimits: true,
+      minZoom: 12,
       unloadInvisibleTiles: true,
       updateWhenIdle: false,
-      reuseTiles: true
+      reuseTiles: true*/
     }).addTo(map);
 
     // zoombox control
@@ -72,7 +72,7 @@ class Map extends Component {
     canvas.addTo(map);
     this._canvas = canvas._container;
 
-    map.addLayer(canvas);
+    //map.addLayer(canvas);
 
     canvas.addEventListener('mousemove', this.onMouseMove);
     map.on('click', this.onClick);
@@ -117,17 +117,20 @@ class Map extends Component {
   }
 
   renderCanvas(time) {
+
+    let flux = this.props.flux;
+    let pointsStore = flux.getStore('points');
+    let isRenderPaused = pointsStore.state.isRenderPaused;
+
+    if ( isRenderPaused ) return;
+
     const canvas = this._canvas;
     let ctx = canvas.getContext('2d');
     let map = this._map;
-    let flux = this.props.flux;
-    let pointsStore = flux.getStore('points');
     let selected = pointsStore.getSelectedPoint();
     let markers = this._markers;
-    let isRenderPaused = pointsStore.state.isRenderPaused;
     const bounds = map.getBounds();
 
-    if ( isRenderPaused ) return;
 
     let keys = Object.keys(markers);
 
@@ -136,19 +139,6 @@ class Map extends Component {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.restore();
 
-    let selectedMarker = selected ? markers[selected.id] : null;
-
-    if (selectedMarker) {
-      selectedMarker.renderTrack(ctx);
-      if (pointsStore.state.trackingMode){
-        if ( selected.status === 1 ) {
-          // смещаем примерно в центр с учетом открытого сайдбара
-          // зумлевел кокрастаке можно смотреть по баундам трэка, если он уже загружен
-          let _coords = [selectedMarker._coords[0], selectedMarker._coords[1] + 0.004];
-          map.setView(_coords, 16)
-        }
-      }
-    }
 
     let optimizedPoints = [];
 
@@ -168,6 +158,21 @@ class Map extends Component {
 
       if ( marker._point !== selected) {
         marker.render( ctx, false, time, options)
+      }
+    }
+
+
+    let selectedMarker = selected ? markers[selected.id] : null;
+
+    if (selectedMarker) {
+      selectedMarker.renderTrack(ctx);
+      if (pointsStore.state.trackingMode){
+        if ( selected.status === 1 ) {
+          // смещаем примерно в центр с учетом открытого сайдбара
+          // зумлевел кокрастаке можно смотреть по баундам трэка, если он уже загружен
+          let _coords = [selectedMarker._coords[0], selectedMarker._coords[1] + 0.004];
+          map.setView(_coords, 16, {animation: true })
+        }
       }
     }
 

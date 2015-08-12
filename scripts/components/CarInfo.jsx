@@ -102,7 +102,9 @@ class CarInfo extends Component {
     store.setTracking( false );
 
     let track = this.props.car.track;
-    window.MAP.fitBounds(track, {paddingBottomRight: [400,50]});
+    let bounds = L.LatLngBounds(track);
+  //  let zoom = window.MAP.getBoundsZoom(track, true, [400,50]);
+    window.MAP.fitBounds(bounds, {paddingBottomRight: [500,50]});
 
   }
 
@@ -213,7 +215,7 @@ class CarInfo extends Component {
 
     // для отрисовки кнопки "маршрут"
     // @TODO remove this
-    this.forceUpdate()
+    //this.forceUpdate()
 
     this.fetchFuelData(from, to);
 

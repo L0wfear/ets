@@ -107,7 +107,9 @@ export default class ToolbarFilters extends Component {
     for ( let key in cars ) {
       let car = cars[key].car;
 
-      if (car.owner_id === undefined) car.owner_id = -1; // dirty fix
+      if (! 'owner_id' in car ) {
+        car.owner_id = 0;
+      } // dirty fix
 
       // если владелец указан
       if ( propsFilters.owner.length > 0 ){

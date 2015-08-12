@@ -5,6 +5,7 @@ var notifyStats = require('./utils/notifyStats');
 var assetsPath = path.resolve(__dirname, '../dist');
 var host = 'localhost';//'dev.ods.mos.ru';
 var port = 3000;
+//var ForceCaseSensitivityPlugin = require('./utils/forcecasesensitivity');
 
 module.exports = {
   devtool: 'eval-source-map',
@@ -48,6 +49,7 @@ module.exports = {
   plugins: [
     // hot reload
     new webpack.HotModuleReplacementPlugin(),
+    //new ForceCaseSensitivityPlugin(),
     new webpack.IgnorePlugin(/\.json$/),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({

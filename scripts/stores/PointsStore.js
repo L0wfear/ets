@@ -10,7 +10,7 @@ import simplify from '../vendor/simplify.js';
 export default class PointsStore extends Store {
 
   constructor(flux) {
-    super();
+    super(flux);
 
     const pointsActions = this._pointsActions = flux.getActions('points');
     const loginActions = flux.getActions('login');

@@ -8,7 +8,7 @@ import { getCustomerById } from '../customers.js';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 //import FuelChart from './FuelChart.js';
 import config from '../config.js';
-import { Sparklines, SparklinesBars, SparklinesLine, SparklinesNormalBand, SparklinesReferenceLine, SparklinesSpots } from './Sparklines.js';
+import { Sparklines, SparklinesBars, SparklinesLine, SparklinesNormalBand, SparklinesReferenceLine, SparklinesSpots } from 'sparklines';
 
 
 class CarInfo extends Component {

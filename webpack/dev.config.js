@@ -1,6 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
-var writeStats = require('./utils/writeStats');
+//var writeStats = require('./utils/writeStats');
 var notifyStats = require('./utils/notifyStats');
 var assetsPath = path.resolve(__dirname, '../dist');
 var host = 'localhost';//'dev.ods.mos.ru';
@@ -28,7 +28,11 @@ module.exports = {
       { test: /\.(jpe?g|png|gif|svg)$/, loader: 'url', query: {limit: 10240} },
       { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['react-hot', 'babel?stage=0&optional=runtime&plugins=typecheck']},
       { test: /\.json$/, loader: 'json-loader' },
-      { test: /\.scss$/, loader: 'style!css?modules&importLoaders=2&localIdentName=[local]___[hash:base64:5]!sass?outputStyle=expanded&sourceMap=true&sourceMapContents=true' }
+      { test: /\.scss$/, loader: 'style!css?modules&importLoaders=2&localIdentName=[local]___[hash:base64:5]!sass?outputStyle=expanded&sourceMap=true&sourceMapContents=true' },
+
+      { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,   loader: "url?limit=10000&mimetype=application/font-woff" },
+      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,    loader: "url?limit=10000&mimetype=application/octet-stream" },
+      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,    loader: "file" }
     ]
   },
   node: {
@@ -50,6 +54,15 @@ module.exports = {
     // hot reload
     new webpack.HotModuleReplacementPlugin(),
     //new ForceCaseSensitivityPlugin(),
+
+    // set global vars
+    new webpack.DefinePlugin({
+      'process.env': {
+        // Useful to reduce the size of client-side libraries, e.g. react
+        NODE_ENV: JSON.stringify('development')
+      }
+    }),
+
     new webpack.IgnorePlugin(/\.json$/),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
@@ -62,11 +75,14 @@ module.exports = {
     // stats
     function () {
       this.plugin('done', notifyStats);
-    },
+    },/*
     function () {
       this.plugin('done', function(stats) {
         writeStats.call(this, stats, 'dev');
       });
-    }
+    }*/
   ]
 };
+
+
+//config.addVendor('bootstrap.min.css', './styles/bootstrap.min.css');

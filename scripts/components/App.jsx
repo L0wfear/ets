@@ -2,11 +2,18 @@ import React, { Component } from 'react';
 import LoginPage from './LoginPage.jsx';
 import MainPage from './MainPage.jsx';
 import FluxComponent from 'flummox/component';
+import NotificationSystem from 'react-notification-system';
 
 class App extends Component {
 
+  constructor(props){
+    super(props)
+  }
+
   render() {
-    const { currentUser, renderLoop } = this.props;
+    const flux = this.props.flux;
+    const currentUser = flux.getStore('login').state.currentUser;
+    const renderLoop = this.props.renderLoop;
 
     if (!currentUser) {
       return (
@@ -18,12 +25,10 @@ class App extends Component {
       );
     }
   }
-
 }
 
 
-
-class AppWrapper {
+class AppWrapper  {
 
   getChildContext() {
     return {
@@ -31,12 +36,11 @@ class AppWrapper {
     }
   }
 
-
   render() {
     return (
-      <FluxComponent connectToStores={['login']}>
-        <App renderLoop={this.props.renderLoop}/>
-      </FluxComponent>
+      <div>
+        <App renderLoop={this.props.renderLoop} flux={this.props.flux}/>
+      </div>
     );
   }
 
@@ -44,7 +48,4 @@ class AppWrapper {
 
 AppWrapper.childContextTypes = { flux: React.PropTypes.object };
 
-
 export default AppWrapper;
-
-// <MainPage renderLoop={this.props.renderLoop}/>

@@ -18,16 +18,6 @@ class Map extends Component {
     this.onDragStart = this.onDragStart.bind(this);
   }
 
-  getDefaultProps() {
-
-    return {
-      center: [51.505, -0.09],
-      zoom: 13,
-      showAttribution: true
-    };
-
-  }
-
   shouldComponentUpdate() {
     return false;
   }
@@ -48,14 +38,9 @@ class Map extends Component {
 
     map.setView(center, zoom);
 
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    let tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       detectRetina: true,   // http://leafletjs.com/reference.html#map-stuff-methods
-      /*bounceAtZoomLimits: true,
-      minZoom: 12,
-      unloadInvisibleTiles: true,
-      updateWhenIdle: false,
-      reuseTiles: true*/
-    }).addTo(map);
+    }).addTo(map).bringToBack();
 
     // zoombox control
     // hold shift plz
@@ -67,7 +52,7 @@ class Map extends Component {
     });
     map.addControl(control);
 
-    let canvas = new L.Canvas().addTo(map);
+    let canvas = L.canvas().addTo(map);
     this._canvas = canvas._container;
     this._ctx = canvas._ctx;
 
@@ -79,11 +64,18 @@ class Map extends Component {
      * prevents track from repainting canvas in trackingMode
      * don't touch ma talala!
      */
+    let isTrackingMode = this.props.flux.getStore('points').state.trackingMode
     map.on('movestart', (ev) => {
-      if (this.props.flux.getStore('points').state.trackingMode) {
-        return false;
+      if (isTrackingMode) {
+        //return false;
+        L.DomEvent.preventDefault( ev )
+      }
+    }).on('moveend', (ev) => {
+      if (isTrackingMode){
+        L.DomEvent.preventDefault( ev )
       }
     })
+
 
     if (showAttribution) {
 
@@ -99,13 +91,9 @@ class Map extends Component {
       `);
 
       attr.addTo(map);
-
-      this._interactive = false; // TODO use React
-
     }
 
     window.addEventListener('resize', this.adjustHeight);
-    this.updateMarkers(this.props.points);
     renderLoop.add(this.renderCanvas, this);
 
   }
@@ -177,7 +165,7 @@ class Map extends Component {
           // смещаем примерно в центр с учетом открытого сайдбара
           // зумлевел кокрастаке можно смотреть по баундам трэка, если он уже загружен
           let _coords = [selectedMarker._coords[0], selectedMarker._coords[1] + 0.004];
-          map.setView(_coords, 16, { animate: true })
+          map.setView(_coords, 16, { animate: true, reset: false })
         }
       }
     }
@@ -226,7 +214,7 @@ class Map extends Component {
 
 
   componentWillUnmount() {
-    window.removeEventListner('resize', this.adjustHeight);
+    window.removeEventListener('resize', this.adjustHeight);
     this._map = null;
     this._canvas = null;
     this._markers = {};

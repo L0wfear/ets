@@ -107,7 +107,8 @@ class CarInfo extends Component {
   //  let zoom = window.MAP.getBoundsZoom(track, true, [400,50]);
     window.MAP.fitBounds(bounds, {
       paddingBottomRight: [500,50],
-      paddingTopLeft: [50,50]
+      paddingTopLeft: [50,50],
+      animate: true
     });
 
   }

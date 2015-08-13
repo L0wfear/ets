@@ -127,7 +127,7 @@ body.application {
   position: fixed;
   top: 15px;
   z-index: 1000;
-  left: 10px;
+  left: 25px;
 }
 
 .app-toolbar-filter {
@@ -160,7 +160,6 @@ body.application {
 }
 
 
-.toolbar-control
 
 .app-toolbar-btn {
   padding: 21px;
@@ -208,7 +207,7 @@ body.application {
 
 .toolbar-control {
   position: absolute;
-  left: 184px;
+  left: 169px;
   top: 0px;
 
   &.toggled {

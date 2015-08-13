@@ -49,7 +49,6 @@ module.exports = {
   plugins: [
     new CleanPlugin([relativeAssetsPath]),
 
-    // css files from the extract-text-plugin loader
     new ExtractTextPlugin('../dist/[name].css', {allChunks: true}),
     new webpack.DefinePlugin({
       __CLIENT__: true,
@@ -72,17 +71,18 @@ module.exports = {
     // optimizations
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
-   /* new webpack.optimize.UglifyJsPlugin({
+    /*new webpack.optimize.UglifyJsPlugin({
       compress: {
           warnings: true
-        }
-    }),*/
+      },
+      sourceMap: false,
+      mangle: false
+    }),
 
-    // stats
     function () {
       this.plugin('done', function(stats) {
-      //  writeStats.call(this, stats, 'prod');
+        writeStats.call(this, stats, 'prod');
       });
-    }
+    }*/
   ]
 };

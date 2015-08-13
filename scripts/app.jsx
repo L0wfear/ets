@@ -2,12 +2,13 @@ require('babel/polyfill');
 require('whatwg-fetch');
 
 import '!style!raw!sass!../styles/main.scss';
-//require('../styles/main.scss');
+import '!style!raw!../styles/bootstrap.min.css';
 
 window.Object.assign = require('object-assign');
 
 import React from 'react';
 import App from './components/App.jsx';
+import NotificationSystem from './components/NotificationSystem.jsx';
 import Flux from './Flux.js';
 import { getAllPoints } from './adapter.js';
 import icons from './icons/index.js';
@@ -34,7 +35,9 @@ window.addEventListener('focus', (ev) => {
   store.unpauseRendering()
 })
 
-if (process.env.NODE_ENV !== 'production') {
+global.NODE_ENV = process.env.NODE_ENV;
+
+if (global.NODE_ENV !== 'production') {
   window.React = React;
 }
 
@@ -54,19 +57,18 @@ Modal.setAppElement(element);
 Modal.injectCSS();
 //icons.loadIcons();
 
-let isReady = false;
-
 Promise.all([
   loadCustomers(),
   loadModels(),
   loadOwners(),
   loadOkrugs(),
   loadTypes()]).then(() => {
-    isReady = true;
     let el = document.getElementsByClassName('cssload-loader')[0];
     setTimeout(()=>{el.parentNode.removeChild(el);}, 3000)
   });
 
-React.render(<App ready={isReady} flux={flux} renderLoop={renderLoop}/>, element, () => {
+React.render(<App flux={flux} renderLoop={renderLoop}/>, element, () => {
   renderLoop.start();
 })
+
+global.NOTIFICATION_SYSTEM = React.render(<NotificationSystem/>, document.getElementById('notifications'))

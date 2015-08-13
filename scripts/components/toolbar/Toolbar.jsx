@@ -69,7 +69,7 @@ class LegendWrapper extends Component {
 
     return (
       <div className="legend-wrapper app-toolbar-fill">
-        <ul style={{'padding-left': '0'}}>
+        <ul style={{paddingLeft: 0}}>
           <li style={{fontSize: '16px',textAlign: 'center'}}>
             <span> Активно:
               <span>&nbsp;{totalOnline}</span>

@@ -7102,7 +7102,7 @@ L.Map.include({
 
 	_onPanTransitionEnd: function () {
 		L.DomUtil.removeClass(this._mapPane, 'leaflet-pan-anim');
-		//this.fire('moveend');
+		this.fire('moveend');
 	},
 
 	_tryAnimatedPan: function (center, options) {

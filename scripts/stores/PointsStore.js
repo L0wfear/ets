@@ -55,9 +55,19 @@ export default class PointsStore extends Store {
 
     //let ws = new WebSocket(config.ws);
     let ws = new ReconnectingWebSocket(config.ws, null);
+    //global.WS = ws;
+
     ws.onmessage = ({ data }) => {
       this.handleUpdatePoints(JSON.parse(data));
-    };
+    }
+
+    ws.onclose =  (ev) => {
+      global.NOTIFICATION_SYSTEM.notify( 'Потеряно соединение с WebSocket, пытаемся переподключиться', 'warning')
+    }
+
+    ws.onerror =  (ev) => {
+      global.NOTIFICATION_SYSTEM.notify( 'Ошибка WebSocket', 'error')
+    }
 
   }
 

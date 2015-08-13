@@ -71,7 +71,7 @@ class Map extends Component {
     this._canvas = canvas._container;
     this._ctx = canvas._ctx;
 
-    canvas.addEventListener('mousemove', this.onMouseMove);
+    this._canvas.addEventListener('mousemove', this.onMouseMove);
     map.on('click', this.onClick);
     map.on('dragstart', this.onDragStart)
 
@@ -120,6 +120,24 @@ class Map extends Component {
 
   }
 
+  getPointsInBounds(bounds){
+
+    let points = [];
+    let markers = this._markers;
+    let keys = Object.keys(markers);
+
+    for ( let i = 0, till = keys.length; i < till; i++){
+      let key = keys[i];
+      let marker = markers[key];
+
+      if ( bounds.contains(marker._coords)){
+        points.push(marker)
+      }
+    }
+
+    return points;
+  }
+
   renderCanvas(time) {
 
     let flux = this.props.flux;
@@ -135,23 +153,12 @@ class Map extends Component {
     let markers = this._markers;
     const bounds = map.getBounds();
 
-    let keys = Object.keys(markers);
-
     ctx.save();
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.restore();
 
-
-    let optimizedPoints = [];
-    for ( let i = 0, till = keys.length; i < till; i++){
-      let key = keys[i];
-      let marker = markers[key];
-
-      if ( bounds.contains(marker._coords)){
-        optimizedPoints.push(marker)
-      }
-    }
+    let optimizedPoints = this.getPointsInBounds(bounds);
 
     const options = { showPlates: this.props.showPlates };
     for ( let i = 0, till = optimizedPoints.length; i < till; i++){
@@ -161,7 +168,6 @@ class Map extends Component {
         marker.render( ctx, false, time, options)
       }
     }
-
 
     let selectedMarker = selected ? markers[selected.id] : false;
     if (selectedMarker) {
@@ -242,30 +248,32 @@ class Map extends Component {
   }
 
   onMouseMove(e) {
+
     let map = this._map;
-    let markers = this._markers;
     let point = map.mouseEventToLayerPoint(e);
 
-    let keys = Object.keys(markers);
+    let bounds = map.getBounds();
+    let points = this.getPointsInBounds(bounds);
+    let keys = Object.keys(points);
 
-    var oldInteractive = this._interactive;
-    this._interactive = false;
+    let interactive = false;
 
-    for (let i = 0; i < keys.length; i++) {
+    for (let i = 0, till = keys.length; i < till; i++) {
       let key = keys[i];
-      let marker = markers[key];
+      let marker = points[key];
 
       if (marker.contains(point)) {
-        this._interactive = true;
+        interactive = true;
         break;
       }
     }
 
-    if (oldInteractive && !this._interactive) {
-      L.DomUtil.removeClass(this._canvas._container, 'leaflet-interactive');
-    } else if (!oldInteractive && this._interactive) {
-      L.DomUtil.addClass(this._canvas._container, 'leaflet-interactive');
+    if (!interactive) {
+      L.DomUtil.removeClass(this._canvas, 'leaflet-interactive');
+    } else {
+      L.DomUtil.addClass(this._canvas, 'leaflet-interactive');
     }
+
   }
 
   onClick(e) {
@@ -290,7 +298,6 @@ class Map extends Component {
 
   onPointClick(p) {
     let flux = this.props.flux;
-
     flux.getActions('points').selectPoint(p);
   }
 

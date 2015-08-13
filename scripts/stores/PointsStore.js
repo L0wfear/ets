@@ -80,11 +80,11 @@ export default class PointsStore extends Store {
       points[key] = Object.assign({}, points[key], pointUpdate);
 
       if (!points[key].track ) {
-        points[key].track = [];
+        points[key].track = null;
+      } else {
+        // push last point to track
+        points[key].track.push(pointUpdate.coords);
       }
-      // push last point to track
-      points[key].track.push(pointUpdate.coords);
-
 
       // HACK
       if (points[key].speed !== 0 && this.state.points[key] && this.state.points[key].speed === 0) {

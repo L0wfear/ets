@@ -74,7 +74,7 @@ class CarInfo extends Component {
       top: 40,
       padding: '4px 7px'
     }
-    let isTrackLoaded = car.track !== null;
+    let isTrackLoaded = car.track !== null && car.track.length > 0;
 
     return (
       <Panel title={title}>
@@ -89,8 +89,9 @@ class CarInfo extends Component {
                   style={zoomToTrackStyle}
                   title="Показать маршрут"><span className="glyphicon glyphicon-resize-full"></span>&nbsp;Маршрут</button>
         {
-         imageUrl ? <img src={config.backend + config.images + imageUrl}
-             style={{ margin: 10, width: 250 }}/> : null
+         imageUrl ?
+           <img src={config.backend + config.images + imageUrl} style={{ margin: 10, width: 250 }}/>
+           : null
          }
         {this.renderAttrs()}
       </Panel>
@@ -102,7 +103,7 @@ class CarInfo extends Component {
     store.setTracking( false );
 
     let track = this.props.car.track;
-    let bounds = L.LatLngBounds(track);
+    let bounds = track;// L.LatLngBounds(track);
   //  let zoom = window.MAP.getBoundsZoom(track, true, [400,50]);
     window.MAP.fitBounds(bounds, {paddingBottomRight: [500,50]});
 

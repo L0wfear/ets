@@ -265,7 +265,7 @@ class Marker {
 
     if (!track || track.length < 2) return;
 
-    ctx.strokeStyle = 'blue';
+    ctx.strokeStyle = '#3C68FA';
     ctx.lineWidth = 3;
     ctx.lineCap = 'round';
 
@@ -274,7 +274,7 @@ class Marker {
     ctx.beginPath();
     ctx.moveTo(first.x, first.y);
 
-    for (let i = 1; i < track.length - 1; i++) {
+    for (let i = 1, till = track.length - 1; i < till; i++) {
       let coords = map.latLngToLayerPoint(track[i]);
       ctx.lineTo(coords.x, coords.y);
     }
@@ -302,7 +302,12 @@ class Marker {
 
     let store = this._store;
 
-    if ( !store.state.isRenderPaused ) this._animation = new CoordsAnimation(this, projectedPoint.x, projectedPoint.y, 500);
+    if ( !store.state.isRenderPaused ) {
+      this._animation = new CoordsAnimation(this, projectedPoint.x, projectedPoint.y, 500);
+    } else {
+      this.x = projectedPoint.x;
+      this.y = projectedPoint.y;
+    }
   }
 
   contains(mousePoint) {

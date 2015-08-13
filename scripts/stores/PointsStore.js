@@ -66,13 +66,25 @@ export default class PointsStore extends Store {
     let points = Object.assign({}, this.state.points);
 
     for (let key in update) {
-      points[key] = Object.assign({}, points[key], update[key]);
+      let pointUpdate = update[key];
 
-      if (!points[key].track) {
-        points[key].track = null;
-      } else {
-        points[key].track.push(points[key].coords);
+      // если информация в обновлении устарела - ничего не делаем
+      if (key in points &&
+        points[key].timestamp > pointUpdate.timestamp) {
+        console.warn( 'got old info for point!');
+        // TODO smartly push old coord to track
+        // points[key].track.push(pointUpdate.coords);
+        continue;
       }
+
+      points[key] = Object.assign({}, points[key], pointUpdate);
+
+      if (!points[key].track ) {
+        points[key].track = [];
+      }
+      // push last point to track
+      points[key].track.push(pointUpdate.coords);
+
 
       // HACK
       if (points[key].speed !== 0 && this.state.points[key] && this.state.points[key].speed === 0) {
@@ -152,7 +164,12 @@ export default class PointsStore extends Store {
     if ( point.track ) {
       point.track.length = 0;
     }
-    point.track = simplify(track, .0001);
+
+    if ( track.length === 0 ){
+      console.warn( 'received null track for some car')
+    } else {
+      point.track = simplify(track, .0001);
+    }
   }
 
   handleLogin(user) {

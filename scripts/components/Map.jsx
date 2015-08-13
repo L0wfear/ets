@@ -3,8 +3,7 @@ import { getStatusById } from '../statuses.js';
 import { getTypeById } from '../types.js';
 import { icons } from '../icons/index.js';
 import Marker from './map/Marker.js';
-//global.L_PREFER_CANVAS = true;
-import L from '../vendor/leaflet';
+import L from '../vendor/leaflet-custom-src.js';
 import ZoomBox from 'leaflet-zoombox/L.Control.ZoomBox.min.js';
 
 
@@ -61,22 +60,30 @@ class Map extends Component {
     // zoombox control
     // hold shift plz
     var control = L.control.zoomBox({
-      modal: true,  // If false (default), it deactivates after each use.
+       modal: false,  // If false (default), it deactivates after each use.
                     // If true, zoomBox control stays active until you click on the control to deactivate.
        position: "topleft",
        className: "zoombox-control"  // Class to use to provide icon instead of Font Awesome
     });
     map.addControl(control);
 
-    let canvas = new L.Canvas(this);
-    canvas.addTo(map);
+    let canvas = new L.Canvas().addTo(map);
     this._canvas = canvas._container;
-
-    //map.addLayer(canvas);
+    this._ctx = canvas._ctx;
 
     canvas.addEventListener('mousemove', this.onMouseMove);
     map.on('click', this.onClick);
     map.on('dragstart', this.onDragStart)
+
+    /**
+     * prevents track from repainting canvas in trackingMode
+     * don't touch ma talala!
+     */
+    map.on('movestart', (ev) => {
+      if (this.props.flux.getStore('points').state.trackingMode) {
+        return false;
+      }
+    })
 
     if (showAttribution) {
 
@@ -99,11 +106,8 @@ class Map extends Component {
 
     window.addEventListener('resize', this.adjustHeight);
     this.updateMarkers(this.props.points);
+    renderLoop.add(this.renderCanvas, this);
 
-    let isRenderPaused = this.props.flux.getStore('points').state.isRenderPaused;
-    if (!isRenderPaused){
-      renderLoop.add(this.renderCanvas, this);
-    }
   }
 
   onDragStart(event){
@@ -120,17 +124,16 @@ class Map extends Component {
 
     let flux = this.props.flux;
     let pointsStore = flux.getStore('points');
-    let isRenderPaused = pointsStore.state.isRenderPaused;
 
-    if ( isRenderPaused ) return;
+    //let isRenderPaused = pointsStore.state.isRenderPaused;
+    //if ( isRenderPaused ) return;
 
     const canvas = this._canvas;
-    let ctx = canvas.getContext('2d');
+    let ctx = this._ctx;
     let map = this._map;
     let selected = pointsStore.getSelectedPoint();
     let markers = this._markers;
     const bounds = map.getBounds();
-
 
     let keys = Object.keys(markers);
 
@@ -141,7 +144,6 @@ class Map extends Component {
 
 
     let optimizedPoints = [];
-
     for ( let i = 0, till = keys.length; i < till; i++){
       let key = keys[i];
       let marker = markers[key];
@@ -152,7 +154,6 @@ class Map extends Component {
     }
 
     const options = { showPlates: this.props.showPlates };
-
     for ( let i = 0, till = optimizedPoints.length; i < till; i++){
       let marker = optimizedPoints[i];
 
@@ -162,8 +163,7 @@ class Map extends Component {
     }
 
 
-    let selectedMarker = selected ? markers[selected.id] : null;
-
+    let selectedMarker = selected ? markers[selected.id] : false;
     if (selectedMarker) {
       selectedMarker.renderTrack(ctx);
       if (pointsStore.state.trackingMode){
@@ -171,7 +171,7 @@ class Map extends Component {
           // смещаем примерно в центр с учетом открытого сайдбара
           // зумлевел кокрастаке можно смотреть по баундам трэка, если он уже загружен
           let _coords = [selectedMarker._coords[0], selectedMarker._coords[1] + 0.004];
-          map.setView(_coords, 16, {animation: true })
+          map.setView(_coords, 16, { animate: true })
         }
       }
     }

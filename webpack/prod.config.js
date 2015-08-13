@@ -2,7 +2,7 @@
 
 var path = require('path');
 var webpack = require('webpack');
-var writeStats = require('./utils/writeStats');
+//var writeStats = require('./utils/writeStats');
 var CleanPlugin = require('clean-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var strip = require('strip-loader');
@@ -11,7 +11,7 @@ var relativeAssetsPath = '../dist';
 var assetsPath = path.join(__dirname, relativeAssetsPath);
 
 module.exports = {
-  //devtool: 'source-map',
+  devtool: 'source-map',
   context: path.resolve(__dirname, '../'),
   entry: {
     'app': './scripts/app.jsx',

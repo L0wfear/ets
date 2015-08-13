@@ -81,7 +81,7 @@ export default class PointsStore extends Store {
       // если информация в обновлении устарела - ничего не делаем
       if (key in points &&
         points[key].timestamp > pointUpdate.timestamp) {
-        console.warn( 'got old info for point!');
+        //console.warn( 'got old info for point!');
         // TODO smartly push old coord to track
         // points[key].track.push(pointUpdate.coords);
         continue;

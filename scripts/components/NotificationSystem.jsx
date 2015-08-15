@@ -37,12 +37,16 @@ export default class AppNotificationSystem extends NotificationSystem {
 
     if (global.NODE_ENV === 'development'){
 
-      console.log = (text) => {
-        const message = Array.prototype.join.call(arguments,',');
-        if ( message !== ''){
+      /*let newConsoleLog = () => {
+        if ( arguments.length > 1 ){
+          console.log( arguments )
+        } else {
+          let message = arguments[0]
           setTimeout(()=>notify( message, 'info'), 0)
         }
       }
+
+      console.log = newConsoleLog;*/
 
       console.warn = (text) => {
         setTimeout(()=> notify( text, 'warning'), 0)

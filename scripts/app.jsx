@@ -26,13 +26,14 @@ import { loadTypes } from './types.js';
 import './vendor/onTabUnfocus.js';
 
 window.addEventListener('blur', (ev) => {
-  let store = flux.getStore('points')
-  store.pauseRendering()
+  //let store = flux.getStore('points')
+  //store.pauseRendering()
 })
 
 window.addEventListener('focus', (ev) => {
-  let store = flux.getStore('points')
-  store.unpauseRendering()
+  //let store = flux.getStore('points')
+  //store.unpauseRendering()
+  window.MAP.invalidateSize();
 })
 
 global.NODE_ENV = process.env.NODE_ENV;

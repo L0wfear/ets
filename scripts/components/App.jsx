@@ -38,9 +38,7 @@ class AppWrapper  {
 
   render() {
     return (
-      <div>
-        <App renderLoop={this.props.renderLoop} flux={this.props.flux}/>
-      </div>
+      <App renderLoop={this.props.renderLoop} flux={this.props.flux}/>
     );
   }
 

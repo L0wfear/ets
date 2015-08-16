@@ -17,10 +17,10 @@ function getUTCUnixTime( time ){
 export function getTrack(carId, from_dt, to_dt ) {
 
   let now = new Date();
-  let start_of_today = new Date(Date.UTC(
+  let start_of_today = new Date(
       now.getFullYear(),
       now.getMonth(),
-      now.getDate())
+      now.getDate()
   );
 
   from_dt = !!from_dt ? from_dt : start_of_today.getTime();

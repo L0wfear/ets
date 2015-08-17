@@ -3,8 +3,46 @@ import { getStatusById } from '../statuses.js';
 import { getTypeById } from '../types.js';
 import { icons } from '../icons/index.js';
 import Marker from './map/Marker.js';
-import L from '../vendor/leaflet-custom-src.js';
-import ZoomBox from 'leaflet-zoombox/L.Control.ZoomBox.min.js';
+import L from '../vendor/leaflet.8.js';
+import 'leaflet-zoombox/L.Control.ZoomBox.min.js';
+import _ from 'lodash';
+
+let SIDEBAR_WIDTH_PX = 500;
+
+L.Map.include({
+
+  /**
+   * prevents track from repainting canvas in trackingMode
+   * don't touch ma talala!
+   */
+
+  panToCenterWithoutAnimation: function(center, store) {
+    const panFn = () => {
+
+      if (!store.state.trackingMode) return;
+
+      let newOrigin = this._getNewPixelOrigin(center);
+      let origin = this.getPixelOrigin();
+      let offset = newOrigin.subtract(origin);
+
+      if ( offset.x === 0 && offset.y === 0 ) return;
+
+      let mapWidth = this.getSize().x;
+
+      // вычисляем смещение с учетом открытого сайдбара
+      offset.x = offset.x + ( mapWidth - (mapWidth  - SIDEBAR_WIDTH_PX ) ) / 2;
+
+      L.Transition = null;
+      // эмулируем события лифлета для правильной отрисовки карты
+      this.fire('movestart');
+      this._rawPanBy(offset); // внутренняя незадокументированная функция
+      this.fire('move');
+      this.fire('moveend',{hard:false});
+    }
+
+    setTimeout( panFn.bind( this ), 150)
+  }
+});
 
 
 class Map extends Component {
@@ -30,7 +68,8 @@ class Map extends Component {
     let el = React.findDOMNode(this);
     let map = this._map = L.map(el, {
       attributionControl: false,
-      preferCanvas:true
+      preferCanvas:true//,
+      //dragging: true
     });
 
     // @TODO remove this
@@ -38,9 +77,14 @@ class Map extends Component {
 
     map.setView(center, zoom);
 
-    let tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      detectRetina: true,   // http://leafletjs.com/reference.html#map-stuff-methods
-    }).addTo(map).bringToBack();
+    let tiles =
+      L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        detectRetina: true,   // http://leafletjs.com/reference.html#map-stuff-methods
+        maxZoom: 16,
+        minZoom: 10
+      })
+        .addTo(map)
+        .bringToBack();
 
     // zoombox control
     // hold shift plz
@@ -52,30 +96,13 @@ class Map extends Component {
     });
     map.addControl(control);
 
-    let canvas = L.canvas().addTo(map);
+    let canvas = L.canvas({pane: 'overlayPane'}).addTo(map);
     this._canvas = canvas._container;
     this._ctx = canvas._ctx;
 
     this._canvas.addEventListener('mousemove', this.onMouseMove);
     map.on('click', this.onClick);
     map.on('dragstart', this.onDragStart)
-
-    /**
-     * prevents track from repainting canvas in trackingMode
-     * don't touch ma talala!
-     */
-    let isTrackingMode = this.props.flux.getStore('points').state.trackingMode
-    map.on('movestart', (ev) => {
-      if (isTrackingMode) {
-        //return false;
-        L.DomEvent.preventDefault( ev )
-      }
-    }).on('moveend', (ev) => {
-      if (isTrackingMode){
-        L.DomEvent.preventDefault( ev )
-      }
-    })
-
 
     if (showAttribution) {
 
@@ -94,7 +121,22 @@ class Map extends Component {
     }
 
     window.addEventListener('resize', this.adjustHeight);
+
+    /* TODO optimize rendering via throttle or debounce
+       based on some conditions like trackingMode
+
+    let renderFn = this.renderCanvas.bind(this);
+    renderLoop.add(_.throttle(renderFn, 400), this); */
+
     renderLoop.add(this.renderCanvas, this);
+
+    // убираем тайтлы у подсказок
+    const classesToRemove = ['leaflet-control-zoom-in', 'leaflet-control-zoom-out', 'leaflet-zoom-box-control'];
+    const removeTitle = (className)=> {
+      let el = document.getElementsByClassName(className)[0];
+      el.setAttribute('title','')
+    }
+    setTimeout(()=>classesToRemove.forEach(removeTitle),0)
 
   }
 
@@ -131,8 +173,8 @@ class Map extends Component {
     let flux = this.props.flux;
     let pointsStore = flux.getStore('points');
 
-    //let isRenderPaused = pointsStore.state.isRenderPaused;
-    //if ( isRenderPaused ) return;
+    let isRenderPaused = pointsStore.state.isRenderPaused;
+    if ( isRenderPaused ) return;
 
     const canvas = this._canvas;
     let ctx = this._ctx;
@@ -149,23 +191,30 @@ class Map extends Component {
     let optimizedPoints = this.getPointsInBounds(bounds);
 
     const options = { showPlates: this.props.showPlates };
+    let rendered = 0;
     for ( let i = 0, till = optimizedPoints.length; i < till; i++){
       let marker = optimizedPoints[i];
 
-      if ( marker._point !== selected) {
-        marker.render( ctx, false, time, options)
+      if ( selected === null || marker._point.id !== selected.id) {
+        marker.render( ctx, false, time, options);
+        rendered++;
       }
     }
 
     let selectedMarker = selected ? markers[selected.id] : false;
     if (selectedMarker) {
-      selectedMarker.renderTrack(ctx);
+
+      // if track loaded before now
+     // if (selectedMarker._point.TRACK_NEEDS_UPDATE ){
+        selectedMarker.renderTrack(ctx);
+      //}
       if (pointsStore.state.trackingMode){
         if ( selected.status === 1 ) {
-          // смещаем примерно в центр с учетом открытого сайдбара
           // зумлевел кокрастаке можно смотреть по баундам трэка, если он уже загружен
-          let _coords = [selectedMarker._coords[0], selectedMarker._coords[1] + 0.004];
-          map.setView(_coords, 16, { animate: true, reset: false })
+          if ( map.getZoom() !== 15 ) {
+            map.setZoom(15);
+          }
+          map.panToCenterWithoutAnimation(selectedMarker._coords, pointsStore)
         }
       }
     }

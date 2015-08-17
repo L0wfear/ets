@@ -48,9 +48,9 @@ export default class AppNotificationSystem extends NotificationSystem {
 
       console.log = newConsoleLog;*/
 
-      console.warn = (text) => {
+     /* console.warn = (text) => {
         setTimeout(()=> notify( text, 'warning'), 0)
-      }
+      }*/
     }
   }
 

@@ -1,5 +1,3 @@
-import fs from 'fs';
-
 var DOMURL = window.URL || window.webkitURL || window;
 var icons = {};
 

@@ -1,14 +1,13 @@
-import { getStatusById } from '../../statuses.js';
+import { default as statuses, getStatusById } from '../../statuses.js';
 import { getTypeById } from '../../types.js';
 import { getIcon } from '../../icons/index.js';
+
+const IS_RETINA = window.devicePixelRatio >= 2;
 
 const SMALL_RADIUS = 5;
 const LARGE_RADIUS = 12;
 const LARGE_RADIUS_SELECTED = 14;
 const ZOOM_THRESHOLD = 14;
-
-
-var _SMALL_RADIUS = SMALL_RADIUS;
 
 function normalizeAngle(angle) {
 
@@ -18,31 +17,46 @@ function normalizeAngle(angle) {
   return angle;
 }
 
-const smallCache = {};
 
-function getSmallImage(statusId) {
-  var cached = smallCache[statusId];
+/**
+ * TODO MOVE SMALLCACHE TO SEPARATE FILE
+ */
+const smallCache = {};
+global.SMALLCACHE = smallCache;
+
+function getSmallImage(statusId, zoom = 1) {
+
+  let cached = true;
+
+  if ( smallCache[statusId] === undefined ){
+    smallCache[statusId] = [];
+    cached = false
+  }
+
+  if ( smallCache[statusId][zoom] === undefined) {
+    cached = false
+  }
 
   if (!cached) {
-    var SMALL_RADIUS = _SMALL_RADIUS * 2; // FIXME detect retina statically
-
-    var color = getStatusById(statusId).color;
-    var canvas = document.createElement('canvas');
-    canvas.width = canvas.height = 2 * SMALL_RADIUS;
-    var ctx = canvas.getContext('2d');
+    let radius = SMALL_RADIUS * zoom * (IS_RETINA ? 2 : 1);
+    let color = getStatusById(statusId).color;
+    let canvas = document.createElement('canvas');
+    canvas.width = canvas.height = 2 * radius;
+    let ctx = canvas.getContext('2d');
     ctx.fillStyle = color;
     ctx.strokeStyle = 'white';
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.arc(SMALL_RADIUS, SMALL_RADIUS, SMALL_RADIUS - 2,  0, 2 * Math.PI);
+    ctx.arc(radius, radius, radius - 2 * zoom,  0, 2 * Math.PI);
     ctx.closePath();
     ctx.fill();
     ctx.stroke();
 
-    cached = smallCache[statusId] = canvas;
+    smallCache[statusId][zoom] = canvas;
+    return canvas;
+  } else {
+    return smallCache[statusId][zoom]
   }
-
-  return cached;
 }
 
 class SimpleAnimation {
@@ -154,6 +168,12 @@ class Marker {
     return coords;
   }
 
+  getZoomCoef(map, threshold = ZOOM_THRESHOLD){
+    let zoom = map.getZoom();
+    let coef = 6 - (threshold - zoom);
+    return coef > 0 ? coef / 1.7 : 1;
+  }
+
   render(context, selected, time, options) {
     let store = this._store;
     let point = this._point;
@@ -174,23 +194,16 @@ class Marker {
     }
   }
 
-  _renderSmall(context) {
+  _renderSmall(context, options) {
     let map = this._map;
     let point = this._point;
-    let origin = map.getPixelOrigin();
-
     let coords = this._getCoords();
+    let zoom = this.getZoomCoef(map);
+    let radius = SMALL_RADIUS * zoom;
 
-    // SSD-21
-    // если машина неактивна - рисуем серым
-    // TODO убрать этот хак
-    if (point['connection_status'] === 0 ){
-      point.status = 4;
-    }
+    let image = getSmallImage(point.status, zoom);
 
-    let image = getSmallImage(point.status);
-
-    context.drawImage(image, coords.x - SMALL_RADIUS/2, coords.y - SMALL_RADIUS / 2, SMALL_RADIUS * 2, SMALL_RADIUS * 2);
+    context.drawImage(image, coords.x - radius/2, coords.y - radius / 2, radius * 2, radius * 2);
   }
 
   _renderLarge(context, selected, options) {
@@ -236,7 +249,7 @@ class Marker {
 
     var radius = LARGE_RADIUS;
     if (selected) {
-      radius = LARGE_RADIUS_SELECTED;
+      radius = radius * 1.15
     }
 
     context.fillStyle = color;
@@ -255,13 +268,18 @@ class Marker {
       context.lineWidth = 3;
       context.stroke();
     }
+
     context.drawImage(getIcon(icon).canvas, -radius + coords.x, -radius + coords.y, 2 * radius, 2 * radius);
   }
 
   renderTrack(ctx) {
     let point = this._point;
     let track = point.track;
+    // TODO блокировать отрисовку до следующего обновления трэка
+    //if ( point.LAST_RENDER_TRACK_LENGTH && point.LAST_RENDER_TRACK_LENGTH === track.length ) return;
+
     let map = this._map;
+    //console.log( 'rendering track ')
 
     if (!track || track.length < 2) return;
 
@@ -282,7 +300,7 @@ class Marker {
     // если машина в движении - дорисовываем еще одну точку, чтобы трэк не обрывался
     // получается некрасиво в том случае, если обновление происходит редко
     // и машина резко перемещается на другую точку
-    if ( point.status === 1 ){
+    if ( point.status === 1 && point.TRACK_NEEDS_UPDATE){
       let coords = map.latLngToLayerPoint(point.coords);
       ctx.lineTo(coords.x, coords.y);
     }

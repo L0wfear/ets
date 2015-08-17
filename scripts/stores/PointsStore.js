@@ -10,7 +10,7 @@ import simplify from '../vendor/simplify.js';
 export default class PointsStore extends Store {
 
   constructor(flux) {
-    super(flux);
+    super();
 
     const pointsActions = this._pointsActions = flux.getActions('points');
     const loginActions = flux.getActions('login');
@@ -52,10 +52,12 @@ export default class PointsStore extends Store {
       isRenderPaused: false
     };
 
-
+   /* this.addListener('change', function(){
+      console.log('I have changed', this.state);
+    });
+*/
     //let ws = new WebSocket(config.ws);
     let ws = new ReconnectingWebSocket(config.ws, null);
-    //global.WS = ws;
 
     ws.onmessage = ({ data }) => {
       this.handleUpdatePoints(JSON.parse(data));
@@ -92,11 +94,13 @@ export default class PointsStore extends Store {
       if (!points[key].track ) {
         points[key].track = null;
       } else {
-        // push last point to track
-        points[key].track.push(pointUpdate.coords);
+        if (points[key].TRACK_NEEDS_UPDATE) {
+          points[key].track.push(pointUpdate.coords);
+        }
       }
 
       // HACK
+      // whatever...
       if (points[key].speed !== 0 && this.state.points[key] && this.state.points[key].speed === 0) {
         points[key].coords = this.state.points[key].coords;
       }
@@ -132,8 +136,6 @@ export default class PointsStore extends Store {
       }
     }
 
-    byStatus[4] = byConnectionStatus[0];
-
     return { byStatus, byConnectionStatus };
   }
 
@@ -149,27 +151,33 @@ export default class PointsStore extends Store {
     this.setState(state);
   }
 
-  handleUpdateTrack( from, to){
+  handleUpdateTrack(
+    from_dt = new Date(
+      new Date().getFullYear(),
+      new Date().getMonth(),
+      new Date().getDate()
+    ).getTime(),
+     to_dt = new Date().getTime() ){
+
     let id = this.state.selected.id;
 
-    getTrack(id, from, to )
-      .then(track => this._pointsActions.receiveTrack(id, track))
+    getTrack(id, from_dt, to_dt )
+      .then(track => this.handleReceiveTrack([id, track, to_dt]))
   }
 
   handleSelectPoint(selected) {
-    if (selected && ! selected.car)
-      return;
+
+    if (!!selected === false) return;
+    if (selected && ! selected.car) return;
 
     if (this.state.selected && this.state.selected.track) this.state.selected.track.length = 0;
 
-    if (selected && !selected.track) {
-      getTrack(selected.id).then(track => this._pointsActions.receiveTrack(selected.id, track));
-    }
-
+    this.state.selected = selected;
+    this.handleUpdateTrack();
     this.setState({ selected, trackingMode: false});
   }
 
-  handleReceiveTrack([key, track]) {
+  handleReceiveTrack([key, track, to_dt]) {
     let point = this.state.points[key];
     if ( point.track ) {
       point.track.length = 0;
@@ -178,7 +186,11 @@ export default class PointsStore extends Store {
     if ( track.length === 0 ){
       console.warn( 'received null track for some car')
     } else {
-      point.track = simplify(track, .0001);
+      console.warn('track received for some car')
+      point.track = simplify(track, .00001);
+
+      //дорисовываем трэк, только если дата "ДО" в будущем или сейчас
+      point.TRACK_NEEDS_UPDATE = to_dt >= global.APPSTART_TIME;
     }
   }
 
@@ -296,6 +308,7 @@ export default class PointsStore extends Store {
   }
 
   isRenderPaused(){
+    return false;
     return this.state.isRenderPaused;
   }
 

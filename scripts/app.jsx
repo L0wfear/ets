@@ -36,6 +36,7 @@ window.addEventListener('focus', (ev) => {
   window.MAP.invalidateSize();
 })
 
+global.APPSTART_TIME = Date.now();
 global.NODE_ENV = process.env.NODE_ENV;
 
 if (global.NODE_ENV !== 'production') {

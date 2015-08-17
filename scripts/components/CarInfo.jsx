@@ -8,7 +8,7 @@ import { getCustomerById } from '../customers.js';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 //import FuelChart from './FuelChart.js';
 import config from '../config.js';
-import { Sparklines, SparklinesBars, SparklinesLine, SparklinesNormalBand, SparklinesReferenceLine, SparklinesSpots } from 'sparklines';
+import { Sparklines, SparklinesBars, SparklinesLine, SparklinesNormalBand, SparklinesReferenceLine, SparklinesSpots } from './Sparklines.js';
 
 
 class CarInfo extends Component {
@@ -207,23 +207,18 @@ class CarInfo extends Component {
 
   reloadTrack() {
 
-    let makeUTCDate = (date) => new Date(Date.UTC(
-      date.getFullYear(), date.getMonth(), date.getDate(), date.getUTCHours(), date.getUTCMinutes()));
-
     let refs = this.refs;
-    let from = makeUTCDate(refs.from_dt.state.value);
-    let to = makeUTCDate(refs.to_dt.state.value);
+    let from = refs.from_dt.state.value;
+    let to = refs.to_dt.state.value;
 
-    let pointActions = this.props.flux.getActions('points');
+    let store = this.props.flux.getStore('points');
 
-    pointActions.updateTrack(from, to);
-
-    // для отрисовки кнопки "маршрут"
-    // @TODO remove this
-    //this.forceUpdate()
-
+    store.handleUpdateTrack(from, to );
     this.fetchFuelData(from, to);
 
+    // для перерисовки кнопки "маршрут"
+    // @TODO remove this
+    this.forceUpdate()
   }
 
   componentWillReceiveProps(nextProps) {

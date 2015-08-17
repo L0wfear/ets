@@ -341,12 +341,13 @@ class Marker {
     let coords = map.latLngToLayerPoint(this._coords);
     var zoom = map.getZoom();
 
-    var radius;
+    let _zoom  = this.getZoomCoef(map )
+    let radius ;
 
     if (zoom < ZOOM_THRESHOLD) {
-      radius = SMALL_RADIUS;
+      radius = SMALL_RADIUS * _zoom ;
     } else {
-      radius = LARGE_RADIUS;
+      radius = LARGE_RADIUS ;
     }
 
     var dx = coords.x - mousePoint.x;

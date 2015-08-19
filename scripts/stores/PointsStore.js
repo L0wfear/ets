@@ -186,8 +186,9 @@ export default class PointsStore extends Store {
     if ( track.length === 0 ){
       console.warn( 'received null track for some car')
     } else {
-      console.warn('track received for some car')
-      point.track = simplify(track, .00001);
+      point.track = track//simplify(track, .00001);
+
+      global.NOTIFICATION_SYSTEM.notify('get track of '+track.length + ' points', 'info')
 
       //дорисовываем трэк, только если дата "ДО" в будущем или сейчас
       point.TRACK_NEEDS_UPDATE = to_dt >= global.APPSTART_TIME;

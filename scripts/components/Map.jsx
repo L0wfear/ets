@@ -212,7 +212,7 @@ class Map extends Component {
         if ( selected.status === 1 ) {
           // зумлевел кокрастаке можно смотреть по баундам трэка, если он уже загружен
           if ( map.getZoom() !== 15 ) {
-            map.setZoom(15);
+            map.setView(selectedMarker._coords, 15, false);
           }
           map.panToCenterWithoutAnimation(selectedMarker._coords, pointsStore)
         }

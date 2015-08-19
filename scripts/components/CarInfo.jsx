@@ -78,8 +78,7 @@ class CarInfo extends Component {
 
     return (
       <Panel title={title}>
-        { car.status !== 4
-          &&
+        {
           <button className={trackBtnClass}
                   onClick={this.toggleCarTracking.bind(this)}
                   style={trackBtnStyle}
@@ -230,10 +229,10 @@ class CarInfo extends Component {
   fetchFuelData(from_dt, to_dt ) {
 
     let now = new Date();
-    let start_of_today = new Date(Date.UTC(
+    let start_of_today = new Date(
         now.getFullYear(),
         now.getMonth(),
-        now.getDate())
+        now.getDate()
     );
 
     from_dt = !!from_dt ? from_dt : start_of_today.getTime();

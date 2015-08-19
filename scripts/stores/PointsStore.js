@@ -182,7 +182,9 @@ export default class PointsStore extends Store {
   }
 
   handleReceiveTrack([key, track, to_dt]) {
-    let point = this.state.points[key];
+    let points = this.state.points;
+    let point = points[key];
+
     if ( point.track ) {
       point.track.length = 0;
     }
@@ -190,12 +192,11 @@ export default class PointsStore extends Store {
     if ( track.length === 0 ){
       console.warn( 'received null track for some car')
     } else {
-      point.track = track//simplify(track, .00001);
-
+      point.track = track  //simplify(track, .00001);
       global.NOTIFICATION_SYSTEM.notify('get track of '+track.length + ' points', 'info')
-
       //дорисовываем трэк, только если дата "ДО" в будущем или сейчас
       point.TRACK_NEEDS_UPDATE = to_dt >= global.APPSTART_TIME;
+      this.setState({ selected: point })
     }
   }
 

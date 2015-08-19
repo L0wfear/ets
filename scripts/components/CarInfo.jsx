@@ -226,20 +226,16 @@ class CarInfo extends Component {
     }
   }
 
-  fetchFuelData(from_dt, to_dt ) {
+  fetchFuelData(
+    from_dt = new Date(
+      new Date().getFullYear(),
+      new Date().getMonth(),
+      new Date().getDate()
+    ).getTime(),
+    to_dt = new Date().getTime() ) {
 
-    let now = new Date();
-    let start_of_today = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate()
-    );
-
-    from_dt = !!from_dt ? from_dt : start_of_today.getTime();
-    to_dt = !!to_dt ? to_dt : now.getTime();
-
-    from_dt = Math.floor( from_dt / 1000)
-    to_dt = Math.floor( to_dt / 1000)
+    from_dt = Math.floor( from_dt / 1000);
+    to_dt = Math.floor( to_dt / 1000);
 
     fetch( config.backend + '/fuel/'+this.props.car.id+'/?from_dt='+from_dt+'&to_dt='+to_dt)
       .then( r => r.json())

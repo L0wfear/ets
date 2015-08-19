@@ -150,7 +150,7 @@ class Map extends Component {
 
   }
 
-  getPointsInBounds(bounds){
+  getMarkersInBounds(bounds){
 
     let points = [];
     let markers = this._markers;
@@ -188,7 +188,7 @@ class Map extends Component {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.restore();
 
-    let optimizedPoints = this.getPointsInBounds(bounds);
+    let optimizedPoints = this.getMarkersInBounds(bounds);
 
     const options = { showPlates: this.props.showPlates };
     let rendered = 0;
@@ -290,7 +290,7 @@ class Map extends Component {
     let point = map.mouseEventToLayerPoint(e);
 
     let bounds = map.getBounds();
-    let points = this.getPointsInBounds(bounds);
+    let points = this.getMarkersInBounds(bounds);
     let keys = Object.keys(points);
 
     let interactive = false;
@@ -315,7 +315,8 @@ class Map extends Component {
 
   onClick(e) {
     let map = this._map;
-    let markers = this._markers;
+    let bounds = map.getBounds();
+    let markers = this.getMarkersInBounds(bounds);
     let point = e.layerPoint;
 
     let keys = Object.keys(markers);

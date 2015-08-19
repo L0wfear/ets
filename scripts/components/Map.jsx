@@ -40,7 +40,7 @@ L.Map.include({
       this.fire('moveend',{hard:false});
     }
 
-    setTimeout( panFn.bind( this ), 150)
+    setTimeout( panFn.bind( this ), 50)
   }
 });
 
@@ -81,7 +81,7 @@ class Map extends Component {
       L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         detectRetina: true,   // http://leafletjs.com/reference.html#map-stuff-methods
         maxZoom: 16,
-        minZoom: 10
+        minZoom: 8
       })
         .addTo(map)
         .bringToBack();
@@ -203,33 +203,25 @@ class Map extends Component {
 
     let selectedMarker = selected ? markers[selected.id] : false;
     if (selectedMarker) {
+      selectedMarker.renderTrack(ctx);
+      selectedMarker.render(ctx, true, time, options);
 
-      // if track loaded before now
-     // if (selectedMarker._point.TRACK_NEEDS_UPDATE ){
-        selectedMarker.renderTrack(ctx);
-      //}
       if (pointsStore.state.trackingMode){
-        this.disableInteractions()
-        //if ( selected.status === 1 ) {
-          // зумлевел кокрастаке можно смотреть по баундам трэка, если он уже загружен
-          if ( map.getZoom() !== 15 ) {
-            map.setView(selectedMarker._coords, 15, false);
-          }
-          map.panToCenterWithoutAnimation(selectedMarker._coords, pointsStore)
+        this.disableInteractions();
+        if ( map.getZoom() !== 15 ) {
+          map.setView(selectedMarker._coords, 15, false);
         }
-      //}
+        map.panToCenterWithoutAnimation(selectedMarker._coords, pointsStore)
+      }
     } else {
       this.enableInteractions()
-    }
-
-    if (selectedMarker) {
-      selectedMarker.render(ctx, true, time, options);
     }
   }
 
   disableInteractions(){
+    return;
     let map = this._map;
-    map.zoomControl.disable()
+    map.zoomControl.disable();
     map.touchZoom.disable();
     map.scrollWheelZoom.disable();
     map.boxZoom.disable();
@@ -239,7 +231,7 @@ class Map extends Component {
 
   enableInteractions(){
     let map = this._map;
-
+    map.zoomControl.enable();
     map.dragging.enable();
     map.touchZoom.enable();
     map.doubleClickZoom.enable();
@@ -355,12 +347,9 @@ class Map extends Component {
       }
     }
 
-    this.onPointClick(selected && selected._point);
-  }
-
-  onPointClick(p) {
     let flux = this.props.flux;
-    flux.getActions('points').selectPoint(p);
+    let store = flux.getStore('points');
+    store.handleSelectPoint( selected && selected._point)
   }
 
 }

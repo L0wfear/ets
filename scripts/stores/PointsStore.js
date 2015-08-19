@@ -167,7 +167,11 @@ export default class PointsStore extends Store {
 
   handleSelectPoint(selected) {
 
-    if (!!selected === false) return;
+    if (!!selected === false) {
+      this.setState({selected: false});
+      return;
+    }
+
     if (selected && ! selected.car) return;
 
     if (this.state.selected && this.state.selected.track) this.state.selected.track.length = 0;

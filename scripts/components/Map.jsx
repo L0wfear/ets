@@ -209,14 +209,17 @@ class Map extends Component {
         selectedMarker.renderTrack(ctx);
       //}
       if (pointsStore.state.trackingMode){
-        if ( selected.status === 1 ) {
+        this.disableInteractions()
+        //if ( selected.status === 1 ) {
           // зумлевел кокрастаке можно смотреть по баундам трэка, если он уже загружен
           if ( map.getZoom() !== 15 ) {
             map.setView(selectedMarker._coords, 15, false);
           }
           map.panToCenterWithoutAnimation(selectedMarker._coords, pointsStore)
         }
-      }
+      //}
+    } else {
+      this.enableInteractions()
     }
 
     if (selectedMarker) {
@@ -224,6 +227,27 @@ class Map extends Component {
     }
   }
 
+  disableInteractions(){
+    let map = this._map;
+    map.zoomControl.disable()
+    map.touchZoom.disable();
+    map.scrollWheelZoom.disable();
+    map.boxZoom.disable();
+    map.keyboard.disable();
+    if (map.tap) map.tap.disable();
+  }
+
+  enableInteractions(){
+    let map = this._map;
+
+    map.dragging.enable();
+    map.touchZoom.enable();
+    map.doubleClickZoom.enable();
+    map.scrollWheelZoom.enable();
+    map.boxZoom.enable();
+    map.keyboard.enable();
+    if (map.tap) map.tap.enable();
+  }
 
   componentWillReceiveProps(nextProps) {
     this.updateMarkers(nextProps.points);

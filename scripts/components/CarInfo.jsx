@@ -16,7 +16,8 @@ class CarInfo extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      imageUrl: null
+      imageUrl: null,
+      tillNow: true
     };
   }
 
@@ -119,15 +120,28 @@ class CarInfo extends Component {
     store.setTracking( !isTrackingMode );
   }
 
+  onTrackingDatesChange(){
+    this.setState({tillNow: !this.state.tillNow});
+
+    let flag = this.state.tillNow;
+    let to = this.refs.to_dt;
+    let from = this.refs.from_dt;
+
+    if ( flag ){
+      to.setState({value: new Date()});
+      from.setState({value: this.getStartOfToday()});
+    } else {
+      to.setState({value: new Date()})
+    }
+
+    this.reloadTrack();
+  }
+
   renderData() {
 
     // TODO refactor
     let now = new Date();
-    let start_of_today = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate()
-    );
+    let start_of_today = this.getStartOfToday();
 
     let DATE_FORMAT = "yyyy-MM-dd HH:mm";
     let TIME_FORMAT = "HH:mm";
@@ -144,11 +158,43 @@ class CarInfo extends Component {
       marginTop: -3
     };
 
+    let tillNow = this.state.tillNow;
+    let tillNowStyle = {
+      position:'absolute',
+      top:-26,
+      right:20,
+      fontWeight:200
+    }
+
+    let toClassname = 'chart-datepicker ' + ( tillNow ? 'disabled' : '');
+
     return (
       <div>
         <Panel title="Трекинг" className="chart-datepickers-wrap">
-          <DateTimePicker format={DATE_FORMAT} timeFormat={TIME_FORMAT} className="chart-datepicker" defaultValue={start_of_today} ref="from_dt"/> – <DateTimePicker  timeFormat={TIME_FORMAT} format={DATE_FORMAT} ref="to_dt" className="chart-datepicker" defaultValue={now}/>
-          &nbsp;<button title="Перезагрузить данные" style={reloadBtnStyle} className="btn btn-default btn-sm" type="button" onClick={this.reloadTrack.bind(this)}><span className="glyphicon glyphicon-repeat"></span></button>
+          <DateTimePicker format={DATE_FORMAT}
+                          timeFormat={TIME_FORMAT}
+                          className="chart-datepicker"
+                          disabled={tillNow}
+                          defaultValue={start_of_today}
+                          ref="from_dt"/> –&nbsp;
+           <label style={tillNowStyle}><input type="checkbox" checked={tillNow} ref="tillNow" onChange={this.onTrackingDatesChange.bind(this)}/> За сегодня</label>
+           <DateTimePicker timeFormat={TIME_FORMAT}
+                            format={DATE_FORMAT}
+                            ref="to_dt"
+                            className={toClassname}
+                            disabled={tillNow}
+                            defaultValue={now}
+                           readonly={tillNow}
+             />
+          <button title="Перезагрузить данные"
+                  style={reloadBtnStyle}
+                  className="btn btn-default btn-sm"
+                  type="button"
+                  onClick={this.reloadTrack.bind(this)}
+                  disabled={tillNow}>
+            <span className="glyphicon glyphicon-repeat"></span>
+          </button>
+
         </Panel>
         {this.renderFuelData(_f, _t)}
       </div>
@@ -210,6 +256,11 @@ class CarInfo extends Component {
     let from = refs.from_dt.state.value;
     let to = refs.to_dt.state.value;
 
+    if ( to - from > 24*60*60*1000) {
+      global.NOTIFICATION_SYSTEM.notify('Период запроса трэка не может превышать 24 часа', 'warning')
+      return;
+    }
+
     let store = this.props.flux.getStore('points');
 
     store.handleUpdateTrack(from, to );
@@ -222,16 +273,24 @@ class CarInfo extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.car && nextProps.car !== this.props.car) {
-      this.fetchImage();
+      //this.fetchImage();
     }
   }
 
+  getStartOfToday(){
+
+    let date = new Date();
+    let today = new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate()
+      )
+
+    return today
+  }
+
   fetchFuelData(
-    from_dt = new Date(
-      new Date().getFullYear(),
-      new Date().getMonth(),
-      new Date().getDate()
-    ).getTime(),
+    from_dt = this.getStartOfToday(),
     to_dt = new Date().getTime() ) {
 
     from_dt = Math.floor( from_dt / 1000);

@@ -209,7 +209,11 @@ class Map extends Component {
       if (pointsStore.state.trackingMode){
         this.disableInteractions();
         if ( map.getZoom() !== 15 ) {
-          map.setView(selectedMarker._coords, 15, false);
+          map.fitBounds([selectedMarker._coords], {
+            paddingBottomRight: [500,50],
+            paddingTopLeft: [50,50],
+            animate: true
+          });
         }
         map.panToCenterWithoutAnimation(selectedMarker._coords, pointsStore)
       }

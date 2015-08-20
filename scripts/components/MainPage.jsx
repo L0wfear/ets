@@ -58,7 +58,7 @@ class MainPage extends Component {
           })
         }}>
           <Map center={MOSCOW_COORDS}
-               zoom={8}
+               zoom={9}
                showAttribution={true}
                renderLoop={this.props.renderLoop}
                showPlates={this.state.showPlates}/>

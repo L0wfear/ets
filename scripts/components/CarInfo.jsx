@@ -131,10 +131,11 @@ class CarInfo extends Component {
       to.setState({value: new Date()});
       from.setState({value: this.getStartOfToday()});
     } else {
+      from.setState({value: this.getStartOfToday()})
       to.setState({value: new Date()})
     }
 
-    this.reloadTrack();
+    this.reloadTrack()
   }
 
   renderData() {
@@ -167,6 +168,10 @@ class CarInfo extends Component {
     }
 
     let toClassname = 'chart-datepicker ' + ( tillNow ? 'disabled' : '');
+
+    if ( this.state.tillNow && !!this.refs.to_dt){
+      setTimeout(()=>this.refs.to_dt.setState({value: now }), 0)
+    }
 
     return (
       <div>

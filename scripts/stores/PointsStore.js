@@ -150,9 +150,9 @@ export default class PointsStore extends Store {
     let filter = Object.assign({}, this.state.filter, update);
     let selected = this.state.selected;
 
-    if (selected && !this._isPointVisible(selected, filter)) {
+   /* if (selected && !this._isPointVisible(selected, filter)) {
       selected = null;
-    }
+    }*/
 
     let state = Object.assign( {}, {filter, selected}, this.countDimensions());
     this.setState(state);
@@ -258,6 +258,9 @@ export default class PointsStore extends Store {
       return false;
 
     if (!filter) return visible;
+
+    // return true for selected point anyway
+    if ( this.state.selected !== null && point.id === this.state.selected.id ) return true ;
 
     if (filter.status) {
       visible = visible && filter.status.indexOf(point.status) !== -1;

@@ -24,6 +24,7 @@ class CarInfo extends Component {
   componentDidMount() {
     if (this.props.car && !this.state.imageUrl) {
       this.fetchImage();
+      this.loadTrack();
       this.fetchFuelData();
     }
   }
@@ -121,21 +122,22 @@ class CarInfo extends Component {
   }
 
   onTrackingDatesChange(){
-    this.setState({tillNow: !this.state.tillNow});
-
     let flag = this.state.tillNow;
-    let to = this.refs.to_dt;
-    let from = this.refs.from_dt;
 
-    if ( flag ){
-      to.setState({value: new Date()});
+    this.setState({tillNow: !flag}, ()=> {
+
+      let to = this.refs.to_dt;
+      let from = this.refs.from_dt;
+      let store = this.props.flux.getStore('points');
+
+      store.toggleSelectedPointTrackUpdating(this.state.tillNow)
+
+      // keeping dates sync
       from.setState({value: this.getStartOfToday()});
-    } else {
-      from.setState({value: this.getStartOfToday()})
-      to.setState({value: new Date()})
-    }
+      to.setState({value: new Date()});
 
-    this.reloadTrack()
+      this.loadTrack()
+    });
   }
 
   renderData() {
@@ -195,7 +197,7 @@ class CarInfo extends Component {
                   style={reloadBtnStyle}
                   className="btn btn-default btn-sm"
                   type="button"
-                  onClick={this.reloadTrack.bind(this)}
+                  onClick={this.loadTrack.bind(this)}
                   disabled={tillNow}>
             <span className="glyphicon glyphicon-repeat"></span>
           </button>
@@ -255,11 +257,16 @@ class CarInfo extends Component {
     )
   }
 
-  reloadTrack() {
+  fetchPointData(){
+    this.loadTrack()
+    this.fetchFuelData()
+  }
+
+  loadTrack() {
 
     let refs = this.refs;
     let from = refs.from_dt.state.value;
-    let to = refs.to_dt.state.value;
+    let to = this.state.tillNow ? Date.now() : refs.to_dt.state.value;
 
     if ( to - from > 24*60*60*1000) {
       global.NOTIFICATION_SYSTEM.notify('Период запроса трэка не может превышать 24 часа', 'warning')
@@ -267,13 +274,8 @@ class CarInfo extends Component {
     }
 
     let store = this.props.flux.getStore('points');
-
     store.handleUpdateTrack(from, to );
     this.fetchFuelData(from, to);
-
-    // для перерисовки кнопки "маршрут"
-    // @TODO remove this
-    this.forceUpdate()
   }
 
   componentWillReceiveProps(nextProps) {

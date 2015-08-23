@@ -17,10 +17,10 @@ export default class Sidebar extends Component {
     let props = this.props;
 
     if ( props.selected ){
-      return <div key={props.selected.id} className="dashboard-sidebar" style={{ zIndex: 100 }}>
+      return <div key={this.props.selected.id} className="dashboard-sidebar" style={{ zIndex: 100 }}>
         <div style={{ height: "100%", overflow: "auto" }}>
           <span style={btnCloseStyle} onClick={this.close.bind(this)}>×</span>
-          <CarInfo car={props.selected} flux={props.flux}/>
+          <CarInfo car={this.props.selected} flux={this.props.flux}/>
         </div>
       </div>
     } else {

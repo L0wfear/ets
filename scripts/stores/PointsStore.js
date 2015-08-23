@@ -76,6 +76,7 @@ export default class PointsStore extends Store {
   handleUpdatePoints(update) {
 
     let points = Object.assign({}, this.state.points);
+    let selected = this.state.selected;
 
     for (let key in update) {
       let pointUpdate = update[key];
@@ -91,11 +92,17 @@ export default class PointsStore extends Store {
 
       points[key] = Object.assign({}, points[key], pointUpdate);
 
-      if (!points[key].track ) {
-        points[key].track = null;
+      if ( !points[key].track ){
+        points[key].track = null
       } else {
-        if (points[key].TRACK_NEEDS_UPDATE) {
-          points[key].track.push(pointUpdate.coords);
+        if ( !!selected && selected.id === points[key].id ){
+
+          if (points[key].TRACK_NEEDS_UPDATE) {
+            console.warn('continuisly updating track ')
+            points[key].track.push(pointUpdate.coords);
+          } else {
+            console.warn('not continuisly updating track ')
+          }
         }
       }
 
@@ -176,14 +183,24 @@ export default class PointsStore extends Store {
 
     if (this.state.selected && this.state.selected.track) this.state.selected.track.length = 0;
 
-    this.state.selected = selected;
-    this.handleUpdateTrack();
+    selected.TRACK_NEEDS_UPDATE = true; //by default - set flag to true
+
     this.setState({ selected, trackingMode: false});
+  }
+
+  toggleSelectedPointTrackUpdating( flag ){
+    let point = this.state.selected;
+    point.TRACK_NEEDS_UPDATE = flag;
+    this.setState({selected: point})
   }
 
   handleReceiveTrack([key, track, to_dt]) {
     let points = this.state.points;
     let point = points[key];
+    let now = new Date();
+    let dateToCheck = new Date(
+      now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), 0
+    );
 
     if ( point.track ) {
       point.track.length = 0;
@@ -192,10 +209,10 @@ export default class PointsStore extends Store {
     if ( track.length === 0 ){
       console.warn( 'received null track for some car')
     } else {
-      point.track = track  //simplify(track, .00001);
-     // global.NOTIFICATION_SYSTEM.notify('get track of '+track.length + ' points (' +  to_dt + ')', 'info')
-      //дорисовываем трэк, только если дата "ДО" в будущем или сейчас
-      point.TRACK_NEEDS_UPDATE = to_dt >= global.APPSTART_TIME;
+      point.track = track;  //simplify(track, .00001);
+      if ( point.id === this.state.selected.id ){
+        point.TRACK_NEEDS_UPDATE = this.state.selected.TRACK_NEEDS_UPDATE;
+      }
       this.setState({ selected: point })
     }
   }

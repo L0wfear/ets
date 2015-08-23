@@ -24,13 +24,12 @@ L.Map.include({
       let newOrigin = this._getNewPixelOrigin(center);
       let origin = this.getPixelOrigin();
       let offset = newOrigin.subtract(origin);
-
-      if ( offset.x === 0 && offset.y === 0 ) return;
-
       let mapWidth = this.getSize().x;
 
       // вычисляем смещение с учетом открытого сайдбара
       offset.x = offset.x + ( mapWidth - (mapWidth  - SIDEBAR_WIDTH_PX ) ) / 2;
+
+      if ( offset.x === 0 && offset.y === 0 ) return;
 
       L.Transition = null;
       // эмулируем события лифлета для правильной отрисовки карты

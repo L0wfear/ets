@@ -1,22 +1,48 @@
 var DOMURL = window.URL || window.webkitURL || window;
 var icons = {};
 
-function loadIcon(name, data) {
+const IS_RETINA = window.devicePixelRatio >= 2;
 
-  var img = new Image();
+const iconCache = {};
 
-  var canvas = document.createElement('canvas');
-  canvas.width = canvas.height = 40;
-  var ctx = canvas.getContext('2d');
+export function getIcon(name = 'drugoe', zoom = 1) {
 
-  img.onload = function () {
-    ctx.drawImage(img, 0, 0, 40, 40); // TODO retina + const
-    icons[name] = {
-      canvas: canvas,
-      src: data
-    }
+  let cached = true;
+
+  if (icons[name] === undefined ) {
+    name = 'drugoe';
   }
 
+  if ( iconCache[name] === undefined ){
+    iconCache[name] = [];
+    cached = false
+  } else if ( iconCache[name][zoom] === undefined) {
+           cached = false
+         }
+
+
+  if (!cached) {
+    let line = 40 * zoom ;
+    let canvas = document.createElement('canvas');
+    canvas.width = canvas.height = line;
+    let ctx = canvas.getContext('2d');
+
+    let temp_ctx = icons[name];
+    ctx.drawImage(temp_ctx, 0, 0, line, line)    ;
+
+    iconCache[name][zoom] = canvas;
+    return canvas;
+  } else {
+    return iconCache[name][zoom]
+  }
+}
+
+
+function loadIcon(name, data) {
+  let img = new Image();
+  img.onload = function () {
+    icons[name] =  img;
+  };
   img.src = data;
 }
 

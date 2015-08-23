@@ -7,7 +7,8 @@ const IS_RETINA = window.devicePixelRatio >= 2;
 const SMALL_RADIUS = 5;
 const LARGE_RADIUS = 12;
 const LARGE_RADIUS_SELECTED = 14;
-const ZOOM_THRESHOLD = 14;
+const ZOOM_THRESHOLD = 15;
+const ZOOM_LARGE_ICONS = 14;
 
 function normalizeAngle(angle) {
 
@@ -170,8 +171,8 @@ class Marker {
 
   getZoomCoef(map, threshold = ZOOM_THRESHOLD){
     let zoom = map.getZoom();
-    let coef = 6 - (threshold - zoom);
-    return coef > 0 ? coef / 1.7 : 1;
+    let coef = 8 - (threshold - zoom);
+    return coef > 0 ? coef * .4 : 1;
   }
 
   render(context, selected, time, options) {
@@ -187,7 +188,7 @@ class Marker {
     let map = this._map;
     let zoom = map.getZoom();
 
-    if (zoom < ZOOM_THRESHOLD && !selected) {
+    if (zoom < ZOOM_LARGE_ICONS && !selected) {
       this._renderSmall(context, options);
     } else {
       this._renderLarge(context, selected, options);
@@ -203,7 +204,7 @@ class Marker {
 
     let image = getSmallImage(point.status, zoom);
 
-    context.drawImage(image, coords.x - radius/2, coords.y - radius / 2, radius * 2, radius * 2);
+    context.drawImage(image, coords.x - radius, coords.y - radius, radius * 2, radius * 2);
   }
 
   _renderLarge(context, selected, options) {
@@ -269,7 +270,7 @@ class Marker {
       context.stroke();
     }
 
-    context.drawImage(getIcon(icon).canvas, -radius + coords.x, -radius + coords.y, 2 * radius, 2 * radius);
+    context.drawImage(getIcon(icon), coords.x - radius, coords.y - radius, 2 * radius, 2 * radius);
   }
 
   renderTrack(ctx) {
@@ -344,7 +345,7 @@ class Marker {
     let _zoom  = this.getZoomCoef(map )
     let radius ;
 
-    if (zoom < ZOOM_THRESHOLD) {
+    if (zoom < ZOOM_LARGE_ICONS) {
       radius = SMALL_RADIUS * _zoom ;
     } else {
       radius = LARGE_RADIUS ;

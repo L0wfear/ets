@@ -46,7 +46,8 @@ function getSmallImage(statusId, zoom = 1) {
     let ctx = canvas.getContext('2d');
     ctx.fillStyle = color;
     ctx.strokeStyle = 'white';
-    ctx.lineWidth = zoom < 1 ? 1 : 2;
+    ctx.lineWidth = zoom < 2 ? 1 : 2;
+
     ctx.beginPath();
     ctx.arc(radius, radius, radius - 2 * zoom,  0, 2 * Math.PI);
     ctx.closePath();

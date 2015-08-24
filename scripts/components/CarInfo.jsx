@@ -172,7 +172,13 @@ class CarInfo extends Component {
     let toClassname = 'chart-datepicker ' + ( tillNow ? 'disabled' : '');
 
     if ( this.state.tillNow && !!this.refs.to_dt){
-      setTimeout(()=>this.refs.to_dt.setState({value: now }), 0)
+      // TODO FIXME
+      setTimeout(()=>{
+        // LOL
+        if ( this.refs.to_dt ){
+          this.refs.to_dt.setState({value: now })
+        }
+      }, 0)
     }
 
     return (

@@ -85,6 +85,7 @@ body.application hr {
   margin-bottom: 30px;
   font-size: 12px;
   margin-top:10px
+  white-space:nowrap;
 }
 
 body.application {
@@ -1621,5 +1622,18 @@ body {
   100% {
     opacity:1;
     -ms-transform:  rotate(360deg) ;
+  }
+}
+
+@media print {
+  .app-toolbar,
+  .leaflet-control-container,
+  .weather-widget,
+  .dashboard-sidebar *{
+    display:none;
+  }
+
+  .dashboard-sidebar .chart-stage {
+    display:block;
   }
 }

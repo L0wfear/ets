@@ -17,8 +17,15 @@ L.Map.include({
    */
 
   panToCenterWithoutAnimation: function(center, store) {
+    L.Transition = null;
+
     const panFn = () => {
 
+      /*if ( this._zoomAnimated || this._fadeAnimated) {
+        console.log( 'this is animated! dont try to pan plz. zoom is ', this.getZoom());
+        return false;
+      }
+*/
       if (!store.state.trackingMode) return;
 
       let newOrigin = this._getNewPixelOrigin(center);
@@ -31,15 +38,18 @@ L.Map.include({
 
       if ( offset.x === 0 && offset.y === 0 ) return;
 
-      L.Transition = null;
+      console.log( 'moving map by', offset)
+
       // эмулируем события лифлета для правильной отрисовки карты
       this.fire('movestart');
       this._rawPanBy(offset); // внутренняя незадокументированная функция
       this.fire('move');
-      this.fire('moveend',{hard:false});
+      this.fire('moveend',{hard:true});
+      //this.fire('zoomend');
+      //this.fire('dragend');
     }
 
-    setTimeout( panFn.bind( this ), 50)
+    setTimeout( panFn.bind( this ), 150)
   }
 });
 
@@ -80,7 +90,13 @@ class Map extends Component {
       L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         detectRetina: true,   // http://leafletjs.com/reference.html#map-stuff-methods
         maxZoom: 16,
-        minZoom: 8
+        minZoom: 8,
+        zoomAnimation: false,
+        // Disable the animation of tiles fading in and out.
+        fadeAnimation: false,
+        // Disable the inertia that causes the map to keep moving
+        // when you drag it quickly.
+        inertia: false
       })
         .addTo(map)
         .bringToBack();
@@ -207,11 +223,12 @@ class Map extends Component {
 
       if (pointsStore.state.trackingMode){
         this.disableInteractions();
-        if ( map.getZoom() !== 15 ) {
+        if ( map.getZoom() !== 16 ) {
           map.fitBounds([selectedMarker._coords], {
             paddingBottomRight: [500,50],
             paddingTopLeft: [50,50],
-            animate: true
+            animate: false,
+            zoom: 16
           });
         }
         map.panToCenterWithoutAnimation(selectedMarker._coords, pointsStore)

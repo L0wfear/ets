@@ -22,10 +22,11 @@ L.Map.include({
     const panFn = () => {
 
       /*if ( this._zoomAnimated || this._fadeAnimated) {
-        console.log( 'this is animated! dont try to pan plz. zoom is ', this.getZoom());
-        return false;
-      }
-*/
+        // TODO TRY TO OPTIMIZE
+        // console.log( 'this is animated! dont try to pan plz. zoom is ', this.getZoom());
+        // return false;
+      }*/
+
       if (!store.state.trackingMode) return;
 
       let newOrigin = this._getNewPixelOrigin(center);
@@ -223,7 +224,7 @@ class Map extends Component {
 
       if (pointsStore.state.trackingMode){
         this.disableInteractions();
-        if ( map.getZoom() !== 16 ) {
+        if ( map.getZoom() < 15 ) {
           map.fitBounds([selectedMarker._coords], {
             paddingBottomRight: [500,50],
             paddingTopLeft: [50,50],

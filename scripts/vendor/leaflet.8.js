@@ -1866,6 +1866,8 @@
 
       do {
         zoom++;
+        // TODO разобраться с этим .floor(), ибо он порождает баги
+        // когда разные измерения выдают разный уровень зума
         boundsSize = this.project(se, zoom).subtract(this.project(nw, zoom)).add(padding).floor();
         zoomNotFound = !inside ? size.contains(boundsSize) : boundsSize.x < size.x || boundsSize.y < size.y;
 

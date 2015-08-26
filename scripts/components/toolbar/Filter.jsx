@@ -45,6 +45,7 @@ class Filter extends Component {
   constructor(props, context) {
     super()
     this.state = { flux: context.flux };
+    this.store = context.flux.getStore('points');
   }
 
   render() {
@@ -104,24 +105,36 @@ class Filter extends Component {
     )
   }
 
+  onSomethingChange(value){
+    if (this.props.onFilterChange !== undefined ) {
+      // встаем в очередь за setState
+      // TODO переписать на промисы
+      setTimeout(()=>this.props.onFilterChange(value), 0)
+    }
+  }
+
   onChange(value) {
-    this.state.flux.getActions('points').setFilter({
+    this.store.handleSetFilter({
       [this.props.name]: value.map( i => i.id )
     });
+    this.onSomethingChange(value)
   }
 
   onChangeSingle(value) {
-    this.state.flux.getActions('points').setFilter({
+    this.store.handleSetFilter({
       [this.props.name]: value.id
     });
+    this.onSomethingChange(value)
   }
 
   onChangeQuery(value) {
     let val = value.currentTarget.value;
 
-    this.state.flux.getActions('points').setFilter({
+    this.store.handleSetFilter({
       [this.props.name]: val
     })
+
+    this.onSomethingChange(val)
   }
 
 }

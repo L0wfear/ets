@@ -63,6 +63,10 @@ function getSmallImage(statusId, zoom = 1) {
 
 class SimpleAnimation {
 
+  /**
+   * TODO отключить анимации при window.hover
+   */
+
   constructor(target, propertyName, toValue, interval) {
     this._target = target;
     this._propertyName = propertyName;

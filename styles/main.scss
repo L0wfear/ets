@@ -1532,6 +1532,7 @@ body {
 * TRACKING BTN ANIMATION
 **/
 
+
 .tracking-animate{
   animation: tracking-animation ease-in 4s;
   animation-iteration-count: infinite;
@@ -1548,6 +1549,9 @@ body {
   -ms-animation: tracking-animation ease-in 4s;
   -ms-animation-iteration-count: infinite;
   -ms-transform-origin: 50% 50%;
+  &.glyphicon-repeat {
+    animation: tracking-animation ease-in 2s;
+  }
 }
 
 @keyframes tracking-animation{

@@ -151,7 +151,7 @@ class Toolbar extends Component {
             <ShowPlatesCheckbox/>
           </FluxComponent>
         </div>
-        <ToolbarSearch/>
+        <ToolbarSearch store={pointsStore}/>
         <ToolbarFilters store={pointsStore} filters={additiveFilters} haveFilters={filtersCount > 0} currentUser={currentUser}/>
       </div>
     );

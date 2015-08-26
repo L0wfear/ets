@@ -6,12 +6,26 @@ export default class ToolbarSearch extends Component {
 
   constructor(flux, props){
     super(flux, props)
+
+    this.state = {
+      canFocus: false
+    }
   }
 
   render(){
+
+    let style = {
+      position:'absolute',
+      right:30,
+      top:6,
+      background:'transparent',
+      color:'#ccc'
+    }
+
     return (
       <ToolbarControl controlType="search" top="0px" btnClass={this.btnClassName} onToggle={this.onToggle.bind(this)}>
         <Filter ref="search_text" onFilterChange={this.onFilterChange.bind(this)} className="bnso-filter" title="гос. номер или номер БНСО" name="bnso_gos"/>
+        {this.state.canFocus && <button style={style} onClick={this.focusOnLonelyCar.bind(this)} className="btn btn-default btn-sm"><span className="glyphicon glyphicon-screenshot"></span>&nbsp;Показать</button>}
       </ToolbarControl>
     )
   }
@@ -24,19 +38,22 @@ export default class ToolbarSearch extends Component {
     }
 
     if ( value.length > 0 ){
-      let byConnectionStatus = this.props.store.state.byConnectionStatus;
       let count = 0;
+      let store = this.props.store;
 
-      for ( let k in this.props.store.state.byConnectionStatus ){
-        count += this.props.store.state.byConnectionStatus[k];
+      for ( let k in store.state.byConnectionStatus ){
+        count += store.state.byConnectionStatus[k];
       }
 
-      if (count === 1){
-        console.log( 'centering on one point', this.props.store.state);
-      }
-
-     // console.log( count )
+      this.setState({canFocus:count === 1})
     }
+  }
+
+  focusOnLonelyCar(){
+    let store = this.props.store;
+    let onlyPoint = store.getVisiblePoints()[0];
+
+    global.MAP.fitBounds([onlyPoint.coords])
   }
 
   onToggle(){

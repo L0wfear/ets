@@ -106,35 +106,31 @@ class Filter extends Component {
   }
 
   onSomethingChange(value){
-    if (this.props.onFilterChange !== undefined ) {
-      // встаем в очередь за setState
-      // TODO переписать на промисы
-      setTimeout(()=>this.props.onFilterChange(value), 0)
-    }
+
+    let callback =
+      this.props.onFilterChange !== undefined ?
+        () => {this.props.onFilterChange(value)}
+        :
+        ()=>{};
+
+    this.store.handleSetFilter({
+      [this.props.name]: value
+    }, callback );
   }
 
   onChange(value) {
-    this.store.handleSetFilter({
-      [this.props.name]: value.map( i => i.id )
-    });
+    value = value.map( i => i.id );
     this.onSomethingChange(value)
   }
 
   onChangeSingle(value) {
-    this.store.handleSetFilter({
-      [this.props.name]: value.id
-    });
+    value = value.id;
     this.onSomethingChange(value)
   }
 
   onChangeQuery(value) {
-    let val = value.currentTarget.value;
-
-    this.store.handleSetFilter({
-      [this.props.name]: val
-    })
-
-    this.onSomethingChange(val)
+    value = value.currentTarget.value;
+    this.onSomethingChange(value)
   }
 
 }

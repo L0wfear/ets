@@ -184,6 +184,8 @@ class Marker {
     let store = this._store;
     let point = this._point;
 
+    // TODO убрать отсюда эту проверку
+    // просто возвращать из хранилища изначально отфильтрованные точки
     if (!store.isPointVisible(point)) return;
 
     if (this._animation) {

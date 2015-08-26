@@ -146,7 +146,7 @@ export default class PointsStore extends Store {
     return { byStatus, byConnectionStatus };
   }
 
-  handleSetFilter(update) {
+  handleSetFilter(update, callback = () => {} ) {
     let filter = Object.assign({}, this.state.filter, update);
     let selected = this.state.selected;
 
@@ -156,6 +156,11 @@ export default class PointsStore extends Store {
 
     let state = Object.assign( {}, {filter, selected}, this.countDimensions());
     this.setState(state);
+
+    // хреновое решение, но зато работает
+    // решится по-другому при рефакторинге
+    // TODO REFACTOR
+    setTimeout( callback, 500)
   }
 
   handleUpdateTrack(
@@ -240,8 +245,17 @@ export default class PointsStore extends Store {
 
   }
 
-  getFilteredPoints() {
-    return this.state.points;
+  getVisiblePoints() {
+    let points = [];
+
+    for ( let k in this.state.points ){
+      let point = this.state.points[k];
+      if ( this.isPointVisible ( point )){
+        points.push(point);
+      }
+    }
+
+    return points;
   }
 
   isPointVisible(point) {

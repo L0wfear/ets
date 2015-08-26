@@ -52,7 +52,7 @@ class MainPage extends Component {
 
         <FluxComponent connectToStores={{
           points: store => ({
-            points: store.getFilteredPoints(),
+            points: store.state.points,
             selected: store.getSelectedPoint(),
             showPlates: store.state.showPlates
           })

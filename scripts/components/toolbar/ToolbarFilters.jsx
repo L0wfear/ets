@@ -61,7 +61,7 @@ export default class ToolbarFilters extends Component {
   doAdditiveFilters(){
 
     const propsFilters = this.props.filters;
-    const cars = this.props.store.getFilteredPoints();
+    const cars = this.props.store.state.points;
 
     let _okrugIds = [];
     let _okrugs = [];

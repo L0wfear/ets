@@ -25,7 +25,6 @@ class CarInfo extends Component {
     if (this.props.car && !this.state.imageUrl) {
       this.fetchImage();
       this.loadTrack();
-      this.fetchFuelData();
     }
   }
 
@@ -175,7 +174,7 @@ class CarInfo extends Component {
       // TODO FIXME
       setTimeout(()=>{
         // LOL
-        if ( this.refs.to_dt ){
+        if ( !!this.refs.to_dt ){
           this.refs.to_dt.setState({value: now })
         }
       }, 0)

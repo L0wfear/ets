@@ -29,7 +29,8 @@ class CarInfo extends Component {
     super(props, context);
     this.state = {
       imageUrl: null,
-      tillNow: true
+      tillNow: true,
+      fuelData: null
     };
   }
 
@@ -70,6 +71,16 @@ class CarInfo extends Component {
     let isTrackingMode =  this.props.flux.getStore('points').state.trackingMode;
     let trackBtnClass = 'btn-sm btn ' + (isTrackingMode ? 'btn-success' : 'btn-default');
     let trackBtnIconClass = 'glyphicon glyphicon-screenshot ' + (isTrackingMode ? 'tracking-animate' : '');
+    let trackBtnIconStyle = {
+      backgroundColor: '#eee',//#2ECC40',
+      border: '1px solid #ccc',
+      borderRadius: 9,
+      padding: 2,
+      margin: -3,
+      marginRight: -1,
+      marginLeft: -4,
+      color: 'black'
+    }
     let trackBtnStyle = {
       position: 'absolute',
       right: 14,
@@ -77,7 +88,12 @@ class CarInfo extends Component {
       padding: '4px 7px',
       paddingRight: 11,
       width:83,
-      textAlign: 'center'
+      textAlign: 'left ',
+      color: 'black'
+    }
+
+    if ( isTrackingMode ){
+      trackBtnStyle.backgroundColor = '#aaddaa';
     }
 
     let zoomToTrackClass = 'btn-sm btn ' + (this.props.car.track === null ? 'btn-disabled' : 'btn-default');
@@ -95,7 +111,7 @@ class CarInfo extends Component {
           <button className={trackBtnClass}
                   onClick={this.toggleCarTracking.bind(this)}
                   style={trackBtnStyle}
-                  title="Следить за машиной"><span className={trackBtnIconClass}></span>&nbsp;{isTrackingMode ? 'Следим' : 'Следить'}</button>}
+                  title="Следить за машиной"><span className={trackBtnIconClass} style={trackBtnIconStyle}></span>&nbsp;{isTrackingMode ? 'Следим' : 'Следить'}</button>}
           <button className={zoomToTrackClass}
                   onClick={isTrackLoaded && this.zoomToTrack.bind(this)}
                   style={zoomToTrackStyle}
@@ -263,20 +279,27 @@ class CarInfo extends Component {
       });
     }
 
+
+    let rendered = <div> Нет данных </div>;
+    if ( this.state.fuelData === null ){
+      rendered = <Preloader style={{height:103}}/>;
+    } else {
+      if ( FUEL_DATA.length > 0 ){
+        rendered = <div style={{fontSize:'10px'}}>
+                      <Sparklines data={FUEL_DATA} width={400} height={90} margin={6} style={{marginBottom:'10px'}}>
+                        <SparklinesLine style={{ strokeWidth: 1, stroke: "orange", fill: "orange" , fillOpacity:'0.25'}}/>
+                      </Sparklines>
+                        <span
+                          style={{position: 'absolute', left: '10px', transform: 'rotate(-90deg)', top: '46px'}}>% топлива</span>
+                      <span style={{position:'absolute',left:'47px',bottom:'5px'}}>{from}</span>
+                      <span style={{position:'absolute',right:'42px',bottom:'5px'}}>{to}</span>
+                    </div>
+      }
+    }
+
     return (
       <Panel title="График уровня топлива">
-        { this.state.fuelData !== null  ?
-          <div style={{fontSize:'10px'}}>
-            <Sparklines data={FUEL_DATA} width={400} height={90} margin={6} style={{marginBottom:'10px'}}>
-              <SparklinesLine style={{ strokeWidth: 1, stroke: "orange", fill: "orange" , fillOpacity:'0.25'}} />
-            </Sparklines>
-            <span style={{position: 'absolute', left: '10px', transform: 'rotate(-90deg)', top: '46px'}}>% топлива</span>
-            <span style={{position:'absolute',left:'47px',bottom:'5px'}}>{from}</span>
-            <span style={{position:'absolute',right:'42px',bottom:'5px'}}>{to}</span>
-          </div>
-          :
-          <Preloader style={{height:103}}/>
-        }
+        {rendered}
       </Panel>
     )
   }
@@ -334,7 +357,6 @@ class CarInfo extends Component {
     fetch( config.backend + '/fuel/'+this.props.car.id+'/?from_dt='+from_dt+'&to_dt='+to_dt)
       .then( r => r.json())
       .then( r => {
-        if (r.length === 0 ) return;
         this.setState( {
           fuelData: r
         })

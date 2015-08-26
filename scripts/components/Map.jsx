@@ -241,6 +241,7 @@ class Map extends Component {
 
   disableInteractions(){
     return;
+
     let map = this._map;
     map.zoomControl.disable();
     map.touchZoom.disable();
@@ -251,6 +252,8 @@ class Map extends Component {
   }
 
   enableInteractions(){
+    return;
+
     let map = this._map;
     map.zoomControl.enable();
     map.dragging.enable();

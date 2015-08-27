@@ -211,14 +211,16 @@ export default class PointsStore extends Store {
       point.track.length = 0;
     }
 
+
+
     if ( track.length === 0 ){
       console.warn( 'received null track for some car')
     } else {
       point.track = track;  //simplify(track, .00001);
       if ( point.id === this.state.selected.id ){
         point.TRACK_NEEDS_UPDATE = this.state.selected.TRACK_NEEDS_UPDATE;
+        this.setState({ selected: point })
       }
-      this.setState({ selected: point })
     }
   }
 

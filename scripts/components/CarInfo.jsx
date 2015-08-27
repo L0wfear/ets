@@ -160,8 +160,8 @@ class CarInfo extends Component {
       store.toggleSelectedPointTrackUpdating(this.state.tillNow)
 
       // keeping dates sync
-      from.setState({value: this.getStartOfToday()});
       to.setState({value: new Date()});
+      from.setState({value: this.getStartOfToday()});
 
       this.loadTrack()
     });

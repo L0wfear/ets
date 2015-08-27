@@ -1551,6 +1551,7 @@ body {
   -ms-transform-origin: 50% 50%;
   &.glyphicon-repeat {
     animation: tracking-animation ease-in 2s;
+    animation-iteration-count: infinite;
   }
 }
 

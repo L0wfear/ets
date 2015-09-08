@@ -12,8 +12,10 @@ export default class ToolbarFilters extends Component {
   render(){
 
     const currentUser = this.props.currentUser;
-    const filters = [];
-    const additiveFilters = this.doAdditiveFilters();
+    let filters = [];
+    let additiveFilters = this.doAdditiveFilters();
+
+    if (additiveFilters === undefined) throw new Error('additive filters is undefined, something went wrong')
 
     if (currentUser.role === 'mayor' || currentUser.role === 'prefect') {
       filters.push(
@@ -107,7 +109,7 @@ export default class ToolbarFilters extends Component {
     for ( let key in cars ) {
       let car = cars[key].car;
 
-      if (car === undefined ) return;
+      if (car === undefined ) continue;
       if (!car.hasOwnProperty('owner_id') ) {
         car.owner_id = 0;
       } // dirty fix

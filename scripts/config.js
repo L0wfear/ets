@@ -19,13 +19,19 @@ let WEBPACK_CONFIG = {
   }
 }
 
+let PROTO = window.location.protocol;
+let WS_PROTO = PROTO === 'http:' ? 'ws:' : 'wss:';
+
 let config = {
-  backend: 'http://ods.mos.ru/ssd/city-dashboard',
-  ws: 'ws://ods.mos.ru/ssd/city-dashboard/stream',
+  backend: PROTO+'//ods.mos.ru/ssd/city-dashboard',
+  ws: WS_PROTO+'//ods.mos.ru/ssd/city-dashboard/stream',
+
   images: '/data/images/',
+
   REQUEST_PARAMS: {
     credentials: 'include'
   },
+
   WEBPACK_CONFIG: WEBPACK_CONFIG[ENV]
 };
 

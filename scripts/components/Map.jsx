@@ -88,7 +88,7 @@ class Map extends Component {
     map.setView(center, zoom);
 
     let tiles =
-      L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      L.tileLayer('//{s}.tile.osm.org/{z}/{x}/{y}.png', {
         detectRetina: true,   // http://leafletjs.com/reference.html#map-stuff-methods
         maxZoom: 16,
         minZoom: 8,

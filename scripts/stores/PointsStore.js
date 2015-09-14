@@ -45,7 +45,7 @@ export default class PointsStore extends Store {
       },
       byConnectionStatus: {
         0: 0,
-        1: 1
+        1: 0
       },
       showPlates: false, // TODO move to settings store
       trackingMode: false,

@@ -126,13 +126,14 @@ class CarInfo extends Component {
     );
   }
 
+  // TODO переместить это на более высокий уровень абстракции
   zoomToTrack(){
     let store = this.props.flux.getStore('points');
     store.setTracking( false );
 
     let track = this.props.car.track;
-    let bounds = track;// L.LatLngBounds(track);
-  //  let zoom = window.MAP.getBoundsZoom(track, true, [400,50]);
+    let bounds = track.map( p => p.coords )
+
     window.MAP.fitBounds(bounds, {
       paddingBottomRight: [500,50],
       paddingTopLeft: [50,50],

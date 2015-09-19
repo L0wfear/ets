@@ -326,9 +326,10 @@ class Marker {
 
     if (!track || track.length < 2) return;
 
+    // TODO move to settings store
+    let RENDER_GRADIENT = false;
 
-
-    let getColor = (speed, previousSpeed = 0) => {
+    let getColor = (speed) => {
       /*
 
        0-10кмч - зеленый
@@ -361,10 +362,12 @@ class Marker {
         stop: '#003'
       }
 
+     /* TODO STOP SIGN
       if ( speed === 0 ){
         return colors.stop
-      }
-      if ( speed > 0 && speed < 10 ){
+      }*/
+
+      if ( speed >= 0 && speed < 10 ){
         return colors.green
       }
 
@@ -409,36 +412,43 @@ class Marker {
 
       // если предыдущий цвет не соответствует новому
       // нужно закрыть предыдущую линию
-      // и нарисовать новую градиентом
+      // и нарисовать новую
       if ( previousColor !== color ){
-        //debugger;
-        //ctx.lineTo(coords.x, coords.y);
 
-        ctx.stroke();
+        if (RENDER_GRADIENT) {
 
-        if ( previousColor === undefined || color === undefined ){
-          console.log( 'bugged point is '+i,  track[i], ' or '+(i-1), track[i-1])
+          ctx.stroke();
+
+          let gradient=ctx.createLinearGradient( previousCoords.x, previousCoords.y, coords.x, coords.y );
+          gradient.addColorStop('0',previousColor);
+          gradient.addColorStop('0.6',color);
+
+          ctx.strokeStyle = gradient;
+          ctx.beginPath();
+          ctx.moveTo ( previousCoords.x, previousCoords.y );
+          ctx.lineTo ( coords.x, coords.y );
+          ctx.stroke();
+
+          ctx.strokeStyle = color;
+          ctx.beginPath();
+          ctx.moveTo(coords.x, coords.y);
+
+        } else {
+          ctx.lineTo( coords.x, coords.y);
+          ctx.stroke();
+
+          ctx.strokeStyle = color;
+          ctx.beginPath();
+          ctx.moveTo(coords.x, coords.y);
         }
-        // TODO градиент
-        let gradient=ctx.createLinearGradient( previousCoords.x, previousCoords.y, coords.x, coords.y );
-        gradient.addColorStop('0',previousColor);
-        gradient.addColorStop('0.6',color);
-
-        ctx.strokeStyle = gradient;
-        ctx.beginPath();
-        ctx.moveTo ( previousCoords.x, previousCoords.y );
-        ctx.lineTo ( coords.x, coords.y );
-        ctx.stroke();
-
-        ctx.strokeStyle = color;
-        ctx.beginPath();
-        ctx.moveTo(coords.x, coords.y);
-      } else {
-        ctx.lineTo(coords.x, coords.y);
-      }
-      previousCoords = coords;
-      previousColor = color;
+    } else {
+      ctx.lineTo(coords.x, coords.y);
     }
+
+    previousCoords = coords;
+    previousColor = color;
+
+  }
 
     // если машина в движении - дорисовываем еще одну точку, чтобы трэк не обрывался
     // получается некрасиво в том случае, если обновление происходит редко
@@ -449,7 +459,6 @@ class Marker {
     }
 
     ctx.stroke()
-
   }
 
   setPoint(point) {

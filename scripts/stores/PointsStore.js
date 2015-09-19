@@ -84,9 +84,7 @@ export default class PointsStore extends Store {
       // если информация в обновлении устарела - ничего не делаем
       if (key in points &&
         points[key].timestamp > pointUpdate.timestamp) {
-        //console.warn( 'got old info for point!');
-        // TODO smartly push old coord to track
-        // points[key].track.push(pointUpdate.coords);
+        console.warn( 'got old info for point!');
         continue;
       }
 
@@ -98,8 +96,15 @@ export default class PointsStore extends Store {
         if ( !!selected && selected.id === points[key].id ){
 
           if (points[key].TRACK_NEEDS_UPDATE) {
+            let point = {
+              coords: pointUpdate.coords,
+              direction: pointUpdate.direction,
+              speed_avg: pointUpdate.speed,
+              timestamp: pointUpdate.timestamp
+            };
+
             console.warn('continuisly updating track ')
-            points[key].track.push(pointUpdate.coords);
+            points[key].track.push(point);
           } else {
             console.warn('not continuisly updating track ')
           }
@@ -210,8 +215,6 @@ export default class PointsStore extends Store {
     if ( point.track ) {
       point.track.length = 0;
     }
-
-
 
     if ( track.length === 0 ){
       console.warn( 'received null track for some car')

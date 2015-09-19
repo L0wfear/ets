@@ -66,9 +66,10 @@ class CarInfo extends Component {
 
     let model = getModelById(modelId);
     let title = model ? model.title : '';
+    let store = this.props.flux.getStore('points')
 
     // TODO убрать стили в css
-    let isTrackingMode =  this.props.flux.getStore('points').state.trackingMode;
+    let isTrackingMode =  store.state.trackingMode;
     let trackBtnClass = 'btn-sm btn ' + (isTrackingMode ? 'btn-success' : 'btn-default');
     let trackBtnIconClass = 'glyphicon glyphicon-screenshot ' + (isTrackingMode ? 'tracking-animate' : '');
     let trackBtnIconStyle = {
@@ -149,6 +150,14 @@ class CarInfo extends Component {
     store.setTracking( !isTrackingMode );
   }
 
+  onShowGradientChange(){
+
+    let store = this.props.flux.getStore('points');
+    let flag = store.state.showTrackingGradient;
+    store.handleSetShowGradient( !flag )
+
+  }
+
   onTrackingDatesChange(){
     let flag = this.state.tillNow;
 
@@ -173,6 +182,7 @@ class CarInfo extends Component {
     // TODO refactor
     let now = new Date();
     let start_of_today = this.getStartOfToday();
+    let store = this.props.flux.getStore('points');
 
     let DATE_FORMAT = "yyyy-MM-dd HH:mm";
     let TIME_FORMAT = "HH:mm";
@@ -212,6 +222,16 @@ class CarInfo extends Component {
 
     let reloadBtnCN = 'glyphicon glyphicon-repeat ' + (this.props.car.track === null ? 'tracking-animate' : '');
 
+
+    let showGradientStyle = {
+      position:'absolute',
+      top: -26,
+      right: 120,
+      fontWeight:200
+    };
+    
+    let showGradient = store.state.showTrackingGradient;
+
     return (
       <div>
         <Panel title="Трекинг" className="chart-datepickers-wrap">
@@ -221,15 +241,20 @@ class CarInfo extends Component {
                           disabled={tillNow}
                           defaultValue={start_of_today}
                           ref="from_dt"/> –&nbsp;
-           <label style={tillNowStyle}><input type="checkbox" checked={tillNow} ref="tillNow" onChange={this.onTrackingDatesChange.bind(this)}/> За сегодня</label>
+           <label style={showGradientStyle}>
+             <input type="checkbox" checked={showGradient} ref="showGradient" onChange={this.onShowGradientChange.bind(this)}/> С градиентом
+           </label>
+           <label style={tillNowStyle}>
+             <input type="checkbox" checked={tillNow} ref="tillNow" onChange={this.onTrackingDatesChange.bind(this)}/> За сегодня
+           </label>
+
            <DateTimePicker timeFormat={TIME_FORMAT}
                             format={DATE_FORMAT}
                             ref="to_dt"
                             className={toClassname}
                             disabled={tillNow}
                             defaultValue={now}
-                           readonly={tillNow}
-             />
+                           readonly={tillNow} />
 
             <button title="Перезагрузить данные"
                     style={reloadBtnStyle}

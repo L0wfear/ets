@@ -327,7 +327,7 @@ class Marker {
     if (!track || track.length < 2) return;
 
     // TODO move to settings store
-    let RENDER_GRADIENT = false;
+    let RENDER_GRADIENT = this._store.state.showTrackingGradient;
 
     let getColor = (speed) => {
       /*

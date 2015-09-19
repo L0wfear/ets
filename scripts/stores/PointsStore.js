@@ -49,6 +49,7 @@ export default class PointsStore extends Store {
       },
       showPlates: false, // TODO move to settings store
       trackingMode: false,
+      showTrackingGradient: false,
       isRenderPaused: false
     };
 
@@ -204,6 +205,7 @@ export default class PointsStore extends Store {
     this.setState({selected: point})
   }
 
+
   handleReceiveTrack([key, track, to_dt]) {
     let points = this.state.points;
     let point = points[key];
@@ -269,6 +271,9 @@ export default class PointsStore extends Store {
 
   setTracking (value) { this.setState({trackingMode: value}) }
 
+  handleSetShowGradient( flag ){ this.setState( {showTrackingGradient: flag }) }
+
+  handleSetShowPlates(showPlates) { this.setState({ showPlates }) }
 
   _isPointVisible(point, filter) {
     let visible = true;
@@ -357,9 +362,6 @@ export default class PointsStore extends Store {
     return this.state.isRenderPaused;
   }
 
-  handleSetShowPlates(showPlates) {
-    this.setState({ showPlates });
-  }
 
 
 }

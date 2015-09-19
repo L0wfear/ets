@@ -17,7 +17,8 @@ function getUTCUnixTime( time ){
 export function getTrack(carId, from_dt, to_dt ) {
 
   let query = '/?from_dt=' + getUTCUnixTime(from_dt) +
-                 '&to_dt=' + getUTCUnixTime(to_dt);
+                 '&to_dt=' + getUTCUnixTime(to_dt) +
+                 '&version=2';
 
   console.log( 'track loading for', carId);
   return fetch(TRACK_URL + carId + query, {credentials: 'include'}).then(r => r.json());

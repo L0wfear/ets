@@ -219,7 +219,10 @@ class Map extends Component {
 
     let selectedMarker = selected ? markers[selected.id] : false;
     if (selectedMarker) {
-      selectedMarker.renderTrack(ctx);
+
+      //debugger;
+      selectedMarker.renderTrackInColors(ctx)
+      //selectedMarker.renderTrack(ctx);
       selectedMarker.render(ctx, true, time, options);
 
       if (pointsStore.state.trackingMode){

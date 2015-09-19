@@ -316,6 +316,142 @@ class Marker {
     ctx.stroke();
   }
 
+  renderTrackInColors(ctx){
+
+
+    let point = this._point;
+    let track = point.track;
+    let map = this._map;
+    let type_id = point.car.type_id;
+
+    if (!track || track.length < 2) return;
+
+
+
+    let getColor = (speed, previousSpeed = 0) => {
+      /*
+
+       0-10кмч - зеленый
+       10-20кмч - зелено-зелено-желтый
+       20-30кмч - красный для машин ПМ,ПЩ,РЖР,РТР, для других зелено-желтый
+       30-40кмч - красный для машин ПМ,ПЩ,РЖР,РТР, для других желтый
+       40+кмч - красный
+
+       ПМ "title": "Поливомоечная техника", "id": 1
+       ПЩ "title": "Плужно-щеточная техника","id": 10
+       РЖР "title": "Распределитель жидких реагентов", "id": 6
+       РТР "title": "Распределитель твердых реагентов", "id": 7
+
+
+        ** EXAMPLE OF GRADIENT **
+
+       var gradient=ctx.createLinearGradient(0,0,170,0);
+       gradient.addColorStop("0","magenta");
+       gradient.addColorStop("0.5","blue");
+       gradient.addColorStop("1.0","red");
+
+       */
+
+      let isPMPSH =  type_id === 1 || type_id === 6 || type_id === 7 || type_id === 10;
+      let colors = {
+        green: '#6c0',
+        greenyellow: '#cf3',
+        yellow: '#ff3',
+        red: '#f03',
+        stop: '#003'
+      }
+
+      if ( speed === 0 ){
+        return colors.stop
+      }
+      if ( speed > 0 && speed < 10 ){
+        return colors.green
+      }
+
+      if ( speed >= 10 && speed < 20  ) {
+        return colors.greenyellow
+      }
+
+      if ( speed >= 20 && speed < 30 ) {
+        return isPMPSH ? colors.red : colors.greenyellow
+      }
+
+      if ( speed >= 30 && speed <= 40 ){
+        return isPMPSH ? colors.red : colors.yellow
+      }
+
+      if ( speed > 40 ) {
+        return colors.red
+      }
+    }
+
+    // TODO убрать эту функцию, ибо она порождена багой на бэкэнде
+    let getSpeed = trackPoint => {
+      return 'speed_avg' in trackPoint ? trackPoint.speed_avg : trackPoint.speed
+    };
+
+    let firstPoint = map.latLngToLayerPoint(track[0].coords);
+    let previousCoords = firstPoint, previousColor;
+
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    ctx.beginPath();
+    ctx.moveTo(firstPoint.x, firstPoint.y);
+
+    ctx.strokeStyle = previousColor = getColor( track[0].speed_avg );
+
+    for (let i = 1, till = track.length - 1; i < till; i++) {
+      let coords = map.latLngToLayerPoint (track[i].coords );
+      let speed = getSpeed( track[i] );
+      let color = getColor( speed );
+
+      // если предыдущий цвет не соответствует новому
+      // нужно закрыть предыдущую линию
+      // и нарисовать новую градиентом
+      if ( previousColor !== color ){
+        //debugger;
+        //ctx.lineTo(coords.x, coords.y);
+
+        ctx.stroke();
+
+        if ( previousColor === undefined || color === undefined ){
+          console.log( 'bugged point is '+i,  track[i], ' or '+(i-1), track[i-1])
+        }
+        // TODO градиент
+        let gradient=ctx.createLinearGradient( previousCoords.x, previousCoords.y, coords.x, coords.y );
+        gradient.addColorStop('0',previousColor);
+        gradient.addColorStop('0.6',color);
+
+        ctx.strokeStyle = gradient;
+        ctx.beginPath();
+        ctx.moveTo ( previousCoords.x, previousCoords.y );
+        ctx.lineTo ( coords.x, coords.y );
+        ctx.stroke();
+
+        ctx.strokeStyle = color;
+        ctx.beginPath();
+        ctx.moveTo(coords.x, coords.y);
+      } else {
+        ctx.lineTo(coords.x, coords.y);
+      }
+      previousCoords = coords;
+      previousColor = color;
+    }
+
+    // если машина в движении - дорисовываем еще одну точку, чтобы трэк не обрывался
+    // получается некрасиво в том случае, если обновление происходит редко
+    // и машина резко перемещается на другую точку
+    if ( point.status === 1 && point.TRACK_NEEDS_UPDATE){
+      let coords = map.latLngToLayerPoint(point.coords);
+      ctx.lineTo(coords.x, coords.y);
+    }
+
+    ctx.stroke()
+
+  }
+
   setPoint(point) {
     this._point = point;
     let map = this._map;

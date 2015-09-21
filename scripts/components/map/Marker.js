@@ -143,13 +143,14 @@ class CoordsAnimation {
 
 class Marker {
 
-  constructor(point, map, store) {
+  constructor(point, map, store, getVisibleTrackPoints ) {
     this._point = point;
     this._map = map;
     this._store = store;
     this._coords = point.coords;
     this._crs = map.options.crs;
     this._animation = null;
+    this._getVisibleTrackPoints = getVisibleTrackPoints;
 
     const projectedPoint = this._crs.project(L.latLng(this._coords));
     this._projectedX = projectedPoint.x;
@@ -318,22 +319,42 @@ class Marker {
 
   renderTrackInColors(ctx){
 
-
     let point = this._point;
     let track = point.track;
-    let map = this._map;
-    let type_id = point.car.type_id;
 
     if (!track || track.length < 2) return;
 
-    // TODO move to settings store
-    let RENDER_GRADIENT = this._store.state.showTrackingGradient;
+    //track = this._getVisibleTrackPoints( track );
 
-    let getColor = (speed) => {
+    let map = this._map;
+    let type_id = point.car.type_id;
+
+    // TODO move CONSTS to settings store
+    const TRACK_COLORS = {
+      green: '#6c0',
+      greenyellow: '#cf3',
+      yellow: '#ff3',
+      red: '#f03',
+      stop: '#005',
+      point_border: '#bbb'
+    };
+    const RENDER_GRADIENT = this._store.state.showTrackingGradient;
+    const TRACK_LINE_OPACITY = .9;
+    const TRACK_LINE_WIDTH = 2;
+    const TRACK_POINT_BORDER_WIDTH = .5;
+    const SHOW_ONLY_POINTS_WITH_SPEED_CHANGES = false;
+
+    /**
+     * получение цвета линии трэка
+     * в зависимости от скорости
+     * @param speed
+     * @returns color string
+     */
+    function getColor (speed, opacity = 1) {
       /*
 
        0-10кмч - зеленый
-       10-20кмч - зелено-зелено-желтый
+       10-20кмч - зелено-желтый
        20-30кмч - красный для машин ПМ,ПЩ,РЖР,РТР, для других зелено-желтый
        30-40кмч - красный для машин ПМ,ПЩ,РЖР,РТР, для других желтый
        40+кмч - красный
@@ -342,24 +363,29 @@ class Marker {
        ПЩ "title": "Плужно-щеточная техника","id": 10
        РЖР "title": "Распределитель жидких реагентов", "id": 6
        РТР "title": "Распределитель твердых реагентов", "id": 7
-
-
-        ** EXAMPLE OF GRADIENT **
-
-       var gradient=ctx.createLinearGradient(0,0,170,0);
-       gradient.addColorStop("0","magenta");
-       gradient.addColorStop("0.5","blue");
-       gradient.addColorStop("1.0","red");
-
        */
 
       let isPMPSH =  type_id === 1 || type_id === 6 || type_id === 7 || type_id === 10;
-      let colors = {
-        green: '#6c0',
-        greenyellow: '#cf3',
-        yellow: '#ff3',
-        red: '#f03',
-        stop: '#003'
+      let result = TRACK_COLORS.green; // green by default
+
+      /**
+       * преобразовывает hex цвет в rgba с нужной прозрачностью
+       * @param hex
+       * @param opacity
+       * @returns {*}
+       */
+      function hexToRgba(hex, opacity) {
+        let shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+        hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+          return r + r + g + g + b + b;
+        });
+
+        let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? 'rgba('
+        + parseInt(result[1], 16) + ','
+        + parseInt(result[2], 16) + ','
+        + parseInt(result[3], 16) + ','
+        + opacity+')' : null
       }
 
      /* TODO STOP SIGN
@@ -368,86 +394,138 @@ class Marker {
       }*/
 
       if ( speed >= 0 && speed < 10 ){
-        return colors.green
+        result = TRACK_COLORS.green
       }
 
       if ( speed >= 10 && speed < 20  ) {
-        return colors.greenyellow
+        result =  TRACK_COLORS.greenyellow
       }
 
       if ( speed >= 20 && speed < 30 ) {
-        return isPMPSH ? colors.red : colors.greenyellow
+        result =  isPMPSH ? TRACK_COLORS.red : TRACK_COLORS.greenyellow
       }
 
       if ( speed >= 30 && speed <= 40 ){
-        return isPMPSH ? colors.red : colors.yellow
+        result = isPMPSH ? TRACK_COLORS.red : TRACK_COLORS.yellow
       }
 
       if ( speed > 40 ) {
-        return colors.red
+        result = TRACK_COLORS.red
       }
+
+      return opacity === 1 ? result : hexToRgba( result, opacity);
     }
 
     // TODO убрать эту функцию, ибо она порождена багой на бэкэнде
-    let getSpeed = trackPoint => {
+    function getSpeed (trackPoint) {
       return 'speed_avg' in trackPoint ? trackPoint.speed_avg : trackPoint.speed
-    };
+    }
+
+    /**
+     * рисует точку трэка
+     * TODO cache it like icons!!
+     *
+     * @param coords
+     * @param color
+     */
+    function drawTrackPoint( coords, color ){
+      ctx.strokeStyle = TRACK_COLORS.point_border;
+      ctx.lineWidth = TRACK_POINT_BORDER_WIDTH;
+      ctx.beginPath();
+      ctx.fillStyle = color;
+      ctx.arc( coords.x, coords.y, 3, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.stroke();
+    }
+
+    /*
+    function getProjectedCoord( trackPoint ){
+      // TODO cache projected coordinates
+      if ( 'projected' in trackPoint ) {
+        return trackPoint.projected
+      } else {
+        let projected = map.latLngToLayerPoint(trackPoint.coords);
+        trackPoint.projected = projected;
+        return projected;
+      }
+    }*/
 
     let firstPoint = map.latLngToLayerPoint(track[0].coords);
-    let previousCoords = firstPoint, previousColor;
+    let prevCoords = firstPoint;
 
-    ctx.lineWidth = 3;
-    ctx.lineCap = 'round';
+    ctx.lineWidth = TRACK_LINE_WIDTH;
+    ctx.lineCap = 'butt';
     ctx.lineJoin = 'round';
 
     ctx.beginPath();
     ctx.moveTo(firstPoint.x, firstPoint.y);
 
-    ctx.strokeStyle = previousColor = getColor( track[0].speed_avg );
+    let prevRgbaColor = ctx.strokeStyle  = getColor( getSpeed(track[0]), TRACK_LINE_OPACITY );
 
     for (let i = 1, till = track.length - 1; i < till; i++) {
       let coords = map.latLngToLayerPoint (track[i].coords );
       let speed = getSpeed( track[i] );
-      let color = getColor( speed );
+      let rgbaColor = getColor( speed, TRACK_LINE_OPACITY );
+      let hexColor = getColor( speed );
 
       // если предыдущий цвет не соответствует новому
       // нужно закрыть предыдущую линию
       // и нарисовать новую
-      if ( previousColor !== color ){
-
+      if ( prevRgbaColor !== rgbaColor ){
         if (RENDER_GRADIENT) {
 
+          // stroke path before
           ctx.stroke();
 
-          let gradient=ctx.createLinearGradient( previousCoords.x, previousCoords.y, coords.x, coords.y );
-          gradient.addColorStop('0',previousColor);
-          gradient.addColorStop('0.6',color);
+          // make gradient fill
+          let gradient=ctx.createLinearGradient( prevCoords.x, prevCoords.y, coords.x, coords.y );
+          gradient.addColorStop('0',prevRgbaColor);
+          gradient.addColorStop('1',rgbaColor);
 
+          // make new path and stroke that
           ctx.strokeStyle = gradient;
           ctx.beginPath();
-          ctx.moveTo ( previousCoords.x, previousCoords.y );
+          ctx.moveTo ( prevCoords.x, prevCoords.y );
           ctx.lineTo ( coords.x, coords.y );
           ctx.stroke();
 
-          ctx.strokeStyle = color;
-          ctx.beginPath();
-          ctx.moveTo(coords.x, coords.y);
-
+          drawTrackPoint( coords, hexColor);
         } else {
           ctx.lineTo( coords.x, coords.y);
           ctx.stroke();
 
-          ctx.strokeStyle = color;
-          ctx.beginPath();
-          ctx.moveTo(coords.x, coords.y);
+          drawTrackPoint( coords, hexColor);
         }
-    } else {
+
+        // start new path
+        // and reset color && lineWidth
+        ctx.strokeStyle = rgbaColor;
+        ctx.lineWidth = TRACK_LINE_WIDTH;
+        ctx.beginPath();
+        ctx.moveTo(coords.x, coords.y);
+
+    } else { // если цвет не менялся
+
+      ctx.strokeStyle = prevRgbaColor;
+      ctx.lineWidth = TRACK_LINE_WIDTH;
       ctx.lineTo(coords.x, coords.y);
+
+      // оптимизация, типа
+      // рисовать кружки только там, где были заметные изменения скорости
+      if ( !SHOW_ONLY_POINTS_WITH_SPEED_CHANGES){
+        ctx.stroke();
+
+        drawTrackPoint( coords, hexColor );
+
+        ctx.strokeStyle = rgbaColor;
+        ctx.lineWidth = TRACK_LINE_WIDTH;
+        ctx.beginPath();
+        ctx.moveTo(coords.x, coords.y);
+      }
     }
 
-    previousCoords = coords;
-    previousColor = color;
-
+    prevCoords = coords;
+    prevRgbaColor = rgbaColor;
   }
 
     // если машина в движении - дорисовываем еще одну точку, чтобы трэк не обрывался

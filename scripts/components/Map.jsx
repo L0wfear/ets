@@ -6,6 +6,7 @@ import Marker from './map/Marker.js';
 import L from '../vendor/leaflet.8.js';
 import 'leaflet-zoombox/L.Control.ZoomBox.min.js';
 import _ from 'lodash';
+import { getGeoObjectsByCoords, getTrackPointInfo } from '../adapter.js';
 
 let SIDEBAR_WIDTH_PX = 500;
 
@@ -64,6 +65,8 @@ class Map extends Component {
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onClick = this.onClick.bind(this);
     this.onDragStart = this.onDragStart.bind(this);
+    this._pointsStore = this.props.flux.getStore('points');
+    this._popup = L.popup().setContent('some car info');
   }
 
   shouldComponentUpdate() {
@@ -296,7 +299,7 @@ class Map extends Component {
       if (marker) {
         marker.setPoint(point)
       } else {
-        markers[key] = new Marker(point, this._map, pointsStore);
+        markers[key] = new Marker(point, this._map, pointsStore, this.getVisibleTrackPoints.bind(this));
       }
     }
 
@@ -325,11 +328,35 @@ class Map extends Component {
     return <div/>;
   }
 
+  getVisibleTrackPoints(track){
+    let map = this._map;
+    let bounds = map.getBounds(); // map bounds
+
+    let filteredPoints = [];
+    let points = track;
+    let keys = Object.keys(points);
+
+    for ( let i = 0, till = keys.length; i < till; i++){
+      let key = keys[i];
+      let point = points[key];
+
+      if ( bounds.contains(point.coords)){
+        filteredPoints.push(point)
+      }
+    }
+
+    return filteredPoints;
+  }
+
+
   onMouseMove(e) {
 
     let map = this._map;
-    let point = map.mouseEventToLayerPoint(e);
+    let mousePoint = map.mouseEventToLayerPoint(e);
 
+    /**
+     * point focus section
+     */
     let bounds = map.getBounds();
     let points = this.getMarkersInBounds(bounds);
     let keys = Object.keys(points);
@@ -340,9 +367,28 @@ class Map extends Component {
       let key = keys[i];
       let marker = points[key];
 
-      if (marker.contains(point)) {
+      if (marker.contains(mousePoint)) {
         interactive = true;
         break;
+      }
+    }
+
+    /**
+     * track point focus section
+     */
+    let store = this._pointsStore;
+    let hasTrackLoaded = !!store.state.selected && store.state.selected.track !== null;
+
+    if (hasTrackLoaded){
+      let trackPoints = this.getVisibleTrackPoints(store.state.selected.track);
+
+      for ( let i = 0, till = trackPoints.length; i < till; i++){
+        let trackPoint = trackPoints[i];
+        if (this.isTrackPointContains(trackPoint,mousePoint)){
+          interactive = true;
+          // TODO something with point
+          break;
+        }
       }
     }
 
@@ -354,27 +400,106 @@ class Map extends Component {
 
   }
 
-  onClick(e) {
-    let map = this._map;
-    let bounds = map.getBounds();
-    let markers = this.getMarkersInBounds(bounds);
-    let point = e.layerPoint;
+  isTrackPointContains( trackPoint, anotherPoint ){
 
-    let keys = Object.keys(markers);
-    let selected = null;
+    let hoverOverlay = 3;
+    let coords = this._map.latLngToLayerPoint(trackPoint.coords);
 
-    for (let i = 0; i < keys.length; i++) {
-      let key = keys[i];
-      let marker = markers[key];
-
-      if (marker.contains(point)) {
-        selected = marker;
+    let bb = {  // bounding box
+      tl: {     // top left of
+        x: coords.x - hoverOverlay,
+        y: coords.y - hoverOverlay
+      },
+      br: {     // bottom right of
+        x: coords.x + hoverOverlay,
+        y: coords.y + hoverOverlay
       }
     }
 
-    let flux = this.props.flux;
-    let store = flux.getStore('points');
-    store.handleSelectPoint( selected && selected._point)
+    return  anotherPoint.x >= bb.tl.x && anotherPoint.y >= bb.tl.y
+         && anotherPoint.x <= bb.br.x && anotherPoint.y <= bb.br.y
+  }
+
+  showTrackPointTooltip(trackPoint){
+
+    let store = this._pointsStore;
+    let selected = store.state.selected;
+    let car_id = selected.id;
+    let popup = this._popup;
+
+    popup
+      .setLatLng(trackPoint.coords)
+      .setContent('Загрузка информации...')
+      .openOn(this._map);
+
+    getGeoObjectsByCoords(trackPoint.coords[0], trackPoint.coords[1]).then ( (geoInfo) => {
+      console.log( 'geoinfo', geoInfo)
+    })
+
+    getTrackPointInfo(car_id, trackPoint.timestamp).then( (info) => {
+
+      console.log( info )
+
+      let content =
+        '<div class="trackpoint-popup">'
+          + '<div class="caption">' +selected.car.gov_number+' <br/>'+ new Date(trackPoint.timestamp*1000) + '</div>'
+          + 'Средняя скорость: ' + info.speed_avg + 'км/ч' +' <br/>'
+          + 'Максимальная скорость: ' + info.speed_max + 'км/ч' +' <br/>'
+          + info.latitude + ','+info.longitude +' <br/>'
+          + 'Кол-во спутников: '+ info.nsat +' <br/>'
+        + '</div>';
+
+      popup
+        .setContent(content);
+      //console.log( 'gotcha some info', info.items[0]);
+    })
+  }
+
+  onClick(e) {
+    let store = this._pointsStore;
+    let map = this._map;
+    let bounds = map.getBounds();
+    let markers = this.getMarkersInBounds(bounds);
+    let mousePoint = e.layerPoint;
+    let cancelSelectionFlag = true;
+
+    let markersKeys = Object.keys(markers);
+    let selected = null;
+
+    for (let i = 0; i < markersKeys.length; i++) {
+      let key = markersKeys[i];
+      let marker = markers[key];
+
+      if (marker.contains(mousePoint)) {
+        selected = marker;
+        cancelSelectionFlag = false;
+      }
+    }
+
+    if ( cancelSelectionFlag ){
+      // если клик не по машине – смотрим, нет ли точки трэка
+      let hasTrackLoaded = store.state.selected !== null && store.state.selected.track !== null;
+      if ( hasTrackLoaded ){
+        let trackPoints = this.getVisibleTrackPoints(store.state.selected.track);
+        for ( let i = 0, till = trackPoints.length; i < till; i++){
+          let trackPoint = trackPoints[i];
+          if (this.isTrackPointContains(trackPoint,mousePoint)){
+            this.showTrackPointTooltip( trackPoint );
+            cancelSelectionFlag = false;
+            break;
+          }
+        }
+      }
+
+      // если клик даже не по точке трэка
+      // развыбираем машину
+      if (cancelSelectionFlag ){
+        store.handleSelectPoint( false )
+      }
+    } else {
+      store.handleSelectPoint( selected && selected._point)
+    }
+
   }
 
 }

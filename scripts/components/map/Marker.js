@@ -2,8 +2,23 @@ import { default as statuses, getStatusById } from '../../statuses.js';
 import { getTypeById } from '../../types.js';
 import { getIcon } from '../../icons/index.js';
 
-const IS_RETINA = window.devicePixelRatio >= 2;
+// TODO move CONSTS to settings store
+const TRACK_COLORS = {
+  green: '#6c0',
+  greenyellow: '#cf3',
+  yellow: '#ff3',
+  red: '#f03',
+  stop: '#005',
+  point_border: '#777'
+};
 
+const TRACK_LINE_OPACITY = .75;
+const TRACK_LINE_WIDTH = 3;
+const TRACK_POINT_BORDER_WIDTH = .4;
+const TRACK_POINT_RADIUS = 4;
+
+const SHOW_ONLY_POINTS_WITH_SPEED_CHANGES = false;
+const IS_RETINA = window.devicePixelRatio >= 2;
 const SMALL_RADIUS = 5;
 const LARGE_RADIUS = 12;
 const LARGE_RADIUS_SELECTED = 14;
@@ -16,6 +31,25 @@ function normalizeAngle(angle) {
   while (angle > 2 * Math.PI) angle -= 2 * Math.PI;
 
   return angle;
+}
+
+let TRACK_POINTS_CACHE = {};
+for ( let color in TRACK_COLORS) {
+
+  let canvas = document.createElement('canvas');
+  canvas.width = canvas.height = ( TRACK_POINT_RADIUS +1 ) * 2;
+
+  let ctx = canvas.getContext('2d');
+
+  ctx.strokeStyle = TRACK_COLORS.point_border;
+  ctx.fillStyle = TRACK_COLORS[color];
+  ctx.lineWidth = TRACK_POINT_BORDER_WIDTH;
+  ctx.beginPath();
+  ctx.arc(TRACK_POINT_RADIUS+1, TRACK_POINT_RADIUS+1, TRACK_POINT_RADIUS, 0, 2 * Math.PI, false);
+
+  ctx.fill();
+  ctx.stroke();
+  TRACK_POINTS_CACHE[TRACK_COLORS[color]] = canvas;
 }
 
 
@@ -317,32 +351,18 @@ class Marker {
     ctx.stroke();
   }
 
-  renderTrackInColors(ctx){
+  renderTrackInColors(ctx, DRAW_POINTS){
 
     let point = this._point;
     let track = point.track;
+    let TRACK_LINE_WIDTH = DRAW_POINTS ? 2 : 4;
 
     if (!track || track.length < 2) return;
-
-    //track = this._getVisibleTrackPoints( track );
 
     let map = this._map;
     let type_id = point.car.type_id;
 
-    // TODO move CONSTS to settings store
-    const TRACK_COLORS = {
-      green: '#6c0',
-      greenyellow: '#cf3',
-      yellow: '#ff3',
-      red: '#f03',
-      stop: '#005',
-      point_border: '#bbb'
-    };
     const RENDER_GRADIENT = this._store.state.showTrackingGradient;
-    const TRACK_LINE_OPACITY = .9;
-    const TRACK_LINE_WIDTH = 2;
-    const TRACK_POINT_BORDER_WIDTH = .5;
-    const SHOW_ONLY_POINTS_WITH_SPEED_CHANGES = false;
 
     /**
      * получение цвета линии трэка
@@ -365,7 +385,7 @@ class Marker {
        РТР "title": "Распределитель твердых реагентов", "id": 7
        */
 
-      let isPMPSH =  type_id === 1 || type_id === 6 || type_id === 7 || type_id === 10;
+      let isPMPSH = type_id === 1 || type_id === 6 || type_id === 7 || type_id === 10;
       let result = TRACK_COLORS.green; // green by default
 
       /**
@@ -429,15 +449,16 @@ class Marker {
      * @param color
      */
     function drawTrackPoint( coords, color ){
-      ctx.strokeStyle = TRACK_COLORS.point_border;
-      ctx.lineWidth = TRACK_POINT_BORDER_WIDTH;
-      ctx.beginPath();
-      ctx.fillStyle = color;
-      ctx.arc( coords.x, coords.y, 3, 0, 2 * Math.PI);
-      ctx.fill();
-      ctx.stroke();
+      if (DRAW_POINTS){
+        let cachedPoint = TRACK_POINTS_CACHE[color];
+        ctx.drawImage(
+          cachedPoint,
+          coords.x - TRACK_POINT_RADIUS -1,
+          coords.y  - TRACK_POINT_RADIUS -1 ,
+          (TRACK_POINT_RADIUS + 1) * 2,
+          (TRACK_POINT_RADIUS + 1) * 2);
+      }
     }
-
     /*
     function getProjectedCoord( trackPoint ){
       // TODO cache projected coordinates
@@ -460,7 +481,7 @@ class Marker {
     ctx.beginPath();
     ctx.moveTo(firstPoint.x, firstPoint.y);
 
-    let prevRgbaColor = ctx.strokeStyle  = getColor( getSpeed(track[0]), TRACK_LINE_OPACITY );
+    let prevRgbaColor = ctx.strokeStyle = getColor( getSpeed(track[0]), TRACK_LINE_OPACITY );
 
     for (let i = 1, till = track.length - 1; i < till; i++) {
       let coords = map.latLngToLayerPoint (track[i].coords );

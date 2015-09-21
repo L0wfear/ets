@@ -93,7 +93,7 @@ class Map extends Component {
     let tiles =
       L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         detectRetina: true,   // http://leafletjs.com/reference.html#map-stuff-methods
-        maxZoom: 16,
+        maxZoom: 18,
         minZoom: 8,
         zoomAnimation: false,
         // Disable the animation of tiles fading in and out.
@@ -222,7 +222,7 @@ class Map extends Component {
 
     let selectedMarker = selected ? markers[selected.id] : false;
     if (selectedMarker) {
-      selectedMarker.renderTrackInColors(ctx)
+      selectedMarker.renderTrackInColors(ctx, map.getZoom() >= 15)
       //selectedMarker.renderTrack(ctx);
       selectedMarker.render(ctx, true, time, options);
 

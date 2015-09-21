@@ -3,7 +3,7 @@ var icons = {};
 
 const IS_RETINA = window.devicePixelRatio >= 2;
 
-const iconCache = {};
+let iconCache = {};
 
 export function getIcon(name = 'drugoe', zoom = 1) {
 

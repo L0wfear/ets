@@ -459,7 +459,7 @@ class Map extends Component {
 
     popup
       .setLatLng(trackPoint.coords)
-      .setContent('Загрузка информации...')
+      .setContent('<div style="padding:6px">Загрузка информации...</div>')
       .openOn(this._map);
 
     getGeoObjectsByCoords(trackPoint.coords[0], trackPoint.coords[1] )

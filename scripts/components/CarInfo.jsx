@@ -229,7 +229,7 @@ class CarInfo extends Component {
       right: 120,
       fontWeight:200
     };
-    
+
     let showGradient = store.state.showTrackingGradient;
 
     return (

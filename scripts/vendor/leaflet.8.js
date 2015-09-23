@@ -2,6 +2,9 @@
  Leaflet 0.8-dev (eb34e66), a JS library for interactive maps. http://leafletjs.com
  (c) 2010-2015 Vladimir Agafonkin, (c) 2010-2011 CloudMade
  */
+
+// TODO try to optimize with
+// http://jsperf.com/math-round-vs-hack/3
 (function (window, document, undefined) {
   var L = {
     version: '0.8-dev'

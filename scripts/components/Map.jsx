@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { getStatusById } from '../statuses.js';
+import { getCustomerById } from '../customers.js';
 import { getTypeById } from '../types.js';
 import { icons } from '../icons/index.js';
 import Marker from './map/Marker.js';
@@ -7,8 +8,12 @@ import L from '../vendor/leaflet.8.js';
 import 'leaflet-zoombox/L.Control.ZoomBox.min.js';
 import _ from 'lodash';
 import { getGeoObjectsByCoords, getTrackPointInfo } from '../adapter.js';
+import { makeDate, makeTime } from '../helpers.js';
 
 let SIDEBAR_WIDTH_PX = 500;
+
+
+let POINTS_CACHE_MAP = {};
 
 L.Map.include({
 
@@ -66,7 +71,7 @@ class Map extends Component {
     this.onClick = this.onClick.bind(this);
     this.onDragStart = this.onDragStart.bind(this);
     this._pointsStore = this.props.flux.getStore('points');
-    this._popup = L.popup().setContent('some car info');
+    this._popup = L.popup({className: 'trackpoint-popup'}).setContent('some car info');
   }
 
   shouldComponentUpdate() {
@@ -119,6 +124,9 @@ class Map extends Component {
     this._canvas = canvas._container;
     this._ctx = canvas._ctx;
 
+   /* let trackCanvas = L.canvas().addTo(map);
+    this._trackCanvas = trackCanvas._container;
+*/
     this._canvas.addEventListener('mousemove', this.onMouseMove);
     map.on('click', this.onClick);
     map.on('dragstart', this.onDragStart)
@@ -187,6 +195,17 @@ class Map extends Component {
     return points;
   }
 
+
+  /**
+   * TODO http://www.html5rocks.com/en/tutorials/canvas/performance/
+   *
+   * OR
+   *
+   Create about 2-3 offscreen (in-memory) canvases each with 1/3 of your particles drawn on them
+   Assign each canvas a fallrate and a driftrate.
+   In each animation frame, draw each offscreen canvas (with an offset according to its own fallrate & driftrate) onto the on-screen canvas.
+   * @param time
+   */
   renderCanvas(time) {
 
     let flux = this.props.flux;
@@ -213,10 +232,13 @@ class Map extends Component {
     let rendered = 0;
     for ( let i = 0, till = optimizedPoints.length; i < till; i++){
       let marker = optimizedPoints[i];
+      let id = marker._point.id;
 
-      if ( selected === null || marker._point.id !== selected.id) {
-        marker.render( ctx, false, time, options);
-        rendered++;
+      if ( selected === null || id !== selected.id) {
+        //if ( POINTS_CACHE_MAP[id] === undefined || POINTS_CACHE_MAP[id] < marker._point.timestamp){
+          marker.render( ctx, false, time, options);
+          rendered++;
+       // }
       }
     }
 
@@ -241,6 +263,15 @@ class Map extends Component {
     } else {
       this.enableInteractions()
     }
+
+    /*for ( let i in optimizedPoints ){
+      let point = optimizedPoints[i]._point;;
+      let id = point.id;
+      POINTS_CACHE_MAP[id] = point.timestamp;
+    }
+
+    console.log( 'rendered only', rendered, 'points of', optimizedPoints.length )
+*/
   }
 
   disableInteractions(){
@@ -402,29 +433,28 @@ class Map extends Component {
 
   isTrackPointContains( trackPoint, anotherPoint ){
 
-    let hoverOverlay = 3;
+    let hoverPadding = 5;
     let coords = this._map.latLngToLayerPoint(trackPoint.coords);
 
-    let bb = {  // bounding box
-      tl: {     // top left of
-        x: coords.x - hoverOverlay,
-        y: coords.y - hoverOverlay
-      },
-      br: {     // bottom right of
-        x: coords.x + hoverOverlay,
-        y: coords.y + hoverOverlay
+    let topLeft = {
+        x: coords.x - hoverPadding,
+        y: coords.y - hoverPadding
       }
-    }
 
-    return  anotherPoint.x >= bb.tl.x && anotherPoint.y >= bb.tl.y
-         && anotherPoint.x <= bb.br.x && anotherPoint.y <= bb.br.y
+    let bottomRight = {
+        x: coords.x + hoverPadding,
+        y: coords.y + hoverPadding
+      }
+
+    return  anotherPoint.x >= topLeft.x && anotherPoint.y >= topLeft.y
+         && anotherPoint.x <= bottomRight.x && anotherPoint.y <= bottomRight.y
   }
 
   showTrackPointTooltip(trackPoint){
 
     let store = this._pointsStore;
     let selected = store.state.selected;
-    let car_id = selected.id;
+    let car = selected.car;
     let popup = this._popup;
 
     popup
@@ -432,27 +462,49 @@ class Map extends Component {
       .setContent('Загрузка информации...')
       .openOn(this._map);
 
-    getGeoObjectsByCoords(trackPoint.coords[0], trackPoint.coords[1]).then ( (geoInfo) => {
-      console.log( 'geoinfo', geoInfo)
+    getGeoObjectsByCoords(trackPoint.coords[0], trackPoint.coords[1] )
+      .then( (data) => {
+        let {
+            nsat,
+            speed_avg,
+            speed_max,
+            direction,
+            timestamp,
+            distance
+          } = trackPoint,
+          [latitude, longitude] = trackPoint.coords,
+          gov_number = car.gov_number,
+          geoObjects = data.objects;
+
+        let objectNames = geoObjects.map((obj)=>obj.name + ' ('+getCustomerById(obj.customer_id).title+')');
+        let objectsString = objectNames.length > 0 ? 'ОДХ: '+objectNames.join(', ') : '';
+        let dt = new Date(timestamp*1000);
+
+        latitude = Math.round(latitude * 1000000) / 1000000;
+        longitude = Math.round(longitude * 1000000) / 1000000;
+
+        dt = makeDate( dt ) + ' ' + makeTime( dt, true );
+
+        let content =
+                        '<div class="header">' +
+                          '<span class="gov-number">'+gov_number+'</span>' +
+                          '<span class="dt">'+dt+'</span>  ' +
+                        '</div>  ' +
+                        (objectsString.length > 0 ? '<div class="geo-objects">'+objectsString+'</div>' : '') +
+                        '<div class="some-info">' +
+                          '<div class="speed">V<sub>ср</sub> = '+speed_avg+' км/ч<br/>'+'V<sub>макс</sub> = '+speed_max+' км/ч</div>' +
+                          '<div class="distance">' + Math.floor(distance) + ' м</div>' +
+                          '<div class="coords">'+latitude+ '<br/>' + longitude + '</div>' +
+                          '<div class="nsat">'+ nsat +' спутников</div>' +
+                        '</div>' +
+                       // '<div class="ignition">${ignition}</div>' +
+                        '</div>';
+
+        popup
+          .setContent(content);
+
     })
 
-    getTrackPointInfo(car_id, trackPoint.timestamp).then( (info) => {
-
-      console.log( info )
-
-      let content =
-        '<div class="trackpoint-popup">'
-          + '<div class="caption">' +selected.car.gov_number+' <br/>'+ new Date(trackPoint.timestamp*1000) + '</div>'
-          + 'Средняя скорость: ' + info.speed_avg + 'км/ч' +' <br/>'
-          + 'Максимальная скорость: ' + info.speed_max + 'км/ч' +' <br/>'
-          + info.latitude + ','+info.longitude +' <br/>'
-          + 'Кол-во спутников: '+ info.nsat +' <br/>'
-        + '</div>';
-
-      popup
-        .setContent(content);
-      //console.log( 'gotcha some info', info.items[0]);
-    })
   }
 
   onClick(e) {

@@ -12,8 +12,9 @@ const TRACK_COLORS = {
   point_border: '#777'
 };
 
+// TODO убрать прозрачность на больших зум левелах
 const TRACK_LINE_OPACITY = .75;
-const TRACK_LINE_WIDTH = 3;
+const TRACK_LINE_WIDTH = 5;
 const TRACK_POINT_BORDER_WIDTH = .4;
 const TRACK_POINT_RADIUS = 4;
 
@@ -25,10 +26,12 @@ const LARGE_RADIUS_SELECTED = 14;
 const ZOOM_THRESHOLD = 15;
 const ZOOM_LARGE_ICONS = 14;
 
+const PI_TIMES_TWO = Math.PI * 2;
+
 function normalizeAngle(angle) {
 
-  while (angle < 0) angle += 2 * Math.PI;
-  while (angle > 2 * Math.PI) angle -= 2 * Math.PI;
+  while (angle < 0) angle += PI_TIMES_TWO;
+  while (angle > PI_TIMES_TWO) angle -= PI_TIMES_TWO;
 
   return angle;
 }
@@ -45,7 +48,7 @@ for ( let color in TRACK_COLORS) {
   ctx.fillStyle = TRACK_COLORS[color];
   ctx.lineWidth = TRACK_POINT_BORDER_WIDTH;
   ctx.beginPath();
-  ctx.arc(TRACK_POINT_RADIUS+1, TRACK_POINT_RADIUS+1, TRACK_POINT_RADIUS, 0, 2 * Math.PI, false);
+  ctx.arc(TRACK_POINT_RADIUS+1, TRACK_POINT_RADIUS+1, TRACK_POINT_RADIUS, 0, PI_TIMES_TWO, false);
 
   ctx.fill();
   ctx.stroke();
@@ -83,7 +86,7 @@ function getSmallImage(statusId, zoom = 1) {
     ctx.lineWidth = zoom < 2 ? 1 : 2;
 
     ctx.beginPath();
-    ctx.arc(radius, radius, radius - 2 * zoom,  0, 2 * Math.PI);
+    ctx.arc(radius, radius, radius - 2 * zoom,  0, PI_TIMES_TWO);
     ctx.closePath();
     ctx.fill();
     ctx.stroke();
@@ -351,11 +354,17 @@ class Marker {
     ctx.stroke();
   }
 
+
+  /**
+   * TODO http://jsperf.com/changing-canvas-state/3
+   * @param ctx
+   * @param DRAW_POINTS
+   */
   renderTrackInColors(ctx, DRAW_POINTS){
 
     let point = this._point;
     let track = point.track;
-    let TRACK_LINE_WIDTH = DRAW_POINTS ? 2 : 4;
+    let TRACK_LINE_WIDTH = DRAW_POINTS ? 4 : TRACK_LINE_WIDTH;
 
     if (!track || track.length < 2) return;
 
@@ -459,17 +468,6 @@ class Marker {
           (TRACK_POINT_RADIUS + 1) * 2);
       }
     }
-    /*
-    function getProjectedCoord( trackPoint ){
-      // TODO cache projected coordinates
-      if ( 'projected' in trackPoint ) {
-        return trackPoint.projected
-      } else {
-        let projected = map.latLngToLayerPoint(trackPoint.coords);
-        trackPoint.projected = projected;
-        return projected;
-      }
-    }*/
 
     let firstPoint = map.latLngToLayerPoint(track[0].coords);
     let prevCoords = firstPoint;
@@ -562,7 +560,6 @@ class Marker {
 
   setPoint(point) {
     this._point = point;
-    let map = this._map;
 
     this._coords = point.coords;
 

@@ -76,6 +76,11 @@ export default class PointsStore extends Store {
 
   handleUpdatePoints(update) {
 
+    /**
+     * TODO https://github.com/mourner/rbush
+     * https://github.com/mourner/rbush-knn
+     */
+
     let points = Object.assign({}, this.state.points);
     let selected = this.state.selected;
 

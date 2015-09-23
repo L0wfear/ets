@@ -1528,6 +1528,83 @@ body {
   background-image: url('images/icon-zoombox.png') !important;
 }
 
+.trackpoint-popup {
+
+  width: 405px;
+  white-space: nowrap;
+  font-weight: 200;
+
+  .leaflet-popup-content {
+    width: 403px !important;
+    margin: 0 0;
+  }
+
+  .leaflet-popup-content-wrapper{
+    color: #565656;
+  }
+  .leaflet-popup-close-button {
+    top: 10px;
+  }
+
+  .header {
+    border-bottom: 1px solid #eee;
+    padding: 6px 23px 6px 6px;
+    .gov-number{
+      font-size:16px;
+    }
+    .dt {
+      font-size: 12px;
+      color: #aaa;
+      float: right;
+      margin-top: 5px;
+    }
+  }
+  .geo-objects {
+    padding: 5px 6px;
+    border-bottom: 1px solid #eee;
+    font-size: 12px;
+    white-space: normal;
+  }
+  .some-info {
+     div {
+       display: inline-block;
+       border-right: 1px solid #eee;
+       height: 44px;
+       width: 120px;
+       padding: 4px 7px;
+       vertical-align: middle;
+       /* text-align: center; */
+       /* border-bottom: 1px solid #ccc; */
+       font-size: 16px;
+    }
+    .speed {
+      width: 120px;
+      font-size: 12px;
+    }
+
+    .nsat {
+      border-right: 0 none;
+      padding-top: 10px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .distance {
+      width: 75px;
+      text-align: center;
+      /* margin-top: 7px; */
+      padding-top: 10px;
+      font-size: 14px;
+    }
+
+    .coords {
+      font-size:12px;
+      width: 80px;
+      padding-left: 10px;
+    }
+  }
+}
+
 /**
 * TRACKING BTN ANIMATION
 **/

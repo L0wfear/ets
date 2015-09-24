@@ -87,11 +87,11 @@ export function getTrackColor (speed, type_id, opacity = 1) {
     result =  isPMPSH ? TRACK_COLORS.red : TRACK_COLORS.greenyellow
   }
 
-  if ( speed >= 30 && speed <= 40 ){
+  if ( speed >= 30 && speed < speed_max){
     result = isPMPSH ? TRACK_COLORS.red : TRACK_COLORS.yellow
   }
 
-  if ( speed > speed_max ) {
+  if ( speed >= speed_max ) {
     result = TRACK_COLORS.red
   }
 

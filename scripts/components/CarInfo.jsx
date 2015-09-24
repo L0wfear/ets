@@ -131,7 +131,7 @@ class CarInfo extends Component {
 
     addColor(prevColor, 0);
 
-    for ( let i = 0, till = 60; i <= till; i++) {
+    for ( let i = 0, till = 100; i <= till; i++) {
       let color = getTrackColor(i, type_id);
       if ( color !== prevColor ){
         addColor(color, i);

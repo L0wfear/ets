@@ -1,16 +1,8 @@
 import { default as statuses, getStatusById } from '../../statuses.js';
 import { getTypeById } from '../../types.js';
 import { getIcon } from '../../icons/index.js';
+import { getTrackColor, TRACK_COLORS } from '../../helpers.js';
 
-// TODO move CONSTS to settings store
-const TRACK_COLORS = {
-  green: '#6c0',
-  greenyellow: '#cf3',
-  yellow: '#ff3',
-  red: '#f03',
-  stop: '#005',
-  point_border: '#777'
-};
 
 // TODO убрать прозрачность на больших зум левелах
 const TRACK_LINE_OPACITY = .75;
@@ -373,77 +365,6 @@ class Marker {
 
     const RENDER_GRADIENT = this._store.state.showTrackingGradient;
 
-    /**
-     * получение цвета линии трэка
-     * в зависимости от скорости
-     * @param speed
-     * @returns color string
-     */
-    function getColor (speed, opacity = 1) {
-      /*
-
-       0-10кмч - зеленый
-       10-20кмч - зелено-желтый
-       20-30кмч - красный для машин ПМ,ПЩ,РЖР,РТР, для других зелено-желтый
-       30-40кмч - красный для машин ПМ,ПЩ,РЖР,РТР, для других желтый
-       40+кмч - красный
-
-       ПМ "title": "Поливомоечная техника", "id": 1
-       ПЩ "title": "Плужно-щеточная техника","id": 10
-       РЖР "title": "Распределитель жидких реагентов", "id": 6
-       РТР "title": "Распределитель твердых реагентов", "id": 7
-       */
-
-      let isPMPSH = type_id === 1 || type_id === 6 || type_id === 7 || type_id === 10;
-      let result = TRACK_COLORS.green; // green by default
-
-      /**
-       * преобразовывает hex цвет в rgba с нужной прозрачностью
-       * @param hex
-       * @param opacity
-       * @returns {*}
-       */
-      function hexToRgba(hex, opacity) {
-        let shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-        hex = hex.replace(shorthandRegex, function(m, r, g, b) {
-          return r + r + g + g + b + b;
-        });
-
-        let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-        return result ? 'rgba('
-        + parseInt(result[1], 16) + ','
-        + parseInt(result[2], 16) + ','
-        + parseInt(result[3], 16) + ','
-        + opacity+')' : null
-      }
-
-     /* TODO STOP SIGN
-      if ( speed === 0 ){
-        return colors.stop
-      }*/
-
-      if ( speed >= 0 && speed < 10 ){
-        result = TRACK_COLORS.green
-      }
-
-      if ( speed >= 10 && speed < 20  ) {
-        result =  TRACK_COLORS.greenyellow
-      }
-
-      if ( speed >= 20 && speed < 30 ) {
-        result =  isPMPSH ? TRACK_COLORS.red : TRACK_COLORS.greenyellow
-      }
-
-      if ( speed >= 30 && speed <= 40 ){
-        result = isPMPSH ? TRACK_COLORS.red : TRACK_COLORS.yellow
-      }
-
-      if ( speed > 40 ) {
-        result = TRACK_COLORS.red
-      }
-
-      return opacity === 1 ? result : hexToRgba( result, opacity);
-    }
 
     // TODO убрать эту функцию, ибо она порождена багой на бэкэнде
     function getSpeed (trackPoint) {
@@ -452,8 +373,6 @@ class Marker {
 
     /**
      * рисует точку трэка
-     * TODO cache it like icons!!
-     *
      * @param coords
      * @param color
      */
@@ -479,13 +398,13 @@ class Marker {
     ctx.beginPath();
     ctx.moveTo(firstPoint.x, firstPoint.y);
 
-    let prevRgbaColor = ctx.strokeStyle = getColor( getSpeed(track[0]), TRACK_LINE_OPACITY );
+    let prevRgbaColor = ctx.strokeStyle = getTrackColor( getSpeed(track[0]), type_id, TRACK_LINE_OPACITY );
 
     for (let i = 1, till = track.length - 1; i < till; i++) {
       let coords = map.latLngToLayerPoint (track[i].coords );
       let speed = getSpeed( track[i] );
-      let rgbaColor = getColor( speed, TRACK_LINE_OPACITY );
-      let hexColor = getColor( speed );
+      let rgbaColor = getTrackColor( speed, type_id, TRACK_LINE_OPACITY );
+      let hexColor = getTrackColor( speed, type_id );
 
       // если предыдущий цвет не соответствует новому
       // нужно закрыть предыдущую линию
@@ -504,8 +423,8 @@ class Marker {
           // make new path and stroke that
           ctx.strokeStyle = gradient;
           ctx.beginPath();
-          ctx.moveTo ( prevCoords.x, prevCoords.y );
-          ctx.lineTo ( coords.x, coords.y );
+            ctx.moveTo ( prevCoords.x, prevCoords.y );
+            ctx.lineTo ( coords.x, coords.y );
           ctx.stroke();
 
           drawTrackPoint( coords, hexColor);
@@ -521,7 +440,7 @@ class Marker {
         ctx.strokeStyle = rgbaColor;
         ctx.lineWidth = TRACK_LINE_WIDTH;
         ctx.beginPath();
-        ctx.moveTo(coords.x, coords.y);
+          ctx.moveTo(coords.x, coords.y);
 
     } else { // если цвет не менялся
 

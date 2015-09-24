@@ -6,10 +6,9 @@ import { getTypeById } from '../types.js';
 import { getOwnerById } from '../owners.js';
 import { getCustomerById } from '../customers.js';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
-//import FuelChart from './FuelChart.js';
 import config from '../config.js';
 import { Sparklines, SparklinesBars, SparklinesLine, SparklinesNormalBand, SparklinesReferenceLine, SparklinesSpots } from './Sparklines.js';
-
+import { getTrackColor, TRACK_COLORS } from '../helpers.js';
 
 export class Preloader {
 
@@ -19,7 +18,6 @@ export class Preloader {
    /* <svg width='120px' height='120px' viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" xmlns:xlink="http://www.w3.org/1999/xlink" class="uil-inf"><rect x="0" y="0" width="100" height="100" fill="none" class="bk"></rect><path id="uil-inf-path" d="M24.3,30C11.4,30,5,43.3,5,50s6.4,20,19.3,20c19.3,0,32.1-40,51.4-40 C88.6,30,95,43.3,95,50s-6.4,20-19.3,20C56.4,70,43.6,30,24.3,30z" fill="none" stroke="#c0bb9c" stroke-width="1px" stroke-dasharray="5px"></path><circle cx="0" cy="0" r="5" fill="#00b8ff"><animateMotion begin="0s" dur="4s" repeatCount="indefinite"><mpath xlink:href="#uil-inf-path"></mpath></animateMotion></circle><circle cx="0" cy="0" r="5" fill="#00b8ff"><animateMotion begin="0.33s" dur="4s" repeatCount="indefinite"><mpath xlink:href="#uil-inf-path"></mpath></animateMotion></circle><circle cx="0" cy="0" r="5" fill="#00b8ff"><animateMotion begin="0.66s" dur="4s" repeatCount="indefinite"><mpath xlink:href="#uil-inf-path"></mpath></animateMotion></circle><circle cx="0" cy="0" r="5" fill="#00b8ff"><animateMotion begin="1s" dur="4s" repeatCount="indefinite"><mpath xlink:href="#uil-inf-path"></mpath></animateMotion></circle><circle cx="0" cy="0" r="5" fill="#00b8ff"><animateMotion begin="1.33s" dur="4s" repeatCount="indefinite"><mpath xlink:href="#uil-inf-path"></mpath></animateMotion></circle>
     </svg>*/
        )
-
   }
 }
 
@@ -51,7 +49,7 @@ class CarInfo extends Component {
     let plate = car.car.gov_number;
 
     return (
-      <div>
+      <div className="car-info">
         <h3 style={{ fontWeight: 200, textAlign: 'center' }}>{plate}</h3>
         {this.renderModel()}
         {this.renderData()}
@@ -70,7 +68,7 @@ class CarInfo extends Component {
 
     // TODO убрать стили в css
     let isTrackingMode =  store.state.trackingMode;
-    let trackBtnClass = 'btn-sm btn ' + (isTrackingMode ? 'btn-success' : 'btn-default');
+
     let trackBtnIconClass = 'glyphicon glyphicon-screenshot ' + (isTrackingMode ? 'tracking-animate' : '');
     let trackBtnIconStyle = {
       backgroundColor: '#eee',//#2ECC40',
@@ -82,20 +80,8 @@ class CarInfo extends Component {
       marginLeft: -4,
       color: 'black'
     }
-    let trackBtnStyle = {
-      position: 'absolute',
-      right: 14,
-      top: 8,
-      padding: '4px 7px',
-      paddingRight: 11,
-      width:83,
-      textAlign: 'left ',
-      color: 'black'
-    }
 
-    if ( isTrackingMode ){
-      trackBtnStyle.backgroundColor = '#aaddaa';
-    }
+    let trackBtnClass = 'btn-sm btn track-btn ' + (isTrackingMode ? 'btn-success' : 'btn-default');
 
     let zoomToTrackClass = 'btn-sm btn ' + (this.props.car.track === null ? 'btn-disabled' : 'btn-default');
     let zoomToTrackStyle = {
@@ -111,7 +97,6 @@ class CarInfo extends Component {
         {
           <button className={trackBtnClass}
                   onClick={this.toggleCarTracking.bind(this)}
-                  style={trackBtnStyle}
                   title="Следить за машиной"><span className={trackBtnIconClass} style={trackBtnIconStyle}></span>&nbsp;{isTrackingMode ? 'Следим' : 'Следить'}</button>}
           <button className={zoomToTrackClass}
                   onClick={isTrackLoaded && this.zoomToTrack.bind(this)}
@@ -119,12 +104,62 @@ class CarInfo extends Component {
                   title="Показать маршрут"><span className="glyphicon glyphicon-resize-full"></span>&nbsp;Маршрут</button>
         {
          imageUrl ?
-           <img src={config.backend + config.images + imageUrl} style={{ margin: 10, width: 250 }}/>
+           <img src={config.backend + config.images + imageUrl} style={{ margin: 10, width: 250, minHeight: 100 }}/>
            : null
          }
         {this.renderAttrs()}
+        {isTrackLoaded ? this.renderTrackLegend() : null}
       </Panel>
     );
+  }
+
+
+  // todo refactor that shit
+  renderTrackLegend(){
+
+    let colors = [];
+    let car = this.props.car.car;
+    let type_id = car.type_id;
+    let prevColor = getTrackColor(0, type_id);
+
+    function addColor(color, speed){
+      if ( colors.length > 0 ){
+        colors[colors.length-1].till = speed-1;
+      }
+      colors.push( {color: color, speed: speed})
+    }
+
+    addColor(prevColor, 0);
+
+    for ( let i = 0, till = 60; i <= till; i++) {
+      let color = getTrackColor(i, type_id);
+      if ( color !== prevColor ){
+        addColor(color, i);
+        prevColor = color;
+      }
+    }
+
+    if ( colors[colors.length -1 ].till === undefined ){
+      colors[colors.length - 1 ].speed = colors[colors.length - 1 ].speed + '+'
+    }
+
+
+    let legend = colors.map((obj,i) => {
+
+      let text = obj.speed +( obj.till ? ' – '+obj.till : '') + ' км/ч';
+      let color = obj.color;
+
+      return <div className="track-legend-item">
+          <div className="track-legend-point" style={{backgroundColor:color}}></div>
+          <div className="track-legend-text">{text}</div>
+      </div>
+    });
+
+    return (
+      <div className="track-legend">
+        <p className="track-legend-header">Цвета маршрута:</p>
+        {legend}</div>
+    )
   }
 
   // TODO переместить это на более высокий уровень абстракции

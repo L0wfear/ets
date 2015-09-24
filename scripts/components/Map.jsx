@@ -477,9 +477,10 @@ class Map extends Component {
           geoObjects = data.objects;
 
         let objectNames = geoObjects.map((obj)=>obj.name + ' ('+getCustomerById(obj.customer_id).title+')');
-        let objectsString = objectNames.length > 0 ? 'ОДХ: '+objectNames.join(', ') : '';
+        let objectsString = objectNames.length > 0 ? 'Объекты ОДХ: '+objectNames.join(', ') : 'Не найдены объекты ОДХ';
         let dt = new Date(timestamp*1000);
 
+        distance = typeof distance == 'number' ? Math.floor(distance)  : distance;
         latitude = Math.round(latitude * 1000000) / 1000000;
         longitude = Math.round(longitude * 1000000) / 1000000;
 
@@ -490,10 +491,10 @@ class Map extends Component {
                           '<span class="gov-number">'+gov_number+'</span>' +
                           '<span class="dt">'+dt+'</span>  ' +
                         '</div>  ' +
-                        (objectsString.length > 0 ? '<div class="geo-objects">'+objectsString+'</div>' : '') +
+                        '<div class="geo-objects">'+objectsString+'</div>'+
                         '<div class="some-info">' +
                           '<div class="speed">V<sub>ср</sub> = '+speed_avg+' км/ч<br/>'+'V<sub>макс</sub> = '+speed_max+' км/ч</div>' +
-                          '<div class="distance">' + Math.floor(distance) + ' м</div>' +
+                          '<div class="distance">' + distance + ' м</div>' +
                           '<div class="coords">'+latitude+ '<br/>' + longitude + '</div>' +
                           '<div class="nsat">'+ nsat +' спутников</div>' +
                         '</div>' +
@@ -546,7 +547,7 @@ class Map extends Component {
       // если клик даже не по точке трэка
       // развыбираем машину
       if (cancelSelectionFlag ){
-        store.handleSelectPoint( false )
+       // store.handleSelectPoint( false )
       }
     } else {
       store.handleSelectPoint( selected && selected._point)

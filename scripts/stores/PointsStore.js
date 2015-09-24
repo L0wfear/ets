@@ -106,6 +106,9 @@ export default class PointsStore extends Store {
               coords: pointUpdate.coords,
               direction: pointUpdate.direction,
               speed_avg: pointUpdate.speed,
+              distance: pointUpdate.distance || 'Н/Д',
+              speed_max: pointUpdate.speed_max || 'Н/Д',
+              nsat: pointUpdate.nsat || 'Н/Д',
               timestamp: pointUpdate.timestamp
             };
 

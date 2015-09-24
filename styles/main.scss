@@ -129,19 +129,50 @@ body.application {
   top: 15px;
   z-index: 1000;
   left: 25px;
-}
 
-.app-toolbar-filter {
-  margin-bottom:5px;
-}
+  &-filter {
+    margin-bottom:5px;
+  }
+
+  &-fill {
+    background: rgba(0,0,0,.75);
+    box-shadow: 0 1px 5px rgba(0,0,0,.1);
+    border-radius: 6px;
+    padding: 6px 16px;
+    margin-bottom: 8px;
+  }
+
+  &-btn {
+    padding: 21px;
+    background: rgba(0, 0, 0, .75) no-repeat center center;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    position:relative;
+
+    /** btn icon */
+    &::before {
+      display: block;
+      width: 38px;
+      height: 38px;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      border: 1px solid transparent;
+      content: " ";
+      border-radius: 5px;
+      background-position: -1px -3px;
+    }
 
 
-.app-toolbar-fill {
-  background: rgba(0,0,0,.75);
-  box-shadow: 0 1px 5px rgba(0,0,0,.1);
-  border-radius: 6px;
-  padding: 6px 16px;
-  margin-bottom: 8px;
+    &.filters::before {
+      background-image: url('images/icon2.png');
+    }
+
+    &.search::before {
+      background-image: url('images/icon1.png');
+    }
+  }
 }
 
 .toggled {
@@ -162,37 +193,7 @@ body.application {
 
 
 
-.app-toolbar-btn {
-  padding: 21px;
-  background: rgba(0, 0, 0, .75) no-repeat center center;
-  outline: none;
-  border: none;
-  border-radius: 5px;
-  position:relative;
 
-  /** btn icon */
-  &::before {
-    display: block;
-    width: 38px;
-    height: 38px;
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    border: 1px solid transparent;
-    content: " ";
-    border-radius: 5px;
-    background-position: -1px -3px;
-  }
-
-
-  &.filters::before {
-    background-image: url('images/icon2.png');
-  }
-
-  &.search::before {
-    background-image: url('images/icon1.png');
-  }
-}
 .toolbar-filters-wrap__close-btn {
   position: absolute;
   right:12px;
@@ -1719,5 +1720,55 @@ body {
 
   .dashboard-sidebar .chart-stage {
     display:block;
+  }
+}
+
+
+.car-info {
+
+  .track-btn {
+    position: absolute;
+    right: 14px;
+    top: 8px;
+    padding: 4px 11px 4px 7px;
+    width:83px;
+    text-align: left;
+    color: black;
+    &.btn-success {
+      background-color: #aaddaa;
+    }
+  }
+}
+
+
+.track-legend {
+
+  width: 150px;
+  text-align: left;
+  position: absolute;
+  top: 8px;
+  left: 11px;
+  font-size: 13px;
+
+  &-item {
+
+  }
+
+  &-header {
+    margin-bottom: 0px;
+  }
+
+  &-point {
+    width:10px;
+    height:10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    display:inline-block;
+    margin-right:3px;
+  }
+
+  &-text {
+
+    display:inline-block;
   }
 }

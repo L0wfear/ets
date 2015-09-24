@@ -356,7 +356,7 @@ class Map extends Component {
   }
 
   render() {
-    return <div/>;
+    return <div style={{display:'none'}} />;
   }
 
   getVisibleTrackPoints(track){
@@ -478,15 +478,15 @@ class Map extends Component {
 
     function makePopup(){
 
-      let objectsString;
+      let objectsString = 'Объекты ОДХ';
+
       if ( geoObjects === null ){
-        objectsString = 'Объекты ОДХ загружаются'
+        objectsString += ' загружаются'
       } else {
         if ( geoObjects.length > 0 ){
-          let objectNames = geoObjects.map((obj)=>obj.name + ' ('+getCustomerById(obj.customer_id).title+')');
-          objectsString = 'Объекты ОДХ: '+objectNames.join(', ')
+          objectsString += ': '+ geoObjects.map((obj)=>obj.name + ' ('+getCustomerById(obj.customer_id).title+')').join(', ')
         } else {
-          objectsString = 'Объекты ОДХ не найдены'
+          objectsString += ' не найдены'
         }
       }
 

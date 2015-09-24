@@ -1,0 +1,243 @@
+export default {
+  "currentVersion": 10.03,
+  "serviceDescription": "",
+  "mapName": "Layers",
+  "description": "",
+  "copyrightText": "",
+  "layers": [
+    {
+      "id": 0,
+      "name": "St_metro",
+      "parentLayerId": -1,
+      "defaultVisibility": true,
+      "subLayerIds": null,
+      "minScale": 0,
+      "maxScale": 0
+    },
+    {
+      "id": 3,
+      "name": "Street_names",
+      "parentLayerId": -1,
+      "defaultVisibility": true,
+      "subLayerIds": [4, 7, 10, 13, 16, 19, 22, 24],
+      "minScale": 0,
+      "maxScale": 0
+    },
+    {
+      "id": 4,
+      "name": "roads_3500",
+      "parentLayerId": 3,
+      "defaultVisibility": true,
+      "subLayerIds": null,
+      "minScale": 4000,
+      "maxScale": 0
+    },
+    {
+      "id": 7,
+      "name": "roads_5000",
+      "parentLayerId": 3,
+      "defaultVisibility": true,
+      "subLayerIds": null,
+      "minScale": 6000,
+      "maxScale": 4000
+    },
+    {
+      "id": 10,
+      "name": "roads_7500",
+      "parentLayerId": 3,
+      "defaultVisibility": true,
+      "subLayerIds": null,
+      "minScale": 8000,
+      "maxScale": 6000
+    },
+    {
+      "id": 13,
+      "name": "roads15000_10000",
+      "parentLayerId": 3,
+      "defaultVisibility": true,
+      "subLayerIds": null,
+      "minScale": 20000,
+      "maxScale": 8000
+    },
+    {
+      "id": 16,
+      "name": "roads50000_30000",
+      "parentLayerId": 3,
+      "defaultVisibility": true,
+      "subLayerIds": null,
+      "minScale": 60000,
+      "maxScale": 20000
+    },
+    {
+      "id": 19,
+      "name": "roads100t",
+      "parentLayerId": 3,
+      "defaultVisibility": true,
+      "subLayerIds": null,
+      "minScale": 150000,
+      "maxScale": 60000
+    },
+    {
+      "id": 22,
+      "name": "roads_250t",
+      "parentLayerId": 3,
+      "defaultVisibility": true,
+      "subLayerIds": null,
+      "minScale": 300000,
+      "maxScale": 150000
+    },
+    {
+      "id": 24,
+      "name": "roads",
+      "parentLayerId": 3,
+      "defaultVisibility": true,
+      "subLayerIds": null,
+      "minScale": 1000000,
+      "maxScale": 300000
+    },
+    {
+      "id": 26,
+      "name": "TSKO_EGKO",
+      "parentLayerId": -1,
+      "defaultVisibility": true,
+      "subLayerIds": [40],
+      "minScale": 0,
+      "maxScale": 0
+    },
+    {
+      "id": 40,
+      "name": "Green_areas",
+      "parentLayerId": 26,
+      "defaultVisibility": true,
+      "subLayerIds": null,
+      "minScale": 0,
+      "maxScale": 0
+    },
+    {
+      "id": 47,
+      "name": "EGKO_OBL",
+      "parentLayerId": -1,
+      "defaultVisibility": true,
+      "subLayerIds": [48, 71, 85],
+      "minScale": 0,
+      "maxScale": 0
+    },
+    {
+      "id": 48,
+      "name": "Labels",
+      "parentLayerId": 47,
+      "defaultVisibility": true,
+      "subLayerIds": null,
+      "minScale": 0,
+      "maxScale": 0
+    },
+    {
+      "id": 71,
+      "name": "dor_i_ul",
+      "parentLayerId": 47,
+      "defaultVisibility": true,
+      "subLayerIds": [72, 75, 77],
+      "minScale": 0,
+      "maxScale": 0
+    },
+    {
+      "id": 72,
+      "name": "roads50000_30000",
+      "parentLayerId": 71,
+      "defaultVisibility": true,
+      "subLayerIds": null,
+      "minScale": 99999,
+      "maxScale": 7500
+    },
+    {
+      "id": 75,
+      "name": "roads_100000",
+      "parentLayerId": 71,
+      "defaultVisibility": true,
+      "subLayerIds": null,
+      "minScale": 100000,
+      "maxScale": 50000
+    },
+    {
+      "id": 77,
+      "name": "roads_250000",
+      "parentLayerId": 71,
+      "defaultVisibility": true,
+      "subLayerIds": null,
+      "minScale": 0,
+      "maxScale": 100000
+    },
+    {
+      "id": 85,
+      "name": "rastit",
+      "parentLayerId": 47,
+      "defaultVisibility": true,
+      "subLayerIds": null,
+      "minScale": 0,
+      "maxScale": 0
+    }
+  ],
+  "tables": [],
+  "spatialReference": {
+    "wkt": "PROJCS[\"Moscow_bessel\",GEOGCS[\"GCS_Bessel_Moscow\",DATUM[\"D_Bessel_Moscow\",SPHEROID[\"Bessel_Moscow\",6377397.0,299.15]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",0.0],PARAMETER[\"False_Northing\",0.0],PARAMETER[\"Central_Meridian\",37.5],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",55.66666666666666],UNIT[\"Meter\",1.0]]"
+  },
+  "singleFusedMapCache": true,
+  "tileInfo": {
+    "rows": 512,
+    "cols": 512,
+    "dpi": 96,
+    "format": "PNG24",
+    "compressionQuality": 0,
+    "origin": {
+      "x": -5622500,
+      "y": 3830200
+    },
+    "spatialReference": {
+      "wkt": "PROJCS[\"Moscow_bessel\",GEOGCS[\"GCS_Bessel_Moscow\",DATUM[\"D_Bessel_Moscow\",SPHEROID[\"Bessel_Moscow\",6377397.0,299.15]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",0.0],PARAMETER[\"False_Northing\",0.0],PARAMETER[\"Central_Meridian\",37.5],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",55.66666666666666],UNIT[\"Meter\",1.0]]"
+    },
+    "lods": [
+      {"level": 0, "resolution": 132.291931250529, "scale": 500000},
+      {"level": 1, "resolution": 66.1459656252646, "scale": 250000},
+      {"level": 2, "resolution": 26.4583862501058, "scale": 100000},
+      {"level": 3, "resolution": 13.2291931250529, "scale": 50000},
+      {"level": 4, "resolution": 7.93751587503175, "scale": 30000},
+      {"level": 5, "resolution": 3.96875793751588, "scale": 15000},
+      {"level": 6, "resolution": 2.64583862501058, "scale": 10000},
+      {"level": 7, "resolution": 1.98437896875794, "scale": 7500},
+      {"level": 8, "resolution": 1.32291931250529, "scale": 5000},
+      {"level": 9, "resolution": 0.926043518753704, "scale": 3500},
+      {"level": 10, "resolution": 0.529167725002117, "scale": 2000},
+      {"level": 11, "resolution": 0.264583862501058, "scale": 1000}
+    ]
+  },
+  "initialExtent": {
+    "xmin": -6727.70562705988,
+    "ymin": -4.59221103494929,
+    "xmax": 22667.5614968077,
+    "ymax": 21691.2845140518,
+    "spatialReference": {
+      "wkt": "PROJCS[\"Moscow_bessel\",GEOGCS[\"GCS_Bessel_Moscow\",DATUM[\"D_Bessel_Moscow\",SPHEROID[\"Bessel_Moscow\",6377397.0,299.15]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",0.0],PARAMETER[\"False_Northing\",0.0],PARAMETER[\"Central_Meridian\",37.5],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",55.66666666666666],UNIT[\"Meter\",1.0]]"
+    }
+  },
+  "fullExtent": {
+    "xmin": -96761.6390643869,
+    "ymin": -76278.9859863959,
+    "xmax": 111042.526584958,
+    "ymax": 55856.7526313993,
+    "spatialReference": {
+      "wkt": "PROJCS[\"Moscow_bessel\",GEOGCS[\"GCS_Bessel_Moscow\",DATUM[\"D_Bessel_Moscow\",SPHEROID[\"Bessel_Moscow\",6377397.0,299.15]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",0.0],PARAMETER[\"False_Northing\",0.0],PARAMETER[\"Central_Meridian\",37.5],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",55.66666666666666],UNIT[\"Meter\",1.0]]"
+    }
+  },
+  "units": "esriMeters",
+  "supportedImageFormatTypes": "PNG24,PNG,JPG,DIB,TIFF,EMF,PS,PDF,GIF,SVG,SVGZ,AI,BMP",
+  "documentInfo": {
+    "Title": "",
+    "Author": "",
+    "Comments": "",
+    "Subject": "",
+    "Category": "",
+    "Keywords": "",
+    "Credits": ""
+  },
+  "capabilities": "Map,Query,Data"
+}

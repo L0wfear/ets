@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import FluxComponent from 'flummox/component';
 import Map from './Map.jsx';
+import OpenLayersMap from './openlayers/map.jsx';
 import Toolbar from './toolbar/Toolbar.jsx';
 import Sidebar from './Sidebar.jsx';
 import WeatherWidget from './WeatherWidget.jsx';
@@ -62,6 +63,8 @@ class MainPage extends Component {
                showAttribution={true}
                renderLoop={this.props.renderLoop}
                showPlates={this.state.showPlates}/>
+
+          <OpenLayersMap/>
 
           <Sidebar/>
 

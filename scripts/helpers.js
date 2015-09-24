@@ -1,3 +1,5 @@
+import {getTypeById} from './types.js';
+
 let twoDigits = (n) => n < 10 ? '0'+n : n;
 
 export function makeDate (date) {
@@ -66,6 +68,8 @@ export function getTrackColor (speed, type_id, opacity = 1) {
     + opacity+')' : null
   }
 
+  let speed_max = getTypeById(type_id).speed_max;
+
   /* TODO STOP SIGN
    if ( speed === 0 ){
    return colors.stop
@@ -87,7 +91,7 @@ export function getTrackColor (speed, type_id, opacity = 1) {
     result = isPMPSH ? TRACK_COLORS.red : TRACK_COLORS.yellow
   }
 
-  if ( speed > 40 ) {
+  if ( speed > speed_max ) {
     result = TRACK_COLORS.red
   }
 

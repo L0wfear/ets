@@ -21,9 +21,6 @@ export const TRACK_COLORS = {
   point_border: '#777'
 };
 
-export function isPMPSHfn ( type_id ){
-  return type_id === 1 || type_id === 6 || type_id === 7 || type_id === 10;
-}
 /**
  * получение цвета линии трэка
  * в зависимости от скорости
@@ -45,7 +42,6 @@ export function getTrackColor (speed, type_id, opacity = 1) {
    РТР "title": "Распределитель твердых реагентов", "id": 7
    */
 
-  let isPMPSH = isPMPSHfn(type_id);
   let result = TRACK_COLORS.green; // green by default
 
   /**
@@ -84,11 +80,11 @@ export function getTrackColor (speed, type_id, opacity = 1) {
   }
 
   if ( speed >= 20 && speed < 30 ) {
-    result =  isPMPSH ? TRACK_COLORS.red : TRACK_COLORS.greenyellow
+    result =  TRACK_COLORS.greenyellow
   }
 
   if ( speed >= 30 && speed < speed_max){
-    result = isPMPSH ? TRACK_COLORS.red : TRACK_COLORS.yellow
+    result = TRACK_COLORS.yellow
   }
 
   if ( speed >= speed_max ) {

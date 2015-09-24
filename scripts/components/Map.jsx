@@ -457,54 +457,64 @@ class Map extends Component {
     let car = selected.car;
     let popup = this._popup;
 
+    let {
+        nsat,
+        speed_avg,
+        speed_max,
+        direction,
+        timestamp,
+        distance
+        } = trackPoint,
+      [latitude, longitude] = trackPoint.coords,
+      geoObjects = null,
+      gov_number = car.gov_number;
+
+    distance = typeof distance == 'number' ? Math.floor(distance)  : distance;
+    latitude = Math.round(latitude * 1000000) / 1000000;
+    longitude = Math.round(longitude * 1000000) / 1000000;
+
+    timestamp = new Date( timestamp * 1000 );
+    let dt = makeDate( timestamp ) + ' ' + makeTime( timestamp, true );
+
+    function makePopup(){
+
+      let objectsString;
+      if ( geoObjects === null ){
+        objectsString = 'Объекты ОДХ загружаются'
+      } else {
+        if ( geoObjects.length > 0 ){
+          let objectNames = geoObjects.map((obj)=>obj.name + ' ('+getCustomerById(obj.customer_id).title+')');
+          objectsString = 'Объекты ОДХ: '+objectNames.join(', ')
+        } else {
+          objectsString = 'Объекты ОДХ не найдены'
+        }
+      }
+
+      return '<div class="header">' +
+                '<span class="gov-number">'+gov_number+'</span>' +
+                '<span class="dt">'+dt+'</span>  ' +
+              '</div>  ' +
+              '<div class="geo-objects">'+objectsString+'</div>'+
+                '<div class="some-info">' +
+                '<div class="speed">V<sub>ср</sub> = '+speed_avg+' км/ч<br/>'+'V<sub>макс</sub> = '+speed_max+' км/ч</div>' +
+                '<div class="distance">' + distance + ' м</div>' +
+                '<div class="coords">'+latitude+ '<br/>' + longitude + '</div>' +
+                '<div class="nsat">'+ nsat +' спутников</div>' +
+              '</div>' +
+                // '<div class="ignition">${ignition}</div>' +
+          '</div>';
+    }
+
     popup
       .setLatLng(trackPoint.coords)
-      .setContent('<div style="padding:6px">Загрузка информации...</div>')
+      .setContent(makePopup())
       .openOn(this._map);
 
     getGeoObjectsByCoords(trackPoint.coords[0], trackPoint.coords[1] )
       .then( (data) => {
-        let {
-            nsat,
-            speed_avg,
-            speed_max,
-            direction,
-            timestamp,
-            distance
-          } = trackPoint,
-          [latitude, longitude] = trackPoint.coords,
-          gov_number = car.gov_number,
-          geoObjects = data.objects;
-
-        let objectNames = geoObjects.map((obj)=>obj.name + ' ('+getCustomerById(obj.customer_id).title+')');
-        let objectsString = objectNames.length > 0 ? 'Объекты ОДХ: '+objectNames.join(', ') : 'Не найдены объекты ОДХ';
-        let dt = new Date(timestamp*1000);
-
-        distance = typeof distance == 'number' ? Math.floor(distance)  : distance;
-        latitude = Math.round(latitude * 1000000) / 1000000;
-        longitude = Math.round(longitude * 1000000) / 1000000;
-
-        dt = makeDate( dt ) + ' ' + makeTime( dt, true );
-
-        let content =
-                        '<div class="header">' +
-                          '<span class="gov-number">'+gov_number+'</span>' +
-                          '<span class="dt">'+dt+'</span>  ' +
-                        '</div>  ' +
-                        '<div class="geo-objects">'+objectsString+'</div>'+
-                        '<div class="some-info">' +
-                          '<div class="speed">V<sub>ср</sub> = '+speed_avg+' км/ч<br/>'+'V<sub>макс</sub> = '+speed_max+' км/ч</div>' +
-                          '<div class="distance">' + distance + ' м</div>' +
-                          '<div class="coords">'+latitude+ '<br/>' + longitude + '</div>' +
-                          '<div class="nsat">'+ nsat +' спутников</div>' +
-                        '</div>' +
-                       // '<div class="ignition">${ignition}</div>' +
-                        '</div>';
-
-        popup
-          .setContent(content);
-
-    })
+        geoObjects = data.objects;
+        popup.setContent(makePopup())
+      })
 
   }
 

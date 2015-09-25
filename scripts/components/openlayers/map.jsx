@@ -1,4 +1,4 @@
-import ol from 'openlayers';
+import ol from 'imports?define=>false!openlayers';
 import React, { Component } from 'react';
 
 
@@ -8,6 +8,7 @@ TODO request this with JSONP
  fetch( MAP_SERVER_INFO, (data)=>console.log('tileserverinfo is', data ))
  */
 import MapServerConfig from './MapServerConfig.js';
+const OpenLayers = global.ol = ol;
 
 const TILES_URL = '//ods.mos.ru/ssd/ArcGIS/rest/services/egko_go/MapServer';
 const TILE_SIZE = [MapServerConfig.tileInfo.rows, MapServerConfig.tileInfo.cols];
@@ -33,7 +34,9 @@ let tilesPerZoom = [
 
 
 
-
+// https://github.com/pka/ol3-react-example
+// local crs example http://stackoverflow.com/questions/20222885/custom-tiles-in-local-crs-without-projection
+// custom tiles example
 class OpenLayersMap extends Component {
 
 
@@ -47,28 +50,14 @@ class OpenLayersMap extends Component {
    */
   componentDidMount() {
 
-    let initialView = {
-      center: [0, 0],
-      zoom: 1
-    };
-
-    let obj = ol;
-
-    //debugger;
-    let layerExtent = /*new OL.Bounds(*/[FULL_EXTENT.xmin, FULL_EXTENT.ymin, FULL_EXTENT.xmax, FULL_EXTENT.ymax]//);
-
-
-    let TileLayer = new ol.layer.Tile({
-      source: new ol.source.XYZ({
-       // attributions: [attribution],
-        url: TILES_URL+'/tile/{z}/{y}/{x}'
-      })
+    let initialView =  new ol.View({
+      center: [1000,100],
+      zoom: 7
     })
 
-    let layers = [
-      TileLayer
-     // OL.Layer.XYZ('ESRI', TILES_URL+'/tile/${z}/${y}/${x}')
-    ]
+
+    //debugger;
+    let layerExtent = /*new OpenLayers.Bounds(*/[FULL_EXTENT.xmin, FULL_EXTENT.ymin, FULL_EXTENT.xmax, FULL_EXTENT.ymax]//);
 
 
      /**
@@ -87,7 +76,7 @@ class OpenLayersMap extends Component {
       }
     */
 
-   /* let cacheLayer = new OL.layer.ArcGISCache( "AGSCache",
+   /* let cacheLayer = new OpenLayers.layer.ArcGISCache( "AGSCache",
       "http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer", {
         isBaseLayer: true,
 
@@ -101,21 +90,36 @@ class OpenLayersMap extends Component {
 
     //layers.push( cacheLayer );
 
-    let map = new ol.Map({
+    let map = new OpenLayers.Map('map',
+      {
       target: 'olmap',
       view: initialView,
-      layers: layers,
       resolutions: resolutions,
-      restrictedExtent: layerExtent,
-      units: MapServerConfig.units
-    })
+      maxExtent: layerExtent,
+      units: MapServerConfig.units,
+      layers: [
+        new ol.layer.Tile({
+          source: new ol.source.XYZ({
+          //  attributions: [attribution],
+            url: 'http:'+TILES_URL+'/tile/{z}/{y}/{x}'
+          })
+        })/*
+        // http://dev.openlayers.org/docs/files/OpenLayers/Layer/ArcGISCache-js.html
+        new OpenLayers.Layer.XYZ('name', 'http:'+TILES_URL+'/tile/{z}/{y}/{x}',{
 
+              // attributions: [attribution],
+              isBaseLayer: true,
+              tileSize:512
+            })*/
+
+      ]
+    })
   }
 
   render(){
     return (
       <div className="openlayers-container">
-        <div id="olmap"></div>
+        <div id="olmap" style={{width: 870, height:800}}></div>
       </div>
     )
   }

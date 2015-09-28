@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import LoginPage from './LoginPage.jsx';
 import MainPage from './MainPage.jsx';
+import OpenlayersPage from './OpenLayers.jsx';
 import FluxComponent from 'flummox/component';
 import NotificationSystem from 'react-notification-system';
 
@@ -20,6 +21,9 @@ class App extends Component {
         <LoginPage/>
       );
     } else {
+      return (
+        <OpenlayersPage renderLoop={renderLoop}/>
+        )
       return (
         <MainPage renderLoop={renderLoop}/>
       );

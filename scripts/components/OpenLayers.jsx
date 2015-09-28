@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import FluxComponent from 'flummox/component';
-//import Map from './Map.jsx';
 import OpenLayersMap from './openlayers/map.jsx';
 import Toolbar from './toolbar/Toolbar.jsx';
 import Sidebar from './Sidebar.jsx';
@@ -47,6 +46,7 @@ class MainPage extends Component {
           <Toolbar/>
         </FluxComponent>
 
+
         <FluxComponent connectToStores={{
           points: store => ({
             points: store.state.points,
@@ -54,27 +54,14 @@ class MainPage extends Component {
             showPlates: store.state.showPlates
           })
         }}>
-          /**<Map zoom={10}
-               showAttribution={true}
-               renderLoop={this.props.renderLoop}
-               showPlates={this.state.showPlates}/>**/
-
-          <OpenLayersMap/>
 
           <Sidebar/>
 
-        </FluxComponent>
-{/*
-        <Modal
-          isOpen={this.state.modalIsOpen}
-          onRequestClose={this.closeModal.bind(this)}
-          closeTimeoutMS={150}
-        >
-          <iframe style={{ width: '100%', height: '100%', border: 'none'}} src="http://ods.mos.ru/ssd/#/dashboard/file/default.json"/>
-          </Modal>
+          <OpenLayersMap/>
 
-        <button className="open-modal-button" onClick={this.openModal.bind(this)}><span className="glyphicon glyphicon-stats"></span></button>*/}
-        <WeatherWidget/>
+
+        </FluxComponent> 
+         <WeatherWidget/>
       </div>
     );
   }

@@ -3,6 +3,7 @@ require('whatwg-fetch');
 
 import '!style!raw!sass!../styles/main.scss';
 import '!style!raw!../styles/bootstrap.min.css';
+//import '!style!raw!../scripts/vendor/ol.css';
 
 window.Object.assign = require('object-assign');
 
@@ -33,7 +34,7 @@ window.addEventListener('blur', (ev) => {
 window.addEventListener('focus', (ev) => {
   //let store = flux.getStore('points')
   //store.unpauseRendering()
-  window.MAP.invalidateSize();
+ // window.MAP.invalidateSize();
 })
 
 global.APPSTART_TIME = Date.now();

@@ -1,4 +1,4 @@
-import ol from 'imports?define=>false!openlayers';
+//import ol from 'imports?define=>false!openlayers';
 import React, { Component } from 'react';
 
 
@@ -10,7 +10,7 @@ TODO request this with JSONP
 import MapServerConfig from './MapServerConfig.js';
 const OpenLayers = global.ol = ol;
 
-const TILES_URL = '//ods.mos.ru/ssd/ArcGIS/rest/services/egko_go/MapServer';
+const TILES_URL = 'http://ods.mos.ru/ssd/ArcGIS/rest/services/egko_go/MapServer'// '//ods.mos.ru/ssd/ArcGIS/rest/services/egko_go/MapServer';
 const TILE_SIZE = [MapServerConfig.tileInfo.rows, MapServerConfig.tileInfo.cols];
 const ORIGIN = MapServerConfig.tileInfo.origin;
 const INITIAL_EXTENT = MapServerConfig.initialExtent;
@@ -31,6 +31,7 @@ let tilesPerZoom = [
     640,
     1768
   ]
+  
 
 
 
@@ -45,82 +46,55 @@ class OpenLayersMap extends Component {
   }
 
 
+  shouldComponentUpdate() {
+    return false;
+  }
+
   /**
    * initialization here
    */
   componentDidMount() {
 
     let initialView =  new ol.View({
-      center: [1000,100],
-      zoom: 7
+      center: [4191042.260876214, 7500918.459680917],
+      zoom: 10,
+      minZoom: 0,
+      maxZoom: 20
     })
 
+    let layerExtent = [FULL_EXTENT.xmin, FULL_EXTENT.ymin, FULL_EXTENT.xmax, FULL_EXTENT.ymax]//);
 
-    //debugger;
-    let layerExtent = /*new OpenLayers.Bounds(*/[FULL_EXTENT.xmin, FULL_EXTENT.ymin, FULL_EXTENT.xmax, FULL_EXTENT.ymax]//);
+    console.log( layerExtent);
+    let container = React.findDOMNode(this);
 
 
-     /**
-      * EXAMPLE
-      * OF Layer.XYZ
-      *
-     var map, layer;
-      function init(){
-        var layerExtent = new OpenLayers.Bounds( -13758743.4295939,  5591455.28887228, -13531302.3472101 , 5757360.4178881);
-        map = new OpenLayers.Map( 'map', {'restrictedExtent': layerExtent} );
-        layer = new OpenLayers.Layer.XYZ( "ESRI",
-          "http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/${z}/${y}/${x}",
-          {sphericalMercator: true} );
-        map.addLayer(layer);
-        map.zoomToExtent(map.restrictedExtent);
-      }
-    */
+        let map = new ol.Map(
+          {
+          view: initialView,
+          target: 'olmap',
+          renderer: 'canvas',
+          controls: ol.control.defaults(),
+          layers: [
+      
+            new ol.layer.Tile({
+                              source: new ol.source.OSM()
+                          }),
+            new ol.layer.Tile({
+              source: new ol.source.TileArcGISRest({
+                url: TILES_URL
+              })
+            }),
+          ]
+        })
 
-   /* let cacheLayer = new OpenLayers.layer.ArcGISCache( "AGSCache",
-      "http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer", {
-        isBaseLayer: true,
 
-        //From layerInfo above
-        resolutions: resolutions,
-        tileSize: TILE_SIZE,
-        tileOrigin: [ORIGIN.x, ORIGIN.y],
-        maxExtent: layerExtent,
-        //projection: 'EPSG:' + layerInfo.spatialReference.wkid
-      });*/
-
-    //layers.push( cacheLayer );
-
-    let map = new OpenLayers.Map('map',
-      {
-      target: 'olmap',
-      view: initialView,
-      resolutions: resolutions,
-      maxExtent: layerExtent,
-      units: MapServerConfig.units,
-      layers: [
-        new ol.layer.Tile({
-          source: new ol.source.XYZ({
-          //  attributions: [attribution],
-            url: 'http:'+TILES_URL+'/tile/{z}/{y}/{x}'
-          })
-        })/*
-        // http://dev.openlayers.org/docs/files/OpenLayers/Layer/ArcGISCache-js.html
-        new OpenLayers.Layer.XYZ('name', 'http:'+TILES_URL+'/tile/{z}/{y}/{x}',{
-
-              // attributions: [attribution],
-              isBaseLayer: true,
-              tileSize:512
-            })*/
-
-      ]
-    })
+      global.olmap = map;
+      map.setTarget(container);
   }
 
   render(){
     return (
-      <div className="openlayers-container">
-        <div id="olmap" style={{width: 870, height:800}}></div>
-      </div>
+      <div className="openlayers-container"/>
     )
   }
 

@@ -1,7 +1,7 @@
 // import ol from 'imports?define=>false!openlayers';
 import React, { Component } from 'react';
 import CarMarker from '../markers/car/Marker.js';
-import { EXTENT, PROJECTION } from './MskAdapter.js'
+import { EXTENT, PROJECTION, ArcGisLayer } from './MskAdapter.js'
 
 // WebGL example
 // http://openlayers.org/en/master/examples/icon-sprite-webgl.html
@@ -12,30 +12,7 @@ import { EXTENT, PROJECTION } from './MskAdapter.js'
 // OpenLayers performance cases
 // http://trac.osgeo.org/openlayers/wiki/Future/OpenLayersWithCanvas
 
-import MapServerConfig from './MapServerConfig.js';
 global.ol = ol;
-
-//olx.FrameState.pixelRatio = 1;
-
-const TILES_URL = 'http://ods.mos.ru/ssd/ArcGIS/rest/services/egko_go/MapServer' // '//ods.mos.ru/ssd/ArcGIS/rest/services/egko_go/MapServer';
-const TILE_SIZE = MapServerConfig.tileInfo.rows;
-const ORIGIN = MapServerConfig.tileInfo.origin;
-
-let resolutions = [];
-let scales = [];
-
-for (let i = 0, till = MapServerConfig.tileInfo.lods.length; i < till; i++) {
-  resolutions.push(MapServerConfig.tileInfo.lods[i].resolution);
-  scales.push(MapServerConfig.tileInfo.lods[i].scale);
-}
-
-/* let tilesPerZoom = [
-    12,
-    35,
-    187,
-    640,
-    1768]*/
-
 
 // https://github.com/pka/ol3-react-example
 // local crs example http://stackoverflow.com/questions/20222885/custom-tiles-in-local-crs-without-projection
@@ -68,25 +45,6 @@ export default class OpenLayersMap extends Component {
       extent: EXTENT
     })
 
-    let arcgisLayer = new ol.layer.Tile({
-      source: new ol.source.TileImage({
-          tileUrlFunction: function(tileCoord, pixelRatio, projection) {
-              var z = tileCoord[0];
-              var x = tileCoord[1];
-              var y = -tileCoord[2] - 1;
-              return TILES_URL + '/tile/' + z + '/' + y + '/' + x
-          },
-          projection: PROJECTION,
-          tileGrid: new ol.tilegrid.TileGrid({
-              origin: [ORIGIN.x, ORIGIN.y],
-              resolutions: resolutions,
-              tileSize: TILE_SIZE
-          })
-      }),
-      extent: EXTENT
-    });
-
-
     let container = React.findDOMNode(this);
 
     let map = new ol.Map(
@@ -95,7 +53,7 @@ export default class OpenLayersMap extends Component {
         target: 'olmap',
         renderer: 'canvas',
         controls: ol.control.defaults(),
-        layers: [arcgisLayer]
+        layers: [ArcGisLayer]
       })
 
     map.setTarget(container);
@@ -103,7 +61,6 @@ export default class OpenLayersMap extends Component {
     this._map = global.olmap = map;
 
     this._canvas = olmap.renderer_.canvas_;
-    //this.renderCanvas()
 
     map.on('click', this.onClick.bind(this))
     this.renderCanvas()

@@ -40,12 +40,18 @@ class Marker {
     this._point = point;
     this._map = map;
     this._store = store;
-    this.coords = point.coords_msk;
+
+    let coords = point.coords_msk;
+    //coords[0] = -coords[0];
+
+    this.coords = coords;
     this._animation = null;
   }
 
 
   render(context, selected, time, options) {
+
+    let map = this._map;
     let store = this._store;
     let point = this._point;
     let pixel = projectToPixel(this.coords)
@@ -60,7 +66,6 @@ class Marker {
       this._animation.update(time);
     }
 
-    let map = this._map;
     let zoom = map.getView().getZoom();
 
     if (zoom < ZOOM_LARGE_ICONS && !selected) {
@@ -70,12 +75,20 @@ class Marker {
     }
   }
 
+
+  getZoomRatio(){
+    let map = this._map;
+    let zoom = map.getView().getZoom();
+    let coef = 8 - (ZOOM_LARGE_ICONS - zoom);
+    return coef > 0 ? coef * .4 : 1;
+
+  }
   _renderSmall(context, pixel) {
 
     let point = this._point;
     let [x, y] = pixel;
 
-    let zoom = 1//this.getZoomCoef(map);
+    let zoom = this.getZoomRatio();
 
     let radius = SMALL_ICON_RADIUS * zoom;
     let image = getSmallIcon(point.status, zoom);
@@ -193,7 +206,9 @@ class Marker {
     let track = point.track;
     let TRACK_LINE_WIDTH = DRAW_POINTS ? 4 : TRACK_LINE_WIDTH;
 
-    if (!track || track.length < 2) return;
+    if (!track || track.length < 2) {
+      return
+    }
 
     let map = this._map;
     let type_id = point.car.type_id;
@@ -314,14 +329,8 @@ class Marker {
 
   setPoint(point) {
     this._point = point;
-
     this.coords = point.coords_msk;
-
     let [x, y] = this.coords;
-
-    //const projectedPoint = this._crs.project(L.latLng(this._coords));
-    // this._projectedX = projectedPoint.x;
-    // this._projectedY = projectedPoint.y;
 
     let store = this._store;
 

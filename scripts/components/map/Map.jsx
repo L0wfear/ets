@@ -25,6 +25,7 @@ export default class OpenLayersMap extends Component {
 
     this._points = {};
     this._pointsStore = this.props.flux.getStore('points');
+    this._viewportVisiblePoints = {};
 
     let initialView = new ol.View({
       center: this.props.center,
@@ -42,6 +43,7 @@ export default class OpenLayersMap extends Component {
         canvasFunction: function draw(extent, res, pixelRatio, size, proj) {
           if (!this.canvas) {
             self.canvas = this.canvas = document.createElement('canvas');
+            self.context = this.canvas.getContext('2d');
           }
           this.canvas.setAttribute('width', size[0]);
           this.canvas.setAttribute('height', size[1]);
@@ -90,16 +92,34 @@ export default class OpenLayersMap extends Component {
     this.canvasLayer.getSource().changed()
   }
 
+  // todo проходить по всем маркерам карты на предмет клика
+  traverseMarkers(){
+
+  }
 
   onClick(ev) {
 
     let map = this.map;
     let pixel = ev.pixel; // координаты viewport
     let coordinate = ev.coordinate;
+    let store = this._pointsStore;
+    let selected = null;
 
     console.log('coord from pixel', map.getCoordinateFromPixel(pixel))
     console.log('pixel from coordinate ', map.getPixelFromCoordinate(coordinate))
 
+    // по машине не кликнули?
+    let cars = this._viewportVisiblePoints;
+    for (let key in cars) {
+      let car = cars[key];
+      let coords = car.coords;
+
+      if (car.contains(coordinate)) {
+        selected = car;
+      }
+    }
+
+    store.handleSelectPoint(selected && selected._point)
   }
 
   render() {
@@ -113,14 +133,14 @@ export default class OpenLayersMap extends Component {
 
     let pointsStore = this._pointsStore;
 
-console.log( 'render extent is', extent)
+//console.log( 'render extent is', extent)
     let ctx = canvas.getContext('2d');
     let map = this.map;
     let selected = pointsStore.getSelectedPoint();
     let markers = this._markers;
 
 
-    let optimizedPoints = this.getMarkersInBounds(extent);
+    let optimizedPoints = this._viewportVisiblePoints = this.getMarkersInBounds(extent);
 
     const options = {
       showPlates: this.props.showPlates
@@ -134,7 +154,7 @@ console.log( 'render extent is', extent)
 
       let key = keys[i];
       let marker = optimizedPoints[key];
-      let id = marker._point.id;
+      let id = marker.point.id;
 
       if (selected === null || id !== selected.id) {
         marker.render(ctx, false, 0, options);
@@ -201,6 +221,7 @@ console.log( 'render extent is', extent)
   updatePoints(updatedPoints) {
 
     let keys = Object.keys(updatedPoints);
+    let ctx = this.canvas.getContext('2d');
 
     for (let i = 0, till = keys.length; i < till; i++) {
 
@@ -225,7 +246,7 @@ console.log( 'render extent is', extent)
       if (_point) {
         _point.setPoint(point)
       } else {
-        this._points[key] = new CarMarker(point, this.map, this._pointsStore);
+        this._points[key] = new CarMarker(point, this.map, this._pointsStore, ctx);
       }
     }
   }

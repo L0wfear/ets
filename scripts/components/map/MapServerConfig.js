@@ -196,18 +196,66 @@ export default {
       "wkt": "PROJCS[\"Moscow_bessel\",GEOGCS[\"GCS_Bessel_Moscow\",DATUM[\"D_Bessel_Moscow\",SPHEROID[\"Bessel_Moscow\",6377397.0,299.15]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",0.0],PARAMETER[\"False_Northing\",0.0],PARAMETER[\"Central_Meridian\",37.5],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",55.66666666666666],UNIT[\"Meter\",1.0]]"
     },
     "lods": [
-      {"level": 0, "resolution": 132.291931250529, "scale": 500000},
-      {"level": 1, "resolution": 66.1459656252646, "scale": 250000},
-      {"level": 2, "resolution": 26.4583862501058, "scale": 100000},
-      {"level": 3, "resolution": 13.2291931250529, "scale": 50000},
-      {"level": 4, "resolution": 7.93751587503175, "scale": 30000},
-      {"level": 5, "resolution": 3.96875793751588, "scale": 15000},
-      {"level": 6, "resolution": 2.64583862501058, "scale": 10000},
-      {"level": 7, "resolution": 1.98437896875794, "scale": 7500},
-      {"level": 8, "resolution": 1.32291931250529, "scale": 5000},
-      {"level": 9, "resolution": 0.926043518753704, "scale": 3500},
-      {"level": 10, "resolution": 0.529167725002117, "scale": 2000},
-      {"level": 11, "resolution": 0.264583862501058, "scale": 1000}
+      {
+        "level": 0,
+        "resolution": 132.291931250529,
+        "scale": 500000
+      },
+      {
+        "level": 1,
+        "resolution": 66.1459656252646,
+        "scale": 250000
+      },
+      {
+        "level": 2,
+        "resolution": 26.4583862501058,
+        "scale": 100000
+      },
+      {
+        "level": 3,
+        "resolution": 13.2291931250529,
+        "scale": 50000
+      },
+      {
+        "level": 4,
+        "resolution": 7.93751587503175,
+        "scale": 30000
+      },
+      {
+        "level": 5,
+        "resolution": 3.96875793751588,
+        "scale": 15000
+      },
+      {
+        "level": 6,
+        "resolution": 2.64583862501058,
+        "scale": 10000
+      },
+      {
+        "level": 7,
+        "resolution": 1.98437896875794,
+        "scale": 7500
+      },
+      {
+        "level": 8,
+        "resolution": 1.32291931250529,
+        "scale": 5000
+      },
+      {
+        "level": 9,
+        "resolution": 0.926043518753704,
+        "scale": 3500
+      },
+      {
+        "level": 10,
+        "resolution": 0.529167725002117,
+        "scale": 2000
+      },
+      {
+        "level": 11,
+        "resolution": 0.264583862501058,
+        "scale": 1000
+      }
     ]
   },
   "initialExtent": {

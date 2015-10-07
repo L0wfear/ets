@@ -4,6 +4,7 @@ import { getTrackColor, getTrackPointByColor } from '../../../helpers/track.js';
 import CoordsAnimation from './CoordsAnimation.js';
 import { getSmallIcon, getBigIcon } from '../../../icons/car.js';
 import {projectToPixel} from '../../map/MskAdapter.js';
+import Marker from '../BaseMarker.js';
 
 import {
   SMALL_ICON_RADIUS,
@@ -33,112 +34,97 @@ function normalizeAngle(angle) {
   return angle;
 }
 
-class Marker {
+export default class CarMarker extends Marker {
 
-  constructor(point, map, store) {
-    this._point = point;
-    this._map = map;
-    this._store = store;
-    this.coords = [point.coords_msk[1], point.coords_msk[0]];
-    this._animation = null;
+  constructor(point, map, store, context) {
+    super(point, map, store, context);
+
+    this.coords = {
+      x: point.coords_msk[1],
+      y: point.coords_msk[0]
+    }
   }
 
 
-  render(context, selected, time, options) {
-
-    let map = this._map;
-    let store = this._store;
-    let point = this._point;
-    let pixel = projectToPixel(this.coords)
-
-    // TODO убрать отсюда эту проверку
-    // просто возвращать из хранилища изначально отфильтрованные точки
-    if (!store.isPointVisible(point)) {
-      return
-    }
-
-    if (this._animation) {
-      this._animation.update(time);
-    }
-
+  renderImage() {
+    let map = this.map;
     let zoom = map.getView().getZoom();
+    let selected = this.store.getSelectedPoint();
 
-    if (zoom < ZOOM_LARGE_ICONS && !selected) {
-      this._renderSmall(context, pixel);
-    } else {
-      this._renderLarge(context, selected, options, pixel);
-    }
+    return zoom < ZOOM_LARGE_ICONS && !selected ? this.renderSmall() : this.renderLarge();
   }
 
 
   getZoomRatio() {
-    let map = this._map;
+    let map = this.map;
     let zoom = map.getView().getZoom();
     let coef = 8 - (ZOOM_LARGE_ICONS - zoom);
     return coef > 0 ? coef * .4 : 1;
-
   }
 
-  _renderSmall(context, pixel) {
+  renderSmall() {
 
-    let point = this._point;
-    let [x, y] = pixel;
+    let point = this.point;
+    let zoomRatio = this.getZoomRatio();
+    this.radius = SMALL_ICON_RADIUS * zoomRatio;
 
-    let zoom = this.getZoomRatio();
+    let image = getSmallIcon(point.status, zoomRatio);
 
-    let radius = SMALL_ICON_RADIUS * zoom;
-    let image = getSmallIcon(point.status, zoom);
-
-    context.drawImage(image, x - radius, y - radius, radius * 2, radius * 2);
+    return image;
   }
 
-  _renderLarge(context, selected, options, pixel) {
+  /**
+   * todo showPlates via map options
+   * @return {[type]} [description]
+   */
+  renderLarge() {
 
-    let point = this._point;
+    let options = {};
+
+    let point = this.point;
     let color = getStatusById(point.status).color;
     let direction = point.direction;
     let type = getTypeById(point.car ? point.car.type_id : 5);
     let icon = type && type.icon;
+    let radius = this.radius = LARGE_ICON_RADIUS + 7 ;
 
     let angle = Math.PI * direction / 180;
     let tipAngle = normalizeAngle(angle - Math.PI / 2);
-    let coords = {x: pixel[0], y: pixel[1]};
+    let drawCoords = projectToPixel(this.coords);
+    let context = this.ctx;
 
     const title = point.car.gov_number;
 
     if (options.showPlates && title) {
-      const ctx = context;
-      const radius = LARGE_ICON_RADIUS;
 
-      ctx.fillStyle = 'white';
+      context.fillStyle = 'white';
 
       var text = title;
-      var width = ctx.measureText(text).width;
+      var width = context.measureText(text).width;
       var padding = 3;
 
       var rectWidth = width + 2 * padding + radius;
       var rectHeight = 2 * radius - 2;
-      var rectOffsetY = coords.y - radius + 1;
+      var rectOffsetY = drawCoords.y - radius + 1;
 
       if (tipAngle >= 0.5 * Math.PI && tipAngle <= 1.5 * Math.PI) {
-        ctx.fillRect(coords.x, rectOffsetY, rectWidth, rectHeight);
-        ctx.fillStyle = 'black';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(text, coords.x + padding + radius, coords.y);
+        context.fillRect(drawCoords.x, rectOffsetY, rectWidth, rectHeight);
+        context.fillStyle = 'black';
+        context.textBaseline = 'middle';
+        context.fillText(text, drawCoords.x + padding + radius, drawCoords.y);
       } else {
-        ctx.fillRect(coords.x - rectWidth, rectOffsetY, rectWidth, rectHeight);
-        ctx.fillStyle = 'black';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(text, coords.x - rectWidth + padding, coords.y);
+        context.fillRect(drawCoords.x - rectWidth, rectOffsetY, rectWidth, rectHeight);
+        context.fillStyle = 'black';
+        context.textBaseline = 'middle';
+        context.fillText(text, drawCoords.x - rectWidth + padding, drawCoords.y);
       }
     }
 
-    var radius = selected ? LARGE_ICON_RADIUS * 1.15 : LARGE_ICON_RADIUS;
 
     context.fillStyle = color;
     context.beginPath();
     context.save();
-    context.translate(coords.x, coords.y);
+    context.translate(drawCoords.x, drawCoords.y);
     context.rotate(tipAngle);
     context.arc(0, 0, radius, Math.PI / 4, -Math.PI / 4);
     context.lineTo(Math.sqrt(2) * radius, 0);
@@ -146,20 +132,20 @@ class Marker {
     context.closePath();
     context.fill();
 
-    if (selected) {
+    /*if (selected) {
       context.strokeStyle = 'white';
       context.lineWidth = 3;
       context.stroke();
-    }
+    }*/
 
-    context.drawImage(getBigIcon(icon), coords.x - radius, coords.y - radius, 2 * radius, 2 * radius);
-  }
+    return getBigIcon(icon);
+ }
 
   renderTrack(ctx) {
-    let point = this._point;
+    let point = this.point;
     let track = point.track;
 
-    let map = this._map;
+    let map = this.map;
 
     if (!track || track.length < 2) {
       return
@@ -198,7 +184,7 @@ class Marker {
    */
   renderTrackInColors(ctx, DRAW_POINTS) {
 
-    let point = this._point;
+    let point = this.point;
     let track = point.track;
     let TRACK_LINE_WIDTH = DRAW_POINTS ? 4 : TRACK_LINE_WIDTH;
 
@@ -206,10 +192,10 @@ class Marker {
       return
     }
 
-    let map = this._map;
+    let map = this.map;
     let type_id = point.car.type_id;
 
-    const RENDER_GRADIENT = this._store.state.showTrackingGradient;
+    const RENDER_GRADIENT = this.store.state.showTrackingGradient;
 
 
     // TODO убрать эту функцию, ибо она порождена багой на бэкэнде
@@ -324,11 +310,11 @@ class Marker {
   }
 
   setPoint(point) {
-    this._point = point;
+    this.point = point;
     this.coords = [point.coords_msk[1], point.coords_msk[0]];
     let [x, y] = this.coords;
 
-    let store = this._store;
+    let store = this.store;
 
     if (!store.state.isRenderPaused) {
       this._animation = new CoordsAnimation(this, x, y, 500);
@@ -338,28 +324,4 @@ class Marker {
     }
   }
 
-  contains(mousePoint) {
-    let map = this._map;
-
-    let store = this._store;
-    let point = this._point;
-
-    if (!store.isPointVisible(point)) {
-      return false;
-    }
-
-    let coords = map.latLngToLayerPoint(this._coords);
-    var zoom = map.getZoom();
-
-    let _zoom = this.getZoomCoef(map)
-    let radius = zoom < ZOOM_LARGE_ICONS ? SMALL_ICON_RADIUS * _zoom : LARGE_ICON_RADIUS;
-
-    var dx = coords.x - mousePoint.x;
-    var dy = coords.y - mousePoint.y;
-
-    return dx * dx + dy * dy < radius * radius;
-  }
-
 }
-
-export default Marker;

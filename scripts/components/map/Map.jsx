@@ -46,7 +46,7 @@ export default class OpenLayersMap extends Component {
           this.canvas.setAttribute('width', size[0]);
           this.canvas.setAttribute('height', size[1]);
 
-          return renderFn(this.canvas);
+          return renderFn(this.canvas, extent);
         },
         ratio: 1
       })
@@ -106,21 +106,21 @@ export default class OpenLayersMap extends Component {
     return <div className="openlayers-container"/>
   }
 
-  renderCanvas(canvas) {
+  renderCanvas(canvas, extent) {
 
     // canvas example
     // https://gist.github.com/acanimal/b2f60367badb0b17a4d9
 
     let pointsStore = this._pointsStore;
 
+console.log( 'render extent is', extent)
     let ctx = canvas.getContext('2d');
     let map = this.map;
     let selected = pointsStore.getSelectedPoint();
     let markers = this._markers;
 
-    const bounds = map.getView().calculateExtent(map.getSize());
 
-    let optimizedPoints = this.getMarkersInBounds(bounds);
+    let optimizedPoints = this.getMarkersInBounds(extent);
 
     const options = {
       showPlates: this.props.showPlates

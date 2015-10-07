@@ -17,7 +17,6 @@ import {
 } from '../../../constants/track.js';
 
 // @todo убрать прозрачность на больших зум левелах
-const ZOOM_THRESHOLD = 15;
 const ZOOM_LARGE_ICONS = 8;
 
 const PI_TIMES_TWO = Math.PI * 2;
@@ -40,11 +39,7 @@ class Marker {
     this._point = point;
     this._map = map;
     this._store = store;
-
-    let coords = point.coords_msk;
-    //coords[0] = -coords[0];
-
-    this.coords = coords;
+    this.coords = [point.coords_msk[1], point.coords_msk[0]];
     this._animation = null;
   }
 
@@ -76,13 +71,14 @@ class Marker {
   }
 
 
-  getZoomRatio(){
+  getZoomRatio() {
     let map = this._map;
     let zoom = map.getView().getZoom();
     let coef = 8 - (ZOOM_LARGE_ICONS - zoom);
     return coef > 0 ? coef * .4 : 1;
 
   }
+
   _renderSmall(context, pixel) {
 
     let point = this._point;
@@ -329,7 +325,7 @@ class Marker {
 
   setPoint(point) {
     this._point = point;
-    this.coords = point.coords_msk;
+    this.coords = [point.coords_msk[1], point.coords_msk[0]];
     let [x, y] = this.coords;
 
     let store = this._store;

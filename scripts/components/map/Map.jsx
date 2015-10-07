@@ -21,10 +21,10 @@ export default class OpenLayersMap extends Component {
 
   constructor(props, context) {
     super(props, context);
+    let self = this;
 
     this._points = {};
     this._pointsStore = this.props.flux.getStore('points');
-
 
     let initialView = new ol.View({
       center: this.props.center,
@@ -41,7 +41,7 @@ export default class OpenLayersMap extends Component {
       source: new ol.source.ImageCanvas({
         canvasFunction: function draw(extent, res, pixelRatio, size, proj) {
           if (!this.canvas) {
-            this.canvas = document.createElement('canvas');
+            self.canvas = this.canvas = document.createElement('canvas');
           }
           this.canvas.setAttribute('width', size[0]);
           this.canvas.setAttribute('height', size[1]);
@@ -113,10 +113,6 @@ export default class OpenLayersMap extends Component {
 
     let pointsStore = this._pointsStore;
 
-    /*  let isRenderPaused = pointsStore.state.isRenderPaused;
-      if (isRenderPaused) return;*/
-
-
     let ctx = canvas.getContext('2d');
     let map = this.map;
     let selected = pointsStore.getSelectedPoint();
@@ -124,33 +120,24 @@ export default class OpenLayersMap extends Component {
 
     const bounds = map.getView().calculateExtent(map.getSize());
 
-    // ctx.save();
-    //ctx.setTransform(1, 0, 0, 1, 0, 0);
-    // ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // ctx.restore();
-
-    let optimizedPoints = this._points; //this.getMarkersInBounds(bounds);
+    let optimizedPoints = this.getMarkersInBounds(bounds);
 
     const options = {
       showPlates: this.props.showPlates
     };
 
-
-    let rendered = 0;
     let keys = Object.keys(optimizedPoints);
+
+    console.log( 'rendered only', keys.length, 'of', Object.keys(this._points).length, 'points')
 
     for (let i = 0, till = keys.length; i < till; i++) {
 
-      //if ( i > 1) return;
       let key = keys[i];
       let marker = optimizedPoints[key];
       let id = marker._point.id;
 
       if (selected === null || id !== selected.id) {
-        //if ( POINTS_CACHE_MAP[id] === undefined || POINTS_CACHE_MAP[id] < marker._point.timestamp){
         marker.render(ctx, false, 0, options);
-        rendered++;
-      // }
       }
     }
 
@@ -193,18 +180,16 @@ export default class OpenLayersMap extends Component {
     let points = this._points;
     let keys = Object.keys(points);
 
-    return points;
-
     for (let i = 0, till = keys.length; i < till; i++) {
       let key = keys[i];
       let point = points[key];
 
-      if (bounds.contains(marker._coords)) {
-        returns.push(marker)
+      // @todo переписать на простые сравнения, без метода contains
+      if (ol.extent.containsCoordinate(bounds, point.coords)) {
+        returns.push(point)
       }
     }
 
-    console.log(returns);
     return returns;
   }
 

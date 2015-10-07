@@ -7,7 +7,7 @@ const TILE_SIZE = MapServerConfig.tileInfo.rows;
 const ORIGIN = MapServerConfig.tileInfo.origin;
 
 export function projectToPixel([x, y]) {
-	return olmap.getPixelFromCoordinate([y, x])
+	return olmap.getPixelFromCoordinate([x, y])
 }
 
 export let EXTENT = [FULL_EXTENT.xmin, FULL_EXTENT.ymin, FULL_EXTENT.xmax, FULL_EXTENT.ymax]

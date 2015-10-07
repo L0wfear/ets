@@ -3,7 +3,7 @@ import { getTypeById } from '../../../types.js';
 import { getTrackColor, getTrackPointByColor } from '../../../helpers/track.js';
 import CoordsAnimation from './CoordsAnimation.js';
 import { getSmallIcon, getBigIcon } from '../../../icons/car.js';
-import {projectLonLat, projectToPixel} from '../../map/MskAdapter.js';
+import {projectToPixel} from '../../map/MskAdapter.js';
 
 import {
   SMALL_ICON_RADIUS,
@@ -18,7 +18,7 @@ import {
 
 // @todo убрать прозрачность на больших зум левелах
 const ZOOM_THRESHOLD = 15;
-const ZOOM_LARGE_ICONS = 14;
+const ZOOM_LARGE_ICONS = 8;
 
 const PI_TIMES_TWO = Math.PI * 2;
 
@@ -40,36 +40,15 @@ class Marker {
     this._point = point;
     this._map = map;
     this._store = store;
-
-
-    let coords = point.coords;
-
-    //this.coords = point.coords_msk;
-
-    //this._crs = map.options.crs;
+    this.coords = point.coords_msk;
     this._animation = null;
-
-    this.projectedCoords = projectLonLat( coords );
-
-   // console.log( 'original coords is', coords, 'projected coords is ', this.projectedCoords);
-
-    /*if (this.coords[0] !== null) {
-      this.projectedPoint = olmap.getPixelFromCoordinate(this.coords);
-      //this._crs.project(L.latLng(this._coords));
-      //this._projectedX = projectedPoint.x;
-      //this._projectedY = projectedPoint.y;
-    }*/
   }
 
 
   render(context, selected, time, options) {
     let store = this._store;
     let point = this._point;
-
-    let pixel = projectToPixel( this.projectedCoords )
-
-
-    //console.log( 'trying to render', this )
+    let pixel = projectToPixel(this.coords)
 
     // TODO убрать отсюда эту проверку
     // просто возвращать из хранилища изначально отфильтрованные точки
@@ -105,7 +84,7 @@ class Marker {
   }
 
   _renderLarge(context, selected, options, pixel) {
-    let map = this._map;
+
     let point = this._point;
     let color = getStatusById(point.status).color;
     let direction = point.direction;

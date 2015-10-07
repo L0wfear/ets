@@ -106,7 +106,7 @@ rules:
  "no-unused-vars": 2
  "no-use-before-define": 2
  indent: 
-  - 2
+  - 0
   - 2
   - SwitchCase: 1
  "brace-style": 2

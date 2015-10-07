@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import LoginPage from './LoginPage.jsx';
 import OpenlayersPage from './OpenLayers.jsx';
-import FluxComponent from 'flummox/component';
-import NotificationSystem from 'react-notification-system';
+//import FluxComponent from 'flummox/component';
+//import NotificationSystem from 'react-notification-system';
 
 class App extends Component {
 

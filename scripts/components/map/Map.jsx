@@ -1,8 +1,7 @@
 // import ol from 'imports?define=>false!openlayers';
 import React, { Component } from 'react';
 import CarMarker from '../markers/car/Marker.js';
-
-import {project as MSKProject, projectLatLon} from './MskAdapter.js';
+import { EXTENT, PROJECTION } from './MskAdapter.js'
 
 // WebGL example
 // http://openlayers.org/en/master/examples/icon-sprite-webgl.html
@@ -19,10 +18,8 @@ global.ol = ol;
 //olx.FrameState.pixelRatio = 1;
 
 const TILES_URL = 'http://ods.mos.ru/ssd/ArcGIS/rest/services/egko_go/MapServer' // '//ods.mos.ru/ssd/ArcGIS/rest/services/egko_go/MapServer';
-const TILE_SIZE = [MapServerConfig.tileInfo.rows, MapServerConfig.tileInfo.cols];
+const TILE_SIZE = MapServerConfig.tileInfo.rows;
 const ORIGIN = MapServerConfig.tileInfo.origin;
-const INITIAL_EXTENT = MapServerConfig.initialExtent;
-const FULL_EXTENT = MapServerConfig.fullExtent;
 
 let resolutions = [];
 let scales = [];
@@ -62,40 +59,33 @@ export default class OpenLayersMap extends Component {
    */
   componentDidMount() {
 
-    let some_extent = [4207094.0368161015, 7465145.9304434545, 4216877.976436604, 7474929.870063957];
-
     let initialView = new ol.View({
       center: this.props.center,
       zoom: this.props.zoom,
-      minZoom: 0,
-      maxZoom: 20, 
-     // projection: 'EPSG:4326'
-      //extent: some_extent
+      minZoom: 2,
+      maxZoom: 20,
+      projection: PROJECTION,
+      extent: EXTENT
     })
 
-
-    let layerExtent = [FULL_EXTENT.xmin, FULL_EXTENT.ymin, FULL_EXTENT.xmax, FULL_EXTENT.ymax] //);
-
-
-    let MSK_SOURCE = new ol.source.TileArcGISRest({
-        url: TILES_URL
-      });
-
-    window.MSK = MSK_SOURCE
-
-    let MSK77Layer = new ol.layer.Tile({
-      source: MSK_SOURCE
+    let arcgisLayer = new ol.layer.Tile({
+      source: new ol.source.TileImage({
+          tileUrlFunction: function(tileCoord, pixelRatio, projection) {
+              var z = tileCoord[0];
+              var x = tileCoord[1];
+              var y = -tileCoord[2] - 1;
+              return TILES_URL + '/tile/' + z + '/' + y + '/' + x
+          },
+          projection: PROJECTION,
+          tileGrid: new ol.tilegrid.TileGrid({
+              origin: [ORIGIN.x, ORIGIN.y],
+              resolutions: resolutions,
+              tileSize: TILE_SIZE
+          })
+      }),
+      extent: EXTENT
     });
 
-
-    let canvasLayer = new ol.layer.Image({
-        source: new ol.source.ImageCanvas({
-          canvasFunction: canvasFunction
-        })
-      });
-
-    window.MSK_LAYER = MSK77Layer;
-    console.log( MSK_SOURCE)
 
     let container = React.findDOMNode(this);
 
@@ -105,24 +95,10 @@ export default class OpenLayersMap extends Component {
         target: 'olmap',
         renderer: 'canvas',
         controls: ol.control.defaults(),
-
-        layers: [
-        //canvasLayer,
-
-        /*new ol.layer.Tile({
-          source: new ol.source.XYZ({
-            url: TILES_URL + '/tile/{z}/{y}/{x}'
-          })
-        }),*/
-
-       // new ol.layer.Tile({
-        //    source: new ol.source.MapQuest({layer: 'sat'})
-        //  }),
-        MSK77Layer
-        ]
+        layers: [arcgisLayer]
       })
-    map.setTarget(container);
 
+    map.setTarget(container);
 
     this._map = global.olmap = map;
 
@@ -130,11 +106,6 @@ export default class OpenLayersMap extends Component {
     //this.renderCanvas()
 
     map.on('click', this.onClick.bind(this))
-
-    function canvasFunction(extent, resolution, pixelRatio, size, projection){
-      console.log( 'canvas works');
-    }
-
     this.renderCanvas()
   }
 
@@ -145,8 +116,6 @@ export default class OpenLayersMap extends Component {
     let pixel = ev.pixel; // координаты viewport
     let coordinate = ev.coordinate;
 
-
-    console.log('lonlat from pixel', ol.proj.toLonLat(coordinate))
     console.log( 'coord from pixel', map.getCoordinateFromPixel(pixel))
     console.log( 'pixel from coordinate ',map.getPixelFromCoordinate(coordinate))
 
@@ -156,12 +125,10 @@ export default class OpenLayersMap extends Component {
     return <div className="openlayers-container"/>
   }
 
-  projectCoordToViewportPixel([x, y]){
-     return this._map.getPixelFromCoordinate([x,y])
-  }
-
   renderCanvas(time) {
 
+// canvas example
+// https://gist.github.com/acanimal/b2f60367badb0b17a4d9
 
     let pointsStore = this._pointsStore;
 
@@ -188,7 +155,6 @@ export default class OpenLayersMap extends Component {
       showPlates: this.props.showPlates
     };
 
-console.log( 'rendering canvas ')
 
     let rendered = 0;
     let keys = Object.keys(optimizedPoints);

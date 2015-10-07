@@ -13,13 +13,13 @@ import React from 'react';
 import App from './components/App.jsx';
 import NotificationSystem from './components/NotificationSystem.jsx';
 import Flux from './Flux.js';
-import { getAllPoints } from './adapter.js';
+//import { getAllPoints } from './adapter.js';
 //import icons from './icons/index.js';
-import config from './config.js';
+//import config from './config.js';
 import Modal from 'react-modal';
 import RenderLoop from './RenderLoop.js';
 import Stats from './Stats.js';
-import ReconnectingWebSocket from './ReconnectingWebsocket.js';
+//import ReconnectingWebSocket from './ReconnectingWebsocket.js';
 
 import { loadCustomers } from './customers.js';
 import { loadModels } from './models.js';

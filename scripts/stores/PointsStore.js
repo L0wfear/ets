@@ -53,11 +53,6 @@ export default class PointsStore extends Store {
       isRenderPaused: false
     };
 
-    /* this.addListener('change', function(){
-       console.log('I have changed', this.state);
-     });
-*/
-    //let ws = new WebSocket(config.ws);
     let ws = new ReconnectingWebSocket(config.ws, null);
 
     ws.onmessage = ({data}) => {

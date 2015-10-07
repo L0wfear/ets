@@ -58,8 +58,8 @@ class MainPage extends Component {
           <Sidebar/>
 
           <Map
-              zoom={10}
-              center={[4191042.260876214, 7500918.459680917]}/>
+              zoom={3}
+              center={[-399.43090337943863, -8521.192605428025]}/>
 
 
         </FluxComponent>

@@ -21,7 +21,9 @@ class LoginStore extends Store {
   }
 
   handleLogin(currentUser) {
-    this.setState({ currentUser });
+    this.setState({
+      currentUser
+    });
   }
 }
 

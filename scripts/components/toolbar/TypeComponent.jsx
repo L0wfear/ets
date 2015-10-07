@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import Filter from './Filter.jsx';
-import { getIcon } from '../../icons/index.js';
+import { getIcon } from '../../icons/car.js';
 
 export default class TypeComponent extends Component {
 
@@ -12,7 +11,7 @@ export default class TypeComponent extends Component {
         {type.icon ? <img className="type-filter-icon" src={getIcon(type.icon).src}/> : null}
         {type.title}
       </span>
-    );
+    )
   }
 
 }

@@ -1,25 +1,7 @@
-import {getTypeById} from './types.js';
+import { getTypeById } from '../types.js';
+import { TRACK_COLORS } from '../constants/track.js';
 
-let twoDigits = (n) => n < 10 ? '0'+n : n;
-
-export function makeDate (date) {
-  return date.getFullYear()+'-'+twoDigits(date.getMonth()+1)+'-'+twoDigits(date.getDate())
-}
-
-export function makeTime (date, withSeconds = false) {
-  return twoDigits(date.getHours())+':'+twoDigits(date.getMinutes())+( withSeconds ? ':'+twoDigits(date.getSeconds()) : '')
-}
-
-
-// TODO move CONSTS to settings store
-export const TRACK_COLORS = {
-  green: '#6c0',
-  greenyellow: '#cf3',
-  yellow: '#ff3',
-  red: '#f03',
-  stop: '#005',
-  point_border: '#777'
-};
+export { getTrackPointByColor } from '../icons/track/points.js';
 
 /**
  * получение цвета линии трэка
@@ -27,7 +9,7 @@ export const TRACK_COLORS = {
  * @param speed
  * @returns color string
  */
-export function getTrackColor (speed, type_id, opacity = 1) {
+export function getTrackColor(speed, type_id, opacity = 1) {
   /*
 
    0-10кмч - зеленый
@@ -61,7 +43,7 @@ export function getTrackColor (speed, type_id, opacity = 1) {
     + parseInt(result[1], 16) + ','
     + parseInt(result[2], 16) + ','
     + parseInt(result[3], 16) + ','
-    + opacity+')' : null
+    + opacity + ')' : null
   }
 
   let speed_max = getTypeById(type_id).speed_max;
@@ -71,25 +53,25 @@ export function getTrackColor (speed, type_id, opacity = 1) {
    return colors.stop
    }*/
 
-  if ( speed >= 0 && speed < 10 ){
+  if (speed >= 0 && speed < 10) {
     result = TRACK_COLORS.green
   }
 
-  if ( speed >= 10 && speed < 20  ) {
-    result =  TRACK_COLORS.greenyellow
+  if (speed >= 10 && speed < 20) {
+    result = TRACK_COLORS.greenyellow
   }
 
-  if ( speed >= 20 && speed < 30 ) {
-    result =  TRACK_COLORS.greenyellow
+  if (speed >= 20 && speed < 30) {
+    result = TRACK_COLORS.greenyellow
   }
 
-  if ( speed >= 30 && speed < speed_max){
+  if (speed >= 30 && speed < speed_max) {
     result = TRACK_COLORS.yellow
   }
 
-  if ( speed >= speed_max ) {
+  if (speed >= speed_max) {
     result = TRACK_COLORS.red
   }
 
-  return opacity === 1 ? result : hexToRgba( result, opacity);
+  return opacity === 1 ? result : hexToRgba(result, opacity);
 }

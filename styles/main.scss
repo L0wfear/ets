@@ -1773,12 +1773,14 @@ body {
   }
 }
 
-.openlayers-container {
+
+#content {
   width:100%;
   height:100%;
 }
-/*.openlayers-container, #olmap{
-  width:1000px;
-  height:700px;
+
+.openlayers-container {
+  width:100%;
+  height:100%;
   position:absolute;
-}*/
+}

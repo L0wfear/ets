@@ -1,11 +1,11 @@
 import { Store } from 'flummox';
 import statuses from '../statuses.js';
-import types from '../types.js';
+//import types from '../types.js';
 import { getTrack } from '../adapter.js';
 import { getOwnerById } from '../owners.js';
 import config from '../config.js';
 import ReconnectingWebSocket from '../ReconnectingWebsocket.js';
-import simplify from '../vendor/simplify.js';
+//import simplify from '../vendor/simplify.js';
 
 export default class PointsStore extends Store {
 
@@ -53,23 +53,23 @@ export default class PointsStore extends Store {
       isRenderPaused: false
     };
 
-   /* this.addListener('change', function(){
-      console.log('I have changed', this.state);
-    });
+    /* this.addListener('change', function(){
+       console.log('I have changed', this.state);
+     });
 */
     //let ws = new WebSocket(config.ws);
     let ws = new ReconnectingWebSocket(config.ws, null);
 
-    ws.onmessage = ({ data }) => {
+    ws.onmessage = ({data}) => {
       this.handleUpdatePoints(JSON.parse(data));
     }
 
-    ws.onclose =  (ev) => {
-      global.NOTIFICATION_SYSTEM.notify( 'Потеряно соединение с WebSocket, пытаемся переподключиться', 'warning')
+    ws.onclose = (ev) => {
+      global.NOTIFICATION_SYSTEM.notify('Потеряно соединение с WebSocket, пытаемся переподключиться', 'warning')
     }
 
-    ws.onerror =  (ev) => {
-      global.NOTIFICATION_SYSTEM.notify( 'Ошибка WebSocket', 'error')
+    ws.onerror = (ev) => {
+      global.NOTIFICATION_SYSTEM.notify('Ошибка WebSocket', 'error')
     }
 
   }
@@ -90,35 +90,34 @@ export default class PointsStore extends Store {
       // если информация в обновлении устарела - ничего не делаем
       if (key in points &&
         points[key].timestamp > pointUpdate.timestamp) {
-        console.warn( 'got old info for point!');
+        console.warn('got old info for point!');
         continue;
       }
 
       points[key] = Object.assign({}, points[key], pointUpdate);
 
-      if ( !points[key].track ){
+      if (!points[key].track) {
         points[key].track = null
-      } else {
-        if ( !!selected && selected.id === points[key].id ){
+      } else if (!!selected && selected.id === points[key].id) {
 
-          if (points[key].TRACK_NEEDS_UPDATE) {
-            let point = {
-              coords: pointUpdate.coords,
-              direction: pointUpdate.direction,
-              speed_avg: pointUpdate.speed,
-              distance: pointUpdate.distance || 'Н/Д',
-              speed_max: pointUpdate.speed_max || 'Н/Д',
-              nsat: pointUpdate.nsat || 'Н/Д',
-              timestamp: pointUpdate.timestamp
-            };
+        if (points[key].TRACK_NEEDS_UPDATE) {
+          let point = {
+            coords: pointUpdate.coords,
+            direction: pointUpdate.direction,
+            speed_avg: pointUpdate.speed,
+            distance: pointUpdate.distance || 'Н/Д',
+            speed_max: pointUpdate.speed_max || 'Н/Д',
+            nsat: pointUpdate.nsat || 'Н/Д',
+            timestamp: pointUpdate.timestamp
+          };
 
-            console.warn('continuisly updating track ')
-            points[key].track.push(point);
-          } else {
-            console.warn('not continuisly updating track ')
-          }
+          console.warn('continuisly updating track ')
+          points[key].track.push(point);
+        } else {
+          console.warn('not continuisly updating track ')
         }
       }
+
 
       // HACK
       // whatever...
@@ -127,13 +126,18 @@ export default class PointsStore extends Store {
       }
     }
 
-    let state = Object.assign( {}, {points}, this.countDimensions());
+    let state = Object.assign({}, {
+      points
+    }, this.countDimensions());
+
     this.setState(state);
   }
 
-  countDimensions(){
+  countDimensions() {
 
-    if (this.state.isRenderPaused) return;
+    if (this.state.isRenderPaused) {
+      return
+    }
 
     let points = this.state.points;
 
@@ -157,24 +161,30 @@ export default class PointsStore extends Store {
       }
     }
 
-    return { byStatus, byConnectionStatus };
+    return {
+      byStatus,
+      byConnectionStatus
+    };
   }
 
-  handleSetFilter(update, callback = () => {} ) {
+  handleSetFilter(update, callback = () => {}) {
     let filter = Object.assign({}, this.state.filter, update);
     let selected = this.state.selected;
 
-   /* if (selected && !this._isPointVisible(selected, filter)) {
-      selected = null;
-    }*/
+    /* if (selected && !this._isPointVisible(selected, filter)) {
+       selected = null;
+     }*/
 
-    let state = Object.assign( {}, {filter, selected}, this.countDimensions());
+    let state = Object.assign({}, {
+      filter,
+      selected
+    }, this.countDimensions());
     this.setState(state);
 
     // хреновое решение, но зато работает
     // решится по-другому при рефакторинге
     // TODO REFACTOR
-    setTimeout( callback, 500)
+    setTimeout(callback, 500)
   }
 
   handleUpdateTrack(
@@ -183,34 +193,45 @@ export default class PointsStore extends Store {
       new Date().getMonth(),
       new Date().getDate()
     ).getTime(),
-     to_dt = new Date().getTime() ){
+    to_dt = new Date().getTime()) {
 
     let id = this.state.selected.id;
 
-    getTrack(id, from_dt, to_dt )
+    getTrack(id, from_dt, to_dt)
       .then(track => this.handleReceiveTrack([id, track, to_dt]))
   }
 
   handleSelectPoint(selected) {
 
     if (!!selected === false) {
-      this.setState({selected: false});
+      this.setState({
+        selected: false
+      });
       return;
     }
 
-    if (selected && ! selected.car) return;
+    if (selected && !selected.car) {
+      return
+    }
 
-    if (this.state.selected && this.state.selected.track) this.state.selected.track.length = 0;
+    if (this.state.selected && this.state.selected.track) {
+      this.state.selected.track.length = 0;
+    }
 
     selected.TRACK_NEEDS_UPDATE = true; //by default - set flag to true
 
-    this.setState({ selected, trackingMode: false});
+    this.setState({
+      selected,
+      trackingMode: false
+    });
   }
 
-  toggleSelectedPointTrackUpdating( flag ){
+  toggleSelectedPointTrackUpdating(flag) {
     let point = this.state.selected;
     point.TRACK_NEEDS_UPDATE = flag;
-    this.setState({selected: point})
+    this.setState({
+      selected: point
+    })
   }
 
 
@@ -222,17 +243,19 @@ export default class PointsStore extends Store {
       now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), 0
     );
 
-    if ( point.track ) {
+    if (point.track) {
       point.track.length = 0;
     }
 
-    if ( track.length === 0 ){
-      console.warn( 'received null track for some car')
+    if (track.length === 0) {
+      console.warn('received null track for some car')
     } else {
-      point.track = track;  //simplify(track, .00001);
-      if ( point.id === this.state.selected.id ){
+      point.track = track; //simplify(track, .00001);
+      if (point.id === this.state.selected.id) {
         point.TRACK_NEEDS_UPDATE = this.state.selected.TRACK_NEEDS_UPDATE;
-        this.setState({ selected: point })
+        this.setState({
+          selected: point
+        })
       }
     }
   }
@@ -256,16 +279,18 @@ export default class PointsStore extends Store {
       filter.owner = [user.owner];
     }
 
-    this.setState({ filter });
+    this.setState({
+      filter
+    });
 
   }
 
   getVisiblePoints() {
     let points = [];
 
-    for ( let k in this.state.points ){
+    for (let k in this.state.points) {
       let point = this.state.points[k];
-      if ( this.isPointVisible ( point )){
+      if (this.isPointVisible(point)) {
         points.push(point);
       }
     }
@@ -277,11 +302,23 @@ export default class PointsStore extends Store {
     return this._isPointVisible(point, this.state.filter);
   }
 
-  setTracking (value) { this.setState({trackingMode: value}) }
+  setTracking(value) {
+    this.setState({
+      trackingMode: value
+    })
+  }
 
-  handleSetShowGradient( flag ){ this.setState( {showTrackingGradient: flag }) }
+  handleSetShowGradient(flag) {
+    this.setState({
+      showTrackingGradient: flag
+    })
+  }
 
-  handleSetShowPlates(showPlates) { this.setState({ showPlates }) }
+  handleSetShowPlates(showPlates) {
+    this.setState({
+      showPlates
+    })
+  }
 
   _isPointVisible(point, filter) {
     let visible = true;
@@ -292,18 +329,18 @@ export default class PointsStore extends Store {
     if (!filter) return visible;
 
     // return true for selected point anyway
-    if ( this.state.selected !== null && point.id === this.state.selected.id ) return true ;
+    if (this.state.selected !== null && point.id === this.state.selected.id) return true;
 
     if (filter.status) {
       visible = visible && filter.status.indexOf(point.status) !== -1;
       if (!visible) return false;
     }
 
-    if (filter.bnso_gos && filter.bnso_gos.length > 0 ){
+    if (filter.bnso_gos && filter.bnso_gos.length > 0) {
       let text = filter.bnso_gos.toLowerCase();
       visible = visible && (
-              point.car.gps_code.toLowerCase().indexOf(text) + 1 ||
-              point.car.gov_number.toLowerCase().indexOf(text) + 1
+        point.car.gps_code.toLowerCase().indexOf(text) + 1 ||
+        point.car.gov_number.toLowerCase().indexOf(text) + 1
       );
 
       if (!visible) return false;
@@ -357,15 +394,19 @@ export default class PointsStore extends Store {
     return this.state.selected;
   }
 
-  pauseRendering(){
-    this.setState({isRenderPaused: true})
+  pauseRendering() {
+    this.setState({
+      isRenderPaused: true
+    })
   }
 
-  unpauseRendering(){
-    this.setState({isRenderPaused: false})
+  unpauseRendering() {
+    this.setState({
+      isRenderPaused: false
+    })
   }
 
-  isRenderPaused(){
+  isRenderPaused() {
     return false;
     return this.state.isRenderPaused;
   }

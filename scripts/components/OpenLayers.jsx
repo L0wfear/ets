@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import FluxComponent from 'flummox/component';
-import OpenLayersMap from './openlayers/map.jsx';
+import Map from './map/Map.jsx';
 import Toolbar from './toolbar/Toolbar.jsx';
 import Sidebar from './Sidebar.jsx';
 import WeatherWidget from './WeatherWidget.jsx';
-import Modal from 'react-modal';
+//import Modal from 'react-modal';
 
 
 //@TODO убрать хардкод и показывать/убирать по пропсам
 class Preloader extends Component {
 
-  render(){
+  render() {
     return (
       <div className="cssload-loader"></div>
     )
@@ -57,10 +57,12 @@ class MainPage extends Component {
 
           <Sidebar/>
 
-          <OpenLayersMap/>
+          <Map
+              zoom={10}
+              center={[4191042.260876214, 7500918.459680917]}/>
 
 
-        </FluxComponent> 
+        </FluxComponent>
          <WeatherWidget/>
       </div>
     );

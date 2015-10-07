@@ -8,11 +8,9 @@ import L from '../vendor/leaflet.8.js';
 import 'leaflet-zoombox/L.Control.ZoomBox.min.js';
 import _ from 'lodash';
 import { getGeoObjectsByCoords, getTrackPointInfo } from '../adapter.js';
-import { makeDate, makeTime } from '../helpers.js';
+import { makeDate, makeTime } from '../helpers/dates.js';
 
 let SIDEBAR_WIDTH_PX = 500;
-
-
 let POINTS_CACHE_MAP = {};
 
 L.Map.include({

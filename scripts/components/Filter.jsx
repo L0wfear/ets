@@ -16,7 +16,7 @@ let STATUSES = [
     id: 'stop',
     title: 'Стоянка (на базе)',
     icon: 'images/car-gray.png'
-  }  
+  }
 ];
 
 export default React.createClass({
@@ -33,14 +33,14 @@ export default React.createClass({
         <button key={s.id} className={className} onClick={() => this.toggleFilter(s.id)}>
           <img src={s.icon}/>{s.title}
         </button>
-      );
+        );
     });
 
     return (
       <div className="map-filter">
         {buttons}
       </div>
-    );
+      );
   },
 
   toggleFilter(name) {

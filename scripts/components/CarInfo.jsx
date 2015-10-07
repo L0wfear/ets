@@ -4,20 +4,21 @@ import { getModelById } from '../models.js';
 import { getStatusById } from '../statuses.js';
 import { getTypeById } from '../types.js';
 import { getOwnerById } from '../owners.js';
-import { getCustomerById } from '../customers.js';
+//import { getCustomerById } from '../customers.js';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 import config from '../config.js';
-import { Sparklines, SparklinesBars, SparklinesLine, SparklinesNormalBand, SparklinesReferenceLine, SparklinesSpots } from './Sparklines.js';
-import { getTrackColor, TRACK_COLORS } from '../helpers.js';
+import { Sparklines, SparklinesLine } from './Sparklines.js';
+import { getTrackColor, TRACK_COLORS } from '../helpers/track.js';
+import { makeDate, makeTime, getStartOfToday } from '../helpers/dates.js';
 
 export class Preloader {
 
-  render(){
-    return (   // TODO заменить .svg
+  render() {
+    return ( // TODO заменить .svg
       <img src="images/infinity.gif" style={this.props.style} alt="Идет загрузка графика топлива"/>
-   /* <svg width='120px' height='120px' viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" xmlns:xlink="http://www.w3.org/1999/xlink" class="uil-inf"><rect x="0" y="0" width="100" height="100" fill="none" class="bk"></rect><path id="uil-inf-path" d="M24.3,30C11.4,30,5,43.3,5,50s6.4,20,19.3,20c19.3,0,32.1-40,51.4-40 C88.6,30,95,43.3,95,50s-6.4,20-19.3,20C56.4,70,43.6,30,24.3,30z" fill="none" stroke="#c0bb9c" stroke-width="1px" stroke-dasharray="5px"></path><circle cx="0" cy="0" r="5" fill="#00b8ff"><animateMotion begin="0s" dur="4s" repeatCount="indefinite"><mpath xlink:href="#uil-inf-path"></mpath></animateMotion></circle><circle cx="0" cy="0" r="5" fill="#00b8ff"><animateMotion begin="0.33s" dur="4s" repeatCount="indefinite"><mpath xlink:href="#uil-inf-path"></mpath></animateMotion></circle><circle cx="0" cy="0" r="5" fill="#00b8ff"><animateMotion begin="0.66s" dur="4s" repeatCount="indefinite"><mpath xlink:href="#uil-inf-path"></mpath></animateMotion></circle><circle cx="0" cy="0" r="5" fill="#00b8ff"><animateMotion begin="1s" dur="4s" repeatCount="indefinite"><mpath xlink:href="#uil-inf-path"></mpath></animateMotion></circle><circle cx="0" cy="0" r="5" fill="#00b8ff"><animateMotion begin="1.33s" dur="4s" repeatCount="indefinite"><mpath xlink:href="#uil-inf-path"></mpath></animateMotion></circle>
-    </svg>*/
-       )
+      /* <svg width='120px' height='120px' viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" xmlns:xlink="http://www.w3.org/1999/xlink" class="uil-inf"><rect x="0" y="0" width="100" height="100" fill="none" class="bk"></rect><path id="uil-inf-path" d="M24.3,30C11.4,30,5,43.3,5,50s6.4,20,19.3,20c19.3,0,32.1-40,51.4-40 C88.6,30,95,43.3,95,50s-6.4,20-19.3,20C56.4,70,43.6,30,24.3,30z" fill="none" stroke="#c0bb9c" stroke-width="1px" stroke-dasharray="5px"></path><circle cx="0" cy="0" r="5" fill="#00b8ff"><animateMotion begin="0s" dur="4s" repeatCount="indefinite"><mpath xlink:href="#uil-inf-path"></mpath></animateMotion></circle><circle cx="0" cy="0" r="5" fill="#00b8ff"><animateMotion begin="0.33s" dur="4s" repeatCount="indefinite"><mpath xlink:href="#uil-inf-path"></mpath></animateMotion></circle><circle cx="0" cy="0" r="5" fill="#00b8ff"><animateMotion begin="0.66s" dur="4s" repeatCount="indefinite"><mpath xlink:href="#uil-inf-path"></mpath></animateMotion></circle><circle cx="0" cy="0" r="5" fill="#00b8ff"><animateMotion begin="1s" dur="4s" repeatCount="indefinite"><mpath xlink:href="#uil-inf-path"></mpath></animateMotion></circle><circle cx="0" cy="0" r="5" fill="#00b8ff"><animateMotion begin="1.33s" dur="4s" repeatCount="indefinite"><mpath xlink:href="#uil-inf-path"></mpath></animateMotion></circle>
+       </svg>*/
+      )
   }
 }
 
@@ -50,11 +51,14 @@ class CarInfo extends Component {
 
     return (
       <div className="car-info">
-        <h3 style={{ fontWeight: 200, textAlign: 'center' }}>{plate}</h3>
+        <h3 style={{
+        fontWeight: 200,
+        textAlign: 'center'
+      }}>{plate}</h3>
         {this.renderModel()}
         {this.renderData()}
       </div>
-    );
+      );
   }
 
   renderModel() {
@@ -67,11 +71,11 @@ class CarInfo extends Component {
     let store = this.props.flux.getStore('points')
 
     // TODO убрать стили в css
-    let isTrackingMode =  store.state.trackingMode;
+    let isTrackingMode = store.state.trackingMode;
 
     let trackBtnIconClass = 'glyphicon glyphicon-screenshot ' + (isTrackingMode ? 'tracking-animate' : '');
     let trackBtnIconStyle = {
-      backgroundColor: '#eee',//#2ECC40',
+      backgroundColor: '#eee', //#2ECC40',
       border: '1px solid #ccc',
       borderRadius: 9,
       padding: 2,
@@ -95,187 +99,200 @@ class CarInfo extends Component {
     return (
       <Panel title={title}>
         {
-          <button className={trackBtnClass}
-                  onClick={this.toggleCarTracking.bind(this)}
-                  title="Следить за машиной"><span className={trackBtnIconClass} style={trackBtnIconStyle}></span>&nbsp;{isTrackingMode ? 'Следим' : 'Следить'}</button>}
+      <button className={trackBtnClass}
+      onClick={this.toggleCarTracking.bind(this)}
+      title="Следить за машиной"><span className={trackBtnIconClass} style={trackBtnIconStyle}></span>&nbsp;{isTrackingMode ? 'Следим' : 'Следить'}</button>}
           <button className={zoomToTrackClass}
-                  onClick={isTrackLoaded && this.zoomToTrack.bind(this)}
-                  style={zoomToTrackStyle}
-                  title="Показать маршрут"><span className="glyphicon glyphicon-resize-full"></span>&nbsp;Маршрут</button>
+      onClick={isTrackLoaded && this.zoomToTrack.bind(this)}
+      style={zoomToTrackStyle}
+      title="Показать маршрут"><span className="glyphicon glyphicon-resize-full"></span>&nbsp;Маршрут</button>
         {
-         imageUrl ?
-           <img src={config.backend + config.images + imageUrl} style={{ margin: 10, width: 250, minHeight: 100 }}/>
-           : null
-         }
+      imageUrl ?
+        <img src={config.backend + config.images + imageUrl} style={{
+          margin: 10,
+          width: 250,
+          minHeight: 100
+        }}/>
+        : null
+      }
         {this.renderAttrs()}
         {isTrackLoaded ? this.renderTrackLegend() : null}
       </Panel>
-    );
+      );
   }
 
 
   // todo refactor that shit
-  renderTrackLegend(){
+  renderTrackLegend() {
 
     let colors = [];
     let car = this.props.car.car;
     let type_id = car.type_id;
     let prevColor = getTrackColor(0, type_id);
 
-    function addColor(color, speed){
-      if ( colors.length > 0 ){
-        colors[colors.length-1].till = speed-1;
+    function addColor(color, speed) {
+      if (colors.length > 0) {
+        colors[colors.length - 1].till = speed - 1;
       }
-      colors.push( {color: color, speed: speed})
+      colors.push({
+        color: color,
+        speed: speed
+      })
     }
 
     addColor(prevColor, 0);
 
-    for ( let i = 0, till = 100; i <= till; i++) {
+    for (let i = 0, till = 100; i <= till; i++) {
       let color = getTrackColor(i, type_id);
-      if ( color !== prevColor ){
+      if (color !== prevColor) {
         addColor(color, i);
         prevColor = color;
       }
     }
 
-    if ( colors[colors.length -1 ].till === undefined ){
-      colors[colors.length - 1 ].speed = colors[colors.length - 1 ].speed + '+'
+    if (colors[colors.length - 1].till === undefined) {
+      colors[colors.length - 1].speed = colors[colors.length - 1].speed + '+'
     }
 
 
-    let legend = colors.map((obj,i) => {
+    let legend = colors.map((obj, i) => {
 
-      let text = obj.speed +( obj.till ? ' – '+obj.till : '') + ' км/ч';
+      let text = obj.speed + (obj.till ? ' – ' + obj.till : '') + ' км/ч';
       let color = obj.color;
 
       return <div className="track-legend-item">
-          <div className="track-legend-point" style={{backgroundColor:color}}></div>
+          <div className="track-legend-point" style={{
+          backgroundColor: color
+        }}></div>
           <div className="track-legend-text">{text}</div>
       </div>
-    });
+      });
 
-    return (
-      <div className="track-legend">
+      return (
+        <div className="track-legend">
         <p className="track-legend-header">Цвета маршрута:</p>
         {legend}</div>
-    )
-  }
+        )
+    }
 
-  // TODO переместить это на более высокий уровень абстракции
-  zoomToTrack(){
-    let store = this.props.flux.getStore('points');
-    store.setTracking( false );
+    // TODO переместить это на более высокий уровень абстракции
+    zoomToTrack() {
+      let store = this.props.flux.getStore('points');
+      store.setTracking(false);
 
-    let track = this.props.car.track;
-    let bounds = track.map( p => p.coords )
+      let track = this.props.car.track;
+      let bounds = track.map(p => p.coords)
 
-    window.MAP.fitBounds(bounds, {
-      paddingBottomRight: [500,50],
-      paddingTopLeft: [50,50],
-      animate: true
-    });
+      window.MAP.fitBounds(bounds, {
+        paddingBottomRight: [500, 50],
+        paddingTopLeft: [50, 50],
+        animate: true
+      });
 
-  }
+    }
 
 
-  toggleCarTracking(){
-    let store = this.props.flux.getStore('points');
-    let isTrackingMode = store.state.trackingMode;
-    store.setTracking( !isTrackingMode );
-  }
+    toggleCarTracking() {
+      let store = this.props.flux.getStore('points');
+      let isTrackingMode = store.state.trackingMode;
+      store.setTracking(!isTrackingMode);
+    }
 
-  onShowGradientChange(){
+    onShowGradientChange() {
 
-    let store = this.props.flux.getStore('points');
-    let flag = store.state.showTrackingGradient;
-    store.handleSetShowGradient( !flag )
+      let store = this.props.flux.getStore('points');
+      let flag = store.state.showTrackingGradient;
+      store.handleSetShowGradient(!flag)
 
-  }
+    }
 
-  onTrackingDatesChange(){
-    let flag = this.state.tillNow;
+    onTrackingDatesChange() {
+      let flag = this.state.tillNow;
 
-    this.setState({tillNow: !flag}, ()=> {
+      this.setState({
+        tillNow: !flag
+      }, () => {
 
-      let to = this.refs.to_dt;
-      let from = this.refs.from_dt;
+        let to = this.refs.to_dt;
+        let from = this.refs.from_dt;
+        let store = this.props.flux.getStore('points');
+
+        store.toggleSelectedPointTrackUpdating(this.state.tillNow)
+
+        // keeping dates sync
+        to.setState({
+          value: new Date()
+        });
+        from.setState({
+          value: this.getStartOfToday()
+        });
+
+        this.loadTrack()
+      });
+    }
+
+    renderData() {
+
+      let now = new Date();
+      let start_of_today = getStartOfToday();
       let store = this.props.flux.getStore('points');
 
-      store.toggleSelectedPointTrackUpdating(this.state.tillNow)
+      let DATE_FORMAT = 'yyyy-MM-dd HH:mm';
+      let TIME_FORMAT = 'HH:mm';
 
-      // keeping dates sync
-      to.setState({value: new Date()});
-      from.setState({value: this.getStartOfToday()});
+      let _f = makeDate(this.refs.from_dt ? this.refs.from_dt.state.value : start_of_today);
+      let _t = makeDate(this.refs.to_dt ? this.refs.to_dt.state.value : now);
 
-      this.loadTrack()
-    });
-  }
+      let reloadBtnStyle = {
+        padding: '6px 9px',
+        height: 34,
+        marginLeft: 5,
+        marginTop: -3
+      };
 
-  renderData() {
+      let tillNow = this.state.tillNow;
+      let tillNowStyle = {
+        position: 'absolute',
+        top: -26,
+        right: 20,
+        fontWeight: 200
+      }
 
-    // TODO refactor
-    let now = new Date();
-    let start_of_today = this.getStartOfToday();
-    let store = this.props.flux.getStore('points');
+      let toClassname = 'chart-datepicker ' + (tillNow ? 'disabled' : '');
 
-    let DATE_FORMAT = "yyyy-MM-dd HH:mm";
-    let TIME_FORMAT = "HH:mm";
+      if (this.state.tillNow) {
+        // TODO FIXME
+        setTimeout(() => {
+          // LOL
+          if (!!this.refs.to_dt) {
+            this.refs.to_dt.setState({
+              value: now
+            })
+          }
+        }, 0)
+      }
 
-    let twoDigits = (v) => v < 10 ? '0'+v : v;
-    let makeDate = (date) => date.getFullYear()+'-'+(date.getMonth()+1)+'-'+twoDigits(date.getDate())+' '+twoDigits(date.getHours())+':'+twoDigits(date.getMinutes());
-
-    let _f = makeDate(this.refs.from_dt ? this.refs.from_dt.state.value : start_of_today);
-    let _t = makeDate(this.refs.to_dt ? this.refs.to_dt.state.value : now);
-
-    let reloadBtnStyle = {
-      padding: '6px 9px',
-      height: 34,
-      marginLeft:5,
-      marginTop: -3
-    };
-
-    let tillNow = this.state.tillNow;
-    let tillNowStyle = {
-      position:'absolute',
-      top:-26,
-      right:20,
-      fontWeight:200
-    }
-
-    let toClassname = 'chart-datepicker ' + ( tillNow ? 'disabled' : '');
-
-    if ( this.state.tillNow ){
-      // TODO FIXME
-      setTimeout(()=>{
-        // LOL
-        if ( !!this.refs.to_dt ){
-          this.refs.to_dt.setState({value: now })
-        }
-      }, 0)
-    }
-
-    let reloadBtnCN = 'glyphicon glyphicon-repeat ' + (this.props.car.track === null ? 'tracking-animate' : '');
+      let reloadBtnCN = 'glyphicon glyphicon-repeat ' + (this.props.car.track === null ? 'tracking-animate' : '');
 
 
-    let showGradientStyle = {
-      position:'absolute',
-      top: -26,
-      right: 120,
-      fontWeight:200
-    };
+      let showGradientStyle = {
+        position: 'absolute',
+        top: -26,
+        right: 120,
+        fontWeight: 200
+      };
 
-    let showGradient = store.state.showTrackingGradient;
+      let showGradient = store.state.showTrackingGradient;
 
-    return (
-      <div>
+      return (
+        <div>
         <Panel title="Трекинг" className="chart-datepickers-wrap">
           <DateTimePicker format={DATE_FORMAT}
-                          timeFormat={TIME_FORMAT}
-                          className="chart-datepicker"
-                          disabled={tillNow}
-                          defaultValue={start_of_today}
-                          ref="from_dt"/> –&nbsp;
+        timeFormat={TIME_FORMAT}
+        className="chart-datepicker"
+        disabled={tillNow}
+        defaultValue={start_of_today}
+        ref="from_dt"/> –&nbsp;
            <label style={showGradientStyle}>
              <input type="checkbox" checked={showGradient} ref="showGradient" onChange={this.onShowGradientChange.bind(this)}/> С градиентом
            </label>
@@ -284,19 +301,19 @@ class CarInfo extends Component {
            </label>
 
            <DateTimePicker timeFormat={TIME_FORMAT}
-                            format={DATE_FORMAT}
-                            ref="to_dt"
-                            className={toClassname}
-                            disabled={tillNow}
-                            defaultValue={now}
-                           readonly={tillNow} />
+        format={DATE_FORMAT}
+        ref="to_dt"
+        className={toClassname}
+        disabled={tillNow}
+        defaultValue={now}
+        readonly={tillNow} />
 
             <button title="Перезагрузить данные"
-                    style={reloadBtnStyle}
-                    className="btn btn-default btn-sm"
-                    type="button"
-                    onClick={this.loadTrack.bind(this)}
-                    disabled={tillNow}>
+        style={reloadBtnStyle}
+        className="btn btn-default btn-sm"
+        type="button"
+        onClick={this.loadTrack.bind(this)}
+        disabled={tillNow}>
               <span className={reloadBtnCN}></span>
             </button>
 
@@ -305,140 +322,181 @@ class CarInfo extends Component {
         </Panel>
         {this.renderFuelData(_f, _t)}
       </div>
-    );
-  }
+        );
+    }
 
-  renderAttrs(){
-    let car = this.props.car.car;
-    let props = [];
-    let addProp = (key, value) => props.push({key, value});
+    renderAttrs() {
+      let car = this.props.car.car;
+      let props = [];
+      let addProp = (key, value) => props.push({
+          key,
+          value
+        });
 
-    if (car.gov_number && car.gov_number.length) addProp('Гос. номер', car.gov_number)
-    if (this.props.car.id && this.props.car.id.length) addProp('ID БНСО', this.props.car.id)
-    addProp('Статус', getStatusById(this.props.car.status).title)
-    if (car.type_id && getTypeById(car.type_id)) addProp( 'Тип техники', getTypeById(car.type_id).title)
-    if (car.model_id && getModelById(car.model_id)) addProp('Шасси', getModelById(car.model_id).title)
-    if (car.owner_id && getOwnerById(car.owner_id)) addProp('Владелец', getOwnerById(car.owner_id).title);
+      if (car.gov_number && car.gov_number.length) addProp('Гос. номер', car.gov_number)
+      if (this.props.car.id && this.props.car.id.length) addProp('ID БНСО', this.props.car.id)
+      addProp('Статус', getStatusById(this.props.car.status).title)
+      if (car.type_id && getTypeById(car.type_id)) addProp('Тип техники', getTypeById(car.type_id).title)
+      if (car.model_id && getModelById(car.model_id)) addProp('Шасси', getModelById(car.model_id).title)
+      if (car.owner_id && getOwnerById(car.owner_id)) addProp('Владелец', getOwnerById(car.owner_id).title);
 
-    return (
-      <div style={{padding:'10px 0', borderTop:'1px solid #ddd', margin: '0 5px'}}>
+      return (
+        <div style={{
+          padding: '10px 0',
+          borderTop: '1px solid #ddd',
+          margin: '0 5px'
+        }}>
         {props.map(
-            p =>
-              <div style={{ textAlign: 'left', fontWeight: 200, color:'#666'}}>{p.key}: <span style={{color:'black', /*fontSize: 16*/}}>{p.value}</span>
+          p => <div style={{
+              textAlign: 'left',
+              fontWeight: 200,
+              color: '#666'
+            }}>{p.key}: <span style={{
+              color: 'black', /*fontSize: 16*/
+            }}>{p.value}</span>
               </div>)}
       </div>
-    )
-  }
-
-
-  renderFuelData(from, to){
-
-    let FUEL_DATA = [];
-    if ( this.state.fuelData ){
-      this.state.fuelData.forEach( function (d ){
-        FUEL_DATA.push ( d[1])
-      });
+        )
     }
 
 
-    let rendered = <div> Нет данных </div>;
-    if ( this.state.fuelData === null ){
-      rendered = <Preloader style={{height:103}}/>;
-    } else {
-      if ( FUEL_DATA.length > 0 ){
-        rendered = <div style={{fontSize:'10px'}}>
-                      <Sparklines data={FUEL_DATA} width={400} height={90} margin={6} style={{marginBottom:'10px'}}>
-                        <SparklinesLine style={{ strokeWidth: 1, stroke: "orange", fill: "orange" , fillOpacity:'0.25'}}/>
+    renderFuelData(from, to) {
+
+      let FUEL_DATA = [];
+      if (this.state.fuelData) {
+        this.state.fuelData.forEach(function(d) {
+          FUEL_DATA.push(d[1])
+        });
+      }
+
+
+      let rendered = <div> Нет данных </div>;
+      if (this.state.fuelData === null) {
+        rendered = <Preloader style={{
+          height: 103
+        }}/>;
+      } else 
+        if (FUEL_DATA.length > 0) {
+          rendered = <div style={{
+            fontSize: '10px'
+          }}>
+                      <Sparklines data={FUEL_DATA} width={400} height={90} margin={6} style={{
+            marginBottom: '10px'
+          }}>
+                        <SparklinesLine style={{
+            strokeWidth: 1,
+            stroke: 'orange',
+            fill: 'orange',
+            fillOpacity: '0.25'
+          }}/>
                       </Sparklines>
                         <span
-                          style={{position: 'absolute', left: '10px', transform: 'rotate(-90deg)', top: '46px'}}>% топлива</span>
-                      <span style={{position:'absolute',left:'47px',bottom:'5px'}}>{from}</span>
-                      <span style={{position:'absolute',right:'42px',bottom:'5px'}}>{to}</span>
+          style={{
+            position: 'absolute',
+            left: '10px',
+            transform: 'rotate(-90deg)',
+            top: '46px'
+          }}>% топлива</span>
+                      <span style={{
+            position: 'absolute',
+            left: '47px',
+            bottom: '5px'
+          }}>{from}</span>
+                      <span style={{
+            position: 'absolute',
+            right: '42px',
+            bottom: '5px'
+          }}>{to}</span>
                     </div>
+        }
+
+      return (
+        <Panel title="График уровня топлива">
+        {rendered}
+      </Panel>
+        )
+    }
+
+    fetchPointData() {
+      this.loadTrack()
+      this.fetchFuelData()
+    }
+
+    loadTrack() {
+
+      let refs = this.refs;
+      let from = refs.from_dt.state.value;
+      let to = this.state.tillNow ? Date.now() : refs.to_dt.state.value;
+
+      if (to - from > 24 * 60 * 60 * 1000) {
+        global.NOTIFICATION_SYSTEM.notify('Период запроса трэка не может превышать 24 часа', 'warning')
+        return;
+      }
+
+      let store = this.props.flux.getStore('points');
+
+      this.props.car.track = null;
+      store.handleUpdateTrack(from, to);
+
+      this.setState({
+        fuelData: null
+      })
+      this.fetchFuelData(from, to);
+    }
+
+    componentWillReceiveProps(nextProps) {
+      if (nextProps.car && nextProps.car !== this.props.car) {
+        //this.fetchImage();
       }
     }
 
-    return (
-      <Panel title="График уровня топлива">
-        {rendered}
-      </Panel>
-    )
-  }
+    getStartOfToday() {
 
-  fetchPointData(){
-    this.loadTrack()
-    this.fetchFuelData()
-  }
-
-  loadTrack() {
-
-    let refs = this.refs;
-    let from = refs.from_dt.state.value;
-    let to = this.state.tillNow ? Date.now() : refs.to_dt.state.value;
-
-    if ( to - from > 24*60*60*1000) {
-      global.NOTIFICATION_SYSTEM.notify('Период запроса трэка не может превышать 24 часа', 'warning')
-      return;
-    }
-
-    let store = this.props.flux.getStore('points');
-
-    this.props.car.track = null;
-    store.handleUpdateTrack(from, to );
-
-    this.setState({fuelData: null})
-    this.fetchFuelData(from, to);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.car && nextProps.car !== this.props.car) {
-      //this.fetchImage();
-    }
-  }
-
-  getStartOfToday(){
-
-    let date = new Date();
-    let today = new Date(
+      let date = new Date();
+      let today = new Date(
         date.getFullYear(),
         date.getMonth(),
         date.getDate()
       )
 
-    return today
-  }
+      return today
+    }
 
-  fetchFuelData(
-    from_dt = this.getStartOfToday(),
-    to_dt = new Date().getTime() ) {
+    fetchFuelData(
+      from_dt = getStartOfToday(),
+      to_dt = new Date().getTime()) {
 
-    from_dt = Math.floor( from_dt / 1000);
-    to_dt = Math.floor( to_dt / 1000);
+      from_dt = Math.floor(from_dt / 1000);
+      to_dt = Math.floor(to_dt / 1000);
 
-    fetch( config.backend + '/fuel/'+this.props.car.id+'/?from_dt='+from_dt+'&to_dt='+to_dt)
-      .then( r => r.json())
-      .then( r => {
-        this.setState( {
-          fuelData: r
+      fetch(config.backend + '/fuel/' + this.props.car.id + '/?from_dt=' + from_dt + '&to_dt=' + to_dt)
+        .then(r => r.json())
+        .then(r => {
+          this.setState({
+            fuelData: r
+          })
         })
-      })
-  }
+    }
 
-  fetchImage() {
-    this.setState({ imageUrl: null });
-
-    const car = this.props.car;
-
-    fetch(config.backend + `/car_image?model_id=${car.car.model_id}&car_id=${car.id}&type_id=${car.car.type_id}`)
-      .then(r => r.json())
-      .then(r => {
-        if (this.props.car === car) {
-          this.setState({ imageUrl: r})
-        }
+    fetchImage() {
+      this.setState({
+        imageUrl: null
       });
 
+      const car = this.props.car;
+
+      fetch(config.backend + `/car_image?model_id=${car.car.model_id}&car_id=${car.id}&type_id=${car.car.type_id}`)
+        .then(r => r.json())
+        .then(r => {
+          if (this.props.car === car) {
+            this.setState({
+              imageUrl: r
+            })
+          }
+        });
+
+    }
+
   }
 
-}
-
-export default CarInfo;
+  export default CarInfo;

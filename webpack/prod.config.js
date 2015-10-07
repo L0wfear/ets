@@ -11,7 +11,6 @@ var relativeAssetsPath = '../dist';
 var assetsPath = path.join(__dirname, relativeAssetsPath);
 
 module.exports = {
-  devtool: 'source-map',
   context: path.resolve(__dirname, '../'),
   entry: {
     'app': './scripts/app.jsx',
@@ -71,14 +70,14 @@ module.exports = {
     // optimizations
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
-    /*new webpack.optimize.UglifyJsPlugin({
-      compress: {
-          warnings: true
-      },
+   new webpack.optimize.UglifyJsPlugin({
+      // compress: {
+      //     warnings: true
+      // },
       sourceMap: false,
       mangle: false
     }),
-
+/* 
     function () {
       this.plugin('done', function(stats) {
         writeStats.call(this, stats, 'prod');

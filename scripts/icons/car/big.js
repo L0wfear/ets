@@ -1,49 +1,38 @@
-var DOMURL = window.URL || window.webkitURL || window;
-var icons = {};
-
 const IS_RETINA = window.devicePixelRatio >= 2;
 
+let icons = {};
 let iconCache = {};
 
-export function getIcon(name = 'drugoe', zoom = 1) {
+export default function getMapIcon(name = 'drugoe', zoom = 1) {
 
   let cached = true;
 
-  if (icons[name] === undefined ) {
+  if (typeof icons[name] === 'undefined') {
     name = 'drugoe';
   }
 
-  if ( iconCache[name] === undefined ){
+  if (typeof iconCache[name] === 'undefined') {
     iconCache[name] = [];
     cached = false
-  } else if ( iconCache[name][zoom] === undefined) {
-           cached = false
-         }
+  } else if (typeof iconCache[name][zoom] === 'undefined') {
+    cached = false
+  }
 
 
   if (!cached) {
-    let line = 40 * zoom ;
+    let line = 40 * zoom;
     let canvas = document.createElement('canvas');
     canvas.width = canvas.height = line;
     let ctx = canvas.getContext('2d');
 
     let temp_ctx = icons[name];
-    ctx.drawImage(temp_ctx, 0, 0, line, line)    ;
+    ctx.drawImage(temp_ctx, 0, 0, line, line);
 
     iconCache[name][zoom] = canvas;
     return canvas;
   } else {
     return iconCache[name][zoom]
   }
-}
-
-
-function loadIcon(name, data) {
-  let img = new Image();
-  img.onload = function () {
-    icons[name] =  img;
-  };
-  img.src = data;
 }
 
 const ICON_MAP = {
@@ -67,13 +56,20 @@ const ICON_MAP = {
   1000: 'neizvesten'
 }
 
-export function getIcon (id) {
+export function getIcon(id) {
   const icon = ICON_MAP[id] || 'drugoe';
   return icons[icon];
-};
+}
 
-export default icons;
+function loadIcon(name, data) {
+  let img = new Image();
+  img.onload = function() {
+    icons[name] = img;
+  };
+  img.src = data;
+}
 
+// @todo load with forEach from ICON_MAP
 loadIcon('greider', require('./greider.svg')),
 loadIcon('musorovoz', require('./musorovoz.svg')),
 loadIcon('podmetalka', require('./podmetalka.svg')),

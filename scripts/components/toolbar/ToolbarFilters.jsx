@@ -22,9 +22,8 @@ export default class ToolbarFilters extends Component {
         <Filter name="owner"
                 title="Владелец"
                 options={additiveFilters.owners}
-                search={true}
-          />
-      );
+                search={true}/>
+      )
     }
 
     if (currentUser.role === 'mayor') {

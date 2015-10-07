@@ -24,6 +24,44 @@ export default class OpenLayersMap extends Component {
 
     this._points = {};
     this._pointsStore = this.props.flux.getStore('points');
+
+
+    let initialView = new ol.View({
+      center: this.props.center,
+      zoom: this.props.zoom,
+      minZoom: 2,
+      maxZoom: 20,
+      projection: PROJECTION,
+      extent: EXTENT
+    })
+
+
+    let renderFn = this.renderCanvas.bind(this);
+    let canvasLayer = this.canvasLayer =  new ol.layer.Image({
+      source: new ol.source.ImageCanvas({
+        canvasFunction: function draw(extent, res, pixelRatio, size, proj) {
+          if (!this.canvas) {
+            this.canvas = document.createElement('canvas');
+          }
+          this.canvas.setAttribute('width', size[0]);
+          this.canvas.setAttribute('height', size[1]);
+
+          return renderFn(this.canvas);
+        },
+        ratio: 1
+      })
+    });
+
+     let map = new ol.Map(
+      {
+        view: initialView,
+        renderer: ['canvas', 'dom'],
+        controls: ol.control.defaults(),
+        layers: [ArcGisLayer, canvasLayer]
+      })
+
+     this.map = global.olmap = map;
+
   }
 
 
@@ -36,45 +74,31 @@ export default class OpenLayersMap extends Component {
    */
   componentDidMount() {
 
-    let initialView = new ol.View({
-      center: this.props.center,
-      zoom: this.props.zoom,
-      minZoom: 2,
-      maxZoom: 20,
-      projection: PROJECTION,
-      extent: EXTENT
-    })
-
+    let map = this.map;
+    let triggerRenderFn = this.triggerRender.bind(this);
     let container = React.findDOMNode(this);
-
-    let map = new ol.Map(
-      {
-        view: initialView,
-        target: 'olmap',
-        renderer: 'canvas',
-        controls: ol.control.defaults(),
-        layers: [ArcGisLayer]
-      })
 
     map.setTarget(container);
 
-    this._map = global.olmap = map;
-
-    this._canvas = olmap.renderer_.canvas_;
+    map.on('postcompose', triggerRenderFn)
+    map.on('precompose', triggerRenderFn)
 
     map.on('click', this.onClick.bind(this))
-    this.renderCanvas()
+  }
+
+  triggerRender() {
+    this.canvasLayer.getSource().changed()
   }
 
 
   onClick(ev) {
 
-    let map = this._map;
+    let map = this.map;
     let pixel = ev.pixel; // координаты viewport
     let coordinate = ev.coordinate;
 
-    console.log( 'coord from pixel', map.getCoordinateFromPixel(pixel))
-    console.log( 'pixel from coordinate ',map.getPixelFromCoordinate(coordinate))
+    console.log('coord from pixel', map.getCoordinateFromPixel(pixel))
+    console.log('pixel from coordinate ', map.getPixelFromCoordinate(coordinate))
 
   }
 
@@ -82,29 +106,28 @@ export default class OpenLayersMap extends Component {
     return <div className="openlayers-container"/>
   }
 
-  renderCanvas(time) {
+  renderCanvas(canvas) {
 
-// canvas example
-// https://gist.github.com/acanimal/b2f60367badb0b17a4d9
+    // canvas example
+    // https://gist.github.com/acanimal/b2f60367badb0b17a4d9
 
     let pointsStore = this._pointsStore;
 
-  /*  let isRenderPaused = pointsStore.state.isRenderPaused;
-    if (isRenderPaused) return;*/
+    /*  let isRenderPaused = pointsStore.state.isRenderPaused;
+      if (isRenderPaused) return;*/
 
-    const canvas = this._canvas;
 
-    let ctx = this._canvas.getContext('2d');
-    let map = this._map;
+    let ctx = canvas.getContext('2d');
+    let map = this.map;
     let selected = pointsStore.getSelectedPoint();
     let markers = this._markers;
 
     const bounds = map.getView().calculateExtent(map.getSize());
 
-   // ctx.save();
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-   // ctx.clearRect(0, 0, canvas.width, canvas.height);
-   // ctx.restore();
+    // ctx.save();
+    //ctx.setTransform(1, 0, 0, 1, 0, 0);
+    // ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // ctx.restore();
 
     let optimizedPoints = this._points; //this.getMarkersInBounds(bounds);
 
@@ -125,7 +148,7 @@ export default class OpenLayersMap extends Component {
 
       if (selected === null || id !== selected.id) {
         //if ( POINTS_CACHE_MAP[id] === undefined || POINTS_CACHE_MAP[id] < marker._point.timestamp){
-        marker.render(ctx, false, time, options);
+        marker.render(ctx, false, 0, options);
         rendered++;
       // }
       }
@@ -135,7 +158,7 @@ export default class OpenLayersMap extends Component {
     if (selectedMarker) {
       selectedMarker.renderTrackInColors(ctx, map.getZoom() >= 15)
       //selectedMarker.renderTrack(ctx);
-      selectedMarker.render(ctx, true, time, options);
+      selectedMarker.render(ctx, true, 0, options);
 
       if (pointsStore.state.trackingMode) {
         this.disableInteractions();
@@ -153,10 +176,8 @@ export default class OpenLayersMap extends Component {
       this.enableInteractions()
     }
 
-
-    window.requestAnimationFrame(this.renderCanvas.bind(this))
-
- }
+    return canvas;
+  }
 
   enableInteractions() {
     // todo enable openlayers interactions
@@ -183,7 +204,7 @@ export default class OpenLayersMap extends Component {
       }
     }
 
-    console.log( returns );
+    console.log(returns);
     return returns;
   }
 
@@ -219,7 +240,7 @@ export default class OpenLayersMap extends Component {
       if (_point) {
         _point.setPoint(point)
       } else {
-        this._points[key] = new CarMarker(point, this._map, this._pointsStore);
+        this._points[key] = new CarMarker(point, this.map, this._pointsStore);
       }
     }
   }

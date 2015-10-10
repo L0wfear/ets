@@ -7,18 +7,23 @@ export default class Sidebar extends Component {
   render() {
 
     let btnCloseStyle = {
-      position:'absolute',
-      right:15,
-      top:15,
-      color:'#767676',
-      fontSize:18,
-      cursor:'pointer'
+      position: 'absolute',
+      right: 15,
+      top: 15,
+      color: '#767676',
+      fontSize: 18,
+      cursor: 'pointer'
     }
     let props = this.props;
 
-    if ( props.selected ){
-      return <div key={this.props.selected.id} className="dashboard-sidebar" style={{ zIndex: 100 }}>
-        <div style={{ height: "100%", overflow: "auto" }}>
+    if (props.selected) {
+      return <div key={this.props.selected.id} className="dashboard-sidebar" style={{
+          zIndex: 100
+        }}>
+        <div style={{
+          height: "100%",
+          overflow: "auto"
+        }}>
           <span style={btnCloseStyle} onClick={this.close.bind(this)}>×</span>
           <CarInfo car={this.props.selected} flux={this.props.flux}/>
         </div>
@@ -28,9 +33,9 @@ export default class Sidebar extends Component {
     }
   }
 
-  close(){
+  close() {
     let store = this.props.flux.getStore('points');
-    store.handleSelectPoint( false )
+    store.handleSelectPoint(false)
   }
 
 }

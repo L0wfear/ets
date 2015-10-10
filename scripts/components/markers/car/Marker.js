@@ -1,25 +1,18 @@
 import { getStatusById } from '../../../statuses.js';
 import { getTypeById } from '../../../types.js';
-import { getTrackColor, getTrackPointByColor } from '../../../helpers/track.js';
 import CoordsAnimation from './CoordsAnimation.js';
 import { getSmallIcon, getBigIcon } from '../../../icons/car.js';
 import {projectToPixel} from '../../map/MskAdapter.js';
 import Marker from '../BaseMarker.js';
+import Track from '../../map/Track.js';
 
 import {
   SMALL_ICON_RADIUS,
   LARGE_ICON_RADIUS
 } from '../../../constants/CarIcons.js';
 
-import {
-  TRACK_LINE_OPACITY,
-  TRACK_POINT_RADIUS,
-  SHOW_ONLY_POINTS_WITH_SPEED_CHANGES
-} from '../../../constants/track.js';
-
 // @todo убрать прозрачность на больших зум левелах
 const ZOOM_LARGE_ICONS = 8;
-
 const PI_TIMES_TWO = Math.PI * 2;
 
 function normalizeAngle(angle) {
@@ -36,15 +29,16 @@ function normalizeAngle(angle) {
 
 export default class CarMarker extends Marker {
 
-  constructor(point, map, store, context) {
-    super(point, map, store, context);
+  constructor(point, map) {
+    super(point, map);
 
     this.coords = {
       x: point.coords_msk[1],
       y: point.coords_msk[0]
     }
-  }
 
+    this.track = null;
+  }
 
   renderImage() {
     let map = this.map;
@@ -71,6 +65,14 @@ export default class CarMarker extends Marker {
     let image = getSmallIcon(point.status, zoomRatio);
 
     return image;
+  }
+
+  onClick() {
+      let track = new Track(this);
+      this.track = track;
+
+      // возвращать новый объект маркера, например
+      //track.render()
   }
 
   /**
@@ -140,174 +142,6 @@ export default class CarMarker extends Marker {
 
     return getBigIcon(icon);
  }
-
-  renderTrack(ctx) {
-    let point = this.point;
-    let track = point.track;
-
-    let map = this.map;
-
-    if (!track || track.length < 2) {
-      return
-    }
-
-    ctx.strokeStyle = '#3C68FA';
-    ctx.lineWidth = 3;
-    ctx.lineCap = 'round';
-
-    let first = map.latLngToLayerPoint(track[0]);
-
-    ctx.beginPath();
-    ctx.moveTo(first.x, first.y);
-
-    for (let i = 1, till = track.length - 1; i < till; i++) {
-      let coords = map.latLngToLayerPoint(track[i]);
-      ctx.lineTo(coords.x, coords.y);
-    }
-
-    // если машина в движении - дорисовываем еще одну точку, чтобы трэк не обрывался
-    // получается некрасиво в том случае, если обновление происходит редко
-    // и машина резко перемещается на другую точку
-    if (point.status === 1 && point.TRACK_NEEDS_UPDATE) {
-      let coords = map.latLngToLayerPoint(point.coords);
-      ctx.lineTo(coords.x, coords.y);
-    }
-
-    ctx.stroke();
-  }
-
-
-  /**
-   * TODO http://jsperf.com/changing-canvas-state/3
-   * @param ctx
-   * @param DRAW_POINTS
-   */
-  renderTrackInColors(ctx, DRAW_POINTS) {
-
-    let point = this.point;
-    let track = point.track;
-    let TRACK_LINE_WIDTH = DRAW_POINTS ? 4 : TRACK_LINE_WIDTH;
-
-    if (!track || track.length < 2) {
-      return
-    }
-
-    let map = this.map;
-    let type_id = point.car.type_id;
-
-    const RENDER_GRADIENT = this.store.state.showTrackingGradient;
-
-
-    // TODO убрать эту функцию, ибо она порождена багой на бэкэнде
-    function getSpeed(trackPoint) {
-      return 'speed_avg' in trackPoint ? trackPoint.speed_avg : trackPoint.speed
-    }
-
-    /**
-     * рисует точку трэка
-     * @param coords
-     * @param color
-     */
-    function drawTrackPoint(coords, color) {
-      if (DRAW_POINTS) {
-        let cachedPoint = getTrackPointByColor(color);
-        ctx.drawImage(
-          cachedPoint,
-          coords.x - TRACK_POINT_RADIUS - 1,
-          coords.y - TRACK_POINT_RADIUS - 1,
-          (TRACK_POINT_RADIUS + 1) * 2,
-          (TRACK_POINT_RADIUS + 1) * 2);
-      }
-    }
-
-    let firstPoint = map.latLngToLayerPoint(track[0].coords);
-    let prevCoords = firstPoint;
-
-    ctx.lineWidth = TRACK_LINE_WIDTH;
-    ctx.lineCap = 'butt';
-    ctx.lineJoin = 'round';
-
-    ctx.beginPath();
-    ctx.moveTo(firstPoint.x, firstPoint.y);
-
-    let prevRgbaColor = ctx.strokeStyle = getTrackColor(getSpeed(track[0]), type_id, TRACK_LINE_OPACITY);
-
-    for (let i = 1, till = track.length - 1; i < till; i++) {
-      let coords = map.latLngToLayerPoint(track[i].coords);
-      let speed = getSpeed(track[i]);
-      let rgbaColor = getTrackColor(speed, type_id, TRACK_LINE_OPACITY);
-      let hexColor = getTrackColor(speed, type_id);
-
-      // если предыдущий цвет не соответствует новому
-      // нужно закрыть предыдущую линию
-      // и нарисовать новую
-      if (prevRgbaColor !== rgbaColor) {
-        if (RENDER_GRADIENT) {
-
-          // stroke path before
-          ctx.stroke();
-
-          // make gradient fill
-          let gradient = ctx.createLinearGradient(prevCoords.x, prevCoords.y, coords.x, coords.y);
-          gradient.addColorStop('0', prevRgbaColor);
-          gradient.addColorStop('1', rgbaColor);
-
-          // make new path and stroke that
-          ctx.strokeStyle = gradient;
-          ctx.beginPath();
-          ctx.moveTo(prevCoords.x, prevCoords.y);
-          ctx.lineTo(coords.x, coords.y);
-          ctx.stroke();
-
-          drawTrackPoint(coords, hexColor);
-        } else {
-          ctx.lineTo(coords.x, coords.y);
-          ctx.stroke();
-
-          drawTrackPoint(coords, hexColor);
-        }
-
-        // start new path
-        // and reset color && lineWidth
-        ctx.strokeStyle = rgbaColor;
-        ctx.lineWidth = TRACK_LINE_WIDTH;
-        ctx.beginPath();
-        ctx.moveTo(coords.x, coords.y);
-
-      } else { // если цвет не менялся
-
-        ctx.strokeStyle = prevRgbaColor;
-        ctx.lineWidth = TRACK_LINE_WIDTH;
-        ctx.lineTo(coords.x, coords.y);
-
-        // оптимизация, типа
-        // рисовать кружки только там, где были заметные изменения скорости
-        if (!SHOW_ONLY_POINTS_WITH_SPEED_CHANGES) {
-          ctx.stroke();
-
-          drawTrackPoint(coords, hexColor);
-
-          ctx.strokeStyle = rgbaColor;
-          ctx.lineWidth = TRACK_LINE_WIDTH;
-          ctx.beginPath();
-          ctx.moveTo(coords.x, coords.y);
-        }
-      }
-
-      prevCoords = coords;
-      prevRgbaColor = rgbaColor;
-    }
-
-    // если машина в движении - дорисовываем еще одну точку, чтобы трэк не обрывался
-    // получается некрасиво в том случае, если обновление происходит редко
-    // и машина резко перемещается на другую точку
-    if (point.status === 1 && point.TRACK_NEEDS_UPDATE) {
-      let coords = map.latLngToLayerPoint(point.coords);
-      ctx.lineTo(coords.x, coords.y);
-    }
-
-    ctx.stroke()
-  }
 
   setPoint(point) {
     this.point = point;

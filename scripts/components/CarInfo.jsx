@@ -8,7 +8,7 @@ import { getOwnerById } from '../owners.js';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 import config from '../config.js';
 import { Sparklines, SparklinesLine } from './Sparklines.js';
-import { getTrackColor, TRACK_COLORS } from '../helpers/track.js';
+import { getTrackColor } from './map/Track.js';
 import { makeDate, makeTime, getStartOfToday } from '../helpers/dates.js';
 
 export class Preloader {
@@ -375,40 +375,39 @@ class CarInfo extends Component {
         rendered = <Preloader style={{
           height: 103
         }}/>;
-      } else 
-        if (FUEL_DATA.length > 0) {
-          rendered = <div style={{
-            fontSize: '10px'
-          }}>
+      } else if (FUEL_DATA.length > 0) {
+        rendered = <div style={{
+          fontSize: '10px'
+        }}>
                       <Sparklines data={FUEL_DATA} width={400} height={90} margin={6} style={{
-            marginBottom: '10px'
-          }}>
+          marginBottom: '10px'
+        }}>
                         <SparklinesLine style={{
-            strokeWidth: 1,
-            stroke: 'orange',
-            fill: 'orange',
-            fillOpacity: '0.25'
-          }}/>
+          strokeWidth: 1,
+          stroke: 'orange',
+          fill: 'orange',
+          fillOpacity: '0.25'
+        }}/>
                       </Sparklines>
                         <span
-          style={{
-            position: 'absolute',
-            left: '10px',
-            transform: 'rotate(-90deg)',
-            top: '46px'
-          }}>% топлива</span>
+        style={{
+          position: 'absolute',
+          left: '10px',
+          transform: 'rotate(-90deg)',
+          top: '46px'
+        }}>% топлива</span>
                       <span style={{
-            position: 'absolute',
-            left: '47px',
-            bottom: '5px'
-          }}>{from}</span>
+          position: 'absolute',
+          left: '47px',
+          bottom: '5px'
+        }}>{from}</span>
                       <span style={{
-            position: 'absolute',
-            right: '42px',
-            bottom: '5px'
-          }}>{to}</span>
+          position: 'absolute',
+          right: '42px',
+          bottom: '5px'
+        }}>{to}</span>
                     </div>
-        }
+      }
 
       return (
         <Panel title="График уровня топлива">
@@ -436,7 +435,7 @@ class CarInfo extends Component {
       let store = this.props.flux.getStore('points');
 
       this.props.car.track = null;
-      store.handleUpdateTrack(from, to);
+//      store.handleUpdateTrack(from, to);
 
       this.setState({
         fuelData: null

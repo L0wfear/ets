@@ -59,16 +59,20 @@ export default class PointsStore extends Store {
       this.handleUpdatePoints(JSON.parse(data));
     }
 
-    ws.onclose = (ev) => {
+    ws.onclose = () => {
       global.NOTIFICATION_SYSTEM.notify('Потеряно соединение с WebSocket, пытаемся переподключиться', 'warning')
     }
 
-    ws.onerror = (ev) => {
+    ws.onerror = () => {
       global.NOTIFICATION_SYSTEM.notify('Ошибка WebSocket', 'error')
     }
 
   }
 
+
+  /**
+    @todo handleMessage() method
+   **/
   handleUpdatePoints(update) {
 
     /**
@@ -93,7 +97,7 @@ export default class PointsStore extends Store {
 
       if (!points[key].track) {
         points[key].track = null
-      } else if (!!selected && selected.id === points[key].id) {
+      } else  {
 
         if (points[key].TRACK_NEEDS_UPDATE) {
           let point = {
@@ -107,7 +111,7 @@ export default class PointsStore extends Store {
           };
 
           console.warn('continuisly updating track ')
-          points[key].track.push(point);
+          points[key].track.addPoint(point);
         } else {
           console.warn('not continuisly updating track ')
         }
@@ -119,6 +123,7 @@ export default class PointsStore extends Store {
       if (points[key].speed !== 0 && this.state.points[key] && this.state.points[key].speed === 0) {
         points[key].coords = this.state.points[key].coords;
       }
+
     }
 
     let state = Object.assign({}, {
@@ -178,7 +183,7 @@ export default class PointsStore extends Store {
 
     // хреновое решение, но зато работает
     // решится по-другому при рефакторинге
-    // TODO REFACTOR
+    // @TODO REFACTOR
     setTimeout(callback, 500)
   }
 
@@ -209,9 +214,10 @@ export default class PointsStore extends Store {
       return
     }
 
-    if (this.state.selected && this.state.selected.track) {
+    // обнуляем трэк во избежание утечек 
+    /*if (this.state.selected && this.state.selected.track) {
       this.state.selected.track.length = 0;
-    }
+    }*/
 
     selected.TRACK_NEEDS_UPDATE = true; //by default - set flag to true
 
@@ -245,6 +251,8 @@ export default class PointsStore extends Store {
     if (track.length === 0) {
       console.warn('received null track for some car')
     } else {
+
+      debugger;
       point.track = track; //simplify(track, .00001);
       if (point.id === this.state.selected.id) {
         point.TRACK_NEEDS_UPDATE = this.state.selected.TRACK_NEEDS_UPDATE;

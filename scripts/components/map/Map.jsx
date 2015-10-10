@@ -23,22 +23,23 @@ export default class OpenLayersMap extends Component {
     super(props, context);
     let self = this;
 
-    this._points = {};
+    this.markers = {};
     this._pointsStore = this.props.flux.getStore('points');
-    this._viewportVisiblePoints = {};
+    this.viewportVisibleMarkers = {};
+
+    this.tracks = {};
 
     let initialView = new ol.View({
       center: this.props.center,
       zoom: this.props.zoom,
       minZoom: 2,
-      maxZoom: 20,
+      maxZoom: 13,
       projection: PROJECTION,
       extent: EXTENT
     })
 
-
     let renderFn = this.renderCanvas.bind(this);
-    let canvasLayer = this.canvasLayer =  new ol.layer.Image({
+    let canvasLayer = this.canvasLayer = new ol.layer.Image({
       source: new ol.source.ImageCanvas({
         canvasFunction: function draw(extent, res, pixelRatio, size, proj) {
           if (!this.canvas) {
@@ -54,7 +55,7 @@ export default class OpenLayersMap extends Component {
       })
     });
 
-     let map = new ol.Map(
+    let map = new ol.Map(
       {
         view: initialView,
         renderer: ['canvas', 'dom'],
@@ -62,7 +63,7 @@ export default class OpenLayersMap extends Component {
         layers: [ArcGisLayer, canvasLayer]
       })
 
-     this.map = global.olmap = map;
+    this.map = global.olmap = map;
 
   }
 
@@ -93,9 +94,8 @@ export default class OpenLayersMap extends Component {
   }
 
   // todo проходить по всем маркерам карты на предмет клика
-  traverseMarkers(){
-
-  }
+  // или рендеринга
+  traverseMarkers() {}
 
   onClick(ev) {
 
@@ -108,18 +108,26 @@ export default class OpenLayersMap extends Component {
     console.log('coord from pixel', map.getCoordinateFromPixel(pixel))
     console.log('pixel from coordinate ', map.getPixelFromCoordinate(coordinate))
 
-    // по машине не кликнули?
-    let cars = this._viewportVisiblePoints;
-    for (let key in cars) {
-      let car = cars[key];
-      let coords = car.coords;
+    // todo
+    // this.traverseMarkers()
 
-      if (car.contains(coordinate)) {
-        selected = car;
+    // по какому маркеру кликнули?
+    let markers = this.viewportVisibleMarkers;
+    for (let key in markers) {
+      let marker = markers[key];
+
+      if (marker.contains(coordinate)) {
+        selected = marker;
+        console.log('marker selected', marker)
+        break;
       }
     }
 
-    store.handleSelectPoint(selected && selected._point)
+    selected.onClick()
+
+    this.selectedMarker = selected;
+
+    store.handleSelectPoint(selected && selected.point)
   }
 
   render() {
@@ -132,40 +140,39 @@ export default class OpenLayersMap extends Component {
     // https://gist.github.com/acanimal/b2f60367badb0b17a4d9
 
     let pointsStore = this._pointsStore;
-
-//console.log( 'render extent is', extent)
-    let ctx = canvas.getContext('2d');
-    let map = this.map;
     let selected = pointsStore.getSelectedPoint();
-    let markers = this._markers;
+    let map = this.map;
 
 
-    let optimizedPoints = this._viewportVisiblePoints = this.getMarkersInBounds(extent);
+    let optimizedMarkers = this.viewportVisibleMarkers = this.getMarkersInBounds(extent);
 
     const options = {
       showPlates: this.props.showPlates
     };
 
-    let keys = Object.keys(optimizedPoints);
+    let keys = Object.keys(optimizedMarkers);
 
-    console.log( 'rendered only', keys.length, 'of', Object.keys(this._points).length, 'points')
+    //console.log( 'rendered only', keys.length, 'of', Object.keys(this._points).length, 'points')
 
     for (let i = 0, till = keys.length; i < till; i++) {
 
       let key = keys[i];
-      let marker = optimizedPoints[key];
+      let marker = optimizedMarkers[key];
       let id = marker.point.id;
 
       if (selected === null || id !== selected.id) {
-        marker.render(ctx, false, 0, options);
+        marker.render(options);
       }
     }
 
-    let selectedMarker = selected ? markers[selected.id] : false;
+
+    // todo render selected marker
+    // 
+    //debugger;
+    let selectedMarker = this.selectedMarker;
     if (selectedMarker) {
-      selectedMarker.renderTrackInColors(ctx, map.getZoom() >= 15)
-      //selectedMarker.renderTrack(ctx);
-      selectedMarker.render(ctx, true, 0, options);
+      selectedMarker.track.render();
+      selectedMarker.render(options);
 
       if (pointsStore.state.trackingMode) {
         this.disableInteractions();
@@ -197,12 +204,12 @@ export default class OpenLayersMap extends Component {
   getMarkersInBounds(bounds) {
 
     let returns = [];
-    let points = this._points;
-    let keys = Object.keys(points);
+    let markers = this.markers;
+    let keys = Object.keys(markers);
 
     for (let i = 0, till = keys.length; i < till; i++) {
       let key = keys[i];
-      let point = points[key];
+      let point = markers[key];
 
       // @todo переписать на простые сравнения, без метода contains
       if (ol.extent.containsCoordinate(bounds, point.coords)) {
@@ -241,12 +248,13 @@ export default class OpenLayersMap extends Component {
       }
 
 
-      let _point = this._points[key];
+      let _point = this.markers[key];
 
       if (_point) {
         _point.setPoint(point)
       } else {
-        this._points[key] = new CarMarker(point, this.map, this._pointsStore, ctx);
+        // @todo передавать только точку и this
+        this.markers[key] = new CarMarker(point, this);
       }
     }
   }

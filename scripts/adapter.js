@@ -1,5 +1,7 @@
 import config from './config.js';
 
+// @todo API INIT().then()
+
 const POINTS_URL = config.backend ? config.backend + '/data' : '/data';
 const TRACK_URL = config.backend ? config.backend + '/tracks/' : '/tracks/';
 const WEATHER_URL = config.backend ? config.backend + '/weather/' : '/weather/';
@@ -14,6 +16,9 @@ function getUTCUnixTime(time) {
   return Math.round(time / 1000);
 }
 
+function init() {
+  // @todo вся нужная для инициализации внешнего апи хрень здесь
+}
 
 export function getTrack(carId, from_dt, to_dt) {
 

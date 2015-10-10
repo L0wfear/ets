@@ -29,9 +29,9 @@ for (let i = 0, till = MapServerConfig.tileInfo.lods.length; i < till; i++) {
  export let ArcGisLayer = new ol.layer.Tile({
       source: new ol.source.TileImage({
           tileUrlFunction: function(tileCoord, pixelRatio, projection) {
-              var z = tileCoord[0];
-              var x = tileCoord[1];
-              var y = -tileCoord[2] - 1;
+              let z = tileCoord[0];
+              let x = tileCoord[1];
+              let y = -tileCoord[2] - 1;
               return TILES_URL + '/tile/' + z + '/' + y + '/' + x
           },
           projection: PROJECTION,
@@ -43,3 +43,4 @@ for (let i = 0, till = MapServerConfig.tileInfo.lods.length; i < till; i++) {
       }),
       extent: EXTENT
 });
+ 

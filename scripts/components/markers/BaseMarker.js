@@ -67,7 +67,7 @@ export default class Marker {
     let projectedPixel = projectToPixel(coordinates);
     let pixelCoords = projectToPixel(this.coords)
 
-    let radius = this.radius * 2;
+    let radius = this.radius;
 
     var dx = pixelCoords.x - projectedPixel.x;
     var dy = pixelCoords.y - projectedPixel.y;

@@ -8,7 +8,7 @@ export const TRACK_COLORS = {
   point_border: '#777'
 }
 
-export const TRACK_LINE_OPACITY = .75;
+export const TRACK_LINE_OPACITY = .85;
 export const TRACK_LINE_WIDTH = 5;
 export const TRACK_POINT_BORDER_WIDTH = .4;
 export const TRACK_POINT_RADIUS = 4;

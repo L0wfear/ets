@@ -183,14 +183,12 @@ class CarInfo extends Component {
       let store = this.props.flux.getStore('points');
       store.setTracking(false);
 
-      let track = this.props.car.track;
-      let bounds = track.map(p => p.coords)
+      let track = this.props.car.marker.track
+      let extent = track.getExtent();
+      let map = this.props.car.marker.map;
+      let view = map.getView();
 
-      window.MAP.fitBounds(bounds, {
-        paddingBottomRight: [500, 50],
-        paddingTopLeft: [50, 50],
-        animate: true
-      });
+      view.fit(extent, map.getSize(), { padding: [50,550, 50,50] })
 
     }
 
@@ -425,6 +423,8 @@ class CarInfo extends Component {
     }
 
     loadTrack() {
+
+      return;
 
       let refs = this.refs;
       let from = refs.from_dt.state.value;

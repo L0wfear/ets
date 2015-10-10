@@ -68,11 +68,9 @@ export default class CarMarker extends Marker {
   }
 
   onClick() {
-      let track = new Track(this);
-      this.track = track;
-
-      // возвращать новый объект маркера, например
-      //track.render()
+    // подгружаем трэк при клике
+    let track = new Track(this);
+    this.track = track;
   }
 
   /**

@@ -167,6 +167,30 @@ export default class Track {
   getExtent() {
     // @todo get extent of points
     // for zooming etc
+    let minX = 100000, minY = 100000, maxX = 0, maxY = 0;
+    let trackPoints = this.points;
+
+		for (let key in trackPoints) {
+			let point = trackPoints[key];
+			let [x, y] = point.coords_msk;
+
+			if (x < minX) {
+				minX = x
+			}
+			if (x > maxX) {
+				maxX = x
+			}
+
+			if (y < minY) {
+				minY = y;
+			}
+			if (y > maxY) {
+				maxY = y
+			}
+		} 
+
+		return [minX, minY, maxX, maxY];
+    
   }
 
 

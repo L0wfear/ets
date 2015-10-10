@@ -63,7 +63,7 @@ export default class OpenLayersMap extends Component {
     let map = new ol.Map(
       {
         view: initialView,
-        interactions: this.interactions,
+        //interactions: [this.interactions],
         renderer: ['canvas', 'dom'],
         controls: [new ol.control.Zoom({
           duration: 400,
@@ -76,16 +76,20 @@ export default class OpenLayersMap extends Component {
     this.map = global.olmap = map;
 
     let mousePositionControl = new ol.control.MousePosition({
-    //  coordinateFormat: ol.coordinate.createStringXY(4), //This is the format we want the coordinate in. 
+      coordinateFormat: ol.coordinate.createStringXY(4), //This is the format we want the coordinate in. 
       //The number arguement in createStringXY is the number of decimal places.
-      projection: PROJECTION, //This is the actual projection of the coordinates. 
+      //projection: PROJECTION, //This is the actual projection of the coordinates. 
       //Luckily, if our map is not native to the projection here, the coordinates will be transformed to the appropriate projection.
       className:"custom-mouse-position",
-      target:undefined, //define a target if you have a div you want to insert into already,
+      //target:undefined, //define a target if you have a div you want to insert into already,
       //undefinedHTML: '&nbsp;' //what openlayers will use if the map returns undefined for a map coordinate.
     });
 
-    //map.addControl(mousePositionControl)
+    map.addControl(mousePositionControl)
+
+    mousePositionControl.on('change', function( ev){
+      console.log('mousePositionControl changed', ev )
+    })
 
   }
 
@@ -236,11 +240,11 @@ export default class OpenLayersMap extends Component {
   }
 
   enableInteractions() {
-    this.map.setInteractions(this.interactions);
+    //this.map.addInteraction(this.interactions);
   }
 
   disableInteractions() {
-    this.map.setInteractions(null);
+    //this.map.removeInteraction(this.interactions);
   }
 
   getMarkersInBounds(bounds) {
@@ -295,7 +299,6 @@ export default class OpenLayersMap extends Component {
       if (_point) {
         _point.setPoint(point)
       } else {
-        // @todo передавать только точку и this
         this.markers[key] = new CarMarker(point, this);
       }
     }

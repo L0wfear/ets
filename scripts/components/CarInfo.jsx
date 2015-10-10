@@ -36,7 +36,6 @@ class CarInfo extends Component {
   componentDidMount() {
     if (this.props.car && !this.state.imageUrl) {
       this.fetchImage();
-      this.loadTrack();
     }
   }
 
@@ -68,7 +67,9 @@ class CarInfo extends Component {
 
     let model = getModelById(modelId);
     let title = model ? model.title : '';
-    let store = this.props.flux.getStore('points')
+    let store = this.props.flux.getStore('points');
+    let marker = this.props.car.marker;
+    let track = marker.track;
 
     // TODO убрать стили в css
     let isTrackingMode = store.state.trackingMode;
@@ -87,14 +88,16 @@ class CarInfo extends Component {
 
     let trackBtnClass = 'btn-sm btn track-btn ' + (isTrackingMode ? 'btn-success' : 'btn-default');
 
-    let zoomToTrackClass = 'btn-sm btn ' + (this.props.car.track === null ? 'btn-disabled' : 'btn-default');
+    let zoomToTrackClass = 'btn-sm btn ' + (track === null ? 'btn-disabled' : 'btn-default');
     let zoomToTrackStyle = {
       position: 'absolute',
       right: 14,
       top: 40,
       padding: '4px 7px'
     }
-    let isTrackLoaded = car.track !== null && car.track.length > 0;
+
+    //debugger;
+    let isTrackLoaded = track !== null && track.points !== null && track.points.length > 0 ;
 
     return (
       <Panel title={title}>
@@ -115,7 +118,7 @@ class CarInfo extends Component {
         }}/>
         : null
       }
-        {this.renderAttrs()}
+       {this.renderAttrs()}
         {isTrackLoaded ? this.renderTrackLegend() : null}
       </Panel>
       );
@@ -417,7 +420,7 @@ class CarInfo extends Component {
     }
 
     fetchPointData() {
-      this.loadTrack()
+      //this.loadTrack()
       this.fetchFuelData()
     }
 
@@ -435,7 +438,7 @@ class CarInfo extends Component {
       let store = this.props.flux.getStore('points');
 
       this.props.car.track = null;
-//      store.handleUpdateTrack(from, to);
+      //      store.handleUpdateTrack(from, to);
 
       this.setState({
         fuelData: null
@@ -449,18 +452,8 @@ class CarInfo extends Component {
       }
     }
 
-    getStartOfToday() {
 
-      let date = new Date();
-      let today = new Date(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate()
-      )
-
-      return today
-    }
-
+    // todo move this to API
     fetchFuelData(
       from_dt = getStartOfToday(),
       to_dt = new Date().getTime()) {

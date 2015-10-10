@@ -23,9 +23,10 @@ export default class Marker {
     // some methods may be useful
     this.store = map._pointsStore;
     this.map = map.map;
+    this.canvas = map.canvas;
     this.image = null;
     this.radius = 0;
-    this.ctx = map.ctx;
+    this.ctx = this.canvas.getContext('2d')
     this.coords = this.getCoords()
 
     this.animation = null;
@@ -45,8 +46,8 @@ export default class Marker {
 
   renderImage() {}
 
-  render() {
-    let image = this.renderImage();
+  render(options = {}) {
+    let image = this.getImage(options);
     let radius = image.width / 2;
     let ctx = this.ctx;
     let drawCoords = projectToPixel(this.coords);
@@ -60,22 +61,16 @@ export default class Marker {
 
   /**
    * проверка на вхождение координаты в маркер
-   * @param  x
-   * @param  y
-   * @return {[type]}
    */
-  contains([x, y]) {
+  contains(coordinates) {
 
-    // @todo привести все координаты в соответствие с этим
-    let coords = {
-      x: this.coords[0],
-      y: this.coords[1]
-    }
+    let projectedPixel = projectToPixel(coordinates);
+    let pixelCoords = projectToPixel(this.coords)
 
     let radius = this.radius * 2;
 
-    var dx = coords.x - x;
-    var dy = coords.y - y;
+    var dx = pixelCoords.x - projectedPixel.x;
+    var dy = pixelCoords.y - projectedPixel.y;
 
     return dx * dx + dy * dy < radius * radius;
   }

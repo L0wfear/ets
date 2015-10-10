@@ -1,7 +1,6 @@
 import { Store } from 'flummox';
 import statuses from '../statuses.js';
 //import types from '../types.js';
-import { getTrack } from '../adapter.js';
 import { getOwnerById } from '../owners.js';
 import config from '../config.js';
 import ReconnectingWebSocket from '../ReconnectingWebsocket.js';
@@ -81,7 +80,6 @@ export default class PointsStore extends Store {
      */
 
     let points = Object.assign({}, this.state.points);
-    let selected = this.state.selected;
 
     for (let key in update) {
       let pointUpdate = update[key];
@@ -95,34 +93,12 @@ export default class PointsStore extends Store {
 
       points[key] = Object.assign({}, points[key], pointUpdate);
 
-      if (!points[key].track) {
-        points[key].track = null
-      } else  {
-
-        if (points[key].TRACK_NEEDS_UPDATE) {
-          let point = {
-            coords: pointUpdate.coords,
-            direction: pointUpdate.direction,
-            speed_avg: pointUpdate.speed,
-            distance: pointUpdate.distance || 'Н/Д',
-            speed_max: pointUpdate.speed_max || 'Н/Д',
-            nsat: pointUpdate.nsat || 'Н/Д',
-            timestamp: pointUpdate.timestamp
-          };
-
-          console.warn('continuisly updating track ')
-          points[key].track.addPoint(point);
-        } else {
-          console.warn('not continuisly updating track ')
-        }
-      }
-
 
       // HACK
       // whatever...
-      if (points[key].speed !== 0 && this.state.points[key] && this.state.points[key].speed === 0) {
+      /*if (points[key].speed !== 0 && this.state.points[key] && this.state.points[key].speed === 0) {
         points[key].coords = this.state.points[key].coords;
-      }
+      }*/
 
     }
 
@@ -187,19 +163,6 @@ export default class PointsStore extends Store {
     setTimeout(callback, 500)
   }
 
-  handleUpdateTrack(
-    from_dt = new Date(
-      new Date().getFullYear(),
-      new Date().getMonth(),
-      new Date().getDate()
-    ).getTime(),
-    to_dt = new Date().getTime()) {
-
-    let id = this.state.selected.id;
-
-    getTrack(id, from_dt, to_dt)
-      .then(track => this.handleReceiveTrack([id, track, to_dt]))
-  }
 
   handleSelectPoint(selected) {
 
@@ -233,34 +196,6 @@ export default class PointsStore extends Store {
     this.setState({
       selected: point
     })
-  }
-
-
-  handleReceiveTrack([key, track, to_dt]) {
-    let points = this.state.points;
-    let point = points[key];
-    let now = new Date();
-    let dateToCheck = new Date(
-      now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), 0
-    );
-
-    if (point.track) {
-      point.track.length = 0;
-    }
-
-    if (track.length === 0) {
-      console.warn('received null track for some car')
-    } else {
-
-      debugger;
-      point.track = track; //simplify(track, .00001);
-      if (point.id === this.state.selected.id) {
-        point.TRACK_NEEDS_UPDATE = this.state.selected.TRACK_NEEDS_UPDATE;
-        this.setState({
-          selected: point
-        })
-      }
-    }
   }
 
   handleLogin(user) {

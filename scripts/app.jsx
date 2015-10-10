@@ -1,9 +1,9 @@
 require('babel/polyfill');
 require('whatwg-fetch');
 
+import '!style!raw!../scripts/vendor/ol.css';
 import '!style!raw!sass!../styles/main.scss';
 import '!style!raw!../styles/bootstrap.min.css';
-//import '!style!raw!../scripts/vendor/ol.css';
 
 // TODO https://github.com/esdoc/esdoc
 // 

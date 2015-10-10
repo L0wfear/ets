@@ -1,5 +1,3 @@
-@import '_leaflet.scss';
-
 body.application {
   background: #f2f2f2;
   padding: 60px 20px 0;
@@ -305,8 +303,8 @@ body.application {
 /*   display: none
  */}
 
-.leaflet-control-zoom {
-  top:140px;
+.ol-zoom {
+  top:260px;
 }
 
 .sidebar-hide-button {
@@ -1784,3 +1782,11 @@ body {
   height:100%;
   position:absolute;
 }
+
+
+/** OPENLAYERS */
+.ol-zoom {
+  background: rgba(0, 0, 0, 0.75);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+} 

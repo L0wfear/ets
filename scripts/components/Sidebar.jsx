@@ -14,10 +14,12 @@ export default class Sidebar extends Component {
       fontSize: 18,
       cursor: 'pointer'
     }
+
     let props = this.props;
 
     if (props.selected) {
-      return <div key={this.props.selected.id} className="dashboard-sidebar" style={{
+    //  debugger;
+      return (<div key={this.props.selected.id} className="dashboard-sidebar" style={{
           zIndex: 100
         }}>
         <div style={{
@@ -27,7 +29,7 @@ export default class Sidebar extends Component {
           <span style={btnCloseStyle} onClick={this.close.bind(this)}>×</span>
           <CarInfo car={this.props.selected} flux={this.props.flux}/>
         </div>
-      </div>
+      </div>)
     } else {
       return <div key="nothing"/>
     }

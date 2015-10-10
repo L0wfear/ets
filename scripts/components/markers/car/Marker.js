@@ -31,6 +31,7 @@ export default class CarMarker extends Marker {
 
   constructor(point, map) {
     super(point, map);
+    point.marker = this;
 
     this.coords = {
       x: point.coords_msk[1],
@@ -40,12 +41,11 @@ export default class CarMarker extends Marker {
     this.track = null;
   }
 
-  renderImage() {
+  getImage(options) {
     let map = this.map;
     let zoom = map.getView().getZoom();
-    let selected = this.store.getSelectedPoint();
 
-    return zoom < ZOOM_LARGE_ICONS && !selected ? this.renderSmall() : this.renderLarge();
+    return zoom < ZOOM_LARGE_ICONS && !options.selected ? this.renderSmall() : this.renderLarge(options);
   }
 
 
@@ -79,9 +79,7 @@ export default class CarMarker extends Marker {
    * todo showPlates via map options
    * @return {[type]} [description]
    */
-  renderLarge() {
-
-    let options = {};
+  renderLarge(options = {}) {
 
     let point = this.point;
     let color = getStatusById(point.status).color;
@@ -134,11 +132,11 @@ export default class CarMarker extends Marker {
     context.closePath();
     context.fill();
 
-    /*if (selected) {
+    if (options.selected) {
       context.strokeStyle = 'white';
       context.lineWidth = 3;
       context.stroke();
-    }*/
+    }
 
     return getBigIcon(icon);
  }
@@ -149,6 +147,22 @@ export default class CarMarker extends Marker {
     let [x, y] = this.coords;
 
     let store = this.store;
+
+    // обновляем трэк, если у точки он загружен
+    if (this.track !== null) {
+      let trackPoint = {
+        coords: point.coords,
+        coords_msk: point.coords_msk,
+        direction: point.direction,
+        speed_avg: point.speed,
+        distance: point.distance || 'Н/Д',
+        speed_max: point.speed_max || 'Н/Д',
+        nsat: point.nsat || 'Н/Д',
+        timestamp: point.timestamp
+      };
+
+      this.track.addPoint(trackPoint)
+    }
 
     if (!store.state.isRenderPaused) {
       this._animation = new CoordsAnimation(this, x, y, 500);

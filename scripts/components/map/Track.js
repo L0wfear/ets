@@ -1,11 +1,12 @@
 import { projectToPixel } from './MskAdapter.js';
 import { getTrack } from '../../adapter.js';
 import { getStartOfToday } from '../../helpers/dates.js';
-import { TRACK_COLORS, TRACK_LINE_OPACITY, TRACK_POINT_RADIUS, SHOW_ONLY_POINTS_WITH_SPEED_CHANGES } from '../../constants/track.js';
+import { TRACK_COLORS, TRACK_LINE_OPACITY, TRACK_LINE_WIDTH, TRACK_POINT_RADIUS, SHOW_ONLY_POINTS_WITH_SPEED_CHANGES } from '../../constants/track.js';
 import { getTypeById } from '../../types.js';
 import { getTrackPointByColor } from '../../icons/track/points.js';
 
 const IS_MSK = true;
+const DRAW_POINTS = true;
 const COLORS_ZOOM_THRESHOLD = 10;
 
 
@@ -90,24 +91,28 @@ export default class Track {
     this.ctx = parent.ctx;
     this.parent = parent;
     this.points = null;
-
-    // todo render after fetch automatically
-    this.fetch()
+    this.fetch().then( this.render.bind(this) )
   }
 
   addPoint(point) {
-  	console.log( 'updating track of', this.parent, 'with', point)
+    //console.log('updating track with', point)
+    
+    point.coords_msk = [point.coords_msk[1], point.coords_msk[0]];
+    point.coords = [point.coords[1], point.coords[0]];
+
+    if (this.points !== null) {
+    	this.points.push(point);
+    }
   }
 
   fetch(from_dt = getStartOfToday(), to_dt = new Date().getTime()) {
 
-    let id = this.parent.id;
+    let id = this.parent.point.id;
 
     return getTrack(id, from_dt, to_dt)
       .then((track) => {
         this.points = track;
         console.log('track fetched for', this.parent)
-        this.render()
       // @todo handle receive track
       })
 
@@ -118,7 +123,6 @@ export default class Track {
     let map = this.map;
     let zoom = map.getView().getZoom();
 
-    console.log( 'rendering track of', this.parent)
     if (zoom > COLORS_ZOOM_THRESHOLD) {
       this.renderInColors()
     } else {
@@ -135,8 +139,8 @@ export default class Track {
       return
     }
 
-    ctx.strokeStyle = '#3C68FA';
-    ctx.lineWidth = 3;
+    ctx.strokeStyle = TRACK_COLORS.blue;
+    ctx.lineWidth = TRACK_LINE_WIDTH;
     ctx.lineCap = 'round';
 
     let first = projectToPixel(track[0].coords_msk);
@@ -161,8 +165,8 @@ export default class Track {
   }
 
   getExtent() {
-  	// todo get extent of points
-  	// for zooming etc
+    // @todo get extent of points
+    // for zooming etc
   }
 
 
@@ -186,11 +190,11 @@ export default class Track {
   /**
    * TODO http://jsperf.com/changing-canvas-state/3
    * @param ctx
-   * @param DRAW_POINTS
    */
-  renderInColors(DRAW_POINTS) {
+  renderInColors() {
 
     let parent = this.parent;
+    let point = this.parent.point;
     let track = this.points;
     let TRACK_LINE_WIDTH = DRAW_POINTS ? 4 : TRACK_LINE_WIDTH;
     let ctx = this.ctx;
@@ -201,14 +205,15 @@ export default class Track {
 
     let type_id = parent.point.car.type_id;
 
-    const RENDER_GRADIENT = this.store.state.showTrackingGradient;
+    // todo import from settings
+    const RENDER_GRADIENT = this.parent.store.state.showTrackingGradient;
 
     // TODO убрать эту функцию, ибо она порождена багой на бэкэнде
     function getSpeed(trackPoint) {
       return 'speed_avg' in trackPoint ? trackPoint.speed_avg : trackPoint.speed
     }
 
-    let firstPoint = projectToPixel(track[0].coords);
+    let firstPoint = projectToPixel(track[0].coords_msk);
     let prevCoords = firstPoint;
 
     ctx.lineWidth = TRACK_LINE_WIDTH;
@@ -221,7 +226,7 @@ export default class Track {
     let prevRgbaColor = ctx.strokeStyle = getTrackColor(getSpeed(track[0]), type_id, TRACK_LINE_OPACITY);
 
     for (let i = 1, till = track.length - 1; i < till; i++) {
-      let coords = projectToPixel(track[i].coords);
+      let coords = projectToPixel(track[i].coords_msk);
       let speed = getSpeed(track[i]);
       let rgbaColor = getTrackColor(speed, type_id, TRACK_LINE_OPACITY);
       let hexColor = getTrackColor(speed, type_id);
@@ -289,11 +294,11 @@ export default class Track {
     // если машина в движении - дорисовываем еще одну точку, чтобы трэк не обрывался
     // получается некрасиво в том случае, если обновление происходит редко
     // и машина резко перемещается на другую точку
-    if (point.status === 1 && point.TRACK_NEEDS_UPDATE) {
+    /*if (point.status === 1 && point.TRACK_NEEDS_UPDATE) {
       let coords = projectToPixel(point.coords);
-      ctx.lineTo(coords.x, coords.y);
+      ctx.lineTo(coords.y, coords.x);
     }
-
+*/
     ctx.stroke()
   }
 

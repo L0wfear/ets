@@ -20,16 +20,24 @@ function init() {
   // @todo вся нужная для инициализации внешнего апи хрень здесь
 }
 
-export function getTrack(carId, from_dt, to_dt) {
+export function getTrack(car_id, from_dt, to_dt) {
 
   let query = '/?from_dt=' + getUTCUnixTime(from_dt) +
     '&to_dt=' + getUTCUnixTime(to_dt) +
     '&version=2';
 
-  console.log('track loading for', carId);
-  return fetch(TRACK_URL + carId + query, {
+  console.log('track loading for', car_id);
+  return fetch(TRACK_URL + car_id + query, {
     credentials: 'include'
-  }).then(r => r.json());
+  }).then(r => r.json())
+  .then(points => points.map( (point) => {
+      // wrap coords for OpenLayers
+      point.coords = [point.coords[1], point.coords[0]];
+      point.coords_msk = [point.coords_msk[1], point.coords_msk[0]];
+
+      return point;
+    })
+  );
 
 }
 

@@ -1,7 +1,11 @@
 // import ol from 'imports?define=>false!openlayers';
 import React, { Component } from 'react';
 import CarMarker from '../markers/car/Marker.js';
-import { EXTENT, PROJECTION, ArcGisLayer } from './MskAdapter.js'
+import { EXTENT, PROJECTION, ArcGisLayer } from './MskAdapter.js';
+
+
+// todo move to settings
+const SIDEBAR_WIDTH_PX = 500;
 
 // WebGL example
 // http://openlayers.org/en/master/examples/icon-sprite-webgl.html
@@ -28,6 +32,7 @@ export default class OpenLayersMap extends Component {
     this.viewportVisibleMarkers = {};
 
     this.tracks = {};
+    this.interactions = new ol.interaction.defaults();
 
     let initialView = new ol.View({
       center: this.props.center,
@@ -58,12 +63,29 @@ export default class OpenLayersMap extends Component {
     let map = new ol.Map(
       {
         view: initialView,
+        interactions: this.interactions,
         renderer: ['canvas', 'dom'],
-        controls: ol.control.defaults(),
+        controls: [new ol.control.Zoom({
+          duration: 400,
+          className: 'ol-zoom',
+          delta: 1
+        })],
         layers: [ArcGisLayer, canvasLayer]
       })
 
     this.map = global.olmap = map;
+
+    let mousePositionControl = new ol.control.MousePosition({
+    //  coordinateFormat: ol.coordinate.createStringXY(4), //This is the format we want the coordinate in. 
+      //The number arguement in createStringXY is the number of decimal places.
+      projection: PROJECTION, //This is the actual projection of the coordinates. 
+      //Luckily, if our map is not native to the projection here, the coordinates will be transformed to the appropriate projection.
+      className:"custom-mouse-position",
+      target:undefined, //define a target if you have a div you want to insert into already,
+      //undefinedHTML: '&nbsp;' //what openlayers will use if the map returns undefined for a map coordinate.
+    });
+
+    //map.addControl(mousePositionControl)
 
   }
 
@@ -84,7 +106,8 @@ export default class OpenLayersMap extends Component {
     map.setTarget(container);
 
     map.on('postcompose', triggerRenderFn)
-    map.on('precompose', triggerRenderFn)
+    map.on('mousemove', this.onMouseMove.bind(this))
+   // map.on('precompose', triggerRenderFn)
 
     map.on('click', this.onClick.bind(this))
   }
@@ -93,8 +116,14 @@ export default class OpenLayersMap extends Component {
     this.canvasLayer.getSource().changed()
   }
 
+  onMouseMove(ev) {
+    console.log( 'map mousemove', ev)
+  }
+
+
   // todo проходить по всем маркерам карты на предмет клика
   // или рендеринга
+  // todo проверять только видимые маркеры
   traverseMarkers() {}
 
   onClick(ev) {
@@ -123,7 +152,7 @@ export default class OpenLayersMap extends Component {
       }
     }
 
-    selected.onClick()
+    selected !== null && selected.onClick();
 
     this.selectedMarker = selected;
 
@@ -172,11 +201,24 @@ export default class OpenLayersMap extends Component {
     let selectedMarker = this.selectedMarker;
     if (selectedMarker) {
       selectedMarker.track.render();
-      selectedMarker.render(options);
+      selectedMarker.render({selected:true, ...options});
 
-      if (pointsStore.state.trackingMode) {
+      
+      let view = map.getView();
+      let zoom = view.getZoom();
+      let size = map.getSize();
+      let pixel = [(size[0] - SIDEBAR_WIDTH_PX)/2, size[1]/2];
+
+        if (pointsStore.state.trackingMode) {
+            view.centerOn(selectedMarker.coords, size, pixel)
+            if (zoom < 12) {
+              view.setZoom( 12 )
+            }
+        }
+
+      if (false && pointsStore.state.trackingMode) {
         this.disableInteractions();
-        if (map.getZoom() < 15) {
+        if ( zoom < 15) {
           map.fitBounds([selectedMarker._coords], {
             paddingBottomRight: [500, 50],
             paddingTopLeft: [50, 50],
@@ -194,11 +236,11 @@ export default class OpenLayersMap extends Component {
   }
 
   enableInteractions() {
-    // todo enable openlayers interactions
+    this.map.setInteractions(this.interactions);
   }
 
   disableInteractions() {
-    // todo disable openlayers interactions
+    this.map.setInteractions(null);
   }
 
   getMarkersInBounds(bounds) {

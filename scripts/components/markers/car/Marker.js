@@ -5,6 +5,7 @@ import { getSmallIcon, getBigIcon } from '../../../icons/car.js';
 import {projectToPixel} from '../../map/MskAdapter.js';
 import Marker from '../BaseMarker.js';
 import Track from '../../map/Track.js';
+import { swapCoords, wrapCoords } from '../../../utils/geo.js';
 
 import {
   SMALL_ICON_RADIUS,
@@ -32,12 +33,7 @@ export default class CarMarker extends Marker {
   constructor(point, map) {
     super(point, map);
     point.marker = this;
-
-    this.coords = {
-      x: point.coords_msk[1],
-      y: point.coords_msk[0]
-    }
-
+    this.coords = wrapCoords(swapCoords(point.coords_msk))
     this.track = null;
   }
 
@@ -77,7 +73,7 @@ export default class CarMarker extends Marker {
 
   hasTrackLoaded() {
     // todo move to Track class
-    return this.track !== null && this.track.points !== null && this.track.points.length > 0 ;
+    return this.track !== null && this.track.points !== null && this.track.points.length > 0;
   }
 
   /**
@@ -148,13 +144,13 @@ export default class CarMarker extends Marker {
 
   setPoint(point) {
     this.point = point;
-    this.coords = [point.coords_msk[1], point.coords_msk[0]];
-    let [x, y] = this.coords;
+    this.coords = swapCoords(point.coords_msk);
 
+    let [x, y] = this.coords;
     let store = this.store;
 
     // обновляем трэк, если у точки он загружен
-    if (this.track !== null) {
+    if (this.hasTrackLoaded()) {
       let trackPoint = {
         coords: point.coords,
         coords_msk: point.coords_msk,

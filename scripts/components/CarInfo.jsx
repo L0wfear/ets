@@ -5,12 +5,12 @@ import { getStatusById } from '../statuses.js';
 import { getTypeById } from '../types.js';
 import { getOwnerById } from '../owners.js';
 //import { getCustomerById } from '../customers.js';
-import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 import config from '../config.js';
 import { makeDate, makeTime, getStartOfToday } from '../utils/dates.js';
 import Graph from './ui/Graph.jsx';
 import { getCarImage } from '../adapter.js';
 import { roundCoordinates } from '../utils/geo.js';
+import DatePicker from './ui/DatePicker.jsx';
 
 class CarInfo extends Component {
 
@@ -37,6 +37,7 @@ class CarInfo extends Component {
     let car = this.props.car;
 
     console.log( 'rendering carinfo');
+
     if (!car) {
       return null;
     }
@@ -56,19 +57,6 @@ class CarInfo extends Component {
   componentWillUnmount() {
     let track = this.props.car.marker.track;
     track.onUpdate();
-  }
-
-  fetchTrack() {
-    let marker = this.props.car.marker;
-    let track = marker.track;
-
-    // обновление инфы о последней точке при обновлении трэка
-    track.onUpdate(function() {
-      this.forceUpdate()
-      console.log('ontrack update')
-    }.bind(this));
-
-    track.fetch();
   }
 
   renderModel() {
@@ -126,59 +114,47 @@ class CarInfo extends Component {
       this.setState({trackingMode: !isTrackingMode})
     }
 
+    onTrackUpdatingChange() {
+      let tillNow = this.state.tillNow;
+      let notTillNow = !tillNow;
+      let state = {tillNow: notTillNow};
+
+      if (notTillNow) {
+        state.from_dt = getStartOfToday();
+        state.to_dt = new Date();
+      }
+
+      let track = this.props.car.marker.track;
+      track.setContinuousUpdating(notTillNow);
+
+      this.setState(state);
+      this.fetchTrack()
+    }
+
     onShowGradientChange() {
       let store = this.store;
       let flag = store.state.showTrackingGradient;
       store.handleSetShowGradient(!flag)
     }
 
-    onTrackingDatesChange() {
-      let flag = this.state.tillNow;
 
-      this.setState({
-        tillNow: !flag
-      }, () => {
+    fetchTrack() {
+      let {from_dt, to_dt, tillNow} = this.state;
+      let track = this.props.car.marker.track;
 
-        let to_ref = this.refs.to_dt;
-        let from_ref = this.refs.from_dt;
-        let store = this.store;
+      // обновление инфы о последней точке при обновлении трэка
+      track.onUpdate(function() {
+        this.forceUpdate()
+        console.log('ontrack update')
+      }.bind(this));
 
-
-        //let to_value = new Date();
-        //let from_value = getStartOfToday();
-
-        //store.toggleSelectedPointTrackUpdating(this.state.tillNow)
-
-        // keeping dates sync
-        /*to_ref.setState({
-          value: to_value
-        });
-
-        from_ref.setState({
-          value: from_value
-        });*/
-
-        
-        let marker = this.props.car.marker;
-        let track = marker.track;
-
-        track.fetch()
-      });
+      track.fetch(from_dt, to_dt);
     }
 
-    loadTrack(){
-
-    }
     renderData() {
 
-      let now = new Date();
-      let start_of_today = getStartOfToday();
-
       let store = this.store;
-
-      let DATE_FORMAT = 'yyyy-MM-dd HH:mm';
-      let TIME_FORMAT = 'HH:mm';
-
+      let marker = this.props.car.marker;
       let reloadBtnStyle = {
         padding: '6px 9px',
         height: 34,
@@ -194,21 +170,7 @@ class CarInfo extends Component {
         fontWeight: 200
       }
 
-      let toClassname = 'chart-datepicker ' + (tillNow ? 'disabled' : '');
-
-      /*if (this.state.tillNow) {
-        // TODO FIXME
-        setTimeout(() => {
-          // LOL
-          if (!!this.refs.to_dt) {
-            this.refs.to_dt.setState({
-              value: now
-            })
-          }
-        }, 0)
-      }*/
-
-      let reloadBtnCN = 'glyphicon glyphicon-repeat ' + (this.props.car.track === null ? 'tracking-animate' : '');
+      let reloadBtnCN = 'glyphicon glyphicon-repeat ' + (tillNow && marker.hasTrackLoaded() ? 'tracking-animate' : '');
 
       let showGradientStyle = {
         position: 'absolute',
@@ -222,35 +184,23 @@ class CarInfo extends Component {
       return (
         <div>
         <Panel title="Трекинг" className="chart-datepickers-wrap">
-          <DateTimePicker format={DATE_FORMAT}
-        timeFormat={TIME_FORMAT}
-        className="chart-datepicker"
-        disabled={tillNow}
-        defaultValue={start_of_today}
-        value={this.state.from_dt}
-        ref="from_dt"/> –&nbsp;
+          <DatePicker onChange={date => this.setState({from_dt: date})} 
+                      date={this.state.from_dt} disabled={tillNow} ref="from_dt"/>&nbsp;–&nbsp;
+          <DatePicker onChange={date => this.setState({to_dt: date})} 
+                      date={this.state.to_dt} disabled={tillNow} ref="to_dt"/>
            <label style={showGradientStyle}>
              <input type="checkbox" checked={showGradient} ref="showGradient" onChange={this.onShowGradientChange.bind(this)}/> С градиентом
            </label>
            <label style={tillNowStyle}>
-             <input type="checkbox" checked={tillNow} ref="tillNow" onChange={this.onTrackingDatesChange.bind(this)}/> За сегодня
+             <input type="checkbox" checked={tillNow} ref="tillNow" onChange={this.onTrackUpdatingChange.bind(this)}/> За сегодня
            </label>
 
-           <DateTimePicker timeFormat={TIME_FORMAT}
-        format={DATE_FORMAT}
-        ref="to_dt"
-        className={toClassname}
-        disabled={tillNow}
-        defaultValue={now}
-        readonly={tillNow} 
-        value={this.state.to_dt}/>
-
             <button title="Перезагрузить данные"
-        style={reloadBtnStyle}
-        className="btn btn-default btn-sm"
-        type="button"
-        onClick={this.loadTrack.bind(this)}
-        disabled={tillNow}>
+                    style={reloadBtnStyle}
+                    className="btn btn-default btn-sm"
+                    type="button"
+                    onClick={this.fetchTrack.bind(this)}
+                    disabled={tillNow}>
               <span className={reloadBtnCN}></span>
             </button>
         </Panel>

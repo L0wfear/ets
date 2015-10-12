@@ -84,7 +84,7 @@ export default class CarMarker extends Marker {
     let direction = point.direction;
     let type = getTypeById(point.car ? point.car.type_id : 5);
     let icon = type && type.icon;
-    let radius = this.radius = LARGE_ICON_RADIUS + 7 ;
+    let radius = this.radius = LARGE_ICON_RADIUS + 6;
 
     let angle = Math.PI * direction / 180;
     let tipAngle = normalizeAngle(angle - Math.PI / 2);

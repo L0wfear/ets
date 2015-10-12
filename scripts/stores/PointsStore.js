@@ -1,10 +1,8 @@
 import { Store } from 'flummox';
 import statuses from '../statuses.js';
-//import types from '../types.js';
 import { getOwnerById } from '../owners.js';
 import config from '../config.js';
-import ReconnectingWebSocket from '../ReconnectingWebsocket.js';
-//import simplify from '../vendor/simplify.js';
+import ReconnectingWebSocket from '../vendor/ReconnectingWebsocket.js';
 
 export default class PointsStore extends Store {
 

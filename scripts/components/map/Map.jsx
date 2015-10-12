@@ -75,21 +75,6 @@ export default class OpenLayersMap extends Component {
 
     this.map = global.olmap = map;
 
-    let mousePositionControl = new ol.control.MousePosition({
-      coordinateFormat: ol.coordinate.createStringXY(4), //This is the format we want the coordinate in. 
-      //The number arguement in createStringXY is the number of decimal places.
-      //projection: PROJECTION, //This is the actual projection of the coordinates. 
-      //Luckily, if our map is not native to the projection here, the coordinates will be transformed to the appropriate projection.
-      className:"custom-mouse-position",
-      //target:undefined, //define a target if you have a div you want to insert into already,
-      //undefinedHTML: '&nbsp;' //what openlayers will use if the map returns undefined for a map coordinate.
-    });
-
-    map.addControl(mousePositionControl)
-
-    mousePositionControl.on('change', function( ev){
-      console.log('mousePositionControl changed', ev )
-    })
 
   }
 
@@ -110,7 +95,7 @@ export default class OpenLayersMap extends Component {
     map.setTarget(container);
 
     map.on('postcompose', triggerRenderFn)
-    map.on('mousemove', this.onMouseMove.bind(this))
+    map.on('pointermove', this.onMouseMove.bind(this))
    // map.on('precompose', triggerRenderFn)
 
     map.on('click', this.onClick.bind(this))
@@ -121,25 +106,58 @@ export default class OpenLayersMap extends Component {
   }
 
   onMouseMove(ev) {
-    console.log( 'map mousemove', ev)
+
+    let coordinate = ev.coordinate;
+    let markerAtCoordinate = null;
+
+    let markers = this.viewportVisibleMarkers;
+    for (let key in markers) {
+      let marker = markers[key];
+
+      if (marker.contains(coordinate)) {
+        markerAtCoordinate = marker;
+        break;
+      }
+    }
+    
+    let el = this.map.getViewport();
+
+    if (markerAtCoordinate){
+      console.log( 'marker was found ', markerAtCoordinate)
+
+      el.style.cursor = 'pointer'
+      //el
+     // debugger;
+    } else {
+      el.style.cursor = '';
+    }
   }
 
 
+  getMarkerByCoord(){
+
+  }
+
   // todo проходить по всем маркерам карты на предмет клика
   // или рендеринга
-  // todo проверять только видимые маркеры
-  traverseMarkers() {}
+  traverseMarkers( mapFn ) {
+    let markers = this.viewportVisibleMarkers;
+    
+    for ( let key in markers ){
+      let marker = markers[key];
+     // if (marker.contains())
+    }
+
+  }
 
   onClick(ev) {
 
     let map = this.map;
-    let pixel = ev.pixel; // координаты viewport
+    let pixel = ev.pixel; // координаты клика во viewport
     let coordinate = ev.coordinate;
     let store = this._pointsStore;
-    let selected = null;
+    let selectedMarker = null;
 
-    console.log('coord from pixel', map.getCoordinateFromPixel(pixel))
-    console.log('pixel from coordinate ', map.getPixelFromCoordinate(coordinate))
 
     // todo
     // this.traverseMarkers()
@@ -150,17 +168,24 @@ export default class OpenLayersMap extends Component {
       let marker = markers[key];
 
       if (marker.contains(coordinate)) {
-        selected = marker;
-        console.log('marker selected', marker)
+        selectedMarker = marker;
         break;
       }
     }
 
-    selected !== null && selected.onClick();
+    if (selectedMarker) {
+      if (selectedMarker.track) {
+        console.log( 'track of marker found', selectedMarker.track ) 
+      }
 
-    this.selectedMarker = selected;
+      // todo отрабатывать клик по точке
+    }
 
-    store.handleSelectPoint(selected && selected.point)
+    selectedMarker !== null && selectedMarker.onClick();
+
+    this.selectedMarker = selectedMarker;
+
+    store.handleSelectPoint(selectedMarker && selectedMarker.point)
   }
 
   render() {
@@ -194,6 +219,9 @@ export default class OpenLayersMap extends Component {
       let id = marker.point.id;
 
       if (selected === null || id !== selected.id) {
+
+        // todo переключать отрисовку маленький/большой значок
+        // в зависимости от количества маркеров на видимой части карты
         marker.render(options);
       }
     }
@@ -205,24 +233,23 @@ export default class OpenLayersMap extends Component {
     let selectedMarker = this.selectedMarker;
     if (selectedMarker) {
       selectedMarker.track.render();
-      selectedMarker.render({selected:true, ...options});
+      selectedMarker.render({selected: true, ...options});
 
-      
       let view = map.getView();
       let zoom = view.getZoom();
       let size = map.getSize();
-      let pixel = [(size[0] - SIDEBAR_WIDTH_PX)/2, size[1]/2];
+      let pixel = [(size[0] - SIDEBAR_WIDTH_PX) / 2, size[1] / 2];
 
         if (pointsStore.state.trackingMode) {
             view.centerOn(selectedMarker.coords, size, pixel)
             if (zoom < 12) {
-              view.setZoom( 12 )
+              view.setZoom(12)
             }
         }
 
       if (false && pointsStore.state.trackingMode) {
         this.disableInteractions();
-        if ( zoom < 15) {
+        if (zoom < 15) {
           map.fitBounds([selectedMarker._coords], {
             paddingBottomRight: [500, 50],
             paddingTopLeft: [50, 50],

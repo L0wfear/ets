@@ -85,11 +85,11 @@ export function getTrackColor(speed, type_id, opacity = 1) {
 
 export default class Track {
 
-  constructor(parent) {
+  constructor(owner) {
 
-    this.map = parent.map;
-    this.ctx = parent.ctx;
-    this.parent = parent;
+    this.map = owner.map;
+    this.ctx = owner.ctx;
+    this.owner = owner;
     this.points = null;
     this.fetch().then( this.render.bind(this) )
   }
@@ -107,12 +107,12 @@ export default class Track {
 
   fetch(from_dt = getStartOfToday(), to_dt = new Date().getTime()) {
 
-    let id = this.parent.point.id;
+    let id = this.owner.point.id;
 
     return getTrack(id, from_dt, to_dt)
       .then((track) => {
         this.points = track;
-        console.log('track fetched for', this.parent)
+        console.log('track fetched for', this.owner)
       // @todo handle receive track
       })
 
@@ -131,7 +131,7 @@ export default class Track {
   }
 
   renderSimple() {
-    let point = this.parent;
+    let point = this.owner;
     let track = this.points;
     let ctx = this.ctx;
 
@@ -217,8 +217,8 @@ export default class Track {
    */
   renderInColors() {
 
-    let parent = this.parent;
-    let point = this.parent.point;
+    let owner = this.owner;
+    let point = this.owner.point;
     let track = this.points;
     let TRACK_LINE_WIDTH = DRAW_POINTS ? 4 : TRACK_LINE_WIDTH;
     let ctx = this.ctx;
@@ -227,10 +227,10 @@ export default class Track {
       return
     }
 
-    let type_id = parent.point.car.type_id;
+    let type_id = owner.point.car.type_id;
 
     // todo import from settings
-    const RENDER_GRADIENT = this.parent.store.state.showTrackingGradient;
+    const RENDER_GRADIENT = this.owner.store.state.showTrackingGradient;
 
     // TODO убрать эту функцию, ибо она порождена багой на бэкэнде
     function getSpeed(trackPoint) {
@@ -324,6 +324,33 @@ export default class Track {
     }
 */
     ctx.stroke()
+  }
+
+  contains(coordinate) {
+    let points = this.points;
+    let viewportPoints = [];
+
+ /*   function trackPointContains(coordinate){
+
+    }
+
+    for (let key in points){
+      let point = points[key];
+
+      if (point
+
+    }*/
+  }
+
+
+  getTrackPointsInExtent(extent) {
+    let points = this.points;
+
+    for ( let key in points) {
+      let point = points[key];
+
+
+    }
   }
 
 }

@@ -20,8 +20,6 @@
     "glob": "^5.0.14",
     "imports-loader": "^0.6.4",
     "keen-js": "^3.2.3",
-    "leaflet": "^0.7.3",
-    "leaflet-zoombox": "^0.1.0",
     "lodash": "^3.10.1",
     "node-sass": "^3.2.0",
     "object-assign": "^2.0.0",

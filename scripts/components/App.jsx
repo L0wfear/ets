@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import LoginPage from './LoginPage.jsx';
-import OpenlayersPage from './OpenLayers.jsx';
-//import FluxComponent from 'flummox/component';
-//import NotificationSystem from 'react-notification-system';
+import OpenlayersPage from './MainPage.jsx';
 
 class App extends Component {
 
-  constructor(props){
+  constructor(props) {
     super(props)
   }
 

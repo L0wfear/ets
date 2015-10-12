@@ -1,4 +1,5 @@
 import config from './config.js';
+import { getStartOfToday, makeUnixTime } from './utils/dates.js';
 
 // @todo API INIT().then()
 
@@ -12,8 +13,10 @@ export function getAllPoints() {
   return fetch(POINTS_URL, config.REQUEST_PARAMS).then(r => r.json());
 }
 
-function getUTCUnixTime(time) {
-  return Math.round(time / 1000);
+export function getFuelData(from_dt = getStartOfToday(), to_dt = new Date().getTime(), car_id) {
+  return fetch(config.backend + '/fuel/' + car_id + '/?from_dt=' + makeUnixTime(from_dt) + '&to_dt=' + makeUnixTime(to_dt))
+    .then(r => r.json())
+    .then(r => r.map(data => data[1]))
 }
 
 function init() {
@@ -22,8 +25,8 @@ function init() {
 
 export function getTrack(car_id, from_dt, to_dt) {
 
-  let query = '/?from_dt=' + getUTCUnixTime(from_dt) +
-    '&to_dt=' + getUTCUnixTime(to_dt) +
+  let query = '/?from_dt=' + makeUnixTime(from_dt) +
+    '&to_dt=' + makeUnixTime(to_dt) +
     '&version=2';
 
   console.log('track loading for', car_id);
@@ -39,6 +42,11 @@ export function getTrack(car_id, from_dt, to_dt) {
     })
   );
 
+}
+
+export function getCarImage(car_id, type_id, model_id) {
+  return fetch(config.backend + `/car_image?model_id=${model_id}&car_id=${car_id}&type_id=${type_id}`)
+        .then(r => r.json())
 }
 
 export function getWeather() {

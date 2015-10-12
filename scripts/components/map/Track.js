@@ -1,6 +1,6 @@
 import { projectToPixel } from './MskAdapter.js';
 import { getTrack } from '../../adapter.js';
-import { getStartOfToday } from '../../helpers/dates.js';
+import { getStartOfToday } from '../../utils/dates.js';
 import { TRACK_COLORS, TRACK_LINE_OPACITY, TRACK_LINE_WIDTH, TRACK_POINT_RADIUS, SHOW_ONLY_POINTS_WITH_SPEED_CHANGES } from '../../constants/track.js';
 import { getTypeById } from '../../types.js';
 import { getTrackPointByColor } from '../../icons/track/points.js';
@@ -91,33 +91,101 @@ export default class Track {
     this.ctx = owner.ctx;
     this.owner = owner;
     this.points = null;
-    this.fetch().then( this.render.bind(this) )
+    this.onUpdateCallback = () => {};
   }
 
   addPoint(point) {
+
     //console.log('updating track with', point)
-    
     point.coords_msk = [point.coords_msk[1], point.coords_msk[0]];
     point.coords = [point.coords[1], point.coords[0]];
 
-    if (this.points !== null) {
+    if (this.points !== null && point.timestamp > this.points[this.points.length - 1].timestamp) {
     	this.points.push(point);
+      this.onUpdateCallback();
     }
   }
+
+  onUpdate(fn = () => {}) {
+    this.onUpdateCallback = fn;
+  }
+
+  getLegend() {
+
+    // todo refactor this
+
+    let colors = [];
+    let car = this.owner.getCar();
+
+    let type_id = car.type_id;
+    //debugger;
+    let prevColor = getTrackColor(0, type_id);
+
+    function addColor(color, speed) {
+      if (colors.length > 0) {
+        colors[colors.length - 1].till = speed - 1;
+      }
+      colors.push({
+        color: color,
+        speed: speed
+      })
+    }
+
+    addColor(prevColor, 0);
+
+    for (let i = 0, till = 100; i <= till; i++) {
+      let color = getTrackColor(i, type_id);
+      if (color !== prevColor) {
+        addColor(color, i);
+        prevColor = color;
+      }
+    }
+
+    if (colors[colors.length - 1].till === undefined) {
+      colors[colors.length - 1].speed = colors[colors.length - 1].speed + '+'
+    }
+
+
+    let legend = colors.map((obj, i) => {
+
+      let text = obj.speed + (obj.till ? ' – ' + obj.till : '') + ' км/ч';
+      let color = obj.color;
+
+      return <div className="track-legend-item">
+          <div className="track-legend-point" style={{
+          backgroundColor: color
+        }}></div>
+          <div className="track-legend-text">{text}</div>
+      </div>
+      });
+
+      return (
+        <div className="track-legend">
+          <p className="track-legend-header">Цвета маршрута:</p>
+          {legend}
+        </div>
+        ) 
+    }
+
 
   fetch(from_dt = getStartOfToday(), to_dt = new Date().getTime()) {
 
     let id = this.owner.point.id;
 
+    if (to_dt - from_dt > 24 * 60 * 60 * 1000) {
+      global.NOTIFICATION_SYSTEM.notify('Период запроса трэка не может превышать 24 часа', 'warning')
+      return;
+    }
+
     return getTrack(id, from_dt, to_dt)
       .then((track) => {
         this.points = track;
+        this.render();
+        this.onUpdateCallback();
         console.log('track fetched for', this.owner)
-      // @todo handle receive track
       })
 
   }
-
 
   render() {
     let map = this.map;
@@ -165,8 +233,6 @@ export default class Track {
   }
 
   getExtent() {
-    // @todo get extent of points
-    // for zooming etc
     let minX = 100000, minY = 100000, maxX = 0, maxY = 0;
     let trackPoints = this.points;
 
@@ -190,7 +256,6 @@ export default class Track {
 		} 
 
 		return [minX, minY, maxX, maxY];
-    
   }
 
 
@@ -218,7 +283,6 @@ export default class Track {
   renderInColors() {
 
     let owner = this.owner;
-    let point = this.owner.point;
     let track = this.points;
     let TRACK_LINE_WIDTH = DRAW_POINTS ? 4 : TRACK_LINE_WIDTH;
     let ctx = this.ctx;
@@ -326,31 +390,44 @@ export default class Track {
     ctx.stroke()
   }
 
-  contains(coordinate) {
-    let points = this.points;
-    let viewportPoints = [];
+  getPointAtCoordinate(coordinate) {
+    let view = this.map.getView();
+    let projectedPixel = projectToPixel(coordinate);
+    let extent = view.calculateExtent(this.map.getSize());
+    let viewportPoints = this.getTrackPointsInExtent(extent);
+    let selected = null;
 
- /*   function trackPointContains(coordinate){
+    for (let key in viewportPoints) {
+      let point = viewportPoints[key];
+      let pixelCoords = projectToPixel(point.coords_msk)
+      let radius = TRACK_POINT_RADIUS;
 
+      var dx = pixelCoords.x - projectedPixel.x;
+      var dy = pixelCoords.y - projectedPixel.y;
+
+      if (dx * dx + dy * dy < radius * radius) {
+        selected = point;
+        break;
+      }
     }
 
-    for (let key in points){
-      let point = points[key];
-
-      if (point
-
-    }*/
+    return selected;
   }
 
 
   getTrackPointsInExtent(extent) {
     let points = this.points;
+    let returns = [];
 
-    for ( let key in points) {
+    for (let key in points) {
       let point = points[key];
-
-
+      if (ol.extent.containsCoordinate(extent, point.coords_msk)) {
+        returns.push(point)
+      }
     }
+
+    return returns;
+
   }
 
 }

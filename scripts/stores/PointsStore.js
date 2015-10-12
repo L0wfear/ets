@@ -145,15 +145,7 @@ export default class PointsStore extends Store {
     let filter = Object.assign({}, this.state.filter, update);
     let selected = this.state.selected;
 
-    /* if (selected && !this._isPointVisible(selected, filter)) {
-       selected = null;
-     }*/
-
-    let state = Object.assign({}, {
-      filter,
-      selected
-    }, this.countDimensions());
-    this.setState(state);
+    this.setState(Object.assign({}, {filter, selected}, this.countDimensions()));
 
     // хреновое решение, но зато работает
     // решится по-другому при рефакторинге
@@ -324,6 +316,18 @@ export default class PointsStore extends Store {
     }
 
     return visible;
+  }
+
+  getSelectedMarker() {
+    if (this.state.selected) {
+      return this.state.selected.marker;
+    } else {
+      return null
+    }
+  }
+
+  hasMarkerSelected() {
+    return this.state.selected !== false && this.state.selected !== null;
   }
 
   getSelectedPoint() {

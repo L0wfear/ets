@@ -56,9 +56,8 @@ class MainPage extends Component {
         }}>
 
 
-          <Map
-              zoom={3}
-              center={[-399.43090337943863, -8521.192605428025]}/>
+          <Map zoom={3}
+               center={[-399.43090337943863, -8521.192605428025]}/>
 
           <Sidebar/>
 

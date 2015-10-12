@@ -4,30 +4,26 @@ import CarInfo from './CarInfo.jsx';
 //var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 export default class Sidebar extends Component {
-  render() {
 
-    let btnCloseStyle = {
-      position: 'absolute',
-      right: 15,
-      top: 15,
-      color: '#767676',
-      fontSize: 18,
-      cursor: 'pointer'
+  shouldComponentUpdate(nextProps) {
+    if (this.props.selected === null) {
+      return true;
+    } else {
+      return nextProps.selected.id !== this.props.selected.id;
     }
+  }
 
+  render() {
     let props = this.props;
 
     if (props.selected) {
-    //  debugger;
-      return (<div key={this.props.selected.id} className="dashboard-sidebar" style={{
-          zIndex: 100
-        }}>
+      return (<div key={props.selected.id} className="dashboard-sidebar">
         <div style={{
           height: "100%",
           overflow: "auto"
         }}>
-          <span style={btnCloseStyle} onClick={this.close.bind(this)}>×</span>
-          <CarInfo car={this.props.selected} flux={this.props.flux}/>
+          <span className="dashboard-sidebar-close" onClick={this.close.bind(this)}>×</span>
+          <CarInfo car={props.selected} flux={props.flux}/>
         </div>
       </div>)
     } else {

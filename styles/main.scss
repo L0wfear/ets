@@ -257,10 +257,39 @@ body.application {
   position: absolute;
   top: 0;
   width: 500px;
+  zIndex: 100;
   background-color: rgba(#f2f2f2, 0.8);
   height: 100%;
   box-shadow: 0 0 3px rgba(#000, 0.3);
   right: 0;
+
+  &-close {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    color: #767676;
+    fontSize: 18px;
+    cursor: pointer;
+  }
+
+  .toggle-tracking-mode {
+    span {
+      background-color: #eee;
+      border: 1px solid #ccc;
+      border-radius: 9px;
+      padding: 2px;
+      margin: -3px;
+      margin-right: -1px;
+      margin-left: -4px;
+      color: black;
+    }
+  }
+  .zoom-to-track-extent {
+    position: absolute;
+    right: 14px;
+    top: 40px;
+    padding: 4px 7px;
+  }
 }
 
 .dashboard-sidebar--open {
@@ -1723,6 +1752,11 @@ body {
 
 
 .car-info {
+
+  &-plate {
+     font-weight: 200;
+     text-align: center;
+  }
 
   .track-btn {
     position: absolute;

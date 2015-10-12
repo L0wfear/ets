@@ -1,7 +1,7 @@
 // import ol from 'imports?define=>false!openlayers';
 import React, { Component } from 'react';
 import CarMarker from '../markers/car/Marker.js';
-import { EXTENT, PROJECTION, ArcGisLayer } from './MskAdapter.js';
+import { PROJECTION, ArcGisLayer } from './MskAdapter.js';
 
 
 // todo move to settings
@@ -40,7 +40,7 @@ export default class OpenLayersMap extends Component {
       minZoom: 2,
       maxZoom: 13,
       projection: PROJECTION,
-      extent: EXTENT
+      extent: PROJECTION.getExtent()
     })
 
     let renderFn = this.renderCanvas.bind(this);
@@ -90,7 +90,7 @@ export default class OpenLayersMap extends Component {
 
     let map = this.map;
     let triggerRenderFn = this.triggerRender.bind(this);
-    let container = React.findDOMNode(this);
+    let container = this.refs.container.getDOMNode();
 
     map.setTarget(container);
 
@@ -108,22 +108,30 @@ export default class OpenLayersMap extends Component {
   onMouseMove(ev) {
 
     let coordinate = ev.coordinate;
-    let markerAtCoordinate = null;
+    let changeCursor = false;
 
     let markers = this.viewportVisibleMarkers;
     for (let key in markers) {
       let marker = markers[key];
 
       if (marker.contains(coordinate)) {
-        markerAtCoordinate = marker;
+        changeCursor = true;
         break;
       }
     }
-    
-    let el = this.map.getViewport();
 
-    if (markerAtCoordinate){
-      console.log( 'marker was found ', markerAtCoordinate)
+    if (this._pointsStore.hasMarkerSelected()) {
+      let currentSelectedMarker = this._pointsStore.getSelectedMarker();
+      if (currentSelectedMarker.hasTrackLoaded()) {
+        let possibleTrackPoint = currentSelectedMarker.track.getPointAtCoordinate(coordinate);
+        if (possibleTrackPoint) {
+          changeCursor = true;
+        }
+      }
+    }
+
+    let el = this.map.getViewport();
+    if (changeCursor) {
 
       el.style.cursor = 'pointer'
       //el
@@ -157,10 +165,21 @@ export default class OpenLayersMap extends Component {
     let coordinate = ev.coordinate;
     let store = this._pointsStore;
     let selectedMarker = null;
+    let cancelSelection = false;
 
-
-    // todo
-    // this.traverseMarkers()
+    // проверка – не кликнули на точку трэка?
+    let currentSelectedPoint = this._pointsStore.getSelectedPoint();
+    if (currentSelectedPoint) {
+      let marker = currentSelectedPoint.marker;
+      if (marker.hasTrackLoaded()) {
+        let track = marker.track;
+        let possibleTrackPoint = track.getPointAtCoordinate(coordinate);
+        if (possibleTrackPoint !== null) {
+          console.log( 'trackpoint  found', possibleTrackPoint);
+          return;
+        }
+      }
+    }
 
     // по какому маркеру кликнули?
     let markers = this.viewportVisibleMarkers;
@@ -174,22 +193,19 @@ export default class OpenLayersMap extends Component {
     }
 
     if (selectedMarker) {
-      if (selectedMarker.track) {
-        console.log( 'track of marker found', selectedMarker.track ) 
-      }
-
-      // todo отрабатывать клик по точке
+      selectedMarker.onClick()
+      store.handleSelectPoint(selectedMarker.point)
     }
-
-    selectedMarker !== null && selectedMarker.onClick();
-
-    this.selectedMarker = selectedMarker;
-
-    store.handleSelectPoint(selectedMarker && selectedMarker.point)
   }
 
   render() {
-    return <div className="openlayers-container"/>
+    return (<div>
+              <div ref="container" className="openlayers-container"/>
+              <div className="openlayers-popup ol-popup">
+                  <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                  <div id="popup-content"><p>You clicked here:</p><code>20° 27′ 26″ N 108° 20′ 14″ E</code></div>
+              </div>
+            </div>)
   }
 
   renderCanvas(canvas, extent) {
@@ -199,8 +215,8 @@ export default class OpenLayersMap extends Component {
 
     let pointsStore = this._pointsStore;
     let selected = pointsStore.getSelectedPoint();
+    let selectedMarker = pointsStore.getSelectedMarker();
     let map = this.map;
-
 
     let optimizedMarkers = this.viewportVisibleMarkers = this.getMarkersInBounds(extent);
 
@@ -209,28 +225,19 @@ export default class OpenLayersMap extends Component {
     };
 
     let keys = Object.keys(optimizedMarkers);
-
-    //console.log( 'rendered only', keys.length, 'of', Object.keys(this._points).length, 'points')
-
     for (let i = 0, till = keys.length; i < till; i++) {
-
       let key = keys[i];
       let marker = optimizedMarkers[key];
       let id = marker.point.id;
 
       if (selected === null || id !== selected.id) {
-
         // todo переключать отрисовку маленький/большой значок
         // в зависимости от количества маркеров на видимой части карты
+        // будет некрасиво, если попадать точно в границу количества
         marker.render(options);
       }
     }
 
-
-    // todo render selected marker
-    // 
-    //debugger;
-    let selectedMarker = this.selectedMarker;
     if (selectedMarker) {
       selectedMarker.track.render();
       selectedMarker.render({selected: true, ...options});

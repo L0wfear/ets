@@ -39,7 +39,8 @@ for (let i = 0, till = MapServerConfig.tileInfo.lods.length; i < till; i++) {
               origin: [ORIGIN.x, ORIGIN.y],
               resolutions: RESOLUTIONS,
               tileSize: TILE_SIZE
-          })
+          }),
+          //tilePixelRatio: 2,
       }),
       extent: EXTENT
 });

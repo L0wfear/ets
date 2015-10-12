@@ -67,10 +67,17 @@ export default class CarMarker extends Marker {
     return image;
   }
 
+  getCar() {
+    return this.point.car
+  }
+
   onClick() {
-    // подгружаем трэк при клике
-    let track = new Track(this);
-    this.track = track;
+    this.track = new Track(this);
+  }
+
+  hasTrackLoaded() {
+    // todo move to Track class
+    return this.track !== null && this.track.points !== null && this.track.points.length > 0 ;
   }
 
   /**

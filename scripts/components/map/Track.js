@@ -7,7 +7,7 @@ import { getTrackPointByColor } from '../../icons/track/points.js';
 
 const IS_MSK = true;
 const DRAW_POINTS = true;
-const COLORS_ZOOM_THRESHOLD = 10;
+const COLORS_ZOOM_THRESHOLD = 8;
 
 
 /**

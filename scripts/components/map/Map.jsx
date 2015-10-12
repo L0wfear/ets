@@ -240,25 +240,14 @@ export default class OpenLayersMap extends Component {
       let size = map.getSize();
       let pixel = [(size[0] - SIDEBAR_WIDTH_PX) / 2, size[1] / 2];
 
-        if (pointsStore.state.trackingMode) {
-            view.centerOn(selectedMarker.coords, size, pixel)
-            if (zoom < 12) {
-              view.setZoom(12)
-            }
-        }
-
-      if (false && pointsStore.state.trackingMode) {
-        this.disableInteractions();
-        if (zoom < 15) {
-          map.fitBounds([selectedMarker._coords], {
-            paddingBottomRight: [500, 50],
-            paddingTopLeft: [50, 50],
-            animate: false,
-            zoom: 16
-          });
-        }
-        map.panToCenterWithoutAnimation(selectedMarker._coords, pointsStore)
+      if (pointsStore.state.trackingMode) {
+          view.centerOn(selectedMarker.coords, size, pixel)
+          if (zoom < 12) {
+            view.setZoom(12)
+          }
+          this.disableInteractions();
       }
+
     } else {
       this.enableInteractions()
     }

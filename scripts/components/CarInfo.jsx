@@ -211,7 +211,7 @@ export default class CarInfo extends Component {
       function getLastTrackPoint(track) {
         let lastPoint = track.getLastPoint();
         let dt = new Date(lastPoint.timestamp * 1000);
-        return makeDate(dt) + ' ' + makeTime(dt) + ' [' + roundCoordinates(lastPoint.coords_msk) + ']';
+        return makeDate(dt) + ' ' + makeTime(dt, true) + ' [' + roundCoordinates(lastPoint.coords_msk) + ']';
       }
 
       if (car.gov_number && car.gov_number.length) {
@@ -234,6 +234,7 @@ export default class CarInfo extends Component {
       }
 
       if (marker.hasTrackLoaded()) {
+        // todo при клике на "последнюю точку" центрировать по координатам
          if (track.points.length > 0) {
             addProp('Последняя точка',  getLastTrackPoint(track));
          } else {

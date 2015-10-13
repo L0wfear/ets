@@ -186,12 +186,13 @@ export default class OpenLayersMap extends Component {
         let track = marker.track;
         let possibleTrackPoint = track.getPointAtCoordinate(coordinate);
         if (possibleTrackPoint !== null) {
+          let pointCoords = possibleTrackPoint.coords_msk;
           //console.log( 'trackpoint  found', possibleTrackPoint);
           let makePopupFn = track.getTrackPointTooltip(possibleTrackPoint);
-          this.popup.show(coordinate, makePopupFn());
+          this.popup.show(pointCoords, makePopupFn());
           getGeoObjectsByCoords(possibleTrackPoint.coords_msk)
             .then((data) => {
-              this.popup.show(coordinate, makePopupFn(data.objects))
+              this.popup.show(pointCoords, makePopupFn(data.objects))
             })
           return;
         }
@@ -210,8 +211,10 @@ export default class OpenLayersMap extends Component {
     }
 
     if (selectedMarker) {
-      selectedMarker.onClick()
-      store.handleSelectPoint(selectedMarker.point)
+      selectedMarker.onClick();
+      store.handleSelectPoint(selectedMarker.point);
+      // прячем попап трэка
+      this.popup.hide()
     }
   }
 

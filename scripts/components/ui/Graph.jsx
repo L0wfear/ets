@@ -9,7 +9,8 @@ export default class Graph extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      data: []
+      data: [],
+      loaded: false
     }
   }
 
@@ -17,19 +18,29 @@ export default class Graph extends Component {
     this.fetch();
   }
 
-  shouldComponentUpdate(nextProps) {
-    return nextProps.to !== this.props.to || nextProps.from !== this.props.from || nextProps.id !== this.props.id;
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.state.loaded !== nextState.loaded;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.to !== this.props.to || nextProps.from !== this.props.from || nextProps.id !== this.props.id) {
+      this.fetch()
+    }
   }
 
   fetch() {
     let {from, to, type, id} = this.props;
 
+    this.setState({loaded: false})
+
     switch (type) {
       case 'fuel':
-        getFuelData(from, to, id).then(data => this.setState({
-            data: data
-          }))
-
+        getFuelData(from, to, id).then(data => {
+          this.setState({
+            data: data,
+            loaded: true
+          })
+        })
     }
   }
 
@@ -42,10 +53,8 @@ export default class Graph extends Component {
 
     let rendered = <div> Нет данных </div>;
 
-    if (data === null) {
-      rendered = <Preloader type="graph" style={{
-        height: 103
-      }}/>;
+    if (!this.state.loaded) {
+      rendered = <Preloader type="graph" style={{height: 103}}/>;
     } else if (data.length > 0) {
       rendered = <div style={{
         fontSize: '10px'

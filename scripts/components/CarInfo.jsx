@@ -12,6 +12,79 @@ import { getCarImage } from '../adapter.js';
 import { roundCoordinates } from '../utils/geo.js';
 import DatePicker from './ui/DatePicker.jsx';
 
+class VehicleAttributes extends Component {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      attributes: []
+    }
+
+    // key => name mapp
+    this.mappings = {
+
+    }
+  }
+
+
+  parseProps(props) {
+    let vehicle = props.vehicle;
+    let car = vehicle.car;
+
+    let attributes = [];
+    let addAttribute = (name, value) => {
+      if (typeof value !== 'undefined') {
+        attributes.push({
+          name,
+          value
+        })
+      }
+    }
+
+    let makeLastPointString = point => {
+      let dt = new Date(point.timestamp * 1000);
+      return makeDate(dt) + ' ' + makeTime(dt, true) + ' [' + roundCoordinates(point.coords_msk) + ']';
+    }
+
+    addAttribute('Гос. номер', car.gov_number)
+    addAttribute('ID БНСО', vehicle.id)
+    addAttribute('Статус', getStatusById(vehicle.status).title)
+    addAttribute('Тип техники', getTypeById(car.type_id).title)
+    addAttribute('Шасси', getModelById(car.model_id).title)
+    addAttribute('Владелец', getOwnerById(car.owner_id).title);
+
+    if (props.lastPoint) {
+      // todo при клике на "последнюю точку" центрировать по координатам
+      addAttribute('Последняя точка', makeLastPointString(props.lastPoint))
+    } else {
+      addAttribute('Последняя точка', makeLastPointString({
+        timestamp: vehicle.timestamp,
+        coords_msk: vehicle.coords_msk
+      }))
+    }
+
+    return attributes;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState((state, props) => state.attributes = this.parseProps(nextProps));
+  }
+
+  renderAttribute({name, value}) {
+    return (
+      <div key={name} className="vehicle-attributes-list__item">
+           {name}: <span className="value">{value}</span>
+      </div>)
+  }
+
+  render() {
+    return (<div className="vehicle-attributes-list">
+              {this.state.attributes.map(attribute => this.renderAttribute(attribute))}
+            </div>)
+  }
+}
+
 export default class CarInfo extends Component {
 
   constructor(props, context) {
@@ -36,7 +109,7 @@ export default class CarInfo extends Component {
   render() {
     let car = this.props.car;
 
-    console.log( 'rendering carinfo');
+    console.log('rendering carinfo');
 
     if (!car) {
       return null;
@@ -74,11 +147,12 @@ export default class CarInfo extends Component {
     let trackBtnIconClass = 'glyphicon glyphicon-screenshot ' + (isTrackingMode ? 'tracking-animate' : '');
     let zoomToTrackClass = 'zoom-to-track-extent btn-sm btn ' + (isTrackLoaded ? 'btn-default' : 'btn-disabled');
 
+
     return (
       <Panel title={title}>
         {<button className={trackBtnClass} onClick={this.toggleCarTracking.bind(this)} title="Следить за машиной"><span className={trackBtnIconClass}></span>&nbsp;{isTrackingMode ? 'Следим' : 'Следить'}</button>}
           <button className={zoomToTrackClass} onClick={isTrackLoaded && this.zoomToTrack.bind(this)} title="Показать маршрут"><span className="glyphicon glyphicon-resize-full"></span>&nbsp;Маршрут</button>
-        { imageUrl ?
+        {imageUrl ?
           <img src={config.backend + config.images + imageUrl} style={{
             margin: 10,
             width: 250,
@@ -86,15 +160,14 @@ export default class CarInfo extends Component {
           }}/>
           : null
         }
-       {this.renderAttrs()}
-       {marker.track.getLegend()}
+        <VehicleAttributes vehicle={car} lastPoint={marker.hasTrackLoaded() && marker.track.getLastPoint()}/>
+        {marker.track.getLegend()}
       </Panel>
       );
   }
 
     // TODO переместить это на более высокий уровень абстракции
     zoomToTrack() {
-
       let store = this.store;
       store.setTracking(false);
       this.setState({trackingMode: false})
@@ -194,77 +267,6 @@ export default class CarInfo extends Component {
         </Panel>
       </div>
         );
-    }
-
-
-    renderAttrs() {
-      let car = this.props.car.car;
-      let marker = this.props.car.marker;
-      let track = marker.track;
-      let props = [];
-      let addProp = (key, value) => props.push({
-          key,
-          value
-        });
-
-
-      function getLastTrackPoint(track) {
-        let lastPoint = track.getLastPoint();
-        let dt = new Date(lastPoint.timestamp * 1000);
-        return makeDate(dt) + ' ' + makeTime(dt, true) + ' [' + roundCoordinates(lastPoint.coords_msk) + ']';
-      }
-
-      if (car.gov_number && car.gov_number.length) {
-        addProp('Гос. номер', car.gov_number)
-      }
-      if (this.props.car.id && this.props.car.id.length) {
-        addProp('ID БНСО', this.props.car.id)
-      }
-
-      addProp('Статус', getStatusById(this.props.car.status).title)
-
-      if (car.type_id && getTypeById(car.type_id)) {
-        addProp('Тип техники', getTypeById(car.type_id).title)
-      }
-      if (car.model_id && getModelById(car.model_id)) {
-        addProp('Шасси', getModelById(car.model_id).title)
-      }
-      if (car.owner_id && getOwnerById(car.owner_id)) {
-        addProp('Владелец', getOwnerById(car.owner_id).title);
-      }
-
-      if (marker.hasTrackLoaded()) {
-        // todo при клике на "последнюю точку" центрировать по координатам
-         if (track.points.length > 0) {
-            addProp('Последняя точка',  getLastTrackPoint(track));
-         } else {
-          addProp('Последняя точка', getLastTrackPoint([
-            {
-              timestamp: this.props.car.timestamp,
-              coords:this.props.car.coords_msk
-            }]))
-         }
-       } else {
-         addProp('Последняя точка', 'Получение данных...')
-       }
-
-      return (
-        <div style={{
-          padding: '10px 0',
-          borderTop: '1px solid #ddd',
-          margin: '0 5px'
-        }}>
-        {props.map(
-          p => <div style={{
-              textAlign: 'left',
-              fontWeight: 200,
-              color: '#666'
-            }}>{p.key}: <span style={{
-              color: 'black', /*fontSize: 16*/
-            }}>{p.value}</span>
-              </div>)}
-      </div>
-        )
     }
 
     fetchImage() {

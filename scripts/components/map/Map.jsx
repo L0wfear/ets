@@ -62,10 +62,12 @@ export default class OpenLayersMap extends Component {
             self.canvas = this.canvas = document.createElement('canvas');
             self.context = this.canvas.getContext('2d');
           }
+          //debugger;
+         // size = self.map.getSize();
           this.canvas.setAttribute('width', size[0]);
           this.canvas.setAttribute('height', size[1]);
 
-          return renderFn(this.canvas, extent);
+          return renderFn(this.canvas, extent, pixelRatio);
         },
         ratio: 1
       })

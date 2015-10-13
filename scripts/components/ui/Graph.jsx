@@ -3,6 +3,7 @@ import { Sparklines, SparklinesLine } from '../../vendor/Sparklines.js';
 import { getFuelData } from '../../adapter.js';
 import Panel from '../Panel.jsx';
 import Preloader from './Preloader.jsx'
+import { makeDate, makeTime } from '../../utils/dates.js';
 
 export default class Graph extends Component {
 
@@ -11,6 +12,10 @@ export default class Graph extends Component {
     this.state = {
       data: [],
       loaded: false
+    }
+
+    this.headers = {
+      fuel: 'График уровня топлива'
     }
   }
 
@@ -50,7 +55,6 @@ export default class Graph extends Component {
     let to = this.props.to;
 
     console.log('rendering graph')
-
     let rendered = <div> Нет данных </div>;
 
     if (!this.state.loaded) {
@@ -79,17 +83,17 @@ export default class Graph extends Component {
         position: 'absolute',
         left: '47px',
         bottom: '5px'
-      }}>{from}</span>
+      }}>{makeDate(from) + ' ' +makeTime(from)}</span>
       <span style={{
         position: 'absolute',
         right: '42px',
         bottom: '5px'
-      }}>{to}</span>
+      }}>{makeDate(to) + ' ' + makeTime(to)}</span>
       </div>
     }
 
     return (
-      <Panel title="График уровня топлива">
+      <Panel title={this.headers[this.props.type]}>
           {rendered}
         </Panel>
       )

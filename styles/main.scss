@@ -262,6 +262,8 @@ body.application {
   height: 100%;
   box-shadow: 0 0 3px rgba(#000, 0.3);
   right: 0;
+  height: 100%;
+  overflow: auto;
 
   &-close {
     position: absolute;
@@ -1818,3 +1820,18 @@ body {
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
   border-radius: 6px;
 } 
+
+.vehicle-attributes-list {
+  padding: 10px 0;
+  border-top: 1px solid #ddd;
+  margin: 0 5px;
+
+  &__item {
+    text-align: left;
+    font-weight: 200;
+    color: #666;
+    .value {
+      color:black;
+    }
+  }
+}

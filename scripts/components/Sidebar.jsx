@@ -16,13 +16,8 @@ export default class Sidebar extends Component {
 
     if (props.selected) {
       return (<div key={props.selected.id} className="dashboard-sidebar">
-        <div style={{
-          height: "100%",
-          overflow: "auto"
-        }}>
           <span className="dashboard-sidebar-close" onClick={this.close.bind(this)}>×</span>
           <CarInfo car={props.selected} flux={props.flux}/>
-        </div>
       </div>)
     } else {
       return <div key="nothing"/>

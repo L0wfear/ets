@@ -7,6 +7,10 @@ const TILE_SIZE = MapServerConfig.tileInfo.rows;
 const ORIGIN = MapServerConfig.tileInfo.origin;
 
 export function projectToPixel([x, y]) {
+  if (x === null || y === null) {
+    return [0, 0];
+  }
+
   let coords = olmap.getPixelFromCoordinate([x, y]);
 	return { x: coords[0], y: coords[1] };
 }

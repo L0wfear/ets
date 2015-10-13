@@ -13,12 +13,17 @@ export default class AppNotificationSystem extends NotificationSystem {
     this._notify = this.notify.bind(this);
   }
 
+
+  _addNotification(notification) {
+    this._notificationSystem.addNotification(notification)
+  }
+
   /**
-   * показать сообщение
+   * показать обычное сообщение
    * @param text
    * @param type success|error|warning|info
    */
-  notify(text, type) {
+  notify(text, type = success) {
 
     if (typeof this._notificationSystem === 'undefined') {
       return

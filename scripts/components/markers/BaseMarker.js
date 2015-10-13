@@ -47,6 +47,7 @@ export default class Marker {
   renderImage() {}
 
   render(options = {}) {
+    if (this.coords[0] === null || this.coords[1] === null ) return;
     let image = this.getImage(options);
     let radius = image.width / 2;
     let ctx = this.ctx;

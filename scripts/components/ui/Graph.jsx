@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Sparklines, SparklinesLine } from '../Sparklines.js';
+import { Sparklines, SparklinesLine } from '../../vendor/Sparklines.js';
 import { getFuelData } from '../../adapter.js';
 import Panel from '../Panel.jsx';
 

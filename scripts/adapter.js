@@ -2,13 +2,16 @@ import config from './config.js';
 import { getStartOfToday, makeUnixTime } from './utils/dates.js';
 import { wrapCoords } from './utils/geo.js';
 
-// @todo API INIT().then()
+import { loadCustomers } from './customers.js';
+import { loadTypes } from './types.js';
+import { loadModels } from './models.js';
+import { loadOkrugs } from './okrugs.js';
+import { loadOwners } from './owners.js';
 
 const POINTS_URL = config.backend ? config.backend + '/data' : '/data';
 const TRACK_URL = config.backend ? config.backend + '/tracks/' : '/tracks/';
 const WEATHER_URL = config.backend ? config.backend + '/weather/' : '/weather/';
 const GEO_OBJECTS_URL = config.backend ? config.backend + '/geo_objects/' : '/geo_objects/';
-
 
 export function getAllPoints() {
   return fetch(POINTS_URL, config.REQUEST_PARAMS).then(r => r.json());
@@ -20,8 +23,15 @@ export function getFuelData(from_dt = getStartOfToday(), to_dt = new Date().getT
     .then(r => r.map(data => data[1]))
 }
 
-function init() {
+export function init() {
   // @todo вся нужная для инициализации внешнего апи хрень здесь
+  return Promise.all([
+        loadCustomers(),
+        loadModels(),
+        loadOwners(),
+        loadOkrugs(),
+        loadTypes()])
+          
 }
 
 export function getTrack(car_id, from_dt, to_dt) {

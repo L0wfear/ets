@@ -24,10 +24,26 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.(jpe?g|png|gif|svg)$/, loader: 'url', query: {limit: 10240} },
-      { test: /\.jsx?$/, exclude: /node_modules/, loaders: [strip.loader('debug'), 'babel?stage=0&optional=runtime&plugins=typecheck']},
-      { test: /\.json$/, loader: 'json-loader' },
-      { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', '!raw!sass?outputStyle=expanded') }
+      {
+        test: /\.(jpe?g|png|gif|svg)$/,
+        loader: 'url',
+        query: {
+          limit: 10240
+        }
+      },
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        loaders: [strip.loader('debug'), 'babel?stage=0&optional=runtime&plugins=typecheck']
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader'
+      },
+      {
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract('style', '!raw!sass?outputStyle=expanded')
+      }
     ]
   },
   node: {
@@ -48,7 +64,9 @@ module.exports = {
   plugins: [
     new CleanPlugin([relativeAssetsPath]),
 
-    new ExtractTextPlugin('../dist/[name].css', {allChunks: true}),
+    new ExtractTextPlugin('../dist/[name].css', {
+      allChunks: true
+    }),
     new webpack.DefinePlugin({
       __CLIENT__: true,
       __SERVER__: false,
@@ -70,18 +88,18 @@ module.exports = {
     // optimizations
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
-   new webpack.optimize.UglifyJsPlugin({
-      // compress: {
-      //     warnings: true
-      // },
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        pure_funcs: ['console.log']
+      },
       sourceMap: false,
       mangle: false
-    }),
-/* 
-    function () {
-      this.plugin('done', function(stats) {
-        writeStats.call(this, stats, 'prod');
-      });
-    }*/
+    })
+  /* 
+      function () {
+        this.plugin('done', function(stats) {
+          writeStats.call(this, stats, 'prod');
+        });
+      }*/
   ]
 };

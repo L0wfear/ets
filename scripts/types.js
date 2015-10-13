@@ -15,8 +15,8 @@ function replaceList(newList) {
   for (let o of newList) {
     list.push(o)
   }
-
 }
+
 function normalizeArray(objOrArray) {
 
   if (Array.isArray(objOrArray)) {

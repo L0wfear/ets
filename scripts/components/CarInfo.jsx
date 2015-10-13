@@ -188,9 +188,9 @@ class CarInfo extends Component {
                       date={this.state.from_dt} disabled={tillNow} ref="from_dt"/>&nbsp;–&nbsp;
           <DatePicker onChange={date => this.setState({to_dt: date})} 
                       date={this.state.to_dt} disabled={tillNow} ref="to_dt"/>
-           <label style={showGradientStyle}>
+          {/* <label style={showGradientStyle}>
              <input type="checkbox" checked={showGradient} ref="showGradient" onChange={this.onShowGradientChange.bind(this)}/> С градиентом
-           </label>
+           </label>*/}
            <label style={tillNowStyle}>
              <input type="checkbox" checked={tillNow} ref="tillNow" onChange={this.onTrackUpdatingChange.bind(this)}/> За сегодня
            </label>

@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 import CarMarker from '../markers/car/Marker.js';
 import { PROJECTION, ArcGisLayer } from './MskAdapter.js';
+import 'ol3-popup/src/ol3-popup.js';
+import { getGeoObjectsByCoords } from '../../adapter.js';
 
 
 // todo move to settings
@@ -61,7 +63,7 @@ export default class OpenLayersMap extends Component {
     });
 
     let map = new ol.Map(
-      {
+      { 
         view: initialView,
         //interactions: [this.interactions],
         renderer: ['canvas', 'dom'],
@@ -74,7 +76,6 @@ export default class OpenLayersMap extends Component {
       })
 
     this.map = global.olmap = map;
-
 
   }
 
@@ -98,7 +99,10 @@ export default class OpenLayersMap extends Component {
     map.on('pointermove', this.onMouseMove.bind(this))
    // map.on('precompose', triggerRenderFn)
 
-    map.on('click', this.onClick.bind(this))
+    map.on('singleclick', this.onClick.bind(this))
+
+    this.popup = new ol.Overlay.Popup();
+    map.addOverlay(this.popup);
   }
 
   triggerRender() {
@@ -131,14 +135,7 @@ export default class OpenLayersMap extends Component {
     }
 
     let el = this.map.getViewport();
-    if (changeCursor) {
-
-      el.style.cursor = 'pointer'
-      //el
-     // debugger;
-    } else {
-      el.style.cursor = '';
-    }
+    el.style.cursor = changeCursor ? 'pointer' : '';
   }
 
 
@@ -175,7 +172,13 @@ export default class OpenLayersMap extends Component {
         let track = marker.track;
         let possibleTrackPoint = track.getPointAtCoordinate(coordinate);
         if (possibleTrackPoint !== null) {
-          console.log( 'trackpoint  found', possibleTrackPoint);
+          //console.log( 'trackpoint  found', possibleTrackPoint);
+          let makePopupFn = track.getTrackPointTooltip(possibleTrackPoint);
+          this.popup.show(coordinate, makePopupFn());
+          getGeoObjectsByCoords(possibleTrackPoint.coords_msk)
+            .then((data) => {
+              this.popup.show(coordinate, makePopupFn(data.objects))
+            })
           return;
         }
       }
@@ -201,10 +204,6 @@ export default class OpenLayersMap extends Component {
   render() {
     return (<div>
               <div ref="container" className="openlayers-container"/>
-              <div className="openlayers-popup ol-popup">
-                  <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-                  <div id="popup-content"><p>You clicked here:</p><code>20° 27′ 26″ N 108° 20′ 14″ E</code></div>
-              </div>
             </div>)
   }
 

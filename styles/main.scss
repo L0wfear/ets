@@ -1556,22 +1556,15 @@ body {
   background-image: url('images/icon-zoombox.png') !important;
 }
 
-.trackpoint-popup {
+.ol-popup {
 
   width: 405px;
   white-space: nowrap;
   font-weight: 200;
+  padding: 0px !important;
 
-  .leaflet-popup-content {
-    width: 403px !important;
-    margin: 0 0;
-  }
-
-  .leaflet-popup-content-wrapper{
-    color: #565656;
-  }
-  .leaflet-popup-close-button {
-    top: 10px;
+  &-closer { 
+    font-size:14px;
   }
 
   .header {
@@ -1614,6 +1607,7 @@ body {
       border-right: 0 none;
       padding-top: 10px;
       font-size: 14px;
+      width: 110px;
       text-align: center;
     }
 
@@ -1627,7 +1621,7 @@ body {
 
     .coords {
       font-size:12px;
-      width: 80px;
+      width: 100px;
       padding-left: 10px;
     }
   }

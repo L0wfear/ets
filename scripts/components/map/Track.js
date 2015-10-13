@@ -1,10 +1,12 @@
+import React from 'react';
 import { projectToPixel } from './MskAdapter.js';
+import { getCustomerById } from '../../customers.js';
 import { getTrack } from '../../adapter.js';
-import { getStartOfToday } from '../../utils/dates.js';
+import { getStartOfToday, makeDate, makeTime } from '../../utils/dates.js';
 import { TRACK_COLORS, TRACK_LINE_OPACITY, TRACK_LINE_WIDTH, TRACK_POINT_RADIUS, SHOW_ONLY_POINTS_WITH_SPEED_CHANGES } from '../../constants/track.js';
 import { getTypeById } from '../../types.js';
 import { getTrackPointByColor } from '../../icons/track/points.js';
-import { swapCoords } from '../../utils/geo.js';
+import { swapCoords, roundCoordinates } from '../../utils/geo.js';
 
 const IS_MSK = true;
 const DRAW_POINTS = true;
@@ -54,7 +56,8 @@ export function getTrackColor(speed, type_id, opacity = 1) {
     + opacity + ')' : null
   }
 
-  let speed_max = getTypeById(type_id).speed_max;
+  let type = getTypeById(type_id);
+  let speed_max = type && type.speed_max | 0;
 
   /* @TODO STOP SIGN
    if ( speed === 0 ){
@@ -445,4 +448,54 @@ export default class Track {
 
     }
 
+
+    // todo refactor
+    getTrackPointTooltip(trackPoint){
+
+      let {
+          nsat,
+          speed_avg,
+          speed_max,
+          direction,
+          timestamp,
+          distance
+          } = trackPoint,
+        [latitude, longitude] = roundCoordinates(trackPoint.coords_msk, 6),
+        geoObjects = null,
+        gov_number = this.owner.point.car.gov_number;
+
+      distance = typeof distance == 'number' ? Math.floor(distance) : distance;
+      timestamp = new Date( timestamp * 1000 );
+      let dt = makeDate( timestamp ) + ' ' + makeTime( timestamp, true );
+
+      return function makePopup(geoObjects = null){
+
+          let objectsString = 'Объекты ОДХ';
+
+          if ( geoObjects === null ){
+            objectsString += ' загружаются'
+          } else {
+            if ( geoObjects.length > 0 ){
+              objectsString += ': '+ geoObjects.map((obj)=>obj.name + ' ('+getCustomerById(obj.customer_id).title+')').join(', ')
+            } else {
+              objectsString += ' не найдены'
+            }
+          }
+
+          return '<div class="header">' +
+                    '<span class="gov-number">'+gov_number+'</span>' +
+                    '<span class="dt">'+dt+'</span>  ' +
+                  '</div>  ' +
+                  '<div class="geo-objects">'+objectsString+'</div>'+
+                    '<div class="some-info">' +
+                    '<div class="speed">V<sub>ср</sub> = '+speed_avg+' км/ч<br/>'+'V<sub>макс</sub> = '+speed_max+' км/ч</div>' +
+                    '<div class="distance">' + distance + ' м</div>' +
+                    '<div class="coords">'+latitude+ '<br/>' + longitude + '</div>' +
+                    '<div class="nsat">'+ nsat +' спутников</div>' +
+                  '</div>' +
+                    // '<div class="ignition">${ignition}</div>' +
+              '</div>';
+      }
+
   }
+}

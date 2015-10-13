@@ -1,5 +1,6 @@
 import config from './config.js';
 import { getStartOfToday, makeUnixTime } from './utils/dates.js';
+import { wrapCoords } from './utils/geo.js';
 
 // @todo API INIT().then()
 
@@ -33,14 +34,13 @@ export function getTrack(car_id, from_dt, to_dt) {
   return fetch(TRACK_URL + car_id + query, {
     credentials: 'include'
   }).then(r => r.json())
-  .then(points => points.map( (point) => {
-      // wrap coords for OpenLayers
-      point.coords = [point.coords[1], point.coords[0]];
-      point.coords_msk = [point.coords_msk[1], point.coords_msk[0]];
-
-      return point;
-    })
-  );
+    .then(points => points.map((point) => {
+        // wrap coords for OpenLayers
+        point.coords = wrapCoords(point.coords);
+        point.coords_msk = wrapCoords(point.coords_msk);
+        return point;
+      })
+    );
 
 }
 
@@ -53,7 +53,8 @@ export function getWeather() {
   return fetch(WEATHER_URL).then(r => r.json());
 }
 
-export function getGeoObjectsByCoords(lat, lon, d = 5) {
+export function getGeoObjectsByCoords([lat, lon], d = 5) {
+  let mskQuery = '?d=' + d + '&x_msk=' + lat + '&y_msk=' + lon;
   let query = '?d=' + d + '&lat=' + lat + '&lon=' + lon;
-  return fetch(GEO_OBJECTS_URL + query).then(r => r.json())
+  return fetch(GEO_OBJECTS_URL + mskQuery).then(r => r.json())
 }

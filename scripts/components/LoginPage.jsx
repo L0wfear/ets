@@ -5,20 +5,20 @@ const users = [
 
   {
     login: 'mayor',
-    password: 'mayor',
+   // password: 'mayor',
     role: 'mayor'
   },
 
   {
     login: 'prefect_cao',
-    password: 'prefect_cao',
+    //password: 'prefect_cao',
     role: 'prefect',
     okrug: 1
   },
 
   {
     login: 'zhilishnik_tverskoy',
-    password: 'zhilishnik_tverskoy',
+    //password: 'zhilishnik_tverskoy',
     role: 'owner',
     owner: 102266340
   }

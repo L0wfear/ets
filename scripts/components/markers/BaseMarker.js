@@ -22,11 +22,10 @@ export default class Marker {
 
     // some methods may be useful
     this.store = map._pointsStore;
+    this._reactMap = map;
     this.map = map.map;
-    this.canvas = map.canvas;
     this.image = null;
     this.radius = 0;
-    this.ctx = this.canvas.getContext('2d')
     this.coords = this.getCoords()
 
     this.animation = null;
@@ -48,10 +47,16 @@ export default class Marker {
 
   render(options = {}) {
     if (this.coords[0] === null || this.coords[1] === null ) return;
+
     let image = this.getImage(options);
     let radius = image.width / 2;
-    let ctx = this.ctx;
+    let canvas = this._reactMap.canvas;
+    let ctx = canvas.getContext('2d');
     let drawCoords = projectToPixel(this.coords);
+
+    if (typeof ctx === 'undefined') {
+      return;
+    }
 
     if (this.animation) {
       this.animation.update(time);

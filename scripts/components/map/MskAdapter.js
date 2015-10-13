@@ -6,7 +6,16 @@ const TILES_URL = '//ods.mos.ru/ssd/ArcGIS/rest/services/egko_go/MapServer';
 const TILE_SIZE = MapServerConfig.tileInfo.rows;
 const ORIGIN = MapServerConfig.tileInfo.origin;
 
-export function projectToPixel([x, y]) {
+export function projectToPixel(coordinates) {
+  let x, y;
+  
+  if (coordinates.length) {
+    [x, y] = coordinates
+  } else {
+    x = coordinates.x;
+    y = coordinates.y
+  }
+
   if (x === null || y === null) {
     return [0, 0];
   }

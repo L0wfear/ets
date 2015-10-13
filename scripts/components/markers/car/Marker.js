@@ -5,7 +5,7 @@ import { getSmallIcon, getBigIcon } from '../../../icons/car.js';
 import {projectToPixel} from '../../map/MskAdapter.js';
 import Marker from '../BaseMarker.js';
 import Track from '../../map/Track.js';
-import { swapCoords, wrapCoords } from '../../../utils/geo.js';
+import { swapCoords, wrapCoords, unwrapCoords } from '../../../utils/geo.js';
 
 import {
   SMALL_ICON_RADIUS,
@@ -35,6 +35,10 @@ export default class CarMarker extends Marker {
     point.marker = this;
     this.coords = wrapCoords(swapCoords(point.coords_msk))
     this.track = null;
+  }
+
+  isVisible() {
+    return this.store.isPointVisible( this.point );
   }
 
   getImage(options) {
@@ -92,7 +96,7 @@ export default class CarMarker extends Marker {
     let angle = Math.PI * direction / 180;
     let tipAngle = normalizeAngle(angle - Math.PI / 2);
     let drawCoords = projectToPixel(this.coords);
-    let context = this.ctx;
+    let context = this._reactMap.canvas.getContext('2d');
 
     const title = point.car.gov_number;
 
@@ -151,18 +155,18 @@ export default class CarMarker extends Marker {
 
     // обновляем трэк, если у точки он загружен
     if (this.hasTrackLoaded()) {
-      let trackPoint = {
-        coords: point.coords,
-        coords_msk: point.coords_msk,
-        direction: point.direction,
-        speed_avg: point.speed,
-        distance: point.distance || 'Н/Д',
-        speed_max: point.speed_max || 'Н/Д',
-        nsat: point.nsat || 'Н/Д',
-        timestamp: point.timestamp
-      };
-
-      this.track.addPoint(trackPoint)
+      if (point.timestamp > this.track.getLastPoint().timestamp) {
+        this.track.addPoint({
+          coords: swapCoords(point.coords),
+          coords_msk: swapCoords(point.coords_msk),
+          direction: point.direction,
+          speed_avg: point.speed,
+          distance: point.distance || 'Н/Д',
+          speed_max: point.speed_max || 'Н/Д',
+          nsat: point.nsat || 'Н/Д',
+          timestamp: point.timestamp
+        })
+      }
     }
 
     if (!store.state.isRenderPaused) {

@@ -4,7 +4,18 @@ import CarMarker from '../markers/car/Marker.js';
 import { PROJECTION, ArcGisLayer } from './MskAdapter.js';
 import 'ol3-popup/src/ol3-popup.js';
 import { getGeoObjectsByCoords } from '../../adapter.js';
+import '../../vendor/onTabUnfocus.js';
 
+window.addEventListener('blur', (ev) => {
+  //let store = flux.getStore('points')
+  //store.pauseRendering()
+})
+
+window.addEventListener('focus', (ev) => {
+  //let store = flux.getStore('points')
+ // store.unpauseRendering()]
+  global.olmap && global.olmap.updateSize()
+})
 
 // todo move to settings
 const SIDEBAR_WIDTH_PX = 500;
@@ -30,11 +41,9 @@ export default class OpenLayersMap extends Component {
     let self = this;
 
     this.markers = {};
+    this._handlers = null; // map event handlers
     this._pointsStore = this.props.flux.getStore('points');
     this.viewportVisibleMarkers = {};
-
-    this.tracks = {};
-    this.interactions = new ol.interaction.defaults();
 
     let initialView = new ol.View({
       center: this.props.center,
@@ -62,21 +71,26 @@ export default class OpenLayersMap extends Component {
       })
     });
 
-    let map = new ol.Map(
-      { 
-        view: initialView,
-        //interactions: [this.interactions],
-        renderer: ['canvas', 'dom'],
-        controls: [new ol.control.Zoom({
+
+    let controls = []
+    if (!this.props.errorLoading) {
+      controls.push(new ol.control.Zoom({
           duration: 400,
           className: 'ol-zoom',
           delta: 1
-        })],
+        }))
+    }
+
+    let map = new ol.Map(
+      {
+        view: initialView,
+        //interactions: [this.interactions],
+        renderer: ['canvas','dom'],
+        controls: controls,
         layers: [ArcGisLayer, canvasLayer]
       })
 
     this.map = global.olmap = map;
-
   }
 
 
@@ -94,15 +108,16 @@ export default class OpenLayersMap extends Component {
     let container = this.refs.container.getDOMNode();
 
     map.setTarget(container);
-
-    map.on('postcompose', triggerRenderFn)
-    map.on('pointermove', this.onMouseMove.bind(this))
-   // map.on('precompose', triggerRenderFn)
-
-    map.on('singleclick', this.onClick.bind(this))
+    map.on('postcompose', triggerRenderFn);
 
     this.popup = new ol.Overlay.Popup();
     map.addOverlay(this.popup);
+
+    if (this.props.errorLoading) {
+      this.disableInteractions();
+    } else {
+      this.enableInteractions();
+    }
   }
 
   triggerRender() {
@@ -138,8 +153,7 @@ export default class OpenLayersMap extends Component {
     el.style.cursor = changeCursor ? 'pointer' : '';
   }
 
-
-  getMarkerByCoord(){
+  getMarkerByCoord() {
 
   }
 
@@ -203,7 +217,7 @@ export default class OpenLayersMap extends Component {
 
   render() {
     return (<div>
-              <div ref="container" className="openlayers-container"/>
+              <div ref="container" style={{opacity: this.props.errorLoading ? .4 : 1}} className="openlayers-container"/>
             </div>)
   }
 
@@ -212,10 +226,10 @@ export default class OpenLayersMap extends Component {
     // canvas example
     // https://gist.github.com/acanimal/b2f60367badb0b17a4d9
 
+    let map = this.map;
     let pointsStore = this._pointsStore;
     let selected = pointsStore.getSelectedPoint();
     let selectedMarker = pointsStore.getSelectedMarker();
-    let map = this.map;
 
     let optimizedMarkers = this.viewportVisibleMarkers = this.getMarkersInBounds(extent);
 
@@ -232,12 +246,14 @@ export default class OpenLayersMap extends Component {
       if (selected === null || id !== selected.id) {
         // todo переключать отрисовку маленький/большой значок
         // в зависимости от количества маркеров на видимой части карты
+        // 
         // будет некрасиво, если попадать точно в границу количества
         marker.render(options);
       }
     }
 
     if (selectedMarker) {
+      //debugger;
       selectedMarker.track.render();
       selectedMarker.render({selected: true, ...options});
 
@@ -252,21 +268,48 @@ export default class OpenLayersMap extends Component {
             view.setZoom(12)
           }
           this.disableInteractions();
+      } else {
+        this.enableInteractions()
       }
 
     } else {
       this.enableInteractions()
     }
 
+
     return canvas;
   }
 
   enableInteractions() {
-    //this.map.addInteraction(this.interactions);
+    let map = this.map;
+    let interactions = map.getInteractions();
+
+    if (this._handlers === null) {
+      this._handlers = {
+        singleclick: map.on('singleclick', this.onClick.bind(this)),
+        pointermove: map.on('pointermove', this.onMouseMove.bind(this))
+      }
+
+      interactions.forEach((interaction)=> {
+        interaction.setActive(true)
+      })
+    }
+
   }
 
   disableInteractions() {
-    //this.map.removeInteraction(this.interactions);
+    let map = this.map;
+    let interactions = this.map.getInteractions();
+
+    if (this._handlers !== null) {
+      map.unByKey(this._handlers.singleclick)
+      map.unByKey(this._handlers.pointermove)
+      this._handlers = null;
+
+      interactions.forEach((interaction)=> {
+        interaction.setActive(false)
+      })
+    }
   }
 
   getMarkersInBounds(bounds) {
@@ -277,11 +320,11 @@ export default class OpenLayersMap extends Component {
 
     for (let i = 0, till = keys.length; i < till; i++) {
       let key = keys[i];
-      let point = markers[key];
+      let marker = markers[key];
 
       // @todo переписать на простые сравнения, без метода contains
-      if (ol.extent.containsCoordinate(bounds, point.coords)) {
-        returns.push(point)
+      if (ol.extent.containsCoordinate(bounds, marker.coords) && marker.isVisible()) {
+        returns.push(marker)
       }
     }
 
@@ -296,7 +339,6 @@ export default class OpenLayersMap extends Component {
   updatePoints(updatedPoints) {
 
     let keys = Object.keys(updatedPoints);
-    let ctx = this.canvas.getContext('2d');
 
     for (let i = 0, till = keys.length; i < till; i++) {
 
@@ -306,20 +348,10 @@ export default class OpenLayersMap extends Component {
       if (point.timestamp === 1420074000000) {
         continue;
       }
-      if ((typeof point.coords === 'undefined') || (typeof point.speed === 'undefined')) {
-        console.warn('point coords or speed is undefined, so skip! point: ', point);
-        continue;
-      }
-      if ((point.coords[0] === null) || (point.coords[1] === null)) {
-        console.warn('point lat or long is null, so skip! point: ', point);
-        continue;
-      }
 
-
-      let _point = this.markers[key];
-
-      if (_point) {
-        _point.setPoint(point)
+      let oldPoint = this.markers[key];
+      if (oldPoint) {
+        oldPoint.setPoint(point)
       } else {
         this.markers[key] = new CarMarker(point, this);
       }

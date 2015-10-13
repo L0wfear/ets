@@ -12,7 +12,7 @@ import { getCarImage } from '../adapter.js';
 import { roundCoordinates } from '../utils/geo.js';
 import DatePicker from './ui/DatePicker.jsx';
 
-class CarInfo extends Component {
+export default class CarInfo extends Component {
 
   constructor(props, context) {
     super(props, context);
@@ -97,6 +97,7 @@ class CarInfo extends Component {
 
       let store = this.store;
       store.setTracking(false);
+      this.setState({trackingMode: false})
 
       let marker = this.props.car.marker;
       let extent = marker.track.getExtent();
@@ -137,19 +138,6 @@ class CarInfo extends Component {
       store.handleSetShowGradient(!flag)
     }
 
-
-    fetchTrack() {
-      let {from_dt, to_dt, tillNow} = this.state;
-      let track = this.props.car.marker.track;
-
-      // обновление инфы о последней точке при обновлении трэка
-      track.onUpdate(function() {
-        this.forceUpdate()
-        console.log('ontrack update')
-      }.bind(this));
-
-      track.fetch(from_dt, to_dt);
-    }
 
     renderData() {
 
@@ -221,7 +209,7 @@ class CarInfo extends Component {
 
 
       function getLastTrackPoint(track) {
-        let lastPoint = track.points[track.points.length - 1];
+        let lastPoint = track.getLastPoint();
         let dt = new Date(lastPoint.timestamp * 1000);
         return makeDate(dt) + ' ' + makeTime(dt) + ' [' + roundCoordinates(lastPoint.coords_msk) + ']';
       }
@@ -234,6 +222,7 @@ class CarInfo extends Component {
       }
 
       addProp('Статус', getStatusById(this.props.car.status).title)
+
       if (car.type_id && getTypeById(car.type_id)) {
         addProp('Тип техники', getTypeById(car.type_id).title)
       }
@@ -277,21 +266,24 @@ class CarInfo extends Component {
         )
     }
 
-
-    componentWillReceiveProps(nextProps) {
-      if (nextProps.car && nextProps.car !== this.props.car) {
-        //this.fetchImage();
-      }
-    }
-
-
     fetchImage() {
       let car = this.props.car;
       let model_id = car.car.model_id;
       let type_id = car.car.type_id;
-      getCarImage(car.id, type_id, model_id).then( url => this.setState({imageUrl: url }))
+      getCarImage(car.id, type_id, model_id).then(url => this.setState({imageUrl: url }))
     }
 
+    fetchTrack() {
+      let {from_dt, to_dt, tillNow} = this.state;
+      let track = this.props.car.marker.track;
+
+      // обновление инфы о последней точке при обновлении трэка
+      track.onUpdate(function() {
+        this.forceUpdate()
+        console.log('ontrack update')
+      }.bind(this));
+
+      track.fetch(from_dt, to_dt);
+    }
   }
 
-  export default CarInfo;

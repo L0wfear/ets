@@ -3,23 +3,16 @@ import FluxComponent from 'flummox/component';
 import Map from './map/Map.jsx';
 import Toolbar from './toolbar/Toolbar.jsx';
 import Sidebar from './Sidebar.jsx';
-import WeatherWidget from './WeatherWidget.jsx';
+import WeatherWidget from './map/WeatherWidget.jsx';
 
+const MAP_INITIAL_CENTER = [-399.43090337943863, -8521.192605428025];
+const MAP_INITIAL_ZOOM = 3;
 
-class MainPage extends Component {
-
-  openModal() {
-    this.setState({modalIsOpen: true});
-  }
-
-  closeModal() {
-    this.setState({modalIsOpen: false});
-  }
+export default class MainPage extends Component {
 
   constructor(props, context) {
     super(props, context);
     this.state = {
-      modalIsOpen: false,
       showPlates: false
     };
   }
@@ -27,9 +20,10 @@ class MainPage extends Component {
   render() {
     return (
       <div>
-        <FluxComponent connectToStores={['login', 'points']}>
+        {!this.props.errorLoading && (<FluxComponent connectToStores={['login', 'points']}>
           <Toolbar/>
         </FluxComponent>
+        )}
 
         <FluxComponent connectToStores={{
           points: store => ({
@@ -38,16 +32,16 @@ class MainPage extends Component {
             showPlates: store.state.showPlates
           })
         }}>
-          <Map zoom={3}
-               center={[-399.43090337943863, -8521.192605428025]}/>
+
+          <Map errorLoading={this.props.errorLoading}
+               zoom={MAP_INITIAL_ZOOM}
+               center={MAP_INITIAL_CENTER}/>
 
           <Sidebar/>
         </FluxComponent>
-         <WeatherWidget/>
+         {/*<WeatherWidget/>*/}
       </div>
     );
   }
 
 }
-
-export default MainPage;

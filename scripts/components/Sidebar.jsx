@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import CarInfo from './CarInfo.jsx';
 
-//var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
-
 export default class Sidebar extends Component {
 
   shouldComponentUpdate(nextProps) {

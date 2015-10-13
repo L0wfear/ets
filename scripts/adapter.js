@@ -1,6 +1,6 @@
 import config from './config.js';
 import { getStartOfToday, makeUnixTime } from './utils/dates.js';
-import { wrapCoords } from './utils/geo.js';
+import { wrapCoords, swapCoords } from './utils/geo.js';
 
 import { loadCustomers } from './customers.js';
 import { loadTypes } from './types.js';
@@ -46,8 +46,8 @@ export function getTrack(car_id, from_dt, to_dt) {
   }).then(r => r.json())
     .then(points => points.map((point) => {
         // wrap coords for OpenLayers
-        point.coords = wrapCoords(point.coords);
-        point.coords_msk = wrapCoords(point.coords_msk);
+        point.coords = swapCoords(point.coords);
+        point.coords_msk = swapCoords(point.coords_msk);
         return point;
       })
     );

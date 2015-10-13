@@ -13,18 +13,7 @@ import React from 'react';
 import App from './components/App.jsx';
 import NotificationSystem from './components/NotificationSystem.jsx';
 import Flux from './Flux.js';
-import './vendor/onTabUnfocus.js';
 
-window.addEventListener('blur', (ev) => {
-  let store = flux.getStore('points')
-  store.pauseRendering()
-})
-
-window.addEventListener('focus', (ev) => {
-  let store = flux.getStore('points')
-  store.unpauseRendering()
-  global.olmap && global.olmap.updateSize()
-})
 
 global.NOTIFICATION_SYSTEM = React.render(<NotificationSystem/>, document.getElementById('notifications'))
 global.APPSTART_TIME = Date.now();

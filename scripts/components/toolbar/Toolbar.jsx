@@ -93,7 +93,7 @@ class LegendWrapper extends Component {
       filter.splice(index, 1);
     }
 
-    this.props.flux.getActions('points').setFilter({
+    this.props.flux.getStore('points').handleSetFilter({
       status: filter
     });
 

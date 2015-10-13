@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getWeather } from '../adapter.js';
+import { getWeather } from '../../adapter.js';
 
 class WeatherWidget extends Component {
 
@@ -24,20 +24,10 @@ class WeatherWidget extends Component {
       return null;
     }
 
-    let tempText = '';
-
-    if (temp > 0){
-      tempText += '+';
-    }
-
-    tempText += temp;
-    tempText += ' °C';
-
-
     return (
       <div className="weather-widget">
         <img src={icon} style={{ width: 35, height: 35 }}/>
-        <span>{tempText}</span>
+        <span>{temp > 0 ? '+' : '' + temp + ' °C'}</span>
       </div>
     );
   }

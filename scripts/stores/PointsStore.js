@@ -61,7 +61,7 @@ export default class PointsStore extends Store {
     }
 
     ws.onerror = () => {
-      global.NOTIFICATION_SYSTEM.notify('Ошибка WebSocket', 'error')
+      //global.NOTIFICATION_SYSTEM.notify('Ошибка WebSocket', 'error')
     }
 
   }
@@ -167,13 +167,6 @@ export default class PointsStore extends Store {
       return
     }
 
-    // обнуляем трэк во избежание утечек 
-    /*if (this.state.selected && this.state.selected.track) {
-      this.state.selected.track.length = 0;
-    }*/
-
-    selected.TRACK_NEEDS_UPDATE = true; //by default - set flag to true
-
     this.setState({
       selected,
       trackingMode: false
@@ -214,16 +207,16 @@ export default class PointsStore extends Store {
   }
 
   getVisiblePoints() {
-    let points = [];
+    let returns = [];
 
-    for (let k in this.state.points) {
+    for (let k in this.state.points){
       let point = this.state.points[k];
-      if (this.isPointVisible(point)) {
-        points.push(point);
+      if (this.isPointVisible(point)){
+        returns.push(point)
       }
     }
-
-    return points;
+    
+    return returns;
   }
 
   isPointVisible(point) {
@@ -350,7 +343,5 @@ export default class PointsStore extends Store {
     return false;
     return this.state.isRenderPaused;
   }
-
-
 
 }

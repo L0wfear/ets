@@ -1,20 +1,8 @@
 import React, { Component } from 'react';
 import LoginPage from './LoginPage.jsx';
-import OpenlayersPage from './MainPage.jsx';
+import MainPage from './MainPage.jsx';
+import LoadingPage from './LoadingPage.jsx';
 import { init } from '../adapter.js';
-import Preloader from './ui/Preloader.jsx';
-
-
-class LoadingPage extends Component {
-
-  constructor(props) {
-    super(props)
-  }
-
-  render() {
-    return <Preloader visible={this.props.loaded}/>
-  }
-}
 
 class App extends Component {
 
@@ -22,39 +10,50 @@ class App extends Component {
     super(props)
 
     this.state = {
-      loaded: false
+      loaded: false,
+      error: false
     }
   }
 
   componentDidMount() {
     init()
-    .then(()=>this.setState({loaded: true }))
-    .catch((error)=>{
-      console.log( 'load error')
-      global.NOTIFICATION_SYSTEM._addNotification(
-        {
-          title: 'Упс',
-          message: 'Ошибка инициализации приложения: не удалось загрузить справочники',
-          level: 'error',
-          dismissible: false,
-          position: 'tc',
-          autoDismiss: 0,
-          action: {
-            label: 'Попробовать перезагрузить',
-            callback: function() {
-              window.location.reload()
+      .then(() => this.setState({
+          loaded: true
+        }))
+      .catch((error) => {
+        console.log('load error')
+        this.setState({
+          error: true
+        })
+        global.NOTIFICATION_SYSTEM._addNotification(
+          {
+            title: 'Упс, что-то пошло не так',
+            message: 'Ошибка инициализации приложения: не удалось загрузить справочники (' + error + ')',
+            level: 'error',
+            dismissible: false,
+            position: 'tc',
+            autoDismiss: 0,
+            action: {
+              label: 'Перезагрузить',
+              callback: function() {
+                window.location.reload()
+              }
             }
           }
-        }
-      )})
+        )
+      })
   }
 
   render() {
     const flux = this.props.flux;
     const currentUser = flux.getStore('login').state.currentUser;
 
+    if (this.state.error) {
+      return <MainPage errorLoading={this.state.error}/>
+    }
+
     if (this.state.loaded) {
-      return currentUser ? <OpenlayersPage/> : <LoginPage/>;
+      return currentUser ? <MainPage/> : <LoginPage/>;
     } else {
       return <LoadingPage loaded={this.state.loaded}/>
     }
@@ -62,21 +61,24 @@ class App extends Component {
 }
 
 
-class AppWrapper  {
+class AppWrapper {
 
   getChildContext() {
     return {
       flux: this.props.flux
     }
   }
+
   render() {
     return (
       <App flux={this.props.flux}/>
-    );
+      );
   }
 
 }
 
-AppWrapper.childContextTypes = { flux: React.PropTypes.object };
+AppWrapper.childContextTypes = {
+  flux: React.PropTypes.object
+};
 
 export default AppWrapper;

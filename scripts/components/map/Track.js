@@ -8,10 +8,10 @@ import { getTypeById } from '../../types.js';
 import { getTrackPointByColor } from '../../icons/track/points.js';
 import { swapCoords, roundCoordinates } from '../../utils/geo.js';
 
+
 const IS_MSK = true;
 const DRAW_POINTS = true;
 const COLORS_ZOOM_THRESHOLD = 8;
-
 
 /**
  * получение цвета линии трэка
@@ -92,12 +92,21 @@ export default class Track {
   constructor(owner) {
 
     this.map = owner.map;
-    this.ctx = owner.ctx;
+    // TODO придумать что-то с этими контекстами
+    this.ctx = owner._reactMap.canvas.getContext('2d');
     this.owner = owner;
+
     this.points = null;
     this.continuousUpdating = true;
-    this.onUpdateCallback = () => {
-    };
+    this.onUpdateCallback = () => {};
+  }
+
+  isLoaded(){
+    return this.points !== null && this.points.length > 0;
+  }
+
+  getLastPoint(){
+      return this.isLoaded() && this.points[this.points.length - 1]
   }
 
   addPoint(point) {
@@ -106,13 +115,12 @@ export default class Track {
       return;
     }
 
-    //console.log('updating track with', point)
-    point.coords_msk = swapCoords(point.coords_msk);
-    point.coords = swapCoords(point.coords);
+    //point.coords_msk = point.coords_msk;
+    //point.coords = swapCoords(point.coords);
 
     if (this.points !== null && (this.points.length && point.timestamp > this.points[this.points.length - 1].timestamp)) {
       this.points.push(point);
-      this.render();
+      //this.render();
       this.onUpdateCallback();
     }
   }
@@ -184,6 +192,7 @@ export default class Track {
     fetch(from_dt = getStartOfToday(), to_dt = new Date().getTime()) {
 
       let id = this.owner.point.id;
+      let updating = this.continuousUpdating;
       //this.points = null;
 
       if (to_dt - from_dt > 24 * 60 * 60 * 1000) {
@@ -191,9 +200,13 @@ export default class Track {
         return;
       }
 
+      this.continuousUpdating = false;
+
       return getTrack(id, from_dt, to_dt)
         .then((track) => {
+          //debugger;
           this.points = track;
+          this.continuousUpdating = updating;
           this.render();
           this.onUpdateCallback();
           console.log('track fetched for', this.owner)

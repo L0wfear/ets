@@ -93,8 +93,12 @@ export default class CarInfo extends Component {
     this.state = {
       imageUrl: null,
       trackingMode: false,
+      fetch_dt_from: null,
+      fetch_dt_to: null,
       from_dt: getStartOfToday(),
       to_dt: new Date(),
+      from_dt_: getStartOfToday(),
+      to_dt_: new Date(),
       tillNow: true
     };
   }
@@ -245,10 +249,10 @@ export default class CarInfo extends Component {
       return (
         <div>
         <Panel title="Трекинг" className="chart-datepickers-wrap">
-          <DatePicker onChange={date => this.setState({from_dt: date})} 
-                      date={this.state.from_dt} disabled={tillNow} ref="from_dt"/>&nbsp;–&nbsp;
-          <DatePicker onChange={date => this.setState({to_dt: date})} 
-                      date={this.state.to_dt} disabled={tillNow} ref="to_dt"/>
+          <DatePicker onChange={date => this.setState({ from_dt_: date})} 
+                      date={this.state.from_dt_} disabled={tillNow} ref="from_dt"/>&nbsp;–&nbsp;
+          <DatePicker onChange={date => this.setState({to_dt_: date})}
+                      date={this.state.to_dt_} disabled={tillNow} ref="to_dt"/>
           {/* <label style={showGradientStyle}>
              <input type="checkbox" checked={showGradient} ref="showGradient" onChange={this.onShowGradientChange.bind(this)}/> С градиентом
            </label>*/}
@@ -260,13 +264,19 @@ export default class CarInfo extends Component {
                     style={reloadBtnStyle}
                     className="btn btn-default btn-sm"
                     type="button"
-                    onClick={this.fetchTrack.bind(this)}
+                    onClick={this.fetchVehicleData.bind(this)}
                     disabled={tillNow}>
               <span className={reloadBtnCN}></span>
             </button>
         </Panel>
       </div>
         );
+    }
+
+    fetchVehicleData() {
+      console.log(' fetching vehicle data')
+      this.setState({from_dt: this.state.from_dt_, to_dt: this.state.to_dt_})
+      this.fetchTrack();
     }
 
     fetchImage() {

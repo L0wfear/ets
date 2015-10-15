@@ -216,8 +216,12 @@ export default class OpenLayersMap extends Component {
       selectedMarker.onClick();
       store.handleSelectPoint(selectedMarker.point);
       // прячем попап трэка
-      this.popup.hide()
+      this.hidePopup()
     }
+  }
+
+  hidePopup() {
+    this.popup.hide()
   }
 
   render() {
@@ -279,6 +283,11 @@ export default class OpenLayersMap extends Component {
 
     } else {
       this.enableInteractions()
+    }
+
+    //todo remove this
+    if (!selected) {
+      this.hidePopup()
     }
 
 

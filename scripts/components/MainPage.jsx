@@ -18,6 +18,7 @@ export default class MainPage extends Component {
   }
 
   render() {
+
     return (
       <div>
         {!this.props.errorLoading && (<FluxComponent connectToStores={['login', 'points']}>
@@ -39,7 +40,7 @@ export default class MainPage extends Component {
 
           <Sidebar/>
         </FluxComponent>
-         {/*<WeatherWidget/>*/}
+         <WeatherWidget/>
       </div>
     );
   }

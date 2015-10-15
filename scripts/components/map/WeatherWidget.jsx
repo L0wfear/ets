@@ -27,7 +27,7 @@ class WeatherWidget extends Component {
     return (
       <div className="weather-widget">
         <img src={icon} style={{ width: 35, height: 35 }}/>
-        <span>{temp > 0 ? '+' : '' + temp + ' °C'}</span>
+        <span>{(temp > 0 ? '+' : '') + temp + ' °C'}</span>
       </div>
     );
   }

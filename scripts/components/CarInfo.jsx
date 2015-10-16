@@ -7,7 +7,8 @@ import { getOwnerById } from '../owners.js';
 //import { getCustomerById } from '../customers.js';
 import config from '../config.js';
 import { makeDate, makeTime, getStartOfToday } from '../utils/dates.js';
-import Graph from './ui/Graph.jsx';
+import FuelChart from './ui/charts/FuelChart.jsx';
+import SpeedChart from './ui/charts/SpeedChart.jsx';
 import { getCarImage } from '../adapter.js';
 import { roundCoordinates } from '../utils/geo.js';
 import DatePicker from './ui/DatePicker.jsx';
@@ -93,8 +94,6 @@ export default class CarInfo extends Component {
     this.state = {
       imageUrl: null,
       trackingMode: false,
-      fetch_dt_from: null,
-      fetch_dt_to: null,
       from_dt: getStartOfToday(),
       to_dt: new Date(),
       from_dt_: getStartOfToday(),
@@ -119,6 +118,7 @@ export default class CarInfo extends Component {
       return null;
     }
 
+    let marker = this.props.car.marker;
     let plate = car.car.gov_number;
 
     return (
@@ -126,7 +126,8 @@ export default class CarInfo extends Component {
         <h3 className="car-info-plate">{plate}</h3>
         {this.renderModel()}
         {this.renderData()}
-        <Graph type="fuel" from={this.state.from_dt} to={this.state.to_dt} id={car.id}/>
+        <FuelChart from={this.state.from_dt} to={this.state.to_dt} id={car.id}/>
+        {/*<SpeedChart track={marker.hasTrackLoaded() && marker.track}/>*/}
       </div>
       );
   }

@@ -36,6 +36,7 @@ export function getModelById(id) {
   if (!r) {
     //console.warn(`Model ${id} not found`);
     r = index[0];
+   // debugger;
   }
 
   return r;

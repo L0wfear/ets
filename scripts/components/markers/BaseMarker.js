@@ -8,13 +8,7 @@
 const IS_MSK = true;
 
 import { projectToPixel } from '../map/MskAdapter.js';
-
-let wrapCoords = ([x, y]) => {
-  return {
-    x: x,
-    y: y
-  }
-}
+import {wrapCoords} from '../../utils/geo.js';
 
 export default class Marker {
   constructor(point, map) {
@@ -22,7 +16,10 @@ export default class Marker {
 
     // some methods may be useful
     this.store = map._pointsStore;
+
+    // todo this.owner
     this._reactMap = map;
+    
     this.map = map.map;
     this.image = null;
     this.radius = 0;

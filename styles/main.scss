@@ -1567,11 +1567,15 @@ body {
   border-radius: 10px;
   box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
 
+  &-content {
+    overflow:hidden;
+  }
 
   &-closer { 
     font-size:14px;
     color: #c3c3c3;
   }
+
 
   .header {
     border-bottom: 1px solid #eee;
@@ -1593,6 +1597,7 @@ body {
     white-space: normal;
   }
   .some-info {
+    overflow:hidden;
      div {
        display: inline-block;
        border-right: 1px solid #eee;

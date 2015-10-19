@@ -330,14 +330,6 @@ body.application {
   text-shadow: 0 0 1px #000;
 }
 
-.leaflet-control-attribution {
-/*   display: none
- */}
-
-.ol-zoom {
-  top:260px;
-}
-
 .sidebar-hide-button {
   margin-left: -45px;
   border-radius: 4px;
@@ -1226,7 +1218,7 @@ ul.rw-list.rw-list-grouped > li.rw-list-option {
 
 .weather-widget {
   position: absolute;
-  top: 370px;
+  top: 320px;
   left: 10px;
   z-index: 100;
   border-radius: 4px;
@@ -1825,10 +1817,16 @@ body {
 
 
 /** OPENLAYERS */
-.ol-zoom {
-  background: rgba(0, 0, 0, 0.75);
+.ol-zoom, .ol-zoom:hover {
+  background-color: rgba(0, 0, 0, 0.75);
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
   border-radius: 6px;
+  top:230px;
+  left: 10px;
+
+  button {
+    background-color: transparent;
+  }
 } 
 
 .vehicle-attributes-list {

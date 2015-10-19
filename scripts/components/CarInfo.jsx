@@ -23,9 +23,8 @@ class VehicleAttributes extends Component {
     }
 
     // key => name mapp
-    this.mappings = {
-
-    }
+    this.mappings = {}
+    
   }
 
 
@@ -50,10 +49,10 @@ class VehicleAttributes extends Component {
 
     addAttribute('Гос. номер', car.gov_number)
     addAttribute('ID БНСО', vehicle.id)
-    addAttribute('Статус', getStatusById(vehicle.status).title)
-    addAttribute('Тип техники', getTypeById(car.type_id).title)
-    addAttribute('Шасси', getModelById(car.model_id).title)
-    addAttribute('Владелец', getOwnerById(car.owner_id).title);
+    getStatusById(vehicle.status) && addAttribute('Статус', getStatusById(vehicle.status).title)
+    getTypeById(car.type_id) && addAttribute('Тип техники', getTypeById(car.type_id).title)
+    getModelById(car.model_id) && addAttribute('Шасси', getModelById(car.model_id).title)
+    getOwnerById(car.owner_id) && addAttribute('Владелец', getOwnerById(car.owner_id).title);
 
     if (props.lastPoint) {
       // todo при клике на "последнюю точку" центрировать по координатам

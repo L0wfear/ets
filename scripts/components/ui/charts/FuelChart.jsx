@@ -1,3 +1,4 @@
+import React, {Component} from 'react';
 import { getFuelData } from '../../../adapter.js';
 import Chart from './BaseChart.jsx';
 import { makeDate, makeTime } from '../../../utils/dates.js';

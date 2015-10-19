@@ -33,7 +33,7 @@ export default list;
 export function getOkrugById(id) {
   var r = index[id];
 
-  if (!r) {
+  if (typeof r === 'undefined') {
     console.warn(`Okrug ${id} not found`);
   }
 

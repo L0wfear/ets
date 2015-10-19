@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import Preloader from './ui/Preloader.jsx';
 
 export default class LoadingPage extends Component {

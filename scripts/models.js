@@ -33,7 +33,7 @@ export default list;
 export function getModelById(id) {
   var r = index[id];
 
-  if (!r) {
+  if (typeof r === 'undefined') {
     //console.warn(`Model ${id} not found`);
     r = index[0];
    // debugger;

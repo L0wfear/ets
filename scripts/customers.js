@@ -33,7 +33,7 @@ export default list;
 export function getCustomerById(id) {
   var r = index[id];
 
-  if (!r) {
+  if (typeof r === 'undefined') {
     //console.warn(`Customer ${id} not found`);
     r = index[0];
   }

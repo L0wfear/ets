@@ -1,4 +1,4 @@
-
+// todo refactor
 import config from './config.js';
 const OWNERS_URL = config.backend ? config.backend + '/owners' : '/owners';
 
@@ -33,7 +33,7 @@ export default list;
 export function getOwnerById(id) {
   var r = index[id];
 
-  if (!r) {
+  if (typeof r === 'undefined') {
     //console.warn(`Owner ${id} not found`);
     r = index[0];
   }

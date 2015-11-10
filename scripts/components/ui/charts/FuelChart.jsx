@@ -13,6 +13,9 @@ export default class FuelChart extends Chart {
   }
 
   componentWillReceiveProps(nextProps) {
+
+    console.log('fuel chart received props', nextProps);
+
     if (nextProps.to !== this.props.to ||
         nextProps.from !== this.props.from ||
         nextProps.id !== this.props.id) {
@@ -53,6 +56,8 @@ export default class FuelChart extends Chart {
 
   fetch() {
   	let {from, to, id} = this.props;
+
+    this.setState({loaded: false})
 
     getFuelData(from, to, id)
       .then(data => {

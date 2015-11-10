@@ -5,6 +5,7 @@ const FULL_EXTENT = MapServerConfig.fullExtent;
 const TILES_URL = '//ods.mos.ru/ssd/ArcGIS/rest/services/egko_go/MapServer';
 const TILE_SIZE = MapServerConfig.tileInfo.rows;
 const ORIGIN = MapServerConfig.tileInfo.origin;
+const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
 
 export function projectToPixel(coordinates) {
   let x, y;
@@ -21,7 +22,7 @@ export function projectToPixel(coordinates) {
   }
 
   let coords = olmap.getPixelFromCoordinate([x, y]);
-	return { x: coords[0], y: coords[1] };
+	return { x: coords[0] * DEVICE_PIXEL_RATIO, y: coords[1] * DEVICE_PIXEL_RATIO};
 }
 
 export let EXTENT = [FULL_EXTENT.xmin, FULL_EXTENT.ymin, FULL_EXTENT.xmax, FULL_EXTENT.ymax]

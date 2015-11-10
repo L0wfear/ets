@@ -43,7 +43,7 @@ class CheckboxListComponent extends Component {
 class Filter extends Component {
 
   constructor(props, context) {
-    super()
+    super(props, context)
     this.state = { flux: context.flux };
     this.store = context.flux.getStore('points');
   }
@@ -89,7 +89,7 @@ class Filter extends Component {
     );
   }
 
-  renderSimpleInput( options ) {
+  renderSimpleInput(options) {
 
     return (
       <div>
@@ -105,7 +105,7 @@ class Filter extends Component {
     )
   }
 
-  onSomethingChange(value){
+  onSomethingChange(value) {
 
     let callback =
       this.props.onFilterChange !== undefined ?
@@ -136,7 +136,7 @@ class Filter extends Component {
 }
 
 Filter.contextTypes = {
-  flux: React.PropTypes.object.isRequired
+  flux: React.PropTypes.object
 }
 
 export default Filter;

@@ -195,8 +195,8 @@ export default class Track {
       let updating = this.continuousUpdating;
       //this.points = null;
 
-      if (to_dt - from_dt > 24 * 60 * 60 * 1000) {
-        global.NOTIFICATION_SYSTEM.notify('Период запроса трэка не может превышать 24 часа', 'warning')
+      if (to_dt - from_dt > 5 * 24 * 60 * 60 * 1000) {
+        global.NOTIFICATION_SYSTEM.notify('Период запроса трэка не может превышать 5 суток', 'warning')
         return;
       }
 

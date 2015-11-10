@@ -146,11 +146,7 @@ export default class PointsStore extends Store {
     let selected = this.state.selected;
 
     this.setState(Object.assign({}, {filter, selected}, this.countDimensions()));
-
-    // хреновое решение, но зато работает
-    // решится по-другому при рефакторинге
-    // @TODO REFACTOR
-    setTimeout(callback, 500)
+    callback()
   }
 
 

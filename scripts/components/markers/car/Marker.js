@@ -7,6 +7,8 @@ import Marker from '../BaseMarker.js';
 import Track from '../../map/Track.js';
 import { swapCoords, wrapCoords, unwrapCoords } from '../../../utils/geo.js';
 
+const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
+
 import {
   SMALL_ICON_RADIUS,
   LARGE_ICON_RADIUS
@@ -45,24 +47,45 @@ export default class CarMarker extends Marker {
     let map = this.map;
     let zoom = map.getView().getZoom();
 
-    return zoom < ZOOM_LARGE_ICONS && !options.selected ? this.renderSmall() : this.renderLarge(options);
+    return zoom < ZOOM_LARGE_ICONS && !options.selected ? this.renderSmall(options) : this.renderLarge(options);
   }
-
 
   getZoomRatio() {
     let map = this.map;
     let zoom = map.getView().getZoom();
     let coef = 8 - (ZOOM_LARGE_ICONS - zoom);
-    return coef > 0 ? coef * .4 : 1;
+    return coef > 0 ? coef * .4 : 1 ;
   }
 
-  renderSmall() {
+  renderSmall(options) {
 
     let point = this.point;
     let zoomRatio = this.getZoomRatio();
-    this.radius = SMALL_ICON_RADIUS * zoomRatio;
+    let radius = this.radius = SMALL_ICON_RADIUS * zoomRatio;
 
     let image = getSmallIcon(point.status, zoomRatio);
+
+
+    if (options.showPlates) {
+      const title = point.car.gov_number;
+      let context = this._reactMap.canvas.getContext('2d');
+      let drawCoords = projectToPixel(this.coords);
+
+      context.fillStyle = 'white';
+
+      var width = context.measureText(title).width;
+      var padding = 1 * zoomRatio;
+
+      // magic numbazz... dont try to understand
+      var rectWidth = width + padding + radius - 3;
+      var rectHeight = radius + 4;
+      var rectOffsetY = drawCoords.y - radius / 2 - 2;
+
+      context.fillRect(drawCoords.x - rectWidth, rectOffsetY, rectWidth, rectHeight);
+      context.fillStyle = 'black';
+      context.textBaseline = 'middle';
+      context.fillText(title, drawCoords.x - rectWidth + padding, drawCoords.y);
+    }
 
     return image;
   }
@@ -76,8 +99,7 @@ export default class CarMarker extends Marker {
   }
 
   hasTrackLoaded() {
-    // todo move to Track class
-    return this.track !== null && this.track.points !== null && this.track.points.length > 0;
+    return this.track !== null && this.track.isLoaded();
   }
 
   /**
@@ -91,7 +113,7 @@ export default class CarMarker extends Marker {
     let direction = point.direction;
     let type = getTypeById(point.car ? point.car.type_id : 5);
     let icon = type && type.icon;
-    let radius = this.radius = LARGE_ICON_RADIUS + 6;
+    let radius = this.radius = (LARGE_ICON_RADIUS + 6);
 
     let angle = Math.PI * direction / 180;
     let tipAngle = normalizeAngle(angle - Math.PI / 2);
@@ -105,12 +127,16 @@ export default class CarMarker extends Marker {
       context.fillStyle = 'white';
 
       var text = title;
-      var width = context.measureText(text).width;
+      var width = context.measureText(text).width ;
       var padding = 3;
 
-      var rectWidth = width + 2 * padding + radius;
-      var rectHeight = 2 * radius - 2;
-      var rectOffsetY = drawCoords.y - radius + 1;
+      var rectWidth = width + 2 * padding + radius + 7;
+      var rectHeight = 2 * radius - 9;
+      var rectOffsetY = drawCoords.y - radius + 5;
+
+      rectWidth = rectWidth * DEVICE_PIXEL_RATIO;
+
+      context.font = 12 * DEVICE_PIXEL_RATIO + 'px \'Helvetica Neue\'';
 
       if (tipAngle >= 0.5 * Math.PI && tipAngle <= 1.5 * Math.PI) {
         context.fillRect(drawCoords.x, rectOffsetY, rectWidth, rectHeight);

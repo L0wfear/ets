@@ -51,18 +51,20 @@ class LegendWrapper extends Component {
 
   render() {
 
-    let storeState = this.props.flux.getStore('points').state;
-    let totalOnline = storeState.byConnectionStatus[1];
+    let totalOnline = this.props.byConnectionStatus[1];
+    let byStatus = this.props.byStatus;
 
-    let byStatus = storeState.byStatus;
-    let filter = storeState.filter.status;
+    let filter = this.props.storeFilter;
 
     let items = statuses
       .map(s => Object.assign({ amount: byStatus[s.id] }, s))
       .map(i => {
         return (
           <li>
-            <StatusComponent active={filter.indexOf(i.id) !== -1} item={i} onClick={() => this.toggleFilter(i)}/>
+            <StatusComponent 
+            active={filter.status.indexOf(i.id) !== -1} 
+            item={i} 
+            onClick={() => this.toggleFilter(i)}/>
           </li>
         );
       });
@@ -93,7 +95,7 @@ class LegendWrapper extends Component {
       filter.splice(index, 1);
     }
 
-    this.props.flux.getStore('points').handleSetFilter({
+    this.props.storeHandleSetFilter({
       status: filter
     });
 
@@ -118,11 +120,28 @@ class ShowPlatesCheckbox {
 
 class Toolbar extends Component {
 
+  constructor(props, context) {
+    super(props, context);
+  }
+
+  focusOnLonelyCar() {
+
+    let store = this.props.flux.getStore('points');
+    let onlyPoint = store.getVisiblePoints()[0];
+    let map = olmap;
+    let view = map.getView();
+    let size = map.getSize();
+
+    view.centerOn(onlyPoint.marker.coords, size, [size[0]/2, size[1]/2])
+    view.setZoom(15);
+  }
+
   render() {
 
     const currentUser = this.props.currentUser;
     const filters = this.props.filter;
     const pointsStore = this.props.flux.getStore('points');
+    const storeState = pointsStore.state;
 
     let filtersCount = 0;
     let keys = {
@@ -143,15 +162,25 @@ class Toolbar extends Component {
       type: filters.type
     }
 
+    let byStatus = storeState.byStatus;
+    let byConnectionStatus = storeState.byConnectionStatus;
+    let carsCount = Object.keys(byConnectionStatus)
+                          .map((k)=>byConnectionStatus[k])
+                          .reduce((a, b) => a + b);
+
     return (
       <div className="app-toolbar">
         <div className="row">
           <FluxComponent connectToStores={['points']}>
-            <LegendWrapper/>
+            <LegendWrapper 
+              byStatus={byStatus} 
+              byConnectionStatus={byConnectionStatus}
+              storeFilter={storeState.filter}
+              storeHandleSetFilter={pointsStore.handleSetFilter.bind(pointsStore)}/>
             <ShowPlatesCheckbox/>
           </FluxComponent>
         </div>
-        <ToolbarSearch store={pointsStore}/>
+        <ToolbarSearch focusOnLonelyCar={this.focusOnLonelyCar.bind(this)} carsCount={carsCount}/>
         <ToolbarFilters store={pointsStore} filters={additiveFilters} haveFilters={filtersCount > 0} currentUser={currentUser}/>
       </div>
     );

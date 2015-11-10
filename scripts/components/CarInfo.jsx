@@ -192,14 +192,14 @@ export default class CarInfo extends Component {
       this.setState({trackingMode: !isTrackingMode})
     }
 
-    onTrackUpdatingChange() {
+    onTillNowChange() {
       let tillNow = this.state.tillNow;
       let notTillNow = !tillNow;
       let state = {tillNow: notTillNow};
 
       if (notTillNow) {
-        state.from_dt = getStartOfToday();
-        state.to_dt = new Date();
+        state.from_dt = state.from_dt_ = getStartOfToday();
+        state.to_dt = state.to_dt_ = new Date();
       }
 
       let track = this.props.car.marker.track;
@@ -257,7 +257,7 @@ export default class CarInfo extends Component {
              <input type="checkbox" checked={showGradient} ref="showGradient" onChange={this.onShowGradientChange.bind(this)}/> С градиентом
            </label>*/}
            <label style={tillNowStyle}>
-             <input type="checkbox" checked={tillNow} ref="tillNow" onChange={this.onTrackUpdatingChange.bind(this)}/> За сегодня
+             <input type="checkbox" checked={tillNow} ref="tillNow" onChange={this.onTillNowChange.bind(this)}/> За сегодня
            </label>
 
             <button title="Перезагрузить данные"
@@ -275,8 +275,7 @@ export default class CarInfo extends Component {
 
     fetchVehicleData() {
       console.log(' fetching vehicle data')
-      this.setState({from_dt: this.state.from_dt_, to_dt: this.state.to_dt_})
-      this.fetchTrack();
+      this.setState({from_dt: this.state.from_dt_, to_dt: this.state.to_dt_}, this.fetchTrack)
     }
 
     fetchImage() {
@@ -291,10 +290,14 @@ export default class CarInfo extends Component {
       let track = this.props.car.marker.track;
 
       // обновление инфы о последней точке при обновлении трэка
-      track.onUpdate(function() {
-        this.forceUpdate()
+      track.onUpdate(()=>{
+        let dt = new Date();
+        if (this.state.tillNow) {
+          this.setState({ to_dt_: dt}); // обновляем дату "по"
+        }
+
         console.log('ontrack update')
-      }.bind(this));
+      });
 
       track.fetch(from_dt, to_dt);
     }

@@ -8,8 +8,13 @@ export default class ToolbarSearch extends Component {
     super(flux, props)
 
     this.state = {
-      canFocus: false
+      canFocus: false,
+      btnClassName: ''
     }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({canFocus: nextProps.carsCount === 1})  
   }
 
   render() {
@@ -23,43 +28,15 @@ export default class ToolbarSearch extends Component {
     }
 
     return (
-      <ToolbarControl controlType="search" top="0px" btnClass={this.btnClassName} onToggle={this.onToggle.bind(this)}>
+      <ToolbarControl controlType="search" top="0px" btnClass={this.state.btnClassName} onToggle={this.onToggle.bind(this)}>
         <Filter ref="search_text" onFilterChange={this.onFilterChange.bind(this)} className="bnso-filter" title="гос. номер или номер БНСО" name="bnso_gos"/>
-        {this.state.canFocus && <button style={style} onClick={this.focusOnLonelyCar.bind(this)} className="btn btn-default btn-sm"><span className="glyphicon glyphicon-screenshot"></span>&nbsp;Показать</button>}
+        {this.state.canFocus && <button style={style} onClick={this.props.focusOnLonelyCar} className="btn btn-default btn-sm"><span className="glyphicon glyphicon-screenshot"></span>&nbsp;Показать</button>}
       </ToolbarControl>
       )
   }
 
   onFilterChange(value) {
-    if (!!value && value.length > 0) {
-      this.btnClassName = 'have-filter'
-    } else {
-      this.btnClassName = ''
-    }
-
-    if (value.length > 0) {
-      let count = 0;
-      let store = this.props.store;
-
-      for (let k in store.state.byConnectionStatus) {
-        count += store.state.byConnectionStatus[k];
-      }
-
-      this.setState({
-        canFocus: count === 1
-      })
-    }
-  }
-
-  focusOnLonelyCar() {
-    let store = this.props.store;
-    let onlyPoint = store.getVisiblePoints()[0];
-    let map = olmap;
-    let view = map.getView();
-    let size = map.getSize()
-
-    view.centerOn(onlyPoint.marker.coords, size, [size[0]/2, size[1]/2])
-    view.setZoom(15);
+    this.setState({btnClassName: !!value && value.length > 0 ? 'have-filter' : ''})
   }
 
   onToggle() {

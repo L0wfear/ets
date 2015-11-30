@@ -123,8 +123,8 @@ body.application {
 
 .app-toolbar {
   color: #fff;
-  position: fixed;
-  top: 15px;
+  position: absolute;
+  top: 65px;
   z-index: 1000;
   left: 25px;
 
@@ -1218,7 +1218,7 @@ ul.rw-list.rw-list-grouped > li.rw-list-option {
 
 .weather-widget {
   position: absolute;
-  top: 320px;
+  top: 350px; 
   left: 10px;
   z-index: 100;
   border-radius: 4px;
@@ -1842,4 +1842,14 @@ body {
       color:black;
     }
   }
+}
+
+
+/** APP NAVIGATION */
+
+.app-navigation {
+
+}
+.app-content {
+    margin-top: -21px;
 }

@@ -1,16 +1,30 @@
+import { Router, Route, Link, Redirect } from 'react-router';
+import { createHashHistory } from 'history';
+import { render } from 'react-dom';
 import React, { Component } from 'react';
 import LoginPage from './LoginPage.jsx';
+import WaybillJournal from './WaybillJournal.jsx';
 import MainPage from './MainPage.jsx';
+import MonitorPage from './MonitorPage.jsx';
 import LoadingPage from './LoadingPage.jsx';
 import { init } from '../adapter.js';
+import Flux from '../Flux.js';
+ 
 
+const flux = new Flux();
 class App extends Component {
+
+  getChildContext() {
+    return {
+      flux: flux
+    }
+  }
 
   constructor(props) {
     super(props)
 
     this.state = {
-      loaded: false,
+      loading: true,
       error: false
     }
   }
@@ -18,9 +32,10 @@ class App extends Component {
   componentDidMount() {
     init()
       .then(() => this.setState({
-          loaded: true
+          loading: false
         }))
       .catch((error) => {
+    //debugger;
         console.log('load error')
         this.setState({
           error: true
@@ -45,40 +60,26 @@ class App extends Component {
   }
 
   render() {
-    const flux = this.props.flux;
-    const currentUser = flux.getStore('login').state.currentUser;
-
-    if (this.state.error) {
-      return <MainPage errorLoading={this.state.error}/>
-    }
-
-    if (this.state.loaded) {
-      return currentUser ? <MainPage/> : <LoginPage/>;
-    } else {
-      return <LoadingPage loaded={this.state.loaded}/>
-    }
+    return !this.state.loading ? <MainPage location={this.props.location}>{this.props.children}</MainPage> : <LoadingPage loaded={this.state.loading}/>;
   }
 }
 
-
-class AppWrapper {
-
-  getChildContext() {
-    return {
-      flux: this.props.flux
-    }
-  }
-
-  render() {
-    return (
-      <App flux={this.props.flux}/>
-      );
-  }
-
-}
-
-AppWrapper.childContextTypes = {
+App.childContextTypes = {
   flux: React.PropTypes.object
 };
 
-export default AppWrapper;
+let history = createHashHistory({queryKey: false})
+const routes = (
+  <Router history={history}>
+    <Redirect from="/" to="monitor" />
+    <Route path="/" component={App}>
+      <Route path="monitor" component={MonitorPage}/>
+      <Route path="waybill-journal" component={WaybillJournal}>
+      {/*  <Route path="/user/:userId" component={User}/>*/}
+      </Route>
+      {/*<Route path="*" component={NoMatch}/>*/}
+    </Route>
+  </Router>
+  ) 
+
+render(routes, document.getElementById('content'))

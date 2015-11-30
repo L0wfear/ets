@@ -107,7 +107,7 @@ export default class OpenLayersMap extends Component {
 
     let map = this.map;
     let triggerRenderFn = this.triggerRender.bind(this);
-    let container = this.refs.container.getDOMNode();
+    let container = this.refs.container;
 
     map.setTarget(container);
     map.on('postcompose', triggerRenderFn);

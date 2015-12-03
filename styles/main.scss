@@ -255,7 +255,7 @@ body.application {
 .dashboard-sidebar {
   padding: 0px 10px;
   position: absolute;
-  top: 0;
+  top: 48px;
   width: 500px;
   zIndex: 100;
   background-color: rgba(#f2f2f2, 0.8);
@@ -1848,8 +1848,78 @@ body {
 /** APP NAVIGATION */
 
 .app-navigation {
-
+  position:relative;
+  z-index:150;
 }
+
 .app-content {
     margin-top: -21px;
+}
+
+/** ETS TABLE */
+
+.ets-table {
+  width:100%;
+  table {
+    width: 100%;
+  }
+  &-row {
+    cursor:pointer;
+    td {
+      border:1px solid #ccc;
+      padding:2px 5px;
+    }
+    &.selected {
+      background-color: #DEDEFF;
+    }
+  }
+  &-header-cell {
+    font-size: 12px;
+    padding: 5px 5px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+  }
+}
+
+.ets-page-wrap {
+  padding:10px 20px;
+}
+.some-header {
+    font-size: 18px;
+    line-height: 40px;
+}
+
+.waybills-buttons {
+  float:right;
+  button {
+    margin-left:10px;
+  }
+}
+
+.routes-list {
+  &-menu {
+    float:left;
+    margin-top: 50px;
+    .list-group-item {
+      cursor: pointer;
+    }
+  }
+
+  &-info {
+    float:left;
+    margin-left:30px;
+    .route-name {
+      font-size:20px;
+      margin-bottom:20px;
+    }
+    .route-image {
+      margin-top:20px;
+    }
+    .route-odhs-on-map {
+
+    position: relative;
+      height:500px;
+      width:600px;
+    }
+  }
 }

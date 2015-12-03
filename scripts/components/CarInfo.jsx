@@ -13,6 +13,7 @@ import { getCarImage } from '../adapter.js';
 import { roundCoordinates } from '../utils/geo.js';
 import DatePicker from './ui/DatePicker.jsx';
 
+
 class VehicleAttributes extends Component {
 
   constructor(props) {
@@ -121,7 +122,7 @@ export default class CarInfo extends Component {
     let plate = car.car.gov_number;
 
     return (
-      <div className="car-info">
+      <div className="car-info" key={marker.id}>
         <h3 className="car-info-plate">{plate}</h3>
         {this.renderModel()}
         {this.renderData()}
@@ -249,11 +250,11 @@ export default class CarInfo extends Component {
       return (
         <div>
         <Panel title="Трекинг" className="chart-datepickers-wrap">
-          <DatePicker onChange={date => this.setState({ from_dt_: date})} 
+           <DatePicker onChange={date => this.setState({ from_dt_: date})} 
                       date={this.state.from_dt_} disabled={tillNow} ref="from_dt"/>&nbsp;–&nbsp;
           <DatePicker onChange={date => this.setState({to_dt_: date})}
                       date={this.state.to_dt_} disabled={tillNow} ref="to_dt"/>
-          {/* <label style={showGradientStyle}>
+          {/*<label style={showGradientStyle}>
              <input type="checkbox" checked={showGradient} ref="showGradient" onChange={this.onShowGradientChange.bind(this)}/> С градиентом
            </label>*/}
            <label style={tillNowStyle}>

@@ -13,7 +13,6 @@ export default class Sidebar extends Component {
 
   render() {
     let props = this.props;
-
     if (props.selected) {
       return (<div key={props.selected.id} className="dashboard-sidebar">
           <span className="dashboard-sidebar-close" onClick={this.close.bind(this)}>×</span>

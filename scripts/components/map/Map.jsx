@@ -42,7 +42,9 @@ export default class OpenLayersMap extends Component {
 
     this.markers = {};
     this._handlers = null; // map event handlers
-    this._pointsStore = this.props.flux.getStore('points');
+    if ( !props.noMarkers ) {
+      this._pointsStore = this.props.flux.getStore('points');
+    }
     this.viewportVisibleMarkers = {};
 
     let initialView = new ol.View({
@@ -97,7 +99,7 @@ export default class OpenLayersMap extends Component {
 
 
   shouldComponentUpdate() {
-    return false;
+    return !this.props.noMarkers;
   }
 
   /**
@@ -131,26 +133,29 @@ export default class OpenLayersMap extends Component {
     let coordinate = ev.coordinate;
     let changeCursor = false;
 
-    let markers = this.viewportVisibleMarkers;
-    for (let key in markers) {
-      let marker = markers[key];
+    if (!this.props.noMarkers){
 
-      if (marker.contains(coordinate)) {
-        changeCursor = true;
-        break;
-      }
-    }
+      let markers = this.viewportVisibleMarkers;
+      for (let key in markers) {
+        let marker = markers[key];
 
-    if (this._pointsStore.hasMarkerSelected()) {
-      let currentSelectedMarker = this._pointsStore.getSelectedMarker();
-      if (currentSelectedMarker.hasTrackLoaded()) {
-        let possibleTrackPoint = currentSelectedMarker.track.getPointAtCoordinate(coordinate);
-        if (possibleTrackPoint) {
+        if (marker.contains(coordinate)) {
           changeCursor = true;
+          break;
         }
       }
-    }
 
+      if (this._pointsStore.hasMarkerSelected()) {
+        let currentSelectedMarker = this._pointsStore.getSelectedMarker();
+        if (currentSelectedMarker.hasTrackLoaded()) {
+          let possibleTrackPoint = currentSelectedMarker.track.getPointAtCoordinate(coordinate);
+          if (possibleTrackPoint) {
+            changeCursor = true;
+          }
+        }
+      }
+
+    }
     let el = this.map.getViewport();
     el.style.cursor = changeCursor ? 'pointer' : '';
   }
@@ -237,7 +242,8 @@ export default class OpenLayersMap extends Component {
 
     let map = this.map;
     let pointsStore = this._pointsStore;
-    let selected = pointsStore.getSelectedPoint();
+    
+    let selected = this.props.noMarkers ? false : pointsStore.getSelectedPoint();
     let selectedMarker = pointsStore.getSelectedMarker();
 
     let optimizedMarkers = this.viewportVisibleMarkers = this.getMarkersInBounds(extent);
@@ -263,7 +269,9 @@ export default class OpenLayersMap extends Component {
 
     if (selectedMarker) {
       //debugger;
-      selectedMarker.track.render();
+      if (selectedMarker.hasTrackLoaded()) {
+        selectedMarker.track.render();
+      }
       selectedMarker.render({selected: true, ...options});
 
       let view = map.getView();
@@ -347,7 +355,9 @@ export default class OpenLayersMap extends Component {
 
 
   componentWillReceiveProps(nextProps) {
-    this.updatePoints(nextProps.points);
+    if (nextProps.points !== undefined ){
+      this.updatePoints(nextProps.points);
+    }
   }
 
   updatePoints(updatedPoints) {

@@ -1,21 +1,33 @@
 import React, { Component } from 'react';
+import { findDOMNode } from 'react-dom';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
+import moment from 'moment';
+import localizer from 'react-widgets/lib/localizers/moment';
+import rome from 'rome';
 //import 'globalize/lib/cultures/globalize.culture.ru-RU';
 //import 'globalize';
+//
+localizer( moment );
 
 export default class DatePicker extends Component {
   constructor(props) {
     super(props);
   }
 
-  render() {
-    let DATE_FORMAT = 'yyyy-MM-dd HH:mm';
-    let TIME_FORMAT = 'HH:mm';
-    let translation = {
-      calendarButton: "Выберите дату",
-      timeButton: "Выберите время"
-    }
+ /* componentDidMount() {
+    let element = findDOMNode(this);
 
+    let romeObj = rome(element);
+    romeObj.setValue(this.props.date)
+
+   // debugger;
+  }*/
+
+  render() {
+    let DATE_FORMAT = 'YYYY-MM-DD HH:mm';
+    let TIME_FORMAT = 'HH:mm';
+
+    //return //<input disabled={this.props.disabled}/>
     return <DateTimePicker onChange={this.props.onChange}
       format={DATE_FORMAT}
       timeFormat={TIME_FORMAT}
@@ -23,7 +35,7 @@ export default class DatePicker extends Component {
       className="chart-datepicker"
       disabled={this.props.disabled}
       step={5}
-      messages={translation}
+      //messages={translation}
       value={this.props.date}/>
   }
 }

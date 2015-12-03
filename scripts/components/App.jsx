@@ -1,15 +1,18 @@
-import { Router, Route, Link, Redirect } from 'react-router';
+import { Router, Route, RouteHandler, Link, Redirect } from 'react-router';
 import { createHashHistory } from 'history';
 import { render } from 'react-dom';
 import React, { Component } from 'react';
 import LoginPage from './LoginPage.jsx';
 import WaybillJournal from './WaybillJournal.jsx';
+import WaybillForm from './WaybillForm.jsx';
+import RoutesList from './RoutesList.jsx';
 import MainPage from './MainPage.jsx';
 import MonitorPage from './MonitorPage.jsx';
 import LoadingPage from './LoadingPage.jsx';
+import EmployeesList from './EmployeesList.jsx';
+import Modal from './ui/Modal.jsx';
 import { init } from '../adapter.js';
 import Flux from '../Flux.js';
- 
 
 const flux = new Flux();
 class App extends Component {
@@ -74,9 +77,11 @@ const routes = (
     <Redirect from="/" to="monitor" />
     <Route path="/" component={App}>
       <Route path="monitor" component={MonitorPage}/>
-      <Route path="waybill-journal" component={WaybillJournal}>
+      <Route path="waybill-journal" component={WaybillJournal}/>
+      <Route path="waybill-journal/create" component={WaybillForm}/>
+      <Route path="routes-list" component={RoutesList}/>
+      <Route path="employees" component={EmployeesList}/>
       {/*  <Route path="/user/:userId" component={User}/>*/}
-      </Route>
       {/*<Route path="*" component={NoMatch}/>*/}
     </Route>
   </Router>

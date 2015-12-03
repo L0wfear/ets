@@ -12,6 +12,8 @@ const POINTS_URL = config.backend ? config.backend + '/data' : '/data';
 const TRACK_URL = config.backend ? config.backend + '/tracks/' : '/tracks/';
 const WEATHER_URL = config.backend ? config.backend + '/weather/' : '/weather/';
 const GEO_OBJECTS_URL = config.backend ? config.backend + '/geo_objects/' : '/geo_objects/';
+const ROADS_ACTUAL_URL = config.backend ? config.backend + '/roads_actual/' : '/roads_actual/';
+const GET_ROAD_BY_ODH_URL = config.backend ? config.backend + '/road_info/' : '/road_info/';
 
 export function getAllPoints() {
   return fetch(POINTS_URL, config.REQUEST_PARAMS).then(r => r.json());
@@ -30,7 +32,8 @@ export function init() {
         loadModels(),
         loadOwners(),
         loadOkrugs(),
-        loadTypes()])
+        loadTypes()
+        ])
           
 }
 
@@ -67,4 +70,13 @@ export function getGeoObjectsByCoords([lat, lon], d = 5) {
   let mskQuery = '?d=' + d + '&x_msk=' + lat + '&y_msk=' + lon;
   let query = '?d=' + d + '&lat=' + lat + '&lon=' + lon;
   return fetch(GEO_OBJECTS_URL + mskQuery).then(r => r.json())
+}
+
+export function getRoadsActual() {
+  return fetch(ROADS_ACTUAL_URL).then(r => r.json());
+}
+
+export function getRoadByODHId(id) {
+  let query = '?road_id=' + id;
+  return fetch(GET_ROAD_BY_ODH_URL + query).then(r => r.json);
 }

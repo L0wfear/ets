@@ -5,9 +5,11 @@ import Table from './ui/table/Table.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
 import WaybillForm from './WaybillForm.jsx';
 import {makeDate, makeTime} from '../utils/dates.js';
+import moment from 'moment';
+import { getCarById } from '../krylatskoe_cars.js';
 
 
-import { getList, getLastNumber, createBill, getBillById } from '../stores/WaybillStore.js';
+import { getList, getLastNumber, createBill, getBillById, updateBill } from '../stores/WaybillStore.js';
 import { getFIOById } from '../stores/EmployeesStore.js';
 
 let fakeData = getList();
@@ -103,9 +105,15 @@ export default class WaybillJournal extends Component {
 	}
 
 	closeBill() {
+
+		let bill = _.clone(getBillById(this.state.selectedBill.id));
+		bill.vyezd_fakt = moment(bill.vyezd_plan).toDate();
+		bill.vozvr_fakt = moment(bill.vozvr_plan).toDate();
+		console.log( bill.vyezd_fakt);
+
 		this.setState({
 			showForm:true,
-			formState:getBillById(this.state.selectedBill.id)
+			formState:bill
 		})
 	}
 
@@ -139,6 +147,10 @@ export default class WaybillJournal extends Component {
 			})
 		} else if (billStatus) {
 			console.log('updating bill')
+			updateBill(formState)
+			this.setState({
+				showForm: false
+			})
 		} else {
 			console.log('xz')
 		}
@@ -192,11 +204,11 @@ let WaybillsTable = (props) => {
 	"vozvr_plan",
 	"vozvr_fakt",
 	"driver_id", 
-	"auto", 
+	"car_id", 
 	"route_id", 
 	"ezdok", 
-	"nachalo",
-	"konez"]
+	"odometr_nachalo",
+	"odometr_konec"]
 
 	_.each(props.data, (bill)=> {
 			let _bill = _.clone(bill);
@@ -224,7 +236,8 @@ let WaybillsTable = (props) => {
 					cellRenderers={
 						{ status: (flag) => flag ? 'Открыт' : 'Закрыт' ,
 							master_id: (id) => getFIOById(id),
-							driver_id: (id) => getFIOById(id)}
+							driver_id: (id) => getFIOById(id),
+							car_id: (id) => getCarById(id)}
 					 }
 					onRowSelected={props.onRowSelected}/>
 }

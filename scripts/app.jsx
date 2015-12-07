@@ -15,7 +15,6 @@ import React from 'react';
 import './components/App.jsx';
 import NotificationSystem from './components/NotificationSystem.jsx';
 
-
 global.NOTIFICATION_SYSTEM = render(<NotificationSystem/>, document.getElementById('notifications'))
 global.APPSTART_TIME = Date.now();
 global.NODE_ENV = process.env.NODE_ENV;

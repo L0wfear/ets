@@ -35,6 +35,23 @@ export function createBill(data) {
 	sortList()
 }
 
+export function updateBill(data) {
+	let toSave = _.clone(data);
+	let updatedBill = getBillById(toSave.id);
+
+	toSave.vyezd_fakt = makeDate(toSave.vyezd_fakt) + ' ' + makeTime(toSave.vyezd_fakt);
+	toSave.vozvr_fakt = makeDate(toSave.vozvr_fakt) + ' ' + makeTime(toSave.vozvr_fakt);
+
+	_.each(toSave, (v,k ) => {
+		updatedBill[k] = v;
+	})
+
+	updatedBill.status = false;
+
+	sortList();
+
+}
+
 export function getBillById( id){
 	let result;
 	_.each(LIST, (bill) => {

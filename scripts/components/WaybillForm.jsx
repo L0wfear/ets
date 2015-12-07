@@ -4,7 +4,8 @@ import Select from 'react-select';
 import Datepicker from './ui/DatePicker.jsx';
 import { getMasters, getDrivers, getFIOById } from './../stores/EmployeesStore.js';
 import ROUTES from '../../mocks/routes.js';
-
+import WORK_TYPES from '../../mocks/work_types.js';
+import CARS from '../krylatskoe_cars.js';
 
 const MASTERS = getMasters();
 const DRIVERS = getDrivers();
@@ -154,22 +155,22 @@ export default class WaybillForm extends Component {
       		}
       		<Col md={6}>
       			<label>Транспортное средство (поиск по госномеру)</label>
-      			<CarSelect/>
+      			<EtsSelect options={CARS} value={fState.car_id} onChange={this.handleChange.bind(this, 'car_id')}/>
       		</Col>
       	</Row>
       	{/*<Select.Async multi={false} value={this.props.master}*/}
 
         <h4>Задание</h4>
       	<Row>
-      	<Col md={4}>
+      	<Col md={5}>
       		<label>Маршрут</label>
       		<EtsSelect options={ROUTES} value={fState.route_id} onChange={this.handleChange.bind(this, 'route_id')}/>
     		</Col>	
     		<Col md={4}>
     			<label>Вид работ</label>
-    			<EtsSelect/>
+    			<EtsSelect options={WORK_TYPES} value={fState.work_type} onChange={this.handleChange.bind(this, 'work_type')}/>
     		</Col>
-    		<Col md={4}>
+    		<Col md={3}>
     		  <label>Количество прохождений</label>
     		  <Input type="number" disabled={IS_CLOSING} value={fState.ezdok} onChange={this.handleChange.bind(this, 'ezdok')}/>
     		</Col>
@@ -238,8 +239,10 @@ export default class WaybillForm extends Component {
       	</Row>
       </Modal.Body>	
       <Modal.Footer>
-      	<Button onClick={this.handlePrint.bind(this)}>Распечатать</Button>
-      	<Button onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+      	{
+      		!fState.status && <Button onClick={this.handlePrint.bind(this)}>Распечатать</Button>
+      	}
+      	<Button onClick={this.handleSubmit.bind(this)}>{fState.status ? 'Закрыть' : 'Сохранить'}</Button>
       </Modal.Footer>
 		</Modal>
 	}

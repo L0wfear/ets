@@ -244,55 +244,56 @@ export default class OpenLayersMap extends Component {
     let pointsStore = this._pointsStore;
     
     let selected = this.props.noMarkers ? false : pointsStore.getSelectedPoint();
-    let selectedMarker = pointsStore.getSelectedMarker();
+    if (!this.props.noMarkers) {
+      let selectedMarker = pointsStore.getSelectedMarker();
 
-    let optimizedMarkers = this.viewportVisibleMarkers = this.getMarkersInBounds(extent);
+      let optimizedMarkers = this.viewportVisibleMarkers = this.getMarkersInBounds(extent);
 
-    const options = {
-      showPlates: this.props.showPlates
-    };
+      const options = {
+        showPlates: this.props.showPlates
+      };
 
-    let keys = Object.keys(optimizedMarkers);
-    for (let i = 0, till = keys.length; i < till; i++) {
-      let key = keys[i];
-      let marker = optimizedMarkers[key];
-      let id = marker.point.id;
+      let keys = Object.keys(optimizedMarkers);
+      for (let i = 0, till = keys.length; i < till; i++) {
+        let key = keys[i];
+        let marker = optimizedMarkers[key];
+        let id = marker.point.id;
 
-      if (selected === null || id !== selected.id) {
-        // todo переключать отрисовку маленький/большой значок
-        // в зависимости от количества маркеров на видимой части карты
-        // 
-        // будет некрасиво, если попадать точно в границу количества
-        marker.render(options);
+        if (selected === null || id !== selected.id) {
+          // todo переключать отрисовку маленький/большой значок
+          // в зависимости от количества маркеров на видимой части карты
+          // 
+          // будет некрасиво, если попадать точно в границу количества
+          marker.render(options);
+        }
       }
-    }
 
-    if (selectedMarker) {
-      //debugger;
-      if (selectedMarker.hasTrackLoaded()) {
-        selectedMarker.track.render();
-      }
-      selectedMarker.render({selected: true, ...options});
+      if (selectedMarker) {
+        //debugger;
+        if (selectedMarker.hasTrackLoaded()) {
+          selectedMarker.track.render();
+        }
+        selectedMarker.render({selected: true, ...options});
 
-      let view = map.getView();
-      let zoom = view.getZoom();
-      let size = map.getSize();
-      let pixel = [(size[0] - SIDEBAR_WIDTH_PX) / 2, size[1] / 2];
+        let view = map.getView();
+        let zoom = view.getZoom();
+        let size = map.getSize();
+        let pixel = [(size[0] - SIDEBAR_WIDTH_PX) / 2, size[1] / 2];
 
-      if (pointsStore.state.trackingMode) {
-          view.centerOn(selectedMarker.coords, size, pixel)
-          if (zoom < 12) {
-            view.setZoom(12)
-          }
-          this.disableInteractions();
+        if (pointsStore.state.trackingMode) {
+            view.centerOn(selectedMarker.coords, size, pixel)
+            if (zoom < 12) {
+              view.setZoom(12)
+            }
+            this.disableInteractions();
+        } else {
+          this.enableInteractions()
+        }
+
       } else {
         this.enableInteractions()
       }
-
-    } else {
-      this.enableInteractions()
-    }
-
+  }
     //todo remove this
     if (!selected) {
       this.hidePopup()

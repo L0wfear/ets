@@ -19,7 +19,7 @@ export default React.createClass({
 				        <NavItem active={path === '/monitor'} href="#/monitor">Монитор</NavItem>
 				        <NavItem active={path === '/waybill-journal'} href="#/waybill-journal">Журнал путевых листов</NavItem>
 				        <NavItem active={path === '/employees'} href="#/employees">Реестр сотрудников</NavItem> 
-				        <NavItem active={path === '/employees'} href="#/employees">Реестр транспортных средств</NavItem>
+				         <NavItem active={path === '/cars'} href="#/cars">Реестр транспортных средств</NavItem>
 				        <NavItem active={path === '/routes-list'} href="#/routes-list">Список маршрутов</NavItem>
 				        {/*<NavItem active={path === '/waybill-journal/create'} href="#/waybill-journal/create">Создать маршрут</NavItem>*/}
 				        {/*<NavItem active={path === '/waybill-journal'} href="#/waybill-journal">Журнал путевых листов</NavItem>

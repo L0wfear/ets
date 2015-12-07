@@ -48,8 +48,20 @@ let EmployeesTable = (props) => {
 			"Телефон",
 		]
 
+		let tableCols = ['Фамилия',
+		'Имя', 
+		'Отчество', 
+		'Дата рождения', 
+		'Табельный номер', 
+		'Должность', 
+		'Водительское удостоверение',
+		'Специальное удостоверение',
+		'Текущее состояние',
+		'Телефон'];
+
 	return <Table 
 					columnCaptions={tableCaptions}
 					data={props.data}
+					tableCols={tableCols}
 					pageSize={10}/>
 }

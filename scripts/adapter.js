@@ -7,6 +7,7 @@ import { loadTypes } from './types.js';
 import { loadModels } from './models.js';
 import { loadOkrugs } from './okrugs.js';
 import { loadOwners } from './owners.js';
+import { getCars } from './krylatskoe_cars.js';
 
 const POINTS_URL = config.backend ? config.backend + '/data' : '/data';
 const TRACK_URL = config.backend ? config.backend + '/tracks/' : '/tracks/';
@@ -14,6 +15,7 @@ const WEATHER_URL = config.backend ? config.backend + '/weather/' : '/weather/';
 const GEO_OBJECTS_URL = config.backend ? config.backend + '/geo_objects/' : '/geo_objects/';
 const ROADS_ACTUAL_URL = config.backend ? config.backend + '/roads_actual/' : '/roads_actual/';
 const GET_ROAD_BY_ODH_URL = config.backend ? config.backend + '/road_info/' : '/road_info/';
+const CARS_INFO_URL = config.backend ? config.backend + '/cars_info/' : '/cars_info/';
 
 export function getAllPoints() {
   return fetch(POINTS_URL, config.REQUEST_PARAMS).then(r => r.json());
@@ -28,12 +30,13 @@ export function getFuelData(from_dt = getStartOfToday(), to_dt = new Date().getT
 export function init() {
   // @todo вся нужная для инициализации внешнего апи хрень здесь
   return Promise.all([
-        //loadCustomers(),
-        //loadModels(),
-        //loadOwners(),
-        //loadOkrugs(),
-        //loadTypes()
-        ])
+        loadCustomers(),
+        loadModels(),
+        loadOwners(),
+        loadOkrugs(),
+        loadTypes(),
+        ]).then(
+        getCars)
           
 }
 
@@ -79,4 +82,8 @@ export function getRoadsActual() {
 export function getRoadByODHId(id) {
   let query = '?road_id=' + id;
   return fetch(GET_ROAD_BY_ODH_URL + query).then(r => r.json());
+}
+
+export function getCarsInfo() {
+  return fetch(CARS_INFO_URL).then(r => r.json())
 }

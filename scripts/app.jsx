@@ -6,6 +6,7 @@ import '!style!raw!../scripts/vendor/ol.css';
 import '!style!raw!ol3-popup/src/ol3-popup.css';
 import '!style!raw!sass!../styles/main.scss';
 import '!style!raw!../styles/bootstrap.min.css';
+import '!style!raw!react-select/dist/react-select.css';
 
 // TODO https://github.com/esdoc/esdoc
 window.Object.assign = require('object-assign');

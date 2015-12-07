@@ -4,6 +4,8 @@ import { getRoadsActual, getRoadByODHId } from '../adapter.js';
 import Map from './map/Map.jsx';
 import classname from 'classnames';
 
+import fakeRoutes from '../../mocks/routes.js';
+
 let ACTUAL_ROADS = [];
 
 const MAP_INITIAL_CENTER = [-399.43090337943863, -8521.192605428025];
@@ -13,27 +15,6 @@ getRoadsActual().then(r => {
 	ACTUAL_ROADS = r;
 	console.log( 'actual roads loaded', ACTUAL_ROADS)
 });
-
-let fakeRoutes = [
-	{
-		id: 1,
-		name: 'Крылатское маршрут 1 (ПУ-зима)',
-		image: '/images/routes/1_zima.jpg',
-		odhs: []
-	},
-	{
-		id:2,
-		name: 'Крылатское маршрут 2 (ПЩ-зима)',
-		image: '/images/routes/2_zima_psch.jpg',
-		odhs: [10000259,10005327,10000260,10005328,10005332,10000257,10000262,10000272,10000258,10000261,10005331,10005330]
-	},
-	{
-		id: 4,
-		name: 'Крылатское маршрут 4 (зима)',
-		image: '/images/routes/4_zima.jpg',
-		odhs: []
-	}
-]
 
 export default class RoutesList extends Component {
 
@@ -49,15 +30,20 @@ export default class RoutesList extends Component {
 	selectRoute(id) {
 
 		_.each(fakeRoutes, (route) => {
-			if (route.id === id ) {
+
+			console.log( 'route selected', route);
+			window.route = route;
+			if (route.id === id ){
 				this.setState({
 					selectedRoute: route
 				})
 
 				if (route.odhs.length > 0) {
 					route.polys = [];
-					route.odhs.forEach((odhID) => getRoadByODHId(odhID).then(r => route.polys.push(r)))
-					console.log('есть список ОДХ')
+					route.odhs.forEach((odhID) => getRoadByODHId(odhID).then(r => {
+						console.log( r, JSON.parse(r[0].SHAPE));
+						route.polys.push(r[0].SHAPE)
+					}))
 				}
 			}
 		})

@@ -71,7 +71,8 @@ App.childContextTypes = {
   flux: React.PropTypes.object
 };
 
-let history = createHashHistory({queryKey: false})
+let history = createHashHistory({queryKey: false});
+
 const routes = (
   <Router history={history}>
     <Redirect from="/" to="monitor" />

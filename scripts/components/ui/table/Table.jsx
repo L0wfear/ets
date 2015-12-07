@@ -70,6 +70,7 @@ export default class Table extends Component {
     	renderers={this.props.cellRenderers} 
     	key={i} 
     	cells={o} 
+      tableCols={this.props.tableCols}
     	selected={this.state.selectedRow === o.id} 
     	handleClick={this.onRowClick.bind(this)}/>));
 
@@ -95,17 +96,29 @@ let Row = (props) => {
 	let cells = [];
 	let renderers = !!props.renderers ? props.renderers : {};
 
-	_.each(props.cells, (v,k) => {
-		if (k !== 'id') {
-			if (renderers[k] === undefined) {
-				cells.push(<td>{v}</td>)
-			} else {
-				console.log('rendered status')
-				cells.push(<td>{renderers[k](v)}</td>)
-			}
-		}
-	}
-	);
+  if (props.tableCols !== undefined ){
+    _.each(props.tableCols, (col) => {
+      let v = props.cells[col];
+      if (renderers[col] === undefined) {
+        cells.push(<td>{v}</td>)
+      } else {
+        console.log('rendered status')
+        cells.push(<td>{renderers[col](v)}</td>)
+      }
+    })
+  } else {
+  	_.each(props.cells, (v,k) => {
+  		if (k !== 'id') {
+  			if (renderers[k] === undefined) {
+  				cells.push(<td>{v}</td>)
+  			} else {
+  				console.log('rendered status')
+  				cells.push(<td>{renderers[k](v)}</td>)
+  			}
+  		}
+  	})
+  }
+	
 
 	let cn = "ets-table-row" + (props.selected ? ' selected' : '');
 

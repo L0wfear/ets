@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import Table from './ui/table/Table.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
 
-import fakeData from '../fakeemployees.js';
+import fakeData from '../../mocks/employees.js';
 
 _.each( fakeData, (e) => {
 	delete e['Организация'];

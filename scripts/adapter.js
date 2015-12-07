@@ -28,11 +28,11 @@ export function getFuelData(from_dt = getStartOfToday(), to_dt = new Date().getT
 export function init() {
   // @todo вся нужная для инициализации внешнего апи хрень здесь
   return Promise.all([
-        loadCustomers(),
-        loadModels(),
-        loadOwners(),
-        loadOkrugs(),
-        loadTypes()
+        //loadCustomers(),
+        //loadModels(),
+        //loadOwners(),
+        //loadOkrugs(),
+        //loadTypes()
         ])
           
 }
@@ -78,5 +78,5 @@ export function getRoadsActual() {
 
 export function getRoadByODHId(id) {
   let query = '?road_id=' + id;
-  return fetch(GET_ROAD_BY_ODH_URL + query).then(r => r.json);
+  return fetch(GET_ROAD_BY_ODH_URL + query).then(r => r.json());
 }

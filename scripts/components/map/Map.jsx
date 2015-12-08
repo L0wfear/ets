@@ -97,6 +97,51 @@ export default class OpenLayersMap extends Component {
     this.map = global.olmap = map;
   }
 
+  renderODHs() {
+    let map = this.map;
+    let odhs = window.ROUTES[1].polys;
+
+    let featuresJSON = {
+      type: 'FeatureCollection',
+      features: []
+    }
+
+
+    let styleFunction = new ol.style.Style({
+       fill: new ol.style.Fill({
+            color: 'rgba(255,255,255,0.9)'
+       }),
+       stroke: new ol.style.Stroke({
+            color: 'red',
+            width: 1
+       })
+    });
+
+
+
+    _.each(odhs, (poly)=>{
+          featuresJSON.features.push({
+            type: 'Feature',
+            geometry: poly.shape
+          })
+      })
+
+    let vectorSource = new ol.source.Vector({
+      features: (new ol.format.GeoJSON()).readFeatures(featuresJSON)
+    })
+
+
+    let polysLayer = new ol.layer.Vector({
+        source: vectorSource,
+        style: styleFunction
+    })
+
+    map.addLayer(polysLayer);
+
+    map.getView().setZoom(6);
+    map.getView().setCenter([-5441.16131979791, 10146.687775846918])
+
+  }
 
   shouldComponentUpdate() {
     return !this.props.noMarkers;
@@ -117,6 +162,10 @@ export default class OpenLayersMap extends Component {
     this.popup = new ol.Overlay.Popup();
     map.addOverlay(this.popup);
 
+    if (this.props.noMarkers) {
+      this.renderODHs()
+    }
+
     if (this.props.errorLoading) {
       this.disableInteractions();
     } else {
@@ -133,7 +182,7 @@ export default class OpenLayersMap extends Component {
     let coordinate = ev.coordinate;
     let changeCursor = false;
 
-    if (!this.props.noMarkers){
+    if (!this.props.noMarkers) {
 
       let markers = this.viewportVisibleMarkers;
       for (let key in markers) {

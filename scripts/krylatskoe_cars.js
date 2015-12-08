@@ -20,16 +20,12 @@ export function getCars() {
 			let type = getTypeById(_car.type_id);
 			let model = getModelById(_car.model_id);
 
-			console.log('model is', model)
-
 			_car.type = !!type ? type.title : 'Н/Д';
 			_car.model = !!model ? model.title : 'Н/Д';
 			_car.label = _car.gov_number + ' [' + _car.model + ']';
 			_car.id = _car.value = key;
 			KRYLATSKOE_CARS.push( _car );
 		})
-
-		console.log( 'kryl cars', KRYLATSKOE_CARS)
 	})
 }
 

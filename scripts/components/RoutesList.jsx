@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import Griddle from 'griddle-react';
-import { getRoadsActual, getRoadByODHId } from '../adapter.js';
 import Map from './map/Map.jsx';
 import classname from 'classnames';
 
@@ -11,10 +10,7 @@ let ACTUAL_ROADS = [];
 const MAP_INITIAL_CENTER = [-399.43090337943863, -8521.192605428025];
 const MAP_INITIAL_ZOOM = 3;
 
-getRoadsActual().then(r => {
-	ACTUAL_ROADS = r;
-	console.log( 'actual roads loaded', ACTUAL_ROADS)
-});
+
 
 export default class RoutesList extends Component {
 
@@ -31,20 +27,14 @@ export default class RoutesList extends Component {
 
 		_.each(fakeRoutes, (route) => {
 
-			console.log( 'route selected', route);
 			window.route = route;
 			if (route.id === id ){
 				this.setState({
 					selectedRoute: route
 				})
+				console.log( 'route selected', route);
 
-				if (route.odhs.length > 0) {
-					route.polys = [];
-					route.odhs.forEach((odhID) => getRoadByODHId(odhID).then(r => {
-						console.log( r, JSON.parse(r[0].SHAPE));
-						route.polys.push(r[0].SHAPE)
-					}))
-				}
+				
 			}
 		})
 
@@ -101,6 +91,12 @@ export default class RoutesList extends Component {
 									noMarkers={true} 
 									zoom={MAP_INITIAL_ZOOM}
 	               center={MAP_INITIAL_CENTER}/>
+	            <div className="route-odhs-list">
+	            	<h4>Список ОДХ</h4>
+	            	<ul>
+	            		{route.odhNames.map((odh)=> <li>{odh}</li>)}
+	            	</ul>
+	            </div>
 						</div>
 					}
 					

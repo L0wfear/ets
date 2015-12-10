@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router';
 //import Modal from './ui/Modal.jsx';
 import Table from './ui/table/Table.jsx';

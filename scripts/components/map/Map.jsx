@@ -99,7 +99,7 @@ export default class OpenLayersMap extends Component {
 
   renderODHs() {
     let map = this.map;
-    let odhs = window.ROUTES[1].polys;
+    let odhs = window.ROUTES[0].polys;
 
     let featuresJSON = {
       type: 'FeatureCollection',

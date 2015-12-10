@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router';
 //import Modal from './ui/Modal.jsx';
 import Table from './ui/table/Table.jsx';
@@ -85,7 +85,7 @@ export default class WaybillJournal extends Component {
 				motoch_nachalo: "",
 				motoch_konec: "",
 				motoch_obor_nachalo: "",
-				motoch_obor_konec: "App.jsx"
+				motoch_obor_konec: ""
 		}
 	}
 
@@ -132,6 +132,8 @@ export default class WaybillJournal extends Component {
 		if (field === 'motoch_obor_konec') {
 			_formState.motoch_obor_probeg = _formState.motoch_obor_konec - _formState.motoch_obor_nachalo;
 		}
+
+		//if (field === 'fuel')
 		this.setState({
 			formState:_formState
 		})

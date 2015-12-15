@@ -3,7 +3,13 @@ import { Link } from 'react-router';
 //import Modal from './ui/Modal.jsx';
 import Table from './ui/table/Table.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
-import CARS from '../krylatskoe_cars.js';
+import { getCarsByOwnerId } from '../adapter.js';
+
+let CARS = [];
+getCarsByOwnerId().then((response)=> {
+	CARS = response
+	debugger;
+});
 
 
 export default class CarsList extends Component {

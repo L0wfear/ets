@@ -1,7 +1,7 @@
-import { getCarsInfo} from './adapter.js';
-import { getOwnerById } from './owners.js';
-import { getTypeById} from './types.js';
-import { getModelById } from './models.js';
+//import { getCarsInfo }  from './adapter.js';
+//import { getOwnerById } from './owners.js';
+import { getTypeById} from '../scripts/types.js';
+import { getModelById } from '../scripts/models.js';
 
 let KRYLATSKOE_CARS = [];
 
@@ -9,7 +9,7 @@ export function getCars() {
 	return fetch('//ods.mos.ru/ssd/city-dashboard/cache_krylatskoe/')
 	.then(r => r.json())
 	.then(cars => {
-		_.each( cars, (car, key ) => {
+		_.each(cars, (car, key ) => {
 			let _car = car.car;
 
 			delete car.contract_type_ids;
@@ -26,6 +26,8 @@ export function getCars() {
 			_car.id = _car.value = key;
 			KRYLATSKOE_CARS.push( _car );
 		})
+
+		return KRYLATSKOE_CARS;
 	})
 }
 

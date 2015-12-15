@@ -6,7 +6,7 @@ import moment from 'moment';
 import { getMasters, getDrivers, getFIOById, getDriverByCode } from './../stores/EmployeesStore.js';
 import ROUTES from '../../mocks/routes.js';
 import WORK_TYPES from '../../mocks/work_types.js';
-import CARS from '../krylatskoe_cars.js';
+import CARS from '../../mocks/krylatskoe_cars.js';
 
 const MASTERS = getMasters();
 const DRIVERS = getDrivers();

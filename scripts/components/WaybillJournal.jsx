@@ -6,7 +6,7 @@ import { Button, Glyphicon } from 'react-bootstrap';
 import WaybillForm from './WaybillForm.jsx';
 import {makeDate, makeTime} from '../utils/dates.js';
 import moment from 'moment';
-import { getCarById } from '../krylatskoe_cars.js';
+import { getCarById } from '../../mocks/krylatskoe_cars.js';
 
 
 import { getList, getLastNumber, createBill, getBillById, updateBill } from '../stores/WaybillStore.js';

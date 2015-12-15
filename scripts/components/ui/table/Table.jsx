@@ -96,7 +96,7 @@ let Row = (props) => {
 	let cells = [];
 	let renderers = !!props.renderers ? props.renderers : {};
 
-  if (props.tableCols !== undefined ){
+  if (props.tableCols !== undefined ) {
     _.each(props.tableCols, (col) => {
       let v = props.cells[col];
       if (renderers[col] === undefined) {
@@ -107,7 +107,7 @@ let Row = (props) => {
       }
     })
   } else {
-  	_.each(props.cells, (v,k) => {
+  	_.each(props.cells, (v, k) => {
   		if (k !== 'id') {
   			if (renderers[k] === undefined) {
   				cells.push(<td>{v}</td>)

@@ -13,9 +13,10 @@ import EmployeesList from './EmployeesList.jsx';
 import CarsList from './CarsList.jsx';
 import Modal from './ui/Modal.jsx';
 import { init } from '../adapter.js';
-import Flux from '../Flux.js';
+import Flux from './Flux.js';
 
 const flux = new Flux();
+
 class App extends Component {
 
   getChildContext() {

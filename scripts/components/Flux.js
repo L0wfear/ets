@@ -1,8 +1,8 @@
 import { Flummox } from 'flummox';
-import PointsActions from './actions/PointsActions.js';
-import PointsStore from './stores/PointsStore.js';
-import LoginStore from './stores/LoginStore.js';
-import LoginActions from './actions/LoginActions.js';
+import PointsActions from '../actions/PointsActions.js';
+import PointsStore from '../stores/PointsStore.js';
+import LoginStore from '../stores/LoginStore.js';
+import LoginActions from '../actions/LoginActions.js';
 
 
 export default class Flux extends Flummox {

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { findDOMNode } from 'react-dom';
+//import { findDOMNode } from 'react-dom';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 import moment from 'moment';
 import localizer from 'react-widgets/lib/localizers/moment';
-import rome from 'rome';
+//import rome from 'rome';
 //import 'globalize/lib/cultures/globalize.culture.ru-RU';
 //import 'globalize';
 //

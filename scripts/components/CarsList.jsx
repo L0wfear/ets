@@ -8,7 +8,6 @@ import { getCarsByOwnerId } from '../adapter.js';
 let CARS = [];
 getCarsByOwnerId().then((response)=> {
 	CARS = response
-	debugger;
 });
 
 

@@ -97,7 +97,7 @@ export default class OpenLayersMap extends Component {
     this.map = global.olmap = map;
   }
 
-  renderODHs( polys = [] ) {
+  renderODHs( polys = window.ROUTES[0].polys ) {
     let map = this.map;
     let odhs = polys;
 
@@ -177,6 +177,8 @@ export default class OpenLayersMap extends Component {
     } else {
       this.enableInteractions();
     }
+
+    this.renderODHs()
   }
 
   triggerRender() {

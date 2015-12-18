@@ -21,7 +21,7 @@ export function getCars() {
 			let model = getModelById(_car.model_id);
 
 			_car.type = !!type ? type.title : 'Н/Д';
-			_car.model = !!model ? model.title : 'Н/Д';
+			_car.model = !!model ? model.title === 'НЕИЗВЕСТНА' ? "Н/Д" : model.title : 'Н/Д';
 			_car.label = _car.gov_number + ' [' + _car.model + ']';
 			_car.id = _car.value = key;
 			KRYLATSKOE_CARS.push( _car );

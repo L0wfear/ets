@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, MenuItem } from 'react-bootstrap';
+import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
 import EtsSelect from './ui/EtsSelect.jsx';
 import Datepicker from './ui/DatePicker.jsx';
 import moment from 'moment';
 import { getMasters, getDrivers, getFIOById, getDriverByCode } from './../stores/EmployeesStore.js';
-import ROUTES from '../../mocks/routes.js';
-import WORK_TYPES from '../../mocks/work_types.js';
+import ROUTES, {getRouteById} from '../../mocks/routes.js';
+import WORK_TYPES, {getWorkTypeById} from '../../mocks/work_types.js';
 import CARS, { getCarById } from '../../mocks/krylatskoe_cars.js';
 import getFuelTypes, {getFuelTypeById } from '../stores/FuelTypes.js';
 import { monthes } from '../utils/dates.js';
@@ -133,7 +133,7 @@ export default class WaybillForm extends Component {
       	<Col md={6}>
       		<label>Ответственное лицо</label><br/>
       		{ (IS_CREATING || IS_POST_CREATING) ? 
-      		<MastersSelect disabled={!!state.STATUS} value={state.RESPONSIBLE_PERSON_ID} onChange={this.handleChange.bind(this, 'RESPONSIBLE_PERSON_ID')}/>
+      		<MastersSelect  value={state.RESPONSIBLE_PERSON_ID} onChange={this.handleChange.bind(this, 'RESPONSIBLE_PERSON_ID')}/>
       		:
       		getFIOById(state.RESPONSIBLE_PERSON_ID, true)
       		}
@@ -160,6 +160,19 @@ export default class WaybillForm extends Component {
 			   			<Datepicker date={ state.FACT_ARRIVAL_DATE } onChange={this.handleChange.bind(this, 'FACT_ARRIVAL_DATE')}/>
 		       	</Col>
 		       }
+
+           {IS_DISPLAY && 
+            <span>
+              <Col md={3}>
+                <label>Выезд план</label><br/>{state.PLAN_DEPARTURE_DATE}<br/>
+                <label>Выезд факт</label><br/>{state.FACT_DEPARTURE_DATE}
+              </Col>
+              <Col md={3}>
+                <label>Возвращение план</label><br/>{state.PLAN_ARRIVAL_DATE}<br/>
+                <label>Возвращение факт</label><br/>{state.FACT_ARRIVAL_DATE}
+              </Col>
+
+            </span>}
        </Row>
 
       	<Row>	
@@ -177,14 +190,14 @@ export default class WaybillForm extends Component {
       		}
           </Col>
       		<Col md={6}>
-          { (IS_CREATING && !IS_POST_CREATING) ?
+          { (IS_CREATING || IS_POST_CREATING) ?
             <span>
         			<label>Транспортное средство (поиск по госномеру)</label>
-        			<EtsSelect options={CARS} value={state.CAR_ID} onChange={this.handleChange.bind(this, 'CAR_ID')}/>
+        			<EtsSelect options={CARS} disabled={IS_POST_CREATING} value={state.CAR_ID} onChange={this.handleChange.bind(this, 'CAR_ID')}/>
             </span>
             : 
             <span>
-              <label>Транспортное средство</label><br/>
+              <label style={{paddingTop:5}}>Транспортное средство</label><br/>
               {getCarById(state.CAR_ID).label}
             </span>
             }
@@ -195,16 +208,41 @@ export default class WaybillForm extends Component {
         <h4>Задание</h4>
       	<Row>
       	<Col md={5}>
-      		<label>Маршрут</label>
-      		<EtsSelect options={ROUTES} value={state.ROUTE_ID} onChange={this.handleChange.bind(this, 'ROUTE_ID')}/>
-    		</Col>	
+        {!IS_DISPLAY  ?
+            <span></span>
+
+            :
+
+            <span></span>
+
+        }
+        {!IS_DISPLAY  ?
+            <span><label>Маршрут</label>
+              <EtsSelect options={ROUTES} value={state.ROUTE_ID} onChange={this.handleChange.bind(this, 'ROUTE_ID')}/>
+            </span>
+            :
+            <span>
+            <label>Маршрут</label><br/>
+              {getRouteById(state.ROUTE_ID).name}
+            </span>
+
+        }
+      			</Col>	
     		<Col md={4}>
     			<label>Вид работ</label>
-    			<EtsSelect options={WORK_TYPES} value={state.WORK_TYPE_ID} onChange={this.handleChange.bind(this, 'WORK_TYPE_ID')}/>
-    		</Col>
+           {!IS_DISPLAY  ?
+            <span><EtsSelect options={WORK_TYPES} value={state.WORK_TYPE_ID} onChange={this.handleChange.bind(this, 'WORK_TYPE_ID')}/>
+      </span>
+
+            :
+
+            <span><br/>{getWorkTypeById(state.WORK_TYPE_ID).label}</span>
+
+        }
+    				</Col>
     		<Col md={3}>
     		  <label>Количество прохождений</label>
-    		  <Input type="number" disabled={IS_CLOSING} value={state.PASSES_COUNT} onChange={this.handleChange.bind(this, 'PASSES_COUNT')}/>
+    		  <Input type="number" disabled={IS_CLOSING || IS_DISPLAY} value={state.PASSES_COUNT} onChange={this.handleChange.bind(this, 'PASSES_COUNT')}/>
     		</Col>
       	</Row>
 
@@ -212,11 +250,11 @@ export default class WaybillForm extends Component {
       		<Col md={4}>
       		<h4>Одометр</h4>
       		<label>Начало, км</label>
-      		<Input type="number" disabled={IS_CLOSING}  onChange={this.handleChange.bind(this, 'ODOMETR_START')} value={state.ODOMETR_START}/>
-          { IS_CLOSING &&
+      		<Input type="number" disabled={IS_CLOSING || IS_DISPLAY}  onChange={this.handleChange.bind(this, 'ODOMETR_START')} value={state.ODOMETR_START}/>
+          { (IS_CLOSING || IS_DISPLAY )&&
             <div>
           		<label>Конец, км</label>
-          		<Input type="number" value={state.ODOMETR_END} onChange={this.handleChange.bind(this, 'ODOMETR_END')} disabled={IS_CREATING}/>
+          		<Input type="number" disabled={IS_DISPLAY} value={state.ODOMETR_END} onChange={this.handleChange.bind(this, 'ODOMETR_END')}/>
           		<label>Пробег, км</label>
           		<Input type="number" value={state.ODOMETR_DIFF} disabled/>
             </div>
@@ -225,11 +263,11 @@ export default class WaybillForm extends Component {
       		<Col md={4}>
       		<h4>Счетчик моточасов</h4>
       		<label>Начало, м/ч</label>
-      		<Input type="number"  disabled={IS_CLOSING} onChange={this.handleChange.bind(this, 'MOTOHOURS_START')} value={state.MOTOHOURS_START}/>
-          { IS_CLOSING &&
+      		<Input type="number"  disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'MOTOHOURS_START')} value={state.MOTOHOURS_START}/>
+          { (IS_CLOSING || IS_DISPLAY )&&
             <div>
       		<label>Конец, м/ч</label>
-      		<Input type="number" value={state.MOTOHOURS_END} onChange={this.handleChange.bind(this, 'MOTOHOURS_END')} disabled={IS_CREATING}/>
+      		<Input type="number" disabled={IS_DISPLAY} value={state.MOTOHOURS_END} onChange={this.handleChange.bind(this, 'MOTOHOURS_END')}/>
       		<label>Пробег, м/ч</label>
       		<Input type="number" value={state.MOTOHOURS_DIFF} disabled/>
           </div>}
@@ -237,11 +275,11 @@ export default class WaybillForm extends Component {
       		<Col md={4}>
       		<h4>Счетчик моточасов обор-ния</h4>
       		<label>Начало, м/ч</label>
-      		<Input type="number" value={state.MOTOHOURS_EQUIP_START}  onChange={this.handleChange.bind(this, 'MOTOHOURS_EQUIP_START')} disabled={IS_CLOSING}/>
-          { IS_CLOSING &&
+      		<Input type="number" value={state.MOTOHOURS_EQUIP_START}  onChange={this.handleChange.bind(this, 'MOTOHOURS_EQUIP_START')} disabled={IS_CLOSING || IS_DISPLAY}/>
+          { (IS_CLOSING || IS_DISPLAY )&&
             <div>
       		<label>Конец, м/ч</label>
-      		<Input type="number" value={state.MOTOHOURS_EQUIP_END}  onChange={this.handleChange.bind(this, 'MOTOHOURS_EQUIP_END')} disabled={IS_CREATING}/>
+      		<Input type="number" value={state.MOTOHOURS_EQUIP_END}  onChange={this.handleChange.bind(this, 'MOTOHOURS_EQUIP_END')} disabled={IS_DISPLAY}/>
       		<label>Пробег, м/ч</label>
       		<Input type="number" value={state.MOTOHOURS_EQUIP_DIFF} disabled/>
           </div>}
@@ -251,22 +289,18 @@ export default class WaybillForm extends Component {
       		<Col md={4}>
       		<h4> Топливо </h4>
       		<label>Тип топлива</label>
-          { IS_CLOSING ? <span><br/>
-            {getFuelTypeById(state.FUEL_TYPE_ID).label}<br/>
-            </span>
-            :
-            <EtsSelect disabled={IS_CLOSING} options={FUEL_TYPES} value={state.FUEL_TYPE_ID} onChange={this.handleChange.bind(this, 'FUEL_TYPE_ID')}/>
-          }
+            <EtsSelect disabled={IS_CLOSING || IS_DISPLAY} options={FUEL_TYPES} value={state.FUEL_TYPE_ID} onChange={this.handleChange.bind(this, 'FUEL_TYPE_ID')}/>
+          
       		<label>Начало, л</label>
-      		<Input type="number" value={state.FUEL_START} disabled={IS_CLOSING} onChange={this.handleChange.bind(this, 'FUEL_START')}/>
+      		<Input type="number" value={state.FUEL_START} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'FUEL_START')}/>
       		<label>Выдать, л</label>
-      		<Input type="number" value={state.FUEL_TO_GIVE}  disabled={IS_CLOSING} onChange={this.handleChange.bind(this, 'FUEL_TO_GIVE')}/>
-          { IS_CLOSING &&
+      		<Input type="number" value={state.FUEL_TO_GIVE}  disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'FUEL_TO_GIVE')}/>
+          { (IS_CLOSING || IS_DISPLAY )&&
             <div>
           <label>Выдано, л</label>
-          <Input type="number" value={state.FUEL_GIVEN}  onChange={this.handleChange.bind(this, 'FUEL_GIVEN')} disabled={IS_CREATING}/>
+          <Input type="number" value={state.FUEL_GIVEN}  onChange={this.handleChange.bind(this, 'FUEL_GIVEN')} disabled={IS_CREATING || IS_DISPLAY}/>
       		<label>Конец, л</label>
-      		<Input type="number" value={state.FUEL_END}  onChange={this.handleChange.bind(this, 'FUEL_END')} disabled={IS_CREATING}/>
+      		<Input type="number" value={state.FUEL_END}  onChange={this.handleChange.bind(this, 'FUEL_END')} disabled={IS_CREATING || IS_DISPLAY}/>
           </div>}
       		</Col>
       		<Col md={4}>
@@ -276,10 +310,15 @@ export default class WaybillForm extends Component {
       	</Row>
       </Modal.Body>	
       <Modal.Footer>
-    		<DropdownButton disabled={!this.props.canPrint} title="Распечатать" onSelect={this.props.handlePrint}>
+    		<Dropdown id="waybill-print-dropdown" disabled={!this.props.canPrint} onSelect={this.props.handlePrint}>
+        <Dropdown.Toggle  disabled={!this.props.canPrint}>
+          <Glyphicon glyph="print" /> Распечатать
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
           <MenuItem eventKey={1}>Форма 3-С</MenuItem>
           <MenuItem eventKey={2}>Форма 4-П</MenuItem>
-        </DropdownButton>&nbsp;
+          </Dropdown.Menu>
+        </Dropdown>&nbsp;
       	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>{this.props.formStage === 'closing' ? 'Закрыть ПЛ' : 'Сохранить'}</Button>
       </Modal.Footer>
 		</Modal>

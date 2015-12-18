@@ -9,8 +9,6 @@ import moment from 'moment';
 import { getCarById } from '../../mocks/krylatskoe_cars.js';
 
 import WaybillFormWrap from './WaybillFormWrap.jsx';
-
-
 import { getList, getLastNumber, createBill, getBillById, updateBill, deleteBill } from '../stores/WaybillStore.js';
 import { getFIOById } from '../stores/EmployeesStore.js';
 
@@ -53,6 +51,10 @@ export default class WaybillJournal extends Component {
 	}
 
 	componentDidMount() {
+		fakeData = getList()
+	}
+
+	componentWillReceiveProps(){
 		fakeData = getList()
 	}
 

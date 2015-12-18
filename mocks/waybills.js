@@ -51,6 +51,10 @@ function getBill () {
     bill.DRIVER_ID = getRandomDriver().id;
     bill.RESPONSIBLE_PERSON_ID = getRandomMaster().id;
     bill.STATUS = Math.floor(Math.random()*2) === 0 ? 'closed' : 'open';
+    bill.ODOMETR_START = Math.floor(Math.random()*1000);
+    bill.FUEL_START = bill.FUEL_TO_GIVE = Math.floor(Math.random()*100);
+    bill.MOTOHOURS_START = Math.floor(Math.random()*3000);
+    bill.MOTOHOURS_EQUIP_START = Math.floor(Math.random()*2000);
     bill.CAR_ID = getRandomCar().id;
     if (bill.STATUS === 'open' ) {
         bill.FACT_DEPARTURE_DATE = bill.FACT_ARRIVAL_DATE = "";
@@ -71,11 +75,12 @@ export function generateBills() {
         LIST.push( getBill());
     }
 
+    // epic shiiit
     console.log('some waybills generated', LIST )
     setTimeout(function(){
         //debugger;
         window.updateBillStore(LIST)
-    }, 1500)
+    }, 800)
 }) 
 }
 

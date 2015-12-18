@@ -1863,6 +1863,8 @@ body {
 
 .ets-table {
   width:100%;
+
+  padding-top: 8px;
   table {
     width: 100%;
   }
@@ -1951,6 +1953,20 @@ body {
   }
 }
 
+.modal-backdrop.in {
+      position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    opacity:.7;
+}
+
 .form-control[disabled] {
   background-color: #f8f8f8;
+}
+
+.Select-control, .form-control {
+  border-radius:0px !important;
 }

@@ -219,6 +219,7 @@ export default class FormWrap extends Component {
 		let stage = this.state.formStage;
 
 		if ( stage === 'creating') {
+			formState.STATUS = 'open';
 			createBill(formState);
 			this.setState({
 				formStage: formStages[1],
@@ -227,7 +228,11 @@ export default class FormWrap extends Component {
 			})
 			//this.props.updateTable();
 		} else if (stage === 'post-creating') {
-			updateBill(formState);
+			formState.STATUS = 'open';
+			updateBill(formState, true);
+			this.setState({
+				canSave: false
+			})
 			//this.props.updateTable();
 		} else if (stage === 'closing') {
 			formState.STATUS = 'closed';

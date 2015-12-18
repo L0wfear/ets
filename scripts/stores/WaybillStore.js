@@ -7,7 +7,10 @@ let DATA = _.clone(LIST);
 window.updateBillStore = function( newData) {
 	DATA = newData;
 	sortList();
-	window.updateBillsJournal();
+	if (window.updateBillsJournal !== undefined ){
+		debugger;
+		window.updateBillsJournal()
+	}
 }
 
 // todo move to Rx.JS
@@ -108,7 +111,7 @@ export function createBill(data) {
 	sortList()
 }
 
-export function updateBill(data) {
+export function updateBill(data, correctionFlag = false) {
 	let toSave = _.clone(data);
 	let updatedBill = getBillById(toSave.ID);
 
@@ -116,8 +119,13 @@ export function updateBill(data) {
 	toSave.PLAN_DEPARTURE_DATE = !!toSave.PLAN_DEPARTURE_DATE.length ? toSave.PLAN_DEPARTURE_DATE : makeDate(toSave.PLAN_DEPARTURE_DATE) + ' ' + makeTime(toSave.PLAN_DEPARTURE_DATE);
 	toSave.PLAN_ARRIVAL_DATE = !!toSave.PLAN_ARRIVAL_DATE.length ? toSave.PLAN_ARRIVAL_DATE : makeDate(toSave.PLAN_ARRIVAL_DATE) + ' ' + makeTime(toSave.PLAN_ARRIVAL_DATE);
 
-	toSave.FACT_DEPARTURE_DATE = makeDate(toSave.FACT_DEPARTURE_DATE) + ' ' + makeTime(toSave.FACT_DEPARTURE_DATE);
-	toSave.FACT_ARRIVAL_DATE = makeDate(toSave.FACT_ARRIVAL_DATE) + ' ' + makeTime(toSave.FACT_ARRIVAL_DATE);
+	if (!correctionFlag) {
+	 	toSave.FACT_DEPARTURE_DATE = makeDate(toSave.FACT_DEPARTURE_DATE) + ' ' + makeTime(toSave.FACT_DEPARTURE_DATE);
+		toSave.FACT_ARRIVAL_DATE = makeDate(toSave.FACT_ARRIVAL_DATE) + ' ' + makeTime(toSave.FACT_ARRIVAL_DATE);
+	} else {
+		toSave.DRIVER_ID = getDriverByCode(toSave.DRIVER_ID).id;
+		toSave.FACT_DEPARTURE_DATE = toSave.FACT_ARRIVAL_DATE = '';
+	}
 
 	_.each(toSave, (v,k ) => {
 		updatedBill[k] = v;

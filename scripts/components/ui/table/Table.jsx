@@ -71,7 +71,7 @@ export default class Table extends Component {
     	key={i} 
     	cells={o} 
       tableCols={this.props.tableCols}
-    	selected={this.state.selectedRow === o.id} 
+    	selected={this.state.selectedRow === o.ID} 
     	handleClick={this.onRowClick.bind(this)}/>));
 
     return (<div className="ets-table">
@@ -122,7 +122,7 @@ let Row = (props) => {
 
 	let cn = "ets-table-row" + (props.selected ? ' selected' : '');
 
-	return <tr className={cn} onClick={props.handleClick.bind(this, props.cells.id)}>{cells}</tr>
+	return <tr className={cn} onClick={props.handleClick.bind(this, props.cells.ID)}>{cells}</tr>
 }
 
 let PageLink = (props) => <span className="table-page-link" onClick={props.handleClick.bind(this,props.pageNum)}>

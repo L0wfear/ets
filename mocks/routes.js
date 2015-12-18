@@ -35,6 +35,17 @@ let LIST =  [
 	}
 ]
 
+export function getRouteById (id) {
+	let result;
+	_.each(LIST, route => {
+		if (route.id === id ) {
+			result = route
+		}
+	})
+
+	return result;
+}
+
 
 _.each(LIST, (v) => {
 	v.label = v.name;

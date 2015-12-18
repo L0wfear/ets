@@ -39,7 +39,7 @@ export function getCarById(id) {
 		}
 	})
 
-	return !!result ? result.gov_number : 'Н/Д';
+	return !!result ? result : {};
 }
 
 

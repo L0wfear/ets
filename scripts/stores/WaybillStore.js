@@ -2,16 +2,83 @@ import LIST from '../../mocks/waybills.js';
 import {makeDate, makeTime} from '../utils/dates.js';
 import {getDriverByCode} from './EmployeesStore.js';
 
+let DATA = _.clone(LIST);
+
+// todo move to Rx.JS
+
 sortList()
 
 export function getList() {
-	return LIST;
+
+	return DATA.filter((bill) => bill.STATUS !== 'deleted')
+
 }
+
+export function deleteBill(id) {
+	let bill = getBillById(id);
+	bill.STATUS = 'deleted';
+}
+
+
+export function getDefaultBill() {
+
+		let now = new Date();
+		let vyezd_plan = new Date( 
+	    now.getFullYear(),
+	    now.getMonth(),
+	    now.getDate(),
+	    9,
+	    0
+    );
+		let vozvr_plan = new Date( 
+	    now.getFullYear(),
+	    now.getMonth(),
+	    now.getDate() + 1,
+	    9,
+	    0
+    )
+		return {
+		    ID: getLastNumber() + 1,
+		    STATUS: null,
+		    NUMBER: getLastNumber() + 1,
+		    DATE_CREATE: makeDate(now) + ' ' + makeTime(now), 
+		    RESPONSIBLE_PERSON_ID: "",
+		    PLAN_DEPARTURE_DATE: vyezd_plan,
+		    FACT_DEPARTURE_DATE: vyezd_plan,
+		    PLAN_ARRIVAL_DATE: vozvr_plan,
+		    FACT_ARRIVAL_DATE: vozvr_plan,
+		    DRIVER_ID: null,
+		    CAR_ID: "",
+		    ROUTE_ID: "",
+		    FUEL_TYPE_ID: 1,
+		    FUEL_START: "",
+		    FUEL_TO_GIVE: "",
+		    FUEL_GIVEN: "",
+		    FUEL_END: "",
+		    PASSES_COUNT: "",
+				ODOMETR_START: "",
+				ODOMETR_END: "",
+				MOTOHOURS_START: "",
+				MOTOHOURS_END: "",
+				MOTOHOURS_EQUIP_START: "",
+				MOTOHOURS_EQUIP_END: ""
+		}
+}
+
+
+export function getLastBillByCarId( carId ) {
+
+}
+
 
 export function getLastNumber() {
 	let result = 0;
 
-	_.each(LIST, (v) => {
+	return DATA.length + 1;
+
+	if (DATA.length === 0 ) return result;
+
+	_.each(DATA, (v) => {
 		if ( v.id > result ) {
 			result = v.id
 		}
@@ -21,32 +88,36 @@ export function getLastNumber() {
 }
 
 function sortList() {
-	LIST.sort((a, b) => b.id - a.id)
+	DATA = DATA.sort((a, b) => b.ID - a.ID).filter((bill) => bill.STATUS !== 'deleted')
 }
 
 export function createBill(data) {
 	let toSave = _.clone(data);
-	toSave.status = true;
-	toSave.vyezd_plan = makeDate(toSave.vyezd_plan) + ' ' + makeTime(toSave.vyezd_plan);
-	toSave.vozvr_plan = makeDate(toSave.vozvr_plan) + ' ' + makeTime(toSave.vozvr_plan);
-	toSave.vozvr_fakt = toSave.vyezd_fakt = '';
-	toSave.driver_id = getDriverByCode(toSave.driver_id).id;
-	LIST.push( toSave );
+	toSave.STATUS = 'open';
+	toSave.PLAN_DEPARTURE_DATE = makeDate(toSave.PLAN_DEPARTURE_DATE) + ' ' + makeTime(toSave.PLAN_DEPARTURE_DATE);
+	toSave.PLAN_ARRIVAL_DATE = makeDate(toSave.PLAN_ARRIVAL_DATE) + ' ' + makeTime(toSave.PLAN_ARRIVAL_DATE);
+	toSave.FACT_DEPARTURE_DATE = toSave.FACT_ARRIVAL_DATE = '';
+	toSave.DRIVER_ID = getDriverByCode(toSave.DRIVER_ID).id;
+	DATA.push( toSave );
 	sortList()
 }
 
 export function updateBill(data) {
 	let toSave = _.clone(data);
-	let updatedBill = getBillById(toSave.id);
+	let updatedBill = getBillById(toSave.ID);
 
-	toSave.vyezd_fakt = makeDate(toSave.vyezd_fakt) + ' ' + makeTime(toSave.vyezd_fakt);
-	toSave.vozvr_fakt = makeDate(toSave.vozvr_fakt) + ' ' + makeTime(toSave.vozvr_fakt);
+
+	toSave.PLAN_DEPARTURE_DATE = makeDate(toSave.PLAN_DEPARTURE_DATE) + ' ' + makeTime(toSave.PLAN_DEPARTURE_DATE);
+	toSave.PLAN_ARRIVAL_DATE = makeDate(toSave.PLAN_ARRIVAL_DATE) + ' ' + makeTime(toSave.PLAN_ARRIVAL_DATE);
+
+	toSave.FACT_DEPARTURE_DATE = makeDate(toSave.FACT_DEPARTURE_DATE) + ' ' + makeTime(toSave.FACT_DEPARTURE_DATE);
+	toSave.FACT_ARRIVAL_DATE = makeDate(toSave.FACT_ARRIVAL_DATE) + ' ' + makeTime(toSave.FACT_ARRIVAL_DATE);
 
 	_.each(toSave, (v,k ) => {
 		updatedBill[k] = v;
 	})
 
-	updatedBill.status = false;
+	//updatedBill.STATUS = false;
 
 	sortList();
 
@@ -54,8 +125,8 @@ export function updateBill(data) {
 
 export function getBillById( id){
 	let result;
-	_.each(LIST, (bill) => {
-		if (bill.id === id) {
+	_.each(DATA, (bill) => {
+		if (bill.ID === id) {
 			result = bill;
 		}
 

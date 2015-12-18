@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Griddle from 'griddle-react';
-import Map from './map/Map.jsx';
+import Map from './map/PolyMap.jsx';
 import classname from 'classnames';
 
 import fakeRoutes from '../../mocks/routes.js';
@@ -90,7 +90,8 @@ export default class RoutesList extends Component {
 							<Map 
 									noMarkers={true} 
 									zoom={MAP_INITIAL_ZOOM}
-	               center={MAP_INITIAL_CENTER}/>
+	               center={MAP_INITIAL_CENTER}
+	               polys={state.selectedRoute.polys}/>
 	            <div className="route-odhs-list">
 	            	<h4>Список ОДХ</h4>
 	            	<ul>

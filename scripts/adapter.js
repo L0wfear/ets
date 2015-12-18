@@ -40,8 +40,7 @@ export function init() {
           loadOwners(),
           loadOkrugs(),
           loadTypes()
-        ]).then(
-        getCars)
+        ]).then(getCars)
           
 }
 

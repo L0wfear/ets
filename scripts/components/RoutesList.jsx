@@ -93,7 +93,7 @@ export default class RoutesList extends Component {
 	               center={MAP_INITIAL_CENTER}
 	               polys={state.selectedRoute.polys}/>
 	            <div className="route-odhs-list">
-	            	<h4>Список ОДХ</h4>
+	            	<h4>Список ОДХ/ДТ</h4>
 	            	<ul>
 	            		{route.odhNames.map((odh)=> <li>{odh}</li>)}
 	            	</ul>

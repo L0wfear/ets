@@ -100,9 +100,26 @@ export default class WaybillForm extends Component {
     let IS_POST_CREATING = stage === 'post-creating'
 		let IS_DISPLAY = stage === 'display';
 
+    let title = '';
+
+    if ( IS_CREATING ) {
+      title = "Создать новый путевой лист"
+    } 
+
+    if (IS_CLOSING) {
+      title = "Закрыть путевой лист"
+    }
+
+    if (IS_DISPLAY) {
+      title= "Просмотр путевого листа "
+    }
+
+    if (IS_POST_CREATING){
+      title = "Создание нового путевого листа"
+    }
 		return <Modal {...this.props} bsSize="large">
 			<Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">Путевой лист № {state.NUMBER}</Modal.Title>
+          <Modal.Title id="contained-modal-title-lg">{title} № {state.NUMBER} { IS_POST_CREATING && '(возможна корректировка)'}</Modal.Title>
 			</Modal.Header>
 
       <Modal.Body>
@@ -234,7 +251,12 @@ export default class WaybillForm extends Component {
       		<Col md={4}>
       		<h4> Топливо </h4>
       		<label>Тип топлива</label>
-      		<EtsSelect options={FUEL_TYPES} value={state.FUEL_TYPE_ID} onChange={this.handleChange.bind(this, 'FUEL_TYPE_ID')}/>
+          { IS_CLOSING ? <span><br/>
+            {getFuelTypeById(state.FUEL_TYPE_ID).label}<br/>
+            </span>
+            :
+            <EtsSelect disabled={IS_CLOSING} options={FUEL_TYPES} value={state.FUEL_TYPE_ID} onChange={this.handleChange.bind(this, 'FUEL_TYPE_ID')}/>
+          }
       		<label>Начало, л</label>
       		<Input type="number" value={state.FUEL_START} disabled={IS_CLOSING} onChange={this.handleChange.bind(this, 'FUEL_START')}/>
       		<label>Выдать, л</label>
@@ -242,7 +264,7 @@ export default class WaybillForm extends Component {
           { IS_CLOSING &&
             <div>
           <label>Выдано, л</label>
-          <Input type="number" value={state.FUEL_GIVEN}  onChange={this.handleChange.bind(this, 'FUEL_GIVER')} disabled={IS_CREATING}/>
+          <Input type="number" value={state.FUEL_GIVEN}  onChange={this.handleChange.bind(this, 'FUEL_GIVEN')} disabled={IS_CREATING}/>
       		<label>Конец, л</label>
       		<Input type="number" value={state.FUEL_END}  onChange={this.handleChange.bind(this, 'FUEL_END')} disabled={IS_CREATING}/>
           </div>}
@@ -257,8 +279,8 @@ export default class WaybillForm extends Component {
     		<DropdownButton disabled={!this.props.canPrint} title="Распечатать" onSelect={this.props.handlePrint}>
           <MenuItem eventKey={1}>Форма 3-С</MenuItem>
           <MenuItem eventKey={2}>Форма 4-П</MenuItem>
-        </DropdownButton>
-      	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>Сохранить</Button>
+        </DropdownButton>&nbsp;
+      	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>{this.props.formStage === 'closing' ? 'Закрыть ПЛ' : 'Сохранить'}</Button>
       </Modal.Footer>
 		</Modal>
 	}

@@ -97,7 +97,7 @@ export default class OpenLayersMap extends Component {
     this.map = global.olmap = map;
   }
 
-  renderODHs( polys = window.ROUTES[0].polys ) {
+  renderODHs( polys = [] ) {
     let map = this.map;
     let odhs = polys;
 
@@ -133,7 +133,7 @@ export default class OpenLayersMap extends Component {
 
 
     !!POLYS_LAYER && map.removeLayer(POLYS_LAYER);
-    
+
     let polysLayer = new ol.layer.Vector({
         source: vectorSource,
         style: styleFunction

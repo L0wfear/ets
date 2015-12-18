@@ -4,6 +4,12 @@ import {getDriverByCode} from './EmployeesStore.js';
 
 let DATA = _.clone(LIST);
 
+window.updateBillStore = function( newData) {
+	DATA = newData;
+	sortList();
+	window.updateBillsJournal();
+}
+
 // todo move to Rx.JS
 
 sortList()
@@ -107,8 +113,8 @@ export function updateBill(data) {
 	let updatedBill = getBillById(toSave.ID);
 
 
-	toSave.PLAN_DEPARTURE_DATE = makeDate(toSave.PLAN_DEPARTURE_DATE) + ' ' + makeTime(toSave.PLAN_DEPARTURE_DATE);
-	toSave.PLAN_ARRIVAL_DATE = makeDate(toSave.PLAN_ARRIVAL_DATE) + ' ' + makeTime(toSave.PLAN_ARRIVAL_DATE);
+	toSave.PLAN_DEPARTURE_DATE = !!toSave.PLAN_DEPARTURE_DATE.length ? toSave.PLAN_DEPARTURE_DATE : makeDate(toSave.PLAN_DEPARTURE_DATE) + ' ' + makeTime(toSave.PLAN_DEPARTURE_DATE);
+	toSave.PLAN_ARRIVAL_DATE = !!toSave.PLAN_ARRIVAL_DATE.length ? toSave.PLAN_ARRIVAL_DATE : makeDate(toSave.PLAN_ARRIVAL_DATE) + ' ' + makeTime(toSave.PLAN_ARRIVAL_DATE);
 
 	toSave.FACT_DEPARTURE_DATE = makeDate(toSave.FACT_DEPARTURE_DATE) + ' ' + makeTime(toSave.FACT_DEPARTURE_DATE);
 	toSave.FACT_ARRIVAL_DATE = makeDate(toSave.FACT_ARRIVAL_DATE) + ' ' + makeTime(toSave.FACT_ARRIVAL_DATE);

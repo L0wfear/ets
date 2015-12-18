@@ -1850,6 +1850,9 @@ body {
 .app-navigation {
   position:relative;
   z-index:150;
+  .navbar {
+    border-bottom:2px solid #ccc;
+  }
 }
 
 .app-content {
@@ -1939,4 +1942,15 @@ body {
 
 .modal-header {
     background-color: #C2CAE0;
+
+}
+
+.modal-content {
+  .chart-datepicker {
+    padding-bottom:2px;
+  }
+}
+
+.form-control[disabled] {
+  background-color: #f8f8f8;
 }

@@ -24,6 +24,8 @@ export default class WaybillJournal extends Component {
 		this.state = {
 			selectedBill: null
 		}
+
+		window.updateBillsJournal = this.updateTable.bind(this);
 	}
 
 	selectBill(id) {
@@ -44,12 +46,15 @@ export default class WaybillJournal extends Component {
 	onFormHide() {
 		this.setState({
 			showForm: false,
-			selectedBill: null
+		//	selectedBill: null
 		})
 
 		fakeData = getList();
 	}
 
+	componentDidMount() {
+		fakeData = getList()
+	}
 
 	deleteBill() {
 		if (confirm('Вы уверены, что хотите удалить путевой лист?')) {
@@ -68,6 +73,9 @@ export default class WaybillJournal extends Component {
 	}
 
 	showBill() {
+		this.setState({
+			showForm:true
+		})
 
 	}
 

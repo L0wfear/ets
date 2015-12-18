@@ -8,7 +8,7 @@ import WaybillForm from './WaybillForm.jsx';
 
 import { getMasters, getDrivers, getFIOById, getDriverByCode } from './../stores/EmployeesStore.js';
 import getFuelTypes, {getFuelTypeById } from '../stores/FuelTypes.js';
-import { getDefaultBill, createBill, updateBill } from '../stores/WaybillStore.js';
+import { getDefaultBill, createBill, updateBill, closeBill } from '../stores/WaybillStore.js';
 import { getCarById } from '../../mocks/krylatskoe_cars.js';
 import {makeTime, makeDate} from '../utils/dates.js';
 
@@ -40,8 +40,15 @@ export default class FormWrap extends Component {
 				})
 			} else {
 				if (props.bill.STATUS === 'open') {
+					let _bill = _.clone(props.bill);
+
+					_bill.FACT_DEPARTURE_DATE = moment(_bill.PLAN_DEPARTURE_DATE).toDate();
+					_bill.FACT_ARRIVAL_DATE = moment(_bill.PLAN_ARRIVAL_DATE).toDate();
+					_bill.PLAN_DEPARTURE_DATE = moment(_bill.PLAN_DEPARTURE_DATE).toDate();
+					_bill.PLAN_ARRIVAL_DATE = moment(_bill.PLAN_ARRIVAL_DATE).toDate();
+
 					this.setState({
-						formState: props.bill,
+						formState: _bill,
 						formStage: formStages[3]
 					})
 
@@ -65,14 +72,20 @@ export default class FormWrap extends Component {
 		formState[field] = !!e.target ? e.target.value : e;
 
 		let HAS_REQUIRED_FIELDS = 
-				!!formState.RESPONSIBLE_PERSON_ID && 
-				!!formState.PLAN_DEPARTURE_DATE && 
-				!!formState.PLAN_ARRIVAL_DATE && 
-				!!formState.DRIVER_ID && 
-				!!formState.CAR_ID && 
-				!!formState.ODOMETR_START && 
-				!!formState.FUEL_TYPE_ID && 
-				!!formState.FUEL_START;
+				this.state.formStage === 'creating' || this.state.formStage === 'post-creating' ?
+					!!formState.RESPONSIBLE_PERSON_ID && 
+					!!formState.PLAN_DEPARTURE_DATE && 
+					!!formState.PLAN_ARRIVAL_DATE && 
+					!!formState.DRIVER_ID && 
+					!!formState.CAR_ID && 
+					!!formState.ODOMETR_START && 
+					!!formState.FUEL_TYPE_ID && 
+					!!formState.FUEL_START
+				:
+					!!formState.ODOMETR_END &&
+					!!formState.MOTOHOURS_END &&
+					!!formState.FUEL_GIVEN &&
+					!!formState.FUEL_END;
 
 
 		if (HAS_REQUIRED_FIELDS) {
@@ -82,6 +95,10 @@ export default class FormWrap extends Component {
 			}
 
 			if (this.state.formStage === 'post-creating') {
+				newState.canSave = true;
+			}
+
+			if (this.state.formStage === 'closing') {
 				newState.canSave = true;
 			}
 
@@ -212,7 +229,13 @@ export default class FormWrap extends Component {
 		} else if (stage === 'post-creating') {
 			updateBill(formState);
 			//this.props.updateTable();
+		} else if (stage === 'closing') {
+			formState.STATUS = 'closed';
+			updateBill(formState)
+			this.props.onFormHide()
 		}
+
+
 
 		return ;
 		if (billStatus === null ){

@@ -8,6 +8,7 @@ import { loadModels } from './models.js';
 import { loadOkrugs } from './okrugs.js';
 import { loadOwners } from './owners.js';
 import { getCars } from '../mocks/krylatskoe_cars.js';
+import { generateBills } from '../mocks/waybills.js';
 
 let getUrl = (url) => config.backend ? config.backend + url : url;
 
@@ -40,7 +41,9 @@ export function init() {
           loadOwners(),
           loadOkrugs(),
           loadTypes()
-        ]).then(getCars)
+        ])
+    .then(getCars)
+    .then(generateBills)
           
 }
 

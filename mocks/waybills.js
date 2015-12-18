@@ -1,14 +1,18 @@
 import { getDrivers, getMasters } from '../scripts/stores/EmployeesStore.js';
 import moment from 'moment';
+import {getCars} from './krylatskoe_cars.js';
 
 const DRIVERS = getDrivers();
 const MASTERS = getMasters();
+
 let LIST = [];
+let CARS = []
 let LAST_BILL_NUMBER = 0;
 
 let getLastBillNumber = () => LAST_BILL_NUMBER+1;
 let getRandomDriver = () => DRIVERS[Math.floor(Math.random() * (DRIVERS.length ))];
 let getRandomMaster = () => MASTERS[Math.floor(Math.random() * (MASTERS.length))];
+let getRandomCar = () => CARS[Math.floor(Math.random() * (CARS.length))]
 
 
 let template = {
@@ -45,8 +49,9 @@ function getBill () {
     let new_id = getLastBillNumber();
     bill.ID = bill.NUMBER = new_id;
     bill.DRIVER_ID = getRandomDriver().id;
-    bill.MASTER_ID = getRandomMaster().id;
+    bill.RESPONSIBLE_PERSON_ID = getRandomMaster().id;
     bill.STATUS = Math.floor(Math.random()*2) === 0 ? 'closed' : 'open';
+    bill.CAR_ID = getRandomCar().id;
     if (bill.STATUS === 'open' ) {
         bill.FACT_DEPARTURE_DATE = bill.FACT_ARRIVAL_DATE = "";
     }
@@ -57,10 +62,21 @@ function getBill () {
     return bill;
 }
 
-for (let i = 0; i < 50; i++) {
-    LIST.push( getBill());
-}
 
-console.log('waybills getnerated', LIST )
+export function generateBills() {
+  return getCars().then((cars)=>{
+    CARS = cars;
+
+    for (let i = 0; i < 50; i++) {
+        LIST.push( getBill());
+    }
+
+    console.log('some waybills generated', LIST )
+    setTimeout(function(){
+        //debugger;
+        window.updateBillStore(LIST)
+    }, 1500)
+}) 
+}
 
 export default LIST;

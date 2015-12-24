@@ -39,7 +39,7 @@ let LIST =  [
 export function getRouteById (id) {
 	let result;
 	_.each(LIST, route => {
-		if (route.id === id ){
+		if (route.id === id ) {
 			result = route
 		}
 	})
@@ -58,9 +58,10 @@ _.each(LIST, (v) => {
 		v.odhs.forEach((odhID) => getRoadByODHId(odhID).then(r => {
 			v.odhNames.push(r[0].name);
 			v.polys[odhID] = {
-				shape: JSON.parse(r[0].SHAPE), 
+				shape: JSON.parse(r[0].SHAPE),
 				simplified: JSON.parse(r[0].SHAPE_SIMPLIFIED),
-				name: r[0].name
+				name: r[0].name,
+				state: 1
 			}
 		}))
 	}

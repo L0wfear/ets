@@ -1,32 +1,28 @@
 import React, {Component} from 'react';
-import Map from './map/PolyMap.jsx';
 import classname from 'classnames';
 import { Button } from 'react-bootstrap';
 
 import {getList} from '../stores/RoutesStore.js';
-import {polyStyles, polyState} from '../constants/polygons.js';
+import RouteInfo from './route/RouteInfo.jsx';
+import RouteCreating from './route/RouteCreating.jsx';
 
 let ROUTES = getList();
+
 let ACTUAL_ROADS = [];
 
-const MAP_INITIAL_CENTER = [-399.43090337943863, -8521.192605428025];
-const MAP_INITIAL_ZOOM = 3;
+const ORG_ODHS = ROUTES[0].polys; // список возможных для выбора ОДХ организации
 
-const ORG_ODHS = []; // список возможных для выбора ОДХ организации
 const ORG_DTS = []; // список возможных для выбора ДТ организации
 
-
-let selectSingleClick = new ol.interaction.Select({
-	/*style: function() {
-		console.log('styleFunction', arguments)
-	}*/
-});
-
+ROUTES.map((route) => {
+	_.each(route.polys, (poly) => poly.state = 2);
+	return route;
+})
 
 // TODO odh : { poly, polyState }
 let newRoute = {
 				name: '',
-				odhs: [],
+				odhs: ORG_ODHS,
 				dts: [],
 				odhNames: [],
 				dtNames: []
@@ -63,34 +59,6 @@ export default class RoutesList extends Component {
 
 	}
 
-	onFeatureClick(feature, ev, map) {
-		console.log('click on feature detected', feature, 'on', map)
-		let {id, name, state} = feature.getProperties();
-
-		// при просмотре маршрута
-		if (!this.state.routeCreating) {
-			map.popup.show(ev.coordinate, '<div class="header">ОДХ: ' + name + '</div>')
-
-		// при создании маршрута
-		} else {
-			if (state) {
-				let nextState;
-
-				if (state === polyState.SELECTABLE) {
-					nextState = polyState.ENABLED;
-				} else if (state === polyState.ENABLED) {
-					nextState = polyState.IDLE;
-				} else if (state === polyState.IDLE) {
-					nextState = polyState.SELECTABLE;
-				}
-
-				feature.set('state', nextState);
-				feature.setStyle(polyStyles[nextState]);
-			}
-		}
-
-	}
-
 	createRoute() {
 
 		this.setState({
@@ -98,6 +66,13 @@ export default class RoutesList extends Component {
 			selectedRoute: newRoute
 		})
 
+	}
+
+	editRoute(route) {
+		this.setState({
+			routeEditing: true,
+			selectedRoute: route
+		})
 	}
 
 	render() {
@@ -110,6 +85,7 @@ export default class RoutesList extends Component {
 		})
 
 		let IS_CREATING = this.state.routeCreating;
+		let IS_EDITING = this.state.routeEditing;
 
 		return <div className="ets-page-wrap routes-list">
 			<p className="some-header"> </p>
@@ -125,31 +101,11 @@ export default class RoutesList extends Component {
 				  <Button bsStyle="primary" block onClick={this.createRoute.bind(this)}>Создать новый</Button>
 				</div>
 				<div className="routes-list-info">
-					<div className="route-name">
-						{IS_CREATING ? 
-							<input name="route-name" value={newRoute.name}/>
-							: 
-							route.name 
-						}
-					</div>
-						<div className="route-odhs-on-map">
-						
-							<Map 
-									//selectInteraction={selectSingleClick}
-									onFeatureClick={this.onFeatureClick.bind(this)}
-									zoom={MAP_INITIAL_ZOOM}
-	               	center={MAP_INITIAL_CENTER}
-	               	polys={route.polys}/>
-	            <div className="route-odhs-list">
-	            	<h4>Список ОДХ/ДТ</h4>
-	            	<ul>
-	            		{route.odhNames.map((odh)=> <li>{odh}</li>)}
-	            	</ul>
-	            </div>
-						</div>
-					
-					
-					
+					{ (IS_CREATING || IS_EDITING) ?
+						<RouteCreating route={IS_CREATING ? newRoute : route}/>
+						:
+						<RouteInfo route={route}/>
+					}
 				</div>
 		</div>
 	}

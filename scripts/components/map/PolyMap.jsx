@@ -100,7 +100,7 @@ export default class OpenLayersMap extends Component {
         geometry: GeoJSON.readGeometry(poly.shape),
         name: poly.name,
         id: key,
-        state: polyState.ENABLED
+        state: polyState.SELECTABLE
       })
 
       vectorSource.addFeature(feature)

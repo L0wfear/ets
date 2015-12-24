@@ -36,10 +36,18 @@ export default class Taxi extends Component {
     ];
 
     this.tableCellRenderers = {
-      OPERATION: (OPERATION, row, index) => OPERATION === null ? '' : <EtsSelect clearable={false} disabled={props.readOnly} options={this.state.operations} value={OPERATION} onChange={this.handleOperationChange.bind(this, index)}/>,
-      RESULT: (RESULT) => RESULT,
+      OPERATION: (OPERATION, row, index) => {
+        if (OPERATION === null) {
+          return '';
+        } else if (props.readOnly) {
+          const operation = _.find(this.state.operations, (op) => OPERATION === op.value);
+          return operation ? operation.label || '' : '';
+        }
+        return <EtsSelect clearable={false} disabled={props.readOnly} options={this.state.operations} value={OPERATION} onChange={this.handleOperationChange.bind(this, index)}/>
+      },
+      RESULT: (RESULT) => RESULT ? RESULT + ' л' : '',
       FACT_VALUE: (FACT_VALUE, {OPERATION, FUEL_RATE}, index) => {
-        if (FACT_VALUE === 'Итого') return FACT_VALUE;
+        if (FACT_VALUE === 'Итого' || this.props.readOnly) return FACT_VALUE;
         const props = {
           type: 'number',
           min: 0,
@@ -50,24 +58,28 @@ export default class Taxi extends Component {
       }
     };
 
-    this.tableHeaderRenderers = {
-      OPERATION: (OPERATION) => <div>{OPERATION} <Glyphicon glyph="plus" className="pointer" onClick={this.addOperation.bind(this)}/></div>,
-    };
+    // this.tableHeaderRenderers = {
+    //   OPERATION: (OPERATION) => <div>{OPERATION} <Glyphicon glyph="plus" className="pointer" onClick={this.addOperation.bind(this)}/></div>,
+    // };
 
     this.state = {
       tableData: [
         {
     			OPERATION: 3,
     			FUEL_RATE: 0.31,
+          FACT_VALUE: 2,
+          RESULT: 0.62
   		  },
         {
     			OPERATION: 2,
     			FUEL_RATE: 1.12,
+          FACT_VALUE: 3,
+          RESULT: 3.36,
   		  },
         {
           OPERATION: null,
     			FACT_VALUE: 'Итого',
-          RESULT: 0,
+          RESULT: 3.98,
   		  }
       ],
       selectedOperation: null,
@@ -85,7 +97,9 @@ export default class Taxi extends Component {
   handleOperationChange(index, value) {
     const { tableData } = this.state;
     tableData[index]['OPERATION'] = value;
-    tableData[index]['FUEL_RATE'] = 0.21;
+    tableData[index]['FUEL_RATE'] = (Math.random() * (1.50 - 0.20) + 0.20).toFixed(2);
+    tableData[index]['RESULT'] = parseFloat(tableData[index].FUEL_RATE * tableData[index].FACT_VALUE).toFixed(2);
+    tableData[tableData.length - 1].RESULT = calculateResult(tableData);
 
     this.setState({tableData});
   }
@@ -128,10 +142,13 @@ export default class Taxi extends Component {
   render() {
 
 		return (
-      <div className="taxi-calc-block">
+      <Div className="taxi-calc-block" hidden={this.props.hidden}>
         <Div className="some-header">
           Расчет топлива по норме
           <Div className="waybills-buttons" hidden={this.props.readOnly}>
+            <Button bsSize="xsmall" onClick={this.addOperation.bind(this)}>
+              Добавить операцию
+            </Button>
             <Button bsSize="xsmall" disabled={this.state.selectedOperation === null || this.state.selectedOperation === this.state.tableData.length - 1} onClick={this.removeOperation.bind(this)}>
               Удалить операцию
             </Button>
@@ -144,9 +161,8 @@ export default class Taxi extends Component {
 							 pageSize={20}
 							 usePagination={false}
 							 cellRenderers={this.tableCellRenderers}
-               headerRenderers={this.tableHeaderRenderers}
-               onRowSelected={this.selectOperation.bind(this)} />
-			</div>
+               onRowSelected={!this.props.readOnly ? this.selectOperation.bind(this) : undefined} />
+			</Div>
     );
 
   }

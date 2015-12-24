@@ -317,7 +317,7 @@ export default class WaybillForm extends Component {
 	          </div>}
       		</Col>
       		<Col md={8}>
-						<Taxi readOnly={!IS_CLOSING} car={getCarById(state.CAR_ID)} operations={this.state.operations}/>
+						<Taxi hidden={! (IS_DISPLAY || IS_CLOSING)} readOnly={!IS_CLOSING} car={getCarById(state.CAR_ID)} operations={this.state.operations}/>
       		</Col>
       	</Row>
       </Modal.Body>

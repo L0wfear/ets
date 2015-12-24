@@ -1,8 +1,15 @@
 import LIST from '../../mocks/waybills.js';
 import {makeDate, makeTime} from '../utils/dates.js';
 import {getDriverByCode} from './EmployeesStore.js';
+import Rx from 'rx';
 
 let DATA = _.clone(LIST);
+
+let billActions = {
+	create: new Rx.Subject(),
+	delete: new Rx.Subject(),
+	update: new Rx.Subject()
+}
 
 window.updateBillStore = function( newData) {
 	DATA = newData;

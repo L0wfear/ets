@@ -1,5 +1,6 @@
 import {getRoadByODHId, getRoadsActual} from '../scripts/adapter.js';
 
+
 let ACTUAL_ROADS = [];
 getRoadsActual().then(r => {
 	ACTUAL_ROADS = r;
@@ -38,7 +39,7 @@ let LIST =  [
 export function getRouteById (id) {
 	let result;
 	_.each(LIST, route => {
-		if (route.id === id ) {
+		if (route.id === id ){
 			result = route
 		}
 	})
@@ -55,9 +56,12 @@ _.each(LIST, (v) => {
 
 	if (v.odhs.length > 0) {
 		v.odhs.forEach((odhID) => getRoadByODHId(odhID).then(r => {
-			console.log( 'odh',r);
 			v.odhNames.push(r[0].name);
-			v.polys[odhID] = {shape: JSON.parse(r[0].SHAPE), simplified: JSON.parse(r[0].SHAPE_SIMPLIFIED)}
+			v.polys[odhID] = {
+				shape: JSON.parse(r[0].SHAPE), 
+				simplified: JSON.parse(r[0].SHAPE_SIMPLIFIED),
+				name: r[0].name
+			}
 		}))
 	}
 })

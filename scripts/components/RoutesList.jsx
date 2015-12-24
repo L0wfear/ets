@@ -1,15 +1,36 @@
 import React, {Component} from 'react';
-import Griddle from 'griddle-react';
 import Map from './map/PolyMap.jsx';
 import classname from 'classnames';
+import { Button } from 'react-bootstrap';
 
-import fakeRoutes from '../../mocks/routes.js';
+import {getList} from '../stores/RoutesStore.js';
+import {polyStyles, polyState} from '../constants/polygons.js';
 
+let ROUTES = getList();
 let ACTUAL_ROADS = [];
 
 const MAP_INITIAL_CENTER = [-399.43090337943863, -8521.192605428025];
 const MAP_INITIAL_ZOOM = 3;
 
+const ORG_ODHS = []; // список возможных для выбора ОДХ организации
+const ORG_DTS = []; // список возможных для выбора ДТ организации
+
+
+let selectSingleClick = new ol.interaction.Select({
+	/*style: function() {
+		console.log('styleFunction', arguments)
+	}*/
+});
+
+
+// TODO odh : { poly, polyState }
+let newRoute = {
+				name: '',
+				odhs: [],
+				dts: [],
+				odhNames: [],
+				dtNames: []
+			};
 
 
 export default class RoutesList extends Component {
@@ -18,19 +39,21 @@ export default class RoutesList extends Component {
 		super(props);
 
 		this.state = {
-			selectedRoute: fakeRoutes[0],
+			routeCreating: false,
+			selectedRoute: ROUTES[0],
 			activeTab: 'image'
 		}
 	}
 
 	selectRoute(id) {
 
-		_.each(fakeRoutes, (route) => {
+		_.each(ROUTES, (route) => {
 
 			window.route = route;
-			if (route.id === id ){
+			if (route.id === id ) {
 				this.setState({
-					selectedRoute: route
+					selectedRoute: route,
+					routeCreating: false
 				})
 				console.log( 'route selected', route);
 
@@ -40,24 +63,53 @@ export default class RoutesList extends Component {
 
 	}
 
-	changeTab(tabName) {
+	onFeatureClick(feature, ev, map) {
+		console.log('click on feature detected', feature, 'on', map)
+		let {id, name, state} = feature.getProperties();
+
+		// при просмотре маршрута
+		if (!this.state.routeCreating) {
+			map.popup.show(ev.coordinate, '<div class="header">ОДХ: ' + name + '</div>')
+
+		// при создании маршрута
+		} else {
+			if (state) {
+				let nextState;
+
+				if (state === polyState.SELECTABLE) {
+					nextState = polyState.ENABLED;
+				} else if (state === polyState.ENABLED) {
+					nextState = polyState.IDLE;
+				} else if (state === polyState.IDLE) {
+					nextState = polyState.SELECTABLE;
+				}
+
+				feature.set('state', nextState);
+				feature.setStyle(polyStyles[nextState]);
+			}
+		}
+
+	}
+
+	createRoute() {
+
 		this.setState({
-			activeTab: tabName
+			routeCreating: true,
+			selectedRoute: newRoute
 		})
 
-		if (tabName === 'map') {
-			setTimeout(()=> olmap.updateSize(), 1000);
-		}
 	}
 
 	render() {
 
 		let route = this.state.selectedRoute;
 		let state = this.state;
-		let routesList = fakeRoutes.map((route) => {
+		let routesList = ROUTES.map((route) => {
 			let cn = "list-group-item" + (route.id === this.state.selectedRoute.id ? " active" : "");
 			return <li className={cn} onClick={this.selectRoute.bind(this, route.id)} key={route.id}>{route.name}</li>
 		})
+
+		let IS_CREATING = this.state.routeCreating;
 
 		return <div className="ets-page-wrap routes-list">
 			<p className="some-header"> </p>
@@ -70,28 +122,24 @@ export default class RoutesList extends Component {
 			  <ul className="list-group">
 			  	{routesList}
 				  </ul>
+				  <Button bsStyle="primary" block onClick={this.createRoute.bind(this)}>Создать новый</Button>
 				</div>
 				<div className="routes-list-info">
 					<div className="route-name">
-						{route.name}
+						{IS_CREATING ? 
+							<input name="route-name" value={newRoute.name}/>
+							: 
+							route.name 
+						}
 					</div>
-					<ul className="nav nav-tabs">
-					  <li role="presentation" className={classname({active : state.activeTab === 'image'})} onClick={this.changeTab.bind(this, 'image')}><a href="javascript:;">Картинкой</a></li>
-					  <li role="presentation" className={classname({active : state.activeTab === 'map'})} onClick={this.changeTab.bind(this, 'map')}><a href="javascript:;">На карте (при наличии списка ОДХ)</a></li>
-					</ul>
-					{
-						this.state.activeTab === 'image' ?
-						<div className="route-image">
-							<img src={route.image} width="800"/>
-						</div>
-						:
 						<div className="route-odhs-on-map">
 						
 							<Map 
-									noMarkers={true} 
+									//selectInteraction={selectSingleClick}
+									onFeatureClick={this.onFeatureClick.bind(this)}
 									zoom={MAP_INITIAL_ZOOM}
-	               center={MAP_INITIAL_CENTER}
-	               polys={state.selectedRoute.polys}/>
+	               	center={MAP_INITIAL_CENTER}
+	               	polys={route.polys}/>
 	            <div className="route-odhs-list">
 	            	<h4>Список ОДХ/ДТ</h4>
 	            	<ul>
@@ -99,7 +147,7 @@ export default class RoutesList extends Component {
 	            	</ul>
 	            </div>
 						</div>
-					}
+					
 					
 					
 				</div>

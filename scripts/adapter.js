@@ -93,10 +93,18 @@ export function getRoadsActual() {
   return fetch(ROADS_ACTUAL_URL).then(r => r.json());
 }
 
-// возвращает инфу по ОДХ
+// возвращает инфу по ОДХ 
+let ODH_CACHE = {};
 export function getRoadByODHId(id) {
-  let query = '?road_id=' + id;
-  return fetch(GET_ROAD_BY_ODH_URL + query).then(r => r.json());
+  if (ODH_CACHE[id] === undefined) {
+    let query = '?road_id=' + id;
+    return fetch(GET_ROAD_BY_ODH_URL + query).then(r => {
+      ODH_CACHE[id] = r.json();
+      return ODH_CACHE[id];
+    });
+  } else {
+    return ODH_CACHE[id];
+  }
 }
 
 // возвращает список всех доступных автомобилей

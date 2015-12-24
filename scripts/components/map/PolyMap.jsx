@@ -5,6 +5,7 @@ import { PROJECTION, ArcGisLayer } from './MskAdapter.js';
 import 'ol3-popup/src/ol3-popup.js';
 import { getGeoObjectsByCoords } from '../../adapter.js';
 import '../../vendor/onTabUnfocus.js';
+import {polyState, polyStyles} from '../../constants/polygons.js';
 
 window.addEventListener('blur', (ev) => {
   //let store = flux.getStore('points')
@@ -17,18 +18,10 @@ window.addEventListener('focus', (ev) => {
   global.olmap && global.olmap.updateSize()
 })
 
-// todo move to settings
-const SIDEBAR_WIDTH_PX = 500;
-
-// WebGL example
-// http://openlayers.org/en/master/examples/icon-sprite-webgl.html
-//
-// current WebGL stats
-// http://webglstats.com/
-//
-// OpenLayers performance cases
-// http://trac.osgeo.org/openlayers/wiki/Future/OpenLayersWithCanvas
 let POLYS_LAYER = null;
+
+
+
 global.ol = ol;
 
 // https://github.com/pka/ol3-react-example
@@ -42,10 +35,7 @@ export default class OpenLayersMap extends Component {
 
     this.markers = {};
     this._handlers = null; // map event handlers
-    if ( !props.noMarkers ) {
-      this._pointsStore = this.props.flux.getStore('points');
-    }
-    this.viewportVisibleMarkers = {};
+    
 
     let initialView = new ol.View({
       center: this.props.center,
@@ -64,8 +54,7 @@ export default class OpenLayersMap extends Component {
             self.canvas = this.canvas = document.createElement('canvas');
             self.context = this.canvas.getContext('2d');
           }
-          //debugger;
-         // size = self.map.getSize();
+
           this.canvas.setAttribute('width', size[0]);
           this.canvas.setAttribute('height', size[1]);
 
@@ -77,13 +66,11 @@ export default class OpenLayersMap extends Component {
 
 
     let controls = []
-    if (!this.props.errorLoading) {
-      controls.push(new ol.control.Zoom({
-          duration: 400,
-          className: 'ol-zoom',
-          delta: 1
-        }))
-    }
+    controls.push(new ol.control.Zoom({
+        duration: 400,
+        className: 'ol-zoom',
+        delta: 1
+      }))
 
     let map = new ol.Map(
       {
@@ -97,39 +84,31 @@ export default class OpenLayersMap extends Component {
     this.map = global.olmap = map;
   }
 
-  renderODHs( polys = window.ROUTES[0].polys ) {
+  renderODHs(polys = window.ROUTES[0].polys) {
     let map = this.map;
-    let odhs = polys;
 
-    let featuresJSON = {
-      type: 'FeatureCollection',
-      features: []
-    }
+    let GeoJSON = new ol.format.GeoJSON();
+    let vectorSource = new ol.source.Vector();
+    let styleFunction = polyStyles[polyState.SELECTABLE];
 
+    //let features = [];
+    //debugger;
 
-    let styleFunction = new ol.style.Style({
-       fill: new ol.style.Fill({
-            color: 'rgba(255,255,255,0.9)'
-       }),
-       stroke: new ol.style.Stroke({
-            color: 'red',
-            width: 1
-       })
-    });
-
-
-
-    _.each(odhs, (poly)=>{
-          featuresJSON.features.push({
-            type: 'Feature',
-            geometry: poly.shape
-          })
+    _.each(polys, (poly, key)=>{
+      //debugger;
+      let feature = new ol.Feature({
+        geometry: GeoJSON.readGeometry(poly.shape),
+        name: poly.name,
+        id: key,
+        state: polyState.ENABLED
       })
 
-    let vectorSource = new ol.source.Vector({
-      features: (new ol.format.GeoJSON()).readFeatures(featuresJSON)
+      vectorSource.addFeature(feature)
+      //featuresJSON.readFeature(feature)
+      //features.push(feature)
     })
 
+    //debugger;
 
 
     !!POLYS_LAYER && map.removeLayer(POLYS_LAYER);
@@ -149,7 +128,7 @@ export default class OpenLayersMap extends Component {
   }
 
   shouldComponentUpdate() {
-    return !this.props.noMarkers;
+    return false;
   }
 
 
@@ -168,15 +147,9 @@ export default class OpenLayersMap extends Component {
     this.popup = new ol.Overlay.Popup();
     map.addOverlay(this.popup);
 
-    if (this.props.noMarkers) {
-      this.renderODHs()
-    }
+    this.enableInteractions();
 
-    if (this.props.errorLoading) {
-      this.disableInteractions();
-    } else {
-      this.enableInteractions();
-    }
+    this.props.selectInteraction && map.addInteraction(this.props.selectInteraction);
 
     this.renderODHs()
   }
@@ -188,98 +161,33 @@ export default class OpenLayersMap extends Component {
   onMouseMove(ev) {
 
     let coordinate = ev.coordinate;
-    let changeCursor = false;
-
-    if (!this.props.noMarkers) {
-
-      let markers = this.viewportVisibleMarkers;
-      for (let key in markers) {
-        let marker = markers[key];
-
-        if (marker.contains(coordinate)) {
-          changeCursor = true;
-          break;
-        }
-      }
-
-      if (this._pointsStore.hasMarkerSelected()) {
-        let currentSelectedMarker = this._pointsStore.getSelectedMarker();
-        if (currentSelectedMarker.hasTrackLoaded()) {
-          let possibleTrackPoint = currentSelectedMarker.track.getPointAtCoordinate(coordinate);
-          if (possibleTrackPoint) {
-            changeCursor = true;
-          }
-        }
-      }
-
-    }
+    let pixel = ev.pixel;
+    let map = this.map;
     let el = this.map.getViewport();
-    el.style.cursor = changeCursor ? 'pointer' : '';
+
+    var hit = map.forEachFeatureAtPixel(pixel, function (feature, layer) {
+                return true;
+            });
+
+
+    el.style.cursor = hit ? 'pointer' : '';
   }
 
-  getMarkerByCoord() {
-
-  }
-
-  // todo проходить по всем маркерам карты на предмет клика
-  // или рендеринга
-  traverseMarkers( mapFn ) {
-    let markers = this.viewportVisibleMarkers;
-    
-    for ( let key in markers ){
-      let marker = markers[key];
-     // if (marker.contains())
-    }
-
-  }
 
   onClick(ev) {
 
     let map = this.map;
     let pixel = ev.pixel; // координаты клика во viewport
     let coordinate = ev.coordinate;
-    let store = this._pointsStore;
-    let selectedMarker = null;
     let cancelSelection = false;
 
-    // проверка – не кликнули на точку трэка?
-    let currentSelectedPoint = this._pointsStore.getSelectedPoint();
-    if (currentSelectedPoint) {
-      let marker = currentSelectedPoint.marker;
-      if (marker.hasTrackLoaded()) {
-        let track = marker.track;
-        let possibleTrackPoint = track.getPointAtCoordinate(coordinate);
-        if (possibleTrackPoint !== null) {
-          let pointCoords = possibleTrackPoint.coords_msk;
-          //console.log( 'trackpoint  found', possibleTrackPoint);
-          let makePopupFn = track.getTrackPointTooltip(possibleTrackPoint);
-          this.popup.show(pointCoords, makePopupFn());
-          getGeoObjectsByCoords(possibleTrackPoint.coords_msk)
-            .then((data) => {
-              this.popup.show(pointCoords, makePopupFn(data.objects))
-            })
-          return;
-        }
-      }
-    }
 
-    // по какому маркеру кликнули?
-    let markers = this.viewportVisibleMarkers;
-    for (let key in markers) {
-      let marker = markers[key];
+    map.forEachFeatureAtPixel(pixel, (feature, layer) =>  {
+      this.props.onFeatureClick(feature, ev, this);
+    })
 
-      if (marker.contains(coordinate)) {
-        selectedMarker = marker;
-        break;
-      }
-    }
 
-    if (selectedMarker) {
-      selectedMarker.onClick();
-      store.handleSelectPoint(selectedMarker.point);
-      // прячем попап трэка
-      this.hidePopup()
-    }
+    // TODO on poly click
   }
 
   hidePopup() {
@@ -296,66 +204,7 @@ export default class OpenLayersMap extends Component {
 
     // canvas example
     // https://gist.github.com/acanimal/b2f60367badb0b17a4d9
-
     let map = this.map;
-    let pointsStore = this._pointsStore;
-    
-    let selected = this.props.noMarkers ? false : pointsStore.getSelectedPoint();
-    if (!this.props.noMarkers) {
-      let selectedMarker = pointsStore.getSelectedMarker();
-
-      let optimizedMarkers = this.viewportVisibleMarkers = this.getMarkersInBounds(extent);
-
-      const options = {
-        showPlates: this.props.showPlates
-      };
-
-      let keys = Object.keys(optimizedMarkers);
-      for (let i = 0, till = keys.length; i < till; i++) {
-        let key = keys[i];
-        let marker = optimizedMarkers[key];
-        let id = marker.point.id;
-
-        if (selected === null || id !== selected.id) {
-          // todo переключать отрисовку маленький/большой значок
-          // в зависимости от количества маркеров на видимой части карты
-          // 
-          // будет некрасиво, если попадать точно в границу количества
-          marker.render(options);
-        }
-      }
-
-      if (selectedMarker) {
-        //debugger;
-        if (selectedMarker.hasTrackLoaded()) {
-          selectedMarker.track.render();
-        }
-        selectedMarker.render({selected: true, ...options});
-
-        let view = map.getView();
-        let zoom = view.getZoom();
-        let size = map.getSize();
-        let pixel = [(size[0] - SIDEBAR_WIDTH_PX) / 2, size[1] / 2];
-
-        if (pointsStore.state.trackingMode) {
-            view.centerOn(selectedMarker.coords, size, pixel)
-            if (zoom < 12) {
-              view.setZoom(12)
-            }
-            this.disableInteractions();
-        } else {
-          this.enableInteractions()
-        }
-
-      } else {
-        this.enableInteractions()
-      }
-  }
-    //todo remove this
-    if (!selected) {
-      this.hidePopup()
-    }
-
 
     return canvas;
   }
@@ -375,11 +224,13 @@ export default class OpenLayersMap extends Component {
       })
     }
 
+
+
   }
 
   disableInteractions() {
     let map = this.map;
-    let interactions = this.map.getInteractions();
+    let interactions = map.getInteractions();
 
     if (this._handlers !== null) {
       map.unByKey(this._handlers.singleclick)
@@ -392,58 +243,12 @@ export default class OpenLayersMap extends Component {
     }
   }
 
-  getMarkersInBounds(bounds) {
-
-    let returns = [];
-    let markers = this.markers;
-    let keys = Object.keys(markers);
-
-    for (let i = 0, till = keys.length; i < till; i++) {
-      let key = keys[i];
-      let marker = markers[key];
-
-      // @todo переписать на простые сравнения, без метода contains
-      if (ol.extent.containsCoordinate(bounds, marker.coords) && marker.isVisible()) {
-        returns.push(marker)
-      }
-    }
-
-    return returns;
-  }
-
 
   componentWillReceiveProps(nextProps) {
 
     if (nextProps.polys !== undefined) {
+      this.popup.hide()
       this.renderODHs(nextProps.polys)
     }
-
-    if (nextProps.points !== undefined) {
-      this.updatePoints(nextProps.points);
-    }
   }
-
-  updatePoints(updatedPoints) {
-
-    let keys = Object.keys(updatedPoints);
-
-    for (let i = 0, till = keys.length; i < till; i++) {
-
-      let key = keys[i];
-      let point = updatedPoints[key];
-
-      if (point.timestamp === 1420074000000) {
-        continue;
-      }
-
-      let oldPoint = this.markers[key];
-      if (oldPoint) {
-        oldPoint.setPoint(point)
-      } else {
-        this.markers[key] = new CarMarker(point, this);
-      }
-    }
-  }
-
 }
-

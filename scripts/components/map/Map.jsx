@@ -42,9 +42,8 @@ export default class OpenLayersMap extends Component {
 
     this.markers = {};
     this._handlers = null; // map event handlers
-    if ( !props.noMarkers ) {
-      this._pointsStore = this.props.flux.getStore('points');
-    }
+    this._pointsStore = this.props.flux.getStore('points'); 
+
     this.viewportVisibleMarkers = {};
 
     let initialView = new ol.View({
@@ -97,52 +96,6 @@ export default class OpenLayersMap extends Component {
     this.map = global.olmap = map;
   }
 
-  renderODHs() {
-    let map = this.map;
-    let odhs = window.ROUTES[0].polys;
-
-    let featuresJSON = {
-      type: 'FeatureCollection',
-      features: []
-    }
-
-
-    let styleFunction = new ol.style.Style({
-       fill: new ol.style.Fill({
-            color: 'rgba(255,255,255,0.9)'
-       }),
-       stroke: new ol.style.Stroke({
-            color: 'red',
-            width: 1
-       })
-    });
-
-
-
-    _.each(odhs, (poly)=>{
-          featuresJSON.features.push({
-            type: 'Feature',
-            geometry: poly.shape
-          })
-      })
-
-    let vectorSource = new ol.source.Vector({
-      features: (new ol.format.GeoJSON()).readFeatures(featuresJSON)
-    })
-
-
-    let polysLayer = new ol.layer.Vector({
-        source: vectorSource,
-        style: styleFunction
-    })
-
-    map.addLayer(polysLayer);
-
-    map.getView().setZoom(6);
-    map.getView().setCenter([-5441.16131979791, 10146.687775846918])
-
-  }
-
   shouldComponentUpdate() {
     return !this.props.noMarkers;
   }
@@ -162,9 +115,6 @@ export default class OpenLayersMap extends Component {
     this.popup = new ol.Overlay.Popup();
     map.addOverlay(this.popup);
 
-    if (this.props.noMarkers) {
-      this.renderODHs()
-    }
 
     if (this.props.errorLoading) {
       this.disableInteractions();
@@ -182,48 +132,30 @@ export default class OpenLayersMap extends Component {
     let coordinate = ev.coordinate;
     let changeCursor = false;
 
-    if (!this.props.noMarkers) {
+    let markers = this.viewportVisibleMarkers;
+    for (let key in markers) {
+      let marker = markers[key];
 
-      let markers = this.viewportVisibleMarkers;
-      for (let key in markers) {
-        let marker = markers[key];
-
-        if (marker.contains(coordinate)) {
-          changeCursor = true;
-          break;
-        }
+      if (marker.contains(coordinate)) {
+        changeCursor = true;
+        break;
       }
-
-      if (this._pointsStore.hasMarkerSelected()) {
-        let currentSelectedMarker = this._pointsStore.getSelectedMarker();
-        if (currentSelectedMarker.hasTrackLoaded()) {
-          let possibleTrackPoint = currentSelectedMarker.track.getPointAtCoordinate(coordinate);
-          if (possibleTrackPoint) {
-            changeCursor = true;
-          }
-        }
-      }
-
     }
+
+    if (this._pointsStore.hasMarkerSelected()) {
+      let currentSelectedMarker = this._pointsStore.getSelectedMarker();
+      if (currentSelectedMarker.hasTrackLoaded()) {
+        let possibleTrackPoint = currentSelectedMarker.track.getPointAtCoordinate(coordinate);
+        if (possibleTrackPoint) {
+          changeCursor = true;
+        }
+      }
+    }
+
     let el = this.map.getViewport();
     el.style.cursor = changeCursor ? 'pointer' : '';
   }
 
-  getMarkerByCoord() {
-
-  }
-
-  // todo проходить по всем маркерам карты на предмет клика
-  // или рендеринга
-  traverseMarkers( mapFn ) {
-    let markers = this.viewportVisibleMarkers;
-    
-    for ( let key in markers ){
-      let marker = markers[key];
-     // if (marker.contains())
-    }
-
-  }
 
   onClick(ev) {
 
@@ -292,57 +224,57 @@ export default class OpenLayersMap extends Component {
     let map = this.map;
     let pointsStore = this._pointsStore;
     
-    let selected = this.props.noMarkers ? false : pointsStore.getSelectedPoint();
-    if (!this.props.noMarkers) {
-      let selectedMarker = pointsStore.getSelectedMarker();
+    let selected = pointsStore.getSelectedPoint();
 
-      let optimizedMarkers = this.viewportVisibleMarkers = this.getMarkersInBounds(extent);
+    let selectedMarker = pointsStore.getSelectedMarker();
 
-      const options = {
-        showPlates: this.props.showPlates
-      };
+    let optimizedMarkers = this.viewportVisibleMarkers = this.getMarkersInBounds(extent);
 
-      let keys = Object.keys(optimizedMarkers);
-      for (let i = 0, till = keys.length; i < till; i++) {
-        let key = keys[i];
-        let marker = optimizedMarkers[key];
-        let id = marker.point.id;
+    const options = {
+      showPlates: this.props.showPlates
+    };
 
-        if (selected === null || id !== selected.id) {
-          // todo переключать отрисовку маленький/большой значок
-          // в зависимости от количества маркеров на видимой части карты
-          // 
-          // будет некрасиво, если попадать точно в границу количества
-          marker.render(options);
-        }
+    let keys = Object.keys(optimizedMarkers);
+    for (let i = 0, till = keys.length; i < till; i++) {
+      let key = keys[i];
+      let marker = optimizedMarkers[key];
+      let id = marker.point.id;
+
+      if (selected === null || id !== selected.id) {
+        // todo переключать отрисовку маленький/большой значок
+        // в зависимости от количества маркеров на видимой части карты
+        // 
+        // будет некрасиво, если попадать точно в границу количества
+        marker.render(options);
       }
+    }
 
-      if (selectedMarker) {
-        //debugger;
-        if (selectedMarker.hasTrackLoaded()) {
-          selectedMarker.track.render();
-        }
-        selectedMarker.render({selected: true, ...options});
+    if (selectedMarker) {
+      //debugger;
+      if (selectedMarker.hasTrackLoaded()) {
+        selectedMarker.track.render();
+      }
+      selectedMarker.render({selected: true, ...options});
 
-        let view = map.getView();
-        let zoom = view.getZoom();
-        let size = map.getSize();
-        let pixel = [(size[0] - SIDEBAR_WIDTH_PX) / 2, size[1] / 2];
+      let view = map.getView();
+      let zoom = view.getZoom();
+      let size = map.getSize();
+      let pixel = [(size[0] - SIDEBAR_WIDTH_PX) / 2, size[1] / 2];
 
-        if (pointsStore.state.trackingMode) {
-            view.centerOn(selectedMarker.coords, size, pixel)
-            if (zoom < 12) {
-              view.setZoom(12)
-            }
-            this.disableInteractions();
-        } else {
-          this.enableInteractions()
-        }
-
+      if (pointsStore.state.trackingMode) {
+          view.centerOn(selectedMarker.coords, size, pixel)
+          if (zoom < 12) {
+            view.setZoom(12)
+          }
+          this.disableInteractions();
       } else {
         this.enableInteractions()
       }
-  }
+
+    } else {
+      this.enableInteractions()
+    }
+    
     //todo remove this
     if (!selected) {
       this.hidePopup()

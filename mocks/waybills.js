@@ -77,7 +77,7 @@ export function generateBills() {
 
     // epic shiiit
     console.log('some waybills generated', LIST )
-    setTimeout(function(){
+    setTimeout(function() {
         //debugger;
         window.updateBillStore(LIST)
     }, 800)

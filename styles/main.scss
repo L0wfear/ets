@@ -1218,7 +1218,7 @@ ul.rw-list.rw-list-grouped > li.rw-list-option {
 
 .weather-widget {
   position: absolute;
-  top: 350px; 
+  top: 350px;
   left: 10px;
   z-index: 100;
   border-radius: 4px;
@@ -1563,7 +1563,7 @@ body {
     overflow:hidden;
   }
 
-  &-closer { 
+  &-closer {
     font-size:14px;
     color: #c3c3c3;
   }
@@ -1827,7 +1827,7 @@ body {
   button {
     background-color: transparent;
   }
-} 
+}
 
 .vehicle-attributes-list {
   padding: 10px 0;
@@ -1969,4 +1969,27 @@ body {
 
 .Select-control, .form-control {
   border-radius:0px !important;
+}
+
+.taxi-calc-block  {
+  .form-group {
+    margin-bottom: 0;
+  }
+  .ets-table {
+    margin-top: 16px;
+
+    .ets-table-row:last-of-type {
+      font-weight: bold;
+    }
+  }
+
+
+  .Select-control {
+    width: 231px;
+    overflow: visible;
+  }
+}
+
+.pointer {
+  cursor: pointer;
 }

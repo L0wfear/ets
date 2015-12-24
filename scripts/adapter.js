@@ -19,7 +19,8 @@ const GEO_OBJECTS_URL = getUrl('/geo_objects/');
 const ROADS_ACTUAL_URL = getUrl('/roads_actual/');
 const GET_ROAD_BY_ODH_URL = getUrl('/road_info/');
 const CARS_INFO_URL = getUrl('/cars_info/');
-const CARS_BY_OWNER_URL = getUrl('/cars_by_owner/')
+const CARS_BY_OWNER_URL = getUrl('/cars_by_owner/');
+const FUEL_OPERATIONS_URL = getUrl('/fuel_operations/');
 
 
 export function getAllPoints() {
@@ -44,7 +45,11 @@ export function init() {
         ])
     .then(getCars)
     .then(generateBills)
-          
+
+}
+
+export function getFuelOperations() {
+  return fetch(FUEL_OPERATIONS_URL).then(r => r.json());
 }
 
 export function getTrack(car_id, from_dt, to_dt) {
@@ -88,7 +93,7 @@ export function getRoadsActual() {
   return fetch(ROADS_ACTUAL_URL).then(r => r.json());
 }
 
-// возвращает инфу по ОДХ 
+// возвращает инфу по ОДХ
 export function getRoadByODHId(id) {
   let query = '?road_id=' + id;
   return fetch(GET_ROAD_BY_ODH_URL + query).then(r => r.json());

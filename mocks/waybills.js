@@ -19,7 +19,7 @@ let template = {
             ID: 0,
             STATUS: 'open',
             NUMBER: 0,
-            DATE_CREATE: '2015-12-18 9:00', 
+            DATE_CREATE: '2015-12-18 9:00',
             RESPONSIBLE_PERSON_ID: "",
             PLAN_DEPARTURE_DATE: '2015-12-18 9:00',
             FACT_DEPARTURE_DATE: '2015-12-18 9:00',
@@ -81,7 +81,7 @@ export function generateBills() {
         //debugger;
         window.updateBillStore(LIST)
     }, 800)
-}) 
+  })
 }
 
 export default LIST;

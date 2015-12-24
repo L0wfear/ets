@@ -8,7 +8,7 @@ window.updateBillStore = function( newData) {
 	DATA = newData;
 	sortList();
 	if (window.updateBillsJournal !== undefined ){
-		debugger;
+		//debugger;
 		window.updateBillsJournal()
 	}
 }
@@ -32,14 +32,14 @@ export function deleteBill(id) {
 export function getDefaultBill() {
 
 		let now = new Date();
-		let vyezd_plan = new Date( 
+		let vyezd_plan = new Date(
 	    now.getFullYear(),
 	    now.getMonth(),
 	    now.getDate(),
 	    9,
 	    0
     );
-		let vozvr_plan = new Date( 
+		let vozvr_plan = new Date(
 	    now.getFullYear(),
 	    now.getMonth(),
 	    now.getDate() + 1,
@@ -50,7 +50,7 @@ export function getDefaultBill() {
 		    ID: getLastNumber() + 1,
 		    STATUS: null,
 		    NUMBER: getLastNumber() + 1,
-		    DATE_CREATE: makeDate(now) + ' ' + makeTime(now), 
+		    DATE_CREATE: makeDate(now) + ' ' + makeTime(now),
 		    RESPONSIBLE_PERSON_ID: "",
 		    PLAN_DEPARTURE_DATE: vyezd_plan,
 		    FACT_DEPARTURE_DATE: vyezd_plan,

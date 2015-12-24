@@ -16,7 +16,7 @@ const FUEL_TYPES = getFuelTypes();
 const MASTERS = getMasters();
 const DRIVERS = getDrivers();
 
-const formStages = ['creating', 'post-creating', 'display', 'closing'];	
+const formStages = ['creating', 'post-creating', 'display', 'closing'];
 
 export default class FormWrap extends Component {
 	constructor(props) {
@@ -71,15 +71,15 @@ export default class FormWrap extends Component {
 		let newState = {};
 		formState[field] = !!e.target ? e.target.value : e;
 
-		let HAS_REQUIRED_FIELDS = 
+		let HAS_REQUIRED_FIELDS =
 				this.state.formStage === 'creating' || this.state.formStage === 'post-creating' ?
-					!!formState.RESPONSIBLE_PERSON_ID && 
-					!!formState.PLAN_DEPARTURE_DATE && 
-					!!formState.PLAN_ARRIVAL_DATE && 
-					!!formState.DRIVER_ID && 
-					!!formState.CAR_ID && 
-					!!formState.ODOMETR_START && 
-					!!formState.FUEL_TYPE_ID && 
+					!!formState.RESPONSIBLE_PERSON_ID &&
+					!!formState.PLAN_DEPARTURE_DATE &&
+					!!formState.PLAN_ARRIVAL_DATE &&
+					!!formState.DRIVER_ID &&
+					!!formState.CAR_ID &&
+					!!formState.ODOMETR_START &&
+					!!formState.FUEL_TYPE_ID &&
 					!!formState.FUEL_START
 				:
 					!!formState.ODOMETR_END &&
@@ -146,9 +146,9 @@ export default class FormWrap extends Component {
   	let route = getRouteById(f.ROUTE_ID);
 
   	let URL = 'http://ods.mos.ru/ssd/city-dashboard/' + (print_form_type === 2 ? 'plate_truck/' : 'plate_special/');
-  	let data = print_form_type === 2 ? 
+  	let data = print_form_type === 2 ?
   	'?registration_number='+f.NUMBER+
-		'&waybill_open_day='+creation_date.date() + 
+		'&waybill_open_day='+creation_date.date() +
 		'&waybill_open_month='+monthes[creation_date.month()]+
 		'&waybill_open_year='+creation_date.year()+
 		'&organization_data='+zhzhzh+
@@ -156,11 +156,11 @@ export default class FormWrap extends Component {
 		'&automobile_number='+car.gov_number+
 		'&driver_fio_full='+getFIOById(driver.id, true)+
 		'&license_number='+(driver["Водительское удостоверение"] == '' ? driver["Специальное удостоверение"] : driver["Водительское удостоверение"])+
-		'&odometer_start=' + f.ODOMETR_START + 
+		'&odometer_start=' + f.ODOMETR_START +
 		'&depart_day=' + f.PLAN_DEPARTURE_DATE.getDate()+
 		'&depart_month='+ (f.PLAN_DEPARTURE_DATE.getMonth()+1) +
 		'&depart_hour='+ f.PLAN_DEPARTURE_DATE.getHours() +
-		'&depart_minute='+f.PLAN_DEPARTURE_DATE.getMinutes() + 
+		'&depart_minute='+f.PLAN_DEPARTURE_DATE.getMinutes() +
 		'&return_day='+f.PLAN_ARRIVAL_DATE.getDate()+
 		'&return_month='+(f.PLAN_ARRIVAL_DATE.getMonth()+1)+
 		'&return_hour='+f.PLAN_ARRIVAL_DATE.getHours()+
@@ -181,7 +181,7 @@ export default class FormWrap extends Component {
 		'&complete_number_trips='+f.PASSES_COUNT
   	:
   	'?registration_number='+f.NUMBER+
-  	'&waybill_open_day='+creation_date.date() + 
+  	'&waybill_open_day='+creation_date.date() +
   	'&waybill_open_month='+monthes[creation_date.month()]+
   	'&waybill_open_year='+creation_date.year()+
   	'&organization_data='+zhzhzh+
@@ -189,7 +189,7 @@ export default class FormWrap extends Component {
   	'&automobile_number='+car.gov_number+
   	'&driver_fio_full='+getFIOById(driver.id, true)+
   	'&license_number='+(driver["Водительское удостоверение"] == '' ? driver["Специальное удостоверение"] : driver["Водительское удостоверение"])+
-  	'&odometer_start='+ f.ODOMETR_START + 
+  	'&odometer_start='+ f.ODOMETR_START +
   	'&depart_time='+makeTime(f.PLAN_DEPARTURE_DATE)+
   	'&return_time='+makeTime(f.PLAN_ARRIVAL_DATE)+
   	'&fuel_mark='+getFuelTypeById(f.FUEL_TYPE_ID).label+
@@ -208,7 +208,7 @@ export default class FormWrap extends Component {
   	//console.log( creation_date, creation_date.year(), creation_date.month(), );
   	let linkTo = URL + data;
 
-  		console.log( 'print url', linkTo, f)
+  	console.log( 'print url', linkTo, f)
 
   	window.location = linkTo;
   }
@@ -267,16 +267,16 @@ export default class FormWrap extends Component {
 
 		let props = this.props;
 
-		return 	props.showForm ? <WaybillForm 
+		return 	props.showForm ? <WaybillForm
 								formState = {this.state.formState}
-								onSubmit={this.handleFormSubmit.bind(this)} 
+								onSubmit={this.handleFormSubmit.bind(this)}
 								handlePrint={this.handlePrint.bind(this)}
-								handleFormChange={this.handleFormStateChange.bind(this)} 
-								show={this.props.showForm} 
+								handleFormChange={this.handleFormStateChange.bind(this)}
+								show={this.props.showForm}
 								onHide={this.props.onFormHide}
 								{...this.state}/>
 								: null;
-			
+
 	}
 
 }

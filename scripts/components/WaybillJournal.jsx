@@ -104,9 +104,9 @@ export default class WaybillJournal extends Component {
 					</div>
 				</div>
 				<WaybillsTable data={fakeData} onRowSelected={this.selectBill.bind(this)}/>
-				<WaybillFormWrap 
+				<WaybillFormWrap
 						onFormHide={this.onFormHide.bind(this)}
-						showForm={this.state.showForm} 
+						showForm={this.state.showForm}
 						bill={this.state.selectedBill}
 						updateTable={this.updateTable.bind(this)}/>
 			</div>)
@@ -116,21 +116,21 @@ export default class WaybillJournal extends Component {
 let WaybillsTable = (props) => {
 
 		let tableCaptions = [
-			"Статус", 
-			"Номер", 
-			"Дата выдачи", 
+			"Статус",
+			"Номер",
+			"Дата выдачи",
 			"Водитель",
 			"Гос. № ТС",
-			"Выезд план.", 
-			"Выезд факт", 
-			"Возвращение план", 
-			"Возвращение факт", 
-			"Мастер", 
+			"Выезд план.",
+			"Выезд факт",
+			"Возвращение план",
+			"Возвращение факт",
+			"Мастер",
 			//"Диспетчер"
 		]
 
 	let tableData = [];
-	let tableCols = [ 
+	let tableCols = [
 	"STATUS",
 	"ID",
 	"DATE_CREATE",
@@ -139,7 +139,7 @@ let WaybillsTable = (props) => {
 	"PLAN_DEPARTURE_DATE",
 	"PLAN_ARRIVAL_DATE",
 	"FACT_DEPARTURE_DATE",
-	"FACT_ARRIVAL_DATE", 
+	"FACT_ARRIVAL_DATE",
 	"RESPONSIBLE_PERSON_ID"]
 
 	_.each(props.data, (bill)=> {
@@ -159,8 +159,8 @@ let WaybillsTable = (props) => {
 			tableData.push(_bill);
 	})
 
-	return <Table 
-					title="Журнал путевых листов" 
+	return <Table
+					title="Журнал путевых листов"
 					columnCaptions={tableCaptions}
 					data={tableData}
 					tableCols={tableCols}

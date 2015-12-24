@@ -98,7 +98,7 @@ export default class Taxi extends Component {
     const { tableData } = this.state;
     tableData[index]['OPERATION'] = value;
     tableData[index]['FUEL_RATE'] = (Math.random() * (1.50 - 0.20) + 0.20).toFixed(2);
-    tableData[index]['RESULT'] = parseFloat(tableData[index].FUEL_RATE * tableData[index].FACT_VALUE).toFixed(2);
+    tableData[index]['RESULT'] = typeof tableData[index].FACT_VALUE !== 'undefined' ? parseFloat(tableData[index].FUEL_RATE * tableData[index].FACT_VALUE).toFixed(2) : 0;
     tableData[tableData.length - 1].RESULT = calculateResult(tableData);
 
     this.setState({tableData});

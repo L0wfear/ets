@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 //import Modal from './ui/Modal.jsx';
 //import Table from './ui/table/Table.jsx';
 import Table from './ui/table/DataTable.jsx';
+import FilterModal from './ui/table/FilterModal.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
 import WaybillForm from './WaybillForm.jsx';
 import {makeDate, makeTime} from '../utils/dates.js';
@@ -16,14 +17,99 @@ import { getFIOById } from '../stores/EmployeesStore.js';
 
 let fakeData = getList();
 
+let tableCaptions = [
+	"Статус",
+	"Номер",
+	"Дата выдачи",
+	"Водитель",
+	"Гос. № ТС",
+	"Выезд план.",
+	"Выезд факт",
+	"Возвращение план",
+	"Возвращение факт",
+	"Мастер",
+	//"Диспетчер"
+]
+
+let tableCols = [
+	"STATUS",
+	"ID",
+	"DATE_CREATE",
+	"DRIVER_ID",
+	"CAR_ID",
+	"PLAN_DEPARTURE_DATE",
+	"PLAN_ARRIVAL_DATE",
+	"FACT_DEPARTURE_DATE",
+	"FACT_ARRIVAL_DATE",
+	"RESPONSIBLE_PERSON_ID"
+];
+
+let tableMeta = {
+	cols: [
+		{
+			name: 'STATUS',
+			caption: 'Статус',
+			type: 'text',
+		},
+		{
+			name: 'ID',
+			caption: 'Номер',
+			type: 'number',
+		},
+		{
+			name: 'DATE_CREATE',
+			caption: 'Дата выдачи',
+			type: 'date',
+		},
+		{
+			name: 'DRIVER_ID',
+			caption: 'Водитель',
+			type: 'text',
+		},
+		{
+			name: 'CAR_ID',
+			caption: 'Гос. № ТС',
+			type: 'text',
+		},
+		{
+			name: 'PLAN_DEPARTURE_DATE',
+			caption: 'Выезд план.',
+			type: 'date',
+		},
+		{
+			name: 'PLAN_ARRIVAL_DATE',
+			caption: 'Возвращение план',
+			type: 'date',
+		},
+		{
+			name: 'FACT_DEPARTURE_DATE',
+			caption: 'Выезд факт',
+			type: 'date',
+		},
+		{
+			name: 'FACT_ARRIVAL_DATE',
+			caption: 'Возвращение факт',
+			type: 'date',
+		},
+		{
+			name: 'RESPONSIBLE_PERSON_ID',
+			caption: 'Мастер',
+			type: 'text',
+		},
+	]
+};
+
 export default class WaybillJournal extends Component {
 
 
 	constructor(props) {
 		super(props);
+
 		this.state = {
-			selectedBill: null
-		}
+			selectedBill: null,
+			filterModalIsOpen: false,
+			filterValues: {}
+		};
 
 		window.updateBillsJournal = this.updateTable.bind(this);
 	}
@@ -54,7 +140,8 @@ export default class WaybillJournal extends Component {
 	}
 
 	componentDidMount() {
-		fakeData = getList()
+	//	console.log(this.context.router.getCurrentParams());
+		fakeData = getList();
 	}
 
 	componentWillReceiveProps(){
@@ -88,25 +175,58 @@ export default class WaybillJournal extends Component {
 		this.setState({
 			showForm: true
 		})
-
 	}
 
+	openFilter() {
+		this.setState({filterModalIsOpen: true});
+	}
+
+	saveFilter(filterValues) {
+		console.info(`SETTING FILTER VALUES`, filterValues);
+		this.setState({filterValues});
+	}
 
 	render() {
 
 		let showCloseBtn = this.state.selectedBill !== null && this.state.selectedBill.STATUS !== 'open';
 
+		const data = _.filter(fakeData, (obj) => {
+			let isValid = true;
+
+			_.mapKeys(this.state.filterValues, (value, key) => {
+
+				if (typeof value.getMonth === 'function') {
+					if (obj[key] !== moment(value).format('YYYY-MM-DD H:mm')) {
+						isValid = false;
+					}
+				} else {
+					if (obj[key] != value) {
+						isValid = false;
+					}
+				}
+			});
+
+			return isValid;
+		});
+
 		return (
 			<div className="ets-page-wrap">
 				<div className="some-header">Журнал путевых листов
 					<div className="waybills-buttons">
+						<Button bsSize="small" onClick={this.openFilter.bind(this)}><Glyphicon glyph="filter" /></Button>
 						<Button bsSize="small" onClick={this.createBill.bind(this)}><Glyphicon glyph="plus" /> Создать ПЛ</Button>
 						<Button bsSize="small" onClick={this.showBill.bind(this)}><Glyphicon glyph="search" /> Просмотреть ПЛ</Button>
 						<Button bsSize="small" disabled={showCloseBtn} onClick={this.closeBill.bind(this)}><Glyphicon glyph="ok" /> Закрыть ПЛ</Button>
 						<Button bsSize="small" disabled={this.state.selectedBill === null} onClick={this.deleteBill.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
 					</div>
 				</div>
-				<WaybillsTable data={fakeData} onRowSelected={this.selectBill.bind(this)} selected={this.state.selectedBill}/>
+				<FilterModal onSubmit={this.saveFilter.bind(this)}
+										 show={this.state.filterModalIsOpen}
+										 onHide={() => this.setState({filterModalIsOpen: false})}
+										 cols={tableCols}
+										 captions={tableCaptions}
+										 values={this.state.filterValues}/>
+				<WaybillsTable data={data} onRowSelected={this.selectBill.bind(this)} selected={this.state.selectedBill}/>
 				<WaybillFormWrap
 						onFormHide={this.onFormHide.bind(this)}
 						showForm={this.state.showForm}
@@ -118,33 +238,6 @@ export default class WaybillJournal extends Component {
 
 let WaybillsTable = (props) => {
 
-		let tableCaptions = [
-			"Статус",
-			"Номер",
-			"Дата выдачи",
-			"Водитель",
-			"Гос. № ТС",
-			"Выезд план.",
-			"Выезд факт",
-			"Возвращение план",
-			"Возвращение факт",
-			"Мастер",
-			//"Диспетчер"
-		]
-
-		let tableCols = [
-			"STATUS",
-			"ID",
-			"DATE_CREATE",
-			"DRIVER_ID",
-			"CAR_ID",
-			"PLAN_DEPARTURE_DATE",
-			"PLAN_ARRIVAL_DATE",
-			"FACT_DEPARTURE_DATE",
-			"FACT_ARRIVAL_DATE",
-			"RESPONSIBLE_PERSON_ID"
-		];
-
 		const renderers = {
 			STATUS: ({data}) => data === 'open' ? <div>Открыт</div> : <div>Закрыт</div>,
 			RESPONSIBLE_PERSON_ID: ({data}) => <div>{getFIOById(data)}</div>,
@@ -152,19 +245,9 @@ let WaybillsTable = (props) => {
 			CAR_ID: ({data}) => <div>{getCarById(data).gov_number}</div>
 		};
 
-		const data = props.data.map( (d, i) => {
-			if (!props.selected) return d;
-			if (d.ID === props.selected.ID) {
-				d.isSelected = true;
-			} else {
-				d.isSelected = false;
-			}
-			return d;
-		});
-
-		return <Table results={data}
+		return <Table results={props.data}
 									tableCols={tableCols}
 									tableCaptions={tableCaptions}
 									renderers={renderers}
-									onRowSelected={props.onRowSelected}/>
+									{...props}/>
 }

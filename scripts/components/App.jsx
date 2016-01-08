@@ -15,13 +15,15 @@ import Modal from './ui/Modal.jsx';
 import { init } from '../adapter.js';
 import Flux from './Flux.js';
 
+//const router = Router.create({ routes });
 const flux = new Flux();
 
 class App extends Component {
 
   getChildContext() {
     return {
-      flux: flux
+      flux: flux,
+      //router: router,
     }
   }
 
@@ -70,7 +72,8 @@ class App extends Component {
 }
 
 App.childContextTypes = {
-  flux: React.PropTypes.object
+  flux: React.PropTypes.object,
+  //router: React.PropTypes.func,
 };
 
 let history = createHashHistory({queryKey: false});
@@ -89,6 +92,6 @@ const routes = (
       {/*<Route path="*" component={NoMatch}/>*/}
     </Route>
   </Router>
-  ) 
+);
 
 render(routes, document.getElementById('content'))

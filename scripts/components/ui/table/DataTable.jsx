@@ -47,9 +47,19 @@ class Table extends React.Component {
   }
 
   render() {
-    const { results, tableCols, tableCaptions, renderers, onRowSelected } = this.props;
+    const { tableCols, tableCaptions, renderers, onRowSelected, selected } = this.props;
     const columnMetadata = this.initializeMetadata(tableCols, tableCaptions, renderers);
 		const rowMetadata = this.initializeRowMetadata();
+
+    const results = this.props.results.map( (data, i) => {
+			if (!selected || typeof onRowSelected === 'undefined') return data;
+			if (data.ID === selected.ID) {
+				data.isSelected = true;
+			} else {
+				data.isSelected = false;
+			}
+			return data;
+		});
 
     return <Griddle results={results}
   									columnMetadata={columnMetadata}

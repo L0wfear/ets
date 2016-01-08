@@ -1,3 +1,3 @@
 import React, {Component} from 'react';
 
-export default (props) => props.hidden ? <div/> : <div {...props}>{props.children}</div>;
+export default (props) => props.hidden ? <div className="none"/> : <div {...props}>{props.children}</div>;

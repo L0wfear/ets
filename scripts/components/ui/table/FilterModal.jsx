@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
+import { Modal, Input, Label, Container, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
 import Div from '../Div.jsx';
 import Datepicker from '../DatePicker.jsx';
 
@@ -58,6 +58,11 @@ class FilterModal extends React.Component {
     this.props.onHide();
   }
 
+  reset() {
+    this.props.onSubmit({});
+    this.props.onHide();
+  }
+
   render() {
 
     const filterRows = this.props.cols.map( (col, i) => {
@@ -71,6 +76,20 @@ class FilterModal extends React.Component {
              </Row>
 
     });
+
+    return (
+      <Div className="filter-container" hidden={!this.props.show}>
+
+        <Modal.Body>
+          {filterRows}
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button onClick={this.submit.bind(this)}>Применить</Button>
+	      	<Button onClick={this.reset.bind(this)}>Сброс</Button>
+	      </Modal.Footer>
+      </Div>
+    );
 
     return (
       <Modal {...this.props}

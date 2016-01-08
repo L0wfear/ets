@@ -8,6 +8,7 @@ import { Button, Glyphicon } from 'react-bootstrap';
 import WaybillForm from './WaybillForm.jsx';
 import {makeDate, makeTime} from '../utils/dates.js';
 import moment from 'moment';
+import cx from 'classnames';
 import { getCarById } from '../../mocks/krylatskoe_cars.js';
 
 import WaybillFormWrap from './WaybillFormWrap.jsx';
@@ -177,8 +178,8 @@ export default class WaybillJournal extends Component {
 		})
 	}
 
-	openFilter() {
-		this.setState({filterModalIsOpen: true});
+	toggleFilter() {
+		this.setState({filterModalIsOpen: !!!this.state.filterModalIsOpen});
 	}
 
 	saveFilter(filterValues) {
@@ -189,6 +190,7 @@ export default class WaybillJournal extends Component {
 	render() {
 
 		let showCloseBtn = this.state.selectedBill !== null && this.state.selectedBill.STATUS !== 'open';
+		let filterClass = cx({'filter-button': true, 'filter-button-active': _.keys(this.state.filterValues).length});
 
 		const data = _.filter(fakeData, (obj) => {
 			let isValid = true;
@@ -213,19 +215,19 @@ export default class WaybillJournal extends Component {
 			<div className="ets-page-wrap">
 				<div className="some-header">Журнал путевых листов
 					<div className="waybills-buttons">
-						<Button bsSize="small" onClick={this.openFilter.bind(this)}><Glyphicon glyph="filter" /></Button>
+							<Button bsSize="small" className={filterClass} onClick={this.toggleFilter.bind(this)}><Glyphicon glyph="filter" /></Button>
+							<FilterModal onSubmit={this.saveFilter.bind(this)}
+													 show={this.state.filterModalIsOpen}
+													 onHide={() => this.setState({filterModalIsOpen: false})}
+													 cols={tableCols}
+													 captions={tableCaptions}
+													 values={this.state.filterValues}/>
 						<Button bsSize="small" onClick={this.createBill.bind(this)}><Glyphicon glyph="plus" /> Создать ПЛ</Button>
 						<Button bsSize="small" onClick={this.showBill.bind(this)}><Glyphicon glyph="search" /> Просмотреть ПЛ</Button>
 						<Button bsSize="small" disabled={showCloseBtn} onClick={this.closeBill.bind(this)}><Glyphicon glyph="ok" /> Закрыть ПЛ</Button>
 						<Button bsSize="small" disabled={this.state.selectedBill === null} onClick={this.deleteBill.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
 					</div>
 				</div>
-				<FilterModal onSubmit={this.saveFilter.bind(this)}
-										 show={this.state.filterModalIsOpen}
-										 onHide={() => this.setState({filterModalIsOpen: false})}
-										 cols={tableCols}
-										 captions={tableCaptions}
-										 values={this.state.filterValues}/>
 				<WaybillsTable data={data} onRowSelected={this.selectBill.bind(this)} selected={this.state.selectedBill}/>
 				<WaybillFormWrap
 						onFormHide={this.onFormHide.bind(this)}

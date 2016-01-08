@@ -1994,6 +1994,82 @@ body {
   cursor: pointer;
 }
 
+.griddle-container {
+  border: none !important;
+}
+
+.filter-container {
+  z-index: 1000;
+  display: block;
+  position: absolute;
+  /* top: 100%; */
+  /* right: 0; */
+  /* width: auto; */
+  /* left: 20px; */
+  /* margin-top: 9px; */
+  margin-left: 13px;
+  font-size: 14px;
+  margin-top: 3px;
+  /*padding: 17px 30px 30px 17px;*/
+  background-color: #EEE;
+  -webkit-box-shadow: 0 0 0 3px #CBCBCB;
+  -moz-box-shadow: 0 0 0 3px #CBCBCB;
+  box-shadow: 0 0 0 3px #CBCBCB;
+  white-space: normal;
+  line-height: normal;
+  color: #000;
+  cursor: default;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+  .rw-select {
+     .rw-btn {
+      width: 0.7em;
+    }
+  }
+
+  .rw-calendar .rw-header .rw-btn-view {
+    width: 55% !important;
+  }
+}
+
+.filter-container::before{
+  position: absolute;
+top: -9px;
+/* right: 91px; */
+left: -3px;
+width: 38px;
+height: 9px;
+background-color: #eee;
+border-right: 3px solid #CBCBCB;
+border-left: 3px solid #CBCBCB;
+content: '';
+}
+
+.waybills-buttons {
+  .btn {
+    border-radius: 0 !important;
+    background: #EEE !important;
+    border: 3px solid #CBCBCB !important;
+  }
+  .btn:active {
+    outline: none;
+  }
+  .btn:focus {
+    outline: none !important;
+  }
+  .filter-button-active {
+    background-color: #6E9E58 !important;
+    color: white !important;
+  }
+}
+
+.filter-button-active {
+  background-color: #6E9E58 !important;
+  color: white !important;
+}
+
 .griddle-body {
   table {
     tr {
@@ -2009,6 +2085,10 @@ body {
       }
     }
   }
+}
+
+div.none {
+  display: none !important;
 }
 
 .pagination>li>a, .pagination>li>span {

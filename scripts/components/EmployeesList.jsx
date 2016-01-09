@@ -4,10 +4,13 @@ import { Link } from 'react-router';
 import Table from './ui/table/DataTable.jsx';
 import FilterModal from './ui/table/filter/FilterModal.jsx';
 import FilterButton from './ui/table/filter/FilterButton.jsx';
+import DriverFormWrap from './drivers/DriverFormWrap.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
 import _ from 'lodash';
+import moment from 'moment';
 
 import EMPLOYEES from '../../mocks/employees.js';
+import { getEmployeeById } from '../stores/EmployeesStore.js';
 
 let fakeData = EMPLOYEES;
 
@@ -16,7 +19,7 @@ fakeData = fakeData.filter((e) => {
 });
 
 _.each( fakeData, (e) => {
-	delete e['Организация'];
+	//delete e['Организация'];
 	delete e["Класс"];
 })
 
@@ -133,6 +136,8 @@ export default class EmployeesList extends Component {
 		this.state = {
 			filterValues: {},
 			filterModalIsOpen: false,
+			selectedDriver: null,
+			showForm: false,
 		};
 	}
 
@@ -143,6 +148,23 @@ export default class EmployeesList extends Component {
 
 	toggleFilter() {
 		this.setState({filterModalIsOpen: !!!this.state.filterModalIsOpen});
+	}
+
+	selectDriver({props}) {
+		const id = props.data.id;
+		let driver = getEmployeeById(id);
+
+		this.setState({
+			selectedDriver: driver
+		});
+	}
+
+	editDriver() {
+		this.setState({showForm: true});
+	}
+
+	onFormHide() {
+		this.setState({showForm: false});
 	}
 
 	render() {
@@ -181,10 +203,14 @@ export default class EmployeesList extends Component {
 												 options={employees}
 												 tableMeta={tableMeta}
 												 tableData={fakeData}/>
+						<Button bsSize="small" onClick={this.editDriver.bind(this)} disabled={this.state.selectedDriver === null}><Glyphicon glyph="pencil" /> Редактировать</Button>
 					</div>
 				</div>
 
-				<EmployeesTable data={data} onRowSelected={()=>{}}/>
+				<EmployeesTable data={data} onRowSelected={this.selectDriver.bind(this)} selected={this.state.selectedDriver} selectField={'id'}/>
+				<DriverFormWrap onFormHide={this.onFormHide.bind(this)}
+												showForm={this.state.showForm}
+												driver={this.state.selectedDriver}/>
 			</div>
 		)
 	}
@@ -192,8 +218,13 @@ export default class EmployeesList extends Component {
 
 let EmployeesTable = (props) => {
 
+	const renderers = {
+		'Дата рождения': ({data}) => <div>{moment(data).format('YYYY-MM-DD H:mm')}</div>,
+	}
+
 	return <Table results={props.data}
 								tableCols={tableCols}
 								tableCaptions={tableCaptions}
+								renderers={renderers}
 								{...props}/>
 }

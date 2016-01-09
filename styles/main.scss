@@ -2145,3 +2145,10 @@ div.none {
 .pagination>li:first-child>a, .pagination>li:first-child>span, .pagination>li:last-child>a, .pagination>li:last-child>span {
   border-radius: 0 !important;
 }
+
+
+.dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .dropdown-menu>.active>a:hover {
+  background-color: rgba(110, 158, 88, 0.4) !important;
+  color: #333 !important;
+  outline: none !important;
+}

@@ -9,6 +9,7 @@ export function getCars() {
 	return fetch('//ods.mos.ru/ssd/city-dashboard/cache_krylatskoe/')
 	.then(r => r.json())
 	.then(cars => {
+		let KRYLATSKOE_CARS_INNER = [];
 		_.each(cars, (car, key ) => {
 			let _car = car.car;
 
@@ -23,11 +24,13 @@ export function getCars() {
 			_car.type = !!type ? type.title : 'Н/Д';
 			_car.model = !!model ? model.title === 'НЕИЗВЕСТНА' ? "Н/Д" : model.title : 'Н/Д';
 			_car.label = _car.gov_number + ' [' + _car.model + ']';
-			_car.id = _car.value = key;
+			_car.id = key;
+			_car.value = key;
 			KRYLATSKOE_CARS.push( _car );
+			KRYLATSKOE_CARS_INNER.push( _car );
 		})
 
-		return KRYLATSKOE_CARS;
+		return KRYLATSKOE_CARS_INNER;
 	})
 }
 

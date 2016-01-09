@@ -21,12 +21,16 @@ export function getFIOById(id, fullFlag = false) {
 
 	_.each( fakeData, (v) => {
 		if ( v.id === id) {
-			result = v['Фамилия'] + ' '+ (fullFlag ? 
+			result = v['Фамилия'] + ' '+ (fullFlag ?
 				v['Имя']+' '+v['Отчество'] : v['Имя'][0]+'.'+v['Отчество'][0]+'.');
 		}
 
 	})
 	return result;
+}
+
+export function getEmployeeById(id) {
+	return _.find(fakeData, e => e.id === id);
 }
 
 
@@ -65,4 +69,17 @@ export function getDrivers() {
 	})
 
 	return result;
+}
+
+export function updateDriver(data) {
+	let toSave = _.clone(data);
+ 	let updatedDriver = getEmployeeById(data.id);
+
+ 	_.each(toSave, (v,k ) => {
+ 		updatedDriver[k] = v;
+ 	})
+
+ 	//updatedBill.STATUS = false;
+
+ 	//sortList();
 }

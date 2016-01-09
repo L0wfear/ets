@@ -47,17 +47,25 @@ class Table extends React.Component {
   }
 
   render() {
-    const { tableCols, tableCaptions, renderers, onRowSelected, selected } = this.props;
+    const { tableCols, tableCaptions, renderers, onRowSelected, selected, selectField } = this.props;
     const columnMetadata = this.initializeMetadata(tableCols, tableCaptions, renderers);
 		const rowMetadata = this.initializeRowMetadata();
 
     const results = this.props.results.map( (data, i) => {
 			if (!selected || typeof onRowSelected === 'undefined') return data;
-			if (data.ID === selected.ID) {
-				data.isSelected = true;
-			} else {
-				data.isSelected = false;
-			}
+      if (typeof selectField !== 'undefined') {
+        if (data[selectField] === selected[selectField]) {
+          data.isSelected = true;
+        } else {
+          data.isSelected = false;
+        }
+      } else {
+  			if (data.ID === selected.ID) {
+  				data.isSelected = true;
+  			} else {
+  				data.isSelected = false;
+  			}
+      }
 			return data;
 		});
 
@@ -69,7 +77,7 @@ class Table extends React.Component {
   									customPagerComponent={Paginator}
   									onRowClick={onRowSelected}
   									rowMetadata={rowMetadata}
-  									noDataMessage={''}/>;
+  									noDataMessage={'Нет данных'}/>;
   }
 }
 

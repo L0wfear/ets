@@ -3,7 +3,7 @@ import { Link, History } from 'react-router';
 import { MenuItem, Navbar, Nav, NavItem, NavDropdown} from 'react-bootstrap';
 export default React.createClass({
 
-  mixins: [ History ], 
+  mixins: [ History ],
 
 	renderHeader() {
 		let path = this.props.location.pathname;
@@ -18,8 +18,10 @@ export default React.createClass({
 				      <Nav>
 				        <NavItem active={path === '/monitor'} href="#/monitor">Монитор</NavItem>
 				        <NavItem active={path === '/waybill-journal'} href="#/waybill-journal">Журнал путевых листов</NavItem>
-				        <NavItem active={path === '/employees'} href="#/employees">Реестр сотрудников</NavItem> 
-				         <NavItem active={path === '/cars'} href="#/cars">Реестр транспортных средств</NavItem>
+                <NavDropdown title="НСИ" id="nav-dropdown">
+                  <MenuItem active={path === '/employees'} href="#/employees">Реестр водителей</MenuItem>
+  				        <MenuItem active={path === '/cars'} href="#/cars">Реестр транспортных средств</MenuItem>
+                </NavDropdown>
 				        <NavItem active={path === '/routes-list'} href="#/routes-list">Список маршрутов</NavItem>
 				        {/*<NavItem active={path === '/waybill-journal/create'} href="#/waybill-journal/create">Создать маршрут</NavItem>*/}
 				        {/*<NavItem active={path === '/waybill-journal'} href="#/waybill-journal">Журнал путевых листов</NavItem>
@@ -36,6 +38,6 @@ export default React.createClass({
 		return <div>
 						<div className="app-navigation">{this.renderHeader()}</div>
 						<div className="app-content">{this.props.children}</div>
-					</div>	
+					</div>
   }
 })

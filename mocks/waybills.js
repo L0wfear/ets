@@ -72,7 +72,7 @@ export function generateBills() {
     CARS = cars;
 
     for (let i = 0; i < 50; i++) {
-        LIST.push( getBill());
+      LIST.push( getBill());
     }
 
     // epic shiiit

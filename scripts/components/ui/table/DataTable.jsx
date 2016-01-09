@@ -72,7 +72,7 @@ class Table extends React.Component {
     return <Griddle results={results}
   									columnMetadata={columnMetadata}
   									columns={tableCols}
-  									resultsPerPage={10}
+  									resultsPerPage={15}
   									useCustomPagerComponent={true}
   									customPagerComponent={Paginator}
   									onRowClick={onRowSelected}

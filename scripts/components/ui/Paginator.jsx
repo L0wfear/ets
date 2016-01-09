@@ -1,4 +1,6 @@
 import React from 'react';
+import { Glyphicon } from 'react-bootstrap';
+import cx from 'classnames';
 
 class Paginator extends React.Component {
 
@@ -39,7 +41,9 @@ class Paginator extends React.Component {
     if (currentPage > 0) {
       options.push(
         <li className="aui-nav-previous" key="prev">
-          <a className="pointer" onClick={this.previous}>Пред</a>
+          <a className="pointer pagination-control" onClick={this.previous}>
+            <Glyphicon glyph="chevron-left" />
+          </a>
         </li>
       );
     }
@@ -63,9 +67,12 @@ class Paginator extends React.Component {
     }
 
     if (currentPage < maxPage - 1) {
+    const nextClasses = cx('pointer pagination-control', {'disabled': !(currentPage < maxPage - 1)});
       options.push(
         <li className="aui-nav-previous" key="next">
-          <a className="pointer" onClick={this.next}>След</a>
+          <a className={nextClasses} onClick={this.next.bind(this, !(currentPage < maxPage - 1))}>
+            <Glyphicon glyph="chevron-right" />
+          </a>
         </li>
       );
     }
@@ -102,8 +109,9 @@ class Paginator extends React.Component {
     this.props.setPage(this.props.currentPage - 1);
   }
 
-  next(e) {
+  next(disabled, e) {
     e.preventDefault();
+    if (disabled) return;
     this.props.setPage(this.props.currentPage + 1);
   }
 

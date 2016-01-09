@@ -3,7 +3,8 @@ import { Link } from 'react-router';
 //import Modal from './ui/Modal.jsx';
 //import Table from './ui/table/Table.jsx';
 import Table from './ui/table/DataTable.jsx';
-import FilterModal from './ui/table/FilterModal.jsx';
+import FilterModal from './ui/table/filter/FilterModal.jsx';
+import FilterButton from './ui/table/filter/FilterButton.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
 import WaybillForm from './WaybillForm.jsx';
 import {makeDate, makeTime} from '../utils/dates.js';
@@ -12,7 +13,7 @@ import cx from 'classnames';
 import { getCarById } from '../../mocks/krylatskoe_cars.js';
 
 import WaybillFormWrap from './WaybillFormWrap.jsx';
-import { getList, getLastNumber, createBill, getBillById, updateBill, deleteBill } from '../stores/WaybillStore.js';
+import { getList, getLastNumber, createBill, getBillById, getStatusLabel, updateBill, deleteBill } from '../stores/WaybillStore.js';
 import { getFIOById } from '../stores/EmployeesStore.js';
 
 
@@ -51,6 +52,10 @@ let tableMeta = {
 			name: 'STATUS',
 			caption: 'Статус',
 			type: 'text',
+			filter: {
+				type: 'select',
+				labelFunction: getStatusLabel
+			}
 		},
 		{
 			name: 'ID',
@@ -66,6 +71,7 @@ let tableMeta = {
 			name: 'DRIVER_ID',
 			caption: 'Водитель',
 			type: 'text',
+			filter: 'select'
 		},
 		{
 			name: 'CAR_ID',
@@ -96,6 +102,10 @@ let tableMeta = {
 			name: 'RESPONSIBLE_PERSON_ID',
 			caption: 'Мастер',
 			type: 'text',
+			filter: {
+				type: 'select',
+				labelFunction: getFIOById
+			}
 		},
 	]
 };
@@ -190,7 +200,6 @@ export default class WaybillJournal extends Component {
 	render() {
 
 		let showCloseBtn = this.state.selectedBill !== null && this.state.selectedBill.STATUS !== 'open';
-		let filterClass = cx({'filter-button': true, 'filter-button-active': _.keys(this.state.filterValues).length});
 
 		const data = _.filter(fakeData, (obj) => {
 			let isValid = true;
@@ -215,13 +224,16 @@ export default class WaybillJournal extends Component {
 			<div className="ets-page-wrap">
 				<div className="some-header">Журнал путевых листов
 					<div className="waybills-buttons">
-							<Button bsSize="small" className={filterClass} onClick={this.toggleFilter.bind(this)}><Glyphicon glyph="filter" /></Button>
-							<FilterModal onSubmit={this.saveFilter.bind(this)}
-													 show={this.state.filterModalIsOpen}
-													 onHide={() => this.setState({filterModalIsOpen: false})}
-													 cols={tableCols}
-													 captions={tableCaptions}
-													 values={this.state.filterValues}/>
+						<FilterButton direction={'right'} show={this.state.filterModalIsOpen} active={_.keys(this.state.filterValues).length} onClick={this.toggleFilter.bind(this)}/>
+						<FilterModal onSubmit={this.saveFilter.bind(this)}
+												 show={this.state.filterModalIsOpen}
+												 onHide={() => this.setState({filterModalIsOpen: false})}
+												 cols={tableCols}
+												 captions={tableCaptions}
+												 values={this.state.filterValues}
+												 direction={'right'}
+												 tableMeta={tableMeta}
+												 tableData={fakeData} />
 						<Button bsSize="small" onClick={this.createBill.bind(this)}><Glyphicon glyph="plus" /> Создать ПЛ</Button>
 						<Button bsSize="small" onClick={this.showBill.bind(this)}><Glyphicon glyph="search" /> Просмотреть ПЛ</Button>
 						<Button bsSize="small" disabled={showCloseBtn} onClick={this.closeBill.bind(this)}><Glyphicon glyph="ok" /> Закрыть ПЛ</Button>
@@ -241,7 +253,7 @@ export default class WaybillJournal extends Component {
 let WaybillsTable = (props) => {
 
 		const renderers = {
-			STATUS: ({data}) => data === 'open' ? <div>Открыт</div> : <div>Закрыт</div>,
+			STATUS: ({data}) => <div>{getStatusLabel(data)}</div>,
 			RESPONSIBLE_PERSON_ID: ({data}) => <div>{getFIOById(data)}</div>,
 			DRIVER_ID: ({data}) => <div>{getFIOById(data)}</div>,
 			CAR_ID: ({data}) => <div>{getCarById(data).gov_number}</div>
@@ -251,5 +263,6 @@ let WaybillsTable = (props) => {
 									tableCols={tableCols}
 									tableCaptions={tableCaptions}
 									renderers={renderers}
+									tableMeta={tableMeta}
 									{...props}/>
 }

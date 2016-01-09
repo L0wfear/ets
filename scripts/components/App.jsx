@@ -43,6 +43,7 @@ class App extends Component {
         }))
       .catch((error) => {
     //debugger;
+        console.log(error);
         console.log('load error')
         this.setState({
           error: true

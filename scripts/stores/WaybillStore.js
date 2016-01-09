@@ -155,3 +155,7 @@ export function getBillById( id){
 
 	return result;
 }
+
+export function getStatusLabel(s) {
+	return s === 'open' ? 'Открыт' : 'Закрыт';
+}

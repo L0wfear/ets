@@ -1,12 +1,54 @@
 import React from 'react';
+import ReactDom from 'react-dom';
 import { Modal, Input, Label, Container, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
-import Div from '../Div.jsx';
-import Datepicker from '../DatePicker.jsx';
+import Div from '../../Div.jsx';
+import Datepicker from '../../DatePicker.jsx';
+import Select from 'react-select';
+
+import _ from 'lodash';
+import cx from 'classnames';
+
+const FilterSelect = (props) => {
+  return <Select {...props}
+                 placeholder="Выберите..."
+                 searchingText="Поиск..."
+                 noResultsText="Ничего не найдено"
+                 clearAllText="Очистить"
+                 addLabelText='Добавить "{label}"?'/>
+};
 
 const Filter = (props) => {
   const value = props.filterValues[props.col];
-  const input = props.col === 'ID' ? <Input type="number" value={value} onChange={props.onChange}/> :
-  <Datepicker date={value} onChange={props.onChange}/>;
+  const columnMeta = _.find(props.tableMeta.cols, col => col.name === props.col) || {};
+  let input;
+
+  switch (props.col) {
+    case 'ID':
+      input = <Input type="number" value={value} onChange={props.onChange}/>;
+      break;
+    case 'DATE_CREATE':
+      input = <Datepicker date={value} onChange={props.onChange}/>;
+      break;
+    case 'id':
+      input = <FilterSelect options={props.options} value={value} onChange={props.onChange} />
+      break;
+    default:
+      input = <Input type="text" value={value} onChange={props.onChange}/>;
+      break;
+  }
+
+  if (columnMeta.filter && columnMeta.filter.type && columnMeta.filter.type === 'select') {
+    const options = _(props.tableData)
+                    .uniq((d) => d[props.col])
+                    .map((d) => ({
+                      value: d[props.col],
+                      label: typeof columnMeta.filter.labelFunction === 'function' ? columnMeta.filter.labelFunction(d[props.col]) : d[props.col],
+                    }))
+                    .value();
+    input = <FilterSelect options={options} value={value} onChange={props.onChange} />
+  }
+
+
   return (
     <Div>
       <label>{props.caption}</label>
@@ -41,6 +83,7 @@ class FilterModal extends React.Component {
   }
 
   submit() {
+    //console.log(this.state.filterValues);
     const filterValues = _.reduce(this.state.filterValues, (cur, v, k) => {
       if (typeof v !== 'undefined') {
         if (typeof v === 'string') {
@@ -67,7 +110,7 @@ class FilterModal extends React.Component {
 
     const filterRows = this.props.cols.map( (col, i) => {
 
-      if (col !== 'ID' && col !== 'DATE_CREATE') return null;
+      //if (col !== 'ID' && col !== 'DATE_CREATE' && col !== 'id') return null;
 
       return <Row key={i}>
               <Col md={12}>
@@ -76,9 +119,10 @@ class FilterModal extends React.Component {
              </Row>
 
     });
+    const className = cx({'left': this.props.direction !== 'right', 'right': this.props.direction === 'right'}, 'filter-container');
 
     return (
-      <Div className="filter-container" hidden={!this.props.show}>
+      <Div className={className} hidden={!this.props.show}>
 
         <Modal.Body>
           {filterRows}
@@ -88,28 +132,10 @@ class FilterModal extends React.Component {
           <Button onClick={this.submit.bind(this)}>Применить</Button>
 	      	<Button onClick={this.reset.bind(this)}>Сброс</Button>
 	      </Modal.Footer>
+
       </Div>
     );
 
-    return (
-      <Modal {...this.props}
-              bsSize="small">
-
-				<Modal.Header closeButton>
-	          <Modal.Title id="contained-modal-title-lg">Фильтр</Modal.Title>
-				</Modal.Header>
-
-	      <Modal.Body>
-  	      {filterRows}
-	      </Modal.Body>
-
-	      <Modal.Footer>
-          <Button onClick={this.submit.bind(this)}>Сохранить</Button>
-	      	<Button onClick={this.props.onHide}>Закрыть</Button>
-	      </Modal.Footer>
-
-			</Modal>
-    )
   }
 
 }

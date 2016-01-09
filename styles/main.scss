@@ -1994,6 +1994,20 @@ body {
   cursor: pointer;
 }
 
+.underline {
+  text-decoration: underline;
+}
+
+.pagination-control {
+  background: #4C4C4C !important;
+  color: white !important;
+}
+
+.pagination-control.disabled {
+  background: #EEE !important;
+  color: #999 !important;
+}
+
 .griddle-container {
   border: none !important;
 }
@@ -2002,15 +2016,9 @@ body {
   z-index: 1000;
   display: block;
   position: absolute;
-  /* top: 100%; */
-  /* right: 0; */
-  /* width: auto; */
-  /* left: 20px; */
-  /* margin-top: 9px; */
   margin-left: 13px;
   font-size: 14px;
   margin-top: 3px;
-  /*padding: 17px 30px 30px 17px;*/
   background-color: #EEE;
   -webkit-box-shadow: 0 0 0 3px #CBCBCB;
   -moz-box-shadow: 0 0 0 3px #CBCBCB;
@@ -2023,6 +2031,10 @@ body {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 
+  min-width: 300px;
+  max-height: 300px;
+  overflow: scroll;
+
   .rw-select {
      .rw-btn {
       width: 0.7em;
@@ -2034,17 +2046,38 @@ body {
   }
 }
 
-.filter-container::before{
+.filter-container.left {
+
+  margin-left: -255px !important;
+}
+
+.filter-container::before, .filter-button.open::after {
   position: absolute;
-top: -9px;
-/* right: 91px; */
-left: -3px;
-width: 38px;
-height: 9px;
-background-color: #eee;
-border-right: 3px solid #CBCBCB;
-border-left: 3px solid #CBCBCB;
-content: '';
+  top: -9px;
+  /* right: 91px; */
+  width: 38px;
+  height: 9px;
+  background-color: #eee;
+  border-right: 3px solid #CBCBCB;
+  border-left: 3px solid #CBCBCB;
+  content: '';
+}
+
+.filter-button.open::after {
+  top: 27px;
+  z-index: 9999;
+}
+
+.filter-container.right::before, .filter-button.open.right::after{
+  left: -3px;
+}
+
+.filter-container.left::before, .filter-button.open.left::after{
+  right: -3px;
+}
+
+.filter-button {
+  position: relative;
 }
 
 .waybills-buttons {
@@ -2076,6 +2109,7 @@ content: '';
       td {
         background-color: transparent !important;
       }
+      cursor: pointer;
     }
 
     tr.selected-row {
@@ -2084,7 +2118,16 @@ content: '';
         color: white !important;
       }
     }
+
+    tbody:first-of-type {
+      tr:hover {
+        background: rgba(110, 158, 88, 0.4);
+      }
+    }
+
   }
+
+
 }
 
 div.none {

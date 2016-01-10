@@ -12,7 +12,6 @@ export default class DriverForm extends Component {
 		super(props);
 
 		this.state = {
-			operations: [],
       cars: [],
 		}
 	}
@@ -36,30 +35,6 @@ export default class DriverForm extends Component {
     let stage = this.props.formStage;
 
     console.log('form stage is ', stage, 'form state is ', state);
-
-
-		let IS_CREATING = stage === 'creating';
-		let IS_CLOSING = stage === 'closing';
-    let IS_POST_CREATING = stage === 'post-creating'
-		let IS_DISPLAY = stage === 'display';
-
-    let title = '';
-
-    if ( IS_CREATING ) {
-      title = "Создать новый путевой лист"
-    }
-
-    if (IS_CLOSING) {
-      title = "Закрыть путевой лист"
-    }
-
-    if (IS_DISPLAY) {
-      title= "Просмотр путевого листа "
-    }
-
-    if (IS_POST_CREATING) {
-      title = "Создание нового путевого листа"
-    }
 
 		return (
 			<Modal {...this.props} bsSize="large" >

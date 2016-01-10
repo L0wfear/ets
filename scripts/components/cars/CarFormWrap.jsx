@@ -1,38 +1,26 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import {monthes} from '../../utils/dates.js';
 import _ from 'lodash';
 
-import DriverForm from './DriverForm.jsx';
-import { getMasters, getDrivers, getFIOById, getDriverByCode, updateDriver } from '../../stores/EmployeesStore.js';
-
-const formStages = ['creating', 'post-creating', 'display', 'closing'];
+import CarForm from './CarForm.jsx';
 
 export default class FormWrap extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			formStage: formStages[0],
 			formState: null,
 			canSave: false,
-			canPrint: false
-		}
+		};
 	}
 
 	componentWillReceiveProps(props) {
 
 		if (props.showForm) {
-			if (props.driver === null ) {
-				// this.setState({
-				// 	formState: getDefaultBill(),
-				// 	formStage: formStages[0]
-				// })
-			} else {
-        const driver = Object.assign({}, props.driver);
+			if (props.car !== null ) {
+        const car = Object.assign({}, props.car);
         this.setState({
-          formState: driver,
-          formStage: formStages[3]
+          formState: car
         })
 			}
 		}
@@ -41,7 +29,7 @@ export default class FormWrap extends Component {
 
 
 	handleFormStateChange(field, e) {
-		console.log( 'driver form changed', field, e)
+		console.log( 'car form changed', field, e)
 
 		let formState = this.state.formState;
 		let newState = {};
@@ -53,8 +41,7 @@ export default class FormWrap extends Component {
 	}
 
 	handleFormSubmit(formState) {
-    updateDriver(formState);
-
+    //todo update car info
     this.props.onFormHide()
 	}
 
@@ -63,7 +50,7 @@ export default class FormWrap extends Component {
 		let props = this.props;
 
 		return props.showForm ?
-    <DriverForm formState = {this.state.formState}
+    <CarForm formState = {this.state.formState}
 								onSubmit={this.handleFormSubmit.bind(this)}
 								handleFormChange={this.handleFormStateChange.bind(this)}
 								show={this.props.showForm}

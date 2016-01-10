@@ -6,22 +6,35 @@ import FilterModal from './ui/table/filter/FilterModal.jsx';
 import FilterButton from './ui/table/filter/FilterButton.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
 import { getCarsByOwnerId } from '../adapter.js';
+import CarFormWrap from './cars/CarFormWrap.jsx';
 
 let CARS = [];
 getCarsByOwnerId().then((response)=> {
-	CARS = response
+	CARS = response.map( (el, i) => {
+		el.garage_number = i % 3 === 0 ? 256 : 128;
+		el.state = i % 9 === 0 ? 'Несправно' : 'Исправно';
+		return el;
+	})
 });
 
 let tableCaptions = [
-	"Госномер", "Модель", "Тип"
-]
+	"Гаражный номер", "Госномер", "Модель", "Тип", "Состояние"
+];
 
 let tableCols = [
-	'gov_number', 'model', 'type'
-]
+	'garage_number', 'gov_number', 'model', 'type', 'state'
+];
 
 let tableMeta = {
 	cols: [
+		{
+			name: 'garage_number',
+			caption: 'Гаражный номер',
+			type: 'text',
+			filter: {
+				type: 'select',
+			}
+		},
 		{
 			name: 'gov_number',
 			caption: 'Госномер',
@@ -45,6 +58,14 @@ let tableMeta = {
 			filter: {
 				type: 'select',
 			}
+		},
+		{
+			name: 'state',
+			caption: 'Состояние',
+			type: 'text',
+			filter: {
+				type: 'select',
+			}
 		}
 	]
 }
@@ -59,6 +80,8 @@ export default class CarsList extends Component {
 		this.state = {
 			filterValues: {},
 			filterModalIsOpen: false,
+			selectedCar: null,
+			showForm: false,
 		};
 	}
 
@@ -69,6 +92,23 @@ export default class CarsList extends Component {
 
 	toggleFilter() {
 		this.setState({filterModalIsOpen: !!!this.state.filterModalIsOpen});
+	}
+
+	selectCar({props}) {
+		const id = props.data.id;
+		let car = _.find(CARS, c => c.id === id);//getCarById(id);
+
+		this.setState({
+			selectedCar: car
+		});
+	}
+
+	editCar() {
+		this.setState({showForm: true});
+	}
+
+	onFormHide() {
+		this.setState({showForm: false});
 	}
 
 	render() {
@@ -108,10 +148,14 @@ export default class CarsList extends Component {
 												 direction={'left'}
 												 tableMeta={tableMeta}
 												 tableData={CARS}/>
+						<Button bsSize="small" onClick={this.editCar.bind(this)} disabled={this.state.selectedCar === null}><Glyphicon glyph="pencil" /> Редактировать</Button>
 					</div>
 				</div>
 
-				<CarsTable data={data}/>
+				<CarsTable data={data} onRowSelected={this.selectCar.bind(this)} selected={this.state.selectedCar} selectField={'id'}/>
+				<CarFormWrap onFormHide={this.onFormHide.bind(this)}
+												showForm={this.state.showForm}
+												car={this.state.selectedCar}/>
 			</div>
 		);
 	}
@@ -121,6 +165,7 @@ let CarsTable = (props) => {
 
 	return <Table tableCaptions={tableCaptions}
 								tableCols={tableCols}
-								results={props.data} />
+								results={props.data}
+								{...props} />
 
 }

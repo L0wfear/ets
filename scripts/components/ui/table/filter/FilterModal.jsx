@@ -27,7 +27,7 @@ const Filter = (props) => {
       input = <Input type="number" value={value} onChange={props.onChange}/>;
       break;
     case 'DATE_CREATE':
-      input = <Datepicker date={value} onChange={props.onChange}/>;
+      input = <Datepicker date={value} onChange={props.onChange} time={false} />;
       break;
     case 'id':
       input = <FilterSelect options={props.options} value={value} onChange={props.onChange} />

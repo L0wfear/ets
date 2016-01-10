@@ -26,6 +26,7 @@ export default class DatePicker extends Component {
   render() {
     let DATE_FORMAT = 'YYYY-MM-DD HH:mm';
     let TIME_FORMAT = 'HH:mm';
+    let { time = true } = this.props;
 
     //return //<input disabled={this.props.disabled}/>
     return <DateTimePicker onChange={this.props.onChange}
@@ -36,6 +37,7 @@ export default class DatePicker extends Component {
       disabled={this.props.disabled}
       step={5}
       //messages={translation}
-      value={this.props.date}/>
+      value={this.props.date}
+      time={time}/>
   }
 }

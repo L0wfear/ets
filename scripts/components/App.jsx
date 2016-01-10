@@ -11,6 +11,7 @@ import MonitorPage from './MonitorPage.jsx';
 import LoadingPage from './LoadingPage.jsx';
 import EmployeesList from './EmployeesList.jsx';
 import CarsList from './CarsList.jsx';
+import FuelRatesDirectory from './directories/FuelRatesDirectory.jsx';
 import Modal from './ui/Modal.jsx';
 import { init } from '../adapter.js';
 import Flux from './Flux.js';
@@ -88,6 +89,7 @@ const routes = (
       <Route path="waybill-journal/create" component={WaybillForm}/>
       <Route path="routes-list" component={RoutesList}/>
       <Route path="employees" component={EmployeesList}/>
+      <Route path="fuel-rates" component={FuelRatesDirectory}/>
       <Route path="cars" component={CarsList}/>
       {/*  <Route path="/user/:userId" component={User}/>*/}
       {/*<Route path="*" component={NoMatch}/>*/}

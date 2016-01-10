@@ -9,6 +9,8 @@ import { Button, Glyphicon } from 'react-bootstrap';
 import _ from 'lodash';
 import moment from 'moment';
 
+import ClickOutHandler from 'react-onclickout';
+
 import EMPLOYEES from '../../mocks/employees.js';
 import { getEmployeeById } from '../stores/EmployeesStore.js';
 
@@ -150,6 +152,10 @@ export default class EmployeesList extends Component {
 		this.setState({filterModalIsOpen: !!!this.state.filterModalIsOpen});
 	}
 
+	handleClickOutside(){
+    this.setState({filterModalIsOpen: false});
+  }
+
 	selectDriver({props}) {
 		const id = props.data.id;
 		let driver = getEmployeeById(id);
@@ -192,17 +198,19 @@ export default class EmployeesList extends Component {
 			<div className="ets-page-wrap">
 				<div className="some-header">Реестр водителей "Жилищник Крылатское"
 					<div className="waybills-buttons">
-						<FilterButton direction={'left'} show={this.state.filterModalIsOpen} active={_.keys(this.state.filterValues).length} onClick={this.toggleFilter.bind(this)}/>
-						<FilterModal onSubmit={this.saveFilter.bind(this)}
-												 show={this.state.filterModalIsOpen}
-												 onHide={() => this.setState({filterModalIsOpen: false})}
-												 cols={tableCols}
-												 captions={tableCaptions}
-												 values={this.state.filterValues}
-												 direction={'left'}
-												 options={employees}
-												 tableMeta={tableMeta}
-												 tableData={fakeData}/>
+						<ClickOutHandler onClickOut={() => this.setState({filterModalIsOpen: false})}>
+							<FilterButton direction={'left'} show={this.state.filterModalIsOpen} active={_.keys(this.state.filterValues).length} onClick={this.toggleFilter.bind(this)}/>
+							<FilterModal onSubmit={this.saveFilter.bind(this)}
+													 show={this.state.filterModalIsOpen}
+													 onHide={() => this.setState({filterModalIsOpen: false})}
+													 cols={tableCols}
+													 captions={tableCaptions}
+													 values={this.state.filterValues}
+													 direction={'left'}
+													 options={employees}
+													 tableMeta={tableMeta}
+													 tableData={fakeData}/>
+						</ClickOutHandler>
 						<Button bsSize="small" onClick={this.editDriver.bind(this)} disabled={this.state.selectedDriver === null}><Glyphicon glyph="pencil" /> Редактировать</Button>
 					</div>
 				</div>

@@ -7,6 +7,7 @@ import FilterButton from './ui/table/filter/FilterButton.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
 import { getCarsByOwnerId } from '../adapter.js';
 import CarFormWrap from './cars/CarFormWrap.jsx';
+import ClickOutHandler from 'react-onclickout';
 
 let CARS = [];
 getCarsByOwnerId().then((response)=> {
@@ -138,16 +139,18 @@ export default class CarsList extends Component {
 
 				<div className="some-header"> Реестр транспорта "Жилищник Крылатское"
 					<div className="waybills-buttons">
-						<FilterButton direction={'left'} show={this.state.filterModalIsOpen} active={_.keys(this.state.filterValues).length} onClick={this.toggleFilter.bind(this)}/>
-						<FilterModal onSubmit={this.saveFilter.bind(this)}
-												 show={this.state.filterModalIsOpen}
-												 onHide={() => this.setState({filterModalIsOpen: false})}
-												 cols={tableCols}
-												 captions={tableCaptions}
-												 values={this.state.filterValues}
-												 direction={'left'}
-												 tableMeta={tableMeta}
-												 tableData={CARS}/>
+						<ClickOutHandler onClickOut={() => this.setState({filterModalIsOpen: false})}>
+							<FilterButton direction={'left'} show={this.state.filterModalIsOpen} active={_.keys(this.state.filterValues).length} onClick={this.toggleFilter.bind(this)}/>
+							<FilterModal onSubmit={this.saveFilter.bind(this)}
+													 show={this.state.filterModalIsOpen}
+													 onHide={() => this.setState({filterModalIsOpen: false})}
+													 cols={tableCols}
+													 captions={tableCaptions}
+													 values={this.state.filterValues}
+													 direction={'left'}
+													 tableMeta={tableMeta}
+													 tableData={CARS}/>
+						</ClickOutHandler>
 						<Button bsSize="small" onClick={this.editCar.bind(this)} disabled={this.state.selectedCar === null}><Glyphicon glyph="pencil" /> Редактировать</Button>
 					</div>
 				</div>

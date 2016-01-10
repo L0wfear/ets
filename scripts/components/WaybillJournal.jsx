@@ -10,6 +10,7 @@ import WaybillForm from './WaybillForm.jsx';
 import {makeDate, makeTime} from '../utils/dates.js';
 import moment from 'moment';
 import cx from 'classnames';
+import ClickOutHandler from 'react-onclickout';
 import { getCarById } from '../../mocks/krylatskoe_cars.js';
 
 import WaybillFormWrap from './WaybillFormWrap.jsx';
@@ -224,18 +225,20 @@ export default class WaybillJournal extends Component {
 			<div className="ets-page-wrap">
 				<div className="some-header">Журнал путевых листов
 					<div className="waybills-buttons">
-						<FilterButton direction={'right'} show={this.state.filterModalIsOpen} active={_.keys(this.state.filterValues).length} onClick={this.toggleFilter.bind(this)}/>
-						<FilterModal onSubmit={this.saveFilter.bind(this)}
-												 show={this.state.filterModalIsOpen}
-												 onHide={() => this.setState({filterModalIsOpen: false})}
-												 cols={tableCols}
-												 captions={tableCaptions}
-												 values={this.state.filterValues}
-												 direction={'right'}
-												 tableMeta={tableMeta}
-												 tableData={fakeData} />
+						<ClickOutHandler onClickOut={() => this.setState({filterModalIsOpen: false})}>
+							<FilterButton direction={'right'} show={this.state.filterModalIsOpen} active={_.keys(this.state.filterValues).length} onClick={this.toggleFilter.bind(this)}/>
+							<FilterModal onSubmit={this.saveFilter.bind(this)}
+													 show={this.state.filterModalIsOpen}
+													 onHide={() => this.setState({filterModalIsOpen: false})}
+													 cols={tableCols}
+													 captions={tableCaptions}
+													 values={this.state.filterValues}
+													 direction={'right'}
+													 tableMeta={tableMeta}
+													 tableData={fakeData} />
+						</ClickOutHandler>
 						<Button bsSize="small" onClick={this.createBill.bind(this)}><Glyphicon glyph="plus" /> Создать ПЛ</Button>
-						<Button bsSize="small" onClick={this.showBill.bind(this)}><Glyphicon glyph="search" /> Просмотреть ПЛ</Button>
+						<Button bsSize="small" onClick={this.showBill.bind(this)} disabled={this.state.selectedBill === null}><Glyphicon glyph="search" /> Просмотреть ПЛ</Button>
 						<Button bsSize="small" disabled={showCloseBtn} onClick={this.closeBill.bind(this)}><Glyphicon glyph="ok" /> Закрыть ПЛ</Button>
 						<Button bsSize="small" disabled={this.state.selectedBill === null} onClick={this.deleteBill.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
 					</div>

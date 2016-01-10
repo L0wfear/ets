@@ -160,7 +160,7 @@ export default class EmployeesList extends Component {
 	}
 
 	editDriver() {
-		this.setState({showForm: true});
+		this.setState({filterModalIsOpen: false, showForm: true});
 	}
 
 	onFormHide() {
@@ -190,7 +190,7 @@ export default class EmployeesList extends Component {
 
 		return (
 			<div className="ets-page-wrap">
-				<div className="some-header">Реестр сотрудников "Жилищник Крылатское"
+				<div className="some-header">Реестр водителей "Жилищник Крылатское"
 					<div className="waybills-buttons">
 						<FilterButton direction={'left'} show={this.state.filterModalIsOpen} active={_.keys(this.state.filterValues).length} onClick={this.toggleFilter.bind(this)}/>
 						<FilterModal onSubmit={this.saveFilter.bind(this)}

@@ -6,6 +6,8 @@ import moment from 'moment';
 import Div from '../ui/Div.jsx';
 import { getCarById, getCars } from '../../../mocks/krylatskoe_cars.js';
 
+const DRIVER_STATES = ['Работает', 'Не работает'].map( el => ({value: el, label: el}));
+
 export default class DriverForm extends Component {
 
 	constructor(props) {
@@ -84,6 +86,10 @@ export default class DriverForm extends Component {
   	      	<Div>
               <label>Предпочитаемое ТрС</label>
               <EtsSelect options={this.state.cars} value={state['Предпочитаемое ТрС']} onChange={this.handleChange.bind(this, 'Предпочитаемое ТрС')}/>
+  	      	</Div>
+            <Div>
+              <label>Состояние</label>
+              <EtsSelect options={DRIVER_STATES} value={state['Текущее состояние']} onChange={this.handleChange.bind(this, 'Текущее состояние')}/>
   	      	</Div>
 	      	</Col>
 

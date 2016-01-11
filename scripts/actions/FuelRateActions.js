@@ -16,4 +16,16 @@ export default class FuelRateActions extends Actions {
     return getFuelOperations();
   }
 
+  updateFuelRate(newFuelRate) {
+    return newFuelRate;
+  }
+
+  deleteFuelRate(rate) {
+    return rate;
+  }
+
+  addFuelRate(rate) {
+    return rate;
+  }
+
 }

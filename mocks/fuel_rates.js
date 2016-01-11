@@ -14,11 +14,11 @@ export function getFuelRates(operations) {
   let fuelRates = [];
   let object;
 
-  [102, 132].map( (model) => {
+  [102, 132, 8, 210].map( (model) => {
     operations.result.map( (op, i) => {
       object = {
         ID: model + i,
-        date: '01-01-2015',
+        date: '2015-01-01',
         operation_id: op.ID,
         model_id: getModelById(model).id,
       }

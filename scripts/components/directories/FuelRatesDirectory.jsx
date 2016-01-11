@@ -9,7 +9,12 @@ import moment from 'moment';
 import cx from 'classnames';
 import ClickOutHandler from 'react-onclickout';
 import connectToStores from 'flummox/connect';
-import { getModelById } from '../../models.js';
+import { getModelById, getModels } from '../../models.js';
+import FuelRateFormWrap from './FuelRateFormWrap.jsx';
+
+function deleteFuelRate() {
+
+}
 
 let getOperationById = () => {};
 
@@ -79,7 +84,8 @@ class FuelRatesDirectory extends Component {
 		this.state = {
 			selectedFuelRate: null,
 			filterModalIsOpen: false,
-			filterValues: {}
+			filterValues: {},
+      showForm: false,
 		};
 	}
 
@@ -119,40 +125,36 @@ class FuelRatesDirectory extends Component {
 	componentWillReceiveProps(){
 	}
 
-	deleteBill() {
-		if (confirm('Вы уверены, что хотите удалить путевой лист?')) {
-			deleteBill(this.state.selectedBill.ID);
-			this.updateTable();
+  updateFuelRate(formState) {
+    const { flux } = this.context;
+    flux.getActions('fuel-rates').updateFuelRate(formState);
+  }
+
+	deleteFuelRate() {
+    const { flux } = this.context;
+		if (confirm('Вы уверены, что хотите удалить запись?')) {
+			flux.getActions('fuel-rates').deleteFuelRate(this.state.selectedFuelRate);
 		} else {
 
 		}
 	}
 
-	// epic shitcode
-	// there is no time to do stores
-	updateTable() {
-		this.forceUpdate()
-	}
-
-	showBill() {
+	showFuelRate() {
 		this.setState({
 			showForm:true
 		})
-
 	}
 
-	closeBill() {
-		this.setState({
-			showForm: true
-		})
-	}
+  addFuelRate(newRate) {
+    const { flux } = this.context;
+    flux.getActions('fuel-rates').addFuelRate(newRate);
+  }
 
 	toggleFilter() {
 		this.setState({filterModalIsOpen: !!!this.state.filterModalIsOpen});
 	}
 
 	saveFilter(filterValues) {
-		console.info(`SETTING FILTER VALUES`, filterValues);
 		this.setState({filterValues});
 	}
 
@@ -181,9 +183,9 @@ class FuelRatesDirectory extends Component {
 
 		return (
 			<div className="ets-page-wrap">
-				<div className="some-header">Нормы расхода ГСМ
+				<div className="some-header">Нормы расхода топлива
 					<div className="waybills-buttons">
-						<ClickOutHandler onClickOut={() => this.setState({filterModalIsOpen: false})}>
+						<ClickOutHandler onClickOut={() => { if (this.state.filterModalIsOpen) { this.setState({filterModalIsOpen: false}) }}}>
 							<FilterButton direction={'right'} show={this.state.filterModalIsOpen} active={_.keys(this.state.filterValues).length} onClick={this.toggleFilter.bind(this)}/>
 							<FilterModal onSubmit={this.saveFilter.bind(this)}
 													 show={this.state.filterModalIsOpen}
@@ -195,13 +197,20 @@ class FuelRatesDirectory extends Component {
 													 tableMeta={tableMeta}
                            tableData={this.props.rates}/>
 						</ClickOutHandler>
-						{/*<Button bsSize="small" onClick={this.createRate.bind(this)}><Glyphicon glyph="plus" /> Добавить</Button>
-						<Button bsSize="small" onClick={this.showBill.bind(this)} disabled={this.state.selectedBill === null}><Glyphicon glyph="search" /> Просмотреть</Button>
-						<Button bsSize="small" disabled={this.state.selectedBill === null} onClick={this.deleteBill.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>*/}
+						<Button bsSize="small" onClick={this.createRate.bind(this)}><Glyphicon glyph="plus" /> Добавить</Button>
+						<Button bsSize="small" onClick={this.showFuelRate.bind(this)} disabled={this.state.selectedFuelRate === null}><Glyphicon glyph="pencil" /> Изменить</Button>
+						<Button bsSize="small" disabled={this.state.selectedFuelRate === null} onClick={this.deleteFuelRate.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
 					</div>
 				</div>
 
         <FuelRatesTable data={data} getOperations={(id) => this.props.operations} onRowSelected={this.selectFuelRate.bind(this)} selected={this.state.selectedFuelRate}/>
+        <FuelRateFormWrap onFormHide={this.onFormHide.bind(this)}
+  												showForm={this.state.showForm}
+  												fuelRate={this.state.selectedFuelRate}
+                          operations={this.props.operations}
+                          models={getModels()}
+                          updateFuelRate={this.updateFuelRate.bind(this)}
+                          addFuelRate={this.addFuelRate.bind(this)}/>
 			</div>)
 	}
 }
@@ -215,6 +224,7 @@ let FuelRatesTable = (props) => {
         return <div>{operation.NAME}</div>;
       },
       model_id: ({data}) => <div>{getModelById(data).title}</div>,
+      date: ({data}) => <div>{moment(data).format('YYYY-MM-DD')}</div>
     };
 
 		return <Table results={props.data}

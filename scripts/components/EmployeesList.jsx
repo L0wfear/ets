@@ -198,7 +198,7 @@ export default class EmployeesList extends Component {
 			<div className="ets-page-wrap">
 				<div className="some-header">Реестр водителей "Жилищник Крылатское"
 					<div className="waybills-buttons">
-						<ClickOutHandler onClickOut={() => this.setState({filterModalIsOpen: false})}>
+						<ClickOutHandler onClickOut={() => { if (this.state.filterModalIsOpen) { this.setState({filterModalIsOpen: false}) }}}>
 							<FilterButton direction={'left'} show={this.state.filterModalIsOpen} active={_.keys(this.state.filterValues).length} onClick={this.toggleFilter.bind(this)}/>
 							<FilterModal onSubmit={this.saveFilter.bind(this)}
 													 show={this.state.filterModalIsOpen}

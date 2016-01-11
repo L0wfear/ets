@@ -225,7 +225,7 @@ export default class WaybillJournal extends Component {
 			<div className="ets-page-wrap">
 				<div className="some-header">Журнал путевых листов
 					<div className="waybills-buttons">
-						<ClickOutHandler onClickOut={() => this.setState({filterModalIsOpen: false})}>
+						<ClickOutHandler onClickOut={() => { if (this.state.filterModalIsOpen) { this.setState({filterModalIsOpen: false}) }}}>
 							<FilterButton direction={'right'} show={this.state.filterModalIsOpen} active={_.keys(this.state.filterValues).length} onClick={this.toggleFilter.bind(this)}/>
 							<FilterModal onSubmit={this.saveFilter.bind(this)}
 													 show={this.state.filterModalIsOpen}

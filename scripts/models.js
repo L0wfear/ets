@@ -42,6 +42,11 @@ export function getModelById(id) {
   return r;
 }
 
+export function getModels() {
+  console.log(list)
+  return list;
+}
+
 export function loadModels() {
   return fetch(MODELS_URL, {credentials: 'include'})
     .then(r => r.json())

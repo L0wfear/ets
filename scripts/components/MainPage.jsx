@@ -22,7 +22,7 @@ export default React.createClass({
                   <MenuItem active={path === '/employees'} href="#/employees">Реестр водителей</MenuItem>
   				        <MenuItem active={path === '/cars'} href="#/cars">Реестр транспортных средств</MenuItem>
                   <MenuItem divider />
-  				        <MenuItem active={path === '/fuel-rates'} href="#/fuel-rates">Справочник норм расхода ГСМ</MenuItem> 
+  				        <MenuItem active={path === '/fuel-rates'} href="#/fuel-rates">Справочник норм расхода топлива</MenuItem> 
                 </NavDropdown>
 				        <NavItem active={path === '/routes-list'} href="#/routes-list">Список маршрутов</NavItem>
 				        {/*<NavItem active={path === '/waybill-journal/create'} href="#/waybill-journal/create">Создать маршрут</NavItem>*/}

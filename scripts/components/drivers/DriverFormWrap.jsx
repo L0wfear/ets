@@ -23,12 +23,7 @@ export default class FormWrap extends Component {
 	componentWillReceiveProps(props) {
 
 		if (props.showForm) {
-			if (props.driver === null ) {
-				// this.setState({
-				// 	formState: getDefaultBill(),
-				// 	formStage: formStages[0]
-				// })
-			} else {
+			if (props.driver !== null ) {
         const driver = Object.assign({}, props.driver);
         this.setState({
           formState: driver,

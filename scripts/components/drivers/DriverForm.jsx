@@ -34,9 +34,8 @@ export default class DriverForm extends Component {
 	render() {
 
 		let state = this.props.formState;
-    let stage = this.props.formStage;
 
-    console.log('form stage is ', stage, 'form state is ', state);
+    console.log('form state is ', state);
 
 		return (
 			<Modal {...this.props} bsSize="large" >

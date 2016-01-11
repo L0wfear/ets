@@ -1,18 +1,234 @@
-import React from 'react';
-import Div from '../ui/Div.jsx';
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+import Table from '../ui/table/DataTable.jsx';
+import FilterModal from '../ui/table/filter/FilterModal.jsx';
+import FilterButton from '../ui/table/filter/FilterButton.jsx';
+import { Button, Glyphicon } from 'react-bootstrap';
+import {makeDate, makeTime} from '../../utils/dates.js';
+import moment from 'moment';
+import cx from 'classnames';
+import ClickOutHandler from 'react-onclickout';
+import connectToStores from 'flummox/connect';
+import { getModelById } from '../../models.js';
 
-export default class FuleRatesDirectory extends React.Component {
+let getOperationById = () => {};
 
-  constructor(props) {
-    super(props);
+let tableCaptions = [
+	"Дата приказа",
+  "Операция",
+  "Норма для летнего периода",
+  "Норма для зимнего периода",
+  "Модель транспортного средства",
+]
 
-    this.state = {
+let tableCols = [
+	"date",
+  "operation_id",
+  "rate_summer",
+  "rate_winter",
+  "model_id",
+];
 
-    };
-  }
+let tableMeta = {
+	cols: [
+		{
+			name: 'date',
+			caption: 'Дата приказа',
+			type: 'date',
+			filter: {
+				type: 'select',
+			}
+		},
+		{
+			name: 'operation_id',
+			caption: 'Операция',
+			type: 'number',
+      filter: {
+        type: 'select',
+        labelFunction: (operation_id) => getOperationById(operation_id).NAME,
+      }
+		},
+		{
+			name: 'rate_summer',
+			caption: 'Норма для летнего периода',
+			type: 'number',
+		},
+    {
+			name: 'rate_winter',
+			caption: 'Норма для зимнего периода',
+			type: 'number',
+		},
+		{
+			name: 'model_id',
+			caption: 'Модель транспортного средства',
+			type: 'number',
+      filter: {
+        type: 'select',
+        labelFunction: (d) => getModelById(d).title,
+      }
+		}
+	]
+};
 
-  render() {
-    return <Div></Div>;
-  }
+class FuelRatesDirectory extends Component {
 
+
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			selectedFuelRate: null,
+			filterModalIsOpen: false,
+			filterValues: {}
+		};
+	}
+
+	selectFuelRate({props}) {
+		const id = props.data.ID;
+		let fuelRate = _.find(this.props.rates, r => r.ID === id) || null;
+
+		this.setState({
+			selectedFuelRate: fuelRate
+		})
+	}
+
+	createRate() {
+		this.setState({
+			showForm: true,
+			selectedFuelRate: null
+		})
+	}
+
+	onFormHide() {
+		this.setState({
+			showForm: false,
+		})
+	}
+
+	componentDidMount() {
+    const { flux } = this.context;
+    flux.getActions('fuel-rates').getFuelOperations().then( (operations) => {
+      flux.getActions('fuel-rates').getFuelRates(operations);
+      // very bad
+      getOperationById = (operation_id) => _.find(operations.result, op => {
+        return op.ID === operation_id
+      });
+    });
+	}
+
+	componentWillReceiveProps(){
+	}
+
+	deleteBill() {
+		if (confirm('Вы уверены, что хотите удалить путевой лист?')) {
+			deleteBill(this.state.selectedBill.ID);
+			this.updateTable();
+		} else {
+
+		}
+	}
+
+	// epic shitcode
+	// there is no time to do stores
+	updateTable() {
+		this.forceUpdate()
+	}
+
+	showBill() {
+		this.setState({
+			showForm:true
+		})
+
+	}
+
+	closeBill() {
+		this.setState({
+			showForm: true
+		})
+	}
+
+	toggleFilter() {
+		this.setState({filterModalIsOpen: !!!this.state.filterModalIsOpen});
+	}
+
+	saveFilter(filterValues) {
+		console.info(`SETTING FILTER VALUES`, filterValues);
+		this.setState({filterValues});
+	}
+
+	render() {
+
+    console.log(this.props);
+
+		const data = _.filter(this.props.rates, (obj) => {
+			let isValid = true;
+
+			_.mapKeys(this.state.filterValues, (value, key) => {
+
+				if (typeof value.getMonth === 'function') {
+					if (obj[key] !== moment(value).format('YYYY-MM-DD H:mm')) {
+						isValid = false;
+					}
+				} else {
+					if (obj[key] != value) {
+						isValid = false;
+					}
+				}
+			});
+
+			return isValid;
+		});
+
+		return (
+			<div className="ets-page-wrap">
+				<div className="some-header">Нормы расхода ГСМ
+					<div className="waybills-buttons">
+						<ClickOutHandler onClickOut={() => this.setState({filterModalIsOpen: false})}>
+							<FilterButton direction={'right'} show={this.state.filterModalIsOpen} active={_.keys(this.state.filterValues).length} onClick={this.toggleFilter.bind(this)}/>
+							<FilterModal onSubmit={this.saveFilter.bind(this)}
+													 show={this.state.filterModalIsOpen}
+													 onHide={() => this.setState({filterModalIsOpen: false})}
+													 cols={tableCols}
+													 captions={tableCaptions}
+													 values={this.state.filterValues}
+													 direction={'left'}
+													 tableMeta={tableMeta}
+                           tableData={this.props.rates}/>
+						</ClickOutHandler>
+						{/*<Button bsSize="small" onClick={this.createRate.bind(this)}><Glyphicon glyph="plus" /> Добавить</Button>
+						<Button bsSize="small" onClick={this.showBill.bind(this)} disabled={this.state.selectedBill === null}><Glyphicon glyph="search" /> Просмотреть</Button>
+						<Button bsSize="small" disabled={this.state.selectedBill === null} onClick={this.deleteBill.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>*/}
+					</div>
+				</div>
+
+        <FuelRatesTable data={data} getOperations={(id) => this.props.operations} onRowSelected={this.selectFuelRate.bind(this)} selected={this.state.selectedFuelRate}/>
+			</div>)
+	}
 }
+
+let FuelRatesTable = (props) => {
+
+    const renderers = {
+      operation_id: ({data}) => {
+        const operations = props.getOperations();
+        const operation = _.find(operations, op => op.ID === data) || { NAME: '' };
+        return <div>{operation.NAME}</div>;
+      },
+      model_id: ({data}) => <div>{getModelById(data).title}</div>,
+    };
+
+		return <Table results={props.data}
+									tableCols={tableCols}
+									tableCaptions={tableCaptions}
+									tableMeta={tableMeta}
+                  renderers={renderers}
+									{...props}/>
+}
+
+FuelRatesDirectory.contextTypes = {
+  flux: React.PropTypes.object,
+};
+
+const Wrapped = connectToStores(FuelRatesDirectory, ['fuel-rates']);
+
+export default Wrapped;

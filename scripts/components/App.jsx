@@ -17,7 +17,8 @@ import { init } from '../adapter.js';
 import Flux from './Flux.js';
 
 //const router = Router.create({ routes });
-const flux = new Flux();
+const adapter = {};
+const flux = new Flux(adapter);
 
 class App extends Component {
 

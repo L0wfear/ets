@@ -9,6 +9,7 @@ import { loadOkrugs } from './okrugs.js';
 import { loadOwners } from './owners.js';
 import { getCars } from '../mocks/krylatskoe_cars.js';
 import { generateBills } from '../mocks/waybills.js';
+import { getFuelRates as getMockFuelRates } from '../mocks/fuel_rates.js';
 
 let getUrl = (url) => config.backend ? config.backend + url : url;
 
@@ -93,7 +94,7 @@ export function getRoadsActual() {
   return fetch(ROADS_ACTUAL_URL).then(r => r.json());
 }
 
-// возвращает инфу по ОДХ 
+// возвращает инфу по ОДХ
 let ODH_CACHE = {};
 export function getRoadByODHId(id) {
   if (ODH_CACHE[id] === undefined) {
@@ -121,4 +122,8 @@ export function getCarsByOwnerId(ownerId) {
 
   let query = '?owner_id=' + ownerId;
   return fetch(CARS_BY_OWNER_URL + query).then(r => r.json())
+}
+
+export function getFuelRates(operations) {
+  return getMockFuelRates(operations);
 }

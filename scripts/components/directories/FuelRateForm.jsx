@@ -4,7 +4,7 @@ import EtsSelect from '../ui/EtsSelect.jsx';
 import Datepicker from '../ui/DatePicker.jsx';
 import moment from 'moment';
 import Div from '../ui/Div.jsx';
-import { getCarById, getCars } from '../../../mocks/krylatskoe_cars.js';
+import { getCarById, getCars, getCarsByModelId } from '../../../mocks/krylatskoe_cars.js';
 import { getCarImage } from '../../adapter.js';
 import { getModelById } from '../../models.js';
 import { getStatusById } from '../../statuses.js';
@@ -18,12 +18,19 @@ export default class FuelRateForm extends Component {
 		super(props);
 
 		this.state = {
+      gov_numbers: [],
 		}
 	}
 
 	handleChange(field, e) {
 		this.props.handleFormChange(field, e);
 	}
+
+  handleModelChange(field, e) {
+    const gov_numbers = _(getCarsByModelId(e)).uniq(c=>c.gov_number).map( c => ({value: c.gov_number, label: c.gov_number})).value();
+    this.setState({gov_numbers})
+    this.handleChange('model_id', e);
+  }
 
   handleSubmit() {
     console.log('submitting fuelRate form', this.props.formState);
@@ -32,6 +39,10 @@ export default class FuelRateForm extends Component {
 
 	componentDidMount() {
     const fuelRate = this.props.formState;
+    if (!this.props.isNew) {
+      const gov_numbers = _(getCarsByModelId(fuelRate.model_id)).uniq(c=>c.gov_number).map( c => ({value: c.gov_number, label: c.gov_number})).value();
+      this.setState({gov_numbers})
+    }
 	}
 
 	render() {
@@ -69,7 +80,11 @@ export default class FuelRateForm extends Component {
             </Div>
             <Div>
   	      		<label>Модель транспортного средства</label>
-              <EtsSelect options={this.props.models.map( m => ({value: m.id, label: m.title}))} value={state.model_id} onChange={this.handleChange.bind(this, 'model_id')}/>
+              <EtsSelect options={this.props.models.map( m => ({value: m.id, label: m.title}))} value={state.model_id} onChange={this.handleModelChange.bind(this, 'model_id')}/>
+            </Div>
+            <Div>
+  	      		<label>Гос. номер транспортного средства</label>
+              <EtsSelect options={this.state.gov_numbers} value={state.gov_number} onChange={this.handleChange.bind(this, 'gov_number')}/>
             </Div>
 	      	</Col>
 

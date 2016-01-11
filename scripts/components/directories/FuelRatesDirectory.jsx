@@ -24,6 +24,7 @@ let tableCaptions = [
   "Норма для летнего периода",
   "Норма для зимнего периода",
   "Модель транспортного средства",
+  "Гос. номер транспортного средства"
 ]
 
 let tableCols = [
@@ -32,6 +33,7 @@ let tableCols = [
   "rate_summer",
   "rate_winter",
   "model_id",
+  "gov_number"
 ];
 
 let tableMeta = {
@@ -70,6 +72,15 @@ let tableMeta = {
       filter: {
         type: 'select',
         labelFunction: (d) => getModelById(d).title,
+      }
+		},
+		{
+			name: 'gov_number',
+			caption: 'Гос. номер транспортного средства',
+			type: 'number',
+      filter: {
+        type: 'select',
+        //labelFunction: (d) => getModelById(d).title,
       }
 		}
 	]

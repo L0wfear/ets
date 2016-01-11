@@ -45,5 +45,10 @@ export function getCarById(id) {
 	return !!result ? result : {};
 }
 
+export function getCarsByModelId(model_id) {
+	const cars = _.filter(KRYLATSKOE_CARS, c => c.model_id === model_id);
+	return cars;
+}
+
 
 export default KRYLATSKOE_CARS;

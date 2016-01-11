@@ -227,7 +227,7 @@ export default class EmployeesList extends Component {
 let EmployeesTable = (props) => {
 
 	const renderers = {
-		'Дата рождения': ({data}) => <div>{moment(data).format('YYYY-MM-DD H:mm')}</div>,
+		'Дата рождения': ({data}) => <div>{moment(data).format('YYYY-MM-DD')}</div>,
 	}
 
 	return <Table results={props.data}

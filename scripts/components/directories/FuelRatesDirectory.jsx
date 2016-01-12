@@ -18,24 +18,6 @@ function deleteFuelRate() {
 
 let getOperationById = () => {};
 
-let tableCaptions = [
-	"Дата приказа",
-  "Операция",
-  "Норма для летнего периода",
-  "Норма для зимнего периода",
-  "Модель транспортного средства",
-  "Гос. номер транспортного средства"
-]
-
-let tableCols = [
-	"date",
-  "operation_id",
-  "rate_summer",
-  "rate_winter",
-  "model_id",
-  "gov_number"
-];
-
 let tableMeta = {
 	cols: [
 		{
@@ -201,8 +183,6 @@ class FuelRatesDirectory extends Component {
 							<FilterModal onSubmit={this.saveFilter.bind(this)}
 													 show={this.state.filterModalIsOpen}
 													 onHide={() => this.setState({filterModalIsOpen: false})}
-													 cols={tableCols}
-													 captions={tableCaptions}
 													 values={this.state.filterValues}
 													 direction={'left'}
 													 tableMeta={tableMeta}
@@ -239,8 +219,6 @@ let FuelRatesTable = (props) => {
     };
 
 		return <Table results={props.data}
-									tableCols={tableCols}
-									tableCaptions={tableCaptions}
 									tableMeta={tableMeta}
                   renderers={renderers}
 									{...props}/>

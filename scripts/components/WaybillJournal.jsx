@@ -20,33 +20,6 @@ import { getFIOById } from '../stores/EmployeesStore.js';
 
 let fakeData = getList();
 
-let tableCaptions = [
-	"Статус",
-	"Номер",
-	"Дата выдачи",
-	"Водитель",
-	"Гос. № ТС",
-	"Выезд план.",
-	"Выезд факт",
-	"Возвращение план",
-	"Возвращение факт",
-	"Мастер",
-	//"Диспетчер"
-]
-
-let tableCols = [
-	"STATUS",
-	"ID",
-	"DATE_CREATE",
-	"DRIVER_ID",
-	"CAR_ID",
-	"PLAN_DEPARTURE_DATE",
-	"PLAN_ARRIVAL_DATE",
-	"FACT_DEPARTURE_DATE",
-	"FACT_ARRIVAL_DATE",
-	"RESPONSIBLE_PERSON_ID"
-];
-
 let tableMeta = {
 	cols: [
 		{
@@ -230,8 +203,6 @@ export default class WaybillJournal extends Component {
 							<FilterModal onSubmit={this.saveFilter.bind(this)}
 													 show={this.state.filterModalIsOpen}
 													 onHide={() => this.setState({filterModalIsOpen: false})}
-													 cols={tableCols}
-													 captions={tableCaptions}
 													 values={this.state.filterValues}
 													 direction={'right'}
 													 tableMeta={tableMeta}
@@ -263,8 +234,6 @@ let WaybillsTable = (props) => {
 		};
 
 		return <Table results={props.data}
-									tableCols={tableCols}
-									tableCaptions={tableCaptions}
 									renderers={renderers}
 									tableMeta={tableMeta}
 									{...props}/>

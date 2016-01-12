@@ -47,7 +47,9 @@ class Table extends React.Component {
   }
 
   render() {
-    const { tableCols, tableCaptions, renderers, onRowSelected, selected, selectField } = this.props;
+    const { tableMeta, renderers, onRowSelected, selected, selectField } = this.props;
+    const tableCols = tableMeta.cols.map( c => c.name );
+    const tableCaptions = tableMeta.cols.map( c => c.caption );
     const columnMetadata = this.initializeMetadata(tableCols, tableCaptions, renderers);
 		const rowMetadata = this.initializeRowMetadata();
 

@@ -32,30 +32,6 @@ const employees = fakeData.map( (d) => {
 	}
 });
 
-let tableCaptions = [
-	"Фамилия",
-	"Имя",
-	"Отчество",
-	"Дата рождения",
-	"Табельный номер",
-	"Должность",
-	"Водительское удостоверение",
-	"Специальное удостоверение",
-	"Текущее состояние",
-	"Телефон",
-]
-
-let tableCols = ['Фамилия',
-'Имя',
-'Отчество',
-'Дата рождения',
-'Табельный номер',
-'Должность',
-'Водительское удостоверение',
-'Специальное удостоверение',
-'Текущее состояние',
-'Телефон'];
-
 let tableMeta = {
   cols: [{
       name: 'Фамилия',
@@ -203,8 +179,6 @@ export default class EmployeesList extends Component {
 							<FilterModal onSubmit={this.saveFilter.bind(this)}
 													 show={this.state.filterModalIsOpen}
 													 onHide={() => this.setState({filterModalIsOpen: false})}
-													 cols={tableCols}
-													 captions={tableCaptions}
 													 values={this.state.filterValues}
 													 direction={'left'}
 													 options={employees}
@@ -231,8 +205,7 @@ let EmployeesTable = (props) => {
 	}
 
 	return <Table results={props.data}
-								tableCols={tableCols}
-								tableCaptions={tableCaptions}
+								tableMeta={tableMeta}
 								renderers={renderers}
 								{...props}/>
 }

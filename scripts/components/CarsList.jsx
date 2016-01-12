@@ -18,14 +18,6 @@ getCarsByOwnerId().then((response)=> {
 	})
 });
 
-let tableCaptions = [
-	"Гаражный номер", "Госномер", "Модель", "Тип", "Состояние"
-];
-
-let tableCols = [
-	'garage_number', 'gov_number', 'model', 'type', 'state'
-];
-
 let tableMeta = {
 	cols: [
 		{
@@ -144,8 +136,6 @@ export default class CarsList extends Component {
 							<FilterModal onSubmit={this.saveFilter.bind(this)}
 													 show={this.state.filterModalIsOpen}
 													 onHide={() => this.setState({filterModalIsOpen: false})}
-													 cols={tableCols}
-													 captions={tableCaptions}
 													 values={this.state.filterValues}
 													 direction={'left'}
 													 tableMeta={tableMeta}
@@ -166,8 +156,7 @@ export default class CarsList extends Component {
 
 let CarsTable = (props) => {
 
-	return <Table tableCaptions={tableCaptions}
-								tableCols={tableCols}
+	return <Table tableMeta={tableMeta}
 								results={props.data}
 								{...props} />
 

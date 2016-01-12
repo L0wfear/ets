@@ -83,7 +83,7 @@ class FilterModal extends React.Component {
   }
 
   submit() {
-    //console.log(this.state.filterValues);
+
     const filterValues = _.reduce(this.state.filterValues, (cur, v, k) => {
       if (typeof v !== 'undefined') {
         if (typeof v === 'string') {
@@ -108,16 +108,14 @@ class FilterModal extends React.Component {
 
   render() {
 
-    const filterRows = this.props.cols.map( (col, i) => {
+    const { tableMeta } = this.props;
 
-      //if (col !== 'ID' && col !== 'DATE_CREATE' && col !== 'id') return null;
-
+    const filterRows = tableMeta.cols.map( (col, i) => {
       return <Row key={i}>
               <Col md={12}>
-                <Filter {...this.props} caption={this.props.captions[i]} col={col} filterValues={this.state.filterValues} onChange={this.handleFilterValueChange.bind(this, col)} />
+                <Filter {...this.props} caption={col.caption} col={col.name} filterValues={this.state.filterValues} onChange={this.handleFilterValueChange.bind(this, col.name)} />
               </Col>
              </Row>
-
     });
     const className = cx({'left': this.props.direction !== 'right', 'right': this.props.direction === 'right'}, 'filter-container');
 

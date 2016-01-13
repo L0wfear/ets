@@ -1,12 +1,6 @@
 import { Store } from 'flummox';
 import _ from 'lodash';
 
-const defaultUser = {
-  login: 'mayor',
-  password: 'mayor',
-  role: 'mayor'
-};
-
 class FuelRatesStore extends Store {
 
   constructor(flux) {
@@ -20,7 +14,7 @@ class FuelRatesStore extends Store {
     this.register(fuelRateActions.addFuelRate, this.handleAddRate);
 
     this.state = {
-      rates: [], //document.referrer.match(/^https?:\/\/monitor.mos.ru/) ? defaultUser : null
+      rates: [],
       operations: [],
     };
 
@@ -39,7 +33,6 @@ class FuelRatesStore extends Store {
   handleUpdateRate(newState) {
     let { rates } = this.state;
     const index = _.findIndex(rates, r => r.ID === newState.ID);
-    console.log(rates[index]);
     rates[index] = newState;
 
     this.setState({rates});

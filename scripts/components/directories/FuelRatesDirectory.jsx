@@ -153,26 +153,7 @@ class FuelRatesDirectory extends Component {
 
 	render() {
 
-    console.log(this.props);
-
-		const data = _.filter(this.props.rates, (obj) => {
-			let isValid = true;
-
-			_.mapKeys(this.state.filterValues, (value, key) => {
-
-				if (typeof value.getMonth === 'function') {
-					if (obj[key] !== moment(value).format('YYYY-MM-DD H:mm')) {
-						isValid = false;
-					}
-				} else {
-					if (obj[key] != value) {
-						isValid = false;
-					}
-				}
-			});
-
-			return isValid;
-		});
+		const { rates = [] } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
@@ -186,7 +167,7 @@ class FuelRatesDirectory extends Component {
 													 values={this.state.filterValues}
 													 direction={'left'}
 													 tableMeta={tableMeta}
-                           tableData={this.props.rates}/>
+                           tableData={rates}/>
 						</ClickOutHandler>
 						<Button bsSize="small" onClick={this.createRate.bind(this)}><Glyphicon glyph="plus" /> Добавить</Button>
 						<Button bsSize="small" onClick={this.showFuelRate.bind(this)} disabled={this.state.selectedFuelRate === null}><Glyphicon glyph="pencil" /> Изменить</Button>
@@ -194,7 +175,7 @@ class FuelRatesDirectory extends Component {
 					</div>
 				</div>
 
-        <FuelRatesTable data={data} getOperations={(id) => this.props.operations} onRowSelected={this.selectFuelRate.bind(this)} selected={this.state.selectedFuelRate}/>
+        <FuelRatesTable data={rates} filter={this.state.filterValues} getOperations={(id) => this.props.operations} onRowSelected={this.selectFuelRate.bind(this)} selected={this.state.selectedFuelRate}/>
         <FuelRateFormWrap onFormHide={this.onFormHide.bind(this)}
   												showForm={this.state.showForm}
   												fuelRate={this.state.selectedFuelRate}

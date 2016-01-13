@@ -1,24 +1,21 @@
 import React, { Component } from 'react';
+import connectToStores from 'flummox/connect';
 import { Link } from 'react-router';
-//import Modal from './ui/Modal.jsx';
-//import Table from './ui/table/Table.jsx';
+import { Button, Glyphicon } from 'react-bootstrap';
+import ClickOutHandler from 'react-onclickout';
 import Table from './ui/table/DataTable.jsx';
 import FilterModal from './ui/table/filter/FilterModal.jsx';
 import FilterButton from './ui/table/filter/FilterButton.jsx';
-import { Button, Glyphicon } from 'react-bootstrap';
-import WaybillForm from './WaybillForm.jsx';
-import {makeDate, makeTime} from '../utils/dates.js';
+import WaybillFormWrap from './WaybillFormWrap.jsx';
 import moment from 'moment';
 import cx from 'classnames';
-import ClickOutHandler from 'react-onclickout';
 import { getCarById } from '../../mocks/krylatskoe_cars.js';
-
-import WaybillFormWrap from './WaybillFormWrap.jsx';
-import { getList, getLastNumber, createBill, getBillById, getStatusLabel, updateBill, deleteBill } from '../stores/WaybillStore.js';
+import { getBillById } from '../stores/WaybillStore.js';
 import { getFIOById } from '../stores/EmployeesStore.js';
 
-
-let fakeData = getList();
+function getStatusLabel(s) {
+	return s === 'open' ? 'Открыт' : 'Закрыт';
+}
 
 let tableMeta = {
 	cols: [
@@ -84,146 +81,6 @@ let tableMeta = {
 	]
 };
 
-export default class WaybillJournal extends Component {
-
-
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			selectedBill: null,
-			filterModalIsOpen: false,
-			filterValues: {}
-		};
-
-		window.updateBillsJournal = this.updateTable.bind(this);
-	}
-
-	selectBill({props}) {
-		const id = props.data.ID;
-		let bill = getBillById(id);
-
-		this.setState({
-			selectedBill: bill
-		})
-	}
-
-	createBill() {
-		this.setState({
-			showForm: true,
-			selectedBill: null
-		})
-	}
-
-	onFormHide() {
-		this.setState({
-			showForm: false,
-		//	selectedBill: null
-		})
-
-		fakeData = getList();
-	}
-
-	componentDidMount() {
-	//	console.log(this.context.router.getCurrentParams());
-		fakeData = getList();
-	}
-
-	componentWillReceiveProps(){
-		fakeData = getList()
-	}
-
-	deleteBill() {
-		if (confirm('Вы уверены, что хотите удалить путевой лист?')) {
-			deleteBill(this.state.selectedBill.ID);
-			this.updateTable();
-		} else {
-
-		}
-	}
-
-	// epic shitcode
-	// there is no time to do stores
-	updateTable() {
-		fakeData = getList();
-		this.forceUpdate()
-	}
-
-	showBill() {
-		this.setState({
-			showForm:true
-		})
-
-	}
-
-	closeBill() {
-		this.setState({
-			showForm: true
-		})
-	}
-
-	toggleFilter() {
-		this.setState({filterModalIsOpen: !!!this.state.filterModalIsOpen});
-	}
-
-	saveFilter(filterValues) {
-		console.info(`SETTING FILTER VALUES`, filterValues);
-		this.setState({filterValues});
-	}
-
-	render() {
-
-		let showCloseBtn = this.state.selectedBill !== null && this.state.selectedBill.STATUS !== 'open';
-
-		const data = _.filter(fakeData, (obj) => {
-			let isValid = true;
-
-			_.mapKeys(this.state.filterValues, (value, key) => {
-
-				if (typeof value.getMonth === 'function') {
-					if (obj[key] !== moment(value).format('YYYY-MM-DD H:mm')) {
-						isValid = false;
-					}
-				} else {
-					if (obj[key] != value) {
-						isValid = false;
-					}
-				}
-			});
-
-			return isValid;
-		});
-
-		return (
-			<div className="ets-page-wrap">
-				<div className="some-header">Журнал путевых листов
-					<div className="waybills-buttons">
-						<ClickOutHandler onClickOut={() => { if (this.state.filterModalIsOpen) { this.setState({filterModalIsOpen: false}) }}}>
-							<FilterButton direction={'right'} show={this.state.filterModalIsOpen} active={_.keys(this.state.filterValues).length} onClick={this.toggleFilter.bind(this)}/>
-							<FilterModal onSubmit={this.saveFilter.bind(this)}
-													 show={this.state.filterModalIsOpen}
-													 onHide={() => this.setState({filterModalIsOpen: false})}
-													 values={this.state.filterValues}
-													 direction={'right'}
-													 tableMeta={tableMeta}
-													 tableData={fakeData} />
-						</ClickOutHandler>
-						<Button bsSize="small" onClick={this.createBill.bind(this)}><Glyphicon glyph="plus" /> Создать ПЛ</Button>
-						<Button bsSize="small" onClick={this.showBill.bind(this)} disabled={this.state.selectedBill === null}><Glyphicon glyph="search" /> Просмотреть ПЛ</Button>
-						<Button bsSize="small" disabled={showCloseBtn} onClick={this.closeBill.bind(this)}><Glyphicon glyph="ok" /> Закрыть ПЛ</Button>
-						<Button bsSize="small" disabled={this.state.selectedBill === null} onClick={this.deleteBill.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
-					</div>
-				</div>
-				<WaybillsTable data={data} onRowSelected={this.selectBill.bind(this)} selected={this.state.selectedBill}/>
-				<WaybillFormWrap
-						onFormHide={this.onFormHide.bind(this)}
-						showForm={this.state.showForm}
-						bill={this.state.selectedBill}
-						updateTable={this.updateTable.bind(this)}/>
-			</div>)
-	}
-}
-
 let WaybillsTable = (props) => {
 
 		const renderers = {
@@ -238,3 +95,117 @@ let WaybillsTable = (props) => {
 									tableMeta={tableMeta}
 									{...props}/>
 }
+
+class WaybillJournal extends Component {
+
+
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			selectedBill: null,
+			filterModalIsOpen: false,
+			filterValues: {}
+		};
+
+		//window.updateBillsJournal = this.updateTable.bind(this);
+	}
+
+	selectBill({props}) {
+		const id = props.data.ID;
+		let bill = _.find(this.props.waybillsList, w => w.ID === id);//();getBillById(id);
+
+		this.setState({ selectedBill: bill });
+	}
+
+	createBill() {
+		this.setState({
+			showForm: true,
+			selectedBill: null
+		})
+	}
+
+	onFormHide() {
+		this.setState({
+			showForm: false,
+		//	selectedBill: null
+		})
+	}
+
+	componentDidMount() {
+		const { flux } = this.context;
+		flux.getActions('waybills').getWaybills();
+	}
+
+	componentWillReceiveProps(){
+	}
+
+	deleteBill() {
+		if (confirm('Вы уверены, что хотите удалить путевой лист?')) {
+			//deleteBill(this.state.selectedBill.ID);
+			const { flux } = this.context;
+			flux.getActions('waybills').removeWaybill(this.state.selectedBill.ID);
+			//this.updateTable();
+		} else {
+
+		}
+	}
+
+	showBill() {
+		this.setState({ showForm: true });
+	}
+
+	closeBill() {
+		this.setState({ showForm: true });
+	}
+
+	toggleFilter() {
+		this.setState({filterModalIsOpen: !!!this.state.filterModalIsOpen});
+	}
+
+	saveFilter(filterValues) {
+		console.info(`SETTING FILTER VALUES`, filterValues);
+		this.setState({filterValues});
+	}
+
+	render() {
+
+		console.log(this.props);
+
+		const { waybillsList = [] } = this.props;
+
+		let showCloseBtn = this.state.selectedBill !== null && this.state.selectedBill.STATUS !== 'open';
+
+		return (
+			<div className="ets-page-wrap">
+				<div className="some-header">Журнал путевых листов
+					<div className="waybills-buttons">
+						<ClickOutHandler onClickOut={() => { if (this.state.filterModalIsOpen) { this.setState({filterModalIsOpen: false}) }}}>
+							<FilterButton direction={'right'} show={this.state.filterModalIsOpen} active={_.keys(this.state.filterValues).length} onClick={this.toggleFilter.bind(this)}/>
+							<FilterModal onSubmit={this.saveFilter.bind(this)}
+													 show={this.state.filterModalIsOpen}
+													 onHide={() => this.setState({filterModalIsOpen: false})}
+													 values={this.state.filterValues}
+													 direction={'right'}
+													 tableMeta={tableMeta}
+													 tableData={waybillsList} />
+						</ClickOutHandler>
+						<Button bsSize="small" onClick={this.createBill.bind(this)}><Glyphicon glyph="plus" /> Создать ПЛ</Button>
+						<Button bsSize="small" onClick={this.showBill.bind(this)} disabled={this.state.selectedBill === null}><Glyphicon glyph="search" /> Просмотреть ПЛ</Button>
+						<Button bsSize="small" disabled={showCloseBtn} onClick={this.closeBill.bind(this)}><Glyphicon glyph="ok" /> Закрыть ПЛ</Button>
+						<Button bsSize="small" disabled={this.state.selectedBill === null} onClick={this.deleteBill.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
+					</div>
+				</div>
+				<WaybillsTable data={waybillsList} filter={this.state.filterValues} onRowSelected={this.selectBill.bind(this)} selected={this.state.selectedBill}/>
+				<WaybillFormWrap onFormHide={this.onFormHide.bind(this)}
+												 showForm={this.state.showForm}
+												 bill={this.state.selectedBill}/>
+			</div>)
+	}
+}
+
+WaybillJournal.contextTypes = {
+	flux: React.PropTypes.object,
+};
+
+export default connectToStores(WaybillJournal, ['waybills']);

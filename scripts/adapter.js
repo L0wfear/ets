@@ -8,7 +8,7 @@ import { loadModels } from './models.js';
 import { loadOkrugs } from './okrugs.js';
 import { loadOwners } from './owners.js';
 import { getCars } from '../mocks/krylatskoe_cars.js';
-import { generateBills } from '../mocks/waybills.js';
+import { generateBills, removeBill, updateBill, createBill } from '../mocks/waybills.js';
 import { getFuelRates as getMockFuelRates } from '../mocks/fuel_rates.js';
 
 let getUrl = (url) => config.backend ? config.backend + url : url;
@@ -45,8 +45,36 @@ export function init() {
           loadTypes()
         ])
     .then(getCars)
-    .then(generateBills)
+    //.then(generateBills)
+}
 
+export function getWaybills() {
+  console.info('GETTING WAYBILLS');
+  return generateBills();
+  // return Promise.all([
+  //         loadCustomers(),
+  //         loadModels(),
+  //         loadOwners(),
+  //         loadOkrugs(),
+  //         loadTypes()
+  //       ])
+  //       .then(getCars)
+  //       .then( (result) => {
+  //         console.log(result);
+  //         return generateBills();
+  //       })
+}
+
+export function removeWaybill(id) {
+  return removeBill(id);
+}
+
+export function updateWaybill(waybill, correctionFlag) {
+  return updateBill(waybill, correctionFlag);
+}
+
+export function createWaybill(waybill) {
+  return createBill(waybill);
 }
 
 export function getFuelOperations() {

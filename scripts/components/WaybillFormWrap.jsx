@@ -8,9 +8,9 @@ import WaybillForm from './WaybillForm.jsx';
 
 import { getMasters, getDrivers, getFIOById, getDriverByCode } from './../stores/EmployeesStore.js';
 import getFuelTypes, {getFuelTypeById } from '../stores/FuelTypes.js';
-import { getDefaultBill, createBill, updateBill, closeBill } from '../stores/WaybillStore.js';
+import { getDefaultBill } from '../../mocks/waybills.js';
 import { getCarById } from '../../mocks/krylatskoe_cars.js';
-import {makeTime, makeDate} from '../utils/dates.js';
+import { makeTime, makeDate } from '../utils/dates.js';
 
 const FUEL_TYPES = getFuelTypes();
 const MASTERS = getMasters();
@@ -18,7 +18,7 @@ const DRIVERS = getDrivers();
 
 const formStages = ['creating', 'post-creating', 'display', 'closing'];
 
-export default class FormWrap extends Component {
+class WaybillFormWrap extends Component {
 	constructor(props) {
 		super(props);
 
@@ -119,21 +119,6 @@ export default class FormWrap extends Component {
 		this.setState(newState)
 	}
 
-
-	closeBill() {
-
-		let bill = _.clone(getBillById(this.state.selectedBill.id));
-		bill.vyezd_fakt = moment(bill.vyezd_plan).toDate();
-		bill.vozvr_fakt = moment(bill.vozvr_plan).toDate();
-		console.log( bill.vyezd_fakt);
-
-		this.setState({
-			showForm:true,
-			formState:bill,
-			formStage: formStages[2]
-		})
-	}
-
   handlePrint(event, print_form_type = 1) {
 
   	console.log('printing bill', this.props.formState);
@@ -217,10 +202,13 @@ export default class FormWrap extends Component {
 	handleFormSubmit(formState) {
 		let billStatus = formState.STATUS;
 		let stage = this.state.formStage;
+		const { flux } = this.context;
 
-		if ( stage === 'creating') {
+		console.log(this.context);
+
+		if (stage === 'creating') {
 			formState.STATUS = 'open';
-			createBill(formState);
+			flux.getActions('waybills').createWaybill(formState);
 			this.setState({
 				formStage: formStages[1],
 				canPrint: true,
@@ -229,38 +217,37 @@ export default class FormWrap extends Component {
 			//this.props.updateTable();
 		} else if (stage === 'post-creating') {
 			formState.STATUS = 'open';
-			updateBill(formState, true);
+			flux.getActions('waybills').updateWaybill(formState, true);
 			this.setState({
 				canSave: false
 			})
-			//this.props.updateTable();
 		} else if (stage === 'closing') {
 			formState.STATUS = 'closed';
-			updateBill(formState)
+			flux.getActions('waybills').updateWaybill(formState);
 			this.props.onFormHide()
 		}
 
 
 
 		return ;
-		if (billStatus === null ){
-			console.log('creating new bill')
-			createBill(formState);
-			this.setState({
-				showForm: false,
-				formStage: formStages[1],
-				canSave: false
-			})
-			this.props.updateTable();
-		} else if (billStatus === 'open') {
-			console.log('updating bill')
-			updateBill(formState)
-			this.setState({
-				showForm: false
-			})
-		} else {
-			console.log('xz')
-		}
+		// if (billStatus === null ){
+		// 	console.log('creating new bill')
+		// 	createBill(formState);
+		// 	this.setState({
+		// 		showForm: false,
+		// 		formStage: formStages[1],
+		// 		canSave: false
+		// 	})
+		// 	this.props.updateTable();
+		// } else if (billStatus === 'open') {
+		// 	console.log('updating bill')
+		// 	updateBill(formState)
+		// 	this.setState({
+		// 		showForm: false
+		// 	})
+		// } else {
+		// 	console.log('xz')
+		// }
 	}
 
 	render() {
@@ -280,3 +267,9 @@ export default class FormWrap extends Component {
 	}
 
 }
+
+WaybillFormWrap.contextTypes = {
+	flux: React.PropTypes.object,
+};
+
+export default WaybillFormWrap;

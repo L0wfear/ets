@@ -106,26 +106,6 @@ export default class CarsList extends Component {
 
 	render() {
 
-		console.log(CARS);
-		const data = _.filter(CARS, (obj) => {
-			let isValid = true;
-
-			_.mapKeys(this.state.filterValues, (value, key) => {
-
-				if (typeof value.getMonth === 'function') {
-					if (obj[key] !== moment(value).format('YYYY-MM-DD H:mm')) {
-						isValid = false;
-					}
-				} else {
-					if (obj[key] != value) {
-						isValid = false;
-					}
-				}
-			});
-
-			return isValid;
-		});
-
 		return (
 			<div className="ets-page-wrap">
 
@@ -145,7 +125,7 @@ export default class CarsList extends Component {
 					</div>
 				</div>
 
-				<CarsTable data={data} onRowSelected={this.selectCar.bind(this)} selected={this.state.selectedCar} selectField={'id'}/>
+				<CarsTable data={CARS} filter={this.state.filterValues} onRowSelected={this.selectCar.bind(this)} selected={this.state.selectedCar} selectField={'id'}/>
 				<CarFormWrap onFormHide={this.onFormHide.bind(this)}
 												showForm={this.state.showForm}
 												car={this.state.selectedCar}/>

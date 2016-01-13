@@ -151,25 +151,6 @@ export default class EmployeesList extends Component {
 
 	render() {
 
-		const data = _.filter(fakeData, (obj) => {
-			let isValid = true;
-
-			_.mapKeys(this.state.filterValues, (value, key) => {
-
-				if (typeof value.getMonth === 'function') {
-					if (obj[key] !== moment(value).format('YYYY-MM-DD H:mm')) {
-						isValid = false;
-					}
-				} else {
-					if (obj[key] != value) {
-						isValid = false;
-					}
-				}
-			});
-
-			return isValid;
-		});
-
 		return (
 			<div className="ets-page-wrap">
 				<div className="some-header">Реестр водителей "Жилищник Крылатское"
@@ -189,7 +170,7 @@ export default class EmployeesList extends Component {
 					</div>
 				</div>
 
-				<EmployeesTable data={data} onRowSelected={this.selectDriver.bind(this)} selected={this.state.selectedDriver} selectField={'id'}/>
+				<EmployeesTable data={fakeData} filter={this.state.filterValues} onRowSelected={this.selectDriver.bind(this)} selected={this.state.selectedDriver} selectField={'id'}/>
 				<DriverFormWrap onFormHide={this.onFormHide.bind(this)}
 												showForm={this.state.showForm}
 												driver={this.state.selectedDriver}/>

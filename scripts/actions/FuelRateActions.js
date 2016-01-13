@@ -5,7 +5,6 @@ export default class FuelRateActions extends Actions {
 
   constructor(props) {
     super();
-    console.log(props);
   }
 
   getFuelRates(operations) {

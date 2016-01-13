@@ -2,6 +2,7 @@ import React from 'react';
 
 import Paginator from '../Paginator.jsx';
 import Griddle from 'griddle-react';
+import moment from 'moment';
 import _ from 'lodash';
 
 class Table extends React.Component {
@@ -47,13 +48,13 @@ class Table extends React.Component {
   }
 
   render() {
-    const { tableMeta, renderers, onRowSelected, selected, selectField } = this.props;
+    const { tableMeta, renderers, onRowSelected, selected, selectField, filter = {} } = this.props;
     const tableCols = tableMeta.cols.map( c => c.name );
     const tableCaptions = tableMeta.cols.map( c => c.caption );
     const columnMetadata = this.initializeMetadata(tableCols, tableCaptions, renderers);
 		const rowMetadata = this.initializeRowMetadata();
 
-    const results = this.props.results.map( (data, i) => {
+    const results = _(this.props.results).map( (data, i) => {
 			if (!selected || typeof onRowSelected === 'undefined') return data;
       if (typeof selectField !== 'undefined') {
         if (data[selectField] === selected[selectField]) {
@@ -69,7 +70,24 @@ class Table extends React.Component {
   			}
       }
 			return data;
-		});
+		}).filter((obj) => {
+  		let isValid = true;
+
+  		_.mapKeys(filter, (value, key) => {
+
+  			if (typeof value.getMonth === 'function') {
+  				if (obj[key] !== moment(value).format('YYYY-MM-DD H:mm')) {
+  					isValid = false;
+  				}
+  			} else {
+  				if (obj[key] != value) {
+  					isValid = false;
+  				}
+  			}
+		  });
+
+			return isValid;
+		}).value();
 
     return <Griddle results={results}
   									columnMetadata={columnMetadata}

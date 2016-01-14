@@ -16,16 +16,17 @@ import Modal from './ui/Modal.jsx';
 import { init } from '../adapter.js';
 import Flux from './Flux.js';
 
-//const router = Router.create({ routes });
 const adapter = {};
 const flux = new Flux(adapter);
+window.__ETS_CONTAINER__ = {
+  flux
+};
 
 class App extends Component {
 
   getChildContext() {
     return {
       flux: flux,
-      //router: router,
     }
   }
 
@@ -44,7 +45,6 @@ class App extends Component {
           loading: false
         }))
       .catch((error) => {
-    //debugger;
         console.log(error);
         console.log('load error')
         this.setState({
@@ -69,6 +69,9 @@ class App extends Component {
       })
   }
 
+  componentWillReceiveProps() {
+  }
+
   render() {
     return !this.state.loading ? <MainPage location={this.props.location}>{this.props.children}</MainPage> : <LoadingPage loaded={this.state.loading}/>;
   }
@@ -76,22 +79,35 @@ class App extends Component {
 
 App.childContextTypes = {
   flux: React.PropTypes.object,
-  //router: React.PropTypes.func,
 };
 
 let history = createHashHistory({queryKey: false});
+
+function requireAuth(nextState, replaceState) {
+  if (!flux.getStore('session').isLoggedIn()) {
+    console.warn('USER IS NOT LOGGED IN');
+    replaceState({ nextPathname: nextState.location.pathname }, '/login')
+  }
+}
+
+function checkLoggedIn(nextState, replaceState) {
+  if (flux.getStore('session').isLoggedIn()) {
+    replaceState({}, '/monitor');
+  }
+}
 
 const routes = (
   <Router history={history}>
     <Redirect from="/" to="monitor" />
     <Route path="/" component={App}>
-      <Route path="monitor" component={MonitorPage}/>
-      <Route path="waybill-journal" component={WaybillJournal}/>
-      <Route path="waybill-journal/create" component={WaybillForm}/>
-      <Route path="routes-list" component={RoutesList}/>
-      <Route path="employees" component={EmployeesList}/>
-      <Route path="fuel-rates" component={FuelRatesDirectory}/>
-      <Route path="cars" component={CarsList}/>
+      <Route path="monitor" component={MonitorPage} onEnter={requireAuth}/>
+      <Route path="waybill-journal" component={WaybillJournal} onEnter={requireAuth}/>
+      <Route path="waybill-journal/create" component={WaybillForm} onEnter={requireAuth}/>
+      <Route path="routes-list" component={RoutesList} onEnter={requireAuth}/>
+      <Route path="employees" component={EmployeesList} onEnter={requireAuth}/>
+      <Route path="fuel-rates" component={FuelRatesDirectory} onEnter={requireAuth}/>
+      <Route path="cars" component={CarsList} onEnter={requireAuth}/>
+      <Route path="login" component={LoginPage} onEnter={checkLoggedIn}/>
       {/*  <Route path="/user/:userId" component={User}/>*/}
       {/*<Route path="*" component={NoMatch}/>*/}
     </Route>

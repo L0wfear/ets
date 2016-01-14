@@ -6,7 +6,7 @@ import { getModelById } from '../scripts/models.js';
 let KRYLATSKOE_CARS = [];
 
 export function getCars() {
-	return fetch('//ods.mos.ru/ssd/city-dashboard/cache_krylatskoe/')
+	return fetch('//ods.mos.ru/ssd/city-dashboard/cache_krylatskoe/', {credentials: 'include'})
 	.then(r => r.json())
 	.then(cars => {
 		let KRYLATSKOE_CARS_INNER = [];

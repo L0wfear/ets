@@ -21,7 +21,7 @@ export default class MainPage extends Component {
 
     return (
       <div>
-        {!this.props.errorLoading && (<FluxComponent connectToStores={['login', 'points']}>
+        {!this.props.errorLoading && (<FluxComponent connectToStores={['session', 'points']}>
           <Toolbar/>
         </FluxComponent>
         )}

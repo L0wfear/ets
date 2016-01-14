@@ -10,7 +10,7 @@ export default class PointsStore extends Store {
     super();
 
     const pointsActions = this._pointsActions = flux.getActions('points');
-    const loginActions = flux.getActions('login');
+    const loginActions = flux.getActions('session');
     this.register(pointsActions.updatePoints, this.handleUpdatePoints);
     this.register(pointsActions.setFilter, this.handleSetFilter);
     this.register(pointsActions.selectPoint, this.handleSelectPoint);
@@ -178,27 +178,28 @@ export default class PointsStore extends Store {
   }
 
   handleLogin(user) {
+    console.log('HUI')
 
-    const filter = {
-      status: statuses.map(s => s.id),
-      type: [],
-      owner: [],
-      customer: [],
-      okrug: [],
-      own: null
-    };
-
-    if (user.role === 'prefect') {
-      filter.okrug = [user.okrug];
-    }
-
-    if (user.role === 'owner') {
-      filter.owner = [user.owner];
-    }
-
-    this.setState({
-      filter
-    });
+    // const filter = {
+    //   status: statuses.map(s => s.id),
+    //   type: [],
+    //   owner: [],
+    //   customer: [],
+    //   okrug: [],
+    //   own: null
+    // };
+    //
+    // if (user.role === 'prefect') {
+    //   filter.okrug = [user.okrug];
+    // }
+    //
+    // if (user.role === 'owner') {
+    //   filter.owner = [user.owner];
+    // }
+    //
+    // this.setState({
+    //   filter
+    // });
 
   }
 
@@ -211,7 +212,7 @@ export default class PointsStore extends Store {
         returns.push(point)
       }
     }
-    
+
     return returns;
   }
 

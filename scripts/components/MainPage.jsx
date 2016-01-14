@@ -1,9 +1,22 @@
 import React, { Component } from 'react';
 import { Link, History } from 'react-router';
 import { MenuItem, Navbar, Nav, NavItem, NavDropdown} from 'react-bootstrap';
+import fluxMixin from 'flummox/mixin';
+
 export default React.createClass({
 
   mixins: [ History ],
+
+  getInitialState() {
+    return {
+      user: {login: 'Пользователь'},
+    }
+  },
+
+  contextTypes: {
+    flux: React.PropTypes.object,
+    history: React.PropTypes.object,
+  },
 
 	renderHeader() {
 		let path = this.props.location.pathname;
@@ -22,7 +35,7 @@ export default React.createClass({
                   <MenuItem active={path === '/employees'} href="#/employees">Реестр водителей</MenuItem>
   				        <MenuItem active={path === '/cars'} href="#/cars">Реестр транспортных средств</MenuItem>
                   <MenuItem divider />
-  				        <MenuItem active={path === '/fuel-rates'} href="#/fuel-rates">Справочник норм расхода топлива</MenuItem> 
+  				        <MenuItem active={path === '/fuel-rates'} href="#/fuel-rates">Справочник норм расхода топлива</MenuItem>
                 </NavDropdown>
 				        <NavItem active={path === '/routes-list'} href="#/routes-list">Список маршрутов</NavItem>
 				        {/*<NavItem active={path === '/waybill-journal/create'} href="#/waybill-journal/create">Создать маршрут</NavItem>*/}
@@ -33,13 +46,29 @@ export default React.createClass({
 					        	<MenuItem><Link to="/routes-list">Реестр маршрутов</Link></MenuItem>
 				        </NavDropdown>*/}
 				      </Nav>
+              <Nav pullRight>
+                <NavItem >{this.state.user.login}</NavItem>
+                <NavItem onClick={this.logout} >Выйти</NavItem>
+              </Nav>
 					</Navbar>)
 	},
 
+  logout() {
+    this.context.flux.getActions('session').logout().then(() => {
+      this.context.history.pushState(null, '/login');
+    });
+  },
+
+  componentWillReceiveProps() {
+    this.setState({user: this.context.flux.getStore('session').getCurrentUser()});
+  },
+
   render() {
+    console.log(this.context);
 		return <div>
 						<div className="app-navigation">{this.renderHeader()}</div>
 						<div className="app-content">{this.props.children}</div>
 					</div>
-  }
+  },
+
 })

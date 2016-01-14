@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import config from './config.js';
 import { getStartOfToday, makeUnixTime } from './utils/dates.js';
 import { wrapCoords, swapCoords } from './utils/geo.js';
@@ -11,7 +12,15 @@ import { getCars } from '../mocks/krylatskoe_cars.js';
 import { generateBills, removeBill, updateBill, createBill } from '../mocks/waybills.js';
 import { getFuelRates as getMockFuelRates } from '../mocks/fuel_rates.js';
 
+
 let getUrl = (url) => config.backend ? config.backend + url : url;
+let toFormData = (data) => {
+  const formData = new FormData();
+  _.mapKeys(data, (v, k) => {
+    formData.append(k, v);
+  });
+  return formData;
+};
 
 const POINTS_URL = getUrl('/data');
 const TRACK_URL = getUrl('/tracks/');
@@ -22,7 +31,47 @@ const GET_ROAD_BY_ODH_URL = getUrl('/road_info/');
 const CARS_INFO_URL = getUrl('/cars_info/');
 const CARS_BY_OWNER_URL = getUrl('/cars_by_owner/');
 const FUEL_OPERATIONS_URL = getUrl('/fuel_operations/');
+const LOGIN_URL = getUrl('/auth/');
 
+function getJSON(url) {
+
+}
+
+function postJSON(url) {
+
+}
+
+function putJSON(url) {
+
+}
+
+function deleteJSON(url) {
+
+}
+
+function checkResponse(url, reponse) {
+  if (url.indexOf('login') === -1) {
+    const { flux } = window.__ETS_CONTAINER__;
+
+    if (response.status === 403) {
+      flux.getActions('session').logout({reason: 'no auth'});
+    }
+  }
+}
+
+export function checkToken(token) {
+
+}
+
+export function login(user) {
+  return fetch(LOGIN_URL, {method: 'POST', body: toFormData(user)}).then(r => r.json());
+}
+
+export function logout() {
+  return new Promise((res, rej) => {
+    res();
+  });
+}
 
 export function getAllPoints() {
   return fetch(POINTS_URL, config.REQUEST_PARAMS).then(r => r.json());
@@ -51,18 +100,6 @@ export function init() {
 export function getWaybills() {
   console.info('GETTING WAYBILLS');
   return generateBills();
-  // return Promise.all([
-  //         loadCustomers(),
-  //         loadModels(),
-  //         loadOwners(),
-  //         loadOkrugs(),
-  //         loadTypes()
-  //       ])
-  //       .then(getCars)
-  //       .then( (result) => {
-  //         console.log(result);
-  //         return generateBills();
-  //       })
 }
 
 export function removeWaybill(id) {
@@ -127,7 +164,7 @@ let ODH_CACHE = {};
 export function getRoadByODHId(id) {
   if (ODH_CACHE[id] === undefined) {
     let query = '?road_id=' + id;
-    return fetch(GET_ROAD_BY_ODH_URL + query).then(r => {
+    return fetch(GET_ROAD_BY_ODH_URL + query, {credentials: 'include'}).then(r => {
       ODH_CACHE[id] = r.json();
       return ODH_CACHE[id];
     });

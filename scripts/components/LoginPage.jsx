@@ -44,6 +44,7 @@ class LoginPage extends Component {
   }
 
   render() {
+  console.log(this.context);
     const { login, password, error } = this.state;
     const disabled = login.length === 0 || password.length === 0;
 
@@ -56,7 +57,7 @@ class LoginPage extends Component {
           <input type="password" className="form-control" placeholder="Пароль" value={password} onChange={this.onPasswordChange}/>
 
           { error ?
-          <div style={{ color: 'red', fontWeight: 'bold', marginBottom: 10 }}>Неправльное имя пользователя или пароль</div>
+          <div style={{ color: 'red', fontWeight: 'bold', marginBottom: 10 }}>Неправильное имя пользователя или пароль</div>
           : null }
           <button className="btn btn-lg btn-primary btn-block" disabled={disabled} onClick={this.onSigninClick}>Вход</button>
         </div>
@@ -80,12 +81,17 @@ class LoginPage extends Component {
     const { login, password } = this.state;
     const flux = this.context.flux;
 
-    const user = users.filter(u => u.login === login && u.password === password)[0];
+    //const user = users.filter(u => u.login === login && u.password === password)[0];
+    const user = {
+      login, password
+    };
 
     if (!user) {
       this.setState({ error: true });
     } else {
-      flux.getActions('login').login(user);
+      flux.getActions('session').login(user).then(() => {
+        this.context.history.pushState(null, '/monitor');
+      });
     }
 
   }
@@ -93,7 +99,8 @@ class LoginPage extends Component {
 }
 
 LoginPage.contextTypes = {
-  flux: React.PropTypes.object.isRequired
+  flux: React.PropTypes.object.isRequired,
+  history: React.PropTypes.object,
 }
 
 

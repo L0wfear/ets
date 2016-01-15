@@ -29,18 +29,18 @@ let template = {
             driver_id: null,
             car_id: "",
             ROUTE_ID: "",
-            FUEL_TYPE_ID: 1,
-            FUEL_START: "",
-            FUEL_TO_GIVE: "",
+            fuel_type_id: 1,
+            fuel_start: "",
+            fuel_to_give: "",
             fuel_given: "",
             fuel_end: "",
             PASSES_COUNT: "",
-            ODOMETR_START: "",
+            odometr_start: "",
             odometr_end: "",
-            MOTOHOURS_START: "",
+            motohours_start: "",
             motohours_end: "",
-            MOTOHOURS_EQUIP_START: "",
-            MOTOHOURS_EQUIP_END: ""
+            motohours_equip_start: "",
+            motohours_equip_end: ""
         }
 
 
@@ -52,10 +52,10 @@ function getBill (number) {
     bill.driver_id = getRandomDriver().id;
     bill.responsible_person_id = getRandomMaster().id;
     bill.STATUS = Math.floor(Math.random()*2) === 0 ? 'closed' : 'open';
-    bill.ODOMETR_START = Math.floor(Math.random()*1000);
-    bill.FUEL_START = bill.FUEL_TO_GIVE = Math.floor(Math.random()*100);
-    bill.MOTOHOURS_START = Math.floor(Math.random()*3000);
-    bill.MOTOHOURS_EQUIP_START = Math.floor(Math.random()*2000);
+    bill.odometr_start = Math.floor(Math.random()*1000);
+    bill.fuel_start = bill.fuel_to_give = Math.floor(Math.random()*100);
+    bill.motohours_start = Math.floor(Math.random()*3000);
+    bill.motohours_equip_start = Math.floor(Math.random()*2000);
     bill.car_id = getRandomCar().id;
     if (bill.STATUS === 'open' ) {
         bill.fact_departure_date = bill.fact_arrival_date = "";
@@ -196,18 +196,18 @@ export function getDefaultBill(currentBillCount = 0) {
 		    driver_id: null,
 		    car_id: "",
 		    //ROUTE_ID: "",
-		    FUEL_TYPE_ID: 1,
-		    FUEL_START: "",
-		    FUEL_TO_GIVE: "",
+		    fuel_type_id: 1,
+		    fuel_start: "",
+		    fuel_to_give: "",
 		    fuel_given: "",
 		    fuel_end: "",
 		    //PASSES_COUNT: "",
-				ODOMETR_START: "",
+				odometr_start: "",
 				odometr_end: "",
-				MOTOHOURS_START: "",
+				motohours_start: "",
 				motohours_end: "",
-				MOTOHOURS_EQUIP_START: "",
-				MOTOHOURS_EQUIP_END: ""
+				motohours_equip_start: "",
+				motohours_equip_end: ""
 		}
 }
 

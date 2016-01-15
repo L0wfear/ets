@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import _ from 'lodash';
 import ROUTES, { getRouteById } from '../../mocks/routes.js';
 import WORK_TYPES from '../../mocks/work_types.js';
 import {monthes} from '../utils/dates.js';
@@ -36,7 +37,7 @@ class WaybillFormWrap extends Component {
 		if (props.showForm) {
 			if (props.bill === null ) {
 				this.setState({
-					formState: getDefaultBill(props.waybillsList.length),
+					formState: getDefaultBill(_.max(props.waybillsList.map(w => w.id))),
 					formStage: formStages[0]
 				})
 			} else {
@@ -79,9 +80,9 @@ class WaybillFormWrap extends Component {
 					!!formState.plan_arrival_date &&
 					!!formState.driver_id &&
 					!!formState.car_id &&
-					!!formState.ODOMETR_START &&
-					!!formState.FUEL_TYPE_ID &&
-					!!formState.FUEL_START
+					!!formState.odometr_start &&
+					!!formState.fuel_type_id &&
+					!!formState.fuel_start
 				:
 					!!formState.odometr_end &&
 					!!formState.motohours_end &&
@@ -106,13 +107,13 @@ class WaybillFormWrap extends Component {
 		}
 
 		if (field === 'odometr_end') {
-			formState.ODOMETR_DIFF = formState.odometr_end - formState.ODOMETR_START;
+			formState.odometr_diff = formState.odometr_end - formState.odometr_start;
 		}
 		if (field === 'motohours_end') {
-			formState.MOTOHOURS_DIFF = formState.motohours_end - formState.MOTOHOURS_START;
+			formState.motohours_diff = formState.motohours_end - formState.motohours_start;
 		}
-		if (field === 'MOTOHOURS_EQUIP_END') {
-			formState.MOTOHOURS_EQUIP_DIFF = formState.MOTOHOURS_EQUIP_END - formState.MOTOHOURS_EQUIP_START;
+		if (field === 'motohours_equip_end') {
+			formState.motohours_equip_diff = formState.motohours_equip_end - formState.motohours_equip_start;
 		}
 
 		newState.formState = formState;
@@ -141,7 +142,7 @@ class WaybillFormWrap extends Component {
 		'&automobile_number='+car.gov_number+
 		'&driver_fio_full='+getFIOById(driver.id, true)+
 		'&license_number='+(driver["Водительское удостоверение"] == '' ? driver["Специальное удостоверение"] : driver["Водительское удостоверение"])+
-		'&odometer_start=' + f.ODOMETR_START +
+		'&odometer_start=' + f.odometr_start +
 		'&depart_day=' + f.plan_departure_date.getDate()+
 		'&depart_month='+ (f.plan_departure_date.getMonth()+1) +
 		'&depart_hour='+ f.plan_departure_date.getHours() +
@@ -150,19 +151,19 @@ class WaybillFormWrap extends Component {
 		'&return_month='+(f.plan_arrival_date.getMonth()+1)+
 		'&return_hour='+f.plan_arrival_date.getHours()+
 		'&return_minute='+f.plan_arrival_date.getMinutes()+
-		'&fuel_mark='+getFuelTypeById(f.FUEL_TYPE_ID).label+
-		'&fuel_start='+f.FUEL_START+
-		'&operation_equipment_start_time='+f.MOTOHOURS_EQUIP_START+
+		'&fuel_mark='+getFuelTypeById(f.fuel_type_id).label+
+		'&fuel_start='+f.fuel_start+
+		'&operation_equipment_start_time='+f.motohours_equip_start+
 		'&operation_engine_start_time='+
 		'&trainee_fio='+
 		'&possession_organization_data='+zhzhzh+
-		'&fuel_issue='+f.FUEL_TO_GIVE+
+		'&fuel_issue='+f.fuel_to_give+
 		'&dispatcher_last_name='+
 		'&pass_driver_last_name='+driver['Фамилия']+
 		'&receive_driver_last_name='+driver['Фамилия']+
 		'&complete_task_route='+route.name+
-		'&complete_task_odometer_start='+f.ODOMETR_START+
-		'&complete_fuel_mark='+getFuelTypeById(f.FUEL_TYPE_ID).label+
+		'&complete_task_odometer_start='+f.odometr_start+
+		'&complete_fuel_mark='+getFuelTypeById(f.fuel_type_id).label+
 		'&complete_number_trips='+f.PASSES_COUNT
   	:
   	'?registration_number='+f.number+
@@ -174,11 +175,11 @@ class WaybillFormWrap extends Component {
   	'&automobile_number='+car.gov_number+
   	'&driver_fio_full='+getFIOById(driver.id, true)+
   	'&license_number='+(driver["Водительское удостоверение"] == '' ? driver["Специальное удостоверение"] : driver["Водительское удостоверение"])+
-  	'&odometer_start='+ f.ODOMETR_START +
+  	'&odometer_start='+ f.odometr_start +
   	'&depart_time='+makeTime(f.plan_departure_date)+
   	'&return_time='+makeTime(f.plan_arrival_date)+
-  	'&fuel_mark='+getFuelTypeById(f.FUEL_TYPE_ID).label+
-  	'&fuel_start='+f.FUEL_START+
+  	'&fuel_mark='+getFuelTypeById(f.fuel_type_id).label+
+  	'&fuel_start='+f.fuel_start+
   	'&operation_equipment_start_time='+
   	'&operation_engine_start_time='+
   	'&possession_organization_data='+zhzhzh+

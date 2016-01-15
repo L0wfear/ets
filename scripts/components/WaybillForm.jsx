@@ -168,12 +168,12 @@ class WaybillForm extends Component {
 	           {IS_DISPLAY &&
 	            <span>
 	              <Col md={3}>
-	                <label>Выезд план</label><br/>{state.plan_departure_date}<br/>
-	                <label>Выезд факт</label><br/>{state.fact_departure_date}
+	                <label>Выезд план</label><br/>{moment(state.plan_departure_date).format('YYYY-MM-DD')}<br/>
+	                <label>Выезд факт</label><br/>{moment(state.fact_departure_date).format('YYYY-MM-DD')}
 	              </Col>
 	              <Col md={3}>
-	                <label>Возвращение план</label><br/>{state.plan_arrival_date}<br/>
-	                <label>Возвращение факт</label><br/>{state.fact_arrival_date}
+	                <label>Возвращение план</label><br/>{moment(state.plan_arrival_date).format('YYYY-MM-DD')}<br/>
+	                <label>Возвращение факт</label><br/>{moment(state.fact_arrival_date).format('YYYY-MM-DD')}
 	              </Col>
 
 	            </span>}
@@ -254,38 +254,38 @@ class WaybillForm extends Component {
 	      		<Col md={4}>
 	      		<h4>Одометр</h4>
 	      		<label>Начало, км</label>
-	      		<Input type="number" disabled={IS_CLOSING || IS_DISPLAY}  onChange={this.handleChange.bind(this, 'ODOMETR_START')} value={state.ODOMETR_START}/>
+	      		<Input type="number" disabled={IS_CLOSING || IS_DISPLAY}  onChange={this.handleChange.bind(this, 'odometr_start')} value={state.odometr_start}/>
 	          { (IS_CLOSING || IS_DISPLAY )&&
 	            <div>
 	          		<label>Конец, км</label>
 	          		<Input type="number" disabled={IS_DISPLAY} value={state.odometr_end} onChange={this.handleChange.bind(this, 'odometr_end')}/>
 	          		<label>Пробег, км</label>
-	          		<Input type="number" value={state.ODOMETR_DIFF} disabled/>
+	          		<Input type="number" value={state.odometr_diff} disabled/>
 	            </div>
 	          }
 	      		</Col>
 	      		<Col md={4}>
 	      		<h4>Счетчик моточасов</h4>
 	      		<label>Начало, м/ч</label>
-	      		<Input type="number"  disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'MOTOHOURS_START')} value={state.MOTOHOURS_START}/>
+	      		<Input type="number"  disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'motohours_start')} value={state.motohours_start}/>
 	          { (IS_CLOSING || IS_DISPLAY )&&
 	            <div>
 	      		<label>Конец, м/ч</label>
 	      		<Input type="number" disabled={IS_DISPLAY} value={state.motohours_end} onChange={this.handleChange.bind(this, 'motohours_end')}/>
 	      		<label>Пробег, м/ч</label>
-	      		<Input type="number" value={state.MOTOHOURS_DIFF} disabled/>
+	      		<Input type="number" value={state.motohours_diff} disabled/>
 	          </div>}
 	      		</Col>
 	      		<Col md={4}>
 	      		<h4>Счетчик моточасов обор-ния</h4>
 	      		<label>Начало, м/ч</label>
-	      		<Input type="number" value={state.MOTOHOURS_EQUIP_START}  onChange={this.handleChange.bind(this, 'MOTOHOURS_EQUIP_START')} disabled={IS_CLOSING || IS_DISPLAY}/>
+	      		<Input type="number" value={state.motohours_equip_start}  onChange={this.handleChange.bind(this, 'motohours_equip_start')} disabled={IS_CLOSING || IS_DISPLAY}/>
 	          { (IS_CLOSING || IS_DISPLAY )&&
 	            <div>
 	      		<label>Конец, м/ч</label>
-	      		<Input type="number" value={state.MOTOHOURS_EQUIP_END}  onChange={this.handleChange.bind(this, 'MOTOHOURS_EQUIP_END')} disabled={IS_DISPLAY}/>
+	      		<Input type="number" value={state.motohours_equip_end}  onChange={this.handleChange.bind(this, 'motohours_equip_end')} disabled={IS_DISPLAY}/>
 	      		<label>Пробег, м/ч</label>
-	      		<Input type="number" value={state.MOTOHOURS_EQUIP_DIFF} disabled/>
+	      		<Input type="number" value={state.motohours_equip_diff} disabled/>
 	          </div>}
 	      		</Col>
 	      	</Row>
@@ -293,12 +293,12 @@ class WaybillForm extends Component {
 	      		<Col md={4}>
 		      		<h4> Топливо </h4>
 		      		<label>Тип топлива</label>
-		            <EtsSelect disabled={IS_CLOSING || IS_DISPLAY} options={FUEL_TYPES} value={state.FUEL_TYPE_ID} onChange={this.handleChange.bind(this, 'FUEL_TYPE_ID')}/>
+		            <EtsSelect disabled={IS_CLOSING || IS_DISPLAY} options={FUEL_TYPES} value={state.fuel_type_id} onChange={this.handleChange.bind(this, 'fuel_type_id')}/>
 
 		      		<label>Начало, л</label>
-		      		<Input type="number" value={state.FUEL_START} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'FUEL_START')}/>
+		      		<Input type="number" value={state.fuel_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_start')}/>
 		      		<label>Выдать, л</label>
-		      		<Input type="number" value={state.FUEL_TO_GIVE}  disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'FUEL_TO_GIVE')}/>
+		      		<Input type="number" value={state.fuel_to_give}  disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_to_give')}/>
 		          { (IS_CLOSING || IS_DISPLAY )&&
 		            <div>
 		          <label>Выдано, л</label>

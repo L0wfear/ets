@@ -36,8 +36,8 @@ export default class WaybillsActions extends Actions {
     payload.plan_arrival_date = createValidDate(payload.plan_arrival_date);
     payload.fact_departure_date = createValidDate(payload.fact_departure_date);
     payload.fact_arrival_date = createValidDate(payload.fact_arrival_date);
-    delete payload.MOTOHOURS_EQUIP_END;
-    delete payload.MOTOHOURS_EQUIP_START;
+    delete payload.motohours_equip_end;
+    delete payload.motohours_equip_start;
     delete payload.ID;
     delete payload.date_create;
     delete payload.STATUS;

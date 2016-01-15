@@ -41,7 +41,7 @@ let tableMeta = {
 			}
 		},
 		{
-			name: 'number',
+			name: 'id',
 			caption: 'Номер',
 			type: 'number',
 		},
@@ -128,9 +128,8 @@ class WaybillJournal extends Component {
 	}
 
 	selectBill({props}) {
-		const number = props.data.number;
-		console.log(number);
-		let bill = _.find(this.props.waybillsList, w => w.number === number);
+		const id = props.data.id;
+		let bill = _.find(this.props.waybillsList, w => w.id === id);
 
 		this.setState({ selectedBill: bill });
 	}
@@ -145,7 +144,7 @@ class WaybillJournal extends Component {
 	onFormHide() {
 		this.setState({
 			showForm: false,
-		//	selectedBill: null
+			selectedBill: null,
 		})
 	}
 
@@ -161,12 +160,8 @@ class WaybillJournal extends Component {
 
 	deleteBill() {
 		if (confirm('Вы уверены, что хотите удалить путевой лист?')) {
-			//deleteBill(this.state.selectedBill.ID);
 			const { flux } = this.context;
 			flux.getActions('waybills').removeWaybill(this.state.selectedBill.id);
-			//this.updateTable();
-		} else {
-
 		}
 	}
 
@@ -218,7 +213,7 @@ class WaybillJournal extends Component {
 						<Button bsSize="small" disabled={this.state.selectedBill === null} onClick={this.deleteBill.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
 					</div>
 				</div>
-				<WaybillsTable data={waybillsList} filter={this.state.filterValues} onRowSelected={this.selectBill.bind(this)} selected={this.state.selectedBill} selectField={'number'} {...this.props}/>
+				<WaybillsTable data={waybillsList} filter={this.state.filterValues} onRowSelected={this.selectBill.bind(this)} selected={this.state.selectedBill} selectField={'id'} {...this.props}/>
 				<WaybillFormWrap onFormHide={this.onFormHide.bind(this)}
 												 showForm={this.state.showForm}
 												 bill={this.state.selectedBill}

@@ -23,7 +23,7 @@ let getCarById = (cars, id) => {
 };
 
 let MastersSelect = (props) => {
-	let options = props.employees.filter( e => e.position_id === 5);
+	let options = props.employees.filter( e => [2, 4, 5, 7, 14].indexOf(e.position_id) > -1);
 			options = options.map( m => ({value: m.id, data: m, label: `${m.last_name} ${m.first_name} ${m.middle_name}`}));
 	return 	<EtsSelect options={options}
 										 clearable={true}

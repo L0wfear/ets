@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
+import connectToStores from 'flummox/connect';
 import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
 import EtsSelect from '../ui/EtsSelect.jsx';
 import Datepicker from '../ui/DatePicker.jsx';
 import moment from 'moment';
 import Div from '../ui/Div.jsx';
-import { getCarById, getCars } from '../../../mocks/krylatskoe_cars.js';
 
-const DRIVER_STATES = ['Работает', 'Не работает'].map( el => ({value: el, label: el}));
+const DRIVER_STATES = ['Работает', 'Не работает'].map( el => ({value: +!!(el.indexOf(' ') === -1), label: el}));
 
-export default class DriverForm extends Component {
+class DriverForm extends Component {
 
 	constructor(props) {
 		super(props);
@@ -19,6 +19,9 @@ export default class DriverForm extends Component {
 	}
 
 	handleChange(field, e) {
+		if (field === 'active') {
+			e = !!e;
+		}
 		this.props.handleFormChange(field, e);
 	}
 
@@ -27,13 +30,11 @@ export default class DriverForm extends Component {
     this.props.onSubmit(this.props.formState);
   }
 
-	componentDidMount() {
-		getCars().then((cars) => this.setState({cars}));
-	}
-
 	render() {
 
 		let state = this.props.formState;
+		const { carsList = [] } = this.props;
+		const CARS = carsList.map( c => ({value: c.asuods_id, label: c.gov_number + ' [' + c.model + ']'}));
 
     console.log('form state is ', state);
 
@@ -49,46 +50,46 @@ export default class DriverForm extends Component {
 
 	      	<Col md={6}>
             <Div>
-              <label>Организация</label> {state['Организация']}
+              <label>Организация</label> {state['company_id']}
             </Div>
             <Div>
   	      		<label>Фамилия</label>
-              <Input type="text" value={state['Фамилия']} onChange={this.handleChange.bind(this, 'Фамилия')}/>
+              <Input type="text" value={state['last_name']} onChange={this.handleChange.bind(this, 'last_name')}/>
   	      	</Div>
             <Div>
               <label>Имя</label>
-              <Input type="text" value={state['Имя']} onChange={this.handleChange.bind(this, 'Имя')}/>
+              <Input type="text" value={state['first_name']} onChange={this.handleChange.bind(this, 'first_name')}/>
   	      	</Div>
             <Div>
               <label>Отчество</label>
-              <Input type="text" value={state['Отчество']} onChange={this.handleChange.bind(this, 'Отчество')}/>
+              <Input type="text" value={state['middle_name']} onChange={this.handleChange.bind(this, 'middle_name')}/>
   	      	</Div>
             <Div>
   	      		<label>Дата рождения</label>
-              <Datepicker date={new Date(state['Дата рождения'])} onChange={this.handleChange.bind(this, 'Дата рождения')}/>
+              <Datepicker date={new Date(state['birthday'])} time={false} onChange={this.handleChange.bind(this, 'birthday')}/>
   	      	</Div>
             <Div>
               <label>Телефон</label>
-              <Input type="text" value={state['Телефон']} onChange={this.handleChange.bind(this, 'Телефон')}/>
+              <Input type="text" value={state['phone']} onChange={this.handleChange.bind(this, 'phone')}/>
   	      	</Div>
 	      	</Col>
 
 	      	<Col md={6}>
             <Div style={{marginTop: 25}}>
 	      		  <label>Табельный номер</label>
-              <Input type="number" value={state['Табельный номер']} onChange={this.handleChange.bind(this, 'Табельный номер')}/>
+              <Input type="number" value={state['personnel_number']} onChange={this.handleChange.bind(this, 'personnel_number')}/>
             </Div>
   	      	<Div>
               <label>Водительское удостоверение</label>
-              <Input type="text" value={state['Водительское удостоверение']} onChange={this.handleChange.bind(this, 'Водительское удостоверение')}/>
+              <Input type="text" value={state['drivers_license']} onChange={this.handleChange.bind(this, 'drivers_license')}/>
   	      	</Div>
   	      	<Div>
               <label>Предпочитаемое ТрС</label>
-              <EtsSelect options={this.state.cars} value={state['Предпочитаемое ТрС']} onChange={this.handleChange.bind(this, 'Предпочитаемое ТрС')}/>
+              <EtsSelect options={CARS} value={state['prefer_car']} onChange={this.handleChange.bind(this, 'prefer_car')}/>
   	      	</Div>
             <Div>
               <label>Состояние</label>
-              <EtsSelect options={DRIVER_STATES} value={state['Текущее состояние']} onChange={this.handleChange.bind(this, 'Текущее состояние')}/>
+              <EtsSelect options={DRIVER_STATES} value={+state['active']} onChange={this.handleChange.bind(this, 'active')}/>
   	      	</Div>
 	      	</Col>
 
@@ -102,3 +103,5 @@ export default class DriverForm extends Component {
 		)
 	}
 }
+
+export default connectToStores(DriverForm, ['objects']);

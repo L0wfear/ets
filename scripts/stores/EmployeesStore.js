@@ -1,6 +1,5 @@
 import fakeData from '../../mocks/employees.js';
 
-
 export function getEmployees() {
 	return fakeData
 }

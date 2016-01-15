@@ -111,7 +111,7 @@ class WaybillForm extends Component {
     let stage = this.props.formStage;
 
 		console.log('WAYBILL PROPS', this.props);
-		const { carsList } = this.props;
+		const { carsList = [] } = this.props;
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: c.gov_number + ' [' + c.model + ']'}));
 
     console.log('form stage is ', stage, 'form state is ', state);

@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import {monthes} from '../../utils/dates.js';
 import _ from 'lodash';
-
 import DriverForm from './DriverForm.jsx';
-import { getMasters, getDrivers, getFIOById, getDriverByCode, updateDriver } from '../../stores/EmployeesStore.js';
 
 const formStages = ['creating', 'post-creating', 'display', 'closing'];
 
-export default class FormWrap extends Component {
+class FormWrap extends Component {
 	constructor(props) {
 		super(props);
 
@@ -48,9 +45,8 @@ export default class FormWrap extends Component {
 	}
 
 	handleFormSubmit(formState) {
-    updateDriver(formState);
-
-    this.props.onFormHide()
+		this.context.flux.getActions('employees').updateEmployee(formState);
+    this.props.onFormHide();
 	}
 
 	render() {
@@ -69,3 +65,9 @@ export default class FormWrap extends Component {
 	}
 
 }
+
+FormWrap.contextTypes = {
+	flux: React.PropTypes.object,
+};
+
+export default FormWrap;

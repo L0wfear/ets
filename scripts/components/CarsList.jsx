@@ -20,14 +20,6 @@ let getCondition = (data) => {
 let tableMeta = {
 	cols: [
 		{
-			name: 'garage_number',
-			caption: 'Гаражный номер',
-			type: 'text',
-			filter: {
-				type: 'select',
-			}
-		},
-		{
 			name: 'gov_number',
 			caption: 'Госномер',
 			type: 'text',
@@ -54,6 +46,14 @@ let tableMeta = {
 		{
 			name: 'condition',
 			caption: 'Состояние',
+			type: 'text',
+			filter: {
+				type: 'select',
+			}
+		},
+		{
+			name: 'garage_number',
+			caption: 'Гаражный номер',
 			type: 'text',
 			filter: {
 				type: 'select',
@@ -102,7 +102,7 @@ class CarsList extends Component {
 
 	selectCar({props}) {
 		const id = props.data.asuods_id;
-		let car = _.find(this.state.carsList, c => c.asuods_id === id);//getCarById(id);
+		let car = _.find(this.props.carsList, c => c.asuods_id === id);//getCarById(id);
 
 		this.setState({
 			selectedCar: car

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-//import Modal from './ui/Modal.jsx';
+import connectToStores from 'flummox/connect';
 import Table from './ui/table/DataTable.jsx';
 import FilterModal from './ui/table/filter/FilterModal.jsx';
 import FilterButton from './ui/table/filter/FilterButton.jsx';
@@ -8,94 +8,81 @@ import DriverFormWrap from './drivers/DriverFormWrap.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
 import _ from 'lodash';
 import moment from 'moment';
-
 import ClickOutHandler from 'react-onclickout';
 
-import EMPLOYEES from '../../mocks/employees.js';
-import { getEmployeeById } from '../stores/EmployeesStore.js';
-
-let fakeData = EMPLOYEES;
-
-fakeData = fakeData.filter((e) => {
-	return e['Должность'].toLowerCase() === 'водитель';
-});
-
-_.each( fakeData, (e) => {
-	//delete e['Организация'];
-	delete e["Класс"];
-})
-
-const employees = fakeData.map( (d) => {
-	return {
-		value: d.id,
-		label: d.label,
-	}
-});
+// active: true
+// birthday: "1974-01-25T00:00:00.000000Z"
+// company_id: 10231494
+// drivers_license: "34 ОН 885423"
+// first_name: "Валерий"
+// id: 16
+// isSelected: false
+// last_name: "Айсин"
+// middle_name: "Александрович"
+// personnel_number: 250
+// phone: "8-905-391-41-86"
+// position_id: 15
+// prefer_car: null
+// special_license: "34 СЕ 348503"
 
 let tableMeta = {
   cols: [{
-      name: 'Фамилия',
+      name: 'last_name',
       caption: 'Фамилия',
       type: 'text',
       filter: {
 				type: 'select'
 			}
   }, {
-      name: 'Имя',
+      name: 'first_name',
       caption: 'Имя',
       type: 'text',
       filter: {
 				type: 'select'
 			}
   }, {
-      name: 'Отчество',
+      name: 'middle_name',
       caption: 'Отчество',
       type: 'text',
       filter: {
 				type: 'select'
 			}
   }, {
-      name: 'Дата рождения',
+      name: 'birthday',
       caption: 'Дата рождения',
       type: '',
       filter: {
 				type: 'date'
 			}
   }, {
-      name: 'Табельный номер',
+      name: 'personnel_number',
       caption: 'Табельный номер',
       type: '',
       filter: {}
   }, {
-      name: 'Должность',
-      caption: 'Должность',
-      type: 'text',
-      filter: {
-				type: 'select'
-			}
-  }, {
-      name: 'Водительское удостоверение',
+      name: 'drivers_license',
       caption: 'Водительское удостоверение',
       type: 'text',
       filter: {
 				type: 'select'
 			}
   }, {
-      name: 'Специальное удостоверение',
+      name: 'special_license',
       caption: 'Специальное удостоверение',
       type: 'text',
       filter: {
 				type: 'select'
 			}
   }, {
-      name: 'Текущее состояние',
+      name: 'active',
       caption: 'Текущее состояние',
       type: 'text',
       filter: {
-				type: 'select'
+				type: 'select',
+				labelFunction: (l) => l === true ? 'Работает' : 'Не работает'
 			}
   }, {
-      name: 'Телефон',
+      name: 'phone',
       caption: 'Телефон',
       type: 'text',
       filter: {
@@ -104,8 +91,20 @@ let tableMeta = {
   }]
 };
 
+let EmployeesTable = (props) => {
 
-export default class EmployeesList extends Component {
+	const renderers = {
+		birthday : ({data}) => <div>{data ? moment(data).format('YYYY-MM-DD') : ''}</div>,
+		active : ({data}) => <div>{data === true ? 'Работает' : 'Не работает'}</div>
+	}
+
+	return <Table results={props.data}
+								tableMeta={tableMeta}
+								renderers={renderers}
+								{...props}/>
+}
+
+class EmployeesList extends Component {
 
 
 	constructor(props) {
@@ -117,6 +116,11 @@ export default class EmployeesList extends Component {
 			selectedDriver: null,
 			showForm: false,
 		};
+	}
+
+	componentDidMount() {
+		console.log('MOUNT EmployeesList')
+		this.context.flux.getActions('employees').getEmployees();
 	}
 
 	saveFilter(filterValues) {
@@ -134,7 +138,7 @@ export default class EmployeesList extends Component {
 
 	selectDriver({props}) {
 		const id = props.data.id;
-		let driver = getEmployeeById(id);
+		let driver = _.find(this.props.employeesList, d => d.id === id);
 
 		this.setState({
 			selectedDriver: driver
@@ -146,10 +150,18 @@ export default class EmployeesList extends Component {
 	}
 
 	onFormHide() {
-		this.setState({showForm: false});
+		this.setState({showForm: false, selectedDriver: null});
 	}
 
 	render() {
+
+		const { driversList = [] } = this.props;
+		const drivers = driversList.map( (d) => {
+			return {
+				value: d.id,
+				label: `${d.last_name} ${d.first_name} ${d.middle_name}`,
+			}
+		});
 
 		return (
 			<div className="ets-page-wrap">
@@ -162,15 +174,15 @@ export default class EmployeesList extends Component {
 													 onHide={() => this.setState({filterModalIsOpen: false})}
 													 values={this.state.filterValues}
 													 direction={'left'}
-													 options={employees}
+													 options={drivers}
 													 tableMeta={tableMeta}
-													 tableData={fakeData}/>
+													 tableData={driversList}/>
 						</ClickOutHandler>
 						<Button bsSize="small" onClick={this.editDriver.bind(this)} disabled={this.state.selectedDriver === null}><Glyphicon glyph="pencil" /> Редактировать</Button>
 					</div>
 				</div>
 
-				<EmployeesTable data={fakeData} filter={this.state.filterValues} onRowSelected={this.selectDriver.bind(this)} selected={this.state.selectedDriver} selectField={'id'}/>
+				<EmployeesTable data={driversList} filter={this.state.filterValues} onRowSelected={this.selectDriver.bind(this)} selected={this.state.selectedDriver} selectField={'id'}/>
 				<DriverFormWrap onFormHide={this.onFormHide.bind(this)}
 												showForm={this.state.showForm}
 												driver={this.state.selectedDriver}/>
@@ -179,14 +191,8 @@ export default class EmployeesList extends Component {
 	}
 }
 
-let EmployeesTable = (props) => {
+EmployeesList.contextTypes = {
+	flux: React.PropTypes.object,
+};
 
-	const renderers = {
-		'Дата рождения': ({data}) => <div>{moment(data).format('YYYY-MM-DD')}</div>,
-	}
-
-	return <Table results={props.data}
-								tableMeta={tableMeta}
-								renderers={renderers}
-								{...props}/>
-}
+export default connectToStores(EmployeesList, ['employees']);

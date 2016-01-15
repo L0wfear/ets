@@ -10,6 +10,8 @@ import WaybillsStore from '../stores/WaybillsStore.js';
 import ObjectsActions from '../actions/ObjectsActions.js';
 import ObjectsStore from '../stores/ObjectsStore.js';
 import CarActions from '../actions/CarActions.js';
+import EmployeesStore from '../stores/EmployeeStore.js';
+import EmployeesActions from '../actions/EmployeesActions.js';
 
 
 
@@ -27,12 +29,14 @@ export default class Flux extends Flummox {
     this.createActions('waybills', WaybillsActions, args);
     this.createActions('objects', ObjectsActions, args);
     this.createActions('car', CarActions, args);
+    this.createActions('employees', EmployeesActions, args);
 
     this.createStore('points', PointsStore, this);
     this.createStore('session', SessionStore, this);
     this.createStore('fuel-rates', FuelRatesStore, this);
     this.createStore('waybills', WaybillsStore, this);
     this.createStore('objects', ObjectsStore, this);
+    this.createStore('employees', EmployeesStore, this);
 
   }
 

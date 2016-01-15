@@ -47,6 +47,7 @@ const WAYBILL_URL = getUrl('/waybill/');
 const CARS_ACTUAL_URL = getUrl('/car_actual/');
 const CARS_GARAGE_NUMBER_URL = getUrl('/car_garage_number/');
 const CARS_ADDITIONAL_INFO_URL = getUrl('/car_additional_info/');
+const EMPLOYEE_URL = getUrl('/employee/');
 
 function getJSON(url) {
   const { flux } = window.__ETS_CONTAINER__;
@@ -202,6 +203,17 @@ export function getCars() {
 export function updateCarGarageNumber(data) {
   return postJSON(CARS_ADDITIONAL_INFO_URL, data, 'params').then( () => {
     return getCars();
+  });
+}
+
+export function getEmployees() {
+  console.log('GETTING EMPLOYEES ADAPTER')
+  return getJSON(EMPLOYEE_URL);
+}
+
+export function updateEmployee(employee) {
+  return putJSON(EMPLOYEE_URL, employee, 'params').then( () => {
+    return getEmployees();
   });
 }
 

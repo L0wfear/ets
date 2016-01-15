@@ -54,6 +54,9 @@ class App extends Component {
       .then(() => {
         flux.getActions('objects').getCars();
       })
+      // .then(() => {
+      //   flux.getActions('employees').getEmployees();
+      // })
       .then(() => this.setState({
           loading: false
         }))

@@ -1,22 +1,21 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-//import Modal from './ui/Modal.jsx';
+import connectToStores from 'flummox/connect';
 import Table from './ui/table/DataTable.jsx';
 import FilterModal from './ui/table/filter/FilterModal.jsx';
 import FilterButton from './ui/table/filter/FilterButton.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
-import { getCarsByOwnerId } from '../adapter.js';
 import CarFormWrap from './cars/CarFormWrap.jsx';
 import ClickOutHandler from 'react-onclickout';
 
-let CARS = [];
-getCarsByOwnerId().then((response)=> {
-	CARS = response.map( (el, i) => {
-		el.garage_number = i % 3 === 0 ? 256 : 128;
-		el.state = i % 9 === 0 ? 'Несправно' : 'Исправно';
-		return el;
-	})
-});
+// function createFakeMissingCarData(types, el, i) {
+// 	el.type = _.find(types, t => t.id === el.type_id).title;
+// 	return el;
+// }
+
+let getCondition = (data) => {
+	return parseInt(data) > 0 ? 'Исправно' : 'Неисправно';
+};
 
 let tableMeta = {
 	cols: [
@@ -53,7 +52,7 @@ let tableMeta = {
 			}
 		},
 		{
-			name: 'state',
+			name: 'condition',
 			caption: 'Состояние',
 			type: 'text',
 			filter: {
@@ -63,8 +62,20 @@ let tableMeta = {
 	]
 }
 
+let CarsTable = (props) => {
 
-export default class CarsList extends Component {
+	const renderers = {
+		condition: ({data}) => <div>{getCondition(data)}</div>,
+	};
+
+	return <Table tableMeta={tableMeta}
+								results={props.data}
+								renderers={renderers}
+								{...props} />
+
+}
+
+class CarsList extends Component {
 
 
 	constructor(props) {
@@ -75,11 +86,13 @@ export default class CarsList extends Component {
 			filterModalIsOpen: false,
 			selectedCar: null,
 			showForm: false,
+			carsList: [],
+			typesList: [],
 		};
 	}
 
 	saveFilter(filterValues) {
-		console.info(`SETTING FILTER VALUES`, filterValues);
+		//console.info(`SETTING FILTER VALUES`, filterValues);
 		this.setState({filterValues});
 	}
 
@@ -88,8 +101,8 @@ export default class CarsList extends Component {
 	}
 
 	selectCar({props}) {
-		const id = props.data.id;
-		let car = _.find(CARS, c => c.id === id);//getCarById(id);
+		const id = props.data.asuods_id;
+		let car = _.find(this.state.carsList, c => c.asuods_id === id);//getCarById(id);
 
 		this.setState({
 			selectedCar: car
@@ -101,10 +114,12 @@ export default class CarsList extends Component {
 	}
 
 	onFormHide() {
-		this.setState({showForm: false});
+		this.setState({showForm: false, selectedCar: null});
 	}
 
 	render() {
+
+		const { carsList = [] } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
@@ -119,13 +134,13 @@ export default class CarsList extends Component {
 													 values={this.state.filterValues}
 													 direction={'left'}
 													 tableMeta={tableMeta}
-													 tableData={CARS}/>
+													 tableData={carsList}/>
 						</ClickOutHandler>
 						<Button bsSize="small" onClick={this.editCar.bind(this)} disabled={this.state.selectedCar === null}><Glyphicon glyph="pencil" /> Редактировать</Button>
 					</div>
 				</div>
 
-				<CarsTable data={CARS} filter={this.state.filterValues} onRowSelected={this.selectCar.bind(this)} selected={this.state.selectedCar} selectField={'id'}/>
+				<CarsTable data={carsList} filter={this.state.filterValues} onRowSelected={this.selectCar.bind(this)} selected={this.state.selectedCar} selectField={'asuods_id'}/>
 				<CarFormWrap onFormHide={this.onFormHide.bind(this)}
 												showForm={this.state.showForm}
 												car={this.state.selectedCar}/>
@@ -134,10 +149,4 @@ export default class CarsList extends Component {
 	}
 }
 
-let CarsTable = (props) => {
-
-	return <Table tableMeta={tableMeta}
-								results={props.data}
-								{...props} />
-
-}
+export default connectToStores(CarsList, ['objects']);

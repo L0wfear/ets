@@ -32,13 +32,10 @@ export default class CarForm extends Component {
   }
 
 	componentDidMount() {
-    console.log(this.props);
     const car = this.props.formState;
-    getCarImage(car.id, car.type_id, car.model_id).then( (imageUrl) => {
-      console.log(imageUrl);
+    getCarImage(car.asuods_id, car.type_id, car.model_id).then( (imageUrl) => {
       this.setState({imageUrl})
     });
-		//getCars().then((cars) => this.setState({cars}));
 	}
 
 	render() {

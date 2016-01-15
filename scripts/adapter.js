@@ -8,7 +8,7 @@ import { loadTypes } from './types.js';
 import { loadModels } from './models.js';
 import { loadOkrugs } from './okrugs.js';
 import { loadOwners } from './owners.js';
-import { getCars } from '../mocks/krylatskoe_cars.js';
+//import { getCars } from '../mocks/krylatskoe_cars.js';
 import { generateBills, removeBill, updateBill, createBill } from '../mocks/waybills.js';
 import { getFuelRates as getMockFuelRates } from '../mocks/fuel_rates.js';
 
@@ -21,6 +21,17 @@ let toFormData = (data) => {
   });
   return formData;
 };
+let toUrlWithParams = (url, data) => {
+  _.mapKeys(data, (v, k) => {
+    if (url.indexOf('?') === -1) {
+      url += '?';
+    } else {
+      url += '&'
+    }
+    url += `${k}=${v}`;
+  });
+  return url;
+};
 
 const POINTS_URL = getUrl('/data');
 const TRACK_URL = getUrl('/tracks/');
@@ -32,24 +43,103 @@ const CARS_INFO_URL = getUrl('/cars_info/');
 const CARS_BY_OWNER_URL = getUrl('/cars_by_owner/');
 const FUEL_OPERATIONS_URL = getUrl('/fuel_operations/');
 const LOGIN_URL = getUrl('/auth/');
+const WAYBILL_URL = getUrl('/waybill/');
+const CARS_ACTUAL_URL = getUrl('/car_actual/');
+const CARS_GARAGE_NUMBER_URL = getUrl('/car_garage_number/');
+const CARS_ADDITIONAL_INFO_URL = getUrl('/car_additional_info/');
 
 function getJSON(url) {
+  const { flux } = window.__ETS_CONTAINER__;
+  const token = flux.getStore('session').getSession();
+  if (token) {
+    url += `?token=${token}`;
+  }
 
+  return fetch(url, {credentials: 'include'}).then( r => {
+    checkResponse(url, r);
+    return r.json();
+  });
 }
 
-function postJSON(url) {
+function postJSON(url, data, type = 'form') {
+  const { flux } = window.__ETS_CONTAINER__;
+  const token = flux.getStore('session').getSession();
+  if (token) {
+    data.token = token;//url += `?token=${token}`;
+  }
+  let body;
+  switch (type) {
+    case 'form':
+      body = toFormData(data);
+      break
+    case 'json':
+      body = JSON.stringify(data);
+      break;
+    case 'params':
+      body = "";
+      url = toUrlWithParams(url, data);
+      break;
+  }
 
+  console.log(type, url);
+
+  const options = {
+    method: 'post',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include',
+    body: body,
+  };
+
+  return fetch(url, options).then( r => {
+    checkResponse(url, r);
+    return r.json();
+  });
 }
 
-function putJSON(url) {
+function putJSON(url, data, type = 'form') {
+  const { flux } = window.__ETS_CONTAINER__;
+  const token = flux.getStore('session').getSession();
+  if (token) {
+    data.token = token;//url += `?token=${token}`;
+  }
+  let body;
+  switch (type) {
+    case 'form':
+      body = toFormData(data);
+      break
+    case 'json':
+      body = JSON.stringify(data);
+      break;
+    case 'params':
+      body = "";
+      url = toUrlWithParams(url, data);
+      break;
+  }
 
+  const options = {
+    method: 'put',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include',
+    body: body,
+  };
+
+  return fetch(url, options).then( r => {
+    checkResponse(url, r);
+    return r.json();
+  });
 }
 
 function deleteJSON(url) {
 
 }
 
-function checkResponse(url, reponse) {
+function checkResponse(url, response) {
   if (url.indexOf('login') === -1) {
     const { flux } = window.__ETS_CONTAINER__;
 
@@ -85,6 +175,7 @@ export function getFuelData(from_dt = getStartOfToday(), to_dt = new Date().getT
 }
 
 export function init() {
+  console.warn('INIT');
   // @todo вся нужная для инициализации внешнего апи хрень здесь
   return Promise.all([
           loadCustomers(),
@@ -93,13 +184,25 @@ export function init() {
           loadOkrugs(),
           loadTypes()
         ])
-    .then(getCars)
+    //.then(getCars)
     //.then(generateBills)
 }
 
 export function getWaybills() {
   console.info('GETTING WAYBILLS');
-  return generateBills();
+  //return generateBills();
+  return getJSON(WAYBILL_URL);
+}
+
+export function getCars() {
+  console.info('GETTING CARS');
+  return getJSON(CARS_ACTUAL_URL);
+}
+
+export function updateCarGarageNumber(data) {
+  return postJSON(CARS_ADDITIONAL_INFO_URL, data, 'params').then( () => {
+    return getCars();
+  });
 }
 
 export function removeWaybill(id) {
@@ -182,6 +285,8 @@ export function getCarsInfo() {
 // TODO метод на бэкэнде
 // пока возвращает промис из заглушки
 export function getCarsByOwnerId(ownerId) {
+
+  console.info('GETTING CARS BY OWNER ID');
 
   return getCars()
 

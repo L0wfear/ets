@@ -18,9 +18,8 @@ class WaybillsStore extends Store {
 
   }
 
-  handleGetWaybills(waybillsList) {
-    waybillsList = _.clone(waybillsList);
-    this.setState({waybillsList});
+  handleGetWaybills(waybills) {
+    this.setState({waybillsList: waybills.result});
   }
 
   //todo: определить объединять или нет

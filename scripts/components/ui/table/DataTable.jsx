@@ -55,7 +55,10 @@ class Table extends React.Component {
 		const rowMetadata = this.initializeRowMetadata();
 
     const results = _(this.props.results).map( (data, i) => {
-			if (!selected || typeof onRowSelected === 'undefined') return data;
+			if (!selected || typeof onRowSelected === 'undefined') {
+        data.isSelected = false;
+        return data;
+      }
       if (typeof selectField !== 'undefined') {
         if (data[selectField] === selected[selectField]) {
           data.isSelected = true;

@@ -47,3 +47,9 @@ export function loadOkrugs() {
     .then(replaceList)
     .then(makeIndex);
 }
+
+export function getOkrugs() {
+  return fetch(OKRUGS_URL, {credentials: 'include'})
+    .then(r => r.json())
+    .then(normalizeArray);
+}

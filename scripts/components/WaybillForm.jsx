@@ -6,16 +6,21 @@ import moment from 'moment';
 import { getMasters, getDrivers, getFIOById, getDriverByCode } from './../stores/EmployeesStore.js';
 import ROUTES, {getRouteById} from '../../mocks/routes.js';
 import WORK_TYPES, {getWorkTypeById} from '../../mocks/work_types.js';
-import CARS, { getCarById } from '../../mocks/krylatskoe_cars.js';
+//import CARS, { getCarById } from '../../mocks/krylatskoe_cars.js';
+//import { getCarById } from '../stores/ObjectsStore.js';
 import getFuelTypes, {getFuelTypeById } from '../stores/FuelTypes.js';
 import { monthes } from '../utils/dates.js';
 import Taxi from './waybill/Taxi.jsx';
 import { getFuelOperations } from '../adapter.js';
+import connectToStores from 'flummox/connect';
 
 const FUEL_TYPES = getFuelTypes();
 const MASTERS = getMasters();
 const DRIVERS = getDrivers();
 
+let getCarById = (cars, id) => {
+	return _.find(cars, c => c.asuods_id === id) || {};
+}
 
 let MastersSelect = (props) => {
 
@@ -64,7 +69,7 @@ let CarSelect = () => {
 		onChange={(v,a)=>console.log('car selected', v,a)}/>
 }
 
-export default class WaybillForm extends Component {
+class WaybillForm extends Component {
 
 	constructor(props) {
 		super(props);
@@ -104,6 +109,10 @@ export default class WaybillForm extends Component {
 
 		let state = this.props.formState;
     let stage = this.props.formStage;
+
+		console.log('WAYBILL PROPS', this.props);
+		const { carsList } = this.props;
+		const CARS = carsList.map( c => ({value: c.asuods_id, label: c.gov_number + ' [' + c.model + ']'}));
 
     console.log('form stage is ', stage, 'form state is ', state);
 
@@ -215,7 +224,7 @@ export default class WaybillForm extends Component {
 	            :
 	            <span>
 	              <label style={{paddingTop:5}}>Транспортное средство</label><br/>
-	              {getCarById(state.CAR_ID).label}
+	              {getCarById(carsList, state.CAR_ID).label}
 	            </span>
 	            }
 	      		</Col>
@@ -321,7 +330,7 @@ export default class WaybillForm extends Component {
 		          </div>}
 	      		</Col>
 	      		<Col md={8}>
-							<Taxi hidden={! (IS_DISPLAY || IS_CLOSING)} readOnly={!IS_CLOSING} car={getCarById(state.CAR_ID)} operations={this.state.operations}/>
+							<Taxi hidden={! (IS_DISPLAY || IS_CLOSING)} readOnly={!IS_CLOSING} car={getCarById(carsList, state.CAR_ID)} operations={this.state.operations}/>
 	      		</Col>
 	      	</Row>
 	      </Modal.Body>
@@ -341,3 +350,5 @@ export default class WaybillForm extends Component {
 		)
 	}
 }
+
+export default connectToStores(WaybillForm, ['objects']);

@@ -7,6 +7,10 @@ import FuelRateActions from '../actions/FuelRateActions.js';
 import FuelRatesStore from '../stores/FuelRatesStore.js';
 import WaybillsActions from '../actions/waybillsActions.js';
 import WaybillsStore from '../stores/WaybillsStore.js';
+import ObjectsActions from '../actions/ObjectsActions.js';
+import ObjectsStore from '../stores/ObjectsStore.js';
+import CarActions from '../actions/CarActions.js';
+
 
 
 export default class Flux extends Flummox {
@@ -21,11 +25,14 @@ export default class Flux extends Flummox {
     this.createActions('session', SessionActions);
     this.createActions('fuel-rates', FuelRateActions, args);
     this.createActions('waybills', WaybillsActions, args);
+    this.createActions('objects', ObjectsActions, args);
+    this.createActions('car', CarActions, args);
 
     this.createStore('points', PointsStore, this);
     this.createStore('session', SessionStore, this);
     this.createStore('fuel-rates', FuelRatesStore, this);
     this.createStore('waybills', WaybillsStore, this);
+    this.createStore('objects', ObjectsStore, this);
 
   }
 

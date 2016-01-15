@@ -48,3 +48,9 @@ export function loadCustomers() {
     .then(replaceList)
     .then(makeIndex);
 }
+
+export function getCustomers() {
+  return fetch(CUSTOMERS_URL, {credentials: 'include'})
+    .then(r => r.json())
+    .then(normalizeArray);
+}

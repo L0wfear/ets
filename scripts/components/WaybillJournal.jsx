@@ -10,7 +10,6 @@ import WaybillFormWrap from './WaybillFormWrap.jsx';
 import moment from 'moment';
 import cx from 'classnames';
 import { getCarById } from '../../mocks/krylatskoe_cars.js';
-import { getBillById } from '../stores/WaybillStore.js';
 import { getFIOById } from '../stores/EmployeesStore.js';
 
 function getStatusLabel(s) {
@@ -113,7 +112,7 @@ class WaybillJournal extends Component {
 
 	selectBill({props}) {
 		const id = props.data.ID;
-		let bill = _.find(this.props.waybillsList, w => w.ID === id);//();getBillById(id);
+		let bill = _.find(this.props.waybillsList, w => w.ID === id);
 
 		this.setState({ selectedBill: bill });
 	}

@@ -59,6 +59,10 @@ export default React.createClass({
     });
   },
 
+  componentDidMount() {
+    this.setState({user: this.context.flux.getStore('session').getCurrentUser()});
+  },
+
   componentWillReceiveProps() {
     this.setState({user: this.context.flux.getStore('session').getCurrentUser()});
   },

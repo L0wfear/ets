@@ -54,3 +54,9 @@ export function loadModels() {
     .then(replaceList)
     .then(makeIndex);
 }
+
+export function fetchModels() {
+  return fetch(MODELS_URL, {credentials: 'include'})
+    .then(r => r.json())
+    .then(normalizeArray)
+}

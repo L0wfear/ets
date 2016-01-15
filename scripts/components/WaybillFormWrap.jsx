@@ -204,8 +204,6 @@ class WaybillFormWrap extends Component {
 		let stage = this.state.formStage;
 		const { flux } = this.context;
 
-		console.log(this.context);
-
 		if (stage === 'creating') {
 			formState.STATUS = 'open';
 			flux.getActions('waybills').createWaybill(formState);

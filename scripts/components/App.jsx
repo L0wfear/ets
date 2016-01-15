@@ -40,7 +40,20 @@ class App extends Component {
   }
 
   componentDidMount() {
+    console.log('WINDOOOOOOOOW')
     init()
+      .then(() => {
+        return Promise.all([
+          flux.getActions('objects').getModels(),
+          flux.getActions('objects').getTypes(),
+          flux.getActions('objects').getOwners(),
+          flux.getActions('objects').getOkrugs(),
+          flux.getActions('objects').getCustomers()
+        ])
+      })
+      .then(() => {
+        flux.getActions('objects').getCars();
+      })
       .then(() => this.setState({
           loading: false
         }))

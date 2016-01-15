@@ -48,3 +48,9 @@ export function loadOwners() {
     .then(replaceList)
     .then(makeIndex);
 }
+
+export function getOwners() {
+  return fetch(OWNERS_URL, config.REQUEST_PARAMS)
+    .then(r => r.json())
+    .then(normalizeArray);
+}

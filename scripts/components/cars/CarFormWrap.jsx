@@ -5,6 +5,11 @@ import _ from 'lodash';
 import CarForm from './CarForm.jsx';
 
 export default class FormWrap extends Component {
+
+	static contextTypes = {
+		flux: React.PropTypes.object,
+	}
+
 	constructor(props) {
 		super(props);
 
@@ -42,7 +47,11 @@ export default class FormWrap extends Component {
 
 	handleFormSubmit(formState) {
     //todo update car info
-    this.props.onFormHide()
+		console.log(formState);
+		//console.log(this.context);
+		this.context.flux.getActions('car').updateCarGarageNumber(formState).then( () => {
+	    this.props.onFormHide();
+		});
 	}
 
 	render() {

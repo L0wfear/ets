@@ -40,3 +40,9 @@ export function loadTypes() {
     .then(replaceList)
     .then(makeIndex);
 }
+
+export function getTypes() {
+  return fetch(TYPES_URL, {credentials: 'include'})
+    .then(r => r.json())
+    .then(normalizeArray);
+}

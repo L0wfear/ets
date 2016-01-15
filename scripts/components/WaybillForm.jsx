@@ -79,8 +79,12 @@ class WaybillForm extends Component {
 		this.handleChange('COMPANY_ID', _.find(this.props.employeesList, e => e.id === v).company_id);
 	}
 
-	onDriverChange() {
-
+	onDriverChange(v) {
+		this.handleChange('driver_id', v);
+		const prefer_car = _.find(this.props.driversList, d => d.id === v).prefer_car || null;
+		if (!this.props.formState.car_id) {
+			this.handleChange('car_id', prefer_car);
+		}
 	}
 
 	render() {
@@ -185,7 +189,7 @@ class WaybillForm extends Component {
 	        { (IS_CREATING || IS_POST_CREATING) ?
 	          <span>
 	      			<label>Водитель (возможен поиск по табельному номеру)</label><br/>
-	      			<DriversSelect value={state.driver_id} drivers={driversList} onChange={this.handleChange.bind(this, 'driver_id')}/>
+	      			<DriversSelect value={state.driver_id} drivers={driversList} onChange={this.onDriverChange.bind(this)}/>
 	      		</span>
 	      		: <span>
 	      				<label>Водитель</label><br/>

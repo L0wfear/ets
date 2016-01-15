@@ -3,6 +3,7 @@ import moment from 'moment';
 import ROUTES, { getRouteById } from '../../mocks/routes.js';
 import WORK_TYPES from '../../mocks/work_types.js';
 import {monthes} from '../utils/dates.js';
+import Div from './ui/Div.jsx';
 
 import WaybillForm from './WaybillForm.jsx';
 
@@ -35,17 +36,17 @@ class WaybillFormWrap extends Component {
 		if (props.showForm) {
 			if (props.bill === null ) {
 				this.setState({
-					formState: getDefaultBill(),
+					formState: getDefaultBill(props.waybillsList.length),
 					formStage: formStages[0]
 				})
 			} else {
 				if (props.bill.STATUS === 'open') {
 					let _bill = _.clone(props.bill);
 
-					_bill.FACT_DEPARTURE_DATE = moment(_bill.PLAN_DEPARTURE_DATE).toDate();
-					_bill.FACT_ARRIVAL_DATE = moment(_bill.PLAN_ARRIVAL_DATE).toDate();
-					_bill.PLAN_DEPARTURE_DATE = moment(_bill.PLAN_DEPARTURE_DATE).toDate();
-					_bill.PLAN_ARRIVAL_DATE = moment(_bill.PLAN_ARRIVAL_DATE).toDate();
+					_bill.fact_departure_date = moment(_bill.plan_departure_date).toDate();
+					_bill.fact_arrival_date = moment(_bill.plan_arrival_date).toDate();
+					_bill.plan_departure_date = moment(_bill.plan_departure_date).toDate();
+					_bill.plan_arrival_date = moment(_bill.plan_arrival_date).toDate();
 
 					this.setState({
 						formState: _bill,
@@ -73,19 +74,19 @@ class WaybillFormWrap extends Component {
 
 		let HAS_REQUIRED_FIELDS =
 				this.state.formStage === 'creating' || this.state.formStage === 'post-creating' ?
-					!!formState.RESPONSIBLE_PERSON_ID &&
-					!!formState.PLAN_DEPARTURE_DATE &&
-					!!formState.PLAN_ARRIVAL_DATE &&
-					!!formState.DRIVER_ID &&
-					!!formState.CAR_ID &&
+					!!formState.responsible_person_id &&
+					!!formState.plan_departure_date &&
+					!!formState.plan_arrival_date &&
+					!!formState.driver_id &&
+					!!formState.car_id &&
 					!!formState.ODOMETR_START &&
 					!!formState.FUEL_TYPE_ID &&
 					!!formState.FUEL_START
 				:
-					!!formState.ODOMETR_END &&
-					!!formState.MOTOHOURS_END &&
-					!!formState.FUEL_GIVEN &&
-					!!formState.FUEL_END;
+					!!formState.odometr_end &&
+					!!formState.motohours_end &&
+					!!formState.fuel_given &&
+					!!formState.fuel_end;
 
 
 		if (HAS_REQUIRED_FIELDS) {
@@ -104,18 +105,17 @@ class WaybillFormWrap extends Component {
 
 		}
 
-		if (field === 'ODOMETR_END') {
-			formState.ODOMETR_DIFF = formState.ODOMETR_END - formState.ODOMETR_START;
+		if (field === 'odometr_end') {
+			formState.ODOMETR_DIFF = formState.odometr_end - formState.ODOMETR_START;
 		}
-		if (field === 'MOTOHOURS_END') {
-			formState.MOTOHOURS_DIFF = formState.MOTOHOURS_END - formState.MOTOHOURS_START;
+		if (field === 'motohours_end') {
+			formState.MOTOHOURS_DIFF = formState.motohours_end - formState.MOTOHOURS_START;
 		}
 		if (field === 'MOTOHOURS_EQUIP_END') {
 			formState.MOTOHOURS_EQUIP_DIFF = formState.MOTOHOURS_EQUIP_END - formState.MOTOHOURS_EQUIP_START;
 		}
 
 		newState.formState = formState;
-		//if (field === 'fuel')
 		this.setState(newState)
 	}
 
@@ -123,16 +123,16 @@ class WaybillFormWrap extends Component {
 
   	console.log('printing bill', this.props.formState);
   	let f = this.state.formState;
-  	let creation_date = moment(f.DATE_CREATE);
+  	let creation_date = moment(f.date_create);
 
   	let zhzhzh = 'ГБУ г.Москвы "Жилищник района Крылатское"';
-  	let driver = getDriverByCode(f.DRIVER_ID);
-  	let car = getCarById(f.CAR_ID);
+  	let driver = getDriverByCode(f.driver_id);
+  	let car = getCarById(f.car_id);
   	let route = getRouteById(f.ROUTE_ID);
 
   	let URL = 'http://ods.mos.ru/ssd/city-dashboard/' + (print_form_type === 2 ? 'plate_truck/' : 'plate_special/');
   	let data = print_form_type === 2 ?
-  	'?registration_number='+f.NUMBER+
+  	'?registration_number='+f.number+
 		'&waybill_open_day='+creation_date.date() +
 		'&waybill_open_month='+monthes[creation_date.month()]+
 		'&waybill_open_year='+creation_date.year()+
@@ -142,14 +142,14 @@ class WaybillFormWrap extends Component {
 		'&driver_fio_full='+getFIOById(driver.id, true)+
 		'&license_number='+(driver["Водительское удостоверение"] == '' ? driver["Специальное удостоверение"] : driver["Водительское удостоверение"])+
 		'&odometer_start=' + f.ODOMETR_START +
-		'&depart_day=' + f.PLAN_DEPARTURE_DATE.getDate()+
-		'&depart_month='+ (f.PLAN_DEPARTURE_DATE.getMonth()+1) +
-		'&depart_hour='+ f.PLAN_DEPARTURE_DATE.getHours() +
-		'&depart_minute='+f.PLAN_DEPARTURE_DATE.getMinutes() +
-		'&return_day='+f.PLAN_ARRIVAL_DATE.getDate()+
-		'&return_month='+(f.PLAN_ARRIVAL_DATE.getMonth()+1)+
-		'&return_hour='+f.PLAN_ARRIVAL_DATE.getHours()+
-		'&return_minute='+f.PLAN_ARRIVAL_DATE.getMinutes()+
+		'&depart_day=' + f.plan_departure_date.getDate()+
+		'&depart_month='+ (f.plan_departure_date.getMonth()+1) +
+		'&depart_hour='+ f.plan_departure_date.getHours() +
+		'&depart_minute='+f.plan_departure_date.getMinutes() +
+		'&return_day='+f.plan_arrival_date.getDate()+
+		'&return_month='+(f.plan_arrival_date.getMonth()+1)+
+		'&return_hour='+f.plan_arrival_date.getHours()+
+		'&return_minute='+f.plan_arrival_date.getMinutes()+
 		'&fuel_mark='+getFuelTypeById(f.FUEL_TYPE_ID).label+
 		'&fuel_start='+f.FUEL_START+
 		'&operation_equipment_start_time='+f.MOTOHOURS_EQUIP_START+
@@ -165,7 +165,7 @@ class WaybillFormWrap extends Component {
 		'&complete_fuel_mark='+getFuelTypeById(f.FUEL_TYPE_ID).label+
 		'&complete_number_trips='+f.PASSES_COUNT
   	:
-  	'?registration_number='+f.NUMBER+
+  	'?registration_number='+f.number+
   	'&waybill_open_day='+creation_date.date() +
   	'&waybill_open_month='+monthes[creation_date.month()]+
   	'&waybill_open_year='+creation_date.year()+
@@ -175,8 +175,8 @@ class WaybillFormWrap extends Component {
   	'&driver_fio_full='+getFIOById(driver.id, true)+
   	'&license_number='+(driver["Водительское удостоверение"] == '' ? driver["Специальное удостоверение"] : driver["Водительское удостоверение"])+
   	'&odometer_start='+ f.ODOMETR_START +
-  	'&depart_time='+makeTime(f.PLAN_DEPARTURE_DATE)+
-  	'&return_time='+makeTime(f.PLAN_ARRIVAL_DATE)+
+  	'&depart_time='+makeTime(f.plan_departure_date)+
+  	'&return_time='+makeTime(f.plan_arrival_date)+
   	'&fuel_mark='+getFuelTypeById(f.FUEL_TYPE_ID).label+
   	'&fuel_start='+f.FUEL_START+
   	'&operation_equipment_start_time='+
@@ -188,9 +188,6 @@ class WaybillFormWrap extends Component {
   	'&complete_task_route='+
   	'&complete_task_odometer_start=';
 
-
-
-  	//console.log( creation_date, creation_date.year(), creation_date.month(), );
   	let linkTo = URL + data;
 
   	console.log( 'print url', linkTo, f)
@@ -212,7 +209,6 @@ class WaybillFormWrap extends Component {
 				canPrint: true,
 				canSave: false
 			})
-			//this.props.updateTable();
 		} else if (stage === 'post-creating') {
 			formState.STATUS = 'open';
 			flux.getActions('waybills').updateWaybill(formState, true);
@@ -225,42 +221,20 @@ class WaybillFormWrap extends Component {
 			this.props.onFormHide()
 		}
 
-
-
-		return ;
-		// if (billStatus === null ){
-		// 	console.log('creating new bill')
-		// 	createBill(formState);
-		// 	this.setState({
-		// 		showForm: false,
-		// 		formStage: formStages[1],
-		// 		canSave: false
-		// 	})
-		// 	this.props.updateTable();
-		// } else if (billStatus === 'open') {
-		// 	console.log('updating bill')
-		// 	updateBill(formState)
-		// 	this.setState({
-		// 		showForm: false
-		// 	})
-		// } else {
-		// 	console.log('xz')
-		// }
+		return;
 	}
 
 	render() {
 
-		let props = this.props;
-
-		return 	props.showForm ? <WaybillForm
-								formState = {this.state.formState}
-								onSubmit={this.handleFormSubmit.bind(this)}
-								handlePrint={this.handlePrint.bind(this)}
-								handleFormChange={this.handleFormStateChange.bind(this)}
-								show={this.props.showForm}
-								onHide={this.props.onFormHide}
-								{...this.state}/>
-								: null;
+		return 	<Div hidden={!this.props.showForm}>
+							<WaybillForm formState = {this.state.formState}
+													 onSubmit={this.handleFormSubmit.bind(this)}
+													 handlePrint={this.handlePrint.bind(this)}
+													 handleFormChange={this.handleFormStateChange.bind(this)}
+													 show={this.props.showForm}
+													 onHide={this.props.onFormHide}
+													 {...this.state}/>
+						</Div>
 
 	}
 

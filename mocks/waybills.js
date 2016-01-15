@@ -19,26 +19,26 @@ let getRandomCar = () => CARS[Math.floor(Math.random() * (CARS.length))]
 let template = {
             ID: 0,
             STATUS: 'open',
-            NUMBER: 0,
-            DATE_CREATE: '2015-12-18 9:00',
-            RESPONSIBLE_PERSON_ID: "",
-            PLAN_DEPARTURE_DATE: '2015-12-18 9:00',
-            FACT_DEPARTURE_DATE: '2015-12-18 9:00',
-            PLAN_ARRIVAL_DATE: '2015-12-19 9:00',
-            FACT_ARRIVAL_DATE: '2015-12-19 9:00',
-            DRIVER_ID: null,
-            CAR_ID: "",
+            number: 0,
+            date_create: '2015-12-18 9:00',
+            responsible_person_id: "",
+            plan_departure_date: '2015-12-18 9:00',
+            fact_departure_date: '2015-12-18 9:00',
+            plan_arrival_date: '2015-12-19 9:00',
+            fact_arrival_date: '2015-12-19 9:00',
+            driver_id: null,
+            car_id: "",
             ROUTE_ID: "",
             FUEL_TYPE_ID: 1,
             FUEL_START: "",
             FUEL_TO_GIVE: "",
-            FUEL_GIVEN: "",
-            FUEL_END: "",
+            fuel_given: "",
+            fuel_end: "",
             PASSES_COUNT: "",
             ODOMETR_START: "",
-            ODOMETR_END: "",
+            odometr_end: "",
             MOTOHOURS_START: "",
-            MOTOHOURS_END: "",
+            motohours_end: "",
             MOTOHOURS_EQUIP_START: "",
             MOTOHOURS_EQUIP_END: ""
         }
@@ -48,17 +48,17 @@ function getBill (number) {
     let bill = _.clone(template);
 
     let new_id = number + 1;
-    bill.ID = bill.NUMBER = new_id;
-    bill.DRIVER_ID = getRandomDriver().id;
-    bill.RESPONSIBLE_PERSON_ID = getRandomMaster().id;
+    bill.ID = bill.number = new_id;
+    bill.driver_id = getRandomDriver().id;
+    bill.responsible_person_id = getRandomMaster().id;
     bill.STATUS = Math.floor(Math.random()*2) === 0 ? 'closed' : 'open';
     bill.ODOMETR_START = Math.floor(Math.random()*1000);
     bill.FUEL_START = bill.FUEL_TO_GIVE = Math.floor(Math.random()*100);
     bill.MOTOHOURS_START = Math.floor(Math.random()*3000);
     bill.MOTOHOURS_EQUIP_START = Math.floor(Math.random()*2000);
-    bill.CAR_ID = getRandomCar().id;
+    bill.car_id = getRandomCar().id;
     if (bill.STATUS === 'open' ) {
-        bill.FACT_DEPARTURE_DATE = bill.FACT_ARRIVAL_DATE = "";
+        bill.fact_departure_date = bill.fact_arrival_date = "";
     }
     bill.PASSES_COUNT = Math.floor(Math.random() * 4)+1;
     bill.ROUTE_ID = Math.floor(Math.random()*3) + 1;
@@ -128,15 +128,15 @@ export function updateBill(data, correctionFlag = false) {
 
     if (!updatedBill) rej();
 
-    toSave.PLAN_DEPARTURE_DATE = !!toSave.PLAN_DEPARTURE_DATE.length ? toSave.PLAN_DEPARTURE_DATE : makeDate(toSave.PLAN_DEPARTURE_DATE) + ' ' + makeTime(toSave.PLAN_DEPARTURE_DATE);
-  	toSave.PLAN_ARRIVAL_DATE = !!toSave.PLAN_ARRIVAL_DATE.length ? toSave.PLAN_ARRIVAL_DATE : makeDate(toSave.PLAN_ARRIVAL_DATE) + ' ' + makeTime(toSave.PLAN_ARRIVAL_DATE);
+    toSave.plan_departure_date = !!toSave.plan_departure_date.length ? toSave.plan_departure_date : makeDate(toSave.plan_departure_date) + ' ' + makeTime(toSave.plan_departure_date);
+  	toSave.plan_arrival_date = !!toSave.plan_arrival_date.length ? toSave.plan_arrival_date : makeDate(toSave.plan_arrival_date) + ' ' + makeTime(toSave.plan_arrival_date);
 
   	if (!correctionFlag) {
-  	 	toSave.FACT_DEPARTURE_DATE = makeDate(toSave.FACT_DEPARTURE_DATE) + ' ' + makeTime(toSave.FACT_DEPARTURE_DATE);
-  		toSave.FACT_ARRIVAL_DATE = makeDate(toSave.FACT_ARRIVAL_DATE) + ' ' + makeTime(toSave.FACT_ARRIVAL_DATE);
+  	 	toSave.fact_departure_date = makeDate(toSave.fact_departure_date) + ' ' + makeTime(toSave.fact_departure_date);
+  		toSave.fact_arrival_date = makeDate(toSave.fact_arrival_date) + ' ' + makeTime(toSave.fact_arrival_date);
   	} else {
-  		toSave.DRIVER_ID = getDriverByCode(toSave.DRIVER_ID).id;
-  		toSave.FACT_DEPARTURE_DATE = toSave.FACT_ARRIVAL_DATE = '';
+  		toSave.driver_id = getDriverByCode(toSave.driver_id).id;
+  		toSave.fact_departure_date = toSave.fact_arrival_date = '';
   	}
 
   	_.each(toSave, (v,k ) => {
@@ -153,10 +153,10 @@ export function updateBill(data, correctionFlag = false) {
 export function createBill(data) {
 	let toSave = _.clone(data);
 	toSave.STATUS = 'open';
-	toSave.PLAN_DEPARTURE_DATE = makeDate(toSave.PLAN_DEPARTURE_DATE) + ' ' + makeTime(toSave.PLAN_DEPARTURE_DATE);
-	toSave.PLAN_ARRIVAL_DATE = makeDate(toSave.PLAN_ARRIVAL_DATE) + ' ' + makeTime(toSave.PLAN_ARRIVAL_DATE);
-	toSave.FACT_DEPARTURE_DATE = toSave.FACT_ARRIVAL_DATE = '';
-	toSave.DRIVER_ID = getDriverByCode(toSave.DRIVER_ID).id;
+	toSave.plan_departure_date = makeDate(toSave.plan_departure_date) + ' ' + makeTime(toSave.plan_departure_date);
+	toSave.plan_arrival_date = makeDate(toSave.plan_arrival_date) + ' ' + makeTime(toSave.plan_arrival_date);
+	toSave.fact_departure_date = toSave.fact_arrival_date = '';
+	toSave.driver_id = getDriverByCode(toSave.driver_id).id;
 	LIST.push(toSave);
 
   return new Promise( (res, rej) => {
@@ -166,7 +166,7 @@ export function createBill(data) {
   });
 }
 
-export function getDefaultBill() {
+export function getDefaultBill(currentBillCount = 0) {
 
 		let now = new Date();
 		let vyezd_plan = new Date(
@@ -184,28 +184,28 @@ export function getDefaultBill() {
 	    0
     )
 		return {
-		    ID: LIST.length + 1,
+		    ID: currentBillCount + 1,
 		    STATUS: null,
-		    NUMBER: LIST.length + 1,
-		    DATE_CREATE: makeDate(now) + ' ' + makeTime(now),
-		    RESPONSIBLE_PERSON_ID: "",
-		    PLAN_DEPARTURE_DATE: vyezd_plan,
-		    FACT_DEPARTURE_DATE: vyezd_plan,
-		    PLAN_ARRIVAL_DATE: vozvr_plan,
-		    FACT_ARRIVAL_DATE: vozvr_plan,
-		    DRIVER_ID: null,
-		    CAR_ID: "",
-		    ROUTE_ID: "",
+		    number: currentBillCount + 1,
+		    date_create: makeDate(now) + ' ' + makeTime(now),
+		    responsible_person_id: "",
+		    plan_departure_date: vyezd_plan,
+		    fact_departure_date: vyezd_plan,
+		    plan_arrival_date: vozvr_plan,
+		    fact_arrival_date: vozvr_plan,
+		    driver_id: null,
+		    car_id: "",
+		    //ROUTE_ID: "",
 		    FUEL_TYPE_ID: 1,
 		    FUEL_START: "",
 		    FUEL_TO_GIVE: "",
-		    FUEL_GIVEN: "",
-		    FUEL_END: "",
-		    PASSES_COUNT: "",
+		    fuel_given: "",
+		    fuel_end: "",
+		    //PASSES_COUNT: "",
 				ODOMETR_START: "",
-				ODOMETR_END: "",
+				odometr_end: "",
 				MOTOHOURS_START: "",
-				MOTOHOURS_END: "",
+				motohours_end: "",
 				MOTOHOURS_EQUIP_START: "",
 				MOTOHOURS_EQUIP_END: ""
 		}

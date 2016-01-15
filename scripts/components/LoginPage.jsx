@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { init } from '../adapter.js';
 
 const users = [
 
@@ -90,7 +90,25 @@ class LoginPage extends Component {
       this.setState({ error: true });
     } else {
       flux.getActions('session').login(user).then(() => {
-        this.context.history.pushState(null, '/monitor');
+        init()
+        .then(() => {
+          return Promise.all([
+            flux.getActions('objects').getModels(),
+            flux.getActions('objects').getTypes(),
+            flux.getActions('objects').getOwners(),
+            flux.getActions('objects').getOkrugs(),
+            flux.getActions('objects').getCustomers()
+          ])
+        })
+        .then(() => {
+          flux.getActions('objects').getCars();
+        })
+        .then(() => {
+          flux.getActions('employees').getEmployees();
+        })
+        .then( () => {
+          this.context.history.pushState(null, '/monitor');
+        })
       });
     }
 

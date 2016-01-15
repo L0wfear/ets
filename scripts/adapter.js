@@ -136,8 +136,40 @@ function putJSON(url, data, type = 'form') {
   });
 }
 
-function deleteJSON(url) {
+function deleteJSON(url, data, type = 'form') {
+  const { flux } = window.__ETS_CONTAINER__;
+  const token = flux.getStore('session').getSession();
+  if (token) {
+    data.token = token;
+  }
+  let body;
+  switch (type) {
+    case 'form':
+      body = toFormData(data);
+      break
+    case 'json':
+      body = JSON.stringify(data);
+      break;
+    case 'params':
+      body = "";
+      url = toUrlWithParams(url, data);
+      break;
+  }
 
+  const options = {
+    method: 'delete',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include',
+    body: body,
+  };
+
+  return fetch(url, options).then( r => {
+    checkResponse(url, r);
+    return r.json();
+  });
 }
 
 function checkResponse(url, response) {
@@ -191,7 +223,6 @@ export function init() {
 
 export function getWaybills() {
   console.info('GETTING WAYBILLS');
-  //return generateBills();
   return getJSON(WAYBILL_URL);
 }
 
@@ -217,8 +248,10 @@ export function updateEmployee(employee) {
   });
 }
 
-export function removeWaybill(id) {
-  return removeBill(id);
+export function removeWaybill(payload) {
+  return deleteJSON(WAYBILL_URL, payload, 'params').then( () => {
+    return getWaybills();
+  });
 }
 
 export function updateWaybill(waybill, correctionFlag) {
@@ -226,7 +259,9 @@ export function updateWaybill(waybill, correctionFlag) {
 }
 
 export function createWaybill(waybill) {
-  return createBill(waybill);
+  return postJSON(WAYBILL_URL, waybill, 'params').then( () => {
+    return getWaybills();
+  });
 }
 
 export function getFuelOperations() {

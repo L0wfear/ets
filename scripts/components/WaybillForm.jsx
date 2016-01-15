@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
 import EtsSelect from './ui/EtsSelect.jsx';
 import Datepicker from './ui/DatePicker.jsx';
+import Span from './ui/Span.jsx';
 import moment from 'moment';
-import { getMasters, getDrivers, getFIOById, getDriverByCode } from './../stores/EmployeesStore.js';
+import { getDrivers, getFIOById, getDriverByCode } from './../stores/EmployeesStore.js';
 import ROUTES, {getRouteById} from '../../mocks/routes.js';
 import WORK_TYPES, {getWorkTypeById} from '../../mocks/work_types.js';
 //import CARS, { getCarById } from '../../mocks/krylatskoe_cars.js';
@@ -15,59 +16,39 @@ import { getFuelOperations } from '../adapter.js';
 import connectToStores from 'flummox/connect';
 
 const FUEL_TYPES = getFuelTypes();
-const MASTERS = getMasters();
 const DRIVERS = getDrivers();
 
 let getCarById = (cars, id) => {
 	return _.find(cars, c => c.asuods_id === id) || {};
-}
+};
 
 let MastersSelect = (props) => {
-
-	//let renderOption = (option) => <span>{option['Имя']}</span>
-
-	return 	<EtsSelect
-			options={MASTERS}
-			clearable={true}
-			searchable={true}
-			{...props}
-			//optionRenderer={renderOption}
-			/>
-
+	let options = props.employees.filter( e => e.position_id === 5);
+			options = options.map( m => ({value: m.id, data: m, label: `${m.last_name} ${m.first_name} ${m.middle_name}`}));
+	return 	<EtsSelect options={options}
+										 clearable={true}
+										 searchable={true}
+										 {...props} />
 };
 
 let DriversSelect = (props) => {
-	return <EtsSelect
-		options={DRIVERS}
-		clearable={true}
-		searchable={true}
-			{...props}/>
-}
+	const options = props.drivers.map( d => ({value: d.id, label: `[${d.personnel_number}] ${d.last_name} ${d.first_name} ${d.middle_name}`}));
+	return <EtsSelect options={options}
+										clearable={true}
+										searchable={true}
+										{...props}/>
+};
 
-let DriversSelectByCode = (props) => {
-
-	let renderOption = (v) => <span>{v['Табельный номер']}</span>
-	let renderValue = (v) => v['Табельный номер'];
-
-	return <Select
-		options={DRIVERS}
-		clearable={true}
-		optionRenderer={renderOption}
-		valueRenderer={renderValue}
-		searchable={true}
-		onChange={(v,a)=>console.log('driver selected', v,a)}/>
-}
-
-let CarSelect = () => {
-
-	return <Select
-		options={DRIVERS}
-		clearable={true}
-		//optionRenderer={renderOption}
-		//valueRenderer={renderValue}
-		searchable={true}
-		onChange={(v,a)=>console.log('car selected', v,a)}/>
-}
+// let CarSelect = (props) => {
+//
+// 	return <Select
+// 		options={DRIVERS}
+// 		clearable={true}
+// 		//optionRenderer={renderOption}
+// 		//valueRenderer={renderValue}
+// 		searchable={true}
+// 		onChange={(v,a)=>console.log('car selected', v,a)}/>
+// }
 
 class WaybillForm extends Component {
 
@@ -90,20 +71,17 @@ class WaybillForm extends Component {
 
 	componentDidMount() {
 		getFuelOperations().then(r => this.setState({operations: r.result}));
+		this.context.flux.getActions('employees').getEmployees();
 	}
 
+	onMasterChange(v) {
+		this.handleChange('responsible_person_id', v);
+		this.handleChange('COMPANY_ID', _.find(this.props.employeesList, e => e.id === v).company_id);
+	}
 
-  renderDisplay() {
+	onDriverChange() {
 
-  }
-
-  renderCreating() {
-
-  }
-
-  renderClosing() {
-
-  }
+	}
 
 	render() {
 
@@ -111,7 +89,7 @@ class WaybillForm extends Component {
     let stage = this.props.formStage;
 
 		console.log('WAYBILL PROPS', this.props);
-		const { carsList = [] } = this.props;
+		const { carsList = [], driversList = [], employeesList = [] } = this.props;
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: c.gov_number + ' [' + c.model + ']'}));
 
     console.log('form stage is ', stage, 'form state is ', state);
@@ -145,7 +123,7 @@ class WaybillForm extends Component {
 			autoFocus={true}
 			enforceFocus={true}>
 				<Modal.Header closeButton>
-	          <Modal.Title id="contained-modal-title-lg">{title} № {state.NUMBER} { IS_POST_CREATING && '(возможна корректировка)'}</Modal.Title>
+	          <Modal.Title id="contained-modal-title-lg">{title} № {state.number} { IS_POST_CREATING && '(возможна корректировка)'}</Modal.Title>
 				</Modal.Header>
 
 	      <Modal.Body>
@@ -159,43 +137,43 @@ class WaybillForm extends Component {
 	      	<Col md={6}>
 	      		<label>Ответственное лицо</label><br/>
 	      		{ (IS_CREATING || IS_POST_CREATING) ?
-	      		<MastersSelect  value={state.RESPONSIBLE_PERSON_ID} onChange={this.handleChange.bind(this, 'RESPONSIBLE_PERSON_ID')}/>
+	      		<MastersSelect  value={state.responsible_person_id} employees={employeesList} onChange={this.onMasterChange.bind(this)}/>
 	      		:
-	      		getFIOById(state.RESPONSIBLE_PERSON_ID, true)
+	      		getFIOById(state.responsible_person_id, true)
 	      		}
 	      	</Col>
 	       	{ (IS_CREATING || IS_POST_CREATING) &&
 	       		<Col md={3}>
 		       		<label>Выезд план</label>
-			   			<Datepicker date={ state.PLAN_DEPARTURE_DATE } onChange={this.handleChange.bind(this, 'PLAN_DEPARTURE_DATE')}/>
+			   			<Datepicker date={ state.plan_departure_date } onChange={this.handleChange.bind(this, 'plan_departure_date')}/>
 		       	</Col> }
 		       { (IS_CREATING || IS_POST_CREATING) &&
 		       	<Col md={3}>
 			   			<label>Возвращение план</label>
-			   			<Datepicker date={ state.PLAN_ARRIVAL_DATE } onChange={this.handleChange.bind(this, 'PLAN_ARRIVAL_DATE')}/>
+			   			<Datepicker date={ state.plan_arrival_date } onChange={this.handleChange.bind(this, 'plan_arrival_date')}/>
 		       	</Col>
 		       }
 		       { IS_CLOSING &&
 			       	<Col md={3}>
 			       		<label>Выезд факт</label>
-				   			<Datepicker date={ state.FACT_DEPARTURE_DATE } onChange={this.handleChange.bind(this, 'FACT_DEPARTURE_DATE')}/>
+				   			<Datepicker date={ state.fact_departure_date } onChange={this.handleChange.bind(this, 'fact_departure_date')}/>
 			       	</Col>}
 			      { IS_CLOSING &&
 			      	<Col md={3}>
 				   			<label>Возвращение факт</label>
-				   			<Datepicker date={ state.FACT_ARRIVAL_DATE } onChange={this.handleChange.bind(this, 'FACT_ARRIVAL_DATE')}/>
+				   			<Datepicker date={ state.fact_arrival_date } onChange={this.handleChange.bind(this, 'fact_arrival_date')}/>
 			       	</Col>
 			       }
 
 	           {IS_DISPLAY &&
 	            <span>
 	              <Col md={3}>
-	                <label>Выезд план</label><br/>{state.PLAN_DEPARTURE_DATE}<br/>
-	                <label>Выезд факт</label><br/>{state.FACT_DEPARTURE_DATE}
+	                <label>Выезд план</label><br/>{state.plan_departure_date}<br/>
+	                <label>Выезд факт</label><br/>{state.fact_departure_date}
 	              </Col>
 	              <Col md={3}>
-	                <label>Возвращение план</label><br/>{state.PLAN_ARRIVAL_DATE}<br/>
-	                <label>Возвращение факт</label><br/>{state.FACT_ARRIVAL_DATE}
+	                <label>Возвращение план</label><br/>{state.plan_arrival_date}<br/>
+	                <label>Возвращение факт</label><br/>{state.fact_arrival_date}
 	              </Col>
 
 	            </span>}
@@ -207,11 +185,11 @@ class WaybillForm extends Component {
 	        { (IS_CREATING || IS_POST_CREATING) ?
 	          <span>
 	      			<label>Водитель (возможен поиск по табельному номеру)</label><br/>
-	      				<DriversSelect value={state.DRIVER_ID} onChange={this.handleChange.bind(this, 'DRIVER_ID')}/>
+	      			<DriversSelect value={state.driver_id} drivers={driversList} onChange={this.handleChange.bind(this, 'driver_id')}/>
 	      		</span>
 	      		: <span>
 	      				<label>Водитель</label><br/>
-	      				{getFIOById(state.DRIVER_ID, true)}
+	      				{getFIOById(state.driver_id, true)}
 	            </span>
 	      		}
 	          </Col>
@@ -219,19 +197,19 @@ class WaybillForm extends Component {
 	          { (IS_CREATING || IS_POST_CREATING) ?
 	            <span>
 	        			<label>Транспортное средство (поиск по госномеру)</label>
-	        			<EtsSelect options={CARS} disabled={IS_POST_CREATING} value={state.CAR_ID} onChange={this.handleChange.bind(this, 'CAR_ID')}/>
+	        			<EtsSelect options={CARS} disabled={IS_POST_CREATING} value={state.car_id} onChange={this.handleChange.bind(this, 'car_id')}/>
 	            </span>
 	            :
 	            <span>
 	              <label style={{paddingTop:5}}>Транспортное средство</label><br/>
-	              {getCarById(carsList, state.CAR_ID).label}
+	              {getCarById(carsList, state.car_id).label}
 	            </span>
 	            }
 	      		</Col>
 	      	</Row>
 	      	{/*<Select.Async multi={false} value={this.props.master}*/}
 
-	        <h4>Задание</h4>
+	        {/*<h4>Задание</h4>
 	      	<Row>
 	      	<Col md={5}>
 	        {!IS_DISPLAY  ?
@@ -270,7 +248,7 @@ class WaybillForm extends Component {
 	    		  <label>Количество прохождений</label>
 	    		  <Input type="number" disabled={IS_CLOSING || IS_DISPLAY} value={state.PASSES_COUNT} onChange={this.handleChange.bind(this, 'PASSES_COUNT')}/>
 	    		</Col>
-	      	</Row>
+	      	</Row> */}
 
 	      	<Row>
 	      		<Col md={4}>
@@ -280,7 +258,7 @@ class WaybillForm extends Component {
 	          { (IS_CLOSING || IS_DISPLAY )&&
 	            <div>
 	          		<label>Конец, км</label>
-	          		<Input type="number" disabled={IS_DISPLAY} value={state.ODOMETR_END} onChange={this.handleChange.bind(this, 'ODOMETR_END')}/>
+	          		<Input type="number" disabled={IS_DISPLAY} value={state.odometr_end} onChange={this.handleChange.bind(this, 'odometr_end')}/>
 	          		<label>Пробег, км</label>
 	          		<Input type="number" value={state.ODOMETR_DIFF} disabled/>
 	            </div>
@@ -293,7 +271,7 @@ class WaybillForm extends Component {
 	          { (IS_CLOSING || IS_DISPLAY )&&
 	            <div>
 	      		<label>Конец, м/ч</label>
-	      		<Input type="number" disabled={IS_DISPLAY} value={state.MOTOHOURS_END} onChange={this.handleChange.bind(this, 'MOTOHOURS_END')}/>
+	      		<Input type="number" disabled={IS_DISPLAY} value={state.motohours_end} onChange={this.handleChange.bind(this, 'motohours_end')}/>
 	      		<label>Пробег, м/ч</label>
 	      		<Input type="number" value={state.MOTOHOURS_DIFF} disabled/>
 	          </div>}
@@ -324,13 +302,13 @@ class WaybillForm extends Component {
 		          { (IS_CLOSING || IS_DISPLAY )&&
 		            <div>
 		          <label>Выдано, л</label>
-		          <Input type="number" value={state.FUEL_GIVEN}  onChange={this.handleChange.bind(this, 'FUEL_GIVEN')} disabled={IS_CREATING || IS_DISPLAY}/>
+		          <Input type="number" value={state.fuel_given}  onChange={this.handleChange.bind(this, 'fuel_given')} disabled={IS_CREATING || IS_DISPLAY}/>
 		      		<label>Конец, л</label>
-		      		<Input type="number" value={state.FUEL_END}  onChange={this.handleChange.bind(this, 'FUEL_END')} disabled={IS_CREATING || IS_DISPLAY}/>
+		      		<Input type="number" value={state.fuel_end}  onChange={this.handleChange.bind(this, 'fuel_end')} disabled={IS_CREATING || IS_DISPLAY}/>
 		          </div>}
 	      		</Col>
 	      		<Col md={8}>
-							<Taxi hidden={! (IS_DISPLAY || IS_CLOSING)} readOnly={!IS_CLOSING} car={getCarById(carsList, state.CAR_ID)} operations={this.state.operations}/>
+							<Taxi hidden={! (IS_DISPLAY || IS_CLOSING)} readOnly={!IS_CLOSING} car={getCarById(carsList, state.car_id)} operations={this.state.operations}/>
 	      		</Col>
 	      	</Row>
 	      </Modal.Body>
@@ -351,4 +329,8 @@ class WaybillForm extends Component {
 	}
 }
 
-export default connectToStores(WaybillForm, ['objects']);
+WaybillForm.contextTypes = {
+	flux: React.PropTypes.object,
+};
+
+export default connectToStores(WaybillForm, ['objects', 'employees']);

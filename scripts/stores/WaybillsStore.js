@@ -23,9 +23,8 @@ class WaybillsStore extends Store {
   }
 
   //todo: определить объединять или нет
-  handleRemoveWaybill(waybillsList) {
-    console.info('REMOVED WAYBILL');
-    this.setState({waybillsList});
+  handleRemoveWaybill(waybills) {
+    this.setState({waybillsList: waybills.result});
   }
 
   handleUpdateWaybill(waybillsList) {
@@ -33,9 +32,9 @@ class WaybillsStore extends Store {
     this.setState({waybillsList});
   }
 
-  handleCreateWaybill(waybillsList) {
+  handleCreateWaybill(waybills) {
     console.info('CREATED WAYBILL');
-    this.setState({waybillsList});
+    this.setState({waybillsList: waybills.result});
   }
 
 }

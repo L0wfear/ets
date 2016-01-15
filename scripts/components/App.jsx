@@ -19,7 +19,7 @@ import Flux from './Flux.js';
 const adapter = {};
 const flux = new Flux(adapter);
 window.__ETS_CONTAINER__ = {
-  flux
+  flux,
 };
 
 class App extends Component {
@@ -40,8 +40,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    console.log('WINDOOOOOOOOW')
-    init()
+      init()
       .then(() => {
         return Promise.all([
           flux.getActions('objects').getModels(),
@@ -54,12 +53,12 @@ class App extends Component {
       .then(() => {
         flux.getActions('objects').getCars();
       })
-      // .then(() => {
-      //   flux.getActions('employees').getEmployees();
-      // })
+      .then(() => {
+        flux.getActions('employees').getEmployees();
+      })
       .then(() => this.setState({
           loading: false
-        }))
+      }))
       .catch((error) => {
         console.log(error);
         console.log('load error')
@@ -100,6 +99,7 @@ App.childContextTypes = {
 let history = createHashHistory({queryKey: false});
 
 function requireAuth(nextState, replaceState) {
+  console.log(nextState);
   if (!flux.getStore('session').isLoggedIn()) {
     console.warn('USER IS NOT LOGGED IN');
     replaceState({ nextPathname: nextState.location.pathname }, '/login')
@@ -112,10 +112,36 @@ function checkLoggedIn(nextState, replaceState) {
   }
 }
 
+function loadData(nextState, replaceState, callback) {
+  if (flux.getStore('session').isLoggedIn()) {
+    init()
+    .then(() => {
+      return Promise.all([
+        flux.getActions('objects').getModels(),
+        flux.getActions('objects').getTypes(),
+        flux.getActions('objects').getOwners(),
+        flux.getActions('objects').getOkrugs(),
+        flux.getActions('objects').getCustomers()
+      ])
+    })
+    .then(() => {
+      flux.getActions('objects').getCars();
+    })
+    .then(() => {
+      flux.getActions('employees').getEmployees();
+    })
+    .then( () => {
+      callback();
+    })
+  } else {
+    callback();
+  }
+}
+
 const routes = (
   <Router history={history}>
     <Redirect from="/" to="monitor" />
-    <Route path="/" component={App}>
+    <Route path="/" component={App} onEnter={loadData}>
       <Route path="monitor" component={MonitorPage} onEnter={requireAuth}/>
       <Route path="waybill-journal" component={WaybillJournal} onEnter={requireAuth}/>
       <Route path="waybill-journal/create" component={WaybillForm} onEnter={requireAuth}/>

@@ -10,7 +10,20 @@ import WaybillFormWrap from './WaybillFormWrap.jsx';
 import moment from 'moment';
 import cx from 'classnames';
 import { getCarById } from '../../mocks/krylatskoe_cars.js';
-import { getFIOById } from '../stores/EmployeesStore.js';
+import LoadingPage from './LoadingPage.jsx';
+//import { getFIOById } from '../stores/EmployeesStore.js';
+
+function getFIOById(data, id) {
+	let result = '';
+
+	_.each(data, (v) => {
+		if ( v.id === id) {
+			result = v['last_name'] + ' '+ v['first_name'][0]+'.'+v['middle_name'][0];
+		}
+	});
+
+	return result;
+}
 
 function getStatusLabel(s) {
 	return s === 'open' ? 'Открыт' : 'Закрыт';
@@ -28,48 +41,48 @@ let tableMeta = {
 			}
 		},
 		{
-			name: 'ID',
+			name: 'number',
 			caption: 'Номер',
 			type: 'number',
 		},
 		{
-			name: 'DATE_CREATE',
+			name: 'date_create',
 			caption: 'Дата выдачи',
 			type: 'date',
 		},
 		{
-			name: 'DRIVER_ID',
+			name: 'driver_id',
 			caption: 'Водитель',
 			type: 'text',
 			filter: 'select'
 		},
 		{
-			name: 'CAR_ID',
+			name: 'car_id',
 			caption: 'Гос. № ТС',
 			type: 'text',
 		},
+		// {
+		// 	name: 'plan_departure_date',
+		// 	caption: 'Выезд план.',
+		// 	type: 'date',
+		// },
+		// {
+		// 	name: 'plan_arrival_date',
+		// 	caption: 'Возвращение план',
+		// 	type: 'date',
+		// },
 		{
-			name: 'PLAN_DEPARTURE_DATE',
-			caption: 'Выезд план.',
-			type: 'date',
-		},
-		{
-			name: 'PLAN_ARRIVAL_DATE',
-			caption: 'Возвращение план',
-			type: 'date',
-		},
-		{
-			name: 'FACT_DEPARTURE_DATE',
+			name: 'fact_departure_date',
 			caption: 'Выезд факт',
 			type: 'date',
 		},
 		{
-			name: 'FACT_ARRIVAL_DATE',
+			name: 'fact_arrival_date',
 			caption: 'Возвращение факт',
 			type: 'date',
 		},
 		{
-			name: 'RESPONSIBLE_PERSON_ID',
+			name: 'responsible_person_id',
 			caption: 'Мастер',
 			type: 'text',
 			filter: {
@@ -84,9 +97,12 @@ let WaybillsTable = (props) => {
 
 		const renderers = {
 			STATUS: ({data}) => <div>{getStatusLabel(data)}</div>,
-			RESPONSIBLE_PERSON_ID: ({data}) => <div>{getFIOById(data)}</div>,
-			DRIVER_ID: ({data}) => <div>{getFIOById(data)}</div>,
-			CAR_ID: ({data}) => <div>{getCarById(data).gov_number}</div>
+			responsible_person_id: ({data}) => <div>{getFIOById(props.employeesList, data)}</div>,
+			driver_id: ({data}) => <div>{getFIOById(props.employeesList, data)}</div>,
+			car_id: ({data}) => <div>{_.find(props.carsList, c => c.asuods_id === data).gov_number}</div>,
+			date_create: ({data}) => <div>{moment(data).format('YYYY-MM-DD')}</div>,
+			fact_departure_date: ({data}) => <div>{moment(data).format('YYYY-MM-DD HH:mm')}</div>,
+			fact_arrival_date: ({data}) => <div>{moment(data).format('YYYY-MM-DD HH:mm')}</div>,
 		};
 
 		return <Table results={props.data}
@@ -104,15 +120,17 @@ class WaybillJournal extends Component {
 		this.state = {
 			selectedBill: null,
 			filterModalIsOpen: false,
-			filterValues: {}
+			filterValues: {},
+			loading: true,
 		};
 
 		//window.updateBillsJournal = this.updateTable.bind(this);
 	}
 
 	selectBill({props}) {
-		const id = props.data.ID;
-		let bill = _.find(this.props.waybillsList, w => w.ID === id);
+		const number = props.data.number;
+		console.log(number);
+		let bill = _.find(this.props.waybillsList, w => w.number === number);
 
 		this.setState({ selectedBill: bill });
 	}
@@ -133,7 +151,9 @@ class WaybillJournal extends Component {
 
 	componentDidMount() {
 		const { flux } = this.context;
-		flux.getActions('waybills').getWaybills();
+		flux.getActions('waybills').getWaybills().then( () => {
+			this.setState({loading: false});
+		});
 	}
 
 	componentWillReceiveProps(){
@@ -143,7 +163,7 @@ class WaybillJournal extends Component {
 		if (confirm('Вы уверены, что хотите удалить путевой лист?')) {
 			//deleteBill(this.state.selectedBill.ID);
 			const { flux } = this.context;
-			flux.getActions('waybills').removeWaybill(this.state.selectedBill.ID);
+			flux.getActions('waybills').removeWaybill(this.state.selectedBill.id);
 			//this.updateTable();
 		} else {
 
@@ -170,6 +190,9 @@ class WaybillJournal extends Component {
 	render() {
 
 		console.log(this.props);
+		if (this.state.loading) {
+			 return <LoadingPage loaded={this.state.loading}/>;
+		}
 
 		const { waybillsList = [] } = this.props;
 
@@ -195,10 +218,11 @@ class WaybillJournal extends Component {
 						<Button bsSize="small" disabled={this.state.selectedBill === null} onClick={this.deleteBill.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
 					</div>
 				</div>
-				<WaybillsTable data={waybillsList} filter={this.state.filterValues} onRowSelected={this.selectBill.bind(this)} selected={this.state.selectedBill}/>
+				<WaybillsTable data={waybillsList} filter={this.state.filterValues} onRowSelected={this.selectBill.bind(this)} selected={this.state.selectedBill} selectField={'number'} {...this.props}/>
 				<WaybillFormWrap onFormHide={this.onFormHide.bind(this)}
 												 showForm={this.state.showForm}
-												 bill={this.state.selectedBill}/>
+												 bill={this.state.selectedBill}
+												 waybillsList={this.props.waybillsList}/>
 			</div>)
 	}
 }
@@ -207,4 +231,4 @@ WaybillJournal.contextTypes = {
 	flux: React.PropTypes.object,
 };
 
-export default connectToStores(WaybillJournal, ['waybills']);
+export default connectToStores(WaybillJournal, ['waybills', 'objects', 'employees']);

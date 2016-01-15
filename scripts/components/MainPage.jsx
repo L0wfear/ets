@@ -22,6 +22,16 @@ export default React.createClass({
 		let path = this.props.location.pathname;
 		console.log( path, this.props );
 
+    if (path === '/login') return (<Navbar justified>
+						 <Navbar.Header>
+					      <Navbar.Brand>
+							    <Link to="/">ЕТС</Link>
+					      </Navbar.Brand>
+					    </Navbar.Header>
+				      <Nav>
+				      </Nav>
+					</Navbar>);
+
 		return (<Navbar justified>
 						 <Navbar.Header>
 					      <Navbar.Brand>

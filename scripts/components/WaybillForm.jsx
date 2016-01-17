@@ -150,12 +150,12 @@ class WaybillForm extends Component {
 	       	{ (IS_CREATING || IS_POST_CREATING) &&
 	       		<Col md={3}>
 		       		<label>Выезд план</label>
-			   			<Datepicker date={ state.plan_departure_date } onChange={this.handleChange.bind(this, 'plan_departure_date')}/>
+			   			<Datepicker date={ new Date(state.plan_departure_date) } onChange={this.handleChange.bind(this, 'plan_departure_date')}/>
 		       	</Col> }
 		       { (IS_CREATING || IS_POST_CREATING) &&
 		       	<Col md={3}>
 			   			<label>Возвращение план</label>
-			   			<Datepicker date={ state.plan_arrival_date } onChange={this.handleChange.bind(this, 'plan_arrival_date')}/>
+			   			<Datepicker date={ new Date(state.plan_arrival_date) } onChange={this.handleChange.bind(this, 'plan_arrival_date')}/>
 		       	</Col>
 		       }
 		       { IS_CLOSING &&

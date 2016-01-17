@@ -63,7 +63,7 @@ class WaybillFormWrap extends Component {
 				} else if (props.bill.status === 'draft'){
 					this.setState({
 						formState: props.bill,
-						formStage: formStages[2],
+						formStage: formStages[1],
 						canPrint: true,
 						canSave: true,
 					});
@@ -179,6 +179,8 @@ class WaybillFormWrap extends Component {
 		'&receive_driver_last_name='+driver.last_name+
 		//'&complete_task_route='+route.name+
 		'&complete_task_odometer_start='+f.odometr_start+
+  	'&complete_task_route='+'1'+
+  	'&complete_number_trips='+'1'+
 		'&complete_fuel_mark='+getFuelTypeById(f.fuel_type_id).label
   	:
   	'?registration_number='+f.id+
@@ -201,15 +203,15 @@ class WaybillFormWrap extends Component {
   	'&dispatcher_last_name='+
   	'&pass_driver_last_name='+driver.last_name+
   	'&receive_driver_last_name='+
-  	'&complete_task_route='+''+
-  	'&complete_number_trips='+''+
+  	'&complete_task_route='+'1'+
+  	'&complete_number_trips='+'1'+
   	'&complete_task_odometer_start=';
 
   	let linkTo = URL + data;
 
   	console.log( 'print url', linkTo, f);
 		console.log(' print submit')
-		this.handleFormSubmit(this.state.formState);
+		this.handleFormSubmit(this.state.formState, true);
 
   	window.location = linkTo;
   }
@@ -233,14 +235,19 @@ class WaybillFormWrap extends Component {
 			console.warn('UPDATING WAYBILL')
 			if (activate) {
 				formState.status = 'active';
-			}
-			flux.getActions('waybills').updateWaybill(formState);
-			this.setState({
-				formStage: formStages[3],
-				canSave: false
-			});
-			if (activate) {
+				flux.getActions('waybills').updateWaybill(formState);
+				this.setState({
+					formStage: formStages[3],
+					canSave: false
+				});
 				this.props.onFormHide();
+			}
+			else {
+				flux.getActions('waybills').updateWaybill(formState);
+				// this.setState({
+				// 	formStage: formStages[1],
+				// });
+				//this.props.onFormHide();
 			}
 		} else if (stage === 'closing') {
 			formState.status = 'closed';

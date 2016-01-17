@@ -26,7 +26,16 @@ function getFIOById(data, id) {
 }
 
 function getStatusLabel(s) {
-	return s === 'open' ? 'Открыт' : 'Закрыт';
+	switch (s) {
+		case 'draft':
+			return 'Черновик';
+		case 'active':
+			return 'Активен';
+		case 'closed':
+			return 'Закрыт';
+		default:
+			return 'Н/Д';
+	}//return //s === 'open' ? 'Открыт' : 'Закрыт';
 }
 
 let tableMeta = {
@@ -61,16 +70,6 @@ let tableMeta = {
 			caption: 'Гос. № ТС',
 			type: 'text',
 		},
-		// {
-		// 	name: 'plan_departure_date',
-		// 	caption: 'Выезд план.',
-		// 	type: 'date',
-		// },
-		// {
-		// 	name: 'plan_arrival_date',
-		// 	caption: 'Возвращение план',
-		// 	type: 'date',
-		// },
 		{
 			name: 'fact_departure_date',
 			caption: 'Выезд факт',
@@ -123,8 +122,6 @@ class WaybillJournal extends Component {
 			filterValues: {},
 			loading: true,
 		};
-
-		//window.updateBillsJournal = this.updateTable.bind(this);
 	}
 
 	selectBill({props}) {
@@ -191,7 +188,7 @@ class WaybillJournal extends Component {
 
 		const { waybillsList = [] } = this.props;
 
-		let showCloseBtn = this.state.selectedBill !== null && this.state.selectedBill.status !== 'open';
+		let showCloseBtn = this.state.selectedBill !== null && this.state.selectedBill.status !== 'active';
 
 		return (
 			<div className="ets-page-wrap">
@@ -217,7 +214,7 @@ class WaybillJournal extends Component {
 				<WaybillFormWrap onFormHide={this.onFormHide.bind(this)}
 												 showForm={this.state.showForm}
 												 bill={this.state.selectedBill}
-												 waybillsList={this.props.waybillsList}/>
+												 {...this.props}/>
 			</div>)
 	}
 }

@@ -63,6 +63,7 @@ function getJSON(url) {
 }
 
 function postJSON(url, data, type = 'form') {
+  data = _.clone(data);
   const { flux } = window.__ETS_CONTAINER__;
   const token = flux.getStore('session').getSession();
   if (token) {
@@ -101,6 +102,7 @@ function postJSON(url, data, type = 'form') {
 }
 
 function putJSON(url, data, type = 'form') {
+  data = _.clone(data);
   const { flux } = window.__ETS_CONTAINER__;
   const token = flux.getStore('session').getSession();
   if (token) {
@@ -137,6 +139,7 @@ function putJSON(url, data, type = 'form') {
 }
 
 function deleteJSON(url, data, type = 'form') {
+  data = _.clone(data);
   const { flux } = window.__ETS_CONTAINER__;
   const token = flux.getStore('session').getSession();
   if (token) {

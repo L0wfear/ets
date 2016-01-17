@@ -9,6 +9,7 @@ export function makeUnixTime(time) {
 }
 
 export function makeTime(date, withSeconds = false) {
+  date = new Date(date);
   return twoDigits(date.getHours()) + ':' + twoDigits(date.getMinutes()) + (withSeconds ? ':' + twoDigits(date.getSeconds()) : '')
 }
 

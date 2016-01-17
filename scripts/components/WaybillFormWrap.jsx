@@ -8,15 +8,19 @@ import Div from './ui/Div.jsx';
 
 import WaybillForm from './WaybillForm.jsx';
 
-import { getMasters, getDrivers, getFIOById, getDriverByCode } from './../stores/EmployeesStore.js';
-import getFuelTypes, {getFuelTypeById } from '../stores/FuelTypes.js';
+import { getFIOById } from './../stores/EmployeesStore.js';
+import { getFuelTypeById } from '../stores/FuelTypes.js';
 import { getDefaultBill } from '../../mocks/waybills.js';
-import { getCarById } from '../../mocks/krylatskoe_cars.js';
 import { makeTime, makeDate } from '../utils/dates.js';
 
-const FUEL_TYPES = getFuelTypes();
-const MASTERS = getMasters();
-const DRIVERS = getDrivers();
+
+let getDriverByCode = (drivers, code) => {
+	return _.find(drivers, d => d.personnel_number === code) || {};
+};
+
+let getCarById = (cars, id) => {
+	return _.find(cars, c => c.asuods_id === id) || {};
+};
 
 const formStages = ['creating', 'post-creating', 'display', 'closing'];
 
@@ -43,7 +47,7 @@ class WaybillFormWrap extends Component {
 					formStage: formStages[0]
 				})
 			} else {
-				if (props.bill.status === 'open') {
+				if (props.bill.status === 'active') {
 					let _bill = _.clone(props.bill);
 
 					_bill.fact_departure_date = moment(_bill.plan_departure_date).toDate();
@@ -56,11 +60,18 @@ class WaybillFormWrap extends Component {
 						formStage: formStages[3]
 					})
 
+				} else if (props.bill.status === 'draft'){
+					this.setState({
+						formState: props.bill,
+						formStage: formStages[2],
+						canPrint: true,
+						canSave: true,
+					});
 				} else {
 					this.setState({
 						formState: props.bill,
 						formStage: formStages[2]
-					})
+					});
 				}
 			}
 		}
@@ -124,18 +135,21 @@ class WaybillFormWrap extends Component {
 
   handlePrint(event, print_form_type = 1) {
 
-  	console.log('printing bill', this.props.formState);
+  	console.log('printing bill', this.state.formState);
   	let f = this.state.formState;
   	let creation_date = moment(f.date_create);
 
   	let zhzhzh = 'ГБУ г.Москвы "Жилищник района Крылатское"';
-  	let driver = getDriverByCode(f.driver_id);
-  	let car = getCarById(f.car_id);
-  	let route = getRouteById(f.ROUTE_ID);
+  	let driver = getDriverByCode(this.props.driversList, f.driver_id);
+  	let car = getCarById(this.props.carsList, f.car_id);
+  	//let route = getRouteById(f.ROUTE_ID);
+		console.log(print_form_type);
+		const plan_departure_date = moment(f.plan_departure_date);
+		const plan_arrival_date = moment(f.plan_arrival_date);
 
   	let URL = 'http://ods.mos.ru/ssd/city-dashboard/' + (print_form_type === 2 ? 'plate_truck/' : 'plate_special/');
   	let data = print_form_type === 2 ?
-  	'?registration_number='+f.number+
+  	'?registration_number='+f.id+
 		'&waybill_open_day='+creation_date.date() +
 		'&waybill_open_month='+monthes[creation_date.month()]+
 		'&waybill_open_year='+creation_date.year()+
@@ -143,16 +157,16 @@ class WaybillFormWrap extends Component {
 		'&automobile_mark='+car.model+
 		'&automobile_number='+car.gov_number+
 		'&driver_fio_full='+getFIOById(driver.id, true)+
-		'&license_number='+(driver["Водительское удостоверение"] == '' ? driver["Специальное удостоверение"] : driver["Водительское удостоверение"])+
+		'&license_number='+(driver.drivers_license == '' ? driver.special_license : driver.drivers_license)+
 		'&odometer_start=' + f.odometr_start +
-		'&depart_day=' + f.plan_departure_date.getDate()+
-		'&depart_month='+ (f.plan_departure_date.getMonth()+1) +
-		'&depart_hour='+ f.plan_departure_date.getHours() +
-		'&depart_minute='+f.plan_departure_date.getMinutes() +
-		'&return_day='+f.plan_arrival_date.getDate()+
-		'&return_month='+(f.plan_arrival_date.getMonth()+1)+
-		'&return_hour='+f.plan_arrival_date.getHours()+
-		'&return_minute='+f.plan_arrival_date.getMinutes()+
+		'&depart_day=' + plan_departure_date.day()+
+		'&depart_month='+plan_departure_date.month()+
+		'&depart_hour='+ plan_departure_date.hours() +
+		'&depart_minute='+plan_departure_date.minutes() +
+		'&return_day='+plan_arrival_date.date()+
+		'&return_month='+(plan_arrival_date.month())+
+		'&return_hour='+plan_arrival_date.hours()+
+		'&return_minute='+plan_arrival_date.minutes()+
 		'&fuel_mark='+getFuelTypeById(f.fuel_type_id).label+
 		'&fuel_start='+f.fuel_start+
 		'&operation_equipment_start_time='+f.motohours_equip_start+
@@ -161,14 +175,13 @@ class WaybillFormWrap extends Component {
 		'&possession_organization_data='+zhzhzh+
 		'&fuel_issue='+f.fuel_to_give+
 		'&dispatcher_last_name='+
-		'&pass_driver_last_name='+driver['Фамилия']+
-		'&receive_driver_last_name='+driver['Фамилия']+
-		'&complete_task_route='+route.name+
+		'&pass_driver_last_name='+driver.last_name+
+		'&receive_driver_last_name='+driver.last_name+
+		//'&complete_task_route='+route.name+
 		'&complete_task_odometer_start='+f.odometr_start+
-		'&complete_fuel_mark='+getFuelTypeById(f.fuel_type_id).label+
-		'&complete_number_trips='+f.PASSES_COUNT
+		'&complete_fuel_mark='+getFuelTypeById(f.fuel_type_id).label
   	:
-  	'?registration_number='+f.number+
+  	'?registration_number='+f.id+
   	'&waybill_open_day='+creation_date.date() +
   	'&waybill_open_month='+monthes[creation_date.month()]+
   	'&waybill_open_year='+creation_date.year()+
@@ -176,7 +189,7 @@ class WaybillFormWrap extends Component {
   	'&automobile_mark='+car.model+
   	'&automobile_number='+car.gov_number+
   	'&driver_fio_full='+getFIOById(driver.id, true)+
-  	'&license_number='+(driver["Водительское удостоверение"] == '' ? driver["Специальное удостоверение"] : driver["Водительское удостоверение"])+
+  	'&license_number='+(driver.drivers_license == '' ? driver.special_license : driver.drivers_license)+
   	'&odometer_start='+ f.odometr_start +
   	'&depart_time='+makeTime(f.plan_departure_date)+
   	'&return_time='+makeTime(f.plan_arrival_date)+
@@ -186,38 +199,49 @@ class WaybillFormWrap extends Component {
   	'&operation_engine_start_time='+
   	'&possession_organization_data='+zhzhzh+
   	'&dispatcher_last_name='+
-  	'&pass_driver_last_name='+driver['Фамилия']+
+  	'&pass_driver_last_name='+driver.last_name+
   	'&receive_driver_last_name='+
-  	'&complete_task_route='+
+  	'&complete_task_route='+''+
+  	'&complete_number_trips='+''+
   	'&complete_task_odometer_start=';
 
   	let linkTo = URL + data;
 
-  	console.log( 'print url', linkTo, f)
+  	console.log( 'print url', linkTo, f);
+		console.log(' print submit')
+		this.handleFormSubmit(this.state.formState);
 
   	window.location = linkTo;
   }
 
 
-	handleFormSubmit(formState) {
+	handleFormSubmit(formState, activate = false) {
 		let billStatus = formState.status;
 		let stage = this.state.formStage;
 		const { flux } = this.context;
+		console.log(stage);
 
 		if (stage === 'creating') {
-			formState.status = 'open';
+			formState.status = 'draft';
 			flux.getActions('waybills').createWaybill(formState);
 			this.setState({
 				formStage: formStages[1],
-				canPrint: true,
+				//canPrint: true,
 				canSave: false
 			})
-		} else if (stage === 'post-creating') {
-			formState.status = 'open';
-			flux.getActions('waybills').updateWaybill(formState, true);
+		} else if (formState.status === 'draft') {
+			console.warn('UPDATING WAYBILL')
+			if (activate) {
+				formState.status = 'active';
+			}
+			flux.getActions('waybills').updateWaybill(formState);
 			this.setState({
+				formStage: formStages[3],
 				canSave: false
-			})
+			});
+			if (activate) {
+				this.props.onFormHide();
+			}
 		} else if (stage === 'closing') {
 			formState.status = 'closed';
 			flux.getActions('waybills').updateWaybill(formState);
@@ -228,6 +252,8 @@ class WaybillFormWrap extends Component {
 	}
 
 	render() {
+
+		console.log(this.props);
 
 		return 	<Div hidden={!this.props.showForm}>
 							<WaybillForm formState = {this.state.formState}

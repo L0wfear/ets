@@ -3,6 +3,7 @@ import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dr
 import EtsSelect from './ui/EtsSelect.jsx';
 import Datepicker from './ui/DatePicker.jsx';
 import Span from './ui/Span.jsx';
+import Div from './ui/Div.jsx';
 import moment from 'moment';
 import { getDrivers, getFIOById, getDriverByCode } from './../stores/EmployeesStore.js';
 import ROUTES, {getRouteById} from '../../mocks/routes.js';
@@ -106,7 +107,7 @@ class WaybillForm extends Component {
 
     let title = '';
 
-    if ( IS_CREATING ) {
+    if (IS_CREATING) {
       title = "Создать новый путевой лист"
     }
 
@@ -115,7 +116,7 @@ class WaybillForm extends Component {
     }
 
     if (IS_DISPLAY) {
-      title= "Просмотр путевого листа "
+      title = "Просмотр путевого листа "
     }
 
     if (IS_POST_CREATING) {
@@ -312,21 +313,23 @@ class WaybillForm extends Component {
 		          </div>}
 	      		</Col>
 	      		<Col md={8}>
-							<Taxi hidden={! (IS_DISPLAY || IS_CLOSING)} readOnly={!IS_CLOSING} car={getCarById(carsList, state.car_id)} operations={this.state.operations}/>
+							<Taxi hidden={!(IS_DISPLAY || IS_CLOSING) || state.status === 'draft'} readOnly={!IS_CLOSING} car={getCarById(carsList, state.car_id)} operations={this.state.operations}/>
 	      		</Col>
 	      	</Row>
 	      </Modal.Body>
 	      <Modal.Footer>
-	    		<Dropdown id="waybill-print-dropdown" disabled={!this.props.canPrint} onSelect={this.props.handlePrint}>
-	        	<Dropdown.Toggle  disabled={!this.props.canPrint}>
-	          	<Glyphicon glyph="print" /> Распечатать
-	          </Dropdown.Toggle>
-	          <Dropdown.Menu>
-		          <MenuItem eventKey={1}>Форма 3-С</MenuItem>
-		          <MenuItem eventKey={2}>Форма 4-П</MenuItem>
-	          </Dropdown.Menu>
-	        </Dropdown>&nbsp;
-	      	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>{this.props.formStage === 'closing' ? 'Закрыть ПЛ' : 'Сохранить'}</Button>
+					<Div hidden={state.status === 'closed'}>
+		    		<Dropdown id="waybill-print-dropdown" disabled={!this.props.canPrint} onSelect={this.props.handlePrint}>
+		        	<Dropdown.Toggle  disabled={!this.props.canPrint}>
+		          	<Glyphicon glyph="print" /> Распечатать
+		          </Dropdown.Toggle>
+		          <Dropdown.Menu>
+			          <MenuItem eventKey={1}>Форма 3-С</MenuItem>
+			          <MenuItem eventKey={2}>Форма 4-П</MenuItem>
+		          </Dropdown.Menu>
+		        </Dropdown>&nbsp;
+		      	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>{this.props.formStage === 'closing' ? 'Закрыть ПЛ' : 'Сохранить'}</Button>
+					</Div>
 	      </Modal.Footer>
 			</Modal>
 		)

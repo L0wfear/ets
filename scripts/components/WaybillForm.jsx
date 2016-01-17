@@ -126,6 +126,13 @@ class WaybillForm extends Component {
 			if (lastCarUsedWaybill.motohours_end) {
 				this.handleChange('motohours_start', lastCarUsedWaybill.motohours_end);
 			}
+		} else {
+			//if (typeof this.state.fuel_start === 'undefined')
+			this.handleChange('fuel_start', 0);
+			//if (typeof this.state.odometr_start === 'undefined')
+			this.handleChange('odometr_start', 0);
+			//if (typeof this.state.motohours_start === 'undefined')
+			this.handleChange('motohours_start', 0);
 		}
 		console.info(lastCarUsedWaybill);
 	}
@@ -301,11 +308,11 @@ class WaybillForm extends Component {
 	      	<Row>
 	      		<Col md={4}>
 	      		<h4>Одометр</h4>
-	      		<label>Начало, км</label>
+	      		<label>Выезд, км</label>
 	      		<Input type="number" disabled={IS_CLOSING || IS_DISPLAY}  onChange={this.handleChange.bind(this, 'odometr_start')} value={state.odometr_start}/>
 	          { (IS_CLOSING || IS_DISPLAY )&&
 	            <div>
-	          		<label>Конец, км</label>
+	          		<label>Возврат, км</label>
 	          		<Input type="number" disabled={IS_DISPLAY} value={state.odometr_end} onChange={this.handleChange.bind(this, 'odometr_end')}/>
 	          		<label>Пробег, км</label>
 	          		<Input type="number" value={state.odometr_diff} disabled/>
@@ -314,11 +321,11 @@ class WaybillForm extends Component {
 	      		</Col>
 	      		<Col md={4}>
 	      		<h4>Счетчик моточасов</h4>
-	      		<label>Начало, м/ч</label>
+	      		<label>Выезд, м/ч</label>
 	      		<Input type="number"  disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'motohours_start')} value={state.motohours_start}/>
 	          { (IS_CLOSING || IS_DISPLAY )&&
 	            <div>
-	      		<label>Конец, м/ч</label>
+	      		<label>Возврат, м/ч</label>
 	      		<Input type="number" disabled={IS_DISPLAY} value={state.motohours_end} onChange={this.handleChange.bind(this, 'motohours_end')}/>
 	      		<label>Пробег, м/ч</label>
 	      		<Input type="number" value={state.motohours_diff} disabled/>
@@ -326,11 +333,11 @@ class WaybillForm extends Component {
 	      		</Col>
 	      		<Col md={4}>
 	      		<h4>Счетчик моточасов обор-ния</h4>
-	      		<label>Начало, м/ч</label>
+	      		<label>Выезд, м/ч</label>
 	      		<Input type="number" value={state.motohours_equip_start}  onChange={this.handleChange.bind(this, 'motohours_equip_start')} disabled={IS_CLOSING || IS_DISPLAY}/>
 	          { (IS_CLOSING || IS_DISPLAY )&&
 	            <div>
-	      		<label>Конец, м/ч</label>
+	      		<label>Возврат, м/ч</label>
 	      		<Input type="number" value={state.motohours_equip_end}  onChange={this.handleChange.bind(this, 'motohours_equip_end')} disabled={IS_DISPLAY}/>
 	      		<label>Пробег, м/ч</label>
 	      		<Input type="number" value={state.motohours_equip_diff} disabled/>
@@ -343,7 +350,7 @@ class WaybillForm extends Component {
 		      		<label>Тип топлива</label>
 		            <EtsSelect disabled={IS_CLOSING || IS_DISPLAY} options={FUEL_TYPES} value={state.fuel_type_id} onChange={this.handleChange.bind(this, 'fuel_type_id')}/>
 
-		      		<label>Начало, л</label>
+		      		<label>Выезд, л</label>
 		      		<Input type="number" value={state.fuel_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_start')}/>
 		      		<label>Выдать, л</label>
 		      		<Input type="number" value={state.fuel_to_give}  disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_to_give')}/>
@@ -351,7 +358,7 @@ class WaybillForm extends Component {
 		            <div>
 		          <label>Выдано, л</label>
 		          <Input type="number" value={state.fuel_given}  onChange={this.handleChange.bind(this, 'fuel_given')} disabled={IS_CREATING || IS_DISPLAY}/>
-		      		<label>Конец, л</label>
+		      		<label>Возврат, л</label>
 		      		<Input type="number" value={state.fuel_end}  onChange={this.handleChange.bind(this, 'fuel_end')} disabled={IS_CREATING || IS_DISPLAY}/>
 		          </div>}
 	      		</Col>
@@ -364,7 +371,7 @@ class WaybillForm extends Component {
 					<Div hidden={state.status === 'closed'}>
 		    		<Dropdown id="waybill-print-dropdown" disabled={!this.props.canPrint} onSelect={this.props.handlePrint}>
 		        	<Dropdown.Toggle  disabled={!this.props.canPrint}>
-		          	<Glyphicon glyph="print" /> Распечатать
+		          	<Glyphicon glyph="print" /> Выдать
 		          </Dropdown.Toggle>
 		          <Dropdown.Menu>
 			          <MenuItem eventKey={1}>Форма 3-С</MenuItem>

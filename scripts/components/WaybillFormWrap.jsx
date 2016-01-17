@@ -204,7 +204,7 @@ class WaybillFormWrap extends Component {
   	'&pass_driver_last_name='+driver.last_name+
   	'&receive_driver_last_name='+
   	'&complete_task_route='+'1'+
-  	'&complete_number_trips='+'1'+
+  	//'&complete_number_trips='+'1'+
   	'&complete_task_odometer_start=';
 
   	let linkTo = URL + data;

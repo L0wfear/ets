@@ -36,6 +36,7 @@ export default class WaybillsActions extends Actions {
     delete payload.motohours_equip_start;
     delete payload.odometr_diff;
     delete payload.motohours_diff;
+    delete payload.motohours_equip_diff;
     delete payload.ID;
     delete payload.date_create;
     delete payload.isSelected;
@@ -58,6 +59,7 @@ export default class WaybillsActions extends Actions {
     delete payload.ID;
     delete payload.date_create;
     delete payload.odometr_diff;
+    delete payload.motohours_diff;
     delete payload.motohours_diff;
     //delete payload.status;
     payload.fuel_end.length === 0 ? payload.fuel_end = 0 : payload.fuel_end = parseInt(payload.fuel_end, 10);

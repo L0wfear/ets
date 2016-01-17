@@ -46,7 +46,7 @@ class App extends Component {
           flux.getActions('objects').getModels(),
           flux.getActions('objects').getTypes(),
           flux.getActions('objects').getOwners(),
-          flux.getActions('objects').getOkrugs(),
+          //flux.getActions('objects').getOkrugs(),
           flux.getActions('objects').getCustomers()
         ])
       })
@@ -120,7 +120,7 @@ function loadData(nextState, replaceState, callback) {
         flux.getActions('objects').getModels(),
         flux.getActions('objects').getTypes(),
         flux.getActions('objects').getOwners(),
-        flux.getActions('objects').getOkrugs(),
+        //flux.getActions('objects').getOkrugs(),
         flux.getActions('objects').getCustomers()
       ])
     })

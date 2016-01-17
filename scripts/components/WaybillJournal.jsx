@@ -32,7 +32,7 @@ function getStatusLabel(s) {
 let tableMeta = {
 	cols: [
 		{
-			name: 'STATUS',
+			name: 'status',
 			caption: 'Статус',
 			type: 'text',
 			filter: {
@@ -96,7 +96,7 @@ let tableMeta = {
 let WaybillsTable = (props) => {
 
 		const renderers = {
-			STATUS: ({data}) => <div>{getStatusLabel(data)}</div>,
+			status: ({data}) => <div>{getStatusLabel(data)}</div>,
 			responsible_person_id: ({data}) => <div>{getFIOById(props.employeesList, data)}</div>,
 			driver_id: ({data}) => <div>{getFIOById(props.employeesList, data)}</div>,
 			car_id: ({data}) => <div>{_.find(props.carsList, c => c.asuods_id === data).gov_number}</div>,
@@ -191,7 +191,7 @@ class WaybillJournal extends Component {
 
 		const { waybillsList = [] } = this.props;
 
-		let showCloseBtn = this.state.selectedBill !== null && this.state.selectedBill.STATUS !== 'open';
+		let showCloseBtn = this.state.selectedBill !== null && this.state.selectedBill.status !== 'open';
 
 		return (
 			<div className="ets-page-wrap">

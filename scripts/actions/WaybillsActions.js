@@ -40,7 +40,7 @@ export default class WaybillsActions extends Actions {
     delete payload.motohours_equip_start;
     delete payload.ID;
     delete payload.date_create;
-    delete payload.STATUS;
+    //delete payload.status;
     payload.fuel_end.length === 0 ? payload.fuel_end = 0 : payload.fuel_end = parseInt(payload.fuel_end, 10);
     payload.fuel_given.length === 0 ? payload.fuel_given = 0 : payload.fuel_given = parseInt(payload.fuel_given, 10);
     payload.motohours_end.length === 0 ? payload.motohours_end = 0 : payload.motohours_end = parseInt(payload.motohours_end, 10);

@@ -78,7 +78,7 @@ export function updateDriver(data) {
  		updatedDriver[k] = v;
  	})
 
- 	//updatedBill.STATUS = false;
+ 	//updatedBill.status = false;
 
  	//sortList();
 }

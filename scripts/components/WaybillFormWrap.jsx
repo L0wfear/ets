@@ -36,12 +36,14 @@ class WaybillFormWrap extends Component {
 
 		if (props.showForm) {
 			if (props.bill === null ) {
+				let max = _.max(props.waybillsList.map(w => w.id));
+				if (max < 0) max = 0;
 				this.setState({
-					formState: getDefaultBill(_.max(props.waybillsList.map(w => w.id))),
+					formState: getDefaultBill(max),
 					formStage: formStages[0]
 				})
 			} else {
-				if (props.bill.STATUS === 'open') {
+				if (props.bill.status === 'open') {
 					let _bill = _.clone(props.bill);
 
 					_bill.fact_departure_date = moment(_bill.plan_departure_date).toDate();
@@ -198,12 +200,12 @@ class WaybillFormWrap extends Component {
 
 
 	handleFormSubmit(formState) {
-		let billStatus = formState.STATUS;
+		let billStatus = formState.status;
 		let stage = this.state.formStage;
 		const { flux } = this.context;
 
 		if (stage === 'creating') {
-			formState.STATUS = 'open';
+			formState.status = 'open';
 			flux.getActions('waybills').createWaybill(formState);
 			this.setState({
 				formStage: formStages[1],
@@ -211,15 +213,15 @@ class WaybillFormWrap extends Component {
 				canSave: false
 			})
 		} else if (stage === 'post-creating') {
-			formState.STATUS = 'open';
+			formState.status = 'open';
 			flux.getActions('waybills').updateWaybill(formState, true);
 			this.setState({
 				canSave: false
 			})
 		} else if (stage === 'closing') {
-			formState.STATUS = 'closed';
+			formState.status = 'closed';
 			flux.getActions('waybills').updateWaybill(formState);
-			this.props.onFormHide()
+			this.props.onFormHide();
 		}
 
 		return;

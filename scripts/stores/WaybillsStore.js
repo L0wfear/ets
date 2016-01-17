@@ -27,9 +27,8 @@ class WaybillsStore extends Store {
     this.setState({waybillsList: waybills.result});
   }
 
-  handleUpdateWaybill(waybillsList) {
-    console.info('UPDATED WAYBILL');
-    this.setState({waybillsList});
+  handleUpdateWaybill(waybills) {
+    this.setState({waybillsList: waybills.result});
   }
 
   handleCreateWaybill(waybills) {

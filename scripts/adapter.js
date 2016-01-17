@@ -214,7 +214,7 @@ export function init() {
           loadCustomers(),
           loadModels(),
           loadOwners(),
-          loadOkrugs(),
+          //loadOkrugs(),
           loadTypes()
         ])
     //.then(getCars)
@@ -255,7 +255,9 @@ export function removeWaybill(payload) {
 }
 
 export function updateWaybill(waybill, correctionFlag) {
-  return updateBill(waybill, correctionFlag);
+  return putJSON(WAYBILL_URL, waybill, 'params').then( () => {
+    return getWaybills();
+  });
 }
 
 export function createWaybill(waybill) {

@@ -18,7 +18,7 @@ let getRandomCar = () => CARS[Math.floor(Math.random() * (CARS.length))]
 
 let template = {
             ID: 0,
-            STATUS: 'open',
+            status: 'open',
             number: 0,
             date_create: '2015-12-18 9:00',
             responsible_person_id: "",
@@ -51,13 +51,13 @@ function getBill (number) {
     bill.ID = bill.number = new_id;
     bill.driver_id = getRandomDriver().id;
     bill.responsible_person_id = getRandomMaster().id;
-    bill.STATUS = Math.floor(Math.random()*2) === 0 ? 'closed' : 'open';
+    bill.status = Math.floor(Math.random()*2) === 0 ? 'closed' : 'open';
     bill.odometr_start = Math.floor(Math.random()*1000);
     bill.fuel_start = bill.fuel_to_give = Math.floor(Math.random()*100);
     bill.motohours_start = Math.floor(Math.random()*3000);
     bill.motohours_equip_start = Math.floor(Math.random()*2000);
     bill.car_id = getRandomCar().id;
-    if (bill.STATUS === 'open' ) {
+    if (bill.status === 'open' ) {
         bill.fact_departure_date = bill.fact_arrival_date = "";
     }
     bill.PASSES_COUNT = Math.floor(Math.random() * 4)+1;
@@ -152,7 +152,7 @@ export function updateBill(data, correctionFlag = false) {
 
 export function createBill(data) {
 	let toSave = _.clone(data);
-	toSave.STATUS = 'open';
+	toSave.status = 'open';
 	toSave.plan_departure_date = makeDate(toSave.plan_departure_date) + ' ' + makeTime(toSave.plan_departure_date);
 	toSave.plan_arrival_date = makeDate(toSave.plan_arrival_date) + ' ' + makeTime(toSave.plan_arrival_date);
 	toSave.fact_departure_date = toSave.fact_arrival_date = '';
@@ -185,7 +185,7 @@ export function getDefaultBill(currentBillCount = 0) {
     )
 		return {
 		    ID: currentBillCount + 1,
-		    STATUS: null,
+		    status: null,
 		    number: currentBillCount + 1,
 		    date_create: makeDate(now) + ' ' + makeTime(now),
 		    responsible_person_id: "",

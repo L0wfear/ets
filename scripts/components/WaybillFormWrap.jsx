@@ -230,7 +230,8 @@ class WaybillFormWrap extends Component {
 				formStage: formStages[1],
 				//canPrint: true,
 				canSave: false
-			})
+			});
+			this.props.onFormHide();
 		} else if (formState.status === 'draft') {
 			console.warn('UPDATING WAYBILL')
 			if (activate) {

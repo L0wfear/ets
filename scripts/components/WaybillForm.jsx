@@ -20,7 +20,11 @@ const FUEL_TYPES = getFuelTypes();
 const DRIVERS = getDrivers();
 
 let getCarById = (cars, id) => {
-	return _.find(cars, c => c.asuods_id === id) || {};
+	const car = _.find(cars, c => c.asuods_id === id) || {};
+	if (car.gov_number && car.model) {
+		car.label = car.gov_number + ' [' + car.model + ']';
+	}
+	return car;
 };
 
 let MastersSelect = (props) => {
@@ -83,9 +87,47 @@ class WaybillForm extends Component {
 	onDriverChange(v) {
 		this.handleChange('driver_id', v);
 		const prefer_car = _.find(this.props.driversList, d => d.id === v).prefer_car || null;
-		if (!this.props.formState.car_id) {
+		if (!this.props.formState.car_id && prefer_car) {
 			this.handleChange('car_id', prefer_car);
 		}
+		if (prefer_car) {
+			const waybillsListSorted = _.sortBy(this.props.waybillsList, 'id').reverse();
+			const lastCarUsedWaybill = _.find(waybillsListSorted, w => w.car_id === prefer_car);
+			if (lastCarUsedWaybill) {
+				if (lastCarUsedWaybill.fuel_end) {
+					this.handleChange('fuel_start', lastCarUsedWaybill.fuel_end);
+				}
+
+				if (lastCarUsedWaybill.odometr_end) {
+					this.handleChange('odometr_start', lastCarUsedWaybill.odometr_end);
+				}
+
+				if (lastCarUsedWaybill.motohours_end) {
+					this.handleChange('motohours_start', lastCarUsedWaybill.motohours_end);
+				}
+			}
+		}
+	}
+
+	onCarChange(v) {
+		this.handleChange('car_id', v);
+		console.log(this.props.waybillsList);
+		const waybillsListSorted = _.sortBy(this.props.waybillsList, 'id').reverse();
+		const lastCarUsedWaybill = _.find(waybillsListSorted, w => w.car_id === v);
+		if (lastCarUsedWaybill) {
+			if (lastCarUsedWaybill.fuel_end) {
+				this.handleChange('fuel_start', lastCarUsedWaybill.fuel_end);
+			}
+
+			if (lastCarUsedWaybill.odometr_end) {
+				this.handleChange('odometr_start', lastCarUsedWaybill.odometr_end);
+			}
+
+			if (lastCarUsedWaybill.motohours_end) {
+				this.handleChange('motohours_start', lastCarUsedWaybill.motohours_end);
+			}
+		}
+		console.info(lastCarUsedWaybill);
 	}
 
 	render() {
@@ -98,6 +140,7 @@ class WaybillForm extends Component {
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: c.gov_number + ' [' + c.model + ']'}));
 
     console.log('form stage is ', stage, 'form state is ', state);
+
 
 
 		let IS_CREATING = stage === 'creating';
@@ -202,7 +245,7 @@ class WaybillForm extends Component {
 	          { (IS_CREATING || IS_POST_CREATING) ?
 	            <span>
 	        			<label>Транспортное средство (поиск по госномеру)</label>
-	        			<EtsSelect options={CARS} disabled={IS_POST_CREATING} value={state.car_id} onChange={this.handleChange.bind(this, 'car_id')}/>
+	        			<EtsSelect options={CARS} disabled={IS_POST_CREATING} value={state.car_id} onChange={this.onCarChange.bind(this)}/>
 	            </span>
 	            :
 	            <span>
@@ -340,4 +383,4 @@ WaybillForm.contextTypes = {
 	flux: React.PropTypes.object,
 };
 
-export default connectToStores(WaybillForm, ['objects', 'employees']);
+export default connectToStores(WaybillForm, ['objects', 'employees', 'waybills']);

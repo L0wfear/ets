@@ -21,8 +21,8 @@ let getFIOById = (employees, id, fullFlag = false) => {
 	return result;
 };
 
-let getDriverByCode = (drivers, code) => {
-	return _.find(drivers, d => d.personnel_number === code) || {};
+let getDriverById = (drivers, id) => {
+	return _.find(drivers, d => d.id === id) || {};
 };
 
 let getCarById = (cars, id) => {
@@ -39,6 +39,7 @@ let validateRequired = (field, data) => {
 
 let validateWaybill = (waybill, errors) => {
 	let waybillErrors = _.clone(errors);
+
 	_.keys(waybill).map( f => {
 		if (['plan_departure_date', 'plan_arrival_date', 'driver_id', 'car_id', 'fuel_type_id', 'fuel_start'].indexOf(f) > -1) {
 			waybillErrors[f] = validateRequired(f, waybill[f]);
@@ -58,7 +59,8 @@ let validateClosingWaybill = (waybill, errors) => {
 			waybillErrors[f] = validateRequired(f, waybill[f]);
 			waybillErrors[f] = validateNumber(f, waybill[f]);
 		}
-	})
+	});
+
 	return waybillErrors;
 };
 
@@ -100,7 +102,7 @@ class WaybillFormWrap extends Component {
 					this.setState({
 						formState: _bill,
 						formStage: formStages[3],
-						formErrors: {},
+						formErrors: validateClosingWaybill(_bill, {}),
 						canPrint: false,
 						canSave: false,
 					});
@@ -165,11 +167,12 @@ class WaybillFormWrap extends Component {
   	let creation_date = moment(f.date_create);
 
   	let zhzhzh = 'ГБУ г.Москвы "Жилищник района Крылатское"';
-  	let driver = getDriverByCode(this.props.driversList, f.driver_id);
+  	let driver = getDriverById(this.props.driversList, f.driver_id);
   	let car = getCarById(this.props.carsList, f.car_id);
   	//let route = getRouteById(f.ROUTE_ID);
 		const plan_departure_date = moment(f.plan_departure_date);
 		const plan_arrival_date = moment(f.plan_arrival_date);
+		console.log(driver);
 
   	let URL = 'http://ods.mos.ru/ssd/city-dashboard/' + (print_form_type === 2 ? 'plate_truck/' : 'plate_special/');
   	let data = print_form_type === 2 ?
@@ -181,7 +184,7 @@ class WaybillFormWrap extends Component {
 		'&automobile_mark='+car.model+
 		'&automobile_number='+car.gov_number+
 		'&driver_fio_full='+getFIOById(this.props.driversList, driver.id, true)+
-		'&license_number='+(driver.drivers_license == '' ? driver.special_license : driver.drivers_license)+
+		'&license_number='+(driver.drivers_license === 'None' ? driver.special_license : driver.drivers_license)+
 		'&odometer_start=' + f.odometr_start +
 		'&depart_day=' + plan_departure_date.day()+
 		'&depart_month='+plan_departure_date.month()+

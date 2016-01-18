@@ -1,5 +1,18 @@
 import _ from 'lodash';
 
+// const waybillMeta = [
+//   {
+//
+//   },
+//   {
+//
+//   },
+//   {
+//
+//   },
+//
+// ]
+
 const fixedValidators = [
   // {
   //   name: 'required',
@@ -11,9 +24,9 @@ const fixedValidators = [
     name: 'number',
     validator(field, data) {
       console.log(field, data);
-      // if (!data && data !== 0) {
-      //   return void 0;
-      // }
+      if (!data && data !== 0) {
+        return void 0;
+      }
       return typeof data !== 'number' && !/^[-  +]?[0-9]*\.?\,?[0-9]{1,3}$/.test(data) ? `Поле должно быть числом` : void 0;
     }
   }

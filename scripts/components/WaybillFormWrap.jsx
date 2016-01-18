@@ -40,13 +40,13 @@ let validateRequired = (field, data) => {
 let validateWaybill = (waybill, errors) => {
 	let waybillErrors = _.clone(errors);
 	_.keys(waybill).map( f => {
-		if (['plan_departure_date', 'plan_arrival_date', 'driver_id', 'car_id', 'fuel_type_id', 'fuel_start', 'fuel_to_give'].indexOf(f) > -1) {
+		if (['plan_departure_date', 'plan_arrival_date', 'driver_id', 'car_id', 'fuel_type_id', 'fuel_start'].indexOf(f) > -1) {
 			waybillErrors[f] = validateRequired(f, waybill[f]);
 		}
-		if (['fuel_start', 'fuel_to_give', 'odometr_start', 'motohours_start'].indexOf(f) > -1) {
+		if (['fuel_start', 'odometr_start', 'motohours_start'].indexOf(f) > -1) {
 			waybillErrors[f] = validateNumber(f, waybill[f]);
 		}
-	})
+	});
 
 	return waybillErrors;
 };
@@ -81,10 +81,13 @@ class WaybillFormWrap extends Component {
 
 		if (props.showForm) {
 			if (props.bill === null ) {
+				const defaultBill = getDefaultBill();
+				console.log(defaultBill);
 				this.setState({
-					formState: getDefaultBill(),
+					formState: defaultBill,
 					formStage: formStages[0],
 					canSave: false,
+					formErrors: validateWaybill(defaultBill, {}),
 				})
 			} else {
 				if (props.bill.status === 'active') {
@@ -109,11 +112,13 @@ class WaybillFormWrap extends Component {
 						formStage: formStages[1],
 						canPrint: true,
 						canSave: true,
+						formErrors: {}
 					});
 				} else {
 					this.setState({
 						formState: props.bill,
-						formStage: formStages[2]
+						formStage: formStages[2],
+						formErrors: {}
 					});
 				}
 			}

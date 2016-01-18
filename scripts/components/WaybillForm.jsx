@@ -75,7 +75,7 @@ class WaybillForm extends Component {
 
 	onMasterChange(v) {
 		this.handleChange('responsible_person_id', v);
-		this.handleChange('company_id', _.find(this.props.employeesList, e => e.id === v).company_id);
+		//this.handleChange('company_id', _.find(this.props.employeesList, e => e.id === v).company_id);
 	}
 
 	onDriverChange(v) {

@@ -43,7 +43,7 @@ class WaybillsStore extends Store {
 export default WaybillsStore;
 
 
-export function getDefaultBill(currentBillCount = 0) {
+export function getDefaultBill() {
 
 		let now = new Date();
 		let vyezd_plan = new Date(
@@ -61,29 +61,25 @@ export function getDefaultBill(currentBillCount = 0) {
 	    0
     )
 		return {
-		    //ID: currentBillCount + 1,
 		    status: null,
-		    //number: currentBillCount + 1,
-		    //date_create: makeDate(now) + ' ' + makeTime(now),
-		    responsible_person_id: "",
+		    //responsible_person_id: null,
 		    plan_departure_date: vyezd_plan,
 		    fact_departure_date: vyezd_plan,
 		    plan_arrival_date: vozvr_plan,
 		    fact_arrival_date: vozvr_plan,
 		    driver_id: null,
 		    car_id: "",
-		    //ROUTE_ID: "",
 		    fuel_type_id: 1,
 		    fuel_start: "",
-		    fuel_to_give: "",
-		    fuel_given: "",
-		    fuel_end: "",
-		    //PASSES_COUNT: "",
+		    //fuel_to_give: null,
+		    //fuel_given: "",
+		    //fuel_end: "",
 				odometr_start: null,
-				odometr_end: "",
+				//odometr_end: "",
 				motohours_start: null,
-				motohours_end: "",
-				motohours_equip_start: null,
-				motohours_equip_end: "",
+				//motohours_end: "",
+				//motohours_equip_start: null,
+				//motohours_equip_end: "",
+        company_id: JSON.parse(localStorage.getItem('current_user')).company_id,
 		}
 }

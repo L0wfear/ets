@@ -1,16 +1,22 @@
 import { Actions } from 'flummox';
-import { updateCarGarageNumber } from '../adapter.js';
+import { updateCarAdditionalInfo } from '../adapter.js';
 import _ from 'lodash';
 
 export default class CarActions extends Actions {
 
-  updateCarGarageNumber(car) {
+  updateCarAdditionalInfo(car) {
     const payload = {
       car_id: car.asuods_id,
-      garage_number: car.garage_number,
     };
+    
+    if (car.garage_number) {
+      payload.garage_number = car.garage_number;
+    }
+    if (car.fuel_correction_rate) {
+      payload.fuel_correction_rate = car.fuel_correction_rate;
+    }
 
-    return updateCarGarageNumber(payload);
+    return updateCarAdditionalInfo(payload);
   }
 
 }

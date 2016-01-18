@@ -231,7 +231,7 @@ export function getCars() {
   return getJSON(CARS_ACTUAL_URL);
 }
 
-export function updateCarGarageNumber(data) {
+export function updateCarAdditionalInfo(data) {
   return postJSON(CARS_ADDITIONAL_INFO_URL, data, 'params').then( () => {
     return getCars();
   });

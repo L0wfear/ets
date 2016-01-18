@@ -46,56 +46,63 @@ export default class CarForm extends Component {
 
 		return (
 			<Modal {...this.props}>
+			
 				<Modal.Header closeButton>
 	          <Modal.Title id="contained-modal-title-lg">Карточка транспортного средства</Modal.Title>
 				</Modal.Header>
 
 	      <Modal.Body>
 
-	      <Row>
+		      <Row>
 
-	      	<Col md={6}>
-            <Div hidden={!this.state.imageUrl}>
-              <img src={config.backend + config.images + this.state.imageUrl} style={{
-                margin: 10,
-                width: 250,
-                minHeight: 100
-              }}/>
-            </Div>
-	      	</Col>
+		      	<Col md={6}>
+	            <Div hidden={!this.state.imageUrl}>
+	              <img src={config.backend + config.images + this.state.imageUrl} style={{
+	                margin: 10,
+	                width: 250,
+	                minHeight: 100
+	              }}/>
+	            </Div>
+		      	</Col>
 
-	      	<Col md={6}>
-            <Div>
-              <label>Гаражный номер</label>
-              <Input type="text" value={state['garage_number']} onChange={this.handleChange.bind(this, 'garage_number')}/>
-            </Div>
-	      	</Col>
+		      	<Col md={6}>
+	            <Div>
+	              <label>Гаражный номер</label>
+	              <Input type="number" value={state['garage_number']} onChange={this.handleChange.bind(this, 'garage_number')}/>
+	            </Div>
+							<Div>
+	              <label>Поправочный коэффициент</label>
+	              <Input type="number" value={state['fuel_correction_rate']} onChange={this.handleChange.bind(this, 'fuel_correction_rate')}/>
+	            </Div>
+		      	</Col>
 
-	      </Row>
+		      </Row>
 
-        <Row>
+	        <Row>
 
-          <Col md={6}>
-            <Div>
-              <label>Владелец</label> {getOwnerById(state.owner_id).title}
-            </Div>
-            <Div>
-              <label>Госномер</label> {state.gov_number}
-            </Div>
-            <Div>
-              <label>Модель</label> {getModelById(state.model_id).title}
-            </Div>
-            <Div>
-              <label>Тип</label> {getTypeById(state.type_id).title}
-            </Div>
-          </Col>
+	          <Col md={6}>
+	            <Div>
+	              <label>Владелец</label> {getOwnerById(state.owner_id).title}
+	            </Div>
+	            <Div>
+	              <label>Госномер</label> {state.gov_number}
+	            </Div>
+	            <Div>
+	              <label>Модель</label> {getModelById(state.model_id).title}
+	            </Div>
+	            <Div>
+	              <label>Тип</label> {getTypeById(state.type_id).title}
+	            </Div>
+	          </Col>
 
-        </Row>
+	        </Row>
 
 	      </Modal.Body>
+
 	      <Modal.Footer>
 	      	<Button onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
 	      </Modal.Footer>
+
 			</Modal>
 		)
 	}

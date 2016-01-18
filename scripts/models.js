@@ -35,7 +35,7 @@ export function getModelById(id) {
 
   if (typeof r === 'undefined') {
     //console.warn(`Model ${id} not found`);
-    r = index[0];
+    r = index[0] || {};
    // debugger;
   }
 

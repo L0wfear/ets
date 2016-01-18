@@ -29,8 +29,9 @@ function normalizeArray(objOrArray) {
 }
 
 export default list;
+
 export function getTypeById(id) {
-  return index[id] === undefined ? index[0] : index[id];
+  return index[id] === undefined ? index[0] || {} : index[id];
 }
 
 export function loadTypes() {

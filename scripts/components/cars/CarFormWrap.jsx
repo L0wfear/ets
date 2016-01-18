@@ -46,12 +46,9 @@ export default class FormWrap extends Component {
 	}
 
 	handleFormSubmit(formState) {
-    //todo update car info
-		console.log(formState);
-		//console.log(this.context);
-		this.context.flux.getActions('car').updateCarGarageNumber(formState).then( () => {
-	    this.props.onFormHide();
-		});
+		const { flux } = this.context;
+		flux.getActions('car').updateCarAdditionalInfo(formState);
+		this.props.onFormHide();
 	}
 
 	render() {

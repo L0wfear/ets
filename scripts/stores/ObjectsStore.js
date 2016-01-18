@@ -8,7 +8,7 @@ class ObjectsStore extends Store {
 
     const objectsActions = flux.getActions('objects');
     const carActions = flux.getActions('car');
-    this.register(carActions.updateCarGarageNumber, this.handleGetCars);
+    this.register(carActions.updateCarAdditionalInfo, this.handleGetCars);
     this.register(objectsActions.getCars, this.handleGetCars);
     this.register(objectsActions.getModels, this.handleGetModels);
     this.register(objectsActions.getTypes, this.handleGetTypes);

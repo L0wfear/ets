@@ -165,7 +165,7 @@ class WaybillFormWrap extends Component {
 
   	console.log('printing bill', this.state.formState);
   	let f = this.state.formState;
-  	let creation_date = moment(f.date_create);
+  	let creation_date = moment();
 
   	let zhzhzh = 'ГБУ г.Москвы "Жилищник района Крылатское"';
   	let driver = getDriverById(this.props.driversList, f.driver_id);
@@ -173,63 +173,62 @@ class WaybillFormWrap extends Component {
   	//let route = getRouteById(f.ROUTE_ID);
 		const plan_departure_date = moment(f.plan_departure_date);
 		const plan_arrival_date = moment(f.plan_arrival_date);
-		console.log(driver);
 
   	let URL = 'http://ods.mos.ru/ssd/city-dashboard/' + (print_form_type === 2 ? 'plate_truck/' : 'plate_special/');
   	let data = print_form_type === 2 ?
-  	'?registration_number='+f.id+
-		'&waybill_open_day='+creation_date.date() +
-		'&waybill_open_month='+monthes[creation_date.month()]+
-		'&waybill_open_year='+creation_date.year()+
-		'&organization_data='+zhzhzh+
-		'&automobile_mark='+car.model+
-		'&automobile_number='+car.gov_number+
-		'&driver_fio_full='+getFIOById(this.props.driversList, driver.id, true)+
+  	`?registration_number=${f.id || ''}` +
+		'&waybill_open_day='+creation_date.date() || '' +
+		'&waybill_open_month='+monthes[creation_date.month()] || ''+
+		'&waybill_open_year='+creation_date.year() || ''+
+		'&organization_data='+zhzhzh || ''+
+		'&automobile_mark='+car.model || ''+
+		'&automobile_number='+car.gov_number || ''+
+		'&driver_fio_full='+getFIOById(this.props.driversList, driver.id, true) || ''+
 		'&license_number='+(driver.drivers_license === 'None' ? driver.special_license : driver.drivers_license)+
-		'&odometer_start=' + f.odometr_start +
-		'&depart_day=' + plan_departure_date.day()+
-		'&depart_month='+plan_departure_date.month()+
-		'&depart_hour='+ plan_departure_date.hours() +
-		'&depart_minute='+plan_departure_date.minutes() +
-		'&return_day='+plan_arrival_date.date()+
-		'&return_month='+(plan_arrival_date.month())+
-		'&return_hour='+plan_arrival_date.hours()+
-		'&return_minute='+plan_arrival_date.minutes()+
-		'&fuel_mark='+getFuelTypeById(f.fuel_type_id).label+
-		'&fuel_start='+f.fuel_start+
-		'&operation_equipment_start_time='+f.motohours_equip_start+
+		'&odometer_start=' + f.odometr_start || '' +
+		'&depart_day=' + plan_departure_date.day() || ''+
+		'&depart_month='+plan_departure_date.month() || ''+
+		'&depart_hour='+ plan_departure_date.hours() || '' +
+		'&depart_minute='+plan_departure_date.minutes() || '' +
+		'&return_day='+plan_arrival_date.date() || ''+
+		'&return_month='+(plan_arrival_date.month()) || ''+
+		'&return_hour='+plan_arrival_date.hours() || ''+
+		'&return_minute='+plan_arrival_date.minutes() || ''+
+		'&fuel_mark=' + getFuelTypeById(f.fuel_type_id).label || ''+
+		'&fuel_start='+f.fuel_start || ''+
+		'&operation_equipment_start_time='+f.motohours_equip_start || ''+
 		'&operation_engine_start_time='+
 		'&trainee_fio='+
-		'&possession_organization_data='+zhzhzh+
-		'&fuel_issue='+f.fuel_to_give+
+		'&possession_organization_data='+zhzhzh || ''+
+		'&fuel_issue='+f.fuel_to_give || ''+
 		'&dispatcher_last_name='+
-		'&pass_driver_last_name='+driver.last_name+
-		'&receive_driver_last_name='+driver.last_name+
+		'&pass_driver_last_name='+driver.last_name || ''+
+		'&receive_driver_last_name='+driver.last_name || ''+
 		//'&complete_task_route='+route.name+
-		'&complete_task_odometer_start='+f.odometr_start+
+		'&complete_task_odometer_start='+f.odometr_start || ''+
   	'&complete_task_route='+'1'+
   	'&complete_number_trips='+'1'+
-		'&complete_fuel_mark='+getFuelTypeById(f.fuel_type_id).label
+		'&complete_fuel_mark='+getFuelTypeById(f.fuel_type_id).label || ''
   	:
-  	'?registration_number='+f.id+
-  	'&waybill_open_day='+creation_date.date() +
-  	'&waybill_open_month='+monthes[creation_date.month()]+
-  	'&waybill_open_year='+creation_date.year()+
-  	'&organization_data='+zhzhzh+
-  	'&automobile_mark='+car.model+
-  	'&automobile_number='+car.gov_number+
-  	'&driver_fio_full='+getFIOById(this.props.driversList, driver.id, true)+
-  	'&license_number='+(driver.drivers_license == '' ? driver.special_license : driver.drivers_license)+
-  	'&odometer_start='+ f.odometr_start +
-  	'&depart_time='+makeTime(f.plan_departure_date)+
-  	'&return_time='+makeTime(f.plan_arrival_date)+
-  	'&fuel_mark='+getFuelTypeById(f.fuel_type_id).label+
-  	'&fuel_start='+f.fuel_start+
+  	`?registration_number=${f.id || ''}`+
+  	'&waybill_open_day='+creation_date.date() || ''+
+  	'&waybill_open_month='+monthes[creation_date.month()] || ''+
+  	'&waybill_open_year='+creation_date.year() || ''+
+  	'&organization_data='+zhzhzh || ''+
+  	'&automobile_mark='+car.model || ''+
+  	'&automobile_number='+car.gov_number || ''+
+  	'&driver_fio_full='+getFIOById(this.props.driversList, driver.id, true) || ''+
+		'&license_number='+(driver.drivers_license === 'None' ? driver.special_license : driver.drivers_license) || ''+
+  	'&odometer_start='+ f.odometr_start || '' +
+  	'&depart_time='+makeTime(f.plan_departure_date) || ''+
+  	'&return_time='+makeTime(f.plan_arrival_date) || ''+
+  	'&fuel_mark='+getFuelTypeById(f.fuel_type_id).label || ''+
+  	'&fuel_start='+f.fuel_start || ''+
   	'&operation_equipment_start_time='+
   	'&operation_engine_start_time='+
-  	'&possession_organization_data='+zhzhzh+
+  	'&possession_organization_data='+zhzhzh || ''+
   	'&dispatcher_last_name='+
-  	'&pass_driver_last_name='+driver.last_name+
+  	'&pass_driver_last_name='+driver.last_name || ''+
   	'&receive_driver_last_name='+
   	'&complete_task_route='+'1'+
   	//'&complete_number_trips='+'1'+
@@ -240,7 +239,7 @@ class WaybillFormWrap extends Component {
   	//console.log( 'print url', linkTo, f);
 		this.handleFormSubmit(this.state.formState, true);
 
-  	window.location = linkTo;
+  	//window.location = linkTo;
   }
 
 

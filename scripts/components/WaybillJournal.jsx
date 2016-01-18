@@ -9,7 +9,6 @@ import FilterButton from './ui/table/filter/FilterButton.jsx';
 import WaybillFormWrap from './WaybillFormWrap.jsx';
 import moment from 'moment';
 import cx from 'classnames';
-import { getCarById } from '../../mocks/krylatskoe_cars.js';
 import LoadingPage from './LoadingPage.jsx';
 
 function getFIOById(data, id) {
@@ -37,59 +36,82 @@ function getStatusLabel(s) {
 	}//return //s === 'open' ? 'Открыт' : 'Закрыт';
 }
 
-let tableMeta = {
-	cols: [
-		{
-			name: 'status',
-			caption: 'Статус',
-			type: 'text',
-			filter: {
-				type: 'select',
-				labelFunction: getStatusLabel
-			}
-		},
-		{
-			name: 'number',
-			caption: 'Номер',
-			type: 'number',
-		},
-		{
-			name: 'date_create',
-			caption: 'Дата выдачи',
-			type: 'date',
-		},
-		{
-			name: 'driver_id',
-			caption: 'Водитель',
-			type: 'text',
-			filter: 'select'
-		},
-		{
-			name: 'car_id',
-			caption: 'Гос. № ТС',
-			type: 'text',
-		},
-		{
-			name: 'fact_departure_date',
-			caption: 'Выезд факт',
-			type: 'date',
-		},
-		{
-			name: 'fact_arrival_date',
-			caption: 'Возвращение факт',
-			type: 'date',
-		},
-		{
-			name: 'responsible_person_id',
-			caption: 'Мастер',
-			type: 'text',
-			filter: {
-				type: 'select',
-				labelFunction: getFIOById
-			}
-		},
-	]
+let getTableMeta = (props) => {
+
+	let tableMeta = {
+		cols: [
+			{
+				name: 'status',
+				caption: 'Статус',
+				type: 'text',
+				filter: {
+					type: 'select',
+					labelFunction: getStatusLabel
+				}
+			},
+			{
+				name: 'number',
+				caption: 'Номер',
+				type: 'number',
+			},
+			{
+				name: 'date_create',
+				caption: 'Дата выдачи',
+				type: 'date',
+				filter: {
+					type: 'select',
+				}
+			},
+			{
+				name: 'driver_id',
+				caption: 'Водитель',
+				type: 'text',
+				filter: {
+					type: 'select',
+					labelFunction: (d) => getFIOById(props.driversList, d),
+				}
+			},
+			{
+				name: 'car_id',
+				caption: 'Гос. № ТС',
+				type: 'text',
+				filter: {
+					type: 'select',
+					labelFunction: (d) => _.find(props.carsList, c => c.asuods_id === d).gov_number,
+				}
+			},
+			{
+				name: 'fact_departure_date',
+				caption: 'Выезд факт',
+				type: 'date',
+				filter: {
+					type: 'select',
+				}
+			},
+			{
+				name: 'fact_arrival_date',
+				caption: 'Возвращение факт',
+				type: 'date',
+				filter: {
+					type: 'select',
+				}
+			},
+			{
+				name: 'responsible_person_id',
+				caption: 'Мастер',
+				type: 'text',
+				filter: {
+					type: 'select',
+					labelFunction: getFIOById
+				}
+			},
+		]
+	};
+
+	return tableMeta;
+
 };
+
 
 let WaybillsTable = (props) => {
 
@@ -105,7 +127,7 @@ let WaybillsTable = (props) => {
 
 		return <Table results={props.data}
 									renderers={renderers}
-									tableMeta={tableMeta}
+									tableMeta={getTableMeta(props)}
 									{...props}/>
 }
 
@@ -199,7 +221,7 @@ class WaybillJournal extends Component {
 													 onHide={() => this.setState({filterModalIsOpen: false})}
 													 values={this.state.filterValues}
 													 direction={'right'}
-													 tableMeta={tableMeta}
+													 tableMeta={getTableMeta(this.props)}
 													 tableData={waybillsList} />
 						</ClickOutHandler>
 						<Button bsSize="small" onClick={this.createBill.bind(this)}><Glyphicon glyph="plus" /> Создать ПЛ</Button>

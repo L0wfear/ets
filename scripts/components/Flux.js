@@ -5,7 +5,7 @@ import SessionStore from '../stores/SessionStore.js';
 import SessionActions from '../actions/SessionActions.js';
 import FuelRateActions from '../actions/FuelRateActions.js';
 import FuelRatesStore from '../stores/FuelRatesStore.js';
-import WaybillsActions from '../actions/waybillsActions.js';
+import WaybillsActions from '../actions/WaybillsActions.js';
 import WaybillsStore from '../stores/WaybillsStore.js';
 import ObjectsActions from '../actions/ObjectsActions.js';
 import ObjectsStore from '../stores/ObjectsStore.js';

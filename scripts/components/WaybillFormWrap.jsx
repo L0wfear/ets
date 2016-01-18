@@ -8,11 +8,18 @@ import Div from './ui/Div.jsx';
 
 import WaybillForm from './WaybillForm.jsx';
 
-import { getFIOById } from './../stores/EmployeesStore.js';
 import { getFuelTypeById } from '../stores/FuelTypes.js';
-import { getDefaultBill } from '../../mocks/waybills.js';
+import { getDefaultBill } from '../stores/WaybillsStore.js';
 import { makeTime, makeDate } from '../utils/dates.js';
+import { validate as validateNumber} from '../validate/validateNumber.js';
 
+let getFIOById = (employees, id, fullFlag = false) => {
+	const employee = _.find(employees, d => d.id === id) || null;
+	if (!employee) return '';
+	let result = employee.last_name + ' ';
+	result += fullFlag ? `${employee.first_name} ${employee.middle_name}` : `${employee.first_name[0]}. ${employee.middle_name[0]}.`;
+	return result;
+};
 
 let getDriverByCode = (drivers, code) => {
 	return _.find(drivers, d => d.personnel_number === code) || {};
@@ -20,6 +27,39 @@ let getDriverByCode = (drivers, code) => {
 
 let getCarById = (cars, id) => {
 	return _.find(cars, c => c.asuods_id === id) || {};
+};
+
+let validateRequired = (field, data) => {
+	console.log(field, data);
+	if (typeof data === 'string' && data.length === 0) {
+		return 'Поле должно быть заполнено';
+	}
+	return typeof data === 'undefined' || data === null ? 'Поле должно быть заполнено' : void 0;
+};
+
+let validateWaybill = (waybill, errors) => {
+	let waybillErrors = _.clone(errors);
+	_.keys(waybill).map( f => {
+		if (['plan_departure_date', 'plan_arrival_date', 'driver_id', 'car_id', 'fuel_type_id', 'fuel_start', 'fuel_to_give'].indexOf(f) > -1) {
+			waybillErrors[f] = validateRequired(f, waybill[f]);
+		}
+		if (['fuel_start', 'fuel_to_give', 'odometr_start', 'motohours_start', 'motohours_equip_start'].indexOf(f) > -1) {
+			waybillErrors[f] = validateNumber(f, waybill[f]);
+		}
+	})
+
+	return waybillErrors;
+};
+
+let validateClosingWaybill = (waybill, errors) => {
+	let waybillErrors = _.clone(errors);
+	_.keys(waybill).map( f => {
+		if (['odometr_end', 'motohours_end', 'fuel_given', 'fuel_end'].indexOf(f) > -1) {
+			waybillErrors[f] = validateRequired(f, waybill[f]);
+			waybillErrors[f] = validateNumber(f, waybill[f]);
+		}
+	})
+	return waybillErrors;
 };
 
 const formStages = ['creating', 'post-creating', 'display', 'closing'];
@@ -31,20 +71,20 @@ class WaybillFormWrap extends Component {
 		this.state = {
 			formStage: formStages[0],
 			formState: null,
+			formErrors: {},
 			canSave: false,
 			canPrint: false
-		}
+		};
 	}
 
 	componentWillReceiveProps(props) {
 
 		if (props.showForm) {
 			if (props.bill === null ) {
-				let max = _.max(props.waybillsList.map(w => w.id));
-				if (max < 0) max = 0;
 				this.setState({
-					formState: getDefaultBill(max),
-					formStage: formStages[0]
+					formState: getDefaultBill(),
+					formStage: formStages[0],
+					canSave: false,
 				})
 			} else {
 				if (props.bill.status === 'active') {
@@ -57,8 +97,11 @@ class WaybillFormWrap extends Component {
 
 					this.setState({
 						formState: _bill,
-						formStage: formStages[3]
-					})
+						formStage: formStages[3],
+						formErrors: {},
+						canPrint: false,
+						canSave: false,
+					});
 
 				} else if (props.bill.status === 'draft'){
 					this.setState({
@@ -81,43 +124,19 @@ class WaybillFormWrap extends Component {
 
 	handleFormStateChange(field, e) {
 		console.log( 'waybill form changed', field, e)
-
+		const value = !!e.target ? e.target.value : e;
 		let formState = this.state.formState;
+		let formErrors = this.state.formErrors;
 		let newState = {};
-		formState[field] = !!e.target ? e.target.value : e;
+		formState[field] = value;
 
-		let HAS_REQUIRED_FIELDS =
-				this.state.formStage === 'creating' || this.state.formStage === 'post-creating' ?
-					!!formState.responsible_person_id &&
-					!!formState.plan_departure_date &&
-					!!formState.plan_arrival_date &&
-					!!formState.driver_id &&
-					!!formState.car_id &&
-					!!formState.odometr_start &&
-					!!formState.fuel_type_id &&
-					!!formState.fuel_start
-				:
-					!!formState.odometr_end &&
-					!!formState.motohours_end &&
-					!!formState.fuel_given &&
-					!!formState.fuel_end;
-
-
-		if (HAS_REQUIRED_FIELDS) {
-			newState.canPrint = true;
-			if (this.state.formStage === 'creating') {
-				newState.canSave = true;
-			}
-
-			if (this.state.formStage === 'post-creating') {
-				newState.canSave = true;
-			}
-
-			if (this.state.formStage === 'closing') {
-				newState.canSave = true;
-			}
-
+		if (['creating', 'post-creating'].indexOf(this.state.formStage) > -1) {
+			formErrors = validateWaybill(formState, formErrors);
+		} else if (this.state.formStage === 'closing') {
+			formErrors = validateClosingWaybill(formState, formErrors);
 		}
+		console.log(_(formErrors).map(v => !!v).value());
+		newState.canSave = _(formErrors).map(v => !!v).filter(e => e === true).value().length === 0;
 
 		if (field === 'odometr_end') {
 			formState.odometr_diff = formState.odometr_end - formState.odometr_start;
@@ -129,8 +148,11 @@ class WaybillFormWrap extends Component {
 			formState.motohours_equip_diff = formState.motohours_equip_end - formState.motohours_equip_start;
 		}
 
+		console.log(formErrors);
 		newState.formState = formState;
-		this.setState(newState)
+		newState.formErrors = formErrors;
+		console.log(`SETTING CAN SAVE STATE TO ${newState.canSave}`);
+		this.setState(newState);
 	}
 
   handlePrint(event, print_form_type = 1) {
@@ -143,7 +165,6 @@ class WaybillFormWrap extends Component {
   	let driver = getDriverByCode(this.props.driversList, f.driver_id);
   	let car = getCarById(this.props.carsList, f.car_id);
   	//let route = getRouteById(f.ROUTE_ID);
-		console.log(print_form_type);
 		const plan_departure_date = moment(f.plan_departure_date);
 		const plan_arrival_date = moment(f.plan_arrival_date);
 
@@ -156,7 +177,7 @@ class WaybillFormWrap extends Component {
 		'&organization_data='+zhzhzh+
 		'&automobile_mark='+car.model+
 		'&automobile_number='+car.gov_number+
-		'&driver_fio_full='+getFIOById(driver.id, true)+
+		'&driver_fio_full='+getFIOById(this.props.driversList, driver.id, true)+
 		'&license_number='+(driver.drivers_license == '' ? driver.special_license : driver.drivers_license)+
 		'&odometer_start=' + f.odometr_start +
 		'&depart_day=' + plan_departure_date.day()+
@@ -190,7 +211,7 @@ class WaybillFormWrap extends Component {
   	'&organization_data='+zhzhzh+
   	'&automobile_mark='+car.model+
   	'&automobile_number='+car.gov_number+
-  	'&driver_fio_full='+getFIOById(driver.id, true)+
+  	'&driver_fio_full='+getFIOById(this.props.driversList, driver.id, true)+
   	'&license_number='+(driver.drivers_license == '' ? driver.special_license : driver.drivers_license)+
   	'&odometer_start='+ f.odometr_start +
   	'&depart_time='+makeTime(f.plan_departure_date)+
@@ -209,8 +230,7 @@ class WaybillFormWrap extends Component {
 
   	let linkTo = URL + data;
 
-  	console.log( 'print url', linkTo, f);
-		console.log(' print submit')
+  	//console.log( 'print url', linkTo, f);
 		this.handleFormSubmit(this.state.formState, true);
 
   	window.location = linkTo;
@@ -226,29 +246,24 @@ class WaybillFormWrap extends Component {
 		if (stage === 'creating') {
 			formState.status = 'draft';
 			flux.getActions('waybills').createWaybill(formState);
-			this.setState({
-				formStage: formStages[1],
-				//canPrint: true,
-				canSave: false
-			});
+			// this.setState({
+			// 	formStage: formStages[1],
+			// 	//canPrint: true,
+			// 	canSave: false
+			// });
 			this.props.onFormHide();
 		} else if (formState.status === 'draft') {
-			console.warn('UPDATING WAYBILL')
 			if (activate) {
 				formState.status = 'active';
 				flux.getActions('waybills').updateWaybill(formState);
-				this.setState({
-					formStage: formStages[3],
-					canSave: false
-				});
+				// this.setState({
+				// 	formStage: formStages[3],
+				// 	canSave: false
+				// });
 				this.props.onFormHide();
 			}
 			else {
 				flux.getActions('waybills').updateWaybill(formState);
-				// this.setState({
-				// 	formStage: formStages[1],
-				// });
-				//this.props.onFormHide();
 			}
 		} else if (stage === 'closing') {
 			formState.status = 'closed';
@@ -260,8 +275,6 @@ class WaybillFormWrap extends Component {
 	}
 
 	render() {
-
-		console.log(this.props);
 
 		return 	<Div hidden={!this.props.showForm}>
 							<WaybillForm formState = {this.state.formState}

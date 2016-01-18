@@ -8,8 +8,6 @@ import { loadTypes } from './types.js';
 import { loadModels } from './models.js';
 import { loadOkrugs } from './okrugs.js';
 import { loadOwners } from './owners.js';
-//import { getCars } from '../mocks/krylatskoe_cars.js';
-import { generateBills, removeBill, updateBill, createBill } from '../mocks/waybills.js';
 import { getFuelRates as getMockFuelRates } from '../mocks/fuel_rates.js';
 
 
@@ -179,7 +177,7 @@ function checkResponse(url, response) {
   if (url.indexOf('login') === -1) {
     const { flux } = window.__ETS_CONTAINER__;
 
-    if (response.status === 403) {
+    if (response.status === 401) {
       flux.getActions('session').logout({reason: 'no auth'});
     }
   }
@@ -221,7 +219,6 @@ export function init() {
           loadTypes()
         ])
     //.then(getCars)
-    //.then(generateBills)
 }
 
 export function getWaybills() {
@@ -241,7 +238,6 @@ export function updateCarGarageNumber(data) {
 }
 
 export function getEmployees() {
-  console.log('GETTING EMPLOYEES ADAPTER')
   return getJSON(EMPLOYEE_URL);
 }
 

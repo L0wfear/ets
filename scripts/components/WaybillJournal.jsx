@@ -11,7 +11,6 @@ import moment from 'moment';
 import cx from 'classnames';
 import { getCarById } from '../../mocks/krylatskoe_cars.js';
 import LoadingPage from './LoadingPage.jsx';
-//import { getFIOById } from '../stores/EmployeesStore.js';
 
 function getFIOById(data, id) {
 	let result = '';
@@ -50,7 +49,7 @@ let tableMeta = {
 			}
 		},
 		{
-			name: 'id',
+			name: 'number',
 			caption: 'Номер',
 			type: 'number',
 		},
@@ -99,7 +98,7 @@ let WaybillsTable = (props) => {
 			responsible_person_id: ({data}) => <div>{getFIOById(props.employeesList, data)}</div>,
 			driver_id: ({data}) => <div>{getFIOById(props.employeesList, data)}</div>,
 			car_id: ({data}) => <div>{_.find(props.carsList, c => c.asuods_id === data).gov_number}</div>,
-			date_create: ({data}) => <div>{moment(data).format('YYYY-MM-DD')}</div>,
+			date_create: ({data}) => <div>{data ? moment(data).format('YYYY-MM-DD') : ''}</div>,
 			fact_departure_date: ({data}) => <div>{moment(data).format('YYYY-MM-DD HH:mm')}</div>,
 			fact_arrival_date: ({data}) => <div>{moment(data).format('YYYY-MM-DD HH:mm')}</div>,
 		};

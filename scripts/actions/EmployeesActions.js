@@ -6,7 +6,6 @@ import moment from 'moment';
 export default class EmployeesActions extends Actions {
 
   getEmployees() {
-    console.log('GETTING EMPLOYEES')
     return getEmployees();
   }
 

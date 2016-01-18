@@ -17,8 +17,6 @@ class EmployeeStore extends Store {
   }
 
   handleGetEmployees(employees) {
-		console.info('GOT EMPLOYEES');
-		console.log(employees);
     const employeesList = employees.result;
     this.setState({employeesList, driversList: employeesList.filter( e => e.position_id === 15)});
 	}

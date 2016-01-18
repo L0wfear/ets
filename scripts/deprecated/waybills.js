@@ -1,4 +1,4 @@
-import { getDrivers, getDriverByCode, getMasters } from '../scripts/stores/EmployeesStore.js';
+import { getDrivers, getDriverByCode, getMasters } from './EmployeesStore.js';
 import {makeDate, makeTime} from '../scripts/utils/dates.js';
 import moment from 'moment';
 import { getCars } from './krylatskoe_cars.js';

@@ -1,4 +1,4 @@
-import fakeData from '../../mocks/employees.js';
+//import fakeData from '../../mocks/employees.js';
 
 export function getEmployees() {
 	return fakeData
@@ -51,7 +51,7 @@ export function getMasters() {
 		}
 		)
 
-	console.log( 'список мастеров', result);
+	//console.log( 'список мастеров', result);
 	return result;
 }
 

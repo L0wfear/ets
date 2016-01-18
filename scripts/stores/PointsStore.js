@@ -178,8 +178,6 @@ export default class PointsStore extends Store {
   }
 
   handleLogin(user) {
-    console.log('HUI')
-
     // const filter = {
     //   status: statuses.map(s => s.id),
     //   type: [],

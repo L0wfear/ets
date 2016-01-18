@@ -64,22 +64,22 @@ export default class Taxi extends Component {
 
     this.state = {
       tableData: [
-        {
-    			OPERATION: 3,
-    			FUEL_RATE: 0.31,
-          FACT_VALUE: 2,
-          RESULT: 0.62
-  		  },
-        {
-    			OPERATION: 2,
-    			FUEL_RATE: 1.12,
-          FACT_VALUE: 3,
-          RESULT: 3.36,
-  		  },
+        // {
+    		// 	OPERATION: 3,
+    		// 	FUEL_RATE: 0.31,
+        //   FACT_VALUE: 2,
+        //   RESULT: 0.62
+  		  // },
+        // {
+    		// 	OPERATION: 2,
+    		// 	FUEL_RATE: 1.12,
+        //   FACT_VALUE: 3,
+        //   RESULT: 3.36,
+  		  // },
         {
           OPERATION: null,
     			FACT_VALUE: 'Итого',
-          RESULT: 3.98,
+          RESULT: null,
   		  }
       ],
       selectedOperation: null,

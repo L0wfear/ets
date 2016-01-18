@@ -43,7 +43,7 @@ let validateWaybill = (waybill, errors) => {
 		if (['plan_departure_date', 'plan_arrival_date', 'driver_id', 'car_id', 'fuel_type_id', 'fuel_start', 'fuel_to_give'].indexOf(f) > -1) {
 			waybillErrors[f] = validateRequired(f, waybill[f]);
 		}
-		if (['fuel_start', 'fuel_to_give', 'odometr_start', 'motohours_start', 'motohours_equip_start'].indexOf(f) > -1) {
+		if (['fuel_start', 'fuel_to_give', 'odometr_start', 'motohours_start'].indexOf(f) > -1) {
 			waybillErrors[f] = validateNumber(f, waybill[f]);
 		}
 	})

@@ -180,7 +180,6 @@ class WaybillJournal extends Component {
 
 	render() {
 
-		console.log(this.props);
 		if (this.state.loading) {
 			 return <LoadingPage loaded={this.state.loading}/>;
 		}

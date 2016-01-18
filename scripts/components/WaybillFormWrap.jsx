@@ -30,7 +30,6 @@ let getCarById = (cars, id) => {
 };
 
 let validateRequired = (field, data) => {
-	console.log(field, data);
 	if (typeof data === 'string' && data.length === 0) {
 		return 'Поле должно быть заполнено';
 	}
@@ -55,8 +54,10 @@ let validateWaybill = (waybill, errors) => {
 let validateClosingWaybill = (waybill, errors) => {
 	let waybillErrors = _.clone(errors);
 	_.keys(waybill).map( f => {
-		if (['odometr_end', 'motohours_end', 'fuel_given', 'fuel_end'].indexOf(f) > -1) {
+		if (['fuel_end'].indexOf(f) > -1) {
 			waybillErrors[f] = validateRequired(f, waybill[f]);
+		}
+		if (['odometr_end', 'motohours_end', 'fuel_given'].indexOf(f) > -1) {
 			waybillErrors[f] = validateNumber(f, waybill[f]);
 		}
 	});

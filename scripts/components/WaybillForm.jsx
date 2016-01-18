@@ -302,7 +302,7 @@ class WaybillForm extends Component {
 			          <label>Выдано, л</label>
 			          <Input type="number" value={state.fuel_given} onChange={this.handleChange.bind(this, 'fuel_given')} disabled={IS_CREATING || IS_DISPLAY}/>
 			      		<label>Возврат, л</label>
-			      		<Input type="number" value={state.fuel_end}  onChange={this.handleChange.bind(this, 'fuel_end')} disabled={IS_CREATING || IS_DISPLAY}/>
+			      		<Input type="number" className={errors['fuel_end'] && 'has-error'} value={state.fuel_end}  onChange={this.handleChange.bind(this, 'fuel_end')} disabled={IS_CREATING || IS_DISPLAY}/>
 		          </Div>
 	      		</Col>
 	      		<Col md={8}>

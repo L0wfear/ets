@@ -8,11 +8,11 @@ import Div from './ui/Div.jsx';
 import moment from 'moment';
 import ROUTES, { getRouteById } from '../../mocks/routes.js';
 //import WORK_TYPES, {getWorkTypeById} from '../../mocks/work_types.js';
-//import { getCarById } from '../stores/ObjectsStore.js';
 import getFuelTypes, { getFuelTypeById } from '../stores/FuelTypes.js';
 import { monthes } from '../utils/dates.js';
 import Taxi from './waybill/Taxi.jsx';
 import { getFuelOperations } from '../adapter.js';
+import cx from 'classnames';
 
 const FUEL_TYPES = getFuelTypes();
 
@@ -85,7 +85,7 @@ class WaybillForm extends Component {
 			this.handleChange('car_id', prefer_car);
 		}
 		if (prefer_car) {
-			const waybillsListSorted = _.sortBy(this.props.waybillsList, 'id').reverse();
+			const waybillsListSorted = _(this.props.waybillsList).filter(w => w.status === 'closed').sortBy('id').value().reverse();
 			const lastCarUsedWaybill = _.find(waybillsListSorted, w => w.car_id === prefer_car);
 			if (lastCarUsedWaybill) {
 				if (typeof lastCarUsedWaybill.fuel_end !== 'undefined') {
@@ -106,7 +106,7 @@ class WaybillForm extends Component {
 	onCarChange(v) {
 		this.handleChange('car_id', v);
 		console.log(this.props.waybillsList);
-		const waybillsListSorted = _.sortBy(this.props.waybillsList, 'id').reverse();
+		const waybillsListSorted = _(this.props.waybillsList).filter(w => w.status === 'closed').sortBy('id').value().reverse();
 		const lastCarUsedWaybill = _.find(waybillsListSorted, w => w.car_id === v);
 		if (lastCarUsedWaybill) {
 			if (typeof lastCarUsedWaybill.fuel_end !== 'undefined') {
@@ -169,71 +169,71 @@ class WaybillForm extends Component {
     }
 
 		return (
-			<Modal {...this.props} bsSize="large"
-			autoFocus={true}
-			enforceFocus={true}>
+			<Modal {...this.props} bsSize="large">
+
 				<Modal.Header closeButton>
 	          <Modal.Title id="contained-modal-title-lg">{title} { IS_POST_CREATING && '(возможна корректировка)'}</Modal.Title>
 				</Modal.Header>
 
 	      <Modal.Body>
 
-	      <Row>
-	      	<Col md={6}>
-	      		{/*Организация: АвД Жилищник "Крылатское" <br/>*/}
-	      	</Col>
-	      </Row>
-	       <Row>
+		      <Row>
 		      	<Col md={6}>
-		      		<label>Ответственное лицо</label><br/>
+		      		{/*Организация: АвД Жилищник "Крылатское" <br/>*/}
+		      	</Col>
+		      </Row>
+
+					<Row>
+						<Col md={6}>
+							<label>Ответственное лицо</label><br/>
 							<Div hidden={!(IS_CREATING || IS_POST_CREATING)}>
-		      			<MastersSelect  value={state.responsible_person_id} employees={employeesList} onChange={this.onMasterChange.bind(this)}/>
+								<MastersSelect  value={state.responsible_person_id} employees={employeesList} onChange={this.onMasterChange.bind(this)}/>
 							</Div>
 							<Div hidden={IS_CREATING || IS_POST_CREATING}>
-		      			{getFIOById(employeesList, state.responsible_person_id, true)}
+								{getFIOById(employeesList, state.responsible_person_id, true)}
 							</Div>
-		      	</Col>
+						</Col>
 						<Div hidden={!(IS_CREATING || IS_POST_CREATING)}>
-		       		<Col md={3}>
-			       		<label>Выезд план</label>
-				   			<Datepicker date={ new Date(state.plan_departure_date) } onChange={this.handleChange.bind(this, 'plan_departure_date')}/>
-			       	</Col>
+					 		<Col md={3}>
+					   		<label>Выезд план</label>
+					 			<Datepicker date={ new Date(state.plan_departure_date) } onChange={this.handleChange.bind(this, 'plan_departure_date')}/>
+					   	</Col>
 					 	</Div>
 						<Div hidden={!(IS_CREATING || IS_POST_CREATING)}>
-			       	<Col md={3}>
-				   			<label>Возвращение план</label>
-				   			<Datepicker date={ new Date(state.plan_arrival_date) } onChange={this.handleChange.bind(this, 'plan_arrival_date')}/>
-			       	</Col>
+					   	<Col md={3}>
+					 			<label>Возвращение план</label>
+					 			<Datepicker date={ new Date(state.plan_arrival_date) } onChange={this.handleChange.bind(this, 'plan_arrival_date')}/>
+					   	</Col>
 						</Div>
 						<Div hidden={!IS_CLOSING}>
-			       	<Col md={3}>
-			       		<label>Выезд факт</label>
-				   			<Datepicker date={ state.fact_departure_date } onChange={this.handleChange.bind(this, 'fact_departure_date')}/>
-			       	</Col>
+					   	<Col md={3}>
+					   		<label>Выезд факт</label>
+					 			<Datepicker date={ state.fact_departure_date } onChange={this.handleChange.bind(this, 'fact_departure_date')}/>
+					   	</Col>
 						</Div>
 						<Div hidden={!IS_CLOSING}>
-			      	<Col md={3}>
-				   			<label>Возвращение факт</label>
-				   			<Datepicker date={ state.fact_arrival_date } onChange={this.handleChange.bind(this, 'fact_arrival_date')}/>
-			       	</Col>
-			      </Div>
-            <Div hidden={!IS_DISPLAY}>
-              <Col md={3}>
-                <label>Выезд план</label><br/>{moment(state.plan_departure_date).format('YYYY-MM-DD')}<br/>
-                <label>Выезд факт</label><br/>{moment(state.fact_departure_date).format('YYYY-MM-DD')}
-              </Col>
-              <Col md={3}>
-                <label>Возвращение план</label><br/>{moment(state.plan_arrival_date).format('YYYY-MM-DD')}<br/>
-                <label>Возвращение факт</label><br/>{moment(state.fact_arrival_date).format('YYYY-MM-DD')}
-              </Col>
-            </Div>
-	       </Row>
+					  	<Col md={3}>
+					 			<label>Возвращение факт</label>
+					 			<Datepicker date={ state.fact_arrival_date } onChange={this.handleChange.bind(this, 'fact_arrival_date')}/>
+					   	</Col>
+					  </Div>
+					  <Div hidden={!IS_DISPLAY}>
+					    <Col md={3}>
+					      <label>Выезд план</label><br/>{moment(state.plan_departure_date).format('YYYY-MM-DD')}<br/>
+					      <label>Выезд факт</label><br/>{moment(state.fact_departure_date).format('YYYY-MM-DD')}
+					    </Col>
+					    <Col md={3}>
+					      <label>Возвращение план</label><br/>{moment(state.plan_arrival_date).format('YYYY-MM-DD')}<br/>
+					      <label>Возвращение факт</label><br/>{moment(state.fact_arrival_date).format('YYYY-MM-DD')}
+					    </Col>
+					  </Div>
+					</Row>
 
 	      	<Row>
 	      		<Col md={6}>
 		          <Div hidden={!(IS_CREATING || IS_POST_CREATING)}>
 		      			<label>Водитель (возможен поиск по табельному номеру)</label><br/>
-		      			<DriversSelect value={state.driver_id} drivers={driversList} onChange={this.onDriverChange.bind(this)}/>
+		      			<DriversSelect className={errors['driver_id'] ? 'has-error' : ''} value={state.driver_id} drivers={driversList} onChange={this.onDriverChange.bind(this)}/>
 		      		</Div>
 		      		<Div hidden={IS_CREATING || IS_POST_CREATING}>
 	      				<label>Водитель</label><br/>
@@ -243,7 +243,7 @@ class WaybillForm extends Component {
 	      		<Col md={6}>
 	            <Div hidden={!(IS_CREATING || IS_POST_CREATING)}>
 	        			<label>Транспортное средство (поиск по госномеру)</label>
-	        			<EtsSelect options={CARS} disabled={IS_POST_CREATING} value={state.car_id} onChange={this.onCarChange.bind(this)}/>
+	        			<EtsSelect className={errors['car_id'] && 'has-error'} options={CARS} disabled={IS_POST_CREATING} value={state.car_id} onChange={this.onCarChange.bind(this)}/>
 	            </Div>
 	            <Div hidden={IS_CREATING || IS_POST_CREATING}>
 	              <label style={{paddingTop:5}}>Транспортное средство</label><br/>
@@ -251,48 +251,6 @@ class WaybillForm extends Component {
 	            </Div>
 	      		</Col>
 	      	</Row>
-	      	{/*<Select.Async multi={false} value={this.props.master}*/}
-
-	        {/*<h4>Задание</h4>
-	      	<Row>
-	      	<Col md={5}>
-	        {!IS_DISPLAY  ?
-	            <span></span>
-
-	            :
-
-	            <span></span>
-
-	        }
-	        {!IS_DISPLAY  ?
-	            <span><label>Маршрут</label>
-	              <EtsSelect options={ROUTES} value={state.ROUTE_ID} onChange={this.handleChange.bind(this, 'ROUTE_ID')}/>
-	            </span>
-	            :
-	            <span>
-	            <label>Маршрут</label><br/>
-	              {getRouteById(state.ROUTE_ID).name}
-	            </span>
-
-	        }
-	      			</Col>
-	    		<Col md={4}>
-	    			<label>Вид работ</label>
-	           {!IS_DISPLAY  ?
-	            <span><EtsSelect options={WORK_TYPES} value={state.WORK_TYPE_ID} onChange={this.handleChange.bind(this, 'WORK_TYPE_ID')}/>
-	      </span>
-
-	            :
-
-	            <span><br/>{getWorkTypeById(state.WORK_TYPE_ID).label}</span>
-
-	        }
-	    				</Col>
-	    		<Col md={3}>
-	    		  <label>Количество прохождений</label>
-	    		  <Input type="number" disabled={IS_CLOSING || IS_DISPLAY} value={state.PASSES_COUNT} onChange={this.handleChange.bind(this, 'PASSES_COUNT')}/>
-	    		</Col>
-	      	</Row> */}
 
 	      	<Row>
 	      		<Col md={4}>
@@ -301,7 +259,7 @@ class WaybillForm extends Component {
 		      		<Input type="number" disabled={IS_CLOSING || IS_DISPLAY}  onChange={this.handleChange.bind(this, 'odometr_start')} value={state.odometr_start}/>
 	            <Div hidden={!(IS_CLOSING || IS_DISPLAY )}>
 	          		<label>Возврат, км</label>
-	          		<Input type="number" bsStyle={errors['odometr_end'] ? 'error' : ''} disabled={IS_DISPLAY} value={state.odometr_end} onChange={this.handleChange.bind(this, 'odometr_end')}/>
+	          		<Input type="number" className={errors['odometr_end'] && 'has-error'} disabled={IS_DISPLAY} value={state.odometr_end} onChange={this.handleChange.bind(this, 'odometr_end')}/>
 	          		<label>Пробег, км</label>
 	          		<Input type="number" value={state.odometr_diff} disabled/>
 	            </Div>
@@ -312,7 +270,7 @@ class WaybillForm extends Component {
 		      		<Input type="number" disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'motohours_start')} value={state.motohours_start}/>
 		          <Div hidden={!(IS_CLOSING || IS_DISPLAY )}>
 			      		<label>Возврат, м/ч</label>
-			      		<Input type="number" bsStyle={errors['motohours_end'] ? 'error' : ''} disabled={IS_DISPLAY} value={state.motohours_end} onChange={this.handleChange.bind(this, 'motohours_end')}/>
+			      		<Input type="number" className={errors['motohours_end'] && 'has-error'} disabled={IS_DISPLAY} value={state.motohours_end} onChange={this.handleChange.bind(this, 'motohours_end')}/>
 			      		<label>Пробег, м/ч</label>
 			      		<Input type="number" value={state.motohours_diff} disabled/>
 		          </Div>
@@ -323,22 +281,23 @@ class WaybillForm extends Component {
 		      		<Input type="number" value={state.motohours_equip_start} onChange={this.handleChange.bind(this, 'motohours_equip_start')} disabled={IS_CLOSING || IS_DISPLAY}/>
 		          <Div hidden={!(IS_CLOSING || IS_DISPLAY )}>
 			      		<label>Возврат, м/ч</label>
-			      		<Input type="number" bsStyle={errors['motohours_equip_end'] ? 'error' : ''} value={state.motohours_equip_end}  onChange={this.handleChange.bind(this, 'motohours_equip_end')} disabled={IS_DISPLAY}/>
+			      		<Input type="number" className={errors['motohours_equip_end'] && 'has-error'} value={state.motohours_equip_end}  onChange={this.handleChange.bind(this, 'motohours_equip_end')} disabled={IS_DISPLAY}/>
 			      		<label>Пробег, м/ч</label>
 			      		<Input type="number" value={state.motohours_equip_diff} disabled/>
 		          </Div>
 	      		</Col>
 	      	</Row>
+
 	      	<Row>
 	      		<Col md={4}>
 		      		<h4> Топливо </h4>
 		      		<label>Тип топлива</label>
-		          <EtsSelect disabled={IS_CLOSING || IS_DISPLAY} options={FUEL_TYPES} value={state.fuel_type_id} onChange={this.handleChange.bind(this, 'fuel_type_id')}/>
+		          <EtsSelect className={errors['fuel_type_id'] ? 'has-error' : ''} disabled={IS_CLOSING || IS_DISPLAY} options={FUEL_TYPES} value={state.fuel_type_id} onChange={this.handleChange.bind(this, 'fuel_type_id')}/>
 		      		<label>Выезд, л</label>
-		      		<Input type="number" bsStyle={errors['fuel_start'] ? 'error' : ''} value={state.fuel_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_start')}/>
+		      		<Input type="number" className="hui" className={errors['fuel_start'] && 'has-error'} value={state.fuel_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_start')}/>
 							<Div hidden={true} className="error">{errors['fuel_start']}</Div>
 		      		<label>Выдать, л</label>
-		      		<Input type="number" bsStyle={errors['fuel_to_give'] ? 'error' : ''}  value={state.fuel_to_give}  disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_to_give')}/>
+		      		<Input type="number" className={errors['fuel_to_give'] && 'has-error'}  value={state.fuel_to_give}  disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_to_give')}/>
 		          <Div hidden={!(IS_CLOSING || IS_DISPLAY )}>
 			          <label>Выдано, л</label>
 			          <Input type="number" value={state.fuel_given} onChange={this.handleChange.bind(this, 'fuel_given')} disabled={IS_CREATING || IS_DISPLAY}/>
@@ -350,7 +309,9 @@ class WaybillForm extends Component {
 							<Taxi hidden={!(IS_DISPLAY || IS_CLOSING) || state.status === 'draft'} readOnly={!IS_CLOSING} car={getCarById(carsList, state.car_id)} operations={this.state.operations}/>
 	      		</Col>
 	      	</Row>
+
 	      </Modal.Body>
+
 	      <Modal.Footer>
 					<Div hidden={state.status === 'closed'}>
 						<Div hidden={state.status !== 'draft'} className="inline-block">
@@ -367,6 +328,7 @@ class WaybillForm extends Component {
 		      	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>{this.props.formStage === 'closing' ? 'Закрыть ПЛ' : 'Сохранить'}</Button>
 					</Div>
 	      </Modal.Footer>
+
 			</Modal>
 		)
 	}

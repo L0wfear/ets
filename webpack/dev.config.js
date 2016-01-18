@@ -8,7 +8,7 @@ var port = 3000;
 //var ForceCaseSensitivityPlugin = require('./utils/forcecasesensitivity');
 
 module.exports = {
-  devtool: 'eval-source-map',
+  devtool: 'source-map',
   context: path.resolve(__dirname, '..'),
   entry: {
     'app': [

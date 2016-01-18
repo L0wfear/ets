@@ -53,26 +53,17 @@ class Table extends React.Component {
     const tableCaptions = tableMeta.cols.map( c => c.caption );
     const columnMetadata = this.initializeMetadata(tableCols, tableCaptions, renderers);
 		const rowMetadata = this.initializeRowMetadata();
+    const data = _.clone(this.props.results);
 
-    const results = _(this.props.results).map( (data, i) => {
+    const results = _(data).map( (d, i) => {
 			if (!selected || typeof onRowSelected === 'undefined') {
-        data.isSelected = false;
-        return data;
+        d.isSelected = false;
+        return d;
       }
       if (typeof selectField !== 'undefined') {
-        if (data[selectField] === selected[selectField]) {
-          data.isSelected = true;
-        } else {
-          data.isSelected = false;
-        }
-      } else {
-  			if (data.ID === selected.ID) {
-  				data.isSelected = true;
-  			} else {
-  				data.isSelected = false;
-  			}
+        d.isSelected = d[selectField] === selected[selectField];
       }
-			return data;
+			return d;
 		}).filter((obj) => {
   		let isValid = true;
 

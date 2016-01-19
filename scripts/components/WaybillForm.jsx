@@ -207,16 +207,18 @@ class WaybillForm extends Component {
 						</Div>
 						<Div hidden={!IS_CLOSING}>
 					   	<Col md={3}>
+								<label>Выезд план</label>
+								<Datepicker date={ new Date(state.plan_departure_date) } disabled={IS_CLOSING} />
 					   		<label>Выезд факт</label>
 					 			<Datepicker date={ state.fact_departure_date } onChange={this.handleChange.bind(this, 'fact_departure_date')}/>
 					   	</Col>
-						</Div>
-						<Div hidden={!IS_CLOSING}>
 					  	<Col md={3}>
+								<label>Возвращение план</label>
+								<Datepicker date={ new Date(state.plan_arrival_date) } disabled={IS_CLOSING} />
 					 			<label>Возвращение факт</label>
 					 			<Datepicker date={ state.fact_arrival_date } onChange={this.handleChange.bind(this, 'fact_arrival_date')}/>
 					   	</Col>
-					  </Div>
+						</Div>
 					  <Div hidden={!IS_DISPLAY}>
 					    <Col md={3}>
 					      <label>Выезд план</label><br/>{moment(state.plan_departure_date).format('YYYY-MM-DD')}<br/>

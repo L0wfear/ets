@@ -58,6 +58,14 @@ let tableMeta = {
 			filter: {
 				type: 'select',
 			}
+		},
+		{
+			name: 'fuel_correction_rate',
+			caption: 'Поправочный коэффициент',
+			type: 'number',
+			filter: {
+				type: 'select',
+			}
 		}
 	]
 }

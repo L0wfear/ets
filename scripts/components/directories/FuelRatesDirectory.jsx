@@ -68,6 +68,24 @@ let tableMeta = {
 	]
 };
 
+let FuelRatesTable = (props) => {
+
+    const renderers = {
+      operation_id: ({data}) => {
+        const operations = props.getOperations();
+        const operation = _.find(operations, op => op.ID === data) || { NAME: '' };
+        return <div>{operation.NAME}</div>;
+      },
+      model_id: ({data}) => <div>{getModelById(data).title}</div>,
+      date: ({data}) => <div>{moment(data).format('YYYY-MM-DD')}</div>
+    };
+
+		return <Table results={props.data}
+									tableMeta={tableMeta}
+                  renderers={renderers}
+									{...props}/>
+}
+
 class FuelRatesDirectory extends Component {
 
 
@@ -187,23 +205,7 @@ class FuelRatesDirectory extends Component {
 	}
 }
 
-let FuelRatesTable = (props) => {
 
-    const renderers = {
-      operation_id: ({data}) => {
-        const operations = props.getOperations();
-        const operation = _.find(operations, op => op.ID === data) || { NAME: '' };
-        return <div>{operation.NAME}</div>;
-      },
-      model_id: ({data}) => <div>{getModelById(data).title}</div>,
-      date: ({data}) => <div>{moment(data).format('YYYY-MM-DD')}</div>
-    };
-
-		return <Table results={props.data}
-									tableMeta={tableMeta}
-                  renderers={renderers}
-									{...props}/>
-}
 
 FuelRatesDirectory.contextTypes = {
   flux: React.PropTypes.object,

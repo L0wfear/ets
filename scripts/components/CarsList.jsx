@@ -126,6 +126,11 @@ class CarsList extends Component {
 		this.setState({showForm: false, selectedCar: null});
 	}
 
+	componentDidMount() {
+		const { flux } = this.context;
+		flux.getActions('objects').getCars();
+	}
+
 	render() {
 
 		const { carsList = [] } = this.props;
@@ -157,5 +162,9 @@ class CarsList extends Component {
 		);
 	}
 }
+
+CarsList.contextTypes = {
+	flux: React.PropTypes.object,
+};
 
 export default connectToStores(CarsList, ['objects']);

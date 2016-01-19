@@ -12,16 +12,12 @@ import connectToStores from 'flummox/connect';
 import { getModelById, getModels } from '../../models.js';
 import FuelRateFormWrap from './FuelRateFormWrap.jsx';
 
-function deleteFuelRate() {
-
-}
-
 let getOperationById = () => {};
 
 let tableMeta = {
 	cols: [
 		{
-			name: 'date',
+			name: 'order_date',
 			caption: 'Дата приказа',
 			type: 'date',
 			filter: {
@@ -38,17 +34,17 @@ let tableMeta = {
       }
 		},
 		{
-			name: 'rate_summer',
+			name: 'summer_rate',
 			caption: 'Норма для летнего периода',
 			type: 'number',
 		},
     {
-			name: 'rate_winter',
+			name: 'winter_rate',
 			caption: 'Норма для зимнего периода',
 			type: 'number',
 		},
 		{
-			name: 'model_id',
+			name: 'car_model_id',
 			caption: 'Модель транспортного средства',
 			type: 'number',
       filter: {
@@ -56,15 +52,15 @@ let tableMeta = {
         labelFunction: (d) => getModelById(d).title,
       }
 		},
-		{
-			name: 'gov_number',
-			caption: 'Гос. номер транспортного средства',
-			type: 'number',
-      filter: {
-        type: 'select',
-        //labelFunction: (d) => getModelById(d).title,
-      }
-		}
+		// {
+		// 	name: 'gov_number',
+		// 	caption: 'Гос. номер транспортного средства',
+		// 	type: 'number',
+    //   filter: {
+    //     type: 'select',
+    //     //labelFunction: (d) => getModelById(d).title,
+    //   }
+		// }
 	]
 };
 
@@ -77,7 +73,7 @@ let FuelRatesTable = (props) => {
         return <div>{operation.NAME}</div>;
       },
       model_id: ({data}) => <div>{getModelById(data).title}</div>,
-      date: ({data}) => <div>{moment(data).format('YYYY-MM-DD')}</div>
+      order_date: ({data}) => <div>{moment(data).format('YYYY-MM-DD')}</div>
     };
 
 		return <Table results={props.data}

@@ -11,10 +11,15 @@ import ROUTES, { getRouteById } from '../../mocks/routes.js';
 import getFuelTypes, { getFuelTypeById } from '../stores/FuelTypes.js';
 import { monthes } from '../utils/dates.js';
 import Taxi from './waybill/Taxi.jsx';
-import { getFuelOperations } from '../adapter.js';
+import { getFuelOperations, getFuelRatesByCarModel } from '../adapter.js';
 import cx from 'classnames';
 
 const FUEL_TYPES = getFuelTypes();
+
+let getInitialDate = (date) => {
+	date = new Date(date);
+	return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 9, 0);
+};
 
 let getFIOById = (employees, id, fullFlag = false) => {
 	const employee = _.find(employees, d => d.id === id) || null;
@@ -69,7 +74,10 @@ class WaybillForm extends Component {
   }
 
 	componentDidMount() {
-		getFuelOperations().then(r => this.setState({operations: r.result}));
+		console.log(this.props);
+		const car_model_id = _.find(this.props.carsList, c => c.asuods_id === this.props.formState.car_id).model_id;
+		console.log(car_model_id);
+		getFuelRatesByCarModel(car_model_id).then(r => console.log(r));//r => this.setState({operations: r.result}));
 		this.context.flux.getActions('employees').getEmployees();
 	}
 
@@ -121,14 +129,10 @@ class WaybillForm extends Component {
 				this.handleChange('motohours_start', lastCarUsedWaybill.motohours_end);
 			}
 		} else {
-			//if (typeof this.state.fuel_start === 'undefined')
 			this.handleChange('fuel_start', 0);
-			//if (typeof this.state.odometr_start === 'undefined')
 			this.handleChange('odometr_start', 0);
-			//if (typeof this.state.motohours_start === 'undefined')
 			this.handleChange('motohours_start', 0);
 		}
-		console.info(lastCarUsedWaybill);
 	}
 
 	render() {
@@ -136,8 +140,7 @@ class WaybillForm extends Component {
 		let state = this.props.formState;
     let stage = this.props.formStage;
 		let errors = this.props.formErrors;
-
-		console.log('WAYBILL PROPS', this.props);
+		
 		const { carsList = [], driversList = [], employeesList = [] } = this.props;
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: c.gov_number + ' [' + c.model + ']'}));
 
@@ -208,15 +211,15 @@ class WaybillForm extends Component {
 						<Div hidden={!IS_CLOSING}>
 					   	<Col md={3}>
 								<label>Выезд план</label>
-								<Datepicker date={ new Date(state.plan_departure_date) } disabled={IS_CLOSING} />
+								<Datepicker date={ getInitialDate(state.plan_departure_date) } disabled={IS_CLOSING} />
 					   		<label>Выезд факт</label>
-					 			<Datepicker date={ state.fact_departure_date } onChange={this.handleChange.bind(this, 'fact_departure_date')}/>
+					 			<Datepicker date={ getInitialDate(state.fact_departure_date) } onChange={this.handleChange.bind(this, 'fact_departure_date')}/>
 					   	</Col>
 					  	<Col md={3}>
 								<label>Возвращение план</label>
-								<Datepicker date={ new Date(state.plan_arrival_date) } disabled={IS_CLOSING} />
+								<Datepicker date={ getInitialDate(state.plan_arrival_date) } disabled={IS_CLOSING} />
 					 			<label>Возвращение факт</label>
-					 			<Datepicker date={ state.fact_arrival_date } onChange={this.handleChange.bind(this, 'fact_arrival_date')}/>
+					 			<Datepicker date={ getInitialDate(state.fact_arrival_date) } onChange={this.handleChange.bind(this, 'fact_arrival_date')}/>
 					   	</Col>
 						</Div>
 					  <Div hidden={!IS_DISPLAY}>

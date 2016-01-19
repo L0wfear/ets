@@ -40,6 +40,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+    if(!flux.getStore('session').isLoggedIn()) return this.setState({loading: false});
       init()
       .then(() => {
         return Promise.all([

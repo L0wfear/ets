@@ -40,6 +40,7 @@ const GET_ROAD_BY_ODH_URL = getUrl('/road_info/');
 const CARS_INFO_URL = getUrl('/cars_info/');
 const CARS_BY_OWNER_URL = getUrl('/cars_by_owner/');
 const FUEL_OPERATIONS_URL = getUrl('/fuel_operations/');
+const FUEL_CONSUMPTION_RATE_URL = getUrl('/fuel_consumption_rates/');
 const LOGIN_URL = getUrl('/auth/');
 const WAYBILL_URL = getUrl('/waybill/');
 const CARS_ACTUAL_URL = getUrl('/car_actual/');
@@ -47,12 +48,14 @@ const CARS_GARAGE_NUMBER_URL = getUrl('/car_garage_number/');
 const CARS_ADDITIONAL_INFO_URL = getUrl('/car_additional_info/');
 const EMPLOYEE_URL = getUrl('/employee/');
 
-function getJSON(url) {
+function getJSON(url, data = {}) {
+  data = _.clone(data);
   const { flux } = window.__ETS_CONTAINER__;
   const token = flux.getStore('session').getSession();
   if (token) {
-    url += `?token=${token}`;
+    data.token = token;
   }
+  url = toUrlWithParams(url, data);
 
   return fetch(url, {credentials: 'include'}).then( r => {
     checkResponse(url, r);
@@ -215,7 +218,7 @@ export function init() {
           loadCustomers(),
           loadModels(),
           loadOwners(),
-          //loadOkrugs(),
+          loadOkrugs(),
           loadTypes()
         ])
     //.then(getCars)
@@ -267,6 +270,10 @@ export function createWaybill(waybill) {
 
 export function getFuelOperations() {
   return fetch(FUEL_OPERATIONS_URL).then(r => r.json());
+}
+
+export function getFuelRatesByCarModel(car_model_id) {
+  return getJSON(FUEL_CONSUMPTION_RATE_URL, { car_model_id });
 }
 
 export function getTrack(car_id, from_dt, to_dt) {
@@ -343,5 +350,5 @@ export function getCarsByOwnerId(ownerId) {
 }
 
 export function getFuelRates(operations) {
-  return getMockFuelRates(operations);
+  return getJSON(FUEL_CONSUMPTION_RATE_URL);
 }

@@ -1,5 +1,5 @@
 import { Actions } from 'flummox';
-import { getFuelRates, getFuelOperations } from '../adapter.js';
+import { getFuelRates, getFuelOperations, getFuelRatesByCarModel } from '../adapter.js';
 
 export default class FuelRateActions extends Actions {
 
@@ -25,6 +25,10 @@ export default class FuelRateActions extends Actions {
 
   addFuelRate(rate) {
     return rate;
+  }
+
+  getFuelRatesByCarModel(model_id) {
+    return getFuelRatesByCarModel(model_id);
   }
 
 }

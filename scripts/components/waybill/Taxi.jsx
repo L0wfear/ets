@@ -146,6 +146,9 @@ export default class Taxi extends Component {
 
   render() {
 
+    const { taxes = this.state.tableData } = this.props;
+    console.log(this.props);
+
 		return (
       <Div className="taxi-calc-block" hidden={this.props.hidden}>
         <Div className="some-header">
@@ -161,7 +164,7 @@ export default class Taxi extends Component {
         </Div>
     		<Table title="Расчет топлива по норме"
     					 columnCaptions={this.tableCaptions}
-							 data={this.state.tableData}
+							 data={taxes}
 							 tableCols={this.tableCols}
 							 pageSize={20}
 							 usePagination={false}

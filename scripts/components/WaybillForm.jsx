@@ -329,9 +329,10 @@ class WaybillForm extends Component {
 							<Taxi hidden={!(IS_DISPLAY || IS_CLOSING) || state.status === 'draft'}
 										readOnly={!IS_CLOSING}
 										car={getCarById(carsList, state.car_id)}
+										taxes={state.taxes}
 										operations={this.state.operations}
 										fuelRates={this.state.fuelRates}
-										onChange={this.handleChange.bind(this, 'data')}/>
+										onChange={this.handleChange.bind(this, 'taxes')}/>
 	      		</Col>
 	      	</Row>
 

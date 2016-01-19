@@ -30,7 +30,11 @@ let toUrlWithParams = (url, data) => {
       //     });
       //   }
       // });
-      params += `${k}=${encodeURIComponent(JSON.stringify(v))}&`
+      if (k === 'taxes') {
+        const taxes = {'taxes':v};
+        params += `data=${encodeURIComponent(JSON.stringify(taxes))}&`
+      }
+
     } else {
       params += `${k}=${encodeURIComponent(v)}&`;
     }

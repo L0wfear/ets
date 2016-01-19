@@ -133,8 +133,14 @@ class WaybillFormWrap extends Component {
 						formErrors: {}
 					});
 				} else {
+					let _bill = _.clone(props.bill);
+					console.log(_bill);
+					if (_bill.data && _bill.data.taxes) {
+						_bill.taxes = _bill.data.taxes;
+					}
+
 					this.setState({
-						formState: props.bill,
+						formState: _bill,
 						formStage: formStages[2],
 						formErrors: {}
 					});
@@ -182,13 +188,17 @@ class WaybillFormWrap extends Component {
 
   	let URL = 'http://ods.mos.ru/ssd/city-dashboard/' + (print_form_type === 2 ? 'plate_truck/' : 'plate_special/') + `?waybill_id=${f.id}`;
 
-		this.handleFormSubmit(this.state.formState, true);
+		let callback = () => {
+			console.log('printing waybill', URL);
+			window.location = URL;
+		};
+		this.handleFormSubmit(this.state.formState, callback);
 
-  	window.location = URL;
+
   }
 
 
-	handleFormSubmit(formState, activate = false) {
+	handleFormSubmit(formState, callback) {
 		let billStatus = formState.status;
 		let stage = this.state.formStage;
 		const { flux } = this.context;
@@ -204,16 +214,18 @@ class WaybillFormWrap extends Component {
 			// });
 			this.props.onFormHide();
 		} else if (formState.status === 'draft') {
-			if (activate) {
+			if (typeof callback === 'function') {
 				formState.status = 'active';
-				flux.getActions('waybills').updateWaybill(formState);
+				flux.getActions('waybills').updateWaybill(formState).then(() => {
+					console.log('waybill has been updated');
+					callback();
+				});
 				// this.setState({
 				// 	formStage: formStages[3],
 				// 	canSave: false
 				// });
 				this.props.onFormHide();
-			}
-			else {
+			} else {
 				flux.getActions('waybills').updateWaybill(formState);
 				this.props.onFormHide();
 			}

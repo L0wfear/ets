@@ -55,6 +55,9 @@ class App extends Component {
         flux.getActions('objects').getCars();
       })
       .then(() => {
+        flux.getActions('objects').getFuelTypes();
+      })
+      .then(() => {
         flux.getActions('employees').getEmployees();
       })
       .then(() => this.setState({
@@ -126,6 +129,9 @@ function loadData(nextState, replaceState, callback) {
     })
     .then(() => {
       flux.getActions('objects').getCars();
+    })
+    .then(() => {
+      flux.getActions('objects').getFuelTypes();
     })
     .then(() => {
       flux.getActions('employees').getEmployees();

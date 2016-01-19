@@ -58,6 +58,7 @@ const CARS_ACTUAL_URL = getUrl('/car_actual/');
 const CARS_GARAGE_NUMBER_URL = getUrl('/car_garage_number/');
 const CARS_ADDITIONAL_INFO_URL = getUrl('/car_additional_info/');
 const EMPLOYEE_URL = getUrl('/employee/');
+const FUEL_TYPES_URL = getUrl('/fuel_type/');
 
 function getJSON(url, data = {}) {
   data = _.clone(data);
@@ -380,4 +381,8 @@ export function deleteFuelRate(rate) {
   return deleteJSON(FUEL_CONSUMPTION_RATE_URL, {id: rate.id}, 'params').then( () => {
     return getFuelRates();
   });
+}
+
+export function getFuelTypes() {
+  return getJSON(FUEL_TYPES_URL);
 }

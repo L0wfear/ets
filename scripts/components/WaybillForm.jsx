@@ -14,7 +14,7 @@ import Taxi from './waybill/Taxi.jsx';
 import { getFuelOperations, getFuelRatesByCarModel } from '../adapter.js';
 import cx from 'classnames';
 
-const FUEL_TYPES = getFuelTypes();
+//const FUEL_TYPES = getFuelTypes();
 
 let getInitialDate = (date) => {
 	date = new Date(date);
@@ -139,16 +139,17 @@ class WaybillForm extends Component {
 		// getFuelRatesByCarModel(car_model_id).then(r => console.log(r));
 		const waybillsListSorted = _(this.props.waybillsList).filter(w => w.status === 'closed').sortBy('id').value().reverse();
 		const lastCarUsedWaybill = _.find(waybillsListSorted, w => w.car_id === v);
+		console.log(lastCarUsedWaybill);
 		if (lastCarUsedWaybill) {
-			if (typeof lastCarUsedWaybill.fuel_end !== 'undefined') {
+			if (typeof lastCarUsedWaybill.fuel_end !== 'undefined' && lastCarUsedWaybill.fuel_end !== null) {
 				this.handleChange('fuel_start', lastCarUsedWaybill.fuel_end);
 			}
 
-			if (typeof lastCarUsedWaybill.odometr_end !== 'undefined') {
+			if (typeof lastCarUsedWaybill.odometr_end !== 'undefined' && lastCarUsedWaybill.odometr_end !== null) {
 				this.handleChange('odometr_start', lastCarUsedWaybill.odometr_end);
 			}
 
-			if (typeof lastCarUsedWaybill.motohours_end !== 'undefined') {
+			if (typeof lastCarUsedWaybill.motohours_end !== 'undefined' && lastCarUsedWaybill.motohours_end !== null) {
 				this.handleChange('motohours_start', lastCarUsedWaybill.motohours_end);
 			}
 		} else {
@@ -164,8 +165,9 @@ class WaybillForm extends Component {
     let stage = this.props.formStage;
 		let errors = this.props.formErrors;
 
-		const { carsList = [], driversList = [], employeesList = [] } = this.props;
+		const { carsList = [], driversList = [], employeesList = [], fuelTypes = [] } = this.props;
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: c.gov_number + ' [' + c.model + ']'}));
+		const FUEL_TYPES = fuelTypes.map(({ID, NAME}) => ({value: ID, label: NAME}));
 
     console.log('form stage is ', stage, 'form state is ', state);
 

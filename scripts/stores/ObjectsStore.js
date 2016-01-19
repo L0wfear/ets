@@ -15,6 +15,7 @@ class ObjectsStore extends Store {
     this.register(objectsActions.getOkrugs, this.handleGetOkrugs);
     this.register(objectsActions.getCustomers, this.handleGetCustomers);
     this.register(objectsActions.getOwners, this.handleGetOwners);
+    this.register(objectsActions.getFuelTypes, this.handleGetFuelTypes);
 
     this.state = {
       carsList: [],
@@ -23,6 +24,7 @@ class ObjectsStore extends Store {
       modelsList: [],
       okrugsList: [],
       ownersList: [],
+      fuelTypes: [],
     };
 
   }
@@ -65,6 +67,10 @@ class ObjectsStore extends Store {
 
   handleGetCustomers(customersList) {
     this.setState({customersList});
+  }
+
+  handleGetFuelTypes(fuelTypes) {
+    this.setState({fuelTypes: fuelTypes.result});
   }
 
   getCarById(asuods_id) {

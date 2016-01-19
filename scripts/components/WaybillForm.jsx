@@ -92,6 +92,10 @@ class WaybillForm extends Component {
 					this.setState({fuelRates, operations});
 				});
 			});
+		} else if (this.props.formStage === 'display') {
+			getFuelOperations().then( fuelOperations => {
+				this.setState({operations: fuelOperations.result});
+			});
 		}
 		this.context.flux.getActions('employees').getEmployees();
 	}
@@ -332,7 +336,8 @@ class WaybillForm extends Component {
 										taxes={state.taxes}
 										operations={this.state.operations}
 										fuelRates={this.state.fuelRates}
-										onChange={this.handleChange.bind(this, 'taxes')}/>
+										onChange={this.handleChange.bind(this, 'taxes')}
+										availableOperations={this.state.availableOperations}/>
 	      		</Col>
 	      	</Row>
 

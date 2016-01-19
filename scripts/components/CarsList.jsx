@@ -29,7 +29,7 @@ let tableMeta = {
 		},
 		{
 			name: 'model',
-			caption: 'Модель',
+			caption: 'Марка шасси',
 			type: 'text',
 			filter: {
 				type: 'select',

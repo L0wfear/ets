@@ -87,7 +87,7 @@ export default class CarForm extends Component {
 	              <label>Госномер</label> {state.gov_number}
 	            </Div>
 	            <Div>
-	              <label>Модель</label> {getModelById(state.model_id).title}
+	              <label>Марка шасси</label> {getModelById(state.model_id).title}
 	            </Div>
 	            <Div>
 	              <label>Тип</label> {getTypeById(state.type_id).title}

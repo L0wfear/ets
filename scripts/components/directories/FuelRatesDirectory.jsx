@@ -45,7 +45,7 @@ let tableMeta = {
 		},
 		{
 			name: 'car_model_id',
-			caption: 'Модель транспортного средства',
+			caption: 'Марка шасси',
 			type: 'number',
       filter: {
         type: 'select',

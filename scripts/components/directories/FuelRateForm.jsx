@@ -79,7 +79,7 @@ export default class FuelRateForm extends Component {
               <input type="number" value={state.winter_rate} onChange={this.handleChange.bind(this, 'winter_rate')}/>
             </Div>
             <Div>
-  	      		<label>Модель транспортного средства</label>
+  	      		<label>Марка шасси</label>
               <EtsSelect options={this.props.models.map( m => ({value: m.id, label: m.title}))} value={state.car_model_id} onChange={this.handleChange.bind(this, 'car_model_id')}/>
             </Div>
             {/*<Div>

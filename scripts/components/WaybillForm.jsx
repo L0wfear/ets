@@ -21,11 +21,12 @@ let getInitialDate = (date) => {
 	return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 9, 0);
 };
 
-let getDateWithoutTZ = (date) => {
-	console.log( typeof date);
-	if (typeof date !== 'string') return new Date(date);
-	date = new Date(date);
-	return new Date(date.getTime() + date.getTimezoneOffset()*60000);//date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes());
+let getDateWithoutTZ = (date, format = true) => {
+	if (typeof date === 'string') date = date.replace('.000000Z', '');
+	date = moment(date).toDate();
+	//console.log(date.getTimezoneOffset()*60000);
+	console.log(date);
+	return date;
 };
 
 let getFIOById = (employees, id, fullFlag = false) => {
@@ -156,8 +157,6 @@ class WaybillForm extends Component {
 
     console.log('form stage is ', stage, 'form state is ', state);
 
-
-
 		let IS_CREATING = stage === 'creating';
 		let IS_CLOSING = stage === 'closing';
     let IS_POST_CREATING = stage === 'post-creating'
@@ -221,13 +220,13 @@ class WaybillForm extends Component {
 						<Div hidden={!IS_CLOSING}>
 					   	<Col md={3}>
 								<label>Выезд план</label>
-								<Datepicker date={ getDateWithoutTZ(state.plan_departure_date) } disabled={IS_CLOSING} />
+					 			<Datepicker date={ getDateWithoutTZ(state.plan_departure_date) } disabled={true}/>
 					   		<label>Выезд факт</label>
 					 			<Datepicker date={ getDateWithoutTZ(state.fact_departure_date) } onChange={this.handleChange.bind(this, 'fact_departure_date')}/>
 					   	</Col>
 					  	<Col md={3}>
 								<label>Возвращение план</label>
-								<Datepicker date={ getDateWithoutTZ(state.plan_arrival_date) } disabled={IS_CLOSING} />
+					 			<Datepicker date={ getDateWithoutTZ(state.plan_arrival_date) } disabled={true}/>
 					 			<label>Возвращение факт</label>
 					 			<Datepicker date={ getDateWithoutTZ(state.fact_arrival_date) } onChange={this.handleChange.bind(this, 'fact_arrival_date')}/>
 					   	</Col>

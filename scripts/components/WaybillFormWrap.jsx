@@ -13,6 +13,16 @@ import { getDefaultBill } from '../stores/WaybillsStore.js';
 import { makeTime, makeDate } from '../utils/dates.js';
 import { validate as validateNumber} from '../validate/validateNumber.js';
 
+
+let getDateWithoutTZ = (date, format = true) => {
+	if (typeof date === 'string') date = date.replace('.000000Z', '');
+	date = moment(date).toDate();
+	//console.log(date.getTimezoneOffset()*60000);
+	console.log(date);
+	return date;
+};
+
+
 let getFIOById = (employees, id, fullFlag = false) => {
 	const employee = _.find(employees, d => d.id === id) || null;
 	if (!employee) return '';
@@ -95,10 +105,10 @@ class WaybillFormWrap extends Component {
 				if (props.bill.status === 'active') {
 					let _bill = _.clone(props.bill);
 
-					_bill.fact_departure_date = moment(_bill.plan_departure_date).toDate();
-					_bill.fact_arrival_date = moment(_bill.plan_arrival_date).toDate();
-					_bill.plan_departure_date = moment(_bill.plan_departure_date).toDate();
-					_bill.plan_arrival_date = moment(_bill.plan_arrival_date).toDate();
+					_bill.fact_departure_date = getDateWithoutTZ(_bill.plan_departure_date);
+					_bill.fact_arrival_date = getDateWithoutTZ(_bill.plan_arrival_date);
+					_bill.plan_departure_date = getDateWithoutTZ(_bill.plan_departure_date);
+					_bill.plan_arrival_date = getDateWithoutTZ(_bill.plan_arrival_date);
 
 					this.setState({
 						formState: _bill,
@@ -109,8 +119,16 @@ class WaybillFormWrap extends Component {
 					});
 
 				} else if (props.bill.status === 'draft') {
+
+					let _bill = _.clone(props.bill);
+
+					_bill.fact_departure_date = getDateWithoutTZ(_bill.plan_departure_date);
+					_bill.fact_arrival_date = getDateWithoutTZ(_bill.plan_arrival_date);
+					_bill.plan_departure_date = getDateWithoutTZ(_bill.plan_departure_date);
+					_bill.plan_arrival_date = getDateWithoutTZ(_bill.plan_arrival_date);
+
 					this.setState({
-						formState: props.bill,
+						formState: _bill,
 						formStage: formStages[1],
 						canPrint: true,
 						canSave: true,

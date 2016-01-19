@@ -3,6 +3,8 @@ import _ from 'lodash';
 import {makeDate, makeTime} from '../utils/dates.js';
 import moment from 'moment';
 
+let createValidDate = (date) => moment.utc(date).format('YYYY-MM-DDTHH:mm:ss');
+
 class WaybillsStore extends Store {
 
   constructor(flux) {
@@ -63,10 +65,10 @@ export function getDefaultBill() {
 		return {
 	    status: null,
 	    //responsible_person_id: null,
-	    plan_departure_date: vyezd_plan,
-	    fact_departure_date: vyezd_plan,
-	    plan_arrival_date: vozvr_plan,
-	    fact_arrival_date: vozvr_plan,
+	    plan_departure_date: vyezd_plan,//createValidDate(vyezd_plan),
+	    //fact_departure_date: vyezd_plan,//createValidDate(vyezd_plan),
+	    plan_arrival_date: vozvr_plan,//createValidDate(vozvr_plan),
+	    // fact_arrival_date: vozvr_plan,//createValidDate(vozvr_plan),
 	    driver_id: null,
 	    car_id: "",
 	    fuel_type_id: 1,

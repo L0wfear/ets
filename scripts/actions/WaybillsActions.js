@@ -52,8 +52,8 @@ export default class WaybillsActions extends Actions {
     const payload = _.clone(waybill);
     payload.plan_departure_date = createValidDate(payload.plan_departure_date);
     payload.plan_arrival_date = createValidDate(payload.plan_arrival_date);
-    payload.fact_departure_date = createValidDate(payload.fact_departure_date);
-    payload.fact_arrival_date = createValidDate(payload.fact_arrival_date);
+    payload.fact_departure_date = createValidDate(payload.plan_departure_date);
+    payload.fact_arrival_date = createValidDate(payload.plan_arrival_date);
     delete payload.odometr_diff;
     delete payload.motohours_diff;
     delete payload.motohours_diff;

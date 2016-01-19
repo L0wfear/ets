@@ -47,7 +47,7 @@ class App extends Component {
           flux.getActions('objects').getModels(),
           flux.getActions('objects').getTypes(),
           flux.getActions('objects').getOwners(),
-          //flux.getActions('objects').getOkrugs(),
+          flux.getActions('objects').getOkrugs(),
           flux.getActions('objects').getCustomers()
         ])
       })
@@ -100,7 +100,6 @@ App.childContextTypes = {
 let history = createHashHistory({queryKey: false});
 
 function requireAuth(nextState, replaceState) {
-  console.log(nextState);
   if (!flux.getStore('session').isLoggedIn()) {
     console.warn('USER IS NOT LOGGED IN');
     replaceState({ nextPathname: nextState.location.pathname }, '/login')
@@ -121,7 +120,7 @@ function loadData(nextState, replaceState, callback) {
         flux.getActions('objects').getModels(),
         flux.getActions('objects').getTypes(),
         flux.getActions('objects').getOwners(),
-        //flux.getActions('objects').getOkrugs(),
+        flux.getActions('objects').getOkrugs(),
         flux.getActions('objects').getCustomers()
       ])
     })

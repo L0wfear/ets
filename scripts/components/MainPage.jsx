@@ -20,7 +20,7 @@ export default React.createClass({
 
 	renderHeader() {
 		let path = this.props.location.pathname;
-		console.log( path, this.props );
+		//console.log( path, this.props );
 
     if (path === '/login') return (<Navbar justified>
 						 <Navbar.Header>
@@ -78,7 +78,6 @@ export default React.createClass({
   },
 
   render() {
-    console.log(this.context);
 		return <div>
 						<div className="app-navigation">{this.renderHeader()}</div>
 						<div className="app-content">{this.props.children}</div>

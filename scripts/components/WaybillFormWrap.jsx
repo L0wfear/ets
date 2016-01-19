@@ -191,7 +191,7 @@ class WaybillFormWrap extends Component {
 
 		let callback = (id) => {
 			console.log('printing waybill', URL);
-			id ? URL = URL + id : URL + ID;
+			URL = id ?  URL + id : URL + ID;
 			window.location = URL;
 		};
 		this.handleFormSubmit(this.state.formState, callback);

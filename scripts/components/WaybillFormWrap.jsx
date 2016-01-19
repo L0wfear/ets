@@ -186,10 +186,12 @@ class WaybillFormWrap extends Component {
   handlePrint(event, print_form_type = 1) {
   	let f = this.state.formState;
 
-  	let URL = 'http://ods.mos.ru/ssd/city-dashboard/' + (print_form_type === 2 ? 'plate_truck/' : 'plate_special/') + `?waybill_id=${f.id}`;
+  	let URL = 'http://ods.mos.ru/ssd/city-dashboard/' + (print_form_type === 2 ? 'plate_truck/' : 'plate_special/') + `?waybill_id=`;
+		let ID = f.id;
 
-		let callback = () => {
+		let callback = (id) => {
 			console.log('printing waybill', URL);
+			id ? URL = URL + id : URL + ID;
 			window.location = URL;
 		};
 		this.handleFormSubmit(this.state.formState, callback);
@@ -205,8 +207,20 @@ class WaybillFormWrap extends Component {
 		console.log(stage);
 
 		if (stage === 'creating') {
-			formState.status = 'draft';
-			flux.getActions('waybills').createWaybill(formState);
+			if (typeof callback === 'function') {
+				formState.status = 'draft';
+				flux.getActions('waybills').createWaybill(formState).then((r) => {
+					const id = _.max(r.result, res => res.id).id;
+					formState.status = 'active';
+					formState.id = id;
+					flux.getActions('waybills').updateWaybill(formState).then(() => {
+						callback(id);
+					});
+				});
+			} else {
+				formState.status = 'draft';
+				flux.getActions('waybills').createWaybill(formState);
+			}
 			// this.setState({
 			// 	formStage: formStages[1],
 			// 	//canPrint: true,

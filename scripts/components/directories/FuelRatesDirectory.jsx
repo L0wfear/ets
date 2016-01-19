@@ -97,8 +97,8 @@ class FuelRatesDirectory extends Component {
 	}
 
 	selectFuelRate({props}) {
-		const id = props.data.ID;
-		let fuelRate = _.find(this.props.rates, r => r.ID === id) || null;
+		const id = props.data.id;
+		let fuelRate = _.find(this.props.rates, r => r.id === id) || null;
 
 		this.setState({
 			selectedFuelRate: fuelRate
@@ -121,7 +121,7 @@ class FuelRatesDirectory extends Component {
 	componentDidMount() {
     const { flux } = this.context;
     flux.getActions('fuel-rates').getFuelOperations().then( (operations) => {
-      flux.getActions('fuel-rates').getFuelRates(operations);
+      flux.getActions('fuel-rates').getFuelRates();
       // very bad
       getOperationById = (operation_id) => _.find(operations.result, op => {
         return op.ID === operation_id
@@ -134,6 +134,7 @@ class FuelRatesDirectory extends Component {
 
   updateFuelRate(formState) {
     const { flux } = this.context;
+		console.log(formState)
     flux.getActions('fuel-rates').updateFuelRate(formState);
   }
 
@@ -189,7 +190,7 @@ class FuelRatesDirectory extends Component {
 					</div>
 				</div>
 
-        <FuelRatesTable data={rates} filter={this.state.filterValues} getOperations={(id) => this.props.operations} onRowSelected={this.selectFuelRate.bind(this)} selected={this.state.selectedFuelRate}/>
+        <FuelRatesTable data={rates} filter={this.state.filterValues} getOperations={(id) => this.props.operations} onRowSelected={this.selectFuelRate.bind(this)} selected={this.state.selectedFuelRate} selectField={'id'}/>
         <FuelRateFormWrap onFormHide={this.onFormHide.bind(this)}
   												showForm={this.state.showForm}
   												fuelRate={this.state.selectedFuelRate}

@@ -8,7 +8,6 @@ import { loadTypes } from './types.js';
 import { loadModels } from './models.js';
 import { loadOkrugs } from './okrugs.js';
 import { loadOwners } from './owners.js';
-import { getFuelRates as getMockFuelRates } from '../mocks/fuel_rates.js';
 
 
 let getUrl = (url) => config.backend ? config.backend + url : url;
@@ -349,6 +348,24 @@ export function getCarsByOwnerId(ownerId) {
   return fetch(CARS_BY_OWNER_URL + query).then(r => r.json())
 }
 
-export function getFuelRates(operations) {
+export function getFuelRates() {
   return getJSON(FUEL_CONSUMPTION_RATE_URL);
+}
+
+export function updateFuelRate(newFuelRate) {
+  return putJSON(FUEL_CONSUMPTION_RATE_URL, newFuelRate, 'params').then( () => {
+    return getFuelRates();
+  });
+}
+
+export function addFuelRate(newFuelRate) {
+  return postJSON(FUEL_CONSUMPTION_RATE_URL, newFuelRate, 'params').then( () => {
+    return getFuelRates();
+  });
+}
+
+export function deleteFuelRate(rate) {
+  return deleteJSON(FUEL_CONSUMPTION_RATE_URL, {id: rate.id}, 'params').then( () => {
+    return getFuelRates();
+  });
 }

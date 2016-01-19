@@ -4,7 +4,6 @@ import EtsSelect from '../ui/EtsSelect.jsx';
 import Datepicker from '../ui/DatePicker.jsx';
 import moment from 'moment';
 import Div from '../ui/Div.jsx';
-import { getCarById, getCars } from '../../../mocks/krylatskoe_cars.js';
 import { getCarImage } from '../../adapter.js';
 import { getModelById } from '../../models.js';
 import { getStatusById } from '../../statuses.js';
@@ -46,7 +45,7 @@ export default class CarForm extends Component {
 
 		return (
 			<Modal {...this.props}>
-			
+
 				<Modal.Header closeButton>
 	          <Modal.Title id="contained-modal-title-lg">Карточка транспортного средства</Modal.Title>
 				</Modal.Header>

@@ -84,6 +84,7 @@ class Table extends React.Component {
 		}).value();
 
     return <Griddle results={results}
+                    initialSort={'id'}
   									columnMetadata={columnMetadata}
   									columns={tableCols}
   									resultsPerPage={15}

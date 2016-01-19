@@ -27,11 +27,11 @@ export default class FormWrap extends Component {
 			} else {
         this.setState({
           formState: {
-            date: new Date('2015', '00', '01'),
+            order_date: new Date('1990', '00', '01'),
             operation_id: null,
-            rate_summer: '',
-            rate_winter: '',
-            model_id: null
+            summer_rate: '',
+            winter_rate: '',
+            car_model_id: null
           },
           isNew: true,
         })

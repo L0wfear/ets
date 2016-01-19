@@ -64,7 +64,7 @@ export default class FuelRateForm extends Component {
 	      	<Col md={6}>
             <Div>
   	      		<label>Дата приказа</label>
-              <Datepicker date={new Date(state.date)} onChange={this.handleChange.bind(this, 'date')} time={false}/>
+              <Datepicker date={new Date(state.order_date)} onChange={this.handleChange.bind(this, 'order_date')} time={false}/>
             </Div>
             <Div>
   	      		<label>Операция</label>
@@ -72,15 +72,15 @@ export default class FuelRateForm extends Component {
             </Div>
             <Div>
   	      		<label>Норма для летнего периода</label>
-              <input type="number" value={state.rate_summer} onChange={this.handleChange.bind(this, 'rate_summer')}/>
+              <input type="number" value={state.summer_rate} onChange={this.handleChange.bind(this, 'summer_rate')}/>
             </Div>
             <Div>
   	      		<label>Норма для зимнего периода</label>
-              <input type="number" value={state.rate_winter} onChange={this.handleChange.bind(this, 'rate_winter')}/>
+              <input type="number" value={state.winter_rate} onChange={this.handleChange.bind(this, 'winter_rate')}/>
             </Div>
             <Div>
   	      		<label>Модель транспортного средства</label>
-              <EtsSelect options={this.props.models.map( m => ({value: m.id, label: m.title}))} value={state.model_id} onChange={this.handleChange.bind(this, 'model_id')}/>
+              <EtsSelect options={this.props.models.map( m => ({value: m.id, label: m.title}))} value={state.car_model_id} onChange={this.handleChange.bind(this, 'car_model_id')}/>
             </Div>
             {/*<Div>
   	      		<label>Гос. номер транспортного средства</label>

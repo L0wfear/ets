@@ -68,6 +68,7 @@ class WaybillForm extends Component {
 		this.state = {
 			operations: [],
 			fuelRates: [],
+			fuel_correction_rate: null,
 		}
 	}
 
@@ -88,10 +89,10 @@ class WaybillForm extends Component {
 			console.log(car);
 			const fuel_correction_rate = car.fuel_correction_rate || null;
 			getFuelRatesByCarModel(car_model_id).then(r => {
-				const fuelRates = r.result.map( ({operation_id, rate_on_date}) => ({operation_id, rate_on_date: fuel_correction_rate ? parseFloat(rate_on_date * fuel_correction_rate).toFixed(2) : rate_on_date}) );
+				const fuelRates = r.result.map( ({operation_id, rate_on_date}) => ({operation_id, rate_on_date}) );
 				getFuelOperations().then( fuelOperations => {
 					const operations =  _.filter(fuelOperations.result, op => _.find(fuelRates, fr => fr.operation_id === op.ID));
-					this.setState({fuelRates, operations});
+					this.setState({fuelRates, operations, fuel_correction_rate});
 				});
 			});
 		} else if (this.props.formStage === 'display') {

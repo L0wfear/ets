@@ -16,6 +16,15 @@ function calculateResult(data) {
   return parseFloat(result).toFixed(2);
 }
 
+let getResult = ({FACT_VALUE, fuel_correction_rate, FUEL_RATE}) => {
+  if (typeof FACT_VALUE === 'undefined') return 0;
+  if (fuel_correction_rate) {
+    return parseFloat(FUEL_RATE * fuel_correction_rate * FACT_VALUE).toFixed(2);
+  } else {
+    return parseFloat(FUEL_RATE * fuel_correction_rate * FACT_VALUE).toFixed(2);
+  }
+}
+
 export default class Taxi extends Component {
 
   constructor(props) {
@@ -24,6 +33,7 @@ export default class Taxi extends Component {
     this.tableCaptions = [
       "Операция",
       "Норма",
+      "Поправочный коэффициент",
       "Значение",
       "Результат (л)"
     ];
@@ -31,6 +41,7 @@ export default class Taxi extends Component {
     this.tableCols = [
       "OPERATION",
       "FUEL_RATE",
+      "fuel_correction_rate",
       "FACT_VALUE",
       "RESULT",
     ];
@@ -46,6 +57,10 @@ export default class Taxi extends Component {
         return <EtsSelect clearable={false} disabled={props.readOnly} options={this.state.operations} value={OPERATION} onChange={this.handleOperationChange.bind(this, index)}/>
       },
       RESULT: (RESULT) => RESULT ? RESULT + ' л' : '',
+      fuel_correction_rate: (fuel_correction_rate, row) => {
+        if (row.OPERATION === null) return '';
+        return fuel_correction_rate ? parseFloat(fuel_correction_rate).toFixed(2) : 1
+      },
       FACT_VALUE: (FACT_VALUE, {OPERATION, FUEL_RATE}, index) => {
         if (FACT_VALUE === 'Итого' || this.props.readOnly) return FACT_VALUE;
         const props = {
@@ -88,19 +103,11 @@ export default class Taxi extends Component {
     }
   }
 
-  handleChange(index, key, value) {
-    const { tableData } = this.state;
-    tableData[index][key] = value;
-
-    this.setState({tableData});
-    this.props.onChange(tableData);
-  }
-
   handleFactValueChange(index, e) {
     const { tableData } = this.state;
     let current = tableData[index];
         current.FACT_VALUE = e.target.value;
-        current.RESULT = parseFloat(current.FUEL_RATE * current.FACT_VALUE).toFixed(2);
+        current.RESULT = getResult(tableData[index]);
     tableData[tableData.length - 1].RESULT = calculateResult(tableData);
 
     this.setState({tableData});
@@ -112,7 +119,7 @@ export default class Taxi extends Component {
     tableData[index]['OPERATION'] = value;
     const fuelRateByOperation = _.find(fuelRates, r => r.operation_id === value) || {};
     tableData[index]['FUEL_RATE'] = fuelRateByOperation.rate_on_date || 0;
-    tableData[index]['RESULT'] = typeof tableData[index].FACT_VALUE !== 'undefined' ? parseFloat(tableData[index].FUEL_RATE * tableData[index].FACT_VALUE).toFixed(2) : 0;
+    tableData[index]['RESULT'] = getResult(tableData[index]);
     tableData[tableData.length - 1].RESULT = calculateResult(tableData);
 
     this.setState({tableData});
@@ -121,7 +128,7 @@ export default class Taxi extends Component {
 
   addOperation() {
     const { tableData } = this.state;
-    tableData.splice(tableData.length - 1, 0, {});
+    tableData.splice(tableData.length - 1, 0, {fuel_correction_rate: this.props.correctionRate});
     this.setState({tableData});
   }
 

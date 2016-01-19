@@ -136,26 +136,25 @@ class FuelRatesDirectory extends Component {
     const { flux } = this.context;
 		console.log(formState)
     flux.getActions('fuel-rates').updateFuelRate(formState);
+		this.setState({selectedFuelRate: null});
   }
 
 	deleteFuelRate() {
     const { flux } = this.context;
 		if (confirm('Вы уверены, что хотите удалить запись?')) {
 			flux.getActions('fuel-rates').deleteFuelRate(this.state.selectedFuelRate);
-		} else {
-
+			this.setState({selectedFuelRate: null});
 		}
 	}
 
 	showFuelRate() {
-		this.setState({
-			showForm:true
-		})
+		this.setState({ showForm: true });
 	}
 
   addFuelRate(newRate) {
     const { flux } = this.context;
     flux.getActions('fuel-rates').addFuelRate(newRate);
+		this.setState({selectedFuelRate: null});
   }
 
 	toggleFilter() {

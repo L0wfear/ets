@@ -18,16 +18,24 @@ let toFormData = (data) => {
   });
   return formData;
 };
+
 let toUrlWithParams = (url, data) => {
+  let params = '?';
   _.mapKeys(data, (v, k) => {
-    if (url.indexOf('?') === -1) {
-      url += '?';
+    if (_.isArray(v)) {
+      // v.map( (el, i) => {
+      //   if (_.isObject(el)) {
+      //     _.mapKeys(el, (innerV, innerK) => {
+      //       params += `${k}[${i}][${innerK}]=${encodeURIComponent(innerV)}&`;
+      //     });
+      //   }
+      // });
+      params += `${k}=${encodeURIComponent(JSON.stringify(v))}&`
     } else {
-      url += '&'
+      params += `${k}=${encodeURIComponent(v)}&`;
     }
-    url += `${k}=${v}`;
   });
-  return url;
+  return `${url}${params}`;
 };
 
 const POINTS_URL = getUrl('/data');

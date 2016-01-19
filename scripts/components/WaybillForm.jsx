@@ -66,7 +66,8 @@ class WaybillForm extends Component {
 		super(props);
 
 		this.state = {
-			operations: []
+			operations: [],
+			fuelRates: [],
 		}
 	}
 
@@ -84,8 +85,13 @@ class WaybillForm extends Component {
 		if (this.props.formStage === 'closing') {
 			const car = _.find(this.props.carsList, c => c.asuods_id === this.props.formState.car_id) || {}
 			const car_model_id = car.model_id;
-			console.log(car_model_id);
-			getFuelRatesByCarModel(car_model_id).then(r => console.log(r));//r => this.setState({operations: r.result}));
+			getFuelRatesByCarModel(car_model_id).then(r => {
+				const fuelRates = r.result.map( ({operation_id, rate_on_date}) => ({operation_id, rate_on_date}) );
+				getFuelOperations().then( fuelOperations => {
+					const operations =  _.filter(fuelOperations.result, op => _.find(fuelRates, fr => fr.operation_id === op.ID));
+					this.setState({fuelRates, operations});
+				});
+			});
 		}
 		this.context.flux.getActions('employees').getEmployees();
 	}
@@ -122,7 +128,9 @@ class WaybillForm extends Component {
 
 	onCarChange(v) {
 		this.handleChange('car_id', v);
-		console.log(this.props.waybillsList);
+		// const car = _.find(this.props.carsList, c => c.asuods_id === v) || {};
+		// const car_model_id = car.model_id;
+		// getFuelRatesByCarModel(car_model_id).then(r => console.log(r));
 		const waybillsListSorted = _(this.props.waybillsList).filter(w => w.status === 'closed').sortBy('id').value().reverse();
 		const lastCarUsedWaybill = _.find(waybillsListSorted, w => w.car_id === v);
 		if (lastCarUsedWaybill) {
@@ -318,7 +326,12 @@ class WaybillForm extends Component {
 		          </Div>
 	      		</Col>
 	      		<Col md={8}>
-							<Taxi hidden={!(IS_DISPLAY || IS_CLOSING) || state.status === 'draft'} readOnly={!IS_CLOSING} car={getCarById(carsList, state.car_id)} operations={this.state.operations}/>
+							<Taxi hidden={!(IS_DISPLAY || IS_CLOSING) || state.status === 'draft'}
+										readOnly={!IS_CLOSING}
+										car={getCarById(carsList, state.car_id)}
+										operations={this.state.operations}
+										fuelRates={this.state.fuelRates}
+										onChange={this.handleChange.bind(this, 'data')}/>
 	      		</Col>
 	      	</Row>
 

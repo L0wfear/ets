@@ -29,8 +29,8 @@ export default class FormWrap extends Component {
           formState: {
             order_date: new Date('1990', '00', '01'),
             operation_id: null,
-            summer_rate: '',
-            winter_rate: '',
+            //summer_rate: '',
+            //winter_rate: '',
             car_model_id: null
           },
           isNew: true,

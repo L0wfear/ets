@@ -84,6 +84,7 @@ export default class Taxi extends Component {
       ],
       selectedOperation: null,
       operations: [],
+      fuelRates: [],
     }
   }
 
@@ -92,16 +93,30 @@ export default class Taxi extends Component {
     tableData[index][key] = value;
 
     this.setState({tableData});
+    this.props.onChange(tableData);
+  }
+
+  handleFactValueChange(index, e) {
+    const { tableData } = this.state;
+    let current = tableData[index];
+        current.FACT_VALUE = e.target.value;
+        current.RESULT = parseFloat(current.FUEL_RATE * current.FACT_VALUE).toFixed(2);
+    tableData[tableData.length - 1].RESULT = calculateResult(tableData);
+
+    this.setState({tableData});
+    this.props.onChange(tableData);
   }
 
   handleOperationChange(index, value) {
-    const { tableData } = this.state;
+    const { tableData, fuelRates } = this.state;
     tableData[index]['OPERATION'] = value;
-    tableData[index]['FUEL_RATE'] = (Math.random() * (1.50 - 0.20) + 0.20).toFixed(2);
+    const fuelRateByOperation = _.find(fuelRates, r => r.operation_id === value) || {};
+    tableData[index]['FUEL_RATE'] = fuelRateByOperation.rate_on_date || 0;
     tableData[index]['RESULT'] = typeof tableData[index].FACT_VALUE !== 'undefined' ? parseFloat(tableData[index].FUEL_RATE * tableData[index].FACT_VALUE).toFixed(2) : 0;
     tableData[tableData.length - 1].RESULT = calculateResult(tableData);
 
     this.setState({tableData});
+    this.props.onChange(tableData);
   }
 
   addOperation() {
@@ -119,24 +134,14 @@ export default class Taxi extends Component {
   }
 
   componentWillReceiveProps(props) {
-    let { operations } = props;
+    let { operations, fuelRates } = props;
     operations = operations.map( ({ID, NAME}) => ({value: ID, label: NAME}));
 
-    this.setState({operations});
+    this.setState({operations, fuelRates});
   }
 
   selectOperation(selectedOperation) {
     this.setState({selectedOperation});
-  }
-
-  handleFactValueChange(index, e) {
-    const { tableData } = this.state;
-    let current = tableData[index];
-        current.FACT_VALUE = e.target.value;
-        current.RESULT = parseFloat(current.FUEL_RATE * current.FACT_VALUE).toFixed(2);
-    tableData[tableData.length - 1].RESULT = calculateResult(tableData);
-
-    this.setState({tableData});
   }
 
   render() {

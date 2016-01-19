@@ -23,7 +23,7 @@ const fixedValidators = [
   {
     name: 'number',
     validator(field, data) {
-      console.log(field, data);
+      //console.log(field, data);
       if (!data && data !== 0) {
         return void 0;
       }

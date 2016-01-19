@@ -141,8 +141,8 @@ class Toolbar extends Component {
     let filtersCount = 0;
     let keys = {
       type:  1,
-      okrug: 1,
-      owner: 1
+     // okrug: 1,
+     // owner: 1
     };
 
     for (let key in filters) {

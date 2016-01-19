@@ -18,6 +18,7 @@ export default class PointsStore extends Store {
     this.register(pointsActions.updateTrack, this.handleUpdateTrack);
     this.register(pointsActions.setShowPlates, this.handleSetShowPlates);
     this.register(pointsActions.setTracking, this.setTracking);
+    this.register(pointsActions.getPointsExtent, this.getPointsExtent);
 
     this.register(loginActions.login, this.handleLogin);
 
@@ -177,7 +178,7 @@ export default class PointsStore extends Store {
     })
   }
 
-  handleLogin(user) {
+  handleLogin({payload, token}) {
     // const filter = {
     //   status: statuses.map(s => s.id),
     //   type: [],
@@ -198,15 +199,51 @@ export default class PointsStore extends Store {
     // this.setState({
     //   filter
     // });
+    // debugger;
+    this.handleSetFilter({owner: [payload.company_id]})
 
+   /* setTimeout(
+      () => olmap.getView().fit(this._pointsActions.getPointsExtent(), olmap.getSize(), { padding: [50, 50, 50, 50] })  
+      , 4000)*/
+
+  }
+
+  getPointsExtent() {
+    let minX = 100000,
+      minY = 100000,
+      maxX = 0,
+      maxY = 0;
+
+    let points = this.getVisiblePoints();
+
+    for (let key in points) {
+      let point = points[key];
+      let [x, y] = point.coords_msk;
+
+      if (x < minX) {
+        minX = x
+      }
+      if (x > maxX) {
+        maxX = x
+      }
+
+      if (y < minY) {
+        minY = y;
+      }
+      if (y > maxY) {
+        maxY = y
+      }
+    }
+
+    return [minX, minY, maxX, maxY];
   }
 
   getVisiblePoints() {
     let returns = [];
 
-    for (let k in this.state.points){
+    for (let k in this.state.points) {
       let point = this.state.points[k];
-      if (this.isPointVisible(point)){
+      if (this.isPointVisible(point)) {
         returns.push(point)
       }
     }

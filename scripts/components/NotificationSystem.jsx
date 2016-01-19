@@ -23,7 +23,7 @@ export default class AppNotificationSystem extends NotificationSystem {
    * @param text
    * @param type success|error|warning|info
    */
-  notify(text, type = success) {
+  notify(text, type = 'success') {
 
     if (typeof this._notificationSystem === 'undefined') {
       return

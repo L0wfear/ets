@@ -120,9 +120,9 @@ let WaybillsTable = (props) => {
 			responsible_person_id: ({data}) => <div>{getFIOById(props.employeesList, data)}</div>,
 			driver_id: ({data}) => <div>{getFIOById(props.employeesList, data)}</div>,
 			car_id: ({data}) => <div>{_.find(props.carsList, c => c.asuods_id === data).gov_number}</div>,
-			date_create: ({data}) => <div>{data ? moment(data).format('YYYY-MM-DD') : ''}</div>,
-			fact_departure_date: ({data}) => <div>{moment(data).format('YYYY-MM-DD HH:mm')}</div>,
-			fact_arrival_date: ({data}) => <div>{moment(data).format('YYYY-MM-DD HH:mm')}</div>,
+			date_create: ({data}) => <div>{data ? moment.utc(data).format('YYYY-MM-DD') : ''}</div>,
+			fact_departure_date: ({data}) => <div>{moment.utc(data).format('YYYY-MM-DD HH:mm')}</div>,
+			fact_arrival_date: ({data}) => <div>{moment.utc(data).format('YYYY-MM-DD HH:mm')}</div>,
 		};
 
 		return <Table results={props.data}

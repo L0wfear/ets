@@ -32,7 +32,7 @@ export default class DatePicker extends Component {
     return <DateTimePicker onChange={this.props.onChange}
       format={DATE_FORMAT}
       timeFormat={TIME_FORMAT}
-  		//culture="ru-RU"
+  		culture="ru-RU"
       className="chart-datepicker"
       disabled={this.props.disabled}
       step={5}

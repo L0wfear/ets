@@ -3,7 +3,7 @@ import { getWaybills, removeWaybill, updateWaybill, createWaybill } from '../ada
 import moment from 'moment';
 import _ from 'lodash';
 
-let createValidDate = (date) => moment(date).format('DD.MM.YYYY');
+let createValidDate = (date) => moment(date).format('YYYY-MM-DDTHH:mm:ss');
 
 export default class WaybillsActions extends Actions {
 

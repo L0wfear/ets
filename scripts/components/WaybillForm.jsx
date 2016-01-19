@@ -21,6 +21,13 @@ let getInitialDate = (date) => {
 	return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 9, 0);
 };
 
+let getDateWithoutTZ = (date) => {
+	console.log( typeof date);
+	if (typeof date !== 'string') return new Date(date);
+	date = new Date(date);
+	return new Date(date.getTime() + date.getTimezoneOffset()*60000);//date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes());
+};
+
 let getFIOById = (employees, id, fullFlag = false) => {
 	const employee = _.find(employees, d => d.id === id) || null;
 	if (!employee) return '';
@@ -75,9 +82,12 @@ class WaybillForm extends Component {
 
 	componentDidMount() {
 		console.log(this.props);
-		const car_model_id = _.find(this.props.carsList, c => c.asuods_id === this.props.formState.car_id).model_id;
-		console.log(car_model_id);
-		getFuelRatesByCarModel(car_model_id).then(r => console.log(r));//r => this.setState({operations: r.result}));
+		if (this.props.formStage === 'closing') {
+			const car = _.find(this.props.carsList, c => c.asuods_id === this.props.formState.car_id) || {}
+			const car_model_id = car.model_id;
+			console.log(car_model_id);
+			getFuelRatesByCarModel(car_model_id).then(r => console.log(r));//r => this.setState({operations: r.result}));
+		}
 		this.context.flux.getActions('employees').getEmployees();
 	}
 
@@ -140,7 +150,7 @@ class WaybillForm extends Component {
 		let state = this.props.formState;
     let stage = this.props.formStage;
 		let errors = this.props.formErrors;
-		
+
 		const { carsList = [], driversList = [], employeesList = [] } = this.props;
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: c.gov_number + ' [' + c.model + ']'}));
 
@@ -199,37 +209,37 @@ class WaybillForm extends Component {
 						<Div hidden={!(IS_CREATING || IS_POST_CREATING)}>
 					 		<Col md={3}>
 					   		<label>Выезд план</label>
-					 			<Datepicker date={ new Date(state.plan_departure_date) } onChange={this.handleChange.bind(this, 'plan_departure_date')}/>
+					 			<Datepicker date={ getDateWithoutTZ(state.plan_departure_date) } onChange={this.handleChange.bind(this, 'plan_departure_date')}/>
 					   	</Col>
 					 	</Div>
 						<Div hidden={!(IS_CREATING || IS_POST_CREATING)}>
 					   	<Col md={3}>
 					 			<label>Возвращение план</label>
-					 			<Datepicker date={ new Date(state.plan_arrival_date) } onChange={this.handleChange.bind(this, 'plan_arrival_date')}/>
+					 			<Datepicker date={ getDateWithoutTZ(state.plan_arrival_date) } onChange={this.handleChange.bind(this, 'plan_arrival_date')}/>
 					   	</Col>
 						</Div>
 						<Div hidden={!IS_CLOSING}>
 					   	<Col md={3}>
 								<label>Выезд план</label>
-								<Datepicker date={ getInitialDate(state.plan_departure_date) } disabled={IS_CLOSING} />
+								<Datepicker date={ getDateWithoutTZ(state.plan_departure_date) } disabled={IS_CLOSING} />
 					   		<label>Выезд факт</label>
-					 			<Datepicker date={ getInitialDate(state.fact_departure_date) } onChange={this.handleChange.bind(this, 'fact_departure_date')}/>
+					 			<Datepicker date={ getDateWithoutTZ(state.fact_departure_date) } onChange={this.handleChange.bind(this, 'fact_departure_date')}/>
 					   	</Col>
 					  	<Col md={3}>
 								<label>Возвращение план</label>
-								<Datepicker date={ getInitialDate(state.plan_arrival_date) } disabled={IS_CLOSING} />
+								<Datepicker date={ getDateWithoutTZ(state.plan_arrival_date) } disabled={IS_CLOSING} />
 					 			<label>Возвращение факт</label>
-					 			<Datepicker date={ getInitialDate(state.fact_arrival_date) } onChange={this.handleChange.bind(this, 'fact_arrival_date')}/>
+					 			<Datepicker date={ getDateWithoutTZ(state.fact_arrival_date) } onChange={this.handleChange.bind(this, 'fact_arrival_date')}/>
 					   	</Col>
 						</Div>
 					  <Div hidden={!IS_DISPLAY}>
 					    <Col md={3}>
-					      <label>Выезд план</label><br/>{moment(state.plan_departure_date).format('YYYY-MM-DD')}<br/>
-					      <label>Выезд факт</label><br/>{moment(state.fact_departure_date).format('YYYY-MM-DD')}
+					      <label>Выезд план</label><br/>{moment.utc(state.plan_departure_date).format('YYYY-MM-DD HH:mm')}<br/>
+					      <label>Выезд факт</label><br/>{moment.utc(state.fact_departure_date).format('YYYY-MM-DD HH:mm')}
 					    </Col>
 					    <Col md={3}>
-					      <label>Возвращение план</label><br/>{moment(state.plan_arrival_date).format('YYYY-MM-DD')}<br/>
-					      <label>Возвращение факт</label><br/>{moment(state.fact_arrival_date).format('YYYY-MM-DD')}
+					      <label>Возвращение план</label><br/>{moment.utc(state.plan_arrival_date).format('YYYY-MM-DD HH:mm')}<br/>
+					      <label>Возвращение факт</label><br/>{moment.utc(state.fact_arrival_date).format('YYYY-MM-DD HH:mm')}
 					    </Col>
 					  </Div>
 					</Row>

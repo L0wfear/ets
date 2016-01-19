@@ -13,9 +13,9 @@ class SessionStore extends Store {
     super();
     console.log('SESSION STORE DID MOUNT');
     const sessionActions = flux.getActions('session');
+    const pointsActions = flux.getActions('points');
     this.register(sessionActions.login, this.handleLogin);
     this.register(sessionActions.logout, this.handleLogout);
-
 
 
     let storedSession, currentUser;
@@ -23,7 +23,13 @@ class SessionStore extends Store {
     try {
       storedSession = JSON.parse(localStorage.getItem(SESSION_KEY));
       currentUser = JSON.parse(localStorage.getItem('current_user'));
-    } catch(e) {
+
+
+      pointsActions.setFilter({owner: [currentUser.company_id]});
+      /*setTimeout(
+        ()=>olmap.getView().fit(pointsActions.getPointsExtent(), olmap.getSize(), { padding: [50, 50, 50, 50] })
+        , 4000)*/
+    } catch (e) {
       storedSession = null;
       currentUser = defaultUser;
     }

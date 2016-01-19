@@ -95,8 +95,10 @@ let EmployeesTable = (props) => {
 
 	const renderers = {
 		birthday : ({data}) => <div>{data ? moment(data).format('YYYY-MM-DD') : ''}</div>,
-		active : ({data}) => <div>{data === true ? 'Работает' : 'Не работает'}</div>
-	}
+		active : ({data}) => <div>{data === true ? 'Работает' : 'Не работает'}</div>,
+		drivers_license : ({data}) => <div>{data && data !== "None" ? data : ''}</div>,
+		special_license : ({data}) => <div>{data && data !== "None" ? data : ''}</div>,
+	};
 
 	return <Table results={props.data}
 								tableMeta={tableMeta}

@@ -21,6 +21,7 @@ class FuelRatesStore extends Store {
   }
 
   handleGetFuelRates(rates) {
+    console.log(rates);
     this.setState({ rates: rates.result });
   }
 

@@ -72,7 +72,7 @@ let FuelRatesTable = (props) => {
         const operation = _.find(operations, op => op.ID === data) || { NAME: '' };
         return <div>{operation.NAME}</div>;
       },
-      model_id: ({data}) => <div>{getModelById(data).title}</div>,
+      car_model_id: ({data}) => <div>{getModelById(data).title}</div>,
       order_date: ({data}) => <div>{moment(data).format('YYYY-MM-DD')}</div>
     };
 

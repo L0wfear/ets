@@ -24,8 +24,6 @@ let getInitialDate = (date) => {
 let getDateWithoutTZ = (date, format = true) => {
 	if (typeof date === 'string') date = date.replace('.000000Z', '');
 	date = moment(date).toDate();
-	//console.log(date.getTimezoneOffset()*60000);
-	console.log(date);
 	return date;
 };
 

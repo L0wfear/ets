@@ -27,8 +27,8 @@ export default class FuelRateForm extends Component {
 	}
 
   handleModelChange(field, e) {
-    const gov_numbers = _(getCarsByModelId(e)).uniq(c=>c.gov_number).map( c => ({value: c.gov_number, label: c.gov_number})).value();
-    this.setState({gov_numbers})
+    // const gov_numbers = _(getCarsByModelId(e)).uniq(c=>c.gov_number).map( c => ({value: c.gov_number, label: c.gov_number})).value();
+    // this.setState({gov_numbers})
     this.handleChange('model_id', e);
   }
 
@@ -80,12 +80,12 @@ export default class FuelRateForm extends Component {
             </Div>
             <Div>
   	      		<label>Модель транспортного средства</label>
-              <EtsSelect options={this.props.models.map( m => ({value: m.id, label: m.title}))} value={state.model_id} onChange={this.handleModelChange.bind(this, 'model_id')}/>
+              <EtsSelect options={this.props.models.map( m => ({value: m.id, label: m.title}))} value={state.model_id} onChange={this.handleChange.bind(this, 'model_id')}/>
             </Div>
-            <Div>
+            {/*<Div>
   	      		<label>Гос. номер транспортного средства</label>
               <EtsSelect options={this.state.gov_numbers} value={state.gov_number} onChange={this.handleChange.bind(this, 'gov_number')}/>
-            </Div>
+            </Div>*/}
 	      	</Col>
 
 	      	<Col md={6}>

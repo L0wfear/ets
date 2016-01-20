@@ -12,7 +12,7 @@ import { getFuelTypeById } from '../stores/FuelTypes.js';
 import { getDefaultBill } from '../stores/WaybillsStore.js';
 import { makeTime, makeDate } from '../utils/dates.js';
 import { validate as validateNumber} from '../validate/validateNumber.js';
-
+import { isNotNull } from '../utils/functions.js';
 
 let getDateWithoutTZ = (date, format = true) => {
 	if (typeof date === 'string') date = date.replace('.000000Z', '');
@@ -137,6 +137,15 @@ class WaybillFormWrap extends Component {
 					console.log(_bill);
 					if (_bill.data && _bill.data.taxes) {
 						_bill.taxes = _bill.data.taxes;
+					}
+					if (isNotNull(_bill.odometr_end) && isNotNull(_bill.odometr_start)) {
+						_bill.odometr_diff = _bill.odometr_end - _bill.odometr_start;
+					}
+					if (isNotNull(_bill.motohours_end) && isNotNull(_bill.motohours_start)) {
+						_bill.motohours_diff = _bill.motohours_end - _bill.motohours_start;
+					}
+					if (isNotNull(_bill.motohours_equip_end) && isNotNull(_bill.motohours_equip_start)) {
+						_bill.motohours_equip_diff = _bill.motohours_equip_end - _bill.motohours_equip_start;
 					}
 
 					this.setState({

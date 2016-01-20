@@ -118,16 +118,20 @@ class WaybillForm extends Component {
 			const waybillsListSorted = _(this.props.waybillsList).filter(w => w.status === 'closed').sortBy('id').value().reverse();
 			const lastCarUsedWaybill = _.find(waybillsListSorted, w => w.car_id === prefer_car);
 			if (lastCarUsedWaybill) {
-				if (typeof lastCarUsedWaybill.fuel_end !== 'undefined') {
+				if (typeof lastCarUsedWaybill.fuel_end !== 'undefined' && lastCarUsedWaybill.fuel_end !== null) {
 					this.handleChange('fuel_start', lastCarUsedWaybill.fuel_end);
 				}
 
-				if (typeof lastCarUsedWaybill.odometr_end !== 'undefined') {
+				if (typeof lastCarUsedWaybill.odometr_end !== 'undefined' && lastCarUsedWaybill.odometr_end !== null) {
 					this.handleChange('odometr_start', lastCarUsedWaybill.odometr_end);
 				}
 
-				if (typeof lastCarUsedWaybill.motohours_end !== 'undefined') {
+				if (typeof lastCarUsedWaybill.motohours_end !== 'undefined' && lastCarUsedWaybill.motohours_end !== null) {
 					this.handleChange('motohours_start', lastCarUsedWaybill.motohours_end);
+				}
+
+				if (typeof lastCarUsedWaybill.motohours_equip_end !== 'undefined' && lastCarUsedWaybill.motohours_equip_end !== null) {
+					this.handleChange('motohours_equip_start', lastCarUsedWaybill.motohours_equip_end);
 				}
 			}
 		}
@@ -153,10 +157,15 @@ class WaybillForm extends Component {
 			if (typeof lastCarUsedWaybill.motohours_end !== 'undefined' && lastCarUsedWaybill.motohours_end !== null) {
 				this.handleChange('motohours_start', lastCarUsedWaybill.motohours_end);
 			}
+
+			if (typeof lastCarUsedWaybill.motohours_equip_end !== 'undefined' && lastCarUsedWaybill.motohours_equip_end !== null) {
+				this.handleChange('motohours_equip_start', lastCarUsedWaybill.motohours_equip_end);
+			}
 		} else {
 			this.handleChange('fuel_start', 0);
 			this.handleChange('odometr_start', 0);
 			this.handleChange('motohours_start', 0);
+			this.handleChange('motohours_equip_start', 0);
 		}
 	}
 

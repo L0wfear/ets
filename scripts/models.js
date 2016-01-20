@@ -43,7 +43,7 @@ export function getModelById(id) {
 }
 
 export function getModels() {
-  console.log(list)
+  //console.log(list)
   return list;
 }
 

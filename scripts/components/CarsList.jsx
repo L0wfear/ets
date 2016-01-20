@@ -74,7 +74,8 @@ let CarsTable = (props) => {
 
 	const renderers = {
 		condition: ({data}) => <div>{getCondition(data)}</div>,
-		fuel_correction_rate: ({data}) => <div>{data ? parseFloat(data).toFixed(2) : ''}</div>
+		fuel_correction_rate: ({data}) => <div>{data ? parseFloat(data).toFixed(2) : ''}</div>,
+		garage_number: ({data}) => <div>{data && data !== 'null' ? data : ''}</div>
 	};
 
 	return <Table tableMeta={tableMeta}

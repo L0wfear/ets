@@ -21,7 +21,7 @@ let getResult = ({FACT_VALUE, fuel_correction_rate, FUEL_RATE}) => {
   if (fuel_correction_rate) {
     return parseFloat(FUEL_RATE * fuel_correction_rate * FACT_VALUE).toFixed(2);
   } else {
-    return parseFloat(FUEL_RATE * fuel_correction_rate * FACT_VALUE).toFixed(2);
+    return parseFloat(FUEL_RATE * 1 * FACT_VALUE).toFixed(2);
   }
 }
 

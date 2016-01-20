@@ -2,6 +2,7 @@ import { Actions } from 'flummox';
 import { getWaybills, removeWaybill, updateWaybill, createWaybill } from '../adapter.js';
 import moment from 'moment';
 import _ from 'lodash';
+import { isNotNull } from '../utils/functions.js';
 
 let createValidDate = (date) => moment(date).format('YYYY-MM-DDTHH:mm:ss');
 
@@ -57,6 +58,12 @@ export default class WaybillsActions extends Actions {
     delete payload.odometr_diff;
     delete payload.motohours_diff;
     delete payload.motohours_diff;
+    if (!isNotNull(payload.motohours_start)) {
+      delete payload.motohours_start;
+    }
+    if (!isNotNull(payload.odometr_start)) {
+      delete payload.odometr_start;
+    }
     // payload.fuel_end.length === 0 ? payload.fuel_end = 0 : payload.fuel_end = parseInt(payload.fuel_end, 10);
     // payload.fuel_given.length === 0 ? payload.fuel_given = 0 : payload.fuel_given = parseInt(payload.fuel_given, 10);
     // payload.motohours_end.length === 0 ? payload.motohours_end = 0 : payload.motohours_end = parseInt(payload.motohours_end, 10);

@@ -71,8 +71,10 @@ function getJSON(url, data = {}) {
   url = toUrlWithParams(url, data);
 
   return fetch(url, {credentials: 'include'}).then( r => {
-    checkResponse(url, r);
-    return r.json();
+    return r.json().then(body => {
+      checkResponse(url, r, body, 'GET');
+      return new Promise((res, rej) => res(body));
+    });
   });
 }
 
@@ -81,7 +83,7 @@ function postJSON(url, data, type = 'form') {
   const { flux } = window.__ETS_CONTAINER__;
   const token = flux.getStore('session').getSession();
   if (token) {
-    data.token = token;//url += `?token=${token}`;
+    data.token = token;
   }
   let body;
   switch (type) {
@@ -97,8 +99,6 @@ function postJSON(url, data, type = 'form') {
       break;
   }
 
-  console.log(type, url);
-
   const options = {
     method: 'post',
     headers: {
@@ -110,8 +110,10 @@ function postJSON(url, data, type = 'form') {
   };
 
   return fetch(url, options).then( r => {
-    checkResponse(url, r);
-    return r.json();
+    return r.json().then(body => {
+      checkResponse(url, r, body, 'POST');
+      return new Promise((res, rej) => res(body));
+    });
   });
 }
 
@@ -147,8 +149,10 @@ function putJSON(url, data, type = 'form') {
   };
 
   return fetch(url, options).then( r => {
-    checkResponse(url, r);
-    return r.json();
+    return r.json().then(body => {
+      checkResponse(url, r, body, 'PUT');
+      return new Promise((res, rej) => res(body));
+    });
   });
 }
 
@@ -184,14 +188,24 @@ function deleteJSON(url, data, type = 'form') {
   };
 
   return fetch(url, options).then( r => {
-    checkResponse(url, r);
-    return r.json();
+    return r.json().then(body => {
+      checkResponse(url, r, body, 'DELETE');
+      return new Promise((res, rej) => res(body));
+    });
   });
 }
 
-function checkResponse(url, response) {
+function checkResponse(url, response, body, method) {
   if (url.indexOf('login') === -1) {
     const { flux } = window.__ETS_CONTAINER__;
+
+    if (body && body.errors && body.errors.length) {
+      const usedUrl = url.slice(0, url.indexOf('?') > -1 ? url.indexOf('?') : url.length);
+      console.error(`ERROR /${method} ${usedUrl}`);
+      body.errors.map( er => {
+        console.error(er);
+      })
+    }
 
     if (response.status === 401) {
       flux.getActions('session').logout({reason: 'no auth'});
@@ -234,7 +248,7 @@ export function init() {
           loadOkrugs(),
           loadTypes()
         ])
-        .then(getRoutes).then((r) => console.log(r));
+        .then(getRoutes);
 }
 
 export function getWaybills() {

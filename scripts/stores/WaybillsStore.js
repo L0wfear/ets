@@ -36,7 +36,6 @@ class WaybillsStore extends Store {
   }
 
   handleCreateWaybill(waybills) {
-    console.info('CREATED WAYBILL');
     this.setState({waybillsList: waybills.result});
   }
 

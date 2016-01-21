@@ -59,6 +59,7 @@ const CARS_GARAGE_NUMBER_URL = getUrl('/car_garage_number/');
 const CARS_ADDITIONAL_INFO_URL = getUrl('/car_additional_info/');
 const EMPLOYEE_URL = getUrl('/employee/');
 const FUEL_TYPES_URL = getUrl('/fuel_type/');
+const ROUTE_URL = getUrl('/route/');
 
 function getJSON(url, data = {}) {
   data = _.clone(data);
@@ -233,7 +234,7 @@ export function init() {
           loadOkrugs(),
           loadTypes()
         ])
-    //.then(getCars)
+        .then(getRoutes).then((r) => console.log(r));
 }
 
 export function getWaybills() {
@@ -385,4 +386,9 @@ export function deleteFuelRate(rate) {
 
 export function getFuelTypes() {
   return getJSON(FUEL_TYPES_URL);
+}
+
+export function getRoutes() {
+  console.info('GETTING ROUTES');
+  return getJSON(ROUTE_URL);
 }

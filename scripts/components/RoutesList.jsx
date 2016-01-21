@@ -5,8 +5,11 @@ import { Button } from 'react-bootstrap';
 import {getList} from '../stores/RoutesStore.js';
 import RouteInfo from './route/RouteInfo.jsx';
 import RouteCreating from './route/RouteCreating.jsx';
+import Div from './ui/Div.jsx';
+import _ from 'lodash';
 
 let ROUTES = getList();
+let CURRENT_ROUTE_ID = 4;
 
 let ACTUAL_ROADS = [];
 
@@ -25,7 +28,7 @@ let newRoute = {
 				odhs: ORG_ODHS,
 				dts: [],
 				odhNames: [],
-				dtNames: []
+				dtNames: [],
 			};
 
 
@@ -37,7 +40,8 @@ export default class RoutesList extends Component {
 		this.state = {
 			routeCreating: false,
 			selectedRoute: ROUTES[0],
-			activeTab: 'image'
+			activeTab: 'image',
+			selectedOdhs: {},
 		}
 	}
 
@@ -53,7 +57,7 @@ export default class RoutesList extends Component {
 				})
 				console.log( 'route selected', route);
 
-				
+
 			}
 		})
 
@@ -61,10 +65,16 @@ export default class RoutesList extends Component {
 
 	createRoute() {
 
+		let newR = _.clone(newRoute);
+		newR.id = CURRENT_ROUTE_ID;
+		newR.name = `Новый маршрут ${CURRENT_ROUTE_ID - 3}`;
+		CURRENT_ROUTE_ID++;
+
 		this.setState({
 			routeCreating: true,
-			selectedRoute: newRoute
-		})
+			//routeEditing: true,
+			selectedRoute: newR
+		});
 
 	}
 
@@ -73,6 +83,27 @@ export default class RoutesList extends Component {
 			routeEditing: true,
 			selectedRoute: route
 		})
+	}
+
+	saveRoute() {
+		const newR = _.clone(this.state.selectedRoute);
+		console.log(newR);
+		let newOdhs = [];
+		let newPolys = {};
+		_.mapKeys(this.state.selectedOdhs, (v, k) => {
+			console.log(v, k)
+			newOdhs.push(k);
+			newPolys[k] = newRoute.odhs[k];
+			newR.odhNames.push(v.name);
+		});
+		newR.polys = newPolys;//_.clone(newRoute.odhs);
+		newR.odhs = newOdhs;
+		ROUTES.push(newR);
+		this.setState({routeCreating: false, routeEditing: true, selectedOdhs: {}, selectedRoute: newR });
+	}
+
+	setSelectedOdhs(selectedOdhs) {
+		this.setState({selectedOdhs});
 	}
 
 	render() {
@@ -86,23 +117,33 @@ export default class RoutesList extends Component {
 
 		let IS_CREATING = this.state.routeCreating;
 		let IS_EDITING = this.state.routeEditing;
+		console.log(IS_CREATING);
 
 		return <div className="ets-page-wrap routes-list">
 			<p className="some-header"> </p>
 
-			<div className="panel panel-default routes-list-menu">
-			  <div className="panel-heading">Список маршрутов "Жилищник Крылатское"</div>
-			  <div className="panel-body">
-			    <p>Выберите маршрут из списка для просмотра</p>
-			  </div>
-			  <ul className="list-group">
-			  	{routesList}
+				<div className="panel panel-default routes-list-menu">
+				  <div className="panel-heading">Список маршрутов "Жилищник Крылатское"</div>
+				  <div className="panel-body">
+				    <p>Выберите маршрут из списка для просмотра</p>
+				  </div>
+
+			  	<ul className="list-group">
+			  		{routesList}
 				  </ul>
-				  <Button bsStyle="primary" block onClick={this.createRoute.bind(this)}>Создать новый</Button>
+
+					<Div hidden={IS_CREATING}>
+				  	<Button bsStyle="primary" block onClick={this.createRoute.bind(this)}>Создать новый</Button>
+					</Div>
+
+					<Div hidden={!IS_CREATING} style={{marginTop: 20}}>
+						<Button bsStyle="primary" block onClick={this.saveRoute.bind(this)}>Сохранить</Button>
+					</Div>
 				</div>
+
 				<div className="routes-list-info">
 					{ (IS_CREATING || IS_EDITING) ?
-						<RouteCreating route={IS_CREATING ? newRoute : route}/>
+						<RouteCreating route={IS_CREATING ? _.clone(newRoute) : route} onSelect={this.setSelectedOdhs.bind(this)}/>
 						:
 						<RouteInfo route={route}/>
 					}

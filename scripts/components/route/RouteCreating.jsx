@@ -33,7 +33,8 @@ export default class RouteCreating extends Component {
 				}
 			}
 
-			this.setState({odhs})
+			this.setState({odhs});
+			this.props.onSelect(odhs);
 		}
 
 		onFeatureClick(feature, ev, map) {
@@ -60,11 +61,12 @@ export default class RouteCreating extends Component {
 
 		render() {
 			let route = this.props.route;
+			console.log(route);
 
 			return  <div>
 				<div className="route-name"> Создание нового маршрута {route.name} </div>
 				<div className="route-odhs-on-map">
-						<Map 
+						<Map
 								onFeatureClick={this.onFeatureClick.bind(this)}
 								zoom={MAP_INITIAL_ZOOM}
 	            	center={MAP_INITIAL_CENTER}

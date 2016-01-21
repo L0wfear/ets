@@ -43,7 +43,7 @@ let getTableMeta = (props) => {
 			{
 				name: 'status',
 				caption: 'Статус',
-				type: 'text',
+				type: 'string',
 				filter: {
 					type: 'select',
 					labelFunction: getStatusLabel
@@ -65,7 +65,7 @@ let getTableMeta = (props) => {
 			{
 				name: 'driver_id',
 				caption: 'Водитель',
-				type: 'text',
+				type: 'string',
 				filter: {
 					type: 'select',
 					labelFunction: (d) => getFIOById(props.driversList, d),
@@ -74,7 +74,7 @@ let getTableMeta = (props) => {
 			{
 				name: 'car_id',
 				caption: 'Гос. № ТС',
-				type: 'text',
+				type: 'string',
 				filter: {
 					type: 'select',
 					labelFunction: (d) => _.find(props.carsList, c => c.asuods_id === d).gov_number,
@@ -99,7 +99,7 @@ let getTableMeta = (props) => {
 			{
 				name: 'responsible_person_id',
 				caption: 'Мастер',
-				type: 'text',
+				type: 'string',
 				filter: {
 					type: 'select',
 					labelFunction: getFIOById

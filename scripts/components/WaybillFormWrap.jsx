@@ -12,7 +12,10 @@ import { getFuelTypeById } from '../stores/FuelTypes.js';
 import { getDefaultBill } from '../stores/WaybillsStore.js';
 import { makeTime, makeDate } from '../utils/dates.js';
 import { validate as validateNumber} from '../validate/validateNumber.js';
-import { isNotNull } from '../utils/functions.js';
+import { isNotNull, isEmpty } from '../utils/functions.js';
+import { validateRow } from '../validate/validateRow.js';
+
+import { waybillSchema, waybillClosingSchema } from './models/WaybillModel.js';
 
 let getDateWithoutTZ = (date, format = true) => {
 	if (typeof date === 'string') date = date.replace('.000000Z', '');
@@ -47,28 +50,29 @@ let validateRequired = (field, data) => {
 let validateWaybill = (waybill, errors) => {
 	let waybillErrors = _.clone(errors);
 
-	_.keys(waybill).map( f => {
-		if (['plan_departure_date', 'plan_arrival_date', 'driver_id', 'car_id', 'fuel_type_id', 'fuel_start'].indexOf(f) > -1) {
-			waybillErrors[f] = validateRequired(f, waybill[f]);
-		}
-		if (['fuel_start', 'odometr_start', 'motohours_start'].indexOf(f) > -1) {
-			waybillErrors[f] = validateNumber(f, waybill[f]);
-		}
+	_.each(waybillSchema.properties, prop => {
+		waybillErrors[prop.key] = validateRow(prop, waybill[prop.key]);
 	});
+
+	if (isEmpty(waybill.odometr_start) && isEmpty(waybill.motohours_start)) {
+		waybillErrors.odometr_start = `Одно из полей "Одометр.Выезд"/"Счетчик моточасов.Выезд" должно быть заполнено`;
+		waybillErrors.motohours_start = `Одно из полей "Одометр.Выезд"/"Счетчик моточасов.Выезд" должно быть заполнено`;
+	}
 
 	return waybillErrors;
 };
 
 let validateClosingWaybill = (waybill, errors) => {
 	let waybillErrors = _.clone(errors);
-	_.keys(waybill).map( f => {
-		if (['fuel_end'].indexOf(f) > -1) {
-			waybillErrors[f] = validateRequired(f, waybill[f]);
-		}
-		if (['odometr_end', 'motohours_end', 'fuel_given'].indexOf(f) > -1) {
-			waybillErrors[f] = validateNumber(f, waybill[f]);
-		}
+
+	_.each(waybillClosingSchema.properties, prop => {
+		waybillErrors[prop.key] = validateRow(prop, waybill[prop.key]);
 	});
+
+	// if (isEmpty(waybill.odometr_start) && isEmpty(waybill.motohours_start)) {
+	// 	waybillErrors.odometr_start = `Одно из полей "Одометр.Выезд"/"Счетчик моточасов.Выезд" должно быть заполнено`;
+	// 	waybillErrors.motohours_start = `Одно из полей "Одометр.Выезд"/"Счетчик моточасов.Выезд" должно быть заполнено`;
+	// }
 
 	return waybillErrors;
 };
@@ -134,7 +138,7 @@ class WaybillFormWrap extends Component {
 					});
 				} else {
 					let _bill = _.clone(props.bill);
-					console.log(_bill);
+
 					if (_bill.data && _bill.data.taxes) {
 						_bill.taxes = _bill.data.taxes;
 					}
@@ -161,17 +165,20 @@ class WaybillFormWrap extends Component {
 
 
 	handleFormStateChange(field, e) {
-		console.log( 'waybill form changed', field, e)
+		console.log('waybill form changed', field, e)
 		const value = !!e.target ? e.target.value : e;
 		let { formState, formStage, formErrors } = this.state;
 		let newState = {};
 		formState[field] = value;
 
-		if (['creating', 'post-creating'].indexOf(this.state.formStage) > -1) {
+		// validation
+		if (formStage === 'creating' || formStage === 'post-creating') {
 			formErrors = validateWaybill(formState, formErrors);
-		} else if (this.state.formStage === 'closing') {
+		} else if (formStage === 'closing') {
 			formErrors = validateClosingWaybill(formState, formErrors);
 		}
+
+		// /validation
 		newState.canSave = _(formErrors).map(v => !!v).filter(e => e === true).value().length === 0;
 
 		if (field === 'odometr_end') {
@@ -240,7 +247,6 @@ class WaybillFormWrap extends Component {
 			if (typeof callback === 'function') {
 				formState.status = 'active';
 				flux.getActions('waybills').updateWaybill(formState).then(() => {
-					console.log('waybill has been updated');
 					callback();
 				});
 				// this.setState({

@@ -1,18 +1,5 @@
 import _ from 'lodash';
 
-// const waybillMeta = [
-//   {
-//
-//   },
-//   {
-//
-//   },
-//   {
-//
-//   },
-//
-// ]
-
 const fixedValidators = [
   {
     name: 'required',
@@ -26,7 +13,7 @@ const fixedValidators = [
       if (!data && data !== 0) {
         return void 0;
       }
-      return typeof data !== 'number' && !/^[-  +]?[0-9]*\.?\,?[0-9]{1,3}$/.test(data) ? `Поле ${config.title || config.key} должно быть числом` : void 0;
+      return typeof data !== 'number' && !/^[ +]?[0-9]*\.?\,?[0-9]{1,3}$/.test(data) ? `Поле ${config.title || config.key} должно быть неотрицательным числом с 3 знаками после запятой` : void 0;
     }
   }
 ];

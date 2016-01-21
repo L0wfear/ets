@@ -2,7 +2,7 @@ import { Actions } from 'flummox';
 import { getWaybills, removeWaybill, updateWaybill, createWaybill } from '../adapter.js';
 import moment from 'moment';
 import _ from 'lodash';
-import { isNotNull } from '../utils/functions.js';
+import { isNotNull, isEmpty } from '../utils/functions.js';
 
 let createValidDate = (date) => moment(date).format('YYYY-MM-DDTHH:mm:ss');
 
@@ -41,6 +41,9 @@ export default class WaybillsActions extends Actions {
     _.mapKeys(payload, (v, k) => {
       if (v === null) delete payload[k];
     });
+    if (isEmpty(payload.motohours_equip_start)) {
+      payload.motohours_equip_start = null;
+    }
     // payload.fuel_end.length === 0 ? payload.fuel_end = 0 : payload.fuel_end = parseInt(payload.fuel_end, 10);
     // payload.fuel_given.length === 0 ? payload.fuel_given = 0 : payload.fuel_given = parseInt(payload.fuel_given, 10);
     // payload.motohours_end.length === 0 ? payload.motohours_end = 0 : payload.motohours_end = parseInt(payload.motohours_end, 10);
@@ -64,6 +67,12 @@ export default class WaybillsActions extends Actions {
     if (!isNotNull(payload.odometr_start)) {
       delete payload.odometr_start;
     }
+    _.mapKeys(payload, (v, k) => {
+      if (isEmpty(v)) {
+        delete payload[k];
+      }
+    });
+
     // payload.fuel_end.length === 0 ? payload.fuel_end = 0 : payload.fuel_end = parseInt(payload.fuel_end, 10);
     // payload.fuel_given.length === 0 ? payload.fuel_given = 0 : payload.fuel_given = parseInt(payload.fuel_given, 10);
     // payload.motohours_end.length === 0 ? payload.motohours_end = 0 : payload.motohours_end = parseInt(payload.motohours_end, 10);

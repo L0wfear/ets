@@ -69,11 +69,6 @@ let validateClosingWaybill = (waybill, errors) => {
 		waybillErrors[prop.key] = validateRow(prop, waybill[prop.key]);
 	});
 
-	// if (isEmpty(waybill.odometr_start) && isEmpty(waybill.motohours_start)) {
-	// 	waybillErrors.odometr_start = `Одно из полей "Одометр.Выезд"/"Счетчик моточасов.Выезд" должно быть заполнено`;
-	// 	waybillErrors.motohours_start = `Одно из полей "Одометр.Выезд"/"Счетчик моточасов.Выезд" должно быть заполнено`;
-	// }
-
 	return waybillErrors;
 };
 
@@ -94,7 +89,7 @@ class WaybillFormWrap extends Component {
 
 	componentWillReceiveProps(props) {
 
-		if (props.showForm) {
+		if (props.showForm && props.showForm !== this.props.showForm) {
 			if (props.bill === null ) {
 				const defaultBill = getDefaultBill();
 				this.setState({
@@ -219,8 +214,7 @@ class WaybillFormWrap extends Component {
 	handleFormSubmit(formState, callback) {
 		let billStatus = formState.status;
 		let stage = this.state.formStage;
-		const { flux } = this.context;
-		console.log(stage);
+		const { flux, setLoading } = this.context;
 
 		if (stage === 'creating') {
 			if (typeof callback === 'function') {
@@ -237,11 +231,6 @@ class WaybillFormWrap extends Component {
 				formState.status = 'draft';
 				flux.getActions('waybills').createWaybill(formState);
 			}
-			// this.setState({
-			// 	formStage: formStages[1],
-			// 	//canPrint: true,
-			// 	canSave: false
-			// });
 			this.props.onFormHide();
 		} else if (formState.status === 'draft') {
 			if (typeof callback === 'function') {
@@ -249,10 +238,6 @@ class WaybillFormWrap extends Component {
 				flux.getActions('waybills').updateWaybill(formState).then(() => {
 					callback();
 				});
-				// this.setState({
-				// 	formStage: formStages[3],
-				// 	canSave: false
-				// });
 				this.props.onFormHide();
 			} else {
 				flux.getActions('waybills').updateWaybill(formState);
@@ -285,6 +270,7 @@ class WaybillFormWrap extends Component {
 
 WaybillFormWrap.contextTypes = {
 	flux: React.PropTypes.object,
+	setLoading: React.PropTypes.func,
 };
 
 export default WaybillFormWrap;

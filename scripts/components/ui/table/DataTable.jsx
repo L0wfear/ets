@@ -1,7 +1,11 @@
 import React from 'react';
 
+import ClickOutHandler from 'react-onclickout';
+import FilterModal from './filter/FilterModal.jsx';
+import FilterButton from './filter/FilterButton.jsx';
 import Paginator from '../Paginator.jsx';
 import Griddle from 'griddle-react';
+import Div from '../Div.jsx';
 import moment from 'moment';
 import _ from 'lodash';
 
@@ -11,9 +15,23 @@ class Table extends React.Component {
     super(props);
 
     this.state = {
-
+      filterModalIsOpen: false,
+      filterValues: {},
     };
   }
+
+  closeFilter() {
+    this.setState({filterModalIsOpen: false});
+  }
+
+  toggleFilter() {
+		this.setState({filterModalIsOpen: !!!this.state.filterModalIsOpen});
+	}
+
+	saveFilter(filterValues) {
+		console.info(`SETTING FILTER VALUES`, filterValues);
+		this.setState({filterValues});
+	}
 
   initializeMetadata(cols = [], captions = [], renderers = {}) {
   	const metadata = _.reduce(cols, (cur, col, i) => {
@@ -48,7 +66,7 @@ class Table extends React.Component {
   }
 
   render() {
-    const { tableMeta, renderers, onRowSelected, selected, selectField, filter = {} } = this.props;
+    const { tableMeta, renderers, onRowSelected, selected, selectField, title = '' } = this.props;
     const tableCols = tableMeta.cols.map( c => c.name );
     const tableCaptions = tableMeta.cols.map( c => c.caption );
     const columnMetadata = this.initializeMetadata(tableCols, tableCaptions, renderers);
@@ -67,7 +85,7 @@ class Table extends React.Component {
 		}).filter((obj) => {
   		let isValid = true;
 
-  		_.mapKeys(filter, (value, key) => {
+  		_.mapKeys(this.state.filterValues, (value, key) => {
 
   			if (typeof value.getMonth === 'function') {
   				if (obj[key] !== moment(value).format('YYYY-MM-DD H:mm')) {
@@ -83,16 +101,35 @@ class Table extends React.Component {
 			return isValid;
 		}).value();
 
-    return <Griddle results={results}
-                    initialSort={'id'}
-  									columnMetadata={columnMetadata}
-  									columns={tableCols}
-  									resultsPerPage={15}
-  									useCustomPagerComponent={true}
-  									customPagerComponent={Paginator}
-  									onRowClick={onRowSelected}
-  									rowMetadata={rowMetadata}
-  									noDataMessage={'Нет данных'}/>;
+    return (
+      <Div className="data-table">
+        <div className="some-header">{title}
+          <div className="waybills-buttons">
+            <ClickOutHandler onClickOut={this.closeFilter.bind(this)}>
+              <FilterButton direction={'left'} show={this.state.filterModalIsOpen} active={_.keys(this.state.filterValues).length} onClick={this.toggleFilter.bind(this)}/>
+              <FilterModal onSubmit={this.saveFilter.bind(this)}
+                           show={this.state.filterModalIsOpen}
+                           onHide={this.closeFilter.bind(this)}
+                           values={this.state.filterValues}
+                           direction={'left'}
+                           tableMeta={this.props.tableMeta}
+                           tableData={this.props.results} />
+            </ClickOutHandler>
+            {this.props.children}
+          </div>
+        </div>
+        <Griddle results={results}
+                 initialSort={'id'}
+								 columnMetadata={columnMetadata}
+								 columns={tableCols}
+								 resultsPerPage={15}
+								 useCustomPagerComponent={true}
+								 customPagerComponent={Paginator}
+								 onRowClick={onRowSelected}
+							   rowMetadata={rowMetadata}
+								 noDataMessage={'Нет данных'}/>
+      </Div>
+    );
   }
 }
 

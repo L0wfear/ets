@@ -41,10 +41,14 @@ export default React.createClass({
 				      <Nav>
 				        <NavItem active={path === '/monitor'} href="#/monitor">Монитор</NavItem>
 				        <NavItem active={path === '/waybill-journal'} href="#/waybill-journal">Журнал путевых листов</NavItem>
+				        <NavItem active={path === '/mission-journal'} href="#/mission-journal">Журнал заданий</NavItem>
                 <NavDropdown title="НСИ" id="nav-dropdown">
                   <MenuItem active={path === '/employees'} href="#/employees">Реестр водителей</MenuItem>
   				        <MenuItem active={path === '/cars'} href="#/cars">Реестр транспортных средств</MenuItem>
+  				        <MenuItem active={path === '/technical-operations'} href="#/technical-operations">Реестр технологических операций</MenuItem>
+
                   <MenuItem divider />
+
   				        <MenuItem active={path === '/fuel-rates'} href="#/fuel-rates">Справочник норм расхода топлива</MenuItem>
                 </NavDropdown>
 				        <NavItem active={path === '/routes-list'} href="#/routes-list">Список маршрутов</NavItem>

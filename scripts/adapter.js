@@ -61,6 +61,10 @@ const CARS_ADDITIONAL_INFO_URL = getUrl('/car_additional_info/');
 const EMPLOYEE_URL = getUrl('/employee/');
 const FUEL_TYPES_URL = getUrl('/fuel_type/');
 const ROUTE_URL = getUrl('/route/');
+const TECH_OPERATIONS_URL = getUrl('/technical_operation/');
+const WORK_KINDS_URL = getUrl('/work_kind/');
+const MISSIONS_URL = getUrl('/mission/');
+const MISSION_SOURCES_URL = getUrl('/mission_source/');
 
 function getJSON(url, data = {}) {
   data = _.clone(data);
@@ -417,4 +421,39 @@ export function getFuelTypes() {
 export function getRoutes() {
   console.info('GETTING ROUTES');
   return getJSON(ROUTE_URL);
+}
+
+export function getTechOperations() {
+  return getJSON(TECH_OPERATIONS_URL);
+}
+
+export function getWorkKinds() {
+  return getJSON(WORK_KINDS_URL);
+}
+
+export function getMissions() {
+  return getJSON(MISSIONS_URL);
+}
+
+
+export function getMissionSources() {
+  return getJSON(MISSION_SOURCES_URL);
+}
+
+export function removeMission(payload) {
+  return deleteJSON(MISSIONS_URL, payload, 'params').then( () => {
+    return getMissions();
+  });
+}
+
+export function updateMission(mission, correctionFlag) {
+  return putJSON(MISSIONS_URL, mission, 'params').then( () => {
+    return getMissions();
+  });
+}
+
+export function createMission(mission) {
+  return postJSON(MISSIONS_URL, mission, 'params').then( () => {
+    return getMissions();
+  });
 }

@@ -6,7 +6,6 @@ import Datepicker from './ui/DatePicker.jsx';
 import Field from './ui/Field.jsx';
 import Div from './ui/Div.jsx';
 import moment from 'moment';
-import { monthes } from '../utils/dates.js';
 import Taxes from './waybill/Taxes.jsx';
 import { getFuelOperations, getFuelRatesByCarModel } from '../adapter.js';
 import cx from 'classnames';
@@ -32,15 +31,6 @@ let getCarById = (cars, id) => {
 		car.label = car.gov_number + ' [' + car.model + ']';
 	}
 	return car;
-};
-
-let MastersSelect = (props) => {
-	let options = props.employees.filter( e => [2, 4, 5, 7, 14].indexOf(e.position_id) > -1);
-			options = options.map( m => ({value: m.id, data: m, label: `${m.last_name} ${m.first_name} ${m.middle_name}`}));
-	return 	<EtsSelect options={options}
-										 clearable={true}
-										 searchable={true}
-										 {...props} />
 };
 
 class WaybillForm extends Component {

@@ -1,29 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import connectToStores from 'flummox/connect';
 import Table from './ui/table/DataTable.jsx';
-import FilterModal from './ui/table/filter/FilterModal.jsx';
-import FilterButton from './ui/table/filter/FilterButton.jsx';
 import DriverFormWrap from './drivers/DriverFormWrap.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
 import _ from 'lodash';
 import moment from 'moment';
-import ClickOutHandler from 'react-onclickout';
-
-// active: true
-// birthday: "1974-01-25T00:00:00.000000Z"
-// company_id: 10231494
-// drivers_license: "34 ОН 885423"
-// first_name: "Валерий"
-// id: 16
-// isSelected: false
-// last_name: "Айсин"
-// middle_name: "Александрович"
-// personnel_number: 250
-// phone: "8-905-391-41-86"
-// position_id: 15
-// prefer_car: null
-// special_license: "34 СЕ 348503"
 
 let tableMeta = {
   cols: [{
@@ -100,7 +81,8 @@ let EmployeesTable = (props) => {
 		special_license : ({data}) => <div>{data && data !== "None" ? data : ''}</div>,
 	};
 
-	return <Table results={props.data}
+	return <Table title='Реестр водителей "Жилищник Крылатское"'
+                results={props.data}
 								tableMeta={tableMeta}
 								renderers={renderers}
 								{...props}/>
@@ -113,8 +95,6 @@ class EmployeesList extends Component {
 		super(props);
 
 		this.state = {
-			filterValues: {},
-			filterModalIsOpen: false,
 			selectedDriver: null,
 			showForm: false,
 		};
@@ -124,19 +104,6 @@ class EmployeesList extends Component {
 		console.log('MOUNT EmployeesList')
 		this.context.flux.getActions('employees').getEmployees();
 	}
-
-	saveFilter(filterValues) {
-		console.info(`SETTING FILTER VALUES`, filterValues);
-		this.setState({filterValues});
-	}
-
-	toggleFilter() {
-		this.setState({filterModalIsOpen: !!!this.state.filterModalIsOpen});
-	}
-
-	handleClickOutside(){
-    this.setState({filterModalIsOpen: false});
-  }
 
 	selectDriver({props}) {
 		const id = props.data.id;
@@ -167,24 +134,9 @@ class EmployeesList extends Component {
 
 		return (
 			<div className="ets-page-wrap">
-				<div className="some-header">Реестр водителей "Жилищник Крылатское"
-					<div className="waybills-buttons">
-						<ClickOutHandler onClickOut={() => { if (this.state.filterModalIsOpen) { this.setState({filterModalIsOpen: false}) }}}>
-							<FilterButton direction={'left'} show={this.state.filterModalIsOpen} active={_.keys(this.state.filterValues).length} onClick={this.toggleFilter.bind(this)}/>
-							<FilterModal onSubmit={this.saveFilter.bind(this)}
-													 show={this.state.filterModalIsOpen}
-													 onHide={() => this.setState({filterModalIsOpen: false})}
-													 values={this.state.filterValues}
-													 direction={'left'}
-													 options={drivers}
-													 tableMeta={tableMeta}
-													 tableData={driversList}/>
-						</ClickOutHandler>
-						<Button bsSize="small" onClick={this.editDriver.bind(this)} disabled={this.state.selectedDriver === null}><Glyphicon glyph="pencil" /> Редактировать</Button>
-					</div>
-				</div>
-
-				<EmployeesTable data={driversList} filter={this.state.filterValues} onRowSelected={this.selectDriver.bind(this)} selected={this.state.selectedDriver} selectField={'id'}/>
+				<EmployeesTable data={driversList} onRowSelected={this.selectDriver.bind(this)} selected={this.state.selectedDriver} selectField={'id'}>
+          <Button bsSize="small" onClick={this.editDriver.bind(this)} disabled={this.state.selectedDriver === null}><Glyphicon glyph="pencil" /> Редактировать</Button>
+        </EmployeesTable>
 				<DriverFormWrap onFormHide={this.onFormHide.bind(this)}
 												showForm={this.state.showForm}
 												driver={this.state.selectedDriver}/>

@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
-import { Link } from 'react-router';
 import { Button, Glyphicon } from 'react-bootstrap';
-import ClickOutHandler from 'react-onclickout';
 import Table from './ui/table/DataTable.jsx';
-import FilterModal from './ui/table/filter/FilterModal.jsx';
-import FilterButton from './ui/table/filter/FilterButton.jsx';
 import WaybillFormWrap from './WaybillFormWrap.jsx';
 import moment from 'moment';
 import cx from 'classnames';
@@ -33,7 +29,7 @@ function getStatusLabel(s) {
 			return 'Закрыт';
 		default:
 			return 'Н/Д';
-	}//return //s === 'open' ? 'Открыт' : 'Закрыт';
+	}
 }
 
 let getTableMeta = (props) => {
@@ -125,7 +121,8 @@ let WaybillsTable = (props) => {
 			fact_arrival_date: ({data}) => <div>{moment.utc(data).format('YYYY-MM-DD HH:mm')}</div>,
 		};
 
-		return <Table results={props.data}
+		return <Table title="Журнал путевых листов"
+									results={props.data}
 									renderers={renderers}
 									tableMeta={getTableMeta(props)}
 									{...props}/>
@@ -139,8 +136,6 @@ class WaybillJournal extends Component {
 
 		this.state = {
 			selectedBill: null,
-			filterModalIsOpen: false,
-			filterValues: {},
 			loading: true,
 		};
 	}
@@ -173,9 +168,6 @@ class WaybillJournal extends Component {
 		});
 	}
 
-	componentWillReceiveProps(){
-	}
-
 	deleteBill() {
 		if (confirm('Вы уверены, что хотите удалить путевой лист?')) {
 			const { flux } = this.context;
@@ -191,15 +183,6 @@ class WaybillJournal extends Component {
 		this.setState({ showForm: true });
 	}
 
-	toggleFilter() {
-		this.setState({filterModalIsOpen: !!!this.state.filterModalIsOpen});
-	}
-
-	saveFilter(filterValues) {
-		console.info(`SETTING FILTER VALUES`, filterValues);
-		this.setState({filterValues});
-	}
-
 	render() {
 
 		if (this.state.loading) {
@@ -212,30 +195,18 @@ class WaybillJournal extends Component {
 
 		return (
 			<div className="ets-page-wrap">
-				<div className="some-header">Журнал путевых листов
-					<div className="waybills-buttons">
-						<ClickOutHandler onClickOut={() => { if (this.state.filterModalIsOpen) { this.setState({filterModalIsOpen: false}) }}}>
-							<FilterButton direction={'right'} show={this.state.filterModalIsOpen} active={_.keys(this.state.filterValues).length} onClick={this.toggleFilter.bind(this)}/>
-							<FilterModal onSubmit={this.saveFilter.bind(this)}
-													 show={this.state.filterModalIsOpen}
-													 onHide={() => this.setState({filterModalIsOpen: false})}
-													 values={this.state.filterValues}
-													 direction={'right'}
-													 tableMeta={getTableMeta(this.props)}
-													 tableData={waybillsList} />
-						</ClickOutHandler>
-						<Button bsSize="small" onClick={this.createBill.bind(this)}><Glyphicon glyph="plus" /> Создать ПЛ</Button>
-						<Button bsSize="small" onClick={this.showBill.bind(this)} disabled={this.state.selectedBill === null}><Glyphicon glyph="search" /> Просмотреть ПЛ</Button>
-						<Button bsSize="small" disabled={showCloseBtn} onClick={this.closeBill.bind(this)}><Glyphicon glyph="ok" /> Закрыть ПЛ</Button>
-						<Button bsSize="small" disabled={this.state.selectedBill === null} onClick={this.deleteBill.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
-					</div>
-				</div>
-				<WaybillsTable data={waybillsList} filter={this.state.filterValues} onRowSelected={this.selectBill.bind(this)} selected={this.state.selectedBill} selectField={'id'} {...this.props}/>
+				<WaybillsTable data={waybillsList} onRowSelected={this.selectBill.bind(this)} selected={this.state.selectedBill} selectField={'id'} {...this.props}>
+					<Button bsSize="small" onClick={this.createBill.bind(this)}><Glyphicon glyph="plus" /> Создать ПЛ</Button>
+					<Button bsSize="small" onClick={this.showBill.bind(this)} disabled={this.state.selectedBill === null}><Glyphicon glyph="search" /> Просмотреть ПЛ</Button>
+					<Button bsSize="small" disabled={showCloseBtn} onClick={this.closeBill.bind(this)}><Glyphicon glyph="ok" /> Закрыть ПЛ</Button>
+					<Button bsSize="small" disabled={this.state.selectedBill === null} onClick={this.deleteBill.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
+				</WaybillsTable>
 				<WaybillFormWrap onFormHide={this.onFormHide.bind(this)}
 												 showForm={this.state.showForm}
 												 bill={this.state.selectedBill}
 												 {...this.props}/>
-			</div>)
+			</div>
+		);
 	}
 }
 

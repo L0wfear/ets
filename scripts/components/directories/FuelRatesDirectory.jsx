@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import Table from '../ui/table/DataTable.jsx';
-import FilterModal from '../ui/table/filter/FilterModal.jsx';
-import FilterButton from '../ui/table/filter/FilterButton.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
-import {makeDate, makeTime} from '../../utils/dates.js';
 import moment from 'moment';
 import cx from 'classnames';
-import ClickOutHandler from 'react-onclickout';
 import connectToStores from 'flummox/connect';
 import { getModelById, getModels } from '../../models.js';
 import FuelRateFormWrap from './FuelRateFormWrap.jsx';
@@ -76,7 +71,8 @@ let FuelRatesTable = (props) => {
       order_date: ({data}) => <div>{moment(data).format('YYYY-MM-DD')}</div>
     };
 
-		return <Table results={props.data}
+		return <Table title='Нормы расхода топлива'
+									results={props.data}
 									tableMeta={tableMeta}
                   renderers={renderers}
 									{...props}/>
@@ -129,9 +125,6 @@ class FuelRatesDirectory extends Component {
     });
 	}
 
-	componentWillReceiveProps(){
-	}
-
   updateFuelRate(formState) {
     const { flux } = this.context;
 		console.log(formState)
@@ -157,39 +150,17 @@ class FuelRatesDirectory extends Component {
 		this.setState({selectedFuelRate: null});
   }
 
-	toggleFilter() {
-		this.setState({filterModalIsOpen: !!!this.state.filterModalIsOpen});
-	}
-
-	saveFilter(filterValues) {
-		this.setState({filterValues});
-	}
-
 	render() {
 
 		const { rates = [] } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
-				<div className="some-header">Нормы расхода топлива
-					<div className="waybills-buttons">
-						<ClickOutHandler onClickOut={() => { if (this.state.filterModalIsOpen) { this.setState({filterModalIsOpen: false}) }}}>
-							<FilterButton direction={'right'} show={this.state.filterModalIsOpen} active={_.keys(this.state.filterValues).length} onClick={this.toggleFilter.bind(this)}/>
-							<FilterModal onSubmit={this.saveFilter.bind(this)}
-													 show={this.state.filterModalIsOpen}
-													 onHide={() => this.setState({filterModalIsOpen: false})}
-													 values={this.state.filterValues}
-													 direction={'left'}
-													 tableMeta={tableMeta}
-                           tableData={rates}/>
-						</ClickOutHandler>
-						<Button bsSize="small" onClick={this.createRate.bind(this)}><Glyphicon glyph="plus" /> Добавить</Button>
-						<Button bsSize="small" onClick={this.showFuelRate.bind(this)} disabled={this.state.selectedFuelRate === null}><Glyphicon glyph="pencil" /> Изменить</Button>
-						<Button bsSize="small" disabled={this.state.selectedFuelRate === null} onClick={this.deleteFuelRate.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
-					</div>
-				</div>
-
-        <FuelRatesTable data={rates} filter={this.state.filterValues} getOperations={(id) => this.props.operations} onRowSelected={this.selectFuelRate.bind(this)} selected={this.state.selectedFuelRate} selectField={'id'}/>
+        <FuelRatesTable data={rates} getOperations={(id) => this.props.operations} onRowSelected={this.selectFuelRate.bind(this)} selected={this.state.selectedFuelRate} selectField={'id'}>
+					<Button bsSize="small" onClick={this.createRate.bind(this)}><Glyphicon glyph="plus" /> Добавить</Button>
+					<Button bsSize="small" onClick={this.showFuelRate.bind(this)} disabled={this.state.selectedFuelRate === null}><Glyphicon glyph="pencil" /> Изменить</Button>
+					<Button bsSize="small" disabled={this.state.selectedFuelRate === null} onClick={this.deleteFuelRate.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
+				</FuelRatesTable>
         <FuelRateFormWrap onFormHide={this.onFormHide.bind(this)}
   												showForm={this.state.showForm}
   												fuelRate={this.state.selectedFuelRate}

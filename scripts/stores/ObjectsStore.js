@@ -16,6 +16,8 @@ class ObjectsStore extends Store {
     this.register(objectsActions.getCustomers, this.handleGetCustomers);
     this.register(objectsActions.getOwners, this.handleGetOwners);
     this.register(objectsActions.getFuelTypes, this.handleGetFuelTypes);
+    this.register(objectsActions.getTechOperations, this.handleGetTechOperations);
+    this.register(objectsActions.getWorkKinds, this.handleGetWorkKinds);
 
     this.state = {
       carsList: [],
@@ -25,6 +27,8 @@ class ObjectsStore extends Store {
       okrugsList: [],
       ownersList: [],
       fuelTypes: [],
+      techOperationsList: [],
+      workKindsList: [],
     };
 
   }
@@ -71,6 +75,22 @@ class ObjectsStore extends Store {
 
   handleGetFuelTypes(fuelTypes) {
     this.setState({fuelTypes: fuelTypes.result});
+  }
+
+  handleGetTechOperations(techOperations) {
+    this.setState({techOperationsList: techOperations.result});
+  }
+
+  handleGetWorkKinds(workKinds) {
+    this.setState({workKindsList: workKinds.result});
+  }
+
+  getWorkKindById(id) {
+    return _.find(this.state.workKindsList, wk => wk.id === id) || {};
+  }
+
+  getTechOperationById(id) {
+    return _.find(this.state.techOperationsList, to => to.id === id) || {};
   }
 
   getCarById(asuods_id) {

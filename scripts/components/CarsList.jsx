@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import connectToStores from 'flummox/connect';
 import Table from './ui/table/DataTable.jsx';
-import FilterModal from './ui/table/filter/FilterModal.jsx';
-import FilterButton from './ui/table/filter/FilterButton.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
 import CarFormWrap from './cars/CarFormWrap.jsx';
-import ClickOutHandler from 'react-onclickout';
 
 // function createFakeMissingCarData(types, el, i) {
 // 	el.type = _.find(types, t => t.id === el.type_id).title;
@@ -78,7 +74,8 @@ let CarsTable = (props) => {
 		garage_number: ({data}) => <div>{data && data !== 'null' ? data : ''}</div>
 	};
 
-	return <Table tableMeta={tableMeta}
+	return <Table title='Реестр транспорта "Жилищник Крылатское"'
+								tableMeta={tableMeta}
 								results={props.data}
 								renderers={renderers}
 								{...props} />
@@ -92,22 +89,9 @@ class CarsList extends Component {
 		super(props);
 
 		this.state = {
-			filterValues: {},
-			filterModalIsOpen: false,
 			selectedCar: null,
 			showForm: false,
-			carsList: [],
-			typesList: [],
 		};
-	}
-
-	saveFilter(filterValues) {
-		//console.info(`SETTING FILTER VALUES`, filterValues);
-		this.setState({filterValues});
-	}
-
-	toggleFilter() {
-		this.setState({filterModalIsOpen: !!!this.state.filterModalIsOpen});
 	}
 
 	selectCar({props}) {
@@ -138,24 +122,9 @@ class CarsList extends Component {
 
 		return (
 			<div className="ets-page-wrap">
-
-				<div className="some-header"> Реестр транспорта "Жилищник Крылатское"
-					<div className="waybills-buttons">
-						<ClickOutHandler onClickOut={() => { if (this.state.filterModalIsOpen) { this.setState({filterModalIsOpen: false}) }}}>
-							<FilterButton direction={'left'} show={this.state.filterModalIsOpen} active={_.keys(this.state.filterValues).length} onClick={this.toggleFilter.bind(this)}/>
-							<FilterModal onSubmit={this.saveFilter.bind(this)}
-													 show={this.state.filterModalIsOpen}
-													 onHide={() => this.setState({filterModalIsOpen: false})}
-													 values={this.state.filterValues}
-													 direction={'left'}
-													 tableMeta={tableMeta}
-													 tableData={carsList}/>
-						</ClickOutHandler>
-						<Button bsSize="small" onClick={this.editCar.bind(this)} disabled={this.state.selectedCar === null}><Glyphicon glyph="pencil" /> Редактировать</Button>
-					</div>
-				</div>
-
-				<CarsTable data={carsList} filter={this.state.filterValues} onRowSelected={this.selectCar.bind(this)} selected={this.state.selectedCar} selectField={'asuods_id'}/>
+				<CarsTable data={carsList} onRowSelected={this.selectCar.bind(this)} selected={this.state.selectedCar} selectField={'asuods_id'}>
+					<Button bsSize="small" onClick={this.editCar.bind(this)} disabled={this.state.selectedCar === null}><Glyphicon glyph="pencil" /> Редактировать</Button>
+				</CarsTable>
 				<CarFormWrap onFormHide={this.onFormHide.bind(this)}
 												showForm={this.state.showForm}
 												car={this.state.selectedCar}/>

@@ -4,6 +4,7 @@ import { render } from 'react-dom';
 import React, { Component } from 'react';
 import LoginPage from './LoginPage.jsx';
 import WaybillJournal from './WaybillJournal.jsx';
+import MissionsJournal from './MissionsJournal.jsx';
 import WaybillForm from './WaybillForm.jsx';
 import RoutesList from './RoutesList.jsx';
 import MainPage from './MainPage.jsx';
@@ -12,6 +13,7 @@ import LoadingPage from './LoadingPage.jsx';
 import EmployeesList from './EmployeesList.jsx';
 import CarsList from './CarsList.jsx';
 import FuelRatesDirectory from './directories/FuelRatesDirectory.jsx';
+import TechOperationsDirectory from './directories/TechOperationsDirectory.jsx';
 import Modal from './ui/Modal.jsx';
 import { checkToken, init } from '../adapter.js';
 import Flux from './Flux.js';
@@ -122,10 +124,12 @@ const routes = (
     <Route path="/" component={App} onEnter={loadData}>
       <Route path="monitor" component={MonitorPage} onEnter={requireAuth}/>
       <Route path="waybill-journal" component={WaybillJournal} onEnter={requireAuth}/>
+      <Route path="mission-journal" component={MissionsJournal} onEnter={requireAuth}/>
       <Route path="waybill-journal/create" component={WaybillForm} onEnter={requireAuth}/>
       <Route path="routes-list" component={RoutesList} onEnter={requireAuth}/>
       <Route path="employees" component={EmployeesList} onEnter={requireAuth}/>
       <Route path="fuel-rates" component={FuelRatesDirectory} onEnter={requireAuth}/>
+      <Route path="technical-operations" component={TechOperationsDirectory} onEnter={requireAuth}/>
       <Route path="cars" component={CarsList} onEnter={requireAuth}/>
       <Route path="login" component={LoginPage} onEnter={checkLoggedIn}/>
     </Route>

@@ -102,7 +102,7 @@ class MissionFormWrap extends Component {
 
 				this.setState({
 					formState: _mission,
-					formStage: formStages[3],
+					formStage: formStages[2],
 					//formErrors: validateClosingMission(_mission, {}),
 					canSave: true,
 				});
@@ -128,16 +128,6 @@ class MissionFormWrap extends Component {
 
 		// /validation
 		newState.canSave = _(formErrors).map(v => !!v).filter(e => e === true).value().length === 0;
-
-		if (field === 'odometr_end') {
-			formState.odometr_diff = formState.odometr_end - formState.odometr_start;
-		}
-		if (field === 'motohours_end') {
-			formState.motohours_diff = formState.motohours_end - formState.motohours_start;
-		}
-		if (field === 'motohours_equip_end') {
-			formState.motohours_equip_diff = formState.motohours_equip_end - formState.motohours_equip_start;
-		}
 
 		console.log(formErrors);
 		newState.formState = formState;

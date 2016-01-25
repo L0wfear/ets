@@ -80,11 +80,12 @@ class MissionForm extends Component {
     let stage = this.props.formStage;
 		let errors = this.props.formErrors;
 
-		const { workKindsList = [], techOperationsList = [], missionSourcesList = [] } = this.props;
+		const { workKindsList = [], techOperationsList = [], missionSourcesList = [], routesList = [] } = this.props;
 
     const WORK_KINDS = workKindsList.map(({id, name}) => ({value: id, label: name}));
     const TECH_OPERATIONS = techOperationsList.map(({id, name}) => ({value: id, label: name}));
     const MISSION_SOURCES = missionSourcesList.map(({id, name}) => ({value: id, label: name}));
+    const ROUTES = routesList.map(({id, name}) => ({value: id, label: name}));
 
     console.log('form stage is ', stage, 'form state is ', state);
 
@@ -93,12 +94,12 @@ class MissionForm extends Component {
     let IS_POST_CREATING = stage === 'post-creating'
 		let IS_DISPLAY = stage === 'display';
 
-    let title = '';
+    let title = `Задание № ${state.number || ''}`;
 
-    // if (IS_CREATING) {
-    //   title = "Создать новый путевой лист"
-    // }
-    //
+    if (IS_CREATING) {
+      title = "Создание задания"
+    }
+
     // if (IS_CLOSING) {
     //   title = "Закрыть путевой лист"
     // }
@@ -122,7 +123,7 @@ class MissionForm extends Component {
 			<Modal {...this.props} bsSize="large">
 
 				<Modal.Header closeButton>
-	          <Modal.Title id="contained-modal-title-lg">{title} </Modal.Title>
+	          <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
 				</Modal.Header>
 
 	      <Modal.Body>
@@ -170,7 +171,10 @@ class MissionForm extends Component {
             <Col md={6}>
               <Field type="number" label="Количество проходов" error={errors['passes_count']}
   									 value={state.passes_count} onChange={this.handleChange.bind(this, 'passes_count')} />
-              {/*МАРШРУТ СЕЛЕКТ*/}
+              <Field type="select" label="Маршрут" error={errors['route_id']}
+                     options={ROUTES}
+                     value={state.route_id}
+                     onChange={this.handleChange.bind(this, 'route_id')}/>
             </Col>
             <Col md={6}>
             {/*КАРТА*/}

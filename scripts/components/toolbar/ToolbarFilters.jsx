@@ -19,7 +19,8 @@ export default class ToolbarFilters extends Component {
 
     if (currentUser.role === 'mayor' || currentUser.role === 'prefect') {
       filters.push(
-        <Filter name="owner"
+        <Filter key={'filter_mayor_prefect'}
+                name="owner"
                 title="Владелец"
                 options={additiveFilters.owners}
                 search={true}/>
@@ -28,7 +29,8 @@ export default class ToolbarFilters extends Component {
 
     if (currentUser.role === 'mayor') {
       filters.push(
-        <Filter name="okrug"
+        <Filter key={'filter_mayor'}
+                name="okrug"
                 title="Округ"
                 options={additiveFilters.okrugs}
                 search={true}/>
@@ -36,7 +38,8 @@ export default class ToolbarFilters extends Component {
     }
 
     filters.push(
-      <Filter name="type"
+      <Filter key={'filter_basic'}
+              name="type"
               title="Тип техники"
               options={additiveFilters.types}
               search={true}
@@ -76,7 +79,7 @@ export default class ToolbarFilters extends Component {
       owners.forEach((owner) => {
         if ( propsFilters.owner.indexOf(owner.id) > -1 ){
           owner.okrugs.forEach( (okrugId) => {
-            _okrugIds.push( okrugId)
+            _okrugIds.push(okrugId)
           })
         }
       })

@@ -53,6 +53,7 @@ const CARS_BY_OWNER_URL = getUrl('/cars_by_owner/');
 const FUEL_OPERATIONS_URL = getUrl('/fuel_operations/');
 const FUEL_CONSUMPTION_RATE_URL = getUrl('/fuel_consumption_rates/');
 const LOGIN_URL = getUrl('/auth/');
+const AUTH_CHECK_URL = getUrl('/auth_check');
 const WAYBILL_URL = getUrl('/waybill/');
 const CARS_ACTUAL_URL = getUrl('/car_actual/');
 const CARS_GARAGE_NUMBER_URL = getUrl('/car_garage_number/');
@@ -208,13 +209,24 @@ function checkResponse(url, response, body, method) {
     }
 
     if (response.status === 401) {
+      console.warn('USER IS NOT AUTHORIZED');
       flux.getActions('session').logout({reason: 'no auth'});
     }
   }
 }
 
 export function checkToken(token) {
-
+  return new Promise((res, rej) => {
+    return getJSON(AUTH_CHECK_URL).then(r => {
+      if (r.errors.length) {
+        console.log('TOKEN EXPIRED');
+        rej(401);
+      } else {
+        console.log('TOKEN IS OK');
+        res();
+      }
+    });
+  })
 }
 
 export function login(user) {

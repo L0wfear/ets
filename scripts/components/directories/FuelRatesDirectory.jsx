@@ -197,7 +197,8 @@ class FuelRatesDirectory extends Component {
                           models={getModels()}
                           updateFuelRate={this.updateFuelRate.bind(this)}
                           addFuelRate={this.addFuelRate.bind(this)}/>
-			</div>)
+			</div>
+		);
 	}
 }
 

@@ -25,7 +25,7 @@ let getResult = ({FACT_VALUE, fuel_correction_rate, FUEL_RATE}) => {
   }
 }
 
-export default class Taxi extends Component {
+export default class Taxes extends Component {
 
   constructor(props) {
     super(props);

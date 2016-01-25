@@ -13,8 +13,9 @@ import EmployeesList from './EmployeesList.jsx';
 import CarsList from './CarsList.jsx';
 import FuelRatesDirectory from './directories/FuelRatesDirectory.jsx';
 import Modal from './ui/Modal.jsx';
-import { init } from '../adapter.js';
+import { checkToken, init } from '../adapter.js';
 import Flux from './Flux.js';
+import { loginErrorNotification, getErrorNotification } from '../utils/notifications.js';
 
 const adapter = {};
 const flux = new Flux(adapter);
@@ -27,6 +28,8 @@ class App extends Component {
   getChildContext() {
     return {
       flux: flux,
+      loadData: this.loadData.bind(this),
+      setLoading: this.setLoading.bind(this),
     }
   }
 
@@ -36,59 +39,51 @@ class App extends Component {
     this.state = {
       loading: true,
       error: false
-    }
+    };
+  }
+
+  setLoading(loading) {
+    this.setState({loading});
+  }
+
+  loadData() {
+    console.log('context function loadData');
+    this.setState({loading: true});
+    if(!flux.getStore('session').isLoggedIn()) return this.setState({loading: false});
+    return checkToken()
+          .then(() => init())
+          .then(() => {
+            return Promise.all([
+              flux.getActions('objects').getModels(),
+              flux.getActions('objects').getTypes(),
+              flux.getActions('objects').getOwners(),
+              flux.getActions('objects').getOkrugs(),
+              flux.getActions('objects').getCustomers()
+            ])
+          })
+          .then(() => {
+            flux.getActions('objects').getCars();
+          })
+          .then(() => {
+            flux.getActions('objects').getFuelTypes();
+          })
+          .then(() => {
+            flux.getActions('employees').getEmployees();
+          })
+          .then(() => this.setState({loading: false}))
+          .catch((error) => {
+            if (error === 401) {
+              flux.getActions('session').logout();
+              return global.NOTIFICATION_SYSTEM._addNotification(loginErrorNotification);
+            }
+            console.log(error);
+            global.NOTIFICATION_SYSTEM._addNotification(getErrorNotification(error));
+          })
   }
 
   componentDidMount() {
-    if(!flux.getStore('session').isLoggedIn()) return this.setState({loading: false});
-      init()
-      .then(() => {
-        return Promise.all([
-          flux.getActions('objects').getModels(),
-          flux.getActions('objects').getTypes(),
-          flux.getActions('objects').getOwners(),
-          flux.getActions('objects').getOkrugs(),
-          flux.getActions('objects').getCustomers()
-        ])
-      })
-      .then(() => {
-        flux.getActions('objects').getCars();
-      })
-      .then(() => {
-        flux.getActions('objects').getFuelTypes();
-      })
-      .then(() => {
-        flux.getActions('employees').getEmployees();
-      })
-      .then(() => this.setState({
-          loading: false
-      }))
-      .catch((error) => {
-        console.log(error);
-        console.log('load error')
-        this.setState({
-          error: true
-        })
-        global.NOTIFICATION_SYSTEM._addNotification(
-          {
-            title: 'Упс, что-то пошло не так',
-            message: 'Ошибка инициализации приложения: не удалось загрузить справочники (' + error + ')',
-            level: 'error',
-            dismissible: false,
-            position: 'tc',
-            autoDismiss: 0,
-            action: {
-              label: 'Перезагрузить',
-              callback: function() {
-                window.location.reload()
-              }
-            }
-          }
-        )
-      })
-  }
-
-  componentWillReceiveProps() {
+    console.info('APP DID MOUNT, LOADING');
+    this.loadData();
   }
 
   render() {
@@ -98,6 +93,8 @@ class App extends Component {
 
 App.childContextTypes = {
   flux: React.PropTypes.object,
+  loadData: React.PropTypes.func,
+  setLoading: React.PropTypes.func,
 };
 
 let history = createHashHistory({queryKey: false});
@@ -116,32 +113,7 @@ function checkLoggedIn(nextState, replaceState) {
 }
 
 function loadData(nextState, replaceState, callback) {
-  if (flux.getStore('session').isLoggedIn()) {
-    init()
-    .then(() => {
-      return Promise.all([
-        flux.getActions('objects').getModels(),
-        flux.getActions('objects').getTypes(),
-        flux.getActions('objects').getOwners(),
-        flux.getActions('objects').getOkrugs(),
-        flux.getActions('objects').getCustomers()
-      ])
-    })
-    .then(() => {
-      flux.getActions('objects').getCars();
-    })
-    .then(() => {
-      flux.getActions('objects').getFuelTypes();
-    })
-    .then(() => {
-      flux.getActions('employees').getEmployees();
-    })
-    .then( () => {
-      callback();
-    })
-  } else {
-    callback();
-  }
+  callback();
 }
 
 const routes = (
@@ -156,8 +128,6 @@ const routes = (
       <Route path="fuel-rates" component={FuelRatesDirectory} onEnter={requireAuth}/>
       <Route path="cars" component={CarsList} onEnter={requireAuth}/>
       <Route path="login" component={LoginPage} onEnter={checkLoggedIn}/>
-      {/*  <Route path="/user/:userId" component={User}/>*/}
-      {/*<Route path="*" component={NoMatch}/>*/}
     </Route>
   </Router>
 );

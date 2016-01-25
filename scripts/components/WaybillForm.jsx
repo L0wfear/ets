@@ -7,7 +7,7 @@ import Field from './ui/Field.jsx';
 import Div from './ui/Div.jsx';
 import moment from 'moment';
 import { monthes } from '../utils/dates.js';
-import Taxi from './waybill/Taxi.jsx';
+import Taxes from './waybill/Taxes.jsx';
 import { getFuelOperations, getFuelRatesByCarModel } from '../adapter.js';
 import cx from 'classnames';
 import { isNotNull } from '../utils/functions.js';
@@ -324,7 +324,7 @@ class WaybillForm extends Component {
 	      		</Col>
 
 	      		<Col md={8}>
-							<Taxi hidden={!(IS_DISPLAY || IS_CLOSING) || state.status === 'draft'}
+							<Taxes hidden={!(IS_DISPLAY || IS_CLOSING) || state.status === 'draft'}
 										readOnly={!IS_CLOSING}
 										car={getCarById(carsList, state.car_id)}
 										taxes={state.taxes}

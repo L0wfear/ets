@@ -58,13 +58,13 @@ class LegendWrapper extends Component {
 
     let items = statuses
       .map(s => Object.assign({ amount: byStatus[s.id] }, s))
-      .map(i => {
+      .map((item, i) => {
         return (
-          <li>
-            <StatusComponent 
-            active={filter.status.indexOf(i.id) !== -1} 
-            item={i} 
-            onClick={() => this.toggleFilter(i)}/>
+          <li key={i}>
+            <StatusComponent
+            active={filter.status.indexOf(item.id) !== -1}
+            item={item}
+            onClick={() => this.toggleFilter(item)}/>
           </li>
         );
       });
@@ -167,8 +167,8 @@ class Toolbar extends Component {
       <div className="app-toolbar">
         <div className="row">
           <FluxComponent connectToStores={['points']}>
-            <LegendWrapper 
-              byStatus={byStatus} 
+            <LegendWrapper
+              byStatus={byStatus}
               byConnectionStatus={byConnectionStatus}
               storeFilter={storeState.filter}
               storeHandleSetFilter={pointsStore.handleSetFilter.bind(pointsStore)}/>

@@ -1,31 +1,6 @@
 import React, { Component } from 'react';
 import { init } from '../adapter.js';
 
-const users = [
-
-  {
-    login: 'mayor',
-   // password: 'mayor',
-    role: 'mayor'
-  },
-
-  {
-    login: 'prefect_cao',
-    //password: 'prefect_cao',
-    role: 'prefect',
-    okrug: 1
-  },
-
-  {
-    login: 'zhilishnik_tverskoy',
-    //password: 'zhilishnik_tverskoy',
-    role: 'owner',
-    owner: 102266340
-  }
-
-];
-
-
 class LoginPage extends Component {
 
   constructor(props) {
@@ -38,7 +13,8 @@ class LoginPage extends Component {
     this.state = {
       login: '',
       password: '',
-      error: false
+      error: false,
+      loading: false,
     };
 
   }
@@ -81,7 +57,6 @@ class LoginPage extends Component {
     const { login, password } = this.state;
     const flux = this.context.flux;
 
-    //const user = users.filter(u => u.login === login && u.password === password)[0];
     const user = {
       login, password
     };
@@ -89,26 +64,10 @@ class LoginPage extends Component {
     if (!user) {
       this.setState({ error: true });
     } else {
+      this.context.setLoading(true);
       flux.getActions('session').login(user).then(() => {
-        init()
-        .then(() => {
-          return Promise.all([
-            flux.getActions('objects').getModels(),
-            flux.getActions('objects').getTypes(),
-            flux.getActions('objects').getOwners(),
-            flux.getActions('objects').getOkrugs(),
-            flux.getActions('objects').getCustomers()
-          ])
-        })
-        .then(() => {
-          flux.getActions('objects').getCars();
-        })
-        .then(() => {
-          flux.getActions('employees').getEmployees();
-        })
-        .then( () => {
-          this.context.history.pushState(null, '/monitor');
-        })
+        this.context.loadData();
+        this.context.history.pushState(null, '/monitor');
       });
     }
 
@@ -119,6 +78,8 @@ class LoginPage extends Component {
 LoginPage.contextTypes = {
   flux: React.PropTypes.object.isRequired,
   history: React.PropTypes.object,
+  loadData: React.PropTypes.func,
+  setLoading: React.PropTypes.func,
 }
 
 

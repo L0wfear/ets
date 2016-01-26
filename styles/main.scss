@@ -2194,3 +2194,23 @@ div.none {
 .form-control.has-error {
   outline: none !important;
 }
+
+
+.task-container {
+  .Select--multi {
+    .Select-item {
+      display: inline-block;
+      max-width: 168px;
+      .Select-item-icon {
+        display: inline-block;
+      }
+      .Select-item-label {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: inline-block;
+        width: 87%;
+      }
+    }
+  }
+}

@@ -9,8 +9,15 @@ import moment from 'moment';
 import Taxes from './waybill/Taxes.jsx';
 import { getFuelOperations, getFuelRatesByCarModel } from '../adapter.js';
 import cx from 'classnames';
-import { isNotNull } from '../utils/functions.js';
+import { isNotNull, isEmpty } from '../utils/functions.js';
 import { getDateWithoutTZ } from '../utils/dates.js';
+
+
+let getTechOperationById = (id) => {
+  const { flux } = window.__ETS_CONTAINER__;
+  const objectsStore = flux.getStore('objects');
+  return objectsStore.getTechOperationById(id);
+};
 
 let getFIOById = (employees, id, fullFlag = false) => {
 	const employee = _.find(employees, d => d.id === id) || null;
@@ -68,31 +75,33 @@ class WaybillForm extends Component {
 			});
 		}
 		this.context.flux.getActions('employees').getEmployees();
+		this.context.flux.getActions('objects').getTechOperations();
+		this.context.flux.getActions('missions').getMissions();
 	}
 
 	onDriverChange(v) {
 		this.handleChange('driver_id', v);
-		const driver = _.find(this.props.driversList, d => d.id === v) || {};
-		const prefer_car = driver.prefer_car || null;
-		if (prefer_car) {
-			this.handleChange('car_id', prefer_car);
-			const waybillsListSorted = _(this.props.waybillsList).filter(w => w.status === 'closed').sortBy('id').value().reverse();
-			const lastCarUsedWaybill = _.find(waybillsListSorted, w => w.car_id === prefer_car);
-			if (isNotNull(lastCarUsedWaybill)) {
-				if (isNotNull(lastCarUsedWaybill.fuel_end)) {
-					this.handleChange('fuel_start', lastCarUsedWaybill.fuel_end);
-				}
-				if (isNotNull(lastCarUsedWaybill.odometr_end)) {
-					this.handleChange('odometr_start', lastCarUsedWaybill.odometr_end);
-				}
-				if (isNotNull(lastCarUsedWaybill.motohours_end)) {
-					this.handleChange('motohours_start', lastCarUsedWaybill.motohours_end);
-				}
-				if (isNotNull(lastCarUsedWaybill.motohours_equip_end)) {
-					this.handleChange('motohours_equip_start', lastCarUsedWaybill.motohours_equip_end);
-				}
-			}
-		}
+		// const driver = _.find(this.props.driversList, d => d.id === v) || {};
+		// const prefer_car = driver.prefer_car || null;
+		// if (prefer_car) {
+		// 	this.handleChange('car_id', prefer_car);
+		// 	const waybillsListSorted = _(this.props.waybillsList).filter(w => w.status === 'closed').sortBy('id').value().reverse();
+		// 	const lastCarUsedWaybill = _.find(waybillsListSorted, w => w.car_id === prefer_car);
+		// 	if (isNotNull(lastCarUsedWaybill)) {
+		// 		if (isNotNull(lastCarUsedWaybill.fuel_end)) {
+		// 			this.handleChange('fuel_start', lastCarUsedWaybill.fuel_end);
+		// 		}
+		// 		if (isNotNull(lastCarUsedWaybill.odometr_end)) {
+		// 			this.handleChange('odometr_start', lastCarUsedWaybill.odometr_end);
+		// 		}
+		// 		if (isNotNull(lastCarUsedWaybill.motohours_end)) {
+		// 			this.handleChange('motohours_start', lastCarUsedWaybill.motohours_end);
+		// 		}
+		// 		if (isNotNull(lastCarUsedWaybill.motohours_equip_end)) {
+		// 			this.handleChange('motohours_equip_start', lastCarUsedWaybill.motohours_equip_end);
+		// 		}
+		// 	}
+		// }
 	}
 
 	onCarChange(v) {
@@ -127,11 +136,15 @@ class WaybillForm extends Component {
     let stage = this.props.formStage;
 		let errors = this.props.formErrors;
 
-		const { carsList = [], driversList = [], employeesList = [], fuelTypes = [] } = this.props;
+		const { carsList = [], driversList = [], employeesList = [], fuelTypes = [], missionsList = [] } = this.props;
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: c.gov_number + ' [' + c.model + ']'}));
 		const FUEL_TYPES = fuelTypes.map(({ID, NAME}) => ({value: ID, label: NAME}));
 		const DRIVERS = driversList.map( d => ({value: d.id, label: `[${d.personnel_number}] ${d.last_name} ${d.first_name} ${d.middle_name}`}));
 		const MASTERS = employeesList.filter( e => [2, 4, 5, 7, 14].indexOf(e.position_id) > -1).map( m => ({value: m.id, data: m, label: `${m.last_name} ${m.first_name} ${m.middle_name}`}));
+		const MISSIONS = missionsList.map( ({id, number, technical_operation_id}) => {
+			const techOperation = getTechOperationById(technical_operation_id);
+			return {id, value: id, label: `№${number} (${techOperation.name})`};
+		});
 
     console.log('form stage is ', stage, 'form state is ', state);
 
@@ -157,6 +170,7 @@ class WaybillForm extends Component {
     if (IS_POST_CREATING) {
       title = "Создание нового путевого листа"
     }
+		console.log(state.mission_id_list);
 
 		return (
 			<Modal {...this.props} bsSize="large">
@@ -247,6 +261,14 @@ class WaybillForm extends Component {
 	      		</Col>
 	      	</Row>
 
+					<Row>
+						<Col md={6}>
+
+						</Col>
+						<Col md={6}>
+						</Col>
+					</Row>
+
 	      	<Row>
 	      		<Col md={4}>
 		      		<h4>Одометр</h4>
@@ -318,6 +340,15 @@ class WaybillForm extends Component {
 										onChange={this.handleChange.bind(this, 'taxes')}
 										correctionRate={this.state.fuel_correction_rate}
 										availableOperations={this.state.availableOperations}/>
+							<Div className="task-container">
+								<Field type="select" label="Задание" error={errors['mission_id_list']}
+											 multi={true}
+											 className="task-container"
+											 options={MISSIONS}
+											 value={_.isArray(state.mission_id_list) && _.filter(state.mission_id_list).length === 0 ? undefined : state.mission_id_list}
+											 disabled={isEmpty(state.car_id)}
+											 onChange={this.handleChange.bind(this, 'mission_id_list')}/>
+							</Div>
 	      		</Col>
 	      	</Row>
 
@@ -349,4 +380,4 @@ WaybillForm.contextTypes = {
 	flux: React.PropTypes.object,
 };
 
-export default connectToStores(WaybillForm, ['objects', 'employees', 'waybills']);
+export default connectToStores(WaybillForm, ['objects', 'employees', 'waybills', 'missions']);

@@ -44,14 +44,14 @@ let getTableMeta = (props) => {
 
 	let tableMeta = {
 		cols: [
-			{
-				name: 'id',
-				caption: 'Идентификатор',
-				type: 'number',
-				filter: {
-					type: 'select'
-				}
-			},
+			// {
+			// 	name: 'id',
+			// 	caption: 'Идентификатор',
+			// 	type: 'number',
+			// 	filter: {
+			// 		type: 'select'
+			// 	}
+			// },
       // {
 			// 	name: 'mission_source_id',
 			// 	caption: 'Источник',
@@ -61,11 +61,11 @@ let getTableMeta = (props) => {
       //     labelFunction: (id) => getMissionSourceById(id).name || id,
 			// 	}
 			// },
-			// {
-			// 	name: 'number',
-			// 	caption: 'Номер',
-			// 	type: 'number',
-			// },
+			{
+				name: 'number',
+				caption: 'Номер',
+				type: 'number',
+			},
 			// {
 			// 	name: 'date_create',
 			// 	caption: 'Дата выдачи',

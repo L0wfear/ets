@@ -207,7 +207,6 @@ class WaybillFormWrap extends Component {
 		};
 		this.handleFormSubmit(this.state.formState, callback);
 
-
   }
 
 

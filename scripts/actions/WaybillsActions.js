@@ -20,7 +20,7 @@ export default class WaybillsActions extends Actions {
     return removeWaybill(payload);
   }
 
-  updateWaybill(waybill, correctionFlag) {
+  updateWaybill(waybill) {
     const payload = _.clone(waybill);
     payload.plan_departure_date = createValidDateTime(payload.plan_departure_date);
     payload.plan_arrival_date = createValidDateTime(payload.plan_arrival_date);

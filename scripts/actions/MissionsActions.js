@@ -39,8 +39,11 @@ export default class MissionsActions extends Actions {
     return createMissionTemplate(payload);
   }
 
-  removeMissionTemplate() {
-    return removeMissionTemplate();
+  removeMissionTemplate(id) {
+    const payload = {
+      id,
+    };
+    return removeMissionTemplate(payload);
   }
 
 }

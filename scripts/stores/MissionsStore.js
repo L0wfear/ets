@@ -13,6 +13,9 @@ class MissionsStore extends Store {
     this.register(missionsActons.removeMission, this.handleGetMissions);
     this.register(missionsActons.getMissionSources, this.handleGetMissionSources);
     this.register(missionsActons.getMissionTemplates, this.handleGetMissionTemplates);
+    this.register(missionsActons.createMissionTemplate, this.handleGetMissionTemplates);
+    this.register(missionsActons.removeMissionTemplate, this.handleGetMissionTemplates);
+    this.register(missionsActons.updateMissionTemplate, this.handleGetMissionTemplates);
 
     this.state = {
       missionsList: [],

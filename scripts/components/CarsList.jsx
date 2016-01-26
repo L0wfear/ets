@@ -53,6 +53,11 @@ let tableMeta = {
 			type: 'text',
 			filter: {
 				type: 'select',
+			},
+			form: {
+				required: true,
+				editable: true,
+				//valueFunction: '',
 			}
 		},
 		{
@@ -61,6 +66,11 @@ let tableMeta = {
 			type: 'number',
 			filter: {
 				type: 'select',
+			},
+			form: {
+				required: true,
+				editable: true,
+				//valueFunction: '',
 			}
 		}
 	]

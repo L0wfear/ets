@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Table from '../ui/table/DataTable.jsx';
+import FormWrap from '../ui/form/FormWrap.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
 import cx from 'classnames';
 import connectToStores from 'flummox/connect';
@@ -10,27 +11,50 @@ let getWorkKindById = (id) => {
   return objectsStore.getWorkKindById(id);
 };
 
-let tableMeta = {
-	cols: [
-		{
-			name: 'name',
-			caption: 'Наименование',
-			type: 'string',
-			filter: {
-				type: 'select',
-			}
-		},
-		{
-			name: 'work_kind_id',
-			caption: 'Вид работ',
-			type: 'number',
-      filter: {
-        type: 'select',
-        labelFunction: (id) => getWorkKindById(id).name || id,
-      }
-		},
-	]
+let getWorkKindOptions = (id) => {
+  const { flux } = window.__ETS_CONTAINER__;
+  const objectsStore = flux.getStore('objects');
+  return objectsStore.getWorkKindById(id);
 };
+
+let getTableMeta = (props) => {
+  let tableMeta = {
+  	cols: [
+  		{
+  			name: 'name',
+  			caption: 'Наименование',
+  			type: 'string',
+  			filter: {
+  				type: 'select',
+  			},
+        form: {
+          required: true,
+          editable: false,
+          formType: 'string',
+        }
+  		},
+  		{
+  			name: 'work_kind_id',
+  			caption: 'Вид работ',
+  			type: 'number',
+        filter: {
+          type: 'select',
+          labelFunction: (id) => getWorkKindById(id).name || id,
+        },
+        form: {
+          required: true,
+          editable: false,
+          formType: 'select',
+          formSelectOptions: (op) => props.workKindsList.map( ({id, name}) => ({value: id, label: name})),
+        }
+  		},
+  	]
+  };
+
+  return tableMeta;
+}
+
+
 
 let TechOperationsTable = (props) => {
 
@@ -40,7 +64,7 @@ let TechOperationsTable = (props) => {
 
 		return <Table title="Реестр технологических операций"
                   results={props.data}
-									tableMeta={tableMeta}
+									tableMeta={getTableMeta(props)}
                   renderers={renderers}
 									{...props}/>
 }
@@ -59,13 +83,10 @@ class TechOperationsDirectory extends Component {
 		};
 	}
 
-	selectFuelRate({props}) {
+	selectTechOperation({props}) {
 		const id = props.data.id;
-		let fuelRate = _.find(this.props.rates, r => r.id === id) || null;
-
-		this.setState({
-			selectedTechOperation: fuelRate
-		})
+		let selectedTechOperation = _.find(this.props.techOperationsList, to => to.id === id) || null;
+		this.setState({selectedTechOperation});
 	}
 
 
@@ -80,8 +101,14 @@ class TechOperationsDirectory extends Component {
 
 		return (
 			<div className="ets-page-wrap">
-        <TechOperationsTable data={techOperationsList} selected={this.state.selectedTechOperation} selectField={'id'}>
+        <TechOperationsTable data={techOperationsList} onRowSelected={this.selectTechOperation.bind(this)} selected={this.state.selectedTechOperation} selectField={'id'} {...this.props}>
+          <Button bsSize="small" onClick={() => this.setState({ showForm: true })} disabled={this.state.selectedTechOperation === null}> Просмотреть</Button>
         </TechOperationsTable>
+        <FormWrap tableMeta={getTableMeta(this.props)}
+                  showForm={this.state.showForm}
+                  onFormHide={() => this.setState({showForm: false})}
+                  element={this.state.selectedTechOperation}
+                  title={'Технологическая операция'} />
 			</div>
 		);
 	}

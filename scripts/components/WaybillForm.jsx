@@ -167,7 +167,7 @@ class WaybillForm extends Component {
 			<Modal {...this.props} bsSize="large">
 
 				<Modal.Header closeButton>
-	          <Modal.Title id="contained-modal-title-lg">{title} { IS_POST_CREATING && '(возможна корректировка)'}</Modal.Title>
+	          <Modal.Title id="contained-modal-title-lg">{title} { IS_POST_CREATING && '(возможна корректировка)'} { (IS_DISPLAY || IS_CLOSING) && `№ ${state.number}`}</Modal.Title>
 				</Modal.Header>
 
 	      <Modal.Body>

@@ -13,11 +13,11 @@ let getTechOperationById = (id) => {
   return objectsStore.getTechOperationById(id);
 };
 
-let getMissionSourceById = (id) => {
-  const { flux } = window.__ETS_CONTAINER__;
-  const missionsStore = flux.getStore('missions');
-  return missionsStore.getMissionSourceById(id);
-};
+// let getMissionSourceById = (id) => {
+//   const { flux } = window.__ETS_CONTAINER__;
+//   const missionsStore = flux.getStore('missions');
+//   return missionsStore.getMissionSourceById(id);
+// };
 
 
 function getStatusLabel(s) {
@@ -52,15 +52,15 @@ let getTableMeta = (props) => {
 					type: 'select'
 				}
 			},
-      {
-				name: 'mission_source_id',
-				caption: 'Источник',
-				type: 'number',
-				filter: {
-					type: 'select',
-          labelFunction: (id) => getMissionSourceById(id).name || id,
-				}
-			},
+      // {
+			// 	name: 'mission_source_id',
+			// 	caption: 'Источник',
+			// 	type: 'number',
+			// 	filter: {
+			// 		type: 'select',
+      //     labelFunction: (id) => getMissionSourceById(id).name || id,
+			// 	}
+			// },
 			// {
 			// 	name: 'number',
 			// 	caption: 'Номер',
@@ -82,14 +82,14 @@ let getTableMeta = (props) => {
 				// 	type: 'select'
 				// }
 			},
-      {
-				name: 'description',
-				caption: 'Описание',
-				type: 'string',
-				// filter: {
-				// 	type: 'select'
-				// }
-			},
+      // {
+			// 	name: 'description',
+			// 	caption: 'Описание',
+			// 	type: 'string',
+			// 	// filter: {
+			// 	// 	type: 'select'
+			// 	// }
+			// },
       {
 				name: 'passes_count',
 				caption: 'Количество проходов',
@@ -119,7 +119,7 @@ let MissionsTable = (props) => {
 
 		const renderers = {
 			technical_operation_id: ({data}) => <div>{getTechOperationById(data).name || data}</div>,
-      mission_source_id: ({data}) => <div>{getMissionSourceById(data).name || data}</div>,
+      //mission_source_id: ({data}) => <div>{getMissionSourceById(data).name || data}</div>,
 		};
 
 		return <Table title="Шаблоны заданий"
@@ -143,7 +143,7 @@ class MissionsJournal extends Component {
 
 	selectMission({props}) {
 		const id = props.data.id;
-		let mission = _.find(this.props.missionsList, m => m.id === id);
+		let mission = _.find(this.props.missionTemplatesList, m => m.id === id);
 
 		this.setState({ selectedMission: mission });
 	}
@@ -193,13 +193,13 @@ class MissionsJournal extends Component {
 
     console.log(this.props);
 
-		const { missionsList = [] } = this.props;
+		const { missionTemplatesList = [] } = this.props;
 
 		let showCloseBtn = this.state.selectedMission !== null && this.state.selectedMission.status !== 'active';
 
 		return (
 			<div className="ets-page-wrap">
-				<MissionsTable data={missionsList} onRowSelected={this.selectMission.bind(this)} selected={this.state.selectedMission} selectField={'id'} {...this.props}>
+				<MissionsTable data={missionTemplatesList} onRowSelected={this.selectMission.bind(this)} selected={this.state.selectedMission} selectField={'id'} {...this.props}>
 					<Button bsSize="small" onClick={this.createMission.bind(this)}><Glyphicon glyph="plus" /> Создать шаблон задания</Button>
 					<Button bsSize="small" onClick={this.showMission.bind(this)} disabled={this.state.selectedMission === null}><Glyphicon glyph="search" /> Просмотреть шаблон</Button>
 					<Button bsSize="small" disabled={this.state.selectedMission === null} onClick={this.removeMission.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>

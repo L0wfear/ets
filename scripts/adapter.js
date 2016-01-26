@@ -300,7 +300,7 @@ export function removeWaybill(payload) {
   });
 }
 
-export function updateWaybill(waybill, correctionFlag) {
+export function updateWaybill(waybill) {
   return putJSON(WAYBILL_URL, waybill, 'params').then( () => {
     return getWaybills();
   });
@@ -447,7 +447,7 @@ export function removeMission(payload) {
   });
 }
 
-export function updateMission(mission, correctionFlag) {
+export function updateMission(mission) {
   return putJSON(MISSIONS_URL, mission, 'params').then( () => {
     return getMissions();
   });

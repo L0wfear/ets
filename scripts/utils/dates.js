@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 let twoDigits = (n) => n < 10 ? '0' + n : n;
 
 export function makeDate(date) {
@@ -40,3 +42,26 @@ export const monthes = [
       'ноября',
       'декабря'
     ]
+
+
+// ^ deprecated ?
+
+export function createValidDate(date){
+  return moment(date).format('YYYY-MM-DD');
+}
+
+export function createValidDateTime(date){
+  return moment(date).format('YYYY-MM-DDTHH:mm:ss');
+}
+
+export function getToday9am() {
+  let now = new Date();
+
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 0);
+}
+
+export function getTomorrow9am() {
+  let now = new Date();
+
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 9, 0);
+}

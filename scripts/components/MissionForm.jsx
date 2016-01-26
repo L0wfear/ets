@@ -54,24 +54,6 @@ class MissionForm extends Component {
   }
 
 	componentDidMount() {
-		console.log(this.props);
-		// if (this.props.formStage === 'closing') {
-		// 	const car = _.find(this.props.carsList, c => c.asuods_id === this.props.formState.car_id) || {}
-		// 	const car_model_id = car.model_id;
-		// 	const fuel_correction_rate = car.fuel_correction_rate || null;
-		// 	getFuelRatesByCarModel(car_model_id).then(r => {
-		// 		const fuelRates = r.result.map( ({operation_id, rate_on_date}) => ({operation_id, rate_on_date}) );
-		// 		getFuelOperations().then( fuelOperations => {
-		// 			const operations =  _.filter(fuelOperations.result, op => _.find(fuelRates, fr => fr.operation_id === op.ID));
-		// 			this.setState({fuelRates, operations, fuel_correction_rate});
-		// 		});
-		// 	});
-		// } else if (this.props.formStage === 'display') {
-		// 	getFuelOperations().then( fuelOperations => {
-		// 		this.setState({operations: fuelOperations.result});
-		// 	});
-		// }
-		// this.context.flux.getActions('employees').getEmployees();
 	}
 
 	render() {

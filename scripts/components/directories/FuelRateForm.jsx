@@ -4,7 +4,6 @@ import EtsSelect from '../ui/EtsSelect.jsx';
 import Datepicker from '../ui/DatePicker.jsx';
 import moment from 'moment';
 import Div from '../ui/Div.jsx';
-import { getCarById, getCars, getCarsByModelId } from '../../../mocks/krylatskoe_cars.js';
 import { getCarImage } from '../../adapter.js';
 import { getModelById } from '../../models.js';
 import { getStatusById } from '../../statuses.js';
@@ -18,36 +17,25 @@ export default class FuelRateForm extends Component {
 		super(props);
 
 		this.state = {
-      gov_numbers: [],
-		}
+
+		};
 	}
 
 	handleChange(field, e) {
 		this.props.handleFormChange(field, e);
 	}
 
-  handleModelChange(field, e) {
-    // const gov_numbers = _(getCarsByModelId(e)).uniq(c=>c.gov_number).map( c => ({value: c.gov_number, label: c.gov_number})).value();
-    // this.setState({gov_numbers})
-    this.handleChange('model_id', e);
-  }
-
   handleSubmit() {
     console.log('submitting fuelRate form', this.props.formState);
     this.props.onSubmit(this.props.formState);
   }
 
-	componentDidMount() {
-    const fuelRate = this.props.formState;
-    if (!this.props.isNew) {
-      const gov_numbers = _(getCarsByModelId(fuelRate.model_id)).uniq(c=>c.gov_number).map( c => ({value: c.gov_number, label: c.gov_number})).value();
-      this.setState({gov_numbers})
-    }
-	}
-
 	render() {
 
 		let state = this.props.formState;
+		const { models = [], operations = [] } = this.props;
+		const MODELS = models.map( m => ({value: m.id, label: m.title}));
+		const OPERATIONS = operations.map(op => ({value: op.ID, label: op.NAME}));
 
     console.log('form state is ', state);
 
@@ -59,44 +47,39 @@ export default class FuelRateForm extends Component {
 
 	      <Modal.Body>
 
-	      <Row>
+		      <Row>
 
-	      	<Col md={6}>
-            <Div>
-  	      		<label>Дата приказа</label>
-              <Datepicker date={new Date(state.order_date)} onChange={this.handleChange.bind(this, 'order_date')} time={false}/>
-            </Div>
-            <Div>
-  	      		<label>Операция</label>
-              <EtsSelect options={this.props.operations.map( op => ({value: op.ID, label: op.NAME}))} value={state.operation_id} onChange={this.handleChange.bind(this, 'operation_id')}/>
-            </Div>
-            <Div>
-  	      		<label>Норма для летнего периода</label>
-              <input type="number" value={state.summer_rate} onChange={this.handleChange.bind(this, 'summer_rate')}/>
-            </Div>
-            <Div>
-  	      		<label>Норма для зимнего периода</label>
-              <input type="number" value={state.winter_rate} onChange={this.handleChange.bind(this, 'winter_rate')}/>
-            </Div>
-            <Div>
-  	      		<label>Марка шасси</label>
-              <EtsSelect options={this.props.models.map( m => ({value: m.id, label: m.title}))} value={state.car_model_id} onChange={this.handleChange.bind(this, 'car_model_id')}/>
-            </Div>
-            {/*<Div>
-  	      		<label>Гос. номер транспортного средства</label>
-              <EtsSelect options={this.state.gov_numbers} value={state.gov_number} onChange={this.handleChange.bind(this, 'gov_number')}/>
-            </Div>*/}
-	      	</Col>
+		      	<Col md={6}>
+	            <Div>
+	  	      		<label>Дата приказа</label>
+	              <Datepicker date={new Date(state.order_date)} onChange={this.handleChange.bind(this, 'order_date')} time={false}/>
+	            </Div>
+	            <Div>
+	  	      		<label>Операция</label>
+	              <EtsSelect options={OPERATIONS} value={state.operation_id} onChange={this.handleChange.bind(this, 'operation_id')}/>
+	            </Div>
+	            <Div>
+	  	      		<label>Норма для летнего периода</label>
+	              <input type="number" value={state.summer_rate} onChange={this.handleChange.bind(this, 'summer_rate')}/>
+	            </Div>
+	            <Div>
+	  	      		<label>Норма для зимнего периода</label>
+	              <input type="number" value={state.winter_rate} onChange={this.handleChange.bind(this, 'winter_rate')}/>
+	            </Div>
+	            <Div>
+	  	      		<label>Марка шасси</label>
+	              <EtsSelect options={MODELS} value={state.car_model_id} onChange={this.handleChange.bind(this, 'car_model_id')}/>
+	            </Div>
+		      	</Col>
 
-	      	<Col md={6}>
-	      	</Col>
-
-        </Row>
+	        </Row>
 
 	      </Modal.Body>
+
 	      <Modal.Footer>
 	      	<Button onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
 	      </Modal.Footer>
+
 			</Modal>
 		)
 	}

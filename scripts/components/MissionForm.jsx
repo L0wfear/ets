@@ -1,36 +1,13 @@
 import React, {Component} from 'react';
 import connectToStores from 'flummox/connect';
-import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
-import EtsSelect from './ui/EtsSelect.jsx';
+import { Modal, Row, Col, FormControls, Button, DropdownButton, Dropdown, Glyphicon } from 'react-bootstrap';
 import Datepicker from './ui/DatePicker.jsx';
 import Field from './ui/Field.jsx';
 import Div from './ui/Div.jsx';
 import moment from 'moment';
 import { getFuelOperations, getFuelRatesByCarModel } from '../adapter.js';
 import cx from 'classnames';
-import { isNotNull } from '../utils/functions.js';
-
-let getDateWithoutTZ = (date, format = true) => {
-	if (typeof date === 'string') date = date.replace('.000000Z', '');
-	date = moment(date).toDate();
-	return date;
-};
-
-let getFIOById = (employees, id, fullFlag = false) => {
-	const employee = _.find(employees, d => d.id === id) || null;
-	if (!employee) return '';
-	let result = employee.last_name + ' ';
-	result += fullFlag ? `${employee.first_name} ${employee.middle_name}` : `${employee.first_name[0]}. ${employee.middle_name[0]}.`;
-	return result;
-}
-
-let getCarById = (cars, id) => {
-	const car = _.find(cars, c => c.asuods_id === id) || {};
-	if (car.gov_number && car.model) {
-		car.label = car.gov_number + ' [' + car.model + ']';
-	}
-	return car;
-};
+import { getDateWithoutTZ } from '../utils/dates.js';
 
 class MissionForm extends Component {
 
@@ -52,10 +29,7 @@ class MissionForm extends Component {
     console.log('submitting mission form', this.props.formState);
     this.props.onSubmit(this.props.formState);
   }
-
-	componentDidMount() {
-	}
-
+  
 	render() {
 
 		let state = this.props.formState;
@@ -82,13 +56,6 @@ class MissionForm extends Component {
     if (IS_CREATING) {
       title = "Создание задания"
     }
-
-    // description: "desAAAAe"
-    // id: 1
-    // mission_source_id: 1
-    // name: "test_mission_111"
-    // passes_count: 778
-    // technical_operation_id: 8
 
 		return (
 			<Modal {...this.props} bsSize="large">

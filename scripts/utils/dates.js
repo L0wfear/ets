@@ -15,34 +15,10 @@ export function makeTime(date, withSeconds = false) {
   return twoDigits(date.getHours()) + ':' + twoDigits(date.getMinutes()) + (withSeconds ? ':' + twoDigits(date.getSeconds()) : '')
 }
 
-
 export function getStartOfToday() {
-
   let now = new Date()
-  let today = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate()
-  )
-
-  return today
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate());
 }
-
-export const monthes = [
-      'января',
-      'февраля',
-      'марта',
-      'апреля',
-      'мая',
-      'июня',
-      'июля',
-      'августа',
-      'сентября',
-      'октября',
-      'ноября',
-      'декабря'
-    ]
-
 
 // ^ deprecated ?
 
@@ -65,3 +41,9 @@ export function getTomorrow9am() {
 
   return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 9, 0);
 }
+
+export function getDateWithoutTZ(date, format = true) {
+	if (typeof date === 'string') date = date.replace('.000000Z', '');
+	date = moment(date).toDate();
+	return date;
+};

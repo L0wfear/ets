@@ -10,12 +10,7 @@ import Taxes from './waybill/Taxes.jsx';
 import { getFuelOperations, getFuelRatesByCarModel } from '../adapter.js';
 import cx from 'classnames';
 import { isNotNull } from '../utils/functions.js';
-
-let getDateWithoutTZ = (date, format = true) => {
-	if (typeof date === 'string') date = date.replace('.000000Z', '');
-	date = moment(date).toDate();
-	return date;
-};
+import { getDateWithoutTZ } from '../utils/dates.js';
 
 let getFIOById = (employees, id, fullFlag = false) => {
 	const employee = _.find(employees, d => d.id === id) || null;

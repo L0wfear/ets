@@ -152,7 +152,7 @@ class FuelRatesDirectory extends Component {
 
 	render() {
 
-		const { rates = [] } = this.props;
+		const { rates = [], modelsList = [] } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
@@ -165,7 +165,7 @@ class FuelRatesDirectory extends Component {
   												showForm={this.state.showForm}
   												fuelRate={this.state.selectedFuelRate}
                           operations={this.props.operations}
-                          models={getModels()}
+                          models={modelsList}
                           updateFuelRate={this.updateFuelRate.bind(this)}
                           addFuelRate={this.addFuelRate.bind(this)}/>
 			</div>
@@ -179,6 +179,6 @@ FuelRatesDirectory.contextTypes = {
   flux: React.PropTypes.object,
 };
 
-const Wrapped = connectToStores(FuelRatesDirectory, ['fuel-rates']);
+const Wrapped = connectToStores(FuelRatesDirectory, ['fuel-rates', 'objects']);
 
 export default Wrapped;

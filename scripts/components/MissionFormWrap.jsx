@@ -1,50 +1,12 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import _ from 'lodash';
-import ROUTES, { getRouteById } from '../../mocks/routes.js';
-import WORK_TYPES from '../../mocks/work_types.js';
-import {monthes} from '../utils/dates.js';
 import Div from './ui/Div.jsx';
-
 import MissionForm from './MissionForm.jsx';
-
 import { getDefaultMission } from '../stores/MissionsStore.js';
-import { makeTime, makeDate } from '../utils/dates.js';
-import { validate as validateNumber} from '../validate/validateNumber.js';
 import { isNotNull, isEmpty } from '../utils/functions.js';
 import { validateRow } from '../validate/validateRow.js';
-
 import { missionSchema, missionClosingSchema } from './models/MissionModel.js';
-
-let getDateWithoutTZ = (date, format = true) => {
-	if (typeof date === 'string') date = date.replace('.000000Z', '');
-	date = moment(date).toDate();
-	return date;
-};
-
-
-let getFIOById = (employees, id, fullFlag = false) => {
-	const employee = _.find(employees, d => d.id === id) || null;
-	if (!employee) return '';
-	let result = employee.last_name + ' ';
-	result += fullFlag ? `${employee.first_name} ${employee.middle_name}` : `${employee.first_name[0]}. ${employee.middle_name[0]}.`;
-	return result;
-};
-
-let getDriverById = (drivers, id) => {
-	return _.find(drivers, d => d.id === id) || {};
-};
-
-let getCarById = (cars, id) => {
-	return _.find(cars, c => c.asuods_id === id) || {};
-};
-
-let validateRequired = (field, data) => {
-	if (typeof data === 'string' && data.length === 0) {
-		return 'Поле должно быть заполнено';
-	}
-	return typeof data === 'undefined' || data === null ? 'Поле должно быть заполнено' : void 0;
-};
 
 let validateMission = (mission, errors) => {
 	let missionErrors = _.clone(errors);
@@ -55,16 +17,6 @@ let validateMission = (mission, errors) => {
 
 	return missionErrors;
 };
-
-// let validateClosingMission = (mission, errors) => {
-// 	let missionErrors = _.clone(errors);
-//
-// 	_.each(missionClosingSchema.properties, prop => {
-// 		missionErrors[prop.key] = validateRow(prop, mission[prop.key]);
-// 	});
-//
-// 	return missionErrors;
-// };
 
 const formStages = ['creating', 'post-creating', 'display', 'closing'];
 

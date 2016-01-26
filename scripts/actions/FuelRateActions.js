@@ -23,12 +23,14 @@ export default class FuelRateActions extends Actions {
     const payload = _.clone(newFuelRate);
     delete payload.rate_on_date;
     delete payload.season;
+
     if (typeof payload.summer_rate === 'string' && payload.summer_rate.length === 0) {
       payload.summer_rate = null;
     }
     if (typeof payload.winter_rate === 'string' && payload.winter_rate.length === 0) {
       payload.winter_rate = null;
     }
+    
     payload.order_date = createValidDate(payload.order_date);
     return updateFuelRate(payload);
   }

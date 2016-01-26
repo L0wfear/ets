@@ -1,28 +1,13 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import _ from 'lodash';
-import ROUTES, { getRouteById } from '../../mocks/routes.js';
-import WORK_TYPES from '../../mocks/work_types.js';
-import {monthes} from '../utils/dates.js';
 import Div from './ui/Div.jsx';
-
 import WaybillForm from './WaybillForm.jsx';
-
-import { getFuelTypeById } from '../stores/FuelTypes.js';
 import { getDefaultBill } from '../stores/WaybillsStore.js';
-import { makeTime, makeDate } from '../utils/dates.js';
-import { validate as validateNumber} from '../validate/validateNumber.js';
+import { getDateWithoutTZ } from '../utils/dates.js';
 import { isNotNull, isEmpty } from '../utils/functions.js';
 import { validateRow } from '../validate/validateRow.js';
-
 import { waybillSchema, waybillClosingSchema } from './models/WaybillModel.js';
-
-let getDateWithoutTZ = (date, format = true) => {
-	if (typeof date === 'string') date = date.replace('.000000Z', '');
-	date = moment(date).toDate();
-	return date;
-};
-
 
 let getFIOById = (employees, id, fullFlag = false) => {
 	const employee = _.find(employees, d => d.id === id) || null;
@@ -38,13 +23,6 @@ let getDriverById = (drivers, id) => {
 
 let getCarById = (cars, id) => {
 	return _.find(cars, c => c.asuods_id === id) || {};
-};
-
-let validateRequired = (field, data) => {
-	if (typeof data === 'string' && data.length === 0) {
-		return 'Поле должно быть заполнено';
-	}
-	return typeof data === 'undefined' || data === null ? 'Поле должно быть заполнено' : void 0;
 };
 
 let validateWaybill = (waybill, errors) => {

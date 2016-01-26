@@ -1,20 +1,13 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import _ from 'lodash';
-import ROUTES, { getRouteById } from '../../mocks/routes.js';
-import WORK_TYPES from '../../mocks/work_types.js';
-import {monthes} from '../utils/dates.js';
-import Div from './ui/Div.jsx';
-
-import MissionForm from './MissionForm.jsx';
-
-import { getDefaultMission } from '../stores/MissionsStore.js';
-import { makeTime, makeDate } from '../utils/dates.js';
-import { validate as validateNumber} from '../validate/validateNumber.js';
-import { isNotNull, isEmpty } from '../utils/functions.js';
-import { validateRow } from '../validate/validateRow.js';
-
-import { missionSchema, missionClosingSchema } from './models/MissionModel.js';
+import Div from '../ui/Div.jsx';
+import MissionTemplateForm from './MissionTemplateForm.jsx';
+import { getDefaultMission } from '../../stores/MissionsStore.js';
+import { validate as validateNumber} from '../../validate/validateNumber.js';
+import { isNotNull, isEmpty } from '../../utils/functions.js';
+import { validateRow } from '../../validate/validateRow.js';
+import { missionTemplateSchema } from '../models/MissionTemplateModel.js';
 
 let getDateWithoutTZ = (date, format = true) => {
 	if (typeof date === 'string') date = date.replace('.000000Z', '');
@@ -49,22 +42,12 @@ let validateRequired = (field, data) => {
 let validateMission = (mission, errors) => {
 	let missionErrors = _.clone(errors);
 
-	_.each(missionSchema.properties, prop => {
+	_.each(missionTemplateSchema.properties, prop => {
 		missionErrors[prop.key] = validateRow(prop, mission[prop.key]);
 	});
 
 	return missionErrors;
 };
-
-// let validateClosingMission = (mission, errors) => {
-// 	let missionErrors = _.clone(errors);
-//
-// 	_.each(missionClosingSchema.properties, prop => {
-// 		missionErrors[prop.key] = validateRow(prop, mission[prop.key]);
-// 	});
-//
-// 	return missionErrors;
-// };
 
 const formStages = ['creating', 'post-creating', 'display', 'closing'];
 
@@ -98,7 +81,7 @@ class MissionFormWrap extends Component {
 				this.setState({
 					formState: _mission,
 					formStage: formStages[2],
-					//formErrors: validateMission(defaultMission, {}),
+					formErrors: validateMission(_mission, {}),
 					canSave: true,
 				});
 			}
@@ -132,7 +115,7 @@ class MissionFormWrap extends Component {
 
 		//if (stage === 'creating') {
 			//formState.status = 'draft';
-			flux.getActions('missions').createMission(formState);
+			flux.getActions('missions').createMissionTemplate(formState);
 			this.props.onFormHide();
 		//}
 
@@ -141,8 +124,10 @@ class MissionFormWrap extends Component {
 
 	render() {
 
+		console.log()
+
 		return 	<Div hidden={!this.props.showForm}>
-							<MissionForm formState = {this.state.formState}
+							<MissionTemplateForm formState = {this.state.formState}
 													 onSubmit={this.handleFormSubmit.bind(this)}
 													 handleFormChange={this.handleFormStateChange.bind(this)}
 													 show={this.props.showForm}

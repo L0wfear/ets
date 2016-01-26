@@ -1,20 +1,16 @@
 import _ from 'lodash';
 
 export const missionSchema = {
-	properties: [
+  properties: [
 		{
-			key: 'plan_departure_date',
-			type: 'datetime',
+			key: 'technical_operation_id',
+      title: 'Технологическая операция',
+			type: 'number',
 			required: true,
 		},
 		{
-			key: 'plan_arrival_date',
-			type: 'datetime',
-			required: true,
-		},
-		{
-			key: 'driver_id',
-			title: 'Водитель',
+			key: 'passes_count',
+			title: 'Количество проходов',
 			type: 'number',
 			required: true,
 		},
@@ -22,44 +18,20 @@ export const missionSchema = {
 			key: 'car_id',
 			title: 'Транспортное средство',
 			type: 'number',
-			required: true,
+			required: false,
 		},
 		{
-			key: 'fuel_start',
-			title: 'Топливо.Выезд',
-			type: 'floatFixed3',
-			required: true,
-		},
-		{
-			key: 'fuel_type_id',
-			title: 'Топливо.Тип',
+			key: 'route_id',
+			title: 'Маршрут',
 			type: 'number',
 			required: true,
 		},
-		{
-			key: 'fuel_to_give',
-			title: 'Топливо.Выдать',
-			type: 'floatFixed3',
-			required: false,
-		},
-		{
-			key: 'odometr_start',
-			title: 'Одометр.Выезд',
-			type: 'floatFixed3',
-			required: false,
-		},
-		{
-			key: 'motohours_start',
-			title: 'Счетчик моточасов.Выезд',
-			type: 'floatFixed3',
-			required: false,
-		},
-		{
-			key: 'motohours_equip_start',
-			title: 'Счетчик моточасов обор-ния.Выезд',
-			type: 'floatFixed3',
-			required: false,
-		},
+    {
+      key: 'mission_source_id',
+      title: 'Источник получения задания',
+      type: 'number',
+      required: true,
+    }
 	],
 };
 
@@ -98,4 +70,4 @@ const closingProperties = [
 
 export const missionClosingSchema = {
   properties: closingProperties
-};;
+};

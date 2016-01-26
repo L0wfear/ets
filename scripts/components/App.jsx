@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import LoginPage from './LoginPage.jsx';
 import WaybillJournal from './WaybillJournal.jsx';
 import MissionsJournal from './MissionsJournal.jsx';
+import MissionTemplatesJournal from './missions/MissionTemplatesJournal.jsx';
 import WaybillForm from './WaybillForm.jsx';
 import RoutesList from './RoutesList.jsx';
 import MainPage from './MainPage.jsx';
@@ -125,6 +126,7 @@ const routes = (
       <Route path="monitor" component={MonitorPage} onEnter={requireAuth}/>
       <Route path="waybill-journal" component={WaybillJournal} onEnter={requireAuth}/>
       <Route path="mission-journal" component={MissionsJournal} onEnter={requireAuth}/>
+      <Route path="mission-templates-journal" component={MissionTemplatesJournal} onEnter={requireAuth}/>
       <Route path="waybill-journal/create" component={WaybillForm} onEnter={requireAuth}/>
       <Route path="routes-list" component={RoutesList} onEnter={requireAuth}/>
       <Route path="employees" component={EmployeesList} onEnter={requireAuth}/>

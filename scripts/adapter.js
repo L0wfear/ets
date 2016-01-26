@@ -65,6 +65,7 @@ const TECH_OPERATIONS_URL = getUrl('/technical_operation/');
 const WORK_KINDS_URL = getUrl('/work_kind/');
 const MISSIONS_URL = getUrl('/mission/');
 const MISSION_SOURCES_URL = getUrl('/mission_source/');
+const MISSION_TEMPLATES_URL = getUrl('/mission_template/');
 
 function getJSON(url, data = {}) {
   data = _.clone(data);
@@ -456,4 +457,18 @@ export function createMission(mission) {
   return postJSON(MISSIONS_URL, mission, 'params').then( () => {
     return getMissions();
   });
+}
+
+export function getMissionTemplates() {
+  return getJSON(MISSION_TEMPLATES_URL);
+}
+
+export function createMissionTemplate(missionTemplate) {
+  return postJSON(MISSION_TEMPLATES_URL, missionTemplate, 'params').then( () => {
+    return getMissionTemplates();
+  });
+}
+
+export function removeMissionTemplate(payload) {
+  return deleteJSON(MISSION_TEMPLATES_URL, payload, 'params').then(() => getMissionTemplates());
 }

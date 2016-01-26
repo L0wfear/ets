@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
-import EtsSelect from './ui/EtsSelect.jsx';
-import Datepicker from './ui/DatePicker.jsx';
-import Field from './ui/Field.jsx';
-import Div from './ui/Div.jsx';
+import EtsSelect from '../ui/EtsSelect.jsx';
+import Datepicker from '../ui/DatePicker.jsx';
+import Field from '../ui/Field.jsx';
+import Div from '../ui/Div.jsx';
 import moment from 'moment';
-import { getFuelOperations, getFuelRatesByCarModel } from '../adapter.js';
+import { getFuelOperations, getFuelRatesByCarModel } from '../../adapter.js';
 import cx from 'classnames';
-import { isNotNull } from '../utils/functions.js';
+import { isNotNull } from '../../utils/functions.js';
 
 let getDateWithoutTZ = (date, format = true) => {
 	if (typeof date === 'string') date = date.replace('.000000Z', '');
@@ -101,6 +101,18 @@ class MissionForm extends Component {
       title = "Создание задания"
     }
 
+    // if (IS_CLOSING) {
+    //   title = "Закрыть путевой лист"
+    // }
+    //
+    // if (IS_DISPLAY) {
+    //   title = "Просмотр путевого листа "
+    // }
+    //
+    // if (IS_POST_CREATING) {
+    //   title = "Создание нового путевого листа"
+    // }
+
     // description: "desAAAAe"
     // id: 1
     // mission_source_id: 1
@@ -125,42 +137,24 @@ class MissionForm extends Component {
 
 					<Row>
 						<Col md={6}>
-              <Field type="select" label="Технологическая операция" error={errors['technical_operation_id']}
-                      options={TECH_OPERATIONS}
-                      value={state.technical_operation_id}
-                      onChange={this.handleChange.bind(this, 'technical_operation_id')}/>
+							<Field type="select" label="Технологическая операция" error={errors['technical_operation_id']}
+											options={TECH_OPERATIONS}
+											value={state.technical_operation_id}
+											onChange={this.handleChange.bind(this, 'technical_operation_id')}/>
 						</Col>
 
-				 		<Col md={3}>
-				   		<label>Время выполнения</label>
-				 			<Div>c <Datepicker date={ getDateWithoutTZ(state.plan_departure_date) } onChange={this.handleChange.bind(this, 'plan_departure_date')}/></Div>
-				   	</Col>
-				   	<Col md={3}>
-              <label style={{minHeight: 15}}></label>
-				 			<Div>по <Datepicker date={ getDateWithoutTZ(state.plan_departure_date) } onChange={this.handleChange.bind(this, 'plan_departure_date')}/></Div>
+				 		<Col md={6}>
+							<Field type="select" label="Транспортное средство" error={errors['car_id']}
+											options={CARS}
+											value={state.car_id}
+											onChange={this.handleChange.bind(this, 'car_id')}/>
 				   	</Col>
 					</Row>
 
 	      	<Row>
-	      		<Col md={6}>
+            <Col md={6}>
               <Field type="number" label="Количество проходов" error={errors['passes_count']}
   									 value={state.passes_count} onChange={this.handleChange.bind(this, 'passes_count')} />
-	          </Col>
-	      		<Col md={6}>
-              <Field type="select" label="Источник получения задания" error={errors['mission_source_id']}
-                     options={MISSION_SOURCES}
-                     value={state.mission_source_id}
-                     onChange={this.handleChange.bind(this, 'mission_source_id')}/>
-
- 							<Field type="select" label="Транспортное средство" error={errors['car_id']}
- 											options={CARS}
- 											value={state.car_id}
- 											onChange={this.handleChange.bind(this, 'car_id')}/>
-	      		</Col>
-	      	</Row>
-
-	      	<Row>
-            <Col md={6}>
               <Field type="select" label="Маршрут" error={errors['route_id']}
                      options={ROUTES}
                      value={state.route_id}

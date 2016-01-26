@@ -1,0 +1,220 @@
+import React, { Component } from 'react';
+import connectToStores from 'flummox/connect';
+import { Button, Glyphicon } from 'react-bootstrap';
+import Table from '../ui/table/DataTable.jsx';
+import MissionTemplateFormWrap from './MissionTemplateFormWrap.jsx';
+import moment from 'moment';
+import cx from 'classnames';
+import LoadingPage from '../LoadingPage.jsx';
+
+let getTechOperationById = (id) => {
+  const { flux } = window.__ETS_CONTAINER__;
+  const objectsStore = flux.getStore('objects');
+  return objectsStore.getTechOperationById(id);
+};
+
+let getMissionSourceById = (id) => {
+  const { flux } = window.__ETS_CONTAINER__;
+  const missionsStore = flux.getStore('missions');
+  return missionsStore.getMissionSourceById(id);
+};
+
+
+function getStatusLabel(s) {
+	switch (s) {
+		case 'draft':
+			return 'Черновик';
+		case 'active':
+			return 'Активен';
+		case 'closed':
+			return 'Закрыт';
+		default:
+			return 'Н/Д';
+	}
+}
+
+// description: "desAAAAe"
+// id: 1
+// mission_source_id: 1
+// name: "test_mission_111"
+// passes_count: 778
+// technical_operation_id: 8
+
+let getTableMeta = (props) => {
+
+	let tableMeta = {
+		cols: [
+			{
+				name: 'id',
+				caption: 'Идентификатор',
+				type: 'number',
+				filter: {
+					type: 'select'
+				}
+			},
+      {
+				name: 'mission_source_id',
+				caption: 'Источник',
+				type: 'number',
+				filter: {
+					type: 'select',
+          labelFunction: (id) => getMissionSourceById(id).name || id,
+				}
+			},
+			// {
+			// 	name: 'number',
+			// 	caption: 'Номер',
+			// 	type: 'number',
+			// },
+			// {
+			// 	name: 'date_create',
+			// 	caption: 'Дата выдачи',
+			// 	type: 'date',
+			// 	filter: {
+			// 		type: 'select',
+			// 	}
+			// }
+      {
+				name: 'name',
+				caption: 'Название',
+				type: 'string',
+				// filter: {
+				// 	type: 'select'
+				// }
+			},
+      {
+				name: 'description',
+				caption: 'Описание',
+				type: 'string',
+				// filter: {
+				// 	type: 'select'
+				// }
+			},
+      {
+				name: 'passes_count',
+				caption: 'Количество проходов',
+				type: 'number',
+				filter: {
+					type: 'select'
+				}
+			},
+      {
+				name: 'technical_operation_id',
+				caption: 'Технологическая операция',
+				type: 'number',
+				filter: {
+					type: 'select',
+          labelFunction: (id) => getTechOperationById(id).name || id,
+				}
+			},
+		]
+	};
+
+	return tableMeta;
+
+};
+
+
+let MissionsTable = (props) => {
+
+		const renderers = {
+			technical_operation_id: ({data}) => <div>{getTechOperationById(data).name || data}</div>,
+      mission_source_id: ({data}) => <div>{getMissionSourceById(data).name || data}</div>,
+		};
+
+		return <Table title="Шаблоны заданий"
+									results={props.data}
+									renderers={renderers}
+									tableMeta={getTableMeta(props)}
+									{...props}/>
+}
+
+class MissionsJournal extends Component {
+
+
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			selectedMission: null,
+			loading: true,
+		};
+	}
+
+	selectMission({props}) {
+		const id = props.data.id;
+		let mission = _.find(this.props.missionsList, m => m.id === id);
+
+		this.setState({ selectedMission: mission });
+	}
+
+	createMission() {
+		this.setState({
+			showForm: true,
+			selectedMission: null
+		})
+	}
+
+	onFormHide() {
+		this.setState({
+			showForm: false,
+			selectedMission: null,
+		})
+	}
+
+	componentDidMount() {
+		const { flux } = this.context;
+		flux.getActions('missions').getMissionTemplates().then( () => {
+			this.setState({loading: false});
+		});
+    flux.getActions('objects').getWorkKinds();
+    flux.getActions('objects').getTechOperations();
+    flux.getActions('objects').getRoutes();
+    flux.getActions('missions').getMissionSources();
+
+	}
+
+	removeMission() {
+		if (confirm('Вы уверены, что хотите удалить шаблон задания?')) {
+			const { flux } = this.context;
+			flux.getActions('missions').removeMissionTemplate(this.state.selectedMission.id);
+		}
+	}
+
+	showMission() {
+		this.setState({ showForm: true });
+	}
+
+	render() {
+
+		if (this.state.loading) {
+			 return <LoadingPage loaded={this.state.loading}/>;
+		}
+
+    console.log(this.props);
+
+		const { missionsList = [] } = this.props;
+
+		let showCloseBtn = this.state.selectedMission !== null && this.state.selectedMission.status !== 'active';
+
+		return (
+			<div className="ets-page-wrap">
+				<MissionsTable data={missionsList} onRowSelected={this.selectMission.bind(this)} selected={this.state.selectedMission} selectField={'id'} {...this.props}>
+					<Button bsSize="small" onClick={this.createMission.bind(this)}><Glyphicon glyph="plus" /> Создать шаблон задания</Button>
+					<Button bsSize="small" onClick={this.showMission.bind(this)} disabled={this.state.selectedMission === null}><Glyphicon glyph="search" /> Просмотреть шаблон</Button>
+					<Button bsSize="small" disabled={this.state.selectedMission === null} onClick={this.removeMission.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
+				</MissionsTable>
+				<MissionTemplateFormWrap onFormHide={this.onFormHide.bind(this)}
+												 showForm={this.state.showForm}
+												 mission={this.state.selectedMission}
+												 {...this.props}/>
+			</div>
+		);
+	}
+}
+
+MissionsJournal.contextTypes = {
+	flux: React.PropTypes.object,
+};
+
+export default connectToStores(MissionsJournal, ['missions', 'objects', 'employees']);

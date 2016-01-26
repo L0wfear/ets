@@ -12,10 +12,12 @@ class MissionsStore extends Store {
     this.register(missionsActons.updateMission, this.handleGetMissions);
     this.register(missionsActons.removeMission, this.handleGetMissions);
     this.register(missionsActons.getMissionSources, this.handleGetMissionSources);
+    this.register(missionsActons.getMissionTemplates, this.handleGetMissionTemplates);
 
     this.state = {
       missionsList: [],
       missionSourcesList: [],
+      missionTemplatesList: [],
     };
 
   }
@@ -26,6 +28,10 @@ class MissionsStore extends Store {
 
   handleGetMissionSources(missionSources) {
     this.setState({missionSourcesList: missionSources.result});
+  }
+
+  handleGetMissionTemplates(missionTemplate) {
+    this.setState({missionTemplatesList: missionTemplate.result});
   }
 
   getMissionSourceById(id) {

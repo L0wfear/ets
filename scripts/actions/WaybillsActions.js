@@ -30,7 +30,6 @@ export default class WaybillsActions extends Actions {
     delete payload.motohours_diff;
     delete payload.motohours_equip_diff;
     delete payload.date_create;
-    delete payload.isSelected;
 
     _.mapKeys(payload, (v, k) => isEmpty(v) ? delete payload[k] : void 0);
     if (isEmpty(payload.motohours_equip_start)) {

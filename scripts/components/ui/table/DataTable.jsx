@@ -71,7 +71,7 @@ class Table extends React.Component {
     const tableCaptions = tableMeta.cols.map( c => c.caption );
     const columnMetadata = this.initializeMetadata(tableCols, tableCaptions, renderers);
 		const rowMetadata = this.initializeRowMetadata();
-    const data = _.clone(this.props.results);
+    const data = _.cloneDeep(this.props.results);
 
     const results = _(data).map( (d, i) => {
 			if (!selected || typeof onRowSelected === 'undefined') {

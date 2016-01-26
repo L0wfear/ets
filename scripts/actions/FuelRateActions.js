@@ -21,7 +21,6 @@ export default class FuelRateActions extends Actions {
 
   updateFuelRate(newFuelRate) {
     const payload = _.clone(newFuelRate);
-    delete payload.isSelected;
     delete payload.rate_on_date;
     delete payload.season;
     if (typeof payload.summer_rate === 'string' && payload.summer_rate.length === 0) {

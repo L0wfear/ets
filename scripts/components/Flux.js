@@ -15,6 +15,8 @@ import EmployeesActions from '../actions/EmployeesActions.js';
 import MissionsActions from '../actions/MissionsActions.js';
 import MissionsStore from '../stores/MissionsStore.js';
 import LoadingStore from '../stores/LoadingStore.js';
+import RoutesActions from '../actions/RoutesActions.js';
+import RoutesStore from '../stores/RoutesStore1.js';
 
 
 
@@ -34,6 +36,8 @@ export default class Flux extends Flummox {
     this.createActions('car', CarActions, args);
     this.createActions('employees', EmployeesActions, args);
     this.createActions('missions', MissionsActions, args);
+    this.createActions('routes', RoutesActions, args);
+
 
     this.createStore('points', PointsStore, this);
     this.createStore('session', SessionStore, this);
@@ -43,6 +47,7 @@ export default class Flux extends Flummox {
     this.createStore('employees', EmployeesStore, this);
     this.createStore('missions', MissionsStore, this);
     this.createStore('loading', LoadingStore, this);
+    this.createStore('routes', RoutesStore, this);
 
   }
 

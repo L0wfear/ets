@@ -46,7 +46,8 @@ export default class FormWrap extends Component {
 
 	handleFormSubmit(formState) {
 		const { flux } = this.context;
-    this.props.onSubmit(formState);
+    //this.props.onSubmit(formState);
+		flux.getActions('routes').createRoute(formState);
 		this.props.onFormHide();
 	}
 

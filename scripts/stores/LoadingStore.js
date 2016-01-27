@@ -12,6 +12,7 @@ export default class LoadingStore extends Store {
     const carActions       = flux.getActionIds('car');
     const employeesActions = flux.getActionIds('employees');
     const missionsActons   = flux.getActionIds('missions');
+    const routesActions    = flux.getActionIds('routes');
 
     this.reg(
       //objectsActionIds.addNewGroup,
@@ -50,6 +51,12 @@ export default class LoadingStore extends Store {
       missionsActons.getMissionTemplates,
       missionsActons.createMissionTemplate,
       missionsActons.removeMissionTemplate,
+
+      routesActions.getRoutes,
+      routesActions.createRoute,
+      routesActions.removeRoute,
+      routesActions.updateRoute,
+      routesActions.getRouteById,
 
     );
 

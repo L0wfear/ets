@@ -41,7 +41,7 @@ export default class Form extends Component {
 
           <Row>
             <Col md={6}>
-              <Field type="string" label="Название маршрута" value={state.title} onChange={this.handleChange.bind(this, 'title')} />
+              <Field type="string" label="Название маршрута" value={state.name} onChange={this.handleChange.bind(this, 'name')} />
             </Col>
           </Row>
 

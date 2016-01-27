@@ -1,5 +1,5 @@
 import { Actions } from 'flummox';
-import { getCars, getFuelTypes, getTechOperations, getWorkKinds, getRoutes } from '../adapter.js';
+import { getCars, getFuelTypes, getTechOperations, getWorkKinds } from '../adapter.js';
 import _ from 'lodash';
 import { getCustomers } from '../customers.js';
 import { getTypes } from '../types.js';
@@ -43,10 +43,6 @@ export default class ObjectsActions extends Actions {
 
   getWorkKinds() {
     return getWorkKinds();
-  }
-
-  getRoutes() {
-    return getRoutes();
   }
 
 }

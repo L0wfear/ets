@@ -420,11 +420,6 @@ export function getFuelTypes() {
   return getJSON(FUEL_TYPES_URL);
 }
 
-export function getRoutes() {
-  console.info('GETTING ROUTES');
-  return getJSON(ROUTE_URL);
-}
-
 export function getTechOperations() {
   return getJSON(TECH_OPERATIONS_URL);
 }

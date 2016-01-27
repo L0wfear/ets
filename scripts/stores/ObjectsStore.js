@@ -18,7 +18,6 @@ class ObjectsStore extends Store {
     this.register(objectsActions.getFuelTypes, this.handleGetFuelTypes);
     this.register(objectsActions.getTechOperations, this.handleGetTechOperations);
     this.register(objectsActions.getWorkKinds, this.handleGetWorkKinds);
-    this.register(objectsActions.getRoutes, this.handleGetRoutes);
 
     this.state = {
       carsList: [],
@@ -30,7 +29,6 @@ class ObjectsStore extends Store {
       fuelTypes: [],
       techOperationsList: [],
       workKindsList: [],
-      routesList: [],
     };
 
   }
@@ -87,10 +85,6 @@ class ObjectsStore extends Store {
     this.setState({workKindsList: workKinds.result});
   }
 
-  handleGetRoutes(routes) {
-    this.setState({routesList: routes.result});
-  }
-
   getWorkKindById(id) {
     return _.find(this.state.workKindsList, wk => wk.id === id) || {};
   }
@@ -102,11 +96,6 @@ class ObjectsStore extends Store {
   getCarById(asuods_id) {
     return _.find(this.state.carsList, c => c.asuods_id === asuods_id) || {};
   }
-
-  getRouteById(id) {
-    return _.find(this.state.routesList, r => r.id === id) || {};
-  }
-
 
 }
 

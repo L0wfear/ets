@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, FormControls, Button, DropdownButton, Dropdown, Glyphicon, MenuItem } from 'react-bootstrap';
 import Datepicker from './ui/DatePicker.jsx';
+import RouteInfo from './route/RouteInfo.jsx';
+import ODHList from './route/ODHList.jsx';
 import Field from './ui/Field.jsx';
 import Div from './ui/Div.jsx';
 import moment from 'moment';
@@ -15,11 +17,30 @@ class MissionForm extends Component {
 		super(props);
 
 		this.state = {
+			selectedRoute: null,
 		};
 	}
 
 	handleChange(field, e) {
 		this.props.handleFormChange(field, e);
+	}
+
+	handleRouteIdChange(v) {
+		this.handleChange('route_id', v);
+		const { flux } = this.context;
+		flux.getActions('routes').getRouteById(v).then(r => {
+			this.setState({selectedRoute: r.result.length ? r.result[0] : null});
+		});
+	}
+
+	componentDidMount() {
+		const mission = this.props.formState;
+		const { flux } = this.context;
+		if (typeof mission.route_id !== 'undefined' && mission.route_id !== null){
+			flux.getActions('routes').getRouteById(mission.route_id).then(r => {
+				this.setState({selectedRoute: r.result.length ? r.result[0] : null});
+			});
+		}
 	}
 
   handleSubmit() {
@@ -90,7 +111,8 @@ class MissionForm extends Component {
 	      		<Col md={6}>
               <Field type="number" label="Количество проходов" error={errors['passes_count']}
 										 disabled={IS_DISPLAY}
-  									 value={state.passes_count} onChange={this.handleChange.bind(this, 'passes_count')} />
+  									 value={state.passes_count} onChange={this.handleChange.bind(this, 'passes_count')}
+										 min={0} />
 	          </Col>
 	      		<Col md={6}>
               <Field type="select" label="Источник получения задания" error={errors['mission_source_id']}
@@ -113,10 +135,16 @@ class MissionForm extends Component {
 										 disabled={IS_DISPLAY}
                      options={ROUTES}
                      value={state.route_id}
-                     onChange={this.handleChange.bind(this, 'route_id')}/>
+                     onChange={this.handleRouteIdChange.bind(this)}/>
+							<Div className="route-odhs-list" hidden={this.state.selectedRoute === null}>
+								<h4>Список ОДХ/ДТ</h4>
+								<ODHList showSelectable={true} object_list={this.state.selectedRoute ? this.state.selectedRoute.object_list : []} />
+							</Div>
             </Col>
             <Col md={6}>
-            {/*КАРТА*/}
+							<Div hidden={this.state.selectedRoute === null} className="mission-form-map-wrapper">
+	            	<RouteInfo route={this.state.selectedRoute} mapOnly={true}/>
+							</Div>
             </Col>
 	      	</Row>
 
@@ -146,4 +174,4 @@ MissionForm.contextTypes = {
 	flux: React.PropTypes.object,
 };
 
-export default connectToStores(MissionForm, ['objects', 'employees', 'missions']);
+export default connectToStores(MissionForm, ['objects', 'employees', 'missions', 'routes']);

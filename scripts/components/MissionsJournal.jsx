@@ -21,10 +21,9 @@ let getMissionSourceById = (id) => {
 
 let getRouteById = (id) => {
   const { flux } = window.__ETS_CONTAINER__;
-  const objectsStore = flux.getStore('objects');
-  return objectsStore.getRouteById(id);
+  const routesStore = flux.getStore('routes');
+  return routesStore.getRouteById(id);
 };
-
 
 function getStatusLabel(s) {
 	switch (s) {
@@ -205,7 +204,7 @@ class MissionsJournal extends Component {
 		flux.getActions('missions').getMissions();
     flux.getActions('objects').getWorkKinds();
     flux.getActions('objects').getTechOperations();
-    flux.getActions('objects').getRoutes();
+    flux.getActions('routes').getRoutes();
     flux.getActions('missions').getMissionSources();
 	}
 

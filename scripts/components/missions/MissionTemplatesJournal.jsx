@@ -14,8 +14,8 @@ let getTechOperationById = (id) => {
 
 let getRouteById = (id) => {
   const { flux } = window.__ETS_CONTAINER__;
-  const objectsStore = flux.getStore('objects');
-  return objectsStore.getRouteById(id);
+  const routesStore = flux.getStore('routes');
+  return routesStore.getRouteById(id);
 };
 
 let getCarById = (id) => {
@@ -140,7 +140,7 @@ class MissionsJournal extends Component {
 		flux.getActions('missions').getMissionTemplates();
     flux.getActions('objects').getWorkKinds();
     flux.getActions('objects').getTechOperations();
-    flux.getActions('objects').getRoutes();
+    flux.getActions('routes').getRoutes();
     //flux.getActions('missions').getMissionSources();
 	}
 

@@ -166,7 +166,7 @@ class WaybillJournal extends Component {
 		this.setState({
 			showForm: false,
 			selectedBill: null,
-		})
+		});
 	}
 
 	componentDidMount() {

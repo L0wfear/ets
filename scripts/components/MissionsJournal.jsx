@@ -41,7 +41,8 @@ let getTableMeta = (props) => {
         caption: 'Статус',
         type: 'string',
         filter: {
-  				type: 'select'
+  				type: 'select',
+          labelFunction: (s) => getStatusLabel(s),
   			},
         cssClassName: 'width120'
       },

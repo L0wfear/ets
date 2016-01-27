@@ -49,7 +49,7 @@ class MissionForm extends Component {
 		let IS_CREATING = stage === 'creating';
 		let IS_CLOSING = stage === 'closing';
     let IS_POST_CREATING = stage === 'post-creating'
-		let IS_DISPLAY = !!!state.status || (!!state.status && state.status !== 'not_assigned');
+		let IS_DISPLAY = !!state.status && state.status !== 'not_assigned';
 
     let title = `Задание № ${state.number || ''}`;
 

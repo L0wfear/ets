@@ -7,20 +7,23 @@ import moment from 'moment';
 import cx from 'classnames';
 import LoadingPage from './LoadingPage.jsx';
 
-function getFIOById(data, id) {
+function getFIOById(id) {
 	let result = '';
-
-	_.each(data, (v) => {
-		if ( v.id === id) {
-			result = v['last_name'] + ' '+ v['first_name'][0]+'.'+v['middle_name'][0];
-		}
-	});
+	const { flux } = window.__ETS_CONTAINER__;
+  const employeesStore = flux.getStore('employees');
+	const employee = employeesStore.getEmployeeById(id);
+	if (employee) {
+		if (employee.last_name && employee.first_name && employee.middle_name)
+		result = employee.last_name + ' ' + employee.first_name[0]+ '.' + employee.middle_name[0];
+	}
 
 	return result;
 }
 
-let getCarById = (cars, id) => {
-	const car = _.find(cars, c => c.asuods_id === id) || {};
+let getCarById = (id) => {
+  const { flux } = window.__ETS_CONTAINER__;
+  const objectsStore = flux.getStore('objects');
+	const car = objectsStore.getCarById(id);
 	if (car.gov_number && car.model) {
 		car.label = car.gov_number + ' [' + car.model + ']';
 	}
@@ -72,7 +75,7 @@ let getTableMeta = (props) => {
 				type: 'string',
 				filter: {
 					type: 'select',
-					labelFunction: (d) => getFIOById(props.driversList, d),
+					labelFunction: (id) => getFIOById(id),
 				}
 			},
 			{
@@ -81,7 +84,7 @@ let getTableMeta = (props) => {
 				type: 'string',
 				filter: {
 					type: 'select',
-					labelFunction: (d) => _.find(props.carsList, c => c.asuods_id === d).gov_number,
+					labelFunction: (id) => getCarById(id).gov_number,
 				}
 			},
 			{
@@ -106,7 +109,7 @@ let getTableMeta = (props) => {
 				type: 'string',
 				filter: {
 					type: 'select',
-					labelFunction: getFIOById
+					labelFunction: (id) => getFIOById(id),
 				}
 			},
 		]
@@ -121,9 +124,9 @@ let WaybillsTable = (props) => {
 
 		const renderers = {
 			status: ({data}) => <div>{getStatusLabel(data)}</div>,
-			responsible_person_id: ({data}) => <div>{getFIOById(props.employeesList, data)}</div>,
-			driver_id: ({data}) => <div>{getFIOById(props.employeesList, data)}</div>,
-			car_id: ({data}) => <div>{getCarById(props.carsList, data).gov_number}</div>,
+			responsible_person_id: ({data}) => <div>{getFIOById(data)}</div>,
+			driver_id: ({data}) => <div>{getFIOById(data)}</div>,
+			car_id: ({data}) => <div>{getCarById(data).gov_number}</div>,
 			date_create: ({data}) => <div>{data ? moment.utc(data).format('YYYY-MM-DD') : ''}</div>,
 			fact_departure_date: ({data}) => <div>{moment.utc(data).format('YYYY-MM-DD HH:mm')}</div>,
 			fact_arrival_date: ({data}) => <div>{moment.utc(data).format('YYYY-MM-DD HH:mm')}</div>,
@@ -192,10 +195,6 @@ class WaybillJournal extends Component {
 	}
 
 	render() {
-
-		// if (this.state.loading) {
-		// 	 return <LoadingPage loaded={this.state.loading}/>;
-		// }
 
 		const { waybillsList = [] } = this.props;
 

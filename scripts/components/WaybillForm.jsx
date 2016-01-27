@@ -10,7 +10,7 @@ import Taxes from './waybill/Taxes.jsx';
 import { getFuelOperations, getFuelRatesByCarModel } from '../adapter.js';
 import cx from 'classnames';
 import { isNotNull, isEmpty } from '../utils/functions.js';
-import { getDateWithoutTZ } from '../utils/dates.js';
+import { getDateWithoutTZ, createValidDateTime } from '../utils/dates.js';
 
 
 let getTechOperationById = (id) => {
@@ -49,6 +49,12 @@ class WaybillForm extends Component {
 
 	handleChange(field, e) {
 		this.props.handleFormChange(field, e);
+    const { flux } = this.context;
+    const { formState } = this.props;
+    if (field === 'plan_arrival_date') {
+  	  this.props.handleFormChange('mission_id_list', undefined);
+    	flux.getActions('missions').getMissions(formState.car_id, createValidDateTime(e));
+    }
 	}
 
   handleSubmit() {
@@ -58,8 +64,10 @@ class WaybillForm extends Component {
 
 	componentDidMount() {
 		console.log(this.props);
-		if (this.props.formState.status && this.props.formState.status === 'active') {
-			const car = _.find(this.props.carsList, c => c.asuods_id === this.props.formState.car_id) || {}
+    const { flux } = this.context;
+    const { formState } = this.props;
+		if (formState.status && formState.status === 'active') {
+			const car = _.find(this.props.carsList, c => c.asuods_id === formState.car_id) || {}
 			const car_model_id = car.model_id;
 			const fuel_correction_rate = car.fuel_correction_rate || null;
 			getFuelRatesByCarModel(car_model_id).then(r => {
@@ -69,14 +77,14 @@ class WaybillForm extends Component {
 					this.setState({fuelRates, operations, fuel_correction_rate});
 				});
 			});
-		} else if (this.props.formState.status && this.props.formState.status === 'closed') {
+		} else if (formState.status && formState.status === 'closed') {
 			getFuelOperations().then( fuelOperations => {
 				this.setState({operations: fuelOperations.result});
 			});
 		}
-		this.context.flux.getActions('employees').getEmployees();
-		this.context.flux.getActions('objects').getTechOperations();
-		this.context.flux.getActions('missions').getMissions();
+		flux.getActions('employees').getEmployees();
+		flux.getActions('objects').getTechOperations();
+  	flux.getActions('missions').getMissions(formState.car_id, createValidDateTime(formState.plan_arrival_date));
 	}
 
 	onDriverChange(v) {
@@ -104,10 +112,13 @@ class WaybillForm extends Component {
 		// }
 	}
 
-	onCarChange(v) {
-		this.handleChange('car_id', v);
+	onCarChange(car_id) {
+		this.handleChange('car_id', car_id);
+  	this.handleChange('mission_id_list', undefined);
+    console.log(this.props.formState.mission_id_list);
+    const { flux } = this.context;
 		const waybillsListSorted = _(this.props.waybillsList).filter(w => w.status === 'closed').sortBy('id').value().reverse();
-		const lastCarUsedWaybill = _.find(waybillsListSorted, w => w.car_id === v);
+		const lastCarUsedWaybill = _.find(waybillsListSorted, w => w.car_id === car_id);
 		console.log(lastCarUsedWaybill);
 		if (isNotNull(lastCarUsedWaybill)) {
 			if (isNotNull(lastCarUsedWaybill.fuel_end)) {
@@ -128,6 +139,8 @@ class WaybillForm extends Component {
 			this.handleChange('motohours_start', 0);
 			this.handleChange('motohours_equip_start', 0);
 		}
+
+  	flux.getActions('missions').getMissions(car_id, createValidDateTime(this.props.formState.plan_arrival_date));
 	}
 
 	render() {

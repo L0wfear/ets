@@ -23,10 +23,12 @@ export function getStartOfToday() {
 // ^ deprecated ?
 
 export function createValidDate(date){
+  if (!date) return null;
   return moment(date).format('YYYY-MM-DD');
 }
 
 export function createValidDateTime(date){
+  if (!date) return null;
   return moment(date).format('YYYY-MM-DDTHH:mm:ss');
 }
 

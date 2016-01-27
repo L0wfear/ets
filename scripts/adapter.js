@@ -428,10 +428,9 @@ export function getWorkKinds() {
   return getJSON(WORK_KINDS_URL);
 }
 
-export function getMissions() {
-  return getJSON(MISSIONS_URL);
+export function getMissions(payload) {
+  return getJSON(MISSIONS_URL, payload, 'params');
 }
-
 
 export function getMissionSources() {
   return getJSON(MISSION_SOURCES_URL);

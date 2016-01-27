@@ -34,6 +34,9 @@ export default class WaybillsActions extends Actions {
     if (isEmpty(payload.motohours_equip_start)) {
       payload.motohours_equip_start = null;
     }
+    if (isEmpty(payload.mission_id_list)) {
+      payload.mission_id_list = null;
+    }
 
     return updateWaybill(payload);
   }

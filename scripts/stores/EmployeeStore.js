@@ -1,4 +1,5 @@
 import { Store } from 'flummox';
+import _ from 'lodash';
 
 class EmployeeStore extends Store {
 
@@ -20,6 +21,10 @@ class EmployeeStore extends Store {
     const employeesList = employees.result;
     this.setState({employeesList, driversList: employeesList.filter( e => e.position_id === 15)});
 	}
+
+  getEmployeeById(id) {
+    return _.find(this.state.employeesList, e => e.id === id) || {};
+  }
 
 }
 

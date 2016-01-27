@@ -2,11 +2,23 @@ import { Actions } from 'flummox';
 import { getMissions, getMissionSources, createMission, removeMission, updateMission, getMissionTemplates, createMissionTemplate, removeMissionTemplate, updateMissionTemplate } from '../adapter.js';
 import _ from 'lodash';
 import { createValidDateTime } from '../utils/dates.js';
+import { isEmpty, isNotNull } from '../utils/functions.js';
 
 export default class MissionsActions extends Actions {
 
-  getMissions() {
-    return getMissions();
+  getMissions(car_id, date_to) {
+    const payload = {
+
+    };
+    if (!isEmpty(car_id)) {
+      payload.car_id = car_id;
+    }
+
+    if (!isEmpty(date_to)) {
+      payload.date_to = date_to;
+    }
+
+    return getMissions(payload);
   }
 
   getMissionSources() {

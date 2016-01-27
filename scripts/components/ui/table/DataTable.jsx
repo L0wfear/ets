@@ -29,19 +29,23 @@ class Table extends React.Component {
 	}
 
 	saveFilter(filterValues) {
-		console.info(`SETTING FILTER VALUES`, filterValues);
+		//console.info(`SETTING FILTER VALUES`, filterValues);
 		this.setState({filterValues});
 	}
 
-  initializeMetadata(cols = [], captions = [], renderers = {}) {
-  	const metadata = _.reduce(cols, (cur, col, i) => {
+  initializeMetadata(tableMeta = { cols: [] }, renderers = {}) {
+  	const metadata = _.reduce(tableMeta.cols, (cur, col, i) => {
   		const metaObject = {
-  			columnName: col,
-  			displayName: captions[i]
+  			columnName: col.name,
+  			displayName: col.caption,
   		};
 
-  		if (typeof renderers[col] === 'function') {
-  			metaObject.customComponent = renderers[col];
+  		if (typeof renderers[col.name] === 'function') {
+  			metaObject.customComponent = renderers[col.name];
+  		}
+
+      if (typeof col.cssClassName !== 'undefined') {
+  			metaObject.cssClassName = col.cssClassName;
   		}
 
   		cur.push(metaObject);
@@ -68,8 +72,7 @@ class Table extends React.Component {
   render() {
     const { tableMeta, renderers, onRowSelected, selected, selectField, title = '' } = this.props;
     const tableCols = tableMeta.cols.map( c => c.name );
-    const tableCaptions = tableMeta.cols.map( c => c.caption );
-    const columnMetadata = this.initializeMetadata(tableCols, tableCaptions, renderers);
+    const columnMetadata = this.initializeMetadata(tableMeta, renderers);
 		const rowMetadata = this.initializeRowMetadata();
     const data = _.cloneDeep(this.props.results);
 

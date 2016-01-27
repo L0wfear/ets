@@ -116,7 +116,7 @@ class MissionsJournal extends Component {
 		this.setState({
 			showForm: false,
 			selectedMission: null,
-		})
+		});
 	}
 
 	componentDidMount() {

@@ -49,7 +49,7 @@ class MissionForm extends Component {
 		let IS_CREATING = stage === 'creating';
 		let IS_CLOSING = stage === 'closing';
     let IS_POST_CREATING = stage === 'post-creating'
-		let IS_DISPLAY = stage === 'display';
+		let IS_DISPLAY = !!!state.status || (!!state.status && state.status !== 'not_assigned');
 
     let title = `Задание № ${state.number || ''}`;
 
@@ -75,6 +75,7 @@ class MissionForm extends Component {
 					<Row>
 						<Col md={6}>
               <Field type="select" label="Технологическая операция" error={errors['technical_operation_id']}
+											disabled={IS_DISPLAY}
                       options={TECH_OPERATIONS}
                       value={state.technical_operation_id}
                       onChange={this.handleChange.bind(this, 'technical_operation_id')}/>
@@ -82,26 +83,31 @@ class MissionForm extends Component {
 
 				 		<Col md={3}>
 				   		<label>Время выполнения</label>
-				 			<Div>c <Datepicker date={ getDateWithoutTZ(state.plan_departure_date) } onChange={this.handleChange.bind(this, 'plan_departure_date')}/></Div>
+				 			<Div>c <Datepicker date={ getDateWithoutTZ(state.plan_departure_date) } onChange={this.handleChange.bind(this, 'plan_departure_date')}
+											disabled={IS_DISPLAY}/></Div>
 				   	</Col>
 				   	<Col md={3}>
               <label style={{minHeight: 15}}></label>
-				 			<Div>по <Datepicker date={ getDateWithoutTZ(state.plan_departure_date) } onChange={this.handleChange.bind(this, 'plan_departure_date')}/></Div>
+				 			<Div>по <Datepicker date={ getDateWithoutTZ(state.plan_departure_date) } onChange={this.handleChange.bind(this, 'plan_departure_date')}
+											disabled={IS_DISPLAY}/></Div>
 				   	</Col>
 					</Row>
 
 	      	<Row>
 	      		<Col md={6}>
               <Field type="number" label="Количество проходов" error={errors['passes_count']}
+										 disabled={IS_DISPLAY}
   									 value={state.passes_count} onChange={this.handleChange.bind(this, 'passes_count')} />
 	          </Col>
 	      		<Col md={6}>
               <Field type="select" label="Источник получения задания" error={errors['mission_source_id']}
+										 disabled={IS_DISPLAY}
                      options={MISSION_SOURCES}
                      value={state.mission_source_id}
                      onChange={this.handleChange.bind(this, 'mission_source_id')}/>
 
  							<Field type="select" label="Транспортное средство" error={errors['car_id']}
+											disabled={IS_DISPLAY}
  											options={CARS}
  											value={state.car_id}
  											onChange={this.handleChange.bind(this, 'car_id')}/>
@@ -111,6 +117,7 @@ class MissionForm extends Component {
 	      	<Row>
             <Col md={6}>
               <Field type="select" label="Маршрут" error={errors['route_id']}
+										 disabled={IS_DISPLAY}
                      options={ROUTES}
                      value={state.route_id}
                      onChange={this.handleChange.bind(this, 'route_id')}/>
@@ -133,7 +140,7 @@ class MissionForm extends Component {
 								<MenuItem eventKey={2}>Форма 4-П</MenuItem>
 							</Dropdown.Menu>
 						</Dropdown>&nbsp;
-		      	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>{'Сохранить'}</Button>
+		      	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || IS_DISPLAY}>{'Сохранить'}</Button>
 					</Div>
 	      </Modal.Footer>
 

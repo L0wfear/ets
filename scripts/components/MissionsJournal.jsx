@@ -21,14 +21,14 @@ let getMissionSourceById = (id) => {
 
 function getStatusLabel(s) {
 	switch (s) {
-		case 'draft':
-			return 'Черновик';
-		case 'active':
-			return 'Активен';
+		case 'assigned':
+			return 'Назначено';
+		case 'not_assigned':
+			return 'Не назначено';
 		case 'closed':
-			return 'Закрыт';
+			return 'Закрыто';
 		default:
-			return 'Н/Д';
+			return s;
 	}
 }
 
@@ -37,12 +37,22 @@ let getTableMeta = (props) => {
 	let tableMeta = {
 		cols: [
       {
+        name: 'status',
+        caption: 'Статус',
+        type: 'string',
+        filter: {
+  				type: 'select'
+  			},
+        cssClassName: 'width120'
+      },
+      {
         name: 'number',
         caption: 'Номер',
         type: 'number',
         filter: {
   				type: 'select'
-  			}
+  			},
+        cssClassName: 'width120',
       },
       {
 				name: 'mission_source_id',
@@ -51,7 +61,8 @@ let getTableMeta = (props) => {
 				filter: {
 					type: 'select',
           labelFunction: (id) => getMissionSourceById(id).name || id,
-				}
+				},
+        cssClassName: 'width300',
 			},
 			// {
 			// 	name: 'date_create',
@@ -61,29 +72,30 @@ let getTableMeta = (props) => {
 			// 		type: 'select',
 			// 	}
 			// }
-      {
-				name: 'name',
-				caption: 'Название',
-				type: 'string',
-				// filter: {
-				// 	type: 'select'
-				// }
-			},
-      {
-				name: 'description',
-				caption: 'Описание',
-				type: 'string',
-				// filter: {
-				// 	type: 'select'
-				// }
-			},
+      // {
+			// 	name: 'name',
+			// 	caption: 'Название',
+			// 	type: 'string',
+			// 	// filter: {
+			// 	// 	type: 'select'
+			// 	// }
+			// },
+      // {
+			// 	name: 'description',
+			// 	caption: 'Описание',
+			// 	type: 'string',
+			// 	// filter: {
+			// 	// 	type: 'select'
+			// 	// }
+			// },
       {
 				name: 'passes_count',
 				caption: 'Количество проходов',
 				type: 'number',
 				filter: {
 					type: 'select'
-				}
+				},
+        cssClassName: 'width120',
 			},
       {
 				name: 'technical_operation_id',
@@ -107,6 +119,7 @@ let MissionsTable = (props) => {
 		const renderers = {
 			technical_operation_id: ({data}) => <div>{getTechOperationById(data).name || data}</div>,
       mission_source_id: ({data}) => <div>{getMissionSourceById(data).name || data}</div>,
+      status: ({data}) => <div>{getStatusLabel(data)}</div>
 		};
 
 		return <Table title="Журнал заданий"
@@ -179,7 +192,7 @@ class MissionsJournal extends Component {
 				<MissionsTable data={missionsList} onRowSelected={this.selectMission.bind(this)} selected={this.state.selectedMission} selectField={'id'} {...this.props}>
 					<Button bsSize="small" onClick={this.createMission.bind(this)}><Glyphicon glyph="plus" /> Создать задание</Button>
 					<Button bsSize="small" onClick={this.showMission.bind(this)} disabled={this.state.selectedMission === null}><Glyphicon glyph="search" /> Просмотреть задание</Button>
-					<Button bsSize="small" disabled={this.state.selectedMission === null} onClick={this.removeMission.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
+					<Button bsSize="small" disabled={this.state.selectedMission === null || this.state.selectedMission.status === 'assigned'} onClick={this.removeMission.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
 				</MissionsTable>
 				<MissionFormWrap onFormHide={this.onFormHide.bind(this)}
 												 showForm={this.state.showForm}

@@ -5,7 +5,6 @@ import Table from './ui/table/DataTable.jsx';
 import MissionFormWrap from './MissionFormWrap.jsx';
 import moment from 'moment';
 import cx from 'classnames';
-import LoadingPage from './LoadingPage.jsx';
 
 let getTechOperationById = (id) => {
   const { flux } = window.__ETS_CONTAINER__;
@@ -33,13 +32,6 @@ function getStatusLabel(s) {
 	}
 }
 
-// description: "desAAAAe"
-// id: 1
-// mission_source_id: 1
-// name: "test_mission_111"
-// passes_count: 778
-// technical_operation_id: 8
-
 let getTableMeta = (props) => {
 
 	let tableMeta = {
@@ -52,14 +44,6 @@ let getTableMeta = (props) => {
   				type: 'select'
   			}
       },
-			// {
-			// 	name: 'id',
-			// 	caption: 'Идентификатор',
-			// 	type: 'number',
-			// 	filter: {
-			// 		type: 'select'
-			// 	}
-			// },
       {
 				name: 'mission_source_id',
 				caption: 'Источник',
@@ -140,7 +124,6 @@ class MissionsJournal extends Component {
 
 		this.state = {
 			selectedMission: null,
-			loading: true,
 		};
 	}
 
@@ -167,14 +150,11 @@ class MissionsJournal extends Component {
 
 	componentDidMount() {
 		const { flux } = this.context;
-		flux.getActions('missions').getMissions().then( () => {
-			this.setState({loading: false});
-		});
+		flux.getActions('missions').getMissions();
     flux.getActions('objects').getWorkKinds();
     flux.getActions('objects').getTechOperations();
     flux.getActions('objects').getRoutes();
     flux.getActions('missions').getMissionSources();
-
 	}
 
 	removeMission() {
@@ -189,12 +169,6 @@ class MissionsJournal extends Component {
 	}
 
 	render() {
-
-		if (this.state.loading) {
-			 return <LoadingPage loaded={this.state.loading}/>;
-		}
-
-    console.log(this.props);
 
 		const { missionsList = [] } = this.props;
 

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import connectToStores from 'flummox/connect';
-import { Modal, Row, Col, FormControls, Button, DropdownButton, Dropdown, Glyphicon } from 'react-bootstrap';
+import { Modal, Row, Col, FormControls, Button, DropdownButton, Dropdown, Glyphicon, MenuItem } from 'react-bootstrap';
 import Datepicker from './ui/DatePicker.jsx';
 import Field from './ui/Field.jsx';
 import Div from './ui/Div.jsx';
@@ -29,7 +29,7 @@ class MissionForm extends Component {
     console.log('submitting mission form', this.props.formState);
     this.props.onSubmit(this.props.formState);
   }
-  
+
 	render() {
 
 		let state = this.props.formState;
@@ -124,6 +124,15 @@ class MissionForm extends Component {
 
 	      <Modal.Footer>
 					<Div hidden={state.status === 'closed'}>
+						<Dropdown id="waybill-print-dropdown" disabled={!this.props.canSave} onSelect={this.props.handlePrint}>
+							<Dropdown.Toggle  disabled={true}>
+								<Glyphicon glyph="print" /> Печать
+							</Dropdown.Toggle>
+							<Dropdown.Menu>
+								<MenuItem eventKey={1}>Форма 3-С</MenuItem>
+								<MenuItem eventKey={2}>Форма 4-П</MenuItem>
+							</Dropdown.Menu>
+						</Dropdown>&nbsp;
 		      	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>{'Сохранить'}</Button>
 					</Div>
 	      </Modal.Footer>

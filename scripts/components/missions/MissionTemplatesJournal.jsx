@@ -5,7 +5,6 @@ import Table from '../ui/table/DataTable.jsx';
 import MissionTemplateFormWrap from './MissionTemplateFormWrap.jsx';
 import moment from 'moment';
 import cx from 'classnames';
-import LoadingPage from '../LoadingPage.jsx';
 
 let getTechOperationById = (id) => {
   const { flux } = window.__ETS_CONTAINER__;
@@ -33,47 +32,15 @@ function getStatusLabel(s) {
 	}
 }
 
-// description: "desAAAAe"
-// id: 1
-// mission_source_id: 1
-// name: "test_mission_111"
-// passes_count: 778
-// technical_operation_id: 8
-
 let getTableMeta = (props) => {
 
 	let tableMeta = {
 		cols: [
-			// {
-			// 	name: 'id',
-			// 	caption: 'Идентификатор',
-			// 	type: 'number',
-			// 	filter: {
-			// 		type: 'select'
-			// 	}
-			// },
-      // {
-			// 	name: 'mission_source_id',
-			// 	caption: 'Источник',
-			// 	type: 'number',
-			// 	filter: {
-			// 		type: 'select',
-      //     labelFunction: (id) => getMissionSourceById(id).name || id,
-			// 	}
-			// },
 			{
 				name: 'number',
 				caption: 'Номер',
 				type: 'number',
 			},
-			// {
-			// 	name: 'date_create',
-			// 	caption: 'Дата выдачи',
-			// 	type: 'date',
-			// 	filter: {
-			// 		type: 'select',
-			// 	}
-			// }
       {
 				name: 'name',
 				caption: 'Название',
@@ -82,14 +49,6 @@ let getTableMeta = (props) => {
 				// 	type: 'select'
 				// }
 			},
-      // {
-			// 	name: 'description',
-			// 	caption: 'Описание',
-			// 	type: 'string',
-			// 	// filter: {
-			// 	// 	type: 'select'
-			// 	// }
-			// },
       {
 				name: 'passes_count',
 				caption: 'Количество проходов',
@@ -119,7 +78,6 @@ let MissionsTable = (props) => {
 
 		const renderers = {
 			technical_operation_id: ({data}) => <div>{getTechOperationById(data).name || data}</div>,
-      //mission_source_id: ({data}) => <div>{getMissionSourceById(data).name || data}</div>,
 		};
 
 		return <Table title="Шаблоны заданий"
@@ -137,7 +95,6 @@ class MissionsJournal extends Component {
 
 		this.state = {
 			selectedMission: null,
-			loading: true,
 		};
 	}
 
@@ -164,14 +121,11 @@ class MissionsJournal extends Component {
 
 	componentDidMount() {
 		const { flux } = this.context;
-		flux.getActions('missions').getMissionTemplates().then( () => {
-			this.setState({loading: false});
-		});
+		flux.getActions('missions').getMissionTemplates();
     flux.getActions('objects').getWorkKinds();
     flux.getActions('objects').getTechOperations();
     flux.getActions('objects').getRoutes();
     flux.getActions('missions').getMissionSources();
-
 	}
 
 	removeMission() {
@@ -187,12 +141,6 @@ class MissionsJournal extends Component {
 
 	render() {
 
-		if (this.state.loading) {
-			 return <LoadingPage loaded={this.state.loading}/>;
-		}
-
-    console.log(this.props);
-
 		const { missionTemplatesList = [] } = this.props;
 
 		let showCloseBtn = this.state.selectedMission !== null && this.state.selectedMission.status !== 'active';
@@ -201,6 +149,7 @@ class MissionsJournal extends Component {
 			<div className="ets-page-wrap">
 				<MissionsTable data={missionTemplatesList} onRowSelected={this.selectMission.bind(this)} selected={this.state.selectedMission} selectField={'id'} {...this.props}>
 					<Button bsSize="small" onClick={this.createMission.bind(this)}><Glyphicon glyph="plus" /> Создать шаблон задания</Button>
+					<Button bsSize="small" onClick={this.showMission.bind(this)} disabled={true}>Сформировать задание</Button>
 					<Button bsSize="small" onClick={this.showMission.bind(this)} disabled={this.state.selectedMission === null}><Glyphicon glyph="search" /> Просмотреть шаблон</Button>
 					<Button bsSize="small" disabled={this.state.selectedMission === null} onClick={this.removeMission.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
 				</MissionsTable>

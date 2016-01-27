@@ -1,17 +1,16 @@
 import {getRoadByODHId, getRoadsActual} from '../scripts/adapter.js';
 
-
 let ACTUAL_ROADS = [];
 // getRoadsActual().then(r => {
 // 	ACTUAL_ROADS = r;
-// 	//console.log('actual roads loaded', ACTUAL_ROADS)
+// 	console.log('actual roads loaded', ACTUAL_ROADS)
 // });
 
 let ACTUAL_DTS = []
 
 // fetch('http://ods.mos.ru/ssd/city-dashboard/dt_list/').then(r=>r.json()).then(r=> {
 // 	ACTUAL_DTS = r;
-// 	//console.log('actual dts loaded', ACTUAL_DTS)
+// 	console.log('actual dts loaded', ACTUAL_DTS)
 // });
 
 let LIST =  [

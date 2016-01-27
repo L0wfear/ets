@@ -1942,6 +1942,34 @@ body {
   }
 }
 
+.routes-form-map-wrapper {
+  .route-odhs-on-map {
+    position: relative;
+    height: 500px;
+    width: 600px;
+    border-radius: 5px;
+    border: 4px solid #ccc;
+  }
+  .route-odhs-list {
+    position:absolute;
+    left:620px;
+    width:380px;
+    margin-top:-15px;
+    ul {
+      margin-left:-20px;
+      li {
+        display: block;
+        max-width: 240px;
+      }
+      li:before{
+        content: "";
+        display: list-item;
+        position: absolute;
+      }
+    }
+  }
+}
+
 .modal-header {
     background-color: #C2CAE0;
 

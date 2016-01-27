@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import _ from 'lodash';
-import Form from './Form.jsx';
+import RouteForm from './RouteForm.jsx';
 
 export default class FormWrap extends Component {
 
@@ -20,10 +20,11 @@ export default class FormWrap extends Component {
 	}
 
 	componentWillReceiveProps(props) {
-
+    console.log('DWQWKINFQWIFHJIPWFQJIPWFJQPIWJFQPOi')
 		if (props.showForm) {
 			if (props.element !== null ) {
         const formState = Object.assign({}, props.element);
+        console.log(formState)
         this.setState({formState});
 			} else {
         this.setState({formState: {}});
@@ -42,12 +43,13 @@ export default class FormWrap extends Component {
 
 		newState.formState = formState;
 
-		this.setState(newState)
+		this.setState(newState);
 	}
 
 	handleFormSubmit(formState) {
 		const { flux } = this.context;
 		//flux.getActions('car').updateCarAdditionalInfo(formState);
+    this.props.onSubmit(formState);
 		this.props.onFormHide();
 	}
 
@@ -56,15 +58,13 @@ export default class FormWrap extends Component {
 		let props = this.props;
 
 		return props.showForm ?
-    <Form formState = {this.state.formState}
-					onSubmit={this.handleFormSubmit.bind(this)}
-					handleFormChange={this.handleFormStateChange.bind(this)}
-					show={this.props.showForm}
-					onHide={this.props.onFormHide}
-          tableMeta={this.props.tableMeta}
-          title={this.props.title}
-					{...this.state}/>
-					: null;
+    <RouteForm formState = {this.state.formState}
+      					onSubmit={this.handleFormSubmit.bind(this)}
+      					handleFormChange={this.handleFormStateChange.bind(this)}
+      					show={this.props.showForm}
+      					onHide={this.props.onFormHide}
+      					{...this.state}/>
+      					: null;
 
 	}
 

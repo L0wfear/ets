@@ -1,11 +1,6 @@
 import React, {Component} from 'react';
-import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
+import { Modal, Row, Col, Button, Dropdown, Glyphicon } from 'react-bootstrap';
 import FieldWrap from '../FieldWrap.jsx';
-import EtsSelect from '../EtsSelect.jsx';
-import Datepicker from '../DatePicker.jsx';
-import moment from 'moment';
-import Div from '../Div.jsx';
-import config from '../../../config.js';
 
 export default class Form extends Component {
 

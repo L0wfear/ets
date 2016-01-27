@@ -95,13 +95,15 @@ export default class OpenLayersMap extends Component {
     //debugger;
 
     _.each(polys, (poly, key) => {
+      console.log(poly.state, polyState.SELECTABLE);
       //debugger;
       let feature = new ol.Feature({
         geometry: GeoJSON.readGeometry(poly.shape),
         name: poly.name,
         id: key,
-        state: polyState.SELECTABLE
+        state: poly.state,
       });
+      feature.setStyle(polyStyles[poly.state]);
 
       vectorSource.addFeature(feature);
       //featuresJSON.readFeature(feature)

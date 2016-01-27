@@ -34,11 +34,18 @@ export default class RouteCreating extends Component {
 			}
 
 			this.setState({odhs});
-			this.props.onSelect(odhs);
+			this.props.onChange('odhs', odhs);
 		}
+
+		// handleChange(field, value) {
+		// 	const { route } = this.props;
+		// 	route[field] = value;
+		// 	this.props.onChange(route);
+		// }
 
 		onFeatureClick(feature, ev, map) {
 			let {id, name, state} = feature.getProperties();
+			const { polys } = this.props.route;
 
 			if (state) {
 				let nextState;
@@ -51,9 +58,10 @@ export default class RouteCreating extends Component {
 					nextState = polyState.SELECTABLE;
 				}
 
-				feature.set('state', nextState);
-				feature.setStyle(polyStyles[nextState]);
-
+				polys[id].state = nextState;
+				//feature.set('state', nextState);
+				//feature.setStyle(polyStyles[nextState]);
+				this.props.onChange('polys', polys);
 				this.setODH(id, name, nextState);
 			}
 
@@ -65,7 +73,7 @@ export default class RouteCreating extends Component {
 
 			return (
 				<div>
-					<div className="route-name"> Создание нового маршрута {route.name} </div>
+					{/*<div className="route-name"> Создание нового маршрута {route.name} </div>*/}
 					<div className="route-odhs-on-map">
 						<Map
 								onFeatureClick={this.onFeatureClick.bind(this)}

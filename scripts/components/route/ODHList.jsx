@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { polyState  } from '../../constants/polygons.js';
+import { polyState } from '../../constants/polygons.js';
 
 const ODHList = (props) => {
 	let ODHS = [];
 
-	_.each(props.odhs, (odh, index) => {
+	_.each(props.object_list, (odh, index) => {
+		console.log(odh);
 		if (props.showSelectable || odh.state !== polyState.SELECTABLE) {
 			let speed_type = odh.state === polyState.IDLE ? 'холостой' : 'рабочий';
 			ODHS.push(<li key={index}>{`${odh.name} (${speed_type} ход)`}</li>);

@@ -7,7 +7,7 @@ import WaybillJournal from './WaybillJournal.jsx';
 import MissionsJournal from './MissionsJournal.jsx';
 import MissionTemplatesJournal from './missions/MissionTemplatesJournal.jsx';
 import WaybillForm from './WaybillForm.jsx';
-import RoutesList from './RoutesList.jsx';
+import RoutesList from './route/RoutesList.jsx';
 import MainPage from './MainPage.jsx';
 import MonitorPage from './MonitorPage.jsx';
 import LoadingPage from './LoadingPage.jsx';

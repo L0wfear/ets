@@ -19,14 +19,14 @@ export default class RouteInfo extends Component {
 			return  <div>
 				<div className="route-name"> {route.name} </div>
 				<div className="route-odhs-on-map">
-						<Map 
+						<Map
 								onFeatureClick={this.onFeatureClick.bind(this)}
 								zoom={MAP_INITIAL_ZOOM}
 	            	center={MAP_INITIAL_CENTER}
 	            	polys={route.polys}/>
 	          <div className="route-odhs-list">
 	          	<h4>Список ОДХ/ДТ</h4>
-	          	<ODHList showSelectable={true} odhs={route.polys}/>
+	          	<ODHList showSelectable={true} object_list={route.object_list}/>
 	          </div>
 					</div>
 				</div>

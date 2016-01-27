@@ -20,11 +20,9 @@ export default class FormWrap extends Component {
 	}
 
 	componentWillReceiveProps(props) {
-    console.log('DWQWKINFQWIFHJIPWFQJIPWFJQPIWJFQPOi')
 		if (props.showForm) {
 			if (props.element !== null ) {
-        const formState = Object.assign({}, props.element);
-        console.log(formState)
+        const formState = _.cloneDeep(props.element);
         this.setState({formState});
 			} else {
         this.setState({formState: {}});
@@ -48,7 +46,6 @@ export default class FormWrap extends Component {
 
 	handleFormSubmit(formState) {
 		const { flux } = this.context;
-		//flux.getActions('car').updateCarAdditionalInfo(formState);
     this.props.onSubmit(formState);
 		this.props.onFormHide();
 	}

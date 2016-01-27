@@ -22,10 +22,6 @@ export default class Form extends Component {
   }
 
 	componentDidMount() {
-    //const car = this.props.formState;
-    // getCarImage(car.asuods_id, car.type_id, car.model_id).then( (imageUrl) => {
-    //   this.setState({imageUrl})
-    // });
 	}
 
 	render() {

@@ -95,7 +95,6 @@ export default class OpenLayersMap extends Component {
     //debugger;
 
     _.each(polys, (poly, key) => {
-      console.log(poly.state, polyState.SELECTABLE);
       //debugger;
       let feature = new ol.Feature({
         geometry: GeoJSON.readGeometry(poly.shape),
@@ -138,8 +137,6 @@ export default class OpenLayersMap extends Component {
    * initialization here
    */
   componentDidMount() {
-
-    console.log('POLYMAP MOUNT', this.props);
 
     let map = this.map;
     let triggerRenderFn = this.triggerRender.bind(this);
@@ -199,7 +196,6 @@ export default class OpenLayersMap extends Component {
   }
 
   render() {
-    console.warn('RENDER POLYMAP')
     return (<div>
               <div ref="container" style={{opacity: this.props.errorLoading ? .4 : 1}} className="openlayers-container"/>
             </div>)
@@ -250,12 +246,8 @@ export default class OpenLayersMap extends Component {
 
 
   componentWillReceiveProps(nextProps) {
-
-    console.log('RECEIVING PROPS', nextProps);
-
     if (nextProps.polys !== undefined) {
       this.popup.hide()
-      console.log('received new polys');
       this.renderODHs(nextProps.polys)
     }
   }

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Map from '../map/PolyMap.jsx';
 import ODHList from './ODHList.jsx';
+import _ from 'lodash';
 
 import {polyStyles, polyState} from '../../constants/polygons.js';
 
@@ -14,7 +15,6 @@ export default class RouteCreating extends Component {
 			super(props);
 
 			this.state = {
-				odhs: {},
 				routeName: ''
 			};
 
@@ -22,26 +22,23 @@ export default class RouteCreating extends Component {
 
 		setODH(id, name, state) {
 
-			console.log( 'set odh', arguments)
-			let odhs = this.state.odhs;
+			console.log('set odh', arguments)
+
+			const { object_list } = this.props.route;
+			const objectIndex = _.findIndex(object_list, o => o.id === id);
 
 			if (state === polyState.SELECTABLE) {
-				delete odhs[id]
+				object_list.splice(objectIndex, 1);
 			} else {
-				odhs[id] = {
-					state, name, id
+				if (objectIndex > -1) {
+					object_list[objectIndex] = {id, type: 'odh', name, state};
+				} else {
+					object_list.push({id, type: 'odh', name, state});
 				}
 			}
 
-			this.setState({odhs});
-			this.props.onChange('odhs', odhs);
+			this.props.onChange('object_list', object_list);
 		}
-
-		// handleChange(field, value) {
-		// 	const { route } = this.props;
-		// 	route[field] = value;
-		// 	this.props.onChange(route);
-		// }
 
 		onFeatureClick(feature, ev, map) {
 			let {id, name, state} = feature.getProperties();
@@ -59,8 +56,6 @@ export default class RouteCreating extends Component {
 				}
 
 				polys[id].state = nextState;
-				//feature.set('state', nextState);
-				//feature.setStyle(polyStyles[nextState]);
 				this.props.onChange('polys', polys);
 				this.setODH(id, name, nextState);
 			}
@@ -82,7 +77,7 @@ export default class RouteCreating extends Component {
 	            	polys={route.polys}/>
 	          <div className="route-odhs-list">
 	          	<h4>Список ОДХ/ДТ</h4>
-	          	<ODHList odhs={this.state.odhs}/>
+	          	<ODHList object_list={route.object_list}/>
 	          </div>
 					</div>
 				</div>

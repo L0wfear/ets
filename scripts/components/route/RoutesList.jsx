@@ -1,39 +1,32 @@
 import React, {Component} from 'react';
 import classname from 'classnames';
 import { Button } from 'react-bootstrap';
-
-import {getList} from '../stores/RoutesStore.js';
-import RouteInfo from './route/RouteInfo.jsx';
-import RouteCreating from './route/RouteCreating.jsx';
-import RouteFormWrap from './route/RouteFormWrap.jsx';
-import Div from './ui/Div.jsx';
+import {getList} from '../../stores/RoutesStore.js';
+import RouteInfo from './RouteInfo.jsx';
+import RouteCreating from './RouteCreating.jsx';
+import RouteFormWrap from './RouteFormWrap.jsx';
+import Div from '../ui/Div.jsx';
 import _ from 'lodash';
 import cx from 'classnames';
 
 let ROUTES = getList();
 let CURRENT_ROUTE_ID = 4;
 
-let ACTUAL_ROADS = [];
-
 const ORG_ODHS = ROUTES[0].polys; // список возможных для выбора ОДХ организации
-const ORG_ODH_POYS = ROUTES[0].polys;// список возможных для выбора ОДХ организации
-
-const ORG_DTS = []; // список возможных для выбора ДТ организации
 
 ROUTES.map((route) => {
 	_.each(route.polys, (poly) => poly.state = 1);
 	return route;
 })
 
+let NEW_ROUTES = [];
+
 // TODO odh : { poly, polyState }
 let newRoute = {
-				name: '',
-				odhs: [],
-				dts: [],
-				odhNames: [],
-				dtNames: [],
-				polys: ORG_ODHS,
-			};
+	name: '',
+	polys: ORG_ODHS,
+	object_list: [],
+};
 
 
 export default class RoutesList extends Component {
@@ -61,13 +54,22 @@ export default class RoutesList extends Component {
 				})
 				console.log( 'route selected', route);
 			}
-		})
+		});
+
+		const route = _.find(NEW_ROUTES, r => r.id === id);
+		if (route) {
+			this.setState({
+				selectedRoute: route,
+				routeCreating: false
+			});
+			console.log( 'route selected', route);
+		}
 
 	}
 
 	createRoute() {
 
-		let newR = _.clone(newRoute);
+		let newR = _.cloneDeep(newRoute);
 		newR.id = CURRENT_ROUTE_ID;
 		newR.title = `Новый маршрут ${CURRENT_ROUTE_ID - 3}`;
 		CURRENT_ROUTE_ID++;
@@ -88,19 +90,15 @@ export default class RoutesList extends Component {
 	}
 
 	saveRoute(route) {
-		const newR = _.clone(route);
-		let newOdhs = [];
+		const newR = _.cloneDeep(route);
 		let newPolys = {};
-		_.mapKeys(newR.odhs, (v, k) => {
-			//console.log(v);
-			newOdhs.push(k);
-			newRoute.polys[k].state = 1;
-			newPolys[k] = newRoute.polys[k];
-			newR.odhNames.push(v.name);
+		_.mapKeys(newR.object_list, (o, i) => {
+			const newPoly = _.cloneDeep(newRoute.polys[o.id]);
+			newPoly.state = o.state;
+			newPolys[o.id] = newPoly;
 		});
-		newR.polys = newPolys;//_.clone(newRoute.odhs);
-		newR.odhs = newOdhs;
-		ROUTES.push(newR);
+		newR.polys = newPolys;
+		NEW_ROUTES.push(newR);
 		this.setState({
 			routeCreating: false,
 			routeEditing: false,
@@ -115,7 +113,7 @@ export default class RoutesList extends Component {
 	onFormHide() {
 		this.setState({
 			showForm: false,
-			selectedBill: null,
+			selectedRoute: null,
 		})
 	}
 
@@ -126,14 +124,13 @@ export default class RoutesList extends Component {
 		let route = this.state.selectedRoute;
 		let state = this.state;
 
-		let routesList = ROUTES.map((r, i) => {
+		let routesList = NEW_ROUTES.map((r, i) => {
 			let cn = cx('list-group-item', {'active': route && r.id === route.id});
 			return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name || r.title}</li>
 		});
 
 		let IS_CREATING = this.state.routeCreating;
 		let IS_EDITING = this.state.routeEditing;
-		console.log(IS_CREATING, IS_EDITING, route);
 
 		return <div className="ets-page-wrap routes-list">
 			<p className="some-header">Список маршрутов "Жилищник Крылатское"</p>

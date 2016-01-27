@@ -5,6 +5,7 @@ import Div from './ui/Div.jsx';
 import MissionForm from './MissionForm.jsx';
 import { getDefaultMission } from '../stores/MissionsStore.js';
 import { isNotNull, isEmpty } from '../utils/functions.js';
+import { getDateWithoutTZ } from '../utils/dates.js';
 import { validateRow } from '../validate/validateRow.js';
 import { missionSchema, missionClosingSchema } from './models/MissionModel.js';
 
@@ -18,14 +19,11 @@ let validateMission = (mission, errors) => {
 	return missionErrors;
 };
 
-const formStages = ['creating', 'post-creating', 'display', 'closing'];
-
 class MissionFormWrap extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			formStage: formStages[0],
 			formState: null,
 			formErrors: {},
 			canSave: false,
@@ -40,16 +38,17 @@ class MissionFormWrap extends Component {
 				const defaultMission = getDefaultMission();
 				this.setState({
 					formState: defaultMission,
-					formStage: formStages[0],
 					canSave: false,
 					formErrors: validateMission(defaultMission, {}),
 				})
 			} else {
-				let _mission = _.clone(props.mission);
+				let mission = _.clone(props.mission);
+
+				mission.date_start = getDateWithoutTZ(mission.date_start);
+				mission.date_end = getDateWithoutTZ(mission.date_end);
 
 				this.setState({
-					formState: _mission,
-					formStage: formStages[2],
+					formState: mission,
 					//formErrors: validateMission(defaultMission, {}),
 					canSave: true,
 				});
@@ -62,7 +61,7 @@ class MissionFormWrap extends Component {
 	handleFormStateChange(field, e) {
 		console.log('mission form changed', field, e)
 		const value = !!e.target ? e.target.value : e;
-		let { formState, formStage, formErrors } = this.state;
+		let { formState, formErrors } = this.state;
 		let newState = {};
 		formState[field] = value;
 
@@ -72,21 +71,14 @@ class MissionFormWrap extends Component {
 		console.log(formErrors);
 		newState.formState = formState;
 		newState.formErrors = formErrors;
-		newState.formStage = formStage;
 
 		this.setState(newState);
 	}
 
 	handleFormSubmit(formState) {
-		//let billStatus = formState.status;
-		let stage = this.state.formStage;
 		const { flux } = this.context;
-
-		//if (stage === 'creating') {
-			//formState.status = 'draft';
-			flux.getActions('missions').createMission(formState);
-			this.props.onFormHide();
-		//}
+		flux.getActions('missions').createMission(formState);
+		this.props.onFormHide();
 
 		return;
 	}

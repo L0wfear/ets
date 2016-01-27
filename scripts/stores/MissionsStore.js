@@ -1,5 +1,6 @@
 import { Store } from 'flummox';
 import _ from 'lodash';
+import { getToday9am, getTomorrow9am } from '../utils/dates.js';
 
 class MissionsStore extends Store {
 
@@ -48,6 +49,8 @@ export default MissionsStore;
 export function getDefaultMission() {
   return {
     description: "",
+    date_start: getToday9am(),
+    date_end: getTomorrow9am(),
     //id: 1
     //mission_source_id: 1
     //name: "test_mission_111"

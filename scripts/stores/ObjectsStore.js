@@ -103,6 +103,10 @@ class ObjectsStore extends Store {
     return _.find(this.state.carsList, c => c.asuods_id === asuods_id) || {};
   }
 
+  getRouteById(id) {
+    return _.find(this.state.routesList, r => r.id === id) || {};
+  }
+
 
 }
 

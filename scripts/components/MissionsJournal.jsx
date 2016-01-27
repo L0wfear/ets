@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import { Button, Glyphicon } from 'react-bootstrap';
 import Table from './ui/table/DataTable.jsx';
+import { getFormattedDateTime } from '../utils/dates.js';
 import MissionFormWrap from './MissionFormWrap.jsx';
 import moment from 'moment';
 import cx from 'classnames';
@@ -16,6 +17,12 @@ let getMissionSourceById = (id) => {
   const { flux } = window.__ETS_CONTAINER__;
   const missionsStore = flux.getStore('missions');
   return missionsStore.getMissionSourceById(id);
+};
+
+let getRouteById = (id) => {
+  const { flux } = window.__ETS_CONTAINER__;
+  const objectsStore = flux.getStore('objects');
+  return objectsStore.getRouteById(id);
 };
 
 
@@ -53,7 +60,7 @@ let getTableMeta = (props) => {
         filter: {
   				type: 'select'
   			},
-        cssClassName: 'width120',
+        cssClassName: 'width60',
       },
       {
 				name: 'mission_source_id',
@@ -90,6 +97,34 @@ let getTableMeta = (props) => {
 			// 	// }
 			// },
       {
+				name: 'date_start',
+				caption: 'Начало',
+				type: 'date',
+				filter: {
+					type: 'select',
+          labelFunction: (date) => getFormattedDateTime(date),
+				},
+			},
+      {
+				name: 'date_end',
+				caption: 'Завершение',
+				type: 'date',
+				filter: {
+					type: 'select',
+          labelFunction: (date) => getFormattedDateTime(date),
+				},
+			},
+      {
+				name: 'route_id',
+				caption: 'Маршрут',
+				type: 'number',
+				filter: {
+					type: 'select',
+          labelFunction: (id) => getRouteById(id).name || id,
+				},
+        cssClassName: 'width120',
+			},
+      {
 				name: 'passes_count',
 				caption: 'Количество проходов',
 				type: 'number',
@@ -120,7 +155,10 @@ let MissionsTable = (props) => {
 		const renderers = {
 			technical_operation_id: ({data}) => <div>{getTechOperationById(data).name || data}</div>,
       mission_source_id: ({data}) => <div>{getMissionSourceById(data).name || data}</div>,
-      status: ({data}) => <div>{getStatusLabel(data)}</div>
+      status: ({data}) => <div>{getStatusLabel(data)}</div>,
+      route_id: ({data}) => <div>{getRouteById(data).name || data}</div>,
+      date_start: ({data}) => <div>{getFormattedDateTime(data)}</div>,
+      date_end: ({data}) => <div>{getFormattedDateTime(data)}</div>,
 		};
 
 		return <Table title="Журнал заданий"

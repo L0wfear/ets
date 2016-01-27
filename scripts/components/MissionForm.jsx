@@ -33,7 +33,6 @@ class MissionForm extends Component {
 	render() {
 
 		let state = this.props.formState;
-    let stage = this.props.formStage;
 		let errors = this.props.formErrors;
 
 		const { workKindsList = [], techOperationsList = [], missionSourcesList = [], routesList = [], carsList = [] } = this.props;
@@ -44,11 +43,11 @@ class MissionForm extends Component {
     const ROUTES = routesList.map(({id, name}) => ({value: id, label: name}));
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: c.gov_number + ' [' + c.model + ']'}));
 
-    console.log('form stage is ', stage, 'form state is ', state);
+    console.log('form state is ', state);
 
-		let IS_CREATING = stage === 'creating';
-		let IS_CLOSING = stage === 'closing';
-    let IS_POST_CREATING = stage === 'post-creating'
+		let IS_CREATING = !!!state.status;
+		let IS_CLOSING = false;
+    let IS_POST_CREATING = false;
 		let IS_DISPLAY = !!state.status && state.status !== 'not_assigned';
 
     let title = `Задание № ${state.number || ''}`;
@@ -83,13 +82,11 @@ class MissionForm extends Component {
 
 				 		<Col md={3}>
 				   		<label>Время выполнения</label>
-				 			<Div>c <Datepicker date={ getDateWithoutTZ(state.plan_departure_date) } onChange={this.handleChange.bind(this, 'plan_departure_date')}
-											disabled={IS_DISPLAY}/></Div>
+				 			<Div>c <Datepicker date={ getDateWithoutTZ(state.date_start) } onChange={this.handleChange.bind(this, 'date_start')} disabled={IS_DISPLAY}/></Div>
 				   	</Col>
 				   	<Col md={3}>
               <label style={{minHeight: 15}}></label>
-				 			<Div>по <Datepicker date={ getDateWithoutTZ(state.plan_departure_date) } onChange={this.handleChange.bind(this, 'plan_departure_date')}
-											disabled={IS_DISPLAY}/></Div>
+				 			<Div>по <Datepicker date={ getDateWithoutTZ(state.date_end) } onChange={this.handleChange.bind(this, 'date_end')} disabled={IS_DISPLAY}/></Div>
 				   	</Col>
 					</Row>
 

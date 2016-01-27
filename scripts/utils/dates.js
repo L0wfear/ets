@@ -30,6 +30,11 @@ export function createValidDateTime(date){
   return moment(date).format('YYYY-MM-DDTHH:mm:ss');
 }
 
+export function getFormattedDateTime(date){
+  if (!date) return '';
+  return moment.utc(date).format('YYYY-MM-DD HH:mm');
+}
+
 export function getToday9am() {
   let now = new Date();
 

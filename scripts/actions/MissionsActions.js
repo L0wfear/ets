@@ -1,6 +1,7 @@
 import { Actions } from 'flummox';
 import { getMissions, getMissionSources, createMission, removeMission, updateMission, getMissionTemplates, createMissionTemplate, removeMissionTemplate } from '../adapter.js';
 import _ from 'lodash';
+import { createValidDateTime } from '../utils/dates.js';
 
 export default class MissionsActions extends Actions {
 
@@ -14,6 +15,8 @@ export default class MissionsActions extends Actions {
 
   createMission(mission) {
     const payload = _.clone(mission);
+    payload.date_start = createValidDateTime(payload.date_start);
+    payload.date_end = createValidDateTime(payload.date_end);
     return createMission(payload);
   }
 

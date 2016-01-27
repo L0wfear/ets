@@ -138,6 +138,7 @@ export default class Taxes extends Component {
     tableData.splice(this.state.selectedOperation, 1);
     tableData[tableData.length - 1].RESULT = calculateResult(tableData);
     this.setState({tableData});
+    this.props.onChange(tableData);
   }
 
   componentWillReceiveProps(props) {
@@ -159,7 +160,7 @@ export default class Taxes extends Component {
 		return (
       <Div className="taxi-calc-block" hidden={this.props.hidden}>
         <Div className="some-header">
-          Расчет топлива по норме
+          <h4>Расчет топлива по норме</h4>
           <Div className="waybills-buttons" hidden={this.props.readOnly}>
             <Button bsSize="xsmall" onClick={this.addOperation.bind(this)}>
               Добавить операцию
@@ -169,14 +170,16 @@ export default class Taxes extends Component {
             </Button>
           </Div>
         </Div>
-    		<Table title="Расчет топлива по норме"
-    					 columnCaptions={this.tableCaptions}
-							 data={taxes}
-							 tableCols={this.tableCols}
-							 pageSize={20}
-							 usePagination={false}
-							 cellRenderers={this.tableCellRenderers}
-               onRowSelected={!this.props.readOnly ? this.selectOperation.bind(this) : undefined} />
+        <Div hidden={taxes.length === 1}>
+          <Table title="Расчет топлива по норме"
+                 columnCaptions={this.tableCaptions}
+                 data={taxes}
+                 tableCols={this.tableCols}
+                 pageSize={20}
+                 usePagination={false}
+                 cellRenderers={this.tableCellRenderers}
+                 onRowSelected={!this.props.readOnly ? this.selectOperation.bind(this) : undefined} />
+        </Div>
 			</Div>
     );
 

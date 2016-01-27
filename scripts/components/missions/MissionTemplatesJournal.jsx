@@ -40,6 +40,7 @@ let getTableMeta = (props) => {
 				name: 'number',
 				caption: 'Номер',
 				type: 'number',
+        cssClassName: 'width60'
 			},
       {
 				name: 'name',
@@ -55,7 +56,8 @@ let getTableMeta = (props) => {
 				type: 'number',
 				filter: {
 					type: 'select'
-				}
+				},
+        cssClassName: 'width120'
 			},
       {
 				name: 'technical_operation_id',

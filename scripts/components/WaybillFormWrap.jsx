@@ -50,14 +50,11 @@ let validateClosingWaybill = (waybill, errors) => {
 	return waybillErrors;
 };
 
-const formStages = ['creating', 'post-creating', 'display', 'closing'];
-
 class WaybillFormWrap extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			formStage: formStages[0],
 			formState: null,
 			formErrors: {},
 			canSave: false,
@@ -72,7 +69,6 @@ class WaybillFormWrap extends Component {
 				const defaultBill = getDefaultBill();
 				this.setState({
 					formState: defaultBill,
-					formStage: formStages[0],
 					canSave: false,
 					formErrors: validateWaybill(defaultBill, {}),
 				})
@@ -87,7 +83,6 @@ class WaybillFormWrap extends Component {
 
 					this.setState({
 						formState: _bill,
-						formStage: formStages[3],
 						formErrors: validateClosingWaybill(_bill, {}),
 						canPrint: false,
 						canSave: false,
@@ -104,7 +99,6 @@ class WaybillFormWrap extends Component {
 
 					this.setState({
 						formState: _bill,
-						formStage: formStages[1],
 						canPrint: true,
 						canSave: true,
 						formErrors: {}
@@ -112,8 +106,8 @@ class WaybillFormWrap extends Component {
 				} else {
 					let _bill = _.clone(props.bill);
 
-					if (_bill.data && _bill.data.taxes) {
-						_bill.taxes = _bill.data.taxes;
+					if (_bill.array_agg && _bill.array_agg.taxes) {
+						_bill.taxes = _bill.array_agg.taxes;
 					}
 					if (isNotNull(_bill.odometr_end) && isNotNull(_bill.odometr_start)) {
 						_bill.odometr_diff = _bill.odometr_end - _bill.odometr_start;
@@ -127,7 +121,6 @@ class WaybillFormWrap extends Component {
 
 					this.setState({
 						formState: _bill,
-						formStage: formStages[2],
 						formErrors: {}
 					});
 				}
@@ -140,34 +133,33 @@ class WaybillFormWrap extends Component {
 	handleFormStateChange(field, e) {
 		console.log('waybill form changed', field, e)
 		const value = !!e.target ? e.target.value : e;
-		let { formState, formStage, formErrors } = this.state;
+		let { formState, formErrors } = this.state;
 		let newState = {};
 		formState[field] = value;
 
 		// validation
-		if (formStage === 'creating' || formStage === 'post-creating') {
+		if (!!!formState.status || formState.status === 'draft') {
 			formErrors = validateWaybill(formState, formErrors);
-		} else if (formStage === 'closing') {
+		} else if (formState.status && formState.status === 'active') {
 			formErrors = validateClosingWaybill(formState, formErrors);
 		}
 
 		// /validation
 		newState.canSave = _(formErrors).map(v => !!v).filter(e => e === true).value().length === 0;
 
-		if (field === 'odometr_end' && formStage !== 'creating') {
+		if (field === 'odometr_end' && formState.status) {
 			formState.odometr_diff = formState.odometr_end - formState.odometr_start;
 		}
-		if (field === 'motohours_end' && formStage !== 'creating') {
+		if (field === 'motohours_end' && formState.status) {
 			formState.motohours_diff = formState.motohours_end - formState.motohours_start;
 		}
-		if (field === 'motohours_equip_end' && formStage !== 'creating') {
+		if (field === 'motohours_equip_end' && formState.status) {
 			formState.motohours_equip_diff = formState.motohours_equip_end - formState.motohours_equip_start;
 		}
 
 		console.log(formErrors);
 		newState.formState = formState;
 		newState.formErrors = formErrors;
-		newState.formStage = formStage;
 
 		this.setState(newState);
 	}
@@ -190,10 +182,9 @@ class WaybillFormWrap extends Component {
 
 	handleFormSubmit(formState, callback) {
 		let billStatus = formState.status;
-		let stage = this.state.formStage;
 		const { flux, setLoading } = this.context;
 
-		if (stage === 'creating') {
+		if (!!!billStatus) {
 			if (typeof callback === 'function') {
 				formState.status = 'draft';
 				flux.getActions('waybills').createWaybill(formState).then((r) => {
@@ -209,7 +200,7 @@ class WaybillFormWrap extends Component {
 				flux.getActions('waybills').createWaybill(formState);
 			}
 			this.props.onFormHide();
-		} else if (formState.status === 'draft') {
+		} else if (billStatus === 'draft') {
 			if (typeof callback === 'function') {
 				formState.status = 'active';
 				flux.getActions('waybills').updateWaybill(formState).then(() => {
@@ -220,7 +211,7 @@ class WaybillFormWrap extends Component {
 				flux.getActions('waybills').updateWaybill(formState);
 				this.props.onFormHide();
 			}
-		} else if (stage === 'closing') {
+		} else if (billStatus === 'active') {
 			formState.status = 'closed';
 			flux.getActions('waybills').updateWaybill(formState);
 			this.props.onFormHide();

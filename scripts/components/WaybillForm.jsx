@@ -58,7 +58,7 @@ class WaybillForm extends Component {
 
 	componentDidMount() {
 		console.log(this.props);
-		if (this.props.formStage === 'closing') {
+		if (this.props.formState.status && this.props.formState.status === 'active') {
 			const car = _.find(this.props.carsList, c => c.asuods_id === this.props.formState.car_id) || {}
 			const car_model_id = car.model_id;
 			const fuel_correction_rate = car.fuel_correction_rate || null;
@@ -69,7 +69,7 @@ class WaybillForm extends Component {
 					this.setState({fuelRates, operations, fuel_correction_rate});
 				});
 			});
-		} else if (this.props.formStage === 'display') {
+		} else if (this.props.formState.status && this.props.formState.status === 'closed') {
 			getFuelOperations().then( fuelOperations => {
 				this.setState({operations: fuelOperations.result});
 			});
@@ -133,7 +133,6 @@ class WaybillForm extends Component {
 	render() {
 
 		let state = this.props.formState;
-    let stage = this.props.formStage;
 		let errors = this.props.formErrors;
 
 		const { carsList = [], driversList = [], employeesList = [], fuelTypes = [], missionsList = [] } = this.props;
@@ -146,12 +145,12 @@ class WaybillForm extends Component {
 			return {id, value: id, label: `№${number} (${techOperation.name})`};
 		});
 
-    console.log('form stage is ', stage, 'form state is ', state);
+    console.log('form state is ', state);
 
-		let IS_CREATING = stage === 'creating';
-		let IS_CLOSING = stage === 'closing';
-    let IS_POST_CREATING = stage === 'post-creating'
-		let IS_DISPLAY = stage === 'display';
+		let IS_CREATING = !!!state.status;
+		let IS_CLOSING = state.status && state.status === 'active';
+    let IS_POST_CREATING = state.status && state.status === 'draft';
+		let IS_DISPLAY = state.status && state.status === 'closed';
 
     let title = '';
 
@@ -330,7 +329,7 @@ class WaybillForm extends Component {
 	      		</Col>
 
 	      		<Col md={8}>
-							<Taxes hidden={!(IS_DISPLAY || IS_CLOSING) || state.status === 'draft'}
+							<Taxes hidden={!(IS_DISPLAY || IS_CLOSING) || state.status === 'draft' || (IS_DISPLAY && state.taxes && state.taxes.length === 1) || (IS_DISPLAY && !!!state.taxes)}
 										readOnly={!IS_CLOSING}
 										car={getCarById(carsList, state.car_id)}
 										taxes={state.taxes}
@@ -345,7 +344,7 @@ class WaybillForm extends Component {
 											 className="task-container"
 											 options={MISSIONS}
 											 value={_.isArray(state.mission_id_list) && _.filter(state.mission_id_list).length === 0 ? undefined : state.mission_id_list}
-											 disabled={isEmpty(state.car_id)}
+											 disabled={isEmpty(state.car_id) || IS_CLOSING || IS_DISPLAY}
 											 onChange={this.handleChange.bind(this, 'mission_id_list')}/>
 							</Div>
 	      		</Col>
@@ -366,7 +365,7 @@ class WaybillForm extends Component {
 			          </Dropdown.Menu>
 			        </Dropdown>&nbsp;
 						</Div>
-		      	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>{this.props.formStage === 'closing' ? 'Закрыть ПЛ' : 'Сохранить'}</Button>
+		      	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>{this.props.formState.status && this.props.formState.status === 'active' ? 'Закрыть ПЛ' : 'Сохранить'}</Button>
 					</Div>
 	      </Modal.Footer>
 

@@ -19,14 +19,11 @@ let validateMission = (mission, errors) => {
 	return missionErrors;
 };
 
-const formStages = ['creating', 'post-creating', 'display', 'closing'];
-
 class MissionFormWrap extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			formStage: formStages[0],
 			formState: null,
 			formErrors: {},
 			canSave: false,
@@ -41,7 +38,6 @@ class MissionFormWrap extends Component {
 				const defaultMission = getDefaultMission();
 				this.setState({
 					formState: defaultMission,
-					formStage: formStages[0],
 					canSave: false,
 					formErrors: validateMission(defaultMission, {}),
 				})
@@ -50,7 +46,6 @@ class MissionFormWrap extends Component {
 
 				this.setState({
 					formState: _mission,
-					formStage: formStages[2],
 					formErrors: validateMission(_mission, {}),
 					canSave: true,
 				});
@@ -63,7 +58,7 @@ class MissionFormWrap extends Component {
 	handleFormStateChange(field, e) {
 		console.log('mission form changed', field, e)
 		const value = !!e.target ? e.target.value : e;
-		let { formState, formStage, formErrors } = this.state;
+		let { formState, formErrors } = this.state;
 		let newState = {};
 		formState[field] = value;
 
@@ -73,21 +68,14 @@ class MissionFormWrap extends Component {
 		console.log(formErrors);
 		newState.formState = formState;
 		newState.formErrors = formErrors;
-		newState.formStage = formStage;
 
 		this.setState(newState);
 	}
 
 	handleFormSubmit(formState) {
-		//let billStatus = formState.status;
-		let stage = this.state.formStage;
 		const { flux } = this.context;
-
-		//if (stage === 'creating') {
-			//formState.status = 'draft';
-			flux.getActions('missions').createMissionTemplate(formState);
-			this.props.onFormHide();
-		//}
+		flux.getActions('missions').createMissionTemplate(formState);
+		this.props.onFormHide();
 
 		return;
 	}

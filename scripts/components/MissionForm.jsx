@@ -15,10 +15,7 @@ class MissionForm extends Component {
 		super(props);
 
 		this.state = {
-			operations: [],
-			fuelRates: [],
-			fuel_correction_rate: null,
-		}
+		};
 	}
 
 	handleChange(field, e) {
@@ -46,7 +43,6 @@ class MissionForm extends Component {
     console.log('form state is ', state);
 
 		let IS_CREATING = !!!state.status;
-		let IS_CLOSING = false;
     let IS_POST_CREATING = false;
 		let IS_DISPLAY = !!state.status && state.status !== 'not_assigned';
 

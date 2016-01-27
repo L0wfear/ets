@@ -53,7 +53,11 @@ class WaybillForm extends Component {
     const { formState } = this.props;
     if (field === 'plan_arrival_date') {
   	  this.props.handleFormChange('mission_id_list', undefined);
-    	flux.getActions('missions').getMissions(formState.car_id, createValidDateTime(e));
+    	flux.getActions('missions').getMissions(formState.car_id, createValidDateTime(formState.plan_departure_date), createValidDateTime(e));
+    }
+    if (field === 'plan_departure_date') {
+  	  this.props.handleFormChange('mission_id_list', undefined);
+    	flux.getActions('missions').getMissions(formState.car_id, createValidDateTime(e), createValidDateTime(formState.plan_arrival_date));
     }
 	}
 
@@ -84,7 +88,7 @@ class WaybillForm extends Component {
 		}
 		flux.getActions('employees').getEmployees();
 		flux.getActions('objects').getTechOperations();
-  	flux.getActions('missions').getMissions(formState.car_id, createValidDateTime(formState.plan_arrival_date));
+  	flux.getActions('missions').getMissions(formState.car_id, createValidDateTime(formState.plan_departure_date), createValidDateTime(formState.plan_arrival_date));
 	}
 
 	onDriverChange(v) {
@@ -140,7 +144,7 @@ class WaybillForm extends Component {
 			this.handleChange('motohours_equip_start', 0);
 		}
 
-  	flux.getActions('missions').getMissions(car_id, createValidDateTime(this.props.formState.plan_arrival_date));
+  	flux.getActions('missions').getMissions(car_id, createValidDateTime(this.props.formState.plan_departure_date), createValidDateTime(this.props.formState.plan_arrival_date));
 	}
 
 	render() {

@@ -182,4 +182,4 @@ MissionsJournal.contextTypes = {
 	flux: React.PropTypes.object,
 };
 
-export default connectToStores(MissionsJournal, ['missions', 'objects', 'employees']);
+export default connectToStores(MissionsJournal, ['missions', 'objects', 'employees', 'routes']);

@@ -77,7 +77,13 @@ class MissionFormWrap extends Component {
 
 	handleFormSubmit(formState) {
 		const { flux } = this.context;
-		flux.getActions('missions').createMission(formState);
+
+		if (isEmpty(formState.id)) {
+			flux.getActions('missions').createMission(formState);
+		} else {
+			flux.getActions('missions').updateMission(formState);
+		}
+
 		this.props.onFormHide();
 
 		return;

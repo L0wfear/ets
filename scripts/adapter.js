@@ -469,6 +469,12 @@ export function removeMissionTemplate(payload) {
   return deleteJSON(MISSION_TEMPLATES_URL, payload, 'params').then(() => getMissionTemplates());
 }
 
+export function updateMissionTemplate(mission) {
+  return putJSON(MISSION_TEMPLATES_URL, mission, 'params').then( () => {
+    return getMissionTemplates();
+  });
+}
+
 
 // ROUTES
 

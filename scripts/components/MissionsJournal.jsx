@@ -25,6 +25,12 @@ let getRouteById = (id) => {
   return routesStore.getRouteById(id);
 };
 
+let getCarById = (id) => {
+  const { flux } = window.__ETS_CONTAINER__;
+  const objectsStore = flux.getStore('objects');
+  return objectsStore.getCarById(id);
+};
+
 function getStatusLabel(s) {
 	switch (s) {
 		case 'assigned':
@@ -114,6 +120,16 @@ let getTableMeta = (props) => {
 				},
 			},
       {
+				name: 'car_id',
+				caption: 'Транспортное средство',
+				type: 'number',
+				filter: {
+					type: 'select',
+          labelFunction: (id) => getCarById(id).gov_number || id,
+				},
+        cssClassName: 'width120',
+			},
+      {
 				name: 'route_id',
 				caption: 'Маршрут',
 				type: 'number',
@@ -158,6 +174,7 @@ let MissionsTable = (props) => {
       route_id: ({data}) => <div>{getRouteById(data).name || data}</div>,
       date_start: ({data}) => <div>{getFormattedDateTime(data)}</div>,
       date_end: ({data}) => <div>{getFormattedDateTime(data)}</div>,
+      car_id: ({data}) => <div>{getCarById(data).gov_number || data}</div>,
 		};
 
 		return <Table title="Журнал заданий"
@@ -245,4 +262,4 @@ MissionsJournal.contextTypes = {
 	flux: React.PropTypes.object,
 };
 
-export default connectToStores(MissionsJournal, ['missions', 'objects', 'employees']);
+export default connectToStores(MissionsJournal, ['missions', 'objects', 'employees', 'routes']);

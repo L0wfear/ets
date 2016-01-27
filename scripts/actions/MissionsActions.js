@@ -1,5 +1,5 @@
 import { Actions } from 'flummox';
-import { getMissions, getMissionSources, createMission, removeMission, updateMission, getMissionTemplates, createMissionTemplate, removeMissionTemplate } from '../adapter.js';
+import { getMissions, getMissionSources, createMission, removeMission, updateMission, getMissionTemplates, createMissionTemplate, removeMissionTemplate, updateMissionTemplate } from '../adapter.js';
 import _ from 'lodash';
 import { createValidDateTime } from '../utils/dates.js';
 
@@ -25,8 +25,12 @@ export default class MissionsActions extends Actions {
     return removeMission(payload);
   }
 
-  updateMission() {
-    return updateMission();
+  updateMission(mission) {
+    const payload = _.cloneDeep(mission);
+    payload.date_start = createValidDateTime(payload.date_start);
+    payload.date_end = createValidDateTime(payload.date_end);
+    delete payload.number;
+    return updateMission(payload);
   }
 
   getMissionTemplates() {
@@ -41,6 +45,13 @@ export default class MissionsActions extends Actions {
   removeMissionTemplate(id) {
     const payload = { id };
     return removeMissionTemplate(payload);
+  }
+
+  updateMissionTemplate(missionTemplate) {
+    const payload = _.cloneDeep(missionTemplate);
+    delete payload.number;
+    delete payload.company_id;
+    return updateMissionTemplate(payload);
   }
 
 }

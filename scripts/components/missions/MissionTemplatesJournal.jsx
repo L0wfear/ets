@@ -12,25 +12,17 @@ let getTechOperationById = (id) => {
   return objectsStore.getTechOperationById(id);
 };
 
-// let getMissionSourceById = (id) => {
-//   const { flux } = window.__ETS_CONTAINER__;
-//   const missionsStore = flux.getStore('missions');
-//   return missionsStore.getMissionSourceById(id);
-// };
+let getRouteById = (id) => {
+  const { flux } = window.__ETS_CONTAINER__;
+  const objectsStore = flux.getStore('objects');
+  return objectsStore.getRouteById(id);
+};
 
-
-function getStatusLabel(s) {
-	switch (s) {
-		case 'draft':
-			return 'Черновик';
-		case 'active':
-			return 'Активен';
-		case 'closed':
-			return 'Закрыт';
-		default:
-			return 'Н/Д';
-	}
-}
+let getCarById = (id) => {
+  const { flux } = window.__ETS_CONTAINER__;
+  const objectsStore = flux.getStore('objects');
+  return objectsStore.getCarById(id);
+};
 
 let getTableMeta = (props) => {
 
@@ -49,6 +41,26 @@ let getTableMeta = (props) => {
 				// filter: {
 				// 	type: 'select'
 				// }
+			},
+      {
+				name: 'car_id',
+				caption: 'Транспортное средство',
+				type: 'number',
+				filter: {
+					type: 'select',
+          labelFunction: (id) => getCarById(id).gov_number || id,
+				},
+        cssClassName: 'width120',
+			},
+      {
+				name: 'route_id',
+				caption: 'Маршрут',
+				type: 'number',
+				filter: {
+					type: 'select',
+          labelFunction: (id) => getRouteById(id).name || id,
+				},
+        cssClassName: 'width120',
 			},
       {
 				name: 'passes_count',
@@ -80,6 +92,8 @@ let MissionsTable = (props) => {
 
 		const renderers = {
 			technical_operation_id: ({data}) => <div>{getTechOperationById(data).name || data}</div>,
+      route_id: ({data}) => <div>{getRouteById(data).name || data}</div>,
+      car_id: ({data}) => <div>{getCarById(data).gov_number || data}</div>,
 		};
 
 		return <Table title="Шаблоны заданий"
@@ -127,7 +141,7 @@ class MissionsJournal extends Component {
     flux.getActions('objects').getWorkKinds();
     flux.getActions('objects').getTechOperations();
     flux.getActions('objects').getRoutes();
-    flux.getActions('missions').getMissionSources();
+    //flux.getActions('missions').getMissionSources();
 	}
 
 	removeMission() {

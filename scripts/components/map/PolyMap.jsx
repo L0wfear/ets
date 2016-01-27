@@ -35,7 +35,7 @@ export default class OpenLayersMap extends Component {
 
     this.markers = {};
     this._handlers = null; // map event handlers
-    
+
 
     let initialView = new ol.View({
       center: this.props.center,
@@ -84,7 +84,7 @@ export default class OpenLayersMap extends Component {
     this.map = global.olmap = map;
   }
 
-  renderODHs(polys = window.ROUTES[0].polys) {
+  renderODHs(polys = {}/*window.ROUTES[0].polys*/) {
     let map = this.map;
 
     let GeoJSON = new ol.format.GeoJSON();
@@ -94,16 +94,16 @@ export default class OpenLayersMap extends Component {
     //let features = [];
     //debugger;
 
-    _.each(polys, (poly, key)=>{
+    _.each(polys, (poly, key) => {
       //debugger;
       let feature = new ol.Feature({
         geometry: GeoJSON.readGeometry(poly.shape),
         name: poly.name,
         id: key,
         state: polyState.SELECTABLE
-      })
+      });
 
-      vectorSource.addFeature(feature)
+      vectorSource.addFeature(feature);
       //featuresJSON.readFeature(feature)
       //features.push(feature)
     })
@@ -137,6 +137,8 @@ export default class OpenLayersMap extends Component {
    */
   componentDidMount() {
 
+    console.log('POLYMAP MOUNT', this.props);
+
     let map = this.map;
     let triggerRenderFn = this.triggerRender.bind(this);
     let container = this.refs.container;
@@ -151,7 +153,7 @@ export default class OpenLayersMap extends Component {
 
     this.props.selectInteraction && map.addInteraction(this.props.selectInteraction);
 
-    this.renderODHs()
+    this.renderODHs(this.props.polys);
   }
 
   triggerRender() {
@@ -195,6 +197,7 @@ export default class OpenLayersMap extends Component {
   }
 
   render() {
+    console.warn('RENDER POLYMAP')
     return (<div>
               <div ref="container" style={{opacity: this.props.errorLoading ? .4 : 1}} className="openlayers-container"/>
             </div>)
@@ -246,8 +249,11 @@ export default class OpenLayersMap extends Component {
 
   componentWillReceiveProps(nextProps) {
 
+    console.log('RECEIVING PROPS', nextProps);
+
     if (nextProps.polys !== undefined) {
       this.popup.hide()
+      console.log('received new polys');
       this.renderODHs(nextProps.polys)
     }
   }

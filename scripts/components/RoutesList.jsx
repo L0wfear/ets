@@ -29,6 +29,7 @@ let newRoute = {
 				dts: [],
 				odhNames: [],
 				dtNames: [],
+				polys: _.clone(ROUTES[0].polys),
 			};
 
 
@@ -39,8 +40,8 @@ export default class RoutesList extends Component {
 
 		this.state = {
 			routeCreating: false,
-			selectedRoute: ROUTES[0],
-			activeTab: 'image',
+			routeEditing: false,
+			selectedRoute: null,
 			selectedOdhs: {},
 		}
 	}
@@ -56,8 +57,6 @@ export default class RoutesList extends Component {
 					routeCreating: false
 				})
 				console.log( 'route selected', route);
-
-
 			}
 		})
 
@@ -72,8 +71,7 @@ export default class RoutesList extends Component {
 
 		this.setState({
 			routeCreating: true,
-			//routeEditing: true,
-			selectedRoute: newR
+			selectedRoute: newR,
 		});
 
 	}
@@ -99,7 +97,12 @@ export default class RoutesList extends Component {
 		newR.polys = newPolys;//_.clone(newRoute.odhs);
 		newR.odhs = newOdhs;
 		ROUTES.push(newR);
-		this.setState({routeCreating: false, routeEditing: true, selectedOdhs: {}, selectedRoute: newR });
+		this.setState({
+			routeCreating: false,
+			routeEditing: false,
+			selectedOdhs: {},
+			selectedRoute: newR
+		});
 	}
 
 	setSelectedOdhs(selectedOdhs) {
@@ -108,16 +111,19 @@ export default class RoutesList extends Component {
 
 	render() {
 
+		console.log(newRoute);
+
 		let route = this.state.selectedRoute;
 		let state = this.state;
-		let routesList = ROUTES.map((route) => {
-			let cn = "list-group-item" + (route.id === this.state.selectedRoute.id ? " active" : "");
-			return <li className={cn} onClick={this.selectRoute.bind(this, route.id)} key={route.id}>{route.name}</li>
+
+		let routesList = ROUTES.map((r) => {
+			let cn = "list-group-item" + (route && (r.id === route.id) ? " active" : "");
+			return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={r.id}>{r.name}</li>
 		})
 
 		let IS_CREATING = this.state.routeCreating;
 		let IS_EDITING = this.state.routeEditing;
-		console.log(IS_CREATING);
+		console.log(IS_CREATING, IS_EDITING, route);
 
 		return <div className="ets-page-wrap routes-list">
 			<p className="some-header"> </p>
@@ -141,13 +147,17 @@ export default class RoutesList extends Component {
 					</Div>
 				</div>
 
-				<div className="routes-list-info">
-					{ (IS_CREATING || IS_EDITING) ?
+				<Div className="routes-list-info" hidden={this.state.selectedRoute === null}>
+
+					<Div hidden={!(IS_CREATING || IS_EDITING)}>
 						<RouteCreating route={IS_CREATING ? _.clone(newRoute) : route} onSelect={this.setSelectedOdhs.bind(this)}/>
-						:
+					</Div>
+
+					<Div hidden={IS_CREATING || IS_EDITING}>
 						<RouteInfo route={route}/>
-					}
-				</div>
+					</Div>
+
+				</Div>
 		</div>
 	}
 }

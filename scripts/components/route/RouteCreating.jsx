@@ -16,7 +16,7 @@ export default class RouteCreating extends Component {
 			this.state = {
 				odhs: {},
 				routeName: ''
-			}
+			};
 
 		}
 
@@ -63,9 +63,10 @@ export default class RouteCreating extends Component {
 			let route = this.props.route;
 			console.log(route);
 
-			return  <div>
-				<div className="route-name"> Создание нового маршрута {route.name} </div>
-				<div className="route-odhs-on-map">
+			return (
+				<div>
+					<div className="route-name"> Создание нового маршрута {route.name} </div>
+					<div className="route-odhs-on-map">
 						<Map
 								onFeatureClick={this.onFeatureClick.bind(this)}
 								zoom={MAP_INITIAL_ZOOM}
@@ -77,5 +78,7 @@ export default class RouteCreating extends Component {
 	          </div>
 					</div>
 				</div>
+			);
+
 		}
 }

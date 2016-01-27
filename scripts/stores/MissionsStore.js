@@ -51,10 +51,11 @@ export function getDefaultMission() {
     description: "",
     date_start: getToday9am(),
     date_end: getTomorrow9am(),
-    //id: 1
-    //mission_source_id: 1
-    //name: "test_mission_111"
-    //passes_count: 778
-    //technical_operation_id: 8
+  };
+}
+
+export function getDefaultMissionTemplate() {
+  return {
+    description: "",
   };
 }

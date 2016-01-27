@@ -3,7 +3,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import Div from '../ui/Div.jsx';
 import MissionTemplateForm from './MissionTemplateForm.jsx';
-import { getDefaultMission } from '../../stores/MissionsStore.js';
+import { getDefaultMissionTemplate } from '../../stores/MissionsStore.js';
 import { validate as validateNumber} from '../../validate/validateNumber.js';
 import { isNotNull, isEmpty } from '../../utils/functions.js';
 import { validateRow } from '../../validate/validateRow.js';
@@ -35,7 +35,7 @@ class MissionFormWrap extends Component {
 
 		if (props.showForm && props.showForm !== this.props.showForm) {
 			if (props.mission === null ) {
-				const defaultMission = getDefaultMission();
+				const defaultMission = getDefaultMissionTemplate();
 				this.setState({
 					formState: defaultMission,
 					canSave: false,

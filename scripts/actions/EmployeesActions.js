@@ -1,7 +1,7 @@
 import { Actions } from 'flummox';
 import { getEmployees, updateEmployee } from '../adapter.js';
+import { createValidDate } from '../utils/dates.js';
 import _ from 'lodash';
-import moment from 'moment';
 
 export default class EmployeesActions extends Actions {
 
@@ -11,7 +11,7 @@ export default class EmployeesActions extends Actions {
 
   updateEmployee(formState) {
     const payload = _.clone(formState);
-    payload.birthday = moment(payload.birthday).format('DD.MM.YYYY');
+    payload.birthday = createValidDate(payload.birthday);
     return updateEmployee(payload);
   }
 

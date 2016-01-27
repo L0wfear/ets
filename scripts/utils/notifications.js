@@ -16,8 +16,8 @@ export const loginErrorNotification = {
 
 export function getErrorNotification(error) {
   return {
-    title: 'Упс, что-то пошло не так',
-    message: 'Ошибка инициализации приложения: не удалось загрузить справочники (' + error + ')',
+    title: 'Ошибка',
+    message: `Ошибка инициализации приложения: (${error})`,
     level: 'error',
     dismissible: false,
     position: 'tc',

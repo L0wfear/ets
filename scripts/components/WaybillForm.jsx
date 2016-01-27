@@ -170,7 +170,6 @@ class WaybillForm extends Component {
     if (IS_POST_CREATING) {
       title = "Создание нового путевого листа"
     }
-		console.log(state.mission_id_list);
 
 		return (
 			<Modal {...this.props} bsSize="large">

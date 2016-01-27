@@ -1,7 +1,6 @@
 import { Actions } from 'flummox';
 import { getMissions, getMissionSources, createMission, removeMission, updateMission, getMissionTemplates, createMissionTemplate, removeMissionTemplate } from '../adapter.js';
 import _ from 'lodash';
-import moment from 'moment';
 
 export default class MissionsActions extends Actions {
 
@@ -19,10 +18,7 @@ export default class MissionsActions extends Actions {
   }
 
   removeMission(id) {
-    const payload = {
-      id,
-    };
-
+    const payload = { id };
     return removeMission(payload);
   }
 
@@ -40,9 +36,7 @@ export default class MissionsActions extends Actions {
   }
 
   removeMissionTemplate(id) {
-    const payload = {
-      id,
-    };
+    const payload = { id };
     return removeMissionTemplate(payload);
   }
 

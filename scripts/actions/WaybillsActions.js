@@ -1,7 +1,6 @@
 import { Actions } from 'flummox';
 import { getWaybills, removeWaybill, updateWaybill, createWaybill } from '../adapter.js';
 import { createValidDateTime } from '../utils/dates.js';
-import moment from 'moment';
 import _ from 'lodash';
 import { isEmpty } from '../utils/functions.js';
 

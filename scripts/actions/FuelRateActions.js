@@ -1,9 +1,7 @@
 import { Actions } from 'flummox';
 import { getFuelRates, getFuelOperations, getFuelRatesByCarModel, addFuelRate, updateFuelRate, deleteFuelRate } from '../adapter.js';
-import moment from 'moment';
+import { createValidDate } from '../utils/dates.js';
 import _ from 'lodash';
-
-let createValidDate = (date) => moment(date).format('YYYY-MM-DD');
 
 export default class FuelRateActions extends Actions {
 
@@ -30,8 +28,8 @@ export default class FuelRateActions extends Actions {
     if (typeof payload.winter_rate === 'string' && payload.winter_rate.length === 0) {
       payload.winter_rate = null;
     }
-    
     payload.order_date = createValidDate(payload.order_date);
+
     return updateFuelRate(payload);
   }
 
@@ -41,7 +39,6 @@ export default class FuelRateActions extends Actions {
 
   addFuelRate(rate) {
     const payload = _.clone(rate);
-    delete payload.isSelected;
     payload.order_date = createValidDate(payload.order_date);
     return addFuelRate(payload);
   }

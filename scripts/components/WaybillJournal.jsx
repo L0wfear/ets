@@ -19,6 +19,14 @@ function getFIOById(data, id) {
 	return result;
 }
 
+let getCarById = (cars, id) => {
+	const car = _.find(cars, c => c.asuods_id === id) || {};
+	if (car.gov_number && car.model) {
+		car.label = car.gov_number + ' [' + car.model + ']';
+	}
+	return car;
+};
+
 function getStatusLabel(s) {
 	switch (s) {
 		case 'draft':
@@ -115,7 +123,7 @@ let WaybillsTable = (props) => {
 			status: ({data}) => <div>{getStatusLabel(data)}</div>,
 			responsible_person_id: ({data}) => <div>{getFIOById(props.employeesList, data)}</div>,
 			driver_id: ({data}) => <div>{getFIOById(props.employeesList, data)}</div>,
-			car_id: ({data}) => <div>{_.find(props.carsList, c => c.asuods_id === data).gov_number}</div>,
+			car_id: ({data}) => <div>{getCarById(props.carsList, data).gov_number}</div>,
 			date_create: ({data}) => <div>{data ? moment.utc(data).format('YYYY-MM-DD') : ''}</div>,
 			fact_departure_date: ({data}) => <div>{moment.utc(data).format('YYYY-MM-DD HH:mm')}</div>,
 			fact_arrival_date: ({data}) => <div>{moment.utc(data).format('YYYY-MM-DD HH:mm')}</div>,
@@ -185,9 +193,9 @@ class WaybillJournal extends Component {
 
 	render() {
 
-		if (this.state.loading) {
-			 return <LoadingPage loaded={this.state.loading}/>;
-		}
+		// if (this.state.loading) {
+		// 	 return <LoadingPage loaded={this.state.loading}/>;
+		// }
 
 		const { waybillsList = [] } = this.props;
 

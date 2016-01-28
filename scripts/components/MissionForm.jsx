@@ -10,6 +10,7 @@ import moment from 'moment';
 import { getFuelOperations, getFuelRatesByCarModel } from '../adapter.js';
 import cx from 'classnames';
 import { getDateWithoutTZ } from '../utils/dates.js';
+import { isEmpty } from '../utils/functions.js';
 
 class MissionForm extends Component {
 
@@ -27,10 +28,14 @@ class MissionForm extends Component {
 
 	handleRouteIdChange(v) {
 		this.handleChange('route_id', v);
-		const { flux } = this.context;
-		flux.getActions('routes').getRouteById(v).then(r => {
-			this.setState({selectedRoute: r.result.length ? r.result[0] : null});
-		});
+		if (!isEmpty(v)) {
+			const { flux } = this.context;
+			flux.getActions('routes').getRouteById(v).then(r => {
+				this.setState({selectedRoute: r.result.length ? r.result[0] : null});
+			});
+		} else {
+			this.setState({selectedRoute: null});
+		}
 	}
 
 	componentDidMount() {

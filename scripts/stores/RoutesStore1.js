@@ -15,7 +15,7 @@ class RoutesStore extends Store {
 
     this.state = {
       routesList: [],
-      selectedRoute: {},
+      selectedRoute: null,
     };
 
   }

@@ -8,6 +8,8 @@ import {polyStyles, polyState} from '../../constants/polygons.js';
 const MAP_INITIAL_CENTER = [-399.43090337943863, -8521.192605428025];
 const MAP_INITIAL_ZOOM = 3;
 
+console.log(polyState);
+
 
 export default class RouteCreating extends Component {
 
@@ -31,9 +33,9 @@ export default class RouteCreating extends Component {
 				object_list.splice(objectIndex, 1);
 			} else {
 				if (objectIndex > -1) {
-					object_list[objectIndex] = {id, type: 'odh', name, state};
+					object_list[objectIndex] = {object_id: id, type: 'odh', name, state};
 				} else {
-					object_list.push({id, type: 'odh', name, state});
+					object_list.push({object_id: id, type: 'odh', name, state});
 				}
 			}
 

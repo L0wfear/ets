@@ -17,6 +17,8 @@ export default class RoutesActions extends Actions {
   createRoute(route) {
     const payload = _.cloneDeep(route);
     delete payload.polys;
+    _.each(payload.object_list, o => delete o.name);
+    console.log(payload.object_list);
     payload.object_list = JSON.stringify(payload.object_list);
     return createRoute(payload);
   }

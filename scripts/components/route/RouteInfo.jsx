@@ -16,6 +16,14 @@ export default class RouteInfo extends Component {
 
 		render() {
 			let route = this.props.route;
+			const { object_list = [] } = route;
+			const polys = object_list.map(({shape, name, state}) => {
+				return {
+					shape: JSON.parse(shape),
+					name,
+					state,
+				}
+			});
 
 			return  (
 				<Div>
@@ -24,7 +32,7 @@ export default class RouteInfo extends Component {
 						<Map onFeatureClick={this.onFeatureClick.bind(this)}
 								 zoom={MAP_INITIAL_ZOOM}
 	            	 center={MAP_INITIAL_CENTER}
-	            	 polys={route.polys}/>
+	            	 polys={polys}/>
 
 	          <Div className="route-odhs-list" hidden={this.props.mapOnly}>
 	          	<h4>Список ОДХ/ДТ</h4>

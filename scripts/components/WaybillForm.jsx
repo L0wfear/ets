@@ -88,7 +88,8 @@ class WaybillForm extends Component {
 		}
 		flux.getActions('employees').getEmployees();
 		flux.getActions('objects').getTechOperations();
-  	flux.getActions('missions').getMissions(formState.car_id, createValidDateTime(formState.plan_departure_date), createValidDateTime(formState.plan_arrival_date));
+    const missionsFilterStatus = (formState.status === 'active' || formState.status === 'closed') ? 'assigned' : 'not_assigned';
+  	flux.getActions('missions').getMissions(formState.car_id, createValidDateTime(formState.plan_departure_date), createValidDateTime(formState.plan_arrival_date), missionsFilterStatus);
 	}
 
 	onDriverChange(v) {

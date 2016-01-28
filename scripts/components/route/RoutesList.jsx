@@ -9,6 +9,7 @@ import Div from '../ui/Div.jsx';
 import _ from 'lodash';
 import cx from 'classnames';
 import connectToStores from 'flummox/connect';
+import { getRouteById } from '../../adapter.js';
 
 let ROUTES = getList();
 let CURRENT_ROUTE_ID = 4;
@@ -37,12 +38,15 @@ class RoutesList extends Component {
 		this.state = {
 			selectedRoute: null,
 			showForm: false,
-		}
+		};
 	}
 
 	selectRoute(id) {
 		const { flux } = this.context;
-		flux.getActions('routes').getRouteById(id);
+		flux.getActions('routes').getRouteById(id).then(r => {
+			console.log(r);
+			this.setState({selectedRoute: r.result && r.result.length ? r.result[0] : null});
+		});
 	}
 
 	createRoute() {
@@ -67,7 +71,7 @@ class RoutesList extends Component {
 	editRoute(route) {
 		this.setState({
 			selectedRoute: route
-		})
+		});
 	}
 
 	handleChange(selectedRoute) {
@@ -86,21 +90,12 @@ class RoutesList extends Component {
 		flux.getActions('routes').getRoutes();
 	}
 
-	componentWillReceiveProps(props) {
-		const { selectedRoute } = props;
-		if (selectedRoute !== null) {
-			this.setState({selectedRoute});
-		}
-	}
-
 	render() {
 
-		const { routesList = [],  selectedRoute = {}} = this.props;
-		console.log(routesList);
+		const { routesList = [] } = this.props;
 
 		let route = this.state.selectedRoute;
 		let state = this.state;
-		console.log(route);
 
 		let routes = routesList.map((r, i) => {
 			let cn = cx('list-group-item', {'active': route && r.id === route.id});

@@ -6,23 +6,23 @@ import { isEmpty, isNotNull } from '../utils/functions.js';
 
 export default class MissionsActions extends Actions {
 
-  getMissions(car_id, date_from, date_to) {
+  getMissions(car_id, date_from, date_to, status = 'not_assigned') {
     const payload = {
 
     };
     if (!isEmpty(car_id)) {
       payload.car_id = car_id;
-      payload.status = 'not_assigned';
+      payload.status = status;
     }
 
     if (!isEmpty(date_to)) {
       payload.date_to = date_to;
-      payload.status = 'not_assigned';
+      payload.status = status;
     }
 
     if (!isEmpty(date_from)) {
       payload.date_from = date_from;
-      payload.status = 'not_assigned';
+      payload.status = status;
     }
 
     return getMissions(payload);

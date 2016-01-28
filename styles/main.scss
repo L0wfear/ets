@@ -1926,7 +1926,7 @@ body {
       height: 500px;
       width: 600px;
       margin-top: 20px;
-      margin-left: 20px;
+      /*margin-left: 20px;*/
       border: 4px solid #ccc;
     }
     .route-odhs-list {
@@ -1936,6 +1936,15 @@ body {
       margin-top:-15px;
       ul {
         margin-left:-20px;
+        li {
+          display: block;
+          max-width: 240px;
+        }
+        li:before{
+          content: "";
+          display: list-item;
+          position: absolute;
+        }
       }
     }
   }
@@ -2296,4 +2305,18 @@ div.none {
 }
 .width60 {
   width: 60px;
+}
+
+.routes-list {
+  .list-group-item {
+
+    display: block;
+    max-width: 300px;
+  }
+  .route-name {
+    max-width: 600px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
 }

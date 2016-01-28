@@ -5,6 +5,7 @@ import Field from '../ui/Field.jsx';
 import Div from '../ui/Div.jsx';
 import RouteInfo from '../route/RouteInfo.jsx';
 import ODHList from '../route/ODHList.jsx';
+import { isEmpty } from '../../utils/functions.js';
 
 class MissionForm extends Component {
 

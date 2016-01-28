@@ -27,7 +27,7 @@ export default class RouteCreating extends Component {
 			console.log('set odh', arguments)
 
 			const { object_list } = this.props.route;
-			const objectIndex = _.findIndex(object_list, o => o.id === id);
+			const objectIndex = _.findIndex(object_list, o => o.object_id == id);
 
 			if (state === polyState.SELECTABLE) {
 				object_list.splice(objectIndex, 1);

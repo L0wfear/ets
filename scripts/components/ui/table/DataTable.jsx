@@ -70,7 +70,7 @@ class Table extends React.Component {
   }
 
   render() {
-    const { tableMeta, renderers, onRowSelected, selected, selectField, title = '' } = this.props;
+    const { tableMeta, renderers, onRowSelected, selected, selectField, title = '', initialSort = 'id' } = this.props;
     const tableCols = tableMeta.cols.map( c => c.name );
     const columnMetadata = this.initializeMetadata(tableMeta, renderers);
 		const rowMetadata = this.initializeRowMetadata();
@@ -122,7 +122,7 @@ class Table extends React.Component {
           </div>
         </div>
         <Griddle results={results}
-                 initialSort={'id'}
+                 initialSort={initialSort}
 								 columnMetadata={columnMetadata}
 								 columns={tableCols}
 								 resultsPerPage={15}

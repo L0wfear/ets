@@ -21,19 +21,6 @@ let getTableMeta = (props) => {
   let tableMeta = {
   	cols: [
   		{
-  			name: 'name',
-  			caption: 'Наименование',
-  			type: 'string',
-  			filter: {
-  				type: 'select',
-  			},
-        form: {
-          required: true,
-          editable: false,
-          formType: 'string',
-        }
-  		},
-  		{
   			name: 'work_kind_id',
   			caption: 'Вид работ',
   			type: 'number',
@@ -46,6 +33,19 @@ let getTableMeta = (props) => {
           editable: false,
           formType: 'select',
           formSelectOptions: (op) => props.workKindsList.map( ({id, name}) => ({value: id, label: name})),
+        }
+  		},
+  		{
+  			name: 'name',
+  			caption: 'Наименование',
+  			type: 'string',
+  			filter: {
+  				type: 'select',
+  			},
+        form: {
+          required: true,
+          editable: false,
+          formType: 'string',
         }
   		},
   	]
@@ -66,6 +66,7 @@ let TechOperationsTable = (props) => {
                   results={props.data}
 									tableMeta={getTableMeta(props)}
                   renderers={renderers}
+                  initialSort={'work_kind_id'}
 									{...props}/>
 }
 

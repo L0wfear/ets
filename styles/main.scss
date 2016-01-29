@@ -2279,6 +2279,17 @@ div.none {
   }
 }
 
+.odh-generation, .odh-filters {
+  .btn-primary, .btn-default {
+    margin-top: 24px;
+  }
+}
+.odh-filters {
+  .btn-primary, .btn-default {
+    display: inline-block;
+  }
+}
+
 .gost-loading-overlay {
   position: fixed;
   top: 0;

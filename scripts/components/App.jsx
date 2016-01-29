@@ -15,6 +15,7 @@ import EmployeesList from './EmployeesList.jsx';
 import CarsList from './CarsList.jsx';
 import FuelRatesDirectory from './directories/FuelRatesDirectory.jsx';
 import TechOperationsDirectory from './directories/TechOperationsDirectory.jsx';
+import ODHReports from './odh/ODHReports.jsx';
 import Modal from './ui/Modal.jsx';
 import { checkToken, init } from '../adapter.js';
 import Flux from './Flux.js';
@@ -129,6 +130,7 @@ const routes = (
       <Route path="mission-templates-journal" component={MissionTemplatesJournal} onEnter={requireAuth}/>
       <Route path="waybill-journal/create" component={WaybillForm} onEnter={requireAuth}/>
       <Route path="routes-list" component={RoutesList} onEnter={requireAuth}/>
+      <Route path="odh-reports" component={ODHReports} onEnter={requireAuth}/>
       <Route path="employees" component={EmployeesList} onEnter={requireAuth}/>
       <Route path="fuel-rates" component={FuelRatesDirectory} onEnter={requireAuth}/>
       <Route path="technical-operations" component={TechOperationsDirectory} onEnter={requireAuth}/>

@@ -11,6 +11,7 @@ import { loadOwners } from './owners.js';
 
 
 let getUrl = (url) => config.backend ? config.backend + url : url;
+let getServiceUrl = (url) => config.servicesBackend ? config.servicesBackend + url : url;
 let toFormData = (data) => {
   const formData = new FormData();
   _.mapKeys(data, (v, k) => {
@@ -67,6 +68,7 @@ const MISSIONS_URL = getUrl('/mission/');
 const MISSION_SOURCES_URL = getUrl('/mission_source/');
 const MISSION_TEMPLATES_URL = getUrl('/mission_template/');
 const ROUTES_URL = getUrl('/route/');
+const ODH_REPORTS_SERVICE_URL = getServiceUrl('/odh-reports/');
 
 function getJSON(url, data = {}) {
   data = _.clone(data);
@@ -495,4 +497,16 @@ export function updateRoute(route) {
 
 export function getRouteById(payload) {
   return getJSON(ROUTES_URL, payload, 'params');
+}
+
+// SERVICES
+
+export function getODHReports() {
+  const payload = {
+    page: 1,
+    per_page: 50,
+    sort_by: 'ID',
+    order: 'desc'
+  }
+  return getJSON(ODH_REPORTS_SERVICE_URL, payload, 'params');
 }

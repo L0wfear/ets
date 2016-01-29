@@ -55,6 +55,11 @@ export default React.createClass({
 
   				        <MenuItem active={path === '/fuel-rates'} href="#/fuel-rates">Справочник норм расхода топлива</MenuItem>
                 </NavDropdown>
+
+                <NavDropdown title="ОДХ" id="nav-dropdown-3">
+				          <MenuItem active={path === '/odh-reports'} href="#/odh-reports">Отчеты</MenuItem>
+                </NavDropdown>
+
 				        <NavItem active={path === '/routes-list'} href="#/routes-list">Список маршрутов</NavItem>
 				        {/*<NavItem active={path === '/waybill-journal/create'} href="#/waybill-journal/create">Создать маршрут</NavItem>*/}
 				        {/*<NavItem active={path === '/waybill-journal'} href="#/waybill-journal">Журнал путевых листов</NavItem>

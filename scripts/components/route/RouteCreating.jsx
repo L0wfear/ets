@@ -45,12 +45,8 @@ export default class RouteCreating extends Component {
 		}
 
 		onFeatureClick(feature, ev, map) {
-			console.log(feature.getGeometry());
+			console.log("ON FEATURE CLICK");
 			let {id, name, state} = feature.getProperties();
-			if (!name) feature.setStyle(vectorStyles[vectorState.IDLE])
-			if (this.props.manual) {
-				return;
-			}
 
 			const { polys } = this.props.route;
 
@@ -69,48 +65,47 @@ export default class RouteCreating extends Component {
 				this.props.onChange('polys', polys);
 				this.setODH(id, name, nextState);
 			}
-
 		}
 
-		onFeatureAdd(feature, coordinates, map) {
-			let {id, state} = feature.getProperties();
+		onDrawFeatureClick(feature, ev, map) {
+
+			let {id, state, distance, begin, end} = feature.getProperties();
+
+			console.warn('DRAW FEATURE CLICK', id);
 
 			const { object_list } = this.props.route;
-			const objectIndex = _.findIndex(object_list, o => o.object_id == id);
-			coordinates.map((c, i) => {
-				//console.log(c)
-				if (coordinates[i+1]) {
-					object_list.push({
-						begin: {x_msk: c[0], y_msk: c[1]},
-						end: {x_msk: coordinates[i+1][0], y_msk: coordinates[i+1][1]},
-						state: 2,
-						distance: 300,
-						technical_operation_id: 55,
-					});
+			const objectIndex = _.findIndex(object_list, o => o.id === id);
+
+			if (state) {
+				let nextState;
+
+				if (state === polyState.ENABLED) {
+					nextState = polyState.IDLE;
+				} else if (state === polyState.IDLE) {
+					nextState = polyState.ENABLED;
 				}
-			})
-			// if (state === polyState.SELECTABLE) {
-			// 	object_list.splice(objectIndex, 1);
-			// } else {
-			//}
+
+				if (objectIndex > -1) {
+					object_list[objectIndex].state = nextState;
+				}
+			}
 
 			this.props.onChange('object_list', object_list);
 
-			// if (state) {
-			// 	let nextState;
-			//
-			// 	if (state === polyState.SELECTABLE) {
-			// 		nextState = polyState.ENABLED;
-			// 	} else if (state === polyState.ENABLED) {
-			// 		nextState = polyState.IDLE;
-			// 	} else if (state === polyState.IDLE) {
-			// 		nextState = polyState.SELECTABLE;
-			// 	}
-			//
-			// 	polys[id].state = nextState;
-			// 	this.props.onChange('polys', polys);
-			// 	this.setODH(id, name, nextState);
-			// }
+		}
+
+		onDrawFeatureAdd(feature, coordinates, distance, map) {
+			let { id, state } = feature.getProperties();
+			const { object_list } = this.props.route;
+			object_list.push({
+				begin: {x_msk: coordinates[0][0], y_msk: coordinates[0][1]},
+				end: {x_msk: coordinates[1][0], y_msk: coordinates[1][1]},
+				state: 2,
+				id: id,
+				distance: distance,
+				technical_operation_id: 55,
+			});
+			this.props.onChange('object_list', object_list);
 		}
 
 		render() {
@@ -122,9 +117,11 @@ export default class RouteCreating extends Component {
 					{/*<div className="route-name"> Создание нового маршрута {route.name} </div>*/}
 					<div className="route-odhs-on-map">
 						<Map onFeatureClick={this.onFeatureClick.bind(this)}
-								 onFeatureAdd={this.onFeatureAdd.bind(this)}
+								 onDrawFeatureAdd={this.onDrawFeatureAdd.bind(this)}
+								 onDrawFeatureClick={this.onDrawFeatureClick.bind(this)}
 								 zoom={MAP_INITIAL_ZOOM}
 	            	 center={MAP_INITIAL_CENTER}
+								 object_list={route.object_list}
 	            	 polys={route.polys}
 								 manualDraw={this.props.manual}/>
 	          <div className="route-odhs-list">

@@ -52,18 +52,32 @@ export function getVectorArrowStyle(feature) {
   //let styles = [vectorStyles[vectorState.ENABLED]];
 
   var geometry = feature.getGeometry();
-  var  i = 0;
   geometry.forEachSegment((start, end) => {
-    styles.push(new ol.style.Style({
-       geometry: new ol.geom.LineString([start, end]),
-       fill: new ol.style.Fill({
-            color: 'rgba(0,0,0,0.2)'
-       }),
-       stroke: new ol.style.Stroke({
-            color: 'red',
-            width: 2,
-       })
-    }));
+    let { state } = feature.getProperties();
+    if (state === 2) {
+      styles.push(new ol.style.Style({
+         geometry: new ol.geom.LineString([start, end]),
+         fill: new ol.style.Fill({
+              color: 'rgba(0,0,0,0.2)'
+         }),
+         stroke: new ol.style.Stroke({
+              color: 'red',
+              width: 2,
+         })
+      }));
+    } else {
+      styles.push(new ol.style.Style({
+         geometry: new ol.geom.LineString([start, end]),
+         fill: new ol.style.Fill({
+              color: 'rgba(0,0,0,0.2)'
+         }),
+         stroke: new ol.style.Stroke({
+              color: 'red',
+              width: 2,
+              lineDash: [12],
+         })
+      }));
+    }
    styles.push(createArrowStyle(start, end));
   });
 
@@ -90,7 +104,7 @@ export function getVectorLayer(source) {
         })
       })
     }),
-    updateWhileAnimating: false,
-    updateWhileInteracting: false
+    // updateWhileAnimating: false,
+    // updateWhileInteracting: false
   });
 }

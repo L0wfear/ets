@@ -75,7 +75,8 @@ export default class OpenLayersMap extends Component {
     let layers = [ArcGisLayer, canvasLayer];
     if (this.props.manualDraw) {
       this.vectorSource = getVectorSource();
-      layers.push(getVectorLayer(this.vectorSource));
+      this.vectorLayer = getVectorLayer(this.vectorSource)
+      layers.push(this.vectorLayer);
     }
     let map = new ol.Map({
       view: initialView,
@@ -100,11 +101,7 @@ export default class OpenLayersMap extends Component {
     let vectorSource = new ol.source.Vector();
     let styleFunction = polyStyles[polyState.SELECTABLE];
 
-    //let features = [];
-    //debugger;
-
     _.each(polys, (poly, key) => {
-      //debugger;
       let feature = new ol.Feature({
         geometry: GeoJSON.readGeometry(poly.shape),
         name: poly.name,
@@ -116,9 +113,6 @@ export default class OpenLayersMap extends Component {
       } else {
         feature.setStyle(polyStyles[poly.state]);
       }
-
-      //feature.setGeometry(new ol.geom.LineString());
-      //console.log(feature.getGeometry().getCoordinates())
 
       vectorSource.addFeature(feature);
     })

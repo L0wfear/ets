@@ -38,6 +38,7 @@ class RoutesList extends Component {
 		this.state = {
 			selectedRoute: null,
 			showForm: false,
+			isVectorRouteSelected: false,
 		};
 	}
 
@@ -45,14 +46,14 @@ class RoutesList extends Component {
 		const { flux } = this.context;
 		flux.getActions('routes').getRouteById(id).then(r => {
 			console.log(r);
-			this.setState({selectedRoute: r.result && r.result.length ? r.result[0] : null});
+			this.setState({selectedRoute: r.result && r.result.length ? r.result[0] : null, isVectorRouteSelected: false});
 		});
 	}
 
 	selectRouteVector(id) {
 		const { flux } = this.context;
 		flux.getActions('routes').getRouteVectorById(id).then(r => {
-			this.setState({selectedRoute: r.result && r.result.length ? r.result[0] : null});
+			this.setState({selectedRoute: r.result && r.result.length ? r.result[0] : null, isVectorRouteSelected: true});
 		});
 	}
 
@@ -70,7 +71,11 @@ class RoutesList extends Component {
 	deleteRoute() {
 		if (confirm('Вы уверены, что хотите удалить выбранный маршрут?')) {
 			const { flux } = this.context;
-			flux.getActions('routes').removeRoute(this.state.selectedRoute);
+			if (this.state.isVectorRouteSelected) {
+				flux.getActions('routes').removeRouteVector(this.state.selectedRoute);
+			} else {
+				flux.getActions('routes').removeRoute(this.state.selectedRoute);
+			}
 			this.setState({selectedRoute: null});
 		}
 	}

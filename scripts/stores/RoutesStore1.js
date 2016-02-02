@@ -10,6 +10,7 @@ class RoutesStore extends Store {
     this.register(routesActions.createRoute, this.handleGetRoutes);
     this.register(routesActions.getRoutes, this.handleGetRoutes);
     this.register(routesActions.createVectorRoute, this.handleGetRoutesVector);
+    this.register(routesActions.removeRouteVector, this.handleGetRoutesVector);
     this.register(routesActions.getRoutesVector, this.handleGetRoutesVector);
     this.register(routesActions.updateRoute, this.handleGetRoutes);
     this.register(routesActions.removeRoute, this.handleGetRoutes);

@@ -500,6 +500,10 @@ export function removeRoute(payload) {
   return deleteJSON(ROUTES_URL, payload, 'params').then(() => getRoutes());
 }
 
+export function removeRouteVector(route) {
+  return deleteJSON(ROUTES_VECTOR_URL, route, 'params').then(() => getRoutesVector());
+}
+
 export function updateRoute(route) {
   return putJSON(ROUTES_URL, route, 'params').then(() => getRoutes());
 }

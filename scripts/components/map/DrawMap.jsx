@@ -145,4 +145,30 @@ export default class DrawMap extends PolyMap {
       this.renderRoute(nextProps.object_list);
     }
   }
+
+  onPointAdd(e, draw) {
+    let { feature, coordinates } = e;
+    console.log(e, draw);
+    let end = coordinates;
+    let startObject = _.last(this.props.object_list);
+    let start = [startObject.end.x_msk, startObject.end.y_msk];
+    console.log(e.getGeometry().getCoordinates());
+    let featureSegment = new ol.Feature({
+      geometry: new ol.geom.LineString([start, end]),
+      id: this.props.object_list.length,
+    });
+    featureSegment.setStyle(getVectorArrowStyle(featureSegment));
+    this.props.onDrawFeatureAdd(featureSegment, featureSegment.getGeometry().getCoordinates(), featureSegment.getGeometry().getLength());
+    draw.setActive(false);
+  }
+
+  addPoint() {
+    //this.draw.setActive(true);
+    let draw = new ol.interaction.Draw({
+      source: this.vectorSource,
+      type: 'Point',
+    });
+    draw.on('drawend', this.onPointAdd.bind(this, draw));
+    this.map.addInteraction(draw);
+  }
 }

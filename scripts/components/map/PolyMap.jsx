@@ -70,7 +70,17 @@ export default class OpenLayersMap extends Component {
       duration: 200,
       className: 'ol-zoom',
       delta: 1
-    }))
+    }));
+    // if (this.props.manualDraw) {
+    //   var button = document.createElement('button');
+    //   button.innerHTML = 'Добавить точку';
+    //   button.addEventListener('click', this.addPoint.bind(this), false);
+    //
+    //   var element = document.createElement('div');
+    //   element.className = 'rotate-north ol-unselectable ol-control';
+    //   element.appendChild(button);
+    //   controls.push(new ol.control.Control({element: element}));
+    // }
 
     let layers = [ArcGisLayer, canvasLayer];
     if (this.props.manualDraw) {

@@ -2338,3 +2338,18 @@ div.none {
   top: 50%;
   transform: translate(-50%,-50%) !important;
 }
+
+.rotate-north {
+  bottom: 25px;
+  right: .5em;
+  button {
+    padding: 8px;
+    font-size: 14px;
+    padding-bottom: 12px;
+    height: auto;
+    width: auto;
+  }
+}
+.ol-touch .rotate-north {
+  top: 80px;
+}

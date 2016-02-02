@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
-import Map from '../map/PolyMap.jsx';
+import DrawMap from '../map/DrawMap.jsx';
+import PolyMap from '../map/PolyMap.jsx';
 import ODHList from './ODHList.jsx';
 import _ from 'lodash';
 
 import {polyStyles, polyState} from '../../constants/polygons.js';
+import {vectorStyles, vectorState} from '../../constants/vectors.js';
 
 const MAP_INITIAL_CENTER = [-399.43090337943863, -8521.192605428025];
 const MAP_INITIAL_ZOOM = 3;
@@ -43,7 +45,13 @@ export default class RouteCreating extends Component {
 		}
 
 		onFeatureClick(feature, ev, map) {
+			console.log(feature.getGeometry());
 			let {id, name, state} = feature.getProperties();
+			if (!name) feature.setStyle(vectorStyles[vectorState.IDLE])
+			if (this.props.manual) {
+				return;
+			}
+
 			const { polys } = this.props.route;
 
 			if (state) {
@@ -64,19 +72,61 @@ export default class RouteCreating extends Component {
 
 		}
 
+		onFeatureAdd(feature, coordinates, map) {
+			let {id, state} = feature.getProperties();
+
+			const { object_list } = this.props.route;
+			const objectIndex = _.findIndex(object_list, o => o.object_id == id);
+			coordinates.map((c, i) => {
+				//console.log(c)
+				if (coordinates[i+1]) {
+					object_list.push({
+						begin: {x_msk: c[0], y_msk: c[1]},
+						end: {x_msk: coordinates[i+1][0], y_msk: coordinates[i+1][1]},
+						state: 2,
+						distance: 300,
+						technical_operation_id: 55,
+					});
+				}
+			})
+			// if (state === polyState.SELECTABLE) {
+			// 	object_list.splice(objectIndex, 1);
+			// } else {
+			//}
+
+			this.props.onChange('object_list', object_list);
+
+			// if (state) {
+			// 	let nextState;
+			//
+			// 	if (state === polyState.SELECTABLE) {
+			// 		nextState = polyState.ENABLED;
+			// 	} else if (state === polyState.ENABLED) {
+			// 		nextState = polyState.IDLE;
+			// 	} else if (state === polyState.IDLE) {
+			// 		nextState = polyState.SELECTABLE;
+			// 	}
+			//
+			// 	polys[id].state = nextState;
+			// 	this.props.onChange('polys', polys);
+			// 	this.setODH(id, name, nextState);
+			// }
+		}
+
 		render() {
 			let route = this.props.route;
-			console.log(route);
+			const Map = this.props.manual ? DrawMap : PolyMap;
 
 			return (
 				<div>
 					{/*<div className="route-name"> Создание нового маршрута {route.name} </div>*/}
 					<div className="route-odhs-on-map">
-						<Map
-								onFeatureClick={this.onFeatureClick.bind(this)}
-								zoom={MAP_INITIAL_ZOOM}
-	            	center={MAP_INITIAL_CENTER}
-	            	polys={route.polys}/>
+						<Map onFeatureClick={this.onFeatureClick.bind(this)}
+								 onFeatureAdd={this.onFeatureAdd.bind(this)}
+								 zoom={MAP_INITIAL_ZOOM}
+	            	 center={MAP_INITIAL_CENTER}
+	            	 polys={route.polys}
+								 manualDraw={this.props.manual}/>
 	          <div className="route-odhs-list">
 	          	<h4>Список ОДХ/ДТ</h4>
 	          	<ODHList object_list={route.object_list}/>

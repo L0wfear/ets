@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import Map from '../map/PolyMap.jsx';
+import PolyMap from '../map/PolyMap.jsx';
+import DrawMap from '../map/DrawMap.jsx';
 import ODHList from './ODHList.jsx';
 import Div from '../ui/Div.jsx';
 
@@ -9,30 +10,41 @@ const MAP_INITIAL_ZOOM = 3;
 export default class RouteInfo extends Component {
 
 		onFeatureClick(feature, ev, map) {
-			console.log('click on feature detected', feature, 'on', map)
+			//console.log('click on feature detected', feature, 'on', map)
 			let {id, name, state} = feature.getProperties();
+			if (name)
 			map.popup.show(ev.coordinate, '<div class="header">ОДХ: ' + name + '</div>')
 		}
 
 		render() {
 			let route = this.props.route;
 			const { object_list = [] } = route;
-			const polys = object_list.map(({shape, name, state}) => {
+			let manual = false;
+			const polys = object_list.map(({shape, name, state, begin, end}) => {
+				if (!shape && begin) {
+					manual = true;
+					shape = {
+						type: "LineString",
+						coordinates: [[begin.x_msk, begin.y_msk], [end.x_msk, end.y_msk]]
+					};
+				}
 				return {
-					shape: JSON.parse(shape),
+					shape,//: JSON.parse(shape),
 					name,
 					state,
 				}
 			});
+			const Map = PolyMap;
 
-			return  (
+			return (
 				<Div>
 					<Div className="route-name" hidden={this.props.mapOnly}> {route.name} </Div>
 					<Div className="route-odhs-on-map">
 						<Map onFeatureClick={this.onFeatureClick.bind(this)}
 								 zoom={MAP_INITIAL_ZOOM}
 	            	 center={MAP_INITIAL_CENTER}
-	            	 polys={polys}/>
+	            	 polys={polys}
+								 manual={manual}/>
 
 	          <Div className="route-odhs-list" hidden={this.props.mapOnly}>
 	          	<h4>Список ОДХ/ДТ</h4>

@@ -68,6 +68,7 @@ const MISSIONS_URL = getUrl('/mission/');
 const MISSION_SOURCES_URL = getUrl('/mission_source/');
 const MISSION_TEMPLATES_URL = getUrl('/mission_template/');
 const ROUTES_URL = getUrl('/route/');
+const ROUTES_VECTOR_URL = getUrl('/route_vector/');
 const ODH_REPORTS_SERVICE_URL = getServiceUrl('/odh-reports/');
 
 function getJSON(url, data = {}) {
@@ -483,8 +484,16 @@ export function getRoutes() {
   return getJSON(ROUTES_URL);
 }
 
+export function getRoutesVector() {
+  return getJSON(ROUTES_VECTOR_URL);
+}
+
 export function createRoute(route) {
   return postJSON(ROUTES_URL, route, 'params').then(() => getRoutes());
+}
+
+export function createVectorRoute(route) {
+  return postJSON(ROUTES_VECTOR_URL, route, 'params').then(() => getRoutesVector());
 }
 
 export function removeRoute(payload) {
@@ -497,6 +506,10 @@ export function updateRoute(route) {
 
 export function getRouteById(payload) {
   return getJSON(ROUTES_URL, payload, 'params');
+}
+
+export function getRouteVectorById(payload) {
+  return getJSON(ROUTES_VECTOR_URL, payload, 'params');
 }
 
 // SERVICES

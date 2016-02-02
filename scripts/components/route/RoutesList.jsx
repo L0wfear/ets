@@ -49,6 +49,13 @@ class RoutesList extends Component {
 		});
 	}
 
+	selectRouteVector(id) {
+		const { flux } = this.context;
+		flux.getActions('routes').getRouteVectorById(id).then(r => {
+			this.setState({selectedRoute: r.result && r.result.length ? r.result[0] : null});
+		});
+	}
+
 	createRoute() {
 
 		let newR = _.cloneDeep(newRoute);
@@ -88,11 +95,11 @@ class RoutesList extends Component {
 	componentDidMount() {
 		const { flux } = this.context;
 		flux.getActions('routes').getRoutes();
+		flux.getActions('routes').getRoutesVector();
 	}
 
 	render() {
-
-		const { routesList = [] } = this.props;
+		let { routesList = [], routesVectorList = [] } = this.props;
 
 		let route = this.state.selectedRoute;
 		let state = this.state;
@@ -100,6 +107,11 @@ class RoutesList extends Component {
 		let routes = routesList.map((r, i) => {
 			let cn = cx('list-group-item', {'active': route && r.id === route.id});
 			return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>
+		});
+
+		let routesVector = routesVectorList.map((r, i) => {
+			let cn = cx('list-group-item', {'active': route && r.id === route.id});
+			return <li className={cn} onClick={this.selectRouteVector.bind(this, r.id)} key={i}>{r.name}</li>
 		});
 
 		return <div className="ets-page-wrap routes-list">
@@ -116,12 +128,16 @@ class RoutesList extends Component {
 						<ul className="list-group">
 							{routes}
 						</ul>
+
+						<ul className="list-group">
+							{routesVector}
+						</ul>
 				  </div>
 				</div>
 
 				<Div className="routes-list-info">
 					<Div hidden={this.state.showForm || route === null}>
-						<RouteInfo route={route}/>
+						<RouteInfo route={route} />
 					</Div>
 					<RouteFormWrap element={route}
 												 onFormHide={this.onFormHide.bind(this)}

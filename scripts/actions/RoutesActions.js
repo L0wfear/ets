@@ -1,5 +1,5 @@
 import { Actions } from 'flummox';
-import { getRoutes, getRouteById, createRoute, removeRoute, updateRoute } from '../adapter.js';
+import { getRoutes, getRouteById, createRoute, removeRoute, updateRoute, getRoutesVector, getRouteVectorById, createVectorRoute } from '../adapter.js';
 import _ from 'lodash';
 import { createValidDateTime } from '../utils/dates.js';
 
@@ -9,9 +9,18 @@ export default class RoutesActions extends Actions {
     return getRoutes();
   }
 
+  getRoutesVector() {
+    return getRoutesVector();
+  }
+
   getRouteById(id) {
     const payload = { id };
     return getRouteById(payload);
+  }
+
+  getRouteVectorById(id) {
+    const payload = { id };
+    return getRouteVectorById(payload);
   }
 
   createRoute(route) {
@@ -21,6 +30,15 @@ export default class RoutesActions extends Actions {
     console.log(payload.object_list);
     payload.object_list = JSON.stringify(payload.object_list);
     return createRoute(payload);
+  }
+
+  createVectorRoute(route) {
+    const payload = _.cloneDeep(route);
+    delete payload.polys;
+    _.each(payload.object_list, o => delete o.name);
+    console.log(payload.object_list);
+    payload.object_list = JSON.stringify(payload.object_list);
+    return createVectorRoute(payload);
   }
 
   removeRoute(route) {

@@ -5,8 +5,7 @@ const ODHList = (props) => {
 	let ODHS = [];
 
 	_.each(props.object_list, (odh, index) => {
-		console.log(odh);
-		if (props.showSelectable || odh.state !== polyState.SELECTABLE) {
+		if ((props.showSelectable || odh.state !== polyState.SELECTABLE) && odh.name) {
 			let speed_type = odh.state === polyState.IDLE ? 'холостой' : 'рабочий';
 			ODHS.push(<li key={index}>{`${odh.name} (${speed_type} ход)`}</li>);
 		}

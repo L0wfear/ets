@@ -9,12 +9,15 @@ class RoutesStore extends Store {
     const routesActions = flux.getActions('routes');
     this.register(routesActions.createRoute, this.handleGetRoutes);
     this.register(routesActions.getRoutes, this.handleGetRoutes);
+    this.register(routesActions.createVectorRoute, this.handleGetRoutesVector);
+    this.register(routesActions.getRoutesVector, this.handleGetRoutesVector);
     this.register(routesActions.updateRoute, this.handleGetRoutes);
     this.register(routesActions.removeRoute, this.handleGetRoutes);
     //this.register(routesActions.getRouteById, this.handleGetRouteById);
 
     this.state = {
       routesList: [],
+      routesVectorList: [],
       //selectedRoute: null,
     };
 
@@ -22,6 +25,10 @@ class RoutesStore extends Store {
 
   handleGetRoutes(routes) {
     this.setState({ routesList: routes.result });
+  }
+
+  handleGetRoutesVector(routes) {
+    this.setState({ routesVectorList: routes.result });
   }
 
   // handleGetRouteById(route) {

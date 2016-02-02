@@ -2331,3 +2331,10 @@ div.none {
     white-space: nowrap;
   }
 }
+
+.centered-xy .modal-dialog {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%) !important;
+}

@@ -67,7 +67,7 @@ export default class CarForm extends Component {
 		      	<Col md={6}>
 	            <Div>
 	              <label>Гаражный номер</label>
-	              <Input type="number" value={state['garage_number']} onChange={this.handleChange.bind(this, 'garage_number')}/>
+	              <Input type="text" value={state['garage_number']} onChange={this.handleChange.bind(this, 'garage_number')}/>
 	            </Div>
 							<Div>
 	              <label>Поправочный коэффициент</label>

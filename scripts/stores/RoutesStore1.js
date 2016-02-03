@@ -14,11 +14,13 @@ class RoutesStore extends Store {
     this.register(routesActions.getRoutesVector, this.handleGetRoutesVector);
     this.register(routesActions.updateRoute, this.handleGetRoutes);
     this.register(routesActions.removeRoute, this.handleGetRoutes);
+    this.register(routesActions.getRouteReports, this.handleGetRouteReports);
     //this.register(routesActions.getRouteById, this.handleGetRouteById);
 
     this.state = {
       routesList: [],
       routesVectorList: [],
+      reportsList: [],
       //selectedRoute: null,
     };
 
@@ -32,9 +34,14 @@ class RoutesStore extends Store {
     this.setState({ routesVectorList: routes.result });
   }
 
-  // handleGetRouteById(route) {
-  //   this.setState({selectedRoute: route.result.length ? route.result[0] : {}});
-  // }
+  handleGetRouteReports(reports) {
+    let reportsList = [];
+    reports.result.map( resByTechOp => {
+      if (resByTechOp.result && resByTechOp.result.rows)
+      reportsList = reportsList.concat(resByTechOp.result.rows);
+    })
+    this.setState({reportsList});
+  }
 
   getRouteById(id) {
     return _.find(this.state.routesList, r => r.id === id) || {};

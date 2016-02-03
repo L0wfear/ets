@@ -58,7 +58,7 @@ export default React.createClass({
 
                 <NavDropdown title="Отчеты" id="nav-dropdown-3">
 				          <MenuItem active={path === '/odh-reports'} href="#/odh-reports">ОДХ</MenuItem>
-  				        <MenuItem active={path === '/odh-reports'} href="#/odh-reports">Покрытие ОДХ маршрутами</MenuItem>
+  				        <MenuItem active={path === '/route-reports'} href="#/route-reports">Покрытие ОДХ маршрутами</MenuItem>
                 </NavDropdown>
 
 				        <NavItem active={path === '/routes-list'} href="#/routes-list">Список маршрутов</NavItem>

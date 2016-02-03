@@ -69,6 +69,7 @@ const MISSION_SOURCES_URL = getUrl('/mission_source/');
 const MISSION_TEMPLATES_URL = getUrl('/mission_template/');
 const ROUTES_URL = getUrl('/route/');
 const ROUTES_VECTOR_URL = getUrl('/route_vector/');
+const ROUTE_REPORTS_URL = getUrl('/route_odh_covering_report/');
 const ODH_REPORTS_SERVICE_URL = getServiceUrl('/odh-reports/');
 
 function getJSON(url, data = {}) {
@@ -526,4 +527,8 @@ export function getODHReports() {
     order: 'desc'
   }
   return getJSON(ODH_REPORTS_SERVICE_URL, payload, 'params');
+}
+
+export function getRouteReports() {
+  return getJSON(ROUTE_REPORTS_URL);
 }

@@ -101,6 +101,7 @@ class RoutesList extends Component {
 		const { flux } = this.context;
 		flux.getActions('routes').getRoutes();
 		flux.getActions('routes').getRoutesVector();
+		flux.getActions('objects').getTechOperations();
 	}
 
 	render() {

@@ -35,8 +35,11 @@ export default class RoutesActions extends Actions {
   createVectorRoute(route) {
     const payload = _.cloneDeep(route);
     delete payload.polys;
-    _.each(payload.object_list, o => delete o.name);
-    console.log(payload.object_list);
+    _.each(payload.object_list, o => {
+      delete o.name;
+      o.technical_operation_id = payload.technical_operation_id;
+    });
+    console.log(payload);
     payload.object_list = JSON.stringify(payload.object_list);
     return createVectorRoute(payload);
   }

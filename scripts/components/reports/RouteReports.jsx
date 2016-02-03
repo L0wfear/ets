@@ -18,7 +18,7 @@ let tableMeta = {
 			caption: 'Тех. операция',
 			type: 'text',
 			filter: {
-				type: 'text',
+				type: 'select',
 			}
 		},
 		{

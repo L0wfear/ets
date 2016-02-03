@@ -99,8 +99,10 @@ function postJSON(url, data, type = 'form') {
   let body;
   switch (type) {
     case 'form':
+      url += '?token=' + token;
+      delete data.token;
       body = toFormData(data);
-      break
+      break;
     case 'json':
       body = JSON.stringify(data);
       break;
@@ -114,7 +116,7 @@ function postJSON(url, data, type = 'form') {
     method: 'post',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      //'Content-Type': 'application/json'
     },
     credentials: 'include',
     body: body,
@@ -494,7 +496,7 @@ export function createRoute(route) {
 }
 
 export function createVectorRoute(route) {
-  return postJSON(ROUTES_VECTOR_URL, route, 'params').then(() => getRoutesVector());
+  return postJSON(ROUTES_VECTOR_URL, route, 'form').then(() => getRoutesVector());
 }
 
 export function removeRoute(payload) {

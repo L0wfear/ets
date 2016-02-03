@@ -15,13 +15,13 @@ class RoutesStore extends Store {
     this.register(routesActions.updateRoute, this.handleGetRoutes);
     this.register(routesActions.removeRoute, this.handleGetRoutes);
     this.register(routesActions.getRouteReports, this.handleGetRouteReports);
-    //this.register(routesActions.getRouteById, this.handleGetRouteById);
+    this.register(routesActions.getRouteReportById, this.handleGetRouteReportById);
 
     this.state = {
       routesList: [],
       routesVectorList: [],
       reportsList: [],
-      //selectedRoute: null,
+      selectedReportData: [],
     };
 
   }
@@ -35,12 +35,16 @@ class RoutesStore extends Store {
   }
 
   handleGetRouteReports(reports) {
-    let reportsList = [];
-    reports.result.map( resByTechOp => {
-      if (resByTechOp.result && resByTechOp.result.rows)
-      reportsList = reportsList.concat(resByTechOp.result.rows);
-    })
-    this.setState({reportsList});
+    // let reportsList = [];
+    // reports.result.map(resByTechOp => {
+    //   if (resByTechOp.result && resByTechOp.result.rows)
+    //   reportsList = reportsList.concat(resByTechOp.result.rows);
+    // });
+    this.setState({reportsList: reports.result});
+  }
+
+  handleGetRouteReportById(report) {
+    this.setState({selectedReportData: report.result[0].result.rows});
   }
 
   getRouteById(id) {

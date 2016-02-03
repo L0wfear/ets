@@ -534,3 +534,7 @@ export function getODHReports() {
 export function getRouteReports() {
   return getJSON(ROUTE_REPORTS_URL);
 }
+
+export function getRouteReportById(payload) {
+  return getJSON(ROUTE_REPORTS_URL, payload);
+}

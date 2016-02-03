@@ -121,16 +121,16 @@ class RouteReports extends Component {
 
 	componentDidMount() {
 		const { flux } = this.context;
-		flux.getActions('routes').getRouteReports();
+		flux.getActions('routes').getRouteReportById(this.props.routeParams.id);
 	}
 
 	render() {
 
-		const { reportsList = [] } = this.props;
+		const { selectedReportData = [] } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
-				<CarsTable data={reportsList} >
+				<CarsTable data={selectedReportData} >
 				</CarsTable>
 			</div>
 		);
@@ -139,6 +139,7 @@ class RouteReports extends Component {
 }
 
 RouteReports.contextTypes = {
+  history: React.PropTypes.object,
 	flux: React.PropTypes.object,
 };
 

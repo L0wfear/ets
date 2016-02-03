@@ -98,10 +98,11 @@ export default class OpenLayersMap extends Component {
 
     this.map = global.olmap = map;
 
-        map.getView().setZoom(6);
-        map.getView().setCenter([-5441.16131979791, 10146.687775846918])
+    map.getView().setZoom(6);
+    map.getView().setCenter([-5441.16131979791, 10146.687775846918])
 
     this.init();
+
   }
 
   init() {

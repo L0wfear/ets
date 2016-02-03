@@ -2,6 +2,7 @@ import React from 'react';
 import PolyMap from './PolyMap.jsx';
 import { polyState, polyStyles } from '../../constants/polygons.js';
 import { vectorStyles, vectorState, getVectorArrowStyle, getVectorLayer, getVectorSource } from '../../constants/vectors.js';
+import Div from '../ui/Div.jsx';
 
 export default class DrawMap extends PolyMap {
   constructor(props) {
@@ -15,7 +16,6 @@ export default class DrawMap extends PolyMap {
     let cancelSelection = false;
     map.forEachFeatureAtPixel(pixel, (feature, layer) =>  {
       let { state } = feature.getProperties();
-      console.log(feature.getProperties());
       if (state && state !== 1) {
         this.props.onDrawFeatureClick(feature, ev, this);
       }
@@ -37,11 +37,10 @@ export default class DrawMap extends PolyMap {
 
   onDrawEnd(ev) {
     let { feature } = ev;
-    let id = 0;
+    let id = this.props.object_list.length || 0;
     const geometry = feature.getGeometry();
-    console.log(geometry.getCoordinates());
     feature.setStyle(getVectorArrowStyle(feature));
-    geometry.forEachSegment((start, end) => {
+    geometry.forEachSegment((start, end, index) => {
       let featureSegment = new ol.Feature({
         geometry: new ol.geom.LineString([start, end]),
         id: id,
@@ -52,9 +51,8 @@ export default class DrawMap extends PolyMap {
     })
     this.draw.setActive(false);
     feature.on('change', () => {
-      console.log('REMOVING FEATURE');
       this.vectorSource.removeFeature(feature)
-    })
+    });
     // setTimeout(() => {
     // this.vectorSource.removeFeature(feature);
     //     console.log(this.vectorSource.getFeatures());
@@ -81,8 +79,13 @@ export default class DrawMap extends PolyMap {
 
   render() {
     console.warn('DRAWMAP RENDER');
+    console.log(this.props);
     return (<div>
-              <div ref="container" style={{opacity: this.props.errorLoading ? .4 : 1}} className="openlayers-container"/>
+              <div ref="container" style={{opacity: this.props.errorLoading ? .4 : 1}} className="openlayers-container">
+                <Div hidden={!this.props.object_list.length}>
+                  <button className="continue-route-button" onClick={this.addPoint.bind(this)}>Продолжить маршрут</button>
+                </Div>
+              </div>
             </div>)
   }
 
@@ -92,7 +95,6 @@ export default class DrawMap extends PolyMap {
     //let styleFunction = polyStyles[polyState.SELECTABLE];
 
     _.each(object_list, (object, index) => {
-      console.log(object);
       let start = [object.begin.x_msk, object.begin.y_msk];
       let end = [object.end.x_msk, object.end.y_msk];
       let feature = new ol.Feature({
@@ -148,11 +150,9 @@ export default class DrawMap extends PolyMap {
 
   onPointAdd(e, draw) {
     let { feature, coordinates } = e;
-    console.log(e, draw);
     let end = coordinates;
     let startObject = _.last(this.props.object_list);
     let start = [startObject.end.x_msk, startObject.end.y_msk];
-    console.log(e.getGeometry().getCoordinates());
     let featureSegment = new ol.Feature({
       geometry: new ol.geom.LineString([start, end]),
       id: this.props.object_list.length,
@@ -163,12 +163,23 @@ export default class DrawMap extends PolyMap {
   }
 
   addPoint() {
-    //this.draw.setActive(true);
-    let draw = new ol.interaction.Draw({
-      source: this.vectorSource,
-      type: 'Point',
+    this.draw.setActive(true);
+    let startObject = _.last(this.props.object_list);
+    let start = [startObject.begin.x_msk, startObject.begin.y_msk];
+    let end = [startObject.end.x_msk, startObject.end.y_msk];
+    let featureSegment = new ol.Feature({
+      geometry: new ol.geom.LineString([start, end]),
     });
-    draw.on('drawend', this.onPointAdd.bind(this, draw));
-    this.map.addInteraction(draw);
+    this.draw.extend(featureSegment);
+    // let draw = new ol.interaction.Draw({
+    //   source: this.vectorSource,
+    //   type: 'Point',
+    // });
+    // draw.on('drawend', this.onPointAdd.bind(this, draw));
+    // this.map.addInteraction(draw);
+  }
+
+  shouldComponentUpdate() {
+    return true;
   }
 }

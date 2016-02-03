@@ -2353,3 +2353,10 @@ div.none {
 .ol-touch .rotate-north {
   top: 80px;
 }
+
+.continue-route-button {
+  position: absolute;
+    z-index: 999;
+    top: 10px;
+    right: 20px;
+}

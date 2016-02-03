@@ -2380,3 +2380,18 @@ div.none {
     border: 2px solid #333;
     border-radius: 4px;
 }
+
+.route-report-panel {
+  float: right;
+  width: 100%;
+  .Select {
+    display: inline-block;
+    float: right;
+    width: 300px;
+    margin-right: 10px;
+  }
+  button {
+    float: right;
+    display: inline-block;
+  }
+}

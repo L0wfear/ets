@@ -538,3 +538,7 @@ export function getRouteReports() {
 export function getRouteReportById(payload) {
   return getJSON(ROUTE_REPORTS_URL, payload);
 }
+
+export function createRouteReport(payload) {
+  return postJSON(ROUTE_REPORTS_URL, payload, 'form').then(() => getRouteReports());
+}

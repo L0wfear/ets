@@ -15,6 +15,7 @@ class RoutesStore extends Store {
     this.register(routesActions.updateRoute, this.handleGetRoutes);
     this.register(routesActions.removeRoute, this.handleGetRoutes);
     this.register(routesActions.getRouteReports, this.handleGetRouteReports);
+    this.register(routesActions.createRouteReport, this.handleGetRouteReports);
     this.register(routesActions.getRouteReportById, this.handleGetRouteReportById);
 
     this.state = {

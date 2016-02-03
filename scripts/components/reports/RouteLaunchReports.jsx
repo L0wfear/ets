@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import Table from '../ui/table/DataTable.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
+import EtsSelect from '../ui/EtsSelect.jsx';
+import Div from '../ui/Div.jsx';
+import { getFormattedDateTimeSeconds } from '../../utils/dates.js';
 
 let getStatusLabel = (status) => {
   let result = '';
@@ -45,6 +48,30 @@ let tableMeta = {
 			}
 		},
 		{
+			name: 'timestamp_create',
+			caption: 'Дата создания',
+			type: 'number',
+			filter: {
+				type: 'select',
+			},
+		},
+		{
+			name: 'timestamp_process_begin',
+			caption: 'Дата начала обработки',
+			type: 'number',
+			filter: {
+				type: 'select',
+			},
+		},
+		{
+			name: 'timestamp_process_end',
+			caption: 'Дата завершения обработки',
+			type: 'number',
+			filter: {
+				type: 'select',
+			},
+		},
+		{
 			name: 'odh_fail_count',
 			caption: 'Кол-во непокрытых',
 			type: 'number',
@@ -75,6 +102,9 @@ let CarsTable = (props) => {
 
 	const renderers = {
     status: ({data}) => <div>{data ? getStatusLabel(data) : ''}</div>,
+    timestamp_create: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
+    timestamp_process_begin: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
+    timestamp_process_end: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
 	};
 
 	return <Table title='Покрытие ОДХ маршрутами'
@@ -93,28 +123,41 @@ class RouteLaunchReports extends Component {
 		this.state = {
 			selectedCar: null,
 			showForm: false,
+      generationType: 'null',
 		};
 	}
 
 	componentDidMount() {
 		const { flux } = this.context;
 		flux.getActions('routes').getRouteReports();
+		flux.getActions('objects').getTechOperations();
 	}
 
   onReportSelect({props}) {
     const id = props.data.id;
-    console.log(id);
-		// const { flux } = this.context;
-		// flux.getActions('routes').getRouteReportById(id);
     this.context.history.pushState(null, '/route-report/'+id);
+  }
+
+  handleGenerationTypeChange(type) {
+    this.setState({generationType: type});
+  }
+  createRouteReport() {
+    console.log(` creating report`, this.state.generationType);
+		const { flux } = this.context;
+		flux.getActions('routes').createRouteReport(this.state.generationType);
   }
 
 	render() {
 
-		const { reportsList = [] } = this.props;
+		const { reportsList = [], techOperationsList = [] } = this.props;
+    const TECH_OPERATIONS = [{value: 'null', label: 'Все операции'}].concat(techOperationsList.map(({id, name}) => ({value: id, label: name})));
 
 		return (
 			<div className="ets-page-wrap">
+      <Div className="route-report-panel">
+        <Button bsSize="small" onClick={this.createRouteReport.bind(this)}>Сформировать отчет</Button>
+        <EtsSelect options={TECH_OPERATIONS} value={this.state.generationType} onChange={this.handleGenerationTypeChange.bind(this)} />
+      </Div>
 				<CarsTable data={reportsList} onRowSelected={this.onReportSelect.bind(this)}>
 				</CarsTable>
 			</div>
@@ -128,4 +171,4 @@ RouteLaunchReports.contextTypes = {
 	flux: React.PropTypes.object,
 };
 
-export default connectToStores(RouteLaunchReports, ['routes']);
+export default connectToStores(RouteLaunchReports, ['routes', 'objects']);

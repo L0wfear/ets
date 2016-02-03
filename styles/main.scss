@@ -2359,4 +2359,13 @@ div.none {
     z-index: 999;
     top: 10px;
     right: 20px;
+    padding: 6px;
+}
+
+.delete-last-point-button {
+  padding-top: 5px;
+    position: absolute;
+      z-index: 999;
+      top: 45px;
+      right: 20px;
 }

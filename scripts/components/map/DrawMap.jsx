@@ -1,5 +1,6 @@
 import React from 'react';
 import PolyMap from './PolyMap.jsx';
+import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
 import { polyState, polyStyles } from '../../constants/polygons.js';
 import { vectorStyles, vectorState, getVectorArrowStyle, getVectorLayer, getVectorSource } from '../../constants/vectors.js';
 import Div from '../ui/Div.jsx';
@@ -83,7 +84,8 @@ export default class DrawMap extends PolyMap {
     return (<div>
               <div ref="container" style={{opacity: this.props.errorLoading ? .4 : 1}} className="openlayers-container">
                 <Div hidden={!this.props.object_list.length}>
-                  <button className="continue-route-button" onClick={this.addPoint.bind(this)}>Продолжить маршрут</button>
+                  <button className="continue-route-button" onClick={this.addPoint.bind(this)}><Glyphicon glyph="plus"/></button>
+                  <button className="delete-last-point-button" onClick={this.removeLastPoint.bind(this)}><Glyphicon glyph="remove"/></button>
                 </Div>
               </div>
             </div>)
@@ -177,6 +179,13 @@ export default class DrawMap extends PolyMap {
     // });
     // draw.on('drawend', this.onPointAdd.bind(this, draw));
     // this.map.addInteraction(draw);
+  }
+
+  removeLastPoint() {
+    if (this.props.object_list.length === 1) {
+      this.draw.setActive(true);
+    }
+    this.props.removeLastDrawFeature();
   }
 
   shouldComponentUpdate() {

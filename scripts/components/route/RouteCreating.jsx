@@ -109,6 +109,12 @@ export default class RouteCreating extends Component {
 			this.props.onChange('object_list', object_list);
 		}
 
+		removeLastDrawFeature() {
+			const { object_list } = this.props.route;
+			object_list.splice(-1, 1);
+			this.props.onChange('object_list', object_list);
+		}
+
 		render() {
 			let route = this.props.route;
 			const Map = this.props.manual ? DrawMap : PolyMap;
@@ -120,6 +126,7 @@ export default class RouteCreating extends Component {
 						<Map onFeatureClick={this.onFeatureClick.bind(this)}
 								 onDrawFeatureAdd={this.onDrawFeatureAdd.bind(this)}
 								 onDrawFeatureClick={this.onDrawFeatureClick.bind(this)}
+								 removeLastDrawFeature={this.removeLastDrawFeature.bind(this)}
 								 zoom={MAP_INITIAL_ZOOM}
 	            	 center={MAP_INITIAL_CENTER}
 								 object_list={route.object_list}

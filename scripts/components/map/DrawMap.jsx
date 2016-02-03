@@ -84,7 +84,7 @@ export default class DrawMap extends PolyMap {
     return (<div>
               <div ref="container" style={{opacity: this.props.errorLoading ? .4 : 1}} className="openlayers-container">
                 <Div hidden={!this.props.object_list.length}>
-                  <button className="continue-route-button" onClick={this.addPoint.bind(this)}><Glyphicon glyph="plus"/></button>
+                  <button className="continue-route-button" onClick={this.addPoint.bind(this)}><Glyphicon glyph="pencil"/></button>
                   <button className="delete-last-point-button" onClick={this.removeLastPoint.bind(this)}><Glyphicon glyph="remove"/></button>
                 </Div>
               </div>

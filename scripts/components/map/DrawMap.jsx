@@ -54,33 +54,9 @@ export default class DrawMap extends PolyMap {
     feature.on('change', () => {
       this.vectorSource.removeFeature(feature)
     });
-    // setTimeout(() => {
-    // this.vectorSource.removeFeature(feature);
-    //     console.log(this.vectorSource.getFeatures());
-    // }, 2000)
-
-    // setTimeout(() => {
-    //   //this.draw.setActive(true);
-    //   console.log('EXTENDING')
-    //   this.draw.extend(feature);
-    // }, 2000)
-    // let format = new ol.format.GeoJSON();
-    // let source = POLYS_LAYER.getSource();
-    // let features = source.getFeatures();
-    // _.each(features, feature => {
-    //   const newFeature = format.writeFeatureObject(ev.feature);
-    //   const currentFeature = format.writeFeatureObject(feature);
-    //   const intersection = intersect(newFeature, currentFeature);
-    //   if (intersection) {
-    //     const formattedFeature = format.readFeature(intersection);
-    //     //this.props.onFeatureClick(feature, ev, this);
-    //   }
-    // })
   }
 
   render() {
-    console.warn('DRAWMAP RENDER');
-    console.log(this.props);
     return (<div>
               <div ref="container" style={{opacity: this.props.errorLoading ? .4 : 1}} className="openlayers-container">
                 <Div hidden={!this.props.object_list.length}>
@@ -108,7 +84,6 @@ export default class DrawMap extends PolyMap {
       feature.setStyle(getVectorArrowStyle(feature));
 
       vectorSource.addFeature(feature);
-      console.log(feature.getProperties());
     });
 
     !!this.vectorLayer && map.removeLayer(this.vectorLayer);
@@ -173,12 +148,6 @@ export default class DrawMap extends PolyMap {
       geometry: new ol.geom.LineString([start, end]),
     });
     this.draw.extend(featureSegment);
-    // let draw = new ol.interaction.Draw({
-    //   source: this.vectorSource,
-    //   type: 'Point',
-    // });
-    // draw.on('drawend', this.onPointAdd.bind(this, draw));
-    // this.map.addInteraction(draw);
   }
 
   removeLastPoint() {

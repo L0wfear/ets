@@ -1,5 +1,5 @@
 import { Actions } from 'flummox';
-import { getRoutes, getRouteById, createRoute, removeRoute, updateRoute, getRoutesVector, getRouteVectorById, createVectorRoute, removeRouteVector, getRouteReports, getRouteReportById,createRouteReport } from '../adapter.js';
+import { getRoutes, getRouteById, createRoute, removeRoute, updateRoute, getRoutesVector, getRouteVectorById, createVectorRoute, removeRouteVector, getRouteReports, getRouteReportById, createRouteReport, validateRoute } from '../adapter.js';
 import _ from 'lodash';
 import { createValidDateTime } from '../utils/dates.js';
 
@@ -72,6 +72,17 @@ export default class RoutesActions extends Actions {
   createRouteReport(operation_id) {
     const payload = { operation_id };
     return createRouteReport(payload);
+  }
+
+  validateRoute(route) {
+    const route_vector = {
+      technical_operation_id: 55,//route.technical_operation_id,
+      object_list: route.object_list,
+    };
+    const payload = {
+      route_vector: JSON.stringify(route_vector),
+    };
+    return validateRoute(payload);
   }
 
 }

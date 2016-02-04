@@ -64,6 +64,7 @@ export default class LoadingStore extends Store {
       routesActions.getRouteReportById,
       routesActions.getRouteReports,
       routesActions.createRouteReport,
+      routesActions.validateRoute,
 
 
     );

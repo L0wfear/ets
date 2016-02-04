@@ -10,10 +10,7 @@ import {vectorStyles, vectorState} from '../../constants/vectors.js';
 const MAP_INITIAL_CENTER = [-399.43090337943863, -8521.192605428025];
 const MAP_INITIAL_ZOOM = 3;
 
-console.log(polyState);
-
-
-export default class RouteCreating extends Component {
+class RouteCreating extends Component {
 
 		constructor(props) {
 			super(props);
@@ -45,7 +42,6 @@ export default class RouteCreating extends Component {
 		}
 
 		onFeatureClick(feature, ev, map) {
-			console.log("ON FEATURE CLICK");
 			let {id, name, state} = feature.getProperties();
 
 			const { polys } = this.props.route;
@@ -71,8 +67,6 @@ export default class RouteCreating extends Component {
 
 			let {id, state, distance, begin, end} = feature.getProperties();
 
-			console.warn('DRAW FEATURE CLICK', id);
-
 			const { object_list } = this.props.route;
 			const objectIndex = _.findIndex(object_list, o => o.id === id);
 
@@ -95,6 +89,7 @@ export default class RouteCreating extends Component {
 		}
 
 		onDrawFeatureAdd(feature, coordinates, distance, map) {
+			const { flux } = this.context;
 			let { id, state } = feature.getProperties();
 			const { object_list } = this.props.route;
 			if (!_.find(object_list, o => o.begin.x_msk === coordinates[0][0]))
@@ -106,7 +101,17 @@ export default class RouteCreating extends Component {
 				distance: distance,
 				technical_operation_id: 55,
 			});
+
 			this.props.onChange('object_list', object_list);
+		}
+
+		checkRoute() {
+			const { flux } = this.context;
+			flux.getActions('routes').validateRoute(this.props.route).then(r => {
+				const result = r.result;
+				let odh_list = r.result.odh_validate_result.filter( res => res.traveled);
+				this.props.onChange('odh_list', odh_list);
+			});
 		}
 
 		removeLastDrawFeature() {
@@ -118,6 +123,8 @@ export default class RouteCreating extends Component {
 		render() {
 			let route = this.props.route;
 			const Map = this.props.manual ? DrawMap : PolyMap;
+			let odh_list = route.odh_list || route.object_list.filter(o => o.type && o.type === 'odh');
+			console.log(this.props.route);
 
 			return (
 				<div>
@@ -130,11 +137,12 @@ export default class RouteCreating extends Component {
 								 zoom={MAP_INITIAL_ZOOM}
 	            	 center={MAP_INITIAL_CENTER}
 								 object_list={route.object_list}
+								 odh_list={odh_list}
 	            	 polys={route.polys}
 								 manualDraw={this.props.manual}/>
 	          <div className="route-odhs-list">
 	          	<h4>Список ОДХ/ДТ</h4>
-	          	<ODHList object_list={route.object_list}/>
+	          	<ODHList odh_list={odh_list} checkRoute={this.props.manual ? this.checkRoute.bind(this) : null}/>
 	          </div>
 					</div>
 				</div>
@@ -142,3 +150,9 @@ export default class RouteCreating extends Component {
 
 		}
 }
+
+RouteCreating.contextTypes = {
+	flux: React.PropTypes.object,
+};
+
+export default RouteCreating;

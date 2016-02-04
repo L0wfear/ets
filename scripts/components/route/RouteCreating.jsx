@@ -109,8 +109,10 @@ class RouteCreating extends Component {
 			const { flux } = this.context;
 			flux.getActions('routes').validateRoute(this.props.route).then(r => {
 				const result = r.result;
-				let odh_list = r.result.odh_validate_result.filter( res => res.traveled);
+				let odh_list = r.result.odh_validate_result.filter(res => res.traveled);
+				let odh_fail_list = r.result.odh_validate_result.filter(res => !res.traveled);
 				this.props.onChange('odh_list', odh_list);
+				this.props.onChange('odh_fail_list', odh_fail_list);
 			});
 		}
 
@@ -124,10 +126,11 @@ class RouteCreating extends Component {
 			let route = this.props.route;
 			const Map = this.props.manual ? DrawMap : PolyMap;
 			let odh_list = route.odh_list || route.object_list.filter(o => o.type && o.type === 'odh');
+			let odh_fail_list = route.odh_fail_list || [];
 			console.log(this.props.route);
 
 			return (
-				<div>
+				<div className="route-creating">
 					{/*<div className="route-name"> Создание нового маршрута {route.name} </div>*/}
 					<div className="route-odhs-on-map">
 						<Map onFeatureClick={this.onFeatureClick.bind(this)}
@@ -139,10 +142,9 @@ class RouteCreating extends Component {
 								 object_list={route.object_list}
 								 odh_list={odh_list}
 	            	 polys={route.polys}
-								 manualDraw={this.props.manual}/>
+								 manualDraw={this.props.manual} />
 	          <div className="route-odhs-list">
-	          	<h4>Список ОДХ/ДТ</h4>
-	          	<ODHList odh_list={odh_list} checkRoute={this.props.manual ? this.checkRoute.bind(this) : null}/>
+	          	<ODHList odh_list={odh_list} odh_fail_list={odh_fail_list} checkRoute={this.props.manual ? this.checkRoute.bind(this) : null}/>
 	          </div>
 					</div>
 				</div>

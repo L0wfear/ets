@@ -26,6 +26,8 @@ export default class RoutesActions extends Actions {
   createRoute(route) {
     const payload = _.cloneDeep(route);
     delete payload.polys;
+    delete payload.odh_list;
+    delete payload.odh_fail_list;
     delete payload.technical_operation_id;
     _.each(payload.object_list, o => delete o.name);
     console.log(payload);
@@ -36,6 +38,8 @@ export default class RoutesActions extends Actions {
   createVectorRoute(route) {
     const payload = _.cloneDeep(route);
     delete payload.polys;
+    delete payload.odh_list;
+    delete payload.odh_fail_list;
     _.each(payload.object_list, o => {
       delete o.name;
       o.technical_operation_id = payload.technical_operation_id;

@@ -111,12 +111,12 @@ class RoutesList extends Component {
 		let state = this.state;
 
 		let routes = routesList.map((r, i) => {
-			let cn = cx('list-group-item', {'active': route && r.id === route.id});
+			let cn = cx('list-group-item', {'active': route && r.id === route.id && !this.state.isVectorRouteSelected});
 			return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>
 		});
 
 		let routesVector = routesVectorList.map((r, i) => {
-			let cn = cx('list-group-item', {'active': route && r.id === route.id});
+			let cn = cx('list-group-item', {'active': route && r.id === route.id && this.state.isVectorRouteSelected});
 			return <li className={cn} onClick={this.selectRouteVector.bind(this, r.id)} key={i}>{r.name}</li>
 		});
 

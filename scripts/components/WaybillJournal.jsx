@@ -141,7 +141,6 @@ let WaybillsTable = (props) => {
 
 class WaybillJournal extends Component {
 
-
 	constructor(props) {
 		super(props);
 
@@ -162,7 +161,7 @@ class WaybillJournal extends Component {
 		this.setState({
 			showForm: true,
 			selectedBill: null
-		})
+		});
 	}
 
 	onFormHide() {

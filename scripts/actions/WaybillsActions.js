@@ -31,10 +31,11 @@ export default class WaybillsActions extends Actions {
     delete payload.date_create;
 
     _.mapKeys(payload, (v, k) => isEmpty(v) ? delete payload[k] : void 0);
+    
     if (isEmpty(payload.motohours_equip_start)) {
       payload.motohours_equip_start = null;
     }
-    console.error(payload.mission_id_list)
+
     if (isEmpty(payload.mission_id_list)) {
       payload.mission_id_list = '';
     }

@@ -35,6 +35,7 @@ export default class RouteInfo extends Component {
 				}
 			});
 			const Map = PolyMap;
+			let odh_list = route.odh_list || object_list.filter(o => o.type && o.type === 'odh');
 
 			return (
 				<Div>
@@ -47,8 +48,7 @@ export default class RouteInfo extends Component {
 								 manual={manual}/>
 
 	          <Div className="route-odhs-list" hidden={this.props.mapOnly}>
-	          	<h4>Список ОДХ/ДТ</h4>
-	          	<ODHList showSelectable={true} object_list={route.object_list}/>
+	          	<ODHList showSelectable={true} odh_list={odh_list}/>
 	          </Div>
 					</Div>
 				</Div>

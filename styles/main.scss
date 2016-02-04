@@ -1930,7 +1930,7 @@ body {
       border: 4px solid #ccc;
     }
     .route-odhs-list {
-      position:absolute;
+      position: absolute;;
       left:620px;
       width:380px;
       margin-top:-15px;
@@ -1953,13 +1953,13 @@ body {
 .routes-form-map-wrapper {
   .route-odhs-on-map {
     position: relative;
-    height: 500px;
+    min-height: 500px;
     width: 600px;
     border-radius: 5px;
     border: 4px solid #ccc;
   }
   .route-odhs-list {
-    position:absolute;
+    position:relative;
     left:620px;
     width:380px;
     margin-top:-15px;
@@ -2394,4 +2394,17 @@ div.none {
     float: right;
     display: inline-block;
   }
+}
+
+.route-creating {
+  .openlayers-container {
+    height: 492px;
+    margin-top: 11px;
+    border: 4px solid #ccc;
+    border-radius: 5px;
+  }
+  .route-odhs-on-map {
+    border: none;
+  }
+
 }

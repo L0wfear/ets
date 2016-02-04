@@ -68,6 +68,8 @@ const MISSIONS_URL = getUrl('/mission/');
 const MISSION_SOURCES_URL = getUrl('/mission_source/');
 const MISSION_TEMPLATES_URL = getUrl('/mission_template/');
 const ROUTES_URL = getUrl('/route/');
+const ROUTES_VECTOR_URL = getUrl('/route_vector/');
+const ROUTE_REPORTS_URL = getUrl('/route_odh_covering_report/');
 const ODH_REPORTS_SERVICE_URL = getServiceUrl('/odh-reports/');
 
 function getJSON(url, data = {}) {
@@ -97,8 +99,10 @@ function postJSON(url, data, type = 'form') {
   let body;
   switch (type) {
     case 'form':
+      url += '?token=' + token;
+      delete data.token;
       body = toFormData(data);
-      break
+      break;
     case 'json':
       body = JSON.stringify(data);
       break;
@@ -112,7 +116,7 @@ function postJSON(url, data, type = 'form') {
     method: 'post',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      //'Content-Type': 'application/json'
     },
     credentials: 'include',
     body: body,
@@ -483,12 +487,24 @@ export function getRoutes() {
   return getJSON(ROUTES_URL);
 }
 
+export function getRoutesVector() {
+  return getJSON(ROUTES_VECTOR_URL);
+}
+
 export function createRoute(route) {
   return postJSON(ROUTES_URL, route, 'params').then(() => getRoutes());
 }
 
+export function createVectorRoute(route) {
+  return postJSON(ROUTES_VECTOR_URL, route, 'form').then(() => getRoutesVector());
+}
+
 export function removeRoute(payload) {
   return deleteJSON(ROUTES_URL, payload, 'params').then(() => getRoutes());
+}
+
+export function removeRouteVector(route) {
+  return deleteJSON(ROUTES_VECTOR_URL, route, 'params').then(() => getRoutesVector());
 }
 
 export function updateRoute(route) {
@@ -497,6 +513,10 @@ export function updateRoute(route) {
 
 export function getRouteById(payload) {
   return getJSON(ROUTES_URL, payload, 'params');
+}
+
+export function getRouteVectorById(payload) {
+  return getJSON(ROUTES_VECTOR_URL, payload, 'params');
 }
 
 // SERVICES
@@ -509,4 +529,16 @@ export function getODHReports() {
     order: 'desc'
   }
   return getJSON(ODH_REPORTS_SERVICE_URL, payload, 'params');
+}
+
+export function getRouteReports() {
+  return getJSON(ROUTE_REPORTS_URL);
+}
+
+export function getRouteReportById(payload) {
+  return getJSON(ROUTE_REPORTS_URL, payload);
+}
+
+export function createRouteReport(payload) {
+  return postJSON(ROUTE_REPORTS_URL, payload, 'form').then(() => getRouteReports());
 }

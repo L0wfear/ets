@@ -47,6 +47,7 @@
     "scss-loader": "0.0.1",
     "sparklines": "^1.0.0",
     "style-loader": "^0.12.3",
+    "turf": "^2.0.2",
     "underscore": "^1.8.3",
     "url-loader": "^0.5.6",
     "whatwg-fetch": "^0.7.0",

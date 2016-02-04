@@ -5,7 +5,9 @@ import { PROJECTION, ArcGisLayer } from './MskAdapter.js';
 import 'ol3-popup/src/ol3-popup.js';
 import { getGeoObjectsByCoords } from '../../adapter.js';
 import '../../vendor/onTabUnfocus.js';
-import {polyState, polyStyles} from '../../constants/polygons.js';
+import { polyState, polyStyles } from '../../constants/polygons.js';
+import { vectorStyles, vectorState, getVectorArrowStyle, getVectorLayer, getVectorSource } from '../../constants/vectors.js';
+import { intersect } from 'turf';
 
 window.addEventListener('blur', (ev) => {
   //let store = flux.getStore('points')
@@ -20,8 +22,6 @@ window.addEventListener('focus', (ev) => {
 
 let POLYS_LAYER = null;
 
-
-
 global.ol = ol;
 
 // https://github.com/pka/ol3-react-example
@@ -32,10 +32,10 @@ export default class OpenLayersMap extends Component {
   constructor(props, context) {
     super(props, context);
     let self = this;
+    console.log('POLYMAP CONSTRUCTOR');
 
     this.markers = {};
     this._handlers = null; // map event handlers
-
 
     let initialView = new ol.View({
       center: this.props.center,
@@ -65,52 +65,72 @@ export default class OpenLayersMap extends Component {
     });
 
 
-    let controls = []
+    let controls = [];
     controls.push(new ol.control.Zoom({
-        duration: 400,
-        className: 'ol-zoom',
-        delta: 1
-      }))
+      duration: 200,
+      className: 'ol-zoom',
+      delta: 1
+    }));
+    // if (this.props.manualDraw) {
+    //   var button = document.createElement('button');
+    //   button.innerHTML = 'Добавить точку';
+    //   button.addEventListener('click', this.addPoint.bind(this), false);
+    //
+    //   var element = document.createElement('div');
+    //   element.className = 'rotate-north ol-unselectable ol-control';
+    //   element.appendChild(button);
+    //   controls.push(new ol.control.Control({element: element}));
+    // }
 
-    let map = new ol.Map(
-      {
-        view: initialView,
-        //interactions: [this.interactions],
-        renderer: ['canvas','dom'],
-        controls: controls,
-        layers: [ArcGisLayer, canvasLayer]
-      })
+    let layers = [ArcGisLayer, canvasLayer];
+    if (this.props.manualDraw) {
+      this.vectorSource = getVectorSource();
+      this.vectorLayer = getVectorLayer(this.vectorSource)
+      layers.push(this.vectorLayer);
+    }
+    let map = new ol.Map({
+      view: initialView,
+      //interactions: [this.interactions],
+      renderer: ['canvas','dom'],
+      controls: controls,
+      layers
+    });
 
     this.map = global.olmap = map;
+
+    map.getView().setZoom(6);
+    map.getView().setCenter([-5441.16131979791, 10146.687775846918])
+
+    this.init();
+
   }
 
-  renderODHs(polys = {}/*window.ROUTES[0].polys*/) {
+  init() {
+
+  }
+
+  renderODHs(polys = {}) {
     let map = this.map;
 
     let GeoJSON = new ol.format.GeoJSON();
     let vectorSource = new ol.source.Vector();
     let styleFunction = polyStyles[polyState.SELECTABLE];
 
-    //let features = [];
-    //debugger;
-
     _.each(polys, (poly, key) => {
-      //debugger;
       let feature = new ol.Feature({
         geometry: GeoJSON.readGeometry(poly.shape),
         name: poly.name,
         id: key,
         state: poly.state,
       });
-      feature.setStyle(polyStyles[poly.state]);
+      if (this.props.manual) {
+        feature.setStyle(getVectorArrowStyle(feature));
+      } else {
+        feature.setStyle(polyStyles[poly.state]);
+      }
 
       vectorSource.addFeature(feature);
-      //featuresJSON.readFeature(feature)
-      //features.push(feature)
     })
-
-    //debugger;
-
 
     !!POLYS_LAYER && map.removeLayer(POLYS_LAYER);
 
@@ -122,16 +142,11 @@ export default class OpenLayersMap extends Component {
     POLYS_LAYER = polysLayer;
 
     map.addLayer(polysLayer);
-
-    map.getView().setZoom(6);
-    map.getView().setCenter([-5441.16131979791, 10146.687775846918])
-
   }
 
   shouldComponentUpdate() {
     return false;
   }
-
 
   /**
    * initialization here
@@ -150,8 +165,6 @@ export default class OpenLayersMap extends Component {
 
     this.enableInteractions();
 
-    this.props.selectInteraction && map.addInteraction(this.props.selectInteraction);
-
     this.renderODHs(this.props.polys);
   }
 
@@ -160,16 +173,11 @@ export default class OpenLayersMap extends Component {
   }
 
   onMouseMove(ev) {
-
     let coordinate = ev.coordinate;
     let pixel = ev.pixel;
     let map = this.map;
     let el = this.map.getViewport();
-
-    var hit = map.forEachFeatureAtPixel(pixel, function (feature, layer) {
-                return true;
-            });
-
+    let hit = map.forEachFeatureAtPixel(pixel, (feature, layer) => true);
 
     el.style.cursor = hit ? 'pointer' : '';
   }
@@ -182,11 +190,9 @@ export default class OpenLayersMap extends Component {
     let coordinate = ev.coordinate;
     let cancelSelection = false;
 
-
     map.forEachFeatureAtPixel(pixel, (feature, layer) =>  {
       this.props.onFeatureClick(feature, ev, this);
-    })
-
+    });
 
     // TODO on poly click
   }
@@ -196,6 +202,7 @@ export default class OpenLayersMap extends Component {
   }
 
   render() {
+    console.warn('POLYMAP RENDER');
     return (<div>
               <div ref="container" style={{opacity: this.props.errorLoading ? .4 : 1}} className="openlayers-container"/>
             </div>)
@@ -217,15 +224,16 @@ export default class OpenLayersMap extends Component {
     if (this._handlers === null) {
       this._handlers = {
         singleclick: map.on('singleclick', this.onClick.bind(this)),
-        pointermove: map.on('pointermove', this.onMouseMove.bind(this))
       }
+
+      //if (!this.props.manualDraw) {
+        this._handlers.pointermove = map.on('pointermove', this.onMouseMove.bind(this))
+      //}
 
       interactions.forEach((interaction)=> {
         interaction.setActive(true)
       })
     }
-
-
 
   }
 
@@ -234,21 +242,22 @@ export default class OpenLayersMap extends Component {
     let interactions = map.getInteractions();
 
     if (this._handlers !== null) {
-      map.unByKey(this._handlers.singleclick)
-      map.unByKey(this._handlers.pointermove)
+      map.unByKey(this._handlers.singleclick);
+      map.unByKey(this._handlers.pointermove);
       this._handlers = null;
 
       interactions.forEach((interaction)=> {
         interaction.setActive(false)
-      })
+      });
     }
   }
 
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.polys !== undefined) {
-      this.popup.hide()
-      this.renderODHs(nextProps.polys)
+      this.popup.hide();
+      this.renderODHs(nextProps.polys);
     }
   }
+
 }

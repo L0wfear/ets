@@ -1,5 +1,5 @@
 import { Actions } from 'flummox';
-import { getRoutes, getRouteById, createRoute, removeRoute, updateRoute } from '../adapter.js';
+import { getRoutes, getRouteById, createRoute, removeRoute, updateRoute, getRoutesVector, getRouteVectorById, createVectorRoute, removeRouteVector, getRouteReports, getRouteReportById,createRouteReport } from '../adapter.js';
 import _ from 'lodash';
 import { createValidDateTime } from '../utils/dates.js';
 
@@ -9,18 +9,40 @@ export default class RoutesActions extends Actions {
     return getRoutes();
   }
 
+  getRoutesVector() {
+    return getRoutesVector();
+  }
+
   getRouteById(id) {
     const payload = { id };
     return getRouteById(payload);
   }
 
+  getRouteVectorById(id) {
+    const payload = { id };
+    return getRouteVectorById(payload);
+  }
+
   createRoute(route) {
     const payload = _.cloneDeep(route);
     delete payload.polys;
+    delete payload.technical_operation_id;
     _.each(payload.object_list, o => delete o.name);
-    console.log(payload.object_list);
+    console.log(payload);
     payload.object_list = JSON.stringify(payload.object_list);
     return createRoute(payload);
+  }
+
+  createVectorRoute(route) {
+    const payload = _.cloneDeep(route);
+    delete payload.polys;
+    _.each(payload.object_list, o => {
+      delete o.name;
+      o.technical_operation_id = payload.technical_operation_id;
+    });
+    console.log(payload);
+    payload.object_list = JSON.stringify(payload.object_list);
+    return createVectorRoute(payload);
   }
 
   removeRoute(route) {
@@ -28,9 +50,28 @@ export default class RoutesActions extends Actions {
     return removeRoute(payload);
   }
 
+  removeRouteVector(route) {
+    const payload = { id: route.id };
+    return removeRouteVector(payload);
+  }
+
   updateRoute(route) {
     const payload = _.cloneDeep(route);
     return updateRoute(payload);
+  }
+
+  getRouteReports() {
+    return getRouteReports();
+  }
+
+  getRouteReportById(id) {
+    const payload = { id };
+    return getRouteReportById(payload);
+  }
+
+  createRouteReport(operation_id) {
+    const payload = { operation_id };
+    return createRouteReport(payload);
   }
 
 }

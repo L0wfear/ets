@@ -37,6 +37,11 @@ export function getFormattedDateTime(date){
   return moment.utc(date).format('YYYY-MM-DD HH:mm');
 }
 
+export function getFormattedDateTimeSeconds(date){
+  if (!date) return '';
+  return moment.utc(date).format('YYYY-MM-DD HH:mm:ss');
+}
+
 export function getToday9am() {
   let now = new Date();
 

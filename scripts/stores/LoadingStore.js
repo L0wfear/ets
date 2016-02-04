@@ -56,6 +56,15 @@ export default class LoadingStore extends Store {
       routesActions.removeRoute,
       routesActions.updateRoute,
       routesActions.getRouteById,
+      routesActions.getRouteReports,
+      routesActions.getRoutesVector,
+      routesActions.removeRouteVector,
+      routesActions.createVectorRoute,
+      routesActions.getRouteVectorById,
+      routesActions.getRouteReportById,
+      routesActions.getRouteReports,
+      routesActions.createRouteReport,
+
 
     );
 

@@ -33,6 +33,4 @@ export const polyStyles = {
             width: 1
        })
     })
-
 };
-

@@ -28,7 +28,17 @@ export default class FormWrap extends Component {
         this.setState({formState: {}});
       }
 		}
+	}
 
+	resetFormState() {
+		if (this.props.showForm) {
+			if (this.props.element !== null ) {
+        const formState = _.cloneDeep(this.props.element);
+        this.setState({formState});
+			} else {
+        this.setState({formState: {}});
+      }
+		}
 	}
 
 
@@ -44,10 +54,13 @@ export default class FormWrap extends Component {
 		this.setState(newState);
 	}
 
-	handleFormSubmit(formState) {
+	handleFormSubmit(formState, manualCreating) {
 		const { flux } = this.context;
-    //this.props.onSubmit(formState);
-		flux.getActions('routes').createRoute(formState);
+		if (!manualCreating) {
+			flux.getActions('routes').createRoute(formState);
+		} else {
+			flux.getActions('routes').createVectorRoute(formState);
+		}
 		this.props.onFormHide();
 	}
 
@@ -61,6 +74,7 @@ export default class FormWrap extends Component {
       					handleFormChange={this.handleFormStateChange.bind(this)}
       					show={this.props.showForm}
       					onHide={this.props.onFormHide}
+								resetState={this.resetFormState.bind(this)}
       					{...this.state}/>
       					: null;
 

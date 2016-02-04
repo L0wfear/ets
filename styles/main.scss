@@ -2338,3 +2338,60 @@ div.none {
   top: 50%;
   transform: translate(-50%,-50%) !important;
 }
+
+.rotate-north {
+  bottom: 25px;
+  right: .5em;
+  button {
+    padding: 8px;
+    font-size: 14px;
+    padding-bottom: 12px;
+    height: auto;
+    width: auto;
+  }
+}
+.ol-touch .rotate-north {
+  top: 80px;
+}
+
+.continue-route-button {
+  position: absolute;
+  z-index: 999;
+  top: 10px;
+  right: 20px;
+  padding: 6px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background: #333;
+  color: white;
+  border: 2px solid #333;
+  border-radius: 4px;
+}
+
+.delete-last-point-button {
+  padding-top: 5px;
+    position: absolute;
+    z-index: 999;
+    top: 50px;
+    right: 20px;
+
+    background: #333;
+    color: white;
+    border: 2px solid #333;
+    border-radius: 4px;
+}
+
+.route-report-panel {
+  float: right;
+  width: 100%;
+  .Select {
+    display: inline-block;
+    float: right;
+    width: 300px;
+    margin-right: 10px;
+  }
+  button {
+    float: right;
+    display: inline-block;
+  }
+}

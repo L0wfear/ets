@@ -14,6 +14,7 @@ import LoadingPage from './LoadingPage.jsx';
 import EmployeesList from './EmployeesList.jsx';
 import CarsList from './CarsList.jsx';
 import FuelRatesDirectory from './directories/FuelRatesDirectory.jsx';
+import ODHDirectory from './directories/ODHDirectory.jsx';
 import TechOperationsDirectory from './directories/TechOperationsDirectory.jsx';
 import ODHReports from './reports/ODHReports.jsx';
 import MissionReports from './reports/MissionReports.jsx';
@@ -141,6 +142,7 @@ const routes = (
       <Route path="mission-report/:id" component={MissionReport} onEnter={requireAuth}/>
       <Route path="employees" component={EmployeesList} onEnter={requireAuth}/>
       <Route path="fuel-rates" component={FuelRatesDirectory} onEnter={requireAuth}/>
+      <Route path="odh" component={ODHDirectory} onEnter={requireAuth}/>
       <Route path="technical-operations" component={TechOperationsDirectory} onEnter={requireAuth}/>
       <Route path="cars" component={CarsList} onEnter={requireAuth}/>
       <Route path="login" component={LoginPage} onEnter={checkLoggedIn}/>

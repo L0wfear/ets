@@ -54,6 +54,7 @@ export default React.createClass({
                   <MenuItem divider />
 
   				        <MenuItem active={path === '/fuel-rates'} href="#/fuel-rates">Справочник норм расхода топлива</MenuItem>
+                  <MenuItem active={path === '/odh'} href="#/odh">Справочник ОДХ</MenuItem>
                 </NavDropdown>
 
                 <NavDropdown title="Отчеты" id="nav-dropdown-3">

@@ -78,14 +78,14 @@ let ODHTable = (props) => {
   const renderers = {
     name: ({data}) => <div>{data.toString()}</div>,
     total_area: ({data}) => <div>{data.toString() + ' кв.м'}</div>,
-    distance: ({data}) => <div>{data.toString() + ' м'}</div>,
+    distance: ({data}) => <div>{data.toString() + ' п.м'}</div>,
     roadway_area: ({data}) => <div>{data.toString() + ' кв.м'}</div>,
     footway_area: ({data}) => <div>{data.toString() + ' кв.м'}</div>,
     cleaning_area: ({data}) => <div>{data.toString() + ' кв.м'}</div>,
     auto_footway_area: ({data}) => <div>{data.toString() + ' кв.м'}</div>,
     manual_footway_area: ({data}) => <div>{data.toString() + ' кв.м'}</div>,
     snow_area: ({data}) => <div>{data.toString() + ' кв.м'}</div>,
-    gutters_length: ({data}) => <div>{data.toString() + ' м'}</div>
+    gutters_length: ({data}) => <div>{data.toString() + ' п.м'}</div>
   };
 
   return <Table title="Реестр ОДХ"

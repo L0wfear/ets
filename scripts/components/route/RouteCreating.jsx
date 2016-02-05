@@ -109,8 +109,8 @@ class RouteCreating extends Component {
 			const { flux } = this.context;
 			flux.getActions('routes').validateRoute(this.props.route).then(r => {
 				const result = r.result;
-				let odh_list = r.result.odh_validate_result.filter(res => res.traveled);
-				let odh_fail_list = r.result.odh_validate_result.filter(res => !res.traveled);
+				let odh_list = r.result.odh_validate_result.filter(res => res.status !== 'fail');
+				let odh_fail_list = r.result.odh_validate_result.filter(res => res.status === 'fail');
 				this.props.onChange('odh_list', odh_list);
 				this.props.onChange('odh_fail_list', odh_fail_list);
 			});

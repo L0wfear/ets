@@ -15,7 +15,9 @@ import EmployeesList from './EmployeesList.jsx';
 import CarsList from './CarsList.jsx';
 import FuelRatesDirectory from './directories/FuelRatesDirectory.jsx';
 import TechOperationsDirectory from './directories/TechOperationsDirectory.jsx';
-import ODHReports from './odh/ODHReports.jsx';
+import ODHReports from './reports/ODHReports.jsx';
+import MissionReports from './reports/MissionReports.jsx';
+import MissionReport from './reports/MissionReport.jsx';
 import RouteLaunchReports from './reports/RouteLaunchReports.jsx';
 import RouteReports from './reports/RouteReports.jsx';
 import Modal from './ui/Modal.jsx';
@@ -135,6 +137,8 @@ const routes = (
       <Route path="odh-reports" component={ODHReports} onEnter={requireAuth}/>
       <Route path="route-reports" component={RouteLaunchReports} onEnter={requireAuth}/>
       <Route path="route-report/:id" component={RouteReports} onEnter={requireAuth}/>
+      <Route path="mission-reports" component={MissionReports} onEnter={requireAuth}/>
+      <Route path="mission-report/:id" component={MissionReport} onEnter={requireAuth}/>
       <Route path="employees" component={EmployeesList} onEnter={requireAuth}/>
       <Route path="fuel-rates" component={FuelRatesDirectory} onEnter={requireAuth}/>
       <Route path="technical-operations" component={TechOperationsDirectory} onEnter={requireAuth}/>

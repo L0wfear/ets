@@ -1,5 +1,5 @@
 import { Actions } from 'flummox';
-import { getMissions, getMissionSources, createMission, removeMission, updateMission, getMissionTemplates, createMissionTemplate, removeMissionTemplate, updateMissionTemplate } from '../adapter.js';
+import { getMissions, getMissionSources, createMission, removeMission, updateMission, getMissionTemplates, createMissionTemplate, removeMissionTemplate, updateMissionTemplate, getMissionReports, getMissionReportById } from '../adapter.js';
 import _ from 'lodash';
 import { createValidDateTime } from '../utils/dates.js';
 import { isEmpty, isNotNull } from '../utils/functions.js';
@@ -72,6 +72,15 @@ export default class MissionsActions extends Actions {
     delete payload.number;
     delete payload.company_id;
     return updateMissionTemplate(payload);
+  }
+
+  getMissionReports() {
+    return getMissionReports();
+  }
+
+  getMissionReportById(id) {
+    const payload = { id };
+    return getMissionReportById(payload);
   }
 
 }

@@ -72,6 +72,7 @@ const ROUTES_VECTOR_URL = getUrl('/route_vector/');
 const ROUTE_REPORTS_URL = getUrl('/route_odh_covering_report/');
 const ODH_REPORTS_SERVICE_URL = getServiceUrl('/odh-reports/');
 const ROUTE_VALIDATE_URL = getUrl('/route_validate/');
+const MISSION_REPORTS_URL = getUrl('/car_odh_travel_report/');
 
 function getJSON(url, data = {}) {
   data = _.clone(data);
@@ -546,4 +547,12 @@ export function createRouteReport(payload) {
 
 export function validateRoute(payload) {
   return getJSON(ROUTE_VALIDATE_URL, payload);
+}
+
+export function getMissionReports() {
+  return getJSON(MISSION_REPORTS_URL);
+}
+
+export function getMissionReportById(payload) {
+  return getJSON(MISSION_REPORTS_URL, payload);
 }

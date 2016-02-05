@@ -53,7 +53,6 @@ class ODHReports extends Component {
 	}
 
 	render() {
-    console.log(this.props)
     const { typesList = [] } = this.props;
     const TYPES = typesList.map( ({id, title}) => ({label: title, value: id}));
 

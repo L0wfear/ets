@@ -93,13 +93,14 @@ let MissionsTable = (props) => {
 		const renderers = {
 			technical_operation_id: ({data}) => <div>{getTechOperationById(data).name || data}</div>,
       route_id: ({data}) => <div>{getRouteById(data).name || data}</div>,
-      car_id: ({data}) => <div>{getCarById(data).gov_number || data}</div>,
+      car_id: ({data}) => <div>{getCarById(data).gov_number || data}</div>
 		};
 
 		return <Table title="Шаблоны заданий"
 									results={props.data}
 									renderers={renderers}
 									tableMeta={getTableMeta(props)}
+                  multiSelection="true"
 									{...props}/>
 }
 

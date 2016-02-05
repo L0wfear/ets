@@ -18,6 +18,7 @@ class ObjectsStore extends Store {
     this.register(objectsActions.getFuelTypes, this.handleGetFuelTypes);
     this.register(objectsActions.getTechOperations, this.handleGetTechOperations);
     this.register(objectsActions.getWorkKinds, this.handleGetWorkKinds);
+    this.register(objectsActions.getODHs, this.handleGetODHs);
 
     this.state = {
       carsList: [],
@@ -29,6 +30,7 @@ class ObjectsStore extends Store {
       fuelTypes: [],
       techOperationsList: [],
       workKindsList: [],
+      odhsList: []
     };
 
   }
@@ -83,6 +85,10 @@ class ObjectsStore extends Store {
 
   handleGetWorkKinds(workKinds) {
     this.setState({workKindsList: workKinds.result});
+  }
+
+  handleGetODHs(odhs) {
+    this.setState({odhsList: odhs.result});
   }
 
   getWorkKindById(id) {

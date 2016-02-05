@@ -63,6 +63,7 @@ const EMPLOYEE_URL = getUrl('/employee/');
 const FUEL_TYPES_URL = getUrl('/fuel_type/');
 const ROUTE_URL = getUrl('/route/');
 const TECH_OPERATIONS_URL = getUrl('/technical_operation/');
+const ODHS_URL = getUrl('/odh/');
 const WORK_KINDS_URL = getUrl('/work_kind/');
 const MISSIONS_URL = getUrl('/mission/');
 const MISSION_SOURCES_URL = getUrl('/mission_source/');
@@ -429,6 +430,10 @@ export function getFuelTypes() {
 
 export function getTechOperations() {
   return getJSON(TECH_OPERATIONS_URL);
+}
+
+export function getODHs() {
+  return getJSON(ODHS_URL);
 }
 
 export function getWorkKinds() {

@@ -54,8 +54,8 @@ let tableMeta = {
 			}
 		},
 		{
-			name: 'v_avg',
-			caption: 'Средняя скорость',
+			name: 'v_avg_max',
+			caption: 'Максимальная скорость',
 			type: 'string',
 			filter: {
 				type: 'select',
@@ -67,8 +67,10 @@ let tableMeta = {
 let CarsTable = (props) => {
 
 	const renderers = {
-    route_traveled_percentage: ({data}) => <div>{parseFloat(data) * 100 + '%'}</div>,
     left_percentage: ({data}) => <div>{ parseFloat(parseFloat(data) * 100).toFixed(2) + '%'}</div>,
+    left: ({data}) => <div>{ parseFloat(data).toFixed(2)}</div>,
+    traveled: ({data}) => <div>{ parseFloat(data).toFixed(2)}</div>,
+    route_check_length: ({data}) => <div>{ parseFloat(data).toFixed(2)}</div>,
 	};
 
 	return <Table title='Покрытие ОДХ маршрутами'

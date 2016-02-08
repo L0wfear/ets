@@ -3,15 +3,14 @@ import { createHashHistory } from 'history';
 import { render } from 'react-dom';
 import React, { Component } from 'react';
 import LoginPage from './LoginPage.jsx';
-import WaybillJournal from './WaybillJournal.jsx';
-import MissionsJournal from './MissionsJournal.jsx';
+import WaybillJournal from './waybill/WaybillJournal.jsx';
+import MissionsJournal from './missions/MissionsJournal.jsx';
 import MissionTemplatesJournal from './missions/MissionTemplatesJournal.jsx';
-import WaybillForm from './WaybillForm.jsx';
 import RoutesList from './route/RoutesList.jsx';
 import MainPage from './MainPage.jsx';
 import MonitorPage from './MonitorPage.jsx';
 import LoadingPage from './LoadingPage.jsx';
-import EmployeesList from './EmployeesList.jsx';
+import DriversList from './drivers/DriversList.jsx';
 import CarsList from './CarsList.jsx';
 import FuelRatesDirectory from './directories/FuelRatesDirectory.jsx';
 import ODHDirectory from './directories/ODHDirectory.jsx';
@@ -134,7 +133,6 @@ const routes = (
       <Route path="waybill-journal" component={WaybillJournal} onEnter={requireAuth}/>
       <Route path="mission-journal" component={MissionsJournal} onEnter={requireAuth}/>
       <Route path="mission-templates-journal" component={MissionTemplatesJournal} onEnter={requireAuth}/>
-      <Route path="waybill-journal/create" component={WaybillForm} onEnter={requireAuth}/>
       <Route path="routes-list" component={RoutesList} onEnter={requireAuth}/>
       <Route path="odh-reports" component={ODHReports} onEnter={requireAuth}/>
       <Route path="route-reports" component={RouteLaunchReports} onEnter={requireAuth}/>
@@ -142,7 +140,7 @@ const routes = (
       <Route path="mission-reports" component={MissionReports} onEnter={requireAuth}/>
       <Route path="mission-report/:id" component={MissionReport} onEnter={requireAuth}/>
       <Route path="mission-report/:id/odhs/:index" component={MissionReportByODH} onEnter={requireAuth}/>
-      <Route path="employees" component={EmployeesList} onEnter={requireAuth}/>
+      <Route path="drivers" component={DriversList} onEnter={requireAuth}/>
       <Route path="fuel-rates" component={FuelRatesDirectory} onEnter={requireAuth}/>
       <Route path="odh" component={ODHDirectory} onEnter={requireAuth}/>
       <Route path="technical-operations" component={TechOperationsDirectory} onEnter={requireAuth}/>

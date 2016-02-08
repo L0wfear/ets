@@ -6,8 +6,9 @@ import Div from '../ui/Div.jsx';
 import RouteInfo from '../route/RouteInfo.jsx';
 import ODHList from '../route/ODHList.jsx';
 import { isEmpty } from '../../utils/functions.js';
+import Form from '../compositions/Form.jsx';
 
-class MissionForm extends Component {
+class MissionForm extends Form {
 
 	constructor(props) {
 		super(props);
@@ -16,15 +17,6 @@ class MissionForm extends Component {
 			selectedRoute: null,
 		};
 	}
-
-	handleChange(field, e) {
-		this.props.handleFormChange(field, e);
-	}
-
-  handleSubmit() {
-    console.log('submitting mission template form', this.props.formState);
-    this.props.onSubmit(this.props.formState);
-  }
 
 	handleRouteIdChange(v) {
 		this.handleChange('route_id', v);
@@ -64,8 +56,6 @@ class MissionForm extends Component {
     console.log('form state is ', state);
 
 		let IS_CREATING = true;
-    let IS_POST_CREATING = false;
-		let IS_DISPLAY = false;
 
     let title = `Задание № ${state.number || ''}`;
 
@@ -81,12 +71,6 @@ class MissionForm extends Component {
 				</Modal.Header>
 
 	      <Modal.Body>
-
-		      <Row>
-		      	<Col md={6}>
-		      		{/*Организация: АвД Жилищник "Крылатское" <br/>*/}
-		      	</Col>
-		      </Row>
 
 					<Row>
 						<Col md={6}>
@@ -114,7 +98,6 @@ class MissionForm extends Component {
                      onChange={this.handleRouteIdChange.bind(this)}/>
 
 						  <Div className="route-odhs-list" hidden={this.state.selectedRoute === null}>
-								<h4>Список ОДХ/ДТ</h4>
 								<ODHList showSelectable={true} odh_list={this.state.selectedRoute ? this.state.selectedRoute.object_list : []} />
 							</Div>
             </Col>
@@ -137,9 +120,5 @@ class MissionForm extends Component {
 		)
 	}
 }
-
-MissionForm.contextTypes = {
-	flux: React.PropTypes.object,
-};
 
 export default connectToStores(MissionForm, ['objects', 'employees', 'missions', 'routes']);

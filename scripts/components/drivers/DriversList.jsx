@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
-import Table from './ui/table/DataTable.jsx';
-import DriverFormWrap from './drivers/DriverFormWrap.jsx';
+import Table from '../ui/table/DataTable.jsx';
+import DriverFormWrap from './DriverFormWrap.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
 import _ from 'lodash';
 import moment from 'moment';
@@ -77,8 +77,8 @@ let EmployeesTable = (props) => {
 	const renderers = {
 		birthday : ({data}) => <div>{data ? moment(data).format('YYYY-MM-DD') : ''}</div>,
 		active : ({data}) => <div>{data === true ? 'Работает' : 'Не работает'}</div>,
-		drivers_license : ({data}) => <div>{data && data !== "None" ? data : ''}</div>,
-		special_license : ({data}) => <div>{data && data !== "None" ? data : ''}</div>,
+		drivers_license : ({data}) => <div>{data && data !== "None" && data !== 'null' ? data : ''}</div>,
+		special_license : ({data}) => <div>{data && data !== "None" && data !== 'null' ? data : ''}</div>,
 	};
 
 	return <Table title='Реестр водителей "Жилищник Крылатское"'
@@ -88,7 +88,7 @@ let EmployeesTable = (props) => {
 								{...props}/>
 }
 
-class EmployeesList extends Component {
+class DriversList extends Component {
 
 
 	constructor(props) {
@@ -101,7 +101,6 @@ class EmployeesList extends Component {
 	}
 
 	componentDidMount() {
-		console.log('MOUNT EmployeesList')
 		this.context.flux.getActions('employees').getEmployees();
 	}
 
@@ -145,8 +144,8 @@ class EmployeesList extends Component {
 	}
 }
 
-EmployeesList.contextTypes = {
+DriversList.contextTypes = {
 	flux: React.PropTypes.object,
 };
 
-export default connectToStores(EmployeesList, ['employees']);
+export default connectToStores(DriversList, ['employees']);

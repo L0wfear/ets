@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import { Button, Glyphicon } from 'react-bootstrap';
-import Table from './ui/table/DataTable.jsx';
-import { getFormattedDateTime } from '../utils/dates.js';
+import Table from '../ui/table/DataTable.jsx';
+import { getFormattedDateTime } from '../../utils/dates.js';
 import MissionFormWrap from './MissionFormWrap.jsx';
 import moment from 'moment';
 import cx from 'classnames';
@@ -77,30 +77,6 @@ let getTableMeta = (props) => {
 				},
         cssClassName: 'width300',
 			},
-			// {
-			// 	name: 'date_create',
-			// 	caption: 'Дата выдачи',
-			// 	type: 'date',
-			// 	filter: {
-			// 		type: 'select',
-			// 	}
-			// }
-      // {
-			// 	name: 'name',
-			// 	caption: 'Название',
-			// 	type: 'string',
-			// 	// filter: {
-			// 	// 	type: 'select'
-			// 	// }
-			// },
-      // {
-			// 	name: 'description',
-			// 	caption: 'Описание',
-			// 	type: 'string',
-			// 	// filter: {
-			// 	// 	type: 'select'
-			// 	// }
-			// },
       {
 				name: 'date_start',
 				caption: 'Начало',

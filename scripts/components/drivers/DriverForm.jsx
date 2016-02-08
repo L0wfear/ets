@@ -5,10 +5,11 @@ import EtsSelect from '../ui/EtsSelect.jsx';
 import Datepicker from '../ui/DatePicker.jsx';
 import moment from 'moment';
 import Div from '../ui/Div.jsx';
+import Form from '../compositions/Form.jsx';
 
 const DRIVER_STATES = ['Работает', 'Не работает'].map( el => ({value: +!!(el.indexOf(' ') === -1), label: el}));
 
-class DriverForm extends Component {
+class DriverForm extends Form {
 
 	constructor(props) {
 		super(props);
@@ -25,16 +26,12 @@ class DriverForm extends Component {
 		this.props.handleFormChange(field, e);
 	}
 
-  handleSubmit() {
-    console.log('submitting driver form', this.props.formState);
-    this.props.onSubmit(this.props.formState);
-  }
-
 	render() {
 
 		let state = this.props.formState;
 		const { carsList = [] } = this.props;
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: c.gov_number + ' [' + c.model + ']'}));
+		console.log(CARS);
 
     console.log('form state is ', state);
 

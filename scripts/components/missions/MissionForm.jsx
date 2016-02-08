@@ -1,18 +1,19 @@
 import React, {Component} from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, FormControls, Button, DropdownButton, Dropdown, Glyphicon, MenuItem } from 'react-bootstrap';
-import Datepicker from './ui/DatePicker.jsx';
-import RouteInfo from './route/RouteInfo.jsx';
-import ODHList from './route/ODHList.jsx';
-import Field from './ui/Field.jsx';
-import Div from './ui/Div.jsx';
+import Datepicker from '../ui/DatePicker.jsx';
+import RouteInfo from '../route/RouteInfo.jsx';
+import ODHList from '../route/ODHList.jsx';
+import Field from '../ui/Field.jsx';
+import Div from '../ui/Div.jsx';
 import moment from 'moment';
-import { getFuelOperations, getFuelRatesByCarModel } from '../adapter.js';
+import { getFuelOperations, getFuelRatesByCarModel } from '../../adapter.js';
 import cx from 'classnames';
-import { getDateWithoutTZ } from '../utils/dates.js';
-import { isEmpty } from '../utils/functions.js';
+import { getDateWithoutTZ } from '../../utils/dates.js';
+import { isEmpty } from '../../utils/functions.js';
+import Form from '../compositions/Form.jsx';
 
-class MissionForm extends Component {
+class MissionForm extends Form {
 
 	constructor(props) {
 		super(props);
@@ -20,10 +21,6 @@ class MissionForm extends Component {
 		this.state = {
 			selectedRoute: null,
 		};
-	}
-
-	handleChange(field, e) {
-		this.props.handleFormChange(field, e);
 	}
 
 	handleRouteIdChange(v) {
@@ -47,11 +44,6 @@ class MissionForm extends Component {
 			});
 		}
 	}
-
-  handleSubmit() {
-    console.log('submitting mission form', this.props.formState);
-    this.props.onSubmit(this.props.formState);
-  }
 
 	render() {
 
@@ -86,12 +78,6 @@ class MissionForm extends Component {
 				</Modal.Header>
 
 	      <Modal.Body>
-
-		      <Row>
-		      	<Col md={6}>
-		      		{/*Организация: АвД Жилищник "Крылатское" <br/>*/}
-		      	</Col>
-		      </Row>
 
 					<Row>
 						<Col md={6}>
@@ -174,9 +160,5 @@ class MissionForm extends Component {
 		)
 	}
 }
-
-MissionForm.contextTypes = {
-	flux: React.PropTypes.object,
-};
 
 export default connectToStores(MissionForm, ['objects', 'employees', 'missions', 'routes']);

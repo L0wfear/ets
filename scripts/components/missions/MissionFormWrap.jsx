@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import _ from 'lodash';
-import Div from './ui/Div.jsx';
+import Div from '../ui/Div.jsx';
 import MissionForm from './MissionForm.jsx';
-import { getDefaultMission } from '../stores/MissionsStore.js';
-import { isNotNull, isEmpty } from '../utils/functions.js';
-import { getDateWithoutTZ } from '../utils/dates.js';
-import { validateRow } from '../validate/validateRow.js';
-import { missionSchema, missionClosingSchema } from './models/MissionModel.js';
+import { getDefaultMission } from '../../stores/MissionsStore.js';
+import { isNotNull, isEmpty } from '../../utils/functions.js';
+import { getDateWithoutTZ } from '../../utils/dates.js';
+import { validateRow } from '../../validate/validateRow.js';
+import { missionSchema, missionClosingSchema } from '../models/MissionModel.js';
 
 let validateMission = (mission, errors) => {
 	let missionErrors = _.clone(errors);

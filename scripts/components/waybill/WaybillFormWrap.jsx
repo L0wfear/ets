@@ -1,29 +1,13 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import _ from 'lodash';
-import Div from './ui/Div.jsx';
+import Div from '../ui/Div.jsx';
 import WaybillForm from './WaybillForm.jsx';
-import { getDefaultBill } from '../stores/WaybillsStore.js';
-import { getDateWithoutTZ } from '../utils/dates.js';
-import { isNotNull, isEmpty } from '../utils/functions.js';
-import { validateRow } from '../validate/validateRow.js';
-import { waybillSchema, waybillClosingSchema } from './models/WaybillModel.js';
-
-let getFIOById = (employees, id, fullFlag = false) => {
-	const employee = _.find(employees, d => d.id === id) || null;
-	if (!employee) return '';
-	let result = employee.last_name + ' ';
-	result += fullFlag ? `${employee.first_name} ${employee.middle_name}` : `${employee.first_name[0]}. ${employee.middle_name[0]}.`;
-	return result;
-};
-
-let getDriverById = (drivers, id) => {
-	return _.find(drivers, d => d.id === id) || {};
-};
-
-let getCarById = (cars, id) => {
-	return _.find(cars, c => c.asuods_id === id) || {};
-};
+import { getDefaultBill } from '../../stores/WaybillsStore.js';
+import { getDateWithoutTZ } from '../../utils/dates.js';
+import { isNotNull, isEmpty } from '../../utils/functions.js';
+import { validateRow } from '../../validate/validateRow.js';
+import { waybillSchema, waybillClosingSchema } from '../models/WaybillModel.js';
 
 let validateWaybill = (waybill, errors) => {
 	let waybillErrors = _.clone(errors);

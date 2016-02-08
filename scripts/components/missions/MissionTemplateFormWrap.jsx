@@ -65,7 +65,6 @@ class MissionFormWrap extends Component {
 		formErrors = validateMission(formState, formErrors);
 		newState.canSave = _(formErrors).map(v => !!v).filter(e => e === true).value().length === 0;
 
-		console.log(formErrors);
 		newState.formState = formState;
 		newState.formErrors = formErrors;
 
@@ -86,8 +85,6 @@ class MissionFormWrap extends Component {
 
 	render() {
 
-		console.log()
-
 		return 	<Div hidden={!this.props.showForm}>
 							<MissionTemplateForm formState = {this.state.formState}
 													 onSubmit={this.handleFormSubmit.bind(this)}
@@ -96,7 +93,6 @@ class MissionFormWrap extends Component {
 													 onHide={this.props.onFormHide}
 													 {...this.state}/>
 						</Div>
-
 	}
 
 }

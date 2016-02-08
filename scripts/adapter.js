@@ -241,7 +241,7 @@ export function checkToken(token) {
         res();
       }
     });
-  })
+  });
 }
 
 export function login(user) {

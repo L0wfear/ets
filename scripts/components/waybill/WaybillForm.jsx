@@ -1,16 +1,17 @@
 import React, {Component} from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
-import EtsSelect from './ui/EtsSelect.jsx';
-import Datepicker from './ui/DatePicker.jsx';
-import Field from './ui/Field.jsx';
-import Div from './ui/Div.jsx';
+import EtsSelect from '../ui/EtsSelect.jsx';
+import Datepicker from '../ui/DatePicker.jsx';
+import Field from '../ui/Field.jsx';
+import Div from '../ui/Div.jsx';
 import moment from 'moment';
-import Taxes from './waybill/Taxes.jsx';
-import { getFuelOperations, getFuelRatesByCarModel } from '../adapter.js';
+import Taxes from './Taxes.jsx';
+import { getFuelOperations, getFuelRatesByCarModel } from '../../adapter.js';
 import cx from 'classnames';
-import { isNotNull, isEmpty } from '../utils/functions.js';
-import { getDateWithoutTZ, createValidDateTime } from '../utils/dates.js';
+import { isNotNull, isEmpty } from '../../utils/functions.js';
+import { getDateWithoutTZ, createValidDateTime } from '../../utils/dates.js';
+import Form from '../compositions/Form.jsx';
 
 
 let getTechOperationById = (id) => {
@@ -35,7 +36,7 @@ let getCarById = (cars, id) => {
 	return car;
 };
 
-class WaybillForm extends Component {
+class WaybillForm extends Form {
 
 	constructor(props) {
 		super(props);
@@ -61,11 +62,6 @@ class WaybillForm extends Component {
     }
 	}
 
-  handleSubmit() {
-    console.log('submitting waybill form', this.props.formState);
-    this.props.onSubmit(this.props.formState);
-  }
-
 	componentDidMount() {
 		console.log(this.props);
     const { flux } = this.context;
@@ -86,8 +82,6 @@ class WaybillForm extends Component {
 				this.setState({operations: fuelOperations.result});
 			});
 		}
-		flux.getActions('employees').getEmployees();
-		flux.getActions('objects').getTechOperations();
     let missionsFilterStatus = (formState.status === 'active' || formState.status === 'closed') ? 'assigned' : 'not_assigned';
     if (formState.status === 'draft') {
       missionsFilterStatus = undefined;
@@ -97,37 +91,15 @@ class WaybillForm extends Component {
 
 	onDriverChange(v) {
 		this.handleChange('driver_id', v);
-		// const driver = _.find(this.props.driversList, d => d.id === v) || {};
-		// const prefer_car = driver.prefer_car || null;
-		// if (prefer_car) {
-		// 	this.handleChange('car_id', prefer_car);
-		// 	const waybillsListSorted = _(this.props.waybillsList).filter(w => w.status === 'closed').sortBy('id').value().reverse();
-		// 	const lastCarUsedWaybill = _.find(waybillsListSorted, w => w.car_id === prefer_car);
-		// 	if (isNotNull(lastCarUsedWaybill)) {
-		// 		if (isNotNull(lastCarUsedWaybill.fuel_end)) {
-		// 			this.handleChange('fuel_start', lastCarUsedWaybill.fuel_end);
-		// 		}
-		// 		if (isNotNull(lastCarUsedWaybill.odometr_end)) {
-		// 			this.handleChange('odometr_start', lastCarUsedWaybill.odometr_end);
-		// 		}
-		// 		if (isNotNull(lastCarUsedWaybill.motohours_end)) {
-		// 			this.handleChange('motohours_start', lastCarUsedWaybill.motohours_end);
-		// 		}
-		// 		if (isNotNull(lastCarUsedWaybill.motohours_equip_end)) {
-		// 			this.handleChange('motohours_equip_start', lastCarUsedWaybill.motohours_equip_end);
-		// 		}
-		// 	}
-		// }
 	}
 
 	onCarChange(car_id) {
 		this.handleChange('car_id', car_id);
   	this.handleChange('mission_id_list', undefined);
-    console.log(this.props.formState.mission_id_list);
+
     const { flux } = this.context;
 		const waybillsListSorted = _(this.props.waybillsList).filter(w => w.status === 'closed').sortBy('id').value().reverse();
 		const lastCarUsedWaybill = _.find(waybillsListSorted, w => w.car_id === car_id);
-		console.log(lastCarUsedWaybill);
 		if (isNotNull(lastCarUsedWaybill)) {
 			if (isNotNull(lastCarUsedWaybill.fuel_end)) {
 				this.handleChange('fuel_start', lastCarUsedWaybill.fuel_end);
@@ -199,12 +171,6 @@ class WaybillForm extends Component {
 				</Modal.Header>
 
 	      <Modal.Body>
-
-		      <Row>
-		      	<Col md={6}>
-		      		{/*Организация: АвД Жилищник "Крылатское" <br/>*/}
-		      	</Col>
-		      </Row>
 
 					<Row>
 						<Col md={6}>

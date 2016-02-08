@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import { Button, Glyphicon } from 'react-bootstrap';
-import Table from './ui/table/DataTable.jsx';
+import Table from '../ui/table/DataTable.jsx';
 import WaybillFormWrap from './WaybillFormWrap.jsx';
 import moment from 'moment';
 import cx from 'classnames';
-import LoadingPage from './LoadingPage.jsx';
 
 function getFIOById(id) {
 	let result = '';
@@ -173,9 +172,9 @@ class WaybillJournal extends Component {
 
 	componentDidMount() {
 		const { flux } = this.context;
-		flux.getActions('waybills').getWaybills().then( () => {
-			this.setState({loading: false});
-		});
+		flux.getActions('waybills').getWaybills();
+		flux.getActions('employees').getEmployees();
+		flux.getActions('objects').getTechOperations();
 	}
 
 	deleteBill() {

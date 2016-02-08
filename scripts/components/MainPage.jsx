@@ -47,7 +47,7 @@ export default React.createClass({
   				        <MenuItem active={path === '/mission-templates-journal'} href="#/mission-templates-journal">Шаблоны заданий</MenuItem>
                 </NavDropdown>
                 <NavDropdown title="НСИ" id="nav-dropdown-2">
-                  <MenuItem active={path === '/employees'} href="#/employees">Реестр водителей</MenuItem>
+                  <MenuItem active={path === '/drivers'} href="#/drivers">Реестр водителей</MenuItem>
   				        <MenuItem active={path === '/cars'} href="#/cars">Реестр транспортных средств</MenuItem>
   				        <MenuItem active={path === '/technical-operations'} href="#/technical-operations">Реестр технологических операций</MenuItem>
 

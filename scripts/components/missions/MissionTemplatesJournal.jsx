@@ -4,6 +4,7 @@ import { Button, Glyphicon } from 'react-bootstrap';
 import Table from '../ui/table/DataTable.jsx';
 import MissionTemplateFormWrap from './MissionTemplateFormWrap.jsx';
 import { MissionsJournal } from './MissionsJournal.jsx';
+import ElementsList from '../ElementsList.jsx';
 import moment from 'moment';
 import cx from 'classnames';
 
@@ -29,9 +30,9 @@ let getTableMeta = (props) => {
 				name: 'name',
 				caption: 'Название',
 				type: 'string',
-				// filter: {
-				// 	type: 'select'
-				// }
+				filter: {
+					type: 'select'
+				}
 			},
       {
 				name: 'car_id',
@@ -94,14 +95,13 @@ let MissionsTable = (props) => {
 									{...props}/>
 }
 
-class MissionTemplatesJournal extends MissionsJournal {
+class MissionTemplatesJournal extends ElementsList {
 
-	constructor(props) {
+	constructor(props, context) {
 		super(props);
 
-		this.state = {
-			selectedMission: null,
-		};
+    this.removeElementAction = context.flux.getActions('missions').removeMissionTemplate;
+    this.mainListName = 'missionTemplatesList';
 	}
 
   init() {
@@ -109,55 +109,32 @@ class MissionTemplatesJournal extends MissionsJournal {
 		flux.getActions('missions').getMissionTemplates();
   }
 
-	selectMission({props}) {
-		const id = props.data.id;
-		let mission = _.find(this.props.missionTemplatesList, m => m.id === id);
-
-		this.setState({ selectedMission: mission });
-	}
-
-	createMission() {
-		this.setState({
-			showForm: true,
-			selectedMission: null
-		})
-	}
-
-	onFormHide() {
-		this.setState({
-			showForm: false,
-			selectedMission: null,
-		});
-	}
-
-	removeMission() {
-		if (confirm('Вы уверены, что хотите удалить шаблон задания?')) {
-			const { flux } = this.context;
-			flux.getActions('missions').removeMissionTemplate(this.state.selectedMission.id);
-		}
-	}
-
-	showMission() {
-		this.setState({ showForm: true });
+  componentDidMount() {
+    this.init();
+		const { flux } = this.context;
+    flux.getActions('objects').getWorkKinds();
+    flux.getActions('objects').getTechOperations();
+    flux.getActions('routes').getRoutes();
+    flux.getActions('objects').getCars();
+    flux.getActions('missions').getMissionSources();
+    flux.getActions('routes').getRoutesVector();
 	}
 
 	render() {
 
 		const { missionTemplatesList = [] } = this.props;
 
-		let showCloseBtn = this.state.selectedMission !== null && this.state.selectedMission.status !== 'active';
-
 		return (
 			<div className="ets-page-wrap">
-				<MissionsTable data={missionTemplatesList} onRowSelected={this.selectMission.bind(this)} selected={this.state.selectedMission} selectField={'id'} {...this.props}>
-					<Button bsSize="small" onClick={this.createMission.bind(this)}><Glyphicon glyph="plus" /> Создать шаблон задания</Button>
-					<Button bsSize="small" onClick={this.showMission.bind(this)} disabled={true}>Сформировать задание</Button>
-					<Button bsSize="small" onClick={this.showMission.bind(this)} disabled={this.state.selectedMission === null}><Glyphicon glyph="search" /> Просмотреть шаблон</Button>
-					<Button bsSize="small" disabled={this.state.selectedMission === null} onClick={this.removeMission.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
+				<MissionsTable data={missionTemplatesList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'} {...this.props}>
+					<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Создать шаблон задания</Button>
+					<Button bsSize="small" onClick={this.showForm.bind(this)} disabled={true}>Сформировать задание</Button>
+					<Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="search" /> Просмотреть шаблон</Button>
+					<Button bsSize="small" disabled={this.state.selectedElement === null} onClick={this.removeElement.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
 				</MissionsTable>
 				<MissionTemplateFormWrap onFormHide={this.onFormHide.bind(this)}
 												 showForm={this.state.showForm}
-												 mission={this.state.selectedMission}
+												 mission={this.state.selectedElement}
 												 {...this.props}/>
 			</div>
 		);

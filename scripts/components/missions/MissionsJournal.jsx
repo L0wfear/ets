@@ -4,6 +4,7 @@ import { Button, Glyphicon } from 'react-bootstrap';
 import Table from '../ui/table/DataTable.jsx';
 import { getFormattedDateTime } from '../../utils/dates.js';
 import MissionFormWrap from './MissionFormWrap.jsx';
+import ElementsList from '../ElementsList.jsx';
 import moment from 'moment';
 import cx from 'classnames';
 
@@ -146,36 +147,17 @@ let MissionsTable = (props) => {
 									{...props}/>
 }
 
-export class MissionsJournal extends Component {
+export class MissionsJournal extends ElementsList {
 
+  static contextTypes = {
+    flux: React.PropTypes.object,
+  }
 
-	constructor(props) {
+	constructor(props, context) {
 		super(props);
 
-		this.state = {
-			selectedMission: null,
-		};
-	}
-
-	selectMission({props}) {
-		const id = props.data.id;
-		let mission = _.find(this.props.missionsList, m => m.id === id);
-
-		this.setState({ selectedMission: mission });
-	}
-
-	createMission() {
-		this.setState({
-			showForm: true,
-			selectedMission: null
-		})
-	}
-
-	onFormHide() {
-		this.setState({
-			showForm: false,
-			selectedMission: null,
-		})
+    this.removeElementAction = context.flux.getActions('missions').removeMission;
+    this.mainListName = 'missionsList';
 	}
 
   init() {
@@ -194,41 +176,23 @@ export class MissionsJournal extends Component {
     flux.getActions('routes').getRoutesVector();
 	}
 
-	removeMission() {
-		if (confirm('Вы уверены, что хотите удалить задание?')) {
-			const { flux } = this.context;
-			flux.getActions('missions').removeMission(this.state.selectedMission.id);
-		}
-	}
-
-	showMission() {
-		this.setState({ showForm: true });
-	}
-
 	render() {
-
 		const { missionsList = [] } = this.props;
-
-		let showCloseBtn = this.state.selectedMission !== null && this.state.selectedMission.status !== 'active';
 
 		return (
 			<div className="ets-page-wrap">
-				<MissionsTable data={missionsList} onRowSelected={this.selectMission.bind(this)} selected={this.state.selectedMission} selectField={'id'} {...this.props}>
-					<Button bsSize="small" onClick={this.createMission.bind(this)}><Glyphicon glyph="plus" /> Создать задание</Button>
-					<Button bsSize="small" onClick={this.showMission.bind(this)} disabled={this.state.selectedMission === null}><Glyphicon glyph="search" /> Просмотреть задание</Button>
-					<Button bsSize="small" disabled={this.state.selectedMission === null || this.state.selectedMission.status === 'assigned'} onClick={this.removeMission.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
+				<MissionsTable data={missionsList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'} {...this.props}>
+					<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Создать задание</Button>
+					<Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="search" /> Просмотреть задание</Button>
+					<Button bsSize="small" disabled={this.state.selectedElement === null || this.state.selectedElement.status === 'assigned'} onClick={this.removeElement.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
 				</MissionsTable>
 				<MissionFormWrap onFormHide={this.onFormHide.bind(this)}
 												 showForm={this.state.showForm}
-												 mission={this.state.selectedMission}
+												 mission={this.state.selectedElement}
 												 {...this.props}/>
 			</div>
 		);
 	}
 }
-
-MissionsJournal.contextTypes = {
-	flux: React.PropTypes.object,
-};
 
 export default connectToStores(MissionsJournal, ['missions', 'objects', 'employees', 'routes']);

@@ -1,5 +1,5 @@
 import { Actions } from 'flummox';
-import { getRoutes, getRouteById, createRoute, removeRoute, updateRoute, getRoutesVector, getRouteVectorById, createVectorRoute, removeRouteVector, getRouteReports, getRouteReportById, createRouteReport, validateRoute } from '../adapter.js';
+import { getRoutes, getRouteById, createRoute, removeRoute, updateRoute, getRoutesVector, getRouteVectorById, createVectorRoute, removeRouteVector, getRouteReports, getRouteReportById, createRouteReport, validateRoute, updateRouteVector, getGeozones } from '../adapter.js';
 import _ from 'lodash';
 import { createValidDateTime } from '../utils/dates.js';
 
@@ -64,6 +64,15 @@ export default class RoutesActions extends Actions {
     return updateRoute(payload);
   }
 
+  updateRouteVector(route) {
+    const payload = _.cloneDeep(route);
+    delete payload.polys;
+    delete payload.odh_list;
+    delete payload.odh_fail_list;
+    payload.object_list = JSON.stringify(payload.object_list);
+    return updateRouteVector(payload);
+  }
+
   getRouteReports() {
     return getRouteReports();
   }
@@ -87,6 +96,10 @@ export default class RoutesActions extends Actions {
       route_vector: JSON.stringify(route_vector),
     };
     return validateRoute(payload);
+  }
+
+  getGeozones() {
+    return getGeozones();
   }
 
 }

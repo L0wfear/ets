@@ -23,8 +23,6 @@ class RouteCreating extends Component {
 
 		setODH(id, name, state) {
 
-			console.log('set odh', arguments)
-
 			const { object_list } = this.props.route;
 			const objectIndex = _.findIndex(object_list, o => o.object_id == id);
 
@@ -127,7 +125,6 @@ class RouteCreating extends Component {
 			const Map = this.props.manual ? DrawMap : PolyMap;
 			let odh_list = route.odh_list || route.object_list.filter(o => o.type && o.type === 'odh');
 			let odh_fail_list = route.odh_fail_list || [];
-			console.log(this.props.route);
 
 			return (
 				<div className="route-creating">
@@ -142,7 +139,8 @@ class RouteCreating extends Component {
 								 object_list={route.object_list}
 								 odh_list={odh_list}
 	            	 polys={route.polys}
-								 manualDraw={this.props.manual} />
+								 manualDraw={this.props.manual}
+								 edit={!!route.id} />
 	          <div className="route-odhs-list">
 	          	<ODHList odh_list={odh_list} odh_fail_list={odh_fail_list} checkRoute={this.props.manual ? this.checkRoute.bind(this) : null}/>
 	          </div>

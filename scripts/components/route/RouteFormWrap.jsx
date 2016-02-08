@@ -59,7 +59,11 @@ export default class FormWrap extends Component {
 		if (!manualCreating) {
 			flux.getActions('routes').createRoute(formState);
 		} else {
-			flux.getActions('routes').createVectorRoute(formState);
+			if (formState.id) {
+				flux.getActions('routes').updateRouteVector(formState);
+			} else {
+				flux.getActions('routes').createVectorRoute(formState);
+			}
 		}
 		this.props.onFormHide();
 	}

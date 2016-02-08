@@ -1,30 +1,13 @@
 import React, {Component} from 'react';
-import classname from 'classnames';
 import { Button, Glyphicon } from 'react-bootstrap';
-import {getList} from '../../stores/RoutesStore.js';
-import RouteInfo from './RouteInfo.jsx';
-import RouteCreating from './RouteCreating.jsx';
-import RouteFormWrap from './RouteFormWrap.jsx';
-import Div from '../ui/Div.jsx';
 import _ from 'lodash';
 import cx from 'classnames';
 import connectToStores from 'flummox/connect';
+
+import RouteInfo from './RouteInfo.jsx';
+import RouteFormWrap from './RouteFormWrap.jsx';
+import Div from '../ui/Div.jsx';
 import { getRouteById } from '../../adapter.js';
-
-let ROUTES = getList();
-let CURRENT_ROUTE_ID = 4;
-
-const ORG_ODHS = ROUTES[0].polys; // список возможных для выбора ОДХ организации
-
-let NEW_ROUTES = [];
-
-// TODO odh : { poly, polyState }
-let newRoute = {
-	name: '',
-	polys: ORG_ODHS,
-	object_list: [],
-};
-
 
 class RoutesList extends Component {
 
@@ -45,7 +28,6 @@ class RoutesList extends Component {
 	selectRoute(id) {
 		const { flux } = this.context;
 		flux.getActions('routes').getRouteById(id).then(r => {
-			console.log(r);
 			this.setState({selectedRoute: r.result && r.result.length ? r.result[0] : null, isVectorRouteSelected: false});
 		});
 	}
@@ -59,7 +41,11 @@ class RoutesList extends Component {
 
 	createRoute() {
 
-		let newR = _.cloneDeep(newRoute);
+		let newR = {
+			name: '',
+			polys: this.props.geozonePolys,
+			object_list: [],
+		};
 
 		this.setState({
 			showForm: true,
@@ -101,12 +87,12 @@ class RoutesList extends Component {
 		const { flux } = this.context;
 		flux.getActions('routes').getRoutes();
 		flux.getActions('routes').getRoutesVector();
+		flux.getActions('routes').getGeozones();
 		flux.getActions('objects').getTechOperations();
 	}
 
 	render() {
 		let { routesList = [], routesVectorList = [] } = this.props;
-
 		let route = this.state.selectedRoute;
 		let state = this.state;
 
@@ -124,6 +110,7 @@ class RoutesList extends Component {
 			<div className="some-header">Список маршрутов "Жилищник Крылатское"
 				<div className="waybills-buttons">
 					<Button bsSize="small" onClick={this.createRoute.bind(this)}><Glyphicon glyph="plus" /> Создать маршрут</Button>
+					<Button bsSize="small" disabled={route === null || !this.state.isVectorRouteSelected} onClick={() => this.setState({showForm: true})}><Glyphicon glyph="pencil" /> Изменить маршрут</Button>
 					<Button bsSize="small" disabled={route === null} onClick={this.deleteRoute.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
 				</div>
 			</div>

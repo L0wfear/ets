@@ -175,6 +175,8 @@ class WaybillJournal extends Component {
 		flux.getActions('waybills').getWaybills();
 		flux.getActions('employees').getEmployees();
 		flux.getActions('objects').getTechOperations();
+		flux.getActions('objects').getFuelTypes();
+		flux.getActions('objects').getCars();
 	}
 
 	deleteBill() {

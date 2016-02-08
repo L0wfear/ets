@@ -60,7 +60,7 @@ class App extends Component {
     this.setState({loading: true});
     if(!flux.getStore('session').isLoggedIn()) return this.setState({loading: false});
     return checkToken()
-          .then(() => init())
+          //.then(() => init())
           .then(() => {
             return Promise.all([
               flux.getActions('objects').getModels(),
@@ -70,15 +70,12 @@ class App extends Component {
               flux.getActions('objects').getCustomers()
             ])
           })
-          .then(() => {
-            flux.getActions('objects').getCars();
-          })
-          .then(() => {
-            flux.getActions('objects').getFuelTypes();
-          })
-          .then(() => {
-            flux.getActions('employees').getEmployees();
-          })
+          // .then(() => {
+          //   flux.getActions('objects').getCars();
+          // })
+          // .then(() => {
+          //   flux.getActions('employees').getEmployees();
+          // })
           .then(() => this.setState({loading: false}))
           .catch((error) => {
             if (error === 401) {

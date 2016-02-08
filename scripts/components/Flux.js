@@ -16,7 +16,7 @@ import MissionsActions from '../actions/MissionsActions.js';
 import MissionsStore from '../stores/MissionsStore.js';
 import LoadingStore from '../stores/LoadingStore.js';
 import RoutesActions from '../actions/RoutesActions.js';
-import RoutesStore from '../stores/RoutesStore1.js';
+import RoutesStore from '../stores/RoutesStore.js';
 
 
 

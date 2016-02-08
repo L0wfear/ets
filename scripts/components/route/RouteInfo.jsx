@@ -35,6 +35,7 @@ export default class RouteInfo extends Component {
 				}
 			});
 			const Map = PolyMap;
+
 			let odh_list = route.odh_list || object_list.filter(o => o.type && o.type === 'odh');
 
 			return (

@@ -22,20 +22,19 @@ let LIST =  [
 	},
 ]
 
-_.each(LIST, (v) => {
-	v.polys = {};
-
-	if (v.odhs.length > 0) {
-		v.odhs.forEach((odhID) => getRoadByODHId(odhID).then(r => {
-			v.polys[odhID] = {
-				shape: JSON.parse(r[0].SHAPE),
-				simplified: JSON.parse(r[0].SHAPE_SIMPLIFIED),
-				name: r[0].name,
-				state: 1
-			}
-		}));
-	}
-})
+// _.each(LIST, (v) => {
+// 	v.polys = {};
+//
+// 	if (v.odhs.length > 0) {
+// 		v.odhs.forEach((odhID) => getRoadByODHId(odhID).then(r => {
+// 			v.polys[odhID] = {
+// 				shape: JSON.parse(r[0].SHAPE),
+// 				name: r[0].name,
+// 				state: 1
+// 			}
+// 		}));
+// 	}
+// });
 
 window.ROUTES = LIST;
 

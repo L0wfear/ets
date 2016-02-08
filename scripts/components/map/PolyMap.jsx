@@ -12,13 +12,13 @@ import { intersect } from 'turf';
 window.addEventListener('blur', (ev) => {
   //let store = flux.getStore('points')
   //store.pauseRendering()
-})
+});
 
 window.addEventListener('focus', (ev) => {
   //let store = flux.getStore('points')
  // store.unpauseRendering()]
   global.olmap && global.olmap.updateSize()
-})
+});
 
 let POLYS_LAYER = null;
 
@@ -71,16 +71,6 @@ export default class OpenLayersMap extends Component {
       className: 'ol-zoom',
       delta: 1
     }));
-    // if (this.props.manualDraw) {
-    //   var button = document.createElement('button');
-    //   button.innerHTML = 'Добавить точку';
-    //   button.addEventListener('click', this.addPoint.bind(this), false);
-    //
-    //   var element = document.createElement('div');
-    //   element.className = 'rotate-north ol-unselectable ol-control';
-    //   element.appendChild(button);
-    //   controls.push(new ol.control.Control({element: element}));
-    // }
 
     let layers = [ArcGisLayer, canvasLayer];
     if (this.props.manualDraw) {
@@ -130,14 +120,14 @@ export default class OpenLayersMap extends Component {
       }
 
       vectorSource.addFeature(feature);
-    })
+    });
 
     !!POLYS_LAYER && map.removeLayer(POLYS_LAYER);
 
     let polysLayer = new ol.layer.Vector({
         source: vectorSource,
         style: styleFunction
-    })
+    });
 
     POLYS_LAYER = polysLayer;
 
@@ -182,7 +172,6 @@ export default class OpenLayersMap extends Component {
     el.style.cursor = hit ? 'pointer' : '';
   }
 
-
   onClick(ev) {
 
     let map = this.map;
@@ -203,9 +192,11 @@ export default class OpenLayersMap extends Component {
 
   render() {
     console.warn('POLYMAP RENDER');
-    return (<div>
-              <div ref="container" style={{opacity: this.props.errorLoading ? .4 : 1}} className="openlayers-container"/>
-            </div>)
+    return (
+      <div>
+        <div ref="container" style={{opacity: this.props.errorLoading ? .4 : 1}} className="openlayers-container"/>
+      </div>
+    );
   }
 
   renderCanvas(canvas, extent) {
@@ -224,33 +215,30 @@ export default class OpenLayersMap extends Component {
     if (this._handlers === null) {
       this._handlers = {
         singleclick: map.on('singleclick', this.onClick.bind(this)),
+        pointermove: map.on('pointermove', this.onMouseMove.bind(this)),
       }
-
-      //if (!this.props.manualDraw) {
-        this._handlers.pointermove = map.on('pointermove', this.onMouseMove.bind(this))
-      //}
 
       interactions.forEach((interaction)=> {
         interaction.setActive(true)
-      })
-    }
-
-  }
-
-  disableInteractions() {
-    let map = this.map;
-    let interactions = map.getInteractions();
-
-    if (this._handlers !== null) {
-      map.unByKey(this._handlers.singleclick);
-      map.unByKey(this._handlers.pointermove);
-      this._handlers = null;
-
-      interactions.forEach((interaction)=> {
-        interaction.setActive(false)
       });
     }
+
   }
+
+  // disableInteractions() {
+  //   let map = this.map;
+  //   let interactions = map.getInteractions();
+  //
+  //   if (this._handlers !== null) {
+  //     map.unByKey(this._handlers.singleclick);
+  //     map.unByKey(this._handlers.pointermove);
+  //     this._handlers = null;
+  //
+  //     interactions.forEach((interaction)=> {
+  //       interaction.setActive(false)
+  //     });
+  //   }
+  // }
 
 
   componentWillReceiveProps(nextProps) {

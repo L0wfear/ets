@@ -68,6 +68,8 @@ export default class LoadingStore extends Store {
       routesActions.getRouteReports,
       routesActions.createRouteReport,
       routesActions.validateRoute,
+      routesActions.getGeozones,
+      routesActions.updateRouteVector,
 
 
     );

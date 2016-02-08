@@ -74,6 +74,7 @@ const ROUTE_REPORTS_URL = getUrl('/route_odh_covering_report/');
 const ODH_REPORTS_SERVICE_URL = getServiceUrl('/odh-reports/');
 const ROUTE_VALIDATE_URL = getUrl('/route_validate/');
 const MISSION_REPORTS_URL = getUrl('/car_odh_travel_report/');
+const GEOZONE_URL = getUrl('/geozone/');
 
 function getJSON(url, data = {}) {
   data = _.clone(data);
@@ -143,6 +144,8 @@ function putJSON(url, data, type = 'form') {
   let body;
   switch (type) {
     case 'form':
+      url += '?token=' + token;
+      delete data.token;
       body = toFormData(data);
       break
     case 'json':
@@ -158,7 +161,7 @@ function putJSON(url, data, type = 'form') {
     method: 'put',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      //'Content-Type': 'application/json'
     },
     credentials: 'include',
     body: body,
@@ -514,16 +517,20 @@ export function removeRouteVector(route) {
   return deleteJSON(ROUTES_VECTOR_URL, route, 'params').then(() => getRoutesVector());
 }
 
-export function updateRoute(route) {
-  return putJSON(ROUTES_URL, route, 'params').then(() => getRoutes());
+export function updateRoute(payload) {
+  return putJSON(ROUTES_URL, payload, 'form').then(() => getRoutes());
+}
+
+export function updateRouteVector(payload) {
+  return putJSON(ROUTES_VECTOR_URL, payload, 'form').then(() => getRoutesVector());
 }
 
 export function getRouteById(payload) {
-  return getJSON(ROUTES_URL, payload, 'params');
+  return getJSON(ROUTES_URL, payload);
 }
 
 export function getRouteVectorById(payload) {
-  return getJSON(ROUTES_VECTOR_URL, payload, 'params');
+  return getJSON(ROUTES_VECTOR_URL, payload);
 }
 
 // SERVICES
@@ -564,4 +571,8 @@ export function getMissionReportById(payload) {
 
 export function createMissionReport(payload) {
   return postJSON(MISSION_REPORTS_URL, payload, 'form').then(() => getMissionReports());
+}
+
+export function getGeozones() {
+  return getJSON(GEOZONE_URL);
 }

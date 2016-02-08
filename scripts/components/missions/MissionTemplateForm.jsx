@@ -6,9 +6,9 @@ import Div from '../ui/Div.jsx';
 import RouteInfo from '../route/RouteInfo.jsx';
 import ODHList from '../route/ODHList.jsx';
 import { isEmpty } from '../../utils/functions.js';
-import Form from '../compositions/Form.jsx';
+import { MissionForm } from './MissionForm.jsx';
 
-class MissionForm extends Form {
+class MissionTemplateForm extends MissionForm {
 
 	constructor(props) {
 		super(props);
@@ -16,28 +16,6 @@ class MissionForm extends Form {
 		this.state = {
 			selectedRoute: null,
 		};
-	}
-
-	handleRouteIdChange(v) {
-		this.handleChange('route_id', v);
-		if (!isEmpty(v)) {
-			const { flux } = this.context;
-			flux.getActions('routes').getRouteById(v).then(r => {
-				this.setState({selectedRoute: r.result.length ? r.result[0] : null});
-			});
-		} else {
-			this.setState({selectedRoute: null});
-		}
-	}
-
-	componentDidMount() {
-		const mission = this.props.formState;
-		const { flux } = this.context;
-		if (typeof mission.route_id !== 'undefined' && mission.route_id !== null){
-			flux.getActions('routes').getRouteById(mission.route_id).then(r => {
-				this.setState({selectedRoute: r.result.length ? r.result[0] : null});
-			});
-		}
 	}
 
 	render() {
@@ -50,7 +28,7 @@ class MissionForm extends Form {
     const WORK_KINDS = workKindsList.map(({id, name}) => ({value: id, label: name}));
     const TECH_OPERATIONS = techOperationsList.map(({id, name}) => ({value: id, label: name}));
     const MISSION_SOURCES = missionSourcesList.map(({id, name}) => ({value: id, label: name}));
-    const ROUTES = routesList.concat(routesVectorList).map(({id, name}) => ({value: id, label: name}));
+    let ROUTES = routesVectorList.map(({id, name}) => ({value: id, label: name}));
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: c.gov_number + ' [' + c.model + ']'}));
 
     console.log('form state is ', state);
@@ -62,6 +40,9 @@ class MissionForm extends Form {
     if (IS_CREATING) {
       title = "Создание шаблона задания"
     }
+
+		let route = this.state.selectedRoute;
+		let odh_list = route ? route.odh_list || route.object_list : [];
 
 		return (
 			<Modal {...this.props} bsSize="large">
@@ -95,10 +76,11 @@ class MissionForm extends Form {
               <Field type="select" label="Маршрут" error={errors['route_id']}
                      options={ROUTES}
                      value={state.route_id}
-                     onChange={this.handleRouteIdChange.bind(this)}/>
+                     onChange={this.handleRouteIdChange.bind(this)}
+										 clearable={false}/>
 
 						  <Div className="route-odhs-list" hidden={this.state.selectedRoute === null}>
-								<ODHList showSelectable={true} odh_list={this.state.selectedRoute ? this.state.selectedRoute.object_list : []} />
+								<ODHList showSelectable={true} odh_list={odh_list} />
 							</Div>
             </Col>
             <Col md={6}>
@@ -121,4 +103,4 @@ class MissionForm extends Form {
 	}
 }
 
-export default connectToStores(MissionForm, ['objects', 'employees', 'missions', 'routes']);
+export default connectToStores(MissionTemplateForm, ['objects', 'employees', 'missions', 'routes']);

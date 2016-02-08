@@ -3,26 +3,17 @@ import connectToStores from 'flummox/connect';
 import { Button, Glyphicon } from 'react-bootstrap';
 import Table from '../ui/table/DataTable.jsx';
 import MissionTemplateFormWrap from './MissionTemplateFormWrap.jsx';
+import { MissionsJournal } from './MissionsJournal.jsx';
 import moment from 'moment';
 import cx from 'classnames';
 
-let getTechOperationById = (id) => {
-  const { flux } = window.__ETS_CONTAINER__;
-  const objectsStore = flux.getStore('objects');
-  return objectsStore.getTechOperationById(id);
-};
+let getTechOperationById = (id) => window.__ETS_CONTAINER__.flux.getStore('objects').getTechOperationById(id);
 
-let getRouteById = (id) => {
-  const { flux } = window.__ETS_CONTAINER__;
-  const routesStore = flux.getStore('routes');
-  return routesStore.getRouteById(id);
-};
+let getRouteById = (id) => window.__ETS_CONTAINER__.flux.getStore('routes').getRouteById(id);
 
-let getCarById = (id) => {
-  const { flux } = window.__ETS_CONTAINER__;
-  const objectsStore = flux.getStore('objects');
-  return objectsStore.getCarById(id);
-};
+let getCarById = (id) => window.__ETS_CONTAINER__.flux.getStore('objects').getCarById(id);
+
+let getRouteVectorById = (id) => window.__ETS_CONTAINER__.flux.getStore('routes').getRouteVectorById(id);
 
 let getTableMeta = (props) => {
 
@@ -58,7 +49,7 @@ let getTableMeta = (props) => {
 				type: 'number',
 				filter: {
 					type: 'select',
-          labelFunction: (id) => getRouteById(id).name || id,
+          labelFunction: (id) => getRouteVectorById(id).name || id,
 				},
         cssClassName: 'width120',
 			},
@@ -92,7 +83,7 @@ let MissionsTable = (props) => {
 
 		const renderers = {
 			technical_operation_id: ({data}) => <div>{getTechOperationById(data).name || data}</div>,
-      route_id: ({data}) => <div>{getRouteById(data).name || data}</div>,
+      route_id: ({data}) => <div>{getRouteVectorById(data).name || data}</div>,
       car_id: ({data}) => <div>{getCarById(data).gov_number || data}</div>,
 		};
 
@@ -103,8 +94,7 @@ let MissionsTable = (props) => {
 									{...props}/>
 }
 
-class MissionsJournal extends Component {
-
+class MissionTemplatesJournal extends MissionsJournal {
 
 	constructor(props) {
 		super(props);
@@ -113,6 +103,11 @@ class MissionsJournal extends Component {
 			selectedMission: null,
 		};
 	}
+
+  init() {
+		const { flux } = this.context;
+		flux.getActions('missions').getMissionTemplates();
+  }
 
 	selectMission({props}) {
 		const id = props.data.id;
@@ -133,16 +128,6 @@ class MissionsJournal extends Component {
 			showForm: false,
 			selectedMission: null,
 		});
-	}
-
-	componentDidMount() {
-		const { flux } = this.context;
-		flux.getActions('missions').getMissionTemplates();
-    flux.getActions('objects').getWorkKinds();
-    flux.getActions('objects').getTechOperations();
-    flux.getActions('routes').getRoutes();
-    flux.getActions('routes').getRoutesVector();
-    //flux.getActions('missions').getMissionSources();
 	}
 
 	removeMission() {
@@ -179,8 +164,4 @@ class MissionsJournal extends Component {
 	}
 }
 
-MissionsJournal.contextTypes = {
-	flux: React.PropTypes.object,
-};
-
-export default connectToStores(MissionsJournal, ['missions', 'objects', 'employees', 'routes']);
+export default connectToStores(MissionTemplatesJournal, ['missions', 'objects', 'employees', 'routes']);

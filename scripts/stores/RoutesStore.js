@@ -63,6 +63,10 @@ class RoutesStore extends Store {
     return _.find(this.state.routesList, r => r.id === id) || {};
   }
 
+  getRouteVectorById(id) {
+    return _.find(this.state.routesVectorList, r => r.id === id) || {};
+  }
+
 }
 
 

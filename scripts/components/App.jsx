@@ -56,7 +56,6 @@ class App extends Component {
   }
 
   loadData() {
-    console.log('context function loadData');
     this.setState({loading: true});
     if(!flux.getStore('session').isLoggedIn()) return this.setState({loading: false});
     return checkToken()
@@ -73,9 +72,6 @@ class App extends Component {
           // .then(() => {
           //   flux.getActions('objects').getCars();
           // })
-          // .then(() => {
-          //   flux.getActions('employees').getEmployees();
-          // })
           .then(() => this.setState({loading: false}))
           .catch((error) => {
             if (error === 401) {
@@ -88,7 +84,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-    console.info('APP DID MOUNT, LOADING');
     this.loadData();
   }
 

@@ -34,7 +34,7 @@ export function getTypeById(id) {
   return index[id] === undefined ? index[0] || {} : index[id];
 }
 
-export function loadTypes() {
+export function loadTypes(types) {
   return fetch(TYPES_URL, {credentials: 'include'})
     .then(r => r.json())
     .then(normalizeArray)

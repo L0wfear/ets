@@ -7,29 +7,15 @@ import MissionFormWrap from './MissionFormWrap.jsx';
 import moment from 'moment';
 import cx from 'classnames';
 
-let getTechOperationById = (id) => {
-  const { flux } = window.__ETS_CONTAINER__;
-  const objectsStore = flux.getStore('objects');
-  return objectsStore.getTechOperationById(id);
-};
+let getTechOperationById = (id) => window.__ETS_CONTAINER__.flux.getStore('objects').getTechOperationById(id);
 
-let getMissionSourceById = (id) => {
-  const { flux } = window.__ETS_CONTAINER__;
-  const missionsStore = flux.getStore('missions');
-  return missionsStore.getMissionSourceById(id);
-};
+let getMissionSourceById = (id) => window.__ETS_CONTAINER__.flux.getStore('missions').getMissionSourceById(id);
 
-let getRouteById = (id) => {
-  const { flux } = window.__ETS_CONTAINER__;
-  const routesStore = flux.getStore('routes');
-  return routesStore.getRouteById(id);
-};
+let getRouteById = (id) => window.__ETS_CONTAINER__.flux.getStore('routes').getRouteById(id);
 
-let getCarById = (id) => {
-  const { flux } = window.__ETS_CONTAINER__;
-  const objectsStore = flux.getStore('objects');
-  return objectsStore.getCarById(id);
-};
+let getRouteVectorById = (id) => window.__ETS_CONTAINER__.flux.getStore('routes').getRouteVectorById(id);
+
+let getCarById = (id) => window.__ETS_CONTAINER__.flux.getStore('objects').getCarById(id);
 
 function getStatusLabel(s) {
 	switch (s) {
@@ -111,7 +97,7 @@ let getTableMeta = (props) => {
 				type: 'number',
 				filter: {
 					type: 'select',
-          labelFunction: (id) => getRouteById(id).name || id,
+          labelFunction: (id) => getRouteVectorById(id).name || id,
 				},
         cssClassName: 'width120',
 			},
@@ -147,7 +133,7 @@ let MissionsTable = (props) => {
 			technical_operation_id: ({data}) => <div>{getTechOperationById(data).name || data}</div>,
       mission_source_id: ({data}) => <div>{getMissionSourceById(data).name || data}</div>,
       status: ({data}) => <div>{getStatusLabel(data)}</div>,
-      route_id: ({data}) => <div>{getRouteById(data).name || data}</div>,
+      route_id: ({data}) => <div>{getRouteVectorById(data).name || data}</div>,
       date_start: ({data}) => <div>{getFormattedDateTime(data)}</div>,
       date_end: ({data}) => <div>{getFormattedDateTime(data)}</div>,
       car_id: ({data}) => <div>{getCarById(data).gov_number || data}</div>,
@@ -160,7 +146,7 @@ let MissionsTable = (props) => {
 									{...props}/>
 }
 
-class MissionsJournal extends Component {
+export class MissionsJournal extends Component {
 
 
 	constructor(props) {
@@ -192,12 +178,18 @@ class MissionsJournal extends Component {
 		})
 	}
 
-	componentDidMount() {
+  init() {
 		const { flux } = this.context;
 		flux.getActions('missions').getMissions();
+  }
+
+	componentDidMount() {
+    this.init();
+		const { flux } = this.context;
     flux.getActions('objects').getWorkKinds();
     flux.getActions('objects').getTechOperations();
     flux.getActions('routes').getRoutes();
+    flux.getActions('objects').getCars();
     flux.getActions('missions').getMissionSources();
     flux.getActions('routes').getRoutesVector();
 	}

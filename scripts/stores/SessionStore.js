@@ -11,7 +11,6 @@ class SessionStore extends Store {
 
   constructor(flux) {
     super();
-    console.log('SESSION STORE DID MOUNT');
     const sessionActions = flux.getActions('session');
     const pointsActions = flux.getActions('points');
     this.register(sessionActions.login, this.handleLogin);

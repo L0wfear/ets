@@ -223,6 +223,7 @@ class MissionsJournal extends Component {
     flux.getActions('objects').getTechOperations();
     flux.getActions('routes').getRoutes();
     flux.getActions('missions').getMissionSources();
+    flux.getActions('routes').getRoutesVector();
 	}
 
 	removeMission() {

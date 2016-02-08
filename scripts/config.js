@@ -23,7 +23,7 @@ let PROTO = window.location.protocol;
 let WS_PROTO = PROTO === 'http:' ? 'ws:' : 'wss:';
 
 let config = {
-  backend: PROTO + '//ods.mos.ru/ssd/city-dashboard',
+  backend: PROTO + '//ods.mos.ru/ssd/ets/services',//city-dashboard',
   servicesBackend: PROTO + '//ods.mos.ru/ssd/services',
   ws: WS_PROTO + '//ods.mos.ru/ssd/city-dashboard/stream',
   images: '/data/images/',

@@ -1,5 +1,16 @@
 import { Actions } from 'flummox';
-import { getMissions, getMissionSources, createMission, removeMission, updateMission, getMissionTemplates, createMissionTemplate, removeMissionTemplate, updateMissionTemplate, getMissionReports, getMissionReportById } from '../adapter.js';
+import { getMissions,
+         getMissionSources,
+         createMission,
+         removeMission,
+         updateMission,
+         getMissionTemplates,
+         createMissionTemplate,
+         removeMissionTemplate,
+         updateMissionTemplate,
+         getMissionReports,
+         getMissionReportById,
+         createMissionReport } from '../adapter.js';
 import _ from 'lodash';
 import { createValidDateTime } from '../utils/dates.js';
 import { isEmpty, isNotNull } from '../utils/functions.js';
@@ -81,6 +92,14 @@ export default class MissionsActions extends Actions {
   getMissionReportById(id) {
     const payload = { id };
     return getMissionReportById(payload);
+  }
+
+  createMissionReport(payload = {}) {
+    return createMissionReport(payload);
+  }
+
+  getMissionReportByODHs(data) {
+    return data;
   }
 
 }

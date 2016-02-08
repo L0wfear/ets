@@ -53,12 +53,12 @@ class MissionForm extends Component {
 		let state = this.props.formState;
 		let errors = this.props.formErrors;
 
-		const { workKindsList = [], techOperationsList = [], missionSourcesList = [], routesList = [], carsList = [] } = this.props;
+		const { workKindsList = [], techOperationsList = [], missionSourcesList = [], routesList = [], routesVectorList = [], carsList = [] } = this.props;
 
     const WORK_KINDS = workKindsList.map(({id, name}) => ({value: id, label: name}));
     const TECH_OPERATIONS = techOperationsList.map(({id, name}) => ({value: id, label: name}));
     const MISSION_SOURCES = missionSourcesList.map(({id, name}) => ({value: id, label: name}));
-    const ROUTES = routesList.map(({id, name}) => ({value: id, label: name}));
+    const ROUTES = routesList.concat(routesVectorList).map(({id, name}) => ({value: id, label: name}));
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: c.gov_number + ' [' + c.model + ']'}));
 
     console.log('form state is ', state);
@@ -115,7 +115,7 @@ class MissionForm extends Component {
 
 						  <Div className="route-odhs-list" hidden={this.state.selectedRoute === null}>
 								<h4>Список ОДХ/ДТ</h4>
-								<ODHList showSelectable={true} object_list={this.state.selectedRoute ? this.state.selectedRoute.object_list : []} />
+								<ODHList showSelectable={true} odh_list={this.state.selectedRoute ? this.state.selectedRoute.object_list : []} />
 							</Div>
             </Col>
             <Col md={6}>

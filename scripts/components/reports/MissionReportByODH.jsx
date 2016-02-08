@@ -14,56 +14,48 @@ let getTypeLabel = (type) => type === 'distance' ? 'Протяженность' 
 let tableMeta = {
 	cols: [
     {
-      name: 'mission_number',
-      caption: '№ Задания',
+      name: 'odh_name',
+      caption: 'ОДХ',
+      type: 'string',
+      filter: {
+        type: 'select',
+      },
+    },
+    {
+      name: 'route_check_length',
+      caption: 'Нужно пройти',
       type: 'string',
       filter: {
         type: 'select',
       },
     },
 		{
-			name: 'driver_name',
-			caption: 'Водитель',
-			type: 'string',
-			filter: {
-				type: 'select',
-			}
-		},
-		{
-			name: 'car_gov_number',
-			caption: 'Гос. номер ТС',
-			type: 'string',
-			filter: {
-				type: 'select',
-			}
-		},
-		{
-			name: 'technical_operation_name',
-			caption: 'Тех. операция',
-			type: 'string',
-			filter: {
-				type: 'select',
-			}
-		},
-		{
-			name: 'route_name',
-			caption: 'Маршрут',
-			type: 'string',
-			filter: {
-				type: 'select',
-			},
-		},
-		{
-			name: 'route_traveled_percentage',
+			name: 'traveled',
 			caption: 'Пройдено',
 			type: 'string',
 			filter: {
 				type: 'select',
-			},
+			}
 		},
 		{
-			name: 'route_left_percentage',
+			name: 'left',
 			caption: 'Осталось',
+			type: 'string',
+			filter: {
+				type: 'select',
+			}
+		},
+		{
+			name: 'left_percentage',
+			caption: 'Осталось %',
+			type: 'string',
+			filter: {
+				type: 'select',
+			}
+		},
+		{
+			name: 'v_avg',
+			caption: 'Средняя скорость',
 			type: 'string',
 			filter: {
 				type: 'select',
@@ -76,7 +68,7 @@ let CarsTable = (props) => {
 
 	const renderers = {
     route_traveled_percentage: ({data}) => <div>{parseFloat(data) * 100 + '%'}</div>,
-    route_left_percentage: ({data}) => <div>{ parseFloat(data) * 100 + '%'}</div>,
+    left_percentage: ({data}) => <div>{ parseFloat(parseFloat(data) * 100).toFixed(2) + '%'}</div>,
 	};
 
 	return <Table title='Покрытие ОДХ маршрутами'
@@ -101,21 +93,16 @@ class RouteReports extends Component {
 
 	componentDidMount() {
 		const { flux } = this.context;
-		flux.getActions('missions').getMissionReportById(this.props.routeParams.id);
+		flux.getActions('missions').getMissionReportByODHs(this.props.routeParams.index);
 	}
-
-  onReportSelect({props}) {
-    let index = props.data.index;
-    this.context.history.pushState(null, '/mission-report/' + this.props.routeParams.id + '/odhs/' + index);
-  }
 
 	render() {
 
-		const { selectedReportData = [] } = this.props;
+		const { selectedReportDataODHS = [] } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
-				<CarsTable data={selectedReportData} onRowSelected={this.onReportSelect.bind(this)}>
+				<CarsTable data={selectedReportDataODHS} >
 				</CarsTable>
 			</div>
 		);

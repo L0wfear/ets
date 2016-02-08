@@ -271,7 +271,7 @@ export function init() {
   return Promise.all([
           loadCustomers(),
           loadModels(),
-          loadOwners(),
+          //loadOwners(),
           loadOkrugs(),
           loadTypes()
         ])
@@ -560,4 +560,8 @@ export function getMissionReports() {
 
 export function getMissionReportById(payload) {
   return getJSON(MISSION_REPORTS_URL, payload);
+}
+
+export function createMissionReport(payload) {
+  return postJSON(MISSION_REPORTS_URL, payload, 'form').then(() => getMissionReports());
 }

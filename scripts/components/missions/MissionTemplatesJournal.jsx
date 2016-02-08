@@ -141,6 +141,7 @@ class MissionsJournal extends Component {
     flux.getActions('objects').getWorkKinds();
     flux.getActions('objects').getTechOperations();
     flux.getActions('routes').getRoutes();
+    flux.getActions('routes').getRoutesVector();
     //flux.getActions('missions').getMissionSources();
 	}
 

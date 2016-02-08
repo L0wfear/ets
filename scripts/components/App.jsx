@@ -19,6 +19,7 @@ import TechOperationsDirectory from './directories/TechOperationsDirectory.jsx';
 import ODHReports from './reports/ODHReports.jsx';
 import MissionReports from './reports/MissionReports.jsx';
 import MissionReport from './reports/MissionReport.jsx';
+import MissionReportByODH from './reports/MissionReportByODH.jsx';
 import RouteLaunchReports from './reports/RouteLaunchReports.jsx';
 import RouteReports from './reports/RouteReports.jsx';
 import Modal from './ui/Modal.jsx';
@@ -65,7 +66,7 @@ class App extends Component {
             return Promise.all([
               flux.getActions('objects').getModels(),
               flux.getActions('objects').getTypes(),
-              flux.getActions('objects').getOwners(),
+              //flux.getActions('objects').getOwners(),
               flux.getActions('objects').getOkrugs(),
               flux.getActions('objects').getCustomers()
             ])
@@ -140,6 +141,7 @@ const routes = (
       <Route path="route-report/:id" component={RouteReports} onEnter={requireAuth}/>
       <Route path="mission-reports" component={MissionReports} onEnter={requireAuth}/>
       <Route path="mission-report/:id" component={MissionReport} onEnter={requireAuth}/>
+      <Route path="mission-report/:id/odhs/:index" component={MissionReportByODH} onEnter={requireAuth}/>
       <Route path="employees" component={EmployeesList} onEnter={requireAuth}/>
       <Route path="fuel-rates" component={FuelRatesDirectory} onEnter={requireAuth}/>
       <Route path="odh" component={ODHDirectory} onEnter={requireAuth}/>

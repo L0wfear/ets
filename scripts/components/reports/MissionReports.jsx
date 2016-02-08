@@ -5,6 +5,7 @@ import { Button, Glyphicon } from 'react-bootstrap';
 import EtsSelect from '../ui/EtsSelect.jsx';
 import Div from '../ui/Div.jsx';
 import { getFormattedDateTimeSeconds } from '../../utils/dates.js';
+import { getReportNotReadyNotification } from '../../utils/notifications.js';
 
 let getStatusLabel = (status) => {
   let result = '';
@@ -31,58 +32,50 @@ let getTypeLabel = (type) => type === 'distance' ? 'Протяженность' 
 
 let tableMeta = {
 	cols: [
-    {
-      name: 'mission_number',
-      caption: '№ Задания',
-      type: 'string',
-      filter: {
-        type: 'select',
-      },
-    },
 		{
-			name: 'driver_name',
-			caption: 'Водитель',
-			type: 'string',
+			name: 'status',
+			caption: 'Статус',
+			type: 'text',
 			filter: {
 				type: 'select',
 			}
 		},
 		{
-			name: 'car_gov_number',
-			caption: 'Гос. номер ТС',
-			type: 'string',
+			name: 'mission_name',
+			caption: 'Задание',
+			type: 'number',
 			filter: {
 				type: 'select',
-			}
+			},
 		},
 		{
 			name: 'technical_operation_name',
 			caption: 'Тех. операция',
-			type: 'string',
-			filter: {
-				type: 'select',
-			}
-		},
-		{
-			name: 'route_name',
-			caption: 'Маршрут',
-			type: 'string',
+			type: 'number',
 			filter: {
 				type: 'select',
 			},
 		},
 		{
-			name: 'route_traveled_percentage',
-			caption: 'Пройдено',
-			type: 'string',
+			name: 'timestamp_create',
+			caption: 'Дата создания',
+			type: 'number',
 			filter: {
 				type: 'select',
 			},
 		},
 		{
-			name: 'route_left_percentage',
-			caption: 'Осталось',
-			type: 'string',
+			name: 'timestamp_process_begin',
+			caption: 'Дата начала обработки',
+			type: 'number',
+			filter: {
+				type: 'select',
+			},
+		},
+		{
+			name: 'timestamp_process_end',
+			caption: 'Дата завершения обработки',
+			type: 'number',
 			filter: {
 				type: 'select',
 			},
@@ -93,8 +86,10 @@ let tableMeta = {
 let CarsTable = (props) => {
 
 	const renderers = {
-    route_traveled_percentage: ({data}) => <div>{parseFloat(data) * 100 + '%'}</div>,
-    route_left_percentage: ({data}) => <div>{ parseFloat(data) * 100 + '%'}</div>,
+    status: ({data}) => <div>{data ? getStatusLabel(data) : ''}</div>,
+    timestamp_create: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
+    timestamp_process_begin: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
+    timestamp_process_end: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
 	};
 
 	return <Table title='Прохождение заданий'
@@ -125,16 +120,19 @@ class RouteLaunchReports extends Component {
 
   onReportSelect({props}) {
     const id = props.data.id;
-    this.context.history.pushState(null, '/mission-report/'+id);
+    if (props.data.status !== 'success') {
+      global.NOTIFICATION_SYSTEM._addNotification(getReportNotReadyNotification(this.context.flux));
+    } else {
+      this.context.history.pushState(null, '/mission-report/'+id);
+    }
   }
 
   handleGenerationTypeChange(type) {
     this.setState({generationType: type});
   }
-  createRouteReport() {
-    console.log(` creating report`, this.state.generationType);
+  createMissionReport() {
 		const { flux } = this.context;
-		flux.getActions('routes').createRouteReport(this.state.generationType);
+		flux.getActions('missions').createMissionReport();
   }
 
 	render() {
@@ -144,6 +142,9 @@ class RouteLaunchReports extends Component {
 
 		return (
 			<div className="ets-page-wrap">
+      <Div className="route-report-panel">
+        <Button bsSize="small" onClick={this.createMissionReport.bind(this)}>Сформировать отчет</Button>
+      </Div>
 				<CarsTable data={missionReportsList} onRowSelected={this.onReportSelect.bind(this)}>
 				</CarsTable>
 			</div>

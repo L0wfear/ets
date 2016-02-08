@@ -1,15 +1,6 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import Table from '../ui/table/DataTable.jsx';
-import { Button, Glyphicon } from 'react-bootstrap';
-
-// function createFakeMissingCarData(types, el, i) {
-// 	el.type = _.find(types, t => t.id === el.type_id).title;
-// 	return el;
-// }
-
-let getStatusLabel = (status) => status === 'fail' ? 'Нет' : 'Да';
-let getTypeLabel = (type) => type === 'distance' ? 'Протяженность' : type;
 
 let tableMeta = {
 	cols: [
@@ -64,7 +55,7 @@ let tableMeta = {
 	]
 }
 
-let CarsTable = (props) => {
+let MissionReportByODHTable = (props) => {
 
 	const renderers = {
     left_percentage: ({data}) => <div>{ parseFloat(parseFloat(data) * 100).toFixed(2) + '%'}</div>,
@@ -73,7 +64,7 @@ let CarsTable = (props) => {
     route_check_length: ({data}) => <div>{ parseFloat(data).toFixed(2)}</div>,
 	};
 
-	return <Table title='Покрытие ОДХ маршрутами'
+	return <Table title='Прохождение заданий по ОДХ'
 								tableMeta={tableMeta}
 								results={props.data}
 								renderers={renderers}
@@ -81,40 +72,30 @@ let CarsTable = (props) => {
 
 }
 
-class RouteReports extends Component {
-
+class MissionReportByODH extends Component {
 
 	constructor(props) {
 		super(props);
-
 		this.state = {
-			selectedCar: null,
-			showForm: false,
 		};
 	}
 
 	componentDidMount() {
-		const { flux } = this.context;
-		flux.getActions('missions').getMissionReportByODHs(this.props.routeParams.index);
+		this.context.flux.getActions('missions').getMissionReportByODHs(this.props.routeParams.index);
 	}
 
 	render() {
-
-		const { selectedReportDataODHS = [] } = this.props;
-
 		return (
 			<div className="ets-page-wrap">
-				<CarsTable data={selectedReportDataODHS} >
-				</CarsTable>
+				<MissionReportByODHTable data={this.props.selectedReportDataODHS || []} >
+				</MissionReportByODHTable>
 			</div>
 		);
-
 	}
 }
 
-RouteReports.contextTypes = {
-  history: React.PropTypes.object,
+MissionReportByODH.contextTypes = {
 	flux: React.PropTypes.object,
 };
 
-export default connectToStores(RouteReports, ['missions']);
+export default connectToStores(MissionReportByODH, ['missions']);

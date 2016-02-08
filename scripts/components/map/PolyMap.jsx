@@ -7,7 +7,6 @@ import { getGeoObjectsByCoords } from '../../adapter.js';
 import '../../vendor/onTabUnfocus.js';
 import { polyState, polyStyles } from '../../constants/polygons.js';
 import { vectorStyles, vectorState, getVectorArrowStyle, getVectorLayer, getVectorSource } from '../../constants/vectors.js';
-import { intersect } from 'turf';
 
 window.addEventListener('blur', (ev) => {
   //let store = flux.getStore('points')

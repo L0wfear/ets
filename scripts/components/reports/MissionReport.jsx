@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import Table from '../ui/table/DataTable.jsx';
-import { Button, Glyphicon } from 'react-bootstrap';
-
-// function createFakeMissingCarData(types, el, i) {
-// 	el.type = _.find(types, t => t.id === el.type_id).title;
-// 	return el;
-// }
 
 let getStatusLabel = (status) => status === 'fail' ? 'Нет' : 'Да';
 let getTypeLabel = (type) => type === 'distance' ? 'Протяженность' : type;
@@ -72,14 +66,14 @@ let tableMeta = {
 	]
 }
 
-let CarsTable = (props) => {
+let MissionReportTable = (props) => {
 
 	const renderers = {
     route_traveled_percentage: ({data}) => <div>{parseFloat(data) * 100 + '%'}</div>,
     route_left_percentage: ({data}) => <div>{ parseFloat(data) * 100 + '%'}</div>,
 	};
 
-	return <Table title='Покрытие ОДХ маршрутами'
+	return <Table title='Прохождение заданий'
 								tableMeta={tableMeta}
 								results={props.data}
 								renderers={renderers}
@@ -87,7 +81,7 @@ let CarsTable = (props) => {
 
 }
 
-class RouteReports extends Component {
+class MissionReport extends Component {
 
 
 	constructor(props) {
@@ -115,17 +109,17 @@ class RouteReports extends Component {
 
 		return (
 			<div className="ets-page-wrap">
-				<CarsTable data={selectedReportData} onRowSelected={this.onReportSelect.bind(this)}>
-				</CarsTable>
+				<MissionReportTable data={selectedReportData} onRowSelected={this.onReportSelect.bind(this)}>
+				</MissionReportTable>
 			</div>
 		);
 
 	}
 }
 
-RouteReports.contextTypes = {
+MissionReport.contextTypes = {
   history: React.PropTypes.object,
 	flux: React.PropTypes.object,
 };
 
-export default connectToStores(RouteReports, ['missions']);
+export default connectToStores(MissionReport, ['missions']);

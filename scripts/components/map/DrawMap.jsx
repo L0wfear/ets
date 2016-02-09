@@ -34,7 +34,9 @@ export default class DrawMap extends PolyMap {
     });
     this.draw.on('drawend', this.onDrawEnd.bind(this));
     this.map.addInteraction(this.draw);
-    setTimeout(() => this.draw.setActive(false), 500);
+    if (this.props.edit) {
+      setTimeout(() => this.draw.setActive(false), 500);
+    }
   }
 
   onDrawEnd(ev) {

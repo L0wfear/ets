@@ -9,7 +9,6 @@ let subItems = [
   {
     title: 'Крылатские холмы',
     action: () => true,
-    actionButtonName: 'Посмотреть на карте',
   },
   {
     title: 'Осенняя улица',
@@ -25,17 +24,47 @@ let subItems = [
   },
 ];
 
+let firstCard = {
+  title: 'Текущие задания',
+  items: [
+    {
+      title: 'Подметание'
+    },
+    {
+      title: 'Распределение жидких реагентов'
+    }
+  ]
+}
+
 const cardsList = [
   {
     title: 'ОДХ не назначенные на текущие задания',
     items: [
       {
         title: 'Подметание — 32 ОДХ',
-        subItems: subItems,
+        subItems: [
+          {
+          title: 'Крылатские холмы',
+          action: () => true,
+          actionButtonName: 'Посмотреть на карте',
+          },
+          {
+            title: 'Осенняя улица',
+            action: () => true,
+          },
+          {
+            title: 'Еще какая-то улица',
+            action: () => true,
+          },
+          {
+            title: 'Крылатские холмы ПУ',
+            action: () => true,
+          },
+        ],
       },
       {
         title: 'Распределение жидких реагентов — 11 ОДХ',
-        subItems: subItems,
+        subItems: [],
       }
     ]
   },
@@ -81,10 +110,15 @@ const cardsList = [
 ];
 
 let DashboardCardSmall = ({card}) => {
+  let action = () => true;
+  let itemActionObject = card.items[0].action;
+  if (itemActionObject) {
+    action = itemActionObject.action;
+  }
   return (
     <Div className="dashboard-card-sm">
       <Panel header={card.title} bsStyle="success">
-        <Div className="pointer" onClick={card.action} >{card.data}</Div>
+        <Div className="pointer" onClick={action}>{card.items[0].title}</Div>
       </Panel>
     </Div>
   );
@@ -207,13 +241,24 @@ class DashboardPage extends React.Component {
     this.smallCardsList = [
       {
         title: 'ТС в работе',
-        data: '46/83',
-        action: () => true,
+        items: [
+          {
+            title: '46/83',
+          }
+        ]
       },
       {
         title: 'Кол-во закрытых путевых листов',
-        data: '12/31',
-        action: () => context.history.pushState(null, '/waybill-journal?status=closed'),
+        items: [
+          {
+            title: '12/31',
+            action: {
+              type: 'url',
+              url: '/waybill-journal?status=closed',
+              action: () => context.history.pushState(null, '/waybill-journal?status=closed'),
+            }
+          }
+        ]
       }
     ];
 
@@ -251,8 +296,8 @@ class DashboardPage extends React.Component {
   }
 
   updateClock() {
-   let time = moment().format('HH:mm:ss');
-   this.setState({time});
+    let time = moment().format('HH:mm:ss');
+    this.setState({time});
   }
 
   render() {

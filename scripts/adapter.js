@@ -272,13 +272,13 @@ export function init() {
   console.warn('INIT');
   // @todo вся нужная для инициализации внешнего апи хрень здесь
   return Promise.all([
-          loadCustomers(),
-          loadModels(),
+          //loadCustomers(),
+          //loadModels(),
           //loadOwners(),
-          loadOkrugs(),
+          //loadOkrugs(),
           loadTypes()
         ])
-        .then(getRoutes);
+        //.then(getRoutes);
 }
 
 export function getWaybills() {

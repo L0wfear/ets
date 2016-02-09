@@ -147,7 +147,7 @@ export default class PointsStore extends Store {
     let selected = this.state.selected;
 
     this.setState(Object.assign({}, {filter, selected}, this.countDimensions()));
-    callback()
+    callback();
   }
 
 
@@ -203,7 +203,7 @@ export default class PointsStore extends Store {
     this.handleSetFilter({owner: [payload.company_id]})
 
    /* setTimeout(
-      () => olmap.getView().fit(this._pointsActions.getPointsExtent(), olmap.getSize(), { padding: [50, 50, 50, 50] })  
+      () => olmap.getView().fit(this._pointsActions.getPointsExtent(), olmap.getSize(), { padding: [50, 50, 50, 50] })
       , 4000)*/
 
   }

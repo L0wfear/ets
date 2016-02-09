@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom'
 import { Panel, Row, Col, Button, Fade, Well, Glyphicon, Collapse } from 'react-bootstrap';
 import Div from './ui/Div.jsx';
-import SDiv from './ui/SDiv.jsx';
 import moment from 'moment';
 import cx from 'classnames';
 import connectToStores from 'flummox/connect';
@@ -28,14 +27,14 @@ let DashboardItemChevron = (props) => {
   if (props.direction === 'left') {
     return (
       <Div className="card-chevron-left" hidden={props.hidden}>
-        <Glyphicon glyph="chevron-left"/>
+        <Glyphicon glyph="menu-left"/>
       </Div>
     );
   }
 
   return (
     <Div className="card-chevron-right" hidden={props.hidden}>
-      <Glyphicon glyph="chevron-right"/>
+      <Glyphicon glyph="menu-right"/>
     </Div>
   );
 
@@ -100,7 +99,7 @@ class DashboardCardMedium extends React.Component {
             </Collapse>
           </Div>
 
-          <Div hidden={otherItems.length === 0}>
+          <Div className="menu-down-block" hidden={otherItems.length === 0}>
             <hr/>
             <Div style={{textAlign: 'center'}} hidden={this.state.fullListOpen}>
               <Glyphicon glyph="menu-down" className="pointer" onClick={this.toggleFullList.bind(this)}/>
@@ -111,16 +110,16 @@ class DashboardCardMedium extends React.Component {
           </Div>
         </Panel>
 
-        <DashboardItemChevron direction={this.props.direction} hidden={selectedItem === null || subItems.length === 0} />
+        <DashboardItemChevron direction={this.props.direction} hidden={selectedItem === null/*|| subItems.length === 0*/} />
 
-        <Div style={styleObject} hidden={subItems.length === 0} className={cx('dashboard-card-info', {active: selectedItem !== null})} >
+        <Div style={styleObject} hidden={false/*subItems.length === 0*/} className={cx('dashboard-card-info', {active: selectedItem !== null})} >
           <Fade in={selectedItem !== null}>
             <div>
               <Well>
                 <Div className="card-glyph-remove" onClick={() => this.setState({selectedItem: null})}>
                   <Glyphicon glyph="remove"/>
                 </Div>
-                <h4>{selectedItem !== null ? selectedItem.title : ''}</h4>
+                <h5>{selectedItem !== null ? selectedItem.title : ''}</h5>
                 <ul>
                   {subItems.map((item, i) => <li key={i}>{item.title}</li>)}
                 </ul>

@@ -58,7 +58,7 @@ let getTableMeta = (props) => {
       },
       {
         name: 'snow_area',
-        caption: 'Полощадь уборки снега',
+        caption: 'Площадь уборки снега',
         type: 'number',
       },
       {

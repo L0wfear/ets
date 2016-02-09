@@ -2469,20 +2469,20 @@ div.none {
     }
   }
 
-  /*.cards-row{
-    overflow: hidden;
-
-    [class*="col-"]{
-        margin-bottom: -99999px;
-        padding-bottom: 99999px;
-    }
-  }*/
   .card-glyph-remove {
     position: absolute;
     right: 15px;
     top: 10px;
     cursor: pointer;
   }
+
+  .menu-down-block {
+    height: 20px;
+    hr {
+      margin-bottom: 5px !important;
+    }
+  }
+
 
 
 }

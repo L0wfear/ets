@@ -40,8 +40,12 @@ export default React.createClass({
 					      </Navbar.Brand>
 					    </Navbar.Header>
 				      <Nav>
-				        <NavItem active={path === '/dashboard'} href="#/dashboard">Рабочее место</NavItem>
-				        <NavItem active={path === '/monitor'} href="#/monitor">Монитор</NavItem>
+
+                <NavItem active={path === '/monitor'} href="#/monitor">Монитор</NavItem>
+                <NavDropdown title="Рабочее место" id="nav-dropdown-5">
+  				        <MenuItem active={path === '/dashboard/master'} href="#/dashboard/master">Рабочее место мастера</MenuItem>
+    				      <MenuItem active={path === '/dashboard/dispatcher'} href="#/dashboard/dispatcher">Рабочее место диспетчера</MenuItem>
+                </NavDropdown>
 				        <NavItem active={path === '/waybill-journal'} href="#/waybill-journal">Журнал путевых листов</NavItem>
                 <NavDropdown title="Задания" id="nav-dropdown-1">
 				          <MenuItem active={path === '/mission-journal'} href="#/mission-journal">Журнал заданий</MenuItem>

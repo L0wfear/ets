@@ -160,19 +160,33 @@ class DashboardPage extends React.Component {
 
   }
 
+  init() {
+    this.context.flux.getStore('dashboard').resetState();
+    this.context.flux.getActions('dashboard').getDashboardCurrentMissions();
+    this.context.flux.getActions('dashboard').getDashboardFutureMissions();
+    if (this.props.params.role === 'master') {
+      this.context.flux.getActions('dashboard').getDashboardCarInWork();
+    } else {
+      this.context.flux.getActions('dashboard').getDashboardReleasedWaybill();
+    }
+  }
+
   componentDidMount() {
     this.updateClock();
     this.timeInterval = setInterval(this.updateClock.bind(this), 1000);
     document.getElementsByTagName('html')[0].classList.add('overflow-scroll');
-    this.context.flux.getActions('dashboard').getDashboardCurrentMissions();
-    this.context.flux.getActions('dashboard').getDashboardFutureMissions();
-    this.context.flux.getActions('dashboard').getDashboardCarInWork();
-    this.context.flux.getActions('dashboard').getDashboardReleasedWaybill();
+    this.init();
   }
 
   componentWillUnmount() {
     clearInterval(this.timeInterval);
     document.getElementsByTagName('html')[0].classList.remove('overflow-scroll');
+  }
+
+  componentWillReceiveProps(props) {
+    if (props.params.role !== this.props.params.role) {
+      this.init();
+    }
   }
 
   updateClock() {
@@ -183,6 +197,8 @@ class DashboardPage extends React.Component {
   render() {
 
     let cards = [];
+    console.log(this.props);
+    let role = this.props.params.role;
     const { componentsList = [], componentsSideList = [] } = this.props;
     componentsSideList.map(c => {
       if (c.key === 'released_waybill') {
@@ -208,7 +224,7 @@ class DashboardPage extends React.Component {
     return (
       <Div className="ets-page-wrap dashboard-page">
 
-        <DashboardHeader personRole="Мастер" personFIO="Лебедев И.А." />
+        <DashboardHeader personRole={role === 'master' ? 'Мастер' : 'Диспетчер'} personFIO={role === 'master' ? 'Лебедев И.А.' : 'Иванов К.М.'} />
 
         <Row>
           <Col md={10}>

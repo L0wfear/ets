@@ -123,7 +123,7 @@ const routes = (
     <Redirect from="/" to="monitor" />
     <Route path="/" component={App} onEnter={loadData}>
       <Route path="monitor" component={MonitorPage} onEnter={requireAuth}/>
-      <Route path="dashboard" component={DashboardPage} onEnter={requireAuth}/>
+      <Route path="dashboard/:role" component={DashboardPage} onEnter={requireAuth}/>
       <Route path="waybill-journal" component={WaybillJournal} onEnter={requireAuth}/>
       <Route path="mission-journal" component={MissionsJournal} onEnter={requireAuth}/>
       <Route path="mission-templates-journal" component={MissionTemplatesJournal} onEnter={requireAuth}/>

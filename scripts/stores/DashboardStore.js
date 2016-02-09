@@ -16,7 +16,6 @@ class DashboardStore extends Store {
     this.register(dashboardActions.getDashboardReleasedWaybill, this.handleGetDashboardSideComponent.bind(this, 'released_waybill', 16));
 
     this.state = {
-      current_missions: [],
       componentsIndex: {},
       componentsSideIndex: {},
       componentsList: [],
@@ -40,6 +39,15 @@ class DashboardStore extends Store {
     componentsSideIndex[key] = component.result;
     componentsSideList = _.toArray(componentsSideIndex);
     this.setState({componentsSideIndex, componentsSideList});
+  }
+
+  resetState() {
+    this.setState({
+      componentsIndex: {},
+      componentsSideIndex: {},
+      componentsList: [],
+      componentsSideList: [],
+    });
   }
 
 }

@@ -33,20 +33,19 @@ export default React.createClass({
 				      </Nav>
 					</Navbar>);
 
-		return (<Navbar justified>
+		return (<Navbar justified fluid>
 						 <Navbar.Header>
 					      <Navbar.Brand>
 							    <Link to="/">ЕТС</Link>
 					      </Navbar.Brand>
 					    </Navbar.Header>
 				      <Nav>
-
                 <NavItem active={path === '/monitor'} href="#/monitor">Монитор</NavItem>
                 <NavDropdown title="Рабочее место" id="nav-dropdown-5">
   				        <MenuItem active={path === '/dashboard/master'} href="#/dashboard/master">Рабочее место мастера</MenuItem>
     				      <MenuItem active={path === '/dashboard/dispatcher'} href="#/dashboard/dispatcher">Рабочее место диспетчера</MenuItem>
                 </NavDropdown>
-				        <NavItem active={path === '/waybill-journal'} href="#/waybill-journal">Журнал путевых листов</NavItem>
+				        <NavItem active={path === '/waybill-journal'} href="#/waybill-journal">Путевые листы</NavItem>
                 <NavDropdown title="Задания" id="nav-dropdown-1">
 				          <MenuItem active={path === '/mission-journal'} href="#/mission-journal">Журнал заданий</MenuItem>
   				        <MenuItem active={path === '/mission-templates-journal'} href="#/mission-templates-journal">Шаблоны заданий</MenuItem>
@@ -68,14 +67,7 @@ export default React.createClass({
   				        <MenuItem active={path === '/mission-reports'} href="#/mission-reports">Прохождение заданий</MenuItem>
                 </NavDropdown>
 
-				        <NavItem active={path === '/routes-list'} href="#/routes-list">Список маршрутов</NavItem>
-				        {/*<NavItem active={path === '/waybill-journal/create'} href="#/waybill-journal/create">Создать маршрут</NavItem>*/}
-				        {/*<NavItem active={path === '/waybill-journal'} href="#/waybill-journal">Журнал путевых листов</NavItem>
-				        <NavDropdown eventKey={3} title="Реестры" id="basic-nav-dropdown">
-				          	<MenuItem>Реестр сотрудников</MenuItem>
-					        	<MenuItem>Реестр водителей</MenuItem>
-					        	<MenuItem><Link to="/routes-list">Реестр маршрутов</Link></MenuItem>
-				        </NavDropdown>*/}
+				        <NavItem active={path === '/routes-list'} href="#/routes-list">Маршруты</NavItem>
 				      </Nav>
               <Nav pullRight>
                 <NavItem >{this.state.user.login}</NavItem>

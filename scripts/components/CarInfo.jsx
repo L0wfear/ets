@@ -25,7 +25,7 @@ class VehicleAttributes extends Component {
 
     // key => name mapp
     this.mappings = {}
-    
+
   }
 
 
@@ -112,7 +112,7 @@ export default class CarInfo extends Component {
   render() {
     let car = this.props.car;
 
-    console.log('rendering carinfo');
+    //console.log('rendering carinfo');
 
     if (!car) {
       return null;
@@ -250,7 +250,7 @@ export default class CarInfo extends Component {
       return (
         <div>
         <Panel title="Трекинг" className="chart-datepickers-wrap">
-           <DatePicker onChange={date => this.setState({ from_dt_: date})} 
+           <DatePicker onChange={date => this.setState({ from_dt_: date})}
                       date={this.state.from_dt_} disabled={tillNow} ref="from_dt"/>&nbsp;–&nbsp;
           <DatePicker onChange={date => this.setState({to_dt_: date})}
                       date={this.state.to_dt_} disabled={tillNow} ref="to_dt"/>
@@ -275,7 +275,7 @@ export default class CarInfo extends Component {
     }
 
     fetchVehicleData() {
-      console.log(' fetching vehicle data')
+      //console.log(' fetching vehicle data')
       this.setState({from_dt: this.state.from_dt_, to_dt: this.state.to_dt_}, this.fetchTrack)
     }
 
@@ -297,10 +297,9 @@ export default class CarInfo extends Component {
           this.setState({ to_dt_: dt}); // обновляем дату "по"
         }
 
-        console.log('ontrack update')
+        //console.log('ontrack update')
       });
 
       track.fetch(from_dt, to_dt);
     }
   }
-

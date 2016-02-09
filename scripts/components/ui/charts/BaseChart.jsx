@@ -52,7 +52,7 @@ export default class Graph extends Component {
   }
 
   render() {
-    console.log('rendering graph', this.type, this.state, this.props)
+    //console.log('rendering graph', this.type, this.state, this.props)
     let {loaded, data} = this.state;
 
     return <Panel title={HEADERS[this.type]}>

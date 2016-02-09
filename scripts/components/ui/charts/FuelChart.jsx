@@ -14,7 +14,7 @@ export default class FuelChart extends Chart {
 
   componentWillReceiveProps(nextProps) {
 
-    console.log('fuel chart received props', nextProps);
+    //console.log('fuel chart received props', nextProps);
 
     if (nextProps.to !== this.props.to ||
         nextProps.from !== this.props.from ||

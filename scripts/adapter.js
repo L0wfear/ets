@@ -11,6 +11,7 @@ import { loadOwners } from './owners.js';
 
 
 let getUrl = (url) => config.backend ? config.backend + url : url;
+let getOldUrl = (url) => config.backendOld ? config.backendOld + url : url;
 let getServiceUrl = (url) => config.servicesBackend ? config.servicesBackend + url : url;
 let toFormData = (data) => {
   const formData = new FormData();
@@ -44,7 +45,7 @@ let toUrlWithParams = (url, data) => {
 };
 
 const POINTS_URL = getUrl('/data');
-const TRACK_URL = getUrl('/tracks/');
+const TRACK_URL = getOldUrl('/tracks/');
 const WEATHER_URL = getUrl('/weather/');
 const GEO_OBJECTS_URL = getUrl('/geo_objects/');
 const ROADS_ACTUAL_URL = getUrl('/roads_actual/');
@@ -75,6 +76,7 @@ const ODH_REPORTS_SERVICE_URL = getServiceUrl('/odh-reports/');
 const ROUTE_VALIDATE_URL = getUrl('/route_validate/');
 const MISSION_REPORTS_URL = getUrl('/car_odh_travel_report/');
 const GEOZONE_URL = getUrl('/geozone/');
+const DASHBOARD_URL = getUrl('/dashboard/');
 
 function getJSON(url, data = {}) {
   data = _.clone(data);
@@ -575,4 +577,22 @@ export function createMissionReport(payload) {
 
 export function getGeozones() {
   return getJSON(GEOZONE_URL);
+}
+
+// DASHBOARD //
+
+export function getDashboardCurrentMissions() {
+  return getJSON(`${DASHBOARD_URL}current_missions/`);
+}
+
+export function getDashboardFutureMissions() {
+  return getJSON(`${DASHBOARD_URL}future_missions/`);
+}
+
+export function getDashboardCarInWork() {
+  return getJSON(`${DASHBOARD_URL}car_in_work/`);
+}
+
+export function getDashboardReleasedWaybill() {
+  return getJSON(`${DASHBOARD_URL}released_waybill/`)
 }

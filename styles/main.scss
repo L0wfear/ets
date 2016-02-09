@@ -2468,4 +2468,15 @@ div.none {
       font-weight: bold;
     }
   }
+
+  /*.cards-row{
+    overflow: hidden;
+
+    [class*="col-"]{
+        margin-bottom: -99999px;
+        padding-bottom: 99999px;
+    }
+  }*/
+
+
 }

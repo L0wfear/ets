@@ -117,6 +117,9 @@ class DashboardCardMedium extends React.Component {
           <Fade in={selectedItem !== null}>
             <div>
               <Well>
+                <Div className="card-glyph-remove" onClick={() => this.setState({selectedItem: null})}>
+                  <Glyphicon glyph="remove"/>
+                </Div>
                 <h4>{selectedItem !== null ? selectedItem.title : ''}</h4>
                 <ul>
                   {subItems.map((item, i) => <li key={i}>{item.title}</li>)}

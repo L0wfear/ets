@@ -33,7 +33,7 @@ class DashboardStore extends Store {
     component.result.id = id;
     component.result.key = key;
     componentsIndex[key] = component.result;
-    componentsList = _.toArray(componentsIndex);
+    componentsList = _(componentsIndex).toArray().sortBy('id').value();
     let state = this.state;
     state[role].componentsList = componentsList;
     state[role].componentsIndex = componentsIndex;
@@ -45,7 +45,8 @@ class DashboardStore extends Store {
     component.result.id = id;
     component.result.key = key;
     componentsSideIndex[key] = component.result;
-    componentsSideList = _.toArray(componentsSideIndex);
+    componentsSideList = _(componentsSideIndex).toArray().sortBy('id').value();
+    console.log(componentsSideList);
     let state = this.state;
     state[role].componentsSideList = componentsSideList;
     state[role].componentsSideIndex = componentsSideIndex;

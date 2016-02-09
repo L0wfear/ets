@@ -8,6 +8,7 @@ class Form extends React.Component {
    }
 
    handleChange(field, e) {
+     console.info('HANDLE FORM CHANGE');
  		 this.props.handleFormChange(field, e);
  	 }
 

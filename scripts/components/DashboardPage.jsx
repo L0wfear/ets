@@ -86,7 +86,7 @@ class DashboardCardMedium extends React.Component {
       };
     }
     let firstItems = items.slice(0, 2);
-    let otherItems = items.slice(2, -1);
+    let otherItems = items.slice(2, items.length);
 
     return (
       <Div md={12}>
@@ -113,7 +113,7 @@ class DashboardCardMedium extends React.Component {
 
         <DashboardItemChevron direction={this.props.direction} hidden={selectedItem === null || subItems.length === 0} />
 
-        <Div style={styleObject} hidden={false/*subItems.length === 0*/} className={cx('dashboard-card-info', {active: selectedItem !== null})} >
+        <Div style={styleObject} hidden={subItems.length === 0} className={cx('dashboard-card-info', {active: selectedItem !== null})} >
           <Fade in={selectedItem !== null}>
             <div>
               <Well>
@@ -156,18 +156,16 @@ class DashboardPage extends React.Component {
     this.state = {
       time: '',
     };
-    //action: () => context.history.pushState(null, '/waybill-journal?status=closed')
 
   }
 
-  init() {
-    this.context.flux.getStore('dashboard').resetState();
-    this.context.flux.getActions('dashboard').getDashboardCurrentMissions();
-    this.context.flux.getActions('dashboard').getDashboardFutureMissions();
-    if (this.props.params.role === 'master') {
-      this.context.flux.getActions('dashboard').getDashboardCarInWork();
+  init(role = this.props.params.role) {
+    this.context.flux.getActions('dashboard').getDashboardComponent(role, 'current_missions', 1);
+    this.context.flux.getActions('dashboard').getDashboardComponent(role, 'future_missions', 2);
+    if (role === 'master') {
+      this.context.flux.getActions('dashboard').getDashboardSideComponent(role, 'car_in_work', 8);
     } else {
-      this.context.flux.getActions('dashboard').getDashboardReleasedWaybill();
+      this.context.flux.getActions('dashboard').getDashboardSideComponent(role, 'released_waybill', 16);
     }
   }
 
@@ -185,7 +183,7 @@ class DashboardPage extends React.Component {
 
   componentWillReceiveProps(props) {
     if (props.params.role !== this.props.params.role) {
-      this.init();
+      this.init(props.params.role);
     }
   }
 
@@ -197,9 +195,8 @@ class DashboardPage extends React.Component {
   render() {
 
     let cards = [];
-    console.log(this.props);
-    let role = this.props.params.role;
-    const { componentsList = [], componentsSideList = [] } = this.props;
+    let { role } = this.props.params;
+    const { componentsList = [], componentsSideList = [] } = this.props[role];
     componentsSideList.map(c => {
       if (c.key === 'released_waybill') {
         c.items[0].action = () => this.context.history.pushState(null, '/waybill-journal?status=active')

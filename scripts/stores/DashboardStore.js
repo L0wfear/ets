@@ -8,46 +8,48 @@ class DashboardStore extends Store {
     this.flux = flux;
 
     const dashboardActions = flux.getActions('dashboard');
-
-    this.register(dashboardActions.getDashboardCurrentMissions, this.handleGetDashboardComponent.bind(this, 'current_missions', 1));
-    this.register(dashboardActions.getDashboardFutureMissions, this.handleGetDashboardComponent.bind(this, 'future_missions', 2));
-
-    this.register(dashboardActions.getDashboardCarInWork, this.handleGetDashboardSideComponent.bind(this, 'car_in_work', 8));
-    this.register(dashboardActions.getDashboardReleasedWaybill, this.handleGetDashboardSideComponent.bind(this, 'released_waybill', 16));
+    this.register(dashboardActions.getDashboardComponent, this.handleGetDashboardComponent);
+    this.register(dashboardActions.getDashboardSideComponent, this.handleGetDashboardSideComponent);
 
     this.state = {
-      componentsIndex: {},
-      componentsSideIndex: {},
-      componentsList: [],
-      componentsSideList: [],
+      dispatcher: {
+        componentsIndex: {},
+        componentsSideIndex: {},
+        componentsList: [],
+        componentsSideList: [],
+      },
+      master: {
+        componentsIndex: {},
+        componentsSideIndex: {},
+        componentsList: [],
+        componentsSideList: [],
+      }
     };
 
   }
 
-  handleGetDashboardComponent(key, id, component) {
-    let { componentsList, componentsIndex } = this.state;
+  handleGetDashboardComponent({role, key, id, component}) {
+    let { componentsList, componentsIndex } = this.state[role];
     component.result.id = id;
+    component.result.key = key;
     componentsIndex[key] = component.result;
     componentsList = _.toArray(componentsIndex);
-    this.setState({componentsIndex, componentsList});
+    let state = this.state;
+    state[role].componentsList = componentsList;
+    state[role].componentsIndex = componentsIndex;
+    this.setState(state);
 	}
 
-  handleGetDashboardSideComponent(key, id, component) {
-    let { componentsSideList, componentsSideIndex } = this.state;
+  handleGetDashboardSideComponent({role, key, id, component}) {
+    let { componentsSideList, componentsSideIndex } = this.state[role];
     component.result.id = id;
     component.result.key = key;
     componentsSideIndex[key] = component.result;
     componentsSideList = _.toArray(componentsSideIndex);
-    this.setState({componentsSideIndex, componentsSideList});
-  }
-
-  resetState() {
-    this.setState({
-      componentsIndex: {},
-      componentsSideIndex: {},
-      componentsList: [],
-      componentsSideList: [],
-    });
+    let state = this.state;
+    state[role].componentsSideList = componentsSideList;
+    state[role].componentsSideIndex = componentsSideIndex;
+    this.setState(state);
   }
 
 }

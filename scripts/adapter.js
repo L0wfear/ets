@@ -581,18 +581,6 @@ export function getGeozones() {
 
 // DASHBOARD //
 
-export function getDashboardCurrentMissions() {
-  return getJSON(`${DASHBOARD_URL}current_missions/`);
-}
-
-export function getDashboardFutureMissions() {
-  return getJSON(`${DASHBOARD_URL}future_missions/`);
-}
-
-export function getDashboardCarInWork() {
-  return getJSON(`${DASHBOARD_URL}car_in_work/`);
-}
-
-export function getDashboardReleasedWaybill() {
-  return getJSON(`${DASHBOARD_URL}released_waybill/`)
+export function getDashboardComponent(role, key, id) {
+  return getJSON(`${DASHBOARD_URL}${key}/`).then(component => ({role, component, key, id}));
 }

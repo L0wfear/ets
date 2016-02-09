@@ -86,11 +86,12 @@ class DashboardCardMedium extends React.Component {
     }
     let firstItems = items.slice(0, 2);
     let otherItems = items.slice(2, items.length);
+    //let dashboardCardClass = cx('dashboard-card', {'visibilityHidden'});
 
     return (
       <Div md={12}>
         <Panel className="dashboard-card" header={this.props.header} bsStyle="success" ref="card">
-          <Div>
+          <Div className="dashboard-card-items">
             {firstItems}
             <Collapse in={this.state.fullListOpen}>
               <Div>
@@ -110,9 +111,9 @@ class DashboardCardMedium extends React.Component {
           </Div>
         </Panel>
 
-        <DashboardItemChevron direction={this.props.direction} hidden={selectedItem === null/*|| subItems.length === 0*/} />
+        <DashboardItemChevron direction={this.props.direction} hidden={selectedItem === null || subItems.length === 0} />
 
-        <Div style={styleObject} hidden={false/*subItems.length === 0*/} className={cx('dashboard-card-info', {active: selectedItem !== null})} >
+        <Div style={styleObject} hidden={subItems.length === 0} className={cx('dashboard-card-info', {active: selectedItem !== null})} >
           <Fade in={selectedItem !== null}>
             <div>
               <Well>
@@ -120,6 +121,7 @@ class DashboardCardMedium extends React.Component {
                   <Glyphicon glyph="remove"/>
                 </Div>
                 <h5>{selectedItem !== null ? selectedItem.title : ''}</h5>
+                <hr/>
                 <ul>
                   {subItems.map((item, i) => <li key={i}>{item.title}</li>)}
                 </ul>
@@ -127,6 +129,7 @@ class DashboardCardMedium extends React.Component {
             </div>
           </Fade>
         </Div>
+
       </Div>
     );
   }
@@ -165,6 +168,7 @@ class DashboardPage extends React.Component {
     this.context.flux.getActions('dashboard').getDashboardComponent(role, 'current_missions', 1);
     this.context.flux.getActions('dashboard').getDashboardComponent(role, 'future_missions', 2);
     if (role === 'master') {
+      this.context.flux.getActions('dashboard').getDashboardComponent(role, 'car_in_work_on_current_missions', 7);
       this.context.flux.getActions('dashboard').getDashboardSideComponent(role, 'car_in_work', 8);
       this.context.flux.getActions('dashboard').getDashboardSideComponent(role, 'count_waybill_closed', 10);
     } else {

@@ -2421,6 +2421,14 @@ div.none {
   .dashboard-card-info {
     position: absolute;
     top: 0;
+
+    h5 {
+      max-width: 95%;
+      margin-top: -7px;
+    }
+    hr {
+      margin-top: 0 !important;
+    }
     .fade, .well {
       /*border-top-left-radius: 0;
       border-bottom-left-radius: 0;*/
@@ -2482,6 +2490,11 @@ div.none {
       margin-bottom: 5px !important;
     }
   }
+
+  .dashboard-card-items{
+    line-height: 2;
+  }
+
 
 
 

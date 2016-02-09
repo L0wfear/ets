@@ -70,7 +70,7 @@ class DashboardCardMedium extends React.Component {
     let selectedItem = this.props.items[selectedItemIndex] || null;
     let subItems = selectedItem !== null ? selectedItem.subItems || [] : [];
     const items = this.props.items.map((item,i) => {
-      return <Div key={i} className="pointer" onClick={this.selectItem.bind(this, i)}>
+      return <Div key={i} className="pointer dashboard-card-item" onClick={this.selectItem.bind(this, i)}>
                 <Div style={{width: '90%', textAlign: 'left', marginLeft: 'auto', marginRight: 'auto'}}>
                   {item.title}
                 </Div>

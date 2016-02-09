@@ -171,6 +171,7 @@ class WaybillJournal extends Component {
 	}
 
 	componentDidMount() {
+		console.log(this.props);
 		const { flux } = this.context;
 		flux.getActions('waybills').getWaybills();
 		flux.getActions('employees').getEmployees();
@@ -202,7 +203,7 @@ class WaybillJournal extends Component {
 
 		return (
 			<div className="ets-page-wrap">
-				<WaybillsTable data={waybillsList} onRowSelected={this.selectBill.bind(this)} selected={this.state.selectedBill} selectField={'id'} {...this.props}>
+				<WaybillsTable data={waybillsList} onRowSelected={this.selectBill.bind(this)} selected={this.state.selectedBill} selectField={'id'} filterValues={this.props.location.query} {...this.props}>
 					<Button bsSize="small" onClick={this.createBill.bind(this)}><Glyphicon glyph="plus" /> Создать ПЛ</Button>
 					<Button bsSize="small" onClick={this.showBill.bind(this)} disabled={this.state.selectedBill === null}><Glyphicon glyph="search" /> Просмотреть ПЛ</Button>
 					<Button bsSize="small" disabled={showCloseBtn} onClick={this.closeBill.bind(this)}><Glyphicon glyph="ok" /> Закрыть ПЛ</Button>

@@ -94,7 +94,7 @@ export default React.createClass({
   },
 
   render() {
-		return <div>
+		return <div className="app">
 						<div className="app-navigation">{this.renderHeader()}</div>
 						<div className="app-content">
               {this.props.children}

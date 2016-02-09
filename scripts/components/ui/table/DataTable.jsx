@@ -69,6 +69,12 @@ class Table extends React.Component {
   	return rowMetadata;
   }
 
+  componentDidMount() {
+    if (this.props.filterValues) {
+      this.setState({filterValues: this.props.filterValues});
+    }
+  }
+
   render() {
     const { tableMeta, renderers, onRowSelected, selected, selectField, title = '', initialSort = 'id' } = this.props;
     const tableCols = tableMeta.cols.map( c => c.name );

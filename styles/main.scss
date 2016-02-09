@@ -2408,3 +2408,64 @@ div.none {
   }
 
 }
+.overflow-scroll {
+  overflow-y:scroll;
+}
+.dashboard-page {
+  .panel-footer {
+    text-align: center;
+  }
+  .panel-heading {
+    text-align: center;
+  }
+  .dashboard-card-info {
+    position: absolute;
+    top: 0;
+    .fade, .well {
+      /*border-top-left-radius: 0;
+      border-bottom-left-radius: 0;*/
+    }
+  }
+  .dashboard-card-info.active {
+    z-index: 9999;
+  }
+  .dashboard-card-info:not(.active) {
+    max-height: 1px;
+  }
+  .dashboard-card {
+    z-index: 1000;
+  }
+  .card-chevron-right {
+    position: absolute;
+    right: 0;
+    top: 100px;
+
+    font-size: 18px;
+    margin-right: -8px;
+  }
+  .card-chevron-left {
+    position: absolute;
+    left: 0;
+    top: 100px;
+    font-size: 18px;
+    margin-left: -8px;
+  }
+  .dashboard-time {
+    text-align: center;
+    font-size: 35px;
+    font-weight: bold;
+  }
+  .dashboard-title {
+    text-align: center;
+    font-size: 26px;
+    line-height: 2.2;
+  }
+
+  .dashboard-card-sm {
+    .panel-body {
+      font-size: 32px;
+      text-align: center;
+      font-weight: bold;
+    }
+  }
+}

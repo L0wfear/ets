@@ -164,6 +164,7 @@ class DashboardPage extends React.Component {
     this.context.flux.getActions('dashboard').getDashboardComponent(role, 'future_missions', 2);
     if (role === 'master') {
       this.context.flux.getActions('dashboard').getDashboardSideComponent(role, 'car_in_work', 8);
+      this.context.flux.getActions('dashboard').getDashboardSideComponent(role, 'count_waybill_closed', 10);
     } else {
       this.context.flux.getActions('dashboard').getDashboardSideComponent(role, 'released_waybill', 16);
     }
@@ -200,6 +201,9 @@ class DashboardPage extends React.Component {
     componentsSideList.map(c => {
       if (c.key === 'released_waybill') {
         c.items[0].action = () => this.context.history.pushState(null, '/waybill-journal?status=active')
+      }
+      if (c.key === 'count_waybill_closed') {
+        c.items[0].action = () => this.context.history.pushState(null, '/waybill-journal?status=closed')
       }
     });
     let lists = _(componentsList).groupBy((el, i) => Math.floor(i/3)).toArray().value();

@@ -54,7 +54,7 @@ class Table extends React.Component {
       this.setState({
         checkedRows: clonedData,
         globalCheckboxState: false
-      };
+      });
     } else {
       clonedData[id] = true;
       this.props.onRowChecked(id, true);

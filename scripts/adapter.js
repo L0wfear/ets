@@ -507,7 +507,9 @@ export function createRoute(route) {
 }
 
 export function createVectorRoute(route) {
-  return postJSON(ROUTES_VECTOR_URL, route, 'form').then(() => getRoutesVector());
+  return postJSON(ROUTES_VECTOR_URL, route, 'form').then((createdRoute) => getRoutesVector().then(routes => {
+    return {createdRoute, routes};
+  }));
 }
 
 export function removeRoute(payload) {

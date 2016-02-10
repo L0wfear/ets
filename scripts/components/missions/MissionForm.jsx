@@ -3,6 +3,7 @@ import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, FormControls, Button, DropdownButton, Dropdown, Glyphicon, MenuItem } from 'react-bootstrap';
 import Datepicker from '../ui/DatePicker.jsx';
 import RouteInfo from '../route/RouteInfo.jsx';
+import RouteFormWrap from '../route/RouteFormWrap.jsx';
 import ODHList from '../route/ODHList.jsx';
 import Field from '../ui/Field.jsx';
 import Div from '../ui/Div.jsx';
@@ -20,6 +21,7 @@ export class MissionForm extends Form {
 
 		this.state = {
 			selectedRoute: null,
+			showRouteForm: false,
 		};
 	}
 
@@ -45,6 +47,31 @@ export class MissionForm extends Form {
 			flux.getActions('routes').getRouteVectorById(mission.route_id).then(r => {
 				this.setState({selectedRoute: r.result.length ? r.result[0] : null});
 			});
+		}
+	}
+
+	createNewRoute() {
+		this.context.flux.getActions('routes').getGeozones().then(v => {
+			let newR = {
+				name: '',
+				polys: this.props.geozonePolys,
+				object_list: [],
+			};
+			this.setState({
+				showRouteForm: true,
+				selectedRoute: newR,
+			});
+		});
+	}
+
+	componentWillReceiveProps(props) {
+		if (props.lastCreatedRouteId !== null && props.lastCreatedRouteId !== this.props.lastCreatedRouteId) {
+			this.handleChange('route_id', props.lastCreatedRouteId);
+			setTimeout(() => { //no time sry
+				this.context.flux.getActions('routes').getRouteVectorById(props.lastCreatedRouteId).then(r => {
+					this.setState({selectedRoute: r.result.length ? r.result[0] : null});
+				});
+			}, 500)
 		}
 	}
 
@@ -137,6 +164,9 @@ export class MissionForm extends Form {
 							<Div className="route-odhs-list" hidden={this.state.selectedRoute === null}>
 								<ODHList showSelectable={true} odh_list={odh_list} />
 							</Div>
+						  <Div hidden={state.route_id}>
+							  <Button onClick={this.createNewRoute.bind(this)}>Создать новый</Button>
+						  </Div>
             </Col>
             <Col md={6}>
 							<Div hidden={this.state.selectedRoute === null} className="mission-form-map-wrapper">
@@ -162,6 +192,12 @@ export class MissionForm extends Form {
 					</Div>
 	      </Modal.Footer>
 
+				<RouteFormWrap element={route}
+											 onFormHide={() => {
+												 console.log(this.props.lastCreatedRouteId);
+												 this.setState({showRouteForm: false, selectedRoute: null})
+											 }}
+											 showForm={this.state.showRouteForm} />
 			</Modal>
 		)
 	}

@@ -4,6 +4,7 @@ import { Modal, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuIt
 import Field from '../ui/Field.jsx';
 import Div from '../ui/Div.jsx';
 import RouteInfo from '../route/RouteInfo.jsx';
+import RouteFormWrap from '../route/RouteFormWrap.jsx';
 import ODHList from '../route/ODHList.jsx';
 import { isEmpty } from '../../utils/functions.js';
 import { MissionForm } from './MissionForm.jsx';
@@ -79,6 +80,9 @@ class MissionTemplateForm extends MissionForm {
                      value={state.route_id}
                      onChange={this.handleRouteIdChange.bind(this)}
 										 clearable={false}/>
+							<Div hidden={state.route_id}>
+								<Button onClick={this.createNewRoute.bind(this)}>Создать новый</Button>
+							</Div>
 
 						  <Div className="route-odhs-list" hidden={this.state.selectedRoute === null}>
 								<ODHList showSelectable={true} odh_list={odh_list} />
@@ -98,6 +102,13 @@ class MissionTemplateForm extends MissionForm {
 		      	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>{'Сохранить'}</Button>
 					</Div>
 	      </Modal.Footer>
+
+				<RouteFormWrap element={route}
+											 onFormHide={() => {
+												 console.log(this.props.lastCreatedRouteId);
+												 this.setState({showRouteForm: false, selectedRoute: null})
+											 }}
+											 showForm={this.state.showRouteForm} />
 
 			</Modal>
 		)

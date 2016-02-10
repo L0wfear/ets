@@ -9,7 +9,7 @@ class RoutesStore extends Store {
     const routesActions = flux.getActions('routes');
     this.register(routesActions.createRoute, this.handleGetRoutes);
     this.register(routesActions.getRoutes, this.handleGetRoutes);
-    this.register(routesActions.createVectorRoute, this.handleGetRoutesVector);
+    this.register(routesActions.createVectorRoute, this.handleCreateRoutesVector);
     this.register(routesActions.removeRouteVector, this.handleGetRoutesVector);
     this.register(routesActions.updateRouteVector, this.handleGetRoutesVector);
     this.register(routesActions.getRoutesVector, this.handleGetRoutesVector);
@@ -26,6 +26,7 @@ class RoutesStore extends Store {
       reportsList: [],
       selectedReportData: [],
       geozonePolys: [],
+      lastCreatedRouteId: null,
     };
 
   }
@@ -36,6 +37,11 @@ class RoutesStore extends Store {
 
   handleGetRoutesVector(routes) {
     this.setState({ routesVectorList: routes.result });
+  }
+
+  handleCreateRoutesVector({createdRoute, routes}) {
+    console.log(createdRoute);
+    this.setState({lastCreatedRouteId: createdRoute.result[0].id, routesVectorList: routes.result });
   }
 
   handleGetRouteReports(reports) {

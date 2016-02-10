@@ -167,8 +167,8 @@ class DashboardPage extends React.Component {
   init(role = this.props.params.role) {
     this.context.flux.getActions('dashboard').getDashboardComponent(role, 'current_missions', 1);
     this.context.flux.getActions('dashboard').getDashboardComponent(role, 'future_missions', 2);
+    this.context.flux.getActions('dashboard').getDashboardComponent(role, 'car_in_work_on_current_missions', 7);
     if (role === 'master') {
-      this.context.flux.getActions('dashboard').getDashboardComponent(role, 'car_in_work_on_current_missions', 7);
       this.context.flux.getActions('dashboard').getDashboardSideComponent(role, 'car_in_work', 8);
       this.context.flux.getActions('dashboard').getDashboardSideComponent(role, 'count_waybill_closed', 10);
     } else {
@@ -216,15 +216,15 @@ class DashboardPage extends React.Component {
         c.items[0].action = () => this.context.history.pushState(null, `/waybill-journal?${params}`)
       }
       if (c.key === 'count_waybill_closed') {
-        c.items[0].filter = {
-          status: ['closed'],
-          date_create: ['2016-02-10'],
-        };
-        if (c.items[0].filter) {
-          for (let key in c.items[0].filter) {
-            if (params.length > 0) params += '&';
-            params += `${key}=${c.items[0].filter[key].join(`&${key}=`)}`;
-          }
+        if (!c.items[0].filter) {
+          c.items[0].filter = {
+            status: ['closed'],
+            date_create: ['2016-02-10'],
+          };
+        }
+        for (let key in c.items[0].filter) {
+          if (params.length > 0) params += '&';
+          params += `${key}=${c.items[0].filter[key].join(`&${key}=`)}`;
         }
         c.items[0].action = () => this.context.history.pushState(null, `/waybill-journal?${params}`)
       }

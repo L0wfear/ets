@@ -205,11 +205,28 @@ class DashboardPage extends React.Component {
     let { role } = this.props.params;
     const { componentsList = [], componentsSideList = [] } = this.props[role];
     componentsSideList.map(c => {
+      let params = '';
       if (c.key === 'released_waybill') {
-        c.items[0].action = () => this.context.history.pushState(null, '/waybill-journal?status=active')
+        if (c.items[0].filter) {
+          for (let key in c.items[0].filter) {
+            if (params.length > 0) params += '&';
+            params += `${key}=${c.items[0].filter[key].join(`&${key}=`)}`;
+          }
+        }
+        c.items[0].action = () => this.context.history.pushState(null, `/waybill-journal?${params}`)
       }
       if (c.key === 'count_waybill_closed') {
-        c.items[0].action = () => this.context.history.pushState(null, '/waybill-journal?status=closed')
+        c.items[0].filter = {
+          status: ['closed'],
+          date_create: ['2016-02-10'],
+        };
+        if (c.items[0].filter) {
+          for (let key in c.items[0].filter) {
+            if (params.length > 0) params += '&';
+            params += `${key}=${c.items[0].filter[key].join(`&${key}=`)}`;
+          }
+        }
+        c.items[0].action = () => this.context.history.pushState(null, `/waybill-journal?${params}`)
       }
     });
     let lists = _(componentsList).groupBy((el, i) => Math.floor(i/3)).toArray().value();

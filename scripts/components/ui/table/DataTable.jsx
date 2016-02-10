@@ -93,14 +93,24 @@ class Table extends React.Component {
 			return d;
 		}).filter((obj) => {
   		let isValid = true;
-
   		_.mapKeys(this.state.filterValues, (value, key) => {
-
-  			if (typeof value.getMonth === 'function') {
+  			if (key.indexOf('date') > -1 && !_.isArray(value)) {
+          if (moment(obj[key]).format('YYYY-MM-DD') !== value) {
+            isValid = false;
+          }
+        } else if (key.indexOf('date') > -1 && _.isArray(value)) {
+          if (value.indexOf(moment(obj[key]).format('YYYY-MM-DD')) === -1) {
+            isValid = false;
+          }
+        } else if (typeof value.getMonth === 'function') {
   				if (obj[key] !== moment(value).format('YYYY-MM-DD H:mm')) {
   					isValid = false;
   				}
-  			} else {
+  			} else if (_.isArray(value)) {
+          if (value.indexOf(obj[key].toString()) === -1) {
+            isValid = false;
+          }
+        } else {
   				if (obj[key] != value) {
   					isValid = false;
   				}

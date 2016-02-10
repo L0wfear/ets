@@ -9,8 +9,12 @@ import { getOwners } from '../owners.js';
 
 export default class ObjectsActions extends Actions {
 
-  getCars() {
-    return getCars();
+  getCars(technical_operation_id) {
+    const payload = {};
+    if (typeof technical_operation_id !== 'undefined') {
+      payload.technical_operation_id = technical_operation_id;
+    }
+    return getCars(payload);
   }
 
   getModels() {

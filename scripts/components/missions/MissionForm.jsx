@@ -31,6 +31,13 @@ export class MissionForm extends Form {
 		});
 	}
 
+	handleTechnicalOperationChange(v) {
+		this.handleChange('technical_operation_id', v)
+		this.handleChange('car_id', undefined);
+
+    this.context.flux.getActions('objects').getCars(v);
+	}
+
 	componentDidMount() {
 		const mission = this.props.formState;
 		const { flux } = this.context;
@@ -47,8 +54,6 @@ export class MissionForm extends Form {
 		let errors = this.props.formErrors;
 
 		const { workKindsList = [], techOperationsList = [], missionSourcesList = [], routesList = [], routesVectorList = [], carsList = [] } = this.props;
-
-		console.log();
 
     const WORK_KINDS = workKindsList.map(({id, name}) => ({value: id, label: name}));
     const TECH_OPERATIONS = techOperationsList.map(({id, name}) => ({value: id, label: name}));
@@ -86,7 +91,7 @@ export class MissionForm extends Form {
 											disabled={IS_DISPLAY}
                       options={TECH_OPERATIONS}
                       value={state.technical_operation_id}
-                      onChange={this.handleChange.bind(this, 'technical_operation_id')}/>
+                      onChange={this.handleTechnicalOperationChange.bind(this)}/>
 						</Col>
 
 				 		<Col md={3}>

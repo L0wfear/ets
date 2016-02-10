@@ -284,13 +284,12 @@ export function init() {
 }
 
 export function getWaybills() {
-  console.info('GETTING WAYBILLS');
   return getJSON(WAYBILL_URL);
 }
 
-export function getCars() {
+export function getCars(payload) {
   console.info('GETTING CARS');
-  return getJSON(CARS_ACTUAL_URL);
+  return getJSON(CARS_ACTUAL_URL, payload);
 }
 
 export function updateCarAdditionalInfo(data) {

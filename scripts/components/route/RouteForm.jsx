@@ -6,7 +6,7 @@ import Div from '../ui/Div.jsx';
 import moment from 'moment';
 import RouteCreating from './RouteCreating.jsx';
 
-class Form extends Component {
+class RouteForm extends Component {
 
 	constructor(props) {
 		super(props);
@@ -95,8 +95,8 @@ class Form extends Component {
 	}
 }
 
-Form.contextTypes = {
+RouteForm.contextTypes = {
 	flux: React.PropTypes.object,
 };
 
-export default connectToStores(Form, ['objects']);
+export default connectToStores(RouteForm, ['objects']);

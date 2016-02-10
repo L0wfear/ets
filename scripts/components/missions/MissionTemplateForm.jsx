@@ -58,7 +58,7 @@ class MissionTemplateForm extends MissionForm {
 							<Field type="select" label="Технологическая операция" error={errors['technical_operation_id']}
 											options={TECH_OPERATIONS}
 											value={state.technical_operation_id}
-											onChange={this.handleChange.bind(this, 'technical_operation_id')}/>
+											onChange={this.handleTechnicalOperationChange.bind(this)}/>
 						</Col>
 
 				 		<Col md={6}>

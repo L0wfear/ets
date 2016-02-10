@@ -60,7 +60,7 @@ class MissionFormWrap extends Component {
 
 	handleFormStateChange(field, e) {
 		console.log('mission form changed', field, e)
-		const value = !!e.target ? e.target.value : e;
+		const value = e !== undefined && !!e.target ? e.target.value : e;
 		let { formState, formErrors } = this.state;
 		let newState = {};
 		formState[field] = value;

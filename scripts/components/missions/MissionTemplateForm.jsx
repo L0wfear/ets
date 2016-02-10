@@ -64,6 +64,7 @@ class MissionTemplateForm extends MissionForm {
 				 		<Col md={6}>
 							<Field type="select" label="Транспортное средство" error={errors['car_id']}
 											options={CARS}
+											disabled={isEmpty(state.technical_operation_id)}
 											value={state.car_id}
 											onChange={this.handleChange.bind(this, 'car_id')}/>
 				   	</Col>

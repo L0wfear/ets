@@ -6,13 +6,16 @@ import { getTypes } from '../types.js';
 import { fetchModels } from '../models.js';
 import { getOkrugs } from '../okrugs.js';
 import { getOwners } from '../owners.js';
+import { isEmpty } from '../utils/functions.js';
 
 export default class ObjectsActions extends Actions {
 
   getCars(technical_operation_id) {
     const payload = {};
-    if (typeof technical_operation_id !== 'undefined') {
+    if (!isEmpty(technical_operation_id)) {
       payload.technical_operation_id = technical_operation_id;
+    } else {
+      delete payload.technical_operation_id;
     }
     return getCars(payload);
   }

@@ -119,7 +119,7 @@ export class MissionForm extends Form {
                      onChange={this.handleChange.bind(this, 'mission_source_id')}/>
 
  							<Field type="select" label="Транспортное средство" error={errors['car_id']}
-											disabled={IS_DISPLAY}
+											disabled={IS_DISPLAY || isEmpty(state.technical_operation_id)}
  											options={CARS}
  											value={state.car_id}
  											onChange={this.handleChange.bind(this, 'car_id')}/>

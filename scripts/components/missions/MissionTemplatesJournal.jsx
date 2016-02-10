@@ -100,7 +100,7 @@ let MissionsTable = (props) => {
 									results={props.data}
 									renderers={renderers}
 									tableMeta={getTableMeta(props)}
-                  multiSelection="true"
+                  multiSelection={true}
 									{...props}/>
 }
 
@@ -112,6 +112,7 @@ class MissionsJournal extends Component {
 
 		this.state = {
 			selectedMission: null,
+      checkedMissions: {}
 		};
 	}
 
@@ -121,6 +122,18 @@ class MissionsJournal extends Component {
 
 		this.setState({ selectedMission: mission });
 	}
+
+  checkMission(id, state) {
+    const missions = _.cloneDeep(this.state.checkedMissions);
+    if (state) {
+      missions[id] = true;
+    } else {
+      missions[id] = false;
+    }
+    this.setState({
+      checkedMissions: missions
+    });
+  }
 
 	createMission() {
 		this.setState({
@@ -164,9 +177,9 @@ class MissionsJournal extends Component {
 
 		return (
 			<div className="ets-page-wrap">
-				<MissionsTable data={missionTemplatesList} onRowSelected={this.selectMission.bind(this)} selected={this.state.selectedMission} selectField={'id'} {...this.props}>
+				<MissionsTable data={missionTemplatesList} onRowChecked={this.checkMission.bind(this)} onRowSelected={this.selectMission.bind(this)} selected={this.state.selectedMission} selectField={'id'} {...this.props}>
 					<Button bsSize="small" onClick={this.createMission.bind(this)}><Glyphicon glyph="plus" /> Создать шаблон задания</Button>
-					<Button bsSize="small" onClick={this.showMission.bind(this)} disabled={true}>Сформировать задание</Button>
+					<Button bsSize="small" onClick={this.showMission.bind(this)} disabled={Object.keys(this.state.checkedMissions).length === 0}>Сформировать задание</Button>
 					<Button bsSize="small" onClick={this.showMission.bind(this)} disabled={this.state.selectedMission === null}><Glyphicon glyph="search" /> Просмотреть шаблон</Button>
 					<Button bsSize="small" disabled={this.state.selectedMission === null} onClick={this.removeMission.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
 				</MissionsTable>
@@ -174,6 +187,11 @@ class MissionsJournal extends Component {
 												 showForm={this.state.showForm}
 												 mission={this.state.selectedMission}
 												 {...this.props}/>
+
+        <MissionTemplateFormWrap onFormHide={this.onFormHide.bind(this)}
+                                 showForm={this.state.showForm}
+                                 mission={this.state.selectedMission}
+          {...this.props}/>
 			</div>
 		);
 	}

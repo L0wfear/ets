@@ -86,8 +86,6 @@ class MissionFormWrap extends Component {
 
 	render() {
 
-		console.log()
-
 		return 	<Div hidden={!this.props.showForm}>
 							<MissionTemplateForm formState = {this.state.formState}
 													 onSubmit={this.handleFormSubmit.bind(this)}

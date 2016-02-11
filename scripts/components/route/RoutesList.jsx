@@ -28,14 +28,7 @@ class RoutesList extends Component {
 	selectRoute(id) {
 		const { flux } = this.context;
 		flux.getActions('routes').getRouteById(id).then(r => {
-			this.setState({selectedRoute: r.result && r.result.length ? r.result[0] : null, isVectorRouteSelected: false});
-		});
-	}
-
-	selectRouteVector(id) {
-		const { flux } = this.context;
-		flux.getActions('routes').getRouteVectorById(id).then(r => {
-			this.setState({selectedRoute: r.result && r.result.length ? r.result[0] : null, isVectorRouteSelected: true});
+			this.setState({selectedRoute: r.result && r.result.length ? r.result[0] : null});
 		});
 	}
 
@@ -45,6 +38,7 @@ class RoutesList extends Component {
 			name: '',
 			polys: this.props.geozonePolys,
 			object_list: [],
+			type: 'vector',
 		};
 
 		this.setState({
@@ -57,11 +51,7 @@ class RoutesList extends Component {
 	deleteRoute() {
 		if (confirm('Вы уверены, что хотите удалить выбранный маршрут?')) {
 			const { flux } = this.context;
-			if (this.state.isVectorRouteSelected) {
-				flux.getActions('routes').removeRouteVector(this.state.selectedRoute);
-			} else {
-				flux.getActions('routes').removeRoute(this.state.selectedRoute);
-			}
+			flux.getActions('routes').removeRoute(this.state.selectedRoute);
 			this.setState({selectedRoute: null});
 		}
 	}
@@ -86,31 +76,25 @@ class RoutesList extends Component {
 	componentDidMount() {
 		const { flux } = this.context;
 		flux.getActions('routes').getRoutes();
-		flux.getActions('routes').getRoutesVector();
 		flux.getActions('routes').getGeozones();
 		flux.getActions('objects').getTechOperations();
 	}
 
 	render() {
-		let { routesList = [], routesVectorList = [] } = this.props;
+		let { routesList = [] } = this.props;
 		let route = this.state.selectedRoute;
 		let state = this.state;
 
 		let routes = routesList.map((r, i) => {
-			let cn = cx('list-group-item', {'active': route && r.id === route.id && !this.state.isVectorRouteSelected});
+			let cn = cx('list-group-item', {'active': route && r.id === route.id});
 			return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>
-		});
-
-		let routesVector = routesVectorList.map((r, i) => {
-			let cn = cx('list-group-item', {'active': route && r.id === route.id && this.state.isVectorRouteSelected});
-			return <li className={cn} onClick={this.selectRouteVector.bind(this, r.id)} key={i}>{r.name}</li>
 		});
 
 		return <div className="ets-page-wrap routes-list">
 			<div className="some-header">Список маршрутов "Жилищник Крылатское"
 				<div className="waybills-buttons">
 					<Button bsSize="small" onClick={this.createRoute.bind(this)}><Glyphicon glyph="plus" /> Создать маршрут</Button>
-					<Button bsSize="small" disabled={route === null || !this.state.isVectorRouteSelected} onClick={() => this.setState({showForm: true})}><Glyphicon glyph="pencil" /> Изменить маршрут</Button>
+					<Button bsSize="small" disabled={route === null} onClick={() => this.setState({showForm: true})}><Glyphicon glyph="pencil" /> Изменить маршрут</Button>
 					<Button bsSize="small" disabled={route === null} onClick={this.deleteRoute.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
 				</div>
 			</div>
@@ -120,10 +104,6 @@ class RoutesList extends Component {
 				  <div className="panel-body">
 						<ul className="list-group">
 							{routes}
-						</ul>
-
-						<ul className="list-group">
-							{routesVector}
 						</ul>
 				  </div>
 				</div>

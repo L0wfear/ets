@@ -28,50 +28,55 @@ export default class RoutesActions extends Actions {
     delete payload.polys;
     delete payload.odh_list;
     delete payload.odh_fail_list;
-    delete payload.technical_operation_id;
-    _.each(payload.object_list, o => delete o.name);
+    _.each(payload.object_list, o => {
+      delete o.name;
+    });
     console.log(payload);
     payload.object_list = JSON.stringify(payload.object_list);
     return createRoute(payload);
   }
 
-  createVectorRoute(route) {
-    const payload = _.cloneDeep(route);
-    delete payload.polys;
-    delete payload.odh_list;
-    delete payload.odh_fail_list;
-    _.each(payload.object_list, o => {
-      delete o.name;
-      o.technical_operation_id = payload.technical_operation_id;
-    });
-    console.log(payload);
-    payload.object_list = JSON.stringify(payload.object_list);
-    return createVectorRoute(payload);
-  }
+  // createVectorRoute(route) {
+  //   const payload = _.cloneDeep(route);
+  //   delete payload.polys;
+  //   delete payload.odh_list;
+  //   delete payload.odh_fail_list;
+  //   _.each(payload.object_list, o => {
+  //     delete o.name;
+  //     o.technical_operation_id = payload.technical_operation_id;
+  //   });
+  //   console.log(payload);
+  //   payload.object_list = JSON.stringify(payload.object_list);
+  //   return createVectorRoute(payload);
+  // }
 
   removeRoute(route) {
     const payload = { id: route.id };
     return removeRoute(payload);
   }
 
-  removeRouteVector(route) {
-    const payload = { id: route.id };
-    return removeRouteVector(payload);
-  }
+  // removeRouteVector(route) {
+  //   const payload = { id: route.id };
+  //   return removeRouteVector(payload);
+  // }
 
   updateRoute(route) {
-    const payload = _.cloneDeep(route);
-    return updateRoute(payload);
-  }
-
-  updateRouteVector(route) {
     const payload = _.cloneDeep(route);
     delete payload.polys;
     delete payload.odh_list;
     delete payload.odh_fail_list;
     payload.object_list = JSON.stringify(payload.object_list);
-    return updateRouteVector(payload);
+    return updateRoute(payload);
   }
+
+  // updateRouteVector(route) {
+  //   const payload = _.cloneDeep(route);
+  //   delete payload.polys;
+  //   delete payload.odh_list;
+  //   delete payload.odh_fail_list;
+  //   payload.object_list = JSON.stringify(payload.object_list);
+  //   return updateRouteVector(payload);
+  // }
 
   getRouteReports() {
     return getRouteReports();

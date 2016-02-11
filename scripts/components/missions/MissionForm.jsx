@@ -28,7 +28,7 @@ export class MissionForm extends Form {
 	handleRouteIdChange(v) {
 		this.handleChange('route_id', v);
 		const { flux } = this.context;
-		flux.getActions('routes').getRouteVectorById(v).then(r => {
+		flux.getActions('routes').getRouteById(v).then(r => {
 			this.setState({selectedRoute: r.result.length ? r.result[0] : null});
 		});
 	}
@@ -44,7 +44,7 @@ export class MissionForm extends Form {
 		const mission = this.props.formState;
 		const { flux } = this.context;
 		if (typeof mission.route_id !== 'undefined' && mission.route_id !== null){
-			flux.getActions('routes').getRouteVectorById(mission.route_id).then(r => {
+			flux.getActions('routes').getRouteById(mission.route_id).then(r => {
 				this.setState({selectedRoute: r.result.length ? r.result[0] : null});
 			});
 		}
@@ -56,6 +56,7 @@ export class MissionForm extends Form {
 				name: '',
 				polys: this.props.geozonePolys,
 				object_list: [],
+				type: 'vector',
 			};
 			this.setState({
 				showRouteForm: true,
@@ -68,10 +69,10 @@ export class MissionForm extends Form {
 		if (props.lastCreatedRouteId !== null && props.lastCreatedRouteId !== this.props.lastCreatedRouteId) {
 			this.handleChange('route_id', props.lastCreatedRouteId);
 			setTimeout(() => { //no time sry
-				this.context.flux.getActions('routes').getRouteVectorById(props.lastCreatedRouteId).then(r => {
+				this.context.flux.getActions('routes').getRouteById(props.lastCreatedRouteId).then(r => {
 					this.setState({selectedRoute: r.result.length ? r.result[0] : null});
 				});
-			}, 500)
+			}, 500);
 		}
 	}
 
@@ -80,13 +81,13 @@ export class MissionForm extends Form {
 		let state = this.props.formState;
 		let errors = this.props.formErrors;
 
-		const { workKindsList = [], techOperationsList = [], missionSourcesList = [], routesList = [], routesVectorList = [], carsList = [] } = this.props;
+		const { workKindsList = [], techOperationsList = [], missionSourcesList = [], routesList = [], carsList = [] } = this.props;
 
     const WORK_KINDS = workKindsList.map(({id, name}) => ({value: id, label: name}));
     const TECH_OPERATIONS = techOperationsList.map(({id, name}) => ({value: id, label: name}));
     const MISSION_SOURCES = missionSourcesList.map(({id, name}) => ({value: id, label: name}));
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: c.gov_number + ' [' + c.model + ']'}));
-    let ROUTES = routesVectorList.map(({id, name}) => ({value: id, label: name}));
+    let ROUTES = routesList.map(({id, name}) => ({value: id, label: name}));
 
     console.log('form state is ', state);
 
@@ -194,7 +195,6 @@ export class MissionForm extends Form {
 
 				<RouteFormWrap element={route}
 											 onFormHide={() => {
-												 console.log(this.props.lastCreatedRouteId);
 												 this.setState({showRouteForm: false, selectedRoute: null})
 											 }}
 											 showForm={this.state.showRouteForm} />

@@ -10,7 +10,6 @@ const MAP_INITIAL_ZOOM = 3;
 export default class RouteInfo extends Component {
 
 		onFeatureClick(feature, ev, map) {
-			//console.log('click on feature detected', feature, 'on', map)
 			let {id, name, state} = feature.getProperties();
 			if (name)
 			map.popup.show(ev.coordinate, '<div class="header">ОДХ: ' + name + '</div>')
@@ -19,7 +18,8 @@ export default class RouteInfo extends Component {
 		render() {
 			let route = this.props.route;
 			const { object_list = [] } = route;
-			let manual = false;
+			console.error(route.type);
+			let manual = route.type === 'vector' ? true : false;
 			const polys = object_list.map(({shape, name, state, begin, end}) => {
 				if (!shape && begin) {
 					manual = true;

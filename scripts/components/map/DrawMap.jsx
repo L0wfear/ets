@@ -8,6 +8,8 @@ import Div from '../ui/Div.jsx';
 export default class DrawMap extends PolyMap {
   constructor(props) {
     super(props);
+
+    console.warn('DRAWMAP CONSTRUCTOR');
   }
 
   onClick(ev) {
@@ -114,14 +116,14 @@ export default class DrawMap extends PolyMap {
 
     this.enableInteractions();
 
-    this.renderODHs(this.props.polys);
+    this.renderPolygons(this.props.polys);
     this.renderRoute(this.props.object_list);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.polys !== undefined) {
       this.popup.hide();
-      this.renderODHs(nextProps.polys);
+      this.renderPolygons(nextProps.polys);
     }
     if (nextProps.object_list !== undefined) {
       this.renderRoute(nextProps.object_list);

@@ -5,8 +5,9 @@ import Field from '../ui/Field.jsx';
 import Div from '../ui/Div.jsx';
 import moment from 'moment';
 import RouteCreating from './RouteCreating.jsx';
+import Form from '../compositions/Form.jsx';
 
-class RouteForm extends Component {
+class RouteForm extends Form {
 
 	constructor(props) {
 		super(props);
@@ -16,20 +17,9 @@ class RouteForm extends Component {
 		};
 	}
 
-	handleChange(field, e) {
-		this.props.handleFormChange(field, e);
-	}
-
-  handleSubmit() {
-    console.log('submitting route form', this.props.formState);
-    this.props.onSubmit(this.props.formState, this.state.manualCreating);
-  }
-
-	componentDidMount() {
-	}
-
-	handleManualCreatingChange() {
-		this.setState({manualCreating: +(!!!this.state.manualCreating)});
+	handleTypeChange(v) {
+		console.log(v);
+		this.handleChange('type', v);
 		this.props.resetState();
 	}
 
@@ -37,7 +27,7 @@ class RouteForm extends Component {
 
 		let state = this.props.formState;
 		let { techOperationsList = [] } = this.props;
-		let CREATE_OPTIONS = [{value: 1, label: 'Вручную'}, {value: 0, label: 'Выбор из ОДХ'}];
+		let ROUTE_TYPE_OPTIONS = [{value: 'vector', label: 'Вручную'}, {value: 'simple', label: 'Выбор из ОДХ'}];
 
     const TECH_OPERATIONS = techOperationsList.map(({id, name}) => ({value: id, label: name}));
 
@@ -57,28 +47,33 @@ class RouteForm extends Component {
               <Field type="string" label="Название маршрута" value={state.name} onChange={this.handleChange.bind(this, 'name')} />
             </Col>
 
-						<Col md={4}>
-							<Field type="select" label="Технологическая операция"
-										 options={TECH_OPERATIONS}
-										 value={state.technical_operation_id}
-										 onChange={this.handleChange.bind(this, 'technical_operation_id')}/>
-            </Col>
+						<Div hidden={this.props.forceTechnicalOperation}>
+							<Col md={4}>
+								<Field type="select" label="Технологическая операция"
+											 options={TECH_OPERATIONS}
+											 value={state.technical_operation_id}
+											 onChange={this.handleChange.bind(this, 'technical_operation_id')}/>
+	            </Col>
+						</Div>
 
-						<Col md={4}>
-							<Field type="select" label="Способ построения маршрута"
-										 options={CREATE_OPTIONS}
-										 value={this.state.manualCreating}
-										 onChange={this.handleManualCreatingChange.bind(this)}/>
-            </Col>
+						<Div hidden={this.props.forceRouteType}>
+							<Col md={4}>
+								<Field type="select" label="Способ построения маршрута"
+											 options={ROUTE_TYPE_OPTIONS}
+											 value={state.type}
+											 clearable={false}
+											 onChange={this.handleTypeChange.bind(this)}/>
+	            </Col>
+						</Div>
           </Row>
 
 
           <Row className={'routes-form-map-wrapper'}>
             <Col md={12}>
-							<Div hidden={this.state.manualCreating}>
+							<Div hidden={state.type === 'vector'}>
               	<RouteCreating route={state} onChange={this.handleChange.bind(this)}/>
 							</Div>
-							<Div hidden={!this.state.manualCreating}>
+							<Div hidden={state.type === 'simple'}>
               	<RouteCreating route={state} manual={true} onChange={this.handleChange.bind(this)}/>
 							</Div>
             </Col>

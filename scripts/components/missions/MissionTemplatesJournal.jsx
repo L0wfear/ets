@@ -117,7 +117,7 @@ class MissionTemplatesJournal extends ElementsList {
     flux.getActions('routes').getRoutes();
     flux.getActions('objects').getCars();
     flux.getActions('missions').getMissionSources();
-    flux.getActions('routes').getRoutesVector();
+    flux.getActions('routes').getRoutes();
 	}
 
 	render() {

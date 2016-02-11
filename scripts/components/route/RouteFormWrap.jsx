@@ -34,6 +34,7 @@ export default class FormWrap extends Component {
 		if (this.props.showForm) {
 			if (this.props.element !== null ) {
         const formState = _.cloneDeep(this.props.element);
+				formState.type = this.state.formState.type;
         this.setState({formState});
 			} else {
         this.setState({formState: {}});

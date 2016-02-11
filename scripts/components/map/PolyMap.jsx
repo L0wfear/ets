@@ -31,7 +31,7 @@ export default class OpenLayersMap extends Component {
   constructor(props, context) {
     super(props, context);
     let self = this;
-    console.log('POLYMAP CONSTRUCTOR');
+    console.warn('POLYMAP CONSTRUCTOR');
 
     this.markers = {};
     this._handlers = null; // map event handlers
@@ -62,6 +62,8 @@ export default class OpenLayersMap extends Component {
         ratio: 1
       })
     });
+
+    console.log(this.constructor.name)
 
 
     let controls = [];
@@ -98,7 +100,7 @@ export default class OpenLayersMap extends Component {
 
   }
 
-  renderODHs(polys = {}) {
+  renderPolygons(polys = {}) {
     let map = this.map;
 
     let GeoJSON = new ol.format.GeoJSON();
@@ -112,7 +114,7 @@ export default class OpenLayersMap extends Component {
         id: key,
         state: poly.state,
       });
-      if (this.props.manual) {
+      if (poly.shape.type === 'LineString') {
         feature.setStyle(getVectorArrowStyle(feature));
       } else {
         feature.setStyle(polyStyles[poly.state]);
@@ -154,7 +156,7 @@ export default class OpenLayersMap extends Component {
 
     this.enableInteractions();
 
-    this.renderODHs(this.props.polys);
+    this.renderPolygons(this.props.polys);
   }
 
   triggerRender() {
@@ -190,7 +192,7 @@ export default class OpenLayersMap extends Component {
   }
 
   render() {
-    console.warn('POLYMAP RENDER');
+    console.warn('POLYMAP RENDER', this.props);
     return (
       <div>
         <div ref="container" style={{opacity: this.props.errorLoading ? .4 : 1}} className="openlayers-container"/>
@@ -218,7 +220,7 @@ export default class OpenLayersMap extends Component {
       }
 
       interactions.forEach((interaction)=> {
-        interaction.setActive(true)
+        interaction.setActive(true);
       });
     }
 
@@ -243,7 +245,7 @@ export default class OpenLayersMap extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.polys !== undefined) {
       this.popup.hide();
-      this.renderODHs(nextProps.polys);
+      this.renderPolygons(nextProps.polys);
     }
   }
 

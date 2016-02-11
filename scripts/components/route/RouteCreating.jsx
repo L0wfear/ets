@@ -30,9 +30,9 @@ class RouteCreating extends Component {
 				object_list.splice(objectIndex, 1);
 			} else {
 				if (objectIndex > -1) {
-					object_list[objectIndex] = {object_id: id, type: 'odh', name, state};
+					object_list[objectIndex] = {object_id: parseInt(id, 10), type: 'odh', name, state};
 				} else {
-					object_list.push({object_id: id, type: 'odh', name, state});
+					object_list.push({object_id: parseInt(id, 10), type: 'odh', name, state});
 				}
 			}
 
@@ -128,7 +128,6 @@ class RouteCreating extends Component {
 
 			return (
 				<div className="route-creating">
-					{/*<div className="route-name"> Создание нового маршрута {route.name} </div>*/}
 					<div className="route-odhs-on-map">
 						<Map onFeatureClick={this.onFeatureClick.bind(this)}
 								 onDrawFeatureAdd={this.onDrawFeatureAdd.bind(this)}

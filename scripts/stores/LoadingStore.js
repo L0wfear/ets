@@ -13,6 +13,7 @@ export default class LoadingStore extends Store {
     const employeesActions = flux.getActionIds('employees');
     const missionsActons   = flux.getActionIds('missions');
     const routesActions    = flux.getActionIds('routes');
+    const dashboardActions = flux.getActionIds('dashboard');
 
     this.reg(
       //objectsActionIds.addNewGroup,
@@ -70,6 +71,9 @@ export default class LoadingStore extends Store {
       routesActions.validateRoute,
       routesActions.getGeozones,
       routesActions.updateRouteVector,
+
+      dashboardActions.getDashboardComponent,
+      dashboardActions.getDashboardSideComponent,
 
 
     );

@@ -123,7 +123,7 @@ class DashboardCardMedium extends React.Component {
                 <h5>{selectedItem !== null ? selectedItem.title : ''}</h5>
                 <hr/>
                 <ul>
-                  {subItems.map((item, i) => <li key={i}>{item.title}</li>)}
+                  {subItems.map((item, i) => <li key={i}>{item.title || item}</li>)}
                 </ul>
               </Well>
             </div>
@@ -168,10 +168,17 @@ class DashboardPage extends React.Component {
     this.context.flux.getActions('dashboard').getDashboardComponent(role, 'current_missions', 1);
     this.context.flux.getActions('dashboard').getDashboardComponent(role, 'future_missions', 2);
     this.context.flux.getActions('dashboard').getDashboardComponent(role, 'car_in_work_on_current_missions', 7);
+    this.context.flux.getActions('dashboard').getDashboardComponent(role, 'count_offline_cars', 6);
     if (role === 'master') {
       this.context.flux.getActions('dashboard').getDashboardSideComponent(role, 'car_in_work', 8);
+      this.context.flux.getActions('dashboard').getDashboardComponent(role, 'odh_not_covered_by_routes', 5);
+      this.context.flux.getActions('dashboard').getDashboardComponent(role, 'odh_not_covered_by_current_missions', 4);
       this.context.flux.getActions('dashboard').getDashboardSideComponent(role, 'count_waybill_closed', 10);
     } else {
+
+      this.context.flux.getActions('dashboard').getDashboardComponent(role, 'count_closed_waybill_by_current_operations', 18);
+      this.context.flux.getActions('dashboard').getDashboardComponent(role, 'estimated_time', 13);
+      this.context.flux.getActions('dashboard').getDashboardComponent(role, 'count_assigned_routes', 15);
       this.context.flux.getActions('dashboard').getDashboardSideComponent(role, 'released_waybill', 16);
     }
   }

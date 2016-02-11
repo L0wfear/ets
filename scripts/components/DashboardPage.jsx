@@ -246,7 +246,7 @@ class DashboardPage extends React.Component {
         if (!c.items[0].filter) {
           c.items[0].filter = {
             status: ['closed'],
-            date_create: ['2016-02-10'],
+            date_create: [moment().format('YYYY-MM-DD')],
           };
         }
         for (let key in c.items[0].filter) {

@@ -24,12 +24,12 @@ class MissionTemplateForm extends MissionForm {
 		let state = this.props.formState;
 		let errors = this.props.formErrors;
 
-		const { workKindsList = [], techOperationsList = [], missionSourcesList = [], routesList = [], routesVectorList = [], carsList = [] } = this.props;
+		const { workKindsList = [], techOperationsList = [], missionSourcesList = [], routesList = [], carsList = [] } = this.props;
 
     const WORK_KINDS = workKindsList.map(({id, name}) => ({value: id, label: name}));
     const TECH_OPERATIONS = techOperationsList.map(({id, name}) => ({value: id, label: name}));
     const MISSION_SOURCES = missionSourcesList.map(({id, name}) => ({value: id, label: name}));
-    let ROUTES = routesVectorList.map(({id, name}) => ({value: id, label: name}));
+    let ROUTES = routesList.map(({id, name}) => ({value: id, label: name}));
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: c.gov_number + ' [' + c.model + ']'}));
 
     console.log('form state is ', state);
@@ -104,10 +104,7 @@ class MissionTemplateForm extends MissionForm {
 	      </Modal.Footer>
 
 				<RouteFormWrap element={route}
-											 onFormHide={() => {
-												 console.log(this.props.lastCreatedRouteId);
-												 this.setState({showRouteForm: false, selectedRoute: null})
-											 }}
+											 onFormHide={() => this.setState({showRouteForm: false, selectedRoute: null})}
 											 showForm={this.state.showRouteForm} />
 
 			</Modal>

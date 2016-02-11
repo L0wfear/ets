@@ -2495,6 +2495,20 @@ div.none {
     margin-top: 6px;
   }
 
+  .dashboard-card-title {
+    max-width: 90%;
+    display: inline-block;
+  }
+
+  .dashboard-card-refresh {
+    display: inline-block;
+    float: right;
+    top: 12px;
+    right: 35px;
+    color: black;
+    cursor: pointer;
+  }
+
 
 
 

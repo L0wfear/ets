@@ -40,7 +40,20 @@ let DashboardItemChevron = (props) => {
 
 }
 
+let DashboardCardHeader = (props) => {
+  return (
+    <Div>
+      <Div className="dashboard-card-title">{props.title}</Div>
+      <Div onClick={props.onClick} className="dashboard-card-refresh"><Glyphicon glyph="refresh"/></Div>
+    </Div>
+  );
+};
+
 class DashboardCardMedium extends React.Component {
+
+  static contextTypes = {
+    flux: React.PropTypes.object,
+  }
 
   constructor(props) {
     super(props);
@@ -65,6 +78,11 @@ class DashboardCardMedium extends React.Component {
     this.setState({fullListOpen: !!!this.state.fullListOpen});
   }
 
+  refreshCard() {
+    const { role, component_key, component_id } = this.props;
+    this.context.flux.getActions('dashboard').getDashboardComponent(role, component_key, component_id);
+  }
+
   render() {
     let selectedItemIndex = this.state.selectedItem;
     let selectedItem = this.props.items[selectedItemIndex] || null;
@@ -87,10 +105,11 @@ class DashboardCardMedium extends React.Component {
     let firstItems = items.slice(0, 2);
     let otherItems = items.slice(2, items.length);
     //let dashboardCardClass = cx('dashboard-card', {'visibilityHidden'});
+    let Header = <DashboardCardHeader title={this.props.title} onClick={this.refreshCard.bind(this)}/>
 
     return (
       <Div md={12}>
-        <Panel className="dashboard-card" header={this.props.header} bsStyle="success" ref="card">
+        <Panel className="dashboard-card" header={Header} bsStyle="success" ref="card">
           <Div className="dashboard-card-items">
             {firstItems}
             <Collapse in={this.state.fullListOpen}>
@@ -136,7 +155,7 @@ class DashboardCardMedium extends React.Component {
 
 };
 
-let DashboardHeader = (props) => {
+let DashboardPageHeader = (props) => {
   return (
     <Row>
       <Col md={4}>
@@ -212,6 +231,7 @@ class DashboardPage extends React.Component {
     let { role } = this.props.params;
     const { componentsList = [], componentsSideList = [] } = this.props[role];
     componentsSideList.map(c => {
+      //переделать этот бред
       let params = '';
       if (c.key === 'released_waybill') {
         if (c.items[0].filter) {
@@ -237,13 +257,14 @@ class DashboardPage extends React.Component {
       }
     });
     let lists = _(componentsList).groupBy((el, i) => Math.floor(i/3)).toArray().value();
+    console.log(lists)
     let rows = [];
     lists.map((row, i) => {
       rows.push(
         <Row key={i} className="cards-row">
           {row.map((c, j) => {
             return <Col key={j} md={4}>
-              <DashboardCardMedium header={c.title} items={c.items} direction={j % 3 === 0 ? 'rigth' : 'left'}/>
+              <DashboardCardMedium title={c.title} items={c.items} role={role} component_key={c.key} component_id={c.id} direction={j % 3 === 0 ? 'right' : 'left'}/>
             </Col>
           })}
         </Row>
@@ -255,7 +276,7 @@ class DashboardPage extends React.Component {
     return (
       <Div className="ets-page-wrap dashboard-page">
 
-        <DashboardHeader personRole={role === 'master' ? 'Мастер' : 'Диспетчер'} personFIO={role === 'master' ? 'Лебедев И.А.' : 'Иванов К.М.'} />
+        <DashboardPageHeader personRole={role === 'master' ? 'Мастер' : 'Диспетчер'} personFIO={role === 'master' ? 'Лебедев И.А.' : 'Иванов К.М.'} />
 
         <Row>
           <Col md={10}>

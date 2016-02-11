@@ -90,7 +90,8 @@ class DashboardCardMedium extends React.Component {
   }
 
   selectItem(i) {
-    this.setState({selectedItem: this.state.selectedItem === i ? null : i});
+    this.setState({selectedItem: i});
+    this.props.openFullList();
   }
 
   toggleFullList() {
@@ -98,7 +99,6 @@ class DashboardCardMedium extends React.Component {
   }
 
   refreshCard() {
-    this.setState({fullListOpen: false});
     this.props.refreshCard();
   }
 
@@ -151,10 +151,10 @@ class DashboardCardMedium extends React.Component {
           <Div className="dashboard-card-overlay" hidden={!this.props.loading}></Div>
         </Panel>
 
-        <DashboardItemChevron direction={this.props.direction} hidden={selectedItem === null || subItems.length === 0} />
+        <DashboardItemChevron direction={this.props.direction} hidden={selectedItem === null || subItems.length === 0 || !this.props.itemOpened} />
 
-        <Div style={styleObject} hidden={subItems.length === 0} className={cx('dashboard-card-info', {active: selectedItem !== null})} >
-          <Fade in={selectedItem !== null}>
+        <Div style={styleObject} hidden={subItems.length === 0} className={cx('dashboard-card-info', {active: selectedItem !== null && this.props.itemOpened})} >
+          <Fade in={selectedItem !== null && this.props.itemOpened}>
             <div>
               <Well>
                 <Div className="card-glyph-remove" onClick={() => this.setState({selectedItem: null})}>
@@ -183,6 +183,7 @@ class DashboardPage extends React.Component {
     this.state = {
       time: '',
       loadingComponents: [],
+      itemOpenedKey: null,
     };
 
   }
@@ -241,6 +242,10 @@ class DashboardPage extends React.Component {
     });
   }
 
+  openFullList(key) {
+    this.setState({itemOpenedKey: key});
+  }
+
   render() {
 
     console.log(this.props);
@@ -282,7 +287,13 @@ class DashboardPage extends React.Component {
         <Row key={i} className="cards-row">
           {row.map((c, j) => {
             return <Col key={j} md={4}>
-              <DashboardCardMedium title={c.title} items={c.items} loading={this.state.loadingComponents.indexOf(c.key) > -1} refreshCard={this.refreshCard.bind(this, c.key, c.id)} direction={j % 3 === 0 ? 'right' : 'left'}/>
+              <DashboardCardMedium title={c.title}
+                                   items={c.items}
+                                   loading={this.state.loadingComponents.indexOf(c.key) > -1}
+                                   refreshCard={this.refreshCard.bind(this, c.key, c.id)}
+                                   openFullList={this.openFullList.bind(this, c.key)}
+                                   itemOpened={this.state.itemOpenedKey === c.key}
+                                   direction={j % 3 === 0 ? 'right' : 'left'} />
             </Col>
           })}
         </Row>

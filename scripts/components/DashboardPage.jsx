@@ -41,13 +41,32 @@ let DashboardItemChevron = (props) => {
 }
 
 let DashboardCardHeader = (props) => {
+  let iconClassname = cx({'glyphicon-spin': props.loading});
   return (
     <Div>
       <Div className="dashboard-card-title">{props.title}</Div>
-      <Div onClick={props.onClick} className="dashboard-card-refresh"><Glyphicon glyph="refresh"/></Div>
+      <Div onClick={props.onClick} className="dashboard-card-refresh"><Glyphicon className={iconClassname} glyph="refresh"/></Div>
     </Div>
   );
 };
+
+let DashboardPageHeader = (props) => {
+  return (
+    <Row>
+      <Col md={4}>
+      </Col>
+      <Col md={4}>
+        <Div className="dashboard-time" id="dashboard-time">
+        </Div>
+      </Col>
+      <Col md={4}>
+        <Div className="dashboard-title">
+          {props.personRole}: {props.personFIO}
+        </Div>
+      </Col>
+    </Row>
+  );
+}
 
 class DashboardCardMedium extends React.Component {
 
@@ -79,8 +98,8 @@ class DashboardCardMedium extends React.Component {
   }
 
   refreshCard() {
-    const { role, component_key, component_id } = this.props;
-    this.context.flux.getActions('dashboard').getDashboardComponent(role, component_key, component_id);
+    this.setState({fullListOpen: false});
+    this.props.refreshCard();
   }
 
   render() {
@@ -105,7 +124,7 @@ class DashboardCardMedium extends React.Component {
     let firstItems = items.slice(0, 2);
     let otherItems = items.slice(2, items.length);
     //let dashboardCardClass = cx('dashboard-card', {'visibilityHidden'});
-    let Header = <DashboardCardHeader title={this.props.title} onClick={this.refreshCard.bind(this)}/>
+    let Header = <DashboardCardHeader title={this.props.title} loading={this.props.loading} onClick={this.refreshCard.bind(this)}/>
 
     return (
       <Div md={12}>
@@ -128,6 +147,8 @@ class DashboardCardMedium extends React.Component {
               <Glyphicon glyph="menu-up" className="pointer" onClick={this.toggleFullList.bind(this)}/>
             </Div>
           </Div>
+
+          <Div className="dashboard-card-overlay" hidden={!this.props.loading}></Div>
         </Panel>
 
         <DashboardItemChevron direction={this.props.direction} hidden={selectedItem === null || subItems.length === 0} />
@@ -155,30 +176,13 @@ class DashboardCardMedium extends React.Component {
 
 };
 
-let DashboardPageHeader = (props) => {
-  return (
-    <Row>
-      <Col md={4}>
-      </Col>
-      <Col md={4}>
-        <Div className="dashboard-time" id="dashboard-time">
-        </Div>
-      </Col>
-      <Col md={4}>
-        <Div className="dashboard-title">
-          {props.personRole}: {props.personFIO}
-        </Div>
-      </Col>
-    </Row>
-  );
-}
-
 class DashboardPage extends React.Component {
   constructor(props, context) {
     super(props);
 
     this.state = {
       time: '',
+      loadingComponents: [],
     };
 
   }
@@ -225,7 +229,21 @@ class DashboardPage extends React.Component {
     document.getElementById('dashboard-time').innerHTML = time;
   }
 
+  refreshCard(key, id) {
+    let { role } = this.props.params;
+    let { loadingComponents } = this.state;
+    loadingComponents.push(key);
+    this.setState({loadingComponents});
+    this.context.flux.getActions('dashboard').getDashboardComponent(role, key, id).then(() => {
+      let { loadingComponents } = this.state;
+      loadingComponents.splice(_.findIndex(loadingComponents, key), 1);
+      setTimeout(() => this.setState({loadingComponents}), 500);
+    });
+  }
+
   render() {
+
+    console.log(this.props);
 
     let cards = [];
     let { role } = this.props.params;
@@ -264,7 +282,7 @@ class DashboardPage extends React.Component {
         <Row key={i} className="cards-row">
           {row.map((c, j) => {
             return <Col key={j} md={4}>
-              <DashboardCardMedium title={c.title} items={c.items} role={role} component_key={c.key} component_id={c.id} direction={j % 3 === 0 ? 'right' : 'left'}/>
+              <DashboardCardMedium title={c.title} items={c.items} loading={this.state.loadingComponents.indexOf(c.key) > -1} refreshCard={this.refreshCard.bind(this, c.key, c.id)} direction={j % 3 === 0 ? 'right' : 'left'}/>
             </Col>
           })}
         </Row>
@@ -298,4 +316,4 @@ DashboardPage.contextTypes = {
   flux: React.PropTypes.object,
 };
 
-export default connectToStores(DashboardPage, ['dashboard']);
+export default connectToStores(DashboardPage, ['dashboard', 'loading']);

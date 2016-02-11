@@ -73,8 +73,8 @@ export default class LoadingStore extends Store {
       routesActions.getGeozones,
       routesActions.updateRouteVector,
 
-      dashboardActions.getDashboardComponent,
-      dashboardActions.getDashboardSideComponent,
+      //dashboardActions.getDashboardComponent,
+      //dashboardActions.getDashboardSideComponent,
 
 
     );

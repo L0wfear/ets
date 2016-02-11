@@ -2418,6 +2418,18 @@ div.none {
   .panel-heading {
     text-align: center;
   }
+  .panel-body {
+    position: relative;
+  }
+  .dashboard-card-overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    background: rgba(236, 240, 241,0.8);
+  }
   .dashboard-card-info {
     position: absolute;
     top: 0;
@@ -2512,4 +2524,30 @@ div.none {
 
 
 
+
+}
+
+.glyphicon-spin {
+    -webkit-animation: spin 1000ms infinite linear;
+    animation: spin 1000ms infinite linear;
+}
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+}
+@keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
 }

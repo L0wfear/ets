@@ -36,6 +36,14 @@ let getCarById = (cars, id) => {
 	return car;
 };
 
+let getMissionFilterStatus = (formState) => {
+  let missionsFilterStatus = (formState.status === 'active' || formState.status === 'closed') ? 'assigned' : 'not_assigned';
+  if (formState.status === 'draft') {
+    missionsFilterStatus = undefined;
+  }
+  return missionsFilterStatus;
+};
+
 class WaybillForm extends Form {
 
 	constructor(props) {
@@ -54,11 +62,11 @@ class WaybillForm extends Form {
     const { formState } = this.props;
     if (field === 'plan_arrival_date') {
   	  this.props.handleFormChange('mission_id_list', undefined);
-    	flux.getActions('missions').getMissions(formState.car_id, createValidDateTime(formState.plan_departure_date), createValidDateTime(e));
+    	flux.getActions('missions').getMissions(formState.car_id, createValidDateTime(formState.plan_departure_date), createValidDateTime(e), getMissionFilterStatus(formState));
     }
     if (field === 'plan_departure_date') {
   	  this.props.handleFormChange('mission_id_list', undefined);
-    	flux.getActions('missions').getMissions(formState.car_id, createValidDateTime(e), createValidDateTime(formState.plan_arrival_date));
+    	flux.getActions('missions').getMissions(formState.car_id, createValidDateTime(e), createValidDateTime(formState.plan_arrival_date), getMissionFilterStatus(formState));
     }
 	}
 
@@ -82,11 +90,7 @@ class WaybillForm extends Form {
 				this.setState({operations: fuelOperations.result});
 			});
 		}
-    let missionsFilterStatus = (formState.status === 'active' || formState.status === 'closed') ? 'assigned' : 'not_assigned';
-    if (formState.status === 'draft') {
-      missionsFilterStatus = undefined;
-    }
-  	flux.getActions('missions').getMissions(formState.car_id, createValidDateTime(formState.plan_departure_date), createValidDateTime(formState.plan_arrival_date), missionsFilterStatus);
+  	flux.getActions('missions').getMissions(formState.car_id, createValidDateTime(formState.plan_departure_date), createValidDateTime(formState.plan_arrival_date), getMissionFilterStatus(formState));
 	}
 
 	onDriverChange(v) {
@@ -120,7 +124,7 @@ class WaybillForm extends Form {
 			this.handleChange('motohours_equip_start', 0);
 		}
 
-  	flux.getActions('missions').getMissions(car_id, createValidDateTime(this.props.formState.plan_departure_date), createValidDateTime(this.props.formState.plan_arrival_date));
+  	flux.getActions('missions').getMissions(car_id, createValidDateTime(this.props.formState.plan_departure_date), createValidDateTime(this.props.formState.plan_arrival_date), getMissionFilterStatus(this.props.formState));
 	}
 
 	render() {
@@ -197,21 +201,21 @@ class WaybillForm extends Form {
 					 			<Datepicker date={ getDateWithoutTZ(state.plan_arrival_date) } onChange={this.handleChange.bind(this, 'plan_arrival_date')}/>
 					   	</Col>
 						</Div>
-						<Div hidden={!IS_CLOSING}>
+						<Div hidden={!(IS_CLOSING || IS_DISPLAY)}>
 					   	<Col md={3}>
 								<label>Выезд план</label>
 					 			<Datepicker date={ getDateWithoutTZ(state.plan_departure_date) } disabled={true} onChange={() => true}/>
 					   		<label>Выезд факт</label>
-					 			<Datepicker date={ getDateWithoutTZ(state.fact_departure_date) } onChange={this.handleChange.bind(this, 'fact_departure_date')}/>
+					 			<Datepicker date={ getDateWithoutTZ(state.fact_departure_date) } disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'fact_departure_date')}/>
 					   	</Col>
 					  	<Col md={3}>
 								<label>Возвращение план</label>
 					 			<Datepicker date={ getDateWithoutTZ(state.plan_arrival_date) } disabled={true} onChange={() => true}/>
 					 			<label>Возвращение факт</label>
-					 			<Datepicker date={ getDateWithoutTZ(state.fact_arrival_date) } onChange={this.handleChange.bind(this, 'fact_arrival_date')}/>
+					 			<Datepicker date={ getDateWithoutTZ(state.fact_arrival_date) } disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'fact_arrival_date')}/>
 					   	</Col>
 						</Div>
-					  <Div hidden={!IS_DISPLAY}>
+					  <Div hidden={true}>
 					    <Col md={3}>
 					      <label>Выезд план</label><br/>{moment.utc(state.plan_departure_date).format('YYYY-MM-DD HH:mm')}<br/>
 					      <label>Выезд факт</label><br/>{moment.utc(state.fact_departure_date).format('YYYY-MM-DD HH:mm')}

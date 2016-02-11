@@ -103,6 +103,7 @@ function postJSON(url, data, type = 'form') {
     data.token = token;
   }
   let body;
+  type = 'form';
   switch (type) {
     case 'form':
       url += '?token=' + token;
@@ -122,7 +123,6 @@ function postJSON(url, data, type = 'form') {
     method: 'post',
     headers: {
       'Accept': 'application/json',
-      //'Content-Type': 'application/json'
     },
     credentials: 'include',
     body: body,
@@ -144,12 +144,13 @@ function putJSON(url, data, type = 'form') {
     data.token = token;//url += `?token=${token}`;
   }
   let body;
+  type = 'form';
   switch (type) {
     case 'form':
       url += '?token=' + token;
       delete data.token;
       body = toFormData(data);
-      break
+      break;
     case 'json':
       body = JSON.stringify(data);
       break;
@@ -163,7 +164,6 @@ function putJSON(url, data, type = 'form') {
     method: 'put',
     headers: {
       'Accept': 'application/json',
-      //'Content-Type': 'application/json'
     },
     credentials: 'include',
     body: body,
@@ -185,8 +185,11 @@ function deleteJSON(url, data, type = 'form') {
     data.token = token;
   }
   let body;
+  type = 'form';
   switch (type) {
     case 'form':
+      url += '?token=' + token;
+      delete data.token;
       body = toFormData(data);
       break
     case 'json':
@@ -202,7 +205,6 @@ function deleteJSON(url, data, type = 'form') {
     method: 'delete',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
     },
     credentials: 'include',
     body: body,
@@ -288,7 +290,6 @@ export function getWaybills() {
 }
 
 export function getCars(payload) {
-  console.info('GETTING CARS');
   return getJSON(CARS_ACTUAL_URL, payload);
 }
 
@@ -398,9 +399,6 @@ export function getCarsInfo() {
 // TODO метод на бэкэнде
 // пока возвращает промис из заглушки
 export function getCarsByOwnerId(ownerId) {
-
-  console.info('GETTING CARS BY OWNER ID');
-
   return getCars()
 
   let query = '?owner_id=' + ownerId;

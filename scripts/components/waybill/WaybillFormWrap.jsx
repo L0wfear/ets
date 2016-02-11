@@ -57,13 +57,14 @@ class WaybillFormWrap extends Component {
 					formErrors: validateWaybill(defaultBill, {}),
 				})
 			} else {
-				if (props.bill.status === 'active') {
-					let _bill = _.clone(props.bill);
 
-					_bill.fact_departure_date = getDateWithoutTZ(_bill.plan_departure_date);
-					_bill.fact_arrival_date = getDateWithoutTZ(_bill.plan_arrival_date);
-					_bill.plan_departure_date = getDateWithoutTZ(_bill.plan_departure_date);
-					_bill.plan_arrival_date = getDateWithoutTZ(_bill.plan_arrival_date);
+				let _bill = _.clone(props.bill);
+				_bill.fact_departure_date = getDateWithoutTZ(_bill.plan_departure_date);
+				_bill.fact_arrival_date = getDateWithoutTZ(_bill.plan_arrival_date);
+				_bill.plan_departure_date = getDateWithoutTZ(_bill.plan_departure_date);
+				_bill.plan_arrival_date = getDateWithoutTZ(_bill.plan_arrival_date);
+
+				if (props.bill.status === 'active') {
 
 					this.setState({
 						formState: _bill,
@@ -74,21 +75,14 @@ class WaybillFormWrap extends Component {
 
 				} else if (props.bill.status === 'draft') {
 
-					let _bill = _.clone(props.bill);
-
-					_bill.fact_departure_date = getDateWithoutTZ(_bill.plan_departure_date);
-					_bill.fact_arrival_date = getDateWithoutTZ(_bill.plan_arrival_date);
-					_bill.plan_departure_date = getDateWithoutTZ(_bill.plan_departure_date);
-					_bill.plan_arrival_date = getDateWithoutTZ(_bill.plan_arrival_date);
-
 					this.setState({
 						formState: _bill,
 						canPrint: true,
 						canSave: true,
 						formErrors: {}
 					});
-				} else {
-					let _bill = _.clone(props.bill);
+
+				} else if (props.bill.status === 'closed') {
 
 					if (_bill.array_agg && _bill.array_agg.taxes) {
 						_bill.taxes = _bill.array_agg.taxes;
@@ -108,6 +102,7 @@ class WaybillFormWrap extends Component {
 						formErrors: {}
 					});
 				}
+
 			}
 		}
 
@@ -151,7 +146,7 @@ class WaybillFormWrap extends Component {
   handlePrint(event, print_form_type = 1) {
   	let f = this.state.formState;
 
-  	let URL = 'http://ods.mos.ru/ssd/city-dashboard/' + (print_form_type === 2 ? 'plate_truck/' : 'plate_special/') + `?waybill_id=`;
+  	let URL = 'http://ods.mos.ru/ssd/ets/services/' + (print_form_type === 2 ? 'plate_truck/' : 'plate_special/') + `?waybill_id=`;
 		let ID = f.id;
 
 		let callback = (id) => {

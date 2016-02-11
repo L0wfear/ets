@@ -37,6 +37,8 @@ export default class MissionsActions extends Actions {
       payload.status = status;
     }
 
+    console.error(payload);
+
     return getMissions(payload);
   }
 

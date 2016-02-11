@@ -19,6 +19,7 @@ export default class LoadingStore extends Store {
       //objectsActionIds.addNewGroup,
       waybillsActions.removeWaybill,
       waybillsActions.createWaybill,
+      waybillsActions.updateWaybill,
       waybillsActions.getWaybills,
 
       fuelRateActions.getFuelRates,

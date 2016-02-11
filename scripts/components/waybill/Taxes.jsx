@@ -155,7 +155,6 @@ export default class Taxes extends Component {
   render() {
 
     const { taxes = this.state.tableData } = this.props;
-    console.log(this.props);
 
 		return (
       <Div className="taxi-calc-block" hidden={this.props.hidden}>

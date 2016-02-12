@@ -128,7 +128,7 @@ class MissionsJournal extends Component {
     if (state) {
       missions[id] = true;
     } else {
-      missions[id] = false;
+      delete missions[id];
     }
     this.setState({
       checkedMissions: missions
@@ -166,8 +166,12 @@ class MissionsJournal extends Component {
 	}
 
 	showMission() {
-		this.setState({ showForm: true });
+		this.setState({ showForm: true, formType: "ViewForm" });
 	}
+
+  createMissions() {
+    this.setState({ showForm: true, formType: "MissionsCreationForm" });
+  }
 
 	render() {
 
@@ -179,19 +183,15 @@ class MissionsJournal extends Component {
 			<div className="ets-page-wrap">
 				<MissionsTable data={missionTemplatesList} onRowChecked={this.checkMission.bind(this)} onRowSelected={this.selectMission.bind(this)} selected={this.state.selectedMission} selectField={'id'} {...this.props}>
 					<Button bsSize="small" onClick={this.createMission.bind(this)}><Glyphicon glyph="plus" /> Создать шаблон задания</Button>
-					<Button bsSize="small" onClick={this.showMission.bind(this)} disabled={Object.keys(this.state.checkedMissions).length === 0}>Сформировать задание</Button>
+					<Button bsSize="small" onClick={this.createMissions.bind(this)} disabled={Object.keys(this.state.checkedMissions).length === 0}>Сформировать задание</Button>
 					<Button bsSize="small" onClick={this.showMission.bind(this)} disabled={this.state.selectedMission === null}><Glyphicon glyph="search" /> Просмотреть шаблон</Button>
 					<Button bsSize="small" disabled={this.state.selectedMission === null} onClick={this.removeMission.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
 				</MissionsTable>
 				<MissionTemplateFormWrap onFormHide={this.onFormHide.bind(this)}
 												 showForm={this.state.showForm}
 												 mission={this.state.selectedMission}
+                         formType={this.state.formType}
 												 {...this.props}/>
-
-        <MissionTemplateFormWrap onFormHide={this.onFormHide.bind(this)}
-                                 showForm={this.state.showForm}
-                                 mission={this.state.selectedMission}
-          {...this.props}/>
 			</div>
 		);
 	}

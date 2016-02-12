@@ -32,7 +32,6 @@ class Table extends React.Component {
 	}
 
 	saveFilter(filterValues) {
-		//console.info(`SETTING FILTER VALUES`, filterValues);
 		this.setState({filterValues});
 	}
 

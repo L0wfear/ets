@@ -3,6 +3,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import Div from '../ui/Div.jsx';
 import MissionTemplateForm from './MissionTemplateForm.jsx';
+import MissionsCreationForm from './MissionsCreationForm.jsx';
 import { getDefaultMissionTemplate } from '../../stores/MissionsStore.js';
 import { validate as validateNumber} from '../../validate/validateNumber.js';
 import { isNotNull, isEmpty } from '../../utils/functions.js';
@@ -85,16 +86,25 @@ class MissionFormWrap extends Component {
 	}
 
 	render() {
-
-		return 	<Div hidden={!this.props.showForm}>
-							<MissionTemplateForm formState = {this.state.formState}
-													 onSubmit={this.handleFormSubmit.bind(this)}
-													 handleFormChange={this.handleFormStateChange.bind(this)}
-													 show={this.props.showForm}
-													 onHide={this.props.onFormHide}
-													 {...this.state}/>
-						</Div>
-
+    if (this.props.formType === 'ViewForm') {
+      return 	<Div hidden={!this.props.showForm}>
+        <MissionTemplateForm formState = {this.state.formState}
+                              onSubmit={this.handleFormSubmit.bind(this)}
+                              handleFormChange={this.handleFormStateChange.bind(this)}
+                              show={this.props.showForm}
+                              onHide={this.props.onFormHide}
+          {...this.state}/>
+      </Div>
+    } else {
+      return 	<Div hidden={!this.props.showForm}>
+        <MissionsCreationForm formState = {this.state.formState}
+                              onSubmit={this.handleFormSubmit.bind(this)}
+                              handleFormChange={this.handleFormStateChange.bind(this)}
+                              show={this.props.showForm}
+                              onHide={this.props.onFormHide}
+          {...this.state}/>
+      </Div>
+    }
 	}
 
 }

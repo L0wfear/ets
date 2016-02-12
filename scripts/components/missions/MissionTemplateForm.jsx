@@ -7,7 +7,7 @@ import RouteInfo from '../route/RouteInfo.jsx';
 import ODHList from '../route/ODHList.jsx';
 import { isEmpty } from '../../utils/functions.js';
 
-class MissionForm extends Component {
+class MissionTemplateForm extends Component {
 
 	constructor(props) {
 		super(props);
@@ -67,7 +67,7 @@ class MissionForm extends Component {
     let IS_POST_CREATING = false;
 		let IS_DISPLAY = false;
 
-    let title = `Задание № ${state.number || ''}`;
+    let title = `Задание`;
 
     if (IS_CREATING) {
       title = "Создание шаблона задания"
@@ -138,8 +138,8 @@ class MissionForm extends Component {
 	}
 }
 
-MissionForm.contextTypes = {
+MissionTemplateForm.contextTypes = {
 	flux: React.PropTypes.object,
 };
 
-export default connectToStores(MissionForm, ['objects', 'employees', 'missions', 'routes']);
+export default connectToStores(MissionTemplateForm, ['objects', 'employees', 'missions', 'routes']);

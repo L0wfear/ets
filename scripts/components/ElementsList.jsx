@@ -17,7 +17,7 @@ class ElementsList extends React.Component {
    }
 
    selectElement({props}) {
-     console.log('SELECT ELEMENT CALL');
+     console.log('SELECT ELEMENT CALL', props.data.id);
      const id = props.data.id;
      let selectedElement = _.find(this.state.elementsList, el => el.id === id);
      this.setState({ selectedElement });

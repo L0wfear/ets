@@ -19,6 +19,8 @@ class ObjectsStore extends Store {
     this.register(objectsActions.getTechOperations, this.handleGetTechOperations);
     this.register(objectsActions.getWorkKinds, this.handleGetWorkKinds);
     this.register(objectsActions.getODHs, this.handleGetODHs);
+    this.register(objectsActions.getFaxogramms, this.handleGetFaxogramms);
+
 
     this.state = {
       carsList: [],
@@ -30,7 +32,9 @@ class ObjectsStore extends Store {
       fuelTypes: [],
       techOperationsList: [],
       workKindsList: [],
-      odhsList: []
+      odhsList: [],
+      faxogrammsList: [],
+      faxogrammsMaxPage: 0,
     };
 
   }
@@ -89,6 +93,11 @@ class ObjectsStore extends Store {
 
   handleGetODHs(odhs) {
     this.setState({odhsList: odhs.result});
+  }
+
+  handleGetFaxogramms(faxogramms) {
+    console.log(faxogramms);
+    this.setState({faxogrammsList: faxogramms.result, faxogrammsMaxPage: faxogramms.total_pages});
   }
 
   getWorkKindById(id) {

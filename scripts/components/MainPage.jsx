@@ -54,6 +54,7 @@ export default React.createClass({
                   <MenuItem active={path === '/drivers'} href="#/drivers">Реестр водителей</MenuItem>
   				        <MenuItem active={path === '/cars'} href="#/cars">Реестр транспортных средств</MenuItem>
   				        <MenuItem active={path === '/technical-operations'} href="#/technical-operations">Реестр технологических операций</MenuItem>
+  				        <MenuItem active={path === '/faxogramms'} href="#/faxogramms">Реестр факсограмм</MenuItem>
 
                   <MenuItem divider />
 

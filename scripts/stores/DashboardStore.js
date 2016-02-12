@@ -30,6 +30,7 @@ class DashboardStore extends Store {
 
   handleGetDashboardComponent({role, key, id, component}) {
     let { componentsList, componentsIndex } = this.state[role];
+    if (!component.result) return;
     component.result.id = id;
     component.result.key = key;
     componentsIndex[key] = component.result;
@@ -42,6 +43,7 @@ class DashboardStore extends Store {
 
   handleGetDashboardSideComponent({role, key, id, component}) {
     let { componentsSideList, componentsSideIndex } = this.state[role];
+    if (!component.result) return;
     component.result.id = id;
     component.result.key = key;
     componentsSideIndex[key] = component.result;

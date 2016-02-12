@@ -143,7 +143,7 @@ class Table extends React.Component {
 								 columns={tableCols}
 								 resultsPerPage={15}
 								 useCustomPagerComponent={true}
-								 customPagerComponent={Paginator}
+								 customPagerComponent={this.props.serverPagination ? <Div/> : Paginator}
 								 onRowClick={onRowSelected}
 							   rowMetadata={rowMetadata}
 								 noDataMessage={'Нет данных'}/>

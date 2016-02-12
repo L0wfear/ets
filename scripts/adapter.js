@@ -77,6 +77,7 @@ const ROUTE_VALIDATE_URL = getUrl('/route_validate/');
 const MISSION_REPORTS_URL = getUrl('/car_odh_travel_report/');
 const GEOZONE_URL = getUrl('/geozone/');
 const DASHBOARD_URL = getUrl('/dashboard/');
+const FAXOGRAMMS_URL = getUrl('/faxogramm/')
 
 function getJSON(url, data = {}) {
   data = _.clone(data);
@@ -437,6 +438,10 @@ export function getTechOperations() {
 
 export function getODHs() {
   return getJSON(ODHS_URL);
+}
+
+export function getFaxogramms(payload) {
+  return getJSON(FAXOGRAMMS_URL, payload)
 }
 
 export function getWorkKinds() {

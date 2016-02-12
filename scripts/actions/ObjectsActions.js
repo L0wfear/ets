@@ -1,5 +1,5 @@
 import { Actions } from 'flummox';
-import { getCars, getFuelTypes, getTechOperations, getWorkKinds, getODHReports, getODHs } from '../adapter.js';
+import { getCars, getFuelTypes, getTechOperations, getWorkKinds, getODHReports, getODHs, getFaxogramms } from '../adapter.js';
 import _ from 'lodash';
 import { getCustomers } from '../customers.js';
 import { getTypes } from '../types.js';
@@ -58,6 +58,14 @@ export default class ObjectsActions extends Actions {
 
   getODHReports() {
     return getODHReports();
+  }
+
+  getFaxogramms(page) {
+    const payload = {
+      page,
+      on_page: 15
+    };
+    return getFaxogramms(payload);
   }
 
 }

@@ -193,13 +193,13 @@ class DashboardPage extends React.Component {
     this.context.flux.getActions('dashboard').getDashboardComponent(role, 'future_missions', 2);
     this.context.flux.getActions('dashboard').getDashboardComponent(role, 'car_in_work_on_current_missions', 7);
     this.context.flux.getActions('dashboard').getDashboardComponent(role, 'count_offline_cars', 6);
+    this.context.flux.getActions('dashboard').getDashboardComponent(role, 'count_traveled_routes_by_current_operations', 3);
     if (role === 'master') {
       this.context.flux.getActions('dashboard').getDashboardSideComponent(role, 'car_in_work', 8);
       this.context.flux.getActions('dashboard').getDashboardComponent(role, 'odh_not_covered_by_routes', 5);
       this.context.flux.getActions('dashboard').getDashboardComponent(role, 'odh_not_covered_by_current_missions', 4);
       this.context.flux.getActions('dashboard').getDashboardSideComponent(role, 'count_waybill_closed', 10);
     } else {
-
       this.context.flux.getActions('dashboard').getDashboardComponent(role, 'count_closed_waybill_by_current_operations', 18);
       this.context.flux.getActions('dashboard').getDashboardComponent(role, 'estimated_time', 13);
       this.context.flux.getActions('dashboard').getDashboardComponent(role, 'count_assigned_routes', 15);

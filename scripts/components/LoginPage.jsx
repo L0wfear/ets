@@ -67,7 +67,7 @@ class LoginPage extends Component {
       this.context.setLoading(true);
       flux.getActions('session').login(user).then(() => {
         this.context.loadData();
-        this.context.history.pushState(null, '/monitor');
+        this.context.history.pushState(null, '/dashboard');
       });
     }
 

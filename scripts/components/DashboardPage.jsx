@@ -188,18 +188,18 @@ class DashboardPage extends React.Component {
 
   }
 
-  init(role = this.props.params.role) {
+  init(role) {
     this.context.flux.getActions('dashboard').getDashboardComponent(role, 'current_missions', 1);
     this.context.flux.getActions('dashboard').getDashboardComponent(role, 'future_missions', 2);
     this.context.flux.getActions('dashboard').getDashboardComponent(role, 'car_in_work_on_current_missions', 7);
     this.context.flux.getActions('dashboard').getDashboardComponent(role, 'count_offline_cars', 6);
     this.context.flux.getActions('dashboard').getDashboardComponent(role, 'count_traveled_routes_by_current_operations', 3);
-    if (role === 'master') {
+    if (role === 'master' || role === 'superuser') {
       this.context.flux.getActions('dashboard').getDashboardSideComponent(role, 'car_in_work', 8);
       this.context.flux.getActions('dashboard').getDashboardComponent(role, 'odh_not_covered_by_routes', 5);
       this.context.flux.getActions('dashboard').getDashboardComponent(role, 'odh_not_covered_by_current_missions', 4);
       this.context.flux.getActions('dashboard').getDashboardSideComponent(role, 'count_waybill_closed', 10);
-    } else {
+    } else if (role === 'dispatcher' || role === 'superuser') {
       this.context.flux.getActions('dashboard').getDashboardComponent(role, 'count_closed_waybill_by_current_operations', 18);
       this.context.flux.getActions('dashboard').getDashboardComponent(role, 'estimated_time', 13);
       this.context.flux.getActions('dashboard').getDashboardComponent(role, 'count_assigned_routes', 15);
@@ -208,21 +208,16 @@ class DashboardPage extends React.Component {
   }
 
   componentDidMount() {
+    let role = this.context.flux.getStore('session').getCurrentUser().role;
     this.updateClock();
     this.timeInterval = setInterval(this.updateClock.bind(this), 1000);
     document.getElementsByTagName('html')[0].classList.add('overflow-scroll');
-    this.init();
+    this.init(role);
   }
 
   componentWillUnmount() {
     clearInterval(this.timeInterval);
     document.getElementsByTagName('html')[0].classList.remove('overflow-scroll');
-  }
-
-  componentWillReceiveProps(props) {
-    if (props.params.role !== this.props.params.role) {
-      this.init(props.params.role);
-    }
   }
 
   updateClock() {
@@ -231,7 +226,7 @@ class DashboardPage extends React.Component {
   }
 
   refreshCard(key, id) {
-    let { role } = this.props.params;
+    let role = this.context.flux.getStore('session').getCurrentUser().role;
     let { loadingComponents } = this.state;
     loadingComponents.push(key);
     this.setState({loadingComponents});
@@ -251,7 +246,7 @@ class DashboardPage extends React.Component {
     console.log(this.props);
 
     let cards = [];
-    let { role } = this.props.params;
+    let role = this.context.flux.getStore('session').getCurrentUser().role;
     const { componentsList = [], componentsSideList = [] } = this.props[role];
     componentsSideList.map(c => {
       //переделать этот бред
@@ -280,7 +275,6 @@ class DashboardPage extends React.Component {
       }
     });
     let lists = _(componentsList).groupBy((el, i) => Math.floor(i/3)).toArray().value();
-    console.log(lists)
     let rows = [];
     lists.map((row, i) => {
       rows.push(
@@ -305,7 +299,7 @@ class DashboardPage extends React.Component {
     return (
       <Div className="ets-page-wrap dashboard-page">
 
-        <DashboardPageHeader personRole={role === 'master' ? 'Мастер' : 'Диспетчер'} personFIO={role === 'master' ? 'Лебедев И.А.' : 'Иванов К.М.'} />
+        <DashboardPageHeader personRole={role === 'master' || role === 'superuser' ? 'Мастер' : 'Диспетчер'} personFIO={role === 'master' || role === 'superuser' ? 'Лебедев И.А.' : 'Иванов К.М.'} />
 
         <Row>
           <Col md={10}>

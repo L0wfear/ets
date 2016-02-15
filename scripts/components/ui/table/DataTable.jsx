@@ -191,7 +191,7 @@ class Table extends React.Component {
     return isValid;
   }
 
-  processTableData(data, selected, selectField) {
+  processTableData(data, selected, selectField, onRowSelected) {
     return _(data).map( (d, i) => {
       if (!selected || typeof onRowSelected === 'undefined') {
         d.isSelected = false;
@@ -222,7 +222,8 @@ class Table extends React.Component {
 		const rowMetadata = this.initializeRowMetadata();
     const data = _.cloneDeep(this.props.results);
 
-    const results = this.processTableData(data);
+    const results = this.processTableData(data, selected, selectField, onRowSelected);
+    console.log(results);
 
     return (
       <Div className="data-table">

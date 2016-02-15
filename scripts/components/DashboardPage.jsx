@@ -199,6 +199,7 @@ class DashboardPage extends React.Component {
       this.context.flux.getActions('dashboard').getDashboardComponent(role, 'odh_not_covered_by_routes', 5);
       this.context.flux.getActions('dashboard').getDashboardComponent(role, 'odh_not_covered_by_current_missions', 4);
       this.context.flux.getActions('dashboard').getDashboardSideComponent(role, 'count_waybill_closed', 10);
+      this.context.flux.getActions('dashboard').getDashboardComponent(role, 'estimated_time', 13);
     } else if (role === 'dispatcher' || role === 'superuser') {
       this.context.flux.getActions('dashboard').getDashboardComponent(role, 'count_closed_waybill_by_current_operations', 18);
       this.context.flux.getActions('dashboard').getDashboardComponent(role, 'estimated_time', 13);

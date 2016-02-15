@@ -90,6 +90,8 @@ let FaxogrammsTable = (props) => {
 									renderers={renderers}
 									tableMeta={getTableMeta(props)}
                   serverPagination={true}
+									initialSort={'create_date'}
+									initialSortAscending={false}
 									{...props}/>
 }
 

@@ -4,6 +4,7 @@ import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
 import Table from '../ui/table/DataTable.jsx';
 import ElementsList from '../ElementsList.jsx';
 import Paginator from '../ui/Paginator.jsx';
+import Div from '../ui/Div.jsx';
 import moment from 'moment';
 import cx from 'classnames';
 
@@ -75,7 +76,7 @@ let getTableMeta = (props) => {
 };
 
 
-let MissionsTable = (props) => {
+let FaxogrammsTable = (props) => {
 
 		const renderers = {
 			order_date: ({data}) => <div>{moment.utc(data).format('YYYY-MM-DD HH:mm')}</div>,
@@ -83,13 +84,55 @@ let MissionsTable = (props) => {
     	create_date: ({data}) => <div>{moment.utc(data).format('YYYY-MM-DD HH:mm')}</div>,
 		};
 
-		return <Table title="Шаблоны заданий"
+		return <Table title="Реестр факсограмм"
 									results={props.data}
 									renderers={renderers}
 									tableMeta={getTableMeta(props)}
                   serverPagination={true}
 									{...props}/>
 }
+
+let FaxogrammOperationInfoTable = (props) => {
+
+	let tableMeta = {
+		cols: [
+			{
+				name: 'tk_operation_name',
+				caption: 'Операция',
+				type: 'string',
+			},
+			{
+				name: 'num_exec',
+				caption: 'Количество выполнений',
+				type: 'string',
+			},
+		]
+	};
+
+	return <Table title="Реестр факсограмм"
+								results={props.data}
+								tableMeta={tableMeta}
+								{...props}/>
+}
+
+let FaxogrammInfoTable = (props) => {
+
+	let tableMeta = {
+		cols: [
+			{
+				name: 'order_info',
+				caption: 'Дополнительная информация',
+				type: 'string',
+			},
+		]
+	};
+
+	return <Table title="Реестр факсограмм"
+								results={props.data}
+								tableMeta={tableMeta}
+								{...props}/>
+}
+
 
 class FaxogrammDirectory extends ElementsList {
 
@@ -100,6 +143,7 @@ class FaxogrammDirectory extends ElementsList {
 
     this.state = {
       page: 0,
+			selectedElement: null,
     };
 	}
 
@@ -122,19 +166,29 @@ class FaxogrammDirectory extends ElementsList {
 
 		const { faxogrammsList = [], faxogrammsMaxPage } = this.props;
     console.log(faxogrammsList.map(f => f.id).sort());
+		let faxogrammInfoData = [];
+		let faxogramm = this.state.selectedElement || {};
+		if (faxogramm.technical_operations) {
+			faxogrammInfoData = [{id: 0, order_info: faxogramm.order_info}];
+		}
 
 		return (
 			<div className="ets-page-wrap">
 
-        <MissionsTable data={faxogrammsList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'} {...this.props}>
-        </MissionsTable>
+        <FaxogrammsTable data={faxogrammsList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'} {...this.props}>
+        </FaxogrammsTable>
         <Paginator currentPage={this.state.page} maxPage={faxogrammsMaxPage} setPage={this.onPageChange.bind(this)}/>
-        <Row>
-          <Col md={8}>
-          </Col>
-          <Col md={4}>
-          </Col>
-        </Row>
+				<Div hidden={this.state.selectedElement === null}>
+	        <Row>
+						<h4 style={{marginLeft: 20, fontWeight: 'bold'}}>Расшифровка факсограммы</h4>
+	          <Col md={8}>
+							<FaxogrammOperationInfoTable noFilter={true} data={faxogramm.technical_operations || []}/>
+	          </Col>
+	          <Col md={4}>
+							<FaxogrammInfoTable noFilter={true} data={faxogrammInfoData}/>
+	          </Col>
+	        </Row>
+				</Div>
 			</div>
 		);
 	}

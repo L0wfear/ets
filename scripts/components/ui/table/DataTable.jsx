@@ -43,8 +43,10 @@ class Table extends React.Component {
     return clonedObject;
   }
 
-  handleRowCheck(id) {
+  handleRowCheck(id, e) {
     console.log('hadleRowCheck is called');
+    e.preventDefault();
+    e.stopPropagation();
     const clonedData = this.cloneObject(this.state.checkedRows);
     if (this.state.checkedRows[id]) {
       clonedData[id] = false;
@@ -123,25 +125,12 @@ class Table extends React.Component {
   		return cur;
   	}, this.props.multiSelection ? [{
       columnName: 'isChecked',
-      displayName: <div>{(() => {
-        if (this.state.globalCheckboxState) {
-          return <input type="checkbox" checked="checked" onChange={this.globalCheckHandler.bind(this)}></input>;
-        } else {
-          return <input type="checkbox" onChange={this.globalCheckHandler.bind(this)}></input>
-        }
-      }
-      )()}</div>,
+      displayName: <input type="checkbox" checked={this.state.globalCheckboxState} onChange={this.globalCheckHandler.bind(this)}></input>,
       sortable: false,
       cssClassName: 'width60 text-center',
       customComponent: (value) => {
         const id = value.rowData.id;
-        return <div>{(() => {
-            if (this.state.checkedRows[id]) {
-              return <input type="checkbox" checked="checked" onChange={this.handleRowCheck.bind(this, id)}></input>;
-            } else {
-              return <input type="checkbox" onChange={this.handleRowCheck.bind(this, id)}></input>;
-            }
-          })()}</div>
+        return <div><input type="checkbox" checked={this.state.checkedRows[id]} onChange={this.handleRowCheck.bind(this, id)}></input></div>
       }
     }] : []);
 
@@ -216,7 +205,7 @@ class Table extends React.Component {
   }
 
   render() {
-    const { tableMeta, renderers, onRowSelected, selected, selectField, title = '', initialSort = 'id', multiSelection = false } = this.props;
+    const { tableMeta, renderers, onRowSelected, selected, selectField, title = '', initialSort = 'id', multiSelection = false, noFilter } = this.props;
     const tableCols = multiSelection ? ['isChecked',...tableMeta.cols.map( c => c.name )] : tableMeta.cols.map( c => c.name );
     const columnMetadata = this.initializeMetadata(tableMeta, renderers);
 		const rowMetadata = this.initializeRowMetadata();
@@ -227,7 +216,7 @@ class Table extends React.Component {
 
     return (
       <Div className="data-table">
-        <div className="some-header">{title}
+        <Div className="some-header" hidden={noFilter}>{title}
           <div className="waybills-buttons">
             <ClickOutHandler onClickOut={this.closeFilter.bind(this)}>
               <FilterButton direction={'left'} show={this.state.filterModalIsOpen} active={_.keys(this.state.filterValues).length} onClick={this.toggleFilter.bind(this)}/>
@@ -241,7 +230,7 @@ class Table extends React.Component {
             </ClickOutHandler>
             {this.props.children}
           </div>
-        </div>
+        </Div>
         <Griddle results={results}
                  initialSort={initialSort}
 								 columnMetadata={columnMetadata}
@@ -251,7 +240,7 @@ class Table extends React.Component {
 								 customPagerComponent={this.props.serverPagination ? <Div/> : Paginator}
 								 onRowClick={onRowSelected}
 							   rowMetadata={rowMetadata}
-								 noDataMessage={'Нет данных'}/>
+								 noDataMessage={noFilter ? '' : 'Нет данных'}/>
       </Div>
     );
   }

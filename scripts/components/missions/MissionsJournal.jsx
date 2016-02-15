@@ -22,7 +22,7 @@ function getStatusLabel(s) {
 	switch (s) {
 		case 'assigned':
 			return 'Назначено';
-		case 'not assigned':
+		case 'not_assigned':
 			return 'Не назначено';
 		case 'closed':
 			return 'Закрыто';

@@ -51,14 +51,14 @@ let getTableMeta = (props) => {
 					type: 'select'
 				},
 			},
-      {
-				name: 'order_status_name',
-				caption: 'Статус',
-				type: 'string',
-				filter: {
-					type: 'select'
-				},
-			},
+      // {
+			// 	name: 'order_status_name',
+			// 	caption: 'Статус',
+			// 	type: 'string',
+			// 	filter: {
+			// 		type: 'select'
+			// 	},
+			// },
       {
 				name: 'pgm_deny',
 				caption: 'ПГМ не применять',

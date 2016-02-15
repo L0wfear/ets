@@ -10,7 +10,9 @@ import { getMissions,
          updateMissionTemplate,
          getMissionReports,
          getMissionReportById,
-         createMissionReport } from '../adapter.js';
+         createMissionReport
+         createMissions,} from '../adapter.js';
+
 import _ from 'lodash';
 import { createValidDateTime } from '../utils/dates.js';
 import { isEmpty, isNotNull } from '../utils/functions.js';
@@ -73,6 +75,35 @@ export default class MissionsActions extends Actions {
   createMissionTemplate(missionTemplate) {
     const payload = _.clone(missionTemplate);
     return createMissionTemplate(payload);
+  }
+
+  createMissions(missionTemplates, missionsCreationTemplate) {
+    /*
+    const payload = _.clone(missionsCreationTemplate);
+     payload.date_start = createValidDateTime(payload.date_start);
+     payload.date_end = createValidDateTime(payload.date_end);
+     delete payload.date_start;
+     delete payload.date_end;
+     payload.mission_template_id_list = _.clone(missionTemplatesIds);
+     return createMissions(payload);
+     */
+    const missionsCreationTemplateCopy = _.clone(missionsCreationTemplate);
+    const date_start = createValidDateTime(missionsCreationTemplateCopy.date_start);
+    const date_end = createValidDateTime(missionsCreationTemplateCopy.date_end);
+    const queries = Object.keys(missionTemplates).map((key) => missionTemplates[key]).map((query) => {
+      const payload = _.clone(query);
+      payload.date_start = date_start;
+      payload.date_end = date_end;
+      payload.mission_source_id = missionsCreationTemplateCopy.mission_source_id;
+      if (!isEmpty(missionsCreationTemplateCopy.passes_count)) {
+        payload.passes_count = parseInt(missionsCreationTemplateCopy.passes_count, 10);
+      }
+      delete payload.company_id;
+      delete payload.id;
+      delete payload.number;
+      return createMission(payload);
+    });
+    return Promise.all(queries);
   }
 
   removeMissionTemplate(id) {

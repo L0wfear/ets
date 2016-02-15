@@ -92,6 +92,7 @@ let MissionsTable = (props) => {
 									results={props.data}
 									renderers={renderers}
 									tableMeta={getTableMeta(props)}
+                  multiSelection={true}
 									{...props}/>
 }
 
@@ -102,6 +103,55 @@ class MissionTemplatesJournal extends ElementsList {
 
     this.removeElementAction = context.flux.getActions('missions').removeMissionTemplate;
     this.mainListName = 'missionTemplatesList';
+		this.state = {
+			selectedMission: null,
+      checkedMissions: {}
+		};
+	}
+
+	selectMission({props}) {
+		const id = props.data.id;
+		let mission = _.find(this.props.missionTemplatesList, m => m.id === id);
+
+		this.setState({ selectedMission: mission });
+	}
+
+  checkMission(id, state) {
+    const missions = _.cloneDeep(this.state.checkedMissions);
+    if (state) {
+      missions[parseInt(id, 10)] = _.find(this.props.missionTemplatesList, m => m.id === parseInt(id, 10));
+    } else {
+      delete missions[id];
+    }
+    this.setState({
+      checkedMissions: missions
+    });
+  }
+
+  checkAll(rows, state) {
+    let missions = _.cloneDeep(this.state.checkedMissions);
+    if (state) {
+      missions = rows;
+    } else {
+      missions = {};
+    }
+    this.setState({
+      checkedMissions: missions
+    })
+  }
+
+	createMission() {
+		this.setState({
+			showForm: true,
+			selectedMission: null
+		})
+	}
+
+	onFormHide() {
+		this.setState({
+			showForm: false,
+			selectedMission: null,
+		});
 	}
 
   init() {
@@ -118,7 +168,23 @@ class MissionTemplatesJournal extends ElementsList {
     flux.getActions('objects').getCars();
     flux.getActions('missions').getMissionSources();
     flux.getActions('routes').getRoutes();
+    flux.getActions('missions').getMissionSources();
 	}
+
+	removeMission() {
+		if (confirm('Вы уверены, что хотите удалить шаблон задания?')) {
+			const { flux } = this.context;
+			flux.getActions('missions').removeMissionTemplate(this.state.selectedMission.id);
+		}
+	}
+
+	showMission() {
+		this.setState({ showForm: true, formType: "ViewForm" });
+	}
+
+  createMissions() {
+    this.setState({ showForm: true, formType: "MissionsCreationForm" });
+  }
 
 	render() {
 
@@ -126,15 +192,17 @@ class MissionTemplatesJournal extends ElementsList {
 
 		return (
 			<div className="ets-page-wrap">
-				<MissionsTable data={missionTemplatesList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'} {...this.props}>
-					<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Создать шаблон задания</Button>
-					<Button bsSize="small" onClick={this.showForm.bind(this)} disabled={true}>Сформировать задание</Button>
-					<Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="search" /> Просмотреть шаблон</Button>
-					<Button bsSize="small" disabled={this.state.selectedElement === null} onClick={this.removeElement.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
+				<MissionsTable data={missionTemplatesList} onAllRowsChecked={this.checkAll.bind(this)} onRowChecked={this.checkMission.bind(this)} onRowSelected={this.selectMission.bind(this)} selected={this.state.selectedMission} selectField={'id'} {...this.props}>
+					<Button bsSize="small" onClick={this.createMission.bind(this)}><Glyphicon glyph="plus" /> Создать шаблон задания</Button>
+					<Button bsSize="small" onClick={this.createMissions.bind(this)} disabled={Object.keys(this.state.checkedMissions).length === 0}>Сформировать задание</Button>
+					<Button bsSize="small" onClick={this.showMission.bind(this)} disabled={this.state.selectedMission === null}><Glyphicon glyph="search" /> Просмотреть шаблон</Button>
+					<Button bsSize="small" disabled={this.state.selectedMission === null} onClick={this.removeMission.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
 				</MissionsTable>
 				<MissionTemplateFormWrap onFormHide={this.onFormHide.bind(this)}
 												 showForm={this.state.showForm}
-												 mission={this.state.selectedElement}
+												 mission={this.state.selectedMission}
+                         formType={this.state.formType}
+                         missions={this.state.checkedMissions}
 												 {...this.props}/>
 			</div>
 		);

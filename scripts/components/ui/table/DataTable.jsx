@@ -8,6 +8,7 @@ import Griddle from 'griddle-react';
 import Div from '../Div.jsx';
 import moment from 'moment';
 import _ from 'lodash';
+import update from 'react-addons-update';
 
 class Table extends React.Component {
 
@@ -17,6 +18,8 @@ class Table extends React.Component {
     this.state = {
       filterModalIsOpen: false,
       filterValues: {},
+      checkedRows: {},
+      globalCheckboxState: false
     };
   }
 
@@ -29,9 +32,77 @@ class Table extends React.Component {
 	}
 
 	saveFilter(filterValues) {
-		//console.info(`SETTING FILTER VALUES`, filterValues);
 		this.setState({filterValues});
 	}
+
+  cloneObject(object) {
+    const clonedObject = {};
+    for (let key of Object.keys(object)) {
+      clonedObject[key] = object[key];
+    }
+    return clonedObject;
+  }
+
+  handleRowCheck(id) {
+    console.log('hadleRowCheck is called');
+    const clonedData = this.cloneObject(this.state.checkedRows);
+    if (this.state.checkedRows[id]) {
+      clonedData[id] = false;
+      this.props.onRowChecked(id, false);
+
+      this.setState({
+        checkedRows: clonedData,
+        globalCheckboxState: false
+      });
+    } else {
+      clonedData[id] = true;
+      this.props.onRowChecked(id, true);
+
+      if (Object.keys(clonedData).map((key) => clonedData[key]).filter((value) => !value).length === 0) {
+        this.setState({
+          checkedRows: clonedData,
+          globalCheckboxState: true
+        }, () => {
+          this.forceUpdate();
+        });
+      } else {
+        this.setState({
+          checkedRows: clonedData,
+          globalCheckboxState: false
+        }, () => {
+          this.forceUpdate();
+        });
+      }
+    }
+  }
+
+  globalCheckHandler(event) {
+    const clonedData = this.cloneObject(this.state.checkedRows);
+    if (_.filter(_.values(this.state.checkedRows), (item) => !item).length > 0 && !this.state.globalCheckboxState) {
+      for (let key of Object.keys(clonedData)) {
+        if (this.shouldBeRendered(_.find(this.props.results, (result) => result.id.toString() === key.toString()))) {
+          clonedData[key] = true;
+        }
+      }
+      this.props.onAllRowsChecked(this.props.results.filter((item) => this.shouldBeRendered(item)), true);
+      this.setState({
+        checkedRows: clonedData,
+        globalCheckboxState: true
+      });
+    } else {
+      for (let key of Object.keys(clonedData)) {
+        if (this.shouldBeRendered(_.find(this.props.results, (result) => result.id.toString() === key.toString()))) {
+          clonedData[key] = false;
+        }
+      }
+      this.props.onAllRowsChecked(this.props.results.filter((item) => this.shouldBeRendered(item)), false);
+      this.setState({
+        checkedRows: clonedData,
+        globalCheckboxState: false
+      });
+    }
+    event.stopPropagation();
+  }
 
   initializeMetadata(tableMeta = { cols: [] }, renderers = {}) {
   	const metadata = _.reduce(tableMeta.cols, (cur, col, i) => {
@@ -50,7 +121,29 @@ class Table extends React.Component {
 
   		cur.push(metaObject);
   		return cur;
-  	}, []);
+  	}, this.props.multiSelection ? [{
+      columnName: 'isChecked',
+      displayName: <div>{(() => {
+        if (this.state.globalCheckboxState) {
+          return <input type="checkbox" checked="checked" onChange={this.globalCheckHandler.bind(this)}></input>;
+        } else {
+          return <input type="checkbox" onChange={this.globalCheckHandler.bind(this)}></input>
+        }
+      }
+      )()}</div>,
+      sortable: false,
+      cssClassName: 'width60 text-center',
+      customComponent: (value) => {
+        const id = value.rowData.id;
+        return <div>{(() => {
+            if (this.state.checkedRows[id]) {
+              return <input type="checkbox" checked="checked" onChange={this.handleRowCheck.bind(this, id)}></input>;
+            } else {
+              return <input type="checkbox" onChange={this.handleRowCheck.bind(this, id)}></input>;
+            }
+          })()}</div>
+      }
+    }] : []);
 
   	return metadata;
   }
@@ -69,56 +162,67 @@ class Table extends React.Component {
   	return rowMetadata;
   }
 
-  componentDidMount() {
-    if (this.props.filterValues) {
-      this.setState({filterValues: this.props.filterValues});
-    }
+  shouldBeRendered(obj) {
+    let isValid = true;
+    _.mapKeys(this.state.filterValues, (value, key) => {
+      if (key.indexOf('date') > -1 && !_.isArray(value)) {
+        if (moment(obj[key]).format('YYYY-MM-DD') !== value) {
+          isValid = false;
+        }
+      } else if (key.indexOf('date') > -1 && _.isArray(value)) {
+        if (value.indexOf(moment(obj[key]).format('YYYY-MM-DD')) === -1) {
+          isValid = false;
+        }
+      } else if (typeof value.getMonth === 'function') {
+        if (obj[key] !== moment(value).format('YYYY-MM-DD H:mm')) {
+          isValid = false;
+        }
+      } else if (_.isArray(value)) {
+        if (value.indexOf(obj[key].toString()) === -1) {
+          isValid = false;
+        }
+      } else {
+        if (obj[key] != value) {
+          isValid = false;
+        }
+      }
+    });
+
+    return isValid;
   }
 
-  render() {
-    const { tableMeta, renderers, onRowSelected, selected, selectField, title = '', initialSort = 'id' } = this.props;
-    const tableCols = tableMeta.cols.map( c => c.name );
-    const columnMetadata = this.initializeMetadata(tableMeta, renderers);
-		const rowMetadata = this.initializeRowMetadata();
-    const data = _.cloneDeep(this.props.results);
-
-    const results = _(data).map( (d, i) => {
-			if (!selected || typeof onRowSelected === 'undefined') {
+  processTableData(data, selected, selectField) {
+    return _(data).map( (d, i) => {
+      if (!selected || typeof onRowSelected === 'undefined') {
         d.isSelected = false;
         return d;
       }
       if (typeof selectField !== 'undefined') {
         d.isSelected = d[selectField] === selected[selectField];
       }
-			return d;
-		}).filter((obj) => {
-  		let isValid = true;
-  		_.mapKeys(this.state.filterValues, (value, key) => {
-  			if (key.indexOf('date') > -1 && !_.isArray(value)) {
-          if (moment(obj[key]).format('YYYY-MM-DD') !== value) {
-            isValid = false;
-          }
-        } else if (key.indexOf('date') > -1 && _.isArray(value)) {
-          if (value.indexOf(moment(obj[key]).format('YYYY-MM-DD')) === -1) {
-            isValid = false;
-          }
-        } else if (typeof value.getMonth === 'function') {
-  				if (obj[key] !== moment(value).format('YYYY-MM-DD H:mm')) {
-  					isValid = false;
-  				}
-  			} else if (_.isArray(value)) {
-          if (value.indexOf(obj[key].toString()) === -1) {
-            isValid = false;
-          }
-        } else {
-  				if (obj[key] != value) {
-  					isValid = false;
-  				}
-  			}
-		  });
+      d.isChecked = this.state.checkedRows[d.id];
+      return d;
+    }).filter(this.shouldBeRendered.bind(this)).value();
+  }
 
-			return isValid;
-		}).value();
+  componentWillReceiveProps(nextProps) {
+    nextProps.results.forEach((d) => {
+      if (!this.shouldBeRendered(d)) {
+        this.state.checkedRows[d.id] = undefined;
+      } else {
+        this.state.checkedRows[d.id] = this.state.checkedRows[d.id] === undefined ? false : this.state.checkedRows[d.id];
+      }
+    });
+  }
+
+  render() {
+    const { tableMeta, renderers, onRowSelected, selected, selectField, title = '', initialSort = 'id', multiSelection = false } = this.props;
+    const tableCols = multiSelection ? ['isChecked',...tableMeta.cols.map( c => c.name )] : tableMeta.cols.map( c => c.name );
+    const columnMetadata = this.initializeMetadata(tableMeta, renderers);
+		const rowMetadata = this.initializeRowMetadata();
+    const data = _.cloneDeep(this.props.results);
+
+    const results = this.processTableData(data);
 
     return (
       <Div className="data-table">

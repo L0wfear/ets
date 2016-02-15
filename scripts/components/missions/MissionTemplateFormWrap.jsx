@@ -3,11 +3,13 @@ import moment from 'moment';
 import _ from 'lodash';
 import Div from '../ui/Div.jsx';
 import MissionTemplateForm from './MissionTemplateForm.jsx';
-import { getDefaultMissionTemplate } from '../../stores/MissionsStore.js';
+import MissionsCreationForm from './MissionsCreationForm.jsx';
+import { getDefaultMissionTemplate, getDefaultMissionsCreationTemplate } from '../../stores/MissionsStore.js';
 import { validate as validateNumber} from '../../validate/validateNumber.js';
 import { isNotNull, isEmpty } from '../../utils/functions.js';
 import { validateRow } from '../../validate/validateRow.js';
 import { missionTemplateSchema } from '../models/MissionTemplateModel.js';
+import { missionsCreationTemplateSchema } from '../models/MissionsCreationTemplateModel.js';
 
 let validateMission = (mission, errors) => {
 	let missionErrors = _.clone(errors);
@@ -17,6 +19,16 @@ let validateMission = (mission, errors) => {
 	});
 
 	return missionErrors;
+};
+
+let validateMissionsCreationTemplate = (mission, errors) => {
+  let missionsCreationTemplateErrors = _.clone(errors);
+
+  _.each(missionsCreationTemplateSchema.properties, prop => {
+    missionsCreationTemplateErrors[prop.key] = validateRow(prop, mission[prop.key]);
+  });
+
+  return missionsCreationTemplateErrors;
 };
 
 class MissionFormWrap extends Component {
@@ -32,26 +44,33 @@ class MissionFormWrap extends Component {
 	}
 
 	componentWillReceiveProps(props) {
-
 		if (props.showForm && props.showForm !== this.props.showForm) {
-			if (props.mission === null ) {
-				const defaultMission = getDefaultMissionTemplate();
-				this.setState({
-					formState: defaultMission,
-					canSave: false,
-					formErrors: validateMission(defaultMission, {}),
-				})
-			} else {
-				let _mission = _.clone(props.mission);
+      if (props.formType === "ViewForm") {
+        if (props.mission === null ) {
+          const defaultMission = getDefaultMissionTemplate();
+          this.setState({
+            formState: defaultMission,
+            canSave: false,
+            formErrors: validateMission(defaultMission, {}),
+          })
+        } else {
+          let _mission = _.clone(props.mission);
 
-				this.setState({
-					formState: _mission,
-					formErrors: validateMission(_mission, {}),
-					canSave: true,
-				});
-			}
+          this.setState({
+            formState: _mission,
+            formErrors: validateMission(_mission, {}),
+            canSave: true,
+          });
+        }
+      } else {
+        const defaultMissionsCreationTemplate = getDefaultMissionsCreationTemplate();
+        this.setState({
+          formState: defaultMissionsCreationTemplate,
+          canSave: true,
+          formErrors: validateMissionsCreationTemplate(defaultMissionsCreationTemplate, {})
+        });
+      }
 		}
-
 	}
 
 
@@ -73,26 +92,41 @@ class MissionFormWrap extends Component {
 
 	handleFormSubmit(formState) {
 		const { flux } = this.context;
-		if (isEmpty(formState.id)) {
-			flux.getActions('missions').createMissionTemplate(formState);
-		} else {
-			flux.getActions('missions').updateMissionTemplate(formState);
-		}
+    if (this.props.formType === "ViewForm") {
+      if (isEmpty(formState.id)) {
+        flux.getActions('missions').createMissionTemplate(formState);
+      } else {
+        flux.getActions('missions').updateMissionTemplate(formState);
+      }
+    } else {
+      flux.getActions('missions').createMissions(this.props.missions, formState);
+    }
 		this.props.onFormHide();
 
 		return;
 	}
 
 	render() {
-
-		return 	<Div hidden={!this.props.showForm}>
-							<MissionTemplateForm formState = {this.state.formState}
-													 onSubmit={this.handleFormSubmit.bind(this)}
-													 handleFormChange={this.handleFormStateChange.bind(this)}
-													 show={this.props.showForm}
-													 onHide={this.props.onFormHide}
-													 {...this.state}/>
-						</Div>
+    if (this.props.formType === 'ViewForm') {
+      return 	<Div hidden={!this.props.showForm}>
+        <MissionTemplateForm formState = {this.state.formState}
+                              onSubmit={this.handleFormSubmit.bind(this)}
+                              handleFormChange={this.handleFormStateChange.bind(this)}
+                              show={this.props.showForm}
+                              onHide={this.props.onFormHide}
+          {...this.state}/>
+      </Div>
+    } else {
+      return 	<Div hidden={!this.props.showForm}>
+        <MissionsCreationForm formState = {this.state.formState}
+                              onSubmit={this.handleFormSubmit.bind(this)}
+                              handleFormChange={this.handleFormStateChange.bind(this)}
+                              show={this.props.showForm}
+                              onHide={this.props.onFormHide}
+                              missions={this.props.missions}
+          {...this.state}/>
+      </Div>
+    }
 	}
 
 }

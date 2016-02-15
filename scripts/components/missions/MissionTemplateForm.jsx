@@ -36,7 +36,7 @@ class MissionTemplateForm extends MissionForm {
 
 		let IS_CREATING = true;
 
-    let title = `Задание № ${state.number || ''}`;
+    let title = `Задание`;
 
     if (IS_CREATING) {
       title = "Создание шаблона задания"

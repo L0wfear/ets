@@ -13,6 +13,7 @@ import { loadOwners } from './owners.js';
 let getUrl = (url) => config.backend ? config.backend + url : url;
 let getOldUrl = (url) => config.backendOld ? config.backendOld + url : url;
 let getServiceUrl = (url) => config.servicesBackend ? config.servicesBackend + url : url;
+let getEtsServiceUrl = (url) => config.etsServicesBackend ? config.etsServicesBackend + url : url;
 let toFormData = (data) => {
   const formData = new FormData();
   _.mapKeys(data, (v, k) => {
@@ -44,6 +45,14 @@ let toUrlWithParams = (url, data) => {
   return `${url}${params}`;
 };
 
+let paramsToBody = (data) => {
+  let params = '';
+  _.mapKeys(data, (v, k) => {
+      params += `${k}=${encodeURIComponent(v)}&`;
+  });
+  return params.slice(0, -1);
+};
+
 const POINTS_URL = getUrl('/data');
 const TRACK_URL = getOldUrl('/tracks/');
 const WEATHER_URL = getUrl('/weather/');
@@ -67,6 +76,7 @@ const TECH_OPERATIONS_URL = getUrl('/technical_operation/');
 const ODHS_URL = getUrl('/odh/');
 const WORK_KINDS_URL = getUrl('/work_kind/');
 const MISSIONS_URL = getUrl('/mission/');
+const MISSIONS_CREATION_URL = getEtsServiceUrl('/create_missions_from_mission_templates/');
 const MISSION_SOURCES_URL = getUrl('/mission_source/');
 const MISSION_TEMPLATES_URL = getUrl('/mission_template/');
 const ROUTES_URL = getUrl('/route/');
@@ -111,6 +121,9 @@ function postJSON(url, data, type = 'form') {
       delete data.token;
       body = toFormData(data);
       break;
+    case 'form_with_token':
+      body = paramsToBody(data);
+      break;
     case 'json':
       body = JSON.stringify(data);
       break;
@@ -126,7 +139,7 @@ function postJSON(url, data, type = 'form') {
       'Accept': 'application/json',
     },
     credentials: 'include',
-    body: body,
+    body: body
   };
 
   return fetch(url, options).then( r => {
@@ -470,6 +483,12 @@ export function updateMission(mission) {
 
 export function createMission(mission) {
   return postJSON(MISSIONS_URL, mission, 'params').then( () => {
+    return getMissions();
+  });
+}
+
+export function createMissions(payload) {
+  return postJSON(MISSIONS_CREATION_URL, payload, 'form_with_token').then( () => {
     return getMissions();
   });
 }

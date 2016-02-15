@@ -126,13 +126,25 @@ class MissionsJournal extends Component {
   checkMission(id, state) {
     const missions = _.cloneDeep(this.state.checkedMissions);
     if (state) {
-      missions[id] = true;
+      missions[parseInt(id, 10)] = _.find(this.props.missionTemplatesList, m => m.id === parseInt(id, 10));
     } else {
       delete missions[id];
     }
     this.setState({
       checkedMissions: missions
     });
+  }
+
+  checkAll(rows, state) {
+    let missions = _.cloneDeep(this.state.checkedMissions);
+    if (state) {
+      missions = rows;
+    } else {
+      missions = {};
+    }
+    this.setState({
+      checkedMissions: missions
+    })
   }
 
 	createMission() {
@@ -155,7 +167,7 @@ class MissionsJournal extends Component {
     flux.getActions('objects').getWorkKinds();
     flux.getActions('objects').getTechOperations();
     flux.getActions('routes').getRoutes();
-    //flux.getActions('missions').getMissionSources();
+    flux.getActions('missions').getMissionSources();
 	}
 
 	removeMission() {
@@ -181,7 +193,7 @@ class MissionsJournal extends Component {
 
 		return (
 			<div className="ets-page-wrap">
-				<MissionsTable data={missionTemplatesList} onRowChecked={this.checkMission.bind(this)} onRowSelected={this.selectMission.bind(this)} selected={this.state.selectedMission} selectField={'id'} {...this.props}>
+				<MissionsTable data={missionTemplatesList} onAllRowsChecked={this.checkAll.bind(this)} onRowChecked={this.checkMission.bind(this)} onRowSelected={this.selectMission.bind(this)} selected={this.state.selectedMission} selectField={'id'} {...this.props}>
 					<Button bsSize="small" onClick={this.createMission.bind(this)}><Glyphicon glyph="plus" /> Создать шаблон задания</Button>
 					<Button bsSize="small" onClick={this.createMissions.bind(this)} disabled={Object.keys(this.state.checkedMissions).length === 0}>Сформировать задание</Button>
 					<Button bsSize="small" onClick={this.showMission.bind(this)} disabled={this.state.selectedMission === null}><Glyphicon glyph="search" /> Просмотреть шаблон</Button>
@@ -191,6 +203,7 @@ class MissionsJournal extends Component {
 												 showForm={this.state.showForm}
 												 mission={this.state.selectedMission}
                          formType={this.state.formType}
+                         missions={this.state.checkedMissions}
 												 {...this.props}/>
 			</div>
 		);

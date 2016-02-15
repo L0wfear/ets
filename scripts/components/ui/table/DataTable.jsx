@@ -80,16 +80,22 @@ class Table extends React.Component {
     const clonedData = this.cloneObject(this.state.checkedRows);
     if (_.filter(_.values(this.state.checkedRows), (item) => !item).length > 0 && !this.state.globalCheckboxState) {
       for (let key of Object.keys(clonedData)) {
-        clonedData[key] = true;
+        if (this.shouldBeRendered(_.find(this.props.results, (result) => result.id.toString() === key.toString()))) {
+          clonedData[key] = true;
+        }
       }
+      this.props.onAllRowsChecked(this.props.results.filter((item) => this.shouldBeRendered(item)), true);
       this.setState({
         checkedRows: clonedData,
         globalCheckboxState: true
       });
     } else {
       for (let key of Object.keys(clonedData)) {
-        clonedData[key] = false;
+        if (this.shouldBeRendered(_.find(this.props.results, (result) => result.id.toString() === key.toString()))) {
+          clonedData[key] = false;
+        }
       }
+      this.props.onAllRowsChecked(this.props.results.filter((item) => this.shouldBeRendered(item)), false);
       this.setState({
         checkedRows: clonedData,
         globalCheckboxState: false
@@ -126,6 +132,7 @@ class Table extends React.Component {
       }
       )()}</div>,
       sortable: false,
+      cssClassName: 'width60 text-center',
       customComponent: (value) => {
         const id = value.rowData.id;
         return <div>{(() => {

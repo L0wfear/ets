@@ -25,6 +25,7 @@ let WS_PROTO = PROTO === 'http:' ? 'ws:' : 'wss:';
 let config = {
   backend: PROTO + '//ods.mos.ru/ssd/city-dashboard',
   servicesBackend: PROTO + '//ods.mos.ru/ssd/services',
+  etsServicesBackend: PROTO + '//ods.mos.ru/ssd/ets/services',
   ws: WS_PROTO + '//ods.mos.ru/ssd/city-dashboard/stream',
   images: '/data/images/',
   REQUEST_PARAMS: {

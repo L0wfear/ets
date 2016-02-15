@@ -14,9 +14,7 @@ class MissionsCreationForm extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      selectedRoute: null,
-    };
+    this.state = {};
   }
 
   handleChange(field, e) {
@@ -29,7 +27,7 @@ class MissionsCreationForm extends Component {
   }
 
   render() {
-    let state = this.state;
+    let state = this.props.formState;
     let errors = this.props.formErrors;
 
     const { workKindsList = [], techOperationsList = [], missionSourcesList = [], routesList = [], carsList = [] } = this.props;
@@ -51,10 +49,10 @@ class MissionsCreationForm extends Component {
     }
 
     return (
-      <Modal {...this.props} bsSize="medium">
+      <Modal {...this.props} bsSize="large">
 
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-md">{title}</Modal.Title>
+          <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>

@@ -212,7 +212,6 @@ class Table extends React.Component {
     const data = _.cloneDeep(this.props.results);
 
     const results = this.processTableData(data, selected, selectField, onRowSelected);
-    console.log(results);
 
     return (
       <Div className="data-table">

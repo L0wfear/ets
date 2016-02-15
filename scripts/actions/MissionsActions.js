@@ -10,8 +10,8 @@ import { getMissions,
          updateMissionTemplate,
          getMissionReports,
          getMissionReportById,
-         createMissionReport
-         createMissions,} from '../adapter.js';
+         createMissionReport,
+         createMissions} from '../adapter.js';
 
 import _ from 'lodash';
 import { createValidDateTime } from '../utils/dates.js';

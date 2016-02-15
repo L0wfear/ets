@@ -8,45 +8,25 @@ import ODHList from '../route/ODHList.jsx';
 import { isEmpty } from '../../utils/functions.js';
 import Datepicker from '../ui/DatePicker.jsx';
 import { getDateWithoutTZ } from '../../utils/dates.js';
+import Form from '../compositions/Form.jsx';
 
-class MissionsCreationForm extends Component {
+class MissionsCreationForm extends Form {
 
   constructor(props) {
     super(props);
-
-    this.state = {};
-  }
-
-  handleChange(field, e) {
-    this.props.handleFormChange(field, e);
-  }
-
-  handleSubmit() {
-    console.log('submitting mission template form', this.props.formState);
-    this.props.onSubmit(this.props.formState);
   }
 
   render() {
     let state = this.props.formState;
     let errors = this.props.formErrors;
 
-    const { workKindsList = [], techOperationsList = [], missionSourcesList = [], routesList = [], carsList = [] } = this.props;
+    const { missionSourcesList = [] } = this.props;
 
-    const WORK_KINDS = workKindsList.map(({id, name}) => ({value: id, label: name}));
-    const TECH_OPERATIONS = techOperationsList.map(({id, name}) => ({value: id, label: name}));
     const MISSION_SOURCES = missionSourcesList.map(({id, name}) => ({value: id, label: name}));
-    const ROUTES = routesList.map(({id, name}) => ({value: id, label: name}));
-    const CARS = carsList.map( c => ({value: c.asuods_id, label: c.gov_number + ' [' + c.model + ']'}));
 
     console.log('form state is ', state);
 
-    let IS_CREATING = true;
-
-    let title = `Задание`;
-
-    if (IS_CREATING) {
-      title = "Формирование заданий из шаблонов"
-    }
+    let title = "Формирование заданий из шаблонов";
 
     return (
       <Modal {...this.props} bsSize="large">
@@ -99,4 +79,4 @@ MissionsCreationForm.contextTypes = {
   flux: React.PropTypes.object,
 };
 
-export default connectToStores(MissionsCreationForm, ['objects', 'employees', 'missions', 'routes']);
+export default connectToStores(MissionsCreationForm, ['objects', 'missions']);

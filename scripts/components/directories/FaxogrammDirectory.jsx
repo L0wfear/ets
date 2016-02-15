@@ -51,14 +51,14 @@ let getTableMeta = (props) => {
 					type: 'select'
 				},
 			},
-      // {
-			// 	name: 'order_status_name',
-			// 	caption: 'Статус',
-			// 	type: 'string',
-			// 	filter: {
-			// 		type: 'select'
-			// 	},
-			// },
+      {
+				name: 'order_status_name',
+				caption: 'Статус',
+				type: 'string',
+				filter: {
+					type: 'select'
+				},
+			},
       {
 				name: 'pgm_deny',
 				caption: 'ПГМ не применять',
@@ -158,7 +158,6 @@ class FaxogrammDirectory extends ElementsList {
 	}
 
   onPageChange(page) {
-    console.log(page);
     this.setState({page});
     this.context.flux.getActions('objects').getFaxogramms(page);
   }
@@ -166,12 +165,8 @@ class FaxogrammDirectory extends ElementsList {
 	render() {
 
 		const { faxogrammsList = [], faxogrammsMaxPage } = this.props;
-    console.log(faxogrammsList.map(f => f.id).sort());
-		let faxogrammInfoData = [];
 		let faxogramm = this.state.selectedElement || {};
-		if (faxogramm.technical_operations) {
-			faxogrammInfoData = [{id: 0, order_info: faxogramm.order_info}];
-		}
+		let faxogrammInfoData = [{id: 0, order_info: faxogramm.order_info}];
 
 		return (
 			<div className="ets-page-wrap">

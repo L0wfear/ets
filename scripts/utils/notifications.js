@@ -14,6 +14,15 @@ export const loginErrorNotification = {
   }
 };
 
+export const missionCreationSuccessNotification = {
+  title: 'Формирование заданий',
+  message: 'Задания сформированы успешно',
+  level: 'success',
+  dismissible: false,
+  position: 'tc',
+  autoDismiss: 3000,
+};
+
 export function getErrorNotification(error) {
   return {
     title: 'Ошибка',

@@ -7,6 +7,7 @@ import MissionsCreationForm from './MissionsCreationForm.jsx';
 import { getDefaultMissionTemplate, getDefaultMissionsCreationTemplate } from '../../stores/MissionsStore.js';
 import { validate as validateNumber} from '../../validate/validateNumber.js';
 import { isNotNull, isEmpty } from '../../utils/functions.js';
+import { missionCreationSuccessNotification } from '../../utils/notifications.js';
 import { validateRow } from '../../validate/validateRow.js';
 import { missionTemplateSchema } from '../models/MissionTemplateModel.js';
 import { missionsCreationTemplateSchema } from '../models/MissionsCreationTemplateModel.js';
@@ -99,7 +100,10 @@ class MissionFormWrap extends Component {
         flux.getActions('missions').updateMissionTemplate(formState);
       }
     } else {
-      flux.getActions('missions').createMissions(this.props.missions, formState);
+			console.log(this.props.missions);
+      flux.getActions('missions').createMissions(this.props.missions, formState).then(() => {
+				return global.NOTIFICATION_SYSTEM._addNotification(missionCreationSuccessNotification);
+			});
     }
 		this.props.onFormHide();
 

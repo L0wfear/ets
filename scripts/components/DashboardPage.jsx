@@ -243,11 +243,10 @@ class DashboardPage extends React.Component {
 
   render() {
 
-    console.log(this.props);
-
     let cards = [];
     let role = this.context.flux.getStore('session').getCurrentUser().role;
-    const { componentsList = [], componentsSideList = [] } = this.props[role];
+    let propsByRole = this.props[role] || {};
+    const { componentsList = [], componentsSideList = [] } = propsByRole;
     componentsSideList.map(c => {
       //переделать этот бред
       let params = '';

@@ -103,15 +103,15 @@ App.childContextTypes = {
 let history = createHashHistory({queryKey: false});
 
 function requireAuth(nextState, replaceState) {
-  if (!flux.getStore('session').isLoggedIn()) {
+  if (!flux.getStore('session').isLoggedIn() || !flux.getStore('session').getCurrentUser().role) {
     console.warn('USER IS NOT LOGGED IN');
     replaceState({ nextPathname: nextState.location.pathname }, '/login')
   }
 }
 
 function checkLoggedIn(nextState, replaceState) {
-  if (flux.getStore('session').isLoggedIn()) {
-    replaceState({}, '/monitor');
+  if (flux.getStore('session').isLoggedIn() && flux.getStore('session').getCurrentUser().role) {
+    replaceState({}, '/dashboard');
   }
 }
 

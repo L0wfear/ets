@@ -45,7 +45,7 @@ class MissionsCreationForm extends Component {
     let title = `Задание`;
 
     if (IS_CREATING) {
-      title = "Создание шаблона задания"
+      title = "Формирование заданий из шаблонов"
     }
 
     return (

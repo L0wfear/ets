@@ -134,6 +134,8 @@ let WaybillsTable = (props) => {
 		return <Table title="Журнал путевых листов"
 									results={props.data}
 									renderers={renderers}
+									initialSort={'number'}
+									initialSortAscending={false}
 									tableMeta={getTableMeta(props)}
 									{...props}/>
 }

@@ -205,7 +205,7 @@ class Table extends React.Component {
   }
 
   render() {
-    const { tableMeta, renderers, onRowSelected, selected, selectField, title = '', initialSort = 'id', multiSelection = false, noFilter } = this.props;
+    const { tableMeta, renderers, onRowSelected, selected, selectField, title = '', initialSort = 'id', initialSortAscending = true, multiSelection = false, noFilter } = this.props;
     const tableCols = multiSelection ? ['isChecked',...tableMeta.cols.map( c => c.name )] : tableMeta.cols.map( c => c.name );
     const columnMetadata = this.initializeMetadata(tableMeta, renderers);
 		const rowMetadata = this.initializeRowMetadata();
@@ -232,6 +232,7 @@ class Table extends React.Component {
         </Div>
         <Griddle results={results}
                  initialSort={initialSort}
+                 initialSortAscending={initialSortAscending}
 								 columnMetadata={columnMetadata}
 								 columns={tableCols}
 								 resultsPerPage={15}

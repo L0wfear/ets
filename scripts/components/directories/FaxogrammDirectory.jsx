@@ -82,6 +82,7 @@ let FaxogrammsTable = (props) => {
 			order_date: ({data}) => <div>{moment.utc(data).format('YYYY-MM-DD HH:mm')}</div>,
   		order_date_to: ({data}) => <div>{moment.utc(data).format('YYYY-MM-DD HH:mm')}</div>,
     	create_date: ({data}) => <div>{moment.utc(data).format('YYYY-MM-DD HH:mm')}</div>,
+			pgm_deny: ({data}) => <div>{data === 1 ? 'Да' : 'Нет'}</div>,
 		};
 
 		return <Table title="Реестр факсограмм"

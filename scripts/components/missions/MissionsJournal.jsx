@@ -144,6 +144,8 @@ let MissionsTable = (props) => {
 									results={props.data}
 									renderers={renderers}
 									tableMeta={getTableMeta(props)}
+									initialSort={'number'}
+									initialSortAscending={false}
 									{...props}/>
 }
 
@@ -181,7 +183,7 @@ export class MissionsJournal extends ElementsList {
 
 		return (
 			<div className="ets-page-wrap">
-				<MissionsTable data={missionsList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'} {...this.props}>
+				<MissionsTable data={missionsList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'}{...this.props}>
 					<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Создать задание</Button>
 					<Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="search" /> Просмотреть задание</Button>
 					<Button bsSize="small" disabled={this.state.selectedElement === null || this.state.selectedElement.status === 'assigned'} onClick={this.removeElement.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>

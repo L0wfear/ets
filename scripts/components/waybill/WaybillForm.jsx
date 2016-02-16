@@ -37,8 +37,9 @@ let getCarById = (cars, id) => {
 };
 
 let getMissionFilterStatus = (formState) => {
-  let missionsFilterStatus = (formState.status === 'active' || formState.status === 'closed') ? 'assigned' : 'not_assigned';
-  if (formState.status === 'draft') {
+  let missionsFilterStatus = (formState.status === 'active') ? 'assigned' : 'not_assigned';
+  //missionsFilterStatus = (formState.status === 'closed') ? 'complete' : missionsFilterStatus;
+  if (formState.status === 'draft' || formState.status === 'closed') {
     missionsFilterStatus = undefined;
   }
   return missionsFilterStatus;
@@ -71,7 +72,6 @@ class WaybillForm extends Form {
 	}
 
 	componentDidMount() {
-		console.log(this.props);
     const { flux } = this.context;
     const { formState } = this.props;
 		if (formState.status && formState.status === 'active') {
@@ -141,6 +141,7 @@ class WaybillForm extends Form {
 			const techOperation = getTechOperationById(technical_operation_id);
 			return {id, value: id, label: `№${number} (${techOperation.name})`};
 		});
+    console.log(missionsList);
 
     console.log('form state is ', state);
 

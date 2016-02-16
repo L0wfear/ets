@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import { Button, Glyphicon } from 'react-bootstrap';
 import Table from '../ui/table/DataTable.jsx';
-import { getFormattedDateTime } from '../../utils/dates.js';
+import { getFormattedDateTime, getDateWithoutTZ } from '../../utils/dates.js';
 import MissionFormWrap from './MissionFormWrap.jsx';
 import ElementsList from '../ElementsList.jsx';
 import moment from 'moment';
@@ -178,6 +178,8 @@ export class MissionsJournal extends ElementsList {
 	completeMission() {
 		let mission = _.cloneDeep(this.state.selectedElement);
 		mission.status = 'complete';
+		mission.date_start = getDateWithoutTZ(mission.date_start);
+		mission.date_end = getDateWithoutTZ(mission.date_end);
 		this.context.flux.getActions('missions').updateMission(mission);
 	}
 

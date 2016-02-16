@@ -60,8 +60,10 @@ export default class MissionsActions extends Actions {
 
   updateMission(mission) {
     const payload = _.cloneDeep(mission);
+    console.log(payload);
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
+    console.log(payload);
     delete payload.number;
     return updateMission(payload);
   }

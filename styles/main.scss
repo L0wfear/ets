@@ -2561,8 +2561,15 @@ div.none {
   min-height: 100px;
 }
 
-.date-divider {
-  display: inline-block;
-  float: left;
-  padding-top: 8px;
+.faxogramms-date-range {
+  text-align: center;
+  .faxogramms-date {
+
+  }
+  .date-divider {
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding-top: 8px;
+  }
 }

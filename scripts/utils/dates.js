@@ -54,9 +54,9 @@ export function getTomorrow9am() {
   return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 9, 0);
 }
 
-export function getToday7am() {
+export function getToday0am() {
   let now = new Date();
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 7, 0);
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0);
 }
 
 export function getToday2359() {

@@ -5,10 +5,10 @@ import Table from '../ui/table/DataTable.jsx';
 import ElementsList from '../ElementsList.jsx';
 import Paginator from '../ui/Paginator.jsx';
 import Div from '../ui/Div.jsx';
-import Datepicker from '../ui/Datepicker.jsx';
+import Datepicker from '../ui/DatePicker.jsx';
 import moment from 'moment';
 import cx from 'classnames';
-import { createValidDateTime, getToday7am, getToday2359 } from '../../utils/dates.js';
+import { createValidDateTime, getToday0am, getToday2359 } from '../../utils/dates.js';
 
 
 let getTableMeta = (props) => {
@@ -139,6 +139,24 @@ let FaxogrammInfoTable = (props) => {
 								{...props}/>
 }
 
+let FaxogrammsDatepicker = (props) => {
+	return (
+		<Row>
+			<Col md={3}>
+			</Col>
+			<Col md={6} className="faxogramms-date-range">
+				<Div className="inline-block faxogramms-date">
+					<Datepicker date={ props.create_date_from } onChange={props.handleChange.bind(null, 'create_date_from')}/>
+				</Div>
+				<Div className="date-divider">—</Div>
+				<Div className="inline-block">
+					<Datepicker date={ props.create_date_to } onChange={props.handleChange.bind(null, 'create_date_to')}/>
+				</Div>
+			</Col>
+		</Row>
+	)
+}
+
 
 class FaxogrammDirectory extends ElementsList {
 
@@ -150,7 +168,7 @@ class FaxogrammDirectory extends ElementsList {
     this.state = {
       page: 0,
 			selectedElement: null,
-			create_date_from: getToday7am(),
+			create_date_from: getToday0am(),
 			create_date_to: getToday2359(),
     };
 	}
@@ -184,17 +202,7 @@ class FaxogrammDirectory extends ElementsList {
 
 		return (
 			<div className="ets-page-wrap">
-				<Row className="faxogramms-date-range">
-					<Col md={3}>
-					</Col>
-					<Col md={3}>
-						<Datepicker date={ this.state.create_date_from } onChange={this.handleChange.bind(this, 'create_date_from')}/>
-					</Col>
-					<Div className="date-divider">—</Div>
-					<Col md={3}>
-					<Datepicker date={ this.state.create_date_to } onChange={this.handleChange.bind(this, 'create_date_to')}/>
-					</Col>
-				</Row>
+				<FaxogrammsDatepicker handleChange={this.handleChange.bind(this)} {...this.state}/>
         <FaxogrammsTable data={faxogrammsList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'} {...this.props}>
         </FaxogrammsTable>
         <Paginator currentPage={this.state.page} maxPage={faxogrammsMaxPage} setPage={this.onPageChange.bind(this)}/>

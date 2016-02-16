@@ -5,8 +5,10 @@ import Table from '../ui/table/DataTable.jsx';
 import ElementsList from '../ElementsList.jsx';
 import Paginator from '../ui/Paginator.jsx';
 import Div from '../ui/Div.jsx';
+import Datepicker from '../ui/Datepicker.jsx';
 import moment from 'moment';
 import cx from 'classnames';
+import { createValidDateTime, getToday7am, getToday2359 } from '../../utils/dates.js';
 
 
 let getTableMeta = (props) => {
@@ -50,6 +52,7 @@ let getTableMeta = (props) => {
 				filter: {
 					type: 'select'
 				},
+        cssClassName: 'width60'
 			},
       {
 				name: 'order_status_name',
@@ -147,32 +150,51 @@ class FaxogrammDirectory extends ElementsList {
     this.state = {
       page: 0,
 			selectedElement: null,
+			create_date_from: getToday7am(),
+			create_date_to: getToday2359(),
     };
 	}
 
   init() {
-    const { flux } = this.context;
-    flux.getActions('objects').getFaxogramms(0);
+		this.getFaxogramms();
   }
 
   componentDidMount() {
     this.init();
 	}
 
+	getFaxogramms() {
+    this.context.flux.getActions('objects').getFaxogramms(this.state.page, this.state.create_date_from, this.state.create_date_to);
+	}
+
   onPageChange(page) {
-    this.setState({page});
-    this.context.flux.getActions('objects').getFaxogramms(page);
+    this.setState({page}, () => this.getFaxogramms());
   }
+
+	handleChange(field, value) {
+		this.setState({[field]: value}, () => this.getFaxogramms());
+	}
 
 	render() {
 
 		const { faxogrammsList = [], faxogrammsMaxPage } = this.props;
 		let faxogramm = this.state.selectedElement || {};
 		let faxogrammInfoData = [{id: 0, order_info: faxogramm.order_info}];
+		console.log(this.state);
 
 		return (
 			<div className="ets-page-wrap">
-
+				<Row className="faxogramms-date-range">
+					<Col md={3}>
+					</Col>
+					<Col md={3}>
+						<Datepicker date={ this.state.create_date_from } onChange={this.handleChange.bind(this, 'create_date_from')}/>
+					</Col>
+					<Div className="date-divider">—</Div>
+					<Col md={3}>
+					<Datepicker date={ this.state.create_date_to } onChange={this.handleChange.bind(this, 'create_date_to')}/>
+					</Col>
+				</Row>
         <FaxogrammsTable data={faxogrammsList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'} {...this.props}>
         </FaxogrammsTable>
         <Paginator currentPage={this.state.page} maxPage={faxogrammsMaxPage} setPage={this.onPageChange.bind(this)}/>

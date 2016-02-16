@@ -54,6 +54,16 @@ export function getTomorrow9am() {
   return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 9, 0);
 }
 
+export function getToday7am() {
+  let now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 7, 0);
+}
+
+export function getToday2359() {
+  let now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59);
+}
+
 export function getDateWithoutTZ(date, format = true) {
 	if (typeof date === 'string') date = date.replace('.000000Z', '');
 	date = moment(date).toDate();

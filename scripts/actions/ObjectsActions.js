@@ -7,6 +7,7 @@ import { fetchModels } from '../models.js';
 import { getOkrugs } from '../okrugs.js';
 import { getOwners } from '../owners.js';
 import { isEmpty } from '../utils/functions.js';
+import { createValidDateTime } from '../utils/dates.js';
 
 export default class ObjectsActions extends Actions {
 
@@ -60,10 +61,12 @@ export default class ObjectsActions extends Actions {
     return getODHReports();
   }
 
-  getFaxogramms(page) {
+  getFaxogramms(page, create_date_from, create_date_to) {
     const payload = {
       page,
-      on_page: 15
+      on_page: 15,
+      create_date_from: createValidDateTime(create_date_from),
+      create_date_to: createValidDateTime(create_date_to)
     };
     return getFaxogramms(payload);
   }

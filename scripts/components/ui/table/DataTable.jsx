@@ -171,7 +171,7 @@ class Table extends React.Component {
     if (typeof selectField !== 'undefined') {
       el.isSelected = el[selectField] === selected[selectField];
     }
-    el.isChecked = this.props.checked[el.id] && this.shouldBeRendered(el);
+    el.isChecked = this.props.checked && this.props.checked[el.id] && this.shouldBeRendered(el);
     //console.log(el.isChecked)
     return el;
   }

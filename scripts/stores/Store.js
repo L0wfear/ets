@@ -11,9 +11,10 @@ class Store extends FlummoxStore {
     };
   }
 
-  makeIndex(list, field) {
+  makeIndex(list, field = 'id') {
     let index = {};
-    list.forEach(item => index[item.id] = item);
+    console.log(field, list);
+    list.forEach(item => index[item[field]] = item);
     return index;
   }
 

@@ -35,6 +35,7 @@ class ObjectsStore extends Store {
       odhsList: [],
       faxogrammsList: [],
 
+      carsIndex: {},
       modelsIndex: {},
       typesIndex: {},
       ownersIndex: {},
@@ -60,8 +61,8 @@ class ObjectsStore extends Store {
       }
       return c;
     });
-
-    this.setState({carsList});
+    let carsIndex = this.makeIndex(carsList, 'asuods_id');
+    this.setState({carsList, carsIndex});
   }
 
   handleGetModels(modelsList) {
@@ -104,7 +105,6 @@ class ObjectsStore extends Store {
   }
 
   handleGetFaxogramms(faxogramms) {
-    console.log(faxogramms);
     this.setState({faxogrammsList: faxogramms.result, faxogrammsMaxPage: faxogramms.total_pages});
   }
 

@@ -7,6 +7,7 @@ import MissionFormWrap from './MissionFormWrap.jsx';
 import ElementsList from '../ElementsList.jsx';
 import moment from 'moment';
 import cx from 'classnames';
+import _ from 'lodash';
 
 let getTechOperationById = (id) => window.__ETS_CONTAINER__.flux.getStore('objects').getTechOperationById(id);
 
@@ -22,8 +23,8 @@ function getStatusLabel(s) {
 			return 'Назначено';
 		case 'not_assigned':
 			return 'Не назначено';
-		case 'closed':
-			return 'Закрыто';
+		case 'complete':
+			return 'Выполнено';
 		default:
 			return s;
 	}
@@ -174,12 +175,19 @@ export class MissionsJournal extends ElementsList {
     flux.getActions('missions').getMissionSources();
 	}
 
+	completeMission() {
+		let mission = _.cloneDeep(this.state.selectedElement);
+		mission.status = 'complete';
+		this.context.flux.getActions('missions').updateMission(mission);
+	}
+
 	render() {
 		const { missionsList = [] } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
 				<MissionsTable data={missionsList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'}{...this.props}>
+					<Button bsSize="small" onClick={this.completeMission.bind(this)} disabled={this.state.selectedElement === null || this.state.selectedElement.status !== 'assigned'}><Glyphicon glyph="ok" /> Отметка о выполнении</Button>
 					<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Создать задание</Button>
 					<Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="search" /> Просмотреть задание</Button>
 					<Button bsSize="small" disabled={this.state.selectedElement === null || this.state.selectedElement.status === 'assigned'} onClick={this.removeElement.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>

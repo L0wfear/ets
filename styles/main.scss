@@ -2573,3 +2573,8 @@ div.none {
     padding-top: 8px;
   }
 }
+
+.ets-page-wrap:focus {
+  outline:0px !important;
+    -webkit-appearance:none;
+}

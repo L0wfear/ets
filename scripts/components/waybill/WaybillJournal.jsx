@@ -3,6 +3,7 @@ import connectToStores from 'flummox/connect';
 import { Button, Glyphicon } from 'react-bootstrap';
 import Table from '../ui/table/DataTable.jsx';
 import WaybillFormWrap from './WaybillFormWrap.jsx';
+import ElementsList from '../ElementsList.jsx';
 import moment from 'moment';
 import cx from 'classnames';
 
@@ -121,6 +122,7 @@ let getTableMeta = (props) => {
 
 let WaybillsTable = (props) => {
 
+		let { carsIndex = {} } = props;
 		const renderers = {
 			status: ({data}) => <div>{getStatusLabel(data)}</div>,
 			responsible_person_id: ({data}) => <div>{getFIOById(data)}</div>,
@@ -140,40 +142,16 @@ let WaybillsTable = (props) => {
 									{...props}/>
 }
 
-class WaybillJournal extends Component {
+class WaybillJournal extends ElementsList {
 
-	constructor(props) {
+	constructor(props, context) {
 		super(props);
 
-		this.state = {
-			selectedBill: null,
-			loading: true,
-		};
-	}
-
-	selectBill({props}) {
-		const id = props.data.id;
-		let bill = _.find(this.props.waybillsList, w => w.id === id);
-
-		this.setState({ selectedBill: bill });
-	}
-
-	createBill() {
-		this.setState({
-			showForm: true,
-			selectedBill: null
-		});
-	}
-
-	onFormHide() {
-		this.setState({
-			showForm: false,
-			selectedBill: null,
-		});
+    this.removeElementAction = context.flux.getActions('waybills').removeWaybill;
+    this.mainListName = 'waybillsList';
 	}
 
 	componentDidMount() {
-		console.log(this.props);
 		const { flux } = this.context;
 		flux.getActions('waybills').getWaybills();
 		flux.getActions('employees').getEmployees();
@@ -182,38 +160,29 @@ class WaybillJournal extends Component {
 		flux.getActions('objects').getCars();
 	}
 
-	deleteBill() {
-		if (confirm('Вы уверены, что хотите удалить путевой лист?')) {
-			const { flux } = this.context;
-			flux.getActions('waybills').removeWaybill(this.state.selectedBill.id);
+	onKeyPress(e) {
+		if (e.key === 'Enter' && this.state.selectedElement !== null) {
+			this.showForm();
 		}
-	}
-
-	showBill() {
-		this.setState({ showForm: true });
-	}
-
-	closeBill() {
-		this.setState({ showForm: true });
 	}
 
 	render() {
 
 		const { waybillsList = [] } = this.props;
 
-		let showCloseBtn = this.state.selectedBill !== null && this.state.selectedBill.status !== 'active';
+		let showCloseBtn = this.state.selectedElement !== null && this.state.selectedElement.status !== 'active';
 
 		return (
-			<div className="ets-page-wrap">
-				<WaybillsTable data={waybillsList} onRowSelected={this.selectBill.bind(this)} selected={this.state.selectedBill} selectField={'id'} filterValues={this.props.location.query} {...this.props}>
-					<Button bsSize="small" onClick={this.createBill.bind(this)}><Glyphicon glyph="plus" /> Создать ПЛ</Button>
-					<Button bsSize="small" onClick={this.showBill.bind(this)} disabled={this.state.selectedBill === null}><Glyphicon glyph="search" /> Просмотреть ПЛ</Button>
-					<Button bsSize="small" disabled={showCloseBtn} onClick={this.closeBill.bind(this)}><Glyphicon glyph="ok" /> Закрыть ПЛ</Button>
-					<Button bsSize="small" disabled={this.state.selectedBill === null} onClick={this.deleteBill.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
+			<div className="ets-page-wrap" tabIndex="1" onKeyDown={this.onKeyPress.bind(this)}>
+				<WaybillsTable data={waybillsList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'} filterValues={this.props.location.query} {...this.props}>
+					<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Создать ПЛ</Button>
+					<Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="search" /> Просмотреть ПЛ</Button>
+					<Button bsSize="small" disabled={showCloseBtn} onClick={this.showForm.bind(this)}><Glyphicon glyph="ok" /> Закрыть ПЛ</Button>
+					<Button bsSize="small" disabled={this.state.selectedElement === null} onClick={this.removeElement.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
 				</WaybillsTable>
 				<WaybillFormWrap onFormHide={this.onFormHide.bind(this)}
 												 showForm={this.state.showForm}
-												 bill={this.state.selectedBill}
+												 bill={this.state.selectedElement}
 												 {...this.props}/>
 			</div>
 		);

@@ -166,7 +166,7 @@ class Table extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    if (props) {
+    if (props.checked) {
       // хак, т.к. гридл не умеет в обновление хедера
       let checked = Object.keys(props.checked).length === _(props.results).filter((r) => this.shouldBeRendered(r)).value().length;
       let el = document.getElementById('checkedColumn');

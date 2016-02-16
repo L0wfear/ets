@@ -167,6 +167,7 @@ class Table extends React.Component {
           isValid = false;
         }
       } else if (_.isArray(value)) {
+        console.log(value);
         if (value.indexOf(obj[key].toString()) === -1) {
           isValid = false;
         }
@@ -202,6 +203,12 @@ class Table extends React.Component {
         this.state.checkedRows[d.id] = this.state.checkedRows[d.id] === undefined ? false : this.state.checkedRows[d.id];
       }
     });
+  }
+
+  componentDidMount() {
+    if (this.props.filterValues) {
+      this.setState({filterValues: this.props.filterValues});
+    }
   }
 
   render() {

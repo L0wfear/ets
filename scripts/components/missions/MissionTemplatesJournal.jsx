@@ -105,7 +105,8 @@ class MissionTemplatesJournal extends ElementsList {
     this.mainListName = 'missionTemplatesList';
 		this.state = {
 			selectedMission: null,
-      checkedMissions: {}
+      checkedMissions: {},
+			formType: 'ViewForm',
 		};
 	}
 

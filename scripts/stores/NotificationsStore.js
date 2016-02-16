@@ -18,6 +18,7 @@ export default class LoadingStore extends Store {
 
 
     this.register(missionsActons.createMission, this.handleMissionCreate);
+    this.register(missionsActons.createMissions, this.handleMissionsCreate);
 
     this.state = {
       operationsCount: 0,
@@ -33,8 +34,14 @@ export default class LoadingStore extends Store {
 
   handleMissionCreate(response) {
     if (this.checkResponse(response)) {
-      global.NOTIFICATION_SYSTEM._addNotification(notifications.missionCreateSuccessNotification)
+      global.NOTIFICATION_SYSTEM._addNotification(notifications.missionCreateSuccessNotification);
     }
   }
+
+  handleMissionsCreate(response) {
+    global.NOTIFICATION_SYSTEM._addNotification(notifications.missionsCreationSuccessNotification);
+  }
+
+
 
 }

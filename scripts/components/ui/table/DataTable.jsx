@@ -47,66 +47,54 @@ class Table extends React.Component {
     console.log('hadleRowCheck is called');
     e.preventDefault();
     e.stopPropagation();
-    const clonedData = this.cloneObject(this.state.checkedRows);
-    if (this.state.checkedRows[id]) {
-      clonedData[id] = false;
-      this.props.onRowChecked(id, false);
+    this.props.onRowChecked(id, !!!this.props.checked[id]);
+    this.setState({
+      globalCheckboxState: !!this.props.checked[id] ? false : Object.keys(this.props.checked).map((key) => this.props.checked[key]).filter((value) => !value).length === 0 ? true : false,
+    });
+    return;
 
-      this.setState({
-        checkedRows: clonedData,
-        globalCheckboxState: false
-      });
-    } else {
-      clonedData[id] = true;
-      this.props.onRowChecked(id, true);
-
-      if (Object.keys(clonedData).map((key) => clonedData[key]).filter((value) => !value).length === 0) {
-        this.setState({
-          checkedRows: clonedData,
-          globalCheckboxState: true
-        }, () => {
-          this.forceUpdate();
-        });
-      } else {
-        this.setState({
-          checkedRows: clonedData,
-          globalCheckboxState: false
-        }, () => {
-          this.forceUpdate();
-        });
-      }
-    }
+    // const clonedData = this.cloneObject(this.state.checkedRows);
+    // if (this.state.checkedRows[id]) {
+    //   clonedData[id] = false;
+    //   this.props.onRowChecked(id, false);
+    //
+    //   this.setState({
+    //     checkedRows: clonedData,
+    //     globalCheckboxState: false
+    //   });
+    // } else {
+    //   clonedData[id] = true;
+    //   this.props.onRowChecked(id, true);
+    //
+    //   if (Object.keys(clonedData).map((key) => clonedData[key]).filter((value) => !value).length === 0) {
+    //     this.setState({
+    //       checkedRows: clonedData,
+    //       globalCheckboxState: true
+    //     }, () => {
+    //       this.forceUpdate();
+    //     });
+    //   } else {
+    //     this.setState({
+    //       checkedRows: clonedData,
+    //       globalCheckboxState: false
+    //     }, () => {
+    //       this.forceUpdate();
+    //     });
+    //   }
+    // }
   }
 
   globalCheckHandler(event) {
-    const clonedData = this.cloneObject(this.state.checkedRows);
-    if (_.filter(_.values(this.state.checkedRows), (item) => !item).length > 0 && !this.state.globalCheckboxState) {
-      for (let key of Object.keys(clonedData)) {
-        if (this.shouldBeRendered(_.find(this.props.results, (result) => result.id.toString() === key.toString()))) {
-          clonedData[key] = true;
-        }
-      }
-      this.props.onAllRowsChecked(this.props.results.filter((item) => this.shouldBeRendered(item)), true);
-      this.setState({
-        checkedRows: clonedData,
-        globalCheckboxState: true
-      });
-    } else {
-      for (let key of Object.keys(clonedData)) {
-        if (this.shouldBeRendered(_.find(this.props.results, (result) => result.id.toString() === key.toString()))) {
-          clonedData[key] = false;
-        }
-      }
-      this.props.onAllRowsChecked(this.props.results.filter((item) => this.shouldBeRendered(item)), false);
-      this.setState({
-        checkedRows: clonedData,
-        globalCheckboxState: false
-      });
-    }
+    let checked = _(this.props.results)
+                  .filter((r) => this.shouldBeRendered(r))
+                  .reduce((cur, val) => {cur[val.id] = val; return cur;}, {});
+    this.props.onAllRowsChecked(checked, this.state.globalCheckboxState ? false : true);
+    this.setState({globalCheckboxState: !this.state.globalCheckboxState});
     event.stopPropagation();
   }
 
   initializeMetadata(tableMeta = { cols: [] }, renderers = {}) {
+
   	const metadata = _.reduce(tableMeta.cols, (cur, col, i) => {
   		const metaObject = {
   			columnName: col.name,
@@ -118,7 +106,7 @@ class Table extends React.Component {
   		}
 
       if (typeof col.cssClassName !== 'undefined') {
-  			metaObject.cssClassName = col.cssClassName;
+  			metaObject.cssClassName = col.cssClassName || '';
   		}
 
   		cur.push(metaObject);
@@ -128,9 +116,9 @@ class Table extends React.Component {
       displayName: <input type="checkbox" checked={this.state.globalCheckboxState} onChange={this.globalCheckHandler.bind(this)}></input>,
       sortable: false,
       cssClassName: 'width60 text-center',
-      customComponent: (value) => {
-        const id = value.rowData.id;
-        return <div><input type="checkbox" checked={this.state.checkedRows[id]} onChange={this.handleRowCheck.bind(this, id)}></input></div>
+      customComponent: (props) => {
+        const id = props.rowData.id;
+        return <div><input type="checkbox" checked={this.props.checked[id]} onChange={this.handleRowCheck.bind(this, id)}></input></div>
       }
     }] : []);
 
@@ -140,12 +128,7 @@ class Table extends React.Component {
   initializeRowMetadata() {
 
   	const rowMetadata = {
-      "bodyCssClassName": function(rowData) {
-        if (rowData.isSelected === true) {
-          return "selected-row";
-        }
-        return "standard-row";
-      }
+      "bodyCssClassName": (rowData) => rowData.isSelected === true ? "selected-row" : "standard-row",
   	};
 
   	return rowMetadata;
@@ -180,28 +163,34 @@ class Table extends React.Component {
     return isValid;
   }
 
+  processSelected(selected, selectField, onRowSelected, el, i) {
+    if (!selected || typeof onRowSelected === 'undefined') {
+      el.isSelected = false;
+      return el;
+    }
+    if (typeof selectField !== 'undefined') {
+      el.isSelected = el[selectField] === selected[selectField];
+    }
+    el.isChecked = this.props.checked[el.id] && this.shouldBeRendered(el);
+    //console.log(el.isChecked)
+    return el;
+  }
+
   processTableData(data, selected, selectField, onRowSelected) {
-    return _(data).map( (d, i) => {
-      if (!selected || typeof onRowSelected === 'undefined') {
-        d.isSelected = false;
-        return d;
-      }
-      if (typeof selectField !== 'undefined') {
-        d.isSelected = d[selectField] === selected[selectField];
-      }
-      d.isChecked = this.state.checkedRows[d.id];
-      return d;
-    }).filter(this.shouldBeRendered.bind(this)).value();
+    return _(data)
+           .map(this.processSelected.bind(this, selected, selectField, onRowSelected))
+           .filter(this.shouldBeRendered.bind(this))
+           .value();
   }
 
   componentWillReceiveProps(nextProps) {
-    nextProps.results.forEach((d) => {
-      if (!this.shouldBeRendered(d)) {
-        this.state.checkedRows[d.id] = undefined;
-      } else {
-        this.state.checkedRows[d.id] = this.state.checkedRows[d.id] === undefined ? false : this.state.checkedRows[d.id];
-      }
-    });
+    // nextProps.results.forEach((d) => {
+    //   if (!this.shouldBeRendered(d)) {
+    //     this.state.checkedRows[d.id] = undefined;
+    //   } else {
+    //     this.state.checkedRows[d.id] = this.state.checkedRows[d.id] === undefined ? false : this.state.checkedRows[d.id];
+    //   }
+    // });
   }
 
   componentDidMount() {
@@ -211,8 +200,8 @@ class Table extends React.Component {
   }
 
   render() {
-    const { tableMeta, renderers, onRowSelected, selected, selectField, title = '', initialSort = 'id', initialSortAscending = true, multiSelection = false, noFilter } = this.props;
-    const tableCols = multiSelection ? ['isChecked',...tableMeta.cols.map( c => c.name )] : tableMeta.cols.map( c => c.name );
+    const { tableMeta, renderers, onRowSelected, selected, selectField, checked = {}, title = '', initialSort = 'id', initialSortAscending = true, multiSelection = false, noFilter } = this.props;
+    const tableCols = multiSelection ? ['isChecked', ...tableMeta.cols.map( c => c.name )] : tableMeta.cols.map( c => c.name );
     const columnMetadata = this.initializeMetadata(tableMeta, renderers);
 		const rowMetadata = this.initializeRowMetadata();
     const data = _.cloneDeep(this.props.results);

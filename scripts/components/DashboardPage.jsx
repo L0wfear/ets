@@ -339,7 +339,7 @@ class DashboardPage extends React.Component {
           </Col>
 
           <Col md={2}>
-            <MasterManagementCard hidden={role !== 'master'} />
+            <MasterManagementCard/>
 
             {componentsSide}
           </Col>

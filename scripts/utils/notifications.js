@@ -14,7 +14,7 @@ export const loginErrorNotification = {
   }
 };
 
-export const missionCreationSuccessNotification = {
+export const missionsCreationSuccessNotification = {
   title: 'Формирование заданий',
   message: 'Задания сформированы успешно',
   level: 'success',
@@ -64,5 +64,6 @@ const missionCreateSuccessNotification = {
 }
 
 export const notifications = {
-  missionCreateSuccessNotification
+  missionCreateSuccessNotification,
+  missionsCreationSuccessNotification
 }

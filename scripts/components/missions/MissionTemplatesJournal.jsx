@@ -131,11 +131,8 @@ class MissionTemplatesJournal extends ElementsList {
 
   checkAll(rows, state) {
     let checkedMissions = _.cloneDeep(this.state.checkedMissions);
-    if (state) {
-      checkedMissions = rows;
-    } else {
-      checkedMissions = {};
-    }
+    checkedMissions = state ? rows : {};
+
     this.setState({checkedMissions});
   }
 
@@ -146,10 +143,12 @@ class MissionTemplatesJournal extends ElementsList {
 		})
 	}
 
-	onFormHide() {
+	onFormHide(clearCheckedMissions) {
+		console.log(clearCheckedMissions);
 		this.setState({
 			showForm: false,
 			selectedMission: null,
+			checkedMissions: clearCheckedMissions ? {} : this.state.checkedMissions,
 		});
 	}
 
@@ -186,10 +185,11 @@ class MissionTemplatesJournal extends ElementsList {
 	render() {
 
 		const { missionTemplatesList = [] } = this.props;
+		console.log(this.state.checkedMissions);
 
 		return (
 			<div className="ets-page-wrap">
-				<MissionsTable data={missionTemplatesList} onAllRowsChecked={this.checkAll.bind(this)} onRowChecked={this.checkMission.bind(this)} onRowSelected={this.selectMission.bind(this)} selected={this.state.selectedMission} selectField={'id'} {...this.props}>
+				<MissionsTable data={missionTemplatesList} onAllRowsChecked={this.checkAll.bind(this)} onRowChecked={this.checkMission.bind(this)} onRowSelected={this.selectMission.bind(this)} selected={this.state.selectedMission} checked={this.state.checkedMissions} selectField={'id'} {...this.props}>
 					<Button bsSize="small" onClick={this.createMission.bind(this)}><Glyphicon glyph="plus" /> Создать шаблон задания</Button>
 					<Button bsSize="small" onClick={this.createMissions.bind(this)} disabled={Object.keys(this.state.checkedMissions).length === 0}>Сформировать задание</Button>
 					<Button bsSize="small" onClick={this.showMission.bind(this)} disabled={this.state.selectedMission === null}><Glyphicon glyph="search" /> Просмотреть шаблон</Button>

@@ -127,7 +127,11 @@ export default class MissionsActions extends Actions {
     return getMissionReportById(payload);
   }
 
-  createMissionReport(payload = {}) {
+  createMissionReport(mission_date_start_from, mission_date_end_to) {
+    const payload = {
+      mission_date_start_from: createValidDateTime(mission_date_start_from),
+      mission_date_end_to: createValidDateTime(mission_date_end_to),
+    };
     return createMissionReport(payload);
   }
 

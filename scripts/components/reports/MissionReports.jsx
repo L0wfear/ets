@@ -1,11 +1,34 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import Table from '../ui/table/DataTable.jsx';
-import { Button, Glyphicon } from 'react-bootstrap';
+import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
 import EtsSelect from '../ui/EtsSelect.jsx';
 import Div from '../ui/Div.jsx';
-import { getFormattedDateTimeSeconds } from '../../utils/dates.js';
+import Datepicker from '../ui/DatePicker.jsx';
+import { getFormattedDateTimeSeconds, getDatesByShift } from '../../utils/dates.js';
 import { getReportNotReadyNotification } from '../../utils/notifications.js';
+
+
+let FaxogrammsDatepicker = (props) => {
+	return (
+		<Row>
+			<Col md={3}>
+			</Col>
+			<Col md={6} className="faxogramms-date-range">
+				<Div className="inline-block faxogramms-date">
+					<Datepicker date={ props.mission_date_start_from } onChange={props.handleChange.bind(null, 'mission_date_start_from')}/>
+				</Div>
+				<Div className="date-divider">—</Div>
+				<Div className="inline-block">
+					<Datepicker date={ props.mission_date_end_to } onChange={props.handleChange.bind(null, 'mission_date_end_to')}/>
+				</Div>
+			</Col>
+      <Col md={3}>
+        <Button bsSize="small" onClick={props.onClick.bind(this)}>Сформировать отчет</Button>
+      </Col>
+		</Row>
+	)
+}
 
 let getStatusLabel = (status) => {
   let result = '';
@@ -105,17 +128,17 @@ class RouteLaunchReports extends Component {
 	constructor(props) {
 		super(props);
 
+    let [mission_date_start_from, mission_date_end_to] = getDatesByShift();
+
 		this.state = {
-			selectedCar: null,
-			showForm: false,
-      generationType: 'null',
+      mission_date_start_from,
+      mission_date_end_to,
 		};
 	}
 
 	componentDidMount() {
 		const { flux } = this.context;
-		flux.getActions('missions').getMissionReports().then( r => console.log(r));
-		flux.getActions('objects').getTechOperations();
+		flux.getActions('missions').getMissionReports();
 	}
 
   onReportSelect({props}) {
@@ -123,30 +146,28 @@ class RouteLaunchReports extends Component {
     if (props.data.status !== 'success') {
       global.NOTIFICATION_SYSTEM._addNotification(getReportNotReadyNotification(this.context.flux));
     } else {
-      this.context.history.pushState(null, '/mission-report/'+id);
+      this.context.history.pushState(null, `/mission-report/${id}`);
     }
   }
 
-  handleGenerationTypeChange(type) {
-    this.setState({generationType: type});
-  }
+  handleChange(field, value) {
+		this.setState({[field]: value});
+	}
+
   createMissionReport() {
 		const { flux } = this.context;
-		flux.getActions('missions').createMissionReport();
+		flux.getActions('missions').createMissionReport(this.state.mission_date_start_from, this.state.mission_date_end_to);
   }
 
 	render() {
 
-		const { reportsList = [], techOperationsList = [], missionReportsList } = this.props;
-    const TECH_OPERATIONS = [{value: 'null', label: 'Все операции'}].concat(techOperationsList.map(({id, name}) => ({value: id, label: name})));
+		const { missionReportsList } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
-      <Div className="route-report-panel">
-        <Button bsSize="small" onClick={this.createMissionReport.bind(this)}>Сформировать отчет</Button>
-      </Div>
-				<CarsTable data={missionReportsList} onRowSelected={this.onReportSelect.bind(this)}>
-				</CarsTable>
+  			<FaxogrammsDatepicker handleChange={this.handleChange.bind(this)} onClick={this.createMissionReport.bind(this)} {...this.state}/>
+
+				<CarsTable data={missionReportsList} onRowSelected={this.onReportSelect.bind(this)} />
 			</div>
 		);
 

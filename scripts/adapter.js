@@ -12,8 +12,7 @@ import { loadOwners } from './owners.js';
 
 let getUrl = (url) => config.backend ? config.backend + url : url;
 let getOldUrl = (url) => config.backendOld ? config.backendOld + url : url;
-let getServiceUrl = (url) => config.servicesBackend ? config.servicesBackend + url : url;
-let getEtsServiceUrl = (url) => config.etsServicesBackend ? config.etsServicesBackend + url : url;
+
 let toFormData = (data) => {
   const formData = new FormData();
   _.mapKeys(data, (v, k) => {
@@ -76,12 +75,12 @@ const TECH_OPERATIONS_URL = getUrl('/technical_operation/');
 const ODHS_URL = getUrl('/odh/');
 const WORK_KINDS_URL = getUrl('/work_kind/');
 const MISSIONS_URL = getUrl('/mission/');
-const MISSIONS_CREATION_URL = getEtsServiceUrl('/create_missions_from_mission_templates/');
+const MISSIONS_CREATION_URL = getUrl('/create_missions_from_mission_templates/');
 const MISSION_SOURCES_URL = getUrl('/mission_source/');
 const MISSION_TEMPLATES_URL = getUrl('/mission_template/');
 const ROUTES_URL = getUrl('/route/');
 const ROUTE_REPORTS_URL = getUrl('/route_odh_covering_report/');
-const ODH_REPORTS_SERVICE_URL = getServiceUrl('/odh-reports/');
+const ODH_REPORTS_SERVICE_URL = getUrl('/odh-reports/');
 const ROUTE_VALIDATE_URL = getUrl('/route_validate/');
 const MISSION_REPORTS_URL = getUrl('/car_odh_travel_report/');
 const GEOZONE_URL = getUrl('/geozone/');

@@ -14,7 +14,7 @@ function getFIOById(id) {
 	const employee = employeesStore.getEmployeeById(id);
 	if (employee) {
 		if (employee.last_name && employee.first_name && employee.middle_name)
-		result = employee.last_name + ' ' + employee.first_name[0]+ '.' + employee.middle_name[0];
+		result = employee.last_name + ' ' + employee.first_name[0]+ '.' + employee.middle_name[0] + '.';
 	}
 
 	return result;

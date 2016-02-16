@@ -64,7 +64,7 @@ let getTableMeta = (props) => {
 			},
       {
 				name: 'pgm_deny',
-				caption: 'ПГМ не применять',
+				caption: 'ПГМ',
 				type: 'string',
 				filter: {
 					type: 'select',
@@ -85,7 +85,7 @@ let FaxogrammsTable = (props) => {
 			order_date: ({data}) => <div>{data ? moment.utc(data).format('YYYY-MM-DD HH:mm') : 'Не указано'}</div>,
   		order_date_to: ({data}) => <div>{data ? moment.utc(data).format('YYYY-MM-DD HH:mm') : 'Не указано'}</div>,
     	create_date: ({data}) => <div>{data ? moment.utc(data).format('YYYY-MM-DD HH:mm') : 'Не указано'}</div>,
-			pgm_deny: ({data}) => <div>{data === 1 ? 'Да' : 'Нет'}</div>,
+			pgm_deny: ({data}) => <div>{data === 1 ? 'Не применять' : 'Применять'}</div>,
 		};
 
 		return <Table title="Реестр факсограмм"

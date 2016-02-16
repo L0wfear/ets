@@ -9,6 +9,7 @@ import Div from '../Div.jsx';
 import moment from 'moment';
 import _ from 'lodash';
 import update from 'react-addons-update';
+import cx from 'classnames';
 
 class Table extends React.Component {
 
@@ -32,7 +33,8 @@ class Table extends React.Component {
 	}
 
 	saveFilter(filterValues) {
-		this.setState({filterValues});
+    this.props.onAllRowsChecked(_.reduce(this.props.results, (cur, val) => {cur[val.id] = val; return cur;}, {}), false);
+		this.setState({filterValues, globalCheckboxState: false});
 	}
 
   cloneObject(object) {
@@ -47,41 +49,14 @@ class Table extends React.Component {
     console.log('hadleRowCheck is called');
     e.preventDefault();
     e.stopPropagation();
-    this.props.onRowChecked(id, !!!this.props.checked[id]);
+    let value = ! !!this.props.checked[id];
+    let clonedData = _.cloneDeep(this.props.checked);
+    clonedData[id] = value;
+    if (value === false) delete clonedData[id];
+    this.props.onRowChecked(id, value);
     this.setState({
-      globalCheckboxState: !!this.props.checked[id] ? false : Object.keys(this.props.checked).map((key) => this.props.checked[key]).filter((value) => !value).length === 0 ? true : false,
+      globalCheckboxState: Object.keys(clonedData).length === _(this.props.results).filter((r) => this.shouldBeRendered(r)).value().length ? true : false,
     });
-    return;
-
-    // const clonedData = this.cloneObject(this.state.checkedRows);
-    // if (this.state.checkedRows[id]) {
-    //   clonedData[id] = false;
-    //   this.props.onRowChecked(id, false);
-    //
-    //   this.setState({
-    //     checkedRows: clonedData,
-    //     globalCheckboxState: false
-    //   });
-    // } else {
-    //   clonedData[id] = true;
-    //   this.props.onRowChecked(id, true);
-    //
-    //   if (Object.keys(clonedData).map((key) => clonedData[key]).filter((value) => !value).length === 0) {
-    //     this.setState({
-    //       checkedRows: clonedData,
-    //       globalCheckboxState: true
-    //     }, () => {
-    //       this.forceUpdate();
-    //     });
-    //   } else {
-    //     this.setState({
-    //       checkedRows: clonedData,
-    //       globalCheckboxState: false
-    //     }, () => {
-    //       this.forceUpdate();
-    //     });
-    //   }
-    // }
   }
 
   globalCheckHandler(event) {
@@ -89,7 +64,9 @@ class Table extends React.Component {
                   .filter((r) => this.shouldBeRendered(r))
                   .reduce((cur, val) => {cur[val.id] = val; return cur;}, {});
     this.props.onAllRowsChecked(checked, this.state.globalCheckboxState ? false : true);
-    this.setState({globalCheckboxState: !this.state.globalCheckboxState});
+    this.setState({globalCheckboxState: !this.state.globalCheckboxState}, () => {
+      this.forceUpdate();
+    });
     event.stopPropagation();
   }
 
@@ -113,13 +90,13 @@ class Table extends React.Component {
   		return cur;
   	}, this.props.multiSelection ? [{
       columnName: 'isChecked',
-      displayName: <input type="checkbox" checked={this.state.globalCheckboxState} onChange={this.globalCheckHandler.bind(this)}></input>,
+      displayName: <input id="checkedColumn" type="checkbox" onChange={this.globalCheckHandler.bind(this)}></input>,
       sortable: false,
       cssClassName: 'width60 text-center',
       customComponent: (props) => {
         const id = props.rowData.id;
         return <div><input type="checkbox" checked={this.props.checked[id]} onChange={this.handleRowCheck.bind(this, id)}></input></div>
-      }
+      },
     }] : []);
 
   	return metadata;
@@ -172,7 +149,6 @@ class Table extends React.Component {
       el.isSelected = el[selectField] === selected[selectField];
     }
     el.isChecked = this.props.checked && this.props.checked[el.id] && this.shouldBeRendered(el);
-    //console.log(el.isChecked)
     return el;
   }
 
@@ -183,19 +159,18 @@ class Table extends React.Component {
            .value();
   }
 
-  componentWillReceiveProps(nextProps) {
-    // nextProps.results.forEach((d) => {
-    //   if (!this.shouldBeRendered(d)) {
-    //     this.state.checkedRows[d.id] = undefined;
-    //   } else {
-    //     this.state.checkedRows[d.id] = this.state.checkedRows[d.id] === undefined ? false : this.state.checkedRows[d.id];
-    //   }
-    // });
-  }
-
   componentDidMount() {
     if (this.props.filterValues) {
       this.setState({filterValues: this.props.filterValues});
+    }
+  }
+
+  componentWillReceiveProps(props) {
+    if (props) {
+      // хак, т.к. гридл не умеет в обновление хедера
+      let checked = Object.keys(props.checked).length === _(props.results).filter((r) => this.shouldBeRendered(r)).value().length;
+      let el = document.getElementById('checkedColumn');
+      if (el) el.checked = checked;
     }
   }
 

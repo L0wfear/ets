@@ -1,4 +1,4 @@
-import { Store } from 'flummox';
+import Store from './Store.js';
 import _ from 'lodash';
 
 class ObjectsStore extends Store {
@@ -34,6 +34,11 @@ class ObjectsStore extends Store {
       workKindsList: [],
       odhsList: [],
       faxogrammsList: [],
+
+      modelsIndex: {},
+      typesIndex: {},
+      ownersIndex: {},
+
       faxogrammsMaxPage: 0,
     };
 
@@ -60,11 +65,13 @@ class ObjectsStore extends Store {
   }
 
   handleGetModels(modelsList) {
-    this.setState({modelsList});
+    let modelsIndex = this.makeIndex(modelsList);
+    this.setState({modelsList, modelsIndex});
   }
 
   handleGetTypes(typesList) {
-    this.setState({typesList});
+    let typesIndex = this.makeIndex(typesList);
+    this.setState({typesList, typesIndex});
   }
 
   handleGetOkrugs(okrugsList) {
@@ -72,7 +79,8 @@ class ObjectsStore extends Store {
   }
 
   handleGetOwners(ownersList) {
-    this.setState({ownersList});
+    let ownersIndex = this.makeIndex(ownersList);
+    this.setState({ownersList, ownersIndex});
   }
 
   handleGetCustomers(customersList) {

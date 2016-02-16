@@ -4,14 +4,12 @@ import EtsSelect from '../ui/EtsSelect.jsx';
 import Datepicker from '../ui/DatePicker.jsx';
 import moment from 'moment';
 import Div from '../ui/Div.jsx';
+import Form from '../compositions/Form.jsx';
+import connectToStores from 'flummox/connect';
 import { getCarImage } from '../../adapter.js';
-import { getModelById } from '../../models.js';
-import { getStatusById } from '../../statuses.js';
-import { getTypeById } from '../../types.js';
-import { getOwnerById } from '../../owners.js';
 import config from '../../config.js';
 
-export default class CarForm extends Component {
+class CarForm extends Form {
 
 	constructor(props) {
 		super(props);
@@ -21,27 +19,20 @@ export default class CarForm extends Component {
 		}
 	}
 
-	handleChange(field, e) {
-		this.props.handleFormChange(field, e);
-	}
-
-  handleSubmit() {
-    console.log('submitting car form', this.props.formState);
-    this.props.onSubmit(this.props.formState);
-  }
-
 	componentDidMount() {
     const car = this.props.formState;
     getCarImage(car.asuods_id, car.type_id, car.model_id).then( (imageUrl) => {
-      this.setState({imageUrl})
+      this.setState({imageUrl});
     });
 	}
 
 	render() {
 
 		let state = this.props.formState;
-
-    console.log('form state is ', state);
+		let { ownersIndex = {}, modelsIndex = {}, typesIndex = {} } = this.props;
+		let owner = ownersIndex[state.owner_id] || {};
+		let model = modelsIndex[state.model_id] || {};
+		let type = typesIndex[state.type_id] || {};
 
 		return (
 			<Modal {...this.props}>
@@ -56,11 +47,7 @@ export default class CarForm extends Component {
 
 		      	<Col md={6}>
 	            <Div hidden={!this.state.imageUrl}>
-	              <img src={config.backend + config.images + this.state.imageUrl} style={{
-	                margin: 10,
-	                width: 250,
-	                minHeight: 100
-	              }}/>
+	              <img src={config.backend + config.images + this.state.imageUrl} className="car-form-image"/>
 	            </Div>
 		      	</Col>
 
@@ -81,16 +68,16 @@ export default class CarForm extends Component {
 
 	          <Col md={6}>
 	            <Div>
-	              <label>Владелец</label> {getOwnerById(state.owner_id).title}
+	              <label>Владелец</label> {owner.title || 'Не указано'}
 	            </Div>
 	            <Div>
-	              <label>Госномер</label> {state.gov_number}
+	              <label>Госномер</label> {state.gov_number || 'Не указано'}
 	            </Div>
 	            <Div>
-	              <label>Марка шасси</label> {getModelById(state.model_id).title}
+	              <label>Марка шасси</label> {model.title || 'Не указано'}
 	            </Div>
 	            <Div>
-	              <label>Тип</label> {getTypeById(state.type_id).title}
+	              <label>Тип</label> {type.title || 'Не указано'}
 	            </Div>
 	          </Col>
 
@@ -106,3 +93,5 @@ export default class CarForm extends Component {
 		)
 	}
 }
+
+export default connectToStores(CarForm, ['objects']);

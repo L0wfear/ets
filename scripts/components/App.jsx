@@ -12,7 +12,7 @@ import MonitorPage from './MonitorPage.jsx';
 import LoadingPage from './LoadingPage.jsx';
 import DashboardPage from './DashboardPage.jsx';
 import DriversList from './drivers/DriversList.jsx';
-import CarsList from './CarsList.jsx';
+import CarsList from './cars/CarsList.jsx';
 import FuelRatesDirectory from './directories/FuelRatesDirectory.jsx';
 import ODHDirectory from './directories/ODHDirectory.jsx';
 import TechOperationsDirectory from './directories/TechOperationsDirectory.jsx';
@@ -121,7 +121,7 @@ function loadData(nextState, replaceState, callback) {
 
 const routes = (
   <Router history={history}>
-    <Redirect from="/" to="monitor" />
+    <Redirect from="/" to="dashboard" />
     <Route path="/" component={App} onEnter={loadData}>
       <Route path="monitor" component={MonitorPage} onEnter={requireAuth}/>
       <Route path="dashboard" component={DashboardPage} onEnter={requireAuth}/>

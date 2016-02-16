@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
-import Table from './ui/table/DataTable.jsx';
+import Table from '../ui/table/DataTable.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
-import CarFormWrap from './cars/CarFormWrap.jsx';
-
-// function createFakeMissingCarData(types, el, i) {
-// 	el.type = _.find(types, t => t.id === el.type_id).title;
-// 	return el;
-// }
+import CarFormWrap from './CarFormWrap.jsx';
 
 let getCondition = (data) => {
 	return parseInt(data) > 0 ? 'Исправно' : 'Неисправно';
@@ -124,6 +119,7 @@ class CarsList extends Component {
 	componentDidMount() {
 		const { flux } = this.context;
 		flux.getActions('objects').getCars();
+		flux.getActions('objects').getOwners();
 	}
 
 	render() {

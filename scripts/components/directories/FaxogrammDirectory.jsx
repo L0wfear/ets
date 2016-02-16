@@ -82,9 +82,9 @@ let getTableMeta = (props) => {
 let FaxogrammsTable = (props) => {
 
 		const renderers = {
-			order_date: ({data}) => <div>{moment.utc(data).format('YYYY-MM-DD HH:mm')}</div>,
-  		order_date_to: ({data}) => <div>{moment.utc(data).format('YYYY-MM-DD HH:mm')}</div>,
-    	create_date: ({data}) => <div>{moment.utc(data).format('YYYY-MM-DD HH:mm')}</div>,
+			order_date: ({data}) => <div>{data ? moment.utc(data).format('YYYY-MM-DD HH:mm') : 'Не указано'}</div>,
+  		order_date_to: ({data}) => <div>{data ? moment.utc(data).format('YYYY-MM-DD HH:mm') : 'Не указано'}</div>,
+    	create_date: ({data}) => <div>{data ? moment.utc(data).format('YYYY-MM-DD HH:mm') : 'Не указано'}</div>,
 			pgm_deny: ({data}) => <div>{data === 1 ? 'Да' : 'Нет'}</div>,
 		};
 

@@ -19,7 +19,7 @@ class MissionFormWrap extends FormWrap {
 	componentWillReceiveProps(props) {
 
 		if (props.showForm && props.showForm !== this.props.showForm) {
-			if (props.mission === null ) {
+			if (props.element === null ) {
 				const defaultMission = getDefaultMission();
 				this.setState({
 					formState: defaultMission,
@@ -27,7 +27,7 @@ class MissionFormWrap extends FormWrap {
 					formErrors: this.validate(defaultMission, {}),
 				})
 			} else {
-				let mission = _.clone(props.mission);
+				let mission = _.clone(props.element);
 
 				mission.date_start = getDateWithoutTZ(mission.date_start);
 				mission.date_end = getDateWithoutTZ(mission.date_end);

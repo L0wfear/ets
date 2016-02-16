@@ -18,7 +18,6 @@ export default class RouteInfo extends Component {
 		render() {
 			let route = this.props.route;
 			const { object_list = [] } = route;
-			console.error(route.type);
 			let manual = route.type === 'vector' ? true : false;
 			const polys = object_list.map(({shape, name, state, begin, end}) => {
 				if (!shape && begin) {

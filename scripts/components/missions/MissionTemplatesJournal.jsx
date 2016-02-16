@@ -166,8 +166,6 @@ class MissionTemplatesJournal extends ElementsList {
     flux.getActions('routes').getRoutes();
     flux.getActions('objects').getCars();
     flux.getActions('missions').getMissionSources();
-    flux.getActions('routes').getRoutes();
-    flux.getActions('missions').getMissionSources();
 	}
 
 	removeMission() {
@@ -199,7 +197,7 @@ class MissionTemplatesJournal extends ElementsList {
 				</MissionsTable>
 				<MissionTemplateFormWrap onFormHide={this.onFormHide.bind(this)}
 												 showForm={this.state.showForm}
-												 mission={this.state.selectedMission}
+												 element={this.state.selectedMission}
                          formType={this.state.formType}
                          missions={this.state.checkedMissions}
 												 {...this.props}/>

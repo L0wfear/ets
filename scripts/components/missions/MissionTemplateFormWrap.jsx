@@ -43,7 +43,7 @@ class MissionFormWrap extends FormWrap {
 	componentWillReceiveProps(props) {
 		if (props.showForm && props.showForm !== this.props.showForm) {
       if (props.formType === "ViewForm") {
-        if (props.mission === null ) {
+        if (props.element === null ) {
           const defaultMission = getDefaultMissionTemplate();
           this.setState({
             formState: defaultMission,
@@ -51,7 +51,7 @@ class MissionFormWrap extends FormWrap {
             formErrors: this.validate(defaultMission, {}),
           })
         } else {
-          let _mission = _.clone(props.mission);
+          let _mission = _.clone(props.element);
 
           this.setState({
             formState: _mission,

@@ -18,7 +18,7 @@ export const missionSchema = {
 			key: 'car_id',
 			title: 'Транспортное средство',
 			type: 'number',
-			required: false,
+			required: true,
 		},
 		{
 			key: 'route_id',
@@ -36,36 +36,6 @@ export const missionSchema = {
 };
 
 const closingProperties = [
-  {
-    key: 'fuel_given',
-    title: 'Топливо.Выдано',
-    type: 'floatFixed3',
-    required: false,
-  },
-  {
-    key: 'fuel_end',
-    title: 'Топливо.Возврат',
-    type: 'floatFixed3',
-    required: true,
-  },
-  {
-    key: 'odometr_end',
-    title: 'Одометр.Возврат',
-    type: 'floatFixed3',
-    required: false,
-  },
-  {
-    key: 'motohours_end',
-    title: 'Счетчик моточасов.Возврат',
-    type: 'floatFixed3',
-    required: false,
-  },
-  {
-    key: 'motohours_equip_end',
-    title: 'Счетчик моточасов обор-ния.Возврат',
-    type: 'floatFixed3',
-    required: false,
-  },
 ];
 
 export const missionClosingSchema = {

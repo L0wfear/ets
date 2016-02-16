@@ -168,12 +168,10 @@ export class MissionsJournal extends ElementsList {
 	componentDidMount() {
     this.init();
 		const { flux } = this.context;
-    flux.getActions('objects').getWorkKinds();
     flux.getActions('objects').getTechOperations();
     flux.getActions('routes').getRoutes();
     flux.getActions('objects').getCars();
     flux.getActions('missions').getMissionSources();
-    flux.getActions('routes').getRoutes();
 	}
 
 	render() {
@@ -188,7 +186,7 @@ export class MissionsJournal extends ElementsList {
 				</MissionsTable>
 				<MissionFormWrap onFormHide={this.onFormHide.bind(this)}
 												 showForm={this.state.showForm}
-												 mission={this.state.selectedElement}
+												 element={this.state.selectedElement}
 												 {...this.props}/>
 			</div>
 		);

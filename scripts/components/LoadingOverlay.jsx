@@ -27,4 +27,4 @@ LoadingOverlay.contextTypes = {
   flux: React.PropTypes.object,
 };
 
-export default connectToStores(LoadingOverlay, ['loading']);
+export default connectToStores(LoadingOverlay, ['loading', 'notifications']);

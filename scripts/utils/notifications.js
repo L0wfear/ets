@@ -20,7 +20,7 @@ export const missionCreationSuccessNotification = {
   level: 'success',
   dismissible: false,
   position: 'tc',
-  autoDismiss: 3000,
+  autoDismiss: 3,
 };
 
 export function getErrorNotification(error) {
@@ -52,4 +52,17 @@ export function getReportNotReadyNotification(flux) {
       callback: () => flux.getActions('missions').getMissionReports(),
     },
   };
+}
+
+const missionCreateSuccessNotification = {
+  title: '',
+  message: 'Задание создано успешно',
+  level: 'success',
+  dismissible: false,
+  position: 'tc',
+  autoDismiss: 3,
+}
+
+export const notifications = {
+  missionCreateSuccessNotification
 }

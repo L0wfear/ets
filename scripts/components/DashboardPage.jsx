@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom'
 import { Panel, Row, Col, Button, Fade, Well, Glyphicon, Collapse } from 'react-bootstrap';
 import Div from './ui/Div.jsx';
+import MissionFormWrap from './missions/MissionFormWrap.jsx';
+import ElementsList from './ElementsList.jsx';
 import moment from 'moment';
 import cx from 'classnames';
 import connectToStores from 'flummox/connect';
@@ -176,6 +178,36 @@ class DashboardCardMedium extends React.Component {
 
 };
 
+class MasterManagementCard extends ElementsList {
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+		const { flux } = this.context;
+    flux.getActions('objects').getTechOperations();
+    flux.getActions('routes').getRoutes();
+    flux.getActions('objects').getCars();
+    flux.getActions('missions').getMissionSources();
+  }
+
+  render() {
+
+    return (
+      <Div className="dashboard-card-sm" hidden={this.props.hidden}>
+        <Panel header={'Управление'} bsStyle="success">
+          <Button onClick={this.showForm.bind(this)}><Glyphicon glyph="plus"/> Создать задание</Button>
+        </Panel>
+        <MissionFormWrap onFormHide={this.onFormHide.bind(this)}
+                         showForm={this.state.showForm}
+                         element={this.state.selectedElement}/>
+      </Div>
+    );
+
+  }
+
+}
+
 class DashboardPage extends React.Component {
   constructor(props, context) {
     super(props);
@@ -307,6 +339,8 @@ class DashboardPage extends React.Component {
           </Col>
 
           <Col md={2}>
+            <MasterManagementCard hidden={role !== 'master'} />
+
             {componentsSide}
           </Col>
         </Row>

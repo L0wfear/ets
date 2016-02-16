@@ -167,7 +167,6 @@ class Table extends React.Component {
           isValid = false;
         }
       } else if (_.isArray(value)) {
-        console.log(value);
         if (value.indexOf(obj[key].toString()) === -1) {
           isValid = false;
         }

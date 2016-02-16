@@ -1,42 +1,65 @@
 import React from 'react';
+import { validateRow } from '../../validate/validateRow.js';
 
 class FormWrap extends React.Component {
 
-   static contextTypes = {
-     flux: React.PropTypes.object,
-   }
+  static contextTypes = {
+    flux: React.PropTypes.object,
+  }
 
-   constructor(props){
-     super(props)
-     this.state = {/* inital state */}
-   }
+  constructor(props){
+    super(props);
 
-   componentWillReceiveProps(props) {
- 		 if (props.showForm) {
- 			 if (props.element !== null ) {
-         const formState = _.cloneDeep(props.element);
-         this.setState({formState});
- 			 } else {
-         this.setState({formState: {}});
-       }
- 		 }
- 	 }
+    this.state = {
+      formState: null,
+      formErrors: {},
+      canSave: false,
+      canPrint: false
+    };
+  }
 
-   handleFormStateChange(field, e) {
-     console.info('Form changed', field, e)
+  componentWillReceiveProps(props) {
+    if (props.showForm) {
+      if (props.element !== null ) {
+        const formState = _.cloneDeep(props.element);
+        this.setState({formState});
+      } else {
+        this.setState({formState: {}});
+      }
+    }
+  }
 
-     let formState = this.state.formState;
-     let newState = {};
-     formState[field] = !!e.target ? e.target.value : e;
+  validate(formState, errors) {
+  	let formErrors = _.clone(errors);
+    if (typeof this.schema === 'undefined') return formErrors;
+    let schema = this.schema;
+  	_.each(schema.properties, prop => {
+  		formErrors[prop.key] = validateRow(prop, formState[prop.key]);
+  	});
 
-     newState.formState = formState;
+  	return formErrors;
+  }
 
-     this.setState(newState);
- 	 }
+  handleFormStateChange(field, e) {
+    console.info('Form changed', field, e);
+    
+    const value = e !== undefined && !!e.target ? e.target.value : e;
+		let { formState, formErrors } = this.state;
+		let newState = {};
+		formState[field] = value;
 
-   render() {
-     return <Component {...this.props} {...this.state} />
-   }
+		formErrors = this.validate(formState, formErrors);
+		newState.canSave = _(formErrors).map(v => !!v).filter(e => e === true).value().length === 0;
+
+		newState.formState = formState;
+		newState.formErrors = formErrors;
+
+		this.setState(newState);
+  }
+
+  render() {
+    return <Component {...this.props} {...this.state} />
+  }
 
 }
 

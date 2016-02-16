@@ -3,32 +3,17 @@ import moment from 'moment';
 import _ from 'lodash';
 import Div from '../ui/Div.jsx';
 import MissionForm from './MissionForm.jsx';
+import FormWrap from '../compositions/FormWrap.jsx';
 import { getDefaultMission } from '../../stores/MissionsStore.js';
 import { isNotNull, isEmpty } from '../../utils/functions.js';
 import { getDateWithoutTZ } from '../../utils/dates.js';
-import { validateRow } from '../../validate/validateRow.js';
 import { missionSchema, missionClosingSchema } from '../models/MissionModel.js';
 
-let validateMission = (mission, errors) => {
-	let missionErrors = _.clone(errors);
-
-	_.each(missionSchema.properties, prop => {
-		missionErrors[prop.key] = validateRow(prop, mission[prop.key]);
-	});
-
-	return missionErrors;
-};
-
-class MissionFormWrap extends Component {
+class MissionFormWrap extends FormWrap {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			formState: null,
-			formErrors: {},
-			canSave: false,
-			canPrint: false
-		};
+		this.schema = missionSchema;
 	}
 
 	componentWillReceiveProps(props) {
@@ -39,7 +24,7 @@ class MissionFormWrap extends Component {
 				this.setState({
 					formState: defaultMission,
 					canSave: false,
-					formErrors: validateMission(defaultMission, {}),
+					formErrors: this.validate(defaultMission, {}),
 				})
 			} else {
 				let mission = _.clone(props.mission);
@@ -49,30 +34,12 @@ class MissionFormWrap extends Component {
 
 				this.setState({
 					formState: mission,
-					//formErrors: validateMission(defaultMission, {}),
+					//formErrors: this.validate(defaultMission, {}),
 					canSave: true,
 				});
 			}
 		}
 
-	}
-
-
-	handleFormStateChange(field, e) {
-		console.log('mission form changed', field, e)
-		const value = e !== undefined && !!e.target ? e.target.value : e;
-		let { formState, formErrors } = this.state;
-		let newState = {};
-		formState[field] = value;
-
-		formErrors = validateMission(formState, formErrors);
-		newState.canSave = _(formErrors).map(v => !!v).filter(e => e === true).value().length === 0;
-
-		console.log(formErrors);
-		newState.formState = formState;
-		newState.formErrors = formErrors;
-
-		this.setState(newState);
 	}
 
 	handleFormSubmit(formState) {

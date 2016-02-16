@@ -82,7 +82,7 @@ class RouteForm extends Form {
 	      </Modal.Body>
 
 	      <Modal.Footer>
-	      	<Button disabled={this.props.canSave} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+	      	<Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
 	      </Modal.Footer>
 
 			</Modal>

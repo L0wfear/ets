@@ -90,6 +90,8 @@ let MissionsTable = (props) => {
 									results={props.data}
 									renderers={renderers}
 									tableMeta={getTableMeta(props)}
+									initialSort={'number'}
+									initialSortAscending={false}
                   multiSelection={true}
 									{...props}/>
 }

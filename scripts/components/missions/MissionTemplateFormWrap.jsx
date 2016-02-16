@@ -11,6 +11,7 @@ import { missionCreationSuccessNotification } from '../../utils/notifications.js
 import { validateRow } from '../../validate/validateRow.js';
 import { missionTemplateSchema } from '../models/MissionTemplateModel.js';
 import { missionsCreationTemplateSchema } from '../models/MissionsCreationTemplateModel.js';
+import FormWrap from '../compositions/FormWrap.jsx';
 
 let validateMission = (mission, errors) => {
 	let missionErrors = _.clone(errors);
@@ -32,16 +33,11 @@ let validateMissionsCreationTemplate = (mission, errors) => {
   return missionsCreationTemplateErrors;
 };
 
-class MissionFormWrap extends Component {
+class MissionFormWrap extends FormWrap {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			formState: null,
-			formErrors: {},
-			canSave: false,
-			canPrint: false
-		};
+		this.schema = missionTemplateSchema;
 	}
 
 	componentWillReceiveProps(props) {
@@ -52,14 +48,14 @@ class MissionFormWrap extends Component {
           this.setState({
             formState: defaultMission,
             canSave: false,
-            formErrors: validateMission(defaultMission, {}),
+            formErrors: this.validate(defaultMission, {}),
           })
         } else {
           let _mission = _.clone(props.mission);
 
           this.setState({
             formState: _mission,
-            formErrors: validateMission(_mission, {}),
+            formErrors: this.validate(_mission, {}),
             canSave: true,
           });
         }
@@ -72,23 +68,6 @@ class MissionFormWrap extends Component {
         });
       }
 		}
-	}
-
-
-	handleFormStateChange(field, e) {
-		console.log('mission form changed', field, e)
-		const value = e !== undefined && !!e.target ? e.target.value : e;
-		let { formState, formErrors } = this.state;
-		let newState = {};
-		formState[field] = value;
-
-		formErrors = validateMission(formState, formErrors);
-		newState.canSave = _(formErrors).map(v => !!v).filter(e => e === true).value().length === 0;
-
-		newState.formState = formState;
-		newState.formErrors = formErrors;
-
-		this.setState(newState);
 	}
 
 	handleFormSubmit(formState) {

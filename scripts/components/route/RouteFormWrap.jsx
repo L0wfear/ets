@@ -8,12 +8,6 @@ export default class RouteFormWrap extends FormWrap {
 
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			formState: null,
-			canSave: false,
-      formErrors: {},
-		};
 	}
 
 	resetFormState() {

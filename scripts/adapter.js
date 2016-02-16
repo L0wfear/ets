@@ -80,7 +80,6 @@ const MISSIONS_CREATION_URL = getEtsServiceUrl('/create_missions_from_mission_te
 const MISSION_SOURCES_URL = getUrl('/mission_source/');
 const MISSION_TEMPLATES_URL = getUrl('/mission_template/');
 const ROUTES_URL = getUrl('/route/');
-const ROUTES_VECTOR_URL = getUrl('/route_vector/');
 const ROUTE_REPORTS_URL = getUrl('/route_odh_covering_report/');
 const ODH_REPORTS_SERVICE_URL = getServiceUrl('/odh-reports/');
 const ROUTE_VALIDATE_URL = getUrl('/route_validate/');
@@ -520,18 +519,8 @@ export function getRoutes() {
   return getJSON(ROUTES_URL);
 }
 
-export function getRoutesVector() {
-  return getJSON(ROUTES_VECTOR_URL);
-}
-
 export function createRoute(route) {
   return postJSON(ROUTES_URL, route, 'form').then((createdRoute) => getRoutes().then(routes => {
-    return {createdRoute, routes};
-  }));
-}
-
-export function createVectorRoute(route) {
-  return postJSON(ROUTES_VECTOR_URL, route, 'form').then((createdRoute) => getRoutesVector().then(routes => {
     return {createdRoute, routes};
   }));
 }
@@ -540,25 +529,14 @@ export function removeRoute(payload) {
   return deleteJSON(ROUTES_URL, payload, 'params').then(() => getRoutes());
 }
 
-export function removeRouteVector(route) {
-  return deleteJSON(ROUTES_VECTOR_URL, route, 'params').then(() => getRoutesVector());
-}
-
 export function updateRoute(payload) {
   return putJSON(ROUTES_URL, payload, 'form').then(() => getRoutes());
-}
-
-export function updateRouteVector(payload) {
-  return putJSON(ROUTES_VECTOR_URL, payload, 'form').then(() => getRoutesVector());
 }
 
 export function getRouteById(payload) {
   return getJSON(ROUTES_URL, payload);
 }
 
-export function getRouteVectorById(payload) {
-  return getJSON(ROUTES_VECTOR_URL, payload);
-}
 
 // SERVICES
 

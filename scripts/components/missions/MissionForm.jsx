@@ -194,9 +194,7 @@ export class MissionForm extends Form {
 	      </Modal.Footer>
 
 				<RouteFormWrap element={route}
-											 onFormHide={() => {
-												 this.setState({showRouteForm: false, selectedRoute: null})
-											 }}
+											 onFormHide={() => {this.setState({showRouteForm: false, selectedRoute: null})}}
 											 showForm={this.state.showRouteForm} />
 			</Modal>
 		)

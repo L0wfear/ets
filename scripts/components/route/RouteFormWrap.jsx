@@ -2,12 +2,9 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import _ from 'lodash';
 import RouteForm from './RouteForm.jsx';
+import FormWrap from '../compositions/FormWrap.jsx';
 
-export default class FormWrap extends Component {
-
-	static contextTypes = {
-		flux: React.PropTypes.object,
-	}
+export default class RouteFormWrap extends FormWrap {
 
 	constructor(props) {
 		super(props);
@@ -17,17 +14,6 @@ export default class FormWrap extends Component {
 			canSave: false,
       formErrors: {},
 		};
-	}
-
-	componentWillReceiveProps(props) {
-		if (props.showForm) {
-			if (props.element !== null ) {
-        const formState = _.cloneDeep(props.element);
-        this.setState({formState});
-			} else {
-        this.setState({formState: {}});
-      }
-		}
 	}
 
 	resetFormState() {
@@ -42,29 +28,12 @@ export default class FormWrap extends Component {
 		}
 	}
 
-
-	handleFormStateChange(field, e) {
-		console.info('Form changed', field, e)
-
-		let formState = this.state.formState;
-		let newState = {};
-		formState[field] = !!e.target ? e.target.value : e;
-
-		newState.formState = formState;
-
-		this.setState(newState);
-	}
-
 	handleFormSubmit(formState, manualCreating) {
 		const { flux } = this.context;
-		if (!manualCreating) {
+		if (!formState.id) {
 			flux.getActions('routes').createRoute(formState);
 		} else {
-			if (formState.id) {
-				flux.getActions('routes').updateRouteVector(formState);
-			} else {
-				flux.getActions('routes').createVectorRoute(formState);
-			}
+			flux.getActions('routes').updateRoute(formState);
 		}
 		this.props.onFormHide();
 	}

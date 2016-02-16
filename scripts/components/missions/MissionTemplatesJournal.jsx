@@ -14,8 +14,6 @@ let getRouteById = (id) => window.__ETS_CONTAINER__.flux.getStore('routes').getR
 
 let getCarById = (id) => window.__ETS_CONTAINER__.flux.getStore('objects').getCarById(id);
 
-let getRouteVectorById = (id) => window.__ETS_CONTAINER__.flux.getStore('routes').getRouteVectorById(id);
-
 let getTableMeta = (props) => {
 
 	let tableMeta = {
@@ -50,7 +48,7 @@ let getTableMeta = (props) => {
 				type: 'number',
 				filter: {
 					type: 'select',
-          labelFunction: (id) => getRouteVectorById(id).name || id,
+          labelFunction: (id) => getRouteById(id).name || id,
 				},
         cssClassName: 'width120',
 			},
@@ -84,7 +82,7 @@ let MissionsTable = (props) => {
 
 		const renderers = {
 			technical_operation_id: ({data}) => <div>{getTechOperationById(data).name || data}</div>,
-      route_id: ({data}) => <div>{getRouteVectorById(data).name || data}</div>,
+      route_id: ({data}) => <div>{getRouteById(data).name || data}</div>,
       car_id: ({data}) => <div>{getCarById(data).gov_number || data}</div>,
 		};
 
@@ -130,15 +128,13 @@ class MissionTemplatesJournal extends ElementsList {
   }
 
   checkAll(rows, state) {
-    let missions = _.cloneDeep(this.state.checkedMissions);
+    let checkedMissions = _.cloneDeep(this.state.checkedMissions);
     if (state) {
-      missions = rows;
+      checkedMissions = rows;
     } else {
-      missions = {};
+      checkedMissions = {};
     }
-    this.setState({
-      checkedMissions: missions
-    })
+    this.setState({checkedMissions});
   }
 
 	createMission() {

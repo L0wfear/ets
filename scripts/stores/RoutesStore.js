@@ -12,7 +12,6 @@ class RoutesStore extends Store {
     this.register(routesActions.createRoute, this.handleCreateRoute);
     this.register(routesActions.removeRouteVector, this.handleGetRoutesVector);
     this.register(routesActions.updateRouteVector, this.handleGetRoutesVector);
-    this.register(routesActions.getRoutesVector, this.handleGetRoutesVector);
     this.register(routesActions.updateRoute, this.handleGetRoutes);
     this.register(routesActions.removeRoute, this.handleGetRoutes);
     this.register(routesActions.getRouteReports, this.handleGetRouteReports);
@@ -22,7 +21,6 @@ class RoutesStore extends Store {
 
     this.state = {
       routesList: [],
-      routesVectorList: [],
       reportsList: [],
       selectedReportData: [],
       geozonePolys: [],
@@ -33,10 +31,6 @@ class RoutesStore extends Store {
 
   handleGetRoutes(routes) {
     this.setState({ routesList: routes.result });
-  }
-
-  handleGetRoutesVector(routes) {
-    this.setState({ routesVectorList: routes.result });
   }
 
   handleCreateRoute({createdRoute, routes}) {
@@ -68,11 +62,6 @@ class RoutesStore extends Store {
   getRouteById(id) {
     return _.find(this.state.routesList, r => r.id === id) || {};
   }
-
-  getRouteVectorById(id) {
-    return _.find(this.state.routesVectorList, r => r.id === id) || {};
-  }
-
 }
 
 

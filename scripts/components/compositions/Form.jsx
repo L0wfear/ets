@@ -18,7 +18,6 @@ class Form extends React.Component {
    }
 
    render() {
-     // here you can pass down whatever you want 'inherited' by the child
      return <Component {...this.props} {...this.state} />
    }
 

@@ -1,11 +1,9 @@
 import React from 'react';
 import { validateRow } from '../../validate/validateRow.js';
+import { FluxContext } from '../decorators/index.js';
 
+@FluxContext
 class FormWrap extends React.Component {
-
-  static contextTypes = {
-    flux: React.PropTypes.object,
-  }
 
   constructor(props){
     super(props);
@@ -42,7 +40,7 @@ class FormWrap extends React.Component {
 
   handleFormStateChange(field, e) {
     console.info('Form changed', field, e);
-    
+
     const value = e !== undefined && !!e.target ? e.target.value : e;
 		let { formState, formErrors } = this.state;
 		let newState = {};

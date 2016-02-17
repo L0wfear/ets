@@ -150,10 +150,6 @@ let MissionsTable = (props) => {
 
 export class MissionsJournal extends ElementsList {
 
-  static contextTypes = {
-    flux: React.PropTypes.object,
-  }
-
 	constructor(props, context) {
 		super(props);
 

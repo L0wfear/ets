@@ -30,6 +30,18 @@ export default class WaybillsActions extends Actions {
       payload.fact_departure_date = createValidDateTime(payload.plan_departure_date);
       payload.fact_arrival_date = createValidDateTime(payload.plan_arrival_date);
     }
+
+    if (payload.taxes) {
+      let taxes = payload.taxes.filter((t) => {
+        return typeof t.FACT_VALUE !== 'undefined';
+      });
+      if (taxes.length === 0 || taxes.length === 1) {
+        delete payload.taxes;
+      } else {
+        payload.data = JSON.stringify(taxes);
+        delete payload.taxes;
+      }
+    }
     delete payload.odometr_diff;
     delete payload.motohours_diff;
     delete payload.motohours_equip_diff;

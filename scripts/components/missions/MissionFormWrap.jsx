@@ -10,6 +10,7 @@ import { getDateWithoutTZ } from '../../utils/dates.js';
 import { missionSchema, missionClosingSchema } from '../models/MissionModel.js';
 
 class MissionFormWrap extends FormWrap {
+
 	constructor(props) {
 		super(props);
 
@@ -70,10 +71,5 @@ class MissionFormWrap extends FormWrap {
 	}
 
 }
-
-MissionFormWrap.contextTypes = {
-	flux: React.PropTypes.object,
-	setLoading: React.PropTypes.func,
-};
 
 export default MissionFormWrap;

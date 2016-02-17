@@ -84,8 +84,8 @@ class WaybillFormWrap extends Component {
 
 				} else if (props.bill.status === 'closed') {
 
-					if (_bill.array_agg && _bill.array_agg.taxes) {
-						_bill.taxes = _bill.array_agg.taxes;
+					if (_bill.array_agg) {
+						_bill.taxes = _bill.array_agg;
 					}
 					if (isNotNull(_bill.odometr_end) && isNotNull(_bill.odometr_start)) {
 						_bill.odometr_diff = _bill.odometr_end - _bill.odometr_start;

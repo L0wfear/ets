@@ -1,9 +1,11 @@
 import React from 'react';
+import { FluxContext } from './decorators/index.js';
 
 /*
  * Базовый класс для наследования списков с формами
  */
 
+@FluxContext
 class ElementsList extends React.Component {
 
    constructor(props) {
@@ -60,9 +62,5 @@ class ElementsList extends React.Component {
    }
 
  }
-
- ElementsList.contextTypes = {
- 	flux: React.PropTypes.object,
- };
 
  export default ElementsList;

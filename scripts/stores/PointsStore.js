@@ -24,6 +24,11 @@ export default class PointsStore extends Store {
 
     this.register(loginActions.login, this.handleLogin);
 
+    this.resetState();
+
+  }
+
+  resetState() {
     this.state = {
       selected: null,
       points: {},
@@ -52,7 +57,6 @@ export default class PointsStore extends Store {
       showTrackingGradient: false,
       isRenderPaused: false
     };
-
   }
 
   handleCreateConnection() {
@@ -70,13 +74,19 @@ export default class PointsStore extends Store {
     this.ws.onerror = () => {
       //global.NOTIFICATION_SYSTEM.notify('Ошибка WebSocket', 'error')
     }
+
+    this.unpauseRendering();
   }
 
   handleCloseConnection() {
     console.info('CLOSING WS CONNECTION');
     if (typeof this.ws !== 'undefined') {
       this.ws.close();
+      this.ws = null;
     }
+    this.resetState();
+    console.log(this.state);
+    this.pauseRendering();
   }
 
 
@@ -384,7 +394,7 @@ export default class PointsStore extends Store {
   }
 
   isRenderPaused() {
-    return false;
+    //return false;
     return this.state.isRenderPaused;
   }
 

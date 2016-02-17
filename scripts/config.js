@@ -20,7 +20,7 @@ let WEBPACK_CONFIG = {
 }
 
 let PROTO = window.location.protocol;
-let WS_PROTO = PROTO === 'http:' ? 'ws:' : 'wss:';
+let WS_PROTO = PROTO === 'http:' ? 'wss:' : 'wss:';
 
 let config = {
   backend: PROTO + '//ods.mos.ru/ssd/ets/services',//city-dashboard',

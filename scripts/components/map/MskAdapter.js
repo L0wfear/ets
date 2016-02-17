@@ -9,7 +9,7 @@ const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
 
 export function projectToPixel(coordinates) {
   let x, y;
-  
+
   if (coordinates.length) {
     [x, y] = coordinates
   } else {
@@ -22,6 +22,7 @@ export function projectToPixel(coordinates) {
   }
 
   let coords = olmap.getPixelFromCoordinate([x, y]);
+
 	return { x: coords[0] * DEVICE_PIXEL_RATIO, y: coords[1] * DEVICE_PIXEL_RATIO};
 }
 
@@ -58,4 +59,3 @@ for (let i = 0, till = MapServerConfig.tileInfo.lods.length; i < till; i++) {
       }),
       extent: EXTENT
 });
- 

@@ -19,7 +19,7 @@ export default class Marker {
 
     // todo this.owner
     this._reactMap = map;
-    
+
     this.map = map.map;
     this.image = null;
     this.radius = 0;

@@ -91,7 +91,7 @@ export default class CarMarker extends Marker {
   }
 
   getCar() {
-    return this.point.car
+    return this.point.car;
   }
 
   onClick() {

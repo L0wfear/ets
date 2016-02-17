@@ -342,6 +342,10 @@ export default class OpenLayersMap extends Component {
     }
   }
 
+  componentWillUnmount() {
+    delete global.olmap;
+  }
+
   updatePoints(updatedPoints) {
 
     let keys = Object.keys(updatedPoints);

@@ -21,6 +21,10 @@ export function projectToPixel(coordinates) {
     return [0, 0];
   }
 
+  if (typeof olmap === 'undefined') {
+    return { x: 1, y: 1};
+  }
+
   let coords = olmap.getPixelFromCoordinate([x, y]);
 
 	return { x: coords[0] * DEVICE_PIXEL_RATIO, y: coords[1] * DEVICE_PIXEL_RATIO};

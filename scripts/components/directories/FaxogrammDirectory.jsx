@@ -177,10 +177,6 @@ class FaxogrammDirectory extends ElementsList {
 		this.getFaxogramms();
   }
 
-  componentDidMount() {
-    this.init();
-	}
-
 	getFaxogramms() {
     this.context.flux.getActions('objects').getFaxogramms(this.state.page, this.state.create_date_from, this.state.create_date_to);
 	}

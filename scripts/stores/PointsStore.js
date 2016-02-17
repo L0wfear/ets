@@ -19,6 +19,8 @@ export default class PointsStore extends Store {
     this.register(pointsActions.setShowPlates, this.handleSetShowPlates);
     this.register(pointsActions.setTracking, this.setTracking);
     this.register(pointsActions.getPointsExtent, this.getPointsExtent);
+    this.register(pointsActions.createConnection, this.handleCreateConnection);
+    this.register(pointsActions.closeConnection, this.handleCloseConnection);
 
     this.register(loginActions.login, this.handleLogin);
 
@@ -51,20 +53,30 @@ export default class PointsStore extends Store {
       isRenderPaused: false
     };
 
-    let ws = new ReconnectingWebSocket(config.ws, null);
+  }
 
-    ws.onmessage = ({data}) => {
+  handleCreateConnection() {
+    console.info('CREATING WS CONNECTION');
+    this.ws = new ReconnectingWebSocket(config.ws, null);
+
+    this.ws.onmessage = ({data}) => {
       this.handleUpdatePoints(JSON.parse(data));
     }
 
-    ws.onclose = () => {
-      global.NOTIFICATION_SYSTEM.notify('Потеряно соединение с WebSocket, пытаемся переподключиться', 'warning')
+    this.ws.onclose = () => {
+      //global.NOTIFICATION_SYSTEM.notify('Потеряно соединение с WebSocket, пытаемся переподключиться', 'warning')
     }
 
-    ws.onerror = () => {
+    this.ws.onerror = () => {
       //global.NOTIFICATION_SYSTEM.notify('Ошибка WebSocket', 'error')
     }
+  }
 
+  handleCloseConnection() {
+    console.info('CLOSING WS CONNECTION');
+    if (typeof this.ws !== 'undefined') {
+      this.ws.close();
+    }
   }
 
 

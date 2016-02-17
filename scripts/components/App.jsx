@@ -8,7 +8,7 @@ import MissionsJournal from './missions/MissionsJournal.jsx';
 import MissionTemplatesJournal from './missions/MissionTemplatesJournal.jsx';
 import RoutesList from './route/RoutesList.jsx';
 import MainPage from './MainPage.jsx';
-import MonitorPage from './MonitorPage.jsx';
+import MonitorPage from './monitor/MonitorPage.jsx';
 import LoadingPage from './LoadingPage.jsx';
 import DashboardPage from './DashboardPage.jsx';
 import DriversList from './drivers/DriversList.jsx';

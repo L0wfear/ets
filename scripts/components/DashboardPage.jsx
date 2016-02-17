@@ -179,6 +179,7 @@ class DashboardCardMedium extends React.Component {
 };
 
 class MasterManagementCard extends ElementsList {
+  
   constructor(props) {
     super(props);
   }

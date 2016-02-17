@@ -42,7 +42,7 @@ export default class OpenLayersMap extends Component {
 
     this.markers = {};
     this._handlers = null; // map event handlers
-    this._pointsStore = this.props.flux.getStore('points'); 
+    this._pointsStore = this.props.flux.getStore('points');
 
     this.viewportVisibleMarkers = {};
 
@@ -223,7 +223,7 @@ export default class OpenLayersMap extends Component {
 
     let map = this.map;
     let pointsStore = this._pointsStore;
-    
+
     let selected = pointsStore.getSelectedPoint();
 
     let selectedMarker = pointsStore.getSelectedMarker();
@@ -243,7 +243,7 @@ export default class OpenLayersMap extends Component {
       if (selected === null || id !== selected.id) {
         // todo переключать отрисовку маленький/большой значок
         // в зависимости от количества маркеров на видимой части карты
-        // 
+        //
         // будет некрасиво, если попадать точно в границу количества
         marker.render(options);
       }
@@ -274,7 +274,7 @@ export default class OpenLayersMap extends Component {
     } else {
       this.enableInteractions()
     }
-    
+
     //todo remove this
     if (!selected) {
       this.hidePopup()
@@ -365,4 +365,3 @@ export default class OpenLayersMap extends Component {
   }
 
 }
-

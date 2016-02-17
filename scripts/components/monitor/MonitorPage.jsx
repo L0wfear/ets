@@ -1,23 +1,37 @@
 import React, { Component } from 'react';
 import FluxComponent from 'flummox/component';
-import Map from './map/Map.jsx';
-import Toolbar from './toolbar/Toolbar.jsx';
+import connectToStores from 'flummox/connect';
+import Map from '../map/Map.jsx';
+import Toolbar from '../toolbar/Toolbar.jsx';
 import Sidebar from './Sidebar.jsx';
-import WeatherWidget from './map/WeatherWidget.jsx';
+import WeatherWidget from '../map/WeatherWidget.jsx';
+import { FluxContext } from '../decorators/index.js';
 
 const MAP_INITIAL_CENTER = [-399.43090337943863, -8521.192605428025];
 const MAP_INITIAL_ZOOM = 3;
 
-export default class MainPage extends Component {
+@FluxContext
+class MonitorPage extends Component {
 
   constructor(props, context) {
     super(props, context);
+
     this.state = {
       showPlates: false
     };
   }
 
+  componentDidMount() {
+    this.context.flux.getActions('points').createConnection();
+  }
+
+  componentWillUnmount() {
+    this.context.flux.getActions('points').closeConnection();
+  }
+
   render() {
+
+    console.log(this.props);
 
     return (
       <div>
@@ -40,9 +54,11 @@ export default class MainPage extends Component {
 
           <Sidebar/>
         </FluxComponent>
-         <WeatherWidget/>
+        <WeatherWidget/>
       </div>
     );
   }
 
 }
+
+export default connectToStores(MonitorPage);

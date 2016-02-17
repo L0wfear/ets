@@ -104,14 +104,14 @@ class LegendWrapper extends Component {
 
 
 let ShowPlatesCheckbox = (props) =>
-      <div className="app-toolbar-fill app-toolbar-show-govnumber" >
-        <div className="checkbox">
-          <label style={{fontSize:'13px', fontWeight:'200'}}>
-            <input type="checkbox" checked={props.showPlates} onChange={e => props.flux.getActions('points').setShowPlates(e.target.checked)}/> Номер ТС
-          </label>
-        </div>
-      </div>
-    ;
+  <div className="app-toolbar-fill app-toolbar-show-govnumber" >
+    <div className="checkbox">
+      <label style={{fontSize:'13px', fontWeight:'200'}}>
+        <input type="checkbox" checked={props.showPlates} onChange={e => props.flux.getActions('points').setShowPlates(e.target.checked)}/> Номер ТС
+      </label>
+    </div>
+  </div>
+;
 
 class Toolbar extends Component {
 

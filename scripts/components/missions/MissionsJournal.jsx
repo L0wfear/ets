@@ -155,21 +155,17 @@ export class MissionsJournal extends ElementsList {
 
     this.removeElementAction = context.flux.getActions('missions').removeMission;
     this.mainListName = 'missionsList';
+		this.removeDisabled = () => this.state.selectedElement && this.state.selectedElement.status === 'assigned';
 	}
 
   init() {
 		const { flux } = this.context;
 		flux.getActions('missions').getMissions();
-  }
-
-	componentDidMount() {
-    this.init();
-		const { flux } = this.context;
     flux.getActions('objects').getTechOperations();
     flux.getActions('routes').getRoutes();
     flux.getActions('objects').getCars();
     flux.getActions('missions').getMissionSources();
-	}
+  }
 
 	completeMission() {
 		let mission = _.cloneDeep(this.state.selectedElement);
@@ -188,7 +184,7 @@ export class MissionsJournal extends ElementsList {
 					<Button bsSize="small" onClick={this.completeMission.bind(this)} disabled={this.state.selectedElement === null || this.state.selectedElement.status !== 'assigned'}><Glyphicon glyph="ok" /> Отметка о выполнении</Button>
 					<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Создать задание</Button>
 					<Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="search" /> Просмотреть задание</Button>
-					<Button bsSize="small" disabled={this.state.selectedElement === null || this.state.selectedElement.status === 'assigned'} onClick={this.removeElement.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
+					<Button bsSize="small" disabled={this.state.selectedElement === null || this.removeDisabled()} onClick={this.removeElement.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
 				</MissionsTable>
 				<MissionFormWrap onFormHide={this.onFormHide.bind(this)}
 												 showForm={this.state.showForm}

@@ -30,4 +30,12 @@ export default class PointsActions extends Actions {
     return showPlates;
   }
 
+  createConnection() {
+    return true;
+  }
+
+  closeConnection() {
+    return true;
+  }
+
 }

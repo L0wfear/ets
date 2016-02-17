@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import connectToStores from 'flummox/connect';
 import { Button, Glyphicon } from 'react-bootstrap';
 import Table from '../ui/table/DataTable.jsx';
@@ -151,19 +152,13 @@ class WaybillJournal extends ElementsList {
     this.mainListName = 'waybillsList';
 	}
 
-	componentDidMount() {
+	init() {
 		const { flux } = this.context;
 		flux.getActions('waybills').getWaybills();
 		flux.getActions('employees').getEmployees();
 		flux.getActions('objects').getTechOperations();
 		flux.getActions('objects').getFuelTypes();
 		flux.getActions('objects').getCars();
-	}
-
-	onKeyPress(e) {
-		if (e.key === 'Enter' && this.state.selectedElement !== null) {
-			this.showForm();
-		}
 	}
 
 	render() {
@@ -173,7 +168,7 @@ class WaybillJournal extends ElementsList {
 		let showCloseBtn = this.state.selectedElement !== null && this.state.selectedElement.status !== 'active';
 
 		return (
-			<div className="ets-page-wrap" tabIndex="1" onKeyDown={this.onKeyPress.bind(this)}>
+			<div className="ets-page-wrap">
 				<WaybillsTable data={waybillsList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'} filterValues={this.props.location.query} {...this.props}>
 					<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Создать ПЛ</Button>
 					<Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="search" /> Просмотреть ПЛ</Button>
@@ -188,9 +183,5 @@ class WaybillJournal extends ElementsList {
 		);
 	}
 }
-
-WaybillJournal.contextTypes = {
-	flux: React.PropTypes.object,
-};
 
 export default connectToStores(WaybillJournal, ['waybills', 'objects', 'employees']);

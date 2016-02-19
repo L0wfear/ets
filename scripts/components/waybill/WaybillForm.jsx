@@ -101,6 +101,13 @@ class WaybillForm extends Form {
 		this.handleChange('car_id', car_id);
   	this.handleChange('mission_id_list', undefined);
 
+    let car_has_odometer = null;
+    let car = this.props.carsIndex[car_id];
+    if (car && car.gov_number) {
+      car_has_odometer = isNaN(car.gov_number[0]);//car.gov_number.replace(/[^0-9]/g,"").length === 3;
+    }
+    this.handleChange('car_has_odometer', car_has_odometer);
+
     const { flux } = this.context;
 		const waybillsListSorted = _(this.props.waybillsList).filter(w => w.status === 'closed').sortBy('id').value().reverse();
 		const lastCarUsedWaybill = _.find(waybillsListSorted, w => w.car_id === car_id);
@@ -132,7 +139,7 @@ class WaybillForm extends Form {
 		let state = this.props.formState;
 		let errors = this.props.formErrors;
 
-		const { carsList = [], driversList = [], employeesList = [], fuelTypes = [], missionsList = [] } = this.props;
+		const { carsList = [], carsIndex = {}, driversList = [], employeesList = [], fuelTypes = [], missionsList = [] } = this.props;
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: c.gov_number + ' [' + c.model + ']'}));
 		const FUEL_TYPES = fuelTypes.map(({ID, NAME}) => ({value: ID, label: NAME}));
 		const DRIVERS = driversList.map( d => ({value: d.id, label: `[${d.personnel_number}] ${d.last_name} ${d.first_name} ${d.middle_name}`}));
@@ -149,6 +156,7 @@ class WaybillForm extends Form {
 		let IS_CLOSING = state.status && state.status === 'active';
     let IS_POST_CREATING = state.status && state.status === 'draft';
 		let IS_DISPLAY = state.status && state.status === 'closed';
+    let car = carsIndex[state.car_id];
 
     let title = '';
 
@@ -241,65 +249,75 @@ class WaybillForm extends Form {
 	      	</Row>
 
 	      	<Row>
-	      		<Col md={4}>
-		      		<h4>Одометр</h4>
-							<Field type="number" label="Выезд, км" error={errors['odometr_start']}
-										 value={state.odometr_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'odometr_start')} />
+          <Div hidden={!state.car_id}>
+            <Div hidden={!state.car_has_odometer}>
+  	      		<Col md={4}>
+  		      		<h4>Одометр</h4>
+  							<Field type="number" label="Выезд, км" error={errors['odometr_start']}
+  										 value={state.odometr_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'odometr_start')} />
 
- 							<Field type="number" label="Возврат, км" error={errors['odometr_end']}
- 										 value={state.odometr_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'odometr_end')} />
+   							<Field type="number" label="Возврат, км" error={errors['odometr_end']}
+   										 value={state.odometr_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'odometr_end')} />
 
- 							<Field type="number" label="Пробег, км"
- 										 value={state.odometr_diff} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled />
-	      		</Col>
-	      		<Col md={4}>
-		      		<h4>Счетчик моточасов</h4>
-							<Field type="number" label="Выезд, м/ч" error={errors['motohours_start']}
-										 value={state.motohours_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'motohours_start')} />
+   							<Field type="number" label="Пробег, км"
+   										 value={state.odometr_diff} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled />
+  	      		</Col>
+            </Div>
+            <Div hidden={state.car_has_odometer}>
+  	      		<Col md={4}>
+  		      		<h4>Счетчик моточасов</h4>
+  							<Field type="number" label="Выезд, м/ч" error={errors['motohours_start']}
+  										 value={state.motohours_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'motohours_start')} />
 
-							<Field type="number" label="Возврат, м/ч" error={errors['motohours_end']}
- 										 value={state.motohours_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'motohours_end')} />
+  							<Field type="number" label="Возврат, м/ч" error={errors['motohours_end']}
+   										 value={state.motohours_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'motohours_end')} />
 
-							<Field type="number" label="Пробег, м/ч"
- 										 value={state.motohours_diff} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled />
-	      		</Col>
-	      		<Col md={4}>
-		      		<h4>Счетчик моточасов обор-ния</h4>
-							<Field type="number" label="Выезд, м/ч" error={errors['motohours_equip_start']}
-										 value={state.motohours_equip_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'motohours_equip_start')} />
+  							<Field type="number" label="Пробег, м/ч"
+   										 value={state.motohours_diff} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled />
+  	      		</Col>
+            </Div>
+            <Div>
+  	      		<Col md={4}>
+  		      		<h4>Счетчик моточасов обор-ния</h4>
+  							<Field type="number" label="Выезд, м/ч" error={errors['motohours_equip_start']}
+  										 value={state.motohours_equip_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'motohours_equip_start')} />
 
-							<Field type="number" label="Возврат, м/ч" error={errors['motohours_equip_end']}
- 										 value={state.motohours_equip_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'motohours_equip_end')} />
+  							<Field type="number" label="Возврат, м/ч" error={errors['motohours_equip_end']}
+   										 value={state.motohours_equip_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'motohours_equip_end')} />
 
-							<Field type="number" label="Пробег, м/ч"
- 										 value={state.motohours_equip_diff} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled />
-	      		</Col>
+  							<Field type="number" label="Пробег, м/ч"
+   										 value={state.motohours_equip_diff} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled />
+  	      		</Col>
+            </Div>
+
+            <Div>
+              <Col md={4}>
+  		      		<h4> Топливо </h4>
+
+  							<Field type="select" label="Тип топлива" error={errors['fuel_type_id']}
+  										 disabled={IS_CLOSING || IS_DISPLAY}
+  										 options={FUEL_TYPES}
+  										 value={state.fuel_type_id}
+  										 onChange={this.handleChange.bind(this, 'fuel_type_id')} />
+
+  							<Field type="number" label="Выезд, л" error={errors['fuel_start']}
+  										 value={state.fuel_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_start')} />
+
+  						  <Field type="number" label="Выдать, л" error={errors['fuel_to_give']}
+  										 value={state.fuel_to_give} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_to_give')} />
+
+  							<Field type="number" label="Выдано, л" error={errors['fuel_given']}
+  									 	 value={state.fuel_given} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_given')} />
+
+  							<Field type="number" label="Возврат, л" error={errors['fuel_end']}
+  									 	 value={state.fuel_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_end')} />
+
+  	      		</Col>
+            </Div>
+          </Div>
 	      	</Row>
 
 	      	<Row>
-	      		<Col md={4}>
-		      		<h4> Топливо </h4>
-
-							<Field type="select" label="Тип топлива" error={errors['fuel_type_id']}
-										 disabled={IS_CLOSING || IS_DISPLAY}
-										 options={FUEL_TYPES}
-										 value={state.fuel_type_id}
-										 onChange={this.handleChange.bind(this, 'fuel_type_id')} />
-
-							<Field type="number" label="Выезд, л" error={errors['fuel_start']}
-										 value={state.fuel_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_start')} />
-
-						  <Field type="number" label="Выдать, л" error={errors['fuel_to_give']}
-										 value={state.fuel_to_give} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_to_give')} />
-
-							<Field type="number" label="Выдано, л" error={errors['fuel_given']}
-									 	 value={state.fuel_given} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_given')} />
-
-							<Field type="number" label="Возврат, л" error={errors['fuel_end']}
-									 	 value={state.fuel_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_end')} />
-
-	      		</Col>
-
 	      		<Col md={8}>
 							<Taxes hidden={!(IS_DISPLAY || IS_CLOSING) || state.status === 'draft' || (IS_DISPLAY && state.taxes && state.taxes.length === 1) || (IS_DISPLAY && !!!state.taxes)}
 										readOnly={!IS_CLOSING}

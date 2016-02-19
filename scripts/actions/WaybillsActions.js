@@ -25,7 +25,6 @@ export default class WaybillsActions extends Actions {
     payload.plan_arrival_date = createValidDateTime(payload.plan_arrival_date);
 
     if (payload.status === 'closed') {
-      console.log('taking fact time');
       payload.fact_departure_date = createValidDateTime(payload.fact_departure_date);
       payload.fact_arrival_date = createValidDateTime(payload.fact_arrival_date);
     } else {
@@ -48,6 +47,7 @@ export default class WaybillsActions extends Actions {
     delete payload.motohours_diff;
     delete payload.motohours_equip_diff;
     delete payload.date_create;
+    delete payload.car_has_odometer;
 
     _.mapKeys(payload, (v, k) => isEmpty(v) ? delete payload[k] : void 0);
 
@@ -68,6 +68,7 @@ export default class WaybillsActions extends Actions {
     payload.plan_arrival_date = createValidDateTime(payload.plan_arrival_date);
     payload.fact_departure_date = createValidDateTime(payload.plan_departure_date);
     payload.fact_arrival_date = createValidDateTime(payload.plan_arrival_date);
+    delete payload.car_has_odometer;
     _.mapKeys(payload, (v, k) => isEmpty(v) ? delete payload[k] : void 0);
 
     return createWaybill(payload);

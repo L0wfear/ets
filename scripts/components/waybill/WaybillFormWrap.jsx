@@ -15,9 +15,16 @@ let validateWaybill = (waybill, errors) => {
 		waybillErrors[prop.key] = validateRow(prop, waybill[prop.key]);
 	});
 
-	if (isEmpty(waybill.odometr_start) && isEmpty(waybill.motohours_start)) {
-		waybillErrors.odometr_start = `Одно из полей "Одометр.Выезд"/"Счетчик моточасов.Выезд" должно быть заполнено`;
-		waybillErrors.motohours_start = `Одно из полей "Одометр.Выезд"/"Счетчик моточасов.Выезд" должно быть заполнено`;
+	if (!isEmpty(waybill.car_has_odometer)) {
+		if (waybill.car_has_odometer) {
+			if (isEmpty(waybill.odometr_start)) {
+				waybillErrors.odometr_start = `Поле "Одометр.Выезд" должно быть заполнено`;
+			}
+		} else {
+			if (isEmpty(waybill.motohours_start)) {
+				waybillErrors.motohours_start = `Поле "Счетчик моточасов.Выезд" должно быть заполнено`;
+			}
+		}
 	}
 
 	return waybillErrors;

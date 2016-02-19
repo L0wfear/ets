@@ -8,6 +8,7 @@ export default class PointsStore extends Store {
 
   constructor(flux) {
     super();
+    this.flux = flux;
 
     const pointsActions = this._pointsActions = flux.getActions('points');
     const loginActions = flux.getActions('session');
@@ -60,8 +61,11 @@ export default class PointsStore extends Store {
   }
 
   handleCreateConnection() {
-    console.info('CREATING WS CONNECTION');
-    this.ws = new ReconnectingWebSocket(config.ws, null);
+    //console.info('CREATING WS CONNECTION');
+    //console.log(this);
+    const token = this.flux.getStore('session').getSession();
+    let wsUrl = `${config.ws}?token=${token}`;
+    this.ws = new ReconnectingWebSocket(wsUrl, null);
 
     this.ws.onmessage = ({data}) => {
       this.handleUpdatePoints(JSON.parse(data));

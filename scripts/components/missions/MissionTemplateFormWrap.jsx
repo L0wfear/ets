@@ -32,22 +32,13 @@ class MissionFormWrap extends FormWrap {
 	componentWillReceiveProps(props) {
 		if (props.showForm && props.showForm !== this.props.showForm) {
       if (props.formType === "ViewForm") {
-        if (props.element === null ) {
-          const defaultMission = getDefaultMissionTemplate();
-          this.setState({
-            formState: defaultMission,
-            canSave: false,
-            formErrors: this.validate(defaultMission, {}),
-          })
-        } else {
-          let _mission = _.clone(props.element);
-
-          this.setState({
-            formState: _mission,
-            formErrors: this.validate(_mission, {}),
-            canSave: true,
-          });
-        }
+        let mission = props.element === null ? getDefaultMissionTemplate() : _.clone(props.element);
+  			let formErrors = this.validate(mission, {});
+  			this.setState({
+  				formState: mission,
+  				canSave: ! !!_.filter(formErrors).length,//false,
+  				formErrors,
+  			});
       } else {
         const defaultMissionsCreationTemplate = getDefaultMissionsCreationTemplate();
         this.setState({

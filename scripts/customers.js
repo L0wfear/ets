@@ -17,6 +17,7 @@ function replaceList(newList) {
   }
 
 }
+
 function normalizeArray(objOrArray) {
 
   if (Array.isArray(objOrArray)) {

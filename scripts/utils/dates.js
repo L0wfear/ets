@@ -3,7 +3,7 @@ import moment from 'moment';
 let twoDigits = (n) => n < 10 ? '0' + n : n;
 
 export function makeDate(date) {
-  return date.getFullYear() + '-' + twoDigits(date.getMonth() + 1) + '-' + twoDigits(date.getDate())
+  return moment(date).format(`${global.APP_DATE_FORMAT}`);//twoDigits(date.getDate()) + '.' + twoDigits(date.getMonth() + 1) + '.' + date.getFullYear();
 }
 
 export function makeUnixTime(time) {
@@ -34,12 +34,12 @@ export function createValidDateTime(date){
 
 export function getFormattedDateTime(date){
   if (!date) return '';
-  return moment.utc(date).format('YYYY-MM-DD HH:mm');
+  return moment.utc(date).format(`${global.APP_DATE_FORMAT} HH:mm`);
 }
 
 export function getFormattedDateTimeSeconds(date){
   if (!date) return '';
-  return moment.utc(date).format('YYYY-MM-DD HH:mm:ss');
+  return moment(date).format(`${global.APP_DATE_FORMAT} HH:mm:ss`);
 }
 
 export function getToday9am() {
@@ -78,8 +78,8 @@ export function getDatesByShift() {
   ];
 }
 
-export function getDateWithoutTZ(date, format = true) {
-	if (typeof date === 'string') date = date.replace('.000000Z', '');
-	date = moment(date).toDate();
-	return date;
-};
+// export function getDateWithoutTZ(date, format = true) {
+// 	if (typeof date === 'string') date = date.replace('.000000Z', '');
+// 	date = moment(date).toDate();
+// 	return date;
+// }; Н Е Н У Ж Н О

@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import { Button, Glyphicon } from 'react-bootstrap';
 import Table from '../ui/table/DataTable.jsx';
-import { getFormattedDateTime, getDateWithoutTZ } from '../../utils/dates.js';
+import DateFormatter from '../ui/DateFormatter.jsx';
+import { getFormattedDateTime } from '../../utils/dates.js';
 import MissionFormWrap from './MissionFormWrap.jsx';
 import ElementsList from '../ElementsList.jsx';
 import moment from 'moment';
@@ -134,8 +135,8 @@ let MissionsTable = (props) => {
       mission_source_id: ({data}) => <div>{getMissionSourceById(data).name || data}</div>,
       status: ({data}) => <div>{getStatusLabel(data)}</div>,
       route_id: ({data}) => <div>{getRouteById(data).name || data}</div>,
-      date_start: ({data}) => <div>{getFormattedDateTime(data)}</div>,
-      date_end: ({data}) => <div>{getFormattedDateTime(data)}</div>,
+      date_start: ({data}) => <DateFormatter date={data} time={true} />,
+      date_end: ({data}) => <DateFormatter date={data} time={true} />,
       car_id: ({data}) => <div>{getCarById(data).gov_number || data}</div>,
 		};
 
@@ -170,8 +171,6 @@ export class MissionsJournal extends ElementsList {
 	completeMission() {
 		let mission = _.cloneDeep(this.state.selectedElement);
 		mission.status = 'complete';
-		mission.date_start = getDateWithoutTZ(mission.date_start);
-		mission.date_end = getDateWithoutTZ(mission.date_end);
 		this.context.flux.getActions('missions').updateMission(mission);
 	}
 

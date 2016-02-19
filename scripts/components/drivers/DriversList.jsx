@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import Table from '../ui/table/DataTable.jsx';
+import DateFormatter from '../ui/DateFormatter.jsx';
+import ElementsList from '../ElementsList.jsx';
 import DriverFormWrap from './DriverFormWrap.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
 import _ from 'lodash';
@@ -72,10 +74,10 @@ let tableMeta = {
   }]
 };
 
-let EmployeesTable = (props) => {
+let DriversTable = (props) => {
 
 	const renderers = {
-		birthday : ({data}) => <div>{data ? moment(data).format('YYYY-MM-DD') : ''}</div>,
+		birthday : ({data}) => <DateFormatter date={data} />,
 		active : ({data}) => <div>{data === true ? 'Работает' : 'Не работает'}</div>,
 		drivers_license : ({data}) => <div>{data && data !== "None" && data !== 'null' ? data : ''}</div>,
 		special_license : ({data}) => <div>{data && data !== "None" && data !== 'null' ? data : ''}</div>,
@@ -88,57 +90,37 @@ let EmployeesTable = (props) => {
 								{...props}/>
 }
 
-class DriversList extends Component {
+class DriversList extends ElementsList {
 
 
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			selectedDriver: null,
-			showForm: false,
-		};
+    this.mainListName = 'driversList';
 	}
 
-	componentDidMount() {
-		this.context.flux.getActions('employees').getEmployees();
-	}
-
-	selectDriver({props}) {
-		const id = props.data.id;
-		let driver = _.find(this.props.employeesList, d => d.id === id);
-
-		this.setState({
-			selectedDriver: driver
-		});
-	}
-
-	editDriver() {
-		this.setState({filterModalIsOpen: false, showForm: true});
-	}
-
-	onFormHide() {
-		this.setState({showForm: false, selectedDriver: null});
-	}
+  init() {
+    this.context.flux.getActions('employees').getEmployees();
+  }
 
 	render() {
 
 		const { driversList = [] } = this.props;
-		const drivers = driversList.map( (d) => {
-			return {
-				value: d.id,
-				label: `${d.last_name} ${d.first_name} ${d.middle_name}`,
-			}
-		});
+		// const drivers = driversList.map( (d) => {
+		// 	return {
+		// 		value: d.id,
+		// 		label: `${d.last_name} ${d.first_name} ${d.middle_name}`,
+		// 	}
+		// });
 
 		return (
 			<div className="ets-page-wrap">
-				<EmployeesTable data={driversList} onRowSelected={this.selectDriver.bind(this)} selected={this.state.selectedDriver} selectField={'id'}>
-          <Button bsSize="small" onClick={this.editDriver.bind(this)} disabled={this.state.selectedDriver === null}><Glyphicon glyph="pencil" /> Редактировать</Button>
-        </EmployeesTable>
+				<DriversTable data={driversList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'}>
+          <Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="pencil" /> Редактировать</Button>
+        </DriversTable>
 				<DriverFormWrap onFormHide={this.onFormHide.bind(this)}
 												showForm={this.state.showForm}
-												driver={this.state.selectedDriver}/>
+												driver={this.state.selectedElement}/>
 			</div>
 		)
 	}

@@ -10,7 +10,6 @@ import Div from '../ui/Div.jsx';
 import moment from 'moment';
 import { getFuelOperations, getFuelRatesByCarModel } from '../../adapter.js';
 import cx from 'classnames';
-import { getDateWithoutTZ } from '../../utils/dates.js';
 import { isEmpty } from '../../utils/functions.js';
 import Form from '../compositions/Form.jsx';
 
@@ -124,11 +123,11 @@ export class MissionForm extends Form {
 
 				 		<Col md={3}>
 				   		<label>Время выполнения</label>
-				 			<Div>c <Datepicker date={ getDateWithoutTZ(state.date_start) } onChange={this.handleChange.bind(this, 'date_start')} disabled={IS_DISPLAY}/></Div>
+				 			<Div>c <Datepicker date={state.date_start} onChange={this.handleChange.bind(this, 'date_start')} disabled={IS_DISPLAY}/></Div>
 				   	</Col>
 				   	<Col md={3}>
               <label style={{minHeight: 15}}></label>
-				 			<Div>по <Datepicker date={ getDateWithoutTZ(state.date_end) } onChange={this.handleChange.bind(this, 'date_end')} disabled={IS_DISPLAY}/></Div>
+				 			<Div>по <Datepicker date={state.date_end} onChange={this.handleChange.bind(this, 'date_end')} disabled={IS_DISPLAY}/></Div>
 				   	</Col>
 					</Row>
 

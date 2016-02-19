@@ -103,7 +103,8 @@ class MissionTemplatesJournal extends ElementsList {
 
     this.removeElementAction = context.flux.getActions('missions').removeMissionTemplate;
     this.mainListName = 'missionTemplatesList';
-		this.keyPressDisabled = true;
+		//this.keyPressDisabled = true;
+		this.doubleClickDisabled = true;
 		this.state = {
 			selectedMission: null,
       checkedMissions: {},

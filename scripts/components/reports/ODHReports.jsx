@@ -22,29 +22,8 @@ class ODHReports extends Component {
 		};
 	}
 
-	deleteRoute() {
-		if (confirm('Вы уверены, что хотите удалить выбранный маршрут?')) {
-			const { flux } = this.context;
-			flux.getActions('routes').removeRoute(this.state.selectedRoute);
-			this.setState({selectedRoute: null});
-		}
-	}
-
-	editRoute(route) {
-		this.setState({
-			selectedRoute: route
-		});
-	}
-
 	handleChange(selectedRoute) {
 		//this.setState({selectedRoute});
-	}
-
-	onFormHide() {
-		this.setState({
-			showForm: false,
-			selectedRoute: null,
-		})
 	}
 
 	componentDidMount() {

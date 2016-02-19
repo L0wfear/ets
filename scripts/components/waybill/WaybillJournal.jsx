@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import connectToStores from 'flummox/connect';
 import { Button, Glyphicon } from 'react-bootstrap';
 import Table from '../ui/table/DataTable.jsx';
+import DateFormatter from '../ui/DateFormatter.jsx';
 import WaybillFormWrap from './WaybillFormWrap.jsx';
 import ElementsList from '../ElementsList.jsx';
 import moment from 'moment';
@@ -129,9 +130,9 @@ let WaybillsTable = (props) => {
 			responsible_person_id: ({data}) => <div>{getFIOById(data)}</div>,
 			driver_id: ({data}) => <div>{getFIOById(data)}</div>,
 			car_id: ({data}) => <div>{getCarById(data).gov_number}</div>,
-			date_create: ({data}) => <div>{data ? moment.utc(data).format('YYYY-MM-DD') : ''}</div>,
-			fact_departure_date: ({data}) => <div>{moment.utc(data).format('YYYY-MM-DD HH:mm')}</div>,
-			fact_arrival_date: ({data}) => <div>{moment.utc(data).format('YYYY-MM-DD HH:mm')}</div>,
+			date_create: ({data}) => <DateFormatter date={data} />,
+			fact_departure_date: ({data}) => <DateFormatter date={data} time={true} />,
+			fact_arrival_date: ({data}) => <DateFormatter date={data} time={true} />,
 		};
 
 		return <Table title="Журнал путевых листов"
@@ -177,7 +178,7 @@ class WaybillJournal extends ElementsList {
 				</WaybillsTable>
 				<WaybillFormWrap onFormHide={this.onFormHide.bind(this)}
 												 showForm={this.state.showForm}
-												 bill={this.state.selectedElement}
+												 element={this.state.selectedElement}
 												 {...this.props}/>
 			</div>
 		);

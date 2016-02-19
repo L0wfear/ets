@@ -18,7 +18,17 @@ import NotificationSystem from './components/NotificationSystem.jsx';
 global.NOTIFICATION_SYSTEM = render(<NotificationSystem/>, document.getElementById('notifications'))
 global.APPSTART_TIME = Date.now();
 global.NODE_ENV = process.env.NODE_ENV;
+global.APP_DATE_FORMAT = 'DD.MM.YYYY';
 
 if (global.NODE_ENV !== 'production') {
   window.React = React;
 }
+
+import moment from 'moment';
+
+// var date1 = '2016-02-19T09:00:00.000000Z';
+// var date2 = '2016-02-19T09:00:00';
+// console.log(new Date(date1)); 12 часов
+// console.log(new Date(date2)); 12 часов
+// console.log(moment(date1).toDate()); 12 часов
+// console.log(moment(date2).toDate()); 9 часов!

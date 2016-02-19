@@ -6,7 +6,6 @@ import MissionForm from './MissionForm.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';
 import { getDefaultMission } from '../../stores/MissionsStore.js';
 import { isNotNull, isEmpty } from '../../utils/functions.js';
-import { getDateWithoutTZ } from '../../utils/dates.js';
 import { missionSchema, missionClosingSchema } from '../models/MissionModel.js';
 
 class MissionFormWrap extends FormWrap {
@@ -20,25 +19,13 @@ class MissionFormWrap extends FormWrap {
 	componentWillReceiveProps(props) {
 
 		if (props.showForm && props.showForm !== this.props.showForm) {
-			if (props.element === null ) {
-				const defaultMission = getDefaultMission();
-				this.setState({
-					formState: defaultMission,
-					canSave: false,
-					formErrors: this.validate(defaultMission, {}),
-				})
-			} else {
-				let mission = _.clone(props.element);
-
-				mission.date_start = getDateWithoutTZ(mission.date_start);
-				mission.date_end = getDateWithoutTZ(mission.date_end);
-
-				this.setState({
-					formState: mission,
-					//formErrors: this.validate(defaultMission, {}),
-					canSave: true,
-				});
-			}
+			let mission = props.element === null ? getDefaultMission() : _.clone(props.element);
+			let formErrors = this.validate(mission, {});
+			this.setState({
+				formState: mission,
+				canSave: ! !!_.filter(formErrors).length,//false,
+				formErrors,
+			});
 		}
 
 	}

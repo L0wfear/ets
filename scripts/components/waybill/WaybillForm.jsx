@@ -10,7 +10,7 @@ import Taxes from './Taxes.jsx';
 import { getFuelOperations, getFuelRatesByCarModel } from '../../adapter.js';
 import cx from 'classnames';
 import { isNotNull, isEmpty } from '../../utils/functions.js';
-import { getDateWithoutTZ, createValidDateTime } from '../../utils/dates.js';
+import { createValidDateTime } from '../../utils/dates.js';
 import Form from '../compositions/Form.jsx';
 
 
@@ -176,7 +176,6 @@ class WaybillForm extends Form {
 				</Modal.Header>
 
 	      <Modal.Body>
-
 					<Row>
 						<Col md={6}>
 							<Field type="select" label="Ответственное лицо" error={errors['responsible_person_id']}
@@ -189,43 +188,33 @@ class WaybillForm extends Form {
 										 value={getFIOById(employeesList, state.responsible_person_id, true)}/>
 						</Col>
 
-
 						<Div hidden={!(IS_CREATING || IS_POST_CREATING)}>
 					 		<Col md={3}>
 					   		<label>Выезд план</label>
-					 			<Datepicker date={ getDateWithoutTZ(state.plan_departure_date) } onChange={this.handleChange.bind(this, 'plan_departure_date')}/>
+					 			<Datepicker date={state.plan_departure_date} onChange={this.handleChange.bind(this, 'plan_departure_date')}/>
 					   	</Col>
 					 	</Div>
 						<Div hidden={!(IS_CREATING || IS_POST_CREATING)}>
 					   	<Col md={3}>
 					 			<label>Возвращение план</label>
-					 			<Datepicker date={ getDateWithoutTZ(state.plan_arrival_date) } onChange={this.handleChange.bind(this, 'plan_arrival_date')}/>
+					 			<Datepicker date={state.plan_arrival_date} onChange={this.handleChange.bind(this, 'plan_arrival_date')}/>
 					   	</Col>
 						</Div>
+
 						<Div hidden={!(IS_CLOSING || IS_DISPLAY)}>
 					   	<Col md={3}>
 								<label>Выезд план</label>
-					 			<Datepicker date={ getDateWithoutTZ(state.plan_departure_date) } disabled={true} onChange={() => true}/>
+					 			<Datepicker date={state.plan_departure_date} disabled={true} onChange={() => true}/>
 					   		<label>Выезд факт</label>
-					 			<Datepicker date={ getDateWithoutTZ(state.fact_departure_date) } disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'fact_departure_date')}/>
+					 			<Datepicker date={state.fact_departure_date} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'fact_departure_date')}/>
 					   	</Col>
 					  	<Col md={3}>
 								<label>Возвращение план</label>
-					 			<Datepicker date={ getDateWithoutTZ(state.plan_arrival_date) } disabled={true} onChange={() => true}/>
+					 			<Datepicker date={state.plan_arrival_date} disabled={true} onChange={() => true}/>
 					 			<label>Возвращение факт</label>
-					 			<Datepicker date={ getDateWithoutTZ(state.fact_arrival_date) } disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'fact_arrival_date')}/>
+					 			<Datepicker date={state.fact_arrival_date} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'fact_arrival_date')}/>
 					   	</Col>
 						</Div>
-					  <Div hidden={true}>
-					    <Col md={3}>
-					      <label>Выезд план</label><br/>{moment.utc(state.plan_departure_date).format('YYYY-MM-DD HH:mm')}<br/>
-					      <label>Выезд факт</label><br/>{moment.utc(state.fact_departure_date).format('YYYY-MM-DD HH:mm')}
-					    </Col>
-					    <Col md={3}>
-					      <label>Возвращение план</label><br/>{moment.utc(state.plan_arrival_date).format('YYYY-MM-DD HH:mm')}<br/>
-					      <label>Возвращение факт</label><br/>{moment.utc(state.fact_arrival_date).format('YYYY-MM-DD HH:mm')}
-					    </Col>
-					  </Div>
 					</Row>
 
 	      	<Row>
@@ -250,14 +239,6 @@ class WaybillForm extends Form {
 										 value={getCarById(carsList, state.car_id).label}/>
 	      		</Col>
 	      	</Row>
-
-					<Row>
-						<Col md={6}>
-
-						</Col>
-						<Col md={6}>
-						</Col>
-					</Row>
 
 	      	<Row>
 	      		<Col md={4}>
@@ -296,7 +277,6 @@ class WaybillForm extends Form {
 	      	</Row>
 
 	      	<Row>
-
 	      		<Col md={4}>
 		      		<h4> Топливо </h4>
 
@@ -341,7 +321,6 @@ class WaybillForm extends Form {
 							</Div>
 	      		</Col>
 	      	</Row>
-
 	      </Modal.Body>
 
 	      <Modal.Footer>

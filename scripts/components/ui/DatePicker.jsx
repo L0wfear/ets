@@ -24,20 +24,27 @@ export default class DatePicker extends Component {
   }*/
 
   render() {
-    let { time = true } = this.props;
-    let DATE_FORMAT = time ? 'YYYY-MM-DD HH:mm' : 'YYYY-MM-DD';
+    let { time = true, date, disabled } = this.props;
+    let DATE_FORMAT = time ? `${global.APP_DATE_FORMAT} HH:mm` : `${global.APP_DATE_FORMAT}`;
     let TIME_FORMAT = 'HH:mm';
 
+    if (typeof date === 'string') {
+      date = moment(date).toDate();
+    }
+
     //return //<input disabled={this.props.disabled}/>
-    return <DateTimePicker onChange={this.props.onChange}
-      format={DATE_FORMAT}
-      timeFormat={TIME_FORMAT}
-  		//culture="ru-RU"
-      className="chart-datepicker"
-      disabled={this.props.disabled}
-      step={5}
-      //messages={translation}
-      value={this.props.date}
-      time={time}/>
+    return (
+      <DateTimePicker onChange={this.props.onChange}
+                      format={DATE_FORMAT}
+                      timeFormat={TIME_FORMAT}
+                  		//culture="ru-RU"
+                      className="chart-datepicker"
+                      disabled={disabled}
+                      step={5}
+                      //messages={translation}
+                      value={date}
+                      time={time}/>
+    );
+    
   }
 }

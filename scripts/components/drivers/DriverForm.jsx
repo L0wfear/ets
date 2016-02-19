@@ -31,7 +31,6 @@ class DriverForm extends Form {
 		let state = this.props.formState;
 		const { carsList = [] } = this.props;
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: c.gov_number + ' [' + c.model + ']'}));
-		console.log(CARS);
 
     console.log('form state is ', state);
 

@@ -7,7 +7,6 @@ import RouteInfo from '../route/RouteInfo.jsx';
 import ODHList from '../route/ODHList.jsx';
 import { isEmpty } from '../../utils/functions.js';
 import Datepicker from '../ui/DatePicker.jsx';
-import { getDateWithoutTZ } from '../../utils/dates.js';
 import Form from '../compositions/Form.jsx';
 
 class MissionsCreationForm extends Form {
@@ -39,11 +38,11 @@ class MissionsCreationForm extends Form {
           <Row>
             <Col md={6}>
               <label>Время выполнения</label>
-              <Div>c <Datepicker date={ getDateWithoutTZ(state.date_start) } onChange={this.handleChange.bind(this, 'date_start')}/></Div>
+              <Div>c <Datepicker date={state.date_start} onChange={this.handleChange.bind(this, 'date_start')}/></Div>
             </Col>
             <Col md={6}>
               <label style={{minHeight: 15}}></label>
-              <Div>по <Datepicker date={ getDateWithoutTZ(state.date_end) } onChange={this.handleChange.bind(this, 'date_end')} /></Div>
+              <Div>по <Datepicker date={state.date_end} onChange={this.handleChange.bind(this, 'date_end')} /></Div>
             </Col>
           </Row>
           <Row>

@@ -23,7 +23,9 @@ export default class WaybillsActions extends Actions {
     const payload = _.clone(waybill);
     payload.plan_departure_date = createValidDateTime(payload.plan_departure_date);
     payload.plan_arrival_date = createValidDateTime(payload.plan_arrival_date);
+
     if (payload.status === 'closed') {
+      console.log('taking fact time');
       payload.fact_departure_date = createValidDateTime(payload.fact_departure_date);
       payload.fact_arrival_date = createValidDateTime(payload.fact_arrival_date);
     } else {

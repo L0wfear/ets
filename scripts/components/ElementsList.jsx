@@ -26,7 +26,7 @@ class ElementsList extends React.Component {
    selectElement({props}) {
      console.log('SELECT ELEMENT CALL', props.data.id);
      const id = props.data.id;
-     if (this.state.selectedElement && id === this.state.selectedElement.id) {
+     if (this.state.selectedElement && id === this.state.selectedElement.id && !this.doubleClickDisabled) {
    		 return this.setState({ showForm: true });
    	 }
      let selectedElement = _.find(this.state.elementsList, el => el.id === id);
@@ -52,6 +52,7 @@ class ElementsList extends React.Component {
  	 }
 
    removeElement() {
+    if (typeof this.removeElementAction !== 'function') return;
  		if (confirm('Вы уверены, что хотите удалить выбранный элемент?')) {
       this.removeElementAction(this.state.selectedElement.id);
  		}

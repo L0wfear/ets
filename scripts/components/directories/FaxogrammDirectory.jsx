@@ -6,6 +6,7 @@ import ElementsList from '../ElementsList.jsx';
 import Paginator from '../ui/Paginator.jsx';
 import Div from '../ui/Div.jsx';
 import Datepicker from '../ui/DatePicker.jsx';
+import DateFormatter from '../ui/DateFormatter.jsx';
 import moment from 'moment';
 import cx from 'classnames';
 import { createValidDateTime, getToday0am, getToday2359 } from '../../utils/dates.js';
@@ -82,9 +83,9 @@ let getTableMeta = (props) => {
 let FaxogrammsTable = (props) => {
 
 		const renderers = {
-			order_date: ({data}) => <div>{data ? moment.utc(data).format('YYYY-MM-DD HH:mm') : 'Не указано'}</div>,
-  		order_date_to: ({data}) => <div>{data ? moment.utc(data).format('YYYY-MM-DD HH:mm') : 'Не указано'}</div>,
-    	create_date: ({data}) => <div>{data ? moment.utc(data).format('YYYY-MM-DD HH:mm') : 'Не указано'}</div>,
+			order_date: ({data}) => <DateFormatter date={data} time={true} empty={'Не указано'} />,
+  		order_date_to: ({data}) => <DateFormatter date={data} time={true} empty={'Не указано'} />,
+    	create_date: ({data}) => <DateFormatter date={data} time={true} empty={'Не указано'} />,
 			pgm_deny: ({data}) => <div>{data === 1 ? 'Не применять' : 'Применять'}</div>,
 		};
 

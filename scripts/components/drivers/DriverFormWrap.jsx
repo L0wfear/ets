@@ -2,15 +2,13 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import _ from 'lodash';
 import DriverForm from './DriverForm.jsx';
+import FormWrap from '../compositions/FormWrap.jsx';
 
-const formStages = ['creating', 'post-creating', 'display', 'closing'];
-
-class FormWrap extends Component {
+class DriverFormWrap extends FormWrap {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			formStage: formStages[0],
 			formState: null,
 			canSave: false,
 			canPrint: false
@@ -24,24 +22,10 @@ class FormWrap extends Component {
         const driver = Object.assign({}, props.driver);
         this.setState({
           formState: driver,
-          formStage: formStages[3]
         })
 			}
 		}
 
-	}
-
-
-	handleFormStateChange(field, e) {
-		console.log( 'driver form changed', field, e)
-
-		let formState = this.state.formState;
-		let newState = {};
-		formState[field] = !!e.target ? e.target.value : e;
-
-		newState.formState = formState;
-
-		this.setState(newState)
 	}
 
 	handleFormSubmit(formState) {
@@ -66,8 +50,4 @@ class FormWrap extends Component {
 
 }
 
-FormWrap.contextTypes = {
-	flux: React.PropTypes.object,
-};
-
-export default FormWrap;
+export default DriverFormWrap;

@@ -4,7 +4,6 @@ import _ from 'lodash';
 import Div from '../ui/Div.jsx';
 import WaybillForm from './WaybillForm.jsx';
 import { getDefaultBill } from '../../stores/WaybillsStore.js';
-import { getDateWithoutTZ } from '../../utils/dates.js';
 import { isNotNull, isEmpty } from '../../utils/functions.js';
 import { validateRow } from '../../validate/validateRow.js';
 import { waybillSchema, waybillClosingSchema } from '../models/WaybillModel.js';
@@ -49,56 +48,53 @@ class WaybillFormWrap extends Component {
 	componentWillReceiveProps(props) {
 
 		if (props.showForm && props.showForm !== this.props.showForm) {
-			if (props.bill === null ) {
+			if (props.element === null ) {
 				const defaultBill = getDefaultBill();
 				this.setState({
 					formState: defaultBill,
 					canSave: false,
+					canPrint: false,
 					formErrors: validateWaybill(defaultBill, {}),
 				})
 			} else {
 
-				let _bill = _.clone(props.bill);
-				_bill.fact_departure_date = getDateWithoutTZ(_bill.plan_departure_date);
-				_bill.fact_arrival_date = getDateWithoutTZ(_bill.plan_arrival_date);
-				_bill.plan_departure_date = getDateWithoutTZ(_bill.plan_departure_date);
-				_bill.plan_arrival_date = getDateWithoutTZ(_bill.plan_arrival_date);
+				let waybill = _.clone(props.element);
 
-				if (props.bill.status === 'active') {
+				if (props.element.status === 'active') {
 
 					this.setState({
-						formState: _bill,
-						formErrors: validateClosingWaybill(_bill, {}),
+						formState: waybill,
+						formErrors: validateClosingWaybill(waybill, {}),
 						canPrint: false,
 						canSave: false,
 					});
 
-				} else if (props.bill.status === 'draft') {
+				} else if (props.element.status === 'draft') {
 
 					this.setState({
-						formState: _bill,
+						formState: waybill,
 						canPrint: true,
 						canSave: true,
 						formErrors: {}
 					});
 
-				} else if (props.bill.status === 'closed') {
+				} else if (props.element.status === 'closed') {
 
-					if (_bill.array_agg) {
-						_bill.taxes = _bill.array_agg;
+					if (waybill.array_agg) {
+						waybill.taxes = waybill.array_agg;
 					}
-					if (isNotNull(_bill.odometr_end) && isNotNull(_bill.odometr_start)) {
-						_bill.odometr_diff = _bill.odometr_end - _bill.odometr_start;
+					if (isNotNull(waybill.odometr_end) && isNotNull(waybill.odometr_start)) {
+						waybill.odometr_diff = waybill.odometr_end - waybill.odometr_start;
 					}
-					if (isNotNull(_bill.motohours_end) && isNotNull(_bill.motohours_start)) {
-						_bill.motohours_diff = _bill.motohours_end - _bill.motohours_start;
+					if (isNotNull(waybill.motohours_end) && isNotNull(waybill.motohours_start)) {
+						waybill.motohours_diff = waybill.motohours_end - waybill.motohours_start;
 					}
-					if (isNotNull(_bill.motohours_equip_end) && isNotNull(_bill.motohours_equip_start)) {
-						_bill.motohours_equip_diff = _bill.motohours_equip_end - _bill.motohours_equip_start;
+					if (isNotNull(waybill.motohours_equip_end) && isNotNull(waybill.motohours_equip_start)) {
+						waybill.motohours_equip_diff = waybill.motohours_equip_end - waybill.motohours_equip_start;
 					}
 
 					this.setState({
-						formState: _bill,
+						formState: waybill,
 						formErrors: {}
 					});
 				}

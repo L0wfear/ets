@@ -4,7 +4,6 @@ import Filter from './Filter.jsx';
 import statuses from '../../statuses.js';
 import types from '../../types.js';
 import owners from '../../owners.js';
-import customers from '../../customers.js';
 import okrugs from '../../okrugs.js';
 import FluxComponent from 'flummox/component';
 import ToolbarSearch from './ToolbarSearch.jsx';

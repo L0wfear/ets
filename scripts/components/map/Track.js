@@ -1,6 +1,5 @@
 import React from 'react';
 import { projectToPixel } from './MskAdapter.js';
-import { getCustomerById } from '../../customers.js';
 import { getTrack } from '../../adapter.js';
 import { getStartOfToday, makeDate, makeTime } from '../../utils/dates.js';
 import { TRACK_COLORS, TRACK_LINE_OPACITY, TRACK_LINE_WIDTH, TRACK_POINT_RADIUS, SHOW_ONLY_POINTS_WITH_SPEED_CHANGES } from '../../constants/track.js';
@@ -489,7 +488,7 @@ export default class Track {
             objectsString += ' загружаются'
           } else {
             if ( geoObjects.length > 0 ){
-              objectsString += ': '+ geoObjects.map((obj)=>obj.name + ' ('+getCustomerById(obj.customer_id).title+')').join(', ')
+              //objectsString += ': '+ geoObjects.map((obj)=>obj.name + ' ('+getCustomerById(obj.customer_id).title+')').join(', ')
             } else {
               objectsString += ' не найдены'
             }

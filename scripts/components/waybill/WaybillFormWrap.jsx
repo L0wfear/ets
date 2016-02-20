@@ -169,33 +169,33 @@ class WaybillFormWrap extends Component {
 		if (!!!billStatus) {
 			if (typeof callback === 'function') {
 				formState.status = 'draft';
-				flux.getActions('waybills').createWaybill(formState).then((r) => {
+				flux.getActions('waybills').create(formState).then((r) => {
 					const id = _.max(r.result, res => res.id).id;
 					formState.status = 'active';
 					formState.id = id;
-					flux.getActions('waybills').updateWaybill(formState).then(() => {
+					flux.getActions('waybills').update(formState).then(() => {
 						callback(id);
 					});
 				});
 			} else {
 				formState.status = 'draft';
-				flux.getActions('waybills').createWaybill(formState);
+				flux.getActions('waybills').create(formState);
 			}
 			this.props.onFormHide();
 		} else if (billStatus === 'draft') {
 			if (typeof callback === 'function') {
 				formState.status = 'active';
-				flux.getActions('waybills').updateWaybill(formState).then(() => {
+				flux.getActions('waybills').update(formState).then(() => {
 					callback();
 				});
 				this.props.onFormHide();
 			} else {
-				flux.getActions('waybills').updateWaybill(formState);
+				flux.getActions('waybills').update(formState);
 				this.props.onFormHide();
 			}
 		} else if (billStatus === 'active') {
 			formState.status = 'closed';
-			flux.getActions('waybills').updateWaybill(formState);
+			flux.getActions('waybills').update(formState);
 			this.props.onFormHide();
 		}
 

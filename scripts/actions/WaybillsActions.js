@@ -1,25 +1,25 @@
-import { Actions } from 'flummox';
-import { getWaybills, removeWaybill, updateWaybill, createWaybill } from '../adapter.js';
+import BaseActions from './Actions.js';
 import { createValidDateTime } from '../utils/dates.js';
 import _ from 'lodash';
 import { isEmpty } from '../utils/functions.js';
+import { WaybillService } from '../api/Services.js';
 
-export default class WaybillsActions extends Actions {
+class WaybillsActions extends BaseActions {
 
   constructor(props) {
     super();
+    this.service = WaybillService;
   }
 
-  getWaybills() {
-    return getWaybills();
+  get() {
+    return super.get();
   }
 
-  removeWaybill(id) {
-    const payload = { id };
-    return removeWaybill(payload);
+  delete(id) {
+    return super.delete(id);
   }
 
-  updateWaybill(waybill) {
+  update(waybill) {
     const payload = _.clone(waybill);
     payload.plan_departure_date = createValidDateTime(payload.plan_departure_date);
     payload.plan_arrival_date = createValidDateTime(payload.plan_arrival_date);
@@ -59,10 +59,10 @@ export default class WaybillsActions extends Actions {
       payload.mission_id_list = '';
     }
 
-    return updateWaybill(payload);
+    return super.update(payload);
   }
 
-  createWaybill(waybill) {
+  create(waybill) {
     const payload = _.clone(waybill);
     payload.plan_departure_date = createValidDateTime(payload.plan_departure_date);
     payload.plan_arrival_date = createValidDateTime(payload.plan_arrival_date);
@@ -71,7 +71,9 @@ export default class WaybillsActions extends Actions {
     delete payload.car_has_odometer;
     _.mapKeys(payload, (v, k) => isEmpty(v) ? delete payload[k] : void 0);
 
-    return createWaybill(payload);
+    return super.create(payload);
   }
 
 }
+
+export default WaybillsActions;

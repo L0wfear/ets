@@ -1,21 +1,22 @@
 import { Actions } from 'flummox';
-import { getRoutes, getRouteById, createRoute, removeRoute, updateRoute, getRouteReports, getRouteReportById, createRouteReport, validateRoute, getGeozones } from '../adapter.js';
 import _ from 'lodash';
+import { createRoute } from '../adapter.js';
 import { createValidDateTime } from '../utils/dates.js';
+import { RouteService, RouteReportsService, RouteValidateService, GeozoneService } from '../api/Services.js';
 
 export default class RoutesActions extends Actions {
 
-  getRoutes() {
-    return getRoutes();
+  constructor(props) {
+    super();
   }
 
-  getRoutesVector() {
-    return getRoutesVector();
+  getRoutes() {
+    return RouteService.get();
   }
 
   getRouteById(id) {
     const payload = { id };
-    return getRouteById(payload);
+    return RouteService.get(payload);
   }
 
   createRoute(route) {
@@ -33,7 +34,7 @@ export default class RoutesActions extends Actions {
 
   removeRoute(route) {
     const payload = { id: route.id };
-    return removeRoute(payload);
+    return RouteService.delete(payload);
   }
 
   updateRoute(route) {
@@ -42,21 +43,21 @@ export default class RoutesActions extends Actions {
     delete payload.odh_list;
     delete payload.odh_fail_list;
     payload.object_list = JSON.stringify(payload.object_list);
-    return updateRoute(payload);
+    return RouteService.update(payload);
   }
 
   getRouteReports() {
-    return getRouteReports();
+    return RouteReportsService.get();
   }
 
   getRouteReportById(id) {
     const payload = { id };
-    return getRouteReportById(payload);
+    return RouteReportsService.get(payload);
   }
 
   createRouteReport(operation_id) {
     const payload = { operation_id };
-    return createRouteReport(payload);
+    return RouteReportsService.create(payload);
   }
 
   validateRoute(route) {
@@ -67,11 +68,11 @@ export default class RoutesActions extends Actions {
     const payload = {
       route_vector: JSON.stringify(route_vector),
     };
-    return validateRoute(payload);
+    return RouteValidateService.get(payload);
   }
 
   getGeozones() {
-    return getGeozones();
+    return GeozoneService.get();
   }
 
 }

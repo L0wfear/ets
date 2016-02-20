@@ -1,7 +1,7 @@
 import { Actions } from 'flummox';
-import { getFuelRates, getFuelOperations, getFuelRatesByCarModel, addFuelRate, updateFuelRate, deleteFuelRate } from '../adapter.js';
 import { createValidDate } from '../utils/dates.js';
 import _ from 'lodash';
+import { FuelConsumptionRateService, FuelOperationsService } from '../api/Services.js';
 
 export default class FuelRateActions extends Actions {
 
@@ -10,11 +10,16 @@ export default class FuelRateActions extends Actions {
   }
 
   getFuelRates() {
-    return getFuelRates();
+    return FuelConsumptionRateService.get();
+  }
+
+  getFuelRatesByCarModel(car_model_id) {
+    const payload = { car_model_id }
+    return FuelConsumptionRateService.get(payload);
   }
 
   getFuelOperations() {
-    return getFuelOperations();
+    return FuelOperationsService.get();
   }
 
   updateFuelRate(newFuelRate) {
@@ -30,21 +35,17 @@ export default class FuelRateActions extends Actions {
     }
     payload.order_date = createValidDate(payload.order_date);
 
-    return updateFuelRate(payload);
+    return FuelConsumptionRateService.update(payload);
   }
 
   deleteFuelRate(rate) {
-    return deleteFuelRate(rate);
+    return FuelConsumptionRateService.delete(rate);
   }
 
   addFuelRate(rate) {
     const payload = _.clone(rate);
     payload.order_date = createValidDate(payload.order_date);
-    return addFuelRate(payload);
-  }
-
-  getFuelRatesByCarModel(model_id) {
-    return getFuelRatesByCarModel(model_id);
+    return FuelConsumptionRateService.create(payload);
   }
 
 }

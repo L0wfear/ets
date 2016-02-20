@@ -1,7 +1,6 @@
 import { Store } from 'flummox';
 import _ from 'lodash';
-import {makeDate, makeTime, getToday9am, getTomorrow9am} from '../utils/dates.js';
-import moment from 'moment';
+import { getToday9am, getTomorrow9am} from '../utils/dates.js';
 
 class WaybillsStore extends Store {
 
@@ -9,10 +8,10 @@ class WaybillsStore extends Store {
     super();
 
     const waybillsActions = flux.getActions('waybills');
-    this.register(waybillsActions.getWaybills, this.handleGetWaybills);
-    this.register(waybillsActions.removeWaybill, this.handleRemoveWaybill);
-    this.register(waybillsActions.updateWaybill, this.handleUpdateWaybill);
-    this.register(waybillsActions.createWaybill, this.handleCreateWaybill);
+    this.register(waybillsActions.get, this.handleGetWaybills);
+    this.register(waybillsActions.delete, this.handleGetWaybills);
+    this.register(waybillsActions.update, this.handleGetWaybills);
+    this.register(waybillsActions.create, this.handleGetWaybills);
 
     this.state = {
       waybillsList: [],
@@ -21,19 +20,6 @@ class WaybillsStore extends Store {
   }
 
   handleGetWaybills(waybills) {
-    this.setState({waybillsList: waybills.result});
-  }
-
-  //todo: определить объединять или нет
-  handleRemoveWaybill(waybills) {
-    this.setState({waybillsList: waybills.result});
-  }
-
-  handleUpdateWaybill(waybills) {
-    this.setState({waybillsList: waybills.result});
-  }
-
-  handleCreateWaybill(waybills) {
     this.setState({waybillsList: waybills.result});
   }
 

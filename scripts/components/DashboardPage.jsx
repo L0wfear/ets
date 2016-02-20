@@ -179,7 +179,7 @@ class DashboardCardMedium extends React.Component {
 };
 
 class MasterManagementCard extends ElementsList {
-  
+
   constructor(props) {
     super(props);
   }
@@ -210,6 +210,7 @@ class MasterManagementCard extends ElementsList {
 }
 
 class DashboardPage extends React.Component {
+
   constructor(props, context) {
     super(props);
 

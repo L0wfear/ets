@@ -68,12 +68,9 @@ class App extends Component {
               flux.getActions('objects').getTypes(),
               //flux.getActions('objects').getOwners(),
               flux.getActions('objects').getOkrugs(),
-              flux.getActions('objects').getCustomers()
+              //flux.getActions('objects').getCustomers()
             ])
           })
-          // .then(() => {
-          //   flux.getActions('objects').getCars();
-          // })
           .then(() => this.setState({loading: false}))
           .catch((error) => {
             if (error === 401) {

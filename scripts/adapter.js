@@ -3,14 +3,9 @@ import config from './config.js';
 import { getStartOfToday, makeUnixTime } from './utils/dates.js';
 import { wrapCoords, swapCoords } from './utils/geo.js';
 
-import { loadCustomers } from './customers.js';
 import { loadTypes } from './types.js';
-import { loadModels } from './models.js';
-import { loadOkrugs } from './okrugs.js';
-import { loadOwners } from './owners.js';
 
-
-let getUrl = (url) => config.backend ? config.backend + url : url;
+export const getUrl = (url) => config.backend ? config.backend + url : url;
 let getOldUrl = (url) => config.backendOld ? config.backendOld + url : url;
 
 let toFormData = (data) => {
@@ -25,13 +20,6 @@ let toUrlWithParams = (url, data) => {
   let params = '?';
   _.mapKeys(data, (v, k) => {
     if (_.isArray(v)) {
-      // v.map( (el, i) => {
-      //   if (_.isObject(el)) {
-      //     _.mapKeys(el, (innerV, innerK) => {
-      //       params += `${k}[${i}][${innerK}]=${encodeURIComponent(innerV)}&`;
-      //     });
-      //   }
-      // });
       if (k === 'taxes') {
         const taxes = {'taxes':v};
         params += `data=${encodeURIComponent(JSON.stringify(taxes))}&`
@@ -56,38 +44,16 @@ const POINTS_URL = getUrl('/data');
 const TRACK_URL = getOldUrl('/tracks/');
 const WEATHER_URL = getUrl('/weather/');
 const GEO_OBJECTS_URL = getUrl('/geo_objects/');
-const ROADS_ACTUAL_URL = getUrl('/roads_actual/');
-const GET_ROAD_BY_ODH_URL = getUrl('/road_info/');
-const CARS_INFO_URL = getUrl('/cars_info/');
-const CARS_BY_OWNER_URL = getUrl('/cars_by_owner/');
 const FUEL_OPERATIONS_URL = getUrl('/fuel_operations/');
 const FUEL_CONSUMPTION_RATE_URL = getUrl('/fuel_consumption_rates/');
 const LOGIN_URL = getUrl('/auth/');
 const AUTH_CHECK_URL = getUrl('/auth_check');
-const WAYBILL_URL = getUrl('/waybill/');
-const CARS_ACTUAL_URL = getUrl('/car_actual/');
-const CARS_GARAGE_NUMBER_URL = getUrl('/car_garage_number/');
-const CARS_ADDITIONAL_INFO_URL = getUrl('/car_additional_info/');
-const EMPLOYEE_URL = getUrl('/employee/');
-const FUEL_TYPES_URL = getUrl('/fuel_type/');
-const ROUTE_URL = getUrl('/route/');
-const TECH_OPERATIONS_URL = getUrl('/technical_operation/');
 const ODHS_URL = getUrl('/odh/');
-const WORK_KINDS_URL = getUrl('/work_kind/');
-const MISSIONS_URL = getUrl('/mission/');
 const MISSIONS_CREATION_URL = getUrl('/create_missions_from_mission_templates/');
-const MISSION_SOURCES_URL = getUrl('/mission_source/');
-const MISSION_TEMPLATES_URL = getUrl('/mission_template/');
-const ROUTES_URL = getUrl('/route/');
-const ROUTE_REPORTS_URL = getUrl('/route_odh_covering_report/');
-const ODH_REPORTS_SERVICE_URL = getUrl('/odh-reports/');
-const ROUTE_VALIDATE_URL = getUrl('/route_validate/');
-const MISSION_REPORTS_URL = getUrl('/car_odh_travel_report/');
-const GEOZONE_URL = getUrl('/geozone/');
+const ROUTE_URL = getUrl('/route/');
 const DASHBOARD_URL = getUrl('/dashboard/');
-const FAXOGRAMMS_URL = getUrl('/faxogramm/')
 
-function getJSON(url, data = {}) {
+export function getJSON(url, data = {}) {
   data = _.clone(data);
   const { flux } = window.__ETS_CONTAINER__;
   const token = flux.getStore('session').getSession();
@@ -104,7 +70,7 @@ function getJSON(url, data = {}) {
   });
 }
 
-function postJSON(url, data, type = 'form') {
+export function postJSON(url, data, type = 'form') {
   data = _.clone(data);
   const { flux } = window.__ETS_CONTAINER__;
   const token = flux.getStore('session').getSession();
@@ -148,7 +114,7 @@ function postJSON(url, data, type = 'form') {
   });
 }
 
-function putJSON(url, data, type = 'form') {
+export function putJSON(url, data, type = 'form') {
   data = _.clone(data);
   const { flux } = window.__ETS_CONTAINER__;
   const token = flux.getStore('session').getSession();
@@ -189,7 +155,7 @@ function putJSON(url, data, type = 'form') {
   });
 }
 
-function deleteJSON(url, data, type = 'form') {
+export function deleteJSON(url, data, type = 'form') {
   data = _.clone(data);
   const { flux } = window.__ETS_CONTAINER__;
   const token = flux.getStore('session').getSession();
@@ -268,9 +234,7 @@ export function login(user) {
 }
 
 export function logout() {
-  return new Promise((res, rej) => {
-    res();
-  });
+  return new Promise((res) => res());
 }
 
 export function getAllPoints() {
@@ -288,55 +252,8 @@ export function init() {
   console.warn('INIT');
   // @todo вся нужная для инициализации внешнего апи хрень здесь
   return Promise.all([
-          //loadCustomers(),
-          //loadModels(),
-          //loadOwners(),
-          //loadOkrugs(),
           loadTypes()
         ])
-        //.then(getRoutes);
-}
-
-export function getWaybills() {
-  return getJSON(WAYBILL_URL);
-}
-
-export function getCars(payload) {
-  return getJSON(CARS_ACTUAL_URL, payload);
-}
-
-export function updateCarAdditionalInfo(data) {
-  return postJSON(CARS_ADDITIONAL_INFO_URL, data, 'params').then( () => {
-    return getCars();
-  });
-}
-
-export function getEmployees() {
-  return getJSON(EMPLOYEE_URL);
-}
-
-export function updateEmployee(employee) {
-  return putJSON(EMPLOYEE_URL, employee, 'params').then( () => {
-    return getEmployees();
-  });
-}
-
-export function removeWaybill(payload) {
-  return deleteJSON(WAYBILL_URL, payload, 'params').then( () => {
-    return getWaybills();
-  });
-}
-
-export function updateWaybill(waybill) {
-  return putJSON(WAYBILL_URL, waybill, 'params').then( () => {
-    return getWaybills();
-  });
-}
-
-export function createWaybill(waybill) {
-  return postJSON(WAYBILL_URL, waybill, 'params').then( () => {
-    return getWaybills();
-  });
 }
 
 export function getFuelOperations() {
@@ -383,106 +300,8 @@ export function getGeoObjectsByCoords([lat, lon], d = 5) {
   return fetch(GEO_OBJECTS_URL + mskQuery).then(r => r.json())
 }
 
-// возвращает список всех доступных ОДХ
-export function getRoadsActual() {
-  return fetch(ROADS_ACTUAL_URL).then(r => r.json());
-}
-
-// возвращает инфу по ОДХ
-let ODH_CACHE = {};
-export function getRoadByODHId(id) {
-  if (ODH_CACHE[id] === undefined) {
-    let query = '?road_id=' + id;
-    return fetch(GET_ROAD_BY_ODH_URL + query, {credentials: 'include'}).then(r => {
-      ODH_CACHE[id] = r.json();
-      return ODH_CACHE[id];
-    });
-  } else {
-    return ODH_CACHE[id];
-  }
-}
-
-// возвращает список всех доступных автомобилей
-export function getCarsInfo() {
-  return fetch(CARS_INFO_URL).then(r => r.json())
-}
-
-
-// TODO метод на бэкэнде
-// пока возвращает промис из заглушки
-export function getCarsByOwnerId(ownerId) {
-  return getCars()
-
-  let query = '?owner_id=' + ownerId;
-  return fetch(CARS_BY_OWNER_URL + query).then(r => r.json())
-}
-
-export function getFuelRates() {
-  return getJSON(FUEL_CONSUMPTION_RATE_URL);
-}
-
-export function updateFuelRate(newFuelRate) {
-  return putJSON(FUEL_CONSUMPTION_RATE_URL, newFuelRate, 'params').then( () => {
-    return getFuelRates();
-  });
-}
-
-export function addFuelRate(newFuelRate) {
-  return postJSON(FUEL_CONSUMPTION_RATE_URL, newFuelRate, 'params').then( () => {
-    return getFuelRates();
-  });
-}
-
-export function deleteFuelRate(rate) {
-  return deleteJSON(FUEL_CONSUMPTION_RATE_URL, {id: rate.id}, 'params').then( () => {
-    return getFuelRates();
-  });
-}
-
-export function getFuelTypes() {
-  return getJSON(FUEL_TYPES_URL);
-}
-
-export function getTechOperations() {
-  return getJSON(TECH_OPERATIONS_URL);
-}
-
 export function getODHs() {
   return getJSON(ODHS_URL);
-}
-
-export function getFaxogramms(payload) {
-  return getJSON(FAXOGRAMMS_URL, payload)
-}
-
-export function getWorkKinds() {
-  return getJSON(WORK_KINDS_URL);
-}
-
-export function getMissions(payload) {
-  return getJSON(MISSIONS_URL, payload, 'params');
-}
-
-export function getMissionSources() {
-  return getJSON(MISSION_SOURCES_URL);
-}
-
-export function removeMission(payload) {
-  return deleteJSON(MISSIONS_URL, payload, 'params').then( () => {
-    return getMissions();
-  });
-}
-
-export function updateMission(mission) {
-  return putJSON(MISSIONS_URL, mission, 'params').then( () => {
-    return getMissions();
-  });
-}
-
-export function createMission(mission) {
-  return postJSON(MISSIONS_URL, mission, 'params').then( () => {
-    return getMissions();
-  });
 }
 
 export function createMissions(payload) {
@@ -491,94 +310,12 @@ export function createMissions(payload) {
   });
 }
 
-export function getMissionTemplates() {
-  return getJSON(MISSION_TEMPLATES_URL);
-}
-
-export function createMissionTemplate(missionTemplate) {
-  return postJSON(MISSION_TEMPLATES_URL, missionTemplate, 'params').then( () => {
-    return getMissionTemplates();
-  });
-}
-
-export function removeMissionTemplate(payload) {
-  return deleteJSON(MISSION_TEMPLATES_URL, payload, 'params').then(() => getMissionTemplates());
-}
-
-export function updateMissionTemplate(mission) {
-  return putJSON(MISSION_TEMPLATES_URL, mission, 'params').then( () => {
-    return getMissionTemplates();
-  });
-}
-
-
 // ROUTES
 
-export function getRoutes() {
-  return getJSON(ROUTES_URL);
-}
-
 export function createRoute(route) {
-  return postJSON(ROUTES_URL, route, 'form').then((createdRoute) => getRoutes().then(routes => {
+  return postJSON(ROUTE_URL, route, 'form').then((createdRoute) => getRoutes().then(routes => {
     return {createdRoute, routes};
   }));
-}
-
-export function removeRoute(payload) {
-  return deleteJSON(ROUTES_URL, payload, 'params').then(() => getRoutes());
-}
-
-export function updateRoute(payload) {
-  return putJSON(ROUTES_URL, payload, 'form').then(() => getRoutes());
-}
-
-export function getRouteById(payload) {
-  return getJSON(ROUTES_URL, payload);
-}
-
-
-// SERVICES
-
-export function getODHReports() {
-  const payload = {
-    page: 1,
-    per_page: 50,
-    sort_by: 'ID',
-    order: 'desc'
-  }
-  return getJSON(ODH_REPORTS_SERVICE_URL, payload, 'params');
-}
-
-export function getRouteReports() {
-  return getJSON(ROUTE_REPORTS_URL);
-}
-
-export function getRouteReportById(payload) {
-  return getJSON(ROUTE_REPORTS_URL, payload);
-}
-
-export function createRouteReport(payload) {
-  return postJSON(ROUTE_REPORTS_URL, payload, 'form').then(() => getRouteReports());
-}
-
-export function validateRoute(payload) {
-  return getJSON(ROUTE_VALIDATE_URL, payload);
-}
-
-export function getMissionReports() {
-  return getJSON(MISSION_REPORTS_URL);
-}
-
-export function getMissionReportById(payload) {
-  return getJSON(MISSION_REPORTS_URL, payload);
-}
-
-export function createMissionReport(payload) {
-  return postJSON(MISSION_REPORTS_URL, payload, 'form').then(() => getMissionReports());
-}
-
-export function getGeozones() {
-  return getJSON(GEOZONE_URL);
 }
 
 // DASHBOARD //

@@ -1,28 +1,17 @@
 import { Actions } from 'flummox';
-import { getMissions,
-         getMissionSources,
-         createMission,
-         removeMission,
-         updateMission,
-         getMissionTemplates,
-         createMissionTemplate,
-         removeMissionTemplate,
-         updateMissionTemplate,
-         getMissionReports,
-         getMissionReportById,
-         createMissionReport,
-         createMissions} from '../adapter.js';
+import { createMissions} from '../adapter.js';
 
 import _ from 'lodash';
 import { createValidDateTime } from '../utils/dates.js';
 import { isEmpty, isNotNull } from '../utils/functions.js';
 
+import { MissionReportsService, MissionService, MissionSourceService, MissionTemplateService } from '../api/Services.js';
+
 export default class MissionsActions extends Actions {
 
   getMissions(car_id, date_from, date_to, status) {
-    const payload = {
-
-    };
+    const payload = {};
+    
     if (!isEmpty(car_id)) {
       payload.car_id = car_id;
     }
@@ -39,42 +28,40 @@ export default class MissionsActions extends Actions {
       payload.status = status;
     }
 
-    return getMissions(payload);
+    return MissionService.get(payload);
   }
 
   getMissionSources() {
-    return getMissionSources();
+    return MissionSourceService.get();
   }
 
   createMission(mission) {
     const payload = _.clone(mission);
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
-    return createMission(payload);
+    return MissionService.create(payload);
   }
 
   removeMission(id) {
     const payload = { id };
-    return removeMission(payload);
+    return MissionService.delete(payload);
   }
 
   updateMission(mission) {
     const payload = _.cloneDeep(mission);
-    console.log(payload);
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
-    console.log(payload);
     delete payload.number;
-    return updateMission(payload);
+    return MissionService.update(payload);
   }
 
   getMissionTemplates() {
-    return getMissionTemplates();
+    return MissionTemplateService.get();
   }
 
   createMissionTemplate(missionTemplate) {
     const payload = _.clone(missionTemplate);
-    return createMissionTemplate(payload);
+    return MissionTemplateService.create(payload);
   }
 
   createMissions(missionTemplates, missionsCreationTemplate) {
@@ -101,30 +88,30 @@ export default class MissionsActions extends Actions {
       delete payload.company_id;
       delete payload.id;
       delete payload.number;
-      return createMission(payload);
+      return MissionService.create(payload);
     });
     return Promise.all(queries);
   }
 
   removeMissionTemplate(id) {
     const payload = { id };
-    return removeMissionTemplate(payload);
+    return MissionTemplateService.delete(payload);
   }
 
   updateMissionTemplate(missionTemplate) {
     const payload = _.cloneDeep(missionTemplate);
     delete payload.number;
     delete payload.company_id;
-    return updateMissionTemplate(payload);
+    return MissionTemplateService.update(payload);
   }
 
   getMissionReports() {
-    return getMissionReports();
+    return MissionReportsService.get();
   }
 
   getMissionReportById(id) {
     const payload = { id };
-    return getMissionReportById(payload);
+    return MissionReportsService.get(payload);
   }
 
   createMissionReport(mission_date_start_from, mission_date_end_to) {
@@ -132,7 +119,7 @@ export default class MissionsActions extends Actions {
       mission_date_start_from: createValidDateTime(mission_date_start_from),
       mission_date_end_to: createValidDateTime(mission_date_end_to),
     };
-    return createMissionReport(payload);
+    return MissionReportsService.create(payload);
   }
 
   getMissionReportByODHs(data) {

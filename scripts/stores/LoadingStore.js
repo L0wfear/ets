@@ -16,11 +16,10 @@ export default class LoadingStore extends Store {
     const dashboardActions = flux.getActionIds('dashboard');
 
     this.reg(
-      //objectsActionIds.addNewGroup,
-      waybillsActions.removeWaybill,
-      waybillsActions.createWaybill,
-      waybillsActions.updateWaybill,
-      waybillsActions.getWaybills,
+      waybillsActions.delete,
+      waybillsActions.create,
+      waybillsActions.update,
+      waybillsActions.get,
 
       fuelRateActions.getFuelRates,
       fuelRateActions.getFuelOperations,
@@ -68,10 +67,6 @@ export default class LoadingStore extends Store {
       routesActions.createRouteReport,
       routesActions.validateRoute,
       routesActions.getGeozones,
-
-      //dashboardActions.getDashboardComponent,
-      //dashboardActions.getDashboardSideComponent,
-
 
     );
 

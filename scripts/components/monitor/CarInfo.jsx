@@ -4,7 +4,6 @@ import { getModelById } from '../../models.js';
 import { getStatusById } from '../../statuses.js';
 import { getTypeById } from '../../types.js';
 import { getOwnerById } from '../../owners.js';
-//import { getCustomerById } from '../customers.js';
 import config from '../../config.js';
 import { makeDate, makeTime, getStartOfToday } from '../../utils/dates.js';
 import FuelChart from '../ui/charts/FuelChart.jsx';

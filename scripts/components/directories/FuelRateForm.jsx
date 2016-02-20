@@ -4,11 +4,6 @@ import EtsSelect from '../ui/EtsSelect.jsx';
 import Datepicker from '../ui/DatePicker.jsx';
 import moment from 'moment';
 import Div from '../ui/Div.jsx';
-import { getCarImage } from '../../adapter.js';
-import { getModelById } from '../../models.js';
-import { getStatusById } from '../../statuses.js';
-import { getTypeById } from '../../types.js';
-import { getOwnerById } from '../../owners.js';
 import config from '../../config.js';
 
 export default class FuelRateForm extends Component {

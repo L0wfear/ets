@@ -1,13 +1,13 @@
 import { Actions } from 'flummox';
-import { getCars, getFuelTypes, getTechOperations, getWorkKinds, getODHReports, getODHs, getFaxogramms } from '../adapter.js';
+import { getODHs, getCustomers } from '../adapter.js';
 import _ from 'lodash';
-import { getCustomers } from '../customers.js';
 import { getTypes } from '../types.js';
 import { fetchModels } from '../models.js';
 import { getOkrugs } from '../okrugs.js';
 import { getOwners } from '../owners.js';
 import { isEmpty } from '../utils/functions.js';
 import { createValidDateTime } from '../utils/dates.js';
+import { FaxogrammService, WorkKindsService, TechnicalOperationService, FuelTypeService, CarService, CustomersService } from '../api/Services.js';
 
 export default class ObjectsActions extends Actions {
 
@@ -18,7 +18,7 @@ export default class ObjectsActions extends Actions {
     } else {
       delete payload.technical_operation_id;
     }
-    return getCars(payload);
+    return CarService.get(payload);
   }
 
   getModels() {
@@ -26,7 +26,7 @@ export default class ObjectsActions extends Actions {
   }
 
   getCustomers() {
-    return getCustomers();
+    return CustomersService.get();
   }
 
   getOwners() {
@@ -42,11 +42,11 @@ export default class ObjectsActions extends Actions {
   }
 
   getFuelTypes() {
-    return getFuelTypes();
+    return FuelTypeService.get();
   }
 
   getTechOperations() {
-    return getTechOperations();
+    return TechnicalOperationService.get();
   }
 
   getODHs() {
@@ -54,11 +54,7 @@ export default class ObjectsActions extends Actions {
   }
 
   getWorkKinds() {
-    return getWorkKinds();
-  }
-
-  getODHReports() {
-    return getODHReports();
+    return WorkKindsService.get();
   }
 
   getFaxogramms(page, create_date_from, create_date_to) {
@@ -68,7 +64,7 @@ export default class ObjectsActions extends Actions {
       create_date_from: createValidDateTime(create_date_from),
       create_date_to: createValidDateTime(create_date_to)
     };
-    return getFaxogramms(payload);
+    return FaxogrammService.get(payload);
   }
 
 }

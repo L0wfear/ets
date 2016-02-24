@@ -2578,3 +2578,16 @@ div.none {
   outline:0px !important;
     -webkit-appearance:none;
 }
+
+.assignToWaybillCheck {
+  .form-group {
+
+      display: inline-block;
+      margin-left: 30px;
+      margin-right: 20px;
+  }
+}
+
+.visibilityHidden {
+  visibility: hidden;
+}

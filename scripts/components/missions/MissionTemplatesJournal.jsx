@@ -145,7 +145,8 @@ class MissionTemplatesJournal extends ElementsList {
 
   init() {
 		const { flux } = this.context;
-		flux.getActions('missions').getMissionTemplates();
+		let { payload = {} } = this.props;
+		flux.getActions('missions').getMissionTemplates(payload);
     flux.getActions('objects').getWorkKinds();
     flux.getActions('objects').getTechOperations();
     flux.getActions('routes').getRoutes();
@@ -164,7 +165,6 @@ class MissionTemplatesJournal extends ElementsList {
 	render() {
 
 		const { missionTemplatesList = [], noFilter = false } = this.props;
-		console.log(this.state.checkedMissions);
 
 		return (
 			<div className="ets-page-wrap">

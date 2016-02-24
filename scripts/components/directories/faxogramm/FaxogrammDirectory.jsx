@@ -196,7 +196,6 @@ class FaxogrammDirectory extends ElementsList {
 		const { faxogrammsList = [], faxogrammsMaxPage } = this.props;
 		let faxogramm = this.state.selectedElement || {};
 		let faxogrammInfoData = [{id: 0, order_info: faxogramm.order_info}];
-		console.log(this.state);
 
 		return (
 			<div className="ets-page-wrap">

@@ -35,7 +35,7 @@ class FaxogrammMissionsFormWrap extends FormWrap {
       faxogramm_id: formState.id,
       date_start: formState.order_date,
       date_end: formState.order_date_to,
-      //passes_count:
+      assign_to_waybill: formState.assign_to_waybill ? 1 : 0,
     }
     flux.getActions('missions').createMissions(formState.missionJournalState.checkedMissions, payload);
 

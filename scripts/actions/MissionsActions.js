@@ -55,8 +55,8 @@ export default class MissionsActions extends Actions {
     return MissionService.update(payload);
   }
 
-  getMissionTemplates() {
-    return MissionTemplateService.get();
+  getMissionTemplates(payload = {}) {
+    return MissionTemplateService.get(payload);
   }
 
   createMissionTemplate(missionTemplate) {
@@ -82,6 +82,7 @@ export default class MissionsActions extends Actions {
       payload.date_start = date_start;
       payload.date_end = date_end;
       payload.mission_source_id = missionsCreationTemplateCopy.mission_source_id;
+      payload.assign_to_waybill = missionsCreationTemplateCopy.assign_to_waybill;
       if (!isEmpty(missionsCreationTemplateCopy.passes_count)) {
         payload.passes_count = parseInt(missionsCreationTemplateCopy.passes_count, 10);
       }

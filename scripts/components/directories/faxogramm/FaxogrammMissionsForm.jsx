@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
+import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon, Checkbox } from 'react-bootstrap';
 import EtsSelect from '../../ui/EtsSelect.jsx';
 import Datepicker from '../../ui/DatePicker.jsx';
 import moment from 'moment';
@@ -24,6 +24,7 @@ class FaxogrammMissionsForm extends Form {
 	render() {
 
 		let state = this.props.formState;
+    let payload = { faxogramm_id: state.id };
 
 		return (
 			<Modal {...this.props} bsSize="large">
@@ -33,10 +34,14 @@ class FaxogrammMissionsForm extends Form {
 				</Modal.Header>
 
 	      <Modal.Body>
-          <MissionTemplatesJournal noFilter={true} onListStateChange={this.handleChange.bind(this, 'missionJournalState')}/>
+          <MissionTemplatesJournal payload={payload} noFilter={true} onListStateChange={this.handleChange.bind(this, 'missionJournalState')}/>
 	      </Modal.Body>
 
 	      <Modal.Footer>
+          <Div className="inline-block assignToWaybillCheck">
+            <label>Создать черновик п.л. / Добавить в существующий</label>
+            <Input type="checkbox" value={state.assign_to_waybill} onClick={this.handleChange.bind(this, 'assign_to_waybill', !!!state.assign_to_waybill)}/>
+          </Div>
 	      	<Button disabled={!state.missionJournalState || !_.keys(state.missionJournalState.checkedMissions).length} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
 	      </Modal.Footer>
 

@@ -92,8 +92,11 @@ class DashboardCardMedium extends React.Component {
   }
 
   selectItem(i) {
-    this.setState({selectedItem: i});
-    this.props.openFullList();
+    let item = this.props.items[i];
+    if ((item && item.subItems && item.subItems.length) || i === null) {
+      this.setState({selectedItem: i});
+      this.props.openFullList(i === null);
+    }
   }
 
   toggleFullList() {
@@ -109,7 +112,8 @@ class DashboardCardMedium extends React.Component {
     let selectedItem = this.props.items[selectedItemIndex] || null;
     let subItems = selectedItem !== null ? selectedItem.subItems || [] : [];
     const items = this.props.items.map((item,i) => {
-      return <Div key={i} className="pointer dashboard-card-item" onClick={this.selectItem.bind(this, i)}>
+      let itemClassName = cx('dashboard-card-item', {'pointer': item.subItems && item.subItems.length});
+      return <Div key={i} className={itemClassName} onClick={this.selectItem.bind(this, i)}>
                 <Div style={{width: '90%', textAlign: 'left', marginLeft: 'auto', marginRight: 'auto'}}>
                   {item.title}
                 </Div>
@@ -159,7 +163,7 @@ class DashboardCardMedium extends React.Component {
           <Fade in={selectedItem !== null && this.props.itemOpened}>
             <div>
               <Well>
-                <Div className="card-glyph-remove" onClick={() => this.setState({selectedItem: null})}>
+                <Div className="card-glyph-remove" onClick={this.selectItem.bind(this, null)}>
                   <Glyphicon glyph="remove"/>
                 </Div>
                 <h5>{selectedItem !== null ? selectedItem.title : ''}</h5>
@@ -272,8 +276,8 @@ class DashboardPage extends React.Component {
     });
   }
 
-  openFullList(key) {
-    this.setState({itemOpenedKey: key});
+  openFullList(key, clear) {
+    this.setState({itemOpenedKey: clear ? null : key});
   }
 
   render() {
@@ -314,14 +318,26 @@ class DashboardPage extends React.Component {
       rows.push(
         <Row key={i} className="cards-row">
           {row.map((c, j) => {
-            return <Col key={j} md={4}>
+            let direction = j % 3 === 0 ? 'right' : 'left';
+            let hidden = false;
+            if (j % 3 === 0) {
+              if (row[j+1] && row[j + 1].key === this.state.itemOpenedKey) {
+                hidden = true;
+              }
+            } else if (j % 3 === 1) {
+              if (row[j+1] && row[j - 1].key === this.state.itemOpenedKey) {
+                hidden = true;
+              }
+            }
+            let cardClassname = cx({'visibilityHidden': hidden});
+            return <Col key={j} md={4} className={cardClassname}>
               <DashboardCardMedium title={c.title}
                                    items={c.items}
                                    loading={this.state.loadingComponents.indexOf(c.key) > -1}
                                    refreshCard={this.refreshCard.bind(this, c.key, c.id)}
                                    openFullList={this.openFullList.bind(this, c.key)}
                                    itemOpened={this.state.itemOpenedKey === c.key}
-                                   direction={j % 3 === 0 ? 'right' : 'left'} />
+                                   direction={direction} />
             </Col>
           })}
         </Row>

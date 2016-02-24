@@ -218,9 +218,9 @@ export default class Track {
       let zoom = map.getView().getZoom();
 
       if (zoom > COLORS_ZOOM_THRESHOLD) {
-        this.renderInColors()
+        this.renderInColors();
       } else {
-        this.renderSimple()
+        this.renderSimple();
       }
     }
 

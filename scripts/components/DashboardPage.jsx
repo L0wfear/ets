@@ -130,7 +130,7 @@ class DashboardCardMedium extends React.Component {
     let firstItems = items.slice(0, 2);
     let otherItems = items.slice(2, items.length);
     //let dashboardCardClass = cx('dashboard-card', {'visibilityHidden'});
-    let Header = <DashboardCardHeader title={this.props.title} loading={this.props.loading} onClick={this.refreshCard.bind(this)}/>
+    let Header = <DashboardCardHeader title={this.props.title} loading={this.props.loading} onClick={this.refreshCard.bind(this)}/>;
 
     return (
       <Div md={12}>

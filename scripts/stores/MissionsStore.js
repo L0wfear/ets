@@ -64,7 +64,6 @@ class MissionsStore extends Store {
 
   handleGetMissionReportByODHs(index) {
     const missionReport = this.state.selectedReportData;
-    console.log(missionReport);
     this.setState({selectedReportDataODHS: missionReport[index].report_by_odh});
   }
 

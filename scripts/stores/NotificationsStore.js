@@ -26,10 +26,13 @@ export default class LoadingStore extends Store {
   }
 
   checkResponse(response) {
-    if (response.errors.length === 0) {
-      return true;
+    let valid = false;
+    if (_.isArray(response)) {
+      valid = response.filter(obj => obj.errors && obj.errors.length > 0).length === 0;
+    } else if (!response.errors || response.errors.length === 0) {
+      valid = true;
     }
-    return false;
+    return valid;
   }
 
   handleMissionCreate(response) {
@@ -39,7 +42,9 @@ export default class LoadingStore extends Store {
   }
 
   handleMissionsCreate(response) {
-    global.NOTIFICATION_SYSTEM._addNotification(notifications.missionsCreationSuccessNotification);
+    if (this.checkResponse(response)) {
+      global.NOTIFICATION_SYSTEM._addNotification(notifications.missionsCreationSuccessNotification);
+    }
   }
 
 

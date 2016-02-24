@@ -112,6 +112,12 @@ class MissionTemplatesJournal extends ElementsList {
 		};
 	}
 
+	stateChangeCallback() {
+		if (typeof this.props.onListStateChange === 'function') {
+			this.props.onListStateChange(this.state);
+		}
+	}
+
   checkMission(id, state) {
     const missions = _.cloneDeep(this.state.checkedMissions);
     if (state) {
@@ -119,20 +125,14 @@ class MissionTemplatesJournal extends ElementsList {
     } else {
       delete missions[id];
     }
-    this.setState({
-      checkedMissions: missions
-    }, () => {
-			if (typeof this.props.onListStateChange === 'function') {
-				this.props.onListStateChange(this.state);
-			}
-		});
+    this.setState({checkedMissions: missions}, this.stateChangeCallback.bind(this));
   }
 
   checkAll(rows, state) {
     let checkedMissions = _.cloneDeep(this.state.checkedMissions);
     checkedMissions = state ? rows : {};
 
-    this.setState({checkedMissions});
+    this.setState({checkedMissions}, this.stateChangeCallback.bind(this));
   }
 
 	onFormHide(clearCheckedMissions) {

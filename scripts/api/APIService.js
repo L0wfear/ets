@@ -15,9 +15,11 @@ export default class APIService {
 
   create(payload = {}, callback) {
     console.info('API SERVICE POST', this.firstUrl);
-    return postJSON(this.url, payload).then(() => {
+    return postJSON(this.url, payload).then((r) => {
       if (typeof callback === 'function') {
         return callback();
+      } else if (callback === false) {
+        return r;
       } else {
         return this.get();
       }

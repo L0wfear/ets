@@ -92,7 +92,7 @@ export default class MissionsActions extends Actions {
       delete payload.company_id;
       delete payload.id;
       delete payload.number;
-      return MissionService.create(payload);
+      return MissionService.create(payload, false);
     });
     return Promise.all(queries);
   }

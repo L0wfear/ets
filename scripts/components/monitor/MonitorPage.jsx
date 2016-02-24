@@ -31,8 +31,6 @@ class MonitorPage extends Component {
 
   render() {
 
-    console.log(this.props);
-
     return (
       <div>
         {!this.props.errorLoading && (<FluxComponent connectToStores={['session', 'points']}>

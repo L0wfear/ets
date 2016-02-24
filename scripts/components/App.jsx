@@ -21,7 +21,7 @@ import MissionReports from './reports/MissionReports.jsx';
 import MissionReport from './reports/MissionReport.jsx';
 import MissionReportByODH from './reports/MissionReportByODH.jsx';
 import RouteLaunchReports from './reports/RouteLaunchReports.jsx';
-import FaxogrammDirectory from './directories/FaxogrammDirectory.jsx';
+import FaxogrammDirectory from './directories/faxogramm/FaxogrammDirectory.jsx';
 import RouteReports from './reports/RouteReports.jsx';
 import Modal from './ui/Modal.jsx';
 import { checkToken, init } from '../adapter.js';

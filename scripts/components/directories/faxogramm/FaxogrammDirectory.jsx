@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
-import Table from '../ui/table/DataTable.jsx';
-import ElementsList from '../ElementsList.jsx';
-import Paginator from '../ui/Paginator.jsx';
-import Div from '../ui/Div.jsx';
-import Datepicker from '../ui/DatePicker.jsx';
-import DateFormatter from '../ui/DateFormatter.jsx';
+import Table from '../../ui/table/DataTable.jsx';
+import ElementsList from '../../ElementsList.jsx';
+import Paginator from '../../ui/Paginator.jsx';
+import Div from '../../ui/Div.jsx';
+import Datepicker from '../../ui/DatePicker.jsx';
+import DateFormatter from '../../ui/DateFormatter.jsx';
 import moment from 'moment';
 import cx from 'classnames';
-import { createValidDateTime, getToday0am, getToday2359 } from '../../utils/dates.js';
+import { createValidDateTime, getToday0am, getToday2359 } from '../../../utils/dates.js';
+import FaxogrammMissionsFormWrap from './FaxogrammMissionsFormWrap.jsx';
 
 
 let getTableMeta = (props) => {
@@ -201,7 +202,12 @@ class FaxogrammDirectory extends ElementsList {
 			<div className="ets-page-wrap">
 				<FaxogrammsDatepicker handleChange={this.handleChange.bind(this)} {...this.state}/>
         <FaxogrammsTable data={faxogrammsList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'} {...this.props}>
-        </FaxogrammsTable>
+					<Button onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}>Создать задания</Button>
+				</FaxogrammsTable>
+				<FaxogrammMissionsFormWrap onFormHide={this.onFormHide.bind(this)}
+																	 showForm={this.state.showForm}
+																	 element={this.state.selectedElement}
+																	 {...this.props}/>
         <Paginator currentPage={this.state.page} maxPage={faxogrammsMaxPage} setPage={this.onPageChange.bind(this)}/>
 				<Div hidden={this.state.selectedElement === null}>
 	        <Row>

@@ -11,7 +11,7 @@ export default class MissionsActions extends Actions {
 
   getMissions(car_id, date_from, date_to, status) {
     const payload = {};
-    
+
     if (!isEmpty(car_id)) {
       payload.car_id = car_id;
     }

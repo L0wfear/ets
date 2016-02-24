@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getIcon } from '../../icons/car.js';
+import { getIcon } from '../../../icons/car.js';
 
 export default class TypeComponent extends Component {
 

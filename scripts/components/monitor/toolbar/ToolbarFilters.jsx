@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Filter from './Filter.jsx';
-import types, {getTypeById} from '../../types.js';
-import okrugs, {getOkrugById} from '../../okrugs.js';
-import owners, {getOwnerById} from '../../owners.js';
+import types, {getTypeById} from '../../../types.js';
+import okrugs, {getOkrugById} from '../../../okrugs.js';
+import owners, {getOwnerById} from '../../../owners.js';
 import TypeComponent from './TypeComponent.jsx';
 import ToolbarControl from './ToolbarControl.js';
 

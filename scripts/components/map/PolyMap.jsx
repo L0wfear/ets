@@ -195,7 +195,7 @@ export default class OpenLayersMap extends Component {
     console.warn('POLYMAP RENDER', this.props);
     return (
       <div>
-        <div ref="container" style={{opacity: this.props.errorLoading ? .4 : 1}} className="openlayers-container"/>
+        <div ref="container" style={{opacity: 1}} className="openlayers-container"/>
       </div>
     );
   }

@@ -76,13 +76,11 @@ export default class OpenLayersMap extends Component {
 
 
     let controls = []
-    if (!this.props.errorLoading) {
-      controls.push(new ol.control.Zoom({
-          duration: 400,
-          className: 'ol-zoom',
-          delta: 1
-        }))
-    }
+    controls.push(new ol.control.Zoom({
+        duration: 400,
+        className: 'ol-zoom',
+        delta: 1
+      }))
 
     let map = new ol.Map(
       {
@@ -114,13 +112,8 @@ export default class OpenLayersMap extends Component {
 
     this.popup = new ol.Overlay.Popup();
     map.addOverlay(this.popup);
-
-
-    if (this.props.errorLoading) {
-      this.disableInteractions();
-    } else {
-      this.enableInteractions();
-    }
+    
+    this.enableInteractions();
   }
 
   triggerRender() {
@@ -212,7 +205,7 @@ export default class OpenLayersMap extends Component {
 
   render() {
     return (<div>
-              <div ref="container" style={{opacity: this.props.errorLoading ? .4 : 1}} className="openlayers-container"/>
+              <div ref="container" style={{opacity: 1}} className="openlayers-container"/>
             </div>)
   }
 

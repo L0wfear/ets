@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import connectToStores from 'flummox/connect';
 import Filter from './Filter.jsx';
+import { FluxContext } from '../../decorators/index.js';
 
-import statuses from '../../statuses.js';
-import types from '../../types.js';
-import owners from '../../owners.js';
-import okrugs from '../../okrugs.js';
+import statuses from '../../../statuses.js';
+import types from '../../../types.js';
+import owners from '../../../owners.js';
+import okrugs from '../../../okrugs.js';
 import FluxComponent from 'flummox/component';
 import ToolbarSearch from './ToolbarSearch.jsx';
 import ToolbarFilters from './ToolbarFilters.jsx';
@@ -112,6 +114,7 @@ let ShowPlatesCheckbox = (props) =>
   </div>
 ;
 
+@FluxContext
 class Toolbar extends Component {
 
   constructor(props, context) {
@@ -120,7 +123,7 @@ class Toolbar extends Component {
 
   focusOnLonelyCar() {
 
-    let store = this.props.flux.getStore('points');
+    let store = this.context.flux.getStore('points');
     let onlyPoint = store.getVisiblePoints()[0];
     let map = olmap;
     let view = map.getView();
@@ -134,7 +137,7 @@ class Toolbar extends Component {
 
     const currentUser = this.props.currentUser;
     const filters = this.props.filter;
-    const pointsStore = this.props.flux.getStore('points');
+    const pointsStore = this.context.flux.getStore('points');
     const storeState = pointsStore.state;
 
     let filtersCount = 0;
@@ -182,5 +185,4 @@ class Toolbar extends Component {
 
 }
 
-
-export default Toolbar;
+export default connectToStores(Toolbar, ['session', 'points']);

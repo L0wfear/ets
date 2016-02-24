@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import FluxComponent from 'flummox/component';
 import connectToStores from 'flummox/connect';
 import Map from '../map/Map.jsx';
-import Toolbar from '../toolbar/Toolbar.jsx';
+import Toolbar from './toolbar/Toolbar.jsx';
 import Sidebar from './Sidebar.jsx';
 import WeatherWidget from '../map/WeatherWidget.jsx';
 import { FluxContext } from '../decorators/index.js';
@@ -33,10 +33,7 @@ class MonitorPage extends Component {
 
     return (
       <div>
-        {!this.props.errorLoading && (<FluxComponent connectToStores={['session', 'points']}>
-          <Toolbar/>
-        </FluxComponent>
-        )}
+        <Toolbar/>
 
         <FluxComponent connectToStores={{
           points: store => ({
@@ -46,8 +43,7 @@ class MonitorPage extends Component {
           })
         }}>
 
-          <Map errorLoading={this.props.errorLoading}
-               zoom={MAP_INITIAL_ZOOM}
+          <Map zoom={MAP_INITIAL_ZOOM}
                center={MAP_INITIAL_CENTER}/>
 
           <Sidebar/>

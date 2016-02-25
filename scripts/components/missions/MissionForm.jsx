@@ -21,6 +21,7 @@ export class MissionForm extends Form {
 		this.state = {
 			selectedRoute: null,
 			showRouteForm: false,
+			carsList: [],
 		};
 	}
 
@@ -36,7 +37,11 @@ export class MissionForm extends Form {
 		this.handleChange('technical_operation_id', v)
 		this.handleChange('car_id', undefined);
 
-    this.context.flux.getActions('objects').getCars(v);
+    this.context.flux.getActions('objects').getCars(v).then(r => this.setState({carsList: r.result}));
+	}
+
+	componentWillUnmount() {
+		this.context.flux.getActions('objects').getCars();
 	}
 
 	componentDidMount() {
@@ -80,7 +85,8 @@ export class MissionForm extends Form {
 		let state = this.props.formState;
 		let errors = this.props.formErrors;
 
-		const { techOperationsList = [], missionSourcesList = [], routesList = [], carsList = [] } = this.props;
+		const { techOperationsList = [], missionSourcesList = [], routesList = [] } = this.props;
+		const { carsList = [] } = this.state;
 
     //const WORK_KINDS = workKindsList.map(({id, name}) => ({value: id, label: name}));
     const TECH_OPERATIONS = techOperationsList.map(({id, name}) => ({value: id, label: name}));

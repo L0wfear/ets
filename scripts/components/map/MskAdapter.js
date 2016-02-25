@@ -50,7 +50,7 @@ for (let i = 0, till = MapServerConfig.tileInfo.lods.length; i < till; i++) {
           tileUrlFunction: function(tileCoord, pixelRatio, projection) {
               let z = tileCoord[0];
               let x = tileCoord[1];
-              let y = -tileCoord[2] - 1;
+              let y = - tileCoord[2] - 1;
               return TILES_URL + '/tile/' + z + '/' + y + '/' + x
           },
           projection: PROJECTION,

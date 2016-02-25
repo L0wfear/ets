@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Panel from '../Panel.jsx';
+import { Button } from 'react-bootstrap';
 import { getModelById } from '../../models.js';
 import { getStatusById } from '../../statuses.js';
 import { getTypeById } from '../../types.js';
@@ -19,14 +20,10 @@ class VehicleAttributes extends Component {
     super(props)
 
     this.state = {
-      attributes: []
-    }
-
-    // key => name mapp
-    this.mappings = {}
+      attributes: [],
+    };
 
   }
-
 
   parseProps(props) {
     let vehicle = props.vehicle;
@@ -220,61 +217,37 @@ export default class CarInfo extends Component {
 
       let store = this.store;
       let marker = this.props.car.marker;
-      let reloadBtnStyle = {
-        padding: '6px 9px',
-        height: 34,
-        marginLeft: 5,
-        marginTop: -3
-      };
-
       let tillNow = this.state.tillNow;
-      let tillNowStyle = {
-        position: 'absolute',
-        top: -26,
-        right: 20,
-        fontWeight: 200
-      }
-
       let reloadBtnCN = 'glyphicon glyphicon-repeat ' + (tillNow && marker.hasTrackLoaded() ? 'tracking-animate' : '');
-
-      let showGradientStyle = {
-        position: 'absolute',
-        top: -26,
-        right: 120,
-        fontWeight: 200
-      };
 
       let showGradient = store.state.showTrackingGradient;
 
       return (
-        <div>
-        <Panel title="Трекинг" className="chart-datepickers-wrap">
-           <DatePicker onChange={date => this.setState({ from_dt_: date})}
-                      date={this.state.from_dt_} disabled={tillNow} ref="from_dt"/>&nbsp;–&nbsp;
-          <DatePicker onChange={date => this.setState({to_dt_: date})}
-                      date={this.state.to_dt_} disabled={tillNow} ref="to_dt"/>
-          {/*<label style={showGradientStyle}>
-             <input type="checkbox" checked={showGradient} ref="showGradient" onChange={this.onShowGradientChange.bind(this)}/> С градиентом
-           </label>*/}
-           <label style={tillNowStyle}>
-             <input type="checkbox" checked={tillNow} ref="tillNow" onChange={this.onTillNowChange.bind(this)}/> За сегодня
-           </label>
+        <div className="car-info-tracking">
+          <Panel title="Трекинг" className="chart-datepickers-wrap">
+            <DatePicker onChange={date => this.setState({ from_dt_: date})}
+                        date={this.state.from_dt_} disabled={tillNow} ref="from_dt"/>&nbsp;–&nbsp;
+            <DatePicker onChange={date => this.setState({to_dt_: date})}
+                        date={this.state.to_dt_} disabled={tillNow} ref="to_dt"/>
+            {/*<label className="gradient-checkbox">
+               <input type="checkbox" checked={showGradient} ref="showGradient" onChange={this.onShowGradientChange.bind(this)}/> С градиентом
+             </label>*/}
+            <label className="till-now-checkbox">
+              <input type="checkbox" checked={tillNow} ref="tillNow" onChange={this.onTillNowChange.bind(this)}/> За сегодня
+            </label>
 
-            <button title="Перезагрузить данные"
-                    style={reloadBtnStyle}
-                    className="btn btn-default btn-sm"
-                    type="button"
+            <Button title="Перезагрузить данные"
+                    className="reload-button"
                     onClick={this.fetchVehicleData.bind(this)}
                     disabled={tillNow}>
               <span className={reloadBtnCN}></span>
-            </button>
-        </Panel>
-      </div>
-        );
+            </Button>
+          </Panel>
+        </div>
+      );
     }
 
     fetchVehicleData() {
-      //console.log(' fetching vehicle data')
       this.setState({from_dt: this.state.from_dt_, to_dt: this.state.to_dt_}, this.fetchTrack)
     }
 
@@ -295,8 +268,6 @@ export default class CarInfo extends Component {
         if (this.state.tillNow) {
           this.setState({ to_dt_: dt}); // обновляем дату "по"
         }
-
-        //console.log('ontrack update')
       });
 
       track.fetch(from_dt, to_dt);

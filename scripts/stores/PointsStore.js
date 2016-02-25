@@ -3,6 +3,37 @@ import statuses from '../statuses.js';
 import { getOwnerById } from '../owners.js';
 import config from '../config.js';
 import ReconnectingWebSocket from '../vendor/ReconnectingWebsocket.js';
+import _ from 'lodash';
+
+let initialState = {
+    selected: null,
+    points: {},
+    totalOnline: 0,
+    filter: {
+      connectionStatus: [0, 1],
+      status: statuses.map(s => s.id),
+      type: [],
+      owner: [],
+      customer: [],
+      okrug: [],
+      own: null
+    },
+    byStatus: {
+      1: 0,
+      2: 0,
+      3: 0,
+      4: 0
+    },
+    byConnectionStatus: {
+      0: 0,
+      1: 0
+    },
+    showPlates: false, // TODO move to settings store
+    trackingMode: false,
+    showTrackingGradient: false,
+    isRenderPaused: false,
+    singleCarTrack: null,
+}
 
 export default class PointsStore extends Store {
 
@@ -21,7 +52,9 @@ export default class PointsStore extends Store {
     this.register(pointsActions.setTracking, this.setTracking);
     this.register(pointsActions.getPointsExtent, this.getPointsExtent);
     this.register(pointsActions.createConnection, this.handleCreateConnection);
+    this.register(pointsActions.createConnectionForSinglePoint, this.handleCreateConnectionForSinglePoint);
     this.register(pointsActions.closeConnection, this.handleCloseConnection);
+    this.register(pointsActions.setSingleCarTrack, this.handleSetSingleCarTrack);
 
     this.register(loginActions.login, this.handleLogin);
 
@@ -30,39 +63,12 @@ export default class PointsStore extends Store {
   }
 
   resetState() {
-    this.state = {
-      selected: null,
-      points: {},
-      totalOnline: 0,
-      filter: {
-        connectionStatus: [0, 1],
-        status: statuses.map(s => s.id),
-        type: [],
-        owner: [],
-        customer: [],
-        okrug: [],
-        own: null
-      },
-      byStatus: {
-        1: 0,
-        2: 0,
-        3: 0,
-        4: 0
-      },
-      byConnectionStatus: {
-        0: 0,
-        1: 0
-      },
-      showPlates: false, // TODO move to settings store
-      trackingMode: false,
-      showTrackingGradient: false,
-      isRenderPaused: false
-    };
+    this.state = _.cloneDeep(initialState);
   }
 
   handleCreateConnection() {
-    //console.info('CREATING WS CONNECTION');
-    //console.log(this);
+    console.info('CREATING WS CONNECTION');
+    //this.setState(_.cloneDeep(initialState));
     const token = this.flux.getStore('session').getSession();
     let wsUrl = `${config.ws}?token=${token}`;
     this.ws = new ReconnectingWebSocket(wsUrl, null);
@@ -72,11 +78,11 @@ export default class PointsStore extends Store {
     }
 
     this.ws.onclose = () => {
-      //global.NOTIFICATION_SYSTEM.notify('Потеряно соединение с WebSocket, пытаемся переподключиться', 'warning')
+      //global.NOTIFICATION_SYSTEM.notify('Потеряно соединение с WebSocket, пытаемся переподключиться', 'warning');
     }
 
     this.ws.onerror = () => {
-      //global.NOTIFICATION_SYSTEM.notify('Ошибка WebSocket', 'error')
+      //global.NOTIFICATION_SYSTEM.notify('Ошибка WebSocket', 'error');
     }
 
     this.unpauseRendering();
@@ -88,11 +94,13 @@ export default class PointsStore extends Store {
       this.ws.close();
       this.ws = null;
     }
-    this.resetState();
-    console.log(this.state);
+    this.setState(_.cloneDeep(initialState));
     this.pauseRendering();
   }
 
+  handleSetSingleCarTrack(car_gov_number) {
+    this.setState({singleCarTrack: car_gov_number});
+  }
 
   /**
     @todo handleMessage() method
@@ -105,6 +113,19 @@ export default class PointsStore extends Store {
      */
 
     let points = Object.assign({}, this.state.points);
+
+    if (this.state.singleCarTrack) {
+      if (!this.state.selected) {
+        _.map(points, p => {
+          let car = p.car;
+          if (car && car.gov_number === this.state.singleCarTrack && p.marker) {
+            p.marker.createTrack();
+            p.marker.track.fetch();
+            this.handleSelectPoint(p);
+          }
+        });
+      }
+    }
 
     for (let key in update) {
       let pointUpdate = update[key];

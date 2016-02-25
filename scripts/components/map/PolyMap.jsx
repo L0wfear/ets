@@ -226,22 +226,6 @@ export default class OpenLayersMap extends Component {
 
   }
 
-  // disableInteractions() {
-  //   let map = this.map;
-  //   let interactions = map.getInteractions();
-  //
-  //   if (this._handlers !== null) {
-  //     map.unByKey(this._handlers.singleclick);
-  //     map.unByKey(this._handlers.pointermove);
-  //     this._handlers = null;
-  //
-  //     interactions.forEach((interaction)=> {
-  //       interaction.setActive(false)
-  //     });
-  //   }
-  // }
-
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.polys !== undefined) {
       this.popup.hide();

@@ -98,6 +98,10 @@ export default class CarMarker extends Marker {
     this.track = new Track(this);
   }
 
+  createTrack() {
+    this.track = new Track(this);
+  }
+
   hasTrackLoaded() {
     return this.track !== null && this.track.isLoaded();
   }

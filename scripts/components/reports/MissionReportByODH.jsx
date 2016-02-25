@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import Table from '../ui/table/DataTable.jsx';
-
+//78
 let tableMeta = {
 	cols: [
     {
@@ -59,10 +59,18 @@ let MissionReportByODHTable = (props) => {
 
 	const renderers = {
     left_percentage: ({data}) => <div>{ parseFloat(parseFloat(data) * 100).toFixed(2) + '%'}</div>,
-    left: ({data}) => <div>{ parseFloat(data).toFixed(2)}</div>,
+    left: ({data}) => {
+			return <div>{ parseFloat(data).toFixed(2)}</div>
+		},
     traveled: ({data}) => <div>{ parseFloat(data).toFixed(2)}</div>,
     route_check_length: ({data}) => <div>{ parseFloat(data).toFixed(2)}</div>,
 	};
+
+	if (props.noFilter) {
+		tableMeta.cols = tableMeta.cols.filter(c => c.name !== 'left_percentage');
+		delete renderers.left_percentage;
+		renderers.left = (data) => <div>{`${parseFloat(data.data).toFixed(2)} (${parseFloat(parseFloat(data.rowData.left_percentage) * 100).toFixed(2) + '%'})`}</div>
+	}
 
 	return <Table title='Прохождение заданий по ОДХ'
 								tableMeta={tableMeta}
@@ -81,13 +89,16 @@ class MissionReportByODH extends Component {
 	}
 
 	componentDidMount() {
+		if (!this.props.noFilter)
 		this.context.flux.getActions('missions').getMissionReportByODHs(this.props.routeParams.index);
 	}
 
 	render() {
+		let { noFilter = false } = this.props;
+
 		return (
 			<div className="ets-page-wrap">
-				<MissionReportByODHTable data={this.props.selectedReportDataODHS || []} >
+				<MissionReportByODHTable noFilter={noFilter}  data={this.props.selectedReportDataODHS || []} >
 				</MissionReportByODHTable>
 			</div>
 		);

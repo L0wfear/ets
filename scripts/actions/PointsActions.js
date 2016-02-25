@@ -38,4 +38,8 @@ export default class PointsActions extends Actions {
     return true;
   }
 
+  setSingleCarTrack(number) {
+    return number;
+  }
+
 }

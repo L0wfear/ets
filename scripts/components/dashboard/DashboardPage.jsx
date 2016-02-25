@@ -1,56 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 import { Panel, Row, Col, Button, Fade, Well, Glyphicon, Collapse } from 'react-bootstrap';
-import Div from './ui/Div.jsx';
-import MissionFormWrap from './missions/MissionFormWrap.jsx';
-import ElementsList from './ElementsList.jsx';
+import Div from '../ui/Div.jsx';
+import ElementsList from '../ElementsList.jsx';
 import moment from 'moment';
 import cx from 'classnames';
 import connectToStores from 'flummox/connect';
-
-
-let DashboardCardSmall = ({card}) => {
-  let action = () => true;
-  let itemActionObject = card.items[0].action;
-  if (itemActionObject) {
-    action = itemActionObject;
-  }
-  return (
-    <Div className="dashboard-card-sm">
-      <Panel header={card.title} bsStyle="success">
-        <Div className="pointer" onClick={action}>{card.items[0].title}</Div>
-      </Panel>
-    </Div>
-  );
-};
-
-let DashboardItemChevron = (props) => {
-
-  if (props.direction === 'left') {
-    return (
-      <Div className="card-chevron-left" hidden={props.hidden}>
-        <Glyphicon glyph="menu-left"/>
-      </Div>
-    );
-  }
-
-  return (
-    <Div className="card-chevron-right" hidden={props.hidden}>
-      <Glyphicon glyph="menu-right"/>
-    </Div>
-  );
-
-}
-
-let DashboardCardHeader = (props) => {
-  let iconClassname = cx({'glyphicon-spin': props.loading});
-  return (
-    <Div>
-      <Div className="dashboard-card-title">{props.title}</Div>
-      <Div onClick={props.onClick} className="dashboard-card-refresh"><Glyphicon className={iconClassname} glyph="refresh"/></Div>
-    </Div>
-  );
-};
+import DashboardCardMedium from './DashboardCardMedium.jsx';
+import DashboardCardSmall from './DashboardCardSmall.jsx';
+import DashboardMasterManagementCard from './DashboardMasterManagementCard.jsx';
+import MissionInfoFormWrap from './MissionInfoFormWrap.jsx';
 
 let DashboardPageHeader = (props) => {
   return (
@@ -70,149 +29,6 @@ let DashboardPageHeader = (props) => {
   );
 }
 
-class DashboardCardMedium extends React.Component {
-
-  static contextTypes = {
-    flux: React.PropTypes.object,
-  }
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      fullListOpen: false,
-      selectedItem: null,
-      items: [],
-    };
-  }
-
-  componentDidMount() {
-    let cardWidth = ReactDOM.findDOMNode(this.refs.card).offsetWidth;
-    this.setState({cardWidth});
-  }
-
-  selectItem(i) {
-    let item = this.props.items[i];
-    if ((item && item.subItems && item.subItems.length) || i === null) {
-      this.setState({selectedItem: i});
-      this.props.openFullList(i === null);
-    }
-  }
-
-  toggleFullList() {
-    this.setState({fullListOpen: !!!this.state.fullListOpen});
-  }
-
-  refreshCard() {
-    this.props.refreshCard();
-  }
-
-  render() {
-    let selectedItemIndex = this.state.selectedItem;
-    let selectedItem = this.props.items[selectedItemIndex] || null;
-    let subItems = selectedItem !== null ? selectedItem.subItems || [] : [];
-    const items = this.props.items.map((item,i) => {
-      let itemClassName = cx('dashboard-card-item', {'pointer': item.subItems && item.subItems.length});
-      return <Div key={i} className={itemClassName} onClick={this.selectItem.bind(this, i)}>
-                <Div style={{width: '90%', textAlign: 'left', marginLeft: 'auto', marginRight: 'auto'}}>
-                  {item.title}
-                </Div>
-             </Div>
-    });
-    let styleObject = {
-      width: this.state.cardWidth, marginLeft: this.state.cardWidth + 30
-    };
-    if (this.props.direction === 'left') {
-      styleObject = {
-        width: this.state.cardWidth, right: this.state.cardWidth + 44
-      };
-    }
-    let firstItems = items.slice(0, 2);
-    let otherItems = items.slice(2, items.length);
-    //let dashboardCardClass = cx('dashboard-card', {'visibilityHidden'});
-    let Header = <DashboardCardHeader title={this.props.title} loading={this.props.loading} onClick={this.refreshCard.bind(this)}/>;
-
-    return (
-      <Div md={12}>
-        <Panel className="dashboard-card" header={Header} bsStyle="success" ref="card">
-          <Div className="dashboard-card-items">
-            {firstItems}
-            <Collapse in={this.state.fullListOpen}>
-              <Div>
-                  {otherItems}
-              </Div>
-            </Collapse>
-          </Div>
-
-          <Div className="menu-down-block" hidden={otherItems.length === 0}>
-            <hr/>
-            <Div style={{textAlign: 'center'}} hidden={this.state.fullListOpen}>
-              <Glyphicon glyph="menu-down" className="pointer" onClick={this.toggleFullList.bind(this)}/>
-            </Div>
-            <Div style={{textAlign: 'center'}} hidden={!this.state.fullListOpen}>
-              <Glyphicon glyph="menu-up" className="pointer" onClick={this.toggleFullList.bind(this)}/>
-            </Div>
-          </Div>
-
-          <Div className="dashboard-card-overlay" hidden={!this.props.loading}></Div>
-        </Panel>
-
-        <DashboardItemChevron direction={this.props.direction} hidden={selectedItem === null || subItems.length === 0 || !this.props.itemOpened} />
-
-        <Div style={styleObject} hidden={subItems.length === 0} className={cx('dashboard-card-info', {active: selectedItem !== null && this.props.itemOpened})} >
-          <Fade in={selectedItem !== null && this.props.itemOpened}>
-            <div>
-              <Well>
-                <Div className="card-glyph-remove" onClick={this.selectItem.bind(this, null)}>
-                  <Glyphicon glyph="remove"/>
-                </Div>
-                <h5>{selectedItem !== null ? selectedItem.title : ''}</h5>
-                <hr/>
-                <ul>
-                  {subItems.map((item, i) => <li key={i}>{item.title || item}</li>)}
-                </ul>
-              </Well>
-            </div>
-          </Fade>
-        </Div>
-
-      </Div>
-    );
-  }
-
-};
-
-class MasterManagementCard extends ElementsList {
-
-  constructor(props) {
-    super(props);
-  }
-
-  componentDidMount() {
-		const { flux } = this.context;
-    flux.getActions('objects').getTechOperations();
-    flux.getActions('routes').getRoutes();
-    flux.getActions('objects').getCars();
-    flux.getActions('missions').getMissionSources();
-  }
-
-  render() {
-
-    return (
-      <Div className="dashboard-card-sm" hidden={this.props.hidden}>
-        <Panel header={'Управление'} bsStyle="success">
-          <Button onClick={this.showForm.bind(this)}><Glyphicon glyph="plus"/> Создать задание</Button>
-        </Panel>
-        <MissionFormWrap onFormHide={this.onFormHide.bind(this)}
-                         showForm={this.state.showForm}
-                         element={this.state.selectedElement}/>
-      </Div>
-    );
-
-  }
-
-}
-
 class DashboardPage extends React.Component {
 
   constructor(props, context) {
@@ -222,6 +38,7 @@ class DashboardPage extends React.Component {
       time: '',
       loadingComponents: [],
       itemOpenedKey: null,
+      showMissionInfoForm: false,
     };
 
   }
@@ -311,7 +128,20 @@ class DashboardPage extends React.Component {
         }
         c.items[0].action = () => this.context.history.pushState(null, `/waybill-journal?${params}`)
       }
+
     });
+
+    componentsList.map(c => {
+      if (c.key === 'current_missions') {
+        c.items.map(item => {
+          item.action = (data) => {
+            console.info(data);
+            this.setState({showMissionInfoForm: true, itemOpenedKey: null, mission: data});
+          }
+        });
+      }
+    });
+
     let lists = _(componentsList).groupBy((el, i) => Math.floor(i/3)).toArray().value();
     let rows = [];
     lists.map((row, i) => {
@@ -357,11 +187,17 @@ class DashboardPage extends React.Component {
           </Col>
 
           <Col md={2}>
-            <MasterManagementCard/>
+            <DashboardMasterManagementCard/>
 
             {componentsSide}
           </Col>
         </Row>
+
+        <MissionInfoFormWrap onFormHide={() => this.setState({showMissionInfoForm: false})}
+														 showForm={this.state.showMissionInfoForm}
+                             element={this.state.mission}
+														 {...this.props}/>
+
 
       </Div>
     );

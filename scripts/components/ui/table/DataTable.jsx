@@ -33,7 +33,9 @@ class Table extends React.Component {
 	}
 
 	saveFilter(filterValues) {
-    this.props.onAllRowsChecked(_.reduce(this.props.results, (cur, val) => {cur[val.id] = val; return cur;}, {}), false);
+    if (typeof this.props.onAllRowsChecked === 'function') {
+      this.props.onAllRowsChecked(_.reduce(this.props.results, (cur, val) => {cur[val.id] = val; return cur;}, {}), false);
+    }
 		this.setState({filterValues, globalCheckboxState: false});
 	}
 

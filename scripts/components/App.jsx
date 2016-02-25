@@ -10,7 +10,7 @@ import RoutesList from './route/RoutesList.jsx';
 import MainPage from './MainPage.jsx';
 import MonitorPage from './monitor/MonitorPage.jsx';
 import LoadingPage from './LoadingPage.jsx';
-import DashboardPage from './DashboardPage.jsx';
+import DashboardPage from './dashboard/DashboardPage.jsx';
 import DriversList from './drivers/DriversList.jsx';
 import CarsList from './cars/CarsList.jsx';
 import FuelRatesDirectory from './directories/FuelRatesDirectory.jsx';

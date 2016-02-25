@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import CarInfo from './CarInfo.jsx';
+import Div from '../ui/Div.jsx';
 
 export default class Sidebar extends Component {
 
@@ -12,15 +13,14 @@ export default class Sidebar extends Component {
   }
 
   render() {
-    let props = this.props;
-    if (props.selected) {
-      return (<div key={props.selected.id} className="dashboard-sidebar">
-          <span className="dashboard-sidebar-close" onClick={this.close.bind(this)}>×</span>
-          <CarInfo car={props.selected} flux={props.flux} onclose={this.close.bind(this)}/>
-      </div>)
-    } else {
-      return <div key="nothing"/>
-    }
+    let { selected } = this.props;
+
+    return (
+      <Div hidden={!selected} className="dashboard-sidebar">
+        <span className="dashboard-sidebar-close" onClick={this.close.bind(this)}>×</span>
+        <CarInfo car={selected} flux={this.props.flux} onclose={this.close.bind(this)}/>
+      </Div>
+    );
   }
 
   close() {

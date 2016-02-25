@@ -24,6 +24,7 @@ export const CarService = new APIService('/car_actual/');
 export const CarInfoService = new APIService('/car_additional_info/');
 export const CustomersService = new APIService('/customers/');
 export const MissionTemplatesForFaxogramm = new APIService('/get_mission_templates_for_faxogramm/');
+export const MissionLastReportService = new APIService('/mission_last_report/');
 
 // REPORTS
 

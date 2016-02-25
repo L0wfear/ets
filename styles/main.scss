@@ -2448,6 +2448,9 @@ div.none {
       /*border-top-left-radius: 0;
       border-bottom-left-radius: 0;*/
     }
+    ul {
+      padding-left: 10px;
+    }
   }
   .dashboard-card-info.active {
     z-index: 9999;
@@ -2590,4 +2593,35 @@ div.none {
 
 .visibilityHidden {
   visibility: hidden;
+}
+
+
+.car-info-tracking {
+
+  .till-now-checkbox {
+    position: absolute;
+    top: -26px;
+    right: 20px;
+    font-weight: 200;
+  }
+
+  .reload-button {
+    padding: 6px 9px;
+    height: 34px;
+    margin-left: 5px;
+    margin-top: -3px;
+  }
+
+  .gradient-checkbox {
+    position: absolute;
+    top: -26px;
+    right: 120px;
+    font-weight: 200;
+  }
+}
+
+@media (min-width: 1240px) {
+  .modal-lg {
+    width: 1240px !important;
+  }
 }

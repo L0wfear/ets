@@ -63,8 +63,6 @@ export default class OpenLayersMap extends Component {
             self.canvas = this.canvas = document.createElement('canvas');
             self.context = this.canvas.getContext('2d');
           }
-          //debugger;
-         // size = self.map.getSize();
           this.canvas.setAttribute('width', size[0]);
           this.canvas.setAttribute('height', size[1]);
 
@@ -77,19 +75,18 @@ export default class OpenLayersMap extends Component {
 
     let controls = []
     controls.push(new ol.control.Zoom({
-        duration: 400,
-        className: 'ol-zoom',
-        delta: 1
-      }))
+      duration: 400,
+      className: 'ol-zoom',
+      delta: 1
+    }))
 
-    let map = new ol.Map(
-      {
-        view: initialView,
-        //interactions: [this.interactions],
-        renderer: ['canvas','dom'],
-        controls: controls,
-        layers: [ArcGisLayer, canvasLayer]
-      })
+    let map = new ol.Map({
+      view: initialView,
+      //interactions: [this.interactions],
+      renderer: ['canvas','dom'],
+      controls: controls,
+      layers: [ArcGisLayer, canvasLayer]
+    });
 
     this.map = global.olmap = map;
   }
@@ -112,7 +109,7 @@ export default class OpenLayersMap extends Component {
 
     this.popup = new ol.Overlay.Popup();
     map.addOverlay(this.popup);
-    
+
     this.enableInteractions();
   }
 
@@ -205,7 +202,7 @@ export default class OpenLayersMap extends Component {
 
   render() {
     return (<div>
-              <div ref="container" style={{opacity: 1}} className="openlayers-container"/>
+              <div ref="container" className="openlayers-container"/>
             </div>)
   }
 
@@ -243,23 +240,23 @@ export default class OpenLayersMap extends Component {
     }
 
     if (selectedMarker) {
-      //debugger;
       if (selectedMarker.hasTrackLoaded()) {
         selectedMarker.track.render();
       }
       selectedMarker.render({selected: true, ...options});
 
-      let view = map.getView();
-      let zoom = view.getZoom();
-      let size = map.getSize();
-      let pixel = [(size[0] - SIDEBAR_WIDTH_PX) / 2, size[1] / 2];
 
-      if (pointsStore.state.trackingMode) {
-          view.centerOn(selectedMarker.coords, size, pixel)
-          if (zoom < 12) {
-            view.setZoom(12)
-          }
-          this.disableInteractions();
+      if (pointsStore.state.trackingMode) { // следить за машиной
+        let view = map.getView();
+        let zoom = view.getZoom();
+        let size = map.getSize();
+        let pixel = [(size[0] - SIDEBAR_WIDTH_PX) / 2, size[1] / 2];
+
+        view.centerOn(selectedMarker.coords, size, pixel)
+        if (zoom < 12) {
+          view.setZoom(12)
+        }
+        this.disableInteractions();
       } else {
         this.enableInteractions()
       }
@@ -286,6 +283,9 @@ export default class OpenLayersMap extends Component {
         singleclick: map.on('singleclick', this.onClick.bind(this)),
         pointermove: map.on('pointermove', this.onMouseMove.bind(this))
       }
+      // map.getView().on('change:resolution', (e) => {
+      //   console.log(e.target.getCenter());
+      // })
 
       interactions.forEach((interaction)=> {
         interaction.setActive(true)
@@ -295,6 +295,7 @@ export default class OpenLayersMap extends Component {
   }
 
   disableInteractions() {
+    console.error('DISABLE INTERCATIONS');
     let map = this.map;
     let interactions = this.map.getInteractions();
 

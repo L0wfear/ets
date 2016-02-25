@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { createValidDateTime } from '../utils/dates.js';
 import { isEmpty, isNotNull } from '../utils/functions.js';
 
-import { MissionReportsService, MissionService, MissionSourceService, MissionTemplateService, MissionTemplatesForFaxogramm } from '../api/Services.js';
+import { MissionReportsService, MissionService, MissionSourceService, MissionTemplateService, MissionTemplatesForFaxogramm, MissionLastReportService } from '../api/Services.js';
 
 export default class MissionsActions extends Actions {
 
@@ -128,6 +128,13 @@ export default class MissionsActions extends Actions {
 
   getMissionReportByODHs(data) {
     return data;
+  }
+
+  getMissionLastReport(mission_id) {
+    const payload = {
+      mission_id
+    };
+    return MissionLastReportService.get(payload);
   }
 
 }

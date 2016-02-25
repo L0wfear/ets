@@ -58,7 +58,6 @@ class MissionsStore extends Store {
       r.index = i;
       return r;
     });
-    console.log(selectedReportData)
     this.setState({selectedReportData});
   }
 

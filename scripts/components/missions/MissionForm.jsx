@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import connectToStores from 'flummox/connect';
-import { Modal, Row, Col, FormControls, Button, DropdownButton, Dropdown, Glyphicon, MenuItem } from 'react-bootstrap';
+import { Modal, Row, Col, FormControls, Button, DropdownButton, Dropdown, Glyphicon, MenuItem, Input } from 'react-bootstrap';
 import Datepicker from '../ui/DatePicker.jsx';
 import RouteInfo from '../route/RouteInfo.jsx';
 import RouteFormWrap from '../route/RouteFormWrap.jsx';
@@ -184,7 +184,11 @@ export class MissionForm extends Form {
 	      </Modal.Body>
 
 	      <Modal.Footer>
-					<Div hidden={state.status === 'closed'}>
+          <Div className="inline-block assignToWaybillCheck" hidden={!!state.status}>
+            <label>Создать черновик п.л. / Добавить в существующий</label>
+            <Input type="checkbox" value={state.assign_to_waybill} onClick={this.handleChange.bind(this, 'assign_to_waybill', !!!state.assign_to_waybill)}/>
+          </Div>
+					<Div className="inline-block" hidden={state.status === 'closed'}>
 						<Dropdown id="waybill-print-dropdown" disabled={!this.props.canSave} onSelect={this.props.handlePrint}>
 							<Dropdown.Toggle  disabled={true}>
 								<Glyphicon glyph="print" /> Печать

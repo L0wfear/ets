@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import connectToStores from 'flummox/connect';
-import { Modal, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
+import { Modal, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon, Input } from 'react-bootstrap';
 import Field from '../ui/Field.jsx';
 import Div from '../ui/Div.jsx';
 import RouteInfo from '../route/RouteInfo.jsx';
@@ -64,7 +64,11 @@ class MissionsCreationForm extends Form {
         </Modal.Body>
 
         <Modal.Footer>
-          <Div hidden={state.status === 'closed'}>
+          <Div className="inline-block assignToWaybillCheck">
+            <label>Создать черновик п.л. / Добавить в существующий</label>
+            <Input type="checkbox" value={state.assign_to_waybill} onClick={this.handleChange.bind(this, 'assign_to_waybill', !!!state.assign_to_waybill)}/>
+          </Div>
+          <Div className="inline-block" hidden={state.status === 'closed'}>
             <Button onClick={this.handleSubmit.bind(this)}>{'Сформировать'}</Button>
           </Div>
         </Modal.Footer>

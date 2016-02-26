@@ -159,6 +159,10 @@ class WaybillForm extends Form {
     let IS_POST_CREATING = state.status && state.status === 'draft';
 		let IS_DISPLAY = state.status && state.status === 'closed';
     let car = carsIndex[state.car_id];
+    let car_has_odometer = null;
+    if (car && car.gov_number) {
+      car_has_odometer = isNaN(car.gov_number[0]);//car.gov_number.replace(/[^0-9]/g,"").length === 3;
+    }
 
     let title = '';
 
@@ -252,7 +256,7 @@ class WaybillForm extends Form {
 
 	      	<Row>
           <Div hidden={!state.car_id}>
-            <Div hidden={!state.car_has_odometer}>
+            <Div hidden={!car_has_odometer}>
   	      		<Col md={4}>
   		      		<h4>Одометр</h4>
   							<Field type="number" label="Выезд, км" error={errors['odometr_start']}
@@ -265,7 +269,7 @@ class WaybillForm extends Form {
    										 value={state.odometr_diff} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled />
   	      		</Col>
             </Div>
-            <Div hidden={state.car_has_odometer}>
+            <Div hidden={car_has_odometer}>
   	      		<Col md={4}>
   		      		<h4>Счетчик моточасов</h4>
   							<Field type="number" label="Выезд, м/ч" error={errors['motohours_start']}

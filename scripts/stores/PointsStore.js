@@ -33,6 +33,7 @@ let initialState = {
     showTrackingGradient: false,
     isRenderPaused: false,
     singleCarTrack: null,
+    singleCarTrackDates: [],
 }
 
 export default class PointsStore extends Store {
@@ -55,6 +56,7 @@ export default class PointsStore extends Store {
     this.register(pointsActions.createConnectionForSinglePoint, this.handleCreateConnectionForSinglePoint);
     this.register(pointsActions.closeConnection, this.handleCloseConnection);
     this.register(pointsActions.setSingleCarTrack, this.handleSetSingleCarTrack);
+    this.register(pointsActions.setSingleCarTrackDates, this.handleSetSingleCarTrackDates);
 
     this.register(loginActions.login, this.handleLogin);
 
@@ -102,6 +104,10 @@ export default class PointsStore extends Store {
     this.setState({singleCarTrack: car_gov_number});
   }
 
+  handleSetSingleCarTrackDates(dates) {
+    this.setState({singleCarTrackDates: dates});
+  }
+
   /**
     @todo handleMessage() method
    **/
@@ -120,7 +126,8 @@ export default class PointsStore extends Store {
           let car = p.car;
           if (car && car.gov_number === this.state.singleCarTrack && p.marker) {
             p.marker.createTrack();
-            p.marker.track.fetch();
+            console.info(this.state.singleCarTrackDates);
+            p.marker.track.fetch(this.state.singleCarTrackDates[0] || undefined, this.state.singleCarTrackDates[1] || undefined);
             this.handleSelectPoint(p);
           }
         });

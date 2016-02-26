@@ -266,6 +266,14 @@ export function getFuelRatesByCarModel(car_model_id) {
 
 export function getTrack(car_id, from_dt, to_dt) {
 
+  if (typeof from_dt === 'string') {
+    from_dt = new Date(from_dt);
+  }
+
+  if (typeof to_dt === 'string') {
+    to_dt = new Date(to_dt);
+  }
+
   let query = '/?from_dt=' + makeUnixTime(from_dt) +
     '&to_dt=' + makeUnixTime(to_dt) +
     '&version=2';

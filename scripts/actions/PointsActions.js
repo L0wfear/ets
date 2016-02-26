@@ -42,4 +42,8 @@ export default class PointsActions extends Actions {
     return number;
   }
 
+  setSingleCarTrackDates(dates) {
+    return dates;
+  }
+
 }

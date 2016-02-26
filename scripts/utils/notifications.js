@@ -67,3 +67,14 @@ export const notifications = {
   missionCreateSuccessNotification,
   missionsCreationSuccessNotification
 }
+
+export function getWarningNotification(message) {
+  return {
+    title: 'Внимание',
+    message: `${message}`,
+    level: 'warning',
+    dismissible: false,
+    position: 'tr',
+    autoDismiss: 3,
+  };
+}

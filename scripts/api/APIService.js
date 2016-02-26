@@ -1,4 +1,5 @@
 import { getUrl, getJSON, postJSON, deleteJSON, putJSON } from '../adapter.js';
+import { getWarningNotification } from '../utils/notifications.js';
 
 export default class APIService {
 
@@ -16,6 +17,11 @@ export default class APIService {
   create(payload = {}, callback) {
     console.info('API SERVICE POST', this.firstUrl);
     return postJSON(this.url, payload).then((r) => {
+      if (r.warnings && r.warnings.length) {
+        r.warnings.map(w => {
+          global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification(w));
+        });
+      }
       if (typeof callback === 'function') {
         return callback();
       } else if (callback === false) {
@@ -28,7 +34,12 @@ export default class APIService {
 
   update(payload = {}, callback) {
     console.info('API SERVICE PUT', this.firstUrl);
-    return putJSON(this.url, payload).then(() => {
+    return putJSON(this.url, payload).then((r) => {
+      if (r.warnings && r.warnings.length) {
+        r.warnings.map(w => {
+          global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification(w));
+        });
+      }
       if (typeof callback === 'function') {
         return callback();
       } else {

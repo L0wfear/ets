@@ -37,10 +37,12 @@ let getCarById = (cars, id) => {
 };
 
 let getMissionFilterStatus = (formState) => {
-  let missionsFilterStatus = (formState.status === 'active') ? 'assigned' : 'not_assigned';
+  let missionsFilterStatus = ''//(formState.status === 'active') ? 'assigned' : 'not_assigned';
   //missionsFilterStatus = (formState.status === 'closed') ? 'complete' : missionsFilterStatus;
-  if (formState.status === 'draft' || formState.status === 'closed') {
+  if (formState.status === 'draft' || formState.status === 'closed' || formState.status === 'active') {
     missionsFilterStatus = undefined;
+  } else {
+    missionsFilterStatus = 'not_assigned';
   }
   return missionsFilterStatus;
 };

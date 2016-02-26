@@ -48,7 +48,7 @@ export class MissionForm extends Form {
 		const mission = this.props.formState;
 		const { flux } = this.context;
 		if (typeof mission.route_id !== 'undefined' && mission.route_id !== null){
-			flux.getActions('routes').getRouteById(mission.route_id).then(r => {
+			flux.getActions('routes').getRouteById(mission.route_id, true).then(r => {
 				this.setState({selectedRoute: r.result.length ? r.result[0] : null});
 			});
 		}
@@ -73,7 +73,7 @@ export class MissionForm extends Form {
 		if (props.lastCreatedRouteId !== null && props.lastCreatedRouteId !== this.props.lastCreatedRouteId) {
 			this.handleChange('route_id', props.lastCreatedRouteId);
 			setTimeout(() => { //no time sry
-				this.context.flux.getActions('routes').getRouteById(props.lastCreatedRouteId).then(r => {
+				this.context.flux.getActions('routes').getRouteById(props.lastCreatedRouteId, true).then(r => {
 					this.setState({selectedRoute: r.result.length ? r.result[0] : null});
 				});
 			}, 500);

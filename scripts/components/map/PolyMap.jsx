@@ -114,7 +114,7 @@ export default class OpenLayersMap extends Component {
         id: key,
         state: poly.state,
       });
-      if (poly.shape.type === 'LineString') {
+      if (poly.shape && poly.shape.type === 'LineString') {
         feature.setStyle(getVectorArrowStyle(feature));
       } else {
         feature.setStyle(polyStyles[poly.state]);

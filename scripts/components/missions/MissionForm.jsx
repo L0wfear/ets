@@ -52,6 +52,7 @@ export class MissionForm extends Form {
 				this.setState({selectedRoute: r.result.length ? r.result[0] : null});
 			});
 		}
+		this.setState({carsList: this.props.carsList})
 	}
 
 	createNewRoute() {

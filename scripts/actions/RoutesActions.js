@@ -14,8 +14,11 @@ export default class RoutesActions extends Actions {
     return RouteService.get();
   }
 
-  getRouteById(id) {
+  getRouteById(id, simple) {
     const payload = { id };
+    if (simple) {
+      payload.simple = 1;
+    }
     return RouteService.get(payload);
   }
 

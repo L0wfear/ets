@@ -33,7 +33,7 @@ export class MissionInfoForm extends Form {
     this.context.flux.getActions('missions').getMissionLastReport(formState.mission_id).then(r => {
       this.setState({missionReport: r.result ? r.result.report_by_odh : []});
     });
-    this.context.flux.getActions('routes').getRouteById(formState.route_id).then(r => {
+    this.context.flux.getActions('routes').getRouteById(formState.route_id, true).then(r => {
       this.setState({object_list: r.result && r.result[0] ? r.result[0].object_list : []});
     })
   }

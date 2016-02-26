@@ -84,7 +84,7 @@ class MissionTemplateForm extends MissionForm {
 							</Div>
 
 						  <Div className="route-odhs-list" hidden={this.state.selectedRoute === null}>
-								<ODHList showSelectable={true} odh_list={odh_list} />
+								{/*<ODHList showSelectable={true} odh_list={odh_list} />*/}
 							</Div>
             </Col>
             <Col md={6}>

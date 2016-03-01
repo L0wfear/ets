@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Button, Glyphicon } from 'react-bootstrap';
+import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
 import _ from 'lodash';
 import cx from 'classnames';
 import connectToStores from 'flummox/connect';
@@ -92,32 +92,34 @@ class RoutesList extends Component {
 		});
 
 		return <div className="ets-page-wrap routes-list">
-			<div className="some-header">Список маршрутов "Жилищник Крылатское"
-				<div className="waybills-buttons">
-					<Button bsSize="small" onClick={this.createRoute.bind(this)}><Glyphicon glyph="plus" /> Создать маршрут</Button>
-					<Button bsSize="small" disabled={route === null} onClick={() => this.setState({showForm: true})}><Glyphicon glyph="pencil" /> Изменить маршрут</Button>
-					<Button bsSize="small" disabled={route === null} onClick={this.deleteRoute.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
-				</div>
-			</div>
-
-				<div className="panel panel-default routes-list-menu">
-				  <div className="panel-heading">Выберите маршрут из списка для просмотра</div>
-				  <div className="panel-body">
-						<ul className="list-group">
-							{routes}
-						</ul>
-				  </div>
+				<div className="some-header">Список маршрутов "Жилищник Крылатское"
+					<div className="waybills-buttons">
+						<Button bsSize="small" onClick={this.createRoute.bind(this)}><Glyphicon glyph="plus" /> Создать маршрут</Button>
+						<Button bsSize="small" disabled={route === null} onClick={() => this.setState({showForm: true})}><Glyphicon glyph="pencil" /> Изменить маршрут</Button>
+						<Button bsSize="small" disabled={route === null} onClick={this.deleteRoute.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
+					</div>
 				</div>
 
-				<Div className="routes-list-info">
-					<Div hidden={this.state.showForm || route === null}>
-						<RouteInfo route={route} />
-					</Div>
-					<RouteFormWrap element={route}
-												 onFormHide={this.onFormHide.bind(this)}
-												 showForm={this.state.showForm} />
-				</Div>
-
+				<Row>
+					<Col md={3}>
+						<div className="panel panel-default routes-list-menu">
+							<div className="panel-heading">Выберите маршрут из списка для просмотра</div>
+							<div className="panel-body">
+								<ul className="list-group">
+									{routes}
+								</ul>
+							</div>
+						</div>
+					</Col>
+					<Col md={9}>
+							<Div hidden={this.state.showForm || route === null}>
+								<RouteInfo route={route} />
+							</Div>
+							<RouteFormWrap element={route}
+														 onFormHide={this.onFormHide.bind(this)}
+														 showForm={this.state.showForm} />
+					</Col>
+				</Row>
 		</div>
 	}
 }

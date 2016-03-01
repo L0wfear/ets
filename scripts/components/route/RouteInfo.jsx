@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Row, Col, Input } from 'react-bootstrap';
 import PolyMap from '../map/PolyMap.jsx';
 import DrawMap from '../map/DrawMap.jsx';
 import ODHList from './ODHList.jsx';
@@ -38,18 +39,32 @@ export default class RouteInfo extends Component {
 			let odh_list = route.odh_list || object_list.filter(o => o.type && o.type === 'odh');
 
 			return (
-				<Div>
-					<Div className="route-name" hidden={this.props.mapOnly}> {route.name} </Div>
-					<Div className="route-odhs-on-map">
-						<Map onFeatureClick={this.onFeatureClick.bind(this)}
-								 zoom={MAP_INITIAL_ZOOM}
-	            	 center={MAP_INITIAL_CENTER}
-	            	 polys={polys}
-								 manual={manual}/>
+				<Div style={{marginTop: 18}}>
+					<Div className="route-name" hidden={this.props.mapOnly}><b>{route.name}</b></Div>
+					<Div>
+						<Row>
 
-	          <Div className="route-odhs-list" hidden={this.props.mapOnly}>
-	          	<ODHList showSelectable={true} odh_list={odh_list}/>
-	          </Div>
+							<Col md={8}>
+								<Div className="route-creating">
+									<Map onFeatureClick={this.onFeatureClick.bind(this)}
+											 zoom={MAP_INITIAL_ZOOM}
+				            	 center={MAP_INITIAL_CENTER}
+				            	 polys={polys}
+											 manual={manual}/>
+								</Div>
+							</Col>
+
+							<Col md={4}>
+								<ODHList showSelectable={true} odh_list={odh_list}/>
+								<Div style={{marginTop: 20}} hidden={route.type !== 'points'}>
+									{route.object_list.map((o,i) => {
+										let label = `Пункт назначения №${i+1} ${o.name ? '(' + o.name + ')' : ''}`
+										return <Input key={i} label={label} />
+									})}
+								</Div>
+							</Col>
+
+						</Row>
 					</Div>
 				</Div>
 			);

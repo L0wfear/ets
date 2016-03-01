@@ -2658,3 +2658,17 @@ div.none {
     }
   }
 }
+
+.destination-points {
+  margin-top: 20px;
+  .destination-point {
+
+    .form-group {
+      display: inline-block;
+    }
+    .btn {
+      margin-left: 5px;
+      margin-bottom: 2px;
+    }
+  }
+}

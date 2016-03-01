@@ -34,7 +34,6 @@ class RoutesStore extends Store {
   }
 
   handleCreateRoute({createdRoute, routes}) {
-    console.log(createdRoute);
     this.setState({lastCreatedRouteId: createdRoute.result[0].id, routesList: routes.result });
   }
 

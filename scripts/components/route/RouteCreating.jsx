@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Row, Col, Input } from 'react-bootstrap';
+import { Row, Col, Input, Button, Glyphicon } from 'react-bootstrap';
 import DrawMap from '../map/DrawMap.jsx';
 import PolyMap from '../map/PolyMap.jsx';
 import ODHList from './ODHList.jsx';
@@ -161,6 +161,12 @@ class RouteCreating extends Component {
 			this.props.onChange('object_list', object_list);
 		}
 
+		removeObject(i) {
+			let { object_list } = this.props.route;
+			object_list.splice(i, 1);
+			this.props.onChange('object_list', object_list);
+		}
+
 		render() {
 			let route = this.props.route;
 			const Map = this.props.manual ? DrawMap : PolyMap;
@@ -199,10 +205,15 @@ class RouteCreating extends Component {
 											 onChange={this.onODHSelectChange.bind(this)}/>
 								</Div>
 		          	<ODHList odh_list={odh_list} odh_fail_list={odh_fail_list} checkRoute={this.props.manual ? this.checkRoute.bind(this) : null}/>
-								<Div style={{marginTop: 20}} hidden={route.type !== 'points'}>
+								<Div className="destination-points" hidden={route.type !== 'points'}>
 									{route.object_list.map((o,i) => {
 										let label = `Пункт назначения №${i+1} ${o.name ? '( ' + o.name + ' )' : ''}`
-										return <Input type="text" key={i} label={label} value={o.name} onChange={this.onObjectNameChange.bind(this, i)} />
+										return (
+											<Div className="destination-point">
+												<Input type="text" key={i} label={label} value={o.name} onChange={this.onObjectNameChange.bind(this, i)} />
+												<Button className="inline-block" onClick={this.removeObject.bind(this, i)}><Glyphicon glyph="remove"/></Button>
+											</Div>
+										)
 									})}
 								</Div>
 							</Col>

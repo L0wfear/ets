@@ -48,6 +48,16 @@ class RoutesList extends Component {
 
 	}
 
+	copyRoute() {
+		let copiedRoute = _.cloneDeep(this.state.selectedRoute);
+		delete copiedRoute.name;
+		delete copiedRoute.id;
+		this.setState({
+			showForm: true,
+			selectedRoute: _.cloneDeep(copiedRoute)
+		});
+	}
+
 	deleteRoute() {
 		if (confirm('Вы уверены, что хотите удалить выбранный маршрут?')) {
 			const { flux } = this.context;
@@ -91,11 +101,13 @@ class RoutesList extends Component {
 			return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>
 		});
 
-		return <div className="ets-page-wrap routes-list">
+		return (
+			<div className="ets-page-wrap routes-list">
 				<div className="some-header">Список маршрутов "Жилищник Крылатское"
 					<div className="waybills-buttons">
 						<Button bsSize="small" onClick={this.createRoute.bind(this)}><Glyphicon glyph="plus" /> Создать маршрут</Button>
 						<Button bsSize="small" disabled={route === null} onClick={() => this.setState({showForm: true})}><Glyphicon glyph="pencil" /> Изменить маршрут</Button>
+						<Button bsSize="small" disabled={route === null} onClick={this.copyRoute.bind(this)}><Glyphicon glyph="copy" /> Копировать маршрут</Button>
 						<Button bsSize="small" disabled={route === null} onClick={this.deleteRoute.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
 					</div>
 				</div>
@@ -120,7 +132,9 @@ class RoutesList extends Component {
 														 showForm={this.state.showForm} />
 					</Col>
 				</Row>
-		</div>
+				
+			</div>
+		)
 	}
 }
 

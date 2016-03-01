@@ -2,7 +2,7 @@ import _ from 'lodash';
 import config from './config.js';
 import { getStartOfToday, makeUnixTime } from './utils/dates.js';
 import { wrapCoords, swapCoords } from './utils/geo.js';
-
+import { RouteService } from './api/Services.js';
 import { loadTypes } from './types.js';
 
 export function getUrl(url) {
@@ -331,7 +331,7 @@ export function createMissions(payload) {
 // ROUTES
 
 export function createRoute(route) {
-  return postJSON(ROUTE_URL, route, 'form').then((createdRoute) => getRoutes().then(routes => {
+  return postJSON(ROUTE_URL, route, 'form').then((createdRoute) => RouteService.get().then(routes => {
     return {createdRoute, routes};
   }));
 }

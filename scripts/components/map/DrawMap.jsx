@@ -2,7 +2,7 @@ import React from 'react';
 import PolyMap from './PolyMap.jsx';
 import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
 import { polyState, polyStyles } from '../../constants/polygons.js';
-import { vectorStyles, vectorState, getVectorArrowStyle, getVectorLayer, getVectorSource } from '../../constants/vectors.js';
+import { vectorStyles, vectorState, getVectorArrowStyle } from '../../constants/vectors.js';
 import Div from '../ui/Div.jsx';
 
 export default class DrawMap extends PolyMap {
@@ -10,6 +10,11 @@ export default class DrawMap extends PolyMap {
     super(props);
 
     console.warn('DRAWMAP CONSTRUCTOR');
+    if (this.props.objectsType === 'vector') {
+      this.addDrawInteraction('LineString');
+    } else {
+      this.addDrawInteraction('Point');
+    }
   }
 
   onClick(ev) {
@@ -26,39 +31,62 @@ export default class DrawMap extends PolyMap {
   }
 
   init() {
-    this.addInteraction();
+
   }
 
-  addInteraction() {
+  addDrawInteraction(type = 'LineString') {
+    console.log(this.vectorSource);
     this.draw = new ol.interaction.Draw({
-      source: this.vectorSource,
-      type: 'LineString',
+      //source: this.vectorSource,
+      type
     });
-    this.draw.on('drawend', this.onDrawEnd.bind(this));
+    this.draw.on('drawend', type === 'LineString' ? this.onDrawEnd.bind(this) : this.onPointDrawEnd.bind(this));
     this.map.addInteraction(this.draw);
     if (this.props.edit) {
       setTimeout(() => this.draw.setActive(false), 500);
     }
   }
 
+  removeDrawInteraction() {
+    this.map.removeInteraction(this.draw);
+  }
+
   onDrawEnd(ev) {
     let { feature } = ev;
     let id = this.props.object_list.length || 0;
     const geometry = feature.getGeometry();
-    feature.setStyle(getVectorArrowStyle(feature));
+    //feature.setStyle(getVectorArrowStyle(feature)); //не нужно т.к. рисуется заново
     geometry.forEachSegment((start, end, index) => {
       let featureSegment = new ol.Feature({
         geometry: new ol.geom.LineString([start, end]),
         id: id,
       });
-      featureSegment.setStyle(getVectorArrowStyle(featureSegment));
+      //featureSegment.setStyle(getVectorArrowStyle(featureSegment)); //не нужно т.к. рисуется заново
       id++;
       this.props.onDrawFeatureAdd(featureSegment, featureSegment.getGeometry().getCoordinates(), featureSegment.getGeometry().getLength());
-    })
-    this.draw.setActive(false);
-    feature.on('change', () => {
-      this.vectorSource.removeFeature(feature)
     });
+    this.draw.setActive(false);
+    // feature.on('change', () => {
+    //   this.vectorSource.removeFeature(feature)
+    // });
+  }
+
+  onPointDrawEnd(ev) {
+    let { feature } = ev;
+    //feature.setStyle(getVectorArrowStyle(feature)); //не нужно т.к. рисуется заново
+    // geometry.forEachSegment((start, end, index) => {
+    //   let featureSegment = new ol.Feature({
+    //     geometry: new ol.geom.LineString([start, end]),
+    //     id: id,
+    //   });
+    //   //featureSegment.setStyle(getVectorArrowStyle(featureSegment)); //не нужно т.к. рисуется заново
+    //   id++;
+    this.props.onPointAdd(feature.getGeometry().getCoordinates());
+    //});
+    //this.draw.setActive(false);
+    // feature.on('change', () => {
+    //   this.vectorSource.removeFeature(feature)
+    // });
   }
 
   render() {
@@ -72,10 +100,37 @@ export default class DrawMap extends PolyMap {
             </div>)
   }
 
+  renderRoutePoints(object_list = []) {
+    let map = this.map;
+    let vectorSource = new ol.source.Vector({wrapX: false});
+
+    _.each(object_list, (object, index) => {
+      let feature = new ol.Feature({
+        geometry: new ol.geom.Point(object.coordinates),
+        id: index,
+        // state: object.state,
+        // distance: object.distance,
+      });
+      //feature.setStyle(getVectorArrowStyle(feature));
+
+      vectorSource.addFeature(feature);
+    });
+
+    !!this.pointsVectorLayer && map.removeLayer(this.pointsVectorLayer);
+
+    let pointsVectorLayer = new ol.layer.Vector({
+      source: vectorSource,
+    });
+
+    !!this.vectorLayer && map.removeLayer(this.vectorLayer);
+    this.pointsVectorLayer = pointsVectorLayer;
+
+    map.addLayer(pointsVectorLayer);
+  }
+
   renderRoute(object_list = []) {
     let map = this.map;
     let vectorSource = new ol.source.Vector({wrapX: false});
-    //let styleFunction = polyStyles[polyState.SELECTABLE];
 
     _.each(object_list, (object, index) => {
       let start = [object.begin.x_msk, object.begin.y_msk];
@@ -91,12 +146,13 @@ export default class DrawMap extends PolyMap {
       vectorSource.addFeature(feature);
     });
 
+    console.log(this.vectorLayer);
+
     !!this.vectorLayer && map.removeLayer(this.vectorLayer);
 
     let vectorLayer = new ol.layer.Vector({
-        source: vectorSource,
-        //style: styleFunction
-    })
+      source: vectorSource,
+    });
 
     this.vectorLayer = vectorLayer;
 
@@ -105,11 +161,11 @@ export default class DrawMap extends PolyMap {
 
   componentDidMount() {
     let map = this.map;
-    let triggerRenderFn = this.triggerRender.bind(this);
+    //let triggerRenderFn = this.triggerRender.bind(this);
     let container = this.refs.container;
 
     map.setTarget(container);
-    map.on('postcompose', triggerRenderFn);
+    //map.on('postcompose', triggerRenderFn);
 
     this.popup = new ol.Overlay.Popup();
     map.addOverlay(this.popup);
@@ -117,7 +173,13 @@ export default class DrawMap extends PolyMap {
     this.enableInteractions();
 
     this.renderPolygons(this.props.polys);
-    this.renderRoute(this.props.object_list);
+    //this.renderRoute(this.props.object_list);
+    if (this.props.objectsType === 'vector') {
+      this.renderRoute(this.props.object_list);
+    }
+    if (this.props.objectsType === 'points') {
+      this.renderRoutePoints(this.props.object_list);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -126,7 +188,22 @@ export default class DrawMap extends PolyMap {
       this.renderPolygons(nextProps.polys);
     }
     if (nextProps.object_list !== undefined) {
-      this.renderRoute(nextProps.object_list);
+      if (nextProps.objectsType === 'vector') {
+        this.renderRoute(nextProps.object_list);
+      }
+      if (nextProps.objectsType === 'points') {
+        this.renderRoutePoints(nextProps.object_list);
+      }
+    }
+    if (nextProps.objectsType !== this.props.objectsType) {
+      // !!this.pointsVectorLayer && this.map.removeLayer(this.pointsVectorLayer);
+      // !!this.vectorLayer && this.map.removeLayer(this.vectorLayer);
+      this.map.removeInteraction(this.draw);
+      if (nextProps.objectsType === 'vector') {
+        this.addDrawInteraction('LineString');
+      } else {
+        this.addDrawInteraction('Point');
+      }
     }
   }
 

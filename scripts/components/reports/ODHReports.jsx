@@ -28,6 +28,7 @@ class ODHReports extends Component {
 
 	componentDidMount() {
 		const { flux } = this.context;
+		flux.getActions('objects').getTypes();
 	}
 
 	render() {

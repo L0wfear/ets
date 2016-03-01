@@ -62,15 +62,6 @@ class App extends Component {
     if(!flux.getStore('session').isLoggedIn()) return this.setState({loading: false});
     return checkToken()
           .then(() => init())
-          .then(() => {
-            return Promise.all([
-              flux.getActions('objects').getModels(),
-              flux.getActions('objects').getTypes(),
-              //flux.getActions('objects').getOwners(),
-              flux.getActions('objects').getOkrugs(),
-              //flux.getActions('objects').getCustomers()
-            ])
-          })
           .then(() => this.setState({loading: false}))
           .catch((error) => {
             if (error === 401) {

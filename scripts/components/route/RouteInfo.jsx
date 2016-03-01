@@ -19,12 +19,12 @@ export default class RouteInfo extends Component {
 			let route = this.props.route;
 			const { object_list = [] } = route;
 			let manual = route.type === 'vector' ? true : false;
-			const polys = object_list.map(({shape, name, state, begin, end}) => {
-				if (!shape && begin) {
-					manual = true;
+			console.log(object_list);
+			const polys = object_list.map(({shape, name, state, coordinates}) => {
+				if (!shape) {
 					shape = {
-						type: "LineString",
-						coordinates: [[begin.x_msk, begin.y_msk], [end.x_msk, end.y_msk]]
+						type: "Point",
+						coordinates
 					};
 				}
 				return {

@@ -1,11 +1,17 @@
 import React, {Component} from 'react';
+import { Row, Col, Input } from 'react-bootstrap';
 import DrawMap from '../map/DrawMap.jsx';
 import PolyMap from '../map/PolyMap.jsx';
 import ODHList from './ODHList.jsx';
-import _ from 'lodash';
+import Field from '../ui/Field.jsx';
+import connectToStores from 'flummox/connect';
+import Div from '../ui/Div.jsx';
+
 
 import {polyStyles, polyState} from '../../constants/polygons.js';
 import {vectorStyles, vectorState} from '../../constants/vectors.js';
+
+import _ from 'lodash';
 
 const MAP_INITIAL_CENTER = [-399.43090337943863, -8521.192605428025];
 const MAP_INITIAL_ZOOM = 3;
@@ -87,7 +93,6 @@ class RouteCreating extends Component {
 		}
 
 		onDrawFeatureAdd(feature, coordinates, distance, map) {
-			const { flux } = this.context;
 			let { id, state } = feature.getProperties();
 			const { object_list } = this.props.route;
 			if (!_.find(object_list, o => o.begin.x_msk === coordinates[0][0]))
@@ -100,6 +105,14 @@ class RouteCreating extends Component {
 				technical_operation_id: 55,
 			});
 
+			this.props.onChange('object_list', object_list);
+		}
+
+		onPointAdd(coordinates) {
+			const { object_list } = this.props.route;
+			object_list.push({
+				coordinates,
+			});
 			this.props.onChange('object_list', object_list);
 		}
 
@@ -120,31 +133,85 @@ class RouteCreating extends Component {
 			this.props.onChange('object_list', object_list);
 		}
 
+		onODHSelectChange(v) {
+			let { object_list, polys } = this.props.route;
+			let { geozonePolys } = this.props;
+			let odhs = v.split(',');
+			if (odhs.length > object_list.length) {
+				console.log(_.last(odhs), geozonePolys);
+				let object_id = _.last(odhs);
+				object_list.push({object_id: parseInt(object_id, 10), type: 'odh', name: geozonePolys[object_id].name, state: polyState.ENABLED});
+				polys[object_id].state = polyState.ENABLED;
+			} else {
+				object_list = object_list.filter(o => {
+					let index = odhs.indexOf(o.object_id.toString());
+					if (index === -1) {
+						polys[o.object_id].state = polyState.SELECTABLE;
+					}
+					return index > -1;
+				});
+			}
+			this.props.onChange('polys', polys);
+			this.props.onChange('object_list', object_list);
+		}
+
+		onObjectNameChange(i, v) {
+			let { object_list } = this.props.route;
+			object_list[i].name = v.target.value;
+			this.props.onChange('object_list', object_list);
+		}
+
 		render() {
 			let route = this.props.route;
 			const Map = this.props.manual ? DrawMap : PolyMap;
 			let odh_list = route.odh_list || route.object_list.filter(o => o.type && o.type === 'odh');
 			let odh_fail_list = route.odh_fail_list || [];
+			let ODHS = _.map(this.props.geozonePolys, (v, k) => ({label: v.name, value: k}) );
+			console.log(route);
 
 			return (
-				<div className="route-creating">
-					<div className="route-odhs-on-map">
-						<Map onFeatureClick={this.onFeatureClick.bind(this)}
-								 onDrawFeatureAdd={this.onDrawFeatureAdd.bind(this)}
-								 onDrawFeatureClick={this.onDrawFeatureClick.bind(this)}
-								 removeLastDrawFeature={this.removeLastDrawFeature.bind(this)}
-								 zoom={MAP_INITIAL_ZOOM}
-	            	 center={MAP_INITIAL_CENTER}
-								 object_list={route.object_list}
-								 odh_list={odh_list}
-	            	 polys={route.polys}
-								 manualDraw={this.props.manual}
-								 edit={!!route.id} />
-	          <div className="route-odhs-list">
-	          	<ODHList odh_list={odh_list} odh_fail_list={odh_fail_list} checkRoute={this.props.manual ? this.checkRoute.bind(this) : null}/>
-	          </div>
+				//<div className="route-creating">
+					//<div className="route-odhs-on-map">
+					<div>
+						<Row>
+							<Col md={9}>
+								<Div className="route-creating">
+									<Map onFeatureClick={this.onFeatureClick.bind(this)}
+											 onPointAdd={this.onPointAdd.bind(this)}
+											 onDrawFeatureAdd={this.onDrawFeatureAdd.bind(this)}
+											 onDrawFeatureClick={this.onDrawFeatureClick.bind(this)}
+											 removeLastDrawFeature={this.removeLastDrawFeature.bind(this)}
+											 zoom={MAP_INITIAL_ZOOM}
+				            	 center={MAP_INITIAL_CENTER}
+											 object_list={route.object_list}
+				            	 polys={route.polys}
+											 objectsType={route.type}
+											 manualDraw={this.props.manual}
+											 edit={!!route.id} />
+								</Div>
+							</Col>
+							<Col md={3}>
+								<Div hidden={this.props.manual} className="odh-container">
+								<Field type="select" label="Список выбранных ОДХ"
+											 multi={true}
+											 options={ODHS}
+											 value={route.object_list.map(o => o.object_id).join(',')}
+											 onChange={this.onODHSelectChange.bind(this)}/>
+								</Div>
+		          	<ODHList odh_list={odh_list} odh_fail_list={odh_fail_list} checkRoute={this.props.manual ? this.checkRoute.bind(this) : null}/>
+								<Div style={{marginTop: 20}} hidden={route.type !== 'points'}>
+									{route.object_list.map((o,i) => {
+										let label = `Пункт назначения №${i+1} ${o.name ? '( ' + o.name + ' )' : ''}`
+										return <Input type="text" key={i} label={label} value={o.name} onChange={this.onObjectNameChange.bind(this, i)} />
+									})}
+								</Div>
+							</Col>
+						</Row>
 					</div>
-				</div>
+	          //<div className="route-odhs-list">
+	          //</div>
+					//</div>
+				//</div>
 			);
 
 		}
@@ -154,4 +221,4 @@ RouteCreating.contextTypes = {
 	flux: React.PropTypes.object,
 };
 
-export default RouteCreating;
+export default connectToStores(RouteCreating, ['routes']);

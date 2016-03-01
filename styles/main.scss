@@ -2400,6 +2400,7 @@ div.none {
 }
 
 .route-creating {
+  min-height: 500px;
   .openlayers-container {
     height: 492px;
     margin-top: 11px;
@@ -2623,5 +2624,37 @@ div.none {
 @media (min-width: 1240px) {
   .modal-lg {
     width: 1240px !important;
+  }
+}
+
+
+.route-creating {
+  .openlayers-container {
+    position: relative;
+  }
+}
+
+.odh-container {
+  .Select--multi {
+    .Select-item {
+      display: inline-block;
+      max-width: 228px;
+      width: 228px;
+      .Select-item-icon {
+        display: inline-block;
+      }
+      .Select-item-label {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: inline-block;
+        width: 84%;
+      }
+    }
+    @media (max-width: 1240px) {
+      .Select-item {
+        max-width: 168px;
+      }
+    }
   }
 }

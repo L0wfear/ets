@@ -116,6 +116,7 @@ class FuelRatesDirectory extends Component {
 
 	componentDidMount() {
     const { flux } = this.context;
+		flux.getActions('objects').getModels();
     flux.getActions('fuel-rates').getFuelOperations().then( (operations) => {
       flux.getActions('fuel-rates').getFuelRates();
       // very bad

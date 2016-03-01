@@ -1,13 +1,12 @@
 import { Actions } from 'flummox';
 import { getODHs, getCustomers } from '../adapter.js';
 import _ from 'lodash';
-import { getTypes } from '../types.js';
 import { fetchModels } from '../models.js';
 import { getOkrugs } from '../okrugs.js';
 import { getOwners } from '../owners.js';
 import { isEmpty } from '../utils/functions.js';
 import { createValidDateTime } from '../utils/dates.js';
-import { FaxogrammService, WorkKindsService, TechnicalOperationService, FuelTypeService, CarService, CustomersService } from '../api/Services.js';
+import { FaxogrammService, WorkKindsService, TechnicalOperationService, FuelTypeService, CarService, CustomersService, TypesService } from '../api/Services.js';
 
 export default class ObjectsActions extends Actions {
 
@@ -38,7 +37,7 @@ export default class ObjectsActions extends Actions {
   }
 
   getTypes() {
-    return getTypes();
+    return TypesService.get();
   }
 
   getFuelTypes() {

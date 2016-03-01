@@ -6,7 +6,7 @@ import 'ol3-popup/src/ol3-popup.js';
 import { getGeoObjectsByCoords } from '../../adapter.js';
 import '../../vendor/onTabUnfocus.js';
 import { polyState, polyStyles } from '../../constants/polygons.js';
-import { vectorStyles, vectorState, getVectorArrowStyle, getVectorLayer, getVectorSource } from '../../constants/vectors.js';
+import { vectorStyles, vectorState, getVectorArrowStyle } from '../../constants/vectors.js';
 
 window.addEventListener('blur', (ev) => {
   //let store = flux.getStore('points')
@@ -36,7 +36,7 @@ export default class OpenLayersMap extends Component {
     this.markers = {};
     this._handlers = null; // map event handlers
 
-    let initialView = new ol.View({
+    this.initialView = new ol.View({
       center: this.props.center,
       zoom: this.props.zoom,
       minZoom: 2,
@@ -46,54 +46,70 @@ export default class OpenLayersMap extends Component {
     })
 
     let renderFn = this.renderCanvas.bind(this);
-    let canvasLayer = this.canvasLayer = new ol.layer.Image({
-      source: new ol.source.ImageCanvas({
-        canvasFunction: function draw(extent, res, pixelRatio, size, proj) {
-          if (!this.canvas) {
-            self.canvas = this.canvas = document.createElement('canvas');
-            self.context = this.canvas.getContext('2d');
-          }
+    // let canvasLayer = this.canvasLayer = new ol.layer.Image({
+    //   source: new ol.source.ImageCanvas({
+    //     canvasFunction: function draw(extent, res, pixelRatio, size, proj) {
+    //       if (!this.canvas) {
+    //         self.canvas = this.canvas = document.createElement('canvas');
+    //         self.context = this.canvas.getContext('2d');
+    //       }
+    //
+    //       this.canvas.setAttribute('width', size[0]);
+    //       this.canvas.setAttribute('height', size[1]);
+    //
+    //       return renderFn(this.canvas, extent, pixelRatio);
+    //     },
+    //     ratio: 1
+    //   })
+    // });
 
-          this.canvas.setAttribute('width', size[0]);
-          this.canvas.setAttribute('height', size[1]);
-
-          return renderFn(this.canvas, extent, pixelRatio);
-        },
-        ratio: 1
-      })
-    });
-
-    console.log(this.constructor.name)
-
-
-    let controls = [];
-    controls.push(new ol.control.Zoom({
+    this.controls = [];
+    this.controls.push(new ol.control.Zoom({
       duration: 200,
       className: 'ol-zoom',
       delta: 1
     }));
 
-    let layers = [ArcGisLayer, canvasLayer];
-    if (this.props.manualDraw) {
-      this.vectorSource = getVectorSource();
-      this.vectorLayer = getVectorLayer(this.vectorSource)
-      layers.push(this.vectorLayer);
-    }
-    let map = new ol.Map({
-      view: initialView,
-      //interactions: [this.interactions],
+    this.layers = [ArcGisLayer/*, canvasLayer*/];
+    // if (this.props.manualDraw) {
+    //   this.vectorLayer = new ol.layer.Vector({
+    //     source: new ol.source.Vector({wrapX: false}),
+    //     style: new ol.style.Style({
+    //       fill: new ol.style.Fill({
+    //         color: 'rgba(255, 255, 255, 0.2)'
+    //       }),
+    //       stroke: new ol.style.Stroke({
+    //         color: '#ffcc33',
+    //         width: 2
+    //       }),
+    //       image: new ol.style.Circle({
+    //         radius: 7,
+    //         fill: new ol.style.Fill({
+    //           color: '#ffcc33'
+    //         })
+    //       })
+    //     }),
+    //     // updateWhileAnimating: false,
+    //     // updateWhileInteracting: false
+    //   });
+    //   //this.layers.push(this.vectorLayer);
+    // }
+
+    this.map = new ol.Map({
+      view: this.initialView,
+      interactions: new ol.interaction.defaults({doubleClickZoom :false}),
       renderer: ['canvas','dom'],
-      controls: controls,
-      layers
+      controls: this.controls,
+      layers: this.layers
     });
 
-    this.map = global.olmap = map;
+    global.olmap = this.map;
 
-    map.getView().setZoom(6);
-    map.getView().setCenter([-5441.16131979791, 10146.687775846918])
+    this.map.getView().setZoom(6);
+    this.map.getView().setCenter([-5441.16131979791, 10146.687775846918])
+
 
     this.init();
-
   }
 
   init() {
@@ -101,6 +117,7 @@ export default class OpenLayersMap extends Component {
   }
 
   renderPolygons(polys = {}) {
+    console.log(polys);
     let map = this.map;
 
     let GeoJSON = new ol.format.GeoJSON();
@@ -116,8 +133,10 @@ export default class OpenLayersMap extends Component {
       });
       if (poly.shape && poly.shape.type === 'LineString') {
         feature.setStyle(getVectorArrowStyle(feature));
-      } else {
+      } else if (poly.shape.type !== 'Point') {
         feature.setStyle(polyStyles[poly.state]);
+      } else {
+        styleFunction = null;
       }
 
       vectorSource.addFeature(feature);
@@ -125,10 +144,13 @@ export default class OpenLayersMap extends Component {
 
     !!POLYS_LAYER && map.removeLayer(POLYS_LAYER);
 
-    let polysLayer = new ol.layer.Vector({
-        source: vectorSource,
-        style: styleFunction
-    });
+    let polysLayerObject = {
+      source: vectorSource,
+    };
+    if (styleFunction) {
+      polysLayerObject.style = styleFunction;
+    }
+    let polysLayer = new ol.layer.Vector(polysLayerObject);
 
     POLYS_LAYER = polysLayer;
 
@@ -145,11 +167,11 @@ export default class OpenLayersMap extends Component {
   componentDidMount() {
 
     let map = this.map;
-    let triggerRenderFn = this.triggerRender.bind(this);
+    //let triggerRenderFn = this.triggerRender.bind(this);
     let container = this.refs.container;
 
     map.setTarget(container);
-    map.on('postcompose', triggerRenderFn);
+    //map.on('postcompose', triggerRenderFn);
 
     this.popup = new ol.Overlay.Popup();
     map.addOverlay(this.popup);
@@ -159,9 +181,9 @@ export default class OpenLayersMap extends Component {
     this.renderPolygons(this.props.polys);
   }
 
-  triggerRender() {
-    this.canvasLayer.getSource().changed()
-  }
+  // triggerRender() {
+  //   this.canvasLayer.getSource().changed()
+  // }
 
   onMouseMove(ev) {
     let coordinate = ev.coordinate;

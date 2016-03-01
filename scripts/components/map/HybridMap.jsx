@@ -30,11 +30,9 @@ export default class HybridMap extends Map {
       let point = updatedPoints[key];
 
       if (point.timestamp === 1420074000000) {
-        //console.warn('continue');
         continue;
       }
 
-      //console.error(point.car.gov_number, this.props.car_gov_number);
       if (!point.car) continue;
       if (point.car.gov_number !== this.props.car_gov_number) continue;
 

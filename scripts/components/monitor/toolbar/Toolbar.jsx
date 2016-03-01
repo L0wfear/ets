@@ -4,9 +4,6 @@ import Filter from './Filter.jsx';
 import { FluxContext } from '../../decorators/index.js';
 
 import statuses from '../../../statuses.js';
-import types from '../../../types.js';
-import owners from '../../../owners.js';
-import okrugs from '../../../okrugs.js';
 import FluxComponent from 'flummox/component';
 import ToolbarSearch from './ToolbarSearch.jsx';
 import ToolbarFilters from './ToolbarFilters.jsx';

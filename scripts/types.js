@@ -1,6 +1,4 @@
-import config from './config.js';
-
-const TYPES_URL = config.backend ? config.backend + '/types' : '/types';
+import {TypesService} from './api/Services.js';
 
 const list = [];
 const index = {};
@@ -35,15 +33,25 @@ export function getTypeById(id) {
 }
 
 export function loadTypes(types) {
-  return fetch(TYPES_URL, {credentials: 'include'})
-    .then(r => r.json())
+  return TypesService.get()
+    .then(r => {
+      if (typeof r.json === 'function') {
+        return r.json();
+      }
+      return r;
+     })
     .then(normalizeArray)
     .then(replaceList)
     .then(makeIndex);
 }
 
 export function getTypes() {
-  return fetch(TYPES_URL, {credentials: 'include'})
-    .then(r => r.json())
+  return TypesService.get()
+    .then(r => {
+      if (typeof r.json === 'function') {
+        return r.json();
+      }
+      return r;
+     })
     .then(normalizeArray);
 }

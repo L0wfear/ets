@@ -5,7 +5,9 @@ import { wrapCoords, swapCoords } from './utils/geo.js';
 
 import { loadTypes } from './types.js';
 
-export const getUrl = (url) => config.backend ? config.backend + url : url;
+export function getUrl(url) {
+  return config.backend ? config.backend + url : url
+}
 let getOldUrl = (url) => config.backendOld ? config.backendOld + url : url;
 
 let toFormData = (data) => {
@@ -62,7 +64,15 @@ export function getJSON(url, data = {}) {
   }
   url = toUrlWithParams(url, data);
 
-  return fetch(url, {credentials: 'include'}).then( r => {
+  const options = {
+    method: 'get',
+    headers: {
+      'Accept': 'application/json',
+    },
+    credentials: 'include',
+  };
+
+  return fetch(url, options).then( r => {
     return r.json().then(body => {
       checkResponse(url, r, body, 'GET');
       return new Promise((res, rej) => res(body));
@@ -70,7 +80,7 @@ export function getJSON(url, data = {}) {
   });
 }
 
-export function postJSON(url, data, type = 'form') {
+export function postJSON(url, data = {}, type = 'form') {
   data = _.clone(data);
   const { flux } = window.__ETS_CONTAINER__;
   const token = flux.getStore('session').getSession();
@@ -81,8 +91,8 @@ export function postJSON(url, data, type = 'form') {
   type = 'form';
   switch (type) {
     case 'form':
-      url += '?token=' + token;
-      delete data.token;
+      // url += '?token=' + token;
+      // delete data.token;
       body = toFormData(data);
       break;
     case 'form_with_token':

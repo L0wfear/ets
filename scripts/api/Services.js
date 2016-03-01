@@ -1,30 +1,32 @@
 import APIService from './APIService.js';
 import * as urls from '../urls.js';
 
-export const RouteService   = new APIService('/route/');
-export const RouteValidateService = new APIService('/route_validate/');
-export const RouteReportsService = new APIService('/route_odh_covering_report/');
-export const WaybillService = new APIService('/waybill/');
-export const GeozoneService = new APIService('/geozone/');
-export const DashboardService = new APIService('/dashboard/');
-export const FaxogrammService = new APIService('/faxogramm/');
-export const ModelsService = new APIService('/models/');
-export const TypesService = new APIService('/types/');
-export const EmployeeService = new APIService('/employee/');
-export const FuelTypeService = new APIService('/fuel_type/');
-export const FuelConsumptionRateService = new APIService('/fuel_consumption_rates/');
-export const FuelOperationsService = new APIService('/fuel_operations/');
-export const MissionService = new APIService('/mission/');
-export const MissionTemplateService = new APIService('/mission_template/');
-export const MissionSourceService = new APIService('/mission_source/');
-export const ODHService = new APIService('/odh/');
-export const WorkKindsService = new APIService('/work_kind/');
-export const TechnicalOperationService = new APIService('/technical_operation/');
-export const CarService = new APIService('/car_actual/');
-export const CarInfoService = new APIService('/car_additional_info/');
-export const CustomersService = new APIService('/customers/');
-export const MissionTemplatesForFaxogramm = new APIService('/get_mission_templates_for_faxogramm/');
-export const MissionLastReportService = new APIService('/mission_last_report/');
+let useMocks = false;
+
+export const RouteService   = new APIService('/route/', useMocks);
+export const RouteValidateService = new APIService('/route_validate/', useMocks);
+export const RouteReportsService = new APIService('/route_odh_covering_report/', useMocks);
+export const WaybillService = new APIService('/waybill/', useMocks);
+export const GeozoneService = new APIService('/geozone/', useMocks);
+export const DashboardService = new APIService('/dashboard/', useMocks);
+export const FaxogrammService = new APIService('/faxogramm/', useMocks);
+export const ModelsService = new APIService('/models/', useMocks);
+export const TypesService = new APIService('/types/', useMocks);
+export const EmployeeService = new APIService('/employee/', useMocks);
+export const FuelTypeService = new APIService('/fuel_type/', useMocks);
+export const FuelConsumptionRateService = new APIService('/fuel_consumption_rates/', useMocks);
+export const FuelOperationsService = new APIService('/fuel_operations/', useMocks);
+export const MissionService = new APIService('/mission/', useMocks);
+export const MissionTemplateService = new APIService('/mission_template/', useMocks);
+export const MissionSourceService = new APIService('/mission_source/', useMocks);
+export const ODHService = new APIService('/odh/', useMocks);
+export const WorkKindsService = new APIService('/work_kind/', useMocks);
+export const TechnicalOperationService = new APIService('/technical_operation/', useMocks);
+export const CarService = new APIService('/car_actual/', useMocks);
+export const CarInfoService = new APIService('/car_additional_info/', useMocks);
+export const CustomersService = new APIService('/customers/', useMocks);
+export const MissionTemplatesForFaxogramm = new APIService('/get_mission_templates_for_faxogramm/', useMocks);
+export const MissionLastReportService = new APIService('/mission_last_report/', useMocks);
 
 // REPORTS
 

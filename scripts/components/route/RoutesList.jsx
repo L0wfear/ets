@@ -76,14 +76,15 @@ class RoutesList extends Component {
 	componentDidMount() {
 		const { flux } = this.context;
 		flux.getActions('routes').getRoutes();
-		flux.getActions('routes').getGeozones();
 		flux.getActions('objects').getTechOperations();
+		flux.getActions('routes').getGeozones();
 	}
 
 	render() {
 		let { routesList = [] } = this.props;
 		let route = this.state.selectedRoute;
 		let state = this.state;
+		console.log(this.props);
 
 		let routes = routesList.map((r, i) => {
 			let cn = cx('list-group-item', {'active': route && r.id === route.id});

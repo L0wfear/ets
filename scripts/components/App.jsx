@@ -134,4 +134,4 @@ const routes = (
   </Router>
 );
 
-render(routes, document.getElementById('content'))
+render(routes, document.getElementById('content'));

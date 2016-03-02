@@ -52,6 +52,7 @@ class MissionFormWrap extends FormWrap {
 
 	handleFormSubmit(formState) {
 		const { flux } = this.context;
+    
     if (this.props.formType === "ViewForm") {
       if (isEmpty(formState.id)) {
         flux.getActions('missions').createMissionTemplate(formState);

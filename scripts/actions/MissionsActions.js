@@ -31,6 +31,12 @@ export default class MissionsActions extends Actions {
     return MissionService.get(payload);
   }
 
+  getMissionById(id) {
+    const payload = { id };
+
+    return MissionService.get(payload);
+  }
+
   getMissionSources() {
     return MissionSourceService.get();
   }

@@ -2301,7 +2301,7 @@ div.none {
   font-size: 20px;
   color: #777;
   padding-top: 150px;
-  z-index: 9997;
+  z-index: 99999;
 }
 
 .width120 {
@@ -2671,4 +2671,13 @@ div.none {
       margin-bottom: 2px;
     }
   }
+}
+
+.dashboard-card-action-button {
+  margin-top: 10px;
+  margin-left: -16px;
+}
+
+.text-right {
+  text-align: right;
 }

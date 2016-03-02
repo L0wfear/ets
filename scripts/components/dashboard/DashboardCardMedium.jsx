@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Div from '../ui/Div.jsx';
-import { Panel, Collapse, Glyphicon, Fade, Well } from 'react-bootstrap';
+import { Panel, Collapse, Glyphicon, Fade, Well, Button } from 'react-bootstrap';
 import { FluxContext } from '../decorators/index.js';
 import DashboardCardHeader from './DashboardCardHeader.jsx';
 import DashboardItemChevron from './DashboardItemChevron.jsx';
@@ -48,6 +48,16 @@ export default class DashboardCardMedium extends React.Component {
   refreshCard() {
     this.props.refreshCard();
   }
+
+  async completeMission(id) {
+		let mission = await this.context.flux.getActions('missions').getMissionById(id);
+        mission = mission.result[0];
+    console.log(mission);
+		mission.status = 'complete';
+		await this.context.flux.getActions('missions').updateMission(mission);
+    this.selectItem(null);
+    this.props.refreshCard();
+	}
 
   render() {
     let selectedItemIndex = this.state.selectedItem;
@@ -131,6 +141,9 @@ export default class DashboardCardMedium extends React.Component {
                     <li><b>Окончание задания:</b> {getFormattedDateTimeSeconds(data.mission_date_end)}</li>
                     <li><b>Пройдено:</b> {getDataTraveledYet(data.traveled_yet)}</li>
                     <li><a className="pointer" onClick={(e) => {e.preventDefault(); action();}}>Подробнее...</a></li>
+                    <Div className="text-right">
+                      <Button className="dashboard-card-action-button" onClick={this.completeMission.bind(this, data.mission_id)}>Завершить</Button>
+                    </Div>
                   </ul>
                 </Div>
               </Well>

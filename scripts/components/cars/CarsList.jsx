@@ -116,8 +116,11 @@ class CarsList extends Component {
 		this.setState({showForm: false, selectedCar: null});
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		const { flux } = this.context;
+
+		await flux.getActions('objects').getTypes();
+		await flux.getActions('objects').getModels();
 		flux.getActions('objects').getCars();
 		flux.getActions('objects').getOwners();
 	}

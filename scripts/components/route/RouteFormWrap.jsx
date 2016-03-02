@@ -1,13 +1,26 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import connectToStores from 'flummox/connect';
 import _ from 'lodash';
 import RouteForm from './RouteForm.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';
 
-export default class RouteFormWrap extends FormWrap {
+class RouteFormWrap extends FormWrap {
 
 	constructor(props) {
 		super(props);
+	}
+
+	componentWillReceiveProps(props) {
+		if (props.showForm) {
+			if (props.element !== null ) {
+        const formState = _.cloneDeep(props.element);
+				formState.polys = formState.type === 'simple_dt' ? props.dtPolys : props.odhPolys;
+        this.setState({formState});
+			} else {
+        this.setState({formState: {}});
+      }
+		}
 	}
 
 	resetFormState() {
@@ -15,6 +28,7 @@ export default class RouteFormWrap extends FormWrap {
 			if (this.props.element !== null ) {
         const formState = _.cloneDeep(this.props.element);
 				formState.type = this.state.formState.type;
+				formState.polys = formState.type === 'simple_dt' ? this.props.dtPolys : this.props.odhPolys;
         this.setState({formState});
 			} else {
         this.setState({formState: {}});
@@ -49,3 +63,5 @@ export default class RouteFormWrap extends FormWrap {
 	}
 
 }
+
+export default connectToStores(RouteFormWrap, ['routes']);

@@ -36,7 +36,7 @@ class RoutesList extends Component {
 
 		let newR = {
 			name: '',
-			polys: this.props.geozonePolys,
+			polys: {}, // geozonePolys
 			object_list: [],
 			type: 'vector',
 		};
@@ -132,7 +132,7 @@ class RoutesList extends Component {
 														 showForm={this.state.showForm} />
 					</Col>
 				</Row>
-				
+
 			</div>
 		)
 	}

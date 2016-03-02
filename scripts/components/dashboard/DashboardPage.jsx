@@ -17,8 +17,7 @@ let DashboardPageHeader = (props) => {
       <Col md={4}>
       </Col>
       <Col md={4}>
-        <Div className="dashboard-time" id="dashboard-time">
-        </Div>
+        <Div className="dashboard-time" id="dashboard-time"/>
       </Col>
       <Col md={4}>
         <Div className="dashboard-title">
@@ -135,7 +134,6 @@ class DashboardPage extends React.Component {
       if (c.key === 'current_missions') {
         c.items.map(item => {
           item.action = (data) => {
-            console.info(data);
             this.setState({showMissionInfoForm: true, itemOpenedKey: null, mission: data});
           }
         });

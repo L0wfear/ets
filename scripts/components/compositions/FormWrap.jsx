@@ -9,7 +9,7 @@ class FormWrap extends React.Component {
     super(props);
 
     this.state = {
-      formState: null,
+      formState: {},
       formErrors: {},
       canSave: false,
       canPrint: false

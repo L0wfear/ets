@@ -48,7 +48,6 @@ class DashboardStore extends Store {
     component.result.key = key;
     componentsSideIndex[key] = component.result;
     componentsSideList = _(componentsSideIndex).toArray().sortBy('id').value();
-    console.log(componentsSideList);
     let state = this.state;
     state[role].componentsSideList = componentsSideList;
     state[role].componentsSideIndex = componentsSideIndex;

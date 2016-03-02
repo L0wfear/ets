@@ -25,6 +25,8 @@ class RoutesStore extends Store {
       selectedReportData: [],
       geozonePolys: [],
       lastCreatedRouteId: null,
+      odhPolys: {},
+      dtPolys: {},
     };
 
   }
@@ -48,14 +50,30 @@ class RoutesStore extends Store {
   handleGetGeozones(data) {
     const geozones = data.result;
     let geozonePolys = {};
+    let odhPolys = {};
+    let dtPolys = {};
     geozones.map( g => {
+      if (g.geozone_type === 'ROAD') {
+        odhPolys[g.id] = {
+          shape: JSON.parse(g.shape),
+          name: g.name,
+          state: 1,
+        }
+      }
+      if (g.geozone_type === 'DT') {
+        dtPolys[g.id] = {
+          shape: JSON.parse(g.shape),
+          name: g.name,
+          state: 1,
+        }
+      }
       geozonePolys[g.id] = {
         shape: JSON.parse(g.shape),
         name: g.name,
         state: 1,
       }
     });
-    this.setState({geozonePolys});
+    this.setState({geozonePolys, dtPolys, odhPolys});
   }
 
   getRouteById(id) {

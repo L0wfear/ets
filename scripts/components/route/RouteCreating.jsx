@@ -31,14 +31,15 @@ class RouteCreating extends Component {
 
 			const { object_list } = this.props.route;
 			const objectIndex = _.findIndex(object_list, o => o.object_id == id);
+			let type = this.props.route.type === 'simple_dt' ? 'dt' : 'odh';
 
 			if (state === polyState.SELECTABLE) {
 				object_list.splice(objectIndex, 1);
 			} else {
 				if (objectIndex > -1) {
-					object_list[objectIndex] = {object_id: parseInt(id, 10), type: 'odh', name, state};
+					object_list[objectIndex] = {object_id: parseInt(id, 10), type, name, state};
 				} else {
-					object_list.push({object_id: parseInt(id, 10), type: 'odh', name, state});
+					object_list.push({object_id: parseInt(id, 10), type, name, state});
 				}
 			}
 
@@ -133,14 +134,13 @@ class RouteCreating extends Component {
 			this.props.onChange('object_list', object_list);
 		}
 
-		onODHSelectChange(v) {
+		onGeozoneSelectChange(type, v) {
 			let { object_list, polys } = this.props.route;
 			let { geozonePolys } = this.props;
 			let odhs = v.split(',');
 			if (odhs.length > object_list.length) {
-				console.log(_.last(odhs), geozonePolys);
 				let object_id = _.last(odhs);
-				object_list.push({object_id: parseInt(object_id, 10), type: 'odh', name: geozonePolys[object_id].name, state: polyState.ENABLED});
+				object_list.push({object_id: parseInt(object_id, 10), type, name: geozonePolys[object_id].name, state: polyState.ENABLED});
 				polys[object_id].state = polyState.ENABLED;
 			} else {
 				object_list = object_list.filter(o => {
@@ -172,12 +172,11 @@ class RouteCreating extends Component {
 			const Map = this.props.manual ? DrawMap : PolyMap;
 			let odh_list = route.odh_list || route.object_list.filter(o => o.type && o.type === 'odh');
 			let odh_fail_list = route.odh_fail_list || [];
-			let ODHS = _.map(this.props.geozonePolys, (v, k) => ({label: v.name, value: k}) );
+			let ODHS = _.map(this.props.odhPolys, (v, k) => ({label: v.name, value: k}) );
+			let DTS = _.map(this.props.dtPolys, (v, k) => ({label: v.name, value: k}) );
 			console.log(route);
 
 			return (
-				//<div className="route-creating">
-					//<div className="route-odhs-on-map">
 					<div>
 						<Row>
 							<Col md={9}>
@@ -197,12 +196,19 @@ class RouteCreating extends Component {
 								</Div>
 							</Col>
 							<Col md={3}>
-								<Div hidden={this.props.manual} className="odh-container">
-								<Field type="select" label="Список выбранных ОДХ"
-											 multi={true}
-											 options={ODHS}
-											 value={route.object_list.map(o => o.object_id).join(',')}
-											 onChange={this.onODHSelectChange.bind(this)}/>
+								<Div hidden={route.type !== 'simple'} className="odh-container">
+									<Field type="select" label="Список выбранных ОДХ"
+												 multi={true}
+												 options={ODHS}
+												 value={route.object_list.map(o => o.object_id).join(',')}
+												 onChange={this.onGeozoneSelectChange.bind(this, 'odh')}/>
+								</Div>
+								<Div hidden={route.type !== 'simple_dt'} className="odh-container">
+									<Field type="select" label="Список выбранных ДТ"
+												 multi={true}
+												 options={DTS}
+												 value={route.object_list.map(o => o.object_id).join(',')}
+												 onChange={this.onGeozoneSelectChange.bind(this, 'dt')}/>
 								</Div>
 		          	<ODHList odh_list={odh_list} odh_fail_list={odh_fail_list} checkRoute={this.props.manual ? this.checkRoute.bind(this) : null}/>
 								<Div className="destination-points" hidden={route.type !== 'points'}>
@@ -219,10 +225,6 @@ class RouteCreating extends Component {
 							</Col>
 						</Row>
 					</div>
-	          //<div className="route-odhs-list">
-	          //</div>
-					//</div>
-				//</div>
 			);
 
 		}

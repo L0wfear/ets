@@ -27,7 +27,7 @@ class RouteForm extends Form {
 
 		let state = this.props.formState;
 		let { techOperationsList = [] } = this.props;
-		let ROUTE_TYPE_OPTIONS = [{value: 'vector', label: 'Вручную'}, {value: 'simple', label: 'Выбор из ОДХ'}, {value: 'points', label: 'Выбор пунктов назначения'}];
+		let ROUTE_TYPE_OPTIONS = [{value: 'vector', label: 'Вручную'}, {value: 'simple', label: 'Выбор из ОДХ'}, {value: 'simple_dt', label: 'Выбор из ДТ'}, {value: 'points', label: 'Выбор пунктов назначения'}];
 
     const TECH_OPERATIONS = techOperationsList.map(({id, name}) => ({value: id, label: name}));
 
@@ -70,13 +70,11 @@ class RouteForm extends Form {
 
           <Row className={'routes-form-map-wrapper'}>
             <Col md={12}>
-							<Div hidden={state.type !== 'simple'}>
+							<Div hidden={state.type !== 'simple' && state.type !== 'simple_dt'}>
               	<RouteCreating route={state} onChange={this.handleChange.bind(this)}/>
 							</Div>
 							<Div hidden={state.type !== 'vector' && state.type !== 'points'}>
               	<RouteCreating route={state} manual={true} onChange={this.handleChange.bind(this)}/>
-							</Div>
-							<Div hidden={state.type !== 'multiselect'}>
 							</Div>
             </Col>
           </Row>

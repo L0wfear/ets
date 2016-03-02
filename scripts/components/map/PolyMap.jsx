@@ -117,7 +117,6 @@ export default class OpenLayersMap extends Component {
   }
 
   renderPolygons(polys = {}) {
-    console.log(polys);
     let map = this.map;
 
     let GeoJSON = new ol.format.GeoJSON();

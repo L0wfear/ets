@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import config from './config.js';
+import moment from 'moment';
 import { getStartOfToday, makeUnixTime } from './utils/dates.js';
 import { wrapCoords, swapCoords } from './utils/geo.js';
 import { RouteService } from './api/Services.js';
@@ -339,5 +340,6 @@ export function createRoute(route) {
 // DASHBOARD //
 
 export function getDashboardComponent(role, key, id) {
-  return getJSON(`${DASHBOARD_URL}${key}/`).then(component => ({role, component, key, id}));
+  let payload = key === 'faxogramms' ? {status: 2, date: moment().format('YYYY-MM-DDTHH:mm:ss')} : {};
+  return getJSON(`${DASHBOARD_URL}${key}/`, payload).then(component => ({role, component, key, id}));
 }

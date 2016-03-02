@@ -10,6 +10,7 @@ import DashboardCardMedium from './DashboardCardMedium.jsx';
 import DashboardCardSmall from './DashboardCardSmall.jsx';
 import DashboardMasterManagementCard from './DashboardMasterManagementCard.jsx';
 import MissionInfoFormWrap from './MissionInfoFormWrap.jsx';
+import FaxogrammMissionsFormWrap from '../directories/faxogramm/FaxogrammMissionsFormWrap.jsx';
 
 let DashboardPageHeader = (props) => {
   return (
@@ -48,6 +49,7 @@ class DashboardPage extends React.Component {
     this.context.flux.getActions('dashboard').getDashboardComponent(role, 'car_in_work_on_current_missions', 7);
     this.context.flux.getActions('dashboard').getDashboardComponent(role, 'count_offline_cars', 6);
     this.context.flux.getActions('dashboard').getDashboardComponent(role, 'count_traveled_routes_by_current_operations', 3);
+    this.context.flux.getActions('dashboard').getDashboardComponent(role, 'faxogramms', 9);
     if (role === 'master' || role === 'superuser') {
       this.context.flux.getActions('dashboard').getDashboardSideComponent(role, 'car_in_work', 8);
       this.context.flux.getActions('dashboard').getDashboardComponent(role, 'odh_not_covered_by_routes', 5);
@@ -138,6 +140,13 @@ class DashboardPage extends React.Component {
           }
         });
       }
+      if (c.key === 'faxogramms') {
+        c.items.map(item => {
+          item.action = (data) => {
+            this.setState({showFaxogrammForm: true, itemOpenedKey: null, faxogramm: data});
+          }
+        });
+      }
     });
 
     let lists = _(componentsList).groupBy((el, i) => Math.floor(i/3)).toArray().value();
@@ -161,6 +170,7 @@ class DashboardPage extends React.Component {
             return <Col key={j} md={4} className={cardClassname}>
               <DashboardCardMedium title={c.title}
                                    items={c.items}
+                                   dashboardKey={c.key}
                                    loading={this.state.loadingComponents.indexOf(c.key) > -1}
                                    refreshCard={this.refreshCard.bind(this, c.key, c.id)}
                                    openFullList={this.openFullList.bind(this, c.key)}
@@ -195,6 +205,10 @@ class DashboardPage extends React.Component {
 														 showForm={this.state.showMissionInfoForm}
                              element={this.state.mission}
 														 {...this.props}/>
+         <FaxogrammMissionsFormWrap onFormHide={() => this.setState({showFaxogrammForm: false})}
+  																	showForm={this.state.showFaxogrammForm}
+  																	element={this.state.faxogramm}
+  																	{...this.props}/>
 
 
       </Div>

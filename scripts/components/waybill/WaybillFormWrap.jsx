@@ -162,7 +162,7 @@ class WaybillFormWrap extends Component {
   }
 
 
-	handleFormSubmit(formState, callback) {
+	async handleFormSubmit(formState, callback) {
 		let billStatus = formState.status;
 		const { flux, setLoading } = this.context;
 
@@ -190,12 +190,22 @@ class WaybillFormWrap extends Component {
 				});
 				this.props.onFormHide();
 			} else {
-				flux.getActions('waybills').update(formState);
+				try {
+					await flux.getActions('waybills').update(formState);
+				} catch (e) {
+					return;
+				}
+				flux.getActions('waybills').get();
 				this.props.onFormHide();
 			}
 		} else if (billStatus === 'active') {
-			formState.status = 'closed';
-			flux.getActions('waybills').update(formState);
+			try {
+				formState.status = 'closed';
+				await flux.getActions('waybills').update(formState);
+			} catch (e) {
+				return;
+			}
+			flux.getActions('waybills').get();
 			this.props.onFormHide();
 		}
 

@@ -48,6 +48,7 @@ export default class APIService {
         r.warnings.map(w => {
           global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification(w));
         });
+        throw new Error('Request warnings is not empty!');
       }
       if (typeof callback === 'function') {
         return callback();
@@ -66,6 +67,7 @@ export default class APIService {
         r.warnings.map(w => {
           global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification(w));
         });
+        throw new Error('Request warnings is not empty!');
       }
       if (typeof callback === 'function') {
         return callback();

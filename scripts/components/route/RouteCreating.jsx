@@ -49,7 +49,7 @@ class RouteCreating extends Component {
 		onFeatureClick(feature, ev, map) {
 			let {id, name, state} = feature.getProperties();
 
-			const { polys } = this.props.route;
+			let polys = _.cloneDeep(this.props.route.polys);
 
 			if (state) {
 				let nextState;
@@ -170,11 +170,10 @@ class RouteCreating extends Component {
 		render() {
 			let route = this.props.route;
 			const Map = this.props.manual ? DrawMap : PolyMap;
-			let odh_list = route.odh_list || route.object_list.filter(o => o.type && o.type === 'odh');
+			let odh_list = route.odh_list || route.object_list.filter(o => o.type);
 			let odh_fail_list = route.odh_fail_list || [];
 			let ODHS = _.map(this.props.odhPolys, (v, k) => ({label: v.name, value: k}) );
 			let DTS = _.map(this.props.dtPolys, (v, k) => ({label: v.name, value: k}) );
-			console.log(route);
 
 			return (
 					<div>
@@ -215,8 +214,8 @@ class RouteCreating extends Component {
 									{route.object_list.map((o,i) => {
 										let label = `Пункт назначения №${i+1} ${o.name ? '( ' + o.name + ' )' : ''}`
 										return (
-											<Div className="destination-point">
-												<Input type="text" key={i} label={label} value={o.name} onChange={this.onObjectNameChange.bind(this, i)} />
+											<Div className="destination-point" key={i}>
+												<Input type="text" label={label} value={o.name} onChange={this.onObjectNameChange.bind(this, i)} />
 												<Button className="inline-block" onClick={this.removeObject.bind(this, i)}><Glyphicon glyph="remove"/></Button>
 											</Div>
 										)

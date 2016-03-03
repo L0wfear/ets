@@ -2,7 +2,7 @@ import MapServerConfig from './MapServerConfig.js';
 
 const INITIAL_EXTENT = MapServerConfig.initialExtent;
 const FULL_EXTENT = MapServerConfig.fullExtent;
-const TILES_URL = '//ods.mos.ru/ssd/ArcGIS/rest/services/egko_go/MapServer';
+const TILES_URL = '//ods.mos.ru/ssd/ArcGIS/rest/services/egko_go/MapServer/tile/';
 const TILE_SIZE = MapServerConfig.tileInfo.rows;
 const ORIGIN = MapServerConfig.tileInfo.origin;
 const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
@@ -51,7 +51,7 @@ for (let i = 0, till = MapServerConfig.tileInfo.lods.length; i < till; i++) {
               let z = tileCoord[0];
               let x = tileCoord[1];
               let y = - tileCoord[2] - 1;
-              return TILES_URL + '/tile/' + z + '/' + y + '/' + x
+              return TILES_URL + z + '/' + y + '/' + x
           },
           projection: PROJECTION,
           tileGrid: new ol.tilegrid.TileGrid({

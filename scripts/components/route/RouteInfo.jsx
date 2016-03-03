@@ -20,7 +20,6 @@ export default class RouteInfo extends Component {
 			let route = this.props.route;
 			const { object_list = [] } = route;
 			let manual = route.type === 'vector' ? true : false;
-			console.log(object_list);
 			const polys = object_list.map(({shape, name, state, coordinates}) => {
 				if (!shape) {
 					shape = {
@@ -36,7 +35,7 @@ export default class RouteInfo extends Component {
 			});
 			const Map = PolyMap;
 
-			let odh_list = route.odh_list || object_list.filter(o => o.type && o.type === 'odh');
+			let odh_list = route.odh_list || object_list.filter(o => o.type);
 
 			return (
 				<Div style={{marginTop: 18}}>

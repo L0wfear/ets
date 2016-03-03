@@ -15,7 +15,11 @@ class RouteFormWrap extends FormWrap {
 		if (props.showForm) {
 			if (props.element !== null ) {
         const formState = _.cloneDeep(props.element);
-				formState.polys = formState.type === 'simple_dt' ? props.dtPolys : props.odhPolys;
+				console.log(formState.polys);
+				formState.polys = formState.type === 'simple_dt' ? _.cloneDeep(props.dtPolys) : _.cloneDeep(props.odhPolys);
+				_.each(formState.object_list, o => {
+					formState.polys[o.object_id].state = o.state;
+				});
         this.setState({formState});
 			} else {
         this.setState({formState: {}});
@@ -27,8 +31,10 @@ class RouteFormWrap extends FormWrap {
 		if (this.props.showForm) {
 			if (this.props.element !== null ) {
         const formState = _.cloneDeep(this.props.element);
+				formState.name = this.state.formState.name;
+				formState.technical_operation_id = this.state.formState.technical_operation_id;
 				formState.type = this.state.formState.type;
-				formState.polys = formState.type === 'simple_dt' ? this.props.dtPolys : this.props.odhPolys;
+				formState.polys = formState.type === 'simple_dt' ? _.cloneDeep(this.props.dtPolys) : _.cloneDeep(this.props.odhPolys);
         this.setState({formState});
 			} else {
         this.setState({formState: {}});

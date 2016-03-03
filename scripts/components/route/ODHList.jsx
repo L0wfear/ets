@@ -23,11 +23,11 @@ const ODHList = (props) => {
 			<Div hidden={!!!props.checkRoute}>
 				<Button onClick={props.checkRoute} style={{marginTop: 11}}>Проверить маршрут</Button>
 			</Div>
-			<Div hidden={!!!props.odh_list || !!!props.odh_list.length}>
+			<Div hidden={!!!props.odh_list || !!!props.odh_list.length} className="odh-list">
 				<h4>Список ОДХ/ДТ</h4>
 				<ul>{ODHS}</ul>
 			</Div>
-			<Div hidden={!!!props.odh_fail_list || !!!props.odh_fail_list.length}>
+			<Div hidden={!!!props.odh_fail_list || !!!props.odh_fail_list.length} className="odh-list">
 				<h4>Список непокрытых ОДХ</h4>
 				<ul>{ODHS_FAIL}</ul>
 			</Div>

@@ -43,7 +43,7 @@ class RoutesList extends Component {
 
 		this.setState({
 			showForm: true,
-			selectedRoute: newR,
+			selectedRoute: _.cloneDeep(newR),
 		});
 
 	}
@@ -94,9 +94,23 @@ class RoutesList extends Component {
 		let { routesList = [] } = this.props;
 		let route = this.state.selectedRoute;
 		let state = this.state;
-		console.log(this.props);
 
-		let routes = routesList.map((r, i) => {
+		let vectorRoutes = routesList.filter(r => r.type === 'vector').map((r, i) => {
+			let cn = cx('list-group-item', {'active': route && r.id === route.id});
+			return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>
+		});
+
+		let simpleRoutes = routesList.filter(r => r.type === 'simple').map((r, i) => {
+			let cn = cx('list-group-item', {'active': route && r.id === route.id});
+			return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>
+		});
+
+		let simpleRoutes2 = routesList.filter(r => r.type === 'simple_dt').map((r, i) => {
+			let cn = cx('list-group-item', {'active': route && r.id === route.id});
+			return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>
+		});
+
+		let pointsRoutes = routesList.filter(r => r.type === 'points').map((r, i) => {
 			let cn = cx('list-group-item', {'active': route && r.id === route.id});
 			return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>
 		});
@@ -118,7 +132,16 @@ class RoutesList extends Component {
 							<div className="panel-heading">Выберите маршрут из списка для просмотра</div>
 							<div className="panel-body">
 								<ul className="list-group">
-									{routes}
+									{vectorRoutes}
+								</ul>
+								<ul className="list-group">
+									{simpleRoutes}
+								</ul>
+								<ul className="list-group">
+									{simpleRoutes2}
+								</ul>
+								<ul className="list-group">
+									{pointsRoutes}
 								</ul>
 							</div>
 						</div>

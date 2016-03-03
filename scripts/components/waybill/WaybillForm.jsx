@@ -198,8 +198,10 @@ class WaybillForm extends Form {
 										 value={state.responsible_person_id}
 										 onChange={this.handleChange.bind(this, 'responsible_person_id')}/>
 
-							<Field type="string" label="Ответственное лицо" readOnly={true} hidden={IS_CREATING || IS_POST_CREATING}
+							<Field type="string" label="Ответственное лицо" readOnly={true} hidden={IS_CREATING || IS_POST_CREATING || !state.responsible_person_id}
 										 value={getFIOById(employeesList, state.responsible_person_id, true)}/>
+              <Field type="string" label="Ответственное лицо" readOnly={true} hidden={IS_CREATING || IS_POST_CREATING || state.responsible_person_id}
+ 										 value={'Не указано'}/>
 						</Col>
 
 						<Div hidden={!(IS_CREATING || IS_POST_CREATING)}>

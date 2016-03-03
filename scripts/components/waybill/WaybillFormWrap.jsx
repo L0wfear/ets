@@ -81,8 +81,8 @@ class WaybillFormWrap extends Component {
 					this.setState({
 						formState: waybill,
 						canPrint: true,
-						canSave: true,
-						formErrors: {}
+						canSave: ! !!_.filter(validateWaybill(waybill, {})).length,
+						formErrors: validateWaybill(waybill, {})
 					});
 
 				} else if (props.element.status === 'closed') {

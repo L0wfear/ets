@@ -130,6 +130,10 @@ export default class DashboardCardMedium extends React.Component {
                   {subItems.map((item, i) => {
                     return <li key={i}>{item.title || item}</li>
                   })}
+                  <Div style={{marginTop: 20}} hidden={this.props.dashboardKey !== 'faxogramms'}>
+                    <h5>Доп. информация</h5>
+                    <p>{data.order_info}</p>
+                  </Div>
                   <Div hidden={this.props.dashboardKey !== 'faxogramms'} className="text-right">
                     <Button className="dashboard-card-action-button" onClick={(e) => {e.preventDefault(); action();}}>Сформировать задания</Button>
                   </Div>

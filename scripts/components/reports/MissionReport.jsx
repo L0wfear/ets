@@ -108,8 +108,13 @@ class MissionReport extends Component {
 
   onReportSelect({props}) {
     let index = props.data.index;
-		console.log(props.data)
-    this.context.history.pushState(null, '/mission-report/' + this.props.routeParams.id + '/odhs/' + index);
+		if (props.data.report_by_odh) {
+	    this.context.history.pushState(null, '/mission-report/' + this.props.routeParams.id + '/odhs/' + index);
+		} else if (props.data.report_by_dt) {
+	    this.context.history.pushState(null, '/mission-report/' + this.props.routeParams.id + '/dts/' + index);
+		} else if (props.data.report_by_point) {
+	    this.context.history.pushState(null, '/mission-report/' + this.props.routeParams.id + '/points/' + index);
+		}
   }
 
 	render() {

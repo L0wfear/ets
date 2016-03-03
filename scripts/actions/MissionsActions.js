@@ -136,8 +136,16 @@ export default class MissionsActions extends Actions {
     return MissionReportsService.create(payload);
   }
 
-  getMissionReportByODHs(data) {
-    return data;
+  getMissionReportByODHs(index) {
+    return index;
+  }
+
+  getMissionReportByPoints(index) {
+    return index;
+  }
+
+  getMissionReportByDTs(index) {
+    return index;
   }
 
   getMissionLastReport(mission_id) {

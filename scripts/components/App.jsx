@@ -20,6 +20,8 @@ import ODHReports from './reports/ODHReports.jsx';
 import MissionReports from './reports/MissionReports.jsx';
 import MissionReport from './reports/MissionReport.jsx';
 import MissionReportByODH from './reports/MissionReportByODH.jsx';
+import MissionReportByDT from './reports/MissionReportByDT.jsx';
+import MissionReportByPoints from './reports/MissionReportByPoints.jsx';
 import RouteLaunchReports from './reports/RouteLaunchReports.jsx';
 import FaxogrammDirectory from './directories/faxogramm/FaxogrammDirectory.jsx';
 import RouteReports from './reports/RouteReports.jsx';
@@ -123,6 +125,8 @@ const routes = (
       <Route path="mission-reports" component={MissionReports} onEnter={requireAuth}/>
       <Route path="mission-report/:id" component={MissionReport} onEnter={requireAuth}/>
       <Route path="mission-report/:id/odhs/:index" component={MissionReportByODH} onEnter={requireAuth}/>
+      <Route path="mission-report/:id/dts/:index" component={MissionReportByDT} onEnter={requireAuth}/>
+      <Route path="mission-report/:id/points/:index" component={MissionReportByPoints} onEnter={requireAuth}/>
       <Route path="drivers" component={DriversList} onEnter={requireAuth}/>
       <Route path="faxogramms" component={FaxogrammDirectory} onEnter={requireAuth}/>
       <Route path="fuel-rates" component={FuelRatesDirectory} onEnter={requireAuth}/>

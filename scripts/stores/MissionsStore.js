@@ -21,6 +21,8 @@ class MissionsStore extends Store {
     this.register(missionsActons.createMissionReport, this.handleGetMissionReports);
     this.register(missionsActons.getMissionReportById, this.handleGetMissionReportById);
     this.register(missionsActons.getMissionReportByODHs, this.handleGetMissionReportByODHs);
+    this.register(missionsActons.getMissionReportByPoints, this.handleGetMissionReportByPoints);
+    this.register(missionsActons.getMissionReportByDTs, this.handleGetMissionReportByDTs);
 
     this.state = {
       missionsList: [],
@@ -64,6 +66,16 @@ class MissionsStore extends Store {
   handleGetMissionReportByODHs(index) {
     const missionReport = this.state.selectedReportData;
     this.setState({selectedReportDataODHS: missionReport[index].report_by_odh});
+  }
+
+  handleGetMissionReportByPoints(index) {
+    const missionReport = this.state.selectedReportData;
+    this.setState({selectedReportDataPoints: missionReport[index].report_by_point});
+  }
+
+  handleGetMissionReportByDTs(index) {
+    const missionReport = this.state.selectedReportData;
+    this.setState({selectedReportDataDTS: missionReport[index].report_by_dt});
   }
 
 }

@@ -63,7 +63,7 @@ export class MissionInfoForm extends Form {
 				state,
 			}
 		});
-    if (!this.props.formState.car_gov_number) return <div/>
+    if (!this.props.formState.car_gov_number) return <div/>;
 
 		return (
 			<Modal {...this.props} bsSize="large" className="mission-info-modal">

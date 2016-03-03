@@ -5,8 +5,8 @@ import Table from '../ui/table/DataTable.jsx';
 let tableMeta = {
 	cols: [
     {
-      name: 'odh_name',
-      caption: 'ОДХ',
+      name: 'dt_name',
+      caption: 'ДТ',
       type: 'string',
       filter: {
         type: 'select',
@@ -55,7 +55,7 @@ let tableMeta = {
 	]
 }
 
-let MissionReportByODHTable = (props) => {
+let MissionReportByDTTable = (props) => {
 
 	const renderers = {
     left_percentage: ({data}) => <div>{ parseFloat(parseFloat(data) * 100).toFixed(2) + '%'}</div>,
@@ -72,7 +72,7 @@ let MissionReportByODHTable = (props) => {
 		renderers.left = (data) => <div>{`${parseFloat(data.data).toFixed(2)} (${parseFloat(parseFloat(data.rowData.left_percentage) * 100).toFixed(2) + '%'})`}</div>
 	}
 
-	return <Table title='Прохождение заданий по ОДХ'
+	return <Table title='Прохождение заданий по ДТ'
 								tableMeta={tableMeta}
 								results={props.data}
 								renderers={renderers}
@@ -80,7 +80,7 @@ let MissionReportByODHTable = (props) => {
 
 }
 
-class MissionReportByODH extends Component {
+class MissionReportByDT extends Component {
 
 	constructor(props) {
 		super(props);
@@ -88,9 +88,11 @@ class MissionReportByODH extends Component {
 		};
 	}
 
-	componentDidMount() {
-		if (!this.props.noFilter)
-		this.context.flux.getActions('missions').getMissionReportByDTs(this.props.routeParams.index);
+	async componentDidMount() {
+		if (!this.props.noFilter) {
+			await this.context.flux.getActions('missions').getMissionReportById(this.props.routeParams.id);
+			this.context.flux.getActions('missions').getMissionReportByDTs(this.props.routeParams.index);
+		}
 	}
 
 	render() {
@@ -98,15 +100,15 @@ class MissionReportByODH extends Component {
 
 		return (
 			<div className="ets-page-wrap">
-				<MissionReportByODHTable noFilter={noFilter}  data={this.props.selectedReportDataODHS || []} >
-				</MissionReportByODHTable>
+				<MissionReportByDTTable noFilter={noFilter}  data={this.props.selectedReportDataDTS || []} >
+				</MissionReportByDTTable>
 			</div>
 		);
 	}
 }
 
-MissionReportByODH.contextTypes = {
+MissionReportByDT.contextTypes = {
 	flux: React.PropTypes.object,
 };
 
-export default connectToStores(MissionReportByODH, ['missions']);
+export default connectToStores(MissionReportByDT, ['missions']);

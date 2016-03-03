@@ -28,9 +28,13 @@ export class MissionForm extends Form {
 	handleRouteIdChange(v) {
 		this.handleChange('route_id', v);
 		const { flux } = this.context;
-		flux.getActions('routes').getRouteById(v, true).then(r => {
-			this.setState({selectedRoute: r.result.length ? r.result[0] : null});
-		});
+		if (v) {
+			flux.getActions('routes').getRouteById(v, true).then(r => {
+				this.setState({selectedRoute: r.result.length ? r.result[0] : null});
+			});
+		} else {
+			this.setState({selectedRoute: null});
+		}
 	}
 
 	handleTechnicalOperationChange(v) {
@@ -60,6 +64,7 @@ export class MissionForm extends Form {
 			let newR = {
 				name: '',
 				polys: this.props.geozonePolys,
+				technical_operation_id: this.props.formState.technical_operation_id,
 				object_list: [],
 				type: 'vector',
 			};
@@ -122,7 +127,7 @@ export class MissionForm extends Form {
 					<Row>
 						<Col md={6}>
               <Field type="select" label="Технологическая операция" error={errors['technical_operation_id']}
-											disabled={IS_DISPLAY}
+											disabled={IS_DISPLAY || !!state.route_id}
                       options={TECH_OPERATIONS}
                       value={state.technical_operation_id}
                       onChange={this.handleTechnicalOperationChange.bind(this)}/>
@@ -163,16 +168,15 @@ export class MissionForm extends Form {
 	      	<Row>
             <Col md={6}>
               <Field type="select" label="Маршрут" error={errors['route_id']}
-										 disabled={IS_DISPLAY}
+										 disabled={IS_DISPLAY || !!!state.technical_operation_id}
                      options={ROUTES}
                      value={state.route_id}
-                     onChange={this.handleRouteIdChange.bind(this)}
-										 clearable={false}/>
+                     onChange={this.handleRouteIdChange.bind(this)}/>
 							<Div className="route-odhs-list" hidden={this.state.selectedRoute === null}>
 								{/*<ODHList showSelectable={true} odh_list={odh_list} />*/}
 							</Div>
 						  <Div hidden={state.route_id}>
-							  <Button onClick={this.createNewRoute.bind(this)}>Создать новый</Button>
+							  <Button onClick={this.createNewRoute.bind(this)} disabled={IS_DISPLAY || !state.technical_operation_id}>Создать новый</Button>
 						  </Div>
             </Col>
             <Col md={6}>
@@ -205,7 +209,8 @@ export class MissionForm extends Form {
 
 				<RouteFormWrap element={route}
 											 onFormHide={() => {this.setState({showRouteForm: false, selectedRoute: null})}}
-											 showForm={this.state.showRouteForm} />
+											 showForm={this.state.showRouteForm}
+											 fromMission={true}/>
 			</Modal>
 		)
 	}

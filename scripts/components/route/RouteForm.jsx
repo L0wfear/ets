@@ -52,7 +52,8 @@ class RouteForm extends Form {
 								<Field type="select" label="Технологическая операция"
 											 options={TECH_OPERATIONS}
 											 value={state.technical_operation_id}
-											 onChange={this.handleChange.bind(this, 'technical_operation_id')}/>
+											 onChange={this.handleChange.bind(this, 'technical_operation_id')}
+											 disabled={this.props.fromMission}/>
 	            </Col>
 						</Div>
 

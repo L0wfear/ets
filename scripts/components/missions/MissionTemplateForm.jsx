@@ -57,6 +57,7 @@ class MissionTemplateForm extends MissionForm {
 						<Col md={6}>
 							<Field type="select" label="Технологическая операция" error={errors['technical_operation_id']}
 											options={TECH_OPERATIONS}
+											disabled={!!state.route_id}
 											value={state.technical_operation_id}
 											onChange={this.handleTechnicalOperationChange.bind(this)}/>
 						</Col>
@@ -77,10 +78,11 @@ class MissionTemplateForm extends MissionForm {
               <Field type="select" label="Маршрут" error={errors['route_id']}
                      options={ROUTES}
                      value={state.route_id}
+										 disabled={!!!state.technical_operation_id}
                      onChange={this.handleRouteIdChange.bind(this)}
-										 clearable={false}/>
+										 clearable={true}/>
 							<Div hidden={state.route_id}>
-								<Button onClick={this.createNewRoute.bind(this)}>Создать новый</Button>
+								<Button onClick={this.createNewRoute.bind(this)} disabled={!state.technical_operation_id}>Создать новый</Button>
 							</Div>
 
 						  <Div className="route-odhs-list" hidden={this.state.selectedRoute === null}>
@@ -104,7 +106,8 @@ class MissionTemplateForm extends MissionForm {
 
 				<RouteFormWrap element={route}
 											 onFormHide={() => this.setState({showRouteForm: false, selectedRoute: null})}
-											 showForm={this.state.showRouteForm} />
+											 showForm={this.state.showRouteForm}
+											 fromMission={true}/>
 
 			</Modal>
 		)

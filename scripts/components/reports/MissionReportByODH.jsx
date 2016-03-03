@@ -13,7 +13,7 @@ let tableMeta = {
       },
     },
     {
-      name: 'route_check_length',
+      name: 'route_check_value',
       caption: 'Нужно пройти',
       type: 'string',
       filter: {
@@ -63,7 +63,7 @@ let MissionReportByODHTable = (props) => {
 			return <div>{ parseFloat(data).toFixed(2)}</div>
 		},
     traveled: ({data}) => <div>{ parseFloat(data).toFixed(2)}</div>,
-    route_check_length: ({data}) => <div>{ parseFloat(data).toFixed(2)}</div>,
+    route_check_value: ({data}) => <div>{ parseFloat(data).toFixed(2)}</div>,
 	};
 
 	if (props.noFilter) {

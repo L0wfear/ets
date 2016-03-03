@@ -26,6 +26,8 @@ function getStatusLabel(s) {
 			return 'Не назначено';
 		case 'complete':
 			return 'Выполнено';
+		case 'fail':
+			return 'Не выполнено';
 		default:
 			return s;
 	}
@@ -174,6 +176,16 @@ export class MissionsJournal extends ElementsList {
 		this.context.flux.getActions('missions').updateMission(mission);
 	}
 
+	rejectMission() {
+		let reason = prompt('Введите причину', '');
+		if (reason) {
+			let mission = _.cloneDeep(this.state.selectedElement);
+			mission.status = 'fail';
+			mission.fail_reason = reason;
+			this.context.flux.getActions('missions').updateMission(mission);
+		}
+	}
+
 	render() {
 		const { missionsList = [] } = this.props;
 
@@ -181,6 +193,7 @@ export class MissionsJournal extends ElementsList {
 			<div className="ets-page-wrap">
 				<MissionsTable data={missionsList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'}{...this.props}>
 					<Button bsSize="small" onClick={this.completeMission.bind(this)} disabled={this.state.selectedElement === null || this.state.selectedElement.status !== 'assigned'}><Glyphicon glyph="ok" /> Отметка о выполнении</Button>
+						<Button bsSize="small" onClick={this.rejectMission.bind(this)} disabled={this.state.selectedElement === null || this.state.selectedElement.status !== 'assigned'}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</Button>
 					<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Создать задание</Button>
 					<Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="search" /> Просмотреть задание</Button>
 					<Button bsSize="small" disabled={this.state.selectedElement === null || this.removeDisabled()} onClick={this.removeElement.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>

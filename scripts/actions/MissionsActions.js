@@ -96,6 +96,9 @@ export default class MissionsActions extends Actions {
       if (!isEmpty(missionsCreationTemplateCopy.passes_count)) {
         payload.passes_count = parseInt(missionsCreationTemplateCopy.passes_count, 10);
       }
+      if (!isEmpty(missionsCreationTemplateCopy.faxogramm_id)) {
+        payload.faxogramm_id = missionsCreationTemplateCopy.faxogramm_id;
+      }
       delete payload.company_id;
       delete payload.id;
       delete payload.number;

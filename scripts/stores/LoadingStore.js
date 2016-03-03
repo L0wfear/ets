@@ -56,6 +56,7 @@ export default class LoadingStore extends Store {
       missionsActons.getMissionReports,
       missionsActons.createMissionReport,
       missionsActons.getMissionReportById,
+      missionsActons.createMissions,
 
       routesActions.getRoutes,
       routesActions.createRoute,

@@ -75,6 +75,11 @@ class Table extends React.Component {
   initializeMetadata(tableMeta = { cols: [] }, renderers = {}) {
 
   	const metadata = _.reduce(tableMeta.cols, (cur, col, i) => {
+
+      if (col.display === false) {
+        return cur;
+      }
+
   		const metaObject = {
   			columnName: col.name,
   			displayName: col.caption,
@@ -178,7 +183,7 @@ class Table extends React.Component {
 
   render() {
     const { tableMeta, renderers, onRowSelected, selected, selectField, checked = {}, title = '', initialSort = 'id', initialSortAscending = true, multiSelection = false, noFilter } = this.props;
-    const tableCols = multiSelection ? ['isChecked', ...tableMeta.cols.map( c => c.name )] : tableMeta.cols.map( c => c.name );
+    let tableCols = multiSelection ? ['isChecked', ...tableMeta.cols.filter(c => c.display !== false).map( c => c.name )] : tableMeta.cols.filter(c => c.display !== false).map( c => c.name );
     const columnMetadata = this.initializeMetadata(tableMeta, renderers);
 		const rowMetadata = this.initializeRowMetadata();
     const data = _.cloneDeep(this.props.results);

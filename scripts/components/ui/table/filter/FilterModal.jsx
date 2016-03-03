@@ -41,7 +41,7 @@ const Filter = (props) => {
     const options = _(props.tableData)
                     .uniq((d) => d[props.col])
                     .map((d) => ({
-                      value: d[props.col],
+                      value: d[props.col] === true || d[props.col] === false ? +d[props.col] : d[props.col],
                       label: typeof columnMeta.filter.labelFunction === 'function' ? columnMeta.filter.labelFunction(d[props.col]) : d[props.col],
                     }))
                     .value();

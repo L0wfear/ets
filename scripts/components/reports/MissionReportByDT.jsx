@@ -88,11 +88,9 @@ class MissionReportByODH extends Component {
 		};
 	}
 
-	async componentDidMount() {
-		if (!this.props.noFilter) {
-			await this.context.flux.getActions('missions').getMissionReportById(this.props.routeParams.id);
-			this.context.flux.getActions('missions').getMissionReportByODHs(this.props.routeParams.index);
-		}
+	componentDidMount() {
+		if (!this.props.noFilter)
+		this.context.flux.getActions('missions').getMissionReportByDTs(this.props.routeParams.index);
 	}
 
 	render() {

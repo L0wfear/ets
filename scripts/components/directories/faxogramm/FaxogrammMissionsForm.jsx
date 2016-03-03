@@ -39,7 +39,7 @@ class FaxogrammMissionsForm extends Form {
 
 	      <Modal.Footer>
           <Div className="inline-block assignToWaybillCheck">
-            <label>Создать черновик п.л. / Добавить в существующий</label>
+            <label>Создать черновик ПЛ / Добавить в существующий</label>
             <Input type="checkbox" value={state.assign_to_waybill} onClick={this.handleChange.bind(this, 'assign_to_waybill', !!!state.assign_to_waybill)}/>
           </Div>
 	      	<Button disabled={!state.missionJournalState || !_.keys(state.missionJournalState.checkedMissions).length} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>

@@ -108,6 +108,7 @@ class MissionReport extends Component {
 
   onReportSelect({props}) {
     let index = props.data.index;
+		console.log(props.data)
     this.context.history.pushState(null, '/mission-report/' + this.props.routeParams.id + '/odhs/' + index);
   }
 

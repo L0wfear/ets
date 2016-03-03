@@ -59,6 +59,16 @@ let getTableMeta = (props) => {
 				}
 			},
 			{
+				name: 'all_missions_completed_or_failed',
+				caption: 'Статус заданий',
+				type: 'string',
+				filter: {
+					type: 'select',
+					labelFunction: (data) => data === true ? 'Все задания завершены' : 'Есть незавершенные задания'
+				},
+				//display: false,
+			},
+			{
 				name: 'number',
 				caption: 'Номер',
 				type: 'number',
@@ -133,6 +143,7 @@ let WaybillsTable = (props) => {
 			date_create: ({data}) => <DateFormatter date={data} />,
 			fact_departure_date: ({data}) => <DateFormatter date={data} time={true} />,
 			fact_arrival_date: ({data}) => <DateFormatter date={data} time={true} />,
+			all_missions_completed_or_failed: ({data}) => <div>{ data === true ? 'Все задания завершены' : 'Есть незавершенные задания'}</div>
 		};
 
 		return <Table title="Журнал путевых листов"

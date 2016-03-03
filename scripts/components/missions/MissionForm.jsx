@@ -190,7 +190,7 @@ export class MissionForm extends Form {
 
 	      <Modal.Footer>
           <Div className="inline-block assignToWaybillCheck" hidden={!!state.status}>
-            <label>Создать черновик п.л. / Добавить в существующий</label>
+            <label>Создать черновик ПЛ / Добавить в существующий</label>
             <Input type="checkbox" value={state.assign_to_waybill} onClick={this.handleChange.bind(this, 'assign_to_waybill', !!!state.assign_to_waybill)}/>
           </Div>
 					<Div className="inline-block" hidden={state.status === 'closed'}>

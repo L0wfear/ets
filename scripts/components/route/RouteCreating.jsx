@@ -209,7 +209,7 @@ class RouteCreating extends Component {
 												 value={route.object_list.map(o => o.object_id).join(',')}
 												 onChange={this.onGeozoneSelectChange.bind(this, 'dt')}/>
 								</Div>
-		          	<ODHList odh_list={odh_list} odh_fail_list={odh_fail_list} checkRoute={this.props.manual ? this.checkRoute.bind(this) : null}/>
+		          	<ODHList odh_list={odh_list} odh_fail_list={odh_fail_list} checkRoute={route.type === 'vector' ? this.checkRoute.bind(this) : null}/>
 								<Div className="destination-points" hidden={route.type !== 'points'}>
 									{route.object_list.map((o,i) => {
 										let label = `Пункт назначения №${i+1} ${o.name ? '( ' + o.name + ' )' : ''}`

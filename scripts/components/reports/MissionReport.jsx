@@ -16,6 +16,14 @@ let tableMeta = {
       },
     },
 		{
+      name: 'mission_name',
+      caption: 'Название',
+      type: 'string',
+      filter: {
+        type: 'select',
+      },
+    },
+		{
 			name: 'driver_name',
 			caption: 'Водитель',
 			type: 'string',
@@ -69,8 +77,8 @@ let tableMeta = {
 let MissionReportTable = (props) => {
 
 	const renderers = {
-    route_traveled_percentage: ({data}) => <div>{parseFloat(data) * 100 + '%'}</div>,
-    route_left_percentage: ({data}) => <div>{ parseFloat(data) * 100 + '%'}</div>,
+    route_traveled_percentage: ({data}) => <div>{ data ? parseFloat(data) * 100 + '%' : 'Нет данных'}</div>,
+    route_left_percentage: ({data}) => <div>{ data ? parseFloat(data) * 100 + '%' : 'Нет данных'}</div>,
 	};
 
 	return <Table title='Прохождение заданий'

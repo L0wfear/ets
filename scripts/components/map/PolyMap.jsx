@@ -132,7 +132,7 @@ export default class OpenLayersMap extends Component {
       });
       if (poly.shape && poly.shape.type === 'LineString') {
         feature.setStyle(getVectorArrowStyle(feature));
-      } else if (poly.shape.type !== 'Point') {
+      } else if (poly.shape && poly.shape.type !== 'Point') {
         feature.setStyle(polyStyles[poly.state]);
       } else {
         styleFunction = null;

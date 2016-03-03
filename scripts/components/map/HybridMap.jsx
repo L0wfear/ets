@@ -65,20 +65,26 @@ export default class HybridMap extends Map {
         id: key,
         state: poly.state,
       });
-      if (poly.shape.type === 'LineString') {
+      if (poly.shape && poly.shape.type === 'LineString') {
         feature.setStyle(getVectorArrowStyle(feature));
-      } else {
+      } else if (poly.shape && poly.shape.type !== 'Point') {
         feature.setStyle(polyStyles[poly.state]);
+      } else {
+        styleFunction = null;
       }
+
       vectorSource.addFeature(feature);
     });
 
     !!POLYS_LAYER && map.removeLayer(POLYS_LAYER);
 
-    let polysLayer = new ol.layer.Vector({
-        source: vectorSource,
-        style: styleFunction
-    });
+    let polysLayerObject = {
+      source: vectorSource,
+    };
+    if (styleFunction) {
+      polysLayerObject.style = styleFunction;
+    }
+    let polysLayer = new ol.layer.Vector(polysLayerObject);
 
     POLYS_LAYER = polysLayer;
 

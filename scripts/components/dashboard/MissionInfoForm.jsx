@@ -50,20 +50,19 @@ export class MissionInfoForm extends Form {
 
 		let state = this.props.formState;
     let { object_list = []} = this.state;
-    const polys = object_list.map(({shape, name, state, begin, end}) => {
-      if (!shape && begin) {
-        manual = true;
-        shape = {
-          type: "LineString",
-          coordinates: [[begin.x_msk, begin.y_msk], [end.x_msk, end.y_msk]]
-        };
-      }
-      return {
-        shape,//: JSON.parse(shape),
-        name,
-        state,
-      }
-    });
+		const polys = object_list.map(({shape, name, state, coordinates}) => {
+			if (!shape) {
+				shape = {
+					type: "Point",
+					coordinates
+				};
+			}
+			return {
+				shape,//: JSON.parse(shape),
+				name,
+				state,
+			}
+		});
     if (!this.props.formState.car_gov_number) return <div/>
 
 		return (

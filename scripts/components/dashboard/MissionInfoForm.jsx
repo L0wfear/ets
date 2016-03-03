@@ -95,7 +95,7 @@ export class MissionInfoForm extends Form {
 
             <Col md={6}>
               <MissionReportByODH noFilter={true} selectedReportDataODHS={this.state.missionReport} />
-              <Div hidden={this.state.missionReport.length > 0}>
+              <Div hidden={this.state.missionReport && this.state.missionReport.length > 0}>
                 <h5>Нет данных о прохождении задания</h5>
               </Div>
             </Col>

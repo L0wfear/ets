@@ -11,6 +11,8 @@ import Form from '../compositions/Form.jsx';
 import Map from '../map/HybridMap.jsx';
 import FluxComponent from 'flummox/component';
 import MissionReportByODH from '../reports/MissionReportByODH.jsx';
+import MissionReportByDT from '../reports/MissionReportByDT.jsx';
+import MissionReportByPoints from '../reports/MissionReportByPoints.jsx';
 
 const MAP_INITIAL_CENTER = [-6240.212982145856, 9358.852595460314];
 const MAP_INITIAL_ZOOM = 6;
@@ -22,7 +24,8 @@ export class MissionInfoForm extends Form {
 
 		this.state = {
       object_list: [],
-      missionReport: []
+      missionReport: [],
+			missionReportFull: {},
 		};
 	}
 
@@ -32,7 +35,17 @@ export class MissionInfoForm extends Form {
     this.context.flux.getActions('points').setSingleCarTrack(formState.car_gov_number);
     this.context.flux.getActions('points').setSingleCarTrackDates([formState.waybill_fact_departure_date, formState.waybill_fact_arrival_date]);
     this.context.flux.getActions('missions').getMissionLastReport(formState.mission_id).then(r => {
-      this.setState({missionReport: r.result ? r.result.report_by_odh : []});
+			if (r.result) {
+				let missionReport = [];
+				if (r.result.report_by_odh) {
+					missionReport = r.result.report_by_odh;
+				} else if (r.result.report_by_dt) {
+					missionReport = r.result.report_by_dt;
+				} else if (r.result.report_by_point) {
+					missionReport = r.result.report_by_point;
+				}
+	      this.setState({missionReport, missionReportFull: r.result});
+			}
     });
     this.context.flux.getActions('routes').getRouteById(formState.route_id, true).then(r => {
       this.setState({object_list: r.result && r.result[0] ? r.result[0].object_list : []});
@@ -65,6 +78,8 @@ export class MissionInfoForm extends Form {
 		});
     if (!this.props.formState.car_gov_number) return <div/>;
 
+		console.log(this.state.missionReport);
+
 		return (
 			<Modal {...this.props} bsSize="large" className="mission-info-modal">
 
@@ -94,7 +109,15 @@ export class MissionInfoForm extends Form {
             </Col>
 
             <Col md={6}>
-              <MissionReportByODH noFilter={true} selectedReportDataODHS={this.state.missionReport} />
+							<Div hidden={this.state.missionReportFull && !this.state.missionReportFull.report_by_odh}>
+              	<MissionReportByODH noFilter={true} selectedReportDataODHS={this.state.missionReport} />
+							</Div>
+							<Div hidden={this.state.missionReportFull && !this.state.missionReportFull.report_by_dt}>
+              	<MissionReportByDT noFilter={true} selectedReportDataDTS={this.state.missionReport} />
+							</Div>
+							<Div hidden={this.state.missionReportFull && !this.state.missionReportFull.report_by_point}>
+              	<MissionReportByPoints noFilter={true} selectedReportDataPoints={this.state.missionReport} />
+							</Div>
               <Div hidden={this.state.missionReport && this.state.missionReport.length > 0}>
                 <h5>Нет данных о прохождении задания</h5>
               </Div>

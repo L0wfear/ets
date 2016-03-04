@@ -72,6 +72,8 @@ class WaybillsActions extends BaseActions {
     payload.fact_departure_date = createValidDateTime(payload.plan_departure_date);
     payload.fact_arrival_date = createValidDateTime(payload.plan_arrival_date);
     delete payload.car_has_odometer;
+    delete payload.mission_list;
+    delete payload.all_missions_completed_or_failed;
     _.mapKeys(payload, (v, k) => isEmpty(v) ? delete payload[k] : void 0);
 
     return super.create(payload);

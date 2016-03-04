@@ -1,9 +1,10 @@
-import MapServerConfig from './MapServerConfig.js';
+//import MapServerConfig from './MapServerConfig.js';
+import MapServerConfig from './MapServerConfig2.js';
 
 const INITIAL_EXTENT = MapServerConfig.initialExtent;
 const FULL_EXTENT = MapServerConfig.fullExtent;
-const TILES_URL = '//ods.mos.ru/ssd/ArcGIS/rest/services/egko_go/MapServer/tile/';
-//const TILES_URL = '//apieatlas.mos.ru/arcgis/rest/services/Basemaps/egko_gc_graphics/MapServer/tile/';
+//const TILES_URL = '//ods.mos.ru/ssd/ArcGIS/rest/services/egko_go/MapServer/tile/';
+const TILES_URL = '//apieatlas.mos.ru/arcgis/rest/services/Basemaps/egko_gc_graphics/MapServer/tile/';
 const TILE_SIZE = MapServerConfig.tileInfo.rows;
 const ORIGIN = MapServerConfig.tileInfo.origin;
 const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
@@ -12,7 +13,7 @@ export function projectToPixel(coordinates) {
   let x, y;
 
   if (coordinates.length) {
-    [x, y] = coordinates
+    [x, y] = coordinates;
   } else {
     x = coordinates.x;
     y = coordinates.y
@@ -50,8 +51,8 @@ for (let i = 0, till = MapServerConfig.tileInfo.lods.length; i < till; i++) {
       source: new ol.source.TileImage({
           tileUrlFunction: function(tileCoord, pixelRatio, projection) {
               let z = tileCoord[0];
-              let x = tileCoord[1];
-              let y = - tileCoord[2] - 1;
+              let x = tileCoord[1]; // было без + 1
+              let y = - tileCoord[2] - 1; // было с -1
               return TILES_URL + z + '/' + y + '/' + x
           },
           projection: PROJECTION,
@@ -60,7 +61,7 @@ for (let i = 0, till = MapServerConfig.tileInfo.lods.length; i < till; i++) {
               resolutions: RESOLUTIONS,
               tileSize: TILE_SIZE
           }),
-          tilePixelRatio: 2,
+          //tilePixelRatio: 2,
       }),
       extent: EXTENT
 });

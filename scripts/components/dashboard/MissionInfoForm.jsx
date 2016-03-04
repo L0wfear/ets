@@ -26,6 +26,7 @@ export class MissionInfoForm extends Form {
       object_list: [],
       missionReport: [],
 			missionReportFull: {},
+			selectedObjects: [],
 		};
 	}
 
@@ -37,14 +38,16 @@ export class MissionInfoForm extends Form {
     this.context.flux.getActions('missions').getMissionLastReport(formState.mission_id).then(r => {
 			if (r.result) {
 				let missionReport = [];
+				let selectedObjects = [];
 				if (r.result.report_by_odh) {
 					missionReport = r.result.report_by_odh;
 				} else if (r.result.report_by_dt) {
 					missionReport = r.result.report_by_dt;
 				} else if (r.result.report_by_point) {
 					missionReport = r.result.report_by_point;
+					selectedObjects = r.result.report_by_point.filter(p => p.status === 'success');
 				}
-	      this.setState({missionReport, missionReportFull: r.result});
+	      this.setState({missionReport, missionReportFull: r.result, selectedObjects});
 			}
     });
     this.context.flux.getActions('routes').getRouteById(formState.route_id, true).then(r => {
@@ -78,8 +81,6 @@ export class MissionInfoForm extends Form {
 		});
     if (!this.props.formState.car_gov_number) return <div/>;
 
-		console.log(this.state.missionReport);
-
 		return (
 			<Modal {...this.props} bsSize="large" className="mission-info-modal">
 
@@ -103,6 +104,7 @@ export class MissionInfoForm extends Form {
                 <Map zoom={MAP_INITIAL_ZOOM}
                      center={MAP_INITIAL_CENTER}
                      polys={polys}
+										 selectedObjects={this.state.selectedObjects}
                      car_gov_number={this.props.formState.car_gov_number}/>
 
               </FluxComponent>

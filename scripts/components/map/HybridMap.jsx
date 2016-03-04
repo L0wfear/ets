@@ -8,7 +8,7 @@ import { swapCoords, roundCoordinates } from '../../utils/geo.js';
 import { TRACK_COLORS, TRACK_LINE_OPACITY, TRACK_LINE_WIDTH, TRACK_POINT_RADIUS, SHOW_ONLY_POINTS_WITH_SPEED_CHANGES } from '../../constants/track.js';
 
 
-import { polyState, polyStyles } from '../../constants/polygons.js';
+import { polyState, polyStyles, pointStyles, getPointStyle } from '../../constants/polygons.js';
 import { vectorStyles, vectorState, getVectorArrowStyle, getVectorLayer, getVectorSource } from '../../constants/vectors.js';
 
 
@@ -70,7 +70,21 @@ export default class HybridMap extends Map {
       } else if (poly.shape && poly.shape.type !== 'Point') {
         feature.setStyle(polyStyles[poly.state]);
       } else {
-        styleFunction = null;
+        if (this.props.selectedObjects) {
+          let succeed = false;
+          _.each(this.props.selectedObjects, o => {
+            if (o.coordinates.x_msk === poly.shape.coordinates[0] && o.coordinates.y_msk === poly.shape.coordinates[1]) {
+              succeed = true;
+            }
+          })
+          if (succeed) {
+            feature.setStyle(getPointStyle('success'));
+          } else {
+            feature.setStyle(getPointStyle('fail'));
+          }
+        } else {
+          styleFunction = null;
+        }
       }
 
       vectorSource.addFeature(feature);

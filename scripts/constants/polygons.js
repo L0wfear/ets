@@ -34,3 +34,43 @@ export const polyStyles = {
        })
     })
 };
+
+export const pointStyles = {
+  'success': new ol.style.Style({
+     //geometry: new ol.geom.Point([start, end]),
+     fill: new ol.style.Fill({
+          color: 'rgba(0,0,0,0.2)'
+     }),
+     stroke: new ol.style.Stroke({
+          color: 'green',
+          width: 2,
+     })
+  }),
+  'fail': new ol.style.Style({
+     //geometry: new ol.geom.LineString([start, end]),
+     fill: new ol.style.Fill({
+          color: 'rgba(0,0,0,0.2)'
+     }),
+     stroke: new ol.style.Stroke({
+          color: 'red',
+          width: 2,
+     })
+  })
+}
+
+export function getPointStyle(status) {
+  let color = status === 'success' ? 'green' : 'red';
+
+  return new ol.style.Style({
+      image: new ol.style.Circle({
+         fill: new ol.style.Fill({
+              color,
+         }),
+         stroke: new ol.style.Stroke({
+              color,
+              width: 2,
+         }),
+        radius: 5
+      }),
+  })
+}

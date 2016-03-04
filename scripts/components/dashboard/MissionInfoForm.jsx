@@ -30,12 +30,12 @@ export class MissionInfoForm extends Form {
 		};
 	}
 
-  componentDidMount() {
+  async componentDidMount() {
     let { formState } = this.props;
     this.context.flux.getActions('points').createConnection();
     this.context.flux.getActions('points').setSingleCarTrack(formState.car_gov_number);
     this.context.flux.getActions('points').setSingleCarTrackDates([formState.waybill_fact_departure_date, formState.waybill_fact_arrival_date]);
-    this.context.flux.getActions('missions').getMissionLastReport(formState.mission_id).then(r => {
+    await this.context.flux.getActions('missions').getMissionLastReport(formState.mission_id).then(r => {
 			if (r.result) {
 				let missionReport = [];
 				let selectedObjects = [];

@@ -23,6 +23,51 @@ export default {
         "resolution": 305.74811314055756,
         "scale": 1155581.108577
       },
+      {
+        "level": 2,
+        "resolution": 152.87405657041106,
+        "scale": 577790.554289
+      },
+      {
+        "level": 3,
+        "resolution": 76.43702828507324,
+        "scale": 288895.277144
+      },
+      {
+        "level": 4,
+        "resolution": 38.21851414253662,
+        "scale": 144447.638572
+      },
+      {
+        "level": 5,
+        "resolution":  19.10925707126831,
+        "scale":  72223.819286
+      },
+      {
+        "level": 6,
+        "resolution": 9.554628535634155,
+        "scale": 36111.909643
+      },
+      {
+        "level": 7,
+        "resolution": 4.77731426794937,
+        "scale": 18055.954822
+      },
+      {
+        "level": 8,
+        "resolution": 2.388657133974685,
+        "scale": 9027.977411
+      },
+      {
+        "level": 9,
+        "resolution": 1.1943285668550503,
+        "scale": 4513.988705
+      },
+      {
+        "level": 10,
+        "resolution":  0.5971642835598172,
+        "scale": 2256.994353
+      },
     ]
   },
   "initialExtent": {

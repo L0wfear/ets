@@ -50,6 +50,7 @@ class WaybillsActions extends BaseActions {
     delete payload.car_has_odometer;
     delete payload.could_be_closed;
     delete payload.mission_list;
+    delete payload.all_missions_completed_or_failed;
 
     _.mapKeys(payload, (v, k) => isEmpty(v) ? delete payload[k] : void 0);
 

@@ -1,10 +1,12 @@
-import MapServerConfig from './MapServerConfig.js';
+//import MapServerConfig from './MapServerConfig.js';
 //import MapServerConfig from './MapServerConfig2.js';
+import MapServerConfig from './MapServerConfig3.js';
 
 const INITIAL_EXTENT = MapServerConfig.initialExtent;
 const FULL_EXTENT = MapServerConfig.fullExtent;
-const TILES_URL = '//ods.mos.ru/ssd/ArcGIS/rest/services/egko_go/MapServer/tile/';
+//const TILES_URL = '//ods.mos.ru/ssd/ArcGIS/rest/services/egko_go/MapServer/tile/';
 //const TILES_URL = '//apieatlas.mos.ru/arcgis/rest/services/Basemaps/egko_gc_graphics/MapServer/tile/';
+const TILES_URL = '//moslight.mos.ru/ArcGIS/rest/services/egko_belle/MapServer/tile/';
 const TILE_SIZE = MapServerConfig.tileInfo.rows;
 const ORIGIN = MapServerConfig.tileInfo.origin;
 const DEVICE_PIXEL_RATIO = window.devicePixelRatio;

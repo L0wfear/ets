@@ -35,10 +35,11 @@ export default React.createClass({
 
 		return (<Navbar justified fluid>
 						 <Navbar.Header>
-					      <Navbar.Brand>
+                             <Navbar.Brand>
 							    <Link to="/">ЕТС</Link>
-					      </Navbar.Brand>
+                             </Navbar.Brand>
 					    </Navbar.Header>
+            {/*<div className="navbar-collapse collapse">*/}
 				      <Nav>
                 <NavItem active={path === '/monitor'} href="#/monitor">Монитор</NavItem>
 				        <NavItem active={path === '/dashboard'} href="#/dashboard">Рабочий стол</NavItem>
@@ -75,6 +76,7 @@ export default React.createClass({
                 <NavItem >{this.state.user.login}</NavItem>
                 <NavItem onClick={this.logout} >Выйти</NavItem>
               </Nav>
+            {/*</div>*/}
 					</Navbar>)
 	},
 

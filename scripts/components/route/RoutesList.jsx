@@ -96,63 +96,67 @@ class RoutesList extends Component {
 		let state = this.state;
 
 		let vectorRoutes = routesList.filter(r => r.type === 'vector').map((r, i) => {
-			let cn = cx('list-group-item', {'active': route && r.id === route.id});
+			let cn = cx('sidebar__list-item', {'active': route && r.id === route.id});
 			return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>
 		});
 
 		let simpleRoutes = routesList.filter(r => r.type === 'simple').map((r, i) => {
-			let cn = cx('list-group-item', {'active': route && r.id === route.id});
+			let cn = cx('sidebar__list-item', {'active': route && r.id === route.id});
 			return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>
 		});
 
 		let simpleRoutes2 = routesList.filter(r => r.type === 'simple_dt').map((r, i) => {
-			let cn = cx('list-group-item', {'active': route && r.id === route.id});
+			let cn = cx('sidebar__list-item', {'active': route && r.id === route.id});
 			return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>
 		});
 
 		let pointsRoutes = routesList.filter(r => r.type === 'points').map((r, i) => {
-			let cn = cx('list-group-item', {'active': route && r.id === route.id});
+			let cn = cx('sidebar__list-item', {'active': route && r.id === route.id});
 			return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>
 		});
 
 		return (
 			<div className="ets-page-wrap routes-list">
-				<div className="some-header">Список маршрутов "Жилищник Крылатское"
-					<div className="waybills-buttons">
-						<Button bsSize="small" onClick={this.createRoute.bind(this)}><Glyphicon glyph="plus" /> Создать маршрут</Button>
-						<Button bsSize="small" disabled={route === null} onClick={() => this.setState({showForm: true})}><Glyphicon glyph="pencil" /> Изменить маршрут</Button>
-						<Button bsSize="small" disabled={route === null} onClick={this.copyRoute.bind(this)}><Glyphicon glyph="copy" /> Копировать маршрут</Button>
-						<Button bsSize="small" disabled={route === null} onClick={this.deleteRoute.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
-					</div>
-				</div>
-
 				<Row>
-					<Col md={3}>
-						<div className="panel panel-default routes-list-menu">
-							<div className="panel-heading">Выберите маршрут из списка для просмотра</div>
-							<div className="panel-body">
-								<ul className="list-group">
-									{vectorRoutes}
-								</ul>
-								<ul className="list-group">
-									{simpleRoutes}
-								</ul>
-								<ul className="list-group">
-									{simpleRoutes2}
-								</ul>
-								<ul className="list-group">
-									{pointsRoutes}
-								</ul>
+					<Col xs={5} md={3} className="sidebar">
+						<header className="sidebar__header clearfix">
+							<div className="sidebar__header-title col-xs-12">
+								Список маршрутов<br/> «Жилищник Крылатское»
 							</div>
+						</header>
+						{/*Выберите маршрут из списка для просмотра*/}
+						<div className="sidebar__list-container">
+							<ul className="sidebar__list">
+								{vectorRoutes}
+							</ul>
+							<ul className="sidebar__list">
+								{simpleRoutes}
+							</ul>
+							<ul className="sidebar__list">
+								{simpleRoutes2}
+							</ul>
+							<ul className="sidebar__list">
+								{pointsRoutes}
+							</ul>
 						</div>
 					</Col>
-					<Col md={9}>
+					<Col xs={7} md={9} className="col-xs-offset-5 col-md-offset-3">
+						<div className="some-header clearfix">
+							<div className="waybills-buttons">
+								<Button bsSize="small" onClick={this.createRoute.bind(this)}><Glyphicon glyph="plus" /> Создать маршрут</Button>
+								<Button bsSize="small" disabled={route === null} onClick={() => this.setState({showForm: true})}><Glyphicon glyph="pencil" /> Изменить маршрут</Button>
+								<Button bsSize="small" disabled={route === null} onClick={this.copyRoute.bind(this)}><Glyphicon glyph="copy" /> Копировать маршрут</Button>
+								<Button bsSize="small" disabled={route === null} onClick={this.deleteRoute.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
+							</div>
+						</div>
+						<div className="clearfix">
 							<Div hidden={this.state.showForm || route === null}>
 								<RouteInfo route={route} />
 							</Div>
 							<RouteFormWrap element={route}
-														 onFormHide={this.onFormHide.bind(this)}
-														 showForm={this.state.showForm} />
+										   onFormHide={this.onFormHide.bind(this)}
+										   showForm={this.state.showForm} />
+						</div>
 					</Col>
 				</Row>
 

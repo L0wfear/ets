@@ -2,6 +2,10 @@ $colorLink: #0081d6;
 $colorGreen: #6a9e56;
 $colorBadge: #4b4b4b;
 $colorButton: #4c4c4c;
+$colorGray: #9b9b9b;
+
+$navbarHeight: 64px;
+$navbarPaddingA: 22px;
 
 body {
   color: #000;
@@ -42,7 +46,7 @@ body.application hr {
   
   &.disabled, &[disabled] {
     background-color: #ddd;
-    color: #b1b1b1;
+    color: $colorGray;
   }
   
   &:not(.disabled):not([disabled]):hover, &:focus, &.active {
@@ -65,9 +69,6 @@ body.application hr {
 
 
 .navbar-default {
-  $navbarHeight: 64px;
-  $navbarPaddingA: 22px;
-  
   min-height: $navbarHeight;
   
   border: none;
@@ -105,7 +106,7 @@ body.application hr {
   }
   
   .navbar-brand {
-    color: #999;
+    color: $colorGray;
     text-decoration: none;
     
     &:hover {
@@ -118,6 +119,42 @@ body.application hr {
       // for: min-height: 64px;
       padding-top: $navbarPaddingA;
       padding-bottom: $navbarPaddingA;
+    }
+  }
+}
+
+.navbar-user {
+  text-decoration: none;
+  
+  & > a {
+    display: block !important;
+    height: $navbarHeight !important;
+    padding: 10px 15px 0 15px !important;
+    text-decoration: none !important;
+  }
+  
+  &__avatar {
+    float: left;
+    width: 43px;
+    height: 43px;
+    overflow: hidden;
+    
+    &-img {
+      display: block;
+      width: 43px;
+      height: auto;
+      margin: 0;
+      border: none;
+      outline: none;
+    }
+  }
+  
+  &__data {
+    margin-left: 53px;
+    padding-top: 2px;
+    
+    &-type {
+      color: $colorGray;
     }
   }
 }
@@ -695,14 +732,14 @@ button.rw-input::-moz-focus-inner, input.rw-input::-moz-focus-inner {
 }
 
 .rw-btn {
-  color: #333;
+  color: #fff;
   line-height: 2.286em;
   display: inline-block;
   margin: 0;
   text-align: center;
   vertical-align: middle;
-  background: none;
-  background-image: none;
+  background: $colorButton;// none;
+  //background-image: none;
   border: 1px solid transparent;
   padding: 0;
   white-space: nowrap
@@ -2002,7 +2039,7 @@ body {
   left: 0;
   right: 0;
   top: 0;
-  z-index:150;
+  z-index:1030;
   //.navbar {
   //  border-bottom:2px solid #ccc;
   //}
@@ -2327,25 +2364,61 @@ body {
   color: white !important;
 }
 
+
 .griddle-body {
+  margin: 15px auto;
+  
+  // !!! нужно избавиться от !important (убрать inline-стили у td и th)
   table {
+    border-collapse: separate;
+    border-spacing: 2px;
+    
+    box-shadow: rgba(0,2,4,0.15) 0 1px 6px inset; // хз как сделать тень над background ячеек (td)
+    //border: 1px solid #d9dada;
+    
     tr {
+      //cursor: pointer;
+      
+      td, th {
+        padding: 8px !important;
+        //background-color: transparent !important;
+        
+        //transition: all .1s linear;
+      }
+    }
+    
+    thead th {
+      color: #272727 !important;
+      background-color: #eee !important;
+      border-bottom: 2px solid #c1c1c1 !important;
+    }
+    
+    tbody {
+      &:first-of-type {
+        tr {
+          cursor: pointer;
+          
+          &:nth-child(even) td {
+            background-color: #f7f7f7 !important;
+          }
+          
+          &:hover td {
+            background-color: $colorGreen !important;
+            color: white !important;
+          }
+        }
+      }
+  
       td {
+        vertical-align: top;
         background-color: transparent !important;
       }
-      cursor: pointer;
     }
     
     tr.selected-row {
-      background-color: #6E9E58 !important;
       td {
+        background-color: $colorGreen !important;
         color: white !important;
-      }
-    }
-    
-    tbody:first-of-type {
-      tr:hover {
-        background: rgba(110, 158, 88, 0.4);
       }
     }
     

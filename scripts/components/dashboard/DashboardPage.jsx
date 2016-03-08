@@ -59,7 +59,7 @@ class DashboardPage extends React.Component {
   componentDidMount() {
     this.updateClock();
     this.timeInterval = setInterval(this.updateClock.bind(this), 1000);
-    this.componentsUpdateInterval = setInterval(this.refreshAll.bind(this), 1000 * 5);
+    this.componentsUpdateInterval = setInterval(this.refreshAll.bind(this), 1000 * 60);
     document.getElementsByTagName('html')[0].classList.add('overflow-scroll');
     this.init();
   }

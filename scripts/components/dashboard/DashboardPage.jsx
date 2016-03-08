@@ -43,40 +43,30 @@ class DashboardPage extends React.Component {
 
   }
 
-  init(role) {
-    this.context.flux.getActions('dashboard').getDashboardComponent(role, 'current_missions', 1);
-    this.context.flux.getActions('dashboard').getDashboardComponent(role, 'future_missions', 2);
-    //this.context.flux.getActions('dashboard').getDashboardComponent(role, 'car_in_work_on_current_missions', 7);
-    //this.context.flux.getActions('dashboard').getDashboardComponent(role, 'count_offline_cars', 6);
-    //this.context.flux.getActions('dashboard').getDashboardComponent(role, 'count_traveled_routes_by_current_operations', 3);
-    this.context.flux.getActions('dashboard').getDashboardComponent(role, 'faxogramms', 9);
-    if (role === 'master' || role === 'superuser') {
-      //this.context.flux.getActions('dashboard').getDashboardSideComponent(role, 'car_in_work', 8);
-      //this.context.flux.getActions('dashboard').getDashboardComponent(role, 'odh_not_covered_by_routes', 5);
-      //this.context.flux.getActions('dashboard').getDashboardComponent(role, 'odh_not_covered_by_current_missions', 4);
-      //this.context.flux.getActions('dashboard').getDashboardSideComponent(role, 'count_waybill_closed', 10);
-      //this.context.flux.getActions('dashboard').getDashboardComponent(role, 'estimated_time', 13);
-    } else if (role === 'dispatcher' || role === 'superuser') {
-      this.context.flux.getActions('dashboard').getDashboardComponent(role, 'car_in_work_on_current_missions', 7); //
-      this.context.flux.getActions('dashboard').getDashboardComponent(role, 'count_offline_cars', 6); //
-      this.context.flux.getActions('dashboard').getDashboardComponent(role, 'count_traveled_routes_by_current_operations', 3); //
-      this.context.flux.getActions('dashboard').getDashboardComponent(role, 'count_closed_waybill_by_current_operations', 18);
-      this.context.flux.getActions('dashboard').getDashboardComponent(role, 'estimated_time', 13);
-      this.context.flux.getActions('dashboard').getDashboardComponent(role, 'count_assigned_routes', 15);
-      this.context.flux.getActions('dashboard').getDashboardSideComponent(role, 'released_waybill', 16);
-    }
+  init() {
+    let { flux } = this.context;
+    let actions = flux.getActions('dashboard');
+    let components = flux.getStore('dashboard').getComponentsByRole();
+    _.each(components, c => c.side ? actions.getDashboardSideComponent(c.key) : actions.getDashboardComponent(c.key));
+  }
+
+  refreshAll() {
+    let { flux } = this.context;
+    let components = flux.getStore('dashboard').getComponentsByRole();
+    _.each(components.filter(c => !c.side), c => c.key !== this.state.itemOpenedKey ? this.refreshCard(c.key) : null);
   }
 
   componentDidMount() {
-    let role = this.context.flux.getStore('session').getCurrentUser().role;
     this.updateClock();
     this.timeInterval = setInterval(this.updateClock.bind(this), 1000);
+    this.componentsUpdateInterval = setInterval(this.refreshAll.bind(this), 1000 * 5);
     document.getElementsByTagName('html')[0].classList.add('overflow-scroll');
-    this.init(role);
+    this.init();
   }
 
   componentWillUnmount() {
     clearInterval(this.timeInterval);
+    clearInterval(this.componentsUpdateInterval);
     document.getElementsByTagName('html')[0].classList.remove('overflow-scroll');
   }
 
@@ -85,12 +75,11 @@ class DashboardPage extends React.Component {
     document.getElementById('dashboard-time').innerHTML = time;
   }
 
-  refreshCard(key, id) {
-    let role = this.context.flux.getStore('session').getCurrentUser().role;
+  refreshCard(key) {
     let { loadingComponents } = this.state;
     loadingComponents.push(key);
     this.setState({loadingComponents});
-    this.context.flux.getActions('dashboard').getDashboardComponent(role, key, id).then(() => {
+    this.context.flux.getActions('dashboard').getDashboardComponent(key).then(() => {
       let { loadingComponents } = this.state;
       loadingComponents.splice(_.findIndex(loadingComponents, key), 1);
       setTimeout(() => this.setState({loadingComponents}), 500);
@@ -103,10 +92,8 @@ class DashboardPage extends React.Component {
 
   render() {
 
-    let cards = [];
     let role = this.context.flux.getStore('session').getCurrentUser().role;
-    let propsByRole = this.props[role] || {};
-    const { componentsList = [], componentsSideList = [] } = propsByRole;
+    const { componentsList = [], componentsSideList = [] } = this.props;
     componentsSideList.map(c => {
       //переделать этот бред
       let params = '';

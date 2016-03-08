@@ -1,6 +1,79 @@
 import { Store } from 'flummox';
 import _ from 'lodash';
 
+const commonComponents = [
+  {
+    id: 1,
+    key: 'current_missions',
+  },
+  {
+    id: 2,
+    key: 'future_missions',
+  },
+  {
+    id: 3,
+    key: 'count_traveled_routes_by_current_operations',
+  },
+  {
+    id: 6,
+    key: 'count_offline_cars',
+  },
+  {
+    id: 7,
+    key: 'car_in_work_on_current_missions',
+  },
+  {
+    id: 9,
+    key: 'faxogramms',
+  },
+  {
+    id: 13,
+    key: 'estimated_time',
+  }
+]
+
+const componentsByRole = {
+  master: [...commonComponents.filter(c => [3, 6, 7, 13].indexOf(c.id) === -1),
+    // { временно не показываем
+    //   id: 4,
+    //   key: 'odh_not_covered_by_current_missions'
+    // },
+    // {
+    //   id: 5,
+    //   key: 'odh_not_covered_by_routes',
+    // },
+    // {
+    //   id: 8,
+    //   key: 'car_in_work',
+    //   side: true,
+    // },
+    // {
+    //   id: 10,
+    //   key: 'count_waybill_closed'
+    //   side: true,
+    // },
+    // {
+    //   id: 13,
+    //   key: 'estimated_time'
+    // }
+  ],
+  dispatcher: [...commonComponents,
+    {
+      id: 15,
+      key: 'count_assigned_routes'
+    },
+    {
+      id: 16,
+      key: 'released_waybill',
+      side: true,
+    },
+    {
+      id: 18,
+      key: 'count_closed_waybill_by_current_operations'
+    }
+  ]
+}
+
 class DashboardStore extends Store {
 
   constructor(flux) {
@@ -12,46 +85,36 @@ class DashboardStore extends Store {
     this.register(dashboardActions.getDashboardSideComponent, this.handleGetDashboardSideComponent);
 
     this.state = {
-      dispatcher: {
-        componentsIndex: {},
-        componentsSideIndex: {},
-        componentsList: [],
-        componentsSideList: [],
-      },
-      master: {
-        componentsIndex: {},
-        componentsSideIndex: {},
-        componentsList: [],
-        componentsSideList: [],
-      }
+      componentsIndex: {},
+      componentsSideIndex: {},
+      componentsList: [],
+      componentsSideList: [],
     };
-
   }
 
-  handleGetDashboardComponent({role, key, id, component}) {
-    let { componentsList, componentsIndex } = this.state[role];
+  handleGetDashboardComponent({key, component}) {
+    let { componentsList, componentsIndex } = this.state;
     if (!component.result) return;
-    component.result.id = id;
+    component.result.id = _.find(this.getComponentsByRole(), c => c.key === key).id;
     component.result.key = key;
     componentsIndex[key] = component.result;
     componentsList = _(componentsIndex).toArray().sortBy('id').value();
-    let state = this.state;
-    state[role].componentsList = componentsList;
-    state[role].componentsIndex = componentsIndex;
-    this.setState(state);
+    this.setState({componentsList, componentsIndex});
 	}
 
-  handleGetDashboardSideComponent({role, key, id, component}) {
-    let { componentsSideList, componentsSideIndex } = this.state[role];
+  handleGetDashboardSideComponent({key, component}) {
+    let { componentsSideList, componentsSideIndex } = this.state;
     if (!component.result) return;
-    component.result.id = id;
+    component.result.id = _.find(this.getComponentsByRole(), c => c.key === key).id;
     component.result.key = key;
     componentsSideIndex[key] = component.result;
     componentsSideList = _(componentsSideIndex).toArray().sortBy('id').value();
-    let state = this.state;
-    state[role].componentsSideList = componentsSideList;
-    state[role].componentsSideIndex = componentsSideIndex;
-    this.setState(state);
+    this.setState({componentsSideList, componentsSideIndex});
+  }
+
+  getComponentsByRole() {
+    let { role } = this.flux.getStore('session').getCurrentUser();
+    return componentsByRole[role];
   }
 
 }

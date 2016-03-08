@@ -4,12 +4,12 @@ import _ from 'lodash';
 
 export default class DashboardActions extends Actions {
 
-  getDashboardComponent(role, key, id) {
-    return getDashboardComponent(role, key, id);
+  getDashboardComponent(key) {
+    return getDashboardComponent(key);
   }
 
-  getDashboardSideComponent(role, key, id) {
-    return getDashboardComponent(role, key, id);
+  getDashboardSideComponent(key) {
+    return getDashboardComponent(key);
   }
 
 }

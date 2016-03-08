@@ -339,7 +339,7 @@ export function createRoute(route) {
 
 // DASHBOARD //
 
-export function getDashboardComponent(role, key, id) {
+export function getDashboardComponent(key) {
   let payload = key === 'faxogramms' ? {status: 2, date: moment().format('YYYY-MM-DDTHH:mm:ss')} : {};
-  return getJSON(`${DASHBOARD_URL}${key}/`, payload).then(component => ({role, component, key, id}));
+  return getJSON(`${DASHBOARD_URL}${key}/`, payload).then(component => ({component, key}));
 }

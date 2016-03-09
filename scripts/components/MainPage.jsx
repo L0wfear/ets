@@ -31,7 +31,7 @@ export default React.createClass({
 					    </Navbar.Header>
 				      <Nav>
 				      </Nav>
-					</Navbar>);
+					</Navbar>); //console.log(this.state.user);
 
 		return (<Navbar justified fluid>
 						 <Navbar.Header>

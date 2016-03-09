@@ -50,13 +50,13 @@ body.application hr {
   }
   
   &:not(.disabled):not([disabled]):hover, &:focus, &.active {
-    background-color: #000;
+    background-color: $colorGreen;
     color: #fff;
   }
 }
 
 .btn-primary {
-  background-color: $colorGreen;
+  background-color: #000;
   color: #fff;
 }
 
@@ -278,7 +278,7 @@ body.application {
 }
 
 .row {
-  margin: 0;
+  //margin: 0; // !! test base bootstrap
 }
 
 .bnso-filter {
@@ -308,11 +308,15 @@ body.application {
 
 
 .app-toolbar {
+  .row {
+    margin: 0;
+  }
+  
   color: #fff;
   position: absolute;
-  top: 65px;
+  top: 84px;
   z-index: 1000;
-  left: 25px;
+  left: 20px;
   
   &-filter {
     margin-bottom:5px;
@@ -393,7 +397,7 @@ body.application {
 
 .toolbar-control {
   position: absolute;
-  left: 169px;
+  left: 183px;
   top: 0px;
   
   &.toggled {
@@ -920,7 +924,7 @@ ul.rw-list.rw-list-grouped > li.rw-list-option {
 .rw-widget {
   background-color: #fff;
   border: #ccc 1px solid;
-  border-radius: 4px
+  //border-radius: 4px
 }
 
 .rw-widget .rw-input {
@@ -1017,7 +1021,7 @@ ul.rw-list.rw-list-grouped > li.rw-list-option {
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125)
 }
 
-.rw-combobox:hover, .rw-datetimepicker:hover, .rw-numberpicker:hover, .rw-dropdownlist:hover {
+.rw-combobox:hover, /*.rw-datetimepicker:hover,*/ .rw-numberpicker:hover, .rw-dropdownlist:hover {
   background-color: #e6e6e6;
   border-color: #adadad
 }
@@ -1097,7 +1101,8 @@ ul.rw-list.rw-list-grouped > li.rw-list-option {
 }
 
 .rw-datetimepicker .rw-btn {
-  width: 1.8em
+  width: 26px;//1.8em;
+  float: left; // new
 }
 
 .rw-datetimepicker.rw-has-neither {
@@ -1119,7 +1124,7 @@ ul.rw-list.rw-list-grouped > li.rw-list-option {
 }
 
 .rw-datetimepicker.rw-has-both > .rw-select {
-  width: 3.8em;
+  width: 53px;//3.8em;
   height: 100%
 }
 
@@ -1949,7 +1954,7 @@ body {
     padding: 4px 11px 4px 7px;
     width:83px;
     text-align: left;
-    color: black;
+    //color: black;
     &.btn-success {
       background-color: #aaddaa;
     }
@@ -2082,7 +2087,7 @@ body {
 }
 
 .ets-page-wrap {
-  padding:10px 20px;
+  padding: 20px /*30px;*/
 }
 .some-header {
   font-size: 18px;
@@ -2201,14 +2206,21 @@ body {
 }
 
 .modal-header {
-  background-color: #C2CAE0;
-  
+  background-color: #e9f0f5;
+  border: none;
 }
 
 .modal-content {
+  border-radius: 0;
+  
   .chart-datepicker {
     padding-bottom:2px;
   }
+}
+
+.modal-footer {
+  background-color: #e9f0f5;
+  border: none;
 }
 
 .modal-backdrop.in {
@@ -2375,16 +2387,12 @@ body {
     
     box-shadow: rgba(0,2,4,0.15) 0 1px 6px inset; // хз как сделать тень над background ячеек (td)
     //border: 1px solid #d9dada;
-    
-    tr {
-      //cursor: pointer;
-      
-      td, th {
-        padding: 8px !important;
-        //background-color: transparent !important;
-        
-        //transition: all .1s linear;
-      }
+  
+    td, th {
+      padding: 8px !important;
+      //background-color: transparent !important;
+      //transition: all .1s linear;
+      word-break: break-all;
     }
     
     thead th {
@@ -2668,19 +2676,45 @@ div.none {
     position: absolute;
     top: 0;
     
-    h5 {
+    /*h5 {
       max-width: 95%;
       margin-top: -7px;
     }
     hr {
       margin-top: 0 !important;
-    }
+    }*/
     .fade, .well {
       /*border-top-left-radius: 0;
       border-bottom-left-radius: 0;*/
     }
     ul {
       padding-left: 10px;
+    }
+  
+    .well {
+      padding: 0 20px 5px 20px;
+      border: none;
+      background-color: #f2f2f2;
+      box-shadow: none;
+      
+      h5 {
+        position: relative;
+        overflow: hidden;
+        padding: 15px 40px 15px 20px;
+        margin: 0 -20px;
+        font-weight: bold;
+  
+        &:after {
+          display: block;
+          content: '';
+          position: absolute;
+          width: 100%;
+          height: 1px;
+          bottom: 1px;
+          left: 20px;
+          background-color: #d6d6d6;
+        }
+      }
     }
   }
   .dashboard-card-info.active {
@@ -2719,15 +2753,61 @@ div.none {
   }
   
   .dashboard-card-sm {
-    .panel-body {
-      font-size: 32px;
-      text-align: center;
+    text-align: center;
+  
+    > .panel > .panel-body {
+      padding: 15px 20px;
+    }
+  }
+  
+  .dashboard-card.panel {
+  
+    > .panel-body {
+      padding: 0;
+      min-height: 20px;
+    }
+  }
+  
+  .dashboard-card-sm > .panel,
+  .dashboard-card.panel {
+    background-color: #f2f2f2;
+    border: none;
+    box-shadow: none;
+  
+    > .panel-heading {
+      padding: 15px 52px 15px 20px;
+      position: relative;
+      overflow: hidden;
+      text-align: left;
       font-weight: bold;
+      color: inherit;
+      background: none;
+      border: none;
+    
+      &:after {
+        display: block;
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        bottom: 1px;
+        left: 20px;
+        background-color: #d6d6d6;
+      }
+    }
+    
+    &.panel-danger {
+      background-color: #ffd7d7;
+  
+      > .panel-heading:after {
+        background-color: #fff;
+      }
     }
   }
   
   .card-glyph-remove {
     position: absolute;
+    z-index: 20;
     right: 15px;
     top: 10px;
     cursor: pointer;
@@ -2740,8 +2820,25 @@ div.none {
     }
   }
   
-  .dashboard-card-item{
-    margin-top: 6px;
+  .dashboard-card-items {
+    .dashboard-card-item{
+      position: relative;
+      overflow: hidden;
+      padding: 15px 0;
+  
+      & + .dashboard-card-item {
+        &:after {
+          display: block;
+          content: '';
+          position: absolute;
+          width: 100%;
+          height: 1px;
+          bottom: 1px;
+          left: 20px;
+          background-color: #d6d6d6;
+        }
+      }
+    }
   }
   
   .dashboard-card-title {
@@ -2750,11 +2847,16 @@ div.none {
   }
   
   .dashboard-card-refresh {
-    display: inline-block;
-    float: right;
-    top: 12px;
-    right: 35px;
-    color: black;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    display: block;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    color: #fff;
+    background-color: $colorButton;
     cursor: pointer;
   }
   

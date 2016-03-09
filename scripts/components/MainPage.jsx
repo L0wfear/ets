@@ -79,7 +79,7 @@ export default React.createClass({
                       </div>
                       <div className="navbar-user__data">
                           <div className="navbar-user__data-type">{this.state.user.role === 'master' ? 'Мастер' : 'Диспетчер'}</div>
-                          <div className="navbar-user__data-name">{/*this.state.user.login*/'Лебедев И.А.'}</div>
+                          <div className="navbar-user__data-name">{/*this.state.user.login*/this.state.user.role === 'master' ?  'Лебедев И.А.' : 'Иванов В.К.'}</div>
                       </div>
                   </NavItem>
                   <NavItem onClick={this.logout} >Выйти</NavItem>

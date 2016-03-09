@@ -31,14 +31,15 @@ export default React.createClass({
 					    </Navbar.Header>
 				      <Nav>
 				      </Nav>
-					</Navbar>);
+					</Navbar>); //console.log(this.state.user);
 
 		return (<Navbar justified fluid>
 						 <Navbar.Header>
-					      <Navbar.Brand>
+                             <Navbar.Brand>
 							    <Link to="/">ЕТС</Link>
-					      </Navbar.Brand>
+                             </Navbar.Brand>
 					    </Navbar.Header>
+            {/*<div className="navbar-collapse collapse">*/}
 				      <Nav>
                 <NavItem active={path === '/monitor'} href="#/monitor">Монитор</NavItem>
 				        <NavItem active={path === '/dashboard'} href="#/dashboard">Рабочий стол</NavItem>
@@ -72,9 +73,18 @@ export default React.createClass({
 				        <NavItem active={path === '/routes-list'} href="#/routes-list">Маршруты</NavItem>
 				      </Nav>
               <Nav pullRight>
-                <NavItem >{this.state.user.login}</NavItem>
-                <NavItem onClick={this.logout} >Выйти</NavItem>
+                  <NavItem className="navbar-user">
+                      <div className="navbar-user__avatar">
+                          <img src="/images/avatar-default.png" className="navbar-user__avatar-img" />
+                      </div>
+                      <div className="navbar-user__data">
+                          <div className="navbar-user__data-type">Мастер</div>
+                          <div className="navbar-user__data-name">{this.state.user.login}</div>
+                      </div>
+                  </NavItem>
+                  <NavItem onClick={this.logout} >Выйти</NavItem>
               </Nav>
+            {/*</div>*/}
 					</Navbar>)
 	},
 

@@ -5,6 +5,7 @@ const commonComponents = [
   {
     id: 1,
     key: 'current_missions',
+    itemsTitle: 'Карточка задания'
   },
   {
     id: 2,
@@ -21,10 +22,12 @@ const commonComponents = [
   {
     id: 7,
     key: 'car_in_work_on_current_missions',
+    itemsTitle: 'Гос. номер ТС'
   },
   {
     id: 9,
     key: 'faxogramms',
+    itemsTitle: 'Расшифровка факсограммы'
   },
   {
     id: 13,
@@ -74,6 +77,13 @@ const componentsByRole = {
   ]
 }
 
+const initialState = {
+  componentsIndex: {},
+  componentsSideIndex: {},
+  componentsList: [],
+  componentsSideList: [],
+};
+
 class DashboardStore extends Store {
 
   constructor(flux) {
@@ -84,19 +94,18 @@ class DashboardStore extends Store {
     this.register(dashboardActions.getDashboardComponent, this.handleGetDashboardComponent);
     this.register(dashboardActions.getDashboardSideComponent, this.handleGetDashboardSideComponent);
 
-    this.state = {
-      componentsIndex: {},
-      componentsSideIndex: {},
-      componentsList: [],
-      componentsSideList: [],
-    };
+    this.state = _.cloneDeep(initialState);
   }
 
   handleGetDashboardComponent({key, component}) {
     let { componentsList, componentsIndex } = this.state;
     if (!component.result) return;
-    component.result.id = _.find(this.getComponentsByRole(), c => c.key === key).id;
+    let componentSchema = _.find(this.getComponentsByRole(), c => c.key === key);
+    component.result.id = componentSchema.id;
     component.result.key = key;
+    if (componentSchema.itemsTitle) {
+      component.result.itemsTitle = componentSchema.itemsTitle;
+    }
     componentsIndex[key] = component.result;
     componentsList = _(componentsIndex).toArray().sortBy('id').value();
     this.setState({componentsList, componentsIndex});
@@ -115,6 +124,10 @@ class DashboardStore extends Store {
   getComponentsByRole() {
     let { role } = this.flux.getStore('session').getCurrentUser();
     return componentsByRole[role];
+  }
+
+  resetState() {
+    this.setState(_.cloneDeep(initialState));
   }
 
 }

@@ -161,6 +161,7 @@ class DashboardPage extends React.Component {
               <DashboardCardMedium title={c.title}
                                    items={c.items}
                                    dashboardKey={c.key}
+                                   itemsTitle={c.itemsTitle}
                                    loading={this.state.loadingComponents.indexOf(c.key) > -1}
                                    refreshCard={this.refreshCard.bind(this, c.key, c.id)}
                                    openFullList={this.openFullList.bind(this, c.key)}

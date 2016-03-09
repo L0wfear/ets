@@ -124,7 +124,7 @@ export default class DashboardCardMedium extends React.Component {
                 <Div className="card-glyph-remove" onClick={this.selectItem.bind(this, null)}>
                   <Glyphicon glyph="remove"/>
                 </Div>
-                <h5>{selectedItem !== null ? selectedItem.title : ''}</h5>
+                <h5>{this.props.itemsTitle ? this.props.itemsTitle : selectedItem !== null ? selectedItem.title : ''}</h5>
                 <hr/>
                 <ul>
                   {subItems.map((item, i) => {

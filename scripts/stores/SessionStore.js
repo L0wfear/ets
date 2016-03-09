@@ -13,6 +13,7 @@ class SessionStore extends Store {
     super();
     const sessionActions = flux.getActions('session');
     const pointsActions = flux.getActions('points');
+    this.flux = flux;
     this.register(sessionActions.login, this.handleLogin);
     this.register(sessionActions.logout, this.handleLogout);
 
@@ -58,6 +59,7 @@ class SessionStore extends Store {
     localStorage.removeItem(SESSION_KEY);
     localStorage.removeItem('current_user');
     this.setState({session: null, sessionError: message || null});
+    this.flux.getStore('dashboard').resetState();
   }
 
   getCurrentUser() {

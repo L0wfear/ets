@@ -171,6 +171,8 @@ class WaybillJournal extends ElementsList {
 		flux.getActions('objects').getTechOperations();
 		flux.getActions('objects').getFuelTypes();
 		flux.getActions('objects').getCars();
+    flux.getActions('routes').getRoutes();
+    flux.getActions('missions').getMissionSources();
 	}
 
 	render() {

@@ -52,6 +52,7 @@ class MissionFormWrap extends FormWrap {
 													 handleFormChange={this.handleFormStateChange.bind(this)}
 													 show={this.props.showForm}
 													 onHide={this.props.onFormHide}
+													 fromWaybill={this.props.fromWaybill}
 													 {...this.state}/>
 						</Div>
 

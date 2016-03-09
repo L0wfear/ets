@@ -12,6 +12,7 @@ import cx from 'classnames';
 import { isNotNull, isEmpty } from '../../utils/functions.js';
 import { createValidDateTime } from '../../utils/dates.js';
 import Form from '../compositions/Form.jsx';
+import MissionFormWrap from '../missions/MissionFormWrap.jsx';
 
 
 let getTechOperationById = (id) => {
@@ -56,6 +57,7 @@ class WaybillForm extends Form {
 			operations: [],
 			fuelRates: [],
 			fuel_correction_rate: null,
+      showMissionForm: false,
 		}
 	}
 
@@ -136,6 +138,11 @@ class WaybillForm extends Form {
   	flux.getActions('missions').getMissions(car_id, createValidDateTime(this.props.formState.plan_departure_date), createValidDateTime(this.props.formState.plan_arrival_date), getMissionFilterStatus(this.props.formState));
 	}
 
+  onMissionFormHide() {
+    this.componentDidMount();
+    this.setState({showMissionForm: false});
+  }
+
 	render() {
 
 		let state = this.props.formState;
@@ -150,8 +157,6 @@ class WaybillForm extends Form {
 			const techOperation = getTechOperationById(technical_operation_id);
 			return {id, value: id, label: `№${number} (${techOperation.name})`};
 		});
-    console.log(missionsList);
-
     console.log('form state is ', state);
 
 		let IS_CREATING = !!!state.status;
@@ -344,6 +349,12 @@ class WaybillForm extends Form {
 											 value={_.isArray(state.mission_id_list) && _.filter(state.mission_id_list).length === 0 ? undefined : state.mission_id_list}
 											 disabled={isEmpty(state.car_id) || IS_CLOSING || IS_DISPLAY}
 											 onChange={this.handleChange.bind(this, 'mission_id_list')}/>
+           		  <Button style={{marginTop: 10}} onClick={() => this.setState({showMissionForm: true})} disabled={isEmpty(state.car_id) || IS_CLOSING || IS_DISPLAY}>Создать задание</Button>
+                <MissionFormWrap onFormHide={this.onMissionFormHide.bind(this)}
+          											 showForm={this.state.showMissionForm}
+                                 element={null}
+                                 fromWaybill={true}
+                                 {...this.props}/>
 							</Div>
 	      		</Col>
 	      	</Row>

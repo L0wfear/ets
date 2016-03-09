@@ -2408,11 +2408,11 @@ body {
         tr {
           cursor: pointer;
 
-          &:nth-child(even) td {
+          &:nth-child(even) > td {
             background-color: #f7f7f7 !important;
           }
 
-          &:hover td {
+          &:hover > td, &.selected-row > td {
             background-color: $colorGreen !important;
             color: white !important;
           }
@@ -2423,13 +2423,6 @@ body {
         vertical-align: top;
         background-color: transparent !important;
         word-break: break-all;
-      }
-    }
-
-    tr.selected-row {
-      td {
-        background-color: $colorGreen !important;
-        color: white !important;
       }
     }
 

@@ -146,6 +146,7 @@ export default class DashboardCardMedium extends React.Component {
                     <li><b>Гос. номер ТС:</b> {data.car_gov_number}</li>
                     <li><b>Начало задания:</b> {getFormattedDateTimeSeconds(data.mission_date_start)}</li>
                     <li><b>Окончание задания:</b> {getFormattedDateTimeSeconds(data.mission_date_end)}</li>
+                    <li><b>Расчетное время выполнения:</b> {getFormattedDateTimeSeconds(data.estimated_finish_time || null)}</li>
                     <li><b>Пройдено:</b> {getDataTraveledYet(data.traveled_yet)}</li>
                     <li><a className="pointer" onClick={(e) => {e.preventDefault(); action();}}>Подробнее...</a></li>
                     <Div className="text-right">

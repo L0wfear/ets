@@ -73,6 +73,8 @@ export const missionTemplateSchema = {
 			title: 'Количество проходов',
 			type: 'number',
 			required: true,
+      min: 0,
+      max: 10,
 		},
 		{
 			key: 'car_id',

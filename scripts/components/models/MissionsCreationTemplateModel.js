@@ -5,6 +5,8 @@ export const missionsCreationTemplateSchema = {
       title: 'Количество проходов',
       type: 'number',
       required: false,
+      min: 0,
+      max: 10,
     },
     {
       key: 'mission_source_id',

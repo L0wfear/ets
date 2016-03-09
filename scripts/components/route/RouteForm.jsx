@@ -26,8 +26,10 @@ class RouteForm extends Form {
 	render() {
 
 		let state = this.props.formState;
+		let errors = this.props.formErrors;
 		let { techOperationsList = [] } = this.props;
 		let ROUTE_TYPE_OPTIONS = [{value: 'vector', label: 'Вручную'}, {value: 'simple', label: 'Выбор из ОДХ'}, {value: 'simple_dt', label: 'Выбор из ДТ'}, {value: 'points', label: 'Выбор пунктов назначения'}];
+		console.log(errors);
 
     const TECH_OPERATIONS = techOperationsList.map(({id, name}) => ({value: id, label: name}));
 
@@ -44,7 +46,7 @@ class RouteForm extends Form {
 
           <Row>
             <Col md={4}>
-              <Field type="string" label="Название маршрута" value={state.name} onChange={this.handleChange.bind(this, 'name')} />
+              <Field type="string" label="Название маршрута" value={state.name} onChange={this.handleChange.bind(this, 'name')} error={errors['name']} />
             </Col>
 
 						<Div hidden={this.props.forceTechnicalOperation}>
@@ -53,7 +55,8 @@ class RouteForm extends Form {
 											 options={TECH_OPERATIONS}
 											 value={state.technical_operation_id}
 											 onChange={this.handleChange.bind(this, 'technical_operation_id')}
-											 disabled={this.props.fromMission}/>
+											 disabled={this.props.fromMission}
+											 error={errors['technical_operation_id']}/>
 	            </Col>
 						</Div>
 

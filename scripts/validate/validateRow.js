@@ -5,6 +5,8 @@ import _ from 'lodash';
 import * as number from './validateNumber.js';
 import * as floatFixed3 from './validateFloatFixed3.js';
 import * as datetime from './validateDateTime.js';
+import * as string from './validateString.js';
+import * as array from './validateArray.js';
 // import * as date from './validateDate.js';
 // import * as integer from './validateInteger';
 // import * as bool from './validateBool';
@@ -21,6 +23,8 @@ const validators = {
   number,
   datetime,
   floatFixed3,
+  string,
+  array,
   // date,
   // integer,
   // bool,

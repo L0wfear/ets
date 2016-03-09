@@ -4,25 +4,36 @@ import connectToStores from 'flummox/connect';
 import _ from 'lodash';
 import RouteForm from './RouteForm.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';
+import { routeSchema } from '../models/RouteModel.js';
 
 class RouteFormWrap extends FormWrap {
 
 	constructor(props) {
 		super(props);
+
+		this.schema = routeSchema;
 	}
 
 	componentWillReceiveProps(props) {
 		if (props.showForm) {
+			let formState = null;
 			if (props.element !== null ) {
-        const formState = _.cloneDeep(props.element);
+        formState = _.cloneDeep(props.element);
 				formState.polys = formState.type === 'simple_dt' ? _.cloneDeep(props.dtPolys) : _.cloneDeep(props.odhPolys);
 				_.each(formState.object_list.filter(o => !!o.object_id), o => {
 					formState.polys[o.object_id].state = o.state;
 				});
-        this.setState({formState});
+        //this.setState({formState});
 			} else {
-        this.setState({formState: {}});
+				formState = {};
+        //this.setState({formState: {}});
       }
+			let formErrors = this.validate(formState, {});
+			this.setState({
+				formState,
+				canSave: ! !!_.filter(formErrors).length,
+				formErrors,
+			});
 		}
 	}
 

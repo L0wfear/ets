@@ -46,6 +46,7 @@ class SessionStore extends Store {
     const currentUser = data.payload;
     localStorage.setItem(SESSION_KEY, JSON.stringify(session));
     localStorage.setItem('current_user', JSON.stringify(currentUser));
+    this.flux.getStore('dashboard').resetState();
     this.setState({
       currentUser, session
     });
@@ -59,7 +60,6 @@ class SessionStore extends Store {
     localStorage.removeItem(SESSION_KEY);
     localStorage.removeItem('current_user');
     this.setState({session: null, sessionError: message || null});
-    this.flux.getStore('dashboard').resetState();
   }
 
   getCurrentUser() {

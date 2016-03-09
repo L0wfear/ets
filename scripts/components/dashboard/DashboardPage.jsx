@@ -21,9 +21,6 @@ let DashboardPageHeader = (props) => {
         <Div className="dashboard-time" id="dashboard-time"/>
       </Col>
       <Col md={4}>
-        <Div className="dashboard-title">
-          {props.personRole}: {props.personFIO}
-        </Div>
       </Col>
     </Row>
   );
@@ -178,7 +175,7 @@ class DashboardPage extends React.Component {
     return (
       <Div className="ets-page-wrap dashboard-page">
 
-        <DashboardPageHeader personRole={role === 'master' || role === 'superuser' ? 'Мастер' : 'Диспетчер'} personFIO={role === 'master' || role === 'superuser' ? 'Лебедев И.А.' : 'Иванов К.М.'} />
+        <DashboardPageHeader/>
 
         <Row>
           <Col md={10}>

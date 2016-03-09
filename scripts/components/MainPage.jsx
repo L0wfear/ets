@@ -78,8 +78,8 @@ export default React.createClass({
                           <img src="/images/avatar-default.png" className="navbar-user__avatar-img" />
                       </div>
                       <div className="navbar-user__data">
-                          <div className="navbar-user__data-type">Мастер</div>
-                          <div className="navbar-user__data-name">{this.state.user.login}</div>
+                          <div className="navbar-user__data-type">{this.state.user.role === 'master' ? 'Мастер' : 'Диспетчер'}</div>
+                          <div className="navbar-user__data-name">{/*this.state.user.login*/'Лебедев И.А.'}</div>
                       </div>
                   </NavItem>
                   <NavItem onClick={this.logout} >Выйти</NavItem>

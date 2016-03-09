@@ -123,14 +123,14 @@ export class MissionInfoForm extends Form {
               </FluxComponent>
             </Col>
 
-            <Col md={6} style={{marginTop: -35}}>
-							<Div hidden={this.state.missionReportFull && !this.state.missionReportFull.report_by_odh}>
+            <Col md={6}>
+							<Div  style={{marginTop: -35}} hidden={this.state.missionReportFull && !this.state.missionReportFull.report_by_odh}>
               	<MissionReportByODH noFilter={true} selectedReportDataODHS={this.state.missionReport} onElementChange={this.handleODHChange.bind(this)}/>
 							</Div>
-							<Div hidden={this.state.missionReportFull && !this.state.missionReportFull.report_by_dt}>
+							<Div  style={{marginTop: -35}} hidden={this.state.missionReportFull && !this.state.missionReportFull.report_by_dt}>
               	<MissionReportByDT noFilter={true} selectedReportDataDTS={this.state.missionReport} />
 							</Div>
-							<Div hidden={this.state.missionReportFull && !this.state.missionReportFull.report_by_point}>
+							<Div  style={{marginTop: -35}} hidden={this.state.missionReportFull && !this.state.missionReportFull.report_by_point}>
               	<MissionReportByPoints noFilter={true} selectedReportDataPoints={this.state.missionReport} />
 							</Div>
               <Div hidden={this.state.missionReport && this.state.missionReport.length > 0}>

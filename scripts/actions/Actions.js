@@ -6,7 +6,6 @@ class BaseActions extends FlummoxActions {
     super();
 
     this.service = null;
-    console.log(this)
   }
 
   get() {

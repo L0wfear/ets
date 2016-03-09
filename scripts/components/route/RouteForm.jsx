@@ -18,7 +18,6 @@ class RouteForm extends Form {
 	}
 
 	handleTypeChange(v) {
-		console.log(v);
 		this.handleChange('type', v);
 		this.props.resetState();
 	}
@@ -29,7 +28,6 @@ class RouteForm extends Form {
 		let errors = this.props.formErrors;
 		let { techOperationsList = [] } = this.props;
 		let ROUTE_TYPE_OPTIONS = [{value: 'vector', label: 'Вручную'}, {value: 'simple', label: 'Выбор из ОДХ'}, {value: 'simple_dt', label: 'Выбор из ДТ'}, {value: 'points', label: 'Выбор пунктов назначения'}];
-		console.log(errors);
 
     const TECH_OPERATIONS = techOperationsList.map(({id, name}) => ({value: id, label: name}));
 

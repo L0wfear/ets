@@ -139,7 +139,6 @@ class WaybillFormWrap extends Component {
 			formState.motohours_equip_diff = formState.motohours_equip_end - formState.motohours_equip_start;
 		}
 
-		console.log(formErrors);
 		newState.formState = formState;
 		newState.formErrors = formErrors;
 

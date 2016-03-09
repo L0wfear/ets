@@ -133,7 +133,6 @@ class FuelRatesDirectory extends Component {
 
   updateFuelRate(formState) {
     const { flux } = this.context;
-		console.log(formState)
     flux.getActions('fuel-rates').updateFuelRate(formState);
 		this.setState({selectedFuelRate: null});
   }

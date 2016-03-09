@@ -20,7 +20,6 @@ class LoginPage extends Component {
   }
 
   render() {
-  console.log(this.context);
     const { login, password, error } = this.state;
     const disabled = login.length === 0 || password.length === 0;
 

@@ -52,7 +52,6 @@ export default class DashboardCardMedium extends React.Component {
   async completeMission(id) {
 		let mission = await this.context.flux.getActions('missions').getMissionById(id);
         mission = mission.result[0];
-    console.log(mission);
 		mission.status = 'complete';
 		await this.context.flux.getActions('missions').updateMission(mission);
     this.selectItem(null);

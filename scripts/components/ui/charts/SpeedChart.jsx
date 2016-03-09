@@ -17,7 +17,6 @@ export default class SpeedChart extends Chart {
   }
 
   fetch() {
-    //console.log( 'fetching speedchart')
     let track = this.props.track;
     let data = [];
     if (track) {

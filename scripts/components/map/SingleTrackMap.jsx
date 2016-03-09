@@ -13,8 +13,6 @@ export default class SingleTrackMap extends Map {
   constructor(props) {
     super(props);
 
-    console.log('dwqdwdwq');
-    this.CAR_GOV_NUMBER = "А868ММ77";
     this.state = {}
     this.onUpdateCallback = () => {};
   }

@@ -20,14 +20,9 @@ export default class Form extends Component {
   }
 
 	componentDidMount() {
-    //const car = this.props.formState;
-    // getCarImage(car.asuods_id, car.type_id, car.model_id).then( (imageUrl) => {
-    //   this.setState({imageUrl})
-    // });
 	}
 
   mapProperties(property, index) {
-    console.log(property);
     if (property.form && property.form.required) {
       return (
         <Row key={index}>

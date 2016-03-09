@@ -72,6 +72,8 @@ export default class OpenLayersMap extends Component {
       })
     });
 
+    canvasLayer.setZIndex(9999);
+
 
     let controls = []
     controls.push(new ol.control.Zoom({

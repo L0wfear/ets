@@ -24,12 +24,13 @@ class ElementsList extends React.Component {
    }
 
    selectElement({props}) {
-     console.log('SELECT ELEMENT CALL', props.data.id);
-     const id = props.data.id;
+     const id = props.data.id || props.data[this.selectField];
+     console.log('SELECT ELEMENT CALL', id);
      if (this.state.selectedElement && id === this.state.selectedElement.id && !this.doubleClickDisabled) {
    		 return this.setState({ showForm: true });
    	 }
-     let selectedElement = _.find(this.state.elementsList, el => el.id === id);
+     let selectedElement = _.find(this.state.elementsList, el => el.id ? el.id === id : el[this.selectField] === id);
+     console.log(selectedElement);
      this.setState({ selectedElement });
    }
 

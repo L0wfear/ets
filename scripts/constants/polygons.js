@@ -32,7 +32,16 @@ export const polyStyles = {
             color: 'blue',
             width: 1
        })
-    })
+    }),
+    'info': new ol.style.Style({
+         fill: new ol.style.Fill({
+              color: '#6a9e56'
+         }),
+         stroke: new ol.style.Stroke({
+              color: '#6a9e56',
+              width: 1
+         })
+      })
 };
 
 export const pointStyles = {

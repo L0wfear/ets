@@ -27,6 +27,7 @@ export class MissionInfoForm extends Form {
       missionReport: [],
 			missionReportFull: {},
 			selectedObjects: [],
+			selectedODHId: 0,
 		};
 	}
 
@@ -53,6 +54,7 @@ export class MissionInfoForm extends Form {
     this.context.flux.getActions('routes').getRouteById(formState.route_id, true).then(r => {
       this.setState({object_list: r.result && r.result[0] ? r.result[0].object_list : []});
     })
+		this.context.flux.getActions('routes').getGeozones();
   }
 
   componentWillUnmount() {
@@ -62,10 +64,21 @@ export class MissionInfoForm extends Form {
     console.warn('UNMOUNT MISSION INFO FORM');
   }
 
+	handleODHChange(id) {
+		this.setState({selectedODHId: id});
+	}
+
 	render() {
 
 		let state = this.props.formState;
-    let { object_list = []} = this.state;
+		let { selectedODHId } = this.state;
+		let { odhPolys = [] } = this.props;
+    let object_list = _.cloneDeep(this.state.object_list || []);
+		_.each(odhPolys, (v,k) => {
+			if (k === this.state.selectedODHId.toString()) {
+				object_list.push(odhPolys[this.state.selectedODHId]);
+			}
+		})
 		const polys = object_list.map(({shape, name, state, coordinates}) => {
 			if (!shape) {
 				shape = {
@@ -110,9 +123,9 @@ export class MissionInfoForm extends Form {
               </FluxComponent>
             </Col>
 
-            <Col md={6}>
+            <Col md={6} style={{marginTop: -35}}>
 							<Div hidden={this.state.missionReportFull && !this.state.missionReportFull.report_by_odh}>
-              	<MissionReportByODH noFilter={true} selectedReportDataODHS={this.state.missionReport} />
+              	<MissionReportByODH noFilter={true} selectedReportDataODHS={this.state.missionReport} onElementChange={this.handleODHChange.bind(this)}/>
 							</Div>
 							<Div hidden={this.state.missionReportFull && !this.state.missionReportFull.report_by_dt}>
               	<MissionReportByDT noFilter={true} selectedReportDataDTS={this.state.missionReport} />

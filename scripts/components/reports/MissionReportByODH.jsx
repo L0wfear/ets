@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import Table from '../ui/table/DataTable.jsx';
+import ElementsList from '../ElementsList.jsx';
 //78
 let tableMeta = {
 	cols: [
@@ -51,6 +52,7 @@ let tableMeta = {
 			filter: {
 				type: 'select',
 			},
+		//	cssClassName: 'width120'
 		},
 	]
 }
@@ -80,12 +82,13 @@ let MissionReportByODHTable = (props) => {
 
 }
 
-class MissionReportByODH extends Component {
+class MissionReportByODH extends ElementsList {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-		};
+
+		this.selectField = 'odh_id';
+    this.mainListName = 'selectedReportDataODHS';
 	}
 
 	async componentDidMount() {
@@ -95,12 +98,17 @@ class MissionReportByODH extends Component {
 		}
 	}
 
+	selectElement(el) {
+		super.selectElement(el);
+		this.props.onElementChange(el.props.data[this.selectField]);
+	}
+
 	render() {
 		let { noFilter = false } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
-				<MissionReportByODHTable noFilter={noFilter}  data={this.props.selectedReportDataODHS || []} >
+				<MissionReportByODHTable noFilter={noFilter} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={this.selectField} data={this.props.selectedReportDataODHS || []} >
 				</MissionReportByODHTable>
 			</div>
 		);

@@ -2384,6 +2384,7 @@ body {
   table {
     border-collapse: separate;
     border-spacing: 2px;
+    table-layout: auto !important;
     
     box-shadow: rgba(0,2,4,0.15) 0 1px 6px inset; // хз как сделать тень над background ячеек (td)
     //border: 1px solid #d9dada;
@@ -2392,13 +2393,14 @@ body {
       padding: 8px !important;
       //background-color: transparent !important;
       //transition: all .1s linear;
-      word-break: break-all;
+      //word-break: break-all;
     }
     
     thead th {
       color: #272727 !important;
       background-color: #eee !important;
       border-bottom: 2px solid #c1c1c1 !important;
+      white-space: nowrap;
     }
     
     tbody {
@@ -2420,6 +2422,7 @@ body {
       td {
         vertical-align: top;
         background-color: transparent !important;
+        word-break: break-all;
       }
     }
     

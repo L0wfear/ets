@@ -4,10 +4,15 @@ import { Button, Glyphicon } from 'react-bootstrap';
 import moment from 'moment';
 import cx from 'classnames';
 import connectToStores from 'flummox/connect';
-import { getModelById, getModels } from '../../models.js';
 import FuelRateFormWrap from './FuelRateFormWrap.jsx';
 
 let getOperationById = () => {};
+
+let getModelById = (id) =>  {
+	let { flux } = window.__ETS_CONTAINER__;
+	let { modelsIndex } = flux.getStore('objects').state;
+	return modelsIndex[id] || {};
+};
 
 let tableMeta = {
 	cols: [

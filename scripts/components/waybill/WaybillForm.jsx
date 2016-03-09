@@ -291,7 +291,7 @@ class WaybillForm extends Form {
             </Div>
             <Div>
   	      		<Col md={4}>
-  		      		<h4>Счетчик моточасов обор-ния</h4>
+  		      		<h4>Счетчик моточасов оборудования</h4>
   							<Field type="number" label="Выезд, м/ч" error={errors['motohours_equip_start']}
   										 value={state.motohours_equip_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'motohours_equip_start')} />
 
@@ -330,7 +330,7 @@ class WaybillForm extends Form {
           </Div>
 	      	</Row>
 
-	      	<Row>
+          <Row>
 	      		<Col md={8}>
 							<Taxes hidden={!(IS_DISPLAY || IS_CLOSING) || state.status === 'draft' || (IS_DISPLAY && state.taxes && state.taxes.length === 1) || (IS_DISPLAY && !!!state.taxes)}
 										readOnly={!IS_CLOSING}
@@ -341,8 +341,14 @@ class WaybillForm extends Form {
 										onChange={this.handleChange.bind(this, 'taxes')}
 										correctionRate={this.state.fuel_correction_rate}
 										availableOperations={this.state.availableOperations}/>
+            </Col>
+          </Row>
+
+	      	<Row>
+	      		<Col md={8}>
 							<Div className="task-container">
-								<Field type="select" label="Задание" error={errors['mission_id_list']}
+                <h4>Задание</h4>
+								<Field type="select" error={errors['mission_id_list']}
 											 multi={true}
 											 className="task-container"
 											 options={MISSIONS}

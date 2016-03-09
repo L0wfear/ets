@@ -56,7 +56,7 @@ export const waybillSchema = {
 		},
 		{
 			key: 'motohours_equip_start',
-			title: 'Счетчик моточасов обор-ния.Выезд',
+			title: 'Счетчик моточасов оборудования.Выезд',
 			type: 'floatFixed3',
 			required: false,
 		},
@@ -90,7 +90,7 @@ const closingProperties = [
   },
   {
     key: 'motohours_equip_end',
-    title: 'Счетчик моточасов обор-ния.Возврат',
+    title: 'Счетчик моточасов оборудования.Возврат',
     type: 'floatFixed3',
     required: false,
   },

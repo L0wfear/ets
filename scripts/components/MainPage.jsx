@@ -75,7 +75,7 @@ export default React.createClass({
               <Nav pullRight>
                   <NavItem className="navbar-user">
                       <div className="navbar-user__avatar">
-                          <img src="/images/avatar-default.png" className="navbar-user__avatar-img" />
+                          <img src="images/avatar-default.png" className="navbar-user__avatar-img" />
                       </div>
                       <div className="navbar-user__data">
                           <div className="navbar-user__data-type">{this.state.user.role === 'master' ? 'Мастер' : 'Диспетчер'}</div>

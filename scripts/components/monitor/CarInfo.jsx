@@ -105,6 +105,14 @@ export default class CarInfo extends Component {
     }
   }
 
+  componentWillReceiveProps(props) {
+      if (props.car) {
+        this.fetchImage();
+      }
+  }
+
+
+
   render() {
     let car = this.props.car;
 
@@ -252,8 +260,8 @@ export default class CarInfo extends Component {
       this.setState({from_dt: this.state.from_dt_, to_dt: this.state.to_dt_}, this.fetchTrack)
     }
 
-    fetchImage() {
-      let car = this.props.car;
+    fetchImage(props = this.props) {
+      let car = props.car;
       let model_id = car.car.model_id;
       let type_id = car.car.type_id;
       getCarImage(car.id, type_id, model_id).then(url => this.setState({imageUrl: url }))

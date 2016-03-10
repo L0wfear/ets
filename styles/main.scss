@@ -2401,7 +2401,19 @@ body {
       color: #272727 !important;
       background-color: #eee !important;
       border-bottom: 2px solid #c1c1c1 !important;
-      white-space: nowrap;
+      //white-space: nowrap;
+      
+      &[data-title="number"] {
+        white-space: nowrap;
+      }
+    }
+    
+    [data-title^="date_"], [data-title="birthday"], [data-title="phone"] {
+      width: 130px;
+    }
+    
+    [data-title^="timestamp_"], [data-title$="_name"] {
+      width: 150px;
     }
     
     tbody {

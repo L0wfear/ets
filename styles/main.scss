@@ -1137,7 +1137,8 @@ ul.rw-list.rw-list-grouped > li.rw-list-option {
 }
 
 .rw-calendar .rw-header {
-  padding-bottom: 5px
+  padding-bottom: 5px;
+  overflow: hidden;
 }
 
 .rw-calendar .rw-header .rw-btn-left, .rw-calendar .rw-header .rw-btn-right {

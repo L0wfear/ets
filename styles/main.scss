@@ -43,12 +43,12 @@ body.application hr {
   border: none;
   border-radius: 0;
   box-shadow: none !important;
-
+  
   &.disabled, &[disabled] {
     background-color: #ddd;
     color: $colorGray;
   }
-
+  
   &:not(.disabled):not([disabled]):hover, &:focus, &.active {
     background-color: $colorGreen;
     color: #fff;
@@ -70,13 +70,13 @@ body.application hr {
 
 .navbar-default {
   min-height: $navbarHeight;
-
+  
   border: none;
   border-radius: 0;
-
+  
   background-color: #292929;
   color: #fff;
-
+  
   .navbar-nav > li {
     @media (min-width: 768px) {
       & > a {
@@ -85,17 +85,17 @@ body.application hr {
         padding-bottom: $navbarPaddingA;
       }
     }
-
+    
     & > a,
     &.open > a  {
       text-decoration: underline;
     }
-
+    
     &.active > a,
     &:hover > a {
       background-color: #4c4c4c;
     }
-
+    
     & > a,
     & > a:focus,
     & > a:active,
@@ -104,18 +104,18 @@ body.application hr {
       color: inherit;
     }
   }
-
+  
   .navbar-brand {
     color: $colorGray;
     text-decoration: none;
-
+    
     &:hover {
       color: #fff;
     }
-
+    
     @media (min-width: 768px) {
       height: $navbarHeight;
-
+      
       // for: min-height: 64px;
       padding-top: $navbarPaddingA;
       padding-bottom: $navbarPaddingA;
@@ -125,20 +125,20 @@ body.application hr {
 
 .navbar-user {
   text-decoration: none;
-
+  
   & > a {
     display: block !important;
     height: $navbarHeight !important;
     padding: 10px 15px 0 15px !important;
     text-decoration: none !important;
   }
-
+  
   &__avatar {
     float: left;
     width: 43px;
     height: 43px;
     overflow: hidden;
-
+    
     &-img {
       display: block;
       width: 43px;
@@ -148,11 +148,11 @@ body.application hr {
       outline: none;
     }
   }
-
+  
   &__data {
     margin-left: 53px;
     padding-top: 2px;
-
+    
     &-type {
       color: $colorGray;
     }
@@ -177,7 +177,7 @@ body.application hr {
 
 .sidebar__header {
   padding-top: 30px;
-
+  
   &-title {
     //height: 120px;
     font-size: 20px;
@@ -200,7 +200,7 @@ body.application hr {
 .sidebar__list {
   margin: 0 0 20px 0;
   padding: 0;
-
+  
   &-item {
     display: block;
     margin: 0 0 8px 0;
@@ -209,7 +209,7 @@ body.application hr {
     font-size: 16px;
     color: $colorLink;
     cursor: pointer;
-
+    
     &:hover, &.active {
       background-color: $colorGreen;
       color: #fff;
@@ -311,17 +311,17 @@ body.application {
   .row {
     margin: 0;
   }
-
+  
   color: #fff;
   position: absolute;
   top: 84px;
   z-index: 1000;
   left: 20px;
-
+  
   &-filter {
     margin-bottom:5px;
   }
-
+  
   &-fill {
     background: rgba(0,0,0,.75);
     box-shadow: 0 1px 5px rgba(0,0,0,.1);
@@ -329,7 +329,7 @@ body.application {
     padding: 6px 16px;
     margin-bottom: 8px;
   }
-
+  
   &-btn {
     padding: 21px;
     background: rgba(0, 0, 0, .75) no-repeat center center;
@@ -337,7 +337,7 @@ body.application {
     border: none;
     border-radius: 5px;
     position:relative;
-
+    
     /** btn icon */
     &::before {
       display: block;
@@ -351,12 +351,12 @@ body.application {
       border-radius: 5px;
       background-position: -1px -3px;
     }
-
-
+    
+    
     &.filters::before {
       background-image: url('images/icon2.png');
     }
-
+    
     &.search::before {
       background-image: url('images/icon1.png');
     }
@@ -371,7 +371,7 @@ body.application {
     border-radius: 0 6px 6px 0px;
     padding-bottom: 7px;
   }
-
+  
   &.toolbar-search {
     .app-toolbar-fill {
       border-radius: 0px 6px 6px 0px;
@@ -399,29 +399,29 @@ body.application {
   position: absolute;
   left: 183px;
   top: 0px;
-
+  
   &.toggled {
-
+    
     .app-toolbar-btn {
       border-radius:5px 0 0 5px;
     }
-
+    
   }
-
+  
   &:not(.toggled){
-
-
+    
+    
     .have-filter::before {
       border:2px solid #bbb;
       background-position: -2px -4px;
     }
-
+    
   }
 }
 
 
 .list-item-checkbox {
-
+  
   input[type=checkbox] {
     position: absolute;
     left: 7px;
@@ -432,11 +432,11 @@ body.application {
 .toolbar-filters {
   position:absolute;
   left:184px;
-
+  
   &.have-filters:not(.toggled) .filters{
     background-color: #873838;
   }
-
+  
   h5 {
     font-weight: 200;
   }
@@ -454,7 +454,7 @@ body.application {
   right: 0;
   height: 100%;
   overflow: auto;
-
+  
   &-close {
     position: absolute;
     right: 15px;
@@ -463,7 +463,7 @@ body.application {
     fontSize: 18px;
     cursor: pointer;
   }
-
+  
   .toggle-tracking-mode {
     .glyphicon {
       background-color: #eee;
@@ -542,7 +542,7 @@ body.application {
   border: 0;
   padding: 0;
   outline: none;
-
+  
   &:hover {
     color: #31708f;
   }
@@ -604,19 +604,19 @@ body.application {
   padding: 10px 15px;
   text-align: left;
   outline: none;
-
+  
   img {
     width: 15px;
     height: 15px;
     margin-right: 5px;
   }
-
+  
   &:last-child {
     border: none;
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
   }
-
+  
   &:first-child {
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
@@ -861,7 +861,7 @@ ul.rw-list > li.rw-list-option, ul.rw-selectlist > li.rw-list-option {
   overflow: hidden;
   position: relative;
   padding: 1px 6px 2px 10px;
-
+  
   img {
     position: absolute;
     left: 2px;
@@ -1060,11 +1060,11 @@ ul.rw-list.rw-list-grouped > li.rw-list-option {
   font-size: 12px;
   color: #eee;
   text-overflow: ellipsis;
-
+  
   border: 0px none;
   padding: 0px;
   border-radius: 0;
-
+  
   /*overflow: hidden;
   white-space: nowrap;
   padding-right: 20px;*/
@@ -1137,7 +1137,8 @@ ul.rw-list.rw-list-grouped > li.rw-list-option {
 }
 
 .rw-calendar .rw-header {
-  padding-bottom: 5px
+  padding-bottom: 5px;
+  overflow: hidden;
 }
 
 .rw-calendar .rw-header .rw-btn-left, .rw-calendar .rw-header .rw-btn-right {
@@ -1526,9 +1527,9 @@ ul.rw-list.rw-list-grouped > li.rw-list-option {
 
 .legend-wrapper {
   width: 175px;
-
+  
   > ul {
-
+    
     list-style-type: none;
     font-weight: 200;
     font-size: 14px;
@@ -1742,24 +1743,24 @@ body {
 }
 
 .ol-popup {
-
+  
   width: 405px;
   white-space: nowrap;
   font-weight: 200;
   padding: 0px !important;
   border-radius: 10px;
   box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
-
+  
   &-content {
     overflow:hidden;
   }
-
+  
   &-closer {
     font-size:14px;
     color: #c3c3c3;
   }
-
-
+  
+  
   .header {
     border-bottom: 1px solid #eee;
     padding: 6px 23px 6px 6px;
@@ -1797,7 +1798,7 @@ body {
       font-size: 12px;
       border-bottom: 1px transparent;
     }
-
+    
     .nsat {
       border-right: 0 none;
       padding-top: 10px;
@@ -1805,7 +1806,7 @@ body {
       width: 110px;
       text-align: center;
     }
-
+    
     .distance {
       width: 75px;
       text-align: center;
@@ -1813,7 +1814,7 @@ body {
       padding-top: 10px;
       font-size: 14px;
     }
-
+    
     .coords {
       font-size:12px;
       width: 100px;
@@ -1933,7 +1934,7 @@ body {
   .dashboard-sidebar *{
     display:none;
   }
-
+  
   .dashboard-sidebar .chart-stage {
     display:block;
   }
@@ -1941,12 +1942,12 @@ body {
 
 
 .car-info {
-
+  
   &-plate {
     font-weight: 200;
     text-align: center;
   }
-
+  
   .track-btn {
     position: absolute;
     right: 14px;
@@ -1963,22 +1964,22 @@ body {
 
 
 .track-legend {
-
+  
   width: 150px;
   text-align: left;
   position: absolute;
   top: 8px;
   left: 11px;
   font-size: 13px;
-
+  
   &-item {
-
+    
   }
-
+  
   &-header {
     margin-bottom: 0px;
   }
-
+  
   &-point {
     width:10px;
     height:10px;
@@ -1987,9 +1988,9 @@ body {
     display:inline-block;
     margin-right:3px;
   }
-
+  
   &-text {
-
+    
     display:inline-block;
   }
 }
@@ -2014,7 +2015,7 @@ body {
   border-radius: 6px;
   top:230px;
   left: 10px;
-
+  
   button {
     background-color: transparent;
   }
@@ -2024,7 +2025,7 @@ body {
   padding: 10px 0;
   border-top: 1px solid #ddd;
   margin: 0 5px;
-
+  
   &__item {
     text-align: left;
     font-weight: 200;
@@ -2062,7 +2063,7 @@ body {
 
 .ets-table {
   width:100%;
-
+  
   padding-top: 8px;
   table {
     width: 100%;
@@ -2109,7 +2110,7 @@ body {
       cursor: pointer;
     }
   }
-
+  
   &-info {
     float:left;
     margin-left:30px;
@@ -2212,7 +2213,7 @@ body {
 
 .modal-content {
   border-radius: 0;
-
+  
   .chart-datepicker {
     padding-bottom:2px;
   }
@@ -2247,13 +2248,13 @@ body {
   }
   .ets-table {
     margin-top: 16px;
-
+    
     .ets-table-row:last-of-type {
       font-weight: bold;
     }
   }
-
-
+  
+  
   .Select-control {
     width: 231px;
     overflow: visible;
@@ -2300,17 +2301,17 @@ body {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-
+  
   min-width: 300px;
   max-height: 300px;
   overflow: scroll;
-
+  
   .rw-select {
     .rw-btn {
       width: 0.7em;
     }
   }
-
+  
   .rw-calendar .rw-header .rw-btn-view {
     width: 55% !important;
   }
@@ -2320,7 +2321,7 @@ body {
 }
 
 .filter-container.left {
-
+  
   margin-left: -255px !important;
 }
 
@@ -2379,56 +2380,68 @@ body {
 
 .griddle-body {
   margin: 15px auto;
-
+  
   // !!! нужно избавиться от !important (убрать inline-стили у td и th)
   table {
     border-collapse: separate;
     border-spacing: 2px;
     table-layout: auto !important;
-
+    
     box-shadow: rgba(0,2,4,0.15) 0 1px 6px inset; // хз как сделать тень над background ячеек (td)
     //border: 1px solid #d9dada;
-
+    
     td, th {
       padding: 8px !important;
       //background-color: transparent !important;
       //transition: all .1s linear;
       //word-break: break-all;
     }
-
+    
     thead th {
       color: #272727 !important;
       background-color: #eee !important;
       border-bottom: 2px solid #c1c1c1 !important;
-      white-space: nowrap;
+      //white-space: nowrap;
+      
+      &[data-title="number"] {
+        white-space: nowrap;
+      }
     }
-
+    
+    [data-title^="date_"], [data-title="birthday"], [data-title="phone"] {
+      width: 130px;
+    }
+    
+    [data-title^="timestamp_"], [data-title$="_name"] {
+      width: 150px;
+    }
+    
     tbody {
       &:first-of-type {
         tr {
           cursor: pointer;
-
+          
           &:nth-child(even) > td {
             background-color: #f7f7f7 !important;
           }
-
+          
           &:hover > td, &.selected-row > td {
             background-color: $colorGreen !important;
             color: white !important;
           }
         }
       }
-
+      
       td {
         vertical-align: top;
         background-color: transparent !important;
         word-break: break-all;
       }
     }
-
+    
   }
-
-
+  
+  
 }
 
 div.none {
@@ -2540,7 +2553,6 @@ div.none {
 
 .width120 {
   width: 120px;
-  max-width: 120px;
 }
 .width10-200 {
   width: 200px;
@@ -2548,20 +2560,17 @@ div.none {
 }
 .width300 {
   width: 300px;
-  max-width: 300px;
 }
 .width60 {
   width: 60px;
-  max-width: 60px;
 }
 .width10 {
   width: 10px;
-  max-width: 10px;
 }
 
 .routes-list {
   .list-group-item {
-
+    
     display: block;
     max-width: 300px;
   }
@@ -2615,7 +2624,7 @@ div.none {
   z-index: 999;
   top: 50px;
   right: 20px;
-
+  
   background: #333;
   color: white;
   border: 2px solid #333;
@@ -2648,7 +2657,7 @@ div.none {
   .route-odhs-on-map {
     border: none;
   }
-
+  
 }
 .overflow-scroll {
   overflow-y:scroll;
@@ -2675,7 +2684,7 @@ div.none {
   .dashboard-card-info {
     position: absolute;
     top: 0;
-
+    
     /*h5 {
       max-width: 95%;
       margin-top: -7px;
@@ -2690,20 +2699,20 @@ div.none {
     ul {
       padding-left: 10px;
     }
-
+    
     .well {
       padding: 0 20px 5px 20px;
       border: none;
       background-color: #f2f2f2;
       box-shadow: none;
-
+      
       h5 {
         position: relative;
         overflow: hidden;
         padding: 15px 40px 15px 20px;
         margin: 0 -20px;
         font-weight: bold;
-
+        
         &:after {
           display: block;
           content: '';
@@ -2730,7 +2739,7 @@ div.none {
     position: absolute;
     right: 0;
     top: 100px;
-
+    
     font-size: 18px;
     margin-right: -8px;
   }
@@ -2751,29 +2760,29 @@ div.none {
     font-size: 26px;
     line-height: 2.2;
   }
-
+  
   .dashboard-card-sm {
     text-align: center;
-
+    
     > .panel > .panel-body {
       padding: 15px 20px;
     }
   }
-
+  
   .dashboard-card.panel {
-
+    
     > .panel-body {
       padding: 0;
       min-height: 20px;
     }
   }
-
+  
   .dashboard-card-sm > .panel,
   .dashboard-card.panel {
     background-color: #f2f2f2;
     border: none;
     box-shadow: none;
-
+    
     > .panel-heading {
       padding: 15px 52px 15px 20px;
       position: relative;
@@ -2783,7 +2792,7 @@ div.none {
       color: inherit;
       background: none;
       border: none;
-
+      
       &:after {
         display: block;
         content: '';
@@ -2795,16 +2804,16 @@ div.none {
         background-color: #d6d6d6;
       }
     }
-
+    
     &.panel-danger {
       background-color: #ffd7d7;
-
+      
       > .panel-heading:after {
         background-color: #fff;
       }
     }
   }
-
+  
   .card-glyph-remove {
     position: absolute;
     z-index: 20;
@@ -2812,20 +2821,20 @@ div.none {
     top: 10px;
     cursor: pointer;
   }
-
+  
   .menu-down-block {
     height: 20px;
     hr {
       margin-bottom: 5px !important;
     }
   }
-
+  
   .dashboard-card-items {
     .dashboard-card-item{
       position: relative;
       overflow: hidden;
       padding: 15px 0;
-
+      
       & + .dashboard-card-item {
         &:after {
           display: block;
@@ -2833,19 +2842,19 @@ div.none {
           position: absolute;
           width: 100%;
           height: 1px;
-          bottom: 1px;
+          top: 1px;
           left: 20px;
           background-color: #d6d6d6;
         }
       }
     }
   }
-
+  
   .dashboard-card-title {
     max-width: 90%;
     display: inline-block;
   }
-
+  
   .dashboard-card-refresh {
     position: absolute;
     right: 10px;
@@ -2859,11 +2868,11 @@ div.none {
     background-color: $colorButton;
     cursor: pointer;
   }
-
-
-
-
-
+  
+  
+  
+  
+  
 }
 
 .glyphicon-spin {
@@ -2900,7 +2909,7 @@ div.none {
 .faxogramms-date-range {
   text-align: center;
   .faxogramms-date {
-
+    
   }
   .date-divider {
     display: inline-block;
@@ -2917,7 +2926,7 @@ div.none {
 
 .assignToWaybillCheck {
   .form-group {
-
+    
     display: inline-block;
     margin-left: 30px;
     margin-right: 20px;
@@ -2930,21 +2939,21 @@ div.none {
 
 
 .car-info-tracking {
-
+  
   .till-now-checkbox {
     position: absolute;
     top: -26px;
     right: 20px;
     font-weight: 200;
   }
-
+  
   .reload-button {
     padding: 6px 9px;
     height: 34px;
     margin-left: 5px;
     margin-top: -3px;
   }
-
+  
   .gradient-checkbox {
     position: absolute;
     top: -26px;
@@ -2994,7 +3003,7 @@ div.none {
 .destination-points {
   margin-top: 20px;
   .destination-point {
-
+    
     .form-group {
       display: inline-block;
     }

@@ -51,7 +51,7 @@ export function getToday9am() {
 export function getTomorrow9am() {
   let now = new Date();
 
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 9, 0);
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 8, 59);
 }
 
 export function getToday0am() {

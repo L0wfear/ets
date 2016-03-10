@@ -161,21 +161,24 @@ class WaybillFormWrap extends Component {
   }
 
 
-	async handleFormSubmit(formState, callback) {
+	async handleFormSubmit(state, callback) {
+		let formState = _.cloneDeep(state);
 		let billStatus = formState.status;
 		const { flux, setLoading } = this.context;
 
 		if (!!!billStatus) {
 			if (typeof callback === 'function') {
 				formState.status = 'draft';
-				flux.getActions('waybills').create(formState).then((r) => {
-					const id = _.max(r.result, res => res.id).id;
-					formState.status = 'active';
-					formState.id = id;
-					flux.getActions('waybills').update(formState).then(() => {
-						callback(id);
-					});
-				});
+				let r = await flux.getActions('waybills').create(formState);
+				const id = _.max(r.result, res => res.id).id;
+				formState.status = 'active';
+				formState.id = id;
+				try {
+					await flux.getActions('waybills').update(formState);
+				} catch (e) {
+					return;
+				}
+				callback(id);
 			} else {
 				formState.status = 'draft';
 				flux.getActions('waybills').create(formState);
@@ -184,9 +187,13 @@ class WaybillFormWrap extends Component {
 		} else if (billStatus === 'draft') {
 			if (typeof callback === 'function') {
 				formState.status = 'active';
-				flux.getActions('waybills').update(formState).then(() => {
-					callback();
-				});
+				try {
+					await flux.getActions('waybills').update(formState);
+				} catch (e) {
+					return;
+				}
+				callback();
+				flux.getActions('waybills').get();
 				this.props.onFormHide();
 			} else {
 				try {

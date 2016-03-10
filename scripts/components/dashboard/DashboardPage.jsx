@@ -42,6 +42,7 @@ class DashboardPage extends React.Component {
 
   init() {
     let { flux } = this.context;
+    flux.getActions('objects').getModels();
     let actions = flux.getActions('dashboard');
     let components = flux.getStore('dashboard').getComponentsByRole();
     _.each(components, c => c.side ? actions.getDashboardSideComponent(c.key) : actions.getDashboardComponent(c.key));

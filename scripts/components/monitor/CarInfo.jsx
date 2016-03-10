@@ -154,7 +154,7 @@ export default class CarInfo extends Component {
         {<button className={trackBtnClass} onClick={this.toggleCarTracking.bind(this)} title="Следить за машиной"><span className={trackBtnIconClass}></span>&nbsp;{isTrackingMode ? 'Следим' : 'Следить'}</button>}
           <button className={zoomToTrackClass} onClick={isTrackLoaded && this.zoomToTrack.bind(this)} title="Показать маршрут"><span className="glyphicon glyphicon-resize-full"></span>&nbsp;Маршрут</button>
         {imageUrl ?
-          <img src={config.backend + config.images + imageUrl} style={{
+          <img src={config.backend.replace('/services', '') + config.images + imageUrl} style={{
             margin: 10,
             width: 250,
             minHeight: 100
@@ -221,6 +221,7 @@ export default class CarInfo extends Component {
       let reloadBtnCN = 'glyphicon glyphicon-repeat ' + (tillNow && marker.hasTrackLoaded() ? 'tracking-animate' : '');
 
       let showGradient = store.state.showTrackingGradient;
+      console.log(this.state.imageUrl)
 
       return (
         <div className="car-info-tracking">

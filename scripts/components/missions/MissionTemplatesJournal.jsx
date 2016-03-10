@@ -106,7 +106,7 @@ class MissionTemplatesJournal extends ElementsList {
 		//this.keyPressDisabled = true;
 		this.doubleClickDisabled = true;
 		this.state = {
-			selectedMission: null,
+			selectedElement: null,
       checkedMissions: {},
 			formType: 'ViewForm',
 		};

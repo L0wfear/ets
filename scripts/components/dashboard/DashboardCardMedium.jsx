@@ -109,7 +109,6 @@ export default class DashboardCardMedium extends React.Component {
           </Div>
 
           <Div className="menu-down-block" hidden={otherItems.length === 0}>
-            <hr/>
             <Div style={{textAlign: 'center'}} hidden={this.state.fullListOpen}>
               <Glyphicon glyph="menu-down" className="pointer" onClick={this.toggleFullList.bind(this)}/>
             </Div>

@@ -369,7 +369,7 @@ class WaybillForm extends Form {
 	      <Modal.Footer>
 					<Div hidden={state.status === 'closed'}>
 						<Div hidden={state.status !== 'draft' && !IS_CREATING} className="inline-block">
-			    		<Dropdown id="waybill-print-dropdown" disabled={!this.props.canSave} onSelect={this.props.handlePrint}>
+			    		<Dropdown id="waybill-print-dropdown" dropup disabled={!this.props.canSave} onSelect={this.props.handlePrint}>
 			        	<Dropdown.Toggle  disabled={!this.props.canSave}>
 			          	<Glyphicon glyph="print" /> Выдать
 			          </Dropdown.Toggle>

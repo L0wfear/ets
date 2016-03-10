@@ -165,6 +165,7 @@ export class MissionsJournal extends ElementsList {
 		const { flux } = this.context;
 		flux.getActions('missions').getMissions();
     flux.getActions('objects').getTechOperations();
+    flux.getActions('objects').getModels();
     flux.getActions('routes').getRoutes();
     flux.getActions('objects').getCars();
     flux.getActions('missions').getMissionSources();

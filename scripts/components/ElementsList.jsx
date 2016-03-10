@@ -30,7 +30,6 @@ class ElementsList extends React.Component {
    		 return this.setState({ showForm: true });
    	 }
      let selectedElement = _.find(this.state.elementsList, el => el.id ? el.id === id : el[this.selectField] === id);
-     console.log(selectedElement);
      this.setState({ selectedElement });
    }
 

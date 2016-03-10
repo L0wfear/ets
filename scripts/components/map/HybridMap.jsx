@@ -68,7 +68,12 @@ export default class HybridMap extends Map {
       if (poly.shape && poly.shape.type === 'LineString') {
         feature.setStyle(getVectorArrowStyle(feature));
       } else if (poly.shape && poly.shape.type !== 'Point') {
-        feature.setStyle(polyStyles['info']);
+        console.log(poly.isInfo)
+        if (poly.isInfo) {
+          feature.setStyle(polyStyles['info']);
+        } else {
+          feature.setStyle(polyStyles[poly.state]);
+        }
       } else {
         if (this.props.selectedObjects) {
           let succeed = false;

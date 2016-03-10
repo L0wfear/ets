@@ -72,25 +72,29 @@ export class MissionInfoForm extends Form {
 
 		let state = this.props.formState;
 		let { selectedODHId } = this.state;
-		let { odhPolys = [] } = this.props;
+		let { geozonePolys = [] } = this.props;
     let object_list = _.cloneDeep(this.state.object_list || []);
-		_.each(odhPolys, (v,k) => {
+		_.each(geozonePolys, (v,k) => {
 			if (k === this.state.selectedODHId.toString()) {
-				object_list.push(odhPolys[this.state.selectedODHId]);
+				let poly = geozonePolys[this.state.selectedODHId];
+				poly.isInfo = true;
+				object_list.push(poly);
 			}
 		})
-		const polys = object_list.map(({shape, name, state, coordinates}) => {
+		const polys = object_list.map(({shape, name, state, coordinates, isInfo}) => {
 			if (!shape) {
 				shape = {
 					type: "Point",
 					coordinates
 				};
 			}
-			return {
-				shape,//: JSON.parse(shape),
+			let object = {
+				shape,
 				name,
 				state,
+				isInfo
 			}
+			return object;
 		});
     if (!this.props.formState.car_gov_number) return <div/>;
 

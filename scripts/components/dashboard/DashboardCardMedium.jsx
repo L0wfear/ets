@@ -7,6 +7,7 @@ import DashboardCardHeader from './DashboardCardHeader.jsx';
 import DashboardItemChevron from './DashboardItemChevron.jsx';
 import cx from 'classnames';
 import {getFormattedDateTimeSeconds} from '../../utils/dates.js';
+import moment from 'moment';
 
 let getDataTraveledYet = (data) => {
   if (typeof data === 'string') {
@@ -16,7 +17,7 @@ let getDataTraveledYet = (data) => {
 }
 
 let getEstimatedFinishTime = (data) => {
-  if (typeof data === 'string') {
+  if (typeof data === 'string' && data.indexOf('2') === -1) {
     return data;
   }
   return moment(data).format(`${global.APP_DATE_FORMAT} HH:mm`);

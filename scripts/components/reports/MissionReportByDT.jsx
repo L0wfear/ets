@@ -81,7 +81,7 @@ let MissionReportByDTTable = (props) => {
 
 }
 
-class MissionReportByDT extends Component {
+class MissionReportByDT extends ElementsList {
 
 	constructor(props) {
 		super(props);

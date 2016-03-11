@@ -111,8 +111,6 @@ export default class CarInfo extends Component {
       }
   }
 
-
-
   render() {
     let car = this.props.car;
 

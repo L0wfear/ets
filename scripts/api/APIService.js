@@ -2,7 +2,7 @@ import { getUrl, getJSON, postJSON, deleteJSON, putJSON } from '../adapter.js';
 import { getWarningNotification } from '../utils/notifications.js';
 
 let mocks = {
-  
+
 }
 
 export default class APIService {
@@ -49,9 +49,9 @@ export default class APIService {
     });
   }
 
-  update(payload = {}, callback) {
+  update(payload = {}, callback, type = 'form') {
     console.info('API SERVICE PUT', this.firstUrl);
-    return putJSON(this.url, payload).then((r) => {
+    return putJSON(this.url, payload, type).then((r) => {
       if (r.warnings && r.warnings.length) {
         r.warnings.map(w => {
           global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification(w));

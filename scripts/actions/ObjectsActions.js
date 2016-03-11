@@ -6,7 +6,7 @@ import { getOkrugs } from '../okrugs.js';
 import { getOwners } from '../owners.js';
 import { isEmpty } from '../utils/functions.js';
 import { createValidDateTime } from '../utils/dates.js';
-import { FaxogrammService, WorkKindsService, TechnicalOperationService, FuelTypeService, CarService, CustomersService, TypesService } from '../api/Services.js';
+import { FaxogrammService, WorkKindsService, TechnicalOperationService, FuelTypeService, CarService, CustomersService, TypesService, CarFuncTypeService } from '../api/Services.js';
 
 export default class ObjectsActions extends Actions {
 
@@ -48,12 +48,24 @@ export default class ObjectsActions extends Actions {
     return TechnicalOperationService.get();
   }
 
+  updateTechOperation(data) {
+    const payload = _.cloneDeep(data);
+    delete payload.season_name;
+    delete payload.work_kind_name;
+    delete payload.check_type_name;
+    return TechnicalOperationService.update(payload, null, 'json');
+  }
+
   getODHs() {
     return getODHs();
   }
 
   getWorkKinds() {
     return WorkKindsService.get();
+  }
+
+  getCarFuncTypes() {
+    return CarFuncTypeService.get();
   }
 
   getFaxogramms(page, create_date_from, create_date_to) {

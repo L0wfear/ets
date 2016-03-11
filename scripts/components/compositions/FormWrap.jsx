@@ -2,8 +2,23 @@ import React from 'react';
 import { validateRow } from '../../validate/validateRow.js';
 import { FluxContext } from '../decorators/index.js';
 
+/**
+ * FormWrap базовый класс хранения и работы с состоянием формы
+ * @constructor дефолтный
+ * @validate валидация состояния формы в соответствии со схемой (this.schema обязателен)
+ * @handleFormStateChange обработка изменения состояния формы
+ * @handleFormSubmit обработка отправки формы
+ * @render дефолтный, обязательно переопределяется
+ */
+
 @FluxContext
 class FormWrap extends React.Component {
+
+  static propTypes = {
+    showForm: React.PropTypes.bool.isRequired,
+    //element: React.PropTypes.object.isRequired,
+    onFormHide: React.PropTypes.func.isRequired,
+  }
 
   constructor(props){
     super(props);
@@ -19,6 +34,7 @@ class FormWrap extends React.Component {
   componentWillReceiveProps(props) {
     if (props.showForm) {
       if (props.element !== null ) {
+        console.log(props.element)
         const formState = _.cloneDeep(props.element);
         this.setState({formState});
       } else {
@@ -28,12 +44,12 @@ class FormWrap extends React.Component {
   }
 
   validate(formState, errors) {
-  	let formErrors = _.clone(errors);
     if (typeof this.schema === 'undefined') return formErrors;
+  	let formErrors = _.clone(errors);
     let schema = this.schema;
   	_.each(schema.properties, prop => {
   		formErrors[prop.key] = validateRow(prop, formState[prop.key]);
-  	});
+    })
 
   	return formErrors;
   }
@@ -55,7 +71,9 @@ class FormWrap extends React.Component {
   }
 
   handleFormSubmit() {
-    this.props.onFormHide();
+    if (typeof this.props.onFormHide === 'function') {
+      this.props.onFormHide();
+    }
   }
 
   render() {
@@ -64,7 +82,49 @@ class FormWrap extends React.Component {
 
 }
 
-FormWrap.propTypes = {
-};
-
 export default FormWrap;
+
+
+/* Пример создания класса, наследующего FormWrap (скопировать, убрать комментарии, заменить форму): */
+
+// import React, { Component } from 'react';
+// import _ from 'lodash';
+// import Div from '../ui/Div.jsx';
+// import MissionForm from './MissionForm.jsx';
+// import FormWrap from '../compositions/FormWrap.jsx';
+// import { getDefaultMission } from '../../stores/MissionsStore.js';
+// import { isNotNull, isEmpty } from '../../utils/functions.js';
+// import { missionSchema, missionClosingSchema } from '../models/MissionModel.js';
+//
+// class MissionFormWrap extends FormWrap {
+//
+// 	constructor(props) {
+// 		super(props);
+//
+// 		this.schema = missionSchema;
+// 	}
+//
+// 	handleFormSubmit(formState) {
+// 		const { flux } = this.context;
+// 		flux.getActions('missions').createMission(formState);
+//
+// 		this.props.onFormHide();
+// 	}
+//
+// 	render() {
+//
+// 		return 	<Div hidden={!this.props.showForm}>
+// 							<MissionForm formState = {this.state.formState}
+// 													 onSubmit={this.handleFormSubmit.bind(this)}
+// 													 handleFormChange={this.handleFormStateChange.bind(this)}
+// 													 show={this.props.showForm}
+// 													 onHide={this.props.onFormHide}
+// 													 fromWaybill={this.props.fromWaybill}
+// 													 {...this.state}/>
+// 						</Div>
+//
+// 	}
+//
+// }
+//
+// export default MissionFormWrap;

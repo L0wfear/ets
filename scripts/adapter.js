@@ -133,7 +133,6 @@ export function putJSON(url, data, type = 'form') {
     data.token = token;//url += `?token=${token}`;
   }
   let body;
-  type = 'form';
   switch (type) {
     case 'form':
       url += '?token=' + token;

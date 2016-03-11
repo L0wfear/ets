@@ -104,7 +104,6 @@ export class MissionForm extends Form {
 
 		let IS_CREATING = !!!state.status;
     let IS_POST_CREATING = false;
-		let IS_DISPLAY = !!state.status && state.status !== 'not_assigned';
 
     let title = `Задание № ${state.number || ''}`;
 
@@ -114,6 +113,9 @@ export class MissionForm extends Form {
 
 		let route = this.state.selectedRoute;
 		let odh_list = route ? route.odh_list || route.object_list : [];
+
+		let isDeferred = moment(state.date_start).toDate().getTime() > moment().toDate().getTime();
+		let IS_DISPLAY = !!state.status && state.status !== 'not_assigned' && !isDeferred;
 
 		return (
 			<Modal {...this.props} bsSize="large">

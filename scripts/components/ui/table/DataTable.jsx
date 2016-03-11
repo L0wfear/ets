@@ -195,14 +195,16 @@ class Table extends React.Component {
         <Div className="some-header" hidden={noFilter}>{title}
           <div className="waybills-buttons">
             <ClickOutHandler onClickOut={this.closeFilter.bind(this)}>
-              <FilterButton direction={'left'} show={this.state.filterModalIsOpen} active={_.keys(this.state.filterValues).length} onClick={this.toggleFilter.bind(this)}/>
-              <FilterModal onSubmit={this.saveFilter.bind(this)}
+              <div className="filter-wrap">
+                <FilterButton direction={'left'} show={this.state.filterModalIsOpen} active={_.keys(this.state.filterValues).length} onClick={this.toggleFilter.bind(this)}/>
+                <FilterModal onSubmit={this.saveFilter.bind(this)}
                            show={this.state.filterModalIsOpen}
                            onHide={this.closeFilter.bind(this)}
                            values={this.state.filterValues}
                            direction={'left'}
                            tableMeta={this.props.tableMeta}
                            tableData={this.props.results} />
+              </div>
             </ClickOutHandler>
             {this.props.children}
           </div>

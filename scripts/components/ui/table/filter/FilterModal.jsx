@@ -121,16 +121,16 @@ class FilterModal extends React.Component {
 
     return (
       <Div className={className} hidden={!this.props.show}>
-
-        <Modal.Body>
-          {filterRows}
-        </Modal.Body>
-
-        <Modal.Footer>
-          <Button onClick={this.submit.bind(this)}>Применить</Button>
-	      	<Button onClick={this.reset.bind(this)}>Сброс</Button>
-	      </Modal.Footer>
-
+        <Div className="filter-container-window">
+          <Modal.Body>
+            {filterRows}
+          </Modal.Body>
+  
+          <Modal.Footer>
+            <Button onClick={this.submit.bind(this)}>Применить</Button>
+            <Button onClick={this.reset.bind(this)}>Сброс</Button>
+          </Modal.Footer>
+        </Div>
       </Div>
     );
 

@@ -2283,28 +2283,36 @@ body {
   border: none !important;
 }
 
+.filter-wrap {
+  position: relative;
+  line-height: 1.5; // copy .btn
+  margin-left: 10px; // copy .btn
+}
+
 .filter-container {
   z-index: 1000;
-  display: block;
   position: absolute;
-  margin-left: 13px;
-  font-size: 14px;
-  margin-top: 3px;
-  background-color: #EEE;
-  -webkit-box-shadow: 0 0 0 3px #CBCBCB;
-  -moz-box-shadow: 0 0 0 3px #CBCBCB;
-  box-shadow: 0 0 0 3px #CBCBCB;
-  white-space: normal;
+  top: 0;
+  
+  display: block;
+  padding: 30px 0 0 0;
+  
   line-height: normal;
+  font-size: 14px;
+  
+  background-color: #EEE;
+  
+  white-space: normal;
   color: #000;
   cursor: default;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
   
-  min-width: 300px;
-  max-height: 300px;
-  overflow: scroll;
+  border: 1px solid #c1c1c1;//$colorButton;
+  
+  &-window {
+    min-width: 298px;
+    max-height: 267px;
+    overflow: scroll;
+  }
   
   .rw-select {
     .rw-btn {
@@ -2318,40 +2326,32 @@ body {
   .rw-i-calendar {
     margin-left: -5px;
   }
+  
+  .modal-body {
+    padding-top: 5px;
+    
+    > .row + .row {
+      margin-top: 10px;
+    }
+  }
+  
+  .modal-footer {
+    background: transparent;
+  }
 }
 
 .filter-container.left {
-  
-  margin-left: -255px !important;
+  right: 0;
 }
 
-.filter-container::before, .filter-button.open::after {
-  position: absolute;
-  top: -9px;
-  /* right: 91px; */
-  width: 38px;
-  height: 9px;
-  background-color: #eee;
-  border-right: 3px solid #CBCBCB;
-  border-left: 3px solid #CBCBCB;
-  content: '';
-}
-
-.filter-button.open::after {
-  top: 27px;
-  z-index: 9999;
-}
-
-.filter-container.right::before, .filter-button.open.right::after{
-  left: -3px;
-}
-
-.filter-container.left::before, .filter-button.open.left::after{
-  right: -3px;
+.filter-container.right {
+  left: 0;
 }
 
 .filter-button {
   position: relative;
+  z-index: 1010;
+  margin-left: 0 !important;
 }
 
 .waybills-buttons {
@@ -2703,7 +2703,7 @@ div.none {
     .well {
       padding: 0 20px 5px 20px;
       border: none;
-      background-color: #f2f2f2;
+      background-color: #eee;
       box-shadow: none;
       
       h5 {
@@ -2779,7 +2779,7 @@ div.none {
   
   .dashboard-card-sm > .panel,
   .dashboard-card.panel {
-    background-color: #f2f2f2;
+    background-color: #eee;
     border: none;
     box-shadow: none;
     

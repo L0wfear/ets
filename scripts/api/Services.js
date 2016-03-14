@@ -28,6 +28,8 @@ export const CustomersService = new APIService('/customers/', useMocks);
 export const MissionTemplatesForFaxogramm = new APIService('/get_mission_templates_for_faxogramm/', useMocks);
 export const MissionLastReportService = new APIService('/mission_last_report/', useMocks);
 export const CarFuncTypeService = new APIService('/car_func_type/', useMocks);
+export const DutyMissionService = new APIService('/duty_mission/', useMocks);
+export const DutyMissionTemplateService = new APIService('/duty_mission_template/', useMocks);
 
 // REPORTS
 

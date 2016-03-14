@@ -97,8 +97,6 @@ export default class DashboardCardMedium extends React.Component {
       action = itemAction.bind(null, selectedItem.data || {});
     }
 
-    console.log(data);
-
     return (
       <Div md={12}>
         <Panel className="dashboard-card" header={Header} bsStyle="success" ref="card">

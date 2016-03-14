@@ -1,6 +1,6 @@
 import { Store } from 'flummox';
 import _ from 'lodash';
-import { getToday9am, getTomorrow9am } from '../utils/dates.js';
+import { getToday9am, getTomorrow9am, getDatesByShift } from '../utils/dates.js';
 
 class MissionsStore extends Store {
 
@@ -23,6 +23,8 @@ class MissionsStore extends Store {
     this.register(missionsActons.getMissionReportByODHs, this.handleGetMissionReportByODHs);
     this.register(missionsActons.getMissionReportByPoints, this.handleGetMissionReportByPoints);
     this.register(missionsActons.getMissionReportByDTs, this.handleGetMissionReportByDTs);
+    this.register(missionsActons.getDutyMissions, this.handleGetDutyMissions);
+
 
     this.state = {
       missionsList: [],
@@ -31,6 +33,7 @@ class MissionsStore extends Store {
       missionReportsList: [],
       selectedReportData: [],
       selectedReportDataODHS: [],
+      dutyMissionsList: [],
     };
 
   }
@@ -45,6 +48,10 @@ class MissionsStore extends Store {
 
   handleGetMissionTemplates(missionTemplate) {
     this.setState({missionTemplatesList: missionTemplate.result});
+  }
+
+  handleGetDutyMissions(dutyMissions) {
+    this.setState({dutyMissionsList: dutyMissions.result});
   }
 
   getMissionSourceById(id) {
@@ -87,6 +94,28 @@ export function getDefaultMission() {
     description: "",
     date_start: getToday9am(),
     date_end: getTomorrow9am(),
+  };
+}
+
+export function getDefaultDutyMission() {
+  let dates = getDatesByShift();
+  return {
+    plan_date_start: dates[0],
+    plan_date_end: dates[1],
+    fact_date_start: dates[0],
+    fact_date_end: dates[1],
+    brigade_id_list: [],
+    comment: '',
+  };
+}
+
+export function getDefaultDutyMissionTemplate() {
+  return {
+  };
+}
+
+export function getDefaultDutyMissionsCreationTemplate() {
+  return {
   };
 }
 

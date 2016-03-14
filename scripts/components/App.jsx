@@ -5,6 +5,8 @@ import React, { Component } from 'react';
 import LoginPage from './LoginPage.jsx';
 import WaybillJournal from './waybill/WaybillJournal.jsx';
 import MissionsJournal from './missions/MissionsJournal.jsx';
+import DutyMissionsJournal from './missions/DutyMissionsJournal.jsx';
+import DutyMissionTemplatesJournal from './missions/DutyMissionTemplatesJournal.jsx';
 import MissionTemplatesJournal from './missions/MissionTemplatesJournal.jsx';
 import RoutesList from './route/RoutesList.jsx';
 import MainPage from './MainPage.jsx';
@@ -117,6 +119,8 @@ const routes = (
       <Route path="dashboard" component={DashboardPage} onEnter={requireAuth}/>
       <Route path="waybill-journal" component={WaybillJournal} onEnter={requireAuth}/>
       <Route path="mission-journal" component={MissionsJournal} onEnter={requireAuth}/>
+      <Route path="duty-missions-journal" component={DutyMissionsJournal} onEnter={requireAuth}/>
+      <Route path="duty-mission-templates-journal" component={DutyMissionTemplatesJournal} onEnter={requireAuth}/>
       <Route path="mission-templates-journal" component={MissionTemplatesJournal} onEnter={requireAuth}/>
       <Route path="routes-list" component={RoutesList} onEnter={requireAuth}/>
       <Route path="odh-reports" component={ODHReports} onEnter={requireAuth}/>

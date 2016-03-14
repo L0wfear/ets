@@ -36,6 +36,7 @@ class DashboardPage extends React.Component {
       loadingComponents: [],
       itemOpenedKey: null,
       showMissionInfoForm: false,
+      showFaxogrammForm: false,
     };
 
   }
@@ -195,9 +196,9 @@ class DashboardPage extends React.Component {
                              element={this.state.mission}
 														 {...this.props}/>
         <FaxogrammMissionsFormWrap onFormHide={() => this.setState({showFaxogrammForm: false})}
-  																	showForm={this.state.showFaxogrammForm}
-  																	element={this.state.faxogramm}
-  																	{...this.props}/>
+  																 showForm={this.state.showFaxogrammForm}
+  																 element={this.state.faxogramm}
+  																 {...this.props}/>
 
 
       </Div>

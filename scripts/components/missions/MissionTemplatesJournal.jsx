@@ -3,7 +3,6 @@ import connectToStores from 'flummox/connect';
 import { Button, Glyphicon } from 'react-bootstrap';
 import Table from '../ui/table/DataTable.jsx';
 import MissionTemplateFormWrap from './MissionTemplateFormWrap.jsx';
-import { MissionsJournal } from './MissionsJournal.jsx';
 import ElementsList from '../ElementsList.jsx';
 import moment from 'moment';
 import cx from 'classnames';

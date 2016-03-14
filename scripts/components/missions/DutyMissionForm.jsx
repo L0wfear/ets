@@ -13,7 +13,14 @@ import cx from 'classnames';
 import { isEmpty } from '../../utils/functions.js';
 import Form from '../compositions/Form.jsx';
 
-export class MissionForm extends Form {
+
+let getTechOperationById = (id) => {
+  const { flux } = window.__ETS_CONTAINER__;
+  const objectsStore = flux.getStore('objects');
+  return objectsStore.getTechOperationById(id);
+};
+
+export class DutyMissionForm extends Form {
 
 	constructor(props) {
 		super(props);
@@ -21,7 +28,6 @@ export class MissionForm extends Form {
 		this.state = {
 			selectedRoute: null,
 			showRouteForm: false,
-			carsList: [],
 		};
 	}
 
@@ -38,15 +44,17 @@ export class MissionForm extends Form {
 	}
 
 	handleTechnicalOperationChange(v) {
-		this.handleChange('technical_operation_id', v)
-		this.handleChange('car_id', undefined);
-
-    this.context.flux.getActions('objects').getCars(v).then(r => this.setState({carsList: r.result}));
+		this.handleChange('technical_operation_id', v);
+    this.handleChange('route_id', undefined);
+    this.context.flux.getActions('routes').getRoutes(v);
 	}
 
-	componentWillUnmount() {
-		this.context.flux.getActions('objects').getCars();
-	}
+  handleBrigadeIdListChange(v) {
+    let data = v.split(',');
+    let { employeesList = [] } = this.props;
+    let brigade_id_list = employeesList.filter(e => data.indexOf(e.id.toString()) > -1);
+    this.props.handleFormChange('brigade_id_list', brigade_id_list);
+  }
 
 	componentDidMount() {
 		const mission = this.props.formState;
@@ -56,7 +64,7 @@ export class MissionForm extends Form {
 				this.setState({selectedRoute: r.result.length ? r.result[0] : null});
 			});
 		}
-		this.setState({carsList: this.props.carsList})
+  	//flux.getActions('missions').getMissions(formState.car_id, createValidDateTime(formState.plan_departure_date), createValidDateTime(formState.plan_arrival_date), getMissionFilterStatus(formState));
 	}
 
 	createNewRoute() {
@@ -91,31 +99,27 @@ export class MissionForm extends Form {
 		let state = this.props.formState;
 		let errors = this.props.formErrors;
 
-		const { techOperationsList = [], missionSourcesList = [], routesList = [] } = this.props;
-		const { carsList = [] } = this.state;
+		const { techOperationsList = [], missionSourcesList = [], routesList = [], employeesList = [], missionsList = [] } = this.props;
 
-    //const WORK_KINDS = workKindsList.map(({id, name}) => ({value: id, label: name}));
     const TECH_OPERATIONS = techOperationsList.map(({id, name}) => ({value: id, label: name}));
     const MISSION_SOURCES = missionSourcesList.map(({id, name}) => ({value: id, label: name}));
-		const CARS = carsList.map( c => ({value: c.asuods_id, label: c.gov_number + ' [' + c.model + ']'}));
-    let ROUTES = routesList.map(({id, name}) => ({value: id, label: name}));
-
-    console.log('form state is ', state);
+    const ROUTES = routesList.map(({id, name}) => ({value: id, label: name}));
+    const EMPLOYEES = employeesList.map( d => ({value: d.id, label: `${d.last_name} ${d.first_name} ${d.middle_name}`}));
+    const MISSIONS = missionsList.map( ({id, number, technical_operation_id}) => {
+			const techOperation = getTechOperationById(technical_operation_id);
+			return {id, value: id, label: `№${number} (${techOperation.name})`};
+		});
 
 		let IS_CREATING = !!!state.status;
-    let IS_POST_CREATING = false;
 
-    let title = `Задание № ${state.number || ''}`;
+    let title = `Наряд-задание № ${state.number || ''}`;
 
     if (IS_CREATING) {
-      title = "Создание задания"
+      title = "Создание наряд-задания"
     }
 
 		let route = this.state.selectedRoute;
-		let odh_list = route ? route.odh_list || route.object_list : [];
-
-		let isDeferred = moment(state.date_start).toDate().getTime() > moment().toDate().getTime();
-		let IS_DISPLAY = !!state.status && state.status !== 'not_assigned' && !isDeferred;
+		let IS_DISPLAY = !!state.status && state.status !== 'not_assigned';
 
 		return (
 			<Modal {...this.props} bsSize="large">
@@ -127,6 +131,7 @@ export class MissionForm extends Form {
 	      <Modal.Body>
 
 					<Row>
+
 						<Col md={6}>
               <Field type="select" label="Технологическая операция" error={errors['technical_operation_id']}
 											disabled={IS_DISPLAY || !!state.route_id}
@@ -135,36 +140,60 @@ export class MissionForm extends Form {
                       onChange={this.handleTechnicalOperationChange.bind(this)}/>
 						</Col>
 
-				 		<Col md={3}>
-				   		<label>Время выполнения</label>
-				 			<Div>c <Datepicker date={state.date_start} onChange={this.handleChange.bind(this, 'date_start')} disabled={IS_DISPLAY}/></Div>
-				   	</Col>
-				   	<Col md={3}>
-              <label style={{minHeight: 15}}></label>
-				 			<Div>по <Datepicker date={state.date_end} onChange={this.handleChange.bind(this, 'date_end')} disabled={IS_DISPLAY}/></Div>
-				   	</Col>
+            <Div>
+  				 		<Col md={3}>
+  				   		<label>Время выполнения, планируемое</label>
+  				 			<Div>c <Datepicker date={state.plan_date_start} onChange={this.handleChange.bind(this, 'plan_date_start')} disabled={IS_DISPLAY}/></Div>
+  				   	</Col>
+  				   	<Col md={3}>
+                <label style={{minHeight: 15}}></label>
+  				 			<Div>по <Datepicker date={state.plan_date_end} onChange={this.handleChange.bind(this, 'plan_date_end')} disabled={IS_DISPLAY}/></Div>
+  				   	</Col>
+            </Div>
+
 					</Row>
 
+          <Row>
+            <Col md={6}>
+              <Field type="select" label="Бригадир" error={errors['foreman_id']}
+                     disabled={IS_DISPLAY}
+                     options={EMPLOYEES}
+                     value={state.foreman_id}
+                     onChange={this.handleChange.bind(this, 'foreman_id')}/>
+            </Col>
+
+            <Col md={6}>
+              <Field type="select" label="Бригада" error={errors['brigade_id_list']}
+                     multi={true}
+                     disabled={IS_DISPLAY}
+                     options={EMPLOYEES}
+                     value={state.brigade_id_list.map(b => b.id).join(',')}
+                     onChange={this.handleBrigadeIdListChange.bind(this)}/>
+            </Col>
+          </Row>
+
+
 	      	<Row>
-	      		<Col md={6}>
-              <Field type="number" label="Количество проходов" error={errors['passes_count']}
-										 disabled={IS_DISPLAY}
-  									 value={state.passes_count} onChange={this.handleChange.bind(this, 'passes_count')}
-										 min={0} />
-	          </Col>
 	      		<Col md={6}>
               <Field type="select" label="Источник получения задания" error={errors['mission_source_id']}
 										 disabled={IS_DISPLAY}
                      options={MISSION_SOURCES}
                      value={state.mission_source_id}
                      onChange={this.handleChange.bind(this, 'mission_source_id')}/>
-
- 							<Field type="select" label="Транспортное средство" error={errors['car_id']}
-											disabled={IS_DISPLAY || isEmpty(state.technical_operation_id)}
- 											options={CARS}
- 											value={state.car_id}
- 											onChange={this.handleChange.bind(this, 'car_id')}/>
 	      		</Col>
+            <Col md={6}>
+              <Field type="string" label="Комментарий" value={state.comment} onChange={this.handleChange.bind(this, 'comment')} error={errors['comment']} />
+            </Col>
+	      	</Row>
+
+          <Row>
+	      		<Col md={6}></Col>
+            <Col md={6}>
+              <Field type="select" label="Задание на ТС" error={errors['mission_id']}
+										 disabled={IS_DISPLAY}
+                     options={MISSIONS}
+                     value={state.mission_id}
+                     onChange={this.handleChange.bind(this, 'mission_id')}/></Col>
 	      	</Row>
 
 	      	<Row>
@@ -174,9 +203,6 @@ export class MissionForm extends Form {
                      options={ROUTES}
                      value={state.route_id}
                      onChange={this.handleRouteIdChange.bind(this)}/>
-							<Div className="route-odhs-list" hidden={this.state.selectedRoute === null}>
-								{/*<ODHList showSelectable={true} odh_list={odh_list} />*/}
-							</Div>
 						  <Div hidden={state.route_id}>
 							  <Button onClick={this.createNewRoute.bind(this)} disabled={IS_DISPLAY || !state.technical_operation_id}>Создать новый</Button>
 						  </Div>
@@ -191,14 +217,10 @@ export class MissionForm extends Form {
 	      </Modal.Body>
 
 	      <Modal.Footer>
-          <Div className="inline-block assignToWaybillCheck" hidden={!!state.status || this.props.fromWaybill}>
-            <label>Создать черновик ПЛ / Добавить в существующий</label>
-            <Input type="checkbox" value={state.assign_to_waybill} onClick={this.handleChange.bind(this, 'assign_to_waybill', !!!state.assign_to_waybill)}/>
-          </Div>
 					<Div className="inline-block" hidden={state.status === 'complete'}>
-						<Dropdown id="waybill-print-dropdown" disabled={!this.props.canSave} onSelect={this.props.handlePrint}>
-							<Dropdown.Toggle  disabled={true}>
-								<Glyphicon glyph="print" /> Печать
+						<Dropdown id="waybill-print-dropdown" disabled={!this.props.canSave} onSelect={this.props.onPrint}>
+							<Dropdown.Toggle  disabled={!this.props.canSave || IS_DISPLAY || state.status !== 'not_assigned'}>
+								<Glyphicon glyph="print" /> Выдать
 							</Dropdown.Toggle>
 							<Dropdown.Menu>
 								<MenuItem eventKey={1}>Форма 3-С</MenuItem>
@@ -218,4 +240,4 @@ export class MissionForm extends Form {
 	}
 }
 
-export default connectToStores(MissionForm, ['objects', 'employees', 'missions', 'routes']);
+export default connectToStores(DutyMissionForm, ['objects', 'employees', 'missions', 'routes']);

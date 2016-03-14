@@ -10,8 +10,12 @@ export default class RoutesActions extends Actions {
     super();
   }
 
-  getRoutes() {
-    return RouteService.get();
+  getRoutes(technical_operation_id) {
+    const payload = {};
+    if (technical_operation_id) {
+      payload.technical_operation_id = technical_operation_id;
+    }
+    return RouteService.get(payload);
   }
 
   getRouteById(id, simple) {

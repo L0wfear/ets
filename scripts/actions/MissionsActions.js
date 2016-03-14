@@ -1,13 +1,15 @@
 import { Actions } from 'flummox';
-import { createMissions} from '../adapter.js';
-
 import _ from 'lodash';
 import { createValidDateTime } from '../utils/dates.js';
 import { isEmpty, isNotNull } from '../utils/functions.js';
+import { response } from '../components/missions/DutyMission.js';
 
-import { MissionReportsService, MissionService, MissionSourceService, MissionTemplateService, MissionTemplatesForFaxogramm, MissionLastReportService } from '../api/Services.js';
+import { MissionReportsService, MissionService, MissionSourceService, MissionTemplateService, MissionTemplatesForFaxogramm, MissionLastReportService, DutyMissionService, DutyMissionTemplateService } from '../api/Services.js';
 
 export default class MissionsActions extends Actions {
+
+
+  /* ---------- MISSION ---------- */
 
   getMissions(car_id, date_from, date_to, status) {
     const payload = {};
@@ -62,6 +64,14 @@ export default class MissionsActions extends Actions {
     return MissionService.update(payload);
   }
 
+
+
+
+  /* ---------- MISSION TEMPLATES ---------- */
+
+
+
+
   getMissionTemplates(payload = {}) {
     if (payload.faxogramm_id) {
       return MissionTemplatesForFaxogramm.get(payload);
@@ -75,15 +85,6 @@ export default class MissionsActions extends Actions {
   }
 
   createMissions(missionTemplates, missionsCreationTemplate) {
-    /*
-    const payload = _.clone(missionsCreationTemplate);
-     payload.date_start = createValidDateTime(payload.date_start);
-     payload.date_end = createValidDateTime(payload.date_end);
-     delete payload.date_start;
-     delete payload.date_end;
-     payload.mission_template_id_list = _.clone(missionTemplatesIds);
-     return createMissions(payload);
-     */
     const missionsCreationTemplateCopy = _.clone(missionsCreationTemplate);
     const date_start = createValidDateTime(missionsCreationTemplateCopy.date_start);
     const date_end = createValidDateTime(missionsCreationTemplateCopy.date_end);
@@ -118,6 +119,95 @@ export default class MissionsActions extends Actions {
     delete payload.company_id;
     return MissionTemplateService.update(payload);
   }
+
+
+
+
+  /* ---------- MISSION DUTY ---------- */
+
+
+
+
+  getDutyMissions() {
+    return new Promise((res, rej) => {
+      setTimeout(res(response), 500);
+    });
+    return DutyMissionService.get();
+  }
+
+  createDutyMission(mission) {
+    const payload = _.cloneDeep(mission);
+    payload.plan_date_start = createValidDateTime(payload.plan_date_start);
+    payload.plan_date_end = createValidDateTime(payload.plan_date_end);
+    payload.fact_date_start = createValidDateTime(payload.fact_date_start);
+    payload.fact_date_end = createValidDateTime(payload.fact_date_end);
+    payload.brigade_id_list = payload.brigade_id_list.map(b => b.id);
+    return DutyMissionService.create(payload);
+  }
+
+  updateDutyMission(mission) {
+    const payload = _.cloneDeep(mission);
+    delete payload.number;
+    delete payload.technical_operation_name;
+    delete payload.route_name;
+    delete payload.foreman_fio;
+    delete payload.mission_name;
+    payload.plan_date_start = createValidDateTime(payload.plan_date_start);
+    payload.plan_date_end = createValidDateTime(payload.plan_date_end);
+    payload.fact_date_start = createValidDateTime(payload.fact_date_start);
+    payload.fact_date_end = createValidDateTime(payload.fact_date_end);
+    payload.brigade_id_list = payload.brigade_id_list.map(b => b.id);
+    return DutyMissionService.update(payload);
+  }
+
+  removeDutyMission(id) {
+    const payload = { id };
+    return DutyMissionService.delete(payload);
+  }
+
+
+
+
+
+  /* ---------- MISSION DUTY TEMPLATES ---------- */
+
+
+
+
+
+   getDutyMissionTemplates() {
+     return new Promise((res, rej) => {
+       setTimeout(res(response), 500);
+     });
+     return DutyMissionTemplateService.get();
+   }
+
+   createDutyMissionTemplate(mission) {
+     const payload = _.cloneDeep(mission);
+     return DutyMissionTemplateService.create(payload);
+   }
+
+   updateDutyMissionTemplate(mission) {
+     const payload = _.cloneDeep(mission);
+     delete payload.number;
+     delete payload.technical_operation_name;
+     delete payload.route_name;
+     return DutyMissionTemplateService.update(payload);
+   }
+
+   removeDutyMissionTemplate(id) {
+     const payload = { id };
+     return DutyMissionTemplateService.delete(payload);
+   }
+
+
+
+
+
+  /* ---------- MISSION REPORTS ---------- */
+
+
+
 
   getMissionReports() {
     return MissionReportsService.get();

@@ -34,7 +34,6 @@ class FormWrap extends React.Component {
   componentWillReceiveProps(props) {
     if (props.showForm) {
       if (props.element !== null ) {
-        console.log(props.element)
         const formState = _.cloneDeep(props.element);
         this.setState({formState});
       } else {

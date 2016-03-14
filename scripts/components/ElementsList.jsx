@@ -25,7 +25,6 @@ class ElementsList extends React.Component {
 
    selectElement({props}) {
      const id = props.data.id || props.data[this.selectField];
-     console.log('SELECT ELEMENT CALL', id);
      if (this.state.selectedElement && id === this.state.selectedElement.id && !this.doubleClickDisabled) {
    		 return this.setState({ showForm: true });
    	 }

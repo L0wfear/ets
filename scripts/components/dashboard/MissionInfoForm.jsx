@@ -74,13 +74,13 @@ export class MissionInfoForm extends Form {
 		let { selectedODHId } = this.state;
 		let { geozonePolys = [] } = this.props;
     let object_list = _.cloneDeep(this.state.object_list || []);
-		_.each(geozonePolys, (v,k) => {
-			if (k === this.state.selectedODHId.toString()) {
-				let poly = geozonePolys[this.state.selectedODHId];
-				poly.isInfo = true;
-				object_list.push(poly);
-			}
-		})
+		// _.each(geozonePolys, (v,k) => {
+		// 	if (k === this.state.selectedODHId.toString()) {
+		// 		let poly = geozonePolys[this.state.selectedODHId];
+		// 		poly.isInfo = true;
+		// 		object_list.push(poly);
+		// 	}
+		// })
 		const polys = object_list.map(({shape, name, state, coordinates, isInfo}) => {
 			if (!shape) {
 				shape = {
@@ -122,6 +122,7 @@ export class MissionInfoForm extends Form {
                      center={MAP_INITIAL_CENTER}
                      polys={polys}
 										 selectedObjects={this.state.selectedObjects}
+										 selectedPoly={geozonePolys[this.state.selectedODHId]}
                      car_gov_number={this.props.formState.car_gov_number}/>
 
               </FluxComponent>

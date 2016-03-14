@@ -18,6 +18,7 @@ global.ol = ol;
 export default class HybridMap extends Map {
   constructor(props) {
     super(props);
+    this.zoomedPolyName = null;
   }
 
   updatePoints(updatedPoints) {
@@ -48,10 +49,10 @@ export default class HybridMap extends Map {
   componentDidMount() {
     super.componentDidMount();
 
-    this.renderPolygons(this.props.polys);
+    this.renderPolygons(this.props.polys, this.props.selectedPoly);
   }
 
-  renderPolygons(polys = {}) {
+  renderPolygons(polys = {}, selectedPoly) {
     let map = this.map;
 
     let GeoJSON = new ol.format.GeoJSON();
@@ -68,12 +69,12 @@ export default class HybridMap extends Map {
       if (poly.shape && poly.shape.type === 'LineString') {
         feature.setStyle(getVectorArrowStyle(feature));
       } else if (poly.shape && poly.shape.type !== 'Point') {
-        console.log(poly.isInfo)
-        if (poly.isInfo) {
-          feature.setStyle(polyStyles['info']);
-        } else {
+        // console.log(poly.isInfo)
+        // if (poly.isInfo) {
+        //   feature.setStyle(polyStyles['info']);
+        // } else {
           feature.setStyle(polyStyles[poly.state]);
-        }
+        //}
       } else {
         if (this.props.selectedObjects) {
           let succeed = false;
@@ -94,6 +95,22 @@ export default class HybridMap extends Map {
 
       vectorSource.addFeature(feature);
     });
+
+    if (selectedPoly) {
+      let feature = new ol.Feature({
+        geometry: GeoJSON.readGeometry(selectedPoly.shape),
+        name: selectedPoly.name,
+        id: 1,
+        state: selectedPoly.state,
+      });
+      feature.setStyle(polyStyles['info']);
+      vectorSource.addFeature(feature);
+      if (this.zoomedPolyName !== selectedPoly.name) {
+        map.getView().fit(feature.getGeometry().getExtent(), map.getSize());
+        map.getView().setZoom(7);
+        this.zoomedPolyName = selectedPoly.name;
+      }
+    }
 
     !!POLYS_LAYER && map.removeLayer(POLYS_LAYER);
 
@@ -160,7 +177,7 @@ export default class HybridMap extends Map {
   componentWillReceiveProps(nextProps) {
     super.componentWillReceiveProps(nextProps);
     if (nextProps.polys !== undefined) {
-      this.renderPolygons(nextProps.polys);
+      this.renderPolygons(nextProps.polys, nextProps.selectedPoly);
     }
   }
 

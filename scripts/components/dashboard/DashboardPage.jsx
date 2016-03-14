@@ -194,7 +194,7 @@ class DashboardPage extends React.Component {
 														 showForm={this.state.showMissionInfoForm}
                              element={this.state.mission}
 														 {...this.props}/>
-         <FaxogrammMissionsFormWrap onFormHide={() => this.setState({showFaxogrammForm: false})}
+        <FaxogrammMissionsFormWrap onFormHide={() => this.setState({showFaxogrammForm: false})}
   																	showForm={this.state.showFaxogrammForm}
   																	element={this.state.faxogramm}
   																	{...this.props}/>

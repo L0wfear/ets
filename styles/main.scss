@@ -3060,3 +3060,10 @@ div.none {
     padding-left: 0;
   }
 }
+
+.monitor-dashboard {
+  height: 90vh;
+  .openlayers-container {
+    position: relative !important;
+  }
+}

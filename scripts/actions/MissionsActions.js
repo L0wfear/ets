@@ -129,10 +129,10 @@ export default class MissionsActions extends Actions {
 
 
   getDutyMissions() {
-    return new Promise((res, rej) => {
-      setTimeout(res(response), 500);
-    });
-    return DutyMissionService.get();
+    // return new Promise((res, rej) => {
+    //   setTimeout(res(response), 500);
+    // });
+    return DutyMissionService.get({});
   }
 
   createDutyMission(mission) {
@@ -141,8 +141,9 @@ export default class MissionsActions extends Actions {
     payload.plan_date_end = createValidDateTime(payload.plan_date_end);
     payload.fact_date_start = createValidDateTime(payload.fact_date_start);
     payload.fact_date_end = createValidDateTime(payload.fact_date_end);
-    payload.brigade_id_list = payload.brigade_id_list.map(b => b.id);
-    return DutyMissionService.create(payload);
+    payload.brigade_employee_id_list = payload.brigade_employee_id_list.map(b => b.id);
+    console.log(payload);
+    return DutyMissionService.create(payload, null, 'json');
   }
 
   updateDutyMission(mission) {
@@ -156,7 +157,7 @@ export default class MissionsActions extends Actions {
     payload.plan_date_end = createValidDateTime(payload.plan_date_end);
     payload.fact_date_start = createValidDateTime(payload.fact_date_start);
     payload.fact_date_end = createValidDateTime(payload.fact_date_end);
-    payload.brigade_id_list = payload.brigade_id_list.map(b => b.id);
+    payload.brigade_employee_id_list = payload.brigade_employee_id_list.map(b => b.id);
     return DutyMissionService.update(payload);
   }
 
@@ -176,9 +177,9 @@ export default class MissionsActions extends Actions {
 
 
    getDutyMissionTemplates() {
-     return new Promise((res, rej) => {
-       setTimeout(res(response), 500);
-     });
+    //  return new Promise((res, rej) => {
+    //    setTimeout(res(response), 500);
+    //  });
      return DutyMissionTemplateService.get();
    }
 

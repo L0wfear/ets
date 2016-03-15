@@ -30,9 +30,9 @@ export default class APIService {
     return getJSON(this.url, payload);
   }
 
-  create(payload = {}, callback) {
-    console.info('API SERVICE POST', this.firstUrl);
-    return postJSON(this.url, payload).then((r) => {
+  create(payload = {}, callback, type = 'form') {
+    console.info('API SERVICE POST', this.firstUrl, type);
+    return postJSON(this.url, payload, type).then((r) => {
       if (r.warnings && r.warnings.length) {
         r.warnings.map(w => {
           global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification(w));

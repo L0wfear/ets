@@ -27,7 +27,7 @@ export const dutyMissionSchema = {
 			required: true,
 		},
     {
-      key: 'brigade_id_list',
+      key: 'brigade_employee_id_list',
       title: 'Бригада',
       type: 'array',
       required: false,

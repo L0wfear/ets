@@ -46,14 +46,15 @@ export class DutyMissionForm extends Form {
 	handleTechnicalOperationChange(v) {
 		this.handleChange('technical_operation_id', v);
     this.handleChange('route_id', undefined);
+    //this.handleChange('car_mission_id', undefined);
     this.context.flux.getActions('routes').getRoutes(v);
 	}
 
   handleBrigadeIdListChange(v) {
     let data = v.split(',');
     let { employeesList = [] } = this.props;
-    let brigade_id_list = employeesList.filter(e => data.indexOf(e.id.toString()) > -1);
-    this.props.handleFormChange('brigade_id_list', brigade_id_list);
+    let brigade_employee_id_list = employeesList.filter(e => data.indexOf(e.id.toString()) > -1);
+    this.props.handleFormChange('brigade_employee_id_list', brigade_employee_id_list);
   }
 
 	componentDidMount() {
@@ -163,11 +164,11 @@ export class DutyMissionForm extends Form {
             </Col>
 
             <Col md={6}>
-              <Field type="select" label="Бригада" error={errors['brigade_id_list']}
+              <Field type="select" label="Бригада" error={errors['brigade_employee_id_list']}
                      multi={true}
                      disabled={IS_DISPLAY}
                      options={EMPLOYEES}
-                     value={state.brigade_id_list.map(b => b.id).join(',')}
+                     value={state.brigade_employee_id_list.map(b => b.id).join(',')}
                      onChange={this.handleBrigadeIdListChange.bind(this)}/>
             </Col>
           </Row>
@@ -189,11 +190,11 @@ export class DutyMissionForm extends Form {
           <Row>
 	      		<Col md={6}></Col>
             <Col md={6}>
-              <Field type="select" label="Задание на ТС" error={errors['mission_id']}
+              <Field type="select" label="Задание на ТС" error={errors['car_mission_id']}
 										 disabled={IS_DISPLAY}
                      options={MISSIONS}
-                     value={state.mission_id}
-                     onChange={this.handleChange.bind(this, 'mission_id')}/></Col>
+                     value={state.car_mission_id}
+                     onChange={this.handleChange.bind(this, 'car_mission_id')}/></Col>
 	      	</Row>
 
 	      	<Row>

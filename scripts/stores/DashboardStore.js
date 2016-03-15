@@ -40,7 +40,7 @@ const componentsByRole = {
   master: [...commonComponents.filter(c => [3, 6, 7, 13].indexOf(c.id) === -1),
     {
       id: 4,
-      key: 'odh_not_covered_by_current_missions',
+      key: 'odh_not_covered_by_missions_of_current_shift',
       itemsTitle: 'Список одх'
     },
     {

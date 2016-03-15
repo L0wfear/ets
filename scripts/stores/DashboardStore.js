@@ -14,6 +14,7 @@ const commonComponents = [
   {
     id: 3,
     key: 'count_traveled_routes_by_current_operations',
+    itemsTitle: 'Расшифровка факсограммы'
   },
   {
     id: 6,
@@ -37,15 +38,16 @@ const commonComponents = [
 
 const componentsByRole = {
   master: [...commonComponents.filter(c => [3, 6, 7, 13].indexOf(c.id) === -1),
-    // { временно не показываем
-    //   id: 4,
-    //   key: 'odh_not_covered_by_current_missions'
-    // },
-    // {
-    //   id: 5,
-    //   key: 'odh_not_covered_by_routes',
-    // },
-    // {
+    {
+      id: 4,
+      key: 'odh_not_covered_by_current_missions',
+      itemsTitle: 'Список одх'
+    },
+    {
+      id: 5,
+      key: 'odh_not_covered_by_routes',
+    },
+    // { //временно не показываем
     //   id: 8,
     //   key: 'car_in_work',
     //   side: true,

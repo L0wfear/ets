@@ -37,15 +37,23 @@ class MissionFormWrap extends FormWrap {
 		let data = {
 
 		}
-		// fetch(URL, {
-		// 	body: JSON.stringify(data);
-		// })
-		// let callback = (id) => {
-		// 	console.log('printing waybill', URL);
-		// 	URL = id ?  URL + id : URL + ID;
-		// 	window.location = URL;
-		// };
-		window.location = this.state.canvasData;
+		global.map.once('postcompose', function(event) {
+      //var canvas1 = document.getElementsByTagName("canvas")[0];
+      data.image = event.context.canvas.toDataURL('image/png')//self.props.onCanvasChange();
+			//window.location = global.canvas;
+			fetch(URL, {
+		    method: 'post',
+				body: JSON.stringify(data)
+			})
+			// let callback = (id) => {
+			// 	console.log('printing waybill', URL);
+			// 	URL = id ?  URL + id : URL + ID;
+			// 	window.location = URL;
+			// };
+    });
+		global.map.renderSync();
+
+		console.log(this.state.canvasData);
 	}
 
 	handleCanvasChange(canvasData) {

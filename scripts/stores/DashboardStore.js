@@ -52,9 +52,14 @@ const componentsByRole = {
       key: 'car_in_work_overall',
       //side: true,
     },
+    {
+      id: 11,
+      key: 'daily_missions_percent',
+      side: true,
+    },
     // {
     //   id: 10,
-    //   key: 'count_waybill_closed'
+    //   key: 'count_waybill_closed',
     //   side: true,
     // },
     // {
@@ -115,8 +120,9 @@ class DashboardStore extends Store {
 
   handleGetDashboardSideComponent({key, component}) {
     let { componentsSideList, componentsSideIndex } = this.state;
-    if (!component.result) return;
-    component.result.id = _.find(this.getComponentsByRole(), c => c.key === key).id;
+    if (!component.result || typeof component.result === 'string') return;
+    let componentSchema = _.find(this.getComponentsByRole(), c => c.key === key);
+    component.result.id = componentSchema.id;
     component.result.key = key;
     componentsSideIndex[key] = component.result;
     componentsSideList = _(componentsSideIndex).toArray().sortBy('id').value();

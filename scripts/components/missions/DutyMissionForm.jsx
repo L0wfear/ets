@@ -46,8 +46,9 @@ export class DutyMissionForm extends Form {
 	handleTechnicalOperationChange(v) {
 		this.handleChange('technical_operation_id', v);
     this.handleChange('route_id', undefined);
-    //this.handleChange('car_mission_id', undefined);
+    this.handleChange('car_mission_id', 0);
     this.context.flux.getActions('routes').getRoutes(v);
+    this.context.flux.getActions('missions').getMissions(v);
 	}
 
   handleBrigadeIdListChange(v) {
@@ -65,7 +66,7 @@ export class DutyMissionForm extends Form {
 				this.setState({selectedRoute: r.result.length ? r.result[0] : null});
 			});
 		}
-  	//flux.getActions('missions').getMissions(formState.car_id, createValidDateTime(formState.plan_departure_date), createValidDateTime(formState.plan_arrival_date), getMissionFilterStatus(formState));
+  	flux.getActions('missions').getMissions(mission.technical_operation_id);
 	}
 
 	createNewRoute() {

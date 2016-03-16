@@ -22,7 +22,7 @@ let validateDutyMissionsCreationTemplate = (mission, errors) => {
   return missionsCreationTemplateErrors;
 };
 
-class DutyMissionFormWrap extends FormWrap {
+class DutyMissionTemplateFormWrap extends FormWrap {
 	constructor(props) {
 		super(props);
 
@@ -93,9 +93,9 @@ class DutyMissionFormWrap extends FormWrap {
 
 }
 
-DutyMissionFormWrap.contextTypes = {
+DutyMissionTemplateFormWrap.contextTypes = {
 	flux: React.PropTypes.object,
 	setLoading: React.PropTypes.func,
 };
 
-export default DutyMissionFormWrap;
+export default DutyMissionTemplateFormWrap;

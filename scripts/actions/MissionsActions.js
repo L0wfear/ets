@@ -10,7 +10,17 @@ export default class MissionsActions extends Actions {
 
   /* ---------- MISSION ---------- */
 
-  getMissions(car_id, date_from, date_to, status) {
+  getMissions(technical_operation_id) {
+    const payload = {};
+
+    if (!isEmpty(technical_operation)) {
+        payload.technical_operation_id = technical_operation_id;
+    }
+
+    return MissionService.get(payload);
+  }
+
+  getMissionsByCarAndDates(car_id, date_from, date_to, status) {
     const payload = {};
 
     if (!isEmpty(car_id)) {

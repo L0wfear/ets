@@ -67,11 +67,11 @@ class WaybillForm extends Form {
     const { formState } = this.props;
     if (field === 'plan_arrival_date') {
   	  this.props.handleFormChange('mission_id_list', undefined);
-    	flux.getActions('missions').getMissions(formState.car_id, createValidDateTime(formState.plan_departure_date), createValidDateTime(e), getMissionFilterStatus(formState));
+    	flux.getActions('missions').getMissionsByCarAndDates(formState.car_id, createValidDateTime(formState.plan_departure_date), createValidDateTime(e), getMissionFilterStatus(formState));
     }
     if (field === 'plan_departure_date') {
   	  this.props.handleFormChange('mission_id_list', undefined);
-    	flux.getActions('missions').getMissions(formState.car_id, createValidDateTime(e), createValidDateTime(formState.plan_arrival_date), getMissionFilterStatus(formState));
+    	flux.getActions('missions').getMissionsByCarAndDates(formState.car_id, createValidDateTime(e), createValidDateTime(formState.plan_arrival_date), getMissionFilterStatus(formState));
     }
 	}
 
@@ -94,7 +94,7 @@ class WaybillForm extends Form {
 				this.setState({operations: fuelOperations.result});
 			});
 		}
-  	flux.getActions('missions').getMissions(formState.car_id, createValidDateTime(formState.plan_departure_date), createValidDateTime(formState.plan_arrival_date), getMissionFilterStatus(formState));
+  	flux.getActions('missions').getMissionsByCarAndDates(formState.car_id, createValidDateTime(formState.plan_departure_date), createValidDateTime(formState.plan_arrival_date), getMissionFilterStatus(formState));
 	}
 
 	onDriverChange(v) {
@@ -135,7 +135,7 @@ class WaybillForm extends Form {
 			this.handleChange('motohours_equip_start', 0);
 		}
 
-  	flux.getActions('missions').getMissions(car_id, createValidDateTime(this.props.formState.plan_departure_date), createValidDateTime(this.props.formState.plan_arrival_date), getMissionFilterStatus(this.props.formState));
+  	flux.getActions('missions').getMissionsByCarAndDates(car_id, createValidDateTime(this.props.formState.plan_departure_date), createValidDateTime(this.props.formState.plan_arrival_date), getMissionFilterStatus(this.props.formState));
 	}
 
   onMissionFormHide() {

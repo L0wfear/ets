@@ -16,20 +16,37 @@ class ElementsList extends React.Component {
        elementsList: [],
        showForm: false,
        selectedElement: null,
-     }
+     };
+
+     this.clicks = 0;
    }
 
    init() {
 
    }
 
+   onDoubleClick() {
+     this.setState({ showForm: true });
+   }
+
    selectElement({props}) {
+     this.clicks++;
      const id = props.data.id || props.data[this.selectField];
-     if (this.state.selectedElement && id === this.state.selectedElement.id && !this.doubleClickDisabled) {
-   		 return this.setState({ showForm: true });
-   	 }
-     let selectedElement = _.find(this.state.elementsList, el => el.id ? el.id === id : el[this.selectField] === id);
-     this.setState({ selectedElement });
+     if (this.clicks === 1) {
+       let selectedElement = _.find(this.state.elementsList, el => el.id ? el.id === id : el[this.selectField] === id);
+       this.setState({ selectedElement });
+       setTimeout(() => {
+         if (this.clicks !== 1) {
+           if (this.state.selectedElement && id === this.state.selectedElement.id) {
+             this.onDoubleClick();//
+           }
+         }
+         this.clicks = 0;
+       }, 300);
+     }
+      else {
+
+     }
    }
 
    createElement() {

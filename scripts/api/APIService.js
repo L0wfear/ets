@@ -66,9 +66,9 @@ export default class APIService {
     });
   }
 
-  delete(payload = {}) {
+  delete(payload = {}, callback, type = 'form') {
     console.info('API SERVICE DELETE', this.firstUrl);
-    return deleteJSON(this.url, payload).then(() => this.get());
+    return deleteJSON(this.url, payload, type).then(() => this.get());
   }
 
 }

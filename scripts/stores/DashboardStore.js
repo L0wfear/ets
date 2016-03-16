@@ -47,11 +47,11 @@ const componentsByRole = {
       id: 5,
       key: 'odh_not_covered_by_routes',
     },
-    // { //временно не показываем
-    //   id: 8,
-    //   key: 'car_in_work',
-    //   side: true,
-    // },
+    { //временно не показываем
+      id: 8,
+      key: 'car_in_work_overall',
+      //side: true,
+    },
     // {
     //   id: 10,
     //   key: 'count_waybill_closed'

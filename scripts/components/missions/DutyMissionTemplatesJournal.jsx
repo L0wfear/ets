@@ -138,11 +138,11 @@ class DutyMissionTemplatesJournal extends ElementsList {
 
 	render() {
 
-		const { missionTemplatesList = [], noFilter = false } = this.props;
+		const { dutyMissionTemplatesList = [], noFilter = false } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
-				<DutyMissionsTable noFilter={noFilter} data={missionTemplatesList} onAllRowsChecked={this.checkAll.bind(this)} onRowChecked={this.checkDutyMission.bind(this)} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} checked={this.state.checkedDutyMissions} selectField={'id'} {...this.props}>
+				<DutyMissionsTable noFilter={noFilter} data={dutyMissionTemplatesList} onAllRowsChecked={this.checkAll.bind(this)} onRowChecked={this.checkDutyMission.bind(this)} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} checked={this.state.checkedDutyMissions} selectField={'id'} {...this.props}>
 					<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Создать шаблон задания</Button>
 					<Button bsSize="small" onClick={this.createDutyMissions.bind(this)} disabled={Object.keys(this.state.checkedDutyMissions).length === 0}>Сформировать наряд-задание</Button>
 					<Button bsSize="small" onClick={this.showDutyMission.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="search" /> Просмотреть шаблон</Button>

@@ -172,7 +172,6 @@ export function deleteJSON(url, data, type = 'form') {
     data.token = token;
   }
   let body;
-  type = 'form';
   switch (type) {
     case 'form':
       url += '?token=' + token;

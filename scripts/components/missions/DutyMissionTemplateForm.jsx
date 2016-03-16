@@ -61,6 +61,10 @@ class MissionTemplateForm extends MissionForm {
 											value={state.technical_operation_id}
 											onChange={this.handleTechnicalOperationChange.bind(this)}/>
 						</Col>
+
+            {/*<Col md={6}>
+              <Field type="string" label="Комментарий" value={state.comment} onChange={this.handleChange.bind(this, 'comment')} error={errors['comment']} />
+            </Col>*/}
 					</Row>
 
 	      	<Row>

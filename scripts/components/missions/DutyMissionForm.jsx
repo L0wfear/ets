@@ -99,6 +99,7 @@ export class DutyMissionForm extends Form {
 
 		let state = this.props.formState;
 		let errors = this.props.formErrors;
+    console.info('FORM STATE IS', state);
 
 		const { techOperationsList = [], missionSourcesList = [], routesList = [], employeesList = [], missionsList = [] } = this.props;
 
@@ -168,7 +169,7 @@ export class DutyMissionForm extends Form {
                      multi={true}
                      disabled={IS_DISPLAY}
                      options={EMPLOYEES}
-                     value={state.brigade_employee_id_list.map(b => b.id).join(',')}
+                     value={state.brigade_employee_id_list.map(b => b.id || b.employee_id).join(',')}
                      onChange={this.handleBrigadeIdListChange.bind(this)}/>
             </Col>
           </Row>

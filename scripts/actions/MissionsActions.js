@@ -2,7 +2,6 @@ import { Actions } from 'flummox';
 import _ from 'lodash';
 import { createValidDateTime } from '../utils/dates.js';
 import { isEmpty, isNotNull } from '../utils/functions.js';
-import { response } from '../components/missions/DutyMission.js';
 
 import { MissionReportsService, MissionService, MissionSourceService, MissionTemplateService, MissionTemplatesForFaxogramm, MissionLastReportService, DutyMissionService, DutyMissionTemplateService } from '../api/Services.js';
 
@@ -129,9 +128,6 @@ export default class MissionsActions extends Actions {
 
 
   getDutyMissions() {
-    // return new Promise((res, rej) => {
-    //   setTimeout(res(response), 500);
-    // });
     return DutyMissionService.get({});
   }
 
@@ -152,18 +148,18 @@ export default class MissionsActions extends Actions {
     delete payload.technical_operation_name;
     delete payload.route_name;
     delete payload.foreman_fio;
-    delete payload.mission_name;
+    delete payload.car_mission_name;
     payload.plan_date_start = createValidDateTime(payload.plan_date_start);
     payload.plan_date_end = createValidDateTime(payload.plan_date_end);
     payload.fact_date_start = createValidDateTime(payload.fact_date_start);
     payload.fact_date_end = createValidDateTime(payload.fact_date_end);
     payload.brigade_employee_id_list = payload.brigade_employee_id_list.map(b => b.id);
-    return DutyMissionService.update(payload);
+    return DutyMissionService.update(payload, null, 'json');
   }
 
   removeDutyMission(id) {
     const payload = { id };
-    return DutyMissionService.delete(payload);
+    return DutyMissionService.delete(payload, null, 'json');
   }
 
 
@@ -177,15 +173,12 @@ export default class MissionsActions extends Actions {
 
 
    getDutyMissionTemplates() {
-    //  return new Promise((res, rej) => {
-    //    setTimeout(res(response), 500);
-    //  });
-     return DutyMissionTemplateService.get();
+     return DutyMissionTemplateService.get({});
    }
 
    createDutyMissionTemplate(mission) {
      const payload = _.cloneDeep(mission);
-     return DutyMissionTemplateService.create(payload);
+     return DutyMissionTemplateService.create(payload, null, 'json');
    }
 
    updateDutyMissionTemplate(mission) {
@@ -193,12 +186,12 @@ export default class MissionsActions extends Actions {
      delete payload.number;
      delete payload.technical_operation_name;
      delete payload.route_name;
-     return DutyMissionTemplateService.update(payload);
+     return DutyMissionTemplateService.update(payload, null, 'json');
    }
 
    removeDutyMissionTemplate(id) {
      const payload = { id };
-     return DutyMissionTemplateService.delete(payload);
+     return DutyMissionTemplateService.delete(payload, null, 'json');
    }
 
 

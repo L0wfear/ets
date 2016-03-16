@@ -30,6 +30,28 @@ class MissionFormWrap extends FormWrap {
 
 	}
 
+	handlePrint() {
+		let f = this.state.formState;
+
+		let URL = `http://ods.mos.ru/ssd/ets/services/plate_mission/?mission_id=${f.id}`;
+		let data = {
+
+		}
+		// fetch(URL, {
+		// 	body: JSON.stringify(data);
+		// })
+		// let callback = (id) => {
+		// 	console.log('printing waybill', URL);
+		// 	URL = id ?  URL + id : URL + ID;
+		// 	window.location = URL;
+		// };
+		window.location = this.state.canvasData;
+	}
+
+	handleCanvasChange(canvasData) {
+		this.setState({canvasData})
+	}
+
 	handleFormSubmit(formState) {
 		const { flux } = this.context;
 
@@ -50,9 +72,11 @@ class MissionFormWrap extends FormWrap {
 							<MissionForm formState = {this.state.formState}
 													 onSubmit={this.handleFormSubmit.bind(this)}
 													 handleFormChange={this.handleFormStateChange.bind(this)}
+													 handlePrint={this.handlePrint.bind(this)}
 													 show={this.props.showForm}
 													 onHide={this.props.onFormHide}
 													 fromWaybill={this.props.fromWaybill}
+													 onCanvasChange={this.handleCanvasChange.bind(this)}
 													 {...this.state}/>
 						</Div>
 

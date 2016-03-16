@@ -113,7 +113,41 @@ export default class OpenLayersMap extends Component {
   }
 
   init() {
+    let self = this;
+    this.map.on('postcompose', function(event) {
+      // //var canvas = event.context.canvas;
+      // var canvas = self.map.canvas;
+      // var image = new Image();
+      // image.src = canvas.toDataURL('image/png');
+      // //document.body.appendChild(image);
+      //
+      // //exportPNGElement.href = canvas.toDataURL('image/png');
 
+      // var img = new Image();
+      //     img.setAttribute('crossOrigin', 'anonymous');
+      //     img.src = canvas1.toDataURL('image/png');
+      //     img.onload = function() {
+      //
+      //         var canvas = document.createElement("canvas");
+      //         canvas.width = this.width;
+      //         canvas.height = this.height;
+      //
+      //         var ctx = canvas.getContext("2d");
+      //         ctx.drawImage(this, 0, 0);
+      //
+      //         var dataURL = canvas.toDataURL("image/png");
+      //
+      //
+      //
+      //     };
+          //
+      //window.location = canvas.toDataURL('image/png');
+
+
+
+      // var canvas1 = document.getElementsByTagName("canvas")[0];
+      // global.canvas = canvas1.toDataURL('image/png')//self.props.onCanvasChange();
+    });
   }
 
   renderPolygons(polys = {}) {

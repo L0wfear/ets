@@ -221,7 +221,7 @@ export class DutyMissionForm extends Form {
 
 	      <Modal.Footer>
 					<Div className="inline-block" hidden={state.status === 'complete'}>
-		      	<Button onClick={this.props.onPrint.bind(this)} disabled={!this.props.canSave || IS_DISPLAY || state.status !== 'not_assigned'}>{'Выдать'}</Button>
+		      	<Button onClick={this.props.onPrint} disabled={!this.props.canSave || IS_DISPLAY || state.status !== 'not_assigned'}>{'Выдать'}</Button>
 		      	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || IS_DISPLAY}>{'Сохранить'}</Button>
 					</Div>
 	      </Modal.Footer>

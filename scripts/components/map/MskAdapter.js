@@ -59,6 +59,7 @@ for (let i = 0, till = MapServerConfig.tileInfo.lods.length; i < till; i++) {
               let y = - tileCoord[2] - 1; // было с -1
               return TILES_URL + z + '/' + y + '/' + x
           },
+          //crossOrigin: 'anonymous',
           projection: PROJECTION,
           tileGrid: new ol.tilegrid.TileGrid({
               origin: [ORIGIN.x, ORIGIN.y],

@@ -13,7 +13,7 @@ export default class MissionsActions extends Actions {
   getMissions(technical_operation_id) {
     const payload = {};
 
-    if (!isEmpty(technical_operation)) {
+    if (!isEmpty(technical_operation_id)) {
         payload.technical_operation_id = technical_operation_id;
     }
 

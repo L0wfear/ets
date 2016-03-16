@@ -49,7 +49,8 @@ export default class RouteInfo extends Component {
 											 zoom={MAP_INITIAL_ZOOM}
 				            	 center={MAP_INITIAL_CENTER}
 				            	 polys={polys}
-											 manual={manual}/>
+											 manual={manual}
+											 onCanvasChange={this.props.onCanvasChange}/>
 								</Div>
 							</Col>
 

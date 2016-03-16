@@ -183,7 +183,7 @@ export class MissionForm extends Form {
             </Col>
             <Col md={6}>
 							<Div hidden={this.state.selectedRoute === null} className="mission-form-map-wrapper">
-	            	<RouteInfo route={this.state.selectedRoute} mapOnly={true}/>
+	            	<RouteInfo route={this.state.selectedRoute} mapOnly={true} onCanvasChange={this.props.onCanvasChange}/>
 							</Div>
             </Col>
 	      	</Row>
@@ -196,16 +196,8 @@ export class MissionForm extends Form {
             <Input type="checkbox" value={state.assign_to_waybill} onClick={this.handleChange.bind(this, 'assign_to_waybill', !!!state.assign_to_waybill)}/>
           </Div>
 					<Div className="inline-block" hidden={state.status === 'complete'}>
-						<Dropdown id="waybill-print-dropdown" disabled={!this.props.canSave} onSelect={this.props.handlePrint}>
-							<Dropdown.Toggle  disabled={true}>
-								<Glyphicon glyph="print" /> Печать
-							</Dropdown.Toggle>
-							<Dropdown.Menu>
-								<MenuItem eventKey={1}>Форма 3-С</MenuItem>
-								<MenuItem eventKey={2}>Форма 4-П</MenuItem>
-							</Dropdown.Menu>
-						</Dropdown>&nbsp;
-		      	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || IS_DISPLAY}>{'Сохранить'}</Button>
+			      <Button onClick={this.props.handlePrint} disabled={!state.route_id}>Печать</Button>
+		      	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || IS_DISPLAY}>Сохранить</Button>
 					</Div>
 	      </Modal.Footer>
 

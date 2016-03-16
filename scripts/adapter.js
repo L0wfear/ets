@@ -226,7 +226,7 @@ function checkResponse(url, response, body, method) {
 export function checkToken(token) {
   return new Promise((res, rej) => {
     return getJSON(AUTH_CHECK_URL).then(r => {
-      if (r.errors.length) {
+      if (r.errors && r.errors.length) {
         console.log('TOKEN EXPIRED');
         rej(401);
       } else {
@@ -238,7 +238,7 @@ export function checkToken(token) {
 }
 
 export function login(user) {
-  return fetch(LOGIN_URL, {method: 'POST', body: toFormData(user)}).then(r => r.json());
+  return fetch(LOGIN_URL, {method: 'POST', body: JSON.stringify(user)}).then(r => r.json());
 }
 
 export function logout() {

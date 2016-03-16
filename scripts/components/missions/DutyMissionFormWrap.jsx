@@ -31,11 +31,11 @@ class DutyMissionFormWrap extends FormWrap {
 	}
 
   handleFormPrint() {
-    console.log('printing');
     let mission = _.cloneDeep(this.state.formState);
 
     mission.status = 'assigned';
     this.context.flux.getActions('missions').updateDutyMission(mission);
+		this.props.onFormHide();
   }
 
 	handleFormSubmit(formState) {

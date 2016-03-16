@@ -220,15 +220,7 @@ export class DutyMissionForm extends Form {
 
 	      <Modal.Footer>
 					<Div className="inline-block" hidden={state.status === 'complete'}>
-						<Dropdown id="waybill-print-dropdown" disabled={!this.props.canSave} onSelect={this.props.onPrint}>
-							<Dropdown.Toggle  disabled={!this.props.canSave || IS_DISPLAY || state.status !== 'not_assigned'}>
-								<Glyphicon glyph="print" /> Выдать
-							</Dropdown.Toggle>
-							<Dropdown.Menu>
-								<MenuItem eventKey={1}>Форма 3-С</MenuItem>
-								<MenuItem eventKey={2}>Форма 4-П</MenuItem>
-							</Dropdown.Menu>
-						</Dropdown>&nbsp;
+		      	<Button onClick={this.props.onPrint.bind(this)} disabled={!this.props.canSave || IS_DISPLAY || state.status !== 'not_assigned'}>{'Выдать'}</Button>
 		      	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || IS_DISPLAY}>{'Сохранить'}</Button>
 					</Div>
 	      </Modal.Footer>

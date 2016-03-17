@@ -84,15 +84,23 @@ const componentsByRole = {
     {
       id: 19,
       key: 'waybill_draft',
+      itemsTitle: 'Информация о ПЛ'
     },
     {
       id: 20,
       key: 'waybill_active',
+      itemsTitle: 'Информация о ПЛ'
     },
     {
       id: 21,
       key: 'waybill_closed',
-    }
+      itemsTitle: 'Информация о ПЛ'
+    },
+    {
+      id: 22,
+      key: 'current_missions',
+      itemsTitle: 'Карточка задания'
+    },
   ]
 }
 

@@ -19,6 +19,11 @@ class WaybillsActions extends BaseActions {
     return super.delete(id);
   }
 
+  getWaybill(id) {
+    const payload = { id }
+    return WaybillService.get(payload);
+  }
+
   update(waybill) {
     const payload = _.clone(waybill);
     payload.plan_departure_date = createValidDateTime(payload.plan_departure_date);

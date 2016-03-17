@@ -44,6 +44,14 @@ export default class DashboardCardMedium extends React.Component {
     this.props.refreshCard();
   }
 
+  renderSubitems(subItems) {
+    return (
+      <ul>
+        {subItems.map((item, i) => <li key={i}>{item.title || item}</li>)}
+      </ul>
+    );
+  }
+
   render() {
     let selectedItemIndex = this.state.selectedItem;
     let selectedItem = this.props.items[selectedItemIndex] || null;
@@ -113,11 +121,7 @@ export default class DashboardCardMedium extends React.Component {
                 </Div>
                 <h5>{this.props.itemsTitle ? this.props.itemsTitle : selectedItem !== null ? selectedItem.title : ''}</h5>
                 <div style={{marginTop: 15}}/>
-                <ul>
-                  {subItems.map((item, i) => {
-                    return <li key={i}>{item.title || item}</li>
-                  })}
-                </ul>
+                {this.renderSubitems(subItems)}
                 {typeof this.renderCustomCardData === 'function' ? this.renderCustomCardData() : null}
                 {/**/}
               </Well>

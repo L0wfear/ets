@@ -183,7 +183,7 @@ export class MissionForm extends Form {
             </Col>
             <Col md={6}>
 							<Div hidden={this.state.selectedRoute === null} className="mission-form-map-wrapper">
-	            	<RouteInfo route={this.state.selectedRoute} mapOnly={true} onCanvasChange={this.props.onCanvasChange}/>
+	            	<RouteInfo route={this.state.selectedRoute} mapOnly={true}/>
 							</Div>
             </Col>
 	      	</Row>

@@ -32,32 +32,18 @@ class MissionFormWrap extends FormWrap {
 
 	handlePrint() {
 		let f = this.state.formState;
-
 		let URL = `http://ods.mos.ru/ssd/ets/services/plate_mission/?mission_id=${f.id}`;
-		let data = {
+		let data = {};
 
-		}
 		global.map.once('postcompose', function(event) {
-      //var canvas1 = document.getElementsByTagName("canvas")[0];
-      data.image = event.context.canvas.toDataURL('image/png')//self.props.onCanvasChange();
+      data.image = event.context.canvas.toDataURL('image/png');
 			//window.location = global.canvas;
 			fetch(URL, {
 		    method: 'post',
 				body: JSON.stringify(data)
-			})
-			// let callback = (id) => {
-			// 	console.log('printing waybill', URL);
-			// 	URL = id ?  URL + id : URL + ID;
-			// 	window.location = URL;
-			// };
+			});
     });
-		global.map.renderSync();
-
-		console.log(this.state.canvasData);
-	}
-
-	handleCanvasChange(canvasData) {
-		this.setState({canvasData})
+		global.map.render();
 	}
 
 	handleFormSubmit(formState) {
@@ -84,7 +70,6 @@ class MissionFormWrap extends FormWrap {
 													 show={this.props.showForm}
 													 onHide={this.props.onFormHide}
 													 fromWaybill={this.props.fromWaybill}
-													 onCanvasChange={this.handleCanvasChange.bind(this)}
 													 {...this.state}/>
 						</Div>
 

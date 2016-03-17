@@ -170,7 +170,7 @@ export class DutyMissionForm extends Form {
                      multi={true}
                      disabled={IS_DISPLAY}
                      options={EMPLOYEES}
-                     value={state.brigade_employee_id_list.map(b => b.id || b.employee_id).join(',')}
+                     value={state.brigade_employee_id_list.filter(b => b.id || b.employee_id).map(b => b.id || b.employee_id).join(',')}
                      onChange={this.handleBrigadeIdListChange.bind(this)}/>
             </Col>
           </Row>

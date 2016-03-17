@@ -74,9 +74,15 @@ export default class DashboardCardMedium extends React.Component {
     const items = this.props.items.map((item,i) => {
       let itemClassName = cx('dashboard-card-item', {'pointer': (item.data && item.data.mission_name) || (item.subItems && item.subItems.length)});
       return <Div key={i} className={itemClassName} onClick={this.selectItem.bind(this, i)}>
-                <Div style={{width: '90%', textAlign: 'left', marginLeft: 'auto', marginRight: 'auto'}}>
-                  {item.title}
-                </Div>
+                {typeof item.value !== 'undefined' ?
+                  <Div className="dashboard-card-item-inner-singlevalue">
+                    {item.value}
+                  </Div>
+                  :
+                  <Div className="dashboard-card-item-inner">
+                    {item.title}
+                  </Div>
+                }
              </Div>
     });
     let styleObject = {
@@ -96,6 +102,8 @@ export default class DashboardCardMedium extends React.Component {
     if (itemAction) {
       action = itemAction.bind(null, selectedItem.data || {});
     }
+
+    // отрефакторить
 
     return (
       <Div md={12}>

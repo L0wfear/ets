@@ -9,6 +9,7 @@ class MissionsStore extends Store {
 
     const missionsActons = flux.getActions('missions');
     this.register(missionsActons.getMissions, this.handleGetMissions);
+    this.register(missionsActons.getMissionsByCarAndDates, this.handleGetMissions);
     this.register(missionsActons.createMission, this.handleGetMissions);
     this.register(missionsActons.updateMission, this.handleGetMissions);
     this.register(missionsActons.removeMission, this.handleGetMissions);

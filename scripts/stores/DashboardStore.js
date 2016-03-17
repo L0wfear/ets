@@ -67,19 +67,31 @@ const componentsByRole = {
     //   key: 'estimated_time'
     // }
   ],
-  dispatcher: [...commonComponents,
+  dispatcher: [//...commonComponents,
+    // {
+    //   id: 15,
+    //   key: 'count_assigned_routes'
+    // },
+    // {
+    //   id: 16,
+    //   key: 'released_waybill',
+    //   side: true,
+    // },
+    // {
+    //   id: 18,
+    //   key: 'count_closed_waybill_by_current_operations'
+    // }
     {
-      id: 15,
-      key: 'count_assigned_routes'
+      id: 19,
+      key: 'waybill_draft',
     },
     {
-      id: 16,
-      key: 'released_waybill',
-      side: true,
+      id: 20,
+      key: 'waybill_active',
     },
     {
-      id: 18,
-      key: 'count_closed_waybill_by_current_operations'
+      id: 21,
+      key: 'waybill_closed',
     }
   ]
 }

@@ -11,7 +11,9 @@ let DashboardCardSmall = ({card}) => {
   return (
     <Div className="dashboard-card-sm">
       <Panel header={card.title} bsStyle="success">
-        <Div className="pointer" onClick={action}>{card.items[0].title}</Div>
+        <Div className="pointer" onClick={action}>
+          {card.items && card.items[0] ? card.items[0].title || '' : ''}
+        </Div>
       </Panel>
     </Div>
   );

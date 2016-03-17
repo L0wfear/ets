@@ -2715,6 +2715,8 @@ div.none {
     hr {
       margin-top: 0 !important;
     }*/
+    .fade {
+    }
     .fade, .well {
       /*border-top-left-radius: 0;
       border-bottom-left-radius: 0;*/
@@ -2724,8 +2726,11 @@ div.none {
     }
 
     .well {
+
+      border: 1px solid #292929;
+      border-radius: 4px;
       padding: 0 20px 5px 20px;
-      border: none;
+      /*border: none;*/
       background-color: #eee;
       box-shadow: none;
 

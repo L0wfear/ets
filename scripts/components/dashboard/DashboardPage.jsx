@@ -9,8 +9,7 @@ import connectToStores from 'flummox/connect';
 import DashboardCardMedium from './DashboardCardMedium.jsx';
 import DashboardCardSmall from './DashboardCardSmall.jsx';
 import DashboardMasterManagementCard from './DashboardMasterManagementCard.jsx';
-import MissionInfoFormWrap from './MissionInfoFormWrap.jsx';
-import FaxogrammMissionsFormWrap from '../directories/faxogramm/FaxogrammMissionsFormWrap.jsx';
+import customCards from './customCards/index.js';
 
 let DashboardPageHeader = (props) => {
   return (
@@ -129,13 +128,13 @@ class DashboardPage extends React.Component {
           }
         });
       }
-      if (c.key === 'faxogramms') {
-        c.items.map(item => {
-          item.action = (data) => {
-            this.setState({showFaxogrammForm: true, itemOpenedKey: null, faxogramm: data});
-          }
-        });
-      }
+      // if (c.key === 'faxogramms') {
+      //   c.items.map(item => {
+      //     item.action = (data) => {
+      //       this.setState({showFaxogrammForm: true, itemOpenedKey: null, faxogramm: data});
+      //     }
+      //   });
+      // }
     });
 
     let lists = _(componentsList).groupBy((el, i) => Math.floor(i/3)).toArray().value();
@@ -156,8 +155,9 @@ class DashboardPage extends React.Component {
               }
             }
             let cardClassname = cx({'visibilityHidden': hidden});
+            let DashboardCard = customCards[c.key] || DashboardCardMedium;
             return <Col key={j} md={4} className={cardClassname}>
-              <DashboardCardMedium title={c.title}
+              <DashboardCard title={c.title}
                                    items={c.items}
                                    dashboardKey={c.key}
                                    itemsTitle={c.itemsTitle}
@@ -190,16 +190,6 @@ class DashboardPage extends React.Component {
             {componentsSide}
           </Col>
         </Row>
-
-        <MissionInfoFormWrap onFormHide={() => this.setState({showMissionInfoForm: false})}
-														 showForm={this.state.showMissionInfoForm}
-                             element={this.state.mission}
-														 {...this.props}/>
-        <FaxogrammMissionsFormWrap onFormHide={() => this.setState({showFaxogrammForm: false})}
-  																 showForm={this.state.showFaxogrammForm}
-  																 element={this.state.faxogramm}
-  																 {...this.props}/>
-
 
       </Div>
     );

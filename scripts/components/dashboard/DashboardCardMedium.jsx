@@ -9,19 +9,6 @@ import cx from 'classnames';
 import {getFormattedDateTimeSeconds} from '../../utils/dates.js';
 import moment from 'moment';
 
-let getDataTraveledYet = (data) => {
-  if (typeof data === 'string') {
-    return data;
-  }
-  return parseInt(data, 10);
-}
-
-let getEstimatedFinishTime = (data) => {
-  if (typeof data === 'string' && data.indexOf('2') === -1) {
-    return data;
-  }
-  return moment(data).format(`${global.APP_DATE_FORMAT} HH:mm`);
-}
 
 @FluxContext
 export default class DashboardCardMedium extends React.Component {
@@ -57,15 +44,6 @@ export default class DashboardCardMedium extends React.Component {
     this.props.refreshCard();
   }
 
-  async completeMission(id) {
-		let mission = await this.context.flux.getActions('missions').getMissionById(id);
-        mission = mission.result[0];
-		mission.status = 'complete';
-		await this.context.flux.getActions('missions').updateMission(mission);
-    this.selectItem(null);
-    this.props.refreshCard();
-	}
-
   render() {
     let selectedItemIndex = this.state.selectedItem;
     let selectedItem = this.props.items[selectedItemIndex] || null;
@@ -97,11 +75,6 @@ export default class DashboardCardMedium extends React.Component {
     let otherItems = items.slice(2, items.length);
     //let dashboardCardClass = cx('dashboard-card', {'visibilityHidden'});
     let Header = <DashboardCardHeader title={this.props.title} loading={this.props.loading} onClick={this.refreshCard.bind(this)}/>;
-    let action = () => true;
-    let itemAction = selectedItem !== null ? selectedItem.action : null;
-    if (itemAction) {
-      action = itemAction.bind(null, selectedItem.data || {});
-    }
 
     // отрефакторить
 
@@ -144,30 +117,9 @@ export default class DashboardCardMedium extends React.Component {
                   {subItems.map((item, i) => {
                     return <li key={i}>{item.title || item}</li>
                   })}
-                  <Div style={{marginTop: 20}} hidden={this.props.dashboardKey !== 'faxogramms'}>
-                    <h5>Доп. информация</h5>
-                    <p>{data.order_info}</p>
-                  </Div>
-                  <Div hidden={this.props.dashboardKey !== 'faxogramms'} className="text-right">
-                    <Button className="dashboard-card-action-button" onClick={(e) => {e.preventDefault(); action();}}>Сформировать задания</Button>
-                  </Div>
                 </ul>
-                <Div hidden={!data || (data && !data.mission_name)}>
-                  <ul>
-                    <li><b>Задание:</b> {data.mission_name}</li>
-                    <li><b>Тех. операция:</b> {data.technical_operation_name}</li>
-                    <li><b>Водитель:</b> {data.driver_fio}</li>
-                    <li><b>Гос. номер ТС:</b> {data.car_gov_number}</li>
-                    <li><b>Начало задания:</b> {getFormattedDateTimeSeconds(data.mission_date_start)}</li>
-                    <li><b>Окончание задания:</b> {getFormattedDateTimeSeconds(data.mission_date_end)}</li>
-                    <li><b>Расчетное время выполнения:</b> {getEstimatedFinishTime(data.estimated_finish_time || 'Подсчет')}</li>
-                    <li><b>Пройдено:</b> {getDataTraveledYet(data.traveled_yet)}</li>
-                    <li><a className="pointer" onClick={(e) => {e.preventDefault(); action();}}>Подробнее...</a></li>
-                    <Div className="text-right">
-                      <Button className="dashboard-card-action-button" onClick={this.completeMission.bind(this, data.mission_id)}>Завершить</Button>
-                    </Div>
-                  </ul>
-                </Div>
+                {typeof this.renderCustomCardData === 'function' ? this.renderCustomCardData() : null}
+                {/**/}
               </Well>
             </div>
           </Fade>

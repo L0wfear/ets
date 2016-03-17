@@ -84,7 +84,7 @@ class DutyMissionTemplatesJournal extends ElementsList {
 			selectedElement: null,
       checkedDutyMissions: {},
 			formType: 'ViewForm',
-      showForm: null,
+      showForm: false,
 		};
 	}
 

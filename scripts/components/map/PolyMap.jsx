@@ -16,7 +16,7 @@ window.addEventListener('blur', (ev) => {
 window.addEventListener('focus', (ev) => {
   //let store = flux.getStore('points')
  // store.unpauseRendering()]
-  global.olmap && global.olmap.updateSize()
+  //global.olmap && global.olmap.updateSize()
 });
 
 let POLYS_LAYER = null;

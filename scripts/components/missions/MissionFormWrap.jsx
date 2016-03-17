@@ -8,6 +8,20 @@ import { getDefaultMission } from '../../stores/MissionsStore.js';
 import { isNotNull, isEmpty } from '../../utils/functions.js';
 import { missionSchema, missionClosingSchema } from '../models/MissionModel.js';
 
+function toDataUrl(url, callback){
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'blob';
+    xhr.onload = function() {
+      var reader  = new FileReader();
+      reader.onloadend = function () {
+          callback(reader.result);
+      }
+      reader.readAsDataURL(xhr.response);
+    };
+    xhr.open('GET', url);
+    xhr.send();
+}
+
 class MissionFormWrap extends FormWrap {
 
 	constructor(props) {
@@ -35,15 +49,24 @@ class MissionFormWrap extends FormWrap {
 		let URL = `http://ods.mos.ru/ssd/ets/services/plate_mission/?mission_id=${f.id}`;
 		let data = {};
 
-		global.map.once('postcompose', function(event) {
-      data.image = event.context.canvas.toDataURL('image/png');
-			//window.location = global.canvas;
+		// global.map.once('postcompose', function(event) {
+    //   data.image = event.context.canvas.toDataURL('image/png');
+		// 	//window.location = global.canvas;
+		// 	fetch(URL, {
+		//     method: 'post',
+		// 		body: JSON.stringify(data)
+		// 	});
+    // });
+		// global.map.render();
+		//data.image = event.context.canvas.toDataURL('image/png');
+		toDataUrl('images/avatar-default.png', (base64Data) => {
+			data.image = base64Data;
+			//window.location = base64Data;
 			fetch(URL, {
-		    method: 'post',
+				method: 'post',
 				body: JSON.stringify(data)
 			});
-    });
-		global.map.render();
+		});
 	}
 
 	handleFormSubmit(formState) {

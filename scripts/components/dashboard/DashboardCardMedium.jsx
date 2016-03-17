@@ -30,7 +30,7 @@ export default class DashboardCardMedium extends React.Component {
 
   selectItem(i) {
     let item = this.props.items[i];
-    if ((item && item.subItems && item.subItems.length) || i === null || (item && item.data && item.data.mission_name)) {
+    if ((item && item.subItems && item.subItems.length) || i === null || (item && item.data)) {
       this.setState({selectedItem: i});
       this.props.openFullList(i === null);
     }
@@ -50,7 +50,7 @@ export default class DashboardCardMedium extends React.Component {
     let subItems = selectedItem !== null ? selectedItem.subItems || [] : [];
     let data = selectedItem !== null ? selectedItem.data || {} : {};
     const items = this.props.items.map((item,i) => {
-      let itemClassName = cx('dashboard-card-item', {'pointer': (item.data && item.data.mission_name) || (item.subItems && item.subItems.length)});
+      let itemClassName = cx('dashboard-card-item', {'pointer': (item.data) || (item.subItems && item.subItems.length)});
       return <Div key={i} className={itemClassName} onClick={this.selectItem.bind(this, i)}>
                 {typeof item.value !== 'undefined' ?
                   <Div className="dashboard-card-item-inner-singlevalue">
@@ -104,7 +104,7 @@ export default class DashboardCardMedium extends React.Component {
 
         <DashboardItemChevron direction={this.props.direction} hidden={selectedItem === null || (subItems.length === 0 && !data.mission_name) || !this.props.itemOpened} />
 
-        <Div style={styleObject} hidden={subItems.length === 0 && !data.mission_name} className={cx('dashboard-card-info', {active: selectedItem !== null && this.props.itemOpened})} >
+        <Div style={styleObject} hidden={subItems.length === 0 && !data} className={cx('dashboard-card-info', {active: selectedItem !== null && this.props.itemOpened})} >
           <Fade in={selectedItem !== null && this.props.itemOpened}>
             <div>
               <Well>
@@ -112,7 +112,7 @@ export default class DashboardCardMedium extends React.Component {
                   <Glyphicon glyph="remove"/>
                 </Div>
                 <h5>{this.props.itemsTitle ? this.props.itemsTitle : selectedItem !== null ? selectedItem.title : ''}</h5>
-                <hr/>
+                <div style={{marginTop: 15}}/>
                 <ul>
                   {subItems.map((item, i) => {
                     return <li key={i}>{item.title || item}</li>

@@ -27,7 +27,7 @@ export default class Faxogramms extends DashboardCardMedium {
 
     return (
       <Div>
-        <Div style={{marginTop: 20}}>
+        <Div style={{marginTop: 10}}>
           <h5>Доп. информация</h5>
           <p>{data.order_info}</p>
         </Div>

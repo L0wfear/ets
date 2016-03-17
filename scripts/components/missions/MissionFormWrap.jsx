@@ -22,6 +22,41 @@ function toDataUrl(url, callback){
     xhr.send();
 }
 
+var saveData = (function () {
+    var a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+    return function (blob, fileName) {
+        var url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = fileName;
+        a.click();
+        window.URL.revokeObjectURL(url);
+    };
+}());
+
+
+function dataURItoBlob(dataURI) {
+    // convert base64/URLEncoded data component to raw binary data held in a string
+    var byteString;
+    if (dataURI.split(',')[0].indexOf('base64') >= 0)
+        byteString = atob(dataURI.split(',')[1]);
+    else
+        byteString = unescape(dataURI.split(',')[1]);
+
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+    // write the bytes of the string to a typed array
+    var ia = new Uint8Array(byteString.length);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([ia], {type:mimeString});
+}
+
+
 class MissionFormWrap extends FormWrap {
 
 	constructor(props) {
@@ -46,27 +81,49 @@ class MissionFormWrap extends FormWrap {
 
 	handlePrint() {
 		let f = this.state.formState;
-		let URL = `http://ods.mos.ru/ssd/ets/services/plate_mission/?mission_id=${f.id}`;
-		let data = {};
+		const { flux } = window.__ETS_CONTAINER__;
 
-		// global.map.once('postcompose', function(event) {
-    //   data.image = event.context.canvas.toDataURL('image/png');
-		// 	//window.location = global.canvas;
-		// 	fetch(URL, {
-		//     method: 'post',
-		// 		body: JSON.stringify(data)
-		// 	});
-    // });
-		// global.map.render();
-		//data.image = event.context.canvas.toDataURL('image/png');
-		toDataUrl('images/avatar-default.png', (base64Data) => {
-			data.image = base64Data;
-			//window.location = base64Data;
+	  const token = flux.getStore('session').getSession();
+		let URL = `http://ods.mos.ru/ssd/ets/services/plate_mission/?token=${token}&mission_id=${f.id}`;
+		let data = {};
+		global.map.once('postcompose', function(event) {
+      data.image = event.context.canvas.toDataURL('image/png');
+			// console.log(data.image.length);
+			// var blob = dataURItoBlob(event.context.canvas.toDataURL('image/png'));
+			// console.log(blob);
+			// saveData(blob, 'qqq.png');
+			// var reader = new window.FileReader();
+			//  reader.onloadend = function() {
+			//                 var base64data = reader.result;
+			//                 console.log(base64data.length);
+			//   }
+			//
+			// 	 reader.readAsDataURL(blob);
 			fetch(URL, {
 				method: 'post',
 				body: JSON.stringify(data)
+			}).then((r) => {
+				console.log(r);
+				 r.blob().then(b => {
+					saveData(b, `Задание №${f.number}.docx`);
+				});
 			});
-		});
+    });
+		global.map.render();
+
+		//data.image = event.context.canvas.toDataURL('image/png');
+		// toDataUrl('images/qqq.png', (base64Data) => {
+		// 	data.image = base64Data;
+		// 	fetch(URL, {
+		// 		method: 'post',
+		// 		body: JSON.stringify(data)
+		// 	}).then((r) => {
+		// 		console.log(r);
+		// 		 r.blob().then(b => {
+		// 			saveData(b, 'abc.docx');
+		// 		});
+		// 	});
+		// });
 	}
 
 	handleFormSubmit(formState) {

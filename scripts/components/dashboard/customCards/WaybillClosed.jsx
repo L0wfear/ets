@@ -41,6 +41,7 @@ export default class WaybillClosed extends DashboardCardMedium {
     this.props.refreshCard('waybill_draft');
     this.props.refreshCard('waybill_active');
     this.props.refreshCard('waybill_closed');
+    this.props.refreshCard('current_missions');
     this.setState({showWaybillForm: false});
   }
 

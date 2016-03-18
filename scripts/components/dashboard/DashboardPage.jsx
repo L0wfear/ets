@@ -82,7 +82,11 @@ class DashboardPage extends React.Component {
     document.getElementById('dashboard-time').innerHTML = time;
   }
 
-  refreshCard(key) {
+  refreshCard(key, id, forcedKey) {
+    if (forcedKey && typeof forcedKey === 'string' && forcedKey.indexOf('_') > -1) {
+      key = forcedKey;
+      console.log(key);
+    }
     let { loadingComponents } = this.state;
     loadingComponents.push(key);
     this.setState({loadingComponents});

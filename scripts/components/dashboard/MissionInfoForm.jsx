@@ -48,6 +48,9 @@ export class MissionInfoForm extends Form {
 					missionReport = r.result.report_by_point;
 					selectedObjects = r.result.report_by_point.filter(p => p.status === 'success');
 				}
+				if (r.result.route_check_unit) {
+					_.each(missionReport, mr => mr.route_check_unit = r.result.route_check_unit)
+				}
 	      this.setState({missionReport, missionReportFull: r.result, selectedObjects});
 			}
     });

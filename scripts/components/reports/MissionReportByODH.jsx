@@ -3,60 +3,78 @@ import connectToStores from 'flummox/connect';
 import Table from '../ui/table/DataTable.jsx';
 import ElementsList from '../ElementsList.jsx';
 //78
-let tableMeta = {
-	cols: [
-    {
-      name: 'odh_name',
-      caption: 'ОДХ',
-      type: 'string',
-      filter: {
-        type: 'select',
-      },
-    },
-    {
-      name: 'route_check_value',
-      caption: 'Нужно пройти',
-      type: 'string',
-      filter: {
-        type: 'select',
-      },
-    },
-		{
-			name: 'traveled',
-			caption: 'Пройдено',
-			type: 'string',
-			filter: {
-				type: 'select',
-			}
-		},
-		{
-			name: 'left',
-			caption: 'Осталось',
-			type: 'string',
-			filter: {
-				type: 'select',
-			}
-		},
-		{
-			name: 'left_percentage',
-			caption: 'Осталось %',
-			type: 'string',
-			filter: {
-				type: 'select',
-			}
-		},
-		{
-			name: 'v_avg_max',
-			caption: 'Максимальная скорость',
+
+let getTableMeta = (props) => {
+	let tableMeta = {
+		cols: [
+	    {
+	      name: 'odh_name',
+	      caption: 'ОДХ',
+	      type: 'string',
+	      filter: {
+	        type: 'select',
+	      },
+	    },
+	    {
+	      name: props.data && props.data[0] && props.data[0].route_check_value ? 'route_check_value' : 'route_check_length',
+	      caption: 'Нужно пройти',
+	      type: 'string',
+	      filter: {
+	        type: 'select',
+	      },
+	    },
+			{
+				name: 'traveled',
+				caption: 'Пройдено',
+				type: 'string',
+				filter: {
+					type: 'select',
+				}
+			},
+			{
+				name: 'left',
+				caption: 'Осталось',
+				type: 'string',
+				filter: {
+					type: 'select',
+				}
+			},
+			{
+				name: 'left_percentage',
+				caption: 'Осталось %',
+				type: 'string',
+				filter: {
+					type: 'select',
+				}
+			},
+			{
+				name: 'v_avg_max',
+				caption: 'Максимальная скорость',
+				type: 'string',
+				filter: {
+					type: 'select',
+				},
+			},
+		]
+	};
+	if (props.data && props.data[0] && props.data[0].route_check_unit) {
+		tableMeta.cols.push({
+			name: 'route_check_unit',
+			caption: 'Единица измерения',
 			type: 'string',
 			filter: {
 				type: 'select',
 			},
-		},
-	]
+		});
+	}
+	
+	return tableMeta;
 }
 
+
 let MissionReportByODHTable = (props) => {
+
+	let tableMeta = getTableMeta(props);
 
 	const renderers = {
     left_percentage: ({data}) => <div>{ parseFloat(parseFloat(data) * 100).toFixed(2) + '%'}</div>,
@@ -64,6 +82,7 @@ let MissionReportByODHTable = (props) => {
 			return <div>{ parseFloat(data).toFixed(2)}</div>
 		},
     traveled: ({data}) => <div>{ parseFloat(data).toFixed(2)}</div>,
+    route_check_length: ({data}) => <div>{ parseFloat(data).toFixed(2)}</div>,
     route_check_value: ({data}) => <div>{ parseFloat(data).toFixed(2)}</div>,
 	};
 
@@ -107,7 +126,7 @@ class MissionReportByODH extends ElementsList {
 
 		return (
 			<div className="ets-page-wrap">
-				<MissionReportByODHTable noFilter={noFilter} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={this.selectField} data={this.props.selectedReportDataODHS || []} >
+				<MissionReportByODHTable noFilter={noFilter} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={this.selectField} data={this.props.selectedReportDataODHS || []} {...this.props}>
 				</MissionReportByODHTable>
 			</div>
 		);

@@ -2,7 +2,6 @@ import React from 'react';
 import Div from '../../ui/Div.jsx';
 import { Panel, Collapse, Glyphicon, Fade, Well, Button } from 'react-bootstrap';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
-import FaxogrammMissionsFormWrap from '../../directories/faxogramm/FaxogrammMissionsFormWrap.jsx';
 import { FluxContext } from '../../decorators/index.js';
 import WaybillFormWrap from '../../waybill/WaybillFormWrap.jsx';
 
@@ -19,7 +18,6 @@ export default class WaybillClosed extends DashboardCardMedium {
   }
 
   action(item) {
-    console.log(this);
     this.props.openFullList(true);
     this.context.flux.getActions('waybills').getWaybill(item.data.waybill_id).then(r => this.setState({showWaybillForm: true, selectedWaybill: r.result[0]}));
   }

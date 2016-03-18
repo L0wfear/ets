@@ -79,6 +79,9 @@ export default class DashboardCardMedium extends React.Component {
         width: this.state.cardWidth, right: this.state.cardWidth + 44
       };
     }
+    if (!this.state.cardWidth) {
+      styleObject = {};
+    }
     let firstItems = items.slice(0, 2);
     let otherItems = items.slice(2, items.length);
     //let dashboardCardClass = cx('dashboard-card', {'visibilityHidden'});
@@ -112,7 +115,7 @@ export default class DashboardCardMedium extends React.Component {
 
         <DashboardItemChevron direction={this.props.direction} hidden={selectedItem === null || (subItems.length === 0 && !data.mission_name) || !this.props.itemOpened} />
 
-        <Div style={styleObject} hidden={subItems.length === 0 && !data} className={cx('dashboard-card-info', {active: selectedItem !== null && this.props.itemOpened})} >
+        <Div style={styleObject} hidden={(subItems.length === 0 && !data) || !this.props.itemOpened} className={cx('dashboard-card-info', {active: selectedItem !== null && this.props.itemOpened})} >
           <Fade in={selectedItem !== null && this.props.itemOpened}>
             <div>
               <Well>

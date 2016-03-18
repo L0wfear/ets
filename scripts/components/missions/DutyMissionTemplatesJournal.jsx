@@ -97,7 +97,7 @@ class DutyMissionTemplatesJournal extends ElementsList {
   checkDutyMission(id, state) {
     const missions = _.cloneDeep(this.state.checkedDutyMissions);
     if (state) {
-      missions[parseInt(id, 10)] = _.find(this.props.missionTemplatesList, m => m.id === parseInt(id, 10));
+      missions[parseInt(id, 10)] = _.find(this.props.dutyMissionTemplatesList, m => m.id === parseInt(id, 10));
     } else {
       delete missions[id];
     }

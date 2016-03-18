@@ -53,21 +53,10 @@ class MissionsCreationForm extends Form {
                      onChange={this.handleChange.bind(this, 'mission_source_id')}/>
             </Col>
           </Row>
-          <Row>
-            <Col md={12}>
-              <Field type="number" label="Количество проходов" error={errors['passes_count']}
-                     value={state.passes_count} onChange={this.handleChange.bind(this, 'passes_count')}
-                     min={0} />
-            </Col>
-          </Row>
 
         </Modal.Body>
 
         <Modal.Footer>
-          <Div className="inline-block assignToWaybillCheck">
-            <label>Создать черновик ПЛ / Добавить в существующий</label>
-            <Input type="checkbox" value={state.assign_to_waybill} onClick={this.handleChange.bind(this, 'assign_to_waybill', !!!state.assign_to_waybill)}/>
-          </Div>
           <Div className="inline-block" hidden={state.status === 'closed'}>
             <Button onClick={this.handleSubmit.bind(this)}>{'Сформировать'}</Button>
           </Div>

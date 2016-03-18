@@ -204,6 +204,34 @@ export default class MissionsActions extends Actions {
      return DutyMissionTemplateService.delete(payload, null, 'json');
    }
 
+   createDutyMissions(dutyMissionTemplates, dutyMissionsCreationTemplate) {
+     const dutyMissionsCreationTemplateCopy = _.clone(dutyMissionsCreationTemplate);
+     const date_start = createValidDateTime(dutyMissionsCreationTemplateCopy.date_start);
+     const date_end = createValidDateTime(dutyMissionsCreationTemplateCopy.date_end);
+     const queries = Object.keys(dutyMissionTemplates).map((key) => dutyMissionTemplates[key]).map((query) => {
+       const payload = _.cloneDeep(query);
+       payload.status = 'not_assigned';
+       payload.plan_date_start = date_start;
+       payload.plan_date_end = date_end;
+       payload.fact_date_start = date_start;
+       payload.fact_date_end = date_end;
+       payload.mission_source_id = dutyMissionsCreationTemplateCopy.mission_source_id;
+       payload.brigade_employee_id_list = [];
+       payload.foreman_id = 27;
+       if (!isEmpty(dutyMissionsCreationTemplateCopy.faxogramm_id)) {
+         payload.faxogramm_id = dutyMissionsCreationTemplateCopy.faxogramm_id;
+       }
+       delete payload.company_id;
+       delete payload.id;
+       delete payload.number;
+       delete payload.technical_operation_name;
+       delete payload.route_name;
+
+       return DutyMissionService.create(payload, false, 'json');
+     });
+     return Promise.all(queries);
+   }
+
 
 
 

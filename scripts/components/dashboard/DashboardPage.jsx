@@ -83,6 +83,7 @@ class DashboardPage extends React.Component {
   }
 
   refreshCard(key) {
+    console.log(key);
     let { loadingComponents } = this.state;
     loadingComponents.push(key);
     this.setState({loadingComponents});

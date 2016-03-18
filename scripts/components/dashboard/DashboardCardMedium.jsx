@@ -131,6 +131,7 @@ export default class DashboardCardMedium extends React.Component {
             </div>
           </Fade>
         </Div>
+        {typeof this.renderCustomCardForm === 'function' ? this.renderCustomCardForm() : null}
 
       </Div>
     );

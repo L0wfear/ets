@@ -84,7 +84,7 @@ const componentsByRole = {
     {
       id: 19,
       key: 'waybill_draft',
-      itemsTitle: 'Информация о ПЛ'
+      itemsTitle: 'Гос. номер ТС'
     },
     {
       id: 20,

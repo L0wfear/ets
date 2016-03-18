@@ -14,7 +14,7 @@ export default class WaybillDraft extends WaybillClosed {
       <ul>
         {subItems.map((item, i) => (
           <li key={i} className="pointer" onClick={this.action.bind(this, item)}>
-            {`№${item.data.waybill_number}`}
+            {`${item.title}`}
           </li>
         ))}
       </ul>

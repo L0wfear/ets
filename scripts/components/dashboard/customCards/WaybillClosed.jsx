@@ -19,7 +19,10 @@ export default class WaybillClosed extends DashboardCardMedium {
 
   action(item) {
     this.props.openFullList(true);
-    this.context.flux.getActions('waybills').getWaybill(item.data.waybill_id).then(r => this.setState({showWaybillForm: true, selectedWaybill: r.result[0]}));
+    this.context.flux.getActions('waybills').getWaybill(item.data.waybill_id).then(r => {
+      console.log(r.result[0])
+      this.setState({showWaybillForm: true, selectedWaybill: r.result[0]});
+    });
   }
 
   renderSubitems(subItems) {
@@ -34,9 +37,16 @@ export default class WaybillClosed extends DashboardCardMedium {
     );
   }
 
-  renderCustomCardData() {
+  onFormHide() {
+    this.props.refreshCard('waybill_draft');
+    this.props.refreshCard('waybill_active');
+    this.props.refreshCard('waybill_closed');
+    this.setState({showWaybillForm: false});
+  }
+
+  renderCustomCardForm() {
     return (
-      <WaybillFormWrap onFormHide={() => this.setState({showWaybillForm: false})}
+      <WaybillFormWrap onFormHide={this.onFormHide.bind(this)}
                        showForm={this.state.showWaybillForm}
                        element={this.state.selectedWaybill}
                        {...this.props}/>

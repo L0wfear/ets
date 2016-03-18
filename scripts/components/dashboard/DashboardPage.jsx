@@ -83,7 +83,6 @@ class DashboardPage extends React.Component {
   }
 
   refreshCard(key) {
-    console.log(key);
     let { loadingComponents } = this.state;
     loadingComponents.push(key);
     this.setState({loadingComponents});
@@ -195,7 +194,7 @@ class DashboardPage extends React.Component {
           </Col>
 
           <Col md={2}>
-            <DashboardMasterManagementCard/>
+            <DashboardMasterManagementCard refreshCard={this.refreshCard.bind(this)}/>
 
             {componentsSide}
           </Col>

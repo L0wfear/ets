@@ -28,6 +28,12 @@ export default class MasterManagementCard extends ElementsList {
     this.setState({showMonitorForm: true});
   }
 
+  onWaybillFormHide() {
+    this.props.refreshCard('waybill_draft');
+    this.props.refreshCard('waybill_active');
+    this.setState({showWaybillForm: false});
+  }
+
   render() {
 
     return (
@@ -39,7 +45,7 @@ export default class MasterManagementCard extends ElementsList {
           {/*<Button bsSize="small" style={{marginTop: 10}} onClick={this.showMonitorForm.bind(this)}><Glyphicon glyph="search"/> Монитор</Button>*/}
         </Panel>
 
-        <WaybillFormWrap onFormHide={() => this.setState({showWaybillForm: false})}
+        <WaybillFormWrap onFormHide={this.onWaybillFormHide.bind(this)}
                          showForm={this.state.showWaybillForm}
                          element={null}/>
 
@@ -47,9 +53,9 @@ export default class MasterManagementCard extends ElementsList {
                          showForm={this.state.showForm}
                          element={this.state.selectedElement}/>
 
-        <MonitorFormWrap onFormHide={() => this.setState({showMonitorForm: false})}
+        {/*<MonitorFormWrap onFormHide={() => this.setState({showMonitorForm: false})}
                       showForm={this.state.showMonitorForm}
-                      {...this.props}/>
+                      {...this.props}/>*/}
       </Div>
     );
 

@@ -34,12 +34,16 @@ export default class Faxogramms extends DashboardCardMedium {
         <Div className="text-right">
           <Button className="dashboard-card-action-button" onClick={(e) => {e.preventDefault(); this.action(data);}}>Сформировать задания</Button>
         </Div>
-
-        <FaxogrammMissionsFormWrap onFormHide={() => this.setState({showFaxogrammForm: false})}
-                                   showForm={this.state.showFaxogrammForm}
-                                   element={this.state.faxogramm}
-                                   {...this.props}/>
       </Div>
+    );
+  }
+
+  renderCustomCardForm() {
+    return (
+      <FaxogrammMissionsFormWrap onFormHide={() => this.setState({showFaxogrammForm: false})}
+                               showForm={this.state.showFaxogrammForm}
+                               element={this.state.faxogramm}
+                               {...this.props}/>
     );
   }
 

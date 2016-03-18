@@ -68,13 +68,16 @@ export default class CurrentMission extends DashboardCardMedium {
             <Button className="dashboard-card-action-button" onClick={this.completeMission.bind(this, data.mission_id)}>Завершить</Button>
           </Div>
         </ul>
-
-
-        <MissionInfoFormWrap onFormHide={() => this.setState({showMissionInfoForm: false})}
-														 showForm={this.state.showMissionInfoForm}
-                             element={this.state.mission}
-														 {...this.props}/>
       </Div>
+    );
+  }
+
+  renderCustomCardForm() {
+    return (
+      <MissionInfoFormWrap onFormHide={() => this.setState({showMissionInfoForm: false})}
+                         showForm={this.state.showMissionInfoForm}
+                         element={this.state.mission}
+                         {...this.props}/>
     );
   }
 

@@ -112,7 +112,7 @@ export class DutyMissionForm extends Form {
 			return {id, value: id, label: `№${number} (${techOperation.name})`};
 		});
 
-		let IS_CREATING = !!!state.status;
+		let IS_CREATING = !!!state.number;
 
     let title = `Наряд-задание № ${state.number || ''}`;
 

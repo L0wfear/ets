@@ -2701,7 +2701,7 @@ div.none {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 9999;
+    z-index: 990;
     background: rgba(236, 240, 241,0.8);
   }
   .dashboard-card-info {
@@ -2755,7 +2755,7 @@ div.none {
     }
   }
   .dashboard-card-info.active {
-    z-index: 9999;
+    z-index: 990;
   }
   .dashboard-card-info:not(.active) {
     max-height: 1px;
@@ -2794,6 +2794,15 @@ div.none {
 
     > .panel > .panel-body {
       padding: 15px 20px;
+    }
+
+    &.dashboard-management-card {
+      .btn {
+        min-width: 200px;
+        + .btn {
+          margin-top: 20px;
+        }
+      }
     }
   }
 
@@ -3094,4 +3103,7 @@ div.none {
   .openlayers-container {
     position: relative !important;
   }
+}
+
+.modal-backdrop.in {
 }

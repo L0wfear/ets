@@ -2,6 +2,7 @@ import React from 'react';
 import Div from '../ui/Div.jsx';
 import { Panel, Row, Col, Button, Fade, Well, Glyphicon, Collapse } from 'react-bootstrap';
 import MissionFormWrap from '../missions/MissionFormWrap.jsx';
+import DutyMissionFormWrap from '../missions/DutyMissionFormWrap.jsx';
 import MonitorFormWrap from './MonitorFormWrap.jsx';
 import WaybillFormWrap from '../waybill/WaybillFormWrap.jsx';
 import ElementsList from '../ElementsList.jsx';
@@ -13,6 +14,8 @@ export default class MasterManagementCard extends ElementsList {
 
     this.state = Object.assign(this.state, {
       showWaybillForm: false,
+      showMissionForm: false,
+      showDutyMissionForm: false,
     })
   }
 
@@ -34,14 +37,23 @@ export default class MasterManagementCard extends ElementsList {
     this.setState({showWaybillForm: false});
   }
 
+  onMissionFormHide() {
+    this.props.refreshCard('waybill_draft');
+    this.setState({showMissionForm: false});
+  }
+
+  onDutyMissionFormHide() {
+    this.setState({showDutyMissionForm: false});
+  }
+
   render() {
 
     return (
-      <Div className="dashboard-card-sm" hidden={this.props.hidden}>
+      <Div className="dashboard-card-sm dashboard-management-card" hidden={this.props.hidden}>
         <Panel header={'Управление'} bsStyle="success">
-          <Button bsSize="small" onClick={() => this.setState({showWaybillForm: true})}>Новый путевой лист</Button>
-          <div style={{marginTop: 20}}/>
-          <Button bsSize="small" onClick={this.showForm.bind(this)}>Новое задание</Button>
+          <Button bsSize="small" onClick={() => this.setState({showWaybillForm: true})}>Создать путевой лист</Button>
+          <Button bsSize="small" onClick={() => this.setState({showMissionForm: true})}>Создать задание</Button>
+          <Button bsSize="small" onClick={() => this.setState({showDutyMissionForm: true})}>Создать наряд-задание</Button>
           {/*<Button bsSize="small" style={{marginTop: 10}} onClick={this.showMonitorForm.bind(this)}><Glyphicon glyph="search"/> Монитор</Button>*/}
         </Panel>
 
@@ -49,9 +61,13 @@ export default class MasterManagementCard extends ElementsList {
                          showForm={this.state.showWaybillForm}
                          element={null}/>
 
-        <MissionFormWrap onFormHide={this.onFormHide.bind(this)}
-                         showForm={this.state.showForm}
-                         element={this.state.selectedElement}/>
+        <MissionFormWrap onFormHide={this.onMissionFormHide.bind(this)}
+                         showForm={this.state.showMissionForm}
+                         element={null}/>
+
+        <DutyMissionFormWrap onFormHide={this.onDutyMissionFormHide.bind(this)}
+                             showForm={this.state.showDutyMissionForm}
+                             element={null}/>
 
         {/*<MonitorFormWrap onFormHide={() => this.setState({showMonitorForm: false})}
                       showForm={this.state.showMonitorForm}

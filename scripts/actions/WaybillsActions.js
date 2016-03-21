@@ -4,8 +4,6 @@ import _ from 'lodash';
 import { isEmpty } from 'utils/functions';
 import { WaybillService } from 'api/Services';
 
-console.log(createValidDateTime);
-
 class WaybillsActions extends BaseActions {
 
   constructor(props) {

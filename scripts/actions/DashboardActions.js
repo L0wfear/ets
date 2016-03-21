@@ -1,6 +1,7 @@
 import { Actions } from 'flummox';
 import { getDashboardComponent } from '../adapter.js';
 import _ from 'lodash';
+import moment from 'moment';
 
 export default class DashboardActions extends Actions {
 

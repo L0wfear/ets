@@ -30,7 +30,7 @@ export default class APIService {
     return getJSON(this.url, payload);
   }
 
-  create(payload = {}, callback, type = 'form') {
+  post(payload = {}, callback, type = 'form') {
     console.info('API SERVICE POST', this.firstUrl, type);
     return postJSON(this.url, payload, type).then((r) => {
       if (r.warnings && r.warnings.length) {
@@ -49,7 +49,7 @@ export default class APIService {
     });
   }
 
-  update(payload = {}, callback, type = 'form') {
+  put(payload = {}, callback, type = 'form') {
     console.info('API SERVICE PUT', this.firstUrl);
     return putJSON(this.url, payload, type).then((r) => {
       if (r.warnings && r.warnings.length) {

@@ -1,6 +1,9 @@
 import { Store } from 'flummox';
 import _ from 'lodash';
 
+
+//`${key}=${c.filter[key].join(`&${key}=`)}`
+
 const commonComponents = [
   {
     id: 1,
@@ -61,6 +64,10 @@ const componentsByRole = {
     //   id: 10,
     //   key: 'count_waybill_closed',
     //   side: true,
+    //   filter: {
+    //     status: ['closed'],
+    //     date_create: [moment().format('YYYY-MM-DD')],
+    //   }
     // },
     // {
     //   id: 13,

@@ -24,10 +24,10 @@ let toUrlWithParams = (url, data) => {
   _.mapKeys(data, (v, k) => {
     if (_.isArray(v)) {
       if (k === 'taxes') {
+        alert('11212')
         const taxes = {'taxes':v};
         params += `data=${encodeURIComponent(JSON.stringify(taxes))}&`
       }
-
     } else {
       params += `${k}=${encodeURIComponent(v)}&`;
     }

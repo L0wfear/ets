@@ -9,21 +9,8 @@ import connectToStores from 'flummox/connect';
 import DashboardCardMedium from './DashboardCardMedium.jsx';
 import DashboardCardSmall from './DashboardCardSmall.jsx';
 import DashboardMasterManagementCard from './DashboardMasterManagementCard.jsx';
+import DashboardPageHeader from './DashboardPageHeader.jsx';
 import customCards from './customCards/index.js';
-
-let DashboardPageHeader = (props) => {
-  return (
-    <Row>
-      <Col md={4}>
-      </Col>
-      <Col md={4}>
-        <Div className="dashboard-time" id="dashboard-time"/>
-      </Col>
-      <Col md={4}>
-      </Col>
-    </Row>
-  );
-}
 
 class DashboardPage extends React.Component {
 
@@ -31,7 +18,6 @@ class DashboardPage extends React.Component {
     super(props);
 
     this.state = {
-      time: '',
       loadingComponents: [],
       itemOpenedKey: null,
       showMissionInfoForm: false,
@@ -64,28 +50,19 @@ class DashboardPage extends React.Component {
   }
 
   componentDidMount() {
-    this.updateClock();
-    this.timeInterval = setInterval(this.updateClock.bind(this), 1000);
     this.componentsUpdateInterval = setInterval(this.refreshAll.bind(this), 1000 * 60);
     document.getElementsByTagName('html')[0].classList.add('overflow-scroll');
     this.init();
   }
 
   componentWillUnmount() {
-    clearInterval(this.timeInterval);
     clearInterval(this.componentsUpdateInterval);
     document.getElementsByTagName('html')[0].classList.remove('overflow-scroll');
   }
 
-  updateClock() {
-    let time = moment().format('HH:mm:ss');
-    document.getElementById('dashboard-time').innerHTML = time;
-  }
-
   refreshCard(key, id, forcedKey) {
-    if (forcedKey && typeof forcedKey === 'string' && forcedKey.indexOf('_') > -1) {
+    if (typeof forcedKey === 'string' && forcedKey.indexOf('_') > -1) {
       key = forcedKey;
-      console.log(key);
     }
     let { loadingComponents } = this.state;
     loadingComponents.push(key);
@@ -105,50 +82,6 @@ class DashboardPage extends React.Component {
 
     let role = this.context.flux.getStore('session').getCurrentUser().role;
     const { componentsList = [], componentsSideList = [] } = this.props;
-    componentsSideList.map(c => {
-      //переделать этот бред
-      let params = '';
-      if (c.key === 'released_waybill') {
-        if (c.items[0].filter) {
-          for (let key in c.items[0].filter) {
-            if (params.length > 0) params += '&';
-            params += `${key}=${c.items[0].filter[key].join(`&${key}=`)}`;
-          }
-        }
-        c.items[0].action = () => this.context.history.pushState(null, `/waybill-journal?${params}`)
-      }
-      if (c.key === 'count_waybill_closed') {
-        if (!c.items[0].filter) {
-          c.items[0].filter = {
-            status: ['closed'],
-            date_create: [moment().format('YYYY-MM-DD')],
-          };
-        }
-        for (let key in c.items[0].filter) {
-          if (params.length > 0) params += '&';
-          params += `${key}=${c.items[0].filter[key].join(`&${key}=`)}`;
-        }
-        c.items[0].action = () => this.context.history.pushState(null, `/waybill-journal?${params}`)
-      }
-
-    });
-
-    componentsList.map(c => {
-      if (c.key === 'current_missions') {
-        c.items.map(item => {
-          item.action = (data) => {
-            this.setState({showMissionInfoForm: true, itemOpenedKey: null, mission: data});
-          }
-        });
-      }
-      // if (c.key === 'faxogramms') {
-      //   c.items.map(item => {
-      //     item.action = (data) => {
-      //       this.setState({showFaxogrammForm: true, itemOpenedKey: null, faxogramm: data});
-      //     }
-      //   });
-      // }
-    });
 
     let lists = _(componentsList).groupBy((el, i) => Math.floor(i/3)).toArray().value();
     let rows = [];
@@ -193,11 +126,11 @@ class DashboardPage extends React.Component {
         <DashboardPageHeader/>
 
         <Row>
-          <Col md={10}>
+          <Col md={9}>
             {rows}
           </Col>
 
-          <Col md={2}>
+          <Col md={3}>
             <DashboardMasterManagementCard refreshCard={this.refreshCard.bind(this)}/>
 
             {componentsSide}

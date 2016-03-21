@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { createValidDateTime } from '../utils/dates.js';
 import { isEmpty, isNotNull } from '../utils/functions.js';
 
-import { MissionReportsService, MissionService, MissionSourceService, MissionTemplateService, MissionTemplatesForFaxogramm, MissionLastReportService, DutyMissionService, DutyMissionTemplateService } from '../api/Services.js';
+import { MissionReportsService, MissionService, MissionSourceService, MissionTemplateService, MissionTemplatesForFaxogramm, MissionLastReportService, DutyMissionService, DutyMissionTemplateService, MissionPrintService } from '../api/Services.js';
 
 export default class MissionsActions extends Actions {
 
@@ -71,6 +71,14 @@ export default class MissionsActions extends Actions {
     payload.date_end = createValidDateTime(payload.date_end);
     delete payload.number;
     return MissionService.update(payload);
+  }
+
+  printMission(mission_id, image) {
+    const payload = {
+      mission_id,
+      image
+    };
+    return MissionPrintService.create(payload, (r) => r.blob(), 'json');
   }
 
 

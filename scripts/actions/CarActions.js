@@ -1,12 +1,11 @@
 import { Actions } from 'flummox';
-import _ from 'lodash';
 import { CarInfoService, CarService } from '../api/Services.js';
 
 export default class CarActions extends Actions {
 
   updateCarAdditionalInfo(car) {
     const payload = {
-      car_id: car.asuods_id,
+      car_id: car.asuods_id
     };
 
     if (car.garage_number) {

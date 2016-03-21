@@ -2,7 +2,6 @@ import { Actions } from 'flummox';
 import _ from 'lodash';
 import { createValidDateTime } from 'utils/dates';
 import { isEmpty, isNotNull } from 'utils/functions';
-
 import { MissionReportsService, MissionService, MissionSourceService, MissionTemplateService, MissionTemplatesForFaxogramm, MissionLastReportService, DutyMissionService, DutyMissionTemplateService, MissionPrintService } from 'api/Services';
 
 export default class MissionsActions extends Actions {
@@ -57,7 +56,7 @@ export default class MissionsActions extends Actions {
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
     payload.assign_to_waybill = +!!payload.assign_to_waybill;
-    return MissionService.create(payload);
+    return MissionService.post(payload);
   }
 
   removeMission(id) {
@@ -70,7 +69,7 @@ export default class MissionsActions extends Actions {
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
     delete payload.number;
-    return MissionService.update(payload);
+    return MissionService.put(payload);
   }
 
   printMission(mission_id, image) {
@@ -78,7 +77,7 @@ export default class MissionsActions extends Actions {
       mission_id,
       image
     };
-    return MissionPrintService.create(payload, (r) => r.blob(), 'json');
+    return MissionPrintService.post(payload, (r) => r.blob(), 'json');
   }
 
 
@@ -98,7 +97,7 @@ export default class MissionsActions extends Actions {
 
   createMissionTemplate(missionTemplate) {
     const payload = _.clone(missionTemplate);
-    return MissionTemplateService.create(payload);
+    return MissionTemplateService.post(payload);
   }
 
   createMissions(missionTemplates, missionsCreationTemplate) {
@@ -120,7 +119,7 @@ export default class MissionsActions extends Actions {
       delete payload.company_id;
       delete payload.id;
       delete payload.number;
-      return MissionService.create(payload, false);
+      return MissionService.post(payload, false);
     });
     return Promise.all(queries);
   }
@@ -134,7 +133,7 @@ export default class MissionsActions extends Actions {
     const payload = _.cloneDeep(missionTemplate);
     delete payload.number;
     delete payload.company_id;
-    return MissionTemplateService.update(payload);
+    return MissionTemplateService.put(payload);
   }
 
 
@@ -157,7 +156,7 @@ export default class MissionsActions extends Actions {
     payload.fact_date_end = createValidDateTime(payload.fact_date_end);
     payload.brigade_employee_id_list = payload.brigade_employee_id_list.map(b => b.id|| b.employee_id);
     console.log(payload);
-    return DutyMissionService.create(payload, null, 'json');
+    return DutyMissionService.post(payload, null, 'json');
   }
 
   updateDutyMission(mission) {
@@ -172,7 +171,7 @@ export default class MissionsActions extends Actions {
     payload.fact_date_start = createValidDateTime(payload.fact_date_start);
     payload.fact_date_end = createValidDateTime(payload.fact_date_end);
     payload.brigade_employee_id_list = payload.brigade_employee_id_list.map(b => b.id || b.employee_id);
-    return DutyMissionService.update(payload, null, 'json');
+    return DutyMissionService.put(payload, null, 'json');
   }
 
   removeDutyMission(id) {
@@ -196,7 +195,7 @@ export default class MissionsActions extends Actions {
 
    createDutyMissionTemplate(mission) {
      const payload = _.cloneDeep(mission);
-     return DutyMissionTemplateService.create(payload, null, 'json');
+     return DutyMissionTemplateService.post(payload, null, 'json');
    }
 
    updateDutyMissionTemplate(mission) {
@@ -204,7 +203,7 @@ export default class MissionsActions extends Actions {
      delete payload.number;
      delete payload.technical_operation_name;
      delete payload.route_name;
-     return DutyMissionTemplateService.update(payload, null, 'json');
+     return DutyMissionTemplateService.put(payload, null, 'json');
    }
 
    removeDutyMissionTemplate(id) {
@@ -235,7 +234,7 @@ export default class MissionsActions extends Actions {
        delete payload.technical_operation_name;
        delete payload.route_name;
 
-       return DutyMissionService.create(payload, false, 'json');
+       return DutyMissionService.post(payload, false, 'json');
      });
      return Promise.all(queries);
    }
@@ -263,7 +262,7 @@ export default class MissionsActions extends Actions {
       mission_date_start_from: createValidDateTime(mission_date_start_from),
       mission_date_end_to: createValidDateTime(mission_date_end_to),
     };
-    return MissionReportsService.create(payload);
+    return MissionReportsService.post(payload);
   }
 
   getMissionReportByODHs(index) {

@@ -35,7 +35,7 @@ export default class FuelRateActions extends Actions {
     }
     payload.order_date = createValidDate(payload.order_date);
 
-    return FuelConsumptionRateService.update(payload);
+    return FuelConsumptionRateService.put(payload);
   }
 
   deleteFuelRate(rate) {
@@ -45,7 +45,7 @@ export default class FuelRateActions extends Actions {
   addFuelRate(rate) {
     const payload = _.clone(rate);
     payload.order_date = createValidDate(payload.order_date);
-    return FuelConsumptionRateService.create(payload);
+    return FuelConsumptionRateService.post(payload);
   }
 
 }

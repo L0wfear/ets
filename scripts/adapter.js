@@ -3,12 +3,12 @@ import config from './config.js';
 import moment from 'moment';
 import { getStartOfToday, makeUnixTime } from 'utils/dates';
 import { wrapCoords, swapCoords } from 'utils/geo';
-import { RouteService } from 'api/Services';
 import { loadTypes } from './types.js';
 
 export function getUrl(url) {
   return config.backend ? config.backend + url : url
 }
+
 let getOldUrl = (url) => config.backendOld ? config.backendOld + url : url;
 
 let toFormData = (data) => {
@@ -20,188 +20,69 @@ let toFormData = (data) => {
 };
 
 let toUrlWithParams = (url, data) => {
-  let params = '?';
-  _.mapKeys(data, (v, k) => {
-    if (_.isArray(v)) {
-      if (k === 'taxes') {
-        alert('11212')
-        const taxes = {'taxes':v};
-        params += `data=${encodeURIComponent(JSON.stringify(taxes))}&`
-      }
-    } else {
-      params += `${k}=${encodeURIComponent(v)}&`;
-    }
-  });
-  return `${url}${params}`;
-};
-
-let paramsToBody = (data) => {
-  let params = '';
-  _.mapKeys(data, (v, k) => {
-      params += `${k}=${encodeURIComponent(v)}&`;
-  });
-  return params.slice(0, -1);
+  let params = _.map(data, (v, k) => `${k}=${encodeURIComponent(v)}`).join('&');
+  return `${url}?${params}`;
 };
 
 const POINTS_URL = getUrl('/data');
 const TRACK_URL = getOldUrl('/tracks/');
 const WEATHER_URL = getUrl('/weather/');
 const GEO_OBJECTS_URL = getUrl('/geo_objects/');
-const FUEL_OPERATIONS_URL = getUrl('/fuel_operations/');
-const FUEL_CONSUMPTION_RATE_URL = getUrl('/fuel_consumption_rates/');
-const LOGIN_URL = getUrl('/auth/');
 const AUTH_CHECK_URL = getUrl('/auth_check');
-const ODHS_URL = getUrl('/odh/');
-const MISSIONS_CREATION_URL = getUrl('/create_missions_from_mission_templates/');
-const ROUTE_URL = getUrl('/route/');
 const DASHBOARD_URL = getUrl('/dashboard/');
 
-export function getJSON(url, data = {}) {
+function HTTPMethod(url, data = {}, method, type) {
+  let body;
   data = _.clone(data);
-  const { flux } = window.__ETS_CONTAINER__;
-  const token = flux.getStore('session').getSession();
+  const token = JSON.parse(window.localStorage.getItem('ets-session'));
   if (token) {
     data.token = token;
   }
-  url = toUrlWithParams(url, data);
 
-  const options = {
-    method: 'get',
+  let options = {
+    method: method,
     headers: {
       'Accept': 'application/json',
     },
     credentials: 'include',
   };
 
+  if (typeof type === 'string') {
+    switch (type) {
+      case 'form':
+        body = toFormData(data);
+        break;
+      case 'json':
+        body = JSON.stringify(data);
+        break;
+    }
+    options.body = body;
+  } else {
+    url = toUrlWithParams(url, data);
+  }
+
   return fetch(url, options).then( r => {
-    return r.json().then(body => {
-      checkResponse(url, r, body, 'GET');
-      return new Promise((res, rej) => res(body));
+    return r.json().then(responseBody => {
+      checkResponse(url, r, responseBody, method);
+      return new Promise((res, rej) => res(responseBody));
     });
   });
+}
+
+export function getJSON(url, data = {}) {
+  return HTTPMethod(url, data, 'GET');
 }
 
 export function postJSON(url, data = {}, type = 'form') {
-  data = _.clone(data);
-  const { flux } = window.__ETS_CONTAINER__;
-  const token = flux.getStore('session').getSession();
-  if (token) {
-    data.token = token;
-  }
-  let body;
-  switch (type) {
-    case 'form':
-      // url += '?token=' + token;
-      // delete data.token;
-      body = toFormData(data);
-      break;
-    case 'form_with_token':
-      body = paramsToBody(data);
-      break;
-    case 'json':
-      body = JSON.stringify(data);
-      break;
-    case 'params':
-      body = "";
-      url = toUrlWithParams(url, data);
-      break;
-  }
-
-  const options = {
-    method: 'post',
-    headers: {
-      'Accept': 'application/json',
-    },
-    credentials: 'include',
-    body: body
-  };
-
-  return fetch(url, options).then( r => {
-    return r.json().then(body => {
-      checkResponse(url, r, body, 'POST');
-      return new Promise((res, rej) => res(body));
-    });
-  });
+  return HTTPMethod(url, data, 'POST', type);
 }
 
 export function putJSON(url, data, type = 'form') {
-  data = _.clone(data);
-  const { flux } = window.__ETS_CONTAINER__;
-  const token = flux.getStore('session').getSession();
-  if (token) {
-    data.token = token;//url += `?token=${token}`;
-  }
-  let body;
-  switch (type) {
-    case 'form':
-      url += '?token=' + token;
-      delete data.token;
-      body = toFormData(data);
-      break;
-    case 'json':
-      body = JSON.stringify(data);
-      break;
-    case 'params':
-      body = "";
-      url = toUrlWithParams(url, data);
-      break;
-  }
-
-  const options = {
-    method: 'put',
-    headers: {
-      'Accept': 'application/json',
-    },
-    credentials: 'include',
-    body: body,
-  };
-
-  return fetch(url, options).then( r => {
-    return r.json().then(body => {
-      checkResponse(url, r, body, 'PUT');
-      return new Promise((res, rej) => res(body));
-    });
-  });
+  return HTTPMethod(url, data, 'PUT', type);
 }
 
 export function deleteJSON(url, data, type = 'form') {
-  data = _.clone(data);
-  const { flux } = window.__ETS_CONTAINER__;
-  const token = flux.getStore('session').getSession();
-  if (token) {
-    data.token = token;
-  }
-  let body;
-  switch (type) {
-    case 'form':
-      url += '?token=' + token;
-      delete data.token;
-      body = toFormData(data);
-      break
-    case 'json':
-      body = JSON.stringify(data);
-      break;
-    case 'params':
-      body = "";
-      url = toUrlWithParams(url, data);
-      break;
-  }
-
-  const options = {
-    method: 'delete',
-    headers: {
-      'Accept': 'application/json',
-    },
-    credentials: 'include',
-    body: body,
-  };
-
-  return fetch(url, options).then( r => {
-    return r.json().then(body => {
-      checkResponse(url, r, body, 'DELETE');
-      return new Promise((res, rej) => res(body));
-    });
-  });
+  return HTTPMethod(url, data, 'DELETE', type);
 }
 
 function checkResponse(url, response, body, method) {
@@ -237,10 +118,6 @@ export function checkToken(token) {
   });
 }
 
-export function login(user) {
-  return fetch(LOGIN_URL, {method: 'POST', body: JSON.stringify(user)}).then(r => r.json());
-}
-
 export function logout() {
   return new Promise((res) => res());
 }
@@ -262,14 +139,6 @@ export function init() {
   return Promise.all([
           loadTypes()
         ])
-}
-
-export function getFuelOperations() {
-  return fetch(FUEL_OPERATIONS_URL).then(r => r.json());
-}
-
-export function getFuelRatesByCarModel(car_model_id) {
-  return getJSON(FUEL_CONSUMPTION_RATE_URL, { car_model_id });
 }
 
 export function getTrack(car_id, from_dt, to_dt) {
@@ -316,27 +185,8 @@ export function getGeoObjectsByCoords([lat, lon], d = 5) {
   return fetch(GEO_OBJECTS_URL + mskQuery).then(r => r.json())
 }
 
-export function getODHs() {
-  return getJSON(ODHS_URL);
-}
-
-export function createMissions(payload) {
-  return postJSON(MISSIONS_CREATION_URL, payload, 'form_with_token').then( () => {
-    return getMissions();
-  });
-}
-
-// ROUTES
-
-export function createRoute(route) {
-  return postJSON(ROUTE_URL, route, 'form').then((createdRoute) => RouteService.get().then(routes => {
-    return {createdRoute, routes};
-  }));
-}
-
 // DASHBOARD //
 
-export function getDashboardComponent(key) {
-  let payload = key === 'faxogramms' ? {status: 2, date: moment().format('YYYY-MM-DDTHH:mm:ss')} : {};
+export function getDashboardComponent(key, payload) {
   return getJSON(`${DASHBOARD_URL}${key}/`, payload).then(component => ({component, key}));
 }

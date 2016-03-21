@@ -12,7 +12,7 @@ export default class EmployeesActions extends Actions {
   updateEmployee(formState) {
     const payload = _.clone(formState);
     payload.birthday = createValidDate(payload.birthday);
-    return EmployeeService.update(payload);
+    return EmployeeService.put(payload);
   }
 
 }

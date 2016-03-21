@@ -1,12 +1,12 @@
 import { Actions } from 'flummox';
-import { getODHs, getCustomers } from '../adapter.js';
+import { getCustomers } from '../adapter.js';
 import _ from 'lodash';
 import { fetchModels } from '../models.js';
 import { getOkrugs } from '../okrugs.js';
 import { getOwners } from '../owners.js';
 import { isEmpty } from 'utils/functions';
 import { createValidDateTime } from 'utils/dates';
-import { FaxogrammService, WorkKindsService, TechnicalOperationService, FuelTypeService, CarService, CustomersService, TypesService, CarFuncTypeService } from 'api/Services';
+import { FaxogrammService, WorkKindsService, TechnicalOperationService, FuelTypeService, CarService, CustomersService, TypesService, CarFuncTypeService, ODHService } from 'api/Services';
 
 export default class ObjectsActions extends Actions {
 
@@ -53,11 +53,11 @@ export default class ObjectsActions extends Actions {
     delete payload.season_name;
     delete payload.work_kind_name;
     delete payload.check_type_name;
-    return TechnicalOperationService.update(payload, null, 'json');
+    return TechnicalOperationService.put(payload, null, 'json');
   }
 
   getODHs() {
-    return getODHs();
+    return ODHService.get();
   }
 
   getWorkKinds() {

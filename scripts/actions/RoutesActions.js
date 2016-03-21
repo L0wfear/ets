@@ -1,6 +1,5 @@
 import { Actions } from 'flummox';
 import _ from 'lodash';
-import { createRoute } from '../adapter.js';
 import { createValidDateTime } from 'utils/dates';
 import { RouteService, RouteReportsService, RouteValidateService, GeozoneService } from 'api/Services';
 
@@ -26,17 +25,16 @@ export default class RoutesActions extends Actions {
     return RouteService.get(payload);
   }
 
-  createRoute(route) {
+  async createRoute(route) {
     const payload = _.cloneDeep(route);
     delete payload.polys;
     delete payload.odh_list;
     delete payload.odh_fail_list;
-    // _.each(payload.object_list, o => {
-    //   delete o.name;
-    // });
     console.log(payload);
     payload.object_list = JSON.stringify(payload.object_list);
-    return createRoute(payload);
+    const createdRoute = await RouteService.post(payload);
+    const routes = await RouteService.get();
+    return {createdRoute, routes};
   }
 
   removeRoute(route) {
@@ -51,7 +49,7 @@ export default class RoutesActions extends Actions {
     delete payload.odh_fail_list;
     _.each(payload.object_list, o => delete o.shape);
     payload.object_list = JSON.stringify(payload.object_list);
-    return RouteService.update(payload);
+    return RouteService.put(payload);
   }
 
   getRouteReports() {
@@ -65,7 +63,7 @@ export default class RoutesActions extends Actions {
 
   createRouteReport(operation_id) {
     const payload = { operation_id };
-    return RouteReportsService.create(payload);
+    return RouteReportsService.post(payload);
   }
 
   validateRoute(route) {

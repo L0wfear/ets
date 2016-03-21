@@ -30,6 +30,8 @@ export const CarFuncTypeService = new APIService('/car_func_type/', useMocks);
 export const DutyMissionService = new APIService('/duty_mission/', useMocks);
 export const DutyMissionTemplateService = new APIService('/duty_mission_template/', useMocks);
 export const MissionPrintService = new APIService('/plate_mission/', useMocks);
+export const AuthService = new APIService('/auth/', useMocks);
+export const AuthCheckService = new APIService('/auth/', useMocks);
 
 // REPORTS
 

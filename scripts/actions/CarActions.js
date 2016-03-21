@@ -15,7 +15,7 @@ export default class CarActions extends Actions {
       payload.fuel_correction_rate = parseFloat(car.fuel_correction_rate).toFixed(2);
     }
 
-    return CarInfoService.create(payload, CarService.get);
+    return CarInfoService.post(payload, CarService.get);
   }
 
 }

@@ -8,7 +8,6 @@ import ODHList from '../route/ODHList.jsx';
 import Field from '../ui/Field.jsx';
 import Div from '../ui/Div.jsx';
 import moment from 'moment';
-import { getFuelOperations, getFuelRatesByCarModel } from '../../adapter.js';
 import cx from 'classnames';
 import { isEmpty } from 'utils/functions';
 import Form from '../compositions/Form.jsx';

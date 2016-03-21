@@ -7,7 +7,6 @@ import Field from '../ui/Field.jsx';
 import Div from '../ui/Div.jsx';
 import moment from 'moment';
 import Taxes from './Taxes.jsx';
-import { getFuelOperations, getFuelRatesByCarModel } from '../../adapter.js';
 import cx from 'classnames';
 import { isNotNull, isEmpty } from 'utils/functions';
 import { createValidDateTime } from 'utils/dates';
@@ -82,15 +81,15 @@ class WaybillForm extends Form {
 			const car = _.find(this.props.carsList, c => c.asuods_id === formState.car_id) || {}
 			const car_model_id = car.model_id;
 			const fuel_correction_rate = car.fuel_correction_rate || null;
-			getFuelRatesByCarModel(car_model_id).then(r => {
+			flux.getActions('fuel-rates').getFuelRatesByCarModel(car_model_id).then(r => {
 				const fuelRates = r.result.map( ({operation_id, rate_on_date}) => ({operation_id, rate_on_date}) );
-				getFuelOperations().then( fuelOperations => {
+				flux.getActions('fuel-rates').getFuelOperations().then(fuelOperations => {
 					const operations =  _.filter(fuelOperations.result, op => _.find(fuelRates, fr => fr.operation_id === op.ID));
 					this.setState({fuelRates, operations, fuel_correction_rate});
 				});
 			});
 		} else if (formState.status && formState.status === 'closed') {
-			getFuelOperations().then( fuelOperations => {
+			flux.getActions('fuel-rates').getFuelOperations().then( fuelOperations => {
 				this.setState({operations: fuelOperations.result});
 			});
 		}

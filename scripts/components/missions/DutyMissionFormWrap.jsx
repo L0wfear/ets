@@ -30,11 +30,14 @@ class DutyMissionFormWrap extends FormWrap {
 
 	}
 
-  handleFormPrint() {
+  async handleFormPrint() {
     let mission = _.cloneDeep(this.state.formState);
 
-    mission.status = 'assigned';
-    this.context.flux.getActions('missions').updateDutyMission(mission);
+    //mission.status = 'assigned';
+    //this.context.flux.getActions('missions').updateDutyMission(mission);
+		await this.context.flux.getActions('missions').printDutyMission(mission.id).then(url => {
+			window.location = `${url}?duty_mission_id=${mission.id}`;
+		});
 		this.props.onFormHide();
   }
 

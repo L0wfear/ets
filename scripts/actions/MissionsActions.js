@@ -2,7 +2,16 @@ import { Actions } from 'flummox';
 import _ from 'lodash';
 import { createValidDateTime } from 'utils/dates';
 import { isEmpty, isNotNull } from 'utils/functions';
-import { MissionReportsService, MissionService, MissionSourceService, MissionTemplateService, MissionTemplatesForFaxogramm, MissionLastReportService, DutyMissionService, DutyMissionTemplateService, MissionPrintService } from 'api/Services';
+import { MissionReportsService,
+         MissionService,
+         MissionSourceService,
+         MissionTemplateService,
+         MissionTemplatesForFaxogramm,
+         MissionLastReportService,
+         DutyMissionService,
+         DutyMissionTemplateService,
+         MissionPrintService,
+         DutyMissionPrintService } from 'api/Services';
 
 export default class MissionsActions extends Actions {
 
@@ -79,6 +88,14 @@ export default class MissionsActions extends Actions {
     };
     return MissionPrintService.post(payload, (r) => r.blob(), 'json');
   }
+
+  printDutyMission(duty_mission_id) {
+    const payload = { duty_mission_id };
+    return new Promise((res, rej) => {
+      res(DutyMissionPrintService.getUrl());
+    });
+  }
+
 
 
 

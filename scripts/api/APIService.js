@@ -71,4 +71,8 @@ export default class APIService {
     return deleteJSON(this.url, payload, type).then(() => this.get());
   }
 
+  getUrl() {
+    return this.url;
+  }
+
 }

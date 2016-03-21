@@ -69,6 +69,7 @@ export default class LoadingStore extends Store {
       missionsActons.updateDutyMissionTemplate,
       missionsActons.removeDutyMissionTemplate,
       missionsActons.printMission,
+      missionsActons.printDutyMission,
 
       routesActions.getRoutes,
       routesActions.createRoute,

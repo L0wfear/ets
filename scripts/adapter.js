@@ -19,7 +19,7 @@ let toFormData = (data) => {
   return formData;
 };
 
-let toUrlWithParams = (url, data) => {
+export function toUrlWithParams(url, data) {
   let params = _.map(data, (v, k) => `${k}=${encodeURIComponent(v)}`).join('&');
   return `${url}?${params}`;
 };

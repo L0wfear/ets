@@ -33,6 +33,8 @@ export default class DashboardCardMedium extends React.Component {
     if ((item && item.subItems && item.subItems.length) || i === null || (item && item.data)) {
       this.setState({selectedItem: i});
       this.props.openFullList(i === null);
+    } else if (typeof this.action === 'function') {
+      this.action(i);
     }
   }
 
@@ -58,7 +60,7 @@ export default class DashboardCardMedium extends React.Component {
     let subItems = selectedItem !== null ? selectedItem.subItems || [] : [];
     let data = selectedItem !== null ? selectedItem.data || {} : {};
     const items = this.props.items.map((item,i) => {
-      let itemClassName = cx('dashboard-card-item', {'pointer': (item.data) || (item.subItems && item.subItems.length)});
+      let itemClassName = cx('dashboard-card-item', {'pointer': (item.data) || (item.subItems && item.subItems.length) || (this.action)});
       return <Div key={i} className={itemClassName} onClick={this.selectItem.bind(this, i)}>
                 {typeof item.value !== 'undefined' ?
                   <Div className="dashboard-card-item-inner-singlevalue">

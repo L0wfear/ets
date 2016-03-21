@@ -66,6 +66,9 @@ class WaybillFormWrap extends Component {
 			} else {
 
 				let waybill = _.clone(props.element);
+				if (waybill.mission_id_list.filter((v) => v).length === 0) {
+					waybill.mission_id_list = [];
+				}
 
 				if (props.element.status === 'active') {
 
@@ -156,6 +159,7 @@ class WaybillFormWrap extends Component {
 			URL = id ?  URL + id : URL + ID;
 			window.location = URL;
 		};
+		//callback();
 		this.handleFormSubmit(this.state.formState, callback);
 
   }

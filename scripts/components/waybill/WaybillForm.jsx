@@ -209,6 +209,7 @@ class WaybillForm extends Form {
 		});
 
     console.log(state.mission_id_list)
+    console.log(typeof state.mission_id_list.filter)
 
 		return (
 			<Modal {...this.props} bsSize="large">

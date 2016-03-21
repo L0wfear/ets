@@ -67,6 +67,10 @@ class WaybillsActions extends BaseActions {
       payload.mission_id_list = [];
     }
 
+    if (!isEmpty(payload.mission_id_list) && payload.mission_id_list.length === 0) {
+      payload.mission_id_list = [];
+    }
+
     return super.update(payload, false);
   }
 
@@ -80,6 +84,14 @@ class WaybillsActions extends BaseActions {
     delete payload.mission_list;
     delete payload.all_missions_completed_or_failed;
     _.mapKeys(payload, (v, k) => isEmpty(v) ? delete payload[k] : void 0);
+
+    if (isEmpty(payload.mission_id_list)) {
+      payload.mission_id_list = [];
+    }
+
+    if (!isEmpty(payload.mission_id_list) && payload.mission_id_list.length === 0) {
+      payload.mission_id_list = [];
+    }
 
     return super.create(payload);
   }

@@ -1,4 +1,4 @@
-import {TypesService} from './api/Services.js';
+import {TypesService} from 'api/Services';
 
 const list = [];
 const index = {};

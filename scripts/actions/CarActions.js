@@ -1,5 +1,5 @@
 import { Actions } from 'flummox';
-import { CarInfoService, CarService } from '../api/Services.js';
+import { CarInfoService, CarService } from 'api/Services';
 
 export default class CarActions extends Actions {
 

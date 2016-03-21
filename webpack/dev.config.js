@@ -47,6 +47,8 @@ module.exports = {
   resolve: {
     alias: {
       utils: 'utils',
+      api: 'api',
+      validate: 'validate',
     },
     modulesDirectories: [
       'scripts',

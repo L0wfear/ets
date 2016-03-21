@@ -1,5 +1,5 @@
 import { Store } from 'flummox';
-import { notifications } from 'utils/notifications'';
+import { notifications } from 'utils/notifications';
 
 export default class LoadingStore extends Store {
 

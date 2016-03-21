@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { createValidDateTime } from 'utils/dates';
 import { isEmpty, isNotNull } from 'utils/functions';
 
-import { MissionReportsService, MissionService, MissionSourceService, MissionTemplateService, MissionTemplatesForFaxogramm, MissionLastReportService, DutyMissionService, DutyMissionTemplateService, MissionPrintService } from '../api/Services.js';
+import { MissionReportsService, MissionService, MissionSourceService, MissionTemplateService, MissionTemplatesForFaxogramm, MissionLastReportService, DutyMissionService, DutyMissionTemplateService, MissionPrintService } from 'api/Services';
 
 export default class MissionsActions extends Actions {
 

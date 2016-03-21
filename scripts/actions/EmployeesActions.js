@@ -1,5 +1,5 @@
 import { Actions } from 'flummox';
-import { EmployeeService } from '../api/Services.js';
+import { EmployeeService } from 'api/Services';
 import { createValidDate } from 'utils/dates';
 import _ from 'lodash';
 

@@ -1,7 +1,7 @@
 import { Actions } from 'flummox';
 import { createValidDate } from 'utils/dates';
 import _ from 'lodash';
-import { FuelConsumptionRateService, FuelOperationsService } from '../api/Services.js';
+import { FuelConsumptionRateService, FuelOperationsService } from 'api/Services';
 
 export default class FuelRateActions extends Actions {
 

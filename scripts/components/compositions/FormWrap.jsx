@@ -1,5 +1,5 @@
 import React from 'react';
-import { validateRow } from '../../validate/validateRow.js';
+import { validateRow } from 'validate/validateRow.js';
 import { FluxContext } from '../decorators/index.js';
 
 /**

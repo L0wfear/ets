@@ -2,7 +2,7 @@ import BaseActions from './Actions.js';
 import { createValidDateTime } from 'utils/dates';
 import _ from 'lodash';
 import { isEmpty } from 'utils/functions';
-import { WaybillService } from '../api/Services.js';
+import { WaybillService } from 'api/Services';
 
 console.log(createValidDateTime);
 

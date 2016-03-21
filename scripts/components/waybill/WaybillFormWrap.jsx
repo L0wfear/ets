@@ -5,7 +5,7 @@ import Div from '../ui/Div.jsx';
 import WaybillForm from './WaybillForm.jsx';
 import { getDefaultBill } from '../../stores/WaybillsStore.js';
 import { isNotNull, isEmpty } from 'utils/functions';
-import { validateRow } from '../../validate/validateRow.js';
+import { validateRow } from 'validate/validateRow.js';
 import { waybillSchema, waybillClosingSchema } from '../models/WaybillModel.js';
 
 let validateWaybill = (waybill, errors) => {

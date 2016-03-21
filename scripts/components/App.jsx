@@ -30,7 +30,7 @@ import RouteReports from './reports/RouteReports.jsx';
 import Modal from './ui/Modal.jsx';
 import { checkToken, init } from '../adapter.js';
 import Flux from './Flux.js';
-import { loginErrorNotification, getErrorNotification } from 'utils/notifications'';
+import { loginErrorNotification, getErrorNotification } from 'utils/notifications';
 
 const adapter = {};
 const flux = new Flux(adapter);

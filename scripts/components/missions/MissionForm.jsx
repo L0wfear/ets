@@ -100,10 +100,11 @@ export class MissionForm extends Form {
     let ROUTES = routesList.map(({id, name}) => ({value: id, label: name}));
 
     console.log('form state is ', state);
+		let isDeferred = moment(state.date_start).toDate().getTime() > moment().toDate().getTime();
 
 		let IS_CREATING = !!!state.status;
-    let IS_POST_CREATING = false;
-
+    let IS_POST_CREATING = state.status === 'not_assigned' && isDeferred;
+		let IS_DISPLAY = !IS_CREATING && !IS_POST_CREATING;//(!!state.status && state.status !== 'not_assigned') || (!isDeferred && !IS_CREATING);
     let title = `Задание № ${state.number || ''}`;
 
     if (IS_CREATING) {
@@ -113,8 +114,7 @@ export class MissionForm extends Form {
 		let route = this.state.selectedRoute;
 		let odh_list = route ? route.odh_list || route.object_list : [];
 
-		let isDeferred = moment(state.date_start).toDate().getTime() > moment().toDate().getTime();
-		let IS_DISPLAY = !!state.status && state.status !== 'not_assigned' && !isDeferred;
+		console.log(IS_CREATING, IS_POST_CREATING, IS_DISPLAY);
 
 		return (
 			<Modal {...this.props} bsSize="large">
@@ -128,7 +128,7 @@ export class MissionForm extends Form {
 					<Row>
 						<Col md={6}>
               <Field type="select" label="Технологическая операция" error={errors['technical_operation_id']}
-											disabled={IS_DISPLAY || !!state.route_id}
+											disabled={IS_POST_CREATING || IS_DISPLAY || !!state.route_id}
                       options={TECH_OPERATIONS}
                       value={state.technical_operation_id}
                       onChange={this.handleTechnicalOperationChange.bind(this)}/>
@@ -147,19 +147,19 @@ export class MissionForm extends Form {
 	      	<Row>
 	      		<Col md={6}>
               <Field type="number" label="Количество проходов" error={errors['passes_count']}
-										 disabled={IS_DISPLAY}
+										 disabled={IS_POST_CREATING || IS_DISPLAY}
   									 value={state.passes_count} onChange={this.handleChange.bind(this, 'passes_count')}
 										 min={0} />
 	          </Col>
 	      		<Col md={6}>
               <Field type="select" label="Источник получения задания" error={errors['mission_source_id']}
-										 disabled={IS_DISPLAY}
+										 disabled={IS_POST_CREATING || IS_DISPLAY}
                      options={MISSION_SOURCES}
                      value={state.mission_source_id}
                      onChange={this.handleChange.bind(this, 'mission_source_id')}/>
 
  							<Field type="select" label="Транспортное средство" error={errors['car_id']}
-											disabled={IS_DISPLAY || isEmpty(state.technical_operation_id)}
+											disabled={IS_POST_CREATING || IS_DISPLAY || isEmpty(state.technical_operation_id)}
  											options={CARS}
  											value={state.car_id}
  											onChange={this.handleChange.bind(this, 'car_id')}/>
@@ -169,7 +169,7 @@ export class MissionForm extends Form {
 	      	<Row>
             <Col md={6}>
               <Field type="select" label="Маршрут" error={errors['route_id']}
-										 disabled={IS_DISPLAY || !!!state.technical_operation_id}
+										 disabled={IS_POST_CREATING || IS_DISPLAY || !!!state.technical_operation_id}
                      options={ROUTES}
                      value={state.route_id}
                      onChange={this.handleRouteIdChange.bind(this)}/>
@@ -177,7 +177,7 @@ export class MissionForm extends Form {
 								{/*<ODHList showSelectable={true} odh_list={odh_list} />*/}
 							</Div>
 						  <Div hidden={state.route_id}>
-							  <Button onClick={this.createNewRoute.bind(this)} disabled={IS_DISPLAY || !state.technical_operation_id}>Создать новый</Button>
+							  <Button onClick={this.createNewRoute.bind(this)} disabled={IS_POST_CREATING || IS_DISPLAY || !state.technical_operation_id}>Создать новый</Button>
 						  </Div>
             </Col>
             <Col md={6}>

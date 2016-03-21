@@ -5,8 +5,8 @@ import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
 import EtsSelect from '../ui/EtsSelect.jsx';
 import Div from '../ui/Div.jsx';
 import Datepicker from '../ui/DatePicker.jsx';
-import { getFormattedDateTimeSeconds, getDatesByShift } from '../../utils/dates.js';
-import { getReportNotReadyNotification } from '../../utils/notifications.js';
+import { getFormattedDateTimeSeconds, getDatesByShift } from 'utils/dates';
+import { getReportNotReadyNotification } from 'utils/notifications'';
 
 
 let FaxogrammsDatepicker = (props) => {

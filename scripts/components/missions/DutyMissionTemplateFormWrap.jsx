@@ -6,7 +6,7 @@ import DutyMissionTemplateForm from './DutyMissionTemplateForm.jsx';
 import DutyMissionsCreationForm from './DutyMissionsCreationForm.jsx';
 import { getDefaultDutyMissionTemplate, getDefaultDutyMissionsCreationTemplate } from '../../stores/MissionsStore.js';
 import { validate as validateNumber} from '../../validate/validateNumber.js';
-import { isNotNull, isEmpty } from '../../utils/functions.js';
+import { isNotNull, isEmpty } from 'utils/functions';
 import { validateRow } from '../../validate/validateRow.js';
 import { dutyMissionTemplateSchema } from '../models/DutyMissionTemplateModel.js';
 import { dutyMissionsCreationTemplateSchema } from '../models/DutyMissionsCreationTemplateModel.js';

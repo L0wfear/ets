@@ -4,7 +4,7 @@ import Div from '../ui/Div.jsx';
 import MissionForm from './MissionForm.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';
 import { getDefaultMission } from '../../stores/MissionsStore.js';
-import { isEmpty, saveData } from '../../utils/functions.js';
+import { isEmpty, saveData } from 'utils/functions';
 import { missionSchema } from '../models/MissionModel.js';
 
 class MissionFormWrap extends FormWrap {

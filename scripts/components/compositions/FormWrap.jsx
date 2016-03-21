@@ -92,7 +92,7 @@ export default FormWrap;
 // import MissionForm from './MissionForm.jsx';
 // import FormWrap from '../compositions/FormWrap.jsx';
 // import { getDefaultMission } from '../../stores/MissionsStore.js';
-// import { isNotNull, isEmpty } from '../../utils/functions.js';
+// import { isNotNull, isEmpty } from 'utils/functions';
 // import { missionSchema, missionClosingSchema } from '../models/MissionModel.js';
 //
 // class MissionFormWrap extends FormWrap {

@@ -4,8 +4,8 @@ import _ from 'lodash';
 import { fetchModels } from '../models.js';
 import { getOkrugs } from '../okrugs.js';
 import { getOwners } from '../owners.js';
-import { isEmpty } from '../utils/functions.js';
-import { createValidDateTime } from '../utils/dates.js';
+import { isEmpty } from 'utils/functions';
+import { createValidDateTime } from 'utils/dates';
 import { FaxogrammService, WorkKindsService, TechnicalOperationService, FuelTypeService, CarService, CustomersService, TypesService, CarFuncTypeService } from '../api/Services.js';
 
 export default class ObjectsActions extends Actions {

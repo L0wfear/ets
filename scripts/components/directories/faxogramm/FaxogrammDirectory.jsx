@@ -9,7 +9,7 @@ import Datepicker from '../../ui/DatePicker.jsx';
 import DateFormatter from '../../ui/DateFormatter.jsx';
 import moment from 'moment';
 import cx from 'classnames';
-import { createValidDateTime, getToday0am, getToday2359 } from '../../../utils/dates.js';
+import { createValidDateTime, getToday0am, getToday2359 } from 'utils/dates';
 import FaxogrammMissionsFormWrap from './FaxogrammMissionsFormWrap.jsx';
 
 

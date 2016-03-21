@@ -6,11 +6,11 @@ import { getStatusById } from '../../statuses.js';
 import { getTypeById } from '../../types.js';
 import { getOwnerById } from '../../owners.js';
 import config from '../../config.js';
-import { makeDate, makeTime, getStartOfToday } from '../../utils/dates.js';
+import { makeDate, makeTime, getStartOfToday } from 'utils/dates';
 import FuelChart from '../ui/charts/FuelChart.jsx';
 import SpeedChart from '../ui/charts/SpeedChart.jsx';
 import { getCarImage } from '../../adapter.js';
-import { roundCoordinates } from '../../utils/geo.js';
+import { roundCoordinates } from 'utils/geo';
 import DatePicker from '../ui/DatePicker.jsx';
 
 

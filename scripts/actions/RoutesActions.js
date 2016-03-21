@@ -1,7 +1,7 @@
 import { Actions } from 'flummox';
 import _ from 'lodash';
 import { createRoute } from '../adapter.js';
-import { createValidDateTime } from '../utils/dates.js';
+import { createValidDateTime } from 'utils/dates';
 import { RouteService, RouteReportsService, RouteValidateService, GeozoneService } from '../api/Services.js';
 
 export default class RoutesActions extends Actions {

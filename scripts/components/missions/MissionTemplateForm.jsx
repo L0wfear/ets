@@ -6,7 +6,7 @@ import Div from '../ui/Div.jsx';
 import RouteInfo from '../route/RouteInfo.jsx';
 import RouteFormWrap from '../route/RouteFormWrap.jsx';
 import ODHList from '../route/ODHList.jsx';
-import { isEmpty } from '../../utils/functions.js';
+import { isEmpty } from 'utils/functions';
 import { MissionForm } from './MissionForm.jsx';
 
 class MissionTemplateForm extends MissionForm {

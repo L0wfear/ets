@@ -3,7 +3,7 @@ import connectToStores from 'flummox/connect';
 import { Button, Glyphicon } from 'react-bootstrap';
 import Table from '../ui/table/DataTable.jsx';
 import DateFormatter from '../ui/DateFormatter.jsx';
-import { getFormattedDateTime } from '../../utils/dates.js';
+import { getFormattedDateTime } from 'utils/dates';
 import DutyMissionFormWrap from './DutyMissionFormWrap.jsx';
 import ElementsList from '../ElementsList.jsx';
 import moment from 'moment';

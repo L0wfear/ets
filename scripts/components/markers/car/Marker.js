@@ -5,7 +5,7 @@ import { getSmallIcon, getBigIcon } from '../../../icons/car.js';
 import {projectToPixel} from '../../map/MskAdapter.js';
 import Marker from '../BaseMarker.js';
 import Track from '../../map/Track.js';
-import { swapCoords, wrapCoords, unwrapCoords } from '../../../utils/geo.js';
+import { swapCoords, wrapCoords, unwrapCoords } from 'utils/geo';
 
 const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
 

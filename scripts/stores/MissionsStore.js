@@ -1,6 +1,6 @@
 import { Store } from 'flummox';
 import _ from 'lodash';
-import { getToday9am, getTomorrow9am, getDatesByShift } from '../utils/dates.js';
+import { getToday9am, getTomorrow9am, getDatesByShift } from 'utils/dates';
 
 class MissionsStore extends Store {
 

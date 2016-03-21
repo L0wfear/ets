@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import config from './config.js';
 import moment from 'moment';
-import { getStartOfToday, makeUnixTime } from './utils/dates.js';
-import { wrapCoords, swapCoords } from './utils/geo.js';
+import { getStartOfToday, makeUnixTime } from 'utils/dates';
+import { wrapCoords, swapCoords } from 'utils/geo';
 import { RouteService } from './api/Services.js';
 import { loadTypes } from './types.js';
 

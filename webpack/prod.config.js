@@ -49,12 +49,14 @@ module.exports = {
   node: {
     fs: "empty"
   },
-
   browser: {
     fs: "empty"
   },
   progress: true,
   resolve: {
+    alias: {
+      utils: 'utils',
+    },
     modulesDirectories: [
       'scripts',
       'node_modules'
@@ -95,7 +97,7 @@ module.exports = {
       sourceMap: false,
       mangle: false
     })
-  /* 
+  /*
       function () {
         this.plugin('done', function(stats) {
           writeStats.call(this, stats, 'prod');

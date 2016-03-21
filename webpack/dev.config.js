@@ -45,6 +45,9 @@ module.exports = {
   },
   progress: true,
   resolve: {
+    alias: {
+      utils: 'utils',
+    },
     modulesDirectories: [
       'scripts',
       'node_modules'

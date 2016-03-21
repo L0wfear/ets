@@ -6,7 +6,7 @@ import { FluxContext } from '../decorators/index.js';
 import DashboardCardHeader from './DashboardCardHeader.jsx';
 import DashboardItemChevron from './DashboardItemChevron.jsx';
 import cx from 'classnames';
-import {getFormattedDateTimeSeconds} from '../../utils/dates.js';
+import {getFormattedDateTimeSeconds} from 'utils/dates';
 import moment from 'moment';
 
 

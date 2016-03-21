@@ -6,7 +6,7 @@ import MissionTemplateForm from './MissionTemplateForm.jsx';
 import MissionsCreationForm from './MissionsCreationForm.jsx';
 import { getDefaultMissionTemplate, getDefaultMissionsCreationTemplate } from '../../stores/MissionsStore.js';
 import { validate as validateNumber} from '../../validate/validateNumber.js';
-import { isNotNull, isEmpty } from '../../utils/functions.js';
+import { isNotNull, isEmpty } from 'utils/functions';
 import { validateRow } from '../../validate/validateRow.js';
 import { missionTemplateSchema } from '../models/MissionTemplateModel.js';
 import { missionsCreationTemplateSchema } from '../models/MissionsCreationTemplateModel.js';
@@ -52,7 +52,7 @@ class MissionFormWrap extends FormWrap {
 
 	handleFormSubmit(formState) {
 		const { flux } = this.context;
-    
+
     if (this.props.formType === "ViewForm") {
       if (isEmpty(formState.id)) {
         flux.getActions('missions').createMissionTemplate(formState);

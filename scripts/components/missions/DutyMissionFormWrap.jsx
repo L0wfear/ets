@@ -5,7 +5,7 @@ import Div from '../ui/Div.jsx';
 import DutyMissionForm from './DutyMissionForm.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';
 import { getDefaultDutyMission } from '../../stores/MissionsStore.js';
-import { isNotNull, isEmpty } from '../../utils/functions.js';
+import { isNotNull, isEmpty } from 'utils/functions';
 import { dutyMissionSchema, dutyMissionClosingSchema } from '../models/DutyMissionModel.js';
 
 class DutyMissionFormWrap extends FormWrap {

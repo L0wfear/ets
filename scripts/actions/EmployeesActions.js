@@ -1,6 +1,6 @@
 import { Actions } from 'flummox';
 import { EmployeeService } from '../api/Services.js';
-import { createValidDate } from '../utils/dates.js';
+import { createValidDate } from 'utils/dates';
 import _ from 'lodash';
 
 export default class EmployeesActions extends Actions {

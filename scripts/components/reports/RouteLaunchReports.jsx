@@ -4,7 +4,7 @@ import Table from '../ui/table/DataTable.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
 import EtsSelect from '../ui/EtsSelect.jsx';
 import Div from '../ui/Div.jsx';
-import { getFormattedDateTimeSeconds } from '../../utils/dates.js';
+import { getFormattedDateTimeSeconds } from 'utils/dates';
 
 let getStatusLabel = (status) => {
   let result = '';

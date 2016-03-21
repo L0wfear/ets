@@ -8,7 +8,7 @@
 const IS_MSK = true;
 
 import { projectToPixel } from '../map/MskAdapter.js';
-import {wrapCoords} from '../../utils/geo.js';
+import {wrapCoords} from 'utils/geo';
 
 export default class Marker {
   constructor(point, map) {

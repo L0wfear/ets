@@ -4,7 +4,7 @@ import _ from 'lodash';
 import Div from '../../ui/Div.jsx';
 import FaxogrammMissionsForm from './FaxogrammMissionsForm.jsx';
 import FormWrap from '../../compositions/FormWrap.jsx';
-import { isNotNull, isEmpty } from '../../../utils/functions.js';
+import { isNotNull, isEmpty } from 'utils/functions';
 import { missionSchema, missionClosingSchema } from '../../models/MissionModel.js';
 
 class FaxogrammMissionsFormWrap extends FormWrap {

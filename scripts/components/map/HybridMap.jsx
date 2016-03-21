@@ -3,8 +3,8 @@ import Map from './Map.jsx';
 import CarMarker from '../markers/car/Marker.js';
 import { projectToPixel } from './MskAdapter.js';
 import { getTrack } from '../../adapter.js';
-import { getStartOfToday, makeDate, makeTime } from '../../utils/dates.js';
-import { swapCoords, roundCoordinates } from '../../utils/geo.js';
+import { getStartOfToday, makeDate, makeTime } from 'utils/dates';
+import { swapCoords, roundCoordinates } from 'utils/geo';
 import { TRACK_COLORS, TRACK_LINE_OPACITY, TRACK_LINE_WIDTH, TRACK_POINT_RADIUS, SHOW_ONLY_POINTS_WITH_SPEED_CHANGES } from '../../constants/track.js';
 
 

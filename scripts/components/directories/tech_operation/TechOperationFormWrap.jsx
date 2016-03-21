@@ -4,7 +4,7 @@ import Div from '../../ui/Div.jsx';
 import TechOperationForm from './TechOperationForm.jsx';
 import FormWrap from '../../compositions/FormWrap.jsx';
 import { getDefaultMission } from '../../../stores/MissionsStore.js';
-import { isNotNull, isEmpty } from '../../../utils/functions.js';
+import { isNotNull, isEmpty } from 'utils/functions';
 import { techOperationSchema } from '../../models/TechOperationModel.js';
 
 class TechOperationFormWrap extends FormWrap {

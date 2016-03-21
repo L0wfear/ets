@@ -1,5 +1,5 @@
 import { Actions } from 'flummox';
-import { createValidDate } from '../utils/dates.js';
+import { createValidDate } from 'utils/dates';
 import _ from 'lodash';
 import { FuelConsumptionRateService, FuelOperationsService } from '../api/Services.js';
 

@@ -1,7 +1,7 @@
 import { Actions } from 'flummox';
 import _ from 'lodash';
-import { createValidDateTime } from '../utils/dates.js';
-import { isEmpty, isNotNull } from '../utils/functions.js';
+import { createValidDateTime } from 'utils/dates';
+import { isEmpty, isNotNull } from 'utils/functions';
 
 import { MissionReportsService, MissionService, MissionSourceService, MissionTemplateService, MissionTemplatesForFaxogramm, MissionLastReportService, DutyMissionService, DutyMissionTemplateService, MissionPrintService } from '../api/Services.js';
 

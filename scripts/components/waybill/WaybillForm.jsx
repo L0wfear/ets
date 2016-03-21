@@ -9,8 +9,8 @@ import moment from 'moment';
 import Taxes from './Taxes.jsx';
 import { getFuelOperations, getFuelRatesByCarModel } from '../../adapter.js';
 import cx from 'classnames';
-import { isNotNull, isEmpty } from '../../utils/functions.js';
-import { createValidDateTime } from '../../utils/dates.js';
+import { isNotNull, isEmpty } from 'utils/functions';
+import { createValidDateTime } from 'utils/dates';
 import Form from '../compositions/Form.jsx';
 import MissionFormWrap from '../missions/MissionFormWrap.jsx';
 

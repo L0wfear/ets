@@ -6,7 +6,7 @@ import Field from '../ui/Field.jsx';
 import Div from '../ui/Div.jsx';
 import moment from 'moment';
 import cx from 'classnames';
-import { isEmpty } from '../../utils/functions.js';
+import { isEmpty } from 'utils/functions';
 import Form from '../compositions/Form.jsx';
 import Map from '../map/HybridMap.jsx';
 import FluxComponent from 'flummox/component';

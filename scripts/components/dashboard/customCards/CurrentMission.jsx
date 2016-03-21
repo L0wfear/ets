@@ -1,7 +1,7 @@
 import React from 'react';
 import Div from '../../ui/Div.jsx';
 import { Panel, Collapse, Glyphicon, Fade, Well, Button } from 'react-bootstrap';
-import {getFormattedDateTimeSeconds} from '../../../utils/dates.js';
+import {getFormattedDateTimeSeconds} from 'utils/dates';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
 import moment from 'moment';
 import MissionInfoFormWrap from '../MissionInfoFormWrap.jsx';

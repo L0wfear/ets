@@ -5,7 +5,7 @@ import Field from '../ui/Field.jsx';
 import Div from '../ui/Div.jsx';
 import RouteInfo from '../route/RouteInfo.jsx';
 import ODHList from '../route/ODHList.jsx';
-import { isEmpty } from '../../utils/functions.js';
+import { isEmpty } from 'utils/functions';
 import Datepicker from '../ui/DatePicker.jsx';
 import Form from '../compositions/Form.jsx';
 

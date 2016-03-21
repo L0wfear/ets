@@ -1,5 +1,5 @@
 import { getUrl, getJSON, postJSON, deleteJSON, putJSON } from '../adapter.js';
-import { getWarningNotification } from '../utils/notifications.js';
+import { getWarningNotification } from 'utils/notifications'';
 
 let mocks = {
 

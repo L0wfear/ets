@@ -49,6 +49,7 @@ export function getDefaultBill() {
 		//motohours_end: "",
 		//motohours_equip_start: null,
 		//motohours_equip_end: "",
+    mission_id_list: [],
     company_id: JSON.parse(localStorage.getItem('current_user')).company_id,
 	}
 }

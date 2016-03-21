@@ -65,11 +65,11 @@ class WaybillForm extends Form {
     const { flux } = this.context;
     const { formState } = this.props;
     if (field === 'plan_arrival_date') {
-  	  this.props.handleFormChange('mission_id_list', undefined);
+  	  this.props.handleFormChange('mission_id_list', []);
     	flux.getActions('missions').getMissionsByCarAndDates(formState.car_id, createValidDateTime(formState.plan_departure_date), createValidDateTime(e), getMissionFilterStatus(formState));
     }
     if (field === 'plan_departure_date') {
-  	  this.props.handleFormChange('mission_id_list', undefined);
+  	  this.props.handleFormChange('mission_id_list', []);
     	flux.getActions('missions').getMissionsByCarAndDates(formState.car_id, createValidDateTime(e), createValidDateTime(formState.plan_arrival_date), getMissionFilterStatus(formState));
     }
 	}
@@ -102,7 +102,7 @@ class WaybillForm extends Form {
 
 	onCarChange(car_id) {
 		this.handleChange('car_id', car_id);
-  	this.handleChange('mission_id_list', undefined);
+  	this.handleChange('mission_id_list', []);
 
     let car_has_odometer = null;
     let car = this.props.carsIndex[car_id];
@@ -134,12 +134,31 @@ class WaybillForm extends Form {
 			this.handleChange('motohours_equip_start', 0);
 		}
 
-  	flux.getActions('missions').getMissionsByCarAndDates(car_id, createValidDateTime(this.props.formState.plan_departure_date), createValidDateTime(this.props.formState.plan_arrival_date), getMissionFilterStatus(this.props.formState));
+  	flux.getActions('missions').getMissionsByCarAndDates(
+      car_id,
+      createValidDateTime(this.props.formState.plan_departure_date),
+      createValidDateTime(this.props.formState.plan_arrival_date),
+      getMissionFilterStatus(this.props.formState)
+    );
 	}
 
   onMissionFormHide() {
     this.componentDidMount();
     this.setState({showMissionForm: false});
+  }
+
+  handleMissionsChange(v) {
+    let f = this.props.formState;
+    let data = !isEmpty(v) ? v.split(',').map(d => parseInt(d, 10)) : [];
+    let shouldBeChanged = true;
+    if (f.status === 'active') {
+      _.each(f.mission_id_list, id => {
+        if (data.indexOf(id) === -1) {
+          shouldBeChanged = false;
+        }
+      });
+    }
+    this.handleChange('mission_id_list', shouldBeChanged ? data : f.mission_id_list);
   }
 
 	render() {
@@ -152,10 +171,7 @@ class WaybillForm extends Form {
 		const FUEL_TYPES = fuelTypes.map(({ID, NAME}) => ({value: ID, label: NAME}));
 		const DRIVERS = driversList.map( d => ({value: d.id, label: `[${d.personnel_number}] ${d.last_name} ${d.first_name} ${d.middle_name}`}));
 		const MASTERS = employeesList.filter( e => [2, 4, 5, 7, 14].indexOf(e.position_id) > -1).map( m => ({value: m.id, data: m, label: `${m.last_name} ${m.first_name} ${m.middle_name}`}));
-		const MISSIONS = missionsList.map( ({id, number, technical_operation_id}) => {
-			const techOperation = getTechOperationById(technical_operation_id);
-			return {id, value: id, label: `№${number} (${techOperation.name})`};
-		});
+
     console.log('form state is ', state);
 
 		let IS_CREATING = !!!state.status;
@@ -185,6 +201,14 @@ class WaybillForm extends Form {
     if (IS_POST_CREATING) {
       title = "Создание нового путевого листа"
     }
+
+    const MISSIONS = missionsList.map( ({id, number, technical_operation_id}) => {
+			const techOperation = getTechOperationById(technical_operation_id);
+      console.log( state.mission_id_list.indexOf(id) === -1);
+			return {value: id, label: `№${number} (${techOperation.name})`, clearableValue: false};
+		});
+
+    console.log(state.mission_id_list)
 
 		return (
 			<Modal {...this.props} bsSize="large">
@@ -351,9 +375,10 @@ class WaybillForm extends Form {
 											 multi={true}
 											 className="task-container"
 											 options={MISSIONS}
-											 value={_.isArray(state.mission_id_list) && _.filter(state.mission_id_list).length === 0 ? undefined : state.mission_id_list}
-											 disabled={isEmpty(state.car_id) || IS_CLOSING || IS_DISPLAY}
-											 onChange={this.handleChange.bind(this, 'mission_id_list')}/>
+											 value={state.mission_id_list}
+											 disabled={isEmpty(state.car_id) || IS_DISPLAY}
+                       clearable={false}
+											 onChange={this.handleMissionsChange.bind(this)}/>
            		  <Button style={{marginTop: 10}} onClick={() => this.setState({showMissionForm: true})} disabled={isEmpty(state.car_id) || IS_CLOSING || IS_DISPLAY}>Создать задание</Button>
                 <MissionFormWrap onFormHide={this.onMissionFormHide.bind(this)}
           											 showForm={this.state.showMissionForm}

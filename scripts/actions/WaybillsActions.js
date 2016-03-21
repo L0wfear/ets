@@ -64,7 +64,7 @@ class WaybillsActions extends BaseActions {
     }
 
     if (isEmpty(payload.mission_id_list)) {
-      payload.mission_id_list = '';
+      payload.mission_id_list = [];
     }
 
     return super.update(payload, false);

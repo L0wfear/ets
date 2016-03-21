@@ -18,11 +18,11 @@ class BaseActions extends FlummoxActions {
   }
 
   update(payload) {
-    return this.service.update(payload);
+    return this.service.put(payload);
   }
 
   create(payload) {
-    return this.service.create(payload);
+    return this.service.post(payload);
   }
 
 }

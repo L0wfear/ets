@@ -51,7 +51,8 @@ module.exports = {
       validate: 'validate',
       compositions: 'components/compositions',
       decorators: 'components/decorators',
-      adapter: 'adapter'
+      adapter: 'adapter',
+      forms: 'components/forms',
     },
     modulesDirectories: [
       'scripts',

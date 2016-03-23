@@ -22,7 +22,6 @@ class TechOperationFormWrap extends FormWrap {
 	}
 
 	componentDidMount() {
-		this.context.flux.getActions('objects').getWorkKinds();
 		//this.context.flux.getActions('technical_operation').getTechnicalOperationsObjects();
 	}
 

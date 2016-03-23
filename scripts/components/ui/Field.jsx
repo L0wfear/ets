@@ -11,6 +11,16 @@ class Field extends React.Component {
     super(props);
   }
 
+  renderBoolean() {
+    const { label = ''} = this.props;
+    return <Div hidden={this.props.hidden}>
+             <label>{label}</label>
+             <Div>
+              <input type="checkbox" checked={this.props.value} {...this.props} />
+             </Div>
+           </Div>
+  }
+
   renderNumber() {
     const { error, label = ''} = this.props;
     const inputClassName = cx({'has-error': error});
@@ -61,6 +71,9 @@ class Field extends React.Component {
         break;
       case 'number':
         return this.renderNumber();
+        break;
+      case 'boolean':
+        return this.renderBoolean();
         break;
       default:
         return this.renderString();

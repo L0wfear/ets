@@ -35,12 +35,12 @@ export default class MissionsActions extends Actions {
       payload.car_id = car_id;
     }
 
-    if (!isEmpty(date_to)) {
-      payload.date_to = date_to;
-    }
-
     if (!isEmpty(date_from)) {
       payload.date_from = date_from;
+    }
+
+    if (!isEmpty(date_to)) {
+      payload.date_to = date_to;
     }
 
     if (!isEmpty(status)) {

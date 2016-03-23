@@ -1,7 +1,7 @@
 import { Actions } from 'flummox';
 import { logout } from '../adapter.js';
 import _ from 'lodash';
-import { TechnicalOperationService, TechnicalOperationObjectsService } from 'api/Services';
+import { TechnicalOperationService, TechnicalOperationObjectsService, TechnicalOperationTypesService } from 'api/Services';
 
 export default class TechnicalOperationsActions extends Actions {
 
@@ -9,15 +9,29 @@ export default class TechnicalOperationsActions extends Actions {
     return TechnicalOperationObjectsService.get();
   }
 
+  getTechnicalOperationsTypes() {
+    return TechnicalOperationTypesService.get();
+  }
+
   getTechnicalOperations(payload = {}) {
     return TechnicalOperationService.get();
   }
 
+  async getTechnicalOperationsWithBrigades() {
+    const payload = {
+      needs_brigade: true,
+    };
+    let response = await TechnicalOperationService.get(payload);
+    return response.result || [];
+  }
+
   updateTechnicalOperation(data) {
     const payload = _.cloneDeep(data);
+    payload.needs_brigade = !!payload.needs_brigade;
     delete payload.season_name;
     delete payload.work_kind_name;
     delete payload.check_type_name;
+    delete payload.object_name;
     return TechnicalOperationService.put(payload, null, 'json');
   }
 

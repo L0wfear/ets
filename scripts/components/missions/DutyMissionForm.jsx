@@ -58,7 +58,7 @@ export class DutyMissionForm extends Form {
     this.props.handleFormChange('brigade_employee_id_list', brigade_employee_id_list);
   }
 
-	componentDidMount() {
+	async componentDidMount() {
 		const mission = this.props.formState;
 		const { flux } = this.context;
 		if (typeof mission.route_id !== 'undefined' && mission.route_id !== null){
@@ -67,7 +67,9 @@ export class DutyMissionForm extends Form {
 			});
 		}
   	flux.getActions('missions').getMissions(mission.technical_operation_id);
-    TechnicalOperationService.get({needs_brigade: true}).then(r => this.setState({technicalOperationsList: r.result}));
+    flux.getActions('technical_operation').getTechnicalOperations();
+    const technicalOperationsList = await flux.getActions('technical_operation').getTechnicalOperationsWithBrigades();
+    this.setState({technicalOperationsList});
 	}
 
 	createNewRoute() {

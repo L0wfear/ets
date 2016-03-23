@@ -34,6 +34,7 @@ export const DutyMissionPrintService = new APIService('/plate_duty_mission/', us
 export const AuthService = new APIService('/auth/', useMocks);
 export const AuthCheckService = new APIService('/auth/', useMocks);
 export const TechnicalOperationObjectsService = new APIService('/technical_operation_objects/', useMocks);
+export const TechnicalOperationTypesService = new APIService('/technical_operation_types/', useMocks);
 
 // REPORTS
 

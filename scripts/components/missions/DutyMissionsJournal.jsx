@@ -70,7 +70,6 @@ let getTableMeta = (props) => {
 				type: 'number',
 				filter: {
 					type: 'select',
-          labelFunction: (id) => getTechOperationById(id).name || id,
 				}
 			},
       {
@@ -167,7 +166,6 @@ export class DutyMissionsJournal extends ElementsList {
   init() {
 		const { flux } = this.context;
 		flux.getActions('missions').getDutyMissions();
-    flux.getActions('technical_operation').getTechnicalOperations();
     flux.getActions('missions').getMissionSources();
     flux.getActions('routes').getRoutes();
     flux.getActions('employees').getEmployees();

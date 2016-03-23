@@ -28,7 +28,23 @@ export class MissionForm extends Form {
 
 	handleObjectsChange(v) {
 		let data = v.split(',');
+		let objects = this.props.technicalOperationsObjectsList.filter(obj => {
+			return data.indexOf(obj.id.toString()) > -1;
+		});
+		this.props.handleFormChange('objects', objects);
+	}
 
+	handleNeedsBrigadeChange(v) {
+		console.log(v);
+
+	}
+
+	componentDidMount() {
+		const { flux } = this.context;
+		flux.getActions('objects').getWorkKinds();
+    flux.getActions('objects').getCarFuncTypes();
+		flux.getActions('technical_operation').getTechnicalOperationsObjects();
+		flux.getActions('technical_operation').getTechnicalOperationsTypes();
 	}
 
 	render() {
@@ -36,11 +52,13 @@ export class MissionForm extends Form {
 		let state = this.props.formState;
 		let errors = this.props.formErrors;
     let title = 'Тех. операция';
-    let { workKindsList = [], carFuncTypesList = [],  } = this.props;
+    let { workKindsList = [], carFuncTypesList = [], technicalOperationsObjectsList = [], technicalOperationsTypesList = [], } = this.props;
     let WORK_KINDS = workKindsList.map(({id, name}) => ({value: id, label: name}));
     let SEASONS = seasonsList.map(({id, name}) => ({value: id, label: name}));
     let CAR_FUNC_TYPES = carFuncTypesList.map(({id, full_name}) => ({value: id, label: full_name}));
-    console.log(state);
+    let TECHNICAL_OPERATION_OBJECTS = technicalOperationsObjectsList.map(({id, full_name}) => ({value: id, label: full_name}));
+		let NEEDS_BRIGADE_OPTIONS = [{value: 1, label: 'Да'}, {value: 0, label: 'Нет'}];
+    //let TECHNICAL_OPERATION_OBJECTS = technicalOperationsTypesList.map(({id, full_name}) => ({value: id, label: full_name}));
 
 		return (
 			<Modal {...this.props} bsSize="large">
@@ -58,6 +76,20 @@ export class MissionForm extends Form {
                      onChange={this.handleChange.bind(this, 'name')}
                      error={errors[name]}/>
             </Col>
+
+						<Col md={3}>
+              <Field type="select" label="Объект"
+                     multi={true}
+                     value={state.objects.map(cft => cft.id).join(',')}
+                     options={TECHNICAL_OPERATION_OBJECTS}
+                     onChange={this.handleObjectsChange.bind(this)}/>
+						</Col>
+						<Col md={3}>
+              <Field type="select" label="C участием РКУ"
+										 options={NEEDS_BRIGADE_OPTIONS}
+                     value={+state.needs_brigade}
+                     onChange={this.handleChange.bind(this, 'needs_brigade')}/>
+						</Col>
 	      	</Row>
 
           <Row>

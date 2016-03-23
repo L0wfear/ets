@@ -8,6 +8,7 @@ class ObjectsStore extends Store {
 
     const objectsActions = flux.getActions('objects');
     const carActions = flux.getActions('car');
+    const technicalOperationsActions = flux.getActions('technical_operation');
     this.register(carActions.updateCarAdditionalInfo, this.handleGetCars);
     this.register(objectsActions.getCars, this.handleGetCars);
     this.register(objectsActions.getModels, this.handleGetModels);
@@ -22,6 +23,7 @@ class ObjectsStore extends Store {
     this.register(objectsActions.getFaxogramms, this.handleGetFaxogramms);
     this.register(objectsActions.getCarFuncTypes, this.handleGetCarFuncTypes);
     this.register(objectsActions.updateTechOperation, this.handleGetTechOperations);
+    this.register(technicalOperationsActions.getTechnicalOperationsObjects, this.handleGetTechnicalOperationsObjects)
 
 
     this.state = {
@@ -37,16 +39,22 @@ class ObjectsStore extends Store {
       odhsList: [],
       faxogrammsList: [],
       carFuncTypesList: [],
+      technicalOperationsObjectsList: [],
 
       carsIndex: {},
       modelsIndex: {},
       typesIndex: {},
       ownersIndex: {},
       carFuncTypesIndex: {},
+      technicalOperationsObjectsList: {},
 
       faxogrammsMaxPage: 0,
     };
 
+  }
+
+  handleGetTechnicalOperationsObjects(technicalOperationsObjects) {
+    this.setState({technicalOperationsObjectsList: technicalOperationsObjects.result});
   }
 
   handleGetCars(cars) {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Table from '../ui/table/DataTable.jsx';
 import TechOperationFormWrap from './tech_operation/TechOperationFormWrap.jsx';
-import { Button, Glyphicon } from 'react-bootstrap';
+import { Button, Glyphicon, Input } from 'react-bootstrap';
 import cx from 'classnames';
 import connectToStores from 'flummox/connect';
 import ElementsList from '../ElementsList.jsx';
@@ -29,10 +29,6 @@ let getTableMeta = (props) => {
         filter: {
           type: 'select',
         },
-        form: {
-          required: true,
-          editable: false,
-        }
   		},
   		{
   			name: 'name',
@@ -41,11 +37,6 @@ let getTableMeta = (props) => {
   			filter: {
   				type: 'select',
   			},
-        form: {
-          required: true,
-          editable: false,
-          formType: 'string',
-        }
   		},
   		{
   			name: 'season_name',
@@ -54,11 +45,6 @@ let getTableMeta = (props) => {
   			filter: {
   				type: 'select',
   			},
-        form: {
-          required: true,
-          editable: false,
-          formType: 'string',
-        }
   		},
   		{
   			name: 'max_speed',
@@ -67,11 +53,6 @@ let getTableMeta = (props) => {
   			filter: {
   				type: 'select',
   			},
-        form: {
-          required: true,
-          editable: false,
-          formType: 'number',
-        }
   		},
   		{
   			name: 'check_type_name',
@@ -80,11 +61,22 @@ let getTableMeta = (props) => {
   			filter: {
   				type: 'select',
   			},
-        form: {
-          required: true,
-          editable: false,
-          formType: 'string',
-        }
+  		},
+  		{
+  			name: 'object_name',
+  			caption: 'Объект',
+  			type: 'string',
+  			filter: {
+  				type: 'select',
+  			},
+  		},
+  		{
+  			name: 'needs_brigade',
+  			caption: 'С участием РКУ',
+  			type: 'boolean',
+  			filter: {
+  				type: 'select',
+  			},
   		},
   		{
   			name: 'car_func_types',
@@ -93,11 +85,6 @@ let getTableMeta = (props) => {
   			filter: {
   				type: 'select',
   			},
-        form: {
-          required: true,
-          editable: false,
-          formType: 'string',
-        }
   		},
   	]
   };
@@ -124,14 +111,18 @@ let TechOperationsTable = (props) => {
         let dataAsString = data.map(d => d.name).join(', ');
         return <div>{dataAsString}</div>;
         //не уверен
-        return <div>
-        <Field type="select"
-               multi={true}
-               className="car-func-types-container"
-               options={OPTIONS}
-               value={values}
-               disabled={true}/></div>;
+        return (
+          <div>
+            <Field type="select"
+                   multi={true}
+                   className="car-func-types-container"
+                   options={OPTIONS}
+                   value={values}
+                   disabled={true}/>
+          </div>
+        );
       },
+      needs_brigade: ({data}) => <input type="checkbox" disabled checked={!!data}/>,
     };
 
 		return <Table title="Реестр технологических операций"

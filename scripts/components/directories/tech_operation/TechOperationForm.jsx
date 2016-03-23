@@ -26,12 +26,17 @@ export class MissionForm extends Form {
     this.props.handleFormChange('car_func_types', carFuncTypes);
   }
 
+	handleObjectsChange(v) {
+		let data = v.split(',');
+
+	}
+
 	render() {
 
 		let state = this.props.formState;
 		let errors = this.props.formErrors;
     let title = 'Тех. операция';
-    let { workKindsList = [], carFuncTypesList = [] } = this.props;
+    let { workKindsList = [], carFuncTypesList = [],  } = this.props;
     let WORK_KINDS = workKindsList.map(({id, name}) => ({value: id, label: name}));
     let SEASONS = seasonsList.map(({id, name}) => ({value: id, label: name}));
     let CAR_FUNC_TYPES = carFuncTypesList.map(({id, full_name}) => ({value: id, label: full_name}));

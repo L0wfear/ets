@@ -20,6 +20,10 @@ class TechOperationFormWrap extends FormWrap {
 		this.props.onFormHide();
 	}
 
+	componentDidMount() {
+		//this.context.flux.getActions('technical_operation').getTechnicalOperationsObjects();
+	}
+
 	render() {
 
 		return 	<Div hidden={!this.props.showForm}>

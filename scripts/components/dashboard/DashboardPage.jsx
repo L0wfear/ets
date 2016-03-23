@@ -74,7 +74,7 @@ class DashboardPage extends React.Component {
     });
   }
 
-  openFullList(key, clear) {
+  openSubitemsList(key, clear) {
     this.setState({itemOpenedKey: clear ? null : key});
   }
 
@@ -109,7 +109,7 @@ class DashboardPage extends React.Component {
                                    itemsTitle={c.itemsTitle}
                                    loading={this.state.loadingComponents.indexOf(c.key) > -1}
                                    refreshCard={this.refreshCard.bind(this, c.key, c.id)}
-                                   openFullList={this.openFullList.bind(this, c.key)}
+                                   openSubitemsList={this.openSubitemsList.bind(this, c.key)}
                                    itemOpened={this.state.itemOpenedKey === c.key}
                                    direction={direction} />
             </Col>

@@ -15,7 +15,7 @@ export default class Faxogramms extends DashboardCardMedium {
   }
 
   action(data) {
-    this.props.openFullList(true);
+    this.props.openSubitemsList(true);
     this.setState({showFaxogrammForm: true, faxogramm: data});
   }
 

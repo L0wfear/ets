@@ -5,7 +5,7 @@ import {getFormattedDateTimeSeconds} from 'utils/dates';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
 import moment from 'moment';
 import MissionInfoFormWrap from '../MissionInfoFormWrap.jsx';
-
+import { isEmpty } from 'utils/functions';
 
 let getDataTraveledYet = (data) => {
   if (typeof data === 'string') {
@@ -29,6 +29,7 @@ export default class CurrentMission extends DashboardCardMedium {
 
     this.state = Object.assign(this.state, {
       showMissionInfoForm: false,
+      selectedMission: null,
     });
   }
 
@@ -41,15 +42,48 @@ export default class CurrentMission extends DashboardCardMedium {
     this.props.refreshCard();
 	}
 
-  action(data) {
-    this.props.openFullList(true);
+  action(i) {
+    let { selectedItem } = this.state;
+    this.setState({selectedItem: selectedItem === i ? null : i});
+    this.props.openSubitemsList(true);
+  }
+
+  selectMission(i) {
+    this.setState({selectedMission: i});
+    this.props.openSubitemsList(this.state.selectedItem === null);
+  }
+
+  missionAction(data) {
+    this.props.openSubitemsList(true);
     this.setState({showMissionInfoForm: true, mission: data});
+  }
+
+  renderSelectedMission() {
+
+  }
+
+  renderSubitems(subItems) {
+    return this.renderSelectedMission();
+  }
+
+  renderCollapsibleSubitems(item, i) {
+    let { subItems } = item;
+      return (
+        <Collapse in={this.state.selectedItem === i}>
+          <Div>
+            <ul>
+              {subItems.map((item, key) => <li key={key} onClick={this.selectMission.bind(this, key)}>{item.title || item}</li>)}
+            </ul>
+          </Div>
+        </Collapse>
+      );
   }
 
   renderCustomCardData() {
     let selectedItemIndex = this.state.selectedItem;
-    let selectedItem = this.props.items[selectedItemIndex] || null;
-    let subItems = selectedItem !== null ? selectedItem.subItems || [] : [];
+    let selectedMissionIndex = this.state.selectedMission;
+    if (isEmpty(selectedItemIndex) || isEmpty(selectedMissionIndex)) return <div/>;
+    let selectedItem = this.props.items[selectedItemIndex].subItems[selectedMissionIndex] || null;
     let data = selectedItem !== null ? selectedItem.data || {} : {};
 
     return (
@@ -63,7 +97,7 @@ export default class CurrentMission extends DashboardCardMedium {
           <li><b>Окончание задания:</b> {getFormattedDateTimeSeconds(data.mission_date_end)}</li>
           <li><b>Расчетное время выполнения:</b> {getEstimatedFinishTime(data.estimated_finish_time || 'Подсчет')}</li>
           <li><b>Пройдено:</b> {getDataTraveledYet(data.traveled_yet)}</li>
-          <li><a className="pointer" onClick={(e) => {e.preventDefault(); this.action(data);}}>Подробнее...</a></li>
+          <li><a className="pointer" onClick={(e) => {e.preventDefault(); this.missionAction(data);}}>Подробнее...</a></li>
           <Div className="text-right">
             <Button className="dashboard-card-action-button" onClick={this.completeMission.bind(this, data.mission_id)}>Завершить</Button>
           </Div>

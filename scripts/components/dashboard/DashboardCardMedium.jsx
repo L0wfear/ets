@@ -30,11 +30,11 @@ export default class DashboardCardMedium extends React.Component {
 
   selectItem(i) {
     let item = this.props.items[i];
-    if ((item && item.subItems && item.subItems.length) || i === null || (item && item.data)) {
-      this.setState({selectedItem: i});
-      this.props.openFullList(i === null);
-    } else if (typeof this.action === 'function') {
+    if (typeof this.action === 'function') {
       this.action(i);
+    } else if ((item && item.subItems && item.subItems.length) || i === null || (item && item.data)) {
+      this.setState({selectedItem: i});
+      this.props.openSubitemsList(i === null);
     }
   }
 
@@ -61,15 +61,18 @@ export default class DashboardCardMedium extends React.Component {
     let data = selectedItem !== null ? selectedItem.data || {} : {};
     const items = this.props.items.map((item,i) => {
       let itemClassName = cx('dashboard-card-item', {'pointer': (item.data) || (item.subItems && item.subItems.length) || (this.action)});
-      return <Div key={i} className={itemClassName} onClick={this.selectItem.bind(this, i)}>
+      return <Div key={i} className={itemClassName} >
                 {typeof item.value !== 'undefined' ?
-                  <Div className="dashboard-card-item-inner-singlevalue">
+                  <Div className="dashboard-card-item-inner-singlevalue" onClick={this.selectItem.bind(this, i)}>
                     {item.value}
                   </Div>
                   :
-                  <Div className="dashboard-card-item-inner">
+                  <Div className="dashboard-card-item-inner" onClick={this.selectItem.bind(this, i)}>
                     {item.title}
                   </Div>
+                }
+                {
+                  typeof this.renderCollapsibleSubitems === 'function' ? this.renderCollapsibleSubitems(item, i) : ''
                 }
              </Div>
     });
@@ -98,7 +101,7 @@ export default class DashboardCardMedium extends React.Component {
             {firstItems}
             <Collapse in={this.state.fullListOpen}>
               <Div>
-                  {otherItems}
+                {otherItems}
               </Div>
             </Collapse>
           </Div>
@@ -124,11 +127,10 @@ export default class DashboardCardMedium extends React.Component {
                 <Div className="card-glyph-remove" onClick={this.selectItem.bind(this, null)}>
                   <Glyphicon glyph="remove"/>
                 </Div>
-                <h5>{this.props.itemsTitle ? this.props.itemsTitle : selectedItem !== null ? selectedItem.title : ''}</h5>
+                <h5>{this.props.itemsTitle || (selectedItem !== null ? selectedItem.title : '')}</h5>
                 <div style={{marginTop: 15}}/>
                 {this.renderSubitems(subItems)}
                 {typeof this.renderCustomCardData === 'function' ? this.renderCustomCardData() : null}
-                {/**/}
               </Well>
             </div>
           </Fade>

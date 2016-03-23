@@ -18,7 +18,8 @@ export default class WaybillClosed extends DashboardCardMedium {
   }
 
   action(item) {
-    this.props.openFullList(true);
+    if (!(item && item.data)) return;
+    this.props.openSubitemsList(true);
     this.context.flux.getActions('waybills').getWaybill(item.data.waybill_id).then(r => {
       console.log(r.result[0])
       this.setState({showWaybillForm: true, selectedWaybill: r.result[0]});

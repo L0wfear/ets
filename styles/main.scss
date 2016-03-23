@@ -2549,6 +2549,26 @@ div.none {
   }
 }
 
+.vehicle-types-container {
+  .Select--multi {
+    .Select-item {
+      display: inline-block;
+      max-width: 240px;
+      min-width: 200px;
+      .Select-item-icon {
+        display: inline-block;
+      }
+      .Select-item-label {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: inline-block;
+        width: 87%;
+      }
+    }
+  }
+}
+
 .odh-generation, .odh-filters {
   .btn-primary, .btn-default {
     margin-top: 24px;

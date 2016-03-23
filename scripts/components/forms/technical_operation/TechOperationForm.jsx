@@ -95,13 +95,19 @@ export class MissionForm extends Form {
 	      	</Row>
 
           <Row>
-            <Col md={3}>
+            <Col md={2}>
               <Field type="select" label="Вид работ"
                      options={WORK_KINDS}
                      value={state.work_kind_id}
                      onChange={this.handleChange.bind(this, 'work_kind_id')}
                      error={errors[name]}/>
             </Col>
+						<Col md={2}>
+              <Field type="select" label="C участием РКУ"
+										 options={NEEDS_BRIGADE_OPTIONS}
+                     value={+state.needs_brigade}
+                     onChange={this.handleChange.bind(this, 'needs_brigade')}/>
+						</Col>
             <Col md={2}>
               <Field type="number" label="Максимальная скорость"
                      value={state.max_speed}
@@ -115,7 +121,7 @@ export class MissionForm extends Form {
                      value={state.check_type}
                      onChange={this.handleChange.bind(this, 'check_type')}/>
 						</Col>
-            <Col md={4}>
+            <Col md={3} className="vehicle-types-container">
               <Field type="select" label="Типы ТС"
                      multi={true}
                      value={state.car_func_types.map(cft => cft.id).join(',')}

@@ -38,7 +38,7 @@ export default class MasterManagementCard extends ElementsList {
   }
 
   onMissionFormHide() {
-    this.props.refreshCard('waybill_draft');
+    this.props.refreshCard(null, null, 'waybill_draft');
     this.setState({showMissionForm: false});
   }
 

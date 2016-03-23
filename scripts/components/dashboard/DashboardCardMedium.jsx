@@ -30,12 +30,17 @@ export default class DashboardCardMedium extends React.Component {
 
   selectItem(i) {
     let item = this.props.items[i];
-    if (typeof this.action === 'function') {
-      this.action(i);
-    } else if ((item && item.subItems && item.subItems.length) || i === null || (item && item.data)) {
+    if ((item && item.subItems && item.subItems.length) || i === null || (item && item.data)) {
       this.setState({selectedItem: i});
       this.props.openSubitemsList(i === null);
+    } else if (typeof this.action === 'function') {
+      this.action(i);
     }
+    // if (typeof this.action === 'function') {
+    // } else if ((item && item.subItems && item.subItems.length) || i === null || (item && item.data)) {
+    //   this.setState({selectedItem: i});
+    //   this.props.openSubitemsList(i === null);
+    // }
   }
 
   toggleFullList() {

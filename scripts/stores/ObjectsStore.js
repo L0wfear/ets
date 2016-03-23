@@ -69,17 +69,9 @@ class ObjectsStore extends Store {
   handleGetCars(cars) {
     const carsList = cars.result.map( c => {
       let model = _.find(this.state.modelsList, m => m.id === c.model_id);
-      if (model) {
-        c.model = model.title;
-      } else {
-        c.model = 'Н/Д';
-      }
+          c.model = model ? model.title : 'Н/Д';
       let type = _.find(this.state.typesList, t => t.id === c.type_id);
-      if (type) {
-        c.type = type.title;
-      } else {
-        c.type = 'Н/Д';
-      }
+          c.type = type ? type.title : 'Н/Д';
       return c;
     });
     let carsIndex = this.makeIndex(carsList, 'asuods_id');
@@ -88,6 +80,12 @@ class ObjectsStore extends Store {
 
   handleGetModels(modelsList) {
     let modelsIndex = this.makeIndex(modelsList);
+    const carsList = this.state.carsList.map( c => {
+      let model = _.find(modelsList, m => m.id === c.model_id);
+          c.model = model ? model.title : 'Н/Д';
+      return c;
+    });
+    let carsIndex = this.makeIndex(carsList, 'asuods_id');
     this.setState({modelsList, modelsIndex});
   }
 

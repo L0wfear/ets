@@ -17,6 +17,12 @@ export default class RoutesActions extends Actions {
     return RouteService.get(payload);
   }
 
+  async getRoutesByTechnicalOperation(technical_operation_id) {
+    const payload = { technical_operation_id };
+    let response = await RouteService.get(payload);
+    return response.result || [];
+  }
+
   getRouteById(id, simple) {
     const payload = { id };
     if (simple) {

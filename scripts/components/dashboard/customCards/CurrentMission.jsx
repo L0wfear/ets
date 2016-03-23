@@ -42,10 +42,13 @@ export default class CurrentMission extends DashboardCardMedium {
     this.props.refreshCard();
 	}
 
-  action(i) {
-    let { selectedItem } = this.state;
-    this.setState({selectedItem: selectedItem === i ? null : i});
-    this.props.openSubitemsList(true);
+  selectItem(i) {
+    let item = this.props.items[i];
+    if ((item && item.subItems && item.subItems.length) || i === null || (item && item.data)) {
+      let { selectedItem } = this.state;
+      this.setState({selectedItem: selectedItem === i ? null : i});
+      this.props.openSubitemsList(true);
+    }
   }
 
   selectMission(i) {

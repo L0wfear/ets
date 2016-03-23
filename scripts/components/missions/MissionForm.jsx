@@ -36,26 +36,65 @@ export class MissionForm extends Form {
 		}
 	}
 
-	handleTechnicalOperationChange(v) {
-		this.handleChange('technical_operation_id', v)
-		this.handleChange('car_id', undefined);
+	async handleCarIdChange(v) {
+		this.handleChange('car_id', v);
+		this.handleChange('technical_operation_id', undefined);
+		this.handleChange('route_id', undefined);
+		this.setState({selectedRoute: null});
+		try {
+			let technicalOperationsList = await this.context.flux.getActions('technical_operation')
+																													 .getTechnicalOperationsByCarId(v);
+			this.setState({technicalOperationsList});
+		} catch (e) {
+			console.error('USER GENERATED EXCEPTION');
+			console.error(e);
+		}
+	}
 
-    this.context.flux.getActions('objects').getCars(v).then(r => this.setState({carsList: r.result}));
+	async handleTechnicalOperationChange(v) {
+		this.handleChange('technical_operation_id', v);
+		this.handleChange('route_id', undefined);
+		this.setState({selectedRoute: null});
+		try {
+			let routesList = await this.context.flux.getActions('routes')
+																							.getRoutesByTechnicalOperation(v);
+			this.setState({routesList});
+		} catch (e) {
+			console.error('USER GENERATED EXCEPTION');
+			console.error(e);
+		}
 	}
 
 	componentWillUnmount() {
-		this.context.flux.getActions('objects').getCars();
+		this.context.flux.getActions('technical_operation').getTechnicalOperations();
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		const mission = this.props.formState;
 		const { flux } = this.context;
+		let objectsActions = flux.getActions('objects')
+		let technicalOperationsActions = flux.getActions('technical_operation');
+		let routesActions = flux.getActions('routes');
+		let technicalOperationsList;
+		let routesList;
 		if (typeof mission.route_id !== 'undefined' && mission.route_id !== null){
-			flux.getActions('routes').getRouteById(mission.route_id, true).then(r => {
+			routesActions.getRouteById(mission.route_id, true).then(r => {
 				this.setState({selectedRoute: r.result.length ? r.result[0] : null});
 			});
 		}
-		this.setState({carsList: this.props.carsList})
+		if (mission.car_id){
+			technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsByCarId(mission.car_id);
+		}
+		if (mission.technical_operation_id){
+			routesList = await routesActions.getRoutesByTechnicalOperation(mission.technical_operation_id);
+		}
+		objectsActions.getModels();
+		objectsActions.getCars();
+		this.setState({
+			carsList: this.props.carsList,
+			technicalOperationsList: technicalOperationsList || this.props.techOperationsList,
+			routesList: routesList || this.props.routesList,
+		});
 	}
 
 	createNewRoute() {
@@ -90,11 +129,11 @@ export class MissionForm extends Form {
 		let state = this.props.formState;
 		let errors = this.props.formErrors;
 
-		const { techOperationsList = [], missionSourcesList = [], routesList = [] } = this.props;
-		const { carsList = [] } = this.state;
+		const { missionSourcesList = [], carsList = [] } = this.props;
+		const { technicalOperationsList = [], routesList = [] } = this.state;
 
     //const WORK_KINDS = workKindsList.map(({id, name}) => ({value: id, label: name}));
-    const TECH_OPERATIONS = techOperationsList.map(({id, name}) => ({value: id, label: name}));
+    const TECH_OPERATIONS = technicalOperationsList.map(({id, name}) => ({value: id, label: name}));
     const MISSION_SOURCES = missionSourcesList.map(({id, name}) => ({value: id, label: name}));
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: c.gov_number + ' [' + c.model + ']'}));
     let ROUTES = routesList.map(({id, name}) => ({value: id, label: name}));
@@ -103,8 +142,9 @@ export class MissionForm extends Form {
 		let isDeferred = moment(state.date_start).toDate().getTime() > moment().toDate().getTime();
 
 		let IS_CREATING = !!!state.status;
-    let IS_POST_CREATING = state.status === 'not_assigned' && isDeferred;
-		let IS_DISPLAY = !IS_CREATING && !IS_POST_CREATING;//(!!state.status && state.status !== 'not_assigned') || (!isDeferred && !IS_CREATING);
+    let IS_POST_CREATING_NOT_ASSIGNED = state.status === 'not_assigned';
+    let IS_POST_CREATING_ASSIGNED = state.status === 'assigned' && isDeferred;
+		let IS_DISPLAY = !IS_CREATING && !(IS_POST_CREATING_NOT_ASSIGNED || IS_POST_CREATING_ASSIGNED);//(!!state.status && state.status !== 'not_assigned') || (!isDeferred && !IS_CREATING);
     let title = `Задание № ${state.number || ''}`;
 
     if (IS_CREATING) {
@@ -113,8 +153,6 @@ export class MissionForm extends Form {
 
 		let route = this.state.selectedRoute;
 		let odh_list = route ? route.odh_list || route.object_list : [];
-
-		console.log(IS_CREATING, IS_POST_CREATING, IS_DISPLAY);
 
 		return (
 			<Modal {...this.props} bsSize="large">
@@ -127,11 +165,11 @@ export class MissionForm extends Form {
 
 					<Row>
 						<Col md={6}>
-              <Field type="select" label="Технологическая операция" error={errors['technical_operation_id']}
-											disabled={IS_POST_CREATING || IS_DISPLAY || !!state.route_id}
-                      options={TECH_OPERATIONS}
-                      value={state.technical_operation_id}
-                      onChange={this.handleTechnicalOperationChange.bind(this)}/>
+							<Field type="select" label="Транспортное средство" error={errors['car_id']}
+											disabled={IS_POST_CREATING_ASSIGNED || IS_POST_CREATING_NOT_ASSIGNED || IS_DISPLAY}
+											options={CARS}
+											value={state.car_id}
+											onChange={this.handleCarIdChange.bind(this)}/>
 						</Col>
 
 				 		<Col md={3}>
@@ -146,30 +184,31 @@ export class MissionForm extends Form {
 
 	      	<Row>
 	      		<Col md={6}>
-              <Field type="number" label="Количество проходов" error={errors['passes_count']}
-										 disabled={IS_POST_CREATING || IS_DISPLAY}
-  									 value={state.passes_count} onChange={this.handleChange.bind(this, 'passes_count')}
-										 min={0} />
+							<Field type="select" label="Технологическая операция" error={errors['technical_operation_id']}
+											disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || isEmpty(state.car_id)}
+											options={TECH_OPERATIONS}
+											value={state.technical_operation_id}
+											onChange={this.handleTechnicalOperationChange.bind(this)}/>
 	          </Col>
 	      		<Col md={6}>
               <Field type="select" label="Источник получения задания" error={errors['mission_source_id']}
-										 disabled={IS_POST_CREATING || IS_DISPLAY}
+										 disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY}
                      options={MISSION_SOURCES}
                      value={state.mission_source_id}
                      onChange={this.handleChange.bind(this, 'mission_source_id')}/>
 
- 							<Field type="select" label="Транспортное средство" error={errors['car_id']}
-											disabled={IS_POST_CREATING || IS_DISPLAY || isEmpty(state.technical_operation_id)}
- 											options={CARS}
- 											value={state.car_id}
- 											onChange={this.handleChange.bind(this, 'car_id')}/>
+
+	            <Field type="number" label="Количество проходов" error={errors['passes_count']}
+										 disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY}
+										 value={state.passes_count} onChange={this.handleChange.bind(this, 'passes_count')}
+										 min={0} />
 	      		</Col>
 	      	</Row>
 
 	      	<Row>
             <Col md={6}>
               <Field type="select" label="Маршрут" error={errors['route_id']}
-										 disabled={IS_POST_CREATING || IS_DISPLAY || !!!state.technical_operation_id}
+										 disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !!!state.technical_operation_id}
                      options={ROUTES}
                      value={state.route_id}
                      onChange={this.handleRouteIdChange.bind(this)}/>
@@ -177,7 +216,7 @@ export class MissionForm extends Form {
 								{/*<ODHList showSelectable={true} odh_list={odh_list} />*/}
 							</Div>
 						  <Div hidden={state.route_id}>
-							  <Button onClick={this.createNewRoute.bind(this)} disabled={IS_POST_CREATING || IS_DISPLAY || !state.technical_operation_id}>Создать новый</Button>
+							  <Button onClick={this.createNewRoute.bind(this)} disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.technical_operation_id}>Создать новый</Button>
 						  </Div>
             </Col>
             <Col md={6}>

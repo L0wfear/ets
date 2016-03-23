@@ -17,6 +17,12 @@ export default class TechnicalOperationsActions extends Actions {
     return TechnicalOperationService.get();
   }
 
+  async getTechnicalOperationsByCarId(car_id) {
+    const payload = { car_id };
+    let response = await TechnicalOperationService.get(payload);
+    return response.result || [];
+  }
+
   async getTechnicalOperationsWithBrigades() {
     const payload = {
       needs_brigade: true,

@@ -81,11 +81,13 @@ export default class LoadingStore extends Store {
       routesActions.createRouteReport,
       routesActions.validateRoute,
       routesActions.getGeozones,
+      routesActions.getRoutesByTechnicalOperation,
 
       technicalOperationsActions.getTechnicalOperations,
       technicalOperationsActions.getTechnicalOperationsWithBrigades,
       technicalOperationsActions.getTechnicalOperationsObjects,
       technicalOperationsActions.updateTechnicalOperation,
+      technicalOperationsActions.getTechnicalOperationsByCarId,
 
     );
 

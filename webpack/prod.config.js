@@ -56,6 +56,12 @@ module.exports = {
   resolve: {
     alias: {
       utils: 'utils',
+      api: 'api',
+      validate: 'validate',
+      compositions: 'components/compositions',
+      decorators: 'components/decorators',
+      adapter: 'adapter',
+      forms: 'components/forms',
     },
     modulesDirectories: [
       'scripts',

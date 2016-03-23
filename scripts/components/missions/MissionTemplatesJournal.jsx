@@ -147,7 +147,7 @@ class MissionTemplatesJournal extends ElementsList {
 		let { payload = {} } = this.props;
 		flux.getActions('missions').getMissionTemplates(payload);
     flux.getActions('objects').getWorkKinds();
-    flux.getActions('objects').getTechOperations();
+    flux.getActions('technical_operation').getTechnicalOperations();
     flux.getActions('objects').getModels();
     flux.getActions('routes').getRoutes();
     flux.getActions('objects').getCars();

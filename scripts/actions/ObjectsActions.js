@@ -44,18 +44,6 @@ export default class ObjectsActions extends Actions {
     return FuelTypeService.get();
   }
 
-  getTechOperations() {
-    return TechnicalOperationService.get();
-  }
-
-  updateTechOperation(data) {
-    const payload = _.cloneDeep(data);
-    delete payload.season_name;
-    delete payload.work_kind_name;
-    delete payload.check_type_name;
-    return TechnicalOperationService.put(payload, null, 'json');
-  }
-
   getODHs() {
     return ODHService.get();
   }

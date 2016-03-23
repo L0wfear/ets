@@ -11,6 +11,7 @@ import moment from 'moment';
 import cx from 'classnames';
 import { isEmpty } from 'utils/functions';
 import Form from '../compositions/Form.jsx';
+import { TechnicalOperationService } from 'api/Services';
 
 
 let getTechOperationById = (id) => {
@@ -66,6 +67,7 @@ export class DutyMissionForm extends Form {
 			});
 		}
   	flux.getActions('missions').getMissions(mission.technical_operation_id);
+    TechnicalOperationService.get({needs_brigade: true}).then(r => this.setState({technicalOperationsList: r.result}));
 	}
 
 	createNewRoute() {
@@ -101,9 +103,10 @@ export class DutyMissionForm extends Form {
 		let errors = this.props.formErrors;
     console.info('FORM STATE IS', state);
 
-		const { techOperationsList = [], missionSourcesList = [], routesList = [], employeesList = [], missionsList = [] } = this.props;
+		const { missionSourcesList = [], routesList = [], employeesList = [], missionsList = [] } = this.props;
+    const { technicalOperationsList = [] } = this.state;
 
-    const TECH_OPERATIONS = techOperationsList.map(({id, name}) => ({value: id, label: name}));
+    const TECH_OPERATIONS = technicalOperationsList.map(({id, name}) => ({value: id, label: name}));
     const MISSION_SOURCES = missionSourcesList.map(({id, name}) => ({value: id, label: name}));
     const ROUTES = routesList.map(({id, name}) => ({value: id, label: name}));
     const EMPLOYEES = employeesList.map( d => ({value: d.id, label: `${d.last_name} ${d.first_name} ${d.middle_name}`}));

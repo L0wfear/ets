@@ -123,7 +123,7 @@ class DutyMissionTemplatesJournal extends ElementsList {
 		const { flux } = this.context;
 		let { payload = {} } = this.props;
 		flux.getActions('missions').getDutyMissionTemplates(payload);
-    flux.getActions('objects').getTechOperations();
+    flux.getActions('technical_operation').getTechnicalOperations();
     flux.getActions('routes').getRoutes();
     flux.getActions('missions').getMissionSources();
   }

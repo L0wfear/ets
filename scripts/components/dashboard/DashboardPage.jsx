@@ -32,7 +32,7 @@ class DashboardPage extends React.Component {
     //
   		flux.getActions('waybills').get();
   		flux.getActions('employees').getEmployees();
-  		flux.getActions('objects').getTechOperations();
+  		flux.getActions('technical_operation').getTechnicalOperations();
   		flux.getActions('objects').getFuelTypes();
   		flux.getActions('objects').getCars();
       flux.getActions('routes').getRoutes();

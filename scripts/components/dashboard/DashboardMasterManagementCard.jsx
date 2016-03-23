@@ -21,7 +21,7 @@ export default class MasterManagementCard extends ElementsList {
 
   componentDidMount() {
 		const { flux } = this.context;
-    flux.getActions('objects').getTechOperations();
+    flux.getActions('technical_operation').getTechnicalOperations();
     flux.getActions('routes').getRoutes();
     flux.getActions('objects').getCars();
     flux.getActions('missions').getMissionSources();

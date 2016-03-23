@@ -86,7 +86,7 @@ class RoutesList extends Component {
 	componentDidMount() {
 		const { flux } = this.context;
 		flux.getActions('routes').getRoutes();
-		flux.getActions('objects').getTechOperations();
+		flux.getActions('technical_operation').getTechnicalOperations();
 		flux.getActions('routes').getGeozones();
 	}
 

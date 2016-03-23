@@ -58,7 +58,7 @@ export class MissionForm extends Form {
     let CAR_FUNC_TYPES = carFuncTypesList.map(({id, full_name}) => ({value: id, label: full_name}));
     let TECHNICAL_OPERATION_OBJECTS = technicalOperationsObjectsList.map(({id, full_name}) => ({value: id, label: full_name}));
 		let NEEDS_BRIGADE_OPTIONS = [{value: 1, label: 'Да'}, {value: 0, label: 'Нет'}];
-    //let TECHNICAL_OPERATION_OBJECTS = technicalOperationsTypesList.map(({id, full_name}) => ({value: id, label: full_name}));
+    let TECHNICAL_OPERATION_TYPES = technicalOperationsTypesList.map(({name, key}) => ({value: key, label: name}));
 
 		return (
 			<Modal {...this.props} bsSize="large">
@@ -84,12 +84,14 @@ export class MissionForm extends Form {
                      options={TECHNICAL_OPERATION_OBJECTS}
                      onChange={this.handleObjectsChange.bind(this)}/>
 						</Col>
-						<Col md={3}>
-              <Field type="select" label="C участием РКУ"
-										 options={NEEDS_BRIGADE_OPTIONS}
-                     value={+state.needs_brigade}
-                     onChange={this.handleChange.bind(this, 'needs_brigade')}/>
-						</Col>
+
+            <Col md={3}>
+              <Field type="select" label="Сезон"
+                     value={state.season_id}
+                     options={SEASONS}
+                     onChange={this.handleChange.bind(this, 'season_id')}
+                     error={errors[name]}/>
+            </Col>
 	      	</Row>
 
           <Row>
@@ -100,19 +102,19 @@ export class MissionForm extends Form {
                      onChange={this.handleChange.bind(this, 'work_kind_id')}
                      error={errors[name]}/>
             </Col>
-            <Col md={3}>
-              <Field type="select" label="Сезон"
-                     value={state.season_id}
-                     options={SEASONS}
-                     onChange={this.handleChange.bind(this, 'season_id')}
-                     error={errors[name]}/>
-            </Col>
             <Col md={2}>
               <Field type="number" label="Максимальная скорость"
                      value={state.max_speed}
                      onChange={this.handleChange.bind(this, 'max_speed')}
                      error={errors[name]}/>
             </Col>
+
+						<Col md={3}>
+              <Field type="select" label="Тип проверки"
+										 options={TECHNICAL_OPERATION_TYPES}
+                     value={state.check_type}
+                     onChange={this.handleChange.bind(this, 'check_type')}/>
+						</Col>
             <Col md={4}>
               <Field type="select" label="Типы ТС"
                      multi={true}

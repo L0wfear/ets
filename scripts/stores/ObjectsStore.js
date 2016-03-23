@@ -44,6 +44,7 @@ class ObjectsStore extends Store {
       faxogrammsList: [],
       carFuncTypesList: [],
       technicalOperationsObjectsList: [],
+      technicalOperationsTypesList: [],
 
       carsIndex: {},
       modelsIndex: {},
@@ -59,6 +60,10 @@ class ObjectsStore extends Store {
 
   handleGetTechnicalOperationsObjects(technicalOperationsObjects) {
     this.setState({technicalOperationsObjectsList: technicalOperationsObjects.result});
+  }
+
+  handleGetTechnicalOperationsTypes(technicalOperationsTypes) {
+    this.setState({technicalOperationsTypesList: technicalOperationsTypes.result});
   }
 
   handleGetCars(cars) {

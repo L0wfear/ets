@@ -9,6 +9,7 @@ export function isEmpty(value) {
 }
 
 export function saveData(blob, fileName) {
+  console.log('wwqwwqqwwq')
   let a = document.createElement("a");
   document.body.appendChild(a);
   a.style = "display: none";

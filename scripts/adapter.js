@@ -35,14 +35,14 @@ function HTTPMethod(url, data = {}, method, type) {
   let body;
   data = _.clone(data);
   const token = JSON.parse(window.localStorage.getItem('ets-session'));
-  if (token) {
+  if (token && url.indexOf('plate_mission') === -1) {
     data.token = token;
   }
 
   let options = {
     method: method,
     headers: {
-      'Accept': url.indexOf('plate_mission') === -1 ? 'application/json' : 'application/octet-stream',
+      'Accept': 'application/json',
     },
     credentials: 'include',
   };

@@ -22,6 +22,7 @@ class RoutesList extends Component {
 			selectedRoute: null,
 			showForm: false,
 			isVectorRouteSelected: false,
+			filterValues: {},
 		};
 	}
 
@@ -83,17 +84,26 @@ class RoutesList extends Component {
 		})
 	}
 
+	setFilterValue(key, value) {
+
+	}
+
 	componentDidMount() {
 		const { flux } = this.context;
 		flux.getActions('routes').getRoutes();
 		flux.getActions('technical_operation').getTechnicalOperations();
+		flux.getActions('technical_operation').getTechnicalOperationsObjects();
 		flux.getActions('routes').getGeozones();
 	}
 
 	render() {
-		let { routesList = [] } = this.props;
+		let { routesList = [], techOperationsList = [], technicalOperationsObjectsList = [] } = this.props;
 		let route = this.state.selectedRoute;
 		let state = this.state;
+
+		let TECH_OPERATIONS = techOperationsList.map(({id, name}) => ({value: id, label: name}));
+		let OBJECTS = technicalOperationsObjectsList.map(({id, name}) => ({value: id, label: name}));
+		console.log(OBJECTS);
 
 		let vectorRoutes = routesList.filter(r => r.type === 'vector').map((r, i) => {
 			let cn = cx('sidebar__list-item', {'active': route && r.id === route.id});

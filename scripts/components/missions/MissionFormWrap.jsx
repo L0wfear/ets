@@ -30,12 +30,25 @@ class MissionFormWrap extends FormWrap {
 	handlePrint() {
 		let f = this.state.formState;
 		const { flux } = window.__ETS_CONTAINER__;
+		const token = flux.getStore('session').getSession();
+		let URL = `http://ods.mos.ru/ssd/ets/services/plate_mission/?token=${token}`;
+		let data = {mission_id: f.id};
 
 		global.map.once('postcompose', function(event) {
 			let routeImageBase64Data = event.context.canvas.toDataURL('image/png');
-			flux.getActions('missions').printMission(f.id, routeImageBase64Data).then(blob => {
-				saveData(blob, `Задание №${f.number}.docx`); // перенести отсюда
-			});
+			data.image = routeImageBase64Data;
+			// flux.getActions('missions').printMission(f.id, routeImageBase64Data).then(blob => {
+			// 	saveData(blob, `Задание №${f.number}.docx`); // перенести отсюда
+			// });
+			fetch(URL, {
+ 				method: 'post',
+ 				body: JSON.stringify(data)
+			}).then((r) => {
+				console.log(r);
+				 r.blob().then(b => {
+					saveData(b, `Задание №${f.number}.docx`);
+				});
+			})
     });
 		global.map.render();
 	}

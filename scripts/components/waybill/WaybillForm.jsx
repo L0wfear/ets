@@ -12,6 +12,7 @@ import { isNotNull, isEmpty } from 'utils/functions';
 import { createValidDateTime } from 'utils/dates';
 import Form from '../compositions/Form.jsx';
 import MissionFormWrap from '../missions/MissionFormWrap.jsx';
+import { getDefaultMission } from '../../stores/MissionsStore.js';
 
 
 let getTechOperationById = (id) => {
@@ -57,6 +58,7 @@ class WaybillForm extends Form {
 			fuelRates: [],
 			fuel_correction_rate: null,
       showMissionForm: false,
+      selectedMission: null
 		}
 	}
 
@@ -93,7 +95,12 @@ class WaybillForm extends Form {
 				this.setState({operations: fuelOperations.result});
 			});
 		}
-  	flux.getActions('missions').getMissionsByCarAndDates(formState.car_id, createValidDateTime(formState.plan_departure_date), createValidDateTime(formState.plan_arrival_date), getMissionFilterStatus(formState));
+  	flux.getActions('missions').getMissionsByCarAndDates(
+      formState.car_id,
+      createValidDateTime(formState.plan_departure_date),
+      createValidDateTime(formState.plan_arrival_date),
+      getMissionFilterStatus(formState)
+    );
 	}
 
 	onDriverChange(v) {
@@ -142,9 +149,16 @@ class WaybillForm extends Form {
     );
 	}
 
-  onMissionFormHide() {
+  onMissionFormHide(result) {
+    //let id = result && result[0] ? result[0].id : null;
     this.componentDidMount();
-    this.setState({showMissionForm: false});
+    this.setState({showMissionForm: false, selectedMission: null});
+  }
+
+  createMission() {
+    let newMission = getDefaultMission();
+    newMission.car_id = this.props.formState.car_id;
+    this.setState({showMissionForm: true, selectedMission: newMission});
   }
 
   handleMissionsChange(v) {
@@ -380,10 +394,10 @@ class WaybillForm extends Form {
 											 disabled={isEmpty(state.car_id) || IS_DISPLAY}
                        clearable={false}
 											 onChange={this.handleMissionsChange.bind(this)}/>
-           		  <Button style={{marginTop: 10}} onClick={() => this.setState({showMissionForm: true})} disabled={isEmpty(state.car_id) || IS_CLOSING || IS_DISPLAY}>Создать задание</Button>
+           		  <Button style={{marginTop: 10}} onClick={this.createMission.bind(this)} disabled={isEmpty(state.car_id) || IS_DISPLAY}>Создать задание</Button>
                 <MissionFormWrap onFormHide={this.onMissionFormHide.bind(this)}
           											 showForm={this.state.showMissionForm}
-                                 element={null}
+                                 element={this.state.selectedMission}
                                  fromWaybill={true}
                                  {...this.props}/>
 							</Div>

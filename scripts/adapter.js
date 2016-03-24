@@ -61,7 +61,7 @@ function HTTPMethod(url, data = {}, method, type) {
     url = toUrlWithParams(url, data);
   }
 
-  return fetch(url, options).then( r => {
+  return fetch(url, options).then(r => {
     return r.json().then(responseBody => {
       checkResponse(url, r, responseBody, method);
       return new Promise((res, rej) => res(responseBody));

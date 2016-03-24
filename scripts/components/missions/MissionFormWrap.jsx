@@ -40,16 +40,16 @@ class MissionFormWrap extends FormWrap {
 		global.map.render();
 	}
 
-	handleFormSubmit(formState) {
+	async handleFormSubmit(formState) {
 		const { flux } = this.context;
 
 		if (isEmpty(formState.id)) {
-			flux.getActions('missions').createMission(formState);
+			let result = await flux.getActions('missions').createMission(formState);
 		} else {
-			flux.getActions('missions').updateMission(formState);
+			await flux.getActions('missions').updateMission(formState);
 		}
 
-		this.props.onFormHide();
+		this.props.onFormHide(result);
 
 		return;
 	}

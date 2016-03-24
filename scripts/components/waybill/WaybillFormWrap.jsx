@@ -213,6 +213,7 @@ class WaybillFormWrap extends Component {
 				formState.status = 'closed';
 				await flux.getActions('waybills').update(formState);
 			} catch (e) {
+				console.log(e);
 				return;
 			}
 			flux.getActions('waybills').get();

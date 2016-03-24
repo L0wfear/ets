@@ -23,10 +23,8 @@ class RouteFormWrap extends FormWrap {
 				_.each(formState.object_list.filter(o => !!o.object_id), o => {
 					formState.polys[o.object_id].state = o.state;
 				});
-        //this.setState({formState});
 			} else {
 				formState = {};
-        //this.setState({formState: {}});
       }
 			let formErrors = this.validate(formState, {});
 			this.setState({

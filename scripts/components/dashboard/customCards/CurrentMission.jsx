@@ -42,6 +42,19 @@ export default class CurrentMission extends DashboardCardMedium {
     this.props.refreshCard();
 	}
 
+  async rejectMission(id) {
+    let reason = prompt('Введите причину', '');
+		if (reason) {
+      let mission = await this.context.flux.getActions('missions').getMissionById(id);
+          mission = mission.result[0];
+			mission.status = 'fail';
+			mission.fail_reason = reason;
+			await this.context.flux.getActions('missions').updateMission(mission);
+      this.selectItem(null);
+      this.props.refreshCard();
+		}
+	}
+
   selectItem(i) {
     let item = this.props.items[i];
     if ((item && item.subItems && item.subItems.length) || i === null || (item && item.data)) {
@@ -102,7 +115,8 @@ export default class CurrentMission extends DashboardCardMedium {
           <li><b>Пройдено:</b> {getDataTraveledYet(data.traveled_yet)}</li>
           <li><a className="pointer" onClick={(e) => {e.preventDefault(); this.missionAction(data);}}>Подробнее...</a></li>
           <Div className="text-right">
-            <Button className="dashboard-card-action-button" onClick={this.completeMission.bind(this, data.mission_id)}>Завершить</Button>
+            <Button className="dashboard-card-action-button" onClick={this.completeMission.bind(this, data.mission_id)}>Выполнено</Button>
+            <Button className="dashboard-card-action-button" onClick={this.rejectMission.bind(this, data.mission_id)}>Не выполнено</Button>
           </Div>
         </ul>
       </Div>

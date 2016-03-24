@@ -160,7 +160,7 @@ export class DutyMissionsJournal extends ElementsList {
 
     this.removeElementAction = context.flux.getActions('missions').removeDutyMission;
     this.mainListName = 'dutyMissionsList';
-		this.removeDisabled = () => this.state.selectedElement && this.state.selectedElement.status === 'assigned';
+		this.removeDisabled = () => this.state.selectedElement && this.state.selectedElement.status !== 'not_assigned';
 	}
 
   init() {
@@ -182,7 +182,7 @@ export class DutyMissionsJournal extends ElementsList {
 		if (reason) {
 			let mission = _.cloneDeep(this.state.selectedElement);
 			mission.status = 'fail';
-			mission.fail_reason = reason;
+			mission.comment = reason;
 			this.context.flux.getActions('missions').updateDutyMission(mission);
 		}
 	}
@@ -194,6 +194,7 @@ export class DutyMissionsJournal extends ElementsList {
 			<div className="ets-page-wrap">
 				<DutyMissionsTable data={dutyMissionsList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'}{...this.props}>
 					<Button bsSize="small" onClick={this.completeMission.bind(this)} disabled={this.state.selectedElement === null || this.state.selectedElement.status !== 'assigned'}><Glyphicon glyph="ok" /> Отметка о выполнении</Button>
+					<Button bsSize="small" onClick={this.rejectMission.bind(this)} disabled={this.state.selectedElement === null || this.state.selectedElement.status !== 'assigned'}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</Button>
 					<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Создать задание</Button>
 					<Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="search" /> Просмотреть задание</Button>
 					<Button bsSize="small" disabled={this.state.selectedElement === null || this.removeDisabled()} onClick={this.removeElement.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>

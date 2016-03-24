@@ -33,23 +33,39 @@ class DutyMissionFormWrap extends FormWrap {
   async handleFormPrint() {
     let mission = _.cloneDeep(this.state.formState);
 
-    //mission.status = 'assigned';
-    //this.context.flux.getActions('missions').updateDutyMission(mission);
-		await this.context.flux.getActions('missions').printDutyMission(mission.id).then(url => {
-			window.location = `${url}?duty_mission_id=${mission.id}`;
-		});
+		// все переделать на пост! убрать бред
+		if (mission.id) {
+			await this.context.flux.getActions('missions').printDutyMission(mission.id).then(url => {
+				window.location = `${url}?duty_mission_id=${mission.id}`;
+				setTimeout(() => {
+					this.context.flux.getActions('missions').getDutyMissions();
+				}, 500);
+			});
+		} else {
+			let response = await this.context.flux.getActions('missions').createDutyMission(mission);
+			let id = response.result && response.result[0] ? response.result[0].id : null;
+			await this.context.flux.getActions('missions').printDutyMission(id).then(url => {
+				window.location = `${url}?duty_mission_id=${id}`;
+				setTimeout(() => {
+					this.context.flux.getActions('missions').getDutyMissions();
+				}, 500);
+			});
+		}
+		this.context.flux.getActions('missions').getDutyMissions();
 		this.props.onFormHide();
   }
 
-	handleFormSubmit(formState) {
+	async handleFormSubmit(formState) {
 		const { flux } = this.context;
 
 		if (isEmpty(formState.id)) {
-			flux.getActions('missions').createDutyMission(formState);
+			await flux.getActions('missions').createDutyMission(formState);
 		} else {
-			flux.getActions('missions').updateDutyMission(formState);
+			await flux.getActions('missions').updateDutyMission(formState);
 		}
 
+
+		flux.getActions('missions').getDutyMissions();
 		this.props.onFormHide();
 
 		return;

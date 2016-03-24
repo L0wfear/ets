@@ -1,8 +1,7 @@
 import React from 'react';
 
 import ClickOutHandler from 'react-onclickout';
-import FilterModal from './filter/FilterModal.jsx';
-import FilterButton from './filter/FilterButton.jsx';
+import Filter from './filter/Filter.jsx';
 import Paginator from '../Paginator.jsx';
 import Griddle from 'griddle-react';
 import Div from '../Div.jsx';
@@ -195,16 +194,18 @@ class Table extends React.Component {
         <Div className="some-header" hidden={noFilter}>{title}
           <div className="waybills-buttons">
             <ClickOutHandler onClickOut={this.closeFilter.bind(this)}>
-              <div className="filter-wrap">
-                <FilterButton direction={'left'} show={this.state.filterModalIsOpen} active={_.keys(this.state.filterValues).length} onClick={this.toggleFilter.bind(this)}/>
-                <FilterModal onSubmit={this.saveFilter.bind(this)}
-                           show={this.state.filterModalIsOpen}
-                           onHide={this.closeFilter.bind(this)}
-                           values={this.state.filterValues}
-                           direction={'left'}
-                           tableMeta={this.props.tableMeta}
-                           tableData={this.props.results} />
-              </div>
+
+              <Filter direction={'left'}
+                      show={this.state.filterModalIsOpen}
+                      onSubmit={this.saveFilter.bind(this)}
+                      onClick={this.toggleFilter.bind(this)}
+                      onHide={this.closeFilter.bind(this)}
+                      active={_.keys(this.state.filterValues).length}
+                      values={this.state.filterValues}
+                      options={this.props.tableMeta.cols}
+                      tableData={this.props.results}
+                      active={_.keys(this.state.filterValues).length}
+                      className="filter-wrap"/>
             </ClickOutHandler>
             {this.props.children}
           </div>

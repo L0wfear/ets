@@ -18,31 +18,25 @@ const FilterSelect = (props) => {
 };
 
 const Filter = (props) => {
-  const value = props.filterValues[props.col];
-  const columnMeta = _.find(props.tableMeta.cols, col => col.name === props.col) || {};
+  const { option } = props;
+  const value = props.filterValues[option.name];
   let input;
 
-  switch (props.col) {
-    case 'ID':
-      input = <Input type="number" value={value} onChange={props.onChange}/>;
-      break;
+  switch (option.name) {
     case 'date_create':
       input = <Datepicker date={value} onChange={props.onChange} time={false} />;
-      break;
-    case 'id':
-      input = <FilterSelect options={props.options} value={value} onChange={props.onChange} />
       break;
     default:
       input = <Input type="text" value={value} onChange={props.onChange}/>;
       break;
   }
 
-  if (columnMeta.filter && columnMeta.filter.type && columnMeta.filter.type === 'select') {
+  if (option.filter && option.filter.type && option.filter.type === 'select' && !option.filter.options) {
     const options = _(props.tableData)
-                    .uniq((d) => d[props.col])
+                    .uniq((d) => d[option.name])
                     .map((d) => ({
-                      value: d[props.col] === true || d[props.col] === false ? +d[props.col] : d[props.col],
-                      label: typeof columnMeta.filter.labelFunction === 'function' ? columnMeta.filter.labelFunction(d[props.col]) : d[props.col],
+                      value: d[option.name] === true || d[option.name] === false ? +d[option.name] : d[option.name],
+                      label: typeof option.filter.labelFunction === 'function' ? option.filter.labelFunction(d[option.name]) : d[option.name],
                     }))
                     .value();
     input = <FilterSelect options={options} value={value} onChange={props.onChange} />
@@ -51,7 +45,7 @@ const Filter = (props) => {
 
   return (
     <Div>
-      <label>{props.caption}</label>
+      <label>{option.caption}</label>
       {input}
     </Div>
   )
@@ -75,9 +69,9 @@ class FilterModal extends React.Component {
     this.setState({filterValues: props.values});
   }
 
-  handleFilterValueChange(col, e) {
+  handleFilterValueChange(key, e) {
     const filterValues = Object.assign({}, this.state.filterValues);
-    filterValues[col] = !!e.target ? e.target.value : e;
+    filterValues[key] = !!e.target ? e.target.value : e;
 
     this.setState({filterValues});
   }
@@ -108,12 +102,12 @@ class FilterModal extends React.Component {
 
   render() {
 
-    const { tableMeta } = this.props;
+    const { options } = this.props;
 
-    const filterRows = tableMeta.cols.map( (col, i) => {
+    const filterRows = options.map( (option, i) => {
       return <Row key={i}>
               <Col md={12}>
-                <Filter {...this.props} caption={col.caption} col={col.name} filterValues={this.state.filterValues} onChange={this.handleFilterValueChange.bind(this, col.name)} />
+                <Filter {...this.props} option={option} filterValues={this.state.filterValues} onChange={this.handleFilterValueChange.bind(this, option.name)} />
               </Col>
              </Row>
     });
@@ -125,7 +119,7 @@ class FilterModal extends React.Component {
           <Modal.Body>
             {filterRows}
           </Modal.Body>
-  
+
           <Modal.Footer>
             <Button onClick={this.submit.bind(this)}>Применить</Button>
             <Button onClick={this.reset.bind(this)}>Сброс</Button>

@@ -12,6 +12,7 @@ import { MissionReportsService,
          DutyMissionTemplateService,
          MissionPrintService,
          DutyMissionPrintService } from 'api/Services';
+import { postJSON } from 'adapter';
 
 export default class MissionsActions extends Actions {
 
@@ -86,7 +87,12 @@ export default class MissionsActions extends Actions {
       mission_id,
       image
     };
-    return MissionPrintService.post(payload, (r) => r.blob(), 'json');
+    const token = JSON.parse(window.localStorage.getItem('ets-session'));
+    return postJSON(`${MissionPrintService.getUrl()}?token=${token}`, payload, 'json').then(r => r.blob());
+
+    // return MissionPrintService.post(payload, (r) => {
+    //   return r.blob();
+    // }, 'json');
   }
 
   printDutyMission(duty_mission_id) {

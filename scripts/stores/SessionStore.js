@@ -42,8 +42,10 @@ class SessionStore extends Store {
   }
 
   handleLogin(data) {
+    data.payload.fio = `${data.payload.last_name} ${data.payload.first_name[0]}. ${data.payload.middle_name[0]}.`;
     const session = data.token;
     const currentUser = data.payload;
+    
     localStorage.setItem(SESSION_KEY, JSON.stringify(session));
     localStorage.setItem('current_user', JSON.stringify(currentUser));
     this.flux.getStore('dashboard').resetState();

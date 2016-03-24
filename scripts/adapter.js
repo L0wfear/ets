@@ -42,7 +42,7 @@ function HTTPMethod(url, data = {}, method, type) {
   let options = {
     method: method,
     headers: {
-      'Accept': 'application/json',
+      'Accept': url.indexOf('plate_mission') === -1 ? 'application/json' : 'application/octet-stream',
     },
     credentials: 'include',
   };

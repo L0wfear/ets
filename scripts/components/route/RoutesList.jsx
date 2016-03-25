@@ -8,6 +8,8 @@ import RouteInfo from './RouteInfo.jsx';
 import RouteFormWrap from './RouteFormWrap.jsx';
 import Div from '../ui/Div.jsx';
 import { getRouteById } from '../../adapter.js';
+import ClickOutHandler from 'react-onclickout';
+import Filter from '../ui/table/filter/Filter.jsx';
 
 class RoutesList extends Component {
 
@@ -23,7 +25,34 @@ class RoutesList extends Component {
 			showForm: false,
 			isVectorRouteSelected: false,
 			filterValues: {},
+			filterModalIsOpen: false,
 		};
+	}
+
+	shouldBeRendered(obj) {
+    let isValid = true;
+    _.mapKeys(this.state.filterValues, (value, key) => {
+      if (_.isArray(value)) {
+        if (value.indexOf(obj[key].toString()) === -1) {
+          isValid = false;
+        }
+      }
+    });
+
+    return isValid;
+  }
+
+	closeFilter() {
+    this.setState({filterModalIsOpen: false});
+  }
+
+  toggleFilter() {
+		this.setState({filterModalIsOpen: !!!this.state.filterModalIsOpen});
+	}
+
+	saveFilter(filterValues) {
+		console.info('SETTING FILTER VALUES', filterValues);
+		this.setState({filterValues});
 	}
 
 	selectRoute(id) {
@@ -94,6 +123,13 @@ class RoutesList extends Component {
 		flux.getActions('technical_operation').getTechnicalOperations();
 		flux.getActions('technical_operation').getTechnicalOperationsObjects();
 		flux.getActions('routes').getGeozones();
+		if (this.props.location.query) {
+			let filterValues = {};
+			_.mapKeys(this.props.location.query, (v, k) => {
+				filterValues[k] = [...v];
+			});
+			this.setState({filterValues})
+		}
 	}
 
 	render() {
@@ -102,8 +138,28 @@ class RoutesList extends Component {
 		let state = this.state;
 
 		let TECH_OPERATIONS = techOperationsList.map(({id, name}) => ({value: id, label: name}));
-		let OBJECTS = technicalOperationsObjectsList.map(({id, name}) => ({value: id, label: name}));
-		console.log(OBJECTS);
+		let OBJECTS = technicalOperationsObjectsList.map(({id, full_name}) => ({value: id, label: full_name}));
+		console.log(technicalOperationsObjectsList);
+		let filterOptions = [
+			{
+				name: 'technical_operation_id',
+				caption: 'Тех. операция',
+				filter: {
+					type: 'multiselect',
+					options: TECH_OPERATIONS,
+				}
+			},
+			{
+				name: 'type',
+				caption: 'Объект',
+				filter: {
+					type: 'multiselect',
+					options: OBJECTS,
+				}
+			}
+		];
+		console.log(this.props);
+		routesList = routesList.filter((r) => this.shouldBeRendered(r));
 
 		let vectorRoutes = routesList.filter(r => r.type === 'vector').map((r, i) => {
 			let cn = cx('sidebar__list-item', {'active': route && r.id === route.id});
@@ -153,6 +209,19 @@ class RoutesList extends Component {
 					<Col xs={7} md={9} className="col-xs-offset-5 col-md-offset-3">
 						<div className="some-header clearfix">
 							<div className="waybills-buttons">
+								<ClickOutHandler onClickOut={this.closeFilter.bind(this)}>
+		              <Filter direction={'right'}
+		                      show={this.state.filterModalIsOpen}
+		                      onSubmit={this.saveFilter.bind(this)}
+		                      onClick={this.toggleFilter.bind(this)}
+		                      onHide={this.closeFilter.bind(this)}
+		                      active={_.keys(this.state.filterValues).length}
+		                      values={this.state.filterValues}
+		                      options={filterOptions}
+		                      //tableData={this.props.results}
+		                      active={_.keys(this.state.filterValues).length}
+		                      className="filter-wrap"/>
+		            </ClickOutHandler>
 								<Button bsSize="small" onClick={this.createRoute.bind(this)}><Glyphicon glyph="plus" /> Создать маршрут</Button>
 								<Button bsSize="small" disabled={route === null} onClick={() => this.setState({showForm: true})}><Glyphicon glyph="pencil" /> Изменить маршрут</Button>
 								<Button bsSize="small" disabled={route === null} onClick={this.copyRoute.bind(this)}><Glyphicon glyph="copy" /> Копировать маршрут</Button>
@@ -175,4 +244,4 @@ class RoutesList extends Component {
 	}
 }
 
-export default connectToStores(RoutesList, ['routes']);
+export default connectToStores(RoutesList, ['routes', 'objects']);

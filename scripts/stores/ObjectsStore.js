@@ -59,7 +59,17 @@ class ObjectsStore extends Store {
   }
 
   handleGetTechnicalOperationsObjects(technicalOperationsObjects) {
-    this.setState({technicalOperationsObjectsList: technicalOperationsObjects.result});
+    let result = technicalOperationsObjects.result;
+    _.each(result, obj => {
+      if (obj.short_name === 'ОДХ') {
+        obj.type = 'simple';
+      } else if (obj.short_name === 'ДТ') {
+        obj.type = 'simple_dt';
+      } else if (obj.short_name === 'ПН') {
+        obj.type = 'points';
+      }
+    });
+    this.setState({technicalOperationsObjectsList: result});
   }
 
   handleGetTechnicalOperationsTypes(technicalOperationsTypes) {

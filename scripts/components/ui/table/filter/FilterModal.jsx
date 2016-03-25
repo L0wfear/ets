@@ -41,6 +41,13 @@ const Filter = (props) => {
                     .value();
     input = <FilterSelect options={options} value={value} onChange={props.onChange} />
   }
+  if (option.filter && option.filter.type && option.filter.type === 'multiselect' && option.filter.options) {
+    input = (
+      <Div className="filter-multiselect-container">
+        <FilterSelect options={option.filter.options} multi={true} value={value} onChange={props.onMultiChange} />
+      </Div>
+    );
+  }
 
 
   return (
@@ -71,7 +78,18 @@ class FilterModal extends React.Component {
 
   handleFilterValueChange(key, e) {
     const filterValues = Object.assign({}, this.state.filterValues);
+
     filterValues[key] = !!e.target ? e.target.value : e;
+
+    this.setState({filterValues});
+  }
+
+  handleFilterMultipleValueChange(key, v) {
+    const filterValues = Object.assign({}, this.state.filterValues);
+
+    let data = v.split(',');
+
+    filterValues[key] = data;
 
     this.setState({filterValues});
   }
@@ -107,7 +125,10 @@ class FilterModal extends React.Component {
     const filterRows = options.map( (option, i) => {
       return <Row key={i}>
               <Col md={12}>
-                <Filter {...this.props} option={option} filterValues={this.state.filterValues} onChange={this.handleFilterValueChange.bind(this, option.name)} />
+                <Filter {...this.props} option={option}
+                                        filterValues={this.state.filterValues}
+                                        onChange={this.handleFilterValueChange.bind(this, option.name)}
+                                        onMultiChange={this.handleFilterMultipleValueChange.bind(this, option.name)}/>
               </Col>
              </Row>
     });

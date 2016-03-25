@@ -73,6 +73,7 @@ export default React.createClass({
                 </NavDropdown>
 
 				        <NavItem active={path === '/routes-list'} href="#/routes-list">Маршруты</NavItem>
+                <NavItem active={path === '/company-structure'} href="#/company-structure">Структура предприятия</NavItem>
 				      </Nav>
               <Nav pullRight>
                   <NavItem className="navbar-user">

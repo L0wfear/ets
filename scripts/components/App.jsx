@@ -27,6 +27,7 @@ import MissionReportByPoints from './reports/MissionReportByPoints.jsx';
 import RouteLaunchReports from './reports/RouteLaunchReports.jsx';
 import FaxogrammDirectory from './directories/faxogramm/FaxogrammDirectory.jsx';
 import RouteReports from './reports/RouteReports.jsx';
+import CompanyStructure from './CompanyStructure.jsx';
 import Modal from './ui/Modal.jsx';
 import { checkToken, init } from '../adapter.js';
 import Flux from './Flux.js';
@@ -119,6 +120,7 @@ const routes = (
       <Route path="dashboard" component={DashboardPage} onEnter={requireAuth}/>
       <Route path="waybill-journal" component={WaybillJournal} onEnter={requireAuth}/>
       <Route path="mission-journal" component={MissionsJournal} onEnter={requireAuth}/>
+      <Route path="company-structure" component={CompanyStructure} onEnter={requireAuth}/>
       <Route path="duty-missions-journal" component={DutyMissionsJournal} onEnter={requireAuth}/>
       <Route path="duty-mission-templates-journal" component={DutyMissionTemplatesJournal} onEnter={requireAuth}/>
       <Route path="mission-templates-journal" component={MissionTemplatesJournal} onEnter={requireAuth}/>

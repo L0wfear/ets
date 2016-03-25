@@ -3147,3 +3147,33 @@ div.none {
 
 .modal-backdrop.in {
 }
+
+
+
+.company-structure .griddle-body table tbody tr:not(:first-child) > td {
+  padding-left: 20px !important;
+}
+
+.company-structure .griddle-body {
+  tbody {
+
+      tr {
+        cursor: pointer;
+
+        &:nth-child(even) > td {
+          background-color: #f7f7f7 !important;
+        }
+
+        &:hover > td, &.selected-row > td {
+          background-color: $colorGreen !important;
+          color: white !important;
+        }
+      }
+
+    td {
+      vertical-align: top;
+      background-color: transparent !important;
+      word-break: break-all;
+    }
+  }
+}

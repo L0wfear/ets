@@ -138,8 +138,7 @@ class RoutesList extends Component {
 		let state = this.state;
 
 		let TECH_OPERATIONS = techOperationsList.map(({id, name}) => ({value: id, label: name}));
-		let OBJECTS = technicalOperationsObjectsList.map(({id, full_name}) => ({value: id, label: full_name}));
-		console.log(technicalOperationsObjectsList);
+		let OBJECTS = technicalOperationsObjectsList.map(({type, full_name}) => ({value: type, label: full_name}));
 		let filterOptions = [
 			{
 				name: 'technical_operation_id',

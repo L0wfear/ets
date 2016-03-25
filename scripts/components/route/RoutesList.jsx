@@ -126,7 +126,7 @@ class RoutesList extends Component {
 		if (this.props.location.query) {
 			let filterValues = {};
 			_.mapKeys(this.props.location.query, (v, k) => {
-				filterValues[k] = [...v];
+				filterValues[k] = [v];
 			});
 			this.setState({filterValues})
 		}

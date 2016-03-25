@@ -147,6 +147,7 @@ class Table extends React.Component {
   }
 
   processSelected(selected, selectField, onRowSelected, el, i) {
+    el.isChecked = this.props.checked && this.props.checked[el.id] && this.shouldBeRendered(el);
     if (!selected || typeof onRowSelected === 'undefined') {
       el.isSelected = false;
       return el;
@@ -154,7 +155,6 @@ class Table extends React.Component {
     if (typeof selectField !== 'undefined') {
       el.isSelected = el[selectField] === selected[selectField];
     }
-    el.isChecked = this.props.checked && this.props.checked[el.id] && this.shouldBeRendered(el);
     return el;
   }
 
@@ -188,6 +188,8 @@ class Table extends React.Component {
     const data = _.cloneDeep(this.props.results);
 
     const results = this.processTableData(data, selected, selectField, onRowSelected);
+    console.log(columnMetadata);
+    console.log(results);
 
     return (
       <Div className="data-table">

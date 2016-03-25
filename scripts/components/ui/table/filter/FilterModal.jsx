@@ -4,6 +4,7 @@ import { Modal, Input, Label, Container, Row, Col, FormControls, Button, Dropdow
 import Div from '../../Div.jsx';
 import Datepicker from '../../DatePicker.jsx';
 import Select from 'react-select';
+import { isEmpty } from 'utils/functions';
 
 import _ from 'lodash';
 import cx from 'classnames';
@@ -86,10 +87,12 @@ class FilterModal extends React.Component {
 
   handleFilterMultipleValueChange(key, v) {
     const filterValues = Object.assign({}, this.state.filterValues);
-
-    let data = v.split(',');
+    let data = !isEmpty(v) ? v.split(',') : [];
 
     filterValues[key] = data;
+    if (data.length === 0) {
+      delete filterValues[key];
+    }
 
     this.setState({filterValues});
   }

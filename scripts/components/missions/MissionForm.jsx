@@ -166,7 +166,7 @@ export class MissionForm extends Form {
 					<Row>
 						<Col md={6}>
 							<Field type="select" label="Транспортное средство" error={errors['car_id']}
-											disabled={IS_POST_CREATING_ASSIGNED || IS_POST_CREATING_NOT_ASSIGNED || IS_DISPLAY}
+											disabled={IS_POST_CREATING_ASSIGNED || IS_POST_CREATING_NOT_ASSIGNED || IS_DISPLAY || this.props.fromWaybill}
 											options={CARS}
 											value={state.car_id}
 											onChange={this.handleCarIdChange.bind(this)}/>

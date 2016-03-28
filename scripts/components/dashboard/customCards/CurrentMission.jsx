@@ -112,7 +112,7 @@ export default class CurrentMission extends DashboardCardMedium {
           <li><b>Начало задания:</b> {getFormattedDateTimeSeconds(data.mission_date_start)}</li>
           <li><b>Окончание задания:</b> {getFormattedDateTimeSeconds(data.mission_date_end)}</li>
           <li><b>Расчетное время выполнения:</b> {getEstimatedFinishTime(data.estimated_finish_time || 'Подсчет')}</li>
-          <li><b>Пройдено:</b> {getDataTraveledYet(data.traveled_yet)}</li>
+          <li><b>Пройдено с рабочей скоростью:</b> {getDataTraveledYet(data.traveled_yet)}</li>
           <li><a className="pointer" onClick={(e) => {e.preventDefault(); this.missionAction(data);}}>Подробнее...</a></li>
           <Div className="text-right">
             <Button className="dashboard-card-action-button" onClick={this.completeMission.bind(this, data.mission_id)}>Выполнено</Button>

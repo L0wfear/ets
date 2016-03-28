@@ -99,13 +99,12 @@ export class MissionForm extends Form {
 			let route = await routesActions.getRouteById(mission.route_id, true);
 					selectedRoute = route.result.length ? route.result[0] : null;
 		}
-		if (!isEmpty(mission.car_id)) {
-			technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsByCarId(mission.car_id);
-		}
+
 		if (!isEmpty(mission.technical_operation_id)){
 			routesList = await routesActions.getRoutesByTechnicalOperation(mission.technical_operation_id);
 		}
 
+		technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsByCarId(mission.car_id);
 		objectsActions.getModels();
 		objectsActions.getCars();
 		missionsActions.getMissionSources();
@@ -135,11 +134,18 @@ export class MissionForm extends Form {
 	}
 
 	componentWillReceiveProps(props) {
+		const { flux } = this.context;
+		let routesActions = flux.getActions('routes');
+
 		if (props.lastCreatedRouteId !== null && props.lastCreatedRouteId !== this.props.lastCreatedRouteId) {
 			this.handleChange('route_id', props.lastCreatedRouteId);
-			setTimeout(() => { //no time sry
-				this.context.flux.getActions('routes').getRouteById(props.lastCreatedRouteId, true).then(r => {
-					this.setState({selectedRoute: r.result.length ? r.result[0] : null});
+			setTimeout(async () => { //no time sry
+				let route = await routesActions.getRouteById(props.lastCreatedRouteId, true);
+				let selectedRoute = route.result.length ? route.result[0] : null;
+				let routesList = await routesActions.getRoutesByTechnicalOperation(props.formState.technical_operation_id);
+				this.setState({
+					selectedRoute,
+					routesList,
 				});
 			}, 500);
 		}

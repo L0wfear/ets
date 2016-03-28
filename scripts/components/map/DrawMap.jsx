@@ -35,9 +35,7 @@ export default class DrawMap extends PolyMap {
   }
 
   addDrawInteraction(type = 'LineString') {
-    console.log(this.vectorSource);
     this.draw = new ol.interaction.Draw({
-      //source: this.vectorSource,
       type
     });
     this.draw.on('drawend', type === 'LineString' ? this.onDrawEnd.bind(this) : this.onPointDrawEnd.bind(this));
@@ -55,38 +53,20 @@ export default class DrawMap extends PolyMap {
     let { feature } = ev;
     let id = this.props.object_list.length || 0;
     const geometry = feature.getGeometry();
-    //feature.setStyle(getVectorArrowStyle(feature)); //не нужно т.к. рисуется заново
     geometry.forEachSegment((start, end, index) => {
       let featureSegment = new ol.Feature({
         geometry: new ol.geom.LineString([start, end]),
         id: id,
       });
-      //featureSegment.setStyle(getVectorArrowStyle(featureSegment)); //не нужно т.к. рисуется заново
       id++;
       this.props.onDrawFeatureAdd(featureSegment, featureSegment.getGeometry().getCoordinates(), featureSegment.getGeometry().getLength());
     });
     this.draw.setActive(false);
-    // feature.on('change', () => {
-    //   this.vectorSource.removeFeature(feature)
-    // });
   }
 
   onPointDrawEnd(ev) {
     let { feature } = ev;
-    //feature.setStyle(getVectorArrowStyle(feature)); //не нужно т.к. рисуется заново
-    // geometry.forEachSegment((start, end, index) => {
-    //   let featureSegment = new ol.Feature({
-    //     geometry: new ol.geom.LineString([start, end]),
-    //     id: id,
-    //   });
-    //   //featureSegment.setStyle(getVectorArrowStyle(featureSegment)); //не нужно т.к. рисуется заново
-    //   id++;
     this.props.onPointAdd(feature.getGeometry().getCoordinates());
-    //});
-    //this.draw.setActive(false);
-    // feature.on('change', () => {
-    //   this.vectorSource.removeFeature(feature)
-    // });
   }
 
   render() {
@@ -145,8 +125,6 @@ export default class DrawMap extends PolyMap {
 
       vectorSource.addFeature(feature);
     });
-
-    console.log(this.vectorLayer);
 
     !!this.vectorLayer && map.removeLayer(this.vectorLayer);
 

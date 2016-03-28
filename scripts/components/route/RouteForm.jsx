@@ -22,6 +22,10 @@ class RouteForm extends Form {
 		this.props.resetState();
 	}
 
+	componentDidMount() {
+		this.context.flux.getActions('technical_operation').getTechnicalOperations();
+	}
+
 	render() {
 
 		let state = this.props.formState;

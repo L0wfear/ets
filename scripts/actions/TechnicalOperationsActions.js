@@ -2,6 +2,7 @@ import { Actions } from 'flummox';
 import { logout } from '../adapter.js';
 import _ from 'lodash';
 import { TechnicalOperationService, TechnicalOperationObjectsService, TechnicalOperationTypesService } from 'api/Services';
+import { isEmpty } from 'utils/functions';
 
 export default class TechnicalOperationsActions extends Actions {
 
@@ -19,6 +20,9 @@ export default class TechnicalOperationsActions extends Actions {
 
   async getTechnicalOperationsByCarId(car_id) {
     const payload = { car_id };
+    if (isEmpty(car_id)) {
+      delete payload.car_id;
+    }
     let response = await TechnicalOperationService.get(payload);
     return response.result || [];
   }

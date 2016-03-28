@@ -157,7 +157,6 @@ export class MissionsJournal extends ElementsList {
   init() {
 		const { flux } = this.context;
 		flux.getActions('missions').getMissions();
-    flux.getActions('technical_operation').getTechnicalOperations();
   }
 
 	completeMission() {

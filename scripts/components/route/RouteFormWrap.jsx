@@ -15,7 +15,7 @@ class RouteFormWrap extends FormWrap {
 	}
 
 	componentWillReceiveProps(props) {
-		if (props.showForm) {
+		if (props.showForm && props.showForm !== this.props.showForm) {
 			let formState = null;
 			if (props.element !== null ) {
         formState = _.cloneDeep(props.element);
@@ -36,18 +36,16 @@ class RouteFormWrap extends FormWrap {
 	}
 
 	resetFormState() {
-		if (this.props.showForm) {
-			if (this.props.element !== null ) {
-        const formState = _.cloneDeep(this.props.element);
-				formState.name = this.state.formState.name;
-				formState.technical_operation_id = this.state.formState.technical_operation_id;
-				formState.type = this.state.formState.type;
-				formState.polys = formState.type === 'simple_dt' ? _.cloneDeep(this.props.dtPolys) : _.cloneDeep(this.props.odhPolys);
-        this.setState({formState});
-			} else {
-        this.setState({formState: {}});
-      }
-		}
+		if (this.props.element !== null ) {
+      const formState = _.cloneDeep(this.props.element);
+			formState.name = this.state.formState.name;
+			formState.technical_operation_id = this.state.formState.technical_operation_id;
+			formState.type = this.state.formState.type;
+			formState.polys = formState.type === 'simple_dt' ? _.cloneDeep(this.props.dtPolys) : _.cloneDeep(this.props.odhPolys);
+      this.setState({formState});
+		} else {
+      this.setState({formState: {}});
+    }
 	}
 
 	handleFormSubmit(formState, manualCreating) {

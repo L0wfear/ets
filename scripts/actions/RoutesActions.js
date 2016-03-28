@@ -36,9 +36,8 @@ export default class RoutesActions extends Actions {
     delete payload.polys;
     delete payload.odh_list;
     delete payload.odh_fail_list;
-    console.log(payload);
     payload.object_list = JSON.stringify(payload.object_list);
-    const createdRoute = await RouteService.post(payload);
+    const createdRoute = await RouteService.post(payload, false);
     const routes = await RouteService.get();
     return {createdRoute, routes};
   }

@@ -28,6 +28,8 @@ export class DutyMissionForm extends Form {
 		this.state = {
 			selectedRoute: null,
 			showRouteForm: false,
+      routesList: [],
+
 		};
 	}
 
@@ -43,12 +45,15 @@ export class DutyMissionForm extends Form {
 		}
 	}
 
-	handleTechnicalOperationChange(v) {
+	async handleTechnicalOperationChange(v) {
 		this.handleChange('technical_operation_id', v);
     this.handleChange('route_id', undefined);
     this.handleChange('car_mission_id', 0);
-    this.context.flux.getActions('routes').getRoutes(v);
     this.context.flux.getActions('missions').getMissions(v);
+
+    let routesList = await this.context.flux.getActions('routes')
+                                            .getRoutesByTechnicalOperation(v);
+    this.setState({routesList});
 	}
 
   handleBrigadeIdListChange(v) {
@@ -61,15 +66,30 @@ export class DutyMissionForm extends Form {
 	async componentDidMount() {
 		const mission = this.props.formState;
 		const { flux } = this.context;
-		if (typeof mission.route_id !== 'undefined' && mission.route_id !== null){
-			flux.getActions('routes').getRouteById(mission.route_id, true).then(r => {
-				this.setState({selectedRoute: r.result.length ? r.result[0] : null});
-			});
+    let objectsActions = flux.getActions('objects')
+		let technicalOperationsActions = flux.getActions('technical_operation');
+		let routesActions = flux.getActions('routes');
+		let missionsActions = flux.getActions('missions');
+
+		let { selectedRoute } = this.state;
+		let { routesList } = this.props;
+
+		if (!isEmpty(mission.route_id)) {
+			let route = await routesActions.getRouteById(mission.route_id, true);
+					selectedRoute = route.result.length ? route.result[0] : null;
+    }
+
+    if (!isEmpty(mission.technical_operation_id)) {
+			routesList = await routesActions.getRoutesByTechnicalOperation(mission.technical_operation_id);
 		}
+
   	flux.getActions('missions').getMissions(mission.technical_operation_id);
-    flux.getActions('technical_operation').getTechnicalOperations();
-    const technicalOperationsList = await flux.getActions('technical_operation').getTechnicalOperationsWithBrigades();
-    this.setState({technicalOperationsList});
+    const technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsWithBrigades();
+    this.setState({
+      selectedRoute,
+      technicalOperationsList,
+      routesList,
+    });
 	}
 
 	createNewRoute() {
@@ -105,8 +125,8 @@ export class DutyMissionForm extends Form {
 		let errors = this.props.formErrors;
     console.info('FORM STATE IS', state);
 
-		const { missionSourcesList = [], routesList = [], employeesList = [], missionsList = [] } = this.props;
-    const { technicalOperationsList = [] } = this.state;
+		const { missionSourcesList = [], employeesList = [], missionsList = [] } = this.props;
+    const { technicalOperationsList = [], routesList = [] } = this.state;
 
     const TECH_OPERATIONS = technicalOperationsList.map(({id, name}) => ({value: id, label: name}));
     const MISSION_SOURCES = missionSourcesList.map(({id, name}) => ({value: id, label: name}));
@@ -118,6 +138,8 @@ export class DutyMissionForm extends Form {
 		});
 
 		let IS_CREATING = !!!state.number;
+    let IS_CLOSING = state.status && state.status === 'assigned';
+    let IS_CLOSED = state.status === 'complete' || state.status === 'fail';
 
     let title = `Наряд-задание № ${state.number || ''}`;
 
@@ -147,16 +169,31 @@ export class DutyMissionForm extends Form {
                       onChange={this.handleTechnicalOperationChange.bind(this)}/>
 						</Col>
 
-            <Div>
-  				 		<Col md={3}>
-  				   		<label>Время выполнения, планируемое</label>
-  				 			<Div>c <Datepicker date={state.plan_date_start} onChange={this.handleChange.bind(this, 'plan_date_start')} disabled={IS_DISPLAY}/></Div>
-  				   	</Col>
-  				   	<Col md={3}>
-                <label style={{minHeight: 15}}></label>
-  				 			<Div>по <Datepicker date={state.plan_date_end} onChange={this.handleChange.bind(this, 'plan_date_end')} disabled={IS_DISPLAY}/></Div>
-  				   	</Col>
-            </Div>
+            <Col md={6}>
+              <Row>
+    				 		<Col md={6}>
+    				   		<label>Время выполнения, планируемое</label>
+    				 			<Div>c <Datepicker date={state.plan_date_start} onChange={this.handleChange.bind(this, 'plan_date_start')} disabled={IS_DISPLAY}/></Div>
+    				   	</Col>
+    				   	<Col md={6}>
+                  <label style={{minHeight: 15}}></label>
+    				 			<Div>по <Datepicker date={state.plan_date_end} onChange={this.handleChange.bind(this, 'plan_date_end')} disabled={IS_DISPLAY}/></Div>
+    				   	</Col>
+
+                <Div hidden={!IS_CLOSING}>
+      				 		<Col md={6}>
+      				   		<label>Время выполнения, фактическое</label>
+      				 			<Div>c <Datepicker date={state.fact_date_start} onChange={this.handleChange.bind(this, 'fact_date_start')} disabled={IS_CLOSED}/></Div>
+      				   	</Col>
+      				   	<Col md={6}>
+                    <label style={{minHeight: 15}}></label>
+      				 			<Div>по <Datepicker date={state.fact_date_end} onChange={this.handleChange.bind(this, 'fact_date_end')} disabled={IS_CLOSED}/></Div>
+      				   	</Col>
+                </Div>
+              </Row>
+            </Col>
+
+
 
 					</Row>
 

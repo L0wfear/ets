@@ -13,10 +13,6 @@ class MissionTemplateForm extends MissionForm {
 
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			selectedRoute: null,
-		};
 	}
 
 	render() {
@@ -24,12 +20,13 @@ class MissionTemplateForm extends MissionForm {
 		let state = this.props.formState;
 		let errors = this.props.formErrors;
 
-		const { technicalOperationsList = [], missionSourcesList = [], routesList = [], carsList = [] } = this.props;
+		const { missionSourcesList = [] } = this.props;
+		const { technicalOperationsList = [], routesList = [], carsList = [] } = this.state;
 
     const TECH_OPERATIONS = technicalOperationsList.map(({id, name}) => ({value: id, label: name}));
     const MISSION_SOURCES = missionSourcesList.map(({id, name}) => ({value: id, label: name}));
     let ROUTES = routesList.map(({id, name}) => ({value: id, label: name}));
-		const CARS = carsList.map( c => ({value: c.asuods_id, label: c.gov_number + ' [' + c.model_name + ']'}));
+		const CARS = carsList.map( c => ({value: c.asuods_id, label: `${c.gov_number} [${c.model_name}]`}));
 
     console.log('form state is ', state);
 

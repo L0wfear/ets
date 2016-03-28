@@ -135,6 +135,7 @@ class DashboardStore extends Store {
     let { componentsList, componentsIndex } = this.state;
     if (!component.result) return;
     let componentSchema = _.find(this.getComponentsByRole(), c => c.key === key);
+    if (!componentSchema) return;
     component.result.id = componentSchema.id;
     component.result.key = key;
     if (componentSchema.itemsTitle) {
@@ -149,6 +150,7 @@ class DashboardStore extends Store {
     let { componentsSideList, componentsSideIndex } = this.state;
     if (!component.result || typeof component.result === 'string') return;
     let componentSchema = _.find(this.getComponentsByRole(), c => c.key === key);
+    if (!componentSchema) return;
     component.result.id = componentSchema.id;
     component.result.key = key;
     componentsSideIndex[key] = component.result;

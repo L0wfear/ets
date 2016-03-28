@@ -38,8 +38,7 @@ let getCarById = (cars, id) => {
 };
 
 let getMissionFilterStatus = (formState) => {
-  let missionsFilterStatus = ''//(formState.status === 'active') ? 'assigned' : 'not_assigned';
-  //missionsFilterStatus = (formState.status === 'closed') ? 'complete' : missionsFilterStatus;
+  let missionsFilterStatus = '';
   if (formState.status === 'draft' || formState.status === 'closed' || formState.status === 'active') {
     missionsFilterStatus = undefined;
   } else {
@@ -108,17 +107,17 @@ class WaybillForm extends Form {
 	}
 
 	onCarChange(car_id) {
+    const { flux } = this.context;
 		this.handleChange('car_id', car_id);
   	this.handleChange('mission_id_list', []);
 
     let car_has_odometer = null;
     let car = this.props.carsIndex[car_id];
     if (car && car.gov_number) {
-      car_has_odometer = isNaN(car.gov_number[0]);//car.gov_number.replace(/[^0-9]/g,"").length === 3;
+      car_has_odometer = isNaN(car.gov_number[0]);
     }
     this.handleChange('car_has_odometer', car_has_odometer);
 
-    const { flux } = this.context;
 		const waybillsListSorted = _(this.props.waybillsList).filter(w => w.status === 'closed').sortBy('id').value().reverse();
 		const lastCarUsedWaybill = _.find(waybillsListSorted, w => w.car_id === car_id);
 		if (isNotNull(lastCarUsedWaybill)) {
@@ -195,7 +194,7 @@ class WaybillForm extends Form {
     let car = carsIndex[state.car_id];
     let car_has_odometer = null;
     if (car && car.gov_number) {
-      car_has_odometer = isNaN(car.gov_number[0]);//car.gov_number.replace(/[^0-9]/g,"").length === 3;
+      car_has_odometer = isNaN(car.gov_number[0]);
     }
 
     let title = '';
@@ -218,12 +217,8 @@ class WaybillForm extends Form {
 
     const MISSIONS = missionsList.map( ({id, number, technical_operation_id}) => {
 			const techOperation = getTechOperationById(technical_operation_id);
-      console.log( state.mission_id_list.indexOf(id) === -1);
 			return {value: id, label: `№${number} (${techOperation.name})`, clearableValue: false};
 		});
-
-    console.log(state.mission_id_list)
-    console.log(typeof state.mission_id_list.filter)
 
 		return (
 			<Modal {...this.props} bsSize="large">

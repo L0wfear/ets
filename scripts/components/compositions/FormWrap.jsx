@@ -48,7 +48,7 @@ class FormWrap extends React.Component {
     let schema = this.schema;
   	_.each(schema.properties, prop => {
   		formErrors[prop.key] = validateRow(prop, formState[prop.key]);
-    })
+    });
 
   	return formErrors;
   }

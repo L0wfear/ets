@@ -47,7 +47,6 @@ class Table extends React.Component {
   }
 
   handleRowCheck(id, e) {
-    console.log('hadleRowCheck is called');
     e.preventDefault();
     e.stopPropagation();
     let value = ! !!this.props.checked[id];
@@ -188,8 +187,6 @@ class Table extends React.Component {
     const data = _.cloneDeep(this.props.results);
 
     const results = this.processTableData(data, selected, selectField, onRowSelected);
-    console.log(columnMetadata);
-    console.log(results);
 
     return (
       <Div className="data-table">

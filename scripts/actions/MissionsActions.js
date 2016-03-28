@@ -82,13 +82,16 @@ export default class MissionsActions extends Actions {
     return MissionService.put(payload);
   }
 
-  printMission(mission_id, image) {
-    const payload = {
-      mission_id,
-      image
-    };
+  printMission(data, url) {
     const token = JSON.parse(window.localStorage.getItem('ets-session'));
-    return postJSON(`${MissionPrintService.getUrl()}?token=${token}`, payload, 'json').then(r => r.blob());
+    let URL = `http://ods.mos.ru/ssd/ets/services/plate_mission/?token=${token}`;
+
+    return fetch(URL, {
+      method: 'post',
+      body: JSON.stringify(data)
+    }).then((r) => r.blob());
+
+    //return postJSON(`${MissionPrintService.getUrl()}?token=${token}`, payload, 'json').then(r => r.blob());
 
     // return MissionPrintService.post(payload, (r) => {
     //   return r.blob();

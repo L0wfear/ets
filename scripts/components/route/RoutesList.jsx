@@ -133,11 +133,11 @@ class RoutesList extends Component {
 	}
 
 	render() {
-		let { routesList = [], techOperationsList = [], technicalOperationsObjectsList = [] } = this.props;
+		let { routesList = [], technicalOperationsList = [], technicalOperationsObjectsList = [] } = this.props;
 		let route = this.state.selectedRoute;
 		let state = this.state;
 
-		let TECH_OPERATIONS = techOperationsList.map(({id, name}) => ({value: id, label: name}));
+		let TECH_OPERATIONS = technicalOperationsList.map(({id, name}) => ({value: id, label: name}));
 		let OBJECTS = technicalOperationsObjectsList.map(({type, full_name}) => ({value: type, label: full_name}));
 		let filterOptions = [
 			{

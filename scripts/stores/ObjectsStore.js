@@ -39,7 +39,7 @@ class ObjectsStore extends Store {
       okrugsList: [],
       ownersList: [],
       fuelTypes: [],
-      techOperationsList: [],
+      technicalOperationsList: [],
       workKindsList: [],
       odhsList: [],
       faxogrammsList: [],
@@ -133,7 +133,7 @@ class ObjectsStore extends Store {
   }
 
   handleGetTechOperations(techOperations) {
-    this.setState({techOperationsList: techOperations.result});
+    this.setState({technicalOperationsList: techOperations.result});
   }
 
   handleGetWorkKinds(workKinds) {
@@ -153,7 +153,7 @@ class ObjectsStore extends Store {
   }
 
   getTechOperationById(id) {
-    return _.find(this.state.techOperationsList, to => to.id === id) || {};
+    return _.find(this.state.technicalOperationsList, to => to.id === id) || {};
   }
 
   getCarById(asuods_id) {

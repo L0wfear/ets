@@ -149,8 +149,8 @@ class RouteLaunchReports extends Component {
 
 	render() {
 
-		const { reportsList = [], techOperationsList = [] } = this.props;
-    const TECH_OPERATIONS = [{value: 'null', label: 'Все операции'}].concat(techOperationsList.map(({id, name}) => ({value: id, label: name})));
+		const { reportsList = [], technicalOperationsList = [] } = this.props;
+    const TECH_OPERATIONS = [{value: 'null', label: 'Все операции'}].concat(technicalOperationsList.map(({id, name}) => ({value: id, label: name})));
 
 		return (
 			<div className="ets-page-wrap">

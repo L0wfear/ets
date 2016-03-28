@@ -2225,7 +2225,7 @@ body {
 }
 
 .modal-backdrop.in {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -2597,6 +2597,9 @@ div.none {
 .width120 {
   width: 120px;
 }
+.width150 {
+  width: 150px;
+}
 .width10-200 {
   width: 200px;
   max-width: 200px;
@@ -2823,7 +2826,7 @@ div.none {
           margin-top: 20px;
         }*/
       }
-      
+
       .dashboard-btn-wrapper + .dashboard-btn-wrapper {
         margin-top: 10px;
       }

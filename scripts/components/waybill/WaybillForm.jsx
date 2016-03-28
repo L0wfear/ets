@@ -180,7 +180,7 @@ class WaybillForm extends Form {
 		let errors = this.props.formErrors;
 
 		const { carsList = [], carsIndex = {}, driversList = [], employeesList = [], fuelTypes = [], missionsList = [] } = this.props;
-		const CARS = carsList.map( c => ({value: c.asuods_id, label: c.gov_number + ' [' + c.model + ']'}));
+		const CARS = carsList.map( c => ({value: c.asuods_id, label: c.gov_number + ' [' + c.model_name + ']'}));
 		const FUEL_TYPES = fuelTypes.map(({ID, NAME}) => ({value: ID, label: NAME}));
 		const DRIVERS = driversList.map( d => ({value: d.id, label: `[${d.personnel_number}] ${d.last_name} ${d.first_name} ${d.middle_name}`}));
 		const MASTERS = employeesList.filter( e => [2, 4, 5, 7, 14].indexOf(e.position_id) > -1).map( m => ({value: m.id, data: m, label: `${m.last_name} ${m.first_name} ${m.middle_name}`}));
@@ -372,8 +372,7 @@ class WaybillForm extends Form {
 										operations={this.state.operations}
 										fuelRates={this.state.fuelRates}
 										onChange={this.handleChange.bind(this, 'taxes')}
-										correctionRate={this.state.fuel_correction_rate}
-										availableOperations={this.state.availableOperations}/>
+										correctionRate={this.state.fuel_correction_rate}/>
             </Col>
           </Row>
 

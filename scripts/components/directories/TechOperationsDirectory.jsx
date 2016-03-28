@@ -146,7 +146,7 @@ class TechOperationsDirectory extends ElementsList {
       showForm: false,
 		};
 
-    this.mainListName = 'techOperationsList';
+    this.mainListName = 'technicalOperationsList';
 	}
 
 	componentDidMount() {
@@ -156,11 +156,11 @@ class TechOperationsDirectory extends ElementsList {
 	}
 
 	render() {
-    const { techOperationsList = [] } = this.props;
+    const { technicalOperationsList = [] } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
-        <TechOperationsTable data={techOperationsList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'} {...this.props}>
+        <TechOperationsTable data={technicalOperationsList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'} {...this.props}>
           <Button bsSize="small" onClick={() => this.setState({ showForm: true })} disabled={this.state.selectedElement === null}> Изменить</Button>
         </TechOperationsTable>
         <TechOperationFormWrap showForm={this.state.showForm} onFormHide={this.onFormHide.bind(this)} element={this.state.selectedElement}/>

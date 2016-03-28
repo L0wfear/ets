@@ -21,6 +21,8 @@ export class MissionForm extends Form {
 			selectedRoute: null,
 			showRouteForm: false,
 			carsList: [],
+			routesList: [],
+			technicalOperationsList: [],
 		};
 	}
 
@@ -38,23 +40,36 @@ export class MissionForm extends Form {
 
 	async handleCarIdChange(v) {
 		this.handleChange('car_id', v);
-		this.handleChange('technical_operation_id', undefined);
-		this.handleChange('route_id', undefined);
-		this.setState({selectedRoute: null});
-		try {
-			let technicalOperationsList = await this.context.flux.getActions('technical_operation')
-																													 .getTechnicalOperationsByCarId(v);
-			this.setState({technicalOperationsList});
-		} catch (e) {
-			console.error('USER GENERATED EXCEPTION');
-			console.error(e);
+
+		if (!!!this.props.formState.status) {
+
+		} else { // в режиме редактирования по ТС сортируются тех.операции
+			this.handleChange('technical_operation_id', undefined);
+			this.handleRouteIdChange(undefined);
+			try {
+				let technicalOperationsList = await this.context.flux.getActions('technical_operation')
+																														 .getTechnicalOperationsByCarId(v);
+				this.setState({technicalOperationsList});
+			} catch (e) {
+				console.error('USER GENERATED EXCEPTION');
+				console.error(e);
+			}
 		}
 	}
 
 	async handleTechnicalOperationChange(v) {
 		this.handleChange('technical_operation_id', v);
-		this.handleChange('route_id', undefined);
-		this.setState({selectedRoute: null});
+		this.handleRouteIdChange(undefined);
+
+		if (!!!this.props.formState.status) {
+			this.handleChange('car_id', undefined);
+			let carsList = await this.context.flux.getActions('car')
+																						.getCarsByTechnicalOperation(v);
+					this.setState({carsList});
+		} else {
+
+		}
+
 		try {
 			let routesList = await this.context.flux.getActions('routes')
 																							.getRoutesByTechnicalOperation(v);
@@ -75,25 +90,31 @@ export class MissionForm extends Form {
 		let objectsActions = flux.getActions('objects')
 		let technicalOperationsActions = flux.getActions('technical_operation');
 		let routesActions = flux.getActions('routes');
-		let technicalOperationsList;
-		let routesList;
-		if (typeof mission.route_id !== 'undefined' && mission.route_id !== null){
-			routesActions.getRouteById(mission.route_id, true).then(r => {
-				this.setState({selectedRoute: r.result.length ? r.result[0] : null});
-			});
+		let missionsActions = flux.getActions('missions');
+
+		let { selectedRoute } = this.state;
+		let { technicalOperationsList, routesList, carsList } = this.props;
+
+		if (!isEmpty(mission.route_id)) {
+			let route = await routesActions.getRouteById(mission.route_id, true);
+					selectedRoute = route.result.length ? route.result[0] : null;
 		}
-		if (mission.car_id){
+		if (!isEmpty(mission.car_id)) {
 			technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsByCarId(mission.car_id);
 		}
-		if (mission.technical_operation_id){
+		if (!isEmpty(mission.technical_operation_id)){
 			routesList = await routesActions.getRoutesByTechnicalOperation(mission.technical_operation_id);
 		}
+
 		objectsActions.getModels();
 		objectsActions.getCars();
+		missionsActions.getMissionSources();
+
 		this.setState({
-			carsList: this.props.carsList,
-			technicalOperationsList: technicalOperationsList || this.props.techOperationsList,
-			routesList: routesList || this.props.routesList,
+			carsList,
+			technicalOperationsList,
+			routesList,
+			selectedRoute,
 		});
 	}
 
@@ -129,16 +150,16 @@ export class MissionForm extends Form {
 		let state = this.props.formState;
 		let errors = this.props.formErrors;
 
-		const { missionSourcesList = [], carsList = [] } = this.props;
-		const { technicalOperationsList = [], routesList = [] } = this.state;
+		const { missionSourcesList = [] } = this.props;
+		const { technicalOperationsList = [], routesList = [], carsList = [] } = this.state;
 
-    //const WORK_KINDS = workKindsList.map(({id, name}) => ({value: id, label: name}));
     const TECH_OPERATIONS = technicalOperationsList.map(({id, name}) => ({value: id, label: name}));
     const MISSION_SOURCES = missionSourcesList.map(({id, name}) => ({value: id, label: name}));
-		const CARS = carsList.map( c => ({value: c.asuods_id, label: c.gov_number + ' [' + c.model + ']'}));
-    let ROUTES = routesList.map(({id, name}) => ({value: id, label: name}));
+		const CARS = carsList.map( c => ({value: c.asuods_id, label: c.gov_number + ' [' + c.model_name + ']'}));
+    const ROUTES = routesList.map(({id, name}) => ({value: id, label: name}));
 
     console.log('form state is ', state);
+		// является ли задание отложенным
 		let isDeferred = moment(state.date_start).toDate().getTime() > moment().toDate().getTime();
 
 		let IS_CREATING = !!!state.status;
@@ -166,7 +187,11 @@ export class MissionForm extends Form {
 					<Row>
 						<Col md={6}>
 							<Field type="select" label="Транспортное средство" error={errors['car_id']}
-											disabled={IS_POST_CREATING_ASSIGNED || IS_POST_CREATING_NOT_ASSIGNED || IS_DISPLAY || this.props.fromWaybill}
+											disabled={IS_POST_CREATING_ASSIGNED ||
+																IS_POST_CREATING_NOT_ASSIGNED ||
+																IS_DISPLAY ||
+																this.props.fromWaybill ||
+																(IS_CREATING && isEmpty(state.technical_operation_id))}
 											options={CARS}
 											value={state.car_id}
 											onChange={this.handleCarIdChange.bind(this)}/>
@@ -185,7 +210,7 @@ export class MissionForm extends Form {
 	      	<Row>
 	      		<Col md={6}>
 							<Field type="select" label="Технологическая операция" error={errors['technical_operation_id']}
-											disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || isEmpty(state.car_id)}
+											disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY || isEmpty(state.car_id))}
 											options={TECH_OPERATIONS}
 											value={state.technical_operation_id}
 											onChange={this.handleTechnicalOperationChange.bind(this)}/>

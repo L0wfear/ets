@@ -26,10 +26,10 @@ class RouteForm extends Form {
 
 		let state = this.props.formState;
 		let errors = this.props.formErrors;
-		let { techOperationsList = [] } = this.props;
+		let { technicalOperationsList = [] } = this.props;
 		let ROUTE_TYPE_OPTIONS = [{value: 'vector', label: 'Вручную'}, {value: 'simple', label: 'Выбор из ОДХ'}, {value: 'simple_dt', label: 'Выбор из ДТ'}, {value: 'points', label: 'Выбор пунктов назначения'}];
 
-    const TECH_OPERATIONS = techOperationsList.map(({id, name}) => ({value: id, label: name}));
+    const TECH_OPERATIONS = technicalOperationsList.map(({id, name}) => ({value: id, label: name}));
 
     console.log('form state is ', state);
 

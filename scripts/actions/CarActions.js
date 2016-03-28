@@ -1,5 +1,6 @@
 import { Actions } from 'flummox';
 import { CarInfoService, CarService } from 'api/Services';
+import { isEmpty } from 'utils/functions';
 
 export default class CarActions extends Actions {
 
@@ -16,6 +17,17 @@ export default class CarActions extends Actions {
     }
 
     return CarInfoService.post(payload, CarService.get);
+  }
+
+  async getCarsByTechnicalOperation(technical_operation_id) {
+    const payload = {};
+    if (!isEmpty(technical_operation_id)) {
+      payload.technical_operation_id = technical_operation_id;
+    } else {
+      delete payload.technical_operation_id;
+    }
+    let response = await CarService.get(payload);
+    return response.result || [];
   }
 
 }

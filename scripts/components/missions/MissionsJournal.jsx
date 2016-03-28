@@ -10,14 +10,6 @@ import moment from 'moment';
 import cx from 'classnames';
 import _ from 'lodash';
 
-let getTechOperationById = (id) => window.__ETS_CONTAINER__.flux.getStore('objects').getTechOperationById(id);
-
-let getMissionSourceById = (id) => window.__ETS_CONTAINER__.flux.getStore('missions').getMissionSourceById(id);
-
-let getRouteById = (id) => window.__ETS_CONTAINER__.flux.getStore('routes').getRouteById(id);
-
-let getCarById = (id) => window.__ETS_CONTAINER__.flux.getStore('objects').getCarById(id);
-
 function getStatusLabel(s) {
 	switch (s) {
 		case 'assigned':
@@ -57,14 +49,22 @@ let getTableMeta = (props) => {
         cssClassName: 'width60',
       },
       {
-				name: 'mission_source_id',
+        name: 'waybill_number',
+        caption: 'Путевой лист',
+        type: 'number',
+        filter: {
+  				type: 'select'
+  			},
+        cssClassName: 'width60',
+      },
+      {
+				name: 'mission_source_name',
 				caption: 'Источник',
 				type: 'number',
 				filter: {
 					type: 'select',
-          labelFunction: (id) => getMissionSourceById(id).name || id,
 				},
-        cssClassName: 'width300',
+        cssClassName: 'width150',
 			},
       {
 				name: 'date_start',
@@ -85,22 +85,20 @@ let getTableMeta = (props) => {
 				},
 			},
       {
-				name: 'car_id',
+				name: 'car_gov_number',
 				caption: 'Транспортное средство',
 				type: 'number',
 				filter: {
 					type: 'select',
-          labelFunction: (id) => getCarById(id).gov_number || id,
 				},
         cssClassName: 'width120',
 			},
       {
-				name: 'route_id',
+				name: 'route_name',
 				caption: 'Маршрут',
 				type: 'number',
 				filter: {
 					type: 'select',
-          labelFunction: (id) => getRouteById(id).name || id,
 				},
         cssClassName: 'width120',
 			},
@@ -114,12 +112,11 @@ let getTableMeta = (props) => {
         cssClassName: 'width120',
 			},
       {
-				name: 'technical_operation_id',
+				name: 'technical_operation_name',
 				caption: 'Технологическая операция',
 				type: 'number',
 				filter: {
 					type: 'select',
-          labelFunction: (id) => getTechOperationById(id).name || id,
 				}
 			},
 		]
@@ -133,13 +130,9 @@ let getTableMeta = (props) => {
 let MissionsTable = (props) => {
 
 		const renderers = {
-			technical_operation_id: ({data}) => <div>{getTechOperationById(data).name || data}</div>,
-      mission_source_id: ({data}) => <div>{getMissionSourceById(data).name || data}</div>,
       status: ({data}) => <div>{getStatusLabel(data)}</div>,
-      route_id: ({data}) => <div>{getRouteById(data).name || data}</div>,
       date_start: ({data}) => <DateFormatter date={data} time={true} />,
       date_end: ({data}) => <DateFormatter date={data} time={true} />,
-      car_id: ({data}) => <div>{getCarById(data).gov_number || data}</div>,
 		};
 
 		return <Table title="Журнал заданий"
@@ -165,9 +158,6 @@ export class MissionsJournal extends ElementsList {
 		const { flux } = this.context;
 		flux.getActions('missions').getMissions();
     flux.getActions('technical_operation').getTechnicalOperations();
-    flux.getActions('routes').getRoutes();
-    flux.getActions('objects').getCars();
-    flux.getActions('missions').getMissionSources();
   }
 
 	completeMission() {

@@ -2819,9 +2819,13 @@ div.none {
     &.dashboard-management-card {
       .btn {
         min-width: 200px;
-        + .btn {
+        /*+ .btn {
           margin-top: 20px;
-        }
+        }*/
+      }
+      
+      .dashboard-btn-wrapper + .dashboard-btn-wrapper {
+        margin-top: 10px;
       }
     }
   }

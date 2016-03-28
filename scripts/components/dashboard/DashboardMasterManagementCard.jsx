@@ -51,9 +51,15 @@ export default class MasterManagementCard extends ElementsList {
     return (
       <Div className="dashboard-card-sm dashboard-management-card" hidden={this.props.hidden}>
         <Panel header={'Управление'} bsStyle="success">
-          <Button bsSize="small" onClick={() => this.setState({showWaybillForm: true})}>Создать путевой лист</Button>
-          <Button bsSize="small" onClick={() => this.setState({showMissionForm: true})}>Создать задание</Button>
-          <Button bsSize="small" onClick={() => this.setState({showDutyMissionForm: true})}>Создать наряд-задание</Button>
+          <Div className="dashboard-btn-wrapper">
+            <Button bsSize="small" onClick={() => this.setState({showWaybillForm: true})}>Создать путевой лист</Button>
+          </Div>
+          <Div className="dashboard-btn-wrapper">
+            <Button bsSize="small" onClick={() => this.setState({showMissionForm: true})}>Создать задание</Button>
+          </Div>
+          <Div className="dashboard-btn-wrapper">
+            <Button bsSize="small" onClick={() => this.setState({showDutyMissionForm: true})}>Создать наряд-задание</Button>
+          </Div>
           {/*<Button bsSize="small" style={{marginTop: 10}} onClick={this.showMonitorForm.bind(this)}><Glyphicon glyph="search"/> Монитор</Button>*/}
         </Panel>
 

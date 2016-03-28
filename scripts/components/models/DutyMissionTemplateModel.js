@@ -16,7 +16,7 @@ export const dutyMissionTemplateSchema = {
 		{
 			key: 'comment',
 			title: 'Комментарий',
-			type: 'number',
+			type: 'string',
 			required: false,
 		},
 	],

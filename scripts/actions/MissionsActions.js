@@ -79,6 +79,11 @@ export default class MissionsActions extends Actions {
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
     delete payload.number;
+    delete payload.car_gov_number;
+    delete payload.technical_operation_name;
+    delete payload.route_name;
+    delete payload.mission_source_name;
+    delete payload.waybill_number;
     return MissionService.put(payload);
   }
 

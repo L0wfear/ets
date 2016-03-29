@@ -133,21 +133,36 @@ export class MissionForm extends Form {
 		});
 	}
 
-	componentWillReceiveProps(props) {
+	async onFormHide(isSubmitted, result) {
 		const { flux } = this.context;
 		let routesActions = flux.getActions('routes');
 
+		let stateChangeObject = {};
+		if (isSubmitted === true) {
+			let createdRouteId = result.createdRoute.result[0].id;
+			this.handleChange('route_id', createdRouteId);
+			let route = await routesActions.getRouteById(createdRouteId, true);
+			let selectedRoute = route.result.length ? route.result[0] : null;
+			let routesList = await routesActions.getRoutesByTechnicalOperation(this.props.formState.technical_operation_id);
+			Object.assign(stateChangeObject, {
+				showRouteForm: false,
+				selectedRoute,
+				routesList,
+			});
+		} else {
+			Object.assign(stateChangeObject, {
+				showRouteForm: false,
+				selectedRoute: null
+			});
+		}
+
+		this.setState(stateChangeObject);
+	}
+
+	componentWillReceiveProps(props) {
+
 		if (props.lastCreatedRouteId !== null && props.lastCreatedRouteId !== this.props.lastCreatedRouteId) {
-			this.handleChange('route_id', props.lastCreatedRouteId);
-			setTimeout(async () => { //no time sry
-				let route = await routesActions.getRouteById(props.lastCreatedRouteId, true);
-				let selectedRoute = route.result.length ? route.result[0] : null;
-				let routesList = await routesActions.getRoutesByTechnicalOperation(props.formState.technical_operation_id);
-				this.setState({
-					selectedRoute,
-					routesList,
-				});
-			}, 500);
+			//this.handleChange('route_id', props.lastCreatedRouteId);
 		}
 	}
 
@@ -271,7 +286,7 @@ export class MissionForm extends Form {
 	      </Modal.Footer>
 
 				<RouteFormWrap element={route}
-											 onFormHide={() => {this.setState({showRouteForm: false, selectedRoute: null})}}
+											 onFormHide={this.onFormHide.bind(this)}
 											 showForm={this.state.showRouteForm}
 											 fromMission={true}/>
 			</Modal>

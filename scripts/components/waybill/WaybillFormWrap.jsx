@@ -210,7 +210,6 @@ class WaybillFormWrap extends Component {
 			}
 		} else if (billStatus === 'active') {
 			try {
-				formState.status = 'closed';
 				await flux.getActions('waybills').update(formState);
 			} catch (e) {
 				console.log(e);
@@ -223,12 +222,26 @@ class WaybillFormWrap extends Component {
 		return;
 	}
 
+	async handleClose() {
+		let { formState } = this.state;
+		try {
+			formState.status = 'closed';
+			await this.context.flux.getActions('waybills').update(formState);
+		} catch (e) {
+			console.log(e);
+			return;
+		}
+		flux.getActions('waybills').get();
+		this.props.onFormHide();
+	}
+
 	render() {
 
 		return 	<Div hidden={!this.props.showForm}>
 							<WaybillForm formState = {this.state.formState}
 													 onSubmit={this.handleFormSubmit.bind(this)}
 													 handlePrint={this.handlePrint.bind(this)}
+													 handleClose={this.handleClose.bind(this)}
 													 handleFormChange={this.handleFormStateChange.bind(this)}
 													 show={this.props.showForm}
 													 onHide={this.props.onFormHide}

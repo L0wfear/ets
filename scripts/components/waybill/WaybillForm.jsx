@@ -412,7 +412,12 @@ class WaybillForm extends Form {
 			          </Dropdown.Menu>
 			        </Dropdown>&nbsp;
 						</Div>
-		      	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>{this.props.formState.status && this.props.formState.status === 'active' ? 'Закрыть ПЛ' : 'Сохранить'}</Button>
+            <Div className={'inline-block'}>
+              <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>Сохранить</Button>
+            </Div>
+            <Div className={'inline-block'} style={{marginLeft: 10}} hidden={!(this.props.formState.status && this.props.formState.status === 'active')}>
+              <Button onClick={this.props.handleClose} disabled={!this.props.canSave}>Закрыть ПЛ</Button>
+            </Div>
 					</Div>
 	      </Modal.Footer>
 

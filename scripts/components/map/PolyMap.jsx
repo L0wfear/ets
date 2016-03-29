@@ -249,7 +249,9 @@ export default class OpenLayersMap extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.polys !== undefined) {
-      this.popup.hide();
+      if (this.popup) {
+        this.popup.hide();
+      }
       this.renderPolygons(nextProps.polys);
     }
   }

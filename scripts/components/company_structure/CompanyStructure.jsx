@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import connectToStores from 'flummox/connect';
 import { Button, Glyphicon } from 'react-bootstrap';
-import Table from './ui/table/DataTable.jsx';
-import ElementsList from './ElementsList.jsx';
+import Table from '../ui/table/DataTable.jsx';
+import ElementsList from '../ElementsList.jsx';
 import moment from 'moment';
 import cx from 'classnames';
 import Griddle from 'griddle-react';
-import Paginator from './ui/Paginator.jsx';
+import Paginator from '../ui/Paginator.jsx';
+import CompanyStructureFormWrap from './CompanyStructureFormWrap.jsx';
 
 
 let getTableMeta = (props) => {
@@ -63,13 +64,12 @@ class WaybillJournal extends ElementsList {
 	constructor(props, context) {
 		super(props);
 
-    this.removeElementAction = context.flux.getActions('waybills').delete;
     this.mainListName = 'waybillsList';
 	}
 
 	init() {
 		const { flux } = this.context;
-		flux.getActions('objects').getCompanyStructure();
+		flux.getActions('company-structure').getCompanyStructure();
 	}
 
   initializeMetadata(tableMeta = { cols: [] }, renderers = {}) {
@@ -107,14 +107,23 @@ class WaybillJournal extends ElementsList {
 
 		return (
 			<div className="ets-page-wrap">
+				<div className="some-header">Структура предприятия
+					<div className="waybills-buttons">
+						<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Добавить подразделение</Button>
+					</div>
+				</div>
         <div className="company-structure">
-				<Griddle results={companyStructureList}
-                 columns={["name", "type_display", "note"]}
-                 useCustomPagerComponent={true}
-								 customPagerComponent={Paginator}
-                 columnMetadata={metadata}
-								 noDataMessage={'Нет данных'}/>
+					<Griddle results={companyStructureList}
+	                 columns={["name", "type_display", "note"]}
+	                 useCustomPagerComponent={true}
+									 customPagerComponent={Paginator}
+	                 columnMetadata={metadata}
+									 noDataMessage={'Нет данных'}/>
         </div>
+				<CompanyStructureFormWrap onFormHide={this.onFormHide.bind(this)}
+																	element={this.state.selectedElement}
+																	showForm={this.state.showForm}
+																	{...this.props}/>
 			</div>
 		);
 	}

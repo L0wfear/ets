@@ -14,8 +14,7 @@ import { FaxogrammService,
          CustomersService,
          TypesService,
          CarFuncTypeService,
-         ODHService,
-         CompanyStructureService } from 'api/Services';
+         ODHService } from 'api/Services';
 
 export default class ObjectsActions extends Actions {
 
@@ -73,10 +72,6 @@ export default class ObjectsActions extends Actions {
       create_date_to: createValidDateTime(create_date_to)
     };
     return FaxogrammService.get(payload);
-  }
-
-  getCompanyStructure() {
-    return CompanyStructureService.get();
   }
 
 }

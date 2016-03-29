@@ -9,6 +9,7 @@ class ObjectsStore extends Store {
     const objectsActions = flux.getActions('objects');
     const carActions = flux.getActions('car');
     const technicalOperationsActions = flux.getActions('technical_operation');
+    const companyStructreActions = flux.getActions('company-structure');
 
     this.register(carActions.updateCarAdditionalInfo, this.handleGetCars);
 
@@ -23,7 +24,7 @@ class ObjectsStore extends Store {
     this.register(objectsActions.getODHs, this.handleGetODHs);
     this.register(objectsActions.getFaxogramms, this.handleGetFaxogramms);
     this.register(objectsActions.getCarFuncTypes, this.handleGetCarFuncTypes);
-    this.register(objectsActions.getCompanyStructure, this.handleGetCompanyStructure);
+    this.register(companyStructreActions.getCompanyStructure, this.handleGetCompanyStructure);
 
     this.register(technicalOperationsActions.getTechnicalOperations, this.handleGetTechOperations);
     this.register(technicalOperationsActions.updateTechnicalOperation, this.handleGetTechOperations);

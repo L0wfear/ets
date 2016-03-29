@@ -27,7 +27,7 @@ import MissionReportByPoints from './reports/MissionReportByPoints.jsx';
 import RouteLaunchReports from './reports/RouteLaunchReports.jsx';
 import FaxogrammDirectory from './directories/faxogramm/FaxogrammDirectory.jsx';
 import RouteReports from './reports/RouteReports.jsx';
-import CompanyStructure from './CompanyStructure.jsx';
+import CompanyStructure from './company_structure/CompanyStructure.jsx';
 import Modal from './ui/Modal.jsx';
 import { checkToken, init } from '../adapter.js';
 import Flux from './Flux.js';

@@ -43,7 +43,7 @@ class FormWrap extends React.Component {
   }
 
   validate(formState, errors) {
-    if (typeof this.schema === 'undefined') return formErrors;
+    if (typeof this.schema === 'undefined') return errors;
   	let formErrors = _.clone(errors);
     let schema = this.schema;
   	_.each(schema.properties, prop => {
@@ -65,6 +65,7 @@ class FormWrap extends React.Component {
 
 		newState.formState = formState;
 		newState.formErrors = formErrors;
+
 
 		this.setState(newState);
   }

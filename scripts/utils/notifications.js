@@ -38,6 +38,21 @@ export function getErrorNotification(error) {
   };
 };
 
+export function getServerErrorNotification(errorService) {
+  return {
+    title: 'Ошибка',
+    message: `Ошибка при получении данных с сервера, сервис ${errorService}`,
+    level: 'error',
+    dismissible: true,
+    position: 'tr',
+    autoDismiss: 0,
+    action: {
+      label: 'Перезагрузить страницу',
+      callback: () => window.location.reload(),
+    },
+  };
+};
+
 
 export function getReportNotReadyNotification(flux) {
   return {

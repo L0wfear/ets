@@ -4,6 +4,7 @@ import moment from 'moment';
 import { getStartOfToday, makeUnixTime } from 'utils/dates';
 import { wrapCoords, swapCoords } from 'utils/geo';
 import { loadTypes } from './types.js';
+import { getServerErrorNotification } from 'utils/notifications';
 
 export function getUrl(url) {
   return config.backend ? config.backend + url : url
@@ -91,9 +92,12 @@ function checkResponse(url, response, body, method) {
 
     if (body && body.errors && body.errors.length) {
       const usedUrl = url.slice(0, url.indexOf('?') > -1 ? url.indexOf('?') : url.length);
-      console.error(`ERROR /${method} ${usedUrl}`);
+      let error = `ERROR /${method} ${usedUrl}`
+      let serviceName = usedUrl.split('/')[usedUrl.split('/').length-2];
+      console.error(error);
       body.errors.map( er => {
         console.error(er);
+        global.NOTIFICATION_SYSTEM._addNotification(getServerErrorNotification(`/${method} ${serviceName}`))
       })
     }
 

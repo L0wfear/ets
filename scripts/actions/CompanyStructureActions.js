@@ -8,15 +8,22 @@ export default class CompanyStructureActions extends Actions {
   createCompanyElement(data) {
     const payload = _.cloneDeep(data);
 
-    return CompanyStructureService.post(payload);
+    return CompanyStructureService.post(payload, false);
   }
 
-  updateCompanyElement() {
+  updateCompanyElement(data) {
+    const payload = _.cloneDeep(data);
+    delete payload.type_display;
 
+    return CompanyStructureService.put(payload, false);
   }
 
-  deleteCompanyElement() {
+  deleteCompanyElement(id) {
+    const payload = {
+      id
+    };
 
+    return CompanyStructureService.delete(payload, false);
   }
 
   getCompanyStructure() {

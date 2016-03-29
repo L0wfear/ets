@@ -15,6 +15,7 @@ export default class LoadingStore extends Store {
     const routesActions    = flux.getActionIds('routes');
     const dashboardActions = flux.getActionIds('dashboard');
     const technicalOperationsActions = flux.getActionIds('technical_operation');
+    const companyStructureActions = flux.getActions('company-structure');
 
     this.reg(
       waybillsActions.delete,
@@ -88,6 +89,12 @@ export default class LoadingStore extends Store {
       technicalOperationsActions.getTechnicalOperationsObjects,
       technicalOperationsActions.updateTechnicalOperation,
       technicalOperationsActions.getTechnicalOperationsByCarId,
+
+      companyStructureActions.getCompanyStructure,
+      companyStructureActions.getPlainCompanyStructure,
+      companyStructureActions.updateCompanyElement,
+      companyStructureActions.createCompanyElement,
+      companyStructureActions.deleteCompanyElement,
 
     );
 

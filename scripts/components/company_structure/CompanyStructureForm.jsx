@@ -12,23 +12,28 @@ class CompanyStructureForm extends Form {
 		super(props);
 
     this.state = {
-      companyStructureList: []
+      companyStructureLinearList: []
     }
+
 	}
 
-  componentDidMount() {
-    this.context.flux.getActions('company-structure').getPlainCompanyStructure();
+  async componentDidMount() {
+    this.company_id = this.context.flux.getStore('session').getCurrentUser().company_id;
+    let companyStructureLinearList = await this.context.flux.getActions('company-structure').getPlainCompanyStructure();
+		this.setState({companyStructureLinearList});
   }
 
 	render() {
 
 		let state = this.props.formState;
 		let errors = this.props.formErrors;
-    let { companyStructureList = [] } = this.state;
+    let { companyStructureLinearList = [] } = this.state;
 
-    let COMPANY_ELEMENTS = companyStructureList.map(el => el);
+    let COMPANY_ELEMENTS = companyStructureLinearList.map(el => ({value: el.id, label: el.name}));
+    COMPANY_ELEMENTS = [{value: this.company_id, label: 'Предприятие'}, ...COMPANY_ELEMENTS];
     let STRUCTURE_TYPES = [{value: 2, label: 'ДЭК'}, {value: 3, label: 'ДЭУ'}];
-    
+    console.log(errors, state);
+
 		return (
 			<Modal {...this.props}>
 
@@ -40,10 +45,10 @@ class CompanyStructureForm extends Form {
 
 					<Row>
             <Col md={12}>
-              <Field type="select" label="Родительское подразделение" error={errors['structure_id']}
+              <Field type="select" label="Родительское подразделение" error={errors['parent_id']}
                      options={COMPANY_ELEMENTS}
-                     value={state.structure_id}
-                     onChange={this.handleChange.bind(this, 'structure_id')}
+                     value={state.parent_id}
+                     onChange={this.handleChange.bind(this, 'parent_id')}
                      clearable={true}/>
             </Col>
 					</Row>

@@ -34,7 +34,15 @@ let getTableMeta = (props) => {
 				type: 'string',
 				filter: {
 					type: 'select',
-				}
+				},
+			},
+			{
+				name: 'id',
+				caption: 'Действия',
+				type: 'string',
+				filter: {
+					type: 'select',
+				},
 			},
 		]
 	};
@@ -44,82 +52,86 @@ let getTableMeta = (props) => {
 };
 
 
-let WaybillsTable = (props) => {
+let CompanyStructureTable = (props) => {
 
 		const renderers = {
-
+			id: ({data}) => {
+				let id = data;
+				return (
+					<div>
+						<Button className="action-button" onClick={props.onActionEdit.bind(null, id)}>Редактировать</Button>
+						<Button className="action-button" onClick={props.onActionDelete.bind(null, id)}>Удалить</Button>
+					</div>
+				);
+			}
     };
 
 		return <Table title="Структура предприятия"
 									results={props.data}
 									renderers={renderers}
-									initialSort={'number'}
-									initialSortAscending={false}
 									tableMeta={getTableMeta(props)}
+									isHierarchical={true}
 									{...props}/>
 }
 
-class WaybillJournal extends ElementsList {
+class CompanyStructure extends ElementsList {
 
 	constructor(props, context) {
 		super(props);
 
-    this.mainListName = 'waybillsList';
+    this.mainListName = 'companyStructureLinearList';
 	}
 
-	init() {
+	async init() {
 		const { flux } = this.context;
-		flux.getActions('company-structure').getCompanyStructure();
+		await flux.getActions('company-structure').getCompanyStructure();
+		let companyStructureLinearList = await flux.getActions('company-structure').getPlainCompanyStructure();
+		this.setState({companyStructureLinearList});
 	}
 
-  initializeMetadata(tableMeta = { cols: [] }, renderers = {}) {
+	async onFormHide(isSubmitted) {
+		this.setState({showForm: false, selectedElement: null});
 
-  	const metadata = _.reduce(tableMeta.cols, (cur, col, i) => {
+		if (isSubmitted === true) {
+			this.init();
+		}
+	}
 
-      if (col.display === false) {
-        return cur;
-      }
+	selectElement(id, e) {
+		e.stopPropagation();
+		let selectedElement = _.find(this.state.companyStructureLinearList, el => el.id ? el.id === id : el[this.selectField] === id);
+		this.setState({showForm: true, selectedElement});
+	}
 
-  		const metaObject = {
-  			columnName: col.name,
-  			displayName: col.caption,
-  		};
+	async deleteElement(id, e) {
+		e.stopPropagation();
+		if (confirm('Вы уверены, что хотите удалить выбранный элемент?')) {
+			await this.context.flux.getActions('company-structure').deleteCompanyElement(id);
+			this.init();
+ 		}
+	}
 
-  		if (typeof renderers[col.name] === 'function') {
-  			metaObject.customComponent = renderers[col.name];
-  		}
-
-      if (typeof col.cssClassName !== 'undefined') {
-  			metaObject.cssClassName = col.cssClassName || '';
-  		}
-
-  		cur.push(metaObject);
-  		return cur;
-  	}, []);
-
-  	return metadata;
-  }
+	async componentDidUpdate(props) {
+		// if (!_.isEqual(props.companyStructureList, this.props.companyStructureList)) {
+		// 	let companyStructureLinearList = await this.context.flux.getActions('company-structure').getPlainCompanyStructure();
+		// 	this.setState({companyStructureLinearList});
+		// }
+	}
 
 	render() {
 
 		const { companyStructureList = [] } = this.props;
-    let metadata = this.initializeMetadata(getTableMeta(), {});
 
 		return (
-			<div className="ets-page-wrap">
-				<div className="some-header">Структура предприятия
-					<div className="waybills-buttons">
-						<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Добавить подразделение</Button>
-					</div>
-				</div>
-        <div className="company-structure">
-					<Griddle results={companyStructureList}
-	                 columns={["name", "type_display", "note"]}
-	                 useCustomPagerComponent={true}
-									 customPagerComponent={Paginator}
-	                 columnMetadata={metadata}
-									 noDataMessage={'Нет данных'}/>
-        </div>
+			<div className="ets-page-wrap company-structure">
+				<CompanyStructureTable data={companyStructureList}
+															 //onRowSelected={this.selectElement.bind(this)}
+															 onActionEdit={this.selectElement.bind(this)}
+															 onActionDelete={this.deleteElement.bind(this)}
+															 selected={this.state.selectedElement}
+															 selectField={'id'}>
+					<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Добавить подразделение</Button>
+				</CompanyStructureTable>
 				<CompanyStructureFormWrap onFormHide={this.onFormHide.bind(this)}
 																	element={this.state.selectedElement}
 																	showForm={this.state.showForm}
@@ -129,4 +141,4 @@ class WaybillJournal extends ElementsList {
 	}
 }
 
-export default connectToStores(WaybillJournal, ['objects']);
+export default connectToStores(CompanyStructure, ['objects']);

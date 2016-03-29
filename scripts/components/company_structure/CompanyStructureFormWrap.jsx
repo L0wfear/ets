@@ -34,7 +34,7 @@ class CompanyStructureFormWrap extends FormWrap {
 			await flux.getActions('company-structure').updateCompanyElement(formState);
 		}
 
-		this.props.onFormHide();
+		this.props.onFormHide(true);
 	}
 
 	render() {

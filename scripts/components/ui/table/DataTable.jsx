@@ -19,12 +19,15 @@ class Table extends React.Component {
       filterModalIsOpen: false,
       filterValues: {},
       checkedRows: {},
-      globalCheckboxState: false
+      globalCheckboxState: false,
+      isHierarchical: props.isHierarchical,
     };
   }
 
   closeFilter() {
-    this.setState({filterModalIsOpen: false});
+    if (this.state.filterModalIsOpen === true) {
+      this.setState({filterModalIsOpen: false});
+    }
   }
 
   toggleFilter() {
@@ -179,9 +182,18 @@ class Table extends React.Component {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (!this.state.isHierarchical) return true;
+
+    return !_.isEqual(nextProps.results, this.props.results);
+  }
+
   render() {
     const { tableMeta, renderers, onRowSelected, selected, selectField, checked = {}, title = '', initialSort = 'id', initialSortAscending = true, multiSelection = false, noFilter } = this.props;
-    let tableCols = multiSelection ? ['isChecked', ...tableMeta.cols.filter(c => c.display !== false).map( c => c.name )] : tableMeta.cols.filter(c => c.display !== false).map( c => c.name );
+    let tableCols = tableMeta.cols.filter(c => c.display !== false).map(c => c.name);
+    if (multiSelection) {
+      tableCols = ['isChecked', ...tableCols];
+    }
     const columnMetadata = this.initializeMetadata(tableMeta, renderers);
 		const rowMetadata = this.initializeRowMetadata();
     const data = _.cloneDeep(this.props.results);
@@ -193,7 +205,6 @@ class Table extends React.Component {
         <Div className="some-header" hidden={noFilter}>{title}
           <div className="waybills-buttons">
             <ClickOutHandler onClickOut={this.closeFilter.bind(this)}>
-
               <Filter direction={'left'}
                       show={this.state.filterModalIsOpen}
                       onSubmit={this.saveFilter.bind(this)}

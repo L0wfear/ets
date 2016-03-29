@@ -3184,3 +3184,15 @@ div.none {
     }
   }
 }
+
+
+.action-button {
+  &:not(.disabled):not([disabled]):hover, &:focus, &.active {
+    background-color: $colorBadge;
+    color: #fff;
+  }
+  & + .action-button {
+    margin-left: 10px;
+  }
+
+}

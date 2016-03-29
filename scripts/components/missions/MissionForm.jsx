@@ -61,7 +61,7 @@ export class MissionForm extends Form {
 		this.handleChange('technical_operation_id', v);
 		this.handleRouteIdChange(undefined);
 
-		if (!!!this.props.formState.status) {
+		if (!!!this.props.formState.status && !this.props.fromWaybill) {
 			this.handleChange('car_id', undefined);
 			let carsList = await this.context.flux.getActions('car')
 																						.getCarsByTechnicalOperation(v);
@@ -169,7 +169,7 @@ export class MissionForm extends Form {
 		let isDeferred = moment(state.date_start).toDate().getTime() > moment().toDate().getTime();
 
 		let IS_CREATING = !!!state.status;
-    let IS_POST_CREATING_NOT_ASSIGNED = state.status === 'not_assigned';
+    let IS_POST_CREATING_NOT_ASSIGNED = state.status === 'not_assigned' || this.props.fromWaybill;
     let IS_POST_CREATING_ASSIGNED = state.status === 'assigned' && isDeferred;
 		let IS_DISPLAY = !IS_CREATING && !(IS_POST_CREATING_NOT_ASSIGNED || IS_POST_CREATING_ASSIGNED);//(!!state.status && state.status !== 'not_assigned') || (!isDeferred && !IS_CREATING);
     let title = `Задание № ${state.number || ''}`;

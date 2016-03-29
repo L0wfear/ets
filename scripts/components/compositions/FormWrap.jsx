@@ -54,7 +54,7 @@ class FormWrap extends React.Component {
   }
 
   handleFormStateChange(field, e) {
-    const value = e !== undefined && !!e.target ? e.target.value : e;
+    const value = e !== undefined && e !== null && !!e.target ? e.target.value : e;
     console.info('Form changed', field, value);
 		let { formState, formErrors } = this.state;
 		let newState = {};

@@ -30,7 +30,7 @@ class CompanyStructureForm extends Form {
     let { companyStructureLinearList = [] } = this.state;
 
     let COMPANY_ELEMENTS = companyStructureLinearList.map(el => ({value: el.id, label: el.name}));
-    COMPANY_ELEMENTS = [{value: this.company_id, label: 'Предприятие'}, ...COMPANY_ELEMENTS];
+    COMPANY_ELEMENTS = [{value: null, label: 'Предприятие'}, ...COMPANY_ELEMENTS];
     let STRUCTURE_TYPES = [{value: 2, label: 'ДЭК'}, {value: 3, label: 'ДЭУ'}];
     console.log(errors, state);
 

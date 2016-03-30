@@ -40,4 +40,14 @@ export default class CompanyStructureActions extends Actions {
     return response.result || [];
   }
 
+  async getLinearCompanyStructureForUser() {
+    const payload = {
+      linear: true,
+      descendants_by_user: true
+    };
+
+    let response = await CompanyStructureService.get(payload);
+    return response.result || [];
+  }
+
 }

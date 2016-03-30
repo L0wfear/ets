@@ -14,6 +14,7 @@ class RouteForm extends Form {
 
 		this.state = {
 			manualCreating: 1,
+			companyStructureList: []
 		};
 	}
 
@@ -22,8 +23,11 @@ class RouteForm extends Form {
 		this.props.resetState();
 	}
 
-	componentDidMount() {
-		this.context.flux.getActions('technical_operation').getTechnicalOperations();
+	async componentDidMount() {
+		let { flux } = this.context;
+		flux.getActions('technical_operation').getTechnicalOperations();
+		let companyStructureList = await flux.getActions('company-structure').getLinearCompanyStructureForUser();
+		this.setState({companyStructureList});
 	}
 
 	render() {
@@ -31,9 +35,10 @@ class RouteForm extends Form {
 		let state = this.props.formState;
 		let errors = this.props.formErrors;
 		let { technicalOperationsList = [] } = this.props;
+		let { companyStructureList = [] } = this.state;
 		let ROUTE_TYPE_OPTIONS = [{value: 'vector', label: 'Вручную'}, {value: 'simple', label: 'Выбор из ОДХ'}, {value: 'simple_dt', label: 'Выбор из ДТ'}, {value: 'points', label: 'Выбор пунктов назначения'}];
-
-    const TECH_OPERATIONS = technicalOperationsList.map(({id, name}) => ({value: id, label: name}));
+    let TECH_OPERATIONS = technicalOperationsList.map(({id, name}) => ({value: id, label: name}));
+		let COMPANY_ELEMENTS = companyStructureList.map(el => ({value: el.id, label: el.name}));
 
     console.log('form state is ', state);
 
@@ -69,6 +74,11 @@ class RouteForm extends Form {
 											 value={state.type}
 											 clearable={false}
 											 onChange={this.handleTypeChange.bind(this)}/>
+								<Field type="select" label="Подразделение"
+											 options={COMPANY_ELEMENTS}
+											 value={state.company_structure_id}
+											 clearable={false}
+											 onChange={this.handleChange.bind(this, 'company_structure_id')}/>
 	            </Col>
 						</Div>
           </Row>

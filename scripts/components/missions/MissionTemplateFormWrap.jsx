@@ -50,20 +50,31 @@ class MissionFormWrap extends FormWrap {
 		}
 	}
 
-	handleFormSubmit(formState) {
+	async handleFormSubmit(formState) {
 		const { flux } = this.context;
 
     if (this.props.formType === "ViewForm") {
       if (isEmpty(formState.id)) {
-        flux.getActions('missions').createMissionTemplate(formState);
+        try {
+          await flux.getActions('missions').createMissionTemplate(formState);
+        } catch (e) {
+          return;
+        }
       } else {
-        flux.getActions('missions').updateMissionTemplate(formState);
+        try {
+          await flux.getActions('missions').updateMissionTemplate(formState);
+        } catch (e) {
+          return;
+        }
       }
 			this.props.onFormHide();
     } else {
-      flux.getActions('missions').createMissions(this.props.missions, formState).then(() => {
-				this.props.onFormHide(true);
-			});
+      try {
+        await flux.getActions('missions').createMissions(this.props.missions, formState);
+      } catch (e) {
+        return;
+      }
+      this.props.onFormHide(true);
     }
 
 	}

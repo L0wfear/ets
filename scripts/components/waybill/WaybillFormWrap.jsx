@@ -186,7 +186,11 @@ class WaybillFormWrap extends Component {
 				callback(id);
 			} else {
 				formState.status = 'draft';
-				flux.getActions('waybills').create(formState);
+				try {
+					await flux.getActions('waybills').create(formState);
+				} catch (e) {
+					return;
+				}
 			}
 			this.props.onFormHide();
 		} else if (billStatus === 'draft') { // если ПЛ обновляем

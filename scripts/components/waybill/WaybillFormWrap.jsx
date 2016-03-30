@@ -232,7 +232,7 @@ class WaybillFormWrap extends Component {
 			console.log(e);
 			return;
 		}
-		flux.getActions('waybills').get();
+		this.context.flux.getActions('waybills').get();
 		this.props.onFormHide();
 	}
 

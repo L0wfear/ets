@@ -109,11 +109,11 @@ class DailyCleaningReports extends Component {
 	constructor(props) {
 		super(props);
 
-    let [start_datetime, end_datetime] = [getToday9am(), getTomorrow9am()];
+    let [date_start, date_end] = [getToday9am(), getTomorrow9am()];
 
 		this.state = {
-      start_datetime,
-      end_datetime,
+      date_start,
+      date_end,
       geozone_type: 'odh',
       element: 'carriageway',
       car_type_id_list: [],
@@ -122,7 +122,7 @@ class DailyCleaningReports extends Component {
 
 	componentDidMount() {
 		const { flux } = this.context;
-		flux.getActions('missions').getMissionReports();
+		flux.getActions('reports').getDailyCleaningReports();
 	}
 
   onReportSelect({props}) {
@@ -140,6 +140,7 @@ class DailyCleaningReports extends Component {
 
   createDailyCleaningReport() {
 		const { flux } = this.context;
+    flux.getActions('reports').createDailyCleaningReport(this.state);
 		//flux.getActions('missions').createMissionReport(this.state.mission_date_start_from, this.state.mission_date_end_to);
   }
 

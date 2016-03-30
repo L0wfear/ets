@@ -20,12 +20,12 @@ class DailyReportHeader extends Component {
     this.props.handleChange('geozone_type', v);
     if (v === 'odh') {
       this.props.handleChange('element', 'carriageway');
-      this.props.handleChange('start_datetime', getYesterday9am());
-      this.props.handleChange('end_datetime', getToday859am());
+      this.props.handleChange('date_start', getYesterday9am());
+      this.props.handleChange('date_end', getToday859am());
     } else {
       this.props.handleChange('element', 'yard');
-      this.props.handleChange('start_datetime', getYesterday0am());
-      this.props.handleChange('end_datetime', getYesterday2359());
+      this.props.handleChange('date_start', getYesterday0am());
+      this.props.handleChange('date_end', getYesterday2359());
     }
   }
 
@@ -73,10 +73,10 @@ class DailyReportHeader extends Component {
     			<Col md={4}>
             <Div><label>Период формирования</label></Div>
     				<Div className="inline-block reports-date">
-    					<Datepicker date={ props.start_datetime } onChange={props.handleChange.bind(null, 'start_datetime')}/>
+    					<Datepicker date={ props.date_start } onChange={props.handleChange.bind(null, 'date_start')}/>
     				</Div>
     				<Div className="inline-block reports-date">
-    					<Datepicker date={ props.end_datetime } onChange={props.handleChange.bind(null, 'end_datetime')}/>
+    					<Datepicker date={ props.date_end } onChange={props.handleChange.bind(null, 'date_end')}/>
     				</Div>
     			</Col>
           <Col md={3} className={'vehicle-types-container'}>

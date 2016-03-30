@@ -109,11 +109,11 @@ class WeeklyTechnicalOperationCompleteReports extends Component {
 	constructor(props) {
 		super(props);
 
-    let [start_datetime, end_datetime] = [getToday9am(), getTomorrow9am()];
+    let [date_start, date_end] = [getToday9am(), getTomorrow9am()];
 
 		this.state = {
-      start_datetime,
-      end_datetime,
+      date_start,
+      date_end,
       geozone_type: 'odh',
       element: 'carriageway',
       car_type_id_list: [],

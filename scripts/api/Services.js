@@ -36,6 +36,7 @@ export const AuthCheckService = new APIService('/auth/', useMocks);
 export const TechnicalOperationObjectsService = new APIService('/technical_operation_objects/', useMocks);
 export const TechnicalOperationTypesService = new APIService('/technical_operation_types/', useMocks);
 export const CompanyStructureService = new APIService('/company_structure/', useMocks);
+export const DailyCleaningReportsService = new APIService('/geozone_element_traveled_daily_report/', useMocks);
 
 // REPORTS
 

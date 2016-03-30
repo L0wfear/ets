@@ -149,7 +149,12 @@ class WaybillForm extends Form {
 	}
 
   onMissionFormHide(result) {
-    //let id = result && result[0] ? result[0].id : null;
+    let id = result && result.result && result.result[0] ? result.result[0].id : null;
+    if (id) {
+      let { mission_id_list } = this.props.formState;
+      mission_id_list.push(id);
+      this.handleChange('mission_id_list', mission_id_list);
+    }
     this.componentDidMount();
     this.setState({showMissionForm: false, selectedMission: null});
   }

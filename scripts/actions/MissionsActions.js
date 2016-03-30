@@ -61,12 +61,12 @@ export default class MissionsActions extends Actions {
     return MissionSourceService.get();
   }
 
-  createMission(mission) {
+  createMission(mission, callback) {
     const payload = _.clone(mission);
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
     payload.assign_to_waybill = +!!payload.assign_to_waybill;
-    return MissionService.post(payload);
+    return MissionService.post(payload, callback);
   }
 
   removeMission(id) {

@@ -47,7 +47,7 @@ class MissionFormWrap extends FormWrap {
 		let result;
 
 		if (isEmpty(formState.id)) {
-			result = await flux.getActions('missions').createMission(formState);
+			result = await flux.getActions('missions').createMission(formState, !this.props.fromWaybill);
 		} else {
 			await flux.getActions('missions').updateMission(formState);
 		}

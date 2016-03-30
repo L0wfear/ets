@@ -70,6 +70,7 @@ export default React.createClass({
 				          <MenuItem active={path === '/odh-reports'} href="#/odh-reports">ОДХ</MenuItem>
   				        <MenuItem active={path === '/route-reports'} href="#/route-reports">Покрытие ОДХ маршрутами</MenuItem>
   				        <MenuItem active={path === '/mission-reports'} href="#/mission-reports">Прохождение заданий</MenuItem>
+  				        <MenuItem active={path === '/daily-cleaning-reports'} href="#/daily-cleaning-reports">Статус по уборке проезжей части</MenuItem>
                 </NavDropdown>
 
 				        <NavItem active={path === '/routes-list'} href="#/routes-list">Маршруты</NavItem>

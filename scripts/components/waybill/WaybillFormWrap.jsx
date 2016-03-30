@@ -76,7 +76,7 @@ class WaybillFormWrap extends Component {
 						formState: waybill,
 						formErrors: validateClosingWaybill(waybill, {}),
 						canPrint: false,
-						canSave: false,
+						canSave: ! !!_.filter(validateClosingWaybill(waybill, {})).length,
 					});
 
 				} else if (props.element.status === 'draft') {
@@ -107,7 +107,7 @@ class WaybillFormWrap extends Component {
 						formState: waybill,
 						formErrors: {}
 					});
-					
+
 				}
 
 			}

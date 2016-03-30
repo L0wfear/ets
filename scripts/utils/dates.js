@@ -42,16 +42,35 @@ export function getFormattedDateTimeSeconds(date){
   return moment(date).format(`${global.APP_DATE_FORMAT} HH:mm:ss`);
 }
 
+// смены за вчера, сегодня, завтра
+
+export function getYesterday0am() {
+  let now = new Date();
+
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 0, 0);
+}
+
+export function getYesterday2359() {
+  let now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 23, 59);
+}
+
+export function getYesterday9am() {
+  let now = new Date();
+
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 9, 0);
+}
+
 export function getToday9am() {
   let now = new Date();
 
   return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 0);
 }
 
-export function getTomorrow9am() {
+export function getToday859am() {
   let now = new Date();
 
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 8, 59);
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, 59);
 }
 
 export function getToday0am() {
@@ -62,6 +81,12 @@ export function getToday0am() {
 export function getToday2359() {
   let now = new Date();
   return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59);
+}
+
+export function getTomorrow9am() {
+  let now = new Date();
+
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 8, 59);
 }
 
 export function getDatesByShift() {

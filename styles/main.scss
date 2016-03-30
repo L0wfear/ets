@@ -1124,8 +1124,9 @@ ul.rw-list.rw-list-grouped > li.rw-list-option {
 }
 
 .rw-datetimepicker.rw-has-both > .rw-select {
-  width: 53px;//3.8em;
-  height: 100%
+  width: 54px;
+  height: 100%;
+  margin-right: -1px;
 }
 
 .rw-calendar {
@@ -3195,4 +3196,11 @@ div.none {
     margin-left: 10px;
   }
 
+}
+
+.reports-date {
+  max-width: 48%;
+  & + .reports-date {
+    margin-left: 10px;
+  }
 }

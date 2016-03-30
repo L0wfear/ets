@@ -96,7 +96,7 @@ let CarsTable = (props) => {
     timestamp_process_end: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
 	};
 
-	return <Table title='Статус по уборке проезжей части'
+	return <Table title='Статус по выполнению технологических операций'
 								tableMeta={tableMeta}
 								results={props.data}
 								renderers={renderers}
@@ -104,7 +104,7 @@ let CarsTable = (props) => {
 
 }
 
-class DailyCleaningReports extends Component {
+class WeeklyTechnicalOperationCompleteReports extends Component {
 
 	constructor(props) {
 		super(props);
@@ -147,7 +147,7 @@ class DailyCleaningReports extends Component {
 
     console.log('state is', this.state);
 
-		const { missionReportsList = [], carFuncTypesList = [] } = this.props;
+		const { missionReportsList = [] } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
@@ -160,9 +160,9 @@ class DailyCleaningReports extends Component {
 	}
 }
 
-DailyCleaningReports.contextTypes = {
+WeeklyTechnicalOperationCompleteReports.contextTypes = {
   history: React.PropTypes.object,
 	flux: React.PropTypes.object,
 };
 
-export default connectToStores(DailyCleaningReports, ['objects']);
+export default connectToStores(WeeklyTechnicalOperationCompleteReports, ['objects']);

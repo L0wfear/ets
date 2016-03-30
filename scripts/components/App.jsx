@@ -26,6 +26,7 @@ import MissionReportByDT from './reports/MissionReportByDT.jsx';
 import MissionReportByPoints from './reports/MissionReportByPoints.jsx';
 import RouteLaunchReports from './reports/RouteLaunchReports.jsx';
 import DailyCleaningReports from './reports/DailyCleaningReports.jsx';
+import WeeklyTechnicalOperationCompleteReports from './reports/WeeklyTechnicalOperationCompleteReports.jsx';
 import FaxogrammDirectory from './directories/faxogramm/FaxogrammDirectory.jsx';
 import RouteReports from './reports/RouteReports.jsx';
 import CompanyStructure from './company_structure/CompanyStructure.jsx';
@@ -129,6 +130,7 @@ const routes = (
       <Route path="odh-reports" component={ODHReports} onEnter={requireAuth}/>
       <Route path="route-reports" component={RouteLaunchReports} onEnter={requireAuth}/>
       <Route path="daily-cleaning-reports" component={DailyCleaningReports} onEnter={requireAuth}/>
+      <Route path="weekly-technical-operation-complete-reports" component={WeeklyTechnicalOperationCompleteReports} onEnter={requireAuth}/>
       <Route path="route-report/:id" component={RouteReports} onEnter={requireAuth}/>
       <Route path="mission-reports" component={MissionReports} onEnter={requireAuth}/>
       <Route path="mission-report/:id" component={MissionReport} onEnter={requireAuth}/>

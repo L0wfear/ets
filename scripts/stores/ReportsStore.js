@@ -7,15 +7,16 @@ class ReportsStore extends Store {
     super();
 
     const reportsActions = flux.getActions('reports');
+    this.register(reportsActions.getDailyCleaningReports, this.handleGetDailyCleaningReports)
 
     this.state = {
-      dailyCleaningReports: [],
+      dailyCleaningReportsList: [],
     };
 
   }
 
-  handleGetFuelRates(rates) {
-    this.setState({ rates: rates.result });
+  handleGetDailyCleaningReports(dailyCleaningReports) {
+    this.setState({dailyCleaningReportsList: dailyCleaningReports.result});
   }
 
 }

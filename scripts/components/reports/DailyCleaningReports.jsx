@@ -34,6 +34,13 @@ let getStatusLabel = (status) => {
 
 let getTypeLabel = (type) => type === 'distance' ? 'Протяженность' : type;
 
+let getGeozoneTypeLabel = (type) => type === 'odh' ? 'Объект дорожного хозяйства' : 'Дворовая территория';
+
+let getElementLabel = (el) => _.find([
+  {value: 'carriageway', label: 'Проезжая часть'},
+  {value: 'footway', label: 'Тротуар'},
+  {value: 'yard', label: 'Двор'}], obj => obj.value === el).label;
+
 let tableMeta = {
 	cols: [
 		{
@@ -45,16 +52,32 @@ let tableMeta = {
 			}
 		},
 		{
-			name: 'mission_name',
-			caption: 'Задание',
+			name: 'geozone_type',
+			caption: 'Объект',
 			type: 'number',
 			filter: {
 				type: 'select',
 			},
 		},
 		{
-			name: 'technical_operation_name',
-			caption: 'Тех. операция',
+			name: 'element',
+			caption: 'Элемент',
+			type: 'number',
+			filter: {
+				type: 'select',
+			},
+		},
+		{
+			name: 'date_start',
+			caption: 'Начало периода',
+			type: 'number',
+			filter: {
+				type: 'select',
+			},
+		},
+		{
+			name: 'date_end',
+			caption: 'Конец периода',
 			type: 'number',
 			filter: {
 				type: 'select',
@@ -87,10 +110,14 @@ let tableMeta = {
 	]
 }
 
-let CarsTable = (props) => {
+let DailyCleaningReportsTable = (props) => {
 
 	const renderers = {
     status: ({data}) => <div>{data ? getStatusLabel(data) : ''}</div>,
+    geozone_type: ({data}) => <div>{data ? getGeozoneTypeLabel(data) : ''}</div>,
+    element: ({data}) => <div>{data ? getElementLabel(data) : ''}</div>,
+    date_start: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
+    date_end: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
     timestamp_create: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
     timestamp_process_begin: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
     timestamp_process_end: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
@@ -130,7 +157,7 @@ class DailyCleaningReports extends Component {
     if (props.data.status !== 'success') {
       global.NOTIFICATION_SYSTEM._addNotification(getReportNotReadyNotification(this.context.flux));
     } else {
-      this.context.history.pushState(null, `/mission-report/${id}`);
+      this.context.history.pushState(null, `/daily-cleaning-report/${id}`);
     }
   }
 
@@ -148,13 +175,13 @@ class DailyCleaningReports extends Component {
 
     console.log('state is', this.state);
 
-		const { missionReportsList = [], carFuncTypesList = [] } = this.props;
+		const { dailyCleaningReportsList = [] } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
   			<DailyReportHeader handleChange={this.handleChange.bind(this)} onClick={this.createDailyCleaningReport.bind(this)} {...this.state}/>
 
-				{/*<CarsTable data={missionReportsList} onRowSelected={this.onReportSelect.bind(this)} />*/}
+				<DailyCleaningReportsTable data={dailyCleaningReportsList} onRowSelected={this.onReportSelect.bind(this)} />
 			</div>
 		);
 
@@ -166,4 +193,4 @@ DailyCleaningReports.contextTypes = {
 	flux: React.PropTypes.object,
 };
 
-export default connectToStores(DailyCleaningReports, ['objects']);
+export default connectToStores(DailyCleaningReports, ['reports']);

@@ -23,6 +23,14 @@ let getTableMeta = (props) => {
 	        type: 'select',
 	      },
 	    },
+	    {
+	      name: 'route_check_length',
+	      caption: 'Нужно пройти',
+	      type: 'string',
+	      filter: {
+	        type: 'select',
+	      },
+	    },
 			{
 				name: 'traveled',
 				caption: 'Пройдено',

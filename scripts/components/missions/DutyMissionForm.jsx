@@ -48,7 +48,9 @@ export class DutyMissionForm extends Form {
 	async handleTechnicalOperationChange(v) {
 		this.handleChange('technical_operation_id', v);
     this.handleChange('route_id', undefined);
-    this.handleChange('car_mission_id', 0);
+    if (!isEmpty(this.props.formState.car_mission_id)) {
+      this.handleChange('car_mission_id', 0);
+    }
     this.context.flux.getActions('missions').getMissions(v);
 
     let routesList = await this.context.flux.getActions('routes')
@@ -85,6 +87,7 @@ export class DutyMissionForm extends Form {
 
   	flux.getActions('missions').getMissions(mission.technical_operation_id);
     const technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsWithBrigades();
+    console.log(technicalOperationsList);
     this.setState({
       selectedRoute,
       technicalOperationsList,

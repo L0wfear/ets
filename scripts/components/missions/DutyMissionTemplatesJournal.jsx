@@ -7,10 +7,6 @@ import ElementsList from '../ElementsList.jsx';
 import moment from 'moment';
 import cx from 'classnames';
 
-let getTechOperationById = (id) => window.__ETS_CONTAINER__.flux.getStore('objects').getTechOperationById(id);
-
-let getRouteById = (id) => window.__ETS_CONTAINER__.flux.getStore('routes').getRouteById(id);
-
 let getTableMeta = (props) => {
 
 	let tableMeta = {
@@ -57,7 +53,6 @@ let getTableMeta = (props) => {
 let DutyMissionsTable = (props) => {
 
 		const renderers = {
-			// technical_operation_id: ({data}) => <div>{getTechOperationById(data).name || data}</div>,
       // route_id: ({data}) => <div>{getRouteById(data).name || data}</div>,
 		};
 
@@ -78,8 +73,6 @@ class DutyMissionTemplatesJournal extends ElementsList {
 
     this.removeElementAction = context.flux.getActions('missions').removeDutyMissionTemplate;
     this.mainListName = 'dutyMissionTemplatesList';
-		//this.keyPressDisabled = true;
-		this.doubleClickDisabled = true;
 		this.state = {
 			selectedElement: null,
       checkedDutyMissions: {},
@@ -123,8 +116,6 @@ class DutyMissionTemplatesJournal extends ElementsList {
 		const { flux } = this.context;
 		let { payload = {} } = this.props;
 		flux.getActions('missions').getDutyMissionTemplates(payload);
-    flux.getActions('technical_operation').getTechnicalOperations();
-    flux.getActions('routes').getRoutes();
     flux.getActions('missions').getMissionSources();
   }
 

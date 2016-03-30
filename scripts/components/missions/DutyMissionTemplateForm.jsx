@@ -7,9 +7,9 @@ import RouteInfo from '../route/RouteInfo.jsx';
 import RouteFormWrap from '../route/RouteFormWrap.jsx';
 import ODHList from '../route/ODHList.jsx';
 import { isEmpty } from 'utils/functions';
-import { MissionForm } from './MissionForm.jsx';
+import { DutyMissionForm } from './DutyMissionForm.jsx';
 
-class MissionTemplateForm extends MissionForm {
+class MissionTemplateForm extends DutyMissionForm {
 
 	constructor(props) {
 		super(props);
@@ -96,7 +96,7 @@ class MissionTemplateForm extends MissionForm {
 	      </Modal.Footer>
 
 				<RouteFormWrap element={route}
-											 onFormHide={() => this.setState({showRouteForm: false, selectedRoute: null})}
+											 onFormHide={this.onFormHide.bind(this)}
 											 showForm={this.state.showRouteForm}
 											 fromMission={true}/>
 

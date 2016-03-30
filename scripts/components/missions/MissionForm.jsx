@@ -196,6 +196,8 @@ export class MissionForm extends Form {
 		let route = this.state.selectedRoute;
 		let odh_list = route ? route.odh_list || route.object_list : [];
 
+		console.log(this.props.waybillStartDate);
+
 		return (
 			<Modal {...this.props} bsSize="large">
 
@@ -220,7 +222,11 @@ export class MissionForm extends Form {
 
 				 		<Col md={3}>
 				   		<label>Время выполнения</label>
-				 			<Div>c <Datepicker date={state.date_start} onChange={this.handleChange.bind(this, 'date_start')} disabled={IS_DISPLAY}/></Div>
+				 			<Div>c <Datepicker date={state.date_start}
+																 onChange={this.handleChange.bind(this, 'date_start')}
+																 disabled={IS_DISPLAY}
+																 min={this.props.fromWaybill && this.props.waybillStartDate ? this.props.waybillStartDate : null}/>
+							</Div>
 				   	</Col>
 				   	<Col md={3}>
               <label style={{minHeight: 15}}></label>

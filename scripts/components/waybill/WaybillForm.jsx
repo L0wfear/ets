@@ -251,7 +251,7 @@ class WaybillForm extends Form {
 						<Div hidden={!(IS_CREATING || IS_POST_CREATING)}>
 					   	<Col md={3}>
 					 			<label>Возвращение план</label>
-					 			<Datepicker date={state.plan_arrival_date} onChange={this.handleChange.bind(this, 'plan_arrival_date')}/>
+					 			<Datepicker date={state.plan_arrival_date} min={state.plan_departure_date} onChange={this.handleChange.bind(this, 'plan_arrival_date')}/>
 					   	</Col>
 						</Div>
 
@@ -393,6 +393,8 @@ class WaybillForm extends Form {
           											 showForm={this.state.showMissionForm}
                                  element={this.state.selectedMission}
                                  fromWaybill={true}
+                                 waybillStartDate={state.plan_departure_date}
+                                 waybillEndDate={state.plan_arrival_date}
                                  {...this.props}/>
 							</Div>
 	      		</Col>

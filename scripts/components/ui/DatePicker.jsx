@@ -24,7 +24,7 @@ export default class DatePicker extends Component {
   }*/
 
   render() {
-    let { time = true, date, disabled } = this.props;
+    let { time = true, date, disabled, min, max } = this.props;
     let DATE_FORMAT = time ? `${global.APP_DATE_FORMAT} HH:mm` : `${global.APP_DATE_FORMAT}`;
     let TIME_FORMAT = 'HH:mm';
 
@@ -32,19 +32,29 @@ export default class DatePicker extends Component {
       date = moment(date).toDate();
     }
 
+    if (typeof min === 'string') {
+      min = moment(min).toDate();
+    }
+
+    if (typeof max === 'string') {
+      max = moment(max).toDate();
+    }
+
     //return //<input disabled={this.props.disabled}/>
     return (
       <DateTimePicker onChange={this.props.onChange}
                       format={DATE_FORMAT}
                       timeFormat={TIME_FORMAT}
-                  		//culture="ru-RU"
+                  		culture="ru-RU"
                       className="chart-datepicker"
                       disabled={disabled}
                       step={5}
+                      min={min}
+                      max={max}
                       //messages={translation}
                       value={date}
                       time={time}/>
     );
-    
+
   }
 }

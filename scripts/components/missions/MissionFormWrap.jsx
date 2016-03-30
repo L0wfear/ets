@@ -59,15 +59,21 @@ class MissionFormWrap extends FormWrap {
 
 	render() {
 
+		let props = {
+			show: this.props.showForm,
+			onHide: this.props.onFormHide,
+			fromWaybill: this.props.fromWaybill,
+			waybillStartDate: this.props.waybillStartDate,
+			waybillEndDate: this.props.waybillEndDate,
+		};
+
 		return (
 			<Div hidden={!this.props.showForm}>
 				<MissionForm formState = {this.state.formState}
     								 onSubmit={this.handleFormSubmit.bind(this)}
 										 handleFormChange={this.handleFormStateChange.bind(this)}
 										 handlePrint={this.handlePrint.bind(this)}
-										 show={this.props.showForm}
-										 onHide={this.props.onFormHide}
-										 fromWaybill={this.props.fromWaybill}
+										 {...props}
 										 {...this.state}/>
 			</Div>
 		)

@@ -280,7 +280,7 @@ export class MissionForm extends Form {
             <Input type="checkbox" value={state.assign_to_waybill} onClick={this.handleChange.bind(this, 'assign_to_waybill', !!!state.assign_to_waybill)}/>
           </Div>
 					<Div className="inline-block" hidden={state.status === 'complete'}>
-			      <Button onClick={this.props.handlePrint} disabled={!state.route_id}>Печать</Button>
+			      <Button onClick={this.props.handlePrint} disabled={!state.status || !this.props.canSave || !state.route_id}>Печать</Button>
 		      	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || IS_DISPLAY}>Сохранить</Button>
 					</Div>
 	      </Modal.Footer>

@@ -53,7 +53,7 @@ class CarForm extends Form {
 
 		      	<Col md={6}>
 	            <Div hidden={!this.state.imageUrl}>
-	              <img src={config.backend + config.images + this.state.imageUrl} className="car-form-image"/>
+	              <img src={config.backend.replace('/services', '') + config.images + this.state.imageUrl} className="car-form-image"/>
 	            </Div>
 		      	</Col>
 

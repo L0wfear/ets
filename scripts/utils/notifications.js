@@ -69,6 +69,21 @@ export function getReportNotReadyNotification(flux) {
   };
 }
 
+export function getReportNotReadyNotification2(flux) {
+  return {
+    title: 'Внимание',
+    message: `Отчет еще не обработан`,
+    level: 'info',
+    dismissible: false,
+    position: 'tc',
+    autoDismiss: 0,
+    action: {
+      label: 'Обновить список',
+      callback: () => flux.getActions('reports').getDailyCleaningReports(),
+    },
+  };
+}
+
 const missionCreateSuccessNotification = {
   title: '',
   message: 'Задание создано успешно',

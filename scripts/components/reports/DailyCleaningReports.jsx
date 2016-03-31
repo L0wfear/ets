@@ -7,7 +7,7 @@ import Div from '../ui/Div.jsx';
 import Field from '../ui/Field.jsx';
 import Datepicker from '../ui/DatePicker.jsx';
 import { getToday9am, getTomorrow9am, getToday0am, getToday2359, getFormattedDateTimeSeconds } from 'utils/dates';
-import { getReportNotReadyNotification } from 'utils/notifications';
+import { getReportNotReadyNotification2 } from 'utils/notifications';
 import { isEmpty } from 'utils/functions';
 import DailyReportHeader from './DailyReportHeader.jsx';
 
@@ -158,7 +158,7 @@ class DailyCleaningReports extends Component {
   onReportSelect({props}) {
     const id = props.data.id;
     if (props.data.status !== 'success') {
-      global.NOTIFICATION_SYSTEM._addNotification(getReportNotReadyNotification(this.context.flux));
+      global.NOTIFICATION_SYSTEM._addNotification(getReportNotReadyNotification2(this.context.flux));
     } else {
       this.context.history.pushState(null, `/daily-cleaning-report/${props.data.element}/${id}`);
     }

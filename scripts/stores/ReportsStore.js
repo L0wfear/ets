@@ -7,7 +7,8 @@ class ReportsStore extends Store {
     super();
 
     const reportsActions = flux.getActions('reports');
-    this.register(reportsActions.getDailyCleaningReports, this.handleGetDailyCleaningReports)
+    this.register(reportsActions.getDailyCleaningReports, this.handleGetDailyCleaningReports);
+    this.register(reportsActions.createDailyCleaningReport, this.handleGetDailyCleaningReports);
 
     this.state = {
       dailyCleaningReportsList: [],

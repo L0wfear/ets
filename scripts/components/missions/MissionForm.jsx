@@ -105,8 +105,9 @@ export class MissionForm extends Form {
 		}
 
 		technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsByCarId(mission.car_id);
-		objectsActions.getModels();
-		objectsActions.getCars();
+		//objectsActions.getModels();
+		let carsListResponse = await objectsActions.getCars();
+		carsList = carsListResponse.result;
 		missionsActions.getMissionSources();
 
 		this.setState({
@@ -160,10 +161,6 @@ export class MissionForm extends Form {
 	}
 
 	componentWillReceiveProps(props) {
-
-		if (props.lastCreatedRouteId !== null && props.lastCreatedRouteId !== this.props.lastCreatedRouteId) {
-			//this.handleChange('route_id', props.lastCreatedRouteId);
-		}
 	}
 
 	render() {
@@ -187,7 +184,7 @@ export class MissionForm extends Form {
     let IS_POST_CREATING_NOT_ASSIGNED = state.status === 'not_assigned' || this.props.fromWaybill;
     let IS_POST_CREATING_ASSIGNED = state.status === 'assigned' && isDeferred;
 		let IS_DISPLAY = !IS_CREATING && !(IS_POST_CREATING_NOT_ASSIGNED || IS_POST_CREATING_ASSIGNED);//(!!state.status && state.status !== 'not_assigned') || (!isDeferred && !IS_CREATING);
-    let title = `Задание № ${state.number || ''}`;
+    let title = `Задание № ${state.number || ''} ${state.fail_reason ? '(Не выполнено)' : ''}`;
 
     if (IS_CREATING) {
       title = "Создание задания"
@@ -209,6 +206,11 @@ export class MissionForm extends Form {
 
 					<Row>
 						<Col md={6}>
+							<Div hidden={!state.fail_reason} style={{marginBottom: 10}}>
+								<Field type="string" label="Причина невыполнения"
+											 value={state.fail_reason}
+											 readOnly={true}/>
+							</Div>
 							<Field type="select" label="Транспортное средство" error={errors['car_id']}
 											disabled={IS_POST_CREATING_ASSIGNED ||
 																IS_POST_CREATING_NOT_ASSIGNED ||
@@ -277,6 +279,7 @@ export class MissionForm extends Form {
 							</Div>
             </Col>
 	      	</Row>
+
 
 	      </Modal.Body>
 

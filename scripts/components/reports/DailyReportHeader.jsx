@@ -19,7 +19,7 @@ class DailyReportHeader extends Component {
   handleGeozoneTypeChange(v) {
     this.props.handleChange('geozone_type', v);
     if (v === 'odh') {
-      this.props.handleChange('element', 'carriageway');
+      this.props.handleChange('element', 'roadway');
       this.props.handleChange('date_start', getYesterday9am());
       this.props.handleChange('date_end', getToday859am());
     } else {
@@ -44,7 +44,7 @@ class DailyReportHeader extends Component {
     let OBJECTS = [{value: 'odh', label: 'Объект дорожного хозяйства'}, {value: 'dt', label: 'Дворовая территория'}];
     let ELEMENTS = props.geozone_type === 'odh' ?
       [
-        {value: 'carriageway', label: 'Проезжая часть'},
+        {value: 'roadway', label: 'Проезжая часть'},
         {value: 'footway', label: 'Тротуар'}
       ]
       : [{value: 'yard', label: 'Двор'}];

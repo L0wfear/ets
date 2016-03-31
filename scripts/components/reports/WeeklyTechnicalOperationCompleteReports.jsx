@@ -115,7 +115,7 @@ class WeeklyTechnicalOperationCompleteReports extends Component {
       date_start,
       date_end,
       geozone_type: 'odh',
-      element: 'carriageway',
+      element: 'roadway',
       car_type_id_list: [],
 		};
 	}

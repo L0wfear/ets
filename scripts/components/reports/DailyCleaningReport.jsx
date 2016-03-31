@@ -5,6 +5,12 @@ import Table from '../ui/table/DataTable.jsx';
 let getStatusLabel = (status) => status === 'fail' ? 'Нет' : 'Да';
 let getTypeLabel = (type) => type === 'distance' ? 'Протяженность' : type;
 
+let statuses = {
+  'full_traveled': 'Пройдено полностью',
+  'not_traveled': 'Не пройдено',
+  'traveled_less_than_half': 'Пройдено меньше половины',
+  'traveled_more_than_half': 'Пройдено больше половины'
+}
 
 let getTableMeta = (props) => {
 
@@ -12,7 +18,7 @@ let getTableMeta = (props) => {
 
   let secondCol = {};
 
-  if (props.data[0] && props.data[0].element === 'carriageway') {
+  if (props.element === 'roadway') {
     secondCol = {
       name: 'geozone_element_area',
       caption: 'Площадь проезжей части',
@@ -23,7 +29,7 @@ let getTableMeta = (props) => {
     }
   }
 
-  if (props.data[0] && props.data[0].element === 'footway') {
+  if (props.element === 'footway') {
     secondCol = {
       name: 'geozone_element_area',
       caption: 'Площадь тротуаров с мехуборкой',
@@ -34,7 +40,7 @@ let getTableMeta = (props) => {
     }
   }
 
-  if (props.data[0] && props.data[0].element === 'yard') {
+  if (props.element === 'yard') {
     secondCol = {
       name: 'geozone_element_area',
       caption: 'Механизированная площадь двора',
@@ -103,12 +109,13 @@ let MissionReportTable = (props) => {
 
 
 	const renderers = {
-    car_type_list: ({data}) => <div>{data.map(el => el.name).join(', ')}</div>
+    car_type_list: ({data}) => <div>{data.map(el => el.name).join(', ')}</div>,
+    status: ({data}) => <div>{statuses[data] || ''}</div>,
 	};
 
   let tableMeta = getTableMeta(props);
 
-  if (!props.data.length) return <div/>
+  //if (!props.data.length) return <div/>
 
 	return <Table title='Прохождение заданий'
 								tableMeta={tableMeta}
@@ -125,14 +132,16 @@ class MissionReport extends Component {
 		super(props);
 
     this.state = {
-      selectedReportData: []
-    }
+      selectedReportData: [],
+    };
 	}
 
 	async componentDidMount() {
 		const { flux } = this.context;
     try {
+      console.log(this.props.routeParams);
   		let result = await flux.getActions('reports').getDailyCleaningReportById(this.props.routeParams.id);
+      //let element = result.result[0].element;
       let selectedReportData = result.result[0].result.rows;
       this.setState({selectedReportData});
     } catch (e) {
@@ -147,10 +156,11 @@ class MissionReport extends Component {
 	render() {
 
 		const { selectedReportData = [] } = this.state;
+    let element = this.props.routeParams.element;
 
 		return (
 			<div className="ets-page-wrap">
-				<MissionReportTable data={selectedReportData} onRowSelected={this.onReportSelect.bind(this)}>
+				<MissionReportTable data={selectedReportData} element={element} onRowSelected={this.onReportSelect.bind(this)}>
 				</MissionReportTable>
 			</div>
 		);

@@ -24,7 +24,6 @@ let getTableMeta = (props) => {
 				filter: {
 					type: 'select',
 				},
-        cssClassName: 'width120',
 			},
       {
 				name: 'technical_operation_name',

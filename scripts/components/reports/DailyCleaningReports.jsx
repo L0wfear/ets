@@ -36,10 +36,13 @@ let getTypeLabel = (type) => type === 'distance' ? 'Протяженность' 
 
 let getGeozoneTypeLabel = (type) => type === 'odh' ? 'Объект дорожного хозяйства' : 'Дворовая территория';
 
-let getElementLabel = (el) => _.find([
-  {value: 'carriageway', label: 'Проезжая часть'},
-  {value: 'footway', label: 'Тротуар'},
-  {value: 'yard', label: 'Двор'}], obj => obj.value === el).label;
+let getElementLabel = (el) => {
+  let element = _.find([
+    {value: 'roadway', label: 'Проезжая часть'},
+    {value: 'footway', label: 'Тротуар'},
+    {value: 'yard', label: 'Двор'}], obj => obj.value === el) || {};
+  return element.label || '';
+};
 
 let tableMeta = {
 	cols: [
@@ -142,7 +145,7 @@ class DailyCleaningReports extends Component {
       date_start,
       date_end,
       geozone_type: 'odh',
-      element: 'carriageway',
+      element: 'roadway',
       car_type_id_list: [],
 		};
 	}
@@ -157,7 +160,7 @@ class DailyCleaningReports extends Component {
     if (props.data.status !== 'success') {
       global.NOTIFICATION_SYSTEM._addNotification(getReportNotReadyNotification(this.context.flux));
     } else {
-      this.context.history.pushState(null, `/daily-cleaning-report/${id}`);
+      this.context.history.pushState(null, `/daily-cleaning-report/${props.data.element}/${id}`);
     }
   }
 

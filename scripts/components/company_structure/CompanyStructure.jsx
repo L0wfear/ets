@@ -106,7 +106,12 @@ class CompanyStructure extends ElementsList {
 	async deleteElement(id, e) {
 		e.stopPropagation();
 		if (confirm('Вы уверены, что хотите удалить выбранный элемент?')) {
-			await this.context.flux.getActions('company-structure').deleteCompanyElement(id);
+			try {
+				await this.context.flux.getActions('company-structure').deleteCompanyElement(id);
+			} catch (e) {
+				console.log(e);
+				return;
+			}
 			this.init();
  		}
 	}

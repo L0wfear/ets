@@ -4,6 +4,7 @@ import EtsSelect from '../ui/EtsSelect.jsx';
 import Datepicker from '../ui/DatePicker.jsx';
 import moment from 'moment';
 import Div from '../ui/Div.jsx';
+import Field from '../ui/Field.jsx';
 import Form from '../compositions/Form.jsx';
 import connectToStores from 'flummox/connect';
 import { getCarImage } from '../../adapter.js';
@@ -16,14 +17,17 @@ class CarForm extends Form {
 
 		this.state = {
       imageUrl: null,
+			companyStructureList: [],
 		}
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
     const car = this.props.formState;
     getCarImage(car.asuods_id, car.type_id, car.model_id).then( (imageUrl) => {
       this.setState({imageUrl});
     });
+		let companyStructureList = await this.context.flux.getActions('company-structure').getLinearCompanyStructureForUser();
+		this.setState({companyStructureList});
 	}
 
 	render() {
@@ -33,6 +37,8 @@ class CarForm extends Form {
 		let owner = ownersIndex[state.owner_id] || {};
 		let model = modelsIndex[state.model_id] || {};
 		let type = typesIndex[state.type_id] || {};
+		let { companyStructureList = [] } = this.state;
+		let COMPANY_ELEMENTS = companyStructureList.map(el => ({value: el.id, label: el.name}));
 
 		return (
 			<Modal {...this.props}>
@@ -52,6 +58,11 @@ class CarForm extends Form {
 		      	</Col>
 
 		      	<Col md={6}>
+							<Field type="select" label="Подразделение"
+										 options={COMPANY_ELEMENTS}
+										 value={state.company_structure_id}
+										 clearable={false}
+										 onChange={this.handleChange.bind(this, 'company_structure_id')}/>
 	            <Div>
 	              <label>Гаражный номер</label>
 	              <Input type="text" value={state['garage_number']} onChange={this.handleChange.bind(this, 'garage_number')}/>

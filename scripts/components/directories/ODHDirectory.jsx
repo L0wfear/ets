@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import Table from '../ui/table/DataTable.jsx';
-import FormWrap from '../ui/form/FormWrap.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
 import cx from 'classnames';
 import connectToStores from 'flummox/connect';
+import ElementsList from '../ElementsList.jsx';
+import OdhFormWrap from './odh/OdhFormWrap.jsx';
 
 let getTableMeta = (props) => {
   let tableMeta = {
@@ -89,32 +90,34 @@ let ODHTable = (props) => {
   };
 
   return <Table title="Реестр ОДХ"
-    results={props.data}
-    tableMeta={getTableMeta(props)}
-    renderers={renderers}
-    initialSort={'name'}
-    {...props}/>;
+                results={props.data}
+                tableMeta={getTableMeta(props)}
+                renderers={renderers}
+                initialSort={'name'}
+                {...props}/>;
 };
 
-class ODHDirectory extends Component {
+class ODHDirectory extends ElementsList {
 
 
   constructor(props) {
     super(props);
 
-    this.state = {
-      selectedODH: null,
-      filterModalIsOpen: false,
-      filterValues: {},
-      showForm: false,
-    };
+    // this.state = {
+    //   selectedElement: null,
+    //   filterModalIsOpen: false,
+    //   filterValues: {},
+    //   showForm: false,
+    // };
+
+    this.mainListName = 'odhsList';
   }
 
-  selectODH({props}) {
-    const id = props.data.id;
-    let selectedODH = _.find(this.props.ODHsList, to => to.id === id) || null;
-    this.setState({selectedODH});
-  }
+  // selectODH({props}) {
+  //   const id = props.data.id;
+  //   let selectedODH = _.find(this.props.ODHsList, to => to.id === id) || null;
+  //   this.setState({selectedODH});
+  // }
 
 
   componentDidMount() {
@@ -125,16 +128,17 @@ class ODHDirectory extends Component {
   render() {
     const { odhsList = [] } = this.props;
 
+    console.log(odhsList);
+
     return (
       <div className="ets-page-wrap">
-        <ODHTable data={odhsList} onRowSelected={this.selectODH.bind(this)} selected={this.state.selectedODH} selectField={'id'} {...this.props}>
-          <Button bsSize="small" onClick={() => this.setState({ showForm: true })} disabled={this.state.selectedODH === null}> Просмотреть</Button>
+        <ODHTable data={odhsList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'} {...this.props}>
+          <Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}> Просмотреть</Button>
         </ODHTable>
-        <FormWrap tableMeta={getTableMeta(this.props)}
-          showForm={this.state.showForm}
-          onFormHide={() => this.setState({showForm: false})}
-          element={this.state.selectedODH}
-          title={'ОДХ'} />
+        <OdhFormWrap onFormHide={this.onFormHide.bind(this)}
+										 showForm={this.state.showForm}
+										 element={this.state.selectedElement}
+										 {...this.props}/>
       </div>
   );
   }
@@ -144,6 +148,4 @@ ODHDirectory.contextTypes = {
   flux: React.PropTypes.object,
 };
 
-const Wrapped = connectToStores(ODHDirectory, ['objects']);
-
-export default Wrapped;
+export default connectToStores(ODHDirectory, ['objects']);

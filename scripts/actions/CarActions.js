@@ -15,6 +15,9 @@ export default class CarActions extends Actions {
     if (car.fuel_correction_rate) {
       payload.fuel_correction_rate = parseFloat(car.fuel_correction_rate).toFixed(2);
     }
+    if (car.company_structure_id) {
+      payload.company_structure_id = car.company_structure_id;
+    }
 
     return CarInfoService.post(payload, CarService.get);
   }

@@ -33,7 +33,9 @@ class RoutesList extends Component {
     let isValid = true;
     _.mapKeys(this.state.filterValues, (value, key) => {
       if (_.isArray(value)) {
-        if (value.indexOf(obj[key].toString()) === -1) {
+				if (!obj[key]) {
+					isValid = false;
+				} else if (value.indexOf(obj[key].toString()) === -1) {
           isValid = false;
         }
       }

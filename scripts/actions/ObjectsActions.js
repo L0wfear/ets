@@ -74,4 +74,14 @@ export default class ObjectsActions extends Actions {
     return FaxogrammService.get(payload);
   }
 
+  updateODH(formState) {
+
+    const payload = {
+      id: formState.id,
+      company_structure_id: formState.company_structure_id || null,
+    };
+
+    return ODHService.put(payload);
+  }
+
 }

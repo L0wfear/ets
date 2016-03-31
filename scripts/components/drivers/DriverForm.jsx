@@ -5,6 +5,7 @@ import EtsSelect from '../ui/EtsSelect.jsx';
 import Datepicker from '../ui/DatePicker.jsx';
 import moment from 'moment';
 import Div from '../ui/Div.jsx';
+import Field from '../ui/Field.jsx';
 import Form from '../compositions/Form.jsx';
 
 const DRIVER_STATES = ['Работает', 'Не работает'].map( el => ({value: +!!(el.indexOf(' ') === -1), label: el}));
@@ -16,6 +17,7 @@ class DriverForm extends Form {
 
 		this.state = {
       cars: [],
+			companyStructureList: [],
 		}
 	}
 
@@ -26,11 +28,18 @@ class DriverForm extends Form {
 		this.props.handleFormChange(field, e);
 	}
 
+	async componentDidMount() {
+		let companyStructureList = await this.context.flux.getActions('company-structure').getLinearCompanyStructureForUser();
+		this.setState({companyStructureList});
+	}
+
 	render() {
 
 		let state = this.props.formState;
 		const { carsList = [] } = this.props;
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: `${c.gov_number} [${c.model_name}]`}));
+		let { companyStructureList = [] } = this.state;
+		let COMPANY_ELEMENTS = companyStructureList.map(el => ({value: el.id, label: el.name}));
 
     console.log('form state is ', state);
 
@@ -46,9 +55,10 @@ class DriverForm extends Form {
 
 	      	<Col md={6}>
             <Div>
-              <label>Организация</label> {state['company_id']}
+              <label>Организация</label><br/>
+							{state['company_id']}
             </Div>
-            <Div>
+            <Div style={{marginTop: 42}}>
   	      		<label>Фамилия</label>
               <Input type="text" value={state['last_name']} onChange={this.handleChange.bind(this, 'last_name')}/>
   	      	</Div>
@@ -71,6 +81,10 @@ class DriverForm extends Form {
 	      	</Col>
 
 	      	<Col md={6}>
+						<Field type="select" label="Подразделение"
+									 options={COMPANY_ELEMENTS}
+									 value={state.company_structure_id}
+									 onChange={this.handleChange.bind(this, 'company_structure_id')}/>
             <Div style={{marginTop: 25}}>
 	      		  <label>Табельный номер</label>
               <Input type="number" value={state['personnel_number']} onChange={this.handleChange.bind(this, 'personnel_number')}/>

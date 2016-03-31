@@ -68,7 +68,19 @@ export default class APIService {
 
   delete(payload = {}, callback, type = 'form') {
     console.info('API SERVICE DELETE', this.firstUrl);
-    return deleteJSON(this.url, payload, type).then(() => this.get());
+    return deleteJSON(this.url, payload, type).then((r) => {
+      if (r.warnings && r.warnings.length) {
+        r.warnings.map(w => {
+          global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification(w));
+        });
+        throw new Error('Request warnings is not empty!');
+      }
+      if (typeof callback === 'function') {
+        return callback();
+      } else {
+        return this.get();
+      }
+    });
   }
 
   getUrl() {

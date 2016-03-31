@@ -3158,7 +3158,7 @@ div.none {
 
 
 
-.company-structure .griddle-body table tbody tr:not(:first-child) > td {
+.company-structure .griddle-body table tbody tr:not(:first-child).child-row > td {
   padding-left: 20px !important;
 }
 

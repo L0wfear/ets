@@ -13,6 +13,7 @@ class OdhFormWrap extends FormWrap {
     try {
       await this.context.flux.getActions('objects').updateODH(formState);
     } catch (e) {
+      console.log(e);
       return;
     }
     this.props.onFormHide();

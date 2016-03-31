@@ -74,7 +74,8 @@
     "build": "webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
     "lint": "eslint -c .eslintrc scripts",
     "start-dev": "node ./node_modules/better-npm-run start-dev",
-    "dev": "npm run start-dev"
+    "dev": "npm run start-dev",
+    "dev-local-server": "node ./node_modules/better-npm-run start-dev-local-server"
   },
   "betterScripts": {
     "start-dev": {

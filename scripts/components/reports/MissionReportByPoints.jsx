@@ -29,12 +29,6 @@ let MissionReportByPointsTable = (props) => {
     status: ({data}) => <div>{data === 'fail' ? 'Не пройден' : 'Пройден'}</div>,
 	};
 
-	// if (props.noFilter) {
-	// 	tableMeta.cols = tableMeta.cols.filter(c => c.name !== 'left_percentage');
-	// 	delete renderers.left_percentage;
-	// 	renderers.left = (data) => <div>{`${parseFloat(data.data).toFixed(2)} (${parseFloat(parseFloat(data.rowData.left_percentage) * 100).toFixed(2) + '%'})`}</div>
-	// }
-
 	return <Table title='Прохождение заданий по пунктам назначения'
 								tableMeta={tableMeta}
 								results={props.data}
@@ -63,7 +57,7 @@ class MissionReportByPoints extends Component {
 
 		return (
 			<div className="ets-page-wrap">
-				<MissionReportByPointsTable noFilter={noFilter}  data={this.props.selectedReportDataPoints || []} >
+				<MissionReportByPointsTable noFilter={noFilter} data={this.props.selectedReportDataPoints || []} >
 				</MissionReportByPointsTable>
 			</div>
 		);

@@ -98,7 +98,11 @@ function checkResponse(url, response, body, method) {
       body.errors.map( er => {
         console.error(er);
         global.NOTIFICATION_SYSTEM._addNotification(getServerErrorNotification(`/${method} ${serviceName}`))
-      })
+      });
+    }
+
+    if (response.status === 500) { 
+      global.NOTIFICATION_SYSTEM._addNotification(getServerErrorNotification(`500 /${method} ${serviceName}`))
     }
 
     if (response.status === 401) {

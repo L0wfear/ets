@@ -189,6 +189,7 @@ class WaybillFormWrap extends Component {
 				try {
 					await flux.getActions('waybills').create(formState);
 				} catch (e) {
+					console.log(e);
 					return;
 				}
 			}

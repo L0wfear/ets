@@ -22,8 +22,15 @@ let WEBPACK_CONFIG = {
 let PROTO = window.location.protocol;
 let WS_PROTO = PROTO === 'http:' ? 'wss:' : 'wss:';
 
+let localServerUrl;
+try {
+  localServerUrl = LOCAL_SERVER_URL;
+} catch (e) {
+  localServerUrl = null;
+}
+
 let config = {
-  backend: PROTO + '//ods.mos.ru/ssd/ets/services',//city-dashboard',
+  backend: localServerUrl ? LOCAL_SERVER_URL : PROTO + '//ods.mos.ru/ssd/ets/services',//city-dashboard',
   backendOld: PROTO + '//ods.mos.ru/ssd/city-dashboard',
   ws: WS_PROTO + '//ods.mos.ru/ssd/city-dashboard/stream',
   images: '/data/images/',

@@ -1,9 +1,8 @@
 import { getUrl, getJSON, postJSON, deleteJSON, putJSON } from '../adapter.js';
 import { getWarningNotification } from 'utils/notifications';
+import RequestWarningError from '../errors/RequestWarningError.js';
 
-let mocks = {
-
-}
+let mocks = {};
 
 export default class APIService {
 
@@ -17,27 +16,26 @@ export default class APIService {
 
   get(payload = {}) {
     if (this.useMock && mocks[this.serviceName] && mocks[this.serviceName].get && _.keys(payload).length === 0) {
-      console.info('API SERVICE GET MOCK', this.firstUrl);
+      this.log('GET MOCK');
       return new Promise((res, rej) => {
         setTimeout(() => {
           res(mocks[this.serviceName].get);
         }, 500);
       });
     }
-
-    console.info('API SERVICE GET', this.firstUrl);
+    this.log('GET');
 
     return getJSON(this.url, payload);
   }
 
   post(payload = {}, callback, type = 'form') {
-    console.info('API SERVICE POST', this.firstUrl, type);
+    this.log('POST');
     return postJSON(this.url, payload, type).then((r) => {
       if (r.warnings && r.warnings.length) {
         r.warnings.map(w => {
           global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification(w));
         });
-        throw new Error('Request warnings is not empty!');
+        throw new RequestWarningError('Request warnings is not empty!');
       }
       if (typeof callback === 'function') {
         return callback();
@@ -50,13 +48,13 @@ export default class APIService {
   }
 
   put(payload = {}, callback, type = 'form') {
-    console.info('API SERVICE PUT', this.firstUrl);
+    this.log('PUT');
     return putJSON(this.url, payload, type).then((r) => {
       if (r.warnings && r.warnings.length) {
         r.warnings.map(w => {
           global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification(w));
         });
-        throw new Error('Request warnings is not empty!');
+        throw new RequestWarningError('Request warnings is not empty!');
       }
       if (typeof callback === 'function') {
         return callback();
@@ -67,13 +65,13 @@ export default class APIService {
   }
 
   delete(payload = {}, callback, type = 'form') {
-    console.info('API SERVICE DELETE', this.firstUrl);
+    this.log('DELETE');
     return deleteJSON(this.url, payload, type).then((r) => {
       if (r.warnings && r.warnings.length) {
         r.warnings.map(w => {
           global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification(w));
         });
-        throw new Error('Request warnings is not empty!');
+        throw new RequestWarningError('Request warnings is not empty!');
       }
       if (typeof callback === 'function') {
         return callback();
@@ -85,6 +83,10 @@ export default class APIService {
 
   getUrl() {
     return this.url;
+  }
+
+  log(method) {
+    console.info(`API SERVICE ${method} ${this.firstUrl}`);
   }
 
 }

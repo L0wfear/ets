@@ -38,6 +38,7 @@ export default class TechnicalOperationsActions extends Actions {
   updateTechnicalOperation(data) {
     const payload = _.cloneDeep(data);
     payload.needs_brigade = !!payload.needs_brigade;
+    payload.use_in_reports = !!payload.use_in_reports;
     delete payload.season_name;
     delete payload.work_kind_name;
     delete payload.check_type_name;

@@ -40,6 +40,8 @@ export default class LoadingStore extends Store {
       objectsActions.getWorkKinds,
       objectsActions.getFaxogramms,
       objectsActions.getCarFuncTypes,
+      objectsActions.getODHs,
+      objectsActions.updateODH,
 
       carActions.updateCarAdditionalInfo,
 

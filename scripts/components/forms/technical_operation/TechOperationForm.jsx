@@ -95,7 +95,7 @@ export class MissionForm extends Form {
 	      	</Row>
 
           <Row>
-            <Col md={2}>
+            <Col md={3}>
               <Field type="select" label="Вид работ"
                      options={WORK_KINDS}
                      value={state.work_kind_id}
@@ -121,17 +121,22 @@ export class MissionForm extends Form {
                      value={state.check_type}
                      onChange={this.handleChange.bind(this, 'check_type')}/>
 						</Col>
-            <Col md={3} className="vehicle-types-container">
-              <Field type="select" label="Типы ТС"
-                     multi={true}
-                     value={state.car_func_types.map(cft => cft.id).join(',')}
-                     options={CAR_FUNC_TYPES}
-                     onChange={this.handleCarFuncTypesChange.bind(this)}/>
-            </Col>
+						<Col md={2}>
+							<Field type="select" label="Учитывать в отчетах"
+										 options={NEEDS_BRIGADE_OPTIONS}
+										 value={+state.use_in_reports}
+										 onChange={this.handleChange.bind(this, 'use_in_reports')}/>
+						</Col>
 	      	</Row>
 
           <Row>
-
+						<Col md={3} className="vehicle-types-container">
+							<Field type="select" label="Типы ТС"
+										 multi={true}
+										 value={state.car_func_types.map(cft => cft.id).join(',')}
+										 options={CAR_FUNC_TYPES}
+										 onChange={this.handleCarFuncTypesChange.bind(this)}/>
+						</Col>
           </Row>
 
 	      </Modal.Body>

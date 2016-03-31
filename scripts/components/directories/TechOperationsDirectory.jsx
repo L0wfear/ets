@@ -78,6 +78,14 @@ let getTableMeta = (props) => {
   				type: 'select',
   			},
   		},
+      {
+  			name: 'use_in_reports',
+  			caption: 'Учет в отчетах',
+  			type: 'boolean',
+  			filter: {
+  				type: 'select',
+  			},
+  		},
   		{
   			name: 'car_func_types',
   			caption: 'Типы ТС',
@@ -123,6 +131,7 @@ let TechOperationsTable = (props) => {
         );
       },
       needs_brigade: ({data}) => <input type="checkbox" disabled checked={!!data}/>,
+      use_in_reports: ({data}) => <input type="checkbox" disabled checked={!!data}/>,
     };
 
 		return <Table title="Реестр технологических операций"

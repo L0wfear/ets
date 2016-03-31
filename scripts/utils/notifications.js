@@ -59,7 +59,7 @@ export function getReportNotReadyNotification(flux) {
     title: 'Внимание',
     message: `Отчет еще не обработан`,
     level: 'info',
-    dismissible: false,
+    dismissible: true,
     position: 'tc',
     autoDismiss: 0,
     action: {
@@ -74,7 +74,7 @@ export function getReportNotReadyNotification2(flux) {
     title: 'Внимание',
     message: `Отчет еще не обработан`,
     level: 'info',
-    dismissible: false,
+    dismissible: true,
     position: 'tc',
     autoDismiss: 0,
     action: {

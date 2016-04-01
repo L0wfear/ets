@@ -24,7 +24,6 @@ class RoutesStore extends Store {
       reportsList: [],
       selectedReportData: [],
       geozonePolys: [],
-      lastCreatedRouteId: null,
       odhPolys: {},
       dtPolys: {},
     };
@@ -36,7 +35,7 @@ class RoutesStore extends Store {
   }
 
   handleCreateRoute({createdRoute, routes}) {
-    this.setState({lastCreatedRouteId: createdRoute.result[0].id, routesList: routes.result });
+    this.setState({routesList: routes.result});
   }
 
   handleGetRouteReports(reports) {

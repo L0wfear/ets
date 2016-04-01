@@ -16,7 +16,7 @@ let getTableMeta = (props) => {
 	      },
 	    },
 	    {
-	      name: props.data && props.data[0] && props.data[0].route_check_value ? 'route_check_value' : 'route_check_length',
+	      name: 'route_check_value',
 	      caption: 'Нужно пройти',
 	      type: 'string',
 	      filter: {
@@ -67,7 +67,7 @@ let getTableMeta = (props) => {
 			},
 		});
 	}
-	
+
 	return tableMeta;
 }
 
@@ -118,15 +118,16 @@ class MissionReportByODH extends ElementsList {
 
 	selectElement(el) {
 		super.selectElement(el);
+		if (typeof this.props.onElementChange === 'function')
 		this.props.onElementChange(el.props.data[this.selectField]);
 	}
 
 	render() {
-		let { noFilter = false } = this.props;
+		let { noFilter = false, routeCheckValue } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
-				<MissionReportByODHTable noFilter={noFilter} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={this.selectField} data={this.props.selectedReportDataODHS || []} {...this.props}>
+				<MissionReportByODHTable routeCheckValue={routeCheckValue} noFilter={noFilter} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={this.selectField} data={this.props.selectedReportDataODHS || []} {...this.props}>
 				</MissionReportByODHTable>
 			</div>
 		);

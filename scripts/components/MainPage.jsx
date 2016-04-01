@@ -41,7 +41,7 @@ export default React.createClass({
 					    </Navbar.Header>
             {/*<div className="navbar-collapse collapse">*/}
 				      <Nav>
-                <NavItem active={path === '/monitor'} href="#/monitor">Монитор</NavItem>
+                <NavItem active={path === '/monitor'} href="#/monitor">Карта</NavItem>
 				        <NavItem active={path === '/dashboard'} href="#/dashboard">Рабочий стол</NavItem>
                 {/*<NavDropdown title="Рабочее место" id="nav-dropdown-5">
   				        <MenuItem active={path === '/dashboard/master'} href="#/dashboard/master">Рабочее место мастера</MenuItem>

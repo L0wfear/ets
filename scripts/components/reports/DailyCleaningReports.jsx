@@ -171,7 +171,6 @@ class DailyCleaningReports extends Component {
   createDailyCleaningReport() {
 		const { flux } = this.context;
     flux.getActions('reports').createDailyCleaningReport(this.state);
-		//flux.getActions('missions').createMissionReport(this.state.mission_date_start_from, this.state.mission_date_end_to);
   }
 
 	render() {

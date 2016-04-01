@@ -9,15 +9,22 @@ class ReportsStore extends Store {
     const reportsActions = flux.getActions('reports');
     this.register(reportsActions.getDailyCleaningReports, this.handleGetDailyCleaningReports);
     this.register(reportsActions.createDailyCleaningReport, this.handleGetDailyCleaningReports);
+    this.register(reportsActions.getWeeklyTechnicalOperationCompleteReports, this.handleGetWeeklyTechnicalOperationCompleteReports);
+    this.register(reportsActions.createWeeklyTechnicalOperationCompleteReport, this.handleGetWeeklyTechnicalOperationCompleteReports);
 
     this.state = {
       dailyCleaningReportsList: [],
+      weeklyTechnicalOperationCompleteReportsList: []
     };
 
   }
 
   handleGetDailyCleaningReports(dailyCleaningReports) {
     this.setState({dailyCleaningReportsList: dailyCleaningReports.result});
+  }
+
+  handleGetWeeklyTechnicalOperationCompleteReports(weeklyTechnicalOperationCompleteReports) {
+    this.setState({weeklyTechnicalOperationCompleteReportsList: weeklyTechnicalOperationCompleteReports.result});
   }
 
 }

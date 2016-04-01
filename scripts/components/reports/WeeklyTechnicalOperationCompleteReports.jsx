@@ -7,7 +7,7 @@ import Div from '../ui/Div.jsx';
 import Field from '../ui/Field.jsx';
 import Datepicker from '../ui/DatePicker.jsx';
 import { getToday9am, getTomorrow9am, getToday0am, getToday2359, getFormattedDateTimeSeconds } from 'utils/dates';
-import { getReportNotReadyNotification } from 'utils/notifications';
+import { getReportNotReadyNotification3 } from 'utils/notifications';
 import { isEmpty } from 'utils/functions';
 import DailyReportHeader from './DailyReportHeader.jsx';
 
@@ -34,6 +34,16 @@ let getStatusLabel = (status) => {
 
 let getTypeLabel = (type) => type === 'distance' ? 'Протяженность' : type;
 
+let getGeozoneTypeLabel = (type) => type === 'odh' ? 'Объект дорожного хозяйства' : 'Дворовая территория';
+
+let getElementLabel = (el) => {
+  let element = _.find([
+    {value: 'roadway', label: 'Проезжая часть'},
+    {value: 'footway', label: 'Тротуар'},
+    {value: 'yard', label: 'Двор'}], obj => obj.value === el) || {};
+  return element.label || '';
+};
+
 let tableMeta = {
 	cols: [
 		{
@@ -45,16 +55,32 @@ let tableMeta = {
 			}
 		},
 		{
-			name: 'mission_name',
-			caption: 'Задание',
+			name: 'geozone_type',
+			caption: 'Объект',
 			type: 'number',
 			filter: {
 				type: 'select',
 			},
 		},
 		{
-			name: 'technical_operation_name',
-			caption: 'Тех. операция',
+			name: 'element',
+			caption: 'Элемент',
+			type: 'number',
+			filter: {
+				type: 'select',
+			},
+		},
+		{
+			name: 'date_start',
+			caption: 'Начало периода',
+			type: 'number',
+			filter: {
+				type: 'select',
+			},
+		},
+		{
+			name: 'date_end',
+			caption: 'Конец периода',
 			type: 'number',
 			filter: {
 				type: 'select',
@@ -87,10 +113,14 @@ let tableMeta = {
 	]
 }
 
-let CarsTable = (props) => {
+let WeeklyTechnicalOperationCompleteReportsTable = (props) => {
 
 	const renderers = {
     status: ({data}) => <div>{data ? getStatusLabel(data) : ''}</div>,
+    geozone_type: ({data}) => <div>{data ? getGeozoneTypeLabel(data) : ''}</div>,
+    element: ({data}) => <div>{data ? getElementLabel(data) : ''}</div>,
+    date_start: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
+    date_end: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
     timestamp_create: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
     timestamp_process_begin: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
     timestamp_process_end: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
@@ -103,6 +133,7 @@ let CarsTable = (props) => {
 								{...props} />
 
 }
+
 
 class WeeklyTechnicalOperationCompleteReports extends Component {
 
@@ -122,15 +153,15 @@ class WeeklyTechnicalOperationCompleteReports extends Component {
 
 	componentDidMount() {
 		const { flux } = this.context;
-		flux.getActions('missions').getMissionReports();
+		flux.getActions('reports').getWeeklyTechnicalOperationCompleteReports();
 	}
 
   onReportSelect({props}) {
     const id = props.data.id;
     if (props.data.status !== 'success') {
-      global.NOTIFICATION_SYSTEM._addNotification(getReportNotReadyNotification(this.context.flux));
+      global.NOTIFICATION_SYSTEM._addNotification(getReportNotReadyNotification3(this.context.flux));
     } else {
-      this.context.history.pushState(null, `/mission-report/${id}`);
+      this.context.history.pushState(null, `/weekly-technical-operation-complete-report/${props.data.element}/${id}`);
     }
   }
 
@@ -138,22 +169,22 @@ class WeeklyTechnicalOperationCompleteReports extends Component {
 		this.setState({[field]: value});
 	}
 
-  createDailyCleaningReport() {
+  createWeeklyTechnicalOperationCompleteReport() {
 		const { flux } = this.context;
-		//flux.getActions('missions').createMissionReport(this.state.mission_date_start_from, this.state.mission_date_end_to);
+		flux.getActions('reports').createWeeklyTechnicalOperationCompleteReport(this.state);
   }
 
 	render() {
 
     console.log('state is', this.state);
 
-		const { missionReportsList = [] } = this.props;
+		const { weeklyTechnicalOperationCompleteReportsList = [] } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
-  			<DailyReportHeader handleChange={this.handleChange.bind(this)} onClick={this.createDailyCleaningReport.bind(this)} {...this.state}/>
+  			<DailyReportHeader handleChange={this.handleChange.bind(this)} onClick={this.createWeeklyTechnicalOperationCompleteReport.bind(this)} {...this.state}/>
 
-				{/*<CarsTable data={missionReportsList} onRowSelected={this.onReportSelect.bind(this)} />*/}
+				<WeeklyTechnicalOperationCompleteReportsTable data={weeklyTechnicalOperationCompleteReportsList} onRowSelected={this.onReportSelect.bind(this)} />
 			</div>
 		);
 
@@ -165,4 +196,4 @@ WeeklyTechnicalOperationCompleteReports.contextTypes = {
 	flux: React.PropTypes.object,
 };
 
-export default connectToStores(WeeklyTechnicalOperationCompleteReports, ['objects']);
+export default connectToStores(WeeklyTechnicalOperationCompleteReports, ['reports']);

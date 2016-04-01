@@ -52,12 +52,17 @@ class MissionReportByPoints extends Component {
 		}
 	}
 
+	selectElement(el) {
+		if (typeof this.props.onElementChange === 'function')
+		this.props.onElementChange(el.props.data[this.selectField]);
+	}
+
 	render() {
 		let { noFilter = false } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
-				<MissionReportByPointsTable noFilter={noFilter} data={this.props.selectedReportDataPoints || []} >
+				<MissionReportByPointsTable onRowSelected={this.selectElement.bind(this)} noFilter={noFilter} data={this.props.selectedReportDataPoints || []} >
 				</MissionReportByPointsTable>
 			</div>
 		);

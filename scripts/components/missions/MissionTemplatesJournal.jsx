@@ -162,6 +162,14 @@ class MissionTemplatesJournal extends ElementsList {
     this.setState({ showForm: true, formType: "MissionsCreationForm" });
   }
 
+	createElement() {
+		this.setState({
+			showForm: true,
+			selectedElement: null,
+			formType: "ViewForm"
+		});
+	}
+
 	render() {
 
 		const { missionTemplatesList = [], noFilter = false } = this.props;

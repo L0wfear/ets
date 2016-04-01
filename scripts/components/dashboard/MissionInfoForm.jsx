@@ -28,6 +28,7 @@ export class MissionInfoForm extends Form {
 			missionReportFull: {},
 			selectedObjects: [],
 			selectedODHId: 0,
+			selectedPoint: null,
 		};
 	}
 
@@ -71,6 +72,10 @@ export class MissionInfoForm extends Form {
 		this.setState({selectedODHId: id});
 	}
 
+	handlePointChange(point) {
+		this.setState({selectedPoint: point});
+	}
+
 	render() {
 
 		let state = this.props.formState;
@@ -93,7 +98,8 @@ export class MissionInfoForm extends Form {
 			return object;
 		});
     if (!this.props.formState.car_gov_number) return <div/>;
-		let title = `Информация о задании. Гос. номер ТС: ${this.props.formState.car_gov_number}`
+		let title = `Информация о задании. Гос. номер ТС: ${this.props.formState.car_gov_number}`;
+		console.log(polys);
 
 		return (
 			<Modal {...this.props} bsSize="large" className="mission-info-modal">
@@ -120,6 +126,7 @@ export class MissionInfoForm extends Form {
                      polys={polys}
 										 selectedObjects={this.state.selectedObjects}
 										 selectedPoly={geozonePolys[this.state.selectedODHId]}
+										 selectedPoint={null}
                      car_gov_number={this.props.formState.car_gov_number}/>
 
               </FluxComponent>
@@ -133,7 +140,7 @@ export class MissionInfoForm extends Form {
               	<MissionReportByDT noFilter={true} selectedReportDataDTS={this.state.missionReport} />
 							</Div>
 							<Div  style={{marginTop: -35}} hidden={this.state.missionReportFull && !this.state.missionReportFull.report_by_point}>
-              	<MissionReportByPoints noFilter={true} selectedReportDataPoints={this.state.missionReport} />
+              	<MissionReportByPoints noFilter={true} selectedReportDataPoints={this.state.missionReport}/>
 							</Div>
               <Div hidden={this.state.missionReport && this.state.missionReport.length > 0}>
                 <h5>Нет данных о прохождении задания</h5>

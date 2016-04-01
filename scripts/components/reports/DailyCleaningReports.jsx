@@ -157,9 +157,9 @@ class DailyCleaningReports extends Component {
 
   onReportSelect({props}) {
     const id = props.data.id;
-    if (props.data.status !== 'success') {
+    if (props.data.status !== 'success' && props.data.status !== 'fail') {
       global.NOTIFICATION_SYSTEM._addNotification(getReportNotReadyNotification2(this.context.flux));
-    } else {
+    } else if (props.data.status !== 'fail'){
       this.context.history.pushState(null, `/daily-cleaning-report/${props.data.element}/${id}`);
     }
   }

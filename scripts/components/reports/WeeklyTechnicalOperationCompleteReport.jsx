@@ -72,6 +72,14 @@ let getTableMeta = (props) => {
           type: 'select',
         }
       },
+      {
+        name: 'gov_number_list',
+        caption: 'Список ТС',
+        type: 'string',
+        filter: {
+          type: 'select',
+        }
+      },
       secondCol,
   		{
   			name: 'fact_traveled_area',
@@ -101,6 +109,7 @@ let MissionReportTable = (props) => {
 	const renderers = {
     car_type_list: ({data}) => <div>{data.map(el => el.name).join(', ')}</div>,
     status: ({data}) => <div>{statuses[data] || ''}</div>,
+    gov_number_list: ({data}) => <div>{data && data.join ? data.join(', ') : ''}</div>,
 	};
 
   let tableMeta = getTableMeta(props);

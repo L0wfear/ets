@@ -227,12 +227,18 @@ export class MissionForm extends Form {
 				 			<Div>c <Datepicker date={state.date_start}
 																 onChange={this.handleChange.bind(this, 'date_start')}
 																 disabled={IS_DISPLAY}
-																 min={this.props.fromWaybill && this.props.waybillStartDate ? this.props.waybillStartDate : null}/>
+																 min={this.props.fromWaybill && this.props.waybillStartDate ? this.props.waybillStartDate : null}
+																 max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}/>
 							</Div>
 				   	</Col>
 				   	<Col md={3}>
               <label style={{minHeight: 15}}></label>
-				 			<Div>по <Datepicker date={state.date_end} onChange={this.handleChange.bind(this, 'date_end')} disabled={IS_DISPLAY}/></Div>
+				 			<Div>по <Datepicker date={state.date_end}
+																	onChange={this.handleChange.bind(this, 'date_end')}
+																	disabled={IS_DISPLAY}
+ 																 	min={state.date_start}
+ 																 	max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}/>
+							</Div>
 				   	</Col>
 					</Row>
 

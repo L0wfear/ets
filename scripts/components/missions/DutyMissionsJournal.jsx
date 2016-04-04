@@ -118,7 +118,7 @@ let getTableMeta = (props) => {
         cssClassName: 'width120',
 			},
       {
-        name: 'mission_name',
+        name: 'car_mission_name',
         caption: 'Задание на ТС',
         type: 'string',
         filter: {

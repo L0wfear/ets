@@ -161,6 +161,7 @@ class RoutesList extends Component {
 		];
 		console.log(this.props);
 		routesList = routesList.filter((r) => this.shouldBeRendered(r));
+		routesList = _.sortBy(routesList, 'name');
 
 		let vectorRoutes = routesList.filter(r => r.type === 'vector').map((r, i) => {
 			let cn = cx('sidebar__list-item', {'active': route && r.id === route.id});
@@ -197,12 +198,15 @@ class RoutesList extends Component {
 								{vectorRoutes}
 							</ul>
 							<ul className="sidebar__list">
+								<h5 className="text-center">Маршруты по ОДХ</h5>
 								{simpleRoutes}
 							</ul>
 							<ul className="sidebar__list">
+								<h5 className="text-center">Маршруты по ДТ</h5>
 								{simpleRoutes2}
 							</ul>
 							<ul className="sidebar__list">
+								<h5 className="text-center">Маршруты по пунктам назначения</h5>
 								{pointsRoutes}
 							</ul>
 						</div>

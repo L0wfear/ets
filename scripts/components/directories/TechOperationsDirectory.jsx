@@ -20,6 +20,9 @@ let getWorkKindOptions = (id) => {
 };
 
 let getTableMeta = (props) => {
+
+  let CAR_FUNC_TYPES = props.carFuncTypesList.map(({id, full_name}) => ({value: id, label: full_name}));
+
   let tableMeta = {
   	cols: [
   		{
@@ -94,7 +97,8 @@ let getTableMeta = (props) => {
   			caption: 'Типы ТС',
   			type: 'string',
   			filter: {
-  				type: 'select',
+					type: 'multiselect',
+					options: CAR_FUNC_TYPES,
   			},
   		},
   	]

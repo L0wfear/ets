@@ -38,6 +38,7 @@ class Table extends React.Component {
     if (typeof this.props.onAllRowsChecked === 'function') {
       this.props.onAllRowsChecked(_.reduce(this.props.results, (cur, val) => {cur[val.id] = val; return cur;}, {}), false);
     }
+    console.info('setting filter values', filterValues);
 		this.setState({filterValues, globalCheckboxState: false});
 	}
 
@@ -135,7 +136,11 @@ class Table extends React.Component {
           isValid = false;
         }
       } else if (_.isArray(value)) {
-        if (value.indexOf(obj[key].toString()) === -1) {
+        if (_.isArray(obj[key])) {
+          if (!_.find(obj[key], el => value.indexOf(el.id.toString()) > -1)) {
+            isValid = false;
+          }
+        } else if (value.indexOf(obj[key].toString()) === -1) {
           isValid = false;
         }
       } else {

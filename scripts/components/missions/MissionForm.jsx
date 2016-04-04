@@ -51,7 +51,6 @@ export class MissionForm extends Form {
 																														 .getTechnicalOperationsByCarId(v);
 				this.setState({technicalOperationsList});
 			} catch (e) {
-				console.error('USER GENERATED EXCEPTION');
 				console.error(e);
 			}
 		}
@@ -73,9 +72,11 @@ export class MissionForm extends Form {
 		try {
 			let routesList = await this.context.flux.getActions('routes')
 																							.getRoutesByTechnicalOperation(v);
+			if (routesList.length === 1) {
+				this.handleRouteIdChange(routesList[0].id);
+			}
 			this.setState({routesList});
 		} catch (e) {
-			console.error('USER GENERATED EXCEPTION');
 			console.error(e);
 		}
 	}

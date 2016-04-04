@@ -188,7 +188,7 @@ class RoutesList extends Component {
 					<Col xs={5} md={3} className="sidebar">
 						<header className="sidebar__header clearfix">
 							<div className="sidebar__header-title col-xs-12">
-								Список маршрутов<br/> «Жилищник Крылатское»
+								Список маршрутов
 							</div>
 						</header>
 						{/*Выберите маршрут из списка для просмотра*/}

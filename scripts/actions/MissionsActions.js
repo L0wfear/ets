@@ -256,7 +256,6 @@ export default class MissionsActions extends Actions {
        payload.fact_date_end = date_end;
        payload.mission_source_id = dutyMissionsCreationTemplateCopy.mission_source_id;
        payload.brigade_employee_id_list = [];
-       payload.foreman_id = 27;
        if (!isEmpty(dutyMissionsCreationTemplateCopy.faxogramm_id)) {
          payload.faxogramm_id = dutyMissionsCreationTemplateCopy.faxogramm_id;
        }

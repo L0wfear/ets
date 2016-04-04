@@ -39,7 +39,8 @@ let getTableMeta = (props) => {
 				type: 'string',
 				filter: {
 					type: 'select',
-				}
+				},
+				cssClassName: 'width300'
 			},
 		]
 	};

@@ -8,7 +8,7 @@ import cx from 'classnames';
 import connectToStores from 'flummox/connect';
 import DashboardCardMedium from './DashboardCardMedium.jsx';
 import DashboardCardSmall from './DashboardCardSmall.jsx';
-import DashboardMasterManagementCard from './DashboardMasterManagementCard.jsx';
+import DashboardManagementCard from './DashboardManagementCard.jsx';
 import DashboardPageHeader from './DashboardPageHeader.jsx';
 import customCards from './customCards/index.js';
 
@@ -121,7 +121,7 @@ class DashboardPage extends React.Component {
           </Col>
 
           <Col md={3}>
-            <DashboardMasterManagementCard refreshCard={this.refreshCard.bind(this)}/>
+            <DashboardManagementCard role={role} refreshCard={this.refreshCard.bind(this)}/>
 
             {componentsSide}
           </Col>

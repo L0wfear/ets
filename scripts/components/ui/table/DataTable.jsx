@@ -214,6 +214,7 @@ class Table extends React.Component {
                       values={this.state.filterValues}
                       options={this.props.tableMeta.cols}
                       tableData={this.props.results}
+                      disabled={this.props.isHierarchical}
                       active={_.keys(this.state.filterValues).length}
                       className="filter-wrap"/>
             </ClickOutHandler>

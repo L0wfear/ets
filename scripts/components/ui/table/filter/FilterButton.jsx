@@ -12,7 +12,7 @@ const FilterButton = (props) => {
   });
 
   return (
-    <Button bsSize="small" className={filterClass} onClick={props.onClick}>
+    <Button bsSize="small" disabled={props.disabled} className={filterClass} onClick={props.onClick}>
       <Glyphicon glyph="filter"/>
     </Button>
   );

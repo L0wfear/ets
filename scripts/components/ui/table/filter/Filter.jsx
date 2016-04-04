@@ -5,7 +5,7 @@ import FilterModal from './FilterModal.jsx';
 let Filter = (props) => {
   return (
     <div className={props.className}>
-      <FilterButton direction={props.direction} show={props.show} active={props.active} onClick={props.onClick}/>
+      <FilterButton disabled={props.disabled} direction={props.direction} show={props.show} active={props.active} onClick={props.onClick}/>
       <FilterModal onSubmit={props.onSubmit}
                    show={props.show}
                    onHide={props.onHide}

@@ -89,20 +89,21 @@ export function deleteJSON(url, data, type = 'form') {
 function checkResponse(url, response, body, method) {
   if (url.indexOf('login') === -1) {
     const { flux } = window.__ETS_CONTAINER__;
+    const usedUrl = url.slice(0, url.indexOf('?') > -1 ? url.indexOf('?') : url.length);
+    let serviceName = usedUrl.split('/')[usedUrl.split('/').length-2];
 
     if (body && body.errors && body.errors.length) {
-      const usedUrl = url.slice(0, url.indexOf('?') > -1 ? url.indexOf('?') : url.length);
-      let error = `ERROR /${method} ${usedUrl}`
-      let serviceName = usedUrl.split('/')[usedUrl.split('/').length-2];
+      let error = `ERROR /${method} ${usedUrl}`;
       console.error(error);
+
       body.errors.map( er => {
         console.error(er);
         global.NOTIFICATION_SYSTEM._addNotification(getServerErrorNotification(`/${method} ${serviceName}`))
       });
     }
 
-    if (response.status === 500) { 
-      global.NOTIFICATION_SYSTEM._addNotification(getServerErrorNotification(`500 /${method} ${serviceName}`))
+    if (response.status === 500) {
+      global.NOTIFICATION_SYSTEM._addNotification(getServerErrorNotification(`/${method} ${serviceName}, код ответа 500`))
     }
 
     if (response.status === 401) {

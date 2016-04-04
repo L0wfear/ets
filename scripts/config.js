@@ -22,15 +22,8 @@ let WEBPACK_CONFIG = {
 let PROTO = window.location.protocol;
 let WS_PROTO = PROTO === 'http:' ? 'wss:' : 'wss:';
 
-let localServerUrl;
-try {
-  localServerUrl = LOCAL_SERVER_URL;
-} catch (e) {
-  localServerUrl = null;
-}
-
 let config = {
-  backend: localServerUrl ? LOCAL_SERVER_URL : PROTO + '//ods.mos.ru/ssd/ets/services',//city-dashboard',
+  backend: PROTO + '//ods.mos.ru/ssd/ets/services',
   backendOld: PROTO + '//ods.mos.ru/ssd/city-dashboard',
   ws: WS_PROTO + '//ods.mos.ru/ssd/city-dashboard/stream',
   images: '/data/images/',
@@ -39,5 +32,32 @@ let config = {
   },
   WEBPACK_CONFIG: WEBPACK_CONFIG[ENV]
 };
+
+// локальный сервер или специфичный стенд
+let localServerUrl;
+try {
+  localServerUrl = LOCAL_SERVER_URL;
+  if (localServerUrl) {
+    config.backend = localServerUrl;
+  }
+} catch (e) {
+  console.log(e);
+  localServerUrl = null;
+}
+try {
+  switch (process.env.STAND) {
+    case 'study':
+      config.backend = PROTO + '//ods.mos.ru/ssd/ets-study/services';
+      break;
+    case 'test':
+      config.backend = PROTO + '//ods.mos.ru/ssd/ets-test/services';
+      break;
+  }
+} catch (e) {
+  console.log(e);
+}
+//
+
+console.log(config.backend);
 
 export default config;

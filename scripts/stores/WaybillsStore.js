@@ -38,7 +38,7 @@ export function getDefaultBill() {
     // fact_arrival_date: vozvr_plan,
     driver_id: null,
     car_id: "",
-    fuel_type_id: 1,
+    fuel_type_id: 6,
     fuel_start: "",
     //fuel_to_give: null,
     //fuel_given: "",

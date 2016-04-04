@@ -62,7 +62,7 @@ export function getVectorArrowStyle(feature) {
          }),
          stroke: new ol.style.Stroke({
               color: 'red',
-              width: 2,
+              width: 4,
          })
       }));
     } else {
@@ -73,7 +73,7 @@ export function getVectorArrowStyle(feature) {
          }),
          stroke: new ol.style.Stroke({
               color: 'red',
-              width: 2,
+              width: 4,
               lineDash: [12],
          })
       }));

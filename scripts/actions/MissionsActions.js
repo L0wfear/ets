@@ -13,6 +13,7 @@ import { MissionReportsService,
          MissionPrintService,
          DutyMissionPrintService } from 'api/Services';
 import { postJSON } from 'adapter';
+import config from '../config.js';
 
 export default class MissionsActions extends Actions {
 
@@ -89,7 +90,7 @@ export default class MissionsActions extends Actions {
 
   printMission(data, url) {
     const token = JSON.parse(window.localStorage.getItem('ets-session'));
-    let URL = `http://ods.mos.ru/ssd/ets/services/plate_mission/?token=${token}`;
+    let URL = `${config.backend}/plate_mission/?token=${token}`;
 
     return fetch(URL, {
       method: 'post',

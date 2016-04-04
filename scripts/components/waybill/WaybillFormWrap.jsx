@@ -7,6 +7,7 @@ import { getDefaultBill } from '../../stores/WaybillsStore.js';
 import { isNotNull, isEmpty } from 'utils/functions';
 import { validateRow } from 'validate/validateRow.js';
 import { waybillSchema, waybillClosingSchema } from '../models/WaybillModel.js';
+import config from '../../config.js';
 
 let validateWaybill = (waybill, errors) => {
 	let waybillErrors = _.clone(errors);
@@ -152,7 +153,7 @@ class WaybillFormWrap extends Component {
   handlePrint(event, print_form_type = 1) {
   	let f = this.state.formState;
 
-  	let URL = 'http://ods.mos.ru/ssd/ets/services/' + (print_form_type === 2 ? 'plate_truck/' : 'plate_special/') + `?waybill_id=`;
+  	let URL = `${config.backend}/` + (print_form_type === 2 ? 'plate_truck/' : 'plate_special/') + `?waybill_id=`;
 		let ID = f.id;
 
 		let callback = (id) => {

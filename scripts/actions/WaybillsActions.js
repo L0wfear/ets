@@ -11,8 +11,8 @@ class WaybillsActions extends BaseActions {
     this.service = WaybillService;
   }
 
-  get() {
-    return super.get();
+  getWaybills() {
+    return WaybillService.get();
   }
 
   delete(id) {

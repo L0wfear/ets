@@ -41,7 +41,6 @@ try {
     config.backend = localServerUrl;
   }
 } catch (e) {
-  console.log(e);
   localServerUrl = null;
 }
 try {
@@ -54,10 +53,6 @@ try {
       break;
   }
 } catch (e) {
-  console.log(e);
 }
-//
-
-console.log(config.backend);
 
 export default config;

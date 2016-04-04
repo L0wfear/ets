@@ -8,42 +8,12 @@ import WaybillFormWrap from './WaybillFormWrap.jsx';
 import ElementsList from '../ElementsList.jsx';
 import moment from 'moment';
 import cx from 'classnames';
+import { dateLabelFunction,
+				 employeeFIOLabelFunction,
+				 getCarByIdLabelFunction,
+				 waybillStatusLabelFunction,
+			 	 waybillMissionsCompleteStatusLabelFunction } from 'utils/labelFunctions';
 
-function getFIOById(id) {
-	let result = '';
-	const { flux } = window.__ETS_CONTAINER__;
-  const employeesStore = flux.getStore('employees');
-	const employee = employeesStore.getEmployeeById(id);
-	if (employee) {
-		if (employee.last_name && employee.first_name && employee.middle_name)
-		result = employee.last_name + ' ' + employee.first_name[0]+ '.' + employee.middle_name[0] + '.';
-	}
-
-	return result;
-}
-
-let getCarById = (id) => {
-  const { flux } = window.__ETS_CONTAINER__;
-  const objectsStore = flux.getStore('objects');
-	const car = objectsStore.getCarById(id);
-	if (car.gov_number && car.model) {
-		car.label = car.gov_number + ' [' + car.model + ']';
-	}
-	return car;
-};
-
-function getStatusLabel(s) {
-	switch (s) {
-		case 'draft':
-			return 'Черновик';
-		case 'active':
-			return 'Активен';
-		case 'closed':
-			return 'Закрыт';
-		default:
-			return 'Н/Д';
-	}
-}
 
 let getTableMeta = (props) => {
 
@@ -55,7 +25,7 @@ let getTableMeta = (props) => {
 				type: 'string',
 				filter: {
 					type: 'select',
-					labelFunction: getStatusLabel
+					labelFunction: waybillStatusLabelFunction
 				}
 			},
 			{
@@ -64,7 +34,7 @@ let getTableMeta = (props) => {
 				type: 'string',
 				filter: {
 					type: 'select',
-					labelFunction: (data) => data === true ? 'Все задания завершены' : 'Есть незавершенные задания'
+					labelFunction: waybillMissionsCompleteStatusLabelFunction
 				},
 				//display: false,
 			},
@@ -79,6 +49,7 @@ let getTableMeta = (props) => {
 				type: 'date',
 				filter: {
 					type: 'select',
+					labelFunction: dateLabelFunction
 				}
 			},
 			{
@@ -87,7 +58,7 @@ let getTableMeta = (props) => {
 				type: 'string',
 				filter: {
 					type: 'select',
-					labelFunction: (id) => getFIOById(id),
+					labelFunction: employeeFIOLabelFunction,
 				}
 			},
 			{
@@ -96,7 +67,7 @@ let getTableMeta = (props) => {
 				type: 'string',
 				filter: {
 					type: 'select',
-					labelFunction: (id) => getCarById(id).gov_number,
+					labelFunction: (id) => getCarByIdLabelFunction(id).gov_number,
 				}
 			},
 			{
@@ -105,6 +76,7 @@ let getTableMeta = (props) => {
 				type: 'date',
 				filter: {
 					type: 'select',
+					labelFunction: dateLabelFunction
 				}
 			},
 			{
@@ -113,6 +85,7 @@ let getTableMeta = (props) => {
 				type: 'date',
 				filter: {
 					type: 'select',
+					labelFunction: dateLabelFunction
 				}
 			},
 			{
@@ -121,7 +94,7 @@ let getTableMeta = (props) => {
 				type: 'string',
 				filter: {
 					type: 'select',
-					labelFunction: (id) => getFIOById(id),
+					labelFunction: employeeFIOLabelFunction,
 				}
 			},
 		]
@@ -134,16 +107,15 @@ let getTableMeta = (props) => {
 
 let WaybillsTable = (props) => {
 
-		let { carsIndex = {} } = props;
 		const renderers = {
-			status: ({data}) => <div>{getStatusLabel(data)}</div>,
-			responsible_person_id: ({data}) => <div>{getFIOById(data)}</div>,
-			driver_id: ({data}) => <div>{getFIOById(data)}</div>,
-			car_id: ({data}) => <div>{getCarById(data).gov_number}</div>,
+			status: ({data}) => <div>{waybillStatusLabelFunction(data)}</div>,
+			responsible_person_id: ({data}) => <div>{employeeFIOLabelFunction(data)}</div>,
+			driver_id: ({data}) => <div>{employeeFIOLabelFunction(data)}</div>,
+			car_id: ({data}) => <div>{getCarByIdLabelFunction(data).gov_number}</div>,
 			date_create: ({data}) => <DateFormatter date={data} />,
 			fact_departure_date: ({data}) => <DateFormatter date={data} time={true} />,
 			fact_arrival_date: ({data}) => <DateFormatter date={data} time={true} />,
-			all_missions_completed_or_failed: ({data}) => <div>{ data === true ? 'Все задания завершены' : 'Есть незавершенные задания'}</div>
+			all_missions_completed_or_failed: ({data}) => <div>{waybillMissionsCompleteStatusLabelFunction(data)}</div>
 		};
 
 		return <Table title="Журнал путевых листов"
@@ -164,15 +136,13 @@ class WaybillJournal extends ElementsList {
     this.mainListName = 'waybillsList';
 	}
 
-	init() {
+	componentDidMount() {
+		super.componentDidMount();
+
 		const { flux } = this.context;
-		flux.getActions('waybills').get();
+		flux.getActions('waybills').getWaybills();
 		flux.getActions('employees').getEmployees();
-		flux.getActions('technical_operation').getTechnicalOperations();
-		flux.getActions('objects').getFuelTypes();
 		flux.getActions('objects').getCars();
-    flux.getActions('routes').getRoutes();
-    flux.getActions('missions').getMissionSources();
 	}
 
 	render() {

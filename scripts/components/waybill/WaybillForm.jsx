@@ -100,6 +100,9 @@ class WaybillForm extends Form {
       createValidDateTime(formState.plan_arrival_date),
       getMissionFilterStatus(formState)
     );
+		flux.getActions('objects').getFuelTypes();
+		flux.getActions('objects').getCars();
+		flux.getActions('employees').getEmployees();
 	}
 
 	onDriverChange(v) {

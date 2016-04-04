@@ -45,6 +45,7 @@ let getTableMeta = (props) => {
   			filter: {
   				type: 'select',
   			},
+        cssClassName: 'width80'
   		},
   		{
   			name: 'max_speed',
@@ -69,6 +70,7 @@ let getTableMeta = (props) => {
   			filter: {
   				type: 'select',
   			},
+        cssClassName: 'width60'
   		},
   		{
   			name: 'needs_brigade',
@@ -84,12 +86,13 @@ let getTableMeta = (props) => {
   			type: 'boolean',
   			filter: {
   				type: 'select',
+          labelFunction: (data) => data ? 'Да' : 'Нет'
   			},
   		},
   		{
   			name: 'car_func_types',
   			caption: 'Типы ТС',
-  			type: 'select2',
+  			type: 'string',
   			filter: {
   				type: 'select',
   			},

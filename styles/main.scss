@@ -2596,23 +2596,29 @@ div.none {
 }
 
 .width120 {
-  width: 120px;
+  width: 120px !important;
 }
 .width150 {
-  width: 150px;
+  width: 150px !important;
 }
 .width10-200 {
   width: 200px;
-  max-width: 200px;
+  max-width: 200px !important;
 }
 .width300 {
-  width: 300px;
+  width: 300px !important;
 }
 .width60 {
-  width: 60px;
+  width: 60px !important;
+}
+.width80 {
+  width: 80px !important;
+}
+.width90 {
+  width: 90px !important;
 }
 .width10 {
-  width: 10px;
+  width: 10px !important;
 }
 
 .routes-list {

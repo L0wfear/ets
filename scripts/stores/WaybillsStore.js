@@ -8,7 +8,7 @@ class WaybillsStore extends Store {
     super();
 
     const waybillsActions = flux.getActions('waybills');
-    this.register(waybillsActions.get, this.handleGetWaybills);
+    this.register(waybillsActions.getWaybills, this.handleGetWaybills);
     this.register(waybillsActions.delete, this.handleGetWaybills);
     this.register(waybillsActions.update, this.handleGetWaybills);
     this.register(waybillsActions.create, this.handleGetWaybills);

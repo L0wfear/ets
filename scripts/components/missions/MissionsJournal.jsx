@@ -153,11 +153,12 @@ export class MissionsJournal extends ElementsList {
     this.mainListName = 'missionsList';
 		this.removeDisabled = () => this.state.selectedElement && this.state.selectedElement.status !== 'not_assigned';
 	}
-
-  init() {
+	
+	componentDidMount() {
+		super.componentDidMount();
 		const { flux } = this.context;
 		flux.getActions('missions').getMissions();
-  }
+	}
 
 	completeMission() {
 		let mission = _.cloneDeep(this.state.selectedElement);

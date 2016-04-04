@@ -9,6 +9,7 @@ var strip = require('strip-loader');
 
 var relativeAssetsPath = '../dist';
 var assetsPath = path.join(__dirname, relativeAssetsPath);
+var alias = require('./alias');
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
@@ -54,15 +55,7 @@ module.exports = {
   },
   progress: true,
   resolve: {
-    alias: {
-      utils: 'utils',
-      api: 'api',
-      validate: 'validate',
-      compositions: 'components/compositions',
-      decorators: 'components/decorators',
-      adapter: 'adapter',
-      forms: 'components/forms',
-    },
+    alias: alias,
     modulesDirectories: [
       'scripts',
       'node_modules'

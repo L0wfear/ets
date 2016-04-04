@@ -5,6 +5,7 @@ var notifyStats = require('./utils/notifyStats');
 var assetsPath = path.resolve(__dirname, '../dist');
 var host = 'localhost';//'dev.ods.mos.ru';
 var port = 3000;
+var alias = require('./alias');
 //var ForceCaseSensitivityPlugin = require('./utils/forcecasesensitivity');
 
 module.exports = {
@@ -45,15 +46,7 @@ module.exports = {
   },
   progress: true,
   resolve: {
-    alias: {
-      utils: 'utils',
-      api: 'api',
-      validate: 'validate',
-      compositions: 'components/compositions',
-      decorators: 'components/decorators',
-      adapter: 'adapter',
-      forms: 'components/forms',
-    },
+    alias: alias,
     modulesDirectories: [
       'scripts',
       'node_modules'

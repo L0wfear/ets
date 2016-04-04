@@ -204,7 +204,7 @@ class WaybillFormWrap extends Component {
 					return;
 				}
 				callback();
-				flux.getActions('waybills').get();
+				flux.getActions('waybills').getWaybills();
 				this.props.onFormHide();
 			} else {
 				try {
@@ -212,7 +212,7 @@ class WaybillFormWrap extends Component {
 				} catch (e) {
 					return;
 				}
-				flux.getActions('waybills').get();
+				flux.getActions('waybills').getWaybills();
 				this.props.onFormHide();
 			}
 		} else if (billStatus === 'active') {
@@ -222,7 +222,7 @@ class WaybillFormWrap extends Component {
 				console.log(e);
 				return;
 			}
-			flux.getActions('waybills').get();
+			flux.getActions('waybills').getWaybills();
 			this.props.onFormHide();
 		}
 
@@ -238,7 +238,7 @@ class WaybillFormWrap extends Component {
 			console.log(e);
 			return;
 		}
-		this.context.flux.getActions('waybills').get();
+		this.context.flux.getActions('waybills').getWaybills();
 		this.props.onFormHide();
 	}
 

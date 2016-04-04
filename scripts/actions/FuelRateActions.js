@@ -38,8 +38,11 @@ export default class FuelRateActions extends Actions {
     return FuelConsumptionRateService.put(payload);
   }
 
-  deleteFuelRate(rate) {
-    return FuelConsumptionRateService.delete(rate);
+  deleteFuelRate(id) {
+    const payload = {
+      id
+    };
+    return FuelConsumptionRateService.delete(payload);
   }
 
   addFuelRate(rate) {

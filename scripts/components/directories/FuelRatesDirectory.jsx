@@ -140,7 +140,7 @@ class FuelRatesDirectory extends Component {
 	deleteFuelRate() {
     const { flux } = this.context;
 		if (confirm('Вы уверены, что хотите удалить запись?')) {
-			flux.getActions('fuel-rates').deleteFuelRate(this.state.selectedFuelRate);
+			flux.getActions('fuel-rates').deleteFuelRate(this.state.selectedFuelRate.id);
 			this.setState({selectedFuelRate: null});
 		}
 	}

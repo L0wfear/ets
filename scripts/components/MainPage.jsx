@@ -114,6 +114,7 @@ export default React.createClass({
               {this.props.children}
               <LoadingOverlay/>
             </div>
+            <div className="app-footer">{this.state.user.company_name}</div>
 					</div>
   },
 

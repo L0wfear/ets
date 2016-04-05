@@ -170,6 +170,14 @@ class MissionTemplatesJournal extends ElementsList {
 		});
 	}
 
+	copyElement() {
+		let copiedElement = _.cloneDeep(this.state.selectedElement);
+		this.setState({
+			showForm: true,
+			selectedRoute: _.cloneDeep(copiedElement)
+		});
+	}
+
 	render() {
 
 		const { missionTemplatesList = [], noFilter = false } = this.props;
@@ -180,8 +188,9 @@ class MissionTemplatesJournal extends ElementsList {
 				<MissionsTable noFilter={noFilter} data={missionTemplatesList} onAllRowsChecked={this.checkAll.bind(this)} onRowChecked={this.checkMission.bind(this)} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} checked={this.state.checkedMissions} selectField={'id'} {...this.props}>
 					<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Создать шаблон задания</Button>
 					<Button bsSize="small" onClick={this.createMissions.bind(this)} disabled={Object.keys(this.state.checkedMissions).length === 0}>Сформировать задание</Button>
-					<Button bsSize="small" onClick={this.showMission.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="search" /> Просмотреть шаблон</Button>
-					<Button bsSize="small" disabled={this.state.selectedElement === null} onClick={this.removeElement.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
+					<Button bsSize="small" onClick={this.showMission.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="search" /> Просмотреть</Button>
+					<Button bsSize="small" onClick={this.copyElement.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="copy" /> Копировать</Button>
+					<Button bsSize="small" onClick={this.removeElement.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="remove" /> Удалить</Button>
 				</MissionsTable>
 				<MissionTemplateFormWrap onFormHide={this.onFormHide.bind(this)}
 																 showForm={this.state.showForm}

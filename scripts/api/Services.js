@@ -52,8 +52,6 @@ let getUrl = (d) => d;
 export const POINTS_URL                = getUrl('/data');
 export const WEATHER_URL               = getUrl('/weather/');
 export const GEO_OBJECTS_URL           = getUrl('/geo_objects/');
-export const ROADS_ACTUAL_URL          = getUrl('/roads_actual/');
-export const GET_ROAD_BY_ODH_URL       = getUrl('/road_info/');
 export const LOGIN_URL                 = getUrl('/auth/');
 export const AUTH_CHECK_URL            = getUrl('/auth_check');
 export const ODHS_URL                  = getUrl('/odh/');

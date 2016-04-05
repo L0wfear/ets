@@ -34,10 +34,14 @@ export default class DatePicker extends Component {
 
     if (typeof min === 'string') {
       min = moment(min).toDate();
+    } else if (typeof min === 'undefined' || min === null) {
+      min = new Date(1900, 0, 1);
     }
 
     if (typeof max === 'string') {
       max = moment(max).toDate();
+    } else if (typeof max === 'undefined' || max === null){
+      max = new Date(2099, 11, 31);
     }
 
     //return //<input disabled={this.props.disabled}/>

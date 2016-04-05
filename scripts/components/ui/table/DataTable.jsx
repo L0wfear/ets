@@ -21,6 +21,8 @@ class Table extends React.Component {
       checkedRows: {},
       globalCheckboxState: false,
       isHierarchical: props.isHierarchical,
+      initialSort: 'id',
+      initialSortAscending: true
     };
   }
 
@@ -74,13 +76,9 @@ class Table extends React.Component {
     event.stopPropagation();
   }
 
-  initializeMetadata(tableMeta = { cols: [] }, renderers = {}) {
-    let { enumerated = true } = this.props;
+  initializeMetadata(tableMetaCols = [], renderers = {}) {
 
-    if (enumerated === true) {
-    }
-
-  	const metadata = _.reduce(tableMeta.cols, (cur, col, i) => {
+  	const metadata = _.reduce(tableMetaCols, (cur, col, i) => {
 
       if (col.display === false) {
         return cur;
@@ -125,8 +123,12 @@ class Table extends React.Component {
   }
 
   shouldBeRendered(obj) {
+    // Здесь проводится проверка на то, фильтруется ли объект
+    // если в результате isValid === false, то объект не рендерится в таблице
+    // проверка берется по this.state.filterValues
     let isValid = true;
     _.mapKeys(this.state.filterValues, (value, key) => {
+
       if (key.indexOf('date') > -1 && !_.isArray(value)) {
         if (moment(obj[key]).format('YYYY-MM-DD') !== value) {
           isValid = false;
@@ -152,6 +154,7 @@ class Table extends React.Component {
           isValid = false;
         }
       }
+
     });
 
     return isValid;
@@ -176,6 +179,15 @@ class Table extends React.Component {
            .value();
   }
 
+  componentWillMount() {
+    // Здесь производится инициализация начальной сортировки для того,
+    // чтобы гриддл мог корректно отобразить хедер при первом рендеринге
+    // важно устанавливать сортировку именно в willMount!
+    let { initialSort = 'id', initialSortAscending = true } = this.props;
+
+    this.setState({initialSort, initialSortAscending});
+  }
+
   componentDidMount() {
     if (this.props.filterValues) {
       this.setState({filterValues: this.props.filterValues});
@@ -189,6 +201,19 @@ class Table extends React.Component {
       let el = document.getElementById('checkedColumn');
       if (el) el.checked = checked;
     }
+
+    let { initialSort, initialSortAscending } = this.state;
+
+
+    if (props.initialSort && props.initialSort !== this.state.initialSort) {
+      initialSort = props.initialSort;
+    }
+
+    if (props.initialSortAscending && props.initialSortAscending !== this.state.initialSortAscending) {
+      initialSortAscending = props.initialSortAscending;
+    }
+
+    this.setState({initialSort, initialSortAscending});
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -197,32 +222,46 @@ class Table extends React.Component {
     return !_.isEqual(nextProps.results, this.props.results);
   }
 
-  render() {
-    const { tableMeta, renderers, onRowSelected, selected, selectField, checked = {}, title = '', initialSort = 'id', initialSortAscending = true, multiSelection = false, noFilter, enumerated = true } = this.props;
+  handleChangeSort(sortingColumnName, ascendingSort) {
+    console.log(sortingColumnName, ascendingSort);
+    this.setState({
+      initialSort: sortingColumnName,
+      initialSortAscending: ascendingSort,
+    })
+  }
 
-    let tableCols = tableMeta.cols.filter(c => c.display !== false).map(c => c.name);
+  render() {
+    const { tableMeta, renderers, onRowSelected, selected, selectField, checked = {}, title = '', multiSelection = false, noFilter, enumerated = true } = this.props;
+    const { initialSort, initialSortAscending } = this.state;
+
+    let tableMetaCols = _.cloneDeep(tableMeta.cols);
+    let tableCols = tableMetaCols.filter(c => c.display !== false).map(c => c.name);
     let data = _.cloneDeep(this.props.results);
 
     if (multiSelection) {
       tableCols = ['isChecked', ...tableCols];
     }
-    if (enumerated === true) {
+
+    let results = this.processTableData(data, selected, selectField, onRowSelected);
+    if (enumerated === true && !this.state.isHierarchical) {
       tableCols = ['rowNumber', ...tableCols];
-      tableMeta.cols = [{
+      tableMetaCols = [{
         name: 'rowNumber',
         caption: '№',
-        cssClassName: 'width60'
-      }, ...tableMeta.cols];
-      data = _(data).sortBy(initialSort).value();
-      if (!initialSortAscending) {
-        data.reverse();
-      }
-      _.each(data, (el, index) => el.rowNumber = index + 1);
+        cssClassName: 'width60',
+        filter: false
+      }, ...tableMetaCols];
+      // results = _.sortBy(results, r => r[initialSort]);//.sortBy(initialSort).value();
+      //
+      // if (!initialSortAscending) {
+      //   results.reverse();
+      // }
+      //
+      // _.each(results, (el, index) => el.rowNumber = index + 1);
     }
-    const columnMetadata = this.initializeMetadata(tableMeta, renderers);
-		const rowMetadata = this.initializeRowMetadata();
 
-    const results = this.processTableData(data, selected, selectField, onRowSelected);
+    const columnMetadata = this.initializeMetadata(tableMetaCols, renderers);
+		const rowMetadata = this.initializeRowMetadata();
 
     return (
       <Div className="data-table">
@@ -236,7 +275,7 @@ class Table extends React.Component {
                       onHide={this.closeFilter.bind(this)}
                       active={_.keys(this.state.filterValues).length}
                       values={this.state.filterValues}
-                      options={this.props.tableMeta.cols}
+                      options={tableMetaCols.filter(el => el.filter !== false)}
                       tableData={this.props.results}
                       disabled={this.props.isHierarchical}
                       active={_.keys(this.state.filterValues).length}
@@ -252,6 +291,7 @@ class Table extends React.Component {
 								 columns={tableCols}
 								 resultsPerPage={15}
 								 useCustomPagerComponent={true}
+                 externalChangeSort={this.handleChangeSort.bind(this)}
 								 customPagerComponent={this.props.serverPagination ? <Div/> : Paginator}
 								 onRowClick={onRowSelected}
 							   rowMetadata={rowMetadata}

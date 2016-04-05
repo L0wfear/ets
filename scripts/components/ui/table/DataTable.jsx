@@ -75,6 +75,10 @@ class Table extends React.Component {
   }
 
   initializeMetadata(tableMeta = { cols: [] }, renderers = {}) {
+    let { enumerated = true } = this.props;
+
+    if (enumerated === true) {
+    }
 
   	const metadata = _.reduce(tableMeta.cols, (cur, col, i) => {
 
@@ -194,14 +198,29 @@ class Table extends React.Component {
   }
 
   render() {
-    const { tableMeta, renderers, onRowSelected, selected, selectField, checked = {}, title = '', initialSort = 'id', initialSortAscending = true, multiSelection = false, noFilter } = this.props;
+    const { tableMeta, renderers, onRowSelected, selected, selectField, checked = {}, title = '', initialSort = 'id', initialSortAscending = true, multiSelection = false, noFilter, enumerated = true } = this.props;
+
     let tableCols = tableMeta.cols.filter(c => c.display !== false).map(c => c.name);
+    let data = _.cloneDeep(this.props.results);
+
     if (multiSelection) {
       tableCols = ['isChecked', ...tableCols];
     }
+    if (enumerated === true) {
+      tableCols = ['rowNumber', ...tableCols];
+      tableMeta.cols = [{
+        name: 'rowNumber',
+        caption: '№',
+        cssClassName: 'width60'
+      }, ...tableMeta.cols];
+      data = _(data).sortBy(initialSort).value();
+      if (!initialSortAscending) {
+        data.reverse();
+      }
+      _.each(data, (el, index) => el.rowNumber = index + 1);
+    }
     const columnMetadata = this.initializeMetadata(tableMeta, renderers);
 		const rowMetadata = this.initializeRowMetadata();
-    const data = _.cloneDeep(this.props.results);
 
     const results = this.processTableData(data, selected, selectField, onRowSelected);
 

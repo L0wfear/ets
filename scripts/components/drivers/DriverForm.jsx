@@ -8,7 +8,6 @@ import Div from '../ui/Div.jsx';
 import Field from '../ui/Field.jsx';
 import Form from '../compositions/Form.jsx';
 
-const DRIVER_STATES = ['Работает', 'Не работает'].map( el => ({value: +!!(el.indexOf(' ') === -1), label: el}));
 
 class DriverForm extends Form {
 
@@ -21,13 +20,6 @@ class DriverForm extends Form {
 		}
 	}
 
-	handleChange(field, e) {
-		if (field === 'active') {
-			e = !!e;
-		}
-		this.props.handleFormChange(field, e);
-	}
-
 	async componentDidMount() {
 		let companyStructureList = await this.context.flux.getActions('company-structure').getLinearCompanyStructureForUser();
 		this.setState({companyStructureList});
@@ -37,9 +29,10 @@ class DriverForm extends Form {
 
 		let state = this.props.formState;
 		const { carsList = [] } = this.props;
+		const { companyStructureList = [] } = this.state;
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: `${c.gov_number} [${c.model_name}]`}));
-		let { companyStructureList = [] } = this.state;
-		let COMPANY_ELEMENTS = companyStructureList.map(el => ({value: el.id, label: el.name}));
+		const COMPANY_ELEMENTS = companyStructureList.map(el => ({value: el.id, label: el.name}));
+		const DRIVER_STATES = [{value: 1, label: 'Работает'}, {value: 0, label: 'Не работает'}];
 
     console.log('form state is ', state);
 

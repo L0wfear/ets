@@ -106,13 +106,7 @@ class DriversList extends ElementsList {
 	render() {
 
 		const { driversList = [] } = this.props;
-		// const drivers = driversList.map( (d) => {
-		// 	return {
-		// 		value: d.id,
-		// 		label: `${d.last_name} ${d.first_name} ${d.middle_name}`,
-		// 	}
-		// });
-
+    
 		return (
 			<div className="ets-page-wrap">
 				<DriversTable data={driversList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'}>

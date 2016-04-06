@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Link, History } from 'react-router';
+import { Link } from 'react-router';
 import { MenuItem, Navbar, Nav, NavItem, NavDropdown} from 'react-bootstrap';
-import fluxMixin from 'flummox/mixin';
 import LoadingOverlay from './LoadingOverlay.jsx';
 
 export default class MainPage extends React.Component {
@@ -13,7 +12,7 @@ export default class MainPage extends React.Component {
       user: {
         login: 'Пользователь'
       }
-    }
+    };
   }
 
   static contextTypes = {

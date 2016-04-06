@@ -192,6 +192,7 @@ class WaybillForm extends Form {
 		const FUEL_TYPES = fuelTypes.map(({ID, NAME}) => ({value: ID, label: NAME}));
 		const DRIVERS = driversList.map( d => ({value: d.id, label: `[${d.personnel_number}] ${d.last_name} ${d.first_name} ${d.middle_name}`}));
 		const MASTERS = employeesList.filter( e => [2, 4, 5, 7, 14].indexOf(e.position_id) > -1).map( m => ({value: m.id, data: m, label: `${m.last_name} ${m.first_name} ${m.middle_name}`}));
+    const MISSIONS = missionsList.map( ({id, number, technical_operation_name}) => ({value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false}));
 
     console.log('form state is ', state);
 
@@ -222,11 +223,6 @@ class WaybillForm extends Form {
     if (IS_POST_CREATING) {
       title = "Создание нового путевого листа"
     }
-
-    const MISSIONS = missionsList.map( ({id, number, technical_operation_id}) => {
-			const techOperation = getTechOperationById(technical_operation_id);
-			return {value: id, label: `№${number} (${techOperation.name})`, clearableValue: false};
-		});
 
 		return (
 			<Modal {...this.props} bsSize="large">

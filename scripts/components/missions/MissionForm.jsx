@@ -194,8 +194,6 @@ export class MissionForm extends Form {
 		let route = this.state.selectedRoute;
 		let odh_list = route ? route.odh_list || route.object_list : [];
 
-		console.log(this.props.waybillStartDate);
-
 		return (
 			<Modal {...this.props} bsSize="large">
 

@@ -102,23 +102,8 @@ class ODHDirectory extends ElementsList {
 
   constructor(props) {
     super(props);
-
-    // this.state = {
-    //   selectedElement: null,
-    //   filterModalIsOpen: false,
-    //   filterValues: {},
-    //   showForm: false,
-    // };
-
     this.mainListName = 'odhsList';
   }
-
-  // selectODH({props}) {
-  //   const id = props.data.id;
-  //   let selectedODH = _.find(this.props.ODHsList, to => to.id === id) || null;
-  //   this.setState({selectedODH});
-  // }
-
 
   componentDidMount() {
     const { flux } = this.context;
@@ -127,8 +112,6 @@ class ODHDirectory extends ElementsList {
 
   render() {
     const { odhsList = [] } = this.props;
-
-    console.log(odhsList);
 
     return (
       <div className="ets-page-wrap">

@@ -24,15 +24,13 @@ export function waybillMissionsCompleteStatusLabelFunction(status) {
 
 
 // обращений к сторам быть не должно, нужно получать данные из бека
-export function employeeFIOLabelFunction(employeeId) {
-	let result = '';
+export function employeeFIOLabelFunction(employeeId, fullFlag = false) {
 	const { flux } = window.__ETS_CONTAINER__;
   const employeesStore = flux.getStore('employees');
 	const employee = employeesStore.getEmployeeById(employeeId);
-	if (employee) {
-		if (employee.last_name && employee.first_name && employee.middle_name)
-		result = employee.last_name + ' ' + employee.first_name[0]+ '.' + employee.middle_name[0] + '.';
-	}
+  if (!employee) return '';
+  let result = employee.last_name + ' ';
+	result += fullFlag ? `${employee.first_name} ${employee.middle_name}` : `${employee.first_name[0]}. ${employee.middle_name[0]}.`;
 
 	return result;
 }

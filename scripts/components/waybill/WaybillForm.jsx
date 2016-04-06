@@ -13,21 +13,7 @@ import { createValidDateTime } from 'utils/dates';
 import Form from '../compositions/Form.jsx';
 import MissionFormWrap from '../missions/MissionFormWrap.jsx';
 import { getDefaultMission } from '../../stores/MissionsStore.js';
-
-
-let getTechOperationById = (id) => {
-  const { flux } = window.__ETS_CONTAINER__;
-  const objectsStore = flux.getStore('objects');
-  return objectsStore.getTechOperationById(id);
-};
-
-let getFIOById = (employees, id, fullFlag = false) => {
-	const employee = _.find(employees, d => d.id === id) || null;
-	if (!employee) return '';
-	let result = employee.last_name + ' ';
-	result += fullFlag ? `${employee.first_name} ${employee.middle_name}` : `${employee.first_name[0]}. ${employee.middle_name[0]}.`;
-	return result;
-}
+import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 
 let getCarById = (cars, id) => {
 	const car = _.find(cars, c => c.asuods_id === id) || {};
@@ -37,15 +23,10 @@ let getCarById = (cars, id) => {
 	return car;
 };
 
-let getMissionFilterStatus = (formState) => {
-  let missionsFilterStatus = '';
-  if (formState.status === 'draft' || formState.status === 'closed' || formState.status === 'active') {
-    missionsFilterStatus = undefined;
-  } else {
-    missionsFilterStatus = 'not_assigned';
-  }
-  return missionsFilterStatus;
-};
+// возвращает статусы задания, которые мы будем искать, в зависимости от статуса ПЛ
+// если у ПЛ нет статуса, то нужны исключительно неназначенные задания!
+let getMissionFilterStatus = (formState) => !!formState.status ? undefined : 'not_assigned';
+
 
 class WaybillForm extends Form {
 
@@ -67,11 +48,21 @@ class WaybillForm extends Form {
     const { formState } = this.props;
     if (field === 'plan_arrival_date') {
   	  this.props.handleFormChange('mission_id_list', []);
-    	flux.getActions('missions').getMissionsByCarAndDates(formState.car_id, createValidDateTime(formState.plan_departure_date), createValidDateTime(e), getMissionFilterStatus(formState));
+    	flux.getActions('missions').getMissionsByCarAndDates(
+        formState.car_id,
+        createValidDateTime(formState.plan_departure_date),
+        createValidDateTime(e),
+        getMissionFilterStatus(formState)
+      );
     }
     if (field === 'plan_departure_date') {
   	  this.props.handleFormChange('mission_id_list', []);
-    	flux.getActions('missions').getMissionsByCarAndDates(formState.car_id, createValidDateTime(e), createValidDateTime(formState.plan_arrival_date), getMissionFilterStatus(formState));
+    	flux.getActions('missions').getMissionsByCarAndDates(
+        formState.car_id,
+        createValidDateTime(e),
+        createValidDateTime(formState.plan_arrival_date),
+        getMissionFilterStatus(formState)
+      );
     }
 	}
 
@@ -241,7 +232,7 @@ class WaybillForm extends Form {
 										 onChange={this.handleChange.bind(this, 'responsible_person_id')}/>
 
 							<Field type="string" label="Ответственное лицо" readOnly={true} hidden={IS_CREATING || IS_POST_CREATING || !state.responsible_person_id}
-										 value={getFIOById(employeesList, state.responsible_person_id, true)}/>
+										 value={employeeFIOLabelFunction(state.responsible_person_id, true)}/>
               <Field type="string" label="Ответственное лицо" readOnly={true} hidden={IS_CREATING || IS_POST_CREATING || state.responsible_person_id}
  										 value={'Не указано'}/>
 						</Col>
@@ -284,7 +275,7 @@ class WaybillForm extends Form {
 										 onChange={this.onDriverChange.bind(this)}/>
 
 							<Field type="string" label="Водитель" readOnly={true} hidden={IS_CREATING || IS_POST_CREATING}
-										 value={getFIOById(driversList, state.driver_id, true)}/>
+										 value={employeeFIOLabelFunction(state.driver_id, true)}/>
 	          </Col>
 	      		<Col md={6}>
 							<Field type="select" label="Транспортное средство (поиск по госномеру)" error={errors['car_id']}

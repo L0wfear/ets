@@ -23,7 +23,7 @@ class EmployeeStore extends Store {
 	}
 
   getEmployeeById(id) {
-    return _.find(this.state.employeesList, e => e.id === id) || {};
+    return _.find(this.state.employeesList, e => e.id === id);
   }
 
 }

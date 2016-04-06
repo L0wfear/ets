@@ -21,7 +21,9 @@ class DriverForm extends Form {
 	}
 
 	async componentDidMount() {
-		let companyStructureList = await this.context.flux.getActions('company-structure').getLinearCompanyStructureForUser();
+		const { flux } = this.context;
+		flux.getActions('objects').getCars();
+		let companyStructureList = await flux.getActions('company-structure').getLinearCompanyStructureForUser();
 		this.setState({companyStructureList});
 	}
 
@@ -39,7 +41,7 @@ class DriverForm extends Form {
 		return (
 			<Modal {...this.props} bsSize="large" >
 				<Modal.Header closeButton>
-	          <Modal.Title id="contained-modal-title-lg">Изменение сотрудника {/*`${state['Фамилия']} ${state['Имя']} ${state['Отчество']}`*/}</Modal.Title>
+	          <Modal.Title id="contained-modal-title-lg">Изменение сотрудника</Modal.Title>
 				</Modal.Header>
 
 	      <Modal.Body>

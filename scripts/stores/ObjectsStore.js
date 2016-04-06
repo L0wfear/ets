@@ -23,6 +23,8 @@ class ObjectsStore extends Store {
     this.register(objectsActions.getWorkKinds, this.handleGetWorkKinds);
     this.register(objectsActions.getODHs, this.handleGetODHs);
     this.register(objectsActions.updateODH, this.handleGetODHs);
+    this.register(objectsActions.getDTs, this.handleGetDTs);
+    this.register(objectsActions.updateDT, this.handleGetDTs);
     this.register(objectsActions.getFaxogramms, this.handleGetFaxogramms);
     this.register(objectsActions.getCarFuncTypes, this.handleGetCarFuncTypes);
     this.register(companyStructreActions.getCompanyStructure, this.handleGetCompanyStructure);
@@ -144,6 +146,10 @@ class ObjectsStore extends Store {
 
   handleGetODHs(odhs) {
     this.setState({odhsList: odhs.result});
+  }
+
+  handleGetDTs(dts) {
+    this.setState({dtsList: dts.result});
   }
 
   handleGetFaxogramms(faxogramms) {

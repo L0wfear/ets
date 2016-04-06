@@ -7,7 +7,7 @@ import { loadTypes } from './types.js';
 import { getServerErrorNotification } from 'utils/notifications';
 
 export function getUrl(url) {
-  return config.backend ? config.backend + url : url
+  return config.backend ? config.backend + url : url;
 }
 
 let getOldUrl = (url) => config.backendOld ? config.backendOld + url : url;

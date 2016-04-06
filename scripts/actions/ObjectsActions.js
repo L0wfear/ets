@@ -14,7 +14,8 @@ import { FaxogrammService,
          CustomersService,
          TypesService,
          CarFuncTypeService,
-         ODHService } from 'api/Services';
+         ODHService,
+         DTService } from 'api/Services';
 
 export default class ObjectsActions extends Actions {
 
@@ -56,6 +57,10 @@ export default class ObjectsActions extends Actions {
     return ODHService.get();
   }
 
+  getDTs() {
+    return DTService.get();
+  }
+
   getWorkKinds() {
     return WorkKindsService.get();
   }
@@ -82,6 +87,16 @@ export default class ObjectsActions extends Actions {
     };
 
     return ODHService.put(payload);
+  }
+
+  updateDT(formState) {
+
+    const payload = {
+      id: formState.id,
+      company_structure_id: formState.company_structure_id || null,
+    };
+
+    return DTService.put(payload);
   }
 
 }

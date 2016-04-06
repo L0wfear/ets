@@ -4,7 +4,7 @@ import { Button, Glyphicon } from 'react-bootstrap';
 import cx from 'classnames';
 import connectToStores from 'flummox/connect';
 import ElementsList from '../ElementsList.jsx';
-import OdhFormWrap from './odh/OdhFormWrap.jsx';
+import DtFormWrap from './dt/DtFormWrap.jsx';
 
 let getTableMeta = (props) => {
   let tableMeta = {
@@ -74,7 +74,7 @@ let getTableMeta = (props) => {
 
 
 
-let ODHTable = (props) => {
+let DTTable = (props) => {
 
   const renderers = {
     name: ({data}) => <div>{data.toString()}</div>,
@@ -89,7 +89,7 @@ let ODHTable = (props) => {
     gutters_length: ({data}) => <div>{data.toString() + ' п.м'}</div>
   };
 
-  return <Table title="Реестр ОДХ"
+  return <Table title="Реестр ДТ"
                 results={props.data}
                 tableMeta={getTableMeta(props)}
                 renderers={renderers}
@@ -97,30 +97,30 @@ let ODHTable = (props) => {
                 {...props}/>;
 };
 
-class ODHDirectory extends ElementsList {
+class DTDirectory extends ElementsList {
 
 
   constructor(props) {
     super(props);
-    this.mainListName = 'odhsList';
+    this.mainListName = 'dtsList';
   }
 
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
-    flux.getActions('objects').getODHs();
+    flux.getActions('objects').getDTs();
   }
 
   render() {
-    const { odhsList = [] } = this.props;
+    const { dtsList = [] } = this.props;
 
     return (
       <div className="ets-page-wrap">
-        <ODHTable data={odhsList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'} {...this.props}>
+        <DTTable data={dtsList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'} {...this.props}>
           <Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}> Просмотреть</Button>
-        </ODHTable>
-        <OdhFormWrap onFormHide={this.onFormHide.bind(this)}
-										 showForm={this.state.showForm}
+        </DTTable>
+        <DtFormWrap onFormHide={this.onFormHide.bind(this)}
+            showForm={this.state.showForm}
 										 element={this.state.selectedElement}
 										 {...this.props}/>
       </div>
@@ -128,8 +128,8 @@ class ODHDirectory extends ElementsList {
   }
 }
 
-ODHDirectory.contextTypes = {
+DTDirectory.contextTypes = {
   flux: React.PropTypes.object,
 };
 
-export default connectToStores(ODHDirectory, ['objects']);
+export default connectToStores(DTDirectory, ['objects']);

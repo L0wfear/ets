@@ -19,6 +19,7 @@ export const EMPLOYEE_URL              = getUrl('/employee/');
 export const FUEL_TYPES_URL            = getUrl('/fuel_type/');
 export const TECH_OPERATIONS_URL       = getUrl('/technical_operation/');
 export const ODHS_URL                  = getUrl('/odh/');
+export const DTS_URL                   = getUrl('/dt/');
 export const WORK_KINDS_URL            = getUrl('/work_kind/');
 export const MISSIONS_URL              = getUrl('/mission/');
 export const MISSIONS_CREATION_URL     = getUrl('/create_missions_from_mission_templates/');

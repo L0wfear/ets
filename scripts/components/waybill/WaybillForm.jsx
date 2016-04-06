@@ -154,7 +154,7 @@ class WaybillForm extends Form {
   }
 
   createMission() {
-    let newMission = getDefaultMission();
+    let newMission = getDefaultMission(this.props.formState.plan_departure_date, this.props.formState.plan_arrival_date);
     newMission.car_id = this.props.formState.car_id;
     this.setState({showMissionForm: true, selectedMission: newMission});
   }

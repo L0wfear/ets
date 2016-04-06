@@ -5,14 +5,9 @@ import DriverForm from './DriverForm.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';
 
 class DriverFormWrap extends FormWrap {
+
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			formState: null,
-			canSave: false,
-			canPrint: false
-		}
 	}
 
 	componentWillReceiveProps(props) {
@@ -21,7 +16,7 @@ class DriverFormWrap extends FormWrap {
 			if (props.driver !== null ) {
         const driver = Object.assign({}, props.driver);
         this.setState({
-          formState: driver,
+          formState: driver
         })
 			}
 		}

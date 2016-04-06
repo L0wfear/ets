@@ -99,14 +99,15 @@ class DriversList extends ElementsList {
     this.mainListName = 'driversList';
 	}
 
-  init() {
+  componentDidMount() {
+    super.componentDidMount();
     this.context.flux.getActions('employees').getEmployees();
   }
 
 	render() {
 
 		const { driversList = [] } = this.props;
-    
+
 		return (
 			<div className="ets-page-wrap">
 				<DriversTable data={driversList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'}>

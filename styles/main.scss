@@ -3225,3 +3225,12 @@ div.none {
     line-height: 30px;
     z-index: 300;
 }
+
+.filter-container-window {
+  overflow-y: scroll;
+  overflow-x: auto;
+}
+
+.filter-footer {
+  padding: 15px 5px;
+}

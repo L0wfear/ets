@@ -102,11 +102,11 @@ class MissionsStore extends Store {
 
 export default MissionsStore;
 
-export function getDefaultMission() {
+export function getDefaultMission(date_start = getToday9am(), date_end = getTomorrow9am()) {
   return {
     description: "",
-    date_start: getToday9am(),
-    date_end: getTomorrow9am(),
+    date_start,
+    date_end,
     mission_source_id: 3,
     passes_count: 1,
   };

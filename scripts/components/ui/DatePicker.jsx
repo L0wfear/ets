@@ -1,27 +1,23 @@
 import React, { Component } from 'react';
-//import { findDOMNode } from 'react-dom';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 import moment from 'moment';
 import localizer from 'react-widgets/lib/localizers/moment';
+localizer( moment );
+
 //import rome from 'rome';
 //import 'globalize/lib/cultures/globalize.culture.ru-RU';
 //import 'globalize';
 //
-localizer( moment );
 
 export default class DatePicker extends Component {
+
   constructor(props) {
     super(props);
   }
 
- /* componentDidMount() {
-    let element = findDOMNode(this);
-
-    let romeObj = rome(element);
-    romeObj.setValue(this.props.date)
-
-   // debugger;
-  }*/
+  shouldComponentUpdate(props, state) {
+    return props.date !== this.props.date;
+  }
 
   render() {
     let { time = true, date, disabled, min, max } = this.props;

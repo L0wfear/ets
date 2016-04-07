@@ -92,7 +92,7 @@ let DriversTable = (props) => {
 		special_license : ({data}) => <div>{data && data !== "None" && data !== 'null' ? data : ''}</div>,
 	};
 
-	return <Table title='Реестр сотрудников "Жилищник Крылатское"'
+	return <Table title='Реестр сотрудников'
                 results={props.data}
 								tableMeta={tableMeta}
 								renderers={renderers}
@@ -126,8 +126,7 @@ class DriversList extends ElementsList {
         </DriversTable>
 				<DriverFormWrap onFormHide={this.onFormHide.bind(this)}
 												showForm={this.state.showForm}
-												driver={this.state.selectedElement}
-                        />
+												driver={this.state.selectedElement} />
 			</div>
 		)
 	}

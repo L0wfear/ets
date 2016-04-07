@@ -70,7 +70,7 @@ class DriverForm extends Form {
   	      	</Div>
             <Div>
   	      		<label>Дата рождения</label>
-              <Datepicker date={new Date(state['birthday'])} time={false} onChange={this.handleChange.bind(this, 'birthday')}/>
+              <Datepicker date={state['birthday']} time={false} onChange={this.handleChange.bind(this, 'birthday')}/>
   	      	</Div>
             <Div>
               <label>Телефон</label>

@@ -146,13 +146,16 @@ export class DutyMissionForm extends Form {
 		let errors = this.props.formErrors;
     console.info('FORM STATE IS', state);
 
+    const EMPLOYEES_RKU_FILTER = 'brigade_worker';
+
 		const { missionSourcesList = [], employeesList = [], missionsList = [] } = this.props;
     const { technicalOperationsList = [], routesList = [] } = this.state;
 
     const TECH_OPERATIONS = technicalOperationsList.map(({id, name}) => ({value: id, label: name}));
     const MISSION_SOURCES = missionSourcesList.map(({id, name}) => ({value: id, label: name}));
     const ROUTES = routesList.map(({id, name}) => ({value: id, label: name}));
-    const EMPLOYEES = employeesList.map( d => ({value: d.id, label: `${d.last_name} ${d.first_name} ${d.middle_name}`}));
+    const EMPLOYEES = employeesList.filter(d => d.position_key == EMPLOYEES_RKU_FILTER)
+      .map( d => ({value: d.id, label: `${d.last_name} ${d.first_name} ${d.middle_name}`}));
     const MISSIONS = missionsList.map( ({id, number, technical_operation_id}) => {
 			const techOperation = getTechOperationById(technical_operation_id);
 			return {id, value: id, label: `№${number} (${techOperation.name})`};

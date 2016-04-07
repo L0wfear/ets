@@ -146,12 +146,12 @@ class FilterModal extends React.Component {
           <Modal.Body>
             {filterRows}
           </Modal.Body>
-
-          <Modal.Footer>
-            <Button onClick={this.submit.bind(this)}>Применить</Button>
-            <Button onClick={this.reset.bind(this)}>Сброс</Button>
-          </Modal.Footer>
         </Div>
+
+        <div className="filter-footer">
+          <Button onClick={this.submit.bind(this)}>Применить</Button>
+          <Button onClick={this.reset.bind(this)}>Сброс</Button>
+        </div>
       </Div>
     );
 

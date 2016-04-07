@@ -108,10 +108,12 @@ let CarsTable = (props) => {
 	};
 
 	return <Table title='Покрытие ОДХ маршрутами'
-								tableMeta={tableMeta}
-								results={props.data}
-								renderers={renderers}
-								{...props} />
+      tableMeta={tableMeta}
+      results={props.data}
+      renderers={renderers}
+      initialSort={tableMeta.name}
+      initialSortAscending={false}
+      {...props} />
 
 }
 
@@ -154,10 +156,10 @@ class RouteLaunchReports extends Component {
 
 		return (
 			<div className="ets-page-wrap">
-      <Div className="route-report-panel">
-        <Button bsSize="small" onClick={this.createRouteReport.bind(this)}>Сформировать отчет</Button>
-        <EtsSelect options={TECH_OPERATIONS} value={this.state.generationType} onChange={this.handleGenerationTypeChange.bind(this)} />
-      </Div>
+        <Div className="route-report-panel">
+          <Button bsSize="small" onClick={this.createRouteReport.bind(this)}>Сформировать отчет</Button>
+          <EtsSelect options={TECH_OPERATIONS} value={this.state.generationType} onChange={this.handleGenerationTypeChange.bind(this)} />
+        </Div>
 				<CarsTable data={reportsList} onRowSelected={this.onReportSelect.bind(this)}>
 				</CarsTable>
 			</div>

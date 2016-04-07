@@ -5,6 +5,10 @@ export function dateLabelFunction(date) {
   return getFormattedDateTime(date);
 }
 
+export function datePickerFunction(date) {
+  return date;
+}
+
 export function waybillStatusLabelFunction(s) {
 	switch (s) {
 		case 'draft':

@@ -9,6 +9,7 @@ import ElementsList from '../ElementsList.jsx';
 import moment from 'moment';
 import cx from 'classnames';
 import { dateLabelFunction,
+				 datePickerFunction,
 				 employeeFIOLabelFunction,
 				 getCarByIdLabelFunction,
 				 waybillStatusLabelFunction,
@@ -48,8 +49,8 @@ let getTableMeta = (props) => {
 				caption: 'Дата выдачи',
 				type: 'date',
 				filter: {
-					type: 'select',
-					labelFunction: dateLabelFunction
+					type: 'date_create',
+					labelFunction: datePickerFunction
 				}
 			},
 			{
@@ -75,8 +76,8 @@ let getTableMeta = (props) => {
 				caption: 'Выезд факт',
 				type: 'date',
 				filter: {
-					type: 'select',
-					labelFunction: dateLabelFunction
+					type: 'date_create',
+					labelFunction: datePickerFunction
 				}
 			},
 			{
@@ -84,8 +85,8 @@ let getTableMeta = (props) => {
 				caption: 'Возвращение факт',
 				type: 'date',
 				filter: {
-					type: 'select',
-					labelFunction: dateLabelFunction
+					type: 'date_create',
+					labelFunction: datePickerFunction
 				}
 			},
 			{

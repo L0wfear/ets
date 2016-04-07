@@ -49,6 +49,9 @@ const Filter = (props) => {
       </Div>
     );
   }
+  if (option.filter && option.filter.type && option.filter.type === 'date_create' && !option.filter.options) {
+    input = <Datepicker date={value} onChange={props.onChange} time={false} />;
+  }
 
 
   return (

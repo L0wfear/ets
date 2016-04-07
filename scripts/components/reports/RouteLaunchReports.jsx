@@ -111,7 +111,7 @@ let CarsTable = (props) => {
       tableMeta={tableMeta}
       results={props.data}
       renderers={renderers}
-      initialSort={tableMeta.name}
+      initialSort={tableMeta.cols[2].name}
       initialSortAscending={false}
       {...props} />
 

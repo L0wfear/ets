@@ -78,7 +78,7 @@ let getTableMeta = (props) => {
 				caption: 'Начало план.',
 				type: 'date',
 				filter: {
-					type: 'date_create',
+					type: 'date_interval',
 					labelFunction: datePickerFunction
 				},
 			},
@@ -87,7 +87,7 @@ let getTableMeta = (props) => {
 				caption: 'Завершение план.',
 				type: 'date',
 				filter: {
-					type: 'date_create',
+					type: 'date_interval',
 					labelFunction: datePickerFunction
 				},
 			},

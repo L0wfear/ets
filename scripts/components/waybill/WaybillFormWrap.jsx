@@ -49,6 +49,7 @@ class WaybillFormWrap extends Component {
 			formState: null,
 			formErrors: {},
 			canSave: false,
+			canClose: false,
 			canPrint: false
 		};
 	}
@@ -61,6 +62,7 @@ class WaybillFormWrap extends Component {
 				this.setState({
 					formState: defaultBill,
 					canSave: false,
+					canClose: false,
 					canPrint: false,
 					formErrors: validateWaybill(defaultBill, {}),
 				})
@@ -77,7 +79,8 @@ class WaybillFormWrap extends Component {
 						formState: waybill,
 						formErrors: validateClosingWaybill(waybill, {}),
 						canPrint: false,
-						canSave: ! !!_.filter(validateClosingWaybill(waybill, {})).length,
+						canSave: ! !!_.filter(validateClosingWaybill(waybill, {}), (a,b) => {b != 'fuel_end'}).length,
+						canClose: ! !!_.filter(validateClosingWaybill(waybill, {})).length,
 					});
 
 				} else if (props.element.status === 'draft') {
@@ -86,6 +89,7 @@ class WaybillFormWrap extends Component {
 						formState: waybill,
 						canPrint: true,
 						canSave: ! !!_.filter(validateWaybill(waybill, {})).length,
+						canClose: ! !!_.filter(validateWaybill(waybill, {})).length,
 						formErrors: validateWaybill(waybill, {})
 					});
 
@@ -132,7 +136,8 @@ class WaybillFormWrap extends Component {
 		}
 
 		// /validation
-		newState.canSave = _(formErrors).map(v => !!v).filter(e => e === true).value().length === 0;
+		newState.canSave = _(formErrors).map(v => !!v).filter(e => e === true).filter((a,b) => {b != 'fuel_end'}).value().length === 0;
+		newState.canClose = _(formErrors).map(v => !!v).filter(e => e === true).value().length === 0;
 
 		if (field === 'odometr_end' && formState.status) {
 			formState.odometr_diff = formState.odometr_end - formState.odometr_start;

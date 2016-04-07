@@ -219,22 +219,22 @@ class WaybillForm extends Form {
 			<Modal {...this.props} bsSize="large">
 
 				<Modal.Header closeButton>
-	          <Modal.Title id="contained-modal-title-lg">{title} { IS_POST_CREATING && '(возможна корректировка)'} { (IS_DISPLAY || IS_CLOSING) && `№ ${state.number}`}</Modal.Title>
+					<Modal.Title id="contained-modal-title-lg">{title} { IS_POST_CREATING && '(возможна корректировка)'} { (IS_DISPLAY || IS_CLOSING) && `№ ${state.number}`}</Modal.Title>
 				</Modal.Header>
 
 	      <Modal.Body>
 					<Row>
 						<Col md={6}>
 							<Field type="select" label="Ответственное лицо" error={errors['responsible_person_id']}
-										 hidden={!(IS_CREATING || IS_POST_CREATING)}
-										 options={MASTERS}
-										 value={state.responsible_person_id}
-										 onChange={this.handleChange.bind(this, 'responsible_person_id')}/>
+									hidden={!(IS_CREATING || IS_POST_CREATING)}
+									options={MASTERS}
+									value={state.responsible_person_id}
+									onChange={this.handleChange.bind(this, 'responsible_person_id')}/>
 
 							<Field type="string" label="Ответственное лицо" readOnly={true} hidden={IS_CREATING || IS_POST_CREATING || !state.responsible_person_id}
-										 value={employeeFIOLabelFunction(state.responsible_person_id, true)}/>
+									value={employeeFIOLabelFunction(state.responsible_person_id, true)}/>
               <Field type="string" label="Ответственное лицо" readOnly={true} hidden={IS_CREATING || IS_POST_CREATING || state.responsible_person_id}
- 										 value={'Не указано'}/>
+									value={'Не указано'}/>
 						</Col>
 
 						<Div hidden={!(IS_CREATING || IS_POST_CREATING)}>
@@ -269,105 +269,105 @@ class WaybillForm extends Form {
 	      	<Row>
 	      		<Col md={6}>
 							<Field type="select" label="Водитель (возможен поиск по табельному номеру)" error={errors['driver_id']}
-										 hidden={!(IS_CREATING || IS_POST_CREATING)}
-										 options={DRIVERS}
-										 value={state.driver_id}
-										 onChange={this.onDriverChange.bind(this)}/>
+									hidden={!(IS_CREATING || IS_POST_CREATING)}
+									options={DRIVERS}
+									value={state.driver_id}
+									onChange={this.onDriverChange.bind(this)}/>
 
 							<Field type="string" label="Водитель" readOnly={true} hidden={IS_CREATING || IS_POST_CREATING}
-										 value={employeeFIOLabelFunction(state.driver_id, true)}/>
+									value={employeeFIOLabelFunction(state.driver_id, true)}/>
 	          </Col>
 	      		<Col md={6}>
 							<Field type="select" label="Транспортное средство (поиск по госномеру)" error={errors['car_id']}
-										 hidden={!(IS_CREATING || IS_POST_CREATING)}
-										 options={CARS}
-										 value={state.car_id}
-										 onChange={this.onCarChange.bind(this)}/>
+									hidden={!(IS_CREATING || IS_POST_CREATING)}
+									options={CARS}
+									value={state.car_id}
+									onChange={this.onCarChange.bind(this)}/>
 
 							<Field type="string" label="Транспортное средство" readOnly={true} hidden={IS_CREATING || IS_POST_CREATING}
-										 value={getCarById(carsList, state.car_id).label}/>
+									value={getCarById(carsList, state.car_id).label}/>
 	      		</Col>
 	      	</Row>
 
 	      	<Row>
-          <Div hidden={!state.car_id}>
-            <Div hidden={!car_has_odometer}>
-  	      		<Col md={4}>
-  		      		<h4>Одометр</h4>
-  							<Field type="number" label="Выезд, км" error={errors['odometr_start']}
-  										 value={state.odometr_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'odometr_start')} />
+						<Div hidden={!state.car_id}>
+							<Div hidden={!car_has_odometer}>
+								<Col md={4}>
+									<h4>Одометр</h4>
+									<Field type="number" label="Выезд, км" error={errors['odometr_start']}
+											value={state.odometr_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'odometr_start')} />
 
-   							<Field type="number" label="Возврат, км" error={errors['odometr_end']}
-   										 value={state.odometr_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'odometr_end')} />
+									<Field type="number" label="Возврат, км" error={errors['odometr_end']}
+											value={state.odometr_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'odometr_end')} />
 
-   							<Field type="number" label="Пробег, км"
-   										 value={state.odometr_diff} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled />
-  	      		</Col>
-            </Div>
-            <Div hidden={car_has_odometer}>
-  	      		<Col md={4}>
-  		      		<h4>Счетчик моточасов</h4>
-  							<Field type="number" label="Выезд, м/ч" error={errors['motohours_start']}
-  										 value={state.motohours_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'motohours_start')} />
+									<Field type="number" label="Пробег, км"
+											value={state.odometr_diff} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled />
+								</Col>
+							</Div>
+							<Div hidden={car_has_odometer}>
+								<Col md={4}>
+									<h4>Счетчик моточасов</h4>
+									<Field type="number" label="Выезд, м/ч" error={errors['motohours_start']}
+											value={state.motohours_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'motohours_start')} />
 
-  							<Field type="number" label="Возврат, м/ч" error={errors['motohours_end']}
-   										 value={state.motohours_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'motohours_end')} />
+									<Field type="number" label="Возврат, м/ч" error={errors['motohours_end']}
+											value={state.motohours_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'motohours_end')} />
 
-  							<Field type="number" label="Пробег, м/ч"
-   										 value={state.motohours_diff} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled />
-  	      		</Col>
-            </Div>
-            <Div>
-  	      		<Col md={4}>
-  		      		<h4>Счетчик моточасов оборудования</h4>
-  							<Field type="number" label="Выезд, м/ч" error={errors['motohours_equip_start']}
-  										 value={state.motohours_equip_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'motohours_equip_start')} />
+									<Field type="number" label="Пробег, м/ч"
+											value={state.motohours_diff} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled />
+								</Col>
+							</Div>
+							<Div>
+								<Col md={4}>
+									<h4>Счетчик моточасов оборудования</h4>
+									<Field type="number" label="Выезд, м/ч" error={errors['motohours_equip_start']}
+											value={state.motohours_equip_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'motohours_equip_start')} />
 
-  							<Field type="number" label="Возврат, м/ч" error={errors['motohours_equip_end']}
-   										 value={state.motohours_equip_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'motohours_equip_end')} />
+									<Field type="number" label="Возврат, м/ч" error={errors['motohours_equip_end']}
+											value={state.motohours_equip_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'motohours_equip_end')} />
 
-  							<Field type="number" label="Пробег, м/ч"
-   										 value={state.motohours_equip_diff} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled />
-  	      		</Col>
-            </Div>
+									<Field type="number" label="Пробег, м/ч"
+											value={state.motohours_equip_diff} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled />
+								</Col>
+							</Div>
 
-            <Div>
-              <Col md={4}>
-  		      		<h4> Топливо </h4>
+							<Div>
+								<Col md={4}>
+									<h4> Топливо </h4>
 
-  							<Field type="select" label="Тип топлива" error={errors['fuel_type_id']}
-  										 disabled={IS_CLOSING || IS_DISPLAY}
-  										 options={FUEL_TYPES}
-  										 value={state.fuel_type_id}
-  										 onChange={this.handleChange.bind(this, 'fuel_type_id')} />
+									<Field type="select" label="Тип топлива" error={errors['fuel_type_id']}
+											disabled={IS_CLOSING || IS_DISPLAY}
+											options={FUEL_TYPES}
+											value={state.fuel_type_id}
+											onChange={this.handleChange.bind(this, 'fuel_type_id')} />
 
-  							<Field type="number" label="Выезд, л" error={errors['fuel_start']}
-  										 value={state.fuel_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_start')} />
+									<Field type="number" label="Выезд, л" error={errors['fuel_start']}
+											value={state.fuel_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_start')} />
 
-  						  <Field type="number" label="Выдать, л" error={errors['fuel_to_give']}
-  										 value={state.fuel_to_give} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_to_give')} />
+									<Field type="number" label="Выдать, л" error={errors['fuel_to_give']}
+											value={state.fuel_to_give} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_to_give')} />
 
-  							<Field type="number" label="Выдано, л" error={errors['fuel_given']}
-  									 	 value={state.fuel_given} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_given')} />
+									<Field type="number" label="Выдано, л" error={errors['fuel_given']}
+											value={state.fuel_given} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_given')} />
 
-  							<Field type="number" label="Возврат, л" error={errors['fuel_end']}
-  									 	 value={state.fuel_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_end')} />
+									<Field type="number" label="Возврат, л" error={errors['fuel_end']}
+											value={state.fuel_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_end')} />
 
-  	      		</Col>
-            </Div>
-          </Div>
+								</Col>
+							</Div>
+						</Div>
 	      	</Row>
 
           <Row>
 	      		<Col md={8}>
 							<Taxes hidden={!(IS_DISPLAY || IS_CLOSING) || state.status === 'draft' || (IS_DISPLAY && state.taxes && state.taxes.length === 1) || (IS_DISPLAY && !!!state.taxes)}
-										readOnly={!IS_CLOSING}
-										car={getCarById(carsList, state.car_id)}
-										taxes={state.taxes}
-										operations={this.state.operations}
-										fuelRates={this.state.fuelRates}
-										onChange={this.handleChange.bind(this, 'taxes')}
-										correctionRate={this.state.fuel_correction_rate}/>
+									readOnly={!IS_CLOSING}
+									car={getCarById(carsList, state.car_id)}
+									taxes={state.taxes}
+									operations={this.state.operations}
+									fuelRates={this.state.fuelRates}
+									onChange={this.handleChange.bind(this, 'taxes')}
+									correctionRate={this.state.fuel_correction_rate}/>
             </Col>
           </Row>
 
@@ -376,21 +376,21 @@ class WaybillForm extends Form {
 							<Div className="task-container">
                 <h4>Задание</h4>
 								<Field type="select" error={errors['mission_id_list']}
-											 multi={true}
-											 className="task-container"
-											 options={MISSIONS}
-											 value={state.mission_id_list}
-											 disabled={isEmpty(state.car_id) || IS_DISPLAY}
-                       clearable={false}
-											 onChange={this.handleMissionsChange.bind(this)}/>
+										multi={true}
+										className="task-container"
+										options={MISSIONS}
+										value={state.mission_id_list}
+										disabled={isEmpty(state.car_id) || IS_DISPLAY}
+										clearable={false}
+										onChange={this.handleMissionsChange.bind(this)}/>
            		  <Button style={{marginTop: 10}} onClick={this.createMission.bind(this)} disabled={isEmpty(state.car_id) || IS_DISPLAY}>Создать задание</Button>
                 <MissionFormWrap onFormHide={this.onMissionFormHide.bind(this)}
-          											 showForm={this.state.showMissionForm}
-                                 element={this.state.selectedMission}
-                                 fromWaybill={true}
-                                 waybillStartDate={state.plan_departure_date}
-                                 waybillEndDate={state.plan_arrival_date}
-                                 {...this.props}/>
+										showForm={this.state.showMissionForm}
+										element={this.state.selectedMission}
+										fromWaybill={true}
+										waybillStartDate={state.plan_departure_date}
+										waybillEndDate={state.plan_arrival_date}
+										{...this.props}/>
 							</Div>
 	      		</Col>
 	      	</Row>
@@ -413,7 +413,7 @@ class WaybillForm extends Form {
               <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>Сохранить</Button>
             </Div>
             <Div className={'inline-block'} style={{marginLeft: 10}} hidden={!(this.props.formState.status && this.props.formState.status === 'active')}>
-              <Button onClick={this.props.handleClose} disabled={!this.props.canSave}>Закрыть ПЛ</Button>
+              <Button onClick={this.props.handleClose} disabled={!this.props.canClose}>Закрыть ПЛ</Button>
             </Div>
 					</Div>
 	      </Modal.Footer>

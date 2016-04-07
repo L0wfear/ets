@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 import ClickOutHandler from 'react-onclickout';
 import Filter from './filter/Filter.jsx';
 import Paginator from '../Paginator.jsx';
@@ -243,7 +244,7 @@ class Table extends React.Component {
     }
 
     let results = this.processTableData(data, selected, selectField, onRowSelected);
-    
+
     if (enumerated === true && !this.state.isHierarchical) {
       tableCols = ['rowNumber', ...tableCols];
       tableMetaCols = [{

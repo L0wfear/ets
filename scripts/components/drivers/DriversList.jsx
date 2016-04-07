@@ -43,6 +43,13 @@ let tableMeta = {
       type: '',
       filter: {}
   }, {
+      name: 'position_name',
+      caption: 'Должность',
+      type: '',
+      filter: {
+        type: 'select'
+      }
+  }, {
       name: 'drivers_license',
       caption: 'Водительское удостоверение',
       type: 'text',
@@ -83,7 +90,7 @@ let DriversTable = (props) => {
 		special_license : ({data}) => <div>{data && data !== "None" && data !== 'null' ? data : ''}</div>,
 	};
 
-	return <Table title='Реестр водителей "Жилищник Крылатское"'
+	return <Table title='Реестр сотрудников "Жилищник Крылатское"'
                 results={props.data}
 								tableMeta={tableMeta}
 								renderers={renderers}
@@ -102,6 +109,7 @@ class DriversList extends ElementsList {
   componentDidMount() {
     super.componentDidMount();
     this.context.flux.getActions('employees').getEmployees();
+    this.context.flux.getActions('objects').getPositions();
   }
 
 	render() {
@@ -111,11 +119,13 @@ class DriversList extends ElementsList {
 		return (
 			<div className="ets-page-wrap">
 				<DriversTable data={driversList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'}>
+          <Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Создать сотрудника</Button>
           <Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="pencil" /> Редактировать</Button>
         </DriversTable>
 				<DriverFormWrap onFormHide={this.onFormHide.bind(this)}
 												showForm={this.state.showForm}
-												driver={this.state.selectedElement}/>
+												driver={this.state.selectedElement}
+                        />
 			</div>
 		)
 	}
@@ -125,4 +135,4 @@ DriversList.contextTypes = {
 	flux: React.PropTypes.object,
 };
 
-export default connectToStores(DriversList, ['employees']);
+export default connectToStores(DriversList, ['employees', 'objects']);

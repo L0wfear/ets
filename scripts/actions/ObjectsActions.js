@@ -15,7 +15,8 @@ import { FaxogrammService,
          TypesService,
          CarFuncTypeService,
          ODHService,
-         DTService } from 'api/Services';
+         DTService,
+         PositionService } from 'api/Services';
 
 export default class ObjectsActions extends Actions {
 
@@ -97,6 +98,10 @@ export default class ObjectsActions extends Actions {
     };
 
     return DTService.put(payload);
+  }
+
+  getPositions() {
+    return PositionService.get();
   }
 
 }

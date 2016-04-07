@@ -122,6 +122,12 @@ class Table extends React.Component {
   	return rowMetadata;
   }
 
+  getTypeByKey(key) {
+    let col = _.find(this.props.tableMeta.cols, col => col.name === key);
+    let colFilterType = col.filter && col.filter.type ? col.filter.type : '';
+    return colFilterType;
+  }
+
   shouldBeRendered(obj) {
     // Здесь проводится проверка на то, фильтруется ли объект
     // если в результате isValid === false, то объект не рендерится в таблице
@@ -133,10 +139,17 @@ class Table extends React.Component {
         if (moment(obj[key]).format(global.APP_DATE_FORMAT) !== moment(value).format(global.APP_DATE_FORMAT)) {
           isValid = false;
         }
-      } else if (key.indexOf('date') > -1 && _.isArray(value)) {
+      } else if (key.indexOf('date') > -1 && _.isArray(value) && this.getTypeByKey(key) !== 'date_interval') {
         if (value.indexOf(moment(obj[key]).format(global.APP_DATE_FORMAT)) === -1) {
           isValid = false;
         }
+      } else if (key.indexOf('date') > -1 && _.isArray(value) && this.getTypeByKey(key) === 'date_interval') {
+          let intervalPickerDate1 = moment(value[0]).toDate().getTime() || 0;
+          let intervalPickerDate2 = moment(value[1]).toDate().getTime() || Infinity;
+          let valueDate = moment(obj[key]).toDate().getTime();
+          if (!(intervalPickerDate1 < valueDate && valueDate < intervalPickerDate2)) {
+            isValid = false;
+          }
       } else if (_.isArray(value)) {
         if (_.isArray(obj[key])) {
           if (!_.find(obj[key], el => value.indexOf(el.id.toString()) > -1)) {

@@ -4,6 +4,7 @@ import { Button, Glyphicon } from 'react-bootstrap';
 import Table from '../ui/table/DataTable.jsx';
 import DateFormatter from '../ui/DateFormatter.jsx';
 import { getFormattedDateTime } from 'utils/dates';
+import { datePickerFunction } from 'utils/labelFunctions';
 import MissionFormWrap from './MissionFormWrap.jsx';
 import ElementsList from '../ElementsList.jsx';
 import moment from 'moment';
@@ -71,8 +72,8 @@ let getTableMeta = (props) => {
 				caption: 'Начало',
 				type: 'date',
 				filter: {
-					type: 'select',
-          labelFunction: (date) => getFormattedDateTime(date),
+					type: 'date_create',
+					labelFunction: datePickerFunction
 				},
 			},
       {
@@ -80,8 +81,8 @@ let getTableMeta = (props) => {
 				caption: 'Завершение',
 				type: 'date',
 				filter: {
-					type: 'select',
-          labelFunction: (date) => getFormattedDateTime(date),
+					type: 'date_create',
+					labelFunction: datePickerFunction
 				},
 			},
       {

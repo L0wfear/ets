@@ -5,6 +5,7 @@ import { Button, Glyphicon } from 'react-bootstrap';
 import EtsSelect from '../ui/EtsSelect.jsx';
 import Div from '../ui/Div.jsx';
 import { getFormattedDateTimeSeconds } from 'utils/dates';
+import { datePickerFunction } from 'utils/labelFunctions';
 
 let getStatusLabel = (status) => {
   let result = '';
@@ -52,7 +53,8 @@ let tableMeta = {
 			caption: 'Дата создания',
 			type: 'number',
 			filter: {
-				type: 'select',
+        type: 'date_create',
+        labelFunction: datePickerFunction
 			},
 		},
 		{
@@ -60,7 +62,8 @@ let tableMeta = {
 			caption: 'Дата начала обработки',
 			type: 'number',
 			filter: {
-				type: 'select',
+        type: 'date_create',
+        labelFunction: datePickerFunction
 			},
 		},
 		{
@@ -68,7 +71,8 @@ let tableMeta = {
 			caption: 'Дата завершения обработки',
 			type: 'number',
 			filter: {
-				type: 'select',
+        type: 'date_create',
+        labelFunction: datePickerFunction
 			},
 		},
 		{

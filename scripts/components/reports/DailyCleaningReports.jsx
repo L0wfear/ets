@@ -6,6 +6,7 @@ import EtsSelect from '../ui/EtsSelect.jsx';
 import Div from '../ui/Div.jsx';
 import Field from '../ui/Field.jsx';
 import Datepicker from '../ui/DatePicker.jsx';
+import { datePickerFunction } from 'utils/labelFunctions';
 import { getToday9am, getTomorrow9am, getToday0am, getToday2359, getFormattedDateTimeSeconds } from 'utils/dates';
 import { getReportNotReadyNotification2 } from 'utils/notifications';
 import { isEmpty } from 'utils/functions';
@@ -75,7 +76,8 @@ let tableMeta = {
 			caption: 'Начало периода',
 			type: 'number',
 			filter: {
-				type: 'select',
+        type: 'date_create',
+        labelFunction: datePickerFunction
 			},
 		},
 		{
@@ -83,7 +85,8 @@ let tableMeta = {
 			caption: 'Конец периода',
 			type: 'number',
 			filter: {
-				type: 'select',
+        type: 'date_create',
+        labelFunction: datePickerFunction
 			},
 		},
 		{
@@ -91,7 +94,8 @@ let tableMeta = {
 			caption: 'Дата создания',
 			type: 'number',
 			filter: {
-				type: 'select',
+        type: 'date_create',
+        labelFunction: datePickerFunction
 			},
 		},
 		{
@@ -99,7 +103,8 @@ let tableMeta = {
 			caption: 'Дата начала обработки',
 			type: 'number',
 			filter: {
-				type: 'select',
+        type: 'date_create',
+        labelFunction: datePickerFunction
 			},
 		},
 		{
@@ -107,7 +112,8 @@ let tableMeta = {
 			caption: 'Дата завершения обработки',
 			type: 'number',
 			filter: {
-				type: 'select',
+        type: 'date_create',
+        labelFunction: datePickerFunction
 			},
 		},
 	]

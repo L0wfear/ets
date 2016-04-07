@@ -35,6 +35,7 @@ let config = {
 
 // локальный сервер или специфичный стенд
 let localServerUrl;
+
 try {
   localServerUrl = LOCAL_SERVER_URL;
   if (localServerUrl) {
@@ -43,12 +44,16 @@ try {
 } catch (e) {
   localServerUrl = null;
 }
+
 try {
   switch (process.env.STAND) {
     case 'study':
       config.backend = PROTO + '//ods.mos.ru/ssd/ets-study/services';
       break;
     case 'test':
+      config.backend = PROTO + '//ods.mos.ru/ssd/ets-test/services';
+      break;
+    case 'development':
       config.backend = PROTO + '//ods.mos.ru/ssd/ets-test/services';
       break;
   }

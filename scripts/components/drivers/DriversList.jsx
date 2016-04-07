@@ -7,6 +7,7 @@ import DriverFormWrap from './DriverFormWrap.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
 import _ from 'lodash';
 import moment from 'moment';
+import { datePickerFunction } from 'utils/labelFunctions';
 
 let tableMeta = {
   cols: [{
@@ -35,7 +36,8 @@ let tableMeta = {
       caption: 'Дата рождения',
       type: '',
       filter: {
-				type: 'date'
+        type: 'date_create',
+        labelFunction: datePickerFunction
 			}
   }, {
       name: 'personnel_number',

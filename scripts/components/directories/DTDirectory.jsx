@@ -10,8 +10,8 @@ let getTableMeta = (props) => {
   let tableMeta = {
     cols: [
       {
-        name: 'name',
-        caption: 'Название',
+        name: 'object_address',
+        caption: 'Название ДТ',
         type: 'string',
         filter: {
           type: 'select',
@@ -28,43 +28,13 @@ let getTableMeta = (props) => {
         type: 'number',
       },
       {
-        name: 'distance',
-        caption: 'Протяженность',
+        name: 'clean_area',
+        caption: 'Общая уборочная площадь',
         type: 'number',
       },
       {
-        name: 'roadway_area',
-        caption: 'Площадь дорожного полотна',
-        type: 'number',
-      },
-      {
-        name: 'footway_area',
-        caption: 'Площадь тротуаров',
-        type: 'number',
-      },
-      {
-        name: 'cleaning_area',
-        caption: 'Площадь уборки',
-        type: 'number',
-      },
-      {
-        name: 'auto_footway_area',
+        name: 'auto_area',
         caption: <span style={{wordWrap: 'break-word'}}>Площадь механизированной уборки</span>,
-        type: 'number',
-      },
-      {
-        name: 'manual_footway_area',
-        caption: 'Площадь ручной уборки',
-        type: 'number',
-      },
-      {
-        name: 'snow_area',
-        caption: 'Площадь уборки снега',
-        type: 'number',
-      },
-      {
-        name: 'gutters_length',
-        caption: 'Протяженность лотков',
         type: 'number',
       }
     ]
@@ -78,15 +48,9 @@ let DTTable = (props) => {
 
   const renderers = {
     name: ({data}) => <div>{data.toString()}</div>,
+    clean_area: ({data}) => <div>{data.toString() + ' кв.м'}</div>,
     total_area: ({data}) => <div>{data.toString() + ' кв.м'}</div>,
-    distance: ({data}) => <div>{data.toString() + ' п.м'}</div>,
-    roadway_area: ({data}) => <div>{data.toString() + ' кв.м'}</div>,
-    footway_area: ({data}) => <div>{data.toString() + ' кв.м'}</div>,
-    cleaning_area: ({data}) => <div>{data.toString() + ' кв.м'}</div>,
-    auto_footway_area: ({data}) => <div>{data.toString() + ' кв.м'}</div>,
-    manual_footway_area: ({data}) => <div>{data.toString() + ' кв.м'}</div>,
-    snow_area: ({data}) => <div>{data.toString() + ' кв.м'}</div>,
-    gutters_length: ({data}) => <div>{data.toString() + ' п.м'}</div>
+    auto_area: ({data}) => <div>{data.toString() + ' кв.м'}</div>,
   };
 
   return <Table title="Реестр ДТ"

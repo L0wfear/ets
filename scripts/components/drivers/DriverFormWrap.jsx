@@ -12,13 +12,18 @@ class DriverFormWrap extends FormWrap {
 
 	componentWillReceiveProps(props) {
 
-		if (props.showForm) {
+		if (props.showForm && (props.showForm !== this.props.showForm)) {
 			if (props.driver !== null ) {
         const driver = Object.assign({}, props.driver);
         this.setState({
           formState: driver
         })
 			}
+      else {
+        this.setState({
+          formState: {}
+        });
+      }
 		}
 
 	}

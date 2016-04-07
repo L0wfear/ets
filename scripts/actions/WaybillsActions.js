@@ -56,6 +56,7 @@ class WaybillsActions extends BaseActions {
     delete payload.could_be_closed;
     delete payload.mission_list;
     delete payload.all_missions_completed_or_failed;
+    delete payload.array_agg;
 
     _.mapKeys(payload, (v, k) => isEmpty(v) ? delete payload[k] : void 0);
 

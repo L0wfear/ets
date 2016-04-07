@@ -30,18 +30,25 @@ class DriverForm extends Form {
 	render() {
 
 		let state = this.props.formState;
-		const { carsList = [] } = this.props;
+		const { carsList = [], positionsList = [] } = this.props;
 		const { companyStructureList = [] } = this.state;
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: `${c.gov_number} [${c.model_name}]`}));
 		const COMPANY_ELEMENTS = companyStructureList.map(el => ({value: el.id, label: el.name}));
 		const DRIVER_STATES = [{value: 1, label: 'Работает'}, {value: 0, label: 'Не работает'}];
+    const POSITION_ELEMENTS = positionsList.map(el => ({value: el.id, label: el.position}));
 
     console.log('form state is ', state);
+
+    const IS_CREATING = !!!state.id;
+
+    let title = 'Изменение сотрудника';
+
+    if (IS_CREATING) title = 'Создание сотрудника';
 
 		return (
 			<Modal {...this.props} bsSize="large" >
 				<Modal.Header closeButton>
-	          <Modal.Title id="contained-modal-title-lg">Изменение сотрудника</Modal.Title>
+	          <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
 				</Modal.Header>
 
 	      <Modal.Body>
@@ -50,10 +57,6 @@ class DriverForm extends Form {
 
 	      	<Col md={6}>
             <Div>
-              <label>Организация</label><br/>
-							{state['company_id']}
-            </Div>
-            <Div style={{marginTop: 42}}>
   	      		<label>Фамилия</label>
               <Input type="text" value={state['last_name']} onChange={this.handleChange.bind(this, 'last_name')}/>
   	      	</Div>
@@ -67,12 +70,16 @@ class DriverForm extends Form {
   	      	</Div>
             <Div>
   	      		<label>Дата рождения</label>
-              <Datepicker date={new Date(state['birthday'])} time={false} onChange={this.handleChange.bind(this, 'birthday')}/>
+              <Datepicker date={state['birthday']} time={false} onChange={this.handleChange.bind(this, 'birthday')}/>
   	      	</Div>
             <Div>
               <label>Телефон</label>
               <Input type="text" value={state['phone']} onChange={this.handleChange.bind(this, 'phone')}/>
   	      	</Div>
+            <Field type="select" label="Должность"
+                   options={POSITION_ELEMENTS}
+                   value={+state['position_id']}
+                   onChange={this.handleChange.bind(this, 'position_id')}/>
 	      	</Col>
 
 	      	<Col md={6}>

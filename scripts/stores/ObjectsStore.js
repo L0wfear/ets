@@ -27,6 +27,7 @@ class ObjectsStore extends Store {
     this.register(objectsActions.updateDT, this.handleGetDTs);
     this.register(objectsActions.getFaxogramms, this.handleGetFaxogramms);
     this.register(objectsActions.getCarFuncTypes, this.handleGetCarFuncTypes);
+    this.register(objectsActions.getPositions, this.handleGetPositions);
     this.register(companyStructreActions.getCompanyStructure, this.handleGetCompanyStructure);
 
     this.register(technicalOperationsActions.getTechnicalOperations, this.handleGetTechOperations);
@@ -51,6 +52,7 @@ class ObjectsStore extends Store {
       technicalOperationsObjectsList: [],
       technicalOperationsTypesList: [],
       companyStructureList: [],
+      positionsList: [],
 
       carsIndex: {},
       modelsIndex: {},
@@ -166,6 +168,10 @@ class ObjectsStore extends Store {
 
   getCarById(asuods_id) {
     return _.find(this.state.carsList, c => c.asuods_id === asuods_id) || {};
+  }
+
+  handleGetPositions(positions) {
+    this.setState({positionsList: positions.result});
   }
 
 }

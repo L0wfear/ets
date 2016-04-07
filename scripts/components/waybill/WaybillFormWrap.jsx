@@ -75,6 +75,19 @@ class WaybillFormWrap extends Component {
 
 				if (props.element.status === 'active') {
 
+					if (waybill.array_agg) {
+						waybill.taxes = waybill.array_agg;
+					}
+					if (isNotNull(waybill.odometr_end) && isNotNull(waybill.odometr_start)) {
+						waybill.odometr_diff = waybill.odometr_end - waybill.odometr_start;
+					}
+					if (isNotNull(waybill.motohours_end) && isNotNull(waybill.motohours_start)) {
+						waybill.motohours_diff = waybill.motohours_end - waybill.motohours_start;
+					}
+					if (isNotNull(waybill.motohours_equip_end) && isNotNull(waybill.motohours_equip_start)) {
+						waybill.motohours_equip_diff = waybill.motohours_equip_end - waybill.motohours_equip_start;
+					}
+
 					this.setState({
 						formState: waybill,
 						formErrors: validateClosingWaybill(waybill, {}),

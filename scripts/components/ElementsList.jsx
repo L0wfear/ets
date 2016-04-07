@@ -92,6 +92,7 @@ class ElementsList extends React.Component {
  		if (e.code === 'Enter' && this.state.selectedElement !== null) {
  			this.showForm();
  		}
+    
  		if (e.code === 'Backspace' && this.state.selectedElement !== null) {
  			e.preventDefault();
       if (typeof this.removeDisabled === 'function') {
@@ -102,6 +103,7 @@ class ElementsList extends React.Component {
         this.removeElement();
       }
  		}
+
  		if (e.code === 'ArrowDown' && this.state.selectedElement !== null) {
  			e.preventDefault();
  			// let elementsAsGrid = _.sortBy(this.props[this.mainListName], 'number').reverse()

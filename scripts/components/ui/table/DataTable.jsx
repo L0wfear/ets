@@ -243,6 +243,7 @@ class Table extends React.Component {
     }
 
     let results = this.processTableData(data, selected, selectField, onRowSelected);
+    
     if (enumerated === true && !this.state.isHierarchical) {
       tableCols = ['rowNumber', ...tableCols];
       tableMetaCols = [{
@@ -251,13 +252,6 @@ class Table extends React.Component {
         cssClassName: 'width60',
         filter: false
       }, ...tableMetaCols];
-      // results = _.sortBy(results, r => r[initialSort]);//.sortBy(initialSort).value();
-      //
-      // if (!initialSortAscending) {
-      //   results.reverse();
-      // }
-      //
-      // _.each(results, (el, index) => el.rowNumber = index + 1);
     }
 
     const columnMetadata = this.initializeMetadata(tableMetaCols, renderers);

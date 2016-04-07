@@ -3,6 +3,7 @@ import ReactDom from 'react-dom';
 import { Modal, Input, Label, Container, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
 import Div from '../../Div.jsx';
 import Datepicker from '../../DatePicker.jsx';
+import IntervalPicker from '../../IntervalPicker.jsx';
 import Select from 'react-select';
 import { isEmpty } from 'utils/functions';
 
@@ -52,7 +53,9 @@ const Filter = (props) => {
   if (option.filter && option.filter.type && option.filter.type === 'date_create' && !option.filter.options) {
     input = <Datepicker date={value} onChange={props.onChange} time={false} />;
   }
-
+  if (option.filter && option.filter.type && option.filter.type === 'date_interval' && !option.filter.options) {
+    input = <IntervalPicker interval={value} onChange={props.onChange} />;
+  }
 
   return (
     <Div>

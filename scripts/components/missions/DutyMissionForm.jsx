@@ -163,6 +163,7 @@ export class DutyMissionForm extends Form {
 
 		let IS_CREATING = !!!state.number;
     let IS_CLOSING = state.status && state.status === 'assigned';
+    let IS_COMPLETED = state.status && state.status === 'complete';
     let IS_CLOSED = state.status === 'complete' || state.status === 'fail';
 
     let title = `Наряд-задание № ${state.number || ''}`;
@@ -178,7 +179,7 @@ export class DutyMissionForm extends Form {
 			<Modal {...this.props} bsSize="large">
 
 				<Modal.Header closeButton>
-	          <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
+          <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
 				</Modal.Header>
 
 	      <Modal.Body>
@@ -187,10 +188,10 @@ export class DutyMissionForm extends Form {
 
 						<Col md={6}>
               <Field type="select" label="Технологическая операция" error={errors['technical_operation_id']}
-											disabled={IS_DISPLAY || !!state.route_id}
-                      options={TECH_OPERATIONS}
-                      value={state.technical_operation_id}
-                      onChange={this.handleTechnicalOperationChange.bind(this)}/>
+                  disabled={IS_DISPLAY || !!state.route_id}
+                  options={TECH_OPERATIONS}
+                  value={state.technical_operation_id}
+                  onChange={this.handleTechnicalOperationChange.bind(this)}/>
 						</Col>
 
             <Col md={6}>
@@ -204,7 +205,7 @@ export class DutyMissionForm extends Form {
     				 			<Div>по <Datepicker date={state.plan_date_end} onChange={this.handleChange.bind(this, 'plan_date_end')} disabled={IS_DISPLAY}/></Div>
     				   	</Col>
 
-                <Div hidden={!IS_CLOSING}>
+                <Div hidden={!(IS_CLOSING || IS_COMPLETED)}>
       				 		<Col md={6}>
       				   		<label>Время выполнения, фактическое</label>
       				 			<Div>c <Datepicker date={state.fact_date_start} onChange={this.handleChange.bind(this, 'fact_date_start')} disabled={IS_CLOSED}/></Div>
@@ -224,19 +225,19 @@ export class DutyMissionForm extends Form {
           <Row>
             <Col md={6}>
               <Field type="select" label="Бригадир" error={errors['foreman_id']}
-                     disabled={IS_DISPLAY}
-                     options={EMPLOYEES}
-                     value={state.foreman_id}
-                     onChange={this.handleChange.bind(this, 'foreman_id')}/>
+                  disabled={IS_DISPLAY}
+                  options={EMPLOYEES}
+                  value={state.foreman_id}
+                  onChange={this.handleChange.bind(this, 'foreman_id')}/>
             </Col>
 
             <Col md={6}>
               <Field type="select" label="Бригада" error={errors['brigade_employee_id_list']}
-                     multi={true}
-                     disabled={IS_DISPLAY}
-                     options={EMPLOYEES}
-                     value={state.brigade_employee_id_list.filter(b => b.id || b.employee_id).map(b => b.id || b.employee_id).join(',')}
-                     onChange={this.handleBrigadeIdListChange.bind(this)}/>
+                  multi={true}
+                  disabled={IS_DISPLAY}
+                  options={EMPLOYEES}
+                  value={state.brigade_employee_id_list.filter(b => b.id || b.employee_id).map(b => b.id || b.employee_id).join(',')}
+                  onChange={this.handleBrigadeIdListChange.bind(this)}/>
             </Col>
           </Row>
 
@@ -244,10 +245,10 @@ export class DutyMissionForm extends Form {
 	      	<Row>
 	      		<Col md={6}>
               <Field type="select" label="Источник получения задания" error={errors['mission_source_id']}
-										 disabled={IS_DISPLAY}
-                     options={MISSION_SOURCES}
-                     value={state.mission_source_id}
-                     onChange={this.handleChange.bind(this, 'mission_source_id')}/>
+                  disabled={IS_DISPLAY}
+                  options={MISSION_SOURCES}
+                  value={state.mission_source_id}
+                  onChange={this.handleChange.bind(this, 'mission_source_id')}/>
 	      		</Col>
             <Col md={6}>
               <Field type="string" label="Комментарий" value={state.comment} onChange={this.handleChange.bind(this, 'comment')} error={errors['comment']} />
@@ -258,19 +259,19 @@ export class DutyMissionForm extends Form {
 	      		<Col md={6}></Col>
             <Col md={6}>
               <Field type="select" label="Задание на ТС" error={errors['car_mission_id']}
-										 disabled={IS_DISPLAY}
-                     options={MISSIONS}
-                     value={state.car_mission_id}
-                     onChange={this.handleChange.bind(this, 'car_mission_id')}/></Col>
+                  disabled={IS_DISPLAY}
+                  options={MISSIONS}
+                  value={state.car_mission_id}
+                  onChange={this.handleChange.bind(this, 'car_mission_id')}/></Col>
 	      	</Row>
 
 	      	<Row>
             <Col md={6}>
               <Field type="select" label="Маршрут" error={errors['route_id']}
-										 disabled={IS_DISPLAY || !!!state.technical_operation_id}
-                     options={ROUTES}
-                     value={state.route_id}
-                     onChange={this.handleRouteIdChange.bind(this)}/>
+                  disabled={IS_DISPLAY || !!!state.technical_operation_id}
+                  options={ROUTES}
+                  value={state.route_id}
+                  onChange={this.handleRouteIdChange.bind(this)}/>
 						  <Div hidden={state.route_id}>
 							  <Button onClick={this.createNewRoute.bind(this)} disabled={IS_DISPLAY || !state.technical_operation_id}>Создать новый</Button>
 						  </Div>
@@ -285,9 +286,9 @@ export class DutyMissionForm extends Form {
 	      </Modal.Body>
 
 	      <Modal.Footer>
-					<Div className="inline-block" hidden={state.status === 'complete'}>
+					<Div className="inline-block" >
 		      	<Button onClick={this.props.onPrint} disabled={!this.props.canSave || IS_DISPLAY || state.status !== 'not_assigned'}>{'Выдать'}</Button>
-		      	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || (IS_DISPLAY && !IS_CLOSING)}>{'Сохранить'}</Button>
+		      	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>{'Сохранить'}</Button>
 					</Div>
 	      </Modal.Footer>
 

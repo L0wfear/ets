@@ -18,4 +18,13 @@ export default class EmployeesActions extends Actions {
     return EmployeeService.put(payload);
   }
 
+  createEmployee(formState) {
+    const payload = _.clone(formState);
+    payload.birthday = createValidDate(payload.birthday);
+    delete payload.position_name;
+    delete payload.position_key;
+    payload.active = !!payload.active;
+    return EmployeeService.post(payload);
+  }
+
 }

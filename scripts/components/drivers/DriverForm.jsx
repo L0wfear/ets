@@ -39,6 +39,11 @@ class DriverForm extends Form {
 
     console.log('form state is ', state);
 
+    let valueActive;
+    if (state.active != undefined) {
+      state.active ? valueActive = 1 : valueActive = 0;
+    }
+
     const IS_CREATING = !!!state.id;
 
     let title = 'Изменение сотрудника';
@@ -78,7 +83,7 @@ class DriverForm extends Form {
   	      	</Div>
             <Field type="select" label="Должность"
                    options={POSITION_ELEMENTS}
-                   value={+state['position_id']}
+                   value={state.position_id}
                    onChange={this.handleChange.bind(this, 'position_id')}/>
 	      	</Col>
 
@@ -101,7 +106,7 @@ class DriverForm extends Form {
   	      	</Div>
             <Div>
               <label>Состояние</label>
-              <EtsSelect options={DRIVER_STATES} value={+state['active']} onChange={this.handleChange.bind(this, 'active')}/>
+              <EtsSelect options={DRIVER_STATES} value={valueActive} onChange={this.handleChange.bind(this, 'active')}/>
   	      	</Div>
 	      	</Col>
 

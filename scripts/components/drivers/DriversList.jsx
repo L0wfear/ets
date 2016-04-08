@@ -47,7 +47,7 @@ let tableMeta = {
   }, {
       name: 'position_name',
       caption: 'Должность',
-      type: '',
+      type: 'text',
       filter: {
         type: 'select'
       }
@@ -90,6 +90,7 @@ let DriversTable = (props) => {
 		active : ({data}) => <div>{data === true ? 'Работает' : 'Не работает'}</div>,
 		drivers_license : ({data}) => <div>{data && data !== "None" && data !== 'null' ? data : ''}</div>,
 		special_license : ({data}) => <div>{data && data !== "None" && data !== 'null' ? data : ''}</div>,
+    position_name: ({data}) => <div>{data && data !== "None" && data !== 'null' ? data : ''}</div>,
 	};
 
 	return <Table title='Реестр сотрудников'
@@ -116,11 +117,11 @@ class DriversList extends ElementsList {
 
 	render() {
 
-		const { driversList = [] } = this.props;
+		const { employeesList = [] } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
-				<DriversTable data={driversList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'}>
+				<DriversTable data={employeesList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'}>
           <Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Создать сотрудника</Button>
           <Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="pencil" /> Редактировать</Button>
         </DriversTable>

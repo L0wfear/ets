@@ -46,8 +46,6 @@ class Field extends React.Component {
 
   renderSelect() {
     const { error, label = ''} = this.props;
-    console.log('This props:');
-    console.dir(this.props);
     const selectClassName = cx({'has-error': error});
     return  <Div hidden={this.props.hidden}>
               <label>{label}</label>

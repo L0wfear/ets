@@ -49,7 +49,7 @@ let getTableMeta = (props) => {
       },
       {
         name: 'auto_footway_area',
-        caption: <span style={{wordWrap: 'break-word'}}>Площадь механизированной уборки тротуаров</span>,
+        caption: 'Площадь механизированной уборки тротуаров',
         type: 'number',
       },
       {

@@ -15,11 +15,6 @@ let getTableMeta = (props) => {
         type: 'string',
         filter: {
           type: 'select',
-        },
-        form: {
-          required: true,
-          editable: false,
-          formType: 'select'
         }
       },
       {
@@ -34,7 +29,7 @@ let getTableMeta = (props) => {
       },
       {
         name: 'auto_area',
-        caption: <span style={{wordWrap: 'break-word'}}>Площадь механизированной уборки</span>,
+        caption: 'Площадь механизированной уборки',
         type: 'number',
       }
     ]
@@ -47,7 +42,6 @@ let getTableMeta = (props) => {
 let DTTable = (props) => {
 
   const renderers = {
-    name: ({data}) => <div>{data.toString()}</div>,
     clean_area: ({data}) => <div>{data.toString() + ' кв.м'}</div>,
     total_area: ({data}) => <div>{data.toString() + ' кв.м'}</div>,
     auto_area: ({data}) => <div>{data.toString() + ' кв.м'}</div>,
@@ -84,8 +78,8 @@ class DTDirectory extends ElementsList {
           <Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}> Просмотреть</Button>
         </DTTable>
         <DtFormWrap onFormHide={this.onFormHide.bind(this)}
-            showForm={this.state.showForm}
-										 element={this.state.selectedElement}
+                    showForm={this.state.showForm}
+										element={this.state.selectedElement}
 										 {...this.props}/>
       </div>
   );

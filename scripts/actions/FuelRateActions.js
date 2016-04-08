@@ -45,6 +45,31 @@ export default class FuelRateActions extends Actions {
     return FuelConsumptionRateService.delete(payload);
   }
 
+  deleteFuelOperation(formState) {
+    const payload = {
+      ID: formState.ID
+    };
+    return FuelOperationsService.delete(payload);
+  }
+
+  addFuelOperation(formState) {
+    const payload = {};
+    if (typeof formState.NAME === "string" && formState.NAME !== '' ) {
+      payload.NAME = formState.NAME;
+    }
+    return FuelOperationsService.post(payload);
+  }
+
+  updateFuelOperation(formState) {
+    const payload = {
+      ID: formState.ID
+    };
+    if (typeof formState.NAME === "string" && formState.NAME !== '' ) {
+      payload.NAME = formState.NAME;
+    }
+    return FuelOperationsService.put(payload);
+  }
+
   addFuelRate(rate) {
     const payload = _.clone(rate);
     payload.order_date = createValidDate(payload.order_date);

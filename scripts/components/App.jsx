@@ -16,6 +16,7 @@ import DashboardPage from './dashboard/DashboardPage.jsx';
 import DriversList from './drivers/DriversList.jsx';
 import CarsList from './cars/CarsList.jsx';
 import FuelRatesDirectory from './directories/FuelRatesDirectory.jsx';
+import FuelOperationsDirectory from './directories/FuelOperationsDirectory.jsx';
 import ODHDirectory from './directories/ODHDirectory.jsx';
 import DTDirectory from './directories/DTDirectory.jsx';
 import TechOperationsDirectory from './directories/TechOperationsDirectory.jsx';
@@ -145,6 +146,7 @@ const routes = (
       <Route path="drivers" component={DriversList} onEnter={requireAuth}/>
       <Route path="faxogramms" component={FaxogrammDirectory} onEnter={requireAuth}/>
       <Route path="fuel-rates" component={FuelRatesDirectory} onEnter={requireAuth}/>
+      <Route path="fuel-operations" component={FuelOperationsDirectory} onEnter={requireAuth}/>
       <Route path="odh" component={ODHDirectory} onEnter={requireAuth}/>
       <Route path="dt" component={DTDirectory} onEnter={requireAuth}/>
       <Route path="technical-operations" component={TechOperationsDirectory} onEnter={requireAuth}/>

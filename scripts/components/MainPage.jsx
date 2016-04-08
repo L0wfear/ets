@@ -65,6 +65,7 @@ export default class MainPage extends React.Component {
             <MenuItem divider />
 
             <MenuItem active={path === '/fuel-rates'} href="#/fuel-rates">Справочник норм расхода топлива</MenuItem>
+            <MenuItem active={path === '/fuel-operations'} href="#/fuel-operations">Операции для расчета топлива</MenuItem>
             <MenuItem active={path === '/odh'} href="#/odh">Справочник ОДХ</MenuItem>
             <MenuItem active={path === '/dt'} href="#/dt">Справочник ДТ</MenuItem>
           </NavDropdown>

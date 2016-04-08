@@ -32,6 +32,7 @@ class ElementsList extends React.Component {
    selectElement({props}) {
      this.clicks++;
      const id = props.data.id || props.data[this.selectField];
+     
      if (this.clicks === 1) {
        let selectedElement = _.find(this.state.elementsList, el => el.id ? el.id === id : el[this.selectField] === id);
        this.setState({ selectedElement });
@@ -92,7 +93,7 @@ class ElementsList extends React.Component {
  		if (e.code === 'Enter' && this.state.selectedElement !== null) {
  			this.showForm();
  		}
-    
+
  		if (e.code === 'Backspace' && this.state.selectedElement !== null) {
  			e.preventDefault();
       if (typeof this.removeDisabled === 'function') {

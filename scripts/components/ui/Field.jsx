@@ -11,6 +11,16 @@ class Field extends React.Component {
     super(props);
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.multi) {
+      const selItems = document.querySelectorAll('.Select--multi .Select-item-label');
+
+      for (var i = 0; i < selItems.length; i++) {
+        selItems[i].setAttribute('title', selItems[i].innerHTML);
+      }
+    }
+  }
+
   renderBoolean() {
     const { label = ''} = this.props;
     return <Div hidden={this.props.hidden}>

@@ -106,7 +106,7 @@ class DriversList extends ElementsList {
 	constructor(props) {
 		super(props);
 
-    this.mainListName = 'driversList';
+    this.mainListName = 'employeesList';
 	}
 
   componentDidMount() {

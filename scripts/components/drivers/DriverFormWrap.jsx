@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import _ from 'lodash';
+import { isEmpty } from 'utils/functions';
 import DriverForm from './DriverForm.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';
 
@@ -28,8 +29,17 @@ class DriverFormWrap extends FormWrap {
 
 	}
 
-	handleFormSubmit(formState) {
-		this.context.flux.getActions('employees').updateEmployee(formState);
+  async handleFormSubmit(formState) {
+    const { flux } = this.context;
+
+    if (isEmpty(formState.id)) {
+      await flux.getActions('employees').createEmployee(formState);
+    }
+    else {
+      await flux.getActions('employees').updateEmployee(formState);
+    }
+
+    flux.getActions('employees').getEmployees();
     this.props.onFormHide();
 	}
 

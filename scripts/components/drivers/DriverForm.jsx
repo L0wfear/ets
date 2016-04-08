@@ -41,7 +41,7 @@ class DriverForm extends Form {
 
     let valueActive;
     if (state.active != undefined) {
-      state.active ? valueActive = 1 : valueActive = 0;
+      valueActive = state.active ?  1 :  0;
     }
 
     const IS_CREATING = !!!state.id;

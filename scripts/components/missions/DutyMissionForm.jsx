@@ -14,12 +14,6 @@ import Form from '../compositions/Form.jsx';
 import { TechnicalOperationService } from 'api/Services';
 
 
-let getTechOperationById = (id) => {
-  const { flux } = window.__ETS_CONTAINER__;
-  const objectsStore = flux.getStore('objects');
-  return objectsStore.getTechOperationById(id);
-};
-
 export class DutyMissionForm extends Form {
 
 	constructor(props) {
@@ -156,9 +150,8 @@ export class DutyMissionForm extends Form {
     const ROUTES = routesList.map(({id, name}) => ({value: id, label: name}));
     const EMPLOYEES = employeesList.filter(d => d.position_key == EMPLOYEES_RKU_FILTER)
       .map( d => ({value: d.id, label: `${d.last_name} ${d.first_name} ${d.middle_name}`}));
-    const MISSIONS = missionsList.map( ({id, number, technical_operation_id}) => {
-			const techOperation = getTechOperationById(technical_operation_id);
-			return {id, value: id, label: `№${number} (${techOperation.name})`};
+    const MISSIONS = missionsList.map( ({id, number, technical_operation_name}) => {
+			return {id, value: id, label: `№${number} (${technical_operation_name})`};
 		});
 
 		let IS_CREATING = !!!state.number;

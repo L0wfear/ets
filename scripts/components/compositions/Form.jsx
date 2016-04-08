@@ -15,8 +15,12 @@ class Form extends React.Component {
 
    handleChange(field, e) {
      console.info('HANDLE FORM CHANGE');
- 		 this.props.handleFormChange(field, e);
+ 		 return this.props.handleFormChange(field, e);
  	 }
+
+   handleMultipleChange(fields) {
+     this.props.handleMultipleChange(fields);
+   }
 
    handleSubmit() {
      console.info('SUBMITTING FORM', this.props.formState);

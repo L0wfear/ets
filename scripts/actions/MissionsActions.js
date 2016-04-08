@@ -30,19 +30,25 @@ export default class MissionsActions extends Actions {
     return MissionService.get(payload);
   }
 
-  getMissionsByCarAndDates(car_id, date_from, date_to, status) {
+  getMissionsByCarAndDates(car_id, date_from, date_to, waybillStatus) {
     const payload = {};
+
+    // возвращает статусы задания, которые мы будем искать, в зависимости от статуса ПЛ
+    // если у ПЛ нет статуса, то нужны исключительно неназначенные задания!
+    let getMissionFilterStatus = (waybillStatus) => !!waybillStatus ? undefined : 'not_assigned';
+
+    let status = getMissionFilterStatus(waybillStatus);
 
     if (!isEmpty(car_id)) {
       payload.car_id = car_id;
     }
 
     if (!isEmpty(date_from)) {
-      payload.date_from = date_from;
+      payload.date_from = createValidDateTime(date_from);
     }
 
     if (!isEmpty(date_to)) {
-      payload.date_to = date_to;
+      payload.date_to = createValidDateTime(date_to);
     }
 
     if (!isEmpty(status)) {

@@ -108,9 +108,19 @@ const missionCreateSuccessNotification = {
   autoDismiss: 3,
 }
 
+const missionsByCarAndDateUpdateNotification = {
+  title: '',
+  message: 'Доступные для выбранного ТС и планируемых дат задания изменены',
+  level: 'info',
+  dismissible: true,
+  position: 'tr',
+  autoDismiss: 2,
+}
+
 export const notifications = {
   missionCreateSuccessNotification,
-  missionsCreationSuccessNotification
+  missionsCreationSuccessNotification,
+  missionsByCarAndDateUpdateNotification
 }
 
 export function getWarningNotification(message) {

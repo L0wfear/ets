@@ -25,7 +25,7 @@ let getTableMeta = (props) => {
 	    },
 			{
 				name: 'traveled',
-				caption: 'Пройдено',
+				caption: 'Пройдено с рабочей скоростью',
 				type: 'string',
 				filter: {
 					type: 'select',

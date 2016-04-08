@@ -139,12 +139,13 @@ export default class Taxes extends Component {
   render() {
 
     const { taxes = this.state.tableData, fuelRates = [] } = this.props;
+    const hasTaxes = taxes.length > 1;
 
 		return (
       <Div className="taxi-calc-block" hidden={this.props.hidden}>
         <Div className="some-header">
           <h4>Расчет топлива по норме</h4>
-          <Div hidden={fuelRates.length}>
+          <Div hidden={fuelRates.length || hasTaxes}>
             <h5>Для данного ТС нормы расхода топлива не указаны</h5>
           </Div>
           <Div className="waybills-buttons" hidden={this.props.readOnly || !fuelRates.length}>
@@ -156,7 +157,7 @@ export default class Taxes extends Component {
             </Button>
           </Div>
         </Div>
-        <Div hidden={taxes.length === 1}>
+        <Div hidden={!hasTaxes}>
           <Table title="Расчет топлива по норме"
                  columnCaptions={this.tableCaptions}
                  data={taxes}

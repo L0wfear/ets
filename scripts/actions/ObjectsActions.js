@@ -94,6 +94,7 @@ export default class ObjectsActions extends Actions {
 
     const payload = {
       id: formState.id,
+      dt_id: formState.dt_id,
       company_structure_id: formState.company_structure_id || null,
     };
 

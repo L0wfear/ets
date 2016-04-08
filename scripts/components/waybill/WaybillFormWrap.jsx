@@ -8,6 +8,7 @@ import { isNotNull, isEmpty } from 'utils/functions';
 import { validateRow } from 'validate/validateRow.js';
 import { waybillSchema, waybillClosingSchema } from '../models/WaybillModel.js';
 import config from '../../config.js';
+import { notifications } from 'utils/notifications';
 
 let validateWaybill = (waybill, errors) => {
 	let waybillErrors = _.clone(errors);
@@ -137,18 +138,17 @@ class WaybillFormWrap extends Component {
 	handleFormStateChange(field, e) {
 		console.log('waybill form changed', field, e)
 		const value = e !== undefined && !!e.target ? e.target.value : e;
-		let { formState, formErrors } = this.state;
+		let { formErrors } = this.state;
+		let formState = _.cloneDeep(this.state.formState);
 		let newState = {};
 		formState[field] = value;
 
-		// validation
 		if (!!!formState.status || formState.status === 'draft') {
 			formErrors = validateWaybill(formState, formErrors);
 		} else if (formState.status && formState.status === 'active') {
 			formErrors = validateClosingWaybill(formState, formErrors);
 		}
 
-		// /validation
 		newState.canSave = ! !!_.filter(formErrors, (v,k) => k === 'fuel_end' ? false : v).length;
 		newState.canClose = ! !!_.filter(formErrors).length;
 
@@ -162,6 +162,38 @@ class WaybillFormWrap extends Component {
 			formState.motohours_equip_diff = formState.motohours_equip_end - formState.motohours_equip_start;
 		}
 
+		newState.formState = formState;
+		newState.formErrors = formErrors;
+
+		this.setState(newState);
+	}
+
+	handleMultipleChange(fields) {
+		let { formErrors } = this.state;
+		let formState = _.cloneDeep(this.state.formState);
+		let newState = {};
+		_.mapKeys(fields, (v, field) => {
+			formState[field] = v;
+			if (field === 'odometr_end' && formState.status) {
+				formState.odometr_diff = formState.odometr_end - formState.odometr_start;
+			}
+			if (field === 'motohours_end' && formState.status) {
+				formState.motohours_diff = formState.motohours_end - formState.motohours_start;
+			}
+			if (field === 'motohours_equip_end' && formState.status) {
+				formState.motohours_equip_diff = formState.motohours_equip_end - formState.motohours_equip_start;
+			}
+		});
+
+		if (!!!formState.status || formState.status === 'draft') {
+			formErrors = validateWaybill(formState, formErrors);
+		} else if (formState.status && formState.status === 'active') {
+			formErrors = validateClosingWaybill(formState, formErrors);
+		}
+
+		newState.canSave = ! !!_.filter(formErrors, (v,k) => k === 'fuel_end' ? false : v).length;
+		newState.canClose = ! !!_.filter(formErrors).length;
+		
 		newState.formState = formState;
 		newState.formErrors = formErrors;
 
@@ -268,6 +300,7 @@ class WaybillFormWrap extends Component {
 													 handlePrint={this.handlePrint.bind(this)}
 													 handleClose={this.handleClose.bind(this)}
 													 handleFormChange={this.handleFormStateChange.bind(this)}
+													 handleMultipleChange={this.handleMultipleChange.bind(this)}
 													 show={this.props.showForm}
 													 onHide={this.props.onFormHide}
 													 {...this.state}/>

@@ -14,6 +14,8 @@ import Form from '../compositions/Form.jsx';
 import MissionFormWrap from '../missions/MissionFormWrap.jsx';
 import { getDefaultMission } from '../../stores/MissionsStore.js';
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
+import { notifications } from 'utils/notifications';
+import _ from 'lodash';
 
 let getCarById = (cars, id) => {
 	const car = _.find(cars, c => c.asuods_id === id) || {};
@@ -22,11 +24,6 @@ let getCarById = (cars, id) => {
 	}
 	return car;
 };
-
-// возвращает статусы задания, которые мы будем искать, в зависимости от статуса ПЛ
-// если у ПЛ нет статуса, то нужны исключительно неназначенные задания!
-let getMissionFilterStatus = (formState) => !!formState.status ? undefined : 'not_assigned';
-
 
 class WaybillForm extends Form {
 
@@ -42,34 +39,38 @@ class WaybillForm extends Form {
 		}
 	}
 
-	handleChange(field, e) {
-		this.props.handleFormChange(field, e);
-    const { flux } = this.context;
-    const { formState } = this.props;
-    if (field === 'plan_arrival_date') {
-  	  this.props.handleFormChange('mission_id_list', []);
-    	flux.getActions('missions').getMissionsByCarAndDates(
-        formState.car_id,
-        createValidDateTime(formState.plan_departure_date),
-        createValidDateTime(e),
-        getMissionFilterStatus(formState)
-      );
+  getMissionsByCarAndDates(formState, notificate = true) {
+    this.context.flux.getActions('missions').getMissionsByCarAndDates(
+      formState.car_id,
+      formState.plan_departure_date,
+      formState.plan_arrival_date,
+      formState.status
+    ).then((response) => {
+      let availableMissions = response && response.result ? response.result.map(el => el.id) : [];
+      let currentMissions = formState.mission_id_list;
+      let newMissions = currentMissions.filter(el => availableMissions.indexOf(el) > -1);
+      this.props.handleFormChange('mission_id_list', newMissions);
+      notificate && global.NOTIFICATION_SYSTEM._addNotification(notifications.missionsByCarAndDateUpdateNotification);
+    });
+  }
+
+  componentWillReceiveProps(props) {
+    let currentState = this.props.formState;
+    let nextState = props.formState;
+
+    //при смене планируемых дат или ТС запрашиваются новые доступные задания
+    if (currentState.car_id !== nextState.car_id ||
+        !_.isEqual(currentState.plan_arrival_date, nextState.plan_arrival_date) ||
+        !_.isEqual(currentState.plan_departure_date, nextState.plan_departure_date)) {
+
+        this.getMissionsByCarAndDates(nextState);
     }
-    if (field === 'plan_departure_date') {
-  	  this.props.handleFormChange('mission_id_list', []);
-    	flux.getActions('missions').getMissionsByCarAndDates(
-        formState.car_id,
-        createValidDateTime(e),
-        createValidDateTime(formState.plan_arrival_date),
-        getMissionFilterStatus(formState)
-      );
-    }
-	}
+  }
 
 	componentDidMount() {
     const { flux } = this.context;
     const { formState } = this.props;
-		if (formState.status && formState.status === 'active') {
+		if (formState.status === 'active') {
 			const car = _.find(this.props.carsList, c => c.asuods_id === formState.car_id) || {}
 			const car_model_id = car.model_id;
 			const fuel_correction_rate = car.fuel_correction_rate || null;
@@ -80,66 +81,57 @@ class WaybillForm extends Form {
 					this.setState({fuelRates, operations, fuel_correction_rate});
 				});
 			});
-		} else if (formState.status && formState.status === 'closed') {
+		} else if (formState.status === 'closed') {
 			flux.getActions('fuel-rates').getFuelOperations().then( fuelOperations => {
 				this.setState({operations: fuelOperations.result});
 			});
 		}
-  	flux.getActions('missions').getMissionsByCarAndDates(
-      formState.car_id,
-      createValidDateTime(formState.plan_departure_date),
-      createValidDateTime(formState.plan_arrival_date),
-      getMissionFilterStatus(formState)
-    );
+
+  	this.getMissionsByCarAndDates(formState, false);
 		flux.getActions('objects').getFuelTypes();
 		flux.getActions('objects').getCars();
 		flux.getActions('employees').getEmployees();
 	}
 
-	onDriverChange(v) {
-		this.handleChange('driver_id', v);
-	}
-
-	onCarChange(car_id) {
+	async onCarChange(car_id) {
     const { flux } = this.context;
-		this.handleChange('car_id', car_id);
-  	this.handleChange('mission_id_list', []);
 
+    let fieldsToChange = {
+      car_id,
+    };
+
+    //определение наличия одометра у машины для отображения различных полей
     let car_has_odometer = null;
     let car = this.props.carsIndex[car_id];
     if (car && car.gov_number) {
       car_has_odometer = isNaN(car.gov_number[0]);
     }
-    this.handleChange('car_has_odometer', car_has_odometer);
+
+    fieldsToChange.car_has_odometer = car_has_odometer;
 
 		const waybillsListSorted = _(this.props.waybillsList).filter(w => w.status === 'closed').sortBy('id').value().reverse();
 		const lastCarUsedWaybill = _.find(waybillsListSorted, w => w.car_id === car_id);
 		if (isNotNull(lastCarUsedWaybill)) {
 			if (isNotNull(lastCarUsedWaybill.fuel_end)) {
-				this.handleChange('fuel_start', lastCarUsedWaybill.fuel_end);
+        fieldsToChange.fuel_start = lastCarUsedWaybill.fuel_end;
 			}
 			if (isNotNull(lastCarUsedWaybill.odometr_end)) {
-				this.handleChange('odometr_start', lastCarUsedWaybill.odometr_end);
+        fieldsToChange.odometr_start = lastCarUsedWaybill.odometr_end;
 			}
 			if (isNotNull(lastCarUsedWaybill.motohours_end)) {
-				this.handleChange('motohours_start', lastCarUsedWaybill.motohours_end);
+        fieldsToChange.motohours_start = lastCarUsedWaybill.motohours_end;
 			}
 			if (isNotNull(lastCarUsedWaybill.motohours_equip_end)) {
-				this.handleChange('motohours_equip_start', lastCarUsedWaybill.motohours_equip_end);
+        fieldsToChange.motohours_equip_start = lastCarUsedWaybill.motohours_equip_end;
 			}
 		} else {
-			this.handleChange('fuel_start', 0);
-			this.handleChange('odometr_start', 0);
-			this.handleChange('motohours_start', 0);
-			this.handleChange('motohours_equip_start', 0);
+      fieldsToChange.fuel_start = 0;
+      fieldsToChange.odometr_start = 0;
+      fieldsToChange.motohours_start = 0;
+      fieldsToChange.motohours_equip_start = 0;
 		}
 
-  	flux.getActions('missions').getMissionsByCarAndDates(
-      car_id,
-      createValidDateTime(this.props.formState.plan_departure_date),
-      createValidDateTime(this.props.formState.plan_arrival_date),
-      getMissionFilterStatus(this.props.formState)
-    );
+    this.props.handleMultipleChange(fieldsToChange);
 	}
 
   onMissionFormHide(result) {
@@ -185,17 +177,12 @@ class WaybillForm extends Form {
 		const MASTERS = employeesList.filter( e => [2, 4, 5, 7, 14].indexOf(e.position_id) > -1).map( m => ({value: m.id, data: m, label: `${m.last_name} ${m.first_name} ${m.middle_name}`}));
     const MISSIONS = missionsList.map( ({id, number, technical_operation_name}) => ({value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false}));
 
-    console.log('form state is ', state);
+    //console.log('form state is ', state);
 
 		let IS_CREATING = !!!state.status;
 		let IS_CLOSING = state.status && state.status === 'active';
     let IS_POST_CREATING = state.status && state.status === 'draft';
 		let IS_DISPLAY = state.status && state.status === 'closed';
-    let car = carsIndex[state.car_id];
-    let car_has_odometer = null;
-    if (car && car.gov_number) {
-      car_has_odometer = isNaN(car.gov_number[0]);
-    }
 
     let title = '';
 
@@ -272,7 +259,7 @@ class WaybillForm extends Form {
 									hidden={!(IS_CREATING || IS_POST_CREATING)}
 									options={DRIVERS}
 									value={state.driver_id}
-									onChange={this.onDriverChange.bind(this)}/>
+									onChange={this.handleChange.bind(this, 'driver_id')}/>
 
 							<Field type="string" label="Водитель" readOnly={true} hidden={IS_CREATING || IS_POST_CREATING}
 									value={employeeFIOLabelFunction(state.driver_id, true)}/>
@@ -291,7 +278,7 @@ class WaybillForm extends Form {
 
 	      	<Row>
 						<Div hidden={!state.car_id}>
-							<Div hidden={!car_has_odometer}>
+							<Div hidden={!state.car_has_odometer}>
 								<Col md={4}>
 									<h4>Одометр</h4>
 									<Field type="number" label="Выезд, км" error={errors['odometr_start']}
@@ -304,7 +291,7 @@ class WaybillForm extends Form {
 											value={state.odometr_diff} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled />
 								</Col>
 							</Div>
-							<Div hidden={car_has_odometer}>
+							<Div hidden={state.car_has_odometer}>
 								<Col md={4}>
 									<h4>Счетчик моточасов</h4>
 									<Field type="number" label="Выезд, м/ч" error={errors['motohours_start']}

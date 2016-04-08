@@ -70,7 +70,7 @@ class FormWrap extends React.Component {
 		this.setState(newState);
   }
 
-  handleFormSubmit() {
+  handleFormSubmit(formState) {
     if (typeof this.props.onFormHide === 'function') {
       this.props.onFormHide();
     }

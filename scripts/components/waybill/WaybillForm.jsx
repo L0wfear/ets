@@ -67,7 +67,7 @@ class WaybillForm extends Form {
     }
   }
 
-	componentDidMount() {
+	async componentDidMount() {
     const { flux } = this.context;
     const { formState } = this.props;
 		if (formState.status === 'active') {
@@ -89,8 +89,15 @@ class WaybillForm extends Form {
 
   	this.getMissionsByCarAndDates(formState, false);
 		flux.getActions('objects').getFuelTypes();
-		flux.getActions('objects').getCars();
-		flux.getActions('employees').getEmployees();
+		await flux.getActions('objects').getCars();
+		await flux.getActions('employees').getEmployees();
+
+    let car_has_odometer = null;
+    let car = this.props.carsIndex[formState.car_id];
+    if (car && car.gov_number) {
+      car_has_odometer = isNaN(car.gov_number[0]);
+      this.handleChange('car_has_odometer', car_has_odometer);
+    }
 	}
 
 	async onCarChange(car_id) {

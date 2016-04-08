@@ -6,6 +6,7 @@ import MissionTemplateFormWrap from './MissionTemplateFormWrap.jsx';
 import ElementsList from '../ElementsList.jsx';
 import moment from 'moment';
 import cx from 'classnames';
+import _ from 'lodash';
 
 let getTechOperationById = (id) => window.__ETS_CONTAINER__.flux.getStore('objects').getTechOperationById(id);
 
@@ -178,6 +179,22 @@ class MissionTemplatesJournal extends ElementsList {
 		});
 	}
 
+  removeCheckedElements() {
+    if (typeof this.removeElementAction !== 'function') return;
+
+    if (Object.keys(this.state.checkedMissions).length !== 0) {
+      if (!confirm('Вы уверены, что хотите удалить выбранные элементы?')) return;
+
+      _.forEach(this.state.checkedMissions, function(mission) {
+        //console.dir(mission);
+        this.removeElementAction(mission.id);
+      });
+    }
+    else {
+      this.removeElement();
+    }
+  }
+
 	render() {
 
 		const { missionTemplatesList = [], noFilter = false } = this.props;
@@ -190,7 +207,7 @@ class MissionTemplatesJournal extends ElementsList {
 					<Button bsSize="small" onClick={this.createMissions.bind(this)} disabled={Object.keys(this.state.checkedMissions).length === 0}>Сформировать задание</Button>
 					<Button bsSize="small" onClick={this.showMission.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="search" /> Просмотреть</Button>
 					<Button bsSize="small" onClick={this.copyElement.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="copy" /> Копировать</Button>
-					<Button bsSize="small" onClick={this.removeElement.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="remove" /> Удалить</Button>
+					<Button bsSize="small" onClick={this.removeCheckedElements.bind(this)} disabled={this.state.selectedElement === null && Object.keys(this.state.checkedMissions).length === 0}><Glyphicon glyph="remove" /> Удалить</Button>
 				</MissionsTable>
 				<MissionTemplateFormWrap onFormHide={this.onFormHide.bind(this)}
 																 showForm={this.state.showForm}

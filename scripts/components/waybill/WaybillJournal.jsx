@@ -8,6 +8,7 @@ import WaybillFormWrap from './WaybillFormWrap.jsx';
 import ElementsList from '../ElementsList.jsx';
 import moment from 'moment';
 import cx from 'classnames';
+import _ from 'lodash';
 import { dateLabelFunction,
 				 datePickerFunction,
 				 employeeFIOLabelFunction,
@@ -125,6 +126,7 @@ let WaybillsTable = (props) => {
 									initialSort={'number'}
 									initialSortAscending={false}
 									tableMeta={getTableMeta(props)}
+                  multiSelection={true}
 									{...props}/>
 }
 
@@ -135,6 +137,11 @@ class WaybillJournal extends ElementsList {
 
     this.removeElementAction = context.flux.getActions('waybills').delete;
     this.mainListName = 'waybillsList';
+
+    this.state = {
+      selectedElement: null,
+      checkedWaybills: {}
+    };
 	}
 
 	componentDidMount() {
@@ -146,6 +153,45 @@ class WaybillJournal extends ElementsList {
 		flux.getActions('objects').getCars();
 	}
 
+  stateChangeCallback() {
+    if (typeof this.props.onListStateChange === 'function') {
+      this.props.onListStateChange(this.state);
+    }
+  }
+
+  checkWaybill(id, state) {
+    const waybills = _.cloneDeep(this.state.checkedWaybills);
+    if (state) {
+      waybills[parseInt(id, 10)] = _.find(this.props.waybillsList, w => w.id === parseInt(id, 10));
+    } else {
+      delete waybills[id];
+    }
+    this.setState({checkedWaybills: waybills}, this.stateChangeCallback.bind(this));
+  }
+
+  checkAll(rows, state) {
+    let checkedWaybills = _.cloneDeep(this.state.checkedWaybills);
+    checkedWaybills = state ? rows : {};
+
+    this.setState({checkedWaybills}, this.stateChangeCallback.bind(this));
+  }
+
+  removeCheckedElements() {
+    if (typeof this.removeElementAction !== 'function') return;
+
+    if (Object.keys(this.state.checkedWaybills).length !== 0) {
+      if (!confirm('Вы уверены, что хотите удалить выбранные элементы?')) return;
+
+      _.forEach(this.state.checkedWaybills, function(waybill) {
+        //console.dir(waybill);
+        this.removeElementAction(waybill.id);
+      });
+    }
+    else {
+      this.removeElement();
+    }
+  }
+
 	render() {
 
 		const { waybillsList = [] } = this.props;
@@ -154,11 +200,11 @@ class WaybillJournal extends ElementsList {
 
 		return (
 			<div className="ets-page-wrap">
-				<WaybillsTable data={waybillsList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'} filterValues={this.props.location.query} {...this.props}>
+				<WaybillsTable data={waybillsList} onAllRowsChecked={this.checkAll.bind(this)} onRowChecked={this.checkWaybill.bind(this)} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} checked={this.state.checkedWaybills} selectField={'id'} filterValues={this.props.location.query} {...this.props}>
 					<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Создать ПЛ</Button>
 					<Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="search" /> Просмотреть</Button>
 					<Button bsSize="small" disabled={disabledCloseButton} onClick={this.showForm.bind(this)}><Glyphicon glyph="ok" /> Закрыть ПЛ</Button>
-					<Button bsSize="small" disabled={this.state.selectedElement === null} onClick={this.removeElement.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
+					<Button bsSize="small" disabled={this.state.selectedElement === null && Object.keys(this.state.checkedWaybills).length === 0} onClick={this.removeCheckedElements.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
 				</WaybillsTable>
 				<WaybillFormWrap onFormHide={this.onFormHide.bind(this)}
 												 showForm={this.state.showForm}

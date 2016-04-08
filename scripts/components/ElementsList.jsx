@@ -32,7 +32,7 @@ class ElementsList extends React.Component {
    selectElement({props}) {
      this.clicks++;
      const id = props.data.id || props.data[this.selectField];
-     
+
      if (this.clicks === 1) {
        let selectedElement = _.find(this.state.elementsList, el => el.id ? el.id === id : el[this.selectField] === id);
        this.setState({ selectedElement });
@@ -70,6 +70,7 @@ class ElementsList extends React.Component {
 
    removeElement() {
     if (typeof this.removeElementAction !== 'function') return;
+
  		if (confirm('Вы уверены, что хотите удалить выбранный элемент?')) {
       this.removeElementAction(this.state.selectedElement.id);
  		}

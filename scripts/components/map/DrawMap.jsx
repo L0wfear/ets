@@ -36,7 +36,7 @@ export default class DrawMap extends PolyMap {
     let map = this.map;
     let el = this.map.getViewport();
     let hit = map.forEachFeatureAtPixel(pixel, (feature, layer) => {
-      return feature.getProperties().state === 2 ? true : false;
+      return feature.getProperties().state >= 2 ? true : false;
     });
 
     el.style.cursor = hit ? 'pointer' : '';

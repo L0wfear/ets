@@ -74,6 +74,7 @@ class ElementsList extends React.Component {
 
    removeElement() {
     if (typeof this.removeElementAction !== 'function') return;
+
  		if (confirm('Вы уверены, что хотите удалить выбранный элемент?')) {
       this.removeElementAction(this.state.selectedElement.id);
  		}

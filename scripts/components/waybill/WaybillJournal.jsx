@@ -182,12 +182,14 @@ class WaybillJournal extends ElementsList {
     if (Object.keys(this.state.checkedWaybills).length !== 0) {
       if (!confirm('Вы уверены, что хотите удалить выбранные элементы?')) return;
 
-      _.forEach(this.state.checkedWaybills, function(waybill) {
-        //console.dir(waybill);
+      _.forEach(this.state.checkedWaybills, (waybill) => {
         this.removeElementAction(waybill.id);
       });
-    }
-    else {
+			this.setState({
+				checkedWaybills: {},
+				selectedElement: null,
+			});
+    } else {
       this.removeElement();
     }
   }

@@ -13,8 +13,7 @@ class WeatherWidget extends Component {
   }
 
   componentDidMount() {
-    getWeather()
-      .then(({ temp, icon }) => this.setState({ temp, icon, loaded: true }));
+    //getWeather().then(({ temp, icon }) => this.setState({ temp, icon, loaded: true }));
   }
 
   render() {

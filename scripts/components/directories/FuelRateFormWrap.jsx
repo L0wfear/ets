@@ -3,61 +3,28 @@ import moment from 'moment';
 import _ from 'lodash';
 
 import FuelRateForm from './FuelRateForm.jsx';
+import FormWrap from '../compositions/FormWrap.jsx';
 
-export default class FormWrap extends Component {
+export default class FuelRateFormWrap extends FormWrap {
+
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			formState: null,
-			canSave: false,
-      isNew: false,
+		this.defaultElement = {
+			order_date: new Date('1990', '00', '01'),
+			operation_id: null,
+			//summer_rate: '',
+			//winter_rate: '',
+			car_model_id: null
 		};
 	}
 
-	componentWillReceiveProps(props) {
-
-		if (props.showForm) {
-			if (props.fuelRate !== null ) {
-        const fuelRate = Object.assign({}, props.fuelRate);
-        this.setState({
-          formState: fuelRate,
-          isNew: false,
-        })
-			} else {
-        this.setState({
-          formState: {
-            order_date: new Date('1990', '00', '01'),
-            operation_id: null,
-            //summer_rate: '',
-            //winter_rate: '',
-            car_model_id: null
-          },
-          isNew: true,
-        })
-      }
-		}
-	}
-
-
-	handleFormStateChange(field, e) {
-		console.log( 'fuelRate form changed', field, e)
-
-		let formState = this.state.formState;
-		let newState = {};
-		formState[field] = !!e.target ? e.target.value : e;
-
-		newState.formState = formState;
-
-		this.setState(newState)
-	}
-
 	handleFormSubmit(formState) {
-    //todo update fuelRate info
-    if (this.state.isNew) {
-      this.props.addFuelRate(formState);
+		let { flux } = this.context;
+    if (!formState.id) {
+			flux.getActions('fuel-rates').addFuelRate(formState);
     } else {
-      this.props.updateFuelRate(formState);
+			flux.getActions('fuel-rates').updateFuelRate(formState);
     }
     this.props.onFormHide();
 	}
@@ -68,15 +35,12 @@ export default class FormWrap extends Component {
 
 		return props.showForm ?
     <FuelRateForm formState = {this.state.formState}
-								onSubmit={this.handleFormSubmit.bind(this)}
-								handleFormChange={this.handleFormStateChange.bind(this)}
-								show={this.props.showForm}
-								onHide={this.props.onFormHide}
-                operations={this.props.operations}
-                models={this.props.models}
-                isNew={this.props.fuelRate === null}
-								{...this.state}/>
-								: null;
+									onSubmit={this.handleFormSubmit.bind(this)}
+									handleFormChange={this.handleFormStateChange.bind(this)}
+									show={this.props.showForm}
+									onHide={this.props.onFormHide}
+									{...this.state}/>
+									: null;
 
 	}
 

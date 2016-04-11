@@ -8,15 +8,12 @@ import moment from 'moment';
 import cx from 'classnames';
 import Form from '../../compositions/Form.jsx';
 
-let seasonsList = [{id: 1, name: 'Лето'},{id: 2, name: 'Зима'},{id: 3, name: 'Всесезон'}]
+let seasonsList = [{id: 1, name: 'Лето'}, {id: 2, name: 'Зима'}, {id: 3, name: 'Всесезон'}];
 
 export class MissionForm extends Form {
 
 	constructor(props) {
 		super(props);
-
-		this.state = {
-		};
 	}
 
   handleCarFuncTypesChange(v) {
@@ -34,11 +31,6 @@ export class MissionForm extends Form {
 		this.props.handleFormChange('objects', objects);
 	}
 
-	handleNeedsBrigadeChange(v) {
-		console.log(v);
-
-	}
-
 	componentDidMount() {
 		const { flux } = this.context;
 		flux.getActions('objects').getWorkKinds();
@@ -53,6 +45,7 @@ export class MissionForm extends Form {
 		let errors = this.props.formErrors;
     let title = 'Тех. операция';
     let { workKindsList = [], carFuncTypesList = [], technicalOperationsObjectsList = [], technicalOperationsTypesList = [], } = this.props;
+
     let WORK_KINDS = workKindsList.map(({id, name}) => ({value: id, label: name}));
     let SEASONS = seasonsList.map(({id, name}) => ({value: id, label: name}));
     let CAR_FUNC_TYPES = carFuncTypesList.map(({id, full_name}) => ({value: id, label: full_name}));

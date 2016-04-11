@@ -45,7 +45,7 @@ class ElementsList extends React.Component {
        this.setState({ selectedElement });
        setTimeout(() => {
          if (this.clicks !== 1) {
-           if (this.state.selectedElement && id === this.state.selectedElement.id) {
+           if (this.state.selectedElement && id === (this.state.selectedElement.id || this.state.selectedElement[this.selectField]) ) {
              this.onDoubleClick();//
            }
          }
@@ -76,7 +76,7 @@ class ElementsList extends React.Component {
     if (typeof this.removeElementAction !== 'function') return;
 
  		if (confirm('Вы уверены, что хотите удалить выбранный элемент?')) {
-      this.removeElementAction(this.state.selectedElement.id);
+      this.removeElementAction(this.state.selectedElement.id || this.state.selectedElement[this.selectField]);
  		}
  	 }
 

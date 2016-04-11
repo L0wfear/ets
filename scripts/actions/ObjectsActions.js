@@ -1,7 +1,6 @@
 import { Actions } from 'flummox';
 import { getCustomers } from '../adapter.js';
 import _ from 'lodash';
-import { fetchModels } from '../models.js';
 import { getOkrugs } from '../okrugs.js';
 import { getOwners } from '../owners.js';
 import { isEmpty } from 'utils/functions';
@@ -16,7 +15,8 @@ import { FaxogrammService,
          CarFuncTypeService,
          ODHService,
          DTService,
-         PositionService } from 'api/Services';
+         PositionService,
+         ModelsService } from 'api/Services';
 
 export default class ObjectsActions extends Actions {
 
@@ -31,7 +31,7 @@ export default class ObjectsActions extends Actions {
   }
 
   getModels() {
-    return fetchModels();
+    return ModelsService.get();
   }
 
   getCustomers() {

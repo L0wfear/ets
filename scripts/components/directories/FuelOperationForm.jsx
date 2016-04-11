@@ -1,10 +1,7 @@
 import React, {Component} from 'react';
 import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
-import EtsSelect from '../ui/EtsSelect.jsx';
-import Datepicker from '../ui/DatePicker.jsx';
-import moment from 'moment';
 import Div from '../ui/Div.jsx';
-import config from '../../config.js';
+import Field from '../ui/Field.jsx';
 import Form from 'compositions/Form.jsx';
 
 export default class FuelOperationForm extends Form {
@@ -14,10 +11,7 @@ export default class FuelOperationForm extends Form {
 	}
 
 	render() {
-
 		let state = this.props.formState;
-
-    console.log('form state is ', state);
 
 		return (
 			<Modal {...this.props}>
@@ -30,10 +24,8 @@ export default class FuelOperationForm extends Form {
 		      <Row>
 
 		      	<Col md={6}>
-	            <Div>
-	  	      		<label>Операция</label>
-	              <input value={state.NAME} onChange={this.handleChange.bind(this, 'NAME')} />
-	            </Div>
+							<Field type="string" label="Операция"
+										 value={state.NAME} onChange={this.handleChange.bind(this, 'NAME')} />
 		      	</Col>
 
 	        </Row>
@@ -45,6 +37,7 @@ export default class FuelOperationForm extends Form {
 	      </Modal.Footer>
 
 			</Modal>
-		)
+		);
 	}
+	
 }

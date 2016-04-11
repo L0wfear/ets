@@ -3229,6 +3229,7 @@ div.none {
 .filter-container-window {
   overflow-y: scroll;
   overflow-x: auto;
+  min-height: 250px;
 }
 
 .filter-footer {

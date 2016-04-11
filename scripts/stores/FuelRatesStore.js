@@ -29,6 +29,11 @@ class FuelRatesStore extends Store {
     this.setState({operations: result});
   }
 
+  getFuelOperationById(id) {
+    return _.find(this.state.operations, c => c.ID === id) || {};
+  }
+
+
 }
 
 export default FuelRatesStore;

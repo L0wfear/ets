@@ -4,32 +4,27 @@ import EtsSelect from '../ui/EtsSelect.jsx';
 import Datepicker from '../ui/DatePicker.jsx';
 import moment from 'moment';
 import Div from '../ui/Div.jsx';
+import Field from '../ui/Field.jsx';
 import config from '../../config.js';
+import Form from 'compositions/Form.jsx';
+import connectToStores from 'flummox/connect';
 
-export default class FuelRateForm extends Component {
+class FuelRateForm extends Form {
 
 	constructor(props) {
 		super(props);
-
-		this.state = {
-
-		};
 	}
 
-	handleChange(field, e) {
-		this.props.handleFormChange(field, e);
+	componentDidMount() {
+		this.context.flux.getActions('fuel-rates').getFuelOperations();
+		this.context.flux.getActions('objects').getModels();
 	}
-
-  handleSubmit() {
-    console.log('submitting fuelRate form', this.props.formState);
-    this.props.onSubmit(this.props.formState);
-  }
 
 	render() {
 
 		let state = this.props.formState;
-		const { models = [], operations = [] } = this.props;
-		const MODELS = models.map( m => ({value: m.id, label: m.title}));
+		const { modelsList = [], operations = [] } = this.props;
+		const MODELS = modelsList.map( m => ({value: m.id, label: m.title}));
 		const OPERATIONS = operations.map(op => ({value: op.ID, label: op.NAME}));
 
     console.log('form state is ', state);
@@ -37,7 +32,7 @@ export default class FuelRateForm extends Component {
 		return (
 			<Modal {...this.props}>
 				<Modal.Header closeButton>
-	          <Modal.Title id="contained-modal-title-lg">{this.props.isNew ? 'Добавление' : 'Изменение'} нормы расхода топлива</Modal.Title>
+	          <Modal.Title id="contained-modal-title-lg">{!state.id ? 'Добавление' : 'Изменение'} нормы расхода топлива</Modal.Title>
 				</Modal.Header>
 
 	      <Modal.Body>
@@ -79,3 +74,5 @@ export default class FuelRateForm extends Component {
 		)
 	}
 }
+
+export default connectToStores(FuelRateForm, ['fuel-rates', 'objects']);

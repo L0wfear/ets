@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Table from '../ui/table/DataTable.jsx';
-import TechOperationFormWrap from 'forms/technical_operation/TechOperationFormWrap.jsx';
+import TechOperationFormWrap from './technical_operation/TechOperationFormWrap.jsx';
 import { Button, Glyphicon, Input } from 'react-bootstrap';
 import cx from 'classnames';
 import connectToStores from 'flummox/connect';

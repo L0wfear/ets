@@ -3,10 +3,8 @@ import _ from 'lodash';
 import Div from '../../ui/Div.jsx';
 import TechOperationForm from './TechOperationForm.jsx';
 import FormWrap from '../../compositions/FormWrap.jsx';
-import { getDefaultMission } from '../../../stores/MissionsStore.js';
 import { isNotNull, isEmpty } from 'utils/functions';
 import { techOperationSchema } from '../../models/TechOperationModel.js';
-import { TechnicalOperationService } from 'api/Services.js';
 
 class TechOperationFormWrap extends FormWrap {
 
@@ -17,12 +15,12 @@ class TechOperationFormWrap extends FormWrap {
 	}
 
 	handleFormSubmit(formState) {
-    this.context.flux.getActions('technical_operation').updateTechnicalOperation(formState);
+		try {
+	    this.context.flux.getActions('technical_operation').updateTechnicalOperation(formState);
+		} catch (e) {
+			return;
+		}
 		this.props.onFormHide();
-	}
-
-	componentDidMount() {
-		//this.context.flux.getActions('technical_operation').getTechnicalOperationsObjects();
 	}
 
 	render() {

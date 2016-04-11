@@ -106,7 +106,6 @@ export class MissionForm extends Form {
 		}
 
 		technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsByCarId(mission.car_id);
-		//objectsActions.getModels();
 		let carsListResponse = await objectsActions.getCars();
 		carsList = carsListResponse.result;
 		missionsActions.getMissionSources();

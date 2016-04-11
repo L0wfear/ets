@@ -170,6 +170,10 @@ class ObjectsStore extends Store {
     return _.find(this.state.carsList, c => c.asuods_id === asuods_id) || {};
   }
 
+  getModelById(id) {
+    return _.find(this.state.modelsList, c => c.id === id) || {};
+  }
+
   handleGetPositions(positions) {
     this.setState({positionsList: positions.result});
   }

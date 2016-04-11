@@ -48,3 +48,13 @@ export function getCarByIdLabelFunction(id) {
 	}
 	return car;
 };
+
+export function getModelById(id) {
+  const { flux } = window.__ETS_CONTAINER__;
+  return flux.getStore('objects').getModelById(id);
+}
+
+export function getFuelOperationById(id) {
+  const { flux } = window.__ETS_CONTAINER__;
+  return flux.getStore('fuel-rates').getFuelOperationById(id);
+}

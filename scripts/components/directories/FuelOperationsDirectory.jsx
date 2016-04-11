@@ -5,14 +5,7 @@ import moment from 'moment';
 import cx from 'classnames';
 import connectToStores from 'flummox/connect';
 import FuelOperationFormWrap from './FuelOperationFormWrap.jsx';
-
-let getOperationById = () => {};
-
-let getModelById = (id) =>  {
-	let { flux } = window.__ETS_CONTAINER__;
-	let { modelsIndex } = flux.getStore('objects').state;
-	return modelsIndex[id] || {};
-};
+import ElementsList from '../ElementsList.jsx';
 
 let tableMeta = {
 	cols: [
@@ -29,13 +22,7 @@ let tableMeta = {
 
 let FuelOperationsTable = (props) => {
 
-    const renderers = {
-      operation_id: ({data}) => {
-        const operations = props.getOperations();
-        const operation = _.find(operations, op => op.ID === data) || { NAME: '' };
-        return <div>{operation.NAME}</div>;
-      }
-    };
+    const renderers = {};
 
 		return <Table title='Операции для расчета топлива'
 									results={props.data}
@@ -44,41 +31,14 @@ let FuelOperationsTable = (props) => {
 									{...props}/>
 }
 
-class FuelOperationsDirectory extends Component {
+class FuelOperationsDirectory extends ElementsList {
 
-
-	constructor(props) {
+	constructor(props, context) {
 		super(props);
 
-		this.state = {
-			selectedFuelOperation: null,
-			filterModalIsOpen: false,
-			filterValues: {},
-      showForm: false,
-		};
-	}
-
-	selectFuelOperation({props}) {
-		const id = props.data.ID;
-		let fuelOperation = _.find(this.props.operations, r => r.ID === id) || null;
-
-		this.setState({
-			selectedFuelOperation: fuelOperation
-		})
-	}
-
-	createRate() {
-		this.setState({
-			showForm: true,
-			selectedFuelOperation: null
-		})
-	}
-
-	onFormHide() {
-		this.setState({
-			showForm: false,
-			selectedFuelOperation: null
-		})
+		this.mainListName = 'operations';
+		this.selectField = 'ID';
+		this.removeElementAction = context.flux.getActions('fuel-rates').deleteFuelOperation;
 	}
 
 	componentDidMount() {
@@ -87,43 +47,27 @@ class FuelOperationsDirectory extends Component {
     flux.getActions('fuel-rates').getFuelOperations();
 	}
 
-	deleteFuelOperation() {
-    const { flux } = this.context;
-		if (confirm('Вы уверены, что хотите удалить запись?')) {
-			flux.getActions('fuel-rates').deleteFuelOperation(this.state.selectedFuelOperation);
-			this.setState({selectedFuelOperation: null});
-		}
-	}
-
-	showFuelOperation() {
-		this.setState({ showForm: true });
-	}
-
 	render() {
 
-		const { operations = [], modelsList = [] } = this.props;
+		const { operations = [] } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
-        <FuelOperationsTable data={operations} getOperations={(id) => this.props.operations} onRowSelected={this.selectFuelOperation.bind(this)} selected={this.state.selectedFuelOperation} selectField={'ID'}>
-					<Button bsSize="small" onClick={this.createRate.bind(this)}><Glyphicon glyph="plus" /> Добавить</Button>
-					<Button bsSize="small" onClick={this.showFuelOperation.bind(this)} disabled={this.state.selectedFuelOperation === null}><Glyphicon glyph="pencil" /> Изменить</Button>
-					<Button bsSize="small" disabled={this.state.selectedFuelOperation === null} onClick={this.deleteFuelOperation.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
+        <FuelOperationsTable data={operations} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'ID'}>
+					<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Добавить</Button>
+					<Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="pencil" /> Изменить</Button>
+					<Button bsSize="small" disabled={this.state.selectedElement === null} onClick={this.removeElement.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
 				</FuelOperationsTable>
         <FuelOperationFormWrap onFormHide={this.onFormHide.bind(this)}
-						showForm={this.state.showForm}
-						fuelOperation={this.state.selectedFuelOperation} />
+															 showForm={this.state.showForm}
+															 element={this.state.selectedElement} />
 			</div>
 		);
 	}
 }
 
-
-
 FuelOperationsDirectory.contextTypes = {
   flux: React.PropTypes.object,
 };
 
-const Wrapped = connectToStores(FuelOperationsDirectory, ['fuel-rates', 'objects']);
-
-export default Wrapped;
+export default connectToStores(FuelOperationsDirectory, ['fuel-rates', 'objects']);

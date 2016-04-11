@@ -45,9 +45,9 @@ export default class FuelRateActions extends Actions {
     return FuelConsumptionRateService.delete(payload);
   }
 
-  deleteFuelOperation(formState) {
+  deleteFuelOperation(id) {
     const payload = {
-      ID: formState.ID
+      ID: id
     };
     return FuelOperationsService.delete(payload);
   }

@@ -233,7 +233,6 @@ class Table extends React.Component {
   }
 
   handleChangeSort(sortingColumnName, ascendingSort) {
-    console.log(sortingColumnName, ascendingSort);
     this.setState({
       initialSort: sortingColumnName,
       initialSortAscending: ascendingSort,
@@ -241,10 +240,8 @@ class Table extends React.Component {
   }
 
   handleKeyPress(data, keyCode) {
-    //console.log(this.props.selected);
     let direction = 0;
     if (keyCode === 13 && this.props.selected !== null) {
-
     }
     if (keyCode === 40) {
       direction = +1;

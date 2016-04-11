@@ -96,15 +96,21 @@ class RouteCreating extends Component {
 		onDrawFeatureAdd(feature, coordinates, distance, map) {
 			let { id, state } = feature.getProperties();
 			const { object_list } = this.props.route;
-			if (!_.find(object_list, o => o.begin.x_msk === coordinates[0][0]))
-			object_list.push({
-				begin: {x_msk: coordinates[0][0], y_msk: coordinates[0][1]},
-				end: {x_msk: coordinates[1][0], y_msk: coordinates[1][1]},
-				state: 2,
-				id: id,
-				distance: distance,
-				technical_operation_id: 55,
+
+			let routeHasObject = _.find(object_list, o => {
+				return o.begin.x_msk === coordinates[0][0] && o.begin.y_msk === coordinates[0][1];
 			});
+			
+			if (!routeHasObject) {
+				object_list.push({
+					begin: {x_msk: coordinates[0][0], y_msk: coordinates[0][1]},
+					end: {x_msk: coordinates[1][0], y_msk: coordinates[1][1]},
+					state: 2,
+					id: id,
+					distance: distance,
+					technical_operation_id: 55,
+				});
+			}
 
 			this.props.onChange('object_list', object_list);
 		}

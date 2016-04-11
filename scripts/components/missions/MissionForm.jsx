@@ -197,7 +197,7 @@ export class MissionForm extends Form {
 			<Modal {...this.props} bsSize="large">
 
 				<Modal.Header closeButton>
-	          <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
+					<Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
 				</Modal.Header>
 
 	      <Modal.Body>
@@ -206,36 +206,36 @@ export class MissionForm extends Form {
 						<Col md={6}>
 							<Div hidden={!state.fail_reason} style={{marginBottom: 10}}>
 								<Field type="string" label="Причина невыполнения"
-											 value={state.fail_reason}
-											 readOnly={true}/>
+										value={state.fail_reason}
+										readOnly={true}/>
 							</Div>
 							<Field type="select" label="Транспортное средство" error={errors['car_id']}
-											disabled={IS_POST_CREATING_ASSIGNED ||
-																IS_POST_CREATING_NOT_ASSIGNED ||
-																IS_DISPLAY ||
-																this.props.fromWaybill ||
-																(IS_CREATING && isEmpty(state.technical_operation_id))}
-											options={CARS}
-											value={state.car_id}
-											onChange={this.handleCarIdChange.bind(this)}/>
+									disabled={IS_POST_CREATING_ASSIGNED ||
+										IS_POST_CREATING_NOT_ASSIGNED ||
+										IS_DISPLAY ||
+										this.props.fromWaybill ||
+									(IS_CREATING && isEmpty(state.technical_operation_id))}
+									options={CARS}
+									value={state.car_id}
+									onChange={this.handleCarIdChange.bind(this)}/>
 						</Col>
 
 				 		<Col md={3}>
 				   		<label>Время выполнения</label>
 				 			<Div>c <Datepicker date={state.date_start}
-																 onChange={this.handleChange.bind(this, 'date_start')}
-																 disabled={IS_DISPLAY}
-																 min={this.props.fromWaybill && this.props.waybillStartDate ? this.props.waybillStartDate : null}
-																 max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}/>
+									onChange={this.handleChange.bind(this, 'date_start')}
+									disabled={IS_DISPLAY}
+									min={this.props.fromWaybill && this.props.waybillStartDate ? this.props.waybillStartDate : null}
+									max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}/>
 							</Div>
 				   	</Col>
 				   	<Col md={3}>
               <label style={{minHeight: 15}}></label>
 				 			<Div>по <Datepicker date={state.date_end}
-																	onChange={this.handleChange.bind(this, 'date_end')}
-																	disabled={IS_DISPLAY}
- 																 	min={state.date_start}
- 																 	max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}/>
+									onChange={this.handleChange.bind(this, 'date_end')}
+									disabled={IS_DISPLAY}
+									min={state.date_start}
+									max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}/>
 							</Div>
 				   	</Col>
 					</Row>
@@ -243,33 +243,33 @@ export class MissionForm extends Form {
 	      	<Row>
 	      		<Col md={6}>
 							<Field type="select" label="Технологическая операция" error={errors['technical_operation_id']}
-											disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY || isEmpty(state.car_id))}
-											options={TECH_OPERATIONS}
-											value={state.technical_operation_id}
-											onChange={this.handleTechnicalOperationChange.bind(this)}/>
+									disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY || isEmpty(state.car_id))}
+									options={TECH_OPERATIONS}
+									value={state.technical_operation_id}
+									onChange={this.handleTechnicalOperationChange.bind(this)}/>
 	          </Col>
 	      		<Col md={6}>
               <Field type="select" label="Источник получения задания" error={errors['mission_source_id']}
-										 disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY}
-                     options={MISSION_SOURCES}
-                     value={state.mission_source_id}
-                     onChange={this.handleChange.bind(this, 'mission_source_id')}/>
+									disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY}
+									options={MISSION_SOURCES}
+									value={state.mission_source_id}
+									onChange={this.handleChange.bind(this, 'mission_source_id')}/>
 
 
 	            <Field type="number" label="Количество проходов" error={errors['passes_count']}
-										 disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY}
-										 value={state.passes_count} onChange={this.handleChange.bind(this, 'passes_count')}
-										 min={0} />
+									disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY}
+									value={state.passes_count} onChange={this.handleChange.bind(this, 'passes_count')}
+									min={0} />
 	      		</Col>
 	      	</Row>
 
 	      	<Row>
             <Col md={6}>
               <Field type="select" label="Маршрут" error={errors['route_id']}
-										 disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !!!state.technical_operation_id}
-                     options={ROUTES}
-                     value={state.route_id}
-                     onChange={this.handleRouteIdChange.bind(this)}/>
+									disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !!!state.technical_operation_id}
+									options={ROUTES}
+									value={state.route_id}
+									onChange={this.handleRouteIdChange.bind(this)}/>
 							<Div className="route-odhs-list" hidden={this.state.selectedRoute === null}>
 								{/*<ODHList showSelectable={true} odh_list={odh_list} />*/}
 							</Div>
@@ -293,7 +293,15 @@ export class MissionForm extends Form {
             <Input type="checkbox" value={state.assign_to_waybill} onClick={this.handleChange.bind(this, 'assign_to_waybill', !!!state.assign_to_waybill)}/>
           </Div>
 					<Div className="inline-block" hidden={state.status === 'complete'}>
-			      <Button onClick={this.props.handlePrint} disabled={!state.status || !this.props.canSave || !state.route_id}>Печать</Button>
+						<Dropdown id="waybill-print-dropdown" dropup disabled={!state.status || !this.props.canSave || !state.route_id} onSelect={this.props.handlePrint}>
+							<Dropdown.Toggle  disabled={!state.status || !this.props.canSave || !state.route_id}>
+								<Glyphicon glyph="print" />
+							</Dropdown.Toggle>
+							<Dropdown.Menu>
+								<MenuItem eventKey={1}>Экспорт в файл</MenuItem>
+								<MenuItem eventKey={2}>Печать</MenuItem>
+							</Dropdown.Menu>
+						</Dropdown>
 		      	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || IS_DISPLAY}>Сохранить</Button>
 					</Div>
 	      </Modal.Footer>

@@ -19,3 +19,18 @@ export function saveData(blob, fileName) {
   a.click();
   window.URL.revokeObjectURL(url);
 }
+
+export function printData(blob) {
+  let url = window.URL.createObjectURL(blob);
+
+  let iframe = document.createElement("iframe");
+  document.body.appendChild(iframe);
+  iframe.style = "display: none";
+  iframe.src = url;
+  iframe.onload = () => {
+    iframe.focus();
+    iframe.contentWindow.print();
+  }
+
+  window.URL.revokeObjectURL(url);
+}

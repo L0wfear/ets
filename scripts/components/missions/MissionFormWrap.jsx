@@ -4,7 +4,7 @@ import Div from '../ui/Div.jsx';
 import MissionForm from './MissionForm.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';
 import { getDefaultMission } from '../../stores/MissionsStore.js';
-import { isEmpty, saveData } from 'utils/functions';
+import { isEmpty, saveData, printData } from 'utils/functions';
 import { missionSchema } from '../models/MissionModel.js';
 
 class MissionFormWrap extends FormWrap {
@@ -27,7 +27,7 @@ class MissionFormWrap extends FormWrap {
 		}
 	}
 
-	handlePrint() {
+	handlePrint(event, print_form_type = 1) {
 		let f = this.state.formState;
 		const { flux } = window.__ETS_CONTAINER__;
 		let data = {mission_id: f.id};
@@ -36,9 +36,9 @@ class MissionFormWrap extends FormWrap {
 			let routeImageBase64Data = event.context.canvas.toDataURL('image/png');
 			data.image = routeImageBase64Data;
 			flux.getActions('missions').printMission(data).then(blob => {
-				saveData(blob, `Задание №${f.number}.docx`);
+				print_form_type === 1 ? saveData(blob, `Задание №${f.number}.docx`) : printData(blob);
 			});
-    });
+		});
 		global.map.render();
 	}
 
@@ -70,10 +70,10 @@ class MissionFormWrap extends FormWrap {
 		return (
 			<Div hidden={!this.props.showForm}>
 				<MissionForm formState = {this.state.formState}
-    								 onSubmit={this.handleFormSubmit.bind(this)}
-										 handleFormChange={this.handleFormStateChange.bind(this)}
-										 handlePrint={this.handlePrint.bind(this)}
-										 {...props}
+						onSubmit={this.handleFormSubmit.bind(this)}
+						handleFormChange={this.handleFormStateChange.bind(this)}
+						handlePrint={this.handlePrint.bind(this)}
+						{...props}
 										 {...this.state}/>
 			</Div>
 		)

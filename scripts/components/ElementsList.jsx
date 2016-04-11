@@ -30,9 +30,16 @@ class ElementsList extends React.Component {
    }
 
    selectElement({props}) {
-     this.clicks++;
      const id = props.data.id || props.data[this.selectField];
-     
+
+     if (props.fromKey) {
+       let selectedElement = _.find(this.state.elementsList, el => el.id ? el.id === id : el[this.selectField] === id);
+       this.setState({ selectedElement });
+       return;
+     }
+
+     this.clicks++;
+
      if (this.clicks === 1) {
        let selectedElement = _.find(this.state.elementsList, el => el.id ? el.id === id : el[this.selectField] === id);
        this.setState({ selectedElement });
@@ -44,9 +51,6 @@ class ElementsList extends React.Component {
          }
          this.clicks = 0;
        }, 300);
-     }
-      else {
-
      }
    }
 
@@ -84,12 +88,30 @@ class ElementsList extends React.Component {
      if (!this.keyPressDisabled) {
    		 ReactDOM.findDOMNode(this).setAttribute('tabindex', 1);
    		 ReactDOM.findDOMNode(this).onkeydown = this.onKeyPress.bind(this);
+   		 //ReactDOM.findDOMNode(this).onmousedown = this.onMouseDown.bind(this);
      }
 
      this.init();
    }
 
-   onKeyPress(e, a) {
+   onMouseDown(e) {
+    //  this.clicks++;
+     //
+    //  if (this.clicks === 1) {
+    //   //  let selectedElement = _.find(this.state.elementsList, el => el.id ? el.id === id : el[this.selectField] === id);
+    //   //  this.setState({ selectedElement });
+    //    setTimeout(() => {
+    //      if (this.clicks !== 1) {
+    //        if (this.state.selectedElement && id === this.state.selectedElement.id) {
+    //          this.onDoubleClick();
+    //        }
+    //      }
+    //      this.clicks = 0;
+    //    }, 300);
+    //  }
+   }
+
+   onKeyPress(e) {
  		if (e.code === 'Enter' && this.state.selectedElement !== null) {
  			this.showForm();
  		}
@@ -103,18 +125,6 @@ class ElementsList extends React.Component {
       } else {
         this.removeElement();
       }
- 		}
-
- 		if (e.code === 'ArrowDown' && this.state.selectedElement !== null) {
- 			e.preventDefault();
- 			// let elementsAsGrid = _.sortBy(this.props[this.mainListName], 'number').reverse()
- 			// let selectedElementIndex = _.findIndex(elementsAsGrid, (el) => el.id === this.state.selectedElement.id);
- 			// console.log(selectedElementIndex);
- 		}
- 		if (e.code === 'ArrowUp' && this.state.selectedElement !== null) {
- 			e.preventDefault();
- 			// let selectedElementIndex = _.findIndex(_.sortBy(this.props[this.mainListName], 'number').reverse(), (el) => el.id === this.state.selectedElement.id);
- 			// console.log(selectedElementIndex);
  		}
  	 }
 

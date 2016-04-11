@@ -240,6 +240,29 @@ class Table extends React.Component {
     })
   }
 
+  handleKeyPress(data, keyCode) {
+    //console.log(this.props.selected);
+    let direction = 0;
+    if (keyCode === 13 && this.props.selected !== null) {
+
+    }
+    if (keyCode === 40) {
+      direction = +1;
+ 		}
+ 		if (keyCode === 38) {
+      direction = -1;
+ 		}
+    let selected = _.find(data, el => el[this.props.selectField] === this.props.selected[this.props.selectField]);
+    let newSelected = _.find(data, el => el.rowNumber === selected.rowNumber + direction);
+
+    this.props.onRowSelected({
+      props: {
+        data: newSelected,
+        fromKey: true,
+      }
+    });
+  }
+
   render() {
     const { tableMeta, renderers, onRowSelected, selected, selectField, checked = {}, title = '', multiSelection = false, noFilter, enumerated = true } = this.props;
     const { initialSort, initialSortAscending } = this.state;
@@ -299,6 +322,7 @@ class Table extends React.Component {
 								 customPagerComponent={this.props.serverPagination ? <Div/> : Paginator}
 								 onRowClick={onRowSelected}
 							   rowMetadata={rowMetadata}
+                 onKeyPress={this.handleKeyPress.bind(this)}
 								 noDataMessage={noFilter ? '' : 'Нет данных'}/>
       </Div>
     );

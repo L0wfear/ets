@@ -103,10 +103,11 @@ let DriversTable = (props) => {
 class DriversList extends ElementsList {
 
 
-	constructor(props) {
+	constructor(props, context) {
 		super(props);
 
     this.mainListName = 'employeesList';
+    this.removeElementAction = context.flux.getActions('employees').delete;
 	}
 
   componentDidMount() {
@@ -124,6 +125,7 @@ class DriversList extends ElementsList {
 				<DriversTable data={employeesList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'}>
           <Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Создать сотрудника</Button>
           <Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="pencil" /> Редактировать</Button>
+          <Button bsSize="small" disabled={this.state.selectedElement === null} onClick={this.removeElement.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
         </DriversTable>
 				<DriverFormWrap onFormHide={this.onFormHide.bind(this)}
 												showForm={this.state.showForm}

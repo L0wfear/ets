@@ -11,16 +11,6 @@ class Field extends React.Component {
     super(props);
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.multi) {
-      const selItems = document.querySelectorAll('.Select--multi .Select-item-label');
-
-      for (var i = 0; i < selItems.length; i++) {
-        selItems[i].setAttribute('title', selItems[i].innerHTML);
-      }
-    }
-  }
-
   renderBoolean() {
     const { label = ''} = this.props;
     return <Div hidden={this.props.hidden}>
@@ -54,12 +44,6 @@ class Field extends React.Component {
             </Div>;
   }
 
-  renderFilterSelect() {
-    return  <Div hidden={this.props.hidden}>
-              <EtsSelect {...this.props}/>
-            </Div>;
-  }
-
   renderString() {
     const { error, label = '', readOnly = false } = this.props;
     const inputClassName = cx({'has-error': error});
@@ -90,9 +74,6 @@ class Field extends React.Component {
         break;
       case 'boolean':
         return this.renderBoolean();
-        break;
-      case 'filter-select':
-        return this.renderFilterSelect();
         break;
       default:
         return this.renderString();

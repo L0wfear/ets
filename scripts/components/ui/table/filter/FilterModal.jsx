@@ -5,13 +5,13 @@ import Div from '../../Div.jsx';
 import Datepicker from '../../DatePicker.jsx';
 import IntervalPicker from '../../IntervalPicker.jsx';
 import { isEmpty } from 'utils/functions';
-import Field from '../../Field.jsx';
+import EtsSelect from '../../EtsSelect.jsx';
 
 import _ from 'lodash';
 import cx from 'classnames';
 
 const FilterSelect = (props) => {
-  return <Field type="filter-select"
+  return <EtsSelect type="filter-select"
                 placeholder="Выберите..."
                 searchingText="Поиск..."
                 noResultsText="Ничего не найдено"

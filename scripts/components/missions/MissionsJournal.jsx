@@ -142,13 +142,13 @@ let MissionsTable = (props) => {
 		};
 
 		return <Table title="Журнал заданий"
-									results={props.data}
-									renderers={renderers}
-									tableMeta={getTableMeta(props)}
-									initialSort={'number'}
-									initialSortAscending={false}
-                  multiSelection={true}
-									{...props}/>
+				results={props.data}
+				renderers={renderers}
+				tableMeta={getTableMeta(props)}
+				initialSort={'number'}
+				initialSortAscending={false}
+				multiSelection={true}
+				{...props}/>
 }
 
 export class MissionsJournal extends ElementsList {
@@ -256,9 +256,9 @@ export class MissionsJournal extends ElementsList {
 					<Button bsSize="small" disabled={this.removeDisabled()} onClick={this.removeCheckedElements.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
 				</MissionsTable>
 				<MissionFormWrap onFormHide={this.onFormHide.bind(this)}
-												 showForm={this.state.showForm}
-												 element={this.state.selectedElement}
-												 {...this.props}/>
+						showForm={this.state.showForm}
+						element={this.state.selectedElement}
+						{...this.props}/>
 			</div>
 		);
 	}

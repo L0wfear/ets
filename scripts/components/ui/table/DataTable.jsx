@@ -268,10 +268,6 @@ class Table extends React.Component {
     let tableCols = tableMetaCols.filter(c => c.display !== false).map(c => c.name);
     let data = _.cloneDeep(this.props.results);
 
-    if (multiSelection) {
-      tableCols = ['isChecked', ...tableCols];
-    }
-
     let results = this.processTableData(data, selected, selectField, onRowSelected);
 
     if (enumerated === true && !this.state.isHierarchical) {
@@ -282,6 +278,10 @@ class Table extends React.Component {
         cssClassName: 'width60',
         filter: false
       }, ...tableMetaCols];
+    }
+
+    if (multiSelection) {
+      tableCols = ['isChecked', ...tableCols];
     }
 
     const columnMetadata = this.initializeMetadata(tableMetaCols, renderers);

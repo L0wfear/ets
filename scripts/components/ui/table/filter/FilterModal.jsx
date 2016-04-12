@@ -4,19 +4,20 @@ import { Modal, Input, Label, Container, Row, Col, FormControls, Button, Dropdow
 import Div from '../../Div.jsx';
 import Datepicker from '../../DatePicker.jsx';
 import IntervalPicker from '../../IntervalPicker.jsx';
-import Select from 'react-select';
 import { isEmpty } from 'utils/functions';
+import EtsSelect from '../../EtsSelect.jsx';
 
 import _ from 'lodash';
 import cx from 'classnames';
 
 const FilterSelect = (props) => {
-  return <Select {...props}
-                 placeholder="Выберите..."
-                 searchingText="Поиск..."
-                 noResultsText="Ничего не найдено"
-                 clearAllText="Очистить"
-                 addLabelText='Добавить "{label}"?'/>
+  return <EtsSelect type="filter-select"
+                placeholder="Выберите..."
+                searchingText="Поиск..."
+                noResultsText="Ничего не найдено"
+                clearAllText="Очистить"
+                addLabelText='Добавить "{label}"?'
+                {...props}/>;
 };
 
 const Filter = (props) => {

@@ -52,64 +52,64 @@ class EmployeeForm extends Form {
 		return (
 			<Modal {...this.props} bsSize="large" >
 				<Modal.Header closeButton>
-	          <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
+					<Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
 				</Modal.Header>
 
 	      <Modal.Body>
 
-	      <Row>
+					<Row>
 
-	      	<Col md={6}>
-            <Div>
-  	      		<label>Фамилия</label>
-              <Input type="text" value={state['last_name']} onChange={this.handleChange.bind(this, 'last_name')}/>
-  	      	</Div>
-            <Div>
-              <label>Имя</label>
-              <Input type="text" value={state['first_name']} onChange={this.handleChange.bind(this, 'first_name')}/>
-  	      	</Div>
-            <Div>
-              <label>Отчество</label>
-              <Input type="text" value={state['middle_name']} onChange={this.handleChange.bind(this, 'middle_name')}/>
-  	      	</Div>
-            <Div>
-  	      		<label>Дата рождения</label>
-              <Datepicker date={state['birthday']} time={false} onChange={this.handleChange.bind(this, 'birthday')}/>
-  	      	</Div>
-            <Div>
-              <label>Телефон</label>
-              <Input type="text" value={state['phone']} onChange={this.handleChange.bind(this, 'phone')}/>
-  	      	</Div>
-            <Field type="select" label="Должность"
-                   options={POSITION_ELEMENTS}
-                   value={state.position_id}
-                   onChange={this.handleChange.bind(this, 'position_id')}/>
-	      	</Col>
+						<Col md={6}>
+							<Div>
+								<label>Фамилия</label>
+								<Input type="text" value={state['last_name']} onChange={this.handleChange.bind(this, 'last_name')}/>
+							</Div>
+							<Div>
+								<label>Имя</label>
+								<Input type="text" value={state['first_name']} onChange={this.handleChange.bind(this, 'first_name')}/>
+							</Div>
+							<Div>
+								<label>Отчество</label>
+								<Input type="text" value={state['middle_name']} onChange={this.handleChange.bind(this, 'middle_name')}/>
+							</Div>
+							<Div>
+								<label>Дата рождения</label>
+								<Datepicker date={state['birthday']} time={false} onChange={this.handleChange.bind(this, 'birthday')}/>
+							</Div>
+							<Div>
+								<label>Телефон</label>
+								<Input type="text" value={state['phone']} onChange={this.handleChange.bind(this, 'phone')}/>
+							</Div>
+							<Field type="select" label="Должность"
+									options={POSITION_ELEMENTS}
+									value={state.position_id}
+									onChange={this.handleChange.bind(this, 'position_id')}/>
+						</Col>
 
-	      	<Col md={6}>
-						<Field type="select" label="Подразделение"
-									 options={COMPANY_ELEMENTS}
-									 value={state.company_structure_id}
-									 onChange={this.handleChange.bind(this, 'company_structure_id')}/>
-            <Div style={{marginTop: 25}}>
-	      		  <label>Табельный номер</label>
-              <Input type="number" value={state['personnel_number']} onChange={this.handleChange.bind(this, 'personnel_number')}/>
-            </Div>
-  	      	<Div>
-              <label>Водительское удостоверение</label>
-              <Input type="text" value={state['drivers_license']} onChange={this.handleChange.bind(this, 'drivers_license')}/>
-  	      	</Div>
-  	      	<Div>
-              <label>Предпочитаемое ТрС</label>
-              <EtsSelect options={CARS} value={state['prefer_car']} onChange={this.handleChange.bind(this, 'prefer_car')}/>
-  	      	</Div>
-            <Div>
-              <label>Состояние</label>
-              <EtsSelect options={DRIVER_STATES} value={valueActive} onChange={this.handleChange.bind(this, 'active')}/>
-  	      	</Div>
-	      	</Col>
+						<Col md={6}>
+							<Field type="select" label="Подразделение"
+									options={COMPANY_ELEMENTS}
+									value={state.company_structure_id}
+									onChange={this.handleChange.bind(this, 'company_structure_id')}/>
+							<Div style={{marginTop: 25}}>
+								<label>Табельный номер</label>
+								<Input type="number" value={state['personnel_number']} onChange={this.handleChange.bind(this, 'personnel_number')}/>
+							</Div>
+							<Div>
+								<label>Водительское удостоверение</label>
+								<Input type="text" value={state['drivers_license']} onChange={this.handleChange.bind(this, 'drivers_license')}/>
+							</Div>
+							<Div>
+								<label>Предпочитаемое ТрС</label>
+								<EtsSelect options={CARS} value={state['prefer_car']} onChange={this.handleChange.bind(this, 'prefer_car')}/>
+							</Div>
+							<Div>
+								<label>Состояние</label>
+								<EtsSelect options={DRIVER_STATES} value={valueActive} onChange={this.handleChange.bind(this, 'active')}/>
+							</Div>
+						</Col>
 
-	      </Row>
+					</Row>
 
 	      </Modal.Body>
 	      <Modal.Footer>

@@ -54,6 +54,12 @@ class Field extends React.Component {
             </Div>;
   }
 
+  renderFilterSelect() {
+    return  <Div hidden={this.props.hidden}>
+              <EtsSelect {...this.props}/>
+            </Div>;
+  }
+
   renderString() {
     const { error, label = '', readOnly = false } = this.props;
     const inputClassName = cx({'has-error': error});
@@ -84,6 +90,9 @@ class Field extends React.Component {
         break;
       case 'boolean':
         return this.renderBoolean();
+        break;
+      case 'filter-select':
+        return this.renderFilterSelect();
         break;
       default:
         return this.renderString();

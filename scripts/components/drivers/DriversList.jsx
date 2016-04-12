@@ -107,7 +107,7 @@ class DriversList extends ElementsList {
 		super(props);
 
     this.mainListName = 'employeesList';
-    this.removeElementAction = context.flux.getActions('employees').delete;
+    this.removeElementAction = context.flux.getActions('employees').deleteEmployee;
 	}
 
   componentDidMount() {

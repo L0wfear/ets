@@ -49,6 +49,11 @@ export class DutyMissionForm extends Form {
 
     let routesList = await this.context.flux.getActions('routes')
                                             .getRoutesByTechnicalOperation(v);
+
+		if (routesList.length === 1) {
+			this.handleRouteIdChange(routesList[0].id);
+		};
+
     this.setState({routesList});
 	}
 

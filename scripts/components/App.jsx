@@ -13,7 +13,7 @@ import MainPage from './MainPage.jsx';
 import MonitorPage from './monitor/MonitorPage.jsx';
 import LoadingPage from './LoadingPage.jsx';
 import DashboardPage from './dashboard/DashboardPage.jsx';
-import DriversList from './drivers/DriversList.jsx';
+import EmployeesList from './employees/EmployeesList.jsx';
 import CarsList from './cars/CarsList.jsx';
 import FuelRatesDirectory from './directories/FuelRatesDirectory.jsx';
 import FuelOperationsDirectory from './directories/FuelOperationsDirectory.jsx';
@@ -143,7 +143,7 @@ const routes = (
       <Route path="mission-report/:id/odhs/:index" component={MissionReportByODH} onEnter={requireAuth}/>
       <Route path="mission-report/:id/dts/:index" component={MissionReportByDT} onEnter={requireAuth}/>
       <Route path="mission-report/:id/points/:index" component={MissionReportByPoints} onEnter={requireAuth}/>
-      <Route path="drivers" component={DriversList} onEnter={requireAuth}/>
+      <Route path="employees" component={EmployeesList} onEnter={requireAuth}/>
       <Route path="faxogramms" component={FaxogrammDirectory} onEnter={requireAuth}/>
       <Route path="fuel-rates" component={FuelRatesDirectory} onEnter={requireAuth}/>
       <Route path="fuel-operations" component={FuelOperationsDirectory} onEnter={requireAuth}/>

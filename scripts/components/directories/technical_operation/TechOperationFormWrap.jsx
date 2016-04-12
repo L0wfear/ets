@@ -8,19 +8,11 @@ import { techOperationSchema } from '../../models/TechOperationModel.js';
 
 class TechOperationFormWrap extends FormWrap {
 
-	constructor(props) {
+	constructor(props, context) {
 		super(props);
 
     this.schema = techOperationSchema;
-	}
-
-	handleFormSubmit(formState) {
-		try {
-	    this.context.flux.getActions('technical_operation').updateTechnicalOperation(formState);
-		} catch (e) {
-			return;
-		}
-		this.props.onFormHide();
+		this.updateAction = context.flux.getActions('technical_operation').updateTechnicalOperation;
 	}
 
 	render() {

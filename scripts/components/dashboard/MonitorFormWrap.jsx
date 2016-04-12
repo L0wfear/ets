@@ -13,11 +13,6 @@ class MonitorFormWrap extends FormWrap {
 		super(props);
 	}
 
-	handleFormSubmit(formState) {
-		const { flux } = this.context;
-		this.props.onFormHide();
-	}
-
 	render() {
 
 		return 	<Div hidden={!this.props.showForm}>

@@ -6,19 +6,11 @@ import FormWrap from 'compositions/FormWrap.jsx';
 
 export default class CarFormWrap extends FormWrap {
 
-	constructor(props) {
+	constructor(props, context) {
 		super(props);
 
-	}
-
-	handleFormSubmit(formState) {
-		const { flux } = this.context;
-		try {
-			flux.getActions('car').updateCarAdditionalInfo(formState);
-		} catch (e) {
-			return;
-		}
-		this.props.onFormHide();
+		this.uniqueField = 'asuods_id';
+		this.updateAction = context.flux.getActions('car').updateCarAdditionalInfo;
 	}
 
 	render() {

@@ -20,8 +20,16 @@ let tableMeta = {
 			}
 		},
 		{
+			name: 'special_model_name',
+			caption: 'Модель ТС',
+			type: 'text',
+			filter: {
+				type: 'select',
+			}
+		},
+		{
 			name: 'model_name',
-			caption: 'Марка шасси',
+			caption: 'Марка шасси ТС',
 			type: 'text',
 			filter: {
 				type: 'select',

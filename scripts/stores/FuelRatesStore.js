@@ -9,10 +9,10 @@ class FuelRatesStore extends Store {
     const fuelRateActions = flux.getActions('fuel-rates');
     this.register(fuelRateActions.getFuelRates, this.handleGetFuelRates);
     this.register(fuelRateActions.getFuelOperations, this.handleGetFuelOperations);
-    this.register(fuelRateActions.addFuelRate, this.handleGetFuelRates);
+    this.register(fuelRateActions.createFuelRate, this.handleGetFuelRates);
     this.register(fuelRateActions.updateFuelRate, this.handleGetFuelRates);
     this.register(fuelRateActions.deleteFuelRate, this.handleGetFuelRates);
-    this.register(fuelRateActions.addFuelOperation, this.handleGetFuelOperations);
+    this.register(fuelRateActions.createFuelOperation, this.handleGetFuelOperations);
 
     this.state = {
       rates: [],

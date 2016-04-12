@@ -10,24 +10,16 @@ import { dutyMissionSchema, dutyMissionClosingSchema } from '../models/DutyMissi
 
 class DutyMissionFormWrap extends FormWrap {
 
-	constructor(props) {
+	constructor(props, context) {
 		super(props);
 
 		this.schema = dutyMissionSchema;
-	}
-
-	componentWillReceiveProps(props) {
-
-		if (props.showForm && props.showForm !== this.props.showForm) {
-			let mission = props.element === null ? getDefaultDutyMission() : _.cloneDeep(props.element);
-			let formErrors = this.validate(mission, {});
-			this.setState({
-				formState: mission,
-				canSave: ! !!_.filter(formErrors).length,//false,
-				formErrors,
-			});
-		}
-
+		this.defaultElement = getDefaultDutyMission();
+		this.createAction = async (formState) => {
+			await context.flux.getActions('missions').createDutyMission(formState);
+			context.flux.getActions('missions').getDutyMissions();
+		};
+		this.updateAction = context.flux.getActions('missions').updateDutyMission;
 	}
 
   async handleFormPrint() {
@@ -54,22 +46,6 @@ class DutyMissionFormWrap extends FormWrap {
 		this.context.flux.getActions('missions').getDutyMissions();
 		this.props.onFormHide();
   }
-
-	async handleFormSubmit(formState) {
-		const { flux } = this.context;
-
-		if (isEmpty(formState.id)) {
-			await flux.getActions('missions').createDutyMission(formState);
-		} else {
-			await flux.getActions('missions').updateDutyMission(formState);
-		}
-
-
-		flux.getActions('missions').getDutyMissions();
-		this.props.onFormHide();
-
-		return;
-	}
 
 	render() {
 

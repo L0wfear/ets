@@ -19,7 +19,7 @@ class CompanyStructureForm extends Form {
 
   async componentDidMount() {
     this.company_id = this.context.flux.getStore('session').getCurrentUser().company_id;
-    let companyStructureLinearList = await this.context.flux.getActions('company-structure').getPlainCompanyStructure();
+    let companyStructureLinearList = await this.context.flux.getActions('company-structure').getLinearCompanyStructure();
 		this.setState({companyStructureLinearList});
   }
 
@@ -30,9 +30,8 @@ class CompanyStructureForm extends Form {
     let { companyStructureLinearList = [] } = this.state;
 
     let COMPANY_ELEMENTS = companyStructureLinearList.map(el => ({value: el.id, label: el.name}));
-    COMPANY_ELEMENTS = [{value: null, label: 'Предприятие'}, ...COMPANY_ELEMENTS];
+    		COMPANY_ELEMENTS = [{value: null, label: 'Предприятие'}, ...COMPANY_ELEMENTS];
     let STRUCTURE_TYPES = [{value: 2, label: 'ДЭК'}, {value: 3, label: 'ДЭУ'}];
-    console.log(errors, state);
 
 		return (
 			<Modal {...this.props}>

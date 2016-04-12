@@ -1,6 +1,7 @@
 import React from 'react';
 import { validateRow } from 'validate/validateRow.js';
 import { FluxContext } from '../decorators/index.js';
+import { isEmpty } from 'utils/functions';
 
 /**
  * FormWrap базовый класс хранения и работы с состоянием формы
@@ -33,13 +34,18 @@ class FormWrap extends React.Component {
 
   componentWillReceiveProps(props) {
     if (props.showForm && (props.showForm !== this.props.showForm) ) {
-      if (props.element !== null ) {
-        const formState = _.cloneDeep(props.element);
-        this.setState({formState});
+      let element = {};
+      if (props.element !== null) {
+        element = _.cloneDeep(props.element);
       } else {
-        let defaultElement = this.defaultElement || {};
-        this.setState({formState: defaultElement});
+        element = !isEmpty(this.defaultElement) ? _.cloneDeep(this.defaultElement) : {};
       }
+      let formErrors = this.validate(element, {});
+      this.setState({
+        formState: element,
+        formErrors,
+        canSave: ! !!_.filter(formErrors).length
+      });
     }
   }
 
@@ -71,7 +77,37 @@ class FormWrap extends React.Component {
 		this.setState(newState);
   }
 
-  handleFormSubmit(formState) {
+  // отправка формы
+  async handleFormSubmit() {
+    const uniqueField = this.uniqueField || 'id';
+    const { formState } = this.state;
+
+    try {
+
+      // понять, обновлять форму или создавать новую
+      // можно по отсутствию уникального идентификатора
+      if (isEmpty(formState[uniqueField])) {
+
+        if (typeof this.createAction === 'function') {
+          await this.createAction(formState);
+        } else {
+          throw new Error('Create action called but not specified');
+        }
+
+      } else {
+
+        if (typeof this.updateAction === 'function') {
+          await this.updateAction(formState);
+        } else {
+          throw new Error('Update action called but not specified');
+        }
+
+      }
+
+    } catch (e) {
+      return;
+    }
+
     if (typeof this.props.onFormHide === 'function') {
       this.props.onFormHide();
     }
@@ -94,7 +130,6 @@ export default FormWrap;
 // import MissionForm from './MissionForm.jsx';
 // import FormWrap from '../compositions/FormWrap.jsx';
 // import { getDefaultMission } from '../../stores/MissionsStore.js';
-// import { isNotNull, isEmpty } from 'utils/functions';
 // import { missionSchema, missionClosingSchema } from '../models/MissionModel.js';
 //
 // class MissionFormWrap extends FormWrap {
@@ -103,13 +138,6 @@ export default FormWrap;
 // 		super(props);
 //
 // 		this.schema = missionSchema;
-// 	}
-//
-// 	handleFormSubmit(formState) {
-// 		const { flux } = this.context;
-// 		flux.getActions('missions').createMission(formState);
-//
-// 		this.props.onFormHide();
 // 	}
 //
 // 	render() {

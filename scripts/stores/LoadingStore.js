@@ -28,7 +28,7 @@ export default class LoadingStore extends Store {
       fuelRateActions.getFuelOperations,
       fuelRateActions.updateFuelRate,
       fuelRateActions.deleteFuelRate,
-      fuelRateActions.addFuelRate,
+      fuelRateActions.createFuelRate,
       fuelRateActions.getFuelRatesByCarModel,
 
       objectsActions.getCars,
@@ -98,7 +98,8 @@ export default class LoadingStore extends Store {
       technicalOperationsActions.getTechnicalOperationsByCarId,
 
       companyStructureActions.getCompanyStructure,
-      companyStructureActions.getPlainCompanyStructure,
+      companyStructureActions.getLinearCompanyStructure,
+      companyStructureActions.getLinearCompanyStructureForUser,
       companyStructureActions.updateCompanyElement,
       companyStructureActions.createCompanyElement,
       companyStructureActions.deleteCompanyElement,

@@ -28,7 +28,11 @@ class ObjectsStore extends Store {
     this.register(objectsActions.getFaxogramms, this.handleGetFaxogramms);
     this.register(objectsActions.getCarFuncTypes, this.handleGetCarFuncTypes);
     this.register(objectsActions.getPositions, this.handleGetPositions);
+
     this.register(companyStructreActions.getCompanyStructure, this.handleGetCompanyStructure);
+    this.register(companyStructreActions.updateCompanyElement, this.handleGetCompanyStructure);
+    this.register(companyStructreActions.deleteCompanyElement, this.handleGetCompanyStructure);
+    this.register(companyStructreActions.createCompanyElement, this.handleGetCompanyStructure);
 
     this.register(technicalOperationsActions.getTechnicalOperations, this.handleGetTechOperations);
     this.register(technicalOperationsActions.updateTechnicalOperation, this.handleGetTechOperations);

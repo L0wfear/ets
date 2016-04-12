@@ -10,6 +10,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import update from 'react-addons-update';
 import cx from 'classnames';
+import { isEmpty } from 'utils/functions';
 
 class Table extends React.Component {
 
@@ -229,6 +230,7 @@ class Table extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     if (!this.state.isHierarchical) return true;
 
+    console.log(_.isEqual(nextProps.results, this.props.results))
     return !_.isEqual(nextProps.results, this.props.results);
   }
 
@@ -240,9 +242,13 @@ class Table extends React.Component {
   }
 
   handleKeyPress(data, keyCode) {
+    if (isEmpty(this.props.selected)) {
+      return;
+    }
     let direction = 0;
     if (keyCode === 13 && this.props.selected !== null) {
     }
+
     if (keyCode === 40) {
       direction = +1;
  		}

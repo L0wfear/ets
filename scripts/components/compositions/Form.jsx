@@ -24,7 +24,7 @@ class Form extends React.Component {
 
    handleSubmit() {
      console.info('SUBMITTING FORM', this.props.formState);
-     this.props.onSubmit(this.props.formState);
+     this.props.onSubmit();
    }
 
    render() {

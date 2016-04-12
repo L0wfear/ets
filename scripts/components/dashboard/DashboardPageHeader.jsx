@@ -7,11 +7,15 @@ export default class DashboardPageHeader extends React.Component {
 
   state = {
     time: moment().format('HH:mm:ss'),
+    date: moment().format('DD MMMM YYYY')
   }
 
   componentDidMount() {
+    moment.locale('ru');
     this.updateClock();
+    this.updateDate();
     this.timeInterval = setInterval(this.updateClock.bind(this), 1000);
+    this.dateInterval = setInterval(this.updateDate.bind(this), 1000 * 60);
   }
 
   updateClock() {
@@ -19,8 +23,14 @@ export default class DashboardPageHeader extends React.Component {
     this.setState({time});
   }
 
+  updateDate() {
+    const date = moment().format('DD MMMM YYYY');
+    this.setState({date});
+  }
+
   componentWillUnmount() {
     clearInterval(this.timeInterval);
+    clearInterval(this.dateInterval);
   }
 
   render() {
@@ -31,6 +41,9 @@ export default class DashboardPageHeader extends React.Component {
         <Col md={4}>
           <Div className="dashboard-time" id="dashboard-time">
             {this.state.time}
+          </Div>
+          <Div className="dashboard-date">
+            {this.state.date}
           </Div>
         </Col>
         <Col md={4}>

@@ -9,6 +9,8 @@ class EmployeeStore extends Store {
     const employeesActions = flux.getActions('employees');
     this.register(employeesActions.getEmployees, this.handleGetEmployees);
     this.register(employeesActions.updateEmployee, this.handleGetEmployees);
+    this.register(employeesActions.createEmployee, this.handleGetEmployees);
+    this.register(employeesActions.deleteEmployee, this.handleGetEmployees);
 
     this.state = {
       employeesList: [],

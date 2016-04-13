@@ -13,6 +13,8 @@ class FuelRatesStore extends Store {
     this.register(fuelRateActions.updateFuelRate, this.handleGetFuelRates);
     this.register(fuelRateActions.deleteFuelRate, this.handleGetFuelRates);
     this.register(fuelRateActions.createFuelOperation, this.handleGetFuelOperations);
+    this.register(fuelRateActions.deleteFuelOperation, this.handleGetFuelOperations);
+    this.register(fuelRateActions.updateFuelOperation, this.handleGetFuelOperations);
 
     this.state = {
       rates: [],

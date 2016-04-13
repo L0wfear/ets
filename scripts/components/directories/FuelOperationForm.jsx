@@ -16,7 +16,7 @@ export default class FuelOperationForm extends Form {
 		return (
 			<Modal {...this.props}>
 				<Modal.Header closeButton>
-					<Modal.Title id="contained-modal-title-lg">{!state.ID ? 'Добавление' : 'Изменение'} операции для расчета топлива</Modal.Title>
+					<Modal.Title id="contained-modal-title-lg">{!state.id ? 'Добавление' : 'Изменение'} операции для расчета топлива</Modal.Title>
 				</Modal.Header>
 
 	      <Modal.Body>
@@ -25,7 +25,7 @@ export default class FuelOperationForm extends Form {
 
 		      	<Col md={6}>
 							<Field type="string" label="Операция"
-										 value={state.NAME} onChange={this.handleChange.bind(this, 'NAME')} />
+									value={state.name} onChange={this.handleChange.bind(this, 'name')} />
 		      	</Col>
 
 	        </Row>
@@ -39,5 +39,5 @@ export default class FuelOperationForm extends Form {
 			</Modal>
 		);
 	}
-	
+
 }

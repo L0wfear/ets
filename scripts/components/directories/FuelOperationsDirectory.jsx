@@ -10,7 +10,7 @@ import ElementsList from '../ElementsList.jsx';
 let tableMeta = {
 	cols: [
 		{
-			name: 'NAME',
+			name: 'name',
 			caption: 'Операция',
 			type: 'number',
       filter: {
@@ -37,7 +37,7 @@ class FuelOperationsDirectory extends ElementsList {
 		super(props);
 
 		this.mainListName = 'operations';
-		this.selectField = 'ID';
+		this.selectField = 'id';
 		this.removeElementAction = context.flux.getActions('fuel-rates').deleteFuelOperation;
 	}
 
@@ -53,7 +53,7 @@ class FuelOperationsDirectory extends ElementsList {
 
 		return (
 			<div className="ets-page-wrap">
-        <FuelOperationsTable data={operations} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'ID'}>
+        <FuelOperationsTable data={operations} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'}>
 					<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Добавить</Button>
 					<Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="pencil" /> Изменить</Button>
 					<Button bsSize="small" disabled={this.state.selectedElement === null} onClick={this.removeElement.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>

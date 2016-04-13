@@ -54,18 +54,18 @@ export default class FuelRateActions extends Actions {
 
   createFuelOperation(formState) {
     const payload = {};
-    if (typeof formState.NAME === "string" && formState.NAME !== '' ) {
-      payload.NAME = formState.NAME;
+    if (typeof formState.name === "string" && formState.name !== '' ) {
+      payload.NAME = formState.name;
     }
     return FuelOperationsService.post(payload);
   }
 
   updateFuelOperation(formState) {
     const payload = {
-      ID: formState.ID
+      ID: formState.id
     };
-    if (typeof formState.NAME === "string" && formState.NAME !== '' ) {
-      payload.NAME = formState.NAME;
+    if (typeof formState.name === "string" && formState.name !== '' ) {
+      payload.name = formState.name;
     }
     return FuelOperationsService.put(payload);
   }

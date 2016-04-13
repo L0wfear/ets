@@ -47,6 +47,7 @@ export default class LoadingStore extends Store {
       objectsActions.updateDT,
 
       carActions.updateCarAdditionalInfo,
+      carActions.getTrack,
 
       employeesActions.getEmployees,
       employeesActions.updateEmployee,

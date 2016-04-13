@@ -1,6 +1,7 @@
 import { Actions } from 'flummox';
 import { CarInfoService, CarService } from 'api/Services';
 import { isEmpty } from 'utils/functions';
+import { getTrack } from '../adapter.js';
 
 export default class CarActions extends Actions {
 
@@ -31,6 +32,10 @@ export default class CarActions extends Actions {
     }
     let response = await CarService.get(payload);
     return response.result || [];
+  }
+
+  getTrack(id, from_dt, to_dt) {
+    return getTrack(id, from_dt, to_dt);
   }
 
 }

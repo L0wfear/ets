@@ -6,8 +6,8 @@ import { getTrack } from '../../adapter.js';
 import { getStartOfToday, makeDate, makeTime } from 'utils/dates';
 import { swapCoords, roundCoordinates } from 'utils/geo';
 import { TRACK_COLORS, TRACK_LINE_OPACITY, TRACK_LINE_WIDTH, TRACK_POINT_RADIUS, SHOW_ONLY_POINTS_WITH_SPEED_CHANGES } from '../../constants/track.js';
-
-
+import Div from '../ui/Div.jsx';
+import { Glyphicon, Button } from 'react-bootstrap';
 import { polyState, polyStyles, pointStyles, getPointStyle } from '../../constants/polygons.js';
 import { vectorStyles, vectorState, getVectorArrowStyle, getVectorLayer, getVectorSource } from '../../constants/vectors.js';
 
@@ -157,8 +157,10 @@ export default class HybridMap extends Map {
     }
 
     if (selectedMarker) {
-      if (selectedMarker.hasTrackLoaded()) {
-        selectedMarker.track.render();
+      if (this.props.showTrack) {
+        if (selectedMarker.hasTrackLoaded()) {
+          selectedMarker.track.render();
+        }
       }
       selectedMarker.render({selected: true, ...options});
     }
@@ -179,6 +181,21 @@ export default class HybridMap extends Map {
     if (nextProps.polys !== undefined) {
       this.renderPolygons(nextProps.polys, nextProps.selectedPoly);
     }
+  }
+
+  toggleTrack() {
+    this.props.flux.getActions('settings').setShowTrack(!this.props.showTrack);
+  }
+
+  render() {
+    const trackButtonTitle = this.props.showTrack ? 'Отключить трек' : 'Включить трек';
+    const trackButtonIcon = this.props.showTrack ? 'ban-circle' : 'ok-circle';
+    return (<div>
+              <div ref="container" style={{opacity: 1}} className="openlayers-container">
+                <Button title={trackButtonTitle} className="continue-route-button" onClick={this.toggleTrack.bind(this)}><Glyphicon glyph={trackButtonIcon}/></Button>
+              </div>
+            </div>
+          )
   }
 
 }

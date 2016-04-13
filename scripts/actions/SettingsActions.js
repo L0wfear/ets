@@ -6,4 +6,8 @@ export default class SettingsActions extends Actions {
     return showPlates;
   }
 
+  setShowTrack(showTrack) {
+    return showTrack;
+  }
+
 }

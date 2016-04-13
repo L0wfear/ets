@@ -119,7 +119,8 @@ export class MissionInfoForm extends Form {
                   selected: store.getSelectedPoint()
                 }),
 			          settings: store => ({
-			            showPlates: store.state.showPlates
+			            showPlates: store.state.showPlates,
+									showTrack: store.state.showTrack
 			          })
               }}>
 

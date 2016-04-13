@@ -1,6 +1,5 @@
 import React from 'react';
 import { projectToPixel } from './MskAdapter.js';
-import { getTrack } from '../../adapter.js';
 import { getStartOfToday, makeDate, makeTime } from 'utils/dates';
 import { TRACK_COLORS, TRACK_LINE_OPACITY, TRACK_LINE_WIDTH, TRACK_POINT_RADIUS, SHOW_ONLY_POINTS_WITH_SPEED_CHANGES } from '../../constants/track.js';
 import { getTrackPointByColor } from '../../icons/track/points.js';
@@ -97,6 +96,7 @@ export default class Track {
     this.points = null;
     this.continuousUpdating = true;
     this.onUpdateCallback = () => {};
+    this.getTrack = window.__ETS_CONTAINER__.flux.getActions('car').getTrack;
   }
 
   isLoaded(){
@@ -201,15 +201,15 @@ export default class Track {
 
     this.continuousUpdating = false;
 
-    return getTrack(id, from_dt, to_dt)
-      .then((track) => {
-        //debugger;
-        this.points = track;
-        this.continuousUpdating = updating;
-        this.render();
-        this.onUpdateCallback();
-        console.log('track fetched for', this.owner)
-      })
+    return this.getTrack(id, from_dt, to_dt)
+                .then((track) => {
+                  //debugger;
+                  this.points = track;
+                  this.continuousUpdating = updating;
+                  this.render();
+                  this.onUpdateCallback();
+                  console.log('track fetched for', this.owner)
+                })
 
   }
 

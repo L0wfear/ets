@@ -9,9 +9,11 @@ class SettingsStore extends Store {
     const settingsActions = flux.getActions('settings');
 
     this.register(settingsActions.setShowPlates, this.handleSetShowPlates);
+    this.register(settingsActions.setShowTrack, this.handleSetShowTrack);
 
     this.state = {
-      showPlates: false
+      showPlates: false,
+      showTrack: true
     };
 
   }
@@ -19,6 +21,15 @@ class SettingsStore extends Store {
   handleSetShowPlates(showPlates) {
     this.setState({
       showPlates
+    });
+  }
+
+  handleSetShowTrack(showTrack) {
+    if (typeof showTrack === 'undefined') {
+      showTrack = !this.state.showTrack;
+    }
+    this.setState({
+      showTrack
     });
   }
 

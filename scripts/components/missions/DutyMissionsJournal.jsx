@@ -234,7 +234,7 @@ export class DutyMissionsJournal extends ElementsList {
       if (!confirm('Вы уверены, что хотите удалить выбранные элементы?')) return;
       let isNotDeleted = false;
 
-      _.forEach(this.state.checkedDutyMissions, function(mission) {
+      _.forEach(this.state.checkedDutyMissions, (mission) => {
         if (mission.status === 'not_assigned') {
           this.removeElementAction(mission.id);
         }
@@ -244,6 +244,10 @@ export class DutyMissionsJournal extends ElementsList {
       if (isNotDeleted) {
         global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Удалились только задания со статусом "Не назначено"!'));
       }
+			this.setState({
+				checkedDutyMissions: {},
+				selectedElement: null,
+			});
     }
     else {
       this.removeElement();

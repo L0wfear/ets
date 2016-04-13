@@ -48,8 +48,9 @@ class RouteFormWrap extends FormWrap {
     }
 	}
 
-	async handleFormSubmit(formState, manualCreating) {
+	async handleFormSubmit() {
 		const { flux } = this.context;
+		let { formState } = this.state;
 		let result;
 
 		if (!formState.id) {

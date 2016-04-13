@@ -51,8 +51,9 @@ class DutyMissionTemplateFormWrap extends FormWrap {
 		}
 	}
 
-	handleFormSubmit(formState) {
+	handleFormSubmit() {
 		const { flux } = this.context;
+    let { formState } = this.state;
 
     if (this.props.formType === "ViewForm") {
       if (isEmpty(formState.id)) {

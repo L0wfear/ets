@@ -27,8 +27,9 @@ class FaxogrammMissionsFormWrap extends FormWrap {
 
 	}
 
-	handleFormSubmit(formState) {
+	handleFormSubmit() {
 		const { flux } = this.context;
+		let { formState } = this.state;
     console.log(formState.missionJournalState);
     const payload = {
       mission_source_id: '4',

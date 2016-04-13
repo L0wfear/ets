@@ -193,7 +193,7 @@ class WaybillFormWrap extends Component {
 
 		newState.canSave = ! !!_.filter(formErrors, (v,k) => k === 'fuel_end' ? false : v).length;
 		newState.canClose = ! !!_.filter(formErrors).length;
-		
+
 		newState.formState = formState;
 		newState.formErrors = formErrors;
 
@@ -217,7 +217,7 @@ class WaybillFormWrap extends Component {
   }
 
 
-	async handleFormSubmit(state, callback) {
+	async handleFormSubmit(state = this.state.formState, callback) {
 		let formState = _.cloneDeep(state);
 		let billStatus = formState.status;
 		const { flux, setLoading } = this.context;

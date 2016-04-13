@@ -42,8 +42,9 @@ class MissionFormWrap extends FormWrap {
 		global.map.render();
 	}
 
-	async handleFormSubmit(formState) {
+	async handleFormSubmit() {
 		const { flux } = this.context;
+		let { formState } = this.state;
 		let result;
 
 		if (isEmpty(formState.id)) {

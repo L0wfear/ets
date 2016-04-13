@@ -16,7 +16,7 @@ class RouteForm extends Form {
 		this.state = {
 			manualCreating: 1,
 			companyStructureList: [],
-      ROUTE_TYPE_OPTIONS: [],
+      ROUTE_TYPE_OPTIONS: [{value: 'vector', label: 'Вручную'}, {value: 'simple', label: 'Выбор из ОДХ'}, {value: 'simple_dt', label: 'Выбор из ДТ'}, {value: 'points', label: 'Выбор пунктов назначения'}],
       routeTypeDisabled: true
 		};
 	}
@@ -26,15 +26,15 @@ class RouteForm extends Form {
 		this.props.resetState();
 	}
 
-  handleTechChange(t, v) {
-    const techOperation =_.find(this.props.technicalOperationsList, (o) => {
-      return o.id === v;
+	setRouteTypeOptionsBasedOnTechnicalOperation(technical_operation_id, technicalOperationsList = this.props.technicalOperationsList) {
+		const technicalOperation =_.find(technicalOperationsList, (o) => {
+      return o.id === technical_operation_id;
     });
 
-    let route_type_options = [];
+		let route_type_options = [];
     let routeTypeValue = '';
 
-    techOperation.objects.forEach(function(obj) {
+    technicalOperation.objects.forEach(function(obj) {
       switch (obj.name) {
         case 'ОДХ':
           route_type_options.push({value: 'vector', label: 'Вручную'});
@@ -54,14 +54,24 @@ class RouteForm extends Form {
 
     this.setState({'ROUTE_TYPE_OPTIONS': route_type_options, 'routeTypeDisabled': routeTypeValue ? false : true});
     this.props.handleFormChange('type', routeTypeValue);
+	}
 
+  handleTechChange(t, v) {
     this.handleChange(t, v);
+		this.setRouteTypeOptionsBasedOnTechnicalOperation(v);
   }
 
 	async componentDidMount() {
 		let { flux } = this.context;
-		flux.getActions('technical_operation').getTechnicalOperations();
+		let technicalOperationsResponse = await flux.getActions('technical_operation').getTechnicalOperations();
+		let technicalOperationsList = technicalOperationsResponse.result;
+
 		let companyStructureList = await flux.getActions('company-structure').getLinearCompanyStructureForUser();
+
+		if (this.props.formState.technical_operation_id) {
+			this.setRouteTypeOptionsBasedOnTechnicalOperation(this.props.formState.technical_operation_id, technicalOperationsList);
+		}
+
 		this.setState({companyStructureList});
 	}
 

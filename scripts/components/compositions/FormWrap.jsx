@@ -2,6 +2,7 @@ import React from 'react';
 import { validateRow } from 'validate/validateRow.js';
 import { FluxContext } from '../decorators/index.js';
 import { isEmpty } from 'utils/functions';
+import { saveDataSuccessNotification } from 'utils/notifications';
 
 /**
  * FormWrap базовый класс хранения и работы с состоянием формы
@@ -103,7 +104,7 @@ class FormWrap extends React.Component {
         }
 
       }
-
+      global.NOTIFICATION_SYSTEM._addNotification(saveDataSuccessNotification);
     } catch (e) {
       return;
     }

@@ -43,17 +43,17 @@ export default class DatePicker extends Component {
     //return //<input disabled={this.props.disabled}/>
     return (
       <DateTimePicker onChange={this.props.onChange}
-                      format={DATE_FORMAT}
-                      timeFormat={TIME_FORMAT}
-                  		culture="ru-RU"
-                      className="chart-datepicker"
-                      disabled={disabled}
-                      step={5}
-                      min={min}
-                      max={max}
-                      //messages={translation}
-                      value={date}
-                      time={time}/>
+          format={DATE_FORMAT}
+          timeFormat={TIME_FORMAT}
+          culture="ru-RU"
+          className="chart-datepicker"
+          disabled={disabled}
+          step={5}
+          min={min}
+          max={max}
+          //messages={translation}
+          value={date}
+          time={time}/>
     );
 
   }

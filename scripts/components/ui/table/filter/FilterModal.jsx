@@ -52,7 +52,7 @@ const Filter = (props) => {
     );
   }
   if (option.filter && option.filter.type && option.filter.type === 'date_create' && !option.filter.options) {
-    input = <Datepicker date={value} onChange={props.onChange} time={false} />;
+    input = <div><Datepicker className="filter-datepicker" date={value} onChange={props.onChange} time={false} /></div>;
   }
   if (option.filter && option.filter.type && option.filter.type === 'date_interval' && !option.filter.options) {
     input = <IntervalPicker interval={value} onChange={props.onChange} />;

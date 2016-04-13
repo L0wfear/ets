@@ -629,6 +629,12 @@ body.application {
   color: white;
 }
 
+
+.rw-btn-calendar, .rw-btn-time {
+  margin: 0 !important;
+  width: 26px !important;
+}
+
 .leaflet-top {
   top: 115px;
 }
@@ -637,7 +643,7 @@ body.application {
 .rw-btn, .rw-input {
   color: inherit;
   font: inherit;
-  margin: 0
+  margin: 0 !important;
 }
 
 button.rw-input {
@@ -1059,7 +1065,7 @@ ul.rw-list.rw-list-grouped > li.rw-list-option {
   right: 10px;
   font-weight: 200;
   font-size: 12px;
-  color: #eee;
+  color: #555;
   text-overflow: ellipsis;
 
   border: 0px none;
@@ -1148,8 +1154,8 @@ ul.rw-list.rw-list-grouped > li.rw-list-option {
 }
 
 .rw-calendar .rw-header .rw-btn-view {
-  width: 75%;
-  background-color: #eee;
+  width: 75% !important;
+  background-color: #555;
   border-radius: 4px
 }
 
@@ -2323,11 +2329,9 @@ body {
   }
 
   .rw-calendar .rw-header .rw-btn-view {
-    width: 55% !important;
+    width: 55%;
   }
-  .rw-i-calendar {
-    margin-left: -5px;
-  }
+
 
   .modal-body {
     padding-top: 5px;

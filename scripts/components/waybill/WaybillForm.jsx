@@ -180,7 +180,10 @@ class WaybillForm extends Form {
 		const { carsList = [], carsIndex = {}, driversList = [], employeesList = [], fuelTypes = [], missionsList = [] } = this.props;
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: `${c.gov_number} [${c.model_name}]`}));
 		const FUEL_TYPES = fuelTypes.map(({ID, NAME}) => ({value: ID, label: NAME}));
-		const DRIVERS = driversList.map( d => ({value: d.id, label: `[${d.personnel_number}] ${d.last_name} ${d.first_name} ${d.middle_name}`}));
+		const DRIVERS = driversList.map( d => {
+			let personnel_number = d.personnel_number ? `[${d.personnel_number}] ` : '';
+			return {value: d.id, label: `${personnel_number}${d.last_name} ${d.first_name} ${d.middle_name}`}
+		});
 		const MASTERS = employeesList.filter( e => [2, 4, 5, 7, 14].indexOf(e.position_id) > -1).map( m => ({value: m.id, data: m, label: `${m.last_name} ${m.first_name} ${m.middle_name}`}));
     const MISSIONS = missionsList.map( ({id, number, technical_operation_name}) => ({value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false}));
 

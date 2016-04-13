@@ -1,6 +1,4 @@
 import MapServerConfig from './MapServerConfig.js';
-//import MapServerConfig from './MapServerConfig2.js';
-//import MapServerConfig from './MapServerConfig3.js';
 
 const INITIAL_EXTENT = MapServerConfig.initialExtent;
 const FULL_EXTENT = MapServerConfig.fullExtent;

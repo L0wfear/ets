@@ -16,7 +16,7 @@ export default class DatePicker extends Component {
   }
 
   shouldComponentUpdate(props, state) {
-    return props.date !== this.props.date;
+    return props.date !== this.props.date || props.disabled !== this.props.disabled;
   }
 
   render() {

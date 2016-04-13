@@ -100,11 +100,13 @@ export default class Track {
   }
 
   isLoaded(){
+    //console.log(this.owner, this.points && this.points.length)
+    //debugger;
     return this.points !== null && this.points.length > 0;
   }
 
   getLastPoint(){
-      return this.isLoaded() && this.points[this.points.length - 1]
+    return this.isLoaded() && this.points[this.points.length - 1]
   }
 
   addPoint(point) {
@@ -128,7 +130,7 @@ export default class Track {
   }
 
   setContinuousUpdating(flag) {
-    console.log( 'track', this, 'continuousUpdating is', flag)
+    console.log('track', this, 'continuousUpdating is', flag)
     this.continuousUpdating = flag;
   }
 
@@ -167,346 +169,344 @@ export default class Track {
 
 
     let legend = colors.map((obj, i) => {
-
       let text = obj.speed + (obj.till ? ' – ' + obj.till : '') + ' км/ч';
       let color = obj.color;
 
-      return <div className="track-legend-item">
-          <div className="track-legend-point" style={{
-          backgroundColor: color
-        }}></div>
-          <div className="track-legend-text">{text}</div>
-      </div>
-      });
-
       return (
-        <div className="track-legend">
-          {legend}
+        <div key={i} className="track-legend-item">
+          <div className="track-legend-point" style={{backgroundColor: color}}></div>
+          <div className="track-legend-text">{text}</div>
         </div>
-        )
+      );
+    });
+
+    return (
+      <div className="track-legend">
+        {legend}
+      </div>
+    );
+  }
+
+
+  fetch(from_dt = getStartOfToday(), to_dt = new Date().getTime()) {
+
+    let id = this.owner.point.id;
+    let updating = this.continuousUpdating;
+    //this.points = null;
+
+    if (to_dt - from_dt > 5 * 24 * 60 * 60 * 1000) {
+      global.NOTIFICATION_SYSTEM.notify('Период запроса трэка не может превышать 5 суток', 'warning')
+      return;
     }
 
+    this.continuousUpdating = false;
 
-    fetch(from_dt = getStartOfToday(), to_dt = new Date().getTime()) {
+    return getTrack(id, from_dt, to_dt)
+      .then((track) => {
+        //debugger;
+        this.points = track;
+        this.continuousUpdating = updating;
+        this.render();
+        this.onUpdateCallback();
+        console.log('track fetched for', this.owner)
+      })
 
-      let id = this.owner.point.id;
-      let updating = this.continuousUpdating;
-      //this.points = null;
+  }
 
-      if (to_dt - from_dt > 5 * 24 * 60 * 60 * 1000) {
-        global.NOTIFICATION_SYSTEM.notify('Период запроса трэка не может превышать 5 суток', 'warning')
-        return;
-      }
+  render() {
+    let map = this.map;
+    let zoom = map.getView().getZoom();
 
-      this.continuousUpdating = false;
+    if (zoom > COLORS_ZOOM_THRESHOLD) {
+      this.renderInColors();
+    } else {
+      this.renderSimple();
+    }
+  }
 
-      return getTrack(id, from_dt, to_dt)
-        .then((track) => {
-          //debugger;
-          this.points = track;
-          this.continuousUpdating = updating;
-          this.render();
-          this.onUpdateCallback();
-          console.log('track fetched for', this.owner)
-        })
+  renderSimple() {
+    let owner = this.owner;
+    let track = this.points;
+    let ctx = this.ctx;
 
+    if (!track || track.length < 2) {
+      return
     }
 
-    render() {
-      let map = this.map;
-      let zoom = map.getView().getZoom();
+    ctx.strokeStyle = TRACK_COLORS.blue;
+    ctx.lineWidth = TRACK_LINE_WIDTH;
+    ctx.lineCap = 'round';
 
-      if (zoom > COLORS_ZOOM_THRESHOLD) {
-        this.renderInColors();
-      } else {
-        this.renderSimple();
+    let first = projectToPixel(track[0].coords_msk);
+
+    ctx.beginPath();
+    ctx.moveTo(first.x, first.y);
+
+    for (let i = 1, till = track.length - 1; i < till; i++) {
+      let coords = projectToPixel(track[i].coords_msk);
+      ctx.lineTo(coords.x, coords.y);
+    }
+
+    // если машина в движении - дорисовываем еще одну точку, чтобы трэк не обрывался
+    // получается некрасиво в том случае, если обновление происходит редко
+    // и машина резко перемещается на другую точку
+    if (owner.point.status === 1 && this.continuousUpdating) {
+      let coords = projectToPixel(swapCoords(owner.point.coords_msk));
+      ctx.lineTo(coords.x, coords.y);
+    }
+
+    ctx.stroke();
+  }
+
+  getExtent() {
+    let minX = 100000,
+      minY = 100000,
+      maxX = 0,
+      maxY = 0;
+    let trackPoints = this.points;
+
+    for (let key in trackPoints) {
+      let point = trackPoints[key];
+      let [x, y] = point.coords_msk;
+
+      if (x < minX) {
+        minX = x
+      }
+      if (x > maxX) {
+        maxX = x
+      }
+
+      if (y < minY) {
+        minY = y;
+      }
+      if (y > maxY) {
+        maxY = y
       }
     }
 
-    renderSimple() {
-      let owner = this.owner;
-      let track = this.points;
-      let ctx = this.ctx;
+    return [minX, minY, maxX, maxY];
+  }
 
-      if (!track || track.length < 2) {
-        return
-      }
 
-      ctx.strokeStyle = TRACK_COLORS.blue;
-      ctx.lineWidth = TRACK_LINE_WIDTH;
-      ctx.lineCap = 'round';
+  /**
+   * рисует точку трэка
+   * @param coords
+   * @param color
+   */
+  drawTrackPoint(coords, color) {
+    let ctx = this.ctx;
+    if (DRAW_POINTS) {
+      let cachedPoint = getTrackPointByColor(color);
+      ctx.drawImage(
+        cachedPoint,
+        coords.x - TRACK_POINT_RADIUS - 1,
+        coords.y - TRACK_POINT_RADIUS - 1,
+        (TRACK_POINT_RADIUS + 1) * 2,
+        (TRACK_POINT_RADIUS + 1) * 2);
+    }
+  }
+  /**
+   * TODO http://jsperf.com/changing-canvas-state/3
+   * @param ctx
+   */
+  renderInColors() {
 
-      let first = projectToPixel(track[0].coords_msk);
+    let owner = this.owner;
+    let track = this.points;
+    let TRACK_LINE_WIDTH = DRAW_POINTS ? 4 : TRACK_LINE_WIDTH;
+    let ctx = this.ctx;
 
-      ctx.beginPath();
-      ctx.moveTo(first.x, first.y);
+    if (!track || track.length < 2) {
+      return
+    }
 
-      for (let i = 1, till = track.length - 1; i < till; i++) {
-        let coords = projectToPixel(track[i].coords_msk);
+    let type_id = owner.point.car.type_id;
+
+    // todo import from settings
+    const RENDER_GRADIENT = this.owner.store.state.showTrackingGradient;
+
+    // TODO убрать эту функцию, ибо она порождена багой на бэкэнде
+    function getSpeed(trackPoint) {
+      return 'speed_avg' in trackPoint ? trackPoint.speed_avg : trackPoint.speed
+    }
+
+    let firstPoint = projectToPixel(track[0].coords_msk);
+    let prevCoords = firstPoint;
+
+    ctx.lineWidth = TRACK_LINE_WIDTH;
+    ctx.lineCap = 'butt';
+    ctx.lineJoin = 'round';
+
+    ctx.beginPath();
+    ctx.moveTo(firstPoint.x, firstPoint.y);
+
+    let prevRgbaColor = ctx.strokeStyle = getTrackColor(getSpeed(track[0]), type_id, TRACK_LINE_OPACITY);
+
+    for (let i = 1, till = track.length - 1; i < till; i++) {
+      let coords = projectToPixel(track[i].coords_msk);
+      let speed = getSpeed(track[i]);
+      let rgbaColor = getTrackColor(speed, type_id, TRACK_LINE_OPACITY);
+      let hexColor = getTrackColor(speed, type_id);
+
+      // если предыдущий цвет не соответствует новому
+      // нужно закрыть предыдущую линию
+      // и нарисовать новую
+      if (prevRgbaColor !== rgbaColor) {
+        if (RENDER_GRADIENT) {
+
+          // stroke path before
+          ctx.stroke();
+
+          // make gradient fill
+          let gradient = ctx.createLinearGradient(prevCoords.x, prevCoords.y, coords.x, coords.y);
+          gradient.addColorStop('0', prevRgbaColor);
+          gradient.addColorStop('1', rgbaColor);
+
+          // make new path and stroke that
+          ctx.strokeStyle = gradient;
+          ctx.beginPath();
+          ctx.moveTo(prevCoords.x, prevCoords.y);
+          ctx.lineTo(coords.x, coords.y);
+          ctx.stroke();
+
+          this.drawTrackPoint(coords, hexColor);
+        } else {
+          ctx.lineTo(coords.x, coords.y);
+          ctx.stroke();
+
+          this.drawTrackPoint(coords, hexColor);
+        }
+
+        // start new path
+        // and reset color && lineWidth
+        ctx.strokeStyle = rgbaColor;
+        ctx.lineWidth = TRACK_LINE_WIDTH;
+        ctx.beginPath();
+        ctx.moveTo(coords.x, coords.y);
+
+      } else { // если цвет не менялся
+
+        ctx.strokeStyle = prevRgbaColor;
+        ctx.lineWidth = TRACK_LINE_WIDTH;
         ctx.lineTo(coords.x, coords.y);
-      }
 
-      // если машина в движении - дорисовываем еще одну точку, чтобы трэк не обрывался
-      // получается некрасиво в том случае, если обновление происходит редко
-      // и машина резко перемещается на другую точку
-      if (owner.point.status === 1 && this.continuousUpdating) {
-        let coords = projectToPixel(swapCoords(owner.point.coords_msk));
-        ctx.lineTo(coords.x, coords.y);
-      }
+        // оптимизация, типа
+        // рисовать кружки только там, где были заметные изменения скорости
+        if (!SHOW_ONLY_POINTS_WITH_SPEED_CHANGES) {
+          ctx.stroke();
 
-      ctx.stroke();
-    }
+          this.drawTrackPoint(coords, hexColor);
 
-    getExtent() {
-      let minX = 100000,
-        minY = 100000,
-        maxX = 0,
-        maxY = 0;
-      let trackPoints = this.points;
-
-      for (let key in trackPoints) {
-        let point = trackPoints[key];
-        let [x, y] = point.coords_msk;
-
-        if (x < minX) {
-          minX = x
-        }
-        if (x > maxX) {
-          maxX = x
-        }
-
-        if (y < minY) {
-          minY = y;
-        }
-        if (y > maxY) {
-          maxY = y
-        }
-      }
-
-      return [minX, minY, maxX, maxY];
-    }
-
-
-    /**
-     * рисует точку трэка
-     * @param coords
-     * @param color
-     */
-    drawTrackPoint(coords, color) {
-      let ctx = this.ctx;
-      if (DRAW_POINTS) {
-        let cachedPoint = getTrackPointByColor(color);
-        ctx.drawImage(
-          cachedPoint,
-          coords.x - TRACK_POINT_RADIUS - 1,
-          coords.y - TRACK_POINT_RADIUS - 1,
-          (TRACK_POINT_RADIUS + 1) * 2,
-          (TRACK_POINT_RADIUS + 1) * 2);
-      }
-    }
-    /**
-     * TODO http://jsperf.com/changing-canvas-state/3
-     * @param ctx
-     */
-    renderInColors() {
-
-      let owner = this.owner;
-      let track = this.points;
-      let TRACK_LINE_WIDTH = DRAW_POINTS ? 4 : TRACK_LINE_WIDTH;
-      let ctx = this.ctx;
-
-      if (!track || track.length < 2) {
-        return
-      }
-
-      let type_id = owner.point.car.type_id;
-
-      // todo import from settings
-      const RENDER_GRADIENT = this.owner.store.state.showTrackingGradient;
-
-      // TODO убрать эту функцию, ибо она порождена багой на бэкэнде
-      function getSpeed(trackPoint) {
-        return 'speed_avg' in trackPoint ? trackPoint.speed_avg : trackPoint.speed
-      }
-
-      let firstPoint = projectToPixel(track[0].coords_msk);
-      let prevCoords = firstPoint;
-
-      ctx.lineWidth = TRACK_LINE_WIDTH;
-      ctx.lineCap = 'butt';
-      ctx.lineJoin = 'round';
-
-      ctx.beginPath();
-      ctx.moveTo(firstPoint.x, firstPoint.y);
-
-      let prevRgbaColor = ctx.strokeStyle = getTrackColor(getSpeed(track[0]), type_id, TRACK_LINE_OPACITY);
-
-      for (let i = 1, till = track.length - 1; i < till; i++) {
-        let coords = projectToPixel(track[i].coords_msk);
-        let speed = getSpeed(track[i]);
-        let rgbaColor = getTrackColor(speed, type_id, TRACK_LINE_OPACITY);
-        let hexColor = getTrackColor(speed, type_id);
-
-        // если предыдущий цвет не соответствует новому
-        // нужно закрыть предыдущую линию
-        // и нарисовать новую
-        if (prevRgbaColor !== rgbaColor) {
-          if (RENDER_GRADIENT) {
-
-            // stroke path before
-            ctx.stroke();
-
-            // make gradient fill
-            let gradient = ctx.createLinearGradient(prevCoords.x, prevCoords.y, coords.x, coords.y);
-            gradient.addColorStop('0', prevRgbaColor);
-            gradient.addColorStop('1', rgbaColor);
-
-            // make new path and stroke that
-            ctx.strokeStyle = gradient;
-            ctx.beginPath();
-            ctx.moveTo(prevCoords.x, prevCoords.y);
-            ctx.lineTo(coords.x, coords.y);
-            ctx.stroke();
-
-            this.drawTrackPoint(coords, hexColor);
-          } else {
-            ctx.lineTo(coords.x, coords.y);
-            ctx.stroke();
-
-            this.drawTrackPoint(coords, hexColor);
-          }
-
-          // start new path
-          // and reset color && lineWidth
           ctx.strokeStyle = rgbaColor;
           ctx.lineWidth = TRACK_LINE_WIDTH;
           ctx.beginPath();
           ctx.moveTo(coords.x, coords.y);
-
-        } else { // если цвет не менялся
-
-          ctx.strokeStyle = prevRgbaColor;
-          ctx.lineWidth = TRACK_LINE_WIDTH;
-          ctx.lineTo(coords.x, coords.y);
-
-          // оптимизация, типа
-          // рисовать кружки только там, где были заметные изменения скорости
-          if (!SHOW_ONLY_POINTS_WITH_SPEED_CHANGES) {
-            ctx.stroke();
-
-            this.drawTrackPoint(coords, hexColor);
-
-            ctx.strokeStyle = rgbaColor;
-            ctx.lineWidth = TRACK_LINE_WIDTH;
-            ctx.beginPath();
-            ctx.moveTo(coords.x, coords.y);
-          }
-        }
-
-        prevCoords = coords;
-        prevRgbaColor = rgbaColor;
-      }
-
-      // если машина в движении - дорисовываем еще одну точку, чтобы трэк не обрывался
-      // получается некрасиво в том случае, если обновление происходит редко
-      // и машина резко перемещается на другую точку
-      if (owner.point.status === 1 && this.continuousUpdating) {
-        //debugger;
-        let coords = projectToPixel(swapCoords(owner.point.coords_msk));
-        ctx.lineTo(coords.x, coords.y);
-      }
-
-      ctx.stroke()
-    }
-
-    getPointAtCoordinate(coordinate) {
-      let view = this.map.getView();
-      let projectedPixel = projectToPixel(coordinate);
-      let extent = view.calculateExtent(this.map.getSize());
-      let viewportPoints = this.getTrackPointsInExtent(extent);
-      let selected = null;
-
-      for (let key in viewportPoints) {
-        let point = viewportPoints[key];
-        let pixelCoords = projectToPixel(point.coords_msk)
-        let radius = TRACK_POINT_RADIUS;
-
-        var dx = pixelCoords.x - projectedPixel.x;
-        var dy = pixelCoords.y - projectedPixel.y;
-
-        if (dx * dx + dy * dy < radius * radius) {
-          selected = point;
-          break;
         }
       }
 
-      return selected;
+      prevCoords = coords;
+      prevRgbaColor = rgbaColor;
     }
 
+    // если машина в движении - дорисовываем еще одну точку, чтобы трэк не обрывался
+    // получается некрасиво в том случае, если обновление происходит редко
+    // и машина резко перемещается на другую точку
+    if (owner.point.status === 1 && this.continuousUpdating) {
+      //debugger;
+      let coords = projectToPixel(swapCoords(owner.point.coords_msk));
+      ctx.lineTo(coords.x, coords.y);
+    }
 
-    getTrackPointsInExtent(extent) {
-      let points = this.points;
-      let returns = [];
+    ctx.stroke()
+  }
 
-      for (let key in points) {
-        let point = points[key];
-        if (ol.extent.containsCoordinate(extent, point.coords_msk)) {
-          returns.push(point)
-        }
+  getPointAtCoordinate(coordinate) {
+    let view = this.map.getView();
+    let projectedPixel = projectToPixel(coordinate);
+    let extent = view.calculateExtent(this.map.getSize());
+    let viewportPoints = this.getTrackPointsInExtent(extent);
+    let selected = null;
+
+    for (let key in viewportPoints) {
+      let point = viewportPoints[key];
+      let pixelCoords = projectToPixel(point.coords_msk)
+      let radius = TRACK_POINT_RADIUS;
+
+      var dx = pixelCoords.x - projectedPixel.x;
+      var dy = pixelCoords.y - projectedPixel.y;
+
+      if (dx * dx + dy * dy < radius * radius) {
+        selected = point;
+        break;
       }
-
-      return returns;
-
     }
 
+    return selected;
+  }
 
-    // todo refactor
-    getTrackPointTooltip(trackPoint){
 
-      let {
-          nsat,
-          speed_avg,
-          speed_max,
-          direction,
-          timestamp,
-          distance
-          } = trackPoint,
-        [latitude, longitude] = roundCoordinates(trackPoint.coords_msk, 6),
-        geoObjects = null,
-        gov_number = this.owner.point.car.gov_number;
+  getTrackPointsInExtent(extent) {
+    let points = this.points;
+    let returns = [];
 
-      distance = typeof distance == 'number' ? Math.floor(distance) : distance;
-      timestamp = new Date( timestamp * 1000 );
-      let dt = makeDate( timestamp ) + ' ' + makeTime( timestamp, true );
+    for (let key in points) {
+      let point = points[key];
+      if (ol.extent.containsCoordinate(extent, point.coords_msk)) {
+        returns.push(point)
+      }
+    }
 
-      return function makePopup(geoObjects = null){
+    return returns;
 
-          let objectsString = 'Объекты ОДХ';
+  }
 
-          if ( geoObjects === null ){
-            objectsString += ' загружаются'
+
+  // todo refactor
+  getTrackPointTooltip(trackPoint){
+
+    let {
+        nsat,
+        speed_avg,
+        speed_max,
+        direction,
+        timestamp,
+        distance
+        } = trackPoint,
+      [latitude, longitude] = roundCoordinates(trackPoint.coords_msk, 6),
+      geoObjects = null,
+      gov_number = this.owner.point.car.gov_number;
+
+    distance = typeof distance == 'number' ? Math.floor(distance) : distance;
+    timestamp = new Date( timestamp * 1000 );
+    let dt = makeDate( timestamp ) + ' ' + makeTime( timestamp, true );
+
+    return function makePopup(geoObjects = null){
+
+        let objectsString = 'Объекты ОДХ';
+
+        if ( geoObjects === null ){
+          objectsString += ' загружаются'
+        } else {
+          if ( geoObjects.length > 0 ){
+            //objectsString += ': '+ geoObjects.map((obj)=>obj.name + ' ('+getCustomerById(obj.customer_id).title+')').join(', ')
           } else {
-            if ( geoObjects.length > 0 ){
-              //objectsString += ': '+ geoObjects.map((obj)=>obj.name + ' ('+getCustomerById(obj.customer_id).title+')').join(', ')
-            } else {
-              objectsString += ' не найдены'
-            }
+            objectsString += ' не найдены'
           }
+        }
 
-          return '<div class="header">' +
-                    '<span class="gov-number">'+gov_number+'</span>' +
-                    '<span class="dt">'+dt+'</span>  ' +
-                  '</div>  ' +
-                  '<div class="geo-objects">'+objectsString+'</div>'+
-                    '<div class="some-info">' +
-                    '<div class="speed">V<sub>ср</sub> = '+speed_avg+' км/ч<br/>'+'V<sub>макс</sub> = '+speed_max+' км/ч</div>' +
-                    '<div class="distance">' + distance + ' м</div>' +
-                    '<div class="coords">'+latitude+ '<br/>' + longitude + '</div>' +
-                    '<div class="nsat">'+ nsat +' спутников</div>' +
-                  '</div>' +
-                    // '<div class="ignition">${ignition}</div>' +
-              '</div>';
-      }
-
+        return '<div class="header">' +
+                  '<span class="gov-number">'+gov_number+'</span>' +
+                  '<span class="dt">'+dt+'</span>  ' +
+                '</div>  ' +
+                '<div class="geo-objects">'+objectsString+'</div>'+
+                  '<div class="some-info">' +
+                  '<div class="speed">V<sub>ср</sub> = '+speed_avg+' км/ч<br/>'+'V<sub>макс</sub> = '+speed_max+' км/ч</div>' +
+                  '<div class="distance">' + distance + ' м</div>' +
+                  '<div class="coords">'+latitude+ '<br/>' + longitude + '</div>' +
+                  '<div class="nsat">'+ nsat +' спутников</div>' +
+                '</div>' +
+                  // '<div class="ignition">${ignition}</div>' +
+            '</div>';
+    }
   }
 }

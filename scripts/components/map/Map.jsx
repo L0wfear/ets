@@ -190,8 +190,6 @@ export default class OpenLayersMap extends Component {
       }
     }
 
-    //console.log(clickedMarker)
-
     if (clickedMarker) {
       clickedMarker.onClick();
       store.handleSelectPoint(clickedMarker.point);
@@ -244,6 +242,7 @@ export default class OpenLayersMap extends Component {
     }
 
     if (selectedMarker) {
+      //console.log(selectedMarker && selectedMarker.track)
       if (selectedMarker.hasTrackLoaded()) {
         selectedMarker.track.render();
       }

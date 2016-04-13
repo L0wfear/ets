@@ -89,7 +89,7 @@ let MissionReportByODHTable = (props) => {
 	if (props.noFilter) {
 		tableMeta.cols = tableMeta.cols.filter(c => c.name !== 'left_percentage' && c.name !== 'v_avg_max');
 		delete renderers.left_percentage;
-		renderers.left = (data) => <div>{`${parseFloat(data.data).toFixed(2)} (${parseFloat(parseFloat(data.rowData.left_percentage) * 100).toFixed(2) + '%'})`}</div>
+    renderers.left = (data) => <div>{parseFloat(data.data).toFixed(2)}<br/>{`(${parseFloat(parseFloat(data.rowData.left_percentage) * 100).toFixed(2) + '%'})`}</div>
 	}
 
 	return <Table title='Прохождение заданий по ОДХ'

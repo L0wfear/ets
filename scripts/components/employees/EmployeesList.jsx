@@ -3,7 +3,7 @@ import connectToStores from 'flummox/connect';
 import Table from '../ui/table/DataTable.jsx';
 import DateFormatter from '../ui/DateFormatter.jsx';
 import ElementsList from '../ElementsList.jsx';
-import DriverFormWrap from './DriverFormWrap.jsx';
+import EmployeeFormWrap from './EmployeeFormWrap.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
 import _ from 'lodash';
 import moment from 'moment';
@@ -83,7 +83,7 @@ let tableMeta = {
   }]
 };
 
-let DriversTable = (props) => {
+let EmployeesTable = (props) => {
 
 	const renderers = {
 		birthday : ({data}) => <DateFormatter date={data} />,
@@ -100,7 +100,7 @@ let DriversTable = (props) => {
 								{...props}/>
 }
 
-class DriversList extends ElementsList {
+class EmployeesList extends ElementsList {
 
 
 	constructor(props, context) {
@@ -122,21 +122,21 @@ class DriversList extends ElementsList {
 
 		return (
 			<div className="ets-page-wrap">
-				<DriversTable data={employeesList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'}>
+				<EmployeesTable data={employeesList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'}>
           <Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Создать сотрудника</Button>
           <Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="pencil" /> Редактировать</Button>
-          <Button bsSize="small" disabled={this.state.selectedElement === null} onClick={this.removeElement.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
-        </DriversTable>
-				<DriverFormWrap onFormHide={this.onFormHide.bind(this)}
+          {/*<Button bsSize="small" disabled={this.state.selectedElement === null} onClick={this.removeElement.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>*/}
+        </EmployeesTable>
+				<EmployeeFormWrap onFormHide={this.onFormHide.bind(this)}
 												showForm={this.state.showForm}
-												driver={this.state.selectedElement} />
+												element={this.state.selectedElement} />
 			</div>
 		)
 	}
 }
 
-DriversList.contextTypes = {
+EmployeesList.contextTypes = {
 	flux: React.PropTypes.object,
 };
 
-export default connectToStores(DriversList, ['employees', 'objects']);
+export default connectToStores(EmployeesList, ['employees', 'objects']);

@@ -52,7 +52,7 @@ export default class FuelRateActions extends Actions {
     return FuelOperationsService.delete(payload);
   }
 
-  addFuelOperation(formState) {
+  createFuelOperation(formState) {
     const payload = {};
     if (typeof formState.NAME === "string" && formState.NAME !== '' ) {
       payload.NAME = formState.NAME;
@@ -70,7 +70,7 @@ export default class FuelRateActions extends Actions {
     return FuelOperationsService.put(payload);
   }
 
-  addFuelRate(rate) {
+  createFuelRate(rate) {
     const payload = _.clone(rate);
     payload.order_date = createValidDate(payload.order_date);
     return FuelConsumptionRateService.post(payload);

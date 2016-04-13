@@ -5,18 +5,10 @@ import Div from '../../ui/Div.jsx';
 
 class OdhFormWrap extends FormWrap {
 
-  constructor(props) {
+  constructor(props, context) {
     super(props);
-  }
 
-  async handleFormSubmit(formState) {
-    try {
-      await this.context.flux.getActions('objects').updateODH(formState);
-    } catch (e) {
-      console.log(e);
-      return;
-    }
-    this.props.onFormHide();
+    this.updateAction = context.flux.getActions('objects').updateODH;
   }
 
   render() {

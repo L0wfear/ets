@@ -8,8 +8,7 @@ import Div from '../ui/Div.jsx';
 import Field from '../ui/Field.jsx';
 import Form from '../compositions/Form.jsx';
 
-
-class DriverForm extends Form {
+class EmployeeForm extends Form {
 
 	constructor(props) {
 		super(props);
@@ -121,4 +120,4 @@ class DriverForm extends Form {
 	}
 }
 
-export default connectToStores(DriverForm, ['objects']);
+export default connectToStores(EmployeeForm, ['objects']);

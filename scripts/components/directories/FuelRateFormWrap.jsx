@@ -7,7 +7,7 @@ import FormWrap from '../compositions/FormWrap.jsx';
 
 export default class FuelRateFormWrap extends FormWrap {
 
-	constructor(props) {
+	constructor(props, context) {
 		super(props);
 
 		this.defaultElement = {
@@ -17,16 +17,8 @@ export default class FuelRateFormWrap extends FormWrap {
 			//winter_rate: '',
 			car_model_id: null
 		};
-	}
-
-	handleFormSubmit(formState) {
-		let { flux } = this.context;
-    if (!formState.id) {
-			flux.getActions('fuel-rates').addFuelRate(formState);
-    } else {
-			flux.getActions('fuel-rates').updateFuelRate(formState);
-    }
-    this.props.onFormHide();
+		this.createAction = context.flux.getActions('fuel-rates').createFuelRate;
+		this.updateAction = context.flux.getActions('fuel-rates').updateFuelRate;
 	}
 
 	render() {

@@ -56,11 +56,10 @@ let CompanyStructureTable = (props) => {
 
 		const renderers = {
 			id: ({data}) => {
-				let id = data;
 				return (
 					<div>
-						<Button className="action-button" onClick={props.onActionEdit.bind(null, id)}>Редактировать</Button>
-						<Button className="action-button" onClick={props.onActionDelete.bind(null, id)}>Удалить</Button>
+						<Button className="action-button" onClick={props.onActionEdit.bind(null, data)}>Редактировать</Button>
+						<Button className="action-button" onClick={props.onActionDelete.bind(null, data)}>Удалить</Button>
 					</div>
 				);
 			}
@@ -82,45 +81,37 @@ class CompanyStructure extends ElementsList {
     this.mainListName = 'companyStructureLinearList';
 	}
 
-	async init() {
-		const { flux } = this.context;
-		await flux.getActions('company-structure').getCompanyStructure();
-		let companyStructureLinearList = await flux.getActions('company-structure').getPlainCompanyStructure();
+	async getLinearCompanyStructure() {
+		let companyStructureLinearList = await this.context.flux.getActions('company-structure').getLinearCompanyStructure();
 		this.setState({companyStructureLinearList});
 	}
 
-	async onFormHide(isSubmitted) {
-		this.setState({showForm: false, selectedElement: null});
+	componentDidMount() {
+		super.componentDidMount();
 
-		if (isSubmitted === true) {
-			this.init();
+		const { flux } = this.context;
+		flux.getActions('company-structure').getCompanyStructure();
+		this.getLinearCompanyStructure();
+	}
+
+	componentWillReceiveProps(props) {
+		if (!_.isEqual(props.companyStructureList, this.props.companyStructureList)) {
+			//переделать
+			setTimeout(() =>this.getLinearCompanyStructure(), 100);
 		}
 	}
 
-	selectElement(id, e) {
+	editElement(id, e) {
 		e.stopPropagation();
 		let selectedElement = _.find(this.state.companyStructureLinearList, el => el.id ? el.id === id : el[this.selectField] === id);
 		this.setState({showForm: true, selectedElement});
 	}
 
-	async deleteElement(id, e) {
+	deleteElement(id, e) {
 		e.stopPropagation();
 		if (confirm('Вы уверены, что хотите удалить выбранный элемент?')) {
-			try {
-				await this.context.flux.getActions('company-structure').deleteCompanyElement(id);
-			} catch (e) {
-				console.log(e);
-				return;
-			}
-			this.init();
+			this.context.flux.getActions('company-structure').deleteCompanyElement(id);
  		}
-	}
-
-	async componentDidUpdate(props) {
-		// if (!_.isEqual(props.companyStructureList, this.props.companyStructureList)) {
-		// 	let companyStructureLinearList = await this.context.flux.getActions('company-structure').getPlainCompanyStructure();
-		// 	this.setState({companyStructureLinearList});
-		// }
 	}
 
 	render() {
@@ -130,11 +121,8 @@ class CompanyStructure extends ElementsList {
 		return (
 			<div className="ets-page-wrap company-structure">
 				<CompanyStructureTable data={companyStructureList}
-															 //onRowSelected={this.selectElement.bind(this)}
-															 onActionEdit={this.selectElement.bind(this)}
-															 onActionDelete={this.deleteElement.bind(this)}
-															 selected={this.state.selectedElement}
-															 selectField={'id'}>
+															 onActionEdit={this.editElement.bind(this)}
+															 onActionDelete={this.deleteElement.bind(this)}>
 					<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Добавить подразделение</Button>
 				</CompanyStructureTable>
 				<CompanyStructureFormWrap onFormHide={this.onFormHide.bind(this)}

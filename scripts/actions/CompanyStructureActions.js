@@ -8,7 +8,7 @@ export default class CompanyStructureActions extends Actions {
   createCompanyElement(data) {
     const payload = _.cloneDeep(data);
 
-    return CompanyStructureService.post(payload, false);
+    return CompanyStructureService.post(payload);
   }
 
   updateCompanyElement(data) {
@@ -16,7 +16,7 @@ export default class CompanyStructureActions extends Actions {
     delete payload.type_display;
     delete payload.legal_person_id;
 
-    return CompanyStructureService.put(payload, false);
+    return CompanyStructureService.put(payload);
   }
 
   deleteCompanyElement(id) {
@@ -24,14 +24,14 @@ export default class CompanyStructureActions extends Actions {
       id
     };
 
-    return CompanyStructureService.delete(payload, false);
+    return CompanyStructureService.delete(payload);
   }
 
   getCompanyStructure() {
     return CompanyStructureService.get();
   }
 
-  async getPlainCompanyStructure() {
+  async getLinearCompanyStructure() {
     const payload = {
       linear: true,
     };

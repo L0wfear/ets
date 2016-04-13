@@ -57,7 +57,7 @@ export default class MainPage extends React.Component {
             <MenuItem active={path === '/duty-mission-templates-journal'} href="#/duty-mission-templates-journal">Шаблоны наряд-заданий</MenuItem>
           </NavDropdown>
           <NavDropdown title="НСИ" id="nav-dropdown-2">
-            <MenuItem active={path === '/drivers'} href="#/drivers">Реестр сотрудников</MenuItem>
+            <MenuItem active={path === '/employees'} href="#/drivers">Реестр сотрудников</MenuItem>
             <MenuItem active={path === '/cars'} href="#/cars">Реестр транспортных средств</MenuItem>
             <MenuItem active={path === '/technical-operations'} href="#/technical-operations">Реестр технологических операций</MenuItem>
             <MenuItem active={path === '/faxogramms'} href="#/faxogramms">Реестр факсограмм</MenuItem>
@@ -65,7 +65,7 @@ export default class MainPage extends React.Component {
             <MenuItem divider />
 
             <MenuItem active={path === '/fuel-rates'} href="#/fuel-rates">Справочник норм расхода топлива</MenuItem>
-            <MenuItem active={path === '/fuel-operations'} href="#/fuel-operations">Операции для расчета топлива</MenuItem>
+            <MenuItem active={path === '/fuel-operations'} href="#/fuel-operations">Справочник операций для расчета топлива</MenuItem>
             <MenuItem active={path === '/odh'} href="#/odh">Справочник ОДХ</MenuItem>
             <MenuItem active={path === '/dt'} href="#/dt">Справочник ДТ</MenuItem>
           </NavDropdown>

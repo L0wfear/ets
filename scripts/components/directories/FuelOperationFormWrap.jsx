@@ -6,26 +6,12 @@ import FuelRateForm from './FuelOperationForm.jsx';
 
 export default class FuelOperationFormWrap extends FormWrap {
 
-	constructor(props) {
+	constructor(props, context) {
 		super(props);
-	}
 
-	handleFormSubmit(formState) {
-	  const { flux } = this.context;
-    if (!formState.ID) {
-			try {
-		    flux.getActions('fuel-rates').addFuelOperation(formState);
-			} catch (e) {
-				return;
-			}
-  	} else {
-			try {
-	    	flux.getActions('fuel-rates').updateFuelOperation(formState);
-			} catch (e) {
-				return;
-			}
-    }
-    this.props.onFormHide();
+		this.uniqueField = 'ID';
+		this.createAction = context.flux.getActions('fuel-rates').createFuelOperation;
+		this.updateAction = context.flux.getActions('fuel-rates').updateFuelOperation;
 	}
 
 	render() {

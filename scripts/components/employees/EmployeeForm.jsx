@@ -37,11 +37,14 @@ class EmployeeForm extends Form {
     const POSITION_ELEMENTS = positionsList.map(el => ({value: el.id, label: el.position}));
 
     console.log('form state is ', state);
+		console.log(state.active);
 
     let valueActive;
     if (state.active != undefined) {
       valueActive = state.active ?  1 :  0;
     }
+
+		if (state.active === undefined) valueActive = 1;
 
     const IS_CREATING = !!!state.id;
 

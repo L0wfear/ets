@@ -25,14 +25,14 @@ class FuelRateForm extends Form {
 		let state = this.props.formState;
 		const { modelsList = [], operations = [] } = this.props;
 		const MODELS = modelsList.map( m => ({value: m.id, label: m.title}));
-		const OPERATIONS = operations.map(op => ({value: op.ID, label: op.NAME}));
+		const OPERATIONS = operations.map(op => ({value: op.id, label: op.name}));
 
     console.log('form state is ', state);
 
 		return (
 			<Modal {...this.props}>
 				<Modal.Header closeButton>
-	          <Modal.Title id="contained-modal-title-lg">{!state.id ? 'Добавление' : 'Изменение'} нормы расхода топлива</Modal.Title>
+					<Modal.Title id="contained-modal-title-lg">{!state.id ? 'Добавление' : 'Изменение'} нормы расхода топлива</Modal.Title>
 				</Modal.Header>
 
 	      <Modal.Body>

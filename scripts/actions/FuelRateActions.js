@@ -72,6 +72,7 @@ export default class FuelRateActions extends Actions {
 
   createFuelRate(rate) {
     const payload = _.clone(rate);
+    delete payload.car_model_name;
     payload.order_date = createValidDate(payload.order_date);
     return FuelConsumptionRateService.post(payload);
   }

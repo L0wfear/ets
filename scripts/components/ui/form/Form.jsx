@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Modal, Row, Col, Button, Dropdown, Glyphicon } from 'react-bootstrap';
 import FieldWrap from '../FieldWrap.jsx';
-
+// deprecated
 export default class Form extends Component {
 
 	constructor(props) {

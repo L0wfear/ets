@@ -225,20 +225,26 @@ export class MissionsJournal extends ElementsList {
 
     if (Object.keys(this.state.checkedMissions).length !== 0) {
       if (!confirm('Вы уверены, что хотите удалить выбранные элементы?')) return;
-        let isNotDeleted = false;
 
-        _.forEach(this.state.checkedMissions, function(mission) {
-          if (mission.status === 'not_assigned') {
-            this.removeElementAction(mission.id);
-          }
-          else isNotDeleted = true;
-        });
+      let isNotDeleted = false;
 
-        if (isNotDeleted) {
-          global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Удалились только задания со статусом "Не назначено"!'));
-        }
-    }
-    else {
+      _.forEach(this.state.checkedMissions, (mission) => {
+        if (mission.status === 'not_assigned') {
+          this.removeElementAction(mission.id);
+        } else {
+					isNotDeleted = true;
+				}
+      });
+
+      if (isNotDeleted) {
+        global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Удалились только задания со статусом "Не назначено"!'));
+      }
+			this.setState({
+				checkedMissions: {},
+				selectedElement: null,
+			});
+			
+    } else {
       this.removeElement();
     }
   }

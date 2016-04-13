@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import Filter from './Filter.jsx';
-import types, {getTypeById} from '../../../types.js';
 import okrugs, {getOkrugById} from '../../../okrugs.js';
 import owners, {getOwnerById} from '../../../owners.js';
 import TypeComponent from './TypeComponent.jsx';
 import ToolbarControl from './ToolbarControl.js';
+import { getTypeById } from 'utils/labelFunctions';
 
 
 export default class ToolbarFilters extends Component {
+
+  static propTypes = {
+    typesList: React.PropTypes.array.isRequired
+  }
 
   render(){
 
@@ -17,25 +21,25 @@ export default class ToolbarFilters extends Component {
 
     if (additiveFilters === undefined) throw new Error('additive filters is undefined, something went wrong')
 
-    if (currentUser.role === 'mayor' || currentUser.role === 'prefect') {
-      filters.push(
-        <Filter key={'filter_mayor_prefect'}
-                name="owner"
-                title="Владелец"
-                options={additiveFilters.owners}
-                search={true}/>
-      )
-    }
-
-    if (currentUser.role === 'mayor') {
-      filters.push(
-        <Filter key={'filter_mayor'}
-                name="okrug"
-                title="Округ"
-                options={additiveFilters.okrugs}
-                search={true}/>
-      );
-    }
+    // if (currentUser.role === 'mayor' || currentUser.role === 'prefect') {
+    //   filters.push(
+    //     <Filter key={'filter_mayor_prefect'}
+    //             name="owner"
+    //             title="Владелец"
+    //             options={additiveFilters.owners}
+    //             search={true}/>
+    //   )
+    // }
+    //
+    // if (currentUser.role === 'mayor') {
+    //   filters.push(
+    //     <Filter key={'filter_mayor'}
+    //             name="okrug"
+    //             title="Округ"
+    //             options={additiveFilters.okrugs}
+    //             search={true}/>
+    //   );
+    // }
 
     filters.push(
       <Filter key={'filter_basic'}
@@ -131,9 +135,9 @@ export default class ToolbarFilters extends Component {
 
     // наполняем селектор типов
     if ( _typeIds.length > 0 ){
-      _typeIds.forEach( (id) => _types.push( getTypeById(id)) )
+      _typeIds.forEach( (id) => _types.push(getTypeById(id)))
     } else {
-      _types = types;
+      _types = this.props.typesList;
     }
 
     return {

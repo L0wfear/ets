@@ -57,7 +57,7 @@ export default class MainPage extends React.Component {
             <MenuItem active={path === '/duty-mission-templates-journal'} href="#/duty-mission-templates-journal">Шаблоны наряд-заданий</MenuItem>
           </NavDropdown>
           <NavDropdown title="НСИ" id="nav-dropdown-2">
-            <MenuItem active={path === '/employees'} href="#/drivers">Реестр сотрудников</MenuItem>
+            <MenuItem active={path === '/employees'} href="#/employees">Реестр сотрудников</MenuItem>
             <MenuItem active={path === '/cars'} href="#/cars">Реестр транспортных средств</MenuItem>
             <MenuItem active={path === '/technical-operations'} href="#/technical-operations">Реестр технологических операций</MenuItem>
             <MenuItem active={path === '/faxogramms'} href="#/faxogramms">Реестр факсограмм</MenuItem>

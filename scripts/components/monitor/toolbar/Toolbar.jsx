@@ -2,47 +2,20 @@ import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import Filter from './Filter.jsx';
 import { FluxContext } from '../../decorators/index.js';
+import cx from 'classnames';
 
 import statuses from '../../../statuses.js';
 import FluxComponent from 'flummox/component';
 import ToolbarSearch from './ToolbarSearch.jsx';
 import ToolbarFilters from './ToolbarFilters.jsx';
 
-class StatusComponent extends Component {
-
-  render() {
-    const status = this.props.item;
-    const active = this.props.active;
-
-    if (!active) {
-      return this.renderNotActive();
-    }
-
-    return (
-      <span>
-        {status.color ? <button className="status-filter-icon" onClick={this.onClick.bind(this)} style={{ backgroundColor: status.color}}></button> : null}
-        {status.title}
-        <span style={{ fontSize: '80%', color: '#aaa' }}> ({status.amount})</span>
-      </span>
-    );
-  }
-
-  renderNotActive() {
-    const status = this.props.item;
-
-    return (
-      <span style={{ opacity: 0.5 }}>
-        {status.color ? <button className="status-filter-icon" onClick={this.onClick.bind(this)} style={{ backgroundColor: status.color}}></button> : null}
-        {status.title}
-      </span>
-    );
-  }
-
-  onClick() {
-    this.props.onClick();
-  }
-
-}
+let StatusComponent = (props) =>
+  <span className={cx({'half-visible': !props.active})}>
+    {props.status.color ? <button className={'status-filter-icon'} onClick={props.onClick} style={{ backgroundColor: props.status.color}}></button> : null}
+    {props.status.title}
+    {props.active ? <span style={{ fontSize: '80%', color: '#aaa' }}> ({props.status.amount})</span> : null}
+  </span>
+;
 
 
 class LegendWrapper extends Component {
@@ -59,10 +32,9 @@ class LegendWrapper extends Component {
       .map((item, i) => {
         return (
           <li key={i}>
-            <StatusComponent
-            active={filter.status.indexOf(item.id) !== -1}
-            item={item}
-            onClick={() => this.toggleFilter(item)}/>
+            <StatusComponent active={filter.status.indexOf(item.id) !== -1}
+                             status={item}
+                             onClick={() => this.toggleFilter(item)}/>
           </li>
         );
       });
@@ -105,7 +77,7 @@ let ShowPlatesCheckbox = (props) =>
   <div className="app-toolbar-fill app-toolbar-show-govnumber" >
     <div className="checkbox">
       <label style={{fontSize:'13px', fontWeight:'200'}}>
-        <input type="checkbox" checked={props.showPlates} onChange={e => props.flux.getActions('points').setShowPlates(e.target.checked)}/> Номер ТС
+        <input type="checkbox" checked={props.showPlates} onChange={e => props.flux.getActions('settings').setShowPlates(e.target.checked)}/> Номер ТС
       </label>
     </div>
   </div>
@@ -128,6 +100,15 @@ class Toolbar extends Component {
 
     view.centerOn(onlyPoint.marker.coords, size, [size[0]/2, size[1]/2])
     view.setZoom(15);
+  }
+
+  shouldComponentUpdate(props) {
+    // сделать обновление только во время изменений!
+    return true;
+  }
+
+  componentDidMount() {
+    this.context.flux.getActions('objects').getTypes();
   }
 
   render() {
@@ -165,7 +146,7 @@ class Toolbar extends Component {
     return (
       <div className="app-toolbar">
         <div className="row">
-          <FluxComponent connectToStores={['points']}>
+          <FluxComponent connectToStores={['points', 'settings']}>
             <LegendWrapper
               byStatus={byStatus}
               byConnectionStatus={byConnectionStatus}
@@ -175,11 +156,11 @@ class Toolbar extends Component {
           </FluxComponent>
         </div>
         <ToolbarSearch focusOnLonelyCar={this.focusOnLonelyCar.bind(this)} carsCount={carsCount}/>
-        <ToolbarFilters store={pointsStore} filters={additiveFilters} haveFilters={filtersCount > 0} currentUser={currentUser}/>
+        <ToolbarFilters store={pointsStore} filters={additiveFilters} haveFilters={filtersCount > 0} currentUser={currentUser} {...this.props}/>
       </div>
     );
   }
 
 }
 
-export default connectToStores(Toolbar, ['session', 'points']);
+export default connectToStores(Toolbar, ['objects', 'session', 'points']);

@@ -1,11 +1,11 @@
 import { getStatusById } from '../../../statuses.js';
-import { getTypeById } from '../../../types.js';
 import CoordsAnimation from './CoordsAnimation.js';
 import { getSmallIcon, getBigIcon } from '../../../icons/car.js';
 import {projectToPixel} from '../../map/MskAdapter.js';
 import Marker from '../BaseMarker.js';
 import Track from '../../map/Track.js';
 import { swapCoords, wrapCoords, unwrapCoords } from 'utils/geo';
+import { getTypeById } from 'utils/labelFunctions';
 
 const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
 
@@ -95,7 +95,7 @@ export default class CarMarker extends Marker {
   }
 
   onClick() {
-    this.track = new Track(this);
+    this.createTrack();
   }
 
   createTrack() {

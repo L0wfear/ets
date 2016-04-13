@@ -1,6 +1,6 @@
 // import ol from 'imports?define=>false!openlayers';
 import React, { Component } from 'react';
-import CarMarker from '../markers/car/Marker.js';
+import CarMarker from '../markers/car/CarMarker.js';
 import { PROJECTION, ArcGisLayer } from './MskAdapter.js';
 import 'ol3-popup/src/ol3-popup.js';
 import { getGeoObjectsByCoords } from '../../adapter.js';
@@ -155,7 +155,7 @@ export default class OpenLayersMap extends Component {
     let pixel = ev.pixel; // координаты клика во viewport
     let coordinate = ev.coordinate;
     let store = this._pointsStore;
-    let selectedMarker = null;
+    let clickedMarker = null;
     let cancelSelection = false;
 
     // проверка – не кликнули на точку трэка?
@@ -185,16 +185,18 @@ export default class OpenLayersMap extends Component {
       let marker = markers[key];
 
       if (marker.contains(coordinate)) {
-        selectedMarker = marker;
+        clickedMarker = marker;
         break;
       }
     }
 
-    if (selectedMarker) {
-      selectedMarker.onClick();
-      store.handleSelectPoint(selectedMarker.point);
+    //console.log(clickedMarker)
+
+    if (clickedMarker) {
+      clickedMarker.onClick();
+      store.handleSelectPoint(clickedMarker.point);
       // прячем попап трэка
-      this.hidePopup()
+      this.hidePopup();
     }
   }
 
@@ -285,12 +287,9 @@ export default class OpenLayersMap extends Component {
         singleclick: map.on('singleclick', this.onClick.bind(this)),
         pointermove: map.on('pointermove', this.onMouseMove.bind(this))
       }
-      // map.getView().on('change:resolution', (e) => {
-      //   console.log(e.target.getCenter());
-      // })
 
       interactions.forEach((interaction)=> {
-        interaction.setActive(true)
+        interaction.setActive(true);
       })
     }
 
@@ -314,7 +313,7 @@ export default class OpenLayersMap extends Component {
 
   getMarkersInBounds(bounds) {
 
-    let returns = [];
+    let markersInBounds = [];
     let markers = this.markers;
     let keys = Object.keys(markers);
 
@@ -324,11 +323,11 @@ export default class OpenLayersMap extends Component {
 
       // @todo переписать на простые сравнения, без метода contains
       if (ol.extent.containsCoordinate(bounds, marker.coords) && marker.isVisible()) {
-        returns.push(marker)
+        markersInBounds.push(marker)
       }
     }
 
-    return returns;
+    return markersInBounds;
   }
 
 
@@ -351,6 +350,7 @@ export default class OpenLayersMap extends Component {
       let key = keys[i];
       let point = updatedPoints[key];
 
+      // это че такое
       if (point.timestamp === 1420074000000) {
         continue;
       }

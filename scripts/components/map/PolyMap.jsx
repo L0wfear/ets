@@ -1,6 +1,6 @@
 // import ol from 'imports?define=>false!openlayers';
 import React, { Component } from 'react';
-import CarMarker from '../markers/car/Marker.js';
+import CarMarker from '../markers/car/CarMarker.js';
 import { PROJECTION, ArcGisLayer } from './MskAdapter.js';
 import 'ol3-popup/src/ol3-popup.js';
 import { getGeoObjectsByCoords } from '../../adapter.js';

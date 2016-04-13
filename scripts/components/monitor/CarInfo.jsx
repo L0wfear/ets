@@ -3,7 +3,6 @@ import Panel from '../Panel.jsx';
 import { Button } from 'react-bootstrap';
 import { getModelById } from '../../models.js';
 import { getStatusById } from '../../statuses.js';
-import { getTypeById } from '../../types.js';
 import { getOwnerById } from '../../owners.js';
 import config from '../../config.js';
 import { makeDate, makeTime, getStartOfToday } from 'utils/dates';
@@ -12,6 +11,7 @@ import SpeedChart from '../ui/charts/SpeedChart.jsx';
 import { getCarImage } from '../../adapter.js';
 import { roundCoordinates } from 'utils/geo';
 import DatePicker from '../ui/DatePicker.jsx';
+import { getTypeById } from 'utils/labelFunctions';
 
 
 class VehicleAttributes extends Component {
@@ -227,7 +227,6 @@ export default class CarInfo extends Component {
       let reloadBtnCN = 'glyphicon glyphicon-repeat ' + (tillNow && marker.hasTrackLoaded() ? 'tracking-animate' : '');
 
       let showGradient = store.state.showTrackingGradient;
-      console.log(this.state.imageUrl)
 
       return (
         <div className="car-info-tracking">

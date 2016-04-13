@@ -35,7 +35,7 @@ import FaxogrammDirectory from './directories/faxogramm/FaxogrammDirectory.jsx';
 import RouteReports from './reports/RouteReports.jsx';
 import CompanyStructure from './company_structure/CompanyStructure.jsx';
 import Modal from './ui/Modal.jsx';
-import { checkToken, init } from '../adapter.js';
+import { checkToken } from '../adapter.js';
 import Flux from './Flux.js';
 import { loginErrorNotification, getErrorNotification } from 'utils/notifications';
 
@@ -72,7 +72,6 @@ class App extends Component {
     this.setState({loading: true});
     if(!flux.getStore('session').isLoggedIn()) return this.setState({loading: false});
     return checkToken()
-          .then(() => init())
           .then(() => this.setState({loading: false}))
           .catch((error) => {
             if (error === 401) {

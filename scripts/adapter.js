@@ -3,7 +3,6 @@ import config from './config.js';
 import moment from 'moment';
 import { getStartOfToday, makeUnixTime } from 'utils/dates';
 import { wrapCoords, swapCoords } from 'utils/geo';
-import { loadTypes } from './types.js';
 import { getServerErrorNotification } from 'utils/notifications';
 
 export function getUrl(url) {
@@ -140,14 +139,6 @@ export function getFuelData(from_dt = getStartOfToday(), to_dt = new Date().getT
   return fetch(config.backend + '/fuel/' + car_id + '/?from_dt=' + makeUnixTime(from_dt) + '&to_dt=' + makeUnixTime(to_dt))
     .then(r => r.json())
     .then(r => r.map(data => data[1]))
-}
-
-export function init() {
-  console.warn('INIT');
-  // @todo вся нужная для инициализации внешнего апи хрень здесь
-  return Promise.all([
-          loadTypes()
-        ])
 }
 
 export function getTrack(car_id, from_dt, to_dt) {

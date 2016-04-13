@@ -28,7 +28,6 @@ let initialState = {
       0: 0,
       1: 0
     },
-    showPlates: false, // TODO move to settings store
     trackingMode: false,
     showTrackingGradient: false,
     isRenderPaused: false,
@@ -49,7 +48,6 @@ export default class PointsStore extends Store {
     this.register(pointsActions.selectPoint, this.handleSelectPoint);
     this.register(pointsActions.receiveTrack, this.handleReceiveTrack);
     this.register(pointsActions.updateTrack, this.handleUpdateTrack);
-    this.register(pointsActions.setShowPlates, this.handleSetShowPlates);
     this.register(pointsActions.setTracking, this.setTracking);
     this.register(pointsActions.getPointsExtent, this.getPointsExtent);
     this.register(pointsActions.createConnection, this.handleCreateConnection);
@@ -318,12 +316,6 @@ export default class PointsStore extends Store {
   handleSetShowGradient(flag) {
     this.setState({
       showTrackingGradient: flag
-    })
-  }
-
-  handleSetShowPlates(showPlates) {
-    this.setState({
-      showPlates
     })
   }
 

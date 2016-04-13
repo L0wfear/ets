@@ -12,17 +12,15 @@ export default class ToolbarControl extends Component {
     let controlClass = this.state.visible ? 'toolbar-control toggled' : 'toolbar-control'
     let position = {
       top: this.props.top
-    }
+    };
     let btnClass = 'app-toolbar-btn '+this.props.controlType+' '+this.props.btnClass
 
-    let style = Object.assign({},
-      {
-        display: this.state.visible ? 'block' : 'none',
-        position:'relative',
-        left:42,
-        top:-42
-      },
-      this.props.style )
+    let style = Object.assign({}, {
+      display: this.state.visible ? 'block' : 'none',
+      position:'relative',
+      left:42,
+      top:-42
+    }, this.props.style);
 
     return (
       <ClickOutHandler onClickOut={this.handleClickOutside.bind(this)}>
@@ -38,7 +36,9 @@ export default class ToolbarControl extends Component {
   }
 
   handleClickOutside(){
-    this.setState({visible: false})
+    if (this.state.visible === true) {
+      this.setState({visible: false});
+    }
   }
 
   toggleVisibility(){

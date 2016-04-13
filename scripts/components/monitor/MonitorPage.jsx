@@ -15,10 +15,6 @@ class MonitorPage extends Component {
 
   constructor(props, context) {
     super(props, context);
-
-    this.state = {
-      showPlates: false
-    };
   }
 
   componentDidMount() {
@@ -33,12 +29,15 @@ class MonitorPage extends Component {
 
     return (
       <div>
+
         <Toolbar/>
 
         <FluxComponent connectToStores={{
           points: store => ({
             points: store.state.points,
-            selected: store.getSelectedPoint(),
+            selected: store.getSelectedPoint()
+          }),
+          settings: store => ({
             showPlates: store.state.showPlates
           })
         }}>

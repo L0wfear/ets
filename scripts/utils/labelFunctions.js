@@ -50,8 +50,11 @@ export function getCarByIdLabelFunction(id) {
 };
 
 export function getModelById(id) {
-  const { flux } = window.__ETS_CONTAINER__;
-  return flux.getStore('objects').getModelById(id);
+  return window.__ETS_CONTAINER__.flux.getStore('objects').getModelById(id);
+}
+
+export function getTypeById(id) {
+  return window.__ETS_CONTAINER__.flux.getStore('objects').getTypeById(id);
 }
 
 export function getFuelOperationById(id) {

@@ -117,6 +117,15 @@ const missionsByCarAndDateUpdateNotification = {
   autoDismiss: 2,
 }
 
+export const saveDataSuccessNotification = {
+  title: '',
+  message: 'Данные успешно сохранены',
+  level: 'success',
+  dismissible: false,
+  position: 'tc',
+  autoDismiss: 3,
+}
+
 export const notifications = {
   missionCreateSuccessNotification,
   missionsCreationSuccessNotification,

@@ -6,6 +6,7 @@ import Div from '../ui/Div.jsx';
 import moment from 'moment';
 import RouteCreating from './RouteCreating.jsx';
 import Form from '../compositions/Form.jsx';
+import _ from 'lodash';
 
 class RouteForm extends Form {
 
@@ -14,7 +15,9 @@ class RouteForm extends Form {
 
 		this.state = {
 			manualCreating: 1,
-			companyStructureList: []
+			companyStructureList: [],
+      ROUTE_TYPE_OPTIONS: [],
+      routeTypeDisabled: true
 		};
 	}
 
@@ -22,6 +25,38 @@ class RouteForm extends Form {
 		this.handleChange('type', v);
 		this.props.resetState();
 	}
+
+  handleTechChange(t, v) {
+    const techOperation =_.find(this.props.technicalOperationsList, (o) => {
+      return o.id === v;
+    });
+
+    let route_type_options = [];
+    let routeTypeValue = '';
+
+    techOperation.objects.forEach(function(obj) {
+      switch (obj.name) {
+        case 'ОДХ':
+          route_type_options.push({value: 'vector', label: 'Вручную'});
+          route_type_options.push({value: 'simple', label: 'Выбор из ОДХ'});
+          routeTypeValue = 'simple';
+          break;
+        case 'ПН':
+          route_type_options.push({value: 'points', label: 'Выбор пунктов назначения'});
+          routeTypeValue !== 'simple' ? routeTypeValue = 'points': null;
+          break;
+        case 'ДТ':
+          route_type_options.push({value: 'simple_dt', label: 'Выбор из ДТ'});
+          routeTypeValue !== 'simple' ? routeTypeValue = 'simple_dt': null;
+          break;
+      }
+    });
+
+    this.setState({'ROUTE_TYPE_OPTIONS': route_type_options, 'routeTypeDisabled': routeTypeValue ? false : true});
+    this.props.handleFormChange('type', routeTypeValue);
+
+    this.handleChange(t, v);
+  }
 
 	async componentDidMount() {
 		let { flux } = this.context;
@@ -61,8 +96,9 @@ class RouteForm extends Form {
 								<Field type="select" label="Технологическая операция"
 											 options={TECH_OPERATIONS}
 											 value={state.technical_operation_id}
-											 onChange={this.handleChange.bind(this, 'technical_operation_id')}
+											 onChange={this.handleTechChange.bind(this, 'technical_operation_id')}
 											 disabled={this.props.fromMission}
+                       clearable={false}
 											 error={errors['technical_operation_id']}/>
 	            </Col>
 						</Div>
@@ -70,9 +106,10 @@ class RouteForm extends Form {
 						<Div hidden={this.props.forceRouteType}>
 							<Col md={4}>
 								<Field type="select" label="Способ построения маршрута"
-											 options={ROUTE_TYPE_OPTIONS}
+											 options={this.state.ROUTE_TYPE_OPTIONS}
 											 value={state.type}
 											 clearable={false}
+                       disabled={this.state.routeTypeDisabled}
 											 onChange={this.handleTypeChange.bind(this)}/>
 								<Field type="select" label="Подразделение"
 											 options={COMPANY_ELEMENTS}

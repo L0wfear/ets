@@ -70,7 +70,7 @@ class RoutesList extends Component {
 			name: '',
 			polys: {}, // geozonePolys
 			object_list: [],
-			type: 'vector',
+			type: '',
 		};
 
 		this.setState({

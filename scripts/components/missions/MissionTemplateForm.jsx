@@ -15,6 +15,39 @@ class MissionTemplateForm extends MissionForm {
 		super(props);
 	}
 
+	async componentDidMount() {
+		const mission = this.props.formState;
+		const { flux } = this.context;
+		let objectsActions = flux.getActions('objects')
+		let technicalOperationsActions = flux.getActions('technical_operation');
+		let routesActions = flux.getActions('routes');
+		let missionsActions = flux.getActions('missions');
+
+		let { selectedRoute } = this.state;
+		let { technicalOperationsList, routesList, carsList } = this.props;
+
+		if (!isEmpty(mission.route_id)) {
+			let route = await routesActions.getRouteById(mission.route_id, true);
+					selectedRoute = route.result.length ? route.result[0] : null;
+		}
+
+		if (!isEmpty(mission.technical_operation_id)){
+			routesList = await routesActions.getRoutesByTechnicalOperation(mission.technical_operation_id);
+		}
+
+		technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsByCarId(mission.car_id);
+		let carsListResponse = await objectsActions.getCars(mission.technical_operation_id);
+		carsList = carsListResponse.result;
+		missionsActions.getMissionSources();
+
+		this.setState({
+			carsList,
+			technicalOperationsList,
+			routesList,
+			selectedRoute,
+		});
+	}
+
 	render() {
 
 		let state = this.props.formState;
@@ -45,7 +78,7 @@ class MissionTemplateForm extends MissionForm {
 			<Modal {...this.props} bsSize="large">
 
 				<Modal.Header closeButton>
-	          <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
+					<Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
 				</Modal.Header>
 
 	      <Modal.Body>
@@ -53,18 +86,18 @@ class MissionTemplateForm extends MissionForm {
 					<Row>
 						<Col md={6}>
 							<Field type="select" label="Технологическая операция" error={errors['technical_operation_id']}
-											options={TECH_OPERATIONS}
-											disabled={!!state.route_id}
-											value={state.technical_operation_id}
-											onChange={this.handleTechnicalOperationChange.bind(this)}/>
+									options={TECH_OPERATIONS}
+									disabled={!!state.route_id}
+									value={state.technical_operation_id}
+									onChange={this.handleTechnicalOperationChange.bind(this)}/>
 						</Col>
 
 				 		<Col md={6}>
 							<Field type="select" label="Транспортное средство" error={errors['car_id']}
-											options={CARS}
-											disabled={isEmpty(state.technical_operation_id)}
-											value={state.car_id}
-											onChange={this.handleChange.bind(this, 'car_id')}/>
+									options={CARS}
+									disabled={isEmpty(state.technical_operation_id)}
+									value={state.car_id}
+									onChange={this.handleChange.bind(this, 'car_id')}/>
 				   	</Col>
 					</Row>
 

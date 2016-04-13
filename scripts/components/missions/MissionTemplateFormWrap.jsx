@@ -50,9 +50,9 @@ class MissionFormWrap extends FormWrap {
 		}
 	}
 
-	async handleFormSubmit(formState) {
+	async handleFormSubmit() {
 		const { flux } = this.context;
-
+    let { formState } = this.state;
     if (this.props.formType === "ViewForm") {
       if (isEmpty(formState.id)) {
         try {

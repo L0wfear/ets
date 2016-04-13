@@ -172,9 +172,10 @@ class MissionTemplatesJournal extends ElementsList {
 
 	copyElement() {
 		let copiedElement = _.cloneDeep(this.state.selectedElement);
+		delete copiedElement.id;
 		this.setState({
 			showForm: true,
-			selectedRoute: _.cloneDeep(copiedElement)
+			selectedElement: _.cloneDeep(copiedElement)
 		});
 	}
 

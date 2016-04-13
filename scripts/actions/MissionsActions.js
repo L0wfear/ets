@@ -135,6 +135,8 @@ export default class MissionsActions extends Actions {
 
   createMissionTemplate(missionTemplate) {
     const payload = _.clone(missionTemplate);
+    delete payload.company_id;
+    delete payload.number;
     return MissionTemplateService.post(payload);
   }
 

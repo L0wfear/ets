@@ -24,6 +24,8 @@ import TechnicalOperationsActions from '../actions/TechnicalOperationsActions.js
 import CompanyStructureActions from '../actions/CompanyStructureActions.js';
 import ReportsActions from '../actions/ReportsActions.js';
 import ReportsStore from '../stores/ReportsStore.js';
+import SettingsStore from '../stores/SettingsStore.js';
+import SettingsActions from '../actions/SettingsActions.js';
 
 
 
@@ -48,6 +50,7 @@ export default class Flux extends Flummox {
     this.createActions('technical_operation', TechnicalOperationsActions, args);
     this.createActions('company-structure', CompanyStructureActions, args);
     this.createActions('reports', ReportsActions, args);
+    this.createActions('settings', SettingsActions, args);
 
 
     this.createStore('points', PointsStore, this);
@@ -62,6 +65,7 @@ export default class Flux extends Flummox {
     this.createStore('routes', RoutesStore, this);
     this.createStore('dashboard', DashboardStore, this);
     this.createStore('reports', ReportsStore, this);
+    this.createStore('settings', SettingsStore, this);
 
   }
 

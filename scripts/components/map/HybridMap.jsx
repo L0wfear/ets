@@ -1,6 +1,6 @@
 import React from 'react';
 import Map from './Map.jsx';
-import CarMarker from '../markers/car/Marker.js';
+import CarMarker from '../markers/car/CarMarker.js';
 import { projectToPixel } from './MskAdapter.js';
 import { getTrack } from '../../adapter.js';
 import { getStartOfToday, makeDate, makeTime } from 'utils/dates';

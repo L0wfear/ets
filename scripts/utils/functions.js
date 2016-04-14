@@ -30,7 +30,7 @@ export function printData(blob) {
   iframe.onload = () => {
     iframe.focus();
     iframe.contentWindow.print();
+    window.URL.revokeObjectURL(url);
   }
 
-  window.URL.revokeObjectURL(url);
 }

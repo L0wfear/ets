@@ -42,6 +42,7 @@ class RouteFormWrap extends FormWrap {
 			formState.technical_operation_id = this.state.formState.technical_operation_id;
 			formState.type = this.state.formState.type;
 			formState.polys = formState.type === 'simple_dt' ? _.cloneDeep(this.props.dtPolys) : _.cloneDeep(this.props.odhPolys);
+			formState.object_list = [];
       this.setState({formState});
 		} else {
       this.setState({formState: {}});

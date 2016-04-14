@@ -178,7 +178,6 @@ class RouteCreating extends Component {
 			const Map = this.props.manual ? DrawMap : PolyMap;
 			let odh_list = route.odh_list || route.object_list.filter(o => o.type);
 			let odh_fail_list = route.odh_fail_list || [];
-			console.log(this.props.odhPolys);
 			let ODHS = _.map(this.props.odhPolys, (v, k) => ({label: v.name, value: k}) );
 			let DTS = _.map(this.props.dtPolys, (v, k) => ({label: v.name, value: k}) );
 
@@ -206,14 +205,14 @@ class RouteCreating extends Component {
 									<Field type="select" label="Список выбранных ОДХ"
 												 multi={true}
 												 options={ODHS}
-												 value={route.object_list.map(o => o.object_id.toString())}
+												 value={route.object_list.map(o => o.object_id).join(',')}
 												 onChange={this.onGeozoneSelectChange.bind(this, 'odh')}/>
 								</Div>
 								<Div hidden={route.type !== 'simple_dt'} className="odh-container">
 									<Field type="select" label="Список выбранных ДТ"
 												 multi={true}
 												 options={DTS}
-												 value={route.object_list.map(o => o.object_id.toString())}
+												 value={route.object_list.map(o => o.object_id).join(',')}
 												 onChange={this.onGeozoneSelectChange.bind(this, 'dt')}/>
 								</Div>
 		          	<ODHList odh_list={odh_list} odh_fail_list={odh_fail_list} checkRoute={route.type === 'vector' ? this.checkRoute.bind(this) : null}/>

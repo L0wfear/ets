@@ -26,28 +26,27 @@ class RouteForm extends Form {
 		this.props.resetState();
 	}
 
-	setRouteTypeOptionsBasedOnTechnicalOperation(technical_operation_id, technicalOperationsList = this.props.technicalOperationsList) {
+	setRouteTypeOptionsBasedOnTechnicalOperation(technical_operation_id, technicalOperationsList = this.props.technicalOperationsList, routeTypeValue = null) {
 		const technicalOperation =_.find(technicalOperationsList, (o) => {
       return o.id === technical_operation_id;
     });
 
 		let route_type_options = [];
-    let routeTypeValue = '';
 
     technicalOperation.objects.forEach(function(obj) {
       switch (obj.name) {
         case 'ОДХ':
           route_type_options.push({value: 'vector', label: 'Вручную'});
           route_type_options.push({value: 'simple', label: 'Выбор из ОДХ'});
-          routeTypeValue = 'simple';
+          !routeTypeValue ? routeTypeValue = 'simple' : null;
           break;
         case 'ПН':
           route_type_options.push({value: 'points', label: 'Выбор пунктов назначения'});
-          routeTypeValue !== 'simple' ? routeTypeValue = 'points': null;
+          !routeTypeValue && routeTypeValue !== 'simple' ? routeTypeValue = 'points': null;
           break;
         case 'ДТ':
           route_type_options.push({value: 'simple_dt', label: 'Выбор из ДТ'});
-          routeTypeValue !== 'simple' ? routeTypeValue = 'simple_dt': null;
+          !routeTypeValue && routeTypeValue !== 'simple' ? routeTypeValue = 'simple_dt': null;
           break;
       }
     });
@@ -69,7 +68,7 @@ class RouteForm extends Form {
 		let companyStructureList = await flux.getActions('company-structure').getLinearCompanyStructureForUser();
 
 		if (this.props.formState.technical_operation_id) {
-			this.setRouteTypeOptionsBasedOnTechnicalOperation(this.props.formState.technical_operation_id, technicalOperationsList);
+			this.setRouteTypeOptionsBasedOnTechnicalOperation(this.props.formState.technical_operation_id, technicalOperationsList, this.props.formState.type);
 		}
 
 		this.setState({companyStructureList});

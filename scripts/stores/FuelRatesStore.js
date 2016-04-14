@@ -32,7 +32,7 @@ class FuelRatesStore extends Store {
   }
 
   getFuelOperationById(id) {
-    return _.find(this.state.operations, c => c.ID === id) || {};
+    return _.find(this.state.operations, c => c.id === id) || {};
   }
 
 

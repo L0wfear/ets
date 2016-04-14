@@ -23,7 +23,7 @@ let tableMeta = {
 			type: 'number',
       filter: {
         type: 'select',
-        labelFunction: (operation_id) => getFuelOperationById(operation_id).NAME,
+        labelFunction: (operation_id) => getFuelOperationById(operation_id).name,
       }
 		},
 		{
@@ -50,7 +50,7 @@ let tableMeta = {
 let FuelRatesTable = (props) => {
 
     const renderers = {
-      operation_id: ({data}) => <div>{getFuelOperationById(data).NAME}</div>,
+      operation_id: ({data}) => <div>{getFuelOperationById(data).name}</div>,
       order_date: ({data}) => <div>{moment(data).format(global.APP_DATE_FORMAT)}</div>
     };
 

@@ -7,7 +7,7 @@ import Sidebar from './Sidebar.jsx';
 import WeatherWidget from '../map/WeatherWidget.jsx';
 import { FluxContext } from '../decorators/index.js';
 
-const MAP_INITIAL_CENTER = [-399.43090337943863, -8521.192605428025];
+const MAP_INITIAL_CENTER = [6000,0]//[-199.43090337943863, -8521.192605428025];
 const MAP_INITIAL_ZOOM = 3;
 
 @FluxContext

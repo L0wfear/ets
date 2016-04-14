@@ -9,7 +9,7 @@ export function isEmpty(value) {
 }
 
 export function saveData(blob, fileName) {
-  console.log('wwqwwqqwwq')
+
   let a = document.createElement("a");
   document.body.appendChild(a);
   a.style = "display: none";
@@ -21,8 +21,7 @@ export function saveData(blob, fileName) {
 }
 
 export function printData(blob) {
-  let url = window.URL.createObjectURL(blob);
-
+  let url = window.URL.createObjectURL(new Blob([blob], {type:'application/pdf'}));
   let iframe = document.createElement("iframe");
   document.body.appendChild(iframe);
   iframe.style = "display: none";
@@ -31,6 +30,5 @@ export function printData(blob) {
     iframe.focus();
     iframe.contentWindow.print();
     window.URL.revokeObjectURL(url);
-  }
-
+  };
 }

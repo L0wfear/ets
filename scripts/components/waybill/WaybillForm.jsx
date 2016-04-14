@@ -77,7 +77,7 @@ class WaybillForm extends Form {
 			flux.getActions('fuel-rates').getFuelRatesByCarModel(car_model_id).then(r => {
 				const fuelRates = r.result.map( ({operation_id, rate_on_date}) => ({operation_id, rate_on_date}) );
 				flux.getActions('fuel-rates').getFuelOperations().then(fuelOperations => {
-					const operations =  _.filter(fuelOperations.result, op => _.find(fuelRates, fr => fr.operation_id === op.ID));
+					const operations =  _.filter(fuelOperations.result, op => _.find(fuelRates, fr => fr.operation_id === op.id));
 					this.setState({fuelRates, operations, fuel_correction_rate});
 				});
 			});

@@ -127,7 +127,7 @@ export default class Taxes extends Component {
 
   componentWillReceiveProps(props) {
     let { operations, fuelRates } = props;
-    operations = operations.map( ({ID, NAME}) => ({value: ID, label: NAME}));
+    operations = operations.map( ({id, name}) => ({value: id, label: name}));
 
     this.setState({operations, fuelRates});
   }

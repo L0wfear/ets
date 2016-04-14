@@ -37,14 +37,6 @@ class EmployeeForm extends Form {
     const POSITION_ELEMENTS = positionsList.map(el => ({value: el.id, label: el.position}));
 
     console.log('form state is ', state);
-		console.log(state.active);
-
-    let valueActive;
-    if (state.active != undefined) {
-      valueActive = state.active ?  1 :  0;
-    }
-
-		if (state.active === undefined) valueActive = 1;
 
     const IS_CREATING = !!!state.id;
 
@@ -108,7 +100,7 @@ class EmployeeForm extends Form {
 							</Div>
 							<Div>
 								<label>Состояние</label>
-								<EtsSelect options={DRIVER_STATES} value={valueActive} onChange={this.handleChange.bind(this, 'active')}/>
+								<EtsSelect options={DRIVER_STATES} value={state.active} onChange={this.handleChange.bind(this, 'active')}/>
 							</Div>
 						</Col>
 

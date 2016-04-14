@@ -10,6 +10,9 @@ class EmployeeFormWrap extends FormWrap {
 	constructor(props, context) {
 		super(props);
 
+		this.defaultElement = {
+			active: 1,
+		};
 		this.createAction = context.flux.getActions('employees').createEmployee;
 		this.updateAction = context.flux.getActions('employees').updateEmployee;
 	}

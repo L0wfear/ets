@@ -82,35 +82,43 @@ class FormWrap extends React.Component {
   async handleFormSubmit() {
     const uniqueField = this.uniqueField || 'id';
     const { formState } = this.state;
+    let result = null;
 
-    try {
+    // понять, обновлять форму или создавать новую
+    // можно по отсутствию уникального идентификатора
+    if (isEmpty(formState[uniqueField])) {
 
-      // понять, обновлять форму или создавать новую
-      // можно по отсутствию уникального идентификатора
-      if (isEmpty(formState[uniqueField])) {
-
-        if (typeof this.createAction === 'function') {
-          await this.createAction(formState);
-        } else {
-          throw new Error('Create action called but not specified');
+      if (typeof this.createAction === 'function') {
+        try {
+          result = await this.createAction(formState);
+        } catch (e) {
+          console.warn(e);
+          return;
         }
-
       } else {
-
-        if (typeof this.updateAction === 'function') {
-          await this.updateAction(formState);
-        } else {
-          throw new Error('Update action called but not specified');
-        }
-
+        throw new Error('Create action called but not specified');
       }
+
+    } else {
+
+      if (typeof this.updateAction === 'function') {
+        try {
+          result = await this.updateAction(formState);
+        } catch (e) {
+          console.warn(e);
+          return;
+        }
+      } else {
+        throw new Error('Update action called but not specified');
+      }
+      // в случае успешного обновления выдаем всплывающее окно
       global.NOTIFICATION_SYSTEM._addNotification(saveDataSuccessNotification);
-    } catch (e) {
-      return;
+
     }
 
+    // закрываем форму только в случае отсутствия исключительных ситуаций
     if (typeof this.props.onFormHide === 'function') {
-      this.props.onFormHide();
+      this.props.onFormHide(result);
     }
   }
 

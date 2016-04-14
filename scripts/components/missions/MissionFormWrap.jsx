@@ -9,10 +9,14 @@ import { missionSchema } from '../models/MissionModel.js';
 
 class MissionFormWrap extends FormWrap {
 
-	constructor(props) {
+	constructor(props, context) {
 		super(props);
 
 		this.schema = missionSchema;
+		this.createAction = (formState) => {
+			return context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill);
+		};
+		this.updateAction = context.flux.getActions('missions').updateMission;
 	}
 
 	componentWillReceiveProps(props) {
@@ -40,22 +44,6 @@ class MissionFormWrap extends FormWrap {
 			});
 		});
 		global.map.render();
-	}
-
-	async handleFormSubmit() {
-		const { flux } = this.context;
-		let { formState } = this.state;
-		let result;
-
-		if (isEmpty(formState.id)) {
-			result = await flux.getActions('missions').createMission(formState, !this.props.fromWaybill);
-		} else {
-			await flux.getActions('missions').updateMission(formState);
-		}
-
-		this.props.onFormHide(result);
-
-		return;
 	}
 
 	render() {

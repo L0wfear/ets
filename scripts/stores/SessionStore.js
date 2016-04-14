@@ -27,7 +27,7 @@ class User {
   }
 
   getCompanyMapConfig = () => {
-    if (typeof this.map_config !== 'undefined' && this.map_config.zoom && this.map_config.coordinates) {
+    if (this.map_config && this.map_config.zoom && this.map_config.coordinates) {
       return this.map_config;
     } else {
       return {

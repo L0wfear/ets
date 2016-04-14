@@ -11,7 +11,8 @@ const MAP_INITIAL_CENTER = [-399.43090337943863, -8521.192605428025];
 const MAP_INITIAL_ZOOM = 3;
 
 class User {
-  constructor(user) {
+  constructor(user = {}) {
+    if (user === null) user = {};
     this.company_id = user.company_id;
     this.company_name = user.company_name;
     this.first_name = user.first_name;
@@ -48,12 +49,12 @@ class SessionStore extends Store {
     this.register(sessionActions.logout, this.handleLogout);
 
 
-    let storedSession, currentUser;
+    let storedSession;
+    let currentUser;
 
     try {
       storedSession = JSON.parse(localStorage.getItem(SESSION_KEY));
       currentUser = JSON.parse(localStorage.getItem('current_user'));
-
 
       //pointsActions.setFilter({owner: [currentUser.company_id]});
     } catch (e) {

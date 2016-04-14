@@ -35,10 +35,10 @@ export const polyStyles = {
     }),
     'info': new ol.style.Style({
          fill: new ol.style.Fill({
-              color: '#6a9e56'
+              color: '#e67e22'
          }),
          stroke: new ol.style.Stroke({
-              color: '#6a9e56',
+              color: '#e67e22',
               width: 1
          })
       })

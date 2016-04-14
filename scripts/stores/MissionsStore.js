@@ -142,6 +142,7 @@ export function getDefaultDutyMissionsCreationTemplate() {
 export function getDefaultMissionTemplate() {
   return {
     description: "",
+    passes_count: 1
   };
 }
 
@@ -149,6 +150,7 @@ export function getDefaultMissionsCreationTemplate() {
   return {
     date_start: getToday9am(),
     date_end: getTomorrow9am(),
-    mission_source_id: 4
+    mission_source_id: 4,
+    passes_count: 1
   };
 }

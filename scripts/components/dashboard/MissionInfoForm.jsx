@@ -14,8 +14,8 @@ import MissionReportByODH from '../reports/MissionReportByODH.jsx';
 import MissionReportByDT from '../reports/MissionReportByDT.jsx';
 import MissionReportByPoints from '../reports/MissionReportByPoints.jsx';
 
-const MAP_INITIAL_CENTER = [-6240.212982145856, 9358.852595460314];
-const MAP_INITIAL_ZOOM = 6;
+// const MAP_INITIAL_CENTER = [-6040.212982145856, 10358.852595460314];
+// const MAP_INITIAL_ZOOM = 6;
 
 export class MissionInfoForm extends Form {
 
@@ -99,7 +99,6 @@ export class MissionInfoForm extends Form {
 		});
     if (!this.props.formState.car_gov_number) return <div/>;
 		let title = `Информация о задании. Гос. номер ТС: ${this.props.formState.car_gov_number}`;
-		console.log(polys);
 
 		return (
 			<Modal {...this.props} bsSize="large" className="mission-info-modal">
@@ -113,6 +112,7 @@ export class MissionInfoForm extends Form {
           <Row>
 
             <Col md={6} style={{height: 400}}>
+
               <FluxComponent connectToStores={{
                 points: store => ({
                   points: store.state.points,
@@ -121,12 +121,14 @@ export class MissionInfoForm extends Form {
 			          settings: store => ({
 			            showPlates: store.state.showPlates,
 									showTrack: store.state.showTrack
-			          })
+			          }),
+								session: store => ({
+									zoom: store.getCurrentUser().getCompanyMapConfig().zoom,
+									center: store.getCurrentUser().getCompanyMapConfig().coordinates,
+								})
               }}>
 
-                <Map zoom={MAP_INITIAL_ZOOM}
-                     center={MAP_INITIAL_CENTER}
-                     polys={polys}
+                <Map polys={polys}
 										 selectedObjects={this.state.selectedObjects}
 										 selectedPoly={geozonePolys[this.state.selectedODHId]}
 										 selectedPoint={null}

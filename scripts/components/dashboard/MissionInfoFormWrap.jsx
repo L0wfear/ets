@@ -9,6 +9,10 @@ export default class MissionInfoFormWrap extends FormWrap {
     super(props);
   }
 
+  handleFormSubmit() {
+    this.props.onFormHide();
+  }
+
 	render() {
 
 		return 	<Div hidden={!this.props.showForm}>

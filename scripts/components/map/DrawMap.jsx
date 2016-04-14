@@ -5,6 +5,8 @@ import { polyState, polyStyles } from '../../constants/polygons.js';
 import { vectorStyles, vectorState, getVectorArrowStyle } from '../../constants/vectors.js';
 import Div from '../ui/Div.jsx';
 
+
+// Компонент используется для отрисовки векторов и точек на карте
 export default class DrawMap extends PolyMap {
   constructor(props) {
     super(props);
@@ -64,7 +66,7 @@ export default class DrawMap extends PolyMap {
 
   onDrawEnd(ev) {
     let { feature } = ev;
-    let id = this.props.object_list.length || 0;
+    let id = this.props.object_list.length > 0 ? this.props.object_list.length : 0;
     const geometry = feature.getGeometry();
     geometry.forEachSegment((start, end, index) => {
       let featureSegment = new ol.Feature({
@@ -101,10 +103,7 @@ export default class DrawMap extends PolyMap {
       let feature = new ol.Feature({
         geometry: new ol.geom.Point(object.coordinates),
         id: index,
-        // state: object.state,
-        // distance: object.distance,
       });
-      //feature.setStyle(getVectorArrowStyle(feature));
 
       vectorSource.addFeature(feature);
     });
@@ -124,7 +123,8 @@ export default class DrawMap extends PolyMap {
   renderRoute(object_list = []) {
     let map = this.map;
     let vectorSource = new ol.source.Vector({wrapX: false});
-
+    object_list = _.uniq(object_list, o => o.id);
+    //console.log(object_list.length, _.uniq(object_list, o => o.id).length);
     _.each(object_list, (object, index) => {
       let start = [object.begin.x_msk, object.begin.y_msk];
       let end = [object.end.x_msk, object.end.y_msk];
@@ -152,19 +152,14 @@ export default class DrawMap extends PolyMap {
 
   componentDidMount() {
     let map = this.map;
-    //let triggerRenderFn = this.triggerRender.bind(this);
     let container = this.refs.container;
 
     map.setTarget(container);
-    //map.on('postcompose', triggerRenderFn);
-
-    this.popup = new ol.Overlay.Popup();
-    map.addOverlay(this.popup);
 
     this.enableInteractions();
 
     this.renderPolygons(this.props.polys);
-    //this.renderRoute(this.props.object_list);
+
     if (this.props.objectsType === 'vector') {
       this.renderRoute(this.props.object_list);
     }
@@ -175,7 +170,6 @@ export default class DrawMap extends PolyMap {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.polys !== undefined) {
-      this.popup.hide();
       this.renderPolygons(nextProps.polys);
     }
     if (nextProps.object_list !== undefined) {

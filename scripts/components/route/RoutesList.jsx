@@ -68,7 +68,7 @@ class RoutesList extends Component {
 
 		let newR = {
 			name: '',
-			polys: {}, // geozonePolys
+			polys: {},
 			object_list: [],
 			type: '',
 		};

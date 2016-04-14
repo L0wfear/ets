@@ -70,7 +70,7 @@ class RouteCreating extends Component {
 
 		onDrawFeatureClick(feature, ev, map) {
 
-			let {id, state, distance, begin, end} = feature.getProperties();
+			let {id, state} = feature.getProperties();
 
 			const { object_list } = this.props.route;
 			const objectIndex = _.findIndex(object_list, o => o.id === id);
@@ -100,7 +100,7 @@ class RouteCreating extends Component {
 			let routeHasObject = _.find(object_list, o => {
 				return o.begin.x_msk === coordinates[0][0] && o.begin.y_msk === coordinates[0][1];
 			});
-			
+
 			if (!routeHasObject) {
 				object_list.push({
 					begin: {x_msk: coordinates[0][0], y_msk: coordinates[0][1]},
@@ -178,6 +178,7 @@ class RouteCreating extends Component {
 			const Map = this.props.manual ? DrawMap : PolyMap;
 			let odh_list = route.odh_list || route.object_list.filter(o => o.type);
 			let odh_fail_list = route.odh_fail_list || [];
+			console.log(this.props.odhPolys);
 			let ODHS = _.map(this.props.odhPolys, (v, k) => ({label: v.name, value: k}) );
 			let DTS = _.map(this.props.dtPolys, (v, k) => ({label: v.name, value: k}) );
 
@@ -205,14 +206,14 @@ class RouteCreating extends Component {
 									<Field type="select" label="Список выбранных ОДХ"
 												 multi={true}
 												 options={ODHS}
-												 value={route.object_list.map(o => o.object_id).join(',')}
+												 value={route.object_list.map(o => o.object_id.toString())}
 												 onChange={this.onGeozoneSelectChange.bind(this, 'odh')}/>
 								</Div>
 								<Div hidden={route.type !== 'simple_dt'} className="odh-container">
 									<Field type="select" label="Список выбранных ДТ"
 												 multi={true}
 												 options={DTS}
-												 value={route.object_list.map(o => o.object_id).join(',')}
+												 value={route.object_list.map(o => o.object_id.toString())}
 												 onChange={this.onGeozoneSelectChange.bind(this, 'dt')}/>
 								</Div>
 		          	<ODHList odh_list={odh_list} odh_fail_list={odh_fail_list} checkRoute={route.type === 'vector' ? this.checkRoute.bind(this) : null}/>

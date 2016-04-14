@@ -5,10 +5,22 @@ import DrawMap from '../map/DrawMap.jsx';
 import ODHList from './ODHList.jsx';
 import Div from '../ui/Div.jsx';
 
-const MAP_INITIAL_CENTER = [-399.43090337943863, -8521.192605428025];
-const MAP_INITIAL_ZOOM = 3;
-
 export default class RouteInfo extends Component {
+
+		static contextTypes = {
+			flux: React.PropTypes.object,
+		}
+
+		constructor(props, context) {
+			super(props);
+
+			let sessionStore = context.flux.getStore('session');
+
+			this.state = {
+				zoom: sessionStore.getCurrentUser().getCompanyMapConfig().zoom,
+				center: sessionStore.getCurrentUser().getCompanyMapConfig().coordinates,
+			}
+		}
 
 		onFeatureClick(feature, ev, map) {
 			let {id, name, state} = feature.getProperties();
@@ -46,8 +58,8 @@ export default class RouteInfo extends Component {
 							<Col md={8}>
 								<Div className="route-creating">
 									<Map onFeatureClick={this.onFeatureClick.bind(this)}
-											 zoom={MAP_INITIAL_ZOOM}
-				            	 center={MAP_INITIAL_CENTER}
+											 zoom={this.state.zoom}
+				            	 center={this.state.center}
 				            	 polys={polys}
 											 manual={manual}/>
 								</Div>

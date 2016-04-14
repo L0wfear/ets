@@ -13,16 +13,24 @@ import {vectorStyles, vectorState} from '../../constants/vectors.js';
 
 import _ from 'lodash';
 
-const MAP_INITIAL_CENTER = [-399.43090337943863, -8521.192605428025];
-const MAP_INITIAL_ZOOM = 3;
+
+//[16580.674245486127, 1249.8835250755087]
+
+
+// const MAP_INITIAL_CENTER = [16580.674245486127, 1249.8835250755087];
+// const MAP_INITIAL_ZOOM = 6;
 
 class RouteCreating extends Component {
 
-		constructor(props) {
+		constructor(props, context) {
 			super(props);
 
+			let sessionStore = context.flux.getStore('session');
+
 			this.state = {
-				routeName: ''
+				routeName: '',
+				zoom: sessionStore.getCurrentUser().getCompanyMapConfig().zoom,
+				center: sessionStore.getCurrentUser().getCompanyMapConfig().coordinates,
 			};
 
 		}
@@ -191,8 +199,8 @@ class RouteCreating extends Component {
 											 onDrawFeatureAdd={this.onDrawFeatureAdd.bind(this)}
 											 onDrawFeatureClick={this.onDrawFeatureClick.bind(this)}
 											 removeLastDrawFeature={this.removeLastDrawFeature.bind(this)}
-											 zoom={MAP_INITIAL_ZOOM}
-				            	 center={MAP_INITIAL_CENTER}
+											 zoom={this.state.zoom}
+				            	 center={this.state.center}
 											 object_list={route.object_list}
 				            	 polys={route.polys}
 											 objectsType={route.type}

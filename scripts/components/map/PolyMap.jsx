@@ -105,10 +105,6 @@ export default class OpenLayersMap extends Component {
 
     global.olmap = this.map;
 
-    this.map.getView().setZoom(6);
-    this.map.getView().setCenter([-5441.16131979791, 10146.687775846918])
-
-
     this.init();
   }
 
@@ -200,6 +196,8 @@ export default class OpenLayersMap extends Component {
     let pixel = ev.pixel; // координаты клика во viewport
     let coordinate = ev.coordinate;
     let cancelSelection = false;
+
+    //console.log(coordinate)
 
     map.forEachFeatureAtPixel(pixel, (feature, layer) =>  {
       this.props.onFeatureClick(feature, ev, this);

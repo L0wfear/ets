@@ -27,7 +27,7 @@ class MissionFormWrap extends FormWrap {
 			let formErrors = this.validate(mission, {});
 			this.setState({
 				formState: mission,
-				canSave: !(!!_.filter(formErrors)).length,
+				canSave: ! !!_.filter(this.validate(mission, {})).length,
 				formErrors
 			});
 		}
@@ -56,23 +56,6 @@ class MissionFormWrap extends FormWrap {
 		return formErrors;
 	}
 
-	handleFormStateChange(field, e) {
-		const value = e !== undefined && e !== null && !!e.target ? e.target.value : e;
-		console.info('Form changed', field, value);
-		let { formErrors } = this.state;
-		let formState = _.cloneDeep(this.state.formState);
-		let newState = {};
-		formState[field] = value;
-
-		formErrors = this.validate(formState, formErrors);
-		newState.canSave = _(formErrors).map(v => !!v).filter(e => e === true).value().length === 0;
-
-		newState.formState = formState;
-		newState.formErrors = formErrors;
-
-
-		this.setState(newState);
-	}
 
 	handlePrint(event, print_form_type = 1) {
 		let f = this.state.formState;

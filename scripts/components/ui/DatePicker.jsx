@@ -42,7 +42,8 @@ export default class DatePicker extends Component {
 
     //return //<input disabled={this.props.disabled}/>
     return (
-      <DateTimePicker onChange={this.props.onChange}
+      <DateTimePicker
+          onChange={this.props.onChange}
           format={DATE_FORMAT}
           timeFormat={TIME_FORMAT}
           culture="ru-RU"

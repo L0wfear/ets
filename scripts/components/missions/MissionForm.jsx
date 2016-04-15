@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, FormControls, Button, DropdownButton, Dropdown, Glyphicon, MenuItem, Input } from 'react-bootstrap';
-import Datepicker from '../ui/DatePicker.jsx';
 import RouteInfo from '../route/RouteInfo.jsx';
 import RouteFormWrap from '../route/RouteFormWrap.jsx';
 import ODHList from '../route/ODHList.jsx';
@@ -221,21 +220,33 @@ export class MissionForm extends Form {
 						</Col>
 
 				 		<Col md={3}>
-				   		<label>Время выполнения</label>
-				 			<Div>c <Datepicker date={state.date_start}
-									onChange={this.handleChange.bind(this, 'date_start')}
-									disabled={IS_DISPLAY}
-									min={this.props.fromWaybill && this.props.waybillStartDate ? this.props.waybillStartDate : null}
-									max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}/>
+				   		<label>Время выполнения:</label>
+				 			<Div>
+								<Field
+										type="date"
+										label="с"
+										error={errors['date_start']}
+										date={state.date_start}
+										disabled={IS_DISPLAY}
+										min={this.props.fromWaybill && this.props.waybillStartDate ? this.props.waybillStartDate : null}
+										max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
+										onChange={this.handleChange.bind(this, 'date_start')}
+									/>
 							</Div>
 				   	</Col>
 				   	<Col md={3}>
               <label style={{minHeight: 15}}></label>
-				 			<Div>по <Datepicker date={state.date_end}
-									onChange={this.handleChange.bind(this, 'date_end')}
-									disabled={IS_DISPLAY}
-									min={state.date_start}
-									max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}/>
+				 			<Div>
+								<Field
+										type="date"
+										label="по"
+										error={errors['date_end']}
+										date={state.date_end}
+										disabled={IS_DISPLAY}
+										min={state.date_start}
+										max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
+										onChange={this.handleChange.bind(this, 'date_end')}
+										/>
 							</Div>
 				   	</Col>
 					</Row>

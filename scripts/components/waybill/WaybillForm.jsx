@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
 import EtsSelect from '../ui/EtsSelect.jsx';
-import Datepicker from '../ui/DatePicker.jsx';
 import Field from '../ui/Field.jsx';
 import Div from '../ui/Div.jsx';
 import moment from 'moment';
@@ -235,31 +234,66 @@ class WaybillForm extends Form {
 						</Col>
 
 						<Div hidden={!(IS_CREATING || IS_POST_CREATING)}>
-					 		<Col md={3}>
-					   		<label>Выезд план</label>
-					 			<Datepicker date={state.plan_departure_date} onChange={this.handleChange.bind(this, 'plan_departure_date')}/>
-					   	</Col>
-					 	</Div>
+							<Col md={3}>
+								<Field
+										type="date"
+										label="Выезд план."
+										error={errors['plan_departure_date']}
+										date={state.plan_departure_date}
+										onChange={this.handleChange.bind(this, 'plan_departure_date')}
+								/>
+							</Col>
+						</Div>
 						<Div hidden={!(IS_CREATING || IS_POST_CREATING)}>
-					   	<Col md={3}>
-					 			<label>Возвращение план</label>
-					 			<Datepicker date={state.plan_arrival_date} min={state.plan_departure_date} onChange={this.handleChange.bind(this, 'plan_arrival_date')}/>
-					   	</Col>
+							<Col md={3}>
+								<Field
+										type="date"
+										label="Возвращение план."
+										error={errors['plan_arrival_date']}
+										date={state.plan_arrival_date}
+										min={state.plan_departure_date}
+										onChange={this.handleChange.bind(this, 'plan_arrival_date')}
+								/>
+							</Col>
 						</Div>
 
 						<Div hidden={!(IS_CLOSING || IS_DISPLAY)}>
-					   	<Col md={3}>
-								<label>Выезд план</label>
-					 			<Datepicker date={state.plan_departure_date} disabled={true} onChange={() => true}/>
-					   		<label>Выезд факт</label>
-					 			<Datepicker date={state.fact_departure_date} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'fact_departure_date')}/>
-					   	</Col>
+							<Col md={3}>
+								<Field
+										type="date"
+										label="Выезд план."
+										error={errors['plan_departure_date']}
+										date={state.plan_departure_date}
+										disabled={true}
+										onChange={() => true}
+								/>
+								<Field
+										type="date"
+										label="Выезд факт."
+										error={errors['fact_departure_date']}
+										date={state.fact_departure_date}
+										disabled={IS_DISPLAY}
+										onChange={this.handleChange.bind(this, 'fact_departure_date')}
+								/>
+							</Col>
 					  	<Col md={3}>
-								<label>Возвращение план</label>
-					 			<Datepicker date={state.plan_arrival_date} disabled={true} onChange={() => true}/>
-					 			<label>Возвращение факт</label>
-					 			<Datepicker date={state.fact_arrival_date} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'fact_arrival_date')}/>
-					   	</Col>
+								<Field
+										type="date"
+										label="Возвращение план."
+										error={errors['plan_arrival_date']}
+										date={state.plan_arrival_date}
+										disabled={true}
+										onChange={() => true}
+								/>
+								<Field
+										type="date"
+										label="Возвращение факт."
+										error={errors['fact_arrival_date']}
+										date={state.fact_arrival_date}
+										disabled={IS_DISPLAY}
+										onChange={this.handleChange.bind(this, 'fact_arrival_date')}
+								/>
+							</Col>
 						</Div>
 					</Row>
 

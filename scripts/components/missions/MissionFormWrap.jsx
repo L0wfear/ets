@@ -1,8 +1,10 @@
 import React from 'react';
 import _ from 'lodash';
+import moment from 'moment';
 import Div from '../ui/Div.jsx';
 import MissionForm from './MissionForm.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';
+import { validateRow } from 'validate/validateRow.js';
 import { getDefaultMission } from '../../stores/MissionsStore.js';
 import { isEmpty, saveData, printData } from 'utils/functions';
 import { missionSchema } from '../models/MissionModel.js';
@@ -29,6 +31,47 @@ class MissionFormWrap extends FormWrap {
 				formErrors
 			});
 		}
+	}
+
+	validate(formState, errors) {
+		let formErrors = _.clone(errors);
+		_.each(missionSchema.properties, prop => {
+			formErrors[prop.key] = validateRow(prop, formState[prop.key]);
+		});
+
+		formErrors.date_start = ''
+		formErrors.date_end = ''
+
+		if (formState.date_start && formState.date_end) {
+			if (moment(formState.date_end).toDate().getTime() < moment(formState.date_start).toDate().getTime()) {
+				formErrors.date_end = `Неправильно указана дата`;
+			}
+		} else if (formState.date_end) {
+			formErrors.date_start = `Дата должна быть указана`;
+		} else if (formState.date_start) {
+			formErrors.date_end = `Дата должна быть указана`;
+		} else {
+			formErrors.date_start = `Даты должны быть указаны`;
+		}
+		return formErrors;
+	}
+
+	handleFormStateChange(field, e) {
+		const value = e !== undefined && e !== null && !!e.target ? e.target.value : e;
+		console.info('Form changed', field, value);
+		let { formErrors } = this.state;
+		let formState = _.cloneDeep(this.state.formState);
+		let newState = {};
+		formState[field] = value;
+
+		formErrors = this.validate(formState, formErrors);
+		newState.canSave = _(formErrors).map(v => !!v).filter(e => e === true).value().length === 0;
+
+		newState.formState = formState;
+		newState.formErrors = formErrors;
+
+
+		this.setState(newState);
 	}
 
 	handlePrint(event, print_form_type = 1) {
@@ -58,12 +101,13 @@ class MissionFormWrap extends FormWrap {
 
 		return (
 			<Div hidden={!this.props.showForm}>
-				<MissionForm formState = {this.state.formState}
+				<MissionForm
+						formState = {this.state.formState}
 						onSubmit={this.handleFormSubmit.bind(this)}
 						handleFormChange={this.handleFormStateChange.bind(this)}
 						handlePrint={this.handlePrint.bind(this)}
 						{...props}
-										 {...this.state}/>
+						{...this.state}/>
 			</Div>
 		)
 

@@ -4,6 +4,7 @@ import Table from '../ui/table/DataTable.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
 import CarFormWrap from './CarFormWrap.jsx';
 import ElementsList from '../ElementsList.jsx';
+import { waybillStatusLabelFunction } from 'utils/labelFunctions';
 
 let getCondition = (data) => {
 	return parseInt(data) > 0 ? 'Исправно' : 'Неисправно';
@@ -49,6 +50,7 @@ let tableMeta = {
 			type: 'text',
 			filter: {
 				type: 'select',
+        labelFunction: (i) => i > 0 ? 'Исправно' : 'Неисправно'
 			}
 		},
 		{

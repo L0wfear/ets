@@ -53,6 +53,7 @@ class RouteForm extends Form {
 
     this.setState({'ROUTE_TYPE_OPTIONS': route_type_options, 'routeTypeDisabled': routeTypeValue ? false : true});
     this.props.handleFormChange('type', routeTypeValue);
+		this.props.resetState();
 	}
 
   handleTechChange(t, v) {
@@ -90,7 +91,7 @@ class RouteForm extends Form {
 			<Modal {...this.props} bsSize="large">
 
 				<Modal.Header closeButton>
-	          <Modal.Title id="contained-modal-title-lg">Создание нового маршрута</Modal.Title>
+					<Modal.Title id="contained-modal-title-lg">Создание нового маршрута</Modal.Title>
 				</Modal.Header>
 
 	      <Modal.Body>
@@ -103,28 +104,28 @@ class RouteForm extends Form {
 						<Div hidden={this.props.forceTechnicalOperation}>
 							<Col md={4}>
 								<Field type="select" label="Технологическая операция"
-											 options={TECH_OPERATIONS}
-											 value={state.technical_operation_id}
-											 onChange={this.handleTechChange.bind(this, 'technical_operation_id')}
-											 disabled={this.props.fromMission}
-                       clearable={false}
-											 error={errors['technical_operation_id']}/>
+										options={TECH_OPERATIONS}
+										value={state.technical_operation_id}
+										onChange={this.handleTechChange.bind(this, 'technical_operation_id')}
+										disabled={this.props.fromMission}
+										clearable={false}
+										error={errors['technical_operation_id']}/>
 	            </Col>
 						</Div>
 
 						<Div hidden={this.props.forceRouteType}>
 							<Col md={4}>
 								<Field type="select" label="Способ построения маршрута"
-											 options={this.state.ROUTE_TYPE_OPTIONS}
-											 value={state.type}
-											 clearable={false}
-                       disabled={this.state.routeTypeDisabled}
-											 onChange={this.handleTypeChange.bind(this)}/>
+										options={this.state.ROUTE_TYPE_OPTIONS}
+										value={state.type}
+										clearable={false}
+										disabled={this.state.routeTypeDisabled}
+										onChange={this.handleTypeChange.bind(this)}/>
 								<Field type="select" label="Подразделение"
-											 options={COMPANY_ELEMENTS}
-											 value={state.company_structure_id}
-											 clearable={false}
-											 onChange={this.handleChange.bind(this, 'company_structure_id')}/>
+										options={COMPANY_ELEMENTS}
+										value={state.company_structure_id}
+										clearable={false}
+										onChange={this.handleChange.bind(this, 'company_structure_id')}/>
 	            </Col>
 						</Div>
           </Row>

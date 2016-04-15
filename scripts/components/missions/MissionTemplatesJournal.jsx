@@ -136,6 +136,8 @@ class MissionTemplatesJournal extends ElementsList {
   }
 
 	onFormHide(clearCheckedMissions) {
+    // снова подтягиваем все актуальные машины
+    window.__ETS_CONTAINER__.flux.getActions('objects').getCars();
 		this.setState({
 			showForm: false,
 			selectedElement: null,
@@ -185,7 +187,7 @@ class MissionTemplatesJournal extends ElementsList {
     if (Object.keys(this.state.checkedMissions).length !== 0) {
       if (!confirm('Вы уверены, что хотите удалить выбранные элементы?')) return;
 
-      _.forEach(this.state.checkedMissions, function(mission) {
+      _.forEach(this.state.checkedMissions, mission => {
         //console.dir(mission);
         this.removeElementAction(mission.id);
       });

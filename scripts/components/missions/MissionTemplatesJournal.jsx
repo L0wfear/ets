@@ -187,7 +187,7 @@ class MissionTemplatesJournal extends ElementsList {
     if (Object.keys(this.state.checkedMissions).length !== 0) {
       if (!confirm('Вы уверены, что хотите удалить выбранные элементы?')) return;
 
-      _.forEach(this.state.checkedMissions, function(mission) {
+      _.forEach(this.state.checkedMissions, mission => {
         //console.dir(mission);
         this.removeElementAction(mission.id);
       });

@@ -54,7 +54,7 @@ try {
       config.backend = PROTO + '//ods.mos.ru/ssd/ets-test/services';
       break;
     case 'development':
-      config.backend = PROTO + '//ods.mos.ru/ssd/ets-test/services';
+      config.backend = PROTO + '//ods.mos.ru/ssd/ets-study/services';
       break;
   }
 } catch (e) {

@@ -117,8 +117,8 @@ class ObjectsStore extends Store {
     this.setState({modelsList, modelsIndex});
   }
 
-  handleGetSpecialModels(specialModelsList) {
-    this.setState({specialModelsList});
+  handleGetSpecialModels({result}) {
+    this.setState({specialModelsList: result});
   }
 
   handleGetTypes(typesList) {

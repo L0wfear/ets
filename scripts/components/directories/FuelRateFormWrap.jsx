@@ -16,7 +16,7 @@ export default class FuelRateFormWrap extends FormWrap {
 			//summer_rate: '',
 			//winter_rate: '',
 			car_model_id: null,
-			special_model_id: null
+			car_special_model_id: null
 		};
 		this.createAction = context.flux.getActions('fuel-rates').createFuelRate;
 		this.updateAction = context.flux.getActions('fuel-rates').updateFuelRate;

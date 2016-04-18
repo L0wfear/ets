@@ -32,7 +32,7 @@ export function employeeFIOLabelFunction(employeeId, fullFlag = false) {
 	const { flux } = window.__ETS_CONTAINER__;
   const employeesStore = flux.getStore('employees');
 	const employee = employeesStore.getEmployeeById(employeeId);
-  if (!employee) return '';
+  if (!employee || !employee.first_name || !employee.middle_name || !employee.last_name) return '';
   let result = employee.last_name + ' ';
 	result += fullFlag ? `${employee.first_name} ${employee.middle_name}` : `${employee.first_name[0]}. ${employee.middle_name[0]}.`;
 

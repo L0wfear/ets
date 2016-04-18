@@ -57,6 +57,7 @@ class MissionFormWrap extends FormWrap {
 	}
 
 
+
 	handlePrint(event, print_form_type = 1) {
 		let f = this.state.formState;
 		const { flux } = window.__ETS_CONTAINER__;

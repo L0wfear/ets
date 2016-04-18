@@ -23,8 +23,9 @@ class FuelRateForm extends Form {
 	render() {
 
 		let state = this.props.formState;
-		const { modelsList = [], operations = [] } = this.props;
+		const { modelsList = [], operations = [], specialModelsList = [] } = this.props;
 		const MODELS = modelsList.map( m => ({value: m.id, label: m.title}));
+		const SPECIALMODELS = specialModelsList.map( m => ({value: m.id, label: m.name}));
 		const OPERATIONS = operations.map(op => ({value: op.id, label: op.name}));
 
     console.log('form state is ', state);
@@ -59,6 +60,10 @@ class FuelRateForm extends Form {
 	            <Div>
 	  	      		<label>Марка шасси</label>
 	              <EtsSelect options={MODELS} value={state.car_model_id} onChange={this.handleChange.bind(this, 'car_model_id')}/>
+	            </Div>
+							<Div>
+	  	      		<label>Модель ТС</label>
+	              <EtsSelect options={SPECIALMODELS} value={state.special_model_id} onChange={this.handleChange.bind(this, 'special_model_id')}/>
 	            </Div>
 		      	</Col>
 

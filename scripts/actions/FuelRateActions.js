@@ -24,9 +24,13 @@ export default class FuelRateActions extends Actions {
 
   updateFuelRate(newFuelRate) {
     const payload = _.clone(newFuelRate);
+    if (payload.special_model_id && !payload.car_special_model_id)
+    payload.car_special_model_id = payload.special_model_id;
     delete payload.rate_on_date;
     delete payload.season;
     delete payload.special_model_name;
+    delete payload.special_model_id;
+    delete payload.car_model_name;
 
     if (typeof payload.summer_rate === 'string' && payload.summer_rate.length === 0) {
       payload.summer_rate = null;
@@ -76,7 +80,7 @@ export default class FuelRateActions extends Actions {
     delete payload.car_model_name;
     delete payload.car_special_model_name;
     delete payload.special_model_name;
-    
+
     payload.order_date = createValidDate(payload.order_date);
     return FuelConsumptionRateService.post(payload);
   }

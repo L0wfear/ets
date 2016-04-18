@@ -48,7 +48,7 @@ class FuelRateForm extends Form {
 	            </Div>
 	            <Div>
 	  	      		<label>Операция</label>
-	              <EtsSelect options={OPERATIONS} value={state.operation_id} onChange={this.handleChange.bind(this, 'operation_id')}/>
+	              <EtsSelect options={OPERATIONS} clearable={false} value={state.operation_id} onChange={this.handleChange.bind(this, 'operation_id')}/>
 	            </Div>
 	            <Div>
 	  	      		<label>Норма для летнего периода</label>
@@ -60,11 +60,11 @@ class FuelRateForm extends Form {
 	            </Div>
 	            <Div>
 	  	      		<label>Марка шасси</label>
-	              <EtsSelect options={MODELS} value={state.car_model_id} onChange={this.handleChange.bind(this, 'car_model_id')}/>
+	              <EtsSelect options={MODELS} clearable={false} value={state.car_model_id} onChange={this.handleChange.bind(this, 'car_model_id')}/>
 	            </Div>
 							<Div>
 	  	      		<label>Модель ТС</label>
-	              <EtsSelect options={SPECIALMODELS} value={state.car_special_model_id} onChange={this.handleChange.bind(this, 'car_special_model_id')}/>
+	              <EtsSelect options={SPECIALMODELS} clearable={false} value={state.car_special_model_id || state.special_model_id} onChange={this.handleChange.bind(this, 'car_special_model_id')}/>
 	            </Div>
 		      	</Col>
 

@@ -187,6 +187,17 @@ export class MissionsJournal extends ElementsList {
     }
   }
 
+  checkDisabled() {
+    if (Object.keys(this.state.checkedMissions).length !== 0) return false;
+
+    if (this.state.selectedElement === null) {
+      return true;
+    }
+    else {
+      return this.state.selectedElement.status !== 'assigned';
+    }
+  }
+
 	completeMission() {
 		let mission = _.cloneDeep(this.state.selectedElement);
 		mission.status = 'complete';
@@ -220,6 +231,45 @@ export class MissionsJournal extends ElementsList {
     this.setState({checkedMissions}, this.stateChangeCallback.bind(this));
   }
 
+  completeCheckedMissions() {
+    if (Object.keys(this.state.checkedMissions).length !== 0) {
+      _.forEach(this.state.checkedMissions, (mission) => {
+        if (mission.status === 'assigned') {
+          let updatedMission = _.cloneDeep(mission);
+          updatedMission.status = 'complete';
+          this.context.flux.getActions('missions').updateMission(updatedMission);
+        }
+      });
+      this.setState({checkedMissions: {}});
+      global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Отметить как "Выполненые" можно только назначенные задания!'));
+    }
+    else {
+      this.completeMission();
+    }
+  }
+
+  rejectCheckedMissions() {
+    if (Object.keys(this.state.checkedMissions).length !== 0) {
+      _.forEach(this.state.checkedMissions, (mission) => {
+        if (mission.status === 'assigned') {
+          console.log('mission', mission);
+          let reason = prompt(`Введите причину для задания №${mission.number}`, '');
+          if (reason) {
+            let updatedMission = _.cloneDeep(mission);
+            updatedMission.status = 'fail';
+            updatedMission.fail_reason = reason;
+            this.context.flux.getActions('missions').updateMission(updatedMission);
+          }
+        }
+      });
+      this.setState({checkedMissions: {}});
+      global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Отметить как "Невыполненые" можно только назначенные задания!'));
+    }
+    else {
+      this.rejectMission();
+    }
+  }
+
   removeCheckedElements() {
     if (typeof this.removeElementAction !== 'function') return;
 
@@ -243,7 +293,7 @@ export class MissionsJournal extends ElementsList {
 				checkedMissions: {},
 				selectedElement: null,
 			});
-			
+
     } else {
       this.removeElement();
     }
@@ -255,8 +305,8 @@ export class MissionsJournal extends ElementsList {
 		return (
 			<div className="ets-page-wrap">
 				<MissionsTable data={missionsList} onAllRowsChecked={this.checkAll.bind(this)} onRowChecked={this.checkMission.bind(this)} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} checked={this.state.checkedMissions} selectField={'id'}{...this.props}>
-					<Button bsSize="small" onClick={this.completeMission.bind(this)} disabled={this.state.selectedElement === null || this.state.selectedElement.status !== 'assigned'}><Glyphicon glyph="ok" /> Отметка о выполнении</Button>
-					<Button bsSize="small" onClick={this.rejectMission.bind(this)} disabled={this.state.selectedElement === null || this.state.selectedElement.status !== 'assigned'}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</Button>
+					<Button bsSize="small" onClick={this.completeCheckedMissions.bind(this)} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</Button>
+					<Button bsSize="small" onClick={this.rejectCheckedMissions.bind(this)} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</Button>
 					<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Создать задание</Button>
 					<Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="search" /> Просмотреть</Button>
 					<Button bsSize="small" disabled={this.removeDisabled()} onClick={this.removeCheckedElements.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>

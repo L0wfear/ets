@@ -194,6 +194,17 @@ export class DutyMissionsJournal extends ElementsList {
     }
   }
 
+  checkDisabled() {
+    if (Object.keys(this.state.checkedDutyMissions).length !== 0) return false;
+
+    if (this.state.selectedElement === null) {
+      return true;
+    }
+    else {
+      return this.state.selectedElement.status !== 'assigned';
+    }
+  }
+
 	completeMission() {
 		let mission = _.cloneDeep(this.state.selectedElement);
 		mission.status = 'complete';
@@ -225,6 +236,44 @@ export class DutyMissionsJournal extends ElementsList {
     checkedDutyMissions = state ? rows : {};
 
     this.setState({checkedDutyMissions}, this.stateChangeCallback.bind(this));
+  }
+
+  completeCheckedMissions() {
+    if (Object.keys(this.state.checkedDutyMissions).length !== 0) {
+      _.forEach(this.state.checkedDutyMissions, (mission) => {
+        if (mission.status === 'assigned') {
+          let updatedMission = _.cloneDeep(mission);
+          updatedMission.status = 'complete';
+          this.context.flux.getActions('missions').updateDutyMission(updatedMission);
+        }
+      });
+      this.setState({checkedDutyMissions: {}});
+      global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Отметить как "Выполненые" можно только назначенные наряд-задания!'));
+    }
+    else {
+      this.completeMission();
+    }
+  }
+
+  rejectCheckedMissions() {
+    if (Object.keys(this.state.checkedDutyMissions).length !== 0) {
+      _.forEach(this.state.checkedDutyMissions, (mission) => {
+        if (mission.status === 'assigned') {
+          let reason = prompt(`Введите причину для наряд-задания №${mission.number}`, '');
+          if (reason) {
+            let updatedMission = _.cloneDeep(mission);
+            updatedMission.status = 'fail';
+            updatedMission.comment = reason;
+            this.context.flux.getActions('missions').updateDutyMission(updatedMission);
+          }
+        }
+      });
+      this.setState({checkedDutyMissions: {}});
+      global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Отметить как "Невыполненые" можно только назначенные наряд-задания!'));
+    }
+    else {
+      this.rejectMission();
+    }
   }
 
   removeCheckedElements() {
@@ -260,8 +309,8 @@ export class DutyMissionsJournal extends ElementsList {
 		return (
 			<div className="ets-page-wrap">
 				<DutyMissionsTable data={dutyMissionsList} onAllRowsChecked={this.checkAll.bind(this)} onRowChecked={this.checkDutyMission.bind(this)} onRowSelected={this.selectElement.bind(this)} checked={this.state.checkedDutyMissions} selected={this.state.selectedElement} selectField={'id'}{...this.props}>
-					<Button bsSize="small" onClick={this.completeMission.bind(this)} disabled={this.state.selectedElement === null || this.state.selectedElement.status !== 'assigned'}><Glyphicon glyph="ok" /> Отметка о выполнении</Button>
-					<Button bsSize="small" onClick={this.rejectMission.bind(this)} disabled={this.state.selectedElement === null || this.state.selectedElement.status !== 'assigned'}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</Button>
+					<Button bsSize="small" onClick={this.completeCheckedMissions.bind(this)} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</Button>
+					<Button bsSize="small" onClick={this.rejectCheckedMissions.bind(this)} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</Button>
 					<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Создать задание</Button>
 					<Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="search" /> Просмотреть</Button>
 					<Button bsSize="small" disabled={this.removeDisabled()} onClick={this.removeCheckedElements.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>

@@ -35,6 +35,35 @@ export default class TechnicalOperationsActions extends Actions {
     return response.result || [];
   }
 
+  async getTechnicalOperationsByObjectsType(type) {
+
+    let objects = [];
+    let getObjectByTypeName = (type) => {
+      switch (type) {
+        case 'simple_dt':
+          objects.push({name: 'ОДХ', id: 1})
+          break;
+        case 'simple':
+          objects.push({name: 'ДТ', id: 2})
+          break;
+        case 'points':
+          objects.push({name: 'ПН', id: 3})
+          break;
+      }
+    }
+
+    getObjectByTypeName(type);
+
+    const payload = {};
+
+    if (objects.length) {
+      payload.objects = JSON.stringify(objects);
+    }
+
+    let response = await TechnicalOperationService.get(payload);
+    return response.result || [];
+  }
+
   updateTechnicalOperation(data) {
     const payload = _.cloneDeep(data);
     payload.needs_brigade = !!payload.needs_brigade;

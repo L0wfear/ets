@@ -84,6 +84,7 @@ class RoutesList extends Component {
 		let copiedRoute = _.cloneDeep(this.state.selectedRoute);
 		delete copiedRoute.name;
 		delete copiedRoute.id;
+		copiedRoute.copy = true;
 		this.setState({
 			showForm: true,
 			selectedRoute: _.cloneDeep(copiedRoute)

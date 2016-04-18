@@ -16,7 +16,8 @@ import { FaxogrammService,
          ODHService,
          DTService,
          PositionService,
-         ModelsService } from 'api/Services';
+         ModelsService,
+         SpecialModelService } from 'api/Services';
 
 export default class ObjectsActions extends Actions {
 
@@ -32,6 +33,10 @@ export default class ObjectsActions extends Actions {
 
   getModels() {
     return ModelsService.get();
+  }
+
+  getSpecialModels() {
+    return SpecialModelService.get();
   }
 
   getCustomers() {

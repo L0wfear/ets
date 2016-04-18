@@ -18,6 +18,7 @@ class FuelRateForm extends Form {
 	componentDidMount() {
 		this.context.flux.getActions('fuel-rates').getFuelOperations();
 		this.context.flux.getActions('objects').getModels();
+		this.context.flux.getActions('objects').getSpecialModels();
 	}
 
 	render() {
@@ -63,7 +64,7 @@ class FuelRateForm extends Form {
 	            </Div>
 							<Div>
 	  	      		<label>Модель ТС</label>
-	              <EtsSelect options={SPECIALMODELS} value={state.special_model_id} onChange={this.handleChange.bind(this, 'special_model_id')}/>
+	              <EtsSelect options={SPECIALMODELS} value={state.car_special_model_id} onChange={this.handleChange.bind(this, 'car_special_model_id')}/>
 	            </Div>
 		      	</Col>
 

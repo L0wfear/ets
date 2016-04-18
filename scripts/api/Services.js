@@ -11,6 +11,7 @@ export const GeozoneService = new APIService('/geozone/', useMocks);
 export const DashboardService = new APIService('/dashboard/', useMocks);
 export const FaxogrammService = new APIService('/faxogramm/', useMocks);
 export const ModelsService = new APIService('/models/', useMocks);
+export const SpecialModelService = new APIService('/special_model/', useMocks);
 export const TypesService = new APIService('/types/', useMocks);
 export const EmployeeService = new APIService('/employee/', useMocks);
 export const FuelTypeService = new APIService('/fuel_type/', useMocks);

@@ -72,7 +72,7 @@ export default class MainPage extends React.Component {
           </NavDropdown>
 
           <NavDropdown title="Отчеты" id="nav-dropdown-3">
-            <MenuItem active={path === '/odh-reports'} href="#/odh-reports">ОДХ</MenuItem>
+            {/*<MenuItem active={path === '/odh-reports'} href="#/odh-reports">ОДХ</MenuItem>*/}
             <MenuItem active={path === '/route-reports'} href="#/route-reports">Покрытие ОДХ маршрутами</MenuItem>
             <MenuItem active={path === '/mission-reports'} href="#/mission-reports">Прохождение заданий</MenuItem>
             <MenuItem active={path === '/daily-cleaning-reports'} href="#/daily-cleaning-reports">Статус по уборке проезжей части</MenuItem>

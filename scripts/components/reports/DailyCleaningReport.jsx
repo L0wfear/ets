@@ -1,20 +1,9 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import Table from '../ui/table/DataTable.jsx';
-
-let getStatusLabel = (status) => status === 'fail' ? 'Нет' : 'Да';
-let getTypeLabel = (type) => type === 'distance' ? 'Протяженность' : type;
-
-let statuses = {
-  'full_traveled': 'Пройдено полностью',
-  'not_traveled': 'Не пройдено',
-  'traveled_less_than_half': 'Пройдено меньше половины',
-  'traveled_more_than_half': 'Пройдено больше половины'
-}
+import { getPeriodicReportStatusLabel } from 'utils/labelFunctions';
 
 let getTableMeta = (props) => {
-
-  console.log(props)
 
   let secondCol = {};
 
@@ -23,9 +12,7 @@ let getTableMeta = (props) => {
       name: 'geozone_element_area',
       caption: 'Площадь проезжей части',
       type: 'number',
-      filter: {
-        type: 'select'
-      }
+      filter: false
     }
   }
 
@@ -34,9 +21,7 @@ let getTableMeta = (props) => {
       name: 'geozone_element_area',
       caption: 'Площадь тротуаров с мехуборкой',
       type: 'number',
-      filter: {
-        type: 'select'
-      }
+      filter: false
     }
   }
 
@@ -45,14 +30,9 @@ let getTableMeta = (props) => {
       name: 'geozone_element_area',
       caption: 'Механизированная площадь двора',
       type: 'number',
-      filter: {
-        type: 'select'
-      }
+      filter: false
     }
   }
-
-  console.log(secondCol)
-
 
   let tableMeta = {
   	cols: [
@@ -69,17 +49,13 @@ let getTableMeta = (props) => {
         name: 'car_type_list',
         caption: 'Тип техники',
         type: 'string',
-        filter: {
-          type: 'select',
-        }
+        filter: false
       },
       {
         name: 'gov_number_list',
         caption: 'Список ТС',
         type: 'string',
-        filter: {
-          type: 'select',
-        }
+        filter: false
       },
   		{
   			name: 'planned_passed_count',
@@ -93,9 +69,7 @@ let getTableMeta = (props) => {
   			name: 'fact_traveled_area',
   			caption: 'Пройденная площадь',
   			type: 'string',
-  			filter: {
-  				type: 'select',
-  			}
+  			filter: false
   		},
   		{
   			name: 'status',
@@ -103,6 +77,7 @@ let getTableMeta = (props) => {
   			type: 'string',
   			filter: {
   				type: 'select',
+          labelFunction: getPeriodicReportStatusLabel
   			},
   		},
   	]
@@ -118,7 +93,7 @@ let MissionReportTable = (props) => {
 
 	const renderers = {
     car_type_list: ({data}) => <div>{data.map(el => el.name).join(', ')}</div>,
-    status: ({data}) => <div>{statuses[data] || ''}</div>,
+    status: ({data}) => <div>{getPeriodicReportStatusLabel(data) || ''}</div>,
     gov_number_list: ({data}) => <div>{data && data.join ? data.join(', ') : ''}</div>,
 	};
 
@@ -148,9 +123,7 @@ class MissionReport extends Component {
 	async componentDidMount() {
 		const { flux } = this.context;
     try {
-      console.log(this.props.routeParams);
   		let result = await flux.getActions('reports').getDailyCleaningReportById(this.props.routeParams.id);
-      //let element = result.result[0].element;
       let selectedReportData = result.result[0].result.rows;
       this.setState({selectedReportData});
     } catch (e) {

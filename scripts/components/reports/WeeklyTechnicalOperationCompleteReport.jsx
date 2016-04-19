@@ -2,19 +2,7 @@ import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import Table from '../ui/table/DataTable.jsx';
 
-let getStatusLabel = (status) => status === 'fail' ? 'Нет' : 'Да';
-let getTypeLabel = (type) => type === 'distance' ? 'Протяженность' : type;
-
-let statuses = {
-  'full_traveled': 'Пройдено полностью',
-  'not_traveled': 'Не пройдено',
-  'traveled_less_than_half': 'Пройдено меньше половины',
-  'traveled_more_than_half': 'Пройдено больше половины'
-}
-
 let getTableMeta = (props) => {
-
-  console.log(props)
 
   let secondCol = {};
 
@@ -23,9 +11,7 @@ let getTableMeta = (props) => {
       name: 'geozone_element_area',
       caption: 'Площадь проезжей части, м2',
       type: 'number',
-      filter: {
-        type: 'select'
-      }
+      filter: false
     }
   }
 
@@ -34,9 +20,7 @@ let getTableMeta = (props) => {
       name: 'geozone_element_area',
       caption: 'Площадь тротуаров с мехуборкой, м2',
       type: 'number',
-      filter: {
-        type: 'select'
-      }
+      filter: false
     }
   }
 
@@ -45,14 +29,9 @@ let getTableMeta = (props) => {
       name: 'geozone_element_area',
       caption: 'Механизированная площадь двора, м2',
       type: 'number',
-      filter: {
-        type: 'select'
-      }
+      filter: false
     }
   }
-
-  console.log(secondCol)
-
 
   let tableMeta = {
   	cols: [
@@ -76,18 +55,14 @@ let getTableMeta = (props) => {
         name: 'gov_number_list',
         caption: 'Список ТС',
         type: 'string',
-        filter: {
-          type: 'select',
-        }
+  			filter: false
       },
       secondCol,
   		{
   			name: 'fact_traveled_area',
   			caption: 'Пройденная площадь',
   			type: 'string',
-  			filter: {
-  				type: 'select',
-  			}
+  			filter: false
   		},
   		{
   			name: 'fact_finished_technical_operation_count',
@@ -107,8 +82,6 @@ let getTableMeta = (props) => {
 let MissionReportTable = (props) => {
 
 	const renderers = {
-    car_type_list: ({data}) => <div>{data.map(el => el.name).join(', ')}</div>,
-    status: ({data}) => <div>{statuses[data] || ''}</div>,
     gov_number_list: ({data}) => <div>{data && data.join ? data.join(', ') : ''}</div>,
 	};
 
@@ -138,7 +111,6 @@ class MissionReport extends Component {
 	async componentDidMount() {
 		const { flux } = this.context;
     try {
-      console.log(this.props.routeParams);
   		let result = await flux.getActions('reports').getWeeklyTechnicalOperationCompleteReportById(this.props.routeParams.id);
       let selectedReportData = result.result[0].result.rows;
       this.setState({selectedReportData});

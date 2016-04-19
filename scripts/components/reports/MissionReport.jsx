@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import Table from '../ui/table/DataTable.jsx';
 
-let getStatusLabel = (status) => status === 'fail' ? 'Нет' : 'Да';
-let getTypeLabel = (type) => type === 'distance' ? 'Протяженность' : type;
-
 let tableMeta = {
 	cols: [
     {
@@ -59,17 +56,13 @@ let tableMeta = {
 			name: 'route_traveled_percentage',
 			caption: 'Пройдено',
 			type: 'string',
-			filter: {
-				type: 'select',
-			},
+			filter: false
 		},
 		{
 			name: 'route_left_percentage',
 			caption: 'Осталось',
 			type: 'string',
-			filter: {
-				type: 'select',
-			},
+			filter: false
 		},
 	]
 }

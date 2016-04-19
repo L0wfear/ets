@@ -7,6 +7,7 @@ import Div from '../ui/Div.jsx';
 import Datepicker from '../ui/DatePicker.jsx';
 import { getFormattedDateTimeSeconds, getDatesByShift } from 'utils/dates';
 import { getReportNotReadyNotification } from 'utils/notifications';
+import { datePickerFunction, getReportStatusLabel, getGeozoneTypeLabel} from 'utils/labelFunctions';
 
 
 let FaxogrammsDatepicker = (props) => {
@@ -61,6 +62,7 @@ let tableMeta = {
 			type: 'text',
 			filter: {
 				type: 'select',
+				labelFunction: getReportStatusLabel
 			}
 		},
 		{
@@ -83,25 +85,19 @@ let tableMeta = {
 			name: 'timestamp_create',
 			caption: 'Дата создания',
 			type: 'number',
-			filter: {
-				type: 'select',
-			},
+			filter: false
 		},
 		{
 			name: 'timestamp_process_begin',
 			caption: 'Дата начала обработки',
 			type: 'number',
-			filter: {
-				type: 'select',
-			},
+			filter: false
 		},
 		{
 			name: 'timestamp_process_end',
 			caption: 'Дата завершения обработки',
 			type: 'number',
-			filter: {
-				type: 'select',
-			},
+			filter: false
 		},
 	]
 }
@@ -109,7 +105,7 @@ let tableMeta = {
 let CarsTable = (props) => {
 
 	const renderers = {
-    status: ({data}) => <div>{data ? getStatusLabel(data) : ''}</div>,
+    status: ({data}) => <div>{data ? getReportStatusLabel(data) : ''}</div>,
     timestamp_create: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
     timestamp_process_begin: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
     timestamp_process_end: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,

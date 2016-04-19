@@ -2,19 +2,24 @@ import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import Table from '../ui/table/DataTable.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
-
-// function createFakeMissingCarData(types, el, i) {
-// 	el.type = _.find(types, t => t.id === el.type_id).title;
-// 	return el;
-// }
-
-let getStatusLabel = (status) => status === 'fail' ? 'Нет' : 'Да';
-let getTypeLabel = (type) => type === 'distance' ? 'Протяженность' : type;
+import EtsSelect from '../ui/EtsSelect.jsx';
+import Div from '../ui/Div.jsx';
+import { getFormattedDateTimeSeconds } from 'utils/dates';
+import { datePickerFunction, getReportStatusLabel } from 'utils/labelFunctions';
 
 let tableMeta = {
 	cols: [
+    {
+      name: 'status',
+      caption: 'Статус',
+      type: 'text',
+      filter: {
+        type: 'select',
+        labelFunction: getReportStatusLabel
+      }
+    },
 		{
-			name: 'technical_operation_name',
+			name: 'operation_name',
 			caption: 'Тех. операция',
 			type: 'text',
 			filter: {
@@ -22,93 +27,79 @@ let tableMeta = {
 			}
 		},
 		{
-			name: 'odh_name',
-			caption: 'ОДХ',
-			type: 'text',
+			name: 'timestamp_create',
+			caption: 'Дата создания',
+			type: 'number',
 			filter: {
-				type: 'select',
-			}
+        type: 'date_create',
+        labelFunction: datePickerFunction
+			},
 		},
 		{
-			name: 'status',
-			caption: 'Покрытие',
-			type: 'text',
+			name: 'timestamp_process_begin',
+			caption: 'Дата начала обработки',
+			type: 'number',
 			filter: {
-				type: 'select',
-			}
+        type: 'date_create',
+        labelFunction: datePickerFunction
+			},
 		},
 		{
-			name: 'distance',
-			caption: 'Протяженность ОДХ',
+			name: 'timestamp_process_end',
+			caption: 'Дата завершения обработки',
+			type: 'number',
+			filter: {
+        type: 'date_create',
+        labelFunction: datePickerFunction
+			},
+		},
+		{
+			name: 'odh_fail_count',
+			caption: 'Кол-во непокрытых',
 			type: 'number',
 			filter: {
 				type: 'select',
 			}
 		},
 		{
-			name: 'traveled',
-			caption: 'Длина маршрута',
+			name: 'odh_total_count',
+			caption: 'Общее кол-во',
 			type: 'number',
 			filter: {
 				type: 'select',
 			},
 		},
 		{
-			name: 'delta',
-			caption: 'Дельта',
+			name: 'odh_success_count',
+			caption: 'Кол-во покрытых',
 			type: 'number',
 			filter: {
 				type: 'select',
 			},
 		},
-		{
-			name: 'gutters_length',
-			caption: 'Длина лотков',
-			type: 'number',
-			filter: {
-				type: 'select',
-			},
-		},
-		{
-			name: 'footway_length',
-			caption: 'Длина тротуаров',
-			type: 'number',
-			filter: {
-				type: 'select',
-			},
-		},
-		{
-			name: 'technical_operation_considered_length',
-			caption: 'Тип проверки',
-			type: 'text',
-			filter: {
-				type: 'select',
-			},
-		}
 	]
 }
 
 let CarsTable = (props) => {
 
 	const renderers = {
-		delta: ({data}) => <div>{data ? parseFloat(data).toFixed(2) : ''}</div>,
-  	traveled: ({data}) => <div>{data ? parseFloat(data).toFixed(2) : ''}</div>,
-  	footway_length: ({data}) => <div>{data ? parseFloat(data).toFixed(2) : ''}</div>,
-  	gutters_length: ({data}) => <div>{data ? parseFloat(data).toFixed(2) : ''}</div>,
-    status: ({data}) => <div>{data ? getStatusLabel(data) : ''}</div>,
-    technical_operation_considered_length: ({data}) => <div>{data ? getTypeLabel(data) : ''}</div>,
+    status: ({data}) => <div>{data ? getReportStatusLabel(data) : ''}</div>,
+    timestamp_create: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
+    timestamp_process_begin: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
+    timestamp_process_end: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
 	};
 
 	return <Table title='Покрытие ОДХ маршрутами'
-								tableMeta={tableMeta}
-								results={props.data}
-								renderers={renderers}
-								{...props} />
+      tableMeta={tableMeta}
+      results={props.data}
+      renderers={renderers}
+      initialSort={tableMeta.cols[2].name}
+      initialSortAscending={false}
+      {...props} />
 
 }
 
-class RouteReports extends Component {
-
+class RouteLaunchReports extends Component {
 
 	constructor(props) {
 		super(props);
@@ -116,21 +107,42 @@ class RouteReports extends Component {
 		this.state = {
 			selectedCar: null,
 			showForm: false,
+      generationType: 'null',
 		};
 	}
 
 	componentDidMount() {
 		const { flux } = this.context;
-		flux.getActions('routes').getRouteReportById(this.props.routeParams.id);
+		flux.getActions('routes').getRouteReports();
+		flux.getActions('technical_operation').getTechnicalOperations();
 	}
+
+  onReportSelect({props}) {
+    const id = props.data.id;
+    this.context.history.pushState(null, '/route-report/'+id);
+  }
+
+  handleGenerationTypeChange(type) {
+    this.setState({generationType: type});
+  }
+  createRouteReport() {
+    console.log(` creating report`, this.state.generationType);
+		const { flux } = this.context;
+		flux.getActions('routes').createRouteReport(this.state.generationType);
+  }
 
 	render() {
 
-		const { selectedReportData = [] } = this.props;
+		const { reportsList = [], technicalOperationsList = [] } = this.props;
+    const TECH_OPERATIONS = [{value: 'null', label: 'Все операции'}].concat(technicalOperationsList.map(({id, name}) => ({value: id, label: name})));
 
 		return (
 			<div className="ets-page-wrap">
-				<CarsTable data={selectedReportData} >
+        <Div className="route-report-panel">
+          <Button bsSize="small" onClick={this.createRouteReport.bind(this)}>Сформировать отчет</Button>
+          <EtsSelect options={TECH_OPERATIONS} value={this.state.generationType} onChange={this.handleGenerationTypeChange.bind(this)} />
+        </Div>
+				<CarsTable data={reportsList} onRowSelected={this.onReportSelect.bind(this)}>
 				</CarsTable>
 			</div>
 		);
@@ -138,9 +150,9 @@ class RouteReports extends Component {
 	}
 }
 
-RouteReports.contextTypes = {
+RouteLaunchReports.contextTypes = {
   history: React.PropTypes.object,
 	flux: React.PropTypes.object,
 };
 
-export default connectToStores(RouteReports, ['routes']);
+export default connectToStores(RouteLaunchReports, ['routes', 'objects']);

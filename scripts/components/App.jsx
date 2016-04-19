@@ -27,13 +27,13 @@ import MissionReport from './reports/MissionReport.jsx';
 import MissionReportByODH from './reports/MissionReportByODH.jsx';
 import MissionReportByDT from './reports/MissionReportByDT.jsx';
 import MissionReportByPoints from './reports/MissionReportByPoints.jsx';
-import RouteLaunchReports from './reports/RouteLaunchReports.jsx';
+import RouteReports from './reports/RouteReports.jsx';
+import RouteReport from './reports/RouteReport.jsx';
 import DailyCleaningReports from './reports/DailyCleaningReports.jsx';
 import DailyCleaningReport from './reports/DailyCleaningReport.jsx';
 import WeeklyTechnicalOperationCompleteReports from './reports/WeeklyTechnicalOperationCompleteReports.jsx';
 import WeeklyTechnicalOperationCompleteReport from './reports/WeeklyTechnicalOperationCompleteReport.jsx';
 import FaxogrammDirectory from './directories/faxogramm/FaxogrammDirectory.jsx';
-import RouteReports from './reports/RouteReports.jsx';
 import CompanyStructure from './company_structure/CompanyStructure.jsx';
 import Modal from './ui/Modal.jsx';
 import { checkToken } from '../adapter.js';
@@ -132,12 +132,12 @@ const routes = (
       <Route path="mission-templates-journal" component={MissionTemplatesJournal} onEnter={requireAuth}/>
       <Route path="routes-list" component={RoutesList} onEnter={requireAuth}/>
       <Route path="odh-reports" component={ODHReports} onEnter={requireAuth}/>
-      <Route path="route-reports" component={RouteLaunchReports} onEnter={requireAuth}/>
       <Route path="daily-cleaning-reports" component={DailyCleaningReports} onEnter={requireAuth}/>
       <Route path="daily-cleaning-report/:element/:id" component={DailyCleaningReport} onEnter={requireAuth}/>
       <Route path="weekly-technical-operation-complete-reports" component={WeeklyTechnicalOperationCompleteReports} onEnter={requireAuth}/>
       <Route path="weekly-technical-operation-complete-report/:element/:id" component={WeeklyTechnicalOperationCompleteReport} onEnter={requireAuth}/>
-      <Route path="route-report/:id" component={RouteReports} onEnter={requireAuth}/>
+      <Route path="route-reports" component={RouteReports} onEnter={requireAuth}/>
+      <Route path="route-report/:id" component={RouteReport} onEnter={requireAuth}/>
       <Route path="mission-reports" component={MissionReports} onEnter={requireAuth}/>
       <Route path="mission-report/:id" component={MissionReport} onEnter={requireAuth}/>
       <Route path="mission-report/:id/odhs/:index" component={MissionReportByODH} onEnter={requireAuth}/>

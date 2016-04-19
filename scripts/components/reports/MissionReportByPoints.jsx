@@ -18,6 +18,7 @@ let tableMeta = {
       type: 'string',
       filter: {
         type: 'select',
+				labelFunction: (data) => data === 'fail' ? 'Не пройден' : 'Пройден'
       },
     },
 	]

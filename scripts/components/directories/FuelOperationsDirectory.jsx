@@ -4,7 +4,7 @@ import { Button, Glyphicon } from 'react-bootstrap';
 import moment from 'moment';
 import cx from 'classnames';
 import connectToStores from 'flummox/connect';
-import FuelOperationFormWrap from './FuelOperationFormWrap.jsx';
+import FuelOperationFormWrap from './fuel_operations/FuelOperationFormWrap.jsx';
 import ElementsList from '../ElementsList.jsx';
 
 let tableMeta = {

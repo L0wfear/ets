@@ -3,7 +3,7 @@ import Table from '../ui/table/DataTable.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
 import moment from 'moment';
 import connectToStores from 'flummox/connect';
-import FuelRateFormWrap from './FuelRateFormWrap.jsx';
+import FuelRateFormWrap from './fuel_rates/FuelRateFormWrap.jsx';
 import ElementsList from '../ElementsList.jsx';
 import { getFuelOperationById, getModelById } from 'utils/labelFunctions';
 
@@ -37,7 +37,7 @@ let tableMeta = {
 			type: 'number',
 		},
 		{
-			name: 'special_model_name',
+			name: 'car_special_model_name',
 			caption: 'Модель ТС',
 			type: 'string',
 			filter: {
@@ -80,7 +80,6 @@ class FuelRatesDirectory extends ElementsList {
 
 	componentDidMount() {
     const { flux } = this.context;
-		flux.getActions('objects').getModels();
     flux.getActions('fuel-rates').getFuelOperations();
 		flux.getActions('fuel-rates').getFuelRates();
 	}

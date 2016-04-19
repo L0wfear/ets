@@ -99,6 +99,7 @@ function checkResponse(url, response, body, method) {
         console.error(er);
         global.NOTIFICATION_SYSTEM._addNotification(getServerErrorNotification(`/${method} ${serviceName}`))
       });
+      throw new Error('Errors in response body');
     }
 
     if (response.status === 500) {

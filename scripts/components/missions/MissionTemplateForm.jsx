@@ -90,6 +90,8 @@ class MissionTemplateForm extends MissionForm {
 									disabled={!!state.route_id}
 									value={state.technical_operation_id}
 									onChange={this.handleTechnicalOperationChange.bind(this)}/>
+              <Field type="number" label="Количество проходов" error={errors['passes_count']}
+  									 value={state.passes_count} onChange={this.handleChange.bind(this, 'passes_count')} min="0"/>
 						</Col>
 
 				 		<Col md={6}>
@@ -98,13 +100,16 @@ class MissionTemplateForm extends MissionForm {
 									disabled={isEmpty(state.technical_operation_id)}
 									value={state.car_id}
 									onChange={this.handleChange.bind(this, 'car_id')}/>
+							<Field type="string"
+								label="Комментарий"
+								value={state.comment}
+								onChange={this.handleChange.bind(this, 'comment')}
+								error={errors['comment']} />
 				   	</Col>
 					</Row>
 
 	      	<Row>
             <Col md={6}>
-              <Field type="number" label="Количество проходов" error={errors['passes_count']}
-  									 value={state.passes_count} onChange={this.handleChange.bind(this, 'passes_count')} min="0"/>
               <Field type="select" label="Маршрут" error={errors['route_id']}
                      options={ROUTES}
                      value={state.route_id}
@@ -113,10 +118,6 @@ class MissionTemplateForm extends MissionForm {
 										 clearable={true}/>
 							<Div hidden={state.route_id}>
 								<Button onClick={this.createNewRoute.bind(this)} disabled={!state.technical_operation_id}>Создать новый</Button>
-							</Div>
-
-						  <Div className="route-odhs-list" hidden={this.state.selectedRoute === null}>
-								{/*<ODHList showSelectable={true} odh_list={odh_list} />*/}
 							</Div>
             </Col>
             <Col md={6}>

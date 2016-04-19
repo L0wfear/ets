@@ -209,7 +209,7 @@ export class MissionsJournal extends ElementsList {
 		if (reason) {
 			let mission = _.cloneDeep(this.state.selectedElement);
 			mission.status = 'fail';
-			mission.fail_reason = reason;
+			mission.comment = reason;
 			this.context.flux.getActions('missions').updateMission(mission);
 		}
 	}
@@ -242,8 +242,7 @@ export class MissionsJournal extends ElementsList {
       });
       this.setState({checkedMissions: {}});
       global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Отметить как "Выполненые" можно только назначенные задания!'));
-    }
-    else {
+    } else {
       this.completeMission();
     }
   }

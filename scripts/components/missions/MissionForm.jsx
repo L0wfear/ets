@@ -80,10 +80,6 @@ export class MissionForm extends Form {
 		}
 	}
 
-	componentWillUnmount() {
-		this.context.flux.getActions('technical_operation').getTechnicalOperations();
-	}
-
 	async componentDidMount() {
 		const mission = this.props.formState;
 		const { flux } = this.context;
@@ -159,9 +155,6 @@ export class MissionForm extends Form {
 		this.setState(stateChangeObject);
 	}
 
-	componentWillReceiveProps(props) {
-	}
-
 	render() {
 
 		let state = this.props.formState;
@@ -203,11 +196,6 @@ export class MissionForm extends Form {
 
 					<Row>
 						<Col md={6}>
-							<Div hidden={!state.fail_reason} style={{marginBottom: 10}}>
-								<Field type="string" label="Причина невыполнения"
-										value={state.fail_reason}
-										readOnly={true}/>
-							</Div>
 							<Field type="select" label="Транспортное средство" error={errors['car_id']}
 									disabled={IS_POST_CREATING_ASSIGNED ||
 										IS_POST_CREATING_NOT_ASSIGNED ||
@@ -253,20 +241,27 @@ export class MissionForm extends Form {
 
 	      	<Row>
 	      		<Col md={6}>
-							<Field type="select" label="Технологическая операция" error={errors['technical_operation_id']}
-									disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY || isEmpty(state.car_id))}
-									options={TECH_OPERATIONS}
-									value={state.technical_operation_id}
-									onChange={this.handleTechnicalOperationChange.bind(this)}/>
+							<Field type="select"
+								label="Технологическая операция"
+								error={errors['technical_operation_id']}
+								disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY || isEmpty(state.car_id))}
+								options={TECH_OPERATIONS}
+								value={state.technical_operation_id}
+								onChange={this.handleTechnicalOperationChange.bind(this)}/>
+							<Field type="string"
+								label="Комментарий"
+								value={state.comment}
+								onChange={this.handleChange.bind(this, 'comment')}
+								error={errors['comment']} />
 	          </Col>
 	      		<Col md={6}>
-              <Field type="select" label="Источник получения задания" error={errors['mission_source_id']}
+              <Field type="select"
+									label="Источник получения задания"
+									error={errors['mission_source_id']}
 									disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY}
 									options={MISSION_SOURCES}
 									value={state.mission_source_id}
 									onChange={this.handleChange.bind(this, 'mission_source_id')}/>
-
-
 	            <Field type="number" label="Количество проходов" error={errors['passes_count']}
 									disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY}
 									value={state.passes_count} onChange={this.handleChange.bind(this, 'passes_count')}
@@ -281,9 +276,6 @@ export class MissionForm extends Form {
 									options={ROUTES}
 									value={state.route_id}
 									onChange={this.handleRouteIdChange.bind(this)}/>
-							<Div className="route-odhs-list" hidden={this.state.selectedRoute === null}>
-								{/*<ODHList showSelectable={true} odh_list={odh_list} />*/}
-							</Div>
 						  <Div hidden={state.route_id}>
 							  <Button onClick={this.createNewRoute.bind(this)} disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.technical_operation_id}>Создать новый</Button>
 						  </Div>

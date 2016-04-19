@@ -11,7 +11,6 @@ import config from '../../config.js';
 import { notifications } from 'utils/notifications';
 
 let validateWaybill = (waybill, errors) => {
-	console.log(waybill)
 	let waybillErrors = _.clone(errors);
 
 	_.each(waybillSchema.properties, prop => {
@@ -42,16 +41,18 @@ let validateWaybill = (waybill, errors) => {
 		waybillErrors.plan_departure_date = `Даты "Выезд план." и "Возвращение план." должны быть указаны`;
 	}
 
-	if (waybill.fact_arrival_date && waybill.fact_departure_date) {
-		if (moment(waybill.fact_arrival_date).toDate().getTime() < moment(waybill.fact_departure_date).toDate().getTime()) {
-			waybillErrors.fact_arrival_date = `"Возвращение план." должно быть больше "Выезд план."`;
+	if (waybill.status && waybill.status !== 'draft') {
+		if (waybill.fact_arrival_date && waybill.fact_departure_date) {
+			if (moment(waybill.fact_arrival_date).toDate().getTime() < moment(waybill.fact_departure_date).toDate().getTime()) {
+				waybillErrors.fact_arrival_date = `"Возвращение план." должно быть больше "Выезд план."`;
+			}
+		} else if (waybill.fact_arrival_date) {
+			waybillErrors.fact_departure_date = `Дата "Выезд план." должна быть указана`;
+		} else if (waybill.fact_departure_date) {
+			waybillErrors.fact_arrival_date = `Дата "Возвращение план." должна быть указана`;
+		} else {
+			waybillErrors.fact_departure_date = `Даты "Выезд план." и "Возвращение план." должны быть указаны`;
 		}
-	} else if (waybill.fact_arrival_date) {
-		waybillErrors.fact_departure_date = `Дата "Выезд план." должна быть указана`;
-	} else if (waybill.fact_departure_date) {
-		waybillErrors.fact_arrival_date = `Дата "Возвращение план." должна быть указана`;
-	} else {
-		waybillErrors.fact_departure_date = `Даты "Выезд план." и "Возвращение план." должны быть указаны`;
 	}
 
 	return waybillErrors;

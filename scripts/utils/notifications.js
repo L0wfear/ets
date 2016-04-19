@@ -121,9 +121,9 @@ export const saveDataSuccessNotification = {
   title: '',
   message: 'Данные успешно сохранены',
   level: 'success',
-  dismissible: false,
+  dismissible: true,
   position: 'tc',
-  autoDismiss: 3,
+  autoDismiss: 20,
 }
 
 export const notifications = {

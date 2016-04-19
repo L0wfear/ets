@@ -13,7 +13,8 @@ let tableMeta = {
 			type: 'string',
       filter: {
         type: 'input',
-      }
+      },
+			cssClassName: 'width300'
 		},
 		{
 			name: 'short_name',
@@ -21,7 +22,8 @@ let tableMeta = {
 			type: 'string',
       filter: {
         type: 'input',
-      }
+      },
+			cssClassName: 'width300'
 		},
 		{
 			name: 'equip_width',

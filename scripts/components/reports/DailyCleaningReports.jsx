@@ -6,36 +6,11 @@ import EtsSelect from '../ui/EtsSelect.jsx';
 import Div from '../ui/Div.jsx';
 import Field from '../ui/Field.jsx';
 import Datepicker from '../ui/DatePicker.jsx';
-import { datePickerFunction } from 'utils/labelFunctions';
+import { datePickerFunction, getReportStatusLabel, getGeozoneTypeLabel} from 'utils/labelFunctions';
 import { getToday9am, getTomorrow9am, getToday0am, getToday2359, getFormattedDateTimeSeconds } from 'utils/dates';
 import { getReportNotReadyNotification2 } from 'utils/notifications';
 import { isEmpty } from 'utils/functions';
 import DailyReportHeader from './DailyReportHeader.jsx';
-
-let getStatusLabel = (status) => {
-  let result = '';
-
-  switch (status) {
-    case 'fail':
-      result = 'Ошибка';
-      break;
-    case 'success':
-      result = 'Обработан';
-      break;
-    case 'in progress':
-      result = 'В обработке';
-      break;
-    case 'wait':
-      result = 'В очереди';
-      break;
-  }
-
-  return result;
-};
-
-let getTypeLabel = (type) => type === 'distance' ? 'Протяженность' : type;
-
-let getGeozoneTypeLabel = (type) => type === 'odh' ? 'Объект дорожного хозяйства' : 'Дворовая территория';
 
 let getElementLabel = (el) => {
   let element = _.find([
@@ -53,6 +28,7 @@ let tableMeta = {
 			type: 'text',
 			filter: {
 				type: 'select',
+        labelFunction: getReportStatusLabel
 			}
 		},
 		{
@@ -61,6 +37,7 @@ let tableMeta = {
 			type: 'number',
 			filter: {
 				type: 'select',
+        labelFunction: getGeozoneTypeLabel
 			},
 		},
 		{
@@ -69,6 +46,7 @@ let tableMeta = {
 			type: 'number',
 			filter: {
 				type: 'select',
+        labelFunction: (s) => getElementLabel(s)
 			},
 		},
 		{
@@ -122,7 +100,7 @@ let tableMeta = {
 let DailyCleaningReportsTable = (props) => {
 
 	const renderers = {
-    status: ({data}) => <div>{data ? getStatusLabel(data) : ''}</div>,
+    status: ({data}) => <div>{data ? getReportStatusLabel(data) : ''}</div>,
     geozone_type: ({data}) => <div>{data ? getGeozoneTypeLabel(data) : ''}</div>,
     element: ({data}) => <div>{data ? getElementLabel(data) : ''}</div>,
     date_start: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,

@@ -19,41 +19,31 @@ let getTableMeta = (props) => {
 	      name: 'route_check_value',
 	      caption: 'Нужно пройти',
 	      type: 'string',
-	      filter: {
-	        type: 'select',
-	      },
+				filter: false
 	    },
 			{
 				name: 'traveled',
 				caption: 'Пройдено с рабочей скоростью',
 				type: 'string',
-				filter: {
-					type: 'select',
-				}
+				filter: false
 			},
 			{
 				name: 'left',
 				caption: 'Осталось',
 				type: 'string',
-				filter: {
-					type: 'select',
-				}
+				filter: false
 			},
 			{
 				name: 'left_percentage',
 				caption: 'Осталось %',
 				type: 'string',
-				filter: {
-					type: 'select',
-				}
+				filter: false
 			},
 			{
 				name: 'v_avg_max',
 				caption: 'Максимальная скорость',
 				type: 'string',
-				filter: {
-					type: 'select',
-				},
+				filter: false
 			},
 		]
 	};

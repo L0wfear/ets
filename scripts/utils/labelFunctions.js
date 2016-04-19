@@ -26,6 +26,42 @@ export function waybillMissionsCompleteStatusLabelFunction(status) {
   return status === true ? 'Все задания завершены' : 'Есть незавершенные задания';
 }
 
+export function getReportStatusLabel(status) {
+  let result = '';
+
+  switch (status) {
+    case 'fail':
+      result = 'Ошибка';
+      break;
+    case 'success':
+      result = 'Обработан';
+      break;
+    case 'in progress':
+      result = 'В обработке';
+      break;
+    case 'wait':
+      result = 'В очереди';
+      break;
+  }
+
+  return result;
+};
+
+export function getGeozoneTypeLabel(type) {
+  return type === 'odh' ? 'Объект дорожного хозяйства' : 'Дворовая территория';
+}
+
+export function getPeriodicReportStatusLabel(s) {
+  let statuses = {
+    'full_traveled': 'Пройдено полностью',
+    'not_traveled': 'Не пройдено',
+    'traveled_less_than_half': 'Пройдено меньше половины',
+    'traveled_more_than_half': 'Пройдено больше половины'
+  }
+
+  return statuses[s];
+}
+
 
 // обращений к сторам быть не должно, нужно получать данные из бека
 export function employeeFIOLabelFunction(employeeId, fullFlag = false) {

@@ -169,6 +169,26 @@ class RouteCreating extends Component {
 			this.props.onChange('object_list', object_list);
 		}
 
+		handleCheckbox(type, v, e) {
+			let { object_list, polys } = this.props.route;
+			let { geozonePolys } = this.props;
+			let odhs = v.split(',');
+			if (e.target.checked) {
+				odhs.forEach((e) => {
+					object_list.push({object_id: parseInt(e, 10), type, name: geozonePolys[e].name, state: polyState.ENABLED});
+					polys[e].state = polyState.ENABLED;
+				});
+			} else {
+				object_list = [];
+				odhs.forEach((e) => {
+					polys[e].state = polyState.SELECTABLE;
+				});
+			}
+
+			this.props.onChange('polys', polys);
+			this.props.onChange('object_list', object_list);
+		}
+
 		onObjectNameChange(i, v) {
 			let { object_list } = this.props.route;
 			object_list[i].name = v.target.value;
@@ -195,44 +215,46 @@ class RouteCreating extends Component {
 							<Col md={9}>
 								<Div className="route-creating">
 									<Map onFeatureClick={this.onFeatureClick.bind(this)}
-											 onPointAdd={this.onPointAdd.bind(this)}
-											 onDrawFeatureAdd={this.onDrawFeatureAdd.bind(this)}
-											 onDrawFeatureClick={this.onDrawFeatureClick.bind(this)}
-											 removeLastDrawFeature={this.removeLastDrawFeature.bind(this)}
-											 zoom={this.state.zoom}
-				            	 center={this.state.center}
-											 object_list={route.object_list}
-				            	 polys={route.polys}
-											 objectsType={route.type}
-											 manualDraw={this.props.manual}
-											 edit={!!route.id} />
+											onPointAdd={this.onPointAdd.bind(this)}
+											onDrawFeatureAdd={this.onDrawFeatureAdd.bind(this)}
+											onDrawFeatureClick={this.onDrawFeatureClick.bind(this)}
+											removeLastDrawFeature={this.removeLastDrawFeature.bind(this)}
+											zoom={this.state.zoom}
+											center={this.state.center}
+											object_list={route.object_list}
+											polys={route.polys}
+											objectsType={route.type}
+											manualDraw={this.props.manual}
+											edit={!!route.id} />
 								</Div>
 							</Col>
 							<Col md={3}>
 								<Div hidden={route.type !== 'simple'} className="odh-container">
+									<Input type="checkbox"  label="Выбрать все" onChange={this.handleCheckbox.bind(this, 'odh', ODHS.map(o => o.value).join(','))}/>
 									<Field type="select" label="Список выбранных ОДХ"
-												 multi={true}
-												 options={ODHS}
-												 value={route.object_list.map(o => o.object_id).join(',')}
-												 onChange={this.onGeozoneSelectChange.bind(this, 'odh')}/>
+											multi={true}
+											options={ODHS}
+											value={route.object_list.map(o => o.object_id).join(',')}
+											onChange={this.onGeozoneSelectChange.bind(this, 'odh')}/>
 								</Div>
 								<Div hidden={route.type !== 'simple_dt'} className="odh-container">
+									<Input type="checkbox"  label="Выбрать все" onChange={this.handleCheckbox.bind(this, 'dt', DTS.map(o => o.value).join(','))}/>
 									<Field type="select" label="Список выбранных ДТ"
-												 multi={true}
-												 options={DTS}
-												 value={route.object_list.map(o => o.object_id).join(',')}
-												 onChange={this.onGeozoneSelectChange.bind(this, 'dt')}/>
+											multi={true}
+											options={DTS}
+											value={route.object_list.map(o => o.object_id).join(',')}
+											onChange={this.onGeozoneSelectChange.bind(this, 'dt')}/>
 								</Div>
 		          	<ODHList odh_list={odh_list} odh_fail_list={odh_fail_list} checkRoute={route.type === 'vector' ? this.checkRoute.bind(this) : null}/>
 								<Div className="destination-points" hidden={route.type !== 'points'}>
 									{route.object_list.map((o,i) => {
-										let label = `Пункт назначения №${i+1} ${o.name ? '( ' + o.name + ' )' : ''}`
-										return (
-											<Div className="destination-point" key={i}>
-												<Input type="text" label={label} value={o.name} onChange={this.onObjectNameChange.bind(this, i)} />
-												<Button className="inline-block" onClick={this.removeObject.bind(this, i)}><Glyphicon glyph="remove"/></Button>
-											</Div>
-										)
+									let label = `Пункт назначения №${i+1} ${o.name ? '( ' + o.name + ' )' : ''}`
+									return (
+										<Div className="destination-point" key={i}>
+											<Input type="text" label={label} value={o.name} onChange={this.onObjectNameChange.bind(this, i)} />
+											<Button className="inline-block" onClick={this.removeObject.bind(this, i)}><Glyphicon glyph="remove"/></Button>
+										</Div>
+									)
 									})}
 								</Div>
 							</Col>

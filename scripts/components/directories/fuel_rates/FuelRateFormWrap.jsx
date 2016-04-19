@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import moment from 'moment';
-import _ from 'lodash';
-
 import FuelRateForm from './FuelRateForm.jsx';
-import FormWrap from '../compositions/FormWrap.jsx';
+import FormWrap from 'compositions/FormWrap.jsx';
+import fuelRateSchema from './fuelRateSchema.js';
+import { isEmpty } from 'utils/functions';
+import { validateRow } from 'validate/validateRow.js';
 
 export default class FuelRateFormWrap extends FormWrap {
 
@@ -18,9 +18,25 @@ export default class FuelRateFormWrap extends FormWrap {
 			car_model_id: null,
 			car_special_model_id: null
 		};
+		this.schema = fuelRateSchema;
 		this.createAction = context.flux.getActions('fuel-rates').createFuelRate;
 		this.updateAction = context.flux.getActions('fuel-rates').updateFuelRate;
 	}
+
+	validate = (formState, formErrors) => {
+		let errors = _.clone(formErrors);
+
+		_.each(this.schema.properties, prop => {
+			errors[prop.key] = validateRow(prop, formState[prop.key]);
+		});
+
+		if (isEmpty(formState.summer_rate) && isEmpty(formState.winter_rate)) {
+			errors.summer_rate = `Одна из норм должна быть заполнена`;
+			errors.winter_rate = `Одна из норм должна быть заполнена`;
+		}
+
+		return errors;
+	};
 
 	render() {
 

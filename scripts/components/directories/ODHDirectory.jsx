@@ -34,7 +34,7 @@ let getTableMeta = (props) => {
       },
       {
         name: 'roadway_area',
-        caption: 'Площадь дорожного полотна',
+        caption: 'Площадь проезжей части',
         type: 'number',
       },
       {

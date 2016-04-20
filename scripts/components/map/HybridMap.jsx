@@ -42,7 +42,7 @@ class LegendWrapper extends React.Component {
         type: 'route'
       },
       {
-        title: 'Выбранный элемент',
+        title: 'ОДХ/ДТ',
         color: "#e67e22",
         type: 'element'
       }

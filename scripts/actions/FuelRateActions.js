@@ -14,8 +14,8 @@ export default class FuelRateActions extends Actions {
     return FuelConsumptionRateService.get();
   }
 
-  getFuelRatesByCarModel(car_model_id) {
-    const payload = { car_model_id }
+  getFuelRatesByCarModel(car_id) {
+    const payload = { car_id }
     return FuelConsumptionRateService.get(payload);
   }
 

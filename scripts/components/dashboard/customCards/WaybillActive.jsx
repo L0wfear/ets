@@ -18,7 +18,7 @@ export default class WaybillActive extends WaybillClosed {
           <li key={i} className="pointer" onClick={this.action.bind(this, item)}>
             {`№${item.data.waybill_number} (${item.data.mission_status}), ${item.data.car_gov_number}`}
             <br/>
-            {`${item.data.driver_fio}, ${item.data.driver_phone}`}
+            {`${item.data.driver_fio || ''}${item.data.driver_phone ? ', ' + item.data.driver_phone : ''}`}
           </li>
         ))}
       </ul>

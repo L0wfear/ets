@@ -13,15 +13,15 @@ function calculateResult(data) {
     }
     return res;
   }, 0);
-  return parseFloat(result).toFixed(2);
+  return parseFloat(result).toFixed(3);
 }
 
 let getResult = ({FACT_VALUE, fuel_correction_rate, FUEL_RATE}) => {
   if (typeof FACT_VALUE === 'undefined') return 0;
   if (fuel_correction_rate) {
-    return parseFloat(FUEL_RATE * fuel_correction_rate * FACT_VALUE).toFixed(2);
+    return parseFloat(FUEL_RATE * fuel_correction_rate * FACT_VALUE).toFixed(3);
   } else {
-    return parseFloat(FUEL_RATE * 1 * FACT_VALUE).toFixed(2);
+    return parseFloat(FUEL_RATE * 1 * FACT_VALUE).toFixed(3);
   }
 }
 
@@ -59,7 +59,7 @@ export default class Taxes extends Component {
       RESULT: (RESULT) => RESULT ? RESULT + ' л' : '',
       fuel_correction_rate: (fuel_correction_rate, row) => {
         if (row.OPERATION === null) return '';
-        return fuel_correction_rate ? parseFloat(fuel_correction_rate).toFixed(2) : 1
+        return fuel_correction_rate ? parseFloat(fuel_correction_rate).toFixed(3) : 1
       },
       FACT_VALUE: (FACT_VALUE, {OPERATION, FUEL_RATE}, index) => {
         if (FACT_VALUE === 'Итого' || this.props.readOnly) return FACT_VALUE;
@@ -126,10 +126,10 @@ export default class Taxes extends Component {
   }
 
   componentWillReceiveProps(props) {
-    let { operations, fuelRates } = props;
+    let { operations, fuelRates, taxes = this.state.tableData } = props;
     operations = operations.map( ({id, name}) => ({value: id, label: name}));
 
-    this.setState({operations, fuelRates});
+    this.setState({operations, fuelRates, tableData: taxes});
   }
 
   selectOperation(selectedOperation) {
@@ -162,7 +162,7 @@ export default class Taxes extends Component {
                  columnCaptions={this.tableCaptions}
                  data={taxes}
                  tableCols={this.tableCols}
-                 pageSize={20}
+                 pageSize={10}
                  usePagination={false}
                  cellRenderers={this.tableCellRenderers}
                  onRowSelected={!this.props.readOnly ? this.selectOperation.bind(this) : undefined} />

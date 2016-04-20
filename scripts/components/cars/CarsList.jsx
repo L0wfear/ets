@@ -17,7 +17,7 @@ let tableMeta = {
 			caption: 'Госномер',
 			type: 'text',
 			filter: {
-				type: 'text',
+				type: 'select',
 			}
 		},
 		{

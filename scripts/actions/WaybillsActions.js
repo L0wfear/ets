@@ -41,12 +41,12 @@ class WaybillsActions extends BaseActions {
       let taxes = payload.taxes.filter((t) => {
         return typeof t.FACT_VALUE !== 'undefined';
       });
-      if (taxes.length === 0 || taxes.length === 1) {
-        delete payload.taxes;
-      } else {
+      // if (taxes.length === 0 || taxes.length === 1) {
+      //   delete payload.taxes;
+      // } else {
         payload.data = JSON.stringify(taxes);
         delete payload.taxes;
-      }
+      //}
     }
     delete payload.odometr_diff;
     delete payload.motohours_diff;

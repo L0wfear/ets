@@ -19,6 +19,9 @@ export default class HybridMap extends Map {
   constructor(props) {
     super(props);
     this.zoomedPolyName = null;
+    this.state = {
+      zoom: null
+    }
   }
 
   updatePoints(updatedPoints) {
@@ -181,6 +184,7 @@ export default class HybridMap extends Map {
     if (nextProps.polys !== undefined) {
       this.renderPolygons(nextProps.polys, nextProps.selectedPoly);
     }
+    this.setState({zoom: this.map.getView().getZoom()});
   }
 
   toggleTrack() {
@@ -190,11 +194,18 @@ export default class HybridMap extends Map {
   render() {
     const trackButtonTitle = this.props.showTrack ? 'Отключить трек' : 'Включить трек';
     const trackButtonIcon = this.props.showTrack ? 'ban-circle' : 'ok-circle';
-    return (<div>
-              <div ref="container" style={{opacity: 1}} className="openlayers-container">
-                <Button title={trackButtonTitle} className="continue-route-button" onClick={this.toggleTrack.bind(this)}><Glyphicon glyph={trackButtonIcon}/></Button>
-              </div>
-            </div>
+
+    return (
+      <div>
+        <div ref="container" style={{opacity: 1}} className="openlayers-container">
+          <Button title={trackButtonTitle} className="continue-route-button" onClick={this.toggleTrack.bind(this)}><Glyphicon glyph={trackButtonIcon}/></Button>
+          <div className="map-legend">
+            <span><span style={{color: TRACK_COLORS.red}}>&#11044;</span> Маршруты</span><br />
+            <span><span style={{color: (this.state.zoom <= 8) ? TRACK_COLORS.blue : TRACK_COLORS.green}}>&#11044;</span> Трек</span><br />
+            <span><span style={{color: "#e67e22"}}>&#11044;</span> Выбранный</span>
+          </div>
+        </div>
+      </div>
           )
   }
 

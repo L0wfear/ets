@@ -148,10 +148,10 @@ class Toolbar extends Component {
         <div className="row">
           <FluxComponent connectToStores={['points', 'settings']}>
             <LegendWrapper
-              byStatus={byStatus}
-              byConnectionStatus={byConnectionStatus}
-              storeFilter={storeState.filter}
-              storeHandleSetFilter={pointsStore.handleSetFilter.bind(pointsStore)}/>
+                byStatus={byStatus}
+                byConnectionStatus={byConnectionStatus}
+                storeFilter={storeState.filter}
+                storeHandleSetFilter={pointsStore.handleSetFilter.bind(pointsStore)}/>
             <ShowPlatesCheckbox/>
           </FluxComponent>
         </div>

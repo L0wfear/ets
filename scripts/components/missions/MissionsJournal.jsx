@@ -209,7 +209,7 @@ export class MissionsJournal extends ElementsList {
 		if (reason) {
 			let mission = _.cloneDeep(this.state.selectedElement);
 			mission.status = 'fail';
-			mission.comment = reason;
+			mission.fail_reason = reason;
 			this.context.flux.getActions('missions').updateMission(mission);
 		}
 	}

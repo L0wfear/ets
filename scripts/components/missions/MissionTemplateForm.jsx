@@ -100,11 +100,11 @@ class MissionTemplateForm extends MissionForm {
 									disabled={isEmpty(state.technical_operation_id)}
 									value={state.car_id}
 									onChange={this.handleChange.bind(this, 'car_id')}/>
-							<Field type="string"
+							{/*<Field type="string"
 								label="Комментарий"
 								value={state.comment}
 								onChange={this.handleChange.bind(this, 'comment')}
-								error={errors['comment']} />
+								error={errors['comment']} />*/}
 				   	</Col>
 					</Row>
 

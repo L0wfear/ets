@@ -248,11 +248,11 @@ export class MissionForm extends Form {
 								options={TECH_OPERATIONS}
 								value={state.technical_operation_id}
 								onChange={this.handleTechnicalOperationChange.bind(this)}/>
-							<Field type="string"
+							{/*<Field type="string"
 								label="Комментарий"
 								value={state.comment}
 								onChange={this.handleChange.bind(this, 'comment')}
-								error={errors['comment']} />
+								error={errors['comment']} />*/}
 	          </Col>
 	      		<Col md={6}>
               <Field type="select"

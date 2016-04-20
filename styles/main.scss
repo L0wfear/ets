@@ -2677,6 +2677,20 @@ div.none {
   border-radius: 4px;
 }
 
+.map-legend {
+  position: absolute;
+  z-index: 999;
+  bottom: 10px;
+  right: 20px;
+  padding: 6px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background: #333;
+  color: white;
+  border: 2px solid #333;
+  border-radius: 4px;
+}
+
 .delete-last-point-button {
   padding-top: 5px;
   position: absolute;

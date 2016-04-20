@@ -104,7 +104,7 @@ export class MissionInfoForm extends Form {
 			<Modal {...this.props} bsSize="large" className="mission-info-modal">
 
 				<Modal.Header closeButton>
-	          <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
+					<Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
 				</Modal.Header>
 
 	      <Modal.Body>
@@ -114,26 +114,26 @@ export class MissionInfoForm extends Form {
             <Col md={6} style={{height: 400}}>
 
               <FluxComponent connectToStores={{
-                points: store => ({
-                  points: store.state.points,
-                  selected: store.getSelectedPoint()
-                }),
+							points: store => ({
+							points: store.state.points,
+							selected: store.getSelectedPoint()
+							}),
 			          settings: store => ({
-			            showPlates: store.state.showPlates,
-									showTrack: store.state.showTrack
+								showPlates: store.state.showPlates,
+								showTrack: store.state.showTrack
 			          }),
 								session: store => ({
-									zoom: store.getCurrentUser().getCompanyMapConfig().zoom,
-									center: store.getCurrentUser().getCompanyMapConfig().coordinates,
+								zoom: store.getCurrentUser().getCompanyMapConfig().zoom,
+								center: store.getCurrentUser().getCompanyMapConfig().coordinates,
 								})
               }}>
 
                 <Map polys={polys}
-										 selectedObjects={this.state.selectedObjects}
-										 selectedPoly={geozonePolys[this.state.selectedODHId]}
-										 selectedPoint={null}
-                     car_gov_number={this.props.formState.car_gov_number}/>
-
+										selectedObjects={this.state.selectedObjects}
+										selectedPoly={geozonePolys[this.state.selectedODHId]}
+										selectedPoint={null}
+										car_gov_number={this.props.formState.car_gov_number}/>
+	
               </FluxComponent>
             </Col>
 

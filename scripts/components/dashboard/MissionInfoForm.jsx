@@ -27,7 +27,7 @@ export class MissionInfoForm extends Form {
       missionReport: [],
 			missionReportFull: {},
 			selectedObjects: [],
-			selectedODHId: 0,
+			selectedElementId: null,
 			selectedPoint: null,
 		};
 	}
@@ -68,8 +68,8 @@ export class MissionInfoForm extends Form {
     console.warn('UNMOUNT MISSION INFO FORM');
   }
 
-	handleODHChange(id) {
-		this.setState({selectedODHId: id});
+	handleSelectedElementChange(id) {
+		this.setState({selectedElementId: id});
 	}
 
 	handlePointChange(point) {
@@ -132,8 +132,7 @@ export class MissionInfoForm extends Form {
 
                 <Map polys={polys}
 										selectedObjects={this.state.selectedObjects}
-										selectedPoly={geozonePolys[this.state.selectedODHId]}
-										selectedPoint={null}
+										selectedPoly={geozonePolys[this.state.selectedElementId]}
 										car_gov_number={this.props.formState.car_gov_number}/>
 
               </FluxComponent>
@@ -141,10 +140,10 @@ export class MissionInfoForm extends Form {
 
             <Col md={6}>
 							<Div  style={{marginTop: -35}} hidden={this.state.missionReportFull && !this.state.missionReportFull.report_by_odh}>
-              	<MissionReportByODH noFilter={true} selectedReportDataODHS={this.state.missionReport} onElementChange={this.handleODHChange.bind(this)}/>
+              	<MissionReportByODH noFilter={true} selectedReportDataODHS={this.state.missionReport} onElementChange={this.handleSelectedElementChange.bind(this)}/>
 							</Div>
 							<Div  style={{marginTop: -35}} hidden={this.state.missionReportFull && !this.state.missionReportFull.report_by_dt}>
-              	<MissionReportByDT noFilter={true} selectedReportDataDTS={this.state.missionReport} />
+              	<MissionReportByDT noFilter={true} selectedReportDataDTS={this.state.missionReport} onElementChange={this.handleSelectedElementChange.bind(this)}/>
 							</Div>
 							<Div  style={{marginTop: -35}} hidden={this.state.missionReportFull && !this.state.missionReportFull.report_by_point}>
               	<MissionReportByPoints noFilter={true} selectedReportDataPoints={this.state.missionReport}/>

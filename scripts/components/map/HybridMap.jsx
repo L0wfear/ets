@@ -19,14 +19,6 @@ let POLYS_LAYER = null;
 let GeoJSON = new ol.format.GeoJSON();
 global.ol = ol;
 
-let MapLegend = ({zoom}) => (
-  <div className="map-legend">
-    <span><span style={{color: TRACK_COLORS.red}}>&#11044;</span> Маршруты</span><br />
-    <span><span style={{color: (zoom <= 8) ? TRACK_COLORS.blue : TRACK_COLORS.green}}>&#11044;</span> Трек</span><br />
-    <span><span style={{color: "#e67e22"}}>&#11044;</span> Выбранный</span>
-  </div>
-);
-
 let ControlComponent = (props) =>
   <span className={cx({'half-visible': !props.active})}>
     {props.control.color ? <button className={'status-filter-icon'} onClick={props.onClick} style={{ backgroundColor: props.control.color}}></button> : null}
@@ -67,6 +59,22 @@ class LegendWrapper extends React.Component {
     return false;
   }
 
+  toggleSettingsControl(type) {
+    const { flux } = this.props;
+    const settingsActions = flux.getActions('settings');
+    switch (type) {
+      case 'track':
+        settingsActions.setShowTrack(!this.props.showTrack);
+        break;
+      case 'route':
+        settingsActions.setShowRoute(!this.props.showRoute);
+        break;
+      case 'element':
+        settingsActions.setShowSelectedElement(!this.props.showSelectedElement);
+        break;
+    }
+  }
+
   render() {
 
     let items = this.getControls()
@@ -75,7 +83,7 @@ class LegendWrapper extends React.Component {
           <li key={i} className="control-element">
             <ControlComponent active={this.isComponentActive(control.type)}
                               control={control}
-                              onClick={this.props.onClick.bind(null, control.type)}/>
+                              onClick={this.toggleSettingsControl.bind(this, control.type)}/>
           </li>
         );
       });
@@ -127,16 +135,16 @@ export default class HybridMap extends Map {
   componentDidMount() {
     super.componentDidMount();
 
-    this.renderPolygons(this.props.polys, this.props.selectedPoly);
+    this.renderPolygons(this.props.polys, true);
   }
 
-  renderPolygons(polys = {}) {
+  renderPolygons(polys = {}, showRoute) {
     let map = this.map;
 
     let vectorSource = new ol.source.Vector();
     let styleFunction = polyStyles[polyState.SELECTABLE];
 
-    if (this.props.showRoute) {
+    if (showRoute) {
       _.each(polys, (poly, key) => {
         let feature = new ol.Feature({
           geometry: GeoJSON.readGeometry(poly.shape),
@@ -147,13 +155,8 @@ export default class HybridMap extends Map {
         if (poly.shape && poly.shape.type === 'LineString') {
           feature.setStyle(getVectorArrowStyle(feature));
         } else if (poly.shape && poly.shape.type !== 'Point') {
-          // console.log(poly.isInfo)
-          // if (poly.isInfo) {
-          //   feature.setStyle(polyStyles['info']);
-          // } else {
             feature.setStyle(polyStyles[poly.state]);
-          //}
-        } else {
+        } else { // Если точка
           if (this.props.selectedObjects) {
             let succeed = false;
             _.each(this.props.selectedObjects, o => {
@@ -201,11 +204,10 @@ export default class HybridMap extends Map {
 
     let feature = new ol.Feature({
       geometry: GeoJSON.readGeometry(selectedPoly.shape),
-      name: selectedPoly.name,
-      id: 1,
-      state: selectedPoly.state,
+      name: selectedPoly.name
     });
     feature.setStyle(polyStyles['info']);
+
     vectorSource.addFeature(feature);
 
     if (this.zoomedPolyName !== selectedPoly.name) {
@@ -278,15 +280,15 @@ export default class HybridMap extends Map {
   componentWillReceiveProps(nextProps) {
     super.componentWillReceiveProps(nextProps);
 
-    if (nextProps.selectedPoly !== undefined && !_.isEqual(this.props.selectedPoly, nextProps.selectedPoly)) {
-      this.renderSelectedPoly(nextProps.selectedPoly);
-    }
-
     if (nextProps.polys !== undefined && !_.isEqual(this.props.polys, nextProps.polys)) {
-      this.renderPolygons(nextProps.polys);
+      this.renderPolygons(nextProps.polys, nextProps.showRoute);
     }
 
-    if (nextProps.selectedPoly !== this.props.selectedPoly) {
+    if (nextProps.polys !== undefined && nextProps.showRoute !== this.props.showRoute) {
+      this.renderPolygons(nextProps.polys, nextProps.showRoute);
+    }
+
+    if (nextProps.selectedPoly !== undefined && !_.isEqual(this.props.selectedPoly, nextProps.selectedPoly)) {
       this.renderSelectedPoly(nextProps.selectedPoly, nextProps.showSelectedElement);
     }
 
@@ -294,22 +296,6 @@ export default class HybridMap extends Map {
       this.renderSelectedPoly(nextProps.selectedPoly, nextProps.showSelectedElement);
     }
 
-  }
-
-  toggleSettingsControl(type) {
-    const { flux } = this.props;
-    const settingsActions = flux.getActions('settings');
-    switch (type) {
-      case 'track':
-        settingsActions.setShowTrack(!this.props.showTrack);
-        break;
-      case 'route':
-        settingsActions.setShowRoute(!this.props.showRoute);
-        break;
-      case 'element':
-        settingsActions.setShowSelectedElement(!this.props.showSelectedElement);
-        break;
-    }
   }
 
   render() {
@@ -321,7 +307,7 @@ export default class HybridMap extends Map {
         <div ref="container" style={{opacity: 1}} className="openlayers-container">
 
           <FluxComponent connectToStores={['settings']}>
-            <LegendWrapper zoom={this.state.zoom} onClick={this.toggleSettingsControl.bind(this)}/>
+            <LegendWrapper zoom={this.state.zoom}/>
           </FluxComponent>
 
         </div>

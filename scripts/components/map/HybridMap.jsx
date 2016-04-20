@@ -5,15 +5,90 @@ import { projectToPixel } from './MskAdapter.js';
 import { getTrack } from '../../adapter.js';
 import { getStartOfToday, makeDate, makeTime } from 'utils/dates';
 import { swapCoords, roundCoordinates } from 'utils/geo';
-import { TRACK_COLORS, TRACK_LINE_OPACITY, TRACK_LINE_WIDTH, TRACK_POINT_RADIUS, SHOW_ONLY_POINTS_WITH_SPEED_CHANGES } from '../../constants/track.js';
+import { TRACK_COLORS } from '../../constants/track.js';
 import Div from '../ui/Div.jsx';
 import { Glyphicon, Button } from 'react-bootstrap';
 import { polyState, polyStyles, pointStyles, getPointStyle } from '../../constants/polygons.js';
 import { vectorStyles, vectorState, getVectorArrowStyle, getVectorLayer, getVectorSource } from '../../constants/vectors.js';
+import cx from 'classnames';
+import FluxComponent from 'flummox/component';
+import _ from 'lodash';
 
 
 let POLYS_LAYER = null;
+let GeoJSON = new ol.format.GeoJSON();
 global.ol = ol;
+
+let MapLegend = ({zoom}) => (
+  <div className="map-legend">
+    <span><span style={{color: TRACK_COLORS.red}}>&#11044;</span> Маршруты</span><br />
+    <span><span style={{color: (zoom <= 8) ? TRACK_COLORS.blue : TRACK_COLORS.green}}>&#11044;</span> Трек</span><br />
+    <span><span style={{color: "#e67e22"}}>&#11044;</span> Выбранный</span>
+  </div>
+);
+
+let ControlComponent = (props) =>
+  <span className={cx({'half-visible': !props.active})}>
+    {props.control.color ? <button className={'status-filter-icon'} onClick={props.onClick} style={{ backgroundColor: props.control.color}}></button> : null}
+    {props.control.title}
+  </span>
+;
+
+
+class LegendWrapper extends React.Component {
+
+  getControls() {
+    let controls = [
+      {
+        title: 'Трек',
+        color: this.props.zoom > 8 ? TRACK_COLORS.green : TRACK_COLORS.blue,
+        type: 'track'
+      },
+      {
+        title: 'Маршрут',
+        color: TRACK_COLORS.red,
+        type: 'route'
+      },
+      {
+        title: 'Выбранный элемент',
+        color: "#e67e22",
+        type: 'element'
+      }
+    ];
+    return controls;
+  }
+
+  isComponentActive(type) {
+    if ((type === 'track' && this.props.showTrack) ||
+        (type === 'route' && this.props.showRoute) ||
+        (type === 'element' && this.props.showSelectedElement)) {
+          return true;
+        }
+    return false;
+  }
+
+  render() {
+
+    let items = this.getControls()
+      .map((control, i) => {
+        return (
+          <li key={i} className="control-element">
+            <ControlComponent active={this.isComponentActive(control.type)}
+                              control={control}
+                              onClick={this.props.onClick.bind(null, control.type)}/>
+          </li>
+        );
+      });
+
+    return (
+      <div className="legend-wrapper app-toolbar-fill controls-legend-wrapper">
+        <ul style={{paddingLeft: 0}}>
+          {items}
+        </ul>
+      </div>
+    );
+  }
+}
 
 export default class HybridMap extends Map {
   constructor(props) {
@@ -55,64 +130,49 @@ export default class HybridMap extends Map {
     this.renderPolygons(this.props.polys, this.props.selectedPoly);
   }
 
-  renderPolygons(polys = {}, selectedPoly) {
+  renderPolygons(polys = {}) {
     let map = this.map;
 
-    let GeoJSON = new ol.format.GeoJSON();
     let vectorSource = new ol.source.Vector();
     let styleFunction = polyStyles[polyState.SELECTABLE];
 
-    _.each(polys, (poly, key) => {
-      let feature = new ol.Feature({
-        geometry: GeoJSON.readGeometry(poly.shape),
-        name: poly.name,
-        id: key,
-        state: poly.state,
-      });
-      if (poly.shape && poly.shape.type === 'LineString') {
-        feature.setStyle(getVectorArrowStyle(feature));
-      } else if (poly.shape && poly.shape.type !== 'Point') {
-        // console.log(poly.isInfo)
-        // if (poly.isInfo) {
-        //   feature.setStyle(polyStyles['info']);
-        // } else {
-          feature.setStyle(polyStyles[poly.state]);
-        //}
-      } else {
-        if (this.props.selectedObjects) {
-          let succeed = false;
-          _.each(this.props.selectedObjects, o => {
-            if (o.coordinates.x_msk === poly.shape.coordinates[0] && o.coordinates.y_msk === poly.shape.coordinates[1]) {
-              succeed = true;
-            }
-          })
-          if (succeed) {
-            feature.setStyle(getPointStyle('success'));
-          } else {
-            feature.setStyle(getPointStyle('fail'));
-          }
+    if (this.props.showRoute) {
+      _.each(polys, (poly, key) => {
+        let feature = new ol.Feature({
+          geometry: GeoJSON.readGeometry(poly.shape),
+          name: poly.name,
+          id: key,
+          state: poly.state,
+        });
+        if (poly.shape && poly.shape.type === 'LineString') {
+          feature.setStyle(getVectorArrowStyle(feature));
+        } else if (poly.shape && poly.shape.type !== 'Point') {
+          // console.log(poly.isInfo)
+          // if (poly.isInfo) {
+          //   feature.setStyle(polyStyles['info']);
+          // } else {
+            feature.setStyle(polyStyles[poly.state]);
+          //}
         } else {
-          styleFunction = null;
+          if (this.props.selectedObjects) {
+            let succeed = false;
+            _.each(this.props.selectedObjects, o => {
+              if (o.coordinates.x_msk === poly.shape.coordinates[0] && o.coordinates.y_msk === poly.shape.coordinates[1]) {
+                succeed = true;
+              }
+            })
+            if (succeed) {
+              feature.setStyle(getPointStyle('success'));
+            } else {
+              feature.setStyle(getPointStyle('fail'));
+            }
+          } else {
+            styleFunction = null;
+          }
         }
-      }
 
-      vectorSource.addFeature(feature);
-    });
-
-    if (selectedPoly) {
-      let feature = new ol.Feature({
-        geometry: GeoJSON.readGeometry(selectedPoly.shape),
-        name: selectedPoly.name,
-        id: 1,
-        state: selectedPoly.state,
+        vectorSource.addFeature(feature);
       });
-      feature.setStyle(polyStyles['info']);
-      vectorSource.addFeature(feature);
-      if (this.zoomedPolyName !== selectedPoly.name) {
-        map.getView().fit(feature.getGeometry().getExtent(), map.getSize());
-        map.getView().setZoom(7);
-        this.zoomedPolyName = selectedPoly.name;
-      }
     }
 
     !!POLYS_LAYER && map.removeLayer(POLYS_LAYER);
@@ -130,10 +190,44 @@ export default class HybridMap extends Map {
     map.addLayer(polysLayer);
   }
 
+  renderSelectedPoly(selectedPoly, showSelectedElement) {
+
+    let vectorSource = new ol.source.Vector();
+    let { map } = this;
+
+    if (!showSelectedElement) {
+      return !!this.polysLayer && map.removeLayer(this.polysLayer);
+    }
+
+    let feature = new ol.Feature({
+      geometry: GeoJSON.readGeometry(selectedPoly.shape),
+      name: selectedPoly.name,
+      id: 1,
+      state: selectedPoly.state,
+    });
+    feature.setStyle(polyStyles['info']);
+    vectorSource.addFeature(feature);
+
+    if (this.zoomedPolyName !== selectedPoly.name) {
+      map.getView().fit(feature.getGeometry().getExtent(), map.getSize());
+      map.getView().setZoom(7);
+      this.zoomedPolyName = selectedPoly.name;
+    }
+
+    !!this.polysLayer && map.removeLayer(this.polysLayer);
+
+    this.polysLayer = new ol.layer.Vector({
+      source: vectorSource
+    });
+
+    map.addLayer(this.polysLayer);
+  }
+
   renderCanvas(canvas, extent) {
 
     // canvas example
     // https://gist.github.com/acanimal/b2f60367badb0b17a4d9
+    // тут рендерятся маркеры и трек
 
     let map = this.map;
     let pointsStore = this._pointsStore;
@@ -172,7 +266,9 @@ export default class HybridMap extends Map {
   }
 
   onMouseMove() {
-
+    let zoom = this.map.getView().getZoom();
+    if (zoom !== this.state.zoom)
+    this.setState({zoom});
   }
 
   onClick() {
@@ -181,14 +277,39 @@ export default class HybridMap extends Map {
 
   componentWillReceiveProps(nextProps) {
     super.componentWillReceiveProps(nextProps);
-    if (nextProps.polys !== undefined) {
-      this.renderPolygons(nextProps.polys, nextProps.selectedPoly);
+
+    if (nextProps.selectedPoly !== undefined && !_.isEqual(this.props.selectedPoly, nextProps.selectedPoly)) {
+      this.renderSelectedPoly(nextProps.selectedPoly);
     }
-    this.setState({zoom: this.map.getView().getZoom()});
+
+    if (nextProps.polys !== undefined && !_.isEqual(this.props.polys, nextProps.polys)) {
+      this.renderPolygons(nextProps.polys);
+    }
+
+    if (nextProps.selectedPoly !== this.props.selectedPoly) {
+      this.renderSelectedPoly(nextProps.selectedPoly, nextProps.showSelectedElement);
+    }
+
+    if (nextProps.selectedPoly !== undefined && nextProps.showSelectedElement !== this.props.showSelectedElement) {
+      this.renderSelectedPoly(nextProps.selectedPoly, nextProps.showSelectedElement);
+    }
+
   }
 
-  toggleTrack() {
-    this.props.flux.getActions('settings').setShowTrack(!this.props.showTrack);
+  toggleSettingsControl(type) {
+    const { flux } = this.props;
+    const settingsActions = flux.getActions('settings');
+    switch (type) {
+      case 'track':
+        settingsActions.setShowTrack(!this.props.showTrack);
+        break;
+      case 'route':
+        settingsActions.setShowRoute(!this.props.showRoute);
+        break;
+      case 'element':
+        settingsActions.setShowSelectedElement(!this.props.showSelectedElement);
+        break;
+    }
   }
 
   render() {
@@ -198,15 +319,14 @@ export default class HybridMap extends Map {
     return (
       <div>
         <div ref="container" style={{opacity: 1}} className="openlayers-container">
-          <Button title={trackButtonTitle} className="continue-route-button" onClick={this.toggleTrack.bind(this)}><Glyphicon glyph={trackButtonIcon}/></Button>
-          <div className="map-legend">
-            <span><span style={{color: TRACK_COLORS.red}}>&#11044;</span> Маршруты</span><br />
-            <span><span style={{color: (this.state.zoom <= 8) ? TRACK_COLORS.blue : TRACK_COLORS.green}}>&#11044;</span> Трек</span><br />
-            <span><span style={{color: "#e67e22"}}>&#11044;</span> Выбранный</span>
-          </div>
+
+          <FluxComponent connectToStores={['settings']}>
+            <LegendWrapper zoom={this.state.zoom} onClick={this.toggleSettingsControl.bind(this)}/>
+          </FluxComponent>
+
         </div>
       </div>
-          )
+    )
   }
 
 }

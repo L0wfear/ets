@@ -115,17 +115,19 @@ export class MissionInfoForm extends Form {
 
               <FluxComponent connectToStores={{
 							points: store => ({
-							points: store.state.points,
-							selected: store.getSelectedPoint()
+								points: store.state.points,
+								selected: store.getSelectedPoint()
 							}),
-			          settings: store => ({
+		          settings: store => ({
 								showPlates: store.state.showPlates,
-								showTrack: store.state.showTrack
-			          }),
-								session: store => ({
+								showTrack: store.state.showTrack,
+								showRoute: store.state.showRoute,
+								showSelectedElement: store.state.showSelectedElement
+		          }),
+							session: store => ({
 								zoom: store.getCurrentUser().getCompanyMapConfig().zoom,
 								center: store.getCurrentUser().getCompanyMapConfig().coordinates,
-								})
+							})
               }}>
 
                 <Map polys={polys}
@@ -133,7 +135,7 @@ export class MissionInfoForm extends Form {
 										selectedPoly={geozonePolys[this.state.selectedODHId]}
 										selectedPoint={null}
 										car_gov_number={this.props.formState.car_gov_number}/>
-	
+
               </FluxComponent>
             </Col>
 

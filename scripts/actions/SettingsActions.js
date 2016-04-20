@@ -10,4 +10,11 @@ export default class SettingsActions extends Actions {
     return showTrack;
   }
 
+  setShowRoute(showRoute) {
+    return showRoute;
+  }
+
+  setShowSelectedElement(showSelectedElement) {
+    return showSelectedElement;
+  }
 }

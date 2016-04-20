@@ -1537,12 +1537,21 @@ ul.rw-list.rw-list-grouped > li.rw-list-option {
 .legend-wrapper {
   width: 175px;
 
+  &.controls-legend-wrapper {
+    z-index: 1000;
+    position: absolute;
+  }
+
   > ul {
 
     list-style-type: none;
     font-weight: 200;
     font-size: 14px;
     line-height: 1.7;
+  }
+
+  .control-element {
+    color: white;
   }
 }
 

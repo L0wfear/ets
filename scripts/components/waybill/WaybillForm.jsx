@@ -193,6 +193,8 @@ class WaybillForm extends Form {
     let IS_POST_CREATING = state.status && state.status === 'draft';
 		let IS_DISPLAY = state.status && state.status === 'closed';
 
+		let car = carsIndex[state.car_id];
+
     let title = '';
 
     if (IS_CREATING) {
@@ -316,7 +318,7 @@ class WaybillForm extends Form {
 									onChange={this.onCarChange.bind(this)}/>
 
 							<Field type="string" label="Транспортное средство" readOnly={true} hidden={IS_CREATING || IS_POST_CREATING}
-									value={getCarById(carsList, state.car_id).label}/>
+									value={car ? `${car.gov_number} [${car.model_name}]` : 'Н/Д'}/>
 	      		</Col>
 	      	</Row>
 

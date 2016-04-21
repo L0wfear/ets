@@ -8,6 +8,7 @@ class EmployeeStore extends Store {
 
     const employeesActions = flux.getActions('employees');
     this.register(employeesActions.getEmployees, this.handleGetEmployees);
+    this.register(employeesActions.getDrivers, this.handleGetDrivers);
     this.register(employeesActions.updateEmployee, this.handleGetEmployees);
     this.register(employeesActions.createEmployee, this.handleGetEmployees);
     this.register(employeesActions.deleteEmployee, this.handleGetEmployees);
@@ -19,10 +20,13 @@ class EmployeeStore extends Store {
 
   }
 
-  handleGetEmployees(employees) {
-    const employeesList = employees.result;
-    this.setState({employeesList, driversList: employeesList.filter( e => e.position_id === 15)});
+  handleGetEmployees({result}) {
+    this.setState({employeesList: result});
 	}
+
+  handleGetDrivers({result}) {
+    this.setState({driversList: result});
+  }
 
   getEmployeeById(id) {
     return _.find(this.state.employeesList, e => e.id === id);

@@ -90,6 +90,7 @@ class WaybillForm extends Form {
 		flux.getActions('objects').getFuelTypes();
 		await flux.getActions('objects').getCars();
 		await flux.getActions('employees').getEmployees();
+		await flux.getActions('employees').getDrivers();
 
     let car_has_odometer = null;
     let car = this.props.carsIndex[formState.car_id];

@@ -13,6 +13,7 @@ export const ModelsService = new APIService('/models/', useMocks);
 export const SpecialModelService = new APIService('/special_model/', useMocks);
 export const TypesService = new APIService('/types/', useMocks);
 export const EmployeeService = new APIService('/employee/', useMocks);
+export const DriverService = new APIService('/driver/', useMocks);
 export const FuelTypeService = new APIService('/fuel_type/', useMocks);
 export const FuelConsumptionRateService = new APIService('/fuel_consumption_rates/', useMocks);
 export const FuelOperationsService = new APIService('/fuel_operations/', useMocks);

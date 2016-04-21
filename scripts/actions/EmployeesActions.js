@@ -1,5 +1,5 @@
 import { Actions } from 'flummox';
-import { EmployeeService } from 'api/Services';
+import { EmployeeService, DriverService } from 'api/Services';
 import { createValidDate } from 'utils/dates';
 import _ from 'lodash';
 
@@ -7,6 +7,10 @@ export default class EmployeesActions extends Actions {
 
   getEmployees() {
     return EmployeeService.get();
+  }
+
+  getDrivers() {
+    return DriverService.get();
   }
 
   updateEmployee(formState) {

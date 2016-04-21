@@ -31,7 +31,7 @@ class EmployeeForm extends Form {
 		let state = this.props.formState;
 		const { carsList = [], positionsList = [] } = this.props;
 		const { companyStructureList = [] } = this.state;
-		const CARS = carsList.map( c => ({value: c.asuods_id, label: `${c.gov_number} [${c.model_name}]`}));
+		const CARS = carsList.map( c => ({value: c.asuods_id, label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`}));
 		const COMPANY_ELEMENTS = companyStructureList.map(el => ({value: el.id, label: el.name}));
 		const DRIVER_STATES = [{value: 1, label: 'Работает'}, {value: 0, label: 'Не работает'}];
     const POSITION_ELEMENTS = positionsList.map(el => ({value: el.id, label: el.position}));

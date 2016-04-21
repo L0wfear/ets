@@ -318,7 +318,7 @@ class WaybillForm extends Form {
 									onChange={this.onCarChange.bind(this)}/>
 
 							<Field type="string" label="Транспортное средство" readOnly={true} hidden={IS_CREATING || IS_POST_CREATING}
-									value={car ? `${car.gov_number} [${car.model_name}]` : 'Н/Д'}/>
+									value={car ? `${car.gov_number} [${car.special_model_name || ''}${car.special_model_name ? '/' : ''}${car.model_name || ''}]` : 'Н/Д'}/>
 	      		</Col>
 	      	</Row>
 

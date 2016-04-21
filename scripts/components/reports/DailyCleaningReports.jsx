@@ -110,7 +110,7 @@ let DailyCleaningReportsTable = (props) => {
     timestamp_process_end: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
 	};
 
-	return <Table title='Статус по уборке проезжей части'
+	return <Table title='Статус по уборке'
 								tableMeta={tableMeta}
 								results={props.data}
 								renderers={renderers}

@@ -101,7 +101,7 @@ let MissionReportTable = (props) => {
 
   //if (!props.data.length) return <div/>
 
-	return <Table title='Статус по уборке проезжей части'
+	return <Table title='Статус по уборке'
 								tableMeta={tableMeta}
 								results={props.data}
 								renderers={renderers}

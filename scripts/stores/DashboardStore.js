@@ -108,6 +108,11 @@ const componentsByRole = {
       key: 'current_missions',
       itemsTitle: 'Карточка задания'
     },
+    {
+      id: 24,
+      key: 'faxogramms',
+      itemsTitle: 'Расшифровка факсограммы'
+    }
   ]
 }
 

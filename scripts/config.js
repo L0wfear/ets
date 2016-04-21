@@ -33,18 +33,6 @@ let config = {
   WEBPACK_CONFIG: WEBPACK_CONFIG[ENV]
 };
 
-// локальный сервер или специфичный стенд
-let localServerUrl;
-
-try {
-  localServerUrl = LOCAL_SERVER_URL;
-  if (localServerUrl) {
-    config.backend = localServerUrl;
-  }
-} catch (e) {
-  localServerUrl = null;
-}
-
 try {
   switch (process.env.STAND) {
     case 'study':
@@ -59,5 +47,19 @@ try {
   }
 } catch (e) {
 }
+
+// локальный сервер или специфичный стенд
+let localServerUrl;
+
+try {
+  localServerUrl = LOCAL_SERVER_URL;
+  if (localServerUrl) {
+    config.backend = localServerUrl;
+  }
+} catch (e) {
+  localServerUrl = null;
+}
+
+
 
 export default config;

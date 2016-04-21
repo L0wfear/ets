@@ -2,10 +2,6 @@ import { Actions } from 'flummox';
 
 export default class PointsActions extends Actions {
 
-  updateTrack( data ){
-    return data
-  }
-
   updatePoints(data) {
     return data;
   }
@@ -20,10 +16,6 @@ export default class PointsActions extends Actions {
 
   selectPoint(point) {
     return point;
-  }
-
-  receiveTrack(carId, track) {
-    return [carId, track];
   }
 
   createConnection() {

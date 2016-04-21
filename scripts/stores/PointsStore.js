@@ -14,9 +14,6 @@ let initialState = {
       status: statuses.map(s => s.id),
       type: [],
       owner: [],
-      customer: [],
-      okrug: [],
-      own: null
     },
     byStatus: {
       1: 0,
@@ -46,8 +43,6 @@ export default class PointsStore extends Store {
     this.register(pointsActions.updatePoints, this.handleUpdatePoints);
     this.register(pointsActions.setFilter, this.handleSetFilter);
     this.register(pointsActions.selectPoint, this.handleSelectPoint);
-    this.register(pointsActions.receiveTrack, this.handleReceiveTrack);
-    this.register(pointsActions.updateTrack, this.handleUpdateTrack);
     this.register(pointsActions.setTracking, this.setTracking);
     this.register(pointsActions.getPointsExtent, this.getPointsExtent);
     this.register(pointsActions.createConnection, this.handleCreateConnection);
@@ -58,12 +53,9 @@ export default class PointsStore extends Store {
 
     this.register(loginActions.login, this.handleLogin);
 
-    this.resetState();
 
-  }
-
-  resetState() {
     this.state = _.cloneDeep(initialState);
+
   }
 
   handleCreateConnection() {
@@ -194,12 +186,11 @@ export default class PointsStore extends Store {
     };
   }
 
-  handleSetFilter(update, callback = () => {}) {
+  handleSetFilter(update) {
     let filter = Object.assign({}, this.state.filter, update);
     let selected = this.state.selected;
 
     this.setState(Object.assign({}, {filter, selected}, this.countDimensions()));
-    callback();
   }
 
 
@@ -230,34 +221,8 @@ export default class PointsStore extends Store {
     })
   }
 
-  handleLogin({payload, token}) {
-    // const filter = {
-    //   status: statuses.map(s => s.id),
-    //   type: [],
-    //   owner: [],
-    //   customer: [],
-    //   okrug: [],
-    //   own: null
-    // };
-    //
-    // if (user.role === 'prefect') {
-    //   filter.okrug = [user.okrug];
-    // }
-    //
-    // if (user.role === 'owner') {
-    //   filter.owner = [user.owner];
-    // }
-    //
-    // this.setState({
-    //   filter
-    // });
-    // debugger;
-    this.handleSetFilter({owner: [payload.company_id]})
-
-   /* setTimeout(
-      () => olmap.getView().fit(this._pointsActions.getPointsExtent(), olmap.getSize(), { padding: [50, 50, 50, 50] })
-      , 4000)*/
-
+  handleLogin({payload}) {
+    this.handleSetFilter({owner: [payload.company_id]});
   }
 
   getPointsExtent() {
@@ -357,32 +322,6 @@ export default class PointsStore extends Store {
 
     if (filter.owner && filter.owner.length > 0) {
       visible = visible && point.car && filter.owner.indexOf(Number(point.car.owner_id)) !== -1;
-      if (!visible) return false;
-    }
-
-    if (filter.customer && filter.customer.length > 0) {
-      visible = visible && point.car && filter.customer.indexOf(point.car.customer_id) !== -1;
-      if (!visible) return false;
-    }
-
-    if (filter.own != null) {
-      visible = visible && point.car && filter.own === point.car.owner_id;
-      if (!visible) return false;
-    }
-
-    if (filter.okrug && filter.okrug.length > 0) {
-      if (!point.car) return false;
-
-      var ownerId = point.car.owner_id;
-      var owner = getOwnerById(ownerId);
-
-      if (!owner) return false;
-
-
-      var okrugs = owner.okrugs;
-
-      visible = visible && okrugs.some(okrug => filter.okrug.indexOf(okrug) !== -1);
-
       if (!visible) return false;
     }
 

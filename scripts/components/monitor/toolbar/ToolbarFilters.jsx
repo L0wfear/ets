@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Filter from './Filter.jsx';
-import okrugs, {getOkrugById} from '../../../okrugs.js';
 import owners, {getOwnerById} from '../../../owners.js';
 import TypeComponent from './TypeComponent.jsx';
 import ToolbarControl from './ToolbarControl.js';
@@ -20,26 +19,6 @@ export default class ToolbarFilters extends Component {
     let additiveFilters = this.doAdditiveFilters();
 
     if (additiveFilters === undefined) throw new Error('additive filters is undefined, something went wrong')
-
-    // if (currentUser.role === 'mayor' || currentUser.role === 'prefect') {
-    //   filters.push(
-    //     <Filter key={'filter_mayor_prefect'}
-    //             name="owner"
-    //             title="Владелец"
-    //             options={additiveFilters.owners}
-    //             search={true}/>
-    //   )
-    // }
-    //
-    // if (currentUser.role === 'mayor') {
-    //   filters.push(
-    //     <Filter key={'filter_mayor'}
-    //             name="okrug"
-    //             title="Округ"
-    //             options={additiveFilters.okrugs}
-    //             search={true}/>
-    //   );
-    // }
 
     filters.push(
       <Filter key={'filter_basic'}
@@ -71,44 +50,16 @@ export default class ToolbarFilters extends Component {
     const propsFilters = this.props.filters;
     const cars = this.props.store.state.points;
 
-    let _okrugIds = [];
-    let _okrugs = [];
     let _types = [];
     let _typeIds = [];
     let _owners = [];
     let possibleOwners = [];
 
+    console.log(propsFilters);
+
     // если указан хотя бы один владелец
     if ( propsFilters.owner.length > 0 ){
-      owners.forEach((owner) => {
-        if ( propsFilters.owner.indexOf(owner.id) > -1 ){
-          owner.okrugs.forEach( (okrugId) => {
-            _okrugIds.push(okrugId)
-          })
-        }
-      })
-      _okrugIds.forEach( (okrugId) => _okrugs.push( getOkrugById(okrugId)))
-
       _owners = owners;
-    } else {
-      // если владелец не указан, но указан округ
-      if ( propsFilters.okrug.length > 0 ) {
-        // реверсивно находим возможных владельцев
-        // чтобы отфильтровать типы машин
-        owners.forEach((owner) => {
-          propsFilters.okrug.forEach((okrugId) => {
-            if ( owner.okrugs.indexOf(okrugId) > -1 ){
-              possibleOwners.push(owner.id);
-            }
-          })
-        })
-        _owners = possibleOwners.map( (id) => getOwnerById(id) );
-      } else {
-        _owners = owners;
-      }
-      // если не указан ни округ, ни владелец
-      // ну и ваще
-      _okrugs = okrugs;
     }
 
     // фильтруем машины по владельцу и типу
@@ -125,11 +76,6 @@ export default class ToolbarFilters extends Component {
         if ( propsFilters.owner.indexOf(car.owner_id) > -1 && _typeIds.indexOf( car.type_id ) === -1 ){
           _typeIds.push( car.type_id)
         }
-      } else {
-        // если владелец не указан
-        if ( possibleOwners.indexOf(car.owner_id) > -1 && _typeIds.indexOf(car.type_id) === -1){
-          _typeIds.push( car.type_id)
-        }
       }
     }
 
@@ -143,7 +89,6 @@ export default class ToolbarFilters extends Component {
     return {
       owners: _owners,
       types: _types,
-      okrugs: _okrugs
     }
   }
 }

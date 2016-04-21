@@ -17,7 +17,6 @@ class ObjectsStore extends Store {
     this.register(objectsActions.getModels, this.handleGetModels);
     this.register(objectsActions.getSpecialModels, this.handleGetSpecialModels);
     this.register(objectsActions.getTypes, this.handleGetTypes);
-    this.register(objectsActions.getOkrugs, this.handleGetOkrugs);
     this.register(objectsActions.getCustomers, this.handleGetCustomers);
     this.register(objectsActions.getOwners, this.handleGetOwners);
     this.register(objectsActions.getFuelTypes, this.handleGetFuelTypes);
@@ -47,7 +46,6 @@ class ObjectsStore extends Store {
       typesList: [],
       modelsList: [],
       specialModelsList: [],
-      okrugsList: [],
       ownersList: [],
       fuelTypes: [],
       technicalOperationsList: [],
@@ -129,10 +127,6 @@ class ObjectsStore extends Store {
   handleGetCarFuncTypes(carFuncTypes) {
     let carFuncTypesIndex = this.makeIndex(carFuncTypes.result);
     this.setState({carFuncTypesList: carFuncTypes.result, carFuncTypesIndex});
-  }
-
-  handleGetOkrugs(okrugsList) {
-    this.setState({okrugsList});
   }
 
   handleGetOwners(ownersList) {

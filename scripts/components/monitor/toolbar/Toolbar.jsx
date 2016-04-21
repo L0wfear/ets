@@ -120,9 +120,7 @@ class Toolbar extends Component {
 
     let filtersCount = 0;
     let keys = {
-      type:  1,
-     // okrug: 1,
-     // owner: 1
+      type:  1
     };
 
     for (let key in filters) {
@@ -133,7 +131,6 @@ class Toolbar extends Component {
 
     let additiveFilters = {
       owner: filters.owner,
-      okrug: filters.okrug,
       type: filters.type
     }
 

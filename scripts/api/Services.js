@@ -1,5 +1,4 @@
 import APIService from './APIService.js';
-import * as urls from '../urls.js';
 
 let useMocks = false;
 
@@ -48,15 +47,12 @@ export const MissionReportsService = new APIService('/car_odh_travel_report/');
 export const MissionLastReportService = new APIService('/mission_last_report/', useMocks);
 
 
-
-let getUrl = (d) => d;
-
-//export const TRACK_URL                 = getOldUrl('/tracks/');
-export const POINTS_URL                = getUrl('/data');
-export const WEATHER_URL               = getUrl('/weather/');
-export const GEO_OBJECTS_URL           = getUrl('/geo_objects/');
-export const LOGIN_URL                 = getUrl('/auth/');
-export const AUTH_CHECK_URL            = getUrl('/auth_check');
-export const ODHS_URL                  = getUrl('/odh/');
-export const DTS_URL                   = getUrl('/dt/');
-export const MISSIONS_CREATION_URL     = getUrl('/create_missions_from_mission_templates/');
+// export const TRACK_URL                 = getOldUrl('/tracks/');
+// export const POINTS_URL                = getUrl('/data');
+// export const WEATHER_URL               = getUrl('/weather/');
+// export const GEO_OBJECTS_URL           = getUrl('/geo_objects/');
+// export const LOGIN_URL                 = getUrl('/auth/');
+// export const AUTH_CHECK_URL            = getUrl('/auth_check');
+// export const ODHS_URL                  = getUrl('/odh/');
+// export const DTS_URL                   = getUrl('/dt/');
+// export const MISSIONS_CREATION_URL     = getUrl('/create_missions_from_mission_templates/');

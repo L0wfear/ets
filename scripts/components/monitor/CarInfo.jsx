@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import Panel from '../Panel.jsx';
 import { Button } from 'react-bootstrap';
-import { getModelById } from '../../models.js';
 import { getStatusById } from '../../statuses.js';
-import { getOwnerById } from '../../owners.js';
 import config from '../../config.js';
 import { makeDate, makeTime, getStartOfToday } from 'utils/dates';
 import FuelChart from '../ui/charts/FuelChart.jsx';
@@ -48,8 +46,8 @@ class VehicleAttributes extends Component {
     addAttribute('ID БНСО', vehicle.id)
     getStatusById(vehicle.status) && addAttribute('Статус', getStatusById(vehicle.status).title)
     getTypeById(car.type_id) && addAttribute('Тип техники', getTypeById(car.type_id).title)
-    getModelById(car.model_id) && addAttribute('Шасси', getModelById(car.model_id).title)
-    getOwnerById(car.owner_id) && addAttribute('Владелец', getOwnerById(car.owner_id).title);
+    //getModelById(car.model_id) && addAttribute('Шасси', getModelById(car.model_id).title)
+    //getOwnerById(car.owner_id) && addAttribute('Владелец', getOwnerById(car.owner_id).title);
 
     if (props.lastPoint) {
       // todo при клике на "последнюю точку" центрировать по координатам
@@ -190,11 +188,9 @@ export default class CarInfo extends Component {
 
   renderModel() {
     let car = this.props.car;
-    let modelId = car.car.model_id;
     const imageUrl = this.state.imageUrl;
 
-    let model = getModelById(modelId);
-    let title = model ? model.title : '';
+    let title =  ''; // должен быть model title
     let marker = this.props.car.marker;
     let isTrackingMode = this.state.trackingMode;
     let isTrackLoaded = marker.hasTrackLoaded();
@@ -208,14 +204,11 @@ export default class CarInfo extends Component {
       <Panel title={title}>
         <button className={trackBtnClass} onClick={this.toggleCarTracking.bind(this)} title="Следить за машиной"><span className={trackBtnIconClass}></span>&nbsp;{isTrackingMode ? 'Следим' : 'Следить'}</button>
         <button className={zoomToTrackClass} onClick={isTrackLoaded && this.zoomToTrack.bind(this)} title="Показать маршрут"><span className="glyphicon glyphicon-resize-full"></span>&nbsp;Маршрут</button>
-        {imageUrl ?
-          <img src={config.backend.replace('/services', '') + config.images + imageUrl} style={{
-            margin: 10,
-            width: 250,
-            minHeight: 100
-          }}/>
-          : null
-        }
+        <img src={imageUrl ? config.backend.replace('/services', '') + config.images + imageUrl : ''} style={{
+          margin: 10,
+          width: 250,
+          minHeight: 100
+        }}/>
         <VehicleAttributes vehicle={car} lastPoint={marker.hasTrackLoaded() && marker.track.getLastPoint()}/>
         {marker.track.getLegend()}
       </Panel>

@@ -11,23 +11,10 @@ import { datePickerFunction } from 'utils/labelFunctions';
 
 let tableMeta = {
   cols: [{
-      name: 'last_name',
-      caption: 'Фамилия',
+      name: 'full_name',
+      caption: 'Фамилия Имя Отчество',
       type: 'text',
-      filter: {
-				type: 'select'
-			}
-  }, {
-      name: 'first_name',
-      caption: 'Имя',
-      type: 'text',
-      filter: {
-				type: 'select'
-			}
-  }, {
-      name: 'middle_name',
-      caption: 'Отчество',
-      type: 'text',
+      cssClassName: "width300justify",
       filter: {
 				type: 'select'
 			}
@@ -85,6 +72,12 @@ let tableMeta = {
 
 let EmployeesTable = (props) => {
 
+  let data = props.data;
+
+  let fullnames = data.map((e) => e.last_name+' '+e.first_name+' '+e.middle_name);
+  data.forEach((e, i) => {e.full_name = fullnames[i]});
+  console.log(data)
+
 	const renderers = {
 		birthday : ({data}) => <DateFormatter date={data} />,
 		active : ({data}) => <div>{data === true ? 'Работает' : 'Не работает'}</div>,
@@ -94,10 +87,11 @@ let EmployeesTable = (props) => {
 	};
 
 	return <Table title='Реестр сотрудников'
-                results={props.data}
-								tableMeta={tableMeta}
-								renderers={renderers}
-								{...props}/>
+      results={data}
+      tableMeta={tableMeta}
+      renderers={renderers}
+      initialSort={"full_name"}
+      {...props}/>
 }
 
 class EmployeesList extends ElementsList {
@@ -128,8 +122,8 @@ class EmployeesList extends ElementsList {
           {/*<Button bsSize="small" disabled={this.state.selectedElement === null} onClick={this.removeElement.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>*/}
         </EmployeesTable>
 				<EmployeeFormWrap onFormHide={this.onFormHide.bind(this)}
-												showForm={this.state.showForm}
-												element={this.state.selectedElement} />
+            showForm={this.state.showForm}
+            element={this.state.selectedElement} />
 			</div>
 		)
 	}

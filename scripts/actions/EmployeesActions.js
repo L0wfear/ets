@@ -14,6 +14,7 @@ export default class EmployeesActions extends Actions {
     payload.birthday = createValidDate(payload.birthday);
     delete payload.position_name;
     delete payload.position_key;
+    delete payload.full_name;
     payload.active = !!payload.active;
     return EmployeeService.put(payload);
   }

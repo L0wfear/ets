@@ -39,11 +39,14 @@ class MonitorPage extends Component {
           }),
           settings: store => ({
             showPlates: store.state.showPlates
+          }),
+          session: store => ({
+            zoom: store.getCurrentUser().getCompanyMapConfig().zoom,
+            center: store.getCurrentUser().getCompanyMapConfig().coordinates,
           })
         }}>
 
-          <Map zoom={MAP_INITIAL_ZOOM}
-               center={MAP_INITIAL_CENTER}/>
+          <Map/>
 
           <Sidebar/>
         </FluxComponent>

@@ -43,7 +43,7 @@ const Filter = (props) => {
                     }))
                     .value();
     if (option.name === "operation_id") {
-      options = options.sort((a,b) => a.label.localeCompare(b.label));
+      options = options.sort((a,b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
     }
     input = <FilterSelect options={options} value={value} onChange={props.onChange} />
   }

@@ -203,7 +203,6 @@ export default class Track {
 
     return this.getTrack(id, from_dt, to_dt)
                 .then((track) => {
-                  //debugger;
                   this.points = track;
                   this.continuousUpdating = updating;
                   this.render();
@@ -317,7 +316,7 @@ export default class Track {
     let ctx = this.ctx;
 
     if (!track || track.length < 2) {
-      return
+      return;
     }
 
     let type_id = owner.point.car.type_id;

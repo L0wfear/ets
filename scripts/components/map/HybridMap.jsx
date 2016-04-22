@@ -20,7 +20,7 @@ let GeoJSON = new ol.format.GeoJSON();
 global.ol = ol;
 
 let ControlComponent = (props) =>
-  <span className={cx({'half-visible': !props.active})}>
+  <span>
     {props.control.color ? <button className={'status-filter-icon'} onClick={props.onClick} style={{ backgroundColor: props.control.color}}></button> : null}
     {props.control.title}
   </span>
@@ -77,13 +77,15 @@ class LegendWrapper extends React.Component {
 
   render() {
 
+    let marker = this.props.marker();
     let items = this.getControls()
       .map((control, i) => {
+        let controllClassName = cx('control-element', {'half-visible': !this.isComponentActive(control.type)});
         return (
-          <li key={i} className="control-element">
-            <ControlComponent active={this.isComponentActive(control.type)}
-                              control={control}
+          <li key={i} className={controllClassName} >
+            <ControlComponent control={control}
                               onClick={this.toggleSettingsControl.bind(this, control.type)}/>
+                              {this.props.zoom > 8 && control.type === 'track' && marker && marker.track ? marker.track.getLegend() : ''}
           </li>
         );
       });
@@ -307,7 +309,7 @@ export default class HybridMap extends Map {
         <div ref="container" style={{opacity: 1}} className="openlayers-container">
 
           <FluxComponent connectToStores={['settings']}>
-            <LegendWrapper zoom={this.state.zoom}/>
+            <LegendWrapper zoom={this.state.zoom} marker={() => this._pointsStore.getSelectedMarker()}/>
           </FluxComponent>
 
         </div>

@@ -116,7 +116,6 @@ export default class PointsStore extends Store {
           let car = p.car;
           if (car && car.gov_number === this.state.singleCarTrack && p.marker) {
             p.marker.createTrack();
-            console.info(this.state.singleCarTrackDates);
             p.marker.track.fetch(this.state.singleCarTrackDates[0] || undefined, this.state.singleCarTrackDates[1] || undefined);
             this.handleSelectPoint(p);
           }
@@ -332,7 +331,7 @@ export default class PointsStore extends Store {
     if (this.state.selected) {
       return this.state.selected.marker;
     } else {
-      return null
+      return null;
     }
   }
 

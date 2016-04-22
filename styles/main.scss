@@ -3280,3 +3280,11 @@ div.none {
 .half-visible {
   opacity: 0.5;
 }
+
+
+.controls-legend-wrapper {
+  .track-legend {
+    position: static;
+    margin-left: 10px;
+  }
+}

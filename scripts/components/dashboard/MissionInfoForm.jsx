@@ -59,6 +59,7 @@ export class MissionInfoForm extends Form {
       this.setState({object_list: r.result && r.result[0] ? r.result[0].object_list : []});
     })
 		this.context.flux.getActions('routes').getGeozones();
+	    this.context.flux.getActions('objects').getTypes();
   }
 
   componentWillUnmount() {

@@ -35,13 +35,16 @@ const Filter = (props) => {
   }
 
   if (option.filter && option.filter.type && option.filter.type === 'select' && !option.filter.options) {
-    const options = _(props.tableData)
+    let options = _(props.tableData)
                     .uniq((d) => d[option.name])
                     .map((d) => ({
                       value: d[option.name] === true || d[option.name] === false ? +d[option.name] : d[option.name],
                       label: typeof option.filter.labelFunction === 'function' ? option.filter.labelFunction(d[option.name]) : d[option.name],
                     }))
                     .value();
+    if (option.name === "operation_id") {
+      options = options.sort((a,b) => a.label.localeCompare(b.label));
+    }
     input = <FilterSelect options={options} value={value} onChange={props.onChange} />
   }
   if (option.filter && option.filter.type && option.filter.type === 'multiselect' && option.filter.options) {

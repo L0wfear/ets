@@ -26,7 +26,7 @@ class FuelRateForm extends Form {
 		const { modelsList = [], operations = [], specialModelsList = [] } = this.props;
 		const MODELS = modelsList.map( m => ({value: m.id, label: m.title}));
 		const SPECIALMODELS = specialModelsList.map( m => ({value: m.id, label: m.name}));
-		const OPERATIONS = operations.map(op => ({value: op.id, label: op.name}));
+		const OPERATIONS = operations.map(op => ({value: op.id, label: op.name})).sort((a,b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
 
     console.log('form state is ', state);
 
@@ -43,45 +43,45 @@ class FuelRateForm extends Form {
 		      	<Col md={6}>
 
 							<Field label="Дата приказа"
-								type="date"
-								date={state.order_date}
-								onChange={this.handleChange.bind(this, 'order_date')}
-								time={false} />
+									type="date"
+									date={state.order_date}
+									onChange={this.handleChange.bind(this, 'order_date')}
+									time={false} />
 
 							<Field label="Операция"
-								error={errors['operation_id']}
-								type="select"
-								options={OPERATIONS}
-								clearable={false}
-								value={state.operation_id}
-								onChange={this.handleChange.bind(this, 'operation_id')} />
+									error={errors['operation_id']}
+									type="select"
+									options={OPERATIONS}
+									clearable={false}
+									value={state.operation_id}
+									onChange={this.handleChange.bind(this, 'operation_id')} />
 
 							<Field label="Норма для летнего периода"
-								type="number"
-								error={errors['summer_rate']}
-								value={state.summer_rate}
-								onChange={this.handleChange.bind(this, 'summer_rate')} />
+									type="number"
+									error={errors['summer_rate']}
+									value={state.summer_rate}
+									onChange={this.handleChange.bind(this, 'summer_rate')} />
 
 							<Field label="Норма для зимнего периода"
-								type="number"
-								error={errors['winter_rate']}
-								value={state.winter_rate}
-								onChange={this.handleChange.bind(this, 'winter_rate')} />
+									type="number"
+									error={errors['winter_rate']}
+									value={state.winter_rate}
+									onChange={this.handleChange.bind(this, 'winter_rate')} />
 
 							<Field label="Модель ТС"
-								error={errors['car_special_model_id']}
-								type="select"
-								options={SPECIALMODELS}
-								clearable={false}
-								value={state.car_special_model_id}
-								onChange={this.handleChange.bind(this, 'car_special_model_id')} />
+									error={errors['car_special_model_id']}
+									type="select"
+									options={SPECIALMODELS}
+									clearable={false}
+									value={state.car_special_model_id}
+									onChange={this.handleChange.bind(this, 'car_special_model_id')} />
 
 							<Field label="Марка шасси"
-								error={errors['car_model_id']}
-								type="select"
-								options={MODELS}
-								value={state.car_model_id}
-								onChange={this.handleChange.bind(this, 'car_model_id')} />
+									error={errors['car_model_id']}
+									type="select"
+									options={MODELS}
+									value={state.car_model_id}
+									onChange={this.handleChange.bind(this, 'car_model_id')} />
 
 		      	</Col>
 

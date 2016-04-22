@@ -11,7 +11,7 @@ export default class FuelRateFormWrap extends FormWrap {
 		super(props);
 
 		this.defaultElement = {
-			order_date: new Date('1990', '00', '01'),
+			order_date: new Date(),
 			operation_id: null,
 			//summer_rate: '',
 			//winter_rate: '',

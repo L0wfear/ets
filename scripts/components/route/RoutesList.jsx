@@ -205,21 +205,21 @@ class RoutesList extends Component {
 							</div>
 						</header>
 						{/*Выберите маршрут из списка для просмотра*/}
-						<div className="sidebar__list-container" style={{marginBottom: "30px !important"}}>
+						<div className="sidebar__list-container" style={{marginBottom: "30px !important", marginLeft: 20}}>
 							<ul className="sidebar__list">
-								<h5 className="text-center">Построенные вручную<span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, 'showManual')}>{this.state.showManual ? ` \u25B2` : ` \u25BC`}</span></h5>
+								<h5>Построенные вручную<span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, 'showManual')}>{this.state.showManual ? ` \u25B2` : ` \u25BC`}</span></h5>
 								<Div hidden={!this.state.showManual}>{vectorRoutes}</Div>
 							</ul>
 							<ul className="sidebar__list">
-								<h5 className="text-center">Маршруты по ОДХ<span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, 'showODH')}>{this.state.showODH ? ` \u25B2` : ` \u25BC`}</span></h5>
+								<h5>Маршруты по ОДХ<span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, 'showODH')}>{this.state.showODH ? ` \u25B2` : ` \u25BC`}</span></h5>
 								<Div hidden={!this.state.showODH}>{simpleRoutes}</Div>
 							</ul>
 							<ul className="sidebar__list">
-								<h5 className="text-center">Маршруты по ДТ<span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, 'showDT')}>{this.state.showDT ? ` \u25B2` : ` \u25BC`}</span></h5>
+								<h5>Маршруты по ДТ<span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, 'showDT')}>{this.state.showDT ? ` \u25B2` : ` \u25BC`}</span></h5>
 								<Div hidden={!this.state.showDT}>{simpleRoutes2}</Div>
 							</ul>
 							<ul className="sidebar__list">
-								<h5 className="text-center">Маршруты по пунктам назначения<span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, 'showDP')}>{this.state.showDP ? ` \u25B2` : ` \u25BC`}</span></h5>
+								<h5>Маршруты по пунктам назначения<span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, 'showDP')}>{this.state.showDP ? ` \u25B2` : ` \u25BC`}</span></h5>
 								<Div hidden={!this.state.showDP}>{pointsRoutes}</Div>
 							</ul>
 						</div>

@@ -26,6 +26,10 @@ class RoutesList extends Component {
 			isVectorRouteSelected: false,
 			filterValues: {},
 			filterModalIsOpen: false,
+			showODH: false,
+			showDT: false,
+			showDP: false,
+			showManual: false,
 		};
 	}
 
@@ -120,6 +124,13 @@ class RoutesList extends Component {
 
 	}
 
+	handleDropdown(name) {
+		if (name === 'showODH') this.setState({showODH: !this.state.showODH});
+		if (name === 'showDT') this.setState({showDT: !this.state.showDT});
+		if (name === 'showDP') this.setState({showDP: !this.state.showDP});
+		if (name === 'showManual') this.setState({showManual: !this.state.showManual});
+	}
+
 	componentDidMount() {
 		const { flux } = this.context;
 		flux.getActions('routes').getRoutes();
@@ -194,21 +205,22 @@ class RoutesList extends Component {
 							</div>
 						</header>
 						{/*Выберите маршрут из списка для просмотра*/}
-						<div className="sidebar__list-container">
+						<div className="sidebar__list-container" style={{marginBottom: "30px !important"}}>
 							<ul className="sidebar__list">
-								{vectorRoutes}
+								<h5 className="text-center">Построенные вручную<span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, 'showManual')}>{this.state.showManual ? ` \u25B2` : ` \u25BC`}</span></h5>
+								<Div hidden={!this.state.showManual}>{vectorRoutes}</Div>
 							</ul>
 							<ul className="sidebar__list">
-								<h5 className="text-center">Маршруты по ОДХ</h5>
-								{simpleRoutes}
+								<h5 className="text-center">Маршруты по ОДХ<span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, 'showODH')}>{this.state.showODH ? ` \u25B2` : ` \u25BC`}</span></h5>
+								<Div hidden={!this.state.showODH}>{simpleRoutes}</Div>
 							</ul>
 							<ul className="sidebar__list">
-								<h5 className="text-center">Маршруты по ДТ</h5>
-								{simpleRoutes2}
+								<h5 className="text-center">Маршруты по ДТ<span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, 'showDT')}>{this.state.showDT ? ` \u25B2` : ` \u25BC`}</span></h5>
+								<Div hidden={!this.state.showDT}>{simpleRoutes2}</Div>
 							</ul>
 							<ul className="sidebar__list">
-								<h5 className="text-center">Маршруты по пунктам назначения</h5>
-								{pointsRoutes}
+								<h5 className="text-center">Маршруты по пунктам назначения<span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, 'showDP')}>{this.state.showDP ? ` \u25B2` : ` \u25BC`}</span></h5>
+								<Div hidden={!this.state.showDP}>{pointsRoutes}</Div>
 							</ul>
 						</div>
 					</Col>
@@ -217,16 +229,16 @@ class RoutesList extends Component {
 							<div className="waybills-buttons">
 								<ClickOutHandler onClickOut={this.closeFilter.bind(this)}>
 		              <Filter direction={'right'}
-		                      show={this.state.filterModalIsOpen}
-		                      onSubmit={this.saveFilter.bind(this)}
-		                      onClick={this.toggleFilter.bind(this)}
-		                      onHide={this.closeFilter.bind(this)}
-		                      active={_.keys(this.state.filterValues).length}
-		                      values={this.state.filterValues}
-		                      options={filterOptions}
-		                      //tableData={this.props.results}
-		                      active={_.keys(this.state.filterValues).length}
-		                      className="filter-wrap"/>
+											show={this.state.filterModalIsOpen}
+											onSubmit={this.saveFilter.bind(this)}
+											onClick={this.toggleFilter.bind(this)}
+											onHide={this.closeFilter.bind(this)}
+											active={_.keys(this.state.filterValues).length}
+											values={this.state.filterValues}
+											options={filterOptions}
+											//tableData={this.props.results}
+											active={_.keys(this.state.filterValues).length}
+				className="filter-wrap"/>
 		            </ClickOutHandler>
 								<Button bsSize="small" onClick={this.createRoute.bind(this)}><Glyphicon glyph="plus" /> Создать маршрут</Button>
 								<Button bsSize="small" disabled={route === null} onClick={() => this.setState({showForm: true})}><Glyphicon glyph="pencil" /> Изменить маршрут</Button>

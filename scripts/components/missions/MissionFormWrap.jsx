@@ -42,6 +42,18 @@ class MissionFormWrap extends FormWrap {
 		formErrors.date_start = ''
 		formErrors.date_end = ''
 
+		if ((this.props.fromWaybill && this.props.waybillStartDate) || (this.props.fromWaybill && this.props.waybillEndDate)) {
+			if (moment(formState.date_start).toDate().getTime() < moment(this.props.waybillStartDate).toDate().getTime()) {
+				formErrors.date_start = `Дата не должна выходить за пределы путевого листа`;
+			}
+
+			if (moment(formState.date_end).toDate().getTime() > moment(this.props.waybillEndDate).toDate().getTime()) {
+				formErrors.date_end = `Дата не должна выходить за пределы путевого листа`;
+			}
+		}
+
+
+
 		if (formState.date_start && formState.date_end) {
 			if (moment(formState.date_end).toDate().getTime() < moment(formState.date_start).toDate().getTime()) {
 				formErrors.date_end = `Неправильно указана дата`;

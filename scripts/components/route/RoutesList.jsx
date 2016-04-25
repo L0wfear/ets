@@ -26,10 +26,7 @@ class RoutesList extends Component {
 			isVectorRouteSelected: false,
 			filterValues: {},
 			filterModalIsOpen: false,
-			showODH: false,
-			showDT: false,
-			showDP: false,
-			showManual: false,
+			showId: [-1]
 		};
 	}
 
@@ -125,10 +122,15 @@ class RoutesList extends Component {
 	}
 
 	handleDropdown(name) {
-		if (name === 'showODH') this.setState({showODH: !this.state.showODH});
-		if (name === 'showDT') this.setState({showDT: !this.state.showDT});
-		if (name === 'showDP') this.setState({showDP: !this.state.showDP});
-		if (name === 'showManual') this.setState({showManual: !this.state.showManual});
+		let {showId} = this.state;
+		let i = this.state.showId.indexOf(name);
+		if (i < 0) {
+			showId.push(name);
+			this.setState({showId})
+		} else {
+			showId.splice(i,1);
+			this.setState({showId})
+		}
 	}
 
 	componentDidMount() {
@@ -171,29 +173,101 @@ class RoutesList extends Component {
 				}
 			}
 		];
-		console.log(this.props);
+
 		routesList = routesList.filter((r) => this.shouldBeRendered(r));
 		routesList = _.sortBy(routesList, (o) => o.name.toLowerCase());
 
-		let vectorRoutes = routesList.filter(r => r.type === 'vector').map((r, i) => {
-			let cn = cx('sidebar__list-item', {'active': route && r.id === route.id});
-			return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>
+		let techOperRoutes = technicalOperationsList.map(e => {
+			return {
+				routes: routesList.filter(r => r.technical_operation_id === e.id),
+				name: e.name,
+				id: e.id
+			}
+		}).filter(e => e.routes.length);
+
+		let vectorRoutes = techOperRoutes.map((o, i) => {
+			let hidden = ! !!(state.showId.indexOf(o.id+'v')+1);
+			let routes = o.routes.filter(r => r.type === 'vector');
+			if (routes.length) return (
+				<div>
+					<h6><span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, o.id+'v')}>{o.name}{hidden ? ` \u25BC` : ` \u25BA`}</span></h6>
+					<Div hidden={hidden}>
+						{routes.map((r, i) => {
+							let cn = cx('sidebar__list-item', {'active': route && r.id === route.id});
+							return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>
+						})}
+					</Div>
+				</div>
+			)
 		});
 
-		let simpleRoutes = routesList.filter(r => r.type === 'simple').map((r, i) => {
-			let cn = cx('sidebar__list-item', {'active': route && r.id === route.id});
-			return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>
-		});
+		let simpleRoutes = techOperRoutes.map((o, i) => {
+			let hidden = ! !!(state.showId.indexOf(o.id+'s')+1);
+			let routes = o.routes.filter(r => r.type === 'simple');
+			if (routes.length) return (
+				<div>
+					<h6><span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, o.id+'s')}>{o.name}{hidden ? ` \u25BC` : ` \u25BA`}</span></h6>
+					<Div hidden={hidden}>
+						{routes.map((r, i) => {
+							let cn = cx('sidebar__list-item', {'active': route && r.id === route.id});
+							return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>
+						})}
+					</Div>
+				</div>
+			)
+		})
 
-		let simpleRoutes2 = routesList.filter(r => r.type === 'simple_dt').map((r, i) => {
-			let cn = cx('sidebar__list-item', {'active': route && r.id === route.id});
-			return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>
-		});
+		let simpleRoutes2 = techOperRoutes.map((o, i) => {
+			let hidden = ! !!(state.showId.indexOf(o.id+'s2')+1);
+			let routes = o.routes.filter(r => r.type === 'simple_dt');
+			if (routes.length) return (
+				<div>
+					<h6><span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, o.id+'s2')}>{o.name}{hidden ? ` \u25BC` : ` \u25BA`}</span></h6>
+					<Div hidden={hidden}>
+						{routes.map((r, i) => {
+							let cn = cx('sidebar__list-item', {'active': route && r.id === route.id});
+							return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>
+						})}
+					</Div>
+				</div>
+			)
+		})
 
-		let pointsRoutes = routesList.filter(r => r.type === 'points').map((r, i) => {
-			let cn = cx('sidebar__list-item', {'active': route && r.id === route.id});
-			return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>
-		});
+		let pointsRoutes = techOperRoutes.map((o, i) => {
+			let hidden = ! !!(state.showId.indexOf(o.id+'p')+1);
+			let routes = o.routes.filter(r => r.type === 'points');
+			if (routes.length) return (
+				<div>
+					<h6><span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, o.id+'p')}>{o.name}{hidden ? ` \u25BC` : ` \u25BA`}</span></h6>
+					<Div hidden={hidden}>
+						{routes.map((r, i) => {
+							let cn = cx('sidebar__list-item', {'active': route && r.id === route.id});
+							return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>
+						})}
+					</Div>
+				</div>
+			)
+		})
+
+		// let vectorRoutes = routesList.filter(r => r.type === 'vector').map((r, i) => {
+		// 	let cn = cx('sidebar__list-item', {'active': route && r.id === route.id});
+		// 	return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>
+		// });
+		//
+		// let simpleRoutes = routesList.filter(r => r.type === 'simple').map((r, i) => {
+		// 	let cn = cx('sidebar__list-item', {'active': route && r.id === route.id});
+		// 	return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>
+		// });
+		//
+		// let simpleRoutes2 = routesList.filter(r => r.type === 'simple_dt').map((r, i) => {
+		// 	let cn = cx('sidebar__list-item', {'active': route && r.id === route.id});
+		// 	return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>
+		// });
+		//
+		// let pointsRoutes = routesList.filter(r => r.type === 'points').map((r, i) => {
+		// 	let cn = cx('sidebar__list-item', {'active': route && r.id === route.id});
+		// 	return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>
+		// });
 
 		return (
 			<div className="ets-page-wrap routes-list">
@@ -206,20 +280,20 @@ class RoutesList extends Component {
 						</header>
 						<div className="sidebar__list-container" style={{marginBottom: "30px !important", marginLeft: 20, top:"70px"}}>
 							<ul className="sidebar__list">
-								<h5><span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, 'showManual')}>Построенные вручную{this.state.showManual ? ` \u25BC` : ` \u25BA`}</span></h5>
-								<Div hidden={!this.state.showManual}>{vectorRoutes}</Div>
+								<h5><span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, 'manual')}>Построенные вручную{!!(state.showId.indexOf('manual')+1) ? ` \u25BC` : ` \u25BA`}</span></h5>
+								<Div hidden={(! !!(state.showId.indexOf('manual')+1))}>{vectorRoutes}</Div>
 							</ul>
 							<ul className="sidebar__list">
-								<h5><span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, 'showODH')}>Маршруты по ОДХ{this.state.showODH ? ` \u25BC` : ` \u25BA`}</span></h5>
-								<Div hidden={!this.state.showODH}>{simpleRoutes}</Div>
+								<h5><span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, 'odh')}>Маршруты по ОДХ{!!(state.showId.indexOf('odh')+1) ? ` \u25BC` : ` \u25BA`}</span></h5>
+								<Div hidden={(! !!(state.showId.indexOf('odh')+1))}>{simpleRoutes}</Div>
 							</ul>
 							<ul className="sidebar__list">
-								<h5><span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, 'showDT')}>Маршруты по ДТ{this.state.showDT ? ` \u25BC` : ` \u25BA`}</span></h5>
-								<Div hidden={!this.state.showDT}>{simpleRoutes2}</Div>
+								<h5><span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, 'dt')}>Маршруты по ДТ{!!(state.showId.indexOf('dt')+1) ? ` \u25BC` : ` \u25BA`}</span></h5>
+								<Div hidden={(! !!(state.showId.indexOf('dt')+1))}>{simpleRoutes2}</Div>
 							</ul>
 							<ul className="sidebar__list">
-								<h5><span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, 'showDP')}>Маршруты по пунктам назначения{this.state.showDP ? ` \u25BC` : ` \u25BA`}</span></h5>
-								<Div hidden={!this.state.showDP}>{pointsRoutes}</Div>
+								<h5><span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, 'dp')}>Маршруты по пунктам назначения{!!(state.showId.indexOf('dp')+1) ? ` \u25BC` : ` \u25BA`}</span></h5>
+								<Div hidden={(! !!(state.showId.indexOf('dp')+1))}>{pointsRoutes}</Div>
 							</ul>
 						</div>
 					</Col>

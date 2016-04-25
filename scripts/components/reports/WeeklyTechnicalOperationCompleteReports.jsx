@@ -114,6 +114,8 @@ let WeeklyTechnicalOperationCompleteReportsTable = (props) => {
 								tableMeta={tableMeta}
 								results={props.data}
 								renderers={renderers}
+                initialSort={'timestamp_create'}
+                initialSortAscending={false}
 								{...props} />
 
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import Map from './Map.jsx';
 import CarMarker from '../markers/car/CarMarker.js';
 import { projectToPixel } from './MskAdapter.js';
-import { getTrack } from '../../adapter.js';
+import { getTrack, getGeoObjectsByCoords } from '../../adapter.js';
 import { getStartOfToday, makeDate, makeTime } from 'utils/dates';
 import { swapCoords, roundCoordinates } from 'utils/geo';
 import { TRACK_COLORS } from '../../constants/track.js';
@@ -269,14 +269,64 @@ export default class HybridMap extends Map {
     return canvas;
   }
 
-  onMouseMove() {
+  onMouseMove(ev) {
     let zoom = this.map.getView().getZoom();
     if (zoom !== this.state.zoom)
     this.setState({zoom});
+
+    let coordinate = ev.coordinate;
+    let changeCursor = false;
+
+    let markers = this.viewportVisibleMarkers;
+    for (let key in markers) {
+      let marker = markers[key];
+
+      if (marker.contains(coordinate)) {
+        changeCursor = true;
+        break;
+      }
+    }
+
+    if (this._pointsStore.hasMarkerSelected()) {
+      let currentSelectedMarker = this._pointsStore.getSelectedMarker();
+      if (currentSelectedMarker.hasTrackLoaded()) {
+        let possibleTrackPoint = currentSelectedMarker.track.getPointAtCoordinate(coordinate);
+        if (possibleTrackPoint) {
+          changeCursor = true;
+        }
+      }
+    }
+
+    let el = this.map.getViewport();
+    el.style.cursor = changeCursor ? 'pointer' : '';
   }
 
-  onClick() {
+  onClick(ev) {
+    let map = this.map;
+    let pixel = ev.pixel; // координаты клика во viewport
+    let coordinate = ev.coordinate;
+    let store = this._pointsStore;
+    let clickedMarker = null;
+    let cancelSelection = false;
 
+    let currentSelectedPoint = this._pointsStore.getSelectedPoint();
+    if (currentSelectedPoint) {
+      let marker = currentSelectedPoint.marker;
+      if (marker.hasTrackLoaded()) {
+        let track = marker.track;
+        let possibleTrackPoint = track.getPointAtCoordinate(coordinate);
+        if (possibleTrackPoint !== null) {
+          let pointCoords = possibleTrackPoint.coords_msk;
+          let makePopupFn = track.getTrackPointTooltip(possibleTrackPoint);
+          this.popup.show(pointCoords, makePopupFn());
+          getGeoObjectsByCoords(possibleTrackPoint.coords_msk)
+            .then((data) => {
+              this.popup.show(pointCoords, makePopupFn(data.objects))
+            })
+          return;
+            }
+          }
+        }
   }
 
   componentWillReceiveProps(nextProps) {

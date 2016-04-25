@@ -79,6 +79,7 @@ class FuelRatesDirectory extends ElementsList {
 	}
 
 	componentDidMount() {
+		super.componentDidMount();
     const { flux } = this.context;
     flux.getActions('fuel-rates').getFuelOperations();
 		flux.getActions('fuel-rates').getFuelRates();

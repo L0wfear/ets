@@ -166,6 +166,7 @@ class TechOperationsDirectory extends ElementsList {
 	}
 
 	componentDidMount() {
+    super.componentDidMount();
     const { flux } = this.context;
     flux.getActions('technical_operation').getTechnicalOperations();
     flux.getActions('objects').getCarFuncTypes();

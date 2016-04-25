@@ -105,6 +105,7 @@ class CarsList extends ElementsList {
 	}
 
 	async componentDidMount() {
+		super.componentDidMount();
 		const { flux } = this.context;
 
 		await flux.getActions('objects').getTypes();

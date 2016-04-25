@@ -83,7 +83,7 @@ export default class CurrentMission extends DashboardCardMedium {
   }
 
   renderCollapsibleSubitems(item, i) {
-    let { subItems } = item;
+    let { subItems = [] } = item;
       return (
         <Collapse in={this.state.selectedItem === i}>
           <Div>

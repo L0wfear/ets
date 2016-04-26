@@ -4,7 +4,7 @@ export const loginErrorNotification = {
   level: 'error',
   dismissible: false,
   position: 'tc',
-  autoDismiss: 0,
+  autoDismiss: 5,
   action: {
     label: 'Перейти на страницу авторизации',
     callback: function() {
@@ -30,7 +30,7 @@ export function getErrorNotification(error) {
     level: 'error',
     dismissible: false,
     position: 'tc',
-    autoDismiss: 0,
+    autoDismiss: 5,
     action: {
       label: 'Перезагрузить',
       callback: () => window.location.reload(),
@@ -45,7 +45,7 @@ export function getServerErrorNotification(errorService) {
     level: 'error',
     dismissible: true,
     position: 'tr',
-    autoDismiss: 0,
+    autoDismiss: 5,
     action: {
       label: 'Перезагрузить страницу',
       callback: () => window.location.reload(),
@@ -61,7 +61,7 @@ export function getReportNotReadyNotification(flux) {
     level: 'info',
     dismissible: true,
     position: 'tc',
-    autoDismiss: 0,
+    autoDismiss: 5,
     action: {
       label: 'Обновить список',
       callback: () => flux.getActions('missions').getMissionReports(),
@@ -76,7 +76,7 @@ export function getReportNotReadyNotification2(flux) {
     level: 'info',
     dismissible: true,
     position: 'tc',
-    autoDismiss: 0,
+    autoDismiss: 5,
     action: {
       label: 'Обновить список',
       callback: () => flux.getActions('reports').getDailyCleaningReports(),
@@ -91,7 +91,7 @@ export function getReportNotReadyNotification3(flux) {
     level: 'info',
     dismissible: true,
     position: 'tc',
-    autoDismiss: 0,
+    autoDismiss: 5,
     action: {
       label: 'Обновить список',
       callback: () => flux.getActions('reports').getWeeklyTechnicalOperationCompleteReports(),
@@ -114,7 +114,7 @@ const missionsByCarAndDateUpdateNotification = {
   level: 'info',
   dismissible: true,
   position: 'tr',
-  autoDismiss: 2,
+  autoDismiss: 5,
 }
 
 export const saveDataSuccessNotification = {
@@ -139,6 +139,6 @@ export function getWarningNotification(message) {
     level: 'warning',
     dismissible: false,
     position: 'tr',
-    autoDismiss: 3,
+    autoDismiss: 5,
   };
 }

@@ -46,6 +46,7 @@ class RoutesList extends Component {
   }
 
 	closeFilter() {
+		if (this.state.filterModalIsOpen === true)
     this.setState({filterModalIsOpen: false});
   }
 
@@ -117,20 +118,15 @@ class RoutesList extends Component {
 		})
 	}
 
-	setFilterValue(key, value) {
-
-	}
-
 	handleDropdown(name) {
-		let {showId} = this.state;
+		let { showId } = this.state;
 		let i = this.state.showId.indexOf(name);
 		if (i < 0) {
 			showId.push(name);
-			this.setState({showId})
 		} else {
 			showId.splice(i,1);
-			this.setState({showId})
 		}
+		this.setState({showId});
 	}
 
 	componentDidMount() {
@@ -144,7 +140,7 @@ class RoutesList extends Component {
 			_.mapKeys(this.props.location.query, (v, k) => {
 				filterValues[k] = [v];
 			});
-			this.setState({filterValues})
+			this.setState({filterValues});
 		}
 	}
 
@@ -309,7 +305,6 @@ class RoutesList extends Component {
 											active={_.keys(this.state.filterValues).length}
 											values={this.state.filterValues}
 											options={filterOptions}
-											//tableData={this.props.results}
 											active={_.keys(this.state.filterValues).length}
 											className="filter-wrap"/>
 		            </ClickOutHandler>

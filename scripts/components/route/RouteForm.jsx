@@ -30,11 +30,12 @@ class RouteForm extends Form {
       return o.id === technical_operation_id;
     });
 
-		let route_type_options = [{value: 'vector', label: 'Вручную'}];
+		let route_type_options = [];
 
     technicalOperation.objects.forEach(function(obj) {
       switch (obj.name) {
         case 'ОДХ':
+					route_type_options.push({value: 'vector', label: 'Вручную'});
           route_type_options.push({value: 'simple', label: 'Выбор из ОДХ'});
           !routeTypeValue ? routeTypeValue = 'simple' : null;
           break;

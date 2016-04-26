@@ -50,22 +50,22 @@ class CarTypesDirectory extends ElementsList {
 	constructor(props, context) {
 		super(props);
 
-		this.mainListName = 'carFuncTypesList';
+		this.mainListName = 'typesList';
 		this.selectField = 'id';
 	}
 
 	componentDidMount() {
     const { flux } = this.context;
-		flux.getActions('objects').getCarFuncTypes();
+		flux.getActions('objects').getTypes();
 	}
 
 	render() {
 
-		const { carFuncTypesList = [] } = this.props;
+		const { typesList = [] } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
-        <CarTypesTable data={carFuncTypesList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'} />
+        <CarTypesTable data={typesList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'} />
 			</div>
 		);
 	}

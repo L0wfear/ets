@@ -18,9 +18,9 @@ export class MissionForm extends Form {
 
   handleCarFuncTypesChange(v) {
     let data = v.split(',');
-    let { carFuncTypesList = [] } = this.props;
-    let carFuncTypes = carFuncTypesList.filter(cft => data.indexOf(cft.id.toString()) > -1);
-    this.props.handleFormChange('car_func_types', carFuncTypes);
+    let { typesList = [] } = this.props;
+    let types = typesList.filter(ct => data.indexOf(ct.id.toString()) > -1);
+    this.props.handleFormChange('car_func_types', types);
   }
 
 	handleObjectsChange(v) {
@@ -34,7 +34,7 @@ export class MissionForm extends Form {
 	componentDidMount() {
 		const { flux } = this.context;
 		flux.getActions('objects').getWorkKinds();
-    flux.getActions('objects').getCarFuncTypes();
+    flux.getActions('objects').getTypes();
 		flux.getActions('technical_operation').getTechnicalOperationsObjects();
 		flux.getActions('technical_operation').getTechnicalOperationsTypes();
 	}
@@ -44,11 +44,11 @@ export class MissionForm extends Form {
 		let state = this.props.formState;
 		let errors = this.props.formErrors;
     let title = 'Тех. операция';
-    let { workKindsList = [], carFuncTypesList = [], technicalOperationsObjectsList = [], technicalOperationsTypesList = [], } = this.props;
+    let { workKindsList = [], typesList = [], technicalOperationsObjectsList = [], technicalOperationsTypesList = [], } = this.props;
 
     let WORK_KINDS = workKindsList.map(({id, name}) => ({value: id, label: name}));
     let SEASONS = seasonsList.map(({id, name}) => ({value: id, label: name}));
-    let CAR_FUNC_TYPES = carFuncTypesList.map(({id, full_name}) => ({value: id, label: full_name}));
+    let CAR_TYPES = typesList.map(({id, full_name}) => ({value: id, label: full_name}));
     let TECHNICAL_OPERATION_OBJECTS = technicalOperationsObjectsList.map(({id, full_name}) => ({value: id, label: full_name}));
 		let NEEDS_BRIGADE_OPTIONS = [{value: 1, label: 'Да'}, {value: 0, label: 'Нет'}];
     let TECHNICAL_OPERATION_TYPES = technicalOperationsTypesList.map(({name, key}) => ({value: key, label: name}));
@@ -127,7 +127,7 @@ export class MissionForm extends Form {
 							<Field type="select" label="Типы ТС"
 										 multi={true}
 										 value={state.car_func_types.map(cft => cft.id).join(',')}
-										 options={CAR_FUNC_TYPES}
+										 options={CAR_TYPES}
 										 onChange={this.handleCarFuncTypesChange.bind(this)}/>
 						</Col>
           </Row>

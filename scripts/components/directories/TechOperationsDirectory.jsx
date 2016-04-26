@@ -21,7 +21,7 @@ let getWorkKindOptions = (id) => {
 
 let getTableMeta = (props) => {
 
-  let CAR_FUNC_TYPES = props.carFuncTypesList.map(({id, full_name}) => ({value: id, label: full_name}));
+  let CAR_TYPES = props.typesList.map(({id, full_name}) => ({value: id, label: full_name}));
 
   let tableMeta = {
   	cols: [
@@ -98,7 +98,7 @@ let getTableMeta = (props) => {
   			type: 'string',
   			filter: {
 					type: 'multiselect',
-					options: CAR_FUNC_TYPES,
+					options: CAR_TYPES,
   			},
   		},
   	]
@@ -114,7 +114,7 @@ let TechOperationsTable = (props) => {
     PROPS = props;
 
     let getCarFuncTypesOptions = () => {
-      let OPTIONS = PROPS.carFuncTypesList.map(({id, full_name}) => ({value: id, label: full_name}));
+      let OPTIONS = PROPS.typesList.map(({id, full_name}) => ({value: id, label: full_name}));
       return OPTIONS;
     };
 
@@ -169,7 +169,7 @@ class TechOperationsDirectory extends ElementsList {
     super.componentDidMount();
     const { flux } = this.context;
     flux.getActions('technical_operation').getTechnicalOperations();
-    flux.getActions('objects').getCarFuncTypes();
+    flux.getActions('objects').getTypes();
 	}
 
 	render() {

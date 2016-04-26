@@ -28,7 +28,6 @@ export const CarService = new APIService('/car_actual/', useMocks);
 export const CarInfoService = new APIService('/car_additional_info/', useMocks);
 export const CustomersService = new APIService('/customers/', useMocks);
 export const MissionTemplatesForFaxogramm = new APIService('/get_mission_templates_for_faxogramm/', useMocks);
-export const CarFuncTypeService = new APIService('/car_func_type/', useMocks);
 export const DutyMissionService = new APIService('/duty_mission/', useMocks);
 export const DutyMissionTemplateService = new APIService('/duty_mission_template/', useMocks);
 export const MissionPrintService = new APIService('/plate_mission/', useMocks);

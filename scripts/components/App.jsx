@@ -31,6 +31,7 @@ import RouteReports from './reports/RouteReports.jsx';
 import RouteReport from './reports/RouteReport.jsx';
 import DailyCleaningReports from './reports/DailyCleaningReports.jsx';
 import DailyCleaningReport from './reports/DailyCleaningReport.jsx';
+import FuelReport from './reports/FuelReport.jsx';
 import WeeklyTechnicalOperationCompleteReports from './reports/WeeklyTechnicalOperationCompleteReports.jsx';
 import WeeklyTechnicalOperationCompleteReport from './reports/WeeklyTechnicalOperationCompleteReport.jsx';
 import FaxogrammDirectory from './directories/faxogramm/FaxogrammDirectory.jsx';
@@ -138,6 +139,7 @@ const routes = (
       <Route path="weekly-technical-operation-complete-report/:element/:id" component={WeeklyTechnicalOperationCompleteReport} onEnter={requireAuth}/>
       <Route path="route-reports" component={RouteReports} onEnter={requireAuth}/>
       <Route path="route-report/:id" component={RouteReport} onEnter={requireAuth}/>
+      <Route path="fuel-report" component={FuelReport} onEnter={requireAuth}/>
       <Route path="mission-reports" component={MissionReports} onEnter={requireAuth}/>
       <Route path="mission-report/:id" component={MissionReport} onEnter={requireAuth}/>
       <Route path="mission-report/:id/odhs/:index" component={MissionReportByODH} onEnter={requireAuth}/>

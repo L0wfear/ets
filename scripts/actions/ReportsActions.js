@@ -1,6 +1,6 @@
 import { Actions } from 'flummox';
 import _ from 'lodash';
-import { DailyCleaningReportsService, WeeklyTechnicalOperationCompleteReportsService } from 'api/Services';
+import { DailyCleaningReportsService, WeeklyTechnicalOperationCompleteReportsService, FuelReportService } from 'api/Services';
 import { createValidDateTime } from 'utils/dates';
 
 export default class ReportsActions extends Actions {
@@ -15,6 +15,10 @@ export default class ReportsActions extends Actions {
 
   getDailyCleaningReports() {
     return DailyCleaningReportsService.get();
+  }
+
+  getFuelReport() {
+    return FuelReportService.get();
   }
 
   getDailyCleaningReportById(id) {

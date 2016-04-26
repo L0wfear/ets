@@ -232,22 +232,24 @@ export class MissionsJournal extends ElementsList {
   }
 
   completeCheckedMissions() {
+		let error = false;
     if (Object.keys(this.state.checkedMissions).length !== 0) {
       _.forEach(this.state.checkedMissions, (mission) => {
         if (mission.status === 'assigned') {
           let updatedMission = _.cloneDeep(mission);
           updatedMission.status = 'complete';
           this.context.flux.getActions('missions').updateMission(updatedMission);
-        }
+        } else error = true;
       });
       this.setState({checkedMissions: {}});
-      global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Отметить как "Выполненые" можно только назначенные задания!'));
+      if (error) global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Отметить как "Выполненые" можно только назначенные задания!'));
     } else {
       this.completeMission();
     }
   }
 
   rejectCheckedMissions() {
+		let error = false;
     if (Object.keys(this.state.checkedMissions).length !== 0) {
       _.forEach(this.state.checkedMissions, (mission) => {
         if (mission.status === 'assigned') {
@@ -259,10 +261,10 @@ export class MissionsJournal extends ElementsList {
             updatedMission.fail_reason = reason;
             this.context.flux.getActions('missions').updateMission(updatedMission);
           }
-        }
+        } else error = true;
       });
       this.setState({checkedMissions: {}});
-      global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Отметить как "Невыполненые" можно только назначенные задания!'));
+      if (error) global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Отметить как "Невыполненые" можно только назначенные задания!'));
     }
     else {
       this.rejectMission();

@@ -225,13 +225,13 @@ class WaybillFormWrap extends Component {
 		newState.canClose = ! !!_.filter(formErrors).length;
 
 		if (field === 'odometr_end' && formState.status) {
-			formState.odometr_diff = formState.odometr_end - formState.odometr_start;
+			formState.odometr_diff = value ? formState.odometr_end - formState.odometr_start : null;
 		}
 		if (field === 'motohours_end' && formState.status) {
-			formState.motohours_diff = formState.motohours_end - formState.motohours_start;
+			formState.motohours_diff = value ? formState.motohours_end - formState.motohours_start : null;
 		}
 		if (field === 'motohours_equip_end' && formState.status) {
-			formState.motohours_equip_diff = formState.motohours_equip_end - formState.motohours_equip_start;
+			formState.motohours_equip_diff = value ? formState.motohours_equip_end - formState.motohours_equip_start : null;
 		}
 
 		newState.formState = formState;

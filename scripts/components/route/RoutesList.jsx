@@ -190,7 +190,7 @@ class RoutesList extends Component {
 			let routes = o.routes.filter(r => r.type === 'vector');
 			if (routes.length) return (
 				<div>
-					<h6><span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, o.id+'v')}>{o.name}{hidden ? ` \u25BC` : ` \u25BA`}</span></h6>
+					<h6 style={{marginLeft:"15px", marginRight:"5px"}}><span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, o.id+'v')}>{o.name}{!hidden ? ` \u25BC` : ` \u25BA`}</span></h6>
 					<Div hidden={hidden}>
 						{routes.map((r, i) => {
 							let cn = cx('sidebar__list-item', {'active': route && r.id === route.id});
@@ -206,7 +206,7 @@ class RoutesList extends Component {
 			let routes = o.routes.filter(r => r.type === 'simple');
 			if (routes.length) return (
 				<div>
-					<h6><span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, o.id+'s')}>{o.name}{hidden ? ` \u25BC` : ` \u25BA`}</span></h6>
+					<h6 style={{marginLeft:"15px", marginRight:"5px"}}><span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, o.id+'s')}>{o.name}{!hidden ? ` \u25BC` : ` \u25BA`}</span></h6>
 					<Div hidden={hidden}>
 						{routes.map((r, i) => {
 							let cn = cx('sidebar__list-item', {'active': route && r.id === route.id});
@@ -222,7 +222,7 @@ class RoutesList extends Component {
 			let routes = o.routes.filter(r => r.type === 'simple_dt');
 			if (routes.length) return (
 				<div>
-					<h6><span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, o.id+'s2')}>{o.name}{hidden ? ` \u25BC` : ` \u25BA`}</span></h6>
+					<h6 style={{marginLeft:"15px", marginRight:"5px"}}><span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, o.id+'s2')}>{o.name}{!hidden ? ` \u25BC` : ` \u25BA`}</span></h6>
 					<Div hidden={hidden}>
 						{routes.map((r, i) => {
 							let cn = cx('sidebar__list-item', {'active': route && r.id === route.id});
@@ -238,7 +238,7 @@ class RoutesList extends Component {
 			let routes = o.routes.filter(r => r.type === 'points');
 			if (routes.length) return (
 				<div>
-					<h6><span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, o.id+'p')}>{o.name}{hidden ? ` \u25BC` : ` \u25BA`}</span></h6>
+					<h6 style={{marginLeft:"15px", marginRight:"5px"}}><span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, o.id+'p')}>{o.name}{!hidden ? ` \u25BC` : ` \u25BA`}</span></h6>
 					<Div hidden={hidden}>
 						{routes.map((r, i) => {
 							let cn = cx('sidebar__list-item', {'active': route && r.id === route.id});

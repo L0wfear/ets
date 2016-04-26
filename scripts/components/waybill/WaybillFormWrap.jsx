@@ -29,6 +29,14 @@ let validateWaybill = (waybill, errors) => {
 		}
 	}
 
+	if ((waybill.motohours_start && waybill.motohours_end) && (waybill.motohours_end < waybill.motohours_start)) waybillErrors.motohours_end = `Поле "Счетчик моточасов.Возврат" должно быть больше или равно "Счетчик моточасов.Выезд"`
+
+	if ((waybill.motohours_equip_start && waybill.motohours_equip_end) && (waybill.motohours_equip_end < waybill.motohours_equip_start)) waybillErrors.motohours_equip_end = `Поле "Счетчик моточасов оборудования.Возврат" должно быть больше или равно "Счетчик моточасов оборудования.Выезд"`
+
+	if ((waybill.odometr_start && waybill.odometr_end) && (waybill.odometr_end < waybill.odometr_start)) waybillErrors.odometr_end = `Поле "Одометр.Возврат" должно быть больше или равно "Одометр.Выезд"`
+
+	if ((waybill.odometr_equip_start && waybill.odometr_equip_end) && (waybill.odometr_equip_end < waybill.odometr_equip_start)) waybillErrors.odometr_equip_end = `Поле "Одометр оборудования.Возврат" должно быть больше или равно "Одометр оборудования.Выезд"`
+
 	if (waybill.plan_arrival_date && waybill.plan_departure_date) {
 		if (moment(waybill.plan_arrival_date).toDate().getTime() < moment(waybill.plan_departure_date).toDate().getTime()) {
 			waybillErrors.plan_arrival_date = `"Возвращение план." должно быть больше "Выезд план."`;

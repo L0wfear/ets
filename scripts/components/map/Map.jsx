@@ -295,6 +295,10 @@ export default class OpenLayersMap extends Component {
 
   }
 
+  onMoveEnd() {
+    
+  }
+
   disableInteractions() {
     console.error('DISABLE INTERCATIONS');
     let map = this.map;

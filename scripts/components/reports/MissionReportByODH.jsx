@@ -28,6 +28,12 @@ let getTableMeta = (props) => {
 				filter: false
 			},
 			{
+				name: 'traveled_percentage',
+				caption: 'Пройдено с рабочей скоростью %',
+				type: 'string',
+				filter: false
+			},
+			{
 				name: 'left',
 				caption: 'Осталось',
 				type: 'string',
@@ -68,6 +74,7 @@ let MissionReportByODHTable = (props) => {
 
 	const renderers = {
     left_percentage: ({data}) => <div>{ parseFloat(parseFloat(data) * 100).toFixed(2) + '%'}</div>,
+		traveled_percentage: ({data}) => <div>{ parseFloat(parseFloat(data) * 100).toFixed(2) + '%'}</div>,
     left: ({data}) => {
 			return <div>{ parseFloat(data).toFixed(2)}</div>
 		},
@@ -79,7 +86,9 @@ let MissionReportByODHTable = (props) => {
 	if (props.noFilter) {
 		tableMeta.cols = tableMeta.cols.filter(c => c.name !== 'left_percentage' && c.name !== 'v_avg_max');
 		delete renderers.left_percentage;
+		delete renderers.traveled_percentage;
     renderers.left = (data) => <div>{parseFloat(data.data).toFixed(2)}<br/>{`(${parseFloat(parseFloat(data.rowData.left_percentage) * 100).toFixed(2) + '%'})`}</div>
+		renderers.traveled = (data) => <div>{parseFloat(data.data).toFixed(2)}<br/>{`(${parseFloat(parseFloat(data.rowData.traveled_percentage) * 100).toFixed(2) + '%'})`}</div>
 	}
 
 	return <Table title='Прохождение заданий по ОДХ'

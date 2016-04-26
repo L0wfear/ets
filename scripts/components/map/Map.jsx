@@ -284,7 +284,8 @@ export default class OpenLayersMap extends Component {
     if (this._handlers === null) {
       this._handlers = {
         singleclick: map.on('singleclick', this.onClick.bind(this)),
-        pointermove: map.on('pointermove', this.onMouseMove.bind(this))
+        pointermove: map.on('pointermove', this.onMouseMove.bind(this)),
+        moveend: map.on('moveend', this.onMoveEnd.bind(this))
       }
 
       interactions.forEach((interaction)=> {

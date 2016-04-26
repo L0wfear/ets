@@ -269,10 +269,13 @@ export default class HybridMap extends Map {
     return canvas;
   }
 
-  onMouseMove(ev) {
+  onMoveEnd() {
     let zoom = this.map.getView().getZoom();
     if (zoom !== this.state.zoom)
     this.setState({zoom});
+  }
+
+  onMouseMove(ev) {
 
     let coordinate = ev.coordinate;
     let changeCursor = false;

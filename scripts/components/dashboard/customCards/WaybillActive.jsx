@@ -12,10 +12,21 @@ export default class WaybillActive extends WaybillClosed {
   }
 
   renderSubitems(subItems) {
+
+    let subItemsCompleted = subItems.filter((e) => e.data.mission_status === 'Выполнено');
+    let subItemsInProgress = subItems.filter((e) => e.data.mission_status === 'В работе');
+
     return (
       <ul>
-        {subItems.map((item, i) => (
-          <li key={i} className="pointer" onClick={this.action.bind(this, item)}>
+        {subItemsCompleted.map((item, i) => (
+          <li key={i} className="pointer_completed" onClick={this.action.bind(this, item)}>
+            {`№${item.data.waybill_number} (${item.data.mission_status}), ${item.data.car_gov_number}`}
+            <br/>
+            {`${item.data.driver_fio || ''}${item.data.driver_phone ? ', ' + item.data.driver_phone : ''}`}
+          </li>
+        ))}
+        {subItemsInProgress.map((item, i) => (
+          <li key={i} className="pointer_in_progress" onClick={this.action.bind(this, item)}>
             {`№${item.data.waybill_number} (${item.data.mission_status}), ${item.data.car_gov_number}`}
             <br/>
             {`${item.data.driver_fio || ''}${item.data.driver_phone ? ', ' + item.data.driver_phone : ''}`}

@@ -2283,6 +2283,28 @@ body {
   cursor: pointer;
 }
 
+.pointer_completed {
+  cursor: pointer;
+  list-style-type: none;
+}
+
+.pointer_in_progress {
+  cursor: pointer;
+  list-style-type: none;
+}
+
+.pointer_completed:before {
+    color: green; /* Цвет маркера */
+    content: "\25CF"; /* Сам маркер */
+    padding-right: 10px; /* Расстояние от маркера до текста */
+}
+
+.pointer_in_progress:before {
+    color: red; /* Цвет маркера */
+    content: "\25CF"; /* Сам маркер */
+    padding-right: 10px; /* Расстояние от маркера до текста */
+}
+
 .underline {
   text-decoration: underline;
 }

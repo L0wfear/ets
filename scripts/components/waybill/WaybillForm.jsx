@@ -184,10 +184,10 @@ class WaybillForm extends Form {
 			let personnel_number = d.personnel_number ? `[${d.personnel_number}] ` : '';
 			return {value: d.id, label: `${personnel_number}${d.last_name} ${d.first_name} ${d.middle_name}`}
 		});
-		const MASTERS = employeesList.filter( e => [2, 4, 5, 7, 14].indexOf(e.position_id) > -1).map( m => ({value: m.id, data: m, label: `${m.last_name} ${m.first_name} ${m.middle_name}`}));
+		const MASTERS = employeesList.filter( e => [2, 4, 5, 7, 14].indexOf(e.position_id) > -1).map( m => ({value: m.id, data: m, label: `${m.last_name} ${m.first_name} ${m.middle_name}`})).filter((e) => e.data.active === true);
     const MISSIONS = missionsList.map( ({id, number, technical_operation_name}) => ({value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false}));
-
     //console.log('form state is ', state);
+
 
 		let IS_CREATING = !!!state.status;
 		let IS_CLOSING = state.status && state.status === 'active';

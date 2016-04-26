@@ -25,14 +25,12 @@ let tableMeta = {
       },
 			cssClassName: 'width300'
 		},
-		// {
-		// 	name: 'equip_width',
-		// 	caption: 'Ширина уборочного оборудования',
-		// 	type: 'string',
-    //   filter: {
-    //     type: 'select',
-    //   }
-		// }
+		{
+			name: 'plow_width',
+			caption: 'Ширина уборочного оборудования',
+			type: 'string',
+      filter: false
+		}
 	]
 };
 

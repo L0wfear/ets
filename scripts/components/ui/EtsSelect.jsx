@@ -15,6 +15,12 @@ class EstSelect extends Component {
       for (var i = 0; i < selItems.length; i++) {
         selItems[i].setAttribute('title', selItems[i].innerHTML);
       }
+    } else {
+      const selItems = document.querySelectorAll('.Select-placeholder');
+
+      for (var i = 0; i < selItems.length; i++) {
+        selItems[i].setAttribute('title', selItems[i].innerHTML);
+      }
     }
   }
 

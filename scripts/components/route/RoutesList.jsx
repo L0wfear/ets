@@ -311,7 +311,7 @@ class RoutesList extends Component {
 											options={filterOptions}
 											//tableData={this.props.results}
 											active={_.keys(this.state.filterValues).length}
-				className="filter-wrap"/>
+											className="filter-wrap"/>
 		            </ClickOutHandler>
 								<Button bsSize="small" onClick={this.createRoute.bind(this)}><Glyphicon glyph="plus" /> Создать маршрут</Button>
 								<Button bsSize="small" disabled={route === null} onClick={() => this.setState({showForm: true})}><Glyphicon glyph="pencil" /> Изменить маршрут</Button>

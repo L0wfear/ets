@@ -11,7 +11,6 @@ import { FaxogrammService,
          CarService,
          CustomersService,
          TypesService,
-         CarFuncTypeService,
          ODHService,
          DTService,
          PositionService,
@@ -64,10 +63,6 @@ export default class ObjectsActions extends Actions {
 
   getWorkKinds() {
     return WorkKindsService.get();
-  }
-
-  getCarFuncTypes() {
-    return CarFuncTypeService.get();
   }
 
   getFaxogramms(page, create_date_from, create_date_to) {

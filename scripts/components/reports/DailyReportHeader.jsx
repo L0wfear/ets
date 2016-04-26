@@ -36,19 +36,20 @@ class DailyReportHeader extends Component {
 
   componentDidMount() {
 		const { flux } = this.context;
-  	flux.getActions('objects').getCarFuncTypes();
+  	flux.getActions('objects').getTypes();
   }
 
   render() {
     let props = this.props;
+    let { geozone_type, typesList = [] } = this.props;
     let OBJECTS = [{value: 'odh', label: 'Объект дорожного хозяйства'}, {value: 'dt', label: 'Дворовая территория'}];
-    let ELEMENTS = props.geozone_type === 'odh' ?
+    let ELEMENTS = geozone_type === 'odh' ?
       [
         {value: 'roadway', label: 'Проезжая часть'},
         {value: 'footway', label: 'Тротуар'}
       ]
       : [{value: 'yard', label: 'Двор'}];
-    let CAR_FUNC_TYPES = props.carFuncTypesList.map(t => ({value: t.id, label: t.full_name}));
+    let CAR_TYPES = typesList.map(t => ({value: t.id, label: t.full_name}));
 
   	return (
       <Div>
@@ -83,7 +84,7 @@ class DailyReportHeader extends Component {
             <Field type="select"
                    label="Типы ТС"
                    multi={true}
-                   options={CAR_FUNC_TYPES}
+                   options={CAR_TYPES}
                    value={props.car_type_id_list}
                    onChange={this.handleCarTypeIdListChange.bind(this)}/>
           </Col>

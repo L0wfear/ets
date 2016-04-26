@@ -26,7 +26,6 @@ class ObjectsStore extends Store {
     this.register(objectsActions.getDTs, this.handleGetDTs);
     this.register(objectsActions.updateDT, this.handleGetDTs);
     this.register(objectsActions.getFaxogramms, this.handleGetFaxogramms);
-    this.register(objectsActions.getCarFuncTypes, this.handleGetCarFuncTypes);
     this.register(objectsActions.getPositions, this.handleGetPositions);
 
     this.register(companyStructreActions.getCompanyStructure, this.handleGetCompanyStructure);
@@ -52,7 +51,6 @@ class ObjectsStore extends Store {
       workKindsList: [],
       odhsList: [],
       faxogrammsList: [],
-      carFuncTypesList: [],
       technicalOperationsObjectsList: [],
       technicalOperationsTypesList: [],
       companyStructureList: [],
@@ -62,7 +60,6 @@ class ObjectsStore extends Store {
       modelsIndex: {},
       typesIndex: {},
       ownersIndex: {},
-      carFuncTypesIndex: {},
       technicalOperationsObjectsIndex: {},
 
       faxogrammsMaxPage: 0,
@@ -122,11 +119,6 @@ class ObjectsStore extends Store {
   handleGetTypes(typesList) {
     let typesIndex = this.makeIndex(typesList);
     this.setState({typesList, typesIndex});
-  }
-
-  handleGetCarFuncTypes(carFuncTypes) {
-    let carFuncTypesIndex = this.makeIndex(carFuncTypes.result);
-    this.setState({carFuncTypesList: carFuncTypes.result, carFuncTypesIndex});
   }
 
   handleGetOwners(ownersList) {

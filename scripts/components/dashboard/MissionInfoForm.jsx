@@ -142,13 +142,13 @@ export class MissionInfoForm extends Form {
 
             <Col md={6}>
 							<Div  style={{marginTop: -35}} hidden={this.state.missionReportFull && !this.state.missionReportFull.report_by_odh}>
-              	<MissionReportByODH noFilter={true} selectedReportDataODHS={this.state.missionReport} onElementChange={this.handleSelectedElementChange.bind(this)}/>
+              	<MissionReportByODH noFilter={true} enumerated={false} selectedReportDataODHS={this.state.missionReport} onElementChange={this.handleSelectedElementChange.bind(this)}/>
 							</Div>
 							<Div  style={{marginTop: -35}} hidden={this.state.missionReportFull && !this.state.missionReportFull.report_by_dt}>
-              	<MissionReportByDT noFilter={true} selectedReportDataDTS={this.state.missionReport} onElementChange={this.handleSelectedElementChange.bind(this)}/>
+              	<MissionReportByDT noFilter={true} enumerated={false} selectedReportDataDTS={this.state.missionReport} onElementChange={this.handleSelectedElementChange.bind(this)}/>
 							</Div>
 							<Div  style={{marginTop: -35}} hidden={this.state.missionReportFull && !this.state.missionReportFull.report_by_point}>
-              	<MissionReportByPoints noFilter={true} selectedReportDataPoints={this.state.missionReport}/>
+              	<MissionReportByPoints noFilter={true} enumerated={false} selectedReportDataPoints={this.state.missionReport}/>
 							</Div>
               <Div hidden={this.state.missionReport && this.state.missionReport.length > 0}>
                 <h5>Нет данных о прохождении задания</h5>

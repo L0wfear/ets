@@ -27,12 +27,12 @@ let getTableMeta = (props) => {
 				type: 'string',
 				filter: false
 			},
-			{
-				name: 'traveled_percentage',
-				caption: 'Пройдено с рабочей скоростью %',
-				type: 'string',
-				filter: false
-			},
+			// {
+			// 	name: 'traveled_percentage',
+			// 	caption: 'Пройдено с рабочей скоростью %',
+			// 	type: 'string',
+			// 	filter: false
+			// },
 			{
 				name: 'left',
 				caption: 'Осталось',
@@ -79,8 +79,8 @@ let MissionReportByODHTable = (props) => {
 			return <div>{ parseFloat(data).toFixed(2)}</div>
 		},
     traveled: ({data}) => <div>{ parseFloat(data).toFixed(2)}</div>,
-    route_check_length: ({data}) => <div>{ parseFloat(data).toFixed(2)}</div>,
-    route_check_value: ({data}) => <div>{ parseFloat(data).toFixed(2)}</div>,
+    route_check_length: ({data}) => <div>{ data }</div>,
+    route_check_value: ({data}) => <div>{ data }</div>,
 	};
 
 	if (props.noFilter) {
@@ -122,19 +122,13 @@ class MissionReportByODH extends ElementsList {
 	}
 
 	render() {
-		let { noFilter = false, routeCheckValue } = this.props;
-
 		return (
 			<div className="ets-page-wrap">
-				<MissionReportByODHTable routeCheckValue={routeCheckValue} noFilter={noFilter} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={this.selectField} data={this.props.selectedReportDataODHS || []} {...this.props}>
+				<MissionReportByODHTable onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={this.selectField} data={this.props.selectedReportDataODHS || []} {...this.props}>
 				</MissionReportByODHTable>
 			</div>
 		);
 	}
 }
-
-MissionReportByODH.contextTypes = {
-	flux: React.PropTypes.object,
-};
 
 export default connectToStores(MissionReportByODH, ['missions']);

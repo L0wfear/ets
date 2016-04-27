@@ -107,6 +107,7 @@ export default class LoadingStore extends Store {
 
 
       reportsActions.getDailyCleaningReports,
+      reportsActions.getFuelReport,
       reportsActions.getDailyCleaningReportById,
       reportsActions.createDailyCleaningReport,
       reportsActions.getWeeklyTechnicalOperationCompleteReports,

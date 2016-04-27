@@ -112,6 +112,7 @@ export class MissionForm extends Form {
               <Field type="select" label="Тип проверки"
 										 options={TECHNICAL_OPERATION_TYPES}
                      value={state.check_type}
+										 clearable={false}
                      onChange={this.handleChange.bind(this, 'check_type')}/>
 						</Col>
 						<Col md={2}>

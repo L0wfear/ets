@@ -18,115 +18,134 @@ let tableMeta = {
 			name: 'car_model_name',
 			caption: 'Модель ТС',
 			type: 'text',
+			cssClassName: "widthFuelMain",
 			filter: false
 		},
 		{
 			name: 'car_gov_number',
 			caption: 'Госномер',
 			type: 'text',
+			cssClassName: "widthFuelMain",
 			filter: false
 		},
 		{
 			name: 'car_garage_number',
 			caption: 'Гаражный номер ТС',
 			type: 'text',
+			cssClassName: "widthFuelMain",
 			filter: false
 		},
 		{
 			name: 'odometr_start',
 			caption: 'Одометр.Выезд',
 			type: 'number',
+			cssClassName: "widthOdometr",
 			filter: false
 		},
 		{
 			name: 'odometr_end',
 			caption: 'Одометр.Возврат',
 			type: 'number',
+			cssClassName: "widthOdometr",
 			filter: false
 		},
 		{
 			name: 'odometr_diff',
 			caption: 'Одометр.Пробег',
 			type: 'number',
+			cssClassName: "widthOdometr",
 			filter: false
 		},
     {
       name: 'motohours_start',
-      caption: 'Счетчик моточасов.Выезд',
+      caption: 'Счет.моточасов.Выезд',
       type: 'number',
+			cssClassName: "widthMotohours",
       filter: false
     },
     {
       name: 'motohours_end',
-      caption: 'Счетчик моточасов.Возврат',
+      caption: 'Счет.моточасов.Возврат',
       type: 'number',
+			cssClassName: "widthMotohours",
       filter: false
     },
     {
       name: 'motohours_diff',
-      caption: 'Счетчик моточасов.Пробег',
+      caption: 'Счет.моточасов.Пробег',
       type: 'number',
+			cssClassName: "widthMotohours",
       filter: false
     },
     {
       name: 'motohours_equip_start',
-      caption: 'Счетчик оборудования моточасов.Выезд',
+      caption: 'Счет.обор.моточасов.Выезд',
       type: 'number',
+			cssClassName: "widthMotohours",
       filter: false
     },
     {
       name: 'motohours_equip_end',
-      caption: 'Счетчик оборудования моточасов.Возврат',
+      caption: 'Счет.обор.моточасов.Возврат',
       type: 'number',
+			cssClassName: "widthMotohours",
       filter: false
     },
     {
       name: 'motohours_equip_diff',
-      caption: 'Счетчик оборудования моточасов.Пробег',
+      caption: 'Счет.обор.моточасов.Пробег',
       type: 'number',
+			cssClassName: "widthMotohours",
       filter: false
     },
     {
       name: 'fuel_type_name',
       caption: 'Тип топлива',
       type: 'text',
+			cssClassName: "widthFuel",
       filter: false
     },
     {
       name: 'fuel_start',
       caption: 'Топливо.Выезд',
       type: 'number',
+			cssClassName: "widthFuel",
       filter: false
     },
     {
       name: 'fuel_given',
       caption: 'Топливо.Выдано',
       type: 'number',
+			cssClassName: "widthFuel",
       filter: false
     },
     {
       name: 'fuel_end',
       caption: 'Топливо.Возврат',
       type: 'number',
+			cssClassName: "widthFuel",
       filter: false
     },
     {
       name: 'fuel_fact',
-      caption: 'Топливо.Фактическое',
+      caption: 'Топливо.Факт.',
       type: 'number',
+			cssClassName: "widthFuel",
       filter: false
     },
     {
       name: 'fuel_rate',
       caption: 'Топливо.Норма',
       type: 'number',
+			cssClassName: "widthFuel",
       filter: false
     },
     {
       name: 'fuel_diff',
       caption: 'Топливо.Разница',
       type: 'number',
-      filter: false
+      filter: false,
+			cssClassName: "widthFuel",
     },
 	]
 }
@@ -141,6 +160,7 @@ let FuelReportTable = (props) => {
 								tableMeta={tableMeta}
 								results={props.data}
 								renderers={renderers}
+								enumerated={false}
 								{...props} />
 
 }

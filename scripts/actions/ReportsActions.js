@@ -1,7 +1,7 @@
 import { Actions } from 'flummox';
 import _ from 'lodash';
 import { DailyCleaningReportsService, WeeklyTechnicalOperationCompleteReportsService, FuelReportService } from 'api/Services';
-import { createValidDateTime } from 'utils/dates';
+import { createValidDateTime, createValidDate } from 'utils/dates';
 
 export default class ReportsActions extends Actions {
 
@@ -17,8 +17,11 @@ export default class ReportsActions extends Actions {
     return DailyCleaningReportsService.get();
   }
 
-  getFuelReport() {
-    return FuelReportService.get();
+  getFuelReport(data) {
+    let payload = _.cloneDeep(data);
+    payload.date_from = createValidDate(payload.date_from);
+    payload.date_to = createValidDate(payload.date_to);
+    return FuelReportService.get(payload, true, 'json');
   }
 
   getDailyCleaningReportById(id) {

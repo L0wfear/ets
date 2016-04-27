@@ -38,10 +38,10 @@ class FuelReportHeader extends Component {
     			<Col md={9}>
             <Div><label>Период формирования</label></Div>
     				<Div className="inline-block reports-date">
-    					<Datepicker date={ props.date_from } onChange={props.handleChange.bind(null, 'date_start')}/>
+    					<Datepicker time={false} date={ props.date_from } onChange={props.handleChange.bind(null, 'date_from')}/>
     				</Div>
     				<Div className="inline-block reports-date">
-    					<Datepicker date={ props.date_to } onChange={props.handleChange.bind(null, 'date_end')}/>
+    					<Datepicker time={false} date={ props.date_to } onChange={props.handleChange.bind(null, 'date_to')}/>
     				</Div>
     			</Col>
           <Col md={3} className={'fuel-types-container'}>

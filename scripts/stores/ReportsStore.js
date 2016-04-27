@@ -22,7 +22,7 @@ class ReportsStore extends Store {
   }
 
   handleGetFuelReport(e) {
-    this.setState({fuelReport: e.result});
+    this.setState({fuelReport: e.results});
   }
 
   handleGetDailyCleaningReports(dailyCleaningReports) {

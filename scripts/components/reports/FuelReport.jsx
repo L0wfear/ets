@@ -150,12 +150,12 @@ class FuelReport extends Component {
 	constructor(props) {
 		super(props);
 
-    let [date_start, date_end] = [getToday9am(), getTomorrow9am()];
+    let [date_from, date_to] = [getToday9am(), getTomorrow9am()];
 
 		this.state = {
-      date_start,
-      date_end,
-      fuel_types: [],
+      date_from,
+      date_to,
+      fuel_type_id: null,
 		};
 	}
 
@@ -174,34 +174,6 @@ class FuelReport extends Component {
 
 		let { fuelReport = [] } = this.props;
 
-    fuelReport = [
-      {
-        //Транспортное средство
-        car_model_name: 'Камаз/Крутой камаз', // Модель ТС - car_special_model / car_model
-        car_gov_number: 'а123аа', // Госномер
-        car_garage_number: 'b12312', // Гаражный номер тс
-        // КМ (одометр)
-        odometr_start: 123,
-        odometr_end: 123,
-        odometr_diff: 0,
-        // МЧ
-        motohours_start: 123,
-        motohours_end: 123,
-        motohours_diff: 0,
-        // М/Ч ОБ
-        motohours_equip_start: 123,
-        motohours_equip_end: 123,
-        motohours_equip_diff: 0,
-        // Расход топлива
-        fuel_type_name: 'ДТ',
-        fuel_start: 0,
-        fuel_given: 123,
-        fuel_end: 46,
-        fuel_fact: 77, // fuel_start + fuel_given - fuel_end
-        fuel_rate: 3, // Норма
-        fuel_diff: 74 // fuel_rate - fuel_fact
-      }
-    ]
 		return (
 			<div className="ets-page-wrap">
   			<FuelReportHeader handleChange={this.handleChange.bind(this)} onClick={this.createReport.bind(this)} {...this.state} />

@@ -17,8 +17,8 @@ class FuelReportHeader extends Component {
   }
 
   handleFuelTypeChange(v) {
-    let data = !isEmpty(v) ? v.split(',').map(d => parseInt(d, 10)) : [];
-    this.props.handleChange('fuel_types', data);
+    let data = !isEmpty(v) ? v : null;
+    this.props.handleChange('fuel_type_id', data);
   }
 
   componentDidMount() {
@@ -38,18 +38,17 @@ class FuelReportHeader extends Component {
     			<Col md={9}>
             <Div><label>Период формирования</label></Div>
     				<Div className="inline-block reports-date">
-    					<Datepicker date={ props.date_start } onChange={props.handleChange.bind(null, 'date_start')}/>
+    					<Datepicker date={ props.date_from } onChange={props.handleChange.bind(null, 'date_start')}/>
     				</Div>
     				<Div className="inline-block reports-date">
-    					<Datepicker date={ props.date_end } onChange={props.handleChange.bind(null, 'date_end')}/>
+    					<Datepicker date={ props.date_to } onChange={props.handleChange.bind(null, 'date_end')}/>
     				</Div>
     			</Col>
           <Col md={3} className={'fuel-types-container'}>
             <Field type="select"
                    label="Тип топлива"
-                   multi={true}
                    options={FUEL_TYPES}
-                   value={props.fuel_types}
+                   value={props.fuel_type_id}
                    onChange={this.handleFuelTypeChange.bind(this)}/>
           </Col>
     		</Row>

@@ -35,7 +35,8 @@ class FuelReportHeader extends Component {
   	return (
       <Div>
     		<Row>
-    			<Col md={9}>
+          <Col md={4}></Col>
+    			<Col md={5}>
             <Div><label>Период формирования</label></Div>
     				<Div className="inline-block reports-date">
     					<Datepicker time={false} date={ props.date_from } onChange={props.handleChange.bind(null, 'date_from')}/>

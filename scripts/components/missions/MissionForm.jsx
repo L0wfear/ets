@@ -173,6 +173,7 @@ export class MissionForm extends Form {
 		let isDeferred = moment(state.date_start).toDate().getTime() > moment().toDate().getTime();
 
 		let IS_CREATING = !!!state.status;
+		let IS_COMPLETED = (state.status === 'complete' || state.status === 'fail');
     let IS_POST_CREATING_NOT_ASSIGNED = state.status === 'not_assigned' || this.props.fromWaybill;
     let IS_POST_CREATING_ASSIGNED = state.status === 'assigned' && isDeferred;
 		let IS_DISPLAY = !IS_CREATING && !(IS_POST_CREATING_NOT_ASSIGNED || IS_POST_CREATING_ASSIGNED);//(!!state.status && state.status !== 'not_assigned') || (!isDeferred && !IS_CREATING);
@@ -250,6 +251,7 @@ export class MissionForm extends Form {
 								onChange={this.handleTechnicalOperationChange.bind(this)}/>
 							<Field type="string"
 								label="Комментарий"
+								disabled={IS_COMPLETED}
 								value={state.comment}
 								onChange={this.handleChange.bind(this, 'comment')}
 								error={errors['comment']} />

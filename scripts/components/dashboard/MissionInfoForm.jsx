@@ -34,9 +34,10 @@ export class MissionInfoForm extends Form {
 
   async componentDidMount() {
     let { formState } = this.props;
+		console.log(formState);
     this.context.flux.getActions('points').createConnection();
     this.context.flux.getActions('points').setSingleCarTrack(formState.car_gov_number);
-    this.context.flux.getActions('points').setSingleCarTrackDates([formState.waybill_fact_departure_date, formState.waybill_fact_arrival_date]);
+    this.context.flux.getActions('points').setSingleCarTrackDates([formState.mission_date_start, formState.mission_date_end]);
     await this.context.flux.getActions('missions').getMissionLastReport(formState.mission_id).then(r => {
 			if (r.result) {
 				let missionReport = [];

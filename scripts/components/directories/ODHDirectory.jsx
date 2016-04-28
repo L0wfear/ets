@@ -66,7 +66,12 @@ let getTableMeta = (props) => {
         name: 'gutters_length',
         caption: 'Протяженность лотков',
         type: 'number',
-      }
+      },
+      {
+        name: 'company_structure_name',
+        caption: 'Подразделение',
+        type: 'text',
+      },
     ]
   };
   return tableMeta;

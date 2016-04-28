@@ -53,6 +53,13 @@ let tableMeta = {
 				type: 'select'
 			}
   }, {
+      name: 'company_structure_name',
+      caption: 'Подразделение',
+      type: 'text',
+      filter: {
+				type: 'select'
+			}
+  }, {
       name: 'active',
       caption: 'Текущее состояние',
       type: 'text',

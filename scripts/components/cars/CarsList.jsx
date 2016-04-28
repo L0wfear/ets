@@ -69,14 +69,14 @@ let tableMeta = {
 				type: 'select',
 			},
 		},
-		// {
-		// 	name: 'company_structure_name',
-		// 	caption: 'Подразделение предприятия',
-		// 	type: 'text',
-		// 	filter: {
-		// 		type: 'select',
-		// 	},
-		// }
+		{
+			name: 'company_structure_name',
+			caption: 'Подразделение предприятия',
+			type: 'text',
+			filter: {
+				type: 'select',
+			},
+		}
 	]
 }
 

@@ -18,134 +18,134 @@ let tableMeta = {
 			name: 'car_model_name',
 			caption: 'Модель ТС',
 			type: 'text',
-			cssClassName: "widthFuelMain",
+			cssClassName: "width-fuel-report-large",
 			filter: false
 		},
 		{
 			name: 'car_gov_number',
 			caption: 'Госномер',
 			type: 'text',
-			cssClassName: "widthFuelMain",
+			cssClassName: "width-fuel-report-large",
 			filter: false
 		},
 		{
 			name: 'car_garage_number',
 			caption: 'Гаражный номер ТС',
 			type: 'text',
-			cssClassName: "widthFuelMain",
+			cssClassName: "width-fuel-report-large",
 			filter: false
 		},
 		{
 			name: 'odometr_start',
-			caption: 'Одометр.Выезд',
+			caption: 'Одометр. Выезд',
 			type: 'number',
-			cssClassName: "widthOdometr",
+			cssClassName: "width-fuel-report-small",
 			filter: false
 		},
 		{
 			name: 'odometr_end',
-			caption: 'Одометр.Возврат',
+			caption: 'Одометр. Возврат',
 			type: 'number',
-			cssClassName: "widthOdometr",
+			cssClassName: "width-fuel-report-small",
 			filter: false
 		},
 		{
 			name: 'odometr_diff',
-			caption: 'Одометр.Пробег',
+			caption: 'Одометр. Пробег',
 			type: 'number',
-			cssClassName: "widthOdometr",
+			cssClassName: "width-fuel-report-small",
 			filter: false
 		},
     {
       name: 'motohours_start',
-      caption: 'Счет.моточасов.Выезд',
+      caption: 'Счетчик моточасов. Выезд',
       type: 'number',
-			cssClassName: "widthMotohours",
+			cssClassName: "width-fuel-report-small",
       filter: false
     },
     {
       name: 'motohours_end',
-      caption: 'Счет.моточасов.Возврат',
+      caption: 'Счетчик моточасов. Возврат',
       type: 'number',
-			cssClassName: "widthMotohours",
+			cssClassName: "width-fuel-report-small",
       filter: false
     },
     {
       name: 'motohours_diff',
-      caption: 'Счет.моточасов.Пробег',
+      caption: 'Счетчик моточасов. Пробег',
       type: 'number',
-			cssClassName: "widthMotohours",
+			cssClassName: "width-fuel-report-small",
       filter: false
     },
     {
       name: 'motohours_equip_start',
-      caption: 'Счет.обор.моточасов.Выезд',
+      caption: 'Счет. обор. моточасов. Выезд',
       type: 'number',
-			cssClassName: "widthMotohours",
+			cssClassName: "width-fuel-report-small",
       filter: false
     },
     {
       name: 'motohours_equip_end',
-      caption: 'Счет.обор.моточасов.Возврат',
+      caption: 'Счет. обор. моточасов. Возврат',
       type: 'number',
-			cssClassName: "widthMotohours",
+			cssClassName: "width-fuel-report-small",
       filter: false
     },
     {
       name: 'motohours_equip_diff',
-      caption: 'Счет.обор.моточасов.Пробег',
+      caption: 'Счет. обор. моточасов. Пробег',
       type: 'number',
-			cssClassName: "widthMotohours",
+			cssClassName: "width-fuel-report-small",
       filter: false
     },
     {
       name: 'fuel_type_name',
       caption: 'Тип топлива',
       type: 'text',
-			cssClassName: "widthFuel",
+			cssClassName: "width-fuel-report-small",
       filter: false
     },
     {
       name: 'fuel_start',
-      caption: 'Топливо.Выезд',
+      caption: 'Топливо. Выезд',
       type: 'number',
-			cssClassName: "widthFuel",
+			cssClassName: "width-fuel-report-small",
       filter: false
     },
     {
       name: 'fuel_given',
-      caption: 'Топливо.Выдано',
+      caption: 'Топливо. Выдано',
       type: 'number',
-			cssClassName: "widthFuel",
+			cssClassName: "width-fuel-report-small",
       filter: false
     },
     {
       name: 'fuel_end',
-      caption: 'Топливо.Возврат',
+      caption: 'Топливо. Возврат',
       type: 'number',
-			cssClassName: "widthFuel",
+			cssClassName: "width-fuel-report-small",
       filter: false
     },
     {
       name: 'fuel_fact',
-      caption: 'Топливо.Факт.',
+      caption: 'Топливо. Факт.',
       type: 'number',
-			cssClassName: "widthFuel",
+			cssClassName: "width-fuel-report-small",
       filter: false
     },
     {
       name: 'fuel_rate',
-      caption: 'Топливо.Норма',
+      caption: 'Топливо. Норма',
       type: 'number',
-			cssClassName: "widthFuel",
+			cssClassName: "width-fuel-report-small",
       filter: false
     },
     {
       name: 'fuel_diff',
-      caption: 'Топливо.Разница',
+      caption: 'Топливо. Разница',
       type: 'number',
       filter: false,
-			cssClassName: "widthFuel",
+			cssClassName: "width-fuel-report-small",
     },
 	]
 }

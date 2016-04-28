@@ -177,7 +177,7 @@ export class MissionForm extends Form {
     let IS_POST_CREATING_NOT_ASSIGNED = state.status === 'not_assigned' || this.props.fromWaybill;
     let IS_POST_CREATING_ASSIGNED = state.status === 'assigned' && isDeferred;
 		let IS_DISPLAY = !IS_CREATING && !(IS_POST_CREATING_NOT_ASSIGNED || IS_POST_CREATING_ASSIGNED);//(!!state.status && state.status !== 'not_assigned') || (!isDeferred && !IS_CREATING);
-    let title = `Задание № ${state.number || ''} ${state.fail_reason ? '(Не выполнено)' : ''}`;
+    let title = `Задание № ${state.number || ''} ${state.comment ? '(Не выполнено)' : ''}`;
 
     if (IS_CREATING) {
       title = "Создание задания"

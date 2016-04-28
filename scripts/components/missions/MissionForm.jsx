@@ -119,8 +119,7 @@ export class MissionForm extends Form {
 				name: '',
 				polys: this.props.geozonePolys,
 				technical_operation_id: this.props.formState.technical_operation_id,
-				object_list: [],
-				type: 'vector',
+				object_list: []
 			};
 			this.setState({
 				showRouteForm: true,

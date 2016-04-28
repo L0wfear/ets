@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Table from '../ui/table/DataTable.jsx';
+import Table from '../ui/table/Table.jsx';
 import { Input, Button, Glyphicon } from 'react-bootstrap';
 import EtsSelect from '../ui/EtsSelect.jsx';
 import Div from '../ui/Div.jsx';
@@ -25,74 +25,60 @@ let getResult = ({FACT_VALUE, fuel_correction_rate, FUEL_RATE}) => {
   }
 }
 
-let tableMeta = {
-  cols: [{
-      name: 'OPERATION',
-      caption: 'Операция',
-  }, {
-      name: 'FUEL_RATE',
-      caption: 'Норма',
-  }, {
-      name: 'fuel_correction_rate',
-      caption: 'Поправочный коэффициент',
-  }, {
-      name: 'FACT_VALUE',
-      caption: 'Значение',
-  }, {
-      name: 'RESULT',
-      caption: 'Результат (л)',
-  }]
-};
-
 export default class Taxes extends Component {
 
   constructor(props) {
     super(props);
 
-    this.renderers = {
-      OPERATION: (meta) => {
-        let {data} = meta;
-        let index = meta.rowData.rowNumber;
-        if (data === null) {
-          return <div/>;
+    this.tableCaptions = [
+      "Операция",
+      "Норма",
+      "Поправочный коэффициент",
+      "Значение",
+      "Результат (л)"
+    ];
+
+    this.tableCols = [
+      "OPERATION",
+      "FUEL_RATE",
+      "fuel_correction_rate",
+      "FACT_VALUE",
+      "RESULT",
+    ];
+
+    this.tableCellRenderers = {
+      OPERATION: (OPERATION, row, index) => {
+        if (OPERATION === null) {
+          return '';
         } else if (props.readOnly) {
-          const operation = _.find(this.state.operations, (op) => data === op.value);
-          return <div>{operation ? operation.label || '' : ''}</div>
+          const operation = _.find(this.state.operations, (op) => OPERATION === op.value);
+          return operation ? operation.label || '' : '';
         }
-        return <EtsSelect clearable={false} disabled={props.readOnly} options={this.state.operations} value={data} onChange={this.handleOperationChange.bind(this, index)}/>
+        return <EtsSelect clearable={false} disabled={props.readOnly} options={this.state.operations} value={OPERATION} onChange={this.handleOperationChange.bind(this, index)}/>
       },
-      RESULT: ({data}) => <div>{data ? data + ' л' : ''}</div>,
-      fuel_correction_rate: (meta) => {
-        let {data} = meta;
-        let row = meta.rowData;
-        if (row.OPERATION === null) return <div/>;
-        return <div>{data ? parseFloat(data).toFixed(3) : 1}</div>
+      RESULT: (RESULT) => RESULT ? RESULT + ' л' : '',
+      fuel_correction_rate: (fuel_correction_rate, row) => {
+        if (row.OPERATION === null) return '';
+        return fuel_correction_rate ? parseFloat(fuel_correction_rate).toFixed(3) : 1
       },
-      FACT_VALUE: (meta) => {
-        let {data} = meta;
-        let index = meta.rowData.rowNumber;
-        let {OPERATION, FUEL_RATE} = meta.rowData;
-        if (data === 'Итого' || this.props.readOnly) return <div>{data}</div>;
+      FACT_VALUE: (FACT_VALUE, {OPERATION, FUEL_RATE}, index) => {
+        if (FACT_VALUE === 'Итого' || this.props.readOnly) return FACT_VALUE;
         const props = {
           type: 'number',
           min: 0,
-          value: data,
-          disabled: typeof data === 'undefined' || typeof OPERATION === 'undefined' || this.props.readOnly
-        };
+          value: FACT_VALUE,
+          disabled: typeof FUEL_RATE === 'undefined' || typeof OPERATION === 'undefined' || this.props.readOnly
+       };
         return <Input {...props} onChange={this.handleFactValueChange.bind(this, index)} />;
-      },
-      FUEL_RATE: ({data}) => <div>{data}</div>,
+      }
     };
 
     this.state = {
       tableData: [
         {
           OPERATION: null,
-          FUEL_RATE: null,
-          fuel_correction_rate: null,
     			FACT_VALUE: 'Итого',
           RESULT: null,
-          id: 0
   		  }
       ],
       selectedOperation: null,
@@ -126,15 +112,7 @@ export default class Taxes extends Component {
 
   addOperation() {
     const { tableData } = this.state;
-    tableData.splice(tableData.length - 1, 0, {
-      OPERATION: undefined,
-      FUEL_RATE: undefined,
-      fuel_correction_rate: this.props.correctionRate,
-      FACT_VALUE: undefined,
-      RESULT: undefined,
-      id: tableData.length
-    });
-    console.log(tableData);
+    tableData.splice(tableData.length - 1, 0, {fuel_correction_rate: this.props.correctionRate});
     this.setState({tableData});
   }
 
@@ -150,11 +128,12 @@ export default class Taxes extends Component {
   componentWillReceiveProps(props) {
     let { operations, fuelRates, taxes = this.state.tableData } = props;
     operations = operations.map( ({id, name}) => ({value: id, label: name}));
+
     this.setState({operations, fuelRates, tableData: taxes});
   }
 
   selectOperation(selectedOperation) {
-    this.setState({selectedOperation: selectedOperation.props.data.rowNumber});
+    this.setState({selectedOperation});
   }
 
   render() {
@@ -180,12 +159,12 @@ export default class Taxes extends Component {
         </Div>
         <Div hidden={!hasTaxes}>
           <Table title="Расчет топлива по норме"
-                 results={taxes}
-                 tableMeta={tableMeta}
-                 noFilter
-                 renderers={this.renderers}
-                 selected={this.state.selectedOperation}
-                 selectField={'id'}
+                 columnCaptions={this.tableCaptions}
+                 data={taxes}
+                 tableCols={this.tableCols}
+                 pageSize={10}
+                 usePagination={false}
+                 cellRenderers={this.tableCellRenderers}
                  onRowSelected={!this.props.readOnly ? this.selectOperation.bind(this) : undefined} />
         </Div>
 			</Div>

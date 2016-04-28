@@ -31,7 +31,12 @@ let getTableMeta = (props) => {
         name: 'auto_area',
         caption: 'Площадь механизированной уборки',
         type: 'number',
-      }
+      },
+      {
+        name: 'company_structure_name',
+        caption: 'Подразделение',
+        type: 'text',
+      },
     ]
   };
   return tableMeta;

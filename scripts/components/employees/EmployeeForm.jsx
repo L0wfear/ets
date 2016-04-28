@@ -100,7 +100,7 @@ class EmployeeForm extends Form {
 							</Div>
 							<Div>
 								<label>Состояние</label>
-								<EtsSelect options={DRIVER_STATES} value={state.active} onChange={this.handleChange.bind(this, 'active')}/>
+								<EtsSelect options={DRIVER_STATES} value={state.active ? 1 : 0} onChange={this.handleChange.bind(this, 'active')}/>
 							</Div>
 						</Col>
 

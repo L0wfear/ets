@@ -2661,33 +2661,19 @@ div.none {
 .width10 {
   width: 10px !important;
 }
-.widthFuel {
-  width: 20px !important;
+.width-fuel-report-small {
   font-size: 10px !important;
-  max-width: 20px !important;
-  word-wrap: break-word !important;
   padding: 4px !important;
+  max-width: 66px !important;
+  min-width: 66px !important;
+  width: 66px !important;
 }
-.widthFuelMain {
-  width: 40px !important;
+.width-fuel-report-large {
   font-size: 10px !important;
-  max-width: 40px !important;
-  word-wrap: break-word !important;
   padding: 4px !important;
-}
-.widthMotohours {
-  width: 25px !important;
-  font-size: 10px !important;
-  max-width: 25px !important;
-  word-wrap: break-word !important;
-  padding: 4px !important;
-}
-.widthOdometr {
-  width: 21px !important;
-  font-size: 10px !important;
-  max-width: 21px !important;
-  word-wrap: break-word !important;
-  padding: 4px !important;
+  max-width: 90px !important;
+  min-width: 90px !important;
+  width: 90px !important;
 }
 
 .routes-list {

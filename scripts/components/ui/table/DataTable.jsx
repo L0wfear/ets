@@ -265,7 +265,7 @@ class Table extends React.Component {
   }
 
   render() {
-    const { tableMeta, renderers, onRowSelected, selected, selectField, checked = {}, title = '', multiSelection = false, noFilter, enumerated = true } = this.props;
+    const { tableMeta, renderers, onRowSelected, selected, selectField, checked = {}, title = '', multiSelection = false, noFilter, enumerated = true, enableSort = true } = this.props;
     const { initialSort, initialSortAscending } = this.state;
 
     let tableMetaCols = _.cloneDeep(tableMeta.cols);
@@ -312,12 +312,14 @@ class Table extends React.Component {
             {this.props.children}
           </div>
         </Div>
-        <Griddle results={results}
+        <Griddle key={'griddle'}
+                 results={results}
                  initialSort={initialSort}
                  initialSortAscending={initialSortAscending}
 								 columnMetadata={columnMetadata}
 								 columns={tableCols}
 								 resultsPerPage={15}
+                 enableSort={enableSort}
 								 useCustomPagerComponent={true}
                  externalChangeSort={this.handleChangeSort.bind(this)}
 								 customPagerComponent={this.props.serverPagination ? <Div/> : Paginator}

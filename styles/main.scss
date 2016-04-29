@@ -1,5 +1,6 @@
 $colorLink: #0081d6;
 $colorGreen: #6a9e56;
+$colorLightGreen: #96bb88;
 $colorBadge: #4b4b4b;
 $colorButton: #4c4c4c;
 $colorGray: #9b9b9b;
@@ -2468,7 +2469,12 @@ body {
             background-color: #f7f7f7 !important;
           }
 
-          &:hover > td, &.selected-row > td {
+          &:hover > td {
+            background-color: $colorLightGreen !important;
+            color: white !important;
+          }
+
+          &.selected-row > td {
             background-color: $colorGreen !important;
             color: white !important;
           }

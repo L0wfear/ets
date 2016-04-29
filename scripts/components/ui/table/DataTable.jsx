@@ -42,7 +42,6 @@ class Table extends React.Component {
     if (typeof this.props.onAllRowsChecked === 'function') {
       this.props.onAllRowsChecked(_.reduce(this.props.results, (cur, val) => {cur[val.id] = val; return cur;}, {}), false);
     }
-    console.info('setting filter values', filterValues);
 		this.setState({filterValues, globalCheckboxState: false});
 	}
 
@@ -69,8 +68,8 @@ class Table extends React.Component {
 
   globalCheckHandler(event) {
     let checked = _(this.props.results)
-                  .filter((r) => this.shouldBeRendered(r))
-                  .reduce((cur, val) => {cur[val.id] = val; return cur;}, {});
+      .filter((r) => this.shouldBeRendered(r))
+      .reduce((cur, val) => {cur[val.id] = val; return cur;}, {});
     this.props.onAllRowsChecked(checked, this.state.globalCheckboxState ? false : true);
     this.setState({globalCheckboxState: !this.state.globalCheckboxState}, () => {
       this.forceUpdate();
@@ -208,13 +207,13 @@ class Table extends React.Component {
   componentWillReceiveProps(props) {
     if (props.checked) {
       // хак, т.к. гридл не умеет в обновление хедера
+      // TODO переделать
       let checked = Object.keys(props.checked).length === _(props.results).filter((r) => this.shouldBeRendered(r)).value().length;
       let el = document.getElementById('checkedColumn');
       if (el) el.checked = checked;
     }
 
     let { initialSort, initialSortAscending } = this.state;
-
 
     if (props.initialSort && props.initialSort !== this.state.initialSort) {
       initialSort = props.initialSort;
@@ -230,7 +229,6 @@ class Table extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     if (!this.state.isHierarchical) return true;
 
-    console.log(_.isEqual(nextProps.results, this.props.results))
     return !_.isEqual(nextProps.results, this.props.results);
   }
 
@@ -241,19 +239,19 @@ class Table extends React.Component {
     })
   }
 
-  handleKeyPress(data, keyCode) {
+  handleKeyPress(data, keyCode, e) {
     if (isEmpty(this.props.selected)) {
       return;
     }
     let direction = 0;
-    if (keyCode === 13 && this.props.selected !== null) {
-    }
 
     if (keyCode === 40) {
       direction = +1;
+      e.preventDefault();
  		}
  		if (keyCode === 38) {
       direction = -1;
+      e.preventDefault();
  		}
     let selected = _.find(data, el => el[this.props.selectField] === this.props.selected[this.props.selectField]);
     let newSelected = _.find(data, el => el.rowNumber === selected.rowNumber + direction);

@@ -30,11 +30,13 @@ class ElementsList extends React.Component {
    }
 
    selectElement({props}) {
-     const id = props.data.id || props.data[this.selectField];
+     const id = !props || !props.data ? null : props.data.id || props.data[this.selectField];
 
      if (props.fromKey) {
        let selectedElement = _.find(this.state.elementsList, el => el.id ? el.id === id : el[this.selectField] === id);
-       this.setState({ selectedElement });
+       if (selectedElement) {
+         this.setState({ selectedElement });
+       }
        return;
      }
 

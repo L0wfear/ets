@@ -76,6 +76,14 @@ let tableMeta = {
 			filter: {
 				type: 'select',
 			},
+		},
+		{
+			name: 'gps_code',
+			caption: 'Код БНСО',
+			type: 'text',
+			filter: {
+				type: 'select',
+			},
 		}
 	]
 }

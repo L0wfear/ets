@@ -264,7 +264,7 @@ export default class CarInfo extends Component {
         <h3 className="car-info-plate">{plate}</h3>
         {this.renderModel()}
         {this.renderData()}
-        <FuelChart from={this.state.from_dt} to={this.state.to_dt} id={car.id}/>
+        {/*<FuelChart from={this.state.from_dt} to={this.state.to_dt} id={car.id}/>*/}
         {/*<SpeedChart track={marker.hasTrackLoaded() && marker.track}/>*/}
       </div>
     );

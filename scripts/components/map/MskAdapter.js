@@ -22,7 +22,8 @@ export function projectToPixel(coordinates) {
   }
 
   if (x === null || y === null) {
-    return [0, 0];
+    // return [0, 0];
+    return { x: 0, y: 0};
   }
 
   if (typeof olmap === 'undefined') {
@@ -53,8 +54,8 @@ for (let i = 0, till = MapServerConfig.tileInfo.lods.length; i < till; i++) {
       source: new ol.source.TileImage({
           tileUrlFunction: function(tileCoord, pixelRatio, projection) {
               let z = tileCoord[0];
-              let x = tileCoord[1]; // было без + 1
-              let y = - tileCoord[2] - 1; // было с -1
+              let x = tileCoord[1];
+              let y = - tileCoord[2] - 1;
               return TILES_URL + z + '/' + y + '/' + x
           },
           crossOrigin: 'anonymous',

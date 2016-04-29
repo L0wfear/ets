@@ -3,7 +3,7 @@ import Table from '../ui/table/DataTable.jsx';
 import { Input, Button, Glyphicon } from 'react-bootstrap';
 import EtsSelect from '../ui/EtsSelect.jsx';
 import Div from '../ui/Div.jsx';
-
+import _ from 'lodash';
 
 function calculateResult(data) {
   const result = _.reduce(data, (res, cur, i) => {
@@ -52,14 +52,19 @@ export default class Taxes extends Component {
     this.renderers = {
       OPERATION: (meta) => {
         let {data} = meta;
-        let index = meta.rowData.rowNumber - 1;
+        let usedOperations = this.state.tableData.map((row) => row.OPERATION);
+        let OPERATIONS = this.state.operations.map((e) => {
+          e.disabled = (usedOperations.indexOf(e.value)+1) ? true : false;
+          return e
+        });
+        let index = meta.rowData.rowNumber;
         if (data === null) {
           return <div/>;
         } else if (props.readOnly) {
           const operation = _.find(this.state.operations, (op) => data === op.value);
           return <div>{operation ? operation.label || '' : ''}</div>
         }
-        return <EtsSelect clearable={false} disabled={props.readOnly} options={this.state.operations} value={data} onChange={this.handleOperationChange.bind(this, index)}/>
+        return <EtsSelect clearable={false} disabled={props.readOnly} options={OPERATIONS} value={data} onChange={this.handleOperationChange.bind(this, index)}/>
       },
       RESULT: ({data}) => <div>{data ? data + ' л' : ''}</div>,
       fuel_correction_rate: (meta) => {
@@ -70,14 +75,14 @@ export default class Taxes extends Component {
       },
       FACT_VALUE: (meta) => {
         let {data} = meta;
-        let index = meta.rowData.rowNumber - 1;
+        let index = meta.rowData.rowNumber;
         let {OPERATION, FUEL_RATE} = meta.rowData;
         if (data === 'Итого' || this.props.readOnly) return <div>{data}</div>;
         const props = {
           type: 'number',
           min: 0,
           value: data,
-          disabled: typeof data === 'undefined' || typeof OPERATION === 'undefined' || this.props.readOnly
+          disabled: typeof OPERATION === 'undefined' || this.props.readOnly
         };
         return <Input {...props} onChange={this.handleFactValueChange.bind(this, index)} />;
       },
@@ -102,23 +107,21 @@ export default class Taxes extends Component {
 
   handleFactValueChange(index, e) {
     const { tableData } = this.state;
-    let current = tableData[index];
+    let current = tableData[index-1];
         current.FACT_VALUE = e.target.value;
-        current.RESULT = getResult(tableData[index]);
+        current.RESULT = getResult(tableData[index-1]);
     tableData[tableData.length - 1].RESULT = calculateResult(tableData);
-
     this.setState({tableData});
     this.props.onChange(tableData);
   }
 
   handleOperationChange(index, value) {
     const { tableData, fuelRates } = this.state;
-    tableData[index]['OPERATION'] = value;
+    tableData[index-1]['OPERATION'] = value;
     const fuelRateByOperation = _.find(fuelRates, r => r.operation_id === value) || {};
-    tableData[index]['FUEL_RATE'] = fuelRateByOperation.rate_on_date || 0;
-    tableData[index]['RESULT'] = getResult(tableData[index]);
+    tableData[index-1]['FUEL_RATE'] = fuelRateByOperation.rate_on_date || 0;
+    tableData[index-1]['RESULT'] = getResult(tableData[index-1]);
     tableData[tableData.length - 1].RESULT = calculateResult(tableData);
-
     this.setState({tableData});
     this.props.onChange(tableData);
   }
@@ -131,41 +134,43 @@ export default class Taxes extends Component {
       fuel_correction_rate: this.props.correctionRate,
       FACT_VALUE: undefined,
       RESULT: undefined,
-      id: tableData.length+1
+      id: tableData.length-1
     });
-    console.log(tableData);
     this.setState({tableData});
   }
 
   removeOperation() {
-    const { tableData } = this.state;
+    let { tableData, selectedOperation } = this.state;
     if (tableData.length === 1) return;
-    tableData.splice(this.state.selectedOperation, 1);
+    tableData.splice(selectedOperation.id, 1);
+    tableData.map((e,i) => {if (i>=selectedOperation.id) {--e.id; return e}});
+
     tableData[tableData.length - 1].RESULT = calculateResult(tableData);
-    this.setState({tableData});
+    selectedOperation = null;
+    this.setState({tableData, selectedOperation});
     this.props.onChange(tableData);
   }
 
   componentWillReceiveProps(props) {
     let { operations, fuelRates, taxes = this.state.tableData } = props;
     operations = operations.map( ({id, name}) => ({value: id, label: name}));
+
     this.setState({operations, fuelRates, tableData: taxes});
   }
 
   selectOperation(selectedOperation, a) {
     if (a.target.className) return;
+    if (!selectedOperation.props.data.id && selectedOperation.props.data.id !== 0) return;
     this.setState({selectedOperation: selectedOperation.props.data});
   }
 
   render() {
-
     const { taxes = this.state.tableData, fuelRates = [] } = this.props;
     taxes.map((e) => {
       if (!e.FUEL_RATE) e.FUEL_RATE = null;
       if (!e.fuel_correction_rate) e.fuel_correction_rate = null;
       return e
     })
-    console.log(taxes);
     const hasTaxes = taxes.length > 1;
 
 		return (
@@ -179,7 +184,7 @@ export default class Taxes extends Component {
             <Button bsSize="xsmall" onClick={this.addOperation.bind(this)}>
               Добавить операцию
             </Button>
-            <Button bsSize="xsmall" disabled={this.state.selectedOperation === null || this.state.selectedOperation === this.state.tableData.length - 1} onClick={this.removeOperation.bind(this)}>
+            <Button bsSize="xsmall" disabled={this.state.selectedOperation === null} onClick={this.removeOperation.bind(this)}>
               Удалить операцию
             </Button>
           </Div>

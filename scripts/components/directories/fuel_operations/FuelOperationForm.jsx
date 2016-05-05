@@ -14,7 +14,7 @@ export default class FuelOperationForm extends Form {
 		let state = this.props.formState;
 
 		return (
-			<Modal {...this.props}>
+			<Modal {...this.props} backdrop="static">
 				<Modal.Header closeButton>
 					<Modal.Title id="contained-modal-title-lg">{!state.id ? 'Добавление' : 'Изменение'} операции для расчета топлива</Modal.Title>
 				</Modal.Header>

@@ -25,7 +25,7 @@ export class MissionForm extends Form {
     let title = '';
 
 		return (
-			<Modal {...this.props} bsSize="large">
+			<Modal {...this.props} bsSize="large" backdrop="static">
 
 				<Modal.Header closeButton>
 	          <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>

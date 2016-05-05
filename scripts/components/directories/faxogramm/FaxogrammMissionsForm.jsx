@@ -27,7 +27,7 @@ class FaxogrammMissionsForm extends Form {
     let payload = { faxogramm_id: state.id };
 
 		return (
-			<Modal {...this.props} bsSize="large">
+			<Modal {...this.props} bsSize="large" backdrop="static">
 
 				<Modal.Header closeButton>
 	          <Modal.Title id="contained-modal-title-lg">Создание заданий</Modal.Title>

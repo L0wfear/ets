@@ -106,7 +106,7 @@ class RouteForm extends Form {
     console.log('form state is ', state);
 
 		return (
-			<Modal {...this.props} bsSize="large">
+			<Modal {...this.props} bsSize="large" backdrop="static">
 
 				<Modal.Header closeButton>
 					<Modal.Title id="contained-modal-title-lg">Создание нового маршрута</Modal.Title>

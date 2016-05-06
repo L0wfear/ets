@@ -77,15 +77,27 @@ export default class RoutesActions extends Actions {
     return RouteReportsService.post(payload);
   }
 
+  // validateRoute(route) {
+  //   const route_vector = {
+  //     technical_operation_id: 55,//route.technical_operation_id,
+  //     object_list: route.object_list,
+  //   };
+  //   const payload = {
+  //     route_vector: JSON.stringify(route_vector),
+  //   };
+  //   return RouteValidateService.get(payload);
+  // }
+
   validateRoute(route) {
     const route_vector = {
       technical_operation_id: 55,//route.technical_operation_id,
       object_list: route.object_list,
     };
     const payload = {
-      route_vector: JSON.stringify(route_vector),
+      technical_operation_id: 55,//route.technical_operation_id,
+      object_list: JSON.stringify(route.object_list),
     };
-    return RouteValidateService.get(payload);
+    return RouteValidateService.post(payload, null, 'json');
   }
 
   getGeozones() {

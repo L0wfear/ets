@@ -114,7 +114,7 @@ export default class PointsStore extends Store {
       if (!this.state.selected) {
         _.map(points, p => {
           let car = p.car;
-          if (car && car.gov_number === this.state.singleCarTrack && p.marker) {
+          if (car && car.gov_number === this.state.singleCarTrack && p.marker) { // заменить на car.gps_code
             p.marker.createTrack();
             p.marker.track.fetch(this.state.singleCarTrackDates[0] || undefined, this.state.singleCarTrackDates[1] || undefined);
             this.handleSelectPoint(p);

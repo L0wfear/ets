@@ -97,7 +97,7 @@ export default class RoutesActions extends Actions {
       technical_operation_id: 55,//route.technical_operation_id,
       object_list: JSON.stringify(route.object_list),
     };
-    return RouteValidateService.post(payload, null, 'json');
+    return RouteValidateService.post(payload, false, 'json');
   }
 
   getGeozones() {

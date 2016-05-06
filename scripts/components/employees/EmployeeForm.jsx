@@ -45,7 +45,7 @@ class EmployeeForm extends Form {
     if (IS_CREATING) title = 'Создание сотрудника';
 
 		return (
-			<Modal {...this.props} bsSize="large" >
+			<Modal {...this.props} bsSize="large" backdrop="static">
 				<Modal.Header closeButton>
 					<Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
 				</Modal.Header>

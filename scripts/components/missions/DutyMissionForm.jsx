@@ -174,7 +174,7 @@ export class DutyMissionForm extends Form {
 		let IS_DISPLAY = !!state.status && state.status !== 'not_assigned';
 
 		return (
-			<Modal {...this.props} bsSize="large">
+			<Modal {...this.props} bsSize="large" backdrop="static">
 
 				<Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>

@@ -34,7 +34,7 @@ class CompanyStructureForm extends Form {
     let STRUCTURE_TYPES = [{value: 2, label: 'ДЭК'}, {value: 3, label: 'ДЭУ'}];
 
 		return (
-			<Modal {...this.props}>
+			<Modal {...this.props} backdrop="static">
 
 				<Modal.Header closeButton>
 	          <Modal.Title id="contained-modal-title-lg">Создание подразделения</Modal.Title>

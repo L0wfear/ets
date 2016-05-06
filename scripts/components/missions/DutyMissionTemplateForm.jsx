@@ -42,7 +42,7 @@ class MissionTemplateForm extends DutyMissionForm {
 		let odh_list = route ? route.odh_list || route.object_list : [];
 
 		return (
-			<Modal {...this.props} bsSize="large">
+			<Modal {...this.props} bsSize="large" backdrop="static">
 
 				<Modal.Header closeButton>
 	          <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>

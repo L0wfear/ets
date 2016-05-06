@@ -47,7 +47,7 @@ export default class Form extends Component {
     console.log('form state is ', state);
 
 		return (
-			<Modal {...this.props}>
+			<Modal {...this.props} backdrop="static">
 
 				<Modal.Header closeButton>
 	          <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>

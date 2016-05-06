@@ -353,11 +353,14 @@ class WaybillFormWrap extends Component {
 
 	async handleClose() {
 		let { formState } = this.state;
+		let prevStatus = formState.status;
 		try {
 			formState.status = 'closed';
 			await this.context.flux.getActions('waybills').update(formState);
 		} catch (e) {
 			console.log(e);
+			formState.status = prevStatus;
+			await this.context.flux.getActions('waybills').update(formState);
 			return;
 		}
 		this.context.flux.getActions('waybills').getWaybills();

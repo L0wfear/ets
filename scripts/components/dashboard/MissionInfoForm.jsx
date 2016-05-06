@@ -103,7 +103,7 @@ export class MissionInfoForm extends Form {
 		let title = `Информация о задании. Гос. номер ТС: ${this.props.formState.car_gov_number}`;
 
 		return (
-			<Modal {...this.props} bsSize="large" className="mission-info-modal">
+			<Modal {...this.props} bsSize="large" className="mission-info-modal" backdrop="static">
 
 				<Modal.Header closeButton>
 					<Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>

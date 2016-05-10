@@ -41,6 +41,16 @@ let getTableMeta = (props) => {
 				//display: false,
 			},
 			{
+				name: 'car_id',
+				caption: 'Гос. № ТС',
+				type: 'string',
+				display: false,
+				filter: {
+					type: 'select',
+					labelFunction: (id) => getCarByIdLabelFunction(id).gov_number,
+				}
+			},
+			{
 				name: 'number',
 				caption: 'Номер',
 				type: 'number',
@@ -67,10 +77,7 @@ let getTableMeta = (props) => {
 				name: 'car_id',
 				caption: 'Гос. № ТС',
 				type: 'string',
-				filter: {
-					type: 'select',
-					labelFunction: (id) => getCarByIdLabelFunction(id).gov_number,
-				}
+				filter: false
 			},
 			{
 				name: 'fact_departure_date',

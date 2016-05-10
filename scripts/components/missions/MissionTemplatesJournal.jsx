@@ -19,6 +19,16 @@ let getTableMeta = (props) => {
 	let tableMeta = {
 		cols: [
 			{
+				name: 'car_id',
+				caption: 'Транспортное средство',
+				type: 'number',
+				display: false,
+				filter: {
+					type: 'select',
+          labelFunction: (id) => getCarById(id).gov_number || id,
+				},
+			},
+			{
 				name: 'number',
 				caption: 'Номер',
 				type: 'number',
@@ -36,10 +46,7 @@ let getTableMeta = (props) => {
 				name: 'car_id',
 				caption: 'Транспортное средство',
 				type: 'number',
-				filter: {
-					type: 'select',
-          labelFunction: (id) => getCarById(id).gov_number || id,
-				},
+				filter: false,
         cssClassName: 'width120',
 			},
       {

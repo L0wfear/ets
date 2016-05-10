@@ -43,14 +43,14 @@ export default class RoutesActions extends Actions {
     delete payload.odh_fail_list;
     delete payload.copy;
     payload.object_list = JSON.stringify(payload.object_list);
-    const createdRoute = await RouteService.post(payload, false);
+    const createdRoute = await RouteService.post(payload, false, 'json');
     const routes = await RouteService.get();
     return {createdRoute, routes};
   }
 
   removeRoute(route) {
     const payload = { id: route.id };
-    return RouteService.delete(payload);
+    return RouteService.delete(payload, null, 'json');
   }
 
   updateRoute(route) {
@@ -60,7 +60,7 @@ export default class RoutesActions extends Actions {
     delete payload.odh_fail_list;
     _.each(payload.object_list, o => delete o.shape);
     payload.object_list = JSON.stringify(payload.object_list);
-    return RouteService.put(payload);
+    return RouteService.put(payload, null, 'json');
   }
 
   getRouteReports() {

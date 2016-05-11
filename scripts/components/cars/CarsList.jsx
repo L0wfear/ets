@@ -84,6 +84,14 @@ let tableMeta = {
 			filter: {
 				type: 'select',
 			},
+		},
+		{
+			name: 'equipment',
+			caption: 'Оборудование ДКМ',
+			type: 'text',
+			filter: {
+				type: 'select',
+			},
 		}
 	]
 }
@@ -124,6 +132,7 @@ class CarsList extends ElementsList {
 	render() {
 
 		const { carsList = [] } = this.props;
+		console.log(carsList);
 
 		return (
 			<div className="ets-page-wrap">

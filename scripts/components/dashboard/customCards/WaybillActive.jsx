@@ -1,6 +1,7 @@
 import React from 'react';
 import Div from '../../ui/Div.jsx';
 import _ from 'lodash';
+import moment from 'moment';
 import { Panel, Collapse, Glyphicon, Fade, Well, Button } from 'react-bootstrap';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
 import FaxogrammMissionsFormWrap from '../../directories/faxogramm/FaxogrammMissionsFormWrap.jsx';
@@ -24,13 +25,13 @@ export default class WaybillActive extends WaybillClosed {
         }
         return e;
       });
-    subItems.sort((a,b) => {
-        let ast = a.data.mission_status === 'Выполнено' ? 1 : 0;
-        let bst = b.data.mission_status === 'Выполнено' ? 1 : 0;
-        let atime = new Date(a.data.create_date.split('T')[0]).getTime();
-        let btime = new Date(b.data.create_date.split('T')[0]).getTime();
-        return btime+bst - atime+ast
-      })
+    subItems = _(subItems)
+      .groupBy((e) => moment(e.data.create_date).format(global.APP_DATE_FORMAT))
+      .map((ar) => _.sortBy(ar, (e) => e.data.mission_status !== 'Выполнено'))
+      .flatten()
+      .value()
+
+    console.log(subItems);
 
     return (
       <ul>

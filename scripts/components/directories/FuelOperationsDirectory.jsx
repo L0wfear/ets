@@ -31,7 +31,7 @@ let tableMeta = {
 let FuelOperationsTable = (props) => {
 
     const renderers = {
-			equipment: ({data}) => <div style={{textAlign: "center"}}><input type="checkbox" checked={!!data} /></div>,
+			equipment: ({data}) => <div style={{textAlign: "center"}}><input type="checkbox" checked={!!data} readOnly /></div>,
 		};
 
 		return <Table title='Операции для расчета топлива'

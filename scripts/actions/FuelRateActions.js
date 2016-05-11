@@ -69,7 +69,7 @@ export default class FuelRateActions extends Actions {
     const payload = {};
     if (typeof formState.name === "string" && formState.name !== '' ) {
       payload.name = formState.name;
-      payload.equipment = !!formState.equipment;
+      payload.equipment = !!formState.equipment || false;
     }
 
     return FuelOperationsService.post(payload);
@@ -81,7 +81,7 @@ export default class FuelRateActions extends Actions {
     };
     if (typeof formState.name === "string" && formState.name !== '' ) {
       payload.name = formState.name;
-      payload.equipment = !!formState.equipment;
+      payload.equipment = !!formState.equipment || false;
     }
     return FuelOperationsService.put(payload);
   }

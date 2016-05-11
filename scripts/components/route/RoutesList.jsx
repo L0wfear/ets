@@ -179,7 +179,7 @@ class RoutesList extends Component {
 				name: e.name,
 				id: e.id
 			}
-		}).filter(e => e.routes.length);
+		}).filter(e => e.routes.length).sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
 
 		let vectorRoutes = techOperRoutes.map((o, i) => {
 			let hidden = ! !!(state.showId.indexOf(o.id+'v')+1);

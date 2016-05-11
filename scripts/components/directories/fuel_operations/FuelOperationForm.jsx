@@ -26,6 +26,7 @@ export default class FuelOperationForm extends Form {
 		      	<Col md={6}>
 							<Field type="string" label="Операция"
 									value={state.name} onChange={this.handleChange.bind(this, 'name')} />
+							<label>Для спецоборудования</label><input type="checkbox" style={{marginLeft:"10px"}} value={state.equipment} onClick={this.handleChange.bind(this, 'equipment', !!!state.equipment)} />
 		      	</Col>
 
 	        </Row>

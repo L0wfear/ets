@@ -16,13 +16,23 @@ let tableMeta = {
       filter: {
         type: 'select',
       }
+		},
+		{
+			name: 'equipment',
+			caption: 'Для спецоборудования',
+			filter: {
+				type: 'select',
+			},
+			cssClassName: 'width150'
 		}
 	]
 };
 
 let FuelOperationsTable = (props) => {
 
-    const renderers = {};
+    const renderers = {
+			equipment: ({data}) => <div style={{textAlign: "center"}}><input type="checkbox" checked={!!data} /></div>,
+		};
 
 		return <Table title='Операции для расчета топлива'
 									results={props.data}

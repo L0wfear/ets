@@ -57,6 +57,9 @@ class WaybillsActions extends BaseActions {
     delete payload.mission_list;
     delete payload.all_missions_completed_or_failed;
     delete payload.array_agg;
+    delete payload.car_special_model_name;
+    delete payload.car_model_name;
+    delete payload.garage_number;
 
     _.mapKeys(payload, (v, k) => isEmpty(v) ? delete payload[k] : void 0);
 
@@ -83,6 +86,9 @@ class WaybillsActions extends BaseActions {
     payload.fact_arrival_date = createValidDateTime(payload.plan_arrival_date);
     delete payload.car_has_odometer;
     delete payload.mission_list;
+    delete payload.car_special_model_name;
+    delete payload.car_model_name;
+    delete payload.garage_number;
     delete payload.all_missions_completed_or_failed;
     _.mapKeys(payload, (v, k) => isEmpty(v) ? delete payload[k] : void 0);
 

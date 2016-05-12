@@ -21,6 +21,7 @@ export function saveData(blob, fileName) {
 }
 
 export function printData(blob) {
+  console.log(blob);
   let url = window.URL.createObjectURL(new Blob([blob], {type:'application/pdf'}));
   let iframe = document.createElement("iframe");
   document.body.appendChild(iframe);

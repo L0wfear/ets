@@ -299,8 +299,18 @@ class WaybillForm extends Form {
 							</Col>
 						</Div>
 					</Row>
-
+					<br/>
 	      	<Row>
+						<Col md={6}>
+							<Field type="select" label="Транспортное средство (поиск по госномеру)" error={errors['car_id']}
+									hidden={!(IS_CREATING || IS_POST_CREATING)}
+									options={CARS}
+									value={state.car_id}
+									onChange={this.onCarChange.bind(this)}/>
+
+							<Field type="string" label="Транспортное средство" readOnly={true} hidden={IS_CREATING || IS_POST_CREATING}
+									value={car ? `${car.gov_number} [${car.special_model_name || ''}${car.special_model_name ? '/' : ''}${car.model_name || ''}]` : 'Н/Д'}/>
+	      		</Col>
 	      		<Col md={6}>
 							<Field type="select" label="Водитель (возможен поиск по табельному номеру)" error={errors['driver_id']}
 									hidden={!(IS_CREATING || IS_POST_CREATING)}
@@ -311,16 +321,6 @@ class WaybillForm extends Form {
 							<Field type="string" label="Водитель" readOnly={true} hidden={IS_CREATING || IS_POST_CREATING}
 									value={employeeFIOLabelFunction(state.driver_id, true)}/>
 	          </Col>
-	      		<Col md={6}>
-							<Field type="select" label="Транспортное средство (поиск по госномеру)" error={errors['car_id']}
-									hidden={!(IS_CREATING || IS_POST_CREATING)}
-									options={CARS}
-									value={state.car_id}
-									onChange={this.onCarChange.bind(this)}/>
-
-							<Field type="string" label="Транспортное средство" readOnly={true} hidden={IS_CREATING || IS_POST_CREATING}
-									value={car ? `${car.gov_number} [${car.special_model_name || ''}${car.special_model_name ? '/' : ''}${car.model_name || ''}]` : 'Н/Д'}/>
-	      		</Col>
 	      	</Row>
 
 	      	<Row>

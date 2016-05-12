@@ -71,11 +71,12 @@
     "webpack-dev-server": "^1.10.1"
   },
   "scripts": {
-    "build": "webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
-    "build-study": "webpack --verbose --colors --display-error-details --config webpack/study.config.js",
-    "build-test": "webpack --verbose --colors --display-error-details --config webpack/test.config.js",
+    "build": "STAND=production webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
+    "build-study": "STAND=study webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
+    "build-test": "STAND=test webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
+    "build-second": "STAND=second webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
     "lint": "eslint -c .eslintrc scripts",
-    "start-dev": "node ./node_modules/better-npm-run start-dev",
+    "start-dev": "STAND=second node ./node_modules/better-npm-run start-dev",
     "dev": "npm run start-dev",
     "dev-local-server": "node ./node_modules/better-npm-run start-dev-local-server"
   },

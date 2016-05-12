@@ -3,7 +3,7 @@ var webpack = require('webpack');
 //var writeStats = require('./utils/writeStats');
 var notifyStats = require('./utils/notifyStats');
 var assetsPath = path.resolve(__dirname, '../dist');
-var host = 'localhost';//'dev.213.79.88.5';
+var host = 'localhost';
 var port = 3000;
 var alias = require('./alias');
 //var ForceCaseSensitivityPlugin = require('./utils/forcecasesensitivity');
@@ -63,7 +63,7 @@ module.exports = {
       'process.env': {
         // Useful to reduce the size of client-side libraries, e.g. react
         NODE_ENV: JSON.stringify('development'),
-        STAND: JSON.stringify('development')
+        STAND: JSON.stringify(process.env.STAND)
       }
     }),
 

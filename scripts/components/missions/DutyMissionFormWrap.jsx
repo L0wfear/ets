@@ -25,24 +25,22 @@ class DutyMissionFormWrap extends FormWrap {
   async handleFormPrint() {
     let mission = _.cloneDeep(this.state.formState);
 
-		// все переделать на пост! убрать бред
+		let response;
+
+		//потом перенести на бек
 		if (mission.id) {
-			await this.context.flux.getActions('missions').printDutyMission(mission.id).then(url => {
-				window.location = `${url}?duty_mission_id=${mission.id}`;
-				setTimeout(() => {
-					this.context.flux.getActions('missions').getDutyMissions();
-				}, 500);
-			});
+			response = await this.context.flux.getActions('missions').updateDutyMission(mission);
 		} else {
-			let response = await this.context.flux.getActions('missions').createDutyMission(mission);
-			let id = response.result && response.result[0] ? response.result[0].id : null;
-			await this.context.flux.getActions('missions').printDutyMission(id).then(url => {
-				window.location = `${url}?duty_mission_id=${id}`;
-				setTimeout(() => {
+			response = await this.context.flux.getActions('missions').createDutyMission(mission);
+		}
+
+		let id = response.result && response.result[0] ? response.result[0].id : null;
+		await this.context.flux.getActions('missions').printDutyMission(id).then(url => {
+			window.location = `${url}?duty_mission_id=${id}`;
+			setTimeout(() => {
 					this.context.flux.getActions('missions').getDutyMissions();
 				}, 500);
 			});
-		}
 		this.context.flux.getActions('missions').getDutyMissions();
 		this.props.onFormHide();
   }

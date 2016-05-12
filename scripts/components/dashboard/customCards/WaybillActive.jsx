@@ -15,22 +15,17 @@ export default class WaybillActive extends WaybillClosed {
 
   renderSubitems(subItems) {
 
-    subItems
-      .sort((a,b) => (new Date(b.data.create_date).getTime() - new Date(a.data.create_date).getTime()))
-      .map((e, i, a) => {
-        if (i == 0 || a[i-1].data.groupEnd) e.data.groupStart = true;
-        if (a[i+1]) {
-          if (e.data.create_date !== a[i+1].data.create_date) {
-            e.data.groupEnd = true;
-          }
-        }
-        return e;
-      });
-    subItems = _(subItems)
-      .groupBy((e) => moment(e.data.create_date).format(global.APP_DATE_FORMAT))
-      .map((ar) => _.sortBy(ar, (e) => e.data.mission_status !== 'Выполнено'))
-      .flatten()
-      .value();
+    let si = _.groupBy(subItems, (e) => moment(e.data.create_date).format(global.APP_DATE_FORMAT));
+    si = _.map(si, (ar) => _.sortBy(ar, (e) => e.data.mission_status !== 'Выполнено'));
+    si = si.reverse();
+    si = si.map((ar) => {
+      ar[0].data.groupStart = true;
+      ar[ar.length-1].data.groupEnd = true;
+      return ar;
+    })
+    si = _.flatten(si);
+
+    subItems = si;
 
     return (
       <ul>

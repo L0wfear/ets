@@ -23,9 +23,9 @@ let PROTO = window.location.protocol;
 let WS_PROTO = PROTO === 'http:' ? 'wss:' : 'wss:';
 
 let config = {
-  backend: PROTO + '//ods.mos.ru/ssd/ets/services',
-  backendOld: PROTO + '//ods.mos.ru/ssd/city-dashboard',
-  ws: WS_PROTO + '//ods.mos.ru/ssd/city-dashboard/stream',
+  backend: PROTO + '//213.79.88.5/ssd/ets/services',
+  backendOld: PROTO + '//213.79.88.5/ssd/city-dashboard',
+  ws: WS_PROTO + '//213.79.88.5/ssd/city-dashboard/stream',
   images: '/data/images/',
   REQUEST_PARAMS: {
     credentials: 'include'
@@ -36,13 +36,13 @@ let config = {
 try {
   switch (process.env.STAND) {
     case 'study':
-      config.backend = PROTO + '//ods.mos.ru/ssd/ets-study/services';
+      config.backend = PROTO + '//213.79.88.5/ssd/ets-study/services';
       break;
     case 'test':
-      config.backend = PROTO + '//ods.mos.ru/ssd/ets-test/services';
+      config.backend = PROTO + '//213.79.88.5/ssd/ets-test/services';
       break;
     case 'development':
-      config.backend = PROTO + '//ods.mos.ru/ssd/ets-test/services';
+      config.backend = PROTO + '//213.79.88.5/ssd/ets-test/services';
       break;
   }
 } catch (e) {

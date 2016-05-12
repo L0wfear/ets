@@ -25,26 +25,10 @@ module.exports = {
   },
   module: {
     loaders: [
-      {
-        test: /\.(jpe?g|png|gif|svg)$/,
-        loader: 'url',
-        query: {
-          limit: 10240
-        }
-      },
-      {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        loaders: [strip.loader('debug'), 'babel?stage=0&optional=runtime&plugins=typecheck']
-      },
-      {
-        test: /\.json$/,
-        loader: 'json-loader'
-      },
-      {
-        test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('style', '!raw!sass?outputStyle=expanded')
-      }
+      { test: /\.(jpe?g|png|gif|svg)$/, loader: 'url', query: { limit: 10240 } },
+      { test: /\.jsx?$/, exclude: /node_modules/, loaders: [strip.loader('debug'), 'babel?stage=0&optional=runtime&plugins=typecheck'] },
+      { test: /\.json$/, loader: 'json-loader' },
+      { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', '!raw!sass?outputStyle=expanded') }
     ]
   },
   node: {

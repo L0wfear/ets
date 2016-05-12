@@ -17,6 +17,7 @@ export default class EmployeesActions extends Actions {
     const payload = _.clone(formState);
     payload.birthday = createValidDate(payload.birthday);
     delete payload.position_name;
+    delete payload.company_structure_name;
     delete payload.position_key;
     delete payload.full_name;
     payload.active = !!payload.active;

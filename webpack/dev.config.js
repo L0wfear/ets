@@ -8,6 +8,8 @@ var port = 3000;
 var alias = require('./alias');
 //var ForceCaseSensitivityPlugin = require('./utils/forcecasesensitivity');
 
+var stand = process.env.STAND || 'development';
+
 module.exports = {
   devtool: 'source-map',
   context: path.resolve(__dirname, '..'),
@@ -63,7 +65,7 @@ module.exports = {
       'process.env': {
         // Useful to reduce the size of client-side libraries, e.g. react
         NODE_ENV: JSON.stringify('development'),
-        STAND: JSON.stringify(process.env.STAND)
+        STAND: JSON.stringify(stand)
       }
     }),
 

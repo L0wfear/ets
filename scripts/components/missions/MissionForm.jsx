@@ -97,7 +97,8 @@ export class MissionForm extends Form {
 		}
 
 		if (!isEmpty(mission.technical_operation_id)){
-			routesList = await routesActions.getRoutesByTechnicalOperation(mission.technical_operation_id);
+			//routesList = await routesActions.getRoutesByTechnicalOperation(mission.technical_operation_id);
+			routesList = await routesActions.getRoutesByMissionId(mission.id);
 		}
 
 		technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsByCarId(mission.car_id);

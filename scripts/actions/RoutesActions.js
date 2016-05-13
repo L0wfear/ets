@@ -28,6 +28,13 @@ export default class RoutesActions extends Actions {
     return response.result || [];
   }
 
+  async getRoutesByMissionId(mission_id) {
+    const payload = { mission_id };
+
+    let response = await RouteService.get(payload);
+    return response.result || [];
+  }
+
   getRouteById(id, simple) {
     const payload = { id };
     if (simple) {

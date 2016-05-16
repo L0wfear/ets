@@ -49,6 +49,9 @@ try {
     case 'second':
       config.backend = PROTO + '//213.79.88.5/ets-test/services';
       break;
+    case 'secondstudy':
+      config.backend = PROTO + '//213.79.88.5/ets-study/services';
+      break;
   }
 } catch (e) {
 }

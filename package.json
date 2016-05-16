@@ -75,6 +75,7 @@
     "build-study": "STAND=study webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
     "build-test": "STAND=test webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
     "build-second": "STAND=second webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
+    "build-second-study": "STAND=secondstudy webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
     "lint": "eslint -c .eslintrc scripts",
     "start-dev": "STAND=second node ./node_modules/better-npm-run start-dev",
     "start": "npm run start-dev",

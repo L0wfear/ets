@@ -11,6 +11,8 @@ var relativeAssetsPath = '../dist';
 var assetsPath = path.join(__dirname, relativeAssetsPath);
 var alias = require('./alias');
 
+var stand = process.env.STAND || 'production';
+
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
@@ -67,7 +69,7 @@ module.exports = {
       'process.env': {
         // Useful to reduce the size of client-side libraries, e.g. react
         NODE_ENV: JSON.stringify('production'),
-        STAND: JSON.stringify(process.env.STAND)
+        STAND: JSON.stringify(stand)
       }
     }),
 

@@ -22,6 +22,7 @@ let tableMeta = {
 			caption: 'Для спецоборудования',
 			filter: {
 				type: 'select',
+				labelFunction: (equipment) => equipment ? 'Да' : 'Нет'
 			},
 			cssClassName: 'width150'
 		}

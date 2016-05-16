@@ -14,6 +14,31 @@ export default class FuelOperationFormWrap extends FormWrap {
 		this.updateAction = context.flux.getActions('fuel-rates').updateFuelOperation;
 	}
 
+	componentWillReceiveProps(props) {
+		if (!props.element) this.setState({
+			canSave: false,
+			formErrors: {name: `Поле "Операция" должно быть заполнено`}
+		})
+	}
+
+	handleFormStateChange(field, e) {
+		const value = e !== undefined && e !== null && !!e.target ? e.target.value : e;
+		console.info('Form changed', field, value);
+		let { formState, formErrors } = this.state;
+		let newState = {};
+		formState[field] = value;
+
+		formErrors = formState.name ? {} : {name: `Поле "Операция" должно быть заполнено`};
+		newState.canSave = _(formErrors).map(v => !!v).filter(e => e === true).value().length === 0;
+
+		newState.formState = formState;
+		newState.formErrors = formErrors;
+
+
+		this.setState(newState);
+	}
+
+
 	render() {
 
 		let props = this.props;

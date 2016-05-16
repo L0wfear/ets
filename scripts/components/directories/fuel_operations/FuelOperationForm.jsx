@@ -12,7 +12,7 @@ export default class FuelOperationForm extends Form {
 
 	render() {
 		let state = this.props.formState;
-		console.log(state);
+		let errors = this.props.formErrors;
 
 		return (
 			<Modal {...this.props} backdrop="static">
@@ -25,8 +25,12 @@ export default class FuelOperationForm extends Form {
 		      <Row>
 
 		      	<Col md={6}>
-							<Field type="string" label="Операция"
-									value={state.name} onChange={this.handleChange.bind(this, 'name')} />
+							<Field
+								type="string"
+								label="Операция"
+								value={state.name}
+								error={errors['name']}
+								onChange={this.handleChange.bind(this, 'name')} />
 							<label>Для спецоборудования</label><input type="checkbox" style={{marginLeft:"10px"}} checked={!!state.equipment} onClick={this.handleChange.bind(this, 'equipment', !!!state.equipment)} />
 		      	</Col>
 
@@ -35,7 +39,7 @@ export default class FuelOperationForm extends Form {
 	      </Modal.Body>
 
 	      <Modal.Footer>
-	      	<Button onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+	      	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>Сохранить</Button>
 	      </Modal.Footer>
 
 			</Modal>

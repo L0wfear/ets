@@ -140,7 +140,11 @@ let WaybillsTable = (props) => {
 			date_create: ({data}) => <DateFormatter date={data} />,
 			fact_departure_date: ({data}) => <DateFormatter date={data} time={true} />,
 			fact_arrival_date: ({data}) => <DateFormatter date={data} time={true} />,
-			car_special_model_name: (meta) => <div>{meta.data+"/"+meta.rowData.car_model_name}</div>,
+			car_special_model_name: (meta) => {
+				let spModel = meta.data === null ? '- ' : meta.data;
+				let model = meta.rowData.car_model_name === null ? ' -' : meta.rowData.car_model_name;
+				return <div>{spModel+"/"+model}</div>
+			},
 			all_missions_completed_or_failed: ({data}) => <div>{waybillMissionsCompleteStatusLabelFunction(data)}</div>
 		};
 

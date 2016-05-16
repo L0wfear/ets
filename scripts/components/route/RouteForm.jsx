@@ -142,7 +142,7 @@ class RouteForm extends Form {
 								<Field type="select" label="Подразделение"
 										options={COMPANY_ELEMENTS}
 										value={state.company_structure_id}
-										clearable={false}
+										clearable={true}
 										onChange={this.handleChange.bind(this, 'company_structure_id')}/>
 	            </Col>
 						</Div>

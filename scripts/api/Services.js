@@ -6,6 +6,7 @@ export const RouteService   = new APIService('/route/', useMocks);
 export const RouteValidateService = new APIService('/route_validate/', useMocks);
 export const RouteReportsService = new APIService('/route_odh_covering_report/', useMocks);
 export const WaybillService = new APIService('/waybill/', useMocks);
+export const WaybillInfoService = new APIService('/waybill_create_info/', useMocks);
 export const GeozoneService = new APIService('/geozone/', useMocks);
 export const DashboardService = new APIService('/dashboard/', useMocks);
 export const FaxogrammService = new APIService('/faxogramm/', useMocks);

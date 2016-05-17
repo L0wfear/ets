@@ -51,6 +51,7 @@ class RouteForm extends Form {
     });
 
     this.setState({'ROUTE_TYPE_OPTIONS': route_type_options, 'routeTypeDisabled': routeTypeValue ? false : true});
+		this.handleTypeChange(routeTypeValue);
     this.props.handleFormChange('type', routeTypeValue);
 		resetState && this.props.resetState();
 	}

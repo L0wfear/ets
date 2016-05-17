@@ -227,7 +227,7 @@ class WaybillForm extends Form {
 							<Field type="select" label="Ответственное лицо" error={errors['responsible_person_id']}
 									hidden={!(IS_CREATING || IS_POST_CREATING)}
 									options={MASTERS}
-									value={state.responsible_person_id}
+									value={employeeFIOLabelFunction(state.responsible_person_id, true)}
 									onChange={this.handleChange.bind(this, 'responsible_person_id')}/>
 
 							<Field type="string" label="Ответственное лицо" readOnly={true} hidden={IS_CREATING || IS_POST_CREATING || !state.responsible_person_id}

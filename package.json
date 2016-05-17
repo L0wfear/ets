@@ -79,6 +79,7 @@
     "lint": "eslint -c .eslintrc scripts",
     "start-dev": "STAND=second node ./node_modules/better-npm-run start-dev",
     "start": "npm run start-dev",
+    "secondstudy": "STAND=secondstudy node ./node_modules/better-npm-run start-dev",
     "dev": "STAND=development node ./node_modules/better-npm-run start-dev",
     "dev-local-server": "node ./node_modules/better-npm-run start-dev-local-server"
   },

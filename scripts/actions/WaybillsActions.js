@@ -2,7 +2,7 @@ import BaseActions from './Actions.js';
 import { createValidDateTime } from 'utils/dates';
 import _ from 'lodash';
 import { isEmpty } from 'utils/functions';
-import { WaybillService, WaybillInfoService } from 'api/Services';
+import { WaybillService, LatestWaybillDriverService } from 'api/Services';
 
 class WaybillsActions extends BaseActions {
 
@@ -19,26 +19,18 @@ class WaybillsActions extends BaseActions {
     return super.delete(id);
   }
 
-  getMissionsByCarAndDates(car_id, date_from, date_to, driver_id) {
+  getLatestWaybillDriver(car_id, driver_id) {
     const payload = {};
 
     if (!isEmpty(car_id)) {
       payload.car_id = car_id;
     }
 
-    if (!isEmpty(date_from)) {
-      payload.date_from = createValidDateTime(date_from);
-    }
-
-    if (!isEmpty(date_to)) {
-      payload.date_to = createValidDateTime(date_to);
-    }
-
     if (!isEmpty(driver_id)) {
       payload.driver_id = driver_id;
     }
 
-    return WaybillInfoService.get(payload);
+    return LatestWaybillDriverService.get(payload);
   }
 
   getWaybill(id) {

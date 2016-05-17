@@ -53,9 +53,22 @@ class WaybillForm extends Form {
     });
   }
 
+	getLatestWaybillDriver(formState) {
+		this.context.flux.getActions('waybills').getLatestWaybillDriver(
+      formState.car_id,
+      formState.driver_id
+    ).then((response) => {
+			let newDriverId = response && response.result ? response.result.driver_id : null;
+      if (newDriverId) this.props.handleFormChange('driver_id', newDriverId);
+    });
+	}
+
   componentWillReceiveProps(props) {
     let currentState = this.props.formState;
     let nextState = props.formState;
+		if (nextState.car_id !== currentState.car_id && nextState.car_id) {
+			this.getLatestWaybillDriver(nextState);
+		}
 
     //при смене планируемых дат или ТС запрашиваются новые доступные задания
     if (currentState.car_id !== nextState.car_id ||

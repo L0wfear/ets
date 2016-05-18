@@ -36,7 +36,7 @@ export default class FuelRateActions extends Actions {
       }
     });
 
-    return FuelConsumptionRateService.post(payload);
+    return FuelConsumptionRateService.post(payload, null, 'json');
   }
 
   updateFuelRate(newFuelRate) {
@@ -55,14 +55,14 @@ export default class FuelRateActions extends Actions {
     });
 
 
-    return FuelConsumptionRateService.put(payload);
+    return FuelConsumptionRateService.put(payload, null, 'json');
   }
 
   deleteFuelRate(id) {
     const payload = {
       id
     };
-    return FuelConsumptionRateService.delete(payload);
+    return FuelConsumptionRateService.delete(payload, null, 'json');
   }
 
   createFuelOperation(formState) {

@@ -2,6 +2,8 @@ import { Actions } from 'flummox';
 import _ from 'lodash';
 import { DailyCleaningReportsService, WeeklyTechnicalOperationCompleteReportsService, FuelReportService, AnalyticsService } from 'api/Services';
 import { createValidDateTime, createValidDate } from 'utils/dates';
+import { postJSON } from 'adapter';
+import config from '../config.js';
 
 export default class ReportsActions extends Actions {
 
@@ -28,7 +30,14 @@ export default class ReportsActions extends Actions {
     let payload = _.cloneDeep(data);
     payload.date_from = createValidDateTime(payload.date_from);
     payload.date_to = createValidDateTime(payload.date_to);
-    return AnalyticsService.post(payload, true, 'json');
+
+    const token = JSON.parse(window.localStorage.getItem('ets-session'));
+    let URL = `${config.backend}/analytical_reports/?token=${token}`;
+
+    return fetch(URL, {
+      method: 'post',
+      body: JSON.stringify(payload)
+    }).then((r) => r.blob());
   }
 
   getDailyCleaningReportById(id) {

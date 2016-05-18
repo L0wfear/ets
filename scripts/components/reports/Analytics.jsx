@@ -4,6 +4,7 @@ import Div from '../ui/Div.jsx';
 import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
 import Datepicker from '../ui/DatePicker.jsx';
 import { getToday9am, getTomorrow9am } from 'utils/dates';
+import { saveData } from 'utils/functions';
 
 class Analytics extends Component {
 
@@ -26,7 +27,7 @@ class Analytics extends Component {
 
   handleSubmit() {
     const { flux } = this.context;
-		flux.getActions('reports').getAnalytics(this.state);
+		flux.getActions('reports').getAnalytics(this.state).then(blob => {saveData(blob, `Отчет.xls`)});
   }
 
   handleChange(field, value) {
@@ -60,10 +61,10 @@ class Analytics extends Component {
           <Row>
             <Col md={1} />
             <Col md={11}>
-              <Div><label>Выбрать отчеты:</label></Div>
-              <input style={{marginRight:"10px"}} type="radio" checked={this.state.report_ids.indexOf(1)+1} onChange={this.handleChange.bind(this, 1)} />Отчет по маршрутам<br/>
-              <input style={{marginRight:"10px"}} type="radio" checked={this.state.report_ids.indexOf(2)+1} onChange={this.handleChange.bind(this, 2)} />Отчет по заданиям<br/>
-              <input style={{marginRight:"10px"}} type="radio" checked={this.state.report_ids.indexOf(3)+1} onChange={this.handleChange.bind(this, 3)} />Отчет по путевым листам<br/>
+              <Div><label>Выбрать отчет:</label></Div>
+              <input style={{marginRight:"10px"}} type="radio" checked={this.state.report_ids.indexOf(0)+1} onChange={this.handleChange.bind(this, 0)} />Отчет по маршрутам<br/>
+              <input style={{marginRight:"10px"}} type="radio" checked={this.state.report_ids.indexOf(1)+1} onChange={this.handleChange.bind(this, 1)} />Отчет по заданиям<br/>
+              <input style={{marginRight:"10px"}} type="radio" checked={this.state.report_ids.indexOf(2)+1} onChange={this.handleChange.bind(this, 2)} />Отчет по путевым листам<br/>
             </Col>
           </Row>
           <br/>

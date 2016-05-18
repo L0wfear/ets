@@ -41,7 +41,7 @@ export const CompanyStructureService = new APIService('/company_structure/', use
 export const CompanyService = new APIService('/company/', useMocks);
 export const DailyCleaningReportsService = new APIService('/geozone_element_traveled_daily_report/', useMocks);
 export const FuelReportService = new APIService('/fuel_consumption_report/', useMocks);
-export const AnalyticsService = new APIService('/analytics/', useMocks);
+export const AnalyticsService = new APIService('/analytical_reports/', useMocks);
 export const WeeklyTechnicalOperationCompleteReportsService = new APIService('/status_of_technical_operation_execution_weekly_report/', useMocks);
 export const PositionService = new APIService('/position/', useMocks);
 

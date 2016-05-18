@@ -13,7 +13,7 @@ class Analytics extends Component {
     let [date_from, date_to] = [getToday9am(), getTomorrow9am()];
 
 		this.state = {
-      report: null,
+      report_ids: [],
       date_from,
       date_to
 		};
@@ -21,7 +21,7 @@ class Analytics extends Component {
 
   componentDidMount() {
     const { flux } = this.context;
-    flux.getActions('company-structure').getCompanyList();
+    // flux.getActions('company-structure').getCompanyList();
   }
 
   handleSubmit() {
@@ -30,7 +30,7 @@ class Analytics extends Component {
   }
 
   handleChange(field, value) {
-    (field === 'routes' || field === 'missions' || field === 'waybills') ? this.setState({report: field}) : this.setState({[field]: value});
+    (!isNaN(parseFloat(field))) ? this.setState({report_ids: [field]}) : this.setState({[field]: value});
   }
 
   render() {
@@ -61,16 +61,16 @@ class Analytics extends Component {
             <Col md={1} />
             <Col md={11}>
               <Div><label>Выбрать отчеты:</label></Div>
-              <input style={{marginRight:"10px"}} type="radio" checked={this.state.report === 'routes'} onChange={this.handleChange.bind(this, 'routes')} />Отчет по маршрутам<br/>
-              <input style={{marginRight:"10px"}} type="radio" checked={this.state.report === 'missions'} onChange={this.handleChange.bind(this, 'missions')} />Отчет по заданиям<br/>
-              <input style={{marginRight:"10px"}} type="radio" checked={this.state.report === 'waybills'} onChange={this.handleChange.bind(this, 'waybills')} />Отчет по путевым листам<br/>
+              <input style={{marginRight:"10px"}} type="radio" checked={this.state.report_ids.indexOf(1)+1} onChange={this.handleChange.bind(this, 1)} />Отчет по маршрутам<br/>
+              <input style={{marginRight:"10px"}} type="radio" checked={this.state.report_ids.indexOf(2)+1} onChange={this.handleChange.bind(this, 2)} />Отчет по заданиям<br/>
+              <input style={{marginRight:"10px"}} type="radio" checked={this.state.report_ids.indexOf(3)+1} onChange={this.handleChange.bind(this, 3)} />Отчет по путевым листам<br/>
             </Col>
           </Row>
           <br/>
           <Row>
             <Col md={1} />
             <Col md={11}>
-            <Button disabled={!this.state.report} onClick={this.handleSubmit.bind(this)}>Выгрузить</Button>
+            <Button disabled={!this.state.report_ids} onClick={this.handleSubmit.bind(this)}>Выгрузить</Button>
             </Col>
           </Row>
         </Div>

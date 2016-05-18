@@ -1,5 +1,5 @@
 import { Actions } from 'flummox';
-import { CompanyStructureService } from 'api/Services';
+import { CompanyStructureService, CompanyService } from 'api/Services';
 import { isEmpty } from 'utils/functions';
 import _ from 'lodash';
 
@@ -29,6 +29,10 @@ export default class CompanyStructureActions extends Actions {
 
   getCompanyStructure() {
     return CompanyStructureService.get();
+  }
+
+  getCompanyList() {
+    return CompanyService.get();
   }
 
   async getLinearCompanyStructure() {

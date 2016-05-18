@@ -101,6 +101,7 @@ export default class LoadingStore extends Store {
       technicalOperationsActions.getTechnicalOperationsByCarId,
 
       companyStructureActions.getCompanyStructure,
+      companyStructureActions.getCompanyList,
       companyStructureActions.getLinearCompanyStructure,
       companyStructureActions.getLinearCompanyStructureForUser,
       companyStructureActions.updateCompanyElement,
@@ -110,6 +111,7 @@ export default class LoadingStore extends Store {
 
       reportsActions.getDailyCleaningReports,
       reportsActions.getFuelReport,
+      reportsActions.getAnalytics,
       reportsActions.getDailyCleaningReportById,
       reportsActions.createDailyCleaningReport,
       reportsActions.getWeeklyTechnicalOperationCompleteReports,

@@ -26,8 +26,8 @@ export default class ReportsActions extends Actions {
 
   getAnalytics(data) {
     let payload = _.cloneDeep(data);
-    payload.date_from = createValidDate(payload.date_from);
-    payload.date_to = createValidDate(payload.date_to);
+    payload.date_from = createValidDateTime(payload.date_from);
+    payload.date_to = createValidDateTime(payload.date_to);
     return AnalyticsService.post(payload, true, 'json');
   }
 

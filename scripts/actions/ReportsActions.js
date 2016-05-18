@@ -28,7 +28,7 @@ export default class ReportsActions extends Actions {
     let payload = _.cloneDeep(data);
     payload.date_from = createValidDate(payload.date_from);
     payload.date_to = createValidDate(payload.date_to);
-    return AnalyticsService.get(payload, true, 'json');
+    return AnalyticsService.post(payload, true, 'json');
   }
 
   getDailyCleaningReportById(id) {

@@ -8,6 +8,7 @@ import { datePickerFunction } from 'utils/labelFunctions';
 import MissionFormWrap from './MissionFormWrap.jsx';
 import ElementsList from '../ElementsList.jsx';
 import moment from 'moment';
+import { saveData } from 'utils/functions';
 import cx from 'classnames';
 import { getWarningNotification } from 'utils/notifications';
 import _ from 'lodash';
@@ -307,6 +308,12 @@ export class MissionsJournal extends ElementsList {
     }
   }
 
+	handleSubmit() {
+		const { flux } = this.context;
+		flux.getActions('missions').getMissionAnalyticalReport().then(blob => {saveData(blob, `Отчет по заданиям.xls`)});
+	}
+
+
 	render() {
 		const { missionsList = [] } = this.props;
 
@@ -318,6 +325,7 @@ export class MissionsJournal extends ElementsList {
 					<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Создать задание</Button>
 					<Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="search" /> Просмотреть</Button>
 					<Button bsSize="small" disabled={this.removeDisabled()} onClick={this.removeCheckedElements.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
+					<Button bsSize="small" onClick={this.handleSubmit.bind(this)}><Glyphicon glyph="download-alt" /></Button>
 				</MissionsTable>
 				<MissionFormWrap onFormHide={this.onFormHide.bind(this)}
 						showForm={this.state.showForm}

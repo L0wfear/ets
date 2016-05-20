@@ -3,7 +3,7 @@ import connectToStores from 'flummox/connect';
 import Div from '../ui/Div.jsx';
 import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
 import Datepicker from '../ui/DatePicker.jsx';
-import { getToday9am, getTomorrow9am } from 'utils/dates';
+import { getToday9am, getTomorrow9am, makeDate } from 'utils/dates';
 import { saveData } from 'utils/functions';
 
 class Analytics extends Component {
@@ -27,7 +27,26 @@ class Analytics extends Component {
 
   handleSubmit() {
     const { flux } = this.context;
-		flux.getActions('reports').getAnalytics(this.state).then(blob => {saveData(blob, `Отчет.xls`)});
+
+    let reportName = '';
+
+    switch (this.state.report_ids[0]) {
+      case 0:
+        reportName = 'Отчет по маршрутам'
+        break;
+      case 1:
+        reportName = 'Отчет по заданиям'
+        break;
+      case 2:
+        reportName = 'Отчет по ПЛ'
+        break;
+      default:
+        reportName = 'Отчет'
+    };
+
+    let dateName = makeDate(this.state.date_from)+'-'+makeDate(this.state.date_to);
+    console.log(dateName);
+		flux.getActions('reports').getAnalytics(this.state).then(blob => {saveData(blob, `${reportName} ${dateName}.xls`)});
   }
 
   handleChange(field, value) {
@@ -35,8 +54,6 @@ class Analytics extends Component {
   }
 
   render() {
-    console.log(this.props);
-    console.log(this.state);
     return (
       <div className="ets-page-wrap">
         <Div>

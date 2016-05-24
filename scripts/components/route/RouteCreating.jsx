@@ -56,6 +56,7 @@ class RouteCreating extends Component {
 
 		onFeatureClick(feature, ev, map) {
 			let {id, name, state} = feature.getProperties();
+			console.log(map.map.getView().getCenter(), map.map.getView().getZoom());
 
 			let polys = _.cloneDeep(this.props.route.polys);
 
@@ -172,10 +173,14 @@ class RouteCreating extends Component {
 		handleCheckbox(type, v, e) {
 			let { object_list, polys } = this.props.route;
 			let { geozonePolys } = this.props;
-			let odhs = v.split(',');
+			let odhs = v.split(',').map((e) => parseInt(e, 10));
+			object_list.forEach((obj) => {
+				let i = odhs.indexOf(obj.object_id);
+				if (i+1) odhs.splice(i,1);
+			});
 			if (e.target.checked) {
 				odhs.forEach((e) => {
-					object_list.push({object_id: parseInt(e, 10), type, name: geozonePolys[e].name, state: polyState.ENABLED});
+					object_list.push({object_id: e, type, name: geozonePolys[e].name, state: polyState.ENABLED});
 					polys[e].state = polyState.ENABLED;
 				});
 			} else {

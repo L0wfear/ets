@@ -13,6 +13,15 @@ class Analytics extends Component {
 
     let [date_from, date_to] = [getToday9am(), getTomorrow9am()];
 
+    this.reports = [
+      'Маршруты',
+      'Задания',
+      'Путевые листы',
+      'Транспортные средства',
+      'Работники',
+      'Расход топлива',
+    ];
+
 		this.state = {
       report_ids: [],
       date_from,
@@ -29,24 +38,9 @@ class Analytics extends Component {
   handleSubmit() {
     const { flux } = this.context;
 
-    let reportName = '';
-
-    switch (this.state.report_ids[0]) {
-      case 0:
-        reportName = 'Отчет по маршрутам'
-        break;
-      case 1:
-        reportName = 'Отчет по заданиям'
-        break;
-      case 2:
-        reportName = 'Отчет по ПЛ'
-        break;
-      default:
-        reportName = 'Отчет'
-    };
+    let reportName = this.reports[this.state.report_ids[0]];
 
     let dateName = makeDate(this.state.date_from)+'-'+makeDate(this.state.date_to);
-    console.log(dateName);
 		flux.getActions('reports').getAnalytics(this.state).then(blob => {saveData(blob, `${reportName} ${dateName}.xls`)});
   }
 
@@ -55,6 +49,15 @@ class Analytics extends Component {
   }
 
   render() {
+
+    let reportsList = this.reports.map((e, i) => {
+      return <div key={e+i}><input
+          style={{marginRight:"10px"}}
+          type="radio"
+          checked={this.state.report_ids.indexOf(i)+1}
+          onChange={this.handleChange.bind(this, i)} />{e}<br/></div>
+      });
+
     return (
       <div className="ets-page-wrap">
         <Div>
@@ -69,10 +72,10 @@ class Analytics extends Component {
     					  <Datepicker date={this.state.date_to} onChange={this.handleChange.bind(this, 'date_to')}/>
     				  </Div>
               {/*<Field type="select" label="Учреждение"
-                  multi={true}
-                  options={COMPANY}
-                  value={institutionsList.map(o => o.object_id).join(',')}
-                  onChange={this.handleChange.bind(null, 'odh')}/>*/}
+                multi={true}
+                options={COMPANY}
+                value={institutionsList.map(o => o.object_id).join(',')}
+              onChange={this.handleChange.bind(null, 'odh')}/>*/}
             </Col>
           </Row>
           <br/>
@@ -80,9 +83,7 @@ class Analytics extends Component {
             <Col md={1} />
             <Col md={11}>
               <Div><label>Выбрать отчет:</label></Div>
-              <input style={{marginRight:"10px"}} type="radio" checked={this.state.report_ids.indexOf(0)+1} onChange={this.handleChange.bind(this, 0)} />Отчет по маршрутам<br/>
-              <input style={{marginRight:"10px"}} type="radio" checked={this.state.report_ids.indexOf(1)+1} onChange={this.handleChange.bind(this, 1)} />Отчет по заданиям<br/>
-              <input style={{marginRight:"10px"}} type="radio" checked={this.state.report_ids.indexOf(2)+1} onChange={this.handleChange.bind(this, 2)} />Отчет по путевым листам<br/>
+              {reportsList}
             </Col>
           </Row>
           <br/>

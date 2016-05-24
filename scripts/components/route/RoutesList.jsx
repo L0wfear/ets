@@ -189,7 +189,7 @@ class RoutesList extends Component {
 					<h6 style={{marginLeft:"15px", marginRight:"5px"}}><span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, o.id+'v')}>{o.name}{!hidden ? ` \u25BC` : ` \u25BA`}</span></h6>
 					<Div hidden={hidden}>
 						{routes.map((r, i) => {
-							let cn = cx('sidebar__list-item', {'active': route && r.id === route.id});
+						let cn = cx('sidebar__list-item', {'active': route && r.id === route.id});
 							return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>
 						})}
 					</Div>

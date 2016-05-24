@@ -57,7 +57,7 @@ export class MissionForm extends Form {
 			<Modal {...this.props} bsSize="large" backdrop="static">
 
 				<Modal.Header closeButton>
-	          <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
+					<Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
 				</Modal.Header>
 
 	      <Modal.Body>
@@ -65,25 +65,25 @@ export class MissionForm extends Form {
 	      	<Row>
             <Col md={6}>
               <Field type="string" label="Наименование"
-                     value={state.name}
-                     onChange={this.handleChange.bind(this, 'name')}
-                     error={errors[name]}/>
+									value={state.name}
+									onChange={this.handleChange.bind(this, 'name')}
+									error={errors[name]}/>
             </Col>
 
 						<Col md={3}>
               <Field type="select" label="Объект"
-                     multi={true}
-                     value={state.objects.map(cft => cft.id).join(',')}
-                     options={TECHNICAL_OPERATION_OBJECTS}
-                     onChange={this.handleObjectsChange.bind(this)}/>
+									multi={true}
+									value={state.objects.map(cft => cft.id).join(',')}
+									options={TECHNICAL_OPERATION_OBJECTS}
+									onChange={this.handleObjectsChange.bind(this)}/>
 						</Col>
 
             <Col md={3}>
               <Field type="select" label="Сезон"
-                     value={state.season_id}
-                     options={SEASONS}
-                     onChange={this.handleChange.bind(this, 'season_id')}
-                     error={errors[name]}/>
+									value={state.season_id}
+									options={SEASONS}
+									onChange={this.handleChange.bind(this, 'season_id')}
+									error={errors[name]}/>
             </Col>
 	      	</Row>
 

@@ -63,8 +63,8 @@ class LoginPage extends Component {
     if (!user) {
       this.setState({ error: true });
     } else {
-      this.context.setLoading(true);
       flux.getActions('session').login(user).then(() => {
+        this.context.setLoading(true);
         this.context.loadData();
         this.context.history.pushState(null, '/dashboard');
       });

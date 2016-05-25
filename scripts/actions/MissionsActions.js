@@ -306,7 +306,7 @@ export default class MissionsActions extends Actions {
 
   getMissionAnalyticalReport() {
     const token = JSON.parse(window.localStorage.getItem('ets-session'));
-    let URL = `${config.backend}/mission_analytical_reports/?token=${token}`;
+    let URL = `${config.backend}/mission_report/?token=${token}`;
 
     return fetch(URL, {
       method: 'get',

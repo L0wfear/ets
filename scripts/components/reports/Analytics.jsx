@@ -107,7 +107,7 @@ class Analytics extends Component {
                   disabled={this.state.company_ids.length > 1}
                   checked={this.state.transcript}
                   onChange={this.handleChange.bind(this, 'transcript', !this.state.transcript)} />
-                <span style={{color: this.state.company_ids.length > 1 ? "grey" : "black"}}>c расшифровкой</span>
+              <span style={{color: this.state.company_ids.length > 1 ? "grey" : "black"}}>c расшифровкой</span>
             </Row>
           </Col>
           <Col md={5}>

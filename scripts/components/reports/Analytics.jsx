@@ -65,6 +65,17 @@ class Analytics extends Component {
     }
   }
 
+  handleCheckbox(e) {
+    let value;
+    if (e.target.checked) {
+      let { companyList } = this.props;
+      value = companyList.map((e) => e.id).join(',');
+    } else {
+      value = '';
+    }
+    this.handleChange('company_ids', value);
+  }
+
   render() {
 
     let { companyList } = this.props;
@@ -77,7 +88,7 @@ class Analytics extends Component {
           onChange={this.handleChange.bind(this, 'report_ids', i)} />{e}<br/></div>
       });
 
-    let COMPANY = (companyList && companyList.map(({id, name}) => ({value: id, label: name}))) || [];
+    let COMPANY = companyList && companyList.map(({id, name}) => ({value: id, label: name}))
 
     return (
       <div className="ets-page-wrap">
@@ -117,6 +128,13 @@ class Analytics extends Component {
                   options={COMPANY}
                   value={this.state.company_ids.join(',')}
                   onChange={this.handleChange.bind(this, 'company_ids')}/>
+                <Div style={{marginLeft: "-9px", marginTop: "8px"}}>
+                <input
+                    style={{marginRight:"5px", marginLeft:"10px"}}
+                    type="checkbox"
+                    onChange={this.handleCheckbox.bind(this)} />
+                <span>Выбрать все</span>
+              </Div>
             </Div>
           </Col>
           <Col md={2} />

@@ -55,10 +55,11 @@ class Analytics extends Component {
 
       this.setState({report_ids});
     } else if (field === 'company_ids') {
-      let { company_ids } = this.state;
+      let { company_ids, transcript } = this.state;
       company_ids = value ? (''+value).split(',') : [];
       company_ids = company_ids.map((e) => parseFloat(e));
-      this.setState({company_ids});
+      if (company_ids.length > 1) transcript = false;
+      this.setState({company_ids, transcript});
     } else {
       this.setState({[field]: value});
     }
@@ -77,7 +78,7 @@ class Analytics extends Component {
       });
 
     let COMPANY = (companyList && companyList.map(({id, name}) => ({value: id, label: name}))) || [];
-    console.log(this.state);
+
     return (
       <div className="ets-page-wrap">
         <Div>
@@ -103,8 +104,10 @@ class Analytics extends Component {
               <input
                   style={{marginRight:"5px", marginLeft:"10px"}}
                   type="checkbox"
+                  disabled={this.state.company_ids.length > 1}
                   checked={this.state.transcript}
-                  onChange={this.handleChange.bind(this, 'transcript', !this.state.transcript)} />c расшифровкой
+                  onChange={this.handleChange.bind(this, 'transcript', !this.state.transcript)} />
+                <span style={{color: this.state.company_ids.length > 1 ? "grey" : "black"}}>c расшифровкой</span>
             </Row>
           </Col>
           <Col md={5}>

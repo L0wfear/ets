@@ -38,11 +38,13 @@ let CarTypesTable = (props) => {
 
     const renderers = {};
 
-		return <Table title='Типы техники'
-									results={props.data}
-									tableMeta={tableMeta}
-                  renderers={renderers}
-									{...props}/>
+		return <Table
+				title='Типы техники'
+				results={props.data}
+				tableMeta={tableMeta}
+				renderers={renderers}
+				initialSort={'full_name'}
+				{...props}/>
 }
 
 class CarTypesDirectory extends ElementsList {

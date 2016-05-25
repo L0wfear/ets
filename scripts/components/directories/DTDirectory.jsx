@@ -53,11 +53,11 @@ let DTTable = (props) => {
   };
 
   return <Table title="Реестр ДТ"
-                results={props.data}
-                tableMeta={getTableMeta(props)}
-                renderers={renderers}
-                initialSort={'name'}
-                {...props}/>;
+      results={props.data}
+      tableMeta={getTableMeta(props)}
+      renderers={renderers}
+      initialSort={'name'}
+      {...props}/>;
 };
 
 class DTDirectory extends ElementsList {

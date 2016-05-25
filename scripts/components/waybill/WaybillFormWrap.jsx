@@ -52,14 +52,14 @@ let validateWaybill = (waybill, errors) => {
 	if (waybill.status && waybill.status !== 'draft') {
 		if (waybill.fact_arrival_date && waybill.fact_departure_date) {
 			if (moment(waybill.fact_arrival_date).toDate().getTime() < moment(waybill.fact_departure_date).toDate().getTime()) {
-				waybillErrors.fact_arrival_date = `"Возвращение план." должно быть больше "Выезд план."`;
+				waybillErrors.fact_arrival_date = `"Возвращение факт." должно быть больше "Выезд факт."`;
 			}
 		} else if (waybill.fact_arrival_date) {
-			waybillErrors.fact_departure_date = `Дата "Выезд план." должна быть указана`;
+			waybillErrors.fact_departure_date = `Дата "Выезд факт." должна быть указана`;
 		} else if (waybill.fact_departure_date) {
-			waybillErrors.fact_arrival_date = `Дата "Возвращение план." должна быть указана`;
+			waybillErrors.fact_arrival_date = `Дата "Возвращение факт." должна быть указана`;
 		} else {
-			waybillErrors.fact_departure_date = `Даты "Выезд план." и "Возвращение план." должны быть указаны`;
+			waybillErrors.fact_departure_date = `Даты "Выезд факт." и "Возвращение факт." должны быть указаны`;
 		}
 	}
 
@@ -101,14 +101,14 @@ let validateClosingWaybill = (waybill, errors) => {
 
 	if (waybill.fact_arrival_date && waybill.fact_departure_date) {
 		if (moment(waybill.fact_arrival_date).toDate().getTime() < moment(waybill.fact_departure_date).toDate().getTime()) {
-			waybillErrors.fact_arrival_date = `"Возвращение план." должно быть больше "Выезд план."`;
+			waybillErrors.fact_arrival_date = `"Возвращение факт." должно быть больше "Выезд факт."`;
 		}
 	} else if (waybill.fact_arrival_date) {
-		waybillErrors.fact_departure_date = `Дата "Выезд план." должна быть указана`;
+		waybillErrors.fact_departure_date = `Дата "Выезд факт." должна быть указана`;
 	} else if (waybill.fact_departure_date) {
-		waybillErrors.fact_arrival_date = `Дата "Возвращение план." должна быть указана`;
+		waybillErrors.fact_arrival_date = `Дата "Возвращение факт." должна быть указана`;
 	} else {
-		waybillErrors.fact_departure_date = `Даты "Выезд план." и "Возвращение план." должны быть указаны`;
+		waybillErrors.fact_departure_date = `Даты "Выезд факт." и "Возвращение факт." должны быть указаны`;
 	}
 
 	return waybillErrors;

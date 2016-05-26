@@ -22,6 +22,20 @@ let getWorkKindOptions = (id) => {
 let getTableMeta = (props) => {
 
   let CAR_TYPES = props.typesList.map(({id, full_name}) => ({value: id, label: full_name}));
+  let OBJECT = [
+    {
+      value: 1,
+      label: "ОДХ"
+    },
+    {
+      value: 2,
+      label: "ДТ"
+    },
+    {
+      value: 3,
+      label: "ПН"
+    }
+  ];
 
   let tableMeta = {
   	cols: [
@@ -67,11 +81,12 @@ let getTableMeta = (props) => {
   			},
   		},
   		{
-  			name: 'object_name',
+  			name: 'objects',
   			caption: 'Объект',
   			type: 'string',
   			filter: {
-  				type: 'select',
+  				type: 'multiselect',
+          options: OBJECT,
   			},
         cssClassName: 'width60'
   		},
@@ -136,6 +151,25 @@ let TechOperationsTable = (props) => {
                    disabled={true}/>
           </div>
         );
+      },
+      objects: ({data}) => {
+        let OBJECT = [
+          {
+            value: 1,
+            label: "ОДХ"
+          },
+          {
+            value: 2,
+            label: "ДТ"
+          },
+          {
+            value: 3,
+            label: "ПН"
+          }
+        ];
+        let values = data.map(d => d.id).join(',');
+        let dataAsString = data.map(d => d.name).join(', ');
+        return <div>{dataAsString}</div>;
       },
       needs_brigade: ({data}) => <input type="checkbox" disabled checked={!!data}/>,
       use_in_reports: ({data}) => <input type="checkbox" disabled checked={!!data}/>,

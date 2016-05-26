@@ -200,7 +200,7 @@ export class DutyMissionForm extends Form {
     				   	</Col>
     				   	<Col md={6}>
                   <label style={{minHeight: 15}}></label>
-    				 			<Div>по <Datepicker date={state.plan_date_end} onChange={this.handleChange.bind(this, 'plan_date_end')} disabled={IS_DISPLAY}/></Div>
+    				 			<Div>по <Datepicker date={state.plan_date_end} min={state.plan_date_start} onChange={this.handleChange.bind(this, 'plan_date_end')} disabled={IS_DISPLAY}/></Div>
     				   	</Col>
 
                 <Div hidden={!(IS_CLOSING || IS_COMPLETED)}>
@@ -210,7 +210,7 @@ export class DutyMissionForm extends Form {
       				   	</Col>
       				   	<Col md={6}>
                     <label style={{minHeight: 15}}></label>
-      				 			<Div>по <Datepicker date={state.fact_date_end} onChange={this.handleChange.bind(this, 'fact_date_end')} disabled={IS_CLOSED}/></Div>
+      				 			<Div>по <Datepicker date={state.fact_date_end} min={state.fact_date_start} onChange={this.handleChange.bind(this, 'fact_date_end')} disabled={IS_CLOSED}/></Div>
       				   	</Col>
                 </Div>
               </Row>

@@ -185,7 +185,7 @@ class RoutesList extends Component {
 			let hidden = ! !!(state.showId.indexOf(o.id+'v')+1);
 			let routes = o.routes.filter(r => r.type === 'vector');
 			if (routes.length) return (
-				<div>
+				<div key={i+o}>
 					<h6 style={{marginLeft:"15px", marginRight:"5px"}}><span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, o.id+'v')}>{o.name}{!hidden ? ` \u25BC` : ` \u25BA`}</span></h6>
 					<Div hidden={hidden}>
 						{routes.map((r, i) => {
@@ -201,7 +201,7 @@ class RoutesList extends Component {
 			let hidden = ! !!(state.showId.indexOf(o.id+'s')+1);
 			let routes = o.routes.filter(r => r.type === 'simple');
 			if (routes.length) return (
-				<div>
+				<div key={i+o}>
 					<h6 style={{marginLeft:"15px", marginRight:"5px"}}><span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, o.id+'s')}>{o.name}{!hidden ? ` \u25BC` : ` \u25BA`}</span></h6>
 					<Div hidden={hidden}>
 						{routes.map((r, i) => {
@@ -217,7 +217,7 @@ class RoutesList extends Component {
 			let hidden = ! !!(state.showId.indexOf(o.id+'s2')+1);
 			let routes = o.routes.filter(r => r.type === 'simple_dt');
 			if (routes.length) return (
-				<div>
+				<div key={i+o}>
 					<h6 style={{marginLeft:"15px", marginRight:"5px"}}><span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, o.id+'s2')}>{o.name}{!hidden ? ` \u25BC` : ` \u25BA`}</span></h6>
 					<Div hidden={hidden}>
 						{routes.map((r, i) => {
@@ -233,7 +233,7 @@ class RoutesList extends Component {
 			let hidden = ! !!(state.showId.indexOf(o.id+'p')+1);
 			let routes = o.routes.filter(r => r.type === 'points');
 			if (routes.length) return (
-				<div>
+				<div key={i+o}>
 					<h6 style={{marginLeft:"15px", marginRight:"5px"}}><span style={{cursor: "pointer"}} onClick={this.handleDropdown.bind(this, o.id+'p')}>{o.name}{!hidden ? ` \u25BC` : ` \u25BA`}</span></h6>
 					<Div hidden={hidden}>
 						{routes.map((r, i) => {

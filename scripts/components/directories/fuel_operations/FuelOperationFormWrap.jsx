@@ -19,6 +19,7 @@ export default class FuelOperationFormWrap extends FormWrap {
 			canSave: false,
 			formErrors: {name: `Поле "Операция" должно быть заполнено`}
 		})
+		this.setState({formState: props.element});
 	}
 
 	handleFormStateChange(field, e) {
@@ -45,11 +46,11 @@ export default class FuelOperationFormWrap extends FormWrap {
 
 		return props.showForm ?
     <FuelRateForm formState = {this.state.formState}
-									onSubmit={this.handleFormSubmit.bind(this)}
-									handleFormChange={this.handleFormStateChange.bind(this)}
-									show={this.props.showForm}
-									onHide={this.props.onFormHide}
-									{...this.state}/>
+				onSubmit={this.handleFormSubmit.bind(this)}
+				handleFormChange={this.handleFormStateChange.bind(this)}
+				show={this.props.showForm}
+				onHide={this.props.onFormHide}
+				{...this.state}/>
 													: null;
 
 	}

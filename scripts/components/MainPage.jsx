@@ -73,13 +73,17 @@ export default class MainPage extends React.Component {
 
           <NavDropdown title="Отчеты" id="nav-dropdown-3">
             {/*<MenuItem active={path === '/odh-reports'} href="#/odh-reports">ОДХ</MenuItem>*/}
-            <MenuItem active={path === '/route-reports'} href="#/route-reports">Покрытие ОДХ маршрутами</MenuItem>
-            <MenuItem active={path === '/mission-reports'} href="#/mission-reports">Прохождение заданий</MenuItem>
-            <MenuItem active={path === '/fuel-report'} href="#/fuel-report">Расход топлива</MenuItem>
-            <MenuItem active={path === '/daily-cleaning-reports'} href="#/daily-cleaning-reports">Статус по уборке</MenuItem>
-            <MenuItem active={path === '/weekly-technical-operation-complete-reports'} href="#/weekly-technical-operation-complete-reports">Статус по выполнению технологических операций</MenuItem>
-            <MenuItem active={path === '/analytics'} href="#/analytics">Аналитика</MenuItem>
-          </NavDropdown>
+            <NavDropdown title="Оперативные отчеты" id="nav-dropdown-3-1" pullLeft>
+              <MenuItem active={path === '/route-reports'} href="#/route-reports">Покрытие ОДХ маршрутами</MenuItem>
+              <MenuItem active={path === '/mission-reports'} href="#/mission-reports">Прохождение заданий</MenuItem>
+            </NavDropdown>
+            <NavDropdown title="Регламентированные отчеты" id="nav-dropdown-3-2" pullRight>
+              <MenuItem active={path === '/fuel-report'} href="#/fuel-report">Расход топлива</MenuItem>
+              <MenuItem active={path === '/daily-cleaning-reports'} href="#/daily-cleaning-reports">Статус по уборке</MenuItem>
+              <MenuItem active={path === '/weekly-technical-operation-complete-reports'} href="#/weekly-technical-operation-complete-reports">Статус по выполнению технологических операций</MenuItem>
+            </NavDropdown>
+              <MenuItem active={path === '/analytics'} href="#/analytics">Аналитика</MenuItem>
+            </NavDropdown>
 
           <NavItem active={path === '/routes-list'} href="#/routes-list">Маршруты</NavItem>
           <NavItem active={path === '/company-structure'} href="#/company-structure">Структура предприятия</NavItem>

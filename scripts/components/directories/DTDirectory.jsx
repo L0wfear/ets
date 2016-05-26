@@ -47,9 +47,9 @@ let getTableMeta = (props) => {
 let DTTable = (props) => {
 
   const renderers = {
-    clean_area: ({data}) => <div>{data.toString() + ' кв.м'}</div>,
-    total_area: ({data}) => <div>{data.toString() + ' кв.м'}</div>,
-    auto_area: ({data}) => <div>{data.toString() + ' кв.м'}</div>,
+    clean_area: ({data}) => <div>{data ? data+'' + ' кв.м' : '-'}</div>,
+    total_area: ({data}) => <div>{data ? data+'' + ' кв.м' : '-'}</div>,
+    auto_area: ({data}) => <div>{data ? data+'' + ' кв.м' : '-'}</div>,
   };
 
   return <Table title="Реестр ДТ"

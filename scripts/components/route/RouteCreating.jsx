@@ -185,8 +185,8 @@ class RouteCreating extends Component {
 				});
 			} else {
 				object_list = [];
-				odhs.forEach((e) => {
-					polys[e].state = polyState.SELECTABLE;
+				_.forEach(polys, (e) => {
+					e.state = polyState.SELECTABLE;
 				});
 			}
 

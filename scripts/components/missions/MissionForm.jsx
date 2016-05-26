@@ -206,6 +206,7 @@ export class MissionForm extends Form {
 									options={CARS}
 									value={state.car_id}
 									onChange={this.handleCarIdChange.bind(this)}/>
+
 						</Col>
 
 				 		<Col md={3}>
@@ -240,36 +241,43 @@ export class MissionForm extends Form {
 				   	</Col>
 					</Row>
 
-	      	<Row>
-	      		<Col md={6}>
-							<Field type="select"
-								label="Технологическая операция"
-								error={errors['technical_operation_id']}
-								disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY || isEmpty(state.car_id))}
-								options={TECH_OPERATIONS}
-								value={state.technical_operation_id}
-								onChange={this.handleTechnicalOperationChange.bind(this)}/>
+					<Row>
+						<Col md={6}>
 							<Field type="string"
-								label="Комментарий"
-								disabled={IS_COMPLETED}
-								value={state.comment}
-								onChange={this.handleChange.bind(this, 'comment')}
-								error={errors['comment']} />
-	          </Col>
-	      		<Col md={6}>
-              <Field type="select"
+									label="Комментарий"
+									disabled={IS_COMPLETED}
+									value={state.comment}
+									onChange={this.handleChange.bind(this, 'comment')}
+									error={errors['comment']} />
+						</Col>
+						<Col md={3}>
+							<Field type="select"
 									label="Источник получения задания"
 									error={errors['mission_source_id']}
 									disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY}
 									options={MISSION_SOURCES}
 									value={state.mission_source_id}
 									onChange={this.handleChange.bind(this, 'mission_source_id')}/>
-	            <Field type="number" label="Количество проходов" error={errors['passes_count']}
+						</Col>
+						<Col md={3}>
+							<Field type="number" label="Количество проходов" error={errors['passes_count']}
 									disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY}
 									value={state.passes_count} onChange={this.handleChange.bind(this, 'passes_count')}
 									min={0} />
-	      		</Col>
-	      	</Row>
+						</Col>
+					</Row>
+
+	      	<Row>
+						<Col md={12}>
+							<Field type="select"
+									label="Технологическая операция"
+									error={errors['technical_operation_id']}
+									disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY || isEmpty(state.car_id))}
+									options={TECH_OPERATIONS}
+									value={state.technical_operation_id}
+									onChange={this.handleTechnicalOperationChange.bind(this)}/>
+								</Col>
+						</Row>
 
 	      	<Row>
             <Col md={6}>

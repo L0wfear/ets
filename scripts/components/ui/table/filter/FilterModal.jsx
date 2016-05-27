@@ -121,7 +121,6 @@ class FilterModal extends React.Component {
       }
       return cur;
     }, {});
-
     this.props.onSubmit(filterValues);
     this.props.onHide();
   }

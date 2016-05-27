@@ -7,7 +7,7 @@ let Filter = (props) => {
     <div className={props.className}>
       <FilterButton disabled={props.disabled} direction={props.direction} show={props.show} active={props.active} onClick={props.onClick}/>
       <FilterModal onSubmit={props.onSubmit}
-                   show={props.show}
+          show={props.show}
                    onHide={props.onHide}
                    values={props.values}
                    direction={props.direction}

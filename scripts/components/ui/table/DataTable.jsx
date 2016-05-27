@@ -153,7 +153,7 @@ class Table extends React.Component {
           }
       } else if (_.isArray(value)) {
         if (_.isArray(obj[key])) {
-          if (!_.find(obj[key], el => el.id && value.indexOf(el.id.toString()) > -1)) {
+          if (!(_.every(obj[key], el => el.id && value.indexOf(el.id.toString()) > -1) && obj[key].length === value.length)) {
             isValid = false;
           }
         } else if (value.indexOf(obj[key].toString()) === -1) {

@@ -87,6 +87,7 @@ let getTableMeta = (props) => {
   			filter: {
   				type: 'multiselect',
           options: OBJECT,
+          strict: true
   			},
         cssClassName: 'width60'
   		},

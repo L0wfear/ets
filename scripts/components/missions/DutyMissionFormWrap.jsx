@@ -48,15 +48,16 @@ class DutyMissionFormWrap extends FormWrap {
 	render() {
 
 		return 	<Div hidden={!this.props.showForm}>
-			<DutyMissionForm formState = {this.state.formState}
+			<DutyMissionForm
+					formState = {this.state.formState}
 					onSubmit={this.handleFormSubmit.bind(this)}
-                           onPrint={this.handleFormPrint.bind(this)}
-													 handleFormChange={this.handleFormStateChange.bind(this)}
-													 show={this.props.showForm}
-													 onHide={this.props.onFormHide}
-													 fromWaybill={this.props.fromWaybill}
-													 {...this.state}/>
-						</Div>
+					onPrint={this.handleFormPrint.bind(this)}
+					handleFormChange={this.handleFormStateChange.bind(this)}
+					show={this.props.showForm}
+					onHide={this.props.onFormHide}
+					fromWaybill={this.props.fromWaybill}
+					{...this.state}/>
+		</Div>
 
 	}
 

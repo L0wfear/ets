@@ -40,10 +40,11 @@ export default class Faxogramms extends DashboardCardMedium {
 
   renderCustomCardForm() {
     return (
-      <FaxogrammMissionsFormWrap onFormHide={() => this.setState({showFaxogrammForm: false})}
-                               showForm={this.state.showFaxogrammForm}
-                               element={this.state.faxogramm}
-                               {...this.props}/>
+      <FaxogrammMissionsFormWrap
+          onFormHide={() => this.setState({showFaxogrammForm: false})}
+          showForm={this.state.showFaxogrammForm}
+          element={this.state.faxogramm}
+          {...this.props}/>
     );
   }
 

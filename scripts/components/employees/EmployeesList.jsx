@@ -81,7 +81,12 @@ let EmployeesTable = (props) => {
 
   let data = props.data;
 
-  let fullnames = data.map((e) => e.last_name+' '+e.first_name+' '+e.middle_name);
+  let fullnames = data.map((e) => {
+    let last_name = e.last_name || '';
+    let first_name = e.first_name || '';
+    let middle_name = e.middle_name || '';
+    return last_name+' '+first_name+' '+middle_name;
+  });
   data.forEach((e, i) => {e.full_name = fullnames[i]});
   console.log(data)
 

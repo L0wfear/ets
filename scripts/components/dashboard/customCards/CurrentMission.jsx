@@ -6,6 +6,7 @@ import DashboardCardMedium from '../DashboardCardMedium.jsx';
 import moment from 'moment';
 import MissionInfoFormWrap from '../MissionInfoFormWrap.jsx';
 import { isEmpty } from 'utils/functions';
+import CurrentMissionRejectForm from './CurrentMissionRejectForm.jsx';
 
 let getDataTraveledYet = (data) => {
   if (typeof data === 'string') {
@@ -29,7 +30,9 @@ export default class CurrentMission extends DashboardCardMedium {
 
     this.state = Object.assign(this.state, {
       showMissionInfoForm: false,
+      showMissionRejectForm: false,
       selectedMission: null,
+      selectedMissionId: null,
     });
   }
 
@@ -43,6 +46,7 @@ export default class CurrentMission extends DashboardCardMedium {
 	}
 
   async rejectMission(id) {
+    // this.setState({showMissionRejectForm: true, selectedMissionId: id});
     let reason = prompt('Введите причину', '');
 		if (reason) {
       let mission = await this.context.flux.getActions('missions').getMissionById(id);
@@ -103,23 +107,28 @@ export default class CurrentMission extends DashboardCardMedium {
     let data = selectedItem !== null ? selectedItem.data || {} : {};
 
     return (
-      <Div hidden={!data || (data && !data.mission_name)}>
-        <ul>
-          <li><b>Задание:</b> {data.mission_name}</li>
-          <li><b>Тех. операция:</b> {data.technical_operation_name}</li>
-          <li><b>Водитель:</b> {data.driver_fio}</li>
-          <li><b>Гос. номер ТС:</b> {data.car_gov_number}</li>
-          <li><b>Начало задания:</b> {getFormattedDateTimeSeconds(data.mission_date_start)}</li>
-          <li><b>Окончание задания:</b> {getFormattedDateTimeSeconds(data.mission_date_end)}</li>
-          <li><b>Расчетное время выполнения:</b> {getEstimatedFinishTime(data.estimated_finish_time || 'Подсчет')}</li>
-          <li><b>Пройдено с рабочей скоростью:</b> {getDataTraveledYet(data.traveled_yet)}</li>
-          <li><a className="pointer" onClick={(e) => {e.preventDefault(); this.missionAction(data);}}>Подробнее...</a></li>
-          <Div className="text-right">
-            <Button className="dashboard-card-action-button" onClick={this.completeMission.bind(this, data.mission_id)}>Выполнено</Button>
-            <Button className="dashboard-card-action-button" onClick={this.rejectMission.bind(this, data.mission_id)}>Не выполнено</Button>
-          </Div>
-        </ul>
-      </Div>
+      <Div>
+        <Div hidden={!data || (data && !data.mission_name)}>
+          <ul>
+            <li><b>Задание:</b> {data.mission_name}</li>
+            <li><b>Тех. операция:</b> {data.technical_operation_name}</li>
+            <li><b>Водитель:</b> {data.driver_fio}</li>
+            <li><b>Гос. номер ТС:</b> {data.car_gov_number}</li>
+            <li><b>Начало задания:</b> {getFormattedDateTimeSeconds(data.mission_date_start)}</li>
+            <li><b>Окончание задания:</b> {getFormattedDateTimeSeconds(data.mission_date_end)}</li>
+            <li><b>Расчетное время выполнения:</b> {getEstimatedFinishTime(data.estimated_finish_time || 'Подсчет')}</li>
+            <li><b>Пройдено с рабочей скоростью:</b> {getDataTraveledYet(data.traveled_yet)}</li>
+            <li><a className="pointer" onClick={(e) => {e.preventDefault(); this.missionAction(data);}}>Подробнее...</a></li>
+            <Div className="text-right">
+              <Button className="dashboard-card-action-button" onClick={this.completeMission.bind(this, data.mission_id)}>Выполнено</Button>
+              <Button className="dashboard-card-action-button" onClick={this.rejectMission.bind(this, data.mission_id)}>Не выполнено</Button>
+            </Div>
+          </ul>
+        </Div>
+        <CurrentMissionRejectForm
+            onFormHide={() => this.setState({showMissionRejectForm: false})}
+            show={this.state.showMissionRejectForm}
+            mission={this.state.selectedMissionId} /></Div>
     );
   }
 

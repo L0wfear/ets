@@ -153,8 +153,15 @@ class Table extends React.Component {
           }
       } else if (_.isArray(value)) {
         if (_.isArray(obj[key])) {
-          if (!(_.every(obj[key], el => el.id && value.indexOf(el.id.toString()) > -1) && obj[key].length === value.length)) {
-            isValid = false;
+          let a = _.find(this.props.tableMeta.cols, e => e.name === key);
+          if (a.filter.strict) {
+            if (!(_.every(obj[key], el => el.id && value.indexOf(el.id.toString()) > -1) && obj[key].length === value.length)) {
+              isValid = false;
+            }
+          } else {
+            if (!(_.find(obj[key], el => el.id && value.indexOf(el.id.toString()) > -1))) {
+              isValid = false;
+            }
           }
         } else if (value.indexOf(obj[key].toString()) === -1) {
           isValid = false;

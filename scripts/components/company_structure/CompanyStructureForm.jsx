@@ -45,10 +45,10 @@ class CompanyStructureForm extends Form {
 					<Row>
             <Col md={12}>
               <Field type="select" label="Родительское подразделение" error={errors['parent_id']}
-                     options={COMPANY_ELEMENTS}
-                     value={state.parent_id}
-                     onChange={this.handleChange.bind(this, 'parent_id')}
-                     clearable={true}/>
+									options={COMPANY_ELEMENTS}
+									value={state.parent_id}
+									onChange={this.handleChange.bind(this, 'parent_id')}
+									clearable={true}/>
             </Col>
 					</Row>
 

@@ -117,19 +117,19 @@ export class MissionInfoForm extends Form {
 
               <FluxComponent connectToStores={{
 							points: store => ({
-								points: store.state.points,
-								selected: store.getSelectedPoint()
+							points: store.state.points,
+							selected: store.getSelectedPoint()
 							}),
-		          settings: store => ({
+								settings: store => ({
 								showPlates: store.state.showPlates,
 								showTrack: store.state.showTrack,
 								showRoute: store.state.showRoute,
 								showSelectedElement: store.state.showSelectedElement
-		          }),
-							session: store => ({
+								}),
+								session: store => ({
 								zoom: store.getCurrentUser().getCompanyMapConfig().zoom,
 								center: store.getCurrentUser().getCompanyMapConfig().coordinates,
-							})
+								})
               }}>
 
                 <Map polys={polys}

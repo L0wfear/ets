@@ -82,24 +82,27 @@ class MissionTemplateForm extends MissionForm {
 				</Modal.Header>
 
 	      <Modal.Body>
-
 					<Row>
-						<Col md={6}>
+						<Col md={12}>
 							<Field type="select" label="Технологическая операция" error={errors['technical_operation_id']}
 									options={TECH_OPERATIONS}
 									disabled={!!state.route_id}
 									value={state.technical_operation_id}
 									onChange={this.handleTechnicalOperationChange.bind(this)}/>
-              <Field type="number" label="Количество проходов" error={errors['passes_count']}
-  									 value={state.passes_count} onChange={this.handleChange.bind(this, 'passes_count')} min="0"/>
 						</Col>
-
-				 		<Col md={6}>
+					</Row>
+					<Row>
+						<Col md={6}>
 							<Field type="select" label="Транспортное средство" error={errors['car_id']}
 									options={CARS}
 									disabled={isEmpty(state.technical_operation_id)}
 									value={state.car_id}
 									onChange={this.handleChange.bind(this, 'car_id')}/>
+              <Field type="number" label="Количество проходов" error={errors['passes_count']}
+									value={state.passes_count} onChange={this.handleChange.bind(this, 'passes_count')} min="0"/>
+						</Col>
+
+				 		<Col md={6}>
 							<Field type="string"
 								label="Комментарий"
 								value={state.comment}

@@ -132,7 +132,7 @@ class CurrentMissionRejectForm extends Component {
     let datePickers = missions && missions.map((mission, i) => {
       return <Row style={{marginBottom: '3px'}} key={i}>
         <Col md={3}>
-          <label title={mission.technical_operation_name} style={{marginRight: "10px", paddingTop: '3px', textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden"}}>{`№: ${mission.number}(${mission.technical_operation_name})`}</label>
+          <label title={mission.technical_operation_name} style={{marginRight: "10px", paddingTop: "10px", textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden"}}>{`№: ${mission.number}(${mission.technical_operation_name})`}</label>
         </Col>
         <Col md={9}>
           <Div className="inline-block reports-date">
@@ -168,26 +168,29 @@ class CurrentMissionRejectForm extends Component {
                   onChange={this.handleChange.bind(this, 'car_id')}
                   clearable={true} />
               <br/>
-              {state.result && state.result.missions ? <Row>
-                <Col md={3}>
-                  <label>Переносимое задание</label>
-                </Col>
-                <Col md={9} >
-                  <Div className="inline-block reports-date">
-                    <Datepicker date={this.state.date_start} onChange={this.handleChange.bind(this, 'date_start')}/>
-                  </Div>
-                  <Div className="inline-block reports-date">
-                    <Datepicker date={this.state.date_end} onChange={this.handleChange.bind(this, 'date_end')}/>
-                  </Div>
-                </Col>
-              </Row>
+              {state.result && state.result.missions ? <Div>
+                <label style={{marginBottom: "10px"}}>{`Задание будет добавлено в п.л. №${state.result.waybill_number} (Выезд: ${getFormattedDateTimeSeconds(state.result.waybill_plan_departure_date)}, Возвращение: ${getFormattedDateTimeSeconds(state.result.waybill_plan_arrival_date)})`}</label>
+                <Row>
+                  <Col md={3}>
+                    <label>Переносимое задание</label>
+                  </Col>
+                  <Col md={9} >
+                    <Div className="inline-block reports-date">
+                      <Datepicker date={this.state.date_start} onChange={this.handleChange.bind(this, 'date_start')}/>
+                    </Div>
+                    <Div className="inline-block reports-date">
+                      <Datepicker date={this.state.date_end} onChange={this.handleChange.bind(this, 'date_end')}/>
+                    </Div>
+                  </Col>
+                </Row>
+              </Div>
               : ''}
               {datePickers}
-	      </Modal.Body>
+            </Modal.Body>
 
-	      <Modal.Footer>
-					<Div>
-		      	<Button onClick={this.handleSubmit.bind(this)} >{'Сохранить'}</Button>
+            <Modal.Footer>
+              <Div>
+                <Button onClick={this.handleSubmit.bind(this)} >{'Сохранить'}</Button>
 		      	<Button onClick={props.onFormHide} >{'Отменить'}</Button>
 					</Div>
 	      </Modal.Footer>

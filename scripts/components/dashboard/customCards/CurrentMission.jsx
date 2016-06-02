@@ -31,8 +31,7 @@ export default class CurrentMission extends DashboardCardMedium {
     this.state = Object.assign(this.state, {
       showMissionInfoForm: false,
       showMissionRejectForm: false,
-      selectedMission: null,
-      selectedMissionId: null,
+      selectedMission: null
     });
   }
 
@@ -46,7 +45,7 @@ export default class CurrentMission extends DashboardCardMedium {
 	}
 
   async rejectMission(id) {
-    // this.setState({showMissionRejectForm: true, selectedMissionId: id});
+    // this.setState({showMissionRejectForm: true});
     let reason = prompt('Введите причину', '');
 		if (reason) {
       let mission = await this.context.flux.getActions('missions').getMissionById(id);
@@ -128,16 +127,17 @@ export default class CurrentMission extends DashboardCardMedium {
         <CurrentMissionRejectForm
             onFormHide={() => this.setState({showMissionRejectForm: false})}
             show={this.state.showMissionRejectForm}
-            mission={this.state.selectedMissionId} /></Div>
+            mission={data} /></Div>
     );
   }
 
   renderCustomCardForm() {
     return (
-      <MissionInfoFormWrap onFormHide={() => this.setState({showMissionInfoForm: false})}
-                         showForm={this.state.showMissionInfoForm}
-                         element={this.state.mission}
-                         {...this.props}/>
+      <MissionInfoFormWrap
+          onFormHide={() => this.setState({showMissionInfoForm: false})}
+          showForm={this.state.showMissionInfoForm}
+          element={this.state.mission}
+          {...this.props} />
     );
   }
 

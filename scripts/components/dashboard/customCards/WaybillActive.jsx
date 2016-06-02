@@ -26,8 +26,6 @@ export default class WaybillActive extends WaybillClosed {
     si = _.flatten(si);
     subItems = si;
 
-    console.log(si)
-
     return (
       <ul>
         {subItems.map((item, i) => (<div key={i}>

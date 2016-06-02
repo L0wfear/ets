@@ -19,6 +19,7 @@ export const FuelTypeService = new APIService('/fuel_type/', useMocks);
 export const FuelConsumptionRateService = new APIService('/fuel_consumption_rates/', useMocks);
 export const FuelOperationsService = new APIService('/fuel_operations/', useMocks);
 export const MissionService = new APIService('/mission/', useMocks);
+export const MissionReassignationService = new APIService('/mission_reassignation/', useMocks);
 export const MissionTemplateService = new APIService('/mission_template/', useMocks);
 export const MissionSourceService = new APIService('/mission_source/', useMocks);
 export const ODHService = new APIService('/odh/', useMocks);

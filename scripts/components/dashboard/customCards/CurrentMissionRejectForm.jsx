@@ -15,7 +15,7 @@ class CurrentMissionRejectForm extends Component {
     this.state = {
       comment: '',
       car_id: null,
-      editDates: true,
+      editDates: false,
     };
   }
 
@@ -24,8 +24,22 @@ class CurrentMissionRejectForm extends Component {
       case 'comment':
         this.setState({comment: e.target.value});
         break;
+      case 'car_id':
+        this.setState({[field]: e});
+        break;
       default:
         this.setState({[field]: e});
+    }
+  }
+
+  async componentWillUpdate(nextProps, nextState) {
+    if (nextState.car_id && this.state.car_id !== nextState.car_id) {
+      let payload = {
+        car_id: nextState.car_id,
+        mission_id: this.props.mission.mission_id
+      }
+      let result = await this.context.flux.getActions('missions').getMissionReassignationParameters(payload);
+      console.log(result);
     }
   }
 
@@ -33,17 +47,15 @@ class CurrentMissionRejectForm extends Component {
     console.log(this.state);
   }
 
-  async componentDidMount() {
-    let mission = await this.context.flux.getActions('missions').getMissionById(this.props.mission);
-    mission = mission.result[0];
-    this.setState({mission});
+  componentDidMount() {
+    this.setState({mission_id: this.props.mission.mission_id});
   }
 
   render() {
     let { state, props } = this;
     let errors = [];
-    let CARS = (props.carsList && state.mission) ? props.carsList.map((e) => ({value: e.asuods_id, label: e.gov_number})).filter((e) => e.label !== state.mission.car_gov_number) : [];
-    let title = state.mission ? 'Задание, ТС: '+state.mission.car_gov_number : '';
+    let CARS = (props.carsList && props.mission) ? props.carsList.map((e) => ({value: e.asuods_id, label: e.gov_number})).filter((e) => e.label !== props.mission.car_gov_number) : [];
+    let title = props.mission ? 'Задание: ' + props.mission.mission_name + ', ТС: '+props.mission.car_gov_number : '';
 
     return (
       <Modal {...props} className="mission-reject-info-modal" backdrop="static">

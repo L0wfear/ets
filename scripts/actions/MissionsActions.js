@@ -4,6 +4,7 @@ import { createValidDateTime } from 'utils/dates';
 import { isEmpty, isNotNull } from 'utils/functions';
 import { MissionReportsService,
          MissionService,
+         MissionReassignationService,
          MissionSourceService,
          MissionTemplateService,
          MissionTemplatesForFaxogramm,
@@ -28,6 +29,10 @@ export default class MissionsActions extends Actions {
     }
 
     return MissionService.get(payload);
+  }
+
+  getMissionReassignationParameters(payload) {
+    return MissionReassignationService.get(payload);
   }
 
   getMissionsByCarAndDates(car_id, date_from, date_to, waybillStatus) {

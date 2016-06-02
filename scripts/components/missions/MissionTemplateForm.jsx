@@ -104,21 +104,21 @@ class MissionTemplateForm extends MissionForm {
 
 				 		<Col md={6}>
 							<Field type="string"
-								label="Комментарий"
-								value={state.comment}
-								onChange={this.handleChange.bind(this, 'comment')}
-								error={errors['comment']} />
+									label="Комментарий"
+									value={state.comment}
+									onChange={this.handleChange.bind(this, 'comment')}
+									error={errors['comment']} />
 				   	</Col>
 					</Row>
 
 	      	<Row>
             <Col md={6}>
               <Field type="select" label="Маршрут" error={errors['route_id']}
-                     options={ROUTES}
-                     value={state.route_id}
-										 disabled={!!!state.technical_operation_id}
-                     onChange={this.handleRouteIdChange.bind(this)}
-										 clearable={true}/>
+									options={ROUTES}
+									value={state.route_id}
+									disabled={!!!state.technical_operation_id}
+									onChange={this.handleRouteIdChange.bind(this)}
+									clearable={true}/>
 							<Div hidden={state.route_id}>
 								<Button onClick={this.createNewRoute.bind(this)} disabled={!state.technical_operation_id}>Создать новый</Button>
 							</Div>
@@ -139,9 +139,9 @@ class MissionTemplateForm extends MissionForm {
 	      </Modal.Footer>
 
 				<RouteFormWrap element={route}
-											 onFormHide={this.onFormHide.bind(this)}
-											 showForm={this.state.showRouteForm}
-											 fromMission={true}/>
+						onFormHide={this.onFormHide.bind(this)}
+						showForm={this.state.showRouteForm}
+						fromMission={true}/>
 
 			</Modal>
 		)

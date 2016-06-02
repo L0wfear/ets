@@ -181,6 +181,7 @@ export class MissionsJournal extends ElementsList {
     this.state = {
       selectedElement: null,
       checkedMissions: {},
+			showForm: false,
 			showMissionRejectForm: false
     };
 	}

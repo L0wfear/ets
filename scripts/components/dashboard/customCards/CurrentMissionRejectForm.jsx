@@ -122,7 +122,7 @@ class CurrentMissionRejectForm extends Component {
     let title = props.mission ? 'Задание, ТС: '+props.mission.car_gov_number : '';
     let missions = this.state.result ? this.state.result.missions : null;
     let datePickers = missions && missions.map((mission, i) => {
-      return <Row style={{marginBottom: '3px'}}>
+      return <Row style={{marginBottom: '3px'}} key={i}>
         <Col md={3}>
           <label style={{marginRight: "10px", paddingTop: '3px'}}>{`№: ${mission.number}(${mission.name})`}</label>
         </Col>

@@ -13,14 +13,11 @@ class CurrentMissionRejectForm extends Component {
   constructor(props) {
     super(props);
 
-    let date_start = props.mission ? props.mission.mission_date_start : null;
-    let date_end = props.mission ? props.mission.mission_date_end : null;
-
     this.state = {
       comment: '',
       car_id: null,
-      date_start,
-      date_end
+      date_start: null,
+      date_end: null
     };
   }
 
@@ -37,9 +34,7 @@ class CurrentMissionRejectForm extends Component {
         }
         let result = await this.context.flux.getActions('missions').getMissionReassignationParameters(payload);
         let data = result ? result.result : null
-        let date_start = this.props.mission && !this.state.date_start ? this.props.mission.date_start : this.state.date_start;
-        let date_end = this.props.mission && !this.state.date_end ? this.props.mission.date_end : this.state.date_end;
-        this.setState({[field]: e, result: data, date_end, date_start});
+        this.setState({[field]: e, result: data});
         break;
       default:
         this.setState({[field]: e});
@@ -107,9 +102,12 @@ class CurrentMissionRejectForm extends Component {
   }
 
   componentWillReceiveProps() {
+    if (this.props.show === false) this.setState({car_id: null, comment: '', date_end: null, date_start: null});
     if (this.props.mission) {
-      let id = this.props.mission.mission_id || this.props.mission.id;
-      this.setState({mission_id: id});
+      let mission_id = this.props.mission.mission_id || this.props.mission.id;
+      let date_start = this.props.mission.mission_date_start || this.props.mission.date_start;
+      let date_end = this.props.mission.mission_date_end || this.props.mission.date_end;
+      this.setState({mission_id, date_end, date_start});
     }
   }
 
@@ -126,7 +124,7 @@ class CurrentMissionRejectForm extends Component {
     let datePickers = missions && missions.map((mission, i) => {
       return <Row style={{marginBottom: '3px'}}>
         <Col md={3}>
-          <label style={{marginRight: "10px", marginBottom: '3px'}}>{`№: ${mission.number}(${mission.name})`}</label>
+          <label style={{marginRight: "10px", paddingTop: '3px'}}>{`№: ${mission.number}(${mission.name})`}</label>
         </Col>
         <Col md={9}>
           <Div className="inline-block reports-date">

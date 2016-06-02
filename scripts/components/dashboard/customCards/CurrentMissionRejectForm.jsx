@@ -57,7 +57,7 @@ class CurrentMissionRejectForm extends Component {
           comment: this.state.comment,
           date_start: this.state.date_start,
           date_end: this.state.date_end,
-        }
+        };
         this.context.flux.getActions('missions').createMissionFromReassignation(payload);
         break;
         case 'update':
@@ -71,7 +71,7 @@ class CurrentMissionRejectForm extends Component {
             date_start: this.state.date_start,
             date_end: this.state.date_end,
             waybill_id: this.state.result.waybill_id
-          }
+          };
           this.context.flux.getActions('missions').updateMissionFromReassignation(payload);
         } else {
           let payload = {
@@ -83,7 +83,7 @@ class CurrentMissionRejectForm extends Component {
             waybill_id: this.state.result.waybill_id
           }
           this.context.flux.getActions('missions').updateMissionFromReassignation(payload);
-        }
+        };
         break;
       }
     }
@@ -120,7 +120,6 @@ class CurrentMissionRejectForm extends Component {
     let missions = this.state.result ? this.state.result.missions : null;
 
     let datePickers = missions && missions.map((mission, i) => {
-      console.log(mission);
       return <div>
         <label style={{marginRight: "10px"}}>{'№: '+mission.number}</label>
         <Div className="inline-block reports-date">

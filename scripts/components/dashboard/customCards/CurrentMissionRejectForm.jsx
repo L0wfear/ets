@@ -15,7 +15,8 @@ class CurrentMissionRejectForm extends Component {
     this.state = {
       comment: '',
       car_id: null,
-      editDates: false,
+      date_start: null,
+      date_end: null
     };
   }
 
@@ -52,7 +53,9 @@ class CurrentMissionRejectForm extends Component {
         let payload = {
           car_id: this.state.car_id,
           mission_id: this.state.mission_id,
-          comment: this.state.comment
+          comment: this.state.comment,
+          date_start: this.state.date_start,
+          date_end: this.state.date_end,
         }
         this.context.flux.getActions('missions').createMissionFromReassignation(payload);
         break;
@@ -113,6 +116,7 @@ class CurrentMissionRejectForm extends Component {
     let datePickers = missions && missions.map((mission, i) => {
       console.log(mission);
       return <div>
+        <label style={{marginRight: "10px"}}>{'№: '+mission.number}</label>
         <Div className="inline-block reports-date">
           <Datepicker date={mission.date_start} onChange={this.handleDateChange.bind(this, 'date_start', mission.id)}/>
         </Div>
@@ -145,6 +149,17 @@ class CurrentMissionRejectForm extends Component {
                   onChange={this.handleChange.bind(this, 'car_id')}
                   clearable={true} />
               <br/>
+              {state.result && state.result.missions ? <div>
+                <label style={{marginRight: "10px"}}>{'Временной интервал этого задания:'}</label><br/>
+                <Div className="inline-block reports-date">
+                  <Datepicker date={this.state.date_start} onChange={this.handleChange.bind(this, 'date_start')}/>
+                </Div>
+                <Div className="inline-block reports-date">
+                  <Datepicker date={this.state.date_end} onChange={this.handleChange.bind(this, 'date_end')}/>
+                </Div>
+                <label style={{marginRight: "10px"}}>{'Временные интервалы других заданий этого ПЛ:'}</label>
+              </div>
+              : ''}
               {datePickers}
 	      </Modal.Body>
 

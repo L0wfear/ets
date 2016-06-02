@@ -25,9 +25,10 @@ class CurrentMissionRejectForm extends Component {
         this.setState({comment: e.target.value});
         break;
       case 'car_id':
+        let id = this.props.mission.mission_id || this.props.mission.id;
         let payload = {
           car_id: e,
-          mission_id: this.props.mission.mission_id
+          mission_id: id
         }
         let result = await this.context.flux.getActions('missions').getMissionReassignationParameters(payload);
         let data = result ? result.result : null
@@ -78,6 +79,7 @@ class CurrentMissionRejectForm extends Component {
       }
     }
     this.props.onReject();
+    this.props.onFormHide();
   }
 
   handleDateChange(field, mission_id, value) {
@@ -90,15 +92,22 @@ class CurrentMissionRejectForm extends Component {
     this.setState({missions});
   }
 
+  componentWillReceiveProps() {
+    if (this.props.mission) {
+      let id = this.props.mission.mission_id || this.props.mission.id;
+      this.setState({mission_id: id});
+    }
+  }
+
   componentDidMount() {
-    this.setState({mission_id: this.props.mission.mission_id});
+    this.context.flux.getActions('objects').getCars();
   }
 
   render() {
     let { state, props } = this;
     let errors = [];
     let CARS = (props.carsList && props.mission) ? props.carsList.map((e) => ({value: e.asuods_id, label: e.gov_number})).filter((e) => e.label !== props.mission.car_gov_number) : [];
-    let title = props.mission ? 'Задание: ' + props.mission.mission_name + ', ТС: '+props.mission.car_gov_number : '';
+    let title = props.mission ? 'Задание, ТС: '+props.mission.car_gov_number : '';
     let missions = this.state.result ? this.state.result.missions : null;
 
     let datePickers = missions && missions.map((mission, i) => {

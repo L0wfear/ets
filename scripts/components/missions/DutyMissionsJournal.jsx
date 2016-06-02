@@ -316,9 +316,9 @@ export class DutyMissionsJournal extends ElementsList {
 					<Button bsSize="small" disabled={this.removeDisabled()} onClick={this.removeCheckedElements.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
 				</DutyMissionsTable>
 				<DutyMissionFormWrap onFormHide={this.onFormHide.bind(this)}
-												     showForm={this.state.showForm}
-    												 element={this.state.selectedElement}
-    												 {...this.props}/>
+						showForm={this.state.showForm}
+						element={this.state.selectedElement}
+						{...this.props}/>
 			</div>
 		);
 	}

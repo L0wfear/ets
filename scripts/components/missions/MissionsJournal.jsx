@@ -6,6 +6,7 @@ import DateFormatter from '../ui/DateFormatter.jsx';
 import { getFormattedDateTime } from 'utils/dates';
 import { datePickerFunction } from 'utils/labelFunctions';
 import MissionFormWrap from './MissionFormWrap.jsx';
+import CurrentMissionRejectForm from 'components/dashboard/customCards/CurrentMissionRejectForm.jsx';
 import ElementsList from '../ElementsList.jsx';
 import moment from 'moment';
 import { saveData } from 'utils/functions';
@@ -179,7 +180,8 @@ export class MissionsJournal extends ElementsList {
 
     this.state = {
       selectedElement: null,
-      checkedMissions: {}
+      checkedMissions: {},
+			showMissionRejectForm: false
     };
 	}
 
@@ -213,13 +215,7 @@ export class MissionsJournal extends ElementsList {
 	}
 
 	rejectMission() {
-		let reason = prompt('Введите причину', '');
-		if (reason) {
-			let mission = _.cloneDeep(this.state.selectedElement);
-			mission.status = 'fail';
-			mission.comment = reason;
-			this.context.flux.getActions('missions').updateMission(mission);
-		}
+		this.setState({showMissionRejectForm: true});
 	}
 
   checkMission(id, state) {
@@ -331,6 +327,11 @@ export class MissionsJournal extends ElementsList {
 						showForm={this.state.showForm}
 						element={this.state.selectedElement}
 						{...this.props}/>
+				<CurrentMissionRejectForm
+						onFormHide={() => this.setState({showMissionRejectForm: false})}
+						show={this.state.showMissionRejectForm}
+						onReject={() => this.context.flux.getActions('missions').getMissions()}
+						mission={this.state.selectedElement} />
 			</div>
 		);
 	}

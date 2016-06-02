@@ -37,7 +37,9 @@ class CurrentMissionRejectForm extends Component {
         }
         let result = await this.context.flux.getActions('missions').getMissionReassignationParameters(payload);
         let data = result ? result.result : null
-        this.setState({[field]: e, result: data});
+        let date_start = this.props.mission && !this.state.date_start ? this.props.mission.date_start : this.state.date_start;
+        let date_end = this.props.mission && !this.state.date_end ? this.props.mission.date_end : this.state.date_end;
+        this.setState({[field]: e, result: data, date_end, date_start});
         break;
       default:
         this.setState({[field]: e});
@@ -122,15 +124,19 @@ class CurrentMissionRejectForm extends Component {
     let title = props.mission ? 'Задание, ТС: '+props.mission.car_gov_number : '';
     let missions = this.state.result ? this.state.result.missions : null;
     let datePickers = missions && missions.map((mission, i) => {
-      return <div>
-        <label style={{marginRight: "10px"}}>{'№: '+mission.number}</label>
-        <Div className="inline-block reports-date">
-          <Datepicker date={mission.date_start} onChange={this.handleDateChange.bind(this, 'date_start', mission.id)}/>
-        </Div>
-        <Div className="inline-block reports-date">
-          <Datepicker date={mission.date_end} onChange={this.handleDateChange.bind(this, 'date_end', mission.id)}/>
-        </Div>
-      </div>
+      return <Row style={{marginBottom: '3px'}}>
+        <Col md={3}>
+          <label style={{marginRight: "10px", marginBottom: '3px'}}>{`№: ${mission.number}(${mission.name})`}</label>
+        </Col>
+        <Col md={9}>
+          <Div className="inline-block reports-date">
+            <Datepicker date={mission.date_start} onChange={this.handleDateChange.bind(this, 'date_start', mission.id)}/>
+          </Div>
+          <Div className="inline-block reports-date">
+            <Datepicker date={mission.date_end} onChange={this.handleDateChange.bind(this, 'date_end', mission.id)}/>
+          </Div>
+        </Col>
+      </Row>
             });
 
             return (
@@ -156,16 +162,19 @@ class CurrentMissionRejectForm extends Component {
                   onChange={this.handleChange.bind(this, 'car_id')}
                   clearable={true} />
               <br/>
-              {state.result && state.result.missions ? <div>
-                <label style={{marginRight: "10px"}}>{'Временной интервал этого задания:'}</label><br/>
-                <Div className="inline-block reports-date">
-                  <Datepicker date={this.state.date_start} onChange={this.handleChange.bind(this, 'date_start')}/>
-                </Div>
-                <Div className="inline-block reports-date">
-                  <Datepicker date={this.state.date_end} onChange={this.handleChange.bind(this, 'date_end')}/>
-                </Div>
-                <label style={{marginRight: "10px"}}>{'Временные интервалы других заданий этого ПЛ:'}</label>
-              </div>
+              {state.result && state.result.missions ? <Row>
+                <Col md={3}>
+                  <label>Переносимое задание</label>
+                </Col>
+                <Col md={9} >
+                  <Div className="inline-block reports-date">
+                    <Datepicker date={this.state.date_start} onChange={this.handleChange.bind(this, 'date_start')}/>
+                  </Div>
+                  <Div className="inline-block reports-date">
+                    <Datepicker date={this.state.date_end} onChange={this.handleChange.bind(this, 'date_end')}/>
+                  </Div>
+                </Col>
+              </Row>
               : ''}
               {datePickers}
 	      </Modal.Body>

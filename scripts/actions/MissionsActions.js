@@ -39,13 +39,13 @@ export default class MissionsActions extends Actions {
   createMissionFromReassignation(payload) {
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
-    return MissionReassignationService.post(payload, false);
+    return MissionReassignationService.post(payload, false, 'json');
   }
 
   updateMissionFromReassignation(payload) {
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
-    return MissionReassignationService.put(payload, false);
+    return MissionReassignationService.put(payload, false, 'json');
   }
 
   getMissionsByCarAndDates(car_id, date_from, date_to, waybillStatus) {

@@ -58,6 +58,8 @@ export default class APIService {
       }
       if (typeof callback === 'function') {
         return callback();
+      } else if (callback === false) {
+        return r;
       } else {
         return this.get();
       }

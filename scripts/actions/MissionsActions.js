@@ -32,7 +32,16 @@ export default class MissionsActions extends Actions {
   }
 
   getMissionReassignationParameters(payload) {
+    if (!payload.car_id) return;
     return MissionReassignationService.get(payload);
+  }
+
+  createMissionFromReassignation(payload) {
+    return MissionReassignationService.post(payload, false);
+  }
+
+  updateMissionFromReassignation(payload) {
+    return MissionReassignationService.put(payload, false);
   }
 
   getMissionsByCarAndDates(car_id, date_from, date_to, waybillStatus) {

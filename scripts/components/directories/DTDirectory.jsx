@@ -47,7 +47,7 @@ let getTableMeta = (props) => {
 let DTTable = (props) => {
 
   const renderers = {
-    company_structure_name: ({data}) => <div>{data ? data+'' : '-'}</div>,
+    company_structure_name: ({data}) => <div>{data ? data+'' : ''}</div>,
     object_address: ({data}) => <div>{data ? data+'' : '-'}</div>,
     clean_area: ({data}) => <div>{data ? data+'' + ' кв.м' : '-'}</div>,
     total_area: ({data}) => <div>{data ? data+'' + ' кв.м' : '-'}</div>,

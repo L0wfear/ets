@@ -192,7 +192,7 @@ class WaybillForm extends Form {
 
 		const { carsList = [], carsIndex = {}, driversList = [], employeesList = [], fuelTypes = [], missionsList = [] } = this.props;
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`}));
-		const FUEL_TYPES = fuelTypes.map(({ID, NAME}) => ({value: ID, label: NAME}));
+		const FUEL_TYPES = fuelTypes.map(({id, name}) => ({value: id, label: name}));
 		const DRIVERS = driversList.map( d => {
 			let personnel_number = d.personnel_number ? `[${d.personnel_number}] ` : '';
 			return {value: d.id, label: `${personnel_number}${d.last_name} ${d.first_name} ${d.middle_name}`}

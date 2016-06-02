@@ -16,8 +16,8 @@ class CurrentMissionRejectForm extends Component {
     this.state = {
       comment: '',
       car_id: null,
-      date_start: null,
-      date_end: null
+      date_start: props.mission.mission_date_start,
+      date_end: props.mission.mission_date_end
     };
   }
 
@@ -118,7 +118,6 @@ class CurrentMissionRejectForm extends Component {
     let CARS = (props.carsList && props.mission) ? props.carsList.map((e) => ({value: e.asuods_id, label: e.gov_number})).filter((e) => e.label !== props.mission.car_gov_number) : [];
     let title = props.mission ? 'Задание, ТС: '+props.mission.car_gov_number : '';
     let missions = this.state.result ? this.state.result.missions : null;
-
     let datePickers = missions && missions.map((mission, i) => {
       return <div>
         <label style={{marginRight: "10px"}}>{'№: '+mission.number}</label>

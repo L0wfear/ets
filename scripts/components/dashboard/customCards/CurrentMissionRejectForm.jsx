@@ -61,12 +61,15 @@ class CurrentMissionRejectForm extends Component {
         this.context.flux.getActions('missions').createMissionFromReassignation(payload);
         break;
         case 'update':
-        if (this.state.result.time_slots.length) {
+        if (this.state.result.missions) {
+          let missions = JSON.stringify(this.state.result.missions);
           let payload = {
             car_id: this.state.car_id,
             mission_id: this.state.mission_id,
             comment: this.state.comment,
-            missions: this.state.result.missions,
+            missions,
+            date_start: this.state.date_start,
+            date_end: this.state.date_end,
             waybill_id: this.state.result.waybill_id
           }
           this.context.flux.getActions('missions').updateMissionFromReassignation(payload);
@@ -75,6 +78,8 @@ class CurrentMissionRejectForm extends Component {
             car_id: this.state.car_id,
             mission_id: this.state.mission_id,
             comment: this.state.comment,
+            date_start: this.state.date_start,
+            date_end: this.state.date_end,
             waybill_id: this.state.result.waybill_id
           }
           this.context.flux.getActions('missions').updateMissionFromReassignation(payload);

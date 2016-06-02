@@ -13,11 +13,14 @@ class CurrentMissionRejectForm extends Component {
   constructor(props) {
     super(props);
 
+    let date_start = props.mission ? props.mission.mission_date_start : null;
+    let date_end = props.mission ? props.mission.mission_date_end : null;
+
     this.state = {
       comment: '',
       car_id: null,
-      date_start: props.mission.mission_date_start,
-      date_end: props.mission.mission_date_end
+      date_start,
+      date_end
     };
   }
 

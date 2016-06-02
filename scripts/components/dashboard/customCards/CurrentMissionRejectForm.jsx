@@ -102,7 +102,13 @@ class CurrentMissionRejectForm extends Component {
   }
 
   componentWillReceiveProps() {
-    if (this.props.show === false) this.setState({car_id: null, comment: '', date_end: null, date_start: null});
+    if (this.props.show === false) this.setState({
+      car_id: null,
+      comment: '',
+      date_end: null,
+      date_start: null,
+      result: null
+    });
     if (this.props.mission) {
       let mission_id = this.props.mission.mission_id || this.props.mission.id;
       let date_start = this.props.mission.mission_date_start || this.props.mission.date_start;

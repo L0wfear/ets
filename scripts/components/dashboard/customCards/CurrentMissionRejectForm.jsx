@@ -3,7 +3,7 @@ import Div from '../../ui/Div.jsx';
 import { Modal, Button, Glyphicon, Row, Col } from 'react-bootstrap';
 import Field from '../../ui/Field.jsx';
 import Datepicker from '../../ui/DatePicker.jsx';
-import {getFormattedDateTimeSeconds} from 'utils/dates';
+import {getFormattedDateTime} from 'utils/dates';
 import moment from 'moment';
 import { isEmpty } from 'utils/functions';
 import connectToStores from 'flummox/connect';
@@ -155,13 +155,13 @@ class CurrentMissionRejectForm extends Component {
             <Modal.Body>
               <Field
                   type="string"
-                  label="Введите причину"
+                  label="Введите причину:"
                   value={state.comment}
                   error={errors['comment']}
                   onChange={this.handleChange.bind(this, 'comment')} />
               <Field
                   type="select"
-                  label="Переназначить задание на"
+                  label="Переназначить задание на:"
                   error={errors['car_id']}
                   options={CARS}
                   value={state.car_id}
@@ -169,7 +169,7 @@ class CurrentMissionRejectForm extends Component {
                   clearable={true} />
               <br/>
               {state.result && state.result.missions ? <Div>
-                <label style={{marginBottom: "10px"}}>{`Задание будет добавлено в п.л. №${state.result.waybill_number} (Выезд: ${getFormattedDateTimeSeconds(state.result.waybill_plan_departure_date)}, Возвращение: ${getFormattedDateTimeSeconds(state.result.waybill_plan_arrival_date)})`}</label>
+                <label style={{marginBottom: "10px"}}>{`Задание будет добавлено в п.л. №${state.result.waybill_number} (Выезд: ${getFormattedDateTime(state.result.waybill_plan_departure_date)}, Возвращение: ${getFormattedDateTime(state.result.waybill_plan_arrival_date)})`}</label>
                 <Row>
                   <Col md={3}>
                     <label>Переносимое задание</label>

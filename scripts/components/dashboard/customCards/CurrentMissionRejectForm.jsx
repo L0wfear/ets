@@ -42,12 +42,13 @@ class CurrentMissionRejectForm extends Component {
   }
 
   async handleSubmit() {
+    let resolve;
     if (!this.state.result) {
       let mission = await this.context.flux.getActions('missions').getMissionById(this.state.mission_id);
       mission = mission.result[0];
   		mission.status = 'fail';
   		mission.comment = this.state.comment;
-  		await this.context.flux.getActions('missions').updateMission(mission);
+  	  resolve = await this.context.flux.getActions('missions').updateMission(mission);
     } else {
       switch(this.state.result.mark) {
         case 'create':
@@ -58,7 +59,7 @@ class CurrentMissionRejectForm extends Component {
           date_start: this.state.date_start,
           date_end: this.state.date_end,
         };
-        this.context.flux.getActions('missions').createMissionFromReassignation(payload);
+        resolve = await this.context.flux.getActions('missions').createMissionFromReassignation(payload);
         break;
         case 'update':
         if (this.state.result.missions) {
@@ -72,7 +73,7 @@ class CurrentMissionRejectForm extends Component {
             date_end: this.state.date_end,
             waybill_id: this.state.result.waybill_id
           };
-          this.context.flux.getActions('missions').updateMissionFromReassignation(payload);
+          resolve = await this.context.flux.getActions('missions').updateMissionFromReassignation(payload);
         } else {
           let payload = {
             car_id: this.state.car_id,
@@ -82,13 +83,14 @@ class CurrentMissionRejectForm extends Component {
             date_end: this.state.date_end,
             waybill_id: this.state.result.waybill_id
           }
-          this.context.flux.getActions('missions').updateMissionFromReassignation(payload);
+          resolve = await this.context.flux.getActions('missions').updateMissionFromReassignation(payload);
         };
         break;
       }
     }
-    this.props.onReject();
-    this.props.onFormHide();
+    console.log(resolve);
+    // this.props.onReject();
+    // this.props.onFormHide();
   }
 
   handleDateChange(field, mission_id, value) {
@@ -128,10 +130,9 @@ class CurrentMissionRejectForm extends Component {
     let title = props.mission ? 'Задание, ТС: '+props.mission.car_gov_number : '';
     let missions = this.state.result ? this.state.result.missions : null;
     let datePickers = missions && missions.map((mission, i) => {
-      console.log(mission);
       return <Row style={{marginBottom: '3px'}} key={i}>
         <Col md={3}>
-          <label style={{marginRight: "10px", paddingTop: '3px'}}>{`№: ${mission.number}(${mission.name})`}</label>
+          <label title={mission.technical_operation_name} style={{marginRight: "10px", paddingTop: '3px', textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden"}}>{`№: ${mission.number}(${mission.technical_operation_name})`}</label>
         </Col>
         <Col md={9}>
           <Div className="inline-block reports-date">

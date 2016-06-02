@@ -7,6 +7,7 @@ import {getFormattedDateTimeSeconds} from 'utils/dates';
 import moment from 'moment';
 import { isEmpty } from 'utils/functions';
 import connectToStores from 'flummox/connect';
+import { createValidDateTime } from 'utils/dates';
 
 class CurrentMissionRejectForm extends Component {
   constructor(props) {
@@ -60,7 +61,7 @@ class CurrentMissionRejectForm extends Component {
         this.context.flux.getActions('missions').createMissionFromReassignation(payload);
         break;
         case 'update':
-        if (this.state.result.time_slots) {
+        if (this.state.result.time_slots.length) {
           let payload = {
             car_id: this.state.car_id,
             mission_id: this.state.mission_id,
@@ -89,7 +90,7 @@ class CurrentMissionRejectForm extends Component {
     let {missions} = this.state.result;
     missions.forEach((mission) => {
       if (mission.id === mission_id) {
-        mission[field] = value;
+        mission[field] = createValidDateTime(value);
       };
     });
     this.setState({missions});

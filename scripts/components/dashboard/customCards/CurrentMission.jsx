@@ -6,7 +6,7 @@ import DashboardCardMedium from '../DashboardCardMedium.jsx';
 import moment from 'moment';
 import MissionInfoFormWrap from '../MissionInfoFormWrap.jsx';
 import { isEmpty } from 'utils/functions';
-import CurrentMissionRejectForm from './CurrentMissionRejectForm.jsx';
+import MissionRejectForm from '../../missions/MissionRejectForm.jsx';
 
 let getDataTraveledYet = (data) => {
   if (typeof data === 'string') {
@@ -58,9 +58,12 @@ export default class CurrentMission extends DashboardCardMedium {
 		// }
 	}
 
-  onReject() {
-    this.selectItem(null);
-    this.props.refreshCard();
+  onReject(refresh) {
+    this.setState({showMissionRejectForm: false})
+    if (refresh) {
+      this.selectItem(null);
+      this.props.refreshCard();
+    }
   }
 
   selectItem(i) {
@@ -129,11 +132,11 @@ export default class CurrentMission extends DashboardCardMedium {
             </Div>
           </ul>
         </Div>
-        <CurrentMissionRejectForm
-            onFormHide={() => this.setState({showMissionRejectForm: false})}
+        <MissionRejectForm
             show={this.state.showMissionRejectForm}
             onReject={this.onReject.bind(this)}
-            mission={data} /></Div>
+            mission={data} />
+      </Div>
     );
   }
 

@@ -6,7 +6,7 @@ import DateFormatter from '../ui/DateFormatter.jsx';
 import { getFormattedDateTime } from 'utils/dates';
 import { datePickerFunction } from 'utils/labelFunctions';
 import MissionFormWrap from './MissionFormWrap.jsx';
-import CurrentMissionRejectForm from 'components/dashboard/customCards/CurrentMissionRejectForm.jsx';
+import MissionRejectForm from './MissionRejectForm.jsx';
 import ElementsList from '../ElementsList.jsx';
 import moment from 'moment';
 import { saveData } from 'utils/functions';
@@ -310,6 +310,10 @@ export class MissionsJournal extends ElementsList {
 		flux.getActions('missions').getMissionAnalyticalReport().then(blob => {saveData(blob, `Отчет по заданиям.xls`)});
 	}
 
+	onReject(refresh) {
+		this.setState({showMissionRejectForm: false});
+		refresh && this.context.flux.getActions('missions').getMissions();
+	}
 
 	render() {
 		const { missionsList = [] } = this.props;
@@ -328,10 +332,9 @@ export class MissionsJournal extends ElementsList {
 						showForm={this.state.showForm}
 						element={this.state.selectedElement}
 						{...this.props}/>
-				<CurrentMissionRejectForm
-						onFormHide={() => this.setState({showMissionRejectForm: false})}
+				<MissionRejectForm
 						show={this.state.showMissionRejectForm}
-						onReject={() => this.context.flux.getActions('missions').getMissions()}
+						onReject={this.onReject.bind(this)}
 						mission={this.state.selectedElement} />
 			</div>
 		);

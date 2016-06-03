@@ -73,8 +73,8 @@ let MissionReportByDTTable = (props) => {
 	let tableMeta = getTableMeta(props);
 
 	const renderers = {
-    left_percentage: ({data}) => <div>{ parseFloat(parseFloat(data) * 100).toFixed(2) + '%'}</div>,
-		traveled_percentage: ({data}) => <div>{ parseFloat(parseFloat(data) * 100).toFixed(2) + '%'}</div>,
+    left_percentage: ({data}) => <div>{ parseFloat(parseFloat(data) * 100).toFixed(0) + '%'}</div>,
+		traveled_percentage: ({data}) => <div>{ parseFloat(parseFloat(data) * 100).toFixed(0) + '%'}</div>,
     left: ({data}) => {
 			return <div>{ parseFloat(data).toFixed(2)}</div>
 		},
@@ -87,8 +87,8 @@ let MissionReportByDTTable = (props) => {
 		tableMeta.cols = tableMeta.cols.filter(c => c.name !== 'left_percentage' && c.name !== 'v_avg_max' && c.name !== 'traveled_percentage');
 		delete renderers.left_percentage;
 		delete renderers.traveled_percentage;
-    renderers.left = (data) => <div>{parseFloat(data.data).toFixed(2)}<br/>{`(${parseFloat(parseFloat(data.rowData.left_percentage) * 100).toFixed(2) + '%'})`}</div>
-		renderers.traveled = (data) => <div>{parseFloat(data.data).toFixed(2)}<br/>{`(${parseFloat(parseFloat(data.rowData.traveled_percentage) * 100).toFixed(2) + '%'})`}</div>
+    renderers.left = (data) => <div>{parseFloat(data.data).toFixed(2)}<br/>{`(${parseFloat(parseFloat(data.rowData.left_percentage) * 100).toFixed(0) + '%'})`}</div>
+	renderers.traveled = (data) => <div>{parseFloat(data.data).toFixed(2)}<br/>{`(${parseFloat(parseFloat(data.rowData.traveled_percentage) * 100).toFixed(0) + '%'})`}</div>
 	}
 
 	return <Table title='Прохождение заданий по ДТ'

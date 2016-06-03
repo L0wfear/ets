@@ -123,7 +123,16 @@ export const saveDataSuccessNotification = {
   level: 'success',
   dismissible: true,
   position: 'tc',
-  autoDismiss: 20,
+  autoDismiss: 5,
+}
+
+export const reassignMissionSuccessNotification = {
+  title: '',
+  message: 'Запись успешно сохранена',
+  level: 'success',
+  dismissible: true,
+  position: 'tc',
+  autoDismiss: 5
 }
 
 export const notifications = {

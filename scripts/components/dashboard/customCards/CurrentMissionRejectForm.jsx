@@ -8,6 +8,7 @@ import moment from 'moment';
 import { isEmpty } from 'utils/functions';
 import connectToStores from 'flummox/connect';
 import { createValidDateTime } from 'utils/dates';
+import { reassignMissionSuccessNotification } from '../../../utils/notifications.js';
 
 class CurrentMissionRejectForm extends Component {
   constructor(props) {
@@ -52,45 +53,48 @@ class CurrentMissionRejectForm extends Component {
     } else {
       switch(this.state.result.mark) {
         case 'create':
-        let payload = {
-          car_id: this.state.car_id,
-          mission_id: this.state.mission_id,
-          comment: this.state.comment,
-          date_start: this.state.date_start,
-          date_end: this.state.date_end,
-        };
-        resolve = await this.context.flux.getActions('missions').createMissionFromReassignation(payload);
-        break;
-        case 'update':
-        if (this.state.result.missions) {
-          let missions = JSON.stringify(this.state.result.missions);
           let payload = {
             car_id: this.state.car_id,
             mission_id: this.state.mission_id,
             comment: this.state.comment,
-            missions,
             date_start: this.state.date_start,
             date_end: this.state.date_end,
-            waybill_id: this.state.result.waybill_id
           };
-          resolve = await this.context.flux.getActions('missions').updateMissionFromReassignation(payload);
-        } else {
-          let payload = {
-            car_id: this.state.car_id,
-            mission_id: this.state.mission_id,
-            comment: this.state.comment,
-            date_start: this.state.date_start,
-            date_end: this.state.date_end,
-            waybill_id: this.state.result.waybill_id
-          }
-          resolve = await this.context.flux.getActions('missions').updateMissionFromReassignation(payload);
-        };
-        break;
+          resolve = await this.context.flux.getActions('missions').createMissionFromReassignation(payload);
+          break;
+        case 'update':
+          if (this.state.result.missions) {
+            let missions = JSON.stringify(this.state.result.missions);
+            let payload = {
+              car_id: this.state.car_id,
+              mission_id: this.state.mission_id,
+              comment: this.state.comment,
+              missions,
+              date_start: this.state.date_start,
+              date_end: this.state.date_end,
+              waybill_id: this.state.result.waybill_id
+            };
+            resolve = await this.context.flux.getActions('missions').updateMissionFromReassignation(payload);
+          } else {
+            let payload = {
+              car_id: this.state.car_id,
+              mission_id: this.state.mission_id,
+              comment: this.state.comment,
+              date_start: this.state.date_start,
+              date_end: this.state.date_end,
+              waybill_id: this.state.result.waybill_id
+            }
+            resolve = await this.context.flux.getActions('missions').updateMissionFromReassignation(payload);
+          };
+          break;
       }
     }
+    if (resolve.errors && !resolve.errors.length) {
+      global.NOTIFICATION_SYSTEM._addNotification(reassignMissionSuccessNotification);
+    }
     console.log(resolve);
-    // this.props.onReject();
-    // this.props.onFormHide();
+    this.props.onReject();
+    this.props.onFormHide();
   }
 
   handleDateChange(field, mission_id, value) {

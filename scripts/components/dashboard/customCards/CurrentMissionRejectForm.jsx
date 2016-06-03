@@ -91,10 +91,9 @@ class CurrentMissionRejectForm extends Component {
     }
     if (resolve.errors && !resolve.errors.length) {
       global.NOTIFICATION_SYSTEM._addNotification(reassignMissionSuccessNotification);
+      this.props.onReject();
+      this.props.onFormHide();
     }
-    console.log(resolve);
-    this.props.onReject();
-    this.props.onFormHide();
   }
 
   handleDateChange(field, mission_id, value) {

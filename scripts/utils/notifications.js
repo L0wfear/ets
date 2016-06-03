@@ -132,7 +132,7 @@ export const reassignMissionSuccessNotification = {
   level: 'success',
   dismissible: true,
   position: 'tc',
-  autoDismiss: 5
+  autoDismiss: 5,
 }
 
 export const notifications = {

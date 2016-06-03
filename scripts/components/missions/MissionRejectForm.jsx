@@ -144,7 +144,7 @@ class MissionRejectForm extends Component {
               {`№: ${mission.number} (${mission.technical_operation_name})`}
             </div>
           </Col>
-          <Col md={8} style={{textAlign: "right", paddingLeft: '0'}}>
+          <Col md={8} style={{textAlign: "right", paddingLeft: '0', whiteSpace: "nowrap"}}>
             <Div className="inline-block reports-date">
               <Datepicker date={mission.date_start} onChange={this.handleMissionsDateChange.bind(this, 'date_start', mission.id)}/>
             </Div>
@@ -193,7 +193,7 @@ class MissionRejectForm extends Component {
                       overflow: "hidden"
                     }}>Переносимое задание</div>
                   </Col>
-                  <Col md={8} style={{textAlign: "right", paddingLeft: '0'}}>
+                  <Col md={8} style={{textAlign: "right", paddingLeft: '0', whiteSpace: "nowrap"}}>
                     <Div className="inline-block reports-date">
                       <Datepicker date={state.date_start} onChange={this.handleChange.bind(this, 'date_start')}/>
                     </Div>

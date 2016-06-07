@@ -31,7 +31,7 @@ export default class WaybillActive extends WaybillClosed {
         {subItems.map((item, i) => (<div key={i}>
           {item.data.groupStart ? <center><span style={{fontWeight: "bold"}}>{moment(item.data.create_date).format(global.APP_DATE_FORMAT)}</span></center> : ''}
           <li key={i} className={item.data.mission_status === "Выполнено" ? "pointer_completed" : "pointer_in_progress"} onClick={this.action.bind(this, item)}>
-            {`№${item.data.waybill_number} (${item.data.mission_status}), ${item.data.car_gov_number}`}
+            {`№${item.data.waybill_number} (${item.data.mission_status}), `}<span style={{fontWeight: "bold"}}>{item.data.car_gov_number}</span>
             <br/>
             {`${item.data.driver_fio || ''}${item.data.driver_phone ? ', ' + item.data.driver_phone : ''}`}
             {item.data.groupEnd ? <p/> : ''}

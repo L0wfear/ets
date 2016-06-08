@@ -161,6 +161,11 @@ class WaybillFormWrap extends Component {
 						waybill.motohours_equip_diff = waybill.motohours_equip_end - waybill.motohours_equip_start;
 					}
 
+					let fuelStart = waybill.fuel_start ? parseInt(waybill.fuel_start) : 0;
+					let fuelGiven = waybill.fuel_given ? parseInt(waybill.fuel_given) : 0;
+					let fuelTaxes = waybill.taxes[waybill.taxes.length-1] ? parseInt(waybill.taxes[waybill.taxes.length-1].RESULT) : 0;
+					waybill.fuel_end = fuelStart + fuelGiven - fuelTaxes;
+
 					this.setState({
 						formState: waybill,
 						formErrors: validateClosingWaybill(waybill, {}),
@@ -193,6 +198,11 @@ class WaybillFormWrap extends Component {
 					if (isNotNull(waybill.motohours_equip_end) && isNotNull(waybill.motohours_equip_start)) {
 						waybill.motohours_equip_diff = waybill.motohours_equip_end - waybill.motohours_equip_start;
 					}
+
+					let fuelStart = waybill.fuel_start ? parseInt(waybill.fuel_start) : 0;
+					let fuelGiven = waybill.fuel_given ? parseInt(waybill.fuel_given) : 0;
+					let fuelTaxes = waybill.taxes[waybill.taxes.length-1] ? parseInt(waybill.taxes[waybill.taxes.length-1].RESULT) : 0;
+					waybill.fuel_end = fuelStart + fuelGiven - fuelTaxes;
 
 					this.setState({
 						formState: waybill,
@@ -234,6 +244,11 @@ class WaybillFormWrap extends Component {
 			formState.motohours_equip_diff = value ? formState.motohours_equip_end - formState.motohours_equip_start : null;
 		}
 
+		let fuelStart = formState.fuel_start ? parseInt(formState.fuel_start) : 0;
+		let fuelGiven = formState.fuel_given ? parseInt(formState.fuel_given) : 0;
+		let fuelTaxes = formState.taxes[formState.taxes.length-1] ? parseInt(formState.taxes[formState.taxes.length-1].RESULT) : 0;
+		formState.fuel_end = fuelStart + fuelGiven - fuelTaxes;
+
 		newState.formState = formState;
 		newState.formErrors = formErrors;
 
@@ -255,6 +270,11 @@ class WaybillFormWrap extends Component {
 			if (field === 'motohours_equip_end' && formState.status) {
 				formState.motohours_equip_diff = formState.motohours_equip_end - formState.motohours_equip_start;
 			}
+
+			let fuelStart = formState.fuel_start ? parseInt(formState.fuel_start) : 0;
+			let fuelGiven = formState.fuel_given ? parseInt(formState.fuel_given) : 0;
+			let fuelTaxes = formState.taxes[formState.taxes.length-1] ? parseInt(formState.taxes[formState.taxes.length-1].RESULT) : 0;
+			formState.fuel_end = fuelStart + fuelGiven - fuelTaxes;
 		});
 
 		if (!!!formState.status || formState.status === 'draft') {

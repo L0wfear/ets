@@ -274,13 +274,15 @@ class WaybillFormWrap extends Component {
 
   handlePrint(event, print_form_type = 1) {
   	let f = this.state.formState;
+		const token = JSON.parse(window.localStorage.getItem('ets-session'));
 
-  	let URL = `${config.backend}/` + (print_form_type === 2 ? 'plate_truck/' : 'plate_special/') + `?waybill_id=`;
+  	let URL = `${config.backend}/${print_form_type === 2 ? 'plate_truck/' : 'plate_special/'}?waybill_id=`;
 		let ID = f.id;
 
 		let callback = (id) => {
 			console.log('printing waybill', URL);
 			URL = id ?  URL + id : URL + ID;
+			URL = URL + '&?token=' + token;
 			window.location = URL;
 		};
 		//callback();

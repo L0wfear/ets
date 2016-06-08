@@ -163,7 +163,7 @@ class WaybillFormWrap extends Component {
 
 					let fuelStart = waybill.fuel_start ? parseInt(waybill.fuel_start) : 0;
 					let fuelGiven = waybill.fuel_given ? parseInt(waybill.fuel_given) : 0;
-					let fuelTaxes = waybill.taxes[waybill.taxes.length-1] ? parseInt(waybill.taxes[waybill.taxes.length-1].RESULT) : 0;
+					let fuelTaxes = waybill.taxes ? parseInt(waybill.taxes[waybill.taxes.length-1].RESULT) : 0;
 					waybill.fuel_end = fuelStart + fuelGiven - fuelTaxes;
 
 					this.setState({
@@ -201,7 +201,7 @@ class WaybillFormWrap extends Component {
 
 					let fuelStart = waybill.fuel_start ? parseInt(waybill.fuel_start) : 0;
 					let fuelGiven = waybill.fuel_given ? parseInt(waybill.fuel_given) : 0;
-					let fuelTaxes = waybill.taxes[waybill.taxes.length-1] ? parseInt(waybill.taxes[waybill.taxes.length-1].RESULT) : 0;
+					let fuelTaxes = waybill.taxes ? parseInt(waybill.taxes[waybill.taxes.length-1].RESULT) : 0;
 					waybill.fuel_end = fuelStart + fuelGiven - fuelTaxes;
 
 					this.setState({
@@ -246,7 +246,7 @@ class WaybillFormWrap extends Component {
 
 		let fuelStart = formState.fuel_start ? parseInt(formState.fuel_start) : 0;
 		let fuelGiven = formState.fuel_given ? parseInt(formState.fuel_given) : 0;
-		let fuelTaxes = formState.taxes[formState.taxes.length-1] ? parseInt(formState.taxes[formState.taxes.length-1].RESULT) : 0;
+		let fuelTaxes = formState.taxes ? parseInt(formState.taxes[formState.taxes.length-1].RESULT) : 0;
 		formState.fuel_end = fuelStart + fuelGiven - fuelTaxes;
 
 		newState.formState = formState;
@@ -273,7 +273,7 @@ class WaybillFormWrap extends Component {
 
 			let fuelStart = formState.fuel_start ? parseInt(formState.fuel_start) : 0;
 			let fuelGiven = formState.fuel_given ? parseInt(formState.fuel_given) : 0;
-			let fuelTaxes = formState.taxes[formState.taxes.length-1] ? parseInt(formState.taxes[formState.taxes.length-1].RESULT) : 0;
+			let fuelTaxes = formState.taxes ? parseInt(formState.taxes[formState.taxes.length-1].RESULT) : 0;
 			formState.fuel_end = fuelStart + fuelGiven - fuelTaxes;
 		});
 

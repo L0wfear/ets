@@ -104,7 +104,7 @@ class Table extends React.Component {
       columnName: 'isChecked',
       displayName: <input id="checkedColumn" type="checkbox" onChange={this.globalCheckHandler.bind(this)}></input>,
       sortable: false,
-      cssClassName: 'width60 text-center',
+      cssClassName: this.props.enumeratedCss || 'width60 text-center',
       customComponent: (props) => {
         const id = props.rowData.id;
         return <div><input type="checkbox" checked={this.props.checked[id]} onChange={this.handleRowCheck.bind(this, id)}></input></div>
@@ -272,7 +272,7 @@ class Table extends React.Component {
   }
 
   render() {
-    const { tableMeta, renderers, onRowSelected, selected, selectField, checked = {}, title = '', multiSelection = false, noFilter, enumerated = true, enableSort = true } = this.props;
+    const { tableMeta, enumeratedCss = 'width60', renderers, onRowSelected, selected, selectField, checked = {}, title = '', multiSelection = false, noFilter, enumerated = true, enableSort = true } = this.props;
     const { initialSort, initialSortAscending } = this.state;
 
     let tableMetaCols = _.cloneDeep(tableMeta.cols);
@@ -286,7 +286,7 @@ class Table extends React.Component {
       tableMetaCols = [{
         name: 'rowNumber',
         caption: '№',
-        cssClassName: 'width60',
+        cssClassName: enumeratedCss,
         filter: false
       }, ...tableMetaCols];
     }

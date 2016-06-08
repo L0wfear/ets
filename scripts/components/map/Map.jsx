@@ -296,7 +296,7 @@ export default class OpenLayersMap extends Component {
   }
 
   onMoveEnd() {
-    
+
   }
 
   disableInteractions() {

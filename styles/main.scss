@@ -2676,6 +2676,20 @@ div.none {
 .width10 {
   width: 10px !important;
 }
+
+.width-waybill-small {
+  font-size: 10px !important;
+  padding: 4px !important;
+}
+
+.width-waybill-large {
+  font-size: 10px !important;
+  padding: 4px !important;
+  max-width: 110px !important;
+  min-width: 110px !important;
+  width: 110px !important;
+}
+
 .width-fuel-report-small {
   font-size: 10px !important;
   padding: 4px !important;

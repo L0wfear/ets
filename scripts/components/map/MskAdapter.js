@@ -6,7 +6,7 @@ const FULL_EXTENT = MapServerConfig.fullExtent;
 //const TILES_URL = '//apieatlas.mos.ru/arcgis/rest/services/Basemaps/egko_gc_graphics/MapServer/tile/';
 //const TILES_URL = '//moslight.mos.ru/ArcGIS/rest/services/egko_belle/MapServer/tile/';
 //const TILES_URL = '//is033-ea-gis-6p:6080/arcgis/rest/services/test/msk_01022016/MapServer/tile/'
-const TILES_URL = '//ods.mos.ru/ssd/arcgis/rest/services/test/msk_01022016/MapServer/tile/';
+const TILES_URL = '//gisoivtest.mos.ru/IntegrationGIS/SpatialProcessor/IIS/egko/MapServer/tile/';
 const TILE_SIZE = MapServerConfig.tileInfo.rows;
 const ORIGIN = MapServerConfig.tileInfo.origin;
 const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
@@ -56,7 +56,7 @@ for (let i = 0, till = MapServerConfig.tileInfo.lods.length; i < till; i++) {
               let z = tileCoord[0];
               let x = tileCoord[1];
               let y = - tileCoord[2] - 1;
-              return TILES_URL + z + '/' + y + '/' + x
+              return TILES_URL + z + '/' + y + '/' + x + '?_sb=' + global.everGisToken
           },
           crossOrigin: 'anonymous',
           projection: PROJECTION,

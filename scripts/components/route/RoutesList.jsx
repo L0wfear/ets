@@ -83,6 +83,7 @@ class RoutesList extends Component {
 	}
 
 	copyRoute() {
+		console.log(this.state);
 		let copiedRoute = _.cloneDeep(this.state.selectedRoute);
 		delete copiedRoute.name;
 		delete copiedRoute.id;

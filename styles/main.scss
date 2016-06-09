@@ -2276,16 +2276,26 @@ body {
   }
   .ets-table {
     margin-top: 16px;
-
-    .ets-table-row:last-of-type {
-      font-weight: bold;
-    }
   }
-
 
   .Select-control {
     width: 231px;
     overflow: visible;
+  }
+
+  .taxes-result {
+    float: right;
+    div {
+      display: inline-block;
+      font-weight: bold;
+    }
+    .taxes-result-label {
+      width: 100px;
+    }
+    .taxes-result-value {
+      min-width: 91px;
+    }
+
   }
 }
 

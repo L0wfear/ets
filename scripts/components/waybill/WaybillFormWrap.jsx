@@ -9,6 +9,7 @@ import { validateRow } from 'validate/validateRow.js';
 import { waybillSchema, waybillClosingSchema } from '../models/WaybillModel.js';
 import config from '../../config.js';
 import { notifications } from 'utils/notifications';
+import Taxes from './Taxes.jsx';
 
 let validateWaybill = (waybill, errors) => {
 	let waybillErrors = _.clone(errors);
@@ -201,7 +202,7 @@ class WaybillFormWrap extends Component {
 
 					let fuelStart = waybill.fuel_start ? parseInt(waybill.fuel_start) : 0;
 					let fuelGiven = waybill.fuel_given ? parseInt(waybill.fuel_given) : 0;
-					let fuelTaxes = waybill.taxes ? parseInt(waybill.taxes[waybill.taxes.length-1].RESULT) : 0;
+					let fuelTaxes = Taxes.calculateFinalResult(waybill.taxes);
 					waybill.fuel_end = fuelStart + fuelGiven - fuelTaxes;
 
 					this.setState({
@@ -246,7 +247,7 @@ class WaybillFormWrap extends Component {
 
 		let fuelStart = formState.fuel_start ? parseInt(formState.fuel_start) : 0;
 		let fuelGiven = formState.fuel_given ? parseInt(formState.fuel_given) : 0;
-		let fuelTaxes = formState.taxes ? parseInt(formState.taxes[formState.taxes.length-1].RESULT) : 0;
+		let fuelTaxes = Taxes.calculateFinalResult(formState.taxes);
 		formState.fuel_end = fuelStart + fuelGiven - fuelTaxes;
 
 		newState.formState = formState;
@@ -319,12 +320,12 @@ class WaybillFormWrap extends Component {
 		if (!!!billStatus) { // если создаем ПЛ
 			if (typeof callback === 'function') {
 				formState.status = 'draft';
-				let r = await flux.getActions('waybills').create(formState);
+				let r = await flux.getActions('waybills').createWaybill(formState);
 				const id = _.max(r.result, res => res.id).id;
 				formState.status = 'active';
 				formState.id = id;
 				try {
-					await flux.getActions('waybills').update(formState);
+					await flux.getActions('waybills').updateWaybill(formState);
 				} catch (e) {
 					return;
 				}
@@ -332,7 +333,7 @@ class WaybillFormWrap extends Component {
 			} else {
 				formState.status = 'draft';
 				try {
-					await flux.getActions('waybills').create(formState);
+					await flux.getActions('waybills').createWaybill(formState);
 				} catch (e) {
 					console.log(e);
 					return;
@@ -343,7 +344,7 @@ class WaybillFormWrap extends Component {
 			if (typeof callback === 'function') {
 				formState.status = 'active';
 				try {
-					await flux.getActions('waybills').update(formState);
+					await flux.getActions('waybills').updateWaybill(formState);
 				} catch (e) {
 					return;
 				}
@@ -352,7 +353,7 @@ class WaybillFormWrap extends Component {
 				this.props.onFormHide();
 			} else {
 				try {
-					await flux.getActions('waybills').update(formState);
+					await flux.getActions('waybills').updateWaybill(formState);
 				} catch (e) {
 					return;
 				}
@@ -361,7 +362,7 @@ class WaybillFormWrap extends Component {
 			}
 		} else if (billStatus === 'active') {
 			try {
-				await flux.getActions('waybills').update(formState);
+				await flux.getActions('waybills').updateWaybill(formState);
 			} catch (e) {
 				console.log(e);
 				return;
@@ -378,11 +379,11 @@ class WaybillFormWrap extends Component {
 		let prevStatus = formState.status;
 		try {
 			formState.status = 'closed';
-			await this.context.flux.getActions('waybills').update(formState);
+			await this.context.flux.getActions('waybills').updateWaybill(formState);
 		} catch (e) {
 			console.log(e);
 			formState.status = prevStatus;
-			await this.context.flux.getActions('waybills').update(formState);
+			await this.context.flux.getActions('waybills').updateWaybill(formState);
 			return;
 		}
 		this.context.flux.getActions('waybills').getWaybills();

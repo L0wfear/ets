@@ -30,7 +30,6 @@ class FaxogrammMissionsFormWrap extends FormWrap {
 	handleFormSubmit() {
 		const { flux } = this.context;
 		let { formState } = this.state;
-    console.log(formState.missionJournalState);
     const payload = {
       mission_source_id: '4',
       faxogramm_id: formState.id,
@@ -49,11 +48,11 @@ class FaxogrammMissionsFormWrap extends FormWrap {
 
 		return 	<Div hidden={!this.props.showForm}>
 							<FaxogrammMissionsForm formState = {this.state.formState}
-          													 onSubmit={this.handleFormSubmit.bind(this)}
-          													 handleFormChange={this.handleFormStateChange.bind(this)}
-          													 show={this.props.showForm}
-          													 onHide={this.props.onFormHide}
-          													 {...this.state}/>
+							 onSubmit={this.handleFormSubmit.bind(this)}
+							 handleFormChange={this.handleFormStateChange.bind(this)}
+							 show={this.props.showForm}
+							 onHide={this.props.onFormHide}
+							 {...this.state}/>
 						</Div>
 
 	}

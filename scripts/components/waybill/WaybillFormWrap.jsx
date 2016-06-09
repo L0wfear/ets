@@ -282,7 +282,7 @@ class WaybillFormWrap extends Component {
 		let callback = (id) => {
 			console.log('printing waybill', URL);
 			URL = id ?  URL + id : URL + ID;
-			URL = URL + '&?token=' + token;
+			URL = URL + '&token=' + token;
 			window.location = URL;
 		};
 		//callback();

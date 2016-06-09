@@ -6,3 +6,4 @@ bower_components
 .DS_Store
 *.iml
 services_json
+npm-debug.log

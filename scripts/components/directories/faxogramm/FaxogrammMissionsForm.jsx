@@ -18,17 +18,10 @@ class FaxogrammMissionsForm extends Form {
 		}
 	}
 
-	componentDidMount() {
-		const { flux } = this.context;
-		let state = this.props.formState;
-		flux.getActions('missions').getMissionTemplates({ faxogramm_id: state.id });
-	}
-
 	render() {
 
 		let state = this.props.formState;
     let payload = { faxogramm_id: state.id };
-		let hasMissionTemplates = this.props.missionTemplatesList.length;
 
 		return (
 			<Modal {...this.props} bsSize="large" backdrop="static">
@@ -38,10 +31,10 @@ class FaxogrammMissionsForm extends Form {
 				</Modal.Header>
 
 	      <Modal.Body>
-          {hasMissionTemplates ? <MissionTemplatesJournal
+						<MissionTemplatesJournal
 							payload={payload}
 							noFilter={true}
-							onListStateChange={this.handleChange.bind(this, 'missionJournalState')} /> : 'Для выбранной факсограммы нет подходящих шаблонов-заданий'}
+							onListStateChange={this.handleChange.bind(this, 'missionJournalState')} />
 	      </Modal.Body>
 
 	      <Modal.Footer>

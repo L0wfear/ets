@@ -272,7 +272,9 @@ class Table extends React.Component {
   }
 
   render() {
-    const { tableMeta, enumeratedCss = 'width60', renderers, onRowSelected, selected, selectField, checked = {}, title = '', multiSelection = false, noFilter, enumerated = true, enableSort = true } = this.props;
+    const { tableMeta, enumeratedCss = 'width60', renderers, onRowSelected, selected,
+      selectField, checked = {}, title = '', multiSelection = false, noFilter,
+      enumerated = true, enableSort = true, noDataMessage } = this.props;
     const { initialSort, initialSortAscending } = this.state;
 
     let tableMetaCols = _.cloneDeep(tableMeta.cols);
@@ -333,7 +335,7 @@ class Table extends React.Component {
 								 onRowClick={onRowSelected}
 							   rowMetadata={rowMetadata}
                  onKeyPress={this.handleKeyPress.bind(this)}
-								 noDataMessage={noFilter ? '' : 'Нет данных'}/>
+								 noDataMessage={noDataMessage ? noDataMessage : noFilter ? '' : 'Нет данных'}/>
       </Div>
     );
   }

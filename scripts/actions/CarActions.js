@@ -1,5 +1,5 @@
 import { Actions } from 'flummox';
-import { CarInfoService, CarService } from 'api/Services';
+import { CarInfoService, CarService, VectorObjectService } from 'api/Services';
 import { isEmpty } from 'utils/functions';
 import { getTrack } from '../adapter.js';
 
@@ -21,6 +21,16 @@ export default class CarActions extends Actions {
     }
 
     return CarInfoService.post(payload, CarService.get);
+  }
+
+  getVectorObject(start, end) {
+    const payload = {
+      start_x: start[0],
+      start_y: start[1],
+      end_x: end[0],
+      end_y: start[1],
+    }
+    return VectorObjectService.get(payload);
   }
 
   async getCarsByTechnicalOperation(technical_operation_id) {

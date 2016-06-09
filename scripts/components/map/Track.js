@@ -461,16 +461,19 @@ export default class Track {
 
 
   // todo refactor
-  getTrackPointTooltip(trackPoint){
+  async getTrackPointTooltip(trackPoint, secondPoint, invert){
+    // let startCoords = trackPoint.coords_msk;
+    // let endCoords = secondPoint.coords_msk;
+    // if (invert) [startCoords, endCoords] = [endCoords, startCoords];
+    // let vectorObject = await window.__ETS_CONTAINER__.flux.getActions('car').getVectorObject(startCoords, endCoords);
+    // console.log(vectorObject);
 
-    let {
-        nsat,
-        speed_avg,
-        speed_max,
-        direction,
-        timestamp,
-        distance
-        } = trackPoint,
+    let { nsat,
+          speed_avg,
+          speed_max,
+          direction,
+          timestamp,
+          distance } = trackPoint,
       [latitude, longitude] = roundCoordinates(trackPoint.coords_msk, 6),
       geoObjects = null,
       gov_number = this.owner.point.car.gov_number;

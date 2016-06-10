@@ -397,8 +397,8 @@ class WaybillForm extends Form {
 									<Field type="number" label="Выдано, л" error={errors['fuel_given']}
 											value={state.fuel_given} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_given')} />
 
-									<Field type="number" label="Возврат, л"
-											value={state.fuel_end ? parseFloat(state.fuel_end).toFixed(2) : state.fuel_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled />
+									<Field type="number" label="Возврат, л" error={errors['fuel_end']}
+											value={state.fuel_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled />
 
 								</Col>
 							</Div>

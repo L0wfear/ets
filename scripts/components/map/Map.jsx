@@ -149,7 +149,7 @@ export default class OpenLayersMap extends Component {
   }
 
 
-  onClick(ev) {
+  async onClick(ev) {
 
     let map = this.map;
     let pixel = ev.pixel; // координаты клика во viewport
@@ -180,7 +180,7 @@ export default class OpenLayersMap extends Component {
             };
           });
           //console.log( 'trackpoint  found', possibleTrackPoint);
-          let makePopupFn = track.getTrackPointTooltip(possibleTrackPoint, secondPoint, invert);
+          let makePopupFn = await track.getTrackPointTooltip(possibleTrackPoint, secondPoint, invert);
           this.popup.show(pointCoords, makePopupFn());
           getGeoObjectsByCoords(possibleTrackPoint.coords_msk).then((data) => {
               this.popup.show(pointCoords, makePopupFn(data.objects))

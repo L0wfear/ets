@@ -169,9 +169,9 @@ class WaybillFormWrap extends Component {
 						waybill.motohours_equip_diff = waybill.motohours_equip_end - waybill.motohours_equip_start;
 					}
 
-					let fuelStart = waybill.fuel_start ? waybill.fuel_start : 0;
-					let fuelGiven = waybill.fuel_given ? waybill.fuel_given : 0;
-					let fuelTaxes = waybill.taxes ? waybill.taxes[waybill.taxes.length-1].RESULT : 0;
+					let fuelStart = waybill.fuel_start ? parseFloat(waybill.fuel_start) : 0;
+					let fuelGiven = waybill.fuel_given ? parseFloat(waybill.fuel_given) : 0;
+					let fuelTaxes = Taxes.calculateFinalResult(waybill.taxes);
 					waybill.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
 
 					this.setState({
@@ -207,8 +207,8 @@ class WaybillFormWrap extends Component {
 						waybill.motohours_equip_diff = waybill.motohours_equip_end - waybill.motohours_equip_start;
 					}
 
-					let fuelStart = waybill.fuel_start ? waybill.fuel_start : 0;
-					let fuelGiven = waybill.fuel_given ? waybill.fuel_given : 0;
+					let fuelStart = waybill.fuel_start ? parseFloat(waybill.fuel_start) : 0;
+					let fuelGiven = waybill.fuel_given ? parseFloat(waybill.fuel_given) : 0;
 					let fuelTaxes = Taxes.calculateFinalResult(waybill.taxes);
 					waybill.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
 
@@ -233,9 +233,10 @@ class WaybillFormWrap extends Component {
 		let newState = {};
 		formState[field] = value;
 
-		let fuelStart = formState.fuel_start ? formState.fuel_start : 0;
-		let fuelGiven = formState.fuel_given ? formState.fuel_given : 0;
+		let fuelStart = formState.fuel_start ? parseFloat(formState.fuel_start) : 0;
+		let fuelGiven = formState.fuel_given ? parseFloat(formState.fuel_given) : 0;
 		let fuelTaxes = Taxes.calculateFinalResult(formState.taxes);
+		console.log((fuelStart + fuelGiven - fuelTaxes));
 		formState.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
 
 		if (!!!formState.status || formState.status === 'draft') {
@@ -280,9 +281,9 @@ class WaybillFormWrap extends Component {
 			}
 		});
 
-		let fuelStart = formState.fuel_start ? formState.fuel_start : 0;
-		let fuelGiven = formState.fuel_given ? formState.fuel_given : 0;
-		let fuelTaxes = formState.taxes ? formState.taxes[formState.taxes.length-1].RESULT : 0;
+		let fuelStart = formState.fuel_start ? parseFloat(formState.fuel_start) : 0;
+		let fuelGiven = formState.fuel_given ? parseFloat(formState.fuel_given) : 0;
+		let fuelTaxes = Taxes.calculateFinalResult(formState.taxes);
 		formState.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
 
 		if (!!!formState.status || formState.status === 'draft') {

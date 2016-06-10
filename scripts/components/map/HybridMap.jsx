@@ -304,7 +304,7 @@ export default class HybridMap extends Map {
     el.style.cursor = changeCursor ? 'pointer' : '';
   }
 
-  onClick(ev) {
+  async onClick(ev) {
     let map = this.map;
     let pixel = ev.pixel; // координаты клика во viewport
     let coordinate = ev.coordinate;
@@ -320,7 +320,7 @@ export default class HybridMap extends Map {
         let possibleTrackPoint = track.getPointAtCoordinate(coordinate);
         if (possibleTrackPoint !== null) {
           let pointCoords = possibleTrackPoint.coords_msk;
-          let makePopupFn = track.getTrackPointTooltip(possibleTrackPoint);
+          let makePopupFn = await track.getTrackPointTooltip(possibleTrackPoint);
           this.popup.show(pointCoords, makePopupFn());
           getGeoObjectsByCoords(possibleTrackPoint.coords_msk)
             .then((data) => {

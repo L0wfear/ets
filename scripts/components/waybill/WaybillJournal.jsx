@@ -247,7 +247,7 @@ class WaybillJournal extends ElementsList {
 	constructor(props, context) {
 		super(props);
 
-    this.removeElementAction = context.flux.getActions('waybills').delete;
+    this.removeElementAction = context.flux.getActions('waybills').deleteWaybill;
     this.mainListName = 'waybillsList';
 
     this.state = {

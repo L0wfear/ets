@@ -14,7 +14,7 @@ class WaybillsActions extends Actions {
     return WaybillService.get();
   }
 
-  delete(id) {
+  deleteWaybill(id) {
     const payload = { id };
     return WaybillService.delete(payload);
   }

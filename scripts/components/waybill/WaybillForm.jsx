@@ -442,7 +442,7 @@ class WaybillForm extends Form {
 	      		</Col>
 						<Col md={4}>
 							<Div className="equipment-fuel-checkbox" hidden={!state.car_id}>
-								<Input type="checkbox" value={state.equipment_fuel} onClick={this.handleChange.bind(this, 'equipment_fuel')}/>
+								<Input type="checkbox" value={state.equipment_fuel} onClick={this.handleChange.bind(this, 'equipment_fuel', !!!state.equipment_fuel)}/>
 								<label>Показать расход топлива для оборудования</label>
 							</Div>
 							<Div hidden={!state.equipment_fuel}>

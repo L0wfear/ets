@@ -42,6 +42,7 @@ class WaybillsActions extends Actions {
     const payload = _.clone(waybill);
     payload.plan_departure_date = createValidDateTime(payload.plan_departure_date);
     payload.plan_arrival_date = createValidDateTime(payload.plan_arrival_date);
+    payload.equipment_fuel = +payload.equipment_fuel;
 
     if (payload.status === 'closed') {
       payload.fact_departure_date = createValidDateTime(payload.fact_departure_date);
@@ -99,6 +100,7 @@ class WaybillsActions extends Actions {
     payload.plan_arrival_date = createValidDateTime(payload.plan_arrival_date);
     payload.fact_departure_date = createValidDateTime(payload.plan_departure_date);
     payload.fact_arrival_date = createValidDateTime(payload.plan_arrival_date);
+    payload.equipment_fuel = +payload.equipment_fuel;
     delete payload.car_has_odometer;
     delete payload.mission_list;
     delete payload.car_special_model_name;

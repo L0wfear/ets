@@ -440,6 +440,28 @@ class WaybillForm extends Form {
 										{...this.props}/>
 							</Div>
 	      		</Col>
+						<Col md={4}>
+							<Div className="equipment-fuel-checkbox" hidden={!state.car_id}>
+								<Input type="checkbox" value={state.equipment_fuel} onClick={this.handleChange.bind(this, 'equipment_fuel')}/>
+								<label>Показать расход топлива для оборудования</label>
+							</Div>
+							<Div hidden={!state.equipment_fuel}>
+								<h4> Топливо для оборудования</h4>
+								<Field type="select" label="Тип топлива" error={errors['equipment_fuel_type_id']}
+										disabled={IS_CLOSING || IS_DISPLAY}
+										options={FUEL_TYPES}
+										value={state.equipment_fuel_type_id}
+										onChange={this.handleChange.bind(this, 'equipment_fuel_type_id')} />
+								<Field type="number" label="Выезд, л" error={errors['equipment_fuel_start']}
+										value={state.equipment_fuel_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'equipment_fuel_start')} />
+								<Field type="number" label="Выдать, л" error={errors['equipment_fuel_to_give']}
+										value={state.equipment_fuel_to_give} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'equipment_fuel_to_give')} />
+								<Field type="number" label="Выдано, л" error={errors['equipment_fuel_given']}
+										value={state.equipment_fuel_given} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'equipment_fuel_given')} />
+								<Field type="number" label="Возврат, л" error={errors['equipment_fuel_end']}
+										value={state.equipment_fuel_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled />
+							</Div>
+						</Col>
 	      	</Row>
 	      </Modal.Body>
 

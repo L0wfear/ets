@@ -19,9 +19,9 @@ export default class LoadingStore extends Store {
     const reportsActions = flux.getActions('reports');
 
     this.reg(
-      waybillsActions.delete,
-      waybillsActions.create,
-      waybillsActions.update,
+      waybillsActions.deleteWaybill,
+      waybillsActions.createWaybill,
+      waybillsActions.updateWaybill,
       waybillsActions.getWaybills,
 
       fuelRateActions.getFuelRates,
@@ -49,6 +49,7 @@ export default class LoadingStore extends Store {
 
       carActions.updateCarAdditionalInfo,
       carActions.getTrack,
+      carActions.getCarsByTechnicalOperation,
 
       employeesActions.getEmployees,
       employeesActions.updateEmployee,

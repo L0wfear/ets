@@ -9,6 +9,7 @@ import { validateRow } from 'validate/validateRow.js';
 import { waybillSchema, waybillClosingSchema } from '../models/WaybillModel.js';
 import config from '../../config.js';
 import { notifications } from 'utils/notifications';
+import Taxes from './Taxes.jsx';
 
 let validateWaybill = (waybill, errors) => {
 	let waybillErrors = _.clone(errors);
@@ -16,6 +17,8 @@ let validateWaybill = (waybill, errors) => {
 	_.each(waybillSchema.properties, prop => {
 		waybillErrors[prop.key] = validateRow(prop, waybill[prop.key]);
 	});
+
+	waybillErrors.fuel_end = '';
 
 	if (!isEmpty(waybill.car_has_odometer)) {
 		if (waybill.car_has_odometer) {
@@ -63,6 +66,8 @@ let validateWaybill = (waybill, errors) => {
 		}
 	}
 
+	if (parseFloat(waybill.fuel_end) < 0) waybillErrors.fuel_end = `Поле "Топливо.Возврат" должно быть неотрицательным`;
+
 	return waybillErrors;
 };
 
@@ -77,6 +82,7 @@ let validateClosingWaybill = (waybill, errors) => {
 	waybillErrors.plan_departure_date = '';
 	waybillErrors.fact_arrival_date = '';
 	waybillErrors.fact_departure_date = '';
+	waybillErrors.fuel_end = '';
 
 	if ((waybill.motohours_start && waybill.motohours_end) && (waybill.motohours_end < waybill.motohours_start)) waybillErrors.motohours_end = `Поле "Счетчик моточасов.Возврат" должно быть больше или равно "Счетчик моточасов.Выезд"`
 
@@ -110,6 +116,8 @@ let validateClosingWaybill = (waybill, errors) => {
 	} else {
 		waybillErrors.fact_departure_date = `Даты "Выезд факт." и "Возвращение факт." должны быть указаны`;
 	}
+
+	if (parseFloat(waybill.fuel_end) < 0) waybillErrors.fuel_end = `Поле "Топливо.Возврат" должно быть неотрицательным`;
 
 	return waybillErrors;
 };
@@ -161,6 +169,11 @@ class WaybillFormWrap extends Component {
 						waybill.motohours_equip_diff = waybill.motohours_equip_end - waybill.motohours_equip_start;
 					}
 
+					let fuelStart = waybill.fuel_start ? parseFloat(waybill.fuel_start) : 0;
+					let fuelGiven = waybill.fuel_given ? parseFloat(waybill.fuel_given) : 0;
+					let fuelTaxes = Taxes.calculateFinalResult(waybill.taxes);
+					waybill.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
+
 					this.setState({
 						formState: waybill,
 						formErrors: validateClosingWaybill(waybill, {}),
@@ -194,6 +207,11 @@ class WaybillFormWrap extends Component {
 						waybill.motohours_equip_diff = waybill.motohours_equip_end - waybill.motohours_equip_start;
 					}
 
+					let fuelStart = waybill.fuel_start ? parseFloat(waybill.fuel_start) : 0;
+					let fuelGiven = waybill.fuel_given ? parseFloat(waybill.fuel_given) : 0;
+					let fuelTaxes = Taxes.calculateFinalResult(waybill.taxes);
+					waybill.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
+
 					this.setState({
 						formState: waybill,
 						formErrors: {}
@@ -214,6 +232,12 @@ class WaybillFormWrap extends Component {
 		let formState = _.cloneDeep(this.state.formState);
 		let newState = {};
 		formState[field] = value;
+
+		let fuelStart = formState.fuel_start ? parseFloat(formState.fuel_start) : 0;
+		let fuelGiven = formState.fuel_given ? parseFloat(formState.fuel_given) : 0;
+		let fuelTaxes = Taxes.calculateFinalResult(formState.taxes);
+		console.log((fuelStart + fuelGiven - fuelTaxes));
+		formState.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
 
 		if (!!!formState.status || formState.status === 'draft') {
 			formErrors = validateWaybill(formState, formErrors);
@@ -257,6 +281,11 @@ class WaybillFormWrap extends Component {
 			}
 		});
 
+		let fuelStart = formState.fuel_start ? parseFloat(formState.fuel_start) : 0;
+		let fuelGiven = formState.fuel_given ? parseFloat(formState.fuel_given) : 0;
+		let fuelTaxes = Taxes.calculateFinalResult(formState.taxes);
+		formState.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
+
 		if (!!!formState.status || formState.status === 'draft') {
 			formErrors = validateWaybill(formState, formErrors);
 		} else if (formState.status && formState.status === 'active') {
@@ -282,7 +311,7 @@ class WaybillFormWrap extends Component {
 		let callback = (id) => {
 			console.log('printing waybill', URL);
 			URL = id ?  URL + id : URL + ID;
-			URL = URL + '&?token=' + token;
+			URL = URL + '&token=' + token;
 			window.location = URL;
 		};
 		//callback();
@@ -299,12 +328,12 @@ class WaybillFormWrap extends Component {
 		if (!!!billStatus) { // если создаем ПЛ
 			if (typeof callback === 'function') {
 				formState.status = 'draft';
-				let r = await flux.getActions('waybills').create(formState);
+				let r = await flux.getActions('waybills').createWaybill(formState);
 				const id = _.max(r.result, res => res.id).id;
 				formState.status = 'active';
 				formState.id = id;
 				try {
-					await flux.getActions('waybills').update(formState);
+					await flux.getActions('waybills').updateWaybill(formState);
 				} catch (e) {
 					return;
 				}
@@ -312,7 +341,7 @@ class WaybillFormWrap extends Component {
 			} else {
 				formState.status = 'draft';
 				try {
-					await flux.getActions('waybills').create(formState);
+					await flux.getActions('waybills').createWaybill(formState);
 				} catch (e) {
 					console.log(e);
 					return;
@@ -323,7 +352,7 @@ class WaybillFormWrap extends Component {
 			if (typeof callback === 'function') {
 				formState.status = 'active';
 				try {
-					await flux.getActions('waybills').update(formState);
+					await flux.getActions('waybills').updateWaybill(formState);
 				} catch (e) {
 					return;
 				}
@@ -332,7 +361,7 @@ class WaybillFormWrap extends Component {
 				this.props.onFormHide();
 			} else {
 				try {
-					await flux.getActions('waybills').update(formState);
+					await flux.getActions('waybills').updateWaybill(formState);
 				} catch (e) {
 					return;
 				}
@@ -341,7 +370,7 @@ class WaybillFormWrap extends Component {
 			}
 		} else if (billStatus === 'active') {
 			try {
-				await flux.getActions('waybills').update(formState);
+				await flux.getActions('waybills').updateWaybill(formState);
 			} catch (e) {
 				console.log(e);
 				return;
@@ -358,11 +387,11 @@ class WaybillFormWrap extends Component {
 		let prevStatus = formState.status;
 		try {
 			formState.status = 'closed';
-			await this.context.flux.getActions('waybills').update(formState);
+			await this.context.flux.getActions('waybills').updateWaybill(formState);
 		} catch (e) {
 			console.log(e);
 			formState.status = prevStatus;
-			await this.context.flux.getActions('waybills').update(formState);
+			await this.context.flux.getActions('waybills').updateWaybill(formState);
 			return;
 		}
 		this.context.flux.getActions('waybills').getWaybills();

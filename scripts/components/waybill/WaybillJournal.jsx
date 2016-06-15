@@ -25,6 +25,7 @@ let getTableMeta = (props) => {
 				name: 'status',
 				caption: 'Статус',
 				type: 'string',
+				cssClassName: 'width-waybill-large',
 				filter: {
 					type: 'select',
 					labelFunction: waybillStatusLabelFunction
@@ -33,6 +34,7 @@ let getTableMeta = (props) => {
 			{
 				name: 'all_missions_completed_or_failed',
 				caption: 'Статус заданий',
+				cssClassName: 'width-waybill-small',
 				type: 'string',
 				filter: {
 					type: 'select',
@@ -53,11 +55,13 @@ let getTableMeta = (props) => {
 			{
 				name: 'number',
 				caption: 'Номер',
+				cssClassName: 'width-waybill-small',
 				type: 'number',
 			},
 			{
 				name: 'date_create',
 				caption: 'Дата выдачи',
+				cssClassName: 'width-waybill-large',
 				type: 'date',
 				filter: {
 					type: 'date_create',
@@ -67,6 +71,7 @@ let getTableMeta = (props) => {
 			{
 				name: 'driver_id',
 				caption: 'Водитель',
+				cssClassName: 'width-waybill-small',
 				type: 'string',
 				filter: {
 					type: 'select',
@@ -76,12 +81,14 @@ let getTableMeta = (props) => {
 			{
 				name: 'car_id',
 				caption: 'Гос. № ТС',
+				cssClassName: 'width-waybill-large',
 				type: 'string',
 				filter: false
 			},
 			{
 				name: 'car_special_model_name',
 				caption: 'Модель ТС/Марка шасси',
+				cssClassName: 'width-waybill-small',
 				type: 'string',
 			},
 			{
@@ -93,11 +100,13 @@ let getTableMeta = (props) => {
 			{
 				name: 'garage_number',
 				caption: 'Гаражный номер',
+				cssClassName: 'width-waybill-small',
 				type: 'string',
 			},
 			{
 				name: 'fact_departure_date',
 				caption: 'Выезд факт',
+				cssClassName: 'width-waybill-large',
 				type: 'date',
 				filter: {
 					type: 'date_create',
@@ -107,6 +116,7 @@ let getTableMeta = (props) => {
 			{
 				name: 'fact_arrival_date',
 				caption: 'Возвращение факт',
+				cssClassName: 'width-waybill-large',
 				type: 'date',
 				filter: {
 					type: 'date_create',
@@ -116,12 +126,85 @@ let getTableMeta = (props) => {
 			{
 				name: 'responsible_person_id',
 				caption: 'Мастер',
+				cssClassName: 'width-waybill-large',
 				type: 'string',
 				filter: {
 					type: 'select',
 					labelFunction: employeeFIOLabelFunction,
 				}
 			},
+			{
+				name: 'odometr_start',
+				caption: 'Одометр. Выезд',
+				cssClassName: 'width-waybill-tiny',
+				type: 'number',
+				filter: {
+	        type: 'input',
+	      },
+			},
+			{
+				name: 'odometr_end',
+				caption: 'Одометр Возврат',
+				cssClassName: 'width-waybill-tiny',
+				type: 'number',
+				filter: {
+	        type: 'input',
+	      },
+			},
+			{
+	      name: 'motohours_start',
+	      caption: 'Моточасы. Выезд',
+				cssClassName: 'width-waybill-tiny',
+	      type: 'number',
+				filter: {
+	        type: 'input',
+	      },
+	    },
+	    {
+	      name: 'motohours_end',
+	      caption: 'Моточасы. Возврат',
+				cssClassName: 'width-waybill-tiny',
+	      type: 'number',
+				filter: {
+	        type: 'input',
+	      },
+	    },
+			{
+	      name: 'motohours_equip_start',
+	      caption: 'Моточасы обор. Выезд',
+				cssClassName: 'width-waybill-tiny',
+	      type: 'number',
+				filter: {
+	        type: 'input',
+	      },
+	    },
+	    {
+	      name: 'motohours_equip_end',
+	      caption: 'Моточасы обор. Возврат',
+				cssClassName: 'width-waybill-tiny',
+	      type: 'number',
+				filter: {
+	        type: 'input',
+	      },
+	    },
+			{
+	      name: 'fuel_start',
+	      caption: 'Топливо. Выезд',
+				cssClassName: 'width-waybill-tiny',
+	      type: 'number',
+				filter: {
+	        type: 'input',
+	      },
+	    },
+			{
+	      name: 'fuel_end',
+	      caption: 'Топливо. Возврат',
+				cssClassName: 'width-waybill-tiny',
+	      type: 'number',
+				filter: {
+	        type: 'input',
+	      },
+	    },
 		]
 	};
 
@@ -149,13 +232,14 @@ let WaybillsTable = (props) => {
 		};
 
 		return <Table title="Журнал путевых листов"
-									results={props.data}
-									renderers={renderers}
-									initialSort={'number'}
-									initialSortAscending={false}
-									tableMeta={getTableMeta(props)}
-                  multiSelection={true}
-									{...props}/>
+				results={props.data}
+				renderers={renderers}
+				initialSort={'number'}
+				initialSortAscending={false}
+				tableMeta={getTableMeta(props)}
+				multiSelection={true}
+				enumeratedCss={'width-waybill-small'}
+				{...props}/>
 }
 
 class WaybillJournal extends ElementsList {

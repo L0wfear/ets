@@ -1,14 +1,13 @@
-import BaseActions from './Actions.js';
+import { Actions } from 'flummox';
 import { createValidDateTime } from 'utils/dates';
 import _ from 'lodash';
 import { isEmpty } from 'utils/functions';
 import { WaybillService, LatestWaybillDriverService } from 'api/Services';
 
-class WaybillsActions extends BaseActions {
+class WaybillsActions extends Actions {
 
   constructor(props) {
     super();
-    this.service = WaybillService;
   }
 
   getWaybills() {
@@ -16,7 +15,8 @@ class WaybillsActions extends BaseActions {
   }
 
   delete(id) {
-    return super.delete(id);
+    const payload = { id };
+    return WaybillService.delete(payload);
   }
 
   getLatestWaybillDriver(car_id, driver_id) {
@@ -38,7 +38,7 @@ class WaybillsActions extends BaseActions {
     return WaybillService.get(payload);
   }
 
-  update(waybill) {
+  updateWaybill(waybill) {
     const payload = _.clone(waybill);
     payload.plan_departure_date = createValidDateTime(payload.plan_departure_date);
     payload.plan_arrival_date = createValidDateTime(payload.plan_arrival_date);
@@ -55,6 +55,7 @@ class WaybillsActions extends BaseActions {
       let taxes = payload.taxes.filter((t) => {
         return typeof t.FACT_VALUE !== 'undefined';
       });
+      console.log(taxes);
       // if (taxes.length === 0 || taxes.length === 1) {
       //   delete payload.taxes;
       // } else {
@@ -89,10 +90,10 @@ class WaybillsActions extends BaseActions {
       payload.mission_id_list = [];
     }
 
-    return super.update(payload, false);
+    return WaybillService.put(payload, false);
   }
 
-  create(waybill) {
+  createWaybill(waybill) {
     const payload = _.clone(waybill);
     payload.plan_departure_date = createValidDateTime(payload.plan_departure_date);
     payload.plan_arrival_date = createValidDateTime(payload.plan_arrival_date);
@@ -114,7 +115,7 @@ class WaybillsActions extends BaseActions {
       payload.mission_id_list = [];
     }
 
-    return super.create(payload);
+    return WaybillService.post(payload);
   }
 
 }

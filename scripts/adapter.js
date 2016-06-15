@@ -62,6 +62,11 @@ function HTTPMethod(url, data = {}, method, type) {
   }
 
   return fetch(url, options).then(r => {
+    if (r.status === 401) {
+      window.localStorage.clear();
+      window.location.hash = '/login';
+      window.location.reload();
+    } else
     return r.json().then(responseBody => {
       checkResponse(url, r, responseBody, method);
       return new Promise((res, rej) => res(responseBody));
@@ -91,7 +96,9 @@ function checkResponse(url, response, body, method) {
     const usedUrl = url.slice(0, url.indexOf('?') > -1 ? url.indexOf('?') : url.length);
     let serviceName = usedUrl.split('/')[usedUrl.split('/').length-2];
 
-    if (body && body.errors && body.errors.length) {
+    if (response.status === 500) {
+      global.NOTIFICATION_SYSTEM._addNotification(getServerErrorNotification(`/${method} ${serviceName}, код ответа 500`))
+    } else if (body && body.errors && body.errors.length) {
       let error = `ERROR /${method} ${usedUrl}`;
       console.error(error);
 
@@ -100,15 +107,6 @@ function checkResponse(url, response, body, method) {
         global.NOTIFICATION_SYSTEM._addNotification(getServerErrorNotification(`/${method} ${serviceName}`))
       });
       throw new Error('Errors in response body');
-    }
-
-    if (response.status === 500) {
-      global.NOTIFICATION_SYSTEM._addNotification(getServerErrorNotification(`/${method} ${serviceName}, код ответа 500`))
-    }
-
-    if (response.status === 401) {
-      console.warn('USER IS NOT AUTHORIZED');
-      flux.getActions('session').logout({reason: 'no auth'});
     }
   }
 }

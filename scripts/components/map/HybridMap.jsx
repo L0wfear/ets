@@ -2,7 +2,7 @@ import React from 'react';
 import Map from './Map.jsx';
 import CarMarker from '../markers/car/CarMarker.js';
 import { projectToPixel } from './MskAdapter.js';
-import { getTrack, getGeoObjectsByCoords } from '../../adapter.js';
+import { getTrack } from '../../adapter.js';
 import { getStartOfToday, makeDate, makeTime } from 'utils/dates';
 import { swapCoords, roundCoordinates } from 'utils/geo';
 import { TRACK_COLORS } from '../../constants/track.js';
@@ -311,6 +311,7 @@ export default class HybridMap extends Map {
     let store = this._pointsStore;
     let clickedMarker = null;
     let cancelSelection = false;
+    let {routeType} = this.props;
 
     let currentSelectedPoint = this._pointsStore.getSelectedPoint();
     if (currentSelectedPoint) {
@@ -320,12 +321,21 @@ export default class HybridMap extends Map {
         let possibleTrackPoint = track.getPointAtCoordinate(coordinate);
         if (possibleTrackPoint !== null) {
           let pointCoords = possibleTrackPoint.coords_msk;
-          let makePopupFn = await track.getTrackPointTooltip(possibleTrackPoint);
+          let secondPoint = null;
+          let invert = false;
+          track.points.forEach((point, i) => {
+            if (point.coords === possibleTrackPoint.coords) {
+              console.log(point, possibleTrackPoint);
+              if (track.points[i+1]) {
+                secondPoint = track.points[i+1];
+              } else {
+                secondPoint = track.points[i-1];
+                invert = true;
+              }
+            };
+          });
+          let makePopupFn = await track.getTrackPointTooltip(possibleTrackPoint, secondPoint, invert, routeType);
           this.popup.show(pointCoords, makePopupFn());
-          getGeoObjectsByCoords(possibleTrackPoint.coords_msk)
-            .then((data) => {
-              this.popup.show(pointCoords, makePopupFn(data.objects))
-            })
           return;
             }
           }

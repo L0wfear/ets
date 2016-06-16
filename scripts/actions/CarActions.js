@@ -23,12 +23,13 @@ export default class CarActions extends Actions {
     return CarInfoService.post(payload, CarService.get);
   }
 
-  getVectorObject(start, end) {
+  getVectorObject(start, end, type) {
     const payload = {
       start_x: start[0],
       start_y: start[1],
       end_x: end[0],
-      end_y: start[1],
+      end_y: end[1],
+      route_type: type
     }
     return VectorObjectService.get(payload);
   }

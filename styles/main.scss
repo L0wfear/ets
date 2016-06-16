@@ -2271,6 +2271,7 @@ body {
 }
 
 .taxi-calc-block  {
+  margin-bottom: 50px;
   .form-group {
     margin-bottom: 0;
   }
@@ -2290,7 +2291,15 @@ body {
       font-weight: bold;
     }
     .taxes-result-label {
-      width: 100px;
+      width: 180px;
+
+      &-positive {
+        color: green;
+      }
+
+      &-negative {
+        color: red;
+      }
     }
     .taxes-result-value {
       min-width: 91px;

@@ -31,7 +31,9 @@ class WaybillForm extends Form {
 
 		this.state = {
 			operations: [],
+			equipmentOperations: [],
 			fuelRates: [],
+			equipmentFuelRates: [],
 			fuel_correction_rate: null,
       showMissionForm: false,
       selectedMission: null
@@ -90,9 +92,20 @@ class WaybillForm extends Form {
 				const fuelRates = r.result.map( ({operation_id, rate_on_date}) => ({operation_id, rate_on_date}) );
 				flux.getActions('fuel-rates').getFuelOperations().then(fuelOperations => {
 					const operations =  _.filter(fuelOperations.result, op => _.find(fuelRates, fr => fr.operation_id === op.id));
-					this.setState({fuelRates, operations, fuel_correction_rate});
+					if (!!formState.equipment_fuel) {
+						flux.getActions('fuel-rates').getEquipmentFuelRatesByCarModel(formState.car_id).then(equipmentFuelRatesResponse => {
+							const equipmentFuelRates = equipmentFuelRatesResponse.result.map( ({operation_id, rate_on_date}) => ({operation_id, rate_on_date}) );
+							flux.getActions('fuel-rates').getFuelOperations().then(equipmentFuelOperations => {
+								const equipmentOperations =  _.filter(equipmentFuelOperations.result, op => _.find(equipmentFuelRates, fr => fr.operation_id === op.id));
+								this.setState({fuelRates, operations, fuel_correction_rate, equipmentFuelRates, equipmentOperations});
+							});
+						});
+					} else {
+						this.setState({fuelRates, operations, fuel_correction_rate});
+					}
 				});
 			});
+
 		} else if (formState.status === 'closed') {
 			flux.getActions('fuel-rates').getFuelOperations().then( fuelOperations => {
 				this.setState({operations: fuelOperations.result});
@@ -129,7 +142,7 @@ class WaybillForm extends Form {
 
     fieldsToChange.car_has_odometer = car_has_odometer;
 
-		const waybillsListSorted = _(this.props.waybillsList).filter(w => w.status === 'closed').sortBy('id').value().reverse();
+		const waybillsListSorted = _(this.props.waybillsList).filter(w => w.status === 'closed').sortBy('date_create').value().reverse();
 		const lastCarUsedWaybill = _.find(waybillsListSorted, w => w.car_id === car_id);
 		if (isNotNull(lastCarUsedWaybill)) {
 			if (isNotNull(lastCarUsedWaybill.fuel_end)) {
@@ -199,7 +212,7 @@ class WaybillForm extends Form {
 		});
 		const MASTERS = employeesList.filter( e => [2, 4, 5, 7, 14].indexOf(e.position_id) > -1).map( m => ({value: m.id, data: m, label: `${m.last_name} ${m.first_name} ${m.middle_name}`})).filter((e) => e.data.active === true);
     const MISSIONS = missionsList.map( ({id, number, technical_operation_name}) => ({value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false}));
-    //console.log('form state is ', state);
+    console.log('form state is ', state);
 
 
 		let IS_CREATING = !!!state.status;
@@ -407,19 +420,27 @@ class WaybillForm extends Form {
 
           <Row>
 	      		<Col md={8}>
-							<Taxes hidden={!(IS_DISPLAY || IS_CLOSING) || state.status === 'draft' || (IS_DISPLAY && state.taxes && state.taxes.length === 1) || (IS_DISPLAY && !!!state.taxes)}
+							<Taxes hidden={!(IS_DISPLAY || IS_CLOSING) || state.status === 'draft' || (IS_DISPLAY && state.tax_data && state.tax_data.length === 0) || (IS_DISPLAY && !!!state.tax_data)}
 									readOnly={!IS_CLOSING}
-									car={getCarById(carsList, state.car_id)}
-									taxes={state.taxes}
+									title={'Расчет топлива по норме'}
+									taxes={state.tax_data}
 									operations={this.state.operations}
 									fuelRates={this.state.fuelRates}
-									onChange={this.handleChange.bind(this, 'taxes')}
-									correctionRate={this.state.fuel_correction_rate}/>
-            </Col>
-          </Row>
-
-	      	<Row>
-	      		<Col md={8}>
+									onChange={this.handleChange.bind(this, 'tax_data')}
+									correctionRate={this.state.fuel_correction_rate}
+									baseFactValue={state.car_has_odometer ? state.odometr_diff : state.motohours_diff}
+									type={state.car_has_odometer ? 'odometr' : 'motohours'}/>
+							<Taxes hidden={!!!state.equipment_fuel || !(IS_DISPLAY || IS_CLOSING) || state.status === 'draft' || (IS_DISPLAY && state.equipment_tax_data && state.equipment_tax_data.length === 0) || (IS_DISPLAY && !!!state.equipment_tax_data)}
+									readOnly={!IS_CLOSING}
+									taxes={state.equipment_tax_data}
+									operations={this.state.equipmentOperations}
+									fuelRates={this.state.equipmentFuelRates}
+									title={'Расчет топлива по норме для оборудования'}
+									noDataMessage={'Для данного ТС нормы расхода топлива для спецоборудования не указаны.'}
+									onChange={this.handleChange.bind(this, 'equipment_tax_data')}
+									correctionRate={this.state.fuel_correction_rate}
+									baseFactValue={state.motohours_equip_diff}
+									type={'motohours'}/>
 							<Div className="task-container">
                 <h4>Задание</h4>
 								<Field type="select" error={errors['mission_id_list']}
@@ -439,13 +460,13 @@ class WaybillForm extends Form {
 										waybillEndDate={state.plan_arrival_date}
 										{...this.props}/>
 							</Div>
-	      		</Col>
+            </Col>
 						<Col md={4}>
 							<Div className="equipment-fuel-checkbox" hidden={!state.car_id}>
-								<Input type="checkbox" value={state.equipment_fuel} onClick={this.handleChange.bind(this, 'equipment_fuel', !!!state.equipment_fuel)}/>
+								<Input type="checkbox" checked={!!state.equipment_fuel} onClick={this.handleChange.bind(this, 'equipment_fuel', !!!state.equipment_fuel)} disabled={IS_CLOSING || IS_DISPLAY}/>
 								<label>Показать расход топлива для оборудования</label>
 							</Div>
-							<Div hidden={!state.equipment_fuel}>
+							<Div hidden={!!!state.equipment_fuel}>
 								<h4> Топливо для оборудования</h4>
 								<Field type="select" label="Тип топлива" error={errors['equipment_fuel_type_id']}
 										disabled={IS_CLOSING || IS_DISPLAY}
@@ -462,6 +483,12 @@ class WaybillForm extends Form {
 										value={state.equipment_fuel_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled />
 							</Div>
 						</Col>
+          </Row>
+
+	      	<Row>
+	      		<Col md={8}>
+
+	      		</Col>
 	      	</Row>
 	      </Modal.Body>
 

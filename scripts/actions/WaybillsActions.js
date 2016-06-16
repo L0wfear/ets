@@ -52,17 +52,11 @@ class WaybillsActions extends Actions {
       payload.fact_arrival_date = createValidDateTime(payload.plan_arrival_date);
     }
 
-    if (payload.taxes) {
-      let taxes = payload.taxes.filter((t) => {
+    if (payload.tax_data) {
+      let tax_data = payload.tax_data.filter((t) => {
         return typeof t.FACT_VALUE !== 'undefined';
       });
-      console.log(taxes);
-      // if (taxes.length === 0 || taxes.length === 1) {
-      //   delete payload.taxes;
-      // } else {
-        payload.data = JSON.stringify(taxes);
-        delete payload.taxes;
-      //}
+      payload.tax_data = JSON.stringify(tax_data);
     }
     delete payload.odometr_diff;
     delete payload.motohours_diff;
@@ -72,7 +66,6 @@ class WaybillsActions extends Actions {
     delete payload.could_be_closed;
     delete payload.mission_list;
     delete payload.all_missions_completed_or_failed;
-    delete payload.array_agg;
     delete payload.car_special_model_name;
     delete payload.car_model_name;
     delete payload.garage_number;

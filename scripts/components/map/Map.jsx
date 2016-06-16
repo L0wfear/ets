@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import CarMarker from '../markers/car/CarMarker.js';
 import { PROJECTION, ArcGisLayer } from './MskAdapter.js';
 import 'ol3-popup/src/ol3-popup.js';
-import { getGeoObjectsByCoords } from '../../adapter.js';
 import '../../vendor/onTabUnfocus.js';
 
 window.addEventListener('blur', (ev) => {
@@ -182,9 +181,6 @@ export default class OpenLayersMap extends Component {
           //console.log( 'trackpoint  found', possibleTrackPoint);
           let makePopupFn = await track.getTrackPointTooltip(possibleTrackPoint, secondPoint, invert);
           this.popup.show(pointCoords, makePopupFn());
-          getGeoObjectsByCoords(possibleTrackPoint.coords_msk).then((data) => {
-              this.popup.show(pointCoords, makePopupFn(data.objects))
-            })
           return;
         }
       }

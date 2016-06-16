@@ -461,12 +461,11 @@ export default class Track {
 
 
   // todo refactor
-  async getTrackPointTooltip(trackPoint, secondPoint, invert){
-    // let startCoords = trackPoint.coords_msk;
-    // let endCoords = secondPoint.coords_msk;
-    // if (invert) [startCoords, endCoords] = [endCoords, startCoords];
-    // let vectorObject = await window.__ETS_CONTAINER__.flux.getActions('car').getVectorObject(startCoords, endCoords);
-    // console.log(vectorObject);
+  async getTrackPointTooltip(trackPoint, secondPoint, invert, routeType = 'odh'){
+    let startCoords = trackPoint.coords_msk;
+    let endCoords = secondPoint.coords_msk;
+    if (invert) [startCoords, endCoords] = [endCoords, startCoords];
+    let vectorObject = await window.__ETS_CONTAINER__.flux.getActions('car').getVectorObject(startCoords, endCoords, routeType);
 
     let { nsat,
           speed_avg,
@@ -482,19 +481,20 @@ export default class Track {
     timestamp = new Date( timestamp * 1000 );
     let dt = makeDate( timestamp ) + ' ' + makeTime( timestamp, true );
 
-    return function makePopup(geoObjects = null){
+    return function makePopup(){
 
-        let objectsString = 'Объекты ОДХ';
-
-        if ( geoObjects === null ){
-          objectsString += ' загружаются'
-        } else {
-          if ( geoObjects.length > 0 ){
-            //objectsString += ': '+ geoObjects.map((obj)=>obj.name + ' ('+getCustomerById(obj.customer_id).title+')').join(', ')
-          } else {
-            objectsString += ' не найдены'
-          }
-        }
+        let objectsString = vectorObject.result.object_name ? vectorObject.result.object_name : 'Объекты ОДХ не найдены';
+        // let objectsString = 'Объекты ОДХ';
+        //
+        // if ( geoObjects === null ){
+        //   objectsString += ' загружаются'
+        // } else {
+        //   if ( geoObjects.length > 0 ){
+        //     //objectsString += ': '+ geoObjects.map((obj)=>obj.name + ' ('+getCustomerById(obj.customer_id).title+')').join(', ')
+        //   } else {
+        //     objectsString += ' не найдены'
+        //   }
+        // }
 
         return '<div class="header">' +
                   '<span class="gov-number">'+gov_number+'</span>' +

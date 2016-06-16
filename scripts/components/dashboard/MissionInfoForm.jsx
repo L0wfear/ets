@@ -42,18 +42,22 @@ export class MissionInfoForm extends Form {
 			if (r.result) {
 				let missionReport = [];
 				let selectedObjects = [];
+				let routeType = 'simple';
 				if (r.result.report_by_odh) {
 					missionReport = r.result.report_by_odh;
+					routeType = 'odh';
 				} else if (r.result.report_by_dt) {
 					missionReport = r.result.report_by_dt;
+					routeType = 'dt';
 				} else if (r.result.report_by_point) {
 					missionReport = r.result.report_by_point;
+					routeType = 'point';
 					selectedObjects = r.result.report_by_point.filter(p => p.status === 'success');
 				}
 				if (r.result.route_check_unit) {
 					_.each(missionReport, mr => mr.route_check_unit = r.result.route_check_unit)
 				}
-	      this.setState({missionReport, missionReportFull: r.result, selectedObjects});
+	      this.setState({missionReport, routeType, missionReportFull: r.result, selectedObjects});
 			}
     });
     this.context.flux.getActions('routes').getRouteById(formState.route_id, true).then(r => {
@@ -116,23 +120,24 @@ export class MissionInfoForm extends Form {
             <Col md={6} style={{height: 400}}>
 
               <FluxComponent connectToStores={{
-							points: store => ({
-							points: store.state.points,
-							selected: store.getSelectedPoint()
-							}),
+								points: store => ({
+									points: store.state.points,
+									selected: store.getSelectedPoint()
+								}),
 								settings: store => ({
-								showPlates: store.state.showPlates,
-								showTrack: store.state.showTrack,
-								showRoute: store.state.showRoute,
-								showSelectedElement: store.state.showSelectedElement
+									showPlates: store.state.showPlates,
+									showTrack: store.state.showTrack,
+									showRoute: store.state.showRoute,
+									showSelectedElement: store.state.showSelectedElement
 								}),
 								session: store => ({
-								zoom: store.getCurrentUser().getCompanyMapConfig().zoom,
-								center: store.getCurrentUser().getCompanyMapConfig().coordinates,
+									zoom: store.getCurrentUser().getCompanyMapConfig().zoom,
+									center: store.getCurrentUser().getCompanyMapConfig().coordinates,
 								})
               }}>
 
                 <Map polys={polys}
+										routeType={this.state.routeType}
 										selectedObjects={this.state.selectedObjects}
 										selectedPoly={geozonePolys[this.state.selectedElementId]}
 										car_gov_number={this.props.formState.car_gov_number}/>

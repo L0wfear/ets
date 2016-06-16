@@ -23,7 +23,13 @@ let getTableMeta = (props) => {
 	    },
 			{
 				name: 'traveled',
-				caption: 'Пройдено с рабочей скоростью',
+				caption: 'Пройдено в рабочем режиме, км',
+				type: 'string',
+				filter: false
+			},
+			{
+				name: 'route_with_speed',
+				caption: 'Пройдено, км',
 				type: 'string',
 				filter: false
 			},

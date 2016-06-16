@@ -17,6 +17,13 @@ import MissionReportByPoints from '../reports/MissionReportByPoints.jsx';
 // const MAP_INITIAL_CENTER = [-6040.212982145856, 10358.852595460314];
 // const MAP_INITIAL_ZOOM = 6;
 
+let getDataTraveledYet = (data) => {
+  if (typeof data === 'string') {
+    return data;
+  }
+  return !isNaN(parseInt(data, 10)) ? parseInt(data, 10) : '-';
+}
+
 export class MissionInfoForm extends Form {
 
 	constructor(props) {
@@ -118,8 +125,7 @@ export class MissionInfoForm extends Form {
           <Row>
 
             <Col md={6} style={{height: 400}}>
-
-              <FluxComponent connectToStores={{
+							<FluxComponent connectToStores={{
 								points: store => ({
 									points: store.state.points,
 									selected: store.getSelectedPoint()
@@ -134,15 +140,15 @@ export class MissionInfoForm extends Form {
 									zoom: store.getCurrentUser().getCompanyMapConfig().zoom,
 									center: store.getCurrentUser().getCompanyMapConfig().coordinates,
 								})
-              }}>
+							}}>
 
-                <Map polys={polys}
+								<Map polys={polys}
 										routeType={this.state.routeType}
 										selectedObjects={this.state.selectedObjects}
 										selectedPoly={geozonePolys[this.state.selectedElementId]}
 										car_gov_number={this.props.formState.car_gov_number}/>
 
-              </FluxComponent>
+							</FluxComponent>
             </Col>
 
             <Col md={6}>
@@ -161,6 +167,11 @@ export class MissionInfoForm extends Form {
             </Col>
 
           </Row>
+					
+					<Div>
+						<b>Пройдено с рабочей скоростью:</b> {getDataTraveledYet(this.props.formState.route_with_work_speed + this.props.formState.with_work_speed_time)}<br/>
+						<b>Пройдено с превышением рабочей скорости:</b> {getDataTraveledYet(this.props.formState.route_with_high_speed + this.props.formState.with_high_speed_time)}
+					</Div>
 
 	      </Modal.Body>
 

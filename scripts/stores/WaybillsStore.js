@@ -41,6 +41,7 @@ export function getDefaultBill() {
     fuel_type_id: 6,
     fuel_start: "",
     equipment_fuel: false,
+    equipment_fuel_type_id: 6, 
     //fuel_to_give: null,
     //fuel_given: "",
     //fuel_end: "",

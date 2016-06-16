@@ -31,6 +31,12 @@ export const waybillSchema = {
 			required: true,
 		},
 		{
+			key: 'equipment_fuel_start',
+			title: 'Топливо.Выезд',
+			type: 'floatFixed3',
+			required: false,
+		},
+		{
 			key: 'fuel_type_id',
 			title: 'Топливо.Тип',
 			type: 'number',
@@ -38,6 +44,12 @@ export const waybillSchema = {
 		},
 		{
 			key: 'fuel_to_give',
+			title: 'Топливо.Выдать',
+			type: 'floatFixed3',
+			required: false,
+		},
+		{
+			key: 'equipment_fuel_to_give',
 			title: 'Топливо.Выдать',
 			type: 'floatFixed3',
 			required: false,
@@ -70,11 +82,23 @@ const closingProperties = [
     type: 'floatFixed3',
     required: false,
   },
+	{
+    key: 'equipment_fuel_given',
+    title: 'Топливо.Выдано',
+    type: 'floatFixed3',
+    required: false,
+  },
   {
     key: 'fuel_end',
     title: 'Топливо.Возврат',
     type: 'floatFixed3',
     required: true,
+  },
+  {
+    key: 'equipment_fuel_end',
+    title: 'Топливо.Возврат',
+    type: 'floatFixed3',
+    required: false,
   },
   {
     key: 'odometr_end',

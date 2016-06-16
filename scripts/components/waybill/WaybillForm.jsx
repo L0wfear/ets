@@ -430,7 +430,7 @@ class WaybillForm extends Form {
 									correctionRate={this.state.fuel_correction_rate}
 									baseFactValue={state.car_has_odometer ? state.odometr_diff : state.motohours_diff}
 									type={state.car_has_odometer ? 'odometr' : 'motohours'}/>
-							<Taxes hidden={!!!state.equipment_fuel || !(IS_DISPLAY || IS_CLOSING) || state.status === 'draft' || (IS_DISPLAY && state.equipment_tax_data && state.equipment_tax_data.length === 0) || (IS_DISPLAY && !!!state.equipment_tax_data)}
+							<Taxes hidden={!(IS_DISPLAY || IS_CLOSING) || state.status === 'draft' || (IS_DISPLAY && state.equipment_tax_data && state.equipment_tax_data.length === 0) || (IS_DISPLAY && !!!state.equipment_tax_data)}
 									readOnly={!IS_CLOSING}
 									taxes={state.equipment_tax_data}
 									operations={this.state.equipmentOperations}

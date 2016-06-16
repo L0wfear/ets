@@ -175,7 +175,7 @@ export default class Taxes extends Component {
             <Button bsSize="xsmall" onClick={this.addOperation.bind(this)} disabled={this.state.operations.length === taxes.length}>
               Добавить операцию
             </Button>
-            <Button bsSize="xsmall" disabled={this.state.selectedOperation === null} onClick={this.removeOperation.bind(this)}>
+            <Button bsSize="xsmall" disabled={this.state.selectedOperation === null || taxes.length === 0} onClick={this.removeOperation.bind(this)}>
               Удалить операцию
             </Button>
           </Div>

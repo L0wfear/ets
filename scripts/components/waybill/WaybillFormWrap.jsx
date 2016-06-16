@@ -150,15 +150,18 @@ class WaybillFormWrap extends Component {
 			} else {
 
 				let waybill = _.clone(props.element);
+				if (!waybill.tax_data) {
+					waybill.tax_data = [];
+				}
+				if (!waybill.equipment_tax_data) {
+					waybill.equipment_tax_data = [];
+				}
 				if (waybill.mission_id_list.filter((v) => v).length === 0) {
 					waybill.mission_id_list = [];
 				}
 
-				if (props.element.status === 'active') {
+				if (props.element.status === 'active' || props.element.status === 'closed') {
 
-					if (waybill.array_agg) {
-						waybill.taxes = waybill.array_agg;
-					}
 					if (isNotNull(waybill.odometr_end) && isNotNull(waybill.odometr_start)) {
 						waybill.odometr_diff = waybill.odometr_end - waybill.odometr_start;
 					}
@@ -171,16 +174,32 @@ class WaybillFormWrap extends Component {
 
 					let fuelStart = waybill.fuel_start ? parseFloat(waybill.fuel_start) : 0;
 					let fuelGiven = waybill.fuel_given ? parseFloat(waybill.fuel_given) : 0;
-					let fuelTaxes = Taxes.calculateFinalResult(waybill.taxes);
-					waybill.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
+					let fuelTaxes = Taxes.calculateFinalResult(waybill.tax_data);
+					let equipmentFuelStart = waybill.equipment_fuel_start ? parseFloat(waybill.equipment_fuel_start) : 0;
+					let equipmentFuelGiven = waybill.equipment_fuel_given ? parseFloat(waybill.equipment_fuel_given) : 0;
+					let equipmentFuelTaxes = Taxes.calculateFinalResult(waybill.equipment_tax_data);
 
-					this.setState({
-						formState: waybill,
-						formErrors: validateClosingWaybill(waybill, {}),
-						canPrint: false,
-						canSave: ! !!_.filter(validateClosingWaybill(waybill, {}), (v,k) => k === 'fuel_end' ? false : v).length,
-						canClose: ! !!_.filter(validateClosingWaybill(waybill, {})).length,
-					});
+					if (!!waybill.equipment_fuel) {
+						waybill.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
+						waybill.equipment_fuel_end = (equipmentFuelStart + equipmentFuelGiven - equipmentFuelTaxes).toFixed(3);
+					} else {
+						waybill.fuel_end = (fuelStart + fuelGiven - fuelTaxes - equipmentFuelTaxes).toFixed(3);
+					}
+
+					if (props.element.status === 'active') {
+						this.setState({
+							formState: waybill,
+							formErrors: validateClosingWaybill(waybill, {}),
+							canPrint: false,
+							canSave: ! !!_.filter(validateClosingWaybill(waybill, {}), (v,k) => k === 'fuel_end' ? false : v).length,
+							canClose: ! !!_.filter(validateClosingWaybill(waybill, {})).length,
+						});
+					} else {
+						this.setState({
+							formState: waybill,
+							formErrors: {}
+						});
+					}
 
 				} else if (props.element.status === 'draft') {
 
@@ -192,52 +211,28 @@ class WaybillFormWrap extends Component {
 						formErrors: validateWaybill(waybill, {})
 					});
 
-				} else if (props.element.status === 'closed') {
-
-					if (waybill.array_agg) {
-						waybill.taxes = waybill.array_agg;
-					}
-					if (isNotNull(waybill.odometr_end) && isNotNull(waybill.odometr_start)) {
-						waybill.odometr_diff = waybill.odometr_end - waybill.odometr_start;
-					}
-					if (isNotNull(waybill.motohours_end) && isNotNull(waybill.motohours_start)) {
-						waybill.motohours_diff = waybill.motohours_end - waybill.motohours_start;
-					}
-					if (isNotNull(waybill.motohours_equip_end) && isNotNull(waybill.motohours_equip_start)) {
-						waybill.motohours_equip_diff = waybill.motohours_equip_end - waybill.motohours_equip_start;
-					}
-
-					let fuelStart = waybill.fuel_start ? parseFloat(waybill.fuel_start) : 0;
-					let fuelGiven = waybill.fuel_given ? parseFloat(waybill.fuel_given) : 0;
-					let fuelTaxes = Taxes.calculateFinalResult(waybill.taxes);
-					waybill.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
-
-					this.setState({
-						formState: waybill,
-						formErrors: {}
-					});
-
 				}
-
 			}
 		}
 
 	}
 
-
-	handleFormStateChange(field, e) {
-		console.log('waybill form changed', field, e)
-		const value = e !== undefined && !!e.target ? e.target.value : e;
+	handleFieldsChange(formState) {
 		let { formErrors } = this.state;
-		let formState = _.cloneDeep(this.state.formState);
 		let newState = {};
-		formState[field] = value;
 
 		let fuelStart = formState.fuel_start ? parseFloat(formState.fuel_start) : 0;
 		let fuelGiven = formState.fuel_given ? parseFloat(formState.fuel_given) : 0;
-		let fuelTaxes = Taxes.calculateFinalResult(formState.taxes);
-		console.log((fuelStart + fuelGiven - fuelTaxes));
-		formState.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
+		let fuelTaxes = Taxes.calculateFinalResult(formState.tax_data);
+		let equipmentFuelStart = formState.equipment_fuel_start ? parseFloat(formState.equipment_fuel_start) : 0;
+		let equipmentFuelGiven = formState.equipment_fuel_given ? parseFloat(formState.equipment_fuel_given) : 0;
+		let equipmentFuelTaxes = Taxes.calculateFinalResult(formState.equipment_tax_data);
+		if (!!formState.equipment_fuel) {
+			formState.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
+			formState.equipment_fuel_end = (equipmentFuelStart + equipmentFuelGiven - equipmentFuelTaxes).toFixed(3);
+		} else {
+			formState.fuel_end = (fuelStart + fuelGiven - fuelTaxes - equipmentFuelTaxes).toFixed(3);
+		}
 
 		if (!!!formState.status || formState.status === 'draft') {
 			formErrors = validateWaybill(formState, formErrors);
@@ -247,6 +242,18 @@ class WaybillFormWrap extends Component {
 
 		newState.canSave = ! !!_.filter(formErrors, (v,k) => k === 'fuel_end' ? false : v).length;
 		newState.canClose = ! !!_.filter(formErrors).length;
+
+		newState.formState = formState;
+		newState.formErrors = formErrors;
+
+		this.setState(newState);
+	}
+
+
+	handleFormStateChange(field, e) {
+		const value = e !== undefined && !!e.target ? e.target.value : e;
+		let formState = _.cloneDeep(this.state.formState);
+		formState[field] = value;
 
 		if (field === 'odometr_end' && formState.status) {
 			formState.odometr_diff = value ? formState.odometr_end - formState.odometr_start : null;
@@ -258,10 +265,7 @@ class WaybillFormWrap extends Component {
 			formState.motohours_equip_diff = value ? formState.motohours_equip_end - formState.motohours_equip_start : null;
 		}
 
-		newState.formState = formState;
-		newState.formErrors = formErrors;
-
-		this.setState(newState);
+		this.handleFieldsChange(formState);
 	}
 
 	handleMultipleChange(fields) {
@@ -281,24 +285,7 @@ class WaybillFormWrap extends Component {
 			}
 		});
 
-		let fuelStart = formState.fuel_start ? parseFloat(formState.fuel_start) : 0;
-		let fuelGiven = formState.fuel_given ? parseFloat(formState.fuel_given) : 0;
-		let fuelTaxes = Taxes.calculateFinalResult(formState.taxes);
-		formState.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
-
-		if (!!!formState.status || formState.status === 'draft') {
-			formErrors = validateWaybill(formState, formErrors);
-		} else if (formState.status && formState.status === 'active') {
-			formErrors = validateClosingWaybill(formState, formErrors);
-		}
-
-		newState.canSave = ! !!_.filter(formErrors, (v,k) => k === 'fuel_end' ? false : v).length;
-		newState.canClose = ! !!_.filter(formErrors).length;
-
-		newState.formState = formState;
-		newState.formErrors = formErrors;
-
-		this.setState(newState);
+		this.handleFieldsChange(formState);
 	}
 
   handlePrint(event, print_form_type = 1) {

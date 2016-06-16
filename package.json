@@ -43,6 +43,7 @@
     "react-select": "^0.9.1",
     "react-widgets": "^3.1.0",
     "request": "^2.53.0",
+    "rimraf": "^2.5.2",
     "rx": "^4.0.7",
     "sass-loader": "^1.0.4",
     "scss-loader": "0.0.1",
@@ -71,18 +72,18 @@
     "webpack-dev-server": "^1.10.1"
   },
   "scripts": {
-    "build": "STAND=production webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
+    "webpack": "webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
+    "build": "STAND=production webpack",
     "build-study": "STAND=study webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
     "build-test": "STAND=test webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
     "build-second": "STAND=second webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
     "build-second-study": "STAND=secondstudy webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
-    "lint": "eslint -c .eslintrc scripts",
-    "start-dev": "STAND=second node ./node_modules/better-npm-run start-dev",
+    "start-dev": "STAND=second NODE_ENV=development PORT=3000 node server.js",
     "start": "npm run start-dev",
-    "secondstudy": "STAND=secondstudy node ./node_modules/better-npm-run start-dev",
+    "secondstudy": "STAND=secondstudy NODE_ENV=development PORT=3000 node server.js",
     "study": "STAND=study node ./node_modules/better-npm-run start-dev",
-    "dev": "STAND=development node ./node_modules/better-npm-run start-dev",
-    "dev-local-server": "node ./node_modules/better-npm-run start-dev-local-server"
+    "dev": "STAND=development NODE_ENV=development PORT=3000 node server.js",
+    "lint": "eslint -c .eslintrc scripts"
   },
   "betterScripts": {
     "start-dev": {

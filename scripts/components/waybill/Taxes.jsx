@@ -3,17 +3,19 @@ import Table from '../ui/table/Table.jsx';
 import { Input, Button, Glyphicon } from 'react-bootstrap';
 import EtsSelect from '../ui/EtsSelect.jsx';
 import Div from '../ui/Div.jsx';
+import { isEmpty } from 'utils/functions';
+import cx from 'classnames';
 
 let getResult = ({FACT_VALUE, fuel_correction_rate, FUEL_RATE}) => {
   if (typeof FACT_VALUE === 'undefined') return 0;
-  if (fuel_correction_rate) {
-    return parseFloat(FUEL_RATE * fuel_correction_rate * FACT_VALUE).toFixed(3);
-  } else {
-    return parseFloat(FUEL_RATE * 1 * FACT_VALUE).toFixed(3);
-  }
+  return parseFloat(FUEL_RATE * fuel_correction_rate * FACT_VALUE).toFixed(3);
 }
 
 export default class Taxes extends Component {
+
+  static propTypes = {
+    type: React.PropTypes.string.isRequired
+  }
 
   static calculateFinalResult(data) {
     if (!data || (data && !data.length)) {
@@ -28,14 +30,29 @@ export default class Taxes extends Component {
     return parseFloat(result).toFixed(3);
   }
 
+  static calculateFinalFactValue(data) {
+    if (!data || (data && !data.length)) {
+      return 0;
+    }
+    const result = _.reduce(data, (res, cur, i) => {
+      if (!isEmpty(cur.FACT_VALUE)) {
+        res += parseFloat(cur.FACT_VALUE);
+      }
+      return res;
+    }, 0);
+    return parseFloat(result).toFixed(3);
+  }
+
   constructor(props) {
     super(props);
+
+    const { type } = props;
 
     this.tableCaptions = [
       "Операция",
       "Норма",
       "Поправочный коэффициент",
-      "Значение",
+      `Значение (${type === 'odometr' ? 'км' : 'м/ч' })`,
       "Результат (л)"
     ];
 
@@ -109,7 +126,8 @@ export default class Taxes extends Component {
 
   addOperation() {
     const { tableData } = this.state;
-    tableData.push({fuel_correction_rate: this.props.correctionRate || 1});
+    const { correctionRate } = this.props;
+    tableData.push({fuel_correction_rate: correctionRate});
     this.setState({tableData});
   }
 
@@ -133,22 +151,31 @@ export default class Taxes extends Component {
 
   render() {
 
-    const { taxes = this.state.tableData, fuelRates = [] } = this.props;
+    const { taxes = this.state.tableData, fuelRates = [], type,
+      title = 'Расчет топлива по норме',
+      noDataMessage = 'Для данного ТС нормы расхода топлива не указаны',
+      baseFactValue } = this.props;
     const hasTaxes = taxes.length > 0;
     const finalResult = Taxes.calculateFinalResult(taxes);
+    const finalFactValue = Taxes.calculateFinalFactValue(taxes);
+    const finalFactValueEqualsBaseValue = parseFloat(baseFactValue).toFixed(3) === parseFloat(finalFactValue).toFixed(3);
+    const finalFactValueClassName = cx('taxes-result-label', {
+      'taxes-result-label-positive': finalFactValueEqualsBaseValue,
+      'taxes-result-label-negative': !finalFactValueEqualsBaseValue
+    });
 
 		return (
       <Div className="taxi-calc-block" hidden={this.props.hidden}>
         <Div className="some-header">
-          <h4>Расчет топлива по норме</h4>
+          <h4>{title}</h4>
           <Div hidden={fuelRates.length || hasTaxes}>
-            <h5>Для данного ТС нормы расхода топлива не указаны</h5>
+            <h5>{noDataMessage}</h5>
           </Div>
           <Div className="waybills-buttons" hidden={this.props.readOnly || !fuelRates.length}>
             <Button bsSize="xsmall" onClick={this.addOperation.bind(this)} disabled={this.state.operations.length === taxes.length}>
               Добавить операцию
             </Button>
-            <Button bsSize="xsmall" disabled={this.state.selectedOperation === null} onClick={this.removeOperation.bind(this)}>
+            <Button bsSize="xsmall" disabled={this.state.selectedOperation === null || taxes.length === 0} onClick={this.removeOperation.bind(this)}>
               Удалить операцию
             </Button>
           </Div>
@@ -165,6 +192,7 @@ export default class Taxes extends Component {
         </Div>
         <Div className="taxes-result" hidden={!hasTaxes}>
           <div className="taxes-result-label">Итого</div>
+          <div className={finalFactValueClassName}>{finalFactValue}</div>
           <div className="taxes-result-value">{finalResult} л.</div>
         </Div>
 			</Div>

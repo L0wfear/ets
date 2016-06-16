@@ -8,11 +8,7 @@ import cx from 'classnames';
 
 let getResult = ({FACT_VALUE, fuel_correction_rate, FUEL_RATE}) => {
   if (typeof FACT_VALUE === 'undefined') return 0;
-  if (fuel_correction_rate) {
-    return parseFloat(FUEL_RATE * fuel_correction_rate * FACT_VALUE).toFixed(3);
-  } else {
-    return parseFloat(FUEL_RATE * 1 * FACT_VALUE).toFixed(3);
-  }
+  return parseFloat(FUEL_RATE * fuel_correction_rate * FACT_VALUE).toFixed(3);
 }
 
 export default class Taxes extends Component {
@@ -130,7 +126,8 @@ export default class Taxes extends Component {
 
   addOperation() {
     const { tableData } = this.state;
-    tableData.push({fuel_correction_rate: this.props.correctionRate || 1});
+    const { correctionRate } = this.props;
+    tableData.push({fuel_correction_rate: correctionRate});
     this.setState({tableData});
   }
 
@@ -158,7 +155,6 @@ export default class Taxes extends Component {
       title = 'Расчет топлива по норме',
       noDataMessage = 'Для данного ТС нормы расхода топлива не указаны',
       baseFactValue } = this.props;
-    console.log(taxes);
     const hasTaxes = taxes.length > 0;
     const finalResult = Taxes.calculateFinalResult(taxes);
     const finalFactValue = Taxes.calculateFinalFactValue(taxes);

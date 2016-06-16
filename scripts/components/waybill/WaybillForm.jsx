@@ -34,7 +34,7 @@ class WaybillForm extends Form {
 			equipmentOperations: [],
 			fuelRates: [],
 			equipmentFuelRates: [],
-			fuel_correction_rate: null,
+			fuel_correction_rate: 1,
       showMissionForm: false,
       selectedMission: null
 		}
@@ -87,7 +87,7 @@ class WaybillForm extends Form {
 		if (formState.status === 'active') {
 			const car = _.find(this.props.carsList, c => c.asuods_id === formState.car_id) || {}
 			const car_model_id = car.model_id;
-			const fuel_correction_rate = car.fuel_correction_rate || null;
+			const fuel_correction_rate = car.fuel_correction_rate || 1;
 			flux.getActions('fuel-rates').getFuelRatesByCarModel(formState.car_id).then(r => {
 				const fuelRates = r.result.map( ({operation_id, rate_on_date}) => ({operation_id, rate_on_date}) );
 				flux.getActions('fuel-rates').getFuelOperations().then(fuelOperations => {

@@ -92,7 +92,6 @@ class WaybillForm extends Form {
 				const fuelRates = r.result.map( ({operation_id, rate_on_date}) => ({operation_id, rate_on_date}) );
 				flux.getActions('fuel-rates').getFuelOperations().then(fuelOperations => {
 					const operations =  _.filter(fuelOperations.result, op => _.find(fuelRates, fr => fr.operation_id === op.id));
-					if (!!formState.equipment_fuel) {
 						flux.getActions('fuel-rates').getEquipmentFuelRatesByCarModel(formState.car_id).then(equipmentFuelRatesResponse => {
 							const equipmentFuelRates = equipmentFuelRatesResponse.result.map( ({operation_id, rate_on_date}) => ({operation_id, rate_on_date}) );
 							flux.getActions('fuel-rates').getFuelOperations().then(equipmentFuelOperations => {
@@ -100,9 +99,6 @@ class WaybillForm extends Form {
 								this.setState({fuelRates, operations, fuel_correction_rate, equipmentFuelRates, equipmentOperations});
 							});
 						});
-					} else {
-						this.setState({fuelRates, operations, fuel_correction_rate});
-					}
 				});
 			});
 

@@ -54,9 +54,15 @@ class WaybillsActions extends Actions {
 
     if (payload.tax_data) {
       let tax_data = payload.tax_data.filter((t) => {
-        return typeof t.FACT_VALUE !== 'undefined';
+        return !isEmpty(t.FACT_VALUE);
       });
       payload.tax_data = JSON.stringify(tax_data);
+    }
+    if (payload.equipment_tax_data) {
+      let equipment_tax_data = payload.equipment_tax_data.filter((t) => {
+        return !isEmpty(t.FACT_VALUE);
+      });
+      payload.equipment_tax_data = JSON.stringify(equipment_tax_data);
     }
     delete payload.odometr_diff;
     delete payload.motohours_diff;

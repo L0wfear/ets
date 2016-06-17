@@ -37,7 +37,6 @@ import WeeklyTechnicalOperationCompleteReport from './reports/WeeklyTechnicalOpe
 import Analytics from './reports/Analytics.jsx';
 import FaxogrammDirectory from './directories/faxogramm/FaxogrammDirectory.jsx';
 import CompanyStructure from './company_structure/CompanyStructure.jsx';
-import Modal from './ui/Modal.jsx';
 import { checkToken, getEverGisToken } from '../adapter.js';
 import Flux from './Flux.js';
 import { loginErrorNotification, getErrorNotification } from 'utils/notifications';

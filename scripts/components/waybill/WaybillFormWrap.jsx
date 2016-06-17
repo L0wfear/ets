@@ -372,17 +372,26 @@ class WaybillFormWrap extends Component {
 	async handleClose() {
 		let { formState } = this.state;
 		let prevStatus = formState.status;
-		try {
-			formState.status = 'closed';
-			await this.context.flux.getActions('waybills').updateWaybill(formState);
-		} catch (e) {
-			console.log(e);
-			formState.status = prevStatus;
-			await this.context.flux.getActions('waybills').updateWaybill(formState);
-			return;
-		}
-		this.context.flux.getActions('waybills').getWaybills();
-		this.props.onFormHide();
+		confirmDialog({
+			title: 'Внимание: После закрытия путевого листа редактирование полей будет запрещено.',
+			body: 'Вы уверены, что хотите закрыть окно?'
+		})
+		.then( async () => {
+			try {
+				formState.status = 'closed';
+				await this.context.flux.getActions('waybills').updateWaybill(formState);
+			} catch (e) {
+				console.log(e);
+				formState.status = prevStatus;
+				await this.context.flux.getActions('waybills').updateWaybill(formState);
+				this.context.flux.getActions('waybills').getWaybills();
+				return;
+			}
+			this.context.flux.getActions('waybills').getWaybills();
+			this.props.onFormHide();
+		})
+		.catch(() => {
+		});
 	}
 
 	render() {

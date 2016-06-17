@@ -23,13 +23,7 @@ let getTableMeta = (props) => {
 	    },
 			{
 				name: 'traveled',
-				caption: 'Пройдено в рабочем режиме, км',
-				type: 'string',
-				filter: false
-			},
-			{
-				name: 'route_with_speed',
-				caption: 'Пройдено, км',
+				caption: 'Пройдено в рабочем режиме',
 				type: 'string',
 				filter: false
 			},
@@ -54,6 +48,12 @@ let getTableMeta = (props) => {
 			{
 				name: 'v_avg_max',
 				caption: 'Максимальная скорость',
+				type: 'string',
+				filter: false
+			},
+			{
+				name: 'route_with_speed',
+				caption: 'Пройдено, км',
 				type: 'string',
 				filter: false
 			},
@@ -95,6 +95,8 @@ let MissionReportByDTTable = (props) => {
 		delete renderers.traveled_percentage;
     renderers.left = (data) => <div>{parseFloat(data.data).toFixed(2)}<br/>{`(${parseFloat(parseFloat(data.rowData.left_percentage) * 100).toFixed(0) + '%'})`}</div>
 	renderers.traveled = (data) => <div>{parseFloat(data.data).toFixed(2)}<br/>{`(${parseFloat(parseFloat(data.rowData.traveled_percentage) * 100).toFixed(0) + '%'})`}</div>
+	} else {
+		tableMeta.cols = tableMeta.cols.filter(c => c.name !== 'route_with_speed');
 	}
 
 	return <Table title='Прохождение заданий по ДТ'

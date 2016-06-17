@@ -12,7 +12,7 @@ let getDataTraveledYet = (data) => {
   if (typeof data === 'string') {
     return data;
   }
-  return parseInt(data, 10);
+  return !isNaN(parseInt(data, 10)) ? parseInt(data, 10) : '-';
 }
 
 let getEstimatedFinishTime = (data) => {
@@ -124,7 +124,9 @@ export default class CurrentMission extends DashboardCardMedium {
             <li><b>Начало задания:</b> {getFormattedDateTimeSeconds(data.mission_date_start)}</li>
             <li><b>Окончание задания:</b> {getFormattedDateTimeSeconds(data.mission_date_end)}</li>
             <li><b>Расчетное время выполнения:</b> {getEstimatedFinishTime(data.estimated_finish_time || 'Подсчет')}</li>
-            <li><b>Пройдено с рабочей скоростью:</b> {getDataTraveledYet(data.traveled_yet)}</li>
+            <li><b>Пройдено в рабочем режиме:</b> {getDataTraveledYet(data.traveled_yet)}</li>
+            <li><b>Пройдено с рабочей скоростью:</b> {getDataTraveledYet(data.route_with_work_speed + data.with_work_speed_time)}</li>
+            <li><b>Пройдено с превышением рабочей скорости:</b> {getDataTraveledYet(data.route_with_high_speed + data.with_high_speed_time)}</li>
             <li><a className="pointer" onClick={(e) => {e.preventDefault(); this.missionAction(data);}}>Подробнее...</a></li>
             <Div className="text-right">
               <Button className="dashboard-card-action-button" onClick={this.completeMission.bind(this, data.mission_id)}>Выполнено</Button>

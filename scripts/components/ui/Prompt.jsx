@@ -63,7 +63,7 @@ class Prompt extends React.Component {
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={this.ok.bind(this)}>Ок</Button>
-          <Button onClick={this.cancel.bind(this)}>Отменв</Button>
+          <Button onClick={this.cancel.bind(this)}>Отмена</Button>
         </Modal.Footer>
       </Modal>
     )

@@ -90,7 +90,7 @@ let MissionReportByDTTable = (props) => {
 	};
 
 	if (props.noFilter) {
-		tableMeta.cols = tableMeta.cols.filter(c => c.name !== 'left_percentage' && c.name !== 'v_avg_max' && c.name !== 'traveled_percentage');
+		tableMeta.cols = tableMeta.cols.filter(c => c.name !== 'left_percentage' && c.name !== 'v_avg_max' && c.name !== 'traveled_percentage' && c.name !== 'route_check_unit');
 		delete renderers.left_percentage;
 		delete renderers.traveled_percentage;
     renderers.left = (data) => <div>{parseFloat(data.data).toFixed(2)}<br/>{`(${parseFloat(parseFloat(data.rowData.left_percentage) * 100).toFixed(0) + '%'})`}</div>

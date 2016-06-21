@@ -22,6 +22,16 @@ let getTableMeta = (props) => {
 	let tableMeta = {
 		cols: [
 			{
+				name: 'car_id',
+				caption: 'Гос. № ТС',
+				type: 'string',
+				display: false,
+				filter: {
+					type: 'select',
+					labelFunction: (id) => getCarByIdLabelFunction(id).gov_number,
+				}
+			},
+			{
 				name: 'status',
 				caption: 'Статус',
 				type: 'string',
@@ -41,16 +51,6 @@ let getTableMeta = (props) => {
 					labelFunction: waybillMissionsCompleteStatusLabelFunction
 				},
 				//display: false,
-			},
-			{
-				name: 'car_id',
-				caption: 'Гос. № ТС',
-				type: 'string',
-				display: false,
-				filter: {
-					type: 'select',
-					labelFunction: (id) => getCarByIdLabelFunction(id).gov_number,
-				}
 			},
 			{
 				name: 'number',

@@ -134,13 +134,17 @@ class RouteLaunchReports extends Component {
 	render() {
 
 		const { reportsList = [], technicalOperationsList = [] } = this.props;
-    const TECH_OPERATIONS = [{value: 'null', label: 'Все операции'}].concat(technicalOperationsList.map(({id, name}) => ({value: id, label: name})));
+    const TECH_OPERATIONS = [{value: 'null', label: 'Все операции'}].concat(technicalOperationsList.filter((route) => route.object_name.indexOf('ОДХ') > -1).map(({id, name}) => ({value: id, label: name})));
 
 		return (
 			<div className="ets-page-wrap">
         <Div className="route-report-panel">
           <Button bsSize="small" onClick={this.createRouteReport.bind(this)}>Сформировать отчет</Button>
-          <EtsSelect options={TECH_OPERATIONS} value={this.state.generationType} onChange={this.handleGenerationTypeChange.bind(this)} />
+          <EtsSelect
+							options={TECH_OPERATIONS}
+							value={this.state.generationType}
+							onChange={this.handleGenerationTypeChange.bind(this)}
+							clearable={false} />
         </Div>
 				<CarsTable data={reportsList} onRowSelected={this.onReportSelect.bind(this)}>
 				</CarsTable>

@@ -481,8 +481,14 @@ export default class Track {
     let dt = makeDate( timestamp ) + ' ' + makeTime( timestamp, true );
 
     return function makePopup(){
+        let objectsString;
+        if (vectorObject.result) {
+          objectsString = vectorObject.result[0].asuods_id === vectorObject.result[1].asuods_id ?
+          vectorObject.result[0].name : vectorObject.result[0].name+' / '+vectorObject.result[1].name;
+        } else {
+          objectsString = 'Объекты ОДХ не найдены';
+        }
 
-        let objectsString = vectorObject.result.object_name ? vectorObject.result.object_name : 'Объекты ОДХ не найдены';
         // let objectsString = 'Объекты ОДХ';
         //
         // if ( geoObjects === null ){

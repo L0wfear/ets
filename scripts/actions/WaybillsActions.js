@@ -42,6 +42,7 @@ class WaybillsActions extends Actions {
     const payload = _.clone(waybill);
     payload.plan_departure_date = createValidDateTime(payload.plan_departure_date);
     payload.plan_arrival_date = createValidDateTime(payload.plan_arrival_date);
+    payload.equipment_fuel = +payload.equipment_fuel;
 
     if (payload.status === 'closed') {
       payload.fact_departure_date = createValidDateTime(payload.fact_departure_date);
@@ -51,17 +52,17 @@ class WaybillsActions extends Actions {
       payload.fact_arrival_date = createValidDateTime(payload.plan_arrival_date);
     }
 
-    if (payload.taxes) {
-      let taxes = payload.taxes.filter((t) => {
-        return typeof t.FACT_VALUE !== 'undefined';
+    if (payload.tax_data) {
+      let tax_data = payload.tax_data.filter((t) => {
+        return !isEmpty(t.FACT_VALUE);
       });
-      console.log(taxes);
-      // if (taxes.length === 0 || taxes.length === 1) {
-      //   delete payload.taxes;
-      // } else {
-        payload.data = JSON.stringify(taxes);
-        delete payload.taxes;
-      //}
+      payload.tax_data = JSON.stringify(tax_data);
+    }
+    if (payload.equipment_tax_data) {
+      let equipment_tax_data = payload.equipment_tax_data.filter((t) => {
+        return !isEmpty(t.FACT_VALUE);
+      });
+      payload.equipment_tax_data = JSON.stringify(equipment_tax_data);
     }
     delete payload.odometr_diff;
     delete payload.motohours_diff;
@@ -71,7 +72,6 @@ class WaybillsActions extends Actions {
     delete payload.could_be_closed;
     delete payload.mission_list;
     delete payload.all_missions_completed_or_failed;
-    delete payload.array_agg;
     delete payload.car_special_model_name;
     delete payload.car_model_name;
     delete payload.garage_number;
@@ -99,6 +99,7 @@ class WaybillsActions extends Actions {
     payload.plan_arrival_date = createValidDateTime(payload.plan_arrival_date);
     payload.fact_departure_date = createValidDateTime(payload.plan_departure_date);
     payload.fact_arrival_date = createValidDateTime(payload.plan_arrival_date);
+    payload.equipment_fuel = +payload.equipment_fuel;
     delete payload.car_has_odometer;
     delete payload.mission_list;
     delete payload.car_special_model_name;

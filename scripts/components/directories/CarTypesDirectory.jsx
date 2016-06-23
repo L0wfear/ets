@@ -12,7 +12,7 @@ let tableMeta = {
 			caption: 'Полное наименование',
 			type: 'string',
       filter: {
-        type: 'input',
+        type: 'select',
       },
 			cssClassName: 'width300'
 		},
@@ -21,7 +21,7 @@ let tableMeta = {
 			caption: 'Краткое наименование',
 			type: 'string',
       filter: {
-        type: 'input',
+        type: 'select',
       },
 			cssClassName: 'width300'
 		},

@@ -31,7 +31,7 @@ const GEO_OBJECTS_URL = getUrl('/geo_objects/');
 const AUTH_CHECK_URL = getUrl('/auth_check');
 const DASHBOARD_URL = getUrl('/dashboard/');
 
-function HTTPMethod(url, data = {}, method, type) {
+function HTTPMethod(url, data = {}, method, type, blob) {
   let body;
   data = _.clone(data);
   const token = JSON.parse(window.localStorage.getItem('ets-session'));
@@ -61,12 +61,13 @@ function HTTPMethod(url, data = {}, method, type) {
     url = toUrlWithParams(url, data);
   }
 
-  return fetch(url, options).then(r => {
+  return fetch(url, options, blob).then(r => {
     if (r.status === 401) {
       window.localStorage.clear();
       window.location.hash = '/login';
       window.location.reload();
     } else
+    if (blob) return r.blob().then(body => new Promise((res, rej) => res(body)));
     return r.json().then(responseBody => {
       checkResponse(url, r, responseBody, method);
       return new Promise((res, rej) => res(responseBody));
@@ -78,8 +79,8 @@ export function getJSON(url, data = {}) {
   return HTTPMethod(url, data, 'GET');
 }
 
-export function postJSON(url, data = {}, type = 'form') {
-  return HTTPMethod(url, data, 'POST', type);
+export function postJSON(url, data = {}, type = 'form', blob = false) {
+  return HTTPMethod(url, data, 'POST', type, blob);
 }
 
 export function putJSON(url, data, type = 'form') {

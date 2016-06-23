@@ -4,6 +4,7 @@ import Div from '../ui/Div.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';
 import { Modal, Row, Col, FormControls, Button, DropdownButton, Dropdown, Glyphicon, MenuItem, Input } from 'react-bootstrap';
 import Field from '../ui/Field.jsx';
+import { saveData } from 'utils/functions';
 
 class WaybillPrintForm extends Component {
 
@@ -17,7 +18,11 @@ class WaybillPrintForm extends Component {
 	}
 
   async handleSubmit() {
-		await this.context.flux.getActions('waybills').getWaybillJournalReport(this.state);
+		let MONTHS = ['Январь','Февраль','Март','Апрель','Май','Июнь',
+      'Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+		await this.context.flux.getActions('waybills')
+			.getWaybillJournalReport(this.state)
+			.then(blob => {saveData(blob, `Отчет по ПЛ за ${MONTHS[this.state.month]} ${this.state.year}.xls`)});
   }
 
   handleChange(field, value) {

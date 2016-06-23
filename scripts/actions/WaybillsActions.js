@@ -39,7 +39,7 @@ class WaybillsActions extends Actions {
   }
 
   getWaybillJournalReport(payload) {
-    return WaybillJournalReportService.post(payload, null, 'json');
+    return WaybillJournalReportService.post(payload, false, 'json', true);
   }
 
   updateWaybill(waybill) {

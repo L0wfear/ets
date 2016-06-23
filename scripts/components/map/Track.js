@@ -461,11 +461,10 @@ export default class Track {
 
 
   // todo refactor
-  async getTrackPointTooltip(trackPoint, secondPoint, invert, routeType = 'odh'){
-    let startCoords = trackPoint.coords_msk;
-    let endCoords = secondPoint.coords_msk;
-    if (invert) [startCoords, endCoords] = [endCoords, startCoords];
-    let vectorObject = await window.__ETS_CONTAINER__.flux.getActions('car').getVectorObject(startCoords, endCoords, routeType);
+  async getTrackPointTooltip(trackPoint, prevPoint, nextPoint){
+    let vectorObject = await window.__ETS_CONTAINER__.flux
+        .getActions('car')
+        .getVectorObject(trackPoint, prevPoint, nextPoint);
 
     let { nsat,
           speed_avg,

@@ -166,20 +166,15 @@ export default class OpenLayersMap extends Component {
         let possibleTrackPoint = track.getPointAtCoordinate(coordinate);
         if (possibleTrackPoint !== null) {
           let pointCoords = possibleTrackPoint.coords_msk;
-          let secondPoint = null;
-          let invert = false;
+          let prevPoint, nextPoint = null;
           track.points.forEach((point, i) => {
             if (point.coords === possibleTrackPoint.coords) {
-              if (track.points[i+1]) {
-                secondPoint = track.points[i+1];
-              } else {
-                secondPoint = track.points[i-1];
-                invert = true;
-              }
+              nextPoint = track.points[i+1] ? track.points[i+1] : null;
+              prevPoint = track.points[i-1] ? track.points[i-1] : null;
             };
           });
           //console.log( 'trackpoint  found', possibleTrackPoint);
-          let makePopupFn = await track.getTrackPointTooltip(possibleTrackPoint, secondPoint, invert);
+          let makePopupFn = await track.getTrackPointTooltip(possibleTrackPoint, prevPoint, nextPoint);
           this.popup.show(pointCoords, makePopupFn());
           return;
         }

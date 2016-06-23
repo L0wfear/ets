@@ -23,15 +23,11 @@ export default class CarActions extends Actions {
     return CarInfoService.post(payload, CarService.get);
   }
 
-  getVectorObject(start, end, type) {
+  getVectorObject(selectedPoint, prevPoint, nextPoint) {
     const payload = {
-      start_x: start[0],
-      start_y: start[1],
-      end_x: end[0],
-      end_y: end[1],
-      route_type: type
+      coordinates: [prevPoint.coords_msk, selectedPoint.coords_msk, nextPoint.coords_msk]
     }
-    return VectorObjectService.get(payload);
+    return VectorObjectService.get(payload, null, 'json');
   }
 
   async getCarsByTechnicalOperation(technical_operation_id) {

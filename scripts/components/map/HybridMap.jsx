@@ -311,7 +311,6 @@ export default class HybridMap extends Map {
     let store = this._pointsStore;
     let clickedMarker = null;
     let cancelSelection = false;
-    let {routeType} = this.props;
 
     let currentSelectedPoint = this._pointsStore.getSelectedPoint();
     if (currentSelectedPoint) {
@@ -321,20 +320,14 @@ export default class HybridMap extends Map {
         let possibleTrackPoint = track.getPointAtCoordinate(coordinate);
         if (possibleTrackPoint !== null) {
           let pointCoords = possibleTrackPoint.coords_msk;
-          let secondPoint = null;
-          let invert = false;
+          let prevPoint, nextPoint = null;
           track.points.forEach((point, i) => {
             if (point.coords === possibleTrackPoint.coords) {
-              console.log(point, possibleTrackPoint);
-              if (track.points[i+1]) {
-                secondPoint = track.points[i+1];
-              } else {
-                secondPoint = track.points[i-1];
-                invert = true;
-              }
+                nextPoint = track.points[i+1] ? track.points[i+1] : null;
+                prevPoint = track.points[i-1] ? track.points[i-1] : null;
             };
           });
-          let makePopupFn = await track.getTrackPointTooltip(possibleTrackPoint, secondPoint, invert, routeType);
+          let makePopupFn = await track.getTrackPointTooltip(possibleTrackPoint, prevPoint, nextPoint);
           this.popup.show(pointCoords, makePopupFn());
           return;
             }

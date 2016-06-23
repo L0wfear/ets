@@ -461,11 +461,10 @@ export default class Track {
 
 
   // todo refactor
-  async getTrackPointTooltip(trackPoint, secondPoint, invert, routeType = 'odh'){
-    let startCoords = trackPoint.coords_msk;
-    let endCoords = secondPoint.coords_msk;
-    if (invert) [startCoords, endCoords] = [endCoords, startCoords];
-    let vectorObject = await window.__ETS_CONTAINER__.flux.getActions('car').getVectorObject(startCoords, endCoords, routeType);
+  async getTrackPointTooltip(trackPoint, prevPoint, nextPoint){
+    let vectorObject = await window.__ETS_CONTAINER__.flux
+        .getActions('car')
+        .getVectorObject(trackPoint, prevPoint, nextPoint);
 
     let { nsat,
           speed_avg,
@@ -482,8 +481,14 @@ export default class Track {
     let dt = makeDate( timestamp ) + ' ' + makeTime( timestamp, true );
 
     return function makePopup(){
+        let objectsString;
+        if (vectorObject.result) {
+          objectsString = vectorObject.result[0].asuods_id === vectorObject.result[1].asuods_id ?
+          vectorObject.result[0].name : vectorObject.result[0].name+' / '+vectorObject.result[1].name;
+        } else {
+          objectsString = 'Объекты ОДХ не найдены';
+        }
 
-        let objectsString = vectorObject.result.object_name ? vectorObject.result.object_name : 'Объекты ОДХ не найдены';
         // let objectsString = 'Объекты ОДХ';
         //
         // if ( geoObjects === null ){

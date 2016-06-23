@@ -2,7 +2,7 @@ import { Actions } from 'flummox';
 import { createValidDateTime } from 'utils/dates';
 import _ from 'lodash';
 import { isEmpty } from 'utils/functions';
-import { WaybillService, LatestWaybillDriverService } from 'api/Services';
+import { WaybillService, LatestWaybillDriverService, WaybillJournalReportService } from 'api/Services';
 
 class WaybillsActions extends Actions {
 
@@ -36,6 +36,10 @@ class WaybillsActions extends Actions {
   getWaybill(id) {
     const payload = { id }
     return WaybillService.get(payload);
+  }
+
+  getWaybillJournalReport(payload) {
+    return WaybillJournalReportService.post(payload, null, 'json');
   }
 
   updateWaybill(waybill) {

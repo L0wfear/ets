@@ -66,15 +66,15 @@ export function getTrackColor(speed, type_id, opacity = 1) {
   }
 
   if (speed >= 10 && speed < 20) {
-    result = TRACK_COLORS.greenyellow
+    result = TRACK_COLORS.green
   }
 
   if (speed >= 20 && speed < 30) {
-    result = TRACK_COLORS.greenyellow
+    result = TRACK_COLORS.green
   }
 
   if (speed >= 30 && speed < speed_max) {
-    result = TRACK_COLORS.yellow
+    result = TRACK_COLORS.green
   }
 
   if (speed >= speed_max) {

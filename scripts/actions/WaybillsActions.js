@@ -39,6 +39,7 @@ class WaybillsActions extends Actions {
   }
 
   getWaybillJournalReport(payload) {
+    payload.month = payload.month+1;
     return WaybillJournalReportService.post(payload, false, 'json', true);
   }
 

@@ -236,10 +236,14 @@ class WaybillForm extends Form {
       title = "Создание нового путевого листа"
     }
 
-		let taxesControl = !!this.state.equipmentFuelRates.length ?
-			!!state.tax_data[0] && !!parseFloat(state.tax_data[0].RESULT)
-			&& !!state.equipment_tax_data[0] && !!parseFloat(state.equipment_tax_data[0].RESULT) :
-			 !!state.tax_data[0] && !!parseFloat(state.tax_data[0].RESULT);
+		if (state.tax_data && state.equipment_tax_data) {
+			let taxesControl = !!this.state.equipmentFuelRates.length ?
+				!!state.tax_data[0] && !!parseFloat(state.tax_data[0].RESULT)
+				&& !!state.equipment_tax_data[0] && !!parseFloat(state.equipment_tax_data[0].RESULT) :
+				 !!state.tax_data[0] && !!parseFloat(state.tax_data[0].RESULT);
+		} else {
+			let taxesControl = false;
+		}
 
 		return (
 			<Modal {...this.props} bsSize="large" backdrop="static">

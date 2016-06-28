@@ -15,7 +15,6 @@ export default class FuelRateActions extends Actions {
   }
 
   getFuelRatesByCarModel(car_id) {
-<<<<<<< HEAD
     const payload = { car_id };
     return FuelConsumptionRateService.get(payload);
   }
@@ -25,10 +24,6 @@ export default class FuelRateActions extends Actions {
       car_id,
       for_equipment: 1
     };
-
-=======
-    const payload = { car_id }
->>>>>>> hotfix
     return FuelConsumptionRateService.get(payload);
   }
 

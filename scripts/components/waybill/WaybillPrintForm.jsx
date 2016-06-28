@@ -23,6 +23,7 @@ class WaybillPrintForm extends Component {
 		await this.context.flux.getActions('waybills')
 			.getWaybillJournalReport(this.state)
 			.then(blob => {saveData(blob, `Отчет по ПЛ за ${MONTHS[this.state.month]} ${this.state.year}.xls`)});
+		this.props.hide();
   }
 
   handleChange(field, value) {

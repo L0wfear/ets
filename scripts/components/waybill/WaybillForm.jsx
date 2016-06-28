@@ -87,7 +87,11 @@ class WaybillForm extends Form {
 		if (formState.status === 'active') {
 			const car = _.find(this.props.carsList, c => c.asuods_id === formState.car_id) || {}
 			const car_model_id = car.model_id;
+<<<<<<< HEAD
 			const fuel_correction_rate = car.fuel_correction_rate || 1;
+=======
+			const fuel_correction_rate = car.fuel_correction_rate || null;
+>>>>>>> hotfix
 			flux.getActions('fuel-rates').getFuelRatesByCarModel(formState.car_id).then(r => {
 				const fuelRates = r.result.map( ({operation_id, rate_on_date}) => ({operation_id, rate_on_date}) );
 				flux.getActions('fuel-rates').getFuelOperations().then(fuelOperations => {

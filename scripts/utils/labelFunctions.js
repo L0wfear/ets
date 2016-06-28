@@ -68,9 +68,9 @@ export function employeeFIOLabelFunction(employeeId, fullFlag = false) {
 	const { flux } = window.__ETS_CONTAINER__;
   const employeesStore = flux.getStore('employees');
 	const employee = employeesStore.getEmployeeById(employeeId);
-  if (!employee || !employee.first_name || !employee.middle_name || !employee.last_name) return '';
+  if (!employee) return '';
   let result = employee.last_name + ' ';
-	result += fullFlag ? `${employee.first_name} ${employee.middle_name}` : `${employee.first_name[0]}. ${employee.middle_name[0]}.`;
+	result += fullFlag ? `${employee.first_name || ''} ${employee.middle_name || ''}` : `${employee.first_name[0] && employee.first_name[0]+'.' || ''} ${employee.middle_name[0] && employee.middle_name[0]+'.' || ''}`;
 
 	return result;
 }

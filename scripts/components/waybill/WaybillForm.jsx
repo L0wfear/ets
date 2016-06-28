@@ -236,6 +236,11 @@ class WaybillForm extends Form {
       title = "Создание нового путевого листа"
     }
 
+		let taxesControl = !!this.state.equipmentFuelRates.length ?
+			!!state.tax_data[0] && !!parseFloat(state.tax_data[0].RESULT)
+			&& !!state.equipment_tax_data[0] && !!parseFloat(state.equipment_tax_data[0].RESULT) :
+			 !!state.tax_data[0] && !!parseFloat(state.tax_data[0].RESULT);
+
 		return (
 			<Modal {...this.props} bsSize="large" backdrop="static">
 
@@ -505,7 +510,7 @@ class WaybillForm extends Form {
               <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>Сохранить</Button>
             </Div>
             <Div className={'inline-block'} style={{marginLeft: 10}} hidden={!(this.props.formState.status && this.props.formState.status === 'active')}>
-              <Button onClick={this.props.handleClose} disabled={!this.props.canClose}>Закрыть ПЛ</Button>
+              <Button onClick={() => this.props.handleClose(taxesControl)} disabled={!this.props.canClose}>Закрыть ПЛ</Button>
             </Div>
 					</Div>
 	      </Modal.Footer>

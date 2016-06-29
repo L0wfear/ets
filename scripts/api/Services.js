@@ -7,6 +7,7 @@ export const RouteValidateService = new APIService('/route_validate/', useMocks)
 export const RouteReportsService = new APIService('/route_odh_covering_report/', useMocks);
 export const WaybillService = new APIService('/waybill/', useMocks);
 export const WaybillJournalReportService = new APIService('/waybill_journal_report/', useMocks);
+export const WaybillsReportService = new APIService('/waybills_report/', useMocks);
 export const LatestWaybillDriverService = new APIService('/latest_waybill_driver/', useMocks);
 export const GeozoneService = new APIService('/geozone/', useMocks);
 export const DashboardService = new APIService('/dashboard/', useMocks);

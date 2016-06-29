@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import connectToStores from 'flummox/connect';
-import { Button, Glyphicon } from 'react-bootstrap';
+import { Button, Glyphicon, ButtonToolbar, Dropdown, MenuItem } from 'react-bootstrap';
 import Table from '../ui/table/DataTable.jsx';
 import DateFormatter from '../ui/DateFormatter.jsx';
 import WaybillFormWrap from './WaybillFormWrap.jsx';
@@ -308,8 +308,8 @@ class WaybillJournal extends ElementsList {
     }
   }
 
-	showPrintForm() {
-		this.setState({showPrintForm: true})
+	showPrintForm(printNumber) {
+		this.setState({showPrintForm: printNumber})
 	}
 
 	render() {
@@ -325,7 +325,21 @@ class WaybillJournal extends ElementsList {
 					<Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="search" /> Просмотреть</Button>
 					<Button bsSize="small" disabled={disabledCloseButton} onClick={this.showForm.bind(this)}><Glyphicon glyph="ok" /> Закрыть ПЛ</Button>
 					<Button bsSize="small" disabled={this.state.selectedElement === null && Object.keys(this.state.checkedWaybills).length === 0} onClick={this.removeCheckedElements.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
-					<Button bsSize="small" onClick={this.showPrintForm.bind(this)}><Glyphicon glyph="download-alt" /></Button>
+					<ButtonToolbar style={{
+						marginLeft: "5px",
+						position: "relative",
+						bottom: "-11px",
+					}}>
+						<Dropdown id="dropdown-print" pullRight>
+							<Dropdown.Toggle noCaret bsSize="small">
+								<Glyphicon glyph="download-alt" />
+							</Dropdown.Toggle>
+							<Dropdown.Menu>
+								<MenuItem onClick={this.showPrintForm.bind(this, 1)}>Журнал путевых листов (ТМФ №8)</MenuItem>
+								<MenuItem onClick={this.showPrintForm.bind(this, 2)}>Отчет по выработке ТС</MenuItem>
+							</Dropdown.Menu>
+						</Dropdown>
+					</ButtonToolbar>
 				</WaybillsTable>
 				<WaybillFormWrap
 						onFormHide={this.onFormHide.bind(this)}

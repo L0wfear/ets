@@ -55,26 +55,26 @@ class ODHReports extends Component {
                       <Col md={6}>
                         <Datepicker date={new Date()} onChange={this.handleChange.bind(this, 'date_start')}/>
                       </Col>
-                        <Col md={6}>
-                          <Datepicker date={new Date()} onChange={this.handleChange.bind(this, 'date_start')}/>
-                        </Col>
+											<Col md={6}>
+												<Datepicker date={new Date()} onChange={this.handleChange.bind(this, 'date_start')}/>
+											</Col>
                     </Row>
                   </Col>
                   <Col md={2}>
                     <Field type="select" label="Типы ТС"
-      										 options={TYPES}
-      										 value={null}
-      										 onChange={this.handleChange.bind(this, 'responsible_person_id')}/>
+												options={TYPES}
+												value={null}
+												onChange={this.handleChange.bind(this, 'responsible_person_id')}/>
                   </Col>
                   <Col md={2}>
                     <Field type="string" label="Норма, ПМ"
-      										 value={null}
-      										 onChange={this.handleChange.bind(this, 'responsible_person_id')}/>
+												value={null}
+												onChange={this.handleChange.bind(this, 'responsible_person_id')}/>
                   </Col>
                   <Col md={2}>
                     <Field type="string" label="ТУ"
-      										 value={null}
-      										 onChange={this.handleChange.bind(this, 'responsible_person_id')}/>
+												value={null}
+												onChange={this.handleChange.bind(this, 'responsible_person_id')}/>
                   </Col>
                   <Col md={2}>
                     <Button bsStyle="primary">Запустить</Button>
@@ -93,15 +93,15 @@ class ODHReports extends Component {
                       <Col md={6}>
                         <Datepicker date={new Date()} onChange={this.handleChange.bind(this, 'date_start')}/>
                       </Col>
-                        <Col md={6}>
-                          <Datepicker date={new Date()} onChange={this.handleChange.bind(this, 'date_start')}/>
-                        </Col>
+											<Col md={6}>
+												<Datepicker date={new Date()} onChange={this.handleChange.bind(this, 'date_start')}/>
+											</Col>
                     </Row>
                   </Col>
                   <Col md={4}>
                     <ButtonToolbar>
-                    <Button bsStyle="primary">Применить</Button>
-                    <Button bsStyle="default">Очистить</Button>
+											<Button bsStyle="primary">Применить</Button>
+											<Button bsStyle="default">Очистить</Button>
                     </ButtonToolbar>
                   </Col>
                 </Row>

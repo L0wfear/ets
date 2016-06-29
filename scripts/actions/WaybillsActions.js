@@ -1,8 +1,8 @@
 import { Actions } from 'flummox';
-import { createValidDateTime } from 'utils/dates';
+import { createValidDateTime, createValidDate } from 'utils/dates';
 import _ from 'lodash';
 import { isEmpty } from 'utils/functions';
-import { WaybillService, LatestWaybillDriverService, WaybillJournalReportService } from 'api/Services';
+import { WaybillService, LatestWaybillDriverService, WaybillJournalReportService, WaybillsReportService } from 'api/Services';
 
 class WaybillsActions extends Actions {
 
@@ -41,6 +41,14 @@ class WaybillsActions extends Actions {
   getWaybillJournalReport(payload) {
     payload.month = payload.month+1;
     return WaybillJournalReportService.post(payload, false, 'json', true);
+  }
+
+  getWaybillsReport(state) {
+    let payload = {
+      date_start: createValidDate(state.date_from),
+      date_end: createValidDate(state.date_to)
+    }
+    return WaybillsReportService.get(payload, true);
   }
 
   updateWaybill(waybill) {

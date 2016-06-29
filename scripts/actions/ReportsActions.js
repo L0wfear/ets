@@ -23,7 +23,14 @@ export default class ReportsActions extends Actions {
     let payload = _.cloneDeep(data);
     payload.date_from = createValidDate(payload.date_from);
     payload.date_to = createValidDate(payload.date_to);
-    return FuelReportService.get(payload, true, 'json');
+    return FuelReportService.get(payload);
+  }
+
+  printFuelReport(data) {
+    let payload = _.cloneDeep(data);
+    payload.date_from = createValidDate(payload.date_from);
+    payload.date_to = createValidDate(payload.date_to);
+    return FuelReportService.post(payload, false, 'json', true);
   }
 
   getAnalytics(data) {

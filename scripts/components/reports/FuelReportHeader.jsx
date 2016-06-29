@@ -47,10 +47,10 @@ class FuelReportHeader extends Component {
     			</Col>
           <Col md={3} className={'fuel-types-container'}>
             <Field type="select"
-                   label="Тип топлива"
-                   options={FUEL_TYPES}
-                   value={props.fuel_type_id}
-                   onChange={this.handleFuelTypeChange.bind(this)}/>
+                label="Тип топлива"
+                options={FUEL_TYPES}
+                value={props.fuel_type_id}
+                onChange={this.handleFuelTypeChange.bind(this)}/>
           </Col>
     		</Row>
 

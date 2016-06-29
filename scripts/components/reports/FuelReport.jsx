@@ -11,6 +11,7 @@ import { getToday9am, getTomorrow9am, getToday0am, getToday2359, getFormattedDat
 import { getReportNotReadyNotification2 } from 'utils/notifications';
 import { isEmpty } from 'utils/functions';
 import FuelReportHeader from "./FuelReportHeader.jsx";
+import { saveData } from 'utils/functions';
 
 let tableMeta = {
 	cols: [
@@ -226,6 +227,13 @@ class FuelReport extends Component {
 		flux.getActions('reports').getFuelReport(this.state);
   }
 
+	printReport() {
+		const { flux } = this.context;
+		flux.getActions('reports')
+				.printFuelReport(this.state)
+				.then(blob => {saveData(blob, `Отчет расхода топлива.xlsx`)});
+	}
+
 	render() {
 
     console.log('state is', this.state);
@@ -235,7 +243,9 @@ class FuelReport extends Component {
 		return (
 			<div className="ets-page-wrap">
   			<FuelReportHeader handleChange={this.handleChange.bind(this)} onClick={this.createReport.bind(this)} {...this.state} />
-				<FuelReportTable data={fuelReport} />
+				<FuelReportTable data={fuelReport}>
+					<Button bsSize="small" onClick={this.printReport.bind(this)}><Glyphicon glyph="download-alt" /></Button>
+				</FuelReportTable>
 			</div>
 		);
 

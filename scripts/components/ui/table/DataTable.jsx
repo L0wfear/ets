@@ -1,6 +1,6 @@
 import React from 'react';
 
-
+import ColumnControl from './ColumnControl.jsx'
 import ClickOutHandler from 'react-onclickout';
 import Filter from './filter/Filter.jsx';
 import Paginator from '../Paginator.jsx';
@@ -19,7 +19,9 @@ class Table extends React.Component {
 
     this.state = {
       filterModalIsOpen: false,
+      columnControlModalIsOpen: false,
       filterValues: {},
+      columnControlValues: [],
       checkedRows: {},
       globalCheckboxState: false,
       isHierarchical: props.isHierarchical,
@@ -38,11 +40,33 @@ class Table extends React.Component {
 		this.setState({filterModalIsOpen: !!!this.state.filterModalIsOpen});
 	}
 
+  toggleColumnControl() {
+		this.setState({columnControlModalIsOpen: !!!this.state.columnControlModalIsOpen});
+	}
+
 	saveFilter(filterValues) {
     if (typeof this.props.onAllRowsChecked === 'function') {
       this.props.onAllRowsChecked(_.reduce(this.props.results, (cur, val) => {cur[val.id] = val; return cur;}, {}), false);
     }
 		this.setState({filterValues, globalCheckboxState: false});
+	}
+
+  closeColumnControl() {
+    if (this.state.columnControlModalIsOpen === true) {
+      this.setState({columnControlModalIsOpen: false});
+    }
+  }
+
+	saveColumnControl(column) {
+    let { columnControlValues } = this.state;
+    let i = columnControlValues.indexOf(column);
+    if (i === -1) {
+      columnControlValues.push(column);
+    } else {
+      columnControlValues.splice(i, 1);
+    }
+		this.setState({columnControlValues});
+    localStorage.setItem('waybillsColumnControl', JSON.stringify(columnControlValues));
 	}
 
   cloneObject(object) {
@@ -209,6 +233,10 @@ class Table extends React.Component {
     if (this.props.filterValues) {
       this.setState({filterValues: this.props.filterValues});
     }
+    if (this.props.columnControl) {
+      let columnControlValues = JSON.parse(localStorage.getItem('waybillsColumnControl')) || [];
+      this.setState({columnControlValues});
+    }
   }
 
   componentWillReceiveProps(props) {
@@ -275,10 +303,10 @@ class Table extends React.Component {
     const { tableMeta, enumeratedCss = 'width60', renderers, onRowSelected, selected,
       selectField, checked = {}, title = '', multiSelection = false, noFilter,
       enumerated = true, enableSort = true, noDataMessage } = this.props;
-    const { initialSort, initialSortAscending } = this.state;
+    const { initialSort, initialSortAscending, columnControlValues } = this.state;
 
     let tableMetaCols = _.cloneDeep(tableMeta.cols);
-    let tableCols = tableMetaCols.filter(c => c.display !== false).map(c => c.name);
+    let tableCols = tableMetaCols.filter(c => c.display !== false).filter(c => columnControlValues.indexOf(c.name) === -1).map(c => c.name);
     let data = _.cloneDeep(this.props.results);
 
     let results = this.processTableData(data, selected, selectField, onRowSelected);
@@ -304,38 +332,46 @@ class Table extends React.Component {
       <Div className="data-table">
         <Div className="some-header" hidden={noFilter}>{title}
           <div className="waybills-buttons">
+            <ClickOutHandler onClickOut={this.closeColumnControl.bind(this)}>
+              <ColumnControl
+                  show={this.state.columnControlModalIsOpen}
+                  onChange={this.saveColumnControl.bind(this)}
+                  onClick={this.toggleColumnControl.bind(this)}
+                  values={this.state.columnControlValues}
+                  options={tableMetaCols.filter(el => el.display !== false)}/>
+            </ClickOutHandler>
             <ClickOutHandler onClickOut={this.closeFilter.bind(this)}>
               <Filter direction={'left'}
-                      show={this.state.filterModalIsOpen}
-                      onSubmit={this.saveFilter.bind(this)}
-                      onClick={this.toggleFilter.bind(this)}
-                      onHide={this.closeFilter.bind(this)}
-                      active={_.keys(this.state.filterValues).length}
-                      values={this.state.filterValues}
-                      options={tableMetaCols.filter(el => el.filter !== false)}
-                      tableData={this.props.results}
-                      disabled={this.props.isHierarchical}
-                      active={_.keys(this.state.filterValues).length}
-                      className="filter-wrap"/>
+                  show={this.state.filterModalIsOpen}
+                  onSubmit={this.saveFilter.bind(this)}
+                  onClick={this.toggleFilter.bind(this)}
+                  onHide={this.closeFilter.bind(this)}
+                  active={_.keys(this.state.filterValues).length}
+                  values={this.state.filterValues}
+                  options={tableMetaCols.filter(el => el.filter !== false)}
+                  tableData={this.props.results}
+                  disabled={this.props.isHierarchical}
+                  active={_.keys(this.state.filterValues).length}
+                  className="filter-wrap"/>
             </ClickOutHandler>
             {this.props.children}
           </div>
         </Div>
         <Griddle key={'griddle'}
-                 results={results}
-                 initialSort={initialSort}
-                 initialSortAscending={initialSortAscending}
-								 columnMetadata={columnMetadata}
-								 columns={tableCols}
-								 resultsPerPage={15}
-                 enableSort={enableSort}
-								 useCustomPagerComponent={true}
-                 externalChangeSort={this.handleChangeSort.bind(this)}
-								 customPagerComponent={this.props.serverPagination ? <Div/> : Paginator}
-								 onRowClick={onRowSelected}
-							   rowMetadata={rowMetadata}
-                 onKeyPress={this.handleKeyPress.bind(this)}
-								 noDataMessage={noDataMessage ? noDataMessage : noFilter ? '' : 'Нет данных'}/>
+            results={results}
+            initialSort={initialSort}
+            initialSortAscending={initialSortAscending}
+            columnMetadata={columnMetadata}
+            columns={tableCols}
+            resultsPerPage={15}
+            enableSort={enableSort}
+            useCustomPagerComponent={true}
+            externalChangeSort={this.handleChangeSort.bind(this)}
+            customPagerComponent={this.props.serverPagination ? <Div/> : Paginator}
+            onRowClick={onRowSelected}
+            rowMetadata={rowMetadata}
+            onKeyPress={this.handleKeyPress.bind(this)}
+            noDataMessage={noDataMessage ? noDataMessage : noFilter ? '' : 'Нет данных'}/>
       </Div>
     );
   }

@@ -2422,6 +2422,63 @@ body {
   margin-left: 0 !important;
 }
 
+.column-control-button {
+  position: relative;
+  z-index: 999;
+  margin-left: 0 !important;
+}
+
+.column-control-container {
+  z-index: 1000;
+  position: absolute;
+  top: 0;
+
+  display: block;
+  padding: 5px;
+
+  line-height: normal;
+  font-size: 14px;
+
+  background-color: #EEE;
+
+  white-space: normal;
+  color: #000;
+  cursor: default;
+
+  border: 1px solid #c1c1c1;//$colorButton;
+
+  &-window {
+    min-width: 250px;
+    // max-height: 600px;
+    // overflow: scroll;
+  }
+
+  .rw-select {
+    .rw-btn {
+      width: 0.7em;
+    }
+  }
+
+  .rw-calendar .rw-header .rw-btn-view {
+    width: 55%;
+  }
+
+
+  .modal-body {
+    padding-top: 5px;
+
+    > .row + .row {
+      margin-top: 10px;
+    }
+  }
+}
+
+.column-control-wrap {
+  position: relative;
+  line-height: 1.5; // copy .btn
+  margin-left: 10px; // copy .btn
+}
+
 .waybills-buttons {
   /*.btn {
     border-radius: 0 !important;

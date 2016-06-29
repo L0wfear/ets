@@ -239,6 +239,7 @@ let WaybillsTable = (props) => {
 				initialSortAscending={false}
 				tableMeta={getTableMeta(props)}
 				multiSelection={true}
+				columnControl={true}
 				enumeratedCss={'width-waybill-small'}
 				{...props}/>
 }

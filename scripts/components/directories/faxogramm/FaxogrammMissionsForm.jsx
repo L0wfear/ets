@@ -31,7 +31,7 @@ class FaxogrammMissionsForm extends Form {
 				</Modal.Header>
 
 	      <Modal.Body>
-						<MissionTemplatesJournal
+					<MissionTemplatesJournal
 							payload={payload}
 							noFilter={true}
 							onListStateChange={this.handleChange.bind(this, 'missionJournalState')} />

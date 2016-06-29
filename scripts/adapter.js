@@ -61,17 +61,18 @@ function HTTPMethod(url, data = {}, method, type, blob) {
     url = toUrlWithParams(url, data);
   }
 
-  return fetch(url, options, blob).then(r => {
+  return fetch(url, options).then(r => {
     if (r.status === 401) {
       window.localStorage.clear();
       window.location.hash = '/login';
       window.location.reload();
-    } else
-    if (blob) return r.blob().then(body => new Promise((res, rej) => res(body)));
-    return r.json().then(responseBody => {
-      checkResponse(url, r, responseBody, method);
-      return new Promise((res, rej) => res(responseBody));
-    });
+    } else {
+      if (blob) return r.blob().then(body => new Promise((res, rej) => res(body)));
+      return r.json().then(responseBody => {
+        checkResponse(url, r, responseBody, method);
+        return new Promise((res, rej) => res(responseBody));
+      })
+    };
   });
 }
 

@@ -66,7 +66,7 @@ class Table extends React.Component {
       columnControlValues.splice(i, 1);
     }
 		this.setState({columnControlValues});
-    localStorage.setItem('waybillsColumnControl', JSON.stringify(columnControlValues));
+    localStorage.setItem(this.props.columnControlStorageName, JSON.stringify(columnControlValues));
 	}
 
   cloneObject(object) {
@@ -234,7 +234,7 @@ class Table extends React.Component {
       this.setState({filterValues: this.props.filterValues});
     }
     if (this.props.columnControl) {
-      let columnControlValues = JSON.parse(localStorage.getItem('waybillsColumnControl')) || [];
+      let columnControlValues = JSON.parse(localStorage.getItem(this.props.columnControlStorageName)) || [];
       this.setState({columnControlValues});
     }
   }
@@ -332,14 +332,14 @@ class Table extends React.Component {
       <Div className="data-table">
         <Div className="some-header" hidden={noFilter}>{title}
           <div className="waybills-buttons">
-            <ClickOutHandler onClickOut={this.closeColumnControl.bind(this)}>
+            {this.props.columnControl ? <ClickOutHandler onClickOut={this.closeColumnControl.bind(this)}>
               <ColumnControl
                   show={this.state.columnControlModalIsOpen}
                   onChange={this.saveColumnControl.bind(this)}
                   onClick={this.toggleColumnControl.bind(this)}
                   values={this.state.columnControlValues}
                   options={tableMetaCols.filter(el => el.display !== false)}/>
-            </ClickOutHandler>
+            </ClickOutHandler> : ''}
             <ClickOutHandler onClickOut={this.closeFilter.bind(this)}>
               <Filter direction={'left'}
                   show={this.state.filterModalIsOpen}

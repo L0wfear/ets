@@ -240,6 +240,7 @@ let WaybillsTable = (props) => {
 				tableMeta={getTableMeta(props)}
 				multiSelection={true}
 				columnControl={true}
+				columnControlStorageName={'waybillsColumnControl'}
 				enumeratedCss={'width-waybill-small'}
 				{...props}/>
 }

@@ -126,8 +126,8 @@ export default class Taxes extends Component {
 
   addOperation() {
     const { tableData } = this.state;
-    const { correctionRate } = this.props;
-    tableData.push({fuel_correction_rate: correctionRate});
+    const { correctionRate, baseFactValue } = this.props;
+    tableData.push({fuel_correction_rate: correctionRate, FACT_VALUE: baseFactValue});
     this.setState({tableData});
   }
 

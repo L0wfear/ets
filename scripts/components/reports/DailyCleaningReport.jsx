@@ -80,6 +80,12 @@ let getTableMeta = (props) => {
           labelFunction: getPeriodicReportStatusLabel
   			},
   		},
+      {
+        name: 'fact_traveled_area_percentage',
+        caption: '% выполнения',
+        type: 'string',
+        filter: false
+      }
   	]
   };
 

@@ -153,7 +153,7 @@ class CoverageReport extends Component {
 										type="radio"
 										checked={this.state.geozone_type === 'DT'}
 										onChange={() => this.handleChange('geozone_type', 'DT')}/><span>ДТ</span>
-								<Button onClick={this.handleSubmit.bind(this)}>Отчет</Button>
+								<Button onClick={this.handleSubmit.bind(this)}>Показать отчет</Button>
 							</Div>
 						</Col>
 						<Col md={6}></Col>
@@ -173,6 +173,7 @@ class CoverageReport extends Component {
 						</Col>
 						<Col md={5}>
 							<ObjectsCoverReportTable
+									noFilter={true}
 									data={this.state.coverageReport}
 									checked={this.state.checkedMissions}
 									onRowChecked={this.checkMission.bind(this)}
@@ -221,7 +222,7 @@ let ObjectsCoverReportTable = (props) => {
 	};
 
 	return <Table
-			title='Показать отчет'
+			title='Отчет'
 			tableMeta={tableMeta}
 			results={props.data}
 			renderers={renderers}

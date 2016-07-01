@@ -59,7 +59,7 @@ let getTableMeta = (props) => {
       },
   		{
   			name: 'fact_traveled_area',
-  			caption: 'Пройденная площадь',
+  			caption: 'Пройдено',
   			type: 'string',
   			filter: false
   		},
@@ -107,7 +107,7 @@ let MissionReportTable = (props) => {
 
   //if (!props.data.length) return <div/>
 
-	return <Table title='Статус по уборке'
+	return <Table title='Статус по уборке (ЦАФАП)'
 								tableMeta={tableMeta}
 								results={props.data}
 								renderers={renderers}

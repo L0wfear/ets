@@ -110,7 +110,7 @@ let DailyCleaningReportsTable = (props) => {
     timestamp_process_end: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
 	};
 
-	return <Table title='Статус по уборке'
+	return <Table title='Статус по уборке (ЦАФАП)'
 								tableMeta={tableMeta}
 								results={props.data}
 								renderers={renderers}
@@ -146,7 +146,7 @@ class DailyCleaningReportsCAFAP extends Component {
     if (props.data.status !== 'success' && props.data.status !== 'fail') {
       global.NOTIFICATION_SYSTEM._addNotification(getReportNotReadyNotification2(this.context.flux));
     } else if (props.data.status !== 'fail'){
-      this.context.history.pushState(null, `/daily-cleaning-report-ets/${props.data.element}/${id}`);
+      this.context.history.pushState(null, `/daily-cleaning-report-cafap/${props.data.element}/${id}`);
     }
   }
 

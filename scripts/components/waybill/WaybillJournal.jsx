@@ -5,6 +5,7 @@ import { Button, Glyphicon } from 'react-bootstrap';
 import Table from '../ui/table/DataTable.jsx';
 import DateFormatter from '../ui/DateFormatter.jsx';
 import WaybillFormWrap from './WaybillFormWrap.jsx';
+import WaybillPrintForm from './WaybillPrintForm.jsx';
 import ElementsList from '../ElementsList.jsx';
 import moment from 'moment';
 import cx from 'classnames';
@@ -21,6 +22,16 @@ let getTableMeta = (props) => {
 
 	let tableMeta = {
 		cols: [
+			{
+				name: 'car_id',
+				caption: 'Гос. № ТС',
+				type: 'string',
+				display: false,
+				filter: {
+					type: 'select',
+					labelFunction: (id) => getCarByIdLabelFunction(id).gov_number,
+				}
+			},
 			{
 				name: 'status',
 				caption: 'Статус',
@@ -41,16 +52,6 @@ let getTableMeta = (props) => {
 					labelFunction: waybillMissionsCompleteStatusLabelFunction
 				},
 				//display: false,
-			},
-			{
-				name: 'car_id',
-				caption: 'Гос. № ТС',
-				type: 'string',
-				display: false,
-				filter: {
-					type: 'select',
-					labelFunction: (id) => getCarByIdLabelFunction(id).gov_number,
-				}
 			},
 			{
 				name: 'number',
@@ -252,7 +253,8 @@ class WaybillJournal extends ElementsList {
 
     this.state = {
       selectedElement: null,
-      checkedWaybills: {}
+      checkedWaybills: {},
+			showPrintForm: false
     };
 	}
 
@@ -306,6 +308,10 @@ class WaybillJournal extends ElementsList {
     }
   }
 
+	showPrintForm() {
+		this.setState({showPrintForm: true})
+	}
+
 	render() {
 
 		const { waybillsList = [] } = this.props;
@@ -319,11 +325,16 @@ class WaybillJournal extends ElementsList {
 					<Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="search" /> Просмотреть</Button>
 					<Button bsSize="small" disabled={disabledCloseButton} onClick={this.showForm.bind(this)}><Glyphicon glyph="ok" /> Закрыть ПЛ</Button>
 					<Button bsSize="small" disabled={this.state.selectedElement === null && Object.keys(this.state.checkedWaybills).length === 0} onClick={this.removeCheckedElements.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
+					<Button bsSize="small" onClick={this.showPrintForm.bind(this)}><Glyphicon glyph="download-alt" /></Button>
 				</WaybillsTable>
-				<WaybillFormWrap onFormHide={this.onFormHide.bind(this)}
-												 showForm={this.state.showForm}
-												 element={this.state.selectedElement}
-												 {...this.props}/>
+				<WaybillFormWrap
+						onFormHide={this.onFormHide.bind(this)}
+						showForm={this.state.showForm}
+						element={this.state.selectedElement}
+						{...this.props}/>
+				<WaybillPrintForm
+						show={this.state.showPrintForm}
+						hide={() => this.setState({showPrintForm: false})}/>
 			</div>
 		);
 	}

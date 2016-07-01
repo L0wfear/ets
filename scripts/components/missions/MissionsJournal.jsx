@@ -33,6 +33,15 @@ let getTableMeta = (props) => {
 
 	let tableMeta = {
 		cols: [
+			{
+				name: 'car_gov_number',
+				caption: 'Транспортное средство',
+				type: 'number',
+				display: false,
+				filter: {
+					type: 'select',
+				},
+			},
       {
         name: 'status',
         caption: 'Статус',
@@ -43,15 +52,6 @@ let getTableMeta = (props) => {
   			},
         cssClassName: 'width120'
       },
-			{
-				name: 'car_gov_number',
-				caption: 'Транспортное средство',
-				type: 'number',
-				display: false,
-				filter: {
-					type: 'select',
-				},
-			},
       {
         name: 'number',
         caption: 'Номер',

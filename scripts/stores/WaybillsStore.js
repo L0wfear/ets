@@ -10,7 +10,7 @@ class WaybillsStore extends Store {
     const waybillsActions = flux.getActions('waybills');
     this.register(waybillsActions.getWaybills, this.handleGetWaybills);
     this.register(waybillsActions.deleteWaybill, this.handleGetWaybills);
-    this.register(waybillsActions.updateWaybill, this.handleGetWaybills);
+    // this.register(waybillsActions.updateWaybill, this.handleGetWaybills);
     this.register(waybillsActions.createWaybill, this.handleGetWaybills);
 
     this.state = {
@@ -40,6 +40,8 @@ export function getDefaultBill() {
     car_id: "",
     fuel_type_id: 6,
     fuel_start: "",
+    equipment_fuel: false,
+    equipment_fuel_type_id: 6,
     //fuel_to_give: null,
     //fuel_given: "",
     //fuel_end: "",

@@ -77,9 +77,15 @@ class ElementsList extends React.Component {
    removeElement() {
     if (typeof this.removeElementAction !== 'function') return;
 
- 		if (confirm('Вы уверены, что хотите удалить выбранный элемент?')) {
-      this.removeElementAction(this.state.selectedElement.id || this.state.selectedElement[this.selectField]);
- 		}
+    confirmDialog({
+			title: 'Внимание',
+			body: 'Вы уверены, что хотите удалить выбранный элемент?'
+		})
+    .then(() => this.removeElementAction(this.state.selectedElement.id || this.state.selectedElement[this.selectField]))
+    .catch(() => {});
+ 	// 	if (confirm('Вы уверены, что хотите удалить выбранный элемент?')) {
+    //   this.removeElementAction(this.state.selectedElement.id || this.state.selectedElement[this.selectField]);
+ 	// 	}
  	 }
 
    componentWillReceiveProps(props) {

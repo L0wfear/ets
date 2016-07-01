@@ -66,15 +66,15 @@ export function getTrackColor(speed, type_id, opacity = 1) {
   }
 
   if (speed >= 10 && speed < 20) {
-    result = TRACK_COLORS.greenyellow
+    result = TRACK_COLORS.green
   }
 
   if (speed >= 20 && speed < 30) {
-    result = TRACK_COLORS.greenyellow
+    result = TRACK_COLORS.green
   }
 
   if (speed >= 30 && speed < speed_max) {
-    result = TRACK_COLORS.yellow
+    result = TRACK_COLORS.green
   }
 
   if (speed >= speed_max) {
@@ -461,12 +461,10 @@ export default class Track {
 
 
   // todo refactor
-  async getTrackPointTooltip(trackPoint, secondPoint, invert){
-    // let startCoords = trackPoint.coords_msk;
-    // let endCoords = secondPoint.coords_msk;
-    // if (invert) [startCoords, endCoords] = [endCoords, startCoords];
-    // let vectorObject = await window.__ETS_CONTAINER__.flux.getActions('car').getVectorObject(startCoords, endCoords);
-    // console.log(vectorObject);
+  async getTrackPointTooltip(trackPoint, prevPoint, nextPoint){
+    let vectorObject = await window.__ETS_CONTAINER__.flux
+        .getActions('car')
+        .getVectorObject(trackPoint, prevPoint, nextPoint);
 
     let { nsat,
           speed_avg,
@@ -482,19 +480,26 @@ export default class Track {
     timestamp = new Date( timestamp * 1000 );
     let dt = makeDate( timestamp ) + ' ' + makeTime( timestamp, true );
 
-    return function makePopup(geoObjects = null){
-
-        let objectsString = 'Объекты ОДХ';
-
-        if ( geoObjects === null ){
-          objectsString += ' загружаются'
+    return function makePopup(){
+        let objectsString;
+        if (vectorObject.result) {
+          objectsString = vectorObject.result[0].asuods_id === vectorObject.result[1].asuods_id ?
+          vectorObject.result[0].name : vectorObject.result[0].name+' / '+vectorObject.result[1].name;
         } else {
-          if ( geoObjects.length > 0 ){
-            //objectsString += ': '+ geoObjects.map((obj)=>obj.name + ' ('+getCustomerById(obj.customer_id).title+')').join(', ')
-          } else {
-            objectsString += ' не найдены'
-          }
+          objectsString = 'Объекты ОДХ не найдены';
         }
+
+        // let objectsString = 'Объекты ОДХ';
+        //
+        // if ( geoObjects === null ){
+        //   objectsString += ' загружаются'
+        // } else {
+        //   if ( geoObjects.length > 0 ){
+        //     //objectsString += ': '+ geoObjects.map((obj)=>obj.name + ' ('+getCustomerById(obj.customer_id).title+')').join(', ')
+        //   } else {
+        //     objectsString += ' не найдены'
+        //   }
+        // }
 
         return '<div class="header">' +
                   '<span class="gov-number">'+gov_number+'</span>' +

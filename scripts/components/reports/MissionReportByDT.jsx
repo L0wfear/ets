@@ -17,13 +17,13 @@ let getTableMeta = (props) => {
 	    },
 	    {
 	      name: 'route_check_value',
-	      caption: 'Нужно пройти',
+	      caption: 'Нужно пройти (кв. м. или м.)',
 	      type: 'string',
 				filter: false
 	    },
 			{
 				name: 'traveled',
-				caption: 'Пройдено с рабочей скоростью',
+				caption: 'Пройдено в рабочем режиме (кв. м. или м.)*',
 				type: 'string',
 				filter: false
 			},
@@ -35,7 +35,7 @@ let getTableMeta = (props) => {
 			// },
 			{
 				name: 'left',
-				caption: 'Осталось',
+				caption: 'Осталось (кв. м. или м.)',
 				type: 'string',
 				filter: false
 			},
@@ -51,18 +51,23 @@ let getTableMeta = (props) => {
 				type: 'string',
 				filter: false
 			},
+			{
+				name: 'route_with_speed',
+				caption: 'Контроль (км)**',
+				type: 'string',
+				filter: false
+			},
+			{
+				name: 'route_check_unit',
+				caption: 'Единица измерения',
+				type: 'string',
+				display: props.data && props.data[0] && props.data[0].route_check_unit ? true : false,
+				filter: {
+					type: 'select',
+				},
+			}
 		]
 	};
-	if (props.data && props.data[0] && props.data[0].route_check_unit) {
-		tableMeta.cols.push({
-			name: 'route_check_unit',
-			caption: 'Единица измерения',
-			type: 'string',
-			filter: {
-				type: 'select',
-			},
-		});
-	}
 
 	return tableMeta;
 }
@@ -75,20 +80,28 @@ let MissionReportByDTTable = (props) => {
 	const renderers = {
     left_percentage: ({data}) => <div>{ parseFloat(parseFloat(data) * 100).toFixed(0) + '%'}</div>,
 		traveled_percentage: ({data}) => <div>{ parseFloat(parseFloat(data) * 100).toFixed(0) + '%'}</div>,
-    left: ({data}) => {
-			return <div>{ parseFloat(data).toFixed(2)}</div>
-		},
-    traveled: ({data}) => <div>{ parseFloat(data).toFixed(2)}</div>,
+		left: (meta) => <div>{ parseFloat(meta.data).toFixed(2) + ' ' + meta.rowData.route_check_unit }</div>,
+    traveled: (meta) => <div>{ parseFloat(meta.data).toFixed(2) + ' ' + meta.rowData.route_check_unit }</div>,
     route_check_length: ({data}) => <div>{ data }</div>,
-    route_check_value: ({data}) => <div>{ data }</div>,
+    route_check_value: (meta) => <div>{ meta.data + ' ' + meta.rowData.route_check_unit }</div>,
 	};
 
 	if (props.noFilter) {
-		tableMeta.cols = tableMeta.cols.filter(c => c.name !== 'left_percentage' && c.name !== 'v_avg_max' && c.name !== 'traveled_percentage');
+		tableMeta.cols = tableMeta.cols.filter(c => c.name !== 'left_percentage' && c.name !== 'v_avg_max' && c.name !== 'traveled_percentage' && c.name !== 'route_check_unit');
 		delete renderers.left_percentage;
 		delete renderers.traveled_percentage;
-    renderers.left = (data) => <div>{parseFloat(data.data).toFixed(2)}<br/>{`(${parseFloat(parseFloat(data.rowData.left_percentage) * 100).toFixed(0) + '%'})`}</div>
-	renderers.traveled = (data) => <div>{parseFloat(data.data).toFixed(2)}<br/>{`(${parseFloat(parseFloat(data.rowData.traveled_percentage) * 100).toFixed(0) + '%'})`}</div>
+		renderers.left = (data) => <div>
+			{parseFloat(data.data).toFixed(2) + ' ' + data.rowData.route_check_unit}
+			<br/>
+			{`(${parseFloat(parseFloat(data.rowData.left_percentage) * 100).toFixed(0) + '%'})`}
+		</div>
+		renderers.traveled = (data) => <div>
+			{parseFloat(data.data).toFixed(2) + ' ' + data.rowData.route_check_unit}
+			<br/>
+			{`(${parseFloat(parseFloat(data.rowData.traveled_percentage) * 100).toFixed(0) + '%'})`}
+		</div>
+	} else {
+		tableMeta.cols = tableMeta.cols.filter(c => c.name !== 'route_with_speed');
 	}
 
 	return <Table title='Прохождение заданий по ДТ'

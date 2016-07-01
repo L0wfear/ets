@@ -140,11 +140,11 @@ class RouteForm extends Form {
 										clearable={false}
 										disabled={this.state.routeTypeDisabled || !!state.id || state.copy}
 										onChange={this.handleTypeChange.bind(this)}/>
-								<Field type="select" label="Подразделение"
-										options={COMPANY_ELEMENTS}
-										value={state.company_structure_id}
-										clearable={true}
-										onChange={this.handleChange.bind(this, 'company_structure_id')}/>
+								{/*<Field type="select" label="Подразделение"
+									options={COMPANY_ELEMENTS}
+									value={state.company_structure_id}
+									clearable={true}
+								onChange={this.handleChange.bind(this, 'company_structure_id')}/>*/}
 	            </Col>
 						</Div>
           </Row>

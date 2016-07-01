@@ -30,7 +30,7 @@ class FuelReportHeader extends Component {
     let { fuelTypes = [] } = this.props;
     let props = this.props;
 
-    let FUEL_TYPES = fuelTypes.map(({ID, NAME}) => ({value: ID, label: NAME}));
+    let FUEL_TYPES = fuelTypes.map(({id, name}) => ({value: id, label: name}));
 
   	return (
       <Div>

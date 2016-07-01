@@ -43,7 +43,7 @@ class CarForm extends Form {
 			<Modal {...this.props} backdrop="static">
 
 				<Modal.Header closeButton>
-	          <Modal.Title id="contained-modal-title-lg">Карточка транспортного средства</Modal.Title>
+					<Modal.Title id="contained-modal-title-lg">Карточка транспортного средства</Modal.Title>
 				</Modal.Header>
 
 	      <Modal.Body>
@@ -58,10 +58,10 @@ class CarForm extends Form {
 
 		      	<Col md={6}>
 							<Field type="select" label="Подразделение"
-										 options={COMPANY_ELEMENTS}
-										 value={state.company_structure_id}
-										 clearable={false}
-										 onChange={this.handleChange.bind(this, 'company_structure_id')}/>
+									options={COMPANY_ELEMENTS}
+									value={state.company_structure_id}
+									clearable={false}
+									onChange={this.handleChange.bind(this, 'company_structure_id')}/>
 
 						 	<Field type="string" label="Гаражный номер"
 										 value={state.garage_number}

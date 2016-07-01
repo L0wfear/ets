@@ -3,6 +3,9 @@ import Div from '../../ui/Div.jsx';
 import { Panel, Collapse, Glyphicon, Fade, Well, Button } from 'react-bootstrap';
 import {getFormattedDateTimeSeconds} from 'utils/dates';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
+import DashboardCardHeader from '../DashboardCardHeader.jsx';
+import DashboardItemChevron from '../DashboardItemChevron.jsx';
+import cx from 'classnames';
 import moment from 'moment';
 import MissionInfoFormWrap from '../MissionInfoFormWrap.jsx';
 import { isEmpty } from 'utils/functions';
@@ -12,7 +15,7 @@ let getDataTraveledYet = (data) => {
   if (typeof data === 'string') {
     return data;
   }
-  return parseInt(data, 10);
+  return !isNaN(parseInt(data, 10)) ? parseInt(data, 10) : '-';
 }
 
 let getEstimatedFinishTime = (data) => {
@@ -124,7 +127,9 @@ export default class CurrentMission extends DashboardCardMedium {
             <li><b>Начало задания:</b> {getFormattedDateTimeSeconds(data.mission_date_start)}</li>
             <li><b>Окончание задания:</b> {getFormattedDateTimeSeconds(data.mission_date_end)}</li>
             <li><b>Расчетное время выполнения:</b> {getEstimatedFinishTime(data.estimated_finish_time || 'Подсчет')}</li>
-            <li><b>Пройдено с рабочей скоростью:</b> {getDataTraveledYet(data.traveled_yet)}</li>
+            <li><b>Пройдено в рабочем режиме:</b> {getDataTraveledYet(data.traveled_yet)}</li>
+            <li><b>Пройдено с рабочей скоростью:</b> {getDataTraveledYet(data.route_with_work_speed + data.with_work_speed_time)}</li>
+            <li><b>Пройдено с превышением рабочей скорости:</b> {getDataTraveledYet(data.route_with_high_speed + data.with_high_speed_time)}</li>
             <li><a className="pointer" onClick={(e) => {e.preventDefault(); this.missionAction(data);}}>Подробнее...</a></li>
             <Div className="text-right">
               <Button className="dashboard-card-action-button" onClick={this.completeMission.bind(this, data.mission_id)}>Выполнено</Button>
@@ -147,6 +152,92 @@ export default class CurrentMission extends DashboardCardMedium {
           showForm={this.state.showMissionInfoForm}
           element={this.state.mission}
           {...this.props} />
+    );
+  }
+
+  render() {
+    let selectedItemIndex = this.state.selectedItem;
+    let selectedItem = this.props.items[selectedItemIndex] || null;
+    let subItems = selectedItem !== null ? selectedItem.subItems || [] : [];
+    let data = selectedItem !== null ? selectedItem.data || {} : {};
+    const items = this.props.items.map((item,i) => {
+      let itemClassName = cx('dashboard-card-item', {'pointer': (item.data) || (item.subItems && item.subItems.length) || (this.action)});
+      let status = item.title.split("").reverse().join("").split(' ')[0].split("").reverse().join("");
+      let title =  item.title.split(status)[0];
+      return <Div key={i} className={itemClassName}>
+        <Div className="dashboard-card-item-inner" onClick={this.selectItem.bind(this, i)}>
+          {title}
+          <span title='Кол-во заданий в статусе "Назначено" / Общее кол-во заданий на текущую тех.операцию'>
+            {status}
+          </span>
+        </Div>
+        {
+          typeof this.renderCollapsibleSubitems === 'function' ? this.renderCollapsibleSubitems(item, i) : ''
+        }
+      </Div>
+    });
+    let styleObject = {
+      width: this.state.cardWidth, marginLeft: this.state.cardWidth + 30
+    };
+    if (this.props.direction === 'left') {
+      styleObject = {
+        width: this.state.cardWidth, right: this.state.cardWidth + 44
+      };
+    }
+    if (!this.state.cardWidth) {
+      styleObject = {};
+    }
+    let firstItems = items.slice(0, 2);
+    let otherItems = items.slice(2, items.length);
+    //let dashboardCardClass = cx('dashboard-card', {'visibilityHidden'});
+    let Header = <DashboardCardHeader title={this.props.title} loading={this.props.loading} onClick={this.refreshCard.bind(this)}/>;
+
+    // отрефакторить
+
+    return (
+      <Div md={12}>
+        <Panel className="dashboard-card" header={Header} bsStyle="success" ref="card">
+          <Div className="dashboard-card-items">
+            {firstItems}
+            <Collapse in={this.state.fullListOpen}>
+              <Div>
+                {otherItems}
+              </Div>
+            </Collapse>
+          </Div>
+
+          <Div className="menu-down-block" hidden={otherItems.length === 0}>
+            <Div style={{textAlign: 'center'}} hidden={this.state.fullListOpen}>
+              <Glyphicon glyph="menu-down" className="pointer" onClick={this.toggleFullList.bind(this)}/>
+            </Div>
+            <Div style={{textAlign: 'center'}} hidden={!this.state.fullListOpen}>
+              <Glyphicon glyph="menu-up" className="pointer" onClick={this.toggleFullList.bind(this)}/>
+            </Div>
+          </Div>
+
+          <Div className="dashboard-card-overlay" hidden={!this.props.loading}></Div>
+        </Panel>
+
+        <DashboardItemChevron direction={this.props.direction} hidden={selectedItem === null || (subItems.length === 0 && !data.mission_name) || !this.props.itemOpened} />
+
+        <Div style={styleObject} hidden={(subItems.length === 0 && !data) || !this.props.itemOpened} className={cx('dashboard-card-info', {active: selectedItem !== null && this.props.itemOpened})} >
+          <Fade in={selectedItem !== null && this.props.itemOpened}>
+            <div>
+              <Well>
+                <Div className="card-glyph-remove" onClick={this.selectItem.bind(this, null)}>
+                  <Glyphicon glyph="remove"/>
+                </Div>
+                <h5>{this.props.itemsTitle || (selectedItem !== null ? selectedItem.title : '')}</h5>
+                <div style={{marginTop: 15}}/>
+                {this.renderSubitems(subItems)}
+                {typeof this.renderCustomCardData === 'function' ? this.renderCustomCardData() : null}
+              </Well>
+            </div>
+          </Fade>
+        </Div>
+        {typeof this.renderCustomCardForm === 'function' ? this.renderCustomCardForm() : null}
+
+      </Div>
     );
   }
 

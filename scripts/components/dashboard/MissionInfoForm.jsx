@@ -17,6 +17,13 @@ import MissionReportByPoints from '../reports/MissionReportByPoints.jsx';
 // const MAP_INITIAL_CENTER = [-6040.212982145856, 10358.852595460314];
 // const MAP_INITIAL_ZOOM = 6;
 
+let getDataTraveledYet = (data) => {
+  if (typeof data === 'string') {
+    return data;
+  }
+  return !isNaN(parseInt(data, 10)) ? parseInt(data, 10) : '-';
+}
+
 export class MissionInfoForm extends Form {
 
 	constructor(props) {
@@ -42,18 +49,22 @@ export class MissionInfoForm extends Form {
 			if (r.result) {
 				let missionReport = [];
 				let selectedObjects = [];
+				let routeType = 'simple';
 				if (r.result.report_by_odh) {
 					missionReport = r.result.report_by_odh;
+					routeType = 'odh';
 				} else if (r.result.report_by_dt) {
 					missionReport = r.result.report_by_dt;
+					routeType = 'dt';
 				} else if (r.result.report_by_point) {
 					missionReport = r.result.report_by_point;
+					routeType = 'point';
 					selectedObjects = r.result.report_by_point.filter(p => p.status === 'success');
 				}
 				if (r.result.route_check_unit) {
 					_.each(missionReport, mr => mr.route_check_unit = r.result.route_check_unit)
 				}
-	      this.setState({missionReport, missionReportFull: r.result, selectedObjects});
+	      this.setState({missionReport, routeType, missionReportFull: r.result, selectedObjects});
 			}
     });
     this.context.flux.getActions('routes').getRouteById(formState.route_id, true).then(r => {
@@ -114,30 +125,30 @@ export class MissionInfoForm extends Form {
           <Row>
 
             <Col md={6} style={{height: 400}}>
-
-              <FluxComponent connectToStores={{
-							points: store => ({
-							points: store.state.points,
-							selected: store.getSelectedPoint()
-							}),
+							<FluxComponent connectToStores={{
+								points: store => ({
+									points: store.state.points,
+									selected: store.getSelectedPoint()
+								}),
 								settings: store => ({
-								showPlates: store.state.showPlates,
-								showTrack: store.state.showTrack,
-								showRoute: store.state.showRoute,
-								showSelectedElement: store.state.showSelectedElement
+									showPlates: store.state.showPlates,
+									showTrack: store.state.showTrack,
+									showRoute: store.state.showRoute,
+									showSelectedElement: store.state.showSelectedElement
 								}),
 								session: store => ({
-								zoom: store.getCurrentUser().getCompanyMapConfig().zoom,
-								center: store.getCurrentUser().getCompanyMapConfig().coordinates,
+									zoom: store.getCurrentUser().getCompanyMapConfig().zoom,
+									center: store.getCurrentUser().getCompanyMapConfig().coordinates,
 								})
-              }}>
+							}}>
 
-                <Map polys={polys}
+								<Map polys={polys}
+										routeType={this.state.routeType}
 										selectedObjects={this.state.selectedObjects}
 										selectedPoly={geozonePolys[this.state.selectedElementId]}
 										car_gov_number={this.props.formState.car_gov_number}/>
 
-              </FluxComponent>
+							</FluxComponent>
             </Col>
 
             <Col md={6}>
@@ -156,6 +167,13 @@ export class MissionInfoForm extends Form {
             </Col>
 
           </Row>
+
+					<Div>
+            * - расстояние, учитываемое при прохождении задания<br/>
+            ** - пройдено с рабочей скоростью / пройдено с превышением рабочей скорости<br/>
+						<b>Пройдено с рабочей скоростью:</b> {getDataTraveledYet(this.props.formState.route_with_work_speed + this.props.formState.with_work_speed_time)}<br/>
+						<b>Пройдено с превышением рабочей скорости:</b> {getDataTraveledYet(this.props.formState.route_with_high_speed + this.props.formState.with_high_speed_time)}
+					</Div>
 
 	      </Modal.Body>
 

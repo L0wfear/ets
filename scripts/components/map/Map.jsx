@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import CarMarker from '../markers/car/CarMarker.js';
 import { PROJECTION, ArcGisLayer } from './MskAdapter.js';
 import 'ol3-popup/src/ol3-popup.js';
-import { getGeoObjectsByCoords } from '../../adapter.js';
 import '../../vendor/onTabUnfocus.js';
 
 window.addEventListener('blur', (ev) => {
@@ -167,24 +166,16 @@ export default class OpenLayersMap extends Component {
         let possibleTrackPoint = track.getPointAtCoordinate(coordinate);
         if (possibleTrackPoint !== null) {
           let pointCoords = possibleTrackPoint.coords_msk;
-          let secondPoint = null;
-          let invert = false;
+          let prevPoint, nextPoint = null;
           track.points.forEach((point, i) => {
             if (point.coords === possibleTrackPoint.coords) {
-              if (track.points[i+1]) {
-                secondPoint = track.points[i+1];
-              } else {
-                secondPoint = track.points[i-1];
-                invert = true;
-              }
+              nextPoint = track.points[i+1] ? track.points[i+1] : null;
+              prevPoint = track.points[i-1] ? track.points[i-1] : null;
             };
           });
           //console.log( 'trackpoint  found', possibleTrackPoint);
-          let makePopupFn = await track.getTrackPointTooltip(possibleTrackPoint, secondPoint, invert);
+          let makePopupFn = await track.getTrackPointTooltip(possibleTrackPoint, prevPoint, nextPoint);
           this.popup.show(pointCoords, makePopupFn());
-          getGeoObjectsByCoords(possibleTrackPoint.coords_msk).then((data) => {
-              this.popup.show(pointCoords, makePopupFn(data.objects))
-            })
           return;
         }
       }

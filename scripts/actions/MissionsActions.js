@@ -155,7 +155,7 @@ export default class MissionsActions extends Actions {
     const payload = _.clone(missionTemplate);
     delete payload.company_id;
     delete payload.number;
-    return MissionTemplateService.post(payload);
+    return MissionTemplateService.post(payload, null, 'json');
   }
 
   createMissions(missionTemplates, missionsCreationTemplate) {
@@ -184,14 +184,14 @@ export default class MissionsActions extends Actions {
 
   removeMissionTemplate(id) {
     const payload = { id };
-    return MissionTemplateService.delete(payload);
+    return MissionTemplateService.delete(payload, null, 'json');
   }
 
   updateMissionTemplate(missionTemplate) {
     const payload = _.cloneDeep(missionTemplate);
     delete payload.number;
     delete payload.company_id;
-    return MissionTemplateService.put(payload);
+    return MissionTemplateService.put(payload, null, 'json');
   }
 
 

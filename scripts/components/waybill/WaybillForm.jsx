@@ -198,6 +198,7 @@ class WaybillForm extends Form {
 
 		let state = this.props.formState;
 		let errors = this.props.formErrors;
+		let taxesControl = false;
 
 		const { carsList = [], carsIndex = {}, driversList = [], employeesList = [], fuelTypes = [], missionsList = [] } = this.props;
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`}));
@@ -237,12 +238,10 @@ class WaybillForm extends Form {
     }
 
 		if (state.tax_data && state.equipment_tax_data) {
-			let taxesControl = !!this.state.equipmentFuelRates.length ?
+			taxesControl = !!this.state.equipmentFuelRates.length ?
 				!!state.tax_data[0] && !!parseFloat(state.tax_data[0].RESULT)
 				&& !!state.equipment_tax_data[0] && !!parseFloat(state.equipment_tax_data[0].RESULT) :
 				 !!state.tax_data[0] && !!parseFloat(state.tax_data[0].RESULT);
-		} else {
-			let taxesControl = false;
 		}
 
 		return (

@@ -79,7 +79,7 @@ export function getReportNotReadyNotification2(flux) {
     autoDismiss: 5,
     action: {
       label: 'Обновить список',
-      callback: () => flux.getActions('reports').getDailyCleaningReports(),
+      callback: () => flux.getActions('reports').getDailyCleaningReportsETS(),
     },
   };
 }

@@ -81,7 +81,7 @@ let getTableMeta = (props) => {
   			},
   		},
       {
-        name: 'fact_traveled_area_percentage',
+        name: 'fact_traveled_percentage',
         caption: '% выполнения',
         type: 'string',
         filter: false
@@ -129,7 +129,7 @@ class MissionReport extends Component {
 	async componentDidMount() {
 		const { flux } = this.context;
     try {
-  		let result = await flux.getActions('reports').getDailyCleaningReportById(this.props.routeParams.id);
+  		let result = await flux.getActions('reports').getDailyCleaningReportByIdETS(this.props.routeParams.id);
       let selectedReportData = result.result[0].result.rows;
       this.setState({selectedReportData});
     } catch (e) {

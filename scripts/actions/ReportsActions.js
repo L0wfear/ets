@@ -1,6 +1,6 @@
 import { Actions } from 'flummox';
 import _ from 'lodash';
-import { DailyCleaningReportsService, WeeklyTechnicalOperationCompleteReportsService, FuelReportService, AnalyticsService } from 'api/Services';
+import { DailyCleaningReportsService, WeeklyTechnicalOperationCompleteReportsService, CoverageReportService, FuelReportService, AnalyticsService } from 'api/Services';
 import { createValidDateTime, createValidDate } from 'utils/dates';
 import { postJSON } from 'adapter';
 import config from '../config.js';
@@ -45,6 +45,14 @@ export default class ReportsActions extends Actions {
       method: 'post',
       body: JSON.stringify(payload)
     }).then((r) => r.blob());
+  }
+
+  getCoverageReport(state) {
+    let payload = _.cloneDeep(state);
+    delete payload.companyStructureList;
+    delete payload.coverageReport;
+    if (!payload.structure_id) payload.structure_id = null;
+    return CoverageReportService.get(payload);
   }
 
   getDailyCleaningReportById(id) {

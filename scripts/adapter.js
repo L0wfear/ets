@@ -67,7 +67,9 @@ function HTTPMethod(url, data = {}, method, type, blob) {
       window.location.hash = '/login';
       window.location.reload();
     } else {
-      if (blob) return r.blob().then(body => new Promise((res, rej) => res(body)));
+      if (blob) {
+        return r.blob().then(body => new Promise((res, rej) => res(body)));
+      }
       return r.json().then(responseBody => {
         checkResponse(url, r, responseBody, method);
         return new Promise((res, rej) => res(responseBody));

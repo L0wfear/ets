@@ -10,6 +10,21 @@ import { getToday859am, getYesterday0am, getYesterday9am, getYesterday2359, getF
 import { getReportNotReadyNotification } from 'utils/notifications';
 import { isEmpty } from 'utils/functions';
 
+const COMBINATIONS_CAR_TYPES = [
+  {
+    value: '84, 85, 1',
+    label: 'ДКМ (ПМ+ЖР), ДКМ (ПМ+ТР), ПМ'
+  },
+  {
+    value: '82, 9, 14',
+    label: 'ДКМ (ПУ+ПЩ), ПУ, ПУвак'
+  },
+  {
+    value: '8',
+    label: 'ТУ'
+  }
+];
+
 class DailyReportHeader extends Component {
 
   constructor(props) {
@@ -34,6 +49,10 @@ class DailyReportHeader extends Component {
     this.props.handleChange('car_type_id_list', data);
   }
 
+  handleCarTypeIdListChangeCombinations(v) {
+    this.props.handleChange('car_type_id_list', v.split(', ').map(v => parseInt(v, 10)));
+  }
+
   componentDidMount() {
 		const { flux } = this.context;
   	flux.getActions('objects').getTypes();
@@ -41,7 +60,7 @@ class DailyReportHeader extends Component {
 
   render() {
     let props = this.props;
-    let { geozone_type, typesList = [] } = this.props;
+    let { geozone_type, typesList = [], useCombinations = false, car_type_id_list } = this.props;
     let OBJECTS = [{value: 'odh', label: 'Объект дорожного хозяйства'}, {value: 'dt', label: 'Дворовая территория'}];
     let ELEMENTS = geozone_type === 'odh' ?
       [
@@ -50,6 +69,11 @@ class DailyReportHeader extends Component {
       ]
       : [{value: 'yard', label: 'Двор'}];
     let CAR_TYPES = typesList.map(t => ({value: t.id, label: t.full_name}));
+    if (useCombinations) {
+      CAR_TYPES = COMBINATIONS_CAR_TYPES;
+    }
+
+    console.log(car_type_id_list);
 
   	return (
       <Div>
@@ -83,10 +107,10 @@ class DailyReportHeader extends Component {
           <Col md={3} className={'vehicle-types-container'}>
             <Field type="select"
                    label="Типы ТС"
-                   multi={true}
+                   multi={!useCombinations}
                    options={CAR_TYPES}
-                   value={props.car_type_id_list}
-                   onChange={this.handleCarTypeIdListChange.bind(this)}/>
+                   value={!useCombinations ? car_type_id_list : car_type_id_list.join(', ')}
+                   onChange={!useCombinations ? this.handleCarTypeIdListChange.bind(this) : this.handleCarTypeIdListChangeCombinations.bind(this)}/>
           </Col>
     		</Row>
 

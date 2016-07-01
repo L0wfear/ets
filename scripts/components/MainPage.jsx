@@ -79,7 +79,8 @@ export default class MainPage extends React.Component {
             </NavDropdown>
             <NavDropdown title="Регламентированные отчеты" id="nav-dropdown-3-2">
               <MenuItem active={path === '/fuel-report'} href="#/fuel-report">Расход топлива</MenuItem>
-              <MenuItem active={path === '/daily-cleaning-reports'} href="#/daily-cleaning-reports">Статус по уборке</MenuItem>
+              <MenuItem active={path === '/daily-cleaning-reports-ets'} href="#/daily-cleaning-reports-ets">Статус по уборке</MenuItem>
+              <MenuItem active={path === '/daily-cleaning-reports-cafap'} href="#/daily-cleaning-reports-cafap">Статус по уборке (ЦАФАП)</MenuItem>
               <MenuItem active={path === '/weekly-technical-operation-complete-reports'} href="#/weekly-technical-operation-complete-reports">Статус по выполнению технологических операций</MenuItem>
             </NavDropdown>
             <NavDropdown title="Графические отчеты" id="nav-dropdown-3-3">

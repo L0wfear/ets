@@ -7,14 +7,17 @@ class ReportsStore extends Store {
     super();
 
     const reportsActions = flux.getActions('reports');
-    this.register(reportsActions.getDailyCleaningReports, this.handleGetDailyCleaningReports);
+    this.register(reportsActions.getDailyCleaningReportsETS, this.handleGetDailyCleaningReportsETS);
+    this.register(reportsActions.getDailyCleaningReportsCAFAP, this.handleGetDailyCleaningReportsCAFAP);
+    this.register(reportsActions.createDailyCleaningReportETS, this.handleGetDailyCleaningReportsETS);
+    this.register(reportsActions.createDailyCleaningReportCAFAP, this.handleGetDailyCleaningReportsCAFAP);
     this.register(reportsActions.getFuelReport, this.handleGetFuelReport);
-    this.register(reportsActions.createDailyCleaningReport, this.handleGetDailyCleaningReports);
     this.register(reportsActions.getWeeklyTechnicalOperationCompleteReports, this.handleGetWeeklyTechnicalOperationCompleteReports);
     this.register(reportsActions.createWeeklyTechnicalOperationCompleteReport, this.handleGetWeeklyTechnicalOperationCompleteReports);
 
     this.state = {
-      dailyCleaningReportsList: [],
+      dailyCleaningReportsListETS: [],
+      dailyCleaningReportsListCAFAP: [],
       fuelReport: [],
       weeklyTechnicalOperationCompleteReportsList: []
     };
@@ -25,8 +28,12 @@ class ReportsStore extends Store {
     this.setState({fuelReport: e.results});
   }
 
-  handleGetDailyCleaningReports(dailyCleaningReports) {
-    this.setState({dailyCleaningReportsList: dailyCleaningReports.result});
+  handleGetDailyCleaningReportsETS(dailyCleaningReports) {
+    this.setState({dailyCleaningReportsListETS: dailyCleaningReports.result});
+  }
+
+  handleGetDailyCleaningReportsCAFAP(dailyCleaningReports) {
+    this.setState({dailyCleaningReportsListCAFAP: dailyCleaningReports.result});
   }
 
   handleGetWeeklyTechnicalOperationCompleteReports(weeklyTechnicalOperationCompleteReports) {

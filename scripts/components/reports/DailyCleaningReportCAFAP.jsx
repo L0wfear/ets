@@ -58,6 +58,12 @@ let getTableMeta = (props) => {
         filter: false
       },
   		{
+  			name: 'fact_traveled_area',
+  			caption: 'Пройдено',
+  			type: 'string',
+  			filter: false
+  		},
+  		{
   			name: 'planned_passed_count',
   			caption: 'Плановое посещение',
   			type: 'string',
@@ -65,12 +71,12 @@ let getTableMeta = (props) => {
   				type: 'select',
   			}
   		},
-  		{
-  			name: 'fact_traveled_area',
-  			caption: 'Пройденная площадь',
-  			type: 'string',
-  			filter: false
-  		},
+      {
+        name: 'fact_traveled_percentage',
+        caption: 'Процент посещения',
+        type: 'string',
+        filter: false
+      },
   		{
   			name: 'status',
   			caption: 'Статус посещения',
@@ -79,7 +85,7 @@ let getTableMeta = (props) => {
   				type: 'select',
           labelFunction: getPeriodicReportStatusLabel
   			},
-  		},
+  		}
   	]
   };
 
@@ -101,7 +107,7 @@ let MissionReportTable = (props) => {
 
   //if (!props.data.length) return <div/>
 
-	return <Table title='Статус по уборке'
+	return <Table title='Статус по уборке (ЦАФАП)'
 								tableMeta={tableMeta}
 								results={props.data}
 								renderers={renderers}
@@ -123,7 +129,7 @@ class MissionReport extends Component {
 	async componentDidMount() {
 		const { flux } = this.context;
     try {
-  		let result = await flux.getActions('reports').getDailyCleaningReportById(this.props.routeParams.id);
+  		let result = await flux.getActions('reports').getDailyCleaningReportByIdCAFAP(this.props.routeParams.id);
       let selectedReportData = result.result[0].result.rows;
       this.setState({selectedReportData});
     } catch (e) {

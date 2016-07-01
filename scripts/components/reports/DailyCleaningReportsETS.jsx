@@ -120,7 +120,7 @@ let DailyCleaningReportsTable = (props) => {
 
 }
 
-class DailyCleaningReports extends Component {
+class DailyCleaningReportsETS extends Component {
 
 	constructor(props) {
 		super(props);
@@ -138,7 +138,7 @@ class DailyCleaningReports extends Component {
 
 	componentDidMount() {
 		const { flux } = this.context;
-		flux.getActions('reports').getDailyCleaningReports();
+		flux.getActions('reports').getDailyCleaningReportsETS();
 	}
 
   onReportSelect({props}) {
@@ -146,7 +146,7 @@ class DailyCleaningReports extends Component {
     if (props.data.status !== 'success' && props.data.status !== 'fail') {
       global.NOTIFICATION_SYSTEM._addNotification(getReportNotReadyNotification2(this.context.flux));
     } else if (props.data.status !== 'fail'){
-      this.context.history.pushState(null, `/daily-cleaning-report/${props.data.element}/${id}`);
+      this.context.history.pushState(null, `/daily-cleaning-report-ets/${props.data.element}/${id}`);
     }
   }
 
@@ -154,31 +154,31 @@ class DailyCleaningReports extends Component {
 		this.setState({[field]: value});
 	}
 
-  createDailyCleaningReport() {
+  createDailyCleaningReportETS() {
 		const { flux } = this.context;
-    flux.getActions('reports').createDailyCleaningReport(this.state);
+    flux.getActions('reports').createDailyCleaningReportETS(this.state);
   }
 
 	render() {
 
     console.log('state is', this.state);
 
-		const { dailyCleaningReportsList = [] } = this.props;
+		const { dailyCleaningReportsListETS = [] } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
-  			<DailyReportHeader handleChange={this.handleChange.bind(this)} onClick={this.createDailyCleaningReport.bind(this)} {...this.state}/>
+  			<DailyReportHeader handleChange={this.handleChange.bind(this)} onClick={this.createDailyCleaningReportETS.bind(this)} {...this.state}/>
 
-				<DailyCleaningReportsTable data={dailyCleaningReportsList} onRowSelected={this.onReportSelect.bind(this)} />
+				<DailyCleaningReportsTable data={dailyCleaningReportsListETS} onRowSelected={this.onReportSelect.bind(this)} />
 			</div>
 		);
 
 	}
 }
 
-DailyCleaningReports.contextTypes = {
+DailyCleaningReportsETS.contextTypes = {
   history: React.PropTypes.object,
 	flux: React.PropTypes.object,
 };
 
-export default connectToStores(DailyCleaningReports, ['reports']);
+export default connectToStores(DailyCleaningReportsETS, ['reports']);

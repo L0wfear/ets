@@ -30,8 +30,10 @@ import MissionReportByDT from './reports/MissionReportByDT.jsx';
 import MissionReportByPoints from './reports/MissionReportByPoints.jsx';
 import RouteReports from './reports/RouteReports.jsx';
 import RouteReport from './reports/RouteReport.jsx';
-import DailyCleaningReports from './reports/DailyCleaningReports.jsx';
-import DailyCleaningReport from './reports/DailyCleaningReport.jsx';
+import DailyCleaningReportsETS from './reports/DailyCleaningReportsETS.jsx';
+import DailyCleaningReportETS from './reports/DailyCleaningReportETS.jsx';
+import DailyCleaningReportsCAFAP from './reports/DailyCleaningReportsCAFAP.jsx';
+import DailyCleaningReportCAFAP from './reports/DailyCleaningReportCAFAP.jsx';
 import FuelReport from './reports/FuelReport.jsx';
 import WeeklyTechnicalOperationCompleteReports from './reports/WeeklyTechnicalOperationCompleteReports.jsx';
 import WeeklyTechnicalOperationCompleteReport from './reports/WeeklyTechnicalOperationCompleteReport.jsx';
@@ -139,8 +141,10 @@ const routes = (
       <Route path="mission-templates-journal" component={MissionTemplatesJournal} onEnter={requireAuth}/>
       <Route path="routes-list" component={RoutesList} onEnter={requireAuth}/>
       <Route path="odh-reports" component={ODHReports} onEnter={requireAuth}/>
-      <Route path="daily-cleaning-reports" component={DailyCleaningReports} onEnter={requireAuth}/>
-      <Route path="daily-cleaning-report/:element/:id" component={DailyCleaningReport} onEnter={requireAuth}/>
+      <Route path="daily-cleaning-reports-ets" component={DailyCleaningReportsETS} onEnter={requireAuth}/>
+      <Route path="daily-cleaning-report-ets/:element/:id" component={DailyCleaningReportETS} onEnter={requireAuth}/>
+      <Route path="daily-cleaning-reports-cafap" component={DailyCleaningReportsCAFAP} onEnter={requireAuth}/>
+      <Route path="daily-cleaning-report-cafap/:element/:id" component={DailyCleaningReportCAFAP} onEnter={requireAuth}/>
       <Route path="weekly-technical-operation-complete-reports" component={WeeklyTechnicalOperationCompleteReports} onEnter={requireAuth}/>
       <Route path="weekly-technical-operation-complete-report/:element/:id" component={WeeklyTechnicalOperationCompleteReport} onEnter={requireAuth}/>
       <Route path="route-reports" component={RouteReports} onEnter={requireAuth}/>

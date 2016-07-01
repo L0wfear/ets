@@ -1,23 +1,64 @@
 import { Actions } from 'flummox';
 import _ from 'lodash';
-import { DailyCleaningReportsService, WeeklyTechnicalOperationCompleteReportsService, CoverageReportService, FuelReportService, AnalyticsService } from 'api/Services';
+import {
+  DailyCleaningReportsServiceETS,
+  DailyCleaningReportsServiceCAFAP,
+  WeeklyTechnicalOperationCompleteReportsService,
+  FuelReportService,
+  CoverageReportService,
+  AnalyticsService
+} from 'api/Services';
 import { createValidDateTime, createValidDate } from 'utils/dates';
 import { postJSON } from 'adapter';
 import config from '../config.js';
 
 export default class ReportsActions extends Actions {
 
-  createDailyCleaningReport(data) {
+  // Cleaning - ETS
+
+  createDailyCleaningReportETS(data) {
     let payload = _.cloneDeep(data);
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
     //payload.car_type_id_list = payload.car_type_id_list);
-    return DailyCleaningReportsService.post(payload, true, 'json');
+    return DailyCleaningReportsServiceETS.post(payload, true, 'json');
   }
 
-  getDailyCleaningReports() {
-    return DailyCleaningReportsService.get();
+  getDailyCleaningReportsETS() {
+    return DailyCleaningReportsServiceETS.get();
   }
+
+  getDailyCleaningReportByIdETS(id) {
+    const payload = {
+      id
+    };
+
+    return DailyCleaningReportsServiceETS.get(payload);
+  }
+
+  // Cleaning - CAFAP
+
+  createDailyCleaningReportCAFAP(data) {
+    let payload = _.cloneDeep(data);
+    payload.date_start = createValidDateTime(payload.date_start);
+    payload.date_end = createValidDateTime(payload.date_end);
+    //payload.car_type_id_list = payload.car_type_id_list);
+    return DailyCleaningReportsServiceCAFAP.post(payload, true, 'json');
+  }
+
+  getDailyCleaningReportsCAFAP() {
+    return DailyCleaningReportsServiceCAFAP.get();
+  }
+
+  getDailyCleaningReportByIdCAFAP(id) {
+    const payload = {
+      id
+    };
+
+    return DailyCleaningReportsServiceCAFAP.get(payload);
+  }
+
+  //
 
   getFuelReport(data) {
     let payload = _.cloneDeep(data);

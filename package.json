@@ -81,19 +81,9 @@
     "start-dev": "STAND=second NODE_ENV=development PORT=3000 node server.js",
     "start": "npm run start-dev",
     "secondstudy": "STAND=secondstudy NODE_ENV=development PORT=3000 node server.js",
-    "study": "STAND=study node ./node_modules/better-npm-run start-dev",
+    "study": "STAND=study NODE_ENV=development PORT=3000 node server.js",
     "dev": "STAND=development NODE_ENV=development PORT=3000 node server.js",
     "lint": "eslint -c .eslintrc scripts"
-  },
-  "betterScripts": {
-    "start-dev": {
-      "command": "node ./server.js",
-      "env": {
-        "NODE_PATH": "./scripts",
-        "NODE_ENV": "development",
-        "PORT": 3000
-      }
-    }
   },
   "engines": {
     "node": ">=5.1.0",

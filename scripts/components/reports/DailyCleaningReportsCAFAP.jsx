@@ -11,6 +11,7 @@ import { getToday9am, getTomorrow9am, getToday0am, getToday2359, getFormattedDat
 import { getReportNotReadyNotification2 } from 'utils/notifications';
 import { isEmpty } from 'utils/functions';
 import DailyReportHeader from './DailyReportHeader.jsx';
+import _ from 'lodash';
 
 let getElementLabel = (el) => {
   let element = _.find([
@@ -156,12 +157,29 @@ class DailyCleaningReportsCAFAP extends Component {
 
   createDailyCleaningReportCAFAP() {
 		const { flux } = this.context;
-    flux.getActions('reports').createDailyCleaningReportCAFAP(this.state);
+    const payload = _.cloneDeep(this.state);
+    const { car_type_id_list, geozone_type } = payload;
+    let newCarTypeIdList = [];
+    if (geozone_type === 'dt') {
+      car_type_id_list.map(el => {
+        if (typeof el === 'string') {
+          el = el.split(';').map(id => parseInt(id));
+        }
+        newCarTypeIdList.push(el);
+        return el;
+      });
+      if (newCarTypeIdList.length) {
+        newCarTypeIdList = newCarTypeIdList.reduce((a,b) => a.concat(b));
+      }
+      payload.car_type_id_list = newCarTypeIdList;
+    }
+
+    flux.getActions('reports').createDailyCleaningReportCAFAP(payload);
   }
 
 	render() {
 
-    console.log('state is', this.state);
+    // console.log('state is', this.state);
 
 		const { dailyCleaningReportsListCAFAP = [] } = this.props;
 

@@ -10,7 +10,8 @@ import { getToday859am, getYesterday0am, getYesterday9am, getYesterday2359, getF
 import { getReportNotReadyNotification } from 'utils/notifications';
 import { isEmpty } from 'utils/functions';
 
-const COMBINATIONS_CAR_TYPES = [
+// TODO поправить на получение типов из специального сервиса
+const COMBINATIONS_CAR_TYPES_ODH = [
   {
     value: '84, 85, 1',
     label: 'ДКМ (ПМ+ЖР), ДКМ (ПМ+ТР), ПМ'
@@ -18,6 +19,24 @@ const COMBINATIONS_CAR_TYPES = [
   {
     value: '82, 9, 14',
     label: 'ДКМ (ПУ+ПЩ), ПУ, ПУвак'
+  },
+  {
+    value: '8',
+    label: 'ТУ'
+  }
+];
+const COMBINATIONS_CAR_TYPES_DT = [
+  {
+    value: '83',
+    label: 'ДКМ (ПУ+ТР)'
+  },
+  {
+    value: '85;84;1',
+    label: 'ДКМ (ПМ+ТР), ДКМ (ПМ+ЖР), ПМ'
+  },
+  {
+    value: '82;9;14',
+    label: 'ДКМ (ПУ + ПЩ), ПУ, ПУ вак'
   },
   {
     value: '8',
@@ -34,10 +53,12 @@ class DailyReportHeader extends Component {
   handleGeozoneTypeChange(v) {
     this.props.handleChange('geozone_type', v);
     if (v === 'odh') {
+      this.props.handleChange('car_type_id_list', []);
       this.props.handleChange('element', 'roadway');
       this.props.handleChange('date_start', getYesterday9am());
       this.props.handleChange('date_end', getToday859am());
     } else {
+      this.props.handleChange('car_type_id_list', []);
       this.props.handleChange('element', 'yard');
       this.props.handleChange('date_start', getYesterday0am());
       this.props.handleChange('date_end', getYesterday2359());
@@ -49,8 +70,15 @@ class DailyReportHeader extends Component {
     this.props.handleChange('car_type_id_list', data);
   }
 
-  handleCarTypeIdListChangeCombinations(v) {
-    this.props.handleChange('car_type_id_list', v.split(', ').map(v => parseInt(v, 10)));
+  handleCarTypeIdListChangeODHCombinations(v) {
+    this.props.handleChange('car_type_id_list', (v.length ? v.split(', ') : []).map(v => parseInt(v, 10)));
+  }
+
+  handleCarTypeIdListChangeDTCombinations(v) {
+    v = v.replace(/\s/g, '').replace(/,/g, ', ');
+    const car_type_id_list = this.props.car_type_id_list;
+    const splittedToArray = v.length ? v.split(', ') : [];
+    this.props.handleChange('car_type_id_list', splittedToArray);
   }
 
   componentDidMount() {
@@ -69,11 +97,6 @@ class DailyReportHeader extends Component {
       ]
       : [{value: 'yard', label: 'Двор'}];
     let CAR_TYPES = typesList.map(t => ({value: t.id, label: t.full_name}));
-    if (useCombinations) {
-      CAR_TYPES = COMBINATIONS_CAR_TYPES;
-    }
-
-    console.log(car_type_id_list);
 
   	return (
       <Div>
@@ -105,12 +128,21 @@ class DailyReportHeader extends Component {
     				</Div>
     			</Col>
           <Col md={3} className={'vehicle-types-container'}>
+            {useCombinations ?
             <Field type="select"
                    label="Типы ТС"
-                   multi={!useCombinations}
+                   multi={geozone_type === 'odh' ? false : true}
+                   options={geozone_type === 'odh' ? COMBINATIONS_CAR_TYPES_ODH : COMBINATIONS_CAR_TYPES_DT}
+                   value={geozone_type === 'odh' ? car_type_id_list.join(', ') : car_type_id_list}
+                   onChange={geozone_type === 'odh' ? this.handleCarTypeIdListChangeODHCombinations.bind(this) : this.handleCarTypeIdListChangeDTCombinations.bind(this)}/>
+            :
+            <Field type="select"
+                   label="Типы ТС"
+                   multi={true}
                    options={CAR_TYPES}
-                   value={!useCombinations ? car_type_id_list : car_type_id_list.join(', ')}
-                   onChange={!useCombinations ? this.handleCarTypeIdListChange.bind(this) : this.handleCarTypeIdListChangeCombinations.bind(this)}/>
+                   value={car_type_id_list}
+                   onChange={this.handleCarTypeIdListChange.bind(this)}/>
+            }
           </Col>
     		</Row>
 

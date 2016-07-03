@@ -5,6 +5,7 @@ import {
   DailyCleaningReportsServiceCAFAP,
   WeeklyTechnicalOperationCompleteReportsService,
   FuelReportService,
+  CoverageReportService,
   AnalyticsService
 } from 'api/Services';
 import { createValidDateTime, createValidDate } from 'utils/dates';
@@ -85,6 +86,22 @@ export default class ReportsActions extends Actions {
       method: 'post',
       body: JSON.stringify(payload)
     }).then((r) => r.blob());
+  }
+
+  getCoverageReport(state) {
+    let payload = _.cloneDeep(state);
+    delete payload.companyStructureList;
+    delete payload.coverageReport;
+    if (!payload.structure_id) payload.structure_id = null;
+    return CoverageReportService.get(payload);
+  }
+
+  getDailyCleaningReportById(id) {
+    const payload = {
+      id
+    };
+
+    return DailyCleaningReportsService.get(payload);
   }
 
   getWeeklyTechnicalOperationCompleteReports() {

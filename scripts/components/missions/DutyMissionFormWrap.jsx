@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import _ from 'lodash';
+import { saveData } from 'utils/functions';
 import Div from '../ui/Div.jsx';
 import DutyMissionForm from './DutyMissionForm.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';
@@ -35,12 +36,7 @@ class DutyMissionFormWrap extends FormWrap {
 		}
 
 		let id = response.result && response.result[0] ? response.result[0].id : null;
-		await this.context.flux.getActions('missions').printDutyMission(id).then(url => {
-			window.location = `${url}?duty_mission_id=${id}`;
-			setTimeout(() => {
-					this.context.flux.getActions('missions').getDutyMissions();
-				}, 500);
-			});
+		await this.context.flux.getActions('missions').printDutyMission(id).then(blob => {saveData(blob, `Печатная форма наряд-задания №${id}.pdf`)});
 		this.context.flux.getActions('missions').getDutyMissions();
 		this.props.onFormHide();
   }

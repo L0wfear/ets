@@ -33,7 +33,13 @@ class WaybillPrintForm extends Component {
 				.getWaybillsReport(this.state)
 				.then(blob => {saveData(blob, `Отчет по выработке ТС за ${makeDate(this.state.date_from)} - ${makeDate(this.state.date_to)}.xls`)});
 		}
-		this.props.hide();
+		this.setState({
+      month: new Date().getMonth(),
+      year: new Date().getYear()+1900,
+			date_from: getToday9am(),
+			date_to: getTomorrow9am()
+    }, () => this.props.hide());
+
   }
 
   handleChange(field, value) {

@@ -133,6 +133,8 @@ export default class OpenLayersMap extends Component {
         styleFunction = null;
       }
 
+      if (poly.state === 4) feature.setStyle(polyStyles['green']);
+
       vectorSource.addFeature(feature);
     });
 

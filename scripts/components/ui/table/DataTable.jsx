@@ -98,7 +98,7 @@ class Table extends React.Component {
     this.setState({globalCheckboxState: !this.state.globalCheckboxState}, () => {
       this.forceUpdate();
     });
-    event.stopPropagation();
+    event && event.stopPropagation();
   }
 
   initializeMetadata(tableMetaCols = [], renderers = {}) {
@@ -236,6 +236,9 @@ class Table extends React.Component {
     if (this.props.columnControl) {
       let columnControlValues = JSON.parse(localStorage.getItem(this.props.columnControlStorageName)) || [];
       this.setState({columnControlValues});
+    }
+    if (this.props.checked) {
+      this.globalCheckHandler()
     }
   }
 

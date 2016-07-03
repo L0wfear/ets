@@ -33,12 +33,21 @@ export const polyStyles = {
             width: 1
        })
     }),
-    'info': new ol.style.Style({
+  'info': new ol.style.Style({
          fill: new ol.style.Fill({
               color: '#e67e22'
          }),
          stroke: new ol.style.Stroke({
               color: '#e67e22',
+              width: 1
+         })
+      }),
+  'green': new ol.style.Style({
+         fill: new ol.style.Fill({
+              color: 'green'
+         }),
+         stroke: new ol.style.Stroke({
+              color: 'green',
               width: 1
          })
       })

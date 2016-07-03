@@ -3440,3 +3440,16 @@ div.none {
     margin-left: 20px;
   }
 }
+
+.coverage-report-radio {
+  position: relative;
+    top: 27px;
+  input {
+    margin-right: 6px;
+    position: relative;
+    top: -1px;
+  }
+  span {
+    margin-right: 15px;
+  }
+}

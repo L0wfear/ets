@@ -24,6 +24,7 @@ import TechOperationsDirectory from './directories/TechOperationsDirectory.jsx';
 import ODHReports from './reports/ODHReports.jsx';
 import MissionReports from './reports/MissionReports.jsx';
 import MissionReport from './reports/MissionReport.jsx';
+import CoverageReport from './reports/CoverageReport.jsx';
 import MissionReportByODH from './reports/MissionReportByODH.jsx';
 import MissionReportByDT from './reports/MissionReportByDT.jsx';
 import MissionReportByPoints from './reports/MissionReportByPoints.jsx';
@@ -147,6 +148,7 @@ const routes = (
       <Route path="weekly-technical-operation-complete-reports" component={WeeklyTechnicalOperationCompleteReports} onEnter={requireAuth}/>
       <Route path="weekly-technical-operation-complete-report/:element/:id" component={WeeklyTechnicalOperationCompleteReport} onEnter={requireAuth}/>
       <Route path="route-reports" component={RouteReports} onEnter={requireAuth}/>
+      <Route path="coverage-report" component={CoverageReport} onEnter={requireAuth}/>
       <Route path="route-report/:id" component={RouteReport} onEnter={requireAuth}/>
       <Route path="fuel-report" component={FuelReport} onEnter={requireAuth}/>
       <Route path="analytics" component={Analytics} onEnter={requireAuth}/>

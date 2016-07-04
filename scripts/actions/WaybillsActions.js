@@ -104,7 +104,7 @@ class WaybillsActions extends Actions {
       payload.mission_id_list = [];
     }
 
-    return WaybillService.put(payload, false);
+    return WaybillService.put(payload, false, 'json');
   }
 
   createWaybill(waybill) {
@@ -130,7 +130,7 @@ class WaybillsActions extends Actions {
       payload.mission_id_list = [];
     }
 
-    return WaybillService.post(payload);
+    return WaybillService.post(payload, true, 'json');
   }
 
 }

@@ -39,13 +39,13 @@ export default class MissionsActions extends Actions {
   createMissionFromReassignation(payload) {
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
-    return MissionReassignationService.post(payload, false);
+    return MissionReassignationService.post(payload, false, 'json');
   }
 
   updateMissionFromReassignation(payload) {
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
-    return MissionReassignationService.put(payload, false);
+    return MissionReassignationService.put(payload, false, 'json');
   }
 
   getMissionsByCarAndDates(car_id, date_from, date_to, waybillStatus) {
@@ -91,7 +91,7 @@ export default class MissionsActions extends Actions {
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
     payload.assign_to_waybill = +!!payload.assign_to_waybill;
-    return MissionService.post(payload, callback);
+    return MissionService.post(payload, callback, 'json');
   }
 
   removeMission(id) {
@@ -109,7 +109,7 @@ export default class MissionsActions extends Actions {
     delete payload.route_name;
     delete payload.mission_source_name;
     delete payload.waybill_number;
-    return MissionService.put(payload);
+    return MissionService.put(payload, true, 'json');
   }
 
   printMission(data, url) {
@@ -175,7 +175,7 @@ export default class MissionsActions extends Actions {
       delete payload.company_id;
       delete payload.id;
       delete payload.number;
-      return MissionService.post(payload, false);
+      return MissionService.post(payload, false, 'json');
     });
     return Promise.all(queries);
   }

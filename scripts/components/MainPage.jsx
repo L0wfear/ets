@@ -23,9 +23,9 @@ export default class MainPage extends React.Component {
   renderEmptyHeader() {
     return (
       <Navbar justified>
-				 <Navbar.Header>
-			      <Navbar.Brand>
-					    <Link to="/">ЕТС</Link>
+        <Navbar.Header>
+          <Navbar.Brand>
+            <Link to="/">ЕТС</Link>
 			      </Navbar.Brand>
 			    </Navbar.Header>
 			</Navbar>

@@ -74,6 +74,21 @@ let tableMeta = {
       filter: {
 				type: 'select'
 			}
+  }, {
+      name: 'medical_certificate',
+      caption: 'Медицинская справка',
+      type: 'text',
+      filter: {
+				type: 'select'
+			}
+  }, {
+      name: 'medical_certificate_date',
+      caption: 'Срок действия мед. справки',
+      type: 'date',
+      filter: {
+        type: 'date_create',
+        labelFunction: datePickerFunction
+      }
   }]
 };
 
@@ -96,6 +111,7 @@ let EmployeesTable = (props) => {
 		drivers_license : ({data}) => <div>{data && data !== "None" && data !== 'null' ? data : ''}</div>,
 		special_license : ({data}) => <div>{data && data !== "None" && data !== 'null' ? data : ''}</div>,
     position_name: ({data}) => <div>{data && data !== "None" && data !== 'null' ? data : ''}</div>,
+    medical_certificate_date: ({data}) => <DateFormatter date={data} />,
 	};
 
 	return <Table title='Реестр сотрудников'

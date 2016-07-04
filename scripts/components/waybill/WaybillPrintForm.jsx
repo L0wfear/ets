@@ -22,7 +22,6 @@ class WaybillPrintForm extends Component {
 	}
 
   async handleSubmit() {
-<<<<<<< HEAD
 		if (this.props.show === 1) {
 			let MONTHS = ['Январь','Февраль','Март','Апрель','Май','Июнь',
 	      'Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
@@ -40,20 +39,6 @@ class WaybillPrintForm extends Component {
 			date_from: getToday9am(),
 			date_to: getTomorrow9am()
     }, () => this.props.hide());
-
-=======
-
-		let MONTHS = ['Январь','Февраль','Март','Апрель','Май','Июнь',
-      'Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
-		await this.context.flux.getActions('waybills')
-			.getWaybillJournalReport(this.state)
-			.then(blob => {saveData(blob, `Отчет по журналу ПЛ за ${MONTHS[this.state.month]} ${this.state.year}.xls`)});
-
-		this.setState({
-      month: new Date().getMonth(),
-      year: new Date().getYear()+1900
-    }, () => this.props.hide());
->>>>>>> hotfix
   }
 
   handleChange(field, value) {

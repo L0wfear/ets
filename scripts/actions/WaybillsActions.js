@@ -69,6 +69,13 @@ class WaybillsActions extends Actions {
       });
       payload.equipment_tax_data = JSON.stringify(equipment_tax_data);
     }
+
+    _.each(['fuel_given', 'equipment_fuel_given'], key => {
+      if (!isEmpty(payload[key])) {
+        payload[key] = parseFloat(payload[key]).toFixed(3);
+      }
+    });
+
     delete payload.odometr_diff;
     delete payload.motohours_diff;
     delete payload.motohours_equip_diff;
@@ -81,7 +88,7 @@ class WaybillsActions extends Actions {
     delete payload.car_model_name;
     delete payload.garage_number;
 
-    _.mapKeys(payload, (v, k) => isEmpty(v) ? delete payload[k] : void 0);
+    _.mapKeys(payload, (v, k) => isEmpty(v) ? payload[k] = null : void 0);
 
     if (isEmpty(payload.motohours_equip_start)) {
       payload.motohours_equip_start = null;

@@ -237,11 +237,8 @@ class WaybillForm extends Form {
       title = "Создание нового путевого листа"
     }
 
-		if (state.tax_data && state.equipment_tax_data) {
-			taxesControl = !!this.state.equipmentFuelRates.length ?
-				!!state.tax_data[0] && !!parseFloat(state.tax_data[0].RESULT)
-				&& !!state.equipment_tax_data[0] && !!parseFloat(state.equipment_tax_data[0].RESULT) :
-				 !!state.tax_data[0] && !!parseFloat(state.tax_data[0].RESULT);
+		if (state.tax_data) {
+			taxesControl = !!state.tax_data[0] && !isEmpty(state.tax_data[0].FACT_VALUE);
 		}
 
 		return (

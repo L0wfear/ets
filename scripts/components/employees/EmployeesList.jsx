@@ -111,6 +111,7 @@ let EmployeesTable = (props) => {
 		drivers_license : ({data}) => <div>{data && data !== "None" && data !== 'null' ? data : ''}</div>,
 		special_license : ({data}) => <div>{data && data !== "None" && data !== 'null' ? data : ''}</div>,
     position_name: ({data}) => <div>{data && data !== "None" && data !== 'null' ? data : ''}</div>,
+    medical_certificate_date: ({data}) => <DateFormatter date={data} />,
 	};
 
 	return <Table title='Реестр сотрудников'

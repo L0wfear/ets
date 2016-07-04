@@ -70,6 +70,16 @@ let getTableMeta = (props) => {
 				}
 			},
 			{
+				name: 'closing_date',
+				caption: 'Дата закрытия',
+				cssClassName: 'width-waybill-large',
+				type: 'date',
+				filter: {
+					type: 'date_create',
+					labelFunction: datePickerFunction
+				}
+			},
+			{
 				name: 'driver_id',
 				caption: 'Водитель',
 				cssClassName: 'width-waybill-small',

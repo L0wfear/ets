@@ -18,12 +18,17 @@ class WaybillPrintForm extends Component {
 	}
 
   async handleSubmit() {
+
 		let MONTHS = ['Январь','Февраль','Март','Апрель','Май','Июнь',
       'Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
 		await this.context.flux.getActions('waybills')
 			.getWaybillJournalReport(this.state)
-			.then(blob => {saveData(blob, `Отчет по ПЛ за ${MONTHS[this.state.month]} ${this.state.year}.xls`)});
-		this.props.hide();
+			.then(blob => {saveData(blob, `Отчет по журналу ПЛ за ${MONTHS[this.state.month]} ${this.state.year}.xls`)});
+
+		this.setState({
+      month: new Date().getMonth(),
+      year: new Date().getYear()+1900
+    }, () => this.props.hide());
   }
 
   handleChange(field, value) {

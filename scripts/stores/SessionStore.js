@@ -1,4 +1,5 @@
 import { Store } from 'flummox';
+import { createFio } from '../utils/create-fio.js';
 
 const SESSION_KEY = 'ets-session';
 const defaultUser = {
@@ -72,7 +73,7 @@ class SessionStore extends Store {
   }
 
   handleLogin(data) {
-    data.payload.fio = `${data.payload.last_name} ${data.payload.first_name[0]}. ${data.payload.middle_name[0]}.`;
+    data.payload.fio = createFio(data.payload);
     const session = data.token;
     let currentUser = data.payload;
 

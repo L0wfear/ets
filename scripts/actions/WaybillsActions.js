@@ -81,6 +81,7 @@ class WaybillsActions extends Actions {
     delete payload.motohours_diff;
     delete payload.motohours_equip_diff;
     delete payload.date_create;
+    delete payload.closing_date;
     delete payload.car_has_odometer;
     delete payload.could_be_closed;
     delete payload.mission_list;

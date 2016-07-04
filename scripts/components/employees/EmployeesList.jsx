@@ -74,6 +74,21 @@ let tableMeta = {
       filter: {
 				type: 'select'
 			}
+  }, {
+      name: 'medical_certificate',
+      caption: 'Медицинская справка',
+      type: 'text',
+      filter: {
+				type: 'select'
+			}
+  }, {
+      name: 'medical_certificate_date',
+      caption: 'Срок действия мед. справки',
+      type: 'date',
+      filter: {
+        type: 'date_create',
+        labelFunction: datePickerFunction
+      }
   }]
 };
 

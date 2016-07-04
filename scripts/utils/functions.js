@@ -17,7 +17,7 @@ export function saveData(blob, fileName) {
   a.href = url;
   a.download = fileName;
   a.click();
-  window.URL.revokeObjectURL(url);
+  setTimeout(() => window.URL.revokeObjectURL(url), 100);
 }
 
 export function printData(blob) {

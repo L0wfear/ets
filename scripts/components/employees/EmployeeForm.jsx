@@ -70,15 +70,18 @@ class EmployeeForm extends Form {
 							<Div>
 								<label>Дата рождения</label>
 								<Datepicker date={state['birthday']} time={false} onChange={this.handleChange.bind(this, 'birthday')}/>
+								<br/>
 							</Div>
 							<Div>
 								<label>Телефон</label>
 								<Input type="text" value={state['phone']} onChange={this.handleChange.bind(this, 'phone')}/>
 							</Div>
-							<Field type="select" label="Должность"
-									options={POSITION_ELEMENTS}
-									value={state.position_id}
-									onChange={this.handleChange.bind(this, 'position_id')}/>
+							<Div>
+								<Field type="select" label="Должность"
+										options={POSITION_ELEMENTS}
+										value={state.position_id}
+										onChange={this.handleChange.bind(this, 'position_id')}/>
+							</Div>
 						</Col>
 
 						<Col md={6}>
@@ -102,6 +105,20 @@ class EmployeeForm extends Form {
 								<label>Состояние</label>
 								<EtsSelect options={DRIVER_STATES} value={state.active ? 1 : 0} onChange={this.handleChange.bind(this, 'active')}/>
 							</Div>
+							<Row>
+								<Col md={6}>
+									<Div>
+										<label>Медицинская справка №</label>
+										<Input type="text" value={state['medical_certificate']} onChange={this.handleChange.bind(this, 'medical_certificate')}/>
+									</Div>
+								</Col>
+								<Col md={6}>
+									<Div>
+										<label>Срок действия медицинской справки</label>
+										<Datepicker date={state['medical_certificate_date']} time={false} onChange={this.handleChange.bind(this, 'medical_certificate_date')}/>
+									</Div>
+								</Col>
+							</Row>
 						</Col>
 
 					</Row>

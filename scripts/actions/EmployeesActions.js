@@ -16,21 +16,23 @@ export default class EmployeesActions extends Actions {
   updateEmployee(formState) {
     const payload = _.clone(formState);
     payload.birthday = createValidDate(payload.birthday);
+    payload.medical_certificate_date = createValidDate(payload.medical_certificate_date);
     delete payload.position_name;
     delete payload.company_structure_name;
     delete payload.position_key;
     delete payload.full_name;
     payload.active = !!payload.active;
-    return EmployeeService.put(payload);
+    return EmployeeService.put(payload, true, 'json');
   }
 
   createEmployee(formState) {
     const payload = _.clone(formState);
     payload.birthday = createValidDate(payload.birthday);
+    payload.medical_certificate_date = createValidDate(payload.medical_certificate_date);
     delete payload.position_name;
     delete payload.position_key;
     payload.active = !!payload.active;
-    return EmployeeService.post(payload);
+    return EmployeeService.post(payload, true, 'json');
   }
 
   deleteEmployee(id) {

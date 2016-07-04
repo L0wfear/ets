@@ -39,7 +39,6 @@ class WaybillPrintForm extends Component {
 			date_from: getToday9am(),
 			date_to: getTomorrow9am()
     }, () => this.props.hide());
-
   }
 
   handleChange(field, value) {

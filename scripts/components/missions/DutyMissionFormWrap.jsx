@@ -28,14 +28,13 @@ class DutyMissionFormWrap extends FormWrap {
 
 		let response;
 
-		//потом перенести на бек
 		if (mission.id) {
 			response = await this.context.flux.getActions('missions').updateDutyMission(mission);
 		} else {
 			response = await this.context.flux.getActions('missions').createDutyMission(mission);
 		}
 
-		let id = response.result && response.result[0] ? response.result[0].id : null;
+		let id = mission.id ? mission.id : response.result && response.result[0] ? response.result[0].id : null;
 		await this.context.flux.getActions('missions').printDutyMission(id).then(blob => {saveData(blob, `Печатная форма наряд-задания №${id}.pdf`)});
 		this.context.flux.getActions('missions').getDutyMissions();
 		this.props.onFormHide();

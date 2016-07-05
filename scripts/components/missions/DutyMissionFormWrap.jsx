@@ -23,24 +23,18 @@ class DutyMissionFormWrap extends FormWrap {
 	}
 
   async handleFormPrint() {
-    let mission = _.cloneDeep(this.state.formState);
+		let mission = _.cloneDeep(this.state.formState);
 
 		let response;
 
-		//потом перенести на бек
 		if (mission.id) {
 			response = await this.context.flux.getActions('missions').updateDutyMission(mission);
 		} else {
 			response = await this.context.flux.getActions('missions').createDutyMission(mission);
 		}
 
-		let id = response.result && response.result[0] ? response.result[0].id : null;
-		await this.context.flux.getActions('missions').printDutyMission(id).then(url => {
-			window.location = `${url}?duty_mission_id=${id}`;
-			setTimeout(() => {
-					this.context.flux.getActions('missions').getDutyMissions();
-				}, 500);
-			});
+		let id = mission.id ? mission.id : response.result && response.result[0] ? response.result[0].id : null;
+		await this.context.flux.getActions('missions').printDutyMission(id).then(blob => {saveData(blob, `Печатная форма наряд-задания №${id}.pdf`)});
 		this.context.flux.getActions('missions').getDutyMissions();
 		this.props.onFormHide();
   }

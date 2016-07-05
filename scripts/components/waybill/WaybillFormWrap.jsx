@@ -266,6 +266,20 @@ class WaybillFormWrap extends Component {
 			formState.motohours_equip_diff = value ? parseFloat(formState.motohours_equip_end - formState.motohours_equip_start).toFixed(3) : null;
 		}
 
+		if (formState.tax_data.length) {
+			if (field === 'odometr_end') {
+				formState.tax_data[formState.tax_data.length-1].FACT_VALUE = formState.odometr_diff > 0 ? formState.odometr_diff - Taxes.calculateFinalFactValue(formState.tax_data) : null;
+			}
+
+			if (field === 'motohours_end') {
+				formState.tax_data[formState.tax_data.length-1].FACT_VALUE = formState.motohours_diff > 0 ? formState.motohours_diff - Taxes.calculateFinalFactValue(formState.tax_data) : null;
+			}
+
+			if (field === 'motohours_equip_end') {
+				formState.equipment_tax_data[formState.tax_data.length-1].FACT_VALUE = formState.motohours_equip_diff > 0 ? formState.motohours_equip_diff - Taxes.calculateFinalFactValue(formState.motohours_equip_diff) : null;
+			}
+		}
+
 		this.handleFieldsChange(formState);
 	}
 

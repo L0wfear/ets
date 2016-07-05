@@ -17,13 +17,13 @@ let getTableMeta = (props) => {
 	    },
 	    {
 	      name: 'route_check_value',
-	      caption: 'Нужно пройти (кв. м. или м.)',
+	      caption: `Нужно пройти (${props.data[0].route_check_unit})`,
 	      type: 'string',
 				filter: false
 	    },
 			{
 				name: 'traveled',
-				caption: 'Пройдено в рабочем режиме (кв. м. или м.)*',
+				caption: `Пройдено в рабочем режиме (${props.data[0].route_check_unit})*`,
 				type: 'string',
 				filter: false
 			},
@@ -35,7 +35,7 @@ let getTableMeta = (props) => {
 			// },
 			{
 				name: 'left',
-				caption: 'Осталось (кв. м. или м.)',
+				caption: `Осталось (${props.data[0].route_check_unit})`,
 				type: 'string',
 				filter: false
 			},

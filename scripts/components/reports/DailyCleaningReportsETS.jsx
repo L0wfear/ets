@@ -7,7 +7,7 @@ import Div from '../ui/Div.jsx';
 import Field from '../ui/Field.jsx';
 import Datepicker from '../ui/DatePicker.jsx';
 import { datePickerFunction, getReportStatusLabel, getGeozoneTypeLabel} from 'utils/labelFunctions';
-import { getToday9am, getTomorrow9am, getToday0am, getToday2359, getFormattedDateTimeSeconds } from 'utils/dates';
+import { getToday9am, getTomorrow9am, getToday0am, getToday2359, getFormattedDateTime } from 'utils/dates';
 import { getReportNotReadyNotification2 } from 'utils/notifications';
 import { isEmpty } from 'utils/functions';
 import DailyReportHeader from './DailyReportHeader.jsx';
@@ -103,11 +103,11 @@ let DailyCleaningReportsTable = (props) => {
     status: ({data}) => <div>{data ? getReportStatusLabel(data) : ''}</div>,
     geozone_type: ({data}) => <div>{data ? getGeozoneTypeLabel(data) : ''}</div>,
     element: ({data}) => <div>{data ? getElementLabel(data) : ''}</div>,
-    date_start: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
-    date_end: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
-    timestamp_create: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
-    timestamp_process_begin: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
-    timestamp_process_end: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
+    date_start: ({data}) => <div>{data ? getFormattedDateTime(data) : ''}</div>,
+    date_end: ({data}) => <div>{data ? getFormattedDateTime(data) : ''}</div>,
+    timestamp_create: ({data}) => <div>{data ? getFormattedDateTime(data) : ''}</div>,
+    timestamp_process_begin: ({data}) => <div>{data ? getFormattedDateTime(data) : ''}</div>,
+    timestamp_process_end: ({data}) => <div>{data ? getFormattedDateTime(data) : ''}</div>,
 	};
 
 	return <Table title='Статус по уборке'

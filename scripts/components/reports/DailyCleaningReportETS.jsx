@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import Table from '../ui/table/DataTable.jsx';
 import { getPeriodicReportStatusLabel } from 'utils/labelFunctions';
+import { Input } from 'react-bootstrap';
+import { getFormattedDateTime } from 'utils/dates';
 
 let getTableMeta = (props) => {
 
@@ -123,19 +125,18 @@ class MissionReport extends Component {
 
     this.state = {
       selectedReportData: [],
+      dateFrom: '',
+      dateTo: ''
     };
 	}
 
 	async componentDidMount() {
 		const { flux } = this.context;
-    try {
-  		let result = await flux.getActions('reports').getDailyCleaningReportByIdETS(this.props.routeParams.id);
-      let selectedReportData = result.result[0].result.rows;
-      this.setState({selectedReportData});
-    } catch (e) {
-      console.log(e);
-      return;
-    }
+		let result = await flux.getActions('reports').getDailyCleaningReportByIdETS(this.props.routeParams.id);
+    let selectedReportData = result.result[0].result.rows;
+    let dateFrom = getFormattedDateTime(result.result[0].timestamp_process_begin);
+    let dateTo = getFormattedDateTime(result.result[0].timestamp_process_end);
+    this.setState({selectedReportData, dateFrom, dateTo});
 	}
 
   onReportSelect({props}) {
@@ -143,12 +144,17 @@ class MissionReport extends Component {
 
 	render() {
 
-		const { selectedReportData = [] } = this.state;
+		const { selectedReportData = [], dateFrom, dateTo } = this.state;
     let element = this.props.routeParams.element;
 
 		return (
 			<div className="ets-page-wrap">
 				<MissionReportTable data={selectedReportData} element={element} onRowSelected={this.onReportSelect.bind(this)}>
+          <div className="daily-cleaning-report-period">
+            Период формирования:
+            <Input type="text" readOnly value={dateFrom}></Input> —
+            <Input type="text" readOnly value={dateTo}></Input>
+          </div>
 				</MissionReportTable>
 			</div>
 		);

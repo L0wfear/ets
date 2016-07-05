@@ -3385,3 +3385,16 @@ div.none {
     margin-left: 20px;
   }
 }
+
+.daily-cleaning-report-period {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  text-align: center;
+  div {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 150px;
+    display: inline-block;
+  }
+}

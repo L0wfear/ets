@@ -1,11 +1,9 @@
 import MapServerConfig from './MapServerConfig.js';
+import EVERGIS_TOKEN, { getToken, fetchToken, isFetchingToken, attemptsLimitExceeded } from 'utils/evergis.js';
+import _ from 'lodash';
 
 const INITIAL_EXTENT = MapServerConfig.initialExtent;
 const FULL_EXTENT = MapServerConfig.fullExtent;
-//const TILES_URL = '//ods.mos.ru/ssd/ArcGIS/rest/services/egko_go/MapServer/tile/';
-//const TILES_URL = '//apieatlas.mos.ru/arcgis/rest/services/Basemaps/egko_gc_graphics/MapServer/tile/';
-//const TILES_URL = '//moslight.mos.ru/ArcGIS/rest/services/egko_belle/MapServer/tile/';
-//const TILES_URL = '//is033-ea-gis-6p:6080/arcgis/rest/services/test/msk_01022016/MapServer/tile/'
 const TILES_URL = '//gisoiv.mos.ru/IntegrationGIS/SpatialProcessor/IIS/egko/MapServer/tile/';
 const TILE_SIZE = MapServerConfig.tileInfo.rows;
 const ORIGIN = MapServerConfig.tileInfo.origin;
@@ -50,22 +48,49 @@ for (let i = 0, till = MapServerConfig.tileInfo.lods.length; i < till; i++) {
   SCALES.push(MapServerConfig.tileInfo.lods[i].scale);
 }
 
- export let ArcGisLayer = new ol.layer.Tile({
-      source: new ol.source.TileImage({
-          tileUrlFunction: function(tileCoord, pixelRatio, projection) {
-              let z = tileCoord[0];
-              let x = tileCoord[1];
-              let y = - tileCoord[2] - 1;
-              return TILES_URL + z + '/' + y + '/' + x + '?_sb=' + global.everGisToken
-          },
-          crossOrigin: 'anonymous',
-          projection: PROJECTION,
-          tileGrid: new ol.tilegrid.TileGrid({
-              origin: [ORIGIN.x, ORIGIN.y],
-              resolutions: RESOLUTIONS,
-              tileSize: TILE_SIZE
-          }),
-          //tilePixelRatio: 2,
-      }),
-      extent: EXTENT
+function tileUrl(getToken, tileCoord, pixelRatio, projection) {
+    let z = tileCoord[0];
+    let x = tileCoord[1];
+    let y = - tileCoord[2] - 1;
+    return TILES_URL + z + '/' + y + '/' + x + '?_sb=' + getToken();
+}
+
+function onErrorsLimit() {
+  console.error('EVERGIS TOKEN ATTEMPTS LIMIT EXCEEDED');
+}
+
+onErrorsLimit = _.debounce(onErrorsLimit, 1000);
+
+tileUrl = tileUrl.bind(null, getToken);
+
+let ArcGisSource = new ol.source.TileImage({
+    tileUrlFunction: tileUrl,
+    crossOrigin: 'anonymous',
+    projection: PROJECTION,
+    tileGrid: new ol.tilegrid.TileGrid({
+        origin: [ORIGIN.x, ORIGIN.y],
+        resolutions: RESOLUTIONS,
+        tileSize: TILE_SIZE
+    }),
+    //tilePixelRatio: 2,
+});
+
+ArcGisSource.on('tileloadstart', () => {
+});
+
+ArcGisSource.on('tileloaderror', (error) => {
+  const { tile } = error;
+  // TODO идентифицировать ошибку конкретно токена
+  if (!isFetchingToken() && !attemptsLimitExceeded()) {
+    fetchToken().then(() => {
+      ArcGisSource.setTileUrlFunction(tileUrl);
+    });
+  } else if (attemptsLimitExceeded()) {
+    onErrorsLimit();
+  }
+});
+
+export let ArcGisLayer = new ol.layer.Tile({
+  source: ArcGisSource,
+  extent: EXTENT
 });

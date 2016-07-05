@@ -106,7 +106,7 @@ export default class HybridMap extends Map {
     this.zoomedPolyName = null;
     this.state = {
       zoom: null
-    }
+    };
   }
 
   updatePoints(updatedPoints) {

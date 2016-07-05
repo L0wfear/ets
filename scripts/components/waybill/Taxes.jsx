@@ -127,7 +127,9 @@ export default class Taxes extends Component {
   addOperation() {
     const { tableData } = this.state;
     const { correctionRate, baseFactValue } = this.props;
-    tableData.push({fuel_correction_rate: correctionRate, FACT_VALUE: baseFactValue});
+    let overallValue = Taxes.calculateFinalFactValue(this.state.tableData);
+    let value = baseFactValue ? baseFactValue - overallValue : null;
+    tableData.push({fuel_correction_rate: correctionRate, FACT_VALUE: value});
     this.setState({tableData});
   }
 
@@ -182,13 +184,13 @@ export default class Taxes extends Component {
         </Div>
         <Div hidden={!hasTaxes}>
           <Table title="Расчет топлива по норме"
-            columnCaptions={this.tableCaptions}
-            data={taxes}
-            tableCols={this.tableCols}
-            pageSize={10}
-            usePagination={false}
-            cellRenderers={this.tableCellRenderers}
-            onRowSelected={!this.props.readOnly ? this.selectOperation.bind(this) : undefined} />
+              columnCaptions={this.tableCaptions}
+              data={taxes}
+              tableCols={this.tableCols}
+              pageSize={10}
+              usePagination={false}
+              cellRenderers={this.tableCellRenderers}
+              onRowSelected={!this.props.readOnly ? this.selectOperation.bind(this) : undefined} />
         </Div>
         <Div className="taxes-result" hidden={!hasTaxes}>
           <div className="taxes-result-label">Итого</div>

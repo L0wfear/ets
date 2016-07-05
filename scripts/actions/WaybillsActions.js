@@ -16,7 +16,7 @@ class WaybillsActions extends Actions {
 
   deleteWaybill(id) {
     const payload = { id };
-    return WaybillService.delete(payload);
+    return WaybillService.delete(payload, true, 'json');
   }
 
   getLatestWaybillDriver(car_id, driver_id) {

@@ -37,7 +37,8 @@ import WeeklyTechnicalOperationCompleteReport from './reports/WeeklyTechnicalOpe
 import Analytics from './reports/Analytics.jsx';
 import FaxogrammDirectory from './directories/faxogramm/FaxogrammDirectory.jsx';
 import CompanyStructure from './company_structure/CompanyStructure.jsx';
-import { checkToken, getEverGisToken } from '../adapter.js';
+import { checkToken } from '../adapter.js';
+import { fetchToken } from '../utils/evergis.js';
 import Flux from './Flux.js';
 import { loginErrorNotification, getErrorNotification } from 'utils/notifications';
 
@@ -74,11 +75,9 @@ class App extends Component {
     this.setState({loading: true});
     if(!flux.getStore('session').isLoggedIn()) return this.setState({loading: false});
     return checkToken()
+          .then(() => fetchToken())
           .then(() => {
-            getEverGisToken().then((token) => {
-              global.everGisToken = token;
-              this.setState({loading: false})
-            })
+            this.setState({loading: false});
           })
           .catch((error) => {
             if (error === 401) {

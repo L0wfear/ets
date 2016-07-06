@@ -14,7 +14,7 @@ export default class APIService {
     this.get = this.get.bind(this);
   }
 
-  get(payload = {}) {
+  get(payload = {}, blob = false) {
     if (this.useMock && mocks[this.serviceName] && mocks[this.serviceName].get && _.keys(payload).length === 0) {
       this.log('GET MOCK');
       return new Promise((res, rej) => {
@@ -25,7 +25,7 @@ export default class APIService {
     }
     this.log('GET');
 
-    return getJSON(this.url, payload);
+    return getJSON(this.url, payload, blob);
   }
 
   post(payload = {}, callback, type = 'form', blob = false) {

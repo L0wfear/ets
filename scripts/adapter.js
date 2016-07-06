@@ -76,8 +76,8 @@ function HTTPMethod(url, data = {}, method, type, blob) {
   });
 }
 
-export function getJSON(url, data = {}) {
-  return HTTPMethod(url, data, 'GET');
+export function getJSON(url, data = {}, blob = false) {
+  return HTTPMethod(url, data, 'GET', null, blob);
 }
 
 export function postJSON(url, data = {}, type = 'form', blob = false) {

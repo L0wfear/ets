@@ -130,9 +130,7 @@ export default class MissionsActions extends Actions {
 
   printDutyMission(duty_mission_id) {
     const payload = { duty_mission_id };
-    return new Promise((res, rej) => {
-      res(DutyMissionPrintService.getUrl());
-    });
+    return DutyMissionPrintService.get(payload, true);
   }
 
 

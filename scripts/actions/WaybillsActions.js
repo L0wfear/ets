@@ -16,7 +16,7 @@ class WaybillsActions extends Actions {
 
   deleteWaybill(id) {
     const payload = { id };
-    return WaybillService.delete(payload);
+    return WaybillService.delete(payload, true, 'json');
   }
 
   getLatestWaybillDriver(car_id, driver_id) {
@@ -111,7 +111,7 @@ class WaybillsActions extends Actions {
       payload.mission_id_list = [];
     }
 
-    return WaybillService.put(payload, false);
+    return WaybillService.put(payload, false, 'json');
   }
 
   createWaybill(waybill) {
@@ -137,7 +137,7 @@ class WaybillsActions extends Actions {
       payload.mission_id_list = [];
     }
 
-    return WaybillService.post(payload);
+    return WaybillService.post(payload, true, 'json');
   }
 
 }

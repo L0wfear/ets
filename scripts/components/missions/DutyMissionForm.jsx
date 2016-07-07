@@ -81,7 +81,7 @@ export class DutyMissionForm extends Form {
     }
 
     if (!isEmpty(mission.technical_operation_id)) {
-			routesList = await routesActions.getRoutesByTechnicalOperation(mission.technical_operation_id);
+			routesList = await routesActions.getRoutesByDutyMissionId(mission.id);
 		}
 
   	flux.getActions('missions').getMissions(mission.technical_operation_id);

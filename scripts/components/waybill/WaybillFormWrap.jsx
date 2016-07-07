@@ -266,7 +266,7 @@ class WaybillFormWrap extends Component {
 			formState.motohours_equip_diff = value ? parseFloat(formState.motohours_equip_end - formState.motohours_equip_start).toFixed(3) : null;
 		}
 
-		if (formState.tax_data.length) {
+		if (formState.tax_data && formState.tax_data.length) {
 			if (field === 'odometr_end') {
 				formState.tax_data[formState.tax_data.length-1].FACT_VALUE = formState.odometr_diff > 0 ? formState.odometr_diff - Taxes.calculateFinalFactValue(formState.tax_data) : null;
 			}

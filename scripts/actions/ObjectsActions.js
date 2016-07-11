@@ -16,7 +16,10 @@ import { FaxogrammService,
          PositionService,
          ModelsService,
          SpecialModelService,
-         SSPService } from 'api/Services';
+         SSPService,
+         PZVService,
+         CarPoolService,
+         DangerZoneService } from 'api/Services';
 
 export default class ObjectsActions extends Actions {
 
@@ -60,6 +63,22 @@ export default class ObjectsActions extends Actions {
 
   getDTs() {
     return DTService.get();
+  }
+
+  getSSPs() {
+    return SSPService.get();
+  }
+
+  getPZVs() {
+    return PZVService.get();
+  }
+
+  getCarpools() {
+    return CarPoolService.get();
+  }
+
+  getDangerZones() {
+    return DangerZoneService.get();
   }
 
   getWorkKinds() {

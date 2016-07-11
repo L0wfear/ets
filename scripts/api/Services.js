@@ -52,6 +52,9 @@ export const VectorObjectService = new APIService('/vector_object/', useMocks);
 export const CoverageReportService = new APIService('/current_coverage_report/', useMocks);
 
 export const SSPService = new APIService('/ssp/', true);
+export const PZVService = new APIService('/pzv/', true);
+export const CarPoolService = new APIService('/carpool/', true);
+export const DangerZoneService = new APIService('/danger_zone/', true);
 
 // REPORTS
 

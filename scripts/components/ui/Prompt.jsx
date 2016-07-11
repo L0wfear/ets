@@ -2,11 +2,6 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Modal, Button } from 'react-bootstrap';
 
-let windowPromptIsVisible = false;
-
-console.log('qs');
-
-
 const promptDiv = document.createElement('div');
 promptDiv.id = 'prompt';
 document.body.appendChild(promptDiv);

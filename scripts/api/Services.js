@@ -51,6 +51,8 @@ export const PositionService = new APIService('/position/', useMocks);
 export const VectorObjectService = new APIService('/vector_object/', useMocks);
 export const CoverageReportService = new APIService('/current_coverage_report/', useMocks);
 
+export const SSPService = new APIService('/ssp/', true);
+
 // REPORTS
 
 export const MissionReportsService = new APIService('/car_odh_travel_report/');

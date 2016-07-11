@@ -132,8 +132,8 @@ class MissionReport extends Component {
     const { flux } = this.context;
 		let result = await flux.getActions('reports').getDailyCleaningReportByIdCAFAP(this.props.routeParams.id);
     let selectedReportData = result.result[0].result.rows;
-    let dateFrom = getFormattedDateTime(result.result[0].timestamp_process_begin);
-    let dateTo = getFormattedDateTime(result.result[0].timestamp_process_end);
+    let dateFrom = getFormattedDateTime(result.result[0].date_start);
+    let dateTo = getFormattedDateTime(result.result[0].date_end);
     this.setState({selectedReportData, dateFrom, dateTo});
 	}
 

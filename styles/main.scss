@@ -3468,3 +3468,11 @@ div.none {
     display: inline-block;
   }
 }
+
+.map-view {
+  vertical-align: middle !important;
+  text-align: center;
+  .glyphicon {
+    font-size: 32px;
+  }
+}

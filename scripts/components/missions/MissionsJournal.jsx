@@ -7,6 +7,7 @@ import { getFormattedDateTime } from 'utils/dates';
 import { datePickerFunction } from 'utils/labelFunctions';
 import MissionFormWrap from './MissionFormWrap.jsx';
 import MissionRejectForm from './MissionRejectForm.jsx';
+import MissionInfoFormWrap from '../dashboard/MissionInfoFormWrap.jsx';
 import ElementsList from '../ElementsList.jsx';
 import moment from 'moment';
 import { saveData } from 'utils/functions';
@@ -130,6 +131,12 @@ let getTableMeta = (props) => {
 					type: 'select',
 				}
 			},
+			{
+	      name: 'map_view',
+	      caption: 'Показать на карте',
+				filter: false,
+				cssClassName: 'map-view'
+	    },
 		]
 	};
 
@@ -147,7 +154,8 @@ let MissionsTable = (props) => {
       isChecked: ({data}) => {
         console.dir(data);
        return <input type="checkbox" />;
-      }
+		 },
+			map_view: ({data}) => <div><span onClick={() => props.mapView(data)}><Glyphicon glyph="exclamation-sign" /></span></div>,
 		};
 
 		return <Table title="Журнал заданий"
@@ -182,7 +190,8 @@ export class MissionsJournal extends ElementsList {
       selectedElement: null,
       checkedMissions: {},
 			showForm: false,
-			showMissionRejectForm: false
+			showMissionRejectForm: false,
+			showMissionInfoForm: false,
     };
 	}
 
@@ -315,12 +324,27 @@ export class MissionsJournal extends ElementsList {
 		refresh && this.context.flux.getActions('missions').getMissions();
 	}
 
+	async mapView(id) {
+		let mission = await this.context.flux.getActions('missions').getMissionData(id);
+		this.setState({mission: mission.result[0], showMissionInfoForm: true});
+	}
+
 	render() {
 		const { missionsList = [] } = this.props;
+		missionsList.map((item) => {item.map_view = item.id; return item});
 
 		return (
 			<div className="ets-page-wrap">
-				<MissionsTable data={missionsList} onAllRowsChecked={this.checkAll.bind(this)} onRowChecked={this.checkMission.bind(this)} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} checked={this.state.checkedMissions} selectField={'id'}{...this.props}>
+				<MissionsTable
+						data={missionsList}
+						onAllRowsChecked={this.checkAll.bind(this)}
+						onRowChecked={this.checkMission.bind(this)}
+						onRowSelected={this.selectElement.bind(this)}
+						selected={this.state.selectedElement}
+						checked={this.state.checkedMissions}
+						selectField={'id'}
+						mapView={this.mapView.bind(this)}
+						{...this.props}>
 					<Button bsSize="small" onClick={this.completeCheckedMissions.bind(this)} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</Button>
 					<Button bsSize="small" onClick={this.rejectCheckedMissions.bind(this)} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</Button>
 					<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Создать задание</Button>
@@ -336,6 +360,10 @@ export class MissionsJournal extends ElementsList {
 						show={this.state.showMissionRejectForm}
 						onReject={this.onReject.bind(this)}
 						mission={this.state.selectedElement} />
+				<MissionInfoFormWrap
+						onFormHide={() => this.setState({showMissionInfoForm: false})}
+						showForm={this.state.showMissionInfoForm}
+						element={this.state.mission} />
 			</div>
 		);
 	}

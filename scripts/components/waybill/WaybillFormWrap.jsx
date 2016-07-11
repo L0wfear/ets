@@ -268,15 +268,15 @@ class WaybillFormWrap extends Component {
 
 		if (formState.tax_data && formState.tax_data.length) {
 			if (field === 'odometr_end') {
-				formState.tax_data[formState.tax_data.length-1].FACT_VALUE = formState.odometr_diff > 0 ? formState.odometr_diff - Taxes.calculateFinalFactValue(formState.tax_data) : null;
+				_.last(formState.tax_data).FACT_VALUE = formState.odometr_diff > 0 ? formState.odometr_diff : null;
 			}
 
 			if (field === 'motohours_end') {
-				formState.tax_data[formState.tax_data.length-1].FACT_VALUE = formState.motohours_diff > 0 ? formState.motohours_diff - Taxes.calculateFinalFactValue(formState.tax_data) : null;
+				_.last(formState.tax_data).FACT_VALUE = formState.motohours_diff > 0 ? formState.motohours_diff : null;
 			}
 
-			if (field === 'motohours_equip_end') {
-				formState.equipment_tax_data[formState.tax_data.length-1].FACT_VALUE = formState.motohours_equip_diff > 0 ? formState.motohours_equip_diff - Taxes.calculateFinalFactValue(formState.motohours_equip_diff) : null;
+			if (field === 'motohours_equip_end' && formState.equipment_tax_data && formState.equipment_tax_data.length) {
+				_.last(formState.equipment_tax_data).FACT_VALUE = formState.motohours_equip_diff > 0 ? formState.motohours_equip_diff : null;
 			}
 		}
 
@@ -409,8 +409,7 @@ class WaybillFormWrap extends Component {
 			this.context.flux.getActions('waybills').getWaybills();
 			this.props.onFormHide();
 		})
-		.catch(() => {
-		});
+		.catch(() => {});
 	}
 
 	render() {

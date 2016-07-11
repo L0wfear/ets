@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import _ from 'lodash';
-import { saveData } from 'utils/functions';
 import Div from '../ui/Div.jsx';
 import DutyMissionForm from './DutyMissionForm.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';

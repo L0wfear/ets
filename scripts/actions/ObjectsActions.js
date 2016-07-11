@@ -15,7 +15,8 @@ import { FaxogrammService,
          DTService,
          PositionService,
          ModelsService,
-         SpecialModelService } from 'api/Services';
+         SpecialModelService,
+         SSPService } from 'api/Services';
 
 export default class ObjectsActions extends Actions {
 

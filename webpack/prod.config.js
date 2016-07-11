@@ -16,7 +16,10 @@ var stand = process.env.STAND || 'production';
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
-    'app': './scripts/app.jsx',
+    'app': [
+      'whatwg-fetch',
+      './scripts/app.jsx'
+    ],
     'style': 'raw!./styles/main.scss'
   },
   output: {

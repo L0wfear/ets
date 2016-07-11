@@ -15,6 +15,7 @@ module.exports = {
   context: path.resolve(__dirname, '..'),
   entry: {
     'app': [
+      'whatwg-fetch',
       'webpack-dev-server/client?http://' + host + ':' + port,
       'webpack/hot/only-dev-server',
       "./scripts/app.jsx"
@@ -81,14 +82,6 @@ module.exports = {
     // stats
     function () {
       this.plugin('done', notifyStats);
-    },/*
-    function () {
-      this.plugin('done', function(stats) {
-        writeStats.call(this, stats, 'dev');
-      });
-    }*/
+    },
   ]
 };
-
-
-//config.addVendor('bootstrap.min.css', './styles/bootstrap.min.css');

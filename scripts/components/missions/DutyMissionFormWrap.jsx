@@ -6,7 +6,7 @@ import Div from '../ui/Div.jsx';
 import DutyMissionForm from './DutyMissionForm.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';
 import { getDefaultDutyMission } from '../../stores/MissionsStore.js';
-import { isNotNull, isEmpty } from 'utils/functions';
+import { isNotNull, isEmpty, saveData } from 'utils/functions';
 import { dutyMissionSchema, dutyMissionClosingSchema } from '../models/DutyMissionModel.js';
 
 class DutyMissionFormWrap extends FormWrap {
@@ -24,7 +24,7 @@ class DutyMissionFormWrap extends FormWrap {
 	}
 
   async handleFormPrint() {
-    let mission = _.cloneDeep(this.state.formState);
+		let mission = _.cloneDeep(this.state.formState);
 
 		let response;
 

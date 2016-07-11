@@ -12,7 +12,8 @@ import { MissionReportsService,
          DutyMissionService,
          DutyMissionTemplateService,
          MissionPrintService,
-         DutyMissionPrintService } from 'api/Services';
+         DutyMissionPrintService,
+         MissionDataService } from 'api/Services';
 import { postJSON } from 'adapter';
 import config from '../config.js';
 
@@ -128,13 +129,13 @@ export default class MissionsActions extends Actions {
     // }, 'json');
   }
 
-  printDutyMission(duty_mission_id) {
-    const payload = { duty_mission_id };
-    return DutyMissionPrintService.get(payload, true);
+  getMissionData(mission_id) {
+    const payload = {
+      mission_id
+    };
+
+    return MissionDataService.get(payload);
   }
-
-
-
 
 
   /* ---------- MISSION TEMPLATES ---------- */
@@ -235,8 +236,10 @@ export default class MissionsActions extends Actions {
     return DutyMissionService.delete(payload, null, 'json');
   }
 
-
-
+  printDutyMission(duty_mission_id) {
+    const payload = { duty_mission_id };
+    return DutyMissionPrintService.get(payload, true);
+  }
 
 
   /* ---------- MISSION DUTY TEMPLATES ---------- */

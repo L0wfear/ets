@@ -49,16 +49,6 @@ export default class CurrentMission extends DashboardCardMedium {
 
   async rejectMission(id) {
     this.setState({showMissionRejectForm: true});
-    // let reason = prompt('Введите причину', '');
-		// if (reason) {
-    //   let mission = await this.context.flux.getActions('missions').getMissionById(id);
-    //       mission = mission.result[0];
-		// 	mission.status = 'fail';
-		// 	mission.comment = reason;
-		// 	await this.context.flux.getActions('missions').updateMission(mission);
-    //   this.selectItem(null);
-    //   this.props.refreshCard();
-		// }
 	}
 
   onReject(refresh) {

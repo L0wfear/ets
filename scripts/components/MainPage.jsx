@@ -70,6 +70,9 @@ export default class MainPage extends React.Component {
             <MenuItem active={path === '/odh'} href="#/odh">Справочник ОДХ</MenuItem>
             <MenuItem active={path === '/dt'} href="#/dt">Справочник ДТ</MenuItem>
             <MenuItem active={path === '/ssp'} href="#/ssp">Справочник ССП</MenuItem>
+            <MenuItem active={path === '/pzv'} href="#/pzv">Справочник ПЗВ</MenuItem>
+            <MenuItem active={path === '/carpool'} href="#/carpool">Справочник Автобаз</MenuItem>
+            <MenuItem active={path === '/danger-zones'} href="#/danger-zones">Справочник особо опасных мест</MenuItem>
           </NavDropdown>
 
           <NavDropdown title="Отчеты" id="nav-dropdown-3">

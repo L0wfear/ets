@@ -21,6 +21,9 @@ import FuelOperationsDirectory from './directories/FuelOperationsDirectory.jsx';
 import ODHDirectory from './directories/ODHDirectory.jsx';
 import DTDirectory from './directories/DTDirectory.jsx';
 import SSPDirectory from './directories/SSPDirectory.jsx';
+import PZVDirectory from './directories/PZVDirectory.jsx';
+import CarpoolDirectory from './directories/CarpoolDirectory.jsx';
+import DangerZonesDirectory from './directories/DangerZonesDirectory.jsx';
 import TechOperationsDirectory from './directories/TechOperationsDirectory.jsx';
 import ODHReports from './reports/ODHReports.jsx';
 import MissionReports from './reports/MissionReports.jsx';
@@ -165,6 +168,9 @@ const routes = (
       <Route path="odh" component={ODHDirectory} onEnter={requireAuth}/>
       <Route path="dt" component={DTDirectory} onEnter={requireAuth}/>
       <Route path="ssp" component={SSPDirectory} onEnter={requireAuth}/>
+      <Route path="pzv" component={PZVDirectory} onEnter={requireAuth}/>
+      <Route path="carpool" component={CarpoolDirectory} onEnter={requireAuth}/>
+      <Route path="danger-zones" component={DangerZonesDirectory} onEnter={requireAuth}/>
       <Route path="technical-operations" component={TechOperationsDirectory} onEnter={requireAuth}/>
       <Route path="cars" component={CarsList} onEnter={requireAuth}/>
       <Route path="login" component={LoginPage} onEnter={checkLoggedIn}/>

@@ -24,6 +24,7 @@ class ObjectsStore extends Store {
     this.register(objectsActions.getODHs, this.handleGetODHs);
     this.register(objectsActions.updateODH, this.handleGetODHs);
     this.register(objectsActions.getDTs, this.handleGetDTs);
+    this.register(objectsActions.getSSPs, this.handleGetSSPs);
     this.register(objectsActions.updateDT, this.handleGetDTs);
     this.register(objectsActions.getFaxogramms, this.handleGetFaxogramms);
     this.register(objectsActions.getPositions, this.handleGetPositions);
@@ -56,7 +57,7 @@ class ObjectsStore extends Store {
       technicalOperationsTypesList: [],
       companyStructureList: [],
       positionsList: [],
-
+      ssps: [],
       carsIndex: {},
       modelsIndex: {},
       typesIndex: {},
@@ -149,6 +150,10 @@ class ObjectsStore extends Store {
 
   handleGetODHs(odhs) {
     this.setState({odhsList: odhs.result});
+  }
+
+  handleGetSSPs(ssps) {
+    this.setState({ssps: ssps.result});
   }
 
   handleGetDTs(dts) {

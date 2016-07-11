@@ -62,6 +62,10 @@ export default class ObjectsActions extends Actions {
     return DTService.get();
   }
 
+  getSSPs() {
+    return SSPService.get();
+  }
+
   getWorkKinds() {
     return WorkKindsService.get();
   }

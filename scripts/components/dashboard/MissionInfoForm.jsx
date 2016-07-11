@@ -142,7 +142,9 @@ export class MissionInfoForm extends Form {
 								})
 							}}>
 
-								<Map polys={polys}
+								<Map
+                    polys={polys}
+                    maxSpeed={this.props.formState.technical_operation_max_speed}
 										routeType={this.state.routeType}
 										selectedObjects={this.state.selectedObjects}
 										selectedPoly={geozonePolys[this.state.selectedElementId]}

@@ -212,12 +212,12 @@ export default class Track {
 
   }
 
-  render() {
+  render(speed = null) {
     let map = this.map;
     let zoom = map.getView().getZoom();
 
     if (zoom > COLORS_ZOOM_THRESHOLD) {
-      this.renderInColors();
+      this.renderInColors(speed);
     } else {
       this.renderSimple();
     }
@@ -308,7 +308,7 @@ export default class Track {
    * TODO http://jsperf.com/changing-canvas-state/3
    * @param ctx
    */
-  renderInColors() {
+  renderInColors(maxSpeed) {
 
     let owner = this.owner;
     let track = this.points;
@@ -339,7 +339,7 @@ export default class Track {
     ctx.beginPath();
     ctx.moveTo(firstPoint.x, firstPoint.y);
 
-    let prevRgbaColor = ctx.strokeStyle = getTrackColor(getSpeed(track[0]), type_id, TRACK_LINE_OPACITY);
+    let prevRgbaColor = ctx.strokeStyle = getTrackColor(maxSpeed !== null ? maxSpeed : getSpeed(track[0]), type_id, TRACK_LINE_OPACITY);
 
     for (let i = 1, till = track.length - 1; i < till; i++) {
       let coords = projectToPixel(track[i].coords_msk);

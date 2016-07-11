@@ -84,8 +84,8 @@ class LegendWrapper extends React.Component {
         return (
           <li key={i} className={controllClassName} >
             <ControlComponent control={control}
-                              onClick={this.toggleSettingsControl.bind(this, control.type)}/>
-                              {this.props.zoom > 8 && control.type === 'track' && marker && marker.track ? marker.track.getLegend() : ''}
+                onClick={this.toggleSettingsControl.bind(this, control.type)}/>
+            {this.props.zoom > 8 && control.type === 'track' && marker && marker.track ? marker.track.getLegend() : ''}
           </li>
         );
       });
@@ -260,7 +260,7 @@ export default class HybridMap extends Map {
     if (selectedMarker) {
       if (this.props.showTrack) {
         if (selectedMarker.hasTrackLoaded()) {
-          selectedMarker.track.render();
+          selectedMarker.track.render(this.props.maxSpeed);
         }
       }
       selectedMarker.render({selected: true, ...options});

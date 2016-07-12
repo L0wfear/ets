@@ -1,12 +1,16 @@
 import React from 'react';
+import { render } from 'react-dom';
 import NotificationSystem from 'react-notification-system';
+
+const notificationsDiv = document.createElement('div');
+notificationsDiv.id = 'notifications';
+document.body.appendChild(notificationsDiv);
 
 /*
   INFO
   https://github.com/igorprado/react-notification-system
  */
-
-export default class AppNotificationSystem extends NotificationSystem {
+class AppNotificationSystem extends NotificationSystem {
 
   constructor(props) {
     super(props)
@@ -43,6 +47,8 @@ export default class AppNotificationSystem extends NotificationSystem {
   render() {
     return (
       <NotificationSystem ref="notificationSystem"/>
-      )
+    );
   }
 }
+
+global.NOTIFICATION_SYSTEM = render(<AppNotificationSystem/>, document.getElementById('notifications'));

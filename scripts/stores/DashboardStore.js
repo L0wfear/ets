@@ -55,11 +55,11 @@ const componentsByRole = {
       key: 'car_in_work_overall',
       //side: true,
     },
-    {
-      id: 11,
-      key: 'daily_missions_percent',
-      side: true,
-    },
+    // {
+    //   id: 11,
+    //   key: 'daily_missions_percent',
+    //   side: true,
+    // },
     // {
     //   id: 10,
     //   key: 'count_waybill_closed',

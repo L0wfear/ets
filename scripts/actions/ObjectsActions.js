@@ -19,6 +19,7 @@ import { FaxogrammService,
          SSPService,
          PZVService,
          CarPoolService,
+         OrganizationsService,
          DangerZoneService } from 'api/Services';
 
 export default class ObjectsActions extends Actions {
@@ -79,6 +80,10 @@ export default class ObjectsActions extends Actions {
 
   getDangerZones() {
     return DangerZoneService.get();
+  }
+
+  getOrganizations() {
+    return OrganizationsService.get();
   }
 
   getWorkKinds() {

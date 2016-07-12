@@ -28,6 +28,7 @@ class ObjectsStore extends Store {
     this.register(objectsActions.getPZVs, this.handleGetPZVs);
     this.register(objectsActions.getCarpools, this.handleGetCarpools);
     this.register(objectsActions.getDangerZones, this.handleGetDangerZones);
+    this.register(objectsActions.getOrganizations, this.handleGetOrganizations);
     this.register(objectsActions.updateDT, this.handleGetDTs);
     this.register(objectsActions.getFaxogramms, this.handleGetFaxogramms);
     this.register(objectsActions.getPositions, this.handleGetPositions);
@@ -64,6 +65,7 @@ class ObjectsStore extends Store {
       pzvs: [],
       carpools: [],
       dangerZones: [],
+      organizations: [],
       carsIndex: {},
       modelsIndex: {},
       typesIndex: {},
@@ -176,6 +178,10 @@ class ObjectsStore extends Store {
 
   handleGetDangerZones(dangerZones) {
     this.setState({dangerZones: dangerZones.result});
+  }
+
+  handleGetOrganizations(organizations) {
+    this.setState({organizations: organizations.result});
   }
 
   handleGetFaxogramms(faxogramms) {

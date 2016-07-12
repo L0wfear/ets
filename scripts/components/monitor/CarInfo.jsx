@@ -96,25 +96,6 @@ export default class CarInfo extends Component {
     };
   }
 
-  componentDidMount() {
-    if (this.props.car && !this.state.imageUrl) {
-      this.fetchImage();
-      this.fetchTrack();
-    }
-  }
-
-  componentWillReceiveProps(props) {
-    if (props.car !== this.props.car) {
-      this.fetchImage();
-      this.fetchTrack(props);
-    }
-  }
-
-  componentWillUnmount() {
-    let track = this.props.car.marker.track;
-    track.onUpdate();
-  }
-
   // TODO переместить это на более высокий уровень абстракции
   zoomToTrack() {
     let store = this.store;
@@ -186,25 +167,44 @@ export default class CarInfo extends Component {
     track.fetch(from_dt, to_dt);
   }
 
+  componentDidMount() {
+    if (this.props.car && !this.state.imageUrl) {
+      this.fetchImage();
+      this.fetchTrack();
+    }
+  }
+
+  componentWillReceiveProps(props) {
+    if (props.car !== this.props.car) {
+      this.fetchImage();
+      this.fetchTrack(props);
+    }
+  }
+
+  componentWillUnmount() {
+    let track = this.props.car.marker.track;
+    track.onUpdate();
+  }
+
   renderModel() {
-    let car = this.props.car;
-    const imageUrl = this.state.imageUrl;
+    const { imageUrl, isTrackingMode } = this.state;
+    const { car } = this.props;
 
     let title =  ''; // должен быть model title
-    let marker = this.props.car.marker;
-    let isTrackingMode = this.state.trackingMode;
+    let marker = car.marker;
     let isTrackLoaded = marker.hasTrackLoaded();
 
     let trackBtnClass = 'toggle-tracking-mode btn-sm btn track-btn ' + (isTrackingMode ? 'btn-success' : 'btn-default');
     let trackBtnIconClass = 'glyphicon glyphicon-screenshot ' + (isTrackingMode ? 'tracking-animate' : '');
     let zoomToTrackClass = 'zoom-to-track-extent btn-sm btn ' + (isTrackLoaded ? 'btn-default' : 'btn-disabled');
+    console.log(imageUrl);
 
 
     return (
       <Panel title={title}>
         <button className={trackBtnClass} onClick={this.toggleCarTracking.bind(this)} title="Следить за машиной"><span className={trackBtnIconClass}></span>&nbsp;{isTrackingMode ? 'Следим' : 'Следить'}</button>
         <button className={zoomToTrackClass} onClick={isTrackLoaded && this.zoomToTrack.bind(this)} title="Показать маршрут"><span className="glyphicon glyphicon-resize-full"></span>&nbsp;Маршрут</button>
-        <img src={imageUrl ? config.backend.replace('/services', '') + config.images + imageUrl : ''} style={{
+        <img src={imageUrl ? config.images + imageUrl : ''} style={{
           margin: 10,
           width: 250,
           minHeight: 100

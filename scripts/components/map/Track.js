@@ -1,5 +1,4 @@
 import React from 'react';
-import { projectToPixel } from './MskAdapter.js';
 import { getStartOfToday, makeDate, makeTime } from 'utils/dates';
 import { TRACK_COLORS, TRACK_LINE_OPACITY, TRACK_LINE_WIDTH, TRACK_POINT_RADIUS, SHOW_ONLY_POINTS_WITH_SPEED_CHANGES } from '../../constants/track.js';
 import { getTrackPointByColor } from '../../icons/track/points.js';
@@ -236,13 +235,13 @@ export default class Track {
     ctx.lineWidth = TRACK_LINE_WIDTH;
     ctx.lineCap = 'round';
 
-    let first = projectToPixel(track[0].coords_msk);
+    let first = this.map.projectToPixel(track[0].coords_msk);
 
     ctx.beginPath();
     ctx.moveTo(first.x, first.y);
 
     for (let i = 1, till = track.length - 1; i < till; i++) {
-      let coords = projectToPixel(track[i].coords_msk);
+      let coords = this.map.projectToPixel(track[i].coords_msk);
       ctx.lineTo(coords.x, coords.y);
     }
 
@@ -250,7 +249,7 @@ export default class Track {
     // получается некрасиво в том случае, если обновление происходит редко
     // и машина резко перемещается на другую точку
     if (owner.point.status === 1 && this.continuousUpdating) {
-      let coords = projectToPixel(swapCoords(owner.point.coords_msk));
+      let coords = this.map.projectToPixel(swapCoords(owner.point.coords_msk));
       ctx.lineTo(coords.x, coords.y);
     }
 
@@ -305,8 +304,10 @@ export default class Track {
     }
   }
   /**
+   * Рисует трек в canvas контексте в несколько цветов, в зависимости от скорости
    * TODO http://jsperf.com/changing-canvas-state/3
-   * @param ctx
+   * // @param ctx
+   * @param maxSpeed - максимальная скорость на участке, вне зависимости от типа ТС
    */
   renderInColors(maxSpeed) {
 
@@ -321,15 +322,10 @@ export default class Track {
 
     let type_id = owner.point.car.type_id;
 
-    // todo import from settings
+    // TODO import from settings
     const RENDER_GRADIENT = this.owner.store.state.showTrackingGradient;
 
-    // TODO убрать эту функцию, ибо она порождена багой на бэкэнде
-    function getSpeed(trackPoint) {
-      return 'speed_avg' in trackPoint ? trackPoint.speed_avg : trackPoint.speed
-    }
-
-    let firstPoint = projectToPixel(track[0].coords_msk);
+    let firstPoint = this.map.projectToPixel(track[0].coords_msk);
     let prevCoords = firstPoint;
 
     ctx.lineWidth = TRACK_LINE_WIDTH;
@@ -339,11 +335,12 @@ export default class Track {
     ctx.beginPath();
     ctx.moveTo(firstPoint.x, firstPoint.y);
 
-    let prevRgbaColor = ctx.strokeStyle = getTrackColor(maxSpeed !== null ? maxSpeed : getSpeed(track[0]), type_id, TRACK_LINE_OPACITY);
+    let prevRgbaColor = getTrackColor(maxSpeed !== null ? maxSpeed : track[0].speed_avg, type_id, TRACK_LINE_OPACITY);
+    ctx.strokeStyle = prevRgbaColor;
 
     for (let i = 1, till = track.length - 1; i < till; i++) {
-      let coords = projectToPixel(track[i].coords_msk);
-      let speed = getSpeed(track[i]);
+      let coords = this.map.projectToPixel(track[i].coords_msk);
+      let speed = track[i].speed_avg;
       let rgbaColor = getTrackColor(speed, type_id, TRACK_LINE_OPACITY);
       let hexColor = getTrackColor(speed, type_id);
 
@@ -352,7 +349,6 @@ export default class Track {
       // и нарисовать новую
       if (prevRgbaColor !== rgbaColor) {
         if (RENDER_GRADIENT) {
-
           // stroke path before
           ctx.stroke();
 
@@ -411,8 +407,7 @@ export default class Track {
     // получается некрасиво в том случае, если обновление происходит редко
     // и машина резко перемещается на другую точку
     if (owner.point.status === 1 && this.continuousUpdating) {
-      //debugger;
-      let coords = projectToPixel(swapCoords(owner.point.coords_msk));
+      let coords = this.map.projectToPixel(swapCoords(owner.point.coords_msk));
       ctx.lineTo(coords.x, coords.y);
     }
 
@@ -421,14 +416,14 @@ export default class Track {
 
   getPointAtCoordinate(coordinate) {
     let view = this.map.getView();
-    let projectedPixel = projectToPixel(coordinate);
+    let projectedPixel = this.map.projectToPixel(coordinate);
     let extent = view.calculateExtent(this.map.getSize());
     let viewportPoints = this.getTrackPointsInExtent(extent);
     let selected = null;
 
     for (let key in viewportPoints) {
       let point = viewportPoints[key];
-      let pixelCoords = projectToPixel(point.coords_msk)
+      let pixelCoords = this.map.projectToPixel(point.coords_msk)
       let radius = TRACK_POINT_RADIUS;
 
       var dx = pixelCoords.x - projectedPixel.x;
@@ -460,7 +455,7 @@ export default class Track {
   }
 
 
-  // todo refactor
+  // TODO refactor
   async getTrackPointTooltip(trackPoint, prevPoint, nextPoint){
     let vectorObject = await window.__ETS_CONTAINER__.flux
         .getActions('car')

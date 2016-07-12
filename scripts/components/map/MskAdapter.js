@@ -9,7 +9,7 @@ const TILE_SIZE = MapServerConfig.tileInfo.rows;
 const ORIGIN = MapServerConfig.tileInfo.origin;
 const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
 
-export function projectToPixel(coordinates) {
+export function projectToPixel(map, coordinates) {
   let x, y;
 
   if (coordinates.length) {
@@ -20,25 +20,20 @@ export function projectToPixel(coordinates) {
   }
 
   if (x === null || y === null) {
-    // return [0, 0];
     return { x: 0, y: 0};
   }
 
-  if (typeof olmap === 'undefined') {
-    return { x: 1, y: 1};
-  }
-
-  let coords = olmap.getPixelFromCoordinate([x, y]);
+  let coords = map.getPixelFromCoordinate([x, y]);
 
 	return { x: coords[0] * DEVICE_PIXEL_RATIO, y: coords[1] * DEVICE_PIXEL_RATIO};
 }
 
-export let EXTENT = [FULL_EXTENT.xmin, FULL_EXTENT.ymin, FULL_EXTENT.xmax, FULL_EXTENT.ymax]
-export let PROJECTION = new ol.proj.Projection({
-    code: 'MSK77',
-    units: 'pixels',
-    extent: EXTENT
-})
+export const EXTENT = [FULL_EXTENT.xmin, FULL_EXTENT.ymin, FULL_EXTENT.xmax, FULL_EXTENT.ymax];
+export const PROJECTION = new ol.proj.Projection({
+  code: 'MSK77',
+  units: 'pixels',
+  extent: EXTENT
+});
 
 
 let RESOLUTIONS = [];
@@ -48,20 +43,14 @@ for (let i = 0, till = MapServerConfig.tileInfo.lods.length; i < till; i++) {
   SCALES.push(MapServerConfig.tileInfo.lods[i].scale);
 }
 
-function tileUrl(getToken, tileCoord, pixelRatio, projection) {
+function tileUrl(tileCoord, pixelRatio, projection) {
     let z = tileCoord[0];
     let x = tileCoord[1];
     let y = - tileCoord[2] - 1;
     return TILES_URL + z + '/' + y + '/' + x + '?_sb=' + getToken();
 }
 
-function onErrorsLimit() {
-  console.error('EVERGIS TOKEN ATTEMPTS LIMIT EXCEEDED');
-}
 
-onErrorsLimit = _.debounce(onErrorsLimit, 1000);
-
-tileUrl = tileUrl.bind(null, getToken);
 
 let ArcGisSource = new ol.source.TileImage({
     tileUrlFunction: tileUrl,
@@ -72,7 +61,7 @@ let ArcGisSource = new ol.source.TileImage({
         resolutions: RESOLUTIONS,
         tileSize: TILE_SIZE
     }),
-    //tilePixelRatio: 2,
+    // tilePixelRatio: 2,
 });
 
 ArcGisSource.on('tileloadstart', () => {
@@ -80,6 +69,12 @@ ArcGisSource.on('tileloadstart', () => {
 
 ArcGisSource.on('tileloaderror', (error) => {
   const { tile } = error;
+
+  function onErrorsLimit() {
+    console.error('EVERGIS TOKEN ATTEMPTS LIMIT EXCEEDED');
+  }
+  onErrorsLimit = _.debounce(onErrorsLimit, 1000);
+
   // TODO идентифицировать ошибку конкретно токена
   if (!isFetchingToken() && !attemptsLimitExceeded()) {
     fetchToken().then(() => {

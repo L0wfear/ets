@@ -31,7 +31,6 @@ class CarForm extends Form {
 	render() {
 
 		let state = this.props.formState;
-		console.log(state)
 		let { ownersIndex = {}, modelsIndex = {}, typesIndex = {} } = this.props;
 		let owner = ownersIndex[state.owner_id] || {};
 		let model = modelsIndex[state.model_id] || {};
@@ -52,7 +51,7 @@ class CarForm extends Form {
 
 		      	<Col md={6}>
 	            <Div hidden={!this.state.imageUrl}>
-	              <img src={config.backend.replace('/services', '') + config.images + this.state.imageUrl} className="car-form-image"/>
+	              <img src={config.images + this.state.imageUrl} className="car-form-image"/>
 	            </Div>
 		      	</Col>
 

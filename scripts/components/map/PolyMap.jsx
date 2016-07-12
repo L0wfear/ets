@@ -1,9 +1,6 @@
-// import ol from 'imports?define=>false!openlayers';
 import React, { Component } from 'react';
 import CarMarker from '../markers/car/CarMarker.js';
 import { PROJECTION, ArcGisLayer } from './MskAdapter.js';
-import 'ol3-popup/src/ol3-popup.js';
-import '../../vendor/onTabUnfocus.js';
 import { polyState, polyStyles } from '../../constants/polygons.js';
 import { vectorStyles, vectorState, getVectorArrowStyle } from '../../constants/vectors.js';
 
@@ -15,17 +12,14 @@ window.addEventListener('blur', (ev) => {
 window.addEventListener('focus', (ev) => {
   //let store = flux.getStore('points')
  // store.unpauseRendering()]
-  //global.olmap && global.olmap.updateSize()
 });
 
 let POLYS_LAYER = null;
 
-global.ol = ol;
-
 // https://github.com/pka/ol3-react-example
 // local crs example http://stackoverflow.com/questions/20222885/custom-tiles-in-local-crs-without-projection
 // custom tiles example
-export default class OpenLayersMap extends Component {
+export default class PolyMap extends Component {
 
   constructor(props, context) {
     super(props, context);
@@ -101,8 +95,6 @@ export default class OpenLayersMap extends Component {
       controls: this.controls,
       layers: this.layers
     });
-
-    global.olmap = this.map;
 
     this.init();
   }

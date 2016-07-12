@@ -7,7 +7,6 @@
 
 const IS_MSK = true;
 
-import { projectToPixel } from '../map/MskAdapter.js';
 import {wrapCoords} from 'utils/geo';
 
 export default class Marker {
@@ -49,7 +48,7 @@ export default class Marker {
     let radius = image.width / 2;
     let canvas = this._reactMap.canvas;
     let ctx = canvas.getContext('2d');
-    let drawCoords = projectToPixel(this.coords);
+    let drawCoords = this.map.projectToPixel(this.coords);
 
     if (typeof ctx === 'undefined') {
       return;
@@ -65,10 +64,10 @@ export default class Marker {
   /**
    * проверка на вхождение координаты в маркер
    */
-  contains(coordinates) {
+  contains = (coordinates) => {
 
-    let projectedPixel = projectToPixel(coordinates);
-    let pixelCoords = projectToPixel(this.coords)
+    let projectedPixel = this.map.projectToPixel(coordinates);
+    let pixelCoords = this.map.projectToPixel(this.coords)
 
     let radius = this.radius;
 

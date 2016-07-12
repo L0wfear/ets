@@ -1,7 +1,6 @@
 import { getStatusById } from '../../../statuses.js';
 import CoordsAnimation from './CoordsAnimation.js';
 import { getSmallIcon, getBigIcon } from '../../../icons/car.js';
-import {projectToPixel} from '../../map/MskAdapter.js';
 import Marker from '../BaseMarker.js';
 import Track from '../../map/Track.js';
 import { swapCoords, wrapCoords, unwrapCoords } from 'utils/geo';
@@ -57,8 +56,7 @@ export default class CarMarker extends Marker {
     return coef > 0 ? coef * .4 : 1 ;
   }
 
-  renderSmall(options) {
-
+  renderSmall = (options) => {
     let point = this.point;
     let zoomRatio = this.getZoomRatio();
     let radius = this.radius = SMALL_ICON_RADIUS * zoomRatio;
@@ -69,7 +67,7 @@ export default class CarMarker extends Marker {
     if (options.showPlates) {
       const title = point.car.gov_number;
       let context = this._reactMap.canvas.getContext('2d');
-      let drawCoords = projectToPixel(this.coords);
+      let drawCoords = this.map.projectToPixel(this.coords);
 
       context.fillStyle = 'white';
 
@@ -110,7 +108,7 @@ export default class CarMarker extends Marker {
    * todo showPlates via map options
    * @return {[type]} [description]
    */
-  renderLarge(options = {}) {
+  renderLarge = (options = {}) => {
 
     let point = this.point;
     let color = getStatusById(point.status).color;
@@ -121,7 +119,7 @@ export default class CarMarker extends Marker {
 
     let angle = Math.PI * direction / 180;
     let tipAngle = normalizeAngle(angle - Math.PI / 2);
-    let drawCoords = projectToPixel(this.coords);
+    let drawCoords = this.map.projectToPixel(this.coords);
     let context = this._reactMap.canvas.getContext('2d');
 
     const title = point.car.gov_number;

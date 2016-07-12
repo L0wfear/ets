@@ -56,6 +56,7 @@ export const PZVService = new APIService('/pzv/', true);
 export const CarPoolService = new APIService('/carpool/', true);
 export const DangerZoneService = new APIService('/danger_zone/', true);
 export const MissionDataService = new APIService('/mission_data/', true);
+export const OrganizationsService = new APIService('/organizations/', true);
 
 // REPORTS
 

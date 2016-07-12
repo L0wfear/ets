@@ -73,6 +73,7 @@ export default class MainPage extends React.Component {
             <MenuItem active={path === '/pzv'} href="#/pzv">Справочник ПЗВ</MenuItem>
             <MenuItem active={path === '/carpool'} href="#/carpool">Справочник Автобаз</MenuItem>
             <MenuItem active={path === '/danger-zones'} href="#/danger-zones">Справочник особо опасных мест</MenuItem>
+            <MenuItem active={path === '/organizations'} href="#/organizations">Справочник организаций</MenuItem>
           </NavDropdown>
 
           <NavDropdown title="Отчеты" id="nav-dropdown-3">

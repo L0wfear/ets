@@ -174,7 +174,7 @@ class DailyCleaningReportsETS extends Component {
 				<DailyCleaningReportsTable
             data={dailyCleaningReportsListETS}
             refreshable={true}
-            onRefresh={() => this.context.flux.getActions('reports').getDailyCleaningReportsCAFAP()}
+            onRefresh={() => this.context.flux.getActions('reports').getDailyCleaningReportsETS()}
             onRowSelected={this.onReportSelect.bind(this)} />
 			</div>
 		);

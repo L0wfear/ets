@@ -357,12 +357,11 @@ class Table extends React.Component {
                   active={_.keys(this.state.filterValues).length}
                   className="filter-wrap"/>
             </ClickOutHandler>
-            <Button
-                hidden={!!!this.props.refreshable}
+            {!!this.props.refreshable ? <Button
                 bsSize="small"
                 onClick={this.props.onRefresh}>
               <Glyphicon glyph="refresh" />
-            </Button>
+            </Button> : ''}
             {this.props.children}
           </div>
         </Div>

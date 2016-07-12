@@ -97,6 +97,7 @@ let getTableMeta = (props) => {
   			type: 'boolean',
   			filter: {
   				type: 'select',
+          labelFunction: (data) => data ? 'Да' : 'Нет'
   			},
   		},
       {

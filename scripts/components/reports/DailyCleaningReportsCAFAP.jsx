@@ -111,13 +111,14 @@ let DailyCleaningReportsTable = (props) => {
     timestamp_process_end: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
 	};
 
-	return <Table title='Статус по уборке (ЦАФАП)'
-								tableMeta={tableMeta}
-								results={props.data}
-								renderers={renderers}
-                initialSort={'timestamp_create'}
-                initialSortAscending={false}
-								{...props} />
+	return <Table
+      title='Статус по уборке (ЦАФАП)'
+      tableMeta={tableMeta}
+      results={props.data}
+      renderers={renderers}
+      initialSort={'timestamp_create'}
+      initialSortAscending={false}
+      {...props} />
 
 }
 
@@ -185,9 +186,16 @@ class DailyCleaningReportsCAFAP extends Component {
 
 		return (
 			<div className="ets-page-wrap">
-  			<DailyReportHeader handleChange={this.handleChange.bind(this)} onClick={this.createDailyCleaningReportCAFAP.bind(this)} {...this.state} useCombinations={true}/>
-
-				<DailyCleaningReportsTable data={dailyCleaningReportsListCAFAP} onRowSelected={this.onReportSelect.bind(this)} />
+  			<DailyReportHeader
+            handleChange={this.handleChange.bind(this)}
+            onClick={this.createDailyCleaningReportCAFAP.bind(this)}
+            useCombinations={true}
+            {...this.state} />
+				<DailyCleaningReportsTable
+            data={dailyCleaningReportsListCAFAP}
+            refreshable={true}
+            onRefresh={() => this.context.flux.getActions('reports').getDailyCleaningReportsCAFAP()}
+            onRowSelected={this.onReportSelect.bind(this)} />
 			</div>
 		);
 

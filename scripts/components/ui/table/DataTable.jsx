@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Button, Glyphicon } from 'react-bootstrap';
 import ColumnControl from './ColumnControl.jsx'
 import ClickOutHandler from 'react-onclickout';
 import Filter from './filter/Filter.jsx';
@@ -357,6 +357,11 @@ class Table extends React.Component {
                   active={_.keys(this.state.filterValues).length}
                   className="filter-wrap"/>
             </ClickOutHandler>
+            {!!this.props.refreshable ? <Button
+                bsSize="small"
+                onClick={this.props.onRefresh}>
+              <Glyphicon glyph="refresh" />
+            </Button> : ''}
             {this.props.children}
           </div>
         </Div>

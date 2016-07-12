@@ -167,9 +167,15 @@ class DailyCleaningReportsETS extends Component {
 
 		return (
 			<div className="ets-page-wrap">
-  			<DailyReportHeader handleChange={this.handleChange.bind(this)} onClick={this.createDailyCleaningReportETS.bind(this)} {...this.state}/>
-
-				<DailyCleaningReportsTable data={dailyCleaningReportsListETS} onRowSelected={this.onReportSelect.bind(this)} />
+  			<DailyReportHeader
+            handleChange={this.handleChange.bind(this)}
+            onClick={this.createDailyCleaningReportETS.bind(this)}
+            {...this.state}/>
+				<DailyCleaningReportsTable
+            data={dailyCleaningReportsListETS}
+            refreshable={true}
+            onRefresh={() => this.context.flux.getActions('reports').getDailyCleaningReportsETS()}
+            onRowSelected={this.onReportSelect.bind(this)} />
 			</div>
 		);
 

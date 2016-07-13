@@ -7,7 +7,7 @@ import Div from 'components/ui/Div.jsx';
 import moment from 'moment';
 import Taxes from './Taxes.jsx';
 import cx from 'classnames';
-import { isNotNull, isEmpty } from 'utils/functions';
+import { isNotNull, isEmpty, hasOdometer } from 'utils/functions';
 import { createValidDateTime } from 'utils/dates';
 import Form from '../compositions/Form.jsx';
 import MissionFormWrap from '../missions/MissionFormWrap.jsx';
@@ -37,7 +37,7 @@ class WaybillForm extends Form {
 			fuel_correction_rate: 1,
       showMissionForm: false,
       selectedMission: null
-		}
+		};
 	}
 
   getMissionsByCarAndDates(formState, notificate = true) {
@@ -101,9 +101,11 @@ class WaybillForm extends Form {
 						});
 				});
 			});
-
 		} else if (formState.status === 'closed') {
-			flux.getActions('fuel-rates').getFuelOperations().then( fuelOperations => {
+			/* В случае, если ПЛ закрыт, мы получаем список всех операций, чтобы
+				 отобразить их в таксировке как ТС, так и оборудования, так как
+				 выбор операций в любом случае недоступен */
+			flux.getActions('fuel-rates').getFuelOperations().then(fuelOperations => {
 				this.setState({
 					operations: fuelOperations.result,
 					equipmentOperations: fuelOperations.result
@@ -116,13 +118,6 @@ class WaybillForm extends Form {
 		await flux.getActions('objects').getCars();
 		await flux.getActions('employees').getEmployees();
 		await flux.getActions('employees').getDrivers();
-
-    let car_has_odometer = null;
-    let car = this.props.carsIndex[formState.car_id];
-    if (car && car.gov_number) {
-      car_has_odometer = isNaN(car.gov_number[0]);
-      this.handleChange('car_has_odometer', car_has_odometer);
-    }
 	}
 
 	async onCarChange(car_id) {
@@ -131,15 +126,6 @@ class WaybillForm extends Form {
     let fieldsToChange = {
       car_id,
     };
-
-    //определение наличия одометра у машины для отображения различных полей
-    let car_has_odometer = null;
-    let car = this.props.carsIndex[car_id];
-    if (car && car.gov_number) {
-      car_has_odometer = isNaN(car.gov_number[0]);
-    }
-
-    fieldsToChange.car_has_odometer = car_has_odometer;
 
 		const waybillsListSorted = _(this.props.waybillsList).filter(w => w.status === 'closed').sortBy('date_create').value().reverse();
 		const lastCarUsedWaybill = _.find(waybillsListSorted, w => w.car_id === car_id);
@@ -212,7 +198,6 @@ class WaybillForm extends Form {
 		});
 		const MASTERS = employeesList.filter( e => [2, 4, 5, 7, 14].indexOf(e.position_id) > -1).map( m => ({value: m.id, data: m, label: `${m.last_name} ${m.first_name} ${m.middle_name}`})).filter((e) => e.data.active === true);
     const MISSIONS = missionsList.map( ({id, number, technical_operation_name}) => ({value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false}));
-    // console.log('form state is ', state);
 
 
 		let IS_CREATING = !!!state.status;
@@ -220,7 +205,8 @@ class WaybillForm extends Form {
     let IS_POST_CREATING = state.status && state.status === 'draft';
 		let IS_DISPLAY = state.status && state.status === 'closed';
 
-		let car = carsIndex[state.car_id];
+		const car = carsIndex[state.car_id];
+		const CAR_HAS_ODOMETER = state.gov_number ? hasOdometer(state.gov_number) : car && car.gov_number ? hasOdometer(car.gov_number) : null;
 
     let title = '';
 
@@ -355,7 +341,7 @@ class WaybillForm extends Form {
 
 	      	<Row>
 						<Div hidden={!state.car_id}>
-							<Div hidden={!state.car_has_odometer}>
+							<Div hidden={!CAR_HAS_ODOMETER}>
 								<Col md={4}>
 									<h4>Одометр</h4>
 									<Field type="number" label="Выезд, км" error={errors['odometr_start']}
@@ -368,7 +354,7 @@ class WaybillForm extends Form {
 											value={state.odometr_diff} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled />
 								</Col>
 							</Div>
-							<Div hidden={state.car_has_odometer}>
+							<Div hidden={CAR_HAS_ODOMETER}>
 								<Col md={4}>
 									<h4>Счетчик моточасов</h4>
 									<Field type="number" label="Выезд, м/ч" error={errors['motohours_start']}
@@ -432,8 +418,8 @@ class WaybillForm extends Form {
 									fuelRates={this.state.fuelRates}
 									onChange={this.handleChange.bind(this, 'tax_data')}
 									correctionRate={this.state.fuel_correction_rate}
-									baseFactValue={state.car_has_odometer ? state.odometr_diff : state.motohours_diff}
-									type={state.car_has_odometer ? 'odometr' : 'motohours'}/>
+									baseFactValue={CAR_HAS_ODOMETER ? state.odometr_diff : state.motohours_diff}
+									type={CAR_HAS_ODOMETER ? 'odometr' : 'motohours'}/>
 							<Taxes hidden={!(IS_DISPLAY || IS_CLOSING) || state.status === 'draft' || (IS_DISPLAY && state.equipment_tax_data && state.equipment_tax_data.length === 0) || (IS_DISPLAY && !!!state.equipment_tax_data)}
 									readOnly={!IS_CLOSING}
 									taxes={state.equipment_tax_data}

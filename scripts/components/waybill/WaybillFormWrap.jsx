@@ -4,7 +4,7 @@ import _ from 'lodash';
 import Div from 'components/ui/Div.jsx';
 import WaybillForm from './WaybillForm.jsx';
 import { getDefaultBill } from '../../stores/WaybillsStore.js';
-import { isNotNull, isEmpty } from 'utils/functions';
+import { isNotNull, isEmpty, hasOdometer } from 'utils/functions';
 import { validateRow } from 'validate/validateRow.js';
 import { waybillSchema, waybillClosingSchema } from 'models/WaybillModel.js';
 import config from '../../config.js';
@@ -21,15 +21,15 @@ let validateWaybill = (waybill, errors) => {
 
 	waybillErrors.fuel_end = '';
 
-	if (!isEmpty(waybill.car_has_odometer)) {
-		if (waybill.car_has_odometer) {
-			if (isEmpty(waybill.odometr_start)) {
-				waybillErrors.odometr_start = `Поле "Одометр.Выезд" должно быть заполнено`;
-			}
-		} else {
-			if (isEmpty(waybill.motohours_start)) {
-				waybillErrors.motohours_start = `Поле "Счетчик моточасов.Выезд" должно быть заполнено`;
-			}
+	const WAYBILL_CAR_HAS_ODOMETER = hasOdometer(waybill.gov_number);
+
+	if (WAYBILL_CAR_HAS_ODOMETER) {
+		if (isEmpty(waybill.odometr_start)) {
+			waybillErrors.odometr_start = `Поле "Одометр.Выезд" должно быть заполнено`;
+		}
+	} else {
+		if (isEmpty(waybill.motohours_start)) {
+			waybillErrors.motohours_start = `Поле "Счетчик моточасов.Выезд" должно быть заполнено`;
 		}
 	}
 

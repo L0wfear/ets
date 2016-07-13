@@ -127,7 +127,7 @@ export default class Taxes extends Component {
     const { correctionRate, baseFactValue } = this.props;
     let overallValue = Taxes.calculateFinalFactValue(this.state.tableData);
     let value = baseFactValue ? baseFactValue - overallValue : null;
-    tableData.push({fuel_correction_rate: correctionRate, FACT_VALUE: value.toFixed(3)});
+    tableData.push({fuel_correction_rate: correctionRate, FACT_VALUE: value !== null ? value.toFixed(3) : value});
     this.setState({tableData});
   }
 

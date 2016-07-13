@@ -89,7 +89,6 @@ class WaybillsActions extends Actions {
     delete payload.motohours_equip_diff;
     delete payload.date_create;
     delete payload.closing_date;
-    delete payload.car_has_odometer;
     delete payload.could_be_closed;
     delete payload.mission_list;
     delete payload.all_missions_completed_or_failed;
@@ -121,7 +120,6 @@ class WaybillsActions extends Actions {
     payload.fact_departure_date = createValidDateTime(payload.plan_departure_date);
     payload.fact_arrival_date = createValidDateTime(payload.plan_arrival_date);
     payload.equipment_fuel = +payload.equipment_fuel;
-    delete payload.car_has_odometer;
     delete payload.mission_list;
     delete payload.car_special_model_name;
     delete payload.car_model_name;

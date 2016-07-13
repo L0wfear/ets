@@ -33,3 +33,10 @@ export function printData(blob) {
     window.URL.revokeObjectURL(url);
   };
 }
+
+export function hasOdometer(gov_number) {
+  if (gov_number && gov_number[0]) {
+    return isNaN(gov_number[0]);
+  }
+  return null;
+}

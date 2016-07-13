@@ -155,7 +155,14 @@ let MissionsTable = (props) => {
         console.dir(data);
        return <input type="checkbox" />;
 		 },
-			map_view: ({data}) => <div><span onClick={() => props.mapView(data)}><Glyphicon glyph="exclamation-sign" /></span></div>,
+			map_view: (meta) => {
+				if (meta.rowData.status === 'not_assigned') return <div>Нет данных</div>;
+					return <div>
+						<span onClick={() => props.mapView(meta.data)}>
+							<Glyphicon glyph="info-sign" />
+						</span>
+					</div>
+			},
 		};
 
 		return <Table title="Журнал заданий"

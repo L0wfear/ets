@@ -1,19 +1,15 @@
-// import ol from 'imports?define=>false!openlayers';
 import React, { Component } from 'react';
 import CarMarker from '../markers/car/CarMarker.js';
-import { PROJECTION, ArcGisLayer } from './MskAdapter.js';
-import 'ol3-popup/src/ol3-popup.js';
-import '../../vendor/onTabUnfocus.js';
+import { PROJECTION, ArcGisLayer, projectToPixel } from './MskAdapter.js';
 
 window.addEventListener('blur', (ev) => {
-  //let store = flux.getStore('points')
-  //store.pauseRendering()
+  // let store = flux.getStore('points')
+  // store.pauseRendering()
 })
 
 window.addEventListener('focus', (ev) => {
-  //let store = flux.getStore('points')
- // store.unpauseRendering()]
-  global.olmap && global.olmap.updateSize()
+  // let store = flux.getStore('points')
+  // store.unpauseRendering();
 })
 
 // todo move to settings
@@ -27,8 +23,6 @@ const SIDEBAR_WIDTH_PX = 500;
 //
 // OpenLayers performance cases
 // http://trac.osgeo.org/openlayers/wiki/Future/OpenLayersWithCanvas
-
-global.ol = ol;
 
 // https://github.com/pka/ol3-react-example
 // local crs example http://stackoverflow.com/questions/20222885/custom-tiles-in-local-crs-without-projection
@@ -89,7 +83,8 @@ export default class OpenLayersMap extends Component {
       layers: [ArcGisLayer, canvasLayer]
     });
 
-    this.map = global.olmap = map;
+    this.map = map;
+    this.map.projectToPixel = (coordinates) => projectToPixel(this.map, coordinates);
   }
 
   shouldComponentUpdate() {
@@ -341,10 +336,6 @@ export default class OpenLayersMap extends Component {
     if (nextProps.points !== undefined ){
       this.updatePoints(nextProps.points);
     }
-  }
-
-  componentWillUnmount() {
-    delete global.olmap;
   }
 
   updatePoints(updatedPoints) {

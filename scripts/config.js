@@ -26,7 +26,7 @@ let config = {
   backend: PROTO + '//ods.mos.ru/ssd/ets/services',
   backendOld: PROTO + '//ods.mos.ru/ssd/city-dashboard',
   ws: WS_PROTO + '//ods.mos.ru/ssd/city-dashboard/stream',
-  images: '/data/images/',
+  images: PROTO + '//ods.mos.ru/ssd/ets/data/images/',
   REQUEST_PARAMS: {
     credentials: 'include'
   },

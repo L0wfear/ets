@@ -6,7 +6,6 @@ const promptDiv = document.createElement('div');
 promptDiv.id = 'prompt';
 document.body.appendChild(promptDiv);
 
-
 class Prompt extends React.Component {
   constructor() {
     super();

@@ -1,7 +1,6 @@
 import React from 'react';
 import Map from './Map.jsx';
 import CarMarker from '../markers/car/CarMarker.js';
-import { projectToPixel } from './MskAdapter.js';
 import { getTrack } from '../../adapter.js';
 import { getStartOfToday, makeDate, makeTime } from 'utils/dates';
 import { swapCoords, roundCoordinates } from 'utils/geo';
@@ -17,7 +16,6 @@ import _ from 'lodash';
 
 let POLYS_LAYER = null;
 let GeoJSON = new ol.format.GeoJSON();
-global.ol = ol;
 
 let ControlComponent = (props) =>
   <span>

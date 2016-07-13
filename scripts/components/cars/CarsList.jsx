@@ -132,7 +132,6 @@ class CarsList extends ElementsList {
 	render() {
 
 		const { carsList = [] } = this.props;
-		console.log(carsList);
 
 		return (
 			<div className="ets-page-wrap">

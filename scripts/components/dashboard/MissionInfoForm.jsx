@@ -77,7 +77,6 @@ export class MissionInfoForm extends Form {
   componentWillUnmount() {
     this.context.flux.getActions('points').closeConnection();
     this.context.flux.getActions('points').setSingleCarTrack(null);
-    delete global.olmap;
     console.warn('UNMOUNT MISSION INFO FORM');
   }
 

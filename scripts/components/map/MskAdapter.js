@@ -1,5 +1,5 @@
 import MapServerConfig from './MapServerConfig.js';
-import EVERGIS_TOKEN, { getToken, fetchToken, isFetchingToken, attemptsLimitExceeded } from 'utils/evergis.js';
+import EVERGIS_TOKEN, { getToken, fetchEvergisToken, isFetchingToken, attemptsLimitExceeded } from 'utils/evergis.js';
 import _ from 'lodash';
 
 const INITIAL_EXTENT = MapServerConfig.initialExtent;
@@ -77,7 +77,7 @@ ArcGisSource.on('tileloaderror', (error) => {
 
   // TODO идентифицировать ошибку конкретно токена
   if (!isFetchingToken() && !attemptsLimitExceeded()) {
-    fetchToken().then(() => {
+    fetchEvergisToken().then(() => {
       ArcGisSource.setTileUrlFunction(tileUrl);
     });
   } else if (attemptsLimitExceeded()) {

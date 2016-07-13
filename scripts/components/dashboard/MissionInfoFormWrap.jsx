@@ -1,7 +1,7 @@
 import React from 'react';
 import FormWrap from '../compositions/FormWrap.jsx';
 import MissionInfoForm from './MissionInfoForm.jsx';
-import Div from '../ui/Div.jsx';
+import Div from 'components/ui/Div.jsx';
 
 export default class MissionInfoFormWrap extends FormWrap {
 

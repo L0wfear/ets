@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import connectToStores from 'flummox/connect';
 import { Button, Glyphicon } from 'react-bootstrap';
-import Table from '../ui/table/DataTable.jsx';
-import ElementsList from '../ElementsList.jsx';
+import Table from 'components/ui/table/DataTable.jsx';
+import ElementsList from 'components/ElementsList.jsx';
 import moment from 'moment';
 import cx from 'classnames';
 import Griddle from 'griddle-react';
-import Paginator from '../ui/Paginator.jsx';
+import Paginator from 'components/ui/Paginator.jsx';
 import CompanyStructureFormWrap from './CompanyStructureFormWrap.jsx';
 
 

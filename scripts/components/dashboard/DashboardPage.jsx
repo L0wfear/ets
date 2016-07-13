@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 import { Panel, Row, Col, Button, Fade, Well, Glyphicon, Collapse } from 'react-bootstrap';
-import Div from '../ui/Div.jsx';
-import ElementsList from '../ElementsList.jsx';
+import Div from 'components/ui/Div.jsx';
+import ElementsList from 'components/ElementsList.jsx';
 import moment from 'moment';
 import cx from 'classnames';
 import connectToStores from 'flummox/connect';

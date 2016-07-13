@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { polyState } from '../../constants/polygons.js';
+import { polyState } from 'constants/polygons.js';
 import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
-import Div from '../ui/Div.jsx';
+import Div from 'components/ui/Div.jsx';
 
 const ODHList = (props) => {
 	let ODHS = [];

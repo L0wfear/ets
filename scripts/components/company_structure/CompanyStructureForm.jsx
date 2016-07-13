@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
-import Field from '../ui/Field.jsx';
-import Div from '../ui/Div.jsx';
+import Field from 'components/ui/Field.jsx';
+import Div from 'components/ui/Div.jsx';
 import { isEmpty } from 'utils/functions';
 import Form from '../compositions/Form.jsx';
 

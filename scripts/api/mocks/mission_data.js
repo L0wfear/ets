@@ -32,6 +32,10 @@ export default class MissionDataMock extends Mock {
     ];
   }
 
+  /**
+    * Избегаем фильтрации по mission_id
+    * @override getData
+    */
   getData() {
 		return {
 			data: this.data

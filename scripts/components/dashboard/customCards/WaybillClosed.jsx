@@ -1,8 +1,8 @@
 import React from 'react';
-import Div from '../../ui/Div.jsx';
+import Div from 'components/ui/Div.jsx';
 import { Panel, Collapse, Glyphicon, Fade, Well, Button } from 'react-bootstrap';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
-import { FluxContext } from '../../decorators/index.js';
+import { FluxContext } from 'utils/decorators';
 import WaybillFormWrap from '../../waybill/WaybillFormWrap.jsx';
 
 @FluxContext

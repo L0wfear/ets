@@ -1,4 +1,4 @@
-import { TRACK_COLORS, TRACK_POINT_RADIUS, TRACK_POINT_BORDER_WIDTH } from '../../constants/track.js';
+import { TRACK_COLORS, TRACK_POINT_RADIUS, TRACK_POINT_BORDER_WIDTH } from 'constants/track.js';
 
 const PI_TIMES_TWO = Math.PI * 2;
 

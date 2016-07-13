@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import Div from '../ui/Div.jsx';
+import Div from 'components/ui/Div.jsx';
 import MonitorForm from './MonitorForm.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';
 import { getDefaultMission } from '../../stores/MissionsStore.js';
 import { isNotNull, isEmpty } from 'utils/functions';
-import { missionSchema, missionClosingSchema } from '../models/MissionModel.js';
+import { missionSchema, missionClosingSchema } from 'models/MissionModel.js';
 
 class MonitorFormWrap extends FormWrap {
 

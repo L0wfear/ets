@@ -1,9 +1,9 @@
 import React from 'react';
 import PolyMap from './PolyMap.jsx';
 import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
-import { polyState, polyStyles } from '../../constants/polygons.js';
-import { vectorStyles, vectorState, getVectorArrowStyle } from '../../constants/vectors.js';
-import Div from '../ui/Div.jsx';
+import { polyState, polyStyles } from 'constants/polygons.js';
+import { vectorStyles, vectorState, getVectorArrowStyle } from 'constants/vectors.js';
+import Div from 'components/ui/Div.jsx';
 
 
 // Компонент используется для отрисовки векторов и точек на карте

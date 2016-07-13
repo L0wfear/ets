@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import CarInfo from './CarInfo.jsx';
-import Div from '../ui/Div.jsx';
+import Div from 'components/ui/Div.jsx';
 
 export default class Sidebar extends Component {
 

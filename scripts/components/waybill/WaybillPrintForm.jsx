@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import Div from '../ui/Div.jsx';
+import Div from 'components/ui/Div.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';
 import { Modal, Row, Col, FormControls, Button, DropdownButton, Dropdown, Glyphicon, MenuItem, Input } from 'react-bootstrap';
-import Field from '../ui/Field.jsx';
-import Datepicker from '../ui/DatePicker.jsx';
+import Field from 'components/ui/Field.jsx';
+import Datepicker from 'components/ui/DatePicker.jsx';
 import { getToday9am, getTomorrow9am, makeDate } from 'utils/dates';
 import { saveData } from 'utils/functions';
 

@@ -6,10 +6,10 @@ import connectToStores from 'flummox/connect';
 
 import RouteInfo from './RouteInfo.jsx';
 import RouteFormWrap from './RouteFormWrap.jsx';
-import Div from '../ui/Div.jsx';
+import Div from 'components/ui/Div.jsx';
 import { getRouteById } from '../../adapter.js';
 import ClickOutHandler from 'react-onclickout';
-import Filter from '../ui/table/filter/Filter.jsx';
+import Filter from 'components/ui/table/filter/Filter.jsx';
 
 class RoutesList extends Component {
 

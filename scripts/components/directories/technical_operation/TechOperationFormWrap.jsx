@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import Div from '../../ui/Div.jsx';
+import Div from 'components/ui/Div.jsx';
 import TechOperationForm from './TechOperationForm.jsx';
 import FormWrap from '../../compositions/FormWrap.jsx';
 import { isNotNull, isEmpty } from 'utils/functions';
-import { techOperationSchema } from '../../models/TechOperationModel.js';
+import { techOperationSchema } from 'models/TechOperationModel.js';
 
 class TechOperationFormWrap extends FormWrap {
 

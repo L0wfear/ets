@@ -1,18 +1,18 @@
 import React, {Component} from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, FormControls, Button, DropdownButton, Dropdown, Glyphicon, MenuItem } from 'react-bootstrap';
-import Datepicker from '../ui/DatePicker.jsx';
-import Field from '../ui/Field.jsx';
-import Div from '../ui/Div.jsx';
+import Datepicker from 'components/ui/DatePicker.jsx';
+import Field from 'components/ui/Field.jsx';
+import Div from 'components/ui/Div.jsx';
 import moment from 'moment';
 import cx from 'classnames';
 import { isEmpty } from 'utils/functions';
 import Form from '../compositions/Form.jsx';
-import Map from '../map/HybridMap.jsx';
+import Map from 'components/map/HybridMap.jsx';
 import FluxComponent from 'flummox/component';
-import MissionReportByODH from '../reports/MissionReportByODH.jsx';
-import MissionReportByDT from '../reports/MissionReportByDT.jsx';
-import MissionReportByPoints from '../reports/MissionReportByPoints.jsx';
+import MissionReportByODH from 'components/reports/mission/MissionReportByODH.jsx';
+import MissionReportByDT from 'components/reports/mission/MissionReportByDT.jsx';
+import MissionReportByPoints from 'components/reports/mission/MissionReportByPoints.jsx';
 
 // const MAP_INITIAL_CENTER = [-6040.212982145856, 10358.852595460314];
 // const MAP_INITIAL_ZOOM = 6;

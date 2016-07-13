@@ -3,13 +3,13 @@ import { Row, Col, Input, Button, Glyphicon } from 'react-bootstrap';
 import DrawMap from '../map/DrawMap.jsx';
 import PolyMap from '../map/PolyMap.jsx';
 import ODHList from './ODHList.jsx';
-import Field from '../ui/Field.jsx';
+import Field from 'components/ui/Field.jsx';
 import connectToStores from 'flummox/connect';
-import Div from '../ui/Div.jsx';
+import Div from 'components/ui/Div.jsx';
 
 
-import {polyStyles, polyState} from '../../constants/polygons.js';
-import {vectorStyles, vectorState} from '../../constants/vectors.js';
+import {polyStyles, polyState} from 'constants/polygons.js';
+import {vectorStyles, vectorState} from 'constants/vectors.js';
 
 import _ from 'lodash';
 

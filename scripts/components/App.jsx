@@ -2,6 +2,7 @@ import { Router, Route, RouteHandler, Link, Redirect } from 'react-router';
 import { createHashHistory } from 'history';
 import { render } from 'react-dom';
 import React, { Component } from 'react';
+// TODO сделать модуль containers по аналогии с другими модулями
 import LoginPage from './LoginPage.jsx';
 import WaybillJournal from './waybill/WaybillJournal.jsx';
 import MissionsJournal from './missions/MissionsJournal.jsx';
@@ -13,45 +14,17 @@ import MainPage from './MainPage.jsx';
 import MonitorPage from './monitor/MonitorPage.jsx';
 import LoadingPage from './LoadingPage.jsx';
 import DashboardPage from './dashboard/DashboardPage.jsx';
-import EmployeesList from './employees/EmployeesList.jsx';
-import CarsList from './cars/CarsList.jsx';
-import FuelRatesDirectory from './directories/FuelRatesDirectory.jsx';
-import CarTypesDirectory from './directories/CarTypesDirectory.jsx';
-import FuelOperationsDirectory from './directories/FuelOperationsDirectory.jsx';
-import ODHDirectory from './directories/ODHDirectory.jsx';
-import DTDirectory from './directories/DTDirectory.jsx';
-import SSPDirectory from './directories/SSPDirectory.jsx';
-import PZVDirectory from './directories/PZVDirectory.jsx';
-import CarpoolDirectory from './directories/CarpoolDirectory.jsx';
-import DangerZonesDirectory from './directories/DangerZonesDirectory.jsx';
-import OrganizationsDirectory from './directories/OrganizationsDirectory.jsx';
-import TechOperationsDirectory from './directories/TechOperationsDirectory.jsx';
-import ODHReports from './reports/ODHReports.jsx';
-import MissionReports from './reports/MissionReports.jsx';
-import MissionReport from './reports/MissionReport.jsx';
-import CoverageReport from './reports/CoverageReport.jsx';
-import MissionReportByODH from './reports/MissionReportByODH.jsx';
-import MissionReportByDT from './reports/MissionReportByDT.jsx';
-import MissionReportByPoints from './reports/MissionReportByPoints.jsx';
-import RouteReports from './reports/RouteReports.jsx';
-import RouteReport from './reports/RouteReport.jsx';
-import DailyCleaningReportsETS from './reports/DailyCleaningReportsETS.jsx';
-import DailyCleaningReportETS from './reports/DailyCleaningReportETS.jsx';
-import DailyCleaningReportsCAFAP from './reports/DailyCleaningReportsCAFAP.jsx';
-import DailyCleaningReportCAFAP from './reports/DailyCleaningReportCAFAP.jsx';
-import FuelReport from './reports/FuelReport.jsx';
-import WeeklyTechnicalOperationCompleteReports from './reports/WeeklyTechnicalOperationCompleteReports.jsx';
-import WeeklyTechnicalOperationCompleteReport from './reports/WeeklyTechnicalOperationCompleteReport.jsx';
-import Analytics from './reports/Analytics.jsx';
-import FaxogrammDirectory from './directories/faxogramm/FaxogrammDirectory.jsx';
 import CompanyStructure from './company_structure/CompanyStructure.jsx';
+
+import directories from './directories';
+import reports from './reports';
+
 import { checkToken } from '../adapter.js';
-import { fetchToken } from '../utils/evergis.js';
+import { fetchEvergisToken } from '../utils/evergis.js';
 import Flux from './Flux.js';
 import { loginErrorNotification, getErrorNotification } from 'utils/notifications';
-
-const adapter = {};
-const flux = new Flux(adapter);
+// TODO вынести в отдельный файл
+const flux = new Flux();
 window.__ETS_CONTAINER__ = {
   flux,
 };
@@ -81,9 +54,11 @@ class App extends Component {
 
   loadData() {
     this.setState({loading: true});
-    if(!flux.getStore('session').isLoggedIn()) return this.setState({loading: false});
+    if (!flux.getStore('session').isLoggedIn()) {
+      return this.setState({loading: false});
+    }
     return checkToken()
-          .then(() => fetchToken())
+          .then(() => fetchEvergisToken())
           .then(() => {
             this.setState({loading: false});
           })
@@ -92,7 +67,6 @@ class App extends Component {
               flux.getActions('session').logout();
               return global.NOTIFICATION_SYSTEM._addNotification(loginErrorNotification);
             }
-            console.log(error);
             global.NOTIFICATION_SYSTEM._addNotification(getErrorNotification(error));
           })
   }
@@ -112,8 +86,6 @@ App.childContextTypes = {
   setLoading: React.PropTypes.func,
 };
 
-let history = createHashHistory({queryKey: false});
-
 function requireAuth(nextState, replaceState) {
   if (!flux.getStore('session').isLoggedIn() || !flux.getStore('session').getCurrentUser().role) {
     console.warn('USER IS NOT LOGGED IN');
@@ -127,14 +99,12 @@ function checkLoggedIn(nextState, replaceState) {
   }
 }
 
-function loadData(nextState, replaceState, callback) {
-  callback();
-}
+const history = createHashHistory({queryKey: false});
 
 const routes = (
   <Router history={history}>
     <Redirect from="/" to="dashboard" />
-    <Route path="/" component={App} onEnter={loadData}>
+    <Route path="/" component={App}>
       <Route path="monitor" component={MonitorPage} onEnter={requireAuth}/>
       <Route path="dashboard" component={DashboardPage} onEnter={requireAuth}/>
       <Route path="waybill-journal" component={WaybillJournal} onEnter={requireAuth}/>
@@ -144,37 +114,42 @@ const routes = (
       <Route path="duty-mission-templates-journal" component={DutyMissionTemplatesJournal} onEnter={requireAuth}/>
       <Route path="mission-templates-journal" component={MissionTemplatesJournal} onEnter={requireAuth}/>
       <Route path="routes-list" component={RoutesList} onEnter={requireAuth}/>
-      <Route path="odh-reports" component={ODHReports} onEnter={requireAuth}/>
-      <Route path="daily-cleaning-reports-ets" component={DailyCleaningReportsETS} onEnter={requireAuth}/>
-      <Route path="daily-cleaning-report-ets/:element/:id" component={DailyCleaningReportETS} onEnter={requireAuth}/>
-      <Route path="daily-cleaning-reports-cafap" component={DailyCleaningReportsCAFAP} onEnter={requireAuth}/>
-      <Route path="daily-cleaning-report-cafap/:element/:id" component={DailyCleaningReportCAFAP} onEnter={requireAuth}/>
-      <Route path="weekly-technical-operation-complete-reports" component={WeeklyTechnicalOperationCompleteReports} onEnter={requireAuth}/>
-      <Route path="weekly-technical-operation-complete-report/:element/:id" component={WeeklyTechnicalOperationCompleteReport} onEnter={requireAuth}/>
-      <Route path="route-reports" component={RouteReports} onEnter={requireAuth}/>
-      <Route path="coverage-report" component={CoverageReport} onEnter={requireAuth}/>
-      <Route path="route-report/:id" component={RouteReport} onEnter={requireAuth}/>
-      <Route path="fuel-report" component={FuelReport} onEnter={requireAuth}/>
-      <Route path="analytics" component={Analytics} onEnter={requireAuth}/>
-      <Route path="mission-reports" component={MissionReports} onEnter={requireAuth}/>
-      <Route path="mission-report/:id" component={MissionReport} onEnter={requireAuth}/>
-      <Route path="mission-report/:id/odhs/:index" component={MissionReportByODH} onEnter={requireAuth}/>
-      <Route path="mission-report/:id/dts/:index" component={MissionReportByDT} onEnter={requireAuth}/>
-      <Route path="mission-report/:id/points/:index" component={MissionReportByPoints} onEnter={requireAuth}/>
-      <Route path="employees" component={EmployeesList} onEnter={requireAuth}/>
-      <Route path="faxogramms" component={FaxogrammDirectory} onEnter={requireAuth}/>
-      <Route path="fuel-rates" component={FuelRatesDirectory} onEnter={requireAuth}/>
-      <Route path="fuel-operations" component={FuelOperationsDirectory} onEnter={requireAuth}/>
-      <Route path="car-func-types" component={CarTypesDirectory} onEnter={requireAuth}/>
-      <Route path="odh" component={ODHDirectory} onEnter={requireAuth}/>
-      <Route path="dt" component={DTDirectory} onEnter={requireAuth}/>
-      <Route path="ssp" component={SSPDirectory} onEnter={requireAuth}/>
-      <Route path="pzv" component={PZVDirectory} onEnter={requireAuth}/>
-      <Route path="carpool" component={CarpoolDirectory} onEnter={requireAuth}/>
-      <Route path="danger-zones" component={DangerZonesDirectory} onEnter={requireAuth}/>
-      <Route path="organizations" component={OrganizationsDirectory} onEnter={requireAuth}/>
-      <Route path="technical-operations" component={TechOperationsDirectory} onEnter={requireAuth}/>
-      <Route path="cars" component={CarsList} onEnter={requireAuth}/>
+      {/* Отчеты */}
+      <Route path="odh-reports" component={reports.odh} onEnter={requireAuth}/>
+      <Route path="route-reports" component={reports.route.all} onEnter={requireAuth}/>
+      <Route path="route-report/:id" component={reports.route.single} onEnter={requireAuth}/>
+      <Route path="coverage-report" component={reports.coverage} onEnter={requireAuth}/>
+      <Route path="fuel-report" component={reports.fuel} onEnter={requireAuth}/>
+      <Route path="analytics" component={reports.analytics} onEnter={requireAuth}/>
+      <Route path="daily-cleaning-reports-ets" component={reports.daily.cleaning.ets.all} onEnter={requireAuth}/>
+      <Route path="daily-cleaning-report-ets/:element/:id" component={reports.daily.cleaning.ets.single} onEnter={requireAuth}/>
+      <Route path="daily-cleaning-reports-cafap" component={reports.daily.cleaning.cafap.all} onEnter={requireAuth}/>
+      <Route path="daily-cleaning-report-cafap/:element/:id" component={reports.daily.cleaning.cafap.single} onEnter={requireAuth}/>
+      <Route path="weekly-technical-operation-complete-reports" component={reports.weekly.technicalOperationComplete.all} onEnter={requireAuth}/>
+      <Route path="weekly-technical-operation-complete-report/:element/:id" component={reports.weekly.technicalOperationComplete.single} onEnter={requireAuth}/>
+      {/* Отчеты - Задания */}
+      <Route path="mission-reports" component={reports.mission.all} onEnter={requireAuth}/>
+      <Route path="mission-report/:id" component={reports.mission.single} onEnter={requireAuth}/>
+      <Route path="mission-report/:id/odhs/:index" component={reports.mission.singleByODH} onEnter={requireAuth}/>
+      <Route path="mission-report/:id/dts/:index" component={reports.mission.singleByDT} onEnter={requireAuth}/>
+      <Route path="mission-report/:id/points/:index" component={reports.mission.singleByPoints} onEnter={requireAuth}/>
+      {/* НСИ - Реестры и справочники */}
+      <Route path="employees" component={directories.employees} onEnter={requireAuth}/>
+      <Route path="faxogramms" component={directories.faxogramm} onEnter={requireAuth}/>
+      <Route path="fuel-rates" component={directories.fuelRates} onEnter={requireAuth}/>
+      <Route path="fuel-operations" component={directories.fuelOperations} onEnter={requireAuth}/>
+      <Route path="organizations" component={directories.organizations} onEnter={requireAuth}/>
+      <Route path="technical-operations" component={directories.technicalOperations} onEnter={requireAuth}/>
+      <Route path="car-func-types" component={directories.carTypes} onEnter={requireAuth}/>
+      <Route path="cars" component={directories.cars} onEnter={requireAuth}/>
+      {/* НСИ - Реестры и справочники - Геоинструментарий */}
+      <Route path="odh" component={directories.geoobjects.odh} onEnter={requireAuth}/>
+      <Route path="dt" component={directories.geoobjects.dt} onEnter={requireAuth}/>
+      <Route path="ssp" component={directories.geoobjects.ssp} onEnter={requireAuth}/>
+      <Route path="pzv" component={directories.geoobjects.pzv} onEnter={requireAuth}/>
+      <Route path="carpool" component={directories.geoobjects.carpool} onEnter={requireAuth}/>
+      <Route path="danger-zones" component={directories.geoobjects.dangerZones} onEnter={requireAuth}/>
+      {/* Страница логина */}
       <Route path="login" component={LoginPage} onEnter={checkLoggedIn}/>
     </Route>
   </Router>

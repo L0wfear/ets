@@ -4,8 +4,8 @@ import { Modal, Row, Col, FormControls, Button, DropdownButton, Dropdown, Glyphi
 import RouteInfo from '../route/RouteInfo.jsx';
 import RouteFormWrap from '../route/RouteFormWrap.jsx';
 import ODHList from '../route/ODHList.jsx';
-import Field from '../ui/Field.jsx';
-import Div from '../ui/Div.jsx';
+import Field from 'components/ui/Field.jsx';
+import Div from 'components/ui/Div.jsx';
 import moment from 'moment';
 import cx from 'classnames';
 import { isEmpty } from 'utils/functions';

@@ -3,7 +3,9 @@ module.exports = {
   api: 'api',
   validate: 'validate',
   compositions: 'components/compositions',
-  decorators: 'components/decorators',
   adapter: 'adapter',
   forms: 'components/forms',
+  components: 'components',
+  models: 'models',
+  constants: 'constants'
 }

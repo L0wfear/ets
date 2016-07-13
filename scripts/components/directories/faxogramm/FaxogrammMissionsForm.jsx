@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon, Checkbox } from 'react-bootstrap';
-import EtsSelect from '../../ui/EtsSelect.jsx';
-import Datepicker from '../../ui/DatePicker.jsx';
+import EtsSelect from 'components/ui/EtsSelect.jsx';
+import Datepicker from 'components/ui/DatePicker.jsx';
 import moment from 'moment';
-import Div from '../../ui/Div.jsx';
+import Div from 'components/ui/Div.jsx';
 import Form from '../../compositions/Form.jsx';
 import _ from 'lodash';
 import connectToStores from 'flummox/connect';

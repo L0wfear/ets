@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
-import Table from '../ui/table/DataTable.jsx';
+import Table from 'components/ui/table/DataTable.jsx';
 import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
-import EtsSelect from '../ui/EtsSelect.jsx';
-import Div from '../ui/Div.jsx';
-import Field from '../ui/Field.jsx';
-import Datepicker from '../ui/DatePicker.jsx';
+import EtsSelect from 'components/ui/EtsSelect.jsx';
+import Div from 'components/ui/Div.jsx';
+import Field from 'components/ui/Field.jsx';
+import Datepicker from 'components/ui/DatePicker.jsx';
 import { datePickerFunction } from 'utils/labelFunctions';
 import { getToday9am, getTomorrow9am, getToday0am, getToday2359, getFormattedDateTimeSeconds } from 'utils/dates';
 import { getReportNotReadyNotification2 } from 'utils/notifications';

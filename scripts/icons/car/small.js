@@ -1,5 +1,5 @@
-import { SMALL_ICON_RADIUS } from '../../constants/CarIcons.js';
-import { getStatusById } from '../../statuses.js';
+import { SMALL_ICON_RADIUS } from 'constants/CarIcons.js';
+import { getStatusById } from 'constants/statuses';
 
 const PI_TIMES_TWO = Math.PI * 2;
 const IS_RETINA = window.devicePixelRatio >= 2;

@@ -1,4 +1,5 @@
 // Модуль для функций, использующихся при рендеринге поля фильтра в гридах
+// TODO переделать на нормальный i18n
 import { getFormattedDateTime } from 'utils/dates';
 
 export function dateLabelFunction(date) {
@@ -62,8 +63,7 @@ export function getPeriodicReportStatusLabel(s) {
   return statuses[s];
 }
 
-
-// обращений к сторам быть не должно, нужно получать данные из бека
+// TODO обращений к сторам быть не должно, нужно получать данные из бека
 export function employeeFIOLabelFunction(employeeId, fullFlag = false) {
 	const { flux } = window.__ETS_CONTAINER__;
   const employeesStore = flux.getStore('employees');

@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import Panel from '../Panel.jsx';
 import { Button } from 'react-bootstrap';
-import { getStatusById } from '../../statuses.js';
+import { getStatusById } from 'constants/statuses';
 import config from '../../config.js';
 import { makeDate, makeTime, getStartOfToday } from 'utils/dates';
-import FuelChart from '../ui/charts/FuelChart.jsx';
-import SpeedChart from '../ui/charts/SpeedChart.jsx';
+import FuelChart from 'components/ui/charts/FuelChart.jsx';
+import SpeedChart from 'components/ui/charts/SpeedChart.jsx';
 import { getCarImage } from '../../adapter.js';
 import { roundCoordinates } from 'utils/geo';
-import DatePicker from '../ui/DatePicker.jsx';
+import DatePicker from 'components/ui/DatePicker.jsx';
 import { getTypeById } from 'utils/labelFunctions';
 
 

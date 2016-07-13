@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { FluxContext } from './decorators/index.js';
+import { FluxContext } from 'utils/decorators';
 
 
 /**

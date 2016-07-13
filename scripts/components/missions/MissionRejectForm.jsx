@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import moment from 'moment';
 import { Modal, Button, Glyphicon, Row, Col } from 'react-bootstrap';
-import Field from '../ui/Field.jsx';
-import Div from '../ui/Div.jsx';
-import Datepicker from '../ui/DatePicker.jsx';
+import Field from 'components/ui/Field.jsx';
+import Div from 'components/ui/Div.jsx';
+import Datepicker from 'components/ui/DatePicker.jsx';
 import { getFormattedDateTime, createValidDateTime } from 'utils/dates';
 import { reassignMissionSuccessNotification } from 'utils/notifications.js';
 

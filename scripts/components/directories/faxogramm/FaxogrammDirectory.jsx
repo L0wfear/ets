@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
-import Table from '../../ui/table/DataTable.jsx';
-import ElementsList from '../../ElementsList.jsx';
-import Paginator from '../../ui/Paginator.jsx';
-import Div from '../../ui/Div.jsx';
-import Datepicker from '../../ui/DatePicker.jsx';
-import DateFormatter from '../../ui/DateFormatter.jsx';
+import Table from 'components/ui/table/DataTable.jsx';
+import ElementsList from 'components/ElementsList.jsx';
+import Paginator from 'components/ui/Paginator.jsx';
+import Div from 'components/ui/Div.jsx';
+import Datepicker from 'components/ui/DatePicker.jsx';
+import DateFormatter from 'components/ui/DateFormatter.jsx';
 import moment from 'moment';
 import cx from 'classnames';
 import { createValidDateTime, getToday0am, getToday2359 } from 'utils/dates';

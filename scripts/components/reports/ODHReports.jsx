@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import { Row, Col, Button, Glyphicon, ButtonToolbar } from 'react-bootstrap';
-import Div from '../ui/Div.jsx';
-import EtsSelect from '../ui/EtsSelect.jsx';
-import Datepicker from '../ui/DatePicker.jsx';
-import Field from '../ui/Field.jsx';
+import Div from 'components/ui/Div.jsx';
+import EtsSelect from 'components/ui/EtsSelect.jsx';
+import Datepicker from 'components/ui/DatePicker.jsx';
+import Field from 'components/ui/Field.jsx';
 import _ from 'lodash';
 import cx from 'classnames';
 import connectToStores from 'flummox/connect';

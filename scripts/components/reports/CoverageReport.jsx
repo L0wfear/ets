@@ -1,19 +1,11 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
-import Table from '../ui/table/DataTable.jsx';
+import Table from 'components/ui/table/DataTable.jsx';
 import { Button, Glyphicon, Row, Col, Input } from 'react-bootstrap';
-import Div from '../ui/Div.jsx';
-import Field from '../ui/Field.jsx';
+import Div from 'components/ui/Div.jsx';
+import Field from 'components/ui/Field.jsx';
 import PolyMap from '../map/PolyMap.jsx';
 import _ from 'lodash';
-// import Datepicker from '../ui/DatePicker.jsx';
-// import { datePickerFunction } from 'utils/labelFunctions';
-// import { getToday9am, getTomorrow9am, getToday0am, getToday2359, getFormattedDateTimeSeconds } from 'utils/dates';
-// import { getReportNotReadyNotification2 } from 'utils/notifications';
-// import { isEmpty } from 'utils/functions';
-// import FuelReportHeader from "./FuelReportHeader.jsx";
-// import { saveData } from 'utils/functions';
-
 
 
 function getStatusLabel(s) {

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import _ from 'lodash';
-import Div from '../ui/Div.jsx';
+import Div from 'components/ui/Div.jsx';
 import WaybillForm from './WaybillForm.jsx';
 import { getDefaultBill } from '../../stores/WaybillsStore.js';
 import { isNotNull, isEmpty } from 'utils/functions';
 import { validateRow } from 'validate/validateRow.js';
-import { waybillSchema, waybillClosingSchema } from '../models/WaybillModel.js';
+import { waybillSchema, waybillClosingSchema } from 'models/WaybillModel.js';
 import config from '../../config.js';
 import { notifications } from 'utils/notifications';
 import Taxes from './Taxes.jsx';

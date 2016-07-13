@@ -18,7 +18,7 @@ module.exports = {
   entry: {
     'app': [
       'whatwg-fetch',
-      './scripts/app.jsx'
+      './scripts/index.js'
     ],
     'style': 'raw!./styles/main.scss'
   },
@@ -44,6 +44,7 @@ module.exports = {
   },
   progress: true,
   resolve: {
+    root: __dirname,
     alias: alias,
     modulesDirectories: [
       'scripts',

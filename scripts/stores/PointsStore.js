@@ -1,5 +1,5 @@
 import { Store } from 'flummox';
-import statuses from '../statuses.js';
+import statuses from 'constants/statuses';
 import { getOwnerById } from '../owners.js';
 import config from '../config.js';
 import ReconnectingWebSocket from '../vendor/ReconnectingWebsocket.js';

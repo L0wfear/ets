@@ -1,6 +1,6 @@
 import React from 'react';
 import { validateRow } from 'validate/validateRow.js';
-import { FluxContext } from '../decorators/index.js';
+import { FluxContext } from 'utils/decorators';
 import { isEmpty } from 'utils/functions';
 import { saveDataSuccessNotification } from 'utils/notifications';
 
@@ -135,11 +135,11 @@ export default FormWrap;
 
 // import React, { Component } from 'react';
 // import _ from 'lodash';
-// import Div from '../ui/Div.jsx';
+// import Div from 'components/ui/Div.jsx';
 // import MissionForm from './MissionForm.jsx';
 // import FormWrap from '../compositions/FormWrap.jsx';
 // import { getDefaultMission } from '../../stores/MissionsStore.js';
-// import { missionSchema, missionClosingSchema } from '../models/MissionModel.js';
+// import { missionSchema, missionClosingSchema } from 'models/MissionModel.js';
 //
 // class MissionFormWrap extends FormWrap {
 //

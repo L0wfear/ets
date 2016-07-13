@@ -18,7 +18,7 @@ module.exports = {
       'whatwg-fetch',
       'webpack-dev-server/client?http://' + host + ':' + port,
       'webpack/hot/only-dev-server',
-      "./scripts/app.jsx"
+      "./scripts/index.js"
     ]
   },
   output: {
@@ -49,6 +49,7 @@ module.exports = {
   },
   progress: true,
   resolve: {
+    root: __dirname,
     alias: alias,
     modulesDirectories: [
       'scripts',

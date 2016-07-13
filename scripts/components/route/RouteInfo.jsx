@@ -3,7 +3,7 @@ import { Row, Col, Input } from 'react-bootstrap';
 import PolyMap from '../map/PolyMap.jsx';
 import DrawMap from '../map/DrawMap.jsx';
 import ODHList from './ODHList.jsx';
-import Div from '../ui/Div.jsx';
+import Div from 'components/ui/Div.jsx';
 
 export default class RouteInfo extends Component {
 

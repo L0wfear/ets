@@ -1,5 +1,5 @@
 import React from 'react';
-import Div from '../ui/Div.jsx';
+import Div from 'components/ui/Div.jsx';
 import CompanyStructureForm from './CompanyStructureForm.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Div from '../ui/Div.jsx';
+import Div from 'components/ui/Div.jsx';
 import { Panel, Collapse, Glyphicon, Fade, Well, Button } from 'react-bootstrap';
-import { FluxContext } from '../decorators/index.js';
+import { FluxContext } from 'utils/decorators';
 import DashboardCardHeader from './DashboardCardHeader.jsx';
 import DashboardItemChevron from './DashboardItemChevron.jsx';
 import cx from 'classnames';

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import { Button, Glyphicon } from 'react-bootstrap';
-import Table from '../ui/table/DataTable.jsx';
+import Table from 'components/ui/table/DataTable.jsx';
 import MissionTemplateFormWrap from './MissionTemplateFormWrap.jsx';
-import ElementsList from '../ElementsList.jsx';
+import ElementsList from 'components/ElementsList.jsx';
 import moment from 'moment';
 import cx from 'classnames';
 import _ from 'lodash';

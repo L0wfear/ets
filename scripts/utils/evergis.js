@@ -14,7 +14,7 @@ function refreshAttempts() {
 }
 
 // Получаем токен из evergis
-export function fetchToken() {
+export function fetchEvergisToken() {
   attempts += 1;
   if (refreshAttemptsTimeoutId !== null) {
     clearInterval(refreshAttemptsTimeoutId);

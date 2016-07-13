@@ -1,11 +1,11 @@
 import React from 'react';
-import Div from '../ui/Div.jsx';
+import Div from 'components/ui/Div.jsx';
 import { Panel, Row, Col, Button, Fade, Well, Glyphicon, Collapse } from 'react-bootstrap';
 import MissionFormWrap from '../missions/MissionFormWrap.jsx';
 import DutyMissionFormWrap from '../missions/DutyMissionFormWrap.jsx';
 import MonitorFormWrap from './MonitorFormWrap.jsx';
 import WaybillFormWrap from '../waybill/WaybillFormWrap.jsx';
-import ElementsList from '../ElementsList.jsx';
+import ElementsList from 'components/ElementsList.jsx';
 
 export default class MasterManagementCard extends ElementsList {
 

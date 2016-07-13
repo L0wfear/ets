@@ -31,11 +31,11 @@ import SettingsActions from '../actions/SettingsActions.js';
 
 export default class Flux extends Flummox {
 
-  constructor(adapter) {
+  constructor() {
     super();
 
     const flux = this;
-    const args = { flux, adapter };
+    const args = { flux };
 
     this.createActions('points', PointsActions);
     this.createActions('session', SessionActions);

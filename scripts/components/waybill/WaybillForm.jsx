@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
-import EtsSelect from '../ui/EtsSelect.jsx';
-import Field from '../ui/Field.jsx';
-import Div from '../ui/Div.jsx';
+import EtsSelect from 'components/ui/EtsSelect.jsx';
+import Field from 'components/ui/Field.jsx';
+import Div from 'components/ui/Div.jsx';
 import moment from 'moment';
 import Taxes from './Taxes.jsx';
 import cx from 'classnames';

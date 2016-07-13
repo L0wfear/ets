@@ -1,5 +1,5 @@
 import React from 'react';
-import Div from '../../ui/Div.jsx';
+import Div from 'components/ui/Div.jsx';
 import _ from 'lodash';
 import moment from 'moment';
 import { Panel, Collapse, Glyphicon, Fade, Well, Button } from 'react-bootstrap';

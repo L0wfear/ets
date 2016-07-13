@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import { Button, Glyphicon } from 'react-bootstrap';
-import Table from '../ui/table/DataTable.jsx';
-import DateFormatter from '../ui/DateFormatter.jsx';
+import Table from 'components/ui/table/DataTable.jsx';
+import DateFormatter from 'components/ui/DateFormatter.jsx';
 import { getFormattedDateTime } from 'utils/dates';
 import { datePickerFunction } from 'utils/labelFunctions';
 import MissionFormWrap from './MissionFormWrap.jsx';
 import MissionRejectForm from './MissionRejectForm.jsx';
 import MissionInfoFormWrap from '../dashboard/MissionInfoFormWrap.jsx';
-import ElementsList from '../ElementsList.jsx';
+import ElementsList from 'components/ElementsList.jsx';
 import moment from 'moment';
 import { saveData } from 'utils/functions';
 import cx from 'classnames';

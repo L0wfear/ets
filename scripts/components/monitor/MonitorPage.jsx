@@ -5,7 +5,7 @@ import Map from '../map/Map.jsx';
 import Toolbar from './toolbar/Toolbar.jsx';
 import Sidebar from './Sidebar.jsx';
 import WeatherWidget from '../map/WeatherWidget.jsx';
-import { FluxContext } from '../decorators/index.js';
+import { FluxContext } from 'utils/decorators';
 
 const MAP_INITIAL_CENTER = [6000,0]//[-199.43090337943863, -8521.192605428025];
 const MAP_INITIAL_ZOOM = 3;

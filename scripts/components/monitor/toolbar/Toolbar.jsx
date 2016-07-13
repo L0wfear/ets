@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import Filter from './Filter.jsx';
-import { FluxContext } from '../../decorators/index.js';
+import { FluxContext } from 'utils/decorators';
 import cx from 'classnames';
 
-import statuses from '../../../statuses.js';
+import statuses from 'constants/statuses';
 import FluxComponent from 'flummox/component';
 import ToolbarSearch from './ToolbarSearch.jsx';
 import ToolbarFilters from './ToolbarFilters.jsx';

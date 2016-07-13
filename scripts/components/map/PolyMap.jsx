@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import CarMarker from '../markers/car/CarMarker.js';
+import CarMarker from './markers/car/CarMarker.js';
 import { PROJECTION, ArcGisLayer } from './MskAdapter.js';
-import { polyState, polyStyles } from '../../constants/polygons.js';
-import { vectorStyles, vectorState, getVectorArrowStyle } from '../../constants/vectors.js';
+import { polyState, polyStyles } from 'constants/polygons.js';
+import { vectorStyles, vectorState, getVectorArrowStyle } from 'constants/vectors.js';
 
 window.addEventListener('blur', (ev) => {
   //let store = flux.getStore('points')

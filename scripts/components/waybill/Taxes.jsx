@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import Table from '../ui/table/Table.jsx';
+import Table from 'components/ui/table/Table.jsx';
 import { Input, Button, Glyphicon } from 'react-bootstrap';
-import EtsSelect from '../ui/EtsSelect.jsx';
-import Div from '../ui/Div.jsx';
+import EtsSelect from 'components/ui/EtsSelect.jsx';
+import Div from 'components/ui/Div.jsx';
 import { isEmpty } from 'utils/functions';
 import cx from 'classnames';
 

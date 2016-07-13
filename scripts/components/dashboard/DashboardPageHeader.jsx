@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { Row, Col } from 'react-bootstrap';
-import Div from '../ui/Div.jsx';
+import Div from 'components/ui/Div.jsx';
 
 export default class DashboardPageHeader extends React.Component {
 

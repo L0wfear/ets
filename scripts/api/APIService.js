@@ -1,7 +1,7 @@
 import { getUrl, getJSON, postJSON, deleteJSON, putJSON } from '../adapter.js';
 import { getWarningNotification } from 'utils/notifications';
-import RequestWarningError from '../errors/RequestWarningError.js';
-import { mocks } from './mocks/index';
+import { RequestWarningError } from 'utils/errors';
+import { mocks } from './mocks';
 
 export default class APIService {
 

@@ -4,7 +4,7 @@ import connectToStores from 'flummox/connect';
 import _ from 'lodash';
 import RouteForm from './RouteForm.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';
-import { routeSchema } from '../models/RouteModel.js';
+import { routeSchema } from 'models/RouteModel.js';
 
 class RouteFormWrap extends FormWrap {
 

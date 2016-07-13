@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import _ from 'lodash';
-import Div from '../ui/Div.jsx';
+import Div from 'components/ui/Div.jsx';
 import DutyMissionForm from './DutyMissionForm.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';
 import { getDefaultDutyMission } from '../../stores/MissionsStore.js';
 import { isNotNull, isEmpty, saveData } from 'utils/functions';
-import { dutyMissionSchema, dutyMissionClosingSchema } from '../models/DutyMissionModel.js';
+import { dutyMissionSchema, dutyMissionClosingSchema } from 'models/DutyMissionModel.js';
 
 class DutyMissionFormWrap extends FormWrap {
 

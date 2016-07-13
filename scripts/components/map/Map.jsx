@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import CarMarker from '../markers/car/CarMarker.js';
+import CarMarker from './markers/car/CarMarker.js';
 import { PROJECTION, ArcGisLayer, projectToPixel } from './MskAdapter.js';
 
 window.addEventListener('blur', (ev) => {

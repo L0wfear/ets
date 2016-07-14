@@ -94,6 +94,7 @@ class MissionTemplateForm extends MissionForm {
 					<Row>
 						<Col md={6}>
 							<Field type="select" label="Транспортное средство" error={errors['car_id']}
+									className="white-space-pre-wrap"
 									options={CARS}
 									disabled={isEmpty(state.technical_operation_id)}
 									value={state.car_id}

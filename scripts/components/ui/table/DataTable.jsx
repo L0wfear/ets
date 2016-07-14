@@ -213,8 +213,18 @@ class Table extends React.Component {
     return el;
   }
 
-  processTableData(data, selected, selectField, onRowSelected) {
+  processEmptyCols(tableCols, el, i) {
+    _.each(tableCols, col => {
+      if (typeof el[col] === 'undefined') {
+        el[col] = null;
+      }
+    });
+    return el;
+  }
+
+  processTableData(data, tableCols, selected, selectField, onRowSelected) {
     return _(data)
+           .map(this.processEmptyCols.bind(this, tableCols))
            .map(this.processSelected.bind(this, selected, selectField, onRowSelected))
            .filter(this.shouldBeRendered.bind(this))
            .value();
@@ -274,7 +284,7 @@ class Table extends React.Component {
     this.setState({
       initialSort: sortingColumnName,
       initialSortAscending: ascendingSort,
-    })
+    });
   }
 
   handleKeyPress(data, keyCode, e) {
@@ -312,7 +322,7 @@ class Table extends React.Component {
     let tableCols = tableMetaCols.filter(c => c.display !== false).filter(c => columnControlValues.indexOf(c.name) === -1).map(c => c.name);
     let data = _.cloneDeep(this.props.results);
 
-    let results = this.processTableData(data, selected, selectField, onRowSelected);
+    let results = this.processTableData(data, tableCols, selected, selectField, onRowSelected);
 
     if (enumerated === true && !this.state.isHierarchical) {
       tableCols = ['rowNumber', ...tableCols];

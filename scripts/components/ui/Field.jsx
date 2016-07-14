@@ -41,9 +41,9 @@ class Field extends React.Component {
   }
 
   renderSelect() {
-    const { error, label = ''} = this.props;
+    const { error, label = '', className = ''} = this.props;
     const selectClassName = cx({'has-error': error});
-    return  <Div hidden={this.props.hidden}>
+    return  <Div hidden={this.props.hidden} className={className}>
       <label>{label}</label>
       <EtsSelect {...this.props} className={selectClassName}/>
       <Div hidden={!error} className="error" style={{marginTop: 4}}>{error}</Div>
@@ -51,14 +51,14 @@ class Field extends React.Component {
   }
 
   renderString() {
-    const { error, label = '', readOnly = false } = this.props;
+    const { error, label = '', readOnly = false, className = '' } = this.props;
     const inputClassName = cx({'has-error': error});
     return !readOnly ?
            <Div hidden={this.props.hidden}>
              <Input type="text" className={inputClassName} {...this.props} />
              <Div hidden={!error} className="error">{error}</Div>
            </Div>:
-           <Div hidden={this.props.hidden}>
+           <Div hidden={this.props.hidden} className={className}>
              <label style={{paddingTop:5}}>{this.props.label}</label><br/>
              {this.props.value}
            </Div>

@@ -28,7 +28,7 @@ class FuelRateForm extends Form {
 		const SPECIALMODELS = specialModelsList.map( m => ({value: m.id, label: m.name}));
 		const OPERATIONS = operations.map(op => ({value: op.id, label: op.name})).sort((a,b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
 
-    console.log('form state is ', state);
+    // console.log('form state is ', state);
 
 		return (
 			<Modal {...this.props} backdrop="static">
@@ -79,6 +79,7 @@ class FuelRateForm extends Form {
 							<Field label="Марка шасси"
 									error={errors['car_model_id']}
 									type="select"
+									className="white-space-pre-wrap"
 									options={MODELS}
 									value={state.car_model_id}
 									onChange={this.handleChange.bind(this, 'car_model_id')} />

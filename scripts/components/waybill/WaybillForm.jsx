@@ -319,12 +319,13 @@ class WaybillForm extends Form {
 	      	<Row>
 						<Col md={6}>
 							<Field type="select" label="Транспортное средство (поиск по госномеру)" error={errors['car_id']}
+									className="white-space-pre-wrap"
 									hidden={!(IS_CREATING || IS_POST_CREATING)}
 									options={CARS}
 									value={state.car_id}
 									onChange={this.onCarChange.bind(this)}/>
 
-							<Field type="string" label="Транспортное средство" readOnly={true} hidden={IS_CREATING || IS_POST_CREATING}
+							<Field type="string" label="Транспортное средство" className="white-space-pre-wrap" readOnly={true} hidden={IS_CREATING || IS_POST_CREATING}
 									value={car ? `${car.gov_number} [${car.special_model_name || ''}${car.special_model_name ? '/' : ''}${car.model_name || ''}]` : 'Н/Д'}/>
 	      		</Col>
 	      		<Col md={6}>

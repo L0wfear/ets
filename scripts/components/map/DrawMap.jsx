@@ -123,7 +123,7 @@ export default class DrawMap extends PolyMap {
   renderRoute(object_list = []) {
     let map = this.map;
     let vectorSource = new ol.source.Vector({wrapX: false});
-    object_list = _.uniq(object_list, o => o.id);
+    object_list = _.uniqBy(object_list, o => o.id);
     //console.log(object_list.length, _.uniq(object_list, o => o.id).length);
     _.each(object_list, (object, index) => {
       let start = [object.begin.x_msk, object.begin.y_msk];

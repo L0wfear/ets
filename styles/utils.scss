@@ -1,0 +1,8 @@
+/* Форсировать отображение двух пробелов */
+.white-space-pre-wrap {
+  white-space: pre-wrap;
+
+  .Select-placeholder  {
+    white-space: pre-wrap;
+  }
+}

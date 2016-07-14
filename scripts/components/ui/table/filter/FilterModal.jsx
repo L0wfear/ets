@@ -36,7 +36,7 @@ const Filter = (props) => {
 
   if (option.filter && option.filter.type && option.filter.type === 'select' && !option.filter.options) {
     let options = _(props.tableData)
-                    .uniq((d) => d[option.name])
+                    .uniqBy((d) => d[option.name])
                     .map((d) => ({
                       value: d[option.name] === true || d[option.name] === false ? +d[option.name] : d[option.name],
                       label: typeof option.filter.labelFunction === 'function' ? option.filter.labelFunction(d[option.name]) : d[option.name],

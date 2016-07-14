@@ -2,16 +2,6 @@ import React, { Component } from 'react';
 import CarMarker from './markers/car/CarMarker.js';
 import { PROJECTION, ArcGisLayer, projectToPixel } from './MskAdapter.js';
 
-window.addEventListener('blur', (ev) => {
-  // let store = flux.getStore('points')
-  // store.pauseRendering()
-})
-
-window.addEventListener('focus', (ev) => {
-  // let store = flux.getStore('points')
-  // store.unpauseRendering();
-})
-
 // todo move to settings
 const SIDEBAR_WIDTH_PX = 500;
 

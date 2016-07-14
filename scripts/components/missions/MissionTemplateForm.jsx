@@ -27,8 +27,7 @@ class MissionTemplateForm extends MissionForm {
 		let { technicalOperationsList, routesList, carsList } = this.props;
 
 		if (!isEmpty(mission.route_id)) {
-			let route = await routesActions.getRouteById(mission.route_id, true);
-					selectedRoute = route.result.length ? route.result[0] : null;
+			selectedRoute = await routesActions.getRouteById(mission.route_id, true);
 		}
 
 		if (!isEmpty(mission.technical_operation_id)){

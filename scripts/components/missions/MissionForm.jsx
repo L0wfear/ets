@@ -92,8 +92,7 @@ export class MissionForm extends Form {
 		let { technicalOperationsList, routesList, carsList } = this.props;
 
 		if (!isEmpty(mission.route_id)) {
-			let route = await routesActions.getRouteById(mission.route_id, true);
-					selectedRoute = route.result.length ? route.result[0] : null;
+			selectedRoute = await routesActions.getRouteById(mission.route_id, true);
 		}
 
 		if (!isEmpty(mission.technical_operation_id)){
@@ -137,8 +136,7 @@ export class MissionForm extends Form {
 		if (isSubmitted === true) {
 			let createdRouteId = result.createdRoute.result[0].id;
 			this.handleChange('route_id', createdRouteId);
-			let route = await routesActions.getRouteById(createdRouteId, true);
-			let selectedRoute = route.result.length ? route.result[0] : null;
+			let selectedRoute = await routesActions.getRouteById(createdRouteId, true);
 			let routesList = await routesActions.getRoutesByTechnicalOperation(this.props.formState.technical_operation_id);
 			Object.assign(stateChangeObject, {
 				showRouteForm: false,

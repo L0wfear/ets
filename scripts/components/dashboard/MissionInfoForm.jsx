@@ -41,11 +41,11 @@ export class MissionInfoForm extends Form {
 
   async componentDidMount() {
     let { formState } = this.props;
-		console.log(formState);
-    this.context.flux.getActions('points').createConnection();
-    this.context.flux.getActions('points').setSingleCarTrack(formState.car_gov_number);
-    this.context.flux.getActions('points').setSingleCarTrackDates([formState.mission_date_start, formState.mission_date_end]);
-    await this.context.flux.getActions('missions').getMissionLastReport(formState.mission_id).then(r => {
+    const { flux } = this.context;
+    flux.getActions('points').createConnection();
+    flux.getActions('points').setSingleCarTrack(formState.car_gov_number);
+    flux.getActions('points').setSingleCarTrackDates([formState.mission_date_start, formState.mission_date_end]);
+    await flux.getActions('missions').getMissionLastReport(formState.mission_id).then(r => {
 			if (r.result) {
 				let missionReport = [];
 				let selectedObjects = [];
@@ -67,11 +67,11 @@ export class MissionInfoForm extends Form {
 	      this.setState({missionReport, routeType, missionReportFull: r.result, selectedObjects});
 			}
     });
-    this.context.flux.getActions('routes').getRouteById(formState.route_id, true).then(r => {
-      this.setState({object_list: r.result && r.result[0] ? r.result[0].object_list : []});
+    flux.getActions('routes').getRouteById(formState.route_id, true).then(route => {
+      this.setState({object_list: route ? route.object_list : []});
     })
-		this.context.flux.getActions('routes').getGeozones();
-	    this.context.flux.getActions('objects').getTypes();
+		flux.getActions('routes').getGeozones();
+	  flux.getActions('objects').getTypes();
   }
 
   componentWillUnmount() {

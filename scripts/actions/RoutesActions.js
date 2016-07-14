@@ -46,12 +46,38 @@ export default class RoutesActions extends Actions {
     return response.result || [];
   }
 
-  getRouteById(id, simple) {
+  /**
+    * Получение маршрута по id
+    * @param {number} id - идентификатор маршрута
+    * @param {boolean} simple - возвращать ли облегченную версию данных
+    * @return {object|null} route - маршрут
+    */
+  async getRouteById(id, simple) {
     const payload = { id };
     if (simple) {
       payload.simple = 1;
     }
-    return RouteService.get(payload);
+    const response = await RouteService.get(payload);
+
+    const route = response && response.result && response.result[0]
+      ? response.result[0]
+      : null;
+
+    if (route) {
+      /* TODO нужно чтобы с бека присылались типы объектов
+       * чтобы избавиться от этого map */
+      route.object_list.map(el => {
+				if (!el.shape && el.coordinates) {
+					el.shape = {
+						type: "Point",
+						coordinates: el.coordinates
+					};
+				}
+        return el;
+      });
+    }
+
+    return route;
   }
 
   async createRoute(route) {

@@ -83,6 +83,9 @@ export function getTrackColor(speed, type_id, opacity = 1) {
   return opacity === 1 ? result : hexToRgba(result, opacity);
 }
 
+/**
+ * Трек на карте
+ */
 export default class Track {
 
   constructor(owner) {

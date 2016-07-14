@@ -7,7 +7,6 @@ import connectToStores from 'flummox/connect';
 import RouteInfo from './RouteInfo.jsx';
 import RouteFormWrap from './RouteFormWrap.jsx';
 import Div from 'components/ui/Div.jsx';
-import { getRouteById } from '../../adapter.js';
 import ClickOutHandler from 'react-onclickout';
 import Filter from 'components/ui/table/filter/Filter.jsx';
 
@@ -61,8 +60,8 @@ class RoutesList extends Component {
 
 	selectRoute(id) {
 		const { flux } = this.context;
-		flux.getActions('routes').getRouteById(id).then(r => {
-			this.setState({selectedRoute: r.result && r.result.length ? r.result[0] : null});
+		flux.getActions('routes').getRouteById(id).then(route => {
+			this.setState({selectedRoute: route});
 		});
 	}
 

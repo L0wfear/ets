@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import { Row, Col, Input } from 'react-bootstrap';
 import PolyMap from '../map/PolyMap.jsx';
-import DrawMap from '../map/DrawMap.jsx';
 import ODHList from './ODHList.jsx';
 import Div from 'components/ui/Div.jsx';
 
@@ -32,20 +31,7 @@ export default class RouteInfo extends Component {
 			let route = this.props.route;
 			const { object_list = [] } = route;
 			let manual = route.type === 'vector' ? true : false;
-			const polys = object_list.map(({shape, name, state, coordinates}) => {
-				if (!shape) {
-					shape = {
-						type: "Point",
-						coordinates
-					};
-				}
-				return {
-					shape,//: JSON.parse(shape),
-					name,
-					state,
-				}
-			});
-			const Map = PolyMap;
+			const polys = object_list.map(({shape, name, state}) => ({shape, name, state}));
 
 			let odh_list = route.odh_list || object_list.filter(o => o.type);
 
@@ -57,7 +43,7 @@ export default class RouteInfo extends Component {
 
 							<Col md={8}>
 								<Div className="route-creating">
-									<Map onFeatureClick={this.onFeatureClick.bind(this)}
+									<PolyMap onFeatureClick={this.onFeatureClick.bind(this)}
 											 zoom={this.state.zoom}
 				            	 center={this.state.center}
 				            	 polys={polys}

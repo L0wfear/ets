@@ -52,9 +52,7 @@ let getTableMeta = (props) => {
 
 let DutyMissionsTable = (props) => {
 
-		const renderers = {
-      // route_id: ({data}) => <div>{getRouteById(data).name || data}</div>,
-		};
+		const renderers = {};
 
 		return <Table title="Шаблоны наряд-заданий"
 									results={props.data}

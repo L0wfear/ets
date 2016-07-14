@@ -4,8 +4,8 @@ import { Button, Glyphicon } from 'react-bootstrap';
 import moment from 'moment';
 import cx from 'classnames';
 import connectToStores from 'flummox/connect';
-// import PZVFormWrap from './ssp/PZVFormWrap.jsx';
 import ElementsList from 'components/ElementsList.jsx';
+import { FluxContext } from 'utils/decorators';
 
 let tableMeta = {
 	cols: [
@@ -28,7 +28,7 @@ let tableMeta = {
 	]
 };
 
-let PZVTable = (props) => {
+let FuelingWaterStationsTable = (props) => {
 
     const renderers = {
 
@@ -42,7 +42,7 @@ let PZVTable = (props) => {
 				{...props}/>
 }
 
-class PZVDirectory extends ElementsList {
+class FuelingWaterStationsDirectory extends ElementsList {
 
 	constructor(props, context) {
 		super(props);
@@ -55,24 +55,24 @@ class PZVDirectory extends ElementsList {
 		super.componentDidMount();
     const { flux } = this.context;
 		flux.getActions('objects').getModels();
-    flux.getActions('objects').getPZVs();
+    flux.getActions('objects').getFuelingWaterStations();
 	}
 
 	render() {
 
-		const { pzvs = [] } = this.props;
+		const { fuelingWaterStations = [] } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
-        <PZVTable data={pzvs} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'}>
-				</PZVTable>
+        <FuelingWaterStationsTable data={fuelingWaterStations} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'}>
+				</FuelingWaterStationsTable>
 			</div>
 		);
 	}
 }
 
-PZVDirectory.contextTypes = {
+FuelingWaterStationsDirectory.contextTypes = {
   flux: React.PropTypes.object,
 };
 
-export default connectToStores(PZVDirectory, ['objects']);
+export default connectToStores(FuelingWaterStationsDirectory, ['objects']);

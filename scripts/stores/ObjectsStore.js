@@ -25,7 +25,7 @@ class ObjectsStore extends Store {
     this.register(objectsActions.updateODH, this.handleGetODHs);
     this.register(objectsActions.getDTs, this.handleGetDTs);
     this.register(objectsActions.getSSPs, this.handleGetSSPs);
-    this.register(objectsActions.getPZVs, this.handleGetPZVs);
+    this.register(objectsActions.getFuelingWaterStations, this.handleGetFuelingWaterStations);
     this.register(objectsActions.getCarpools, this.handleGetCarpools);
     this.register(objectsActions.getDangerZones, this.handleGetDangerZones);
     this.register(objectsActions.getOrganizations, this.handleGetOrganizations);
@@ -62,7 +62,7 @@ class ObjectsStore extends Store {
       companyStructureList: [],
       positionsList: [],
       ssps: [],
-      pzvs: [],
+      fuelingWaterStations: [],
       carpools: [],
       dangerZones: [],
       organizations: [],
@@ -168,8 +168,8 @@ class ObjectsStore extends Store {
     this.setState({dtsList: dts.result});
   }
 
-  handleGetPZVs(pzvs) {
-    this.setState({pzvs: pzvs.result});
+  handleGetFuelingWaterStations({result}) {
+    this.setState({fuelingWaterStations: result});
   }
 
   handleGetCarpools(carpools) {

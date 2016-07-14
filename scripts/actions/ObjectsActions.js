@@ -17,7 +17,7 @@ import { FaxogrammService,
          ModelsService,
          SpecialModelService,
          SSPService,
-         PZVService,
+         FuelingWaterService,
          CarPoolService,
          OrganizationsService,
          DangerZoneService } from 'api/Services';
@@ -70,8 +70,8 @@ export default class ObjectsActions extends Actions {
     return SSPService.get();
   }
 
-  getPZVs() {
-    return PZVService.get();
+  getFuelingWaterStations() {
+    return FuelingWaterService.get();
   }
 
   getCarpools() {

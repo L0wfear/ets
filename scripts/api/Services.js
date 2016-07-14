@@ -42,10 +42,10 @@ export const CompanyService = new APIService('/actual_companies/', USE_MOCKS);
 export const PositionService = new APIService('/position/', USE_MOCKS);
 export const VectorObjectService = new APIService('/vector_object/', USE_MOCKS);
 
-export const SSPService = new APIService('/ssp/', true);
-export const PZVService = new APIService('/pzv/', true);
-export const CarPoolService = new APIService('/carpool/', true);
-export const DangerZoneService = new APIService('/danger_zone/', true);
+export const SSPService = new APIService('/ssp/', USE_MOCKS);
+export const FuelingWaterService = new APIService('/fueling_water/', USE_MOCKS);
+export const CarPoolService = new APIService('/carpool/', USE_MOCKS);
+export const DangerZoneService = new APIService('/danger_zone/', USE_MOCKS);
 export const MissionDataService = new APIService('/mission_data/', false);
 export const OrganizationsService = new APIService('/organizations/', true);
 

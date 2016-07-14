@@ -1,6 +1,6 @@
 import Mock from '../Mock.js';
 
-export default class PZVMock extends Mock {
+export default class FuelingWaterMock extends Mock {
 
   constructor() {
     super();

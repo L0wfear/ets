@@ -120,11 +120,13 @@ class WaybillForm extends Form {
 		await flux.getActions('employees').getDrivers();
 	}
 
-	async onCarChange(car_id) {
+	async onCarChange(car_id, cars) {
+		const selectedCar = cars[0] || {};
     const { flux } = this.context;
 
     let fieldsToChange = {
       car_id,
+			gov_number: selectedCar.gov_number
     };
 
 		const waybillsListSorted = _(this.props.waybillsList).filter(w => w.status === 'closed').sortBy('date_create').value().reverse();
@@ -190,7 +192,11 @@ class WaybillForm extends Form {
 		let taxesControl = false;
 
 		const { carsList = [], carsIndex = {}, driversList = [], employeesList = [], fuelTypes = [], missionsList = [] } = this.props;
-		const CARS = carsList.map( c => ({value: c.asuods_id, label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`}));
+		const CARS = carsList.map(c => ({
+			value: c.asuods_id,
+			gov_number: c.gov_number,
+			label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`
+		}));
 		const FUEL_TYPES = fuelTypes.map(({id, name}) => ({value: id, label: name}));
 		const DRIVERS = driversList.map( d => {
 			let personnel_number = d.personnel_number ? `[${d.personnel_number}] ` : '';
@@ -229,6 +235,8 @@ class WaybillForm extends Form {
 		if (state.tax_data) {
 			taxesControl = !!state.tax_data[0] && !isEmpty(state.tax_data[0].FACT_VALUE);
 		}
+
+		console.log(state, errors);
 
 		return (
 			<Modal {...this.props} bsSize="large" backdrop="static">

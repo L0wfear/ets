@@ -30,7 +30,7 @@ export class MissionForm extends Form {
 		const { flux } = this.context;
 		if (v) {
 			flux.getActions('routes').getRouteById(v, true).then(r => {
-				this.setState({selectedRoute: r.result.length ? r.result[0] : null});
+				this.setState({selectedRoute: r});
 			});
 		} else {
 			this.setState({selectedRoute: null});

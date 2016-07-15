@@ -236,8 +236,6 @@ class WaybillForm extends Form {
 			taxesControl = !!state.tax_data[0] && !isEmpty(state.tax_data[0].FACT_VALUE);
 		}
 
-		console.log(state, errors);
-
 		return (
 			<Modal {...this.props} bsSize="large" backdrop="static">
 

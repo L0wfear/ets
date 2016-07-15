@@ -117,6 +117,7 @@ export default class Taxes extends Component {
     tableData[index]['OPERATION'] = value;
     const fuelRateByOperation = _.find(fuelRates, r => r.operation_id === value) || {};
     tableData[index]['FUEL_RATE'] = fuelRateByOperation.rate_on_date || 0;
+    tableData[index]['RESULT'] = getResult(tableData[index]);
 
     this.setState({tableData});
     this.props.onChange(tableData);
@@ -126,8 +127,8 @@ export default class Taxes extends Component {
     const { tableData } = this.state;
     const { correctionRate, baseFactValue } = this.props;
     let overallValue = Taxes.calculateFinalFactValue(this.state.tableData);
-    let value = baseFactValue ? baseFactValue - overallValue : null;
-    tableData.push({fuel_correction_rate: correctionRate, FACT_VALUE: value !== null ? value.toFixed(3) : value});
+    let value = baseFactValue ? (baseFactValue - overallValue).toFixed(3) : null;
+    tableData.push({fuel_correction_rate: correctionRate, FACT_VALUE: value});
     this.setState({tableData});
   }
 

@@ -146,7 +146,7 @@ export function getWarningNotification(message) {
     title: 'Внимание',
     message: `${message}`,
     level: 'warning',
-    dismissible: false,
+    dismissible: true,
     position: 'tr',
     autoDismiss: 5,
   };

@@ -113,6 +113,11 @@ class WaybillsActions extends Actions {
     return WaybillService.put(payload, false, 'json');
   }
 
+  /**
+   * Создает ПЛ
+   * @param {object} waybill - данные ПЛ
+   * @returns {promise} POST WaybillService
+   */
   createWaybill(waybill) {
     const payload = _.clone(waybill);
     payload.plan_departure_date = createValidDateTime(payload.plan_departure_date);
@@ -135,7 +140,7 @@ class WaybillsActions extends Actions {
       payload.mission_id_list = [];
     }
 
-    return WaybillService.post(payload, true, 'json');
+    return WaybillService.post(payload, false, 'json');
   }
 
 }

@@ -303,40 +303,51 @@ class WaybillFormWrap extends Component {
 		this.handleFieldsChange(formState);
 	}
 
+	/**
+	 * Выдача (печать) Путевого листа
+	 * @param {object} event
+	 * @param {number 1|2} print_form_type - Идентификатор печатной формы
+	 * @returns {undefined}
+	 */
   handlePrint(event, print_form_type = 1) {
-  	let f = this.state.formState;
+		const { formState } = this.state;
 		const token = JSON.parse(window.localStorage.getItem('ets-session'));
 
   	let URL = `${config.backend}/${print_form_type === 2 ? 'plate_truck/' : 'plate_special/'}?waybill_id=`;
-		let ID = f.id;
+		let currentWaybillId = formState.id;
 
-		let callback = (id) => {
+		let callback = (createdWaybillId) => {
 			console.log('printing waybill', URL);
-			URL = id ?  URL + id : URL + ID;
-			URL = URL + '&token=' + token;
+			URL += createdWaybillId ?  createdWaybillId : currentWaybillId;
+			URL += `&token=${token}`;
 			window.location = URL;
 		};
-		//callback();
 		this.handleFormSubmit(this.state.formState, callback);
-
   }
 
-
+	/**
+	 * Отправка формы ПЛ
+	 * @param {object} state - содержимое формы
+	 * @param {function} callback - функция, вызываемая после отправки
+	 * @returns {undefined}
+	 */
 	async handleFormSubmit(state = this.state.formState, callback) {
 		let formState = _.cloneDeep(state);
-		let billStatus = formState.status;
+		let waybillStatus = formState.status;
 		const { flux, setLoading } = this.context;
 
-		if (!!!billStatus) { // если создаем ПЛ
+		if (!!!waybillStatus) { // если создаем ПЛ
 			if (typeof callback === 'function') {
 				formState.status = 'draft';
 				let r = await flux.getActions('waybills').createWaybill(formState);
+				// TODO сейчас возвращается один ПЛ
 				const id = _.max(r.result, res => res.id).id;
 				formState.status = 'active';
 				formState.id = id;
 				try {
 					await flux.getActions('waybills').updateWaybill(formState);
 				} catch (e) {
+					console.log(e);
 					return;
 				}
 				callback(id);
@@ -349,8 +360,9 @@ class WaybillFormWrap extends Component {
 					return;
 				}
 			}
+			await flux.getActions('waybills').getWaybills();
 			this.props.onFormHide();
-		} else if (billStatus === 'draft') { // если ПЛ обновляем
+		} else if (waybillStatus === 'draft') { // если ПЛ обновляем
 			if (typeof callback === 'function') {
 				formState.status = 'active';
 				try {
@@ -370,7 +382,7 @@ class WaybillFormWrap extends Component {
 				flux.getActions('waybills').getWaybills();
 				this.props.onFormHide();
 			}
-		} else if (billStatus === 'active') {
+		} else if (waybillStatus === 'active') {
 			try {
 				await flux.getActions('waybills').updateWaybill(formState);
 			} catch (e) {

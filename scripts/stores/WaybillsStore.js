@@ -11,7 +11,7 @@ class WaybillsStore extends Store {
     this.register(waybillsActions.getWaybills, this.handleGetWaybills);
     this.register(waybillsActions.deleteWaybill, this.handleGetWaybills);
     // this.register(waybillsActions.updateWaybill, this.handleGetWaybills);
-    this.register(waybillsActions.createWaybill, this.handleGetWaybills);
+    // this.register(waybillsActions.createWaybill, this.handleGetWaybills);
 
     this.state = {
       waybillsList: [],

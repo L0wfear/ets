@@ -19,8 +19,8 @@ export default class FuelRateFormWrap extends FormWrap {
 			car_special_model_id: null
 		};
 		this.schema = fuelRateSchema;
-		this.createAction = context.flux.getActions('fuel-rates').createFuelRate;
-		this.updateAction = context.flux.getActions('fuel-rates').updateFuelRate;
+		this.createAction = context.flux.getActions('fuelRates').createFuelRate;
+		this.updateAction = context.flux.getActions('fuelRates').updateFuelRate;
 	}
 
 	validate = (formState, formErrors) => {

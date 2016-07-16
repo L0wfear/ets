@@ -98,7 +98,7 @@ export default class Track {
     this.points = null;
     this.continuousUpdating = true;
     this.onUpdateCallback = () => {};
-    this.getTrack = window.__ETS_CONTAINER__.flux.getActions('car').getTrack;
+    this.getTrack = window.__ETS_CONTAINER__.flux.getActions('cars').getTrack;
   }
 
   isLoaded(){
@@ -461,7 +461,7 @@ export default class Track {
   // TODO refactor
   async getTrackPointTooltip(trackPoint, prevPoint, nextPoint){
     let vectorObject = await window.__ETS_CONTAINER__.flux
-        .getActions('car')
+        .getActions('cars')
         .getVectorObject(trackPoint, prevPoint, nextPoint);
 
     let { nsat,

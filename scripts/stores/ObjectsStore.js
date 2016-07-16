@@ -7,9 +7,9 @@ class ObjectsStore extends Store {
     super();
 
     const objectsActions = flux.getActions('objects');
-    const carActions = flux.getActions('car');
-    const technicalOperationsActions = flux.getActions('technical_operation');
-    const companyStructreActions = flux.getActions('company-structure');
+    const carActions = flux.getActions('cars');
+    const technicalOperationsActions = flux.getActions('technicalOperation');
+    const companyStructreActions = flux.getActions('companyStructure');
 
     this.register(carActions.updateCarAdditionalInfo, this.handleGetCars);
 

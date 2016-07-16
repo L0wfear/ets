@@ -82,7 +82,7 @@ class CompanyStructure extends ElementsList {
 	}
 
 	async getLinearCompanyStructure() {
-		let companyStructureLinearList = await this.context.flux.getActions('company-structure').getLinearCompanyStructure();
+		let companyStructureLinearList = await this.context.flux.getActions('companyStructure').getLinearCompanyStructure();
 		this.setState({companyStructureLinearList});
 	}
 
@@ -90,7 +90,7 @@ class CompanyStructure extends ElementsList {
 		super.componentDidMount();
 
 		const { flux } = this.context;
-		flux.getActions('company-structure').getCompanyStructure();
+		flux.getActions('companyStructure').getCompanyStructure();
 		this.getLinearCompanyStructure();
 	}
 
@@ -110,7 +110,7 @@ class CompanyStructure extends ElementsList {
 	deleteElement(id, e) {
 		e.stopPropagation();
 		if (confirm('Вы уверены, что хотите удалить выбранный элемент?')) {
-			this.context.flux.getActions('company-structure').deleteCompanyElement(id);
+			this.context.flux.getActions('companyStructure').deleteCompanyElement(id);
  		}
 	}
 

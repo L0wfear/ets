@@ -95,5 +95,5 @@ export function getTypeById(id) {
 
 export function getFuelOperationById(id) {
   const { flux } = window.__ETS_CONTAINER__;
-  return flux.getStore('fuel-rates').getFuelOperationById(id);
+  return flux.getStore('fuelRates').getFuelOperationById(id);
 }

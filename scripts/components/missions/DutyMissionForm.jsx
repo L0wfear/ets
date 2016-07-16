@@ -68,7 +68,7 @@ export class DutyMissionForm extends Form {
 		const mission = this.props.formState;
 		const { flux } = this.context;
     let objectsActions = flux.getActions('objects')
-		let technicalOperationsActions = flux.getActions('technical_operation');
+		let technicalOperationsActions = flux.getActions('technicalOperation');
 		let routesActions = flux.getActions('routes');
 		let missionsActions = flux.getActions('missions');
 

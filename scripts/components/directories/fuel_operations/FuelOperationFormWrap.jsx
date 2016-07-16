@@ -21,8 +21,8 @@ export default class FuelOperationFormWrap extends FormWrap {
 		super(props);
 
 		this.uniqueField = 'id';
-		this.createAction = context.flux.getActions('fuel-rates').createFuelOperation;
-		this.updateAction = context.flux.getActions('fuel-rates').updateFuelOperation;
+		this.createAction = context.flux.getActions('fuelRates').createFuelOperation;
+		this.updateAction = context.flux.getActions('fuelRates').updateFuelOperation;
 		this.schema = fuelOperationSchema;
 	}
 

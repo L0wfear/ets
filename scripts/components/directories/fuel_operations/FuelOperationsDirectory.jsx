@@ -49,14 +49,14 @@ class FuelOperationsDirectory extends ElementsList {
 
 		this.mainListName = 'operations';
 		this.selectField = 'id';
-		this.removeElementAction = context.flux.getActions('fuel-rates').deleteFuelOperation;
+		this.removeElementAction = context.flux.getActions('fuelRates').deleteFuelOperation;
 	}
 
 	componentDidMount() {
 		super.componentDidMount();
     const { flux } = this.context;
 		flux.getActions('objects').getModels();
-    flux.getActions('fuel-rates').getFuelOperations();
+    flux.getActions('fuelRates').getFuelOperations();
 	}
 
 	render() {

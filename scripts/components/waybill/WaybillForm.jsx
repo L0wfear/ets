@@ -88,13 +88,13 @@ class WaybillForm extends Form {
 			const car = _.find(this.props.carsList, c => c.asuods_id === formState.car_id) || {}
 			const car_model_id = car.model_id;
 			const fuel_correction_rate = car.fuel_correction_rate || 1;
-			flux.getActions('fuel-rates').getFuelRatesByCarModel(formState.car_id).then(r => {
+			flux.getActions('fuelRates').getFuelRatesByCarModel(formState.car_id).then(r => {
 				const fuelRates = r.result.map( ({operation_id, rate_on_date}) => ({operation_id, rate_on_date}) );
-				flux.getActions('fuel-rates').getFuelOperations().then(fuelOperations => {
+				flux.getActions('fuelRates').getFuelOperations().then(fuelOperations => {
 					const operations =  _.filter(fuelOperations.result, op => _.find(fuelRates, fr => fr.operation_id === op.id));
-						flux.getActions('fuel-rates').getEquipmentFuelRatesByCarModel(formState.car_id).then(equipmentFuelRatesResponse => {
+						flux.getActions('fuelRates').getEquipmentFuelRatesByCarModel(formState.car_id).then(equipmentFuelRatesResponse => {
 							const equipmentFuelRates = equipmentFuelRatesResponse.result.map( ({operation_id, rate_on_date}) => ({operation_id, rate_on_date}) );
-							flux.getActions('fuel-rates').getFuelOperations().then(equipmentFuelOperations => {
+							flux.getActions('fuelRates').getFuelOperations().then(equipmentFuelOperations => {
 								const equipmentOperations =  _.filter(equipmentFuelOperations.result, op => _.find(equipmentFuelRates, fr => fr.operation_id === op.id));
 								this.setState({fuelRates, operations, fuel_correction_rate, equipmentFuelRates, equipmentOperations});
 							});
@@ -105,7 +105,7 @@ class WaybillForm extends Form {
 			/* В случае, если ПЛ закрыт, мы получаем список всех операций, чтобы
 				 отобразить их в таксировке как ТС, так и оборудования, так как
 				 выбор операций в любом случае недоступен */
-			flux.getActions('fuel-rates').getFuelOperations().then(fuelOperations => {
+			flux.getActions('fuelRates').getFuelOperations().then(fuelOperations => {
 				this.setState({
 					operations: fuelOperations.result,
 					equipmentOperations: fuelOperations.result

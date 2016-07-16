@@ -4,8 +4,8 @@ module.exports = {
   validate: 'validate',
   compositions: 'components/compositions',
   adapter: 'adapter',
-  forms: 'components/forms',
   components: 'components',
   models: 'models',
-  constants: 'constants'
+  constants: 'constants',
+  config: 'config',
 }

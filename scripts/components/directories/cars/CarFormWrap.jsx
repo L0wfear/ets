@@ -10,7 +10,7 @@ export default class CarFormWrap extends FormWrap {
 		super(props);
 
 		this.uniqueField = 'asuods_id';
-		this.updateAction = context.flux.getActions('car').updateCarAdditionalInfo;
+		this.updateAction = context.flux.getActions('cars').updateCarAdditionalInfo;
 	}
 
 	render() {

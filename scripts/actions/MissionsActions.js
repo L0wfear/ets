@@ -14,7 +14,6 @@ import { MissionReportsService,
          MissionPrintService,
          DutyMissionPrintService,
          MissionDataService } from 'api/Services';
-import { postJSON } from 'adapter';
 import config from '../config.js';
 
 export default class MissionsActions extends Actions {
@@ -121,8 +120,6 @@ export default class MissionsActions extends Actions {
       method: 'post',
       body: JSON.stringify(data)
     }).then((r) => r.blob());
-
-    //return postJSON(`${MissionPrintService.getUrl()}?token=${token}`, payload, 'json').then(r => r.blob());
 
     // return MissionPrintService.post(payload, (r) => {
     //   return r.blob();

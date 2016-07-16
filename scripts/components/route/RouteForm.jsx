@@ -65,17 +65,17 @@ class RouteForm extends Form {
 	async getTechnicalOperationsByType(type) {
 		let { flux } = this.context;
 
-		let technicalOperationsList = await flux.getActions('technical_operation').getTechnicalOperationsByObjectsType(type);
+		let technicalOperationsList = await flux.getActions('technicalOperation').getTechnicalOperationsByObjectsType(type);
 		this.setState({technicalOperationsList});
 	}
 
 	async componentDidMount() {
 		let { flux } = this.context;
 		let { formState } = this.props;
-		let technicalOperationsResponse = await flux.getActions('technical_operation').getTechnicalOperations();
+		let technicalOperationsResponse = await flux.getActions('technicalOperation').getTechnicalOperations();
 		let technicalOperationsList = technicalOperationsResponse.result;
 
-		let companyStructureList = await flux.getActions('company-structure').getLinearCompanyStructureForUser();
+		let companyStructureList = await flux.getActions('companyStructure').getLinearCompanyStructureForUser();
 
 		if (formState.technical_operation_id && !formState.copy) {
 			this.setRouteTypeOptionsBasedOnTechnicalOperation(formState.technical_operation_id, technicalOperationsList, formState.type, false);

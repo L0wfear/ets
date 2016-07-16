@@ -9,7 +9,6 @@ import {
   AnalyticsService
 } from 'api/Services';
 import { createValidDateTime, createValidDate } from 'utils/dates';
-import { postJSON } from 'adapter';
 import config from '../config.js';
 
 export default class ReportsActions extends Actions {

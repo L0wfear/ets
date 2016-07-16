@@ -1,21 +1,20 @@
 import { Store } from 'flummox';
 import { notifications } from 'utils/notifications';
 
-export default class LoadingStore extends Store {
+export default class NotificationsStore extends Store {
 
   constructor(flux) {
     super();
 
-    const objectsActionIds = flux.getActionIds('objects');
-    const waybillsActions  = flux.getActionIds('waybills');
-    const fuelRateActions  = flux.getActionIds('fuel-rates');
-    const objectsActions   = flux.getActionIds('objects');
-    const carActions       = flux.getActionIds('car');
-    const employeesActions = flux.getActionIds('employees');
-    const missionsActons   = flux.getActionIds('missions');
-    const routesActions    = flux.getActionIds('routes');
-    const dashboardActions = flux.getActionIds('dashboard');
-
+    const objectsActionIds = flux.getActions('objects');
+    const waybillsActions  = flux.getActions('waybills');
+    const fuelRateActions  = flux.getActions('fuelRates');
+    const objectsActions   = flux.getActions('objects');
+    const carActions       = flux.getActions('cars');
+    const employeesActions = flux.getActions('employees');
+    const missionsActons   = flux.getActions('missions');
+    const routesActions    = flux.getActions('routes');
+    const dashboardActions = flux.getActions('dashboard');
 
     this.register(missionsActons.createMission, this.handleMissionCreate);
     this.register(missionsActons.createMissions, this.handleMissionsCreate);
@@ -46,7 +45,5 @@ export default class LoadingStore extends Store {
       global.NOTIFICATION_SYSTEM._addNotification(notifications.missionsCreationSuccessNotification);
     }
   }
-
-
 
 }

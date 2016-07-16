@@ -8,8 +8,8 @@ class CompanyStructureFormWrap extends FormWrap {
 	constructor(props, context) {
 		super(props);
 
-		this.createAction = context.flux.getActions('company-structure').createCompanyElement;
-		this.updateAction = context.flux.getActions('company-structure').updateCompanyElement;
+		this.createAction = context.flux.getActions('companyStructure').createCompanyElement;
+		this.updateAction = context.flux.getActions('companyStructure').updateCompanyElement;
 	}
 
 	render() {

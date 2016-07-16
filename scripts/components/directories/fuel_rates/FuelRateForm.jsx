@@ -14,7 +14,7 @@ class FuelRateForm extends Form {
 	}
 
 	componentDidMount() {
-		this.context.flux.getActions('fuel-rates').getFuelOperations();
+		this.context.flux.getActions('fuelRates').getFuelOperations();
 		this.context.flux.getActions('objects').getModels();
 		this.context.flux.getActions('objects').getSpecialModels();
 	}

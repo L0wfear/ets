@@ -46,7 +46,7 @@ export class MissionForm extends Form {
 			this.handleChange('technical_operation_id', undefined);
 			this.handleRouteIdChange(undefined);
 			try {
-				let technicalOperationsList = await this.context.flux.getActions('technical_operation')
+				let technicalOperationsList = await this.context.flux.getActions('technicalOperation')
 																														 .getTechnicalOperationsByCarId(v);
 				this.setState({technicalOperationsList});
 			} catch (e) {
@@ -61,7 +61,7 @@ export class MissionForm extends Form {
 
 		if (!!!this.props.formState.status && !this.props.fromWaybill) {
 			this.handleChange('car_id', undefined);
-			let carsList = await this.context.flux.getActions('car')
+			let carsList = await this.context.flux.getActions('cars')
 																						.getCarsByTechnicalOperation(v);
 					this.setState({carsList});
 		} else {
@@ -84,7 +84,7 @@ export class MissionForm extends Form {
 		const mission = this.props.formState;
 		const { flux } = this.context;
 		let objectsActions = flux.getActions('objects')
-		let technicalOperationsActions = flux.getActions('technical_operation');
+		let technicalOperationsActions = flux.getActions('technicalOperation');
 		let routesActions = flux.getActions('routes');
 		let missionsActions = flux.getActions('missions');
 

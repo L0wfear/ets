@@ -17,7 +17,7 @@ class OdhForm extends Form {
 	}
 
 	async componentDidMount() {
-		let companyStructureList = await this.context.flux.getActions('company-structure').getLinearCompanyStructureForUser();
+		let companyStructureList = await this.context.flux.getActions('companyStructure').getLinearCompanyStructureForUser();
 		this.setState({companyStructureList});
 	}
 

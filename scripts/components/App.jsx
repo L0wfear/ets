@@ -21,7 +21,7 @@ import reports from './reports';
 
 import { checkToken } from '../adapter.js';
 import { fetchEvergisToken } from '../utils/evergis.js';
-import Flux from './Flux.js';
+import Flux from 'config/flux.js';
 import { loginErrorNotification, getErrorNotification } from 'utils/notifications';
 // TODO вынести в отдельный файл
 const flux = new Flux();

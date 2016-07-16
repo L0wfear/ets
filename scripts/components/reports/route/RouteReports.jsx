@@ -114,7 +114,7 @@ class RouteLaunchReports extends Component {
 	componentDidMount() {
 		const { flux } = this.context;
 		flux.getActions('routes').getRouteReports();
-		flux.getActions('technical_operation').getTechnicalOperations();
+		flux.getActions('technicalOperation').getTechnicalOperations();
 	}
 
   onReportSelect({props}) {

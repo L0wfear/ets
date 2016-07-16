@@ -22,7 +22,7 @@ class EmployeeForm extends Form {
 	async componentDidMount() {
 		const { flux } = this.context;
 		flux.getActions('objects').getCars();
-		let companyStructureList = await flux.getActions('company-structure').getLinearCompanyStructureForUser();
+		let companyStructureList = await flux.getActions('companyStructure').getLinearCompanyStructureForUser();
 		this.setState({companyStructureList});
 	}
 

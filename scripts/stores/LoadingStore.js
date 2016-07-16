@@ -5,17 +5,17 @@ export default class LoadingStore extends Store {
   constructor(flux) {
     super();
 
-    const objectsActionIds = flux.getActionIds('objects');
-    const waybillsActions  = flux.getActionIds('waybills');
-    const fuelRateActions  = flux.getActionIds('fuel-rates');
-    const objectsActions   = flux.getActionIds('objects');
-    const carActions       = flux.getActionIds('car');
-    const employeesActions = flux.getActionIds('employees');
-    const missionsActons   = flux.getActionIds('missions');
-    const routesActions    = flux.getActionIds('routes');
-    const dashboardActions = flux.getActionIds('dashboard');
-    const technicalOperationsActions = flux.getActionIds('technical_operation');
-    const companyStructureActions = flux.getActions('company-structure');
+    const objectsActionIds = flux.getActions('objects');
+    const waybillsActions  = flux.getActions('waybills');
+    const fuelRateActions  = flux.getActions('fuelRates');
+    const objectsActions   = flux.getActions('objects');
+    const carActions       = flux.getActions('cars');
+    const employeesActions = flux.getActions('employees');
+    const missionsActons   = flux.getActions('missions');
+    const routesActions    = flux.getActions('routes');
+    const dashboardActions = flux.getActions('dashboard');
+    const technicalOperationsActions = flux.getActions('technicalOperation');
+    const companyStructureActions = flux.getActions('companyStructure');
     const reportsActions = flux.getActions('reports');
 
     this.reg(

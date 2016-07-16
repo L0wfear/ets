@@ -34,7 +34,7 @@ class Analytics extends Component {
 
   componentDidMount() {
     const { flux } = this.context;
-    flux.getActions('company-structure').getCompanyList();
+    flux.getActions('companyStructure').getCompanyList();
   }
 
   handleSubmit() {

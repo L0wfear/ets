@@ -19,7 +19,7 @@ class CompanyStructureForm extends Form {
 
   async componentDidMount() {
     this.company_id = this.context.flux.getStore('session').getCurrentUser().company_id;
-    let companyStructureLinearList = await this.context.flux.getActions('company-structure').getLinearCompanyStructure();
+    let companyStructureLinearList = await this.context.flux.getActions('companyStructure').getLinearCompanyStructure();
 		this.setState({companyStructureLinearList});
   }
 

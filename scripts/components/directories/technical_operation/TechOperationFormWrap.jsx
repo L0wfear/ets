@@ -12,7 +12,7 @@ class TechOperationFormWrap extends FormWrap {
 		super(props);
 
     this.schema = techOperationSchema;
-		this.updateAction = context.flux.getActions('technical_operation').updateTechnicalOperation;
+		this.updateAction = context.flux.getActions('technicalOperation').updateTechnicalOperation;
 	}
 
 	render() {

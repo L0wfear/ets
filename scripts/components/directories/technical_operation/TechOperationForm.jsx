@@ -35,8 +35,8 @@ export class MissionForm extends Form {
 		const { flux } = this.context;
 		flux.getActions('objects').getWorkKinds();
     flux.getActions('objects').getTypes();
-		flux.getActions('technical_operation').getTechnicalOperationsObjects();
-		flux.getActions('technical_operation').getTechnicalOperationsTypes();
+		flux.getActions('technicalOperation').getTechnicalOperationsObjects();
+		flux.getActions('technicalOperation').getTechnicalOperationsTypes();
 	}
 
 	render() {

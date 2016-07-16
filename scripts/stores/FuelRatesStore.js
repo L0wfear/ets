@@ -6,7 +6,7 @@ class FuelRatesStore extends Store {
   constructor(flux) {
     super();
 
-    const fuelRateActions = flux.getActions('fuel-rates');
+    const fuelRateActions = flux.getActions('fuelRates');
     this.register(fuelRateActions.getFuelRates, this.handleGetFuelRates);
     this.register(fuelRateActions.getFuelOperations, this.handleGetFuelOperations);
     this.register(fuelRateActions.createFuelRate, this.handleGetFuelRates);

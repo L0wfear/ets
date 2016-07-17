@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 const INITIAL_EXTENT = MapServerConfig.initialExtent;
 const FULL_EXTENT = MapServerConfig.fullExtent;
-const TILES_URL = '//gisoiv.mos.ru/IntegrationGIS/SpatialProcessor/IIS/egko/MapServer/tile/';
+const TILES_URL = '//gisoiv.mos.ru/IntegrationGIS/SpatialProcessor/IIS/egko/MapServer/tile';
 const TILE_SIZE = MapServerConfig.tileInfo.rows;
 const ORIGIN = MapServerConfig.tileInfo.origin;
 const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
@@ -47,10 +47,8 @@ function tileUrl(tileCoord, pixelRatio, projection) {
     let z = tileCoord[0];
     let x = tileCoord[1];
     let y = - tileCoord[2] - 1;
-    return TILES_URL + z + '/' + y + '/' + x + '?_sb=' + getToken();
+    return `${TILES_URL}/${z}/${y}/${x}?_sb=${getToken()}`;
 }
-
-
 
 let ArcGisSource = new ol.source.TileImage({
     tileUrlFunction: tileUrl,
@@ -78,7 +76,7 @@ ArcGisSource.on('tileloaderror', (error) => {
   // TODO идентифицировать ошибку конкретно токена
   if (!isFetchingToken() && !attemptsLimitExceeded()) {
     fetchEvergisToken().then(() => {
-      ArcGisSource.setTileUrlFunction(tileUrl);
+      ArcGisSource.refresh();
     });
   } else if (attemptsLimitExceeded()) {
     onErrorsLimit();

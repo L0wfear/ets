@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import CarMarker from './markers/car/CarMarker.js';
 import { PROJECTION, ArcGisLayer, projectToPixel } from './MskAdapter.js';
 
-// todo move to settings
+// TODO move to settings
 const SIDEBAR_WIDTH_PX = 500;
 
 // WebGL example

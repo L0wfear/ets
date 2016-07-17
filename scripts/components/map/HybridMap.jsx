@@ -2,22 +2,16 @@ import React from 'react';
 import Map from './Map.jsx';
 import CarMarker from './markers/car/CarMarker.js';
 import LegendWrapper from './LegendWrapper.jsx';
-import { getTrack } from '../../adapter.js';
-import { getStartOfToday, makeDate, makeTime } from 'utils/dates';
-import { swapCoords, roundCoordinates } from 'utils/geo';
 import { GeoJSON } from 'utils/ol';
-import { TRACK_COLORS } from 'constants/track.js';
 import Div from 'components/ui/Div.jsx';
 import { Glyphicon, Button } from 'react-bootstrap';
 import { polyState, polyStyles, pointStyles, getPointStyle } from 'constants/polygons.js';
 import { vectorStyles, vectorState, getVectorArrowStyle, getVectorLayer, getVectorSource } from 'constants/vectors.js';
-import cx from 'classnames';
 import FluxComponent from 'flummox/component';
 import _ from 'lodash';
 
-
 let POLYS_LAYER = null;
-
+// TODO синхронизировать с Map, чтобы один класс мог поддерживать все геометрии
 export default class HybridMap extends Map {
   constructor(props) {
     super(props);
@@ -146,11 +140,6 @@ export default class HybridMap extends Map {
   }
 
   renderCanvas(canvas, extent) {
-
-    // canvas example
-    // https://gist.github.com/acanimal/b2f60367badb0b17a4d9
-    // тут рендерятся маркеры и трек
-
     let map = this.map;
     let pointsStore = this._pointsStore;
 
@@ -158,7 +147,8 @@ export default class HybridMap extends Map {
 
     let selectedMarker = pointsStore.getSelectedMarker();
 
-    let optimizedMarkers = this.viewportVisibleMarkers = this.getMarkersInBounds(extent);
+    let optimizedMarkers = this.getMarkersInBounds(extent);
+    this.viewportVisibleMarkers = optimizedMarkers;
 
     const options = {
       showPlates: this.props.showPlates
@@ -187,41 +177,6 @@ export default class HybridMap extends Map {
     return canvas;
   }
 
-  onMoveEnd() {
-    let zoom = this.map.getView().getZoom();
-    if (zoom !== this.state.zoom)
-    this.setState({zoom});
-  }
-
-  onMouseMove(ev) {
-
-    let coordinate = ev.coordinate;
-    let changeCursor = false;
-
-    let markers = this.viewportVisibleMarkers;
-    for (let key in markers) {
-      let marker = markers[key];
-
-      if (marker.contains(coordinate)) {
-        changeCursor = true;
-        break;
-      }
-    }
-
-    if (this._pointsStore.hasMarkerSelected()) {
-      let currentSelectedMarker = this._pointsStore.getSelectedMarker();
-      if (currentSelectedMarker.hasTrackLoaded()) {
-        let possibleTrackPoint = currentSelectedMarker.track.getPointAtCoordinate(coordinate);
-        if (possibleTrackPoint) {
-          changeCursor = true;
-        }
-      }
-    }
-
-    let el = this.map.getViewport();
-    el.style.cursor = changeCursor ? 'pointer' : '';
-  }
-
   async onClick(ev) {
     let map = this.map;
     let pixel = ev.pixel; // координаты клика во viewport
@@ -248,9 +203,9 @@ export default class HybridMap extends Map {
           let makePopupFn = await track.getTrackPointTooltip(possibleTrackPoint, prevPoint, nextPoint);
           this.popup.show(pointCoords, makePopupFn());
           return;
-            }
-          }
         }
+      }
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -271,16 +226,13 @@ export default class HybridMap extends Map {
     if (nextProps.selectedPoly !== undefined && nextProps.showSelectedElement !== this.props.showSelectedElement) {
       this.renderSelectedPoly(nextProps.selectedPoly, nextProps.showSelectedElement);
     }
-
   }
 
   render() {
-    const trackButtonTitle = this.props.showTrack ? 'Отключить трек' : 'Включить трек';
-    const trackButtonIcon = this.props.showTrack ? 'ban-circle' : 'ok-circle';
 
     return (
       <div>
-        <div ref="container" style={{opacity: 1}} className="openlayers-container">
+        <div ref="container" className="openlayers-container">
 
           <FluxComponent connectToStores={['settings']}>
             <LegendWrapper zoom={this.state.zoom} marker={() => this._pointsStore.getSelectedMarker()}/>

@@ -4,16 +4,6 @@ import { PROJECTION, ArcGisLayer } from './MskAdapter.js';
 import { polyState, polyStyles } from 'constants/polygons.js';
 import { vectorStyles, vectorState, getVectorArrowStyle } from 'constants/vectors.js';
 
-window.addEventListener('blur', (ev) => {
-  //let store = flux.getStore('points')
-  //store.pauseRendering()
-});
-
-window.addEventListener('focus', (ev) => {
-  //let store = flux.getStore('points')
- // store.unpauseRendering()]
-});
-
 let POLYS_LAYER = null;
 
 // https://github.com/pka/ol3-react-example
@@ -36,25 +26,7 @@ export default class PolyMap extends Component {
       maxZoom: 13,
       projection: PROJECTION,
       extent: PROJECTION.getExtent()
-    })
-
-    let renderFn = this.renderCanvas.bind(this);
-    // let canvasLayer = this.canvasLayer = new ol.layer.Image({
-    //   source: new ol.source.ImageCanvas({
-    //     canvasFunction: function draw(extent, res, pixelRatio, size, proj) {
-    //       if (!this.canvas) {
-    //         self.canvas = this.canvas = document.createElement('canvas');
-    //         self.context = this.canvas.getContext('2d');
-    //       }
-    //
-    //       this.canvas.setAttribute('width', size[0]);
-    //       this.canvas.setAttribute('height', size[1]);
-    //
-    //       return renderFn(this.canvas, extent, pixelRatio);
-    //     },
-    //     ratio: 1
-    //   })
-    // });
+    });
 
     this.controls = [];
     this.controls.push(new ol.control.Zoom({
@@ -63,30 +35,7 @@ export default class PolyMap extends Component {
       delta: 1
     }));
 
-    this.layers = [ArcGisLayer/*, canvasLayer*/];
-    // if (this.props.manualDraw) {
-    //   this.vectorLayer = new ol.layer.Vector({
-    //     source: new ol.source.Vector({wrapX: false}),
-    //     style: new ol.style.Style({
-    //       fill: new ol.style.Fill({
-    //         color: 'rgba(255, 255, 255, 0.2)'
-    //       }),
-    //       stroke: new ol.style.Stroke({
-    //         color: '#ffcc33',
-    //         width: 2
-    //       }),
-    //       image: new ol.style.Circle({
-    //         radius: 7,
-    //         fill: new ol.style.Fill({
-    //           color: '#ffcc33'
-    //         })
-    //       })
-    //     }),
-    //     // updateWhileAnimating: false,
-    //     // updateWhileInteracting: false
-    //   });
-    //   //this.layers.push(this.vectorLayer);
-    // }
+    this.layers = [ArcGisLayer];
 
     this.map = new ol.Map({
       view: this.initialView,
@@ -155,11 +104,9 @@ export default class PolyMap extends Component {
   componentDidMount() {
 
     let map = this.map;
-    //let triggerRenderFn = this.triggerRender.bind(this);
     let container = this.refs.container;
 
     map.setTarget(container);
-    //map.on('postcompose', triggerRenderFn);
 
     this.popup = new ol.Overlay.Popup();
     map.addOverlay(this.popup);
@@ -168,10 +115,6 @@ export default class PolyMap extends Component {
 
     this.renderPolygons(this.props.polys);
   }
-
-  // triggerRender() {
-  //   this.canvasLayer.getSource().changed()
-  // }
 
   onMouseMove(ev) {
     let coordinate = ev.coordinate;
@@ -210,15 +153,6 @@ export default class PolyMap extends Component {
         <div ref="container" style={{opacity: 1}} className="openlayers-container"/>
       </div>
     );
-  }
-
-  renderCanvas(canvas, extent) {
-
-    // canvas example
-    // https://gist.github.com/acanimal/b2f60367badb0b17a4d9
-    let map = this.map;
-
-    return canvas;
   }
 
   enableInteractions() {

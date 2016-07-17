@@ -74,7 +74,7 @@ export default class CarMarker extends Marker {
       var width = context.measureText(title).width;
       var padding = 1 * zoomRatio;
 
-      // magic numbazz... dont try to understand
+      // dont try to understand
       var rectWidth = width + padding + radius - 3;
       var rectHeight = radius + 4;
       var rectOffsetY = drawCoords.y - radius / 2 - 2;
@@ -172,7 +172,7 @@ export default class CarMarker extends Marker {
     }
 
     return getBigIcon(icon);
- }
+  }
 
   setPoint(point) {
     this.point = point;

@@ -8,14 +8,11 @@ import moment from 'moment';
 import cx from 'classnames';
 import { isEmpty } from 'utils/functions';
 import Form from '../compositions/Form.jsx';
-import Map from 'components/map/HybridMap.jsx';
+import HybridMap from 'components/map/HybridMap.jsx';
 import FluxComponent from 'flummox/component';
 import MissionReportByODH from 'components/reports/mission/MissionReportByODH.jsx';
 import MissionReportByDT from 'components/reports/mission/MissionReportByDT.jsx';
 import MissionReportByPoints from 'components/reports/mission/MissionReportByPoints.jsx';
-
-// const MAP_INITIAL_CENTER = [-6040.212982145856, 10358.852595460314];
-// const MAP_INITIAL_ZOOM = 6;
 
 let getDataTraveledYet = (data) => {
   if (typeof data === 'string') {
@@ -94,23 +91,10 @@ export class MissionInfoForm extends Form {
 		let { selectedODHId } = this.state;
 		let { geozonePolys = {} } = this.props;
     let object_list = _.cloneDeep(this.state.object_list || []);
-		const polys = object_list.map(({shape, name, state, coordinates, isInfo}) => {
-			if (!shape) {
-				shape = {
-					type: "Point",
-					coordinates
-				};
-			}
-			let object = {
-				shape,
-				name,
-				state,
-				isInfo
-			}
-			return object;
-		});
-    if (!this.props.formState.car_gov_number) return <div/>;
-		let title = `Информация о задании. Гос. номер ТС: ${this.props.formState.car_gov_number}`;
+    const polys = object_list.map(({shape, name, state}) => ({shape, name, state}));
+
+    if (!state.car_gov_number) return <div/>;
+		let title = `Информация о задании. Гос. номер ТС: ${state.car_gov_number}`;
 
 		return (
 			<Modal {...this.props} bsSize="large" className="mission-info-modal" backdrop="static">
@@ -141,7 +125,7 @@ export class MissionInfoForm extends Form {
 								})
 							}}>
 
-								<Map
+								<HybridMap
                     polys={polys}
                     maxSpeed={this.props.formState.technical_operation_max_speed}
 										routeType={this.state.routeType}

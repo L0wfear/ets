@@ -1,22 +1,28 @@
 import React, { Component } from 'react';
 import CarMarker from './markers/car/CarMarker.js';
 import { PROJECTION, ArcGisLayer, projectToPixel } from './MskAdapter.js';
+import LegendWrapper from './LegendWrapper.jsx';
+import FluxComponent from 'flummox/component';
 
 // TODO move to settings
 const SIDEBAR_WIDTH_PX = 500;
 
-// WebGL example
-// http://openlayers.org/en/master/examples/icon-sprite-webgl.html
-//
-// current WebGL stats
-// http://webglstats.com/
-//
-// OpenLayers performance cases
-// http://trac.osgeo.org/openlayers/wiki/Future/OpenLayersWithCanvas
-
-// https://github.com/pka/ol3-react-example
-// local crs example http://stackoverflow.com/questions/20222885/custom-tiles-in-local-crs-without-projection
-// custom tiles example
+/**
+ * Openlayers docs (latest version)
+ * http://openlayers.org/en/latest/apidoc/
+ * WebGL example
+ * http://openlayers.org/en/master/examples/icon-sprite-webgl.html
+ * current WebGL stats
+ * http://webglstats.com/
+ * Canvas example
+ * https://gist.github.com/acanimal/b2f60367badb0b17a4d9
+ * OpenLayers performance cases
+ * http://trac.osgeo.org/openlayers/wiki/Future/OpenLayersWithCanvas
+ * React with ol3
+ * https://github.com/pka/ol3-react-example
+ * local crs example http://stackoverflow.com/questions/20222885/custom-tiles-in-local-crs-without-projection
+ * custom tiles example
+ */
 export default class OpenLayersMap extends Component {
 
   constructor(props, context) {
@@ -57,7 +63,6 @@ export default class OpenLayersMap extends Component {
 
     canvasLayer.setZIndex(9999);
 
-
     let controls = []
     controls.push(new ol.control.Zoom({
       duration: 400,
@@ -75,10 +80,10 @@ export default class OpenLayersMap extends Component {
 
     this.map = map;
     this.map.projectToPixel = (coordinates) => projectToPixel(this.map, coordinates);
-  }
 
-  shouldComponentUpdate() {
-    return !this.props.noMarkers;
+    this.state = {
+      zoom: null
+    };
   }
 
   /**
@@ -189,25 +194,13 @@ export default class OpenLayersMap extends Component {
     this.popup.hide()
   }
 
-  render() {
-    return (<div>
-              <div ref="container" className="openlayers-container"/>
-            </div>)
-  }
-
   renderCanvas(canvas, extent) {
-
-    // canvas example
-    // https://gist.github.com/acanimal/b2f60367badb0b17a4d9
-
     let map = this.map;
     let pointsStore = this._pointsStore;
-
     let selected = pointsStore.getSelectedPoint();
-
     let selectedMarker = pointsStore.getSelectedMarker();
-
-    let optimizedMarkers = this.viewportVisibleMarkers = this.getMarkersInBounds(extent);
+    let optimizedMarkers = this.getMarkersInBounds(extent);
+    this.viewportVisibleMarkers = optimizedMarkers;
 
     const options = {
       showPlates: this.props.showPlates
@@ -220,21 +213,18 @@ export default class OpenLayersMap extends Component {
       let id = marker.point.id;
 
       if (selected === null || id !== selected.id) {
-        // todo переключать отрисовку маленький/большой значок
+        // TODO переключать отрисовку маленький/большой значок
         // в зависимости от количества маркеров на видимой части карты
-        //
         // будет некрасиво, если попадать точно в границу количества
         marker.render(options);
       }
     }
 
     if (selectedMarker) {
-      //console.log(selectedMarker && selectedMarker.track)
       if (selectedMarker.hasTrackLoaded()) {
         selectedMarker.track.render();
       }
       selectedMarker.render({selected: true, ...options});
-
 
       if (pointsStore.state.trackingMode) { // следить за машиной
         let view = map.getView();
@@ -255,11 +245,10 @@ export default class OpenLayersMap extends Component {
       this.enableInteractions()
     }
 
-    //todo remove this
+    // TODO remove this
     if (!selected) {
       this.hidePopup()
     }
-
 
     return canvas;
   }
@@ -283,11 +272,13 @@ export default class OpenLayersMap extends Component {
   }
 
   onMoveEnd() {
-
+    let zoom = this.map.getView().getZoom();
+    if (zoom !== this.state.zoom) {
+      this.setState({zoom});
+    }
   }
 
   disableInteractions() {
-    console.error('DISABLE INTERCATIONS');
     let map = this.map;
     let interactions = this.map.getInteractions();
 
@@ -337,18 +328,33 @@ export default class OpenLayersMap extends Component {
       let key = keys[i];
       let point = updatedPoints[key];
 
-      // это че такое
+      // TODO это че такое
       if (point.timestamp === 1420074000000) {
         continue;
       }
 
-      let oldPoint = this.markers[key];
-      if (oldPoint) {
-        oldPoint.setPoint(point)
+      let oldMarker = this.markers[key];
+      if (oldMarker) {
+        oldMarker.setPoint(point)
       } else {
         this.markers[key] = new CarMarker(point, this);
       }
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state.zoom !== nextState.zoom) {
+      return true;
+    }
+    return false;
+  }
+
+  render() {
+    return (
+      <div>
+        <div ref="container" className="openlayers-container"></div>
+      </div>
+    );
   }
 
 }

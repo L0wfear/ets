@@ -1,4 +1,4 @@
-import Store from './Store.js';
+import { Store } from 'flummox';
 import _ from 'lodash';
 
 class ObjectsStore extends Store {
@@ -21,15 +21,7 @@ class ObjectsStore extends Store {
     this.register(objectsActions.getOwners, this.handleGetOwners);
     this.register(objectsActions.getFuelTypes, this.handleGetFuelTypes);
     this.register(objectsActions.getWorkKinds, this.handleGetWorkKinds);
-    this.register(objectsActions.getODHs, this.handleGetODHs);
-    this.register(objectsActions.updateODH, this.handleGetODHs);
-    this.register(objectsActions.getDTs, this.handleGetDTs);
-    this.register(objectsActions.getSSPs, this.handleGetSSPs);
-    this.register(objectsActions.getFuelingWaterStations, this.handleGetFuelingWaterStations);
-    this.register(objectsActions.getCarpools, this.handleGetCarpools);
-    this.register(objectsActions.getDangerZones, this.handleGetDangerZones);
     this.register(objectsActions.getOrganizations, this.handleGetOrganizations);
-    this.register(objectsActions.updateDT, this.handleGetDTs);
     this.register(objectsActions.getFaxogramms, this.handleGetFaxogramms);
     this.register(objectsActions.getPositions, this.handleGetPositions);
 
@@ -55,17 +47,13 @@ class ObjectsStore extends Store {
       fuelTypes: [],
       technicalOperationsList: [],
       workKindsList: [],
-      odhsList: [],
       faxogrammsList: [],
       technicalOperationsObjectsList: [],
       technicalOperationsTypesList: [],
       companyStructureList: [],
       positionsList: [],
-      ssps: [],
-      fuelingWaterStations: [],
-      carpools: [],
-      dangerZones: [],
       organizations: [],
+
       carsIndex: {},
       modelsIndex: {},
       typesIndex: {},
@@ -111,18 +99,18 @@ class ObjectsStore extends Store {
           c.type = type ? type.title : 'Н/Д';
       return c;
     });
-    let carsIndex = this.makeIndex(carsList, 'asuods_id');
+    let carsIndex = _.keyBy(carsList, 'asuods_id');
     this.setState({carsList, carsIndex});
   }
 
   handleGetModels(modelsList) {
-    let modelsIndex = this.makeIndex(modelsList);
+    let modelsIndex = _.keyBy(modelsList, 'id');
     const carsList = this.state.carsList.map( c => {
       let model = _.find(modelsList, m => m.id === c.model_id);
           c.model = model ? model.title : 'Н/Д';
       return c;
     });
-    let carsIndex = this.makeIndex(carsList, 'asuods_id');
+    let carsIndex = _.keyBy(carsList, 'asuods_id');
     this.setState({modelsList, modelsIndex});
   }
 
@@ -131,12 +119,12 @@ class ObjectsStore extends Store {
   }
 
   handleGetTypes(typesList) {
-    let typesIndex = this.makeIndex(typesList);
+    let typesIndex = _.keyBy(typesList, 'id');
     this.setState({typesList, typesIndex});
   }
 
   handleGetOwners(ownersList) {
-    let ownersIndex = this.makeIndex(ownersList);
+    let ownersIndex = _.keyBy(ownersList, 'id');
     this.setState({ownersList, ownersIndex});
   }
 
@@ -156,36 +144,16 @@ class ObjectsStore extends Store {
     this.setState({workKindsList: workKinds.result});
   }
 
-  handleGetODHs(odhs) {
-    this.setState({odhsList: odhs.result});
-  }
-
-  handleGetSSPs(ssps) {
-    this.setState({ssps: ssps.result});
-  }
-
-  handleGetDTs(dts) {
-    this.setState({dtsList: dts.result});
-  }
-
-  handleGetFuelingWaterStations({result}) {
-    this.setState({fuelingWaterStations: result});
-  }
-
-  handleGetCarpools(carpools) {
-    this.setState({carpools: carpools.result});
-  }
-
-  handleGetDangerZones(dangerZones) {
-    this.setState({dangerZones: dangerZones.result});
-  }
-
   handleGetOrganizations(organizations) {
     this.setState({organizations: organizations.result});
   }
 
   handleGetFaxogramms(faxogramms) {
     this.setState({faxogrammsList: faxogramms.result, faxogrammsMaxPage: faxogramms.total_pages});
+  }
+
+  handleGetPositions(positions) {
+    this.setState({positionsList: positions.result});
   }
 
   getWorkKindById(id) {
@@ -206,10 +174,6 @@ class ObjectsStore extends Store {
 
   getTypeById(id) {
     return _.find(this.state.typesList, t => t.id === id) || {};
-  }
-
-  handleGetPositions(positions) {
-    this.setState({positionsList: positions.result});
   }
 
 }

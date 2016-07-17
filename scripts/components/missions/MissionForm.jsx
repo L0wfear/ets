@@ -114,7 +114,7 @@ export class MissionForm extends Form {
 	}
 
 	createNewRoute() {
-		this.context.flux.getActions('routes').getGeozones().then(v => {
+		this.context.flux.getActions('geoObjects').getGeozones().then(v => {
 			let newR = {
 				name: '',
 				polys: this.props.geozonePolys,
@@ -327,4 +327,4 @@ export class MissionForm extends Form {
 	}
 }
 
-export default connectToStores(MissionForm, ['objects', 'employees', 'missions', 'routes']);
+export default connectToStores(MissionForm, ['objects', 'employees', 'missions', 'routes', 'geoObjects']);

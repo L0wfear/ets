@@ -21,8 +21,6 @@ export const MissionService = new APIService('/mission/', USE_MOCKS);
 export const MissionReassignationService = new APIService('/mission_reassignation/', USE_MOCKS);
 export const MissionTemplateService = new APIService('/mission_template/', USE_MOCKS);
 export const MissionSourceService = new APIService('/mission_source/', USE_MOCKS);
-export const ODHService = new APIService('/odh/', USE_MOCKS);
-export const DTService = new APIService('/dt/', USE_MOCKS);
 export const WorkKindsService = new APIService('/work_kind/', USE_MOCKS);
 export const TechnicalOperationService = new APIService('/technical_operation/', USE_MOCKS);
 export const CarService = new APIService('/car_actual/', USE_MOCKS);
@@ -42,15 +40,18 @@ export const CompanyService = new APIService('/actual_companies/', USE_MOCKS);
 export const PositionService = new APIService('/position/', USE_MOCKS);
 export const VectorObjectService = new APIService('/vector_object/', USE_MOCKS);
 
+/* Geoobjects - Геообъекты */
+export const ODHService = new APIService('/odh/', USE_MOCKS);
+export const DTService = new APIService('/dt/', USE_MOCKS);
 export const SSPService = new APIService('/ssp/', USE_MOCKS);
 export const FuelingWaterService = new APIService('/fueling_water/', USE_MOCKS);
 export const CarPoolService = new APIService('/carpool/', USE_MOCKS);
 export const DangerZoneService = new APIService('/danger_zone/', USE_MOCKS);
-export const MissionDataService = new APIService('/mission_data/', false);
+
+export const MissionDataService = new APIService('/mission_data/', USE_MOCKS);
 export const OrganizationsService = new APIService('/organizations/', true);
 
-// REPORTS
-
+/* Reports - Отчеты */
 export const MissionReportsService = new APIService('/car_odh_travel_report/');
 export const RouteReportsService = new APIService('/route_odh_covering_report/', USE_MOCKS);
 export const WaybillJournalReportService = new APIService('/waybill_journal_report/', USE_MOCKS);

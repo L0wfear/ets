@@ -274,4 +274,4 @@ RouteCreating.contextTypes = {
 	flux: React.PropTypes.object,
 };
 
-export default connectToStores(RouteCreating, ['routes']);
+export default connectToStores(RouteCreating, ['routes', 'geoObjects']);

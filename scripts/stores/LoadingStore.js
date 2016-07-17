@@ -6,6 +6,7 @@ export default class LoadingStore extends Store {
     super();
 
     const objectsActionIds = flux.getActions('objects');
+    const geoObjectsActions = flux.getActions('geoObjects');
     const waybillsActions  = flux.getActions('waybills');
     const fuelRateActions  = flux.getActions('fuelRates');
     const objectsActions   = flux.getActions('objects');
@@ -43,10 +44,16 @@ export default class LoadingStore extends Store {
       objectsActions.getFuelTypes,
       objectsActions.getWorkKinds,
       objectsActions.getFaxogramms,
-      objectsActions.getODHs,
-      objectsActions.updateODH,
-      objectsActions.getDTs,
-      objectsActions.updateDT,
+
+      /* Geoobjects */
+      geoObjectsActions.getODHs,
+      geoObjectsActions.updateODH,
+      geoObjectsActions.getDTs,
+      geoObjectsActions.updateDT,
+      geoObjectsActions.getSSPs,
+      geoObjectsActions.getCarpools,
+      geoObjectsActions.getFuelingWaterStations,
+      geoObjectsActions.getDangerZones,
 
       carActions.updateCarAdditionalInfo,
       carActions.getTrack,

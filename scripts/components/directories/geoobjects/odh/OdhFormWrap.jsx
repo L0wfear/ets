@@ -8,7 +8,7 @@ class OdhFormWrap extends FormWrap {
   constructor(props, context) {
     super(props);
 
-    this.updateAction = context.flux.getActions('objects').updateODH;
+    this.updateAction = context.flux.getActions('geoObjects').updateODH;
   }
 
   render() {

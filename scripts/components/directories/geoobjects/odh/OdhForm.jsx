@@ -56,4 +56,4 @@ class OdhForm extends Form {
 	}
 }
 
-export default connectToStores(OdhForm, ['objects']);
+export default connectToStores(OdhForm, ['geoObjects']);

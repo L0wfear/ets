@@ -44,7 +44,7 @@ class CoverageReport extends Component {
 	async handleSubmit() {
 		let coverageReport = await this.context.flux.getActions('reports').getCoverageReport(this.state);
 		await this.state.geozone_type === 'ODH' ? this.context.flux.getActions('objects').getODHs() : this.context.flux.getActions('objects').getDTs();
-		await this.context.flux.getActions('routes').getGeozones();
+		await this.context.flux.getActions('geoObjects').getGeozones();
 		coverageReport = coverageReport.result.map((item, i) => {item.id = i; return item});
 		this.setState({coverageReport, checkedMissions: _.extend({}, coverageReport)})
 	}
@@ -184,7 +184,7 @@ CoverageReport.contextTypes = {
 	flux: React.PropTypes.object,
 };
 
-export default connectToStores(CoverageReport, ['reports', 'session', 'objects', 'routes']);
+export default connectToStores(CoverageReport, ['reports', 'session', 'objects', 'routes', 'geoObjects']);
 
 let tableMeta = {
 	cols: [

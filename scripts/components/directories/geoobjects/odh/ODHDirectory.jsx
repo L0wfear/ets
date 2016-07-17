@@ -113,7 +113,7 @@ class ODHDirectory extends ElementsList {
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
-    flux.getActions('objects').getODHs();
+    flux.getActions('geoObjects').getODHs();
   }
 
   render() {
@@ -129,12 +129,8 @@ class ODHDirectory extends ElementsList {
 										 element={this.state.selectedElement}
 										 {...this.props}/>
       </div>
-  );
+    );
   }
 }
 
-ODHDirectory.contextTypes = {
-  flux: React.PropTypes.object,
-};
-
-export default connectToStores(ODHDirectory, ['objects']);
+export default connectToStores(ODHDirectory, ['geoObjects']);

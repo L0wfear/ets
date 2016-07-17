@@ -8,7 +8,7 @@ class DtFormWrap extends FormWrap {
   constructor(props, context) {
     super(props);
 
-    this.updateAction = context.flux.getActions('objects').updateDT;
+    this.updateAction = context.flux.getActions('geoObjects').updateDT;
   }
 
   render() {

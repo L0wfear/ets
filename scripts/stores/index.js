@@ -15,6 +15,7 @@ import settings from './SettingsStore.js';
 import waybills from './WaybillsStore.js';
 import loading from './LoadingStore.js';
 import notifications from './NotificationsStore.js';
+import geoObjects from './GeoObjectsStore.js';
 
 export default {
   dashboard,
@@ -29,5 +30,6 @@ export default {
   settings,
   waybills,
   loading,
-  notifications
+  notifications,
+  geoObjects
 }

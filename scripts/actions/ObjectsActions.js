@@ -4,23 +4,19 @@ import _ from 'lodash';
 import { getOwners } from '../owners.js';
 import { isEmpty } from 'utils/functions';
 import { createValidDateTime } from 'utils/dates';
-import { FaxogrammService,
-         WorkKindsService,
-         TechnicalOperationService,
-         FuelTypeService,
-         CarService,
-         CustomersService,
-         TypesService,
-         ODHService,
-         DTService,
-         PositionService,
-         ModelsService,
-         SpecialModelService,
-         SSPService,
-         FuelingWaterService,
-         CarPoolService,
-         OrganizationsService,
-         DangerZoneService } from 'api/Services';
+import {
+  FaxogrammService,
+  WorkKindsService,
+  TechnicalOperationService,
+  FuelTypeService,
+  CarService,
+  CustomersService,
+  TypesService,
+  PositionService,
+  ModelsService,
+  SpecialModelService,
+  OrganizationsService
+} from 'api/Services';
 
 export default class ObjectsActions extends Actions {
 
@@ -58,30 +54,6 @@ export default class ObjectsActions extends Actions {
     return FuelTypeService.get();
   }
 
-  getODHs() {
-    return ODHService.get();
-  }
-
-  getDTs() {
-    return DTService.get();
-  }
-
-  getSSPs() {
-    return SSPService.get();
-  }
-
-  getFuelingWaterStations() {
-    return FuelingWaterService.get();
-  }
-
-  getCarpools() {
-    return CarPoolService.get();
-  }
-
-  getDangerZones() {
-    return DangerZoneService.get();
-  }
-
   getOrganizations() {
     return OrganizationsService.get();
   }
@@ -98,27 +70,6 @@ export default class ObjectsActions extends Actions {
       create_date_to: createValidDateTime(create_date_to)
     };
     return FaxogrammService.get(payload);
-  }
-
-  updateODH(formState) {
-
-    const payload = {
-      id: formState.id,
-      company_structure_id: formState.company_structure_id || null,
-    };
-
-    return ODHService.put(payload);
-  }
-
-  updateDT(formState) {
-
-    const payload = {
-      id: formState.id,
-      dt_id: formState.dt_id,
-      company_structure_id: formState.company_structure_id || null,
-    };
-
-    return DTService.put(payload);
   }
 
   getPositions() {

@@ -17,15 +17,11 @@ class RoutesStore extends Store {
     this.register(routesActions.getRouteReports, this.handleGetRouteReports);
     this.register(routesActions.createRouteReport, this.handleGetRouteReports);
     this.register(routesActions.getRouteReportById, this.handleGetRouteReportById);
-    this.register(routesActions.getGeozones, this.handleGetGeozones);
 
     this.state = {
       routesList: [],
       reportsList: [],
       selectedReportData: [],
-      geozonePolys: [],
-      odhPolys: {},
-      dtPolys: {},
     };
 
   }
@@ -44,35 +40,6 @@ class RoutesStore extends Store {
 
   handleGetRouteReportById(report) {
     this.setState({selectedReportData: report.result[0].result.rows});
-  }
-
-  handleGetGeozones(data) {
-    const geozones = data.result;
-    let geozonePolys = {};
-    let odhPolys = {};
-    let dtPolys = {};
-    geozones.map( g => {
-      if (g.geozone_type === 'ROAD') {
-        odhPolys[g.id] = {
-          shape: JSON.parse(g.shape),
-          name: g.name,
-          state: 1,
-        }
-      }
-      if (g.geozone_type === 'DT') {
-        dtPolys[g.id] = {
-          shape: JSON.parse(g.shape),
-          name: g.name,
-          state: 1,
-        }
-      }
-      geozonePolys[g.id] = {
-        shape: JSON.parse(g.shape),
-        name: g.name,
-        state: 1,
-      }
-    });
-    this.setState({geozonePolys, dtPolys, odhPolys});
   }
 
   getRouteById(id) {

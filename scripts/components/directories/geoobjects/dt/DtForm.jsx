@@ -56,4 +56,4 @@ class DtForm extends Form {
 	}
 }
 
-export default connectToStores(DtForm, ['objects']);
+export default connectToStores(DtForm, ['geoObjects']);

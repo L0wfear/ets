@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
-import cx from 'classnames';
 import connectToStores from 'flummox/connect';
 import ElementsList from 'components/ElementsList.jsx';
 import DtFormWrap from './DtFormWrap.jsx';
@@ -42,8 +41,6 @@ let getTableMeta = (props) => {
   return tableMeta;
 };
 
-
-
 let DTTable = (props) => {
 
   const renderers = {
@@ -64,7 +61,6 @@ let DTTable = (props) => {
 
 class DTDirectory extends ElementsList {
 
-
   constructor(props) {
     super(props);
     this.mainListName = 'dtsList';
@@ -73,7 +69,7 @@ class DTDirectory extends ElementsList {
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
-    flux.getActions('objects').getDTs();
+    flux.getActions('geoObjects').getDTs();
   }
 
   render() {
@@ -89,12 +85,8 @@ class DTDirectory extends ElementsList {
 										element={this.state.selectedElement}
 										 {...this.props}/>
       </div>
-  );
+    );
   }
 }
 
-DTDirectory.contextTypes = {
-  flux: React.PropTypes.object,
-};
-
-export default connectToStores(DTDirectory, ['objects']);
+export default connectToStores(DTDirectory, ['geoObjects']);

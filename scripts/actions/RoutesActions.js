@@ -1,7 +1,11 @@
 import { Actions } from 'flummox';
 import _ from 'lodash';
 import { createValidDateTime } from 'utils/dates';
-import { RouteService, RouteReportsService, RouteValidateService, GeozoneService } from 'api/Services';
+import {
+  RouteService,
+  RouteReportsService,
+  RouteValidateService
+} from 'api/Services';
 
 export default class RoutesActions extends Actions {
 
@@ -121,18 +125,8 @@ export default class RoutesActions extends Actions {
     return RouteReportsService.post(payload);
   }
 
-  // validateRoute(route) {
-  //   const route_vector = {
-  //     technical_operation_id: 55,//route.technical_operation_id,
-  //     object_list: route.object_list,
-  //   };
-  //   const payload = {
-  //     route_vector: JSON.stringify(route_vector),
-  //   };
-  //   return RouteValidateService.get(payload);
-  // }
-
   validateRoute(route) {
+    // TODO разобраться почему операция константная
     const route_vector = {
       technical_operation_id: 55,//route.technical_operation_id,
       object_list: route.object_list,
@@ -142,10 +136,6 @@ export default class RoutesActions extends Actions {
       object_list: JSON.stringify(route.object_list),
     };
     return RouteValidateService.post(payload, false, 'json');
-  }
-
-  getGeozones() {
-    return GeozoneService.get();
   }
 
 }

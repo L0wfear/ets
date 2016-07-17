@@ -16,6 +16,7 @@ import session from './SessionActions.js';
 import settings from './SettingsActions.js';
 import technicalOperation from './TechnicalOperationsActions.js';
 import waybills from './WaybillsActions.js';
+import geoObjects from './GeoObjectsActions.js';
 
 export default {
   cars,
@@ -31,5 +32,6 @@ export default {
   session,
   settings,
   technicalOperation,
-  waybills
+  waybills,
+  geoObjects
 }

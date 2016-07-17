@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
-import moment from 'moment';
-import cx from 'classnames';
 import connectToStores from 'flummox/connect';
 import ElementsList from 'components/ElementsList.jsx';
-import { FluxContext } from 'utils/decorators';
 
 let tableMeta = {
 	cols: [
@@ -47,32 +44,27 @@ class FuelingWaterStationsDirectory extends ElementsList {
 	constructor(props, context) {
 		super(props);
 
-		this.mainListName = 'name';
+		this.mainListName = 'fuelingWaterStationsList';
 		this.selectField = 'id';
 	}
 
 	componentDidMount() {
 		super.componentDidMount();
     const { flux } = this.context;
-		flux.getActions('objects').getModels();
-    flux.getActions('objects').getFuelingWaterStations();
+    flux.getActions('geoObjects').getFuelingWaterStations();
 	}
 
 	render() {
 
-		const { fuelingWaterStations = [] } = this.props;
+		const { fuelingWaterStationsList = [] } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
-        <FuelingWaterStationsTable data={fuelingWaterStations} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'}>
+        <FuelingWaterStationsTable data={fuelingWaterStationsList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'}>
 				</FuelingWaterStationsTable>
 			</div>
 		);
 	}
 }
 
-FuelingWaterStationsDirectory.contextTypes = {
-  flux: React.PropTypes.object,
-};
-
-export default connectToStores(FuelingWaterStationsDirectory, ['objects']);
+export default connectToStores(FuelingWaterStationsDirectory, ['geoObjects']);

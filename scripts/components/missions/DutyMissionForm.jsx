@@ -94,7 +94,7 @@ export class DutyMissionForm extends Form {
 	}
 
 	createNewRoute() {
-		this.context.flux.getActions('routes').getGeozones().then(v => {
+		this.context.flux.getActions('geoObjects').getGeozones().then(v => {
 			let newR = {
 				name: '',
 				polys: this.props.geozonePolys,
@@ -115,7 +115,6 @@ export class DutyMissionForm extends Form {
 
 		let stateChangeObject = {};
 		if (isSubmitted === true) {
-			console.log(result);
 			let createdRouteId = result.createdRoute.result[0].id;
 			this.handleChange('route_id', createdRouteId);
 			let selectedRoute = await routesActions.getRouteById(createdRouteId, true);
@@ -298,4 +297,4 @@ export class DutyMissionForm extends Form {
 	}
 }
 
-export default connectToStores(DutyMissionForm, ['objects', 'employees', 'missions', 'routes']);
+export default connectToStores(DutyMissionForm, ['objects', 'employees', 'missions', 'routes', 'geoObjects']);

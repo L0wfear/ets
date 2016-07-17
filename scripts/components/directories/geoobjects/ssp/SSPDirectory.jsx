@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
 import moment from 'moment';
-import cx from 'classnames';
 import connectToStores from 'flummox/connect';
-// import SSPFormWrap from './ssp/SSPFormWrap.jsx';
 import ElementsList from 'components/ElementsList.jsx';
 
 let tableMeta = {
@@ -71,32 +69,27 @@ class SSPDirectory extends ElementsList {
 	constructor(props, context) {
 		super(props);
 
-		this.mainListName = 'name';
+		this.mainListName = 'sspsList';
 		this.selectField = 'id';
 	}
 
 	componentDidMount() {
 		super.componentDidMount();
     const { flux } = this.context;
-		flux.getActions('objects').getModels();
-    flux.getActions('objects').getSSPs();
+    flux.getActions('geoObjects').getSSPs();
 	}
 
 	render() {
 
-		const { ssps = [] } = this.props;
+		const { sspsList = [] } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
-        <SSPTable data={ssps} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'}>
+        <SSPTable data={sspsList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'}>
 				</SSPTable>
 			</div>
 		);
 	}
 }
 
-SSPDirectory.contextTypes = {
-  flux: React.PropTypes.object,
-};
-
-export default connectToStores(SSPDirectory, ['objects']);
+export default connectToStores(SSPDirectory, ['geoObjects']);

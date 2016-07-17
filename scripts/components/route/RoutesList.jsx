@@ -134,7 +134,7 @@ class RoutesList extends Component {
 		flux.getActions('routes').getRoutes();
 		flux.getActions('technicalOperation').getTechnicalOperations();
 		flux.getActions('technicalOperation').getTechnicalOperationsObjects();
-		flux.getActions('routes').getGeozones();
+		flux.getActions('geoObjects').getGeozones();
 		if (this.props.location.query) {
 			let filterValues = {};
 			_.mapKeys(this.props.location.query, (v, k) => {

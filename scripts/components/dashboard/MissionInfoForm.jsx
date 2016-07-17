@@ -70,7 +70,7 @@ export class MissionInfoForm extends Form {
     flux.getActions('routes').getRouteById(formState.route_id, true).then(route => {
       this.setState({object_list: route ? route.object_list : []});
     })
-		flux.getActions('routes').getGeozones();
+		flux.getActions('geoObjects').getGeozones();
 	  flux.getActions('objects').getTypes();
   }
 
@@ -92,7 +92,7 @@ export class MissionInfoForm extends Form {
 
 		let state = this.props.formState;
 		let { selectedODHId } = this.state;
-		let { geozonePolys = [] } = this.props;
+		let { geozonePolys = {} } = this.props;
     let object_list = _.cloneDeep(this.state.object_list || []);
 		const polys = object_list.map(({shape, name, state, coordinates, isInfo}) => {
 			if (!shape) {
@@ -191,4 +191,4 @@ export class MissionInfoForm extends Form {
 	}
 }
 
-export default connectToStores(MissionInfoForm, ['objects', 'employees', 'missions', 'routes']);
+export default connectToStores(MissionInfoForm, ['objects', 'employees', 'missions', 'routes', 'geoObjects']);

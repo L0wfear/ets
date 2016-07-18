@@ -108,4 +108,4 @@ FuelRatesDirectory.contextTypes = {
   flux: React.PropTypes.object,
 };
 
-export default connectToStores(FuelRatesDirectory, ['fuel-rates', 'objects']);
+export default connectToStores(FuelRatesDirectory, ['fuelRates', 'objects']);

@@ -99,4 +99,4 @@ class FuelRateForm extends Form {
 	}
 }
 
-export default connectToStores(FuelRateForm, ['fuel-rates', 'objects']);
+export default connectToStores(FuelRateForm, ['fuelRates', 'objects']);

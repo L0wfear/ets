@@ -32,12 +32,22 @@ export default class LegendWrapper extends React.Component {
         type: 'element'
       }
     ];
-    return controls;
+    let finalControls = [];
+    if (this.props.controls) {
+      controls.map((c, i) => {
+        if (this.props.controls.indexOf(c.type) > -1) {
+          finalControls.push(c);
+        }
+      });
+    } else {
+      finalControls = controls;
+    }
+    return finalControls;
   }
 
   isComponentActive(type) {
     if ((type === 'track' && this.props.showTrack) ||
-        (type === 'route' && this.props.showRoute) ||
+        (type === 'route' && this.props.showPolygons) ||
         (type === 'element' && this.props.showSelectedElement)) {
           return true;
         }
@@ -52,7 +62,7 @@ export default class LegendWrapper extends React.Component {
         settingsActions.setShowTrack(!this.props.showTrack);
         break;
       case 'route':
-        settingsActions.setShowRoute(!this.props.showRoute);
+        settingsActions.setShowPolygons(!this.props.showPolygons);
         break;
       case 'element':
         settingsActions.setShowSelectedElement(!this.props.showSelectedElement);
@@ -61,11 +71,13 @@ export default class LegendWrapper extends React.Component {
   }
 
   render() {
-
+    const { className = "legend-wrapper app-toolbar-fill controls-legend-wrapper",
+      controlTitles = {} } = this.props;
     let marker = this.props.marker();
     let items = this.getControls()
       .map((control, i) => {
         let controllClassName = cx('control-element', {'half-visible': !this.isComponentActive(control.type)});
+        control.title = controlTitles[control.type] || control.title;
         return (
           <li key={i} className={controllClassName} >
             <ControlComponent control={control}
@@ -76,7 +88,7 @@ export default class LegendWrapper extends React.Component {
       });
 
     return (
-      <div className="legend-wrapper app-toolbar-fill controls-legend-wrapper">
+      <div className={className}>
         <ul style={{paddingLeft: 0}}>
           {items}
         </ul>

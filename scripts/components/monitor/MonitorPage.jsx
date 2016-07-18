@@ -7,9 +7,6 @@ import Sidebar from './Sidebar.jsx';
 import WeatherWidget from '../map/WeatherWidget.jsx';
 import { FluxContext } from 'utils/decorators';
 
-const MAP_INITIAL_CENTER = [6000,0]//[-199.43090337943863, -8521.192605428025];
-const MAP_INITIAL_ZOOM = 3;
-
 @FluxContext
 class MonitorPage extends Component {
 
@@ -18,7 +15,9 @@ class MonitorPage extends Component {
   }
 
   componentDidMount() {
-    this.context.flux.getActions('points').createConnection();
+    const { flux } = this.context;
+    flux.getActions('points').createConnection();
+    flux.getActions('geoObjects').getGeozoneByTypeWithGeometry('dt');
   }
 
   componentWillUnmount() {
@@ -38,11 +37,18 @@ class MonitorPage extends Component {
             selected: store.getSelectedPoint()
           }),
           settings: store => ({
-            showPlates: store.state.showPlates
+            showPlates: store.state.showPlates,
+            showTrack: store.state.showTrack,
+            showPolygons: store.state.showPolygons,
+            showSelectedElement: store.state.showSelectedElement,
+            showMarkers: store.state.showMarkers
           }),
           session: store => ({
             zoom: store.getCurrentUser().getCompanyMapConfig().zoom,
             center: store.getCurrentUser().getCompanyMapConfig().coordinates,
+          }),
+          geoObjects: store => ({
+            polys: store.getSelectedPolys()
           })
         }}>
 

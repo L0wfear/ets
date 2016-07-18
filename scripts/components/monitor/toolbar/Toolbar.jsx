@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
+import cx from 'classnames';
 import Filter from './Filter.jsx';
 import { FluxContext } from 'utils/decorators';
-import cx from 'classnames';
+import { TRACK_COLORS } from 'constants/track.js';
+import GeometryLegendWrapper from 'components/map/LegendWrapper.jsx';
 
 import statuses from 'constants/statuses';
+import { GEOOBJECTS_TYPES, GEOOBJECTS_TYPES_LABELS } from 'constants/geoobjects';
 import FluxComponent from 'flummox/component';
 import ToolbarSearch from './ToolbarSearch.jsx';
 import ToolbarFilters from './ToolbarFilters.jsx';
@@ -17,8 +20,8 @@ let StatusComponent = (props) =>
   </span>
 ;
 
-
-class LegendWrapper extends Component {
+// TODO jsdoc
+class CarsLegendWrapper extends Component {
 
   render() {
 
@@ -72,7 +75,6 @@ class LegendWrapper extends Component {
   }
 }
 
-
 let ShowPlatesCheckbox = (props) =>
   <div className="app-toolbar-fill app-toolbar-show-govnumber" >
     <div className="checkbox">
@@ -83,11 +85,59 @@ let ShowPlatesCheckbox = (props) =>
   </div>
 ;
 
+let ShowGeoobjectsCheckbox = (props) => {
+  const { selectedPolysTypes } = props;
+  const showGeoobjectsList = props.showGeoobjects;
+  const listStyle = {};
+  if (!showGeoobjectsList) {
+    listStyle.display = 'none';
+  }
+
+  function setSelectedPolysType(type) {
+    const alreadyChecked = selectedPolysTypes.indexOf(GEOOBJECTS_TYPES[type]) > -1;
+    if (!alreadyChecked) {
+      props.flux.getActions('geoObjects').getGeozoneByTypeWithGeometry(type);
+    }
+    props.flux.getActions('geoObjects').setSelectedPolysType(GEOOBJECTS_TYPES[type]);
+  }
+
+  function setShowGeoobjects(checked) {
+    props.flux.getActions('geoObjects').setSelectedPolysType(null);
+    props.flux.getActions('settings').setShowGeoobjects(checked);
+  }
+
+  const geoObjectsList = ['dt', 'odh', 'ssp', 'msp', 'carpool', 'fueling_water', 'danger_zone'].map((type, index) => {
+    return (
+      <li key={index}>
+        <div className="checkbox">
+          <label style={{fontSize:'13px', fontWeight:'200'}}>
+            <input type="checkbox" checked={selectedPolysTypes.indexOf(GEOOBJECTS_TYPES[type]) > -1} onChange={e => setSelectedPolysType(type)}/> {GEOOBJECTS_TYPES_LABELS[type]}
+          </label>
+        </div>
+      </li>
+    )
+  });
+
+  return (
+    <div className="app-toolbar-fill app-toolbar-show-geoobjects" >
+      <div className="checkbox">
+        <label style={{fontSize:'13px', fontWeight:'200'}}>
+          <input type="checkbox" checked={props.showGeoobjects} onChange={e => setShowGeoobjects(e.target.checked)}/> Объекты
+        </label>
+      </div>
+      <ul style={listStyle}>
+        {geoObjectsList}
+      </ul>
+    </div>
+  );
+}
+
 @FluxContext
 class Toolbar extends Component {
 
   constructor(props, context) {
     super(props, context);
+    this._pointsStore = this.context.flux.getStore('points');
   }
 
   focusOnLonelyCar() {
@@ -113,8 +163,8 @@ class Toolbar extends Component {
 
   render() {
 
-    const currentUser = this.props.currentUser;
-    const filters = this.props.filter;
+    const { selectedPolysTypes, currentUser, filter } = this.props;
+    const filters = filter;
     const pointsStore = this.context.flux.getStore('points');
     const storeState = pointsStore.state;
 
@@ -143,13 +193,21 @@ class Toolbar extends Component {
     return (
       <div className="app-toolbar">
         <div className="row">
-          <FluxComponent connectToStores={['points', 'settings']}>
-            <LegendWrapper
-                byStatus={byStatus}
-                byConnectionStatus={byConnectionStatus}
-                storeFilter={storeState.filter}
-                storeHandleSetFilter={pointsStore.handleSetFilter.bind(pointsStore)}/>
+          <FluxComponent connectToStores={['points', 'settings', 'geoObjects']}>
+            <CarsLegendWrapper
+              byStatus={byStatus}
+              byConnectionStatus={byConnectionStatus}
+              storeFilter={storeState.filter}
+              storeHandleSetFilter={pointsStore.handleSetFilter.bind(pointsStore)}/>
+            <GeometryLegendWrapper
+              controlTitles={{
+                route: 'Геообъекты'
+              }}
+              controls={['track', 'route']}
+              className="legend-wrapper app-toolbar-fill"
+              marker={() => this._pointsStore.getSelectedMarker()}/>
             <ShowPlatesCheckbox/>
+            <ShowGeoobjectsCheckbox selectedPolysTypes={selectedPolysTypes}/>
           </FluxComponent>
         </div>
         <ToolbarSearch focusOnLonelyCar={this.focusOnLonelyCar.bind(this)} carsCount={carsCount}/>

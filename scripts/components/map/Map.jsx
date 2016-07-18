@@ -1,9 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import CarMarker from './markers/car/CarMarker.js';
 import { PROJECTION, ArcGisLayer, projectToPixel } from './MskAdapter.js';
 import LegendWrapper from './LegendWrapper.jsx';
 import FluxComponent from 'flummox/component';
+import { polyState, polyStyles, pointStyles, getPointStyle } from 'constants/polygons.js';
+import { vectorStyles, vectorState, getVectorArrowStyle, getVectorLayer, getVectorSource } from 'constants/vectors.js';
+import { GeoJSON } from 'utils/ol';
 
+let POLYS_LAYER = null;
 // TODO move to settings
 const SIDEBAR_WIDTH_PX = 500;
 /**
@@ -23,6 +27,13 @@ const SIDEBAR_WIDTH_PX = 500;
  * custom tiles example
  */
 export default class OpenLayersMap extends Component {
+
+  static propTypes = {
+    points: PropTypes.object,
+    polys: PropTypes.object,
+    showPolygons: PropTypes.bool,
+    showTrack: PropTypes.bool
+  }
 
   constructor(props, context) {
     super(props, context);
@@ -191,6 +202,47 @@ export default class OpenLayersMap extends Component {
     this.popup.hide()
   }
 
+  renderPolygons(polys = {}, showPolygons) {
+    let map = this.map;
+
+    let vectorSource = new ol.source.Vector();
+    let styleFunction = polyStyles[polyState.SELECTABLE];
+
+    if (showPolygons) {
+      _.each(polys, (poly, key) => {
+        let feature = new ol.Feature({
+          geometry: GeoJSON.readGeometry(poly.shape),
+          name: poly.name,
+          id: key,
+          state: poly.state,
+        });
+        if (poly.shape && poly.shape.type === 'LineString') {
+          feature.setStyle(getVectorArrowStyle(feature));
+        } else if (poly.shape && poly.shape.type !== 'Point') {
+          feature.setStyle(polyStyles['geoobject']);
+        } else { // Если точка
+          feature.setStyle(getPointStyle());
+        }
+
+        vectorSource.addFeature(feature);
+      });
+    }
+
+    !!POLYS_LAYER && map.removeLayer(POLYS_LAYER);
+
+    let polysLayerObject = {
+      source: vectorSource,
+    };
+    if (styleFunction) {
+      polysLayerObject.style = styleFunction;
+    }
+    let polysLayer = new ol.layer.Vector(polysLayerObject);
+
+    POLYS_LAYER = polysLayer;
+
+    map.addLayer(polysLayer);
+  }
+
   renderCanvas(canvas, extent) {
     let map = this.map;
     let pointsStore = this._pointsStore;
@@ -210,16 +262,20 @@ export default class OpenLayersMap extends Component {
       let id = marker.point.id;
 
       if (selected === null || id !== selected.id) {
-        // TODO переключать отрисовку маленький/большой значок
-        // в зависимости от количества маркеров на видимой части карты
-        // будет некрасиво, если попадать точно в границу количества
-        marker.render(options);
+        if (this.props.showMarkers) {
+          // TODO переключать отрисовку маленький/большой значок
+          // в зависимости от количества маркеров на видимой части карты
+          // будет некрасиво, если попадать точно в границу количества
+          marker.render(options);
+        }
       }
     }
 
     if (selectedMarker) {
-      if (selectedMarker.hasTrackLoaded()) {
-        selectedMarker.track.render();
+      if (this.props.showTrack) {
+        if (selectedMarker.hasTrackLoaded()) {
+          selectedMarker.track.render();
+        }
       }
       selectedMarker.render({selected: true, ...options});
 
@@ -321,8 +377,17 @@ export default class OpenLayersMap extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.points !== undefined ){
+    const hasPoints = nextProps.points !== undefined;
+    const hasPolys = nextProps.polys !== undefined;
+    const polysHasChanged = hasPolys && !_.isEqual(this.props.polys, nextProps.polys);
+    const showPolygonsChanged = hasPolys && nextProps.showPolygons !== this.props.showPolygons;
+
+    if (hasPoints) {
       this.updatePoints(nextProps.points);
+    }
+
+    if (hasPolys && (polysHasChanged || showPolygonsChanged)) {
+      this.renderPolygons(nextProps.polys, nextProps.showPolygons);
     }
   }
 

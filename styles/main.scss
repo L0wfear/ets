@@ -1768,6 +1768,21 @@ body {
   padding: 1px 16px;
 }
 
+.app-toolbar-show-geoobjects {
+  padding: 1px 16px;
+  margin-top: 80px;
+  ul, li {
+    list-style-type: none;
+  }
+  ul {
+    padding-left: 15px;
+  }
+  .checkbox {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+}
+
 .zoombox-control {
   background-position: 2px 3px !important;
   background-image: url('images/icon-zoombox.png') !important;
@@ -2051,8 +2066,9 @@ body {
   background-color: rgba(0, 0, 0, 0.75);
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
   border-radius: 6px;
-  top:230px;
+  top: 305px;
   left: 10px;
+  z-index: 9999;
 
   button {
     background-color: transparent;

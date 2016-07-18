@@ -52,13 +52,13 @@ export default class HybridMap extends Map {
     this.renderPolygons(this.props.polys, true);
   }
 
-  renderPolygons(polys = {}, showRoute) {
+  renderPolygons(polys = {}, showPolygons) {
     let map = this.map;
 
     let vectorSource = new ol.source.Vector();
     let styleFunction = polyStyles[polyState.SELECTABLE];
 
-    if (showRoute) {
+    if (showPolygons) {
       _.each(polys, (poly, key) => {
         let feature = new ol.Feature({
           geometry: GeoJSON.readGeometry(poly.shape),
@@ -211,14 +211,6 @@ export default class HybridMap extends Map {
   componentWillReceiveProps(nextProps) {
     super.componentWillReceiveProps(nextProps);
 
-    if (nextProps.polys !== undefined && !_.isEqual(this.props.polys, nextProps.polys)) {
-      this.renderPolygons(nextProps.polys, nextProps.showRoute);
-    }
-
-    if (nextProps.polys !== undefined && nextProps.showRoute !== this.props.showRoute) {
-      this.renderPolygons(nextProps.polys, nextProps.showRoute);
-    }
-
     if (nextProps.selectedPoly !== undefined && !_.isEqual(this.props.selectedPoly, nextProps.selectedPoly)) {
       this.renderSelectedPoly(nextProps.selectedPoly, nextProps.showSelectedElement);
     }
@@ -235,7 +227,10 @@ export default class HybridMap extends Map {
         <div ref="container" className="openlayers-container">
 
           <FluxComponent connectToStores={['settings']}>
-            <LegendWrapper zoom={this.state.zoom} marker={() => this._pointsStore.getSelectedMarker()}/>
+            <LegendWrapper
+              controls={['track', 'route', 'element']}
+              zoom={this.state.zoom}
+              marker={() => this._pointsStore.getSelectedMarker()}/>
           </FluxComponent>
 
         </div>

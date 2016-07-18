@@ -2,6 +2,7 @@ import { Actions } from 'flummox';
 import { createValidDate } from 'utils/dates';
 import _ from 'lodash';
 import { isEmpty } from 'utils/functions';
+import { GEOOBJECTS_TYPES } from 'constants/geoobjects';
 import {
   SSPService,
   FuelingWaterService,
@@ -9,7 +10,8 @@ import {
   DangerZoneService,
   ODHService,
   DTService,
-  GeozoneService
+  GeozoneService,
+  GeozonesService
 } from 'api/Services';
 
 export default class GeoObjectsActions extends Actions {
@@ -63,6 +65,21 @@ export default class GeoObjectsActions extends Actions {
 
   getGeozones() {
     return GeozoneService.get();
+  }
+
+  async getGeozoneByTypeWithGeometry(type) {
+    const payload = {
+      shape: 1
+    };
+    const response = await GeozonesService.path(type).get(payload);
+    return {
+      type: GEOOBJECTS_TYPES[type],
+      data: response
+    };
+  }
+
+  setSelectedPolysType(type) {
+    return type;
   }
 
 }

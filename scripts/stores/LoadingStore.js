@@ -54,6 +54,7 @@ export default class LoadingStore extends Store {
       geoObjectsActions.getCarpools,
       geoObjectsActions.getFuelingWaterStations,
       geoObjectsActions.getDangerZones,
+      geoObjectsActions.getGeozoneByTypeWithGeometry,
 
       carActions.updateCarAdditionalInfo,
       carActions.getTrack,

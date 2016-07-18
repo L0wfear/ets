@@ -50,6 +50,15 @@ export const polyStyles = {
               color: 'green',
               width: 1
          })
+      }),
+  'geoobject': new ol.style.Style({
+         fill: new ol.style.Fill({
+              color: 'red'
+         }),
+         stroke: new ol.style.Stroke({
+              color: 'red',
+              width: 1
+         })
       })
 };
 

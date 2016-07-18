@@ -5,11 +5,23 @@ import { mocks } from './mocks';
 
 export default class APIService {
 
-  constructor(url, useMock = false) {
+  /**
+   * Creates APIService handler for backend service via provided url
+   * @param {string} url - url path
+   * @param {object} options - options
+   * @param {boolean} options.useMock - use mock instead of backend service
+   * @param {boolean} options.customPaths - allow to provide additional part of url path
+   * @param {array} options.customPathsList - available paths for customPaths
+   */
+  constructor(url, options = {}) {
+    const { useMock = false } = options;
     this.firstUrl = url;
+    this.canonicFirstUrl = url;
     this.serviceName = url.replace(/\//g, '');
     this.useMock = useMock;
-    this.url = url.indexOf('http') > -1 ? url : getUrl(url);
+    const canonicUrl = url.indexOf('http') > -1 ? url : getUrl(url);
+    this.url = canonicUrl;
+    this.canonicUrl = canonicUrl;
     this.get = this.get.bind(this);
     this.processResponse = this.processResponse.bind(this);
 
@@ -66,6 +78,15 @@ export default class APIService {
 
   getUrl() {
     return this.url;
+  }
+
+  path(path) {
+    // TODO переделать нормально
+    this.url = this.canonicUrl;
+    this.firstUrl = this.canonicFirstUrl;
+    this.url += path;
+    this.firstUrl += path;
+    return this;
   }
 
   log(method) {

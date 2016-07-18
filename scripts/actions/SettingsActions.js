@@ -10,11 +10,19 @@ export default class SettingsActions extends Actions {
     return showTrack;
   }
 
-  setShowRoute(showRoute) {
-    return showRoute;
+  setShowPolygons(showPolygons) {
+    return showPolygons;
+  }
+
+  setShowGeoobjects(showGeoobjects) {
+    return showGeoobjects;
   }
 
   setShowSelectedElement(showSelectedElement) {
     return showSelectedElement;
+  }
+
+  setShowMarkers(showMarkers) {
+    return showMarkers;
   }
 }

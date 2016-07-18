@@ -116,7 +116,7 @@ export class MissionInfoForm extends Form {
 								settings: store => ({
 									showPlates: store.state.showPlates,
 									showTrack: store.state.showTrack,
-									showRoute: store.state.showRoute,
+                  showPolygons: store.state.showPolygons,
 									showSelectedElement: store.state.showSelectedElement
 								}),
 								session: store => ({

@@ -17,6 +17,9 @@ class GeoObjectsStore extends Store {
     this.register(geoObjectsActions.updateDT, this.handleGetList.bind(this, 'dts'));
     this.register(geoObjectsActions.getDTs, this.handleGetList.bind(this, 'dts'));
     this.register(geoObjectsActions.getGeozones, this.handleGetGeozones);
+    this.register(geoObjectsActions.setSelectedPolysType, this.handleSetSelectedPolysType);
+
+    this.register(geoObjectsActions.getGeozoneByTypeWithGeometry, this.handleGetGeozonesByType);
 
     this.state = {
       odhsList: [],
@@ -25,6 +28,7 @@ class GeoObjectsStore extends Store {
       fuelingWaterStationsList: [],
       carpoolsList: [],
       dangerZonesList: [],
+      mspsList: [],
 
       odhsIndex: {},
       dtsIndex: {},
@@ -37,6 +41,12 @@ class GeoObjectsStore extends Store {
       geozonePolys: {},
       odhPolys: {},
       dtPolys: {},
+      sspPolys: {},
+      mspPolys: {},
+      fuelingWaterStationPolys: {},
+      carpoolPolys: {},
+
+      selectedPolysTypes: []
     };
 
   }
@@ -46,6 +56,23 @@ class GeoObjectsStore extends Store {
     this.setState({
       [statePropertyName]: result
     });
+  }
+
+  handleSetSelectedPolysType(type) {
+    if (type === null) {
+      this.setState({selectedPolysTypes: []});
+      return;
+    }
+    const { selectedPolysTypes } = this.state;
+    const typeIndex = selectedPolysTypes.indexOf(type);
+
+    if (typeIndex > -1) {
+      selectedPolysTypes.splice(typeIndex, 1);
+    } else {
+      selectedPolysTypes.push(type);
+    }
+
+    this.setState({selectedPolysTypes});
   }
 
   handleGetGeozones(data) {
@@ -75,6 +102,32 @@ class GeoObjectsStore extends Store {
       }
     });
     this.setState({geozonePolys, dtPolys, odhPolys});
+  }
+
+  handleGetGeozonesByType(response) {
+    const { type, data = {} } = response;
+    const { result = [] } = data;
+    const polys = {};
+    result.map(geozone => {
+      polys[geozone.id] = Object.assign({}, geozone, {
+        shape: JSON.parse(geozone.shape),
+      });
+    });
+    const polysByType = `${type}Polys`;
+
+    this.setState({
+      [polysByType]: polys
+    });
+  }
+
+  getSelectedPolys() {
+    const { selectedPolysTypes } = this.state;
+    let polys = {};
+    selectedPolysTypes.map(type => {
+      Object.assign(polys, this.state[`${type}Polys`]);
+    });
+
+    return polys;
   }
 
 }

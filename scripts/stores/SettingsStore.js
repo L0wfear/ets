@@ -8,16 +8,21 @@ class SettingsStore extends Store {
 
     const settingsActions = flux.getActions('settings');
 
+    // TODO make 1 handler with type binding
     this.register(settingsActions.setShowPlates, this.handleSetShowPlates);
     this.register(settingsActions.setShowTrack, this.handleSetShowTrack);
-    this.register(settingsActions.setShowRoute, this.handleSetShowRoute);
+    this.register(settingsActions.setShowPolygons, this.handleSetShowPolygons);
     this.register(settingsActions.setShowSelectedElement, this.handleSetShowSelectedElement);
+    this.register(settingsActions.setShowGeoobjects, this.handleSetShowGeoobjects);
+    this.register(settingsActions.setShowMarkers, this.handleSetShowMarkers);
 
     this.state = {
       showPlates: false,
       showTrack: true,
-      showRoute: true,
-      showSelectedElement: true
+      showPolygons: true,
+      showSelectedElement: true,
+      showGeoobjects: false,
+      showMarkers: true
     };
 
   }
@@ -25,6 +30,18 @@ class SettingsStore extends Store {
   handleSetShowPlates(showPlates) {
     this.setState({
       showPlates
+    });
+  }
+
+  handleSetShowGeoobjects(showGeoobjects) {
+    this.setState({
+      showGeoobjects
+    });
+  }
+
+  handleSetShowMarkers(showMarkers) {
+    this.setState({
+      showMarkers
     });
   }
 
@@ -37,12 +54,12 @@ class SettingsStore extends Store {
     });
   }
 
-  handleSetShowRoute(showRoute) {
-    if (typeof showRoute === 'undefined') {
-      showRoute = !this.state.showRoute;
+  handleSetShowPolygons(showPolygons) {
+    if (typeof showPolygons === 'undefined') {
+      showPolygons = !this.state.showPolygons;
     }
     this.setState({
-      showRoute
+      showPolygons
     });
   }
 

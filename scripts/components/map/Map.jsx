@@ -6,7 +6,6 @@ import FluxComponent from 'flummox/component';
 
 // TODO move to settings
 const SIDEBAR_WIDTH_PX = 500;
-
 /**
  * Openlayers docs (latest version)
  * http://openlayers.org/en/latest/apidoc/
@@ -29,8 +28,8 @@ export default class OpenLayersMap extends Component {
     super(props, context);
     let self = this;
 
-    this.markers = {};
-    this._handlers = null; // map event handlers
+    this.markers = {}; // container for markers on map
+    this._handlers = null; // container for map event handlers
     this._pointsStore = this.props.flux.getStore('points');
 
     this.viewportVisibleMarkers = {};
@@ -72,7 +71,6 @@ export default class OpenLayersMap extends Component {
 
     let map = new ol.Map({
       view: initialView,
-      //interactions: [this.interactions],
       renderer: ['canvas','dom'],
       controls: controls,
       layers: [ArcGisLayer, canvasLayer]
@@ -92,11 +90,10 @@ export default class OpenLayersMap extends Component {
   componentDidMount() {
 
     let map = this.map;
-    let triggerRenderFn = this.triggerRender.bind(this);
     let container = this.refs.container;
 
     map.setTarget(container);
-    map.on('postcompose', triggerRenderFn);
+    map.on('postcompose', this.triggerRender.bind(this));
 
     this.popup = new ol.Overlay.Popup();
     map.addOverlay(this.popup);
@@ -105,7 +102,7 @@ export default class OpenLayersMap extends Component {
   }
 
   triggerRender() {
-    this.canvasLayer.getSource().changed()
+    this.canvasLayer.getSource().changed();
   }
 
   onMouseMove(ev) {
@@ -262,15 +259,20 @@ export default class OpenLayersMap extends Component {
         singleclick: map.on('singleclick', this.onClick.bind(this)),
         pointermove: map.on('pointermove', this.onMouseMove.bind(this)),
         moveend: map.on('moveend', this.onMoveEnd.bind(this))
-      }
+      };
 
       interactions.forEach((interaction)=> {
         interaction.setActive(true);
-      })
+      });
     }
 
   }
 
+  /**
+   * Вызывается при манипуляциях с картой, таких как перемещение видимой
+   * области, зуммирование
+   * @method
+   */
   onMoveEnd() {
     let zoom = this.map.getView().getZoom();
     if (zoom !== this.state.zoom) {
@@ -283,13 +285,14 @@ export default class OpenLayersMap extends Component {
     let interactions = this.map.getInteractions();
 
     if (this._handlers !== null) {
-      map.unByKey(this._handlers.singleclick)
-      map.unByKey(this._handlers.pointermove)
+      map.unByKey(this._handlers.singleclick);
+      map.unByKey(this._handlers.pointermove);
+      map.unByKey(this._handlers.moveend);
       this._handlers = null;
 
       interactions.forEach((interaction)=> {
         interaction.setActive(false)
-      })
+      });
     }
   }
 
@@ -303,15 +306,19 @@ export default class OpenLayersMap extends Component {
       let key = keys[i];
       let marker = markers[key];
 
-      // @todo переписать на простые сравнения, без метода contains
-      if (ol.extent.containsCoordinate(bounds, marker.coords) && marker.isVisible()) {
-        markersInBounds.push(marker)
+      if (this.containsCoordinate(bounds, marker.coords) && marker.isVisible()) {
+        markersInBounds.push(marker);
       }
     }
 
     return markersInBounds;
   }
 
+  containsCoordinate(extent, coordinates) {
+    const x = coordinates[0];
+    const y = coordinates[1];
+    return extent[0] <= x && x <= extent[2] && extent[1] <= y && y <= extent[3];
+  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.points !== undefined ){
@@ -320,7 +327,6 @@ export default class OpenLayersMap extends Component {
   }
 
   updatePoints(updatedPoints) {
-
     let keys = Object.keys(updatedPoints);
 
     for (let i = 0, till = keys.length; i < till; i++) {
@@ -343,6 +349,7 @@ export default class OpenLayersMap extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    // Делаем ререндер компонента только в случае изменения зума для передачи в легенду
     if (this.state.zoom !== nextState.zoom) {
       return true;
     }

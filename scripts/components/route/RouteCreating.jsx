@@ -6,19 +6,9 @@ import ODHList from './ODHList.jsx';
 import Field from 'components/ui/Field.jsx';
 import connectToStores from 'flummox/connect';
 import Div from 'components/ui/Div.jsx';
-
-
 import {polyStyles, polyState} from 'constants/polygons.js';
 import {vectorStyles, vectorState} from 'constants/vectors.js';
-
 import _ from 'lodash';
-
-
-//[16580.674245486127, 1249.8835250755087]
-
-
-// const MAP_INITIAL_CENTER = [16580.674245486127, 1249.8835250755087];
-// const MAP_INITIAL_ZOOM = 6;
 
 class RouteCreating extends Component {
 
@@ -219,18 +209,19 @@ class RouteCreating extends Component {
 						<Row>
 							<Col md={9}>
 								<Div className="route-creating">
-									<Map onFeatureClick={this.onFeatureClick.bind(this)}
-											onPointAdd={this.onPointAdd.bind(this)}
-											onDrawFeatureAdd={this.onDrawFeatureAdd.bind(this)}
-											onDrawFeatureClick={this.onDrawFeatureClick.bind(this)}
-											removeLastDrawFeature={this.removeLastDrawFeature.bind(this)}
-											zoom={this.state.zoom}
-											center={this.state.center}
-											object_list={route.object_list}
-											polys={route.polys}
-											objectsType={route.type}
-											manualDraw={this.props.manual}
-											edit={!!route.id} />
+									<Map
+										onFeatureClick={this.onFeatureClick.bind(this)}
+										onPointAdd={this.onPointAdd.bind(this)}
+										onDrawFeatureAdd={this.onDrawFeatureAdd.bind(this)}
+										onDrawFeatureClick={this.onDrawFeatureClick.bind(this)}
+										removeLastDrawFeature={this.removeLastDrawFeature.bind(this)}
+										zoom={this.state.zoom}
+										center={this.state.center}
+										object_list={route.object_list}
+										polys={route.polys}
+										objectsType={route.type}
+										manualDraw={this.props.manual}
+										edit={!!route.id} />
 								</Div>
 							</Col>
 							<Col md={3}>

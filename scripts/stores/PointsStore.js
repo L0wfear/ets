@@ -1,66 +1,91 @@
 import { Store } from 'flummox';
 import statuses from 'constants/statuses';
-import { getOwnerById } from '../owners.js';
 import config from '../config.js';
 import ReconnectingWebSocket from '../vendor/ReconnectingWebsocket.js';
 import _ from 'lodash';
 
-let initialState = {
-    selected: null,
-    points: {},
-    totalOnline: 0,
-    filter: {
-      connectionStatus: [0, 1],
-      status: statuses.map(s => s.id),
-      type: [],
-      owner: [],
-    },
-    byStatus: {
-      1: 0,
-      2: 0,
-      3: 0,
-      4: 0
-    },
-    byConnectionStatus: {
-      0: 0,
-      1: 0
-    },
-    trackingMode: false,
-    showTrackingGradient: false,
-    isRenderPaused: false,
-    singleCarTrack: null,
-    singleCarTrackDates: [],
+/**
+ * Начальное состояние хранилища
+ * @constant
+ * @type {object}
+ * @property {object|null} selected - выбранная точка
+ * @property {object} points - индекс (объект по айдишникам) точек
+ * @property {object} filter - настройки фильтрации точек
+ * @property {array}  filter.status - выбранные для фильтрации статусы
+ * @property {array}  filter.type - выбранные для фильтрации типы ТС
+ * @property {array}  filter.owner - выбранные для фильтрации организации-владельцы ТС
+ * @property {object} byStatus - количество точек со статусами
+ * @property {object} byConnectionStatus - количество точек не на связи/на связи
+ * @property {boolean} trackingMode - включен ли режим слежения за 1 точкой (= маркером, БНСО, ТС)
+ * @property {boolean} showTrackingGradient - включено ли отображение цветов трека с градиентом
+ * @property {boolean} isRenderPaused - включена ли приостановка рендеринга точек
+ * @property {string|null} singleCarTrack - гос. номер ТС, если он есть то включается режим отображения только 1 точки
+ * @property {array} singleCarTrackDates - даты для отображения трека по 1 БНСО
+ */
+const initialState = {
+  selected: null,
+  points: {},
+  filter: {
+    status: statuses.map(s => s.id),
+    type: [],
+    owner: [],
+  },
+  byStatus: {
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0
+  },
+  byConnectionStatus: {
+    0: 0,
+    1: 0
+  },
+  trackingMode: false,
+  showTrackingGradient: false,
+  isRenderPaused: false,
+  singleCarTrack: null,
+  singleCarTrackDates: [],
 }
 
+/**
+ * @classdesc Хранилище для объектов точек, отображаемых на карте
+ * @class
+ * @extends Store
+ */
 export default class PointsStore extends Store {
 
+  /**
+   * Создает хранилище
+   * @param {object} flux - Реализация flux
+   */
   constructor(flux) {
     super();
     this.flux = flux;
 
-    const pointsActions = this._pointsActions = flux.getActions('points');
+    const pointsActions = flux.getActions('points');
     const loginActions = flux.getActions('session');
     this.register(pointsActions.updatePoints, this.handleUpdatePoints);
     this.register(pointsActions.setFilter, this.handleSetFilter);
     this.register(pointsActions.selectPoint, this.handleSelectPoint);
     this.register(pointsActions.setTracking, this.setTracking);
-    this.register(pointsActions.getPointsExtent, this.getPointsExtent);
-    this.register(pointsActions.createConnection, this.handleCreateConnection);
-    this.register(pointsActions.createConnectionForSinglePoint, this.handleCreateConnectionForSinglePoint);
-    this.register(pointsActions.closeConnection, this.handleCloseConnection);
+    this.register(pointsActions.createConnection, this._handleCreateConnection);
+    this.register(pointsActions.closeConnection, this._handleCloseConnection);
     this.register(pointsActions.setSingleCarTrack, this.handleSetSingleCarTrack);
     this.register(pointsActions.setSingleCarTrackDates, this.handleSetSingleCarTrackDates);
 
     this.register(loginActions.login, this.handleLogin);
 
-
     this.state = _.cloneDeep(initialState);
-
   }
 
-  handleCreateConnection() {
-    console.info('CREATING WS CONNECTION');
-    //this.setState(_.cloneDeep(initialState));
+  /**
+   * Устанавливает соединение по WebSocket и устанавливает передачу данных из
+   * ws в PointsStore~handleUpdatePoints{@link PointsStore#handleUpdatePoints}
+   * так же устанавливает обработку ивентов WebSocket
+   * @method
+   * @private
+   */
+  _handleCreateConnection() {
     const token = this.flux.getStore('session').getSession();
     let wsUrl = `${config.ws}?token=${token}`;
     this.ws = new ReconnectingWebSocket(wsUrl, null);
@@ -70,18 +95,21 @@ export default class PointsStore extends Store {
     }
 
     this.ws.onclose = () => {
-      //global.NOTIFICATION_SYSTEM.notify('Потеряно соединение с WebSocket, пытаемся переподключиться', 'warning');
+      console.warn('WEBSOCKET - Потеряно соединение с WebSocket, пытаемся переподключиться');
     }
-
     this.ws.onerror = () => {
-      //global.NOTIFICATION_SYSTEM.notify('Ошибка WebSocket', 'error');
+      console.error('WEBSOCKET - Ошибка WebSocket');
     }
 
     this.unpauseRendering();
   }
 
-  handleCloseConnection() {
-    console.info('CLOSING WS CONNECTION');
+  /**
+   * Закрывает соединение по WebSocket и возвращает state в initialState
+   * @method
+   * @private
+   */
+  _handleCloseConnection() {
     if (typeof this.ws !== 'undefined') {
       this.ws.close();
       this.ws = null;
@@ -99,17 +127,17 @@ export default class PointsStore extends Store {
   }
 
   /**
-    @todo handleMessage() method
-   **/
+    * Обновляет точки
+    * @method
+    * @param {object} update - поступившие данные о точках
+    *
+    * @todo оптимизировать с https://github.com/mourner/rbush
+    * https://github.com/mourner/rbush-knn
+    */
   handleUpdatePoints(update) {
-
-    /**
-     * TODO https://github.com/mourner/rbush
-     * https://github.com/mourner/rbush-knn
-     */
-
     let points = Object.assign({}, this.state.points);
 
+    // TODO отрефакторить механизм обработки получения точек для 1 БНСО
     if (this.state.singleCarTrack) {
       if (!this.state.selected) {
         _.map(points, p => {
@@ -135,7 +163,7 @@ export default class PointsStore extends Store {
 
       points[key] = Object.assign({}, points[key], pointUpdate);
 
-
+      // TODO разобраться что это такое
       // HACK
       // whatever...
       /*if (points[key].speed !== 0 && this.state.points[key] && this.state.points[key].speed === 0) {
@@ -146,18 +174,24 @@ export default class PointsStore extends Store {
 
     let state = Object.assign({}, {
       points
-    }, this.countDimensions());
+    }, this.countDimensions(points));
 
     this.setState(state);
   }
 
-  countDimensions() {
+  /**
+   * Расчет количества активных машин по статусам
+   * @method
+   * @param {object} points - точки
+   * @returns {object} dimensions - кол-во точек в разрезе статусов и активности
+   * @returns {object} dimensions.byStatus - кол-во точек в разрезе статусов
+   * @returns {object} dimensions.byConnectionStatus - кол-во точек в разрезе активности
+   */
+  countDimensions(points = this.state.points) {
 
-    if (this.state.isRenderPaused) {
-      return
+    if (this.isRenderPaused()) {
+      return;
     }
-
-    let points = this.state.points;
 
     let byStatus = {
       1: 0,
@@ -185,6 +219,12 @@ export default class PointsStore extends Store {
     };
   }
 
+  /**
+   * Устанавливает фильтр
+   * @method
+   * @public
+   * @param {object} update - измененный фильтр
+   */
   handleSetFilter(update) {
     let filter = Object.assign({}, this.state.filter, update);
     let selected = this.state.selected;
@@ -192,7 +232,11 @@ export default class PointsStore extends Store {
     this.setState(Object.assign({}, {filter, selected}, this.countDimensions()));
   }
 
-
+  /**
+   * Устанавливает выбранную точку
+   * @method
+   * @param {object|false} selected
+   */
   handleSelectPoint(selected) {
 
     if (!!selected === false) {
@@ -203,7 +247,7 @@ export default class PointsStore extends Store {
     }
 
     if (selected && !selected.car) {
-      return
+      return;
     }
 
     this.setState({
@@ -212,121 +256,137 @@ export default class PointsStore extends Store {
     });
   }
 
-  toggleSelectedPointTrackUpdating(flag) {
-    let point = this.state.selected;
-    point.TRACK_NEEDS_UPDATE = flag;
-    this.setState({
-      selected: point
-    })
-  }
-
+  /**
+   * Обрабатывает логин пользователя, устанавливая в фильтр по владельцам
+   * id стркутурного элемента организации пользователя
+   * @method
+   * @param {object} data - ответ с сервера
+   * @param {object} data.payload - данные о пользователе
+   */
   handleLogin({payload}) {
     this.handleSetFilter({owner: [payload.company_id]});
   }
 
-  getPointsExtent() {
-    let minX = 100000,
-      minY = 100000,
-      maxX = 0,
-      maxY = 0;
-
-    let points = this.getVisiblePoints();
-
-    for (let key in points) {
-      let point = points[key];
-      let [x, y] = point.coords_msk;
-
-      if (x < minX) {
-        minX = x
-      }
-      if (x > maxX) {
-        maxX = x
-      }
-
-      if (y < minY) {
-        minY = y;
-      }
-      if (y > maxY) {
-        maxY = y
-      }
-    }
-
-    return [minX, minY, maxX, maxY];
-  }
-
+  /**
+   * Возвращает прошедшие фильтрацию точки
+   * @method
+   * @returns {array} visiblePoints - прошедшие фильтрацию точки
+   */
   getVisiblePoints() {
-    let returns = [];
+    let visiblePoints = [];
 
     for (let k in this.state.points) {
       let point = this.state.points[k];
       if (this.isPointVisible(point)) {
-        returns.push(point)
+        visiblePoints.push(point)
       }
     }
 
-    return returns;
+    return visiblePoints;
   }
 
+  /**
+   * Определяет, доступна ли точка для отображения в соответствии с фильтром
+   * интерфейс для PointsStore~_isPointVisible
+   * @method
+   * @public
+   * @param {object} point - точка
+   * @returns
+   */
   isPointVisible(point) {
     return this._isPointVisible(point, this.state.filter);
   }
 
+  /**
+   * Устанавливает значение режима слежения за точкой (БНСО, маркером, ТС)
+   * @method
+   * @public
+   * @param {boolean} value - режим слежения
+   */
   setTracking(value) {
     this.setState({
       trackingMode: value
-    })
+    });
   }
 
+  /**
+   * Устанавливает значение использования градиента при отрисовке
+   * @todo перенести в более подходящее место
+   * @method
+   * @public
+   * @param {boolean} flag - использовать градиент
+   */
   handleSetShowGradient(flag) {
     this.setState({
       showTrackingGradient: flag
-    })
+    });
   }
 
+  /**
+   * Определяет, доступна ли точка для отображения в соответствии с фильтром
+   * @method
+   * @private
+   * @param {object} point - точка
+   * @param {object} filter - заданная конфигурация фильтрации
+   * @returns {boolean} visible - доступность точки для отображения
+   */
   _isPointVisible(point, filter) {
     let visible = true;
 
-    if (!point.car)
+    // Если точка не имеет за собой ТС, то она не должна отображаться на карте
+    if (!point.car) {
       return false;
-
-    if (!filter) return visible;
-
-    // return true for selected point anyway
-    if (this.state.selected !== null && point.id === this.state.selected.id) return true;
-
+    }
+    // В случае незаданной фильтрации возвращаем true
+    if (!filter) {
+      return visible;
+    }
+    // В случае если точка выбрана, она должна быть видима вне зависимости от
+    // фильтрации
+    if (this.state.selected !== null && point.id === this.state.selected.id) {
+      return true;
+    }
+    // Фильтрация по статусу точки
     if (filter.status) {
       visible = visible && filter.status.indexOf(point.status) !== -1;
-      if (!visible) return false;
+      if (!visible) {
+        return false;
+      }
     }
-
+    // Фильтрация по номеру БНСО (GPS) или Гос. номеру ТС
     if (filter.bnso_gos && filter.bnso_gos.length > 0) {
       let text = filter.bnso_gos.toLowerCase();
       visible = visible && (
         point.car.gps_code.toLowerCase().indexOf(text) + 1 ||
         point.car.gov_number.toLowerCase().indexOf(text) + 1
       );
-
-      if (!visible) return false;
+      if (!visible) {
+        return false;
+      }
     }
-
-    if (filter.connectionStatus) {
-      visible = visible && filter.connectionStatus.indexOf(point.connection_status) !== -1;
-      if (!visible) return false;
-    }
-
+    // Фильтрация по типу ТС
     if (filter.type && filter.type.length > 0) {
       visible = visible && point.car && filter.type.indexOf(point.car.type_id) !== -1;
-      if (!visible) return false;
+      if (!visible) {
+        return false;
+      }
     }
-
+    // Фильтрация по организации-владельцу ТС
     if (filter.owner && filter.owner.length > 0) {
       visible = visible && point.car && filter.owner.indexOf(Number(point.car.owner_id)) !== -1;
-      if (!visible) return false;
+      if (!visible) {
+        return false;
+      }
     }
-
     return visible;
   }
 
+  /**
+   * Возвращает маркер по выбранной точке
+   * @method
+   * @public
+   * @returns {Marker|null} marker - маркер
+   */
   getSelectedMarker() {
     if (this.state.selected) {
       return this.state.selected.marker;
@@ -335,28 +395,55 @@ export default class PointsStore extends Store {
     }
   }
 
+  /**
+   * Определяет выбрана ли какая-либо точка
+   * @method
+   * @public
+   * @returns {boolean} isSelected - выбрана ли какая-либо точка
+   */
   hasMarkerSelected() {
     return this.state.selected !== false && this.state.selected !== null;
   }
 
+  /**
+   * Возвращает выбранную точку
+   * @method
+   * @public
+   * @returns {object|null} point - выбранная точка
+   */
   getSelectedPoint() {
     return this.state.selected;
   }
 
+  /**
+   * Выключает обновление точек
+   * @method
+   * @public
+   */
   pauseRendering() {
     this.setState({
       isRenderPaused: true
-    })
+    });
   }
 
+  /**
+   * Включает обновление точек
+   * @method
+   * @public
+   */
   unpauseRendering() {
     this.setState({
       isRenderPaused: false
-    })
+    });
   }
 
+  /**
+   * Определяет включено ли обновление точек
+   * @method
+   * @public
+   * @returns {boolean} isRenderPaused - включено ли обновление точек
+   */
   isRenderPaused() {
-    //return false;
     return this.state.isRenderPaused;
   }
 

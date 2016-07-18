@@ -3,7 +3,7 @@ import CoordsAnimation from './CoordsAnimation.js';
 import { getSmallIcon, getBigIcon } from '../../../../icons/car.js';
 import Marker from '../BaseMarker.js';
 import Track from '../../Track.js';
-import { swapCoords, wrapCoords, unwrapCoords } from 'utils/geo';
+import { swapCoords, wrapCoords } from 'utils/geo';
 import { getTypeById } from 'utils/labelFunctions';
 
 const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
@@ -39,7 +39,7 @@ export default class CarMarker extends Marker {
   }
 
   isVisible() {
-    return this.store.isPointVisible( this.point );
+    return this.store.isPointVisible(this.point);
   }
 
   getImage(options) {

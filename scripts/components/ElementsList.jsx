@@ -103,6 +103,13 @@ class ElementsList extends React.Component {
   }
 
   onKeyPress(e) {
+    const activeTabIndex = document.activeElement.getAttribute('tabIndex');
+    const appropriateTabIndex = activeTabIndex && (activeTabIndex === 1 || activeTabIndex === 2);
+
+    if (!appropriateTabIndex) {
+      return;
+    }
+
     if (e.code === 'Enter' && this.state.selectedElement !== null) {
       this.showForm();
     }

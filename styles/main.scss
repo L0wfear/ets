@@ -453,7 +453,7 @@ body.application {
   }
 }
 
-.dashboard-sidebar {
+.monitor-sidebar {
   padding: 0px 10px;
   position: absolute;
   top: 48px;
@@ -464,6 +464,10 @@ body.application {
   right: 0;
   height: 100%;
   overflow: auto;
+
+  &-sm {
+    width: 300px;
+  }
 
   &-close {
     position: absolute;
@@ -499,16 +503,16 @@ body.application {
   }
 }
 
-.dashboard-sidebar--open {
+.monitor-sidebar--open {
   right: 0;
 }
 
-.dashboard-sidebar--closed {
+.monitor-sidebar--closed {
   right: -500px;
 }
 
 
-.dashboard-sidebar .chart-wrapper {
+.monitor-sidebar .chart-wrapper {
   border: medium none;
   box-shadow: 0 1px 3px rgba(0,0,0,.1);
 }
@@ -1977,11 +1981,11 @@ body {
   .app-toolbar,
   .leaflet-control-container,
   .weather-widget,
-  .dashboard-sidebar *{
+  .monitor-sidebar *{
     display:none;
   }
 
-  .dashboard-sidebar .chart-stage {
+  .monitor-sidebar .chart-stage {
     display:block;
   }
 }
@@ -2012,6 +2016,12 @@ body {
     margin: 10px;
     width: 250px;
     min-height: 100px;
+  }
+}
+
+.feature-info {
+  .chart-wrapper, .chart-stage {
+    text-align: left !important;
   }
 }
 

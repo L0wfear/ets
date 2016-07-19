@@ -46,7 +46,8 @@ class GeoObjectsStore extends Store {
       fuelingWaterStationPolys: {},
       carpoolPolys: {},
 
-      selectedPolysTypes: []
+      selectedPolysTypes: [],
+      selectedFeature: null
     };
 
   }
@@ -68,6 +69,11 @@ class GeoObjectsStore extends Store {
 
     if (typeIndex > -1) {
       selectedPolysTypes.splice(typeIndex, 1);
+      if (this.state.selectedFeature) {
+        if (this.state.selectedFeature.featureType === type) {
+          this.handleSelectFeature(null);
+        }
+      }
     } else {
       selectedPolysTypes.push(type);
     }
@@ -109,8 +115,13 @@ class GeoObjectsStore extends Store {
     const { result = [] } = data;
     const polys = {};
     result.map(geozone => {
-      polys[geozone.id] = Object.assign({}, geozone, {
-        shape: JSON.parse(geozone.shape),
+      let data = geozone;
+      let shape = JSON.parse(geozone.shape);
+      data.featureType = type;
+      delete data.shape;
+      polys[geozone.id] = Object.assign({}, {
+        shape,
+        data
       });
     });
     const polysByType = `${type}Polys`;
@@ -128,6 +139,54 @@ class GeoObjectsStore extends Store {
     });
 
     return polys;
+  }
+
+  handleSelectFeature(selectedFeature) {
+    // TODO рефакторинг
+    if (selectedFeature !== null) {
+      if (this.state.selectedFeature !== null) {
+        const typePrev = this.state.selectedFeature.featureType;
+        const polysByTypePrev = `${typePrev}Polys`;
+        const polysPrev = this.state[polysByTypePrev];
+        delete polysPrev[this.state.selectedFeature.id].selected;
+
+        const type = selectedFeature.featureType;
+        const polysByType = `${type}Polys`;
+        const polys = this.state[polysByType];
+        polys[selectedFeature.id].selected = true;
+        this.setState({
+          selectedFeature,
+          [polysByTypePrev]: polysPrev,
+          [polysByType]: polys
+        });
+      } else {
+        const type = selectedFeature.featureType;
+        const polysByType = `${type}Polys`;
+        const polys = this.state[polysByType];
+        polys[selectedFeature.id].selected = true;
+        this.setState({
+          selectedFeature,
+          [polysByType]: polys
+        });
+      }
+    } else {
+      if (this.state.selectedFeature !== null) {
+        const type = this.state.selectedFeature.featureType;
+        const polysByType = `${type}Polys`;
+        const polys = this.state[polysByType];
+        delete polys[this.state.selectedFeature.id].selected;
+        this.setState({
+          selectedFeature,
+          [polysByType]: polys
+        });
+      } else {
+        this.setState({selectedFeature});
+      }
+    }
+  }
+
+  getSelectedFeature() {
+    return this.state.selectedFeature;
   }
 
 }

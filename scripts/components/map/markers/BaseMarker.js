@@ -4,10 +4,9 @@
  * @todo подумать про наследование от стандартного маркера OpenLayers
  * @todo SelectableMarker extends BaseMarker
  */
+import { wrapCoords } from 'utils/geo';
 
 const IS_MSK = true;
-
-import {wrapCoords} from 'utils/geo';
 
 export default class Marker {
   constructor(point, map) {
@@ -32,7 +31,7 @@ export default class Marker {
     let coords = point.coords;
     let coords_msk = point.coords_msk;
 
-    return IS_MSK ? wrapCoords(coords_msk) : wrapCoords(coords)
+    return IS_MSK ? wrapCoords(coords_msk) : wrapCoords(coords);
   }
 
   onClick() {

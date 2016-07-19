@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import FluxComponent from 'flummox/component';
 import connectToStores from 'flummox/connect';
-import Map from '../map/Map.jsx';
+import MapWrapper from './MapWrapper.jsx';
 import Toolbar from './toolbar/Toolbar.jsx';
 import Sidebar from './Sidebar.jsx';
 import WeatherWidget from '../map/WeatherWidget.jsx';
@@ -24,6 +24,11 @@ class MonitorPage extends Component {
     this.context.flux.getActions('points').closeConnection();
   }
 
+  openSideBar() {
+
+  }
+
+  // TODO сделать MapWrapper для манипуляции пропсами карты и обработки FeatureClick
   render() {
 
     return (
@@ -48,11 +53,12 @@ class MonitorPage extends Component {
             center: store.getCurrentUser().getCompanyMapConfig().coordinates,
           }),
           geoObjects: store => ({
-            polys: store.getSelectedPolys()
+            polys: store.getSelectedPolys(),
+            selectedFeature: store.getSelectedFeature()
           })
         }}>
 
-          <Map/>
+          <MapWrapper/>
 
           <Sidebar/>
         </FluxComponent>

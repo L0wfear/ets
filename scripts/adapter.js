@@ -96,7 +96,6 @@ export function deleteJSON(url, data, type = 'form') {
 
 function checkResponse(url, response, body, method) {
   if (url.indexOf('login') === -1) {
-    const { flux } = window.__ETS_CONTAINER__;
     const usedUrl = url.slice(0, url.indexOf('?') > -1 ? url.indexOf('?') : url.length);
     let serviceName = usedUrl.split('/')[usedUrl.split('/').length-2];
 

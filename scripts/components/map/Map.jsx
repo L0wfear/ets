@@ -32,7 +32,8 @@ export default class OpenLayersMap extends Component {
     points: PropTypes.object,
     polys: PropTypes.object,
     showPolygons: PropTypes.bool,
-    showTrack: PropTypes.bool
+    showTrack: PropTypes.bool,
+    onFeatureClick: PropTypes.func
   }
 
   constructor(props, context) {
@@ -41,7 +42,9 @@ export default class OpenLayersMap extends Component {
 
     this.markers = {}; // container for markers on map
     this._handlers = null; // container for map event handlers
+    // TODO убрать взаимодействие со сторами из этого компонента
     this._pointsStore = this.props.flux.getStore('points');
+    this._geoObjectsStore = this.props.flux.getStore('geoObjects');
 
     this.viewportVisibleMarkers = {};
 
@@ -52,7 +55,7 @@ export default class OpenLayersMap extends Component {
       maxZoom: 13,
       projection: PROJECTION,
       extent: PROJECTION.getExtent()
-    })
+    });
 
     let renderFn = this.renderCanvas.bind(this);
     let canvasLayer = this.canvasLayer = new ol.layer.Image({
@@ -68,10 +71,11 @@ export default class OpenLayersMap extends Component {
           return renderFn(this.canvas, extent, pixelRatio);
         },
         ratio: 1
-      })
+      }),
+      zIndex: 9999
     });
 
-    canvasLayer.setZIndex(9999);
+    // canvasLayer.setZIndex(9999);
 
     let controls = []
     controls.push(new ol.control.Zoom({
@@ -118,7 +122,9 @@ export default class OpenLayersMap extends Component {
 
   onMouseMove(ev) {
 
+    let map = this.map;
     let coordinate = ev.coordinate;
+    let pixel = ev.pixel;
     let changeCursor = false;
 
     let markers = this.viewportVisibleMarkers;
@@ -141,8 +147,10 @@ export default class OpenLayersMap extends Component {
       }
     }
 
-    let el = this.map.getViewport();
-    el.style.cursor = changeCursor ? 'pointer' : '';
+    let hit = map.forEachFeatureAtPixel(pixel, (feature, layer) => true);
+
+    let el = map.getViewport();
+    el.style.cursor = changeCursor || hit ? 'pointer' : '';
   }
 
 
@@ -193,9 +201,14 @@ export default class OpenLayersMap extends Component {
     if (clickedMarker) {
       clickedMarker.onClick();
       store.handleSelectPoint(clickedMarker.point);
+      this._geoObjectsStore.handleSelectFeature(null);
       // прячем попап трэка
       this.hidePopup();
     }
+
+    map.forEachFeatureAtPixel(pixel, (feature, layer) =>  {
+      this.props.onFeatureClick(feature, ev, this);
+    });
   }
 
   hidePopup() {
@@ -206,7 +219,7 @@ export default class OpenLayersMap extends Component {
     let map = this.map;
 
     let vectorSource = new ol.source.Vector();
-    let styleFunction = polyStyles[polyState.SELECTABLE];
+    // let styleFunction = polyStyles[polyState.SELECTABLE];
 
     if (showPolygons) {
       _.each(polys, (poly, key) => {
@@ -215,13 +228,22 @@ export default class OpenLayersMap extends Component {
           name: poly.name,
           id: key,
           state: poly.state,
+          data: poly.data
         });
         if (poly.shape && poly.shape.type === 'LineString') {
           feature.setStyle(getVectorArrowStyle(feature));
         } else if (poly.shape && poly.shape.type !== 'Point') {
-          feature.setStyle(polyStyles['geoobject']);
+          if (poly.selected) {
+            feature.setStyle(polyStyles['geoobject-selected']);
+          } else {
+            feature.setStyle(polyStyles['geoobject']);
+          }
         } else { // Если точка
-          feature.setStyle(getPointStyle());
+          if (poly.selected) {
+            feature.setStyle(pointStyles['geoobject-selected']);
+          } else {
+            feature.setStyle(pointStyles['geoobject']);
+          }
         }
 
         vectorSource.addFeature(feature);
@@ -233,9 +255,9 @@ export default class OpenLayersMap extends Component {
     let polysLayerObject = {
       source: vectorSource,
     };
-    if (styleFunction) {
-      polysLayerObject.style = styleFunction;
-    }
+    // if (styleFunction) {
+    //   polysLayerObject.style = styleFunction;
+    // }
     let polysLayer = new ol.layer.Vector(polysLayerObject);
 
     POLYS_LAYER = polysLayer;
@@ -358,11 +380,17 @@ export default class OpenLayersMap extends Component {
     let markers = this.markers;
     let keys = Object.keys(markers);
 
+    function containsCoordinate(extent, coordinates) {
+      const x = coordinates[0];
+      const y = coordinates[1];
+      return extent[0] <= x && x <= extent[2] && extent[1] <= y && y <= extent[3];
+    }
+
     for (let i = 0, till = keys.length; i < till; i++) {
       let key = keys[i];
       let marker = markers[key];
 
-      if (this.containsCoordinate(bounds, marker.coords) && marker.isVisible()) {
+      if (containsCoordinate(bounds, marker.coords) && marker.isVisible()) {
         markersInBounds.push(marker);
       }
     }
@@ -370,23 +398,18 @@ export default class OpenLayersMap extends Component {
     return markersInBounds;
   }
 
-  containsCoordinate(extent, coordinates) {
-    const x = coordinates[0];
-    const y = coordinates[1];
-    return extent[0] <= x && x <= extent[2] && extent[1] <= y && y <= extent[3];
-  }
-
   componentWillReceiveProps(nextProps) {
     const hasPoints = nextProps.points !== undefined;
     const hasPolys = nextProps.polys !== undefined;
     const polysHasChanged = hasPolys && !_.isEqual(this.props.polys, nextProps.polys);
     const showPolygonsChanged = hasPolys && nextProps.showPolygons !== this.props.showPolygons;
+    const selectedFeatureChanged = !_.isEqual(this.props.selectedFeature, nextProps.selectedFeature);
 
     if (hasPoints) {
       this.updatePoints(nextProps.points);
     }
 
-    if (hasPolys && (polysHasChanged || showPolygonsChanged)) {
+    if (hasPolys && (polysHasChanged || showPolygonsChanged || selectedFeatureChanged)) {
       this.renderPolygons(nextProps.polys, nextProps.showPolygons);
     }
   }

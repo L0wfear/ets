@@ -14,6 +14,18 @@ export const GEOOBJECTS_TYPES_LABELS = {
   'ssp': 'ССП',
   'msp': 'МСП',
   'danger_zone': 'Особо опасные места',
+  'dangerZone': 'Особо опасное место',
   'carpool': 'Автобазы',
-  'fueling_water': 'Пункты заправки водой'
+  'fueling_water': 'Пункты заправки водой',
+  'fuelingWater': 'Пункт заправки водой'
+};
+
+export const GEOOBJECTS_TYPES_LABELS_SINGLE = {
+  'dt': 'ДТ',
+  'odh': 'ОДХ',
+  'ssp': 'Стационарный снегоплавильный пункт',
+  'msp': 'Мобильный снегоплавильный пункт',
+  'dangerZone': 'Особо опасное место',
+  'carpool': 'Автобаза',
+  'fuelingWaterStation': 'Пункт заправки водой'
 };

@@ -143,8 +143,9 @@ class MissionTemplatesJournal extends ElementsList {
   }
 
 	onFormHide(clearCheckedMissions) {
+		const { flux } = this.context;
     // снова подтягиваем все актуальные машины
-    window.__ETS_CONTAINER__.flux.getActions('objects').getCars();
+    flux.getActions('objects').getCars();
 		this.setState({
 			showForm: false,
 			selectedElement: null,

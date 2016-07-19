@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import { MenuItem, Navbar, Nav, NavItem, NavDropdown} from 'react-bootstrap';
+import { MenuItem, Navbar, Nav, NavItem, NavDropdown, Glyphicon} from 'react-bootstrap';
 import LoadingOverlay from './LoadingOverlay.jsx';
 
 export default class MainPage extends React.Component {
@@ -98,6 +98,7 @@ export default class MainPage extends React.Component {
 
           <NavItem active={path === '/routes-list'} href="#/routes-list">Маршруты</NavItem>
           <NavItem active={path === '/company-structure'} href="#/company-structure">Структура предприятия</NavItem>
+          <NavItem title="Администрирование" href="http://213.79.88.5/admin/"><Glyphicon glyph="list-alt"/></NavItem>
         </Nav>
 
         <Nav pullRight>

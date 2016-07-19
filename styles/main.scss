@@ -1770,6 +1770,7 @@ body {
 
 .app-toolbar-show-govnumber {
   padding: 1px 16px;
+  width: 175px;
 }
 
 .app-toolbar-show-geoobjects {
@@ -2077,7 +2078,7 @@ body {
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
   border-radius: 6px;
   top: 305px;
-  left: 10px;
+  left: 20px;
   z-index: 9999;
 
   button {

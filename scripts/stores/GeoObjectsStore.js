@@ -62,6 +62,7 @@ class GeoObjectsStore extends Store {
   handleSetSelectedPolysType(type) {
     if (type === null) {
       this.setState({selectedPolysTypes: []});
+      this.handleSelectFeature(null);
       return;
     }
     const { selectedPolysTypes } = this.state;

@@ -1,7 +1,7 @@
 {
-  "coverage": "4.77%",
+  "coverage": "4.93%",
   "expectCount": 649,
-  "actualCount": 31,
+  "actualCount": 32,
   "files": {
     "scripts/api/APIService.js": {
       "expectCount": 20,
@@ -257,10 +257,8 @@
     },
     "scripts/utils/decorators/index.js": {
       "expectCount": 1,
-      "actualCount": 0,
-      "undocumentLines": [
-        3
-      ]
+      "actualCount": 1,
+      "undocumentLines": []
     },
     "scripts/actions/FuelRateActions.js": {
       "expectCount": 12,

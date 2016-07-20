@@ -95,9 +95,4 @@ class DutyMissionTemplateFormWrap extends FormWrap {
 
 }
 
-DutyMissionTemplateFormWrap.contextTypes = {
-	flux: React.PropTypes.object,
-	setLoading: React.PropTypes.func,
-};
-
 export default DutyMissionTemplateFormWrap;

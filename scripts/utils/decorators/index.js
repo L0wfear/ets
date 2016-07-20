@@ -1,7 +1,11 @@
-import React from 'react';
+import { PropTypes } from 'react';
 
+/**
+ * Добавляет flux в contextTypes класса
+ * @param {Component} target - декорируемый класс
+ */
 export function FluxContext(target) {
-	target.contextTypes = {
-		flux: React.PropTypes.object,
-	};
+	target.contextTypes = Object.assign({}, target.contextTypes, {
+		flux: PropTypes.object,
+	});
 }

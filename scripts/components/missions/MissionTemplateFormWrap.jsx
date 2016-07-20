@@ -23,6 +23,7 @@ let validateMissionsCreationTemplate = (mission, errors) => {
 };
 
 class MissionFormWrap extends FormWrap {
+
 	constructor(props) {
 		super(props);
 
@@ -103,10 +104,5 @@ class MissionFormWrap extends FormWrap {
 	}
 
 }
-
-MissionFormWrap.contextTypes = {
-	flux: React.PropTypes.object,
-	setLoading: React.PropTypes.func,
-};
 
 export default MissionFormWrap;

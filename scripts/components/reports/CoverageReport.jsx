@@ -5,6 +5,7 @@ import { Button, Glyphicon, Row, Col, Input } from 'react-bootstrap';
 import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
 import PolyMap from '../map/PolyMap.jsx';
+import { FluxContext } from 'utils/decorators';
 import _ from 'lodash';
 
 
@@ -23,6 +24,7 @@ function getStatusLabel(s) {
 	}
 }
 
+@FluxContext
 class CoverageReport extends Component {
 
 	constructor(props) {
@@ -42,9 +44,10 @@ class CoverageReport extends Component {
 	}
 
 	async handleSubmit() {
-		let coverageReport = await this.context.flux.getActions('reports').getCoverageReport(this.state);
-		await this.state.geozone_type === 'ODH' ? this.context.flux.getActions('objects').getODHs() : this.context.flux.getActions('objects').getDTs();
-		await this.context.flux.getActions('geoObjects').getGeozones();
+		const { flux } = this.context;
+		let coverageReport = await flux.getActions('reports').getCoverageReport(this.state);
+		await this.state.geozone_type === 'ODH' ? flux.getActions('geoObjects').getODHs() : flux.getActions('geoObjects').getDTs();
+		await flux.getActions('geoObjects').getGeozones();
 		coverageReport = coverageReport.result.map((item, i) => {item.id = i; return item});
 		this.setState({coverageReport, checkedMissions: _.extend({}, coverageReport)})
 	}
@@ -113,10 +116,13 @@ class CoverageReport extends Component {
 					return o;
 				});
 
-			let checkedMissions = _.values(this.state.checkedMissions).map((item) => item.missions);
-			checkedMissions = _.flatten(checkedMissions);
-			checkedMissions = checkedMissions.map((item) => item.objects);
-			checkedMissions = _.flatten(checkedMissions);
+			let checkedMissions = _(this.state.checkedMissions)
+				.values()
+				.map((item) => item.missions)
+				.flatten(checkedMissions)
+				.map((item) => item.objects)
+				.flatten(checkedMissions)
+				.value();
 
 			object_list_used = object_list_used.filter((object) => checkedMissions.indexOf(object.id) > -1);
 
@@ -179,10 +185,6 @@ class CoverageReport extends Component {
 
 	}
 }
-
-CoverageReport.contextTypes = {
-	flux: React.PropTypes.object,
-};
 
 export default connectToStores(CoverageReport, ['reports', 'session', 'objects', 'routes', 'geoObjects']);
 

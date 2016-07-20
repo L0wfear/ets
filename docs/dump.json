@@ -17398,7 +17398,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import React from 'react';\n\nexport function FluxContext(target) {\n\ttarget.contextTypes = {\n\t\tflux: React.PropTypes.object,\n\t};\n}\n"
+    "content": "import { PropTypes } from 'react';\n\n/**\n * Добавляет flux в contextTypes класса\n * @param {Component} target - декорируемый класс\n */\nexport function FluxContext(target) {\n\ttarget.contextTypes = Object.assign({}, target.contextTypes, {\n\t\tflux: PropTypes.object,\n\t});\n}\n"
   },
   {
     "__docId__": 784,
@@ -17412,15 +17412,18 @@
     "export": true,
     "importPath": "ets-frontend/scripts/utils/decorators/index.js",
     "importStyle": "{FluxContext}",
-    "description": null,
-    "lineNumber": 3,
-    "undocument": true,
+    "description": "Добавляет flux в contextTypes класса",
+    "lineNumber": 7,
     "params": [
       {
-        "name": "target",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "Component"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "target",
+        "description": "декорируемый класс"
       }
     ],
     "generator": false

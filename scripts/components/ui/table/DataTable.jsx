@@ -45,6 +45,7 @@ class Table extends React.Component {
 	}
 
 	saveFilter(filterValues) {
+    console.log('SAVE FILTER');
     if (typeof this.props.onAllRowsChecked === 'function') {
       this.props.onAllRowsChecked(_.reduce(this.props.results, (cur, val) => {cur[val.id] = val; return cur;}, {}), false);
     }
@@ -247,9 +248,10 @@ class Table extends React.Component {
       let columnControlValues = JSON.parse(localStorage.getItem(this.props.columnControlStorageName)) || [];
       this.setState({columnControlValues});
     }
-    if (this.props.checked) {
-      this.globalCheckHandler()
-    }
+    // TODO этого здесь быть не должно, не вызываем this.props.onSomething в componentDidMount
+    // if (this.props.checked) {
+    //   this.globalCheckHandler()
+    // }
   }
 
   componentWillReceiveProps(props) {

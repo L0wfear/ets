@@ -332,26 +332,31 @@ class WaybillJournal extends ElementsList {
 
 		return (
 			<div className="ets-page-wrap">
-				<WaybillsTable data={waybillsList} onAllRowsChecked={this.checkAll.bind(this)} onRowChecked={this.checkWaybill.bind(this)} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} checked={this.state.checkedWaybills} selectField={'id'} filterValues={this.props.location.query} {...this.props}>
-					<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Создать ПЛ</Button>
-					<Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="search" /> Просмотреть</Button>
-					<Button bsSize="small" disabled={disabledCloseButton} onClick={this.showForm.bind(this)}><Glyphicon glyph="ok" /> Закрыть ПЛ</Button>
-					<Button bsSize="small" disabled={this.state.selectedElement === null && Object.keys(this.state.checkedWaybills).length === 0} onClick={this.removeCheckedElements.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
-					<ButtonToolbar style={{
-						marginLeft: "5px",
-						position: "relative",
-						bottom: "-11px",
-					}}>
-						<Dropdown id="dropdown-print" pullRight>
-							<Dropdown.Toggle noCaret bsSize="small">
-								<Glyphicon glyph="download-alt" />
-							</Dropdown.Toggle>
-							<Dropdown.Menu>
-								<MenuItem onClick={this.showPrintForm.bind(this, 1)}>Журнал путевых листов (ТМФ №8)</MenuItem>
-								<MenuItem onClick={this.showPrintForm.bind(this, 2)}>Отчет по выработке ТС</MenuItem>
-							</Dropdown.Menu>
-						</Dropdown>
-					</ButtonToolbar>
+				<WaybillsTable
+					data={waybillsList}
+					onAllRowsChecked={this.checkAll.bind(this)}
+					onRowChecked={this.checkWaybill.bind(this)}
+					onRowSelected={this.selectElement.bind(this)}
+					selected={this.state.selectedElement}
+					checked={this.state.checkedWaybills}
+					selectField={'id'}
+					filterValues={this.props.location.query}
+					{...this.props}>
+						<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Создать ПЛ</Button>
+						<Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="search" /> Просмотреть</Button>
+						<Button bsSize="small" disabled={disabledCloseButton} onClick={this.showForm.bind(this)}><Glyphicon glyph="ok" /> Закрыть ПЛ</Button>
+						<Button bsSize="small" disabled={this.state.selectedElement === null && Object.keys(this.state.checkedWaybills).length === 0} onClick={this.removeCheckedElements.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
+						<ButtonToolbar className="waybill-button-toolbar">
+							<Dropdown id="dropdown-print" pullRight>
+								<Dropdown.Toggle noCaret bsSize="small">
+									<Glyphicon glyph="download-alt" />
+								</Dropdown.Toggle>
+								<Dropdown.Menu>
+									<MenuItem onClick={this.showPrintForm.bind(this, 1)}>Журнал путевых листов (ТМФ №8)</MenuItem>
+									<MenuItem onClick={this.showPrintForm.bind(this, 2)}>Отчет по выработке ТС</MenuItem>
+								</Dropdown.Menu>
+							</Dropdown>
+						</ButtonToolbar>
 				</WaybillsTable>
 				<WaybillFormWrap
 						onFormHide={this.onFormHide.bind(this)}

@@ -11,6 +11,7 @@ import config from '../../config.js';
 import { notifications } from 'utils/notifications';
 import Taxes from './Taxes.jsx';
 import { getWarningNotification } from 'utils/notifications';
+import { FluxContext } from 'utils/decorators';
 
 let validateWaybill = (waybill, errors) => {
 	let waybillErrors = _.clone(errors);
@@ -142,6 +143,7 @@ function calculateWaybillMetersDiff(waybill, field, value) {
 	return waybill;
 }
 
+@FluxContext
 class WaybillFormWrap extends Component {
 	constructor(props) {
 		super(props);
@@ -452,10 +454,5 @@ class WaybillFormWrap extends Component {
 	}
 
 }
-
-WaybillFormWrap.contextTypes = {
-	flux: React.PropTypes.object,
-	setLoading: React.PropTypes.func,
-};
 
 export default WaybillFormWrap;

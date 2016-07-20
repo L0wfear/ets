@@ -209,7 +209,7 @@ class MissionTemplatesJournal extends ElementsList {
 	render() {
 
 		const { missionTemplatesList = [], noFilter = false, payload = {} } = this.props;
-		//_.each(missionTemplatesList, t => t.isChecked = false);
+		console.log(this.state.checkedMissions);
 
 		return (
 			<div className="ets-page-wrap">

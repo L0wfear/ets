@@ -17,18 +17,17 @@ class MonitorPage extends Component {
   componentDidMount() {
     const { flux } = this.context;
     flux.getActions('points').createConnection();
-    flux.getActions('geoObjects').getGeozoneByTypeWithGeometry('dt');
   }
 
   componentWillUnmount() {
-    this.context.flux.getActions('points').closeConnection();
+    const { flux } = this.context;
+    flux.getActions('points').closeConnection();
   }
 
   openSideBar() {
 
   }
 
-  // TODO сделать MapWrapper для манипуляции пропсами карты и обработки FeatureClick
   render() {
 
     return (

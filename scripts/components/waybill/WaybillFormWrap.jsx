@@ -123,6 +123,25 @@ let validateClosingWaybill = (waybill, errors) => {
 	return waybillErrors;
 };
 
+function calculateWaybillMetersDiff(waybill, field, value) {
+	// Для уже созданных ПЛ
+	if (waybill.status) {
+		// Если изменилось поле "Одометр.Возврат" то считаем "Одометр.Пробег"
+		if (field === 'odometr_end') {
+			waybill.odometr_diff = value ? parseFloat(waybill.odometr_end - waybill.odometr_start).toFixed(3) : null;
+		}
+		// Если изменилось поле "Моточасы.Возврат" то считаем "Моточасы.Пробег"
+		if (field === 'motohours_end') {
+			waybill.motohours_diff = value ? parseFloat(waybill.motohours_end - waybill.motohours_start).toFixed(3) : null;
+		}
+		// Если изменилось поле "Моточасы.Оборудование.Возврат" то считаем "Моточасы.Оборудование.пробег"
+		if (field === 'motohours_equip_end') {
+			waybill.motohours_equip_diff = value ? parseFloat(waybill.motohours_equip_end - waybill.motohours_equip_start).toFixed(3) : null;
+		}
+	}
+	return waybill;
+}
+
 class WaybillFormWrap extends Component {
 	constructor(props) {
 		super(props);
@@ -228,6 +247,7 @@ class WaybillFormWrap extends Component {
 		let equipmentFuelStart = formState.equipment_fuel_start ? parseFloat(formState.equipment_fuel_start) : 0;
 		let equipmentFuelGiven = formState.equipment_fuel_given ? parseFloat(formState.equipment_fuel_given) : 0;
 		let equipmentFuelTaxes = Taxes.calculateFinalResult(formState.equipment_tax_data);
+
 		if (!!formState.equipment_fuel) {
 			formState.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
 			formState.equipment_fuel_end = (equipmentFuelStart + equipmentFuelGiven - equipmentFuelTaxes).toFixed(3);
@@ -256,27 +276,26 @@ class WaybillFormWrap extends Component {
 		let formState = _.cloneDeep(this.state.formState);
 		formState[field] = value;
 
-		if (field === 'odometr_end' && formState.status) {
-			formState.odometr_diff = value ? parseFloat(formState.odometr_end - formState.odometr_start).toFixed(3) : null;
-		}
-		if (field === 'motohours_end' && formState.status) {
-			formState.motohours_diff = value ? parseFloat(formState.motohours_end - formState.motohours_start).toFixed(3) : null;
-		}
-		if (field === 'motohours_equip_end' && formState.status) {
-			formState.motohours_equip_diff = value ? parseFloat(formState.motohours_equip_end - formState.motohours_equip_start).toFixed(3) : null;
-		}
+		formState = calculateWaybillMetersDiff(formState, field, value);
 
+		// TODO при формировании FACT_VALUE считать diff - finalFactValue
 		if (formState.tax_data && formState.tax_data.length) {
-			if (field === 'odometr_end') {
-				_.last(formState.tax_data).FACT_VALUE = formState.odometr_diff > 0 ? formState.odometr_diff : null;
+			const lastTax = _.last(formState.tax_data);
+			if (field === 'odometr_end' && formState.odometr_diff > 0) {
+				lastTax.FACT_VALUE = formState.odometr_diff;
+				lastTax.RESULT = Taxes.getResult(lastTax);
 			}
 
-			if (field === 'motohours_end') {
-				_.last(formState.tax_data).FACT_VALUE = formState.motohours_diff > 0 ? formState.motohours_diff : null;
+			if (field === 'motohours_end' && formState.motohours_diff > 0) {
+				lastTax.FACT_VALUE = formState.motohours_diff;
+				lastTax.RESULT = Taxes.getResult(lastTax);
 			}
 
-			if (field === 'motohours_equip_end' && formState.equipment_tax_data && formState.equipment_tax_data.length) {
-				_.last(formState.equipment_tax_data).FACT_VALUE = formState.motohours_equip_diff > 0 ? formState.motohours_equip_diff : null;
+			if (field === 'motohours_equip_end' && formState.equipment_tax_data
+				&& formState.equipment_tax_data.length && formState.motohours_equip_diff > 0) {
+				const lastEquipmentTax = _.last(formState.equipment_tax_data);
+				lastEquipmentTax.FACT_VALUE = formState.motohours_equip_diff;
+				lastEquipmentTax.RESULT = Taxes.getResult(lastEquipmentTax);
 			}
 		}
 
@@ -287,17 +306,9 @@ class WaybillFormWrap extends Component {
 		let { formErrors } = this.state;
 		let formState = _.cloneDeep(this.state.formState);
 		let newState = {};
-		_.mapKeys(fields, (v, field) => {
-			formState[field] = v;
-			if (field === 'odometr_end' && formState.status) {
-				formState.odometr_diff = parseFloat(formState.odometr_end - formState.odometr_start).toFixed(3);
-			}
-			if (field === 'motohours_end' && formState.status) {
-				formState.motohours_diff = parseFloat(formState.motohours_end - formState.motohours_start).toFixed(3);
-			}
-			if (field === 'motohours_equip_end' && formState.status) {
-				formState.motohours_equip_diff = parseFloat(formState.motohours_equip_end - formState.motohours_equip_start).toFixed(3);
-			}
+		_.mapKeys(fields, (value, field) => {
+			formState[field] = value;
+			formState = calculateWaybillMetersDiff(formState, field, value);
 		});
 
 		this.handleFieldsChange(formState);

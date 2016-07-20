@@ -6,15 +6,21 @@ import Div from 'components/ui/Div.jsx';
 import { isEmpty } from 'utils/functions';
 import cx from 'classnames';
 
-let getResult = ({FACT_VALUE, fuel_correction_rate, FUEL_RATE}) => {
-  if (typeof FACT_VALUE === 'undefined') return 0;
-  return parseFloat(FUEL_RATE * fuel_correction_rate * FACT_VALUE).toFixed(3);
-}
-
+/**
+ * Компонент таксировки ТС
+ * @extends React.Component
+ */
 export default class Taxes extends Component {
 
   static propTypes = {
     type: React.PropTypes.string.isRequired
+  }
+
+  static getResult({FACT_VALUE, fuel_correction_rate, FUEL_RATE}) {
+    if (isEmpty(FACT_VALUE) || isEmpty(fuel_correction_rate) || isEmpty(FUEL_RATE)) {
+      return 0;
+    }
+    return parseFloat(FUEL_RATE * fuel_correction_rate * FACT_VALUE).toFixed(3);
   }
 
   static calculateFinalResult(data) {
@@ -107,6 +113,7 @@ export default class Taxes extends Component {
     const { tableData } = this.state;
     let current = tableData[index];
     current.FACT_VALUE = e.target.value;
+    current.RESULT = Taxes.getResult(current);
 
     this.setState({tableData});
     this.props.onChange(tableData);
@@ -117,7 +124,7 @@ export default class Taxes extends Component {
     tableData[index]['OPERATION'] = value;
     const fuelRateByOperation = _.find(fuelRates, r => r.operation_id === value) || {};
     tableData[index]['FUEL_RATE'] = fuelRateByOperation.rate_on_date || 0;
-    tableData[index]['RESULT'] = getResult(tableData[index]);
+    tableData[index]['RESULT'] = Taxes.getResult(tableData[index]);
 
     this.setState({tableData});
     this.props.onChange(tableData);
@@ -142,7 +149,9 @@ export default class Taxes extends Component {
   componentWillReceiveProps(props) {
     let { operations, fuelRates, taxes = this.state.tableData } = props;
     operations = operations.map( ({id, name}) => ({value: id, label: name}));
-    taxes.map((tax) => {tax['RESULT'] = getResult(tax); return tax});
+    taxes.map((tax) => {
+      tax['RESULT'] = Taxes.getResult(tax); return tax
+    });
     this.setState({operations, fuelRates, tableData: taxes});
   }
 

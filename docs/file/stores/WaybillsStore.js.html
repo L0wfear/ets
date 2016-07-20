@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">stores/WaybillsStore.js | ETS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-script.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-style.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/DashboardStore.js~DashboardStore.html">DashboardStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/EmployeesStore.js~EmployeeStore.html">EmployeeStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/FuelRatesStore.js~FuelRatesStore.html">FuelRatesStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/GeoObjectsStore.js~GeoObjectsStore.html">GeoObjectsStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/MissionsStore.js~MissionsStore.html">MissionsStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/NotificationsStore.js~NotificationsStore.html">NotificationsStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/ObjectsStore.js~ObjectsStore.html">ObjectsStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/ReportsStore.js~ReportsStore.html">ReportsStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/RoutesStore.js~RoutesStore.html">RoutesStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/SettingsStore.js~SettingsStore.html">SettingsStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/WaybillsStore.js~WaybillsStore.html">WaybillsStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultDutyMission">getDefaultDutyMission</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultDutyMissionTemplate">getDefaultDutyMissionTemplate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultDutyMissionsCreationTemplate">getDefaultDutyMissionsCreationTemplate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultMission">getDefaultMission</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultMissionTemplate">getDefaultMissionTemplate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultMissionsCreationTemplate">getDefaultMissionsCreationTemplate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultBill">getDefaultBill</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">stores/WaybillsStore.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Store } from &apos;flummox&apos;;
+import _ from &apos;lodash&apos;;
+import { getToday9am, getTomorrow9am} from &apos;utils/dates&apos;;
+
+class WaybillsStore extends Store {
+
+  constructor(flux) {
+    super();
+
+    const waybillsActions = flux.getActions(&apos;waybills&apos;);
+    this.register(waybillsActions.getWaybills, this.handleGetWaybills);
+    this.register(waybillsActions.deleteWaybill, this.handleGetWaybills);
+    // this.register(waybillsActions.updateWaybill, this.handleGetWaybills);
+    // this.register(waybillsActions.createWaybill, this.handleGetWaybills);
+
+    this.state = {
+      waybillsList: [],
+    };
+
+  }
+
+  handleGetWaybills(waybills) {
+    this.setState({waybillsList: waybills.result});
+  }
+
+}
+
+export default WaybillsStore;
+
+
+export function getDefaultBill() {
+	return {
+    status: null,
+    //responsible_person_id: null,
+    plan_departure_date: getToday9am(),
+    //fact_departure_date: vyezd_plan,
+    plan_arrival_date: getTomorrow9am(),
+    // fact_arrival_date: vozvr_plan,
+    driver_id: null,
+    car_id: &quot;&quot;,
+    fuel_type_id: 6,
+    fuel_start: &quot;&quot;,
+    equipment_fuel: false,
+    equipment_fuel_type_id: 6,
+    //fuel_to_give: null,
+    //fuel_given: &quot;&quot;,
+    //fuel_end: &quot;&quot;,
+		odometr_start: null,
+		//odometr_end: &quot;&quot;,
+		motohours_start: null,
+		//motohours_end: &quot;&quot;,
+		//motohours_equip_start: null,
+		//motohours_equip_end: &quot;&quot;,
+    mission_id_list: [],
+    company_id: JSON.parse(localStorage.getItem(&apos;current_user&apos;)).company_id,
+	}
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

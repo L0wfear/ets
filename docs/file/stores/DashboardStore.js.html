@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">stores/DashboardStore.js | ETS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-script.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-style.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/DashboardStore.js~DashboardStore.html">DashboardStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/EmployeesStore.js~EmployeeStore.html">EmployeeStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/FuelRatesStore.js~FuelRatesStore.html">FuelRatesStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/GeoObjectsStore.js~GeoObjectsStore.html">GeoObjectsStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/MissionsStore.js~MissionsStore.html">MissionsStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/NotificationsStore.js~NotificationsStore.html">NotificationsStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/ObjectsStore.js~ObjectsStore.html">ObjectsStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/ReportsStore.js~ReportsStore.html">ReportsStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/RoutesStore.js~RoutesStore.html">RoutesStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/SettingsStore.js~SettingsStore.html">SettingsStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/WaybillsStore.js~WaybillsStore.html">WaybillsStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultDutyMission">getDefaultDutyMission</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultDutyMissionTemplate">getDefaultDutyMissionTemplate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultDutyMissionsCreationTemplate">getDefaultDutyMissionsCreationTemplate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultMission">getDefaultMission</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultMissionTemplate">getDefaultMissionTemplate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultMissionsCreationTemplate">getDefaultMissionsCreationTemplate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultBill">getDefaultBill</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">stores/DashboardStore.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Store } from &apos;flummox&apos;;
+import _ from &apos;lodash&apos;;
+
+
+//`${key}=${c.filter[key].join(`&amp;${key}=`)}`
+
+const commonComponents = [
+  {
+    id: 1,
+    key: &apos;current_missions&apos;,
+    itemsTitle: &apos;&#x41A;&#x430;&#x440;&#x442;&#x43E;&#x447;&#x43A;&#x430; &#x437;&#x430;&#x434;&#x430;&#x43D;&#x438;&#x44F;&apos;
+  },
+  {
+    id: 2,
+    key: &apos;future_missions&apos;,
+  },
+  {
+    id: 3,
+    key: &apos;count_traveled_routes_by_current_operations&apos;,
+    itemsTitle: &apos;&#x420;&#x430;&#x441;&#x448;&#x438;&#x444;&#x440;&#x43E;&#x432;&#x43A;&#x430; &#x444;&#x430;&#x43A;&#x441;&#x43E;&#x433;&#x440;&#x430;&#x43C;&#x43C;&#x44B;&apos;
+  },
+  {
+    id: 6,
+    key: &apos;count_offline_cars&apos;,
+  },
+  {
+    id: 7,
+    key: &apos;car_in_work_on_current_missions&apos;,
+    itemsTitle: &apos;&#x413;&#x43E;&#x441;. &#x43D;&#x43E;&#x43C;&#x435;&#x440; &#x422;&#x421;&apos;
+  },
+  {
+    id: 9,
+    key: &apos;faxogramms&apos;,
+    itemsTitle: &apos;&#x420;&#x430;&#x441;&#x448;&#x438;&#x444;&#x440;&#x43E;&#x432;&#x43A;&#x430; &#x444;&#x430;&#x43A;&#x441;&#x43E;&#x433;&#x440;&#x430;&#x43C;&#x43C;&#x44B;&apos;
+  },
+  {
+    id: 13,
+    key: &apos;estimated_time&apos;,
+  }
+]
+
+const componentsByRole = {
+  master: [...commonComponents.filter(c =&gt; [3, 6, 7, 13].indexOf(c.id) === -1),
+    {
+      id: 4,
+      key: &apos;odh_not_covered_by_missions_of_current_shift&apos;,
+      itemsTitle: &apos;&#x421;&#x43F;&#x438;&#x441;&#x43E;&#x43A; &#x43E;&#x434;&#x445;&apos;
+    },
+    {
+      id: 5,
+      key: &apos;odh_not_covered_by_routes&apos;,
+    },
+    { //&#x432;&#x440;&#x435;&#x43C;&#x435;&#x43D;&#x43D;&#x43E; &#x43D;&#x435; &#x43F;&#x43E;&#x43A;&#x430;&#x437;&#x44B;&#x432;&#x430;&#x435;&#x43C;
+      id: 8,
+      key: &apos;car_in_work_overall&apos;,
+      //side: true,
+    },
+    // {
+    //   id: 11,
+    //   key: &apos;daily_missions_percent&apos;,
+    //   side: true,
+    // },
+    // {
+    //   id: 10,
+    //   key: &apos;count_waybill_closed&apos;,
+    //   side: true,
+    //   filter: {
+    //     status: [&apos;closed&apos;],
+    //     date_create: [moment().format(&apos;YYYY-MM-DD&apos;)],
+    //   }
+    // },
+    // {
+    //   id: 13,
+    //   key: &apos;estimated_time&apos;
+    // }
+  ],
+  dispatcher: [//...commonComponents,
+    // {
+    //   id: 15,
+    //   key: &apos;count_assigned_routes&apos;
+    // },
+    // {
+    //   id: 16,
+    //   key: &apos;released_waybill&apos;,
+    //   side: true,
+    // },
+    // {
+    //   id: 18,
+    //   key: &apos;count_closed_waybill_by_current_operations&apos;
+    // }
+    {
+      id: 19,
+      key: &apos;waybill_draft&apos;,
+      itemsTitle: &apos;&#x413;&#x43E;&#x441;. &#x43D;&#x43E;&#x43C;&#x435;&#x440; &#x422;&#x421;&apos;
+    },
+    {
+      id: 20,
+      key: &apos;waybill_active&apos;,
+      itemsTitle: &apos;&#x418;&#x43D;&#x444;&#x43E;&#x440;&#x43C;&#x430;&#x446;&#x438;&#x44F; &#x43E; &#x41F;&#x41B;&apos;
+    },
+    {
+      id: 21,
+      key: &apos;waybill_closed&apos;,
+      itemsTitle: &apos;&#x418;&#x43D;&#x444;&#x43E;&#x440;&#x43C;&#x430;&#x446;&#x438;&#x44F; &#x43E; &#x41F;&#x41B;&apos;
+    },
+    {
+      id: 22,
+      key: &apos;current_missions&apos;,
+      itemsTitle: &apos;&#x41A;&#x430;&#x440;&#x442;&#x43E;&#x447;&#x43A;&#x430; &#x437;&#x430;&#x434;&#x430;&#x43D;&#x438;&#x44F;&apos;
+    },
+    {
+      id: 24,
+      key: &apos;faxogramms&apos;,
+      itemsTitle: &apos;&#x420;&#x430;&#x441;&#x448;&#x438;&#x444;&#x440;&#x43E;&#x432;&#x43A;&#x430; &#x444;&#x430;&#x43A;&#x441;&#x43E;&#x433;&#x440;&#x430;&#x43C;&#x43C;&#x44B;&apos;
+    }
+  ]
+}
+
+const initialState = {
+  componentsIndex: {},
+  componentsSideIndex: {},
+  componentsList: [],
+  componentsSideList: [],
+};
+
+class DashboardStore extends Store {
+
+  constructor(flux) {
+    super();
+    this.flux = flux;
+
+    const dashboardActions = flux.getActions(&apos;dashboard&apos;);
+    this.register(dashboardActions.getDashboardComponent, this.handleGetDashboardComponent);
+    this.register(dashboardActions.getDashboardSideComponent, this.handleGetDashboardSideComponent);
+
+    this.state = _.cloneDeep(initialState);
+  }
+
+  handleGetDashboardComponent({key, component}) {
+    let { componentsList, componentsIndex } = this.state;
+    if (!component.result) return;
+    let componentSchema = _.find(this.getComponentsByRole(), c =&gt; c.key === key);
+    if (!componentSchema) return;
+    component.result.id = componentSchema.id;
+    component.result.key = key;
+    if (componentSchema.itemsTitle) {
+      component.result.itemsTitle = componentSchema.itemsTitle;
+    }
+    componentsIndex[key] = component.result;
+    componentsList = _(componentsIndex).toArray().sortBy(&apos;id&apos;).value();
+    this.setState({componentsList, componentsIndex});
+	}
+
+  handleGetDashboardSideComponent({key, component}) {
+    let { componentsSideList, componentsSideIndex } = this.state;
+    if (!component.result || typeof component.result === &apos;string&apos;) return;
+    let componentSchema = _.find(this.getComponentsByRole(), c =&gt; c.key === key);
+    if (!componentSchema) return;
+    component.result.id = componentSchema.id;
+    component.result.key = key;
+    componentsSideIndex[key] = component.result;
+    componentsSideList = _(componentsSideIndex).toArray().sortBy(&apos;id&apos;).value();
+    this.setState({componentsSideList, componentsSideIndex});
+  }
+
+  getComponentsByRole() {
+    let { role } = this.flux.getStore(&apos;session&apos;).getCurrentUser();
+    return componentsByRole[role];
+  }
+
+  resetState() {
+    this.setState(_.cloneDeep(initialState));
+  }
+
+}
+
+export default DashboardStore;
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

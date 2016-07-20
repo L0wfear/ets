@@ -5,54 +5,54 @@ import ReconnectingWebSocket from '../vendor/ReconnectingWebsocket.js';
 import _ from 'lodash';
 
 /**
- * Начальное состояние хранилища
- * @constant
- * @type {object}
- * @property {object|null} selected - выбранная точка
- * @property {object} points - индекс (объект по айдишникам) точек
- * @property {object} filter - настройки фильтрации точек
- * @property {array}  filter.status - выбранные для фильтрации статусы
- * @property {array}  filter.type - выбранные для фильтрации типы ТС
- * @property {array}  filter.owner - выбранные для фильтрации организации-владельцы ТС
- * @property {object} byStatus - количество точек со статусами
- * @property {object} byConnectionStatus - количество точек не на связи/на связи
- * @property {boolean} trackingMode - включен ли режим слежения за 1 точкой (= маркером, БНСО, ТС)
- * @property {boolean} showTrackingGradient - включено ли отображение цветов трека с градиентом
- * @property {boolean} isRenderPaused - включена ли приостановка рендеринга точек
- * @property {string|null} singleCarTrack - гос. номер ТС, если он есть то включается режим отображения только 1 точки
- * @property {array} singleCarTrackDates - даты для отображения трека по 1 БНСО
- */
-const initialState = {
-  selected: null,
-  points: {},
-  filter: {
-    status: statuses.map(s => s.id),
-    type: [],
-    owner: [],
-  },
-  byStatus: {
-    1: 0,
-    2: 0,
-    3: 0,
-    4: 0
-  },
-  byConnectionStatus: {
-    0: 0,
-    1: 0
-  },
-  trackingMode: false,
-  showTrackingGradient: false,
-  isRenderPaused: false,
-  singleCarTrack: null,
-  singleCarTrackDates: [],
-}
-
-/**
- * @classdesc Хранилище для объектов точек, отображаемых на карте
- * @class
- * @extends Store
+ * Хранилище для объектов точек, отображаемых на карте
+ * @extends {Store}
  */
 export default class PointsStore extends Store {
+
+  /**
+   * Начальное состояние хранилища
+   * @type {Object}
+   * @property {object|null} selected=null - выбранная точка
+   * @property {object} points={} - индекс (объект по айдишникам) точек
+   * @property {object} filter - настройки фильтрации точек
+   * @property {array}  filter.status - выбранные для фильтрации статусы
+   * @property {array}  filter.type - выбранные для фильтрации типы ТС
+   * @property {array}  filter.owner - выбранные для фильтрации организации-владельцы ТС
+   * @property {object} byStatus - количество точек со статусами
+   * @property {object} byConnectionStatus - количество точек не на связи/на связи
+   * @property {boolean} trackingMode=false - включен ли режим слежения за 1 точкой (= маркером, БНСО, ТС)
+   * @property {boolean} showTrackingGradient=false - включено ли отображение цветов трека с градиентом
+   * @property {boolean} isRenderPaused=false - включена ли приостановка рендеринга точек
+   * @property {string|null} singleCarTrack=null - гос. номер ТС, если он есть то включается режим отображения только 1 точки
+   * @property {array} singleCarTrackDates - даты для отображения трека по 1 БНСО
+   */
+  static get initialState() {
+    return {
+      selected: null,
+      points: {},
+      filter: {
+        status: statuses.map(s => s.id),
+        type: [],
+        owner: [],
+      },
+      byStatus: {
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0
+      },
+      byConnectionStatus: {
+        0: 0,
+        1: 0
+      },
+      trackingMode: false,
+      showTrackingGradient: false,
+      isRenderPaused: false,
+      singleCarTrack: null,
+      singleCarTrackDates: [],
+    }
+  }
 
   /**
    * Создает хранилище
@@ -75,12 +75,11 @@ export default class PointsStore extends Store {
 
     this.register(loginActions.login, this.handleLogin);
 
-    this.state = _.cloneDeep(initialState);
+    this.state = _.cloneDeep(PointsStore.initialState);
   }
 
   /**
-   * Устанавливает соединение по WebSocket и устанавливает передачу данных из
-   * ws в PointsStore~handleUpdatePoints{@link PointsStore#handleUpdatePoints}
+   * Устанавливает соединение по WebSocket и устанавливает передачу данных из ws в {@link PointsStore#handleUpdatePoints}
    * так же устанавливает обработку ивентов WebSocket
    * @method
    * @private
@@ -92,14 +91,14 @@ export default class PointsStore extends Store {
 
     this.ws.onmessage = ({data}) => {
       this.handleUpdatePoints(JSON.parse(data));
-    }
+    };
 
     this.ws.onclose = () => {
-      console.warn('WEBSOCKET - Потеряно соединение с WebSocket, пытаемся переподключиться');
-    }
+      // console.warn('WEBSOCKET - Потеряно соединение с WebSocket, пытаемся переподключиться');
+    };
     this.ws.onerror = () => {
-      console.error('WEBSOCKET - Ошибка WebSocket');
-    }
+      // console.error('WEBSOCKET - Ошибка WebSocket');
+    };
 
     this.unpauseRendering();
   }
@@ -114,7 +113,7 @@ export default class PointsStore extends Store {
       this.ws.close();
       this.ws = null;
     }
-    this.setState(_.cloneDeep(initialState));
+    this.setState(_.cloneDeep(PointsStore.initialState));
     this.pauseRendering();
   }
 
@@ -183,9 +182,9 @@ export default class PointsStore extends Store {
    * Расчет количества активных машин по статусам
    * @method
    * @param {object} points - точки
-   * @returns {object} dimensions - кол-во точек в разрезе статусов и активности
-   * @returns {object} dimensions.byStatus - кол-во точек в разрезе статусов
-   * @returns {object} dimensions.byConnectionStatus - кол-во точек в разрезе активности
+   * @return {object} dimensions - кол-во точек в разрезе статусов и активности
+   * @return {object} dimensions.byStatus - кол-во точек в разрезе статусов
+   * @return {object} dimensions.byConnectionStatus - кол-во точек в разрезе активности
    */
   countDimensions(points = this.state.points) {
 
@@ -270,7 +269,7 @@ export default class PointsStore extends Store {
   /**
    * Возвращает прошедшие фильтрацию точки
    * @method
-   * @returns {array} visiblePoints - прошедшие фильтрацию точки
+   * @return {array} visiblePoints - прошедшие фильтрацию точки
    */
   getVisiblePoints() {
     let visiblePoints = [];
@@ -291,7 +290,7 @@ export default class PointsStore extends Store {
    * @method
    * @public
    * @param {object} point - точка
-   * @returns
+   * @return {function} PointsStore~_isPointVisible
    */
   isPointVisible(point) {
     return this._isPointVisible(point, this.state.filter);
@@ -328,7 +327,7 @@ export default class PointsStore extends Store {
    * @private
    * @param {object} point - точка
    * @param {object} filter - заданная конфигурация фильтрации
-   * @returns {boolean} visible - доступность точки для отображения
+   * @return {boolean} visible - доступность точки для отображения
    */
   _isPointVisible(point, filter) {
     let visible = true;
@@ -385,7 +384,7 @@ export default class PointsStore extends Store {
    * Возвращает маркер по выбранной точке
    * @method
    * @public
-   * @returns {Marker|null} marker - маркер
+   * @return {Marker|null} marker - маркер
    */
   getSelectedMarker() {
     if (this.state.selected) {
@@ -399,7 +398,7 @@ export default class PointsStore extends Store {
    * Определяет выбрана ли какая-либо точка
    * @method
    * @public
-   * @returns {boolean} isSelected - выбрана ли какая-либо точка
+   * @return {boolean} isSelected - выбрана ли какая-либо точка
    */
   hasMarkerSelected() {
     return this.state.selected !== false && this.state.selected !== null;
@@ -409,7 +408,7 @@ export default class PointsStore extends Store {
    * Возвращает выбранную точку
    * @method
    * @public
-   * @returns {object|null} point - выбранная точка
+   * @return {?Object} point - выбранная точка
    */
   getSelectedPoint() {
     return this.state.selected;
@@ -441,7 +440,7 @@ export default class PointsStore extends Store {
    * Определяет включено ли обновление точек
    * @method
    * @public
-   * @returns {boolean} isRenderPaused - включено ли обновление точек
+   * @return {boolean} isRenderPaused - включено ли обновление точек
    */
   isRenderPaused() {
     return this.state.isRenderPaused;

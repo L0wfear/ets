@@ -116,7 +116,7 @@ class WaybillsActions extends Actions {
   /**
    * Создает ПЛ
    * @param {object} waybill - данные ПЛ
-   * @returns {promise} POST WaybillService
+   * @return {promise} POST WaybillService
    */
   createWaybill(waybill) {
     const payload = _.clone(waybill);

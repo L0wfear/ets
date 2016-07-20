@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">stores/MissionsStore.js | ETS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-script.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-style.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/DashboardStore.js~DashboardStore.html">DashboardStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/EmployeesStore.js~EmployeeStore.html">EmployeeStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/FuelRatesStore.js~FuelRatesStore.html">FuelRatesStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/GeoObjectsStore.js~GeoObjectsStore.html">GeoObjectsStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/MissionsStore.js~MissionsStore.html">MissionsStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/NotificationsStore.js~NotificationsStore.html">NotificationsStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/ObjectsStore.js~ObjectsStore.html">ObjectsStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/ReportsStore.js~ReportsStore.html">ReportsStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/RoutesStore.js~RoutesStore.html">RoutesStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/SettingsStore.js~SettingsStore.html">SettingsStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/stores/WaybillsStore.js~WaybillsStore.html">WaybillsStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultDutyMission">getDefaultDutyMission</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultDutyMissionTemplate">getDefaultDutyMissionTemplate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultDutyMissionsCreationTemplate">getDefaultDutyMissionsCreationTemplate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultMission">getDefaultMission</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultMissionTemplate">getDefaultMissionTemplate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultMissionsCreationTemplate">getDefaultMissionsCreationTemplate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultBill">getDefaultBill</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">stores/MissionsStore.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Store } from &apos;flummox&apos;;
+import _ from &apos;lodash&apos;;
+import { getToday9am, getTomorrow9am, getDatesByShift } from &apos;utils/dates&apos;;
+
+class MissionsStore extends Store {
+
+  constructor(flux) {
+    super();
+
+    const missionsActons = flux.getActions(&apos;missions&apos;);
+    this.register(missionsActons.getMissions, this.handleGetMissions);
+    this.register(missionsActons.getMissionsByCarAndDates, this.handleGetMissions);
+    this.register(missionsActons.createMission, this.handleGetMissions);
+    this.register(missionsActons.updateMission, this.handleGetMissions);
+    this.register(missionsActons.removeMission, this.handleGetMissions);
+    this.register(missionsActons.getMissionSources, this.handleGetMissionSources);
+    this.register(missionsActons.getMissionTemplates, this.handleGetMissionTemplates);
+    this.register(missionsActons.createMissionTemplate, this.handleGetMissionTemplates);
+    this.register(missionsActons.removeMissionTemplate, this.handleGetMissionTemplates);
+    this.register(missionsActons.updateMissionTemplate, this.handleGetMissionTemplates);
+    this.register(missionsActons.getMissionReports, this.handleGetMissionReports);
+    this.register(missionsActons.createMissionReport, this.handleGetMissionReports);
+    this.register(missionsActons.getMissionReportById, this.handleGetMissionReportById);
+    this.register(missionsActons.getMissionReportByODHs, this.handleGetMissionReportByODHs);
+    this.register(missionsActons.getMissionReportByPoints, this.handleGetMissionReportByPoints);
+    this.register(missionsActons.getMissionReportByDTs, this.handleGetMissionReportByDTs);
+    this.register(missionsActons.getDutyMissions, this.handleGetDutyMissions);
+    this.register(missionsActons.createDutyMission, this.handleGetDutyMissions);
+    this.register(missionsActons.updateDutyMission, this.handleGetDutyMissions);
+    this.register(missionsActons.removeDutyMission, this.handleGetDutyMissions);
+    this.register(missionsActons.getDutyMissionTemplates, this.handleGetDutyMissionTemplates);
+    this.register(missionsActons.createDutyMissionTemplate, this.handleGetDutyMissionTemplates);
+    this.register(missionsActons.updateDutyMissionTemplate, this.handleGetDutyMissionTemplates);
+    this.register(missionsActons.removeDutyMissionTemplate, this.handleGetDutyMissionTemplates);
+
+
+    this.state = {
+      missionsList: [],
+      missionSourcesList: [],
+      missionTemplatesList: [],
+      missionReportsList: [],
+      selectedReportData: [],
+      selectedReportDataODHS: [],
+      dutyMissionsList: [],
+      dutyMissionTemplatesList: [],
+    };
+
+  }
+
+  handleGetMissions(missions) {
+    this.setState({missionsList: missions.result});
+	}
+
+  handleGetMissionSources(missionSources) {
+    this.setState({missionSourcesList: missionSources.result});
+  }
+
+  handleGetMissionTemplates(missionTemplate) {
+    this.setState({missionTemplatesList: missionTemplate.result});
+  }
+
+  handleGetDutyMissions(dutyMissions) {
+    this.setState({dutyMissionsList: dutyMissions.result});
+  }
+
+  handleGetDutyMissionTemplates(dutyMissionTemplates) {
+    this.setState({dutyMissionTemplatesList: dutyMissionTemplates.result});
+  }
+
+  getMissionSourceById(id) {
+    return _.find(this.state.missionSourcesList, ms =&gt; ms.id === id) || {};
+  }
+
+  handleGetMissionReports(missionReports) {
+    this.setState({missionReportsList: missionReports.result});
+  }
+
+  handleGetMissionReportById(data) {
+    let selectedReportData = data.result[0].result.result.map((r,i) =&gt; {
+      r.index = i;
+      return r;
+    });
+    this.setState({selectedReportData});
+  }
+
+  handleGetMissionReportByODHs(index) {
+    const missionReport = this.state.selectedReportData;
+    this.setState({selectedReportDataODHS: missionReport[index].report_by_odh});
+  }
+
+  handleGetMissionReportByPoints(index) {
+    const missionReport = this.state.selectedReportData;
+    this.setState({selectedReportDataPoints: missionReport[index].report_by_point});
+  }
+
+  handleGetMissionReportByDTs(index) {
+    const missionReport = this.state.selectedReportData;
+    this.setState({selectedReportDataDTS: missionReport[index].report_by_dt});
+  }
+
+}
+
+export default MissionsStore;
+
+export function getDefaultMission(date_start = getToday9am(), date_end = getTomorrow9am()) {
+  return {
+    description: &quot;&quot;,
+    date_start,
+    date_end,
+    mission_source_id: 3,
+    passes_count: 1,
+  };
+}
+
+export function getDefaultDutyMission() {
+  //let dates = getDatesByShift();
+  return {
+    status: &apos;not_assigned&apos;,
+    plan_date_start: getToday9am(),
+    plan_date_end: getTomorrow9am(),
+    fact_date_start: getToday9am(),
+    fact_date_end: getTomorrow9am(),
+    brigade_employee_id_list: [],
+    comment: &apos;&apos;,
+    car_mission_id: 0,
+  };
+}
+
+export function getDefaultDutyMissionTemplate() {
+  return {
+  };
+}
+
+export function getDefaultDutyMissionsCreationTemplate() {
+  return {
+    date_start: getToday9am(),
+    date_end: getTomorrow9am(),
+    mission_source_id: 4
+  };
+}
+
+export function getDefaultMissionTemplate() {
+  return {
+    description: &quot;&quot;,
+    passes_count: 1
+  };
+}
+
+export function getDefaultMissionsCreationTemplate() {
+  return {
+    date_start: getToday9am(),
+    date_end: getTomorrow9am(),
+    mission_source_id: 4,
+    passes_count: 1
+  };
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

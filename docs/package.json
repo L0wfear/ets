@@ -23,6 +23,7 @@
     "griddle-react": "git://github.com/amorphousxd/griddle-ets.git",
     "history": "^1.17.0",
     "imports-loader": "^0.6.4",
+    "jsdoc": "^3.4.0",
     "lodash": "^4.13.1",
     "moment": "^2.10.6",
     "node-sass": "^3.2.0",
@@ -88,7 +89,7 @@
     "dev:test": "STAND=second NODE_ENV=development PORT=3000 node server.js",
     "dev:study": "STAND=secondstudy NODE_ENV=development PORT=3000 node server.js",
     "lint": "eslint -c .eslintrc scripts",
-    "esdoc": "esdoc -c esdoc.json"
+    "jsdoc": "jsdoc"
   },
   "engines": {
     "node": ">=5.1.0",

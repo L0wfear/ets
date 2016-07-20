@@ -13,7 +13,7 @@ const COLORS_ZOOM_THRESHOLD = 8;
  * получение цвета линии трэка
  * в зависимости от скорости
  * @param speed
- * @returns color string
+ * @return color string
  */
 export function getTrackColor(speed, type_id, opacity = 1) {
   /*
@@ -36,7 +36,7 @@ export function getTrackColor(speed, type_id, opacity = 1) {
    * преобразовывает hex цвет в rgba с нужной прозрачностью
    * @param hex
    * @param opacity
-   * @returns {*}
+   * @return {*}
    */
   function hexToRgba(hex, opacity) {
     let shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;

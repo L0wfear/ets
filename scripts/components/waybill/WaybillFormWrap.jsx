@@ -307,7 +307,7 @@ class WaybillFormWrap extends Component {
 	 * Выдача (печать) Путевого листа
 	 * @param {object} event
 	 * @param {number 1|2} print_form_type - Идентификатор печатной формы
-	 * @returns {undefined}
+	 * @return {undefined}
 	 */
   handlePrint(event, print_form_type = 1) {
 		const { formState } = this.state;
@@ -329,7 +329,7 @@ class WaybillFormWrap extends Component {
 	 * Отправка формы ПЛ
 	 * @param {object} state - содержимое формы
 	 * @param {function} callback - функция, вызываемая после отправки
-	 * @returns {undefined}
+	 * @return {undefined}
 	 */
 	async handleFormSubmit(state = this.state.formState, callback) {
 		let formState = _.cloneDeep(state);

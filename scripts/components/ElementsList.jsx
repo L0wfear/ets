@@ -1,15 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { FluxContext } from 'utils/decorators';
-
+import { ButtonCreate, ButtonRead, ButtonDelete } from './ui/buttons/CRUD.jsx';
+import { isEmpty } from 'utils/functions';
 
 /**
-* Базовый класс для наследования таблиц с формами
-* @extends React.Component
-*/
+ * Базовый класс для отображения таблиц и привязанных к ним форм (модальных окон)
+ * используется для наследования
+ * @extends React.Component
+ */
 @FluxContext
 class ElementsList extends React.Component {
 
+  /**
+   * Создает компонент
+   */
   constructor(props) {
     super(props);
 
@@ -19,19 +24,40 @@ class ElementsList extends React.Component {
       selectedElement: null,
     };
 
+    this.selectField = this.constructor.selectField || 'id';
+    this.mainListName = this.constructor.listName || undefined;
+
+    this.tablePropsFunctions = [
+      this.getBasicProps.bind(this),
+      this.getSelectedProps.bind(this),
+      this.getAdditionalProps.bind(this)
+    ];
+
     this.clicks = 0;
   }
 
-  init() {
+  /**
+   * Дополнительная инициализация после componentDidMount
+   * может быть переопределена в дочерних классах
+   */
+  init() {}
 
-  }
-
-  onDoubleClick() {
-    this.setState({ showForm: true });
-  }
-
+  /**
+   * Выбирает элемент
+   * в случае вызова метода чаще, чем раз в 300мсек, открывает форму с выбранным
+   * элементом
+   */
   selectElement({props}) {
-    const id = !props || !props.data ? null : props.data.id || props.data[this.selectField];
+
+    const DOUBLECLICK_TIMEOUT = 300;
+    function onDoubleClick() {
+      return this.setState({
+        showForm: true
+      });
+    }
+
+    // TODO реализовать вызов ошибки в случае пустого айдишника
+    const id = props && props.data ? props.data[this.selectField] : null;
 
     if (props.fromKey) {
       let selectedElement = _.find(this.state.elementsList, el => el.id ? el.id === id : el[this.selectField] === id);
@@ -47,16 +73,20 @@ class ElementsList extends React.Component {
       let selectedElement = _.find(this.state.elementsList, el => el.id ? el.id === id : el[this.selectField] === id);
       this.setState({ selectedElement });
       setTimeout(() => {
+        // В случае если за DOUBLECLICK_TIMEOUT (мс) кликнули по одному и тому же элементу больше 1 раза
         if (this.clicks !== 1) {
-          if (this.state.selectedElement && id === (this.state.selectedElement.id || this.state.selectedElement[this.selectField]) ) {
-            this.onDoubleClick();
+          if (this.state.selectedElement && id === this.state.selectedElement[this.selectField]) {
+            onDoubleClick.call(this);
           }
         }
         this.clicks = 0;
-      }, 300);
+      }, DOUBLECLICK_TIMEOUT);
     }
   }
 
+  /**
+   * Обнуляет выбранный элемент и открывает форму для создания нового
+   */
   createElement() {
     this.setState({
       showForm: true,
@@ -64,12 +94,18 @@ class ElementsList extends React.Component {
     });
   }
 
+  /**
+   * Открывает форму
+   */
   showForm() {
     this.setState({
       showForm: true
     });
   }
 
+  /**
+   * Закрывает форму и обнуляет выбранный элемент
+   */
   onFormHide() {
     this.setState({
       showForm: false,
@@ -77,14 +113,21 @@ class ElementsList extends React.Component {
     });
   }
 
+  /**
+   * Вызывает диалог подтверждения удаления выбранного элемента и в случае подтверждения удаляет выбранный элемент
+   * метод не будет исполняться в случае отсутствия выбранного элемента и не
+   * определенной в классе-наследнике функции this.removeElementAction
+   */
   removeElement() {
-    if (typeof this.removeElementAction !== 'function') return;
+    if (typeof this.removeElementAction !== 'function' || this.state.selectedElement === null) {
+      return;
+    }
 
     confirmDialog({
       title: 'Внимание',
       body: 'Вы уверены, что хотите удалить выбранный элемент?'
     })
-    .then(() => this.removeElementAction(this.state.selectedElement.id || this.state.selectedElement[this.selectField]))
+    .then(() => this.removeElementAction(this.state.selectedElement[this.selectField]))
     .catch(() => {});
   }
 
@@ -126,9 +169,174 @@ class ElementsList extends React.Component {
     }
   }
 
-  render() {
+  checkDisabledDelete() {
+    return this.additionalCheckDisabledDelete() && this.state.selectedElement === null && _.keys(this.state.checkedElements).length === 0;
+  }
+
+  additionalCheckDisabledDelete() {
+    return true;
+  }
+
+  checkDisabledRead() {
+    return this.state.selectedElement === null;
+  }
+
+  /**
+   * Определяет и возвращает массив кнопок для CRUD операций
+   * @return {Component[]} Buttons - массив кнопок
+   */
+  getButtons() {
+    // Операции, заданные в статической переменной operations класса-наследника
+    const operations = this.constructor.operations || [];
+    const entity = this.constructor.entity;
+    const buttons = [];
+    if (operations.indexOf('CREATE') > 0) {
+      buttons.push(
+        <ButtonCreate key={buttons.length}
+          onClick={this.createElement.bind(this)}
+          permissions={[`${entity}.create`]}/>
+      );
+    }
+    if (operations.indexOf('READ') > 0) {
+      buttons.push(
+        <ButtonRead key={buttons.length}
+          onClick={this.showForm.bind(this)}
+          disabled={this.checkDisabledRead()}
+          permissions={[`${entity}.read`]}/>
+      );
+    }
+    if (operations.indexOf('DELETE') > 0) {
+      buttons.push(
+        <ButtonDelete key={buttons.length}
+          onClick={this.removeElement.bind(this)}
+          disabled={this.checkDisabledDelete()}
+          permissions={[`${entity}.delete`]}/>
+      );
+    }
+    return buttons;
+  }
+
+  /**
+   * Получение дополнительных кнопок, помимо кнопок для CRUD операций
+   * метод для переопределения в классе-наследнике
+   */
+  getAdditionalButtons() {
     return <div/>;
   }
+
+  /**
+   * Получение props, связанных с выбором элементов
+   * @return {object} selectableTableProps - свойства
+   */
+  getSelectedProps() {
+    return {
+      onRowSelected: this.selectElement.bind(this),
+      selected: this.state.selectedElement,
+      selectField: this.selectField
+    };
+  }
+
+  /**
+   * Получение props, которые всегда передаются в таблицу
+   * @return {object} basicProps - свойства, передающиеся в таблицу всегда
+   */
+  getBasicProps() {
+    const listName = this.constructor.listName;
+    let basicProps = {
+      data: this.props[listName]
+    };
+    if (this.props.location && this.props.location.query) {
+      basicProps = {
+        ...basicProps,
+        filterValues: this.props.location.query
+      };
+    }
+    return basicProps;
+  }
+
+  /**
+   * Метод для переопределения в дочерних компонентах
+   * используется для передачи дополнительных свойств в компонент таблицы
+   */
+  getAdditionalProps() {
+    return {};
+  }
+
+  /**
+   * Получение всех props, которые будут переданы в компонент таблицы
+   * @return {object} tableProps - свойства
+   */
+  getTableProps() {
+    return Object.assign({},
+      ...this.tablePropsFunctions.map(f => f())
+    );
+  }
+
+  /**
+   * Возвращает компонент таблицы с переданными туда props
+   * возвращает null, если класс-наследник не использует tableComponent
+   * @return {Component} TableComponent - компонент таблицы
+   */
+  getTable() {
+    const TableComponent = this.constructor.tableComponent;
+
+    if (!TableComponent) {
+      return <div/>;
+    }
+
+    return (
+      <TableComponent {...this.getTableProps()} {...this.props}>
+        {this.getButtons()}
+        {this.getAdditionalButtons()}
+      </TableComponent>
+    );
+  }
+
+  /**
+   * Возвращает компонент формы с переданными туда props
+   * возвращает null, если класс-наследник не испольует formComponent
+   * @return {Component} FormComponent - компонент формы
+   */
+  getForm() {
+    const FormComponent = this.constructor.formComponent;
+
+    if (!FormComponent) {
+      return <div/>;
+    }
+
+    return (
+      <FormComponent
+        onFormHide={this.onFormHide.bind(this)}
+        showForm={this.state.showForm}
+        element={this.state.selectedElement}/>
+    );
+  }
+
+  /**
+   * Метод для переопределения в классах-наследниках
+   * метод должен возвращать {FormWrap[]} - одну или несколько дополнительных
+   * форм, которые помимо основной будут использоваться в компоненте
+   */
+  getAdditionalForms() {
+    return <div/>;
+  }
+
+  /**
+   * React render
+   */
+  render() {
+    const table = this.getTable();
+    const form = this.getForm();
+    const additionalForms = this.getAdditionalForms();
+
+		return (
+			<div className="ets-page-wrap">
+        {table}
+        {form}
+        {additionalForms}
+			</div>
+		);
+	}
 
 }
 

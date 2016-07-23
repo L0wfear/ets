@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import connectToStores from 'flummox/connect';
 import Table from 'components/ui/table/DataTable.jsx';
 import ElementsList from 'components/ElementsList.jsx';
@@ -86,8 +86,10 @@ let MissionReportByODHTable = (props) => {
     route_check_value: (meta) => <div>{ meta.data + ' ' + meta.rowData.route_check_unit }</div>,
 	};
 
-	if (props.noFilter) {
-		tableMeta.cols = tableMeta.cols.filter(c => c.name !== 'left_percentage' && c.name !== 'v_avg_max' && c.name !== 'traveled_percentage' && c.name !== 'route_check_unit');
+	if (props.renderOnly) {
+		const hiddenFields = ['left_percentage', 'v_avg_max',
+			'traveled_percentage', 'route_check_unit'];
+		tableMeta.cols = tableMeta.cols.filter(c => hiddenFields.indexOf(c.name) === -1);
 		delete renderers.left_percentage;
 		delete renderers.traveled_percentage;
     renderers.left = (data) => <div>
@@ -114,6 +116,11 @@ let MissionReportByODHTable = (props) => {
 
 class MissionReportByODH extends ElementsList {
 
+	static propTypes = {
+		renderOnly: PropTypes.bool,
+		onElementChange: PropTypes.func
+	}
+
 	constructor(props) {
 		super(props);
 
@@ -122,7 +129,7 @@ class MissionReportByODH extends ElementsList {
 	}
 
 	async componentDidMount() {
-		if (!this.props.noFilter) {
+		if (!this.props.renderOnly) {
 			await this.context.flux.getActions('missions').getMissionReportById(this.props.routeParams.id);
 			this.context.flux.getActions('missions').getMissionReportByODHs(this.props.routeParams.index);
 		}
@@ -135,9 +142,11 @@ class MissionReportByODH extends ElementsList {
 	}
 
 	render() {
+		const { renderOnly = false } = this.props;
+
 		return (
 			<div className="ets-page-wrap">
-				<MissionReportByODHTable onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={this.selectField} data={this.props.selectedReportDataODHS || []} {...this.props}>
+				<MissionReportByODHTable noHeader={renderOnly} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={this.selectField} data={this.props.selectedReportDataODHS || []} {...this.props}>
 				</MissionReportByODHTable>
 			</div>
 		);

@@ -1,4 +1,5 @@
 @import './utils.scss';
+@import './waybill.scss';
 
 $colorLink: #0081d6;
 $colorGreen: #6a9e56;
@@ -2791,6 +2792,9 @@ div.none {
 .width60 {
   width: 60px !important;
 }
+.width25 {
+  width: 25px !important;
+}
 .width80 {
   width: 80px !important;
 }
@@ -3521,4 +3525,8 @@ div.none {
   .glyphicon {
     font-size: 32px;
   }
+}
+
+.btn-toolbar {
+  margin-left: 5px !important;
 }

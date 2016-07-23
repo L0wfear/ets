@@ -171,7 +171,7 @@ class CoverageReport extends Component {
 						</Col>
 						<Col md={5}>
 							<ObjectsCoverReportTable
-									noFilter={true}
+									noHeader={true}
 									data={this.state.coverageReport}
 									checked={this.state.checkedMissions}
 									onRowChecked={this.checkMission.bind(this)}
@@ -209,10 +209,7 @@ let tableMeta = {
 let ObjectsCoverReportTable = (props) => {
 
 	const renderers = {
-		isChecked: ({data}) => {
-			console.dir(data);
-		 return <input type="checkbox" />;
-		}
+		isChecked: ({data}) => <input type="checkbox"/>
 	};
 
 	return <Table

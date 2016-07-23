@@ -106,7 +106,7 @@ export default class Taxes extends Component {
       selectedOperation: null,
       operations: [],
       fuelRates: [],
-    }
+    };
   }
 
   handleFactValueChange(index, e) {

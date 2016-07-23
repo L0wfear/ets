@@ -1,7 +1,26 @@
+/**
+ * Вспомогательные функции
+ * @module utils/functions
+ */
+
 export function isNotNull(value) {
   return typeof value !== 'undefined' && value !== null;
 }
 
+/**
+ * Проверяет значение на "пустоту"
+ * "Пустым" считается значение undefined, null и пустая строка
+ * @example
+ * // true
+ * isEmpty('');
+ * @example
+ * // true
+ * isEmpty({}.a)
+ * @example
+ * // true
+ * isEmpty(null)
+ * @return {boolean} isEmpty - пyстое ли значение
+ */
 export function isEmpty(value) {
   if (!isNotNull(value)) return true;
   if (typeof value === 'string' && value.length === 0) return true;

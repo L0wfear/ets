@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import connectToStores from 'flummox/connect';
 import Table from 'components/ui/table/DataTable.jsx';
 
@@ -40,6 +40,11 @@ let MissionReportByPointsTable = (props) => {
 
 class MissionReportByPoints extends Component {
 
+	static propTypes = {
+		renderOnly: PropTypes.bool,
+		onElementChange: PropTypes.func
+	}
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -47,7 +52,7 @@ class MissionReportByPoints extends Component {
 	}
 
 	async componentDidMount() {
-		if (!this.props.noFilter) {
+		if (!this.props.renderOnly) {
 			await this.context.flux.getActions('missions').getMissionReportById(this.props.routeParams.id);
 			this.context.flux.getActions('missions').getMissionReportByPoints(this.props.routeParams.index);
 		}
@@ -59,9 +64,11 @@ class MissionReportByPoints extends Component {
 	}
 
 	render() {
+		const { renderOnly = false } = this.props;
+
 		return (
 			<div className="ets-page-wrap">
-				<MissionReportByPointsTable onRowSelected={this.selectElement.bind(this)} data={this.props.selectedReportDataPoints || []} {...this.props} >
+				<MissionReportByPointsTable noHeader={renderOnly} onRowSelected={this.selectElement.bind(this)} data={this.props.selectedReportDataPoints || []} {...this.props} >
 				</MissionReportByPointsTable>
 			</div>
 		);

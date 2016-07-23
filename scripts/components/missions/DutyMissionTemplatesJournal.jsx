@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import connectToStores from 'flummox/connect';
 import { Button, Glyphicon } from 'react-bootstrap';
 import Table from 'components/ui/table/DataTable.jsx';
 import DutyMissionTemplateFormWrap from './DutyMissionTemplateFormWrap.jsx';
 import ElementsList from 'components/ElementsList.jsx';
 import moment from 'moment';
 import cx from 'classnames';
+import { connectToStores } from 'utils/decorators';
 
 let getTableMeta = (props) => {
 
@@ -64,7 +64,8 @@ let DutyMissionsTable = (props) => {
 									{...props}/>
 }
 
-class DutyMissionTemplatesJournal extends ElementsList {
+@connectToStores(['missions', 'objects', 'employees', 'routes'])
+export default class DutyMissionTemplatesJournal extends ElementsList {
 
 	constructor(props, context) {
 		super(props);
@@ -135,11 +136,11 @@ class DutyMissionTemplatesJournal extends ElementsList {
 
 	render() {
 
-		const { dutyMissionTemplatesList = [], noFilter = false } = this.props;
+		const { dutyMissionTemplatesList = [] } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
-				<DutyMissionsTable noFilter={noFilter} data={dutyMissionTemplatesList} onAllRowsChecked={this.checkAll.bind(this)} onRowChecked={this.checkDutyMission.bind(this)} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} checked={this.state.checkedDutyMissions} selectField={'id'} {...this.props}>
+				<DutyMissionsTable data={dutyMissionTemplatesList} onAllRowsChecked={this.checkAll.bind(this)} onRowChecked={this.checkDutyMission.bind(this)} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} checked={this.state.checkedDutyMissions} selectField={'id'} {...this.props}>
 					<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Создать шаблон задания</Button>
 					<Button bsSize="small" onClick={this.createDutyMissions.bind(this)} disabled={Object.keys(this.state.checkedDutyMissions).length === 0}>Сформировать наряд-задание</Button>
 					<Button bsSize="small" onClick={this.showDutyMission.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="search" /> Просмотреть</Button>
@@ -155,5 +156,3 @@ class DutyMissionTemplatesJournal extends ElementsList {
 		);
 	}
 }
-
-export default connectToStores(DutyMissionTemplatesJournal, ['missions', 'objects', 'employees', 'routes']);

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import connectToStores from 'flummox/connect';
-import { Button, Glyphicon } from 'react-bootstrap';
+import { Button, Glyphicon, ButtonToolbar } from 'react-bootstrap';
 import Table from 'components/ui/table/DataTable.jsx';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 import { getFormattedDateTime } from 'utils/dates';
@@ -8,11 +7,11 @@ import { datePickerFunction } from 'utils/labelFunctions';
 import MissionFormWrap from './MissionFormWrap.jsx';
 import MissionRejectForm from './MissionRejectForm.jsx';
 import MissionInfoFormWrap from '../dashboard/MissionInfoFormWrap.jsx';
-import ElementsList from 'components/ElementsList.jsx';
-import moment from 'moment';
+import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { saveData } from 'utils/functions';
 import cx from 'classnames';
 import { getWarningNotification } from 'utils/notifications';
+import { connectToStores, elementsList } from 'utils/decorators';
 import _ from 'lodash';
 
 function getStatusLabel(s) {
@@ -132,7 +131,7 @@ let getTableMeta = (props) => {
 				}
 			},
 			{
-	      name: 'map_view',
+	      name: 'id',
 	      caption: 'Показать на карте',
 				filter: false,
 				cssClassName: 'map-view'
@@ -154,8 +153,8 @@ let MissionsTable = (props) => {
       isChecked: ({data}) => {
         console.dir(data);
        return <input type="checkbox" />;
-		 },
-			map_view: (meta) => {
+		 	},
+			id: (meta) => {
 				if (meta.rowData.status === 'not_assigned') return <div>Нет данных</div>;
 					return <div>
 						<span onClick={() => props.mapView(meta.data)}>
@@ -175,31 +174,33 @@ let MissionsTable = (props) => {
 				{...props}/>
 }
 
-export class MissionsJournal extends ElementsList {
+@connectToStores(['missions', 'objects', 'employees', 'routes'])
+@elementsList({
+	entity: 'mission',
+	listName: 'missionsList',
+	tableComponent: MissionsTable,
+	operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE']
+})
+export default class MissionsJournal extends CheckableElementsList {
 
 	constructor(props, context) {
 		super(props);
 
     this.removeElementAction = context.flux.getActions('missions').removeMission;
-    this.mainListName = 'missionsList';
 		this.removeDisabled = () => {
-      if (Object.keys(this.state.checkedMissions).length !== 0) return false;
+      if (Object.keys(this.state.checkedElements).length !== 0) return false;
 
       if (this.state.selectedElement === null) {
         return true;
-      }
-      else {
-        return this.state.selectedElement && this.state.selectedElement.status !== 'not_assigned';
+      } else {
+        return this.state.selectedElement.status !== 'not_assigned';
       }
     };
 
-    this.state = {
-      selectedElement: null,
-      checkedMissions: {},
-			showForm: false,
+		this.state = Object.assign(this.state, {
 			showMissionRejectForm: false,
 			showMissionInfoForm: false,
-    };
+    });
 	}
 
 	componentDidMount() {
@@ -208,22 +209,19 @@ export class MissionsJournal extends ElementsList {
 		flux.getActions('missions').getMissions();
 	}
 
-  stateChangeCallback() {
-    if (typeof this.props.onListStateChange === 'function') {
-      this.props.onListStateChange(this.state);
-    }
-  }
-
   checkDisabled() {
-    if (Object.keys(this.state.checkedMissions).length !== 0) return false;
+    if (Object.keys(this.state.checkedElements).length !== 0) return false;
 
     if (this.state.selectedElement === null) {
       return true;
-    }
-    else {
+    } else {
       return this.state.selectedElement.status !== 'assigned';
     }
   }
+
+	additionalCheckDisabledDelete() {
+		return this.state.selectedElement && this.state.selectedElement.status !== 'not_assigned';
+	}
 
 	completeMission() {
 		let mission = _.cloneDeep(this.state.selectedElement);
@@ -235,44 +233,27 @@ export class MissionsJournal extends ElementsList {
 		this.setState({showMissionRejectForm: true});
 	}
 
-  checkMission(id, state) {
-    const missions = _.cloneDeep(this.state.checkedMissions);
-    if (state) {
-      missions[parseInt(id, 10)] = _.find(this.props.missionsList, w => w.id === parseInt(id, 10));
-    } else {
-      delete missions[id];
-    }
-    this.setState({checkedMissions: missions}, this.stateChangeCallback.bind(this));
-  }
-
-  checkAll(rows, state) {
-    let checkedMissions = _.cloneDeep(this.state.checkedMissions);
-    checkedMissions = state ? rows : {};
-
-    this.setState({checkedMissions}, this.stateChangeCallback.bind(this));
-  }
-
-  completeCheckedMissions() {
+  completecheckedElements() {
 		let error = false;
-    if (Object.keys(this.state.checkedMissions).length !== 0) {
-      _.forEach(this.state.checkedMissions, (mission) => {
+    if (Object.keys(this.state.checkedElements).length !== 0) {
+      _.forEach(this.state.checkedElements, (mission) => {
         if (mission.status === 'assigned') {
           let updatedMission = _.cloneDeep(mission);
           updatedMission.status = 'complete';
           this.context.flux.getActions('missions').updateMission(updatedMission);
         } else error = true;
       });
-      this.setState({checkedMissions: {}});
+      this.setState({checkedElements: {}});
       if (error) global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Отметить как "Выполненые" можно только назначенные задания!'));
     } else {
       this.completeMission();
     }
   }
 
-  rejectCheckedMissions() {
+  rejectcheckedElements() {
 		let error = false;
-    if (Object.keys(this.state.checkedMissions).length !== 0) {
-      _.forEach(this.state.checkedMissions, (mission) => {
+    if (Object.keys(this.state.checkedElements).length !== 0) {
+      _.forEach(this.state.checkedElements, (mission) => {
         if (mission.status === 'assigned') {
           console.log('mission', mission);
           let reason = prompt(`Введите причину для задания №${mission.number}`, '');
@@ -284,7 +265,7 @@ export class MissionsJournal extends ElementsList {
           }
         } else error = true;
       });
-      this.setState({checkedMissions: {}});
+      this.setState({checkedElements: {}});
       if (error) global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Отметить как "Невыполненые" можно только назначенные задания!'));
     }
     else {
@@ -292,34 +273,34 @@ export class MissionsJournal extends ElementsList {
     }
   }
 
-  removeCheckedElements() {
-    if (typeof this.removeElementAction !== 'function') return;
-
-    if (Object.keys(this.state.checkedMissions).length !== 0) {
-      if (!confirm('Вы уверены, что хотите удалить выбранные элементы?')) return;
-
-      let isNotDeleted = false;
-
-      _.forEach(this.state.checkedMissions, (mission) => {
-        if (mission.status === 'not_assigned') {
-          this.removeElementAction(mission.id);
-        } else {
-					isNotDeleted = true;
-				}
-      });
-
-      if (isNotDeleted) {
-        global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Удалились только задания со статусом "Не назначено"!'));
-      }
-			this.setState({
-				checkedMissions: {},
-				selectedElement: null,
-			});
-
-    } else {
-      this.removeElement();
-    }
-  }
+  // removeCheckedElements() {
+  //   if (typeof this.removeElementAction !== 'function') return;
+	//
+  //   if (Object.keys(this.state.checkedElements).length !== 0) {
+  //     if (!confirm('Вы уверены, что хотите удалить выбранные элементы?')) return;
+	//
+  //     let isNotDeleted = false;
+	//
+  //     _.forEach(this.state.checkedElements, (mission) => {
+  //       if (mission.status === 'not_assigned') {
+  //         this.removeElementAction(mission.id);
+  //       } else {
+	// 				isNotDeleted = true;
+	// 			}
+  //     });
+	//
+  //     if (isNotDeleted) {
+  //       global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Удалились только задания со статусом "Не назначено"!'));
+  //     }
+	// 		this.setState({
+	// 			checkedElements: {},
+	// 			selectedElement: null,
+	// 		});
+	//
+  //   } else {
+  //     this.removeElement();
+  //   }
+  // }
 
 	handleSubmit() {
 		const { flux } = this.context;
@@ -336,29 +317,9 @@ export class MissionsJournal extends ElementsList {
 		this.setState({mission: mission.result[0], showMissionInfoForm: true});
 	}
 
-	render() {
-		const { missionsList = [] } = this.props;
-		missionsList.map((item) => {item.map_view = item.id; return item});
-
+	getForm() {
 		return (
-			<div className="ets-page-wrap">
-				<MissionsTable
-						data={missionsList}
-						onAllRowsChecked={this.checkAll.bind(this)}
-						onRowChecked={this.checkMission.bind(this)}
-						onRowSelected={this.selectElement.bind(this)}
-						selected={this.state.selectedElement}
-						checked={this.state.checkedMissions}
-						selectField={'id'}
-						mapView={this.mapView.bind(this)}
-						{...this.props}>
-					<Button bsSize="small" onClick={this.completeCheckedMissions.bind(this)} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</Button>
-					<Button bsSize="small" onClick={this.rejectCheckedMissions.bind(this)} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</Button>
-					<Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Создать задание</Button>
-					<Button bsSize="small" onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="search" /> Просмотреть</Button>
-					<Button bsSize="small" disabled={this.removeDisabled()} onClick={this.removeCheckedElements.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
-					<Button bsSize="small" onClick={this.handleSubmit.bind(this)}><Glyphicon glyph="download-alt" /></Button>
-				</MissionsTable>
+			<div>
 				<MissionFormWrap onFormHide={this.onFormHide.bind(this)}
 						showForm={this.state.showForm}
 						element={this.state.selectedElement}
@@ -372,8 +333,23 @@ export class MissionsJournal extends ElementsList {
 						showForm={this.state.showMissionInfoForm}
 						element={this.state.mission} />
 			</div>
-		);
+		)
 	}
-}
 
-export default connectToStores(MissionsJournal, ['missions', 'objects', 'employees', 'routes']);
+	getAdditionalButtons() {
+		return (
+			<ButtonToolbar>
+				<Button bsSize="small" onClick={this.completecheckedElements.bind(this)} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</Button>
+				<Button bsSize="small" onClick={this.rejectcheckedElements.bind(this)} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</Button>
+				<Button bsSize="small" onClick={this.handleSubmit.bind(this)}><Glyphicon glyph="download-alt" /></Button>
+			</ButtonToolbar>
+		)
+	}
+
+	getAdditionalProps() {
+		return {
+			mapView: this.mapView.bind(this)
+		}
+	}
+	
+}

@@ -212,10 +212,16 @@ class FaxogrammDirectory extends ElementsList {
 	        <Row>
 						<h4 style={{marginLeft: 20, fontWeight: 'bold'}}>Расшифровка факсограммы</h4>
 	          <Col md={8}>
-							<FaxogrammOperationInfoTable noFilter={true} data={faxogramm.technical_operations || []}/>
+							<FaxogrammOperationInfoTable
+								noHeader={true}
+								preventNoDataMessage={true}
+								data={faxogramm.technical_operations || []}/>
 	          </Col>
 	          <Col md={4}>
-							<FaxogrammInfoTable noFilter={true} data={faxogrammInfoData}/>
+							<FaxogrammInfoTable
+								noHeader={true}
+								preventNoDataMessage={true}
+								data={faxogrammInfoData}/>
 	          </Col>
 	        </Row>
 				</Div>

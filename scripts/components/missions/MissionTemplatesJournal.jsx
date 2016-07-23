@@ -208,12 +208,11 @@ class MissionTemplatesJournal extends ElementsList {
 
 	render() {
 
-		const { missionTemplatesList = [], noFilter = false, payload = {} } = this.props;
-		console.log(this.state.checkedMissions);
+		const { missionTemplatesList = [], renderOnly = false, payload = {} } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
-				<MissionsTable noFilter={noFilter}
+				<MissionsTable noHeader={renderOnly}
 					data={missionTemplatesList}
 					onAllRowsChecked={this.checkAll.bind(this)}
 					onRowChecked={this.checkMission.bind(this)}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
 import ColumnControl from './ColumnControl.jsx'
 import ClickOutHandler from 'react-onclickout';
@@ -8,11 +8,102 @@ import Griddle from 'griddle-react';
 import Div from '../Div.jsx';
 import moment from 'moment';
 import _ from 'lodash';
-import update from 'react-addons-update';
 import cx from 'classnames';
 import { isEmpty } from 'utils/functions';
 
-class Table extends React.Component {
+export default class Table extends React.Component {
+
+  /**
+   * Свойства компонента
+   * @type {Object}
+   * @property {Object[]} results - данные
+   */
+  static get propTypes() {
+    return {
+      results: PropTypes.array,
+      checked: PropTypes.object,
+      isHierarchical: PropTypes.bool,
+      renderers: PropTypes.object,
+      className: PropTypes.string,
+
+      onAllRowsChecked: PropTypes.func,
+      onRowChecked: PropTypes.func,
+      onRowSelected: PropTypes.func,
+      onRefresh: PropTypes.func,
+      selected: PropTypes.object,
+      selectField: PropTypes.string,
+
+      initialSort: PropTypes.string,
+      initialSortAscending: PropTypes.bool,
+
+      children: PropTypes.node,
+
+      enumerated: PropTypes.bool,
+      refreshable: PropTypes.bool,
+      multiSelection: PropTypes.bool,
+      serverPagination: PropTypes.bool,
+      noDataMessage: PropTypes.string,
+
+      noFilter: PropTypes.bool,
+      noTitle: PropTypes.bool,
+      noHeader: PropTypes.bool,
+      preventNoDataMessage: PropTypes.bool,
+      enableSort: PropTypes.bool,
+
+      title: PropTypes.string,
+
+      tableMeta: PropTypes.object,
+
+      columnControl: PropTypes.bool,
+      // TODO реализовать обработку вне
+      onColumnControlChange: PropTypes.func,
+      // TODO перенести на более высокий уровень абстракции
+      columnControlStorageName: PropTypes.string
+    };
+  }
+
+  static get defaultProps() {
+    return {
+      results: [],
+      checked: {},
+      isHierarchical: false,
+      renderers: {},
+      className: '',
+      title: '',
+
+      onAllRowsChecked: () => {},
+      onRowChecked: () => {},
+      onRowSelected: () => {},
+      onRefresh: () => {},
+
+      selected: null,
+      selectField: 'id',
+
+      initialSort: 'id',
+      initialSortAscending: true,
+
+      enableSort: true,
+
+      enumerated: true,
+      refreshable: false,
+      multiSelection: false,
+      serverPagination: false,
+      noDataMessage: 'Нет данных',
+      preventNoDataMessage: false,
+
+      noFilter: false,
+      noHeader: false,
+      noTitle: false,
+
+      tableMeta: {},
+
+      columnControl: false,
+      // TODO реализовать обработку вне
+      onColumnControlChange: () => {},
+      // TODO перенести на более высокий уровень абстракции
+      columnControlStorageName: 'ets-storage'
+    }
+  }
 
   constructor(props) {
     super(props);
@@ -103,6 +194,30 @@ class Table extends React.Component {
   }
 
   initializeMetadata(tableMetaCols = [], renderers = {}) {
+    const { multiSelection, enumerated } = this.props;
+    const initialArray = [];
+
+    if (multiSelection) {
+      initialArray.push({
+        columnName: 'isChecked',
+        displayName: <input id="checkedColumn" type="checkbox" onChange={this.globalCheckHandler.bind(this)}></input>,
+        sortable: false,
+        cssClassName: 'width25 pointer text-center',
+        customComponent: (props) => {
+          const id = props.rowData.id;
+          return <div><input type="checkbox" checked={this.props.checked[id]} onChange={this.handleRowCheck.bind(this, id)}></input></div>
+        },
+      });
+    }
+
+    if (enumerated && !this.state.isHierarchical) {
+      initialArray.push({
+        columnName: 'rowNumber',
+        displayName: '№',
+        cssClassName: 'width60',
+        filter: false
+      });
+    }
 
   	const metadata = _.reduce(tableMetaCols, (cur, col, i) => {
 
@@ -125,16 +240,7 @@ class Table extends React.Component {
 
   		cur.push(metaObject);
   		return cur;
-  	}, this.props.multiSelection ? [{
-      columnName: 'isChecked',
-      displayName: <input id="checkedColumn" type="checkbox" onChange={this.globalCheckHandler.bind(this)}></input>,
-      sortable: false,
-      cssClassName: this.props.enumeratedCss || 'width60 text-center',
-      customComponent: (props) => {
-        const id = props.rowData.id;
-        return <div><input type="checkbox" checked={this.props.checked[id]} onChange={this.handleRowCheck.bind(this, id)}></input></div>
-      },
-    }] : []);
+  	}, initialArray);
 
   	return metadata;
   }
@@ -298,7 +404,7 @@ class Table extends React.Component {
     if (keyCode === 40) {
       direction = +1;
       e.preventDefault();
- 		}
+    }
  		if (keyCode === 38) {
       direction = -1;
       e.preventDefault();
@@ -315,86 +421,78 @@ class Table extends React.Component {
   }
 
   render() {
-    const { tableMeta, enumeratedCss = 'width60', renderers, onRowSelected, selected,
-      selectField, checked = {}, title = '', multiSelection = false, noFilter,
-      enumerated = true, enableSort = true, noDataMessage } = this.props;
+    const { tableMeta, renderers, onRowSelected, selected,
+      selectField, checked, title, noTitle, multiSelection, noFilter,
+      enumerated, enableSort, noDataMessage, className, noHeader,
+      refreshable, columnControl } = this.props;
     const { initialSort, initialSortAscending, columnControlValues } = this.state;
 
     let tableMetaCols = _.cloneDeep(tableMeta.cols);
-    let tableCols = tableMetaCols.filter(c => c.display !== false).filter(c => columnControlValues.indexOf(c.name) === -1).map(c => c.name);
     let data = _.cloneDeep(this.props.results);
 
     let results = this.processTableData(data, tableCols, selected, selectField, onRowSelected);
 
-    if (enumerated === true && !this.state.isHierarchical) {
-      tableCols = ['rowNumber', ...tableCols];
-      tableMetaCols = [{
-        name: 'rowNumber',
-        caption: '№',
-        cssClassName: enumeratedCss,
-        filter: false
-      }, ...tableMetaCols];
-    }
-
-    if (multiSelection) {
-      tableCols = ['isChecked', ...tableCols];
-    }
-
     const columnMetadata = this.initializeMetadata(tableMetaCols, renderers);
+    const tableCols = columnMetadata.map(m => m.columnName).filter(c => columnControlValues.indexOf(c) === -1);
 		const rowMetadata = this.initializeRowMetadata();
+    const tableClassName = cx('data-table', className);
 
     return (
-      <Div className="data-table">
-        <Div className="some-header" hidden={noFilter}>{title}
+      <Div className={tableClassName}>
+        <Div className="some-header" hidden={noHeader}>{noTitle ? '' : title}
           <div className="waybills-buttons">
-            {this.props.columnControl ? <ClickOutHandler onClickOut={this.closeColumnControl.bind(this)}>
-              <ColumnControl
+            {columnControl &&
+              <ClickOutHandler onClickOut={this.closeColumnControl.bind(this)}>
+                <ColumnControl
                   show={this.state.columnControlModalIsOpen}
                   onChange={this.saveColumnControl.bind(this)}
                   onClick={this.toggleColumnControl.bind(this)}
                   values={this.state.columnControlValues}
                   options={tableMetaCols.filter(el => el.display !== false)}/>
-            </ClickOutHandler> : ''}
-            <ClickOutHandler onClickOut={this.closeFilter.bind(this)}>
-              <Filter direction={'left'}
-                  show={this.state.filterModalIsOpen}
-                  onSubmit={this.saveFilter.bind(this)}
-                  onClick={this.toggleFilter.bind(this)}
-                  onHide={this.closeFilter.bind(this)}
-                  active={_.keys(this.state.filterValues).length}
-                  values={this.state.filterValues}
-                  options={tableMetaCols.filter(el => el.filter !== false)}
-                  tableData={this.props.results}
-                  disabled={this.props.isHierarchical}
-                  active={_.keys(this.state.filterValues).length}
-                  className="filter-wrap"/>
-            </ClickOutHandler>
-            {!!this.props.refreshable ? <Button
+              </ClickOutHandler>
+            }
+            {!noFilter &&
+              <ClickOutHandler onClickOut={this.closeFilter.bind(this)}>
+                <Filter direction={'left'}
+                    show={this.state.filterModalIsOpen}
+                    onSubmit={this.saveFilter.bind(this)}
+                    onClick={this.toggleFilter.bind(this)}
+                    onHide={this.closeFilter.bind(this)}
+                    active={_.keys(this.state.filterValues).length}
+                    values={this.state.filterValues}
+                    options={tableMetaCols.filter(el => el.filter !== false)}
+                    tableData={this.props.results}
+                    disabled={this.props.isHierarchical}
+                    active={_.keys(this.state.filterValues).length}
+                    className="filter-wrap"/>
+              </ClickOutHandler>
+            }
+            {refreshable &&
+              <Button
                 bsSize="small"
                 onClick={this.props.onRefresh}>
-              <Glyphicon glyph="refresh" />
-            </Button> : ''}
+                  <Glyphicon glyph="refresh" />
+              </Button>
+            }
             {this.props.children}
           </div>
         </Div>
         <Griddle key={'griddle'}
-            results={results}
-            initialSort={initialSort}
-            initialSortAscending={initialSortAscending}
-            columnMetadata={columnMetadata}
-            columns={tableCols}
-            resultsPerPage={15}
-            enableSort={enableSort}
-            useCustomPagerComponent={true}
-            externalChangeSort={this.handleChangeSort.bind(this)}
-            customPagerComponent={this.props.serverPagination ? <Div/> : Paginator}
-            onRowClick={onRowSelected}
-            rowMetadata={rowMetadata}
-            onKeyPress={this.handleKeyPress.bind(this)}
-            noDataMessage={noDataMessage ? noDataMessage : noFilter ? '' : 'Нет данных'}/>
+          results={results}
+          enableSort={enableSort}
+          initialSort={initialSort}
+          initialSortAscending={initialSortAscending}
+          columnMetadata={columnMetadata}
+          columns={tableCols}
+          resultsPerPage={15}
+          useCustomPagerComponent={true}
+          externalChangeSort={this.handleChangeSort.bind(this)}
+          customPagerComponent={this.props.serverPagination ? <Div/> : Paginator}
+          onRowClick={onRowSelected}
+          rowMetadata={rowMetadata}
+          onKeyPress={this.handleKeyPress.bind(this)}
+          noDataMessage={noDataMessage ? noDataMessage : noFilter ? '' : 'Нет данных'}/>
       </Div>
     );
   }
 }
-
-export default Table;

@@ -33,7 +33,7 @@ class FaxogrammMissionsForm extends Form {
 	      <Modal.Body>
 					<MissionTemplatesJournal
 							payload={payload}
-							noFilter={true}
+							renderOnly={true}
 							onListStateChange={this.handleChange.bind(this, 'missionJournalState')} />
 	      </Modal.Body>
 
@@ -42,7 +42,7 @@ class FaxogrammMissionsForm extends Form {
             <label>Создать черновик ПЛ / Добавить в существующий</label>
             <Input type="checkbox" value={state.assign_to_waybill} onClick={this.handleChange.bind(this, 'assign_to_waybill', !!!state.assign_to_waybill)}/>
           </Div>
-	      	<Button disabled={!state.missionJournalState || !_.keys(state.missionJournalState.checkedMissions).length} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+	      	<Button disabled={!state.missionJournalState || !_.keys(state.missionJournalState.checkedElements).length} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
 	      </Modal.Footer>
 
 			</Modal>

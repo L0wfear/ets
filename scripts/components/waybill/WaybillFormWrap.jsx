@@ -13,6 +13,9 @@ import Taxes from './Taxes.jsx';
 import { getWarningNotification } from 'utils/notifications';
 import { FluxContext } from 'utils/decorators';
 
+/**
+ * TODO это конец
+ */
 let validateWaybill = (waybill, errors) => {
 	let waybillErrors = _.clone(errors);
 
@@ -330,8 +333,8 @@ class WaybillFormWrap extends Component {
 		let currentWaybillId = formState.id;
 
 		let callback = (createdWaybillId) => {
-			console.log('printing waybill', URL);
 			URL += createdWaybillId ?  createdWaybillId : currentWaybillId;
+			console.log('printing waybill', URL);
 			URL += `&token=${token}`;
 			window.location = URL;
 		};
@@ -347,7 +350,7 @@ class WaybillFormWrap extends Component {
 	async handleFormSubmit(state = this.state.formState, callback) {
 		let formState = _.cloneDeep(state);
 		let waybillStatus = formState.status;
-		const { flux, setLoading } = this.context;
+		const { flux } = this.context;
 
 		if (!!!waybillStatus) { // если создаем ПЛ
 			if (typeof callback === 'function') {

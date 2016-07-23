@@ -31,6 +31,14 @@ window.__ETS_CONTAINER__ = {
 
 class App extends Component {
 
+  static get childContextTypes() {
+    return {
+      flux: React.PropTypes.object,
+      loadData: React.PropTypes.func,
+      setLoading: React.PropTypes.func,
+    }
+  }
+
   getChildContext() {
     return {
       flux: flux,
@@ -68,6 +76,7 @@ class App extends Component {
               return global.NOTIFICATION_SYSTEM._addNotification(loginErrorNotification);
             }
             global.NOTIFICATION_SYSTEM._addNotification(getErrorNotification(error));
+            console.error(error);
           })
   }
 
@@ -80,16 +89,11 @@ class App extends Component {
   }
 }
 
-App.childContextTypes = {
-  flux: React.PropTypes.object,
-  loadData: React.PropTypes.func,
-  setLoading: React.PropTypes.func,
-};
-
 function requireAuth(nextState, replaceState) {
   if (!flux.getStore('session').isLoggedIn() || !flux.getStore('session').getCurrentUser().role) {
     console.warn('USER IS NOT LOGGED IN');
-    replaceState({ nextPathname: nextState.location.pathname }, '/login')
+    replaceState({ nextPathname: nextState.location.pathname }, '/login');
+    return;
   }
 }
 

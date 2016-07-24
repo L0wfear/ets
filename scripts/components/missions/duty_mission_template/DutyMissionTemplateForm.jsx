@@ -3,11 +3,11 @@ import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
-import RouteInfo from '../route/RouteInfo.jsx';
-import RouteFormWrap from '../route/RouteFormWrap.jsx';
-import ODHList from '../route/ODHList.jsx';
+import RouteInfo from '../../route/RouteInfo.jsx';
+import RouteFormWrap from '../../route/RouteFormWrap.jsx';
+import ODHList from '../../route/ODHList.jsx';
 import { isEmpty } from 'utils/functions';
-import { DutyMissionForm } from './DutyMissionForm.jsx';
+import { DutyMissionForm } from '../duty_mission/DutyMissionForm.jsx';
 
 class MissionTemplateForm extends DutyMissionForm {
 
@@ -24,8 +24,7 @@ class MissionTemplateForm extends DutyMissionForm {
 		const { technicalOperationsList = [], routesList = [] } = this.state;
 
     const TECH_OPERATIONS = technicalOperationsList.map(({id, name}) => ({value: id, label: name}));
-    const MISSION_SOURCES = missionSourcesList.map(({id, name}) => ({value: id, label: name}));
-    let ROUTES = routesList.map(({id, name}) => ({value: id, label: name}));
+    const ROUTES = routesList.map(({id, name}) => ({value: id, label: name}));
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`}));
 
     console.log('form state is ', state);

@@ -27,12 +27,6 @@ class ElementsList extends React.Component {
     this.selectField = this.constructor.selectField || 'id';
     this.mainListName = this.constructor.listName || undefined;
 
-    this.tablePropsFunctions = [
-      this.getBasicProps.bind(this),
-      this.getSelectedProps.bind(this),
-      this.getAdditionalProps.bind(this)
-    ];
-
     this.clicks = 0;
   }
 
@@ -170,11 +164,7 @@ class ElementsList extends React.Component {
   }
 
   checkDisabledDelete() {
-    return this.additionalCheckDisabledDelete() && this.state.selectedElement === null && _.keys(this.state.checkedElements).length === 0;
-  }
-
-  additionalCheckDisabledDelete() {
-    return true;
+    return this.state.selectedElement === null;
   }
 
   checkDisabledRead() {
@@ -214,14 +204,6 @@ class ElementsList extends React.Component {
       );
     }
     return buttons;
-  }
-
-  /**
-   * Получение дополнительных кнопок, помимо кнопок для CRUD операций
-   * метод для переопределения в классе-наследнике
-   */
-  getAdditionalButtons() {
-    return <div/>;
   }
 
   /**
@@ -268,7 +250,9 @@ class ElementsList extends React.Component {
    */
   getTableProps() {
     return Object.assign({},
-      ...this.tablePropsFunctions.map(f => f())
+      this.getBasicProps(),
+      this.getSelectedProps(),
+      this.getAdditionalProps()
     );
   }
 
@@ -287,7 +271,6 @@ class ElementsList extends React.Component {
     return (
       <TableComponent {...this.getTableProps()} {...this.props}>
         {this.getButtons()}
-        {this.getAdditionalButtons()}
       </TableComponent>
     );
   }
@@ -297,28 +280,21 @@ class ElementsList extends React.Component {
    * возвращает null, если класс-наследник не испольует formComponent
    * @return {Component} FormComponent - компонент формы
    */
-  getForm() {
+  getForms() {
     const FormComponent = this.constructor.formComponent;
+    const forms = [];
 
     if (!FormComponent) {
-      return <div/>;
+      return forms;
     }
 
-    return (
-      <FormComponent
-        onFormHide={this.onFormHide.bind(this)}
-        showForm={this.state.showForm}
-        element={this.state.selectedElement}/>
-    );
-  }
+    forms.push(<FormComponent
+      key={forms.length}
+      onFormHide={this.onFormHide.bind(this)}
+      showForm={this.state.showForm}
+      element={this.state.selectedElement}/>)
 
-  /**
-   * Метод для переопределения в классах-наследниках
-   * метод должен возвращать {FormWrap[]} - одну или несколько дополнительных
-   * форм, которые помимо основной будут использоваться в компоненте
-   */
-  getAdditionalForms() {
-    return <div/>;
+    return forms;
   }
 
   /**
@@ -326,14 +302,12 @@ class ElementsList extends React.Component {
    */
   render() {
     const table = this.getTable();
-    const form = this.getForm();
-    const additionalForms = this.getAdditionalForms();
+    const forms = this.getForms();
 
 		return (
 			<div className="ets-page-wrap">
         {table}
-        {form}
-        {additionalForms}
+        {forms}
 			</div>
 		);
 	}

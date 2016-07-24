@@ -4,7 +4,7 @@ import { Panel, Collapse, Glyphicon, Fade, Well, Button } from 'react-bootstrap'
 import {getFormattedDateTimeSeconds} from 'utils/dates';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
 import moment from 'moment';
-import MissionFormWrap from '../../missions/MissionFormWrap.jsx';
+import MissionFormWrap from '../../missions/mission/MissionFormWrap.jsx';
 
 
 export default class CurrentMission extends DashboardCardMedium {

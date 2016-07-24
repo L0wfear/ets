@@ -33,6 +33,8 @@ export default class RequirePermissions extends Component {
    */
 	isPermitted(requiredPermissions) {
     const { userPermissions } = this.props;
+    // TODO переделать, когда появится бек
+    return true;
 		return requiredPermissions.filter(p => this.props.userPermissions.indexOf(p) + 1).length;
 	}
 

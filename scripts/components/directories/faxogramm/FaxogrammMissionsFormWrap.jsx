@@ -3,7 +3,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import Div from 'components/ui/Div.jsx';
 import FaxogrammMissionsForm from './FaxogrammMissionsForm.jsx';
-import FormWrap from '../../compositions/FormWrap.jsx';
+import FormWrap from 'components/compositions/FormWrap.jsx';
 import { isNotNull, isEmpty } from 'utils/functions';
 import { missionSchema, missionClosingSchema } from 'models/MissionModel.js';
 

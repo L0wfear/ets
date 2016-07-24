@@ -3,8 +3,8 @@ import moment from 'moment';
 import _ from 'lodash';
 import Div from 'components/ui/Div.jsx';
 import DutyMissionForm from './DutyMissionForm.jsx';
-import FormWrap from '../compositions/FormWrap.jsx';
-import { getDefaultDutyMission } from '../../stores/MissionsStore.js';
+import FormWrap from 'components/compositions/FormWrap.jsx';
+import { getDefaultDutyMission } from 'stores/MissionsStore.js';
 import { isNotNull, isEmpty, saveData } from 'utils/functions';
 import { dutyMissionSchema, dutyMissionClosingSchema } from 'models/DutyMissionModel.js';
 

@@ -4,13 +4,13 @@ import _ from 'lodash';
 import Div from 'components/ui/Div.jsx';
 import DutyMissionTemplateForm from './DutyMissionTemplateForm.jsx';
 import DutyMissionsCreationForm from './DutyMissionsCreationForm.jsx';
-import { getDefaultDutyMissionTemplate, getDefaultDutyMissionsCreationTemplate } from '../../stores/MissionsStore.js';
+import { getDefaultDutyMissionTemplate, getDefaultDutyMissionsCreationTemplate } from 'stores/MissionsStore.js';
 import { validate as validateNumber} from 'validate/validateNumber.js';
 import { isNotNull, isEmpty } from 'utils/functions';
 import { validateRow } from 'validate/validateRow.js';
 import { dutyMissionTemplateSchema } from 'models/DutyMissionTemplateModel.js';
 import { dutyMissionsCreationTemplateSchema } from 'models/DutyMissionsCreationTemplateModel.js';
-import FormWrap from '../compositions/FormWrap.jsx';
+import FormWrap from 'components/compositions/FormWrap.jsx';
 
 let validateDutyMissionsCreationTemplate = (mission, errors) => {
   return errors;

@@ -3,9 +3,9 @@ import _ from 'lodash';
 import moment from 'moment';
 import Div from 'components/ui/Div.jsx';
 import MissionForm from './MissionForm.jsx';
-import FormWrap from '../compositions/FormWrap.jsx';
+import FormWrap from 'components/compositions/FormWrap.jsx';
 import { validateRow } from 'validate/validateRow.js';
-import { getDefaultMission } from '../../stores/MissionsStore.js';
+import { getDefaultMission } from 'stores/MissionsStore.js';
 import { isEmpty, saveData, printData } from 'utils/functions';
 import { missionSchema } from 'models/MissionModel.js';
 

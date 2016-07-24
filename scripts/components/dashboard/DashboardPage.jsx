@@ -94,14 +94,14 @@ class DashboardPage extends React.Component {
             let DashboardCard = customCards[c.key] || DashboardCardMedium;
             return <Col key={j} md={4} className={cardClassname}>
               <DashboardCard title={c.title}
-                                   items={c.items}
-                                   dashboardKey={c.key}
-                                   itemsTitle={c.itemsTitle}
-                                   loading={this.state.loadingComponents.indexOf(c.key) > -1}
-                                   refreshCard={this.refreshCard.bind(this, c.key, c.id)}
-                                   openSubitemsList={this.openSubitemsList.bind(this, c.key)}
-                                   itemOpened={this.state.itemOpenedKey === c.key}
-                                   direction={direction} />
+                items={c.items}
+                dashboardKey={c.key}
+                itemsTitle={c.itemsTitle}
+                loading={this.state.loadingComponents.indexOf(c.key) > -1}
+                refreshCard={this.refreshCard.bind(this, c.key, c.id)}
+                openSubitemsList={this.openSubitemsList.bind(this, c.key)}
+                itemOpened={this.state.itemOpenedKey === c.key}
+                direction={direction} />
             </Col>
           })}
         </Row>
@@ -112,21 +112,16 @@ class DashboardPage extends React.Component {
 
     return (
       <Div className="ets-page-wrap dashboard-page">
-
         <DashboardPageHeader/>
-
         <Row>
           <Col md={9}>
             {rows}
           </Col>
-
           <Col md={3}>
             <DashboardManagementCard role={role} refreshCard={this.refreshCard.bind(this)}/>
-
             {componentsSide}
           </Col>
         </Row>
-
       </Div>
     );
   }

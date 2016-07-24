@@ -10,7 +10,7 @@ import cx from 'classnames';
 import { isNotNull, isEmpty, hasOdometer } from 'utils/functions';
 import { createValidDateTime } from 'utils/dates';
 import Form from '../compositions/Form.jsx';
-import MissionFormWrap from '../missions/MissionFormWrap.jsx';
+import MissionFormWrap from '../missions/mission/MissionFormWrap.jsx';
 import { getDefaultMission } from '../../stores/MissionsStore.js';
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { notifications } from 'utils/notifications';

@@ -8,4 +8,6 @@ module.exports = {
   models: 'models',
   constants: 'constants',
   config: 'config',
+  stores: 'stores',
+  actions: 'actions'
 }

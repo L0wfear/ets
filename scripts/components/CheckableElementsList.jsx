@@ -1,5 +1,6 @@
 import React from 'react';
 import ElementsList from './ElementsList.jsx';
+import { ButtonCreate, ButtonRead, ButtonDelete } from './ui/buttons/CRUD.jsx';
 
 /**
  * ElementsList с возможностью обрабатывать таблицы с выбором элементов
@@ -13,11 +14,6 @@ export default class CheckableElementsList extends ElementsList {
     this.state = Object.assign({}, this.state, {
       checkedElements: {}
     });
-
-    this.tablePropsFunctions = [
-      ...this.tablePropsFunctions,
-      this.getCheckedProps.bind(this)
-    ];
   }
 
   /**
@@ -28,6 +24,17 @@ export default class CheckableElementsList extends ElementsList {
     if (typeof this.props.onListStateChange === 'function') {
       this.props.onListStateChange(this.state);
     }
+  }
+
+  /**
+   * Закрывает форму и обнуляет выбранный элемент
+   */
+  onFormHide(clearCheckedElements) {
+    this.setState({
+      showForm: false,
+      selectedElement: null,
+      checkedElements: clearCheckedElements ? {} : this.state.checkedElements
+    });
   }
 
   /**
@@ -90,8 +97,67 @@ export default class CheckableElementsList extends ElementsList {
     return {
   		onAllRowsChecked: this.checkAll.bind(this),
   		onRowChecked: this.checkElement.bind(this),
-  		checked: this.state.checkedElements
+  		checked: this.state.checkedElements,
+			multiSelection: true
     }
+  }
+
+  /**
+   * @override
+   */
+  getTableProps() {
+    const tableProps = super.getTableProps();
+
+    return Object.assign(tableProps, this.getCheckedProps());
+  }
+
+  /**
+   * Дополнительная проверка на наличие выбранных элементов
+   * @override
+   */
+  checkDisabledDelete() {
+    return super.checkDisabledDelete() && !this.hasCheckedElements();
+  }
+
+  /**
+   * Определяет, есть ли на текущий момент выбранные элементы
+   */
+  hasCheckedElements() {
+    return Object.keys(this.state.checkedElements).length;
+  }
+
+  /**
+   * @override
+   */
+  getButtons() {
+    // Операции, заданные в статической переменной operations класса-наследника
+    const operations = this.constructor.operations || [];
+    const entity = this.constructor.entity;
+    const buttons = [];
+    if (operations.indexOf('CREATE') > 0) {
+      buttons.push(
+        <ButtonCreate key={buttons.length}
+          onClick={this.createElement.bind(this)}
+          permissions={[`${entity}.create`]}/>
+      );
+    }
+    if (operations.indexOf('READ') > 0) {
+      buttons.push(
+        <ButtonRead key={buttons.length}
+          onClick={this.showForm.bind(this)}
+          disabled={this.checkDisabledRead()}
+          permissions={[`${entity}.read`]}/>
+      );
+    }
+    if (operations.indexOf('DELETE') > 0) {
+      buttons.push(
+        <ButtonDelete key={buttons.length}
+          onClick={this.removeCheckedElements.bind(this)}
+          disabled={this.checkDisabledDelete()}
+          permissions={[`${entity}.delete`]}/>
+      );
+    }
+    return buttons;
   }
 
 }

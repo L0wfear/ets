@@ -4,13 +4,13 @@ import _ from 'lodash';
 import Div from 'components/ui/Div.jsx';
 import MissionTemplateForm from './MissionTemplateForm.jsx';
 import MissionsCreationForm from './MissionsCreationForm.jsx';
-import { getDefaultMissionTemplate, getDefaultMissionsCreationTemplate } from '../../stores/MissionsStore.js';
+import { getDefaultMissionTemplate, getDefaultMissionsCreationTemplate } from 'stores/MissionsStore.js';
 import { validate as validateNumber} from 'validate/validateNumber.js';
 import { isNotNull, isEmpty } from 'utils/functions';
 import { validateRow } from 'validate/validateRow.js';
 import { missionTemplateSchema } from 'models/MissionTemplateModel.js';
 import { missionsCreationTemplateSchema } from 'models/MissionsCreationTemplateModel.js';
-import FormWrap from '../compositions/FormWrap.jsx';
+import FormWrap from 'components/compositions/FormWrap.jsx';
 
 let validateMissionsCreationTemplate = (mission, errors) => {
   let missionsCreationTemplateErrors = _.clone(errors);

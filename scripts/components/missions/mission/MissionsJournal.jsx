@@ -6,7 +6,7 @@ import { getFormattedDateTime } from 'utils/dates';
 import { datePickerFunction } from 'utils/labelFunctions';
 import MissionFormWrap from './MissionFormWrap.jsx';
 import MissionRejectForm from './MissionRejectForm.jsx';
-import MissionInfoFormWrap from '../dashboard/MissionInfoFormWrap.jsx';
+import MissionInfoFormWrap from 'components/dashboard/MissionInfoFormWrap.jsx';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { saveData } from 'utils/functions';
 import cx from 'classnames';
@@ -219,8 +219,9 @@ export default class MissionsJournal extends CheckableElementsList {
     }
   }
 
-	additionalCheckDisabledDelete() {
-		return this.state.selectedElement && this.state.selectedElement.status !== 'not_assigned';
+	checkDisabledDelete() {
+		return super.checkDisabledDelete() &&
+		  this.state.selectedElement && this.state.selectedElement.status !== 'not_assigned';
 	}
 
 	completeMission() {
@@ -273,34 +274,34 @@ export default class MissionsJournal extends CheckableElementsList {
     }
   }
 
-  // removeCheckedElements() {
-  //   if (typeof this.removeElementAction !== 'function') return;
-	//
-  //   if (Object.keys(this.state.checkedElements).length !== 0) {
-  //     if (!confirm('Вы уверены, что хотите удалить выбранные элементы?')) return;
-	//
-  //     let isNotDeleted = false;
-	//
-  //     _.forEach(this.state.checkedElements, (mission) => {
-  //       if (mission.status === 'not_assigned') {
-  //         this.removeElementAction(mission.id);
-  //       } else {
-	// 				isNotDeleted = true;
-	// 			}
-  //     });
-	//
-  //     if (isNotDeleted) {
-  //       global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Удалились только задания со статусом "Не назначено"!'));
-  //     }
-	// 		this.setState({
-	// 			checkedElements: {},
-	// 			selectedElement: null,
-	// 		});
-	//
-  //   } else {
-  //     this.removeElement();
-  //   }
-  // }
+  removeCheckedElements() {
+    if (typeof this.removeElementAction !== 'function') return;
+
+    if (Object.keys(this.state.checkedElements).length !== 0) {
+      if (!confirm('Вы уверены, что хотите удалить выбранные элементы?')) return;
+
+      let isNotDeleted = false;
+
+      _.forEach(this.state.checkedElements, (mission) => {
+        if (mission.status === 'not_assigned') {
+          this.removeElementAction(mission.id);
+        } else {
+					isNotDeleted = true;
+				}
+      });
+
+      if (isNotDeleted) {
+        global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Удалились только задания со статусом "Не назначено"!'));
+      }
+			this.setState({
+				checkedElements: {},
+				selectedElement: null,
+			});
+
+    } else {
+      this.removeElement();
+    }
+  }
 
 	handleSubmit() {
 		const { flux } = this.context;
@@ -317,9 +318,9 @@ export default class MissionsJournal extends CheckableElementsList {
 		this.setState({mission: mission.result[0], showMissionInfoForm: true});
 	}
 
-	getForm() {
-		return (
-			<div>
+	getForms() {
+		return [
+			<div key={'forms'}>
 				<MissionFormWrap onFormHide={this.onFormHide.bind(this)}
 						showForm={this.state.showForm}
 						element={this.state.selectedElement}
@@ -333,17 +334,21 @@ export default class MissionsJournal extends CheckableElementsList {
 						showForm={this.state.showMissionInfoForm}
 						element={this.state.mission} />
 			</div>
-		)
+		]
 	}
 
-	getAdditionalButtons() {
-		return (
-			<ButtonToolbar>
+	getButtons() {
+		const buttons = super.getButtons();
+
+		buttons.push(
+			<ButtonToolbar key={buttons.length}>
 				<Button bsSize="small" onClick={this.completecheckedElements.bind(this)} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</Button>
 				<Button bsSize="small" onClick={this.rejectcheckedElements.bind(this)} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</Button>
 				<Button bsSize="small" onClick={this.handleSubmit.bind(this)}><Glyphicon glyph="download-alt" /></Button>
 			</ButtonToolbar>
-		)
+		);
+
+		return buttons;
 	}
 
 	getAdditionalProps() {
@@ -351,5 +356,5 @@ export default class MissionsJournal extends CheckableElementsList {
 			mapView: this.mapView.bind(this)
 		}
 	}
-	
+
 }

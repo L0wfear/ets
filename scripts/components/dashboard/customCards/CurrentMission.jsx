@@ -9,7 +9,7 @@ import cx from 'classnames';
 import moment from 'moment';
 import MissionInfoFormWrap from '../MissionInfoFormWrap.jsx';
 import { isEmpty } from 'utils/functions';
-import MissionRejectForm from '../../missions/MissionRejectForm.jsx';
+import MissionRejectForm from '../../missions/mission/MissionRejectForm.jsx';
 
 let getDataTraveledYet = (data) => {
   if (typeof data === 'string') {

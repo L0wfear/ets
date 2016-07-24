@@ -40,9 +40,14 @@ export default class WaybillJournal extends CheckableElementsList {
 		this.setState({showPrintForm: printNumber})
 	}
 
-	getAdditionalButtons() {
-		return (
-			<ButtonToolbar className="waybill-button-toolbar">
+	/**
+	 * @override
+	 */
+	getButtons() {
+		const buttons = super.getButtons();
+
+		buttons.push(
+			<ButtonToolbar key={buttons.length} className="waybill-button-toolbar">
 				<Dropdown id="dropdown-print" pullRight>
 					<Dropdown.Toggle noCaret bsSize="small">
 						<Glyphicon glyph="download-alt" />
@@ -54,13 +59,23 @@ export default class WaybillJournal extends CheckableElementsList {
 				</Dropdown>
 			</ButtonToolbar>
 		);
+
+		return buttons;
 	}
 
-	getAdditionalForms() {
-		return (
+	/**
+	 * @override
+	 */
+	getForms() {
+		const forms = super.getForms();
+
+		forms.push(
 			<WaybillPrintForm
-					show={this.state.showPrintForm}
-					hide={() => this.setState({showPrintForm: false})}/>
+				key={forms.length}
+				show={this.state.showPrintForm}
+				hide={() => this.setState({showPrintForm: false})}/>
 		);
+
+		return forms;
 	}
 }

@@ -5,10 +5,6 @@ import React, { Component } from 'react';
 // TODO сделать модуль containers по аналогии с другими модулями
 import LoginPage from './LoginPage.jsx';
 import WaybillJournal from './waybill/WaybillJournal.jsx';
-import MissionsJournal from './missions/MissionsJournal.jsx';
-import DutyMissionsJournal from './missions/DutyMissionsJournal.jsx';
-import DutyMissionTemplatesJournal from './missions/DutyMissionTemplatesJournal.jsx';
-import MissionTemplatesJournal from './missions/MissionTemplatesJournal.jsx';
 import RoutesList from './route/RoutesList.jsx';
 import MainPage from './MainPage.jsx';
 import MonitorPage from './monitor/MonitorPage.jsx';
@@ -16,6 +12,7 @@ import LoadingPage from './LoadingPage.jsx';
 import DashboardPage from './dashboard/DashboardPage.jsx';
 import CompanyStructure from './company_structure/CompanyStructure.jsx';
 
+import missions from './missions';
 import directories from './directories';
 import reports from './reports';
 
@@ -112,12 +109,13 @@ const routes = (
       <Route path="monitor" component={MonitorPage} onEnter={requireAuth}/>
       <Route path="dashboard" component={DashboardPage} onEnter={requireAuth}/>
       <Route path="waybill-journal" component={WaybillJournal} onEnter={requireAuth}/>
-      <Route path="mission-journal" component={MissionsJournal} onEnter={requireAuth}/>
       <Route path="company-structure" component={CompanyStructure} onEnter={requireAuth}/>
-      <Route path="duty-missions-journal" component={DutyMissionsJournal} onEnter={requireAuth}/>
-      <Route path="duty-mission-templates-journal" component={DutyMissionTemplatesJournal} onEnter={requireAuth}/>
-      <Route path="mission-templates-journal" component={MissionTemplatesJournal} onEnter={requireAuth}/>
       <Route path="routes-list" component={RoutesList} onEnter={requireAuth}/>
+      {/* Задания */}
+      <Route path="mission-journal" component={missions.missions} onEnter={requireAuth}/>
+      <Route path="mission-templates-journal" component={missions.missionTemplates} onEnter={requireAuth}/>
+      <Route path="duty-missions-journal" component={missions.dutyMissions} onEnter={requireAuth}/>
+      <Route path="duty-mission-templates-journal" component={missions.dutyMissionTemplates} onEnter={requireAuth}/>
       {/* Отчеты */}
       <Route path="odh-reports" component={reports.odh} onEnter={requireAuth}/>
       <Route path="route-reports" component={reports.route.all} onEnter={requireAuth}/>

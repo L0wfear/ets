@@ -180,13 +180,15 @@ export class DutyMissionsJournal extends ElementsList {
     };
 	}
 
-  init() {
+	componentDidMount() {
+		super.componentDidMount();
+
 		const { flux } = this.context;
 		flux.getActions('missions').getDutyMissions();
     flux.getActions('missions').getMissionSources();
     flux.getActions('routes').getRoutes();
     flux.getActions('employees').getEmployees();
-  }
+	}
 
   stateChangeCallback() {
     if (typeof this.props.onListStateChange === 'function') {

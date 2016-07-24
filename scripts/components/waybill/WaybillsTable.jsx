@@ -238,7 +238,6 @@ export let WaybillsTable = (props) => {
 			initialSort={'number'}
 			initialSortAscending={false}
 			tableMeta={getTableMeta(props)}
-			multiSelection={true}
 			columnControl={true}
 			className="waybills-table"
 			columnControlStorageName={'waybillsColumnControl'}

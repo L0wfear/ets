@@ -69,6 +69,7 @@ export class MissionInfoForm extends Form {
     })
 		flux.getActions('geoObjects').getGeozones();
 	  flux.getActions('objects').getTypes();
+	  flux.getActions('objects').getCars();
   }
 
   componentWillUnmount() {

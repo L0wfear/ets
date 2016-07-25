@@ -222,6 +222,7 @@ export let WaybillsTable = (props) => {
 			driver_id: ({data}) => <div>{employeeFIOLabelFunction(data)}</div>,
 			car_id: ({data}) => <div>{getCarByIdLabelFunction(data).gov_number}</div>,
 			date_create: ({data}) => <DateFormatter date={data} />,
+			closing_date: ({data}) => <DateFormatter date={data} />,
 			fact_departure_date: ({data}) => <DateFormatter date={data} time={true} />,
 			fact_arrival_date: ({data}) => <DateFormatter date={data} time={true} />,
 			car_special_model_name: (meta) => {

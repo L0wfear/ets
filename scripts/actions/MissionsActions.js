@@ -34,7 +34,7 @@ export default class MissionsActions extends Actions {
   getMissionsByCarAndTimestamp(car_id, timestamp) {
     const payload = {
       car_id,
-      timestamp
+      point_timestamp: timestamp
     };
 
     return MissionService.get(payload);

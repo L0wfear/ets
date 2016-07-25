@@ -68,6 +68,7 @@ export default class LoadingStore extends Store {
       missionsActons.createMissionFromReassignation,
       missionsActons.updateMissionFromReassignation,
       missionsActons.getMissionsByCarAndDates,
+      missionsActons.getMissionsByCarAndTimestamp,
       missionsActons.getMissionById,
       missionsActons.getMissionSources,
       missionsActons.createMission,

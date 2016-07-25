@@ -32,7 +32,7 @@ let FuelingWaterStationsTable = (props) => {
 		};
 
 		return <Table
-				title='Пункты заправки водой'
+				title='Базы гидрантов'
 				results={props.data}
 				tableMeta={tableMeta}
 				renderers={renderers}

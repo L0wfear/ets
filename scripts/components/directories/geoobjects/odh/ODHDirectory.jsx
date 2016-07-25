@@ -113,7 +113,7 @@ class ODHDirectory extends ElementsList {
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
-    flux.getActions('geoObjects').getODHs();
+    flux.getActions('geoObjects').getGeozoneByType('odh');
   }
 
   render() {

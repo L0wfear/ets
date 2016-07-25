@@ -4,6 +4,7 @@ import carpool from './carpool/CarpoolDirectory.jsx';
 import dangerZones from './danger_zones/DangerZonesDirectory.jsx';
 import fuelingWater from './fueling_water/FuelingWaterStationsDirectory.jsx';
 import ssp from './ssp/SSPDirectory.jsx';
+import msp from './msp/MSPDirectory.jsx';
 
 export default {
   dt,
@@ -11,5 +12,6 @@ export default {
   carpool,
   dangerZones,
   fuelingWater,
-  ssp
+  ssp,
+  msp
 }

@@ -51,7 +51,7 @@ class FuelingWaterStationsDirectory extends ElementsList {
 	componentDidMount() {
 		super.componentDidMount();
     const { flux } = this.context;
-    flux.getActions('geoObjects').getFuelingWaterStations();
+    flux.getActions('geoObjects').getGeozoneByType('fueling_water');
 	}
 
 	render() {

@@ -10,20 +10,18 @@ class GeoObjectsStore extends Store {
 
     this.register(geoObjectsActions.getODHs, this.handleGetList.bind(this, 'odhs'));
     this.register(geoObjectsActions.updateODH, this.handleGetList.bind(this, 'odhs'));
-    this.register(geoObjectsActions.getSSPs, this.handleGetList.bind(this, 'ssps'));
-    this.register(geoObjectsActions.getFuelingWaterStations, this.handleGetList.bind(this, 'fuelingWaterStations'));
-    this.register(geoObjectsActions.getCarpools, this.handleGetList.bind(this, 'carpools'));
-    this.register(geoObjectsActions.getDangerZones, this.handleGetList.bind(this, 'dangerZones'));
     this.register(geoObjectsActions.updateDT, this.handleGetList.bind(this, 'dts'));
     this.register(geoObjectsActions.getDTs, this.handleGetList.bind(this, 'dts'));
     this.register(geoObjectsActions.getGeozones, this.handleGetGeozones);
     this.register(geoObjectsActions.setSelectedPolysType, this.handleSetSelectedPolysType);
 
-    this.register(geoObjectsActions.getGeozoneByTypeWithGeometry, this.handleGetGeozonesByType);
+    this.register(geoObjectsActions.getGeozoneByTypeWithGeometry, this.handleGetGeozonesByTypeWithGeometry);
+    this.register(geoObjectsActions.getGeozoneByType, this.handleGetGeozonesByType);
 
     this.state = {
       odhsList: [],
       sspsList: [],
+      mspsList: [],
       dtsList: [],
       fuelingWaterStationsList: [],
       carpoolsList: [],
@@ -111,7 +109,7 @@ class GeoObjectsStore extends Store {
     this.setState({geozonePolys, dtPolys, odhPolys});
   }
 
-  handleGetGeozonesByType(response) {
+  handleGetGeozonesByTypeWithGeometry(response) {
     const { type, data = {} } = response;
     const { result = [] } = data;
     const polys = {};
@@ -129,6 +127,15 @@ class GeoObjectsStore extends Store {
 
     this.setState({
       [polysByType]: polys
+    });
+  }
+
+  handleGetGeozonesByType(response) {
+    const { type, data = {} } = response;
+    const { result = [] } = data;
+    const typeList = `${type}sList`;
+    this.setState({
+      [typeList]: result
     });
   }
 

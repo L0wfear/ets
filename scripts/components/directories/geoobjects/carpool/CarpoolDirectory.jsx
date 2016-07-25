@@ -50,7 +50,7 @@ class CarpoolDirectory extends ElementsList {
 	componentDidMount() {
 		super.componentDidMount();
     const { flux } = this.context;
-    flux.getActions('geoObjects').getCarpools();
+    flux.getActions('geoObjects').getGeozoneByType('carpool');
 	}
 
 	render() {

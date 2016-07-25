@@ -27,23 +27,7 @@ export default class GeoObjectsActions extends Actions {
   getDTs() {
     return DTService.get();
   }
-
-  getSSPs() {
-    return SSPService.get();
-  }
-
-  getFuelingWaterStations() {
-    return FuelingWaterService.get();
-  }
-
-  getCarpools() {
-    return CarPoolService.get();
-  }
-
-  getDangerZones() {
-    return DangerZoneService.get();
-  }
-
+  
   updateODH(formState) {
     const payload = {
       id: formState.id,
@@ -71,6 +55,15 @@ export default class GeoObjectsActions extends Actions {
     const payload = {
       shape: 1
     };
+    const response = await GeozonesService.path(type).get(payload);
+    return {
+      type: GEOOBJECTS_TYPES[type],
+      data: response
+    };
+  }
+
+  async getGeozoneByType(type) {
+    const payload = {};
     const response = await GeozonesService.path(type).get(payload);
     return {
       type: GEOOBJECTS_TYPES[type],

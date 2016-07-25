@@ -69,7 +69,7 @@ class DTDirectory extends ElementsList {
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
-    flux.getActions('geoObjects').getDTs();
+    flux.getActions('geoObjects').getGeozoneByType('dt');
   }
 
   render() {

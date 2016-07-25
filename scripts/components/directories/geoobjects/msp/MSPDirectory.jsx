@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import SSPTable from './SSPTable.jsx';
+import MSPTable from './MSPTable.jsx';
 import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps } from 'utils/decorators';
 
 @connectToStores(['geoObjects'])
 @staticProps({
-	entity: 'ssp',
-	listName: 'sspsList',
-	tableComponent: SSPTable
+	entity: 'msp',
+	listName: 'mspsList',
+	tableComponent: MSPTable
 })
-export default class SSPDirectory extends ElementsList {
+export default class MSPDirectory extends ElementsList {
 
 	constructor(props, context) {
 		super(props);
@@ -18,6 +18,6 @@ export default class SSPDirectory extends ElementsList {
 	componentDidMount() {
 		super.componentDidMount();
     const { flux } = this.context;
-    flux.getActions('geoObjects').getGeozoneByType('ssp');
+    flux.getActions('geoObjects').getGeozoneByType('msp');
 	}
 }

@@ -16,6 +16,7 @@ class MonitorPage extends Component {
 
   componentDidMount() {
     const { flux } = this.context;
+    flux.getActions('objects').getCars();
     flux.getActions('points').createConnection();
   }
 

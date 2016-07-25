@@ -459,11 +459,19 @@ export default class Track {
 
 
   // TODO refactor
-  async getTrackPointTooltip(trackPoint, prevPoint, nextPoint){
-    let vectorObject = await window.__ETS_CONTAINER__.flux
-        .getActions('cars')
+  async getTrackPointTooltip(trackPoint, prevPoint, nextPoint) {
+    let missions = [];
+    const { flux } =  window.__ETS_CONTAINER__;
+    let vectorObject = await flux.getActions('cars')
         .getVectorObject(trackPoint, prevPoint, nextPoint);
-
+    // это рак вызванный косяком бекенда
+    const carsList = flux.getStore('objects').state.carsList;
+    const car = carsList.find(c => c.gov_number === this.owner.point.car.gov_number);
+    if (car) {
+      missions = await flux.getActions('missions')
+          .getMissionsByCarAndTimestamp(car.asuods_id, trackPoint.timestamp);
+      missions = missions.result;
+    }
     let { nsat,
           speed_avg,
           speed_max,
@@ -487,6 +495,14 @@ export default class Track {
           objectsString = 'Объекты ОДХ не найдены';
         }
 
+        let missionsString;
+        if (missions.length) {
+          missionsString = missions.map(m => `Задание №${m.number}`).join('<br/>');
+          missionsString = '<div class="geo-objects">' + missionsString + '</div>';
+        } else {
+          missionsString = '';
+        }
+
         // let objectsString = 'Объекты ОДХ';
         //
         // if ( geoObjects === null ){
@@ -504,7 +520,8 @@ export default class Track {
                   '<span class="dt">'+dt+'</span>  ' +
                 '</div>  ' +
                 '<div class="geo-objects">'+objectsString+'</div>'+
-                  '<div class="some-info">' +
+                missionsString +
+                '<div class="some-info">' +
                   '<div class="speed">V<sub>ср</sub> = '+speed_avg+' км/ч<br/>'+'V<sub>макс</sub> = '+speed_max+' км/ч</div>' +
                   '<div class="distance">' + distance + ' м</div>' +
                   '<div class="coords">'+latitude+ '<br/>' + longitude + '</div>' +

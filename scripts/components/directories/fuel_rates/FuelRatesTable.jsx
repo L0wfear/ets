@@ -48,6 +48,15 @@ let tableMeta = {
         type: 'select'
       }
 		},
+		{
+			name: 'operation_equipment',
+			caption: 'Для спецоборудования',
+			type: 'boolen',
+      filter: {
+        type: 'select',
+        labelFunction: (d) => d ? 'Да' : 'Нет'
+      }
+		}
 	]
 };
 
@@ -55,7 +64,8 @@ let FuelRatesTable = (props) => {
 
     const renderers = {
       operation_id: ({data}) => <div>{getFuelOperationById(data).name}</div>,
-      order_date: ({data}) => <div>{moment(data).format(global.APP_DATE_FORMAT)}</div>
+      order_date: ({data}) => <div>{moment(data).format(global.APP_DATE_FORMAT)}</div>,
+      operation_equipment: ({data}) => <div style={{textAlign: "center"}}><input type="checkbox" checked={!!data} readOnly /></div>
     };
 
 		return <Table title='Нормы расхода топлива'

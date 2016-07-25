@@ -25,7 +25,9 @@ export default class FuelRateForm extends Form {
 		const { modelsList = [], operations = [], specialModelsList = [] } = this.props;
 		const MODELS = modelsList.map( m => ({value: m.id, label: m.title}));
 		const SPECIALMODELS = specialModelsList.map( m => ({value: m.id, label: m.name}));
-		const OPERATIONS = operations.map(op => ({value: op.id, label: op.name})).sort((a,b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
+		const OPERATIONS = operations
+			.map(op => ({value: op.id, label: `${op.name}${op.equipment ? ' [спецоборудование]' : ''}`}))
+			.sort((a,b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
 
 		return (
 			<Modal {...this.props} backdrop="static">

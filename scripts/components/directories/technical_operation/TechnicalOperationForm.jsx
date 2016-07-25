@@ -1,16 +1,15 @@
 import React, {Component} from 'react';
-import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, FormControls, Button, DropdownButton, Dropdown, Glyphicon, MenuItem, Input } from 'react-bootstrap';
-import Datepicker from 'components/ui/DatePicker.jsx';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
-import moment from 'moment';
-import cx from 'classnames';
-import Form from '../../compositions/Form.jsx';
+import Form from 'components/compositions/Form.jsx';
+import { connectToStores } from 'utils/decorators';
+import _ from 'lodash';
 
 let seasonsList = [{id: 1, name: 'Лето'}, {id: 2, name: 'Зима'}, {id: 3, name: 'Всесезон'}];
 
-export class MissionForm extends Form {
+@connectToStores(['objects', 'employees', 'missions', 'routes'])
+export default class TechnicalOperationForm extends Form {
 
 	constructor(props) {
 		super(props);
@@ -127,7 +126,7 @@ export class MissionForm extends Form {
 						<Col md={3} className="vehicle-types-container">
 							<Field type="select" label="Типы ТС"
 										 multi={true}
-										 value={state.car_func_types.map(cft => cft.id).join(',')}
+										 value={_.uniq(state.car_func_types.map(cft => cft.id)).join(',')}
 										 options={CAR_TYPES}
 										 onChange={this.handleCarFuncTypesChange.bind(this)}/>
 						</Col>
@@ -144,5 +143,3 @@ export class MissionForm extends Form {
 		)
 	}
 }
-
-export default connectToStores(MissionForm, ['objects', 'employees', 'missions', 'routes']);

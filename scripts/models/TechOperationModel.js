@@ -1,6 +1,4 @@
-import _ from 'lodash';
-
-export const techOperationSchema = {
+export const technicalOperationSchema = {
   properties: [
 		{
 			key: 'name',

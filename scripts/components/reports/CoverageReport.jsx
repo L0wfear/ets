@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import connectToStores from 'flummox/connect';
 import Table from 'components/ui/table/DataTable.jsx';
 import { Button, Glyphicon, Row, Col, Input } from 'react-bootstrap';
 import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
 import PolyMap from '../map/PolyMap.jsx';
-import { FluxContext } from 'utils/decorators';
+import { connectToStores, FluxContext } from 'utils/decorators';
 import _ from 'lodash';
-
 
 function getStatusLabel(s) {
 	switch (s) {
@@ -24,8 +22,9 @@ function getStatusLabel(s) {
 	}
 }
 
+@connectToStores(['reports', 'session', 'objects', 'routes', 'geoObjects'])
 @FluxContext
-class CoverageReport extends Component {
+export default class CoverageReport extends Component {
 
 	constructor(props) {
 		super(props);
@@ -185,8 +184,6 @@ class CoverageReport extends Component {
 
 	}
 }
-
-export default connectToStores(CoverageReport, ['reports', 'session', 'objects', 'routes', 'geoObjects']);
 
 let tableMeta = {
 	cols: [

@@ -22,9 +22,10 @@ class CarForm extends Form {
 	}
 
 	async componentDidMount() {
+		const { flux } = this.context;
     const car = this.props.formState;
     getCarImage(car.asuods_id, car.type_id, car.model_id).then((imageUrl) => this.setState({imageUrl}) );
-		let companyStructureList = await this.context.flux.getActions('companyStructure').getLinearCompanyStructureForUser();
+		let companyStructureList = await flux.getActions('companyStructure').getLinearCompanyStructureForUser();
 		this.setState({companyStructureList});
 	}
 

@@ -12,6 +12,7 @@ import cx from 'classnames';
 import { createValidDateTime, getToday0am, getToday2359 } from 'utils/dates';
 import FaxogrammMissionsFormWrap from './FaxogrammMissionsFormWrap.jsx';
 
+// TODO привести к общему виду
 
 let getTableMeta = (props) => {
 

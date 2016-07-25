@@ -3,11 +3,11 @@ import { Button, Glyphicon } from 'react-bootstrap';
 import MissionTemplateFormWrap from './MissionTemplateFormWrap.jsx';
 import { MissionTemplatesTable } from './MissionTemplatesTable.jsx';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
-import { connectToStores, elementsList } from 'utils/decorators';
+import { connectToStores, staticProps } from 'utils/decorators';
 import _ from 'lodash';
 
 @connectToStores(['missions', 'objects', 'employees', 'routes'])
-@elementsList({
+@staticProps({
 	entity: 'mission_template',
 	listName: 'missionTemplatesList',
 	tableComponent: MissionTemplatesTable,

@@ -1,22 +1,21 @@
 import React, {Component} from 'react';
 import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
-import EtsSelect from 'components/ui/EtsSelect.jsx';
-import Datepicker from 'components/ui/DatePicker.jsx';
-import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
 import Form from 'compositions/Form.jsx';
-import connectToStores from 'flummox/connect';
+import { connectToStores } from 'utils/decorators';
 
-class FuelRateForm extends Form {
+@connectToStores(['fuelRates', 'objects'])
+export default class FuelRateForm extends Form {
 
 	constructor(props) {
 		super(props);
 	}
 
 	componentDidMount() {
-		this.context.flux.getActions('fuelRates').getFuelOperations();
-		this.context.flux.getActions('objects').getModels();
-		this.context.flux.getActions('objects').getSpecialModels();
+		const { flux } = this.context;
+		flux.getActions('fuelRates').getFuelOperations();
+		flux.getActions('objects').getModels();
+		flux.getActions('objects').getSpecialModels();
 	}
 
 	render() {
@@ -27,8 +26,6 @@ class FuelRateForm extends Form {
 		const MODELS = modelsList.map( m => ({value: m.id, label: m.title}));
 		const SPECIALMODELS = specialModelsList.map( m => ({value: m.id, label: m.name}));
 		const OPERATIONS = operations.map(op => ({value: op.id, label: op.name})).sort((a,b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
-
-    // console.log('form state is ', state);
 
 		return (
 			<Modal {...this.props} backdrop="static">
@@ -98,5 +95,3 @@ class FuelRateForm extends Form {
 		)
 	}
 }
-
-export default connectToStores(FuelRateForm, ['fuelRates', 'objects']);

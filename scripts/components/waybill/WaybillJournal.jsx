@@ -4,11 +4,11 @@ import WaybillFormWrap from './WaybillFormWrap.jsx';
 import WaybillPrintForm from './WaybillPrintForm.jsx';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import _ from 'lodash';
-import { connectToStores, elementsList  } from 'utils/decorators';
+import { connectToStores, staticProps  } from 'utils/decorators';
 import { WaybillsTable } from './WaybillsTable.jsx';
 
 @connectToStores(['waybills', 'objects', 'employees'])
-@elementsList({
+@staticProps({
 	entity: 'waybill',
 	listName: 'waybillsList',
 	tableComponent: WaybillsTable,

@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
-import connectToStores from 'flummox/connect';
 import Div from 'components/ui/Div.jsx';
 import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
 import Field from 'components/ui/Field.jsx';
 import Datepicker from 'components/ui/DatePicker.jsx';
 import { getToday9am, getTomorrow9am, makeDate } from 'utils/dates';
 import { saveData } from 'utils/functions';
+import { connectToStores, FluxContext } from 'utils/decorators';
 
-class Analytics extends Component {
+@connectToStores(['reports', 'objects'])
+@FluxContext
+export default class Analytics extends Component {
 
   constructor(props) {
 		super(props);
@@ -143,9 +145,3 @@ class Analytics extends Component {
     );
   }
 }
-
-Analytics.contextTypes = {
-	flux: React.PropTypes.object,
-};
-
-export default connectToStores(Analytics, ['reports', 'objects']);

@@ -180,14 +180,14 @@ class ElementsList extends React.Component {
     const operations = this.constructor.operations || [];
     const entity = this.constructor.entity;
     const buttons = [];
-    if (operations.indexOf('CREATE') > 0) {
+    if (operations.indexOf('CREATE') > -1) {
       buttons.push(
         <ButtonCreate key={buttons.length}
           onClick={this.createElement.bind(this)}
           permissions={[`${entity}.create`]}/>
       );
     }
-    if (operations.indexOf('READ') > 0) {
+    if (operations.indexOf('READ') > -1) {
       buttons.push(
         <ButtonRead key={buttons.length}
           onClick={this.showForm.bind(this)}
@@ -195,7 +195,7 @@ class ElementsList extends React.Component {
           permissions={[`${entity}.read`]}/>
       );
     }
-    if (operations.indexOf('DELETE') > 0) {
+    if (operations.indexOf('DELETE') > -1) {
       buttons.push(
         <ButtonDelete key={buttons.length}
           onClick={this.removeElement.bind(this)}

@@ -11,7 +11,21 @@ export function FluxContext(target) {
 	});
 }
 
-export function elementsList(options) {
+/**
+ * Добавляет history в static contextTypes класса
+ * @param {Component} target - декорируемый класс
+ */
+export function HistoryContext(target) {
+	target.contextTypes = Object.assign({}, target.contextTypes, {
+		history: PropTypes.object,
+	});
+}
+
+/**
+ * Добавляет параметры в статические свойства класса
+ * @param {object} options - свойства (поля переданного объекта)
+ */
+export function staticProps(options) {
 	return function (target) {
 		target = Object.assign(target, options);
 	}

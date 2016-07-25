@@ -11,7 +11,7 @@ import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { saveData } from 'utils/functions';
 import cx from 'classnames';
 import { getWarningNotification } from 'utils/notifications';
-import { connectToStores, elementsList } from 'utils/decorators';
+import { connectToStores, staticProps } from 'utils/decorators';
 import _ from 'lodash';
 
 function getStatusLabel(s) {
@@ -150,10 +150,7 @@ let MissionsTable = (props) => {
       status: ({data}) => <div>{getStatusLabel(data)}</div>,
       date_start: ({data}) => <DateFormatter date={data} time={true} />,
       date_end: ({data}) => <DateFormatter date={data} time={true} />,
-      isChecked: ({data}) => {
-        console.dir(data);
-       return <input type="checkbox" />;
-		 	},
+      isChecked: ({data}) => <input type="checkbox"/>,
 			id: (meta) => {
 				if (meta.rowData.status === 'not_assigned') return <div>Нет данных</div>;
 					return <div>
@@ -175,7 +172,7 @@ let MissionsTable = (props) => {
 }
 
 @connectToStores(['missions', 'objects', 'employees', 'routes'])
-@elementsList({
+@staticProps({
 	entity: 'mission',
 	listName: 'missionsList',
 	tableComponent: MissionsTable,

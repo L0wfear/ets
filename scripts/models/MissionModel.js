@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 export const missionSchema = {
   properties: [
 		{
@@ -37,8 +35,7 @@ export const missionSchema = {
 	],
 };
 
-const closingProperties = [
-];
+const closingProperties = [];
 
 export const missionClosingSchema = {
   properties: closingProperties

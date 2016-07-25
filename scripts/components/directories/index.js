@@ -9,7 +9,7 @@ import faxogramm from './faxogramm/FaxogrammDirectory.jsx';
 import fuelOperations from './fuel_operations/FuelOperationsDirectory.jsx';
 import fuelRates from './fuel_rates/FuelRatesDirectory.jsx';
 import organizations from './organizations/OrganizationsDirectory.jsx';
-import technicalOperations from './technical_operation/TechOperationsDirectory.jsx';
+import technicalOperations from './technical_operation/TechnicalOperationsDirectory.jsx';
 import geoobjects from './geoobjects';
 
 export default {

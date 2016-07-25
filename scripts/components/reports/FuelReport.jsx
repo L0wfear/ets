@@ -1,17 +1,10 @@
 import React, { Component } from 'react';
-import connectToStores from 'flummox/connect';
 import Table from 'components/ui/table/DataTable.jsx';
 import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
-import EtsSelect from 'components/ui/EtsSelect.jsx';
-import Div from 'components/ui/Div.jsx';
-import Field from 'components/ui/Field.jsx';
-import Datepicker from 'components/ui/DatePicker.jsx';
-import { datePickerFunction } from 'utils/labelFunctions';
-import { getToday9am, getTomorrow9am, getToday0am, getToday2359, getFormattedDateTimeSeconds } from 'utils/dates';
-import { getReportNotReadyNotification2 } from 'utils/notifications';
-import { isEmpty } from 'utils/functions';
+import { getToday9am, getTomorrow9am } from 'utils/dates';
 import FuelReportHeader from "./FuelReportHeader.jsx";
 import { saveData } from 'utils/functions';
+import { connectToStores, FluxContext, HistoryContext } from 'utils/decorators';
 
 let tableMeta = {
 	cols: [
@@ -204,7 +197,10 @@ let FuelReportTable = (props) => {
 
 }
 
-class FuelReport extends Component {
+@connectToStores(['reports'])
+@FluxContext
+@HistoryContext
+export default class FuelReport extends Component {
 
 	constructor(props) {
 		super(props);
@@ -235,9 +231,6 @@ class FuelReport extends Component {
 	}
 
 	render() {
-
-    console.log('state is', this.state);
-
 		let { fuelReport = [] } = this.props;
 
 		return (
@@ -248,13 +241,5 @@ class FuelReport extends Component {
 				</FuelReportTable>
 			</div>
 		);
-
 	}
 }
-
-FuelReport.contextTypes = {
-  history: React.PropTypes.object,
-	flux: React.PropTypes.object,
-};
-
-export default connectToStores(FuelReport, ['reports']);

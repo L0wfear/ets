@@ -1,4 +1,3 @@
-
 export const dutyMissionTemplateSchema = {
 	properties: [
 		{

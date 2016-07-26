@@ -161,24 +161,24 @@ let tableMeta = {
         type: 'input',
       },
     },
-    {
-      name: 'fuel_rate',
-      caption: 'Топливо. Норма',
-      type: 'number',
-			cssClassName: "width-fuel-report-small",
-			filter: {
-        type: 'input',
-      },
-    },
-    {
-      name: 'fuel_diff',
-      caption: 'Топливо. Разница',
-      type: 'number',
-			filter: {
-        type: 'input',
-      },
-			cssClassName: "width-fuel-report-small",
-    },
+    // {
+    //   name: 'fuel_rate',
+    //   caption: 'Топливо. Норма',
+    //   type: 'number',
+		// 	cssClassName: "width-fuel-report-small",
+		// 	filter: {
+    //     type: 'input',
+    //   },
+    // },
+    // {
+    //   name: 'fuel_diff',
+    //   caption: 'Топливо. Разница',
+    //   type: 'number',
+		// 	filter: {
+    //     type: 'input',
+    //   },
+		// 	cssClassName: "width-fuel-report-small",
+    // },
 	]
 }
 

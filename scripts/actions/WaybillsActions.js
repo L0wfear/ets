@@ -14,6 +14,13 @@ class WaybillsActions extends Actions {
     return WaybillService.get();
   }
 
+  getLastClosedWaybill(car_id) {
+    const payload = {
+      car_id
+    };
+    return WaybillService.path('closed').get(payload);
+  }
+
   deleteWaybill(id) {
     const payload = { id };
     return WaybillService.delete(payload, true, 'json');

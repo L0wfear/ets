@@ -24,6 +24,7 @@ export default class LoadingStore extends Store {
       waybillsActions.createWaybill,
       waybillsActions.updateWaybill,
       waybillsActions.getWaybills,
+      waybillsActions.getLastClosedWaybill,
 
       fuelRateActions.getFuelRates,
       fuelRateActions.getFuelOperations,

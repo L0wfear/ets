@@ -171,6 +171,15 @@ class WaybillForm extends Form {
     this.setState({showMissionForm: true, selectedMission: newMission});
   }
 
+	refresh() {
+		let state = this.props.formState;
+		const { flux } = this.context;
+
+		flux.getActions('waybills').getLastClosedWaybill(state.car_id).then(w => {
+			console.log(w);
+		});
+	}
+
   handleMissionsChange(v) {
     let f = this.props.formState;
     let data = !isEmpty(v) ? v.split(',').map(d => parseInt(d, 10)) : [];
@@ -491,6 +500,9 @@ class WaybillForm extends Form {
 
 	      <Modal.Footer>
 					<Div hidden={state.status === 'closed'}>
+						{/*<Div className={'inline-block'} style={{marginRight: 5}} hidden={!isEmpty(state.id)}>
+							<Button title="Обновить" onClick={this.refresh.bind(this)} disabled={isEmpty(state.car_id)}><Glyphicon glyph="refresh" /></Button>
+						</Div>*/}
 						<Div hidden={state.status !== 'draft' && !IS_CREATING} className="inline-block">
 			    		<Dropdown id="waybill-print-dropdown" dropup disabled={!this.props.canSave} onSelect={this.props.handlePrint}>
 			        	<Dropdown.Toggle  disabled={!this.props.canSave}>

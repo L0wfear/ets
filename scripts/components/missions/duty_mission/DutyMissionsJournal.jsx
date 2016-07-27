@@ -174,10 +174,9 @@ export class DutyMissionsJournal extends ElementsList {
       }
     };
 
-    this.state = {
-      selectedElement: null,
-      checkedDutyMissions: {}
-    };
+		this.state = Object.assign(this.state, {
+			checkedDutyMissions: {}
+    });
 	}
 
 	componentDidMount() {

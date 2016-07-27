@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class Panel extends Component {
+export default class Panel extends Component {
 
   render() {
     return (
@@ -8,7 +8,7 @@ class Panel extends Component {
         <div className="chart-title">
           {this.props.title}
         </div>
-        <div className="chart-stage" style={{ textAlign: 'center' }}>
+        <div className="chart-stage" style={{textAlign: 'center'}}>
           {this.props.children}
         </div>
       </div>
@@ -16,5 +16,3 @@ class Panel extends Component {
   }
 
 }
-
-export default Panel;

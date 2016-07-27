@@ -1,8 +1,10 @@
 import React from 'react';
-import connectToStores from 'flummox/connect';
-import Preloader from './ui/Preloader.jsx';
+import Preloader from './Preloader.jsx';
+import { connectToStores, FluxContext } from 'utils/decorators';
 
-class LoadingOverlay extends React.Component {
+@connectToStores(['loading'])
+@FluxContext
+export default class LoadingOverlay extends React.Component {
 
   constructor(props) {
     super(props);
@@ -22,9 +24,3 @@ class LoadingOverlay extends React.Component {
   }
 
 }
-
-LoadingOverlay.contextTypes = {
-  flux: React.PropTypes.object,
-};
-
-export default connectToStores(LoadingOverlay, ['loading', 'notifications']);

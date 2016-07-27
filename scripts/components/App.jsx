@@ -3,7 +3,7 @@ import { createHashHistory } from 'history';
 import { render } from 'react-dom';
 import React, { Component } from 'react';
 // TODO сделать модуль containers по аналогии с другими модулями
-import LoginPage from './LoginPage.jsx';
+import LoginPage from './login/LoginPage.jsx';
 import WaybillJournal from './waybill/WaybillJournal.jsx';
 import RoutesList from './route/RoutesList.jsx';
 import MainPage from './MainPage.jsx';
@@ -31,16 +31,14 @@ class App extends Component {
   static get childContextTypes() {
     return {
       flux: React.PropTypes.object,
-      loadData: React.PropTypes.func,
-      setLoading: React.PropTypes.func,
+      loadData: React.PropTypes.func
     }
   }
 
   getChildContext() {
     return {
-      flux: flux,
-      loadData: this.loadData.bind(this),
-      setLoading: this.setLoading.bind(this),
+      flux,
+      loadData: this.loadData.bind(this)
     }
   }
 
@@ -48,13 +46,8 @@ class App extends Component {
     super(props)
 
     this.state = {
-      loading: true,
-      error: false
+      loading: true
     };
-  }
-
-  setLoading(loading) {
-    this.setState({loading});
   }
 
   loadData() {

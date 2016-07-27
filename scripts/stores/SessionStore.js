@@ -1,5 +1,6 @@
 import { Store } from 'flummox';
 import { createFio } from '../utils/create-fio.js';
+import User from '../models/User.js';
 
 const SESSION_KEY = 'ets-session';
 const defaultUser = {
@@ -8,44 +9,13 @@ const defaultUser = {
   role: 'mayor'
 };
 
-const MAP_INITIAL_CENTER = [-399.43090337943863, -8521.192605428025];
-const MAP_INITIAL_ZOOM = 3;
-
-class User {
-  constructor(user = {}) {
-    if (user === null) user = {};
-    this.company_id = user.company_id;
-    this.company_name = user.company_name;
-    this.first_name = user.first_name;
-    this.last_name = user.last_name;
-    this.middle_name = user.middle_name;
-    this.login = user.login;
-    this.role = user.role;
-    this.user_id = user.user_id;
-    this.structure_id = user.structure_id;
-    this.map_config = user.map_config;
-    this.fio = user.fio;
-  }
-
-  getCompanyMapConfig = () => {
-    if (this.map_config && this.map_config.zoom && this.map_config.coordinates) {
-      return this.map_config;
-    } else {
-      return {
-        coordinates: MAP_INITIAL_CENTER,
-        zoom: MAP_INITIAL_ZOOM
-      }
-    }
-  }
-}
-
-class SessionStore extends Store {
+export default class SessionStore extends Store {
 
   constructor(flux) {
     super();
-    const sessionActions = flux.getActions('session');
-    const pointsActions = flux.getActions('points');
     this.flux = flux;
+
+    const sessionActions = flux.getActions('session');
     this.register(sessionActions.login, this.handleLogin);
     this.register(sessionActions.logout, this.handleLogout);
 
@@ -56,8 +26,6 @@ class SessionStore extends Store {
     try {
       storedSession = JSON.parse(localStorage.getItem(SESSION_KEY));
       currentUser = JSON.parse(localStorage.getItem('current_user'));
-
-      //pointsActions.setFilter({owner: [currentUser.company_id]});
     } catch (e) {
       storedSession = null;
       currentUser = defaultUser;
@@ -82,7 +50,8 @@ class SessionStore extends Store {
     this.flux.getStore('dashboard').resetState();
     currentUser = new User(currentUser);
     this.setState({
-      currentUser, session
+      currentUser,
+      session
     });
   }
 
@@ -93,7 +62,10 @@ class SessionStore extends Store {
   handleLogout(message) {
     localStorage.removeItem(SESSION_KEY);
     localStorage.removeItem('current_user');
-    this.setState({session: null, sessionError: message || null});
+    this.setState({
+      session: null,
+      sessionError: message || null
+    });
   }
 
   getCurrentUser() {
@@ -105,5 +77,3 @@ class SessionStore extends Store {
   }
 
 }
-
-export default SessionStore;

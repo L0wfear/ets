@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { MenuItem as BootstrapMenuItem, Navbar, Nav, NavItem, NavDropdown, Glyphicon} from 'react-bootstrap';
 import { enhanceWithPermissions } from './util/RequirePermissions.jsx';
-import LoadingOverlay from './LoadingOverlay.jsx';
+import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
+import { FluxContext, HistoryContext, connectToStores } from 'utils/decorators';
 
 const MenuItem = enhanceWithPermissions(BootstrapMenuItem);
 
+@FluxContext
+@HistoryContext
 export default class MainPage extends React.Component {
 
   constructor() {
@@ -16,11 +19,6 @@ export default class MainPage extends React.Component {
         login: 'Пользователь'
       }
     };
-  }
-
-  static contextTypes = {
-    flux: React.PropTypes.object,
-    history: React.PropTypes.object
   }
 
   renderEmptyHeader() {
@@ -114,26 +112,31 @@ export default class MainPage extends React.Component {
               <div className="navbar-user__data-name">{this.state.user.fio}</div>
             </div>
           </NavItem>
-          <NavItem onClick={this.logout.bind(this)} >Выйти</NavItem>
+          <NavItem onClick={this.logout.bind(this)}>Выйти</NavItem>
         </Nav>
 
       </Navbar>
-    )
+    );
 
 	}
 
   logout() {
-    this.context.flux.getActions('session').logout().then(() => {
-      this.context.history.pushState(null, '/login');
+    const { flux, history } = this.context;
+    flux.getActions('session').logout().then(() => {
+      history.pushState(null, '/login');
     });
   }
 
   componentDidMount() {
-    this.setState({user: this.context.flux.getStore('session').getCurrentUser()});
+    this.setState({
+      user: this.context.flux.getStore('session').getCurrentUser()
+    });
   }
 
   componentWillReceiveProps() {
-    this.setState({user: this.context.flux.getStore('session').getCurrentUser()});
+    this.setState({
+      user: this.context.flux.getStore('session').getCurrentUser()
+    });
   }
 
   render() {

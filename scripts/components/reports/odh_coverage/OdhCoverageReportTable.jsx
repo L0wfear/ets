@@ -53,7 +53,8 @@ let OdhCoverageReportTable = (props) => {
 		};
 
 		return <Table
-      noHeader={true}
+      title="Фактическое выполнение заданий за смену"
+      noFilter={true}
 			results={props.data}
 			renderers={renderers}
       enumerated={false}

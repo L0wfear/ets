@@ -15,9 +15,11 @@ export default class NotificationsStore extends Store {
     const missionsActons   = flux.getActions('missions');
     const routesActions    = flux.getActions('routes');
     const dashboardActions = flux.getActions('dashboard');
+    const reportsActions   = flux.getActions('reports');
 
     this.register(missionsActons.createMission, this.handleMissionCreate);
     this.register(missionsActons.createMissions, this.handleMissionsCreate);
+    this.register(reportsActions.getOdhCoverageReport, this.handleGetOdhCoverageReport);
 
     this.state = {
       operationsCount: 0,
@@ -44,6 +46,10 @@ export default class NotificationsStore extends Store {
     if (this.checkResponse(response)) {
       global.NOTIFICATION_SYSTEM._addNotification(notifications.missionsCreationSuccessNotification);
     }
+  }
+
+  handleGetOdhCoverageReport(response) {
+    global.NOTIFICATION_SYSTEM.notify('Отчет обновлен', 'info');
   }
 
 }

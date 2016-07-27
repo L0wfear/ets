@@ -215,7 +215,8 @@ export default class Table extends React.Component {
         columnName: 'rowNumber',
         displayName: '№',
         cssClassName: 'width60',
-        filter: false
+        filter: false,
+        customComponent: renderers['rowNumber']
       });
     }
 

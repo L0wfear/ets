@@ -118,6 +118,7 @@ const routes = (
       <Route path="coverage-report" component={reports.coverage} onEnter={requireAuth}/>
       <Route path="fuel-report" component={reports.fuel} onEnter={requireAuth}/>
       <Route path="analytics" component={reports.analytics} onEnter={requireAuth}/>
+      <Route path="car_func_type_usage_reports" component={reports.carFuncTypeUsage.all} onEnter={requireAuth}/>
       <Route path="daily-cleaning-reports-ets" component={reports.daily.cleaning.ets.all} onEnter={requireAuth}/>
       <Route path="daily-cleaning-report-ets/:element/:id" component={reports.daily.cleaning.ets.single} onEnter={requireAuth}/>
       <Route path="daily-cleaning-reports-cafap" component={reports.daily.cleaning.cafap.all} onEnter={requireAuth}/>

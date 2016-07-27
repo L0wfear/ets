@@ -6,8 +6,6 @@ import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
 import { FluxContext, HistoryContext, connectToStores } from 'utils/decorators';
 import PERMISSIONS from 'constants/permissions';
 
-console.log(PERMISSIONS.nsi.list);
-
 const MenuItem = enhanceWithPermissions(BootstrapMenuItem);
 const NavItem = enhanceWithPermissions(BootstrapNavItem);
 const NavDropdown = enhanceWithPermissions(BootstrapNavDropdown);
@@ -88,6 +86,7 @@ export default class MainPage extends React.Component {
             <NavDropdown title="Оперативные отчеты" id="nav-dropdown-3-1">
               <MenuItem active={path === '/route-reports'} href="#/route-reports">Покрытие ОДХ маршрутами</MenuItem>
               <MenuItem active={path === '/mission-reports'} href="#/mission-reports">Прохождение заданий</MenuItem>
+              <MenuItem active={path === '/car_func_type_usage_reports'} href="#/car_func_type_usage_reports">Статистика выхода техники</MenuItem>
             </NavDropdown>
             <NavDropdown title="Регламентированные отчеты" id="nav-dropdown-3-2">
               <MenuItem active={path === '/fuel-report'} href="#/fuel-report">Расход топлива</MenuItem>

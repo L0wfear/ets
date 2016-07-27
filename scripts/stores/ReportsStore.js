@@ -15,10 +15,12 @@ class ReportsStore extends Store {
     this.register(reportsActions.getWeeklyTechnicalOperationCompleteReports, this.handleGetWeeklyTechnicalOperationCompleteReports);
     this.register(reportsActions.createWeeklyTechnicalOperationCompleteReport, this.handleGetWeeklyTechnicalOperationCompleteReports);
     this.register(reportsActions.getOdhCoverageReport, this.handleGetOdhCoverageReport);
+    this.register(reportsActions.getCarFuncTypeUsageReports, this.handleGetCarFuncTypeUsageReports);
 
     this.state = {
       dailyCleaningReportsListETS: [],
       dailyCleaningReportsListCAFAP: [],
+      carFuncTypeUsageReportsList: [],
       fuelReport: [],
       weeklyTechnicalOperationCompleteReportsList: [],
       odhCoverageReport: []
@@ -28,6 +30,10 @@ class ReportsStore extends Store {
 
   handleGetFuelReport(e) {
     this.setState({fuelReport: e.results});
+  }
+
+  handleGetCarFuncTypeUsageReports({result}) {
+    this.setState({carFuncTypeUsageReportsList: result});
   }
 
   handleGetDailyCleaningReportsETS(dailyCleaningReports) {

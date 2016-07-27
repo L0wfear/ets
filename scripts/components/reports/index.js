@@ -11,6 +11,7 @@ import route from './route';
 import daily from './daily';
 import weekly from './weekly';
 import odhCoverageReport from './odh_coverage/OdhCoverageReport.jsx';
+import carFuncTypeUsage from './car_func_type_usage';
 
 export default {
   analytics,
@@ -21,5 +22,6 @@ export default {
   route,
   daily,
   weekly,
-  odhCoverageReport
+  odhCoverageReport,
+  carFuncTypeUsage
 }

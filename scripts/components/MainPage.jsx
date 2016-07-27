@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import { MenuItem as BootstrapMenuItem, Navbar, Nav, NavItem, NavDropdown, Glyphicon} from 'react-bootstrap';
+import { MenuItem as BootstrapMenuItem, Navbar, Nav, NavItem as BootstrapNavItem, NavDropdown as BootstrapNavDropdown, Glyphicon} from 'react-bootstrap';
 import { enhanceWithPermissions } from './util/RequirePermissions.jsx';
 import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
 import { FluxContext, HistoryContext, connectToStores } from 'utils/decorators';
+import PERMISSIONS from 'constants/permissions';
+
+console.log(PERMISSIONS.nsi.list);
 
 const MenuItem = enhanceWithPermissions(BootstrapMenuItem);
+const NavItem = enhanceWithPermissions(BootstrapNavItem);
+const NavDropdown = enhanceWithPermissions(BootstrapNavDropdown);
 
 @FluxContext
 @HistoryContext
@@ -48,24 +53,24 @@ export default class MainPage extends React.Component {
         </Navbar.Header>
 
         <Nav>
-          <NavItem active={path === '/monitor'} href="#/monitor">Карта</NavItem>
+          <NavItem permissions={PERMISSIONS.monitor} active={path === '/monitor'} href="#/monitor">Карта</NavItem>
           <NavItem active={path === '/odh_coverage_report'} href="#/odh_coverage_report">Оперативная обстановка</NavItem>
           <NavItem active={path === '/dashboard'} href="#/dashboard">Рабочий стол</NavItem>
           <NavItem active={path === '/waybill-journal'} href="#/waybill-journal">Путевые листы</NavItem>
+
           <NavDropdown title="Задания" id="nav-dropdown-1">
             <MenuItem permissions={['mission.list']} active={path === '/mission-journal'} href="#/mission-journal">Журнал заданий</MenuItem>
             <MenuItem permissions={['mission_template.list']} active={path === '/mission-templates-journal'} href="#/mission-templates-journal">Шаблоны заданий</MenuItem>
             <MenuItem permissions={['duty_mission.list']} active={path === '/duty-missions-journal'} href="#/duty-missions-journal">Журнал наряд-заданий</MenuItem>
             <MenuItem permissions={['duty_mission_template.list']} active={path === '/duty-mission-templates-journal'} href="#/duty-mission-templates-journal">Шаблоны наряд-заданий</MenuItem>
           </NavDropdown>
-          <NavDropdown title="НСИ" id="nav-dropdown-2">
+
+          <NavDropdown oneOfPermissions={PERMISSIONS.nsi.list} title="НСИ" id="nav-dropdown-2">
             <MenuItem permissions={['employee.list']} active={path === '/employees'} href="#/employees">Реестр сотрудников</MenuItem>
             <MenuItem permissions={['car.list']} active={path === '/cars'} href="#/cars">Реестр транспортных средств</MenuItem>
             <MenuItem permissions={['technical_operation.list']} active={path === '/technical-operations'} href="#/technical-operations">Реестр технологических операций</MenuItem>
             <MenuItem permissions={['faxogramm.list']} active={path === '/faxogramms'} href="#/faxogramms">Реестр факсограмм</MenuItem>
-
             <MenuItem divider />
-
             <MenuItem permissions={['fuel_consumption_rate.list']} active={path === '/fuel-rates'} href="#/fuel-rates">Справочник норм расхода топлива</MenuItem>
             <MenuItem permissions={['fuel_operations.list']} active={path === '/fuel-operations'} href="#/fuel-operations">Справочник операций для расчета топлива</MenuItem>
             <MenuItem permissions={['types.list']} active={path === '/car-func-types'} href="#/car-func-types">Справочник типов техники</MenuItem>

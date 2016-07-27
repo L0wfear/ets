@@ -1,5 +1,7 @@
 @import './utils.scss';
 @import './waybill.scss';
+@import './reports.scss';
+@import './media.scss';
 
 $colorLink: #0081d6;
 $colorGreen: #6a9e56;
@@ -2777,6 +2779,9 @@ div.none {
 }
 .width150 {
   width: 150px !important;
+}
+.width200 {
+  width: 200px !important;
 }
 .width10-200 {
   width: 200px;

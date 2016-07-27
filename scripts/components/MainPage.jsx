@@ -49,6 +49,7 @@ export default class MainPage extends React.Component {
 
         <Nav>
           <NavItem active={path === '/monitor'} href="#/monitor">Карта</NavItem>
+          <NavItem active={path === '/odh_coverage_report'} href="#/odh_coverage_report">Оперативная обстановочка</NavItem>
           <NavItem active={path === '/dashboard'} href="#/dashboard">Рабочий стол</NavItem>
           <NavItem active={path === '/waybill-journal'} href="#/waybill-journal">Путевые листы</NavItem>
           <NavDropdown title="Задания" id="nav-dropdown-1">

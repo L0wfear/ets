@@ -100,6 +100,8 @@ const routes = (
     <Redirect from="/" to="dashboard" />
     <Route path="/" component={App}>
       <Route path="monitor" component={MonitorPage} onEnter={requireAuth}/>
+      {/* Отчет префекта */}
+      <Route path="odh_coverage_report" component={reports.odhCoverageReport} onEnter={requireAuth}/>
       <Route path="dashboard" component={DashboardPage} onEnter={requireAuth}/>
       <Route path="waybill-journal" component={WaybillJournal} onEnter={requireAuth}/>
       <Route path="company-structure" component={CompanyStructure} onEnter={requireAuth}/>

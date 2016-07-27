@@ -132,7 +132,8 @@ export default class LoadingStore extends Store {
       reportsActions.getWeeklyTechnicalOperationCompleteReports,
       reportsActions.getWeeklyTechnicalOperationCompleteReportById,
       reportsActions.createWeeklyTechnicalOperationCompleteReport,
-      reportsActions.getCoverageReport
+      reportsActions.getCoverageReport,
+      reportsActions.getOdhCoverageReport,
 
     );
 

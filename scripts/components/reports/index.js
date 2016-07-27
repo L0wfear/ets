@@ -10,6 +10,7 @@ import mission from './mission';
 import route from './route';
 import daily from './daily';
 import weekly from './weekly';
+import odhCoverageReport from './odh_coverage/OdhCoverageReport.jsx';
 
 export default {
   analytics,
@@ -19,5 +20,6 @@ export default {
   odh,
   route,
   daily,
-  weekly
+  weekly,
+  odhCoverageReport
 }

@@ -6,7 +6,8 @@ import {
   WeeklyTechnicalOperationCompleteReportsService,
   FuelReportService,
   CoverageReportService,
-  AnalyticsService
+  AnalyticsService,
+  OdhCoverageReportService
 } from 'api/Services';
 import { createValidDateTime, createValidDate } from 'utils/dates';
 import config from '../config.js';
@@ -120,6 +121,10 @@ export default class ReportsActions extends Actions {
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
     return WeeklyTechnicalOperationCompleteReportsService.post(payload, true, 'json');
+  }
+
+  getOdhCoverageReport() {
+    return OdhCoverageReportService.get();
   }
 
 }

@@ -227,7 +227,7 @@ export default class Table extends React.Component {
 
   		const metaObject = {
   			columnName: col.name,
-  			displayName: col.caption,
+  			displayName: col.customHeaderComponent ? col.customHeaderComponent : col.caption,
   		};
 
   		if (typeof renderers[col.name] === 'function') {

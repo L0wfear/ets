@@ -113,7 +113,6 @@ export default class Table extends React.Component {
       columnControlModalIsOpen: false,
       filterValues: {},
       columnControlValues: [],
-      checkedRows: {},
       globalCheckboxState: false,
       isHierarchical: props.isHierarchical,
       initialSort: 'id',

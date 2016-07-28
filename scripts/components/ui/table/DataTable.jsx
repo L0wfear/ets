@@ -430,6 +430,10 @@ export default class Table extends React.Component {
     let tableMetaCols = _.cloneDeep(tableMeta.cols);
     let data = _.cloneDeep(this.props.results);
 
+    if (typeof this.props.results === 'string') {
+      data = [];
+    }
+
     let results = this.processTableData(data, tableCols, selected, selectField, onRowSelected);
 
     const columnMetadata = this.initializeMetadata(tableMetaCols, renderers);

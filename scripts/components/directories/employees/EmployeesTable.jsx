@@ -13,7 +13,8 @@ let tableMeta = {
       filter: {
 				type: 'select'
 			}
-    }, {
+    },
+    {
       name: 'birthday',
       caption: 'Дата рождения',
       type: '',
@@ -21,40 +22,46 @@ let tableMeta = {
         type: 'date_create',
         labelFunction: datePickerFunction
 			}
-  }, {
+    },
+    {
       name: 'personnel_number',
       caption: 'Табельный номер',
       type: '',
       filter: {}
-  }, {
+    },
+    {
       name: 'position_name',
       caption: 'Должность',
       type: 'text',
       filter: {
         type: 'select'
       }
-  }, {
+    },
+    {
       name: 'drivers_license',
       caption: 'Водительское удостоверение',
       type: 'text',
       filter: {
 				type: 'select'
 			}
-  }, {
+    },
+    {
       name: 'special_license',
       caption: 'Специальное удостоверение',
       type: 'text',
       filter: {
 				type: 'select'
 			}
-  }, {
+    },
+    {
       name: 'company_structure_name',
       caption: 'Подразделение',
       type: 'text',
       filter: {
 				type: 'select'
 			}
-  }, {
+    },
+    {
       name: 'active',
       caption: 'Текущее состояние',
       type: 'text',
@@ -62,21 +69,24 @@ let tableMeta = {
 				type: 'select',
 				labelFunction: (l) => l ? 'Работает' : 'Не работает'
 			}
-  }, {
+    },
+    {
       name: 'phone',
       caption: 'Телефон',
       type: 'text',
       filter: {
 				type: 'select'
 			}
-  }, {
+    },
+    {
       name: 'medical_certificate',
       caption: 'Медицинская справка',
       type: 'text',
       filter: {
 				type: 'select'
 			}
-  }, {
+    },
+    {
       name: 'medical_certificate_date',
       caption: 'Срок действия мед. справки',
       type: 'date',
@@ -84,27 +94,31 @@ let tableMeta = {
         type: 'date_create',
         labelFunction: datePickerFunction
       }
-  }]
+    },
+    {
+      name: 'snils',
+      caption: 'СНИЛС №',
+      type: 'text',
+      filter: {
+        type: 'select'
+      }
+    }
+  ]
 };
 
 let EmployeesTable = (props) => {
 
   let data = props.data;
-
-  let fullnames = data.map((e) => {
+  data.forEach((e, i) => {
     let last_name = e.last_name || '';
     let first_name = e.first_name || '';
     let middle_name = e.middle_name || '';
-    return last_name+' '+first_name+' '+middle_name;
+    e.full_name = last_name+' '+first_name+' '+middle_name;
   });
-  data.forEach((e, i) => {e.full_name = fullnames[i]});
 
 	const renderers = {
 		birthday : ({data}) => <DateFormatter date={data} />,
 		active : ({data}) => <div>{data === true ? 'Работает' : 'Не работает'}</div>,
-		drivers_license : ({data}) => <div>{data && data !== "None" && data !== 'null' ? data : ''}</div>,
-		special_license : ({data}) => <div>{data && data !== "None" && data !== 'null' ? data : ''}</div>,
-    position_name: ({data}) => <div>{data && data !== "None" && data !== 'null' ? data : ''}</div>,
     medical_certificate_date: ({data}) => <DateFormatter date={data} />,
 	};
 

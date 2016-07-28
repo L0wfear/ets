@@ -25,9 +25,7 @@ export default class MainPage extends React.Component {
     super();
 
     this.state = {
-      user: {
-        login: 'Пользователь'
-      }
+      user: {}
     };
   }
 

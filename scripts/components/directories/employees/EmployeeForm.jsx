@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import connectToStores from 'flummox/connect';
 import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
 import EtsSelect from 'components/ui/EtsSelect.jsx';
 import Datepicker from 'components/ui/DatePicker.jsx';
@@ -7,8 +6,10 @@ import moment from 'moment';
 import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
 import Form from '../../compositions/Form.jsx';
+import { connectToStores } from 'utils/decorators';
 
-class EmployeeForm extends Form {
+@connectToStores(['objects'])
+export default class EmployeeForm extends Form {
 
 	constructor(props) {
 		super(props);
@@ -22,6 +23,7 @@ class EmployeeForm extends Form {
 	async componentDidMount() {
 		const { flux } = this.context;
 		flux.getActions('objects').getCars();
+		flux.getActions('objects').getPositions();
 		let companyStructureList = await flux.getActions('companyStructure').getLinearCompanyStructureForUser();
 		this.setState({companyStructureList});
 	}
@@ -35,8 +37,6 @@ class EmployeeForm extends Form {
 		const COMPANY_ELEMENTS = companyStructureList.map(el => ({value: el.id, label: el.name}));
 		const DRIVER_STATES = [{value: 1, label: 'Работает'}, {value: 0, label: 'Не работает'}];
     const POSITION_ELEMENTS = positionsList.map(el => ({value: el.id, label: el.position}));
-
-    console.log('form state is ', state);
 
     const IS_CREATING = !!!state.id;
 
@@ -117,6 +117,10 @@ class EmployeeForm extends Form {
 								<label>Срок действия медицинской справки</label>
 								<Datepicker date={state['medical_certificate_date']} time={false} onChange={this.handleChange.bind(this, 'medical_certificate_date')}/>
 							</Div>
+							<Div>
+								<label>СНИЛС №</label>
+								<Input type="text" value={state['snils']} onChange={this.handleChange.bind(this, 'snils')}/>
+							</Div>
 						</Col>
 
 					</Row>
@@ -129,5 +133,3 @@ class EmployeeForm extends Form {
 		)
 	}
 }
-
-export default connectToStores(EmployeeForm, ['objects']);

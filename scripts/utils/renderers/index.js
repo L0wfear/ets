@@ -12,10 +12,10 @@ export function floatFixed3({data}) {
   return <div>{value}</div>
 }
 
-export function floatFixed1({data}) {
+export function floatFixed1Percentage({data}) {
   let value;
   try {
-    value = !isEmpty(data) ? parseFloat(data).toFixed(1) : null;
+    value = !isEmpty(data) ? parseFloat(data).toFixed(1) + '%' : null;
   } catch (e) {
     console.log(e);
     value = 'Ошибка при обработке данных'

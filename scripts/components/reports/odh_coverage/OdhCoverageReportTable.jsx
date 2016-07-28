@@ -1,6 +1,6 @@
 import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
-import { floatFixed1 } from 'utils/renderers';
+import { floatFixed1Percentage } from 'utils/renderers';
 
 let getTableMeta = (props) => {
 
@@ -46,10 +46,10 @@ let getTableMeta = (props) => {
 
 let OdhCoverageReportTable = (props) => {
 		const renderers = {
-			percentage_one: floatFixed1,
-      percentage_two: floatFixed1,
-      percentage_three: floatFixed1,
-      total_percentage: floatFixed1,
+			percentage_one: floatFixed1Percentage,
+      percentage_two: floatFixed1Percentage,
+      percentage_three: floatFixed1Percentage,
+      total_percentage: floatFixed1Percentage,
 		};
 
 		return <Table

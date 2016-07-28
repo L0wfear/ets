@@ -51,9 +51,14 @@ export default class LoginPage extends Component {
       password
     };
 
-    flux.getActions('session').login(user).then(() => {
+    flux.getActions('session').login(user).then((data) => {
       this.context.loadData();
-      this.context.history.pushState(null, '/dashboard');
+      if (['dispatcher', 'master'].indexOf(data.payload.role) > -1) {
+        this.context.history.pushState(null, '/dashboard');
+      } else {
+        this.context.history.pushState(null, '/odh_coverage_report');
+      }
+
     });
   }
 

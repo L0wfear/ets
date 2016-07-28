@@ -10,12 +10,35 @@ const PERMISSIONS = {
     'plate': 'waybill.plate',
     'delete': 'waybill.delete'
   },
-  'company_structure': {
-    'list': 'company_structure.list',
-    'create': 'company_structure.create',
-    'read': 'company_structure.read',
-    'update': 'company_structure.update',
-    'delete': 'company_structure.delete'
+  'missions': {
+    'mission': {
+      'list': 'mission.list',
+      'create': 'mission.create',
+      'read': 'mission.read',
+      'update': 'mission.update',
+      'delete': 'mission.delete'
+    },
+    'mission_template': {
+      'list': 'mission_template.list',
+      'create': 'mission_template.create',
+      'read': 'mission_template.read',
+      'update': 'mission_template.update',
+      'delete': 'mission_template.delete'
+    },
+    'duty_mission': {
+      'list': 'duty_mission.list',
+      'create': 'duty_mission.create',
+      'read': 'duty_mission.read',
+      'update': 'duty_mission.update',
+      'delete': 'duty_mission.delete'
+    },
+    'duty_mission_template': {
+      'list': 'duty_mission_template.list',
+      'create': 'duty_mission_template.create',
+      'read': 'duty_mission_template.read',
+      'update': 'duty_mission_template.update',
+      'delete': 'duty_mission_template.delete'
+    }
   },
   'company_structure': {
     'list': 'company_structure.list',
@@ -26,6 +49,14 @@ const PERMISSIONS = {
   },
   'monitor': 'monitor',
   'report': 'report.create',
+  'odh_coverage_report': 'odh_coverage_report',
+  'route': {
+    'list': 'route.list',
+    'create': 'route.create',
+    'read': 'route.read',
+    'update': 'route.update',
+    'delete': 'route.delete'
+  },
   'nsi': {
     'employee': {
       'list': 'employee.list',
@@ -132,16 +163,14 @@ const PERMISSIONS = {
       'update': 'work_kind.update',
       'delete': 'work_kind.delete'
     }
-  }
+  },
+  'administration': 'administration'
 }
 
-const NSI_PERMISSIONS = [];
 const NSI_LIST_PERMISSIONS = _(PERMISSIONS.nsi).map((v,k) => v.list).value();
+const MISSIONS_LIST_PERMISSIONS = _(PERMISSIONS.missions).map((v,k) => v.list).value();
 
-console.log(NSI_LIST_PERMISSIONS);
+PERMISSIONS.nsi.list = NSI_LIST_PERMISSIONS;
+PERMISSIONS.missions.list = MISSIONS_LIST_PERMISSIONS;
 
-export default {
-  nsi: {
-    list: NSI_LIST_PERMISSIONS
-  }
-}
+export default PERMISSIONS;

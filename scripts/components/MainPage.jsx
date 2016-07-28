@@ -6,6 +6,13 @@ import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
 import { FluxContext, HistoryContext, connectToStores } from 'utils/decorators';
 import PERMISSIONS from 'constants/permissions';
 
+const ROLES = {
+  'master': 'Мастер',
+  'dispatcher': 'Диспетчер',
+  'prefect': 'Префект',
+  'superuser': 'Администратор'
+};
+
 const MenuItem = enhanceWithPermissions(BootstrapMenuItem);
 const NavItem = enhanceWithPermissions(BootstrapNavItem);
 const NavDropdown = enhanceWithPermissions(BootstrapNavDropdown);
@@ -51,12 +58,12 @@ export default class MainPage extends React.Component {
         </Navbar.Header>
 
         <Nav>
-          <NavItem permissions={PERMISSIONS.monitor} active={path === '/monitor'} href="#/monitor">Карта</NavItem>
-          <NavItem active={path === '/odh_coverage_report'} href="#/odh_coverage_report">Оперативная обстановка</NavItem>
-          <NavItem active={path === '/dashboard'} href="#/dashboard">Рабочий стол</NavItem>
-          <NavItem active={path === '/waybill-journal'} href="#/waybill-journal">Путевые листы</NavItem>
+          <NavItem permissions={[PERMISSIONS.monitor]} active={path === '/monitor'} href="#/monitor">Карта</NavItem>
+          <NavItem permissions={[PERMISSIONS.odh_coverage_report]} active={path === '/odh_coverage_report'} href="#/odh_coverage_report">Оперативная обстановка</NavItem>
+          <NavItem preventRole={'prefect'} active={path === '/dashboard'} href="#/dashboard">Рабочий стол</NavItem>
+          <NavItem permissions={[PERMISSIONS.waybill.list]} active={path === '/waybill-journal'} href="#/waybill-journal">Путевые листы</NavItem>
 
-          <NavDropdown title="Задания" id="nav-dropdown-1">
+          <NavDropdown oneOfPermissions={PERMISSIONS.missions.list} title="Задания" id="nav-dropdown-1">
             <MenuItem permissions={['mission.list']} active={path === '/mission-journal'} href="#/mission-journal">Журнал заданий</MenuItem>
             <MenuItem permissions={['mission_template.list']} active={path === '/mission-templates-journal'} href="#/mission-templates-journal">Шаблоны заданий</MenuItem>
             <MenuItem permissions={['duty_mission.list']} active={path === '/duty-missions-journal'} href="#/duty-missions-journal">Журнал наряд-заданий</MenuItem>
@@ -82,7 +89,7 @@ export default class MainPage extends React.Component {
             {/*<MenuItem active={path === '/organizations'} href="#/organizations">Справочник организаций</MenuItem>*/}
           </NavDropdown>
 
-          <NavDropdown title="Отчеты" id="nav-dropdown-3">
+          <NavDropdown preventRole={'prefect'} title="Отчеты" id="nav-dropdown-3">
             <NavDropdown title="Оперативные отчеты" id="nav-dropdown-3-1">
               <MenuItem active={path === '/route-reports'} href="#/route-reports">Покрытие ОДХ маршрутами</MenuItem>
               <MenuItem active={path === '/mission-reports'} href="#/mission-reports">Прохождение заданий</MenuItem>
@@ -102,9 +109,9 @@ export default class MainPage extends React.Component {
             <MenuItem active={path === '/analytics'} href="#/analytics">Аналитика</MenuItem>
           </NavDropdown>
 
-          <NavItem active={path === '/routes-list'} href="#/routes-list">Маршруты</NavItem>
-          <NavItem active={path === '/company-structure'} href="#/company-structure">Структура предприятия</NavItem>
-          <NavItem title="Администрирование" href="http://213.79.88.5/admin/"><Glyphicon glyph="list-alt"/></NavItem>
+          <NavItem permissions={[PERMISSIONS.route.list]} active={path === '/routes-list'} href="#/routes-list">Маршруты</NavItem>
+          <NavItem permissions={[PERMISSIONS.company_structure.list]} active={path === '/company-structure'} href="#/company-structure">Структура предприятия</NavItem>
+          <NavItem permissions={[PERMISSIONS.administration]} title="Администрирование" href="http://172.17.31.72/admin"><Glyphicon glyph="list-alt"/></NavItem>
         </Nav>
 
         <Nav pullRight>
@@ -113,7 +120,7 @@ export default class MainPage extends React.Component {
               <img src="images/avatar-default.png" className="navbar-user__avatar-img" />
             </div>
             <div className="navbar-user__data">
-              <div className="navbar-user__data-type">{this.state.user.role === 'master' ? 'Мастер' : 'Диспетчер'}</div>
+              <div className="navbar-user__data-type">{this.state.user.role ? ROLES[this.state.user.role] : ''}</div>
               <div className="navbar-user__data-name">{this.state.user.fio}</div>
             </div>
           </NavItem>

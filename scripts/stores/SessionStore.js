@@ -35,7 +35,8 @@ export default class SessionStore extends Store {
 
     this.state = {
       currentUser,
-      session: storedSession
+      session: storedSession,
+      userPermissions: currentUser.permissions
     };
 
   }
@@ -51,7 +52,8 @@ export default class SessionStore extends Store {
     currentUser = new User(currentUser);
     this.setState({
       currentUser,
-      session
+      session,
+      userPermissions: currentUser.permissions
     });
   }
 

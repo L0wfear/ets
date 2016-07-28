@@ -10,7 +10,6 @@ export function enhanceWithPermissions(ComposedComponent) {
         userPermissions: PropTypes.array.isRequired,
         permissions: PropTypes.array,
         oneOfPermissions: PropTypes.array,
-        preventRole: PropTypes.string,
       }
     }
 
@@ -19,7 +18,6 @@ export function enhanceWithPermissions(ComposedComponent) {
         userPermissions: [],
         permissions: [],
         oneOfPermissions: [],
-        preventRole: ''
       }
     }
 
@@ -32,10 +30,7 @@ export function enhanceWithPermissions(ComposedComponent) {
      * @return {boolean} isPermitted - доступен ли компонент для отображения
      */
   	isPermitted() {
-      const { userPermissions, permissions, oneOfPermissions, preventRole, currentUser } = this.props;
-      if (preventRole && currentUser.role && currentUser.role === preventRole) {
-        return false;
-      }
+      const { userPermissions, permissions, oneOfPermissions } = this.props;
       // В случае если достаточно наличия хоть одного доступа
       if (oneOfPermissions.length) {
         return userPermissions.filter(up => oneOfPermissions.indexOf(up) + 1).length;

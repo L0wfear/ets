@@ -60,7 +60,7 @@ export default class MainPage extends React.Component {
         <Nav>
           <NavItem permissions={[PERMISSIONS.monitor]} active={path === '/monitor'} href="#/monitor">Карта</NavItem>
           <NavItem permissions={[PERMISSIONS.odh_coverage_report]} active={path === '/odh_coverage_report'} href="#/odh_coverage_report">Оперативная обстановка</NavItem>
-          <NavItem preventRole={'prefect'} active={path === '/dashboard'} href="#/dashboard">Рабочий стол</NavItem>
+          <NavItem permissions={[PERMISSIONS.dashboard]} active={path === '/dashboard'} href="#/dashboard">Рабочий стол</NavItem>
           <NavItem permissions={[PERMISSIONS.waybill.list]} active={path === '/waybill-journal'} href="#/waybill-journal">Путевые листы</NavItem>
 
           <NavDropdown oneOfPermissions={PERMISSIONS.missions.list} title="Задания" id="nav-dropdown-1">
@@ -89,7 +89,7 @@ export default class MainPage extends React.Component {
             {/*<MenuItem active={path === '/organizations'} href="#/organizations">Справочник организаций</MenuItem>*/}
           </NavDropdown>
 
-          <NavDropdown preventRole={'prefect'} title="Отчеты" id="nav-dropdown-3">
+          <NavDropdown oneOfPermissions={[PERMISSIONS.report.list]} title="Отчеты" id="nav-dropdown-3">
             <NavDropdown title="Оперативные отчеты" id="nav-dropdown-3-1">
               <MenuItem active={path === '/route-reports'} href="#/route-reports">Покрытие ОДХ маршрутами</MenuItem>
               <MenuItem active={path === '/mission-reports'} href="#/mission-reports">Прохождение заданий</MenuItem>

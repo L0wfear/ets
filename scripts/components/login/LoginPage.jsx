@@ -56,7 +56,7 @@ export default class LoginPage extends Component {
       if (['dispatcher', 'master'].indexOf(data.payload.role) > -1) {
         this.context.history.pushState(null, '/dashboard');
       } else {
-        this.context.history.pushState(null, '/odh_coverage_report');
+        this.context.history.pushState(null, '/monitor');
       }
 
     });

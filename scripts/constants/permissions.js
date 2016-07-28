@@ -48,7 +48,11 @@ const PERMISSIONS = {
     'delete': 'company_structure.delete'
   },
   'monitor': 'monitor',
-  'report': 'report.create',
+  'dashboard': 'dashboard',
+  'report': {
+    'create': 'report.create',
+    'list': 'report.list'
+  },
   'odh_coverage_report': 'odh_coverage_report',
   'route': {
     'list': 'route.list',

@@ -88,8 +88,13 @@ function requireAuth(nextState, replaceState) {
 }
 
 function checkLoggedIn(nextState, replaceState) {
-  if (flux.getStore('session').isLoggedIn() && flux.getStore('session').getCurrentUser().role) {
-    replaceState({}, '/dashboard');
+  const role = flux.getStore('session').getCurrentUser().role;
+  if (flux.getStore('session').isLoggedIn() && role) {
+    if (['dispatcher', 'master'].indexOf(role) > -1) {
+      replaceState({}, '/dashboard');
+    } else {
+      replaceState({}, '/monitor');
+    }
   }
 }
 
@@ -97,7 +102,7 @@ const history = createHashHistory({queryKey: false});
 
 const routes = (
   <Router history={history}>
-    <Redirect from="/" to="dashboard" />
+    <Redirect from="/" to="monitor" />
     <Route path="/" component={App}>
       <Route path="monitor" component={MonitorPage} onEnter={requireAuth}/>
       {/* Отчет префекта */}

@@ -7,15 +7,7 @@ import ElementsList from 'components/ElementsList.jsx';
 let tableMeta = {
 	cols: [
 		{
-			name: 'id',
-			caption: 'Номер',
-			type: 'string',
-      filter: {
-        type: 'select',
-      }
-		},
-		{
-			name: 'address',
+			name: 'address_comm',
 			caption: 'Адрес',
 			type: 'string',
       filter: {
@@ -60,7 +52,7 @@ let DangerZonesTable = (props) => {
 				results={props.data}
 				tableMeta={tableMeta}
 				renderers={renderers}
-				enumerated={false}
+				enumerated={true}
 				{...props}/>
 }
 

@@ -1,13 +1,10 @@
 var path = require('path');
 var webpack = require('webpack');
-//var writeStats = require('./utils/writeStats');
 var notifyStats = require('./utils/notifyStats');
 var assetsPath = path.resolve(__dirname, '../dist');
 var host = 'localhost';
 var port = 3000;
 var alias = require('./alias');
-//var ForceCaseSensitivityPlugin = require('./utils/forcecasesensitivity');
-
 var stand = process.env.STAND || 'development';
 
 module.exports = {
@@ -58,10 +55,7 @@ module.exports = {
     extensions: ['', '.json', '.js', '.jsx']
   },
   plugins: [
-    // hot reload
     new webpack.HotModuleReplacementPlugin(),
-    //new ForceCaseSensitivityPlugin(),
-
     // set global vars
     new webpack.DefinePlugin({
       'process.env': {
@@ -70,7 +64,6 @@ module.exports = {
         STAND: JSON.stringify(stand)
       }
     }),
-
     new webpack.IgnorePlugin(/\.json$/),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
@@ -79,8 +72,6 @@ module.exports = {
       __DEVELOPMENT__: true,
       __DEVTOOLS__: true  // <-------- DISABLE redux-devtools HERE
     }),
-
-    // stats
     function () {
       this.plugin('done', notifyStats);
     },

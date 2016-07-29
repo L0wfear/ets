@@ -9,3 +9,4 @@ services_json
 npm-debug.log
 build_and_deploy_study.sh
 build_and_deploy_test.sh
+node-server.js

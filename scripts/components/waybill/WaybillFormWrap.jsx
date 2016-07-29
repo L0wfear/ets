@@ -187,16 +187,6 @@ class WaybillFormWrap extends Component {
 
 				if (props.element.status === 'active' || props.element.status === 'closed') {
 
-					if (isNotNull(waybill.odometr_end) && isNotNull(waybill.odometr_start)) {
-						waybill.odometr_diff = parseFloat(waybill.odometr_end - waybill.odometr_start).toFixed(3);
-					}
-					if (isNotNull(waybill.motohours_end) && isNotNull(waybill.motohours_start)) {
-						waybill.motohours_diff = parseFloat(waybill.motohours_end - waybill.motohours_start).toFixed(3);
-					}
-					if (isNotNull(waybill.motohours_equip_end) && isNotNull(waybill.motohours_equip_start)) {
-						waybill.motohours_equip_diff = parseFloat(waybill.motohours_equip_end - waybill.motohours_equip_start).toFixed(3);
-					}
-
 					let fuelStart = waybill.fuel_start ? parseFloat(waybill.fuel_start) : 0;
 					let fuelGiven = waybill.fuel_given ? parseFloat(waybill.fuel_given) : 0;
 					let fuelTaxes = Taxes.calculateFinalResult(waybill.tax_data);
@@ -209,6 +199,29 @@ class WaybillFormWrap extends Component {
 						waybill.equipment_fuel_end = (equipmentFuelStart + equipmentFuelGiven - equipmentFuelTaxes).toFixed(3);
 					} else {
 						waybill.fuel_end = (fuelStart + fuelGiven - fuelTaxes - equipmentFuelTaxes).toFixed(3);
+					}
+
+					// Автоматическое заполнение поля "возврат" полем "выезд"
+					if (props.element.status === 'active') {
+						if (isEmpty(waybill.odometr_end) && isNotNull(waybill.odometr_start)) {
+							waybill.odometr_end = waybill.odometr_start;
+						}
+						if (isEmpty(waybill.motohours_end) && isNotNull(waybill.motohours_start)) {
+							waybill.motohours_end = waybill.motohours_start;
+						}
+						if (isEmpty(waybill.motohours_equip_end) && isNotNull(waybill.motohours_equip_start)) {
+							waybill.motohours_equip_end = waybill.motohours_equip_start;
+						}
+					}
+
+					if (isNotNull(waybill.odometr_end) && isNotNull(waybill.odometr_start)) {
+						waybill.odometr_diff = parseFloat(waybill.odometr_end - waybill.odometr_start).toFixed(3);
+					}
+					if (isNotNull(waybill.motohours_end) && isNotNull(waybill.motohours_start)) {
+						waybill.motohours_diff = parseFloat(waybill.motohours_end - waybill.motohours_start).toFixed(3);
+					}
+					if (isNotNull(waybill.motohours_equip_end) && isNotNull(waybill.motohours_equip_start)) {
+						waybill.motohours_equip_diff = parseFloat(waybill.motohours_equip_end - waybill.motohours_equip_start).toFixed(3);
 					}
 
 					if (props.element.status === 'active') {

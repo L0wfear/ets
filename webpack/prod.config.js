@@ -32,7 +32,7 @@ module.exports = {
       { test: /\.(jpe?g|png|gif|svg)$/, loader: 'url', query: { limit: 10240 } },
       { test: /\.jsx?$/, exclude: /node_modules/, loaders: [strip.loader('debug'), 'babel?stage=0&optional=runtime&plugins=typecheck'] },
       { test: /\.json$/, loader: 'json-loader' },
-      { test: /\.(eot|woff|woff2|ttf|svg)(\?v=\d+\.\d+\.\d+)?/, loader: 'url-loader?limit=100000&name=fonts/[name].[ext]' },
+      // { test: /\.(eot|woff|woff2|ttf|svg)(\?v=\d+\.\d+\.\d+)?/, loader: 'url-loader?limit=100000&name=fonts/[name].[ext]' },
       { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', '!raw!sass?outputStyle=expanded') }
       //  { test: /\.scss$/, loaders: ['style','css-loader?sourceMap', 'resolve-url', 'sass-loader?sourceMap'] }
     ]

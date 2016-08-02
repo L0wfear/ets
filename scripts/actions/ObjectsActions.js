@@ -78,6 +78,12 @@ export default class ObjectsActions extends Actions {
     window.open(URL);
   }
 
+  getFaxogrammPDFUrl(id) {
+    const token = JSON.parse(window.localStorage.getItem('ets-session'));
+    let URL = FaxogrammService.getUrl() + id + '?token=' + token;
+    return URL;
+  }
+
   getPositions() {
     return PositionService.get();
   }

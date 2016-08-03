@@ -29,7 +29,7 @@ export class MissionForm extends Form {
 		this.handleChange('route_id', v);
 		const { flux } = this.context;
 		if (v) {
-			flux.getActions('routes').getRouteById(v, true).then(r => {
+			flux.getActions('routes').getRouteById(v, false).then(r => {
 				this.setState({selectedRoute: r});
 			});
 		} else {
@@ -92,10 +92,10 @@ export class MissionForm extends Form {
 		let { technicalOperationsList, routesList, carsList } = this.props;
 
 		if (!isEmpty(mission.route_id)) {
-			selectedRoute = await routesActions.getRouteById(mission.route_id, true);
+			selectedRoute = await routesActions.getRouteById(mission.route_id, false);
 		}
 
-		if (!isEmpty(mission.technical_operation_id)){
+		if (!isEmpty(mission.technical_operation_id)) {
 			//routesList = await routesActions.getRoutesByTechnicalOperation(mission.technical_operation_id);
 			routesList = await routesActions.getRoutesByMissionId(mission.id);
 		}

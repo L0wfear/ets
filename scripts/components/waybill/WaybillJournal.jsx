@@ -71,9 +71,9 @@ export default class WaybillJournal extends CheckableElementsList {
 
 		forms.push(
 			<WaybillPrintForm
-				key={forms.length}
-				show={this.state.showPrintForm}
-				hide={() => this.setState({showPrintForm: false})}/>
+					key={forms.length}
+					show={this.state.showPrintForm}
+					hide={() => this.setState({showPrintForm: false})}/>
 		);
 
 		return forms;

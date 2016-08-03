@@ -3,7 +3,10 @@ import Div from 'components/ui/Div.jsx';
 import { Panel, Collapse, Glyphicon, Fade, Well, Button } from 'react-bootstrap';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
 import FaxogrammMissionsFormWrap from '../../directories/faxogramm/FaxogrammMissionsFormWrap.jsx';
+import PDFViewModal from './PDFViewModal.jsx';
+import { FluxContext } from 'utils/decorators';
 
+@FluxContext
 export default class Faxogramms extends DashboardCardMedium {
 
   constructor(props) {
@@ -11,13 +14,18 @@ export default class Faxogramms extends DashboardCardMedium {
 
     this.state = Object.assign(this.state, {
       showFaxogrammForm: false,
+      showPDFViewModal: false,
     });
   }
 
-  action(data) {
+  showFaxogrammForm(data) {
     this.props.openSubitemsList(true);
     this.setState({showFaxogrammForm: true, faxogramm: data});
-    console.log('ok');
+  }
+
+  async showPDFViewModal(data) {
+    let url = await this.context.flux.getActions('objects').getFaxogrammPDFUrl(data.id);
+    this.setState({showPDFViewModal: true, url});
   }
 
   renderCustomCardData() {
@@ -33,8 +41,13 @@ export default class Faxogramms extends DashboardCardMedium {
           <p>{data.order_info}</p>
         </Div>
         <Div className="text-right">
-          <Button className="dashboard-card-action-button" onClick={(e) => {e.preventDefault(); this.action(data);}}>Сформировать задания</Button>
+          <Button className="dashboard-card-action-button" onClick={(e) => {e.preventDefault(); this.showPDFViewModal(data);}}><Glyphicon glyph="info-sign" /></Button>
+          <Button className="dashboard-card-action-button" onClick={(e) => {e.preventDefault(); this.showFaxogrammForm(data);}}>Сформировать задания</Button>
         </Div>
+        <PDFViewModal
+            url={this.state.url}
+            show={this.state.showPDFViewModal}
+            onHide={() => this.setState({showPDFViewModal: false, url: null})} />
       </Div>
     );
   }

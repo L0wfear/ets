@@ -334,11 +334,12 @@ class WaybillFormWrap extends Component {
 
 	/**
 	 * Выдача (печать) Путевого листа
+	 * @param {boolean} printonly - Только скачивание или скачивание+сохранение
 	 * @param {object} event
 	 * @param {number 1|2} print_form_type - Идентификатор печатной формы
 	 * @return {undefined}
 	 */
-  handlePrint(event, print_form_type = 1) {
+  handlePrint(printonly, event, print_form_type = 1) {
 		const { formState } = this.state;
 		const token = JSON.parse(window.localStorage.getItem('ets-session'));
 
@@ -346,12 +347,12 @@ class WaybillFormWrap extends Component {
 		let currentWaybillId = formState.id;
 
 		let callback = (createdWaybillId) => {
-			URL += createdWaybillId ?  createdWaybillId : currentWaybillId;
+			URL += createdWaybillId ? createdWaybillId : currentWaybillId;
 			console.log('printing waybill', URL);
 			URL += `&token=${token}`;
 			window.location = URL;
 		};
-		this.handleFormSubmit(this.state.formState, callback);
+		printonly ? callback() : this.handleFormSubmit(this.state.formState, callback);
   }
 
 	/**

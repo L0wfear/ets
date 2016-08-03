@@ -70,6 +70,12 @@ let getTableMeta = (props) => {
           labelFunction: (id) => getTechOperationById(id).name || id,
 				}
 			},
+      {
+				name: 'comment',
+				caption: 'Комментарий',
+				type: 'string',
+				filter: false
+			}
 		]
 	};
 

@@ -130,6 +130,12 @@ let getTableMeta = (props) => {
 					type: 'select',
 				}
 			},
+      {
+				name: 'comment',
+				caption: 'Комментарий',
+				type: 'string',
+				filter: false
+			},
 			{
 	      name: 'id',
 	      caption: 'Показать на карте',

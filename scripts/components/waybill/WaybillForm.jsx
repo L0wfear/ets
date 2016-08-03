@@ -171,6 +171,15 @@ class WaybillForm extends Form {
     this.setState({showMissionForm: true, selectedMission: newMission});
   }
 
+	refresh() {
+		let state = this.props.formState;
+		const { flux } = this.context;
+
+		flux.getActions('waybills').getLastClosedWaybill(state.car_id).then(w => {
+			console.log(w);
+		});
+	}
+
   handleMissionsChange(v) {
     let f = this.props.formState;
     let data = !isEmpty(v) ? v.split(',').map(d => parseInt(d, 10)) : [];
@@ -490,9 +499,12 @@ class WaybillForm extends Form {
 	      </Modal.Body>
 
 	      <Modal.Footer>
-					<Div hidden={state.status === 'closed'}>
-						<Div hidden={state.status !== 'draft' && !IS_CREATING} className="inline-block">
-			    		<Dropdown id="waybill-print-dropdown" dropup disabled={!this.props.canSave} onSelect={this.props.handlePrint}>
+					<Div>
+						{/*<Div className={'inline-block'} style={{marginRight: 5}} hidden={!isEmpty(state.id)}>
+							<Button title="Обновить" onClick={this.refresh.bind(this)} disabled={isEmpty(state.car_id)}><Glyphicon glyph="refresh" /></Button>
+						</Div>*/}
+						<Div className="inline-block">
+			    		<Dropdown id="waybill-print-dropdown" dropup disabled={!this.props.canSave} onSelect={this.props.handlePrint.bind(this, state.status !== 'draft' && !IS_CREATING)}>
 			        	<Dropdown.Toggle  disabled={!this.props.canSave}>
 			          	<Glyphicon glyph="print" /> Выдать
 			          </Dropdown.Toggle>
@@ -502,10 +514,10 @@ class WaybillForm extends Form {
 			          </Dropdown.Menu>
 			        </Dropdown>&nbsp;
 						</Div>
-            <Div className={'inline-block'}>
+            <Div className={'inline-block'} hidden={state.status === 'closed'}>
               <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>Сохранить</Button>
             </Div>
-            <Div className={'inline-block'} style={{marginLeft: 10}} hidden={!(this.props.formState.status && this.props.formState.status === 'active')}>
+            <Div className={'inline-block'} style={{marginLeft: 4}} hidden={state.status === 'closed' || !(this.props.formState.status && this.props.formState.status === 'active')}>
               <Button onClick={() => this.props.handleClose(taxesControl)} disabled={!this.props.canClose}>Закрыть ПЛ</Button>
             </Div>
 					</Div>

@@ -1,14 +1,13 @@
 // Webpack config for creating the production bundle.
-
 var path = require('path');
 var webpack = require('webpack');
-//var writeStats = require('./utils/writeStats');
+var notifyStats = require('./utils/notifyStats');
 var CleanPlugin = require('clean-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var strip = require('strip-loader');
 
-var relativeAssetsPath = '../dist';
-var assetsPath = path.join(__dirname, relativeAssetsPath);
+var assetsPath = path.join(__dirname, '..', 'dist');
 var alias = require('./alias');
 
 var stand = process.env.STAND || 'production';
@@ -33,7 +32,9 @@ module.exports = {
       { test: /\.(jpe?g|png|gif|svg)$/, loader: 'url', query: { limit: 10240 } },
       { test: /\.jsx?$/, exclude: /node_modules/, loaders: [strip.loader('debug'), 'babel?stage=0&optional=runtime&plugins=typecheck'] },
       { test: /\.json$/, loader: 'json-loader' },
+      // { test: /\.(eot|woff|woff2|ttf|svg)(\?v=\d+\.\d+\.\d+)?/, loader: 'url-loader?limit=100000&name=fonts/[name].[ext]' },
       { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', '!raw!sass?outputStyle=expanded') }
+      //  { test: /\.scss$/, loaders: ['style','css-loader?sourceMap', 'resolve-url', 'sass-loader?sourceMap'] }
     ]
   },
   node: {
@@ -53,8 +54,9 @@ module.exports = {
     extensions: ['', '.json', '.js', '.jsx']
   },
   plugins: [
-    new CleanPlugin([relativeAssetsPath]),
-
+    new CleanPlugin(['dist'], {
+      root: path.resolve(__dirname, '..')
+    }),
     new ExtractTextPlugin('../dist/[name].css', {
       allChunks: true
     }),
@@ -64,10 +66,8 @@ module.exports = {
       __DEVELOPMENT__: false,
       __DEVTOOLS__: false
     }),
-
     // ignore dev config
     new webpack.IgnorePlugin(/\.\/dev/, /\/config$/),
-
     // set global vars
     new webpack.DefinePlugin({
       'process.env': {
@@ -86,12 +86,23 @@ module.exports = {
       },
       sourceMap: false,
       mangle: false
-    })
-  /*
-      function () {
-        this.plugin('done', function(stats) {
-          writeStats.call(this, stats, 'prod');
-        });
-      }*/
+    }),
+    new CopyWebpackPlugin([
+      {
+        from: path.join(__dirname, '..', 'fonts'),
+        to: 'fonts'
+      },
+      {
+        from: path.join(__dirname, '..', 'images'),
+        to: 'images'
+      },
+      // TODO добавить, обсудив деплой
+      // {
+      //   from: path.join(__dirname, '..', 'index.html'),
+      // }
+    ]),
+    function () {
+      this.plugin('done', notifyStats);
+    },
   ]
 };

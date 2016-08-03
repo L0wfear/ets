@@ -1,71 +1,23 @@
 import React, { Component, PropTypes } from 'react';
 import { FluxContext, connectToStores } from 'utils/decorators';
-//
-// /**
-//  * Компонент, выступающий в роли HoC (Higher order Component) для проверки
-//  * наличия прав доступа
-//  * @extends React.Component
-//  */
-// export default class RequirePermissions extends Component {
-//
-//   static get propTypes() {
-//     return {
-//       userPermissions: PropTypes.array.isRequired,
-//       permissions: PropTypes.array
-//     }
-//   }
-//
-//   static get defaultProps() {
-//     return {
-//       userPermissions: ['waybill.create', 'waybill.read', 'waybill.delete'],
-//       permissions: []
-//     }
-//   }
-//
-// 	constructor() {
-// 		super();
-// 	}
-//
-//   /**
-//    * Определяет, доступен ли компонент для отображения пользователю в зависимости от требуемых прав
-//    * @param {string[]} requiredPermissions - требуемые права пользователя
-//    * @return {boolean} isPermitted - доступен ли компонент для отображения
-//    */
-// 	isPermitted(requiredPermissions) {
-//     const { userPermissions } = this.props;
-//     // TODO переделать, когда появится бек
-//     return true;
-// 		return requiredPermissions.filter(p => this.props.userPermissions.indexOf(p) + 1).length;
-// 	}
-//
-//   /**
-//    * React render
-//    * проводит проверку на наличие прав у пользователя, в случае отсутствия - не отображает компонент
-//    * @return {?React.Component}
-//    */
-// 	render() {
-//     const { permissions } = this.props;
-// 		if (!this.isPermitted(permissions)) {
-//       return null;
-//     }
-// 		return this.props.children;
-// 	}
-//
-// }
 
 export function enhanceWithPermissions(ComposedComponent) {
-  return class extends Component {
+
+  return @connectToStores('session')class extends Component {
+
     static get propTypes() {
       return {
         userPermissions: PropTypes.array.isRequired,
-        permissions: PropTypes.array
+        permissions: PropTypes.array,
+        oneOfPermissions: PropTypes.array,
       }
     }
 
     static get defaultProps() {
       return {
-        userPermissions: ['waybill.create', 'waybill.read', 'waybill.delete'],
-        permissions: []
+        userPermissions: [],
+        permissions: [],
+        oneOfPermissions: [],
       }
     }
 
@@ -75,17 +27,22 @@ export function enhanceWithPermissions(ComposedComponent) {
 
     /**
      * Определяет, доступен ли компонент для отображения пользователю в зависимости от требуемых прав
-     * @param {string[]} requiredPermissions - требуемые права пользователя
      * @return {boolean} isPermitted - доступен ли компонент для отображения
      */
-  	isPermitted(requiredPermissions) {
-      const { userPermissions } = this.props;
-      if (requiredPermissions.length === 0) {
-        return true;
+  	isPermitted() {
+      const { userPermissions, permissions, oneOfPermissions } = this.props;
+      // В случае если достаточно наличия хоть одного доступа
+      if (oneOfPermissions.length) {
+        return userPermissions.filter(up => oneOfPermissions.indexOf(up) + 1).length;
+      } else {
+        // В случае если требуемые права не указаны
+        if (permissions.length === 0) {
+          return true;
+        }
+        // TODO переделать, когда появится бек
+        // return true;
+    		return permissions.filter(p => userPermissions.indexOf(p) + 1).length;
       }
-      // TODO переделать, когда появится бек
-      return true;
-  		return requiredPermissions.filter(p => this.props.userPermissions.indexOf(p) + 1).length;
   	}
 
     /**
@@ -95,7 +52,7 @@ export function enhanceWithPermissions(ComposedComponent) {
      */
   	render() {
       const { permissions } = this.props;
-  		if (!this.isPermitted(permissions)) {
+  		if (!this.isPermitted()) {
         return null;
       }
   		return <ComposedComponent {...this.props}/>;

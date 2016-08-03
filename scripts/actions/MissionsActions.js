@@ -34,7 +34,7 @@ export default class MissionsActions extends Actions {
   getMissionsByCarAndTimestamp(car_id, timestamp) {
     const payload = {
       car_id,
-      timestamp
+      point_timestamp: timestamp
     };
 
     return MissionService.get(payload);
@@ -167,7 +167,7 @@ export default class MissionsActions extends Actions {
     const missionsCreationTemplateCopy = _.clone(missionsCreationTemplate);
     const date_start = createValidDateTime(missionsCreationTemplateCopy.date_start);
     const date_end = createValidDateTime(missionsCreationTemplateCopy.date_end);
-    const queries = Object.keys(missionTemplates).map((key) => missionTemplates[key]).map((query) => {
+    const queries = _.keys(missionTemplates).map((key) => missionTemplates[key]).map((query) => {
       const payload = _.clone(query);
       payload.date_start = date_start;
       payload.date_end = date_end;

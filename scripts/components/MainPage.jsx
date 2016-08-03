@@ -1,26 +1,32 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import { MenuItem as BootstrapMenuItem, Navbar, Nav, NavItem, NavDropdown, Glyphicon} from 'react-bootstrap';
+import { MenuItem as BootstrapMenuItem, Navbar, Nav, NavItem as BootstrapNavItem, NavDropdown as BootstrapNavDropdown, Glyphicon} from 'react-bootstrap';
 import { enhanceWithPermissions } from './util/RequirePermissions.jsx';
-import LoadingOverlay from './LoadingOverlay.jsx';
+import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
+import { FluxContext, HistoryContext, connectToStores } from 'utils/decorators';
+import PERMISSIONS from 'constants/permissions';
+
+const ROLES = {
+  'master': 'Мастер',
+  'dispatcher': 'Диспетчер',
+  'prefect': 'Префект',
+  'superuser': 'Администратор'
+};
 
 const MenuItem = enhanceWithPermissions(BootstrapMenuItem);
+const NavItem = enhanceWithPermissions(BootstrapNavItem);
+const NavDropdown = enhanceWithPermissions(BootstrapNavDropdown);
 
+@FluxContext
+@HistoryContext
 export default class MainPage extends React.Component {
 
   constructor() {
     super();
 
     this.state = {
-      user: {
-        login: 'Пользователь'
-      }
+      user: {}
     };
-  }
-
-  static contextTypes = {
-    flux: React.PropTypes.object,
-    history: React.PropTypes.object
   }
 
   renderEmptyHeader() {
@@ -50,25 +56,26 @@ export default class MainPage extends React.Component {
         </Navbar.Header>
 
         <Nav>
-          <NavItem active={path === '/monitor'} href="#/monitor">Карта</NavItem>
-          <NavItem active={path === '/dashboard'} href="#/dashboard">Рабочий стол</NavItem>
-          <NavItem active={path === '/waybill-journal'} href="#/waybill-journal">Путевые листы</NavItem>
-          <NavDropdown title="Задания" id="nav-dropdown-1">
+          <NavItem permissions={[PERMISSIONS.monitor]} active={path === '/monitor'} href="#/monitor">Карта</NavItem>
+          <NavItem permissions={[PERMISSIONS.odh_coverage_report]} active={path === '/odh_coverage_report'} href="#/odh_coverage_report">Оперативная обстановка</NavItem>
+          <NavItem permissions={[PERMISSIONS.dashboard]} active={path === '/dashboard'} href="#/dashboard">Рабочий стол</NavItem>
+          <NavItem permissions={[PERMISSIONS.waybill.list]} active={path === '/waybill-journal'} href="#/waybill-journal">Путевые листы</NavItem>
+
+          <NavDropdown oneOfPermissions={PERMISSIONS.missions.list} title="Задания" id="nav-dropdown-1">
             <MenuItem permissions={['mission.list']} active={path === '/mission-journal'} href="#/mission-journal">Журнал заданий</MenuItem>
             <MenuItem permissions={['mission_template.list']} active={path === '/mission-templates-journal'} href="#/mission-templates-journal">Шаблоны заданий</MenuItem>
             <MenuItem permissions={['duty_mission.list']} active={path === '/duty-missions-journal'} href="#/duty-missions-journal">Журнал наряд-заданий</MenuItem>
             <MenuItem permissions={['duty_mission_template.list']} active={path === '/duty-mission-templates-journal'} href="#/duty-mission-templates-journal">Шаблоны наряд-заданий</MenuItem>
           </NavDropdown>
-          <NavDropdown title="НСИ" id="nav-dropdown-2">
+
+          <NavDropdown oneOfPermissions={PERMISSIONS.nsi.list} title="НСИ" id="nav-dropdown-2">
             <MenuItem permissions={['employee.list']} active={path === '/employees'} href="#/employees">Реестр сотрудников</MenuItem>
             <MenuItem permissions={['car.list']} active={path === '/cars'} href="#/cars">Реестр транспортных средств</MenuItem>
             <MenuItem permissions={['technical_operation.list']} active={path === '/technical-operations'} href="#/technical-operations">Реестр технологических операций</MenuItem>
             <MenuItem permissions={['faxogramm.list']} active={path === '/faxogramms'} href="#/faxogramms">Реестр факсограмм</MenuItem>
-
             <MenuItem divider />
-
             <MenuItem permissions={['fuel_consumption_rate.list']} active={path === '/fuel-rates'} href="#/fuel-rates">Справочник норм расхода топлива</MenuItem>
-            <MenuItem permissions={['fuel_operations.list']} active={path === '/fuel-operations'} href="#/fuel-operations">Справочник операций для расчета топлива</MenuItem>
+            <MenuItem permissions={['fuel_operation.list']} active={path === '/fuel-operations'} href="#/fuel-operations">Справочник операций для расчета топлива</MenuItem>
             <MenuItem permissions={['types.list']} active={path === '/car-func-types'} href="#/car-func-types">Справочник типов техники</MenuItem>
             <MenuItem permissions={['odh.list']} active={path === '/odh'} href="#/odh">Справочник ОДХ</MenuItem>
             <MenuItem permissions={['dt.list']} active={path === '/dt'} href="#/dt">Справочник ДТ</MenuItem>
@@ -80,10 +87,11 @@ export default class MainPage extends React.Component {
             {/*<MenuItem active={path === '/organizations'} href="#/organizations">Справочник организаций</MenuItem>*/}
           </NavDropdown>
 
-          <NavDropdown title="Отчеты" id="nav-dropdown-3">
+          <NavDropdown oneOfPermissions={[PERMISSIONS.report.list]} title="Отчеты" id="nav-dropdown-3">
             <NavDropdown title="Оперативные отчеты" id="nav-dropdown-3-1">
               <MenuItem active={path === '/route-reports'} href="#/route-reports">Покрытие ОДХ маршрутами</MenuItem>
               <MenuItem active={path === '/mission-reports'} href="#/mission-reports">Прохождение заданий</MenuItem>
+              <MenuItem active={path === '/car_func_type_usage_reports'} href="#/car_func_type_usage_reports">Статистика выхода техники</MenuItem>
             </NavDropdown>
             <NavDropdown title="Регламентированные отчеты" id="nav-dropdown-3-2">
               <MenuItem active={path === '/fuel-report'} href="#/fuel-report">Расход топлива</MenuItem>
@@ -99,9 +107,9 @@ export default class MainPage extends React.Component {
             <MenuItem active={path === '/analytics'} href="#/analytics">Аналитика</MenuItem>
           </NavDropdown>
 
-          <NavItem active={path === '/routes-list'} href="#/routes-list">Маршруты</NavItem>
-          <NavItem active={path === '/company-structure'} href="#/company-structure">Структура предприятия</NavItem>
-          <NavItem title="Администрирование" href="http://213.79.88.5/admin/"><Glyphicon glyph="list-alt"/></NavItem>
+          <NavItem permissions={[PERMISSIONS.route.list]} active={path === '/routes-list'} href="#/routes-list">Маршруты</NavItem>
+          <NavItem permissions={[PERMISSIONS.company_structure.list]} active={path === '/company-structure'} href="#/company-structure">Структура предприятия</NavItem>
+          <NavItem permissions={[PERMISSIONS.administration]} title="Администрирование" href="http://172.17.31.72/admin"><Glyphicon glyph="list-alt"/></NavItem>
         </Nav>
 
         <Nav pullRight>
@@ -110,30 +118,35 @@ export default class MainPage extends React.Component {
               <img src="images/avatar-default.png" className="navbar-user__avatar-img" />
             </div>
             <div className="navbar-user__data">
-              <div className="navbar-user__data-type">{this.state.user.role === 'master' ? 'Мастер' : 'Диспетчер'}</div>
+              <div className="navbar-user__data-type">{this.state.user.role ? ROLES[this.state.user.role] : ''}</div>
               <div className="navbar-user__data-name">{this.state.user.fio}</div>
             </div>
           </NavItem>
-          <NavItem onClick={this.logout.bind(this)} >Выйти</NavItem>
+          <NavItem onClick={this.logout.bind(this)}>Выйти</NavItem>
         </Nav>
 
       </Navbar>
-    )
+    );
 
 	}
 
   logout() {
-    this.context.flux.getActions('session').logout().then(() => {
-      this.context.history.pushState(null, '/login');
+    const { flux, history } = this.context;
+    flux.getActions('session').logout().then(() => {
+      history.pushState(null, '/login');
     });
   }
 
   componentDidMount() {
-    this.setState({user: this.context.flux.getStore('session').getCurrentUser()});
+    this.setState({
+      user: this.context.flux.getStore('session').getCurrentUser()
+    });
   }
 
   componentWillReceiveProps() {
-    this.setState({user: this.context.flux.getStore('session').getCurrentUser()});
+    this.setState({
+      user: this.context.flux.getStore('session').getCurrentUser()
+    });
   }
 
   render() {

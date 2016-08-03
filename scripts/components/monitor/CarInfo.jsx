@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Panel from '../Panel.jsx';
+import Panel from 'components/ui/Panel.jsx';
 import { Button } from 'react-bootstrap';
 import { getStatusById } from 'constants/statuses';
 import config from '../../config.js';

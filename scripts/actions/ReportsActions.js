@@ -6,12 +6,39 @@ import {
   WeeklyTechnicalOperationCompleteReportsService,
   FuelReportService,
   CoverageReportService,
-  AnalyticsService
+  AnalyticsService,
+  OdhCoverageReportService,
+  CarFuncTypeUsageReportService
 } from 'api/Services';
 import { createValidDateTime, createValidDate } from 'utils/dates';
 import config from '../config.js';
 
 export default class ReportsActions extends Actions {
+
+  // Статистика выхода техники за период
+
+  createCarFuncTypeUsageReport(data) {
+    let payload = _.cloneDeep(data);
+    payload.date_start = createValidDateTime(payload.date_start);
+    payload.date_end = createValidDateTime(payload.date_end);
+    //payload.car_type_id_list = payload.car_type_id_list);
+    return CarFuncTypeUsageReportService.post(payload, true, 'json');
+  }
+
+  getCarFuncTypeUsageReports(data) {
+    let payload = _.cloneDeep(data);
+    payload.date_start = createValidDateTime(payload.date_start);
+    payload.date_end = createValidDateTime(payload.date_end);
+    return CarFuncTypeUsageReportService.get(payload);
+  }
+
+  getCarFuncTypeUsageReportById(id) {
+    const payload = {
+      id
+    };
+
+    return CarFuncTypeUsageReportService.get(payload);
+  }
 
   // Cleaning - ETS
 
@@ -95,14 +122,6 @@ export default class ReportsActions extends Actions {
     return CoverageReportService.get(payload);
   }
 
-  getDailyCleaningReportById(id) {
-    const payload = {
-      id
-    };
-
-    return DailyCleaningReportsService.get(payload);
-  }
-
   getWeeklyTechnicalOperationCompleteReports() {
     return WeeklyTechnicalOperationCompleteReportsService.get();
   }
@@ -120,6 +139,10 @@ export default class ReportsActions extends Actions {
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
     return WeeklyTechnicalOperationCompleteReportsService.post(payload, true, 'json');
+  }
+
+  getOdhCoverageReport() {
+    return OdhCoverageReportService.get();
   }
 
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Sparklines, SparklinesLine } from '../../../vendor/Sparklines.js';
-import Panel from '../../Panel.jsx';
+import Panel from 'components/ui/Panel.jsx';
 import Preloader from '../Preloader.jsx'
 
 const HEADERS = {

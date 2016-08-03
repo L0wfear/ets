@@ -214,7 +214,8 @@ export default class Table extends React.Component {
         columnName: 'rowNumber',
         displayName: '№',
         cssClassName: 'width60',
-        filter: false
+        filter: false,
+        customComponent: renderers['rowNumber']
       });
     }
 
@@ -226,7 +227,7 @@ export default class Table extends React.Component {
 
   		const metaObject = {
   			columnName: col.name,
-  			displayName: col.caption,
+  			displayName: col.customHeaderComponent ? col.customHeaderComponent : col.caption,
   		};
 
   		if (typeof renderers[col.name] === 'function') {
@@ -428,6 +429,10 @@ export default class Table extends React.Component {
 
     let tableMetaCols = _.cloneDeep(tableMeta.cols);
     let data = _.cloneDeep(this.props.results);
+
+    if (typeof this.props.results === 'string') {
+      data = [];
+    }
 
     let results = this.processTableData(data, tableCols, selected, selectField, onRowSelected);
 

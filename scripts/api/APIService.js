@@ -57,27 +57,39 @@ export default class APIService {
       });
     }
     this.log('GET');
-
-    return getJSON(this.url, payload, blob);
+    const url = this.url;
+    this.resetPath();
+    return getJSON(url, payload, blob);
   }
 
   post(payload = {}, callback, type = 'form', blob = false) {
     this.log('POST');
-    return postJSON(this.url, payload, type, blob).then((r) => this.processResponse(r, callback));
+    const url = this.url;
+    this.resetPath();
+    return postJSON(url, payload, type, blob).then((r) => this.processResponse(r, callback));
   }
 
   put(payload = {}, callback, type = 'form') {
     this.log('PUT');
-    return putJSON(this.url, payload, type).then((r) => this.processResponse(r, callback));
+    const url = this.url;
+    this.resetPath();
+    return putJSON(url, payload, type).then((r) => this.processResponse(r, callback));
   }
 
   delete(payload = {}, callback, type = 'form') {
     this.log('DELETE');
-    return deleteJSON(this.url, payload, type).then((r) => this.processResponse(r, callback));
+    const url = this.url;
+    this.resetPath();
+    return deleteJSON(url, payload, type).then((r) => this.processResponse(r, callback));
   }
 
   getUrl() {
     return this.url;
+  }
+
+  resetPath() {
+    this.url = this.canonicUrl;
+    this.firstUrl = this.canonicFirstUrl;
   }
 
   path(path) {

@@ -24,7 +24,6 @@ export default class EmployeesList extends ElementsList {
     super.componentDidMount();
     const { flux } = this.context;
     flux.getActions('employees').getEmployees();
-    flux.getActions('objects').getPositions();
   }
 
 }

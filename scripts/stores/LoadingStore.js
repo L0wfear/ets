@@ -24,6 +24,7 @@ export default class LoadingStore extends Store {
       waybillsActions.createWaybill,
       waybillsActions.updateWaybill,
       waybillsActions.getWaybills,
+      waybillsActions.getLastClosedWaybill,
 
       fuelRateActions.getFuelRates,
       fuelRateActions.getFuelOperations,
@@ -68,6 +69,7 @@ export default class LoadingStore extends Store {
       missionsActons.createMissionFromReassignation,
       missionsActons.updateMissionFromReassignation,
       missionsActons.getMissionsByCarAndDates,
+      missionsActons.getMissionsByCarAndTimestamp,
       missionsActons.getMissionById,
       missionsActons.getMissionSources,
       missionsActons.createMission,
@@ -130,7 +132,9 @@ export default class LoadingStore extends Store {
       reportsActions.getWeeklyTechnicalOperationCompleteReports,
       reportsActions.getWeeklyTechnicalOperationCompleteReportById,
       reportsActions.createWeeklyTechnicalOperationCompleteReport,
-      reportsActions.getCoverageReport
+      reportsActions.getCoverageReport,
+      reportsActions.getOdhCoverageReport,
+      reportsActions.getCarFuncTypeUsageReports,
 
     );
 

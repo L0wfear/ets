@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
-import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
+import { Button, ButtonToolbar, Glyphicon, Row, Col } from 'react-bootstrap';
 import Table from 'components/ui/table/DataTable.jsx';
 import ElementsList from 'components/ElementsList.jsx';
 import Paginator from 'components/ui/Paginator.jsx';
@@ -11,6 +11,7 @@ import moment from 'moment';
 import cx from 'classnames';
 import { createValidDateTime, getToday0am, getToday2359 } from 'utils/dates';
 import FaxogrammMissionsFormWrap from './FaxogrammMissionsFormWrap.jsx';
+import { saveData } from 'utils/functions';
 
 // TODO привести к общему виду
 
@@ -186,6 +187,12 @@ class FaxogrammDirectory extends ElementsList {
     this.context.flux.getActions('objects').getFaxogramms(this.state.page, this.state.create_date_from, this.state.create_date_to);
 	}
 
+	saveFaxogramm() {
+		const { flux } = this.context;
+		const faxogramm = this.state.selectedElement;
+		flux.getActions('objects').saveFaxogramm(faxogramm.id);
+	}
+
   onPageChange(page) {
     this.setState({page}, () => this.getFaxogramms());
   }
@@ -205,6 +212,7 @@ class FaxogrammDirectory extends ElementsList {
 				<FaxogrammsDatepicker handleChange={this.handleChange.bind(this)} {...this.state}/>
         <FaxogrammsTable data={faxogrammsList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'} {...this.props}>
 					<Button onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}>Создать задания</Button>
+					<Button onClick={this.saveFaxogramm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="download-alt" /></Button>
 				</FaxogrammsTable>
 				<FaxogrammMissionsFormWrap onFormHide={this.onFormHide.bind(this)}
 																	 showForm={this.state.showForm}

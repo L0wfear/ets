@@ -14,18 +14,26 @@ class ReportsStore extends Store {
     this.register(reportsActions.getFuelReport, this.handleGetFuelReport);
     this.register(reportsActions.getWeeklyTechnicalOperationCompleteReports, this.handleGetWeeklyTechnicalOperationCompleteReports);
     this.register(reportsActions.createWeeklyTechnicalOperationCompleteReport, this.handleGetWeeklyTechnicalOperationCompleteReports);
+    this.register(reportsActions.getOdhCoverageReport, this.handleGetOdhCoverageReport);
+    this.register(reportsActions.getCarFuncTypeUsageReports, this.handleGetCarFuncTypeUsageReports);
 
     this.state = {
       dailyCleaningReportsListETS: [],
       dailyCleaningReportsListCAFAP: [],
+      carFuncTypeUsageReportsList: [],
       fuelReport: [],
-      weeklyTechnicalOperationCompleteReportsList: []
+      weeklyTechnicalOperationCompleteReportsList: [],
+      odhCoverageReport: []
     };
 
   }
 
   handleGetFuelReport(e) {
     this.setState({fuelReport: e.results});
+  }
+
+  handleGetCarFuncTypeUsageReports({result}) {
+    this.setState({carFuncTypeUsageReportsList: result});
   }
 
   handleGetDailyCleaningReportsETS(dailyCleaningReports) {
@@ -38,6 +46,10 @@ class ReportsStore extends Store {
 
   handleGetWeeklyTechnicalOperationCompleteReports(weeklyTechnicalOperationCompleteReports) {
     this.setState({weeklyTechnicalOperationCompleteReportsList: weeklyTechnicalOperationCompleteReports.result});
+  }
+
+  handleGetOdhCoverageReport({result}) {
+    this.setState({odhCoverageReport: result});
   }
 
 }

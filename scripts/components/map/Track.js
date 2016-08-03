@@ -4,6 +4,7 @@ import { TRACK_COLORS, TRACK_LINE_OPACITY, TRACK_LINE_WIDTH, TRACK_POINT_RADIUS,
 import { getTrackPointByColor } from '../../icons/track/points.js';
 import { swapCoords, roundCoordinates } from 'utils/geo';
 import { getTypeById } from 'utils/labelFunctions';
+import _ from 'lodash';
 
 const IS_MSK = true;
 const DRAW_POINTS = true;
@@ -231,8 +232,13 @@ export default class Track {
     let ctx = this.ctx;
 
     if (!track || track.length < 2) {
-      return
+      return;
     }
+    
+    // Сравнение в случае если все точки трека одинаковые
+    // console.log(_.uniqWith(track, (a,b) => {
+    //   return a.coords_msk[0] === b.coords_msk[0] && a.coords_msk[1] === b.coords_msk[1];
+    // }).length);
 
     ctx.strokeStyle = TRACK_COLORS.blue;
     ctx.lineWidth = TRACK_LINE_WIDTH;
@@ -253,6 +259,7 @@ export default class Track {
     // и машина резко перемещается на другую точку
     if (owner.point.status === 1 && this.continuousUpdating) {
       let coords = this.map.projectToPixel(swapCoords(owner.point.coords_msk));
+      // console.log(track[0].coords_msk, owner.point.coords_msk);
       ctx.lineTo(coords.x, coords.y);
     }
 

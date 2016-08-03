@@ -3,7 +3,7 @@ import { createHashHistory } from 'history';
 import { render } from 'react-dom';
 import React, { Component } from 'react';
 // TODO сделать модуль containers по аналогии с другими модулями
-import LoginPage from './LoginPage.jsx';
+import LoginPage from './login/LoginPage.jsx';
 import WaybillJournal from './waybill/WaybillJournal.jsx';
 import RoutesList from './route/RoutesList.jsx';
 import MainPage from './MainPage.jsx';
@@ -31,16 +31,14 @@ class App extends Component {
   static get childContextTypes() {
     return {
       flux: React.PropTypes.object,
-      loadData: React.PropTypes.func,
-      setLoading: React.PropTypes.func,
+      loadData: React.PropTypes.func
     }
   }
 
   getChildContext() {
     return {
-      flux: flux,
-      loadData: this.loadData.bind(this),
-      setLoading: this.setLoading.bind(this),
+      flux,
+      loadData: this.loadData.bind(this)
     }
   }
 
@@ -48,13 +46,8 @@ class App extends Component {
     super(props)
 
     this.state = {
-      loading: true,
-      error: false
+      loading: true
     };
-  }
-
-  setLoading(loading) {
-    this.setState({loading});
   }
 
   loadData() {
@@ -95,8 +88,13 @@ function requireAuth(nextState, replaceState) {
 }
 
 function checkLoggedIn(nextState, replaceState) {
-  if (flux.getStore('session').isLoggedIn() && flux.getStore('session').getCurrentUser().role) {
-    replaceState({}, '/dashboard');
+  const role = flux.getStore('session').getCurrentUser().role;
+  if (flux.getStore('session').isLoggedIn() && role) {
+    if (['dispatcher', 'master'].indexOf(role) > -1) {
+      replaceState({}, '/dashboard');
+    } else {
+      replaceState({}, '/monitor');
+    }
   }
 }
 
@@ -104,9 +102,11 @@ const history = createHashHistory({queryKey: false});
 
 const routes = (
   <Router history={history}>
-    <Redirect from="/" to="dashboard" />
+    <Redirect from="/" to="monitor" />
     <Route path="/" component={App}>
       <Route path="monitor" component={MonitorPage} onEnter={requireAuth}/>
+      {/* Отчет префекта */}
+      <Route path="odh_coverage_report" component={reports.odhCoverageReport} onEnter={requireAuth}/>
       <Route path="dashboard" component={DashboardPage} onEnter={requireAuth}/>
       <Route path="waybill-journal" component={WaybillJournal} onEnter={requireAuth}/>
       <Route path="company-structure" component={CompanyStructure} onEnter={requireAuth}/>
@@ -123,6 +123,7 @@ const routes = (
       <Route path="coverage-report" component={reports.coverage} onEnter={requireAuth}/>
       <Route path="fuel-report" component={reports.fuel} onEnter={requireAuth}/>
       <Route path="analytics" component={reports.analytics} onEnter={requireAuth}/>
+      <Route path="car_func_type_usage_reports" component={reports.carFuncTypeUsage.all} onEnter={requireAuth}/>
       <Route path="daily-cleaning-reports-ets" component={reports.daily.cleaning.ets.all} onEnter={requireAuth}/>
       <Route path="daily-cleaning-report-ets/:element/:id" component={reports.daily.cleaning.ets.single} onEnter={requireAuth}/>
       <Route path="daily-cleaning-reports-cafap" component={reports.daily.cleaning.cafap.all} onEnter={requireAuth}/>

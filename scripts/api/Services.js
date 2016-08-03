@@ -66,5 +66,7 @@ export const DailyCleaningReportsServiceETS = new APIService('/geozone_element_t
 export const DailyCleaningReportsServiceCAFAP = new APIService('/geozone_element_traveled_daily_report__cafap/', {});
 export const FuelReportService = new APIService('/fuel_consumption_report/', {});
 export const AnalyticsService = new APIService('/analytical_reports/', {});
+export const CarFuncTypeUsageReportService = new APIService('/car_func_type_usage_report/', {});
 export const WeeklyTechnicalOperationCompleteReportsService = new APIService('/status_of_technical_operation_execution_weekly_report/', {});
 export const CoverageReportService = new APIService('/current_coverage_report/', {});
+export const OdhCoverageReportService = new APIService('/odh_coverage_report/', {});

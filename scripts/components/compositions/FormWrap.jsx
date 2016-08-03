@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { validateRow } from 'validate/validateRow.js';
 import { FluxContext } from 'utils/decorators';
 import { isEmpty } from 'utils/functions';
@@ -6,20 +6,20 @@ import { saveDataSuccessNotification } from 'utils/notifications';
 
 /**
  * FormWrap базовый класс хранения и работы с состоянием формы
- * @constructor дефолтный
  * @validate валидация состояния формы в соответствии со схемой (this.schema обязателен)
  * @handleFormStateChange обработка изменения состояния формы
  * @handleFormSubmit обработка отправки формы
  * @render дефолтный, обязательно переопределяется
  */
-
 @FluxContext
-class FormWrap extends React.Component {
+export default class FormWrap extends Component {
 
-  static propTypes = {
-    showForm: React.PropTypes.bool.isRequired,
-    //element: React.PropTypes.object.isRequired,
-    onFormHide: React.PropTypes.func.isRequired,
+  static get propTypes() {
+    return {
+      showForm: React.PropTypes.bool.isRequired,
+      //element: React.PropTypes.object.isRequired,
+      onFormHide: React.PropTypes.func.isRequired,
+    }
   }
 
   constructor(props){
@@ -123,46 +123,8 @@ class FormWrap extends React.Component {
   }
 
   render() {
+    throw new TypeError("FormWrap: do not call abstract method FormWrap#render from child.");
     return <Component {...this.props} {...this.state} />
   }
 
 }
-
-export default FormWrap;
-
-
-/* Пример создания класса, наследующего FormWrap (скопировать, убрать комментарии, заменить форму): */
-
-// import React, { Component } from 'react';
-// import _ from 'lodash';
-// import Div from 'components/ui/Div.jsx';
-// import MissionForm from './MissionForm.jsx';
-// import FormWrap from '../compositions/FormWrap.jsx';
-// import { getDefaultMission } from '../../stores/MissionsStore.js';
-// import { missionSchema, missionClosingSchema } from 'models/MissionModel.js';
-//
-// class MissionFormWrap extends FormWrap {
-//
-// 	constructor(props) {
-// 		super(props);
-//
-// 		this.schema = missionSchema;
-// 	}
-//
-// 	render() {
-//
-// 		return 	<Div hidden={!this.props.showForm}>
-// 							<MissionForm formState = {this.state.formState}
-// 													 onSubmit={this.handleFormSubmit.bind(this)}
-// 													 handleFormChange={this.handleFormStateChange.bind(this)}
-// 													 show={this.props.showForm}
-// 													 onHide={this.props.onFormHide}
-// 													 fromWaybill={this.props.fromWaybill}
-// 													 {...this.state}/>
-// 						</Div>
-//
-// 	}
-//
-// }
-//
-// export default MissionFormWrap;

@@ -128,17 +128,35 @@ class WaybillForm extends Form {
       car_id,
 			gov_number: selectedCar.gov_number
     };
+		if (!isEmpty(car_id)) {
+			const lastCarUsedWaybillObject = await flux.getActions('waybills').getLastClosedWaybill(car_id);
+			const lastCarUsedWaybill = lastCarUsedWaybillObject.result;
+			const additionalFields = this.getFieldsToChangeBasedOnLastWaybill(lastCarUsedWaybill);
+			fieldsToChange = {
+				...fieldsToChange,
+				...additionalFields
+			};
+		}
 
-		const lastCarUsedWaybillObject = await flux.getActions('waybills').getLastClosedWaybill(car_id);
-		const lastCarUsedWaybill = lastCarUsedWaybillObject.result;
-		const additionalFields = this.getFieldsToChangeBasedOnLastWaybill(lastCarUsedWaybill);
+    this.props.handleMultipleChange(fieldsToChange);
+	}
 
-		const allFields = {
-			...fieldsToChange,
-			...additionalFields
+
+	async handleEquipmentFuelChange(equipment_fuel) {
+		const { flux } = this.context;
+		const state = this.props.formState;
+		let fieldsToChange = {
+			equipment_fuel
 		};
+		const lastCarUsedWaybillObject = await flux.getActions('waybills').getLastClosedWaybill(state.car_id);
+		const lastCarUsedWaybill = lastCarUsedWaybillObject.result;
 
-    this.props.handleMultipleChange(allFields);
+		if (lastCarUsedWaybill && lastCarUsedWaybill.equipment_fuel) {
+			fieldsToChange.equipment_fuel_type_id = lastCarUsedWaybill.equipment_fuel_type_id;
+			fieldsToChange.equipment_fuel_start = lastCarUsedWaybill.equipment_fuel_end;
+		}
+
+		this.props.handleMultipleChange(fieldsToChange);
 	}
 
 	getFieldsToChangeBasedOnLastWaybill(lastCarUsedWaybill) {
@@ -485,25 +503,27 @@ class WaybillForm extends Form {
 							</Div>
             </Col>
 						<Col md={4}>
-							<Div className="equipment-fuel-checkbox" hidden={!state.car_id}>
-								<Input type="checkbox" checked={!!state.equipment_fuel} onClick={this.handleChange.bind(this, 'equipment_fuel', !!!state.equipment_fuel)} disabled={IS_CLOSING || IS_DISPLAY}/>
-								<label>Показать расход топлива для оборудования</label>
-							</Div>
-							<Div hidden={!!!state.equipment_fuel}>
-								<h4> Топливо для оборудования</h4>
-								<Field type="select" label="Тип топлива" error={errors['equipment_fuel_type_id']}
-										disabled={IS_CLOSING || IS_DISPLAY}
-										options={FUEL_TYPES}
-										value={state.equipment_fuel_type_id}
-										onChange={this.handleChange.bind(this, 'equipment_fuel_type_id')} />
-								<Field type="number" label="Выезд, л" error={errors['equipment_fuel_start']}
-										value={state.equipment_fuel_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'equipment_fuel_start')} />
-								<Field type="number" label="Выдать, л" error={errors['equipment_fuel_to_give']}
-										value={state.equipment_fuel_to_give} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'equipment_fuel_to_give')} />
-								<Field type="number" label="Выдано, л" error={errors['equipment_fuel_given']}
-										value={state.equipment_fuel_given} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'equipment_fuel_given')} />
-								<Field type="number" label="Возврат, л" error={errors['equipment_fuel_end']}
-										value={state.equipment_fuel_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled />
+							<Div hidden={!state.car_id}>
+								<Div className="equipment-fuel-checkbox" hidden={!state.car_id}>
+									<Input type="checkbox" checked={!!state.equipment_fuel} disabled={IS_CLOSING || IS_DISPLAY} onClick={this.handleEquipmentFuelChange.bind(this, !!!state.equipment_fuel)}/>
+									<label>Показать расход топлива для оборудования</label>
+								</Div>
+								<Div hidden={!!!state.equipment_fuel}>
+									<h4> Топливо для оборудования</h4>
+									<Field type="select" label="Тип топлива" error={errors['equipment_fuel_type_id']}
+											disabled={IS_CLOSING || IS_DISPLAY}
+											options={FUEL_TYPES}
+											value={state.equipment_fuel_type_id}
+											onChange={this.handleChange.bind(this, 'equipment_fuel_type_id')} />
+									<Field type="number" label="Выезд, л" error={errors['equipment_fuel_start']}
+											value={state.equipment_fuel_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'equipment_fuel_start')} />
+									<Field type="number" label="Выдать, л" error={errors['equipment_fuel_to_give']}
+											value={state.equipment_fuel_to_give} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'equipment_fuel_to_give')} />
+									<Field type="number" label="Выдано, л" error={errors['equipment_fuel_given']}
+											value={state.equipment_fuel_given} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'equipment_fuel_given')} />
+									<Field type="number" label="Возврат, л" error={errors['equipment_fuel_end']}
+											value={state.equipment_fuel_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled />
+								</Div>
 							</Div>
 						</Col>
           </Row>

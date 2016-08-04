@@ -129,8 +129,20 @@ class WaybillForm extends Form {
 			gov_number: selectedCar.gov_number
     };
 
-		const waybillsListSorted = _(this.props.waybillsList).filter(w => w.status === 'closed').sortBy('date_create').value().reverse();
-		const lastCarUsedWaybill = _.find(waybillsListSorted, w => w.car_id === car_id);
+		const lastCarUsedWaybillObject = await flux.getActions('waybills').getLastClosedWaybill(car_id);
+		const lastCarUsedWaybill = lastCarUsedWaybillObject.result;
+		const additionalFields = this.getFieldsToChangeBasedOnLastWaybill(lastCarUsedWaybill);
+
+		const allFields = {
+			...fieldsToChange,
+			...additionalFields
+		};
+
+    this.props.handleMultipleChange(allFields);
+	}
+
+	getFieldsToChangeBasedOnLastWaybill(lastCarUsedWaybill) {
+		const fieldsToChange = {};
 		if (isNotNull(lastCarUsedWaybill)) {
 			if (isNotNull(lastCarUsedWaybill.fuel_end)) {
         fieldsToChange.fuel_start = lastCarUsedWaybill.fuel_end;
@@ -151,7 +163,7 @@ class WaybillForm extends Form {
       fieldsToChange.motohours_equip_start = 0;
 		}
 
-    this.props.handleMultipleChange(fieldsToChange);
+		return fieldsToChange;
 	}
 
   onMissionFormHide(result) {
@@ -171,13 +183,18 @@ class WaybillForm extends Form {
     this.setState({showMissionForm: true, selectedMission: newMission});
   }
 
-	refresh() {
+	/**
+	 * Обновляет данные формы на основе закрытого ПЛ
+	 */
+	async refresh() {
 		let state = this.props.formState;
 		const { flux } = this.context;
 
-		flux.getActions('waybills').getLastClosedWaybill(state.car_id).then(w => {
-			console.log(w);
-		});
+		const lastCarUsedWaybillObject = await flux.getActions('waybills').getLastClosedWaybill(state.car_id);
+		const lastCarUsedWaybill = lastCarUsedWaybillObject.result;
+		const fieldsToChange = this.getFieldsToChangeBasedOnLastWaybill(lastCarUsedWaybill);
+
+		this.props.handleMultipleChange(fieldsToChange);
 	}
 
   handleMissionsChange(v) {
@@ -500,9 +517,9 @@ class WaybillForm extends Form {
 
 	      <Modal.Footer>
 					<Div>
-						{/*<Div className={'inline-block'} style={{marginRight: 5}} hidden={!isEmpty(state.id)}>
+						<Div className={'inline-block'} style={{marginRight: 5}} hidden={!(IS_CREATING || IS_POST_CREATING)}>
 							<Button title="Обновить" onClick={this.refresh.bind(this)} disabled={isEmpty(state.car_id)}><Glyphicon glyph="refresh" /></Button>
-						</Div>*/}
+						</Div>
 						<Div className="inline-block">
 			    		<Dropdown id="waybill-print-dropdown" dropup disabled={!this.props.canSave} onSelect={this.props.handlePrint.bind(this, state.status !== 'draft' && !IS_CREATING)}>
 			        	<Dropdown.Toggle  disabled={!this.props.canSave}>

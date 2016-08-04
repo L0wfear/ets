@@ -175,7 +175,7 @@ export class MissionForm extends Form {
     let IS_POST_CREATING_NOT_ASSIGNED = state.status === 'not_assigned' || this.props.fromWaybill;
     let IS_POST_CREATING_ASSIGNED = state.status === 'assigned' && isDeferred;
 		let IS_DISPLAY = !IS_CREATING && !(IS_POST_CREATING_NOT_ASSIGNED || IS_POST_CREATING_ASSIGNED);//(!!state.status && state.status !== 'not_assigned') || (!isDeferred && !IS_CREATING);
-    let title = `Задание № ${state.number || ''} ${state.comment ? '(Не выполнено)' : ''}`;
+    let title = `Задание № ${state.number || ''} ${state.status === 'fail' ? '(Не выполнено)' : ''}`;
 
     if (IS_CREATING) {
       title = "Создание задания"
@@ -244,7 +244,6 @@ export class MissionForm extends Form {
 						<Col md={6}>
 							<Field type="string"
 									label="Комментарий"
-									disabled={IS_COMPLETED}
 									value={state.comment}
 									onChange={this.handleChange.bind(this, 'comment')}
 									error={errors['comment']} />
@@ -304,9 +303,9 @@ export class MissionForm extends Form {
             <label>Создать черновик ПЛ / Добавить в существующий</label>
             <Input type="checkbox" value={state.assign_to_waybill} onClick={this.handleChange.bind(this, 'assign_to_waybill', !!!state.assign_to_waybill)}/>
           </Div>
-					<Div className="inline-block" hidden={state.status === 'complete'}>
+					<Div className="inline-block">
 						<Dropdown id="waybill-print-dropdown" dropup disabled={!state.status || !this.props.canSave || !state.route_id} onSelect={this.props.handlePrint}>
-							<Dropdown.Toggle  disabled={!state.status || !this.props.canSave || !state.route_id}>
+							<Dropdown.Toggle disabled={!state.status || !this.props.canSave || !state.route_id || IS_COMPLETED}>
 								<Glyphicon glyph="print" />
 							</Dropdown.Toggle>
 							<Dropdown.Menu>
@@ -314,7 +313,7 @@ export class MissionForm extends Form {
 								<MenuItem eventKey={2}>Печать</MenuItem>
 							</Dropdown.Menu>
 						</Dropdown>
-		      	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || IS_DISPLAY}>Сохранить</Button>
+		      	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>Сохранить</Button>
 					</Div>
 	      </Modal.Footer>
 

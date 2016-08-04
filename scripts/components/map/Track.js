@@ -4,6 +4,7 @@ import { TRACK_COLORS, TRACK_LINE_OPACITY, TRACK_LINE_WIDTH, TRACK_POINT_RADIUS,
 import { getTrackPointByColor } from '../../icons/track/points.js';
 import { swapCoords, roundCoordinates } from 'utils/geo';
 import { getTypeById } from 'utils/labelFunctions';
+import { isEmpty } from 'utils/functions';
 import _ from 'lodash';
 
 const IS_MSK = true;
@@ -234,7 +235,7 @@ export default class Track {
     if (!track || track.length < 2) {
       return;
     }
-    
+
     // Сравнение в случае если все точки трека одинаковые
     // console.log(_.uniqWith(track, (a,b) => {
     //   return a.coords_msk[0] === b.coords_msk[0] && a.coords_msk[1] === b.coords_msk[1];
@@ -489,53 +490,61 @@ export default class Track {
       geoObjects = null,
       gov_number = this.owner.point.car.gov_number;
 
-    distance = typeof distance == 'number' ? Math.floor(distance) : distance;
+    distance = typeof distance === 'number' ? Math.floor(distance) : distance;
     timestamp = new Date( timestamp * 1000 );
     let dt = makeDate( timestamp ) + ' ' + makeTime( timestamp, true );
 
     return function makePopup(){
-        let objectsString;
-        if (vectorObject.result) {
-          objectsString = vectorObject.result[0].asuods_id === vectorObject.result[1].asuods_id ?
-          vectorObject.result[0].name : vectorObject.result[0].name+' / '+vectorObject.result[1].name;
-        } else {
-          objectsString = 'Объекты ОДХ не найдены';
+      let objectsString;
+      let missionsString;
+      // Объекты на точке
+      if (vectorObject.result) {
+        if (vectorObject.result[0].asuods_id && vectorObject.result[1].asuods_id) {
+          if (vectorObject.result[0].asuods_id === vectorObject.result[1].asuods_id) {
+            objectsString = vectorObject.result[0].name ? vectorObject.result[0].name : '';
+          } else {
+            objectsString = `${vectorObject.result[0].name} / ${vectorObject.result[1].name}`;
+          }
         }
+      }
+      if (isEmpty(objectsString)) {
+        objectsString = 'Объекты ОДХ не найдены';
+      }
+      // Задания на точке
+      if (missions.length) {
+        missionsString = missions.map(m => `Задание №${m.number}`).join('<br/>');
+      } else {
+        missionsString = 'Нет выполняемых заданий';
+      }
 
-        let missionsString;
-        if (missions.length) {
-          missionsString = missions.map(m => `Задание №${m.number}`).join('<br/>');
-          missionsString = '<div class="geo-objects">' + missionsString + '</div>';
-        } else {
-          missionsString = '';
-        }
+      // let objectsString = 'Объекты ОДХ';
+      //
+      // if ( geoObjects === null ){
+      //   objectsString += ' загружаются'
+      // } else {
+      //   if ( geoObjects.length > 0 ){
+      //     //objectsString += ': '+ geoObjects.map((obj)=>obj.name + ' ('+getCustomerById(obj.customer_id).title+')').join(', ')
+      //   } else {
+      //     objectsString += ' не найдены'
+      //   }
+      // }
 
-        // let objectsString = 'Объекты ОДХ';
-        //
-        // if ( geoObjects === null ){
-        //   objectsString += ' загружаются'
-        // } else {
-        //   if ( geoObjects.length > 0 ){
-        //     //objectsString += ': '+ geoObjects.map((obj)=>obj.name + ' ('+getCustomerById(obj.customer_id).title+')').join(', ')
-        //   } else {
-        //     objectsString += ' не найдены'
-        //   }
-        // }
-
-        return '<div class="header">' +
-                  '<span class="gov-number">'+gov_number+'</span>' +
-                  '<span class="dt">'+dt+'</span>  ' +
-                '</div>  ' +
-                '<div class="geo-objects">'+objectsString+'</div>'+
-                missionsString +
-                '<div class="some-info">' +
-                  '<div class="speed">V<sub>ср</sub> = '+speed_avg+' км/ч<br/>'+'V<sub>макс</sub> = '+speed_max+' км/ч</div>' +
-                  '<div class="distance">' + distance + ' м</div>' +
-                  '<div class="coords">'+latitude+ '<br/>' + longitude + '</div>' +
-                  '<div class="nsat">'+ nsat +' спутников</div>' +
-                '</div>' +
-                  // '<div class="ignition">${ignition}</div>' +
-            '</div>';
+      return `
+        <div>
+          <div class="header">
+            <span class="gov-number">${gov_number}</span>
+            <span class="dt">${dt}</span>
+          </div>
+          <div class="geo-objects">${objectsString}</div>
+          <div class="geo-objects">${missionsString}</div>
+          <div class="some-info">
+            <div class="speed">V<sub>ср</sub> = ${speed_avg}км/ч<br/>V<sub>макс</sub> = ${speed_max}км/ч</div>
+            <div class="distance">${distance}м</div>
+            <div class="coords">${latitude}<br/>${longitude}</div>
+            <div class="nsat">${nsat} спутников</div>
+          </div>
+        </div>
+      `;
     }
   }
 }

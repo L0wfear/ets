@@ -201,19 +201,7 @@ class WaybillFormWrap extends Component {
 						waybill.fuel_end = (fuelStart + fuelGiven - fuelTaxes - equipmentFuelTaxes).toFixed(3);
 					}
 
-					// Автоматическое заполнение поля "возврат" полем "выезд"
-					if (props.element.status === 'active') {
-						if (isEmpty(waybill.odometr_end) && isNotNull(waybill.odometr_start)) {
-							waybill.odometr_end = waybill.odometr_start;
-						}
-						if (isEmpty(waybill.motohours_end) && isNotNull(waybill.motohours_start)) {
-							waybill.motohours_end = waybill.motohours_start;
-						}
-						if (isEmpty(waybill.motohours_equip_end) && isNotNull(waybill.motohours_equip_start)) {
-							waybill.motohours_equip_end = waybill.motohours_equip_start;
-						}
-					}
-
+					// Расчет пробегов
 					if (isNotNull(waybill.odometr_end) && isNotNull(waybill.odometr_start)) {
 						waybill.odometr_diff = parseFloat(waybill.odometr_end - waybill.odometr_start).toFixed(3);
 					}

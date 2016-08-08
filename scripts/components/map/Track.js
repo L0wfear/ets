@@ -4,7 +4,7 @@ import { TRACK_COLORS, TRACK_LINE_OPACITY, TRACK_LINE_WIDTH, TRACK_POINT_RADIUS,
 import { getTrackPointByColor } from '../../icons/track/points.js';
 import { swapCoords, roundCoordinates } from 'utils/geo';
 import { getTypeById } from 'utils/labelFunctions';
-import { isEmpty } from 'utils/functions';
+import { isEmpty, hexToRgba } from 'utils/functions';
 import _ from 'lodash';
 
 const IS_MSK = true;
@@ -18,63 +18,11 @@ const COLORS_ZOOM_THRESHOLD = 8;
  * @return color string
  */
 export function getTrackColor(speed, type_id, opacity = 1) {
-  /*
-
-   0-10кмч - зеленый
-   10-20кмч - зелено-желтый
-   20-30кмч - красный для машин ПМ,ПЩ,РЖР,РТР, для других зелено-желтый
-   30-40кмч - красный для машин ПМ,ПЩ,РЖР,РТР, для других желтый
-   40+кмч - красный
-
-   ПМ "title": "Поливомоечная техника", "id": 1
-   ПЩ "title": "Плужно-щеточная техника","id": 10
-   РЖР "title": "Распределитель жидких реагентов", "id": 6
-   РТР "title": "Распределитель твердых реагентов", "id": 7
-   */
-
   let result = TRACK_COLORS.green; // green by default
-
-  /**
-   * преобразовывает hex цвет в rgba с нужной прозрачностью
-   * @param hex
-   * @param opacity
-   * @return {*}
-   */
-  function hexToRgba(hex, opacity) {
-    let shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
-      return r + r + g + g + b + b;
-    });
-
-    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? 'rgba('
-    + parseInt(result[1], 16) + ','
-    + parseInt(result[2], 16) + ','
-    + parseInt(result[3], 16) + ','
-    + opacity + ')' : null
-  }
-
   let type = getTypeById(type_id);
   let speed_max = type && type.speed_max | 0;
 
-  /* @TODO STOP SIGN
-   if ( speed === 0 ){
-   return colors.stop
-   }*/
-
-  if (speed >= 0 && speed < 10) {
-    result = TRACK_COLORS.green
-  }
-
-  if (speed >= 10 && speed < 20) {
-    result = TRACK_COLORS.green
-  }
-
-  if (speed >= 20 && speed < 30) {
-    result = TRACK_COLORS.green
-  }
-
-  if (speed >= 30 && speed < speed_max) {
+  if (speed >= 0 && speed < speed_max) {
     result = TRACK_COLORS.green
   }
 

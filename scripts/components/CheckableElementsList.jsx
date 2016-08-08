@@ -1,5 +1,6 @@
 import React from 'react';
 import ElementsList from './ElementsList.jsx';
+import { Button, Glyphicon } from 'react-bootstrap';
 import { ButtonCreate, ButtonRead, ButtonDelete } from './ui/buttons/CRUD.jsx';
 
 /**
@@ -155,6 +156,11 @@ export default class CheckableElementsList extends ElementsList {
           onClick={this.removeCheckedElements.bind(this)}
           disabled={this.checkDisabledDelete()}
           permissions={[`${entity}.delete`]}/>
+      );
+    }
+    if (this.exportable) {
+      buttons.push(
+        <Button key={buttons.length} bsSize="small" onClick={this.export.bind(this)}><Glyphicon glyph="download-alt" /></Button>
       );
     }
     return buttons;

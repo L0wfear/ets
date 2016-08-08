@@ -1,26 +1,5 @@
-let ENV = process.env.NODE_ENV || 'development';
-
-let WEBPACK_CONFIG = {
-  development: {
-    isProduction: false,
-    port: 3000,
-    apiPort: 3030,
-    app: {
-      name: 'Development'
-    }
-  },
-  production: {
-    isProduction: true,
-    port: process.env.PORT,
-    apiPort: 3030,
-    app: {
-      name: 'Production'
-    }
-  }
-}
-
-let PROTO = window.location.protocol;
-let WS_PROTO = PROTO === 'http:' ? 'wss:' : 'wss:';
+const PROTO = window.location.protocol;
+const WS_PROTO = 'wss:';
 
 let config = {
   backend: PROTO + '//ods.mos.ru/ssd/ets/services',
@@ -29,8 +8,7 @@ let config = {
   images: PROTO + '//ods.mos.ru/ssd/ets/data/images/',
   REQUEST_PARAMS: {
     credentials: 'include'
-  },
-  WEBPACK_CONFIG: WEBPACK_CONFIG[ENV]
+  }
 };
 
 console.log(process.env);
@@ -67,7 +45,5 @@ try {
 } catch (e) {
   localServerUrl = null;
 }
-
-
 
 export default config;

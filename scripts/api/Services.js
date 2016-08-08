@@ -47,7 +47,6 @@ export const OrganizationsService = new APIService('/organizations/', {
 /* Geoobjects - Геообъекты */
 export const ODHService = new APIService('/odh/', {});
 export const DTService = new APIService('/dt/', {});
-export const SSPService = new APIService('/ssp/', {});
 export const FuelingWaterService = new APIService('/fueling_water/', {});
 export const CarPoolService = new APIService('/carpool/', {});
 export const DangerZoneService = new APIService('/danger_zone/', {});

@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
-import connectToStores from 'flummox/connect';
 import Table from 'components/ui/table/DataTable.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
-
-// function createFakeMissingCarData(types, el, i) {
-// 	el.type = _.find(types, t => t.id === el.type_id).title;
-// 	return el;
-// }
+import { connectToStores, FluxContext } from 'utils/decorators';
 
 let getStatusLabel = (status) => status === 'fail' ? 'Нет' : 'Да';
 let getTypeLabel = (type) => type === 'distance' ? 'Протяженность' : type;
@@ -74,7 +69,7 @@ let tableMeta = {
 	]
 }
 
-let CarsTable = (props) => {
+let RouteOdhCoveringReportTable = (props) => {
 
 	const renderers = {
 		delta: ({data}) => <div>{data ? parseFloat(data).toFixed(2) : ''}</div>,
@@ -93,16 +88,11 @@ let CarsTable = (props) => {
 
 }
 
-class RouteReports extends Component {
-
-
+@connectToStores(['routes'])
+@FluxContext
+export default class RouteOdhCoveringReport extends Component {
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			selectedCar: null,
-			showForm: false,
-		};
 	}
 
 	componentDidMount() {
@@ -111,22 +101,13 @@ class RouteReports extends Component {
 	}
 
 	render() {
-
 		const { selectedReportData = [] } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
-				<CarsTable data={selectedReportData} >
-				</CarsTable>
+				<RouteOdhCoveringReportTable data={selectedReportData} >
+				</RouteOdhCoveringReportTable>
 			</div>
 		);
-
 	}
 }
-
-RouteReports.contextTypes = {
-  history: React.PropTypes.object,
-	flux: React.PropTypes.object,
-};
-
-export default connectToStores(RouteReports, ['routes']);

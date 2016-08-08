@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
-import moment from 'moment';
 import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
 import Form from 'compositions/Form.jsx';
@@ -39,9 +38,9 @@ class OdhForm extends Form {
 		      <Row>
             <Col md={12}>
               <Field type="select" label="Подразделение"
-                     options={COMPANY_ELEMENTS}
-                     value={state.company_structure_id}
-                     onChange={this.handleChange.bind(this, 'company_structure_id')}/>
+                options={COMPANY_ELEMENTS}
+                value={state.company_structure_id}
+                onChange={this.handleChange.bind(this, 'company_structure_id')}/>
             </Col>
 		      </Row>
 

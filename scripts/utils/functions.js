@@ -34,7 +34,9 @@ export function saveData(blob, fileName) {
   a.style = "display: none";
   let url = window.URL.createObjectURL(blob);
   a.href = url;
-  a.download = fileName;
+  if (fileName) {
+    a.download = fileName;
+  }
   a.click();
   setTimeout(() => window.URL.revokeObjectURL(url), 100);
 }
@@ -53,9 +55,35 @@ export function printData(blob) {
   };
 }
 
-export function hasOdometer(gov_number) {
-  if (gov_number && gov_number[0]) {
-    return isNaN(gov_number[0]);
+/**
+ * Проверяет наличие одометра у ТС по гос.номеру
+ * если гос. номер начинается с буквы - одометр есть
+ * @param {string} carStateNumber - гос.номер
+ * @return {boolean} hasOdometer - есть ли одометр
+ */
+export function hasOdometer(carStateNumber) {
+  if (carStateNumber && carStateNumber[0]) {
+    return isNaN(carStateNumber[0]);
   }
   return null;
+}
+
+/**
+ * преобразовывает hex цвет в rgba с нужной прозрачностью
+ * @param hex
+ * @param opacity
+ * @return {*}
+ */
+export function hexToRgba(hex, opacity) {
+  let shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+  hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+    return r + r + g + g + b + b;
+  });
+
+  let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? 'rgba('
+  + parseInt(result[1], 16) + ','
+  + parseInt(result[2], 16) + ','
+  + parseInt(result[3], 16) + ','
+  + opacity + ')' : null
 }

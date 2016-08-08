@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { FluxContext } from 'utils/decorators';
+import { Button, Glyphicon } from 'react-bootstrap';
 import { ButtonCreate, ButtonRead, ButtonDelete } from './ui/buttons/CRUD.jsx';
-import { isEmpty } from 'utils/functions';
 
 /**
  * Базовый класс для отображения таблиц и привязанных к ним форм (модальных окон)
@@ -26,6 +26,7 @@ class ElementsList extends React.Component {
 
     this.selectField = this.constructor.selectField || 'id';
     this.mainListName = this.constructor.listName || undefined;
+    this.entity = this.constructor.entity;
 
     this.clicks = 0;
   }
@@ -201,6 +202,11 @@ class ElementsList extends React.Component {
           onClick={this.removeElement.bind(this)}
           disabled={this.checkDisabledDelete()}
           permissions={[`${entity}.delete`]}/>
+      );
+    }
+    if (this.exportable) {
+      buttons.push(
+        <Button key={buttons.length} bsSize="small" onClick={this.export.bind(this)}><Glyphicon glyph="download-alt" /></Button>
       );
     }
     return buttons;

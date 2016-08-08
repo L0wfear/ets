@@ -18,11 +18,9 @@ export default class MapWrapper extends React.Component {
 
   render() {
     return (
-      <div>
-        <Map
-          onFeatureClick={this.onFeatureClick.bind(this)}
-          {...this.props}/>
-      </div>
+      <Map
+        onFeatureClick={this.onFeatureClick.bind(this)}
+        {...this.props}/>
     );
   }
 

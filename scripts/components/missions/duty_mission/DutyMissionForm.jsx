@@ -67,7 +67,7 @@ export class DutyMissionForm extends Form {
 	async componentDidMount() {
 		const mission = this.props.formState;
 		const { flux } = this.context;
-    let objectsActions = flux.getActions('objects')
+    let objectsActions = flux.getActions('objects');
 		let technicalOperationsActions = flux.getActions('technicalOperation');
 		let routesActions = flux.getActions('routes');
 		let missionsActions = flux.getActions('missions');
@@ -83,9 +83,10 @@ export class DutyMissionForm extends Form {
 			routesList = await routesActions.getRoutesByDutyMissionId(mission.id);
 		}
 
-  	flux.getActions('missions').getMissions(mission.technical_operation_id);
+  	missionsActions.getMissions(mission.technical_operation_id);
+		missionsActions.getMissionSources();
+		flux.getActions('employees').getEmployees();
     const technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsWithBrigades();
-    console.log(technicalOperationsList);
     this.setState({
       selectedRoute,
       technicalOperationsList,
@@ -141,7 +142,6 @@ export class DutyMissionForm extends Form {
 
 		let state = this.props.formState;
 		let errors = this.props.formErrors;
-    console.info('FORM STATE IS', state);
 
     const EMPLOYEES_RKU_FILTER = 'brigade_worker';
 

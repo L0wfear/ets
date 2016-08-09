@@ -548,6 +548,8 @@ class WaybillForm extends Form {
 			          <Dropdown.Menu>
 				          <MenuItem eventKey={1}>Форма 3-С</MenuItem>
 				          <MenuItem eventKey={2}>Форма 4-П</MenuItem>
+				          <MenuItem eventKey={3}>Форма №6 (спец)</MenuItem>
+				          <MenuItem eventKey={4}>Форма №3</MenuItem>
 			          </Dropdown.Menu>
 			        </Dropdown>&nbsp;
 						</Div>

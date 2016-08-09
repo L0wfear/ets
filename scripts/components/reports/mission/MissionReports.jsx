@@ -170,7 +170,7 @@ export default class MissionReports extends Component {
   			<FaxogrammsDatepicker handleChange={this.handleChange.bind(this)} onClick={this.createMissionReport.bind(this)} {...this.state}/>
 
 				<MissionReportsTable data={missionReportsList} onRowSelected={this.onReportSelect.bind(this)}>
-					<Button bsSize="small" onClick={this.export.bind(this)}><Glyphicon glyph="download-alt" /></Button>
+					<Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt" /></Button>
 				</MissionReportsTable>
 			</div>
 		);

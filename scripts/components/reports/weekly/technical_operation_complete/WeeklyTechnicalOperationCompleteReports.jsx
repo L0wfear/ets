@@ -175,7 +175,7 @@ export default class WeeklyTechnicalOperationCompleteReports extends Component {
 				<WeeklyTechnicalOperationCompleteReportsTable
           data={weeklyTechnicalOperationCompleteReportsList}
           onRowSelected={this.onReportSelect.bind(this)}>
-          <Button bsSize="small" onClick={this.export.bind(this)}><Glyphicon glyph="download-alt"/></Button>
+          <Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt"/></Button>
         </WeeklyTechnicalOperationCompleteReportsTable>
 			</div>
 		);

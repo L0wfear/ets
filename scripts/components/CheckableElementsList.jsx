@@ -160,7 +160,7 @@ export default class CheckableElementsList extends ElementsList {
     }
     if (this.exportable) {
       buttons.push(
-        <Button key={buttons.length} bsSize="small" onClick={this.export.bind(this)}><Glyphicon glyph="download-alt" /></Button>
+        <Button key={buttons.length} bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt" /></Button>
       );
     }
     return buttons;

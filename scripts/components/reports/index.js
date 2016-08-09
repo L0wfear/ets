@@ -4,7 +4,7 @@
  */
 import analytics from './Analytics.jsx';
 import coverage from './CoverageReport.jsx';
-import fuel from './FuelReport.jsx';
+import fuelConsumption from './fuel_consumption/FuelReport.jsx';
 import odh from './ODHReports.jsx';
 import mission from './mission';
 import route from './route';
@@ -16,7 +16,7 @@ import carFuncTypeUsage from './car_func_type_usage';
 export default {
   analytics,
   coverage,
-  fuel,
+  fuelConsumption,
   mission,
   odh,
   route,

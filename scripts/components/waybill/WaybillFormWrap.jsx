@@ -328,6 +328,10 @@ class WaybillFormWrap extends Component {
 	 * @return {undefined}
 	 */
   handlePrint(printonly, event, print_form_type = 1) {
+		if (print_form_type > 2) {
+			console.log('Нужен сервис на бэке.')
+			return;
+		}
 		const { formState } = this.state;
 		const token = JSON.parse(window.localStorage.getItem('ets-session'));
 

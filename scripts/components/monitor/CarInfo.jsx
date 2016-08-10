@@ -167,17 +167,27 @@ export default class CarInfo extends Component {
     track.fetch(from_dt, to_dt);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     if (this.props.car && !this.state.imageUrl) {
       this.fetchImage();
       this.fetchTrack();
+      let carsList = this.props.flux.getStore('objects').state.carsList;
+      let car_id = _.find(carsList, (car) => car.gov_number === this.props.car.car.gov_number).asuods_id;
+      let missions = await this.props.flux.getActions('missions').getMissionsByCarAndDates(car_id, this.state.from_dt, this.state.to_dt, 'assigned')
+      console.log(missions);
     }
   }
 
-  componentWillReceiveProps(props) {
+  async componentWillReceiveProps(props) {
     if (props.car !== this.props.car) {
       this.fetchImage();
       this.fetchTrack(props);
+    }
+    if (props.car.id !== this.props.car.id) {
+      let carsList = this.props.flux.getStore('objects').state.carsList;
+      let car_id = _.find(carsList, (car) => car.gov_number === this.props.car.car.gov_number).asuods_id;
+      let missions = await this.props.flux.getActions('missions').getMissionsByCarAndDates(car_id, this.state.from_dt, this.state.to_dt, 'assigned')
+      console.log(missions)
     }
   }
 

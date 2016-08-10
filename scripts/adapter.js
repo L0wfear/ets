@@ -193,7 +193,13 @@ export function getGeoObjectsByCoords([lat, lon], d = 5) {
 }
 
 // DASHBOARD //
-
+const CURRENT_DUTY_MISSIONS = '{"result":{"title":"Текущие наряд-задания (6)","items":[{"title":"Название тех.операции (кол-во наряд заданий)","subItems":[{"data":{"duty_mission_number":11,"duty_mission_date_start":"2016-03-23T09:00:00","duty_mission_date_end":"2016-03-24T08:59:00","foreman_fio":"Мамедов Эльдар Исабалыевич","foreman_phone":"8-980-253-91-01","duty_mission_id":650,"route_id":195,"technical_operation_name":"Первоочередная и аварийная обработка противогололедными материалами опасных для движения транспорта мест"},"title":"№(НОМЕР НАРЯД-ЗАДАНИЯ) ИМЯ-ТЕХНОЛОГИЧЕСКОЙ-ОПЕРАЦИИ"}]}]},"errors":[]}'
 export function getDashboardComponent(key, payload) {
+  if (key === 'current_duty_missions') {
+    let component = JSON.parse(CURRENT_DUTY_MISSIONS);
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {resolve(({component, key}))}, 100);
+    });
+  }
   return getJSON(`${DASHBOARD_URL}${key}/`, payload).then(component => ({component, key}));
 }

@@ -5,6 +5,7 @@ import RouteInfo from 'components/route/RouteInfo.jsx';
 import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
 import ODHList from 'components/route/ODHList.jsx';
 import Field from 'components/ui/Field.jsx';
+import EtsSelect from 'components/ui/EtsSelect.jsx';
 import Div from 'components/ui/Div.jsx';
 import moment from 'moment';
 import cx from 'classnames';
@@ -163,6 +164,11 @@ export class MissionForm extends Form {
 
     const TECH_OPERATIONS = technicalOperationsList.map(({id, name}) => ({value: id, label: name}));
     const MISSION_SOURCES = missionSourcesList.map(({id, name}) => ({value: id, label: name}));
+		const ASSIGN_OPTIONS = [
+			{value: 0, label: "Не добавлять в ПЛ"},
+			{value: 1, label: "Добавить в активный ПЛ"},
+			{value: 2, label: "Создать/добавить в черновик ПЛ"}
+		];
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`}));
     const ROUTES = routesList.map(({id, name}) => ({value: id, label: name}));
 
@@ -274,8 +280,8 @@ export class MissionForm extends Form {
 									options={TECH_OPERATIONS}
 									value={state.technical_operation_id}
 									onChange={this.handleTechnicalOperationChange.bind(this)}/>
-								</Col>
-						</Row>
+						</Col>
+					</Row>
 
 	      	<Row>
             <Col md={6}>
@@ -299,11 +305,16 @@ export class MissionForm extends Form {
 	      </Modal.Body>
 
 	      <Modal.Footer>
-          <Div className="inline-block assignToWaybillCheck" hidden={!!state.status || this.props.fromWaybill}>
-            <label>Создать черновик ПЛ / Добавить в существующий</label>
-            <Input type="checkbox" value={state.assign_to_waybill} onClick={this.handleChange.bind(this, 'assign_to_waybill', !!!state.assign_to_waybill)}/>
-          </Div>
-					<Div className="inline-block">
+          <Div className="inline-block assignToWaybillCheck" style={{width: "300px",textAlign:"left !important", height: "22px", marginRight: "20px"}} hidden={!!state.status || this.props.fromWaybill}>
+            {/* <Input type="checkbox" value={state.assign_to_waybill} onClick={this.handleChange.bind(this, 'assign_to_waybill', !!!state.assign_to_waybill)}/> */}
+						<EtsSelect
+								type="select"
+								options={ASSIGN_OPTIONS}
+								value={state.assign_to_waybill}
+								clearable={false}
+								onChange={this.handleChange.bind(this, 'assign_to_waybill')}/>
+					</Div>
+							<Div className="inline-block">
 						<Dropdown id="waybill-print-dropdown" dropup disabled={!state.status || !this.props.canSave || !state.route_id} onSelect={this.props.handlePrint}>
 							<Dropdown.Toggle disabled={!state.status || !this.props.canSave || !state.route_id || IS_COMPLETED}>
 								<Glyphicon glyph="print" />

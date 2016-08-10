@@ -55,26 +55,26 @@ class CompanyStructureForm extends Form {
 	      	<Row>
             <Col md={12}>
               <Field type="select" label="Тип подразделения" error={errors['type']}
-                     options={STRUCTURE_TYPES}
-                     value={state.type}
-                     onChange={this.handleChange.bind(this, 'type')}
-                     clearable={true}/>
+									options={STRUCTURE_TYPES}
+									value={state.type}
+									onChange={this.handleChange.bind(this, 'type')}
+									clearable={true}/>
             </Col>
 	      	</Row>
 
           <Row>
             <Col md={12}>
               <Field type="string" label="Наименование" error={errors['name']}
-                     value={state.name}
-                     onChange={this.handleChange.bind(this, 'name')}/>
+									value={state.name}
+									onChange={this.handleChange.bind(this, 'name')}/>
             </Col>
 	      	</Row>
 
           <Row>
             <Col md={12}>
               <Field type="string" label="Примечание" error={errors['note']}
-                     value={state.note}
-                     onChange={this.handleChange.bind(this, 'note')}/>
+									value={state.note}
+									onChange={this.handleChange.bind(this, 'note')}/>
             </Col>
 	      	</Row>
 

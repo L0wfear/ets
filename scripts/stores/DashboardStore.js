@@ -55,6 +55,11 @@ const componentsByRole = {
       key: 'car_in_work_overall',
       //side: true,
     },
+    {
+      id: 12,
+      key: 'current_duty_missions',
+      itemsTitle: 'Карточка наряд-задания'
+    }
     // {
     //   id: 11,
     //   key: 'daily_missions_percent',

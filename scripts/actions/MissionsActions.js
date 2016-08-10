@@ -211,6 +211,12 @@ export default class MissionsActions extends Actions {
     return DutyMissionService.get({});
   }
 
+  getDutyMissionById(id) {
+    const payload = { id };
+
+    return DutyMissionService.get(payload);
+  }
+
   createDutyMission(mission) {
     const payload = _.cloneDeep(mission);
     payload.plan_date_start = createValidDateTime(payload.plan_date_start);

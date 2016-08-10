@@ -176,7 +176,7 @@ export default class DailyCleaningReportsETS extends Component {
             refreshable={true}
             onRefresh={() => this.context.flux.getActions('reports').getDailyCleaningReportsETS()}
             onRowSelected={this.onReportSelect.bind(this)}>
-          <Button bsSize="small" onClick={this.export.bind(this)}><Glyphicon glyph="download-alt"/></Button>
+          <Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt"/></Button>
         </DailyCleaningReportsTable>
 			</div>
 		);

@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
-import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
-import { getToday9am, getTomorrow9am } from 'utils/dates';
-import FuelReportHeader from "./FuelReportHeader.jsx";
-import { saveData } from 'utils/functions';
-import { connectToStores, FluxContext, HistoryContext } from 'utils/decorators';
 
 let tableMeta = {
 	cols: [
@@ -154,7 +149,7 @@ let tableMeta = {
     },
     {
       name: 'fuel_fact',
-      caption: 'Топливо. Факт.',
+      caption: 'Топливо. Расход',
       type: 'number',
 			cssClassName: "width-fuel-report-small",
 			filter: {
@@ -197,49 +192,4 @@ let FuelReportTable = (props) => {
 
 }
 
-@connectToStores(['reports'])
-@FluxContext
-@HistoryContext
-export default class FuelReport extends Component {
-
-	constructor(props) {
-		super(props);
-
-    let [date_from, date_to] = [getToday9am(), getTomorrow9am()];
-
-		this.state = {
-      date_from,
-      date_to,
-      fuel_type_id: null,
-		};
-	}
-
-  handleChange(field, value) {
-		this.setState({[field]: value});
-	}
-
-  createReport() {
-    const { flux } = this.context;
-		flux.getActions('reports').getFuelReport(this.state);
-  }
-
-	printReport() {
-		const { flux } = this.context;
-		flux.getActions('reports')
-				.printFuelReport(this.state)
-				.then(blob => {saveData(blob, `Отчет расхода топлива.xlsx`)});
-	}
-
-	render() {
-		let { fuelReport = [] } = this.props;
-
-		return (
-			<div className="ets-page-wrap">
-  			<FuelReportHeader handleChange={this.handleChange.bind(this)} onClick={this.createReport.bind(this)} {...this.state} />
-				<FuelReportTable data={fuelReport}>
-					<Button bsSize="small" onClick={this.printReport.bind(this)}><Glyphicon glyph="download-alt" /></Button>
-				</FuelReportTable>
-			</div>
-		);
-	}
-}
+export default FuelReportTable;

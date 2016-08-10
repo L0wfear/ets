@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import { saveData } from 'utils/functions';
 import config from 'config';
 
+export function toUrlWithParams(url, data) {
+  let params = _.map(data, (v, k) => `${k}=${encodeURIComponent(v)}`).join('&');
+  return `${url}?${params}`;
+};
+
 function exportable(ComposedComponent) {
 
   return class extends ComposedComponent {
@@ -19,9 +24,17 @@ function exportable(ComposedComponent) {
       this.path = this.constructor.path;
   	}
 
-    exportFunction() {
+    exportFunction(payload = {}) {
       const token = JSON.parse(window.localStorage.getItem('ets-session'));
-      let URL = `${config.backend}/${this.path ? this.path + '/' : ''}${this.entity}/?format=xls&token=${token}`;
+      payload = {
+        ...payload,
+        format: 'xls',
+        token
+      };
+      let URL = toUrlWithParams(
+        `${config.backend}/${this.path ? this.path + '/' : ''}${this.entity}/`,
+        payload
+      );
       window.open(URL);
       return;
       // return fetch(URL, {
@@ -32,9 +45,9 @@ function exportable(ComposedComponent) {
       // });
     }
 
-    export() {
+    export(payload) {
       if (typeof this.exportFunction === 'function') {
-        this.exportFunction();
+        this.exportFunction(payload);
         // .then(blob => {
         //   console.log(blob);
         //   // saveData(blob);//, `Отчет по заданиям.xls`);

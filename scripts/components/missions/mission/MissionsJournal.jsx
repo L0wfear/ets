@@ -17,6 +17,7 @@ import _ from 'lodash';
 	tableComponent: MissionsTable,
 	operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE']
 })
+@exportable
 export default class MissionsJournal extends CheckableElementsList {
 
 	constructor(props, context) {
@@ -138,12 +139,7 @@ export default class MissionsJournal extends CheckableElementsList {
       this.removeElement();
     }
   }
-
-	handleSubmit() {
-		const { flux } = this.context;
-		flux.getActions('missions').getMissionAnalyticalReport().then(blob => {saveData(blob, `Отчет по заданиям.xls`)});
-	}
-
+	
 	onReject(refresh) {
 		this.setState({showMissionRejectForm: false});
 		refresh && this.context.flux.getActions('missions').getMissions();
@@ -180,7 +176,6 @@ export default class MissionsJournal extends CheckableElementsList {
 			<ButtonToolbar key={buttons.length}>
 				<Button bsSize="small" onClick={this.completeCheckedElements.bind(this)} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</Button>
 				<Button bsSize="small" onClick={this.rejectCheckedElements.bind(this)} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</Button>
-				<Button bsSize="small" onClick={this.handleSubmit.bind(this)}><Glyphicon glyph="download-alt" /></Button>
 			</ButtonToolbar>
 		);
 

@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
 import { connectToStores, FluxContext } from 'utils/decorators';
+import { isEmpty } from 'utils/functions';
 
 let getStatusLabel = (status) => status === 'fail' ? 'Нет' : 'Да';
-let getTypeLabel = (type) => type === 'distance' ? 'Протяженность' : type;
 
 let tableMeta = {
 	cols: [
@@ -61,7 +61,7 @@ let tableMeta = {
 			filter: false
 		},
 		{
-			name: 'technical_operation_considered_length',
+			name: 'check_type_name',
 			caption: 'Тип проверки',
 			type: 'text',
 			filter: false
@@ -72,12 +72,11 @@ let tableMeta = {
 let RouteOdhCoveringReportTable = (props) => {
 
 	const renderers = {
-		delta: ({data}) => <div>{data ? parseFloat(data).toFixed(2) : ''}</div>,
-  	traveled: ({data}) => <div>{data ? parseFloat(data).toFixed(2) : ''}</div>,
-  	footway_length: ({data}) => <div>{data ? parseFloat(data).toFixed(2) : ''}</div>,
-  	gutters_length: ({data}) => <div>{data ? parseFloat(data).toFixed(2) : ''}</div>,
-    status: ({data}) => <div>{data ? getStatusLabel(data) : ''}</div>,
-    technical_operation_considered_length: ({data}) => <div>{data ? getTypeLabel(data) : ''}</div>,
+		delta: ({data}) => <div>{!isEmpty(data) ? parseFloat(data).toFixed(2) : ''}</div>,
+  	traveled: ({data}) => <div>{!isEmpty(data) ? parseFloat(data).toFixed(2) : ''}</div>,
+  	footway_length: ({data}) => <div>{!isEmpty(data) ? parseFloat(data).toFixed(2) : ''}</div>,
+  	gutters_length: ({data}) => <div>{!isEmpty(data) ? parseFloat(data).toFixed(2) : ''}</div>,
+    status: ({data}) => <div>{!isEmpty(data) ? getStatusLabel(data) : ''}</div>,
 	};
 
 	return <Table title='Покрытие ОДХ маршрутами'

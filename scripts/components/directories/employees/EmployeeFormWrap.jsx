@@ -58,10 +58,11 @@ class EmployeeFormWrap extends FormWrap {
 			delete formErrors["special_license"]
 			delete formErrors["drivers_license"]
 		};
-		console.log(this.schema)
 		_.each(schema.properties, prop => {
 			formErrors[prop.key] = validateRow(prop, formState[prop.key]);
 		});
+		if (formState["special_license"]) delete formErrors["drivers_license"]
+		if (formState["drivers_license"]) delete formErrors["special_license"]
 
 		return formErrors;
 	}

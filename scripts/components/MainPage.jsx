@@ -118,7 +118,7 @@ export default class MainPage extends React.Component {
               <img src="images/avatar-default.png" className="navbar-user__avatar-img" />
             </div>
             <div className="navbar-user__data">
-              <div className="navbar-user__data-type">{this.state.user.role ? ROLES[this.state.user.role] : ''}</div>
+              <div className="navbar-user__data-type">{this.state.user.role ? ROLES[this.state.user.role] ?  ROLES[this.state.user.role] : this.state.user.role : ''}</div>
               <div className="navbar-user__data-name">{this.state.user.fio}</div>
             </div>
           </NavItem>

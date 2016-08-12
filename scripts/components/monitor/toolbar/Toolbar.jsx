@@ -106,7 +106,7 @@ let ShowGeoobjectsCheckbox = (props) => {
     props.flux.getActions('settings').setShowGeoobjects(checked);
   }
 
-  const geoObjectsList = ['dt', 'odh', 'ssp', 'msp', 'carpool', 'fueling_water', 'danger_zone'].map((type, index) => {
+  const geoObjectsList = ['dt', 'odh', 'ssp', 'msp', 'carpool', 'fueling_water', 'danger_zone', 'pgm_store', 'snow_storage'].map((type, index) => {
     return (
       <li key={index}>
         <div className="checkbox">

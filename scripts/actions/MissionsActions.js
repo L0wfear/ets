@@ -57,7 +57,7 @@ export default class MissionsActions extends Actions {
     return MissionReassignationService.put(payload, false, 'json');
   }
 
-  getMissionsByCarAndDates(car_id, date_from, date_to, waybillStatus) {
+  getMissionsByCarAndDates(car_id, date_from, date_to, waybillStatus, inBetween) {
     const payload = {};
 
     // возвращает статусы задания, которые мы будем искать, в зависимости от статуса ПЛ
@@ -80,6 +80,10 @@ export default class MissionsActions extends Actions {
 
     if (!isEmpty(status)) {
       payload.status = status;
+    }
+
+    if (!isEmpty(inBetween)) {
+      payload.in_between = inBetween;
     }
 
     return MissionService.get(payload);

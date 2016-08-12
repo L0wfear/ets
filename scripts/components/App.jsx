@@ -150,6 +150,8 @@ const routes = (
       <Route path="dt" component={directories.geoobjects.dt} onEnter={requireAuth}/>
       <Route path="ssp" component={directories.geoobjects.ssp} onEnter={requireAuth}/>
       <Route path="msp" component={directories.geoobjects.msp} onEnter={requireAuth}/>
+      <Route path="pgm" component={directories.geoobjects.pgm} onEnter={requireAuth}/>
+      <Route path="snow-storage" component={directories.geoobjects.snowStorage} onEnter={requireAuth}/>
       <Route path="fueling-water" component={directories.geoobjects.fuelingWater} onEnter={requireAuth}/>
       <Route path="carpool" component={directories.geoobjects.carpool} onEnter={requireAuth}/>
       <Route path="danger-zones" component={directories.geoobjects.dangerZones} onEnter={requireAuth}/>

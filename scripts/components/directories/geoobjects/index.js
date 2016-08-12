@@ -5,6 +5,8 @@ import dangerZones from './danger_zones/DangerZonesDirectory.jsx';
 import fuelingWater from './fueling_water/FuelingWaterStationsDirectory.jsx';
 import ssp from './ssp/SSPDirectory.jsx';
 import msp from './msp/MSPDirectory.jsx';
+import pgm from './pgm/PGMDirectory.jsx';
+import snowStorage from './snow_storage/SnowStorageDirectory.jsx';
 
 export default {
   dt,
@@ -13,5 +15,7 @@ export default {
   dangerZones,
   fuelingWater,
   ssp,
-  msp
+  msp,
+  pgm,
+  snowStorage
 }

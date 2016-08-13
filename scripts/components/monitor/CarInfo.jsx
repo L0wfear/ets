@@ -88,6 +88,7 @@ export default class CarInfo extends Component {
     this.state = {
       imageUrl: null,
       trackingMode: false,
+      missions: [],
       from_dt: getStartOfToday(),
       to_dt: new Date(),
       from_dt_: getStartOfToday(),
@@ -173,8 +174,8 @@ export default class CarInfo extends Component {
       this.fetchTrack();
       let carsList = this.props.flux.getStore('objects').state.carsList;
       let car_id = _.find(carsList, (car) => car.gov_number === this.props.car.car.gov_number).asuods_id;
-      let missions = await this.props.flux.getActions('missions').getMissionsByCarAndDates(car_id, this.state.from_dt, this.state.to_dt, 'assigned')
-      console.log(missions);
+      let missions = await this.props.flux.getActions('missions').getMissionsByCarAndDates(car_id, this.state.from_dt, this.state.to_dt, true, 1)
+      this.setState({missions: missions.result})
     }
   }
 
@@ -186,8 +187,8 @@ export default class CarInfo extends Component {
     if (props.car.id !== this.props.car.id) {
       let carsList = this.props.flux.getStore('objects').state.carsList;
       let car_id = _.find(carsList, (car) => car.gov_number === this.props.car.car.gov_number).asuods_id;
-      let missions = await this.props.flux.getActions('missions').getMissionsByCarAndDates(car_id, this.state.from_dt, this.state.to_dt, 'assigned')
-      console.log(missions)
+      let missions = await this.props.flux.getActions('missions').getMissionsByCarAndDates(car_id, this.state.from_dt, this.state.to_dt, true, 1)
+      this.setState({missions: missions.result})
     }
   }
 
@@ -236,20 +237,20 @@ export default class CarInfo extends Component {
       <div className="car-info-tracking">
         <Panel title="Трекинг" className="chart-datepickers-wrap">
           <DatePicker onChange={date => this.setState({ from_dt_: date})}
-                      date={this.state.from_dt_} disabled={tillNow} ref="from_dt"/>&nbsp;–&nbsp;
+              date={this.state.from_dt_} disabled={tillNow} ref="from_dt"/>&nbsp;–&nbsp;
           <DatePicker onChange={date => this.setState({to_dt_: date})}
-                      date={this.state.to_dt_} disabled={tillNow} ref="to_dt"/>
+              date={this.state.to_dt_} disabled={tillNow} ref="to_dt"/>
           {/*<label className="gradient-checkbox">
-             <input type="checkbox" checked={showGradient} ref="showGradient" onChange={this.onShowGradientChange.bind(this)}/> С градиентом
-           </label>*/}
+            <input type="checkbox" checked={showGradient} ref="showGradient" onChange={this.onShowGradientChange.bind(this)}/> С градиентом
+          </label>*/}
           <label className="till-now-checkbox">
             <input type="checkbox" checked={tillNow} ref="tillNow" onChange={this.onTillNowChange.bind(this)}/> За сегодня
           </label>
 
           <Button title="Перезагрузить данные"
-                  className="reload-button"
-                  onClick={this.fetchVehicleData.bind(this)}
-                  disabled={tillNow}>
+              className="reload-button"
+              onClick={this.fetchVehicleData.bind(this)}
+              disabled={tillNow}>
             <span className={reloadBtnCN}></span>
           </Button>
         </Panel>
@@ -272,6 +273,47 @@ export default class CarInfo extends Component {
         <h3 className="car-info-plate">{plate}</h3>
         {this.renderModel()}
         {this.renderData()}
+        {/*<FuelChart from={this.state.from_dt} to={this.state.to_dt} id={car.id}/>*/}
+        {/*<SpeedChart track={marker.hasTrackLoaded() && marker.track}/>*/}
+      </div>
+    );
+  }
+
+  renderMissions() {
+    let { missions } = this.state;
+    missions = <div style={{textAlign: "left", overflow: "hidden",textOverflow: "ellipsis"}}>
+      {missions.map((mission) => {
+        return <span key={mission.id} style={{whiteSpace: "nowrap"}}>{`№${mission.number} - ${mission.technical_operation_name}`}</span>
+      })}
+    </div>;
+
+    if (!missions.length) missions = 'Нет данных';
+
+    return (
+      <div className="car-info-tracking">
+        <Panel title="Задания" className="chart-datepickers-wrap">
+          {missions}
+        </Panel>
+      </div>
+    );
+  }
+
+  render() {
+    let car = this.props.car;
+
+    if (!car) {
+      return null;
+    }
+
+    let marker = this.props.car.marker;
+    let plate = car.car.gov_number;
+
+    return (
+      <div className="car-info" key={marker.id}>
+        <h3 className="car-info-plate">{plate}</h3>
+        {this.renderModel()}
+        {this.renderData()}
+        {this.renderMissions()}
         {/*<FuelChart from={this.state.from_dt} to={this.state.to_dt} id={car.id}/>*/}
         {/*<SpeedChart track={marker.hasTrackLoaded() && marker.track}/>*/}
       </div>

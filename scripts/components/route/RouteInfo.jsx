@@ -44,10 +44,10 @@ export default class RouteInfo extends Component {
 							<Col md={8}>
 								<Div className="route-creating">
 									<PolyMap onFeatureClick={this.onFeatureClick.bind(this)}
-											 zoom={this.state.zoom}
-				            	 center={this.state.center}
-				            	 polys={polys}
-											 manual={manual}/>
+											zoom={this.state.zoom}
+											center={this.state.center}
+											polys={polys}
+											manual={manual}/>
 								</Div>
 							</Col>
 

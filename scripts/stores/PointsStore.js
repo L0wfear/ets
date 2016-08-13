@@ -240,7 +240,7 @@ export default class PointsStore extends Store {
 
     if (!!selected === false) {
       this.setState({
-        selected: false
+        selected: null
       });
       return;
     }

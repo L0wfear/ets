@@ -31,7 +31,8 @@ export default class EmployeeForm extends Form {
 	render() {
 
 		let state = this.props.formState;
-		const { carsList = [], positionsList = [] } = this.props;
+		let errors = this.props.formErrors;
+		const { carsList = [], positionsList = []} = this.props;
 		const { companyStructureList = [] } = this.state;
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`}));
 		const COMPANY_ELEMENTS = companyStructureList.map(el => ({value: el.id, label: el.name}));
@@ -56,12 +57,20 @@ export default class EmployeeForm extends Form {
 
 						<Col md={6}>
 							<Div>
-								<label>Фамилия</label>
-								<Input type="text" value={state['last_name']} onChange={this.handleChange.bind(this, 'last_name')}/>
+								<Field
+										type="string"
+										label="Фамилия"
+										value={state['last_name']}
+										error={errors['last_name']}
+										onChange={this.handleChange.bind(this, 'last_name')} />
 							</Div>
 							<Div>
-								<label>Имя</label>
-								<Input type="text" value={state['first_name']} onChange={this.handleChange.bind(this, 'first_name')}/>
+								<Field
+										type="string"
+										label="Имя"
+										value={state['first_name']}
+										error={errors['first_name']}
+										onChange={this.handleChange.bind(this, 'first_name')} />
 							</Div>
 							<Div>
 								<label>Отчество</label>
@@ -77,14 +86,21 @@ export default class EmployeeForm extends Form {
 								<Input type="text" value={state['phone']} onChange={this.handleChange.bind(this, 'phone')}/>
 							</Div>
 							<Div>
-								<Field type="select" label="Должность"
+								<Field
+										type="select"
+										label="Должность"
 										options={POSITION_ELEMENTS}
 										value={state.position_id}
+										error={errors['position_id']}
 										onChange={this.handleChange.bind(this, 'position_id')}/>
 							</Div>
 							<Div>
-								<label>Специальное удостоверение</label>
-								<Input type="text" value={state['special_license']} onChange={this.handleChange.bind(this, 'special_license')}/>
+								<Field
+										type="string"
+										label="Специальное удостоверение"
+										value={state['special_license']}
+										error={errors['special_license']}
+										onChange={this.handleChange.bind(this, 'special_license')} />
 							</Div>
 						</Col>
 
@@ -98,8 +114,12 @@ export default class EmployeeForm extends Form {
 								<Input type="number" value={state['personnel_number']} onChange={this.handleChange.bind(this, 'personnel_number')}/>
 							</Div>
 							<Div>
-								<label>Водительское удостоверение</label>
-								<Input type="text" value={state['drivers_license']} onChange={this.handleChange.bind(this, 'drivers_license')}/>
+								<Field
+										type="string"
+										label="Водительское удостоверение"
+										value={state['drivers_license']}
+										error={errors['drivers_license']}
+										onChange={this.handleChange.bind(this, 'drivers_license')} />
 							</Div>
 							<Div>
 								<label>Предпочитаемое ТрС</label>
@@ -127,7 +147,7 @@ export default class EmployeeForm extends Form {
 
 	      </Modal.Body>
 	      <Modal.Footer>
-	      	<Button onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+	      	<Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
 	      </Modal.Footer>
 			</Modal>
 		)

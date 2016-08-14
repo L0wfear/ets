@@ -7,7 +7,7 @@ import MissionsCreationForm from './MissionsCreationForm.jsx';
 import { getDefaultMissionTemplate, getDefaultMissionsCreationTemplate } from 'stores/MissionsStore.js';
 import { validate as validateNumber} from 'validate/validateNumber.js';
 import { isNotNull, isEmpty } from 'utils/functions';
-import { validateRow } from 'validate/validateRow.js';
+import { validateField } from 'validate/validateField.js';
 import { missionTemplateSchema } from 'models/MissionTemplateModel.js';
 import { missionsCreationTemplateSchema } from 'models/MissionsCreationTemplateModel.js';
 import FormWrap from 'components/compositions/FormWrap.jsx';
@@ -16,7 +16,7 @@ let validateMissionsCreationTemplate = (mission, errors) => {
   let missionsCreationTemplateErrors = _.clone(errors);
 
   _.each(missionsCreationTemplateSchema.properties, prop => {
-    missionsCreationTemplateErrors[prop.key] = validateRow(prop, mission[prop.key]);
+    missionsCreationTemplateErrors[prop.key] = validateField(prop, mission[prop.key]);
   });
 
   return missionsCreationTemplateErrors;

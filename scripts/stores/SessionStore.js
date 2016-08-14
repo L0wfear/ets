@@ -1,6 +1,6 @@
 import { Store } from 'flummox';
 import { createFio } from '../utils/create-fio.js';
-import User from '../models/User.js';
+import { User } from '../models';
 
 const SESSION_KEY = 'ets-session';
 const defaultUser = {

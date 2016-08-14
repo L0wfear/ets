@@ -32,10 +32,3 @@ export const dutyMissionSchema = {
     }
 	],
 };
-
-const closingProperties = [
-];
-
-export const dutyMissionClosingSchema = {
-  properties: closingProperties
-};

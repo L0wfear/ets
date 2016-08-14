@@ -95,32 +95,30 @@ export default class EmployeeForm extends Form {
 										onChange={this.handleChange.bind(this, 'position_id')}/>
 							</Div>
 							<Div>
+								<Field type="select" label="Подразделение"
+										options={COMPANY_ELEMENTS}
+										value={state.company_structure_id}
+										onChange={this.handleChange.bind(this, 'company_structure_id')}/>
+							</Div>
+						</Col>
+
+						<Col md={6}>
+							<Div>
+								<label>Табельный номер</label>
+								<Input type="number" value={state['personnel_number']} onChange={this.handleChange.bind(this, 'personnel_number')}/>
+							</Div>
 								<Field
 										type="string"
 										label="Специальное удостоверение"
 										value={state['special_license']}
 										error={errors['special_license']}
 										onChange={this.handleChange.bind(this, 'special_license')} />
-							</Div>
-						</Col>
-
-						<Col md={6}>
-							<Field type="select" label="Подразделение"
-									options={COMPANY_ELEMENTS}
-									value={state.company_structure_id}
-									onChange={this.handleChange.bind(this, 'company_structure_id')}/>
-							<Div style={{marginTop: 25}}>
-								<label>Табельный номер</label>
-								<Input type="number" value={state['personnel_number']} onChange={this.handleChange.bind(this, 'personnel_number')}/>
-							</Div>
-							<Div>
 								<Field
 										type="string"
 										label="Водительское удостоверение"
 										value={state['drivers_license']}
 										error={errors['drivers_license']}
 										onChange={this.handleChange.bind(this, 'drivers_license')} />
-							</Div>
 							<Div>
 								<label>Предпочитаемое ТрС</label>
 								<EtsSelect options={CARS} value={state['prefer_car']} onChange={this.handleChange.bind(this, 'prefer_car')}/>

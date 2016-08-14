@@ -1,18 +1,5 @@
 import _ from 'lodash';
 
-// const waybillMeta = [
-//   {
-//
-//   },
-//   {
-//
-//   },
-//   {
-//
-//   },
-//
-// ]
-
 const fixedValidators = [
   {
     name: 'required',

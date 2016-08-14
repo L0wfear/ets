@@ -15,6 +15,13 @@ const fixedValidators = [
       }
       return typeof data !== 'number' && !/^[ +]?[0-9]*\.?\,?[0-9]{1,3}$/.test(data) ? `Поле ${config.title || config.key} должно быть неотрицательным числом с 3 знаками после запятой` : void 0;
     }
+  },
+  {
+    name: 'min',
+    validator(config, data) {
+      if (typeof config.min === 'undefined') return void 0;
+      return parseFloat(data) < config.min ? `Поле "${config.title || config.key}" должно быть не меньше ${config.min}` : void 0;
+    }
   }
 ];
 

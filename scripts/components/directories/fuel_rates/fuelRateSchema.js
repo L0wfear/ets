@@ -1,4 +1,6 @@
-const fuelRateSchema = {
+import { isEmpty } from 'utils/functions';
+
+export const fuelRateSchema = {
   properties: [
 		{
 			key: 'operation_id',
@@ -10,13 +12,11 @@ const fuelRateSchema = {
 			key: 'summer_rate',
       title: 'Норма для летнего периода',
 			type: 'number',
-			required: false,
 		},
     {
 			key: 'winter_rate',
       title: 'Норма для зимнего периода',
 			type: 'number',
-			required: false,
 		},
     {
 			key: 'car_special_model_id',
@@ -31,6 +31,31 @@ const fuelRateSchema = {
 			required: false,
 		}
 	],
+  dependencies: {
+    'summer_rate': [
+      {
+        validator: (value, formData) => {
+          if (isEmpty(formData['winter_rate']) && isEmpty(value)) {
+            return 'Одна из норм должна быть заполнена';
+          }
+        }
+      }
+    ],
+    'winter_rate': [
+      {
+        validator: (value, formData) => {
+          if (isEmpty(formData['summer_rate']) && isEmpty(value)) {
+            return 'Одна из норм должна быть заполнена';
+          }
+        }
+      }
+    ]
+  }
 };
 
-export default fuelRateSchema;
+export const defaultElement = {
+  order_date: new Date(),
+  operation_id: null,
+  car_model_id: null,
+  car_special_model_id: null
+};

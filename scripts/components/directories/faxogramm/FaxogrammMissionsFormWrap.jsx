@@ -5,7 +5,7 @@ import Div from 'components/ui/Div.jsx';
 import FaxogrammMissionsForm from './FaxogrammMissionsForm.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import { isNotNull, isEmpty } from 'utils/functions';
-import { missionSchema, missionClosingSchema } from 'models/MissionModel.js';
+import { missionSchema } from 'models/MissionModel.js';
 
 class FaxogrammMissionsFormWrap extends FormWrap {
 

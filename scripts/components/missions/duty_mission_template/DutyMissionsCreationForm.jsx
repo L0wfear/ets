@@ -3,8 +3,6 @@ import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon, Input } from 'react-bootstrap';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
-import RouteInfo from 'components/route/RouteInfo.jsx';
-import ODHList from 'components/route/ODHList.jsx';
 import { isEmpty } from 'utils/functions';
 import Datepicker from 'components/ui/DatePicker.jsx';
 import Form from 'components/compositions/Form.jsx';

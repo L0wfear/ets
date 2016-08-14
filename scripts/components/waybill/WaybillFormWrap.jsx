@@ -3,129 +3,15 @@ import moment from 'moment';
 import _ from 'lodash';
 import Div from 'components/ui/Div.jsx';
 import WaybillForm from './WaybillForm.jsx';
+import FormWrap from 'components/compositions/FormWrap.jsx';
 import { getDefaultBill } from '../../stores/WaybillsStore.js';
 import { isNotNull, isEmpty, hasOdometer } from 'utils/functions';
-import { validateRow } from 'validate/validateRow.js';
 import { waybillSchema, waybillClosingSchema } from 'models/WaybillModel.js';
 import config from '../../config.js';
-import { notifications } from 'utils/notifications';
 import Taxes from './Taxes.jsx';
 import { getWarningNotification } from 'utils/notifications';
+
 import { FluxContext } from 'utils/decorators';
-
-/**
- * TODO это конец
- */
-let validateWaybill = (waybill, errors) => {
-	let waybillErrors = _.clone(errors);
-
-	_.each(waybillSchema.properties, prop => {
-		waybillErrors[prop.key] = validateRow(prop, waybill[prop.key]);
-	});
-
-	waybillErrors.fuel_end = '';
-
-	const WAYBILL_CAR_HAS_ODOMETER = hasOdometer(waybill.gov_number);
-
-	if (WAYBILL_CAR_HAS_ODOMETER) {
-		if (isEmpty(waybill.odometr_start)) {
-			waybillErrors.odometr_start = `Поле "Одометр.Выезд" должно быть заполнено`;
-		}
-	} else {
-		if (isEmpty(waybill.motohours_start)) {
-			waybillErrors.motohours_start = `Поле "Счетчик моточасов.Выезд" должно быть заполнено`;
-		}
-	}
-
-	if ((waybill.motohours_start && waybill.motohours_end) && (waybill.motohours_end < waybill.motohours_start)) waybillErrors.motohours_end = `Поле "Счетчик моточасов.Возврат" должно быть больше или равно "Счетчик моточасов.Выезд"`
-
-	if ((waybill.motohours_equip_start && waybill.motohours_equip_end) && (waybill.motohours_equip_end < waybill.motohours_equip_start)) waybillErrors.motohours_equip_end = `Поле "Счетчик моточасов оборудования.Возврат" должно быть больше или равно "Счетчик моточасов оборудования.Выезд"`
-
-	if ((waybill.odometr_start && waybill.odometr_end) && (waybill.odometr_end < waybill.odometr_start)) waybillErrors.odometr_end = `Поле "Одометр.Возврат" должно быть больше или равно "Одометр.Выезд"`
-
-	if ((waybill.odometr_equip_start && waybill.odometr_equip_end) && (waybill.odometr_equip_end < waybill.odometr_equip_start)) waybillErrors.odometr_equip_end = `Поле "Одометр оборудования.Возврат" должно быть больше или равно "Одометр оборудования.Выезд"`
-
-	if (waybill.plan_arrival_date && waybill.plan_departure_date) {
-		if (moment(waybill.plan_arrival_date).toDate().getTime() < moment(waybill.plan_departure_date).toDate().getTime()) {
-			waybillErrors.plan_arrival_date = `"Возвращение план." должно быть больше "Выезд план."`;
-		}
-	} else if (waybill.plan_arrival_date) {
-		waybillErrors.plan_departure_date = `Дата "Выезд план." должна быть указана`;
-	} else if (waybill.plan_departure_date) {
-		waybillErrors.plan_arrival_date = `Дата "Возвращение план." должна быть указана`;
-	} else {
-		waybillErrors.plan_departure_date = `Даты "Выезд план." и "Возвращение план." должны быть указаны`;
-	}
-
-	if (waybill.status && waybill.status !== 'draft') {
-		if (waybill.fact_arrival_date && waybill.fact_departure_date) {
-			if (moment(waybill.fact_arrival_date).toDate().getTime() < moment(waybill.fact_departure_date).toDate().getTime()) {
-				waybillErrors.fact_arrival_date = `"Возвращение факт." должно быть больше "Выезд факт."`;
-			}
-		} else if (waybill.fact_arrival_date) {
-			waybillErrors.fact_departure_date = `Дата "Выезд факт." должна быть указана`;
-		} else if (waybill.fact_departure_date) {
-			waybillErrors.fact_arrival_date = `Дата "Возвращение факт." должна быть указана`;
-		} else {
-			waybillErrors.fact_departure_date = `Даты "Выезд факт." и "Возвращение факт." должны быть указаны`;
-		}
-	}
-
-	if (parseFloat(waybill.fuel_end) < 0) waybillErrors.fuel_end = `Поле "Топливо.Возврат" должно быть неотрицательным`;
-
-	return waybillErrors;
-};
-
-let validateClosingWaybill = (waybill, errors) => {
-	let waybillErrors = _.clone(errors);
-
-	_.each(waybillClosingSchema.properties, prop => {
-		waybillErrors[prop.key] = validateRow(prop, waybill[prop.key]);
-	});
-
-	waybillErrors.plan_arrival_date = '';
-	waybillErrors.plan_departure_date = '';
-	waybillErrors.fact_arrival_date = '';
-	waybillErrors.fact_departure_date = '';
-	waybillErrors.fuel_end = '';
-
-	if ((waybill.motohours_start && waybill.motohours_end) && (waybill.motohours_end < waybill.motohours_start)) waybillErrors.motohours_end = `Поле "Счетчик моточасов.Возврат" должно быть больше или равно "Счетчик моточасов.Выезд"`
-
-	if ((waybill.motohours_equip_start && waybill.motohours_equip_end) && (waybill.motohours_equip_end < waybill.motohours_equip_start)) waybillErrors.motohours_equip_end = `Поле "Счетчик моточасов оборудования.Возврат" должно быть больше или равно "Счетчик моточасов оборудования.Выезд"`
-
-	if ((waybill.odometr_start && waybill.odometr_end) && (waybill.odometr_end < waybill.odometr_start)) waybillErrors.odometr_end = `Поле "Одометр.Возврат" должно быть больше или равно "Одометр.Выезд"`
-
-	if ((waybill.odometr_equip_start && waybill.odometr_equip_end) && (waybill.odometr_equip_end < waybill.odometr_equip_start)) waybillErrors.odometr_equip_end = `Поле "Одометр оборудования.Возврат" должно быть больше или равно "Одометр оборудования.Выезд"`
-
-
-	if (waybill.plan_arrival_date && waybill.plan_departure_date) {
-		if (moment(waybill.plan_arrival_date).toDate().getTime() < moment(waybill.plan_departure_date).toDate().getTime()) {
-			waybillErrors.plan_arrival_date = `"Возвращение план." должно быть больше "Выезд план."`;
-		}
-	} else if (waybill.plan_arrival_date) {
-		waybillErrors.plan_departure_date = `Дата "Выезд план." должна быть указана`;
-	} else if (waybill.plan_departure_date) {
-		waybillErrors.plan_arrival_date = `Дата "Возвращение план." должна быть указана`;
-	} else {
-		waybillErrors.plan_departure_date = `Даты "Выезд план." и "Возвращение план." должны быть указаны`;
-	}
-
-	if (waybill.fact_arrival_date && waybill.fact_departure_date) {
-		if (moment(waybill.fact_arrival_date).toDate().getTime() < moment(waybill.fact_departure_date).toDate().getTime()) {
-			waybillErrors.fact_arrival_date = `"Возвращение факт." должно быть больше "Выезд факт."`;
-		}
-	} else if (waybill.fact_arrival_date) {
-		waybillErrors.fact_departure_date = `Дата "Выезд факт." должна быть указана`;
-	} else if (waybill.fact_departure_date) {
-		waybillErrors.fact_arrival_date = `Дата "Возвращение факт." должна быть указана`;
-	} else {
-		waybillErrors.fact_departure_date = `Даты "Выезд факт." и "Возвращение факт." должны быть указаны`;
-	}
-
-	if (parseFloat(waybill.fuel_end) < 0) waybillErrors.fuel_end = `Поле "Топливо.Возврат" должно быть неотрицательным`;
-
-	return waybillErrors;
-};
 
 function calculateWaybillMetersDiff(waybill, field, value) {
 	// Для уже созданных ПЛ
@@ -147,7 +33,7 @@ function calculateWaybillMetersDiff(waybill, field, value) {
 }
 
 @FluxContext
-class WaybillFormWrap extends Component {
+class WaybillFormWrap extends FormWrap {
 	constructor(props) {
 		super(props);
 
@@ -165,12 +51,13 @@ class WaybillFormWrap extends Component {
 		if (props.showForm && props.showForm !== this.props.showForm) {
 			if (props.element === null ) {
 				const defaultBill = getDefaultBill();
+				this.schema = waybillSchema;
 				this.setState({
 					formState: defaultBill,
 					canSave: false,
 					canClose: false,
 					canPrint: false,
-					formErrors: validateWaybill(defaultBill, {}),
+					formErrors: this.validate(defaultBill, {}),
 				})
 			} else {
 
@@ -213,12 +100,13 @@ class WaybillFormWrap extends Component {
 					}
 
 					if (props.element.status === 'active') {
+						this.schema = waybillClosingSchema;
 						this.setState({
 							formState: waybill,
-							formErrors: validateClosingWaybill(waybill, {}),
+							formErrors: this.validate(waybill, {}),
 							canPrint: false,
-							canSave: ! !!_.filter(validateClosingWaybill(waybill, {}), (v,k) => k === 'fuel_end' ? false : v).length,
-							canClose: ! !!_.filter(validateClosingWaybill(waybill, {})).length,
+							canSave: ! !!_.filter(this.validate(waybill, {}), (v, k) => k === 'fuel_end' ? false : v).length,
+							canClose: ! !!_.filter(this.validate(waybill, {})).length,
 						});
 					} else {
 						this.setState({
@@ -228,13 +116,13 @@ class WaybillFormWrap extends Component {
 					}
 
 				} else if (props.element.status === 'draft') {
-
+					this.schema = waybillSchema;
 					this.setState({
 						formState: waybill,
 						canPrint: true,
-						canSave: ! !!_.filter(validateWaybill(waybill, {})).length,
-						canClose: ! !!_.filter(validateWaybill(waybill, {})).length,
-						formErrors: validateWaybill(waybill, {})
+						canSave: ! !!_.filter(this.validate(waybill, {})).length,
+						canClose: ! !!_.filter(this.validate(waybill, {})).length,
+						formErrors: this.validate(waybill, {})
 					});
 
 				}
@@ -262,9 +150,11 @@ class WaybillFormWrap extends Component {
 		}
 
 		if (!!!formState.status || formState.status === 'draft') {
-			formErrors = validateWaybill(formState, formErrors);
+			this.schema = waybillSchema;
+			formErrors = this.validate(formState, formErrors);
 		} else if (formState.status && formState.status === 'active') {
-			formErrors = validateClosingWaybill(formState, formErrors);
+			this.schema = waybillClosingSchema;
+			formErrors = this.validate(formState, formErrors);
 		}
 
 		newState.canSave = ! !!_.filter(formErrors, (v,k) => k === 'fuel_end' ? false : v).length;

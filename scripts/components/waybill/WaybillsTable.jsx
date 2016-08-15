@@ -27,7 +27,6 @@ let getTableMeta = (props) => {
 				name: 'status',
 				caption: 'Статус',
 				type: 'string',
-				cssClassName: 'width-waybill-large',
 				filter: {
 					type: 'select',
 					labelFunction: waybillStatusLabelFunction
@@ -36,7 +35,6 @@ let getTableMeta = (props) => {
 			{
 				name: 'all_missions_completed_or_failed',
 				caption: 'Статус заданий',
-				cssClassName: 'width-waybill-small',
 				type: 'string',
 				filter: {
 					type: 'select',
@@ -47,13 +45,11 @@ let getTableMeta = (props) => {
 			{
 				name: 'number',
 				caption: 'Номер',
-				cssClassName: 'width-waybill-small',
 				type: 'number',
 			},
 			{
 				name: 'date_create',
 				caption: 'Дата выдачи',
-				cssClassName: 'width-waybill-large',
 				type: 'date',
 				filter: {
 					type: 'date_create',
@@ -63,7 +59,6 @@ let getTableMeta = (props) => {
 			{
 				name: 'closing_date',
 				caption: 'Дата закрытия',
-				cssClassName: 'width-waybill-large',
 				type: 'date',
 				filter: {
 					type: 'date_create',
@@ -73,7 +68,6 @@ let getTableMeta = (props) => {
 			{
 				name: 'driver_id',
 				caption: 'Водитель',
-				cssClassName: 'width-waybill-small',
 				type: 'string',
 				filter: {
 					type: 'select',
@@ -83,14 +77,13 @@ let getTableMeta = (props) => {
 			{
 				name: 'car_id',
 				caption: 'Гос. № ТС',
-				cssClassName: 'width-waybill-large',
+				cssClassName: 'width-nowrap',
 				type: 'string',
 				filter: false
 			},
 			{
 				name: 'car_special_model_name',
 				caption: 'Модель ТС/Марка шасси',
-				cssClassName: 'width-waybill-small',
 				type: 'string',
 			},
 			{
@@ -102,13 +95,11 @@ let getTableMeta = (props) => {
 			{
 				name: 'garage_number',
 				caption: 'Гаражный номер',
-				cssClassName: 'width-waybill-small',
 				type: 'string',
 			},
 			{
 				name: 'fact_departure_date',
 				caption: 'Выезд факт',
-				cssClassName: 'width-waybill-large',
 				type: 'date',
 				filter: {
 					type: 'date_create',
@@ -118,7 +109,6 @@ let getTableMeta = (props) => {
 			{
 				name: 'fact_arrival_date',
 				caption: 'Возвращение факт',
-				cssClassName: 'width-waybill-large',
 				type: 'date',
 				filter: {
 					type: 'date_create',
@@ -128,7 +118,6 @@ let getTableMeta = (props) => {
 			{
 				name: 'responsible_person_id',
 				caption: 'Мастер',
-				cssClassName: 'width-waybill-large',
 				type: 'string',
 				filter: {
 					type: 'select',
@@ -234,13 +223,13 @@ export let WaybillsTable = (props) => {
 		};
 
 		return <Table title="Журнал путевых листов"
-			results={props.data}
-			renderers={renderers}
-			initialSort={'number'}
-			initialSortAscending={false}
-			tableMeta={getTableMeta(props)}
-			columnControl={true}
-			className="waybills-table"
-			columnControlStorageName={'waybillsColumnControl'}
-			{...props}/>
+				results={props.data}
+				renderers={renderers}
+				initialSort={'number'}
+				initialSortAscending={false}
+				tableMeta={getTableMeta(props)}
+				columnControl={true}
+				className="waybills-table"
+				columnControlStorageName={'waybillsColumnControl'}
+				{...props}/>
 }

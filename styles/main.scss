@@ -2810,21 +2810,15 @@ div.none {
   width: 10px !important;
 }
 
-.width-waybill-small {
-  font-size: 10px !important;
-  padding: 4px !important;
-}
-
 .width-waybill-tiny {
   font-size: 10px !important;
   padding: 4px !important;
   width: 20px !important;
 }
 
-.width-waybill-large {
-  font-size: 10px !important;
-  padding: 4px !important;
-  width: 60px !important;
+.width-nowrap {
+  white-space: nowrap !important;
+  width: 20px !important;
 }
 
 .width-fuel-report-small {

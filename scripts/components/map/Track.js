@@ -17,17 +17,15 @@ const COLORS_ZOOM_THRESHOLD = 8;
  * @param speed
  * @return color string
  */
-export function getTrackColor(speed, type_id, opacity = 1) {
+export function getTrackColor(speed, maxSpeed, opacity = 1) {
   let result = TRACK_COLORS.green; // green by default
-  let type = getTypeById(type_id);
-  let speed_max = type && type.speed_max | 0;
 
-  if (speed >= 0 && speed < speed_max) {
-    result = TRACK_COLORS.green
+  if (speed >= 0 && speed < maxSpeed) {
+    result = TRACK_COLORS.green;
   }
 
-  if (speed >= speed_max) {
-    result = TRACK_COLORS.red
+  if (speed >= maxSpeed) {
+    result = TRACK_COLORS.red;
   }
 
   return opacity === 1 ? result : hexToRgba(result, opacity);
@@ -41,6 +39,7 @@ export default class Track {
   constructor(owner) {
 
     this.map = owner.map;
+    this.maxSpeed = owner._reactMap.props.maxSpeed;
     // TODO придумать что-то с этими контекстами
     this.ctx = owner._reactMap.canvas.getContext('2d');
     this.owner = owner;
@@ -87,13 +86,14 @@ export default class Track {
   }
 
   getLegend() {
-
-    // todo refactor this
     let colors = [];
     let car = this.owner.getCar();
-
     let type_id = car.type_id;
-    let prevColor = getTrackColor(0, type_id);
+    let type = getTypeById(type_id);
+    let carTypeMaxSpeed = type && type.speed_max | 0;
+    let maxSpeed = isEmpty(this.maxSpeed) ? carTypeMaxSpeed : this.maxSpeed;
+
+    let prevColor = getTrackColor(0, maxSpeed);
 
     function addColor(color, speed) {
       if (colors.length > 0) {
@@ -102,22 +102,20 @@ export default class Track {
       colors.push({
         color: color,
         speed: speed
-      })
+      });
     }
 
     addColor(prevColor, 0);
 
     for (let i = 0, till = 100; i <= till; i++) {
-      let color = getTrackColor(i, type_id);
+      let color = getTrackColor(i, maxSpeed);
       if (color !== prevColor) {
         addColor(color, i);
         prevColor = color;
       }
     }
 
-    if (colors[colors.length - 1].till === undefined) {
-      colors[colors.length - 1].speed = colors[colors.length - 1].speed + '+'
-    }
+    colors[colors.length - 1].speed += '+';
 
 
     let legend = colors.map((obj, i) => {
@@ -266,20 +264,24 @@ export default class Track {
    * Рисует трек в canvas контексте в несколько цветов, в зависимости от скорости
    * TODO http://jsperf.com/changing-canvas-state/3
    * // @param ctx
-   * @param maxSpeed - максимальная скорость на участке, вне зависимости от типа ТС
    */
-  renderInColors(maxSpeed) {
+  renderInColors() {
 
     let owner = this.owner;
     let track = this.points;
     let TRACK_LINE_WIDTH = DRAW_POINTS ? 4 : TRACK_LINE_WIDTH;
     let ctx = this.ctx;
 
+
     if (!track || track.length < 2) {
       return;
     }
 
-    let type_id = owner.point.car.type_id;
+    let car = owner.getCar();
+    let type_id = car.type_id;
+    let type = getTypeById(type_id);
+    let carTypeMaxSpeed = type && type.speed_max | 0;
+    let maxSpeed = isEmpty(this.maxSpeed) ? carTypeMaxSpeed : this.maxSpeed;
 
     // TODO import from settings
     const RENDER_GRADIENT = this.owner.store.state.showTrackingGradient;
@@ -294,14 +296,14 @@ export default class Track {
     ctx.beginPath();
     ctx.moveTo(firstPoint.x, firstPoint.y);
 
-    let prevRgbaColor = getTrackColor(maxSpeed !== null ? maxSpeed : track[0].speed_avg, type_id, TRACK_LINE_OPACITY);
+    let prevRgbaColor = getTrackColor(track[0].speed_avg, maxSpeed, TRACK_LINE_OPACITY);
     ctx.strokeStyle = prevRgbaColor;
 
     for (let i = 1, till = track.length - 1; i < till; i++) {
       let coords = this.map.projectToPixel(track[i].coords_msk);
       let speed = track[i].speed_avg;
-      let rgbaColor = getTrackColor(speed, type_id, TRACK_LINE_OPACITY);
-      let hexColor = getTrackColor(speed, type_id);
+      let rgbaColor = getTrackColor(speed, maxSpeed, TRACK_LINE_OPACITY);
+      let hexColor = getTrackColor(speed, maxSpeed);
 
       // если предыдущий цвет не соответствует новому
       // нужно закрыть предыдущую линию

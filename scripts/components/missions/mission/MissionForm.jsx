@@ -137,7 +137,7 @@ export class MissionForm extends Form {
 		if (isSubmitted === true) {
 			let createdRouteId = result.createdRoute.result[0].id;
 			this.handleChange('route_id', createdRouteId);
-			let selectedRoute = await routesActions.getRouteById(createdRouteId, true);
+			let selectedRoute = await routesActions.getRouteById(createdRouteId);
 			let routesList = await routesActions.getRoutesByTechnicalOperation(this.props.formState.technical_operation_id);
 			Object.assign(stateChangeObject, {
 				showRouteForm: false,

@@ -31,7 +31,7 @@ export class DutyMissionForm extends Form {
 		this.handleChange('route_id', v);
 		const { flux } = this.context;
 		if (v) {
-			flux.getActions('routes').getRouteById(v, true).then(route => {
+			flux.getActions('routes').getRouteById(v).then(route => {
 				this.setState({selectedRoute: route});
 			});
 		} else {
@@ -76,7 +76,7 @@ export class DutyMissionForm extends Form {
 		let { routesList } = this.props;
 
 		if (!isEmpty(mission.route_id)) {
-			selectedRoute = await routesActions.getRouteById(mission.route_id, true);
+			selectedRoute = await routesActions.getRouteById(mission.route_id);
     }
 
     if (!isEmpty(mission.technical_operation_id)) {
@@ -118,7 +118,7 @@ export class DutyMissionForm extends Form {
 		if (isSubmitted === true) {
 			let createdRouteId = result.createdRoute.result[0].id;
 			this.handleChange('route_id', createdRouteId);
-			let selectedRoute = await routesActions.getRouteById(createdRouteId, true);
+			let selectedRoute = await routesActions.getRouteById(createdRouteId);
 			let routesList = await routesActions.getRoutesByTechnicalOperation(this.props.formState.technical_operation_id);
 			Object.assign(stateChangeObject, {
 				showRouteForm: false,

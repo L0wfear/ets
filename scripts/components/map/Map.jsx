@@ -58,11 +58,12 @@ export default class OpenLayersMap extends Component {
     });
 
     let renderFn = this.renderCanvas.bind(this);
-    let canvasLayer = this.canvasLayer = new ol.layer.Image({
+    let canvasLayer = new ol.layer.Image({
       source: new ol.source.ImageCanvas({
-        canvasFunction: function draw(extent, res, pixelRatio, size, proj) {
+        canvasFunction: function (extent, res, pixelRatio, size, proj) {
           if (!this.canvas) {
-            self.canvas = this.canvas = document.createElement('canvas');
+            this.canvas = document.createElement('canvas');
+            self.canvas = this.canvas;
             self.context = this.canvas.getContext('2d');
           }
           this.canvas.setAttribute('width', size[0]);
@@ -74,6 +75,7 @@ export default class OpenLayersMap extends Component {
       }),
       zIndex: 9999
     });
+    this.canvasLayer = canvasLayer;
 
     // canvasLayer.setZIndex(9999);
 
@@ -108,12 +110,17 @@ export default class OpenLayersMap extends Component {
     let container = this.refs.container;
 
     map.setTarget(container);
-    map.on('postcompose', this.triggerRender.bind(this));
-
+    // Оставлю это здесь. так делать не надо, канвас начинает адово тупить
+    // this.triggerRenderEventKey = map.on('postcompose', this.triggerRender.bind(this));
+    this.triggerRender();
     this.popup = new ol.Overlay.Popup();
     map.addOverlay(this.popup);
 
     this.enableInteractions();
+  }
+
+  componentWillUnmount() {
+    this.disableInteractions();
   }
 
   triggerRender() {
@@ -313,11 +320,11 @@ export default class OpenLayersMap extends Component {
         }
         this.disableInteractions();
       } else {
-        this.enableInteractions()
+        this.enableInteractions();
       }
 
     } else {
-      this.enableInteractions()
+      this.enableInteractions();
     }
 
     // TODO remove this
@@ -371,6 +378,9 @@ export default class OpenLayersMap extends Component {
       interactions.forEach((interaction)=> {
         interaction.setActive(false)
       });
+    }
+    if (this.triggerRenderEventKey) {
+      map.unByKey(this.triggerRenderEventKey);
     }
   }
 
@@ -434,6 +444,7 @@ export default class OpenLayersMap extends Component {
         this.markers[key] = new CarMarker(point, this);
       }
     }
+    this.triggerRender();
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -446,7 +457,7 @@ export default class OpenLayersMap extends Component {
 
   render() {
     return (
-      <div>
+      <div key="olmap">
         <div ref="container" className="openlayers-container"></div>
       </div>
     );

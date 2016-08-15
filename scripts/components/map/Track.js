@@ -171,6 +171,7 @@ export default class Track {
     } else {
       this.renderSimple();
     }
+    this.owner._reactMap.triggerRender();
   }
 
   renderSimple() {

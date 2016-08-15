@@ -93,7 +93,9 @@ export default class CarMarker extends Marker {
   }
 
   onClick() {
-    this.createTrack();
+    if (!this.track) {
+      this.createTrack();
+    }
   }
 
   createTrack() {

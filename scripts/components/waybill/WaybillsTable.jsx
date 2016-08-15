@@ -127,7 +127,7 @@ let getTableMeta = (props) => {
 			{
 				name: 'odometr_start',
 				caption: 'Одометр. Выезд',
-				cssClassName: 'width-waybill-tiny',
+				cssClassName: 'width20',
 				type: 'number',
 				filter: {
 	        type: 'input',
@@ -136,7 +136,7 @@ let getTableMeta = (props) => {
 			{
 				name: 'odometr_end',
 				caption: 'Одометр Возврат',
-				cssClassName: 'width-waybill-tiny',
+				cssClassName: 'width20',
 				type: 'number',
 				filter: {
 	        type: 'input',
@@ -145,7 +145,7 @@ let getTableMeta = (props) => {
 			{
 	      name: 'motohours_start',
 	      caption: 'Моточасы. Выезд',
-				cssClassName: 'width-waybill-tiny',
+				cssClassName: 'width20',
 	      type: 'number',
 				filter: {
 	        type: 'input',
@@ -154,7 +154,7 @@ let getTableMeta = (props) => {
 	    {
 	      name: 'motohours_end',
 	      caption: 'Моточасы. Возврат',
-				cssClassName: 'width-waybill-tiny',
+				cssClassName: 'width20',
 	      type: 'number',
 				filter: {
 	        type: 'input',
@@ -163,7 +163,7 @@ let getTableMeta = (props) => {
 			{
 	      name: 'motohours_equip_start',
 	      caption: 'Моточасы обор. Выезд',
-				cssClassName: 'width-waybill-tiny',
+				cssClassName: 'width20',
 	      type: 'number',
 				filter: {
 	        type: 'input',
@@ -172,7 +172,7 @@ let getTableMeta = (props) => {
 	    {
 	      name: 'motohours_equip_end',
 	      caption: 'Моточасы обор. Возврат',
-				cssClassName: 'width-waybill-tiny',
+				cssClassName: 'width20',
 	      type: 'number',
 				filter: {
 	        type: 'input',
@@ -181,7 +181,7 @@ let getTableMeta = (props) => {
 			{
 	      name: 'fuel_start',
 	      caption: 'Топливо. Выезд',
-				cssClassName: 'width-waybill-tiny',
+				cssClassName: 'width20',
 	      type: 'number',
 				filter: {
 	        type: 'input',
@@ -190,7 +190,7 @@ let getTableMeta = (props) => {
 			{
 	      name: 'fuel_end',
 	      caption: 'Топливо. Возврат',
-				cssClassName: 'width-waybill-tiny',
+				cssClassName: 'width20',
 	      type: 'number',
 				filter: {
 	        type: 'input',
@@ -221,6 +221,8 @@ export let WaybillsTable = (props) => {
 			},
 			all_missions_completed_or_failed: ({data}) => <div>{waybillMissionsCompleteStatusLabelFunction(data)}</div>
 		};
+
+		
 
 		return <Table title="Журнал путевых листов"
 				results={props.data}

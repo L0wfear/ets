@@ -213,7 +213,7 @@ export default class Table extends React.Component {
       initialArray.push({
         columnName: 'rowNumber',
         displayName: '№',
-        cssClassName: 'width60',
+        cssClassName: 'width30',
         filter: false,
         customComponent: renderers['rowNumber']
       });
@@ -436,10 +436,21 @@ export default class Table extends React.Component {
 
     let results = this.processTableData(data, tableCols, selected, selectField, onRowSelected);
 
+    let columnSize = columnControlValues.length;
+    let tablePropsClass = className;
+
+    if (columnSize >= 0 && columnSize < 8 && columnControl) {
+      tablePropsClass += '-sm';
+    } else if (columnSize >= 8 && columnSize < 14) {
+      tablePropsClass += '-md';
+    } else if (columnSize >= 14 && columnSize <= 20) {
+      tablePropsClass += '-lg';
+    };
+
     const columnMetadata = this.initializeMetadata(tableMetaCols, renderers);
     const tableCols = columnMetadata.map(m => m.columnName).filter(c => columnControlValues.indexOf(c) === -1);
 		const rowMetadata = this.initializeRowMetadata();
-    const tableClassName = cx('data-table', className);
+    const tableClassName = cx('data-table', tablePropsClass);
 
     return (
       <Div className={tableClassName}>

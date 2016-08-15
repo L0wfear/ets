@@ -2800,6 +2800,12 @@ div.none {
 .width25 {
   width: 25px !important;
 }
+
+.width30 {
+  width: 30px !important;
+  word-break: normal !important;
+}
+
 .width80 {
   width: 80px !important;
 }
@@ -2810,9 +2816,7 @@ div.none {
   width: 10px !important;
 }
 
-.width-waybill-tiny {
-  font-size: 10px !important;
-  padding: 4px !important;
+.width20 {
   width: 20px !important;
 }
 

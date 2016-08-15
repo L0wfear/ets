@@ -5,6 +5,7 @@ import Marker from '../BaseMarker.js';
 import Track from '../../Track.js';
 import { swapCoords, wrapCoords } from 'utils/geo';
 import { getTypeById } from 'utils/labelFunctions';
+import _ from 'lodash';
 
 const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
 
@@ -36,6 +37,60 @@ export default class CarMarker extends Marker {
     point.marker = this;
     this.coords = wrapCoords(swapCoords(point.coords_msk))
     this.track = null;
+  }
+
+  animate() {
+    this.animateEventKey = this.map.on('postcompose', this.animateToTrack.bind(this));
+    this.render = () => {};
+    this.now = new Date().getTime();
+    this.animatePoints = _.uniqWith(this.track.points, (a,b) => {
+      return a.coords_msk[0] === b.coords_msk[0] && a.coords_msk[1] === b.coords_msk[1];
+    });
+    this.animatePoints = this.animatePoints.map(p => p.coords_msk);
+    this.image = this.getImage({selected: true});
+    this.radius = this.image.width / 2;
+    this.map.render();
+  }
+
+  stopAnimation() {
+    console.log('animationEnd');
+    this.map.unByKey(this.animateEventKey);
+  }
+
+  animateToTrack(event) {
+    let { image, radius } = this;
+    var { frameState } = event;
+    var elapsedTime = frameState.time - this.now;
+    var index = Math.round(2 * elapsedTime / 1000);
+    console.log('animating point ', index);
+    if (index >= this.animatePoints.length) {
+      this.stopAnimation();
+      return;
+    }
+
+    let map = this.map;
+    let coords = this.animatePoints[index];
+    let view = map.getView();
+    let zoom = view.getZoom();
+    let size = map.getSize();
+    let pixel = [(size[0] - 500) / 2, size[1] / 2];
+
+    view.centerOn(coords, size, pixel)
+    if (zoom != 9) {
+      view.setZoom(9);
+    }
+
+    let canvas = this._reactMap.canvas;
+    let ctx = canvas.getContext('2d');
+    let drawCoords = this.map.projectToPixel(coords);
+    console.log(drawCoords);
+
+    if (typeof ctx === 'undefined') {
+      return;
+    }
+
+    ctx.drawImage(image, drawCoords.x - radius, drawCoords.y - radius, radius * 2, radius * 2);
+    this.map.render();
   }
 
   isVisible() {

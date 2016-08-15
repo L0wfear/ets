@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Panel from 'components/ui/Panel.jsx';
-import { Button } from 'react-bootstrap';
+import { Button, Glyphicon } from 'react-bootstrap';
 import { getStatusById } from 'constants/statuses';
 import config from '../../config.js';
 import { makeDate, makeTime, getStartOfToday } from 'utils/dates';
@@ -197,6 +197,10 @@ export default class CarInfo extends Component {
     track.onUpdate();
   }
 
+  animate() {
+    this.props.car.marker.animate();
+  }
+
   renderModel() {
     const { imageUrl, trackingMode } = this.state;
     const { car } = this.props;
@@ -253,6 +257,10 @@ export default class CarInfo extends Component {
               disabled={tillNow}>
             <span className={reloadBtnCN}></span>
           </Button>
+
+          <div>
+            <Button onClick={this.animate.bind(this)}><Glyphicon glyph="play"/></Button>
+          </div>
         </Panel>
       </div>
     );

@@ -29,7 +29,7 @@ class ReportsStore extends Store {
   }
 
   handleGetFuelReport(e) {
-    this.setState({fuelReport: e.results});
+    this.setState({fuelReport: e.result});
   }
 
   handleGetCarFuncTypeUsageReports({result}) {

@@ -22,8 +22,7 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
 
   async showCurrentDutyMissionForm(data) {
     this.props.openSubitemsList(true);
-    let route = await this.context.flux.getActions('routes').getRouteById(12294);
-    console.log(route)
+    let route = await this.context.flux.getActions('routes').getRouteById(data.route_id);
     this.setState({showCurrentDutyMissionForm: true, selectedDutyMission: data, route});
   }
 
@@ -113,7 +112,7 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
   }
 
   renderCustomCardForm() {
-    if (!this.state.selectedDutyMission) return (<div></div>)
+    if (!this.state.selectedDutyMission || !this.state.route) return (<div></div>)
     return (
       <Modal show={this.state.showCurrentDutyMissionForm} onHide={() => this.setState({showCurrentDutyMissionForm: false})} backdrop="static">
 
@@ -165,7 +164,6 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
     let otherItems = items.slice(2, items.length);
     //let dashboardCardClass = cx('dashboard-card', {'visibilityHidden'});
     let Header = <DashboardCardHeader title={this.props.title} loading={this.props.loading} onClick={this.refreshCard.bind(this)}/>;
-
     // отрефакторить
 
     return (

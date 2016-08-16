@@ -235,5 +235,5 @@ export let WaybillsTable = (props) => {
 				className="waybills-table"
 				highlight={[{status: "active"}]}
 				columnControlStorageName={'waybillsColumnControl'}
-				{...props}/>
+				{...props} />
 }

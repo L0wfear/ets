@@ -543,7 +543,7 @@ class WaybillForm extends Form {
 						<Div className="inline-block">
 			    		<Dropdown id="waybill-print-dropdown" dropup disabled={!this.props.canSave} onSelect={this.props.handlePrint.bind(this, state.status !== 'draft' && !IS_CREATING)}>
 			        	<Dropdown.Toggle  disabled={!this.props.canSave}>
-			          	<Glyphicon glyph="print" /> Выдать
+			          	<Glyphicon glyph="download-alt" /> {state.status === 'closed' || state.status === 'active' ? "Просмотр" : "Выдать"}
 			          </Dropdown.Toggle>
 			          <Dropdown.Menu>
 				          <MenuItem eventKey={1}>Форма 3-С</MenuItem>

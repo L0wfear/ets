@@ -11,13 +11,14 @@ import _ from 'lodash';
 import cx from 'classnames';
 
 const FilterSelect = (props) => {
-  return <EtsSelect type="filter-select"
-                placeholder="Выберите..."
-                searchingText="Поиск..."
-                noResultsText="Ничего не найдено"
-                clearAllText="Очистить"
-                addLabelText='Добавить "{label}"?'
-                {...props}/>;
+  return <EtsSelect
+      type="filter-select"
+      placeholder="Выберите..."
+      searchingText="Поиск..."
+      noResultsText="Ничего не найдено"
+      clearAllText="Очистить"
+      addLabelText='Добавить "{label}"?'
+      {...props} />;
 };
 
 const Filter = (props) => {

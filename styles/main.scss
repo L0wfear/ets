@@ -9,6 +9,7 @@ $colorLightGreen: #96bb88;
 $colorBadge: #4b4b4b;
 $colorButton: #4c4c4c;
 $colorGray: #9b9b9b;
+$colorYellow: #F2DE5A;
 
 $navbarHeight: 64px;
 $navbarPaddingA: 22px;
@@ -2605,6 +2606,10 @@ body {
             background-color: #f7f7f7 !important;
           }
 
+          &.highlighted-row > td {
+            background-color: $colorYellow !important;
+          }
+
           &:hover > td {
             background-color: $colorLightGreen !important;
             color: white !important;
@@ -3419,6 +3424,10 @@ div.none {
         &:hover > td, &.selected-row > td {
           background-color: $colorGreen !important;
           color: white !important;
+        }
+
+        &:hover > td, &.highlighted-row > td {
+          background-color: $colorYellow !important;
         }
       }
 

@@ -222,9 +222,10 @@ export let WaybillsTable = (props) => {
 			all_missions_completed_or_failed: ({data}) => <div>{waybillMissionsCompleteStatusLabelFunction(data)}</div>
 		};
 
-		
 
-		return <Table title="Журнал путевых листов"
+
+		return <Table
+				title="Журнал путевых листов"
 				results={props.data}
 				renderers={renderers}
 				initialSort={'number'}
@@ -232,6 +233,7 @@ export let WaybillsTable = (props) => {
 				tableMeta={getTableMeta(props)}
 				columnControl={true}
 				className="waybills-table"
+				highlight={[{status: "active"}]}
 				columnControlStorageName={'waybillsColumnControl'}
 				{...props}/>
 }

@@ -303,6 +303,15 @@ class WaybillFormWrap extends FormWrap {
 			}
 			flux.getActions('waybills').getWaybills();
 			this.props.onFormHide();
+		} else if (waybillStatus === 'closed') {
+				try {
+					await flux.getActions('waybills').updateWaybill(formState);
+				} catch (e) {
+					console.log(e);
+					return;
+				}
+				flux.getActions('waybills').getWaybills();
+				this.props.onFormHide();
 		}
 
 		return;

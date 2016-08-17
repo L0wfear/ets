@@ -36,7 +36,8 @@ class WaybillForm extends Form {
 			equipmentFuelRates: [],
 			fuel_correction_rate: 1,
       showMissionForm: false,
-      selectedMission: null
+      selectedMission: null,
+			canEditIfClose: null,
 		};
 	}
 
@@ -118,6 +119,9 @@ class WaybillForm extends Form {
 		await flux.getActions('objects').getCars();
 		await flux.getActions('employees').getEmployees();
 		await flux.getActions('employees').getDrivers();
+		let waybillInfo = await flux.getActions('waybills').getWaybill(formState.id);
+		let canEditIfClose = waybillInfo.result[0].closed_editable || true;
+		this.setState({canEditIfClose});
 	}
 
 	async onCarChange(car_id, cars) {
@@ -553,7 +557,7 @@ class WaybillForm extends Form {
 			          </Dropdown.Menu>
 			        </Dropdown>&nbsp;
 						</Div>
-            <Div className={'inline-block'} hidden={state.status === 'closed'}>
+            <Div className={'inline-block'} hidden={state.status === 'closed' && !this.state.canEditIfClose}>
               <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>Сохранить</Button>
             </Div>
             <Div className={'inline-block'} style={{marginLeft: 4}} hidden={state.status === 'closed' || !(this.props.formState.status && this.props.formState.status === 'active')}>

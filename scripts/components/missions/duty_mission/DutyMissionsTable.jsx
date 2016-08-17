@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 import Table from 'components/ui/table/DataTable.jsx';
-import { datePickerFunction } from 'utils/labelFunctions';
 
 const DUTY_MISSION_STATUS_LABELS = {
   'assigned': 'Назначено',
@@ -56,7 +55,6 @@ let getTableMeta = (props) => {
 				type: 'date',
 				filter: {
 					type: 'date_interval',
-					labelFunction: datePickerFunction
 				},
 			},
       {
@@ -65,7 +63,6 @@ let getTableMeta = (props) => {
 				type: 'date',
 				filter: {
 					type: 'date_interval',
-					labelFunction: datePickerFunction
 				},
 			},
       {

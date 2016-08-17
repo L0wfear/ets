@@ -92,8 +92,7 @@ export class MissionInfoForm extends Form {
 		let { selectedODHId } = this.state;
 		let { geozonePolys = {} } = this.props;
     let object_list = _.cloneDeep(this.state.object_list || []);
-    const polys = object_list.map(({shape, name, state}) => ({shape, name, state}));
-
+    const polys = _.keyBy(object_list, 'object_id');
     if (!state.car_gov_number) return <div/>;
 		let title = `Информация о задании. Гос. номер ТС: ${state.car_gov_number}`;
 

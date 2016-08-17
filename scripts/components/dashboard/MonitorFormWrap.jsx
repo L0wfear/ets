@@ -4,7 +4,7 @@ import Div from 'components/ui/Div.jsx';
 import MonitorForm from './MonitorForm.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';
 import { getDefaultMission } from '../../stores/MissionsStore.js';
-import { isNotNull, isEmpty } from 'utils/functions';
+import { isEmpty } from 'utils/functions';
 import { missionSchema } from 'models/MissionModel.js';
 
 class MonitorFormWrap extends FormWrap {

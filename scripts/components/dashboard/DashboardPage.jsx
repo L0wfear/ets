@@ -20,8 +20,6 @@ class DashboardPage extends React.Component {
     this.state = {
       loadingComponents: [],
       itemOpenedKey: null,
-      showMissionInfoForm: false,
-      showFaxogrammForm: false,
     };
 
   }
@@ -71,7 +69,7 @@ class DashboardPage extends React.Component {
   render() {
 
     let role = this.context.flux.getStore('session').getCurrentUser().role;
-    const { componentsList = [], componentsSideList = [] } = this.props;
+    const { componentsList = [] } = this.props;
 
     let lists = _(componentsList).groupBy((el, i) => Math.floor(i/3)).toArray().value();
     let rows = [];
@@ -108,8 +106,6 @@ class DashboardPage extends React.Component {
       )
     });
 
-    let componentsSide = componentsSideList.map((c, i) => <DashboardCardSmall key={i} card={c}/>);
-
     return (
       <Div className="ets-page-wrap dashboard-page">
         <DashboardPageHeader/>
@@ -118,8 +114,7 @@ class DashboardPage extends React.Component {
             {rows}
           </Col>
           <Col md={3}>
-            <DashboardManagementCard role={role} refreshCard={this.refreshCard.bind(this)}/>
-            {componentsSide}
+            <DashboardManagementCard refreshCard={this.refreshCard.bind(this)}/>
           </Col>
         </Row>
       </Div>
@@ -128,7 +123,6 @@ class DashboardPage extends React.Component {
 }
 
 DashboardPage.contextTypes = {
-  history: React.PropTypes.object,
   flux: React.PropTypes.object,
 };
 

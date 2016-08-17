@@ -49,7 +49,6 @@ function validateFieldByDependencyType(type, config, value, dependentFieldConfig
     return void 0;
   }
   const validator = dependencyValidators[type];
-  console.log(dependentFieldValue);
 
   return validator ? validator.validate(config, value, dependentFieldConfig, dependentFieldValue, formData, schema) : void 0;
 }

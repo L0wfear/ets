@@ -3,6 +3,11 @@
  * @module utils/functions
  */
 
+/**
+ * Стандартная проверка на null/undefined в js
+ * @param {any} value
+ * @return {boolean}
+ */
 export function isNotNull(value) {
   return typeof value !== 'undefined' && value !== null;
 }
@@ -10,6 +15,7 @@ export function isNotNull(value) {
 /**
  * Проверяет значение на "пустоту"
  * "Пустым" считается значение undefined, null и пустая строка
+ * @param {any} value
  * @example
  * // true
  * isEmpty('');
@@ -19,7 +25,7 @@ export function isNotNull(value) {
  * @example
  * // true
  * isEmpty(null)
- * @return {boolean} isEmpty - пyстое ли значение
+ * @return {boolean} пyстое ли значение
  */
 export function isEmpty(value) {
   if (!isNotNull(value)) return true;

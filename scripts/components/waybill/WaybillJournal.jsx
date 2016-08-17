@@ -5,7 +5,7 @@ import WaybillPrintForm from './WaybillPrintForm.jsx';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import _ from 'lodash';
 import { connectToStores, staticProps  } from 'utils/decorators';
-import { WaybillsTable } from './WaybillsTable.jsx';
+import WaybillsTable from './WaybillsTable.jsx';
 
 @connectToStores(['waybills', 'objects', 'employees'])
 @staticProps({

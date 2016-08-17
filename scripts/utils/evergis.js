@@ -1,4 +1,7 @@
-import { getEverGisToken } from '../adapter.js';
+export function getEverGisToken() {
+  const tokenUrl = `http://gisoiv.mos.ru/IntegrationGIS/SpatialProcessor/Strategis.JsClient/ApiLogin.aspx?authId=505741D8-C667-440D-9CA0-32FD1FF6AF88&userName=jspublic&password=jspublic&ts=${new Date().getTime()}`;
+  return fetch(tokenUrl).then((response) => response.json()).then((data) => encodeURIComponent(data.token));
+}
 
 const ATTEMPTS_LIMIT = 10;
 const FIFTY_SECONDS = 1000 * 50;

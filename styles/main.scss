@@ -2012,8 +2012,9 @@ body {
     text-align: left;
     outline: none;
     //color: black;
-    &.btn-success {
-      background-color: #aaddaa;
+    &.tracking {
+      background-color: #5cb85c;
+      border-color: #4cae4c;
     }
   }
 
@@ -3541,4 +3542,20 @@ div.none {
 
 .btn-toolbar {
   margin-left: 5px !important;
+}
+
+
+.track-player {
+  padding: 4px;
+  padding-top: 10px;
+  text-align: left;
+  .btn {
+    outline: none;
+    border-color: inherit;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    &:focus, &:active, &:active:focus {
+      background-color: #4c4c4c;
+    }
+  }
 }

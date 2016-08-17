@@ -33,7 +33,7 @@ function calculateWaybillMetersDiff(waybill, field, value) {
 }
 
 @FluxContext
-class WaybillFormWrap extends FormWrap {
+export default class WaybillFormWrap extends FormWrap {
 	constructor(props) {
 		super(props);
 
@@ -353,5 +353,3 @@ class WaybillFormWrap extends FormWrap {
 	}
 
 }
-
-export default WaybillFormWrap;

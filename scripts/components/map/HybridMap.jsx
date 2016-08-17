@@ -2,10 +2,10 @@ import React from 'react';
 import Map from './Map.jsx';
 import CarMarker from './markers/car/CarMarker.js';
 import LegendWrapper from './LegendWrapper.jsx';
-import { GeoJSON } from 'utils/ol';
+import { GeoJSON, getPointStyle, getPolyStyle} from 'utils/ol';
 import Div from 'components/ui/Div.jsx';
 import { Glyphicon, Button } from 'react-bootstrap';
-import { polyState, polyStyles, pointStyles, getPointStyle } from 'constants/polygons.js';
+import { polyState, polyStyles } from 'constants/polygons.js';
 import { vectorStyles, vectorState, getVectorArrowStyle, getVectorLayer, getVectorSource } from 'constants/vectors.js';
 import FluxComponent from 'flummox/component';
 import _ from 'lodash';
@@ -15,7 +15,7 @@ let POLYS_LAYER = null;
 export default class HybridMap extends Map {
   constructor(props) {
     super(props);
-    this.zoomedPolyName = null;
+
     this.state = {
       zoom: null
     };
@@ -77,11 +77,11 @@ export default class HybridMap extends Map {
               if (o.coordinates.x_msk === poly.shape.coordinates[0] && o.coordinates.y_msk === poly.shape.coordinates[1]) {
                 succeed = true;
               }
-            })
+            });
             if (succeed) {
-              feature.setStyle(getPointStyle('success'));
+              feature.setStyle(getPointStyle('green'));
             } else {
-              feature.setStyle(getPointStyle('fail'));
+              feature.setStyle(getPointStyle('red'));
             }
           } else {
             styleFunction = null;
@@ -113,30 +113,27 @@ export default class HybridMap extends Map {
     let { map } = this;
 
     if (!showSelectedElement) {
-      return !!this.polysLayer && map.removeLayer(this.polysLayer);
+      return !!this.selectedPolysLayer && map.removeLayer(this.selectedPolysLayer);
     }
 
     let feature = new ol.Feature({
       geometry: GeoJSON.readGeometry(selectedPoly.shape),
       name: selectedPoly.name
     });
-    feature.setStyle(polyStyles['info']);
 
     vectorSource.addFeature(feature);
 
-    if (this.zoomedPolyName !== selectedPoly.name) {
-      map.getView().fit(feature.getGeometry().getExtent(), map.getSize());
-      map.getView().setZoom(7);
-      this.zoomedPolyName = selectedPoly.name;
-    }
+    map.getView().fit(feature.getGeometry().getExtent(), map.getSize());
+    map.getView().setZoom(7);
 
-    !!this.polysLayer && map.removeLayer(this.polysLayer);
+    !!this.selectedPolysLayer && map.removeLayer(this.selectedPolysLayer);
 
-    this.polysLayer = new ol.layer.Vector({
-      source: vectorSource
+    this.selectedPolysLayer = new ol.layer.Vector({
+      source: vectorSource,
+      style: getPolyStyle('#e67e22')
     });
 
-    map.addLayer(this.polysLayer);
+    map.addLayer(this.selectedPolysLayer);
   }
 
   renderCanvas(canvas, extent) {

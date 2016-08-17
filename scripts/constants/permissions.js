@@ -169,7 +169,7 @@ const PERMISSIONS = {
     }
   },
   'administration': 'administration'
-}
+};
 
 const NSI_LIST_PERMISSIONS = _(PERMISSIONS.nsi).map((v,k) => v.list).value();
 const MISSIONS_LIST_PERMISSIONS = _(PERMISSIONS.missions).map((v,k) => v.list).value();

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Panel from 'components/ui/Panel.jsx';
-import { Button } from 'react-bootstrap';
+import { Button, Glyphicon } from 'react-bootstrap';
 import { getStatusById } from 'constants/statuses';
 import config from '../../config.js';
 import { makeDate, makeTime, getStartOfToday } from 'utils/dates';
@@ -10,7 +10,6 @@ import { getCarImage } from '../../adapter.js';
 import { roundCoordinates } from 'utils/geo';
 import DatePicker from 'components/ui/DatePicker.jsx';
 import { getTypeById } from 'utils/labelFunctions';
-
 
 class VehicleAttributes extends Component {
 
@@ -197,6 +196,15 @@ export default class CarInfo extends Component {
     track.onUpdate();
   }
 
+  toggleTrackPlaying() {
+    const { marker } = this.props.car;
+    if (marker.isAnimating()) {
+      marker.stopAnimation();
+    } else {
+      marker.animate();
+    }
+  }
+
   renderModel() {
     const { imageUrl, trackingMode } = this.state;
     const { car } = this.props;
@@ -205,7 +213,7 @@ export default class CarInfo extends Component {
     let marker = car.marker;
     let isTrackLoaded = marker.hasTrackLoaded();
 
-    let trackBtnClass = 'toggle-tracking-mode btn-sm btn track-btn ' + (trackingMode ? 'btn-success' : 'btn-default');
+    let trackBtnClass = 'toggle-tracking-mode btn-sm btn track-btn ' + (trackingMode ? 'tracking' : 'btn-default');
     let trackBtnIconClass = 'glyphicon glyphicon-screenshot ' + (trackingMode ? 'tracking-animate' : '');
     let zoomToTrackClass = 'zoom-to-track-extent btn-sm btn ' + (isTrackLoaded ? 'btn-default' : 'btn-disabled');
 
@@ -214,8 +222,8 @@ export default class CarInfo extends Component {
         <button className={trackBtnClass} onClick={this.toggleCarTracking.bind(this)} title="Следить за машиной">
           <span className={trackBtnIconClass}></span>&nbsp;{trackingMode ? 'Следим' : 'Следить'}
         </button>
-        <button className={zoomToTrackClass} onClick={isTrackLoaded && this.zoomToTrack.bind(this)} title="Показать маршрут">
-          <span className="glyphicon glyphicon-resize-full"></span>&nbsp;Маршрут
+        <button className={zoomToTrackClass} onClick={isTrackLoaded && this.zoomToTrack.bind(this)} title="Показать трек">
+          <span className="glyphicon glyphicon-resize-full"></span>&nbsp;Трек
         </button>
         <img className="car-info-image" src={imageUrl ? config.images + imageUrl : ''}/>
         <VehicleAttributes vehicle={car} lastPoint={marker.hasTrackLoaded() && marker.track.getLastPoint()}/>
@@ -253,6 +261,10 @@ export default class CarInfo extends Component {
               disabled={tillNow}>
             <span className={reloadBtnCN}></span>
           </Button>
+
+          <div className="track-player">
+            <Button onClick={this.toggleTrackPlaying.bind(this)}><Glyphicon glyph={marker.isAnimating() ? 'pause' : 'play'}/></Button>
+          </div>
         </Panel>
       </div>
     );

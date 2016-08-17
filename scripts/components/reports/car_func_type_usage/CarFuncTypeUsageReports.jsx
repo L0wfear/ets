@@ -5,7 +5,7 @@ import EtsSelect from 'components/ui/EtsSelect.jsx';
 import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
 import Datepicker from 'components/ui/DatePicker.jsx';
-import { datePickerFunction, getReportStatusLabel, getGeozoneTypeLabel} from 'utils/labelFunctions';
+import { getGeozoneTypeLabel} from 'utils/labelFunctions';
 import { getToday9am, getTomorrow9am, getToday0am, getToday2359, getFormattedDateTime } from 'utils/dates';
 import { getReportNotReadyNotification2 } from 'utils/notifications';
 import { isEmpty } from 'utils/functions';

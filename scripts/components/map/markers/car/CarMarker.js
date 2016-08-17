@@ -39,6 +39,8 @@ export default class CarMarker extends Marker {
     this.coords = wrapCoords(swapCoords(point.coords_msk))
     this.track = null;
     this.animating = false;
+    this.currentIndex = 0;
+    this.new = true;
   }
 
   isAnimating() {
@@ -48,8 +50,9 @@ export default class CarMarker extends Marker {
   animate() {
     this.animating = true;
     this.store.pauseRendering();
-    this.animatePoints = _(this.track.points).map(t => t.coords_msk).value();
-
+    if (this.new) this.animatePoints = _(this.track.points).map(t => t.coords_msk).value();
+    this.new = false;
+    this.animatePoints.splice(0, this.currentIndex);
     // НЕ УДАЛЯТЬ
     // let newPoints = [];
     // _.each(this.animatePoints, (c, i) => {
@@ -68,13 +71,12 @@ export default class CarMarker extends Marker {
     });
 
     // TODO сделать константный лейер для карты, а то будет каждый раз создаваться
-    var vectorLayer = new ol.layer.Vector({
+    this.vectorLayer = new ol.layer.Vector({
       source: new ol.source.Vector({
         features: []
       })
     });
-
-    this.map.addLayer(vectorLayer);
+    this.map.addLayer(this.vectorLayer);
 
     let map = this.map;
     let coords = this.animatePoints[0];
@@ -102,8 +104,28 @@ export default class CarMarker extends Marker {
 
   stopAnimation() {
     this.animating = false;
+    this.currentIndex = 0;
+    this.new = true;
     this.store.unpauseRendering();
     this.map.unByKey(this.animateEventKey);
+  }
+
+  togglePlay() {
+    if (this.animating) {
+      this.animating = false;
+      this.store.unpauseRendering();
+      this.map.unByKey(this.animateEventKey);
+
+      let pausedMarker = new ol.Feature({
+        type: 'geoMarker',
+        geometry: new ol.geom.Point(this.animatePoints[this.currentIndex])
+      });
+      pausedMarker.setStyle(getPointStyle('black', 7));
+      this.vectorLayer.getSource().addFeature(pausedMarker);
+    } else {
+      if (this.vectorLayer) this.map.removeLayer(this.vectorLayer);
+      this.animate();
+    }
   }
 
   animateToTrack(event) {
@@ -111,6 +133,7 @@ export default class CarMarker extends Marker {
     let { frameState, vectorContext } = event;
     let elapsedTime = frameState.time - this.animateStartTime;
     let index = Math.round(2 * elapsedTime / 1000);
+    this.currentIndex = index;
     if (index >= this.animatePoints.length) {
       this.stopAnimation();
       return;
@@ -132,10 +155,12 @@ export default class CarMarker extends Marker {
     // });
     // map.beforeRender(pan);
 
-    view.centerOn(coords, size, pixel)
-    if (zoom != 13) {
-      view.setZoom(13);
-    }
+    if (!this.paused) {
+      view.centerOn(coords, size, pixel)
+      if (zoom != 13) {
+        view.setZoom(13);
+      }
+    };
 
     let currentPoint = new ol.geom.Point(this.animatePoints[index]);
     let feature = new ol.Feature(currentPoint);

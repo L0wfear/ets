@@ -86,6 +86,7 @@ export default class CarInfo extends Component {
     this.store = this.props.flux.getStore('points');
     this.state = {
       imageUrl: null,
+      trackPaused: true,
       trackingMode: false,
       missions: [],
       from_dt: getStartOfToday(),
@@ -182,6 +183,8 @@ export default class CarInfo extends Component {
     if (props.car !== this.props.car) {
       this.fetchImage();
       this.fetchTrack(props);
+      this.stopTrackPlaying();
+      this.setState({trackPaused: true})
     }
     if (props.car.id !== this.props.car.id) {
       let carsList = this.props.flux.getStore('objects').state.carsList;
@@ -194,15 +197,18 @@ export default class CarInfo extends Component {
   componentWillUnmount() {
     let track = this.props.car.marker.track;
     track.onUpdate();
+    this.stopTrackPlaying();
   }
 
   toggleTrackPlaying() {
     const { marker } = this.props.car;
-    if (marker.isAnimating()) {
-      marker.stopAnimation();
-    } else {
-      marker.animate();
-    }
+    marker.togglePlay();
+    this.setState({trackPaused: !marker.isAnimating()})
+  }
+
+  stopTrackPlaying() {
+    const { marker } = this.props.car;
+    marker.stopAnimation();
   }
 
   renderModel() {
@@ -263,7 +269,8 @@ export default class CarInfo extends Component {
           </Button>
 
           <div className="track-player">
-            <Button onClick={this.toggleTrackPlaying.bind(this)}><Glyphicon glyph={marker.isAnimating() ? 'pause' : 'play'}/></Button>
+            <Button onClick={this.toggleTrackPlaying.bind(this)}><Glyphicon glyph={this.state.trackPaused ? 'play' : 'pause'}/></Button>
+            <Button onClick={this.stopTrackPlaying.bind(this)}><Glyphicon glyph={'stop'}/></Button>
           </div>
         </Panel>
       </div>

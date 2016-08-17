@@ -321,7 +321,7 @@ body.application {
 }
 
 .no-pointer-events {
-  pointer-events: none !important; 
+  pointer-events: none !important;
   cursor: default !important;
 }
 
@@ -457,6 +457,12 @@ body.application {
 
   h5 {
     font-weight: 200;
+  }
+}
+
+.track-player {
+  .btn {
+    margin-right: 10px; 
   }
 }
 

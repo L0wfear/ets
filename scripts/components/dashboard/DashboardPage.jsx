@@ -29,13 +29,13 @@ class DashboardPage extends React.Component {
   init() {
     let { flux } = this.context;
     let actions = flux.getActions('dashboard');
-    let components = flux.getStore('dashboard').getComponentsByRole();
-    _.each(components, c => c.side ? actions.getDashboardSideComponent(c.key) : actions.getDashboardComponent(c.key));
+    let components = flux.getStore('dashboard').getComponentsByPermissions();
+    _.each(components, c => actions.getDashboardComponent(c.key));
   }
 
   refreshAll() {
     let { flux } = this.context;
-    let components = flux.getStore('dashboard').getComponentsByRole();
+    let components = flux.getStore('dashboard').getComponentsByPermissions();
     _.each(components.filter(c => !c.side), c => c.key !== this.state.itemOpenedKey ? this.refreshCard(c.key) : null);
   }
 

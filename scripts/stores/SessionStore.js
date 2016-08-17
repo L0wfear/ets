@@ -78,4 +78,16 @@ export default class SessionStore extends Store {
     return this.state.session;
   }
 
+  getPermission(permissionName) {
+    let { permissions } = this.state.currentUser;
+    if (Array.isArray(permissionName)) {
+      permissionName.forEach((permission) => {
+        if (permissions.indexOf(permission) === -1) return false;
+      })
+      return true
+    } else {
+      return !!(permissions.indexOf(permissionName)+1);
+    }
+  }
+
 }

@@ -66,9 +66,6 @@ export default class Track {
       return;
     }
 
-    //point.coords_msk = point.coords_msk;
-    //point.coords = swapCoords(point.coords);
-
     if (this.points !== null && (this.points.length && point.timestamp > this.points[this.points.length - 1].timestamp)) {
       this.points.push(point);
       //this.render();
@@ -142,7 +139,6 @@ export default class Track {
 
     let id = this.owner.point.id;
     let updating = this.continuousUpdating;
-    //this.points = null;
 
     if (to_dt - from_dt > 5 * 24 * 60 * 60 * 1000) {
       global.NOTIFICATION_SYSTEM.notify('Период запроса трэка не может превышать 5 суток', 'warning')

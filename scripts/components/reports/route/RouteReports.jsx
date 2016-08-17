@@ -4,7 +4,7 @@ import { Button, Glyphicon } from 'react-bootstrap';
 import EtsSelect from 'components/ui/EtsSelect.jsx';
 import Div from 'components/ui/Div.jsx';
 import { getFormattedDateTimeSeconds } from 'utils/dates';
-import { datePickerFunction, getReportStatusLabel } from 'utils/labelFunctions';
+import { getReportStatusLabel } from 'utils/labelFunctions';
 import { FluxContext, HistoryContext, exportable, staticProps, connectToStores } from 'utils/decorators';
 
 let tableMeta = {
@@ -31,8 +31,7 @@ let tableMeta = {
 			caption: 'Дата создания',
 			type: 'number',
 			filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			},
 		},
 		{
@@ -40,8 +39,7 @@ let tableMeta = {
 			caption: 'Дата начала обработки',
 			type: 'number',
 			filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			},
 		},
 		{
@@ -49,8 +47,7 @@ let tableMeta = {
 			caption: 'Дата завершения обработки',
 			type: 'number',
 			filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			},
 		},
 		{

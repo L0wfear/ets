@@ -134,6 +134,9 @@ export default class PointsStore extends Store {
     * https://github.com/mourner/rbush-knn
     */
   handleUpdatePoints(update) {
+    if (this.isRenderPaused()) {
+      return;
+    }
     let points = Object.assign({}, this.state.points);
 
     // TODO отрефакторить механизм обработки получения точек для 1 БНСО

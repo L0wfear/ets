@@ -2,9 +2,14 @@ import { Actions } from 'flummox';
 import { createValidDateTime, createValidDate } from 'utils/dates';
 import _ from 'lodash';
 import { isEmpty } from 'utils/functions';
-import { WaybillService, LatestWaybillDriverService, WaybillJournalReportService, WaybillsReportService } from 'api/Services';
+import {
+  WaybillService,
+  LatestWaybillDriverService,
+  WaybillJournalReportService,
+  WaybillsReportService
+} from 'api/Services';
 
-class WaybillsActions extends Actions {
+export default class WaybillsActions extends Actions {
 
   constructor(props) {
     super();
@@ -151,5 +156,3 @@ class WaybillsActions extends Actions {
   }
 
 }
-
-export default WaybillsActions;

@@ -1,4 +1,5 @@
 import { Actions } from 'flummox';
+import { createValidDateTime, createValidDate } from 'utils/dates';
 import _ from 'lodash';
 import {
   DailyCleaningReportsServiceETS,
@@ -10,7 +11,6 @@ import {
   OdhCoverageReportService,
   CarFuncTypeUsageReportService
 } from 'api/Services';
-import { createValidDateTime, createValidDate } from 'utils/dates';
 import config from '../config.js';
 
 export default class ReportsActions extends Actions {

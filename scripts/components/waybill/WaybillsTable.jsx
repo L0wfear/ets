@@ -2,10 +2,7 @@ import React from 'react';
 import { Button, Glyphicon, ButtonToolbar, Dropdown, MenuItem } from 'react-bootstrap';
 import Table from 'components/ui/table/DataTable.jsx';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
-import { dateLabelFunction,
-				 datePickerFunction,
-				 employeeFIOLabelFunction,
-				 getCarByIdLabelFunction,
+import { employeeFIOLabelFunction,
 				 waybillStatusLabelFunction,
 			 	 waybillMissionsCompleteStatusLabelFunction } from 'utils/labelFunctions';
 
@@ -13,16 +10,6 @@ let getTableMeta = (props) => {
 
 	let tableMeta = {
 		cols: [
-			{
-				name: 'car_id',
-				caption: 'Гос. № ТС',
-				type: 'string',
-				display: false,
-				filter: {
-					type: 'select',
-					labelFunction: (id) => getCarByIdLabelFunction(id).gov_number,
-				}
-			},
 			{
 				name: 'status',
 				caption: 'Статус',
@@ -56,8 +43,7 @@ let getTableMeta = (props) => {
 				cssClassName: 'width-waybill-large',
 				type: 'date',
 				filter: {
-					type: 'date_create',
-					labelFunction: datePickerFunction
+					type: 'date_create'
 				}
 			},
 			{
@@ -66,8 +52,7 @@ let getTableMeta = (props) => {
 				cssClassName: 'width-waybill-large',
 				type: 'date',
 				filter: {
-					type: 'date_create',
-					labelFunction: datePickerFunction
+					type: 'date_create'
 				}
 			},
 			{
@@ -81,7 +66,7 @@ let getTableMeta = (props) => {
 				}
 			},
 			{
-				name: 'car_id',
+				name: 'gov_number',
 				caption: 'Гос. № ТС',
 				cssClassName: 'width-waybill-large',
 				type: 'string',
@@ -111,8 +96,7 @@ let getTableMeta = (props) => {
 				cssClassName: 'width-waybill-large',
 				type: 'date',
 				filter: {
-					type: 'date_create',
-					labelFunction: datePickerFunction
+					type: 'date_create'
 				}
 			},
 			{
@@ -121,8 +105,7 @@ let getTableMeta = (props) => {
 				cssClassName: 'width-waybill-large',
 				type: 'date',
 				filter: {
-					type: 'date_create',
-					labelFunction: datePickerFunction
+					type: 'date_create'
 				}
 			},
 			{
@@ -214,33 +197,33 @@ let getTableMeta = (props) => {
 
 };
 
-export let WaybillsTable = (props) => {
+let WaybillsTable = (props) => {
+	const renderers = {
+		status: ({data}) => <div>{waybillStatusLabelFunction(data)}</div>,
+		responsible_person_id: ({data}) => <div>{employeeFIOLabelFunction(data)}</div>,
+		driver_id: ({data}) => <div>{employeeFIOLabelFunction(data)}</div>,
+		date_create: ({data}) => <DateFormatter date={data} />,
+		closing_date: ({data}) => <DateFormatter date={data} />,
+		fact_departure_date: ({data}) => <DateFormatter date={data} time={true} />,
+		fact_arrival_date: ({data}) => <DateFormatter date={data} time={true} />,
+		car_special_model_name: (meta) => {
+			let spModel = meta.data === null ? '- ' : meta.data;
+			let model = meta.rowData.car_model_name === null ? ' -' : meta.rowData.car_model_name;
+			return <div className="white-space-pre-wrap">{spModel+"/"+model}</div>
+		},
+		all_missions_completed_or_failed: ({data}) => <div>{waybillMissionsCompleteStatusLabelFunction(data)}</div>
+	};
 
-		const renderers = {
-			status: ({data}) => <div>{waybillStatusLabelFunction(data)}</div>,
-			responsible_person_id: ({data}) => <div>{employeeFIOLabelFunction(data)}</div>,
-			driver_id: ({data}) => <div>{employeeFIOLabelFunction(data)}</div>,
-			car_id: ({data}) => <div>{getCarByIdLabelFunction(data).gov_number}</div>,
-			date_create: ({data}) => <DateFormatter date={data} />,
-			closing_date: ({data}) => <DateFormatter date={data} />,
-			fact_departure_date: ({data}) => <DateFormatter date={data} time={true} />,
-			fact_arrival_date: ({data}) => <DateFormatter date={data} time={true} />,
-			car_special_model_name: (meta) => {
-				let spModel = meta.data === null ? '- ' : meta.data;
-				let model = meta.rowData.car_model_name === null ? ' -' : meta.rowData.car_model_name;
-				return <div className="white-space-pre-wrap">{spModel+"/"+model}</div>
-			},
-			all_missions_completed_or_failed: ({data}) => <div>{waybillMissionsCompleteStatusLabelFunction(data)}</div>
-		};
-
-		return <Table title="Журнал путевых листов"
-			results={props.data}
-			renderers={renderers}
-			initialSort={'number'}
-			initialSortAscending={false}
-			tableMeta={getTableMeta(props)}
-			columnControl={true}
-			className="waybills-table"
-			columnControlStorageName={'waybillsColumnControl'}
-			{...props}/>
+	return <Table title="Журнал путевых листов"
+		results={props.data}
+		renderers={renderers}
+		initialSort={'number'}
+		initialSortAscending={false}
+		tableMeta={getTableMeta(props)}
+		columnControl={true}
+		className="waybills-table"
+		columnControlStorageName={'waybillsColumnControl'}
+		{...props}/>
 }
+
+export default WaybillsTable;

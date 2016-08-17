@@ -4,6 +4,7 @@ import { getSmallIcon, getBigIcon } from '../../../../icons/car.js';
 import Marker from '../BaseMarker.js';
 import Track from '../../Track.js';
 import { swapCoords, wrapCoords } from 'utils/geo';
+import { getPointStyle } from 'utils/ol';
 import { getTypeById } from 'utils/labelFunctions';
 import _ from 'lodash';
 
@@ -37,32 +38,79 @@ export default class CarMarker extends Marker {
     point.marker = this;
     this.coords = wrapCoords(swapCoords(point.coords_msk))
     this.track = null;
+    this.animating = false;
+  }
+
+  isAnimating() {
+    return this.animating;
   }
 
   animate() {
-    this.animateEventKey = this.map.on('postcompose', this.animateToTrack.bind(this));
-    this.render = () => {};
-    this.now = new Date().getTime();
-    this.animatePoints = _.uniqWith(this.track.points, (a,b) => {
-      return a.coords_msk[0] === b.coords_msk[0] && a.coords_msk[1] === b.coords_msk[1];
+    this.animating = true;
+    this.store.pauseRendering();
+    this.animatePoints = _(this.track.points).map(t => t.coords_msk).value();
+
+    // НЕ УДАЛЯТЬ
+    // let newPoints = [];
+    // _.each(this.animatePoints, (c, i) => {
+    //   newPoints.push(this.animatePoints[i]);
+    //   if (this.animatePoints[i+1]) {
+    //     const points = getCoordinatesBetweenPoints(this.animatePoints[i], this.animatePoints[i+1]);
+    //     _.each(points, (p, j) => {
+    //       newPoints.push(p);
+    //     });
+    //   }
+    // });
+
+    var geoMarker = new ol.Feature({
+      type: 'geoMarker',
+      geometry: new ol.geom.Point(this.animatePoints[0])
     });
-    this.animatePoints = this.animatePoints.map(p => p.coords_msk);
-    this.image = this.getImage({selected: true});
-    this.radius = this.image.width / 2;
-    this.map.render();
+
+    // TODO сделать константный лейер для карты, а то будет каждый раз создаваться
+    var vectorLayer = new ol.layer.Vector({
+      source: new ol.source.Vector({
+        features: []
+      })
+    });
+
+    this.map.addLayer(vectorLayer);
+
+    let map = this.map;
+    let coords = this.animatePoints[0];
+    let view = map.getView();
+
+    var duration = 1500;
+    var start = +new Date();
+    var pan = ol.animation.pan({
+      duration: duration,
+      source: view.getCenter(),
+      start
+    });
+    map.beforeRender(pan);
+    view.setCenter(coords);
+
+    setTimeout(() => {
+      this.animateEventKey = this.map.on('postcompose', this.animateToTrack.bind(this));
+      this.render = () => {};
+      this.animateStartTime = new Date().getTime();
+      this.image = this.getImage({selected: true});
+      this.radius = this.image.width / 2;
+      this.map.render();
+    }, 1500);
   }
 
   stopAnimation() {
-    console.log('animationEnd');
+    this.animating = false;
+    this.store.unpauseRendering();
     this.map.unByKey(this.animateEventKey);
   }
 
   animateToTrack(event) {
     let { image, radius } = this;
-    var { frameState } = event;
-    var elapsedTime = frameState.time - this.now;
-    var index = Math.round(2 * elapsedTime / 1000);
-    console.log('animating point ', index);
+    let { frameState, vectorContext } = event;
+    let elapsedTime = frameState.time - this.animateStartTime;
+    let index = Math.round(2 * elapsedTime / 1000);
     if (index >= this.animatePoints.length) {
       this.stopAnimation();
       return;
@@ -75,21 +123,23 @@ export default class CarMarker extends Marker {
     let size = map.getSize();
     let pixel = [(size[0] - 500) / 2, size[1] / 2];
 
+    // var duration = 1500;
+    // var start = +new Date();
+    // var pan = ol.animation.pan({
+    //   duration: duration,
+    //   source: view.getCenter(),
+    //   start: start
+    // });
+    // map.beforeRender(pan);
+
     view.centerOn(coords, size, pixel)
-    if (zoom != 9) {
-      view.setZoom(9);
+    if (zoom != 13) {
+      view.setZoom(13);
     }
 
-    let canvas = this._reactMap.canvas;
-    let ctx = canvas.getContext('2d');
-    let drawCoords = this.map.projectToPixel(coords);
-    console.log(drawCoords);
-
-    if (typeof ctx === 'undefined') {
-      return;
-    }
-
-    ctx.drawImage(image, drawCoords.x - radius, drawCoords.y - radius, radius * 2, radius * 2);
+    let currentPoint = new ol.geom.Point(this.animatePoints[index]);
+    let feature = new ol.Feature(currentPoint);
+    vectorContext.drawFeature(feature, getPointStyle('black', 7));
     this.map.render();
   }
 

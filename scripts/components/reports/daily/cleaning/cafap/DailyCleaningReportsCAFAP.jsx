@@ -5,7 +5,7 @@ import EtsSelect from 'components/ui/EtsSelect.jsx';
 import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
 import Datepicker from 'components/ui/DatePicker.jsx';
-import { datePickerFunction, getReportStatusLabel, getGeozoneTypeLabel} from 'utils/labelFunctions';
+import { getReportStatusLabel, getGeozoneTypeLabel} from 'utils/labelFunctions';
 import { getToday9am, getTomorrow9am, getToday0am, getToday2359, getFormattedDateTimeSeconds } from 'utils/dates';
 import { getReportNotReadyNotification2 } from 'utils/notifications';
 import DailyReportHeader from 'components/reports/DailyReportHeader.jsx';
@@ -54,8 +54,7 @@ let tableMeta = {
 			caption: 'Начало периода',
 			type: 'number',
 			filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			},
 		},
 		{
@@ -63,8 +62,7 @@ let tableMeta = {
 			caption: 'Конец периода',
 			type: 'number',
 			filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			},
 		},
 		{
@@ -72,8 +70,7 @@ let tableMeta = {
 			caption: 'Дата создания',
 			type: 'number',
 			filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			},
 		},
 		{
@@ -81,8 +78,7 @@ let tableMeta = {
 			caption: 'Дата начала обработки',
 			type: 'number',
 			filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			},
 		},
 		{
@@ -90,8 +86,7 @@ let tableMeta = {
 			caption: 'Дата завершения обработки',
 			type: 'number',
 			filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			},
 		},
 	]

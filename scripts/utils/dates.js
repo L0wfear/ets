@@ -1,9 +1,7 @@
 import moment from 'moment';
 
-let twoDigits = (n) => n < 10 ? '0' + n : n;
-
 export function makeDate(date) {
-  return moment(date).format(`${global.APP_DATE_FORMAT}`);//twoDigits(date.getDate()) + '.' + twoDigits(date.getMonth() + 1) + '.' + date.getFullYear();
+  return moment(date).format(`${global.APP_DATE_FORMAT}`);
 }
 
 export function makeUnixTime(time) {
@@ -12,15 +10,13 @@ export function makeUnixTime(time) {
 
 export function makeTime(date, withSeconds = false) {
   date = new Date(date);
-  return twoDigits(date.getHours()) + ':' + twoDigits(date.getMinutes()) + (withSeconds ? ':' + twoDigits(date.getSeconds()) : '')
+  return moment(date).format(`HH:mm${withSeconds ? ':ss' : ''}`);
 }
 
 export function getStartOfToday() {
-  let now = new Date()
+  let now = new Date();
   return new Date(now.getFullYear(), now.getMonth(), now.getDate());
 }
-
-// ^ deprecated ?
 
 export function createValidDate(date){
   if (!date) return null;
@@ -102,9 +98,3 @@ export function getDatesByShift() {
     new Date(now.getFullYear(), now.getMonth(), now.getDate(), 19, 0),
   ];
 }
-
-// export function getDateWithoutTZ(date, format = true) {
-// 	if (typeof date === 'string') date = date.replace('.000000Z', '');
-// 	date = moment(date).toDate();
-// 	return date;
-// }; Н Е Н У Ж Н О

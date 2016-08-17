@@ -14,8 +14,12 @@ class RouteForm extends Form {
 		super(props);
 
 		this.state = {
-			companyStructureList: [],
-      ROUTE_TYPE_OPTIONS: [{value: 'vector', label: 'Вручную'}, {value: 'simple', label: 'Выбор из ОДХ'}, {value: 'simple_dt', label: 'Выбор из ДТ'}, {value: 'points', label: 'Выбор пунктов назначения'}],
+      ROUTE_TYPE_OPTIONS: [
+				{value: 'vector', label: 'Вручную'},
+				{value: 'simple', label: 'Выбор из ОДХ'},
+				{value: 'simple_dt', label: 'Выбор из ДТ'},
+				{value: 'points', label: 'Выбор пунктов назначения'}
+			],
       routeTypeDisabled: true
 		};
 	}
@@ -58,8 +62,9 @@ class RouteForm extends Form {
 
   handleTechChange(v) {
     this.handleChange('technical_operation_id', v);
-		if (!this.props.formState.copy)
-		this.setRouteTypeOptionsBasedOnTechnicalOperation(v);
+		if (!this.props.formState.copy) {
+			this.setRouteTypeOptionsBasedOnTechnicalOperation(v);
+		}
   }
 
 	async getTechnicalOperationsByType(type) {
@@ -75,8 +80,6 @@ class RouteForm extends Form {
 		let technicalOperationsResponse = await flux.getActions('technicalOperation').getTechnicalOperations();
 		let technicalOperationsList = technicalOperationsResponse.result;
 
-		let companyStructureList = await flux.getActions('companyStructure').getLinearCompanyStructureForUser();
-
 		if (formState.technical_operation_id && !formState.copy) {
 			this.setRouteTypeOptionsBasedOnTechnicalOperation(formState.technical_operation_id, technicalOperationsList, formState.type, false);
 		}
@@ -85,26 +88,22 @@ class RouteForm extends Form {
 			return type === 'points' ? 3 : type === 'simple_dt' ? 2 : 1;
 		}
 
-		//this.getTechnicalOperationsByType(formState.type);
+		// this.getTechnicalOperationsByType(formState.type);
 		if (formState.copy) {
 			technicalOperationsList = technicalOperationsList.filter(to => {
 				return to.objects.find(o => o.id === getObjectIdByType(formState.type));
 			});
 		}
 
-		this.setState({companyStructureList, technicalOperationsList});
+		this.setState({technicalOperationsList});
 	}
 
 	render() {
 
 		let state = this.props.formState;
 		let errors = this.props.formErrors;
-		let { technicalOperationsList = [] } = this.state;
-		let { companyStructureList = [], ROUTE_TYPE_OPTIONS } = this.state;
+		let { ROUTE_TYPE_OPTIONS, technicalOperationsList = [] } = this.state;
     let TECH_OPERATIONS = technicalOperationsList.map(({id, name}) => ({value: id, label: name}));
-		let COMPANY_ELEMENTS = companyStructureList.map(el => ({value: el.id, label: el.name}));
-
-    console.log('form state is ', state);
 
 		return (
 			<Modal {...this.props} bsSize="large" backdrop="static">
@@ -135,20 +134,14 @@ class RouteForm extends Form {
 						<Div hidden={this.props.forceRouteType}>
 							<Col md={4}>
 								<Field type="select" label="Способ построения маршрута"
-										options={ROUTE_TYPE_OPTIONS}
-										value={state.type}
-										clearable={false}
-										disabled={this.state.routeTypeDisabled || !!state.id || state.copy}
-										onChange={this.handleTypeChange.bind(this)}/>
-								{/*<Field type="select" label="Подразделение"
-									options={COMPANY_ELEMENTS}
-									value={state.company_structure_id}
-									clearable={true}
-								onChange={this.handleChange.bind(this, 'company_structure_id')}/>*/}
+									options={ROUTE_TYPE_OPTIONS}
+									value={state.type}
+									clearable={false}
+									disabled={this.state.routeTypeDisabled || !!state.id || state.copy}
+									onChange={this.handleTypeChange.bind(this)}/>
 	            </Col>
 						</Div>
           </Row>
-
 
           <Row className={'routes-form-map-wrapper'}>
             <Col md={12}>
@@ -171,9 +164,5 @@ class RouteForm extends Form {
 		)
 	}
 }
-
-RouteForm.contextTypes = {
-	flux: React.PropTypes.object,
-};
 
 export default connectToStores(RouteForm, ['objects']);

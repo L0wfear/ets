@@ -5,7 +5,7 @@ import Div from 'components/ui/Div.jsx';
 import { getToday9am, getTomorrow9am, getFormattedDateTimeSeconds } from 'utils/dates';
 import { getReportNotReadyNotification3 } from 'utils/notifications';
 import DailyReportHeader from 'components/reports/DailyReportHeader.jsx';
-import { datePickerFunction, getReportStatusLabel, getGeozoneTypeLabel } from 'utils/labelFunctions';
+import { getReportStatusLabel, getGeozoneTypeLabel } from 'utils/labelFunctions';
 import { FluxContext, HistoryContext, exportable, staticProps, connectToStores } from 'utils/decorators';
 
 let getElementLabel = (el) => {
@@ -50,8 +50,7 @@ let tableMeta = {
 			caption: 'Начало периода',
 			type: 'number',
 			filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			},
 		},
 		{
@@ -59,8 +58,7 @@ let tableMeta = {
 			caption: 'Конец периода',
 			type: 'number',
 			filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			},
 		},
 		{
@@ -68,8 +66,7 @@ let tableMeta = {
 			caption: 'Дата создания',
 			type: 'number',
 			filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			},
 		},
 		{
@@ -77,8 +74,7 @@ let tableMeta = {
 			caption: 'Дата начала обработки',
 			type: 'number',
 			filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			},
 		},
 		{
@@ -86,8 +82,7 @@ let tableMeta = {
 			caption: 'Дата завершения обработки',
 			type: 'number',
 			filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			},
 		},
 	]

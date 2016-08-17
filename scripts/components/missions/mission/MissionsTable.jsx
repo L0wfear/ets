@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Button, Glyphicon, ButtonToolbar } from 'react-bootstrap';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 import Table from 'components/ui/table/DataTable.jsx';
-import { datePickerFunction } from 'utils/labelFunctions';
 
 const MISSION_STATUS_LABELS = {
   'assigned': 'Назначено',
@@ -66,8 +65,7 @@ let getTableMeta = (props) => {
 				caption: 'Начало',
 				type: 'date',
 				filter: {
-					type: 'date_create',
-					labelFunction: datePickerFunction
+					type: 'date_create'
 				},
 			},
       {
@@ -75,8 +73,7 @@ let getTableMeta = (props) => {
 				caption: 'Завершение',
 				type: 'date',
 				filter: {
-					type: 'date_create',
-					labelFunction: datePickerFunction
+					type: 'date_create'
 				},
 			},
       {

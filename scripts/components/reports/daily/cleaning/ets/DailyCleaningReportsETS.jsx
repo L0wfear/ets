@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
 import Div from 'components/ui/Div.jsx';
-import { datePickerFunction, getReportStatusLabel, getGeozoneTypeLabel } from 'utils/labelFunctions';
+import { getReportStatusLabel, getGeozoneTypeLabel } from 'utils/labelFunctions';
 import { getToday9am, getTomorrow9am, getFormattedDateTime } from 'utils/dates';
 import { getReportNotReadyNotification2 } from 'utils/notifications';
 import DailyReportHeader from 'components/reports/DailyReportHeader.jsx';
@@ -50,8 +50,7 @@ let tableMeta = {
 			caption: 'Начало периода',
 			type: 'number',
 			filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			},
 		},
 		{
@@ -59,8 +58,7 @@ let tableMeta = {
 			caption: 'Конец периода',
 			type: 'number',
 			filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			},
 		},
 		{
@@ -68,8 +66,7 @@ let tableMeta = {
 			caption: 'Дата создания',
 			type: 'number',
 			filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			},
 		},
 		{
@@ -77,8 +74,7 @@ let tableMeta = {
 			caption: 'Дата начала обработки',
 			type: 'number',
 			filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			},
 		},
 		{
@@ -86,8 +82,7 @@ let tableMeta = {
 			caption: 'Дата завершения обработки',
 			type: 'number',
 			filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			},
 		},
 	]

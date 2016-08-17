@@ -12,12 +12,15 @@ import { FluxContext } from 'utils/decorators';
 @FluxContext
 export default class CurrentDutyMissions extends DashboardCardMedium {
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     this.state = Object.assign(this.state, {
       showCurrentDutyMissionForm: false
     });
+
+    this.canView = context.flux.getStore('session').getPermission("duty_mission.get");
+    this.canCompleteOrReject = context.flux.getStore('session').getPermission("duty_mission.update");
   }
 
   async showCurrentDutyMissionForm(data) {
@@ -72,15 +75,16 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
 
   renderCollapsibleSubitems(item, i) {
     let { subItems = [] } = item;
-      return (
-        <Collapse in={this.state.selectedItem === i}>
-          <Div>
-            <ul>
-              {subItems.map((item, key) => <li key={key} onClick={this.selectedDutyMission.bind(this, key)}>{item.title || item}</li>)}
-            </ul>
-          </Div>
-        </Collapse>
-      );
+
+    return (
+      <Collapse in={this.state.selectedItem === i}>
+        <Div className={!this.canView ? 'no-pointer-events' : 'pointer'}>
+          <ul>
+            {subItems.map((item, key) => <li key={key} onClick={this.selectedDutyMission.bind(this, key)}>{item.title || item}</li>)}
+          </ul>
+        </Div>
+      </Collapse>
+    );
   }
 
 
@@ -90,6 +94,7 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
     if (isEmpty(selectedItemIndex) || isEmpty(selectedDutyMissionIndex)) return <div/>;
     let selectedItem = this.props.items[selectedItemIndex].subItems[selectedDutyMissionIndex] || null;
     let data = selectedItem !== null ? selectedItem.data || {} : {};
+
     return (
       <Div>
         <Div hidden={!data || (data && !data.technical_operation_name)}>
@@ -100,11 +105,11 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
             <li><b>Окончание задания (плановое):</b> {data.duty_mission_date_end}</li>
             <li><b>ФИО бригадира:</b> {data.foreman_fio}</li>
             <li><b>Номер телефона бригадира:</b> {data.foreman_phone}</li>
-            <li><a className="pointer" onClick={(e) => {e.preventDefault(); this.showCurrentDutyMissionForm(data);}}>Показать на карте</a></li>
-            <Div className="text-right">
+            {this.canView ? <li><a className="pointer" onClick={(e) => {e.preventDefault(); this.showCurrentDutyMissionForm(data);}}>Показать на карте</a></li> : ''}
+            {this.canCompleteOrReject ? <Div className="text-right">
               <Button className="dashboard-card-action-button" onClick={this.completeMission.bind(this, data.duty_mission_id)}>Выполнено</Button>
               <Button className="dashboard-card-action-button" onClick={this.rejectMission.bind(this, data.duty_mission_id)}>Не выполнено</Button>
-            </Div>
+            </Div> : ''}
           </ul>
         </Div>
       </Div>
@@ -134,11 +139,11 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
     let subItems = selectedItem !== null ? selectedItem.subItems || [] : [];
     let data = selectedItem !== null ? selectedItem.data || {} : {};
     const items = this.props.items.map((item,i) => {
-      let itemClassName = cx('dashboard-card-item', {'pointer': (item.data) || (item.subItems && item.subItems.length) || (this.action)});
+      let itemClassName = cx('dashboard-card-item-inner', {'pointer': (item.data) || (item.subItems && item.subItems.length) || (this.action)});
       let status = item.title.split("").reverse().join("").split(' ')[0].split("").reverse().join("");
       let title =  item.title.split(status)[0];
-      return <Div key={i} className={itemClassName}>
-        <Div className="dashboard-card-item-inner" onClick={this.selectItem.bind(this, i)}>
+      return <Div key={i} className="dashboard-card-item">
+        <Div className={itemClassName} onClick={this.selectItem.bind(this, i)}>
           {title}
           <span title='Кол-во заданий в статусе "Назначено" / Общее кол-во заданий на текущую тех.операцию'>
             {status}

@@ -13,8 +13,4 @@ export default class DashboardActions extends Actions {
     return getDashboardComponent(key, payload);
   }
 
-  getDashboardSideComponent(key) {
-    return getDashboardComponent(key);
-  }
-
 }

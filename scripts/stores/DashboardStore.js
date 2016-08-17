@@ -126,7 +126,6 @@ export default class DashboardStore extends Store {
 
     const dashboardActions = flux.getActions('dashboard');
     this.register(dashboardActions.getDashboardComponent, this.handleGetDashboardComponent);
-    this.register(dashboardActions.getDashboardSideComponent, this.handleGetDashboardSideComponent);
 
     this.state = _.cloneDeep(DashboardStore.initialState);
   }
@@ -134,7 +133,7 @@ export default class DashboardStore extends Store {
   handleGetDashboardComponent({key, component}) {
     let { componentsList, componentsIndex } = this.state;
     if (!component.result) return;
-    let componentSchema = _.find(this.getComponentsByRole(), c => c.key === key);
+    let componentSchema = _.find(this.getComponentsByPermissions(), c => c.key === key);
     if (!componentSchema) return;
     component.result.id = componentSchema.id;
     component.result.key = key;
@@ -145,18 +144,6 @@ export default class DashboardStore extends Store {
     componentsList = _(componentsIndex).toArray().sortBy('id').value();
     this.setState({componentsList, componentsIndex});
 	}
-
-  handleGetDashboardSideComponent({key, component}) {
-    let { componentsSideList, componentsSideIndex } = this.state;
-    if (!component.result || typeof component.result === 'string') return;
-    let componentSchema = _.find(this.getComponentsByRole(), c => c.key === key);
-    if (!componentSchema) return;
-    component.result.id = componentSchema.id;
-    component.result.key = key;
-    componentsSideIndex[key] = component.result;
-    componentsSideList = _(componentsSideIndex).toArray().sortBy('id').value();
-    this.setState({componentsSideList, componentsSideIndex});
-  }
 
   // TODO сделано для ETS-1531
   // получение какие компоненты отображать

@@ -47,22 +47,25 @@ export default class MasterManagementCard extends ElementsList {
   }
 
   render() {
+    let canCreateMission = this.context.flux.getStore('session').getPermission("mission.create");
+    let canCreateDutyMission = this.context.flux.getStore('session').getPermission("duty_mission.create");
+    let canCreateWaybill = this.context.flux.getStore('session').getPermission("waybill.create");
 
     return (
       <Div className="dashboard-card-sm dashboard-management-card" hidden={this.props.hidden}>
         <Panel header={'Управление'} bsStyle="success">
-          {this.props.role === 'dispatcher' ?
-          <Div className="dashboard-btn-wrapper">
-            <Button bsSize="small" onClick={() => this.setState({showWaybillForm: true})}>Создать путевой лист</Button>
-          </Div> : ''}
-          {this.props.role === 'master' ?
-          <Div className="dashboard-btn-wrapper">
-            <Button bsSize="small" onClick={() => this.setState({showMissionForm: true})}>Создать задание</Button>
-          </Div> : ''}
-          {this.props.role === 'master' ?
-          <Div className="dashboard-btn-wrapper">
-            <Button bsSize="small" onClick={() => this.setState({showDutyMissionForm: true})}>Создать наряд-задание</Button>
-          </Div> : ''}
+          {canCreateWaybill ?
+            <Div className="dashboard-btn-wrapper">
+              <Button bsSize="small" onClick={() => this.setState({showWaybillForm: true})}>Создать путевой лист</Button>
+            </Div> : ''}
+          {canCreateMission ?
+            <Div className="dashboard-btn-wrapper">
+              <Button bsSize="small" onClick={() => this.setState({showMissionForm: true})}>Создать задание</Button>
+            </Div> : ''}
+          {canCreateDutyMission ?
+            <Div className="dashboard-btn-wrapper">
+              <Button bsSize="small" onClick={() => this.setState({showDutyMissionForm: true})}>Создать наряд-задание</Button>
+            </Div> : ''}
           {/*<Button bsSize="small" style={{marginTop: 10}} onClick={this.showMonitorForm.bind(this)}><Glyphicon glyph="search"/> Монитор</Button>*/}
         </Panel>
 

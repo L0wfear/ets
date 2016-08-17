@@ -59,28 +59,32 @@ export default class DashboardCardMedium extends React.Component {
     );
   }
 
+  renderItems() {
+    return this.props.items.map((item,i) => {
+      let itemClassName = cx('dashboard-card-item', {'pointer': (item.data) || (item.subItems && item.subItems.length) || (this.action)});
+      return <Div key={i} className={itemClassName} >
+        {typeof item.value !== 'undefined' ?
+          <Div className="dashboard-card-item-inner-singlevalue" onClick={this.selectItem.bind(this, i)}>
+            {item.value}
+          </Div>
+          :
+            <Div className="dashboard-card-item-inner" onClick={this.selectItem.bind(this, i)}>
+              {item.title}
+            </Div>
+        }
+        {
+          typeof this.renderCollapsibleSubitems === 'function' ? this.renderCollapsibleSubitems(item, i) : ''
+        }
+      </Div>
+    });
+  }
+
   render() {
     let selectedItemIndex = this.state.selectedItem;
     let selectedItem = this.props.items[selectedItemIndex] || null;
     let subItems = selectedItem !== null ? selectedItem.subItems || [] : [];
     let data = selectedItem !== null ? selectedItem.data || {} : {};
-    const items = this.props.items.map((item,i) => {
-      let itemClassName = cx('dashboard-card-item', {'pointer': (item.data) || (item.subItems && item.subItems.length) || (this.action)});
-      return <Div key={i} className={itemClassName} >
-                {typeof item.value !== 'undefined' ?
-                  <Div className="dashboard-card-item-inner-singlevalue" onClick={this.selectItem.bind(this, i)}>
-                    {item.value}
-                  </Div>
-                  :
-                  <Div className="dashboard-card-item-inner" onClick={this.selectItem.bind(this, i)}>
-                    {item.title}
-                  </Div>
-                }
-                {
-                  typeof this.renderCollapsibleSubitems === 'function' ? this.renderCollapsibleSubitems(item, i) : ''
-                }
-             </Div>
-    });
+    const items = this.renderItems();
     let styleObject = {
       width: this.state.cardWidth, marginLeft: this.state.cardWidth + 30
     };

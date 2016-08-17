@@ -3,7 +3,7 @@ import connectToStores from 'flummox/connect';
 import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
 import EtsSelect from 'components/ui/EtsSelect.jsx';
 import Field from 'components/ui/Field.jsx';
-import Div from 'components/ui/Div.jsx';
+import DivForEnhance from 'components/ui/Div.jsx';
 import moment from 'moment';
 import Taxes from './Taxes.jsx';
 import cx from 'classnames';
@@ -15,6 +15,7 @@ import { getDefaultMission } from '../../stores/MissionsStore.js';
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { notifications } from 'utils/notifications';
 import _ from 'lodash';
+import { enhanceWithPermissions } from '../util/RequirePermissions.jsx';
 
 let getCarById = (cars, id) => {
 	const car = _.find(cars, c => c.asuods_id === id) || {};
@@ -23,6 +24,8 @@ let getCarById = (cars, id) => {
 	}
 	return car;
 };
+
+const Div = enhanceWithPermissions(DivForEnhance);
 
 class WaybillForm extends Form {
 
@@ -36,7 +39,8 @@ class WaybillForm extends Form {
 			equipmentFuelRates: [],
 			fuel_correction_rate: 1,
       showMissionForm: false,
-      selectedMission: null
+      selectedMission: null,
+			canEditIfClose: null,
 		};
 	}
 
@@ -118,6 +122,9 @@ class WaybillForm extends Form {
 		await flux.getActions('objects').getCars();
 		await flux.getActions('employees').getEmployees();
 		await flux.getActions('employees').getDrivers();
+		let waybillInfo = await flux.getActions('waybills').getWaybill(formState.id);
+		let canEditIfClose = waybillInfo.result[0].closed_editable || false;
+		this.setState({canEditIfClose});
 	}
 
 	async onCarChange(car_id, cars) {
@@ -399,7 +406,7 @@ class WaybillForm extends Form {
 											value={state.odometr_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'odometr_start')} />
 
 									<Field type="number" label="Возврат, км" error={errors['odometr_end']}
-											value={state.odometr_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'odometr_end')} />
+											value={state.odometr_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY && !this.state.canEditIfClose} onChange={this.handleChange.bind(this, 'odometr_end')} />
 
 									<Field type="number" label="Пробег, км"
 											value={state.odometr_diff} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled />
@@ -412,7 +419,7 @@ class WaybillForm extends Form {
 											value={state.motohours_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'motohours_start')} />
 
 									<Field type="number" label="Возврат, м/ч" error={errors['motohours_end']}
-											value={state.motohours_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'motohours_end')} />
+											value={state.motohours_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY && !this.state.canEditIfClose} onChange={this.handleChange.bind(this, 'motohours_end')} />
 
 									<Field type="number" label="Пробег, м/ч"
 											value={state.motohours_diff} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled />
@@ -425,7 +432,7 @@ class WaybillForm extends Form {
 											value={state.motohours_equip_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'motohours_equip_start')} />
 
 									<Field type="number" label="Возврат, м/ч" error={errors['motohours_equip_end']}
-											value={state.motohours_equip_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'motohours_equip_end')} />
+											value={state.motohours_equip_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY && !this.state.canEditIfClose} onChange={this.handleChange.bind(this, 'motohours_equip_end')} />
 
 									<Field type="number" label="Пробег, м/ч"
 											value={state.motohours_equip_diff} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled />
@@ -446,10 +453,10 @@ class WaybillForm extends Form {
 											value={state.fuel_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_start')} />
 
 									<Field type="number" label="Выдать, л" error={errors['fuel_to_give']}
-											value={state.fuel_to_give} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_to_give')} />
+											value={state.fuel_to_give} disabled={(IS_CLOSING || IS_DISPLAY) && !this.state.canEditIfClose} onChange={this.handleChange.bind(this, 'fuel_to_give')} />
 
 									<Field type="number" label="Выдано, л" error={errors['fuel_given']}
-											value={state.fuel_given} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_given')} />
+											value={state.fuel_given} hidden={!(IS_CLOSING || IS_DISPLAY)} disabled={IS_DISPLAY && !this.state.canEditIfClose} onChange={this.handleChange.bind(this, 'fuel_given')} />
 
 									<Field type="number" label="Возврат, л" error={errors['fuel_end']}
 											value={state.fuel_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled />
@@ -462,7 +469,7 @@ class WaybillForm extends Form {
           <Row>
 	      		<Col md={8}>
 							<Taxes hidden={!(IS_DISPLAY || IS_CLOSING) || state.status === 'draft' || (IS_DISPLAY && state.tax_data && state.tax_data.length === 0) || (IS_DISPLAY && !!!state.tax_data)}
-									readOnly={!IS_CLOSING}
+									readOnly={!IS_CLOSING && !this.state.canEditIfClose}
 									title={'Расчет топлива по норме'}
 									taxes={state.tax_data}
 									operations={this.state.operations}
@@ -472,7 +479,7 @@ class WaybillForm extends Form {
 									baseFactValue={CAR_HAS_ODOMETER ? state.odometr_diff : state.motohours_diff}
 									type={CAR_HAS_ODOMETER ? 'odometr' : 'motohours'}/>
 							<Taxes hidden={!(IS_DISPLAY || IS_CLOSING) || state.status === 'draft' || (IS_DISPLAY && state.equipment_tax_data && state.equipment_tax_data.length === 0) || (IS_DISPLAY && !!!state.equipment_tax_data)}
-									readOnly={!IS_CLOSING}
+									readOnly={!IS_CLOSING && !this.state.canEditIfClose}
 									taxes={state.equipment_tax_data}
 									operations={this.state.equipmentOperations}
 									fuelRates={this.state.equipmentFuelRates}
@@ -518,9 +525,9 @@ class WaybillForm extends Form {
 									<Field type="number" label="Выезд, л" error={errors['equipment_fuel_start']}
 											value={state.equipment_fuel_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'equipment_fuel_start')} />
 									<Field type="number" label="Выдать, л" error={errors['equipment_fuel_to_give']}
-											value={state.equipment_fuel_to_give} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'equipment_fuel_to_give')} />
+											value={state.equipment_fuel_to_give} disabled={(IS_CLOSING || IS_DISPLAY) && !(this.state.canEditIfClose && !!state.equipment_fuel)} onChange={this.handleChange.bind(this, 'equipment_fuel_to_give')} />
 									<Field type="number" label="Выдано, л" error={errors['equipment_fuel_given']}
-											value={state.equipment_fuel_given} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY} onChange={this.handleChange.bind(this, 'equipment_fuel_given')} />
+											value={state.equipment_fuel_given} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled={IS_DISPLAY && !(this.state.canEditIfClose && !!state.equipment_fuel)} onChange={this.handleChange.bind(this, 'equipment_fuel_given')} />
 									<Field type="number" label="Возврат, л" error={errors['equipment_fuel_end']}
 											value={state.equipment_fuel_end} hidden={!(IS_CLOSING || IS_DISPLAY )} disabled />
 								</Div>
@@ -553,8 +560,8 @@ class WaybillForm extends Form {
 			          </Dropdown.Menu>
 			        </Dropdown>&nbsp;
 						</Div>
-            <Div className={'inline-block'} hidden={state.status === 'closed'}>
-              <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>Сохранить</Button>
+            <Div permissions={['waybill.update_closed']} className={'inline-block'} hidden={state.status === 'closed' && !this.state.canEditIfClose}>
+              <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave && !this.state.canEditIfClose}>Сохранить</Button>
             </Div>
             <Div className={'inline-block'} style={{marginLeft: 4}} hidden={state.status === 'closed' || !(this.props.formState.status && this.props.formState.status === 'active')}>
               <Button onClick={() => this.props.handleClose(taxesControl)} disabled={!this.props.canClose}>Закрыть ПЛ</Button>

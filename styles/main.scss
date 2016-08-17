@@ -320,7 +320,10 @@ body.application {
   }
 }
 
-
+.no-pointer-events {
+  pointer-events: none !important; 
+  cursor: default !important;
+}
 
 .app-toolbar {
   .row {

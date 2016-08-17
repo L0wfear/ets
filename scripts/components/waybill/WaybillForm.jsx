@@ -122,9 +122,11 @@ class WaybillForm extends Form {
 		await flux.getActions('objects').getCars();
 		await flux.getActions('employees').getEmployees();
 		await flux.getActions('employees').getDrivers();
-		let waybillInfo = await flux.getActions('waybills').getWaybill(formState.id);
-		let canEditIfClose = waybillInfo.result[0].closed_editable || false;
-		this.setState({canEditIfClose});
+		if (formState && formState.id) {
+			let waybillInfo = await flux.getActions('waybills').getWaybill(formState.id);
+			let canEditIfClose = waybillInfo.result[0].closed_editable || false;
+			this.setState({canEditIfClose});
+		}
 	}
 
 	async onCarChange(car_id, cars) {

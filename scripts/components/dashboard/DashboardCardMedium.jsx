@@ -6,9 +6,6 @@ import { FluxContext } from 'utils/decorators';
 import DashboardCardHeader from './DashboardCardHeader.jsx';
 import DashboardItemChevron from './DashboardItemChevron.jsx';
 import cx from 'classnames';
-import {getFormattedDateTimeSeconds} from 'utils/dates';
-import moment from 'moment';
-
 
 @FluxContext
 export default class DashboardCardMedium extends React.Component {
@@ -17,6 +14,7 @@ export default class DashboardCardMedium extends React.Component {
     super(props);
 
     this.state = {
+      cardWidth: null,
       fullListOpen: false,
       selectedItem: null,
       items: [],
@@ -36,11 +34,6 @@ export default class DashboardCardMedium extends React.Component {
     } else if (typeof this.action === 'function') {
       this.action(i);
     }
-    // if (typeof this.action === 'function') {
-    // } else if ((item && item.subItems && item.subItems.length) || i === null || (item && item.data)) {
-    //   this.setState({selectedItem: i});
-    //   this.props.openSubitemsList(i === null);
-    // }
   }
 
   toggleFullList() {
@@ -98,7 +91,6 @@ export default class DashboardCardMedium extends React.Component {
     }
     let firstItems = items.slice(0, 2);
     let otherItems = items.slice(2, items.length);
-    //let dashboardCardClass = cx('dashboard-card', {'visibilityHidden'});
     let Header = <DashboardCardHeader title={this.props.title} loading={this.props.loading} onClick={this.refreshCard.bind(this)}/>;
 
     // отрефакторить

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Datepicker from './DatePicker.jsx';
+import { Row, Col } from 'react-bootstrap';
 
 export default class IntervalPicker extends Component {
   constructor(props) {
@@ -15,11 +16,23 @@ export default class IntervalPicker extends Component {
   render() {
     let { interval = [null,null] } = this.props;
     return (
-      <div>
-        с
-        <Datepicker date={interval[0]} onChange={this.handleChange.bind(this, 0)} max={interval[1]} />
-        по
-        <Datepicker date={interval[1]} onChange={this.handleChange.bind(this, 1)} min={interval[0]} />
+      <div className="interval-picker">
+        <Row style={{margin: "0 0 5px 0"}}>
+          <Col md={1} style={{padding: "6px 6px 0 0", fontWeight: "bold"}}>
+            с
+          </Col>
+          <Col md={11} style={{padding: 0}}>
+            <Datepicker date={interval[0]} onChange={this.handleChange.bind(this, 0)} max={interval[1]} />
+          </Col>
+        </Row>
+        <Row style={{margin: 0}}>
+          <Col md={1} style={{padding: "6px 6px 0 0", fontWeight: "bold"}}>
+            по
+          </Col>
+          <Col md={11} style={{padding: 0}}>
+            <Datepicker date={interval[1]} onChange={this.handleChange.bind(this, 1)} min={interval[0]} />
+          </Col>
+        </Row>
       </div>
     );
   }

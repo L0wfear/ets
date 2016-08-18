@@ -3,6 +3,7 @@ import { Button, Glyphicon } from 'react-bootstrap';
 import ColumnControl from './ColumnControl.jsx'
 import ClickOutHandler from 'react-onclickout';
 import Filter from './filter/Filter.jsx';
+import FilterButton from './filter/FilterButton.jsx';
 import Paginator from '../Paginator.jsx';
 import Griddle from 'griddle-react';
 import Div from '../Div.jsx';
@@ -486,22 +487,11 @@ export default class Table extends React.Component {
                     options={tableMetaCols.filter(el => el.display !== false)}/>
               </ClickOutHandler>
             }
-            {!noFilter &&
-              <ClickOutHandler onClickOut={this.closeFilter.bind(this)}>
-                <Filter direction={'left'}
-                    show={this.state.filterModalIsOpen}
-                    onSubmit={this.saveFilter.bind(this)}
-                    onClick={this.toggleFilter.bind(this)}
-                    onHide={this.closeFilter.bind(this)}
-                    active={_.keys(this.state.filterValues).length}
-                    values={this.state.filterValues}
-                    options={tableMetaCols.filter(el => el.filter !== false)}
-                    tableData={this.props.results}
-                    disabled={this.props.isHierarchical}
-                    active={_.keys(this.state.filterValues).length}
-                    className="filter-wrap"/>
-              </ClickOutHandler>
-            }
+            {!noFilter && <FilterButton
+                disabled={this.props.isHierarchical}
+                show={this.state.filterModalIsOpen}
+                active={_.keys(this.state.filterValues).length}
+                onClick={this.toggleFilter.bind(this)}/>}
             {refreshable &&
               <Button
                   bsSize="small"
@@ -511,6 +501,13 @@ export default class Table extends React.Component {
             }
             {this.props.children}
           </div>
+          {!noFilter && <Filter
+              show={this.state.filterModalIsOpen}
+              onSubmit={this.saveFilter.bind(this)}
+              onHide={this.closeFilter.bind(this)}
+              values={this.state.filterValues}
+              options={tableMetaCols.filter(el => el.filter !== false)}
+              tableData={this.props.results}/>}
         </Div>
         <Griddle
             key={'griddle'}

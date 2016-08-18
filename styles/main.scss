@@ -462,7 +462,7 @@ body.application {
 
 .track-player {
   .btn {
-    margin-right: 10px; 
+    margin-right: 10px;
   }
 }
 
@@ -2414,74 +2414,57 @@ body {
   border: none !important;
 }
 
-.filter-wrap {
-  position: relative;
-  line-height: 1.5; // copy .btn
-  margin-left: 10px; // copy .btn
-}
-
 .filter-container {
-  z-index: 1000;
-  position: absolute;
-  top: 0;
-
-  display: block;
-  padding: 30px 0 0 0;
-
   line-height: normal;
+  margin-top: 10px;
+  width: 100%;
   font-size: 14px;
-
-  background-color: #EEE;
-
-  white-space: normal;
-  color: #000;
-  cursor: default;
-
-  border: 1px solid #c1c1c1;//$colorButton;
-
-  &-window {
-    min-width: 298px;
-    max-height: 267px;
-    overflow: scroll;
+  background-color: #eee;
+  border: 1px solid #ddd;
+  label {
+    text-align: center;
+    width: 100%
   }
-
-  .rw-select {
-    .rw-btn {
-      width: 0.7em;
-    }
+  td {
+    padding: 1px !important;
   }
-
-  .rw-calendar .rw-header .rw-btn-view {
-    width: 55%;
-  }
-
-
-  .modal-body {
-    padding-top: 5px;
-
-    > .row + .row {
-      margin-top: 10px;
-    }
-  }
-
-  .modal-footer {
-    background: transparent;
-  }
-
+  // .rw-select {
+  //   .rw-btn {
+  //     width: 0.7em;
+  //   }
+  // }
+  //
+  // .rw-calendar .rw-header .rw-btn-view {
+  //   width: 55%;
+  // }
 }
 
-.filter-container.left {
-  right: 0;
+.filter-buttons {
+  margin-bottom: 10px;
+  padding: 1% 1% 5px 1%;
+  text-align: center;
+  .btn {
+    margin-right: 5px;
+    margin-left: 5px;
+  }
 }
 
-.filter-container.right {
-  left: 0;
+.filter-close {
+  cursor: pointer;
+  float: right;
+  margin-top: 5px;
+  font-size: 20px;
+  color: #444;
 }
 
-.filter-button {
-  position: relative;
-  z-index: 999;
-  margin-left: 0 !important;
+.filter-row {
+  width: 18%;
+  display: inline-table;
+  margin: 0 1% 10px 1%;
+}
+
+.interval-picker {
+  display: block;
 }
 
 .column-control-button {
@@ -3480,16 +3463,6 @@ div.none {
     color: white;
     line-height: 30px;
     z-index: 300;
-}
-
-.filter-container-window {
-  overflow-y: scroll;
-  overflow-x: auto;
-  min-height: 250px;
-}
-
-.filter-footer {
-  padding: 15px 5px;
 }
 
 .griddle:focus {

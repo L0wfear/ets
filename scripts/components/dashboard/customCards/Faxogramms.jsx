@@ -34,7 +34,7 @@ export default class Faxogramms extends DashboardCardMedium {
     let subItems = selectedItem !== null ? selectedItem.subItems || [] : [];
     let data = selectedItem !== null ? selectedItem.data || {} : {};
 
-    let canViewPDF = this.context.flux.getStore('session').getPermission("faxogramm.get");
+    let canViewPDF = this.context.flux.getStore('session').getPermission("faxogramm.read");
     let canCreateMission = this.context.flux.getStore('session').getPermission("mission.create");
 
     return (

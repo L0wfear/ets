@@ -37,7 +37,7 @@ export default class CurrentMission extends DashboardCardMedium {
       selectedMission: null
     });
 
-    this.canView = context.flux.getStore('session').getPermission("mission.get");
+    this.canView = context.flux.getStore('session').getPermission("mission.read");
     this.canCompleteOrReject = context.flux.getStore('session').getPermission("mission.update");
   }
 

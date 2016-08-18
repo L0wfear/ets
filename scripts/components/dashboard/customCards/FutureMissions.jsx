@@ -19,7 +19,7 @@ export default class CurrentMission extends DashboardCardMedium {
   }
 
   action(itemIndex) {
-    let canView = this.context.flux.getStore('session').getPermission("mission.get");
+    let canView = this.context.flux.getStore('session').getPermission("mission.read");
     if (canView) this.context.flux
       .getActions('missions')
       .getMissionById(this.props.items[itemIndex].mission_id)

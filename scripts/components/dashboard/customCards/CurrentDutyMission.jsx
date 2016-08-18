@@ -19,7 +19,7 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
       showCurrentDutyMissionForm: false
     });
 
-    this.canView = context.flux.getStore('session').getPermission("duty_mission.get");
+    this.canView = context.flux.getStore('session').getPermission("duty_mission.read");
     this.canCompleteOrReject = context.flux.getStore('session').getPermission("duty_mission.update");
   }
 

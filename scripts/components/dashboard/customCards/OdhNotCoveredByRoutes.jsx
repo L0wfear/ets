@@ -34,7 +34,7 @@ export default class OdhNotCoveredByRoutes extends DashboardCardMedium {
   }
 
   renderItems() {
-    let canView = this.context.flux.getStore('session').getPermission(["odh.get", "dt.get"]);
+    let canView = this.context.flux.getStore('session').getPermission(["odh.read", "dt.read"]);
 
     return this.props.items.map((item,i) => {
       let itemClassName = cx('dashboard-card-item', {'pointer': (item.data) || (item.subItems && item.subItems.length) || (this.action), 'no-pointer-events': !canView});

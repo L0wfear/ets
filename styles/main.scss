@@ -2457,10 +2457,28 @@ body {
   color: #444;
 }
 
-.filter-row {
-  width: 18%;
-  display: inline-table;
-  margin: 0 1% 10px 1%;
+@media (min-width: 1600px) {
+  .filter-row {
+    width: 10.5%;
+    display: inline-table;
+    margin: 0 1% 10px 1%;
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1600px) {
+  .filter-row {
+    width: 18%;
+    display: inline-table;
+    margin: 0 1% 10px 1%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .filter-row {
+    width: 23%;
+    display: inline-table;
+    margin: 0 1% 10px 1%;
+  }
 }
 
 .interval-picker {

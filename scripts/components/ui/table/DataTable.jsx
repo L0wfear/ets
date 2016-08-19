@@ -276,6 +276,14 @@ export default class Table extends React.Component {
     let isValid = true;
     _.mapKeys(this.state.filterValues, (value, key) => {
 
+      if (key === 'number') {
+        value = value.replace(/\s/g, '').split(',');
+      }
+      if (obj[key] === null) {
+        isValid = false
+        return;
+      };
+
       if (/(timestamp|date|birthday)/.test(key) && !_.isArray(value)) {
         if (moment(obj[key]).format(global.APP_DATE_FORMAT) !== moment(value).format(global.APP_DATE_FORMAT)) {
           isValid = false;

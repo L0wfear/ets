@@ -9,6 +9,7 @@ import RouteFormWrap from './RouteFormWrap.jsx';
 import Div from 'components/ui/Div.jsx';
 import ClickOutHandler from 'react-onclickout';
 import Filter from 'components/ui/table/filter/Filter.jsx';
+import FilterButton from 'components/ui/table/filter/FilterButton.jsx';
 
 class RoutesList extends Component {
 
@@ -296,24 +297,24 @@ class RoutesList extends Component {
 					<Col xs={7} md={9} className="col-xs-offset-5 col-md-offset-3">
 						<div className="some-header clearfix">
 							<div className="waybills-buttons">
-								<ClickOutHandler onClickOut={this.closeFilter.bind(this)}>
-		              <Filter direction={'right'}
-											show={this.state.filterModalIsOpen}
-											onSubmit={this.saveFilter.bind(this)}
-											onClick={this.toggleFilter.bind(this)}
-											onHide={this.closeFilter.bind(this)}
-											active={_.keys(this.state.filterValues).length}
-											values={this.state.filterValues}
-											options={filterOptions}
-											active={_.keys(this.state.filterValues).length}
-											className="filter-wrap"/>
-		            </ClickOutHandler>
+								<FilterButton
+		                show={this.state.filterModalIsOpen}
+		                active={_.keys(this.state.filterValues).length}
+		                onClick={this.toggleFilter.bind(this)}/>
 								<Button bsSize="small" onClick={this.createRoute.bind(this)}><Glyphicon glyph="plus" /> Создать маршрут</Button>
 								<Button bsSize="small" disabled={route === null} onClick={() => this.setState({showForm: true})}><Glyphicon glyph="pencil" /> Изменить маршрут</Button>
 								<Button bsSize="small" disabled={route === null} onClick={this.copyRoute.bind(this)}><Glyphicon glyph="copy" /> Копировать маршрут</Button>
 								<Button bsSize="small" disabled={route === null} onClick={this.deleteRoute.bind(this)}><Glyphicon glyph="remove" /> Удалить</Button>
 							</div>
 						</div>
+						<Filter
+								show={this.state.filterModalIsOpen}
+								onSubmit={this.saveFilter.bind(this)}
+								onClick={this.toggleFilter.bind(this)}
+								onHide={this.closeFilter.bind(this)}
+								active={_.keys(this.state.filterValues).length}
+								values={this.state.filterValues}
+								options={filterOptions} />
 						<div className="clearfix">
 							<Div hidden={this.state.showForm || route === null}>
 								<RouteInfo route={route} />

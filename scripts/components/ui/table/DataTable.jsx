@@ -276,7 +276,7 @@ export default class Table extends React.Component {
     let isValid = true;
     _.mapKeys(this.state.filterValues, (value, key) => {
 
-      if (key === 'number') {
+      if (key === 'number' && typeof value === 'string') {
         value = value.replace(/\s/g, '').split(',');
       }
       if (obj[key] === null) {

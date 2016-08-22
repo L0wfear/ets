@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import Table from 'components/ui/table/DataTable.jsx';
+import { exportable } from 'utils/decorators';
+import { Button, Glyphicon } from 'react-bootstrap';
 
 let getTableMeta = (props) => {
 
@@ -97,6 +99,7 @@ let MissionReportTable = (props) => {
 
 }
 
+@exportable
 class MissionReport extends Component {
 
 
@@ -106,13 +109,14 @@ class MissionReport extends Component {
     this.state = {
       selectedReportData: [],
     };
+    this.entity = 'status_of_technical_operation_execution_weekly_report/' + this.props.routeParams.id;
 	}
 
 	async componentDidMount() {
 		const { flux } = this.context;
     try {
   		let result = await flux.getActions('reports').getWeeklyTechnicalOperationCompleteReportById(this.props.routeParams.id);
-      let selectedReportData = result.result[0].result.rows;
+      let selectedReportData = result.result;
       this.setState({selectedReportData});
     } catch (e) {
       console.log(e);
@@ -131,6 +135,7 @@ class MissionReport extends Component {
 		return (
 			<div className="ets-page-wrap">
 				<MissionReportTable data={selectedReportData} element={element} onRowSelected={this.onReportSelect.bind(this)}>
+          <Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt" /></Button>
 				</MissionReportTable>
 			</div>
 		);

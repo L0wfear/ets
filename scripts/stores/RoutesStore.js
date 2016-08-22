@@ -39,7 +39,7 @@ class RoutesStore extends Store {
   }
 
   handleGetRouteReportById(report) {
-    this.setState({selectedReportData: report.result[0].result.rows});
+    this.setState({selectedReportData: report.result});
   }
 
   getRouteById(id) {

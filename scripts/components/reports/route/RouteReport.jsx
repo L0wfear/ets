@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
-import { connectToStores, FluxContext } from 'utils/decorators';
+import { connectToStores, FluxContext, exportable } from 'utils/decorators';
 import { isEmpty } from 'utils/functions';
 
 let getStatusLabel = (status) => status === 'fail' ? 'Нет' : 'Да';
@@ -89,9 +89,11 @@ let RouteOdhCoveringReportTable = (props) => {
 
 @connectToStores(['routes'])
 @FluxContext
+@exportable
 export default class RouteOdhCoveringReport extends Component {
 	constructor(props) {
 		super(props);
+		this.entity = 'route_odh_covering_report/' + this.props.routeParams.id;
 	}
 
 	componentDidMount() {
@@ -105,6 +107,7 @@ export default class RouteOdhCoveringReport extends Component {
 		return (
 			<div className="ets-page-wrap">
 				<RouteOdhCoveringReportTable data={selectedReportData} >
+					<Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt" /></Button>
 				</RouteOdhCoveringReportTable>
 			</div>
 		);

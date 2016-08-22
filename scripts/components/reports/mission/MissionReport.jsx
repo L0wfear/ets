@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import Table from 'components/ui/table/DataTable.jsx';
+import { exportable } from 'utils/decorators';
+import { Button, Glyphicon } from 'react-bootstrap';
 
 let tableMeta = {
 	cols: [
@@ -82,6 +84,7 @@ let MissionReportTable = (props) => {
 
 }
 
+@exportable
 class MissionReport extends Component {
 
 
@@ -92,6 +95,8 @@ class MissionReport extends Component {
 			selectedCar: null,
 			showForm: false,
 		};
+
+		this.entity = 'car_odh_travel_report/' + this.props.routeParams.id;
 	}
 
 	componentDidMount() {
@@ -117,6 +122,7 @@ class MissionReport extends Component {
 		return (
 			<div className="ets-page-wrap">
 				<MissionReportTable data={selectedReportData} onRowSelected={this.onReportSelect.bind(this)}>
+					<Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt" /></Button>
 				</MissionReportTable>
 			</div>
 		);

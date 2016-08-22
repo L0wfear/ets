@@ -337,8 +337,7 @@ export default class MissionsActions extends Actions {
   }
 
   getMissionReportById(id) {
-    const payload = { id };
-    return MissionReportsService.get(payload);
+    return MissionReportsService.get({}, false, id);
   }
 
   createMissionReport(mission_date_start_from, mission_date_end_to) {

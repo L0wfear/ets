@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import Table from 'components/ui/table/DataTable.jsx';
 import { getPeriodicReportStatusLabel } from 'utils/labelFunctions';
-import { Input } from 'react-bootstrap';
+import { Input, Button, Glyphicon } from 'react-bootstrap';
+import { exportable } from 'utils/decorators';
 import { getFormattedDateTime } from 'utils/dates';
 
 let getTableMeta = (props) => {
@@ -117,6 +118,7 @@ let MissionReportTable = (props) => {
 
 }
 
+@exportable
 class MissionReport extends Component {
 
 
@@ -128,12 +130,14 @@ class MissionReport extends Component {
       dateFrom: '',
       dateTo: ''
     };
+
+    this.entity = 'geozone_element_traveled_daily_report__ets/' + this.props.routeParams.id;
 	}
 
 	async componentDidMount() {
 		const { flux } = this.context;
 		let result = await flux.getActions('reports').getDailyCleaningReportByIdETS(this.props.routeParams.id);
-    let selectedReportData = result.result[0].result.rows;
+    let selectedReportData = result.result;
     let dateFrom = getFormattedDateTime(result.result[0].date_start);
     let dateTo = getFormattedDateTime(result.result[0].date_end);
     this.setState({selectedReportData, dateFrom, dateTo});
@@ -155,6 +159,7 @@ class MissionReport extends Component {
             <Input type="text" readOnly value={dateFrom}></Input> —
             <Input type="text" readOnly value={dateTo}></Input>
           </div>
+          <Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt" /></Button>
 				</MissionReportTable>
 			</div>
 		);

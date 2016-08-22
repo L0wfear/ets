@@ -76,7 +76,11 @@ class MissionsStore extends Store {
   }
 
   handleGetMissionReportById(data) {
-    let selectedReportData = data.result[0].result.result.map((r,i) => {
+    // let selectedReportData = data.result[0].result.result.map((r,i) => {
+    //   r.index = i;
+    //   return r;
+    // });
+    let selectedReportData = data.result.map((r,i) => {
       r.index = i;
       return r;
     });

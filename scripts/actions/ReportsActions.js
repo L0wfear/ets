@@ -55,11 +55,7 @@ export default class ReportsActions extends Actions {
   }
 
   getDailyCleaningReportByIdETS(id) {
-    const payload = {
-      id
-    };
-
-    return DailyCleaningReportsServiceETS.get(payload);
+    return DailyCleaningReportsServiceETS.get({}, false, id);
   }
 
   // Cleaning - CAFAP
@@ -77,11 +73,7 @@ export default class ReportsActions extends Actions {
   }
 
   getDailyCleaningReportByIdCAFAP(id) {
-    const payload = {
-      id
-    };
-
-    return DailyCleaningReportsServiceCAFAP.get(payload);
+    return DailyCleaningReportsServiceCAFAP.get({}, false, id);
   }
 
   //
@@ -127,11 +119,7 @@ export default class ReportsActions extends Actions {
   }
 
   getWeeklyTechnicalOperationCompleteReportById(id) {
-    const payload = {
-      id
-    };
-
-    return WeeklyTechnicalOperationCompleteReportsService.get(payload);
+    return WeeklyTechnicalOperationCompleteReportsService.get({}, false, id);
   }
 
   createWeeklyTechnicalOperationCompleteReport(data) {

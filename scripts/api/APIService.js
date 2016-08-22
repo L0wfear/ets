@@ -47,7 +47,7 @@ export default class APIService {
     }
   }
 
-  get(payload = {}, blob = false) {
+  get(payload = {}, blob = false, restId) {
     if (this.useMock && mocks[this.serviceName]) {
       this.log('GET MOCK');
       return new Promise((res, rej) => {
@@ -57,7 +57,7 @@ export default class APIService {
       });
     }
     this.log('GET');
-    const url = this.url;
+    const url = restId ? this.url + restId : this.url;
     this.resetPath();
     return getJSON(url, payload, blob);
   }

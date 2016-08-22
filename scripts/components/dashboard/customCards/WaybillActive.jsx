@@ -37,7 +37,7 @@ export default class WaybillActive extends WaybillClosed {
             {`${item.data.driver_fio || ''}${item.data.driver_phone ? ', ' + item.data.driver_phone : ''}`}
             {item.data.groupEnd ? <p/> : ''}
           </li></div>
-          ))}
+        ))}
       </ul>
     );
   }

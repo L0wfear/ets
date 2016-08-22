@@ -3,6 +3,7 @@ import Div from 'components/ui/Div.jsx';
 import { Panel, Collapse, Glyphicon, Fade, Well, Button } from 'react-bootstrap';
 import WaybillClosed from './WaybillClosed.jsx';
 import cx from 'classnames';
+import moment from 'moment';
 
 export default class WaybillDraft extends WaybillClosed {
 
@@ -11,12 +12,24 @@ export default class WaybillDraft extends WaybillClosed {
   }
 
   renderSubitems(subItems) {
+    let si = _.groupBy(subItems, (e) => moment(e.data.waybill_date_create).format(global.APP_DATE_FORMAT));
+    si = _.sortBy(si, (ar) => -moment(ar[0].data.waybill_date_create).unix());
+    si = si.map((ar) => {
+      ar[0].data.groupStart = true;
+      ar[ar.length-1].data.groupEnd = true;
+      return ar;
+    })
+    si = _.flatten(si);
+    subItems = si;
+
     return (
       <ul>
-        {subItems.map((item, i) => (
-          <li key={i} className="pointer" onClick={this.action.bind(this, item)}>
+        {subItems.map((item, i) => (<div key={i}>
+          {item.data.groupStart ? <center><span style={{fontWeight: "bold"}}>{moment(item.data.waybill_date_create).format(global.APP_DATE_FORMAT)}</span></center> : ''}
+          <li key={i} className='pointer' onClick={this.action.bind(this, item)}>
             {`${item.title}`}
-          </li>
+            {item.data.groupEnd ? <p/> : ''}
+          </li></div>
         ))}
       </ul>
     );

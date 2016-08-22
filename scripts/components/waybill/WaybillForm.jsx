@@ -51,7 +51,7 @@ class WaybillForm extends Form {
       formState.plan_arrival_date,
       formState.status
     ).then((response) => {
-      let availableMissions = response && response.result ? response.result.map(el => el.id) : [];
+      let availableMissions = response && response.result ? response.result.rows.map(el => el.id) : [];
       let currentMissions = formState.mission_id_list;
       let newMissions = currentMissions.filter(el => availableMissions.indexOf(el) > -1);
       this.props.handleFormChange('mission_id_list', newMissions);

@@ -5,6 +5,7 @@ import DashboardCardMedium from '../DashboardCardMedium.jsx';
 import DashboardCardHeader from '../DashboardCardHeader.jsx';
 import DashboardItemChevron from '../DashboardItemChevron.jsx';
 import RouteInfo from 'components/route/RouteInfo.jsx';
+import {getFormattedDateTimeSeconds} from 'utils/dates';
 import cx from 'classnames';
 import { isEmpty } from 'utils/functions';
 import { FluxContext } from 'utils/decorators';
@@ -101,8 +102,8 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
           <ul>
             <li><b>№ задания:</b> {data.duty_mission_number}</li>
             <li><b>Техоперация:</b> {data.technical_operation_name}</li>
-            <li><b>Начало задания (плановое):</b> {data.duty_mission_date_start}</li>
-            <li><b>Окончание задания (плановое):</b> {data.duty_mission_date_end}</li>
+            <li><b>Начало задания (плановое):</b> {getFormattedDateTimeSeconds(data.duty_mission_date_start)}</li>
+            <li><b>Окончание задания (плановое):</b> {getFormattedDateTimeSeconds(data.duty_mission_date_end)}</li>
             <li><b>ФИО бригадира:</b> {data.foreman_fio}</li>
             <li><b>Номер телефона бригадира:</b> {data.foreman_phone}</li>
             {this.canView ? <li><a className="pointer" onClick={(e) => {e.preventDefault(); this.showCurrentDutyMissionForm(data);}}>Показать на карте</a></li> : ''}

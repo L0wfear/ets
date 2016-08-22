@@ -116,7 +116,7 @@ class MissionReport extends Component {
 		const { flux } = this.context;
     try {
   		let result = await flux.getActions('reports').getWeeklyTechnicalOperationCompleteReportById(this.props.routeParams.id);
-      let selectedReportData = result.result;
+      let selectedReportData = result.result.rows;
       this.setState({selectedReportData});
     } catch (e) {
       console.log(e);

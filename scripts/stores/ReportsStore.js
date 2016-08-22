@@ -37,15 +37,15 @@ class ReportsStore extends Store {
   }
 
   handleGetDailyCleaningReportsETS(dailyCleaningReports) {
-    this.setState({dailyCleaningReportsListETS: dailyCleaningReports.result});
+    this.setState({dailyCleaningReportsListETS: dailyCleaningReports.result.rows});
   }
 
   handleGetDailyCleaningReportsCAFAP(dailyCleaningReports) {
-    this.setState({dailyCleaningReportsListCAFAP: dailyCleaningReports.result});
+    this.setState({dailyCleaningReportsListCAFAP: dailyCleaningReports.result.rows});
   }
 
   handleGetWeeklyTechnicalOperationCompleteReports(weeklyTechnicalOperationCompleteReports) {
-    this.setState({weeklyTechnicalOperationCompleteReportsList: weeklyTechnicalOperationCompleteReports.result});
+    this.setState({weeklyTechnicalOperationCompleteReportsList: weeklyTechnicalOperationCompleteReports.result.rows});
   }
 
   handleGetOdhCoverageReport({result}) {

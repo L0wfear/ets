@@ -138,10 +138,10 @@ class GeoObjectsStore extends Store {
 
   handleGetGeozonesByType(response) {
     const { type, data = {} } = response;
-    const { result = [] } = data;
+    const { rows = [] } = data.result;
     const typeList = `${type}sList`;
     this.setState({
-      [typeList]: result
+      [typeList]: rows
     });
   }
 

@@ -35,11 +35,11 @@ class RoutesStore extends Store {
   }
 
   handleGetRouteReports(reports) {
-    this.setState({reportsList: reports.result});
+    this.setState({reportsList: reports.result.rows});
   }
 
   handleGetRouteReportById(report) {
-    this.setState({selectedReportData: report.result});
+    this.setState({selectedReportData: report.result.rows});
   }
 
   getRouteById(id) {

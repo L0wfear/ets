@@ -48,7 +48,7 @@ class MissionsStore extends Store {
   }
 
   handleGetMissions(missions) {
-    this.setState({missionsList: missions.result});
+    this.setState({missionsList: missions.result.rows});
 	}
 
   handleGetMissionSources(missionSources) {
@@ -60,7 +60,7 @@ class MissionsStore extends Store {
   }
 
   handleGetDutyMissions(dutyMissions) {
-    this.setState({dutyMissionsList: dutyMissions.result});
+    this.setState({dutyMissionsList: dutyMissions.result.rows});
   }
 
   handleGetDutyMissionTemplates(dutyMissionTemplates) {
@@ -72,7 +72,7 @@ class MissionsStore extends Store {
   }
 
   handleGetMissionReports(missionReports) {
-    this.setState({missionReportsList: missionReports.result});
+    this.setState({missionReportsList: missionReports.result.rows});
   }
 
   handleGetMissionReportById(data) {
@@ -80,7 +80,7 @@ class MissionsStore extends Store {
     //   r.index = i;
     //   return r;
     // });
-    let selectedReportData = data.result.map((r,i) => {
+    let selectedReportData = data.result.rows.map((r,i) => {
       r.index = i;
       return r;
     });

@@ -25,7 +25,7 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
 
   async showCurrentDutyMissionForm(data) {
     this.props.openSubitemsList(true);
-    let route = await this.context.flux.getActions('routes').getRouteById(data.route_id);
+    let route = await this.context.flux.getActions('routes').getRouteById(data.duty_mission_route_id);
     this.setState({showCurrentDutyMissionForm: true, selectedDutyMission: data, route});
   }
 

@@ -168,9 +168,9 @@ export default class WeeklyTechnicalOperationCompleteReports extends Component {
   			<DailyReportHeader handleChange={this.handleChange.bind(this)} onClick={this.createWeeklyTechnicalOperationCompleteReport.bind(this)} {...this.state}/>
 
 				<WeeklyTechnicalOperationCompleteReportsTable
-          data={weeklyTechnicalOperationCompleteReportsList}
-          onRowSelected={this.onReportSelect.bind(this)}>
-          <Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt"/></Button>
+            data={weeklyTechnicalOperationCompleteReportsList}
+            onRowSelected={this.onReportSelect.bind(this)}>
+          {/* <Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt"/></Button> */}
         </WeeklyTechnicalOperationCompleteReportsTable>
 			</div>
 		);

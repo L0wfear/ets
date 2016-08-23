@@ -197,7 +197,7 @@ export default class DailyCleaningReportsCAFAP extends Component {
             refreshable={true}
             onRefresh={() => this.context.flux.getActions('reports').getDailyCleaningReportsCAFAP()}
             onRowSelected={this.onReportSelect.bind(this)}>
-          <Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt"/></Button>
+          {/* <Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt"/></Button> */}
         </DailyCleaningReportsTable>
 			</div>
 		);

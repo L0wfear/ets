@@ -150,7 +150,7 @@ export default class RouteOdhCoveringReports extends Component {
 							clearable={false} />
         </Div>
 				<RouteOdhCoveringReportsTable data={reportsList} onRowSelected={this.onReportSelect.bind(this)}>
-					<Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt" /></Button>
+					{/* <Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt" /></Button> */}
 				</RouteOdhCoveringReportsTable>
 			</div>
 		);

@@ -6,11 +6,11 @@ import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
 import Datepicker from 'components/ui/DatePicker.jsx';
 import { getGeozoneTypeLabel} from 'utils/labelFunctions';
-import { getToday9am, getTomorrow9am, getToday0am, getToday2359, getFormattedDateTime } from 'utils/dates';
+import { getToday9am, getTomorrow9am, getToday0am, getToday2359, getFormattedDateTime, createValidDateTime } from 'utils/dates';
 import { getReportNotReadyNotification2 } from 'utils/notifications';
 import { isEmpty } from 'utils/functions';
 import CarFuncTypeUsageReportHeader from './CarFuncTypeUsageReportHeader.jsx';
-import { FluxContext, HistoryContext, connectToStores } from 'utils/decorators';
+import { FluxContext, HistoryContext, connectToStores, exportable } from 'utils/decorators';
 
 let tableMeta = {
 	cols: [
@@ -78,6 +78,7 @@ let CarFuncTypeUsageReportsTable = (props) => {
 @connectToStores(['reports'])
 @FluxContext
 @HistoryContext
+@exportable
 export default class CarFuncTypeUsageReports extends Component {
 
 	constructor(props) {
@@ -91,20 +92,8 @@ export default class CarFuncTypeUsageReports extends Component {
       geozone_type: 'odh',
       company_id: null
 		};
+		this.entity = '';
 	}
-
-	componentDidMount() {
-		const { flux } = this.context;
-	}
-
-  onReportSelect({props}) {
-    const id = props.data.id;
-    if (props.data.status !== 'success' && props.data.status !== 'fail') {
-      global.NOTIFICATION_SYSTEM._addNotification(getReportNotReadyNotification2(this.context.flux));
-    } else if (props.data.status !== 'fail'){
-      this.context.history.pushState(null, `/daily-cleaning-report-ets/${props.data.element}/${id}`);
-    }
-  }
 
   handleChange(field, value) {
 		this.setState({[field]: value});
@@ -113,6 +102,15 @@ export default class CarFuncTypeUsageReports extends Component {
   createDailyCleaningReportETS() {
 		const { flux } = this.context;
 		flux.getActions('reports').getCarFuncTypeUsageReports(this.state);
+		this.entity = `car_func_type_usage_report/?date_start=${
+			createValidDateTime(this.state.date_start)
+		}&date_end=${
+			createValidDateTime(this.state.date_end)
+		}&geozone_type=${
+			this.state.geozone_type
+		}&company_id=${
+			this.state.company_id
+		}`;
   }
 
 	render() {
@@ -134,7 +132,9 @@ export default class CarFuncTypeUsageReports extends Component {
             onClick={this.createDailyCleaningReportETS.bind(this)}
             {...this.state}/>
 				<CarFuncTypeUsageReportsTable
-            data={carFuncTypeUsageReportsList} />
+            data={carFuncTypeUsageReportsList}>
+					{this.entity && <Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt" /></Button>}
+				</CarFuncTypeUsageReportsTable>
 			</div>
 		);
 

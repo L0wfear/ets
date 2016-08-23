@@ -24,6 +24,7 @@ export default class Marker {
     this.coords = this.getCoords()
 
     this.animation = null;
+    this.visible = true;
   }
 
   getCoords() {
@@ -38,10 +39,14 @@ export default class Marker {
     /** onClick **/
   }
 
+  setVisible(bool) {
+    this.visible = bool;
+  }
+
   renderImage() {}
 
   render(options = {}) {
-    if (this.coords[0] === null || this.coords[1] === null ) return;
+    if (this.coords[0] === null || this.coords[1] === null || this.visible === false ) return;
 
     let image = this.getImage(options);
     let radius = image.width / 2;

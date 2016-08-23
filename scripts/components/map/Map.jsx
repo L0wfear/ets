@@ -86,6 +86,8 @@ export default class OpenLayersMap extends Component {
       layers: [ArcGisLayer, canvasLayer],
       loadTilesWhileAnimating: true,
     });
+    map.disableInteractions = this.disableInteractions.bind(this);
+    map.enableInteractions = this.enableInteractions.bind(this);
 
     this.map = map;
     this.map.projectToPixel = (coordinates) => projectToPixel(this.map, coordinates);

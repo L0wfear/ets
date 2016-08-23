@@ -13,6 +13,11 @@ export function makeTime(date, withSeconds = false) {
   return moment(date).format(`HH:mm${withSeconds ? ':ss' : ''}`);
 }
 
+export function makeMinutes(date) {
+  date = new Date(date);
+  return moment(date).format(`mm:ss`);
+}
+
 export function getStartOfToday() {
   let now = new Date();
   return new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -36,6 +41,11 @@ export function getFormattedDateTime(date){
 export function getFormattedDateTimeSeconds(date){
   if (!date) return '';
   return moment(date).format(`${global.APP_DATE_FORMAT} HH:mm:ss`);
+}
+
+export function makeDateFromUnix(date){
+  if (!date) return '-';
+  return moment.unix(date).format(`${global.APP_DATE_FORMAT} HH:mm:ss`);
 }
 
 // смены за вчера, сегодня, завтра

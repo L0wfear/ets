@@ -46,8 +46,7 @@ export default class WaybillsActions extends Actions {
   }
 
   getWaybill(id) {
-    const payload = { id }
-    return WaybillService.get(payload);
+    return WaybillService.path(id).get();
   }
 
   getWaybillJournalReport(payload) {

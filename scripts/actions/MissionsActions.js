@@ -337,7 +337,7 @@ export default class MissionsActions extends Actions {
   }
 
   getMissionReportById(id) {
-    return MissionReportsService.get({}, false, id);
+    return MissionReportsService.path(id).get();
   }
 
   createMissionReport(mission_date_start_from, mission_date_end_to) {

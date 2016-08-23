@@ -124,7 +124,7 @@ class WaybillForm extends Form {
 		await flux.getActions('employees').getDrivers();
 		if (formState && formState.id) {
 			let waybillInfo = await flux.getActions('waybills').getWaybill(formState.id);
-			let canEditIfClose = waybillInfo.result[0].closed_editable || false;
+			let canEditIfClose = waybillInfo.result.closed_editable && flux.getStore('session').getPermission('waybill.update_closed') || false;
 			this.setState({canEditIfClose});
 		}
 	}

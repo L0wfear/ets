@@ -55,7 +55,7 @@ export default class ReportsActions extends Actions {
   }
 
   getDailyCleaningReportByIdETS(id) {
-    return DailyCleaningReportsServiceETS.get({}, false, id);
+    return DailyCleaningReportsServiceETS.path(id).get();
   }
 
   // Cleaning - CAFAP
@@ -73,7 +73,7 @@ export default class ReportsActions extends Actions {
   }
 
   getDailyCleaningReportByIdCAFAP(id) {
-    return DailyCleaningReportsServiceCAFAP.get({}, false, id);
+    return DailyCleaningReportsServiceCAFAP.path(id).get();
   }
 
   //
@@ -119,7 +119,7 @@ export default class ReportsActions extends Actions {
   }
 
   getWeeklyTechnicalOperationCompleteReportById(id) {
-    return WeeklyTechnicalOperationCompleteReportsService.get({}, false, id);
+    return WeeklyTechnicalOperationCompleteReportsService.path(id).get();
   }
 
   createWeeklyTechnicalOperationCompleteReport(data) {

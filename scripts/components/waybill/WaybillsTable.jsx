@@ -64,7 +64,10 @@ let getTableMeta = (props) => {
 				caption: 'Рег. номер ТС',
 				cssClassName: 'width-nowrap',
 				type: 'string',
-				filter: false
+				filter: {
+					type: 'multiselect',
+					labelFunction: id => id,
+				}
 			},
 			{
 				name: 'car_special_model_name',

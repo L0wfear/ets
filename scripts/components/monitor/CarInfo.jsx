@@ -312,7 +312,7 @@ export default class CarInfo extends Component {
     let { missions = [] } = this.state;
     let missionsRender = <div style={{textAlign: "left", overflow: "hidden",textOverflow: "ellipsis"}}>
       {missions.map((mission) => {
-        return <span key={mission.id} style={{whiteSpace: "nowrap"}}>{`№${mission.number} - ${mission.technical_operation_name}`}</span>
+        return <span key={mission.id} style={{whiteSpace: "nowrap", display: "block"}}>{`№${mission.number} - ${mission.technical_operation_name}`}</span>
       })}
     </div>;
 

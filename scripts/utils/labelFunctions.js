@@ -61,10 +61,6 @@ export function employeeFIOLabelFunction(employeeId, fullFlag = false) {
 	return result;
 }
 
-export function getModelById(id) {
-  return window.__ETS_CONTAINER__.flux.getStore('objects').getModelById(id);
-}
-
 export function getTypeById(id) {
   return window.__ETS_CONTAINER__.flux.getStore('objects').getTypeById(id);
 }

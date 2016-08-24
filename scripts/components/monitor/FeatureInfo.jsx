@@ -1,15 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import Panel from 'components/ui/Panel.jsx';
-import { Button } from 'react-bootstrap';
-import { getStatusById } from 'constants/statuses';
-import config from '../../config.js';
-import { makeDate, makeTime, getStartOfToday } from 'utils/dates';
-import FuelChart from 'components/ui/charts/FuelChart.jsx';
-import SpeedChart from 'components/ui/charts/SpeedChart.jsx';
-import { getCarImage } from '../../adapter.js';
-import { roundCoordinates } from 'utils/geo';
-import DatePicker from 'components/ui/DatePicker.jsx';
-import { getTypeById } from 'utils/labelFunctions';
 import { GEOOBJECTS_TYPES_LABELS_SINGLE } from 'constants/geoobjects';
 
 let DTFeature = ({feature}) =>

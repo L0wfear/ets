@@ -17,14 +17,6 @@ import { notifications } from 'utils/notifications';
 import _ from 'lodash';
 import { enhanceWithPermissions } from '../util/RequirePermissions.jsx';
 
-let getCarById = (cars, id) => {
-	const car = _.find(cars, c => c.asuods_id === id) || {};
-	if (car.gov_number && car.model) {
-		car.label = car.gov_number + ' [' + car.model + ']';
-	}
-	return car;
-};
-
 const Div = enhanceWithPermissions(DivForEnhance);
 
 class WaybillForm extends Form {

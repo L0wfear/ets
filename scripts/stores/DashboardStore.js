@@ -1,7 +1,6 @@
 import { Store } from 'flummox';
 import _ from 'lodash';
 
-// TODO сделано для ETS-1531
 const dashboardComponents = [
   {
     id: 1,
@@ -52,63 +51,6 @@ const dashboardComponents = [
   }
 ];
 
-const commonComponents = [
-  {
-    id: 1,
-    key: 'current_missions',
-    itemsTitle: 'Карточка задания'
-  },
-  {
-    id: 9,
-    key: 'faxogramms',
-    itemsTitle: 'Расшифровка факсограммы'
-  }
-];
-
-const componentsByRole = {
-  master: [...commonComponents,
-    {
-      id: 2,
-      key: 'future_missions',
-    },
-    {
-      id: 4,
-      key: 'odh_not_covered_by_missions_of_current_shift',
-      itemsTitle: 'Список одх'
-    },
-    {
-      id: 5,
-      key: 'odh_not_covered_by_routes',
-    },
-    {
-      id: 8,
-      key: 'car_in_work_overall',
-    },
-    {
-      id: 12,
-      key: 'current_duty_missions',
-      itemsTitle: 'Карточка наряд-задания'
-    }
-  ],
-  dispatcher: [...commonComponents,
-    {
-      id: 19,
-      key: 'waybill_draft',
-      itemsTitle: 'Гос. номер ТС'
-    },
-    {
-      id: 20,
-      key: 'waybill_active',
-      itemsTitle: 'Информация о ПЛ'
-    },
-    {
-      id: 21,
-      key: 'waybill_closed',
-      itemsTitle: 'Информация о ПЛ'
-    }
-  ]
-}
-
 export default class DashboardStore extends Store {
 
   static get initialState() {
@@ -145,8 +87,6 @@ export default class DashboardStore extends Store {
     this.setState({componentsList, componentsIndex});
 	}
 
-  // TODO сделано для ETS-1531
-  // получение какие компоненты отображать
   getComponentsByPermissions() {
     let { permissions = [] } = this.flux.getStore('session').getCurrentUser();
     const dashboardPermissions = permissions
@@ -154,11 +94,6 @@ export default class DashboardStore extends Store {
       .filter(p => p.indexOf('dashboard') + 1)
       .map(p => p.replace('dashboard.', ''));
     return dashboardComponents.filter(c => dashboardPermissions.indexOf(c.key) + 1);
-  }
-
-  getComponentsByRole() {
-    let { role } = this.flux.getStore('session').getCurrentUser();
-    return componentsByRole[role];
   }
 
   resetState() {

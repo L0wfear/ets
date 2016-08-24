@@ -54,7 +54,7 @@ class MissionFormWrap extends FormWrap {
 
 	handlePrint(event, print_form_type = 1) {
 		let f = this.state.formState;
-		const { flux } = window.__ETS_CONTAINER__;
+		const { flux } = this.context;
 		let data = {mission_id: f.id};
 
 		global.map.once('postcompose', function(event) {

@@ -156,20 +156,12 @@ class ObjectsStore extends Store {
     this.setState({positionsList: positions.result});
   }
 
-  getWorkKindById(id) {
-    return _.find(this.state.workKindsList, wk => wk.id === id) || {};
-  }
-
   getTechOperationById(id) {
     return _.find(this.state.technicalOperationsList, to => to.id === id) || {};
   }
 
   getCarById(asuods_id) {
     return _.find(this.state.carsList, c => c.asuods_id === asuods_id) || {};
-  }
-
-  getModelById(id) {
-    return _.find(this.state.modelsList, c => c.id === id) || {};
   }
 
   getTypeById(id) {

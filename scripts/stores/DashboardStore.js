@@ -1,7 +1,6 @@
 import { Store } from 'flummox';
 import _ from 'lodash';
 
-// TODO сделано для ETS-1531
 const dashboardComponents = [
   {
     id: 1,
@@ -145,8 +144,6 @@ export default class DashboardStore extends Store {
     this.setState({componentsList, componentsIndex});
 	}
 
-  // TODO сделано для ETS-1531
-  // получение какие компоненты отображать
   getComponentsByPermissions() {
     let { permissions = [] } = this.flux.getStore('session').getCurrentUser();
     const dashboardPermissions = permissions
@@ -154,11 +151,6 @@ export default class DashboardStore extends Store {
       .filter(p => p.indexOf('dashboard') + 1)
       .map(p => p.replace('dashboard.', ''));
     return dashboardComponents.filter(c => dashboardPermissions.indexOf(c.key) + 1);
-  }
-
-  getComponentsByRole() {
-    let { role } = this.flux.getStore('session').getCurrentUser();
-    return componentsByRole[role];
   }
 
   resetState() {

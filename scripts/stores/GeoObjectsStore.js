@@ -1,7 +1,7 @@
 import { Store } from 'flummox';
 import _ from 'lodash';
 
-class GeoObjectsStore extends Store {
+export default class GeoObjectsStore extends Store {
 
   constructor(flux) {
     super();
@@ -204,5 +204,3 @@ class GeoObjectsStore extends Store {
   }
 
 }
-
-export default GeoObjectsStore;

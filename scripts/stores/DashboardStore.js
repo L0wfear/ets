@@ -38,7 +38,7 @@ const dashboardComponents = [
   {
     id: 19,
     key: 'waybill_draft',
-    itemsTitle: 'Гос. номер ТС'
+    itemsTitle: 'Рег. номер ТС'
   },
   {
     id: 20,
@@ -94,7 +94,7 @@ const componentsByRole = {
     {
       id: 19,
       key: 'waybill_draft',
-      itemsTitle: 'Гос. номер ТС'
+      itemsTitle: 'Рег. номер ТС'
     },
     {
       id: 20,

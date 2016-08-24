@@ -14,7 +14,7 @@ let tableMeta = {
 		},
 		{
 			name: 'car_gov_number',
-			caption: 'Госномер',
+			caption: 'Рег. номер ТС',
 			type: 'text',
 			cssClassName: "width-fuel-report-large",
 			filter: {

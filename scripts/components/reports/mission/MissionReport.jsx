@@ -32,7 +32,7 @@ let tableMeta = {
 		},
 		{
 			name: 'car_gov_number',
-			caption: 'Гос. номер ТС',
+			caption: 'Рег. номер ТС',
 			type: 'string',
 			filter: {
 				type: 'select',

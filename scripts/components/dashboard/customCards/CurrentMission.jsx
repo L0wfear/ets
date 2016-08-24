@@ -117,7 +117,7 @@ export default class CurrentMission extends DashboardCardMedium {
             <li><b>Задание:</b> {data.mission_name}</li>
             <li><b>Тех. операция:</b> {data.technical_operation_name}</li>
             <li><b>Водитель:</b> {data.driver_fio}</li>
-            <li><b>Гос. номер ТС:</b> {data.car_gov_number}</li>
+            <li><b>Рег. номер ТС:</b> {data.car_gov_number}</li>
             <li><b>Начало задания:</b> {getFormattedDateTimeSeconds(data.mission_date_start)}</li>
             <li><b>Окончание задания:</b> {getFormattedDateTimeSeconds(data.mission_date_end)}</li>
             <li><b>Расчетное время выполнения:</b> {getEstimatedFinishTime(data.estimated_finish_time || 'Подсчет')}</li>

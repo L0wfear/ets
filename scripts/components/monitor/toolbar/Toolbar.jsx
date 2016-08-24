@@ -79,7 +79,7 @@ let ShowPlatesCheckbox = (props) =>
   <div className="app-toolbar-fill app-toolbar-show-govnumber" >
     <div className="checkbox">
       <label style={{fontSize:'13px', fontWeight:'200'}}>
-        <input type="checkbox" checked={props.showPlates} onChange={e => props.flux.getActions('settings').setShowPlates(e.target.checked)}/> Номер ТС
+        <input type="checkbox" checked={props.showPlates} onChange={e => props.flux.getActions('settings').setShowPlates(e.target.checked)}/> Рег. номер ТС
       </label>
     </div>
   </div>

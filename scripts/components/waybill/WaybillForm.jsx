@@ -377,7 +377,7 @@ class WaybillForm extends Form {
 					<br/>
 	      	<Row>
 						<Col md={6}>
-							<Field type="select" label="Транспортное средство (поиск по госномеру)" error={errors['car_id']}
+							<Field type="select" label="Транспортное средство (поиск по рег. номер ТС)" error={errors['car_id']}
 									className="white-space-pre-wrap"
 									hidden={!(IS_CREATING || IS_POST_CREATING)}
 									options={CARS}

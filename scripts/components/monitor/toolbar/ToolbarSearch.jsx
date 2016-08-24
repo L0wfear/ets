@@ -14,7 +14,7 @@ export default class ToolbarSearch extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({canFocus: nextProps.carsCount === 1})  
+    this.setState({canFocus: nextProps.carsCount === 1})
   }
 
   render() {
@@ -29,7 +29,7 @@ export default class ToolbarSearch extends Component {
 
     return (
       <ToolbarControl controlType="search" top="0px" btnClass={this.state.btnClassName} onToggle={this.onToggle.bind(this)}>
-        <Filter ref="search_text" onFilterChange={this.onFilterChange.bind(this)} className="bnso-filter" title="гос. номер или номер БНСО" name="bnso_gos"/>
+        <Filter ref="search_text" onFilterChange={this.onFilterChange.bind(this)} className="bnso-filter" title="рег. номер ТС или номер БНСО" name="bnso_gos"/>
         {this.state.canFocus && <button style={style} onClick={this.props.focusOnLonelyCar} className="btn btn-default btn-sm"><span className="glyphicon glyphicon-screenshot"></span>&nbsp;Показать</button>}
       </ToolbarControl>
       )

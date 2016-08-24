@@ -94,7 +94,7 @@ export class MissionInfoForm extends Form {
     let object_list = _.cloneDeep(this.state.object_list || []);
     const polys = _.keyBy(object_list, 'object_id');
     if (!state.car_gov_number) return <div/>;
-		let title = `Информация о задании. Гос. номер ТС: ${state.car_gov_number}`;
+		let title = `Информация о задании. Рег. номер ТС: ${state.car_gov_number}`;
 
 		return (
 			<Modal {...this.props} bsSize="large" className="mission-info-modal" backdrop="static">

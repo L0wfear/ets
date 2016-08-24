@@ -13,7 +13,7 @@ let getTableMeta = (props) => {
 		cols: [
 			{
 				name: 'car_id',
-				caption: 'Транспортное средство',
+				caption: 'Рег. номер ТС',
 				type: 'number',
 				display: false,
 				filter: {
@@ -41,7 +41,7 @@ let getTableMeta = (props) => {
 			},
       {
 				name: 'car_id',
-				caption: 'Транспортное средство',
+				caption: 'Рег. номер ТС',
 				type: 'number',
 				filter: false,
         cssClassName: 'width120',

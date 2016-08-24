@@ -41,7 +41,7 @@ class VehicleAttributes extends Component {
       return makeDate(dt) + ' ' + makeTime(dt, true) + ' [' + roundCoordinates(point.coords_msk) + ']';
     }
 
-    addAttribute('Гос. номер', car.gov_number)
+    addAttribute('Рег. номер ТС', car.gov_number)
     addAttribute('ID БНСО', vehicle.id)
     getStatusById(vehicle.status) && addAttribute('Статус', getStatusById(vehicle.status).title)
     getTypeById(car.type_id) && addAttribute('Тип техники', getTypeById(car.type_id).title)

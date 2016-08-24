@@ -61,7 +61,7 @@ let getTableMeta = (props) => {
 			},
 			{
 				name: 'gov_number',
-				caption: 'Гос. № ТС',
+				caption: 'Рег. номер ТС',
 				cssClassName: 'width-nowrap',
 				type: 'string',
 				filter: false

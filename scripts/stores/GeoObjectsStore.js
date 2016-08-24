@@ -117,7 +117,7 @@ export default class GeoObjectsStore extends Store {
 
   handleGetGeozonesByTypeWithGeometry(response) {
     const { type, data = {} } = response;
-    const { result = [] } = data;
+    const { rows = [] } = data.result;
     const polys = {};
     result.map(geozone => {
       let data = geozone;

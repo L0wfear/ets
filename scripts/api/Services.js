@@ -40,9 +40,8 @@ export const CompanyService = new APIService('/actual_companies/', {});
 export const PositionService = new APIService('/position/', {});
 export const VectorObjectService = new APIService('/vector_object/', {});
 export const MissionDataService = new APIService('/mission_data/', {});
-export const OrganizationsService = new APIService('/organizations/', {
-  useMock: true
-});
+export const OrganizationsService = new APIService('/organizations/', { useMock: true });
+export const ODHSupportStandardsService = new APIService('/odh_support_standards/', {useMock: true});
 
 /* Geoobjects - Геообъекты */
 export const ODHService = new APIService('/odh/', {});

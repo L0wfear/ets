@@ -17,9 +17,11 @@ import settings from './SettingsActions.js';
 import technicalOperation from './TechnicalOperationsActions.js';
 import waybills from './WaybillsActions.js';
 import geoObjects from './GeoObjectsActions.js';
+import odh from './ODHActions.js';
 
 export default {
   cars,
+  odh,
   companyStructure,
   dashboard,
   employees,

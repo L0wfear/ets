@@ -119,7 +119,7 @@ export default class GeoObjectsStore extends Store {
     const { type, data = {} } = response;
     const { rows = [] } = data.result;
     const polys = {};
-    result.map(geozone => {
+    rows.map(geozone => {
       let data = geozone;
       let shape = JSON.parse(geozone.shape);
       data.featureType = type;

@@ -40,6 +40,9 @@ export default class CarMarker extends Marker {
     this.track = null;
     this.animating = false;
     this.currentIndex = 0;
+    this.currentCoords = [0,0];
+    this.currentSpeed = 0;
+    this.currentTime = 0;
     this.new = true;
   }
 
@@ -50,7 +53,7 @@ export default class CarMarker extends Marker {
   animate() {
     this.animating = true;
     this.store.pauseRendering();
-    if (this.new) this.animatePoints = _(this.track.points).map(t => t.coords_msk).value();
+    if (this.new) this.animatePoints = _(this.track.points).map(t => ({coords: t.coords_msk, speed: t.speed_avg, time: t.timestamp})).value();
     this.new = false;
     this.animatePoints.splice(0, this.currentIndex);
     // НЕ УДАЛЯТЬ
@@ -67,7 +70,7 @@ export default class CarMarker extends Marker {
 
     var geoMarker = new ol.Feature({
       type: 'geoMarker',
-      geometry: new ol.geom.Point(this.animatePoints[0])
+      geometry: new ol.geom.Point(this.animatePoints[0].coords)
     });
 
     // TODO сделать константный лейер для карты, а то будет каждый раз создаваться
@@ -79,7 +82,7 @@ export default class CarMarker extends Marker {
     this.map.addLayer(this.vectorLayer);
 
     let map = this.map;
-    let coords = this.animatePoints[0];
+    let coords = this.animatePoints[0].coords;
     let view = map.getView();
 
     var duration = 1500;
@@ -94,7 +97,8 @@ export default class CarMarker extends Marker {
 
     setTimeout(() => {
       this.animateEventKey = this.map.on('postcompose', this.animateToTrack.bind(this));
-      this.render = () => {};
+      this.setVisible(false);
+      this.map.disableInteractions();
       this.animateStartTime = new Date().getTime();
       this.image = this.getImage({selected: true});
       this.radius = this.image.width / 2;
@@ -105,7 +109,13 @@ export default class CarMarker extends Marker {
   stopAnimation() {
     this.animating = false;
     this.currentIndex = 0;
+    this.currentCoords = [0,0];
+    this.currentSpeed = 0;
+    this.currentTime = 0;
     this.new = true;
+    this.map.enableInteractions();
+    if (this.vectorLayer) this.map.removeLayer(this.vectorLayer);
+    this.setVisible(true);
     this.store.unpauseRendering();
     this.map.unByKey(this.animateEventKey);
   }
@@ -113,12 +123,12 @@ export default class CarMarker extends Marker {
   togglePlay() {
     if (this.animating) {
       this.animating = false;
-      this.store.unpauseRendering();
+      this.map.enableInteractions();
       this.map.unByKey(this.animateEventKey);
 
       let pausedMarker = new ol.Feature({
         type: 'geoMarker',
-        geometry: new ol.geom.Point(this.animatePoints[this.currentIndex])
+        geometry: new ol.geom.Point(this.animatePoints[this.currentIndex].coords)
       });
       pausedMarker.setStyle(getPointStyle('black', 7));
       this.vectorLayer.getSource().addFeature(pausedMarker);
@@ -140,7 +150,11 @@ export default class CarMarker extends Marker {
     }
 
     let map = this.map;
-    let coords = this.animatePoints[index];
+    let coords = this.animatePoints[index].coords;
+    this.currentCoords = coords;
+    this.currentTime = this.animatePoints[index].time;
+    this.currentSpeed = this.animatePoints[index].speed;
+    this.store.pauseRendering(); //TODO хак для перерендера CarInfo
     let view = map.getView();
     let zoom = view.getZoom();
     let size = map.getSize();
@@ -162,7 +176,7 @@ export default class CarMarker extends Marker {
       }
     };
 
-    let currentPoint = new ol.geom.Point(this.animatePoints[index]);
+    let currentPoint = new ol.geom.Point(this.animatePoints[index].coords);
     let feature = new ol.Feature(currentPoint);
     vectorContext.drawFeature(feature, getPointStyle('black', 7));
     this.map.render();

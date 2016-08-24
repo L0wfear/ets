@@ -17,7 +17,7 @@ let getTableMeta = (props) => {
 				type: 'number',
 				display: false,
 				filter: {
-					type: 'select',
+					type: 'multiselect',
           labelFunction: (id) => getCarById(id).gov_number || id,
 				},
 			},
@@ -25,7 +25,11 @@ let getTableMeta = (props) => {
 				name: 'number',
 				caption: 'Номер',
 				type: 'number',
-        cssClassName: 'width60'
+        cssClassName: 'width60',
+				filter: {
+					type: 'multiselect',
+					labelFunction: (id) => id,
+				},
 			},
       {
 				name: 'name',

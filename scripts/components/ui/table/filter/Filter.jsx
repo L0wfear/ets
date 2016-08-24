@@ -55,6 +55,20 @@ const FilterRow = (props) => {
       </Div>
     );
   }
+  if (option.filter && option.filter.type && option.filter.type === 'multiselect' && !option.filter.options) {
+    let options = _(props.tableData)
+                    .uniqBy((d) => d[option.name])
+                    .map((d) => ({
+                      value: d[option.name] === true || d[option.name] === false ? +d[option.name] : d[option.name],
+                      label: typeof option.filter.labelFunction === 'function' ? option.filter.labelFunction(d[option.name]) : d[option.name],
+                    }))
+                    .value();
+    input = (
+      <Div className="filter-multiselect-container">
+        <FilterSelect options={options} multi={true} value={value} onChange={props.onMultiChange} />
+      </Div>
+    );
+  }
   if (option.filter && option.filter.type && option.filter.type === 'date_create' && !option.filter.options) {
     input = <div><Datepicker className="filter-datepicker" date={value} onChange={props.onChange} time={false} /></div>;
   }

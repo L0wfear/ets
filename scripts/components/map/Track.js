@@ -4,7 +4,7 @@ import { TRACK_COLORS, TRACK_LINE_OPACITY, TRACK_LINE_WIDTH, TRACK_POINT_RADIUS,
 import { getTrackPointByColor } from '../../icons/track/points.js';
 import { swapCoords, roundCoordinates } from 'utils/geo';
 import { getTypeById } from 'utils/labelFunctions';
-import { isEmpty } from 'utils/functions';
+import { isEmpty, hexToRgba } from 'utils/functions';
 import _ from 'lodash';
 
 const IS_MSK = true;

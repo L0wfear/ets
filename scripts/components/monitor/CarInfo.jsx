@@ -184,7 +184,7 @@ export default class CarInfo extends Component {
       this.fetchImage();
       this.fetchTrack(props);
       this.stopTrackPlaying();
-      this.setState({trackPaused: true})
+      this.setState({trackPaused: 'stopped'})
     }
     if (props.car.id !== this.props.car.id) {
       let carsList = this.props.flux.getStore('objects').state.carsList;

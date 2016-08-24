@@ -114,6 +114,7 @@ export default class MissionsActions extends Actions {
         payload.assign_to_waybill = 'assign_to_draft';
         break;
     }
+    if (!callback) payload.assign_to_waybill = 'not_assign'; //TODO хак, в колбэк попадает !this.props.fromWaybill
     return MissionService.post(payload, callback, 'json');
   }
 

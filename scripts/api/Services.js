@@ -42,6 +42,7 @@ export const VectorObjectService = new APIService('/vector_object/', {});
 export const MissionDataService = new APIService('/mission_data/', {});
 export const OrganizationsService = new APIService('/organizations/', { useMock: true });
 export const ODHSupportStandardsService = new APIService('/odh_support_standards/', {useMock: true});
+export const ODHSupportStandardsDataSummerService = new APIService('/odh_support_standards_data_summer/', {useMock: true});
 
 /* Geoobjects - Геообъекты */
 export const ODHService = new APIService('/odh/', {});

@@ -54,7 +54,7 @@ class Field extends React.Component {
     const { error, label = '', readOnly = false, className = '' } = this.props;
     const inputClassName = cx({'has-error': error});
     return !readOnly ?
-           <Div hidden={this.props.hidden}>
+           <Div hidden={this.props.hidden} style={this.props.wrapStyle || {}}>
              <Input type="text" className={inputClassName} {...this.props} />
              <Div hidden={!error} className="error">{error}</Div>
            </Div>:

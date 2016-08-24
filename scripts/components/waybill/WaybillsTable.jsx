@@ -207,17 +207,17 @@ let WaybillsTable = (props) => {
 	};
 
 	return <Table
-		title="Журнал путевых листов"
-		results={props.data}
-		renderers={renderers}
-		initialSort={'number'}
-		initialSortAscending={false}
-		tableMeta={getTableMeta(props)}
-		columnControl={true}
-		className="waybills-table"
-		highlight={[{status: "active"}]}
-		columnControlStorageName={'waybillsColumnControl'}
-		{...props} />
+			title="Журнал путевых листов"
+			results={props.data}
+			renderers={renderers}
+			initialSort={'number'}
+			initialSortAscending={false}
+			tableMeta={getTableMeta(props)}
+			columnControl={true}
+			className="waybills-table"
+			highlight={[{status: "active"}]}
+			columnControlStorageName={'waybillsColumnControl'}
+			{...props} />
 }
 
 export default WaybillsTable;

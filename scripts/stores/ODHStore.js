@@ -10,6 +10,10 @@ class ODHStore extends Store {
     this.register(actions.getODHSupportStandards, this.handleGetODHSupportStandards);
     this.register(actions.updateODHSupportStandard, this.handleGetODHSupportStandards);
     this.register(actions.createODHSupportStandard, this.handleGetODHSupportStandards);
+    this.register(actions.getODHSupportStandardsDataSummer, this.handleGetODHSupportStandardsDataSummer);
+    this.register(actions.updateODHSupportStandardDataSummer, this.handleGetODHSupportStandardsDataSummer);
+    this.register(actions.createODHSupportStandardDataSummer, this.handleGetODHSupportStandardsDataSummer);
+    this.register(actions.createODHSupportStandardDataSummer, this.handleGetODHSupportStandardsDataSummer);
 
     this.state = {
       odhSupportStandardsList: [],
@@ -19,6 +23,10 @@ class ODHStore extends Store {
 
   handleGetODHSupportStandards({result}) {
     this.setState({odhSupportStandardsList: result});
+	}
+
+  handleGetODHSupportStandardsDataSummer({result}) {
+    this.setState({odhSupportStandardsDataSummerList: result});
 	}
 
 }

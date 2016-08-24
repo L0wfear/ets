@@ -9,6 +9,7 @@ import faxogramm from './faxogramm/FaxogrammDirectory.jsx';
 import fuelOperations from './fuel_operations/FuelOperationsDirectory.jsx';
 import fuelRates from './fuel_rates/FuelRatesDirectory.jsx';
 import odhSupportStandards from './odh_support_standards/ODHSupportStandardsList.jsx'
+import odhSupportStandardsDataSummer from './odh_support_standards_data_summer/ODHSupportStandardsDataSummerList.jsx'
 import organizations from './organizations/OrganizationsDirectory.jsx';
 import technicalOperations from './technical_operation/TechnicalOperationsDirectory.jsx';
 import geoobjects from './geoobjects';
@@ -19,6 +20,7 @@ export default {
   employees,
   faxogramm,
   odhSupportStandards,
+  odhSupportStandardsDataSummer,
   fuelOperations,
   fuelRates,
   organizations,

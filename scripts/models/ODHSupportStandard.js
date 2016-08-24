@@ -2,13 +2,13 @@ export const odhSupportStandardSchema = {
   properties: [
 		{
 			key: 'standard',
-      title: 'unit',
+      title: 'Норматив содержания ОДХ',
 			type: 'string',
 			required: true,
 		},
 		{
 			key: 'unit',
-			title: 'Источник получения задания',
+			title: 'Единица измерения',
 			type: 'string',
 			required: false,
 		}

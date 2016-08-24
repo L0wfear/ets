@@ -239,6 +239,14 @@ body.application hr {
   text-decoration: none;
 }
 
+.small-table {
+  th, td {
+    font-size: 12px !important;
+    padding: 4px !important;
+    word-break: normal !important;
+  }
+}
+
 .chart-wrapper {
   background: #fff;
   border: 1px solid #e2e2e2;

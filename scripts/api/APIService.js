@@ -32,7 +32,11 @@ export default class APIService {
   processResponse(r, callback) {
     if (r.warnings && r.warnings.length) {
       // Show warnings
-      r.warnings.map(w => this.warningNotificationFunction(w));
+      if (Array.isArray(r.warnings)) {
+        r.warnings.map(w => this.warningNotificationFunction(w));
+      } else if (typeof r.warnings === 'string') {
+        this.warningNotificationFunction(w);
+      }
       throw new Error('Request warnings is not empty!');
     }
     if (typeof callback === 'function') {

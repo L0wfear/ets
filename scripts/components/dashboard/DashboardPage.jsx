@@ -69,7 +69,7 @@ export default class DashboardPage extends React.Component {
   render() {
     const { componentsList = [] } = this.props;
 
-    let lists = _(componentsList).groupBy((el, i) => Math.floor(i/3)).toArray().value();
+    let lists = _(componentsList).chunk(3).value();
     let rows = [];
     lists.map((row, i) => {
       rows.push(

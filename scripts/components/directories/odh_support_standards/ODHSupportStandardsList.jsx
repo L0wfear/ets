@@ -6,7 +6,7 @@ import { connectToStores, staticProps } from 'utils/decorators';
 
 @connectToStores(['odh'])
 @staticProps({
-  entity: 'odh_support_standards',
+  entity: 'odh_support_standard',
   listName: 'odhSupportStandardsList',
   tableComponent: ODHSupportStandardsTable,
   formComponent: ODHSupportStandardFormWrap,

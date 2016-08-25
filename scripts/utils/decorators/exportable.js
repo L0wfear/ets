@@ -28,30 +28,31 @@ function exportable(ComposedComponent) {
       const token = JSON.parse(window.localStorage.getItem('ets-session'));
       payload = {
         ...payload,
-        format: 'xls',
-        token
+        format: 'xls'
       };
       let URL = toUrlWithParams(
         `${config.backend}/${this.path ? this.path + '/' : ''}${this.entity}/`,
         payload
       );
-      window.open(URL);
-      return;
-      // return fetch(URL, {
-      //   method: 'get',
-      // }).then((r) => {
-      //   console.log(r.headers);
-      //   return r.blob();
-      // });
+      return fetch(URL, {
+        method: 'get',
+        headers: {
+          'Authorization': `Token ${token}`
+        }
+      }).then((r) => {
+        console.log(r);
+        console.log(r.headers.get('Content-Disposition'));
+        return r.blob();
+      });
     }
 
     export(payload) {
       if (typeof this.exportFunction === 'function') {
-        this.exportFunction(payload);
-        // .then(blob => {
-        //   console.log(blob);
-        //   // saveData(blob);//, `Отчет по заданиям.xls`);
-        // });
+        this.exportFunction(payload)
+          .then(blob => {
+            // console.log(blob);
+            saveData(blob);
+          });
       }
     }
 

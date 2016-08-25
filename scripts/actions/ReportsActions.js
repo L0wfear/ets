@@ -98,10 +98,13 @@ export default class ReportsActions extends Actions {
     payload.date_to = createValidDateTime(payload.date_to);
 
     const token = JSON.parse(window.localStorage.getItem('ets-session'));
-    let URL = `${config.backend}/analytical_reports/?token=${token}`;
+    let URL = `${config.backend}/analytical_reports/`;
 
     return fetch(URL, {
       method: 'post',
+      headers: {
+        'Authorization': `Token ${token}`
+      },
       body: JSON.stringify(payload)
     }).then((r) => r.blob());
   }

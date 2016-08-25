@@ -58,7 +58,7 @@ export default class WaybillsActions extends Actions {
     let payload = {
       date_start: createValidDate(state.date_from),
       date_end: createValidDate(state.date_to)
-    }
+    };
     return WaybillsReportService.get(payload, true);
   }
 

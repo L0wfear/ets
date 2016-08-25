@@ -26,7 +26,6 @@ export function toUrlWithParams(url, data) {
 
 const POINTS_URL = getUrl('/data');
 const TRACK_URL = getOldUrl('/tracks/');
-const WEATHER_URL = getUrl('/weather/');
 const GEO_OBJECTS_URL = getUrl('/geo_objects/');
 const AUTH_CHECK_URL = getUrl('/auth_check');
 const DASHBOARD_URL = getUrl('/dashboard/');
@@ -35,14 +34,17 @@ function HTTPMethod(url, data = {}, method, type, blob) {
   let body;
   data = _.clone(data);
   const token = JSON.parse(window.localStorage.getItem('ets-session'));
+  let authorizationHeader = {};
   if (token && url.indexOf('plate_mission') === -1) {
-    data.token = token;
+    // data.token = token;
+    authorizationHeader['Authorization'] = `Token ${token}`;
   }
 
   let options = {
     method: method,
     headers: {
       'Accept': 'application/json',
+      ...authorizationHeader
     },
     credentials: 'include',
   };
@@ -159,7 +161,7 @@ export function getTrack(car_id, from_dt, to_dt) {
 
   console.log('track loading for', car_id);
   return fetch(TRACK_URL + car_id + query, {
-    credentials: 'include'
+    credentials: 'include',
   }).then(r => r.json())
     .then(points => points.map((point) => {
         // wrap coords for OpenLayers
@@ -174,10 +176,6 @@ export function getTrack(car_id, from_dt, to_dt) {
 export function getCarImage(car_id, type_id, model_id) {
   return fetch(config.backend + `/car_image?model_id=${model_id}&car_id=${car_id}&type_id=${type_id}`)
         .then(r => r.json())
-}
-
-export function getWeather() {
-  return fetch(WEATHER_URL).then(r => r.json());
 }
 
 // возвращает список ОДХ по координатам

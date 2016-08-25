@@ -138,10 +138,13 @@ export default class MissionsActions extends Actions {
 
   printMission(data, url) {
     const token = JSON.parse(window.localStorage.getItem('ets-session'));
-    let URL = `${config.backend}/plate_mission/?token=${token}`;
+    let URL = `${config.backend}/plate_mission/`;
 
     return fetch(URL, {
       method: 'post',
+      headers: {
+        'Authorization': `Token ${token}`
+      },
       body: JSON.stringify(data)
     }).then((r) => r.blob());
 

@@ -85,7 +85,7 @@ export class DutyMissionForm extends Form {
 
   	missionsActions.getMissions(mission.technical_operation_id);
 		missionsActions.getMissionSources();
-		flux.getActions('employees').getEmployees();
+		flux.getActions('employees').getEmployees(true);
     const technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsWithBrigades();
     this.setState({
       selectedRoute,

@@ -5,8 +5,9 @@ import _ from 'lodash';
 
 export default class EmployeesActions extends Actions {
 
-  getEmployees() {
-    return EmployeeService.get();
+  getEmployees(isBrigade = false) {
+    const payload = isBrigade ? {isBrigade: 1} : {};
+    return EmployeeService.get(payload);
   }
 
   getDrivers() {

@@ -11,7 +11,6 @@ import {
   OdhCoverageReportService,
   CarFuncTypeUsageReportService
 } from 'api/Services';
-import config from '../config.js';
 
 export default class ReportsActions extends Actions {
 
@@ -96,17 +95,9 @@ export default class ReportsActions extends Actions {
     let payload = _.cloneDeep(data);
     payload.date_from = createValidDateTime(payload.date_from);
     payload.date_to = createValidDateTime(payload.date_to);
-
-    const token = JSON.parse(window.localStorage.getItem('ets-session'));
-    let URL = `${config.backend}/analytical_reports/`;
-
-    return fetch(URL, {
-      method: 'post',
-      headers: {
-        'Authorization': `Token ${token}`
-      },
-      body: JSON.stringify(payload)
-    }).then((r) => r.blob());
+    
+    // TODO blob
+    return AnalyticsService.postBlob(payload);
   }
 
   getCoverageReport(state) {

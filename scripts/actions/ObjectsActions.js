@@ -73,18 +73,8 @@ export default class ObjectsActions extends Actions {
   }
 
   saveFaxogramm(id) {
-    const token = JSON.parse(window.localStorage.getItem('ets-session'));
-    let URL = FaxogrammService.getUrl() + id;
-    // window.open(URL);
-    return fetch(URL, {
-      method: 'get',
-      headers: {
-        'Authorization': `Token ${token}`
-      }
-    }).then((r) => {
-      console.log(r.headers);
-      return r.blob();
-    }).then(blob => saveData(blob));
+    const payload = { id };
+    return FaxogrammService.getBlob(payload);
   }
 
   getFaxogrammPDFUrl(id) {

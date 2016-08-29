@@ -86,7 +86,7 @@ export default class PointsStore extends Store {
    */
   _handleCreateConnection() {
     const token = this.flux.getStore('session').getSession();
-    let wsUrl = `${config.ws}?token=${token}`;
+    const wsUrl = `${config.ws}?token=${token}`;
     this.ws = new ReconnectingWebSocket(wsUrl, null);
 
     this.ws.onmessage = ({data}) => {

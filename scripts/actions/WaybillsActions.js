@@ -6,7 +6,9 @@ import {
   WaybillService,
   LatestWaybillDriverService,
   WaybillJournalReportService,
-  WaybillsReportService
+  WaybillsReportService,
+  WaybillPrintTruckService,
+  WaybillPrintSpecialService
 } from 'api/Services';
 
 export default class WaybillsActions extends Actions {
@@ -49,9 +51,10 @@ export default class WaybillsActions extends Actions {
     return WaybillService.path(id).get();
   }
 
-  getWaybillJournalReport(payload) {
-    payload.month = payload.month+1;
-    return WaybillJournalReportService.post(payload, false, 'json', true);
+  getWaybillJournalReport(state) {
+    const payload = _.cloneDeep(state);
+    payload.month = payload.month + 1;
+    return WaybillJournalReportService.postBlob(payload);
   }
 
   getWaybillsReport(state) {
@@ -59,7 +62,18 @@ export default class WaybillsActions extends Actions {
       date_start: createValidDate(state.date_from),
       date_end: createValidDate(state.date_to)
     };
-    return WaybillsReportService.get(payload, true);
+    return WaybillsReportService.getBlob(payload);
+  }
+
+  printWaybill(print_form_type, waybill_id) {
+    const payload = {
+      waybill_id
+    };
+    if (print_form_type === 2) {
+      return WaybillPrintTruckService.getBlob(payload);
+    } else {
+      return WaybillPrintSpecialService.getBlob(payload);
+    }
   }
 
   updateWaybill(waybill) {

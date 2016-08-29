@@ -60,7 +60,7 @@ class MissionFormWrap extends FormWrap {
 		global.map.once('postcompose', function(event) {
 			let routeImageBase64Data = event.context.canvas.toDataURL('image/png');
 			data.image = routeImageBase64Data;
-			flux.getActions('missions').printMission(data).then(blob => {
+			flux.getActions('missions').printMission(data).then(({blob}) => {
 				print_form_type === 1 ? saveData(blob, `Задание №${f.number}.pdf`) : printData(blob);
 			});
 		});

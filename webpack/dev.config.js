@@ -8,7 +8,7 @@ var alias = require('./alias');
 var stand = process.env.STAND || 'development';
 
 module.exports = {
-  devtool: 'source-map',
+  devtool: 'eval',
   context: path.resolve(__dirname, '..'),
   entry: {
     'app': [

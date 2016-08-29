@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { saveData } from 'utils/functions';
+import { parseFilename } from 'utils/content-disposition.js';
 import config from 'config';
 
 export function toUrlWithParams(url, data) {
@@ -34,24 +35,28 @@ function exportable(ComposedComponent) {
         `${config.backend}/${this.path ? this.path + '/' : ''}${this.entity}/`,
         payload
       );
+      // TODO blob
       return fetch(URL, {
         method: 'get',
         headers: {
-          'Authorization': `Token ${token}`
+          'Authorization': `Token ${token}`,
+          'Access-Control-Expose-Headers': 'Content-Disposition'
         }
-      }).then((r) => {
-        console.log(r);
-        console.log(r.headers.get('Content-Disposition'));
-        return r.blob();
+      }).then(async (r) => {
+        const fileName = parseFilename(r.headers.get('Content-Disposition'));
+        const blob = await r.blob();
+        return {
+          blob,
+          fileName
+        };
       });
     }
 
     export(payload) {
       if (typeof this.exportFunction === 'function') {
         this.exportFunction(payload)
-          .then(blob => {
-            // console.log(blob);
-            saveData(blob);
+          .then(({blob, fileName}) => {
+            saveData(blob, fileName);
           });
       }
     }

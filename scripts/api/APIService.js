@@ -1,4 +1,4 @@
-import { getUrl, getJSON, postJSON, deleteJSON, putJSON } from '../adapter.js';
+import { getUrl, getJSON, postJSON, deleteJSON, putJSON, getBlob, postBlob } from '../adapter.js';
 import { getWarningNotification } from 'utils/notifications';
 import { RequestWarningError } from 'utils/errors';
 import { mocks } from './mocks';
@@ -51,7 +51,7 @@ export default class APIService {
     }
   }
 
-  get(payload = {}, blob = false) {
+  get(payload = {}) {
     if (this.useMock && mocks[this.serviceName]) {
       this.log('GET MOCK');
       return new Promise((res, rej) => {
@@ -63,7 +63,21 @@ export default class APIService {
     this.log('GET');
     const url = this.url;
     this.resetPath();
-    return getJSON(url, payload, blob);
+    return getJSON(url, payload);
+  }
+
+  getBlob(payload = {}) {
+    this.log('GET BLOB');
+    const url = this.url;
+    this.resetPath();
+    return getBlob(url, payload);
+  }
+
+  postBlob(payload = {}) {
+    this.log('GET (POST) BLOB');
+    const url = this.url;
+    this.resetPath();
+    return postBlob(url, payload);
   }
 
   post(payload = {}, callback, type = 'form', blob = false) {

@@ -55,6 +55,7 @@
     "sparklines": "^1.0.0",
     "style-loader": "^0.12.3",
     "url-loader": "^0.5.6",
+    "utf8": "^2.1.1",
     "whatwg-fetch": "^1.0.0",
     "ws": "^0.7.1"
   },

@@ -15,6 +15,7 @@ export default class PDFViewModal extends Component {
   componentWillReceiveProps(nextProps) {
     window.URL.revokeObjectURL(this.state.url);
     const token = JSON.parse(window.localStorage.getItem('ets-session'));
+    // TODO blob
     if (nextProps.url !== this.props.url && nextProps.url !== null) {
       fetch(nextProps.url, {
         headers: {

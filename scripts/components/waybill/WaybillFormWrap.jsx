@@ -5,7 +5,7 @@ import Div from 'components/ui/Div.jsx';
 import WaybillForm from './WaybillForm.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import { getDefaultBill } from '../../stores/WaybillsStore.js';
-import { isNotNull, isEmpty, hasOdometer } from 'utils/functions';
+import { isNotNull, isEmpty, hasOdometer, saveData } from 'utils/functions';
 import { waybillSchema, waybillClosingSchema } from 'models/WaybillModel.js';
 import config from '../../config.js';
 import Taxes from './Taxes.jsx';
@@ -222,19 +222,20 @@ export default class WaybillFormWrap extends FormWrap {
 			console.log('Нужен сервис на бэке.')
 			return;
 		}
+		const { flux } = this.context;
 		const { formState } = this.state;
-		const token = JSON.parse(window.localStorage.getItem('ets-session'));
 
-  	let URL = `${config.backend}/${print_form_type === 2 ? 'plate_truck/' : 'plate_special/'}?waybill_id=`;
 		let currentWaybillId = formState.id;
 
 		let callback = (createdWaybillId) => {
-			URL += createdWaybillId ? createdWaybillId : currentWaybillId;
-			console.log('printing waybill', URL);
-			URL += `&token=${token}`;
-			window.location = URL;
+			const waybill_id = createdWaybillId ? createdWaybillId : currentWaybillId;
+			flux.getActions('waybills').printWaybill(print_form_type, waybill_id)
+				.then(({blob, fileName}) => {
+					console.log()
+					saveData(blob, fileName);
+				});
 		};
-		printonly ? callback() : this.handleFormSubmit(this.state.formState, callback);
+		printonly ? callback() : this.handleFormSubmit(formState, callback);
   }
 
 	/**

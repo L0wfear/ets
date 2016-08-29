@@ -26,8 +26,8 @@ export default class CarActions extends Actions {
   getVectorObject(selectedPoint, prevPoint, nextPoint) {
     const payload = {
       coordinates: [prevPoint.coords_msk, selectedPoint.coords_msk, nextPoint.coords_msk]
-    }
-    return VectorObjectService.get(payload, null, 'json');
+    };
+    return VectorObjectService.get(payload);
   }
 
   async getCarsByTechnicalOperation(technical_operation_id) {

@@ -137,20 +137,9 @@ export default class MissionsActions extends Actions {
   }
 
   printMission(data, url) {
-    const token = JSON.parse(window.localStorage.getItem('ets-session'));
-    let URL = `${config.backend}/plate_mission/`;
-
-    return fetch(URL, {
-      method: 'post',
-      headers: {
-        'Authorization': `Token ${token}`
-      },
-      body: JSON.stringify(data)
-    }).then((r) => r.blob());
-
-    // return MissionPrintService.post(payload, (r) => {
-    //   return r.blob();
-    // }, 'json');
+    const payload = _.cloneDeep(data);
+    
+    return MissionPrintService.postBlob(payload);
   }
 
   getMissionData(mission_id) {
@@ -242,7 +231,6 @@ export default class MissionsActions extends Actions {
     payload.fact_date_start = createValidDateTime(payload.fact_date_start);
     payload.fact_date_end = createValidDateTime(payload.fact_date_end);
     payload.brigade_employee_id_list = payload.brigade_employee_id_list.map(b => b.id|| b.employee_id);
-    console.log(payload);
     return DutyMissionService.post(payload, false, 'json');
   }
 
@@ -268,7 +256,7 @@ export default class MissionsActions extends Actions {
 
   printDutyMission(duty_mission_id) {
     const payload = { duty_mission_id };
-    return DutyMissionPrintService.get(payload, true);
+    return DutyMissionPrintService.getBlob(payload);
   }
 
 

@@ -44,6 +44,9 @@ export const OrganizationsService = new APIService('/organizations/', { useMock:
 export const ODHSupportStandardsService = new APIService('/odh_support_standards/', {useMock: true});
 export const ODHSupportStandardsDataSummerService = new APIService('/odh_support_standards_data_summer/', {useMock: true});
 
+export const WaybillPrintSpecialService = new APIService('/plate_special/');
+export const WaybillPrintTruckService = new APIService('/plate_truck/');
+
 /* Geoobjects - Геообъекты */
 export const ODHService = new APIService('/odh/', {});
 export const DTService = new APIService('/dt/', {});

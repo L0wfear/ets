@@ -4,6 +4,7 @@ import moment from 'moment';
 import { getStartOfToday, makeUnixTime } from 'utils/dates';
 import { wrapCoords, swapCoords } from 'utils/geo';
 import { getServerErrorNotification } from 'utils/notifications';
+import { parseFilename } from 'utils/content-disposition.js';
 
 export function getUrl(url) {
   return config.backend ? config.backend + url : url;
@@ -24,19 +25,16 @@ export function toUrlWithParams(url, data) {
   return `${url}?${params}`;
 };
 
-const POINTS_URL = getUrl('/data');
 const TRACK_URL = getOldUrl('/tracks/');
-const GEO_OBJECTS_URL = getUrl('/geo_objects/');
 const AUTH_CHECK_URL = getUrl('/auth_check');
 const DASHBOARD_URL = getUrl('/dashboard/');
 
-function HTTPMethod(url, data = {}, method, type, blob) {
+function HTTPMethod(url, data = {}, method, type) {
   let body;
   data = _.clone(data);
   const token = JSON.parse(window.localStorage.getItem('ets-session'));
   let authorizationHeader = {};
   if (token && url.indexOf('plate_mission') === -1) {
-    // data.token = token;
     authorizationHeader['Authorization'] = `Token ${token}`;
   }
 
@@ -69,9 +67,6 @@ function HTTPMethod(url, data = {}, method, type, blob) {
       window.location.hash = '/login';
       window.location.reload();
     } else {
-      if (blob) {
-        return r.blob().then(body => new Promise((res, rej) => res(body)));
-      }
       return r.json().then(responseBody => {
         checkResponse(url, r, responseBody, method);
         return new Promise((res, rej) => res(responseBody));
@@ -80,12 +75,12 @@ function HTTPMethod(url, data = {}, method, type, blob) {
   });
 }
 
-export function getJSON(url, data = {}, blob = false) {
-  return HTTPMethod(url, data, 'GET', undefined, blob);
+export function getJSON(url, data = {}) {
+  return HTTPMethod(url, data, 'GET', undefined);
 }
 
-export function postJSON(url, data = {}, type = 'form', blob = false) {
-  return HTTPMethod(url, data, 'POST', type, blob);
+export function postJSON(url, data = {}, type = 'form') {
+  return HTTPMethod(url, data, 'POST', type);
 }
 
 export function putJSON(url, data, type = 'form') {
@@ -94,6 +89,44 @@ export function putJSON(url, data, type = 'form') {
 
 export function deleteJSON(url, data, type = 'form') {
   return HTTPMethod(url, data, 'DELETE', type);
+}
+
+export function getBlob(url, data) {
+  const token = JSON.parse(window.localStorage.getItem('ets-session'));
+  url = toUrlWithParams(url, data);
+  return fetch(url, {
+    method: 'get',
+    headers: {
+      'Authorization': `Token ${token}`,
+      'Access-Control-Expose-Headers': 'Content-Disposition'
+    }
+  }).then(async (r) => {
+    const fileName = parseFilename(r.headers.get('Content-Disposition'));
+    const blob = await r.blob();
+    return {
+      blob,
+      fileName
+    };
+  });
+}
+
+export function postBlob(url, data) {
+  const token = JSON.parse(window.localStorage.getItem('ets-session'));
+  return fetch(url, {
+    method: 'post',
+    headers: {
+      'Authorization': `Token ${token}`,
+      'Access-Control-Expose-Headers': 'Content-Disposition'
+    },
+    body: JSON.stringify(data)
+  }).then(async (r) => {
+    const fileName = parseFilename(r.headers.get('Content-Disposition'));
+    const blob = await r.blob();
+    return {
+      blob,
+      fileName
+    };
+  });
 }
 
 function checkResponse(url, response, body, method) {
@@ -134,10 +167,6 @@ export function logout() {
   return new Promise((res) => res());
 }
 
-export function getAllPoints() {
-  return fetch(POINTS_URL, config.REQUEST_PARAMS).then(r => r.json());
-}
-
 // возвращает инфу для графика уровня топлива
 export function getFuelData(from_dt = getStartOfToday(), to_dt = new Date().getTime(), car_id) {
   return fetch(config.backend + '/fuel/' + car_id + '/?from_dt=' + makeUnixTime(from_dt) + '&to_dt=' + makeUnixTime(to_dt))
@@ -176,13 +205,6 @@ export function getTrack(car_id, from_dt, to_dt) {
 export function getCarImage(car_id, type_id, model_id) {
   return fetch(config.backend + `/car_image?model_id=${model_id}&car_id=${car_id}&type_id=${type_id}`)
         .then(r => r.json())
-}
-
-// возвращает список ОДХ по координатам
-export function getGeoObjectsByCoords([lat, lon], d = 5) {
-  let mskQuery = '?d=' + d + '&x_msk=' + lat + '&y_msk=' + lon;
-  let query = '?d=' + d + '&lat=' + lat + '&lon=' + lon;
-  return fetch(GEO_OBJECTS_URL + mskQuery).then(r => r.json())
 }
 
 // DASHBOARD //

@@ -56,6 +56,31 @@ class RouteFormWrap extends FormWrap {
 		this.props.onFormHide(true, result);
 	}
 
+	async handleFormStateChange(f, e) {
+		await super.handleFormStateChange(f, e);
+
+		// Проверка на наличие имени маршрута в списке маршрутов
+		const { formErrors, formState } = this.state;
+		const { routesList } = this.props;
+		let routesByName = routesList
+			.filter(r => r.id !== formState.id)
+			.map(r => r.name);
+		let value;
+		if (f === 'name') {
+			value = e !== undefined && e !== null && !!e.target ? e.target.value : e;
+		} else {
+			value = formState['name'];
+		}
+		if (routesByName.includes(value)) {
+			if (!formErrors['name']) {
+				formErrors.name = 'Маршрут с данным названием уже существует!';
+			}
+		} else if (formErrors['name'] === 'Маршрут с данным названием уже существует!') {
+			delete formErrors.name;
+		}
+		this.setState({formErrors});
+	}
+
 	render() {
 
 		let props = this.props;

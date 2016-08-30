@@ -16,7 +16,7 @@ let validateMissionsCreationTemplate = (mission, errors) => {
   let missionsCreationTemplateErrors = _.clone(errors);
 
   _.each(missionsCreationTemplateSchema.properties, prop => {
-    missionsCreationTemplateErrors[prop.key] = validateField(prop, mission[prop.key]);
+    missionsCreationTemplateErrors[prop.key] = validateField(prop, mission[prop.key], mission, missionsCreationTemplateSchema);
   });
 
   return missionsCreationTemplateErrors;

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { getTypes } from 'redux/modules/types';
 import connectToStores from 'flummox/connect';
 import cx from 'classnames';
 import Filter from './Filter.jsx';
@@ -132,6 +134,12 @@ let ShowGeoobjectsCheckbox = (props) => {
   );
 }
 
+@connect(
+  state => state.types,
+  {
+    getTypes
+  }
+)
 @FluxContext
 class Toolbar extends Component {
 
@@ -158,7 +166,7 @@ class Toolbar extends Component {
   }
 
   componentDidMount() {
-    this.context.flux.getActions('objects').getTypes();
+    this.props.getTypes();
   }
 
   render() {
@@ -177,11 +185,6 @@ class Toolbar extends Component {
       if (key in keys){
         filtersCount += filters[key].length;
       }
-    }
-
-    let additiveFilters = {
-      owner: filters.owner,
-      type: filters.type
     }
 
     let byStatus = storeState.byStatus;
@@ -211,7 +214,7 @@ class Toolbar extends Component {
           </FluxComponent>
         </div>
         <ToolbarSearch focusOnLonelyCar={this.focusOnLonelyCar.bind(this)} carsCount={carsCount}/>
-        <ToolbarFilters store={pointsStore} filters={additiveFilters} haveFilters={filtersCount > 0} currentUser={currentUser} {...this.props}/>
+        <ToolbarFilters store={pointsStore} filters={filters} haveFilters={filtersCount > 0} currentUser={currentUser} {...this.props}/>
       </div>
     );
   }

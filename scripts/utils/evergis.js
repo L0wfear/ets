@@ -45,4 +45,7 @@ export function attemptsLimitExceeded() {
   return attempts >= ATTEMPTS_LIMIT;
 }
 
+// Инициализация токена
+fetchEvergisToken();
+
 export default EVERGIS_TOKEN;

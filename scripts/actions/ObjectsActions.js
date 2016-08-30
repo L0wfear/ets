@@ -1,7 +1,6 @@
 import { Actions } from 'flummox';
 import { getCustomers } from '../adapter.js';
 import _ from 'lodash';
-import { getOwners } from '../owners.js';
 import { isEmpty, saveData } from 'utils/functions';
 import { createValidDateTime } from 'utils/dates';
 import {
@@ -40,10 +39,6 @@ export default class ObjectsActions extends Actions {
 
   getCustomers() {
     return CustomersService.get();
-  }
-
-  getOwners() {
-    return getOwners();
   }
 
   getTypes() {

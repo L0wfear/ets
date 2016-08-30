@@ -19,6 +19,10 @@ import { AuthCheckService } from 'api/Services';
 
 import { fetchEvergisToken } from '../utils/evergis.js';
 import Flux from 'config/flux.js';
+
+import createStore from '../redux/create';
+import { Provider } from 'react-redux';
+
 import { loginErrorNotification, getErrorNotification } from 'utils/notifications';
 // TODO вынести в отдельный файл
 const flux = new Flux();
@@ -56,7 +60,7 @@ class App extends Component {
       return this.setState({loading: false});
     }
     return AuthCheckService.get()
-          .then(() => fetchEvergisToken())
+          // .then(() => fetchEvergisToken())
           .then(() => {
             this.setState({loading: false});
           })
@@ -164,4 +168,9 @@ const routes = (
   </Router>
 );
 
-render(routes, document.getElementById('content'));
+render(
+  <Provider store={createStore()}>
+    {routes}
+  </Provider>,
+  document.getElementById('content')
+);

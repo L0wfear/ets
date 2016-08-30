@@ -41,7 +41,6 @@ export default class LoadingStore extends Store {
       objectsActions.getModels,
       objectsActions.getSpecialModels,
       objectsActions.getCustomers,
-      objectsActions.getOwners,
       objectsActions.getTypes,
       objectsActions.getFuelTypes,
       objectsActions.getWorkKinds,

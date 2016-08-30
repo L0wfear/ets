@@ -29,6 +29,7 @@ export const DashboardService = ETS_API_FACTORY.createApiServiceAdapter('dashboa
 
 export const RouteService   = ETS_API_FACTORY.createApiServiceAdapter('route', {});
 export const RouteValidateService = ETS_API_FACTORY.createApiServiceAdapter('route_validate', {});
+export const OwnersService = ETS_API_FACTORY.createApiServiceAdapter('owners');
 export const GeozoneService = ETS_API_FACTORY.createApiServiceAdapter('geozone', {});
 export const FaxogrammService = ETS_API_FACTORY.createApiServiceAdapter('faxogramm', {});
 export const ModelsService = ETS_API_FACTORY.createApiServiceAdapter('models', {});

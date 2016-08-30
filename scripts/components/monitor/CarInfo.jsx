@@ -45,7 +45,6 @@ class VehicleAttributes extends Component {
     getStatusById(vehicle.status) && addAttribute('Статус', getStatusById(vehicle.status).title)
     getTypeById(car.type_id) && addAttribute('Тип техники', getTypeById(car.type_id).title)
     //getModelById(car.model_id) && addAttribute('Шасси', getModelById(car.model_id).title)
-    //getOwnerById(car.owner_id) && addAttribute('Владелец', getOwnerById(car.owner_id).title);
 
     if (props.lastPoint) {
       // todo при клике на "последнюю точку" центрировать по координатам

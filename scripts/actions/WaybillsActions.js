@@ -7,8 +7,6 @@ import {
   LatestWaybillDriverService,
   WaybillJournalReportService,
   WaybillsReportService,
-  WaybillPrintTruckService,
-  WaybillPrintSpecialService,
   RootService
 } from 'api/Services';
 
@@ -71,11 +69,6 @@ export default class WaybillsActions extends Actions {
       waybill_id
     };
     return RootService.path(print_form_type).getBlob(payload);
-    // if (print_form_type === 2) {
-    //   return WaybillPrintTruckService.getBlob(payload);
-    // } else {
-    //   return WaybillPrintSpecialService.getBlob(payload);
-    // }
   }
 
   updateWaybill(waybill) {

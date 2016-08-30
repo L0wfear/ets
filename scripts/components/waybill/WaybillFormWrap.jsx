@@ -223,7 +223,6 @@ export default class WaybillFormWrap extends FormWrap {
 	 * @return {undefined}
 	 */
   handlePrint(printonly, event, print_form_type) {
-		console.log(print_form_type);
 		const { flux } = this.context;
 		const { formState } = this.state;
 

@@ -1,5 +1,4 @@
 import { Actions } from 'flummox';
-import { logout } from '../adapter.js';
 import _ from 'lodash';
 import { TechnicalOperationService, TechnicalOperationObjectsService, TechnicalOperationTypesService } from 'api/Services';
 import { isEmpty } from 'utils/functions';

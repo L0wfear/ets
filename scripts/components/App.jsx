@@ -15,8 +15,8 @@ import CompanyStructure from './company_structure/CompanyStructure.jsx';
 import missions from './missions';
 import directories from './directories';
 import reports from './reports';
+import { AuthCheckService } from 'api/Services';
 
-import { checkToken } from '../adapter.js';
 import { fetchEvergisToken } from '../utils/evergis.js';
 import Flux from 'config/flux.js';
 import { loginErrorNotification, getErrorNotification } from 'utils/notifications';
@@ -55,12 +55,13 @@ class App extends Component {
     if (!flux.getStore('session').isLoggedIn()) {
       return this.setState({loading: false});
     }
-    return checkToken()
+    return AuthCheckService.get()
           .then(() => fetchEvergisToken())
           .then(() => {
             this.setState({loading: false});
           })
           .catch((error) => {
+            console.log(error);
             if (error === 401) {
               flux.getActions('session').logout();
               return global.NOTIFICATION_SYSTEM._addNotification(loginErrorNotification);

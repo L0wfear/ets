@@ -6,7 +6,6 @@ import config from '../../config.js';
 import { makeDate, makeTime, makeDateFromUnix, getStartOfToday } from 'utils/dates';
 import FuelChart from 'components/ui/charts/FuelChart.jsx';
 import SpeedChart from 'components/ui/charts/SpeedChart.jsx';
-import { getCarImage } from '../../adapter.js';
 import { roundCoordinates } from 'utils/geo';
 import DatePicker from 'components/ui/DatePicker.jsx';
 import { getTypeById } from 'utils/labelFunctions';
@@ -147,10 +146,11 @@ export default class CarInfo extends Component {
   }
 
   fetchImage(props = this.props) {
+    const { flux } = this.props;
     let car = props.car;
     let model_id = car.car.model_id;
     let type_id = car.car.type_id;
-    getCarImage(car.id, type_id, model_id).then(url => this.setState({imageUrl: url }))
+    flux.getActions('cars').getCarImage(car.id, type_id, model_id).then(url => this.setState({imageUrl: url }))
   }
 
   fetchTrack(props = this.props) {
@@ -173,9 +173,13 @@ export default class CarInfo extends Component {
       this.fetchImage();
       this.fetchTrack();
       let carsList = this.props.flux.getStore('objects').state.carsList;
-      let car_id = _.find(carsList, (car) => car.gov_number === this.props.car.car.gov_number).asuods_id;
-      let missions = await this.props.flux.getActions('missions').getMissionsByCarAndDates(car_id, this.state.from_dt, this.state.to_dt, true, 1)
-      this.setState({missions: missions.result.rows})
+      let car = _.find(carsList, (car) => car.gov_number === this.props.car.car.gov_number);
+      if (car) {
+        let car_id = car.asuods_id;
+        let missions = await this.props.flux.getActions('missions').getMissionsByCarAndDates(car_id, this.state.from_dt, this.state.to_dt, true, 1)
+        this.setState({missions: missions.result.rows});
+      }
+
     }
   }
 
@@ -188,9 +192,12 @@ export default class CarInfo extends Component {
     }
     if (props.car.id !== this.props.car.id) {
       let carsList = this.props.flux.getStore('objects').state.carsList;
-      let car_id = _.find(carsList, (car) => car.gov_number === this.props.car.car.gov_number).asuods_id;
-      let missions = await this.props.flux.getActions('missions').getMissionsByCarAndDates(car_id, this.state.from_dt, this.state.to_dt, true, 1)
-      this.setState({missions: missions.result.rows})
+      let car = _.find(carsList, (car) => car.gov_number === this.props.car.car.gov_number);
+      if (car) {
+        let car_id = car.asuods_id;
+        let missions = await this.props.flux.getActions('missions').getMissionsByCarAndDates(car_id, this.state.from_dt, this.state.to_dt, true, 1)
+        this.setState({missions: missions.result.rows});
+      }
     }
   }
 
@@ -283,27 +290,6 @@ export default class CarInfo extends Component {
             <dd>{marker.currentSpeed}</dd>
           </dl>}
         </Panel>
-      </div>
-    );
-  }
-
-  render() {
-    let car = this.props.car;
-
-    if (!car) {
-      return null;
-    }
-
-    let marker = this.props.car.marker;
-    let plate = car.car.gov_number;
-
-    return (
-      <div className="car-info" key={marker.id}>
-        <h3 className="car-info-plate">{plate}</h3>
-        {this.renderModel()}
-        {this.renderData()}
-        {/*<FuelChart from={this.state.from_dt} to={this.state.to_dt} id={car.id}/>*/}
-        {/*<SpeedChart track={marker.hasTrackLoaded() && marker.track}/>*/}
       </div>
     );
   }

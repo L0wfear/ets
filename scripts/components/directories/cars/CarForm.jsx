@@ -7,7 +7,6 @@ import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
 import Form from 'compositions/Form.jsx';
 import connectToStores from 'flummox/connect';
-import { getCarImage } from '../../../adapter.js';
 import config from '../../../config.js';
 
 class CarForm extends Form {
@@ -24,7 +23,7 @@ class CarForm extends Form {
 	async componentDidMount() {
 		const { flux } = this.context;
     const car = this.props.formState;
-    getCarImage(car.asuods_id, car.type_id, car.model_id).then((imageUrl) => this.setState({imageUrl}) );
+    flux.getActions('cars').getCarImage(car.asuods_id, car.type_id, car.model_id).then((imageUrl) => this.setState({imageUrl}) );
 		let companyStructureList = await flux.getActions('companyStructure').getLinearCompanyStructureForUser();
 		this.setState({companyStructureList});
 	}

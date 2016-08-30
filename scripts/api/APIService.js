@@ -1,4 +1,4 @@
-import { getUrl, getJSON, postJSON, deleteJSON, putJSON, getBlob, postBlob } from '../adapter.js';
+import { getJSON, postJSON, deleteJSON, putJSON, getBlob, postBlob } from '../adapter.js';
 import { getWarningNotification } from 'utils/notifications';
 import { RequestWarningError } from 'utils/errors';
 import { mocks } from './mocks';
@@ -11,17 +11,14 @@ export default class APIService {
    * @param {string} url - url path
    * @param {object} options - options
    * @param {boolean} options.useMock - use mock instead of backend service
-   * @param {boolean} options.customPaths - allow to provide additional part of url path
-   * @param {array} options.customPathsList - available paths for customPaths
    */
   constructor(url, options = {}) {
     const { useMock = false } = options;
     this.serviceName = url.replace(/\//g, '');
     this.useMock = useMock;
 
-    const canonicUrl = url.indexOf('http') > -1 ? url : getUrl(url);
-    this.url = canonicUrl;
-    this.canonicUrl = canonicUrl;
+    this.url = url;
+    this.canonicUrl = url;
 
     this.get = this.get.bind(this);
     this.processResponse = this.processResponse.bind(this);
@@ -111,7 +108,6 @@ export default class APIService {
   }
 
   path(...args) {
-    // TODO переделать нормально
     this.url = urljoin(this.canonicUrl, ...args);
     return this;
   }

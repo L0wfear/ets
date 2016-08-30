@@ -5,6 +5,9 @@ export function makeDate(date) {
 }
 
 export function makeUnixTime(time) {
+  if (typeof time === 'string') {
+    time = moment(time).toDate();
+  }
 	return Math.floor(time / 1000);
 }
 

@@ -1,18 +1,8 @@
 import _ from 'lodash';
-import config from './config.js';
-import moment from 'moment';
-import { getStartOfToday, makeUnixTime } from 'utils/dates';
-import { wrapCoords, swapCoords } from 'utils/geo';
 import { getServerErrorNotification } from 'utils/notifications';
 import { parseFilename } from 'utils/content-disposition.js';
 
-export function getUrl(url) {
-  return config.backend ? config.backend + url : url;
-}
-
-let getOldUrl = (url) => config.backendOld ? config.backendOld + url : url;
-
-let toFormData = (data) => {
+export function toFormData(data) {
   const formData = new FormData();
   _.mapKeys(data, (v, k) => {
     formData.append(k, v);
@@ -27,10 +17,6 @@ export function toUrlWithParams(url, data) {
   }
   return `${url}`;
 };
-
-const TRACK_URL = getOldUrl('/tracks/');
-const AUTH_CHECK_URL = getUrl('/auth_check');
-const DASHBOARD_URL = getUrl('/dashboard/');
 
 function HTTPMethod(url, data = {}, method, type) {
   let body;
@@ -49,6 +35,9 @@ function HTTPMethod(url, data = {}, method, type) {
     },
     credentials: 'include',
   };
+  if (url.indexOf('city-dashboard') > -1) {
+    delete options.headers;
+  }
 
   if (typeof type === 'string') {
     switch (type) {
@@ -67,7 +56,6 @@ function HTTPMethod(url, data = {}, method, type) {
   return fetch(url, options).then(r => {
     if (r.status === 401) {
       window.localStorage.clear();
-      window.location.hash = '/login';
       window.location.reload();
     } else {
       return r.json().then(responseBody => {
@@ -94,42 +82,40 @@ export function deleteJSON(url, data, type = 'form') {
   return HTTPMethod(url, data, 'DELETE', type);
 }
 
-export function getBlob(url, data) {
+function HTTPMethodBlob(url, data, method) {
   const token = JSON.parse(window.localStorage.getItem('ets-session'));
-  url = toUrlWithParams(url, data);
-  return fetch(url, {
-    method: 'get',
+
+  const options = {
+    method,
     headers: {
       'Authorization': `Token ${token}`,
       'Access-Control-Expose-Headers': 'Content-Disposition'
     }
-  }).then(async (r) => {
-    const fileName = parseFilename(r.headers.get('Content-Disposition'));
-    const blob = await r.blob();
-    return {
-      blob,
-      fileName
-    };
-  });
+  };
+
+  if (method === 'post') {
+    options.body = JSON.stringify(data);
+  } else if (method === 'get') {
+    url = toUrlWithParams(url, data);
+  }
+
+  return fetch(url, options)
+    .then(async (r) => {
+      const fileName = parseFilename(r.headers.get('Content-Disposition'));
+      const blob = await r.blob();
+      return {
+        blob,
+        fileName
+      };
+    });
+}
+
+export function getBlob(url, data) {
+  return HTTPMethodBlob(url, data, 'get');
 }
 
 export function postBlob(url, data) {
-  const token = JSON.parse(window.localStorage.getItem('ets-session'));
-  return fetch(url, {
-    method: 'post',
-    headers: {
-      'Authorization': `Token ${token}`,
-      'Access-Control-Expose-Headers': 'Content-Disposition'
-    },
-    body: JSON.stringify(data)
-  }).then(async (r) => {
-    const fileName = parseFilename(r.headers.get('Content-Disposition'));
-    const blob = await r.blob();
-    return {
-      blob,
-      fileName
-    };
-  });
+  return HTTPMethodBlob(url, data, 'post');
 }
 
 function checkResponse(url, response, body, method) {
@@ -150,67 +136,4 @@ function checkResponse(url, response, body, method) {
       throw new Error('Errors in response body');
     }
   }
-}
-
-export function checkToken(token) {
-  return new Promise((res, rej) => {
-    return getJSON(AUTH_CHECK_URL).then(r => {
-      if (r.errors && r.errors.length) {
-        console.log('TOKEN EXPIRED');
-        rej(401);
-      } else {
-        console.log('TOKEN IS OK');
-        res();
-      }
-    });
-  });
-}
-
-export function logout() {
-  return new Promise((res) => res());
-}
-
-// возвращает инфу для графика уровня топлива
-export function getFuelData(from_dt = getStartOfToday(), to_dt = new Date().getTime(), car_id) {
-  return fetch(config.backend + '/fuel/' + car_id + '/?from_dt=' + makeUnixTime(from_dt) + '&to_dt=' + makeUnixTime(to_dt))
-    .then(r => r.json())
-    .then(r => r.map(data => data[1]))
-}
-
-export function getTrack(car_id, from_dt, to_dt) {
-
-  if (typeof from_dt === 'string') {
-    from_dt = moment(from_dt).toDate();
-  }
-
-  if (typeof to_dt === 'string') {
-    to_dt = moment(to_dt).toDate();
-  }
-
-  let query = '/?from_dt=' + makeUnixTime(from_dt) +
-    '&to_dt=' + makeUnixTime(to_dt) +
-    '&version=2';
-
-  console.log('track loading for', car_id);
-  return fetch(TRACK_URL + car_id + query, {
-    credentials: 'include',
-  }).then(r => r.json())
-    .then(points => points.map((point) => {
-        // wrap coords for OpenLayers
-        point.coords = swapCoords(point.coords);
-        point.coords_msk = swapCoords(point.coords_msk);
-        return point;
-      })
-    );
-
-}
-
-export function getCarImage(car_id, type_id, model_id) {
-  return fetch(config.backend + `/car_image?model_id=${model_id}&car_id=${car_id}&type_id=${type_id}`)
-        .then(r => r.json())
-}
-
-// DASHBOARD //
-export function getDashboardComponent(key, payload) {
-  return getJSON(`${DASHBOARD_URL}${key}/`, payload).then(component => ({component, key}));
 }

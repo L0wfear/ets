@@ -547,10 +547,10 @@ class WaybillForm extends Form {
 			          	<Glyphicon glyph="download-alt" /> {state.status === 'closed' || state.status === 'active' ? "Просмотр" : "Выдать"}
 			          </Dropdown.Toggle>
 			          <Dropdown.Menu>
-				          <MenuItem eventKey={1}>Форма 3-С</MenuItem>
-				          <MenuItem eventKey={2}>Форма 4-П</MenuItem>
-				          <MenuItem eventKey={3}>Форма №6 (спец)</MenuItem>
-				          <MenuItem eventKey={4}>Форма №3</MenuItem>
+				          <MenuItem eventKey={'plate_special'}>Форма 3-С</MenuItem>
+				          <MenuItem eventKey={'plate_truck'}>Форма 4-П</MenuItem>
+				          <MenuItem eventKey={'plate_bus'}>Форма №6 (спец)</MenuItem>
+				          <MenuItem eventKey={'plate_car'}>Форма №3</MenuItem>
 			          </Dropdown.Menu>
 			        </Dropdown>&nbsp;
 						</Div>

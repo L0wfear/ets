@@ -2,6 +2,8 @@ import APIService from './APIService.js';
 
 const USE_MOCKS = false;
 
+export const RootService = new APIService('', {});
+
 export const RouteService   = new APIService('/route/', {});
 export const RouteValidateService = new APIService('/route_validate/', {});
 export const WaybillService = new APIService('/waybill/', {});

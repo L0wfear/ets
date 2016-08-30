@@ -8,7 +8,8 @@ import {
   WaybillJournalReportService,
   WaybillsReportService,
   WaybillPrintTruckService,
-  WaybillPrintSpecialService
+  WaybillPrintSpecialService,
+  RootService
 } from 'api/Services';
 
 export default class WaybillsActions extends Actions {
@@ -69,11 +70,12 @@ export default class WaybillsActions extends Actions {
     const payload = {
       waybill_id
     };
-    if (print_form_type === 2) {
-      return WaybillPrintTruckService.getBlob(payload);
-    } else {
-      return WaybillPrintSpecialService.getBlob(payload);
-    }
+    return RootService.path(print_form_type).getBlob(payload);
+    // if (print_form_type === 2) {
+    //   return WaybillPrintTruckService.getBlob(payload);
+    // } else {
+    //   return WaybillPrintSpecialService.getBlob(payload);
+    // }
   }
 
   updateWaybill(waybill) {

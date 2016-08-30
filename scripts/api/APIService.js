@@ -2,6 +2,7 @@ import { getUrl, getJSON, postJSON, deleteJSON, putJSON, getBlob, postBlob } fro
 import { getWarningNotification } from 'utils/notifications';
 import { RequestWarningError } from 'utils/errors';
 import { mocks } from './mocks';
+import urljoin from 'url-join';
 
 export default class APIService {
 
@@ -15,17 +16,17 @@ export default class APIService {
    */
   constructor(url, options = {}) {
     const { useMock = false } = options;
-    this.firstUrl = url;
-    this.canonicFirstUrl = url;
     this.serviceName = url.replace(/\//g, '');
     this.useMock = useMock;
+
     const canonicUrl = url.indexOf('http') > -1 ? url : getUrl(url);
     this.url = canonicUrl;
     this.canonicUrl = canonicUrl;
+
     this.get = this.get.bind(this);
     this.processResponse = this.processResponse.bind(this);
 
-    this.logFunction = (method) => console.info(`API SERVICE ${method} ${this.firstUrl}`);
+    this.logFunction = (method) => console.info(`API SERVICE ${method} ${this.url}`);
     this.warningNotificationFunction = (warning) => global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification(warning));
   }
 
@@ -107,15 +108,11 @@ export default class APIService {
 
   resetPath() {
     this.url = this.canonicUrl;
-    this.firstUrl = this.canonicFirstUrl;
   }
 
-  path(path) {
+  path(...args) {
     // TODO переделать нормально
-    this.url = this.canonicUrl;
-    this.firstUrl = this.canonicFirstUrl;
-    this.url += path;
-    this.firstUrl += path;
+    this.url = urljoin(this.canonicUrl, ...args);
     return this;
   }
 
@@ -125,7 +122,7 @@ export default class APIService {
 
   connectToLoggerService(fn) {
     if (typeof fn === 'function') {
-      this.warningNotificationFunction = fn;
+      this.logFunction = fn;
     }
   }
 

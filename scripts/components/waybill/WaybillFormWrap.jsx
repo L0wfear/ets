@@ -217,11 +217,8 @@ export default class WaybillFormWrap extends FormWrap {
 	 * @param {number 1|2} print_form_type - Идентификатор печатной формы
 	 * @return {undefined}
 	 */
-  handlePrint(printonly, event, print_form_type = 1) {
-		if (print_form_type > 2) {
-			console.log('Нужен сервис на бэке.')
-			return;
-		}
+  handlePrint(printonly, event, print_form_type) {
+		console.log(print_form_type);
 		const { flux } = this.context;
 		const { formState } = this.state;
 

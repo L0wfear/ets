@@ -1613,6 +1613,10 @@ body {
   padding: 15px;
   margin: 0 auto;
 }
+.form-control {
+  height: 36px;
+}
+
 .form-signin .form-signin-heading,
 .form-signin .checkbox {
   margin-bottom: 10px;
@@ -2320,10 +2324,10 @@ body {
 
 .modal-content {
   border-radius: 0;
+}
 
-  .chart-datepicker {
-    padding-bottom:2px;
-  }
+.chart-datepicker {
+  padding-bottom:2px;
 }
 
 .modal-footer {
@@ -2429,6 +2433,10 @@ body {
 
 .griddle-container {
   border: none !important;
+}
+
+.filter-datepicker {
+  padding-bottom: 2px;
 }
 
 .filter-container {

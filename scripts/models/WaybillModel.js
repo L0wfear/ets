@@ -150,13 +150,13 @@ const closingProperties = [
     key: 'odometr_end',
     title: 'Одометр.Возврат',
     type: 'floatFixed3',
-    required: false,
+    required: true,
   },
   {
     key: 'motohours_end',
     title: 'Счетчик моточасов.Возврат',
     type: 'floatFixed3',
-    required: false,
+    required: true,
   },
   {
     key: 'motohours_equip_end',

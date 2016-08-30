@@ -101,12 +101,15 @@ export default class WaybillFormWrap extends FormWrap {
 
 					if (props.element.status === 'active') {
 						this.schema = waybillClosingSchema;
+						let formErrors = this.validate(waybill, {});
+						if (typeof formErrors.motohours_end === 'undefined') formErrors.odometr_end = undefined;
+						if (typeof formErrors.odometr_end === 'undefined') formErrors.motohours_end = undefined;
 						this.setState({
 							formState: waybill,
-							formErrors: this.validate(waybill, {}),
+							formErrors,
 							canPrint: false,
-							canSave: ! !!_.filter(this.validate(waybill, {}), (v, k) => k === 'fuel_end' ? false : v).length,
-							canClose: ! !!_.filter(this.validate(waybill, {})).length,
+							canSave: ! !!_.filter(formErrors, (v, k) => k === 'fuel_end' ? false : v).length,
+							canClose: ! !!_.filter(formErrors).length,
 						});
 					} else {
 						this.setState({
@@ -155,6 +158,8 @@ export default class WaybillFormWrap extends FormWrap {
 		} else if (formState.status && formState.status === 'active') {
 			this.schema = waybillClosingSchema;
 			formErrors = this.validate(formState, formErrors);
+			if (typeof formErrors.motohours_end === 'undefined') formErrors.odometr_end = undefined;
+			if (typeof formErrors.odometr_end === 'undefined') formErrors.motohours_end = undefined;
 		}
 
 		newState.canSave = ! !!_.filter(formErrors, (v,k) => k === 'fuel_end' ? false : v).length;
@@ -343,7 +348,6 @@ export default class WaybillFormWrap extends FormWrap {
 	}
 
 	render() {
-
 		return 	<Div hidden={!this.props.showForm}>
 							<WaybillForm formState = {this.state.formState}
 													 onSubmit={this.handleFormSubmit.bind(this)}

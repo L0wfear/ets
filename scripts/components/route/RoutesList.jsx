@@ -321,7 +321,8 @@ class RoutesList extends Component {
 							</Div>
 							<RouteFormWrap element={route}
 										   onFormHide={this.onFormHide.bind(this)}
-										   showForm={this.state.showForm} />
+										   showForm={this.state.showForm}
+											 routesList={routesList} />
 						</div>
 					</Col>
 				</Row>

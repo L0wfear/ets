@@ -215,11 +215,11 @@ export class MissionForm extends Form {
 						</Col>
 
 				 		<Col md={3}>
-				   		<label>Время выполнения:</label>
+				   		<label style={{position: "absolute", right: -7, top: 31, fontWeight: 400}}>—</label>
 				 			<Div>
 								<Field
 										type="date"
-										label="с"
+										label="Время выполнения:"
 										error={errors['date_start']}
 										date={state.date_start}
 										disabled={IS_DISPLAY}
@@ -230,11 +230,10 @@ export class MissionForm extends Form {
 							</Div>
 				   	</Col>
 				   	<Col md={3}>
-              <label style={{minHeight: 15}}></label>
 				 			<Div>
 								<Field
 										type="date"
-										label="по"
+										label=""
 										error={errors['date_end']}
 										date={state.date_end}
 										disabled={IS_DISPLAY}

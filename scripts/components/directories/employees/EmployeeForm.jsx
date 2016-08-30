@@ -73,17 +73,29 @@ export default class EmployeeForm extends Form {
 										onChange={this.handleChange.bind(this, 'first_name')} />
 							</Div>
 							<Div>
-								<label>Отчество</label>
-								<Input type="text" value={state['middle_name']} onChange={this.handleChange.bind(this, 'middle_name')}/>
+								<Field
+										type="string"
+										label="Отчество"
+										value={state['middle_name']}
+										error={errors['middle_name']}
+										onChange={this.handleChange.bind(this, 'middle_name')} />
 							</Div>
 							<Div>
-								<label>Дата рождения</label>
-								<Datepicker date={state['birthday']} time={false} onChange={this.handleChange.bind(this, 'birthday')}/>
-								<br/>
+								<Field
+										type="date"
+										label="Дата рождения"
+										date={state['birthday']}
+										time={false}
+										error={errors['birthday']}
+										onChange={this.handleChange.bind(this, 'birthday')} />
 							</Div>
 							<Div>
-								<label>Телефон</label>
-								<Input type="text" value={state['phone']} onChange={this.handleChange.bind(this, 'phone')}/>
+								<Field
+										type="string"
+										label="Телефон"
+										value={state['phone']}
+										error={errors['phone']}
+										onChange={this.handleChange.bind(this, 'phone')} />
 							</Div>
 							<Div>
 								<Field
@@ -104,40 +116,71 @@ export default class EmployeeForm extends Form {
 
 						<Col md={6}>
 							<Div>
-								<label>Табельный номер</label>
-								<Input type="number" value={state['personnel_number']} onChange={this.handleChange.bind(this, 'personnel_number')}/>
+								<Field
+										type="number"
+										label="Табельный номер"
+										value={state['personnel_number']}
+										error={errors['personnel_number']}
+										onChange={this.handleChange.bind(this, 'personnel_number')} />
 							</Div>
+							<Div>
 								<Field
 										type="string"
 										label="Специальное удостоверение"
 										value={state['special_license']}
 										error={errors['special_license']}
 										onChange={this.handleChange.bind(this, 'special_license')} />
+							</Div>
+							<Div>
 								<Field
 										type="string"
 										label="Водительское удостоверение"
 										value={state['drivers_license']}
 										error={errors['drivers_license']}
 										onChange={this.handleChange.bind(this, 'drivers_license')} />
-							<Div>
-								<label>Предпочитаемое ТрС</label>
-								<EtsSelect options={CARS} value={state['prefer_car']} onChange={this.handleChange.bind(this, 'prefer_car')}/>
 							</Div>
 							<Div>
-								<label>Состояние</label>
-								<EtsSelect options={DRIVER_STATES} value={state.active ? 1 : 0} onChange={this.handleChange.bind(this, 'active')}/>
+								<Field
+										type="select"
+										label="Предпочитаемое ТрС"
+										value={state['prefer_car']}
+										options={CARS}
+										error={errors['prefer_car']}
+										onChange={this.handleChange.bind(this, 'prefer_car')} />
 							</Div>
 							<Div>
-								<label>Медицинская справка №</label>
-								<Input type="text" value={state['medical_certificate']} onChange={this.handleChange.bind(this, 'medical_certificate')}/>
+								<Field
+										type="select"
+										label="Состояние"
+										value={state.active ? 1 : 0}
+										options={DRIVER_STATES}
+										error={errors['active']}
+										onChange={this.handleChange.bind(this, 'active')} />
 							</Div>
 							<Div>
-								<label>Срок действия медицинской справки</label>
-								<Datepicker date={state['medical_certificate_date']} time={false} onChange={this.handleChange.bind(this, 'medical_certificate_date')}/>
+								<Field
+										type="string"
+										label="Медицинская справка №"
+										value={state['medical_certificate']}
+										error={errors['medical_certificate']}
+										onChange={this.handleChange.bind(this, 'medical_certificate')} />
 							</Div>
 							<Div>
-								<label>СНИЛС №</label>
-								<Input type="text" value={state['snils']} onChange={this.handleChange.bind(this, 'snils')}/>
+								<Field
+										type="date"
+										label="Срок действия медицинской справки"
+										date={state['medical_certificate_date']}
+										time={false}
+										error={errors['medical_certificate_date']}
+										onChange={this.handleChange.bind(this, 'medical_certificate_date')} />
+							</Div>
+							<Div>
+								<Field
+										type="string"
+										label="СНИЛС №"
+										value={state['snils']}
+										error={errors['snils']}
+										onChange={this.handleChange.bind(this, 'snils')} />
 							</Div>
 						</Col>
 

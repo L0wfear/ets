@@ -22,7 +22,10 @@ let toFormData = (data) => {
 
 export function toUrlWithParams(url, data) {
   let params = _.map(data, (v, k) => `${k}=${encodeURIComponent(v)}`).join('&');
-  return `${url}?${params}`;
+  if (params && params.length) {
+    return `${url}?${params}`;
+  }
+  return `${url}`;
 };
 
 const TRACK_URL = getOldUrl('/tracks/');

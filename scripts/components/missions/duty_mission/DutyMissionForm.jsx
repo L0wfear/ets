@@ -193,22 +193,54 @@ export class DutyMissionForm extends Form {
             <Col md={6}>
               <Row>
     				 		<Col md={6}>
-    				   		<label>Время выполнения, планируемое</label>
-    				 			<Div>c <Datepicker date={state.plan_date_start} onChange={this.handleChange.bind(this, 'plan_date_start')} disabled={IS_DISPLAY}/></Div>
+									<label style={{position: "absolute", right: -7, top: 31, fontWeight: 400}}>—</label>
+						 			<Div>
+										<Field
+												type="date"
+												label="Время выполнения, планируемое:"
+												error={errors['plan_date_start']}
+												date={state.plan_date_start}
+												disabled={IS_DISPLAY}
+												onChange={this.handleChange.bind(this, 'plan_date_start')} />
+									</Div>
     				   	</Col>
     				   	<Col md={6}>
-                  <label style={{minHeight: 15}}></label>
-    				 			<Div>по <Datepicker date={state.plan_date_end} min={state.plan_date_start} onChange={this.handleChange.bind(this, 'plan_date_end')} disabled={IS_DISPLAY}/></Div>
+									<Div>
+										<Field
+												type="date"
+												label=""
+												error={errors['plan_date_end']}
+												date={state.plan_date_end}
+												disabled={IS_DISPLAY}
+												min={state.plan_date_start}
+												onChange={this.handleChange.bind(this, 'plan_date_end')} />
+									</Div>
     				   	</Col>
 
                 <Div hidden={!(IS_CLOSING || IS_COMPLETED)}>
       				 		<Col md={6}>
-      				   		<label>Время выполнения, фактическое</label>
-      				 			<Div>c <Datepicker date={state.fact_date_start} onChange={this.handleChange.bind(this, 'fact_date_start')} disabled={IS_CLOSED}/></Div>
+      				   		<label style={{position: "absolute", right: -7, top: 31, fontWeight: 400}}>—</label>
+										<Div>
+											<Field
+													type="date"
+													label="Время выполнения, фактическое:"
+													error={errors['fact_date_start']}
+													date={state.fact_date_start}
+													disabled={IS_CLOSED}
+													onChange={this.handleChange.bind(this, 'fact_date_start')} />
+										</Div>
       				   	</Col>
       				   	<Col md={6}>
-                    <label style={{minHeight: 15}}></label>
-      				 			<Div>по <Datepicker date={state.fact_date_end} min={state.fact_date_start} onChange={this.handleChange.bind(this, 'fact_date_end')} disabled={IS_CLOSED}/></Div>
+										<Div>
+											<Field
+													type="date"
+													label=""
+													error={errors['fact_date_end']}
+													date={state.fact_date_end}
+													min={state.fact_date_start}
+													disabled={IS_CLOSED}
+													onChange={this.handleChange.bind(this, 'fact_date_end')} />
+										</Div>
       				   	</Col>
                 </Div>
               </Row>

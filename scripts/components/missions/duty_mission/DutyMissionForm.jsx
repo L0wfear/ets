@@ -151,8 +151,7 @@ export class DutyMissionForm extends Form {
     const TECH_OPERATIONS = technicalOperationsList.map(({id, name}) => ({value: id, label: name}));
     const MISSION_SOURCES = missionSourcesList.map(({id, name}) => ({value: id, label: name}));
     const ROUTES = routesList.map(({id, name}) => ({value: id, label: name}));
-    const EMPLOYEES = employeesList.filter(d => d.position_key == EMPLOYEES_RKU_FILTER)
-      .map( d => ({value: d.id, label: `${d.last_name} ${d.first_name} ${d.middle_name}`}));
+    const EMPLOYEES = employeesList.map( d => ({value: d.id, label: `${d.last_name} ${d.first_name} ${d.middle_name}`}));
     const MISSIONS = missionsList.map( ({id, number, technical_operation_name}) => {
 			return {id, value: id, label: `№${number} (${technical_operation_name})`};
 		});

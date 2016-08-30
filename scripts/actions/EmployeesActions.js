@@ -6,7 +6,10 @@ import _ from 'lodash';
 export default class EmployeesActions extends Actions {
 
   getEmployees(isBrigade = false) {
-    const payload = isBrigade ? {isBrigade: 1} : {};
+    const payload = {};
+    if (isBrigade) {
+      payload.is_brigade = 1;
+    }
     return EmployeeService.get(payload);
   }
 

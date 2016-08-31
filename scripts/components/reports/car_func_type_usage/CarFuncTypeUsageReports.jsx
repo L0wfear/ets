@@ -10,7 +10,7 @@ import { getToday9am, getTomorrow9am, getToday0am, getToday2359, getFormattedDat
 import { getReportNotReadyNotification2 } from 'utils/notifications';
 import { isEmpty } from 'utils/functions';
 import CarFuncTypeUsageReportHeader from './CarFuncTypeUsageReportHeader.jsx';
-import { FluxContext, HistoryContext, connectToStores, exportable } from 'utils/decorators';
+import { FluxContext, connectToStores, exportable, staticProps } from 'utils/decorators';
 
 let tableMeta = {
 	cols: [
@@ -77,7 +77,9 @@ let CarFuncTypeUsageReportsTable = (props) => {
 
 @connectToStores(['reports'])
 @FluxContext
-@HistoryContext
+@staticProps({
+  entity: 'car_func_type_usage_report'
+})
 @exportable
 export default class CarFuncTypeUsageReports extends Component {
 
@@ -92,25 +94,23 @@ export default class CarFuncTypeUsageReports extends Component {
       geozone_type: 'odh',
       company_id: null
 		};
-		this.entity = '';
 	}
 
   handleChange(field, value) {
 		this.setState({[field]: value});
 	}
 
+	getCleanState(state) {
+		return {
+			...state,
+			date_start: createValidDateTime(state.date_start),
+			date_end: createValidDateTime(state.date_end)
+		};
+	}
+
   createDailyCleaningReportETS() {
 		const { flux } = this.context;
 		flux.getActions('reports').getCarFuncTypeUsageReports(this.state);
-		this.entity = `car_func_type_usage_report/?date_start=${
-			createValidDateTime(this.state.date_start)
-		}&date_end=${
-			createValidDateTime(this.state.date_end)
-		}&geozone_type=${
-			this.state.geozone_type
-		}&company_id=${
-			this.state.company_id
-		}`;
   }
 
 	render() {
@@ -133,7 +133,7 @@ export default class CarFuncTypeUsageReports extends Component {
             {...this.state}/>
 				<CarFuncTypeUsageReportsTable
             data={carFuncTypeUsageReportsList}>
-					{this.entity && <Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt" /></Button>}
+					<Button disabled={!carFuncTypeUsageReportsList.length} bsSize="small" onClick={() => this.export(this.getCleanState(this.state))}><Glyphicon glyph="download-alt" /></Button>
 				</CarFuncTypeUsageReportsTable>
 			</div>
 		);

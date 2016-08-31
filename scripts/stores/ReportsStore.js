@@ -33,7 +33,7 @@ class ReportsStore extends Store {
   }
 
   handleGetCarFuncTypeUsageReports({result}) {
-    this.setState({carFuncTypeUsageReportsList: result});
+    this.setState({carFuncTypeUsageReportsList: result.rows});
   }
 
   handleGetDailyCleaningReportsETS(dailyCleaningReports) {

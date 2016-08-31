@@ -73,13 +73,6 @@ class CarFuncTypeUsageReportHeader extends Component {
     this.setState({companyOptions});
   }
 
-  componentDidMount() {
-		// const { flux } = this.context;
-    // const user = flux.getStore('session').getCurrentUser();
-    // const companyOptions = [{value: user.company_id, label: user.company_name}];
-    // this.setState({companyOptions});
-  }
-
   render() {
     let props = this.props;
     const { companyOptions } = this.state;

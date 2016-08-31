@@ -150,8 +150,8 @@ const routes = (
       <Route path="technical-operations" component={directories.technicalOperations} onEnter={requireAuth}/>
       <Route path="car-func-types" component={directories.carTypes} onEnter={requireAuth}/>
       <Route path="cars" component={directories.cars} onEnter={requireAuth}/>
-      <Route path="odh-support-standards" component={directories.odhSupportStandards} onEnter={requireAuth}/>
-      <Route path="odh-support-standards-data-summer" component={directories.odhSupportStandardsDataSummer} onEnter={requireAuth}/>
+      <Route path="odh-norm" component={directories.odhNorm} onEnter={requireAuth}/>
+      <Route path="odh-norm-data-summer" component={directories.odhNormDataSummer} onEnter={requireAuth}/>
       {/* НСИ - Реестры и справочники - Геоинструментарий */}
       <Route path="odh" component={directories.geoobjects.odh} onEnter={requireAuth}/>
       <Route path="dt" component={directories.geoobjects.dt} onEnter={requireAuth}/>

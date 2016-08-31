@@ -78,8 +78,8 @@ export default class MainPage extends React.Component {
             <MenuItem permissions={['fuel_operation.list']} active={path === '/fuel-operations'} href="#/fuel-operations">Справочник операций для расчета топлива</MenuItem>
             <MenuItem permissions={['type.list']} active={path === '/car-func-types'} href="#/car-func-types">Справочник типов техники</MenuItem>
             <MenuItem permissions={['odh.list']} active={path === '/odh'} href="#/odh">Справочник ОДХ</MenuItem>
-            <MenuItem permissions={['odh_support_standards.list']} active={path === '/odh-support-standards'} href="#/odh-support-standards">Справочник нормативов по содержанию ОДХ</MenuItem>
-            <MenuItem permissions={['odh_support_standards_data_summer.list']} active={path === '/odh-support-standards-data-summer'} href="#/odh-support-standards-data-summer">Справочник показателей норм по содержанию ОДХ (лето)</MenuItem>
+            <MenuItem permissions={['odh_norm.list']} active={path === '/odh-norm'} href="#/odh-norm">Справочник нормативов по содержанию ОДХ</MenuItem>
+            <MenuItem permissions={['odh_norm_data_summer.list']} active={path === '/odh-norm-data-summer'} href="#/odh-norm-data-summer">Справочник показателей норм по содержанию ОДХ (лето)</MenuItem>
             <MenuItem permissions={['dt.list']} active={path === '/dt'} href="#/dt">Справочник ДТ</MenuItem>
             <MenuItem permissions={['ssp.list']} active={path === '/ssp'} href="#/ssp">Справочник ССП</MenuItem>
             <MenuItem permissions={['msp.list']} active={path === '/msp'} href="#/msp">Справочник МСП</MenuItem>

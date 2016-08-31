@@ -1,40 +1,40 @@
 import { Actions } from 'flummox';
-import { ODHSupportStandardsService, ODHSupportStandardsDataSummerService } from 'api/Services';
+import { ODHNormService, ODHNormDataSummerService } from 'api/Services';
 import _ from 'lodash';
 
 export default class ODHActions extends Actions {
 
-  getODHSupportStandards() {
-    return ODHSupportStandardsService.get();
+  getODHNorm() {
+    return ODHNormService.get();
   }
 
-  updateODHSupportStandard(formState) {
+  updateODHNorm(formState) {
     const payload = _.clone(formState);
-    return ODHSupportStandardsService.put(payload, true, 'json');
+    return ODHNormService.put(payload, true, 'json');
   }
 
-  createODHSupportStandard(formState) {
+  createODHNorm(formState) {
     const payload = _.clone(formState);
-    return ODHSupportStandardsService.post(payload, true, 'json');
+    return ODHNormService.post(payload, true, 'json');
   }
 
-  getODHSupportStandardsDataSummer() {
-    return ODHSupportStandardsDataSummerService.get();
+  getODHNormDataSummer() {
+    return ODHNormDataSummerService.get();
   }
 
-  deleteODHSupportStandardsDataSummer() {
+  deleteODHNormDataSummer() {
     const payload = _.clone(formState);
-    return ODHSupportStandardsDataSummerService.delete(payload, true, 'json');
+    return ODHNormDataSummerService.delete(payload, true, 'json');
   }
 
-  updateODHSupportStandardDataSummer(formState) {
+  updateODHNormDataSummer(formState) {
     const payload = _.clone(formState);
-    return ODHSupportStandardsDataSummerService.put(payload, true, 'json');
+    return ODHNormDataSummerService.put(payload, true, 'json');
   }
 
-  createODHSupportStandardDataSummer(formState) {
+  createODHNormDataSummer(formState) {
     const payload = _.clone(formState);
-    return ODHSupportStandardsDataSummerService.post(payload, true, 'json');
+    return ODHNormDataSummerService.post(payload, true, 'json');
   }
 
 }

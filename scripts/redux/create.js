@@ -2,10 +2,11 @@ import { createStore as _createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import promiseMiddleware from 'redux-promise';
 import createLogger from 'redux-logger';
+import { loadingMiddleware } from 'redux-promise-loading';
 
 export default function createStore() {
 
-  const middleware = [thunk, promiseMiddleware, createLogger({collapsed: true})];
+  const middleware = [thunk, loadingMiddleware(), promiseMiddleware, createLogger({collapsed: true})];
 
   let finalCreateStore = applyMiddleware(...middleware)(_createStore);
 

@@ -10,14 +10,14 @@ import { connectToStores, staticProps } from 'utils/decorators';
   listName: 'odhNormList',
   tableComponent: ODHNormTable,
   formComponent: ODHNormFormWrap,
-  operations: ['LIST', 'CREATE', 'READ', 'UPDATE']
+  operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE']
 })
 export default class ODHNormList extends ElementsList {
 
 	constructor(props, context) {
 		super(props);
-    // DELETE пока не используется
-    // this.removeElementAction = context.flux.getActions('employees').deleteODHNorm;
+
+    this.removeElementAction = context.flux.getActions('odh').deleteODHNorm;
 	}
 
   componentDidMount() {

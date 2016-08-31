@@ -10,12 +10,16 @@ export default class ODHActions extends Actions {
 
   updateODHNorm(formState) {
     const payload = _.clone(formState);
-    return ODHNormService.put(payload, true, 'json');
+    return ODHNormService.path(formState.id).put(payload, true, 'json');
   }
 
   createODHNorm(formState) {
     const payload = _.clone(formState);
     return ODHNormService.post(payload, true, 'json');
+  }
+
+  deleteODHNorm(formState) {
+    return ODHNormService.path(formState.id).delete();
   }
 
   getODHNormDataSummer() {

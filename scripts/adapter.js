@@ -62,7 +62,7 @@ function HTTPMethod(url, data = {}, method, type) {
         checkResponse(url, r, responseBody, method);
         return new Promise((res, rej) => res(responseBody));
       })
-    };
+    }
   });
 }
 

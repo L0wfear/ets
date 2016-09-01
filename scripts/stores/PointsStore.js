@@ -27,32 +27,9 @@ export default class PointsStore extends Store {
    * @property {string|null} singleCarTrack=null - гос. номер ТС, если он есть то включается режим отображения только 1 точки
    * @property {array} singleCarTrackDates - даты для отображения трека по 1 БНСО
    */
-  static get initialState() {
-    return {
-      selected: null,
-      points: {},
-      filter: {
-        status: statuses.map(s => s.id),
-        type: [],
-        owner: [],
-      },
-      byStatus: {
-        1: 0,
-        2: 0,
-        3: 0,
-        4: 0
-      },
-      byConnectionStatus: {
-        0: 0,
-        1: 0
-      },
-      trackingMode: false,
-      showTrackingGradient: false,
-      isRenderPaused: false,
-      singleCarTrack: null,
-      singleCarTrackDates: [],
-    }
-  }
+  // static get initialState() {
+  //   return
+  // }
 
   /**
    * Создает хранилище
@@ -75,8 +52,6 @@ export default class PointsStore extends Store {
 
     this.register(loginActions.login, this.handleLogin);
 
-    this.state = _.cloneDeep(PointsStore.initialState);
-
     let currentUser;
 
     try {
@@ -85,9 +60,36 @@ export default class PointsStore extends Store {
       currentUser = {};
     }
 
-    if (currentUser.company_id) {
-      this.state.filter.owner = [currentUser.company_id];
-    }
+    // if (currentUser.company_id) {
+    //   this.initialState.filter.owner = [currentUser.company_id];
+    // }
+
+    this.initialState = {
+      selected: null,
+      points: {},
+      filter: {
+        status: statuses.map(s => s.id),
+        type: [],
+        owner: currentUser.company_id ? [currentUser.company_id] : [],
+      },
+      byStatus: {
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0
+      },
+      byConnectionStatus: {
+        0: 0,
+        1: 0
+      },
+      trackingMode: false,
+      showTrackingGradient: false,
+      isRenderPaused: false,
+      singleCarTrack: null,
+      singleCarTrackDates: [],
+    };
+
+    this.state = _.cloneDeep(this.initialState);
   }
 
   /**
@@ -125,7 +127,7 @@ export default class PointsStore extends Store {
       this.ws.close();
       this.ws = null;
     }
-    this.setState(_.cloneDeep(PointsStore.initialState));
+    this.setState(_.cloneDeep(this.initialState));
     this.pauseRendering();
   }
 

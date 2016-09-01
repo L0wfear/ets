@@ -14,11 +14,9 @@ class Field extends React.Component {
   renderBoolean() {
     const { label = ''} = this.props;
     return <Div hidden={this.props.hidden}>
-             <label>{label}</label>
-             <Div>
-              <input type="checkbox" checked={this.props.value} {...this.props} />
-             </Div>
-           </Div>
+      <label>{label}</label>
+      <input type="checkbox" style={{fontSize: '20px', marginLeft: '5px'}} checked={this.props.value} onChange={this.props.onChange} />
+    </Div>
   }
 
   renderNumber() {

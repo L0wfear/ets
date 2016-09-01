@@ -18,7 +18,7 @@ export default class ODHNormForm extends Form {
     const title = IS_CREATING ? 'Добавление норматива по содержанию ОДХ' : 'Изменение норматива по содержанию ОДХ';
 
 		return (
-			<Modal {...this.props} bsSize="large" backdrop="static">
+			<Modal {...this.props} backdrop="static">
 				<Modal.Header closeButton>
 					<Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
 				</Modal.Header>
@@ -38,6 +38,14 @@ export default class ODHNormForm extends Form {
 								value={state['unit']}
 								error={errors['unit']}
 								onChange={this.handleChange.bind(this, 'unit')} />
+					</Div>
+					<Div>
+						<Field
+								type="boolean"
+								label="Расходный материал"
+								value={state['expendable']}
+								error={errors['expendable']}
+								onChange={this.handleChange.bind(this, 'expendable', !!!state['expendable'])} />
 					</Div>
 	      </Modal.Body>
 	      <Modal.Footer>

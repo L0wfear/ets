@@ -17,12 +17,22 @@ let tableMeta = {
       caption: 'Единица измерения',
       type: 'text',
       filter: false
+    },
+    {
+      name: 'expendable',
+      caption: 'Расходный материал',
+      filter: {
+				type: 'select',
+				labelFunction: (expendable) => expendable ? 'Да' : 'Нет'
+			},
     }
   ]
 };
 
 let ODHNormTable = (props) => {
-	const renderers = {};
+	const renderers = {
+    expendable: ({data}) => <div style={{textAlign: "center"}}><input type="checkbox" checked={!!data} readOnly /></div>
+  };
 
 	return <Table title='Нормативы по содержанию ОДХ'
       results={props.data}

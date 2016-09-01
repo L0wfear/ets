@@ -11,6 +11,12 @@ export const odhNormSchema = {
 			title: 'Единица измерения',
 			type: 'string',
 			required: false,
+		},
+		{
+			key: 'expendable',
+			title: 'Расходный материал',
+			type: 'select',
+			required: false,
 		}
 	],
 };

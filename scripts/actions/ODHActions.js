@@ -14,7 +14,8 @@ export default class ODHActions extends Actions {
   }
 
   createODHNorm(formState) {
-    const payload = _.clone(formState);
+    let payload = _.clone(formState);
+    if (typeof payload.expendable === 'undefined') payload.expendable = false;
     return ODHNormService.post(payload, true, 'json');
   }
 

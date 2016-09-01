@@ -3,6 +3,11 @@
  * @module utils/functions
  */
 
+/**
+ * Стандартная проверка на null/undefined в js
+ * @param {any} value
+ * @return {boolean}
+ */
 export function isNotNull(value) {
   return typeof value !== 'undefined' && value !== null;
 }
@@ -10,6 +15,7 @@ export function isNotNull(value) {
 /**
  * Проверяет значение на "пустоту"
  * "Пустым" считается значение undefined, null и пустая строка
+ * @param {any} value
  * @example
  * // true
  * isEmpty('');
@@ -19,7 +25,7 @@ export function isNotNull(value) {
  * @example
  * // true
  * isEmpty(null)
- * @return {boolean} isEmpty - пyстое ли значение
+ * @return {boolean} пyстое ли значение
  */
 export function isEmpty(value) {
   if (!isNotNull(value)) return true;
@@ -34,7 +40,9 @@ export function saveData(blob, fileName) {
   a.style = "display: none";
   let url = window.URL.createObjectURL(blob);
   a.href = url;
-  a.download = fileName;
+  if (fileName) {
+    a.download = fileName;
+  }
   a.click();
   setTimeout(() => window.URL.revokeObjectURL(url), 100);
 }
@@ -53,9 +61,15 @@ export function printData(blob) {
   };
 }
 
-export function hasOdometer(gov_number) {
-  if (gov_number && gov_number[0]) {
-    return isNaN(gov_number[0]);
+/**
+ * Проверяет наличие одометра у ТС по гос.номеру
+ * если гос. номер начинается с буквы - одометр есть
+ * @param {string} carStateNumber - гос.номер
+ * @return {boolean} hasOdometer - есть ли одометр
+ */
+export function hasOdometer(carStateNumber) {
+  if (carStateNumber && carStateNumber[0]) {
+    return isNaN(carStateNumber[0]);
   }
   return null;
 }

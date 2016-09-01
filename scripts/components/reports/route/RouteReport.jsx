@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
-import connectToStores from 'flummox/connect';
 import Table from 'components/ui/table/DataTable.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
-
-// function createFakeMissingCarData(types, el, i) {
-// 	el.type = _.find(types, t => t.id === el.type_id).title;
-// 	return el;
-// }
+import { connectToStores, FluxContext, exportable } from 'utils/decorators';
+import { isEmpty } from 'utils/functions';
 
 let getStatusLabel = (status) => status === 'fail' ? 'Нет' : 'Да';
-let getTypeLabel = (type) => type === 'distance' ? 'Протяженность' : type;
 
 let tableMeta = {
 	cols: [
@@ -66,7 +61,7 @@ let tableMeta = {
 			filter: false
 		},
 		{
-			name: 'technical_operation_considered_length',
+			name: 'check_type_name',
 			caption: 'Тип проверки',
 			type: 'text',
 			filter: false
@@ -74,15 +69,14 @@ let tableMeta = {
 	]
 }
 
-let CarsTable = (props) => {
+let RouteOdhCoveringReportTable = (props) => {
 
 	const renderers = {
-		delta: ({data}) => <div>{data ? parseFloat(data).toFixed(2) : ''}</div>,
-  	traveled: ({data}) => <div>{data ? parseFloat(data).toFixed(2) : ''}</div>,
-  	footway_length: ({data}) => <div>{data ? parseFloat(data).toFixed(2) : ''}</div>,
-  	gutters_length: ({data}) => <div>{data ? parseFloat(data).toFixed(2) : ''}</div>,
-    status: ({data}) => <div>{data ? getStatusLabel(data) : ''}</div>,
-    technical_operation_considered_length: ({data}) => <div>{data ? getTypeLabel(data) : ''}</div>,
+		delta: ({data}) => <div>{!isEmpty(data) ? parseFloat(data).toFixed(2) : ''}</div>,
+  	traveled: ({data}) => <div>{!isEmpty(data) ? parseFloat(data).toFixed(2) : ''}</div>,
+  	footway_length: ({data}) => <div>{!isEmpty(data) ? parseFloat(data).toFixed(2) : ''}</div>,
+  	gutters_length: ({data}) => <div>{!isEmpty(data) ? parseFloat(data).toFixed(2) : ''}</div>,
+    status: ({data}) => <div>{!isEmpty(data) ? getStatusLabel(data) : ''}</div>,
 	};
 
 	return <Table title='Покрытие ОДХ маршрутами'
@@ -93,16 +87,13 @@ let CarsTable = (props) => {
 
 }
 
-class RouteReports extends Component {
-
-
+@connectToStores(['routes'])
+@FluxContext
+@exportable
+export default class RouteOdhCoveringReport extends Component {
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			selectedCar: null,
-			showForm: false,
-		};
+		this.entity = 'route_odh_covering_report/' + this.props.routeParams.id;
 	}
 
 	componentDidMount() {
@@ -111,22 +102,14 @@ class RouteReports extends Component {
 	}
 
 	render() {
-
 		const { selectedReportData = [] } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
-				<CarsTable data={selectedReportData} >
-				</CarsTable>
+				<RouteOdhCoveringReportTable data={selectedReportData} >
+					<Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt" /></Button>
+				</RouteOdhCoveringReportTable>
 			</div>
 		);
-
 	}
 }
-
-RouteReports.contextTypes = {
-  history: React.PropTypes.object,
-	flux: React.PropTypes.object,
-};
-
-export default connectToStores(RouteReports, ['routes']);

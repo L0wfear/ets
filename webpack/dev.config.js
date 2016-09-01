@@ -8,7 +8,7 @@ var alias = require('./alias');
 var stand = process.env.STAND || 'development';
 
 module.exports = {
-  devtool: 'source-map',
+  devtool: 'eval',
   context: path.resolve(__dirname, '..'),
   entry: {
     'app': [
@@ -69,8 +69,7 @@ module.exports = {
     new webpack.DefinePlugin({
       __CLIENT__: true,
       __SERVER__: false,
-      __DEVELOPMENT__: true,
-      __DEVTOOLS__: true  // <-------- DISABLE redux-devtools HERE
+      __DEVELOPMENT__: true
     }),
     function () {
       this.plugin('done', notifyStats);

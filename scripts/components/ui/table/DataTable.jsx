@@ -3,6 +3,7 @@ import { Button, Glyphicon } from 'react-bootstrap';
 import ColumnControl from './ColumnControl.jsx'
 import ClickOutHandler from 'react-onclickout';
 import Filter from './filter/Filter.jsx';
+import FilterButton from './filter/FilterButton.jsx';
 import Paginator from '../Paginator.jsx';
 import Griddle from 'griddle-react';
 import Div from '../Div.jsx';
@@ -213,7 +214,7 @@ export default class Table extends React.Component {
       initialArray.push({
         columnName: 'rowNumber',
         displayName: '№',
-        cssClassName: 'width60',
+        cssClassName: 'width30',
         filter: false,
         customComponent: renderers['rowNumber']
       });
@@ -248,7 +249,15 @@ export default class Table extends React.Component {
   initializeRowMetadata() {
 
   	const rowMetadata = {
-      "bodyCssClassName": (rowData) => rowData.isSelected === true ? "selected-row" : "standard-row",
+      "bodyCssClassName": (rowData) => {
+        if (rowData.isSelected) {
+          return "selected-row"
+        }
+        if (rowData.isHighlighted) {
+          return "highlighted-row"
+        }
+        return "standard-row"
+      }
   	};
 
   	return rowMetadata;
@@ -266,6 +275,11 @@ export default class Table extends React.Component {
     // проверка берется по this.state.filterValues
     let isValid = true;
     _.mapKeys(this.state.filterValues, (value, key) => {
+      
+      if (obj[key] === null) {
+        isValid = false
+        return;
+      };
 
       if (/(timestamp|date|birthday)/.test(key) && !_.isArray(value)) {
         if (moment(obj[key]).format(global.APP_DATE_FORMAT) !== moment(value).format(global.APP_DATE_FORMAT)) {
@@ -320,6 +334,17 @@ export default class Table extends React.Component {
     return el;
   }
 
+  processHighlighted(highlight, el, i) {
+    el.isHighlighted === false;
+    if (highlight.length > 0) {
+      highlight.forEach((obj) => {
+        let field = Object.keys(obj)[0];
+        if (el[field] === obj[field]) el.isHighlighted = true;
+      });
+    }
+    return el
+  }
+
   processEmptyCols(tableCols, el, i) {
     _.each(tableCols, col => {
       if (typeof el[col] === 'undefined') {
@@ -329,9 +354,10 @@ export default class Table extends React.Component {
     return el;
   }
 
-  processTableData(data, tableCols, selected, selectField, onRowSelected) {
+  processTableData(data, tableCols, selected, selectField, onRowSelected, highlight = []) {
     return _(data)
            .map(this.processEmptyCols.bind(this, tableCols))
+           .map(this.processHighlighted.bind(this, highlight))
            .map(this.processSelected.bind(this, selected, selectField, onRowSelected))
            .filter(this.shouldBeRendered.bind(this))
            .value();
@@ -424,7 +450,7 @@ export default class Table extends React.Component {
     const { tableMeta, renderers, onRowSelected, selected,
       selectField, checked, title, noTitle, multiSelection, noFilter,
       enumerated, enableSort, noDataMessage, className, noHeader,
-      refreshable, columnControl } = this.props;
+      refreshable, columnControl, highlight } = this.props;
     const { initialSort, initialSortAscending, columnControlValues } = this.state;
 
     let tableMetaCols = _.cloneDeep(tableMeta.cols);
@@ -434,12 +460,23 @@ export default class Table extends React.Component {
       data = [];
     }
 
-    let results = this.processTableData(data, tableCols, selected, selectField, onRowSelected);
+    let results = this.processTableData(data, tableCols, selected, selectField, onRowSelected, highlight);
+
+    let columnSize = columnControlValues.length;
+    let tablePropsClass = className;
+
+    if (columnSize >= 0 && columnSize < 8 && columnControl) {
+      tablePropsClass += '-sm';
+    } else if (columnSize >= 8 && columnSize < 14) {
+      tablePropsClass += '-md';
+    } else if (columnSize >= 14 && columnSize <= 20) {
+      tablePropsClass += '-lg';
+    };
 
     const columnMetadata = this.initializeMetadata(tableMetaCols, renderers);
     const tableCols = columnMetadata.map(m => m.columnName).filter(c => columnControlValues.indexOf(c) === -1);
 		const rowMetadata = this.initializeRowMetadata();
-    const tableClassName = cx('data-table', className);
+    const tableClassName = cx('data-table', tablePropsClass);
 
     return (
       <Div className={tableClassName}>
@@ -448,54 +485,51 @@ export default class Table extends React.Component {
             {columnControl &&
               <ClickOutHandler onClickOut={this.closeColumnControl.bind(this)}>
                 <ColumnControl
-                  show={this.state.columnControlModalIsOpen}
-                  onChange={this.saveColumnControl.bind(this)}
-                  onClick={this.toggleColumnControl.bind(this)}
-                  values={this.state.columnControlValues}
-                  options={tableMetaCols.filter(el => el.display !== false)}/>
+                    show={this.state.columnControlModalIsOpen}
+                    onChange={this.saveColumnControl.bind(this)}
+                    onClick={this.toggleColumnControl.bind(this)}
+                    values={this.state.columnControlValues}
+                    options={tableMetaCols.filter(el => el.display !== false)}/>
               </ClickOutHandler>
             }
-            {!noFilter &&
-              <ClickOutHandler onClickOut={this.closeFilter.bind(this)}>
-                <Filter direction={'left'}
-                    show={this.state.filterModalIsOpen}
-                    onSubmit={this.saveFilter.bind(this)}
-                    onClick={this.toggleFilter.bind(this)}
-                    onHide={this.closeFilter.bind(this)}
-                    active={_.keys(this.state.filterValues).length}
-                    values={this.state.filterValues}
-                    options={tableMetaCols.filter(el => el.filter !== false)}
-                    tableData={this.props.results}
-                    disabled={this.props.isHierarchical}
-                    active={_.keys(this.state.filterValues).length}
-                    className="filter-wrap"/>
-              </ClickOutHandler>
-            }
+            {!noFilter && <FilterButton
+                disabled={this.props.isHierarchical}
+                show={this.state.filterModalIsOpen}
+                active={_.keys(this.state.filterValues).length}
+                onClick={this.toggleFilter.bind(this)}/>}
             {refreshable &&
               <Button
-                bsSize="small"
-                onClick={this.props.onRefresh}>
-                  <Glyphicon glyph="refresh" />
+                  bsSize="small"
+                  onClick={this.props.onRefresh}>
+                <Glyphicon glyph="refresh" />
               </Button>
             }
             {this.props.children}
           </div>
+          {!noFilter && <Filter
+              show={this.state.filterModalIsOpen}
+              onSubmit={this.saveFilter.bind(this)}
+              onHide={this.closeFilter.bind(this)}
+              values={this.state.filterValues}
+              options={tableMetaCols.filter(el => el.filter !== false)}
+              tableData={this.props.results}/>}
         </Div>
-        <Griddle key={'griddle'}
-          results={results}
-          enableSort={enableSort}
-          initialSort={initialSort}
-          initialSortAscending={initialSortAscending}
-          columnMetadata={columnMetadata}
-          columns={tableCols}
-          resultsPerPage={15}
-          useCustomPagerComponent={true}
-          externalChangeSort={this.handleChangeSort.bind(this)}
-          customPagerComponent={this.props.serverPagination ? <Div/> : Paginator}
-          onRowClick={onRowSelected}
-          rowMetadata={rowMetadata}
-          onKeyPress={this.handleKeyPress.bind(this)}
-          noDataMessage={noDataMessage ? noDataMessage : noFilter ? '' : 'Нет данных'}/>
+        <Griddle
+            key={'griddle'}
+            results={results}
+            enableSort={enableSort}
+            initialSort={initialSort}
+            initialSortAscending={initialSortAscending}
+            columnMetadata={columnMetadata}
+            columns={tableCols}
+            resultsPerPage={15}
+            useCustomPagerComponent={true}
+            externalChangeSort={this.handleChangeSort.bind(this)}
+            customPagerComponent={this.props.serverPagination ? <Div/> : Paginator}
+            onRowClick={onRowSelected}
+            rowMetadata={rowMetadata}
+            onKeyPress={this.handleKeyPress.bind(this)}
+            noDataMessage={noDataMessage ? noDataMessage : noFilter ? '' : 'Нет данных'}/>
       </Div>
     );
   }

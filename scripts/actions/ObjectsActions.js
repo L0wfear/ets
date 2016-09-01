@@ -1,8 +1,7 @@
 import { Actions } from 'flummox';
 import { getCustomers } from '../adapter.js';
 import _ from 'lodash';
-import { getOwners } from '../owners.js';
-import { isEmpty } from 'utils/functions';
+import { isEmpty, saveData } from 'utils/functions';
 import { createValidDateTime } from 'utils/dates';
 import {
   FaxogrammService,
@@ -42,10 +41,6 @@ export default class ObjectsActions extends Actions {
     return CustomersService.get();
   }
 
-  getOwners() {
-    return getOwners();
-  }
-
   getTypes() {
     return TypesService.get();
   }
@@ -73,14 +68,12 @@ export default class ObjectsActions extends Actions {
   }
 
   saveFaxogramm(id) {
-    const token = JSON.parse(window.localStorage.getItem('ets-session'));
-    let URL = FaxogrammService.getUrl() + id + '?token=' + token;
-    window.open(URL);
+    const payload = { id };
+    return FaxogrammService.getBlob(payload);
   }
 
   getFaxogrammPDFUrl(id) {
-    const token = JSON.parse(window.localStorage.getItem('ets-session'));
-    let URL = FaxogrammService.getUrl() + id + '?token=' + token;
+    let URL = FaxogrammService.getUrl() + id;
     return URL;
   }
 

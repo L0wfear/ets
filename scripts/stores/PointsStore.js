@@ -86,7 +86,7 @@ export default class PointsStore extends Store {
    */
   _handleCreateConnection() {
     const token = this.flux.getStore('session').getSession();
-    let wsUrl = `${config.ws}?token=${token}`;
+    const wsUrl = `${config.ws}?token=${token}`;
     this.ws = new ReconnectingWebSocket(wsUrl, null);
 
     this.ws.onmessage = ({data}) => {
@@ -134,6 +134,9 @@ export default class PointsStore extends Store {
     * https://github.com/mourner/rbush-knn
     */
   handleUpdatePoints(update) {
+    if (this.isRenderPaused()) {
+      return;
+    }
     let points = Object.assign({}, this.state.points);
 
     // TODO отрефакторить механизм обработки получения точек для 1 БНСО
@@ -240,7 +243,7 @@ export default class PointsStore extends Store {
 
     if (!!selected === false) {
       this.setState({
-        selected: false
+        selected: null
       });
       return;
     }

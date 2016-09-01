@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import Table from 'components/ui/table/DataTable.jsx';
 import { getPeriodicReportStatusLabel } from 'utils/labelFunctions';
-import { Input } from 'react-bootstrap';
+import { Input, Button, Glyphicon } from 'react-bootstrap';
+import { exportable } from 'utils/decorators';
 import { getFormattedDateTime } from 'utils/dates';
 
 let getTableMeta = (props) => {
@@ -117,6 +118,7 @@ let MissionReportTable = (props) => {
 
 }
 
+@exportable
 class MissionReport extends Component {
 
 
@@ -126,14 +128,16 @@ class MissionReport extends Component {
     this.state = {
       selectedReportData: [],
     };
+
+    this.entity = 'geozone_element_traveled_daily_report__cafap/' + this.props.routeParams.id;
 	}
 
 	async componentDidMount() {
     const { flux } = this.context;
 		let result = await flux.getActions('reports').getDailyCleaningReportByIdCAFAP(this.props.routeParams.id);
-    let selectedReportData = result.result[0].result.rows;
-    let dateFrom = getFormattedDateTime(result.result[0].date_start);
-    let dateTo = getFormattedDateTime(result.result[0].date_end);
+    let selectedReportData = result.result.rows;
+    let dateFrom = getFormattedDateTime(result.result.meta.date_start);
+    let dateTo = getFormattedDateTime(result.result.meta.date_end);
     this.setState({selectedReportData, dateFrom, dateTo});
 	}
 
@@ -153,6 +157,7 @@ class MissionReport extends Component {
             <Input type="text" readOnly value={dateFrom}></Input> —
             <Input type="text" readOnly value={dateTo}></Input>
           </div>
+          <Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt" /></Button>
 				</MissionReportTable>
 			</div>
 		);

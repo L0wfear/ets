@@ -19,20 +19,22 @@ export default class CurrentMission extends DashboardCardMedium {
   }
 
   action(itemIndex) {
-    this.context.flux.getActions('missions')
-                     .getMissionById(this.props.items[itemIndex].mission_id)
-                     .then(m => {
-                       this.setState({selectedMission: m.result[0], showMissionForm: true});
-                     })
-    //this.setState({showMissionInfoForm: true, mission: data});
+    let canView = this.context.flux.getStore('session').getPermission("mission.read");
+    if (canView) this.context.flux
+      .getActions('missions')
+      .getMissionById(this.props.items[itemIndex].mission_id)
+      .then(m => {
+        this.setState({selectedMission: m.result[0], showMissionForm: true});
+      });
   }
 
   renderCustomCardForm() {
     return (
-      <MissionFormWrap onFormHide={() => this.setState({showMissionForm: false})}
-                           showForm={this.state.showMissionForm}
-                           element={this.state.selectedMission}
-                           {...this.props}/>
+      <MissionFormWrap
+          onFormHide={() => this.setState({showMissionForm: false})}
+          showForm={this.state.showMissionForm}
+          element={this.state.selectedMission}
+          {...this.props}/>
     );
   }
 

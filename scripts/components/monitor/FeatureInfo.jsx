@@ -1,15 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import Panel from 'components/ui/Panel.jsx';
-import { Button } from 'react-bootstrap';
-import { getStatusById } from 'constants/statuses';
-import config from '../../config.js';
-import { makeDate, makeTime, getStartOfToday } from 'utils/dates';
-import FuelChart from 'components/ui/charts/FuelChart.jsx';
-import SpeedChart from 'components/ui/charts/SpeedChart.jsx';
-import { getCarImage } from '../../adapter.js';
-import { roundCoordinates } from 'utils/geo';
-import DatePicker from 'components/ui/DatePicker.jsx';
-import { getTypeById } from 'utils/labelFunctions';
 import { GEOOBJECTS_TYPES_LABELS_SINGLE } from 'constants/geoobjects';
 
 let DTFeature = ({feature}) =>
@@ -53,6 +43,7 @@ let CarpoolFeature = ({feature}) =>
 ;
 
 let FuelingWaterStationFeature = CarpoolFeature;
+let SnowStorageFeature = CarpoolFeature;
 
 let DangerZoneFeature = ({feature}) =>
   <div>
@@ -64,6 +55,21 @@ let DangerZoneFeature = ({feature}) =>
     {feature.sidewalk_area}
     <h5>Площадь на обочинах, м2</h5>
     {feature.sidelines_area}
+  </div>
+;
+
+let PGMFeature = ({feature}) =>
+  <div>
+    <h5>Наименование</h5>
+    {feature.name}
+    <h5>Адрес</h5>
+    {feature.address}
+    <h5>Объем жидких ПГМ, т</h5>
+    {feature.liquid_pgm_volume}
+    <h5>Объем твердых ПГМ, т</h5>
+    {feature.solid_pgm_volume}
+    <h5>Тип ПГМ</h5>
+    {feature.pgm_stores_type_name}
   </div>
 ;
 
@@ -112,6 +118,12 @@ export default class FeatureInfo extends Component {
         break;
       case 'dangerZone':
         Feature = DangerZoneFeature;
+        break;
+      case 'pgm':
+        Feature = PGMFeature;
+        break;
+      case 'snowStorage':
+        Feature = SnowStorageFeature;
         break;
       default:
         Feature = () => <div/>

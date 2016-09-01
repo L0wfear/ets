@@ -190,7 +190,8 @@ class FaxogrammDirectory extends ElementsList {
 	saveFaxogramm() {
 		const { flux } = this.context;
 		const faxogramm = this.state.selectedElement;
-		flux.getActions('objects').saveFaxogramm(faxogramm.id);
+		flux.getActions('objects').saveFaxogramm(faxogramm.id)
+			.then(({blob, fileName}) => saveData(blob, fileName));
 	}
 
   onPageChange(page) {

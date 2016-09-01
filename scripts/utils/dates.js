@@ -1,26 +1,30 @@
 import moment from 'moment';
 
-let twoDigits = (n) => n < 10 ? '0' + n : n;
-
 export function makeDate(date) {
-  return moment(date).format(`${global.APP_DATE_FORMAT}`);//twoDigits(date.getDate()) + '.' + twoDigits(date.getMonth() + 1) + '.' + date.getFullYear();
+  return moment(date).format(`${global.APP_DATE_FORMAT}`);
 }
 
 export function makeUnixTime(time) {
+  if (typeof time === 'string') {
+    time = moment(time).toDate();
+  }
 	return Math.floor(time / 1000);
 }
 
 export function makeTime(date, withSeconds = false) {
   date = new Date(date);
-  return twoDigits(date.getHours()) + ':' + twoDigits(date.getMinutes()) + (withSeconds ? ':' + twoDigits(date.getSeconds()) : '')
+  return moment(date).format(`HH:mm${withSeconds ? ':ss' : ''}`);
+}
+
+export function makeMinutes(date) {
+  date = new Date(date);
+  return moment(date).format(`mm:ss`);
 }
 
 export function getStartOfToday() {
-  let now = new Date()
+  let now = new Date();
   return new Date(now.getFullYear(), now.getMonth(), now.getDate());
 }
-
-// ^ deprecated ?
 
 export function createValidDate(date){
   if (!date) return null;
@@ -40,6 +44,11 @@ export function getFormattedDateTime(date){
 export function getFormattedDateTimeSeconds(date){
   if (!date) return '';
   return moment(date).format(`${global.APP_DATE_FORMAT} HH:mm:ss`);
+}
+
+export function makeDateFromUnix(date){
+  if (!date) return '-';
+  return moment.unix(date).format(`${global.APP_DATE_FORMAT} HH:mm:ss`);
 }
 
 // смены за вчера, сегодня, завтра
@@ -102,9 +111,3 @@ export function getDatesByShift() {
     new Date(now.getFullYear(), now.getMonth(), now.getDate(), 19, 0),
   ];
 }
-
-// export function getDateWithoutTZ(date, format = true) {
-// 	if (typeof date === 'string') date = date.replace('.000000Z', '');
-// 	date = moment(date).toDate();
-// 	return date;
-// }; Н Е Н У Ж Н О

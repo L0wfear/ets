@@ -9,7 +9,7 @@ let tableMeta = {
 	cols: [
 		{
 			name: 'gov_number',
-			caption: 'Госномер',
+			caption: 'Рег. номер ТС',
 			type: 'text',
 			filter: {
 				type: 'select',

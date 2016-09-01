@@ -29,23 +29,23 @@ class ReportsStore extends Store {
   }
 
   handleGetFuelReport(e) {
-    this.setState({fuelReport: e.results});
+    this.setState({fuelReport: e.result});
   }
 
   handleGetCarFuncTypeUsageReports({result}) {
-    this.setState({carFuncTypeUsageReportsList: result});
+    this.setState({carFuncTypeUsageReportsList: result.rows});
   }
 
   handleGetDailyCleaningReportsETS(dailyCleaningReports) {
-    this.setState({dailyCleaningReportsListETS: dailyCleaningReports.result});
+    this.setState({dailyCleaningReportsListETS: dailyCleaningReports.result.rows});
   }
 
   handleGetDailyCleaningReportsCAFAP(dailyCleaningReports) {
-    this.setState({dailyCleaningReportsListCAFAP: dailyCleaningReports.result});
+    this.setState({dailyCleaningReportsListCAFAP: dailyCleaningReports.result.rows});
   }
 
   handleGetWeeklyTechnicalOperationCompleteReports(weeklyTechnicalOperationCompleteReports) {
-    this.setState({weeklyTechnicalOperationCompleteReportsList: weeklyTechnicalOperationCompleteReports.result});
+    this.setState({weeklyTechnicalOperationCompleteReportsList: weeklyTechnicalOperationCompleteReports.result.rows});
   }
 
   handleGetOdhCoverageReport({result}) {

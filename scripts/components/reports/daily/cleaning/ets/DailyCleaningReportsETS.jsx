@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
-import connectToStores from 'flummox/connect';
 import Table from 'components/ui/table/DataTable.jsx';
 import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
-import EtsSelect from 'components/ui/EtsSelect.jsx';
 import Div from 'components/ui/Div.jsx';
-import Field from 'components/ui/Field.jsx';
-import Datepicker from 'components/ui/DatePicker.jsx';
-import { datePickerFunction, getReportStatusLabel, getGeozoneTypeLabel} from 'utils/labelFunctions';
-import { getToday9am, getTomorrow9am, getToday0am, getToday2359, getFormattedDateTime } from 'utils/dates';
+import { getReportStatusLabel, getGeozoneTypeLabel } from 'utils/labelFunctions';
+import { getToday9am, getTomorrow9am, getFormattedDateTime } from 'utils/dates';
 import { getReportNotReadyNotification2 } from 'utils/notifications';
-import { isEmpty } from 'utils/functions';
 import DailyReportHeader from 'components/reports/DailyReportHeader.jsx';
+import { FluxContext, HistoryContext, exportable, staticProps, connectToStores } from 'utils/decorators';
 
 let getElementLabel = (el) => {
   let element = _.find([
@@ -54,8 +50,7 @@ let tableMeta = {
 			caption: 'Начало периода',
 			type: 'number',
 			filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			},
 		},
 		{
@@ -63,8 +58,7 @@ let tableMeta = {
 			caption: 'Конец периода',
 			type: 'number',
 			filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			},
 		},
 		{
@@ -72,8 +66,7 @@ let tableMeta = {
 			caption: 'Дата создания',
 			type: 'number',
 			filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			},
 		},
 		{
@@ -81,8 +74,7 @@ let tableMeta = {
 			caption: 'Дата начала обработки',
 			type: 'number',
 			filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			},
 		},
 		{
@@ -90,8 +82,7 @@ let tableMeta = {
 			caption: 'Дата завершения обработки',
 			type: 'number',
 			filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			},
 		},
 	]
@@ -120,7 +111,14 @@ let DailyCleaningReportsTable = (props) => {
 
 }
 
-class DailyCleaningReportsETS extends Component {
+@connectToStores(['reports'])
+@FluxContext
+@HistoryContext
+@staticProps({
+  entity: 'geozone_element_traveled_daily_report__ets'
+})
+@exportable
+export default class DailyCleaningReportsETS extends Component {
 
 	constructor(props) {
 		super(props);
@@ -160,9 +158,6 @@ class DailyCleaningReportsETS extends Component {
   }
 
 	render() {
-
-    console.log('state is', this.state);
-
 		const { dailyCleaningReportsListETS = [] } = this.props;
 
 		return (
@@ -175,16 +170,11 @@ class DailyCleaningReportsETS extends Component {
             data={dailyCleaningReportsListETS}
             refreshable={true}
             onRefresh={() => this.context.flux.getActions('reports').getDailyCleaningReportsETS()}
-            onRowSelected={this.onReportSelect.bind(this)} />
+            onRowSelected={this.onReportSelect.bind(this)}>
+          {/* <Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt"/></Button> */}
+        </DailyCleaningReportsTable>
 			</div>
 		);
 
 	}
 }
-
-DailyCleaningReportsETS.contextTypes = {
-  history: React.PropTypes.object,
-	flux: React.PropTypes.object,
-};
-
-export default connectToStores(DailyCleaningReportsETS, ['reports']);

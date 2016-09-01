@@ -34,6 +34,9 @@ export default class Faxogramms extends DashboardCardMedium {
     let subItems = selectedItem !== null ? selectedItem.subItems || [] : [];
     let data = selectedItem !== null ? selectedItem.data || {} : {};
 
+    let canViewPDF = this.context.flux.getStore('session').getPermission("faxogramm.read");
+    let canCreateMission = this.context.flux.getStore('session').getPermission("mission.create");
+
     return (
       <Div>
         <Div style={{marginTop: 10}}>
@@ -41,8 +44,8 @@ export default class Faxogramms extends DashboardCardMedium {
           <p>{data.order_info}</p>
         </Div>
         <Div className="text-right">
-          <Button className="dashboard-card-action-button" onClick={(e) => {e.preventDefault(); this.showPDFViewModal(data);}}><Glyphicon glyph="info-sign" /></Button>
-          <Button className="dashboard-card-action-button" onClick={(e) => {e.preventDefault(); this.showFaxogrammForm(data);}}>Сформировать задания</Button>
+          {canViewPDF ? <Button className="dashboard-card-action-button" onClick={(e) => {e.preventDefault(); this.showPDFViewModal(data);}}><Glyphicon glyph="info-sign" /></Button> : ''}
+          {canCreateMission ? <Button className="dashboard-card-action-button" onClick={(e) => {e.preventDefault(); this.showFaxogrammForm(data);}}>Сформировать задания</Button> : ''}
         </Div>
         <PDFViewModal
             url={this.state.url}

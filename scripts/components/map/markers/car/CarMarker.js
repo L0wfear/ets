@@ -4,7 +4,9 @@ import { getSmallIcon, getBigIcon } from '../../../../icons/car.js';
 import Marker from '../BaseMarker.js';
 import Track from '../../Track.js';
 import { swapCoords, wrapCoords } from 'utils/geo';
+import { getPointStyle } from 'utils/ol';
 import { getTypeById } from 'utils/labelFunctions';
+import _ from 'lodash';
 
 const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
 
@@ -36,6 +38,148 @@ export default class CarMarker extends Marker {
     point.marker = this;
     this.coords = wrapCoords(swapCoords(point.coords_msk))
     this.track = null;
+    this.animating = false;
+    this.currentIndex = 0;
+    this.currentCoords = [0,0];
+    this.currentSpeed = 0;
+    this.currentTime = 0;
+    this.new = true;
+  }
+
+  isAnimating() {
+    return this.animating;
+  }
+
+  animate() {
+    this.animating = true;
+    this.store.pauseRendering();
+    if (this.new) this.animatePoints = _(this.track.points).map(t => ({coords: t.coords_msk, speed: t.speed_avg, time: t.timestamp})).value();
+    this.new = false;
+    this.animatePoints.splice(0, this.currentIndex);
+    // НЕ УДАЛЯТЬ
+    // let newPoints = [];
+    // _.each(this.animatePoints, (c, i) => {
+    //   newPoints.push(this.animatePoints[i]);
+    //   if (this.animatePoints[i+1]) {
+    //     const points = getCoordinatesBetweenPoints(this.animatePoints[i], this.animatePoints[i+1]);
+    //     _.each(points, (p, j) => {
+    //       newPoints.push(p);
+    //     });
+    //   }
+    // });
+
+    var geoMarker = new ol.Feature({
+      type: 'geoMarker',
+      geometry: new ol.geom.Point(this.animatePoints[0].coords)
+    });
+
+    // TODO сделать константный лейер для карты, а то будет каждый раз создаваться
+    this.vectorLayer = new ol.layer.Vector({
+      source: new ol.source.Vector({
+        features: []
+      })
+    });
+    this.map.addLayer(this.vectorLayer);
+
+    let map = this.map;
+    let coords = this.animatePoints[0].coords;
+    let view = map.getView();
+
+    var duration = 1500;
+    var start = +new Date();
+    var pan = ol.animation.pan({
+      duration: duration,
+      source: view.getCenter(),
+      start
+    });
+    map.beforeRender(pan);
+    view.setCenter(coords);
+
+    setTimeout(() => {
+      this.animateEventKey = this.map.on('postcompose', this.animateToTrack.bind(this));
+      this.setVisible(false);
+      this.map.disableInteractions();
+      this.animateStartTime = new Date().getTime();
+      this.image = this.getImage({selected: true});
+      this.radius = this.image.width / 2;
+      this.map.render();
+    }, 1500);
+  }
+
+  stopAnimation() {
+    this.animating = false;
+    this.currentIndex = 0;
+    this.currentCoords = [0,0];
+    this.currentSpeed = 0;
+    this.currentTime = 0;
+    this.new = true;
+    this.map.enableInteractions();
+    if (this.vectorLayer) this.map.removeLayer(this.vectorLayer);
+    this.setVisible(true);
+    this.store.unpauseRendering();
+    this.map.unByKey(this.animateEventKey);
+  }
+
+  togglePlay() {
+    if (this.animating) {
+      this.animating = false;
+      this.map.enableInteractions();
+      this.map.unByKey(this.animateEventKey);
+
+      let pausedMarker = new ol.Feature({
+        type: 'geoMarker',
+        geometry: new ol.geom.Point(this.animatePoints[this.currentIndex].coords)
+      });
+      pausedMarker.setStyle(getPointStyle('black', 7));
+      this.vectorLayer.getSource().addFeature(pausedMarker);
+    } else {
+      if (this.vectorLayer) this.map.removeLayer(this.vectorLayer);
+      this.animate();
+    }
+  }
+
+  animateToTrack(event) {
+    let { image, radius } = this;
+    let { frameState, vectorContext } = event;
+    let elapsedTime = frameState.time - this.animateStartTime;
+    let index = Math.round(2 * elapsedTime / 1000);
+    this.currentIndex = index;
+    if (index >= this.animatePoints.length) {
+      this.stopAnimation();
+      return;
+    }
+
+    let map = this.map;
+    let coords = this.animatePoints[index].coords;
+    this.currentCoords = coords;
+    this.currentTime = this.animatePoints[index].time;
+    this.currentSpeed = this.animatePoints[index].speed;
+    this.store.pauseRendering(); //TODO хак для перерендера CarInfo
+    let view = map.getView();
+    let zoom = view.getZoom();
+    let size = map.getSize();
+    let pixel = [(size[0] - 500) / 2, size[1] / 2];
+
+    // var duration = 1500;
+    // var start = +new Date();
+    // var pan = ol.animation.pan({
+    //   duration: duration,
+    //   source: view.getCenter(),
+    //   start: start
+    // });
+    // map.beforeRender(pan);
+
+    if (!this.paused) {
+      view.centerOn(coords, size, pixel)
+      if (zoom != 13) {
+        view.setZoom(13);
+      }
+    };
+
+    let currentPoint = new ol.geom.Point(this.animatePoints[index].coords);
+    let feature = new ol.Feature(currentPoint);
+    vectorContext.drawFeature(feature, getPointStyle('black', 7));
+    this.map.render();
   }
 
   isVisible() {
@@ -93,7 +237,9 @@ export default class CarMarker extends Marker {
   }
 
   onClick() {
-    this.createTrack();
+    if (!this.track) {
+      this.createTrack();
+    }
   }
 
   createTrack() {

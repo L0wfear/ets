@@ -10,6 +10,5 @@ export function createFio(data, full = false) {
   if (middle_name && middle_name.length) {
     result += full ? `${middle_name} ` : `${middle_name[0]}. `;
   }
-
   return result;
 }

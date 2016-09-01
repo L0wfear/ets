@@ -18,7 +18,7 @@ class WaybillPrintForm extends Component {
       year: new Date().getYear()+1900,
 			date_from: getToday9am(),
 			date_to: getTomorrow9am()
-    }
+    };
 	}
 
   async handleSubmit() {
@@ -27,11 +27,11 @@ class WaybillPrintForm extends Component {
 	      'Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
 			await this.context.flux.getActions('waybills')
 				.getWaybillJournalReport(this.state)
-				.then(blob => {saveData(blob, `Отчет по журналу ПЛ за ${MONTHS[this.state.month]} ${this.state.year}.xls`)});
+				.then(({blob}) => {saveData(blob, `Отчет по журналу ПЛ за ${MONTHS[this.state.month]} ${this.state.year}.xls`)});
 		} else {
 			await this.context.flux.getActions('waybills')
 				.getWaybillsReport(this.state)
-				.then(blob => {saveData(blob, `Отчет по выработке ТС за ${makeDate(this.state.date_from)} - ${makeDate(this.state.date_to)}.xls`)});
+				.then(({blob}) => {saveData(blob, `Отчет по выработке ТС за ${makeDate(this.state.date_from)} - ${makeDate(this.state.date_to)}.xls`)});
 		}
 		this.setState({
       month: new Date().getMonth(),

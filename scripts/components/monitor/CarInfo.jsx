@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
 import Panel from 'components/ui/Panel.jsx';
-import { Button } from 'react-bootstrap';
+import { Button, Glyphicon } from 'react-bootstrap';
 import { getStatusById } from 'constants/statuses';
 import config from '../../config.js';
-import { makeDate, makeTime, getStartOfToday } from 'utils/dates';
+import { makeDate, makeTime, makeDateFromUnix, getStartOfToday } from 'utils/dates';
 import FuelChart from 'components/ui/charts/FuelChart.jsx';
 import SpeedChart from 'components/ui/charts/SpeedChart.jsx';
-import { getCarImage } from '../../adapter.js';
 import { roundCoordinates } from 'utils/geo';
 import DatePicker from 'components/ui/DatePicker.jsx';
 import { getTypeById } from 'utils/labelFunctions';
-
 
 class VehicleAttributes extends Component {
 
@@ -42,12 +40,11 @@ class VehicleAttributes extends Component {
       return makeDate(dt) + ' ' + makeTime(dt, true) + ' [' + roundCoordinates(point.coords_msk) + ']';
     }
 
-    addAttribute('Гос. номер', car.gov_number)
+    addAttribute('Рег. номер ТС', car.gov_number)
     addAttribute('ID БНСО', vehicle.id)
     getStatusById(vehicle.status) && addAttribute('Статус', getStatusById(vehicle.status).title)
     getTypeById(car.type_id) && addAttribute('Тип техники', getTypeById(car.type_id).title)
     //getModelById(car.model_id) && addAttribute('Шасси', getModelById(car.model_id).title)
-    //getOwnerById(car.owner_id) && addAttribute('Владелец', getOwnerById(car.owner_id).title);
 
     if (props.lastPoint) {
       // todo при клике на "последнюю точку" центрировать по координатам
@@ -87,7 +84,9 @@ export default class CarInfo extends Component {
     this.store = this.props.flux.getStore('points');
     this.state = {
       imageUrl: null,
+      trackPaused: 'stopped',
       trackingMode: false,
+      missions: [],
       from_dt: getStartOfToday(),
       to_dt: new Date(),
       from_dt_: getStartOfToday(),
@@ -146,10 +145,11 @@ export default class CarInfo extends Component {
   }
 
   fetchImage(props = this.props) {
+    const { flux } = this.props;
     let car = props.car;
     let model_id = car.car.model_id;
     let type_id = car.car.type_id;
-    getCarImage(car.id, type_id, model_id).then(url => this.setState({imageUrl: url }))
+    flux.getActions('cars').getCarImage(car.id, type_id, model_id).then(url => this.setState({imageUrl: url }))
   }
 
   fetchTrack(props = this.props) {
@@ -167,23 +167,55 @@ export default class CarInfo extends Component {
     track.fetch(from_dt, to_dt);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     if (this.props.car && !this.state.imageUrl) {
       this.fetchImage();
       this.fetchTrack();
+      let carsList = this.props.flux.getStore('objects').state.carsList;
+      let car = _.find(carsList, (car) => car.gov_number === this.props.car.car.gov_number);
+      if (car) {
+        let car_id = car.asuods_id;
+        let missions = await this.props.flux.getActions('missions').getMissionsByCarAndDates(car_id, this.state.from_dt, this.state.to_dt, true, 1)
+        this.setState({missions: missions.result.rows});
+      }
+
     }
   }
 
-  componentWillReceiveProps(props) {
+  async componentWillReceiveProps(props) {
     if (props.car !== this.props.car) {
       this.fetchImage();
       this.fetchTrack(props);
+      this.stopTrackPlaying();
+      this.setState({trackPaused: 'stopped'})
+    }
+    if (props.car.id !== this.props.car.id) {
+      let carsList = this.props.flux.getStore('objects').state.carsList;
+      let car = _.find(carsList, (car) => car.gov_number === this.props.car.car.gov_number);
+      if (car) {
+        let car_id = car.asuods_id;
+        let missions = await this.props.flux.getActions('missions').getMissionsByCarAndDates(car_id, this.state.from_dt, this.state.to_dt, true, 1)
+        this.setState({missions: missions.result.rows});
+      }
     }
   }
 
   componentWillUnmount() {
     let track = this.props.car.marker.track;
     track.onUpdate();
+    this.stopTrackPlaying();
+  }
+
+  toggleTrackPlaying() {
+    const { marker } = this.props.car;
+    marker.togglePlay();
+    this.setState({trackPaused: !this.state.trackPaused})
+  }
+
+  stopTrackPlaying() {
+    const { marker } = this.props.car;
+    marker.stopAnimation();
+    this.setState({trackPaused: 'stopped'})
   }
 
   renderModel() {
@@ -194,17 +226,17 @@ export default class CarInfo extends Component {
     let marker = car.marker;
     let isTrackLoaded = marker.hasTrackLoaded();
 
-    let trackBtnClass = 'toggle-tracking-mode btn-sm btn track-btn ' + (trackingMode ? 'btn-success' : 'btn-default');
+    let trackBtnClass = 'toggle-tracking-mode btn-sm btn track-btn ' + (trackingMode ? 'tracking' : 'btn-default');
     let trackBtnIconClass = 'glyphicon glyphicon-screenshot ' + (trackingMode ? 'tracking-animate' : '');
     let zoomToTrackClass = 'zoom-to-track-extent btn-sm btn ' + (isTrackLoaded ? 'btn-default' : 'btn-disabled');
 
     return (
       <Panel title={title}>
-        <button className={trackBtnClass} onClick={this.toggleCarTracking.bind(this)} title="Следить за машиной">
+        <button disabled={this.state.trackPaused !== 'stopped'} className={trackBtnClass} onClick={this.toggleCarTracking.bind(this)} title="Следить за машиной">
           <span className={trackBtnIconClass}></span>&nbsp;{trackingMode ? 'Следим' : 'Следить'}
         </button>
-        <button className={zoomToTrackClass} onClick={isTrackLoaded && this.zoomToTrack.bind(this)} title="Показать маршрут">
-          <span className="glyphicon glyphicon-resize-full"></span>&nbsp;Маршрут
+        <button disabled={this.state.trackPaused !== 'stopped'} className={zoomToTrackClass} onClick={isTrackLoaded && this.zoomToTrack.bind(this)} title="Показать трек">
+          <span className="glyphicon glyphicon-resize-full"></span>&nbsp;Трек
         </button>
         <img className="car-info-image" src={imageUrl ? config.images + imageUrl : ''}/>
         <VehicleAttributes vehicle={car} lastPoint={marker.hasTrackLoaded() && marker.track.getLastPoint()}/>
@@ -226,22 +258,55 @@ export default class CarInfo extends Component {
       <div className="car-info-tracking">
         <Panel title="Трекинг" className="chart-datepickers-wrap">
           <DatePicker onChange={date => this.setState({ from_dt_: date})}
-                      date={this.state.from_dt_} disabled={tillNow} ref="from_dt"/>&nbsp;–&nbsp;
+              date={this.state.from_dt_} disabled={tillNow} ref="from_dt"/>&nbsp;–&nbsp;
           <DatePicker onChange={date => this.setState({to_dt_: date})}
-                      date={this.state.to_dt_} disabled={tillNow} ref="to_dt"/>
+              date={this.state.to_dt_} disabled={tillNow} ref="to_dt"/>
           {/*<label className="gradient-checkbox">
-             <input type="checkbox" checked={showGradient} ref="showGradient" onChange={this.onShowGradientChange.bind(this)}/> С градиентом
-           </label>*/}
+            <input type="checkbox" checked={showGradient} ref="showGradient" onChange={this.onShowGradientChange.bind(this)}/> С градиентом
+          </label>*/}
           <label className="till-now-checkbox">
             <input type="checkbox" checked={tillNow} ref="tillNow" onChange={this.onTillNowChange.bind(this)}/> За сегодня
           </label>
 
           <Button title="Перезагрузить данные"
-                  className="reload-button"
-                  onClick={this.fetchVehicleData.bind(this)}
-                  disabled={tillNow}>
+              className="reload-button"
+              onClick={this.fetchVehicleData.bind(this)}
+              disabled={tillNow}>
             <span className={reloadBtnCN}></span>
           </Button>
+
+          <div className="track-player">
+            <Button onClick={this.toggleTrackPlaying.bind(this)}><Glyphicon glyph={this.state.trackPaused ? 'play' : 'pause'}/></Button>
+            <Button disabled={this.state.trackPaused === 'stopped'} onClick={this.stopTrackPlaying.bind(this)}><Glyphicon glyph={'stop'}/></Button>
+          </div>
+
+          {this.state.trackPaused !== 'stopped' && <dl className="car-info-play-info">
+            <dt>Координаты:</dt>
+            <dd>{parseFloat(marker.currentCoords[0]).toFixed(5)}, {parseFloat(marker.currentCoords[1]).toFixed(5)}</dd>
+            <dt>Время:</dt>
+            <dd>{makeDateFromUnix(marker.currentTime)}</dd>
+            <dt>Скорость:</dt>
+            <dd>{marker.currentSpeed}</dd>
+          </dl>}
+        </Panel>
+      </div>
+    );
+  }
+
+  renderMissions() {
+    let { missions = [] } = this.state;
+    let missionsRender = <div style={{textAlign: "left", overflow: "hidden",textOverflow: "ellipsis"}}>
+      {missions.map((mission) => {
+        return <span key={mission.id} style={{whiteSpace: "nowrap", display: "block"}}>{`№${mission.number} - ${mission.technical_operation_name}`}</span>
+      })}
+    </div>;
+
+    if (!missions.length) missionsRender = 'Нет данных';
+
+    return (
+      <div className="car-info-tracking">
+        <Panel title="Задания" className="chart-datepickers-wrap">
+          {missionsRender}
         </Panel>
       </div>
     );
@@ -262,6 +327,7 @@ export default class CarInfo extends Component {
         <h3 className="car-info-plate">{plate}</h3>
         {this.renderModel()}
         {this.renderData()}
+        {this.renderMissions()}
         {/*<FuelChart from={this.state.from_dt} to={this.state.to_dt} id={car.id}/>*/}
         {/*<SpeedChart track={marker.hasTrackLoaded() && marker.track}/>*/}
       </div>

@@ -8,17 +8,22 @@ import { FluxContext } from 'utils/decorators';
 @FluxContext
 export default class Form extends React.Component {
 
-   static propTypes = {
-     handleFormChange: PropTypes.func.isRequired,
-     handleMultipleChange: PropTypes.func.isRequired,
-     onSubmit: PropTypes.func.isRequired,
-     formState: PropTypes.object.isRequired,
-   }
+  static get propTypes() {
+    return {
+      handleFormChange: PropTypes.func.isRequired,
+      handleMultipleChange: PropTypes.func,
+      onSubmit: PropTypes.func.isRequired,
+      formState: PropTypes.object.isRequired
+    }
+  }
 
-   constructor(props){
-     super(props)
-     this.state = {/* inital state */}
-   }
+  constructor(props){
+    super(props);
+
+    this.state = {
+      /* inital state */
+    };
+  }
 
    handleChange(field, e) {
      console.info('HANDLE FORM CHANGE');

@@ -7,7 +7,6 @@ import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
 import Form from 'compositions/Form.jsx';
 import connectToStores from 'flummox/connect';
-import { getCarImage } from '../../../adapter.js';
 import config from '../../../config.js';
 
 class CarForm extends Form {
@@ -24,7 +23,7 @@ class CarForm extends Form {
 	async componentDidMount() {
 		const { flux } = this.context;
     const car = this.props.formState;
-    getCarImage(car.asuods_id, car.type_id, car.model_id).then((imageUrl) => this.setState({imageUrl}) );
+    flux.getActions('cars').getCarImage(car.asuods_id, car.type_id, car.model_id).then((imageUrl) => this.setState({imageUrl}) );
 		let companyStructureList = await flux.getActions('companyStructure').getLinearCompanyStructureForUser();
 		this.setState({companyStructureList});
 	}
@@ -64,12 +63,12 @@ class CarForm extends Form {
 									onChange={this.handleChange.bind(this, 'company_structure_id')}/>
 
 						 	<Field type="string" label="Гаражный номер"
-										 value={state.garage_number}
-										 onChange={this.handleChange.bind(this, 'garage_number')}/>
+									value={state.garage_number}
+									onChange={this.handleChange.bind(this, 'garage_number')}/>
 
 							<Field type="number" label="Поправочный коэффициент"
-										 value={state.fuel_correction_rate}
-										 onChange={this.handleChange.bind(this, 'fuel_correction_rate')}/>
+									value={state.fuel_correction_rate}
+									onChange={this.handleChange.bind(this, 'fuel_correction_rate')}/>
 		      	</Col>
 
 		      </Row>
@@ -79,7 +78,7 @@ class CarForm extends Form {
 	          <Col md={6}>
 							<Field type="string" label="Владелец" readOnly={true} value={owner.title || 'Не указано'} />
 
-							<Field type="string" label="Госномер" readOnly={true} value={state.gov_number || 'Не указано'} />
+							<Field type="string" label="Рег. номер ТС" readOnly={true} value={state.gov_number || 'Не указано'} />
 
 							<Field type="string" label="Марка шасси" readOnly={true} value={state.model_name || 'Не указано'} />
 

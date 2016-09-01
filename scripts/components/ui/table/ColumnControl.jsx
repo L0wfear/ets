@@ -32,18 +32,20 @@ class ColumnControl extends Component {
       )
     });
 
-    return (<Div className={'column-control-wrap'}>
-      <Button bsSize="small" className={buttonClass} onClick={this.props.onClick}>
-        <Glyphicon glyph="cog"/>
-      </Button>
-      <Div hidden={!this.props.show} className={'column-control-container'}>
-        <Div className="column-control-container-window">
-          <Modal.Body>
-            {rows}
-          </Modal.Body>
+    return (
+      <Div className={'column-control-wrap'}>
+        <Button bsSize="small" className={buttonClass} onClick={this.props.onClick}>
+          <Glyphicon glyph="cog"/>
+        </Button>
+        <Div hidden={!this.props.show} className={'column-control-container'}>
+          <Div className="column-control-container-window">
+            <Modal.Body>
+              {rows}
+            </Modal.Body>
+          </Div>
         </Div>
       </Div>
-    </Div>);
+    );
 
   }
 

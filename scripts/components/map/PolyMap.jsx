@@ -3,6 +3,7 @@ import CarMarker from './markers/car/CarMarker.js';
 import { PROJECTION, ArcGisLayer } from './MskAdapter.js';
 import { polyState, polyStyles } from 'constants/polygons.js';
 import { vectorStyles, vectorState, getVectorArrowStyle } from 'constants/vectors.js';
+import { getPolyStyle } from 'utils/ol';
 
 let POLYS_LAYER = null;
 
@@ -74,7 +75,9 @@ export default class PolyMap extends Component {
         styleFunction = null;
       }
 
-      if (poly.state === 4) feature.setStyle(polyStyles['green']);
+      if (poly.state === 4) {
+        feature.setStyle(getPolyStyle('green'));
+      };
 
       vectorSource.addFeature(feature);
     });
@@ -133,8 +136,6 @@ export default class PolyMap extends Component {
     let coordinate = ev.coordinate;
     let cancelSelection = false;
 
-    //console.log(coordinate)
-
     map.forEachFeatureAtPixel(pixel, (feature, layer) =>  {
       this.props.onFeatureClick(feature, ev, this);
     });
@@ -142,15 +143,11 @@ export default class PolyMap extends Component {
     // TODO on poly click
   }
 
-  hidePopup() {
-    this.popup.hide()
-  }
-
   render() {
     console.warn('POLYMAP RENDER', this.props);
     return (
       <div>
-        <div ref="container" style={{opacity: 1}} className="openlayers-container"/>
+        <div ref="container" className="openlayers-container"/>
       </div>
     );
   }

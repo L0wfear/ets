@@ -4,7 +4,6 @@ import _ from 'lodash';
 import { isEmpty } from 'utils/functions';
 import { GEOOBJECTS_TYPES } from 'constants/geoobjects';
 import {
-  SSPService,
   FuelingWaterService,
   CarPoolService,
   DangerZoneService,
@@ -27,7 +26,7 @@ export default class GeoObjectsActions extends Actions {
   getDTs() {
     return DTService.get();
   }
-  
+
   updateODH(formState) {
     const payload = {
       id: formState.id,

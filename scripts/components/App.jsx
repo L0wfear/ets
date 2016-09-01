@@ -15,10 +15,14 @@ import CompanyStructure from './company_structure/CompanyStructure.jsx';
 import missions from './missions';
 import directories from './directories';
 import reports from './reports';
+import { AuthCheckService } from 'api/Services';
 
-import { checkToken } from '../adapter.js';
 import { fetchEvergisToken } from '../utils/evergis.js';
 import Flux from 'config/flux.js';
+
+import createStore from '../redux/create';
+import { Provider } from 'react-redux';
+
 import { loginErrorNotification, getErrorNotification } from 'utils/notifications';
 // TODO вынести в отдельный файл
 const flux = new Flux();
@@ -55,12 +59,13 @@ class App extends Component {
     if (!flux.getStore('session').isLoggedIn()) {
       return this.setState({loading: false});
     }
-    return checkToken()
-          .then(() => fetchEvergisToken())
+    return AuthCheckService.get()
+          // .then(() => fetchEvergisToken())
           .then(() => {
             this.setState({loading: false});
           })
           .catch((error) => {
+            console.log(error);
             if (error === 401) {
               flux.getActions('session').logout();
               return global.NOTIFICATION_SYSTEM._addNotification(loginErrorNotification);
@@ -121,7 +126,7 @@ const routes = (
       <Route path="route-reports" component={reports.route.all} onEnter={requireAuth}/>
       <Route path="route-report/:id" component={reports.route.single} onEnter={requireAuth}/>
       <Route path="coverage-report" component={reports.coverage} onEnter={requireAuth}/>
-      <Route path="fuel-report" component={reports.fuel} onEnter={requireAuth}/>
+      <Route path="fuel-consumption-report" component={reports.fuelConsumption} onEnter={requireAuth}/>
       <Route path="analytics" component={reports.analytics} onEnter={requireAuth}/>
       <Route path="car_func_type_usage_reports" component={reports.carFuncTypeUsage.all} onEnter={requireAuth}/>
       <Route path="daily-cleaning-reports-ets" component={reports.daily.cleaning.ets.all} onEnter={requireAuth}/>
@@ -145,11 +150,15 @@ const routes = (
       <Route path="technical-operations" component={directories.technicalOperations} onEnter={requireAuth}/>
       <Route path="car-func-types" component={directories.carTypes} onEnter={requireAuth}/>
       <Route path="cars" component={directories.cars} onEnter={requireAuth}/>
+      <Route path="odh-norm" component={directories.odhNorm} onEnter={requireAuth}/>
+      <Route path="odh-norm-data-summer" component={directories.odhNormDataSummer} onEnter={requireAuth}/>
       {/* НСИ - Реестры и справочники - Геоинструментарий */}
       <Route path="odh" component={directories.geoobjects.odh} onEnter={requireAuth}/>
       <Route path="dt" component={directories.geoobjects.dt} onEnter={requireAuth}/>
       <Route path="ssp" component={directories.geoobjects.ssp} onEnter={requireAuth}/>
       <Route path="msp" component={directories.geoobjects.msp} onEnter={requireAuth}/>
+      <Route path="pgm" component={directories.geoobjects.pgm} onEnter={requireAuth}/>
+      <Route path="snow-storage" component={directories.geoobjects.snowStorage} onEnter={requireAuth}/>
       <Route path="fueling-water" component={directories.geoobjects.fuelingWater} onEnter={requireAuth}/>
       <Route path="carpool" component={directories.geoobjects.carpool} onEnter={requireAuth}/>
       <Route path="danger-zones" component={directories.geoobjects.dangerZones} onEnter={requireAuth}/>
@@ -159,4 +168,9 @@ const routes = (
   </Router>
 );
 
-render(routes, document.getElementById('content'));
+render(
+  <Provider store={createStore()}>
+    {routes}
+  </Provider>,
+  document.getElementById('content')
+);

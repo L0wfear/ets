@@ -31,7 +31,7 @@ export class DutyMissionForm extends Form {
 		this.handleChange('route_id', v);
 		const { flux } = this.context;
 		if (v) {
-			flux.getActions('routes').getRouteById(v, true).then(route => {
+			flux.getActions('routes').getRouteById(v).then(route => {
 				this.setState({selectedRoute: route});
 			});
 		} else {
@@ -67,7 +67,7 @@ export class DutyMissionForm extends Form {
 	async componentDidMount() {
 		const mission = this.props.formState;
 		const { flux } = this.context;
-    let objectsActions = flux.getActions('objects')
+    let objectsActions = flux.getActions('objects');
 		let technicalOperationsActions = flux.getActions('technicalOperation');
 		let routesActions = flux.getActions('routes');
 		let missionsActions = flux.getActions('missions');
@@ -76,16 +76,17 @@ export class DutyMissionForm extends Form {
 		let { routesList } = this.props;
 
 		if (!isEmpty(mission.route_id)) {
-			selectedRoute = await routesActions.getRouteById(mission.route_id, true);
+			selectedRoute = await routesActions.getRouteById(mission.route_id);
     }
 
     if (!isEmpty(mission.technical_operation_id)) {
 			routesList = await routesActions.getRoutesByDutyMissionId(mission.id);
 		}
 
-  	flux.getActions('missions').getMissions(mission.technical_operation_id);
+  	missionsActions.getMissions(mission.technical_operation_id);
+		missionsActions.getMissionSources();
+		flux.getActions('employees').getEmployees(true);
     const technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsWithBrigades();
-    console.log(technicalOperationsList);
     this.setState({
       selectedRoute,
       technicalOperationsList,
@@ -117,7 +118,7 @@ export class DutyMissionForm extends Form {
 		if (isSubmitted === true) {
 			let createdRouteId = result.createdRoute.result[0].id;
 			this.handleChange('route_id', createdRouteId);
-			let selectedRoute = await routesActions.getRouteById(createdRouteId, true);
+			let selectedRoute = await routesActions.getRouteById(createdRouteId);
 			let routesList = await routesActions.getRoutesByTechnicalOperation(this.props.formState.technical_operation_id);
 			Object.assign(stateChangeObject, {
 				showRouteForm: false,
@@ -141,7 +142,6 @@ export class DutyMissionForm extends Form {
 
 		let state = this.props.formState;
 		let errors = this.props.formErrors;
-    console.info('FORM STATE IS', state);
 
     const EMPLOYEES_RKU_FILTER = 'brigade_worker';
 
@@ -151,8 +151,7 @@ export class DutyMissionForm extends Form {
     const TECH_OPERATIONS = technicalOperationsList.map(({id, name}) => ({value: id, label: name}));
     const MISSION_SOURCES = missionSourcesList.map(({id, name}) => ({value: id, label: name}));
     const ROUTES = routesList.map(({id, name}) => ({value: id, label: name}));
-    const EMPLOYEES = employeesList.filter(d => d.position_key == EMPLOYEES_RKU_FILTER)
-      .map( d => ({value: d.id, label: `${d.last_name} ${d.first_name} ${d.middle_name}`}));
+    const EMPLOYEES = employeesList.map( d => ({value: d.id, label: `${d.last_name} ${d.first_name} ${d.middle_name}`}));
     const MISSIONS = missionsList.map( ({id, number, technical_operation_name}) => {
 			return {id, value: id, label: `№${number} (${technical_operation_name})`};
 		});
@@ -193,22 +192,54 @@ export class DutyMissionForm extends Form {
             <Col md={6}>
               <Row>
     				 		<Col md={6}>
-    				   		<label>Время выполнения, планируемое</label>
-    				 			<Div>c <Datepicker date={state.plan_date_start} onChange={this.handleChange.bind(this, 'plan_date_start')} disabled={IS_DISPLAY}/></Div>
+									<label style={{position: "absolute", right: -7, top: 31, fontWeight: 400}}>—</label>
+						 			<Div>
+										<Field
+												type="date"
+												label="Время выполнения, планируемое:"
+												error={errors['plan_date_start']}
+												date={state.plan_date_start}
+												disabled={IS_DISPLAY}
+												onChange={this.handleChange.bind(this, 'plan_date_start')} />
+									</Div>
     				   	</Col>
     				   	<Col md={6}>
-                  <label style={{minHeight: 15}}></label>
-    				 			<Div>по <Datepicker date={state.plan_date_end} min={state.plan_date_start} onChange={this.handleChange.bind(this, 'plan_date_end')} disabled={IS_DISPLAY}/></Div>
+									<Div>
+										<Field
+												type="date"
+												label=""
+												error={errors['plan_date_end']}
+												date={state.plan_date_end}
+												disabled={IS_DISPLAY}
+												min={state.plan_date_start}
+												onChange={this.handleChange.bind(this, 'plan_date_end')} />
+									</Div>
     				   	</Col>
 
                 <Div hidden={!(IS_CLOSING || IS_COMPLETED)}>
       				 		<Col md={6}>
-      				   		<label>Время выполнения, фактическое</label>
-      				 			<Div>c <Datepicker date={state.fact_date_start} onChange={this.handleChange.bind(this, 'fact_date_start')} disabled={IS_CLOSED}/></Div>
+      				   		<label style={{position: "absolute", right: -7, top: 31, fontWeight: 400}}>—</label>
+										<Div>
+											<Field
+													type="date"
+													label="Время выполнения, фактическое:"
+													error={errors['fact_date_start']}
+													date={state.fact_date_start}
+													disabled={IS_CLOSED}
+													onChange={this.handleChange.bind(this, 'fact_date_start')} />
+										</Div>
       				   	</Col>
       				   	<Col md={6}>
-                    <label style={{minHeight: 15}}></label>
-      				 			<Div>по <Datepicker date={state.fact_date_end} min={state.fact_date_start} onChange={this.handleChange.bind(this, 'fact_date_end')} disabled={IS_CLOSED}/></Div>
+										<Div>
+											<Field
+													type="date"
+													label=""
+													error={errors['fact_date_end']}
+													date={state.fact_date_end}
+													min={state.fact_date_start}
+													disabled={IS_CLOSED}
+													onChange={this.handleChange.bind(this, 'fact_date_end')} />
+										</Div>
       				   	</Col>
                 </Div>
               </Row>

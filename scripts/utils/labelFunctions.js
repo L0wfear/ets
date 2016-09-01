@@ -2,14 +2,6 @@
 // TODO переделать на нормальный i18n
 import { getFormattedDateTime } from 'utils/dates';
 
-export function dateLabelFunction(date) {
-  return getFormattedDateTime(date);
-}
-
-export function datePickerFunction(date) {
-  return date;
-}
-
 export function waybillStatusLabelFunction(s) {
 	switch (s) {
 		case 'draft':
@@ -28,24 +20,18 @@ export function waybillMissionsCompleteStatusLabelFunction(status) {
 }
 
 export function getReportStatusLabel(status) {
-  let result = '';
-
   switch (status) {
     case 'fail':
-      result = 'Ошибка';
-      break;
+      return 'Ошибка';
     case 'success':
-      result = 'Обработан';
-      break;
+      return 'Обработан';
     case 'in progress':
-      result = 'В обработке';
-      break;
+      return 'В обработке';
     case 'wait':
-      result = 'В очереди';
-      break;
+      return 'В очереди';
+    default:
+      return 'Н/Д';
   }
-
-  return result;
 };
 
 export function getGeozoneTypeLabel(type) {
@@ -73,20 +59,6 @@ export function employeeFIOLabelFunction(employeeId, fullFlag = false) {
 	result += fullFlag ? `${employee.first_name || ''} ${employee.middle_name || ''}` : `${employee.first_name[0] && employee.first_name[0]+'.' || ''} ${employee.middle_name[0] && employee.middle_name[0]+'.' || ''}`;
 
 	return result;
-}
-
-export function getCarByIdLabelFunction(id) {
-  const { flux } = window.__ETS_CONTAINER__;
-  const objectsStore = flux.getStore('objects');
-	const car = objectsStore.getCarById(id);
-	if (car.gov_number && car.model) {
-		car.label = car.gov_number + ' [' + car.model + ']';
-	}
-	return car;
-};
-
-export function getModelById(id) {
-  return window.__ETS_CONTAINER__.flux.getStore('objects').getModelById(id);
 }
 
 export function getTypeById(id) {

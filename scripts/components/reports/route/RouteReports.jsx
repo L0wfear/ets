@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import connectToStores from 'flummox/connect';
 import Table from 'components/ui/table/DataTable.jsx';
 import { Button, Glyphicon } from 'react-bootstrap';
 import EtsSelect from 'components/ui/EtsSelect.jsx';
 import Div from 'components/ui/Div.jsx';
 import { getFormattedDateTimeSeconds } from 'utils/dates';
-import { datePickerFunction, getReportStatusLabel } from 'utils/labelFunctions';
+import { getReportStatusLabel } from 'utils/labelFunctions';
+import { FluxContext, HistoryContext, exportable, staticProps, connectToStores } from 'utils/decorators';
 
 let tableMeta = {
 	cols: [
@@ -31,8 +31,7 @@ let tableMeta = {
 			caption: 'Дата создания',
 			type: 'number',
 			filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			},
 		},
 		{
@@ -40,8 +39,7 @@ let tableMeta = {
 			caption: 'Дата начала обработки',
 			type: 'number',
 			filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			},
 		},
 		{
@@ -49,8 +47,7 @@ let tableMeta = {
 			caption: 'Дата завершения обработки',
 			type: 'number',
 			filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			},
 		},
 		{
@@ -80,7 +77,7 @@ let tableMeta = {
 	]
 }
 
-let CarsTable = (props) => {
+let RouteOdhCoveringReportsTable = (props) => {
 
 	const renderers = {
     status: ({data}) => <div>{data ? getReportStatusLabel(data) : ''}</div>,
@@ -99,7 +96,14 @@ let CarsTable = (props) => {
 
 }
 
-class RouteLaunchReports extends Component {
+@connectToStores(['routes', 'objects'])
+@FluxContext
+@HistoryContext
+@staticProps({
+	entity: 'route_odh_covering_report'
+})
+@exportable
+export default class RouteOdhCoveringReports extends Component {
 
 	constructor(props) {
 		super(props);
@@ -132,7 +136,6 @@ class RouteLaunchReports extends Component {
   }
 
 	render() {
-
 		const { reportsList = [], technicalOperationsList = [] } = this.props;
     const TECH_OPERATIONS = [{value: 'null', label: 'Все операции'}].concat(technicalOperationsList.filter((route) => route.object_name.indexOf('ОДХ') > -1).map(({id, name}) => ({value: id, label: name})));
 
@@ -146,17 +149,10 @@ class RouteLaunchReports extends Component {
 							onChange={this.handleGenerationTypeChange.bind(this)}
 							clearable={false} />
         </Div>
-				<CarsTable data={reportsList} onRowSelected={this.onReportSelect.bind(this)}>
-				</CarsTable>
+				<RouteOdhCoveringReportsTable data={reportsList} onRowSelected={this.onReportSelect.bind(this)}>
+					{/* <Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt" /></Button> */}
+				</RouteOdhCoveringReportsTable>
 			</div>
 		);
-
 	}
 }
-
-RouteLaunchReports.contextTypes = {
-  history: React.PropTypes.object,
-	flux: React.PropTypes.object,
-};
-
-export default connectToStores(RouteLaunchReports, ['routes', 'objects']);

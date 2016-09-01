@@ -14,11 +14,9 @@ class Field extends React.Component {
   renderBoolean() {
     const { label = ''} = this.props;
     return <Div hidden={this.props.hidden}>
-             <label>{label}</label>
-             <Div>
-              <input type="checkbox" checked={this.props.value} {...this.props} />
-             </Div>
-           </Div>
+      <label>{label}</label>
+      <input type="checkbox" style={{fontSize: '20px', marginLeft: '5px'}} checked={this.props.value} onChange={this.props.onChange} />
+    </Div>
   }
 
   renderNumber() {
@@ -33,8 +31,8 @@ class Field extends React.Component {
   renderDate() {
     const { error, label = '', readOnly = false } = this.props;
     const dateClassName = cx({'has-error': error});
-    return  <Div hidden={this.props.hidden}>
-      <label>{label}</label>
+    return  <Div hidden={this.props.hidden} style={{marginBottom: 15}}>
+      <label style={{minHeight: 15}}>{label}</label>
       <DatePicker {...this.props} className={dateClassName}/>
       <Div hidden={!error} className="error" style={{marginTop: 4}}>{error}</Div>
     </Div>;
@@ -43,7 +41,7 @@ class Field extends React.Component {
   renderSelect() {
     const { error, label = '', className = ''} = this.props;
     const selectClassName = cx({'has-error': error});
-    return  <Div hidden={this.props.hidden} className={className}>
+    return  <Div hidden={this.props.hidden} className={className} style={{marginBottom: 15}}>
       <label>{label}</label>
       <EtsSelect {...this.props} className={selectClassName}/>
       <Div hidden={!error} className="error" style={{marginTop: 4}}>{error}</Div>
@@ -54,7 +52,7 @@ class Field extends React.Component {
     const { error, label = '', readOnly = false, className = '' } = this.props;
     const inputClassName = cx({'has-error': error});
     return !readOnly ?
-           <Div hidden={this.props.hidden}>
+           <Div hidden={this.props.hidden} style={this.props.wrapStyle || {}}>
              <Input type="text" className={inputClassName} {...this.props} />
              <Div hidden={!error} className="error">{error}</Div>
            </Div>:

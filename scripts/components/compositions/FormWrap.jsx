@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { validateRow } from 'validate/validateRow.js';
+import { validateField } from 'validate/validateField.js';
 import { FluxContext } from 'utils/decorators';
 import { isEmpty } from 'utils/functions';
 import { saveDataSuccessNotification } from 'utils/notifications';
@@ -55,7 +55,7 @@ export default class FormWrap extends Component {
   	let formErrors = _.clone(errors);
     let schema = this.schema;
   	_.each(schema.properties, prop => {
-  		formErrors[prop.key] = validateRow(prop, formState[prop.key]);
+  		formErrors[prop.key] = validateField(prop, formState[prop.key], formState, this.schema);
     });
 
   	return formErrors;

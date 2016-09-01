@@ -1,7 +1,7 @@
 import { Actions } from 'flummox';
 import _ from 'lodash';
 import { createValidDateTime } from 'utils/dates';
-import { isEmpty, isNotNull } from 'utils/functions';
+import { isEmpty } from 'utils/functions';
 import { MissionReportsService,
          MissionService,
          MissionReassignationService,
@@ -57,7 +57,7 @@ export default class MissionsActions extends Actions {
     return MissionReassignationService.put(payload, false, 'json');
   }
 
-  getMissionsByCarAndDates(car_id, date_from, date_to, waybillStatus) {
+  getMissionsByCarAndDates(car_id, date_from, date_to, waybillStatus, inBetween) {
     const payload = {};
 
     // возвращает статусы задания, которые мы будем искать, в зависимости от статуса ПЛ
@@ -82,6 +82,10 @@ export default class MissionsActions extends Actions {
       payload.status = status;
     }
 
+    if (!isEmpty(inBetween)) {
+      payload.in_between = inBetween;
+    }
+
     return MissionService.get(payload);
   }
 
@@ -99,7 +103,18 @@ export default class MissionsActions extends Actions {
     const payload = _.clone(mission);
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
-    payload.assign_to_waybill = +!!payload.assign_to_waybill;
+    switch(payload.assign_to_waybill) {
+      case 0:
+        payload.assign_to_waybill = 'not_assign';
+        break;
+      case 1:
+        payload.assign_to_waybill = 'assign_to_active';
+        break;
+      case 2:
+        payload.assign_to_waybill = 'assign_to_draft';
+        break;
+    }
+    if (!callback) payload.assign_to_waybill = 'not_assign'; //TODO хак, в колбэк попадает !this.props.fromWaybill§
     return MissionService.post(payload, callback, 'json');
   }
 
@@ -122,17 +137,9 @@ export default class MissionsActions extends Actions {
   }
 
   printMission(data, url) {
-    const token = JSON.parse(window.localStorage.getItem('ets-session'));
-    let URL = `${config.backend}/plate_mission/?token=${token}`;
-
-    return fetch(URL, {
-      method: 'post',
-      body: JSON.stringify(data)
-    }).then((r) => r.blob());
-
-    // return MissionPrintService.post(payload, (r) => {
-    //   return r.blob();
-    // }, 'json');
+    const payload = _.cloneDeep(data);
+    
+    return MissionPrintService.postBlob(payload);
   }
 
   getMissionData(mission_id) {
@@ -211,6 +218,12 @@ export default class MissionsActions extends Actions {
     return DutyMissionService.get({});
   }
 
+  getDutyMissionById(id) {
+    const payload = { id };
+
+    return DutyMissionService.get(payload);
+  }
+
   createDutyMission(mission) {
     const payload = _.cloneDeep(mission);
     payload.plan_date_start = createValidDateTime(payload.plan_date_start);
@@ -218,7 +231,6 @@ export default class MissionsActions extends Actions {
     payload.fact_date_start = createValidDateTime(payload.fact_date_start);
     payload.fact_date_end = createValidDateTime(payload.fact_date_end);
     payload.brigade_employee_id_list = payload.brigade_employee_id_list.map(b => b.id|| b.employee_id);
-    console.log(payload);
     return DutyMissionService.post(payload, false, 'json');
   }
 
@@ -244,7 +256,7 @@ export default class MissionsActions extends Actions {
 
   printDutyMission(duty_mission_id) {
     const payload = { duty_mission_id };
-    return DutyMissionPrintService.get(payload, true);
+    return DutyMissionPrintService.getBlob(payload);
   }
 
 
@@ -317,8 +329,7 @@ export default class MissionsActions extends Actions {
   }
 
   getMissionReportById(id) {
-    const payload = { id };
-    return MissionReportsService.get(payload);
+    return MissionReportsService.path(id).get();
   }
 
   createMissionReport(mission_date_start_from, mission_date_end_to) {
@@ -327,16 +338,6 @@ export default class MissionsActions extends Actions {
       mission_date_end_to: createValidDateTime(mission_date_end_to),
     };
     return MissionReportsService.post(payload);
-  }
-
-  // TODO перенести в reports
-  getMissionAnalyticalReport() {
-    const token = JSON.parse(window.localStorage.getItem('ets-session'));
-    let URL = `${config.backend}/mission_report/?token=${token}`;
-
-    return fetch(URL, {
-      method: 'get',
-    }).then((r) => r.blob());
   }
 
   getMissionReportByODHs(index) {

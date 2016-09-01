@@ -4,6 +4,7 @@ import { Panel, Collapse, Glyphicon, Fade, Well, Button } from 'react-bootstrap'
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
 import { FluxContext } from 'utils/decorators';
 import WaybillFormWrap from '../../waybill/WaybillFormWrap.jsx';
+import cx from 'classnames';
 
 @FluxContext
 export default class WaybillClosed extends DashboardCardMedium {
@@ -21,7 +22,7 @@ export default class WaybillClosed extends DashboardCardMedium {
     if (!(item && item.data)) return;
     this.props.openSubitemsList(true);
     this.context.flux.getActions('waybills').getWaybill(item.data.waybill_id).then(r => {
-      if (r.result[0]) this.setState({showWaybillForm: true, selectedWaybill: r.result[0]});
+      if (r.result) this.setState({showWaybillForm: true, selectedWaybill: r.result});
     });
   }
 
@@ -29,7 +30,7 @@ export default class WaybillClosed extends DashboardCardMedium {
     return (
       <ul>
         {subItems.map((item, i) => (
-          <li key={i} className="pointer" onClick={this.action.bind(this, item)}>
+          <li key={i} onClick={this.action.bind(this, item)}>
               {`№${item.data.waybill_number}, ${item.data.car_gov_number}, ${item.data.driver_fio}`}
           </li>
         ))}

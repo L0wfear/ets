@@ -1,12 +1,16 @@
+import { isEmpty, hasOdometer } from 'utils/functions';
+
 export const waybillSchema = {
 	properties: [
 		{
 			key: 'plan_departure_date',
+			title: 'Выезд план.',
 			type: 'datetime',
 			required: true,
 		},
 		{
 			key: 'plan_arrival_date',
+			title: 'Возвращение план.',
 			type: 'datetime',
 			required: true,
 		},
@@ -71,9 +75,52 @@ export const waybillSchema = {
 			required: false,
 		},
 	],
+	dependencies: {
+		'odometr_start': [
+			{
+				validator: (value, formData) => {
+					if (hasOdometer(formData.gov_number)) {
+						if (isEmpty(value)) {
+							return `Поле "Одометр.Выезд" должно быть заполнено`;
+						}
+					}
+				}
+			}
+		],
+		'motohours_start': [
+			{
+				validator: (value, formData) => {
+					if (!hasOdometer(formData.gov_number)) {
+						if (isEmpty(value)) {
+							return `Поле "Счетчик моточасов.Выезд" должно быть заполнено`;
+						}
+					}
+				}
+			}
+		],
+		'plan_arrival_date': [
+			{
+				type: 'gt',
+				field: 'plan_departure_date'
+			}
+		]
+	}
 };
 
 const closingProperties = [
+	...waybillSchema.properties,
+	{
+		key: 'fact_departure_date',
+		title: 'Выезд факт.',
+		type: 'datetime',
+		required: true,
+	},
+	{
+		key: 'fact_arrival_date',
+		title: 'Возвращение факт.',
+		type: 'datetime',
+		required: true,
+	},
   {
     key: 'fuel_given',
     title: 'Топливо.Выдано',
@@ -90,6 +137,7 @@ const closingProperties = [
     key: 'fuel_end',
     title: 'Топливо.Возврат',
     type: 'floatFixed3',
+		min: 0,
     required: true,
   },
   {
@@ -102,13 +150,13 @@ const closingProperties = [
     key: 'odometr_end',
     title: 'Одометр.Возврат',
     type: 'floatFixed3',
-    required: false,
+    required: true,
   },
   {
     key: 'motohours_end',
     title: 'Счетчик моточасов.Возврат',
     type: 'floatFixed3',
-    required: false,
+    required: true,
   },
   {
     key: 'motohours_equip_end',
@@ -118,6 +166,35 @@ const closingProperties = [
   },
 ];
 
+const closingDependencies = {
+	...waybillSchema.dependencies,
+	'fact_arrival_date': [
+		{
+			type: 'gt',
+			field: 'fact_departure_date'
+		}
+	],
+	'motohours_end' : [
+		{
+			type: 'gt',
+			field: 'motohours_start'
+		}
+	],
+	'motohours_equip_end' : [
+		{
+			type: 'gt',
+			field: 'motohours_equip_start'
+		}
+	],
+	'odometr_end' : [
+		{
+			type: 'gt',
+			field: 'odometr_start'
+		}
+	]
+}
+
 export const waybillClosingSchema = {
-  properties: closingProperties
+  properties: closingProperties,
+	dependencies: closingDependencies
 };;

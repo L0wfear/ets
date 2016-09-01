@@ -1,4 +1,5 @@
 import { Actions } from 'flummox';
+import { createValidDateTime, createValidDate } from 'utils/dates';
 import _ from 'lodash';
 import {
   DailyCleaningReportsServiceETS,
@@ -10,8 +11,6 @@ import {
   OdhCoverageReportService,
   CarFuncTypeUsageReportService
 } from 'api/Services';
-import { createValidDateTime, createValidDate } from 'utils/dates';
-import config from '../config.js';
 
 export default class ReportsActions extends Actions {
 
@@ -55,11 +54,7 @@ export default class ReportsActions extends Actions {
   }
 
   getDailyCleaningReportByIdETS(id) {
-    const payload = {
-      id
-    };
-
-    return DailyCleaningReportsServiceETS.get(payload);
+    return DailyCleaningReportsServiceETS.path(id).get();
   }
 
   // Cleaning - CAFAP
@@ -77,11 +72,7 @@ export default class ReportsActions extends Actions {
   }
 
   getDailyCleaningReportByIdCAFAP(id) {
-    const payload = {
-      id
-    };
-
-    return DailyCleaningReportsServiceCAFAP.get(payload);
+    return DailyCleaningReportsServiceCAFAP.path(id).get();
   }
 
   //
@@ -104,14 +95,9 @@ export default class ReportsActions extends Actions {
     let payload = _.cloneDeep(data);
     payload.date_from = createValidDateTime(payload.date_from);
     payload.date_to = createValidDateTime(payload.date_to);
-
-    const token = JSON.parse(window.localStorage.getItem('ets-session'));
-    let URL = `${config.backend}/analytical_reports/?token=${token}`;
-
-    return fetch(URL, {
-      method: 'post',
-      body: JSON.stringify(payload)
-    }).then((r) => r.blob());
+    
+    // TODO blob
+    return AnalyticsService.postBlob(payload);
   }
 
   getCoverageReport(state) {
@@ -127,11 +113,7 @@ export default class ReportsActions extends Actions {
   }
 
   getWeeklyTechnicalOperationCompleteReportById(id) {
-    const payload = {
-      id
-    };
-
-    return WeeklyTechnicalOperationCompleteReportsService.get(payload);
+    return WeeklyTechnicalOperationCompleteReportsService.path(id).get();
   }
 
   createWeeklyTechnicalOperationCompleteReport(data) {

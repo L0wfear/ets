@@ -9,6 +9,7 @@ $colorLightGreen: #96bb88;
 $colorBadge: #4b4b4b;
 $colorButton: #4c4c4c;
 $colorGray: #9b9b9b;
+$colorYellow: #c0e1f6;
 
 $navbarHeight: 64px;
 $navbarPaddingA: 22px;
@@ -238,6 +239,14 @@ body.application hr {
   text-decoration: none;
 }
 
+.small-table {
+  th, td {
+    font-size: 12px !important;
+    padding: 4px !important;
+    word-break: normal !important;
+  }
+}
+
 .chart-wrapper {
   background: #fff;
   border: 1px solid #e2e2e2;
@@ -319,7 +328,10 @@ body.application {
   }
 }
 
-
+.no-pointer-events {
+  pointer-events: none !important;
+  cursor: default !important;
+}
 
 .app-toolbar {
   .row {
@@ -433,6 +445,15 @@ body.application {
   }
 }
 
+.car-info-play-info {
+  text-align: left;
+  margin-top: 10px;
+  dt {
+    float: left;
+    width: 120px;
+  }
+}
+
 
 .list-item-checkbox {
 
@@ -453,6 +474,12 @@ body.application {
 
   h5 {
     font-weight: 200;
+  }
+}
+
+.track-player {
+  .btn {
+    margin-right: 10px;
   }
 }
 
@@ -1586,6 +1613,10 @@ body {
   padding: 15px;
   margin: 0 auto;
 }
+.form-control {
+  height: 36px;
+}
+
 .form-signin .form-signin-heading,
 .form-signin .checkbox {
   margin-bottom: 10px;
@@ -2011,8 +2042,9 @@ body {
     text-align: left;
     outline: none;
     //color: black;
-    &.btn-success {
-      background-color: #aaddaa;
+    &.tracking {
+      background-color: #5cb85c;
+      border-color: #4cae4c;
     }
   }
 
@@ -2292,10 +2324,10 @@ body {
 
 .modal-content {
   border-radius: 0;
+}
 
-  .chart-datepicker {
-    padding-bottom:2px;
-  }
+.chart-datepicker {
+  padding-bottom:2px;
 }
 
 .modal-footer {
@@ -2403,74 +2435,79 @@ body {
   border: none !important;
 }
 
-.filter-wrap {
-  position: relative;
-  line-height: 1.5; // copy .btn
-  margin-left: 10px; // copy .btn
+.filter-datepicker {
+  padding-bottom: 2px;
 }
 
 .filter-container {
-  z-index: 1000;
-  position: absolute;
-  top: 0;
-
-  display: block;
-  padding: 30px 0 0 0;
-
   line-height: normal;
+  margin-top: 10px;
+  width: 100%;
   font-size: 14px;
-
-  background-color: #EEE;
-
-  white-space: normal;
-  color: #000;
-  cursor: default;
-
-  border: 1px solid #c1c1c1;//$colorButton;
-
-  &-window {
-    min-width: 298px;
-    max-height: 267px;
-    overflow: scroll;
+  background-color: #eee;
+  border: 1px solid #ddd;
+  label {
+    text-align: center;
+    width: 100%
   }
-
-  .rw-select {
-    .rw-btn {
-      width: 0.7em;
-    }
+  td {
+    padding: 1px !important;
   }
-
-  .rw-calendar .rw-header .rw-btn-view {
-    width: 55%;
-  }
-
-
-  .modal-body {
-    padding-top: 5px;
-
-    > .row + .row {
-      margin-top: 10px;
-    }
-  }
-
-  .modal-footer {
-    background: transparent;
-  }
-
+  // .rw-select {
+  //   .rw-btn {
+  //     width: 0.7em;
+  //   }
+  // }
+  //
+  // .rw-calendar .rw-header .rw-btn-view {
+  //   width: 55%;
+  // }
 }
 
-.filter-container.left {
-  right: 0;
+.filter-buttons {
+  margin-bottom: 10px;
+  padding: 1% 1% 5px 1%;
+  text-align: center;
+  .btn {
+    margin-right: 5px;
+    margin-left: 5px;
+  }
 }
 
-.filter-container.right {
-  left: 0;
+.filter-close {
+  cursor: pointer;
+  float: right;
+  margin-top: 5px;
+  font-size: 20px;
+  color: #444;
 }
 
-.filter-button {
-  position: relative;
-  z-index: 999;
-  margin-left: 0 !important;
+@media (min-width: 1600px) {
+  .filter-row {
+    width: 14.6666667%;
+    display: inline-table;
+    margin: 0 1% 10px 1%;
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1600px) {
+  .filter-row {
+    width: 18%;
+    display: inline-table;
+    margin: 0 1% 10px 1%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .filter-row {
+    width: 23%;
+    display: inline-table;
+    margin: 0 1% 10px 1%;
+  }
+}
+
+.interval-picker {
+  display: block;
 }
 
 .column-control-button {
@@ -2603,6 +2640,10 @@ body {
 
           &:nth-child(even) > td {
             background-color: #f7f7f7 !important;
+          }
+
+          &.highlighted-row > td {
+            background-color: $colorYellow !important;
           }
 
           &:hover > td {
@@ -2800,6 +2841,12 @@ div.none {
 .width25 {
   width: 25px !important;
 }
+
+.width30 {
+  width: 30px !important;
+  word-break: normal !important;
+}
+
 .width80 {
   width: 80px !important;
 }
@@ -2810,21 +2857,13 @@ div.none {
   width: 10px !important;
 }
 
-.width-waybill-small {
-  font-size: 10px !important;
-  padding: 4px !important;
-}
-
-.width-waybill-tiny {
-  font-size: 10px !important;
-  padding: 4px !important;
+.width20 {
   width: 20px !important;
 }
 
-.width-waybill-large {
-  font-size: 10px !important;
-  padding: 4px !important;
-  width: 60px !important;
+.width-nowrap {
+  white-space: nowrap !important;
+  width: 20px !important;
 }
 
 .width-fuel-report-small {
@@ -3422,6 +3461,10 @@ div.none {
           background-color: $colorGreen !important;
           color: white !important;
         }
+
+        &:hover > td, &.highlighted-row > td {
+          background-color: $colorYellow !important;
+        }
       }
 
     td {
@@ -3465,16 +3508,6 @@ div.none {
     z-index: 300;
 }
 
-.filter-container-window {
-  overflow-y: scroll;
-  overflow-x: auto;
-  min-height: 250px;
-}
-
-.filter-footer {
-  padding: 15px 5px;
-}
-
 .griddle:focus {
   outline: none;
 }
@@ -3515,6 +3548,7 @@ div.none {
   position: absolute;
   width: 100%;
   left: 0;
+  z-index: -1;
   text-align: center;
   div {
     margin-left: 10px;
@@ -3534,4 +3568,20 @@ div.none {
 
 .btn-toolbar {
   margin-left: 5px !important;
+}
+
+
+.track-player {
+  padding: 4px;
+  padding-top: 10px;
+  text-align: left;
+  .btn {
+    outline: none;
+    border-color: inherit;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    &:focus, &:active, &:active:focus {
+      background-color: #4c4c4c;
+    }
+  }
 }

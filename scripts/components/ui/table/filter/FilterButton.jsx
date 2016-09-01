@@ -5,10 +5,7 @@ import cx from 'classnames';
 const FilterButton = (props) => {
 
   const filterClass = cx('filter-button', {
-    'filter-button-active': props.active,
-    'open': props.show,
-    'right': props.direction === 'right',
-    'left': props.direction !== 'right'
+    'filter-button-active': props.active
   });
 
   return (

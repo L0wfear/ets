@@ -114,8 +114,7 @@ export default class RoutesActions extends Actions {
   }
 
   getRouteReportById(id) {
-    const payload = { id };
-    return RouteReportsService.get(payload);
+    return RouteReportsService.path(id).get();
   }
 
   createRouteReport(operation_id) {

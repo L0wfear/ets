@@ -1,7 +1,8 @@
-import { getUrl, getJSON, postJSON, deleteJSON, putJSON } from '../adapter.js';
+import { getJSON, postJSON, deleteJSON, putJSON, getBlob, postBlob } from '../adapter.js';
 import { getWarningNotification } from 'utils/notifications';
 import { RequestWarningError } from 'utils/errors';
 import { mocks } from './mocks';
+import urljoin from 'url-join';
 
 export default class APIService {
 
@@ -10,29 +11,30 @@ export default class APIService {
    * @param {string} url - url path
    * @param {object} options - options
    * @param {boolean} options.useMock - use mock instead of backend service
-   * @param {boolean} options.customPaths - allow to provide additional part of url path
-   * @param {array} options.customPathsList - available paths for customPaths
    */
   constructor(url, options = {}) {
     const { useMock = false } = options;
-    this.firstUrl = url;
-    this.canonicFirstUrl = url;
     this.serviceName = url.replace(/\//g, '');
     this.useMock = useMock;
-    const canonicUrl = url.indexOf('http') > -1 ? url : getUrl(url);
-    this.url = canonicUrl;
-    this.canonicUrl = canonicUrl;
+
+    this.url = url;
+    this.canonicUrl = url;
+
     this.get = this.get.bind(this);
     this.processResponse = this.processResponse.bind(this);
 
-    this.logFunction = (method) => console.info(`API SERVICE ${method} ${this.firstUrl}`);
+    this.logFunction = (method) => console.info(`API SERVICE ${method} ${this.url}`);
     this.warningNotificationFunction = (warning) => global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification(warning));
   }
 
   processResponse(r, callback) {
     if (r.warnings && r.warnings.length) {
       // Show warnings
-      r.warnings.map(w => this.warningNotificationFunction(w));
+      if (Array.isArray(r.warnings)) {
+        r.warnings.map(w => this.warningNotificationFunction(w));
+      } else if (typeof r.warnings === 'string') {
+        this.warningNotificationFunction(w);
+      }
       throw new Error('Request warnings is not empty!');
     }
     if (typeof callback === 'function') {
@@ -47,7 +49,7 @@ export default class APIService {
     }
   }
 
-  get(payload = {}, blob = false) {
+  get(payload = {}) {
     if (this.useMock && mocks[this.serviceName]) {
       this.log('GET MOCK');
       return new Promise((res, rej) => {
@@ -59,7 +61,21 @@ export default class APIService {
     this.log('GET');
     const url = this.url;
     this.resetPath();
-    return getJSON(url, payload, blob);
+    return getJSON(url, payload);
+  }
+
+  getBlob(payload = {}) {
+    this.log('GET BLOB');
+    const url = this.url;
+    this.resetPath();
+    return getBlob(url, payload);
+  }
+
+  postBlob(payload = {}) {
+    this.log('GET (POST) BLOB');
+    const url = this.url;
+    this.resetPath();
+    return postBlob(url, payload);
   }
 
   post(payload = {}, callback, type = 'form', blob = false) {
@@ -89,15 +105,10 @@ export default class APIService {
 
   resetPath() {
     this.url = this.canonicUrl;
-    this.firstUrl = this.canonicFirstUrl;
   }
 
-  path(path) {
-    // TODO переделать нормально
-    this.url = this.canonicUrl;
-    this.firstUrl = this.canonicFirstUrl;
-    this.url += path;
-    this.firstUrl += path;
+  path(...args) {
+    this.url = urljoin(this.canonicUrl, ...args);
     return this;
   }
 
@@ -107,7 +118,7 @@ export default class APIService {
 
   connectToLoggerService(fn) {
     if (typeof fn === 'function') {
-      this.warningNotificationFunction = fn;
+      this.logFunction = fn;
     }
   }
 

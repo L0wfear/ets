@@ -25,6 +25,5 @@ export default class CarsList extends ElementsList {
 
 		await flux.getActions('objects').getTypes();
 		flux.getActions('objects').getCars();
-		flux.getActions('objects').getOwners();
 	}
 }

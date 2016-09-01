@@ -5,6 +5,7 @@ import RouteInfo from 'components/route/RouteInfo.jsx';
 import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
 import ODHList from 'components/route/ODHList.jsx';
 import Field from 'components/ui/Field.jsx';
+import EtsSelect from 'components/ui/EtsSelect.jsx';
 import Div from 'components/ui/Div.jsx';
 import moment from 'moment';
 import cx from 'classnames';
@@ -29,7 +30,7 @@ export class MissionForm extends Form {
 		this.handleChange('route_id', v);
 		const { flux } = this.context;
 		if (v) {
-			flux.getActions('routes').getRouteById(v, true).then(r => {
+			flux.getActions('routes').getRouteById(v, false).then(r => {
 				this.setState({selectedRoute: r});
 			});
 		} else {
@@ -92,10 +93,10 @@ export class MissionForm extends Form {
 		let { technicalOperationsList, routesList, carsList } = this.props;
 
 		if (!isEmpty(mission.route_id)) {
-			selectedRoute = await routesActions.getRouteById(mission.route_id, true);
+			selectedRoute = await routesActions.getRouteById(mission.route_id, false);
 		}
 
-		if (!isEmpty(mission.technical_operation_id)){
+		if (!isEmpty(mission.technical_operation_id)) {
 			//routesList = await routesActions.getRoutesByTechnicalOperation(mission.technical_operation_id);
 			routesList = await routesActions.getRoutesByMissionId(mission.id);
 		}
@@ -136,7 +137,7 @@ export class MissionForm extends Form {
 		if (isSubmitted === true) {
 			let createdRouteId = result.createdRoute.result[0].id;
 			this.handleChange('route_id', createdRouteId);
-			let selectedRoute = await routesActions.getRouteById(createdRouteId, true);
+			let selectedRoute = await routesActions.getRouteById(createdRouteId);
 			let routesList = await routesActions.getRoutesByTechnicalOperation(this.props.formState.technical_operation_id);
 			Object.assign(stateChangeObject, {
 				showRouteForm: false,
@@ -163,6 +164,11 @@ export class MissionForm extends Form {
 
     const TECH_OPERATIONS = technicalOperationsList.map(({id, name}) => ({value: id, label: name}));
     const MISSION_SOURCES = missionSourcesList.map(({id, name}) => ({value: id, label: name}));
+		const ASSIGN_OPTIONS = [
+			{value: 0, label: "Не добавлять в ПЛ"},
+			{value: 1, label: "Добавить в активный ПЛ"},
+			{value: 2, label: "Создать/добавить в черновик ПЛ"}
+		];
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`}));
     const ROUTES = routesList.map(({id, name}) => ({value: id, label: name}));
 
@@ -175,7 +181,7 @@ export class MissionForm extends Form {
     let IS_POST_CREATING_NOT_ASSIGNED = state.status === 'not_assigned' || this.props.fromWaybill;
     let IS_POST_CREATING_ASSIGNED = state.status === 'assigned' && isDeferred;
 		let IS_DISPLAY = !IS_CREATING && !(IS_POST_CREATING_NOT_ASSIGNED || IS_POST_CREATING_ASSIGNED);//(!!state.status && state.status !== 'not_assigned') || (!isDeferred && !IS_CREATING);
-    let title = `Задание № ${state.number || ''} ${state.comment ? '(Не выполнено)' : ''}`;
+    let title = `Задание № ${state.number || ''} ${state.status === 'fail' ? '(Не выполнено)' : ''}`;
 
     if (IS_CREATING) {
       title = "Создание задания"
@@ -209,11 +215,11 @@ export class MissionForm extends Form {
 						</Col>
 
 				 		<Col md={3}>
-				   		<label>Время выполнения:</label>
+				   		<label style={{position: "absolute", right: -7, top: 31, fontWeight: 400}}>—</label>
 				 			<Div>
 								<Field
 										type="date"
-										label="с"
+										label="Время выполнения:"
 										error={errors['date_start']}
 										date={state.date_start}
 										disabled={IS_DISPLAY}
@@ -224,11 +230,10 @@ export class MissionForm extends Form {
 							</Div>
 				   	</Col>
 				   	<Col md={3}>
-              <label style={{minHeight: 15}}></label>
 				 			<Div>
 								<Field
 										type="date"
-										label="по"
+										label=""
 										error={errors['date_end']}
 										date={state.date_end}
 										disabled={IS_DISPLAY}
@@ -244,7 +249,6 @@ export class MissionForm extends Form {
 						<Col md={6}>
 							<Field type="string"
 									label="Комментарий"
-									disabled={IS_COMPLETED}
 									value={state.comment}
 									onChange={this.handleChange.bind(this, 'comment')}
 									error={errors['comment']} />
@@ -275,8 +279,8 @@ export class MissionForm extends Form {
 									options={TECH_OPERATIONS}
 									value={state.technical_operation_id}
 									onChange={this.handleTechnicalOperationChange.bind(this)}/>
-								</Col>
-						</Row>
+						</Col>
+					</Row>
 
 	      	<Row>
             <Col md={6}>
@@ -300,13 +304,18 @@ export class MissionForm extends Form {
 	      </Modal.Body>
 
 	      <Modal.Footer>
-          <Div className="inline-block assignToWaybillCheck" hidden={!!state.status || this.props.fromWaybill}>
-            <label>Создать черновик ПЛ / Добавить в существующий</label>
-            <Input type="checkbox" value={state.assign_to_waybill} onClick={this.handleChange.bind(this, 'assign_to_waybill', !!!state.assign_to_waybill)}/>
-          </Div>
-					<Div className="inline-block" hidden={state.status === 'complete'}>
+          <Div className="inline-block assignToWaybillCheck" style={{width: "300px",textAlign:"left !important", height: "22px", marginRight: "20px"}} hidden={!!state.status || this.props.fromWaybill}>
+            {/* <Input type="checkbox" value={state.assign_to_waybill} onClick={this.handleChange.bind(this, 'assign_to_waybill', !!!state.assign_to_waybill)}/> */}
+						<EtsSelect
+								type="select"
+								options={ASSIGN_OPTIONS}
+								value={state.assign_to_waybill}
+								clearable={false}
+								onChange={this.handleChange.bind(this, 'assign_to_waybill')}/>
+					</Div>
+							<Div className="inline-block">
 						<Dropdown id="waybill-print-dropdown" dropup disabled={!state.status || !this.props.canSave || !state.route_id} onSelect={this.props.handlePrint}>
-							<Dropdown.Toggle  disabled={!state.status || !this.props.canSave || !state.route_id}>
+							<Dropdown.Toggle disabled={!state.status || !this.props.canSave || !state.route_id || IS_COMPLETED}>
 								<Glyphicon glyph="print" />
 							</Dropdown.Toggle>
 							<Dropdown.Menu>
@@ -314,7 +323,7 @@ export class MissionForm extends Form {
 								<MenuItem eventKey={2}>Печать</MenuItem>
 							</Dropdown.Menu>
 						</Dropdown>
-		      	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || IS_DISPLAY}>Сохранить</Button>
+		      	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>Сохранить</Button>
 					</Div>
 	      </Modal.Footer>
 

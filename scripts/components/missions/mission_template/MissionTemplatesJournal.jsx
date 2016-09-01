@@ -46,11 +46,11 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
 		const { flux } = this.context;
 		let { payload = {} } = this.props;
 		flux.getActions('missions').getMissionTemplates(payload);
-    flux.getActions('objects').getWorkKinds();
+    // flux.getActions('objects').getWorkKinds();
     flux.getActions('technicalOperation').getTechnicalOperations();
     flux.getActions('routes').getRoutes();
     flux.getActions('objects').getCars();
-    flux.getActions('missions').getMissionSources();
+    // flux.getActions('missions').getMissionSources();
 	}
 
 	/**

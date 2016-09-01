@@ -4,7 +4,6 @@ import connectToStores from 'flummox/connect';
 import MapWrapper from './MapWrapper.jsx';
 import Toolbar from './toolbar/Toolbar.jsx';
 import Sidebar from './Sidebar.jsx';
-import WeatherWidget from '../map/WeatherWidget.jsx';
 import { FluxContext } from 'utils/decorators';
 
 @FluxContext
@@ -62,7 +61,6 @@ class MonitorPage extends Component {
 
           <Sidebar/>
         </FluxComponent>
-        <WeatherWidget/>
       </div>
     );
   }

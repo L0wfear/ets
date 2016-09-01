@@ -78,12 +78,16 @@ export default class MainPage extends React.Component {
             <MenuItem permissions={['fuel_operation.list']} active={path === '/fuel-operations'} href="#/fuel-operations">Справочник операций для расчета топлива</MenuItem>
             <MenuItem permissions={['type.list']} active={path === '/car-func-types'} href="#/car-func-types">Справочник типов техники</MenuItem>
             <MenuItem permissions={['odh.list']} active={path === '/odh'} href="#/odh">Справочник ОДХ</MenuItem>
+            <MenuItem permissions={['odh_norm.list']} active={path === '/odh-norm'} href="#/odh-norm">Справочник нормативов по содержанию ОДХ</MenuItem>
+            <MenuItem permissions={['odh_norm_data_summer.list']} active={path === '/odh-norm-data-summer'} href="#/odh-norm-data-summer">Справочник показателей норм по содержанию ОДХ (лето)</MenuItem>
             <MenuItem permissions={['dt.list']} active={path === '/dt'} href="#/dt">Справочник ДТ</MenuItem>
             <MenuItem permissions={['ssp.list']} active={path === '/ssp'} href="#/ssp">Справочник ССП</MenuItem>
             <MenuItem permissions={['msp.list']} active={path === '/msp'} href="#/msp">Справочник МСП</MenuItem>
             <MenuItem permissions={['fueling_water.list']} active={path === '/fueling-water'} href="#/fueling-water">Справочник баз гидрантов</MenuItem>
             <MenuItem permissions={['carpool.list']} active={path === '/carpool'} href="#/carpool">Справочник Автобаз</MenuItem>
             <MenuItem permissions={['danger_zone.list']} active={path === '/danger-zones'} href="#/danger-zones">Справочник особо опасных мест</MenuItem>
+            <MenuItem permissions={['pgm.list']} active={path === '/pgm'} href="#/pgm">Справочник пунктов отпуска ПГМ</MenuItem>
+            <MenuItem permissions={['snow_storage.list']} active={path === '/snow-storage'} href="#/snow-storage">Справочник пунктов временного складирования снега</MenuItem>
             {/*<MenuItem active={path === '/organizations'} href="#/organizations">Справочник организаций</MenuItem>*/}
           </NavDropdown>
 
@@ -94,7 +98,7 @@ export default class MainPage extends React.Component {
               <MenuItem active={path === '/car_func_type_usage_reports'} href="#/car_func_type_usage_reports">Статистика выхода техники</MenuItem>
             </NavDropdown>
             <NavDropdown title="Регламентированные отчеты" id="nav-dropdown-3-2">
-              <MenuItem active={path === '/fuel-report'} href="#/fuel-report">Расход топлива</MenuItem>
+              <MenuItem active={path === '/fuel-consumption-report'} href="#/fuel-consumption-report">Расход топлива</MenuItem>
               <MenuItem active={path === '/daily-cleaning-reports-ets'} href="#/daily-cleaning-reports-ets">Статус по уборке</MenuItem>
               <MenuItem active={path === '/daily-cleaning-reports-cafap'} href="#/daily-cleaning-reports-cafap">Статус по уборке (ЦАФАП)</MenuItem>
               <MenuItem active={path === '/weekly-technical-operation-complete-reports'} href="#/weekly-technical-operation-complete-reports">Статус по выполнению технологических операций</MenuItem>
@@ -118,7 +122,7 @@ export default class MainPage extends React.Component {
               <img src="images/avatar-default.png" className="navbar-user__avatar-img" />
             </div>
             <div className="navbar-user__data">
-              <div className="navbar-user__data-type">{this.state.user.role ? ROLES[this.state.user.role] : ''}</div>
+              <div className="navbar-user__data-type">{this.state.user.role ? ROLES[this.state.user.role] ?  ROLES[this.state.user.role] : this.state.user.role : ''}</div>
               <div className="navbar-user__data-name">{this.state.user.fio}</div>
             </div>
           </NavItem>

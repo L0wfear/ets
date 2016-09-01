@@ -1,0 +1,35 @@
+import _ from 'lodash';
+import moment from 'moment';
+import { isEmpty } from 'utils/functions';
+
+const fixedValidators = [
+  {
+    name: 'gte',
+    validator(config, value, dependentFieldConfig, dependentFieldValue, formData, schema) {
+      const MUST_BE_GREATER_THAN = `"${config.title || config.key}" должно быть больше или равно "${dependentFieldConfig.title}"`;
+      if (isEmpty(value) || isEmpty(dependentFieldValue)) {
+        return void 0;
+      }
+      if (config.type === 'date' || config.type === 'datetime') {
+        if (moment(value).toDate().getTime() < moment(dependentFieldValue).toDate().getTime()) {
+          return MUST_BE_GREATER_THAN;
+        }
+      }
+      return value < dependentFieldValue ? MUST_BE_GREATER_THAN : void 0;
+    }
+  }
+];
+
+function validate(config, value, dependentFieldConfig, dependentFieldValue, formData, schema) {
+  //console.warn(`VALIDATING ${config.key} with data = ${data}`);
+  const error = _(fixedValidators)
+    .map(({validator}) => validator(config, value, dependentFieldConfig, dependentFieldValue, formData, schema))
+    .filter()
+    .first();
+
+  return error;
+}
+
+export default {
+  validate
+}

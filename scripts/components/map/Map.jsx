@@ -3,9 +3,10 @@ import CarMarker from './markers/car/CarMarker.js';
 import { PROJECTION, ArcGisLayer, projectToPixel } from './MskAdapter.js';
 import LegendWrapper from './LegendWrapper.jsx';
 import FluxComponent from 'flummox/component';
-import { polyState, polyStyles, pointStyles, getPointStyle } from 'constants/polygons.js';
+import { polyState, polyStyles } from 'constants/polygons.js';
+import { pointStyles } from 'constants/points.js';
 import { vectorStyles, vectorState, getVectorArrowStyle, getVectorLayer, getVectorSource } from 'constants/vectors.js';
-import { GeoJSON } from 'utils/ol';
+import { GeoJSON, defaultZoom } from 'utils/ol';
 
 let POLYS_LAYER = null;
 // TODO move to settings
@@ -28,20 +29,22 @@ const SIDEBAR_WIDTH_PX = 500;
  */
 export default class OpenLayersMap extends Component {
 
-  static propTypes = {
-    points: PropTypes.object,
-    polys: PropTypes.object,
-    showPolygons: PropTypes.bool,
-    showTrack: PropTypes.bool,
-    onFeatureClick: PropTypes.func
+  static get propTypes() {
+    return {
+      points: PropTypes.object,
+      polys: PropTypes.object,
+      showPolygons: PropTypes.bool,
+      showTrack: PropTypes.bool,
+      onFeatureClick: PropTypes.func
+    };
   }
 
   constructor(props, context) {
     super(props, context);
     let self = this;
 
-    this.markers = {}; // container for markers on map
-    this._handlers = null; // container for map event handlers
+    this.markers = {};
+    this._handlers = null;
     // TODO убрать взаимодействие со сторами из этого компонента
     this._pointsStore = this.props.flux.getStore('points');
     this._geoObjectsStore = this.props.flux.getStore('geoObjects');
@@ -58,11 +61,12 @@ export default class OpenLayersMap extends Component {
     });
 
     let renderFn = this.renderCanvas.bind(this);
-    let canvasLayer = this.canvasLayer = new ol.layer.Image({
+    let canvasLayer = new ol.layer.Image({
       source: new ol.source.ImageCanvas({
-        canvasFunction: function draw(extent, res, pixelRatio, size, proj) {
+        canvasFunction: function(extent, res, pixelRatio, size, proj) {
           if (!this.canvas) {
-            self.canvas = this.canvas = document.createElement('canvas');
+            this.canvas = document.createElement('canvas');
+            self.canvas = this.canvas;
             self.context = this.canvas.getContext('2d');
           }
           this.canvas.setAttribute('width', size[0]);
@@ -74,22 +78,16 @@ export default class OpenLayersMap extends Component {
       }),
       zIndex: 9999
     });
-
-    // canvasLayer.setZIndex(9999);
-
-    let controls = []
-    controls.push(new ol.control.Zoom({
-      duration: 400,
-      className: 'ol-zoom',
-      delta: 1
-    }))
+    this.canvasLayer = canvasLayer;
 
     let map = new ol.Map({
       view: initialView,
-      renderer: ['canvas','dom'],
-      controls: controls,
-      layers: [ArcGisLayer, canvasLayer]
+      controls: [defaultZoom],
+      layers: [ArcGisLayer, canvasLayer],
+      loadTilesWhileAnimating: true,
     });
+    map.disableInteractions = this.disableInteractions.bind(this);
+    map.enableInteractions = this.enableInteractions.bind(this);
 
     this.map = map;
     this.map.projectToPixel = (coordinates) => projectToPixel(this.map, coordinates);
@@ -108,12 +106,17 @@ export default class OpenLayersMap extends Component {
     let container = this.refs.container;
 
     map.setTarget(container);
-    map.on('postcompose', this.triggerRender.bind(this));
-
+    // Оставлю это здесь. так делать не надо, канвас начинает адово тупить
+    // this.triggerRenderEventKey = map.on('postcompose', this.triggerRender.bind(this));
+    // this.triggerRender();
     this.popup = new ol.Overlay.Popup();
     map.addOverlay(this.popup);
 
     this.enableInteractions();
+  }
+
+  componentWillUnmount() {
+    this.disableInteractions();
   }
 
   triggerRender() {
@@ -313,11 +316,11 @@ export default class OpenLayersMap extends Component {
         }
         this.disableInteractions();
       } else {
-        this.enableInteractions()
+        this.enableInteractions();
       }
 
     } else {
-      this.enableInteractions()
+      this.enableInteractions();
     }
 
     // TODO remove this
@@ -363,14 +366,20 @@ export default class OpenLayersMap extends Component {
     let interactions = this.map.getInteractions();
 
     if (this._handlers !== null) {
-      map.unByKey(this._handlers.singleclick);
-      map.unByKey(this._handlers.pointermove);
-      map.unByKey(this._handlers.moveend);
+      // map.unByKey(this._handlers.singleclick);
+      // map.unByKey(this._handlers.pointermove);
+      // map.unByKey(this._handlers.moveend);
+      for (let eventKey in this._handlers) {
+        map.unByKey(this._handlers[eventKey]);
+      }
       this._handlers = null;
 
       interactions.forEach((interaction)=> {
-        interaction.setActive(false)
+        interaction.setActive(false);
       });
+    }
+    if (this.triggerRenderEventKey) {
+      map.unByKey(this.triggerRenderEventKey);
     }
   }
 
@@ -434,6 +443,7 @@ export default class OpenLayersMap extends Component {
         this.markers[key] = new CarMarker(point, this);
       }
     }
+    this.triggerRender();
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -446,7 +456,7 @@ export default class OpenLayersMap extends Component {
 
   render() {
     return (
-      <div>
+      <div key="olmap">
         <div ref="container" className="openlayers-container"></div>
       </div>
     );

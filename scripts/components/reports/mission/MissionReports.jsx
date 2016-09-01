@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import connectToStores from 'flummox/connect';
 import Table from 'components/ui/table/DataTable.jsx';
 import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
-import EtsSelect from 'components/ui/EtsSelect.jsx';
 import Div from 'components/ui/Div.jsx';
 import Datepicker from 'components/ui/DatePicker.jsx';
 import { getFormattedDateTimeSeconds, getDatesByShift } from 'utils/dates';
 import { getReportNotReadyNotification } from 'utils/notifications';
-import { datePickerFunction, getReportStatusLabel, getGeozoneTypeLabel} from 'utils/labelFunctions';
+import { getReportStatusLabel } from 'utils/labelFunctions';
+import { FluxContext, HistoryContext, exportable, staticProps, connectToStores } from 'utils/decorators';
 
 
 let FaxogrammsDatepicker = (props) => {
@@ -119,7 +118,14 @@ let MissionReportsTable = (props) => {
 
 }
 
-class RouteLaunchReports extends Component {
+@connectToStores(['missions'])
+@FluxContext
+@HistoryContext
+@staticProps({
+	entity: 'car_odh_travel_report'
+})
+@exportable
+export default class MissionReports extends Component {
 
 	constructor(props) {
 		super(props);
@@ -163,16 +169,11 @@ class RouteLaunchReports extends Component {
 			<div className="ets-page-wrap">
   			<FaxogrammsDatepicker handleChange={this.handleChange.bind(this)} onClick={this.createMissionReport.bind(this)} {...this.state}/>
 
-				<MissionReportsTable data={missionReportsList} onRowSelected={this.onReportSelect.bind(this)} />
+				<MissionReportsTable data={missionReportsList} onRowSelected={this.onReportSelect.bind(this)}>
+					{/* <Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt" /></Button> */}
+				</MissionReportsTable>
 			</div>
 		);
 
 	}
 }
-
-RouteLaunchReports.contextTypes = {
-  history: React.PropTypes.object,
-	flux: React.PropTypes.object,
-};
-
-export default connectToStores(RouteLaunchReports, ['missions', 'objects']);

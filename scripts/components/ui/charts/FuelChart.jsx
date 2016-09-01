@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { getFuelData } from '../../../adapter.js';
 import Chart from './BaseChart.jsx';
 import { makeDate, makeTime } from 'utils/dates';
 
@@ -59,13 +58,13 @@ export default class FuelChart extends Chart {
 
     this.setState({loaded: false})
 
-    getFuelData(from, to, id)
-      .then(data => {
-        this.setState({
-          data: data,
-          loaded: true
-        })
-      })
+    // getFuelData(from, to, id)
+    //   .then(data => {
+    //     this.setState({
+    //       data: data,
+    //       loaded: true
+    //     })
+    //   })
 
   }
 }

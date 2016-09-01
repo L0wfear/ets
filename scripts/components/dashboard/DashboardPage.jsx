@@ -5,14 +5,15 @@ import Div from 'components/ui/Div.jsx';
 import ElementsList from 'components/ElementsList.jsx';
 import moment from 'moment';
 import cx from 'classnames';
-import connectToStores from 'flummox/connect';
 import DashboardCardMedium from './DashboardCardMedium.jsx';
-import DashboardCardSmall from './DashboardCardSmall.jsx';
 import DashboardManagementCard from './DashboardManagementCard.jsx';
 import DashboardPageHeader from './DashboardPageHeader.jsx';
 import customCards from './customCards/index.js';
+import { FluxContext, connectToStores } from 'utils/decorators';
 
-class DashboardPage extends React.Component {
+@connectToStores(['dashboard', 'loading'])
+@FluxContext
+export default class DashboardPage extends React.Component {
 
   constructor(props, context) {
     super(props);
@@ -20,23 +21,20 @@ class DashboardPage extends React.Component {
     this.state = {
       loadingComponents: [],
       itemOpenedKey: null,
-      showMissionInfoForm: false,
-      showFaxogrammForm: false,
     };
-
   }
 
   init() {
     let { flux } = this.context;
     let actions = flux.getActions('dashboard');
-    let components = flux.getStore('dashboard').getComponentsByRole();
-    _.each(components, c => c.side ? actions.getDashboardSideComponent(c.key) : actions.getDashboardComponent(c.key));
+    let components = flux.getStore('dashboard').getComponentsByPermissions();
+    _.each(components, c => actions.getDashboardComponent(c.key));
   }
 
   refreshAll() {
     let { flux } = this.context;
-    let components = flux.getStore('dashboard').getComponentsByRole();
-    _.each(components.filter(c => !c.side), c => c.key !== this.state.itemOpenedKey ? this.refreshCard(c.key) : null);
+    let components = flux.getStore('dashboard').getComponentsByPermissions();
+    _.each(components, c => c.key !== this.state.itemOpenedKey ? this.refreshCard(c.key) : null);
   }
 
   componentDidMount() {
@@ -69,11 +67,9 @@ class DashboardPage extends React.Component {
   }
 
   render() {
+    const { componentsList = [] } = this.props;
 
-    let role = this.context.flux.getStore('session').getCurrentUser().role;
-    const { componentsList = [], componentsSideList = [] } = this.props;
-
-    let lists = _(componentsList).groupBy((el, i) => Math.floor(i/3)).toArray().value();
+    let lists = _(componentsList).chunk(3).value();
     let rows = [];
     lists.map((row, i) => {
       rows.push(
@@ -92,23 +88,23 @@ class DashboardPage extends React.Component {
             }
             let cardClassname = cx({'visibilityHidden': hidden});
             let DashboardCard = customCards[c.key] || DashboardCardMedium;
-            return <Col key={j} md={4} className={cardClassname}>
-              <DashboardCard title={c.title}
-                items={c.items}
-                dashboardKey={c.key}
-                itemsTitle={c.itemsTitle}
-                loading={this.state.loadingComponents.indexOf(c.key) > -1}
-                refreshCard={this.refreshCard.bind(this, c.key, c.id)}
-                openSubitemsList={this.openSubitemsList.bind(this, c.key)}
-                itemOpened={this.state.itemOpenedKey === c.key}
-                direction={direction} />
-            </Col>
+            return (
+              <Col key={j} md={4} className={cardClassname}>
+                <DashboardCard title={c.title}
+                  items={c.items}
+                  dashboardKey={c.key}
+                  itemsTitle={c.itemsTitle}
+                  loading={this.state.loadingComponents.indexOf(c.key) > -1}
+                  refreshCard={this.refreshCard.bind(this, c.key, c.id)}
+                  openSubitemsList={this.openSubitemsList.bind(this, c.key)}
+                  itemOpened={this.state.itemOpenedKey === c.key}
+                  direction={direction} />
+              </Col>
+            );
           })}
         </Row>
       )
     });
-
-    let componentsSide = componentsSideList.map((c, i) => <DashboardCardSmall key={i} card={c}/>);
 
     return (
       <Div className="ets-page-wrap dashboard-page">
@@ -118,18 +114,10 @@ class DashboardPage extends React.Component {
             {rows}
           </Col>
           <Col md={3}>
-            <DashboardManagementCard role={role} refreshCard={this.refreshCard.bind(this)}/>
-            {componentsSide}
+            <DashboardManagementCard refreshCard={this.refreshCard.bind(this)}/>
           </Col>
         </Row>
       </Div>
     );
   }
 }
-
-DashboardPage.contextTypes = {
-  history: React.PropTypes.object,
-  flux: React.PropTypes.object,
-};
-
-export default connectToStores(DashboardPage, ['dashboard', 'loading']);

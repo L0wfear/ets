@@ -1,7 +1,7 @@
 import { Store } from 'flummox';
 import _ from 'lodash';
 
-class GeoObjectsStore extends Store {
+export default class GeoObjectsStore extends Store {
 
   constructor(flux) {
     super();
@@ -22,6 +22,8 @@ class GeoObjectsStore extends Store {
       odhsList: [],
       sspsList: [],
       mspsList: [],
+      pgmsList: [],
+      snowStoragesList: [],
       dtsList: [],
       fuelingWaterStationsList: [],
       carpoolsList: [],
@@ -31,6 +33,8 @@ class GeoObjectsStore extends Store {
       odhsIndex: {},
       dtsIndex: {},
       sspsIndex: {},
+      pgmsIndex: {},
+      snowStoragesIndex: {},
       fuelingWaterStationsIndex: {},
       carpoolsIndex: {},
       dangerZonesIndex: {},
@@ -41,6 +45,8 @@ class GeoObjectsStore extends Store {
       dtPolys: {},
       sspPolys: {},
       mspPolys: {},
+      pgmPolys: {},
+      snowStoragePolys: {},
       fuelingWaterStationPolys: {},
       carpoolPolys: {},
 
@@ -111,9 +117,9 @@ class GeoObjectsStore extends Store {
 
   handleGetGeozonesByTypeWithGeometry(response) {
     const { type, data = {} } = response;
-    const { result = [] } = data;
+    const { rows = [] } = data.result;
     const polys = {};
-    result.map(geozone => {
+    rows.map(geozone => {
       let data = geozone;
       let shape = JSON.parse(geozone.shape);
       data.featureType = type;
@@ -132,10 +138,10 @@ class GeoObjectsStore extends Store {
 
   handleGetGeozonesByType(response) {
     const { type, data = {} } = response;
-    const { result = [] } = data;
+    const { rows = [] } = data.result;
     const typeList = `${type}sList`;
     this.setState({
-      [typeList]: result
+      [typeList]: rows
     });
   }
 
@@ -198,5 +204,3 @@ class GeoObjectsStore extends Store {
   }
 
 }
-
-export default GeoObjectsStore;

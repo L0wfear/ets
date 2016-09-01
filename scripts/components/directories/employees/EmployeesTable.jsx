@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
-import { datePickerFunction } from 'utils/labelFunctions';
 
 let tableMeta = {
   cols: [
@@ -19,8 +18,7 @@ let tableMeta = {
       caption: 'Дата рождения',
       type: '',
       filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
 			}
     },
     {
@@ -91,8 +89,7 @@ let tableMeta = {
       caption: 'Срок действия мед. справки',
       type: 'date',
       filter: {
-        type: 'date_create',
-        labelFunction: datePickerFunction
+        type: 'date_create'
       }
     },
     {

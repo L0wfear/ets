@@ -9,5 +9,6 @@ module.exports = {
   constants: 'constants',
   config: 'config',
   stores: 'stores',
-  actions: 'actions'
+  actions: 'actions',
+  redux: 'redux'
 }

@@ -31,12 +31,26 @@ export const missionSchema = {
       title: 'Источник получения задания',
       type: 'number',
       required: true,
+    },
+    {
+      key: 'date_start',
+      title: 'Время выполнения, с',
+      type: 'datetime',
+      required: true
+    },
+    {
+      key: 'date_end',
+      title: 'Время выполнения, по',
+      type: 'datetime',
+      required: true
     }
 	],
-};
-
-const closingProperties = [];
-
-export const missionClosingSchema = {
-  properties: closingProperties
+  dependencies: {
+    'date_end': [
+      {
+        type: 'gt',
+        field: 'date_start'
+      }
+    ]
+  }
 };

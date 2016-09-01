@@ -28,14 +28,17 @@ let getEstimatedFinishTime = (data) => {
 
 export default class CurrentMission extends DashboardCardMedium {
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     this.state = Object.assign(this.state, {
       showMissionInfoForm: false,
       showMissionRejectForm: false,
       selectedMission: null
     });
+
+    this.canView = context.flux.getStore('session').getPermission("mission.read");
+    this.canCompleteOrReject = context.flux.getStore('session').getPermission("mission.update");
   }
 
   async completeMission(id) {
@@ -88,15 +91,16 @@ export default class CurrentMission extends DashboardCardMedium {
 
   renderCollapsibleSubitems(item, i) {
     let { subItems = [] } = item;
-      return (
-        <Collapse in={this.state.selectedItem === i}>
-          <Div>
-            <ul>
-              {subItems.map((item, key) => <li key={key} onClick={this.selectMission.bind(this, key)}>{item.title || item}</li>)}
-            </ul>
-          </Div>
-        </Collapse>
-      );
+
+    return (
+      <Collapse in={this.state.selectedItem === i}>
+        <Div className={!this.canView ? 'no-pointer-events' : 'pointer'}>
+          <ul>
+            {subItems.map((item, key) => <li key={key} onClick={this.selectMission.bind(this, key)}>{item.title || item}</li>)}
+          </ul>
+        </Div>
+      </Collapse>
+    );
   }
 
   renderCustomCardData() {
@@ -113,18 +117,18 @@ export default class CurrentMission extends DashboardCardMedium {
             <li><b>Задание:</b> {data.mission_name}</li>
             <li><b>Тех. операция:</b> {data.technical_operation_name}</li>
             <li><b>Водитель:</b> {data.driver_fio}</li>
-            <li><b>Гос. номер ТС:</b> {data.car_gov_number}</li>
+            <li><b>Рег. номер ТС:</b> {data.car_gov_number}</li>
             <li><b>Начало задания:</b> {getFormattedDateTimeSeconds(data.mission_date_start)}</li>
             <li><b>Окончание задания:</b> {getFormattedDateTimeSeconds(data.mission_date_end)}</li>
             <li><b>Расчетное время выполнения:</b> {getEstimatedFinishTime(data.estimated_finish_time || 'Подсчет')}</li>
             <li><b>Пройдено в рабочем режиме:</b> {getDataTraveledYet(data.traveled_yet)}</li>
             <li><b>Пройдено с рабочей скоростью:</b> {getDataTraveledYet(data.route_with_work_speed + data.with_work_speed_time)}</li>
             <li><b>Пройдено с превышением рабочей скорости:</b> {getDataTraveledYet(data.route_with_high_speed + data.with_high_speed_time)}</li>
-            <li><a className="pointer" onClick={(e) => {e.preventDefault(); this.missionAction(data);}}>Подробнее...</a></li>
-            <Div className="text-right">
+            {this.canView ? <li><a className="pointer" onClick={(e) => {e.preventDefault(); this.missionAction(data);}}>Подробнее...</a></li> : ''}
+            {this.canCompleteOrReject ? <Div className="text-right">
               <Button className="dashboard-card-action-button" onClick={this.completeMission.bind(this, data.mission_id)}>Выполнено</Button>
               <Button className="dashboard-card-action-button" onClick={this.rejectMission.bind(this, data.mission_id)}>Не выполнено</Button>
-            </Div>
+            </Div> : ''}
           </ul>
         </Div>
         <MissionRejectForm
@@ -151,20 +155,18 @@ export default class CurrentMission extends DashboardCardMedium {
     let subItems = selectedItem !== null ? selectedItem.subItems || [] : [];
     let data = selectedItem !== null ? selectedItem.data || {} : {};
     const items = this.props.items.map((item,i) => {
-      let itemClassName = cx('dashboard-card-item', {'pointer': (item.data) || (item.subItems && item.subItems.length) || (this.action)});
+      let itemClassName = cx('dashboard-card-item-inner', {'pointer': (item.data) || (item.subItems && item.subItems.length) || (this.action)});
       let status = item.title.split("").reverse().join("").split(' ')[0].split("").reverse().join("");
       let title =  item.title.split(status)[0];
-      return <Div key={i} className={itemClassName}>
-        <Div className="dashboard-card-item-inner" onClick={this.selectItem.bind(this, i)}>
+      return <Div key={i} className="dashboard-card-item">
+        <Div className={itemClassName} onClick={this.selectItem.bind(this, i)}>
           {title}
           <span title='Кол-во заданий в статусе "Назначено" / Общее кол-во заданий на текущую тех.операцию'>
             {status}
           </span>
         </Div>
-        {
-          typeof this.renderCollapsibleSubitems === 'function' ? this.renderCollapsibleSubitems(item, i) : ''
-        }
-      </Div>
+        {typeof this.renderCollapsibleSubitems === 'function' ? this.renderCollapsibleSubitems(item, i) : ''}
+        </Div>
     });
     let styleObject = {
       width: this.state.cardWidth, marginLeft: this.state.cardWidth + 30

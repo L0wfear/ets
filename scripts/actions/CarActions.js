@@ -1,7 +1,14 @@
 import { Actions } from 'flummox';
-import { CarInfoService, CarService, VectorObjectService } from 'api/Services';
 import { isEmpty } from 'utils/functions';
-import { getTrack } from '../adapter.js';
+import { makeUnixTime } from 'utils/dates';
+import { swapCoords } from 'utils/geo';
+import {
+  CarInfoService,
+  CarService,
+  CarImageService,
+  VectorObjectService,
+  TrackService
+} from 'api/Services';
 
 export default class CarActions extends Actions {
 
@@ -26,8 +33,8 @@ export default class CarActions extends Actions {
   getVectorObject(selectedPoint, prevPoint, nextPoint) {
     const payload = {
       coordinates: [prevPoint.coords_msk, selectedPoint.coords_msk, nextPoint.coords_msk]
-    }
-    return VectorObjectService.get(payload, null, 'json');
+    };
+    return VectorObjectService.get(payload);
   }
 
   async getCarsByTechnicalOperation(technical_operation_id) {
@@ -42,7 +49,47 @@ export default class CarActions extends Actions {
   }
 
   getTrack(id, from_dt, to_dt) {
-    return getTrack(id, from_dt, to_dt);
+    const payload = {
+      from_dt: makeUnixTime(from_dt),
+      to_dt: makeUnixTime(to_dt),
+      version: 2
+    };
+
+    console.log('track loading for', id);
+
+    return TrackService
+      .path(id)
+      .get(payload)
+      .then(points => points.map((point) => {
+          // wrap coords for OpenLayers
+          point.coords = swapCoords(point.coords);
+          point.coords_msk = swapCoords(point.coords_msk);
+          return point;
+        })
+      );
+
+    // console.log('track loading for', car_id);
+    // return fetch(TRACK_URL + car_id + query, {
+    //   credentials: 'include',
+    // }).then(r => r.json())
+    //   .then(points => points.map((point) => {
+    //       // wrap coords for OpenLayers
+    //       point.coords = swapCoords(point.coords);
+    //       point.coords_msk = swapCoords(point.coords_msk);
+    //       return point;
+    //     })
+    //   );
+
+  }
+
+  getCarImage(car_id, type_id, model_id) {
+    const payload = {
+      car_id,
+      type_id,
+      model_id
+    };
+
+    return CarImageService.get(payload);
   }
 
 }

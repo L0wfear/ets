@@ -48,7 +48,7 @@ class MissionsStore extends Store {
   }
 
   handleGetMissions(missions) {
-    this.setState({missionsList: missions.result});
+    this.setState({missionsList: missions.result.rows});
 	}
 
   handleGetMissionSources(missionSources) {
@@ -60,7 +60,7 @@ class MissionsStore extends Store {
   }
 
   handleGetDutyMissions(dutyMissions) {
-    this.setState({dutyMissionsList: dutyMissions.result});
+    this.setState({dutyMissionsList: dutyMissions.result.rows});
   }
 
   handleGetDutyMissionTemplates(dutyMissionTemplates) {
@@ -72,11 +72,15 @@ class MissionsStore extends Store {
   }
 
   handleGetMissionReports(missionReports) {
-    this.setState({missionReportsList: missionReports.result});
+    this.setState({missionReportsList: missionReports.result.rows});
   }
 
   handleGetMissionReportById(data) {
-    let selectedReportData = data.result[0].result.result.map((r,i) => {
+    // let selectedReportData = data.result[0].result.result.map((r,i) => {
+    //   r.index = i;
+    //   return r;
+    // });
+    let selectedReportData = data.result.rows.map((r,i) => {
       r.index = i;
       return r;
     });
@@ -107,6 +111,7 @@ export function getDefaultMission(date_start = getToday9am(), date_end = getTomo
     description: "",
     date_start,
     date_end,
+    assign_to_waybill: 2,
     mission_source_id: 3,
     passes_count: 1,
   };

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Filter from './Filter.jsx';
-import owners from '../../../owners.js';
 import TypeComponent from './TypeComponent.jsx';
 import ToolbarControl from './ToolbarControl.js';
 import { getTypeById } from 'utils/labelFunctions';
@@ -52,12 +51,6 @@ export default class ToolbarFilters extends Component {
 
     let _types = [];
     let _typeIds = [];
-    let _owners = [];
-
-    // если указан хотя бы один владелец
-    if ( propsFilters.owner.length > 0 ){
-      _owners = owners;
-    }
 
     // фильтруем машины по владельцу и типу
     for ( let key in cars ) {
@@ -84,7 +77,6 @@ export default class ToolbarFilters extends Component {
     }
 
     return {
-      owners: _owners,
       types: _types,
     }
   }

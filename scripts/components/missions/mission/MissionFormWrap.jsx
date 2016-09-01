@@ -4,7 +4,7 @@ import moment from 'moment';
 import Div from 'components/ui/Div.jsx';
 import MissionForm from './MissionForm.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
-import { validateRow } from 'validate/validateRow.js';
+import { validateField } from 'validate/validateField.js';
 import { getDefaultMission } from 'stores/MissionsStore.js';
 import { isEmpty, saveData, printData } from 'utils/functions';
 import { missionSchema } from 'models/MissionModel.js';
@@ -36,11 +36,8 @@ class MissionFormWrap extends FormWrap {
 	validate(formState, errors) {
 		let formErrors = _.clone(errors);
 		_.each(missionSchema.properties, prop => {
-			formErrors[prop.key] = validateRow(prop, formState[prop.key]);
+			formErrors[prop.key] = validateField(prop, formState[prop.key], formState, missionSchema);
 		});
-
-		formErrors.date_start = ''
-		formErrors.date_end = ''
 
 		if ((this.props.fromWaybill && this.props.waybillStartDate) || (this.props.fromWaybill && this.props.waybillEndDate)) {
 			if (moment(formState.date_start).toDate().getTime() < moment(this.props.waybillStartDate).toDate().getTime()) {
@@ -52,33 +49,18 @@ class MissionFormWrap extends FormWrap {
 			}
 		}
 
-
-
-		if (formState.date_start && formState.date_end) {
-			if (moment(formState.date_end).toDate().getTime() < moment(formState.date_start).toDate().getTime()) {
-				formErrors.date_end = `Неправильно указана дата`;
-			}
-		} else if (formState.date_end) {
-			formErrors.date_start = `Дата должна быть указана`;
-		} else if (formState.date_start) {
-			formErrors.date_end = `Дата должна быть указана`;
-		} else {
-			formErrors.date_start = `Даты должны быть указаны`;
-		}
 		return formErrors;
 	}
 
-
-
 	handlePrint(event, print_form_type = 1) {
 		let f = this.state.formState;
-		const { flux } = window.__ETS_CONTAINER__;
+		const { flux } = this.context;
 		let data = {mission_id: f.id};
 
 		global.map.once('postcompose', function(event) {
 			let routeImageBase64Data = event.context.canvas.toDataURL('image/png');
 			data.image = routeImageBase64Data;
-			flux.getActions('missions').printMission(data).then(blob => {
+			flux.getActions('missions').printMission(data).then(({blob}) => {
 				print_form_type === 1 ? saveData(blob, `Задание №${f.number}.pdf`) : printData(blob);
 			});
 		});

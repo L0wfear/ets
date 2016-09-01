@@ -1,6 +1,6 @@
 import { Store } from 'flummox';
 import { createFio } from '../utils/create-fio.js';
-import User from '../models/User.js';
+import { User } from '../models';
 
 const SESSION_KEY = 'ets-session';
 const defaultUser = {
@@ -76,6 +76,18 @@ export default class SessionStore extends Store {
 
   getSession() {
     return this.state.session;
+  }
+
+  getPermission(permissionName) {
+    let { permissions } = this.state.currentUser;
+    if (Array.isArray(permissionName)) {
+      permissionName.forEach((permission) => {
+        if (permissions.indexOf(permission) === -1) return false;
+      })
+      return true
+    } else {
+      return !!(permissions.indexOf(permissionName)+1);
+    }
   }
 
 }

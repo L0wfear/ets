@@ -112,7 +112,7 @@ export default class Taxes extends Component {
   handleFactValueChange(index, e) {
     const { tableData } = this.state;
     let current = tableData[index];
-    current.FACT_VALUE = e.target.value;
+    current.FACT_VALUE = Math.abs(e.target.value);
     current.RESULT = Taxes.getResult(current);
 
     this.setState({tableData});

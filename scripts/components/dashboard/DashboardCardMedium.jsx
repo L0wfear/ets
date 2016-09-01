@@ -6,9 +6,6 @@ import { FluxContext } from 'utils/decorators';
 import DashboardCardHeader from './DashboardCardHeader.jsx';
 import DashboardItemChevron from './DashboardItemChevron.jsx';
 import cx from 'classnames';
-import {getFormattedDateTimeSeconds} from 'utils/dates';
-import moment from 'moment';
-
 
 @FluxContext
 export default class DashboardCardMedium extends React.Component {
@@ -17,6 +14,7 @@ export default class DashboardCardMedium extends React.Component {
     super(props);
 
     this.state = {
+      cardWidth: null,
       fullListOpen: false,
       selectedItem: null,
       items: [],
@@ -36,11 +34,6 @@ export default class DashboardCardMedium extends React.Component {
     } else if (typeof this.action === 'function') {
       this.action(i);
     }
-    // if (typeof this.action === 'function') {
-    // } else if ((item && item.subItems && item.subItems.length) || i === null || (item && item.data)) {
-    //   this.setState({selectedItem: i});
-    //   this.props.openSubitemsList(i === null);
-    // }
   }
 
   toggleFullList() {
@@ -59,28 +52,32 @@ export default class DashboardCardMedium extends React.Component {
     );
   }
 
+  renderItems() {
+    return this.props.items.map((item,i) => {
+      let itemClassName = cx('dashboard-card-item', {'pointer': (item.data) || (item.subItems && item.subItems.length) || (this.action)});
+      return <Div key={i} className={itemClassName} >
+        {typeof item.value !== 'undefined' ?
+          <Div className="dashboard-card-item-inner-singlevalue" onClick={this.selectItem.bind(this, i)}>
+            {item.value}
+          </Div>
+          :
+            <Div className="dashboard-card-item-inner" onClick={this.selectItem.bind(this, i)}>
+              {item.title}
+            </Div>
+        }
+        {
+          typeof this.renderCollapsibleSubitems === 'function' ? this.renderCollapsibleSubitems(item, i) : ''
+        }
+      </Div>
+    });
+  }
+
   render() {
     let selectedItemIndex = this.state.selectedItem;
     let selectedItem = this.props.items[selectedItemIndex] || null;
     let subItems = selectedItem !== null ? selectedItem.subItems || [] : [];
     let data = selectedItem !== null ? selectedItem.data || {} : {};
-    const items = this.props.items.map((item,i) => {
-      let itemClassName = cx('dashboard-card-item', {'pointer': (item.data) || (item.subItems && item.subItems.length) || (this.action)});
-      return <Div key={i} className={itemClassName} >
-                {typeof item.value !== 'undefined' ?
-                  <Div className="dashboard-card-item-inner-singlevalue" onClick={this.selectItem.bind(this, i)}>
-                    {item.value}
-                  </Div>
-                  :
-                  <Div className="dashboard-card-item-inner" onClick={this.selectItem.bind(this, i)}>
-                    {item.title}
-                  </Div>
-                }
-                {
-                  typeof this.renderCollapsibleSubitems === 'function' ? this.renderCollapsibleSubitems(item, i) : ''
-                }
-             </Div>
-    });
+    const items = this.renderItems();
     let styleObject = {
       width: this.state.cardWidth, marginLeft: this.state.cardWidth + 30
     };
@@ -94,7 +91,6 @@ export default class DashboardCardMedium extends React.Component {
     }
     let firstItems = items.slice(0, 2);
     let otherItems = items.slice(2, items.length);
-    //let dashboardCardClass = cx('dashboard-card', {'visibilityHidden'});
     let Header = <DashboardCardHeader title={this.props.title} loading={this.props.loading} onClick={this.refreshCard.bind(this)}/>;
 
     // отрефакторить

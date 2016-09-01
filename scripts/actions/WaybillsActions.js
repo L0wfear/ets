@@ -2,9 +2,15 @@ import { Actions } from 'flummox';
 import { createValidDateTime, createValidDate } from 'utils/dates';
 import _ from 'lodash';
 import { isEmpty } from 'utils/functions';
-import { WaybillService, LatestWaybillDriverService, WaybillJournalReportService, WaybillsReportService } from 'api/Services';
+import {
+  WaybillService,
+  LatestWaybillDriverService,
+  WaybillJournalReportService,
+  WaybillsReportService,
+  RootService
+} from 'api/Services';
 
-class WaybillsActions extends Actions {
+export default class WaybillsActions extends Actions {
 
   constructor(props) {
     super();
@@ -41,21 +47,28 @@ class WaybillsActions extends Actions {
   }
 
   getWaybill(id) {
-    const payload = { id }
-    return WaybillService.get(payload);
+    return WaybillService.path(id).get();
   }
 
-  getWaybillJournalReport(payload) {
-    payload.month = payload.month+1;
-    return WaybillJournalReportService.post(payload, false, 'json', true);
+  getWaybillJournalReport(state) {
+    const payload = _.cloneDeep(state);
+    payload.month = payload.month + 1;
+    return WaybillJournalReportService.postBlob(payload);
   }
 
   getWaybillsReport(state) {
     let payload = {
       date_start: createValidDate(state.date_from),
       date_end: createValidDate(state.date_to)
-    }
-    return WaybillsReportService.get(payload, true);
+    };
+    return WaybillsReportService.getBlob(payload);
+  }
+
+  printWaybill(print_form_type, waybill_id) {
+    const payload = {
+      waybill_id
+    };
+    return RootService.path(print_form_type).getBlob(payload);
   }
 
   updateWaybill(waybill) {
@@ -151,5 +164,3 @@ class WaybillsActions extends Actions {
   }
 
 }
-
-export default WaybillsActions;

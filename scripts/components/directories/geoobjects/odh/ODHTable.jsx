@@ -12,14 +12,14 @@ let getTableMeta = (props) => {
           type: 'select',
         }
       },
-      {
-        name: 'clean_category_name',
-        caption: 'Категория',
-        type: 'string',
-        filter: {
-          type: 'select',
-        }
-      },
+      // {
+      //   name: 'clean_category_name',
+      //   caption: 'Категория',
+      //   type: 'string',
+      //   filter: {
+      //     type: 'select',
+      //   }
+      // },
       {
         name: 'total_area',
         caption: 'Общая площадь (кв.м.)',

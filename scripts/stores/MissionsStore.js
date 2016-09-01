@@ -111,7 +111,7 @@ export function getDefaultMission(date_start = getToday9am(), date_end = getTomo
     description: "",
     date_start,
     date_end,
-    assign_to_waybill: 2,
+    assign_to_waybill: 'assign_to_draft',
     mission_source_id: 3,
     passes_count: 1,
   };

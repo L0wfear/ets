@@ -22,6 +22,11 @@ class FaxogrammMissionsForm extends Form {
 
 		let state = this.props.formState;
     let payload = { faxogramm_id: state.id };
+    const ASSIGN_OPTIONS = [
+			{value: 'not_assign', label: "Не добавлять в ПЛ"},
+			// {value: 'assign_to_active', label: "Добавить в активный ПЛ"},
+			{value: 'assign_to_draft', label: "Создать/добавить в черновик ПЛ"}
+		];
 
 		return (
 			<Modal {...this.props} bsSize="large" backdrop="static">
@@ -38,9 +43,15 @@ class FaxogrammMissionsForm extends Form {
 	      </Modal.Body>
 
 	      <Modal.Footer>
-          <Div className="inline-block assignToWaybillCheck">
-            <label>Создать черновик ПЛ / Добавить в существующий</label>
-            <Input type="checkbox" value={state.assign_to_waybill} onClick={this.handleChange.bind(this, 'assign_to_waybill', !!!state.assign_to_waybill)}/>
+          <Div className="inline-block assignToWaybillCheck" style={{width: "300px",textAlign:"left !important", height: "22px", marginRight: "20px"}}>
+            {/*<label>Создать черновик ПЛ / Добавить в существующий</label>*/}
+            <EtsSelect
+								type="select"
+								options={ASSIGN_OPTIONS}
+								value={state.assign_to_waybill}
+								clearable={false}
+								onChange={this.handleChange.bind(this, 'assign_to_waybill')}/>
+            {/*<Input type="checkbox" value={state.assign_to_waybill} onClick={this.handleChange.bind(this, 'assign_to_waybill', !!!state.assign_to_waybill)}/>*/}
           </Div>
 	      	<Button disabled={!state.missionJournalState || !_.keys(state.missionJournalState.checkedElements).length} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
 	      </Modal.Footer>

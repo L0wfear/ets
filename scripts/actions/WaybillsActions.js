@@ -89,11 +89,13 @@ export default class WaybillsActions extends Actions {
       let tax_data = payload.tax_data.filter((t) => {
         return !isEmpty(t.FACT_VALUE);
       });
+      payload.tax_data = tax_data;
     }
     if (payload.equipment_tax_data) {
       let equipment_tax_data = payload.equipment_tax_data.filter((t) => {
         return !isEmpty(t.FACT_VALUE);
       });
+      payload.equipment_tax_data = equipment_tax_data;
     }
 
     _.each(['fuel_given', 'equipment_fuel_given'], key => {

@@ -76,6 +76,18 @@ export default class PointsStore extends Store {
     this.register(loginActions.login, this.handleLogin);
 
     this.state = _.cloneDeep(PointsStore.initialState);
+
+    let currentUser;
+
+    try {
+      currentUser = JSON.parse(localStorage.getItem('current_user')) || {};
+    } catch (e) {
+      currentUser = {};
+    }
+
+    if (currentUser.company_id) {
+      this.state.filter.owner = [currentUser.company_id];
+    }
   }
 
   /**

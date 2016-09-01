@@ -103,17 +103,17 @@ export default class MissionsActions extends Actions {
     const payload = _.clone(mission);
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
-    switch(payload.assign_to_waybill) {
-      case 0:
-        payload.assign_to_waybill = 'not_assign';
-        break;
-      case 1:
-        payload.assign_to_waybill = 'assign_to_active';
-        break;
-      case 2:
-        payload.assign_to_waybill = 'assign_to_draft';
-        break;
-    }
+    // switch(payload.assign_to_waybill) {
+    //   case 0:
+    //     payload.assign_to_waybill = 'not_assign';
+    //     break;
+    //   case 1:
+    //     payload.assign_to_waybill = 'assign_to_active';
+    //     break;
+    //   case 2:
+    //     payload.assign_to_waybill = 'assign_to_draft';
+    //     break;
+    // }
     if (!callback) payload.assign_to_waybill = 'not_assign'; //TODO хак, в колбэк попадает !this.props.fromWaybill§
     return MissionService.post(payload, callback, 'json');
   }
@@ -138,7 +138,7 @@ export default class MissionsActions extends Actions {
 
   printMission(data, url) {
     const payload = _.cloneDeep(data);
-    
+
     return MissionPrintService.postBlob(payload);
   }
 
@@ -179,7 +179,7 @@ export default class MissionsActions extends Actions {
       payload.date_start = date_start;
       payload.date_end = date_end;
       payload.mission_source_id = missionsCreationTemplateCopy.mission_source_id;
-      payload.assign_to_waybill = +!!missionsCreationTemplateCopy.assign_to_waybill;
+      payload.assign_to_waybill = missionsCreationTemplateCopy.assign_to_waybill;
       if (!isEmpty(missionsCreationTemplateCopy.passes_count)) {
         payload.passes_count = parseInt(missionsCreationTemplateCopy.passes_count, 10);
       }

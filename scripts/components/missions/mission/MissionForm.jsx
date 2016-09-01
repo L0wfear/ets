@@ -165,9 +165,9 @@ export class MissionForm extends Form {
     const TECH_OPERATIONS = technicalOperationsList.map(({id, name}) => ({value: id, label: name}));
     const MISSION_SOURCES = missionSourcesList.map(({id, name}) => ({value: id, label: name}));
 		const ASSIGN_OPTIONS = [
-			{value: 0, label: "Не добавлять в ПЛ"},
-			{value: 1, label: "Добавить в активный ПЛ"},
-			{value: 2, label: "Создать/добавить в черновик ПЛ"}
+			{value: 'not_assign', label: "Не добавлять в ПЛ"},
+			{value: 'assign_to_active', label: "Добавить в активный ПЛ"},
+			{value: 'assign_to_draft', label: "Создать/добавить в черновик ПЛ"}
 		];
 		const CARS = carsList.map( c => ({value: c.asuods_id, label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`}));
     const ROUTES = routesList.map(({id, name}) => ({value: id, label: name}));

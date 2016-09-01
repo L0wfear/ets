@@ -18,6 +18,11 @@ class FaxogrammMissionsFormWrap extends FormWrap {
 		if (props.showForm && props.showForm !== this.props.showForm) {
 			let faxogrammMissions = props.element === null ? {} : _.clone(props.element);
 			let formErrors = this.validate(faxogrammMissions, {});
+
+      if (isEmpty(faxogrammMissions.assign_to_waybill)) {
+        faxogrammMissions.assign_to_waybill = 'not_assign';
+      }
+
 			this.setState({
 				formState: faxogrammMissions,
 				canSave: ! !!_.filter(formErrors).length,//false,
@@ -35,7 +40,7 @@ class FaxogrammMissionsFormWrap extends FormWrap {
       faxogramm_id: formState.id,
       date_start: formState.order_date,
       date_end: formState.order_date_to,
-      assign_to_waybill: formState.assign_to_waybill ? 1 : 0,
+      assign_to_waybill: formState.assign_to_waybill,
     };
     flux.getActions('missions').createMissions(formState.missionJournalState.checkedElements, payload);
 

@@ -105,6 +105,8 @@ export default class LoadingStore extends Store {
       routesActions.validateRoute,
       routesActions.getGeozones,
       routesActions.getRoutesByTechnicalOperation,
+      routesActions.getRoutesByMissionId,
+      routesActions.getRoutesByDutyMissionId,
 
       technicalOperationsActions.getTechnicalOperations,
       technicalOperationsActions.getTechnicalOperationsWithBrigades,

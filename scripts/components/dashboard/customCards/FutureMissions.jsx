@@ -6,8 +6,7 @@ import DashboardCardMedium from '../DashboardCardMedium.jsx';
 import moment from 'moment';
 import MissionFormWrap from '../../missions/mission/MissionFormWrap.jsx';
 
-
-export default class CurrentMission extends DashboardCardMedium {
+export default class FutureMissions extends DashboardCardMedium {
 
   constructor(props) {
     super(props);
@@ -24,7 +23,8 @@ export default class CurrentMission extends DashboardCardMedium {
       .getActions('missions')
       .getMissionById(this.props.items[itemIndex].mission_id)
       .then(m => {
-        this.setState({selectedMission: m.result[0], showMissionForm: true});
+        console.log(m);
+        this.setState({selectedMission: m.result.rows[0], showMissionForm: true});
       });
   }
 

@@ -56,7 +56,7 @@ export default class TechnicalOperationsActions extends Actions {
     const payload = {};
 
     if (objects.length) {
-      payload.objects = JSON.stringify(objects);
+      payload.objects = objects;
     }
 
     let response = await TechnicalOperationService.get(payload);

@@ -7,6 +7,7 @@ import Div from 'components/ui/Div.jsx';
 import Datepicker from 'components/ui/DatePicker.jsx';
 import { getFormattedDateTime, createValidDateTime } from 'utils/dates';
 import { reassignMissionSuccessNotification } from 'utils/notifications.js';
+import _ from 'lodash';
 
 class MissionRejectForm extends Component {
   constructor(props) {
@@ -45,7 +46,7 @@ class MissionRejectForm extends Component {
     let payload;
     if (!this.state.data) {
       let mission = await this.context.flux.getActions('missions').getMissionById(this.state.mission_id);
-      mission = mission.result[0];
+      mission = mission.result.rows[0];
   		mission.status = 'fail';
   		mission.comment = this.state.comment;
   	  resolve = await this.context.flux.getActions('missions').updateMission(mission);
@@ -63,7 +64,7 @@ class MissionRejectForm extends Component {
           break;
         case 'update':
           if (this.state.data.missions) {
-            let missions = JSON.stringify(this.state.data.missions);
+            let missions = _.cloneDeep(this.state.data.missions);
             payload = {
               car_id: this.state.car_id,
               mission_id: this.state.mission_id,
@@ -87,7 +88,7 @@ class MissionRejectForm extends Component {
           break;
       }
     }
-    if (resolve.errors && !resolve.errors.length) {
+    if (!resolve.errors || resolve.errors && !resolve.errors.length) {
       global.NOTIFICATION_SYSTEM._addNotification(reassignMissionSuccessNotification);
       this.props.onReject(true);
     };

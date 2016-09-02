@@ -7,6 +7,7 @@ import RouteInfo from 'components/route/RouteInfo.jsx';
 import ODHList from 'components/route/ODHList.jsx';
 import { isEmpty } from 'utils/functions';
 import Datepicker from 'components/ui/DatePicker.jsx';
+import EtsSelect from 'components/ui/EtsSelect.jsx';
 import Form from 'components/compositions/Form.jsx';
 
 class MissionsCreationForm extends Form {
@@ -22,6 +23,11 @@ class MissionsCreationForm extends Form {
     const { missionSourcesList = [] } = this.props;
 
     const MISSION_SOURCES = missionSourcesList.map(({id, name}) => ({value: id, label: name}));
+    const ASSIGN_OPTIONS = [
+			{value: 'not_assign', label: "Не добавлять в ПЛ"},
+			{value: 'assign_to_active', label: "Добавить в активный ПЛ"},
+			{value: 'assign_to_draft', label: "Создать/добавить в черновик ПЛ"}
+		];
 
     console.log('form state is ', state);
 
@@ -48,25 +54,29 @@ class MissionsCreationForm extends Form {
           <Row>
             <Col md={12}>
               <Field type="select" label="Источник получения задания" error={errors['mission_source_id']}
-                     options={MISSION_SOURCES}
-                     value={state.mission_source_id}
-                     onChange={this.handleChange.bind(this, 'mission_source_id')}/>
+                  options={MISSION_SOURCES}
+                  value={state.mission_source_id}
+                  onChange={this.handleChange.bind(this, 'mission_source_id')}/>
             </Col>
           </Row>
           <Row>
             <Col md={12}>
               <Field type="number" label="Количество проходов" error={errors['passes_count']}
-                     value={state.passes_count} onChange={this.handleChange.bind(this, 'passes_count')}
-                     min={0} />
+                  value={state.passes_count} onChange={this.handleChange.bind(this, 'passes_count')}
+                  min={0} />
             </Col>
           </Row>
 
         </Modal.Body>
 
         <Modal.Footer>
-          <Div className="inline-block assignToWaybillCheck">
-            <label>Создать черновик ПЛ / Добавить в существующий</label>
-            <Input type="checkbox" value={state.assign_to_waybill} onClick={this.handleChange.bind(this, 'assign_to_waybill', !!!state.assign_to_waybill)}/>
+          <Div className="inline-block assignToWaybillCheck" style={{width: "300px",textAlign:"left !important", height: "22px", marginRight: "20px"}}>
+            <EtsSelect
+                type="select"
+                options={ASSIGN_OPTIONS}
+                value={state.assign_to_waybill}
+                clearable={false}
+                onChange={this.handleChange.bind(this, 'assign_to_waybill')}/>
           </Div>
           <Div className="inline-block" hidden={state.status === 'closed'}>
             <Button onClick={this.handleSubmit.bind(this)}>{'Сформировать'}</Button>

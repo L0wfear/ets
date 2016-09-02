@@ -103,18 +103,7 @@ export default class MissionsActions extends Actions {
     const payload = _.clone(mission);
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
-    // switch(payload.assign_to_waybill) {
-    //   case 0:
-    //     payload.assign_to_waybill = 'not_assign';
-    //     break;
-    //   case 1:
-    //     payload.assign_to_waybill = 'assign_to_active';
-    //     break;
-    //   case 2:
-    //     payload.assign_to_waybill = 'assign_to_draft';
-    //     break;
-    // }
-    if (!callback) payload.assign_to_waybill = 'not_assign'; //TODO хак, в колбэк попадает !this.props.fromWaybill§
+    if (typeof payload.assign_to_waybill === 'undefined') payload.assign_to_waybill = 'not_assign';
     return MissionService.post(payload, callback, 'json');
   }
 

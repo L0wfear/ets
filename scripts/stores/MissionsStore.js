@@ -155,6 +155,7 @@ export function getDefaultMissionsCreationTemplate() {
   return {
     date_start: getToday9am(),
     date_end: getTomorrow9am(),
+    assign_to_waybill: 'assign_to_draft',
     mission_source_id: 4,
     passes_count: 1
   };

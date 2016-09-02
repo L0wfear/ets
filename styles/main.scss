@@ -2433,6 +2433,9 @@ body {
 
 .griddle-container {
   border: none !important;
+  overflow: scroll;
+  width: 100%;
+  margin-bottom: 16px;
 }
 
 .filter-datepicker {
@@ -2607,7 +2610,7 @@ body {
       padding: 8px;
       //background-color: transparent !important;
       //transition: all .1s linear;
-      //word-break: break-all;
+      word-break: normal !important;
     }
 
     thead th {

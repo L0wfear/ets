@@ -275,7 +275,7 @@ export default class Table extends React.Component {
     // проверка берется по this.state.filterValues
     let isValid = true;
     _.mapKeys(this.state.filterValues, (value, key) => {
-      
+
       if (obj[key] === null) {
         isValid = false
         return;
@@ -463,20 +463,11 @@ export default class Table extends React.Component {
     let results = this.processTableData(data, tableCols, selected, selectField, onRowSelected, highlight);
 
     let columnSize = columnControlValues.length;
-    let tablePropsClass = className;
-
-    if (columnSize >= 0 && columnSize < 8 && columnControl) {
-      tablePropsClass += '-sm';
-    } else if (columnSize >= 8 && columnSize < 14) {
-      tablePropsClass += '-md';
-    } else if (columnSize >= 14 && columnSize <= 20) {
-      tablePropsClass += '-lg';
-    };
 
     const columnMetadata = this.initializeMetadata(tableMetaCols, renderers);
     const tableCols = columnMetadata.map(m => m.columnName).filter(c => columnControlValues.indexOf(c) === -1);
 		const rowMetadata = this.initializeRowMetadata();
-    const tableClassName = cx('data-table', tablePropsClass);
+    const tableClassName = cx('data-table', className);
 
     return (
       <Div className={tableClassName}>

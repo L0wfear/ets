@@ -176,19 +176,19 @@ const closingDependencies = {
 	],
 	'motohours_end' : [
 		{
-			type: 'gt',
+			type: 'gte',
 			field: 'motohours_start'
 		}
 	],
 	'motohours_equip_end' : [
 		{
-			type: 'gt',
+			type: 'gte',
 			field: 'motohours_equip_start'
 		}
 	],
 	'odometr_end' : [
 		{
-			type: 'gt',
+			type: 'gte',
 			field: 'odometr_start'
 		}
 	]

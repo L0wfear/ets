@@ -6,7 +6,7 @@ const fixedValidators = [
   {
     name: 'gte',
     validator(config, value, dependentFieldConfig, dependentFieldValue, formData, schema) {
-      const MUST_BE_GREATER_THAN = `"${config.title || config.key}" должно быть больше или равно "${dependentFieldConfig.title}"`;
+      const MUST_BE_GREATER_THAN = `"${config.title || config.key}" должно быть не меньше значения "${dependentFieldConfig.title}"`;
       if (isEmpty(value) || isEmpty(dependentFieldValue)) {
         return void 0;
       }

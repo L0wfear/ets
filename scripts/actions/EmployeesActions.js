@@ -9,7 +9,7 @@ export default class EmployeesActions extends Actions {
   getEmployees(isBrigade = false) {
     const payload = {};
     if (isBrigade) {
-      payload.is_brigade = 1;
+      payload.active = 1;
     }
     return EmployeeService.get(payload);
   }

@@ -1,5 +1,5 @@
 import { Actions } from 'flummox';
-import { ODHNormService, ODHNormDataSummerService } from 'api/Services';
+import { ODHNormService, ODHNormDataSummerService, EfficiencyService } from 'api/Services';
 import _ from 'lodash';
 
 export default class ODHActions extends Actions {
@@ -41,5 +41,24 @@ export default class ODHActions extends Actions {
     const payload = _.clone(formState);
     return ODHNormDataSummerService.post(payload, true, 'json');
   }
+
+  getEfficiency() {
+    return EfficiencyService.get();
+  }
+
+  updateEfficiency(formState) {
+    const payload = _.clone(formState);
+    return EfficiencyService.path(formState.id).put(payload, true, 'json');
+  }
+
+  createEfficiency(formState) {
+    let payload = _.clone(formState);
+    return EfficiencyService.post(payload, true, 'json');
+  }
+
+  deleteEfficiency(formState) {
+    return EfficiencyService.path(formState.id).delete();
+  }
+
 
 }

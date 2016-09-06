@@ -14,7 +14,7 @@ export default class APIService {
    */
   constructor(url, options = {}) {
     const { useMock = false } = options;
-    this.serviceName = url.replace(/\//g, '');
+    this.serviceName = url.split('/').pop();
     this.useMock = useMock;
 
     this.url = url;

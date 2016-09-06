@@ -20,12 +20,10 @@ export default class EfficiencyList extends ElementsList {
     this.removeElementAction = context.flux.getActions('odh').deleteEfficiency;
 	}
 
-  componentDidMount() {
+  async componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
-    flux.getActions('odh').getEfficiency();
-    flux.getActions('odh').getODHNorm();
-    flux.getActions('technicalOperation').getTechnicalOperations();
+    await flux.getActions('odh').getEfficiency();
   }
 
 }

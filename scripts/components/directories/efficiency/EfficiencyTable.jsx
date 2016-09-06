@@ -42,7 +42,7 @@ let EfficiencyTable = (props) => {
     source: ({data}) => +data ? <div>Справочник показателей норм на содержание ОДХ</div> : <div>Реестр ОДХ</div>
   };
 
-	return <Table title='Нормативы по содержанию ОДХ'
+	return <Table title='Реестр показателей для расчета эффективности'
       results={props.data}
       tableMeta={tableMeta}
       renderers={renderers}

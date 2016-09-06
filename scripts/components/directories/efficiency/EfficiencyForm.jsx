@@ -3,11 +3,19 @@ import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dr
 import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
 import Form from '../../compositions/Form.jsx';
+import { connectToStores } from 'utils/decorators';
 
+@connectToStores(['odh', 'objects'])
 export default class EfficiencyForm extends Form {
 
 	constructor(props) {
 		super(props);
+	}
+
+	async componentDidMount() {
+		const { flux } = this.context;
+		await flux.getActions('odh').getODHNorm();
+		await flux.getActions('technicalOperation').getTechnicalOperations();
 	}
 
 	render() {

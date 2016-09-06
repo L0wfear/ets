@@ -2433,7 +2433,7 @@ body {
 
 .griddle-container {
   border: none !important;
-  overflow: scroll;
+  overflow-x: auto;
   width: 100%;
   margin-bottom: 16px;
 }

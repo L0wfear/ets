@@ -16,6 +16,11 @@ class MissionsCreationForm extends Form {
     super(props);
   }
 
+  componentDidMount() {
+    const { flux } = this.context;
+    flux.getActions('missions').getMissionSources();
+  }
+
   render() {
     let state = this.props.formState;
     let errors = this.props.formErrors;

@@ -160,7 +160,7 @@ export default class DashboardStore extends Store {
       .map(p => p.toLowerCase())
       .filter(p => p.indexOf('dashboard') + 1)
       .map(p => p.replace('dashboard.', ''));
-    const WaybillCompleted = dashboardComponents.filter(c => c.id === 21);
+    const WaybillCompleted = dashboardPermissions.indexOf('waybill_active') > -1 ? dashboardComponents.filter(c => c.id === 21) : [];
     return dashboardComponents.filter(c => dashboardPermissions.indexOf(c.key) + 1).concat(WaybillCompleted);
   }
 

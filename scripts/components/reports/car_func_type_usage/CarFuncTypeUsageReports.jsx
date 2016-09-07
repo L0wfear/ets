@@ -32,7 +32,7 @@ let tableMeta = {
 		},
 		{
 			name: 'total_cars_count',
-			caption: 'Всего',
+			caption: 'Кол-во техники указанного типа',
 			type: 'number',
 			filter: {
         type: 'select',

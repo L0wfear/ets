@@ -46,6 +46,11 @@ const dashboardComponents = [
   },
   {
     id: 21,
+    key: 'waybill_completed',
+    itemsTitle: 'Информация о ПЛ'
+  },
+  {
+    id: 22,
     key: 'waybill_closed',
     itemsTitle: 'Информация о ПЛ'
   }
@@ -102,6 +107,11 @@ const componentsByRole = {
     },
     {
       id: 21,
+      key: 'waybill_completed',
+      itemsTitle: 'Информация о ПЛ'
+    },
+    {
+      id: 22,
       key: 'waybill_closed',
       itemsTitle: 'Информация о ПЛ'
     }
@@ -150,7 +160,8 @@ export default class DashboardStore extends Store {
       .map(p => p.toLowerCase())
       .filter(p => p.indexOf('dashboard') + 1)
       .map(p => p.replace('dashboard.', ''));
-    return dashboardComponents.filter(c => dashboardPermissions.indexOf(c.key) + 1);
+    const WaybillCompleted = dashboardComponents.filter(c => c.id === 21);
+    return dashboardComponents.filter(c => dashboardPermissions.indexOf(c.key) + 1).concat(WaybillCompleted);
   }
 
   resetState() {

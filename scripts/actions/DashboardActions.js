@@ -15,6 +15,13 @@ export default class DashboardActions extends Actions {
         date: moment().format('YYYY-MM-DDTHH:mm:ss')
       });
     }
+    if (key.indexOf('waybill_') > -1) {
+      let path = key.replace(/_/g, "/");
+      return DashboardService
+        .path(path)
+        .get(payload)
+        .then(component => ({component, key}));
+    }
     return DashboardService
       .path(key)
       .get(payload)

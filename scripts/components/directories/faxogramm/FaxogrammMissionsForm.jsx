@@ -23,7 +23,7 @@ class FaxogrammMissionsForm extends Form {
 		let state = this.props.formState;
     let payload = { faxogramm_id: state.id };
     const ASSIGN_OPTIONS = [
-			{value: 'not_assign', label: "Не добавлять в ПЛ"},
+			// {value: 'not_assign', label: "Не добавлять в ПЛ"},
 			// {value: 'assign_to_active', label: "Добавить в активный ПЛ"},
 			{value: 'assign_to_draft', label: "Создать/добавить в черновик ПЛ"}
 		];

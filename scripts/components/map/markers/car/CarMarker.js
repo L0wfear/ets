@@ -171,8 +171,8 @@ export default class CarMarker extends Marker {
 
     if (!this.paused) {
       view.centerOn(coords, size, pixel)
-      if (zoom != 13) {
-        view.setZoom(13);
+      if (zoom != 9) {
+        view.setZoom(9);
       }
     };
 

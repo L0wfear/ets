@@ -24,7 +24,7 @@ class MissionsCreationForm extends Form {
 
     const MISSION_SOURCES = missionSourcesList.map(({id, name}) => ({value: id, label: name}));
     const ASSIGN_OPTIONS = [
-			{value: 'not_assign', label: "Не добавлять в ПЛ"},
+			// {value: 'not_assign', label: "Не добавлять в ПЛ"},
 			{value: 'assign_to_active', label: "Добавить в активный ПЛ"},
 			{value: 'assign_to_draft', label: "Создать/добавить в черновик ПЛ"}
 		];

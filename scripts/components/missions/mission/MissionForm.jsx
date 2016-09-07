@@ -165,7 +165,7 @@ export class MissionForm extends Form {
     const TECH_OPERATIONS = technicalOperationsList.map(({id, name}) => ({value: id, label: name}));
     const MISSION_SOURCES = missionSourcesList.map(({id, name}) => ({value: id, label: name}));
 		const ASSIGN_OPTIONS = [
-			{value: 'not_assign', label: "Не добавлять в ПЛ"},
+			// {value: 'not_assign', label: "Не добавлять в ПЛ"},
 			{value: 'assign_to_active', label: "Добавить в активный ПЛ"},
 			{value: 'assign_to_draft', label: "Создать/добавить в черновик ПЛ"}
 		];
@@ -313,9 +313,9 @@ export class MissionForm extends Form {
 								clearable={false}
 								onChange={this.handleChange.bind(this, 'assign_to_waybill')}/>
 					</Div>
-							<Div className="inline-block">
+					<Div className="inline-block">
 						<Dropdown id="waybill-print-dropdown" dropup disabled={!state.status || !this.props.canSave || !state.route_id} onSelect={this.props.handlePrint}>
-							<Dropdown.Toggle disabled={!state.status || !this.props.canSave || !state.route_id || IS_COMPLETED}>
+							<Dropdown.Toggle disabled={!state.status || !this.props.canSave || !state.route_id}>
 								<Glyphicon glyph="print" />
 							</Dropdown.Toggle>
 							<Dropdown.Menu>

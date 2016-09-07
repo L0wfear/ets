@@ -314,7 +314,8 @@ export class DutyMissionForm extends Form {
 
 	      <Modal.Footer>
 					<Div className="inline-block" >
-		      	<Button onClick={this.props.onPrint} disabled={!this.props.canSave || IS_DISPLAY || state.status !== 'not_assigned'}>{'Выдать'}</Button>
+		      	<Button onClick={this.props.onPrint} disabled={!this.props.canSave}>
+							<Glyphicon glyph="download-alt" /> {state.status !== 'not_assigned' ? "Просмотр" : "Выдать"}</Button>
 		      	<Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>{'Сохранить'}</Button>
 					</Div>
 	      </Modal.Footer>

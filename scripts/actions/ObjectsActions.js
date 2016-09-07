@@ -68,12 +68,11 @@ export default class ObjectsActions extends Actions {
   }
 
   saveFaxogramm(id) {
-    const payload = { id };
-    return FaxogrammService.getBlob(payload);
+    return FaxogrammService.path(id).getBlob();
   }
 
   getFaxogrammPDFUrl(id) {
-    let URL = FaxogrammService.getUrl() + id;
+    let URL = FaxogrammService.getUrl() + '/' + id;
     return URL;
   }
 

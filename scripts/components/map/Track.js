@@ -9,7 +9,7 @@ import _ from 'lodash';
 
 const IS_MSK = true;
 const DRAW_POINTS = true;
-const COLORS_ZOOM_THRESHOLD = 8;
+const COLORS_ZOOM_THRESHOLD = 6;
 
 /**
  * получение цвета линии трэка

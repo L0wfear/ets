@@ -18,7 +18,7 @@ export default class LegendWrapper extends React.Component {
     let controls = [
       {
         title: 'Трек',
-        color: this.props.zoom > 8 ? TRACK_COLORS.green : TRACK_COLORS.blue,
+        color: this.props.zoom > 6 ? TRACK_COLORS.green : TRACK_COLORS.blue,
         type: 'track'
       },
       {

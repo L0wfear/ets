@@ -1,7 +1,7 @@
 import current_missions from './CurrentMission.jsx';
 import faxogramms from './Faxogramms.jsx';
 import current_duty_missions from './CurrentDutyMission.jsx';
-import waybill_active from './WaybillActive.jsx';
+import waybill_in_progress from './WaybillInProgress.jsx';
 import waybill_completed from './WaybillCompleted.jsx';
 import waybill_closed from './WaybillClosed.jsx';
 import waybill_draft from './WaybillDraft.jsx';
@@ -15,7 +15,7 @@ const customCards = {
   faxogramms,
   current_duty_missions,
   waybill_draft,
-  waybill_active,
+  waybill_in_progress,
   waybill_completed,
   waybill_closed,
   odh_not_covered_by_routes,

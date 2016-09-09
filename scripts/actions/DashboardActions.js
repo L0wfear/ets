@@ -16,7 +16,7 @@ export default class DashboardActions extends Actions {
       });
     }
     if (key.indexOf('waybill_') > -1) {
-      let path = key.replace(/_/g, "/");
+      let path = key.replace(/_/, "/");
       return DashboardService
         .path(path)
         .get(payload)

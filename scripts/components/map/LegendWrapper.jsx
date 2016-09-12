@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { TRACK_COLORS } from 'constants/track.js';
 import cx from 'classnames';
 
@@ -13,6 +13,10 @@ let ControlComponent = (props) =>
  * Легенда на карте
  */
 export default class LegendWrapper extends React.Component {
+
+  static propTypes = {
+    zoom: PropTypes.number, // перенести
+  }
 
   getControls() {
     let controls = [
@@ -82,7 +86,7 @@ export default class LegendWrapper extends React.Component {
           <li key={i} className={controllClassName} >
             <ControlComponent control={control}
                 onClick={this.toggleSettingsControl.bind(this, control.type)}/>
-            {this.props.zoom > 8 && control.type === 'track' && marker && marker.track ? marker.track.getLegend() : ''}
+            {this.props.zoom > 6 && control.type === 'track' && marker && marker.track ? marker.track.getLegend() : ''}
           </li>
         );
       });

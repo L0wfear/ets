@@ -1,19 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Filter from './Filter.jsx';
 import TypeComponent from './TypeComponent.jsx';
 import ToolbarControl from './ToolbarControl.js';
-import { getTypeById } from 'utils/labelFunctions';
-
 
 export default class ToolbarFilters extends Component {
 
   static propTypes = {
-    typesList: React.PropTypes.array.isRequired
+    typesList: PropTypes.array.isRequired,
+    typesIndex: PropTypes.object.isRequired,
+    filters: PropTypes.object
   }
 
   render(){
-
-    const currentUser = this.props.currentUser;
     let filters = [];
     let additiveFilters = this.doAdditiveFilters();
 
@@ -40,12 +38,13 @@ export default class ToolbarFilters extends Component {
       <ToolbarControl top="49px" controlType="filters" btnClass={this.props.haveFilters ? 'have-filter' : ''} style={style}>
         {filters}
       </ToolbarControl>
-    )
+    );
 
   }
 
   doAdditiveFilters(){
 
+    const { typesIndex, typesList } = this.props;
     const propsFilters = this.props.filters;
     const cars = this.props.store.state.points;
 
@@ -71,7 +70,7 @@ export default class ToolbarFilters extends Component {
 
     // наполняем селектор типов
     if ( _typeIds.length > 0 ){
-      _typeIds.forEach( (id) => _types.push(getTypeById(id)))
+      _types = _typeIds.map(id => typesIndex[id]);
     } else {
       _types = this.props.typesList;
     }

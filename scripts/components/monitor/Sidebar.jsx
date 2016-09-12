@@ -50,7 +50,6 @@ export default class Sidebar extends Component {
 
   render() {
     // TODO оптимизировать рендер
-    // console.log('render');
     let { selected, selectedFeature } = this.props;
     const dashboardClassName = cx('monitor-sidebar', {'monitor-sidebar-sm': selectedFeature});
 

@@ -33,8 +33,8 @@ function normalizeAngle(angle) {
 
 export default class CarMarker extends Marker {
 
-  constructor(point, map) {
-    super(point, map);
+  constructor(point, map, options) {
+    super(point, map, options);
     point.marker = this;
     this.coords = wrapCoords(swapCoords(point.coords_msk))
     this.track = null;
@@ -339,7 +339,7 @@ export default class CarMarker extends Marker {
           speed_max: point.speed_max || 'Н/Д',
           nsat: point.nsat || 'Н/Д',
           timestamp: point.timestamp
-        })
+        });
       }
     }
 

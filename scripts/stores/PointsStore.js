@@ -60,10 +60,6 @@ export default class PointsStore extends Store {
       currentUser = {};
     }
 
-    // if (currentUser.company_id) {
-    //   this.initialState.filter.owner = [currentUser.company_id];
-    // }
-
     this.initialState = {
       selected: null,
       points: {},

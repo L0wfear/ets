@@ -1,19 +1,32 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import FluxComponent from 'flummox/component';
 import connectToStores from 'flummox/connect';
 import MapWrapper from './MapWrapper.jsx';
 import Toolbar from './toolbar/Toolbar.jsx';
 import Sidebar from './Sidebar.jsx';
 import { FluxContext } from 'utils/decorators';
+import { connect } from 'react-redux';
+import { getTypes } from 'redux/modules/types';
 
+@connect(
+  state => state.types,
+  {
+    getTypes
+  }
+)
 @FluxContext
 class MonitorPage extends Component {
+
+  static propTypes = {
+    getTypes: PropTypes.func
+  }
 
   constructor(props, context) {
     super(props, context);
   }
 
   componentDidMount() {
+    this.props.getTypes();
     const { flux } = this.context;
     flux.getActions('objects').getCars();
     flux.getActions('points').createConnection();
@@ -22,10 +35,6 @@ class MonitorPage extends Component {
   componentWillUnmount() {
     const { flux } = this.context;
     flux.getActions('points').closeConnection();
-  }
-
-  openSideBar() {
-
   }
 
   render() {

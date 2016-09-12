@@ -9,7 +9,7 @@ import { wrapCoords } from 'utils/geo';
 const IS_MSK = true;
 
 export default class Marker {
-  constructor(point, map) {
+  constructor(point, map, options = {}) {
     this.point = point;
 
     // some methods may be useful
@@ -21,7 +21,8 @@ export default class Marker {
     this.map = map.map;
     this.image = null;
     this.radius = 0;
-    this.coords = this.getCoords()
+    this.coords = this.getCoords();
+    this.options = options;
 
     this.animation = null;
     this.visible = true;

@@ -135,10 +135,7 @@ let ShowGeoobjectsCheckbox = (props) => {
 }
 
 @connect(
-  state => state.types,
-  {
-    getTypes
-  }
+  state => state.types
 )
 @FluxContext
 class Toolbar extends Component {
@@ -165,13 +162,9 @@ class Toolbar extends Component {
     return true;
   }
 
-  componentDidMount() {
-    this.props.getTypes();
-  }
-
   render() {
 
-    const { selectedPolysTypes, currentUser, filter } = this.props;
+    const { selectedPolysTypes, filter } = this.props;
     const filters = filter;
     const pointsStore = this.context.flux.getStore('points');
     const storeState = pointsStore.state;
@@ -214,7 +207,7 @@ class Toolbar extends Component {
           </FluxComponent>
         </div>
         <ToolbarSearch focusOnLonelyCar={this.focusOnLonelyCar.bind(this)} carsCount={carsCount}/>
-        <ToolbarFilters store={pointsStore} filters={filters} haveFilters={filtersCount > 0} currentUser={currentUser} {...this.props}/>
+        <ToolbarFilters store={pointsStore} filters={filters} haveFilters={filtersCount > 0} {...this.props}/>
       </div>
     );
   }

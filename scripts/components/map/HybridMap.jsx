@@ -6,15 +6,16 @@ import { GeoJSON, getPointStyle, getPolyStyle} from 'utils/ol';
 import Div from 'components/ui/Div.jsx';
 import { Glyphicon, Button } from 'react-bootstrap';
 import { polyState, polyStyles } from 'constants/polygons.js';
-import { vectorStyles, vectorState, getVectorArrowStyle, getVectorLayer, getVectorSource } from 'constants/vectors.js';
+import { vectorStyles, vectorState, getVectorArrowStyle } from 'constants/vectors.js';
 import FluxComponent from 'flummox/component';
 import _ from 'lodash';
 
 let POLYS_LAYER = null;
+
 // TODO синхронизировать с Map, чтобы один класс мог поддерживать все геометрии
 export default class HybridMap extends Map {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     this.state = {
       zoom: null
@@ -39,11 +40,14 @@ export default class HybridMap extends Map {
 
       let oldPoint = this.markers[key];
       if (oldPoint) {
-        oldPoint.setPoint(point)
+        oldPoint.setPoint(point);
       } else {
-        this.markers[key] = new CarMarker(point, this);
+        this.markers[key] = new CarMarker(point, this, {
+          maxSpeed: this.props.maxSpeed
+        });
       }
     }
+    this.triggerRender();
   }
 
   componentDidMount() {
@@ -218,19 +222,14 @@ export default class HybridMap extends Map {
   }
 
   render() {
-
     return (
-      <div>
-        <div ref="container" className="openlayers-container">
-
-          <FluxComponent connectToStores={['settings']}>
-            <LegendWrapper
-              controls={['track', 'route', 'element']}
-              zoom={this.state.zoom}
-              marker={() => this._pointsStore.getSelectedMarker()}/>
-          </FluxComponent>
-
-        </div>
+      <div ref="container" className="openlayers-container">
+        <FluxComponent connectToStores={['settings']}>
+          <LegendWrapper
+            controls={['track', 'route', 'element']}
+            zoom={this.state.zoom}
+            marker={() => this._pointsStore.getSelectedMarker()}/>
+        </FluxComponent>
       </div>
     )
   }

@@ -1,6 +1,10 @@
 import React from 'react';
 import Map from 'components/map/Map.jsx';
+import { connect } from 'react-redux';
 
+@connect(
+  state => state.types
+)
 export default class MapWrapper extends React.Component {
 
   constructor() {

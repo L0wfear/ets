@@ -2,15 +2,19 @@ import { TypesService } from 'api/Services';
 import { handleActions } from 'redux-actions';
 import keyBy from 'lodash/keyBy';
 
-const GET = 'ets/types/GET';
+const SET_SHOW_PLATES = 'ets/settings/setShowPlates';
 
 const initialState = {
-  typesList: [],
-  typesIndex: {}
+  showPlates: false,
+  showTrack: true,
+  showPolygons: true,
+  showSelectedElement: true,
+  showGeoobjects: false,
+  showMarkers: true
 };
 
 export default handleActions({
-  [GET]: {
+  [SET_SHOW_PLATES]: {
     next(state, { payload }) {
       return {
         ...state,

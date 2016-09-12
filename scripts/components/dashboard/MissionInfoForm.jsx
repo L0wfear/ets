@@ -127,11 +127,11 @@ export class MissionInfoForm extends Form {
 
 								<HybridMap
                     polys={polys}
-                    maxSpeed={this.props.formState.technical_operation_max_speed}
+                    maxSpeed={state.technical_operation_max_speed}
 										routeType={this.state.routeType}
 										selectedObjects={this.state.selectedObjects}
 										selectedPoly={geozonePolys[this.state.selectedElementId]}
-										car_gov_number={this.props.formState.car_gov_number}/>
+										car_gov_number={state.car_gov_number}/>
 
 							</FluxComponent>
             </Col>
@@ -158,8 +158,8 @@ export class MissionInfoForm extends Form {
 					<Div>
             * - расстояние, учитываемое при прохождении задания<br/>
             ** - пройдено с рабочей скоростью / пройдено с превышением рабочей скорости<br/>
-						<b>Пройдено с рабочей скоростью:</b> {getDataTraveledYet(this.props.formState.route_with_work_speed + this.props.formState.with_work_speed_time)}<br/>
-						<b>Пройдено с превышением рабочей скорости:</b> {getDataTraveledYet(this.props.formState.route_with_high_speed + this.props.formState.with_high_speed_time)}
+						<b>Пройдено с рабочей скоростью:</b> {getDataTraveledYet(state.route_with_work_speed + state.with_work_speed_time)}<br/>
+						<b>Пройдено с превышением рабочей скорости:</b> {getDataTraveledYet(state.route_with_high_speed + state.with_high_speed_time)}
 					</Div>
 
 	      </Modal.Body>

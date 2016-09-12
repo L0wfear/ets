@@ -3,7 +3,6 @@ import { getStartOfToday, makeDate, makeTime } from 'utils/dates';
 import { TRACK_COLORS, TRACK_LINE_OPACITY, TRACK_LINE_WIDTH, TRACK_POINT_RADIUS, SHOW_ONLY_POINTS_WITH_SPEED_CHANGES } from 'constants/track.js';
 import { getTrackPointByColor } from '../../icons/track/points.js';
 import { swapCoords, roundCoordinates } from 'utils/geo';
-import { getTypeById } from 'utils/labelFunctions';
 import { isEmpty, hexToRgba } from 'utils/functions';
 import _ from 'lodash';
 
@@ -40,7 +39,9 @@ export default class Track {
   constructor(owner) {
 
     this.map = owner.map;
-    this.maxSpeed = owner._reactMap.props.maxSpeed;
+    const reactMapProps = owner._reactMap.props;
+    this.maxSpeed = owner.options.maxSpeed;
+    this.typesIndex = reactMapProps.typesIndex;
     // TODO придумать что-то с этими контекстами
     this.ctx = owner._reactMap.canvas.getContext('2d');
     this.owner = owner;
@@ -85,13 +86,8 @@ export default class Track {
 
   getLegend() {
     let colors = [];
-    let car = this.owner.getCar();
-    let type_id = car.type_id;
-    let type = getTypeById(type_id);
-    let carTypeMaxSpeed = type && type.speed_max | 0;
-    let maxSpeed = isEmpty(this.maxSpeed) ? carTypeMaxSpeed : this.maxSpeed;
 
-    let prevColor = getTrackColor(0, maxSpeed);
+    let prevColor = getTrackColor(0, this.maxSpeed);
 
     function addColor(color, speed) {
       if (colors.length > 0) {
@@ -106,7 +102,7 @@ export default class Track {
     addColor(prevColor, 0);
 
     for (let i = 0, till = 100; i <= till; i++) {
-      let color = getTrackColor(i, maxSpeed);
+      let color = getTrackColor(i, this.maxSpeed);
       if (color !== prevColor) {
         addColor(color, i);
         prevColor = color;
@@ -114,7 +110,6 @@ export default class Track {
     }
 
     colors[colors.length - 1].speed += '+';
-
 
     let legend = colors.map((obj, i) => {
       let text = obj.speed + (obj.till ? ' – ' + obj.till : '') + ' км/ч';
@@ -275,12 +270,6 @@ export default class Track {
       return;
     }
 
-    let car = owner.getCar();
-    let type_id = car.type_id;
-    let type = getTypeById(type_id);
-    let carTypeMaxSpeed = type && type.speed_max | 0;
-    let maxSpeed = isEmpty(this.maxSpeed) ? carTypeMaxSpeed : this.maxSpeed;
-
     // TODO import from settings
     const RENDER_GRADIENT = this.owner.store.state.showTrackingGradient;
 
@@ -294,14 +283,14 @@ export default class Track {
     ctx.beginPath();
     ctx.moveTo(firstPoint.x, firstPoint.y);
 
-    let prevRgbaColor = getTrackColor(track[0].speed_avg, maxSpeed, TRACK_LINE_OPACITY);
+    let prevRgbaColor = getTrackColor(track[0].speed_avg, this.maxSpeed, TRACK_LINE_OPACITY);
     ctx.strokeStyle = prevRgbaColor;
 
     for (let i = 1, till = track.length - 1; i < till; i++) {
       let coords = this.map.projectToPixel(track[i].coords_msk);
       let speed = track[i].speed_avg;
-      let rgbaColor = getTrackColor(speed, maxSpeed, TRACK_LINE_OPACITY);
-      let hexColor = getTrackColor(speed, maxSpeed);
+      let rgbaColor = getTrackColor(speed, this.maxSpeed, TRACK_LINE_OPACITY);
+      let hexColor = getTrackColor(speed, this.maxSpeed);
 
       // если предыдущий цвет не соответствует новому
       // нужно закрыть предыдущую линию
@@ -458,24 +447,13 @@ export default class Track {
       if (isEmpty(objectsString)) {
         objectsString = 'Объекты ОДХ не найдены';
       }
+
       // Задания на точке
       if (missions.length) {
         missionsString = missions.map(m => `Задание №${m.number}`).join('<br/>');
       } else {
         missionsString = 'Нет выполняемых заданий';
       }
-
-      // let objectsString = 'Объекты ОДХ';
-      //
-      // if ( geoObjects === null ){
-      //   objectsString += ' загружаются'
-      // } else {
-      //   if ( geoObjects.length > 0 ){
-      //     //objectsString += ': '+ geoObjects.map((obj)=>obj.name + ' ('+getCustomerById(obj.customer_id).title+')').join(', ')
-      //   } else {
-      //     objectsString += ' не найдены'
-      //   }
-      // }
 
       return `
         <div>

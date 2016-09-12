@@ -27,10 +27,12 @@ const SIDEBAR_WIDTH_PX = 500;
  * local crs example http://stackoverflow.com/questions/20222885/custom-tiles-in-local-crs-without-projection
  * custom tiles example
  */
+ // TODO сделать реализацию завязанной на рендеринг в рамках ЕТС карты
 export default class OpenLayersMap extends Component {
 
   static get propTypes() {
     return {
+      typesIndex: PropTypes.object,
       points: PropTypes.object,
       polys: PropTypes.object,
       showPolygons: PropTypes.bool,
@@ -209,9 +211,11 @@ export default class OpenLayersMap extends Component {
       this.hidePopup();
     }
 
-    map.forEachFeatureAtPixel(pixel, (feature, layer) =>  {
-      this.props.onFeatureClick(feature, ev, this);
-    });
+    if (typeof this.props.onFeatureClick === 'function') {
+      map.forEachFeatureAtPixel(pixel, (feature, layer) =>  {
+        this.props.onFeatureClick(feature, ev, this);
+      });
+    }
   }
 
   hidePopup() {
@@ -325,7 +329,7 @@ export default class OpenLayersMap extends Component {
 
     // TODO remove this
     if (!selected) {
-      this.hidePopup()
+      this.hidePopup();
     }
 
     return canvas;
@@ -346,7 +350,6 @@ export default class OpenLayersMap extends Component {
         interaction.setActive(true);
       });
     }
-
   }
 
   /**
@@ -424,6 +427,7 @@ export default class OpenLayersMap extends Component {
   }
 
   updatePoints(updatedPoints) {
+    const { typesIndex } = this.props;
     let keys = Object.keys(updatedPoints);
 
     for (let i = 0, till = keys.length; i < till; i++) {
@@ -438,9 +442,11 @@ export default class OpenLayersMap extends Component {
 
       let oldMarker = this.markers[key];
       if (oldMarker) {
-        oldMarker.setPoint(point)
+        oldMarker.setPoint(point);
       } else {
-        this.markers[key] = new CarMarker(point, this);
+        this.markers[key] = new CarMarker(point, this, {
+          maxSpeed: typesIndex[point.car.type_id].speed_max
+        });
       }
     }
     this.triggerRender();
@@ -455,6 +461,7 @@ export default class OpenLayersMap extends Component {
   }
 
   render() {
+    console.log(this.props);
     return (
       <div key="olmap">
         <div ref="container" className="openlayers-container"></div>

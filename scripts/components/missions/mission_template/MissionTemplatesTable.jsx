@@ -13,7 +13,7 @@ let getTableMeta = (props) => {
 		cols: [
 			{
 				name: 'car_id',
-				caption: 'Рег. номер ТС',
+				displayName: 'Рег. номер ТС',
 				type: 'number',
 				display: false,
 				filter: {
@@ -23,7 +23,7 @@ let getTableMeta = (props) => {
 			},
 			{
 				name: 'number',
-				caption: 'Номер',
+				displayName: 'Номер',
 				type: 'number',
         cssClassName: 'width60',
 				filter: {
@@ -33,7 +33,7 @@ let getTableMeta = (props) => {
 			},
       {
 				name: 'name',
-				caption: 'Название',
+				displayName: 'Название',
 				type: 'string',
 				filter: {
 					type: 'select'
@@ -41,14 +41,14 @@ let getTableMeta = (props) => {
 			},
       {
 				name: 'car_id',
-				caption: 'Рег. номер ТС',
+				displayName: 'Рег. номер ТС',
 				type: 'number',
 				filter: false,
         cssClassName: 'width120',
 			},
       {
 				name: 'route_id',
-				caption: 'Маршрут',
+				displayName: 'Маршрут',
 				type: 'number',
 				filter: {
 					type: 'select',
@@ -58,7 +58,7 @@ let getTableMeta = (props) => {
 			},
       {
 				name: 'passes_count',
-				caption: 'Количество проходов',
+				displayName: 'Количество проходов',
 				type: 'number',
 				filter: {
 					type: 'select'
@@ -67,7 +67,7 @@ let getTableMeta = (props) => {
 			},
       {
 				name: 'technical_operation_id',
-				caption: 'Технологическая операция',
+				displayName: 'Технологическая операция',
 				type: 'number',
 				filter: {
 					type: 'select',
@@ -76,7 +76,7 @@ let getTableMeta = (props) => {
 			},
       {
 				name: 'comment',
-				caption: 'Комментарий',
+				displayName: 'Комментарий',
 				type: 'string',
 				filter: false
 			}

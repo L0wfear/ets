@@ -6,7 +6,7 @@ let getTableMeta = (props) => {
     cols: [
       {
         name: 'name',
-        caption: 'Название',
+        displayName: 'Название',
         type: 'string',
         filter: {
           type: 'select',
@@ -14,7 +14,7 @@ let getTableMeta = (props) => {
       },
       {
         name: 'clean_category_name',
-        caption: 'Категория',
+        displayName: 'Категория',
         type: 'string',
         filter: {
           type: 'select',
@@ -22,52 +22,52 @@ let getTableMeta = (props) => {
       },
       {
         name: 'total_area',
-        caption: 'Общая площадь (кв.м.)',
+        displayName: 'Общая площадь (кв.м.)',
         type: 'number',
       },
       {
         name: 'distance',
-        caption: 'Протяженность (п.м.)',
+        displayName: 'Протяженность (п.м.)',
         type: 'number',
       },
       {
         name: 'roadway_area',
-        caption: 'Площадь проезжей части (кв.м.)',
+        displayName: 'Площадь проезжей части (кв.м.)',
         type: 'number',
       },
       {
         name: 'footway_area',
-        caption: 'Площадь тротуаров (кв.м.)',
+        displayName: 'Площадь тротуаров (кв.м.)',
         type: 'number',
       },
       {
         name: 'cleaning_area',
-        caption: 'Площадь уборки (кв.м.)',
+        displayName: 'Площадь уборки (кв.м.)',
         type: 'number',
       },
       {
         name: 'auto_footway_area',
-        caption: 'Площадь механизированной уборки тротуаров (кв.м.)',
+        displayName: 'Площадь механизированной уборки тротуаров (кв.м.)',
         type: 'number',
       },
       {
         name: 'manual_footway_area',
-        caption: 'Площадь ручной уборки тротуаров (кв.м.)',
+        displayName: 'Площадь ручной уборки тротуаров (кв.м.)',
         type: 'number',
       },
       {
         name: 'snow_area',
-        caption: 'Площадь уборки снега (кв.м.)',
+        displayName: 'Площадь уборки снега (кв.м.)',
         type: 'number',
       },
       {
         name: 'gutters_length',
-        caption: 'Протяженность лотков (п.м.)',
+        displayName: 'Протяженность лотков (п.м.)',
         type: 'number',
       },
       {
         name: 'company_structure_name',
-        caption: 'Подразделение',
+        displayName: 'Подразделение',
         type: 'text',
       },
     ]

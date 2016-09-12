@@ -5,7 +5,7 @@ let tableMeta = {
 	cols: [
 		{
 			name: 'full_name',
-			caption: 'Полное наименование',
+			displayName: 'Полное наименование',
 			type: 'string',
       filter: {
         type: 'select',
@@ -14,7 +14,7 @@ let tableMeta = {
 		},
 		{
 			name: 'short_name',
-			caption: 'Краткое наименование',
+			displayName: 'Краткое наименование',
 			type: 'string',
       filter: {
         type: 'select',
@@ -23,7 +23,7 @@ let tableMeta = {
 		},
 		{
 			name: 'plow_width',
-			caption: 'Ширина уборочного оборудования',
+			displayName: 'Ширина уборочного оборудования',
 			type: 'string',
       filter: false
 		}

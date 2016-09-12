@@ -7,7 +7,7 @@ let tableMeta = {
 	cols: [
 		{
 			name: 'order_date',
-			caption: 'Дата приказа',
+			displayName: 'Дата приказа',
 			type: 'date',
 			filter: {
 				type: 'select',
@@ -15,7 +15,7 @@ let tableMeta = {
 		},
 		{
 			name: 'operation_id',
-			caption: 'Операция',
+			displayName: 'Операция',
 			type: 'number',
       filter: {
         type: 'select',
@@ -24,17 +24,17 @@ let tableMeta = {
 		},
 		{
 			name: 'summer_rate',
-			caption: 'Норма для летнего периода',
+			displayName: 'Норма для летнего периода',
 			type: 'number',
 		},
     {
 			name: 'winter_rate',
-			caption: 'Норма для зимнего периода',
+			displayName: 'Норма для зимнего периода',
 			type: 'number',
 		},
 		{
 			name: 'car_special_model_name',
-			caption: 'Модель ТС',
+			displayName: 'Модель ТС',
 			type: 'string',
 			filter: {
         type: 'select'
@@ -42,7 +42,7 @@ let tableMeta = {
 		},
 		{
 			name: 'car_model_name',
-			caption: 'Марка шасси',
+			displayName: 'Марка шасси',
 			type: 'number',
       filter: {
         type: 'select'
@@ -50,7 +50,7 @@ let tableMeta = {
 		},
 		{
 			name: 'operation_equipment',
-			caption: 'Для спецоборудования',
+			displayName: 'Для спецоборудования',
 			type: 'boolen',
       filter: {
         type: 'select',

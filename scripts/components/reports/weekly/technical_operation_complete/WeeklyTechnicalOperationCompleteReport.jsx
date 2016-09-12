@@ -11,7 +11,7 @@ let getTableMeta = (props) => {
   if (props.element === 'roadway') {
     secondCol = {
       name: 'geozone_element_area',
-      caption: 'Площадь проезжей части, м2',
+      displayName: 'Площадь проезжей части, м2',
       type: 'number',
       filter: false
     }
@@ -20,7 +20,7 @@ let getTableMeta = (props) => {
   if (props.element === 'footway') {
     secondCol = {
       name: 'geozone_element_area',
-      caption: 'Площадь тротуаров с мехуборкой, м2',
+      displayName: 'Площадь тротуаров с мехуборкой, м2',
       type: 'number',
       filter: false
     }
@@ -29,7 +29,7 @@ let getTableMeta = (props) => {
   if (props.element === 'yard') {
     secondCol = {
       name: 'geozone_element_area',
-      caption: 'Механизированная площадь двора, м2',
+      displayName: 'Механизированная площадь двора, м2',
       type: 'number',
       filter: false
     }
@@ -39,7 +39,7 @@ let getTableMeta = (props) => {
   	cols: [
       {
         name: 'geozone_name',
-        caption: 'Наименование объекта',
+        displayName: 'Наименование объекта',
         type: 'string',
         filter: {
           type: 'select',
@@ -47,7 +47,7 @@ let getTableMeta = (props) => {
       },
       {
         name: 'planned_passed_technical_operation_count',
-        caption: 'Количество техопераций',
+        displayName: 'Количество техопераций',
         type: 'string',
         filter: {
           type: 'select',
@@ -55,20 +55,20 @@ let getTableMeta = (props) => {
       },
       {
         name: 'gov_number_list',
-        caption: 'Список ТС',
+        displayName: 'Список ТС',
         type: 'string',
   			filter: false
       },
       secondCol,
   		{
   			name: 'fact_traveled_area',
-  			caption: 'Пройденная площадь',
+  			displayName: 'Пройденная площадь',
   			type: 'string',
   			filter: false
   		},
   		{
   			name: 'fact_finished_technical_operation_count',
-  			caption: 'Выполнено ТО, количество',
+  			displayName: 'Выполнено ТО, количество',
   			type: 'string',
   			filter: {
   				type: 'select',

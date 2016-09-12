@@ -10,7 +10,7 @@ let tableMeta = {
 	cols: [
 		{
 			name: 'technical_operation_name',
-			caption: 'Тех. операция',
+			displayName: 'Тех. операция',
 			type: 'text',
 			filter: {
 				type: 'select',
@@ -18,7 +18,7 @@ let tableMeta = {
 		},
 		{
 			name: 'odh_name',
-			caption: 'ОДХ',
+			displayName: 'ОДХ',
 			type: 'text',
 			filter: {
 				type: 'select',
@@ -26,43 +26,43 @@ let tableMeta = {
 		},
 		{
 			name: 'status',
-			caption: 'Покрытие',
+			displayName: 'Покрытие',
 			type: 'text',
 			filter: false
 		},
 		{
 			name: 'distance',
-			caption: 'Протяженность ОДХ',
+			displayName: 'Протяженность ОДХ',
 			type: 'number',
 			filter: false
 		},
 		{
 			name: 'traveled',
-			caption: 'Длина маршрута',
+			displayName: 'Длина маршрута',
 			type: 'number',
 			filter: false
 		},
 		{
 			name: 'delta',
-			caption: 'Дельта',
+			displayName: 'Дельта',
 			type: 'number',
 			filter: false
 		},
 		{
 			name: 'gutters_length',
-			caption: 'Длина лотков',
+			displayName: 'Длина лотков',
 			type: 'number',
 			filter: false
 		},
 		{
 			name: 'footway_length',
-			caption: 'Длина тротуаров',
+			displayName: 'Длина тротуаров',
 			type: 'number',
 			filter: false
 		},
 		{
 			name: 'check_type_name',
-			caption: 'Тип проверки',
+			displayName: 'Тип проверки',
 			type: 'text',
 			filter: false
 		}

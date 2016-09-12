@@ -13,7 +13,7 @@ let getTableMeta = (props) => {
   if (props.element === 'roadway') {
     secondCol = {
       name: 'geozone_element_area',
-      caption: 'Площадь проезжей части',
+      displayName: 'Площадь проезжей части',
       type: 'number',
       filter: false
     }
@@ -22,7 +22,7 @@ let getTableMeta = (props) => {
   if (props.element === 'footway') {
     secondCol = {
       name: 'geozone_element_area',
-      caption: 'Площадь тротуаров с мехуборкой',
+      displayName: 'Площадь тротуаров с мехуборкой',
       type: 'number',
       filter: false
     }
@@ -31,7 +31,7 @@ let getTableMeta = (props) => {
   if (props.element === 'yard') {
     secondCol = {
       name: 'geozone_element_area',
-      caption: 'Механизированная площадь двора',
+      displayName: 'Механизированная площадь двора',
       type: 'number',
       filter: false
     }
@@ -41,7 +41,7 @@ let getTableMeta = (props) => {
   	cols: [
       {
         name: 'geozone_name',
-        caption: 'Наименование объекта',
+        displayName: 'Наименование объекта',
         type: 'string',
         filter: {
           type: 'select',
@@ -50,25 +50,25 @@ let getTableMeta = (props) => {
       secondCol,
       {
         name: 'car_type_list',
-        caption: 'Тип техники',
+        displayName: 'Тип техники',
         type: 'string',
         filter: false
       },
       {
         name: 'gov_number_list',
-        caption: 'Список ТС',
+        displayName: 'Список ТС',
         type: 'string',
         filter: false
       },
   		{
   			name: 'fact_traveled_area',
-  			caption: 'Пройдено',
+  			displayName: 'Пройдено',
   			type: 'string',
   			filter: false
   		},
   		{
   			name: 'planned_passed_count',
-  			caption: 'Плановое посещение',
+  			displayName: 'Плановое посещение',
   			type: 'string',
   			filter: {
   				type: 'select',
@@ -76,13 +76,13 @@ let getTableMeta = (props) => {
   		},
       {
         name: 'fact_traveled_percentage',
-        caption: 'Процент посещения',
+        displayName: 'Процент посещения',
         type: 'string',
         filter: false
       },
   		{
   			name: 'status',
-  			caption: 'Статус посещения',
+  			displayName: 'Статус посещения',
   			type: 'string',
   			filter: {
   				type: 'select',

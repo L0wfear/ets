@@ -21,13 +21,13 @@ let getTableMeta = (props) => {
 		cols: [
 			{
 				name: 'order_number',
-				caption: 'Номер',
+				displayName: 'Номер',
 				type: 'number',
         cssClassName: 'width120'
 			},
       {
 				name: 'create_date',
-				caption: 'Дата создания',
+				displayName: 'Дата создания',
 				type: 'date',
 				filter: {
 					type: 'select'
@@ -35,7 +35,7 @@ let getTableMeta = (props) => {
 			},
       {
 				name: 'order_date',
-				caption: 'Начало действия',
+				displayName: 'Начало действия',
 				type: 'number',
 				filter: {
 					type: 'select',
@@ -43,7 +43,7 @@ let getTableMeta = (props) => {
 			},
       {
 				name: 'order_date_to',
-				caption: 'Окончание действия',
+				displayName: 'Окончание действия',
 				type: 'number',
 				filter: {
 					type: 'select',
@@ -51,7 +51,7 @@ let getTableMeta = (props) => {
 			},
       {
 				name: 'order_type_name',
-				caption: 'Тип',
+				displayName: 'Тип',
 				type: 'string',
 				filter: {
 					type: 'select'
@@ -60,7 +60,7 @@ let getTableMeta = (props) => {
 			},
       {
 				name: 'order_status_name',
-				caption: 'Статус',
+				displayName: 'Статус',
 				type: 'string',
 				filter: {
 					type: 'select'
@@ -68,7 +68,7 @@ let getTableMeta = (props) => {
 			},
       {
 				name: 'pgm_deny',
-				caption: 'ПГМ',
+				displayName: 'ПГМ',
 				type: 'string',
 				filter: {
 					type: 'select',
@@ -108,12 +108,12 @@ let FaxogrammOperationInfoTable = (props) => {
 		cols: [
 			{
 				name: 'tk_operation_name',
-				caption: 'Операция',
+				displayName: 'Операция',
 				type: 'string',
 			},
 			{
 				name: 'num_exec',
-				caption: 'Количество выполнений',
+				displayName: 'Количество выполнений',
 				type: 'string',
 			},
 		]
@@ -131,7 +131,7 @@ let FaxogrammInfoTable = (props) => {
 		cols: [
 			{
 				name: 'order_info',
-				caption: 'Дополнительная информация',
+				displayName: 'Дополнительная информация',
 				type: 'string',
 			},
 		]

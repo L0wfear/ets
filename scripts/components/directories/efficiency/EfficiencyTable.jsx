@@ -6,7 +6,7 @@ let tableMeta = {
   cols: [
     {
       name: 'technical_operation_name',
-      caption: 'Технологическая операция',
+      displayName: 'Технологическая операция',
       type: 'text',
       filter: {
 				type: 'select'
@@ -14,7 +14,7 @@ let tableMeta = {
     },
     {
       name: 'source',
-      caption: 'Источник',
+      displayName: 'Источник',
       type: 'text',
       filter: {
 				type: 'select',
@@ -23,7 +23,7 @@ let tableMeta = {
     },
     {
       name: 'areal_feature_name',
-      caption: 'Площадная характеристика',
+      displayName: 'Площадная характеристика',
       type: 'text',
       filter: {
 				type: 'select'
@@ -31,7 +31,7 @@ let tableMeta = {
     },
     {
       name: 'ratio',
-      caption: 'Коэффициент',
+      displayName: 'Коэффициент',
       type: 'text'
     }
   ]

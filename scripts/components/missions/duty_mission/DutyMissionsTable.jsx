@@ -15,7 +15,7 @@ let getTableMeta = (props) => {
 		cols: [
       {
         name: 'status',
-        caption: 'Статус',
+        displayName: 'Статус',
         type: 'string',
         filter: {
   				type: 'select',
@@ -25,7 +25,7 @@ let getTableMeta = (props) => {
       },
       {
         name: 'number',
-        caption: 'Номер',
+        displayName: 'Номер',
         type: 'number',
         filter: {
   				type: 'select'
@@ -34,7 +34,7 @@ let getTableMeta = (props) => {
       },
       {
 				name: 'mission_source_name',
-				caption: 'Источник',
+				displayName: 'Источник',
 				type: 'number',
 				filter: {
 					type: 'select'
@@ -43,7 +43,7 @@ let getTableMeta = (props) => {
 			},
       {
 				name: 'technical_operation_name',
-				caption: 'Технологическая операция',
+				displayName: 'Технологическая операция',
 				type: 'number',
 				filter: {
 					type: 'select',
@@ -51,7 +51,7 @@ let getTableMeta = (props) => {
 			},
       {
 				name: 'plan_date_start',
-				caption: 'Начало план.',
+				displayName: 'Начало план.',
 				type: 'date',
 				filter: {
 					type: 'date_interval',
@@ -59,7 +59,7 @@ let getTableMeta = (props) => {
 			},
       {
 				name: 'plan_date_end',
-				caption: 'Завершение план.',
+				displayName: 'Завершение план.',
 				type: 'date',
 				filter: {
 					type: 'date_interval',
@@ -67,7 +67,7 @@ let getTableMeta = (props) => {
 			},
       {
 				name: 'route_name',
-				caption: 'Маршрут',
+				displayName: 'Маршрут',
 				type: 'number',
 				filter: {
 					type: 'select'
@@ -76,7 +76,7 @@ let getTableMeta = (props) => {
 			},
       {
         name: 'foreman_fio',
-        caption: 'Бригадир',
+        displayName: 'Бригадир',
         type: 'string',
         filter: {
           type: 'string',
@@ -84,7 +84,7 @@ let getTableMeta = (props) => {
       },
       {
 				name: 'comment',
-				caption: 'Комментарий',
+				displayName: 'Комментарий',
 				type: 'string',
 				filter: {
 					type: 'select'
@@ -93,7 +93,7 @@ let getTableMeta = (props) => {
 			},
       {
         name: 'car_mission_name',
-        caption: 'Задание на ТС',
+        displayName: 'Задание на ТС',
         type: 'string',
         filter: {
           type: 'select',

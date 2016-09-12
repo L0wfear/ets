@@ -189,13 +189,13 @@ let tableMeta = {
 	cols: [
     {
       name: 'technical_operation_name',
-      caption: 'Наименование',
+      displayName: 'Наименование',
 			filter: false,
       type: 'string'
     },
     {
       name: 'coverage',
-      caption: 'Объем выполняемых работ',
+      displayName: 'Объем выполняемых работ',
 			filter: false,
       type: 'string',
 			cssClassName: 'width60'

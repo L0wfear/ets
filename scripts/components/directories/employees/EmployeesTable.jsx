@@ -6,7 +6,7 @@ let tableMeta = {
   cols: [
     {
       name: 'full_name',
-      caption: 'Фамилия Имя Отчество',
+      displayName: 'Фамилия Имя Отчество',
       type: 'text',
       cssClassName: "width300justify",
       filter: {
@@ -15,21 +15,21 @@ let tableMeta = {
     },
     {
       name: 'birthday',
-      caption: 'Дата рождения',
+      displayName: 'Дата рождения',
       type: '',
       filter: {
-        type: 'date_create'
+        type: 'date'
 			}
     },
     {
       name: 'personnel_number',
-      caption: 'Табельный номер',
+      displayName: 'Табельный номер',
       type: '',
       filter: {}
     },
     {
       name: 'position_name',
-      caption: 'Должность',
+      displayName: 'Должность',
       type: 'text',
       filter: {
         type: 'select'
@@ -37,7 +37,7 @@ let tableMeta = {
     },
     {
       name: 'drivers_license',
-      caption: 'Водительское удостоверение',
+      displayName: 'Водительское удостоверение',
       type: 'text',
       filter: {
 				type: 'select'
@@ -45,7 +45,7 @@ let tableMeta = {
     },
     {
       name: 'special_license',
-      caption: 'Специальное удостоверение',
+      displayName: 'Специальное удостоверение',
       type: 'text',
       filter: {
 				type: 'select'
@@ -53,7 +53,7 @@ let tableMeta = {
     },
     {
       name: 'company_structure_name',
-      caption: 'Подразделение',
+      displayName: 'Подразделение',
       type: 'text',
       filter: {
 				type: 'select'
@@ -61,7 +61,7 @@ let tableMeta = {
     },
     {
       name: 'active',
-      caption: 'Текущее состояние',
+      displayName: 'Текущее состояние',
       type: 'text',
       filter: {
 				type: 'select',
@@ -70,7 +70,7 @@ let tableMeta = {
     },
     {
       name: 'phone',
-      caption: 'Телефон',
+      displayName: 'Телефон',
       type: 'text',
       filter: {
 				type: 'select'
@@ -78,7 +78,7 @@ let tableMeta = {
     },
     {
       name: 'medical_certificate',
-      caption: 'Медицинская справка',
+      displayName: 'Медицинская справка',
       type: 'text',
       filter: {
 				type: 'select'
@@ -86,15 +86,15 @@ let tableMeta = {
     },
     {
       name: 'medical_certificate_date',
-      caption: 'Срок действия мед. справки',
+      displayName: 'Срок действия мед. справки',
       type: 'date',
       filter: {
-        type: 'date_create'
+        type: 'date'
       }
     },
     {
       name: 'snils',
-      caption: 'СНИЛС №',
+      displayName: 'СНИЛС №',
       type: 'text',
       filter: {
         type: 'select'

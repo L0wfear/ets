@@ -6,7 +6,7 @@ let getTableMeta = (props) => {
     cols: [
       {
         name: 'object_address',
-        caption: 'Название ДТ',
+        displayName: 'Название ДТ',
         type: 'string',
         filter: {
           type: 'select',
@@ -14,22 +14,22 @@ let getTableMeta = (props) => {
       },
       {
         name: 'total_area',
-        caption: 'Общая площадь (кв.м.)',
+        displayName: 'Общая площадь (кв.м.)',
         type: 'number',
       },
       {
         name: 'clean_area',
-        caption: 'Общая уборочная площадь (кв.м.)',
+        displayName: 'Общая уборочная площадь (кв.м.)',
         type: 'number',
       },
       {
         name: 'auto_area',
-        caption: 'Площадь механизированной уборки (кв.м.)',
+        displayName: 'Площадь механизированной уборки (кв.м.)',
         type: 'number',
       },
       {
         name: 'company_structure_name',
-        caption: 'Подразделение',
+        displayName: 'Подразделение',
         type: 'text',
       },
     ]

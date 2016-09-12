@@ -17,12 +17,12 @@ let getTableMeta = (props) => {
 		cols: [
 			{
 				name: 'name',
-				caption: 'Название',
+				displayName: 'Название',
 				type: 'string',
 			},
 			{
 				name: 'type_display',
-				caption: 'Тип',
+				displayName: 'Тип',
 				type: 'string',
 				filter: {
 					type: 'select',
@@ -30,7 +30,7 @@ let getTableMeta = (props) => {
       },
 			{
 				name: 'note',
-				caption: 'Примечание',
+				displayName: 'Примечание',
 				type: 'string',
 				filter: {
 					type: 'select',
@@ -38,7 +38,7 @@ let getTableMeta = (props) => {
 			},
 			{
 				name: 'id',
-				caption: 'Действия',
+				displayName: 'Действия',
 				type: 'string',
 				filter: {
 					type: 'select',

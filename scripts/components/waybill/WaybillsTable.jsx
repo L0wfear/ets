@@ -12,107 +12,105 @@ let getTableMeta = (props) => {
 		cols: [
 			{
 				name: 'status',
-				caption: 'Статус',
+				displayName: 'Статус',
 				type: 'string',
 				filter: {
-					type: 'select',
+	  			type: 'multiselect',
 					labelFunction: waybillStatusLabelFunction
 				}
 			},
 			{
 				name: 'all_missions_completed_or_failed',
-				caption: 'Статус заданий',
+				displayName: 'Статус заданий',
 				type: 'string',
 				filter: {
-					type: 'select',
+					type: 'multiselect',
 					labelFunction: waybillMissionsCompleteStatusLabelFunction
 				},
-				//display: false,
 			},
 			{
 				name: 'number',
-				caption: 'Номер',
+				displayName: 'Номер',
 				type: 'number',
 			},
 			{
-				name: 'date_create',
-				caption: 'Дата создания',
+				name: 'date',
+				displayName: 'Дата создания',
 				type: 'date',
 				filter: {
-					type: 'date_create'
+					type: 'date'
 				}
 			},
 			{
 				name: 'closing_date',
-				caption: 'Дата закрытия',
+				displayName: 'Дата закрытия',
 				type: 'date',
 				filter: {
-					type: 'date_create'
+					type: 'date'
 				}
 			},
 			{
 				name: 'driver_id',
-				caption: 'Водитель',
+				displayName: 'Водитель',
 				type: 'string',
 				filter: {
-					type: 'select',
+					type: 'multiselect',
 					labelFunction: employeeFIOLabelFunction,
 				}
 			},
 			{
 				name: 'gov_number',
-				caption: 'Рег. номер ТС',
+				displayName: 'Рег. номер ТС',
 				cssClassName: 'width-nowrap',
 				type: 'string',
 				filter: {
-					type: 'multiselect',
-					labelFunction: id => id,
+					type: 'multiselect'
 				}
 			},
 			{
 				name: 'car_special_model_name',
-				caption: 'Модель ТС/Марка шасси',
+				displayName: 'Модель ТС/Марка шасси',
 				type: 'string',
 			},
 			{
 				name: 'car_model_name',
-				caption: 'Марка шасси',
+				displayName: 'Марка шасси',
 				type: 'string',
 				display: false
 			},
 			{
 				name: 'garage_number',
-				caption: 'Гаражный номер',
+				displayName: 'Гаражный номер',
 				type: 'string',
 			},
 			{
 				name: 'fact_departure_date',
-				caption: 'Выезд факт',
+				displayName: 'Выезд факт',
 				type: 'date',
 				filter: {
-					type: 'date_create'
+					type: 'date'
 				}
 			},
 			{
 				name: 'fact_arrival_date',
-				caption: 'Возвращение факт',
+				displayName: 'Возвращение факт',
 				type: 'date',
 				filter: {
-					type: 'date_create'
+					type: 'date'
 				}
 			},
 			{
 				name: 'responsible_person_id',
-				caption: 'Мастер',
+				displayName: 'Мастер',
 				type: 'string',
 				filter: {
-					type: 'select',
+					type: 'multiselect',
 					labelFunction: employeeFIOLabelFunction,
 				}
 			},
 			{
 				name: 'odometr_start',
-				caption: 'Одометр. Выезд',
+				displayName: 'Одометр. Выезд',
 				cssClassName: 'width20',
 				type: 'number',
 				filter: {
@@ -121,7 +119,7 @@ let getTableMeta = (props) => {
 			},
 			{
 				name: 'odometr_end',
-				caption: 'Одометр Возврат',
+				displayName: 'Одометр Возврат',
 				cssClassName: 'width20',
 				type: 'number',
 				filter: {
@@ -130,7 +128,7 @@ let getTableMeta = (props) => {
 			},
 			{
 	      name: 'motohours_start',
-	      caption: 'Моточасы. Выезд',
+	      displayName: 'Моточасы. Выезд',
 				cssClassName: 'width20',
 	      type: 'number',
 				filter: {
@@ -139,7 +137,7 @@ let getTableMeta = (props) => {
 	    },
 	    {
 	      name: 'motohours_end',
-	      caption: 'Моточасы. Возврат',
+	      displayName: 'Моточасы. Возврат',
 				cssClassName: 'width20',
 	      type: 'number',
 				filter: {
@@ -148,7 +146,7 @@ let getTableMeta = (props) => {
 	    },
 			{
 	      name: 'motohours_equip_start',
-	      caption: 'Моточасы обор. Выезд',
+	      displayName: 'Моточасы обор. Выезд',
 				cssClassName: 'width20',
 	      type: 'number',
 				filter: {
@@ -157,7 +155,7 @@ let getTableMeta = (props) => {
 	    },
 	    {
 	      name: 'motohours_equip_end',
-	      caption: 'Моточасы обор. Возврат',
+	      displayName: 'Моточасы обор. Возврат',
 				cssClassName: 'width20',
 	      type: 'number',
 				filter: {
@@ -166,7 +164,7 @@ let getTableMeta = (props) => {
 	    },
 			{
 	      name: 'fuel_start',
-	      caption: 'Топливо. Выезд',
+	      displayName: 'Топливо. Выезд',
 				cssClassName: 'width20',
 	      type: 'number',
 				filter: {
@@ -175,7 +173,7 @@ let getTableMeta = (props) => {
 	    },
 			{
 	      name: 'fuel_end',
-	      caption: 'Топливо. Возврат',
+	      displayName: 'Топливо. Возврат',
 				cssClassName: 'width20',
 	      type: 'number',
 				filter: {

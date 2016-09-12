@@ -155,7 +155,7 @@ class RoutesList extends Component {
 		let filterOptions = [
 			{
 				name: 'technical_operation_id',
-				caption: 'Тех. операция',
+				displayName: 'Тех. операция',
 				filter: {
 					type: 'multiselect',
 					options: TECH_OPERATIONS,
@@ -163,7 +163,7 @@ class RoutesList extends Component {
 			},
 			{
 				name: 'type',
-				caption: 'Объект',
+				displayName: 'Объект',
 				filter: {
 					type: 'multiselect',
 					options: OBJECTS,

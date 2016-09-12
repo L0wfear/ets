@@ -5,7 +5,7 @@ let tableMeta = {
 	cols: [
 		{
 			name: 'car_model_name',
-			caption: 'Модель ТС',
+			displayName: 'Модель ТС',
 			type: 'text',
 			cssClassName: "width-fuel-report-large",
 			filter: {
@@ -14,7 +14,7 @@ let tableMeta = {
 		},
 		{
 			name: 'car_gov_number',
-			caption: 'Рег. номер ТС',
+			displayName: 'Рег. номер ТС',
 			type: 'text',
 			cssClassName: "width-fuel-report-large",
 			filter: {
@@ -23,7 +23,7 @@ let tableMeta = {
 		},
 		{
 			name: 'car_garage_number',
-			caption: 'Гаражный номер ТС',
+			displayName: 'Гаражный номер ТС',
 			type: 'text',
 			cssClassName: "width-fuel-report-large",
 			filter: {
@@ -32,7 +32,7 @@ let tableMeta = {
 		},
 		{
 			name: 'odometr_start',
-			caption: 'Одометр. Выезд',
+			displayName: 'Одометр. Выезд',
 			type: 'number',
 			cssClassName: "width-fuel-report-small",
 			filter: {
@@ -41,7 +41,7 @@ let tableMeta = {
 		},
 		{
 			name: 'odometr_end',
-			caption: 'Одометр. Возврат',
+			displayName: 'Одометр. Возврат',
 			type: 'number',
 			cssClassName: "width-fuel-report-small",
 			filter: {
@@ -50,7 +50,7 @@ let tableMeta = {
 		},
 		{
 			name: 'odometr_diff',
-			caption: 'Одометр. Пробег',
+			displayName: 'Одометр. Пробег',
 			type: 'number',
 			cssClassName: "width-fuel-report-small",
 			filter: {
@@ -59,7 +59,7 @@ let tableMeta = {
 		},
     {
       name: 'motohours_start',
-      caption: 'Счетчик моточасов. Выезд',
+      displayName: 'Счетчик моточасов. Выезд',
       type: 'number',
 			cssClassName: "width-fuel-report-small",
 			filter: {
@@ -68,7 +68,7 @@ let tableMeta = {
     },
     {
       name: 'motohours_end',
-      caption: 'Счетчик моточасов. Возврат',
+      displayName: 'Счетчик моточасов. Возврат',
       type: 'number',
 			cssClassName: "width-fuel-report-small",
 			filter: {
@@ -77,7 +77,7 @@ let tableMeta = {
     },
     {
       name: 'motohours_diff',
-      caption: 'Счетчик моточасов. Пробег',
+      displayName: 'Счетчик моточасов. Пробег',
       type: 'number',
 			cssClassName: "width-fuel-report-small",
 			filter: {
@@ -86,7 +86,7 @@ let tableMeta = {
     },
     {
       name: 'motohours_equip_start',
-      caption: 'Счет. обор. моточасов. Выезд',
+      displayName: 'Счет. обор. моточасов. Выезд',
       type: 'number',
 			cssClassName: "width-fuel-report-small",
 			filter: {
@@ -95,7 +95,7 @@ let tableMeta = {
     },
     {
       name: 'motohours_equip_end',
-      caption: 'Счет. обор. моточасов. Возврат',
+      displayName: 'Счет. обор. моточасов. Возврат',
       type: 'number',
 			cssClassName: "width-fuel-report-small",
 			filter: {
@@ -104,7 +104,7 @@ let tableMeta = {
     },
     {
       name: 'motohours_equip_diff',
-      caption: 'Счет. обор. моточасов. Пробег',
+      displayName: 'Счет. обор. моточасов. Пробег',
       type: 'number',
 			cssClassName: "width-fuel-report-small",
 			filter: {
@@ -113,7 +113,7 @@ let tableMeta = {
     },
     {
       name: 'fuel_type_name',
-      caption: 'Тип топлива',
+      displayName: 'Тип топлива',
       type: 'text',
 			cssClassName: "width-fuel-report-small",
 			filter: {
@@ -122,7 +122,7 @@ let tableMeta = {
     },
     {
       name: 'fuel_start',
-      caption: 'Топливо. Выезд',
+      displayName: 'Топливо. Выезд',
       type: 'number',
 			cssClassName: "width-fuel-report-small",
 			filter: {
@@ -131,7 +131,7 @@ let tableMeta = {
     },
     {
       name: 'fuel_given',
-      caption: 'Топливо. Выдано',
+      displayName: 'Топливо. Выдано',
       type: 'number',
 			cssClassName: "width-fuel-report-small",
 			filter: {
@@ -140,7 +140,7 @@ let tableMeta = {
     },
     {
       name: 'fuel_end',
-      caption: 'Топливо. Возврат',
+      displayName: 'Топливо. Возврат',
       type: 'number',
 			cssClassName: "width-fuel-report-small",
 			filter: {
@@ -149,7 +149,7 @@ let tableMeta = {
     },
     {
       name: 'fuel_fact',
-      caption: 'Топливо. Расход',
+      displayName: 'Топливо. Расход',
       type: 'number',
 			cssClassName: "width-fuel-report-small",
 			filter: {
@@ -158,7 +158,7 @@ let tableMeta = {
     },
     // {
     //   name: 'fuel_rate',
-    //   caption: 'Топливо. Норма',
+    //   displayName: 'Топливо. Норма',
     //   type: 'number',
 		// 	cssClassName: "width-fuel-report-small",
 		// 	filter: {
@@ -167,7 +167,7 @@ let tableMeta = {
     // },
     // {
     //   name: 'fuel_diff',
-    //   caption: 'Топливо. Разница',
+    //   displayName: 'Топливо. Разница',
     //   type: 'number',
 		// 	filter: {
     //     type: 'input',

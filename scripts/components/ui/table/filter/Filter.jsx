@@ -1,5 +1,4 @@
-import React from 'react';
-import ReactDom from 'react-dom';
+import React, { PropTypes } from 'react';
 import { Input, Label, Container, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon, Collapse } from 'react-bootstrap';
 import Div from '../../Div.jsx';
 import Datepicker from '../../DatePicker.jsx';
@@ -13,89 +12,94 @@ import cx from 'classnames';
 const FilterSelect = (props) => {
   return <EtsSelect
       type="filter-select"
-      placeholder="Выберите..."
       searchingText="Поиск..."
-      noResultsText="Ничего не найдено"
       clearAllText="Очистить"
       addLabelText='Добавить "{label}"?'
       {...props} />;
 };
 
-const FilterRow = (props) => {
-  const { option } = props;
-  const value = props.filterValues[option.name];
-  let input;
+class FilterRow extends React.Component {
 
-  switch (option.name) {
-    case 'date_create':
-      input = <Datepicker date={value} onChange={props.onChange} time={false} />;
-      break;
-    default:
-      input = <Input type="text" value={value} onChange={props.onChange}/>;
-      break;
+  static get propTypes() {
+    return {
+      value: PropTypes.any,
+      type: PropTypes.string,
+      labelFunction: PropTypes.func,
+      availableOptions: PropTypes.array,
+      tableData: PropTypes.array
+    };
   }
 
-  if (option.filter && option.filter.type && option.filter.type === 'select' && !option.filter.options) {
-    let options = _(props.tableData)
-                    .uniqBy((d) => d[option.name])
-                    .map((d) => ({
-                      value: d[option.name] === true || d[option.name] === false ? +d[option.name] : d[option.name],
-                      label: typeof option.filter.labelFunction === 'function' ? option.filter.labelFunction(d[option.name]) : d[option.name],
-                    }))
-                    .value();
-    if (option.name === "operation_id") {
-      options = options.sort((a,b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
+  static get defaultProps() {
+    return {
+      labelFunction: (v) => v,
+      tableData: []
+    };
+  }
+
+  render() {
+    const props = this.props;
+
+    const { value, name, displayName, type, labelFunction,
+      availableOptions, tableData } = props;
+    let input = <Input type="text" value={value} onChange={props.onChange}/>;
+
+    if (type) {
+      if (type === 'select' || type === 'multiselect') {
+        let options = availableOptions || _(props.tableData)
+                        .uniqBy(name)
+                        .map((d) => ({
+                          value: typeof d[name] === 'boolean' ? +d[name] : d[name],
+                          label: labelFunction(d[name]),
+                        }))
+                        .value();
+        if (type === 'select') {
+          if (name === "operation_id") {
+            options = options.sort((a,b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
+          }
+          input = <FilterSelect options={options} value={value} onChange={props.onChange}/>;
+        } else if (type === 'multiselect') {
+          input = (
+            <Div className="filter-multiselect-container">
+              <FilterSelect options={options} multi={true} value={value} onChange={props.onMultiChange} />
+            </Div>
+          );
+        }
+      }
+      if (type === 'date') {
+        input = <Datepicker className="filter-datepicker" date={value} onChange={props.onChange} time={false} />;
+      }
+      if (type === 'date_interval') {
+        input = <IntervalPicker interval={value} onChange={props.onChange} />;
+      }
     }
-    input = <FilterSelect options={options} value={value} onChange={props.onChange} />
-  }
-  if (option.filter && option.filter.type && option.filter.type === 'multiselect' && option.filter.options) {
-    input = (
-      <Div className="filter-multiselect-container">
-        <FilterSelect options={option.filter.options} multi={true} value={value} onChange={props.onMultiChange} />
-      </Div>
-    );
-  }
-  if (option.filter && option.filter.type && option.filter.type === 'multiselect' && !option.filter.options) {
-    let options = _(props.tableData)
-                    .uniqBy((d) => d[option.name])
-                    .map((d) => ({
-                      value: d[option.name] === true || d[option.name] === false ? +d[option.name] : d[option.name],
-                      label: typeof option.filter.labelFunction === 'function' ? option.filter.labelFunction(d[option.name]) : d[option.name],
-                    }))
-                    .value();
-    input = (
-      <Div className="filter-multiselect-container">
-        <FilterSelect options={options} multi={true} value={value} onChange={props.onMultiChange} />
-      </Div>
-    );
-  }
-  if (option.filter && option.filter.type && option.filter.type === 'date_create' && !option.filter.options) {
-    input = <div><Datepicker className="filter-datepicker" date={value} onChange={props.onChange} time={false} /></div>;
-  }
-  if (option.filter && option.filter.type && option.filter.type === 'date_interval' && !option.filter.options) {
-    input = <IntervalPicker interval={value} onChange={props.onChange} />;
-  }
 
-  return (
-    <Div className="filter-row">
-      <label>{option.caption}</label>
-      {input}
-    </Div>
-  )
-};
+    return (
+      <Div className="filter-row">
+        <label>{displayName}</label>
+        {input}
+      </Div>
+    );
+  }
+}
 
 export default class Filter extends React.Component {
+
+  static get propTypes() {
+    return {
+      show: PropTypes.bool,
+      tableData: PropTypes.array,
+      onHide: PropTypes.func,
+      onSubmit: PropTypes.func.isRequired
+    };
+  }
 
   constructor(props) {
     super(props);
 
     this.state = {
-      filterValues: {},
+      filterValues: props.values || {},
     };
-  }
-
-  componentDidMount() {
-    this.setState({filterValues: this.props.values});
   }
 
   componentWillReceiveProps(props) {
@@ -103,7 +107,7 @@ export default class Filter extends React.Component {
   }
 
   handleFilterValueChange(key, e) {
-    const filterValues = Object.assign({}, this.state.filterValues);
+    const filterValues = {...this.state.filterValues};
 
     filterValues[key] = !!e.target ? e.target.value : e;
 
@@ -111,7 +115,7 @@ export default class Filter extends React.Component {
   }
 
   handleFilterMultipleValueChange(key, v) {
-    const filterValues = Object.assign({}, this.state.filterValues);
+    const filterValues = {...this.state.filterValues};
     let data = !isEmpty(v) ? v.split(',') : [];
 
     filterValues[key] = data;
@@ -123,7 +127,6 @@ export default class Filter extends React.Component {
   }
 
   submit() {
-
     const filterValues = _.reduce(this.state.filterValues, (cur, v, k) => {
       if (typeof v !== 'undefined') {
         if (typeof v === 'string') {
@@ -144,31 +147,39 @@ export default class Filter extends React.Component {
   }
 
   render() {
-
-    const { options } = this.props;
+    const { filterValues } = this.state;
+    const { tableData, options } = this.props;
 
     const filterRows = options.map( (option, i) => {
-      return <FilterRow {...this.props}
+      const { filter = {}, name, displayName } = option;
+      const { type, labelFunction, options } = filter;
+      return (
+        <FilterRow
+          tableData={tableData}
           key={i}
-          option={option}
-          filterValues={this.state.filterValues}
-          onChange={this.handleFilterValueChange.bind(this, option.name)}
-          onMultiChange={this.handleFilterMultipleValueChange.bind(this, option.name)} />
+          value={filterValues[name]}
+          type={type}
+          name={name}
+          labelFunction={labelFunction}
+          availableOptions={options}
+          displayName={displayName}
+          onChange={this.handleFilterValueChange.bind(this, name)}
+          onMultiChange={this.handleFilterMultipleValueChange.bind(this, name)} />
+      );
     });
 
     return (
-        <Collapse in={this.props.show}>
-          <Div className="filter-container">
-            <Div className="filter-buttons">
-              <Button onClick={this.submit.bind(this)}>Применить</Button>
-              <Button onClick={this.reset.bind(this)}>Сброс</Button>
-              <span className="filter-close" onClick={this.props.onHide}><Glyphicon glyph="remove"/></span>
-            </Div>
-            {filterRows}
+      <Collapse in={this.props.show}>
+        <Div className="filter-container">
+          <Div className="filter-buttons">
+            <Button onClick={this.submit.bind(this)}>Применить</Button>
+            <Button onClick={this.reset.bind(this)}>Сброс</Button>
+            <span className="filter-close" onClick={this.props.onHide}><Glyphicon glyph="remove"/></span>
           </Div>
-        </Collapse>
+          {filterRows}
+        </Div>
+      </Collapse>
     );
-
   }
 
 }

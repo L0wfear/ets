@@ -9,7 +9,7 @@ let getTableMeta = (props) => {
 		cols: [
 	    {
 	      name: 'odh_name',
-	      caption: 'ОДХ',
+	      displayName: 'ОДХ',
 	      type: 'string',
 	      filter: {
 	        type: 'select',
@@ -17,49 +17,49 @@ let getTableMeta = (props) => {
 	    },
 	    {
 	      name: 'route_check_value',
-	      caption: `Нужно пройти (${props.data[0].route_check_unit})`,
+	      displayName: `Нужно пройти (${props.data[0].route_check_unit})`,
 	      type: 'string',
 				filter: false
 	    },
 			{
 				name: 'traveled',
-				caption: `Пройдено в рабочем режиме (${props.data[0].route_check_unit})*`,
+				displayName: `Пройдено в рабочем режиме (${props.data[0].route_check_unit})*`,
 				type: 'string',
 				filter: false
 			},
 			// {
 			// 	name: 'traveled_percentage',
-			// 	caption: 'Пройдено с рабочей скоростью %',
+			// 	displayName: 'Пройдено с рабочей скоростью %',
 			// 	type: 'string',
 			// 	filter: false
 			// },
 			{
 				name: 'left',
-				caption: `Осталось (${props.data[0].route_check_unit})`,
+				displayName: `Осталось (${props.data[0].route_check_unit})`,
 				type: 'string',
 				filter: false
 			},
 			{
 				name: 'left_percentage',
-				caption: 'Осталось %',
+				displayName: 'Осталось %',
 				type: 'string',
 				filter: false
 			},
 			{
 				name: 'v_avg_max',
-				caption: 'Максимальная скорость',
+				displayName: 'Максимальная скорость',
 				type: 'string',
 				filter: false
 			},
 			{
 				name: 'route_with_speed',
-				caption: 'Контроль (км.)**',
+				displayName: 'Контроль (км.)**',
 				type: 'string',
 				filter: false
 			},
 			{
 				name: 'route_check_unit',
-				caption: 'Единица измерения',
+				displayName: 'Единица измерения',
 				type: 'string',
 				display: props.data && props.data[0] && props.data[0].route_check_unit ? true : false,
 				filter: {

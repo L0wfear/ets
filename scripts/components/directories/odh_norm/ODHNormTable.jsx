@@ -6,7 +6,7 @@ let tableMeta = {
   cols: [
     {
       name: 'name',
-      caption: 'Норматив по содержанию ОДХ',
+      displayName: 'Норматив по содержанию ОДХ',
       type: 'text',
       filter: {
 				type: 'select'
@@ -14,13 +14,13 @@ let tableMeta = {
     },
     {
       name: 'unit',
-      caption: 'Единица измерения',
+      displayName: 'Единица измерения',
       type: 'text',
       filter: false
     },
     {
       name: 'expendable',
-      caption: 'Расходный материал',
+      displayName: 'Расходный материал',
       filter: {
 				type: 'select',
 				labelFunction: (expendable) => expendable ? 'Да' : 'Нет'

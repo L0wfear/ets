@@ -24,7 +24,7 @@ let tableMeta = {
 	cols: [
 		{
 			name: 'status',
-			caption: 'Статус',
+			displayName: 'Статус',
 			type: 'text',
 			filter: {
 				type: 'select',
@@ -33,7 +33,7 @@ let tableMeta = {
 		},
 		{
 			name: 'geozone_type',
-			caption: 'Объект',
+			displayName: 'Объект',
 			type: 'number',
 			filter: {
 				type: 'select',
@@ -42,7 +42,7 @@ let tableMeta = {
 		},
 		{
 			name: 'element',
-			caption: 'Элемент',
+			displayName: 'Элемент',
 			type: 'number',
 			filter: {
 				type: 'select',
@@ -51,42 +51,42 @@ let tableMeta = {
 		},
 		{
 			name: 'date_start',
-			caption: 'Начало периода',
+			displayName: 'Начало периода',
 			type: 'number',
 			filter: {
-        type: 'date_create'
+        type: 'date'
 			},
 		},
 		{
 			name: 'date_end',
-			caption: 'Конец периода',
+			displayName: 'Конец периода',
 			type: 'number',
 			filter: {
-        type: 'date_create'
+        type: 'date'
 			},
 		},
 		{
 			name: 'timestamp_create',
-			caption: 'Дата создания',
+			displayName: 'Дата создания',
 			type: 'number',
 			filter: {
-        type: 'date_create'
+        type: 'date'
 			},
 		},
 		{
 			name: 'timestamp_process_begin',
-			caption: 'Дата начала обработки',
+			displayName: 'Дата начала обработки',
 			type: 'number',
 			filter: {
-        type: 'date_create'
+        type: 'date'
 			},
 		},
 		{
 			name: 'timestamp_process_end',
-			caption: 'Дата завершения обработки',
+			displayName: 'Дата завершения обработки',
 			type: 'number',
 			filter: {
-        type: 'date_create'
+        type: 'date'
 			},
 		},
 	]

@@ -16,7 +16,7 @@ let getTableMeta = (props) => {
 		cols: [
 			{
 				name: 'car_gov_number',
-				caption: 'Рег. номер ТС',
+				displayName: 'Рег. номер ТС',
 				type: 'number',
 				display: false,
 				filter: {
@@ -25,7 +25,7 @@ let getTableMeta = (props) => {
 			},
       {
         name: 'status',
-        caption: 'Статус',
+        displayName: 'Статус',
         type: 'string',
         filter: {
   				type: 'select',
@@ -35,7 +35,7 @@ let getTableMeta = (props) => {
       },
       {
         name: 'number',
-        caption: 'Номер',
+        displayName: 'Номер',
         type: 'number',
         filter: {
   				type: 'select'
@@ -44,7 +44,7 @@ let getTableMeta = (props) => {
       },
       {
         name: 'waybill_number',
-        caption: 'Путевой лист',
+        displayName: 'Путевой лист',
         type: 'number',
         filter: {
   				type: 'select'
@@ -53,7 +53,7 @@ let getTableMeta = (props) => {
       },
       {
 				name: 'mission_source_name',
-				caption: 'Источник',
+				displayName: 'Источник',
 				type: 'number',
 				filter: {
 					type: 'select',
@@ -62,30 +62,30 @@ let getTableMeta = (props) => {
 			},
       {
 				name: 'date_start',
-				caption: 'Начало',
+				displayName: 'Начало',
 				type: 'date',
 				filter: {
-					type: 'date_create'
+					type: 'date'
 				},
 			},
       {
 				name: 'date_end',
-				caption: 'Завершение',
+				displayName: 'Завершение',
 				type: 'date',
 				filter: {
-					type: 'date_create'
+					type: 'date'
 				},
 			},
       {
 				name: 'car_gov_number',
-				caption: 'Рег. номер ТС',
+				displayName: 'Рег. номер ТС',
 				type: 'number',
 				filter: false,
         cssClassName: 'width120',
 			},
       {
 				name: 'route_name',
-				caption: 'Маршрут',
+				displayName: 'Маршрут',
 				type: 'number',
 				filter: {
 					type: 'select',
@@ -94,7 +94,7 @@ let getTableMeta = (props) => {
 			},
       {
 				name: 'passes_count',
-				caption: 'Количество проходов',
+				displayName: 'Количество проходов',
 				type: 'number',
 				filter: {
 					type: 'select'
@@ -103,7 +103,7 @@ let getTableMeta = (props) => {
 			},
       {
 				name: 'technical_operation_name',
-				caption: 'Технологическая операция',
+				displayName: 'Технологическая операция',
 				type: 'number',
 				filter: {
 					type: 'select',
@@ -111,13 +111,13 @@ let getTableMeta = (props) => {
 			},
       {
 				name: 'comment',
-				caption: 'Комментарий',
+				displayName: 'Комментарий',
 				type: 'string',
 				filter: false
 			},
 			{
 	      name: 'id',
-	      caption: 'Показать на карте',
+	      displayName: 'Показать на карте',
 				filter: false,
 				cssClassName: 'map-view'
 	    },

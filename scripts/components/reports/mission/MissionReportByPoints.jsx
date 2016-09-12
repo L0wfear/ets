@@ -6,7 +6,7 @@ let tableMeta = {
 	cols: [
     {
       name: 'name',
-      caption: 'Наименование пункта назначения',
+      displayName: 'Наименование пункта назначения',
       type: 'string',
       filter: {
         type: 'select',
@@ -14,7 +14,7 @@ let tableMeta = {
     },
     {
       name: 'status',
-      caption: 'Статус',
+      displayName: 'Статус',
       type: 'string',
       filter: {
         type: 'select',

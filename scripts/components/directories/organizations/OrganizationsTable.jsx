@@ -5,7 +5,7 @@ let tableMeta = {
 	cols: [
 		{
 			name: 'asuods_id',
-			caption: 'ID организации',
+			displayName: 'ID организации',
 			type: 'number',
       filter: {
         type: 'string',
@@ -13,7 +13,7 @@ let tableMeta = {
 		},
 		{
 			name: 'name',
-			caption: 'Наименование',
+			displayName: 'Наименование',
 			type: 'string',
       filter: {
         type: 'select',
@@ -21,7 +21,7 @@ let tableMeta = {
 		},
 		{
 			name: 'short_name',
-			caption: 'Краткое наименование',
+			displayName: 'Краткое наименование',
 			type: 'string',
       filter: {
         type: 'select',
@@ -29,7 +29,7 @@ let tableMeta = {
 		},
 		{
 			name: 'ogrn',
-			caption: 'ОГРН',
+			displayName: 'ОГРН',
 			type: 'string',
       filter: {
         type: 'string',
@@ -37,7 +37,7 @@ let tableMeta = {
 		},
 		{
 			name: 'inn',
-			caption: 'ИНН',
+			displayName: 'ИНН',
 			type: 'string',
       filter: {
         type: 'string',
@@ -45,7 +45,7 @@ let tableMeta = {
 		},
 		{
 			name: 'postal_address',
-			caption: 'Почтовый адрес',
+			displayName: 'Почтовый адрес',
 			type: 'string',
       filter: {
         type: 'select',
@@ -53,7 +53,7 @@ let tableMeta = {
 		},
 		{
 			name: 'email',
-			caption: 'Электронный адрес',
+			displayName: 'Электронный адрес',
 			type: 'string',
       filter: {
         type: 'string',
@@ -61,7 +61,7 @@ let tableMeta = {
 		},
 		{
 			name: 'phone',
-			caption: 'Телефон',
+			displayName: 'Телефон',
 			type: 'string',
       filter: {
         type: 'string',
@@ -69,7 +69,7 @@ let tableMeta = {
 		},
 		{
 			name: 'fax',
-			caption: 'Факс',
+			displayName: 'Факс',
 			type: 'string',
       filter: {
         type: 'string',

@@ -136,7 +136,7 @@ export default class Table extends React.Component {
 	}
 
 	saveFilter(filterValues) {
-    console.log('SAVE FILTER');
+    console.log('SAVE FILTER', filterValues);
     if (typeof this.props.onAllRowsChecked === 'function') {
       this.props.onAllRowsChecked(_.reduce(this.props.results, (cur, val) => {cur[val.id] = val; return cur;}, {}), false);
     }
@@ -228,7 +228,7 @@ export default class Table extends React.Component {
 
   		const metaObject = {
   			columnName: col.name,
-  			displayName: col.customHeaderComponent ? col.customHeaderComponent : col.caption,
+  			displayName: col.customHeaderComponent ? col.customHeaderComponent : col.displayName,
   		};
 
   		if (typeof renderers[col.name] === 'function') {
@@ -247,8 +247,7 @@ export default class Table extends React.Component {
   }
 
   initializeRowMetadata() {
-
-  	const rowMetadata = {
+  	return {
       "bodyCssClassName": (rowData) => {
         if (rowData.isSelected) {
           return "selected-row"
@@ -259,8 +258,6 @@ export default class Table extends React.Component {
         return "standard-row"
       }
   	};
-
-  	return rowMetadata;
   }
 
   getTypeByKey(key) {
@@ -380,10 +377,6 @@ export default class Table extends React.Component {
       let columnControlValues = JSON.parse(localStorage.getItem(this.props.columnControlStorageName)) || [];
       this.setState({columnControlValues});
     }
-    // TODO этого здесь быть не должно, не вызываем this.props.onSomething в componentDidMount
-    // if (this.props.checked) {
-    //   this.globalCheckHandler()
-    // }
   }
 
   componentWillReceiveProps(props) {
@@ -450,7 +443,7 @@ export default class Table extends React.Component {
     const { tableMeta, renderers, onRowSelected, selected,
       selectField, checked, title, noTitle, multiSelection, noFilter,
       enumerated, enableSort, noDataMessage, className, noHeader,
-      refreshable, columnControl, highlight } = this.props;
+      refreshable, columnControl, highlight, serverPagination } = this.props;
     const { initialSort, initialSortAscending, columnControlValues } = this.state;
 
     let tableMetaCols = _.cloneDeep(tableMeta.cols);
@@ -506,21 +499,20 @@ export default class Table extends React.Component {
               tableData={this.props.results}/>}
         </Div>
         <Griddle
-            key={'griddle'}
-            results={results}
-            enableSort={enableSort}
-            initialSort={initialSort}
-            initialSortAscending={initialSortAscending}
-            columnMetadata={columnMetadata}
-            columns={tableCols}
-            resultsPerPage={15}
-            useCustomPagerComponent={true}
-            externalChangeSort={this.handleChangeSort.bind(this)}
-            customPagerComponent={this.props.serverPagination ? <Div/> : Paginator}
-            onRowClick={onRowSelected}
-            rowMetadata={rowMetadata}
-            onKeyPress={this.handleKeyPress.bind(this)}
-            noDataMessage={noDataMessage ? noDataMessage : noFilter ? '' : 'Нет данных'}/>
+          results={results}
+          enableSort={enableSort}
+          initialSort={initialSort}
+          initialSortAscending={initialSortAscending}
+          columnMetadata={columnMetadata}
+          columns={tableCols}
+          resultsPerPage={15}
+          useCustomPagerComponent={true}
+          externalChangeSort={this.handleChangeSort.bind(this)}
+          customPagerComponent={serverPagination ? <Div/> : Paginator}
+          onRowClick={onRowSelected}
+          rowMetadata={rowMetadata}
+          onKeyPress={this.handleKeyPress.bind(this)}
+          noDataMessage={noDataMessage ? noDataMessage : noFilter ? '' : 'Нет данных'}/>
       </Div>
     );
   }

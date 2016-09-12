@@ -7,13 +7,13 @@ let getTableMeta = (props) => {
 		cols: [
 			{
 				name: 'number',
-				caption: 'Номер',
+				displayName: 'Номер',
 				type: 'number',
         cssClassName: 'width60'
 			},
       {
 				name: 'route_name',
-				caption: 'Маршрут',
+				displayName: 'Маршрут',
 				type: 'string',
 				filter: {
 					type: 'select',
@@ -21,7 +21,7 @@ let getTableMeta = (props) => {
 			},
       {
 				name: 'technical_operation_name',
-				caption: 'Технологическая операция',
+				displayName: 'Технологическая операция',
 				type: 'string',
 				filter: {
 					type: 'select',
@@ -29,7 +29,7 @@ let getTableMeta = (props) => {
 			},
       {
 				name: 'comment',
-				caption: 'Комментарий',
+				displayName: 'Комментарий',
 				type: 'string',
 				filter: {
 					type: 'select',

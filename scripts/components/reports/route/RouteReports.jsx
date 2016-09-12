@@ -11,7 +11,7 @@ let tableMeta = {
 	cols: [
     {
       name: 'status',
-      caption: 'Статус',
+      displayName: 'Статус',
       type: 'text',
       filter: {
         type: 'select',
@@ -20,7 +20,7 @@ let tableMeta = {
     },
 		{
 			name: 'operation_name',
-			caption: 'Тех. операция',
+			displayName: 'Тех. операция',
 			type: 'text',
 			filter: {
 				type: 'select',
@@ -28,31 +28,31 @@ let tableMeta = {
 		},
 		{
 			name: 'timestamp_create',
-			caption: 'Дата создания',
+			displayName: 'Дата создания',
 			type: 'number',
 			filter: {
-        type: 'date_create'
+        type: 'date'
 			},
 		},
 		{
 			name: 'timestamp_process_begin',
-			caption: 'Дата начала обработки',
+			displayName: 'Дата начала обработки',
 			type: 'number',
 			filter: {
-        type: 'date_create'
+        type: 'date'
 			},
 		},
 		{
 			name: 'timestamp_process_end',
-			caption: 'Дата завершения обработки',
+			displayName: 'Дата завершения обработки',
 			type: 'number',
 			filter: {
-        type: 'date_create'
+        type: 'date'
 			},
 		},
 		{
 			name: 'odh_fail_count',
-			caption: 'Кол-во непокрытых',
+			displayName: 'Кол-во непокрытых',
 			type: 'number',
 			filter: {
 				type: 'select',
@@ -60,7 +60,7 @@ let tableMeta = {
 		},
 		{
 			name: 'odh_total_count',
-			caption: 'Общее кол-во',
+			displayName: 'Общее кол-во',
 			type: 'number',
 			filter: {
 				type: 'select',
@@ -68,7 +68,7 @@ let tableMeta = {
 		},
 		{
 			name: 'odh_success_count',
-			caption: 'Кол-во покрытых',
+			displayName: 'Кол-во покрытых',
 			type: 'number',
 			filter: {
 				type: 'select',

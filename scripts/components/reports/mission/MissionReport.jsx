@@ -8,7 +8,7 @@ let tableMeta = {
 	cols: [
     {
       name: 'mission_number',
-      caption: '№ Задания',
+      displayName: '№ Задания',
       type: 'string',
       filter: {
         type: 'select',
@@ -16,7 +16,7 @@ let tableMeta = {
     },
 		{
       name: 'mission_name',
-      caption: 'Название',
+      displayName: 'Название',
       type: 'string',
       filter: {
         type: 'select',
@@ -24,7 +24,7 @@ let tableMeta = {
     },
 		{
 			name: 'driver_name',
-			caption: 'Водитель',
+			displayName: 'Водитель',
 			type: 'string',
 			filter: {
 				type: 'select',
@@ -32,7 +32,7 @@ let tableMeta = {
 		},
 		{
 			name: 'car_gov_number',
-			caption: 'Рег. номер ТС',
+			displayName: 'Рег. номер ТС',
 			type: 'string',
 			filter: {
 				type: 'select',
@@ -40,7 +40,7 @@ let tableMeta = {
 		},
 		{
 			name: 'technical_operation_name',
-			caption: 'Тех. операция',
+			displayName: 'Тех. операция',
 			type: 'string',
 			filter: {
 				type: 'select',
@@ -48,7 +48,7 @@ let tableMeta = {
 		},
 		{
 			name: 'route_name',
-			caption: 'Маршрут',
+			displayName: 'Маршрут',
 			type: 'string',
 			filter: {
 				type: 'select',
@@ -56,13 +56,13 @@ let tableMeta = {
 		},
 		{
 			name: 'route_traveled_percentage',
-			caption: 'Пройдено',
+			displayName: 'Пройдено',
 			type: 'string',
 			filter: false
 		},
 		{
 			name: 'route_left_percentage',
-			caption: 'Осталось',
+			displayName: 'Осталось',
 			type: 'string',
 			filter: false
 		},

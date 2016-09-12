@@ -5,7 +5,7 @@ let tableMeta = {
 	cols: [
 		{
 			name: 'address_comm',
-			caption: 'Адрес',
+			displayName: 'Адрес',
 			type: 'string',
       filter: {
         type: 'select',
@@ -13,7 +13,7 @@ let tableMeta = {
 		},
 		{
 			name: 'roadway_area',
-			caption: 'Площадь на проезжей части, м²',
+			displayName: 'Площадь на проезжей части, м²',
 			type: 'number',
       filter: {
         type: 'string',
@@ -21,7 +21,7 @@ let tableMeta = {
 		},
 		{
 			name: 'sidewalk_area',
-			caption: 'Площадь на тротуаре, м²',
+			displayName: 'Площадь на тротуаре, м²',
 			type: 'number',
       filter: {
         type: 'string',
@@ -29,7 +29,7 @@ let tableMeta = {
 		},
 		{
 			name: 'sidelines_area',
-			caption: 'Площадь на обочинах, м²',
+			displayName: 'Площадь на обочинах, м²',
 			type: 'number',
       filter: {
         type: 'string',

@@ -6,7 +6,7 @@ let tableMeta = {
   cols: [
     {
 			name: 'technical_operation_name',
-      caption: 'Технологическая операция',
+      displayName: 'Технологическая операция',
 			type: 'string',
       filter: {
 				type: 'select'
@@ -14,7 +14,7 @@ let tableMeta = {
 		},
 		{
 			name: 'standard_name',
-			caption: 'Норматив содержания ОДХ',
+			displayName: 'Норматив содержания ОДХ',
 			type: 'string',
       filter: {
 				type: 'select'
@@ -22,85 +22,85 @@ let tableMeta = {
 		},
 		{
 			name: 'unit',
-			caption: 'Единица измерения',
+			displayName: 'Единица измерения',
 			type: 'string',
 			filter: false,
 		},
 		{
 			name: 'categorized_1',
-			caption: '1',
+			displayName: '1',
 			type: 'number',
 			filter: false,
 		},
 		{
 			name: 'categorized_2',
-			caption: '2',
+			displayName: '2',
 			type: 'number',
 			filter: false,
 		},
 		{
 			name: 'categorized_3',
-			caption: '3',
+			displayName: '3',
 			type: 'number',
 			filter: false,
 		},
 		{
 			name: 'categorized_4',
-			caption: '4',
+			displayName: '4',
 			type: 'number',
 			filter: false,
 		},
 		{
 			name: 'categorized_5',
-			caption: '5',
+			displayName: '5',
 			type: 'number',
 			filter: false,
 		},
 		{
 			name: 'categorized_6a',
-			caption: '6а',
+			displayName: '6а',
 			type: 'number',
 			filter: false,
 		},
 		{
 			name: 'categorized_6b',
-			caption: '6б',
+			displayName: '6б',
 			type: 'number',
 			filter: false,
 		},
 		{
 			name: 'categorized_6c',
-			caption: '6в',
+			displayName: '6в',
 			type: 'number',
 			filter: false,
 		},
 		{
 			name: 'categorized_7a',
-			caption: '7а',
+			displayName: '7а',
 			type: 'number',
 			filter: false,
 		},
 		{
 			name: 'categorized_7b',
-			caption: '7б',
+			displayName: '7б',
 			type: 'number',
 			filter: false,
 		},
 		{
 			name: 'uncategorized_highway',
-			caption: 'Магистрали (направления "Внуковское", "Рублевское", "Шереметьевское")',
+			displayName: 'Магистрали (направления "Внуковское", "Рублевское", "Шереметьевское")',
 			type: 'number',
 			filter: false,
 		},
 		{
 			name: 'uncategorized_odhs_center',
-			caption: 'ОДХ внутри Садового кольца',
+			displayName: 'ОДХ внутри Садового кольца',
 			type: 'number',
 			filter: false,
 		},
 		{
 			name: 'uncategorized_odhs_other',
-			caption: 'ОДХ на территории ТиНАО, не отнесенные к иным категориям на территории г. Москвы',
+			displayName: 'ОДХ на территории ТиНАО, не отнесенные к иным категориям на территории г. Москвы',
 			type: 'number',
 			filter: false,
 		}

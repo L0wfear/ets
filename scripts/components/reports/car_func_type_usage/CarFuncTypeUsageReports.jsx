@@ -16,7 +16,7 @@ let tableMeta = {
 	cols: [
 		{
 			name: 'company_name',
-			caption: 'Учреждение',
+			displayName: 'Учреждение',
 			type: 'string',
 			filter: {
 				type: 'select',
@@ -24,7 +24,7 @@ let tableMeta = {
 		},
 		{
 			name: 'func_type',
-			caption: 'Тип техники',
+			displayName: 'Тип техники',
 			type: 'string',
 			filter: {
         type: 'select',
@@ -32,7 +32,7 @@ let tableMeta = {
 		},
 		{
 			name: 'total_cars_count',
-			caption: 'Кол-во техники указанного типа',
+			displayName: 'Кол-во техники указанного типа',
 			type: 'number',
 			filter: {
         type: 'select',
@@ -40,7 +40,7 @@ let tableMeta = {
 		},
 		{
 			name: 'technical_operation',
-			caption: 'Технологическая операция',
+			displayName: 'Технологическая операция',
 			type: 'string',
 			filter: {
         type: 'select',
@@ -48,7 +48,7 @@ let tableMeta = {
 		},
 		{
 			name: 'cars_count',
-			caption: 'Задействованная техника',
+			displayName: 'Задействованная техника',
 			type: 'number',
 			filter: {
         type: 'select',

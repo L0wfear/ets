@@ -8,7 +8,7 @@ let getTableMeta = (props) => {
 		cols: [
 			{
 				name: 'company_name',
-				caption: 'Учреждение',
+				displayName: 'Учреждение',
 				type: 'string',
         cssClassName: 'width200',
         customHeaderComponent:
@@ -19,22 +19,22 @@ let getTableMeta = (props) => {
 			},
       {
 				name: 'percentage_one',
-				caption: 'Тротуаро-уборочная техника',
+				displayName: 'Тротуаро-уборочная техника',
 				type: 'floatFixed1',
 			},
       {
 				name: 'percentage_two',
-				caption: 'Поливомоечная техника',
+				displayName: 'Поливомоечная техника',
 				type: 'floatFixed1',
 			},
       {
 				name: 'percentage_three',
-				caption: 'Подметательно-уборочная техника',
+				displayName: 'Подметательно-уборочная техника',
 				type: 'floatFixed1',
 			},
       {
 				name: 'total_percentage',
-				caption: 'Итого',
+				displayName: 'Итого',
 				type: 'floatFixed1',
 			}
 		]

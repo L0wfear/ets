@@ -5,7 +5,7 @@ let tableMeta = {
 	cols: [
 		{
 			name: 'name',
-			caption: 'Операция',
+			displayName: 'Операция',
 			type: 'number',
       filter: {
         type: 'select',
@@ -13,7 +13,7 @@ let tableMeta = {
 		},
 		{
 			name: 'equipment',
-			caption: 'Для спецоборудования',
+			displayName: 'Для спецоборудования',
 			filter: {
 				type: 'select',
 				labelFunction: (equipment) => equipment ? 'Да' : 'Нет'

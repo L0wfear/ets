@@ -23,7 +23,7 @@ let getTableMeta = (props) => {
   	cols: [
   		{
   			name: 'work_kind_name',
-  			caption: 'Вид работ',
+  			displayName: 'Вид работ',
   			type: 'number',
         filter: {
           type: 'select',
@@ -31,7 +31,7 @@ let getTableMeta = (props) => {
   		},
   		{
   			name: 'name',
-  			caption: 'Наименование',
+  			displayName: 'Наименование',
   			type: 'string',
   			filter: {
   				type: 'select',
@@ -39,7 +39,7 @@ let getTableMeta = (props) => {
   		},
   		{
   			name: 'season_name',
-  			caption: 'Сезон',
+  			displayName: 'Сезон',
   			type: 'string',
   			filter: {
   				type: 'select',
@@ -48,7 +48,7 @@ let getTableMeta = (props) => {
   		},
   		{
   			name: 'max_speed',
-  			caption: 'Максимальная скорость',
+  			displayName: 'Максимальная скорость',
   			type: 'number',
   			filter: {
   				type: 'select',
@@ -56,7 +56,7 @@ let getTableMeta = (props) => {
   		},
   		{
   			name: 'check_type_name',
-  			caption: 'Тип проверки',
+  			displayName: 'Тип проверки',
   			type: 'string',
   			filter: {
   				type: 'select',
@@ -64,7 +64,7 @@ let getTableMeta = (props) => {
   		},
   		{
   			name: 'objects',
-  			caption: 'Объект',
+  			displayName: 'Объект',
   			type: 'string',
   			filter: {
   				type: 'multiselect',
@@ -75,7 +75,7 @@ let getTableMeta = (props) => {
   		},
   		{
   			name: 'needs_brigade',
-  			caption: 'С участием РКУ',
+  			displayName: 'С участием РКУ',
   			type: 'boolean',
   			filter: {
   				type: 'select',
@@ -84,7 +84,7 @@ let getTableMeta = (props) => {
   		},
       {
   			name: 'use_in_reports',
-  			caption: 'Учет в отчетах',
+  			displayName: 'Учет в отчетах',
   			type: 'boolean',
   			filter: {
   				type: 'select',
@@ -93,7 +93,7 @@ let getTableMeta = (props) => {
   		},
   		{
   			name: 'car_func_types',
-  			caption: 'Типы ТС',
+  			displayName: 'Типы ТС',
   			type: 'string',
   			filter: {
 					type: 'multiselect',

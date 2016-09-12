@@ -57,7 +57,7 @@ let tableMeta = {
 	cols: [
 		{
 			name: 'status',
-			caption: 'Статус',
+			displayName: 'Статус',
 			type: 'text',
 			filter: {
 				type: 'select',
@@ -66,7 +66,7 @@ let tableMeta = {
 		},
 		{
 			name: 'mission_name',
-			caption: 'Задание',
+			displayName: 'Задание',
 			type: 'number',
 			filter: {
 				type: 'select',
@@ -74,7 +74,7 @@ let tableMeta = {
 		},
 		{
 			name: 'technical_operation_name',
-			caption: 'Тех. операция',
+			displayName: 'Тех. операция',
 			type: 'number',
 			filter: {
 				type: 'select',
@@ -82,19 +82,19 @@ let tableMeta = {
 		},
 		{
 			name: 'timestamp_create',
-			caption: 'Дата создания',
+			displayName: 'Дата создания',
 			type: 'number',
 			filter: false
 		},
 		{
 			name: 'timestamp_process_begin',
-			caption: 'Дата начала обработки',
+			displayName: 'Дата начала обработки',
 			type: 'number',
 			filter: false
 		},
 		{
 			name: 'timestamp_process_end',
-			caption: 'Дата завершения обработки',
+			displayName: 'Дата завершения обработки',
 			type: 'number',
 			filter: false
 		},

@@ -26,7 +26,7 @@ class ColumnControl extends Component {
         <div key={i} style={{marginLeft: 20}}>
           <span onClick={this.checkboxChange.bind(this, option.name)} style={{cursor: "pointer"}}>
             <Input readOnly type="checkbox" checked={this.props.values.indexOf(option.name) === -1} />
-            <span style={{bottom: -2, position: "relative"}}>{option.caption}</span>
+            <span style={{bottom: -2, position: "relative"}}>{option.displayName}</span>
           </span>
         </div>
       )

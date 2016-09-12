@@ -9,7 +9,7 @@ let tableMeta = {
 	cols: [
 		{
 			name: 'gov_number',
-			caption: 'Рег. номер ТС',
+			displayName: 'Рег. номер ТС',
 			type: 'text',
 			filter: {
 				type: 'select',
@@ -17,7 +17,7 @@ let tableMeta = {
 		},
 		{
 			name: 'special_model_name',
-			caption: 'Модель ТС',
+			displayName: 'Модель ТС',
 			type: 'text',
 			filter: {
 				type: 'select',
@@ -25,7 +25,7 @@ let tableMeta = {
 		},
 		{
 			name: 'model_name',
-			caption: 'Марка шасси ТС',
+			displayName: 'Марка шасси ТС',
 			type: 'text',
 			filter: {
 				type: 'select',
@@ -33,7 +33,7 @@ let tableMeta = {
 		},
 		{
 			name: 'type',
-			caption: 'Тип',
+			displayName: 'Тип',
 			type: 'text',
 			filter: {
 				type: 'select',
@@ -41,7 +41,7 @@ let tableMeta = {
 		},
 		{
 			name: 'condition',
-			caption: 'Состояние',
+			displayName: 'Состояние',
 			type: 'text',
 			filter: {
 				type: 'select',
@@ -50,7 +50,7 @@ let tableMeta = {
 		},
 		{
 			name: 'garage_number',
-			caption: 'Гаражный номер',
+			displayName: 'Гаражный номер',
 			type: 'text',
 			filter: {
 				type: 'select',
@@ -58,7 +58,7 @@ let tableMeta = {
 		},
 		{
 			name: 'fuel_correction_rate',
-			caption: 'Поправочный коэффициент',
+			displayName: 'Поправочный коэффициент',
 			type: 'number',
 			filter: {
 				type: 'select',
@@ -66,7 +66,7 @@ let tableMeta = {
 		},
 		{
 			name: 'company_structure_name',
-			caption: 'Подразделение предприятия',
+			displayName: 'Подразделение предприятия',
 			type: 'text',
 			filter: {
 				type: 'select',
@@ -74,7 +74,7 @@ let tableMeta = {
 		},
 		{
 			name: 'gps_code',
-			caption: 'Код БНСО',
+			displayName: 'Код БНСО',
 			type: 'text',
 			filter: {
 				type: 'select',
@@ -82,7 +82,7 @@ let tableMeta = {
 		},
 		{
 			name: 'equipment',
-			caption: 'Оборудование ДКМ',
+			displayName: 'Оборудование ДКМ',
 			type: 'text',
 			filter: {
 				type: 'select',

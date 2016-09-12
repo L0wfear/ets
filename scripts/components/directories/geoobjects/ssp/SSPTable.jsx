@@ -5,7 +5,7 @@ let tableMeta = {
 	cols: [
 		{
 			name: 'name',
-			caption: 'Полное наименование',
+			displayName: 'Полное наименование',
 			type: 'string',
       filter: {
         type: 'select',
@@ -13,7 +13,7 @@ let tableMeta = {
 		},
 		{
 			name: 'shortname',
-			caption: 'Краткое наименование',
+			displayName: 'Краткое наименование',
 			type: 'string',
       filter: {
         type: 'select',
@@ -21,7 +21,7 @@ let tableMeta = {
 		},
 		{
 			name: 'address',
-			caption: 'Адрес',
+			displayName: 'Адрес',
 			type: 'string',
       filter: {
         type: 'select',
@@ -29,7 +29,7 @@ let tableMeta = {
 		},
 		{
 			name: 'productivity',
-			caption: 'Производительность (куб. м в сутки)',
+			displayName: 'Производительность (куб. м в сутки)',
 			type: 'number',
       filter: {
         type: 'string',

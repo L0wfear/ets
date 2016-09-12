@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
 import cx from 'classnames';
 
-const FilterButton = (props) => {
+export default function FilterButton(props) {
 
   const filterClass = cx('filter-button', {
     'filter-button-active': props.active
@@ -13,6 +13,4 @@ const FilterButton = (props) => {
       <Glyphicon glyph="filter"/>
     </Button>
   );
-};
-
-export default FilterButton;
+}

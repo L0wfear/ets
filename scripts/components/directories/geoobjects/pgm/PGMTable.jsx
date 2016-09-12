@@ -5,7 +5,7 @@ let tableMeta = {
 	cols: [
 		{
 			name: 'name',
-			caption: 'Наименование',
+			displayName: 'Наименование',
 			type: 'string',
       filter: {
         type: 'select',
@@ -13,7 +13,7 @@ let tableMeta = {
 		},
 		{
 			name: 'address',
-			caption: 'Адрес',
+			displayName: 'Адрес',
 			type: 'string',
       filter: {
         type: 'select',
@@ -21,7 +21,7 @@ let tableMeta = {
 		},
 		{
 			name: 'liquid_pgm_volume',
-			caption: 'Объем жидких ПГМ',
+			displayName: 'Объем жидких ПГМ',
 			type: 'number',
       filter: {
         type: 'string',
@@ -29,7 +29,7 @@ let tableMeta = {
 		},
 		{
 			name: 'solid_pgm_volume',
-			caption: 'Объем твердых ПГМ',
+			displayName: 'Объем твердых ПГМ',
 			type: 'number',
       filter: {
         type: 'string',
@@ -37,7 +37,7 @@ let tableMeta = {
 		},
 		{
 			name: 'pgm_stores_type_name',
-			caption: 'Тип ПГМ',
+			displayName: 'Тип ПГМ',
 			type: 'number',
       filter: {
         type: 'string',

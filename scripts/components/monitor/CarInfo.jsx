@@ -9,6 +9,7 @@ import SpeedChart from 'components/ui/charts/SpeedChart.jsx';
 import { roundCoordinates } from 'utils/geo';
 import DatePicker from 'components/ui/DatePicker.jsx';
 import { getTypeById } from 'utils/labelFunctions';
+import MissionFormWrap from '../missions/mission/MissionFormWrap.jsx';
 
 class VehicleAttributes extends Component {
 
@@ -87,6 +88,8 @@ export default class CarInfo extends Component {
       trackPaused: 'stopped',
       trackingMode: false,
       missions: [],
+      showMissionForm: false,
+      selectedMission: null,
       from_dt: getStartOfToday(),
       to_dt: new Date(),
       from_dt_: getStartOfToday(),
@@ -218,6 +221,11 @@ export default class CarInfo extends Component {
     this.setState({trackPaused: 'stopped'})
   }
 
+  async setMissionById(id) {
+    let response = await this.props.flux.getActions('missions').getMissionById(id);
+    this.setState({selectedMission: response.result.rows[0], showMissionForm: true})
+  }
+
   renderModel() {
     const { imageUrl, trackingMode } = this.state;
     const { car } = this.props;
@@ -295,9 +303,14 @@ export default class CarInfo extends Component {
 
   renderMissions() {
     let { missions = [] } = this.state;
-    let missionsRender = <div style={{textAlign: "left", overflow: "hidden",textOverflow: "ellipsis"}}>
+    let missionsRender = <div style={{textAlign: "left", overflow: "hidden", textOverflow: "ellipsis"}}>
       {missions.map((mission) => {
-        return <span key={mission.id} style={{whiteSpace: "nowrap", display: "block"}}>{`№${mission.number} - ${mission.technical_operation_name}`}</span>
+        return <span
+            key={mission.id}
+            onClick={this.setMissionById.bind(this, mission.id)}
+            style={{whiteSpace: "nowrap", display: "block", cursor: 'pointer'}}>
+          {`№${mission.number} - ${mission.technical_operation_name}`}
+        </span>
       })}
     </div>;
 
@@ -308,6 +321,9 @@ export default class CarInfo extends Component {
         <Panel title="Задания" className="chart-datepickers-wrap">
           {missionsRender}
         </Panel>
+        <MissionFormWrap onFormHide={() => this.setState({showMissionForm: false})}
+						showForm={this.state.showMissionForm}
+						element={this.state.selectedMission} />
       </div>
     );
   }

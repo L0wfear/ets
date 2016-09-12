@@ -8,7 +8,7 @@ import FaxogrammMissionsFormWrap from '../../directories/faxogramm/FaxogrammMiss
 import WaybillClosed from './WaybillClosed.jsx';
 import cx from 'classnames';
 
-export default class WaybillActive extends WaybillClosed {
+export default class WaybillInProgress extends WaybillClosed {
 
   constructor(props) {
     super(props);

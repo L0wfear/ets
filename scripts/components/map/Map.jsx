@@ -359,6 +359,7 @@ export default class OpenLayersMap extends Component {
    */
   onMoveEnd() {
     let zoom = this.map.getView().getZoom();
+    console.info(`Центр карты: [${this.map.getView().getCenter()}], зум: ${zoom}`);
     if (zoom !== this.state.zoom) {
       this.setState({zoom});
     }
@@ -461,7 +462,6 @@ export default class OpenLayersMap extends Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <div key="olmap">
         <div ref="container" className="openlayers-container"></div>

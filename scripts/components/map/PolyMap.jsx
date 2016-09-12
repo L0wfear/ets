@@ -143,6 +143,16 @@ export default class PolyMap extends Component {
     // TODO on poly click
   }
 
+  /**
+   * Вызывается при манипуляциях с картой, таких как перемещение видимой
+   * области, зуммирование
+   * @method
+   */
+  onMoveEnd() {
+    let zoom = this.map.getView().getZoom();
+    console.info(`Центр карты: [${this.map.getView().getCenter()}], зум: ${zoom}`);
+  }
+
   render() {
     console.warn('POLYMAP RENDER', this.props);
     return (
@@ -160,6 +170,7 @@ export default class PolyMap extends Component {
       this._handlers = {
         singleclick: map.on('singleclick', this.onClick.bind(this)),
         pointermove: map.on('pointermove', this.onMouseMove.bind(this)),
+        moveend: map.on('moveend', this.onMoveEnd.bind(this))
       }
 
       interactions.forEach((interaction)=> {

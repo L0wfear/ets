@@ -1,100 +1,16 @@
 import React, { Component } from 'react';
-import connectToStores from 'flummox/connect';
-import Table from 'components/ui/table/DataTable.jsx';
-import { exportable } from 'utils/decorators';
+import { connectToStores, HistoryContext, FluxContext, exportable } from 'utils/decorators';
 import { Button, Glyphicon } from 'react-bootstrap';
+import MissionReportTable from './MissionReportTable.jsx';
 
-let tableMeta = {
-	cols: [
-    {
-      name: 'mission_number',
-      displayName: '№ Задания',
-      type: 'string',
-      filter: {
-        type: 'select',
-      },
-    },
-		{
-      name: 'mission_name',
-      displayName: 'Название',
-      type: 'string',
-      filter: {
-        type: 'select',
-      },
-    },
-		{
-			name: 'driver_name',
-			displayName: 'Водитель',
-			type: 'string',
-			filter: {
-				type: 'select',
-			}
-		},
-		{
-			name: 'car_gov_number',
-			displayName: 'Рег. номер ТС',
-			type: 'string',
-			filter: {
-				type: 'select',
-			}
-		},
-		{
-			name: 'technical_operation_name',
-			displayName: 'Тех. операция',
-			type: 'string',
-			filter: {
-				type: 'select',
-			}
-		},
-		{
-			name: 'route_name',
-			displayName: 'Маршрут',
-			type: 'string',
-			filter: {
-				type: 'select',
-			},
-		},
-		{
-			name: 'route_traveled_percentage',
-			displayName: 'Пройдено',
-			type: 'string',
-			filter: false
-		},
-		{
-			name: 'route_left_percentage',
-			displayName: 'Осталось',
-			type: 'string',
-			filter: false
-		},
-	]
-}
-
-let MissionReportTable = (props) => {
-
-	const renderers = {
-    route_traveled_percentage: ({data}) => <div>{ data ? parseFloat(data) * 100 + '%' : 'Нет данных'}</div>,
-    route_left_percentage: ({data}) => <div>{ data ? parseFloat(data) * 100 + '%' : 'Нет данных'}</div>,
-	};
-
-	return <Table title='Прохождение заданий'
-								tableMeta={tableMeta}
-								results={props.data}
-								renderers={renderers}
-								{...props} />
-
-}
-
+@connectToStores(['missions'])
+@HistoryContext
+@FluxContext
 @exportable
-class MissionReport extends Component {
-
+export default class MissionReport extends Component {
 
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			selectedCar: null,
-			showForm: false,
-		};
 
 		this.entity = 'car_odh_travel_report/' + this.props.routeParams.id;
 	}
@@ -107,7 +23,7 @@ class MissionReport extends Component {
   onReportSelect({props}) {
     let index = props.data.index;
 		if (props.data.report_by_odh) {
-	    this.context.history.pushState(null, '/mission-report/' + this.props.routeParams.id + '/odhs/' + index);
+			this.context.history.pushState(null, '/mission-report/' + this.props.routeParams.id + '/odhs/' + index);
 		} else if (props.data.report_by_dt) {
 	    this.context.history.pushState(null, '/mission-report/' + this.props.routeParams.id + '/dts/' + index);
 		} else if (props.data.report_by_point) {
@@ -129,10 +45,3 @@ class MissionReport extends Component {
 
 	}
 }
-
-MissionReport.contextTypes = {
-  history: React.PropTypes.object,
-	flux: React.PropTypes.object,
-};
-
-export default connectToStores(MissionReport, ['missions']);

@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import connectToStores from 'flummox/connect';
 import Table from 'components/ui/table/DataTable.jsx';
 import ElementsList from 'components/ElementsList.jsx';
-//78
 
 let getTableMeta = (props) => {
 	let tableMeta = {
@@ -27,12 +26,6 @@ let getTableMeta = (props) => {
 				type: 'string',
 				filter: false
 			},
-			// {
-			// 	name: 'traveled_percentage',
-			// 	displayName: 'Пройдено с рабочей скоростью %',
-			// 	type: 'string',
-			// 	filter: false
-			// },
 			{
 				name: 'left',
 				displayName: `Осталось (${props.data[0].route_check_unit})`,

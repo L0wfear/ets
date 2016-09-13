@@ -1,7 +1,6 @@
 import { Store } from 'flummox';
-import _ from 'lodash';
 
-class FuelRatesStore extends Store {
+export default class FuelRatesStore extends Store {
 
   constructor(flux) {
     super();
@@ -18,7 +17,7 @@ class FuelRatesStore extends Store {
 
     this.state = {
       rates: [],
-      operations: [],
+      operations: []
     };
 
   }
@@ -31,11 +30,4 @@ class FuelRatesStore extends Store {
     this.setState({operations: result});
   }
 
-  getFuelOperationById(id) {
-    return _.find(this.state.operations, c => c.id === id) || {};
-  }
-
-
 }
-
-export default FuelRatesStore;

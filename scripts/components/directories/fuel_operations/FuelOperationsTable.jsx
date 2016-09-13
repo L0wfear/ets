@@ -23,7 +23,7 @@ let tableMeta = {
 	]
 };
 
-let FuelOperationsTable = (props) => {
+export default (props) => {
 
     const renderers = {
 			equipment: ({data}) => <div style={{textAlign: "center"}}><input type="checkbox" checked={!!data} readOnly /></div>,
@@ -35,5 +35,3 @@ let FuelOperationsTable = (props) => {
                   renderers={renderers}
 									{...props}/>
 }
-
-export default FuelOperationsTable;

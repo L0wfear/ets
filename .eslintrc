@@ -1,7 +1,7 @@
-env: 
+env:
  node: true
  browser: true
-ecmaFeatures: 
+ecmaFeatures:
  jsx: true
  arrowFunctions: true
  forOf: true
@@ -10,14 +10,14 @@ ecmaFeatures:
  defaultParams: true
 
  destructuring: true
-globals: 
+globals:
  ol: true
  window: true
 parser: "babel-eslint"
-plugins: 
+plugins:
  - react
-rules: 
- "comma-dangle": 
+rules:
+ "comma-dangle":
   - 2
   - never
  "no-cond-assign": 2
@@ -92,7 +92,7 @@ rules:
  "vars-on-top": 0
  "wrap-iife": 2
  yoda: 2
- strict: 
+ strict:
   - 2
   - global
  "no-catch-shadow": 2
@@ -105,7 +105,7 @@ rules:
  "no-undefined": 2
  "no-unused-vars": 2
  "no-use-before-define": 2
- indent: 
+ indent:
   - 0
   - 2
   - SwitchCase: 1
@@ -117,9 +117,9 @@ rules:
  "eol-last": 2
  "func-names": 0
  "func-style": 0
- "key-spacing": 
+ "key-spacing":
   - 2
-  - 
+  -
    beforeColon: false
    afterColon: true
  "max-nested-callbacks": 0
@@ -131,9 +131,9 @@ rules:
  "no-mixed-spaces-and-tabs": 1
  "no-nested-ternary": 2
  "no-new-object": 2
- "semi-spacing": 
+ "semi-spacing":
   - 2
-  - 
+  -
    before: false
    after: true
  "no-spaced-func": 2
@@ -142,28 +142,28 @@ rules:
  "no-multiple-empty-lines": 2
  "no-underscore-dangle": 0
  "one-var": 0
- "operator-assignment": 
+ "operator-assignment":
   - 2
   - always
  "padded-blocks": 0
- quotes: 
+ quotes:
   - 2
   - single
- "quote-props": 
+ "quote-props":
   - 2
   - "as-needed"
- semi: 
+ semi:
   - 0
   - always
- "sort-vars": 
+ "sort-vars":
   - 2
   - ignoreCase: true
  "space-after-keywords": 2
  "space-before-blocks": 2
- "object-curly-spacing": 
+ "object-curly-spacing":
   - 0
   - never
- "array-bracket-spacing": 
+ "array-bracket-spacing":
   - 2
   - never
  "space-in-parens": 2
@@ -173,13 +173,13 @@ rules:
  "spaced-comment": 0
  "wrap-regex": 0
  "max-depth": 0
- "max-len": 
+ "max-len":
   - 1
   - 160
- "max-params": 
+ "max-params":
   - 0
   - 3
- "max-statements": 
+ "max-statements":
   - 0
   - 10
  "no-plusplus": 0

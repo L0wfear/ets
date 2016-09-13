@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import moment from 'moment';
-import { getFuelOperationById } from 'utils/labelFunctions';
 
 let tableMeta = {
 	cols: [
@@ -14,12 +13,11 @@ let tableMeta = {
 			}
 		},
 		{
-			name: 'operation_id',
+			name: 'operation_name',
 			displayName: 'Операция',
 			type: 'number',
       filter: {
-        type: 'select',
-        labelFunction: (operation_id) => getFuelOperationById(operation_id).name,
+        type: 'select'
       }
 		},
 		{
@@ -51,7 +49,7 @@ let tableMeta = {
 		{
 			name: 'operation_equipment',
 			displayName: 'Для спецоборудования',
-			type: 'boolen',
+			type: 'boolean',
       filter: {
         type: 'select',
         labelFunction: (d) => d ? 'Да' : 'Нет'
@@ -60,10 +58,9 @@ let tableMeta = {
 	]
 };
 
-let FuelRatesTable = (props) => {
+export default (props) => {
 
     const renderers = {
-      operation_id: ({data}) => <div>{getFuelOperationById(data).name}</div>,
       order_date: ({data}) => <div>{moment(data).format(global.APP_DATE_FORMAT)}</div>,
       operation_equipment: ({data}) => <div style={{textAlign: "center"}}><input type="checkbox" checked={!!data} readOnly /></div>
     };
@@ -74,5 +71,3 @@ let FuelRatesTable = (props) => {
                   renderers={renderers}
 									{...props}/>
 }
-
-export default FuelRatesTable;

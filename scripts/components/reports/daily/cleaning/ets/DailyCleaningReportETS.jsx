@@ -1,126 +1,13 @@
 import React, { Component } from 'react';
-import connectToStores from 'flummox/connect';
-import Table from 'components/ui/table/DataTable.jsx';
-import { getPeriodicReportStatusLabel } from 'utils/labelFunctions';
 import { Input, Button, Glyphicon } from 'react-bootstrap';
-import { exportable } from 'utils/decorators';
+import { FluxContext, connectToStores, exportable } from 'utils/decorators';
 import { getFormattedDateTime } from 'utils/dates';
+import DailyCleaningReportETSTable from './DailyCleaningReportETSTable.jsx';
 
-let getTableMeta = (props) => {
-
-  let secondCol = {};
-
-  if (props.element === 'roadway') {
-    secondCol = {
-      name: 'geozone_element_area',
-      displayName: 'Площадь проезжей части',
-      type: 'number',
-      filter: false
-    }
-  }
-
-  if (props.element === 'footway') {
-    secondCol = {
-      name: 'geozone_element_area',
-      displayName: 'Площадь тротуаров с мехуборкой',
-      type: 'number',
-      filter: false
-    }
-  }
-
-  if (props.element === 'yard') {
-    secondCol = {
-      name: 'geozone_element_area',
-      displayName: 'Механизированная площадь двора',
-      type: 'number',
-      filter: false
-    }
-  }
-
-  let tableMeta = {
-  	cols: [
-      {
-        name: 'geozone_name',
-        displayName: 'Наименование объекта',
-        type: 'string',
-        filter: {
-          type: 'select',
-        },
-      },
-      secondCol,
-      {
-        name: 'car_type_list',
-        displayName: 'Тип техники',
-        type: 'string',
-        filter: false
-      },
-      {
-        name: 'gov_number_list',
-        displayName: 'Список ТС',
-        type: 'string',
-        filter: false
-      },
-  		{
-  			name: 'planned_passed_count',
-  			displayName: 'Плановое посещение',
-  			type: 'string',
-  			filter: {
-  				type: 'select',
-  			}
-  		},
-  		{
-  			name: 'fact_traveled_area',
-  			displayName: 'Пройденная площадь',
-  			type: 'string',
-  			filter: false
-  		},
-  		{
-  			name: 'status',
-  			displayName: 'Статус посещения',
-  			type: 'string',
-  			filter: {
-  				type: 'select',
-          labelFunction: getPeriodicReportStatusLabel
-  			},
-  		},
-      {
-        name: 'fact_traveled_percentage',
-        displayName: '% выполнения',
-        type: 'string',
-        filter: false
-      }
-  	]
-  };
-
-  return tableMeta;
-}
-
-
-let MissionReportTable = (props) => {
-
-
-
-	const renderers = {
-    car_type_list: ({data}) => <div>{data.map(el => el.name).join(', ')}</div>,
-    status: ({data}) => <div>{getPeriodicReportStatusLabel(data) || ''}</div>,
-    gov_number_list: ({data}) => <div>{data && data.join ? data.join(', ') : ''}</div>,
-	};
-
-  let tableMeta = getTableMeta(props);
-
-  //if (!props.data.length) return <div/>
-
-	return <Table title='Статус по уборке'
-								tableMeta={tableMeta}
-								results={props.data}
-								renderers={renderers}
-								{...props} />
-
-}
-
+@connectToStores(['missions'])
+@FluxContext
 @exportable
-class MissionReport extends Component {
-
+export default class DailyCleaningReportETS extends Component {
 
 	constructor(props) {
 		super(props);
@@ -143,9 +30,6 @@ class MissionReport extends Component {
     this.setState({selectedReportData, dateFrom, dateTo});
 	}
 
-  onReportSelect({props}) {
-  }
-
 	render() {
 
 		const { selectedReportData = [], dateFrom, dateTo } = this.state;
@@ -153,23 +37,16 @@ class MissionReport extends Component {
 
 		return (
 			<div className="ets-page-wrap">
-				<MissionReportTable data={selectedReportData} element={element} onRowSelected={this.onReportSelect.bind(this)}>
+				<DailyCleaningReportETSTable data={selectedReportData} element={element}>
           <div className="daily-cleaning-report-period">
             Период формирования:
             <Input type="text" readOnly value={dateFrom}></Input> —
             <Input type="text" readOnly value={dateTo}></Input>
           </div>
           <Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt" /></Button>
-				</MissionReportTable>
+				</DailyCleaningReportETSTable>
 			</div>
 		);
 
 	}
 }
-
-MissionReport.contextTypes = {
-  history: React.PropTypes.object,
-	flux: React.PropTypes.object,
-};
-
-export default connectToStores(MissionReport, ['missions']);

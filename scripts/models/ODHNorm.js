@@ -15,7 +15,7 @@ export const odhNormSchema = {
 		{
 			key: 'expendable',
 			title: 'Расходный материал',
-			type: 'select',
+			type: 'number',
 			required: false,
 		}
 	],

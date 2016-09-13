@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
-import Table from 'components/ui/table/DataTable.jsx';
-import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
+import { Button, Row, Col } from 'react-bootstrap';
 import Div from 'components/ui/Div.jsx';
 import Datepicker from 'components/ui/DatePicker.jsx';
-import { getFormattedDateTimeSeconds, getDatesByShift } from 'utils/dates';
+import { getDatesByShift } from 'utils/dates';
 import { getReportNotReadyNotification } from 'utils/notifications';
-import { getReportStatusLabel } from 'utils/labelFunctions';
 import { FluxContext, HistoryContext, exportable, staticProps, connectToStores } from 'utils/decorators';
+import MissionReportsTable from './MissionReportsTable.jsx';
 
-
-let FaxogrammsDatepicker = (props) => {
+let MissionReportsDatepicker = (props) => {
 	return (
 		<Row>
 			<Col md={3}>
@@ -27,95 +25,7 @@ let FaxogrammsDatepicker = (props) => {
         <Button bsSize="small" onClick={props.onClick.bind(this)}>Сформировать отчет</Button>
       </Col>
 		</Row>
-	)
-}
-
-let getStatusLabel = (status) => {
-  let result = '';
-
-  switch (status) {
-    case 'fail':
-      result = 'Ошибка';
-      break;
-    case 'success':
-      result = 'Обработан';
-      break;
-    case 'in progress':
-      result = 'В обработке';
-      break;
-    case 'wait':
-      result = 'В очереди';
-      break;
-  }
-
-  return result;
-};
-
-let getTypeLabel = (type) => type === 'distance' ? 'Протяженность' : type;
-
-let tableMeta = {
-	cols: [
-		{
-			name: 'status',
-			displayName: 'Статус',
-			type: 'text',
-			filter: {
-				type: 'select',
-				labelFunction: getReportStatusLabel
-			}
-		},
-		{
-			name: 'mission_name',
-			displayName: 'Задание',
-			type: 'number',
-			filter: {
-				type: 'select',
-			},
-		},
-		{
-			name: 'technical_operation_name',
-			displayName: 'Тех. операция',
-			type: 'number',
-			filter: {
-				type: 'select',
-			},
-		},
-		{
-			name: 'timestamp_create',
-			displayName: 'Дата создания',
-			type: 'number',
-			filter: false
-		},
-		{
-			name: 'timestamp_process_begin',
-			displayName: 'Дата начала обработки',
-			type: 'number',
-			filter: false
-		},
-		{
-			name: 'timestamp_process_end',
-			displayName: 'Дата завершения обработки',
-			type: 'number',
-			filter: false
-		},
-	]
-}
-
-let MissionReportsTable = (props) => {
-
-	const renderers = {
-    status: ({data}) => <div>{data ? getReportStatusLabel(data) : ''}</div>,
-    timestamp_create: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
-    timestamp_process_begin: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
-    timestamp_process_end: ({data}) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
-	};
-
-	return <Table title='Прохождение заданий'
-								tableMeta={tableMeta}
-								results={props.data}
-								renderers={renderers}
-								{...props} />
-
+	);
 }
 
 @connectToStores(['missions'])
@@ -162,15 +72,12 @@ export default class MissionReports extends Component {
   }
 
 	render() {
-
 		const { missionReportsList } = this.props;
 
 		return (
 			<div className="ets-page-wrap">
-  			<FaxogrammsDatepicker handleChange={this.handleChange.bind(this)} onClick={this.createMissionReport.bind(this)} {...this.state}/>
-
+  			<MissionReportsDatepicker handleChange={this.handleChange.bind(this)} onClick={this.createMissionReport.bind(this)} {...this.state}/>
 				<MissionReportsTable data={missionReportsList} onRowSelected={this.onReportSelect.bind(this)}>
-					{/* <Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt" /></Button> */}
 				</MissionReportsTable>
 			</div>
 		);

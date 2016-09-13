@@ -155,41 +155,16 @@ let tableMeta = {
 			filter: {
         type: 'input',
       },
-    },
-    // {
-    //   name: 'fuel_rate',
-    //   displayName: 'Топливо. Норма',
-    //   type: 'number',
-		// 	cssClassName: "width-fuel-report-small",
-		// 	filter: {
-    //     type: 'input',
-    //   },
-    // },
-    // {
-    //   name: 'fuel_diff',
-    //   displayName: 'Топливо. Разница',
-    //   type: 'number',
-		// 	filter: {
-    //     type: 'input',
-    //   },
-		// 	cssClassName: "width-fuel-report-small",
-    // },
+    }
 	]
 }
 
-let FuelReportTable = (props) => {
-
-	const renderers = {
-
-	};
+export default (props) => {
 
 	return <Table title='Отчет по топливу'
 								tableMeta={tableMeta}
 								results={props.data}
-								renderers={renderers}
 								enumerated={false}
 								{...props} />
 
 }
-
-export default FuelReportTable;

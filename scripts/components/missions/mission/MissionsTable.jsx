@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Glyphicon, ButtonToolbar } from 'react-bootstrap';
+import { Glyphicon } from 'react-bootstrap';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 import Table from 'components/ui/table/DataTable.jsx';
 
@@ -14,21 +14,12 @@ let getTableMeta = (props) => {
 
 	let tableMeta = {
 		cols: [
-			{
-				name: 'car_gov_number',
-				displayName: 'Рег. номер ТС',
-				type: 'number',
-				display: false,
-				filter: {
-					type: 'select',
-				},
-			},
       {
         name: 'status',
         displayName: 'Статус',
         type: 'string',
         filter: {
-  				type: 'select',
+  				type: 'multiselect',
           labelFunction: (s) => MISSION_STATUS_LABELS[s],
   			},
         cssClassName: 'width120'
@@ -38,7 +29,7 @@ let getTableMeta = (props) => {
         displayName: 'Номер',
         type: 'number',
         filter: {
-  				type: 'select'
+  				type: 'multiselect'
   			},
         cssClassName: 'width60',
       },
@@ -47,7 +38,7 @@ let getTableMeta = (props) => {
         displayName: 'Путевой лист',
         type: 'number',
         filter: {
-  				type: 'select'
+  				type: 'multiselect'
   			},
         cssClassName: 'width60',
       },
@@ -56,7 +47,7 @@ let getTableMeta = (props) => {
 				displayName: 'Источник',
 				type: 'number',
 				filter: {
-					type: 'select',
+					type: 'multiselect',
 				},
         cssClassName: 'width150',
 			},
@@ -80,7 +71,9 @@ let getTableMeta = (props) => {
 				name: 'car_gov_number',
 				displayName: 'Рег. номер ТС',
 				type: 'number',
-				filter: false,
+				filter: {
+					type: 'multiselect',
+				},
         cssClassName: 'width120',
 			},
       {
@@ -88,7 +81,7 @@ let getTableMeta = (props) => {
 				displayName: 'Маршрут',
 				type: 'number',
 				filter: {
-					type: 'select',
+					type: 'multiselect',
 				},
         cssClassName: 'width120',
 			},
@@ -97,7 +90,7 @@ let getTableMeta = (props) => {
 				displayName: 'Количество проходов',
 				type: 'number',
 				filter: {
-					type: 'select'
+					type: 'multiselect'
 				},
         cssClassName: 'width120',
 			},
@@ -106,7 +99,7 @@ let getTableMeta = (props) => {
 				displayName: 'Технологическая операция',
 				type: 'number',
 				filter: {
-					type: 'select',
+					type: 'multiselect',
 				}
 			},
       {
@@ -129,19 +122,20 @@ let getTableMeta = (props) => {
 };
 
 
-let MissionsTable = (props) => {
-
+export default (props) => {
 		const renderers = {
       status: ({data}) => <div>{MISSION_STATUS_LABELS[data]}</div>,
       date_start: ({data}) => <DateFormatter date={data} time={true} />,
       date_end: ({data}) => <DateFormatter date={data} time={true} />,
 			id: (meta) => {
 				if (meta.rowData.status === 'not_assigned') return <div>Нет данных</div>;
-					return <div>
+				return (
+          <div>
 						<span onClick={() => props.mapView(meta.data)}>
 							<Glyphicon glyph="info-sign" />
 						</span>
 					</div>
+        );
 			},
 		};
 
@@ -154,5 +148,3 @@ let MissionsTable = (props) => {
 				multiSelection={true}
 				{...props}/>
 }
-
-export default MissionsTable;

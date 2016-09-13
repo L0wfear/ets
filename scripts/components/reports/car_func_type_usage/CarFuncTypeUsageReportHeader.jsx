@@ -1,48 +1,12 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
-import Table from 'components/ui/table/DataTable.jsx';
-import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
-import EtsSelect from 'components/ui/EtsSelect.jsx';
+import { Button, Row, Col } from 'react-bootstrap';
 import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
 import Datepicker from 'components/ui/DatePicker.jsx';
-import { getToday859am, getYesterday0am, getYesterday9am, getYesterday2359, getFormattedDateTimeSeconds } from 'utils/dates';
-import { getReportNotReadyNotification } from 'utils/notifications';
-import { isEmpty } from 'utils/functions';
+import { getToday859am, getYesterday0am, getYesterday9am, getYesterday2359 } from 'utils/dates';
 
 // TODO поправить на получение типов из специального сервиса
-const COMBINATIONS_CAR_TYPES_ODH = [
-  {
-    value: '84, 85, 1',
-    label: 'ДКМ (ПМ+ЖР), ДКМ (ПМ+ТР), ПМ'
-  },
-  {
-    value: '82, 9, 14',
-    label: 'ДКМ (ПУ+ПЩ), ПУ, ПУвак'
-  },
-  {
-    value: '8',
-    label: 'ТУ'
-  }
-];
-const COMBINATIONS_CAR_TYPES_DT = [
-  {
-    value: '83',
-    label: 'ДКМ (ПУ+ТР)'
-  },
-  {
-    value: '85;84;1',
-    label: 'ДКМ (ПМ+ТР), ДКМ (ПМ+ЖР), ПМ'
-  },
-  {
-    value: '82;9;14',
-    label: 'ДКМ (ПУ + ПЩ), ПУ, ПУ вак'
-  },
-  {
-    value: '8',
-    label: 'ТУ'
-  }
-];
 
 class CarFuncTypeUsageReportHeader extends Component {
 
@@ -86,7 +50,7 @@ class CarFuncTypeUsageReportHeader extends Component {
             <Field type="select"
                    label="Объекты"
                    options={OBJECTS}
-                   value={props.geozone_type}
+                   value={geozone_type}
                    onChange={this.handleGeozoneTypeChange.bind(this)}
                    clearable={false}/>
     			</Col>
@@ -118,7 +82,7 @@ class CarFuncTypeUsageReportHeader extends Component {
 }
 
 CarFuncTypeUsageReportHeader.contextTypes = {
-  flux: React.PropTypes.object,
+  flux: React.PropTypes.object
 }
 
 export default connectToStores(CarFuncTypeUsageReportHeader, ['objects']);

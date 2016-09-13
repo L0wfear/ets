@@ -1,34 +1,17 @@
 import React, { Component } from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 
-let getTechOperationById = (id) => window.__ETS_CONTAINER__.flux.getStore('objects').getTechOperationById(id);
-
-let getRouteById = (id) => window.__ETS_CONTAINER__.flux.getStore('routes').getRouteById(id);
-
-let getCarById = (id) => window.__ETS_CONTAINER__.flux.getStore('objects').getCarById(id);
-
 let getTableMeta = (props) => {
 
 	let tableMeta = {
 		cols: [
-			{
-				name: 'car_id',
-				displayName: 'Рег. номер ТС',
-				type: 'number',
-				display: false,
-				filter: {
-					type: 'multiselect',
-          labelFunction: (id) => getCarById(id).gov_number || id,
-				},
-			},
 			{
 				name: 'number',
 				displayName: 'Номер',
 				type: 'number',
         cssClassName: 'width60',
 				filter: {
-					type: 'multiselect',
-					labelFunction: (id) => id,
+					type: 'multiselect'
 				},
 			},
       {
@@ -36,23 +19,24 @@ let getTableMeta = (props) => {
 				displayName: 'Название',
 				type: 'string',
 				filter: {
-					type: 'select'
+					type: 'multiselect'
 				}
 			},
       {
-				name: 'car_id',
+				name: 'car_gov_number',
 				displayName: 'Рег. номер ТС',
 				type: 'number',
-				filter: false,
+				filter: {
+					type: 'multiselect'
+				},
         cssClassName: 'width120',
 			},
       {
-				name: 'route_id',
+				name: 'route_name',
 				displayName: 'Маршрут',
 				type: 'number',
 				filter: {
-					type: 'select',
-          labelFunction: (id) => getRouteById(id).name || id,
+					type: 'multiselect'
 				},
         cssClassName: 'width120',
 			},
@@ -61,17 +45,16 @@ let getTableMeta = (props) => {
 				displayName: 'Количество проходов',
 				type: 'number',
 				filter: {
-					type: 'select'
+					type: 'multiselect'
 				},
         cssClassName: 'width120'
 			},
       {
-				name: 'technical_operation_id',
+				name: 'technical_operation_name',
 				displayName: 'Технологическая операция',
 				type: 'number',
 				filter: {
-					type: 'select',
-          labelFunction: (id) => getTechOperationById(id).name || id,
+					type: 'multiselect'
 				}
 			},
       {
@@ -84,21 +67,13 @@ let getTableMeta = (props) => {
 	};
 
 	return tableMeta;
-
 };
 
 
 export let MissionTemplatesTable = (props) => {
 
-		const renderers = {
-			technical_operation_id: ({data}) => <div>{getTechOperationById(data).name || data}</div>,
-      route_id: ({data}) => <div>{getRouteById(data).name || data}</div>,
-      car_id: ({data}) => <div>{getCarById(data).gov_number || data}</div>,
-		};
-
 		return <Table title="Шаблоны заданий"
 			results={props.data}
-			renderers={renderers}
 			tableMeta={getTableMeta(props)}
 			initialSort={'number'}
 			initialSortAscending={false}

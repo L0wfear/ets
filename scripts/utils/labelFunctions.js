@@ -54,7 +54,9 @@ export function employeeFIOLabelFunction(employeeId, fullFlag = false) {
 	const { flux } = window.__ETS_CONTAINER__;
   const employeesStore = flux.getStore('employees');
 	const employee = employeesStore.getEmployeeById(employeeId);
-  if (!employee) return '';
+  if (!employee) {
+		return '';
+	}
   let result = employee.last_name + ' ';
 	result += fullFlag ? `${employee.first_name || ''} ${employee.middle_name || ''}` : `${employee.first_name[0] && employee.first_name[0]+'.' || ''} ${employee.middle_name[0] && employee.middle_name[0]+'.' || ''}`;
 
@@ -63,9 +65,4 @@ export function employeeFIOLabelFunction(employeeId, fullFlag = false) {
 
 export function getTypeById(id) {
   return window.__ETS_CONTAINER__.flux.getStore('objects').getTypeById(id);
-}
-
-export function getFuelOperationById(id) {
-  const { flux } = window.__ETS_CONTAINER__;
-  return flux.getStore('fuelRates').getFuelOperationById(id);
 }

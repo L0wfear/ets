@@ -1,14 +1,9 @@
-// TODO переместить в модуль
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
-import Table from 'components/ui/table/DataTable.jsx';
-import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
-import EtsSelect from 'components/ui/EtsSelect.jsx';
+import { Button, Row, Col } from 'react-bootstrap';
 import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
 import Datepicker from 'components/ui/DatePicker.jsx';
-import { getToday859am, getYesterday0am, getYesterday9am, getYesterday2359, getFormattedDateTimeSeconds } from 'utils/dates';
-import { getReportNotReadyNotification } from 'utils/notifications';
 import { isEmpty } from 'utils/functions';
 
 class FuelReportHeader extends Component {

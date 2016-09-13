@@ -1,79 +1,9 @@
 import React, { Component } from 'react';
-import Table from 'components/ui/table/DataTable.jsx';
-import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
-import EtsSelect from 'components/ui/EtsSelect.jsx';
-import Div from 'components/ui/Div.jsx';
-import Field from 'components/ui/Field.jsx';
-import Datepicker from 'components/ui/DatePicker.jsx';
-import { getGeozoneTypeLabel} from 'utils/labelFunctions';
-import { getToday9am, getTomorrow9am, getToday0am, getToday2359, getFormattedDateTime, createValidDateTime } from 'utils/dates';
-import { getReportNotReadyNotification2 } from 'utils/notifications';
-import { isEmpty } from 'utils/functions';
+import { Button, Glyphicon } from 'react-bootstrap';
+import { getToday9am, getTomorrow9am, createValidDateTime } from 'utils/dates';
 import CarFuncTypeUsageReportHeader from './CarFuncTypeUsageReportHeader.jsx';
+import CarFuncTypeUsageReportsTable from './CarFuncTypeUsageReportsTable.jsx';
 import { FluxContext, connectToStores, exportable, staticProps } from 'utils/decorators';
-
-let tableMeta = {
-	cols: [
-		{
-			name: 'company_name',
-			displayName: 'Учреждение',
-			type: 'string',
-			filter: {
-				type: 'select',
-			}
-		},
-		{
-			name: 'func_type',
-			displayName: 'Тип техники',
-			type: 'string',
-			filter: {
-        type: 'select',
-			},
-		},
-		{
-			name: 'total_cars_count',
-			displayName: 'Кол-во техники указанного типа',
-			type: 'number',
-			filter: {
-        type: 'select',
-			},
-		},
-		{
-			name: 'technical_operation',
-			displayName: 'Технологическая операция',
-			type: 'string',
-			filter: {
-        type: 'select',
-			},
-		},
-		{
-			name: 'cars_count',
-			displayName: 'Задействованная техника',
-			type: 'number',
-			filter: {
-        type: 'select',
-			},
-		},
-	]
-}
-
-let CarFuncTypeUsageReportsTable = (props) => {
-
-	const renderers = {
-    rowNumber: (meta) => <div>{meta.rowData.hidden ? '' : meta.data}</div>,
-    company_name: (meta) => <div>{meta.rowData.hidden ? '' : meta.data}</div>,
-    func_type: (meta) => <div>{meta.rowData.hidden ? '' : meta.data}</div>,
-    total_cars_count: (meta) => <div>{meta.rowData.hidden ? '' : meta.data}</div>,
-	};
-
-	return <Table title='Статистика выхода техники за период'
-								tableMeta={tableMeta}
-								results={props.data}
-								renderers={renderers}
-								enableSort={false}
-								{...props} />
-
-}
 
 @connectToStores(['reports'])
 @FluxContext

@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 import Field from './Field.jsx';
 import Div from './Div.jsx';
 
@@ -41,7 +40,7 @@ export default class FieldWrap extends React.Component {
         break;
       case 'select':
         fieldProps = {
-          type: 'select',
+          type: 'select2',
           label: field.displayName,
           disabled: ! !!field.form.editable,
           hidden: field.form.hidden,

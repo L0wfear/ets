@@ -22,7 +22,7 @@ let tableMeta = {
       },
     },
 	]
-}
+};
 
 let MissionReportByPointsTable = (props) => {
 

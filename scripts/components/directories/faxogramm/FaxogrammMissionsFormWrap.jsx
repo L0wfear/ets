@@ -20,7 +20,7 @@ class FaxogrammMissionsFormWrap extends FormWrap {
 			let formErrors = this.validate(faxogrammMissions, {});
 
       if (isEmpty(faxogrammMissions.assign_to_waybill)) {
-        faxogrammMissions.assign_to_waybill = 'not_assign';
+        faxogrammMissions.assign_to_waybill = 'assign_to_draft';
       }
 
 			this.setState({

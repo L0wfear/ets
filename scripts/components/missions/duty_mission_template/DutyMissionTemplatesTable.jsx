@@ -31,9 +31,7 @@ let getTableMeta = (props) => {
 				name: 'comment',
 				displayName: 'Комментарий',
 				type: 'string',
-				filter: {
-					type: 'select',
-				},
+				filter: false,
 				cssClassName: 'width300'
 			},
 		]
@@ -44,12 +42,11 @@ let getTableMeta = (props) => {
 };
 
 
-export let DutyMissionTemplatesTable = (props) => {
-
-		return <Table title="Шаблоны наряд-заданий"
-									results={props.data}
-									tableMeta={getTableMeta(props)}
-									initialSort={'number'}
-									initialSortAscending={false}
-									{...props}/>
+export default (props) => {
+	return <Table title="Шаблоны наряд-заданий"
+  				results={props.data}
+  				tableMeta={getTableMeta(props)}
+  				initialSort={'number'}
+  				initialSortAscending={false}
+  				{...props}/>
 }

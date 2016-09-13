@@ -1,77 +1,9 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react';
 import connectToStores from 'flummox/connect';
 import { Button, Glyphicon } from 'react-bootstrap';
-import Table from 'components/ui/table/DataTable.jsx';
 import ElementsList from 'components/ElementsList.jsx';
-import moment from 'moment';
-import cx from 'classnames';
-import Griddle from 'griddle-react';
-import Paginator from 'components/ui/Paginator.jsx';
 import CompanyStructureFormWrap from './CompanyStructureFormWrap.jsx';
-
-
-let getTableMeta = (props) => {
-
-	let tableMeta = {
-		cols: [
-			{
-				name: 'name',
-				displayName: 'Название',
-				type: 'string',
-			},
-			{
-				name: 'type_display',
-				displayName: 'Тип',
-				type: 'string',
-				filter: {
-					type: 'select',
-				}
-      },
-			{
-				name: 'note',
-				displayName: 'Примечание',
-				type: 'string',
-				filter: {
-					type: 'select',
-				},
-			},
-			{
-				name: 'id',
-				displayName: 'Действия',
-				type: 'string',
-				filter: {
-					type: 'select',
-				},
-			},
-		]
-	};
-
-	return tableMeta;
-
-};
-
-
-let CompanyStructureTable = (props) => {
-
-		const renderers = {
-			id: ({data}) => {
-				return (
-					<div>
-						<Button className="action-button" onClick={props.onActionEdit.bind(null, data)}>Редактировать</Button>
-						<Button className="action-button" onClick={props.onActionDelete.bind(null, data)}>Удалить</Button>
-					</div>
-				);
-			}
-    };
-
-		return <Table title="Структура предприятия"
-									results={props.data}
-									renderers={renderers}
-									tableMeta={getTableMeta(props)}
-									isHierarchical={true}
-									{...props}/>
-}
+import CompanyStructureTable from './CompanyStructureTable.jsx';
 
 class CompanyStructure extends ElementsList {
 
@@ -96,8 +28,8 @@ class CompanyStructure extends ElementsList {
 
 	componentWillReceiveProps(props) {
 		if (!_.isEqual(props.companyStructureList, this.props.companyStructureList)) {
-			//переделать
-			setTimeout(() =>this.getLinearCompanyStructure(), 100);
+			// TODO переделать
+			setTimeout(() => this.getLinearCompanyStructure(), 100);
 		}
 	}
 
@@ -115,7 +47,6 @@ class CompanyStructure extends ElementsList {
 	}
 
 	render() {
-
 		const { companyStructureList = [] } = this.props;
 
 		return (

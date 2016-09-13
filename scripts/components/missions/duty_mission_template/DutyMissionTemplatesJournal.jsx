@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
 import DutyMissionTemplateFormWrap from './DutyMissionTemplateFormWrap.jsx';
-import { DutyMissionTemplatesTable } from './DutyMissionTemplatesTable.jsx';
+import DutyMissionTemplatesTable from './DutyMissionTemplatesTable.jsx';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import cx from 'classnames';
 import { connectToStores, staticProps } from 'utils/decorators';

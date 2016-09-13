@@ -3,25 +3,25 @@ export const efficiencySchema = {
 		{
 			key: 'technical_operation_id',
       title: 'Технологическая операция',
-			type: 'select',
+			type: 'number',
 			required: true,
 		},
 		{
 			key: 'source',
       title: 'Источник',
-			type: 'select',
+			type: 'number',
 			required: true,
 		},
 		{
 			key: 'areal_feature_id',
       title: 'Площадная характеристика',
-			type: 'select',
+			type: 'number',
 			required: true,
 		},
 		{
 			key: 'ratio',
       title: 'Коэффициент',
-			type: 'string',
+			type: 'number',
 			required: true,
 		}
 	],

@@ -103,13 +103,15 @@ class RouteForm extends Form {
 		let state = this.props.formState;
 		let errors = this.props.formErrors;
 		let { ROUTE_TYPE_OPTIONS, technicalOperationsList = [] } = this.state;
-    let TECH_OPERATIONS = technicalOperationsList.map(({id, name}) => ({value: id, label: name}));
+    const TECH_OPERATIONS = technicalOperationsList.map(({id, name}) => ({value: id, label: name}));
+
+		const title = state.id ? 'Изменение маршрута' : 'Создание нового маршрута';
 
 		return (
 			<Modal {...this.props} bsSize="large" backdrop="static">
 
 				<Modal.Header closeButton>
-					<Modal.Title id="contained-modal-title-lg">Создание нового маршрута</Modal.Title>
+					<Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
 				</Modal.Header>
 
 	      <Modal.Body>

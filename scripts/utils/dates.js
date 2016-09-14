@@ -8,7 +8,7 @@ export function makeUnixTime(time) {
   if (typeof time === 'string') {
     time = moment(time).toDate();
   }
-	return Math.floor(time / 1000);
+  return Math.floor(time / 1000);
 }
 
 export function makeTime(date, withSeconds = false) {
@@ -18,35 +18,35 @@ export function makeTime(date, withSeconds = false) {
 
 export function makeMinutes(date) {
   date = new Date(date);
-  return moment(date).format(`mm:ss`);
+  return moment(date).format('mm:ss');
 }
 
 export function getStartOfToday() {
-  let now = new Date();
+  const now = new Date();
   return new Date(now.getFullYear(), now.getMonth(), now.getDate());
 }
 
-export function createValidDate(date){
+export function createValidDate(date) {
   if (!date) return null;
   return moment(date).format('YYYY-MM-DD');
 }
 
-export function createValidDateTime(date){
+export function createValidDateTime(date) {
   if (!date) return null;
   return moment(date).format('YYYY-MM-DDTHH:mm:ss');
 }
 
-export function getFormattedDateTime(date){
+export function getFormattedDateTime(date) {
   if (!date) return '';
   return moment.utc(date).format(`${global.APP_DATE_FORMAT} HH:mm`);
 }
 
-export function getFormattedDateTimeSeconds(date){
+export function getFormattedDateTimeSeconds(date) {
   if (!date) return '';
   return moment(date).format(`${global.APP_DATE_FORMAT} HH:mm:ss`);
 }
 
-export function makeDateFromUnix(date){
+export function makeDateFromUnix(date) {
   if (!date) return '-';
   return moment.unix(date).format(`${global.APP_DATE_FORMAT} HH:mm:ss`);
 }
@@ -54,52 +54,52 @@ export function makeDateFromUnix(date){
 // смены за вчера, сегодня, завтра
 
 export function getYesterday0am() {
-  let now = new Date();
+  const now = new Date();
 
   return new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 0, 0);
 }
 
 export function getYesterday2359() {
-  let now = new Date();
+  const now = new Date();
   return new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 23, 59);
 }
 
 export function getYesterday9am() {
-  let now = new Date();
+  const now = new Date();
 
   return new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 9, 0);
 }
 
 export function getToday9am() {
-  let now = new Date();
+  const now = new Date();
 
   return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 0);
 }
 
 export function getToday859am() {
-  let now = new Date();
+  const now = new Date();
 
   return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, 59);
 }
 
 export function getToday0am() {
-  let now = new Date();
+  const now = new Date();
   return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0);
 }
 
 export function getToday2359() {
-  let now = new Date();
+  const now = new Date();
   return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59);
 }
 
 export function getTomorrow9am() {
-  let now = new Date();
+  const now = new Date();
 
   return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 8, 59);
 }
 
 export function getDatesByShift() {
-  let now = new Date();
+  const now = new Date();
   if (now.getHours() > 18) {
     return [
       new Date(now.getFullYear(), now.getMonth(), now.getDate(), 19, 0),

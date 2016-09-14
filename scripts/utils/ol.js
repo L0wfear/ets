@@ -4,7 +4,7 @@ export const GeoJSON = new ol.format.GeoJSON();
 export const defaultZoom = new ol.control.Zoom({
   duration: 400,
   className: 'ol-zoom',
-  delta: 1
+  delta: 1,
 });
 
 export function getPointStyle(fillColor, radius, strokeColor = 'white', strokeWidth = 2) {
@@ -13,24 +13,24 @@ export function getPointStyle(fillColor, radius, strokeColor = 'white', strokeWi
       radius,
       snapToPixel: false,
       fill: new ol.style.Fill({
-        color: fillColor
+        color: fillColor,
       }),
       stroke: new ol.style.Stroke({
         color: strokeColor,
-        width: strokeWidth
-      })
-    })
+        width: strokeWidth,
+      }),
+    }),
   });
-};
+}
 
 export function getPolyStyle(color, width = 1) {
   return new ol.style.Style({
     fill: new ol.style.Fill({
-      color
+      color,
     }),
     stroke: new ol.style.Stroke({
       color,
-      width
-    })
+      width,
+    }),
   });
 }

@@ -32,7 +32,7 @@ export function getReportStatusLabel(status) {
     default:
       return 'Н/Д';
   }
-};
+}
 
 export function getGeozoneTypeLabel(type) {
   return type === 'odh' ? 'Объект дорожного хозяйства' : 'Дворовая территория';
@@ -51,9 +51,9 @@ export function getPeriodicReportStatusLabel(s) {
 
 // TODO обращений к сторам быть не должно, нужно получать данные из бека
 export function employeeFIOLabelFunction(employeeId, fullFlag = false) {
-	const { flux } = window.__ETS_CONTAINER__;
+  const { flux } = window.__ETS_CONTAINER__;
   const employeesStore = flux.getStore('employees');
-	const employee = employeesStore.getEmployeeById(employeeId);
+  const employee = employeesStore.getEmployeeById(employeeId);
   if (!employee) {
 		return '';
 	}

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Table from 'components/ui/table/Table.jsx';
 import { Input, Button, Glyphicon } from 'react-bootstrap';
 import EtsSelect from 'components/ui/EtsSelect.jsx';
@@ -13,10 +13,10 @@ import cx from 'classnames';
 export default class Taxes extends Component {
 
   static propTypes = {
-    type: React.PropTypes.string.isRequired
+    type: React.PropTypes.string.isRequired,
   }
 
-  static getResult({FACT_VALUE, fuel_correction_rate, FUEL_RATE}) {
+  static getResult({ FACT_VALUE, fuel_correction_rate, FUEL_RATE }) {
     if (isEmpty(FACT_VALUE) || isEmpty(fuel_correction_rate) || isEmpty(FUEL_RATE)) {
       return 0;
     }
@@ -55,50 +55,50 @@ export default class Taxes extends Component {
     const { type } = props;
 
     this.tableCaptions = [
-      "Операция",
-      "Норма",
-      "Поправочный коэффициент",
-      `Значение (${type === 'odometr' ? 'км' : 'м/ч' })`,
-      "Результат (л)"
+      'Операция',
+      'Норма',
+      'Поправочный коэффициент',
+      `Значение (${type === 'odometr' ? 'км' : 'м/ч'})`,
+      'Результат (л)',
     ];
 
     this.tableCols = [
-      "OPERATION",
-      "FUEL_RATE",
-      "fuel_correction_rate",
-      "FACT_VALUE",
-      "RESULT",
+      'OPERATION',
+      'FUEL_RATE',
+      'fuel_correction_rate',
+      'FACT_VALUE',
+      'RESULT',
     ];
 
     this.tableCellRenderers = {
       OPERATION: (OPERATION, row, index) => {
         if (props.readOnly) {
-          const operation = _.find(this.state.operations, (op) => OPERATION === op.value);
+          const operation = _.find(this.state.operations, op => OPERATION === op.value);
           return operation ? operation.label || '' : '';
         }
         const options = this.state.operations.map((op) => {
-          const { taxes = this.state.tableData} = this.props;
+          const { taxes = this.state.tableData } = this.props;
           const usedOperations = taxes.map(t => t.OPERATION);
           if (usedOperations.indexOf(op.value) > -1) {
             op.disabled = true;
           }
           return op;
         });
-        return <EtsSelect clearable={false} disabled={props.readOnly} options={options} value={OPERATION} onChange={this.handleOperationChange.bind(this, index)}/>
+        return <EtsSelect clearable={false} disabled={props.readOnly} options={options} value={OPERATION} onChange={this.handleOperationChange.bind(this, index)} />;
       },
-      RESULT: (RESULT) => `${RESULT ? RESULT + ' л' : ''}`,
+      RESULT: RESULT => `${RESULT ? RESULT + ' л' : ''}`,
       fuel_correction_rate: (fuel_correction_rate, row) => {
-        return fuel_correction_rate ? parseFloat(fuel_correction_rate).toFixed(3) : 1
+        return fuel_correction_rate ? parseFloat(fuel_correction_rate).toFixed(3) : 1;
       },
-      FACT_VALUE: (FACT_VALUE, {OPERATION, FUEL_RATE}, index) => {
+      FACT_VALUE: (FACT_VALUE, { OPERATION, FUEL_RATE }, index) => {
         const props = {
           type: 'number',
           min: 0,
           value: FACT_VALUE,
-          disabled: typeof FUEL_RATE === 'undefined' || typeof OPERATION === 'undefined' || this.props.readOnly
+          disabled: typeof FUEL_RATE === 'undefined' || typeof OPERATION === 'undefined' || this.props.readOnly,
         };
         return <Input {...props} onChange={this.handleFactValueChange.bind(this, index)} />;
-      }
+      },
     };
 
     this.state = {
@@ -111,56 +111,55 @@ export default class Taxes extends Component {
 
   handleFactValueChange(index, e) {
     const { tableData } = this.state;
-    let current = tableData[index];
+    const current = tableData[index];
     current.FACT_VALUE = Math.abs(e.target.value);
     current.RESULT = Taxes.getResult(current);
 
-    this.setState({tableData});
+    this.setState({ tableData });
     this.props.onChange(tableData);
   }
 
   handleOperationChange(index, value) {
     const { tableData, fuelRates } = this.state;
-    tableData[index]['OPERATION'] = value;
+    tableData[index].OPERATION = value;
     const fuelRateByOperation = _.find(fuelRates, r => r.operation_id === value) || {};
-    tableData[index]['FUEL_RATE'] = fuelRateByOperation.rate_on_date || 0;
-    tableData[index]['RESULT'] = Taxes.getResult(tableData[index]);
+    tableData[index].FUEL_RATE = fuelRateByOperation.rate_on_date || 0;
+    tableData[index].RESULT = Taxes.getResult(tableData[index]);
 
-    this.setState({tableData});
+    this.setState({ tableData });
     this.props.onChange(tableData);
   }
 
   addOperation() {
     const { tableData } = this.state;
     const { correctionRate, baseFactValue } = this.props;
-    let overallValue = Taxes.calculateFinalFactValue(this.state.tableData);
-    let value = baseFactValue ? (baseFactValue - overallValue).toFixed(3) : null;
-    tableData.push({fuel_correction_rate: correctionRate, FACT_VALUE: value});
-    this.setState({tableData});
+    const overallValue = Taxes.calculateFinalFactValue(this.state.tableData);
+    const value = baseFactValue ? (baseFactValue - overallValue).toFixed(3) : null;
+    tableData.push({ fuel_correction_rate: correctionRate, FACT_VALUE: value });
+    this.setState({ tableData });
   }
 
   removeOperation() {
     const { tableData } = this.state;
     tableData.splice(this.state.selectedOperation, 1);
-    this.setState({tableData});
+    this.setState({ tableData });
     this.props.onChange(tableData);
   }
 
   componentWillReceiveProps(props) {
     let { operations, fuelRates, taxes = this.state.tableData } = props;
-    operations = operations.map( ({id, name}) => ({value: id, label: name}));
+    operations = operations.map(({ id, name }) => ({ value: id, label: name }));
     taxes.map((tax) => {
-      tax['RESULT'] = Taxes.getResult(tax); return tax
+      tax.RESULT = Taxes.getResult(tax); return tax;
     });
-    this.setState({operations, fuelRates, tableData: taxes});
+    this.setState({ operations, fuelRates, tableData: taxes });
   }
 
   selectOperation(selectedOperation) {
-    this.setState({selectedOperation});
+    this.setState({ selectedOperation });
   }
 
   render() {
-
     const { taxes = this.state.tableData, fuelRates = [], type,
       title = 'Расчет топлива по норме',
       noDataMessage = 'Для данного ТС нормы расхода топлива не указаны',
@@ -171,10 +170,10 @@ export default class Taxes extends Component {
     const finalFactValueEqualsBaseValue = parseFloat(baseFactValue).toFixed(3) === parseFloat(finalFactValue).toFixed(3);
     const finalFactValueClassName = cx('taxes-result-label', {
       'taxes-result-label-positive': finalFactValueEqualsBaseValue,
-      'taxes-result-label-negative': !finalFactValueEqualsBaseValue
+      'taxes-result-label-negative': !finalFactValueEqualsBaseValue,
     });
 
-		return (
+    return (
       <Div className="taxi-calc-block" hidden={this.props.hidden}>
         <Div className="some-header">
           <h4>{title}</h4>
@@ -192,22 +191,22 @@ export default class Taxes extends Component {
         </Div>
         <Div hidden={!hasTaxes}>
           <Table title="Расчет топлива по норме"
-              columnCaptions={this.tableCaptions}
-              data={taxes}
-              tableCols={this.tableCols}
-              pageSize={10}
-              usePagination={false}
-              cellRenderers={this.tableCellRenderers}
-              onRowSelected={!this.props.readOnly ? this.selectOperation.bind(this) : undefined} />
+            columnCaptions={this.tableCaptions}
+            data={taxes}
+            tableCols={this.tableCols}
+            pageSize={10}
+            usePagination={false}
+            cellRenderers={this.tableCellRenderers}
+            onRowSelected={!this.props.readOnly ? this.selectOperation.bind(this) : undefined}
+          />
         </Div>
         <Div className="taxes-result" hidden={!hasTaxes}>
           <div className="taxes-result-label">Итого</div>
           <div className={finalFactValueClassName}>{finalFactValue}</div>
           <div className="taxes-result-value">{finalResult} л.</div>
         </Div>
-			</Div>
+      </Div>
     );
-
   }
 
 }

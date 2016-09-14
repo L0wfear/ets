@@ -5,7 +5,7 @@ export function parseFilename(contentDisposition) {
   try {
     const result = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(contentDisposition);
     if (result && result[1]) {
-      filename = utf8.decode(result[1]).replace(/\"/g, '');
+      filename = utf8.decode(result[1]).replace(/"/g, '');
     }
   } catch (e) {
     filename = null;

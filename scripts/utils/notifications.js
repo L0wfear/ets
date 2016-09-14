@@ -7,11 +7,11 @@ export const loginErrorNotification = {
   autoDismiss: 5,
   action: {
     label: 'Перейти на страницу авторизации',
-    callback: function() {
+    callback() {
       window.location.hash = '/login';
       window.location.reload();
-    }
-  }
+    },
+  },
 };
 
 export const missionsCreationSuccessNotification = {
@@ -36,7 +36,7 @@ export function getErrorNotification(error) {
       callback: () => window.location.reload(),
     },
   };
-};
+}
 
 export function getServerErrorNotification(errorService) {
   return {
@@ -51,13 +51,13 @@ export function getServerErrorNotification(errorService) {
       callback: () => window.location.reload(),
     },
   };
-};
+}
 
 
 export function getReportNotReadyNotification(flux) {
   return {
     title: 'Внимание',
-    message: `Отчет еще не обработан`,
+    message: 'Отчет еще не обработан',
     level: 'info',
     dismissible: true,
     position: 'tc',
@@ -72,7 +72,7 @@ export function getReportNotReadyNotification(flux) {
 export function getReportNotReadyNotification2(flux) {
   return {
     title: 'Внимание',
-    message: `Отчет еще не обработан`,
+    message: 'Отчет еще не обработан',
     level: 'info',
     dismissible: true,
     position: 'tc',
@@ -87,7 +87,7 @@ export function getReportNotReadyNotification2(flux) {
 export function getReportNotReadyNotification3(flux) {
   return {
     title: 'Внимание',
-    message: `Отчет еще не обработан`,
+    message: 'Отчет еще не обработан',
     level: 'info',
     dismissible: true,
     position: 'tc',
@@ -106,7 +106,7 @@ const missionCreateSuccessNotification = {
   dismissible: false,
   position: 'tc',
   autoDismiss: 3,
-}
+};
 
 const missionsByCarAndDateUpdateNotification = {
   title: '',
@@ -115,7 +115,7 @@ const missionsByCarAndDateUpdateNotification = {
   dismissible: true,
   position: 'tr',
   autoDismiss: 5,
-}
+};
 
 export const saveDataSuccessNotification = {
   title: '',
@@ -124,7 +124,7 @@ export const saveDataSuccessNotification = {
   dismissible: true,
   position: 'tc',
   autoDismiss: 5,
-}
+};
 
 export const reassignMissionSuccessNotification = {
   title: '',
@@ -133,13 +133,13 @@ export const reassignMissionSuccessNotification = {
   dismissible: true,
   position: 'tc',
   autoDismiss: 5,
-}
+};
 
 export const notifications = {
   missionCreateSuccessNotification,
   missionsCreationSuccessNotification,
-  missionsByCarAndDateUpdateNotification
-}
+  missionsByCarAndDateUpdateNotification,
+};
 
 export function getWarningNotification(message) {
   return {

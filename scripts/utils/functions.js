@@ -34,11 +34,10 @@ export function isEmpty(value) {
 }
 
 export function saveData(blob, fileName) {
-
-  let a = document.createElement("a");
+  const a = document.createElement('a');
   document.body.appendChild(a);
-  a.style = "display: none";
-  let url = window.URL.createObjectURL(blob);
+  a.style = 'display: none';
+  const url = window.URL.createObjectURL(blob);
   a.href = url;
   if (fileName) {
     a.download = fileName;
@@ -48,11 +47,10 @@ export function saveData(blob, fileName) {
 }
 
 export function printData(blob) {
-  console.log(blob);
-  let url = window.URL.createObjectURL(new Blob([blob], {type:'application/pdf'}));
-  let iframe = document.createElement("iframe");
+  const url = window.URL.createObjectURL(new Blob([blob], { type: 'application/pdf' }));
+  const iframe = document.createElement('iframe');
   document.body.appendChild(iframe);
-  iframe.style = "display: none";
+  iframe.style = 'display: none';
   iframe.src = url;
   iframe.onload = () => {
     iframe.focus();
@@ -81,15 +79,15 @@ export function hasOdometer(carStateNumber) {
  * @return {*}
  */
 export function hexToRgba(hex, opacity) {
-  let shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+  const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+  hex = hex.replace(shorthandRegex, (m, r, g, b) => {
     return r + r + g + g + b + b;
   });
 
-  let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result ? 'rgba('
   + parseInt(result[1], 16) + ','
   + parseInt(result[2], 16) + ','
   + parseInt(result[3], 16) + ','
-  + opacity + ')' : null
+  + opacity + ')' : null;
 }

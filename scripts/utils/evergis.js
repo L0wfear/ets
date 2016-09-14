@@ -1,13 +1,13 @@
 export function getEverGisToken() {
   const tokenUrl = `http://gisoiv.mos.ru/IntegrationGIS/SpatialProcessor/Strategis.JsClient/ApiLogin.aspx?authId=505741D8-C667-440D-9CA0-32FD1FF6AF88&userName=jspublic&password=jspublic&ts=${new Date().getTime()}`;
-  return fetch(tokenUrl).then((response) => response.json()).then((data) => encodeURIComponent(data.token));
+  return fetch(tokenUrl).then(response => response.json()).then(data => encodeURIComponent(data.token));
 }
 
 const ATTEMPTS_LIMIT = 10;
 const FIFTY_SECONDS = 1000 * 50;
 
 let EVERGIS_TOKEN = null;
-let lastTokenUsedTime = null;
+const lastTokenUsedTime = null;
 let loading = false;
 let attempts = 0;
 let refreshAttemptsTimeoutId = null;

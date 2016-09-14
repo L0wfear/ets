@@ -10,5 +10,5 @@ module.exports = {
   config: 'config',
   stores: 'stores',
   actions: 'actions',
-  redux: 'redux'
-}
+  redux: 'redux',
+};

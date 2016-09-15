@@ -7,7 +7,7 @@ import employees from './EmployeesStore.js';
 import fuelRates from './FuelRatesStore.js';
 import missions from './MissionsStore.js';
 import objects from './ObjectsStore.js';
-import odh from './ODHStore.js'
+import odh from './ODHStore.js';
 import points from './PointsStore.js';
 import reports from './ReportsStore.js';
 import routes from './RoutesStore.js';
@@ -33,5 +33,5 @@ export default {
   waybills,
   loading,
   notifications,
-  geoObjects
-}
+  geoObjects,
+};

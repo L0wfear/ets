@@ -1,7 +1,6 @@
 import { Store } from 'flummox';
-import _ from 'lodash';
 
-class RoutesStore extends Store {
+export default class RoutesStore extends Store {
 
   constructor(flux) {
     super();
@@ -23,29 +22,21 @@ class RoutesStore extends Store {
       reportsList: [],
       selectedReportData: [],
     };
-
   }
 
   handleGetRoutes(routes) {
     this.setState({ routesList: routes.result });
   }
 
-  handleCreateRoute({createdRoute, routes}) {
-    this.setState({routesList: routes.result});
+  handleCreateRoute({ routes }) {
+    this.setState({ routesList: routes.result });
   }
 
   handleGetRouteReports(reports) {
-    this.setState({reportsList: reports.result.rows});
+    this.setState({ reportsList: reports.result.rows });
   }
 
   handleGetRouteReportById(report) {
-    this.setState({selectedReportData: report.result.rows});
-  }
-
-  getRouteById(id) {
-    return _.find(this.state.routesList, r => r.id === id) || {};
+    this.setState({ selectedReportData: report.result.rows });
   }
 }
-
-
-export default RoutesStore;

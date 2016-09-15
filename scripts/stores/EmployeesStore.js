@@ -17,15 +17,14 @@ class EmployeeStore extends Store {
       employeesList: [],
       driversList: [],
     };
-
   }
 
-  handleGetEmployees({result}) {
-    this.setState({employeesList: result});
-	}
+  handleGetEmployees({ result }) {
+    this.setState({ employeesList: result });
+  }
 
-  handleGetDrivers({result}) {
-    this.setState({driversList: result});
+  handleGetDrivers({ result }) {
+    this.setState({ driversList: result });
   }
 
   getEmployeeById(id) {

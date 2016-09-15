@@ -1,7 +1,7 @@
 import { Store } from 'flummox';
 import _ from 'lodash';
 
-class ObjectsStore extends Store {
+export default class ObjectsStore extends Store {
 
   constructor(flux) {
     super();
@@ -62,12 +62,11 @@ class ObjectsStore extends Store {
 
       faxogrammsMaxPage: 0,
     };
-
   }
 
   handleGetTechnicalOperationsObjects(technicalOperationsObjects) {
-    let result = technicalOperationsObjects.result;
-    _.each(result, obj => {
+    const result = technicalOperationsObjects.result;
+    _.each(result, (obj) => {
       if (obj.short_name === 'ОДХ') {
         obj.type = 'simple';
       } else if (obj.short_name === 'ДТ') {
@@ -76,79 +75,73 @@ class ObjectsStore extends Store {
         obj.type = 'points';
       }
     });
-    this.setState({technicalOperationsObjectsList: result});
+    this.setState({ technicalOperationsObjectsList: result });
   }
 
   handleGetTechnicalOperationsTypes(technicalOperationsTypes) {
-    this.setState({technicalOperationsTypesList: technicalOperationsTypes.result});
+    this.setState({ technicalOperationsTypesList: technicalOperationsTypes.result });
   }
 
   handleGetCompanyStructure(companyStructure) {
-    this.setState({companyStructureList: companyStructure.result})
+    this.setState({ companyStructureList: companyStructure.result });
   }
 
   handleGetCompanyList(companyList) {
-    this.setState({companyList: companyList.result})
+    this.setState({ companyList: companyList.result });
   }
 
   handleGetCars(cars) {
-    const carsList = cars.result.map( c => {
-      let model = _.find(this.state.modelsList, m => m.id === c.model_id);
-          c.model = model ? model.title : 'Н/Д';
-      let type = _.find(this.state.typesList, t => t.id === c.type_id);
-          c.type = type ? type.title : 'Н/Д';
+    const carsList = cars.result.map((c) => {
+      const model = _.find(this.state.modelsList, m => m.id === c.model_id);
+      c.model = model ? model.title : 'Н/Д';
+      const type = _.find(this.state.typesList, t => t.id === c.type_id);
+      c.type = type ? type.title : 'Н/Д';
       return c;
     });
-    let carsIndex = _.keyBy(carsList, 'asuods_id');
-    this.setState({carsList, carsIndex});
+    const carsIndex = _.keyBy(carsList, 'asuods_id');
+    this.setState({ carsList, carsIndex });
   }
 
   handleGetModels(modelsList) {
-    let modelsIndex = _.keyBy(modelsList, 'id');
-    const carsList = this.state.carsList.map( c => {
-      let model = _.find(modelsList, m => m.id === c.model_id);
-          c.model = model ? model.title : 'Н/Д';
-      return c;
-    });
-    let carsIndex = _.keyBy(carsList, 'asuods_id');
-    this.setState({modelsList, modelsIndex});
+    const modelsIndex = _.keyBy(modelsList, 'id');
+    this.setState({ modelsList, modelsIndex });
   }
 
-  handleGetSpecialModels({result}) {
-    this.setState({specialModelsList: result});
+  handleGetSpecialModels({ result }) {
+    this.setState({ specialModelsList: result });
   }
 
   handleGetTypes(typesList) {
-    let typesIndex = _.keyBy(typesList, 'id');
-    this.setState({typesList, typesIndex});
+    const typesIndex = _.keyBy(typesList, 'id');
+    this.setState({ typesList, typesIndex });
   }
 
   handleGetCustomers(customersList) {
-    this.setState({customersList});
+    this.setState({ customersList });
   }
 
   handleGetFuelTypes(fuelTypes) {
-    this.setState({fuelTypes: fuelTypes.result});
+    this.setState({ fuelTypes: fuelTypes.result });
   }
 
   handleGetTechOperations(techOperations) {
-    this.setState({technicalOperationsList: techOperations.result});
+    this.setState({ technicalOperationsList: techOperations.result });
   }
 
   handleGetWorkKinds(workKinds) {
-    this.setState({workKindsList: workKinds.result});
+    this.setState({ workKindsList: workKinds.result });
   }
 
   handleGetOrganizations(organizations) {
-    this.setState({organizations: organizations.result});
+    this.setState({ organizations: organizations.result });
   }
 
   handleGetFaxogramms(faxogramms) {
-    this.setState({faxogrammsList: faxogramms.result, faxogrammsMaxPage: faxogramms.total_pages});
+    this.setState({ faxogrammsList: faxogramms.result, faxogrammsMaxPage: faxogramms.total_pages });
   }
 
   handleGetPositions(positions) {
-    this.setState({positionsList: positions.result});
+    this.setState({ positionsList: positions.result });
   }
 
   getTechOperationById(id) {
@@ -164,10 +157,7 @@ class ObjectsStore extends Store {
   }
 
   handleGetConfig(appConfig) {
-    console.log(appConfig);
-    this.setState({appConfig});
+    this.setState({ appConfig });
   }
 
 }
-
-export default ObjectsStore;

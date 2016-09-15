@@ -1,5 +1,4 @@
 import { Store } from 'flummox';
-import _ from 'lodash';
 
 export default class GeoObjectsStore extends Store {
 
@@ -28,7 +27,6 @@ export default class GeoObjectsStore extends Store {
       fuelingWaterStationsList: [],
       carpoolsList: [],
       dangerZonesList: [],
-      mspsList: [],
 
       odhsIndex: {},
       dtsIndex: {},
@@ -51,21 +49,20 @@ export default class GeoObjectsStore extends Store {
       carpoolPolys: {},
 
       selectedPolysTypes: [],
-      selectedFeature: null
+      selectedFeature: null,
     };
-
   }
 
-  handleGetList(name, {result}) {
+  handleGetList(name, { result }) {
     const statePropertyName = `${name}List`;
     this.setState({
-      [statePropertyName]: result
+      [statePropertyName]: result,
     });
   }
 
   handleSetSelectedPolysType(type) {
     if (type === null) {
-      this.setState({selectedPolysTypes: []});
+      this.setState({ selectedPolysTypes: [] });
       this.handleSelectFeature(null);
       return;
     }
@@ -83,56 +80,56 @@ export default class GeoObjectsStore extends Store {
       selectedPolysTypes.push(type);
     }
 
-    this.setState({selectedPolysTypes});
+    this.setState({ selectedPolysTypes });
   }
 
   handleGetGeozones(data) {
     const geozones = data.result;
-    let geozonePolys = {};
-    let odhPolys = {};
-    let dtPolys = {};
-    geozones.map( g => {
+    const geozonePolys = {};
+    const odhPolys = {};
+    const dtPolys = {};
+    geozones.map((g) => {
       if (g.geozone_type === 'ROAD') {
         odhPolys[g.id] = {
           shape: JSON.parse(g.shape),
           name: g.name,
           state: 1,
-        }
+        };
       }
       if (g.geozone_type === 'DT') {
         dtPolys[g.id] = {
           shape: JSON.parse(g.shape),
           name: g.name,
           state: 1,
-        }
+        };
       }
       geozonePolys[g.id] = {
         shape: JSON.parse(g.shape),
         name: g.name,
         state: 1,
-      }
+      };
     });
-    this.setState({geozonePolys, dtPolys, odhPolys});
+    this.setState({ geozonePolys, dtPolys, odhPolys });
   }
 
   handleGetGeozonesByTypeWithGeometry(response) {
     const { type, data = {} } = response;
     const { rows = [] } = data.result;
     const polys = {};
-    rows.map(geozone => {
-      let data = geozone;
-      let shape = JSON.parse(geozone.shape);
+    rows.map((geozone) => {
+      const data = geozone;
+      const shape = JSON.parse(geozone.shape);
       data.featureType = type;
       delete data.shape;
       polys[geozone.id] = Object.assign({}, {
         shape,
-        data
+        data,
       });
     });
     const polysByType = `${type}Polys`;
 
     this.setState({
-      [polysByType]: polys
+      [polysByType]: polys,
     });
   }
 
@@ -141,14 +138,14 @@ export default class GeoObjectsStore extends Store {
     const { rows = [] } = data.result;
     const typeList = `${type}sList`;
     this.setState({
-      [typeList]: rows
+      [typeList]: rows,
     });
   }
 
   getSelectedPolys() {
     const { selectedPolysTypes } = this.state;
-    let polys = {};
-    selectedPolysTypes.map(type => {
+    const polys = {};
+    selectedPolysTypes.map((type) => {
       Object.assign(polys, this.state[`${type}Polys`]);
     });
 
@@ -171,7 +168,7 @@ export default class GeoObjectsStore extends Store {
         this.setState({
           selectedFeature,
           [polysByTypePrev]: polysPrev,
-          [polysByType]: polys
+          [polysByType]: polys,
         });
       } else {
         const type = selectedFeature.featureType;
@@ -180,22 +177,20 @@ export default class GeoObjectsStore extends Store {
         polys[selectedFeature.id].selected = true;
         this.setState({
           selectedFeature,
-          [polysByType]: polys
+          [polysByType]: polys,
         });
       }
+    } else if (this.state.selectedFeature !== null) {
+      const type = this.state.selectedFeature.featureType;
+      const polysByType = `${type}Polys`;
+      const polys = this.state[polysByType];
+      delete polys[this.state.selectedFeature.id].selected;
+      this.setState({
+        selectedFeature,
+        [polysByType]: polys,
+      });
     } else {
-      if (this.state.selectedFeature !== null) {
-        const type = this.state.selectedFeature.featureType;
-        const polysByType = `${type}Polys`;
-        const polys = this.state[polysByType];
-        delete polys[this.state.selectedFeature.id].selected;
-        this.setState({
-          selectedFeature,
-          [polysByType]: polys
-        });
-      } else {
-        this.setState({selectedFeature});
-      }
+      this.setState({ selectedFeature });
     }
   }
 

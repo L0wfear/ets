@@ -1,7 +1,6 @@
 import { Store } from 'flummox';
-import _ from 'lodash';
 
-class ReportsStore extends Store {
+export default class ReportsStore extends Store {
 
   constructor(flux) {
     super();
@@ -23,35 +22,32 @@ class ReportsStore extends Store {
       carFuncTypeUsageReportsList: [],
       fuelReport: [],
       weeklyTechnicalOperationCompleteReportsList: [],
-      odhCoverageReport: []
+      odhCoverageReport: [],
     };
-
   }
 
-  handleGetFuelReport({result}) {
-    this.setState({fuelReport: result.rows});
+  handleGetFuelReport({ result }) {
+    this.setState({ fuelReport: result.rows });
   }
 
-  handleGetCarFuncTypeUsageReports({result}) {
-    this.setState({carFuncTypeUsageReportsList: result.rows});
+  handleGetCarFuncTypeUsageReports({ result }) {
+    this.setState({ carFuncTypeUsageReportsList: result.rows });
   }
 
   handleGetDailyCleaningReportsETS(dailyCleaningReports) {
-    this.setState({dailyCleaningReportsListETS: dailyCleaningReports.result.rows});
+    this.setState({ dailyCleaningReportsListETS: dailyCleaningReports.result.rows });
   }
 
   handleGetDailyCleaningReportsCAFAP(dailyCleaningReports) {
-    this.setState({dailyCleaningReportsListCAFAP: dailyCleaningReports.result.rows});
+    this.setState({ dailyCleaningReportsListCAFAP: dailyCleaningReports.result.rows });
   }
 
   handleGetWeeklyTechnicalOperationCompleteReports(weeklyTechnicalOperationCompleteReports) {
-    this.setState({weeklyTechnicalOperationCompleteReportsList: weeklyTechnicalOperationCompleteReports.result.rows});
+    this.setState({ weeklyTechnicalOperationCompleteReportsList: weeklyTechnicalOperationCompleteReports.result.rows });
   }
 
-  handleGetOdhCoverageReport({result}) {
-    this.setState({odhCoverageReport: result});
+  handleGetOdhCoverageReport({ result }) {
+    this.setState({ odhCoverageReport: result });
   }
 
 }
-
-export default ReportsStore;

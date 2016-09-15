@@ -1,6 +1,6 @@
 import { Store } from 'flummox';
 import _ from 'lodash';
-import { getToday9am, getTomorrow9am, getDatesByShift } from 'utils/dates';
+import { getToday9am, getTomorrow9am } from 'utils/dates';
 
 class MissionsStore extends Store {
 
@@ -44,27 +44,26 @@ class MissionsStore extends Store {
       dutyMissionsList: [],
       dutyMissionTemplatesList: [],
     };
-
   }
 
   handleGetMissions(missions) {
-    this.setState({missionsList: missions.result.rows});
-	}
+    this.setState({ missionsList: missions.result.rows });
+  }
 
   handleGetMissionSources(missionSources) {
-    this.setState({missionSourcesList: missionSources.result});
+    this.setState({ missionSourcesList: missionSources.result });
   }
 
   handleGetMissionTemplates(missionTemplate) {
-    this.setState({missionTemplatesList: missionTemplate.result});
+    this.setState({ missionTemplatesList: missionTemplate.result });
   }
 
   handleGetDutyMissions(dutyMissions) {
-    this.setState({dutyMissionsList: dutyMissions.result.rows});
+    this.setState({ dutyMissionsList: dutyMissions.result.rows });
   }
 
   handleGetDutyMissionTemplates(dutyMissionTemplates) {
-    this.setState({dutyMissionTemplatesList: dutyMissionTemplates.result});
+    this.setState({ dutyMissionTemplatesList: dutyMissionTemplates.result });
   }
 
   getMissionSourceById(id) {
@@ -72,7 +71,7 @@ class MissionsStore extends Store {
   }
 
   handleGetMissionReports(missionReports) {
-    this.setState({missionReportsList: missionReports.result.rows});
+    this.setState({ missionReportsList: missionReports.result.rows });
   }
 
   handleGetMissionReportById(data) {
@@ -80,26 +79,26 @@ class MissionsStore extends Store {
     //   r.index = i;
     //   return r;
     // });
-    let selectedReportData = data.result.rows.map((r,i) => {
+    const selectedReportData = data.result.rows.map((r, i) => {
       r.index = i;
       return r;
     });
-    this.setState({selectedReportData});
+    this.setState({ selectedReportData });
   }
 
   handleGetMissionReportByODHs(index) {
     const missionReport = this.state.selectedReportData;
-    this.setState({selectedReportDataODHS: missionReport[index].report_by_odh});
+    this.setState({ selectedReportDataODHS: missionReport[index].report_by_odh });
   }
 
   handleGetMissionReportByPoints(index) {
     const missionReport = this.state.selectedReportData;
-    this.setState({selectedReportDataPoints: missionReport[index].report_by_point});
+    this.setState({ selectedReportDataPoints: missionReport[index].report_by_point });
   }
 
   handleGetMissionReportByDTs(index) {
     const missionReport = this.state.selectedReportData;
-    this.setState({selectedReportDataDTS: missionReport[index].report_by_dt});
+    this.setState({ selectedReportDataDTS: missionReport[index].report_by_dt });
   }
 
 }
@@ -108,7 +107,7 @@ export default MissionsStore;
 
 export function getDefaultMission(date_start = getToday9am(), date_end = getTomorrow9am()) {
   return {
-    description: "",
+    description: '',
     date_start,
     date_end,
     assign_to_waybill: 'assign_to_draft',
@@ -118,7 +117,7 @@ export function getDefaultMission(date_start = getToday9am(), date_end = getTomo
 }
 
 export function getDefaultDutyMission() {
-  //let dates = getDatesByShift();
+  // let dates = getDatesByShift();
   return {
     status: 'not_assigned',
     plan_date_start: getToday9am(),
@@ -140,14 +139,14 @@ export function getDefaultDutyMissionsCreationTemplate() {
   return {
     date_start: getToday9am(),
     date_end: getTomorrow9am(),
-    mission_source_id: 4
+    mission_source_id: 4,
   };
 }
 
 export function getDefaultMissionTemplate() {
   return {
-    description: "",
-    passes_count: 1
+    description: '',
+    passes_count: 1,
   };
 }
 
@@ -157,6 +156,6 @@ export function getDefaultMissionsCreationTemplate() {
     date_end: getTomorrow9am(),
     assign_to_waybill: 'assign_to_draft',
     mission_source_id: 4,
-    passes_count: 1
+    passes_count: 1,
   };
 }

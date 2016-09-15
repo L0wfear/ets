@@ -5,16 +5,14 @@ export default class LoadingStore extends Store {
   constructor(flux) {
     super();
 
-    const objectsActionIds = flux.getActions('objects');
     const geoObjectsActions = flux.getActions('geoObjects');
-    const waybillsActions  = flux.getActions('waybills');
-    const fuelRateActions  = flux.getActions('fuelRates');
-    const objectsActions   = flux.getActions('objects');
-    const carActions       = flux.getActions('cars');
+    const waybillsActions = flux.getActions('waybills');
+    const fuelRateActions = flux.getActions('fuelRates');
+    const objectsActions = flux.getActions('objects');
+    const carActions = flux.getActions('cars');
     const employeesActions = flux.getActions('employees');
-    const missionsActons   = flux.getActions('missions');
-    const routesActions    = flux.getActions('routes');
-    const dashboardActions = flux.getActions('dashboard');
+    const missionsActons = flux.getActions('missions');
+    const routesActions = flux.getActions('routes');
     const technicalOperationsActions = flux.getActions('technicalOperation');
     const companyStructureActions = flux.getActions('companyStructure');
     const reportsActions = flux.getActions('reports');
@@ -153,10 +151,10 @@ export default class LoadingStore extends Store {
   }
 
   inc(action) {
-    //console.info(action); // to watch actions stack
+    // console.info(action); // to watch actions stack
     let { operationsCount } = this.state;
 
-    operationsCount++;
+    operationsCount += 1;
 
     this.setState({ operationsCount });
   }
@@ -164,7 +162,7 @@ export default class LoadingStore extends Store {
   dec() {
     let { operationsCount } = this.state;
 
-    operationsCount--;
+    operationsCount -= 1;
 
     this.setState({ operationsCount });
   }

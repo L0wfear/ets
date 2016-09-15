@@ -1,8 +1,8 @@
 import { Store } from 'flummox';
+import _ from 'lodash';
 import statuses from 'constants/statuses';
 import config from '../config.js';
 import ReconnectingWebSocket from '../vendor/ReconnectingWebsocket.js';
-import _ from 'lodash';
 
 /**
  * Хранилище для объектов точек, отображаемых на карте
@@ -72,11 +72,11 @@ export default class PointsStore extends Store {
         1: 0,
         2: 0,
         3: 0,
-        4: 0
+        4: 0,
       },
       byConnectionStatus: {
         0: 0,
-        1: 0
+        1: 0,
       },
       trackingMode: false,
       showTrackingGradient: false,
@@ -99,7 +99,7 @@ export default class PointsStore extends Store {
     const wsUrl = `${config.ws}?token=${token}`;
     this.ws = new ReconnectingWebSocket(wsUrl, null);
 
-    this.ws.onmessage = ({data}) => {
+    this.ws.onmessage = ({ data }) => {
       this.handleUpdatePoints(JSON.parse(data));
     };
 
@@ -128,11 +128,11 @@ export default class PointsStore extends Store {
   }
 
   handleSetSingleCarTrack(car_gov_number) {
-    this.setState({singleCarTrack: car_gov_number});
+    this.setState({ singleCarTrack: car_gov_number });
   }
 
   handleSetSingleCarTrackDates(dates) {
-    this.setState({singleCarTrackDates: dates});
+    this.setState({ singleCarTrackDates: dates });
   }
 
   /**
@@ -147,13 +147,13 @@ export default class PointsStore extends Store {
     if (this.isRenderPaused()) {
       return;
     }
-    let points = Object.assign({}, this.state.points);
+    const points = Object.assign({}, this.state.points);
 
     // TODO отрефакторить механизм обработки получения точек для 1 БНСО
     if (this.state.singleCarTrack) {
       if (!this.state.selected) {
-        _.map(points, p => {
-          let car = p.car;
+        _.map(points, (p) => {
+          const car = p.car;
           if (car && car.gov_number === this.state.singleCarTrack && p.marker) { // заменить на car.gps_code
             p.marker.createTrack();
             p.marker.track.fetch(this.state.singleCarTrackDates[0] || undefined, this.state.singleCarTrackDates[1] || undefined);
@@ -163,8 +163,8 @@ export default class PointsStore extends Store {
       }
     }
 
-    for (let key in update) {
-      let pointUpdate = update[key];
+    for (const key in update) {
+      const pointUpdate = update[key];
 
       // если информация в обновлении устарела - ничего не делаем
       if (key in points &&
@@ -178,14 +178,13 @@ export default class PointsStore extends Store {
       // TODO разобраться что это такое
       // HACK
       // whatever...
-      /*if (points[key].speed !== 0 && this.state.points[key] && this.state.points[key].speed === 0) {
+      /* if (points[key].speed !== 0 && this.state.points[key] && this.state.points[key].speed === 0) {
         points[key].coords = this.state.points[key].coords;
       }*/
-
     }
 
-    let state = Object.assign({}, {
-      points
+    const state = Object.assign({}, {
+      points,
     }, this.countDimensions(points));
 
     this.setState(state);
@@ -200,25 +199,24 @@ export default class PointsStore extends Store {
    * @return {object} dimensions.byConnectionStatus - кол-во точек в разрезе активности
    */
   countDimensions(points = this.state.points) {
-
     if (this.isRenderPaused()) {
       return;
     }
 
-    let byStatus = {
+    const byStatus = {
       1: 0,
       2: 0,
       3: 0,
-      4: 0
+      4: 0,
     };
 
-    let byConnectionStatus = {
+    const byConnectionStatus = {
       0: 0,
-      1: 0
-    }
+      1: 0,
+    };
 
-    for (let key in points) {
-      let point = points[key];
+    for (const key in points) {
+      const point = points[key];
       if (this.isPointVisible(point)) {
         byStatus[point.status]++;
         byConnectionStatus[point.connection_status]++;
@@ -227,7 +225,7 @@ export default class PointsStore extends Store {
 
     return {
       byStatus,
-      byConnectionStatus
+      byConnectionStatus,
     };
   }
 
@@ -238,10 +236,10 @@ export default class PointsStore extends Store {
    * @param {object} update - измененный фильтр
    */
   handleSetFilter(update) {
-    let filter = Object.assign({}, this.state.filter, update);
-    let selected = this.state.selected;
+    const filter = Object.assign({}, this.state.filter, update);
+    const selected = this.state.selected;
 
-    this.setState(Object.assign({}, {filter, selected}, this.countDimensions()));
+    this.setState(Object.assign({}, { filter, selected }, this.countDimensions()));
   }
 
   /**
@@ -250,10 +248,9 @@ export default class PointsStore extends Store {
    * @param {object|false} selected
    */
   handleSelectPoint(selected) {
-
     if (!!selected === false) {
       this.setState({
-        selected: null
+        selected: null,
       });
       return;
     }
@@ -264,7 +261,7 @@ export default class PointsStore extends Store {
 
     this.setState({
       selected,
-      trackingMode: false
+      trackingMode: false,
     });
   }
 
@@ -275,8 +272,8 @@ export default class PointsStore extends Store {
    * @param {object} data - ответ с сервера
    * @param {object} data.payload - данные о пользователе
    */
-  handleLogin({payload}) {
-    this.handleSetFilter({owner: [payload.company_id]});
+  handleLogin({ payload }) {
+    this.handleSetFilter({ owner: [payload.company_id] });
   }
 
   /**
@@ -285,12 +282,12 @@ export default class PointsStore extends Store {
    * @return {array} visiblePoints - прошедшие фильтрацию точки
    */
   getVisiblePoints() {
-    let visiblePoints = [];
+    const visiblePoints = [];
 
-    for (let k in this.state.points) {
-      let point = this.state.points[k];
+    for (const k in this.state.points) {
+      const point = this.state.points[k];
       if (this.isPointVisible(point)) {
-        visiblePoints.push(point)
+        visiblePoints.push(point);
       }
     }
 
@@ -317,7 +314,7 @@ export default class PointsStore extends Store {
    */
   setTracking(value) {
     this.setState({
-      trackingMode: value
+      trackingMode: value,
     });
   }
 
@@ -330,7 +327,7 @@ export default class PointsStore extends Store {
    */
   handleSetShowGradient(flag) {
     this.setState({
-      showTrackingGradient: flag
+      showTrackingGradient: flag,
     });
   }
 
@@ -367,7 +364,7 @@ export default class PointsStore extends Store {
     }
     // Фильтрация по номеру БНСО (GPS) или Гос. номеру ТС
     if (filter.bnso_gos && filter.bnso_gos.length > 0) {
-      let text = filter.bnso_gos.toLowerCase();
+      const text = filter.bnso_gos.toLowerCase();
       visible = visible && (
         point.car.gps_code.toLowerCase().indexOf(text) + 1 ||
         point.car.gov_number.toLowerCase().indexOf(text) + 1
@@ -402,9 +399,8 @@ export default class PointsStore extends Store {
   getSelectedMarker() {
     if (this.state.selected) {
       return this.state.selected.marker;
-    } else {
-      return null;
     }
+    return null;
   }
 
   /**
@@ -434,7 +430,7 @@ export default class PointsStore extends Store {
    */
   pauseRendering() {
     this.setState({
-      isRenderPaused: true
+      isRenderPaused: true,
     });
   }
 
@@ -445,7 +441,7 @@ export default class PointsStore extends Store {
    */
   unpauseRendering() {
     this.setState({
-      isRenderPaused: false
+      isRenderPaused: false,
     });
   }
 

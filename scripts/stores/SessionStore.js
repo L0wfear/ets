@@ -6,7 +6,7 @@ const SESSION_KEY = 'ets-session';
 const defaultUser = {
   login: 'mayor',
   password: 'mayor',
-  role: 'mayor'
+  role: 'mayor',
 };
 
 export default class SessionStore extends Store {
@@ -36,9 +36,8 @@ export default class SessionStore extends Store {
     this.state = {
       currentUser,
       session: storedSession,
-      userPermissions: currentUser.permissions
+      userPermissions: currentUser.permissions,
     };
-
   }
 
   handleLogin(data) {
@@ -53,7 +52,7 @@ export default class SessionStore extends Store {
     this.setState({
       currentUser,
       session,
-      userPermissions: currentUser.permissions
+      userPermissions: currentUser.permissions,
     });
   }
 
@@ -66,7 +65,7 @@ export default class SessionStore extends Store {
     localStorage.removeItem('current_user');
     this.setState({
       session: null,
-      sessionError: message || null
+      sessionError: message || null,
     });
   }
 
@@ -79,15 +78,15 @@ export default class SessionStore extends Store {
   }
 
   getPermission(permissionName) {
-    let { permissions } = this.state.currentUser;
+    const { permissions } = this.state.currentUser;
     if (Array.isArray(permissionName)) {
       permissionName.forEach((permission) => {
         if (permissions.indexOf(permission) === -1) return false;
-      })
-      return true
-    } else {
-      return !!(permissions.indexOf(permissionName)+1);
+      });
+      return true;
     }
+
+    return !!(permissions.indexOf(permissionName) + 1);
   }
 
 }

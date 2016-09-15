@@ -1,7 +1,6 @@
 import { Store } from 'flummox';
-import _ from 'lodash';
 
-class SettingsStore extends Store {
+export default class SettingsStore extends Store {
 
   constructor(flux) {
     super();
@@ -22,26 +21,25 @@ class SettingsStore extends Store {
       showPolygons: true,
       showSelectedElement: true,
       showGeoobjects: false,
-      showMarkers: true
+      showMarkers: true,
     };
-
   }
 
   handleSetShowPlates(showPlates) {
     this.setState({
-      showPlates
+      showPlates,
     });
   }
 
   handleSetShowGeoobjects(showGeoobjects) {
     this.setState({
-      showGeoobjects
+      showGeoobjects,
     });
   }
 
   handleSetShowMarkers(showMarkers) {
     this.setState({
-      showMarkers
+      showMarkers,
     });
   }
 
@@ -50,7 +48,7 @@ class SettingsStore extends Store {
       showTrack = !this.state.showTrack;
     }
     this.setState({
-      showTrack
+      showTrack,
     });
   }
 
@@ -59,7 +57,7 @@ class SettingsStore extends Store {
       showPolygons = !this.state.showPolygons;
     }
     this.setState({
-      showPolygons
+      showPolygons,
     });
   }
 
@@ -68,10 +66,8 @@ class SettingsStore extends Store {
       showSelectedElement = !this.state.showSelectedElement;
     }
     this.setState({
-      showSelectedElement
+      showSelectedElement,
     });
   }
 
 }
-
-export default SettingsStore;

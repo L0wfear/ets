@@ -1,7 +1,6 @@
 import { Store } from 'flummox';
-import _ from 'lodash';
 
-class ODHStore extends Store {
+export default class ODHStore extends Store {
 
   constructor(flux) {
     super();
@@ -22,23 +21,20 @@ class ODHStore extends Store {
 
     this.state = {
       odhNormList: [],
-      efficiencyList: []
+      efficiencyList: [],
     };
-
   }
 
-  handleGetODHNorm({result}) {
-    this.setState({odhNormList: result});
-	}
+  handleGetODHNorm({ result }) {
+    this.setState({ odhNormList: result });
+  }
 
-  handleGetODHNormDataSummer({result}) {
-    this.setState({odhNormDataSummerList: result});
-	}
+  handleGetODHNormDataSummer({ result }) {
+    this.setState({ odhNormDataSummerList: result });
+  }
 
-  handleGetEfficiency({result}) {
-    this.setState({efficiencyList: result});
+  handleGetEfficiency({ result }) {
+    this.setState({ efficiencyList: result });
   }
 
 }
-
-export default ODHStore;

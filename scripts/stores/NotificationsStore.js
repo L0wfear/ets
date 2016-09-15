@@ -6,16 +6,8 @@ export default class NotificationsStore extends Store {
   constructor(flux) {
     super();
 
-    const objectsActionIds = flux.getActions('objects');
-    const waybillsActions  = flux.getActions('waybills');
-    const fuelRateActions  = flux.getActions('fuelRates');
-    const objectsActions   = flux.getActions('objects');
-    const carActions       = flux.getActions('cars');
-    const employeesActions = flux.getActions('employees');
-    const missionsActons   = flux.getActions('missions');
-    const routesActions    = flux.getActions('routes');
-    const dashboardActions = flux.getActions('dashboard');
-    const reportsActions   = flux.getActions('reports');
+    const missionsActons = flux.getActions('missions');
+    const reportsActions = flux.getActions('reports');
 
     this.register(missionsActons.createMission, this.handleMissionCreate);
     this.register(missionsActons.createMissions, this.handleMissionsCreate);
@@ -28,7 +20,7 @@ export default class NotificationsStore extends Store {
 
   checkResponse(response) {
     let valid = false;
-    if (_.isArray(response)) {
+    if (Array.isArray(response)) {
       valid = response.filter(obj => obj.errors && obj.errors.length > 0).length === 0;
     } else if (!response.errors || response.errors.length === 0) {
       valid = true;
@@ -48,7 +40,7 @@ export default class NotificationsStore extends Store {
     }
   }
 
-  handleGetOdhCoverageReport(response) {
+  handleGetOdhCoverageReport() {
     global.NOTIFICATION_SYSTEM.notify('Отчет обновлен', 'info');
   }
 

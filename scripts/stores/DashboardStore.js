@@ -5,7 +5,7 @@ const dashboardComponents = [
   {
     id: 1,
     key: 'current_missions',
-    itemsTitle: 'Карточка задания'
+    itemsTitle: 'Карточка задания',
   },
   {
     id: 2,
@@ -14,7 +14,7 @@ const dashboardComponents = [
   {
     id: 4,
     key: 'odh_not_covered_by_missions_of_current_shift',
-    itemsTitle: 'Список одх'
+    itemsTitle: 'Список одх',
   },
   {
     id: 5,
@@ -27,96 +27,34 @@ const dashboardComponents = [
   {
     id: 9,
     key: 'faxogramms',
-    itemsTitle: 'Расшифровка факсограммы'
+    itemsTitle: 'Расшифровка факсограммы',
   },
   {
     id: 12,
     key: 'current_duty_missions',
-    itemsTitle: 'Карточка наряд-задания'
+    itemsTitle: 'Карточка наряд-задания',
   },
   {
     id: 19,
     key: 'waybill_draft',
-    itemsTitle: 'Рег. номер ТС'
+    itemsTitle: 'Рег. номер ТС',
   },
   {
     id: 20,
     key: 'waybill_in_progress',
-    itemsTitle: 'Информация о ПЛ'
+    itemsTitle: 'Информация о ПЛ',
   },
   {
     id: 21,
     key: 'waybill_completed',
-    itemsTitle: 'Информация о ПЛ'
+    itemsTitle: 'Информация о ПЛ',
   },
   {
     id: 22,
     key: 'waybill_closed',
-    itemsTitle: 'Информация о ПЛ'
-  }
-];
-
-const commonComponents = [
-  {
-    id: 1,
-    key: 'current_missions',
-    itemsTitle: 'Карточка задания'
+    itemsTitle: 'Информация о ПЛ',
   },
-  {
-    id: 9,
-    key: 'faxogramms',
-    itemsTitle: 'Расшифровка факсограммы'
-  }
 ];
-
-const componentsByRole = {
-  master: [...commonComponents,
-    {
-      id: 2,
-      key: 'future_missions',
-    },
-    {
-      id: 4,
-      key: 'odh_not_covered_by_missions_of_current_shift',
-      itemsTitle: 'Список одх'
-    },
-    {
-      id: 5,
-      key: 'odh_not_covered_by_routes',
-    },
-    {
-      id: 8,
-      key: 'car_in_work_overall',
-    },
-    {
-      id: 12,
-      key: 'current_duty_missions',
-      itemsTitle: 'Карточка наряд-задания'
-    }
-  ],
-  dispatcher: [...commonComponents,
-    {
-      id: 19,
-      key: 'waybill_draft',
-      itemsTitle: 'Рег. номер ТС'
-    },
-    {
-      id: 20,
-      key: 'waybill_in_progress',
-      itemsTitle: 'Информация о ПЛ'
-    },
-    {
-      id: 21,
-      key: 'waybill_completed',
-      itemsTitle: 'Информация о ПЛ'
-    },
-    {
-      id: 22,
-      key: 'waybill_closed',
-      itemsTitle: 'Информация о ПЛ'
-    }
-  ]
-}
 
 export default class DashboardStore extends Store {
 
@@ -125,7 +63,7 @@ export default class DashboardStore extends Store {
       componentsIndex: {},
       componentsSideIndex: {},
       componentsList: [],
-      componentsSideList: []
+      componentsSideList: [],
     };
   }
 
@@ -139,10 +77,10 @@ export default class DashboardStore extends Store {
     this.state = _.cloneDeep(DashboardStore.initialState);
   }
 
-  handleGetDashboardComponent({key, component}) {
+  handleGetDashboardComponent({ key, component }) {
     let { componentsList, componentsIndex } = this.state;
     if (!component.result) return;
-    let componentSchema = _.find(this.getComponentsByPermissions(), c => c.key === key);
+    const componentSchema = _.find(this.getComponentsByPermissions(), c => c.key === key);
     if (!componentSchema) return;
     component.result.id = componentSchema.id;
     component.result.key = key;
@@ -151,11 +89,11 @@ export default class DashboardStore extends Store {
     }
     componentsIndex[key] = component.result;
     componentsList = _(componentsIndex).toArray().sortBy('id').value();
-    this.setState({componentsList, componentsIndex});
+    this.setState({ componentsList, componentsIndex });
   }
 
   getComponentsByPermissions() {
-    let { permissions = [] } = this.flux.getStore('session').getCurrentUser();
+    const { permissions = [] } = this.flux.getStore('session').getCurrentUser();
     const dashboardPermissions = permissions
       .map(p => p.toLowerCase())
       .filter(p => p.indexOf('dashboard') + 1)

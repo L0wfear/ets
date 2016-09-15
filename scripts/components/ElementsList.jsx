@@ -4,7 +4,6 @@ import { autobind } from 'core-decorators';
 import { FluxContext } from 'utils/decorators';
 import { Button, Glyphicon } from 'react-bootstrap';
 import { ButtonCreate, ButtonRead, ButtonDelete } from './ui/buttons/CRUD.jsx';
-console.log(autobind);
 
 /**
  * Базовый класс для отображения таблиц и привязанных к ним форм (модальных окон)
@@ -66,7 +65,6 @@ class ElementsList extends React.Component {
    */
   @autobind
   selectElement({ props }) {
-    console.log(this);
     const DOUBLECLICK_TIMEOUT = 300;
     function onDoubleClick() {
       return this.setState({
@@ -320,12 +318,14 @@ class ElementsList extends React.Component {
       return forms;
     }
 
-    forms.push(<FormComponent
-      key={forms.length}
-      onFormHide={this.onFormHide}
-      showForm={this.state.showForm}
-      element={this.state.selectedElement}
-    />);
+    forms.push(
+      <FormComponent
+        key={forms.length}
+        onFormHide={this.onFormHide}
+        showForm={this.state.showForm}
+        element={this.state.selectedElement}
+      />
+    );
 
     return forms;
   }

@@ -1,17 +1,20 @@
 import React, { PropTypes } from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
-import ColumnControl from './ColumnControl.jsx'
-import ClickOutHandler from 'react-onclickout';
-import Filter from './filter/Filter.jsx';
-import FilterButton from './filter/FilterButton.jsx';
-import Paginator from '../Paginator.jsx';
-import Griddle from 'griddle-react';
-import Div from '../Div.jsx';
 import moment from 'moment';
 import _ from 'lodash';
 import cx from 'classnames';
+import ClickOutHandler from 'react-onclickout';
+import Griddle from 'griddle-react';
+import { autobind } from 'core-decorators';
+
+import ColumnControl from './ColumnControl.jsx';
+import Filter from './filter/Filter.jsx';
+import FilterButton from './filter/FilterButton.jsx';
+import Paginator from '../Paginator.jsx';
+import Div from '../Div.jsx';
 import { isEmpty } from 'utils/functions';
 
+@autobind
 export default class Table extends React.Component {
 
   /**
@@ -59,7 +62,7 @@ export default class Table extends React.Component {
       // TODO реализовать обработку вне
       onColumnControlChange: PropTypes.func,
       // TODO перенести на более высокий уровень абстракции
-      columnControlStorageName: PropTypes.string
+      columnControlStorageName: PropTypes.string,
     };
   }
 
@@ -102,8 +105,8 @@ export default class Table extends React.Component {
       // TODO реализовать обработку вне
       onColumnControlChange: () => {},
       // TODO перенести на более высокий уровень абстракции
-      columnControlStorageName: 'ets-storage'
-    }
+      columnControlStorageName: 'ets-storage',
+    };
   }
 
   constructor(props) {
@@ -117,53 +120,100 @@ export default class Table extends React.Component {
       globalCheckboxState: false,
       isHierarchical: props.isHierarchical,
       initialSort: 'id',
-      initialSortAscending: true
+      initialSortAscending: true,
     };
+  }
+
+  componentWillMount() {
+    // Здесь производится инициализация начальной сортировки для того,
+    // чтобы гриддл мог корректно отобразить хедер при первом рендеринге
+    // важно устанавливать сортировку именно в willMount!
+    const { initialSort = 'id', initialSortAscending = true } = this.props;
+
+    this.setState({ initialSort, initialSortAscending });
+  }
+
+  componentDidMount() {
+    if (this.props.filterValues) {
+      this.setState({ filterValues: this.props.filterValues });
+    }
+    if (this.props.columnControl) {
+      const columnControlValues = JSON.parse(localStorage.getItem(this.props.columnControlStorageName)) || [];
+      this.setState({ columnControlValues });
+    }
+  }
+
+  componentWillReceiveProps(props) {
+    if (props.checked) {
+      // хак, т.к. гридл не умеет в обновление хедера
+      // TODO переделать
+      const checked = Object.keys(props.checked).length === _(props.results).filter(r => this.shouldBeRendered(r)).value().length;
+      const el = document.getElementById('checkedColumn');
+      if (el) el.checked = checked;
+    }
+
+    let { initialSort, initialSortAscending } = this.state;
+
+    if (props.initialSort && props.initialSort !== this.state.initialSort) {
+      initialSort = props.initialSort;
+    }
+
+    if (props.initialSortAscending && props.initialSortAscending !== this.state.initialSortAscending) {
+      initialSortAscending = props.initialSortAscending;
+    }
+
+    this.setState({ initialSort, initialSortAscending });
+  }
+
+  shouldComponentUpdate(nextProps) {
+    if (!this.state.isHierarchical) return true;
+
+    return !_.isEqual(nextProps.results, this.props.results);
   }
 
   closeFilter() {
     if (this.state.filterModalIsOpen === true) {
-      this.setState({filterModalIsOpen: false});
+      this.setState({ filterModalIsOpen: false });
     }
   }
 
   toggleFilter() {
-		this.setState({filterModalIsOpen: !!!this.state.filterModalIsOpen});
-	}
+    this.setState({ filterModalIsOpen: !this.state.filterModalIsOpen });
+  }
 
   toggleColumnControl() {
-		this.setState({columnControlModalIsOpen: !!!this.state.columnControlModalIsOpen});
-	}
+    this.setState({ columnControlModalIsOpen: !this.state.columnControlModalIsOpen });
+  }
 
-	saveFilter(filterValues) {
+  saveFilter(filterValues) {
     console.log('SAVE FILTER', filterValues);
     if (typeof this.props.onAllRowsChecked === 'function') {
-      this.props.onAllRowsChecked(_.reduce(this.props.results, (cur, val) => {cur[val.id] = val; return cur;}, {}), false);
+      this.props.onAllRowsChecked(_.reduce(this.props.results, (cur, val) => { cur[val.id] = val; return cur; }, {}), false);
     }
-		this.setState({filterValues, globalCheckboxState: false});
-	}
+    this.setState({ filterValues, globalCheckboxState: false });
+  }
 
   closeColumnControl() {
     if (this.state.columnControlModalIsOpen === true) {
-      this.setState({columnControlModalIsOpen: false});
+      this.setState({ columnControlModalIsOpen: false });
     }
   }
 
-	saveColumnControl(column) {
-    let { columnControlValues } = this.state;
-    let i = columnControlValues.indexOf(column);
+  saveColumnControl(column) {
+    const { columnControlValues } = this.state;
+    const i = columnControlValues.indexOf(column);
     if (i === -1) {
       columnControlValues.push(column);
     } else {
       columnControlValues.splice(i, 1);
     }
-		this.setState({columnControlValues});
+    this.setState({ columnControlValues });
     localStorage.setItem(this.props.columnControlStorageName, JSON.stringify(columnControlValues));
-	}
+  }
 
   cloneObject(object) {
     const clonedObject = {};
-    for (let key of Object.keys(object)) {
+    for (const key of Object.keys(object)) {
       clonedObject[key] = object[key];
     }
     return clonedObject;
@@ -172,22 +222,22 @@ export default class Table extends React.Component {
   handleRowCheck(id, e) {
     e.preventDefault();
     e.stopPropagation();
-    let value = ! !!this.props.checked[id];
-    let clonedData = _.cloneDeep(this.props.checked);
+    const value = !this.props.checked[id];
+    const clonedData = _.cloneDeep(this.props.checked);
     clonedData[id] = value;
     if (value === false) delete clonedData[id];
     this.props.onRowChecked(id, value);
     this.setState({
-      globalCheckboxState: Object.keys(clonedData).length === _(this.props.results).filter((r) => this.shouldBeRendered(r)).value().length ? true : false,
+      globalCheckboxState: Object.keys(clonedData).length === _(this.props.results).filter(r => this.shouldBeRendered(r)).value().length,
     });
   }
 
   globalCheckHandler(event) {
-    let checked = _(this.props.results)
-      .filter((r) => this.shouldBeRendered(r))
-      .reduce((cur, val) => {cur[val.id] = val; return cur;}, {});
+    const checked = _(this.props.results)
+      .filter(r => this.shouldBeRendered(r))
+      .reduce((cur, val) => { cur[val.id] = val; return cur; }, {});
     this.props.onAllRowsChecked(checked, this.state.globalCheckboxState ? false : true);
-    this.setState({globalCheckboxState: !this.state.globalCheckboxState}, () => {
+    this.setState({ globalCheckboxState: !this.state.globalCheckboxState }, () => {
       this.forceUpdate();
     });
     event && event.stopPropagation();
@@ -200,12 +250,12 @@ export default class Table extends React.Component {
     if (multiSelection) {
       initialArray.push({
         columnName: 'isChecked',
-        displayName: <input id="checkedColumn" type="checkbox" onChange={this.globalCheckHandler.bind(this)}></input>,
+        displayName: <input id="checkedColumn" type="checkbox" onChange={this.globalCheckHandler} />,
         sortable: false,
         cssClassName: 'width25 pointer text-center',
         customComponent: (props) => {
           const id = props.rowData.id;
-          return <div><input type="checkbox" checked={this.props.checked[id]} onChange={this.handleRowCheck.bind(this, id)}></input></div>
+          return <div><input type="checkbox" checked={this.props.checked[id]} onChange={this.handleRowCheck.bind(this, id)} /></div>;
         },
       });
     }
@@ -216,53 +266,52 @@ export default class Table extends React.Component {
         displayName: '№',
         cssClassName: 'width30',
         filter: false,
-        customComponent: renderers['rowNumber']
+        customComponent: renderers.rowNumber,
       });
     }
 
-  	const metadata = _.reduce(tableMetaCols, (cur, col, i) => {
-
+    const metadata = _.reduce(tableMetaCols, (cur, col, i) => {
       if (col.display === false) {
         return cur;
       }
 
-  		const metaObject = {
-  			columnName: col.name,
-  			displayName: col.customHeaderComponent ? col.customHeaderComponent : col.displayName,
-  		};
+      const metaObject = {
+        columnName: col.name,
+        displayName: col.customHeaderComponent ? col.customHeaderComponent : col.displayName,
+      };
 
-  		if (typeof renderers[col.name] === 'function') {
-  			metaObject.customComponent = renderers[col.name];
-  		}
+      if (typeof renderers[col.name] === 'function') {
+        metaObject.customComponent = renderers[col.name];
+      }
 
       if (typeof col.cssClassName !== 'undefined') {
-  			metaObject.cssClassName = col.cssClassName || '';
-  		}
+        metaObject.cssClassName = col.cssClassName || '';
+      }
 
-  		cur.push(metaObject);
-  		return cur;
-  	}, initialArray);
+      cur.push(metaObject);
+      return cur;
+    }, initialArray);
 
-  	return metadata;
+    return metadata;
   }
 
   initializeRowMetadata() {
-  	return {
-      "bodyCssClassName": (rowData) => {
+    return {
+      'bodyCssClassName': (rowData) => {
         if (rowData.isSelected) {
-          return "selected-row"
+          return 'selected-row';
         }
         if (rowData.isHighlighted) {
-          return "highlighted-row"
+          return 'highlighted-row';
         }
-        return "standard-row"
-      }
-  	};
+        return 'standard-row';
+      },
+    };
   }
 
   getTypeByKey(key) {
-    let col = _.find(this.props.tableMeta.cols, col => col.name === key);
-    let colFilterType = col.filter && col.filter.type ? col.filter.type : '';
+    const col = _.find(this.props.tableMeta.cols, col => col.name === key);
+    const colFilterType = col.filter && col.filter.type ? col.filter.type : '';
     return colFilterType;
   }
 
@@ -272,11 +321,10 @@ export default class Table extends React.Component {
     // проверка берется по this.state.filterValues
     let isValid = true;
     _.mapKeys(this.state.filterValues, (value, key) => {
-
       if (obj[key] === null) {
-        isValid = false
+        isValid = false;
         return;
-      };
+      }
 
       if (/(timestamp|date|birthday)/.test(key) && !_.isArray(value)) {
         if (moment(obj[key]).format(global.APP_DATE_FORMAT) !== moment(value).format(global.APP_DATE_FORMAT)) {
@@ -287,33 +335,28 @@ export default class Table extends React.Component {
           isValid = false;
         }
       } else if (key.indexOf('date') > -1 && _.isArray(value) && this.getTypeByKey(key) === 'date_interval') {
-          let intervalPickerDate1 = moment(value[0]).toDate().getTime() || 0;
-          let intervalPickerDate2 = moment(value[1]).toDate().getTime() || Infinity;
-          let valueDate = moment(obj[key]).toDate().getTime();
-          if (!(intervalPickerDate1 < valueDate && valueDate < intervalPickerDate2)) {
-            isValid = false;
-          }
+        const intervalPickerDate1 = moment(value[0]).toDate().getTime() || 0;
+        const intervalPickerDate2 = moment(value[1]).toDate().getTime() || Infinity;
+        const valueDate = moment(obj[key]).toDate().getTime();
+        if (!(intervalPickerDate1 < valueDate && valueDate < intervalPickerDate2)) {
+          isValid = false;
+        }
       } else if (_.isArray(value)) {
         if (_.isArray(obj[key])) {
-          let a = _.find(this.props.tableMeta.cols, e => e.name === key);
+          const a = _.find(this.props.tableMeta.cols, e => e.name === key);
           if (a.filter.strict) {
             if (!(_.every(obj[key], el => el.id && value.indexOf(el.id.toString()) > -1) && obj[key].length === value.length)) {
               isValid = false;
             }
-          } else {
-            if (!(_.find(obj[key], el => el.id && value.indexOf(el.id.toString()) > -1))) {
-              isValid = false;
-            }
+          } else if (!(_.find(obj[key], el => el.id && value.indexOf(el.id.toString()) > -1))) {
+            isValid = false;
           }
         } else if (value.indexOf(obj[key].toString()) === -1) {
           isValid = false;
         }
-      } else {
-        if (obj[key] != value) {
-          isValid = false;
-        }
+      } else if (obj[key] != value) {
+        isValid = false;
       }
-
     });
 
     return isValid;
@@ -335,15 +378,15 @@ export default class Table extends React.Component {
     el.isHighlighted === false;
     if (highlight.length > 0) {
       highlight.forEach((obj) => {
-        let field = Object.keys(obj)[0];
+        const field = Object.keys(obj)[0];
         if (el[field] === obj[field]) el.isHighlighted = true;
       });
     }
-    return el
+    return el;
   }
 
   processEmptyCols(tableCols, el, i) {
-    _.each(tableCols, col => {
+    _.each(tableCols, (col) => {
       if (typeof el[col] === 'undefined') {
         el[col] = null;
       }
@@ -356,55 +399,8 @@ export default class Table extends React.Component {
            .map(this.processEmptyCols.bind(this, tableCols))
            .map(this.processHighlighted.bind(this, highlight))
            .map(this.processSelected.bind(this, selected, selectField, onRowSelected))
-           .filter(this.shouldBeRendered.bind(this))
+           .filter(this.shouldBeRendered)
            .value();
-  }
-
-  componentWillMount() {
-    // Здесь производится инициализация начальной сортировки для того,
-    // чтобы гриддл мог корректно отобразить хедер при первом рендеринге
-    // важно устанавливать сортировку именно в willMount!
-    let { initialSort = 'id', initialSortAscending = true } = this.props;
-
-    this.setState({initialSort, initialSortAscending});
-  }
-
-  componentDidMount() {
-    if (this.props.filterValues) {
-      this.setState({filterValues: this.props.filterValues});
-    }
-    if (this.props.columnControl) {
-      let columnControlValues = JSON.parse(localStorage.getItem(this.props.columnControlStorageName)) || [];
-      this.setState({columnControlValues});
-    }
-  }
-
-  componentWillReceiveProps(props) {
-    if (props.checked) {
-      // хак, т.к. гридл не умеет в обновление хедера
-      // TODO переделать
-      let checked = Object.keys(props.checked).length === _(props.results).filter((r) => this.shouldBeRendered(r)).value().length;
-      let el = document.getElementById('checkedColumn');
-      if (el) el.checked = checked;
-    }
-
-    let { initialSort, initialSortAscending } = this.state;
-
-    if (props.initialSort && props.initialSort !== this.state.initialSort) {
-      initialSort = props.initialSort;
-    }
-
-    if (props.initialSortAscending && props.initialSortAscending !== this.state.initialSortAscending) {
-      initialSortAscending = props.initialSortAscending;
-    }
-
-    this.setState({initialSort, initialSortAscending});
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    if (!this.state.isHierarchical) return true;
-
-    return !_.isEqual(nextProps.results, this.props.results);
   }
 
   handleChangeSort(sortingColumnName, ascendingSort) {
@@ -424,18 +420,18 @@ export default class Table extends React.Component {
       direction = +1;
       e.preventDefault();
     }
- 		if (keyCode === 38) {
+    if (keyCode === 38) {
       direction = -1;
       e.preventDefault();
- 		}
-    let selected = _.find(data, el => el[this.props.selectField] === this.props.selected[this.props.selectField]);
-    let newSelected = _.find(data, el => el.rowNumber === selected.rowNumber + direction);
+    }
+    const selected = _.find(data, el => el[this.props.selectField] === this.props.selected[this.props.selectField]);
+    const newSelected = _.find(data, el => el.rowNumber === selected.rowNumber + direction);
 
     this.props.onRowSelected({
       props: {
         data: newSelected,
         fromKey: true,
-      }
+      },
     });
   }
 
@@ -446,57 +442,59 @@ export default class Table extends React.Component {
       refreshable, columnControl, highlight, serverPagination } = this.props;
     const { initialSort, initialSortAscending, columnControlValues } = this.state;
 
-    let tableMetaCols = _.cloneDeep(tableMeta.cols);
+    const tableMetaCols = _.cloneDeep(tableMeta.cols);
     let data = _.cloneDeep(this.props.results);
 
     if (typeof this.props.results === 'string') {
       data = [];
     }
 
-    let results = this.processTableData(data, tableCols, selected, selectField, onRowSelected, highlight);
-
-    let columnSize = columnControlValues.length;
-
     const columnMetadata = this.initializeMetadata(tableMetaCols, renderers);
     const tableCols = columnMetadata.map(m => m.columnName).filter(c => columnControlValues.indexOf(c) === -1);
-		const rowMetadata = this.initializeRowMetadata();
+    const rowMetadata = this.initializeRowMetadata();
     const tableClassName = cx('data-table', className);
+
+    const results = this.processTableData(data, tableCols, selected, selectField, onRowSelected, highlight);
 
     return (
       <Div className={tableClassName}>
         <Div className="some-header" hidden={noHeader}>{noTitle ? '' : title}
           <div className="waybills-buttons">
             {columnControl &&
-              <ClickOutHandler onClickOut={this.closeColumnControl.bind(this)}>
+              <ClickOutHandler onClickOut={this.closeColumnControl}>
                 <ColumnControl
-                    show={this.state.columnControlModalIsOpen}
-                    onChange={this.saveColumnControl.bind(this)}
-                    onClick={this.toggleColumnControl.bind(this)}
-                    values={this.state.columnControlValues}
-                    options={tableMetaCols.filter(el => el.display !== false)}/>
+                  show={this.state.columnControlModalIsOpen}
+                  onChange={this.saveColumnControl}
+                  onClick={this.toggleColumnControl}
+                  values={this.state.columnControlValues}
+                  options={tableMetaCols.filter(el => el.display !== false)}
+                />
               </ClickOutHandler>
             }
             {!noFilter && <FilterButton
-                disabled={this.props.isHierarchical}
-                show={this.state.filterModalIsOpen}
-                active={_.keys(this.state.filterValues).length}
-                onClick={this.toggleFilter.bind(this)}/>}
+              disabled={this.props.isHierarchical}
+              show={this.state.filterModalIsOpen}
+              active={_.keys(this.state.filterValues).length}
+              onClick={this.toggleFilter}
+            />}
             {refreshable &&
               <Button
-                  bsSize="small"
-                  onClick={this.props.onRefresh}>
+                bsSize="small"
+                onClick={this.props.onRefresh}
+              >
                 <Glyphicon glyph="refresh" />
               </Button>
             }
             {this.props.children}
           </div>
           {!noFilter && <Filter
-              show={this.state.filterModalIsOpen}
-              onSubmit={this.saveFilter.bind(this)}
-              onHide={this.closeFilter.bind(this)}
-              values={this.state.filterValues}
-              options={tableMetaCols.filter(el => el.filter !== false)}
-              tableData={this.props.results}/>}
+            show={this.state.filterModalIsOpen}
+            onSubmit={this.saveFilter}
+            onHide={this.closeFilter}
+            values={this.state.filterValues}
+            options={tableMetaCols.filter(el => el.filter !== false)}
+            tableData={this.props.results}
+          />}
         </Div>
         <Griddle
           results={results}
@@ -506,13 +504,14 @@ export default class Table extends React.Component {
           columnMetadata={columnMetadata}
           columns={tableCols}
           resultsPerPage={15}
-          useCustomPagerComponent={true}
-          externalChangeSort={this.handleChangeSort.bind(this)}
-          customPagerComponent={serverPagination ? <Div/> : Paginator}
+          useCustomPagerComponent
+          externalChangeSort={this.handleChangeSort}
+          customPagerComponent={serverPagination ? <Div /> : Paginator}
           onRowClick={onRowSelected}
           rowMetadata={rowMetadata}
-          onKeyPress={this.handleKeyPress.bind(this)}
-          noDataMessage={noDataMessage ? noDataMessage : noFilter ? '' : 'Нет данных'}/>
+          onKeyPress={this.handleKeyPress}
+          noDataMessage={noDataMessage ? noDataMessage : noFilter ? '' : 'Нет данных'}
+        />
       </Div>
     );
   }

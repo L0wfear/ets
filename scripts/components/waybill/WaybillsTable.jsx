@@ -35,7 +35,7 @@ const getTableMeta = (props) => {
         type: 'number',
       },
       {
-        name: 'date',
+        name: 'date_create',
         displayName: 'Дата создания',
         type: 'date',
         filter: {

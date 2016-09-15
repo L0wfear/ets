@@ -9,10 +9,6 @@ import {
 
 export default class RoutesActions extends Actions {
 
-  constructor(props) {
-    super();
-  }
-
   getRoutes(technical_operation_id) {
     const payload = {};
     if (technical_operation_id) {

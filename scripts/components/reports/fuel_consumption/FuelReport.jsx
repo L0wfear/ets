@@ -21,7 +21,7 @@ export default class FuelReport extends Component {
 		this.state = {
       date_from: getToday9am(),
       date_to: getTomorrow9am(),
-      fuel_type_id: null,
+      fuel_type: null,
 		};
 	}
 

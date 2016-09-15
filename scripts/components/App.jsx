@@ -62,6 +62,9 @@ class App extends Component {
     return AuthCheckService.get()
           // .then(() => fetchEvergisToken())
           .then(() => {
+            return flux.getActions('objects').getConfig();
+          })
+          .then(() => {
             this.setState({loading: false});
           })
           .catch((error) => {

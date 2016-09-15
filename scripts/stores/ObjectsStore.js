@@ -23,6 +23,7 @@ class ObjectsStore extends Store {
     this.register(objectsActions.getOrganizations, this.handleGetOrganizations);
     this.register(objectsActions.getFaxogramms, this.handleGetFaxogramms);
     this.register(objectsActions.getPositions, this.handleGetPositions);
+    this.register(objectsActions.getConfig, this.handleGetConfig);
 
     this.register(companyStructreActions.getCompanyStructure, this.handleGetCompanyStructure);
     this.register(companyStructreActions.getCompanyList, this.handleGetCompanyList);
@@ -51,6 +52,8 @@ class ObjectsStore extends Store {
       companyStructureList: [],
       positionsList: [],
       organizations: [],
+
+      appConfig: {},
 
       carsIndex: {},
       modelsIndex: {},
@@ -158,6 +161,11 @@ class ObjectsStore extends Store {
 
   getTypeById(id) {
     return _.find(this.state.typesList, t => t.id === id) || {};
+  }
+
+  handleGetConfig(appConfig) {
+    console.log(appConfig);
+    this.setState({appConfig});
   }
 
 }

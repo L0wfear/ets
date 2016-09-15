@@ -29,7 +29,7 @@ export default WaybillsStore;
 
 
 export function getDefaultBill() {
-	return {
+  return {
     status: null,
     //responsible_person_id: null,
     plan_departure_date: getToday9am(),
@@ -38,20 +38,20 @@ export function getDefaultBill() {
     // fact_arrival_date: vozvr_plan,
     driver_id: null,
     car_id: "",
-    fuel_type_id: 6,
+    fuel_type: 'DT',
     fuel_start: "",
     equipment_fuel: false,
-    equipment_fuel_type_id: 6,
+    equipment_fuel_type: 6,
     //fuel_to_give: null,
     //fuel_given: "",
     //fuel_end: "",
-		odometr_start: null,
-		//odometr_end: "",
-		motohours_start: null,
-		//motohours_end: "",
-		//motohours_equip_start: null,
-		//motohours_equip_end: "",
+    odometr_start: null,
+    //odometr_end: "",
+    motohours_start: null,
+    //motohours_end: "",
+    //motohours_equip_start: null,
+    //motohours_equip_end: "",
     mission_id_list: [],
     company_id: JSON.parse(localStorage.getItem('current_user')).company_id,
-	}
+  }
 }

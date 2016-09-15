@@ -63,7 +63,7 @@ export const PositionService = ETS_API_FACTORY.createApiServiceAdapter('position
 export const VectorObjectService = ETS_API_FACTORY.createApiServiceAdapter('vector_object', {});
 export const MissionDataService = ETS_API_FACTORY.createApiServiceAdapter('mission_data', {});
 export const OrganizationsService = ETS_API_FACTORY.createApiServiceAdapter('organizations', { useMock: true });
-export const ODHNormService = ETS_API_FACTORY.createApiServiceAdapter('odh_norm', {useMock: true});
+export const ODHNormService = ETS_API_FACTORY.createApiServiceAdapter('odh_norm', {});
 export const ODHNormDataSummerService = ETS_API_FACTORY.createApiServiceAdapter('odh_norm_data_summer', {useMock: true});
 export const EfficiencyService = ETS_API_FACTORY.createApiServiceAdapter('efficiency', {useMock: true});
 

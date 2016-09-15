@@ -19,11 +19,11 @@ let tableMeta = {
       filter: false
     },
     {
-      name: 'expendable',
+      name: 'consumable_material',
       displayName: 'Расходный материал',
       filter: {
 				type: 'select',
-				labelFunction: (expendable) => expendable ? 'Да' : 'Нет'
+				labelFunction: (consumable_material) => consumable_material ? 'Да' : 'Нет'
 			},
     }
   ]
@@ -31,7 +31,7 @@ let tableMeta = {
 
 let ODHNormTable = (props) => {
 	const renderers = {
-    expendable: ({data}) => <div style={{textAlign: "center"}}><input type="checkbox" checked={!!data} readOnly /></div>
+    consumable_material: ({data}) => <div style={{textAlign: "center"}}><input type="checkbox" checked={!!data} readOnly /></div>
   };
 
 	return <Table title='Нормативы по содержанию ОДХ'

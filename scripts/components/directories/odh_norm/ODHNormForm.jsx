@@ -43,9 +43,9 @@ export default class ODHNormForm extends Form {
 						<Field
 								type="boolean"
 								label="Расходный материал"
-								value={state['expendable']}
-								error={errors['expendable']}
-								onChange={this.handleChange.bind(this, 'expendable', !!!state['expendable'])} />
+								value={state['consumable_material']}
+								error={errors['consumable_material']}
+								onChange={this.handleChange.bind(this, 'consumable_material', !!!state['consumable_material'])} />
 					</Div>
 	      </Modal.Body>
 	      <Modal.Footer>

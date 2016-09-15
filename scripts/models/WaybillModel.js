@@ -81,30 +81,30 @@ export const waybillSchema = {
         validator: (value, formData) => {
           if (hasOdometer(formData.gov_number)) {
             if (isEmpty(value)) {
-              return `Поле "Одометр.Выезд" должно быть заполнено`;
+              return 'Поле "Одометр.Выезд" должно быть заполнено';
             }
           }
-        }
-      }
+        },
+      },
     ],
     'motohours_start': [
       {
         validator: (value, formData) => {
           if (!hasOdometer(formData.gov_number)) {
             if (isEmpty(value)) {
-              return `Поле "Счетчик моточасов.Выезд" должно быть заполнено`;
+              return 'Поле "Счетчик моточасов.Выезд" должно быть заполнено';
             }
           }
-        }
-      }
+        },
+      },
     ],
     'plan_arrival_date': [
       {
         type: 'gt',
-        field: 'plan_departure_date'
-      }
-    ]
-  }
+        field: 'plan_departure_date',
+      },
+    ],
+  },
 };
 
 const closingProperties = [
@@ -171,30 +171,30 @@ const closingDependencies = {
   'fact_arrival_date': [
     {
       type: 'gt',
-      field: 'fact_departure_date'
-    }
+      field: 'fact_departure_date',
+    },
   ],
-  'motohours_end' : [
+  'motohours_end': [
     {
       type: 'gte',
-      field: 'motohours_start'
-    }
+      field: 'motohours_start',
+    },
   ],
-  'motohours_equip_end' : [
+  'motohours_equip_end': [
     {
       type: 'gte',
-      field: 'motohours_equip_start'
-    }
+      field: 'motohours_equip_start',
+    },
   ],
-  'odometr_end' : [
+  'odometr_end': [
     {
       type: 'gte',
-      field: 'odometr_start'
-    }
-  ]
-}
+      field: 'odometr_start',
+    },
+  ],
+};
 
 export const waybillClosingSchema = {
   properties: closingProperties,
-  dependencies: closingDependencies
-};;
+  dependencies: closingDependencies,
+};

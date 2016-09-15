@@ -112,7 +112,7 @@ export default class WaybillsActions extends Actions {
     delete payload.car_model_name;
     delete payload.garage_number;
 
-    _.mapKeys(payload, (v, k) => isEmpty(v) ? payload[k] = null : void 0);
+    _.mapKeys(payload, (v, k) => isEmpty(v) ? payload[k] = null : undefined);
 
     if (isEmpty(payload.motohours_equip_start)) {
       payload.motohours_equip_start = null;
@@ -146,7 +146,7 @@ export default class WaybillsActions extends Actions {
     delete payload.car_model_name;
     delete payload.garage_number;
     delete payload.all_missions_completed_or_failed;
-    _.mapKeys(payload, (v, k) => isEmpty(v) ? delete payload[k] : void 0);
+    _.mapKeys(payload, (v, k) => isEmpty(v) ? delete payload[k] : undefined);
 
     if (isEmpty(payload.mission_id_list)) {
       payload.mission_id_list = [];

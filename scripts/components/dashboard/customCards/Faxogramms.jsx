@@ -1,6 +1,6 @@
 import React from 'react';
 import Div from 'components/ui/Div.jsx';
-import { Panel, Collapse, Glyphicon, Fade, Well, Button } from 'react-bootstrap';
+import { Glyphicon, Button } from 'react-bootstrap';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
 import FaxogrammMissionsFormWrap from '../../directories/faxogramm/FaxogrammMissionsFormWrap.jsx';
 import PDFViewModal from './PDFViewModal.jsx';
@@ -20,37 +20,37 @@ export default class Faxogramms extends DashboardCardMedium {
 
   showFaxogrammForm(data) {
     this.props.openSubitemsList(true);
-    this.setState({showFaxogrammForm: true, faxogramm: data});
+    this.setState({ showFaxogrammForm: true, faxogramm: data });
   }
 
   async showPDFViewModal(data) {
-    let url = await this.context.flux.getActions('objects').getFaxogrammPDFUrl(data.id);
-    this.setState({showPDFViewModal: true, url});
+    const url = await this.context.flux.getActions('objects').getFaxogrammPDFUrl(data.id);
+    this.setState({ showPDFViewModal: true, url });
   }
 
   renderCustomCardData() {
-    let selectedItemIndex = this.state.selectedItem;
-    let selectedItem = this.props.items[selectedItemIndex] || null;
-    let subItems = selectedItem !== null ? selectedItem.subItems || [] : [];
-    let data = selectedItem !== null ? selectedItem.data || {} : {};
+    const selectedItemIndex = this.state.selectedItem;
+    const selectedItem = this.props.items[selectedItemIndex] || null;
+    const data = selectedItem !== null ? selectedItem.data || {} : {};
 
-    let canViewPDF = this.context.flux.getStore('session').getPermission("faxogramm.read");
-    let canCreateMission = this.context.flux.getStore('session').getPermission("mission.create");
+    const canViewPDF = this.context.flux.getStore('session').getPermission('faxogramm.read');
+    const canCreateMission = this.context.flux.getStore('session').getPermission('mission.create');
 
     return (
       <Div>
-        <Div style={{marginTop: 10}}>
+        <Div style={{ marginTop: 10 }}>
           <h5>Доп. информация</h5>
           <p>{data.order_info}</p>
         </Div>
         <Div className="text-right">
-          {canViewPDF ? <Button className="dashboard-card-action-button" onClick={(e) => {e.preventDefault(); this.showPDFViewModal(data);}}><Glyphicon glyph="info-sign" /></Button> : ''}
-          {canCreateMission ? <Button className="dashboard-card-action-button" onClick={(e) => {e.preventDefault(); this.showFaxogrammForm(data);}}>Сформировать задания</Button> : ''}
+          {canViewPDF ? <Button className="dashboard-card-action-button" onClick={(e) => { e.preventDefault(); this.showPDFViewModal(data); }}><Glyphicon glyph="info-sign" /></Button> : ''}
+          {canCreateMission ? <Button className="dashboard-card-action-button" onClick={(e) => { e.preventDefault(); this.showFaxogrammForm(data); }}>Сформировать задания</Button> : ''}
         </Div>
         <PDFViewModal
-            url={this.state.url}
-            show={this.state.showPDFViewModal}
-            onHide={() => this.setState({showPDFViewModal: false, url: null})} />
+          url={this.state.url}
+          show={this.state.showPDFViewModal}
+          onHide={() => this.setState({ showPDFViewModal: false, url: null })}
+        />
       </Div>
     );
   }
@@ -58,10 +58,11 @@ export default class Faxogramms extends DashboardCardMedium {
   renderCustomCardForm() {
     return (
       <FaxogrammMissionsFormWrap
-          onFormHide={() => this.setState({showFaxogrammForm: false})}
-          showForm={this.state.showFaxogrammForm}
-          element={this.state.faxogramm}
-          {...this.props}/>
+        onFormHide={() => this.setState({ showFaxogrammForm: false })}
+        showForm={this.state.showFaxogrammForm}
+        element={this.state.faxogramm}
+        {...this.props}
+      />
     );
   }
 

@@ -1,40 +1,32 @@
 import React, { Component } from 'react';
-import moment from 'moment';
 import _ from 'lodash';
 import Div from 'components/ui/Div.jsx';
 import FaxogrammMissionsForm from './FaxogrammMissionsForm.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import { isEmpty } from 'utils/functions';
-import { missionSchema } from 'models/MissionModel.js';
 
 class FaxogrammMissionsFormWrap extends FormWrap {
 
-	constructor(props) {
-		super(props);
-	}
-
-	componentWillReceiveProps(props) {
-
-		if (props.showForm && props.showForm !== this.props.showForm) {
-			let faxogrammMissions = props.element === null ? {} : _.clone(props.element);
-			let formErrors = this.validate(faxogrammMissions, {});
+  componentWillReceiveProps(props) {
+    if (props.showForm && props.showForm !== this.props.showForm) {
+      const faxogrammMissions = props.element === null ? {} : _.clone(props.element);
+      const formErrors = this.validate(faxogrammMissions, {});
 
       if (isEmpty(faxogrammMissions.assign_to_waybill)) {
         faxogrammMissions.assign_to_waybill = 'assign_to_draft';
       }
 
-			this.setState({
-				formState: faxogrammMissions,
-				canSave: ! !!_.filter(formErrors).length,//false,
-				formErrors,
-			});
-		}
+      this.setState({
+        formState: faxogrammMissions,
+        canSave: !_.filter(formErrors).length, // false,
+        formErrors,
+      });
+    }
+  }
 
-	}
-
-	handleFormSubmit() {
-		const { flux } = this.context;
-		let { formState } = this.state;
+  handleFormSubmit() {
+    const { flux } = this.context;
+    const { formState } = this.state;
     const payload = {
       mission_source_id: '4',
       faxogramm_id: formState.id,
@@ -44,23 +36,25 @@ class FaxogrammMissionsFormWrap extends FormWrap {
     };
     flux.getActions('missions').createMissions(formState.missionJournalState.checkedElements, payload);
 
-		this.props.onFormHide();
+    this.props.onFormHide();
 
-		return;
-	}
+    return;
+  }
 
-	render() {
-
-		return 	<Div hidden={!this.props.showForm}>
-							<FaxogrammMissionsForm formState = {this.state.formState}
-							 onSubmit={this.handleFormSubmit.bind(this)}
-							 handleFormChange={this.handleFormStateChange.bind(this)}
-							 show={this.props.showForm}
-							 onHide={this.props.onFormHide}
-							 {...this.state}/>
-						</Div>
-
-	}
+  render() {
+    return (
+      <Div hidden={!this.props.showForm}>
+        <FaxogrammMissionsForm
+          formState={this.state.formState}
+          onSubmit={this.handleFormSubmit.bind(this)}
+          handleFormChange={this.handleFormStateChange.bind(this)}
+          show={this.props.showForm}
+          onHide={this.props.onFormHide}
+          {...this.state}
+        />
+      </Div>
+    );
+  }
 
 }
 

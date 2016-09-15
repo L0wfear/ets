@@ -6,20 +6,20 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 @connectToStores(['geoObjects'])
 @staticProps({
   path: 'geozones',
-	entity: 'msp',
-	listName: 'mspsList',
-	tableComponent: MSPTable
+  entity: 'msp',
+  listName: 'mspsList',
+  tableComponent: MSPTable,
 })
 @exportable
 export default class MSPDirectory extends ElementsList {
 
-	constructor(props, context) {
-		super(props);
-	}
+  constructor(props, context) {
+    super(props);
+  }
 
-	componentDidMount() {
-		super.componentDidMount();
+  componentDidMount() {
+    super.componentDidMount();
     const { flux } = this.context;
     flux.getActions('geoObjects').getGeozoneByType('msp');
-	}
+  }
 }

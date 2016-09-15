@@ -19,8 +19,8 @@ import * as array from './validateArray.js';
 import dependencyValidators from './dependency';
 
 const validators = {
-  //string,
-  //text,
+  // string,
+  // text,
   number,
   datetime,
   floatFixed3,
@@ -41,23 +41,22 @@ function validateFieldByType(config, value, formData) {
   const { type } = config;
   const validator = validators[type];
 
-  return validator ? validator.validate(config, value, formData) : void 0;
+  return validator ? validator.validate(config, value, formData) : undefined;
 }
 
 function validateFieldByDependencyType(type, config, value, dependentFieldConfig, dependentFieldValue, formData, schema) {
   if (typeof type === 'undefined') {
-    return void 0;
+    return undefined;
   }
   const validator = dependencyValidators[type];
 
-  return validator ? validator.validate(config, value, dependentFieldConfig, dependentFieldValue, formData, schema) : void 0;
+  return validator ? validator.validate(config, value, dependentFieldConfig, dependentFieldValue, formData, schema) : undefined;
 }
 
 export function validateField(config, value, formData, schema) {
+  // console.warn(`VALIDATING ${config.key} with data = ${value}`);
 
-  //console.warn(`VALIDATING ${config.key} with data = ${value}`);
-
-  let error = validateFieldByType(config, value, formData);
+  const error = validateFieldByType(config, value, formData);
 
   // if (!error && config.extends) {
   //   error = validateFieldByType(config.extends, config, value, formData);
@@ -65,7 +64,7 @@ export function validateField(config, value, formData, schema) {
   // Версия из gistek-forms
   // if (!error && config.config.customValidations) {
   //   return _(config.config.customValidations)
-  //     .map(({expression, message}) => eval(expression) ? message : void 0)
+  //     .map(({expression, message}) => eval(expression) ? message : undefined)
   //     .filter()
   //     .first();
   // }
@@ -81,10 +80,10 @@ export function validateField(config, value, formData, schema) {
         // If no field was specified we should abort validation
         // TODO check schema before validation to remove this block
         if (typeof field === 'undefined') {
-          return void 0;
+          return undefined;
         }
         // We need to check dependent field to work on comparisons
-        const dependentFieldConfig = _.find(schema.properties, (object) => object.key === field);
+        const dependentFieldConfig = _.find(schema.properties, object => object.key === field);
         if (typeof dependentFieldConfig === 'undefined') {
           throw new Error(`Dependent field "${field}" for key "${config.key}" was not found in schema`);
         }

@@ -3,7 +3,7 @@ import gte from './gte.js';
 
 const validators = {
   gt,
-  gte
+  gte,
 };
 
 export default validators;

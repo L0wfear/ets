@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { autobind } from 'core-decorators';
 import { FluxContext } from 'utils/decorators';
 
 /**
@@ -6,6 +7,7 @@ import { FluxContext } from 'utils/decorators';
  * @abstract
  */
 @FluxContext
+@autobind
 export default class Form extends React.Component {
 
   static get propTypes() {
@@ -13,11 +15,11 @@ export default class Form extends React.Component {
       handleFormChange: PropTypes.func.isRequired,
       handleMultipleChange: PropTypes.func,
       onSubmit: PropTypes.func.isRequired,
-      formState: PropTypes.object.isRequired
-    }
+      formState: PropTypes.object.isRequired,
+    };
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -25,22 +27,22 @@ export default class Form extends React.Component {
     };
   }
 
-   handleChange(field, e) {
-     console.info('HANDLE FORM CHANGE');
- 		 return this.props.handleFormChange(field, e);
- 	 }
+  handleChange(field, e) {
+    console.info('HANDLE FORM CHANGE');
+    return this.props.handleFormChange(field, e);
+  }
 
-   handleMultipleChange(fields) {
-     this.props.handleMultipleChange(fields);
-   }
+  handleMultipleChange(fields) {
+    this.props.handleMultipleChange(fields);
+  }
 
-   handleSubmit() {
-     console.info('SUBMITTING FORM', this.props.formState);
-     this.props.onSubmit();
-   }
+  handleSubmit() {
+    console.info('SUBMITTING FORM', this.props.formState);
+    this.props.onSubmit();
+  }
 
-   render() {
-     return <Component {...this.props} {...this.state} />
-   }
+  render() {
+    return <Component {...this.props} {...this.state} />;
+  }
 
 }

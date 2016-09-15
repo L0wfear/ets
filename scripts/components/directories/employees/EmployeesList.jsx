@@ -10,15 +10,15 @@ import { connectToStores, staticProps } from 'utils/decorators';
   listName: 'employeesList',
   tableComponent: EmployeesTable,
   formComponent: EmployeeFormWrap,
-  operations: ['LIST', 'CREATE', 'READ', 'UPDATE']
+  operations: ['LIST', 'CREATE', 'READ', 'UPDATE'],
 })
 export default class EmployeesList extends ElementsList {
 
-	constructor(props, context) {
-		super(props);
+  constructor(props) {
+    super(props);
     // DELETE пока не используется
     // this.removeElementAction = context.flux.getActions('employees').deleteEmployee;
-	}
+  }
 
   componentDidMount() {
     super.componentDidMount();

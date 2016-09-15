@@ -6,20 +6,20 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 @connectToStores(['geoObjects'])
 @staticProps({
   path: 'geozones',
-	entity: 'snowStorage',
-	listName: 'snowStoragesList',
-	tableComponent: SnowStorageTable
+  entity: 'snowStorage',
+  listName: 'snowStoragesList',
+  tableComponent: SnowStorageTable,
 })
 // @exportable
 export default class SnowStorageDirectory extends ElementsList {
 
-	constructor(props, context) {
-		super(props);
-	}
+  constructor(props, context) {
+    super(props);
+  }
 
-	componentDidMount() {
-		super.componentDidMount();
+  componentDidMount() {
+    super.componentDidMount();
     const { flux } = this.context;
     flux.getActions('geoObjects').getGeozoneByType('snow_storage');
-	}
+  }
 }

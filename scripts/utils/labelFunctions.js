@@ -3,16 +3,16 @@
 import { getFormattedDateTime } from 'utils/dates';
 
 export function waybillStatusLabelFunction(s) {
-	switch (s) {
-		case 'draft':
-			return 'Черновик';
-		case 'active':
-			return 'Активен';
-		case 'closed':
-			return 'Закрыт';
-		default:
-			return 'Н/Д';
-	}
+  switch (s) {
+    case 'draft':
+      return 'Черновик';
+    case 'active':
+      return 'Активен';
+    case 'closed':
+      return 'Закрыт';
+    default:
+      return 'Н/Д';
+  }
 }
 
 export function waybillMissionsCompleteStatusLabelFunction(status) {
@@ -39,12 +39,12 @@ export function getGeozoneTypeLabel(type) {
 }
 
 export function getPeriodicReportStatusLabel(s) {
-  let statuses = {
+  const statuses = {
     'full_traveled': 'Пройдено полностью',
     'not_traveled': 'Не пройдено',
     'traveled_less_than_half': 'Пройдено меньше половины',
-    'traveled_more_than_half': 'Пройдено больше половины'
-  }
+    'traveled_more_than_half': 'Пройдено больше половины',
+  };
 
   return statuses[s];
 }
@@ -55,12 +55,12 @@ export function employeeFIOLabelFunction(employeeId, fullFlag = false) {
   const employeesStore = flux.getStore('employees');
   const employee = employeesStore.getEmployeeById(employeeId);
   if (!employee) {
-		return '';
-	}
+    return '';
+  }
   let result = employee.last_name + ' ';
-	result += fullFlag ? `${employee.first_name || ''} ${employee.middle_name || ''}` : `${employee.first_name[0] && employee.first_name[0]+'.' || ''} ${employee.middle_name[0] && employee.middle_name[0]+'.' || ''}`;
+  result += fullFlag ? `${employee.first_name || ''} ${employee.middle_name || ''}` : `${employee.first_name[0] && employee.first_name[0] + '.' || ''} ${employee.middle_name[0] && employee.middle_name[0] + '.' || ''}`;
 
-	return result;
+  return result;
 }
 
 export function getTypeById(id) {

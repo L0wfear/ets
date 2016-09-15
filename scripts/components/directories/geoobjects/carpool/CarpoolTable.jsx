@@ -1,37 +1,35 @@
 import React, { Component } from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 
-let tableMeta = {
-	cols: [
-		{
-			name: 'name',
-			displayName: 'Полное наименование',
-			type: 'string',
+const tableMeta = {
+  cols: [
+    {
+      name: 'name',
+      displayName: 'Полное наименование',
+      type: 'string',
       filter: {
         type: 'select',
-      }
-		},
-		{
-			name: 'address',
-			displayName: 'Адрес',
-			type: 'string',
+      },
+    },
+    {
+      name: 'address',
+      displayName: 'Адрес',
+      type: 'string',
       filter: {
         type: 'select',
-      }
-		}
-	]
+      },
+    },
+  ],
 };
 
-let CarpoolTable = (props) => {
+export default (props) => {
+  const renderers = {};
 
-    const renderers = {};
-
-		return <Table
-				title='Автобазы'
-				results={props.data}
-				tableMeta={tableMeta}
-				renderers={renderers}
-				{...props}/>
-}
-
-export default CarpoolTable;
+  return (<Table
+    title="Автобазы"
+    results={props.data}
+    tableMeta={tableMeta}
+    renderers={renderers}
+    {...props}
+  />);
+};

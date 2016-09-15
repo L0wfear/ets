@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Div from 'components/ui/Div.jsx';
-import { Panel, Collapse, Glyphicon, Fade, Well, Button } from 'react-bootstrap';
+import { Panel, Collapse, Glyphicon, Fade, Well } from 'react-bootstrap';
 import { FluxContext } from 'utils/decorators';
 import DashboardCardHeader from './DashboardCardHeader.jsx';
 import DashboardItemChevron from './DashboardItemChevron.jsx';
@@ -22,14 +22,14 @@ export default class DashboardCardMedium extends React.Component {
   }
 
   componentDidMount() {
-    let cardWidth = ReactDOM.findDOMNode(this.refs.card).offsetWidth;
-    this.setState({cardWidth});
+    const cardWidth = ReactDOM.findDOMNode(this.refs.card).offsetWidth;
+    this.setState({ cardWidth });
   }
 
   selectItem(i) {
-    let item = this.props.items[i];
+    const item = this.props.items[i];
     if ((item && item.subItems && item.subItems.length) || i === null || (item && item.data)) {
-      this.setState({selectedItem: i});
+      this.setState({ selectedItem: i });
       this.props.openSubitemsList(i === null);
     } else if (typeof this.action === 'function') {
       this.action(i);
@@ -37,7 +37,7 @@ export default class DashboardCardMedium extends React.Component {
   }
 
   toggleFullList() {
-    this.setState({fullListOpen: !!!this.state.fullListOpen});
+    this.setState({ fullListOpen: !!!this.state.fullListOpen });
   }
 
   refreshCard() {
@@ -53,9 +53,9 @@ export default class DashboardCardMedium extends React.Component {
   }
 
   renderItems() {
-    return this.props.items.map((item,i) => {
-      let itemClassName = cx('dashboard-card-item', {'pointer': (item.data) || (item.subItems && item.subItems.length) || (this.action)});
-      return <Div key={i} className={itemClassName} >
+    return this.props.items.map((item, i) => {
+      const itemClassName = cx('dashboard-card-item', { 'pointer': (item.data) || (item.subItems && item.subItems.length) || (this.action) });
+      return (<Div key={i} className={itemClassName} >
         {typeof item.value !== 'undefined' ?
           <Div className="dashboard-card-item-inner-singlevalue" onClick={this.selectItem.bind(this, i)}>
             {item.value}
@@ -68,30 +68,30 @@ export default class DashboardCardMedium extends React.Component {
         {
           typeof this.renderCollapsibleSubitems === 'function' ? this.renderCollapsibleSubitems(item, i) : ''
         }
-      </Div>
+      </Div>);
     });
   }
 
   render() {
-    let selectedItemIndex = this.state.selectedItem;
-    let selectedItem = this.props.items[selectedItemIndex] || null;
-    let subItems = selectedItem !== null ? selectedItem.subItems || [] : [];
-    let data = selectedItem !== null ? selectedItem.data || {} : {};
+    const selectedItemIndex = this.state.selectedItem;
+    const selectedItem = this.props.items[selectedItemIndex] || null;
+    const subItems = selectedItem !== null ? selectedItem.subItems || [] : [];
+    const data = selectedItem !== null ? selectedItem.data || {} : {};
     const items = this.renderItems();
     let styleObject = {
-      width: this.state.cardWidth, marginLeft: this.state.cardWidth + 30
+      width: this.state.cardWidth, marginLeft: this.state.cardWidth + 30,
     };
     if (this.props.direction === 'left') {
       styleObject = {
-        width: this.state.cardWidth, right: this.state.cardWidth + 44
+        width: this.state.cardWidth, right: this.state.cardWidth + 44,
       };
     }
     if (!this.state.cardWidth) {
       styleObject = {};
     }
-    let firstItems = items.slice(0, 2);
-    let otherItems = items.slice(2, items.length);
-    let Header = <DashboardCardHeader title={this.props.title} loading={this.props.loading} onClick={this.refreshCard.bind(this)}/>;
+    const firstItems = items.slice(0, 2);
+    const otherItems = items.slice(2, items.length);
+    const Header = <DashboardCardHeader title={this.props.title} loading={this.props.loading} onClick={this.refreshCard.bind(this)} />;
 
     // отрефакторить
 
@@ -108,28 +108,28 @@ export default class DashboardCardMedium extends React.Component {
           </Div>
 
           <Div className="menu-down-block" hidden={otherItems.length === 0}>
-            <Div style={{textAlign: 'center'}} hidden={this.state.fullListOpen}>
-              <Glyphicon glyph="menu-down" className="pointer" onClick={this.toggleFullList.bind(this)}/>
+            <Div style={{ textAlign: 'center' }} hidden={this.state.fullListOpen}>
+              <Glyphicon glyph="menu-down" className="pointer" onClick={this.toggleFullList.bind(this)} />
             </Div>
-            <Div style={{textAlign: 'center'}} hidden={!this.state.fullListOpen}>
-              <Glyphicon glyph="menu-up" className="pointer" onClick={this.toggleFullList.bind(this)}/>
+            <Div style={{ textAlign: 'center' }} hidden={!this.state.fullListOpen}>
+              <Glyphicon glyph="menu-up" className="pointer" onClick={this.toggleFullList.bind(this)} />
             </Div>
           </Div>
 
-          <Div className="dashboard-card-overlay" hidden={!this.props.loading}></Div>
+          <Div className="dashboard-card-overlay" hidden={!this.props.loading} />
         </Panel>
 
         <DashboardItemChevron direction={this.props.direction} hidden={selectedItem === null || (subItems.length === 0 && !data.mission_name) || !this.props.itemOpened} />
 
-        <Div style={styleObject} hidden={(subItems.length === 0 && !data) || !this.props.itemOpened} className={cx('dashboard-card-info', {active: selectedItem !== null && this.props.itemOpened})} >
+        <Div style={styleObject} hidden={(subItems.length === 0 && !data) || !this.props.itemOpened} className={cx('dashboard-card-info', { active: selectedItem !== null && this.props.itemOpened })} >
           <Fade in={selectedItem !== null && this.props.itemOpened}>
             <div>
               <Well>
                 <Div className="card-glyph-remove" onClick={this.selectItem.bind(this, null)}>
-                  <Glyphicon glyph="remove"/>
+                  <Glyphicon glyph="remove" />
                 </Div>
                 <h5>{this.props.itemsTitle || (selectedItem !== null ? selectedItem.title : '')}</h5>
-                <div style={{marginTop: 15}}/>
+                <div style={{ marginTop: 15 }} />
                 {this.renderSubitems(subItems)}
                 {typeof this.renderCustomCardData === 'function' ? this.renderCustomCardData() : null}
               </Well>
@@ -142,4 +142,4 @@ export default class DashboardCardMedium extends React.Component {
     );
   }
 
-};
+}

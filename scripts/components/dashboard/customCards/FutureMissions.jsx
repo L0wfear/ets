@@ -1,9 +1,5 @@
 import React from 'react';
-import Div from 'components/ui/Div.jsx';
-import { Panel, Collapse, Glyphicon, Fade, Well, Button } from 'react-bootstrap';
-import {getFormattedDateTimeSeconds} from 'utils/dates';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
-import moment from 'moment';
 import MissionFormWrap from '../../missions/mission/MissionFormWrap.jsx';
 
 export default class FutureMissions extends DashboardCardMedium {
@@ -18,23 +14,26 @@ export default class FutureMissions extends DashboardCardMedium {
   }
 
   action(itemIndex) {
-    let canView = this.context.flux.getStore('session').getPermission("mission.read");
-    if (canView) this.context.flux
+    const canView = this.context.flux.getStore('session').getPermission('mission.read');
+    if (canView) {
+      this.context.flux
       .getActions('missions')
       .getMissionById(this.props.items[itemIndex].mission_id)
-      .then(m => {
+      .then((m) => {
         console.log(m);
-        this.setState({selectedMission: m.result.rows[0], showMissionForm: true});
+        this.setState({ selectedMission: m.result.rows[0], showMissionForm: true });
       });
+    }
   }
 
   renderCustomCardForm() {
     return (
       <MissionFormWrap
-          onFormHide={() => this.setState({showMissionForm: false})}
-          showForm={this.state.showMissionForm}
-          element={this.state.selectedMission}
-          {...this.props}/>
+        onFormHide={() => this.setState({ showMissionForm: false })}
+        showForm={this.state.showMissionForm}
+        element={this.state.selectedMission}
+        {...this.props}
+      />
     );
   }
 

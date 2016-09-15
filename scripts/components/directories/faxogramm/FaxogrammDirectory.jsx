@@ -14,82 +14,84 @@ import { saveData } from 'utils/functions';
 
 class FaxogrammDirectory extends ElementsList {
 
-	constructor(props, context) {
-		super(props);
+  constructor(props, context) {
+    super(props);
 
     this.mainListName = 'faxogrammsList';
 
     this.state = {
       page: 0,
-			selectedElement: null,
-			create_date_from: getToday0am(),
-			create_date_to: getToday2359(),
+      selectedElement: null,
+      create_date_from: getToday0am(),
+      create_date_to: getToday2359(),
     };
-	}
-
-	componentDidMount() {
-		super.componentDidMount();
-
-		this.getFaxogramms();
-	}
-
-	getFaxogramms() {
-    this.context.flux.getActions('objects').getFaxogramms(this.state.page, this.state.create_date_from, this.state.create_date_to);
-	}
-
-	saveFaxogramm() {
-		const { flux } = this.context;
-		const faxogramm = this.state.selectedElement;
-		flux.getActions('objects').saveFaxogramm(faxogramm.id)
-			.then(({blob, fileName}) => saveData(blob, fileName));
-	}
-
-  onPageChange(page) {
-    this.setState({page}, () => this.getFaxogramms());
   }
 
-	handleChange(field, value) {
-		this.setState({[field]: value}, () => this.getFaxogramms());
-	}
+  componentDidMount() {
+    super.componentDidMount();
 
-	render() {
+    this.getFaxogramms();
+  }
 
-		const { faxogrammsList = [], faxogrammsMaxPage } = this.props;
-		let faxogramm = this.state.selectedElement || {};
-		let faxogrammInfoData = [{id: 0, order_info: faxogramm.order_info}];
+  getFaxogramms() {
+    this.context.flux.getActions('objects').getFaxogramms(this.state.page, this.state.create_date_from, this.state.create_date_to);
+  }
 
-		return (
-			<div className="ets-page-wrap">
-				<FaxogrammsDatepicker handleChange={this.handleChange.bind(this)} {...this.state}/>
+  saveFaxogramm() {
+    const { flux } = this.context;
+    const faxogramm = this.state.selectedElement;
+    flux.getActions('objects').saveFaxogramm(faxogramm.id)
+      .then(({ blob, fileName }) => saveData(blob, fileName));
+  }
+
+  onPageChange(page) {
+    this.setState({ page }, () => this.getFaxogramms());
+  }
+
+  handleChange(field, value) {
+    this.setState({ [field]: value }, () => this.getFaxogramms());
+  }
+
+  render() {
+    const { faxogrammsList = [], faxogrammsMaxPage } = this.props;
+    const faxogramm = this.state.selectedElement || {};
+    const faxogrammInfoData = [{ id: 0, order_info: faxogramm.order_info }];
+
+    return (
+      <div className="ets-page-wrap">
+        <FaxogrammsDatepicker handleChange={this.handleChange.bind(this)} {...this.state} />
         <FaxogrammsTable data={faxogrammsList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'} {...this.props}>
-					<Button onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}>Создать задания</Button>
-					<Button onClick={this.saveFaxogramm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="download-alt" /></Button>
-				</FaxogrammsTable>
-				<FaxogrammMissionsFormWrap onFormHide={this.onFormHide.bind(this)}
-																	 showForm={this.state.showForm}
-																	 element={this.state.selectedElement}
-																	 {...this.props}/>
-        <Paginator currentPage={this.state.page} maxPage={faxogrammsMaxPage} setPage={this.onPageChange.bind(this)}/>
-				<Div hidden={this.state.selectedElement === null}>
-	        <Row>
-						<h4 style={{marginLeft: 20, fontWeight: 'bold'}}>Расшифровка факсограммы</h4>
-	          <Col md={8}>
-							<FaxogrammOperationInfoTable
-								noHeader={true}
-								preventNoDataMessage={true}
-								data={faxogramm.technical_operations || []}/>
-	          </Col>
-	          <Col md={4}>
-							<FaxogrammInfoTable
-								noHeader={true}
-								preventNoDataMessage={true}
-								data={faxogrammInfoData}/>
-	          </Col>
-	        </Row>
-				</Div>
-			</div>
-		);
-	}
+          <Button onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}>Создать задания</Button>
+          <Button onClick={this.saveFaxogramm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="download-alt" /></Button>
+        </FaxogrammsTable>
+        <FaxogrammMissionsFormWrap onFormHide={this.onFormHide.bind(this)}
+          showForm={this.state.showForm}
+          element={this.state.selectedElement}
+          {...this.props}
+        />
+        <Paginator currentPage={this.state.page} maxPage={faxogrammsMaxPage} setPage={this.onPageChange.bind(this)} />
+        <Div hidden={this.state.selectedElement === null}>
+          <Row>
+            <h4 style={{ marginLeft: 20, fontWeight: 'bold' }}>Расшифровка факсограммы</h4>
+            <Col md={8}>
+              <FaxogrammOperationInfoTable
+                noHeader
+                preventNoDataMessage
+                data={faxogramm.technical_operations || []}
+              />
+            </Col>
+            <Col md={4}>
+              <FaxogrammInfoTable
+                noHeader
+                preventNoDataMessage
+                data={faxogrammInfoData}
+              />
+            </Col>
+          </Row>
+        </Div>
+      </div>
+    );
+  }
 }
 
 export default connectToStores(FaxogrammDirectory, ['objects']);

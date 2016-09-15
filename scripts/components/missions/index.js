@@ -11,5 +11,5 @@ export default {
   missions,
   missionTemplates,
   dutyMissions,
-  dutyMissionTemplates
-}
+  dutyMissionTemplates,
+};

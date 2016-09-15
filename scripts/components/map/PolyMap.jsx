@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import CarMarker from './markers/car/CarMarker.js';
 import { PROJECTION, ArcGisLayer } from './MskAdapter.js';
 import { polyState, polyStyles } from 'constants/polygons.js';
-import { vectorStyles, vectorState, getVectorArrowStyle } from 'constants/vectors.js';
+import { getVectorArrowStyle } from 'constants/vectors.js';
 import { getPolyStyle } from 'utils/ol';
 
 let POLYS_LAYER = null;
@@ -14,7 +13,7 @@ export default class PolyMap extends Component {
 
   constructor(props, context) {
     super(props, context);
-    let self = this;
+    const self = this;
     console.warn('POLYMAP CONSTRUCTOR');
 
     this.markers = {};
@@ -26,27 +25,53 @@ export default class PolyMap extends Component {
       minZoom: 2,
       maxZoom: 13,
       projection: PROJECTION,
-      extent: PROJECTION.getExtent()
+      extent: PROJECTION.getExtent(),
     });
 
     this.controls = [];
     this.controls.push(new ol.control.Zoom({
       duration: 200,
       className: 'ol-zoom',
-      delta: 1
+      delta: 1,
     }));
 
     this.layers = [ArcGisLayer];
 
     this.map = new ol.Map({
       view: this.initialView,
-      interactions: new ol.interaction.defaults({doubleClickZoom :false}),
-      renderer: ['canvas','dom'],
+      interactions: new ol.interaction.defaults({ doubleClickZoom: false }),
+      renderer: ['canvas', 'dom'],
       controls: this.controls,
-      layers: this.layers
+      layers: this.layers,
     });
 
     this.init();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.polys !== undefined) {
+      if (this.popup) {
+        this.popup.hide();
+      }
+      this.renderPolygons(nextProps.polys);
+    }
+  }
+
+  /**
+   * initialization here
+   */
+  componentDidMount() {
+    const map = this.map;
+    const container = this.refs.container;
+
+    map.setTarget(container);
+
+    this.popup = new ol.Overlay.Popup();
+    map.addOverlay(this.popup);
+
+    this.enableInteractions();
+
+    this.renderPolygons(this.props.polys);
   }
 
   init() {
@@ -54,14 +79,14 @@ export default class PolyMap extends Component {
   }
 
   renderPolygons(polys = {}) {
-    let map = this.map;
+    const map = this.map;
 
-    let GeoJSON = new ol.format.GeoJSON();
-    let vectorSource = new ol.source.Vector();
+    const GeoJSON = new ol.format.GeoJSON();
+    const vectorSource = new ol.source.Vector();
     let styleFunction = polyStyles[polyState.SELECTABLE];
 
     _.each(polys, (poly, key) => {
-      let feature = new ol.Feature({
+      const feature = new ol.Feature({
         geometry: GeoJSON.readGeometry(poly.shape),
         name: poly.name,
         id: key,
@@ -77,20 +102,20 @@ export default class PolyMap extends Component {
 
       if (poly.state === 4) {
         feature.setStyle(getPolyStyle('green'));
-      };
+      }
 
       vectorSource.addFeature(feature);
     });
 
     !!POLYS_LAYER && map.removeLayer(POLYS_LAYER);
 
-    let polysLayerObject = {
+    const polysLayerObject = {
       source: vectorSource,
     };
     if (styleFunction) {
       polysLayerObject.style = styleFunction;
     }
-    let polysLayer = new ol.layer.Vector(polysLayerObject);
+    const polysLayer = new ol.layer.Vector(polysLayerObject);
 
     POLYS_LAYER = polysLayer;
 
@@ -101,42 +126,23 @@ export default class PolyMap extends Component {
     return false;
   }
 
-  /**
-   * initialization here
-   */
-  componentDidMount() {
-
-    let map = this.map;
-    let container = this.refs.container;
-
-    map.setTarget(container);
-
-    this.popup = new ol.Overlay.Popup();
-    map.addOverlay(this.popup);
-
-    this.enableInteractions();
-
-    this.renderPolygons(this.props.polys);
-  }
-
   onMouseMove(ev) {
-    let coordinate = ev.coordinate;
-    let pixel = ev.pixel;
-    let map = this.map;
-    let el = this.map.getViewport();
-    let hit = map.forEachFeatureAtPixel(pixel, (feature, layer) => true);
+    const coordinate = ev.coordinate;
+    const pixel = ev.pixel;
+    const map = this.map;
+    const el = this.map.getViewport();
+    const hit = map.forEachFeatureAtPixel(pixel, (feature, layer) => true);
 
     el.style.cursor = hit ? 'pointer' : '';
   }
 
   onClick(ev) {
+    const map = this.map;
+    const pixel = ev.pixel; // координаты клика во viewport
+    const coordinate = ev.coordinate;
+    const cancelSelection = false;
 
-    let map = this.map;
-    let pixel = ev.pixel; // координаты клика во viewport
-    let coordinate = ev.coordinate;
-    let cancelSelection = false;
-
-    map.forEachFeatureAtPixel(pixel, (feature, layer) =>  {
+    map.forEachFeatureAtPixel(pixel, (feature, layer) => {
       this.props.onFeatureClick(feature, ev, this);
     });
 
@@ -149,44 +155,34 @@ export default class PolyMap extends Component {
    * @method
    */
   onMoveEnd() {
-    let zoom = this.map.getView().getZoom();
+    const zoom = this.map.getView().getZoom();
     console.info(`Центр карты: [${this.map.getView().getCenter()}], зум: ${zoom}`);
+  }
+
+  enableInteractions() {
+    const map = this.map;
+    const interactions = map.getInteractions();
+
+    if (this._handlers === null) {
+      this._handlers = {
+        singleclick: map.on('singleclick', this.onClick.bind(this)),
+        pointermove: map.on('pointermove', this.onMouseMove.bind(this)),
+        moveend: map.on('moveend', this.onMoveEnd.bind(this)),
+      };
+
+      interactions.forEach((interaction) => {
+        interaction.setActive(true);
+      });
+    }
   }
 
   render() {
     console.warn('POLYMAP RENDER', this.props);
     return (
       <div>
-        <div ref="container" className="openlayers-container"/>
+        <div ref="container" className="openlayers-container" />
       </div>
     );
-  }
-
-  enableInteractions() {
-    let map = this.map;
-    let interactions = map.getInteractions();
-
-    if (this._handlers === null) {
-      this._handlers = {
-        singleclick: map.on('singleclick', this.onClick.bind(this)),
-        pointermove: map.on('pointermove', this.onMouseMove.bind(this)),
-        moveend: map.on('moveend', this.onMoveEnd.bind(this))
-      }
-
-      interactions.forEach((interaction)=> {
-        interaction.setActive(true);
-      });
-    }
-
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.polys !== undefined) {
-      if (this.popup) {
-        this.popup.hide();
-      }
-      this.renderPolygons(nextProps.polys);
-    }
   }
 
 }

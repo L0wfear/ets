@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import Panel from 'components/ui/Panel.jsx';
 import { GEOOBJECTS_TYPES_LABELS_SINGLE } from 'constants/geoobjects';
 
-let DTFeature = ({feature}) =>
+const DTFeature = ({ feature }) =>
   <div>
     <h5>Наименование</h5>
     {feature.object_address}
@@ -11,7 +11,7 @@ let DTFeature = ({feature}) =>
   </div>
 ;
 
-let ODHFeature = ({feature}) =>
+const ODHFeature = ({ feature }) =>
   <div>
     <h5>Наименование</h5>
     {feature.name}
@@ -20,7 +20,7 @@ let ODHFeature = ({feature}) =>
   </div>
 ;
 
-let SSPFeature = ({feature}) =>
+const SSPFeature = ({ feature }) =>
   <div>
     <h5>Наименование</h5>
     {feature.name}
@@ -31,9 +31,9 @@ let SSPFeature = ({feature}) =>
   </div>
 ;
 
-let MSPFeature = SSPFeature;
+const MSPFeature = SSPFeature;
 
-let CarpoolFeature = ({feature}) =>
+const CarpoolFeature = ({ feature }) =>
   <div>
     <h5>Наименование</h5>
     {feature.name}
@@ -42,10 +42,10 @@ let CarpoolFeature = ({feature}) =>
   </div>
 ;
 
-let FuelingWaterStationFeature = CarpoolFeature;
-let SnowStorageFeature = CarpoolFeature;
+const FuelingWaterStationFeature = CarpoolFeature;
+const SnowStorageFeature = CarpoolFeature;
 
-let DangerZoneFeature = ({feature}) =>
+const DangerZoneFeature = ({ feature }) =>
   <div>
     <h5>Адрес</h5>
     {feature.address_comm}
@@ -58,7 +58,7 @@ let DangerZoneFeature = ({feature}) =>
   </div>
 ;
 
-let PGMFeature = ({feature}) =>
+const PGMFeature = ({ feature }) =>
   <div>
     <h5>Наименование</h5>
     {feature.name}
@@ -76,7 +76,7 @@ let PGMFeature = ({feature}) =>
 export default class FeatureInfo extends Component {
 
   static propTypes = {
-    feature: PropTypes.object.isRequired
+    feature: PropTypes.object.isRequired,
   }
 
   constructor(props, context) {
@@ -126,14 +126,13 @@ export default class FeatureInfo extends Component {
         Feature = SnowStorageFeature;
         break;
       default:
-        Feature = () => <div/>
+        Feature = () => <div />;
     }
 
-    return <Feature {...this.props}/>;
+    return <Feature {...this.props} />;
   }
 
   renderModel() {
-    const { feature } = this.props;
     return (
       <Panel title={''}>
         {this.renderFeatureByType()}
@@ -142,7 +141,7 @@ export default class FeatureInfo extends Component {
   }
 
   render() {
-    let { feature } = this.props;
+    const { feature } = this.props;
 
     return (
       <div className="car-info feature-info">

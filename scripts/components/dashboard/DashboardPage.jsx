@@ -1,9 +1,7 @@
-import React from 'react';
-import ReactDOM from 'react-dom'
-import { Panel, Row, Col, Button, Fade, Well, Glyphicon, Collapse } from 'react-bootstrap';
+import React, { PropTypes } from 'react';
+import _ from 'lodash';
+import { Row, Col } from 'react-bootstrap';
 import Div from 'components/ui/Div.jsx';
-import ElementsList from 'components/ElementsList.jsx';
-import moment from 'moment';
 import cx from 'classnames';
 import DashboardCardMedium from './DashboardCardMedium.jsx';
 import DashboardManagementCard from './DashboardManagementCard.jsx';
@@ -15,26 +13,19 @@ import { FluxContext, connectToStores } from 'utils/decorators';
 @FluxContext
 export default class DashboardPage extends React.Component {
 
-  constructor(props, context) {
+  static get propTypes() {
+    return {
+      componentsList: PropTypes.arrayOf(PropTypes.object),
+    };
+  }
+
+  constructor(props) {
     super(props);
 
     this.state = {
       loadingComponents: [],
       itemOpenedKey: null,
     };
-  }
-
-  init() {
-    let { flux } = this.context;
-    let actions = flux.getActions('dashboard');
-    let components = flux.getStore('dashboard').getComponentsByPermissions();
-    _.each(components, c => actions.getDashboardComponent(c.key));
-  }
-
-  refreshAll() {
-    let { flux } = this.context;
-    let components = flux.getStore('dashboard').getComponentsByPermissions();
-    _.each(components, c => c.key !== this.state.itemOpenedKey ? this.refreshCard(c.key) : null);
   }
 
   componentDidMount() {
@@ -48,46 +39,59 @@ export default class DashboardPage extends React.Component {
     document.getElementsByTagName('html')[0].classList.remove('overflow-scroll');
   }
 
+  init() {
+    const { flux } = this.context;
+    const actions = flux.getActions('dashboard');
+    const components = flux.getStore('dashboard').getComponentsByPermissions();
+    _.each(components, c => actions.getDashboardComponent(c.key));
+  }
+
+  refreshAll() {
+    const { flux } = this.context;
+    const components = flux.getStore('dashboard').getComponentsByPermissions();
+    _.each(components, c => c.key !== this.state.itemOpenedKey ? this.refreshCard(c.key) : null);
+  }
+
   refreshCard(key, id, forcedKey) {
     if (typeof forcedKey === 'string' && forcedKey.indexOf('_') > -1) {
       key = forcedKey;
     }
-    let { loadingComponents } = this.state;
+    const { loadingComponents } = this.state;
     loadingComponents.push(key);
-    this.setState({loadingComponents});
+    this.setState({ loadingComponents });
     this.context.flux.getActions('dashboard').getDashboardComponent(key).then(() => {
-      let { loadingComponents } = this.state;
+      const { loadingComponents } = this.state;
       loadingComponents.splice(_.findIndex(loadingComponents, key), 1);
-      setTimeout(() => this.setState({loadingComponents}), 500);
+      setTimeout(() => this.setState({ loadingComponents }), 500);
     });
   }
 
   openSubitemsList(key, clear) {
-    this.setState({itemOpenedKey: clear ? null : key});
+    this.setState({ itemOpenedKey: clear ? null : key });
   }
 
   render() {
     const { componentsList = [] } = this.props;
 
-    let lists = _(componentsList).chunk(3).value();
-    let rows = [];
+    const lists = _(componentsList).chunk(3).value();
+    const rows = [];
     lists.map((row, i) => {
       rows.push(
         <Row key={i} className="cards-row">
           {row.map((c, j) => {
-            let direction = j % 3 === 0 ? 'right' : 'left';
+            const direction = j % 3 === 0 ? 'right' : 'left';
             let hidden = false;
             if (j % 3 === 0) {
-              if (row[j+1] && row[j + 1].key === this.state.itemOpenedKey) {
+              if (row[j + 1] && row[j + 1].key === this.state.itemOpenedKey) {
                 hidden = true;
               }
             } else if (j % 3 === 1) {
-              if (row[j+1] && row[j - 1].key === this.state.itemOpenedKey) {
+              if (row[j + 1] && row[j - 1].key === this.state.itemOpenedKey) {
                 hidden = true;
               }
             }
-            let cardClassname = cx({'visibilityHidden': hidden});
-            let DashboardCard = customCards[c.key] || DashboardCardMedium;
+            const cardClassname = cx({ 'visibilityHidden': hidden });
+            const DashboardCard = customCards[c.key] || DashboardCardMedium;
             return (
               <Col key={j} md={4} className={cardClassname}>
                 <DashboardCard title={c.title}
@@ -98,23 +102,24 @@ export default class DashboardPage extends React.Component {
                   refreshCard={this.refreshCard.bind(this, c.key, c.id)}
                   openSubitemsList={this.openSubitemsList.bind(this, c.key)}
                   itemOpened={this.state.itemOpenedKey === c.key}
-                  direction={direction} />
+                  direction={direction}
+                />
               </Col>
             );
           })}
         </Row>
-      )
+      );
     });
 
     return (
       <Div className="ets-page-wrap dashboard-page">
-        <DashboardPageHeader/>
+        <DashboardPageHeader />
         <Row>
           <Col md={9}>
             {rows}
           </Col>
           <Col md={3}>
-            <DashboardManagementCard refreshCard={this.refreshCard.bind(this)}/>
+            <DashboardManagementCard refreshCard={this.refreshCard.bind(this)} />
           </Col>
         </Row>
       </Div>

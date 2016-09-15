@@ -1,118 +1,121 @@
 import React, { Component } from 'react';
+import { autobind } from 'core-decorators';
+import _ from 'lodash';
 import { Button, Glyphicon } from 'react-bootstrap';
 import MissionTemplateFormWrap from './MissionTemplateFormWrap.jsx';
-import { MissionTemplatesTable } from './MissionTemplatesTable.jsx';
+import MissionTemplatesTable from './MissionTemplatesTable.jsx';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { connectToStores, staticProps } from 'utils/decorators';
-import _ from 'lodash';
 
 @connectToStores(['missions', 'objects', 'employees', 'routes'])
 @staticProps({
-	entity: 'mission_template',
-	listName: 'missionTemplatesList',
-	tableComponent: MissionTemplatesTable,
-	operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE']
+  entity: 'mission_template',
+  listName: 'missionTemplatesList',
+  tableComponent: MissionTemplatesTable,
+  operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
+@autobind
 export default class MissionTemplatesJournal extends CheckableElementsList {
 
-	static get propTypes() {
-		return {
-			renderOnly: React.PropTypes.bool,
-			payload: React.PropTypes.object
-		}
-	}
+  static get propTypes() {
+    return {
+      renderOnly: React.PropTypes.bool,
+      payload: React.PropTypes.object,
+    };
+  }
 
-	static get defaultProps() {
-		return {
-			renderOnly: false,
-			payload: {}
-		}
-	}
+  static get defaultProps() {
+    return {
+      renderOnly: false,
+      payload: {},
+    };
+  }
 
-	constructor(props, context) {
-		super(props);
+  constructor(props, context) {
+    super(props);
 
     this.removeElementAction = context.flux.getActions('missions').removeMissionTemplate;
-		this.state = Object.assign(this.state, {
-			formType: 'ViewForm'
-		});
-	}
-	// // снова подтягиваем все актуальные машины
-	// flux.getActions('objects').getCars();
+    this.state = Object.assign(this.state, {
+      formType: 'ViewForm',
+    });
+  }
+  // // снова подтягиваем все актуальные машины
+  // flux.getActions('objects').getCars();
 
-	componentDidMount() {
-		super.componentDidMount();
+  componentDidMount() {
+    super.componentDidMount();
 
-		const { flux } = this.context;
-		let { payload = {} } = this.props;
-		flux.getActions('missions').getMissionTemplates(payload);
+    const { flux } = this.context;
+    const { payload = {} } = this.props;
+    flux.getActions('missions').getMissionTemplates(payload);
     // flux.getActions('objects').getWorkKinds();
     flux.getActions('technicalOperation').getTechnicalOperations();
     flux.getActions('routes').getRoutes();
     flux.getActions('objects').getCars();
     // flux.getActions('missions').getMissionSources();
-	}
-
-	/**
-	 * @override
-	 */
-	showForm() {
-		this.setState({ showForm: true, formType: "ViewForm" });
-	}
-
-  createMissions() {
-    this.setState({ showForm: true, formType: "MissionsCreationForm" });
   }
 
-	/**
-	 * @override
-	 */
-	createElement() {
-		this.setState({
-			showForm: true,
-			selectedElement: null,
-			formType: "ViewForm"
-		});
-	}
+  /**
+   * @override
+   */
+  showForm() {
+    this.setState({ showForm: true, formType: 'ViewForm' });
+  }
 
-	copyElement() {
-		let copiedElement = _.cloneDeep(this.state.selectedElement);
-		delete copiedElement.id;
-		delete copiedElement.name;
-		this.setState({
-			showForm: true,
-			selectedElement: _.cloneDeep(copiedElement)
-		});
-	}
+  createMissions() {
+    this.setState({ showForm: true, formType: 'MissionsCreationForm' });
+  }
 
-	getForms() {
-		return [
-			<MissionTemplateFormWrap
-			 key={'form'}
-			 onFormHide={this.onFormHide.bind(this)}
-			 showForm={this.state.showForm}
-			 element={this.state.selectedElement}
-			 formType={this.state.formType}
-			 missions={this.state.checkedElements}/>
-		];
-	}
+  /**
+   * @override
+   */
+  createElement() {
+    this.setState({
+      showForm: true,
+      selectedElement: null,
+      formType: 'ViewForm',
+    });
+  }
 
-	getButtons() {
-		const buttons = super.getButtons();
+  copyElement() {
+    const copiedElement = _.cloneDeep(this.state.selectedElement);
+    delete copiedElement.id;
+    delete copiedElement.name;
+    this.setState({
+      showForm: true,
+      selectedElement: _.cloneDeep(copiedElement),
+    });
+  }
 
-		const additionalButtons = [
-			<Button key={buttons.length + 1} bsSize="small" onClick={this.createMissions.bind(this)} disabled={_.keys(this.state.checkedElements).length === 0}>Сформировать задание</Button>,
-			<Button key={buttons.length + 2} bsSize="small" onClick={this.copyElement.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="copy"/> Копировать</Button>
-		];
-		buttons.push(...additionalButtons);
+  getForms() {
+    return [
+      <MissionTemplateFormWrap
+        key={'form'}
+        onFormHide={this.onFormHide}
+        showForm={this.state.showForm}
+        element={this.state.selectedElement}
+        formType={this.state.formType}
+        missions={this.state.checkedElements}
+      />,
+    ];
+  }
 
-		return buttons;
-	}
+  getButtons() {
+    const buttons = super.getButtons();
 
-	getAdditionalProps() {
-		return {
-			noHeader: this.props.renderOnly,
-			noDataMessage: this.props.payload.faxogramm_id ? 'Для выбранной факсограммы нет подходящих шаблонов заданий' : null
-		};
-	}
+    const additionalButtons = [
+      <Button key={buttons.length + 1} bsSize="small" onClick={this.createMissions} disabled={_.keys(this.state.checkedElements).length === 0}>Сформировать задание</Button>,
+      <Button key={buttons.length + 2} bsSize="small" onClick={this.copyElement} disabled={this.state.selectedElement === null}><Glyphicon glyph="copy" /> Копировать</Button>,
+    ];
+    buttons.push(...additionalButtons);
+
+    return buttons;
+  }
+
+  getAdditionalProps() {
+    return {
+      noHeader: this.props.renderOnly,
+      noDataMessage: this.props.payload.faxogramm_id ? 'Для выбранной факсограммы нет подходящих шаблонов заданий' : null,
+    };
+  }
 }

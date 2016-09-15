@@ -1,90 +1,88 @@
 import React, { Component } from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 
-let tableMeta = {
-	cols: [
-		{
-			name: 'asuods_id',
-			displayName: 'ID организации',
-			type: 'number',
+const tableMeta = {
+  cols: [
+    {
+      name: 'asuods_id',
+      displayName: 'ID организации',
+      type: 'number',
       filter: {
         type: 'string',
-      }
-		},
-		{
-			name: 'name',
-			displayName: 'Наименование',
-			type: 'string',
+      },
+    },
+    {
+      name: 'name',
+      displayName: 'Наименование',
+      type: 'string',
       filter: {
         type: 'select',
-      }
-		},
-		{
-			name: 'short_name',
-			displayName: 'Краткое наименование',
-			type: 'string',
+      },
+    },
+    {
+      name: 'short_name',
+      displayName: 'Краткое наименование',
+      type: 'string',
       filter: {
         type: 'select',
-      }
-		},
-		{
-			name: 'ogrn',
-			displayName: 'ОГРН',
-			type: 'string',
+      },
+    },
+    {
+      name: 'ogrn',
+      displayName: 'ОГРН',
+      type: 'string',
       filter: {
         type: 'string',
-      }
-		},
-		{
-			name: 'inn',
-			displayName: 'ИНН',
-			type: 'string',
+      },
+    },
+    {
+      name: 'inn',
+      displayName: 'ИНН',
+      type: 'string',
       filter: {
         type: 'string',
-      }
-		},
-		{
-			name: 'postal_address',
-			displayName: 'Почтовый адрес',
-			type: 'string',
+      },
+    },
+    {
+      name: 'postal_address',
+      displayName: 'Почтовый адрес',
+      type: 'string',
       filter: {
         type: 'select',
-      }
-		},
-		{
-			name: 'email',
-			displayName: 'Электронный адрес',
-			type: 'string',
+      },
+    },
+    {
+      name: 'email',
+      displayName: 'Электронный адрес',
+      type: 'string',
       filter: {
         type: 'string',
-      }
-		},
-		{
-			name: 'phone',
-			displayName: 'Телефон',
-			type: 'string',
+      },
+    },
+    {
+      name: 'phone',
+      displayName: 'Телефон',
+      type: 'string',
       filter: {
         type: 'string',
-      }
-		},
-		{
-			name: 'fax',
-			displayName: 'Факс',
-			type: 'string',
+      },
+    },
+    {
+      name: 'fax',
+      displayName: 'Факс',
+      type: 'string',
       filter: {
         type: 'string',
-      }
-		},
-	]
+      },
+    },
+  ],
 };
 
-let OrganizationsTable = (props) => {
-
-		return <Table
-				title='Организации'
-				results={props.data}
-				tableMeta={tableMeta}
-				{...props}/>
-}
-
-export default OrganizationsTable;
+export default (props) => {
+  return (<Table
+    title="Организации"
+    results={props.data}
+    tableMeta={tableMeta}
+    {...props}
+  />);
+};

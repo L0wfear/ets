@@ -11,5 +11,5 @@ export default {
   drawMap,
   polyMap,
   map,
-  hybridMap
-}
+  hybridMap,
+};

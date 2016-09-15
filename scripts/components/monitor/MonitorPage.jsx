@@ -1,28 +1,24 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { FluxContext } from 'utils/decorators';
+import { getTypes } from 'redux/modules/types';
 import FluxComponent from 'flummox/component';
 import connectToStores from 'flummox/connect';
 import MapWrapper from './MapWrapper.jsx';
 import Toolbar from './toolbar/Toolbar.jsx';
 import Sidebar from './Sidebar.jsx';
-import { FluxContext } from 'utils/decorators';
-import { connect } from 'react-redux';
-import { getTypes } from 'redux/modules/types';
 
 @connect(
   state => state.types,
   {
-    getTypes
+    getTypes,
   }
 )
 @FluxContext
 class MonitorPage extends Component {
 
   static propTypes = {
-    getTypes: PropTypes.func
-  }
-
-  constructor(props, context) {
-    super(props, context);
+    getTypes: PropTypes.func,
   }
 
   componentDidMount() {
@@ -38,37 +34,38 @@ class MonitorPage extends Component {
   }
 
   render() {
-
     return (
       <div>
 
-        <Toolbar/>
+        <Toolbar />
 
-        <FluxComponent connectToStores={{
-          points: store => ({
-            points: store.state.points,
-            selected: store.getSelectedPoint()
-          }),
-          settings: store => ({
-            showPlates: store.state.showPlates,
-            showTrack: store.state.showTrack,
-            showPolygons: store.state.showPolygons,
-            showSelectedElement: store.state.showSelectedElement,
-            showMarkers: store.state.showMarkers
-          }),
-          session: store => ({
-            zoom: store.getCurrentUser().getCompanyMapConfig().zoom,
-            center: store.getCurrentUser().getCompanyMapConfig().coordinates,
-          }),
-          geoObjects: store => ({
-            polys: store.getSelectedPolys(),
-            selectedFeature: store.getSelectedFeature()
-          })
-        }}>
+        <FluxComponent
+          connectToStores={{
+            points: store => ({
+              points: store.state.points,
+              selected: store.getSelectedPoint(),
+            }),
+            settings: store => ({
+              showPlates: store.state.showPlates,
+              showTrack: store.state.showTrack,
+              showPolygons: store.state.showPolygons,
+              showSelectedElement: store.state.showSelectedElement,
+              showMarkers: store.state.showMarkers,
+            }),
+            session: store => ({
+              zoom: store.getCurrentUser().getCompanyMapConfig().zoom,
+              center: store.getCurrentUser().getCompanyMapConfig().coordinates,
+            }),
+            geoObjects: store => ({
+              polys: store.getSelectedPolys(),
+              selectedFeature: store.getSelectedFeature(),
+            }),
+          }}
+        >
 
-          <MapWrapper/>
+          <MapWrapper />
 
-          <Sidebar/>
+          <Sidebar />
         </FluxComponent>
       </div>
     );

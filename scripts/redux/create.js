@@ -5,10 +5,9 @@ import createLogger from 'redux-logger';
 import { loadingMiddleware } from 'redux-promise-loading';
 
 export default function createStore() {
+  const middleware = [thunk, loadingMiddleware(), promiseMiddleware, createLogger({ collapsed: true })];
 
-  const middleware = [thunk, loadingMiddleware(), promiseMiddleware, createLogger({collapsed: true})];
-
-  let finalCreateStore = applyMiddleware(...middleware)(_createStore);
+  const finalCreateStore = applyMiddleware(...middleware)(_createStore);
 
   const reducer = require('./modules/reducer');
   const store = finalCreateStore(reducer);

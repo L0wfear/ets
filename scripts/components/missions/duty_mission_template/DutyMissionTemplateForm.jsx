@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
-import { Modal, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
+import { Modal, Row, Col, Button } from 'react-bootstrap';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import RouteInfo from '../../route/RouteInfo.jsx';
 import RouteFormWrap from '../../route/RouteFormWrap.jsx';
-import ODHList from '../../route/ODHList.jsx';
-import { isEmpty } from 'utils/functions';
 import { DutyMissionForm } from '../duty_mission/DutyMissionForm.jsx';
 
 class MissionTemplateForm extends DutyMissionForm {
@@ -14,13 +12,10 @@ class MissionTemplateForm extends DutyMissionForm {
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
-
-    const { missionSourcesList = [], carsList = [] } = this.props;
     const { technicalOperationsList = [], routesList = [] } = this.state;
 
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
     const ROUTES = routesList.map(({ id, name }) => ({ value: id, label: name }));
-    const CARS = carsList.map(c => ({ value: c.asuods_id, label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]` }));
 
     console.log('form state is ', state);
 
@@ -33,7 +28,6 @@ class MissionTemplateForm extends DutyMissionForm {
     }
 
     const route = this.state.selectedRoute;
-    const odh_list = route ? route.odh_list || route.object_list : [];
 
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
@@ -70,10 +64,6 @@ class MissionTemplateForm extends DutyMissionForm {
               />
               <Div hidden={state.route_id}>
                 <Button onClick={this.createNewRoute.bind(this)} disabled={!state.technical_operation_id}>Создать новый</Button>
-              </Div>
-
-              <Div className="route-odhs-list" hidden={this.state.selectedRoute === null}>
-                {/* <ODHList showSelectable={true} odh_list={odh_list} />*/}
               </Div>
             </Col>
             <Col md={6}>

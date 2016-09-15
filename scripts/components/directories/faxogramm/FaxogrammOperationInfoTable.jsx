@@ -2,24 +2,25 @@ import React, { Component } from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 
 export default (props) => {
+  const tableMeta = {
+    cols: [
+      {
+        name: 'tk_operation_name',
+        displayName: 'Операция',
+        type: 'string',
+      },
+      {
+        name: 'num_exec',
+        displayName: 'Количество выполнений',
+        type: 'string',
+      },
+    ],
+  };
 
-	let tableMeta = {
-		cols: [
-			{
-				name: 'tk_operation_name',
-				displayName: 'Операция',
-				type: 'string',
-			},
-			{
-				name: 'num_exec',
-				displayName: 'Количество выполнений',
-				type: 'string',
-			},
-		]
-	};
-
-	return <Table title="Реестр факсограмм"
-								results={props.data}
-								tableMeta={tableMeta}
-								{...props}/>
-}
+  return (<Table
+    title="Реестр факсограмм"
+    results={props.data}
+    tableMeta={tableMeta}
+    {...props}
+  />);
+};

@@ -17,5 +17,5 @@ export default {
   ssp,
   msp,
   pgm,
-  snowStorage
-}
+  snowStorage,
+};

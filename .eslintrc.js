@@ -1,5 +1,4 @@
 var path = require('path');
-var webpackAlias = require(path.resolve(__dirname, 'webpack', 'alias'));
 
 module.exports = {
   "extends": "airbnb",
@@ -23,7 +22,10 @@ module.exports = {
     "quote-props": "warn",
     "no-underscore-dangle": ["error", { "allowAfterThis": true }],
     "class-methods-use-this": "off",
-    "max-len": ["off", 120]
+    "max-len": ["off", 120],
+    "camelcase": ["off"], // временно
+    "no-param-reassign": ["off"], // временно
+    "no-unused-expressions": ["error", { "allowShortCircuit": true }]
   },
   "settings": {
     "import-resolver": {

@@ -1,12 +1,14 @@
 import React, { Component, PropTypes } from 'react';
+import { autobind } from 'core-decorators';
 
+@autobind
 export default class LoginPage extends Component {
 
   static get contextTypes() {
     return {
       flux: PropTypes.object.isRequired,
       history: PropTypes.object,
-      loadData: PropTypes.func
+      loadData: PropTypes.func,
     };
   }
 
@@ -15,14 +17,14 @@ export default class LoginPage extends Component {
 
     this.state = {
       login: '',
-      password: ''
+      password: '',
     };
   }
 
   handleChange(field, e) {
     const value = e !== undefined && e !== null && !!e.target ? e.target.value : e;
     this.setState({
-      [field]: value
+      [field]: value,
     });
   }
 
@@ -32,7 +34,7 @@ export default class LoginPage extends Component {
     const { flux } = this.context;
     const user = {
       login,
-      password
+      password,
     };
 
     flux.getActions('session').login(user).then((data) => {
@@ -42,7 +44,6 @@ export default class LoginPage extends Component {
       } else {
         this.context.history.pushState(null, '/monitor');
       }
-
     });
   }
 
@@ -51,13 +52,13 @@ export default class LoginPage extends Component {
     const disabled = login.length === 0 || password.length === 0;
 
     return (
-      <form style={{ paddingTop: 40 }} onSubmit={this.onSigninClick.bind(this)}>
+      <form style={{ paddingTop: 40 }} onSubmit={this.onSigninClick}>
         <div className="form-signin">
           <label className="sr-only">Имя пользователя</label>
-          <input type="text" className="form-control" placeholder="Имя пользователя" value={login} onChange={this.handleChange.bind(this, 'login')}/>
+          <input type="text" className="form-control" placeholder="Имя пользователя" value={login} onChange={this.handleChange.bind(this, 'login')} />
           <label className="sr-only">Пароль</label>
-          <input type="password" className="form-control" placeholder="Пароль" value={password} onChange={this.handleChange.bind(this, 'password')}/>
-          <button role="button" className="btn btn-lg btn-primary btn-block" disabled={disabled} onClick={this.onSigninClick.bind(this)}>Вход</button>
+          <input type="password" className="form-control" placeholder="Пароль" value={password} onChange={this.handleChange.bind(this, 'password')} />
+          <button role="button" className="btn btn-lg btn-primary btn-block" disabled={disabled} onClick={this.onSigninClick}>Вход</button>
         </div>
       </form>
     );

@@ -6,13 +6,13 @@ export const schema = {
       key: 'last_name',
       title: 'Фамилия',
       type: 'string',
-      required: true
+      required: true,
     },
     {
       key: 'first_name',
       title: 'Имя',
       type: 'string',
-      required: true
+      required: true,
     },
     {
       key: 'position_id',
@@ -23,40 +23,40 @@ export const schema = {
     {
       key: 'special_license',
       title: 'Специальное удостоверение',
-      type: 'string'
+      type: 'string',
     },
     {
       key: 'drivers_license',
       title: 'Водительское удостоверение',
-      type: 'string'
+      type: 'string',
     },
   ],
   dependencies: {
     'drivers_license': [
       {
         validator: (value, formData) => {
-          if (formData['position_id'] === 15 || formData['position_id'] === 24) {
-            if (isEmpty(formData['special_license']) && isEmpty(value)) {
+          if (formData.position_id === 15 || formData.position_id === 24) {
+            if (isEmpty(formData.special_license) && isEmpty(value)) {
               return 'Одно из полей "Специальное удостоверение", "Водительское удостоверение" должно быть заполнено';
             }
           }
-          return void 0;
-        }
-      }
+          return undefined;
+        },
+      },
     ],
     'special_license': [
       {
         validator: (value, formData) => {
-          if (formData['position_id'] === 15 || formData['position_id'] === 24) {
-            if (isEmpty(formData['drivers_license']) && isEmpty(value)) {
+          if (formData.position_id === 15 || formData.position_id === 24) {
+            if (isEmpty(formData.drivers_license) && isEmpty(value)) {
               return 'Одно из полей "Специальное удостоверение", "Водительское удостоверение" должно быть заполнено';
             }
           }
-          return void 0;
-        }
-      }
-    ]
-  }
+          return undefined;
+        },
+      },
+    ],
+  },
 };
 
 export const defaultElement = {

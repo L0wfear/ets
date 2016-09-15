@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
-import { Button, Glyphicon, ButtonToolbar, Dropdown, MenuItem } from 'react-bootstrap';
+import React from 'react';
+import { Glyphicon, ButtonToolbar, Dropdown, MenuItem } from 'react-bootstrap';
 import WaybillFormWrap from './WaybillFormWrap.jsx';
 import WaybillPrintForm from './WaybillPrintForm.jsx';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
-import _ from 'lodash';
 import { connectToStores, staticProps } from 'utils/decorators';
 import WaybillsTable from './WaybillsTable.jsx';
 

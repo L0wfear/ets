@@ -14,351 +14,345 @@ import { getWarningNotification } from 'utils/notifications';
 import { FluxContext } from 'utils/decorators';
 
 function calculateWaybillMetersDiff(waybill, field, value) {
-	// Для уже созданных ПЛ
-	if (waybill.status) {
-		// Если изменилось поле "Одометр.Возврат" то считаем "Одометр.Пробег"
-		if (field === 'odometr_end') {
-			waybill.odometr_diff = value ? parseFloat(waybill.odometr_end - waybill.odometr_start).toFixed(3) : null;
-		}
-		// Если изменилось поле "Моточасы.Возврат" то считаем "Моточасы.Пробег"
-		if (field === 'motohours_end') {
-			waybill.motohours_diff = value ? parseFloat(waybill.motohours_end - waybill.motohours_start).toFixed(3) : null;
-		}
-		// Если изменилось поле "Моточасы.Оборудование.Возврат" то считаем "Моточасы.Оборудование.пробег"
-		if (field === 'motohours_equip_end') {
-			waybill.motohours_equip_diff = value ? parseFloat(waybill.motohours_equip_end - waybill.motohours_equip_start).toFixed(3) : null;
-		}
-	}
-	return waybill;
+  // Для уже созданных ПЛ
+  if (waybill.status) {
+    // Если изменилось поле "Одометр.Возврат" то считаем "Одометр.Пробег"
+    if (field === 'odometr_end') {
+      waybill.odometr_diff = value ? parseFloat(waybill.odometr_end - waybill.odometr_start).toFixed(3) : null;
+    }
+    // Если изменилось поле "Моточасы.Возврат" то считаем "Моточасы.Пробег"
+    if (field === 'motohours_end') {
+      waybill.motohours_diff = value ? parseFloat(waybill.motohours_end - waybill.motohours_start).toFixed(3) : null;
+    }
+    // Если изменилось поле "Моточасы.Оборудование.Возврат" то считаем "Моточасы.Оборудование.пробег"
+    if (field === 'motohours_equip_end') {
+      waybill.motohours_equip_diff = value ? parseFloat(waybill.motohours_equip_end - waybill.motohours_equip_start).toFixed(3) : null;
+    }
+  }
+  return waybill;
 }
 
 @FluxContext
 export default class WaybillFormWrap extends FormWrap {
-	constructor(props) {
-		super(props);
+  constructor(props) {
+    super(props);
 
-		this.state = {
-			formState: null,
-			formErrors: {},
-			canSave: false,
-			canClose: false,
-			canPrint: false
-		};
-	}
-
-	componentWillReceiveProps(props) {
-
-		if (props.showForm && props.showForm !== this.props.showForm) {
-			if (props.element === null ) {
-				const defaultBill = getDefaultBill();
-				this.schema = waybillSchema;
-				this.setState({
-					formState: defaultBill,
-					canSave: false,
-					canClose: false,
-					canPrint: false,
-					formErrors: this.validate(defaultBill, {}),
-				})
-			} else {
-
-				let waybill = _.clone(props.element);
-				if (!waybill.tax_data) {
-					waybill.tax_data = [];
-				}
-				if (!waybill.equipment_tax_data) {
-					waybill.equipment_tax_data = [];
-				}
-				if (waybill.mission_id_list.filter((v) => v).length === 0) {
-					waybill.mission_id_list = [];
-				}
-
-				if (props.element.status === 'active' || props.element.status === 'closed') {
-
-					let fuelStart = waybill.fuel_start ? parseFloat(waybill.fuel_start) : 0;
-					let fuelGiven = waybill.fuel_given ? parseFloat(waybill.fuel_given) : 0;
-					let fuelTaxes = Taxes.calculateFinalResult(waybill.tax_data);
-					let equipmentFuelStart = waybill.equipment_fuel_start ? parseFloat(waybill.equipment_fuel_start) : 0;
-					let equipmentFuelGiven = waybill.equipment_fuel_given ? parseFloat(waybill.equipment_fuel_given) : 0;
-					let equipmentFuelTaxes = Taxes.calculateFinalResult(waybill.equipment_tax_data);
-
-					if (!!waybill.equipment_fuel) {
-						waybill.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
-						waybill.equipment_fuel_end = (equipmentFuelStart + equipmentFuelGiven - equipmentFuelTaxes).toFixed(3);
-					} else {
-						waybill.fuel_end = (fuelStart + fuelGiven - fuelTaxes - equipmentFuelTaxes).toFixed(3);
-					}
-
-					// Расчет пробегов
-					if (isNotNull(waybill.odometr_end) && isNotNull(waybill.odometr_start)) {
-						waybill.odometr_diff = parseFloat(waybill.odometr_end - waybill.odometr_start).toFixed(3);
-					}
-					if (isNotNull(waybill.motohours_end) && isNotNull(waybill.motohours_start)) {
-						waybill.motohours_diff = parseFloat(waybill.motohours_end - waybill.motohours_start).toFixed(3);
-					}
-					if (isNotNull(waybill.motohours_equip_end) && isNotNull(waybill.motohours_equip_start)) {
-						waybill.motohours_equip_diff = parseFloat(waybill.motohours_equip_end - waybill.motohours_equip_start).toFixed(3);
-					}
-
-					if (props.element.status === 'active') {
-						this.schema = waybillClosingSchema;
-						let formErrors = this.validate(waybill, {});
-						if (typeof formErrors.motohours_end === 'undefined') formErrors.odometr_end = undefined;
-						if (typeof formErrors.odometr_end === 'undefined') formErrors.motohours_end = undefined;
-						this.setState({
-							formState: waybill,
-							formErrors,
-							canPrint: false,
-							canSave: ! !!_.filter(formErrors, (v, k) => k === 'fuel_end' ? false : v).length,
-							canClose: ! !!_.filter(formErrors).length,
-						});
-					} else {
-						this.setState({
-							formState: waybill,
-							formErrors: {}
-						});
-					}
-
-				} else if (props.element.status === 'draft') {
-					this.schema = waybillSchema;
-					this.setState({
-						formState: waybill,
-						canPrint: true,
-						canSave: ! !!_.filter(this.validate(waybill, {})).length,
-						canClose: ! !!_.filter(this.validate(waybill, {})).length,
-						formErrors: this.validate(waybill, {})
-					});
-
-				}
-			}
-		}
-
-	}
-
-	handleFieldsChange(formState) {
-		let { formErrors } = this.state;
-		let newState = {};
-
-		let fuelStart = formState.fuel_start ? parseFloat(formState.fuel_start) : 0;
-		let fuelGiven = formState.fuel_given ? parseFloat(formState.fuel_given) : 0;
-		let fuelTaxes = Taxes.calculateFinalResult(formState.tax_data);
-		let equipmentFuelStart = formState.equipment_fuel_start ? parseFloat(formState.equipment_fuel_start) : 0;
-		let equipmentFuelGiven = formState.equipment_fuel_given ? parseFloat(formState.equipment_fuel_given) : 0;
-		let equipmentFuelTaxes = Taxes.calculateFinalResult(formState.equipment_tax_data);
-
-		if (!!formState.equipment_fuel) {
-			formState.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
-			formState.equipment_fuel_end = (equipmentFuelStart + equipmentFuelGiven - equipmentFuelTaxes).toFixed(3);
-		} else {
-			formState.fuel_end = (fuelStart + fuelGiven - fuelTaxes - equipmentFuelTaxes).toFixed(3);
-		}
-
-		if (!!!formState.status || formState.status === 'draft') {
-			this.schema = waybillSchema;
-			formErrors = this.validate(formState, formErrors);
-		} else if (formState.status && formState.status === 'active') {
-			this.schema = waybillClosingSchema;
-			formErrors = this.validate(formState, formErrors);
-			if (typeof formErrors.motohours_end === 'undefined') formErrors.odometr_end = undefined;
-			if (typeof formErrors.odometr_end === 'undefined') formErrors.motohours_end = undefined;
-		}
-
-		newState.canSave = ! !!_.filter(formErrors, (v,k) => k === 'fuel_end' ? false : v).length;
-		newState.canClose = ! !!_.filter(formErrors).length;
-
-		newState.formState = formState;
-		newState.formErrors = formErrors;
-
-		this.setState(newState);
-	}
-
-
-	handleFormStateChange(field, e) {
-		const value = e !== undefined && !!e.target ? e.target.value : e;
-		let formState = _.cloneDeep(this.state.formState);
-		formState[field] = value;
-
-		formState = calculateWaybillMetersDiff(formState, field, value);
-
-		// TODO при формировании FACT_VALUE считать diff - finalFactValue
-		if (formState.tax_data && formState.tax_data.length) {
-			const lastTax = _.last(formState.tax_data);
-			if (field === 'odometr_end' && formState.odometr_diff > 0) {
-				lastTax.FACT_VALUE = formState.odometr_diff;
-				lastTax.RESULT = Taxes.getResult(lastTax);
-			}
-
-			if (field === 'motohours_end' && formState.motohours_diff > 0) {
-				lastTax.FACT_VALUE = formState.motohours_diff;
-				lastTax.RESULT = Taxes.getResult(lastTax);
-			}
-
-			if (field === 'motohours_equip_end' && formState.equipment_tax_data
-				&& formState.equipment_tax_data.length && formState.motohours_equip_diff > 0) {
-				const lastEquipmentTax = _.last(formState.equipment_tax_data);
-				lastEquipmentTax.FACT_VALUE = formState.motohours_equip_diff;
-				lastEquipmentTax.RESULT = Taxes.getResult(lastEquipmentTax);
-			}
-		}
-
-		this.handleFieldsChange(formState);
-	}
-
-	handleMultipleChange(fields) {
-		let { formErrors } = this.state;
-		let formState = _.cloneDeep(this.state.formState);
-		let newState = {};
-		_.mapKeys(fields, (value, field) => {
-			formState[field] = value;
-			formState = calculateWaybillMetersDiff(formState, field, value);
-		});
-
-		this.handleFieldsChange(formState);
-	}
-
-	/**
-	 * Выдача (печать) Путевого листа
-	 * @param {boolean} printonly - Только скачивание или скачивание+сохранение
-	 * @param {object} event
-	 * @param {number 1|2} print_form_type - Идентификатор печатной формы
-	 * @return {undefined}
-	 */
-  handlePrint(printonly, event, print_form_type) {
-		const { flux } = this.context;
-		const { formState } = this.state;
-
-		let currentWaybillId = formState.id;
-
-		let callback = (createdWaybillId) => {
-			const waybill_id = createdWaybillId ? createdWaybillId : currentWaybillId;
-			flux.getActions('waybills').printWaybill(print_form_type, waybill_id)
-				.then(({blob, fileName}) => {
-					saveData(blob, fileName);
-				});
-		};
-		printonly ? callback() : this.handleFormSubmit(formState, callback);
+    this.state = {
+      formState: null,
+      formErrors: {},
+      canSave: false,
+      canClose: false,
+      canPrint: false,
+    };
   }
 
-	/**
-	 * Отправка формы ПЛ
-	 * @param {object} state - содержимое формы
-	 * @param {function} callback - функция, вызываемая после отправки
-	 * @return {undefined}
-	 */
-	async handleFormSubmit(state = this.state.formState, callback) {
-		let formState = _.cloneDeep(state);
-		let waybillStatus = formState.status;
-		const { flux } = this.context;
+  componentWillReceiveProps(props) {
+    if (props.showForm && props.showForm !== this.props.showForm) {
+      if (props.element === null) {
+        const defaultBill = getDefaultBill();
+        this.schema = waybillSchema;
+        this.setState({
+          formState: defaultBill,
+          canSave: false,
+          canClose: false,
+          canPrint: false,
+          formErrors: this.validate(defaultBill, {}),
+        });
+      } else {
+        const waybill = _.clone(props.element);
+        if (!waybill.tax_data) {
+          waybill.tax_data = [];
+        }
+        if (!waybill.equipment_tax_data) {
+          waybill.equipment_tax_data = [];
+        }
+        if (waybill.mission_id_list.filter(v => v).length === 0) {
+          waybill.mission_id_list = [];
+        }
 
-		if (!!!waybillStatus) { // если создаем ПЛ
-			if (typeof callback === 'function') {
-				formState.status = 'draft';
-				let r = await flux.getActions('waybills').createWaybill(formState);
-				// TODO сейчас возвращается один ПЛ
-				const id = _.max(r.result, res => res.id).id;
-				formState.status = 'active';
-				formState.id = id;
-				try {
-					await flux.getActions('waybills').updateWaybill(formState);
-				} catch (e) {
-					console.log(e);
-					return;
-				}
-				callback(id);
-			} else {
-				formState.status = 'draft';
-				try {
-					await flux.getActions('waybills').createWaybill(formState);
-				} catch (e) {
-					console.log(e);
-					return;
-				}
-			}
-			await flux.getActions('waybills').getWaybills();
-			this.props.onFormHide();
-		} else if (waybillStatus === 'draft') { // если ПЛ обновляем
-			if (typeof callback === 'function') {
-				formState.status = 'active';
-				try {
-					await flux.getActions('waybills').updateWaybill(formState);
-				} catch (e) {
-					return;
-				}
-				callback();
-				flux.getActions('waybills').getWaybills();
-				this.props.onFormHide();
-			} else {
-				try {
-					await flux.getActions('waybills').updateWaybill(formState);
-				} catch (e) {
-					return;
-				}
-				flux.getActions('waybills').getWaybills();
-				this.props.onFormHide();
-			}
-		} else if (waybillStatus === 'active') {
-			try {
-				await flux.getActions('waybills').updateWaybill(formState);
-			} catch (e) {
-				console.log(e);
-				return;
-			}
-			flux.getActions('waybills').getWaybills();
-			this.props.onFormHide();
-		} else if (waybillStatus === 'closed') {
-				try {
-					await flux.getActions('waybills').updateWaybill(formState);
-				} catch (e) {
-					console.log(e);
-					return;
-				}
-				flux.getActions('waybills').getWaybills();
-				this.props.onFormHide();
-		}
+        if (props.element.status === 'active' || props.element.status === 'closed') {
+          const fuelStart = waybill.fuel_start ? parseFloat(waybill.fuel_start) : 0;
+          const fuelGiven = waybill.fuel_given ? parseFloat(waybill.fuel_given) : 0;
+          const fuelTaxes = Taxes.calculateFinalResult(waybill.tax_data);
+          const equipmentFuelStart = waybill.equipment_fuel_start ? parseFloat(waybill.equipment_fuel_start) : 0;
+          const equipmentFuelGiven = waybill.equipment_fuel_given ? parseFloat(waybill.equipment_fuel_given) : 0;
+          const equipmentFuelTaxes = Taxes.calculateFinalResult(waybill.equipment_tax_data);
 
-		return;
-	}
+          if (!!waybill.equipment_fuel) {
+            waybill.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
+            waybill.equipment_fuel_end = (equipmentFuelStart + equipmentFuelGiven - equipmentFuelTaxes).toFixed(3);
+          } else {
+            waybill.fuel_end = (fuelStart + fuelGiven - fuelTaxes - equipmentFuelTaxes).toFixed(3);
+          }
 
-	async handleClose(taxesControl) {
-		let { formState } = this.state;
-		let prevStatus = formState.status;
-		if (!taxesControl) {
-			global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Необходимо заполнить нормы для расчета топлива!'));
-			return;
-		}
-		confirmDialog({
-			title: 'Внимание: После закрытия путевого листа редактирование полей будет запрещено.',
-			body: 'Вы уверены, что хотите закрыть окно?'
-		})
-		.then( async () => {
-			try {
-				formState.status = 'closed';
-				await this.context.flux.getActions('waybills').updateWaybill(formState);
-			} catch (e) {
-				console.log(e);
-				formState.status = prevStatus;
-				await this.context.flux.getActions('waybills').updateWaybill(formState);
-				this.context.flux.getActions('waybills').getWaybills();
-				return;
-			}
-			this.context.flux.getActions('waybills').getWaybills();
-			this.props.onFormHide();
-		})
-		.catch(() => {});
-	}
+          // Расчет пробегов
+          if (isNotNull(waybill.odometr_end) && isNotNull(waybill.odometr_start)) {
+            waybill.odometr_diff = parseFloat(waybill.odometr_end - waybill.odometr_start).toFixed(3);
+          }
+          if (isNotNull(waybill.motohours_end) && isNotNull(waybill.motohours_start)) {
+            waybill.motohours_diff = parseFloat(waybill.motohours_end - waybill.motohours_start).toFixed(3);
+          }
+          if (isNotNull(waybill.motohours_equip_end) && isNotNull(waybill.motohours_equip_start)) {
+            waybill.motohours_equip_diff = parseFloat(waybill.motohours_equip_end - waybill.motohours_equip_start).toFixed(3);
+          }
 
-	render() {
-		return 	<Div hidden={!this.props.showForm}>
-							<WaybillForm formState = {this.state.formState}
-													 onSubmit={this.handleFormSubmit.bind(this)}
-													 handlePrint={this.handlePrint.bind(this)}
-													 handleClose={this.handleClose.bind(this)}
-													 handleFormChange={this.handleFormStateChange.bind(this)}
-													 handleMultipleChange={this.handleMultipleChange.bind(this)}
-													 show={this.props.showForm}
-													 onHide={this.props.onFormHide}
-													 {...this.state}/>
-						</Div>
+          if (props.element.status === 'active') {
+            this.schema = waybillClosingSchema;
+            const formErrors = this.validate(waybill, {});
+            if (typeof formErrors.motohours_end === 'undefined') formErrors.odometr_end = undefined;
+            if (typeof formErrors.odometr_end === 'undefined') formErrors.motohours_end = undefined;
+            this.setState({
+              formState: waybill,
+              formErrors,
+              canPrint: false,
+              canSave: !!!_.filter(formErrors, (v, k) => k === 'fuel_end' ? false : v).length,
+              canClose: !!!_.filter(formErrors).length,
+            });
+          } else {
+            this.setState({
+              formState: waybill,
+              formErrors: {},
+            });
+          }
+        } else if (props.element.status === 'draft') {
+          this.schema = waybillSchema;
+          this.setState({
+            formState: waybill,
+            canPrint: true,
+            canSave: !!!_.filter(this.validate(waybill, {})).length,
+            canClose: !!!_.filter(this.validate(waybill, {})).length,
+            formErrors: this.validate(waybill, {}),
+          });
+        }
+      }
+    }
+  }
 
-	}
+  handleFieldsChange(formState) {
+    let { formErrors } = this.state;
+    const newState = {};
+
+    const fuelStart = formState.fuel_start ? parseFloat(formState.fuel_start) : 0;
+    const fuelGiven = formState.fuel_given ? parseFloat(formState.fuel_given) : 0;
+    const fuelTaxes = Taxes.calculateFinalResult(formState.tax_data);
+    const equipmentFuelStart = formState.equipment_fuel_start ? parseFloat(formState.equipment_fuel_start) : 0;
+    const equipmentFuelGiven = formState.equipment_fuel_given ? parseFloat(formState.equipment_fuel_given) : 0;
+    const equipmentFuelTaxes = Taxes.calculateFinalResult(formState.equipment_tax_data);
+
+    if (!!formState.equipment_fuel) {
+      formState.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
+      formState.equipment_fuel_end = (equipmentFuelStart + equipmentFuelGiven - equipmentFuelTaxes).toFixed(3);
+    } else {
+      formState.fuel_end = (fuelStart + fuelGiven - fuelTaxes - equipmentFuelTaxes).toFixed(3);
+    }
+
+    if (!!!formState.status || formState.status === 'draft') {
+      this.schema = waybillSchema;
+      formErrors = this.validate(formState, formErrors);
+    } else if (formState.status && formState.status === 'active') {
+      this.schema = waybillClosingSchema;
+      formErrors = this.validate(formState, formErrors);
+      if (typeof formErrors.motohours_end === 'undefined') formErrors.odometr_end = undefined;
+      if (typeof formErrors.odometr_end === 'undefined') formErrors.motohours_end = undefined;
+    }
+
+    newState.canSave = !!!_.filter(formErrors, (v, k) => k === 'fuel_end' ? false : v).length;
+    newState.canClose = !!!_.filter(formErrors).length;
+
+    newState.formState = formState;
+    newState.formErrors = formErrors;
+
+    this.setState(newState);
+  }
+
+
+  handleFormStateChange(field, e) {
+    const value = e !== undefined && !!e.target ? e.target.value : e;
+    let formState = _.cloneDeep(this.state.formState);
+    formState[field] = value;
+
+    formState = calculateWaybillMetersDiff(formState, field, value);
+
+    // TODO при формировании FACT_VALUE считать diff - finalFactValue
+    if (formState.tax_data && formState.tax_data.length) {
+      const lastTax = _.last(formState.tax_data);
+      if (field === 'odometr_end' && formState.odometr_diff > 0) {
+        lastTax.FACT_VALUE = formState.odometr_diff;
+        lastTax.RESULT = Taxes.getResult(lastTax);
+      }
+
+      if (field === 'motohours_end' && formState.motohours_diff > 0) {
+        lastTax.FACT_VALUE = formState.motohours_diff;
+        lastTax.RESULT = Taxes.getResult(lastTax);
+      }
+
+      if (field === 'motohours_equip_end' && formState.equipment_tax_data
+        && formState.equipment_tax_data.length && formState.motohours_equip_diff > 0) {
+        const lastEquipmentTax = _.last(formState.equipment_tax_data);
+        lastEquipmentTax.FACT_VALUE = formState.motohours_equip_diff;
+        lastEquipmentTax.RESULT = Taxes.getResult(lastEquipmentTax);
+      }
+    }
+
+    this.handleFieldsChange(formState);
+  }
+
+  handleMultipleChange(fields) {
+    const { formErrors } = this.state;
+    let formState = _.cloneDeep(this.state.formState);
+    const newState = {};
+    _.mapKeys(fields, (value, field) => {
+      formState[field] = value;
+      formState = calculateWaybillMetersDiff(formState, field, value);
+    });
+
+    this.handleFieldsChange(formState);
+  }
+
+  /**
+   * Выдача (печать) Путевого листа
+   * @param {boolean} printonly - Только скачивание или скачивание+сохранение
+   * @param {object} event
+   * @param {number 1|2} print_form_type - Идентификатор печатной формы
+   * @return {undefined}
+   */
+  handlePrint(printonly, event, print_form_type) {
+    const { flux } = this.context;
+    const { formState } = this.state;
+
+    const currentWaybillId = formState.id;
+
+    const callback = (createdWaybillId) => {
+      const waybill_id = createdWaybillId ? createdWaybillId : currentWaybillId;
+      flux.getActions('waybills').printWaybill(print_form_type, waybill_id)
+        .then(({ blob, fileName }) => {
+          saveData(blob, fileName);
+        });
+    };
+    printonly ? callback() : this.handleFormSubmit(formState, callback);
+  }
+
+  /**
+   * Отправка формы ПЛ
+   * @param {object} state - содержимое формы
+   * @param {function} callback - функция, вызываемая после отправки
+   * @return {undefined}
+   */
+  async handleFormSubmit(state = this.state.formState, callback) {
+    const formState = _.cloneDeep(state);
+    const waybillStatus = formState.status;
+    const { flux } = this.context;
+
+    if (!!!waybillStatus) { // если создаем ПЛ
+      if (typeof callback === 'function') {
+        formState.status = 'draft';
+        const r = await flux.getActions('waybills').createWaybill(formState);
+        // TODO сейчас возвращается один ПЛ
+        const id = _.max(r.result, res => res.id).id;
+        formState.status = 'active';
+        formState.id = id;
+        try {
+          await flux.getActions('waybills').updateWaybill(formState);
+        } catch (e) {
+          console.log(e);
+          return;
+        }
+        callback(id);
+      } else {
+        formState.status = 'draft';
+        try {
+          await flux.getActions('waybills').createWaybill(formState);
+        } catch (e) {
+          console.log(e);
+          return;
+        }
+      }
+      await flux.getActions('waybills').getWaybills();
+      this.props.onFormHide();
+    } else if (waybillStatus === 'draft') { // если ПЛ обновляем
+      if (typeof callback === 'function') {
+        formState.status = 'active';
+        try {
+          await flux.getActions('waybills').updateWaybill(formState);
+        } catch (e) {
+          return;
+        }
+        callback();
+        flux.getActions('waybills').getWaybills();
+        this.props.onFormHide();
+      } else {
+        try {
+          await flux.getActions('waybills').updateWaybill(formState);
+        } catch (e) {
+          return;
+        }
+        flux.getActions('waybills').getWaybills();
+        this.props.onFormHide();
+      }
+    } else if (waybillStatus === 'active') {
+      try {
+        await flux.getActions('waybills').updateWaybill(formState);
+      } catch (e) {
+        console.log(e);
+        return;
+      }
+      flux.getActions('waybills').getWaybills();
+      this.props.onFormHide();
+    } else if (waybillStatus === 'closed') {
+      try {
+        await flux.getActions('waybills').updateWaybill(formState);
+      } catch (e) {
+        console.log(e);
+        return;
+      }
+      flux.getActions('waybills').getWaybills();
+      this.props.onFormHide();
+    }
+
+    return;
+  }
+
+  async handleClose(taxesControl) {
+    const { formState } = this.state;
+    const prevStatus = formState.status;
+    if (!taxesControl) {
+      global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Необходимо заполнить нормы для расчета топлива!'));
+      return;
+    }
+    confirmDialog({
+      title: 'Внимание: После закрытия путевого листа редактирование полей будет запрещено.',
+      body: 'Вы уверены, что хотите закрыть окно?',
+    })
+    .then((async) () => {
+      try {
+        formState.status = 'closed';
+        await this.context.flux.getActions('waybills').updateWaybill(formState);
+      } catch (e) {
+        console.log(e);
+        formState.status = prevStatus;
+        await this.context.flux.getActions('waybills').updateWaybill(formState);
+        this.context.flux.getActions('waybills').getWaybills();
+        return;
+      }
+      this.context.flux.getActions('waybills').getWaybills();
+      this.props.onFormHide();
+    })
+    .catch(() => {});
+  }
+
+  render() {
+    return 	(<Div hidden={!this.props.showForm}>
+              <WaybillForm formState={this.state.formState}
+                onSubmit={this.handleFormSubmit.bind(this)}
+                handlePrint={this.handlePrint.bind(this)}
+                handleClose={this.handleClose.bind(this)}
+                handleFormChange={this.handleFormStateChange.bind(this)}
+                handleMultipleChange={this.handleMultipleChange.bind(this)}
+                show={this.props.showForm}
+                onHide={this.props.onFormHide}
+                {...this.state}
+              />
+            </Div>);
+  }
 
 }

@@ -5,19 +5,15 @@ import { connectToStores, staticProps } from 'utils/decorators';
 
 @connectToStores(['objects'])
 @staticProps({
-	entity: 'type',
-	listName: 'typesList',
-	tableComponent: CarTypesTable
+  entity: 'type',
+  listName: 'typesList',
+  tableComponent: CarTypesTable,
 })
 export default class CarTypesDirectory extends ElementsList {
 
-	constructor(props, context) {
-		super(props);
-	}
-
-	componentDidMount() {
+  componentDidMount() {
     const { flux } = this.context;
-		flux.getActions('objects').getTypes();
-	}
+    flux.getActions('objects').getTypes();
+  }
 
 }

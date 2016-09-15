@@ -9,7 +9,6 @@ export default class CoordsAnimation {
   }
 
   update(newTime) {
-
     if (this.ended) {
       return;
     }
@@ -20,6 +19,5 @@ export default class CoordsAnimation {
     if (this._x.ended) {
       this.ended = true;
     }
-
   }
 }

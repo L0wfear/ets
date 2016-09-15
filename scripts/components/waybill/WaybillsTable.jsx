@@ -8,7 +8,7 @@ import {
   waybillMissionsCompleteStatusLabelFunction,
 } from 'utils/labelFunctions';
 
-const getTableMeta = (props) => {
+const getTableMeta = () => {
   const tableMeta = {
     cols: [
       {
@@ -199,7 +199,7 @@ export default (props) => {
     car_special_model_name: (meta) => {
       const spModel = meta.data === null ? '- ' : meta.data;
       const model = meta.rowData.car_model_name === null ? ' -' : meta.rowData.car_model_name;
-      return <div className="white-space-pre-wrap">{spModel + '/' + model}</div>;
+      return <div className="white-space-pre-wrap">{`${spModel}/${model}`}</div>;
     },
     all_missions_completed_or_failed: ({ data }) => <div>{waybillMissionsCompleteStatusLabelFunction(data)}</div>,
   };

@@ -4,9 +4,7 @@ import { TRACK_COLORS, TRACK_LINE_OPACITY, TRACK_LINE_WIDTH, TRACK_POINT_RADIUS,
 import { getTrackPointByColor } from '../../icons/track/points.js';
 import { swapCoords, roundCoordinates } from 'utils/geo';
 import { isEmpty, hexToRgba } from 'utils/functions';
-import _ from 'lodash';
 
-const IS_MSK = true;
 const DRAW_POINTS = true;
 const COLORS_ZOOM_THRESHOLD = 6;
 
@@ -37,7 +35,6 @@ export function getTrackColor(speed, maxSpeed, opacity = 1) {
 export default class Track {
 
   constructor(owner) {
-
     this.map = owner.map;
     const reactMapProps = owner._reactMap.props;
     this.maxSpeed = owner.options.maxSpeed;
@@ -52,25 +49,24 @@ export default class Track {
     this.getTrack = window.__ETS_CONTAINER__.flux.getActions('cars').getTrack;
   }
 
-  isLoaded(){
-    //console.log(this.owner, this.points && this.points.length)
-    //debugger;
+  isLoaded() {
+    // console.log(this.owner, this.points && this.points.length)
+    // debugger;
     return this.points !== null && this.points.length > 0;
   }
 
-  getLastPoint(){
-    return this.isLoaded() && this.points[this.points.length - 1]
+  getLastPoint() {
+    return this.isLoaded() && this.points[this.points.length - 1];
   }
 
   addPoint(point) {
-
     if (!this.continuousUpdating) {
       return;
     }
 
     if (this.points !== null && (this.points.length && point.timestamp > this.points[this.points.length - 1].timestamp)) {
       this.points.push(point);
-      //this.render();
+      // this.render();
       this.onUpdateCallback();
     }
   }
@@ -80,12 +76,12 @@ export default class Track {
   }
 
   setContinuousUpdating(flag) {
-    console.log('track', this, 'continuousUpdating is', flag)
+    console.log('track', this, 'continuousUpdating is', flag);
     this.continuousUpdating = flag;
   }
 
   getLegend() {
-    let colors = [];
+    const colors = [];
 
     let prevColor = getTrackColor(0, this.maxSpeed);
 
@@ -94,15 +90,15 @@ export default class Track {
         colors[colors.length - 1].till = speed - 1;
       }
       colors.push({
-        color: color,
-        speed: speed
+        color,
+        speed,
       });
     }
 
     addColor(prevColor, 0);
 
     for (let i = 0, till = 100; i <= till; i++) {
-      let color = getTrackColor(i, this.maxSpeed);
+      const color = getTrackColor(i, this.maxSpeed);
       if (color !== prevColor) {
         addColor(color, i);
         prevColor = color;
@@ -111,13 +107,13 @@ export default class Track {
 
     colors[colors.length - 1].speed += '+';
 
-    let legend = colors.map((obj, i) => {
-      let text = obj.speed + (obj.till ? ' – ' + obj.till : '') + ' км/ч';
-      let color = obj.color;
+    const legend = colors.map((obj, i) => {
+      const text = obj.speed + (obj.till ? ' – ' + obj.till : '') + ' км/ч';
+      const color = obj.color;
 
       return (
         <div key={i} className="track-legend-item">
-          <div className="track-legend-point" style={{backgroundColor: color}}></div>
+          <div className="track-legend-point" style={{ backgroundColor: color }} />
           <div className="track-legend-text">{text}</div>
         </div>
       );
@@ -132,12 +128,11 @@ export default class Track {
 
 
   fetch(from_dt = getStartOfToday(), to_dt = new Date().getTime()) {
-
-    let id = this.owner.point.id;
-    let updating = this.continuousUpdating;
+    const id = this.owner.point.id;
+    const updating = this.continuousUpdating;
 
     if (to_dt - from_dt > 5 * 24 * 60 * 60 * 1000) {
-      global.NOTIFICATION_SYSTEM.notify('Период запроса трэка не может превышать 5 суток', 'warning')
+      global.NOTIFICATION_SYSTEM.notify('Период запроса трэка не может превышать 5 суток', 'warning');
       return;
     }
 
@@ -149,14 +144,13 @@ export default class Track {
                   this.continuousUpdating = updating;
                   this.render();
                   this.onUpdateCallback();
-                  console.log('track fetched for', this.owner)
-                })
-
+                  console.log('track fetched for', this.owner);
+                });
   }
 
   render(speed = null) {
-    let map = this.map;
-    let zoom = map.getView().getZoom();
+    const map = this.map;
+    const zoom = map.getView().getZoom();
 
     if (zoom > COLORS_ZOOM_THRESHOLD) {
       this.renderInColors(speed);
@@ -167,9 +161,9 @@ export default class Track {
   }
 
   renderSimple() {
-    let owner = this.owner;
-    let track = this.points;
-    let ctx = this.ctx;
+    const owner = this.owner;
+    const track = this.points;
+    const ctx = this.ctx;
 
     if (!track || track.length < 2) {
       return;
@@ -184,13 +178,13 @@ export default class Track {
     ctx.lineWidth = TRACK_LINE_WIDTH;
     ctx.lineCap = 'round';
 
-    let first = this.map.projectToPixel(track[0].coords_msk);
+    const first = this.map.projectToPixel(track[0].coords_msk);
 
     ctx.beginPath();
     ctx.moveTo(first.x, first.y);
 
     for (let i = 1, till = track.length - 1; i < till; i++) {
-      let coords = this.map.projectToPixel(track[i].coords_msk);
+      const coords = this.map.projectToPixel(track[i].coords_msk);
       ctx.lineTo(coords.x, coords.y);
     }
 
@@ -198,7 +192,7 @@ export default class Track {
     // получается некрасиво в том случае, если обновление происходит редко
     // и машина резко перемещается на другую точку
     if (owner.point.status === 1 && this.continuousUpdating) {
-      let coords = this.map.projectToPixel(swapCoords(owner.point.coords_msk));
+      const coords = this.map.projectToPixel(swapCoords(owner.point.coords_msk));
       // console.log(track[0].coords_msk, owner.point.coords_msk);
       ctx.lineTo(coords.x, coords.y);
     }
@@ -207,28 +201,28 @@ export default class Track {
   }
 
   getExtent() {
-    let minX = 100000,
-      minY = 100000,
-      maxX = 0,
-      maxY = 0;
-    let trackPoints = this.points;
+    let minX = 100000;
+    let minY = 100000;
+    let maxX = 0;
+    let maxY = 0;
+    const trackPoints = this.points;
 
-    for (let key in trackPoints) {
-      let point = trackPoints[key];
-      let [x, y] = point.coords_msk;
+    for (const key in trackPoints) {
+      const point = trackPoints[key];
+      const [x, y] = point.coords_msk;
 
       if (x < minX) {
-        minX = x
+        minX = x;
       }
       if (x > maxX) {
-        maxX = x
+        maxX = x;
       }
 
       if (y < minY) {
         minY = y;
       }
       if (y > maxY) {
-        maxY = y
+        maxY = y;
       }
     }
 
@@ -242,9 +236,9 @@ export default class Track {
    * @param color
    */
   drawTrackPoint(coords, color) {
-    let ctx = this.ctx;
+    const ctx = this.ctx;
     if (DRAW_POINTS) {
-      let cachedPoint = getTrackPointByColor(color);
+      const cachedPoint = getTrackPointByColor(color);
       ctx.drawImage(
         cachedPoint,
         coords.x - TRACK_POINT_RADIUS - 1,
@@ -259,11 +253,10 @@ export default class Track {
    * // @param ctx
    */
   renderInColors() {
-
-    let owner = this.owner;
-    let track = this.points;
-    let TRACK_LINE_WIDTH = DRAW_POINTS ? 4 : TRACK_LINE_WIDTH;
-    let ctx = this.ctx;
+    const owner = this.owner;
+    const track = this.points;
+    const TRACK_LINE_WIDTH = DRAW_POINTS ? 4 : TRACK_LINE_WIDTH;
+    const ctx = this.ctx;
 
 
     if (!track || track.length < 2) {
@@ -273,7 +266,7 @@ export default class Track {
     // TODO import from settings
     const RENDER_GRADIENT = this.owner.store.state.showTrackingGradient;
 
-    let firstPoint = this.map.projectToPixel(track[0].coords_msk);
+    const firstPoint = this.map.projectToPixel(track[0].coords_msk);
     let prevCoords = firstPoint;
 
     ctx.lineWidth = TRACK_LINE_WIDTH;
@@ -287,10 +280,10 @@ export default class Track {
     ctx.strokeStyle = prevRgbaColor;
 
     for (let i = 1, till = track.length - 1; i < till; i++) {
-      let coords = this.map.projectToPixel(track[i].coords_msk);
-      let speed = track[i].speed_avg;
-      let rgbaColor = getTrackColor(speed, this.maxSpeed, TRACK_LINE_OPACITY);
-      let hexColor = getTrackColor(speed, this.maxSpeed);
+      const coords = this.map.projectToPixel(track[i].coords_msk);
+      const speed = track[i].speed_avg;
+      const rgbaColor = getTrackColor(speed, this.maxSpeed, TRACK_LINE_OPACITY);
+      const hexColor = getTrackColor(speed, this.maxSpeed);
 
       // если предыдущий цвет не соответствует новому
       // нужно закрыть предыдущую линию
@@ -301,7 +294,7 @@ export default class Track {
           ctx.stroke();
 
           // make gradient fill
-          let gradient = ctx.createLinearGradient(prevCoords.x, prevCoords.y, coords.x, coords.y);
+          const gradient = ctx.createLinearGradient(prevCoords.x, prevCoords.y, coords.x, coords.y);
           gradient.addColorStop('0', prevRgbaColor);
           gradient.addColorStop('1', rgbaColor);
 
@@ -326,8 +319,8 @@ export default class Track {
         ctx.lineWidth = TRACK_LINE_WIDTH;
         ctx.beginPath();
         ctx.moveTo(coords.x, coords.y);
-
-      } else { // если цвет не менялся
+      } else {
+ // если цвет не менялся
 
         ctx.strokeStyle = prevRgbaColor;
         ctx.lineWidth = TRACK_LINE_WIDTH;
@@ -355,27 +348,27 @@ export default class Track {
     // получается некрасиво в том случае, если обновление происходит редко
     // и машина резко перемещается на другую точку
     if (owner.point.status === 1 && this.continuousUpdating) {
-      let coords = this.map.projectToPixel(swapCoords(owner.point.coords_msk));
+      const coords = this.map.projectToPixel(swapCoords(owner.point.coords_msk));
       ctx.lineTo(coords.x, coords.y);
     }
 
-    ctx.stroke()
+    ctx.stroke();
   }
 
   getPointAtCoordinate(coordinate) {
-    let view = this.map.getView();
-    let projectedPixel = this.map.projectToPixel(coordinate);
-    let extent = view.calculateExtent(this.map.getSize());
-    let viewportPoints = this.getTrackPointsInExtent(extent);
+    const view = this.map.getView();
+    const projectedPixel = this.map.projectToPixel(coordinate);
+    const extent = view.calculateExtent(this.map.getSize());
+    const viewportPoints = this.getTrackPointsInExtent(extent);
     let selected = null;
 
-    for (let key in viewportPoints) {
-      let point = viewportPoints[key];
-      let pixelCoords = this.map.projectToPixel(point.coords_msk)
-      let radius = TRACK_POINT_RADIUS;
+    for (const key in viewportPoints) {
+      const point = viewportPoints[key];
+      const pixelCoords = this.map.projectToPixel(point.coords_msk);
+      const radius = TRACK_POINT_RADIUS;
 
-      var dx = pixelCoords.x - projectedPixel.x;
-      var dy = pixelCoords.y - projectedPixel.y;
+      const dx = pixelCoords.x - projectedPixel.x;
+      const dy = pixelCoords.y - projectedPixel.y;
 
       if (dx * dx + dy * dy < radius * radius) {
         selected = point;
@@ -388,26 +381,25 @@ export default class Track {
 
 
   getTrackPointsInExtent(extent) {
-    let points = this.points;
-    let returns = [];
+    const points = this.points;
+    const returns = [];
 
-    for (let key in points) {
-      let point = points[key];
+    for (const key in points) {
+      const point = points[key];
       if (ol.extent.containsCoordinate(extent, point.coords_msk)) {
-        returns.push(point)
+        returns.push(point);
       }
     }
 
     return returns;
-
   }
 
 
   // TODO refactor
   async getTrackPointTooltip(trackPoint, prevPoint, nextPoint) {
     let missions = [];
-    const { flux } =  window.__ETS_CONTAINER__;
-    let vectorObject = await flux.getActions('cars')
+    const { flux } = window.__ETS_CONTAINER__;
+    const vectorObject = await flux.getActions('cars')
         .getVectorObject(trackPoint, prevPoint, nextPoint);
     // это рак вызванный косяком бекенда
     const carsList = flux.getStore('objects').state.carsList;
@@ -428,10 +420,10 @@ export default class Track {
       gov_number = this.owner.point.car.gov_number;
 
     distance = typeof distance === 'number' ? Math.floor(distance) : distance;
-    timestamp = new Date( timestamp * 1000 );
-    let dt = makeDate( timestamp ) + ' ' + makeTime( timestamp, true );
+    timestamp = new Date(timestamp * 1000);
+    const dt = makeDate(timestamp) + ' ' + makeTime(timestamp, true);
 
-    return function makePopup(){
+    return function makePopup() {
       let objectsString;
       let missionsString;
       // Объекты на точке
@@ -471,6 +463,6 @@ export default class Track {
           </div>
         </div>
       `;
-    }
+    };
   }
 }

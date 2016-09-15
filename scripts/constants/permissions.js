@@ -8,7 +8,7 @@ const PERMISSIONS = {
     'update': 'waybill.update',
     'update_closed': 'waybill.update_closed',
     'plate': 'waybill.plate',
-    'delete': 'waybill.delete'
+    'delete': 'waybill.delete',
   },
   'missions': {
     'mission': {
@@ -16,42 +16,42 @@ const PERMISSIONS = {
       'create': 'mission.create',
       'read': 'mission.read',
       'update': 'mission.update',
-      'delete': 'mission.delete'
+      'delete': 'mission.delete',
     },
     'mission_template': {
       'list': 'mission_template.list',
       'create': 'mission_template.create',
       'read': 'mission_template.read',
       'update': 'mission_template.update',
-      'delete': 'mission_template.delete'
+      'delete': 'mission_template.delete',
     },
     'duty_mission': {
       'list': 'duty_mission.list',
       'create': 'duty_mission.create',
       'read': 'duty_mission.read',
       'update': 'duty_mission.update',
-      'delete': 'duty_mission.delete'
+      'delete': 'duty_mission.delete',
     },
     'duty_mission_template': {
       'list': 'duty_mission_template.list',
       'create': 'duty_mission_template.create',
       'read': 'duty_mission_template.read',
       'update': 'duty_mission_template.update',
-      'delete': 'duty_mission_template.delete'
-    }
+      'delete': 'duty_mission_template.delete',
+    },
   },
   'company_structure': {
     'list': 'company_structure.list',
     'create': 'company_structure.create',
     'read': 'company_structure.read',
     'update': 'company_structure.update',
-    'delete': 'company_structure.delete'
+    'delete': 'company_structure.delete',
   },
   'monitor': 'monitor',
   'dashboard': 'dashboard',
   'report': {
     'create': 'report.create',
-    'list': 'report.list'
+    'list': 'report.list',
   },
   'odh_coverage_report': 'odh_coverage_report',
   'route': {
@@ -59,7 +59,7 @@ const PERMISSIONS = {
     'create': 'route.create',
     'read': 'route.read',
     'update': 'route.update',
-    'delete': 'route.delete'
+    'delete': 'route.delete',
   },
   'nsi': {
     'employee': {
@@ -67,112 +67,112 @@ const PERMISSIONS = {
       'create': 'employee.create',
       'read': 'employee.read',
       'update': 'employee.update',
-      'delete': 'employee.delete'
+      'delete': 'employee.delete',
     },
     'car': {
       'list': 'car.list',
       'create': 'car.create',
       'read': 'car.read',
       'update': 'car.update',
-      'delete': 'car.delete'
+      'delete': 'car.delete',
     },
     'technical_operation': {
       'list': 'technical_operation.list',
       'create': 'technical_operation.create',
       'read': 'technical_operation.read',
       'update': 'technical_operation.update',
-      'delete': 'technical_operation.delete'
+      'delete': 'technical_operation.delete',
     },
     'faxogramm': {
       'list': 'faxogramm.list',
       'create': 'faxogramm.create',
       'read': 'faxogramm.read',
       'update': 'faxogramm.update',
-      'delete': 'faxogramm.delete'
+      'delete': 'faxogramm.delete',
     },
     'fuel_consumption_rate': {
       'list': 'fuel_consumption_rate.list',
       'create': 'fuel_consumption_rate.create',
       'read': 'fuel_consumption_rate.read',
       'update': 'fuel_consumption_rate.update',
-      'delete': 'fuel_consumption_rate.delete'
+      'delete': 'fuel_consumption_rate.delete',
     },
     'fuel_operation': {
       'list': 'fuel_operation.list',
       'create': 'fuel_operation.create',
       'read': 'fuel_operation.read',
       'update': 'fuel_operation.update',
-      'delete': 'fuel_operation.delete'
+      'delete': 'fuel_operation.delete',
     },
     'type': {
       'list': 'type.list',
       'create': 'type.create',
       'read': 'type.read',
       'update': 'type.update',
-      'delete': 'type.delete'
+      'delete': 'type.delete',
     },
     'odh': {
       'list': 'odh.list',
       'create': 'odh.create',
       'read': 'odh.read',
       'update': 'odh.update',
-      'delete': 'odh.delete'
+      'delete': 'odh.delete',
     },
     'dt': {
       'list': 'dt.list',
       'create': 'dt.create',
       'read': 'dt.read',
       'update': 'dt.update',
-      'delete': 'dt.delete'
+      'delete': 'dt.delete',
     },
     'ssp': {
       'list': 'ssp.list',
       'create': 'ssp.create',
       'read': 'ssp.read',
       'update': 'ssp.update',
-      'delete': 'ssp.delete'
+      'delete': 'ssp.delete',
     },
     'msp': {
       'list': 'msp.list',
       'create': 'msp.create',
       'read': 'msp.read',
       'update': 'msp.update',
-      'delete': 'msp.delete'
+      'delete': 'msp.delete',
     },
     'fueling_water': {
       'list': 'fueling_water.list',
       'create': 'fueling_water.create',
       'read': 'fueling_water.read',
       'update': 'fueling_water.update',
-      'delete': 'fueling_water.delete'
+      'delete': 'fueling_water.delete',
     },
     'carpool': {
       'list': 'carpool.list',
       'create': 'carpool.create',
       'read': 'carpool.read',
       'update': 'carpool.update',
-      'delete': 'carpool.delete'
+      'delete': 'carpool.delete',
     },
     'danger_zone': {
       'list': 'danger_zone.list',
       'create': 'danger_zone.create',
       'read': 'danger_zone.read',
       'update': 'danger_zone.update',
-      'delete': 'danger_zone.delete'
+      'delete': 'danger_zone.delete',
     },
     'work_kind': {
       'list': 'work_kind.list',
       'create': 'work_kind.create',
       'read': 'work_kind.read',
       'update': 'work_kind.update',
-      'delete': 'work_kind.delete'
-    }
+      'delete': 'work_kind.delete',
+    },
   },
-  'administration': 'administration'
+  'administration': 'administration',
 };
 
-const NSI_LIST_PERMISSIONS = _(PERMISSIONS.nsi).map((v,k) => v.list).value();
-const MISSIONS_LIST_PERMISSIONS = _(PERMISSIONS.missions).map((v,k) => v.list).value();
+const NSI_LIST_PERMISSIONS = _(PERMISSIONS.nsi).map(v => v.list).value();
+const MISSIONS_LIST_PERMISSIONS = _(PERMISSIONS.missions).map(v => v.list).value();
 
 PERMISSIONS.nsi.list = NSI_LIST_PERMISSIONS;
 PERMISSIONS.missions.list = MISSIONS_LIST_PERMISSIONS;

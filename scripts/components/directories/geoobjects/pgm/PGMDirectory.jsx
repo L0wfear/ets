@@ -6,20 +6,20 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 @connectToStores(['geoObjects'])
 @staticProps({
   path: 'geozones',
-	entity: 'pgm',
-	listName: 'pgmsList',
-	tableComponent: PGMTable
+  entity: 'pgm',
+  listName: 'pgmsList',
+  tableComponent: PGMTable,
 })
 // @exportable
 export default class PGMDirectory extends ElementsList {
 
-	constructor(props, context) {
-		super(props);
-	}
+  constructor(props, context) {
+    super(props);
+  }
 
-	componentDidMount() {
-		super.componentDidMount();
+  componentDidMount() {
+    super.componentDidMount();
     const { flux } = this.context;
     flux.getActions('geoObjects').getGeozoneByType('pgm_store');
-	}
+  }
 }

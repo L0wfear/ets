@@ -2,13 +2,12 @@ import { TRACK_COLORS, TRACK_POINT_RADIUS, TRACK_POINT_BORDER_WIDTH } from 'cons
 
 const PI_TIMES_TWO = Math.PI * 2;
 
-let TRACK_POINTS = {};
-for (let color in TRACK_COLORS) {
-
-  let canvas = document.createElement('canvas');
+const TRACK_POINTS = {};
+for (const color in TRACK_COLORS) {
+  const canvas = document.createElement('canvas');
   canvas.width = canvas.height = (TRACK_POINT_RADIUS + 1) * 2;
 
-  let ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d');
 
   ctx.strokeStyle = TRACK_COLORS.point_border;
   ctx.fillStyle = TRACK_COLORS[color];

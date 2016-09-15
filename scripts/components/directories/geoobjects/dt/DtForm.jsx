@@ -1,59 +1,59 @@
-import React, {Component} from 'react';
-import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
-import moment from 'moment';
-import Div from 'components/ui/Div.jsx';
+import React, { Component } from 'react';
+import { Modal, Row, Col, Button } from 'react-bootstrap';
 import Field from 'components/ui/Field.jsx';
 import Form from 'compositions/Form.jsx';
 import connectToStores from 'flummox/connect';
 
 class DtForm extends Form {
 
-	constructor(props) {
-		super(props);
+  constructor(props) {
+    super(props);
 
-		this.state = {
-			companyStructureList: [],
-		}
-	}
+    this.state = {
+      companyStructureList: [],
+    };
+  }
 
-	async componentDidMount() {
-		let companyStructureList = await this.context.flux.getActions('companyStructure').getLinearCompanyStructureForUser();
-		this.setState({companyStructureList});
-	}
+  async componentDidMount() {
+    const companyStructureList = await this.context.flux.getActions('companyStructure').getLinearCompanyStructureForUser();
+    this.setState({ companyStructureList });
+  }
 
-	render() {
+  render() {
+    const state = this.props.formState;
+    const { companyStructureList = [] } = this.state;
+    const COMPANY_ELEMENTS = companyStructureList.map(el => ({ value: el.id, label: el.name }));
 
-		let state = this.props.formState;
-		let { companyStructureList = [] } = this.state;
-		let COMPANY_ELEMENTS = companyStructureList.map(el => ({value: el.id, label: el.name}));
+    return (
+      <Modal {...this.props} backdrop="static">
 
-		return (
-			<Modal {...this.props} backdrop="static">
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-lg">Дворовая территория</Modal.Title>
+        </Modal.Header>
 
-				<Modal.Header closeButton>
-					<Modal.Title id="contained-modal-title-lg">Дворовая территория</Modal.Title>
-				</Modal.Header>
+        <Modal.Body>
 
-	      <Modal.Body>
-
-		      <Row>
+          <Row>
             <Col md={12}>
-              <Field type="select" label="Подразделение"
-                     options={COMPANY_ELEMENTS}
-                     value={state.company_structure_id}
-                     onChange={this.handleChange.bind(this, 'company_structure_id')}/>
+              <Field
+                type="select"
+                label="Подразделение"
+                options={COMPANY_ELEMENTS}
+                value={state.company_structure_id}
+                onChange={this.handleChange.bind(this, 'company_structure_id')}
+              />
             </Col>
-		      </Row>
+          </Row>
 
-	      </Modal.Body>
+        </Modal.Body>
 
-	      <Modal.Footer>
-	      	<Button onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
-	      </Modal.Footer>
+        <Modal.Footer>
+          <Button onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+        </Modal.Footer>
 
-			</Modal>
-		)
-	}
+      </Modal>
+    );
+  }
 }
 
 export default connectToStores(DtForm, ['geoObjects']);

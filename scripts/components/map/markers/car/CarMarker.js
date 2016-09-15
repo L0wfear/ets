@@ -7,25 +7,23 @@ import { swapCoords, wrapCoords } from 'utils/geo';
 import { getPointStyle } from 'utils/ol';
 import { getTypeById } from 'utils/labelFunctions';
 import _ from 'lodash';
-
-const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
-
 import {
   SMALL_ICON_RADIUS,
-  LARGE_ICON_RADIUS
+  LARGE_ICON_RADIUS,
 } from 'constants/CarIcons.js';
+
+const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
 
 // @todo убрать прозрачность на больших зум левелах
 const ZOOM_LARGE_ICONS = 8;
 const PI_TIMES_TWO = Math.PI * 2;
 
 function normalizeAngle(angle) {
-
   while (angle < 0) {
-    angle += PI_TIMES_TWO
+    angle += PI_TIMES_TWO;
   }
   while (angle > PI_TIMES_TWO) {
-    angle -= PI_TIMES_TWO
+    angle -= PI_TIMES_TWO;
   }
 
   return angle;
@@ -36,11 +34,11 @@ export default class CarMarker extends Marker {
   constructor(point, map, options) {
     super(point, map, options);
     point.marker = this;
-    this.coords = wrapCoords(swapCoords(point.coords_msk))
+    this.coords = wrapCoords(swapCoords(point.coords_msk));
     this.track = null;
     this.animating = false;
     this.currentIndex = 0;
-    this.currentCoords = [0,0];
+    this.currentCoords = [0, 0];
     this.currentSpeed = 0;
     this.currentTime = 0;
     this.new = true;
@@ -53,7 +51,7 @@ export default class CarMarker extends Marker {
   animate() {
     this.animating = true;
     this.store.pauseRendering();
-    if (this.new) this.animatePoints = _(this.track.points).map(t => ({coords: t.coords_msk, speed: t.speed_avg, time: t.timestamp})).value();
+    if (this.new) this.animatePoints = _(this.track.points).map(t => ({ coords: t.coords_msk, speed: t.speed_avg, time: t.timestamp })).value();
     this.new = false;
     this.animatePoints.splice(0, this.currentIndex);
     // НЕ УДАЛЯТЬ
@@ -68,29 +66,29 @@ export default class CarMarker extends Marker {
     //   }
     // });
 
-    var geoMarker = new ol.Feature({
+    const geoMarker = new ol.Feature({
       type: 'geoMarker',
-      geometry: new ol.geom.Point(this.animatePoints[0].coords)
+      geometry: new ol.geom.Point(this.animatePoints[0].coords),
     });
 
     // TODO сделать константный лейер для карты, а то будет каждый раз создаваться
     this.vectorLayer = new ol.layer.Vector({
       source: new ol.source.Vector({
-        features: []
-      })
+        features: [],
+      }),
     });
     this.map.addLayer(this.vectorLayer);
 
-    let map = this.map;
-    let coords = this.animatePoints[0].coords;
-    let view = map.getView();
+    const map = this.map;
+    const coords = this.animatePoints[0].coords;
+    const view = map.getView();
 
-    var duration = 1500;
-    var start = +new Date();
-    var pan = ol.animation.pan({
-      duration: duration,
+    const duration = 1500;
+    const start = +new Date();
+    const pan = ol.animation.pan({
+      duration,
       source: view.getCenter(),
-      start
+      start,
     });
     map.beforeRender(pan);
     view.setCenter(coords);
@@ -100,7 +98,7 @@ export default class CarMarker extends Marker {
       this.setVisible(false);
       this.map.disableInteractions();
       this.animateStartTime = new Date().getTime();
-      this.image = this.getImage({selected: true});
+      this.image = this.getImage({ selected: true });
       this.radius = this.image.width / 2;
       this.map.render();
     }, 1500);
@@ -109,7 +107,7 @@ export default class CarMarker extends Marker {
   stopAnimation() {
     this.animating = false;
     this.currentIndex = 0;
-    this.currentCoords = [0,0];
+    this.currentCoords = [0, 0];
     this.currentSpeed = 0;
     this.currentTime = 0;
     this.new = true;
@@ -126,9 +124,9 @@ export default class CarMarker extends Marker {
       this.map.enableInteractions();
       this.map.unByKey(this.animateEventKey);
 
-      let pausedMarker = new ol.Feature({
+      const pausedMarker = new ol.Feature({
         type: 'geoMarker',
-        geometry: new ol.geom.Point(this.animatePoints[this.currentIndex].coords)
+        geometry: new ol.geom.Point(this.animatePoints[this.currentIndex].coords),
       });
       pausedMarker.setStyle(getPointStyle('black', 7));
       this.vectorLayer.getSource().addFeature(pausedMarker);
@@ -141,24 +139,24 @@ export default class CarMarker extends Marker {
   animateToTrack(event) {
     let { image, radius } = this;
     let { frameState, vectorContext } = event;
-    let elapsedTime = frameState.time - this.animateStartTime;
-    let index = Math.round(2 * elapsedTime / 1000);
+    const elapsedTime = frameState.time - this.animateStartTime;
+    const index = Math.round(2 * elapsedTime / 1000);
     this.currentIndex = index;
     if (index >= this.animatePoints.length) {
       this.stopAnimation();
       return;
     }
 
-    let map = this.map;
-    let coords = this.animatePoints[index].coords;
+    const map = this.map;
+    const coords = this.animatePoints[index].coords;
     this.currentCoords = coords;
     this.currentTime = this.animatePoints[index].time;
     this.currentSpeed = this.animatePoints[index].speed;
-    this.store.pauseRendering(); //TODO хак для перерендера CarInfo
-    let view = map.getView();
-    let zoom = view.getZoom();
-    let size = map.getSize();
-    let pixel = [(size[0] - 500) / 2, size[1] / 2];
+    this.store.pauseRendering(); // TODO хак для перерендера CarInfo
+    const view = map.getView();
+    const zoom = view.getZoom();
+    const size = map.getSize();
+    const pixel = [(size[0] - 500) / 2, size[1] / 2];
 
     // var duration = 1500;
     // var start = +new Date();
@@ -170,14 +168,14 @@ export default class CarMarker extends Marker {
     // map.beforeRender(pan);
 
     if (!this.paused) {
-      view.centerOn(coords, size, pixel)
+      view.centerOn(coords, size, pixel);
       if (zoom != 9) {
         view.setZoom(9);
       }
-    };
+    }
 
-    let currentPoint = new ol.geom.Point(this.animatePoints[index].coords);
-    let feature = new ol.Feature(currentPoint);
+    const currentPoint = new ol.geom.Point(this.animatePoints[index].coords);
+    const feature = new ol.Feature(currentPoint);
     vectorContext.drawFeature(feature, getPointStyle('black', 7));
     this.map.render();
   }
@@ -187,41 +185,41 @@ export default class CarMarker extends Marker {
   }
 
   getImage(options) {
-    let map = this.map;
-    let zoom = map.getView().getZoom();
+    const map = this.map;
+    const zoom = map.getView().getZoom();
 
     return zoom < ZOOM_LARGE_ICONS && !options.selected ? this.renderSmall(options) : this.renderLarge(options);
   }
 
   getZoomRatio() {
-    let map = this.map;
-    let zoom = map.getView().getZoom();
-    let coef = 8 - (ZOOM_LARGE_ICONS - zoom);
-    return coef > 0 ? coef * .4 : 1 ;
+    const map = this.map;
+    const zoom = map.getView().getZoom();
+    const coef = 8 - (ZOOM_LARGE_ICONS - zoom);
+    return coef > 0 ? coef * 0.4 : 1;
   }
 
   renderSmall = (options) => {
-    let point = this.point;
-    let zoomRatio = this.getZoomRatio();
-    let radius = this.radius = SMALL_ICON_RADIUS * zoomRatio;
+    const point = this.point;
+    const zoomRatio = this.getZoomRatio();
+    const radius = this.radius = SMALL_ICON_RADIUS * zoomRatio;
 
-    let image = getSmallIcon(point.status, zoomRatio);
+    const image = getSmallIcon(point.status, zoomRatio);
 
 
     if (options.showPlates) {
       const title = point.car.gov_number;
-      let context = this._reactMap.canvas.getContext('2d');
-      let drawCoords = this.map.projectToPixel(this.coords);
+      const context = this._reactMap.canvas.getContext('2d');
+      const drawCoords = this.map.projectToPixel(this.coords);
 
       context.fillStyle = 'white';
 
-      var width = context.measureText(title).width;
-      var padding = 1 * zoomRatio;
+      const width = context.measureText(title).width;
+      const padding = 1 * zoomRatio;
 
       // dont try to understand
-      var rectWidth = width + padding + radius - 3;
-      var rectHeight = radius + 4;
-      var rectOffsetY = drawCoords.y - radius / 2 - 2;
+      const rectWidth = width + padding + radius - 3;
+      const rectHeight = radius + 4;
+      const rectOffsetY = drawCoords.y - radius / 2 - 2;
 
       context.fillRect(drawCoords.x - rectWidth, rectOffsetY, rectWidth, rectHeight);
       context.fillStyle = 'black';
@@ -255,34 +253,32 @@ export default class CarMarker extends Marker {
    * @return {[type]} [description]
    */
   renderLarge = (options = {}) => {
+    const point = this.point;
+    const color = getStatusById(point.status).color;
+    const direction = point.direction;
+    const type = getTypeById(point.car ? point.car.type_id : 5);
+    const icon = type && type.icon;
+    const radius = this.radius = (LARGE_ICON_RADIUS + 6);
 
-    let point = this.point;
-    let color = getStatusById(point.status).color;
-    let direction = point.direction;
-    let type = getTypeById(point.car ? point.car.type_id : 5);
-    let icon = type && type.icon;
-    let radius = this.radius = (LARGE_ICON_RADIUS + 6);
-
-    let angle = Math.PI * direction / 180;
-    let tipAngle = normalizeAngle(angle - Math.PI / 2);
-    let drawCoords = this.map.projectToPixel(this.coords);
-    let context = this._reactMap.canvas.getContext('2d');
+    const angle = Math.PI * direction / 180;
+    const tipAngle = normalizeAngle(angle - Math.PI / 2);
+    const drawCoords = this.map.projectToPixel(this.coords);
+    const context = this._reactMap.canvas.getContext('2d');
 
     const title = point.car.gov_number;
 
     if (options.showPlates && title) {
-
       context.fillStyle = 'white';
 
-      var text = title;
-      var width = context.measureText(text).width ;
-      var padding = 3;
+      const text = title;
+      const width = context.measureText(text).width;
+      const padding = 3;
 
-      var rectWidth = width + 2 * padding + radius + 7;
-      var rectHeight = 2 * radius - 9;
-      var rectOffsetY = drawCoords.y - radius + 5;
+      let rectWidth = width + 2 * padding + radius + 7;
+      const rectHeight = 2 * radius - 9;
+      const rectOffsetY = drawCoords.y - radius + 5;
 
-      rectWidth = rectWidth * DEVICE_PIXEL_RATIO;
+      rectWidth *= DEVICE_PIXEL_RATIO;
 
       context.font = 12 * DEVICE_PIXEL_RATIO + 'px \'Helvetica Neue\'';
 
@@ -324,8 +320,8 @@ export default class CarMarker extends Marker {
     this.point = point;
     this.coords = swapCoords(point.coords_msk);
 
-    let [x, y] = this.coords;
-    let store = this.store;
+    const [x, y] = this.coords;
+    const store = this.store;
 
     // обновляем трэк, если у точки он загружен
     if (this.hasTrackLoaded()) {
@@ -338,7 +334,7 @@ export default class CarMarker extends Marker {
           distance: point.distance || 'Н/Д',
           speed_max: point.speed_max || 'Н/Д',
           nsat: point.nsat || 'Н/Д',
-          timestamp: point.timestamp
+          timestamp: point.timestamp,
         });
       }
     }

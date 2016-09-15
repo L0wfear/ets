@@ -7,7 +7,7 @@ export const GEOOBJECTS_TYPES = {
   'snow_storage': 'snowStorage',
   'danger_zone': 'dangerZone',
   'carpool': 'carpool',
-  'fueling_water': 'fuelingWaterStation'
+  'fueling_water': 'fuelingWaterStation',
 };
 
 export const GEOOBJECTS_TYPES_LABELS = {
@@ -22,7 +22,7 @@ export const GEOOBJECTS_TYPES_LABELS = {
   'dangerZone': 'Особо опасное место',
   'carpool': 'Автобазы',
   'fueling_water': 'Базы гидрантов',
-  'fuelingWater': 'Базы гидрантов'
+  'fuelingWater': 'Базы гидрантов',
 };
 
 export const GEOOBJECTS_TYPES_LABELS_SINGLE = {
@@ -34,5 +34,5 @@ export const GEOOBJECTS_TYPES_LABELS_SINGLE = {
   'msp': 'Мобильный снегоплавильный пункт',
   'dangerZone': 'Особо опасное место',
   'carpool': 'Автобаза',
-  'fuelingWaterStation': 'База гидрантов'
+  'fuelingWaterStation': 'База гидрантов',
 };

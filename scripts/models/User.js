@@ -1,4 +1,5 @@
 import Model from './Model.js';
+
 const MAP_INITIAL_CENTER = [-399.43090337943863, -8521.192605428025];
 const MAP_INITIAL_ZOOM = 3;
 
@@ -21,8 +22,8 @@ export default class User extends Model {
       user_id: 'integer',
       structure_id: 'integer',
       map_config: 'object',
-      fio: 'string'
-    }
+      fio: 'string',
+    };
   }
 
   constructor(user = {}) {
@@ -49,11 +50,10 @@ export default class User extends Model {
   getCompanyMapConfig = () => {
     if (this.map_config && this.map_config.zoom && this.map_config.coordinates) {
       return this.map_config;
-    } else {
-      return {
-        coordinates: MAP_INITIAL_CENTER,
-        zoom: MAP_INITIAL_ZOOM
-      };
     }
+    return {
+      coordinates: MAP_INITIAL_CENTER,
+      zoom: MAP_INITIAL_ZOOM,
+    };
   }
 }

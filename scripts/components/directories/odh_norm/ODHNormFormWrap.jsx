@@ -5,28 +5,27 @@ import { schema as odhNormSchema, defaultElement } from 'models/ODHNorm.js';
 
 export default class ODHNormFormWrap extends FormWrap {
 
-	constructor(props, context) {
-		super(props);
+  constructor(props, context) {
+    super(props);
 
-		this.defaultElement = defaultElement;
-		this.schema = odhNormSchema;
-		this.createAction = context.flux.getActions('odh').createODHNorm;
-		this.updateAction = context.flux.getActions('odh').updateODHNorm;
-	}
+    this.defaultElement = defaultElement;
+    this.schema = odhNormSchema;
+    this.createAction = context.flux.getActions('odh').createODHNorm;
+    this.updateAction = context.flux.getActions('odh').updateODHNorm;
+  }
 
-	render() {
-
-		return this.props.showForm ?
-	    <ODHNormForm
-					formState={this.state.formState}
-					formErrors={this.state.formErrors}
-					canSave={this.state.canSave}
-					onSubmit={this.handleFormSubmit.bind(this)}
-					handleFormChange={this.handleFormStateChange.bind(this)}
-					show={this.props.showForm}
-					onHide={this.props.onFormHide}/>
-								: null;
-
-	}
+  render() {
+    return this.props.showForm ?
+      <ODHNormForm
+        formState={this.state.formState}
+        formErrors={this.state.formErrors}
+        canSave={this.state.canSave}
+        onSubmit={this.handleFormSubmit.bind(this)}
+        handleFormChange={this.handleFormStateChange.bind(this)}
+        show={this.props.showForm}
+        onHide={this.props.onFormHide}
+      />
+                : null;
+  }
 
 }

@@ -8,7 +8,7 @@ export const pointStyles = {
         color: 'red',
         width: 2,
       }),
-      radius: 5
+      radius: 5,
     }),
   }),
   'geoobject-selected': new ol.style.Style({
@@ -18,9 +18,9 @@ export const pointStyles = {
       }),
       stroke: new ol.style.Stroke({
         color: 'yellow',
-          width: 2,
+        width: 2,
       }),
-      radius: 5
+      radius: 5,
     }),
-  })
+  }),
 };

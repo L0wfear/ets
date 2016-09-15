@@ -85,9 +85,13 @@ export function hexToRgba(hex, opacity) {
   });
 
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result ? 'rgba('
-  + parseInt(result[1], 16) + ','
-  + parseInt(result[2], 16) + ','
-  + parseInt(result[3], 16) + ','
-  + opacity + ')' : null;
+
+  if (!result) {
+    return null;
+  }
+
+  const red = parseInt(result[1], 16);
+  const green = parseInt(result[2], 16);
+  const blue = parseInt(result[3], 16);
+  return `rgba(${red}, ${green}, ${blue}, ${opacity})`;
 }

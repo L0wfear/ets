@@ -10,15 +10,15 @@ import { connectToStores, staticProps } from 'utils/decorators';
   listName: 'efficiencyList',
   tableComponent: EfficiencyTable,
   formComponent: EfficiencyFormWrap,
-  operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE']
+  operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 export default class EfficiencyList extends ElementsList {
 
-	constructor(props, context) {
-		super(props);
+  constructor(props, context) {
+    super(props);
 
     this.removeElementAction = context.flux.getActions('odh').deleteEfficiency;
-	}
+  }
 
   async componentDidMount() {
     super.componentDidMount();

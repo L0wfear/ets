@@ -2,11 +2,9 @@ import React from 'react';
 import Map from './Map.jsx';
 import CarMarker from './markers/car/CarMarker.js';
 import LegendWrapper from './LegendWrapper.jsx';
-import { GeoJSON, getPointStyle, getPolyStyle} from 'utils/ol';
-import Div from 'components/ui/Div.jsx';
-import { Glyphicon, Button } from 'react-bootstrap';
+import { GeoJSON, getPointStyle, getPolyStyle } from 'utils/ol';
 import { polyState, polyStyles } from 'constants/polygons.js';
-import { vectorStyles, vectorState, getVectorArrowStyle } from 'constants/vectors.js';
+import { getVectorArrowStyle } from 'constants/vectors.js';
 import FluxComponent from 'flummox/component';
 import _ from 'lodash';
 
@@ -18,18 +16,16 @@ export default class HybridMap extends Map {
     super(props, context);
 
     this.state = {
-      zoom: null
+      zoom: null,
     };
   }
 
   updatePoints(updatedPoints) {
-
-    let keys = Object.keys(updatedPoints);
+    const keys = Object.keys(updatedPoints);
 
     for (let i = 0, till = keys.length; i < till; i++) {
-
-      let key = keys[i];
-      let point = updatedPoints[key];
+      const key = keys[i];
+      const point = updatedPoints[key];
 
       if (point.timestamp === 1420074000000) {
         continue;
@@ -38,12 +34,12 @@ export default class HybridMap extends Map {
       if (!point.car) continue;
       if (point.car.gov_number !== this.props.car_gov_number) continue;
 
-      let oldPoint = this.markers[key];
+      const oldPoint = this.markers[key];
       if (oldPoint) {
         oldPoint.setPoint(point);
       } else {
         this.markers[key] = new CarMarker(point, this, {
-          maxSpeed: this.props.maxSpeed
+          maxSpeed: this.props.maxSpeed,
         });
       }
     }
@@ -56,15 +52,27 @@ export default class HybridMap extends Map {
     this.renderPolygons(this.props.polys, true);
   }
 
-  renderPolygons(polys = {}, showPolygons) {
-    let map = this.map;
+  componentWillReceiveProps(nextProps) {
+    super.componentWillReceiveProps(nextProps);
 
-    let vectorSource = new ol.source.Vector();
+    if (nextProps.selectedPoly !== undefined && !_.isEqual(this.props.selectedPoly, nextProps.selectedPoly)) {
+      this.renderSelectedPoly(nextProps.selectedPoly, nextProps.showSelectedElement);
+    }
+
+    if (nextProps.selectedPoly !== undefined && nextProps.showSelectedElement !== this.props.showSelectedElement) {
+      this.renderSelectedPoly(nextProps.selectedPoly, nextProps.showSelectedElement);
+    }
+  }
+
+  renderPolygons(polys = {}, showPolygons) {
+    const map = this.map;
+
+    const vectorSource = new ol.source.Vector();
     let styleFunction = polyStyles[polyState.SELECTABLE];
 
     if (showPolygons) {
       _.each(polys, (poly, key) => {
-        let feature = new ol.Feature({
+        const feature = new ol.Feature({
           geometry: GeoJSON.readGeometry(poly.shape),
           name: poly.name,
           id: key,
@@ -73,11 +81,11 @@ export default class HybridMap extends Map {
         if (poly.shape && poly.shape.type === 'LineString') {
           feature.setStyle(getVectorArrowStyle(feature));
         } else if (poly.shape && poly.shape.type !== 'Point') {
-            feature.setStyle(polyStyles[poly.state]);
+          feature.setStyle(polyStyles[poly.state]);
         } else { // Если точка
           if (this.props.selectedObjects) {
             let succeed = false;
-            _.each(this.props.selectedObjects, o => {
+            _.each(this.props.selectedObjects, (o) => {
               if (o.coordinates.x_msk === poly.shape.coordinates[0] && o.coordinates.y_msk === poly.shape.coordinates[1]) {
                 succeed = true;
               }
@@ -98,13 +106,13 @@ export default class HybridMap extends Map {
 
     !!POLYS_LAYER && map.removeLayer(POLYS_LAYER);
 
-    let polysLayerObject = {
+    const polysLayerObject = {
       source: vectorSource,
     };
     if (styleFunction) {
       polysLayerObject.style = styleFunction;
     }
-    let polysLayer = new ol.layer.Vector(polysLayerObject);
+    const polysLayer = new ol.layer.Vector(polysLayerObject);
 
     POLYS_LAYER = polysLayer;
 
@@ -112,17 +120,16 @@ export default class HybridMap extends Map {
   }
 
   renderSelectedPoly(selectedPoly, showSelectedElement) {
-
-    let vectorSource = new ol.source.Vector();
-    let { map } = this;
+    const vectorSource = new ol.source.Vector();
+    const { map } = this;
 
     if (!showSelectedElement) {
       return !!this.selectedPolysLayer && map.removeLayer(this.selectedPolysLayer);
     }
 
-    let feature = new ol.Feature({
+    const feature = new ol.Feature({
       geometry: GeoJSON.readGeometry(selectedPoly.shape),
-      name: selectedPoly.name
+      name: selectedPoly.name,
     });
 
     vectorSource.addFeature(feature);
@@ -134,32 +141,32 @@ export default class HybridMap extends Map {
 
     this.selectedPolysLayer = new ol.layer.Vector({
       source: vectorSource,
-      style: getPolyStyle('#e67e22')
+      style: getPolyStyle('#e67e22'),
     });
 
     map.addLayer(this.selectedPolysLayer);
   }
 
   renderCanvas(canvas, extent) {
-    let map = this.map;
-    let pointsStore = this._pointsStore;
+    const map = this.map;
+    const pointsStore = this._pointsStore;
 
-    let selected = pointsStore.getSelectedPoint();
+    const selected = pointsStore.getSelectedPoint();
 
-    let selectedMarker = pointsStore.getSelectedMarker();
+    const selectedMarker = pointsStore.getSelectedMarker();
 
-    let optimizedMarkers = this.getMarkersInBounds(extent);
+    const optimizedMarkers = this.getMarkersInBounds(extent);
     this.viewportVisibleMarkers = optimizedMarkers;
 
     const options = {
-      showPlates: this.props.showPlates
+      showPlates: this.props.showPlates,
     };
 
-    let keys = Object.keys(optimizedMarkers);
+    const keys = Object.keys(optimizedMarkers);
     for (let i = 0, till = keys.length; i < till; i++) {
-      let key = keys[i];
-      let marker = optimizedMarkers[key];
-      let id = marker.point.id;
+      const key = keys[i];
+      const marker = optimizedMarkers[key];
+      const id = marker.point.id;
 
       if (selected === null || id !== selected.id) {
         marker.render(options);
@@ -172,52 +179,36 @@ export default class HybridMap extends Map {
           selectedMarker.track.render(this.props.maxSpeed);
         }
       }
-      selectedMarker.render({selected: true, ...options});
+      selectedMarker.render({ selected: true, ...options });
     }
 
     return canvas;
   }
 
   async onClick(ev) {
-    let map = this.map;
-    let pixel = ev.pixel; // координаты клика во viewport
-    let coordinate = ev.coordinate;
-    let store = this._pointsStore;
-    let clickedMarker = null;
-    let cancelSelection = false;
+    const coordinate = ev.coordinate;
 
-    let currentSelectedPoint = this._pointsStore.getSelectedPoint();
+    const currentSelectedPoint = this._pointsStore.getSelectedPoint();
     if (currentSelectedPoint) {
-      let marker = currentSelectedPoint.marker;
+      const marker = currentSelectedPoint.marker;
       if (marker.hasTrackLoaded()) {
-        let track = marker.track;
-        let possibleTrackPoint = track.getPointAtCoordinate(coordinate);
+        const track = marker.track;
+        const possibleTrackPoint = track.getPointAtCoordinate(coordinate);
         if (possibleTrackPoint !== null) {
-          let pointCoords = possibleTrackPoint.coords_msk;
-          let prevPoint, nextPoint = null;
+          const pointCoords = possibleTrackPoint.coords_msk;
+          let prevPoint = null;
+          let nextPoint = null;
           track.points.forEach((point, i) => {
             if (point.coords === possibleTrackPoint.coords) {
-                nextPoint = track.points[i+1] ? track.points[i+1] : null;
-                prevPoint = track.points[i-1] ? track.points[i-1] : null;
-            };
+              nextPoint = track.points[i + 1] ? track.points[i + 1] : null;
+              prevPoint = track.points[i - 1] ? track.points[i - 1] : null;
+            }
           });
-          let makePopupFn = await track.getTrackPointTooltip(possibleTrackPoint, prevPoint, nextPoint);
+          const makePopupFn = await track.getTrackPointTooltip(possibleTrackPoint, prevPoint, nextPoint);
           this.popup.show(pointCoords, makePopupFn());
           return;
         }
       }
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    super.componentWillReceiveProps(nextProps);
-
-    if (nextProps.selectedPoly !== undefined && !_.isEqual(this.props.selectedPoly, nextProps.selectedPoly)) {
-      this.renderSelectedPoly(nextProps.selectedPoly, nextProps.showSelectedElement);
-    }
-
-    if (nextProps.selectedPoly !== undefined && nextProps.showSelectedElement !== this.props.showSelectedElement) {
-      this.renderSelectedPoly(nextProps.selectedPoly, nextProps.showSelectedElement);
     }
   }
 
@@ -228,10 +219,11 @@ export default class HybridMap extends Map {
           <LegendWrapper
             controls={['track', 'route', 'element']}
             zoom={this.state.zoom}
-            marker={() => this._pointsStore.getSelectedMarker()}/>
+            marker={() => this._pointsStore.getSelectedMarker()}
+          />
         </FluxComponent>
       </div>
-    )
+    );
   }
 
 }

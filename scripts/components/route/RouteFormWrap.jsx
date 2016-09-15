@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import moment from 'moment';
 import connectToStores from 'flummox/connect';
 import _ from 'lodash';
 import RouteForm from './RouteForm.jsx';
@@ -8,95 +7,95 @@ import { routeSchema } from 'models/RouteModel.js';
 
 class RouteFormWrap extends FormWrap {
 
-	constructor(props) {
-		super(props);
+  constructor(props) {
+    super(props);
 
-		this.schema = routeSchema;
-	}
+    this.schema = routeSchema;
+  }
 
-	componentWillReceiveProps(props) {
-		if (props.showForm && props.showForm !== this.props.showForm) {
-			let formState = null;
-			if (props.element !== null ) {
+  componentWillReceiveProps(props) {
+    if (props.showForm && props.showForm !== this.props.showForm) {
+      let formState = null;
+      if (props.element !== null) {
         formState = _.cloneDeep(props.element);
-				formState.polys = formState.type === 'simple_dt' ? _.cloneDeep(props.dtPolys) : _.cloneDeep(props.odhPolys);
-				_.each(formState.object_list.filter(o => !!o.object_id), o => {
-					if (formState.polys[o.object_id]) formState.polys[o.object_id].state = o.state;
-				});
-			} else {
-				formState = {};
+        formState.polys = formState.type === 'simple_dt' ? _.cloneDeep(props.dtPolys) : _.cloneDeep(props.odhPolys);
+        _.each(formState.object_list.filter(o => !!o.object_id), (o) => {
+          if (formState.polys[o.object_id]) formState.polys[o.object_id].state = o.state;
+        });
+      } else {
+        formState = {};
       }
-			let formErrors = this.validate(formState, {});
-			this.setState({
-				formState,
-				canSave: ! !!_.filter(formErrors).length,
-				formErrors,
-			});
-		}
-	}
+      const formErrors = this.validate(formState, {});
+      this.setState({
+        formState,
+        canSave: !_.filter(formErrors).length,
+        formErrors,
+      });
+    }
+  }
 
-	resetFormState() {
-		const { formState } = this.state;
-		formState.polys = formState.type === 'simple_dt' ? _.cloneDeep(this.props.dtPolys) : _.cloneDeep(this.props.odhPolys);
-		formState.object_list = [];
-		this.setState({formState});
-	}
+  resetFormState() {
+    const { formState } = this.state;
+    formState.polys = formState.type === 'simple_dt' ? _.cloneDeep(this.props.dtPolys) : _.cloneDeep(this.props.odhPolys);
+    formState.object_list = [];
+    this.setState({ formState });
+  }
 
-	async handleFormSubmit() {
-		const { flux } = this.context;
-		let { formState } = this.state;
-		let result;
+  async handleFormSubmit() {
+    const { flux } = this.context;
+    const { formState } = this.state;
+    let result;
 
-		if (!formState.id) {
-			result = await flux.getActions('routes').createRoute(formState);
-		} else {
-			result = await flux.getActions('routes').updateRoute(formState);
-		}
+    if (!formState.id) {
+      result = await flux.getActions('routes').createRoute(formState);
+    } else {
+      result = await flux.getActions('routes').updateRoute(formState);
+    }
 
-		this.props.onFormHide(true, result);
-	}
+    this.props.onFormHide(true, result);
+  }
 
-	async handleFormStateChange(f, e) {
-		await super.handleFormStateChange(f, e);
+  async handleFormStateChange(f, e) {
+    await super.handleFormStateChange(f, e);
 
-		// Проверка на наличие имени маршрута в списке маршрутов
-		const { formErrors, formState } = this.state;
-		const { routesList } = this.props;
-		let routesByName = routesList
-			.filter(r => r.id !== formState.id)
-			.map(r => r.name);
-		let value;
-		if (f === 'name') {
-			value = e !== undefined && e !== null && !!e.target ? e.target.value : e;
-		} else {
-			value = formState['name'];
-		}
-		if (routesByName.includes(value)) {
-			if (!formErrors['name']) {
-				formErrors.name = 'Маршрут с данным названием уже существует!';
-			}
-		} else if (formErrors['name'] === 'Маршрут с данным названием уже существует!') {
-			delete formErrors.name;
-		}
-		this.setState({formErrors});
-	}
+    // Проверка на наличие имени маршрута в списке маршрутов
+    const { formErrors, formState } = this.state;
+    const { routesList } = this.props;
+    const routesByName = routesList
+      .filter(r => r.id !== formState.id)
+      .map(r => r.name);
+    let value;
+    if (f === 'name') {
+      value = e !== undefined && e !== null && !!e.target ? e.target.value : e;
+    } else {
+      value = formState.name;
+    }
+    if (routesByName.includes(value)) {
+      if (!formErrors.name) {
+        formErrors.name = 'Маршрут с данным названием уже существует!';
+      }
+    } else if (formErrors.name === 'Маршрут с данным названием уже существует!') {
+      delete formErrors.name;
+    }
+    this.setState({ formErrors });
+  }
 
-	render() {
+  render() {
+    const props = this.props;
 
-		let props = this.props;
-
-		return props.showForm ?
-    <RouteForm formState = {this.state.formState}
-      					onSubmit={this.handleFormSubmit.bind(this)}
-      					handleFormChange={this.handleFormStateChange.bind(this)}
-      					show={this.props.showForm}
-      					onHide={this.props.onFormHide}
-								resetState={this.resetFormState.bind(this)}
-								fromMission={this.props.fromMission}
-      					{...this.state}/>
-      					: null;
-
-	}
+    return props.showForm ?
+    <RouteForm
+      formState={this.state.formState}
+      onSubmit={this.handleFormSubmit.bind(this)}
+      handleFormChange={this.handleFormStateChange.bind(this)}
+      show={this.props.showForm}
+      onHide={this.props.onFormHide}
+      resetState={this.resetFormState.bind(this)}
+      fromMission={this.props.fromMission}
+      {...this.state}
+    />
+    : null;
+  }
 
 }
 

@@ -1,10 +1,10 @@
 export const technicalOperationSchema = {
   properties: [
-		{
-			key: 'name',
+    {
+      key: 'name',
       title: 'Наименование',
-			type: 'string',
-			required: true,
-		},
-	],
+      type: 'string',
+      required: true,
+    },
+  ],
 };

@@ -10,19 +10,15 @@ import { connectToStores, staticProps } from 'utils/decorators';
   listName: 'technicalOperationsList',
   tableComponent: TechnicalOperationsTable,
   formComponent: TechnicalOperationFormWrap,
-  operations: ['READ', 'UPDATE']
+  operations: ['READ', 'UPDATE'],
 })
 export default class TechOperationsDirectory extends ElementsList {
 
-	constructor(props) {
-		super(props);
-	}
-
-	componentDidMount() {
+  componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
     flux.getActions('technicalOperation').getTechnicalOperations();
     flux.getActions('objects').getTypes();
-	}
+  }
 
 }

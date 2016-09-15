@@ -29,9 +29,9 @@ export default class Marker {
   }
 
   getCoords() {
-    let point = this.point;
-    let coords = point.coords;
-    let coords_msk = point.coords_msk;
+    const point = this.point;
+    const coords = point.coords;
+    const coords_msk = point.coords_msk;
 
     return IS_MSK ? wrapCoords(coords_msk) : wrapCoords(coords);
   }
@@ -47,13 +47,13 @@ export default class Marker {
   renderImage() {}
 
   render(options = {}) {
-    if (this.coords[0] === null || this.coords[1] === null || this.visible === false ) return;
+    if (this.coords[0] === null || this.coords[1] === null || this.visible === false) return;
 
-    let image = this.getImage(options);
-    let radius = image.width / 2;
-    let canvas = this._reactMap.canvas;
-    let ctx = canvas.getContext('2d');
-    let drawCoords = this.map.projectToPixel(this.coords);
+    const image = this.getImage(options);
+    const radius = image.width / 2;
+    const canvas = this._reactMap.canvas;
+    const ctx = canvas.getContext('2d');
+    const drawCoords = this.map.projectToPixel(this.coords);
 
     if (typeof ctx === 'undefined') {
       return;
@@ -70,14 +70,13 @@ export default class Marker {
    * проверка на вхождение координаты в маркер
    */
   contains = (coordinates) => {
+    const projectedPixel = this.map.projectToPixel(coordinates);
+    const pixelCoords = this.map.projectToPixel(this.coords);
 
-    let projectedPixel = this.map.projectToPixel(coordinates);
-    let pixelCoords = this.map.projectToPixel(this.coords)
+    const radius = this.radius;
 
-    let radius = this.radius;
-
-    var dx = pixelCoords.x - projectedPixel.x;
-    var dy = pixelCoords.y - projectedPixel.y;
+    const dx = pixelCoords.x - projectedPixel.x;
+    const dy = pixelCoords.y - projectedPixel.y;
 
     return dx * dx + dy * dy < radius * radius;
   }

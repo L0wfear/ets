@@ -10,15 +10,15 @@ import { connectToStores, staticProps } from 'utils/decorators';
   listName: 'odhNormList',
   tableComponent: ODHNormTable,
   formComponent: ODHNormFormWrap,
-  operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE']
+  operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 export default class ODHNormList extends ElementsList {
 
-	constructor(props, context) {
-		super(props);
+  constructor(props, context) {
+    super(props);
 
     this.removeElementAction = context.flux.getActions('odh').deleteODHNorm;
-	}
+  }
 
   componentDidMount() {
     super.componentDidMount();

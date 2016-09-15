@@ -19,7 +19,7 @@ const customCards = {
   waybill_completed,
   waybill_closed,
   odh_not_covered_by_routes,
-  odh_not_covered_by_missions_of_current_shift
+  odh_not_covered_by_missions_of_current_shift,
 };
 
 export default customCards;

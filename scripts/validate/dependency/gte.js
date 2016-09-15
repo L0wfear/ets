@@ -8,14 +8,14 @@ const fixedValidators = [
     validator(config, value, dependentFieldConfig, dependentFieldValue, formData, schema) {
       const MUST_BE_GREATER_THAN = `"${config.title || config.key}" должно быть не меньше значения "${dependentFieldConfig.title}"`;
       if (isEmpty(value) || isEmpty(dependentFieldValue)) {
-        return void 0;
+        return undefined;
       }
       if (config.type === 'date' || config.type === 'datetime') {
         if (moment(value).toDate().getTime() < moment(dependentFieldValue).toDate().getTime()) {
           return MUST_BE_GREATER_THAN;
         }
       }
-      return value < dependentFieldValue ? MUST_BE_GREATER_THAN : void 0;
+      return value < dependentFieldValue ? MUST_BE_GREATER_THAN : undefined;
     }
   }
 ];

@@ -5,25 +5,25 @@ import { isEmpty } from 'utils/functions';
 const fixedValidators = [
   {
     name: 'gt',
-    validator(config, value, dependentFieldConfig, dependentFieldValue, formData, schema) {
+    validator(config, value, dependentFieldConfig, dependentFieldValue, formData) {
       const MUST_BE_GREATER_THAN = `"${config.title || config.key}" должно быть больше "${dependentFieldConfig.title}"`;
       if (isEmpty(value) || isEmpty(dependentFieldValue)) {
-        return void 0;
+        return;
       }
       if (config.type === 'date' || config.type === 'datetime') {
         if (moment(value).toDate().getTime() <= moment(dependentFieldValue).toDate().getTime()) {
           return MUST_BE_GREATER_THAN;
         }
       }
-      return value <= dependentFieldValue ? MUST_BE_GREATER_THAN : void 0;
-    }
-  }
+      return value <= dependentFieldValue ? MUST_BE_GREATER_THAN : undefined;
+    },
+  },
 ];
 
 function validate(config, value, dependentFieldConfig, dependentFieldValue, formData, schema) {
-  //console.warn(`VALIDATING ${config.key} with data = ${data}`);
+  // console.warn(`VALIDATING ${config.key} with data = ${data}`);
   const error = _(fixedValidators)
-    .map(({validator}) => validator(config, value, dependentFieldConfig, dependentFieldValue, formData, schema))
+    .map(({ validator }) => validator(config, value, dependentFieldConfig, dependentFieldValue, formData, schema))
     .filter()
     .first();
 
@@ -31,5 +31,5 @@ function validate(config, value, dependentFieldConfig, dependentFieldValue, form
 }
 
 export default {
-  validate
-}
+  validate,
+};

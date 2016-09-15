@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 
-let getTableMeta = (props) => {
-  let tableMeta = {
+const getTableMeta = () => {
+  const tableMeta = {
     cols: [
       {
         name: 'object_address',
@@ -10,7 +10,7 @@ let getTableMeta = (props) => {
         type: 'string',
         filter: {
           type: 'select',
-        }
+        },
       },
       {
         name: 'total_area',
@@ -32,21 +32,20 @@ let getTableMeta = (props) => {
         displayName: 'Подразделение',
         type: 'text',
       },
-    ]
+    ],
   };
   return tableMeta;
 };
 
-let DTTable = (props) => {
-
+export default (props) => {
   const renderers = {};
 
-  return <Table title="Реестр ДТ"
-      results={props.data}
-      tableMeta={getTableMeta(props)}
-      renderers={renderers}
-      initialSort={'name'}
-      {...props}/>;
+  return (<Table
+    title="Реестр ДТ"
+    results={props.data}
+    tableMeta={getTableMeta(props)}
+    renderers={renderers}
+    initialSort={'name'}
+    {...props}
+  />);
 };
-
-export default DTTable;

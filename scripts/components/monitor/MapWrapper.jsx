@@ -1,21 +1,25 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Map from 'components/map/Map.jsx';
 import { connect } from 'react-redux';
+import { autobind } from 'core-decorators';
 
 @connect(
   state => state.types
 )
+@autobind
 export default class MapWrapper extends React.Component {
 
-  constructor() {
-    super();
+  static get propTypes() {
+    return {
+      flux: PropTypes.object,
+    };
   }
 
-  onFeatureClick(feature, event, map) {
+  onFeatureClick(feature) {
     const featureData = feature.getProperties().data;
     const { flux } = this.props;
-    let pointsStore = flux.getStore('points');
-    let geoObjectsStore = flux.getStore('geoObjects');
+    const pointsStore = flux.getStore('points');
+    const geoObjectsStore = flux.getStore('geoObjects');
     pointsStore.handleSelectPoint(false);
     geoObjectsStore.handleSelectFeature(featureData);
   }
@@ -23,8 +27,9 @@ export default class MapWrapper extends React.Component {
   render() {
     return (
       <Map
-        onFeatureClick={this.onFeatureClick.bind(this)}
-        {...this.props}/>
+        onFeatureClick={this.onFeatureClick}
+        {...this.props}
+      />
     );
   }
 

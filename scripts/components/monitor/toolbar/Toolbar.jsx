@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getTypes } from 'redux/modules/types';
 import connectToStores from 'flummox/connect';
 import cx from 'classnames';
-import Filter from './Filter.jsx';
 import { FluxContext } from 'utils/decorators';
-import { TRACK_COLORS } from 'constants/track.js';
 import GeometryLegendWrapper from 'components/map/LegendWrapper.jsx';
 
 import statuses from 'constants/statuses';
@@ -14,9 +11,9 @@ import FluxComponent from 'flummox/component';
 import ToolbarSearch from './ToolbarSearch.jsx';
 import ToolbarFilters from './ToolbarFilters.jsx';
 
-let StatusComponent = (props) =>
-  <span className={cx({'half-visible': !props.active})}>
-    {props.status.color ? <button className={'status-filter-icon'} onClick={props.onClick} style={{ backgroundColor: props.status.color}}></button> : null}
+const StatusComponent = props =>
+  <span className={cx({ 'half-visible': !props.active })}>
+    {props.status.color ? <button className={'status-filter-icon'} onClick={props.onClick} style={{ backgroundColor: props.status.color }} /> : null}
     {props.status.title}
     {props.active ? <span style={{ fontSize: '80%', color: '#aaa' }}> ({props.status.amount})</span> : null}
   </span>
@@ -26,28 +23,28 @@ let StatusComponent = (props) =>
 class CarsLegendWrapper extends Component {
 
   render() {
+    const totalOnline = this.props.byConnectionStatus[1];
+    const byStatus = this.props.byStatus;
 
-    let totalOnline = this.props.byConnectionStatus[1];
-    let byStatus = this.props.byStatus;
+    const filter = this.props.storeFilter;
 
-    let filter = this.props.storeFilter;
-
-    let items = statuses
+    const items = statuses
       .map(s => Object.assign({ amount: byStatus[s.id] }, s))
       .map((item, i) => {
         return (
           <li key={i}>
             <StatusComponent active={filter.status.indexOf(item.id) !== -1}
-                             status={item}
-                             onClick={() => this.toggleFilter(item)}/>
+              status={item}
+              onClick={() => this.toggleFilter(item)}
+            />
           </li>
         );
       });
 
     return (
       <div className="legend-wrapper app-toolbar-fill">
-        <ul style={{paddingLeft: 0}}>
-          <li style={{fontSize: '16px',textAlign: 'center'}}>
+        <ul style={{ paddingLeft: 0 }}>
+          <li style={{ fontSize: '16px', textAlign: 'center' }}>
             <span> Активно:
               <span>&nbsp;{totalOnline}</span>
             </span>
@@ -59,35 +56,33 @@ class CarsLegendWrapper extends Component {
   }
 
   toggleFilter(i) {
+    const filter = this.props.filter.status.slice();
+    const id = i.id;
+    const index = filter.indexOf(id);
 
-    let filter = this.props.filter.status.slice();
-    let id = i.id;
-    let index = filter.indexOf(id);
-
-    if (index === -1 ) {
+    if (index === -1) {
       filter.push(id);
     } else {
       filter.splice(index, 1);
     }
 
     this.props.storeHandleSetFilter({
-      status: filter
+      status: filter,
     });
-
   }
 }
 
-let ShowPlatesCheckbox = (props) =>
+const ShowPlatesCheckbox = props =>
   <div className="app-toolbar-fill app-toolbar-show-govnumber" >
     <div className="checkbox">
-      <label style={{fontSize:'13px', fontWeight:'200'}}>
-        <input type="checkbox" checked={props.showPlates} onChange={e => props.flux.getActions('settings').setShowPlates(e.target.checked)}/> Рег. номер ТС
+      <label style={{ fontSize: '13px', fontWeight: '200' }}>
+        <input type="checkbox" checked={props.showPlates} onChange={e => props.flux.getActions('settings').setShowPlates(e.target.checked)} /> Рег. номер ТС
       </label>
     </div>
   </div>
 ;
 
-let ShowGeoobjectsCheckbox = (props) => {
+const ShowGeoobjectsCheckbox = (props) => {
   const { selectedPolysTypes } = props;
   const showGeoobjectsList = props.showGeoobjects;
   const listStyle = {};
@@ -112,19 +107,19 @@ let ShowGeoobjectsCheckbox = (props) => {
     return (
       <li key={index}>
         <div className="checkbox">
-          <label style={{fontSize:'13px', fontWeight:'200'}}>
-            <input type="checkbox" checked={selectedPolysTypes.indexOf(GEOOBJECTS_TYPES[type]) > -1} onChange={e => setSelectedPolysType(type)}/> {GEOOBJECTS_TYPES_LABELS[type]}
+          <label style={{ fontSize: '13px', fontWeight: '200' }}>
+            <input type="checkbox" checked={selectedPolysTypes.indexOf(GEOOBJECTS_TYPES[type]) > -1} onChange={e => setSelectedPolysType(type)} /> {GEOOBJECTS_TYPES_LABELS[type]}
           </label>
         </div>
       </li>
-    )
+    );
   });
 
   return (
     <div className="app-toolbar-fill app-toolbar-show-geoobjects" >
       <div className="checkbox">
-        <label style={{fontSize:'13px', fontWeight:'200'}}>
-          <input type="checkbox" checked={props.showGeoobjects} onChange={e => setShowGeoobjects(e.target.checked)}/> Объекты
+        <label style={{ fontSize: '13px', fontWeight: '200' }}>
+          <input type="checkbox" checked={props.showGeoobjects} onChange={e => setShowGeoobjects(e.target.checked)} /> Объекты
         </label>
       </div>
       <ul style={listStyle}>
@@ -132,7 +127,7 @@ let ShowGeoobjectsCheckbox = (props) => {
       </ul>
     </div>
   );
-}
+};
 
 @connect(
   state => state.types
@@ -146,14 +141,13 @@ class Toolbar extends Component {
   }
 
   focusOnLonelyCar() {
+    const store = this.context.flux.getStore('points');
+    const onlyPoint = store.getVisiblePoints()[0];
+    const map = olmap;
+    const view = map.getView();
+    const size = map.getSize();
 
-    let store = this.context.flux.getStore('points');
-    let onlyPoint = store.getVisiblePoints()[0];
-    let map = olmap;
-    let view = map.getView();
-    let size = map.getSize();
-
-    view.centerOn(onlyPoint.marker.coords, size, [size[0]/2, size[1]/2])
+    view.centerOn(onlyPoint.marker.coords, size, [size[0] / 2, size[1] / 2]);
     view.setZoom(15);
   }
 
@@ -163,27 +157,26 @@ class Toolbar extends Component {
   }
 
   render() {
-
     const { selectedPolysTypes, filter } = this.props;
     const filters = filter;
     const pointsStore = this.context.flux.getStore('points');
     const storeState = pointsStore.state;
 
     let filtersCount = 0;
-    let keys = {
-      type:  1
+    const keys = {
+      type: 1,
     };
 
-    for (let key in filters) {
-      if (key in keys){
+    for (const key in filters) {
+      if (key in keys) {
         filtersCount += filters[key].length;
       }
     }
 
-    let byStatus = storeState.byStatus;
-    let byConnectionStatus = storeState.byConnectionStatus;
-    let carsCount = Object.keys(byConnectionStatus)
-                          .map((k)=>byConnectionStatus[k])
+    const byStatus = storeState.byStatus;
+    const byConnectionStatus = storeState.byConnectionStatus;
+    const carsCount = Object.keys(byConnectionStatus)
+                          .map(k => byConnectionStatus[k])
                           .reduce((a, b) => a + b);
 
     return (
@@ -194,20 +187,22 @@ class Toolbar extends Component {
               byStatus={byStatus}
               byConnectionStatus={byConnectionStatus}
               storeFilter={storeState.filter}
-              storeHandleSetFilter={pointsStore.handleSetFilter.bind(pointsStore)}/>
+              storeHandleSetFilter={pointsStore.handleSetFilter.bind(pointsStore)}
+            />
             <GeometryLegendWrapper
               controlTitles={{
-                route: 'Геообъекты'
+                route: 'Геообъекты',
               }}
               controls={['track', 'route']}
               className="legend-wrapper app-toolbar-fill"
-              marker={() => this._pointsStore.getSelectedMarker()}/>
-            <ShowPlatesCheckbox/>
-            <ShowGeoobjectsCheckbox selectedPolysTypes={selectedPolysTypes}/>
+              marker={() => this._pointsStore.getSelectedMarker()}
+            />
+            <ShowPlatesCheckbox />
+            <ShowGeoobjectsCheckbox selectedPolysTypes={selectedPolysTypes} />
           </FluxComponent>
         </div>
-        <ToolbarSearch focusOnLonelyCar={this.focusOnLonelyCar.bind(this)} carsCount={carsCount}/>
-        <ToolbarFilters store={pointsStore} filters={filters} haveFilters={filtersCount > 0} {...this.props}/>
+        <ToolbarSearch focusOnLonelyCar={this.focusOnLonelyCar.bind(this)} carsCount={carsCount} />
+        <ToolbarFilters store={pointsStore} filters={filters} haveFilters={filtersCount > 0} {...this.props} />
       </div>
     );
   }

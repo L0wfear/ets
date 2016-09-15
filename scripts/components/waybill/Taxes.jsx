@@ -1,19 +1,30 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { autobind } from 'core-decorators';
 import Table from 'components/ui/table/Table.jsx';
-import { Input, Button, Glyphicon } from 'react-bootstrap';
+import { Input, Button } from 'react-bootstrap';
 import EtsSelect from 'components/ui/EtsSelect.jsx';
 import Div from 'components/ui/Div.jsx';
 import { isEmpty } from 'utils/functions';
 import cx from 'classnames';
+import _ from 'lodash';
 
 /**
  * Компонент таксировки ТС
  * @extends React.Component
  */
+@autobind
 export default class Taxes extends Component {
 
-  static propTypes = {
-    type: React.PropTypes.string.isRequired,
+  static get propTypes() {
+    return {
+      type: PropTypes.string.isRequired,
+      taxes: PropTypes.arrayOf(PropTypes.object),
+      readOnly: PropTypes.bool,
+      correctionRate: PropTypes.number,
+      baseFactValue: PropTypes.string,
+
+      onChange: PropTypes.func.isRequired,
+    };
   }
 
   static getResult({ FACT_VALUE, fuel_correction_rate, FUEL_RATE }) {
@@ -91,13 +102,13 @@ export default class Taxes extends Component {
         return fuel_correction_rate ? parseFloat(fuel_correction_rate).toFixed(3) : 1;
       },
       FACT_VALUE: (FACT_VALUE, { OPERATION, FUEL_RATE }, index) => {
-        const props = {
+        const factValueProps = {
           type: 'number',
           min: 0,
           value: FACT_VALUE,
           disabled: typeof FUEL_RATE === 'undefined' || typeof OPERATION === 'undefined' || this.props.readOnly,
         };
-        return <Input {...props} onChange={this.handleFactValueChange.bind(this, index)} />;
+        return <Input {...factValueProps} onChange={this.handleFactValueChange.bind(this, index)} />;
       },
     };
 
@@ -107,6 +118,14 @@ export default class Taxes extends Component {
       operations: [],
       fuelRates: [],
     };
+  }
+
+  componentWillReceiveProps(props) {
+    const { fuelRates, taxes = this.state.tableData } = props;
+    let { operations } = props;
+    operations = operations.map(({ id, name }) => ({ value: id, label: name }));
+    taxes.map(tax => ({ ...tax, RESULT: Taxes.getResult(tax) }));
+    this.setState({ operations, fuelRates, tableData: taxes });
   }
 
   handleFactValueChange(index, e) {
@@ -146,15 +165,6 @@ export default class Taxes extends Component {
     this.props.onChange(tableData);
   }
 
-  componentWillReceiveProps(props) {
-    let { operations, fuelRates, taxes = this.state.tableData } = props;
-    operations = operations.map(({ id, name }) => ({ value: id, label: name }));
-    taxes.map((tax) => {
-      tax.RESULT = Taxes.getResult(tax); return tax;
-    });
-    this.setState({ operations, fuelRates, tableData: taxes });
-  }
-
   selectOperation(selectedOperation) {
     this.setState({ selectedOperation });
   }
@@ -181,10 +191,10 @@ export default class Taxes extends Component {
             <h5>{noDataMessage}</h5>
           </Div>
           <Div className="waybills-buttons" hidden={this.props.readOnly || !fuelRates.length}>
-            <Button bsSize="xsmall" onClick={this.addOperation.bind(this)} disabled={this.state.operations.length === taxes.length}>
+            <Button bsSize="xsmall" onClick={this.addOperation} disabled={this.state.operations.length === taxes.length}>
               Добавить операцию
             </Button>
-            <Button bsSize="xsmall" disabled={this.state.selectedOperation === null || taxes.length === 0} onClick={this.removeOperation.bind(this)}>
+            <Button bsSize="xsmall" disabled={this.state.selectedOperation === null || taxes.length === 0} onClick={this.removeOperation}>
               Удалить операцию
             </Button>
           </Div>
@@ -197,7 +207,7 @@ export default class Taxes extends Component {
             pageSize={10}
             usePagination={false}
             cellRenderers={this.tableCellRenderers}
-            onRowSelected={!this.props.readOnly ? this.selectOperation.bind(this) : undefined}
+            onRowSelected={!this.props.readOnly ? this.selectOperation : undefined}
           />
         </Div>
         <Div className="taxes-result" hidden={!hasTaxes}>

@@ -152,7 +152,7 @@ export default class DashboardStore extends Store {
     componentsIndex[key] = component.result;
     componentsList = _(componentsIndex).toArray().sortBy('id').value();
     this.setState({componentsList, componentsIndex});
-	}
+  }
 
   getComponentsByPermissions() {
     let { permissions = [] } = this.flux.getStore('session').getCurrentUser();

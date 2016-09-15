@@ -8,11 +8,7 @@ export default class Sidebar extends Component {
 
   static propTypes = {
     selected: PropTypes.object,
-    selectedFeature: PropTypes.object
-  }
-
-  constructor() {
-    super();
+    selectedFeature: PropTypes.object,
   }
 
   shouldComponentUpdate(nextProps) {
@@ -29,12 +25,12 @@ export default class Sidebar extends Component {
 
   renderFeatureInfo() {
     const { selectedFeature } = this.props;
-    return <FeatureInfo feature={selectedFeature}/>
+    return <FeatureInfo feature={selectedFeature} />;
   }
 
   renderCarInfo() {
     const { selected, flux } = this.props;
-    return <CarInfo car={selected} flux={flux} onclose={this.close.bind(this)}/>;
+    return <CarInfo car={selected} flux={flux} onclose={this.close.bind(this)} />;
   }
 
   renderInfo() {
@@ -44,21 +40,8 @@ export default class Sidebar extends Component {
     } else if (selected) {
       return this.renderCarInfo();
     } else {
-      return <div/>
+      return <div />;
     }
-  }
-
-  render() {
-    // TODO оптимизировать рендер
-    let { selected, selectedFeature } = this.props;
-    const dashboardClassName = cx('monitor-sidebar', {'monitor-sidebar-sm': selectedFeature});
-
-    return (
-      <Div hidden={!selected && !selectedFeature} className={dashboardClassName}>
-        <span className="monitor-sidebar-close" onClick={this.close.bind(this)}>×</span>
-        {this.renderInfo()}
-      </Div>
-    );
   }
 
   close() {
@@ -71,6 +54,19 @@ export default class Sidebar extends Component {
       store = this.props.flux.getStore('geoObjects');
       store.handleSelectFeature(null);
     }
+  }
+
+  render() {
+    // TODO оптимизировать рендер
+    let { selected, selectedFeature } = this.props;
+    const dashboardClassName = cx('monitor-sidebar', { 'monitor-sidebar-sm': selectedFeature });
+
+    return (
+      <Div hidden={!selected && !selectedFeature} className={dashboardClassName}>
+        <span className="monitor-sidebar-close" onClick={this.close.bind(this)}>×</span>
+        {this.renderInfo()}
+      </Div>
+    );
   }
 
 }

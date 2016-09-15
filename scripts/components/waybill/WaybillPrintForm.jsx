@@ -56,7 +56,7 @@ class WaybillPrintForm extends Component {
   render() {
     const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
       'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'].map((m, i) => ({ label: m, value: i }));
-    const YEARS = Array.from({ length: 11 }, (y, i) => ({ label: i + 2016 + '', value: i + 2016 }));
+    const YEARS = Array.from({ length: 11 }, (y, i) => ({ label: `${i}2016`, value: i + 2016 }));
 
     return (
       <Modal {...this.props} show={!!this.props.show} bsSize="small">
@@ -75,7 +75,7 @@ class WaybillPrintForm extends Component {
                 options={MONTHS}
                 value={this.state.month}
                 clearable={false}
-                onChange={this.handleChange.bind(this, 'month')}
+                onChange={v => this.handleChange('month', v)}
               />
               <br />
               <Field
@@ -84,16 +84,16 @@ class WaybillPrintForm extends Component {
                 options={YEARS}
                 value={this.state.year}
                 clearable={false}
-                onChange={this.handleChange.bind(this, 'year')}
+                onChange={v => this.handleChange('year', v)}
               />
             </div>
             :
             <div>
               <Div className="inline-block reports-date">
-                <Datepicker time={false} date={this.state.date_from} onChange={this.handleChange.bind(this, 'date_from')} />
+                <Datepicker time={false} date={this.state.date_from} onChange={v => this.handleChange('date_from', v)} />
               </Div>
               <Div className="inline-block reports-date">
-                <Datepicker time={false} date={this.state.date_to} onChange={this.handleChange.bind(this, 'date_to')} />
+                <Datepicker time={false} date={this.state.date_to} onChange={v => this.handleChange('date_to', v)} />
               </Div>
             </div>
           }
@@ -101,7 +101,7 @@ class WaybillPrintForm extends Component {
 
         <Modal.Footer>
           <Div className="inline-block">
-            <Button onClick={this.handleSubmit.bind(this)}>ОК</Button>
+            <Button onClick={this.handleSubmit}>ОК</Button>
             <Button onClick={this.props.hide}>Отмена</Button>
           </Div>
         </Modal.Footer>

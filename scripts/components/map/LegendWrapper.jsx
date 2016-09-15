@@ -2,9 +2,9 @@ import React, { PropTypes } from 'react';
 import { TRACK_COLORS } from 'constants/track.js';
 import cx from 'classnames';
 
-let ControlComponent = (props) =>
+const ControlComponent = props =>
   <span>
-    {props.control.color ? <button className={'status-filter-icon'} onClick={props.onClick} style={{ backgroundColor: props.control.color}}></button> : null}
+    {props.control.color ? <button className={'status-filter-icon'} onClick={props.onClick} style={{ backgroundColor: props.control.color }} /> : null}
     {props.control.title}
   </span>
 ;
@@ -19,22 +19,22 @@ export default class LegendWrapper extends React.Component {
   }
 
   getControls() {
-    let controls = [
+    const controls = [
       {
         title: 'Трек',
         color: this.props.zoom > 6 ? TRACK_COLORS.green : TRACK_COLORS.blue,
-        type: 'track'
+        type: 'track',
       },
       {
         title: 'Маршрут',
         color: TRACK_COLORS.red,
-        type: 'route'
+        type: 'route',
       },
       {
         title: 'ОДХ/ДТ',
-        color: "#e67e22",
-        type: 'element'
-      }
+        color: '#e67e22',
+        type: 'element',
+      },
     ];
     let finalControls = [];
     if (this.props.controls) {
@@ -53,8 +53,8 @@ export default class LegendWrapper extends React.Component {
     if ((type === 'track' && this.props.showTrack) ||
         (type === 'route' && this.props.showPolygons) ||
         (type === 'element' && this.props.showSelectedElement)) {
-          return true;
-        }
+      return true;
+    }
     return false;
   }
 
@@ -75,17 +75,19 @@ export default class LegendWrapper extends React.Component {
   }
 
   render() {
-    const { className = "legend-wrapper app-toolbar-fill controls-legend-wrapper",
+    const { className = 'legend-wrapper app-toolbar-fill controls-legend-wrapper',
       controlTitles = {} } = this.props;
-    let marker = this.props.marker();
-    let items = this.getControls()
+    const marker = this.props.marker();
+    const items = this.getControls()
       .map((control, i) => {
-        let controllClassName = cx('control-element', {'half-visible': !this.isComponentActive(control.type)});
+        const controllClassName = cx('control-element', { 'half-visible': !this.isComponentActive(control.type) });
         control.title = controlTitles[control.type] || control.title;
         return (
           <li key={i} className={controllClassName} >
-            <ControlComponent control={control}
-                onClick={this.toggleSettingsControl.bind(this, control.type)}/>
+            <ControlComponent
+              control={control}
+              onClick={this.toggleSettingsControl.bind(this, control.type)}
+            />
             {this.props.zoom > 6 && control.type === 'track' && marker && marker.track ? marker.track.getLegend() : ''}
           </li>
         );
@@ -93,7 +95,7 @@ export default class LegendWrapper extends React.Component {
 
     return (
       <div className={className}>
-        <ul style={{paddingLeft: 0}}>
+        <ul style={{ paddingLeft: 0 }}>
           {items}
         </ul>
       </div>

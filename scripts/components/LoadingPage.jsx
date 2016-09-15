@@ -1,13 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Preloader from './ui/Preloader.jsx';
 
-export default class LoadingPage extends Component {
-
-  constructor(props) {
-    super(props)
-  }
-
-  render() {
-    return <Preloader type="mainpage" visible={this.props.loaded}/>
-  }
-}
+export default ({ loaded }) =>
+  <Preloader type="mainpage" visible={loaded} />;

@@ -28,7 +28,9 @@ export default class EmployeesActions extends Actions {
     delete payload.full_name;
     payload.active = !!payload.active;
 
-    _.mapKeys(payload, (v, k) => isEmpty(v) ? payload[k] = null : void 0);
+    _.mapKeys(payload, (v, k) => {
+      isEmpty(v) ? payload[k] = null : undefined;
+    });
     return EmployeeService.put(payload, true, 'json');
   }
 
@@ -39,7 +41,7 @@ export default class EmployeesActions extends Actions {
     delete payload.position_name;
     delete payload.position_key;
     payload.active = !!payload.active;
-    _.mapKeys(payload, (v, k) => isEmpty(v) ? payload[k] = null : void 0);
+    _.mapKeys(payload, (v, k) => isEmpty(v) ? payload[k] = null : undefined);
     return EmployeeService.post(payload, true, 'json');
   }
 

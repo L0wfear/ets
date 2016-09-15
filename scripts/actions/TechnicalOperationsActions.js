@@ -22,7 +22,7 @@ export default class TechnicalOperationsActions extends Actions {
     if (isEmpty(car_id)) {
       delete payload.car_id;
     }
-    let response = await TechnicalOperationService.get(payload);
+    const response = await TechnicalOperationService.get(payload);
     return response.result || [];
   }
 
@@ -30,26 +30,25 @@ export default class TechnicalOperationsActions extends Actions {
     const payload = {
       needs_brigade: true,
     };
-    let response = await TechnicalOperationService.get(payload);
+    const response = await TechnicalOperationService.get(payload);
     return response.result || [];
   }
 
   async getTechnicalOperationsByObjectsType(type) {
-
-    let objects = [];
-    let getObjectByTypeName = (type) => {
+    const objects = [];
+    const getObjectByTypeName = (type) => {
       switch (type) {
         case 'simple_dt':
-          objects.push({name: 'ОДХ', id: 1})
+          objects.push({ name: 'ОДХ', id: 1 });
           break;
         case 'simple':
-          objects.push({name: 'ДТ', id: 2})
+          objects.push({ name: 'ДТ', id: 2 });
           break;
         case 'points':
-          objects.push({name: 'ПН', id: 3})
+          objects.push({ name: 'ПН', id: 3 });
           break;
       }
-    }
+    };
 
     getObjectByTypeName(type);
 
@@ -59,7 +58,7 @@ export default class TechnicalOperationsActions extends Actions {
       payload.objects = objects;
     }
 
-    let response = await TechnicalOperationService.get(payload);
+    const response = await TechnicalOperationService.get(payload);
     return response.result || [];
   }
 

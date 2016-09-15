@@ -1,52 +1,52 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 
-let getTableMeta = (props) => {
-
-	let tableMeta = {
-		cols: [
-			{
-				name: 'number',
-				displayName: 'Номер',
-				type: 'number',
-        cssClassName: 'width60'
-			},
+const getTableMeta = () => {
+  const tableMeta = {
+    cols: [
       {
-				name: 'route_name',
-				displayName: 'Маршрут',
-				type: 'string',
-				filter: {
-					type: 'select',
-				},
-			},
+        name: 'number',
+        displayName: 'Номер',
+        type: 'number',
+        cssClassName: 'width60',
+      },
       {
-				name: 'technical_operation_name',
-				displayName: 'Технологическая операция',
-				type: 'string',
-				filter: {
-					type: 'select',
-				}
-			},
+        name: 'route_name',
+        displayName: 'Маршрут',
+        type: 'string',
+        filter: {
+          type: 'select',
+        },
+      },
       {
-				name: 'comment',
-				displayName: 'Комментарий',
-				type: 'string',
-				filter: false,
-				cssClassName: 'width300'
-			},
-		]
-	};
+        name: 'technical_operation_name',
+        displayName: 'Технологическая операция',
+        type: 'string',
+        filter: {
+          type: 'select',
+        },
+      },
+      {
+        name: 'comment',
+        displayName: 'Комментарий',
+        type: 'string',
+        filter: false,
+        cssClassName: 'width300',
+      },
+    ],
+  };
 
-	return tableMeta;
-
+  return tableMeta;
 };
 
 
-export default (props) => {
-	return <Table title="Шаблоны наряд-заданий"
-  				results={props.data}
-  				tableMeta={getTableMeta(props)}
-  				initialSort={'number'}
-  				initialSortAscending={false}
-  				{...props}/>
-}
+export default props =>
+  <Table
+    title="Шаблоны наряд-заданий"
+    results={props.data}
+    tableMeta={getTableMeta(props)}
+    initialSort={'number'}
+    initialSortAscending={false}
+    {...props}
+  />
+;

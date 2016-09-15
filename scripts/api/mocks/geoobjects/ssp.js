@@ -10,8 +10,8 @@ export default class SSPMock extends Mock {
         shortname: 'Абз',
         address: 'Адрес д.1',
         productivity: 12,
-        is_mobile: 1
-      }
+        is_mobile: 1,
+      },
     ];
   }
 

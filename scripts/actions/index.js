@@ -35,5 +35,5 @@ export default {
   settings,
   technicalOperation,
   waybills,
-  geoObjects
-}
+  geoObjects,
+};

@@ -7,13 +7,16 @@ const ATTEMPTS_LIMIT = 10;
 const FIFTY_SECONDS = 1000 * 50;
 
 let EVERGIS_TOKEN = null;
-const lastTokenUsedTime = null;
 let loading = false;
 let attempts = 0;
 let refreshAttemptsTimeoutId = null;
 
 function refreshAttempts() {
   attempts = 0;
+}
+
+export function attemptsLimitExceeded() {
+  return attempts >= ATTEMPTS_LIMIT;
 }
 
 // Получаем токен из evergis
@@ -41,11 +44,5 @@ export function getToken() {
   return EVERGIS_TOKEN;
 }
 
-export function attemptsLimitExceeded() {
-  return attempts >= ATTEMPTS_LIMIT;
-}
-
 // Инициализация токена
 fetchEvergisToken();
-
-export default EVERGIS_TOKEN;

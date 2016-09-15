@@ -1,16 +1,22 @@
-import React, { Component } from 'react';
+import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
-import { MenuItem as BootstrapMenuItem, Navbar, Nav, NavItem as BootstrapNavItem, NavDropdown as BootstrapNavDropdown, Glyphicon} from 'react-bootstrap';
+import {
+  Navbar, Nav, Glyphicon,
+  NavItem as BootstrapNavItem,
+  NavDropdown as BootstrapNavDropdown,
+  MenuItem as BootstrapMenuItem,
+} from 'react-bootstrap';
+import { autobind } from 'core-decorators';
 import { enhanceWithPermissions } from './util/RequirePermissions.jsx';
 import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
-import { FluxContext, HistoryContext, connectToStores } from 'utils/decorators';
+import { FluxContext, HistoryContext } from 'utils/decorators';
 import PERMISSIONS from 'constants/permissions';
 
 const ROLES = {
   'master': 'Мастер',
   'dispatcher': 'Диспетчер',
   'prefect': 'Префект',
-  'superuser': 'Администратор'
+  'superuser': 'Администратор',
 };
 
 const MenuItem = enhanceWithPermissions(BootstrapMenuItem);
@@ -21,12 +27,31 @@ const NavDropdown = enhanceWithPermissions(BootstrapNavDropdown);
 @HistoryContext
 export default class MainPage extends React.Component {
 
+  static get propTypes() {
+    return {
+      location: PropTypes.object,
+      children: PropTypes.node,
+    };
+  }
+
   constructor() {
     super();
 
     this.state = {
-      user: {}
+      user: {},
     };
+  }
+
+  componentDidMount() {
+    this.setState({
+      user: this.context.flux.getStore('session').getCurrentUser(),
+    });
+  }
+
+  componentWillReceiveProps() {
+    this.setState({
+      user: this.context.flux.getStore('session').getCurrentUser(),
+    });
   }
 
   renderEmptyHeader() {
@@ -35,18 +60,18 @@ export default class MainPage extends React.Component {
         <Navbar.Header>
           <Navbar.Brand>
             <Link to="/">ЕТС</Link>
-			      </Navbar.Brand>
-			    </Navbar.Header>
-			</Navbar>
+          </Navbar.Brand>
+        </Navbar.Header>
+      </Navbar>
     );
   }
 
-	renderHeader() {
-		let path = this.props.location.pathname;
+  renderHeader() {
+    const path = this.props.location.pathname;
 
     if (path === '/login') return this.renderEmptyHeader();
 
-		return (
+    return (
       <Navbar justified fluid>
 
         <Navbar.Header>
@@ -89,7 +114,7 @@ export default class MainPage extends React.Component {
             <MenuItem permissions={['danger_zone.list']} active={path === '/danger-zones'} href="#/danger-zones">Справочник особо опасных мест</MenuItem>
             <MenuItem permissions={['pgm.list']} active={path === '/pgm'} href="#/pgm">Справочник пунктов отпуска ПГМ</MenuItem>
             <MenuItem permissions={['snow_storage.list']} active={path === '/snow-storage'} href="#/snow-storage">Справочник пунктов временного складирования снега</MenuItem>
-            {/*<MenuItem active={path === '/organizations'} href="#/organizations">Справочник организаций</MenuItem>*/}
+            {/* <MenuItem active={path === '/organizations'} href="#/organizations">Справочник организаций</MenuItem>*/}
           </NavDropdown>
 
           <NavDropdown oneOfPermissions={[PERMISSIONS.report.list]} title="Отчеты" id="nav-dropdown-3">
@@ -114,27 +139,27 @@ export default class MainPage extends React.Component {
 
           <NavItem permissions={[PERMISSIONS.route.list]} active={path === '/routes-list'} href="#/routes-list">Маршруты</NavItem>
           <NavItem permissions={[PERMISSIONS.company_structure.list]} active={path === '/company-structure'} href="#/company-structure">Структура предприятия</NavItem>
-          <NavItem permissions={[PERMISSIONS.administration]} title="Администрирование" href="http://172.17.31.72/admin"><Glyphicon glyph="list-alt"/></NavItem>
+          <NavItem permissions={[PERMISSIONS.administration]} title="Администрирование" href="http://172.17.31.72/admin"><Glyphicon glyph="list-alt" /></NavItem>
         </Nav>
 
         <Nav pullRight>
           <NavItem className="navbar-user">
             <div className="navbar-user__avatar">
-              <img src="images/avatar-default.png" className="navbar-user__avatar-img" />
+              <img role="presentation" src="images/avatar-default.png" className="navbar-user__avatar-img" />
             </div>
             <div className="navbar-user__data">
-              <div className="navbar-user__data-type">{this.state.user.role ? ROLES[this.state.user.role] ?  ROLES[this.state.user.role] : this.state.user.role : ''}</div>
+              <div className="navbar-user__data-type">{this.state.user.role ? ROLES[this.state.user.role] ? ROLES[this.state.user.role] : this.state.user.role : ''}</div>
               <div className="navbar-user__data-name">{this.state.user.fio}</div>
             </div>
           </NavItem>
-          <NavItem onClick={this.logout.bind(this)}>Выйти</NavItem>
+          <NavItem onClick={this.logout}>Выйти</NavItem>
         </Nav>
 
       </Navbar>
     );
+  }
 
-	}
-
+  @autobind
   logout() {
     const { flux, history } = this.context;
     flux.getActions('session').logout().then(() => {
@@ -142,30 +167,18 @@ export default class MainPage extends React.Component {
     });
   }
 
-  componentDidMount() {
-    this.setState({
-      user: this.context.flux.getStore('session').getCurrentUser()
-    });
-  }
-
-  componentWillReceiveProps() {
-    this.setState({
-      user: this.context.flux.getStore('session').getCurrentUser()
-    });
-  }
-
   render() {
-		return (
+    return (
       <div className="app">
-				<div className="app-navigation">{this.renderHeader()}</div>
+        <div className="app-navigation">{this.renderHeader()}</div>
 
-				<div className="app-content">
+        <div className="app-content">
           {this.props.children}
-          <LoadingOverlay/>
+          <LoadingOverlay />
         </div>
 
         <div className="app-footer">{this.state.user.company_name}</div>
-			</div>
+      </div>
     );
   }
 

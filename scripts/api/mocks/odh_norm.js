@@ -8,8 +8,8 @@ export default class ODHNormMock extends Mock {
       {
         name: 'Когда будет готово на бэке, попросить отключить моки',
         id: 0,
-        unit: 'О да'
-      }
+        unit: 'О да',
+      },
     ];
   }
 

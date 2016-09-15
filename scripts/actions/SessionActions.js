@@ -1,7 +1,6 @@
 import { Actions } from 'flummox';
-import _ from 'lodash';
 import {
-  AuthService
+  AuthService,
 } from 'api/Services';
 
 export default class SessionActions extends Actions {
@@ -11,7 +10,7 @@ export default class SessionActions extends Actions {
   }
 
   logout() {
-    return new Promise((res) => res());
+    return new Promise(res => res());
   }
 
 }

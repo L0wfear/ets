@@ -1,12 +1,9 @@
 import { Actions } from 'flummox';
-import { getCustomers } from '../adapter.js';
-import _ from 'lodash';
-import { isEmpty, saveData } from 'utils/functions';
+import { isEmpty } from 'utils/functions';
 import { createValidDateTime } from 'utils/dates';
 import {
   FaxogrammService,
   WorkKindsService,
-  TechnicalOperationService,
   FuelTypeService,
   CarService,
   CustomersService,
@@ -14,7 +11,7 @@ import {
   PositionService,
   ModelsService,
   SpecialModelService,
-  OrganizationsService
+  OrganizationsService,
 } from 'api/Services';
 
 export default class ObjectsActions extends Actions {
@@ -62,7 +59,7 @@ export default class ObjectsActions extends Actions {
       page,
       on_page: 15,
       create_date_from: createValidDateTime(create_date_from),
-      create_date_to: createValidDateTime(create_date_to)
+      create_date_to: createValidDateTime(create_date_to),
     };
     return FaxogrammService.get(payload);
   }
@@ -72,7 +69,7 @@ export default class ObjectsActions extends Actions {
   }
 
   getFaxogrammPDFUrl(id) {
-    let URL = FaxogrammService.getUrl() + '/' + id;
+    const URL = `${FaxogrammService.getUrl()}/${id}`;
     return URL;
   }
 

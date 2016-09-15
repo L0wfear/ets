@@ -1,6 +1,5 @@
 import { Actions } from 'flummox';
 import { CompanyStructureService, CompanyService } from 'api/Services';
-import { isEmpty } from 'utils/functions';
 import _ from 'lodash';
 
 export default class CompanyStructureActions extends Actions {
@@ -21,7 +20,7 @@ export default class CompanyStructureActions extends Actions {
 
   deleteCompanyElement(id) {
     const payload = {
-      id
+      id,
     };
 
     return CompanyStructureService.delete(payload);
@@ -40,17 +39,17 @@ export default class CompanyStructureActions extends Actions {
       linear: true,
     };
 
-    let response = await CompanyStructureService.get(payload);
+    const response = await CompanyStructureService.get(payload);
     return response.result || [];
   }
 
   async getLinearCompanyStructureForUser() {
     const payload = {
       linear: true,
-      descendants_by_user: true
+      descendants_by_user: true,
     };
 
-    let response = await CompanyStructureService.get(payload);
+    const response = await CompanyStructureService.get(payload);
     return response.result || [];
   }
 

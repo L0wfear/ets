@@ -7,14 +7,10 @@ import {
   LatestWaybillDriverService,
   WaybillJournalReportService,
   WaybillsReportService,
-  RootService
+  RootService,
 } from 'api/Services';
 
 export default class WaybillsActions extends Actions {
-
-  constructor(props) {
-    super();
-  }
 
   getWaybills() {
     return WaybillService.get();
@@ -22,7 +18,7 @@ export default class WaybillsActions extends Actions {
 
   getLastClosedWaybill(car_id) {
     const payload = {
-      car_id
+      car_id,
     };
     return WaybillService.path('closed').get(payload);
   }
@@ -57,16 +53,16 @@ export default class WaybillsActions extends Actions {
   }
 
   getWaybillsReport(state) {
-    let payload = {
+    const payload = {
       date_start: createValidDate(state.date_from),
-      date_end: createValidDate(state.date_to)
+      date_end: createValidDate(state.date_to),
     };
     return WaybillsReportService.getBlob(payload);
   }
 
   printWaybill(print_form_type, waybill_id) {
     const payload = {
-      waybill_id
+      waybill_id,
     };
     return RootService.path(print_form_type).getBlob(payload);
   }
@@ -86,19 +82,19 @@ export default class WaybillsActions extends Actions {
     }
 
     if (payload.tax_data) {
-      let tax_data = payload.tax_data.filter((t) => {
+      const tax_data = payload.tax_data.filter((t) => {
         return !isEmpty(t.FACT_VALUE);
       });
       payload.tax_data = tax_data;
     }
     if (payload.equipment_tax_data) {
-      let equipment_tax_data = payload.equipment_tax_data.filter((t) => {
+      const equipment_tax_data = payload.equipment_tax_data.filter((t) => {
         return !isEmpty(t.FACT_VALUE);
       });
       payload.equipment_tax_data = equipment_tax_data;
     }
 
-    _.each(['fuel_given', 'equipment_fuel_given'], key => {
+    _.each(['fuel_given', 'equipment_fuel_given'], (key) => {
       if (!isEmpty(payload[key])) {
         payload[key] = parseFloat(payload[key]).toFixed(3);
       }

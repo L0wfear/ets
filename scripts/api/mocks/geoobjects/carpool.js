@@ -7,8 +7,8 @@ export default class CarPoolMock extends Mock {
     this.data = [
       {
         name: 'Гидрант',
-        address: 'Русаковская д. 14'
-      }
+        address: 'Русаковская д. 14',
+      },
     ];
   }
 

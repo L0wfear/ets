@@ -8,76 +8,79 @@ import { connectToStores, staticProps } from 'utils/decorators';
 
 @connectToStores(['missions', 'objects', 'employees', 'routes'])
 @staticProps({
-	entity: 'duty_mission_template',
-	listName: 'dutyMissionTemplatesList',
-	tableComponent: DutyMissionTemplatesTable,
-	operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE']
+  entity: 'duty_mission_template',
+  listName: 'dutyMissionTemplatesList',
+  tableComponent: DutyMissionTemplatesTable,
+  operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 export default class DutyMissionTemplatesJournal extends CheckableElementsList {
 
-	constructor(props, context) {
-		super(props);
+  constructor(props, context) {
+    super(props);
 
     this.removeElementAction = context.flux.getActions('missions').removeDutyMissionTemplate;
-		this.state = Object.assign(this.state, {
-			formType: 'ViewForm'
-		});
-	}
-
-	componentDidMount() {
-		super.componentDidMount();
-		const { flux } = this.context;
-		let { payload = {} } = this.props;
-		flux.getActions('missions').getDutyMissionTemplates(payload);
-    flux.getActions('missions').getMissionSources();
-	}
-
-	showForm() {
-		this.setState({ showForm: true, formType: "ViewForm" });
-	}
-
-  createDutyMissions() {
-    this.setState({ showForm: true, formType: "MissionsCreationForm" });
+    this.state = Object.assign(this.state, {
+      formType: 'ViewForm',
+    });
   }
 
-	/**
-	 * @override
-	 */
-	createElement() {
-		this.setState({
-			showForm: true,
-			selectedElement: null,
-			formType: "ViewForm"
-		});
-	}
+  componentDidMount() {
+    super.componentDidMount();
+    const { flux } = this.context;
+    const { payload = {} } = this.props;
+    flux.getActions('missions').getDutyMissionTemplates(payload);
+    flux.getActions('missions').getMissionSources();
+  }
 
-	getForms() {
-		return [
-			<DutyMissionTemplateFormWrap
-				key={'form'}
-				onFormHide={this.onFormHide.bind(this)}
-				showForm={this.state.showForm}
-				element={this.state.selectedElement}
-				formType={this.state.formType}
-				missions={this.state.checkedElements}/>
-		];
-	}
+  showForm() {
+    this.setState({ showForm: true, formType: 'ViewForm' });
+  }
 
-	/**
-	 * @override
-	 */
-	getButtons() {
-		const buttons = super.getButtons();
+  createDutyMissions() {
+    this.setState({ showForm: true, formType: 'MissionsCreationForm' });
+  }
 
-		buttons.push(
-			<Button key={buttons.length + 1}
-				bsSize="small"
-				onClick={this.createDutyMissions.bind(this)}
-				disabled={!this.hasCheckedElements()}>
-				Сформировать наряд-задание
-			</Button>
-		);
+  /**
+   * @override
+   */
+  createElement() {
+    this.setState({
+      showForm: true,
+      selectedElement: null,
+      formType: 'ViewForm',
+    });
+  }
 
-		return buttons;
-	}
+  getForms() {
+    return [
+      <DutyMissionTemplateFormWrap
+        key={'form'}
+        onFormHide={this.onFormHide.bind(this)}
+        showForm={this.state.showForm}
+        element={this.state.selectedElement}
+        formType={this.state.formType}
+        missions={this.state.checkedElements}
+      />,
+    ];
+  }
+
+  /**
+   * @override
+   */
+  getButtons() {
+    const buttons = super.getButtons();
+
+    buttons.push(
+      <Button
+        key={buttons.length + 1}
+        bsSize="small"
+        onClick={this.createDutyMissions.bind(this)}
+        disabled={!this.hasCheckedElements()}
+      >
+        Сформировать наряд-задание
+      </Button>
+    );
+
+    return buttons;
+  }
 }

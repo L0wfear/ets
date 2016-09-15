@@ -14,16 +14,10 @@ export default class ApiServiceFactory {
     this._apiUrl = url;
   }
 
-  createApiServiceAdapter = (path, options) => {
-    return new APIService(
+  createApiServiceAdapter = (path, options) =>
+    new APIService(
       urljoin(this._apiUrl, path),
       options
     );
-  }
-
-  // not implemented yet
-  createRestApiServiceAdapter(path, options) {
-    return new RESTApiService(path, options);
-  }
 
 }

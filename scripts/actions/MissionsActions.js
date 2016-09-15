@@ -25,7 +25,7 @@ export default class MissionsActions extends Actions {
     const payload = {};
 
     if (!isEmpty(technical_operation_id)) {
-        payload.technical_operation_id = technical_operation_id;
+      payload.technical_operation_id = technical_operation_id;
     }
 
     return MissionService.get(payload);
@@ -34,7 +34,7 @@ export default class MissionsActions extends Actions {
   getMissionsByCarAndTimestamp(car_id, timestamp) {
     const payload = {
       car_id,
-      point_timestamp: timestamp
+      point_timestamp: timestamp,
     };
 
     return MissionService.get(payload);
@@ -62,9 +62,9 @@ export default class MissionsActions extends Actions {
 
     // возвращает статусы задания, которые мы будем искать, в зависимости от статуса ПЛ
     // если у ПЛ нет статуса, то нужны исключительно неназначенные задания!
-    let getMissionFilterStatus = (waybillStatus) => !!waybillStatus ? undefined : 'not_assigned';
+    const getMissionFilterStatus = waybillStatus => !!waybillStatus ? undefined : 'not_assigned';
 
-    let status = getMissionFilterStatus(waybillStatus);
+    const status = getMissionFilterStatus(waybillStatus);
 
     if (!isEmpty(car_id)) {
       payload.car_id = car_id;
@@ -134,7 +134,7 @@ export default class MissionsActions extends Actions {
 
   getMissionData(mission_id) {
     const payload = {
-      mission_id
+      mission_id,
     };
 
     return MissionDataService.get(payload);
@@ -142,8 +142,6 @@ export default class MissionsActions extends Actions {
 
 
   /* ---------- MISSION TEMPLATES ---------- */
-
-
 
 
   getMissionTemplates(payload = {}) {
@@ -164,7 +162,7 @@ export default class MissionsActions extends Actions {
     const missionsCreationTemplateCopy = _.clone(missionsCreationTemplate);
     const date_start = createValidDateTime(missionsCreationTemplateCopy.date_start);
     const date_end = createValidDateTime(missionsCreationTemplateCopy.date_end);
-    const queries = _.keys(missionTemplates).map((key) => missionTemplates[key]).map((query) => {
+    const queries = _.keys(missionTemplates).map(key => missionTemplates[key]).map((query) => {
       const payload = _.clone(query);
       payload.date_start = date_start;
       payload.date_end = date_end;
@@ -197,11 +195,7 @@ export default class MissionsActions extends Actions {
   }
 
 
-
-
   /* ---------- MISSION DUTY ---------- */
-
-
 
 
   getDutyMissions() {
@@ -220,7 +214,7 @@ export default class MissionsActions extends Actions {
     payload.plan_date_end = createValidDateTime(payload.plan_date_end);
     payload.fact_date_start = createValidDateTime(payload.fact_date_start);
     payload.fact_date_end = createValidDateTime(payload.fact_date_end);
-    payload.brigade_employee_id_list = payload.brigade_employee_id_list.map(b => b.id|| b.employee_id);
+    payload.brigade_employee_id_list = payload.brigade_employee_id_list.map(b => b.id || b.employee_id);
     return DutyMissionService.post(payload, false, 'json');
   }
 
@@ -253,65 +247,57 @@ export default class MissionsActions extends Actions {
   /* ---------- MISSION DUTY TEMPLATES ---------- */
 
 
+  getDutyMissionTemplates() {
+    return DutyMissionTemplateService.get({});
+  }
 
+  createDutyMissionTemplate(mission) {
+    const payload = _.cloneDeep(mission);
+    return DutyMissionTemplateService.post(payload, null, 'json');
+  }
 
+  updateDutyMissionTemplate(mission) {
+    const payload = _.cloneDeep(mission);
+    delete payload.number;
+    delete payload.technical_operation_name;
+    delete payload.route_name;
+    return DutyMissionTemplateService.put(payload, null, 'json');
+  }
 
-   getDutyMissionTemplates() {
-     return DutyMissionTemplateService.get({});
-   }
+  removeDutyMissionTemplate(id) {
+    const payload = { id };
+    return DutyMissionTemplateService.delete(payload, null, 'json');
+  }
 
-   createDutyMissionTemplate(mission) {
-     const payload = _.cloneDeep(mission);
-     return DutyMissionTemplateService.post(payload, null, 'json');
-   }
+  createDutyMissions(dutyMissionTemplates, dutyMissionsCreationTemplate) {
+    const dutyMissionsCreationTemplateCopy = _.clone(dutyMissionsCreationTemplate);
+    const date_start = createValidDateTime(dutyMissionsCreationTemplateCopy.date_start);
+    const date_end = createValidDateTime(dutyMissionsCreationTemplateCopy.date_end);
+    const queries = Object.keys(dutyMissionTemplates).map(key => dutyMissionTemplates[key]).map((query) => {
+      const payload = _.cloneDeep(query);
+      payload.status = 'not_assigned';
+      payload.plan_date_start = date_start;
+      payload.plan_date_end = date_end;
+      payload.fact_date_start = date_start;
+      payload.fact_date_end = date_end;
+      payload.mission_source_id = dutyMissionsCreationTemplateCopy.mission_source_id;
+      payload.brigade_employee_id_list = [];
+      if (!isEmpty(dutyMissionsCreationTemplateCopy.faxogramm_id)) {
+        payload.faxogramm_id = dutyMissionsCreationTemplateCopy.faxogramm_id;
+      }
+      delete payload.company_id;
+      delete payload.id;
+      delete payload.number;
+      delete payload.technical_operation_name;
+      delete payload.route_name;
 
-   updateDutyMissionTemplate(mission) {
-     const payload = _.cloneDeep(mission);
-     delete payload.number;
-     delete payload.technical_operation_name;
-     delete payload.route_name;
-     return DutyMissionTemplateService.put(payload, null, 'json');
-   }
-
-   removeDutyMissionTemplate(id) {
-     const payload = { id };
-     return DutyMissionTemplateService.delete(payload, null, 'json');
-   }
-
-   createDutyMissions(dutyMissionTemplates, dutyMissionsCreationTemplate) {
-     const dutyMissionsCreationTemplateCopy = _.clone(dutyMissionsCreationTemplate);
-     const date_start = createValidDateTime(dutyMissionsCreationTemplateCopy.date_start);
-     const date_end = createValidDateTime(dutyMissionsCreationTemplateCopy.date_end);
-     const queries = Object.keys(dutyMissionTemplates).map((key) => dutyMissionTemplates[key]).map((query) => {
-       const payload = _.cloneDeep(query);
-       payload.status = 'not_assigned';
-       payload.plan_date_start = date_start;
-       payload.plan_date_end = date_end;
-       payload.fact_date_start = date_start;
-       payload.fact_date_end = date_end;
-       payload.mission_source_id = dutyMissionsCreationTemplateCopy.mission_source_id;
-       payload.brigade_employee_id_list = [];
-       if (!isEmpty(dutyMissionsCreationTemplateCopy.faxogramm_id)) {
-         payload.faxogramm_id = dutyMissionsCreationTemplateCopy.faxogramm_id;
-       }
-       delete payload.company_id;
-       delete payload.id;
-       delete payload.number;
-       delete payload.technical_operation_name;
-       delete payload.route_name;
-
-       return DutyMissionService.post(payload, false, 'json');
-     });
-     return Promise.all(queries);
-   }
-
-
-
+      return DutyMissionService.post(payload, false, 'json');
+    });
+    return Promise.all(queries);
+  }
 
 
   /* ---------- MISSION REPORTS ---------- */
-
-
 
 
   getMissionReports() {
@@ -344,7 +330,7 @@ export default class MissionsActions extends Actions {
 
   getMissionLastReport(mission_id) {
     const payload = {
-      mission_id
+      mission_id,
     };
     return MissionLastReportService.get(payload);
   }

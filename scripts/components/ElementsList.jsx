@@ -1,8 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { PropTypes } from 'react';
+import find from 'lodash/find';
+import { autobind } from 'core-decorators';
 import { FluxContext } from 'utils/decorators';
 import { Button, Glyphicon } from 'react-bootstrap';
 import { ButtonCreate, ButtonRead, ButtonDelete } from './ui/buttons/CRUD.jsx';
+console.log(autobind);
 
 /**
  * Базовый класс для отображения таблиц и привязанных к ним форм (модальных окон)
@@ -11,6 +13,12 @@ import { ButtonCreate, ButtonRead, ButtonDelete } from './ui/buttons/CRUD.jsx';
  */
 @FluxContext
 class ElementsList extends React.Component {
+
+  static get propTypes() {
+    return {
+      location: PropTypes.object,
+    };
+  }
 
   /**
    * Создает компонент
@@ -31,6 +39,20 @@ class ElementsList extends React.Component {
     this.clicks = 0;
   }
 
+  componentDidMount() {
+    if (!this.keyPressDisabled) {
+      this.node.setAttribute('tabindex', 1);
+      this.node.onkeydown = this.onKeyPress.bind(this);
+    }
+
+    this.init();
+  }
+
+  componentWillReceiveProps(props) {
+    const elementsList = props[this.mainListName] || [];
+    this.setState({ elementsList });
+  }
+
   /**
    * Дополнительная инициализация после componentDidMount
    * может быть переопределена в дочерних классах
@@ -42,12 +64,13 @@ class ElementsList extends React.Component {
    * в случае вызова метода чаще, чем раз в 300мсек, открывает форму с выбранным
    * элементом
    */
-  selectElement({props}) {
-
+  @autobind
+  selectElement({ props }) {
+    console.log(this);
     const DOUBLECLICK_TIMEOUT = 300;
     function onDoubleClick() {
       return this.setState({
-        showForm: true
+        showForm: true,
       });
     }
 
@@ -55,17 +78,19 @@ class ElementsList extends React.Component {
     const id = props && props.data ? props.data[this.selectField] : null;
 
     if (props.fromKey) {
-      let selectedElement = _.find(this.state.elementsList, el => el.id ? el.id === id : el[this.selectField] === id);
+      const selectedElement = find(this.state.elementsList, el => el.id ? el.id === id : el[this.selectField] === id);
       if (selectedElement) {
         this.setState({ selectedElement });
       }
       return;
     }
 
-    this.clicks++;
+    this.clicks += 1;
 
     if (this.clicks === 1) {
-      let selectedElement = _.find(this.state.elementsList, el => el.id ? el.id === id : el[this.selectField] === id);
+      const selectedElement = find(this.state.elementsList,
+        el => el.id ? el.id === id : el[this.selectField] === id
+      );
       this.setState({ selectedElement });
       setTimeout(() => {
         // В случае если за DOUBLECLICK_TIMEOUT (мс) кликнули по одному и тому же элементу больше 1 раза
@@ -82,25 +107,28 @@ class ElementsList extends React.Component {
   /**
    * Обнуляет выбранный элемент и открывает форму для создания нового
    */
+  @autobind
   createElement() {
     this.setState({
       showForm: true,
-      selectedElement: null
+      selectedElement: null,
     });
   }
 
   /**
    * Открывает форму
    */
+  @autobind
   showForm() {
     this.setState({
-      showForm: true
+      showForm: true,
     });
   }
 
   /**
    * Закрывает форму и обнуляет выбранный элемент
    */
+  @autobind
   onFormHide() {
     this.setState({
       showForm: false,
@@ -113,6 +141,7 @@ class ElementsList extends React.Component {
    * метод не будет исполняться в случае отсутствия выбранного элемента и не
    * определенной в классе-наследнике функции this.removeElementAction
    */
+  @autobind
   removeElement() {
     if (typeof this.removeElementAction !== 'function' || this.state.selectedElement === null) {
       return;
@@ -120,30 +149,15 @@ class ElementsList extends React.Component {
 
     confirmDialog({
       title: 'Внимание',
-      body: 'Вы уверены, что хотите удалить выбранный элемент?'
+      body: 'Вы уверены, что хотите удалить выбранный элемент?',
     })
     .then(() => this.removeElementAction(this.state.selectedElement[this.selectField]))
     .catch(() => {});
   }
 
-  componentWillReceiveProps(props) {
-    const elementsList = props[this.mainListName] || [];
-    this.setState({elementsList});
-  }
-
-  componentDidMount() {
-    if (!this.keyPressDisabled) {
-      ReactDOM.findDOMNode(this).setAttribute('tabindex', 1);
-      ReactDOM.findDOMNode(this).onkeydown = this.onKeyPress.bind(this);
-    }
-
-    this.init();
-  }
-
   onKeyPress(e) {
     const activeTabIndex = document.activeElement.getAttribute('tabIndex');
-    const appropriateTabIndex = activeTabIndex && (activeTabIndex === 1 || activeTabIndex === 2);
-
+    const appropriateTabIndex = activeTabIndex === '1' || activeTabIndex === '2';
     if (!appropriateTabIndex) {
       return;
     }
@@ -183,30 +197,42 @@ class ElementsList extends React.Component {
     const buttons = [];
     if (operations.indexOf('CREATE') > -1) {
       buttons.push(
-        <ButtonCreate key={buttons.length}
-          onClick={this.createElement.bind(this)}
-          permissions={[`${entity}.create`]}/>
+        <ButtonCreate
+          key={buttons.length}
+          onClick={this.createElement}
+          permissions={[`${entity}.create`]}
+        />
       );
     }
     if (operations.indexOf('READ') > -1) {
       buttons.push(
-        <ButtonRead key={buttons.length}
-          onClick={this.showForm.bind(this)}
+        <ButtonRead
+          key={buttons.length}
+          onClick={this.showForm}
           disabled={this.checkDisabledRead()}
-          permissions={[`${entity}.read`]}/>
+          permissions={[`${entity}.read`]}
+        />
       );
     }
     if (operations.indexOf('DELETE') > -1) {
       buttons.push(
-        <ButtonDelete key={buttons.length}
-          onClick={this.removeElement.bind(this)}
+        <ButtonDelete
+          key={buttons.length}
+          onClick={this.removeElement}
           disabled={this.checkDisabledDelete()}
-          permissions={[`${entity}.delete`]}/>
+          permissions={[`${entity}.delete`]}
+        />
       );
     }
     if (this.exportable) {
       buttons.push(
-        <Button key={buttons.length} bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt" /></Button>
+        <Button
+          key={buttons.length}
+          bsSize="small"
+          onClick={() => this.export()}
+        >
+          <Glyphicon glyph="download-alt" />
+        </Button>
       );
     }
     return buttons;
@@ -218,9 +244,9 @@ class ElementsList extends React.Component {
    */
   getSelectedProps() {
     return {
-      onRowSelected: this.selectElement.bind(this),
+      onRowSelected: this.selectElement,
       selected: this.state.selectedElement,
-      selectField: this.selectField
+      selectField: this.selectField,
     };
   }
 
@@ -231,12 +257,12 @@ class ElementsList extends React.Component {
   getBasicProps() {
     const listName = this.constructor.listName;
     let basicProps = {
-      data: this.props[listName]
+      data: this.props[listName],
     };
     if (this.props.location && this.props.location.query) {
       basicProps = {
         ...basicProps,
-        filterValues: this.props.location.query
+        filterValues: this.props.location.query,
       };
     }
     return basicProps;
@@ -271,7 +297,7 @@ class ElementsList extends React.Component {
     const TableComponent = this.constructor.tableComponent;
 
     if (!TableComponent) {
-      return <div/>;
+      return <div />;
     }
 
     return (
@@ -296,9 +322,10 @@ class ElementsList extends React.Component {
 
     forms.push(<FormComponent
       key={forms.length}
-      onFormHide={this.onFormHide.bind(this)}
+      onFormHide={this.onFormHide}
       showForm={this.state.showForm}
-      element={this.state.selectedElement}/>)
+      element={this.state.selectedElement}
+    />);
 
     return forms;
   }
@@ -310,13 +337,13 @@ class ElementsList extends React.Component {
     const table = this.getTable();
     const forms = this.getForms();
 
-		return (
-			<div className="ets-page-wrap">
+    return (
+      <div className="ets-page-wrap" ref={node => (this.node = node)}>
         {table}
         {forms}
-			</div>
-		);
-	}
+      </div>
+    );
+  }
 
 }
 

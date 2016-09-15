@@ -4,7 +4,7 @@ import { createValidDateTime } from 'utils/dates';
 import {
   RouteService,
   RouteReportsService,
-  RouteValidateService
+  RouteValidateService,
 } from 'api/Services';
 
 export default class RoutesActions extends Actions {
@@ -28,7 +28,7 @@ export default class RoutesActions extends Actions {
       delete payload.technical_operation_id;
     }
 
-    let response = await RouteService.get(payload);
+    const response = await RouteService.get(payload);
     return response.result || [];
   }
 
@@ -39,14 +39,14 @@ export default class RoutesActions extends Actions {
       delete payload.duty_mission_id;
     }
 
-    let response = await RouteService.get(payload);
+    const response = await RouteService.get(payload);
     return response.result || [];
   }
 
   async getRoutesByMissionId(mission_id) {
     const payload = { mission_id };
 
-    let response = await RouteService.get(payload);
+    const response = await RouteService.get(payload);
     return response.result || [];
   }
 
@@ -70,13 +70,13 @@ export default class RoutesActions extends Actions {
     if (route) {
       /* TODO нужно чтобы с бека присылались типы объектов
        * чтобы избавиться от этого map */
-      route.object_list.map(el => {
-				if (!el.shape && el.coordinates) {
-					el.shape = {
-						type: "Point",
-						coordinates: el.coordinates
-					};
-				}
+      route.object_list.map((el) => {
+        if (!el.shape && el.coordinates) {
+          el.shape = {
+            type: 'Point',
+            coordinates: el.coordinates,
+          };
+        }
         return el;
       });
     }
@@ -92,7 +92,7 @@ export default class RoutesActions extends Actions {
     delete payload.copy;
     const createdRoute = await RouteService.post(payload, false, 'json');
     const routes = await RouteService.get();
-    return {createdRoute, routes};
+    return { createdRoute, routes };
   }
 
   removeRoute(route) {
@@ -125,11 +125,11 @@ export default class RoutesActions extends Actions {
   validateRoute(route) {
     // TODO разобраться почему операция константная
     const route_vector = {
-      technical_operation_id: 55,//route.technical_operation_id,
+      technical_operation_id: 55, // route.technical_operation_id,
       object_list: route.object_list,
     };
     const payload = {
-      technical_operation_id: 55,//route.technical_operation_id,
+      technical_operation_id: 55, // route.technical_operation_id,
       object_list: route.object_list,
     };
     return RouteValidateService.post(payload, false, 'json');

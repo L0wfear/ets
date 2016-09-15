@@ -7,9 +7,9 @@ import exportable from './exportable.js';
  * @param {Component} target - декорируемый класс
  */
 function FluxContext(target) {
-	target.contextTypes = Object.assign({}, target.contextTypes, {
-		flux: PropTypes.object,
-	});
+  target.contextTypes = Object.assign({}, target.contextTypes, {
+    flux: PropTypes.object,
+  });
 }
 
 /**
@@ -17,9 +17,9 @@ function FluxContext(target) {
  * @param {Component} target - декорируемый класс
  */
 function HistoryContext(target) {
-	target.contextTypes = Object.assign({}, target.contextTypes, {
-		history: PropTypes.object,
-	});
+  target.contextTypes = Object.assign({}, target.contextTypes, {
+    history: PropTypes.object,
+  });
 }
 
 /**
@@ -27,9 +27,9 @@ function HistoryContext(target) {
  * @param {object} options - свойства (поля переданного объекта)
  */
 function staticProps(options) {
-	return function (target) {
-		target = Object.assign(target, options);
-	}
+  return function decorate(target) {
+    target = Object.assign(target, options);
+  };
 }
 
 /**
@@ -40,15 +40,15 @@ function staticProps(options) {
  * class SomeClass extends React.component {}
  */
 function connectToStores(...args) {
-  return function (target) {
+  return function decorate(target) {
     return flummoxConnectToStores(target, ...args);
-  }
+  };
 }
 
 export default {
-	exportable,
-	connectToStores,
-	FluxContext,
-	HistoryContext,
-	staticProps
-}
+  exportable,
+  connectToStores,
+  FluxContext,
+  HistoryContext,
+  staticProps,
+};

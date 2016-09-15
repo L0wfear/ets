@@ -12,3 +12,7 @@ export function createFio(data, full = false) {
   }
   return result;
 }
+
+export default {
+  createFio,
+};

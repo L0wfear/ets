@@ -35,34 +35,34 @@ class App extends Component {
   static get childContextTypes() {
     return {
       flux: React.PropTypes.object,
-      loadData: React.PropTypes.func
-    }
+      loadData: React.PropTypes.func,
+    };
   }
 
   getChildContext() {
     return {
       flux,
-      loadData: this.loadData.bind(this)
-    }
+      loadData: this.loadData.bind(this),
+    };
   }
 
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
-      loading: true
+      loading: true,
     };
   }
 
   loadData() {
-    this.setState({loading: true});
+    this.setState({ loading: true });
     if (!flux.getStore('session').isLoggedIn()) {
-      return this.setState({loading: false});
+      return this.setState({ loading: false });
     }
     return AuthCheckService.get()
           // .then(() => fetchEvergisToken())
           .then(() => {
-            this.setState({loading: false});
+            this.setState({ loading: false });
           })
           .catch((error) => {
             console.log(error);
@@ -72,7 +72,7 @@ class App extends Component {
             }
             global.NOTIFICATION_SYSTEM._addNotification(getErrorNotification(error));
             console.error(error);
-          })
+          });
   }
 
   componentDidMount() {
@@ -80,7 +80,7 @@ class App extends Component {
   }
 
   render() {
-    return !this.state.loading ? <MainPage location={this.props.location}>{this.props.children}</MainPage> : <LoadingPage loaded={this.state.loading}/>;
+    return !this.state.loading ? <MainPage location={this.props.location}>{this.props.children}</MainPage> : <LoadingPage loaded={this.state.loading} />;
   }
 }
 
@@ -103,68 +103,68 @@ function checkLoggedIn(nextState, replaceState) {
   }
 }
 
-const history = createHashHistory({queryKey: false});
+const history = createHashHistory({ queryKey: false });
 
 const routes = (
   <Router history={history}>
     <Redirect from="/" to="monitor" />
     <Route path="/" component={App}>
-      <Route path="monitor" component={MonitorPage} onEnter={requireAuth}/>
+      <Route path="monitor" component={MonitorPage} onEnter={requireAuth} />
       {/* Отчет префекта */}
-      <Route path="odh_coverage_report" component={reports.odhCoverageReport} onEnter={requireAuth}/>
-      <Route path="dashboard" component={DashboardPage} onEnter={requireAuth}/>
-      <Route path="waybill-journal" component={WaybillJournal} onEnter={requireAuth}/>
-      <Route path="company-structure" component={CompanyStructure} onEnter={requireAuth}/>
-      <Route path="routes-list" component={RoutesList} onEnter={requireAuth}/>
+      <Route path="odh_coverage_report" component={reports.odhCoverageReport} onEnter={requireAuth} />
+      <Route path="dashboard" component={DashboardPage} onEnter={requireAuth} />
+      <Route path="waybill-journal" component={WaybillJournal} onEnter={requireAuth} />
+      <Route path="company-structure" component={CompanyStructure} onEnter={requireAuth} />
+      <Route path="routes-list" component={RoutesList} onEnter={requireAuth} />
       {/* Задания */}
-      <Route path="mission-journal" component={missions.missions} onEnter={requireAuth}/>
-      <Route path="mission-templates-journal" component={missions.missionTemplates} onEnter={requireAuth}/>
-      <Route path="duty-missions-journal" component={missions.dutyMissions} onEnter={requireAuth}/>
-      <Route path="duty-mission-templates-journal" component={missions.dutyMissionTemplates} onEnter={requireAuth}/>
+      <Route path="mission-journal" component={missions.missions} onEnter={requireAuth} />
+      <Route path="mission-templates-journal" component={missions.missionTemplates} onEnter={requireAuth} />
+      <Route path="duty-missions-journal" component={missions.dutyMissions} onEnter={requireAuth} />
+      <Route path="duty-mission-templates-journal" component={missions.dutyMissionTemplates} onEnter={requireAuth} />
       {/* Отчеты */}
-      <Route path="odh-reports" component={reports.odh} onEnter={requireAuth}/>
-      <Route path="route-reports" component={reports.route.all} onEnter={requireAuth}/>
-      <Route path="route-report/:id" component={reports.route.single} onEnter={requireAuth}/>
-      <Route path="coverage-report" component={reports.coverage} onEnter={requireAuth}/>
-      <Route path="fuel-consumption-report" component={reports.fuelConsumption} onEnter={requireAuth}/>
-      <Route path="analytics" component={reports.analytics} onEnter={requireAuth}/>
-      <Route path="car_func_type_usage_reports" component={reports.carFuncTypeUsage.all} onEnter={requireAuth}/>
-      <Route path="daily-cleaning-reports-ets" component={reports.daily.cleaning.ets.all} onEnter={requireAuth}/>
-      <Route path="daily-cleaning-report-ets/:element/:id" component={reports.daily.cleaning.ets.single} onEnter={requireAuth}/>
-      <Route path="daily-cleaning-reports-cafap" component={reports.daily.cleaning.cafap.all} onEnter={requireAuth}/>
-      <Route path="daily-cleaning-report-cafap/:element/:id" component={reports.daily.cleaning.cafap.single} onEnter={requireAuth}/>
-      <Route path="weekly-technical-operation-complete-reports" component={reports.weekly.technicalOperationComplete.all} onEnter={requireAuth}/>
-      <Route path="weekly-technical-operation-complete-report/:element/:id" component={reports.weekly.technicalOperationComplete.single} onEnter={requireAuth}/>
+      <Route path="odh-reports" component={reports.odh} onEnter={requireAuth} />
+      <Route path="route-reports" component={reports.route.all} onEnter={requireAuth} />
+      <Route path="route-report/:id" component={reports.route.single} onEnter={requireAuth} />
+      <Route path="coverage-report" component={reports.coverage} onEnter={requireAuth} />
+      <Route path="fuel-consumption-report" component={reports.fuelConsumption} onEnter={requireAuth} />
+      <Route path="analytics" component={reports.analytics} onEnter={requireAuth} />
+      <Route path="car_func_type_usage_reports" component={reports.carFuncTypeUsage.all} onEnter={requireAuth} />
+      <Route path="daily-cleaning-reports-ets" component={reports.daily.cleaning.ets.all} onEnter={requireAuth} />
+      <Route path="daily-cleaning-report-ets/:element/:id" component={reports.daily.cleaning.ets.single} onEnter={requireAuth} />
+      <Route path="daily-cleaning-reports-cafap" component={reports.daily.cleaning.cafap.all} onEnter={requireAuth} />
+      <Route path="daily-cleaning-report-cafap/:element/:id" component={reports.daily.cleaning.cafap.single} onEnter={requireAuth} />
+      <Route path="weekly-technical-operation-complete-reports" component={reports.weekly.technicalOperationComplete.all} onEnter={requireAuth} />
+      <Route path="weekly-technical-operation-complete-report/:element/:id" component={reports.weekly.technicalOperationComplete.single} onEnter={requireAuth} />
       {/* Отчеты - Задания */}
-      <Route path="mission-reports" component={reports.mission.all} onEnter={requireAuth}/>
-      <Route path="mission-report/:id" component={reports.mission.single} onEnter={requireAuth}/>
-      <Route path="mission-report/:id/odhs/:index" component={reports.mission.singleByODH} onEnter={requireAuth}/>
-      <Route path="mission-report/:id/dts/:index" component={reports.mission.singleByDT} onEnter={requireAuth}/>
-      <Route path="mission-report/:id/points/:index" component={reports.mission.singleByPoints} onEnter={requireAuth}/>
+      <Route path="mission-reports" component={reports.mission.all} onEnter={requireAuth} />
+      <Route path="mission-report/:id" component={reports.mission.single} onEnter={requireAuth} />
+      <Route path="mission-report/:id/odhs/:index" component={reports.mission.singleByODH} onEnter={requireAuth} />
+      <Route path="mission-report/:id/dts/:index" component={reports.mission.singleByDT} onEnter={requireAuth} />
+      <Route path="mission-report/:id/points/:index" component={reports.mission.singleByPoints} onEnter={requireAuth} />
       {/* НСИ - Реестры и справочники */}
-      <Route path="employees" component={directories.employees} onEnter={requireAuth}/>
-      <Route path="faxogramms" component={directories.faxogramm} onEnter={requireAuth}/>
-      <Route path="fuel-rates" component={directories.fuelRates} onEnter={requireAuth}/>
-      <Route path="fuel-operations" component={directories.fuelOperations} onEnter={requireAuth}/>
-      <Route path="organizations" component={directories.organizations} onEnter={requireAuth}/>
-      <Route path="technical-operations" component={directories.technicalOperations} onEnter={requireAuth}/>
-      <Route path="car-func-types" component={directories.carTypes} onEnter={requireAuth}/>
-      <Route path="cars" component={directories.cars} onEnter={requireAuth}/>
-      <Route path="odh-norm" component={directories.odhNorm} onEnter={requireAuth}/>
-      <Route path="odh-norm-data-summer" component={directories.odhNormDataSummer} onEnter={requireAuth}/>
-      <Route path="efficiency" component={directories.efficiency} onEnter={requireAuth}/>
+      <Route path="employees" component={directories.employees} onEnter={requireAuth} />
+      <Route path="faxogramms" component={directories.faxogramm} onEnter={requireAuth} />
+      <Route path="fuel-rates" component={directories.fuelRates} onEnter={requireAuth} />
+      <Route path="fuel-operations" component={directories.fuelOperations} onEnter={requireAuth} />
+      <Route path="organizations" component={directories.organizations} onEnter={requireAuth} />
+      <Route path="technical-operations" component={directories.technicalOperations} onEnter={requireAuth} />
+      <Route path="car-func-types" component={directories.carTypes} onEnter={requireAuth} />
+      <Route path="cars" component={directories.cars} onEnter={requireAuth} />
+      <Route path="odh-norm" component={directories.odhNorm} onEnter={requireAuth} />
+      <Route path="odh-norm-data-summer" component={directories.odhNormDataSummer} onEnter={requireAuth} />
+      <Route path="efficiency" component={directories.efficiency} onEnter={requireAuth} />
       {/* НСИ - Реестры и справочники - Геоинструментарий */}
-      <Route path="odh" component={directories.geoobjects.odh} onEnter={requireAuth}/>
-      <Route path="dt" component={directories.geoobjects.dt} onEnter={requireAuth}/>
-      <Route path="ssp" component={directories.geoobjects.ssp} onEnter={requireAuth}/>
-      <Route path="msp" component={directories.geoobjects.msp} onEnter={requireAuth}/>
-      <Route path="pgm" component={directories.geoobjects.pgm} onEnter={requireAuth}/>
-      <Route path="snow-storage" component={directories.geoobjects.snowStorage} onEnter={requireAuth}/>
-      <Route path="fueling-water" component={directories.geoobjects.fuelingWater} onEnter={requireAuth}/>
-      <Route path="carpool" component={directories.geoobjects.carpool} onEnter={requireAuth}/>
-      <Route path="danger-zones" component={directories.geoobjects.dangerZones} onEnter={requireAuth}/>
+      <Route path="odh" component={directories.geoobjects.odh} onEnter={requireAuth} />
+      <Route path="dt" component={directories.geoobjects.dt} onEnter={requireAuth} />
+      <Route path="ssp" component={directories.geoobjects.ssp} onEnter={requireAuth} />
+      <Route path="msp" component={directories.geoobjects.msp} onEnter={requireAuth} />
+      <Route path="pgm" component={directories.geoobjects.pgm} onEnter={requireAuth} />
+      <Route path="snow-storage" component={directories.geoobjects.snowStorage} onEnter={requireAuth} />
+      <Route path="fueling-water" component={directories.geoobjects.fuelingWater} onEnter={requireAuth} />
+      <Route path="carpool" component={directories.geoobjects.carpool} onEnter={requireAuth} />
+      <Route path="danger-zones" component={directories.geoobjects.dangerZones} onEnter={requireAuth} />
       {/* Страница логина */}
-      <Route path="login" component={LoginPage} onEnter={checkLoggedIn}/>
+      <Route path="login" component={LoginPage} onEnter={checkLoggedIn} />
     </Route>
   </Router>
 );

@@ -47,7 +47,7 @@ module.exports = {
   },
   progress: true,
   resolve: {
-    root: __dirname,
+    root: path.resolve(__dirname, '..', 'scripts'),
     alias,
     modulesDirectories: [
       'scripts',

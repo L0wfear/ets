@@ -10,8 +10,8 @@ export default class PointsActions extends Actions {
     return data;
   }
 
-  setTracking(value){
-    return value
+  setTracking(value) {
+    return value;
   }
 
   selectPoint(point) {

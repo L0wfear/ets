@@ -1,23 +1,13 @@
 import { Actions } from 'flummox';
-import { createValidDate } from 'utils/dates';
-import _ from 'lodash';
-import { isEmpty } from 'utils/functions';
 import { GEOOBJECTS_TYPES } from 'constants/geoobjects';
 import {
-  FuelingWaterService,
-  CarPoolService,
-  DangerZoneService,
   ODHService,
   DTService,
   GeozoneService,
-  GeozonesService
+  GeozonesService,
 } from 'api/Services';
 
 export default class GeoObjectsActions extends Actions {
-
-  constructor(props) {
-    super();
-  }
 
   getODHs() {
     return ODHService.get();
@@ -52,12 +42,12 @@ export default class GeoObjectsActions extends Actions {
 
   async getGeozoneByTypeWithGeometry(type) {
     const payload = {
-      shape: 1
+      shape: 1,
     };
     const response = await GeozonesService.path(type).get(payload);
     return {
       type: GEOOBJECTS_TYPES[type],
-      data: response
+      data: response,
     };
   }
 
@@ -66,7 +56,7 @@ export default class GeoObjectsActions extends Actions {
     const response = await GeozonesService.path(type).get(payload);
     return {
       type: GEOOBJECTS_TYPES[type],
-      data: response
+      data: response,
     };
   }
 

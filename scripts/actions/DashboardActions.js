@@ -1,8 +1,7 @@
 import { Actions } from 'flummox';
-import _ from 'lodash';
 import moment from 'moment';
 import {
-  DashboardService
+  DashboardService,
 } from 'api/Services';
 
 export default class DashboardActions extends Actions {
@@ -12,20 +11,20 @@ export default class DashboardActions extends Actions {
     if (key === 'faxogramms') {
       payload = Object.assign(payload, {
         status: 2,
-        date: moment().format('YYYY-MM-DDTHH:mm:ss')
+        date: moment().format('YYYY-MM-DDTHH:mm:ss'),
       });
     }
     if (key.indexOf('waybill_') > -1) {
-      let path = key.replace(/_/, "/");
+      const path = key.replace(/_/, '/');
       return DashboardService
         .path(path)
         .get(payload)
-        .then(component => ({component, key}));
+        .then(component => ({ component, key }));
     }
     return DashboardService
       .path(key)
       .get(payload)
-      .then(component => ({component, key}));
+      .then(component => ({ component, key }));
   }
 
 }

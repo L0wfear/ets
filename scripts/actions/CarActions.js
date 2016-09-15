@@ -7,14 +7,14 @@ import {
   CarService,
   CarImageService,
   VectorObjectService,
-  TrackService
+  TrackService,
 } from 'api/Services';
 
 export default class CarActions extends Actions {
 
   updateCarAdditionalInfo(car) {
     const payload = {
-      car_id: car.asuods_id
+      car_id: car.asuods_id,
     };
 
     if (car.garage_number) {
@@ -32,7 +32,7 @@ export default class CarActions extends Actions {
 
   getVectorObject(selectedPoint, prevPoint, nextPoint) {
     const payload = {
-      coordinates: [prevPoint.coords_msk, selectedPoint.coords_msk, nextPoint.coords_msk]
+      coordinates: [prevPoint.coords_msk, selectedPoint.coords_msk, nextPoint.coords_msk],
     };
     return VectorObjectService.get(payload);
   }
@@ -44,7 +44,7 @@ export default class CarActions extends Actions {
     } else {
       delete payload.technical_operation_id;
     }
-    let response = await CarService.get(payload);
+    const response = await CarService.get(payload);
     return response.result || [];
   }
 
@@ -52,7 +52,7 @@ export default class CarActions extends Actions {
     const payload = {
       from_dt: makeUnixTime(from_dt),
       to_dt: makeUnixTime(to_dt),
-      version: 2
+      version: 2,
     };
 
     console.log('track loading for', id);
@@ -62,31 +62,17 @@ export default class CarActions extends Actions {
       .get(payload)
       .then(points => points.map((point) => {
           // wrap coords for OpenLayers
-          point.coords = swapCoords(point.coords);
-          point.coords_msk = swapCoords(point.coords_msk);
-          return point;
-        })
-      );
-
-    // console.log('track loading for', car_id);
-    // return fetch(TRACK_URL + car_id + query, {
-    //   credentials: 'include',
-    // }).then(r => r.json())
-    //   .then(points => points.map((point) => {
-    //       // wrap coords for OpenLayers
-    //       point.coords = swapCoords(point.coords);
-    //       point.coords_msk = swapCoords(point.coords_msk);
-    //       return point;
-    //     })
-    //   );
-
+        point.coords = swapCoords(point.coords);
+        point.coords_msk = swapCoords(point.coords_msk);
+        return point;
+      }));
   }
 
   getCarImage(car_id, type_id, model_id) {
     const payload = {
       car_id,
       type_id,
-      model_id
+      model_id,
     };
 
     return CarImageService.get(payload);

@@ -11,8 +11,8 @@ export default class DangerZoneMock extends Mock {
         address: 'Адрес д. 1',
         roadway_area: 12,
         sidewalk_area: 12,
-        sidelines_area: 12
-      }
+        sidelines_area: 12,
+      },
     ];
   }
 

@@ -1,13 +1,12 @@
-import APIService from './APIService.js';
 import ApiServiceFactory from './ApiServiceFactory.js';
 import config from '../config.js';
 
 const CITY_DASHBOARD_API_FACTORY = new ApiServiceFactory({
-  apiUrl: 'http://ods.mos.ru/ssd/city-dashboard'
+  apiUrl: 'http://ods.mos.ru/ssd/city-dashboard',
 });
 
 const ETS_API_FACTORY = new ApiServiceFactory({
-  apiUrl: config.backend
+  apiUrl: config.backend,
 });
 
 export const RootService = ETS_API_FACTORY.createApiServiceAdapter('', {});
@@ -27,7 +26,7 @@ export const TrackService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('
 /* Рабочий стол */
 export const DashboardService = ETS_API_FACTORY.createApiServiceAdapter('dashboard');
 
-export const RouteService   = ETS_API_FACTORY.createApiServiceAdapter('route', {});
+export const RouteService = ETS_API_FACTORY.createApiServiceAdapter('route', {});
 export const RouteValidateService = ETS_API_FACTORY.createApiServiceAdapter('route_validate', {});
 export const OwnersService = ETS_API_FACTORY.createApiServiceAdapter('owners');
 export const GeozoneService = ETS_API_FACTORY.createApiServiceAdapter('geozone', {});
@@ -62,10 +61,9 @@ export const PositionService = ETS_API_FACTORY.createApiServiceAdapter('position
 export const VectorObjectService = ETS_API_FACTORY.createApiServiceAdapter('vector_object', {});
 export const MissionDataService = ETS_API_FACTORY.createApiServiceAdapter('mission_data', {});
 export const OrganizationsService = ETS_API_FACTORY.createApiServiceAdapter('organizations', { useMock: true });
-export const ODHNormService = ETS_API_FACTORY.createApiServiceAdapter('odh_norm', {useMock: true});
-export const ODHNormDataSummerService = ETS_API_FACTORY.createApiServiceAdapter('odh_norm_data_summer', {useMock: true});
-export const EfficiencyService = ETS_API_FACTORY.createApiServiceAdapter('efficiency', {useMock: true});
-
+export const ODHNormService = ETS_API_FACTORY.createApiServiceAdapter('odh_norm', { useMock: true });
+export const ODHNormDataSummerService = ETS_API_FACTORY.createApiServiceAdapter('odh_norm_data_summer', { useMock: true });
+export const EfficiencyService = ETS_API_FACTORY.createApiServiceAdapter('efficiency', { useMock: true });
 
 
 /* Geoobjects - Геообъекты */

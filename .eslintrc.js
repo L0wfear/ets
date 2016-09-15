@@ -1,6 +1,5 @@
 var path = require('path');
 var webpackAlias = require(path.resolve(__dirname, 'webpack', 'alias'));
-console.log(webpackAlias);
 
 module.exports = {
   "extends": "airbnb",
@@ -12,11 +11,19 @@ module.exports = {
     ol: true,
     window: true,
     document: true,
+    confirmDialog: true
   },
   "parser": "babel-eslint",
   "rules": {
-    "strict": 0,
-    "import/no-extraneous-dependencies": 0
+    "strict": "off",
+    "import/no-extraneous-dependencies": "off",
+    "no-tabs": "error",
+    "no-mixed-spaces-and-tabs": "off",
+    "no-confusing-arrow": "off",
+    "quote-props": "warn",
+    "no-underscore-dangle": ["error", { "allowAfterThis": true }],
+    "class-methods-use-this": "off",
+    "max-len": ["off", 120]
   },
   "settings": {
     "import-resolver": {

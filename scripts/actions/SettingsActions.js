@@ -25,4 +25,5 @@ export default class SettingsActions extends Actions {
   setShowMarkers(showMarkers) {
     return showMarkers;
   }
+
 }

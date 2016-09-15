@@ -14,8 +14,8 @@ export default class OrganizationsMock extends Mock {
         postal_address: 'ул. Пушкина д. Колотушкина',
         email: 'getalife@top.com',
         phone: '8 (800) 555-35-35',
-        fax: '12345'
-      }
+        fax: '12345',
+      },
     ];
   }
 

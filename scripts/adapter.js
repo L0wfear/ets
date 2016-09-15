@@ -8,30 +8,30 @@ export function toFormData(data) {
     formData.append(k, v);
   });
   return formData;
-};
+}
 
 export function toUrlWithParams(url, data) {
-  let params = _.map(data, (v, k) => `${k}=${encodeURIComponent(v)}`).join('&');
+  const params = _.map(data, (v, k) => `${k}=${encodeURIComponent(v)}`).join('&');
   if (params && params.length) {
     return `${url}?${params}`;
   }
   return `${url}`;
-};
+}
 
 function HTTPMethod(url, data = {}, method, type) {
   let body;
   data = _.clone(data);
   const token = JSON.parse(window.localStorage.getItem('ets-session'));
-  let authorizationHeader = {};
+  const authorizationHeader = {};
   if (token && url.indexOf('plate_mission') === -1) {
-    authorizationHeader['Authorization'] = `Token ${token}`;
+    authorizationHeader.Authorization = `Token ${token}`;
   }
 
-  let options = {
-    method: method,
+  const options = {
+    method,
     headers: {
       'Accept': 'application/json',
-      ...authorizationHeader
+      ...authorizationHeader,
     },
     credentials: 'include',
   };
@@ -53,15 +53,15 @@ function HTTPMethod(url, data = {}, method, type) {
     url = toUrlWithParams(url, data);
   }
 
-  return fetch(url, options).then(r => {
+  return fetch(url, options).then((r) => {
     if (r.status === 401) {
       window.localStorage.clear();
       window.location.reload();
     } else {
-      return r.json().then(responseBody => {
+      return r.json().then((responseBody) => {
         checkResponse(url, r, responseBody, method);
         return new Promise((res, rej) => res(responseBody));
-      })
+      });
     }
   });
 }
@@ -89,8 +89,8 @@ function HTTPMethodBlob(url, data, method) {
     method,
     headers: {
       'Authorization': `Token ${token}`,
-      'Access-Control-Expose-Headers': 'Content-Disposition'
-    }
+      'Access-Control-Expose-Headers': 'Content-Disposition',
+    },
   };
 
   if (method === 'post') {
@@ -100,12 +100,12 @@ function HTTPMethodBlob(url, data, method) {
   }
 
   return fetch(url, options)
-    .then(async (r) => {
+    .then((async) (r) => {
       const fileName = parseFilename(r.headers.get('Content-Disposition'));
       const blob = await r.blob();
       return {
         blob,
-        fileName
+        fileName,
       };
     });
 }
@@ -121,17 +121,17 @@ export function postBlob(url, data) {
 function checkResponse(url, response, body, method) {
   if (url.indexOf('login') === -1) {
     const usedUrl = url.slice(0, url.indexOf('?') > -1 ? url.indexOf('?') : url.length);
-    let serviceName = usedUrl.split('/')[usedUrl.split('/').length-2];
+    const serviceName = usedUrl.split('/')[usedUrl.split('/').length - 2];
 
     if (response.status === 500) {
-      global.NOTIFICATION_SYSTEM._addNotification(getServerErrorNotification(`/${method} ${serviceName}, код ответа 500`))
+      global.NOTIFICATION_SYSTEM._addNotification(getServerErrorNotification(`/${method} ${serviceName}, код ответа 500`));
     } else if (body && body.errors && body.errors.length) {
-      let error = `ERROR /${method} ${usedUrl}`;
+      const error = `ERROR /${method} ${usedUrl}`;
       console.error(error);
 
-      body.errors.map( er => {
+      body.errors.map((er) => {
         console.error(er);
-        global.NOTIFICATION_SYSTEM._addNotification(getServerErrorNotification(`/${method} ${serviceName}`))
+        return global.NOTIFICATION_SYSTEM._addNotification(getServerErrorNotification(`/${method} ${serviceName}`));
       });
       throw new Error('Errors in response body');
     }

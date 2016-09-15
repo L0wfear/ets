@@ -6,10 +6,6 @@ import { isEmpty } from 'utils/functions';
 
 export default class FuelRateActions extends Actions {
 
-  constructor(props) {
-    super();
-  }
-
   getFuelRates() {
     return FuelConsumptionRateService.get();
   }
@@ -22,7 +18,7 @@ export default class FuelRateActions extends Actions {
   getEquipmentFuelRatesByCarModel(car_id) {
     const payload = {
       car_id,
-      for_equipment: 1
+      for_equipment: 1,
     };
     return FuelConsumptionRateService.get(payload);
   }
@@ -62,20 +58,19 @@ export default class FuelRateActions extends Actions {
       }
     });
 
-
     return FuelConsumptionRateService.put(payload, null, 'json');
   }
 
   deleteFuelRate(id) {
     const payload = {
-      id
+      id,
     };
     return FuelConsumptionRateService.delete(payload, null, 'json');
   }
 
   createFuelOperation(formState) {
     const payload = {};
-    if (typeof formState.name === "string" && formState.name !== '' ) {
+    if (typeof formState.name === 'string' && formState.name !== '') {
       payload.name = formState.name;
       payload.equipment = !!formState.equipment || false;
     }
@@ -85,9 +80,9 @@ export default class FuelRateActions extends Actions {
 
   updateFuelOperation(formState) {
     const payload = {
-      id: formState.id
+      id: formState.id,
     };
-    if (typeof formState.name === "string" && formState.name !== '' ) {
+    if (typeof formState.name === 'string' && formState.name !== '') {
       payload.name = formState.name;
       payload.equipment = !!formState.equipment || false;
     }
@@ -96,7 +91,7 @@ export default class FuelRateActions extends Actions {
 
   deleteFuelOperation(id) {
     const payload = {
-      id: id
+      id,
     };
     return FuelOperationsService.delete(payload);
   }

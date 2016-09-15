@@ -11,6 +11,7 @@ const ETS_API_FACTORY = new ApiServiceFactory({
 });
 
 export const RootService = ETS_API_FACTORY.createApiServiceAdapter('', {});
+export const ConfigService = ETS_API_FACTORY.createApiServiceAdapter('config', {});
 
 // TODO разбить на отдельные файлы
 

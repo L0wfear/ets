@@ -20,7 +20,7 @@ export default class ODHActions extends Actions {
   }
 
   deleteODHNorm(formState) {
-    return ODHNormService.path(formState.id).delete();
+    return ODHNormService.path(formState.id).delete({}, true, 'json');
   }
 
   getODHNormDataSummer() {

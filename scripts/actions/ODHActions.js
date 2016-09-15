@@ -19,8 +19,8 @@ export default class ODHActions extends Actions {
     return ODHNormService.post(payload, true, 'json');
   }
 
-  deleteODHNorm(formState) {
-    return ODHNormService.path(formState.id).delete();
+  deleteODHNorm(id) {
+    return ODHNormService.path(id).delete();
   }
 
   getODHNormDataSummer() {

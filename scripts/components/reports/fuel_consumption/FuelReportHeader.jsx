@@ -5,6 +5,7 @@ import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
 import Datepicker from 'components/ui/DatePicker.jsx';
 import { isEmpty } from 'utils/functions';
+import map from 'lodash/map';
 
 class FuelReportHeader extends Component {
 
@@ -14,41 +15,36 @@ class FuelReportHeader extends Component {
 
   handleFuelTypeChange(v) {
     let data = !isEmpty(v) ? v : null;
-    this.props.handleChange('fuel_type_id', data);
-  }
-
-  componentDidMount() {
-		const { flux } = this.context;
-  	flux.getActions('objects').getFuelTypes();
+    this.props.handleChange('fuel_type', data);
   }
 
   render() {
-    let { fuelTypes = [] } = this.props;
+    let { appConfig } = this.props;
     let props = this.props;
 
-    let FUEL_TYPES = fuelTypes.map(({id, name}) => ({value: id, label: name}));
+    let FUEL_TYPES = map(appConfig.enums.FUEL_TYPE, (v, k) => ({value: k, label: v}));
 
-  	return (
+    return (
       <Div>
-    		<Row>
+        <Row>
           <Col md={4}></Col>
-    			<Col md={5}>
+          <Col md={5}>
             <Div><label>Период формирования</label></Div>
-    				<Div className="inline-block reports-date">
-    					<Datepicker time={false} date={ props.date_from } onChange={props.handleChange.bind(null, 'date_from')}/>
-    				</Div>
-    				<Div className="inline-block reports-date">
-    					<Datepicker time={false} date={ props.date_to } onChange={props.handleChange.bind(null, 'date_to')}/>
-    				</Div>
-    			</Col>
+            <Div className="inline-block reports-date">
+              <Datepicker time={false} date={ props.date_from } onChange={props.handleChange.bind(null, 'date_from')}/>
+            </Div>
+            <Div className="inline-block reports-date">
+              <Datepicker time={false} date={ props.date_to } onChange={props.handleChange.bind(null, 'date_to')}/>
+            </Div>
+          </Col>
           <Col md={3} className={'fuel-types-container'}>
             <Field type="select"
                 label="Тип топлива"
                 options={FUEL_TYPES}
-                value={props.fuel_type_id}
+                value={props.fuel_type}
                 onChange={this.handleFuelTypeChange.bind(this)}/>
           </Col>
-    		</Row>
+        </Row>
 
         <Row style={{marginTop: 20}}>
           <Col md={9}></Col>
@@ -57,7 +53,7 @@ class FuelReportHeader extends Component {
           </Col>
         </Row>
       </Div>
-  	)
+    )
   }
 
 }

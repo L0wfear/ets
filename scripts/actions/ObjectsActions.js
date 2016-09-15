@@ -12,6 +12,7 @@ import {
   ModelsService,
   SpecialModelService,
   OrganizationsService,
+  ConfigService,
 } from 'api/Services';
 
 export default class ObjectsActions extends Actions {
@@ -40,10 +41,6 @@ export default class ObjectsActions extends Actions {
 
   getTypes() {
     return TypesService.get();
-  }
-
-  getFuelTypes() {
-    return FuelTypeService.get();
   }
 
   getOrganizations() {
@@ -75,6 +72,10 @@ export default class ObjectsActions extends Actions {
 
   getPositions() {
     return PositionService.get();
+  }
+
+  getConfig() {
+    return ConfigService.get();
   }
 
 }

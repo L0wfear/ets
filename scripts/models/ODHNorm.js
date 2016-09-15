@@ -13,7 +13,7 @@ export const odhNormSchema = {
 			required: false,
 		},
 		{
-			key: 'expendable',
+			key: 'consumable_material',
 			title: 'Расходный материал',
 			type: 'number',
 			required: false,

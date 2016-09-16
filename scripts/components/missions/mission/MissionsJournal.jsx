@@ -1,14 +1,14 @@
 import React from 'react';
+import { autobind } from 'core-decorators';
 import { Button, Glyphicon, ButtonToolbar } from 'react-bootstrap';
-import MissionsTable from './MissionsTable.jsx';
-import MissionFormWrap from './MissionFormWrap.jsx';
-import MissionRejectForm from './MissionRejectForm.jsx';
 import MissionInfoFormWrap from 'components/dashboard/MissionInfoFormWrap.jsx';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
-import { saveData } from 'utils/functions';
 import { getWarningNotification } from 'utils/notifications';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import _ from 'lodash';
+import MissionsTable from './MissionsTable.jsx';
+import MissionFormWrap from './MissionFormWrap.jsx';
+import MissionRejectForm from './MissionRejectForm.jsx';
 
 @connectToStores(['missions', 'objects', 'employees', 'routes'])
 @staticProps({
@@ -18,6 +18,7 @@ import _ from 'lodash';
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 @exportable
+@autobind
 export default class MissionsJournal extends CheckableElementsList {
 
   constructor(props, context) {
@@ -51,9 +52,8 @@ export default class MissionsJournal extends CheckableElementsList {
 
     if (this.state.selectedElement === null) {
       return true;
-    } else {
-      return this.state.selectedElement.status !== 'assigned';
     }
+    return this.state.selectedElement.status !== 'assigned';
   }
 
   checkDisabledDelete() {
@@ -153,14 +153,14 @@ export default class MissionsJournal extends CheckableElementsList {
     return [
       <div key={'forms'}>
         <MissionFormWrap
-          onFormHide={this.onFormHide.bind(this)}
+          onFormHide={this.onFormHide}
           showForm={this.state.showForm}
           element={this.state.selectedElement}
           {...this.props}
         />
         <MissionRejectForm
           show={this.state.showMissionRejectForm}
-          onReject={this.onReject.bind(this)}
+          onReject={this.onReject}
           mission={this.state.selectedElement}
         />
         <MissionInfoFormWrap
@@ -177,8 +177,8 @@ export default class MissionsJournal extends CheckableElementsList {
 
     buttons.push(
       <ButtonToolbar key={buttons.length}>
-        <Button bsSize="small" onClick={this.completeCheckedElements.bind(this)} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</Button>
-        <Button bsSize="small" onClick={this.rejectCheckedElements.bind(this)} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</Button>
+        <Button bsSize="small" onClick={this.completeCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</Button>
+        <Button bsSize="small" onClick={this.rejectCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</Button>
       </ButtonToolbar>
     );
 
@@ -187,7 +187,7 @@ export default class MissionsJournal extends CheckableElementsList {
 
   getAdditionalProps() {
     return {
-      mapView: this.mapView.bind(this),
+      mapView: this.mapView,
     };
   }
 

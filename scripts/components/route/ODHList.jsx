@@ -11,7 +11,7 @@ export default (props) => {
   each(props.odh_list, (odh, index) => {
     if (props.showSelectable || odh.state !== polyState.SELECTABLE) {
       const speed_type = odh.state === polyState.IDLE ? 'холостой' : 'рабочий';
-      ODHS.push(<li key={index}>{`${odh.name || odh.odh_name} (${speed_type} ход)`}</li>);
+      ODHS.push(<li key={index}>{`${odh.name || odh.object_name} (${speed_type} ход)`}</li>);
     }
   });
 

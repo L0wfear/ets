@@ -1,46 +1,41 @@
-import React, {Component} from 'react';
-import { Row, Col, Button, Glyphicon, ButtonToolbar } from 'react-bootstrap';
-import Div from 'components/ui/Div.jsx';
-import EtsSelect from 'components/ui/EtsSelect.jsx';
+import React, { Component } from 'react';
+import { Row, Col, Button, ButtonToolbar } from 'react-bootstrap';
 import Datepicker from 'components/ui/DatePicker.jsx';
 import Field from 'components/ui/Field.jsx';
-import _ from 'lodash';
-import cx from 'classnames';
 import connectToStores from 'flummox/connect';
 
 class ODHReports extends Component {
 
-	static contextTypes = {
-		flux: React.PropTypes.object,
-	}
+  static contextTypes = {
+    flux: React.PropTypes.object,
+  }
 
-	constructor(props) {
-		super(props);
+  constructor(props) {
+    super(props);
 
-		this.state = {
-			showForm: false,
-		};
-	}
+    this.state = {
+      showForm: false,
+    };
+  }
 
-	handleChange(selectedRoute) {
-		//this.setState({selectedRoute});
-	}
+  componentDidMount() {
+    const { flux } = this.context;
+    flux.getActions('objects').getTypes();
+  }
 
-	componentDidMount() {
-		const { flux } = this.context;
-		flux.getActions('objects').getTypes();
-	}
+  handleChange() {
+    // this.setState({selectedRoute});
+  }
 
-	render() {
+  render() {
     const { typesList = [] } = this.props;
-    const TYPES = typesList.map( ({id, title}) => ({label: title, value: id}));
+    const TYPES = typesList.map(({ id, title }) => ({ label: title, value: id }));
 
-		return (
+    return (
       <div className="ets-page-wrap">
-  			<div className="some-header">
-  				<div className="waybills-buttons">
-  				</div>
-  			</div>
+        <div className="some-header">
+          <div className="waybills-buttons" />
+        </div>
 
         <Row>
           <Col md={12}>
@@ -53,28 +48,31 @@ class ODHReports extends Component {
                     <label>Период</label>
                     <Row>
                       <Col md={6}>
-                        <Datepicker date={new Date()} onChange={this.handleChange.bind(this, 'date_start')}/>
+                        <Datepicker date={new Date()} onChange={this.handleChange.bind(this, 'date_start')} />
                       </Col>
-											<Col md={6}>
-												<Datepicker date={new Date()} onChange={this.handleChange.bind(this, 'date_start')}/>
-											</Col>
+                      <Col md={6}>
+                        <Datepicker date={new Date()} onChange={this.handleChange.bind(this, 'date_start')} />
+                      </Col>
                     </Row>
                   </Col>
                   <Col md={2}>
                     <Field type="select" label="Типы ТС"
-												options={TYPES}
-												value={null}
-												onChange={this.handleChange.bind(this, 'responsible_person_id')}/>
+                      options={TYPES}
+                      value={null}
+                      onChange={this.handleChange.bind(this, 'responsible_person_id')}
+                    />
                   </Col>
                   <Col md={2}>
                     <Field type="string" label="Норма, ПМ"
-												value={null}
-												onChange={this.handleChange.bind(this, 'responsible_person_id')}/>
+                      value={null}
+                      onChange={this.handleChange.bind(this, 'responsible_person_id')}
+                    />
                   </Col>
                   <Col md={2}>
                     <Field type="string" label="ТУ"
-												value={null}
-												onChange={this.handleChange.bind(this, 'responsible_person_id')}/>
+                      value={null}
+                      onChange={this.handleChange.bind(this, 'responsible_person_id')}
+                    />
                   </Col>
                   <Col md={2}>
                     <Button bsStyle="primary">Запустить</Button>
@@ -91,17 +89,17 @@ class ODHReports extends Component {
                     <label>Период</label>
                     <Row>
                       <Col md={6}>
-                        <Datepicker date={new Date()} onChange={this.handleChange.bind(this, 'date_start')}/>
+                        <Datepicker date={new Date()} onChange={this.handleChange.bind(this, 'date_start')} />
                       </Col>
-											<Col md={6}>
-												<Datepicker date={new Date()} onChange={this.handleChange.bind(this, 'date_start')}/>
-											</Col>
+                      <Col md={6}>
+                        <Datepicker date={new Date()} onChange={this.handleChange.bind(this, 'date_start')} />
+                      </Col>
                     </Row>
                   </Col>
                   <Col md={4}>
                     <ButtonToolbar>
-											<Button bsStyle="primary">Применить</Button>
-											<Button bsStyle="default">Очистить</Button>
+                      <Button bsStyle="primary">Применить</Button>
+                      <Button bsStyle="default">Очистить</Button>
                     </ButtonToolbar>
                   </Col>
                 </Row>
@@ -111,9 +109,9 @@ class ODHReports extends Component {
           </Col>
         </Row>
 
-  		</div>
-    )
-	}
+      </div>
+    );
+  }
 }
 
 export default connectToStores(ODHReports, ['objects']);

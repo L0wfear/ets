@@ -18,5 +18,5 @@ export default {
   single,
   singleByDT,
   singleByODH,
-  singleByPoints
-}
+  singleByPoints,
+};

@@ -1,10 +1,12 @@
 import React from 'react';
+import { autobind } from 'core-decorators';
 import Div from 'components/ui/Div.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';
 import MissionInfoForm from './MissionInfoForm.jsx';
 
 export default class MissionInfoFormWrap extends FormWrap {
 
+  @autobind
   handleFormSubmit() {
     this.props.onFormHide();
   }

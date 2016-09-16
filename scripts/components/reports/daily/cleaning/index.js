@@ -7,5 +7,5 @@
 
  export default {
    ets,
-   cafap
- }
+   cafap,
+ };

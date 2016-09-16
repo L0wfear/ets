@@ -9,39 +9,37 @@ import MissionReportTable from './MissionReportTable.jsx';
 @exportable
 export default class MissionReport extends Component {
 
-	constructor(props) {
-		super(props);
+  constructor(props) {
+    super(props);
 
-		this.entity = 'car_odh_travel_report/' + this.props.routeParams.id;
-	}
-
-	componentDidMount() {
-		const { flux } = this.context;
-		flux.getActions('missions').getMissionReportById(this.props.routeParams.id);
-	}
-
-  onReportSelect({props}) {
-    let index = props.data.index;
-		if (props.data.report_by_odh) {
-			this.context.history.pushState(null, '/mission-report/' + this.props.routeParams.id + '/odhs/' + index);
-		} else if (props.data.report_by_dt) {
-	    this.context.history.pushState(null, '/mission-report/' + this.props.routeParams.id + '/dts/' + index);
-		} else if (props.data.report_by_point) {
-	    this.context.history.pushState(null, '/mission-report/' + this.props.routeParams.id + '/points/' + index);
-		}
+    this.entity = 'car_odh_travel_report/' + this.props.routeParams.id;
   }
 
-	render() {
+  componentDidMount() {
+    const { flux } = this.context;
+    flux.getActions('missions').getMissionReportById(this.props.routeParams.id);
+  }
 
-		const { selectedReportData = [] } = this.props;
+  onReportSelect({ props }) {
+    const index = props.data.index;
+    if (props.data.report_by_odh) {
+      this.context.history.pushState(null, '/mission-report/' + this.props.routeParams.id + '/odhs/' + index);
+    } else if (props.data.report_by_dt) {
+      this.context.history.pushState(null, '/mission-report/' + this.props.routeParams.id + '/dts/' + index);
+    } else if (props.data.report_by_point) {
+      this.context.history.pushState(null, '/mission-report/' + this.props.routeParams.id + '/points/' + index);
+    }
+  }
 
-		return (
-			<div className="ets-page-wrap">
-				<MissionReportTable data={selectedReportData} onRowSelected={this.onReportSelect.bind(this)}>
-					<Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt" /></Button>
-				</MissionReportTable>
-			</div>
-		);
+  render() {
+    const { selectedReportData = [] } = this.props;
 
-	}
+    return (
+      <div className="ets-page-wrap">
+        <MissionReportTable data={selectedReportData} onRowSelected={this.onReportSelect.bind(this)}>
+          <Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt" /></Button>
+        </MissionReportTable>
+      </div>
+    );
+  }
 }

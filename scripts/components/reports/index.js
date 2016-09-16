@@ -23,5 +23,5 @@ export default {
   daily,
   weekly,
   odhCoverageReport,
-  carFuncTypeUsage
-}
+  carFuncTypeUsage,
+};

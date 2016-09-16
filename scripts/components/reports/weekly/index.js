@@ -6,5 +6,5 @@
  import technicalOperationComplete from './technical_operation_complete';
 
  export default {
-   technicalOperationComplete
- }
+   technicalOperationComplete,
+ };

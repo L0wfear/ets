@@ -124,7 +124,7 @@ class RouteCreating extends Component {
     const { object_list } = this.props.route;
     object_list.push({
       coordinates,
-      name: ''
+      name: '',
     });
     this.props.onChange('object_list', object_list);
   }

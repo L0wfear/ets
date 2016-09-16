@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connectToStores, staticProps } from 'utils/decorators';
 import ElementsList from 'components/ElementsList.jsx';
 import OdhCoverageReportTable from './OdhCoverageReportTable.jsx';
@@ -27,13 +27,13 @@ export default class OdhCoverageReport extends ElementsList {
     this.refreshInterval = setInterval(() => {
       flux.getActions('reports').getOdhCoverageReport();
     }, TWO_MINUTES);
-	}
+  }
 
 	export() {
 		this.setState({showForm: true});
 	}
 
   componentWillUnmount() {
-    clearInterval(this.refreshInterval)
+    clearInterval(this.refreshInterval);
   }
 }

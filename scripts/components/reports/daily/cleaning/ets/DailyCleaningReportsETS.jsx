@@ -1,76 +1,73 @@
 import React, { Component } from 'react';
-import Table from 'components/ui/table/DataTable.jsx';
-import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
-import Div from 'components/ui/Div.jsx';
 import { getToday9am, getTomorrow9am } from 'utils/dates';
 import { getReportNotReadyNotification2 } from 'utils/notifications';
 import DailyReportHeader from 'components/reports/DailyReportHeader.jsx';
-import DailyCleaningReportsETSTable from './DailyCleaningReportsETSTable.jsx';
 import { FluxContext, HistoryContext, exportable, staticProps, connectToStores } from 'utils/decorators';
+import DailyCleaningReportsETSTable from './DailyCleaningReportsETSTable.jsx';
 
 @connectToStores(['reports'])
 @FluxContext
 @HistoryContext
 @staticProps({
-  entity: 'geozone_element_traveled_daily_report__ets'
+  entity: 'geozone_element_traveled_daily_report__ets',
 })
 @exportable
 export default class DailyCleaningReportsETS extends Component {
 
-	constructor(props) {
-		super(props);
+  constructor(props) {
+    super(props);
 
-    let [date_start, date_end] = [getToday9am(), getTomorrow9am()];
+    const [date_start, date_end] = [getToday9am(), getTomorrow9am()];
 
-		this.state = {
+    this.state = {
       date_start,
       date_end,
       geozone_type: 'odh',
       element: 'roadway',
       car_type_id_list: [],
-		};
-	}
+    };
+  }
 
-	componentDidMount() {
-		const { flux } = this.context;
-		flux.getActions('reports').getDailyCleaningReportsETS();
-	}
+  componentDidMount() {
+    const { flux } = this.context;
+    flux.getActions('reports').getDailyCleaningReportsETS();
+  }
 
-  onReportSelect({props}) {
+  onReportSelect({ props }) {
     const id = props.data.id;
     if (props.data.status !== 'success' && props.data.status !== 'fail') {
       global.NOTIFICATION_SYSTEM._addNotification(getReportNotReadyNotification2(this.context.flux));
-    } else if (props.data.status !== 'fail'){
+    } else if (props.data.status !== 'fail') {
       this.context.history.pushState(null, `/daily-cleaning-report-ets/${props.data.element}/${id}`);
     }
   }
 
   handleChange(field, value) {
-		this.setState({[field]: value});
-	}
+    this.setState({ [field]: value });
+  }
 
   createDailyCleaningReportETS() {
-		const { flux } = this.context;
+    const { flux } = this.context;
     flux.getActions('reports').createDailyCleaningReportETS(this.state);
   }
 
-	render() {
-		const { dailyCleaningReportsListETS = [] } = this.props;
+  render() {
+    const { dailyCleaningReportsListETS = [] } = this.props;
 
-		return (
-			<div className="ets-page-wrap">
-  			<DailyReportHeader
-            handleChange={this.handleChange.bind(this)}
-            onClick={this.createDailyCleaningReportETS.bind(this)}
-            {...this.state}/>
-				<DailyCleaningReportsETSTable
-            data={dailyCleaningReportsListETS}
-            refreshable={true}
-            onRefresh={() => this.context.flux.getActions('reports').getDailyCleaningReportsETS()}
-            onRowSelected={this.onReportSelect.bind(this)}>
-        </DailyCleaningReportsETSTable>
-			</div>
-		);
-
-	}
+    return (
+      <div className="ets-page-wrap">
+        <DailyReportHeader
+          handleChange={this.handleChange.bind(this)}
+          onClick={this.createDailyCleaningReportETS.bind(this)}
+          {...this.state}
+        />
+        <DailyCleaningReportsETSTable
+          data={dailyCleaningReportsListETS}
+          refreshable
+          onRefresh={() => this.context.flux.getActions('reports').getDailyCleaningReportsETS()}
+          onRowSelected={this.onReportSelect.bind(this)}
+        />
+      </div>
+    );
+  }
 }

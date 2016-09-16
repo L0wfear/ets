@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Div from 'components/ui/Div.jsx';
-import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
+import { Button, Row, Col } from 'react-bootstrap';
 import Field from 'components/ui/Field.jsx';
 import Datepicker from 'components/ui/DatePicker.jsx';
 import { getToday9am, getTomorrow9am, makeDate } from 'utils/dates';
@@ -12,9 +12,9 @@ import { connectToStores, FluxContext } from 'utils/decorators';
 export default class Analytics extends Component {
 
   constructor(props) {
-		super(props);
+    super(props);
 
-    let [date_from, date_to] = [getToday9am(), getTomorrow9am()];
+    const [date_from, date_to] = [getToday9am(), getTomorrow9am()];
 
     this.reports = [
       'Маршруты',
@@ -25,14 +25,14 @@ export default class Analytics extends Component {
       'Расход топлива',
     ];
 
-		this.state = {
+    this.state = {
       report_ids: [],
       company_ids: [],
       transcript: false,
       date_from,
-      date_to
-		};
-	}
+      date_to,
+    };
+  }
 
   componentDidMount() {
     const { flux } = this.context;
@@ -42,39 +42,39 @@ export default class Analytics extends Component {
   handleSubmit() {
     const { flux } = this.context;
 
-    let reportName = this.state.report_ids.length === 1 ? this.reports[this.state.report_ids[0]] : 'Отчет';
+    const reportName = this.state.report_ids.length === 1 ? this.reports[this.state.report_ids[0]] : 'Отчет';
 
-    let dateName = makeDate(this.state.date_from)+'-'+makeDate(this.state.date_to);
-		flux.getActions('reports').getAnalytics(this.state)
-      .then(({blob}) => {
-        saveData(blob, `${reportName} ${dateName}.xls`)
+    const dateName = makeDate(this.state.date_from) + '-' + makeDate(this.state.date_to);
+    flux.getActions('reports').getAnalytics(this.state)
+      .then(({ blob }) => {
+        saveData(blob, `${reportName} ${dateName}.xls`);
       });
   }
 
   handleChange(field, value) {
     if (field === 'report_ids') {
-      let { report_ids } = this.state;
-      let id = parseFloat(value);
-      let index = report_ids.indexOf(id);
+      const { report_ids } = this.state;
+      const id = parseFloat(value);
+      const index = report_ids.indexOf(id);
       index === -1 ? report_ids.push(id) : report_ids.splice(index, 1);
 
-      this.setState({report_ids});
+      this.setState({ report_ids });
     } else if (field === 'company_ids') {
       let { company_ids, transcript } = this.state;
-      company_ids = value ? (''+value).split(',') : [];
-      company_ids = company_ids.map((e) => parseFloat(e));
+      company_ids = value ? ('' + value).split(',') : [];
+      company_ids = company_ids.map(e => parseFloat(e));
       if (company_ids.length > 1) transcript = false;
-      this.setState({company_ids, transcript});
+      this.setState({ company_ids, transcript });
     } else {
-      this.setState({[field]: value});
+      this.setState({ [field]: value });
     }
   }
 
   handleCheckbox(e) {
     let value;
     if (e.target.checked) {
-      let { companyList } = this.props;
-      value = companyList.map((e) => e.id).join(',');
+      const { companyList } = this.props;
+      value = companyList.map(e => e.id).join(',');
     } else {
       value = '';
     }
@@ -82,18 +82,18 @@ export default class Analytics extends Component {
   }
 
   render() {
+    const { companyList } = this.props;
 
-    let { companyList } = this.props;
+    const reportsList = this.reports.map((e, i) => {
+      return (<div key={e + i}><input
+        style={{ marginRight: '10px' }}
+        type="checkbox"
+        checked={this.state.report_ids.indexOf(i) + 1}
+        onChange={this.handleChange.bind(this, 'report_ids', i)}
+      />{e}<br /></div>);
+    });
 
-    let reportsList = this.reports.map((e, i) => {
-      return <div key={e+i}><input
-          style={{marginRight:"10px"}}
-          type="checkbox"
-          checked={this.state.report_ids.indexOf(i)+1}
-          onChange={this.handleChange.bind(this, 'report_ids', i)} />{e}<br/></div>
-      });
-
-    let COMPANY = companyList && companyList.map(({id, name}) => ({value: id, label: name}))
+    const COMPANY = companyList && companyList.map(({ id, name }) => ({ value: id, label: name }));
 
     return (
       <div className="ets-page-wrap">
@@ -103,41 +103,44 @@ export default class Analytics extends Component {
             <Row>
               <Div><label>Период формирования:</label></Div>
               <Div className="inline-block reports-date">
-                <Datepicker date={this.state.date_from} onChange={this.handleChange.bind(this, 'date_from')}/>
+                <Datepicker date={this.state.date_from} onChange={this.handleChange.bind(this, 'date_from')} />
               </Div>
               <Div className="inline-block reports-date">
-                <Datepicker date={this.state.date_to} onChange={this.handleChange.bind(this, 'date_to')}/>
+                <Datepicker date={this.state.date_to} onChange={this.handleChange.bind(this, 'date_to')} />
               </Div>
             </Row>
-            <br/>
+            <br />
             <Row>
               <Div><label>Выбрать отчет:</label></Div>
               {reportsList}
             </Row>
-            <br/>
+            <br />
             <Row>
               <Button disabled={!!!this.state.report_ids.length} onClick={this.handleSubmit.bind(this)}>Выгрузить</Button>
               <input
-                  style={{marginRight:"5px", marginLeft:"10px"}}
-                  type="checkbox"
-                  disabled={this.state.company_ids.length > 1}
-                  checked={this.state.transcript}
-                  onChange={this.handleChange.bind(this, 'transcript', !this.state.transcript)} />
-              <span style={{color: this.state.company_ids.length > 1 ? "grey" : "black"}}>c расшифровкой</span>
+                style={{ marginRight: '5px', marginLeft: '10px' }}
+                type="checkbox"
+                disabled={this.state.company_ids.length > 1}
+                checked={this.state.transcript}
+                onChange={this.handleChange.bind(this, 'transcript', !this.state.transcript)}
+              />
+              <span style={{ color: this.state.company_ids.length > 1 ? 'grey' : 'black' }}>c расшифровкой</span>
             </Row>
           </Col>
           <Col md={5}>
             <Div>
               <Field type="select" label="Учреждение"
-                  multi={true}
-                  options={COMPANY}
-                  value={this.state.company_ids.join(',')}
-                  onChange={this.handleChange.bind(this, 'company_ids')}/>
-                <Div style={{marginLeft: "-9px", marginTop: "8px"}}>
+                multi
+                options={COMPANY}
+                value={this.state.company_ids.join(',')}
+                onChange={this.handleChange.bind(this, 'company_ids')}
+              />
+                <Div style={{ marginLeft: '-9px', marginTop: '8px' }}>
                 <input
-                    style={{marginRight:"5px", marginLeft:"10px"}}
-                    type="checkbox"
-                    onChange={this.handleCheckbox.bind(this)} />
+                  style={{ marginRight: '5px', marginLeft: '10px' }}
+                  type="checkbox"
+                  onChange={this.handleCheckbox.bind(this)}
+                />
                 <span>Выбрать все</span>
               </Div>
             </Div>

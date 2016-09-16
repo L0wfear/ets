@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { autobind } from 'core-decorators';
 import { Button, Glyphicon, ButtonToolbar } from 'react-bootstrap';
-import DutyMissionsTable from './DutyMissionsTable.jsx';
-import DutyMissionFormWrap from './DutyMissionFormWrap.jsx';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { getWarningNotification } from 'utils/notifications';
 import _ from 'lodash';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import DutyMissionsTable from './DutyMissionsTable.jsx';
+import DutyMissionFormWrap from './DutyMissionFormWrap.jsx';
 
 @connectToStores(['missions', 'objects'])
 @staticProps({
@@ -17,6 +18,7 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
   exportable: true,
 })
 @exportable
+@autobind
 export default class DutyMissionsJournal extends CheckableElementsList {
 
   constructor(props, context) {
@@ -135,9 +137,9 @@ export default class DutyMissionsJournal extends CheckableElementsList {
 
     buttons.push(
       <ButtonToolbar key={buttons.length}>
-        <Button bsSize="small" onClick={this.completeCheckedElements.bind(this)} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</Button>
-        <Button bsSize="small" onClick={this.rejectCheckedElements.bind(this)} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</Button>
-        {/* <Button bsSize="small" onClick={this.handleSubmit.bind(this)}><Glyphicon glyph="download-alt" /></Button>*/}
+        <Button bsSize="small" onClick={this.completeCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</Button>
+        <Button bsSize="small" onClick={this.rejectCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</Button>
+        {/* <Button bsSize="small" onClick={this.handleSubmit}><Glyphicon glyph="download-alt" /></Button>*/}
       </ButtonToolbar>
     );
 

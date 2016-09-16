@@ -59,7 +59,8 @@ let OdhCoverageReportTable = (props) => {
 			renderers={renderers}
       enumerated={false}
 			tableMeta={getTableMeta(props)}
-			className="waybills-table"/>
+			className="waybills-table"
+			{...props}/>
 }
 
 export default OdhCoverageReportTable;

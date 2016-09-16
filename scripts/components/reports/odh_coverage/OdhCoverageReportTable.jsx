@@ -50,15 +50,17 @@ const OdhCoverageReportTable = (props) => {
     total_percentage: floatFixed1Percentage,
   };
 
-  return (<Table
-    title="Фактическое выполнение заданий за смену"
-    noFilter
-    results={props.data}
-    renderers={renderers}
-    enumerated={false}
-    tableMeta={getTableMeta(props)}
-    className="waybills-table"
-  />);
+  return (
+    <Table
+      title="Фактическое выполнение заданий за смену"
+      noFilter
+      results={props.data}
+      renderers={renderers}
+      enumerated={false}
+      tableMeta={getTableMeta(props)}
+      className="waybills-table"
+    />
+  );
 };
 
 export default OdhCoverageReportTable;

@@ -12,50 +12,50 @@ import DailyCleaningReportsCAFAPTable from './DailyCleaningReportsCAFAPTable.jsx
 @FluxContext
 @HistoryContext
 @staticProps({
-  entity: 'geozone_element_traveled_daily_report__cafap'
+  entity: 'geozone_element_traveled_daily_report__cafap',
 })
 @exportable
 export default class DailyCleaningReportsCAFAP extends Component {
 
-	constructor(props) {
-		super(props);
+  constructor(props) {
+    super(props);
 
     let [date_start, date_end] = [getToday9am(), getTomorrow9am()];
 
-		this.state = {
+    this.state = {
       date_start,
       date_end,
       geozone_type: 'odh',
       element: 'roadway',
       car_type_id_list: [],
-		};
-	}
+    };
+  }
 
-	componentDidMount() {
-		const { flux } = this.context;
-		flux.getActions('reports').getDailyCleaningReportsCAFAP();
-	}
+  componentDidMount() {
+    const { flux } = this.context;
+    flux.getActions('reports').getDailyCleaningReportsCAFAP();
+  }
 
-  onReportSelect({props}) {
+  onReportSelect({ props }) {
     const id = props.data.id;
     if (props.data.status !== 'success' && props.data.status !== 'fail') {
       global.NOTIFICATION_SYSTEM._addNotification(getReportNotReadyNotification2(this.context.flux));
-    } else if (props.data.status !== 'fail'){
+    } else if (props.data.status !== 'fail') {
       this.context.history.pushState(null, `/daily-cleaning-report-cafap/${props.data.element}/${id}`);
     }
   }
 
   handleChange(field, value) {
-		this.setState({[field]: value});
-	}
+    this.setState({ [field]: value });
+  }
 
   createDailyCleaningReportCAFAP() {
-		const { flux } = this.context;
+    const { flux } = this.context;
     const payload = _.cloneDeep(this.state);
     const { car_type_id_list, geozone_type } = payload;
     let newCarTypeIdList = [];
     if (geozone_type === 'dt') {
-      car_type_id_list.map(el => {
+      car_type_id_list.map((el) => {
         if (typeof el === 'string') {
           el = el.split(';').map(id => parseInt(id));
         }
@@ -63,7 +63,7 @@ export default class DailyCleaningReportsCAFAP extends Component {
         return el;
       });
       if (newCarTypeIdList.length) {
-        newCarTypeIdList = newCarTypeIdList.reduce((a,b) => a.concat(b));
+        newCarTypeIdList = newCarTypeIdList.reduce((a, b) => a.concat(b));
       }
       payload.car_type_id_list = newCarTypeIdList;
     }
@@ -71,23 +71,24 @@ export default class DailyCleaningReportsCAFAP extends Component {
     flux.getActions('reports').createDailyCleaningReportCAFAP(payload);
   }
 
-	render() {
-		const { dailyCleaningReportsListCAFAP = [] } = this.props;
+  render() {
+    const { dailyCleaningReportsListCAFAP = [] } = this.props;
 
-		return (
-			<div className="ets-page-wrap">
-  			<DailyReportHeader
-            handleChange={this.handleChange.bind(this)}
-            onClick={this.createDailyCleaningReportCAFAP.bind(this)}
-            useCombinations={true}
-            {...this.state} />
-				<DailyCleaningReportsCAFAPTable
-            data={dailyCleaningReportsListCAFAP}
-            refreshable={true}
-            onRefresh={() => this.context.flux.getActions('reports').getDailyCleaningReportsCAFAP()}
-            onRowSelected={this.onReportSelect.bind(this)}>
-        </DailyCleaningReportsCAFAPTable>
-			</div>
-		);
-	}
+    return (
+      <div className="ets-page-wrap">
+        <DailyReportHeader
+          handleChange={this.handleChange.bind(this)}
+          onClick={this.createDailyCleaningReportCAFAP.bind(this)}
+          useCombinations
+          {...this.state}
+        />
+        <DailyCleaningReportsCAFAPTable
+          data={dailyCleaningReportsListCAFAP}
+          refreshable
+          onRefresh={() => this.context.flux.getActions('reports').getDailyCleaningReportsCAFAP()}
+          onRowSelected={this.onReportSelect.bind(this)}
+        />
+      </div>
+    );
+  }
 }

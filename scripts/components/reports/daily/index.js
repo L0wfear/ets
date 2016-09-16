@@ -6,5 +6,5 @@
  import cleaning from './cleaning';
 
  export default {
-   cleaning
- }
+   cleaning,
+ };

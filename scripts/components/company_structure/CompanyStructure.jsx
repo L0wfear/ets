@@ -1,11 +1,13 @@
 import React from 'react';
+import { autobind } from 'core-decorators';
+import _ from 'lodash';
 import connectToStores from 'flummox/connect';
 import { Button, Glyphicon } from 'react-bootstrap';
 import ElementsList from 'components/ElementsList.jsx';
 import CompanyStructureFormWrap from './CompanyStructureFormWrap.jsx';
 import CompanyStructureTable from './CompanyStructureTable.jsx';
-import { autobind } from 'core-decorators';
 
+@autobind
 class CompanyStructure extends ElementsList {
 
   constructor(props) {
@@ -34,14 +36,12 @@ class CompanyStructure extends ElementsList {
     }
   }
 
-  @autobind
   editElement(id, e) {
     e.stopPropagation();
     const selectedElement = _.find(this.state.companyStructureLinearList, el => el.id ? el.id === id : el[this.selectField] === id);
     this.setState({ showForm: true, selectedElement });
   }
 
-  @autobind
   deleteElement(id, e) {
     e.stopPropagation();
     if (confirm('Вы уверены, что хотите удалить выбранный элемент?')) {
@@ -53,15 +53,16 @@ class CompanyStructure extends ElementsList {
     const { companyStructureList = [] } = this.props;
 
     return (
-      <div className="ets-page-wrap company-structure">
+      <div className="ets-page-wrap company-structure" ref={node => (this.node = node)}>
         <CompanyStructureTable
           data={companyStructureList}
           onActionEdit={this.editElement}
           onActionDelete={this.deleteElement}
         >
-          <Button bsSize="small" onClick={this.createElement.bind(this)}><Glyphicon glyph="plus" /> Добавить подразделение</Button>
+          <Button bsSize="small" onClick={this.createElement}><Glyphicon glyph="plus" /> Добавить подразделение</Button>
         </CompanyStructureTable>
-        <CompanyStructureFormWrap onFormHide={this.onFormHide.bind(this)}
+        <CompanyStructureFormWrap
+          onFormHide={this.onFormHide}
           element={this.state.selectedElement}
           showForm={this.state.showForm}
           {...this.props}

@@ -24,7 +24,7 @@ export default class Filter extends Component {
   static get propTypes() {
     return {
       title: PropTypes.string,
-      name: PropTypes.name,
+      name: PropTypes.string,
       onFilterChange: PropTypes.func,
       search: PropTypes.bool,
       options: PropTypes.arrayOf(PropTypes.object),

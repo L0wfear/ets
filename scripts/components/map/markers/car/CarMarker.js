@@ -1,16 +1,15 @@
 import { getStatusById } from 'constants/statuses';
-import CoordsAnimation from './CoordsAnimation.js';
-import { getSmallIcon, getBigIcon } from '../../../../icons/car.js';
-import Marker from '../BaseMarker.js';
-import Track from '../../Track.js';
 import { swapCoords, wrapCoords } from 'utils/geo';
 import { getPointStyle } from 'utils/ol';
-import { getTypeById } from 'utils/labelFunctions';
 import _ from 'lodash';
 import {
   SMALL_ICON_RADIUS,
   LARGE_ICON_RADIUS,
 } from 'constants/CarIcons.js';
+import CoordsAnimation from './CoordsAnimation.js';
+import { getSmallIcon, getBigIcon } from '../../../../icons/car.js';
+import Marker from '../BaseMarker.js';
+import Track from '../../Track.js';
 
 const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
 
@@ -65,11 +64,6 @@ export default class CarMarker extends Marker {
     //     });
     //   }
     // });
-
-    const geoMarker = new ol.Feature({
-      type: 'geoMarker',
-      geometry: new ol.geom.Point(this.animatePoints[0].coords),
-    });
 
     // TODO сделать константный лейер для карты, а то будет каждый раз создаваться
     this.vectorLayer = new ol.layer.Vector({
@@ -137,10 +131,9 @@ export default class CarMarker extends Marker {
   }
 
   animateToTrack(event) {
-    let { image, radius } = this;
-    let { frameState, vectorContext } = event;
+    const { frameState, vectorContext } = event;
     const elapsedTime = frameState.time - this.animateStartTime;
-    const index = Math.round(2 * elapsedTime / 1000);
+    const index = Math.round((2 * elapsedTime) / 1000);
     this.currentIndex = index;
     if (index >= this.animatePoints.length) {
       this.stopAnimation();
@@ -169,7 +162,7 @@ export default class CarMarker extends Marker {
 
     if (!this.paused) {
       view.centerOn(coords, size, pixel);
-      if (zoom != 9) {
+      if (zoom !== 9) {
         view.setZoom(9);
       }
     }
@@ -217,14 +210,14 @@ export default class CarMarker extends Marker {
       const padding = 1 * zoomRatio;
 
       // dont try to understand
-      const rectWidth = width + padding + radius - 3;
+      const rectWidth = width + padding + (radius - 3);
       const rectHeight = radius + 4;
-      const rectOffsetY = drawCoords.y - radius / 2 - 2;
+      const rectOffsetY = drawCoords.y - (radius / 2) - 2;
 
       context.fillRect(drawCoords.x - rectWidth, rectOffsetY, rectWidth, rectHeight);
       context.fillStyle = 'black';
       context.textBaseline = 'middle';
-      context.fillText(title, drawCoords.x - rectWidth + padding, drawCoords.y);
+      context.fillText(title, drawCoords.x - (rectWidth + padding), drawCoords.y);
     }
 
     return image;
@@ -256,12 +249,13 @@ export default class CarMarker extends Marker {
     const point = this.point;
     const color = getStatusById(point.status).color;
     const direction = point.direction;
-    const type = getTypeById(point.car ? point.car.type_id : 5);
+    const typesIndex = this._reactMap.props.typesIndex;
+    const type = typesIndex[point.car ? point.car.type_id : 5];
     const icon = type && type.icon;
     const radius = this.radius = (LARGE_ICON_RADIUS + 6);
 
-    const angle = Math.PI * direction / 180;
-    const tipAngle = normalizeAngle(angle - Math.PI / 2);
+    const angle = (Math.PI * direction) / 180;
+    const tipAngle = normalizeAngle(angle - (Math.PI / 2));
     const drawCoords = this.map.projectToPixel(this.coords);
     const context = this._reactMap.canvas.getContext('2d');
 
@@ -274,13 +268,13 @@ export default class CarMarker extends Marker {
       const width = context.measureText(text).width;
       const padding = 3;
 
-      let rectWidth = width + 2 * padding + radius + 7;
-      const rectHeight = 2 * radius - 9;
-      const rectOffsetY = drawCoords.y - radius + 5;
+      let rectWidth = width + (2 * padding) + radius + 7;
+      const rectHeight = (2 * radius) - 9;
+      const rectOffsetY = drawCoords.y - (radius + 5);
 
       rectWidth *= DEVICE_PIXEL_RATIO;
 
-      context.font = 12 * DEVICE_PIXEL_RATIO + 'px \'Helvetica Neue\'';
+      context.font = `${12 * DEVICE_PIXEL_RATIO}px \'Helvetica Neue\'`;
 
       if (tipAngle >= 0.5 * Math.PI && tipAngle <= 1.5 * Math.PI) {
         context.fillRect(drawCoords.x, rectOffsetY, rectWidth, rectHeight);
@@ -291,7 +285,7 @@ export default class CarMarker extends Marker {
         context.fillRect(drawCoords.x - rectWidth, rectOffsetY, rectWidth, rectHeight);
         context.fillStyle = 'black';
         context.textBaseline = 'middle';
-        context.fillText(text, drawCoords.x - rectWidth + padding, drawCoords.y);
+        context.fillText(text, drawCoords.x - (rectWidth + padding), drawCoords.y);
       }
     }
 

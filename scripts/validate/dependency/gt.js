@@ -5,7 +5,7 @@ import { isEmpty } from 'utils/functions';
 const fixedValidators = [
   {
     name: 'gt',
-    validator(config, value, dependentFieldConfig, dependentFieldValue, formData) {
+    validator(config, value, dependentFieldConfig, dependentFieldValue) {
       const MUST_BE_GREATER_THAN = `"${config.title || config.key}" должно быть больше "${dependentFieldConfig.title}"`;
       if (isEmpty(value) || isEmpty(dependentFieldValue)) {
         return;

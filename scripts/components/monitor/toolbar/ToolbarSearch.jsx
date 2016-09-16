@@ -8,7 +8,7 @@ export default class ToolbarSearch extends Component {
 
   static get propTypes() {
     return {
-      focusOnLonelyCar: PropTypes.bool,
+      focusOnLonelyCar: PropTypes.func,
     };
   }
 

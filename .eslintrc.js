@@ -25,10 +25,11 @@ module.exports = {
     "max-len": ["off", 120],
     "camelcase": ["off"], // временно
     "no-param-reassign": ["off"], // временно
-    "no-unused-expressions": ["error", { "allowShortCircuit": true }]
+    "no-unused-expressions": ["error", { "allowShortCircuit": true }],
+    "jsx-a11y/no-static-element-interactions": ["off"]
   },
   "settings": {
-    "import-resolver": {
+    "import/resolver": {
       "webpack": {
         config: path.resolve(__dirname, 'webpack', 'dev.config.js')
       }

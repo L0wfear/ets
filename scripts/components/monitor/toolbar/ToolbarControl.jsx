@@ -12,7 +12,7 @@ export default class ToolbarControl extends Component {
       controlType: PropTypes.string,
       btnClass: PropTypes.string,
       style: PropTypes.object,
-      top: PropTypes.number,
+      top: PropTypes.string,
       children: PropTypes.node,
     };
   }

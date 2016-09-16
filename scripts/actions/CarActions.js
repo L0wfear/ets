@@ -55,8 +55,6 @@ export default class CarActions extends Actions {
       version: 2,
     };
 
-    console.log('track loading for', id);
-
     return TrackService
       .path(id)
       .get(payload)

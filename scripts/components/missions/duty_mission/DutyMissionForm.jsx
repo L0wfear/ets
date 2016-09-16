@@ -247,7 +247,10 @@ export class DutyMissionForm extends Form {
 
           <Row>
             <Col md={6}>
-              <Field type="select" label="Бригадир" error={errors.foreman_id}
+              <Field
+                type="select"
+                label="Бригадир"
+                error={errors.foreman_id}
                 disabled={IS_DISPLAY}
                 options={EMPLOYEES}
                 value={state.foreman_id}

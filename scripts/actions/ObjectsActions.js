@@ -4,7 +4,6 @@ import { createValidDateTime } from 'utils/dates';
 import {
   FaxogrammService,
   WorkKindsService,
-  FuelTypeService,
   CarService,
   CustomersService,
   TypesService,

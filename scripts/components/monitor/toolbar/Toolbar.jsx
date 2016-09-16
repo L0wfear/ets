@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 import connectToStores from 'flummox/connect';
 import cx from 'classnames';
@@ -22,6 +23,31 @@ const StatusComponent = props =>
 // TODO jsdoc
 class CarsLegendWrapper extends Component {
 
+  static get propTypes() {
+    return {
+      filter: PropTypes.object,
+      storeHandleSetFilter: PropTypes.func,
+      byStatus: PropTypes.object,
+      byConnectionStatus: PropTypes.object
+    };
+  }
+
+  toggleFilter(i) {
+    const filter = this.props.filter.status.slice();
+    const id = i.id;
+    const index = filter.indexOf(id);
+
+    if (index === -1) {
+      filter.push(id);
+    } else {
+      filter.splice(index, 1);
+    }
+
+    this.props.storeHandleSetFilter({
+      status: filter,
+    });
+  }
+
   render() {
     const totalOnline = this.props.byConnectionStatus[1];
     const byStatus = this.props.byStatus;
@@ -33,7 +59,8 @@ class CarsLegendWrapper extends Component {
       .map((item, i) => {
         return (
           <li key={i}>
-            <StatusComponent active={filter.status.indexOf(item.id) !== -1}
+            <StatusComponent
+              active={filter.status.indexOf(item.id) !== -1}
               status={item}
               onClick={() => this.toggleFilter(item)}
             />
@@ -53,22 +80,6 @@ class CarsLegendWrapper extends Component {
         </ul>
       </div>
     );
-  }
-
-  toggleFilter(i) {
-    const filter = this.props.filter.status.slice();
-    const id = i.id;
-    const index = filter.indexOf(id);
-
-    if (index === -1) {
-      filter.push(id);
-    } else {
-      filter.splice(index, 1);
-    }
-
-    this.props.storeHandleSetFilter({
-      status: filter,
-    });
   }
 }
 
@@ -133,7 +144,15 @@ const ShowGeoobjectsCheckbox = (props) => {
   state => state.types
 )
 @FluxContext
+@autobind
 class Toolbar extends Component {
+
+  static get propTypes() {
+    return {
+      selectedPolysTypes: PropTypes.array,
+      filter: PropTypes.object
+    };
+  }
 
   constructor(props, context) {
     super(props, context);
@@ -151,7 +170,7 @@ class Toolbar extends Component {
     view.setZoom(15);
   }
 
-  shouldComponentUpdate(props) {
+  shouldComponentUpdate() {
     // сделать обновление только во время изменений!
     return true;
   }
@@ -187,7 +206,7 @@ class Toolbar extends Component {
               byStatus={byStatus}
               byConnectionStatus={byConnectionStatus}
               storeFilter={storeState.filter}
-              storeHandleSetFilter={pointsStore.handleSetFilter.bind(pointsStore)}
+              storeHandleSetFilter={pointsStore.handleSetFilter}
             />
             <GeometryLegendWrapper
               controlTitles={{
@@ -201,7 +220,7 @@ class Toolbar extends Component {
             <ShowGeoobjectsCheckbox selectedPolysTypes={selectedPolysTypes} />
           </FluxComponent>
         </div>
-        <ToolbarSearch focusOnLonelyCar={this.focusOnLonelyCar.bind(this)} carsCount={carsCount} />
+        <ToolbarSearch focusOnLonelyCar={this.focusOnLonelyCar} carsCount={carsCount} />
         <ToolbarFilters store={pointsStore} filters={filters} haveFilters={filtersCount > 0} {...this.props} />
       </div>
     );

@@ -1,6 +1,5 @@
 // Модуль для функций, использующихся при рендеринге поля фильтра в гридах
 // TODO переделать на нормальный i18n
-import { getFormattedDateTime } from 'utils/dates';
 
 export function waybillStatusLabelFunction(s) {
   switch (s) {

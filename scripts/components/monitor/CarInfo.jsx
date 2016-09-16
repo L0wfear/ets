@@ -60,24 +60,33 @@ class VehicleAttributes extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState((state, props) => state.attributes = this.parseProps(nextProps));
+    this.setState(state => (state.attributes = this.parseProps(nextProps)));
   }
 
   renderAttribute({ name, value }) {
     return (
       <div key={name} className="vehicle-attributes-list__item">
            {name}: <span className="value">{value}</span>
-      </div>);
+      </div>
+    );
   }
 
   render() {
-    return (<div className="vehicle-attributes-list">
-              {this.state.attributes.map(attribute => this.renderAttribute(attribute))}
-            </div>);
+    return (
+      <div className="vehicle-attributes-list">
+        {this.state.attributes.map(attribute => this.renderAttribute(attribute))}
+      </div>
+    );
   }
 }
 
 export default class CarInfo extends Component {
+
+  static get propTypes() {
+    return {
+
+    };
+  }
 
   constructor(props, context) {
     super(props, context);
@@ -185,7 +194,7 @@ export default class CarInfo extends Component {
 
   async componentWillReceiveProps(props) {
     if (props.car !== this.props.car) {
-      this.fetchImage();
+      this.fetchImage(props);
       this.fetchTrack(props);
       this.stopTrackPlaying();
       this.setState({ trackPaused: 'stopped' });

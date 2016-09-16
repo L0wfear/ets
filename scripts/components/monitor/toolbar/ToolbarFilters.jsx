@@ -43,7 +43,7 @@ export default class ToolbarFilters extends Component {
   }
 
   doAdditiveFilters() {
-    const { typesIndex, typesList } = this.props;
+    const { typesIndex } = this.props;
     const propsFilters = this.props.filters;
     const cars = this.props.store.state.points;
 
@@ -53,16 +53,16 @@ export default class ToolbarFilters extends Component {
     // фильтруем машины по владельцу и типу
     for (const key in cars) {
       const car = cars[key].car;
+      if (car !== undefined) {
+        if (!{}.hasOwnProperty.call(car, 'owner_id')) {
+          car.owner_id = 0;
+        } // dirty fix
 
-      if (car === undefined) continue;
-      if (!car.hasOwnProperty('owner_id')) {
-        car.owner_id = 0;
-      } // dirty fix
-
-      // если владелец указан
-      if (propsFilters.owner.length > 0) {
-        if (propsFilters.owner.indexOf(car.owner_id) > -1 && _typeIds.indexOf(car.type_id) === -1) {
-          _typeIds.push(car.type_id);
+        // если владелец указан
+        if (propsFilters.owner.length > 0) {
+          if (propsFilters.owner.indexOf(car.owner_id) > -1 && _typeIds.indexOf(car.type_id) === -1) {
+            _typeIds.push(car.type_id);
+          }
         }
       }
     }

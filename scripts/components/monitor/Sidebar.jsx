@@ -1,17 +1,22 @@
 import React, { Component, PropTypes } from 'react';
-import CarInfo from './CarInfo.jsx';
-import FeatureInfo from './FeatureInfo.jsx';
 import Div from 'components/ui/Div.jsx';
 import cx from 'classnames';
+import { autobind } from 'core-decorators';
+import CarInfo from './CarInfo.jsx';
+import FeatureInfo from './FeatureInfo.jsx';
 
+@autobind
 export default class Sidebar extends Component {
 
-  static propTypes = {
-    selected: PropTypes.object,
-    selectedFeature: PropTypes.object,
+  static get propTypes() {
+    return {
+      selected: PropTypes.object,
+      selectedFeature: PropTypes.object,
+      flux: PropTypes.object,
+    };
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate() {
     // const noSelected = this.props.selected === null;
     // const noSelectedFeature = this.props.selectedFeature;
     // const selectedHasChanged = this.props.selected && nextProps.selected.id !== this.props.selected.id;
@@ -30,7 +35,7 @@ export default class Sidebar extends Component {
 
   renderCarInfo() {
     const { selected, flux } = this.props;
-    return <CarInfo car={selected} flux={flux} onclose={this.close.bind(this)} />;
+    return <CarInfo car={selected} flux={flux} onclose={this.close} />;
   }
 
   renderInfo() {
@@ -39,9 +44,8 @@ export default class Sidebar extends Component {
       return this.renderFeatureInfo();
     } else if (selected) {
       return this.renderCarInfo();
-    } else {
-      return <div />;
     }
+    return <div />;
   }
 
   close() {
@@ -58,12 +62,12 @@ export default class Sidebar extends Component {
 
   render() {
     // TODO оптимизировать рендер
-    let { selected, selectedFeature } = this.props;
+    const { selected, selectedFeature } = this.props;
     const dashboardClassName = cx('monitor-sidebar', { 'monitor-sidebar-sm': selectedFeature });
 
     return (
       <Div hidden={!selected && !selectedFeature} className={dashboardClassName}>
-        <span className="monitor-sidebar-close" onClick={this.close.bind(this)}>×</span>
+        <span className="monitor-sidebar-close" onClick={this.close}>×</span>
         {this.renderInfo()}
       </Div>
     );

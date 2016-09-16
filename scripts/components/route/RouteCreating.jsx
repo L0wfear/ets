@@ -1,24 +1,26 @@
 import React, { Component, PropTypes } from 'react';
 import _ from 'lodash';
+import { autobind } from 'core-decorators';
 import connectToStores from 'flummox/connect';
 import { Row, Col, Input, Button, Glyphicon } from 'react-bootstrap';
-import DrawMap from '../map/DrawMap.jsx';
-import PolyMap from '../map/PolyMap.jsx';
-import ODHList from './ODHList.jsx';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import { polyState } from 'constants/polygons.js';
+import DrawMap from '../map/DrawMap.jsx';
+import PolyMap from '../map/PolyMap.jsx';
+import ODHList from './ODHList.jsx';
 
+@autobind
 class RouteCreating extends Component {
 
   static get propTypes() {
     return {
       route: PropTypes.object,
       onChange: PropTypes.func,
-      geozonePolys: PropTypes.array,
+      geozonePolys: PropTypes.object,
       manual: PropTypes.bool,
-      odhPolys: PropTypes.array,
-      dtPolys: PropTypes.array,
+      odhPolys: PropTypes.object,
+      dtPolys: PropTypes.object,
     };
   }
 
@@ -73,7 +75,7 @@ class RouteCreating extends Component {
     }
   }
 
-  onDrawFeatureClick(feature, ev, map) {
+  onDrawFeatureClick(feature, ev) {
     const { id, state } = feature.getProperties();
 
     const { object_list } = this.props.route;
@@ -96,7 +98,7 @@ class RouteCreating extends Component {
     this.props.onChange('object_list', object_list);
   }
 
-  onDrawFeatureAdd(feature, coordinates, distance, map) {
+  onDrawFeatureAdd(feature, coordinates, distance) {
     const { id } = feature.getProperties();
     const { object_list } = this.props.route;
 
@@ -122,6 +124,7 @@ class RouteCreating extends Component {
     const { object_list } = this.props.route;
     object_list.push({
       coordinates,
+      name: ''
     });
     this.props.onChange('object_list', object_list);
   }
@@ -214,11 +217,11 @@ class RouteCreating extends Component {
           <Col md={9}>
             <Div className="route-creating">
               <Map
-                onFeatureClick={this.onFeatureClick.bind(this)}
-                onPointAdd={this.onPointAdd.bind(this)}
-                onDrawFeatureAdd={this.onDrawFeatureAdd.bind(this)}
-                onDrawFeatureClick={this.onDrawFeatureClick.bind(this)}
-                removeLastDrawFeature={this.removeLastDrawFeature.bind(this)}
+                onFeatureClick={this.onFeatureClick}
+                onPointAdd={this.onPointAdd}
+                onDrawFeatureAdd={this.onDrawFeatureAdd}
+                onDrawFeatureClick={this.onDrawFeatureClick}
+                removeLastDrawFeature={this.removeLastDrawFeature}
                 zoom={this.state.zoom}
                 center={this.state.center}
                 object_list={route.object_list}
@@ -248,7 +251,7 @@ class RouteCreating extends Component {
                 onChange={this.onGeozoneSelectChange.bind(this, 'dt')}
               />
             </Div>
-            <ODHList odh_list={odh_list} odh_fail_list={odh_fail_list} checkRoute={route.type === 'vector' ? this.checkRoute.bind(this) : null} />
+            <ODHList odh_list={odh_list} odh_fail_list={odh_fail_list} checkRoute={route.type === 'vector' ? this.checkRoute : null} />
             <Div className="destination-points" hidden={route.type !== 'points'}>
               {route.object_list.map((o, i) => {
                 const label = `Пункт назначения №${i + 1} ${o.name ? '( ' + o.name + ' )' : ''}`;

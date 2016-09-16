@@ -1,7 +1,31 @@
 const icons = {};
 const iconCache = {};
 
+const ICON_MAP = {
+  9: 'podmetalka',
+  1: 'polivalka',
+  2: 'samosval',
+  4: 'pogruzchik',
+  5: 'pogruzchik',
+  6: 'reagent',
+  7: 'reagent_tverd',
+  8: 'trotuar',
+  11: 'greider',
+  13: 'musorovoz',
+  16: 'traktor',
+  18: 'musorovoz',
+  19: 'musorovoz',
+  20: 'musorovoz',
+  21: 'musorovoz',
+  22: 'musorovoz',
+  23: 'musorovoz',
+  1000: 'neizvesten',
+};
+
 export default function getMapIcon(name = 'drugoe', zoom = 1) {
+  if (ICON_MAP[name]) {
+    name = ICON_MAP[name];
+  }
   let cached = true;
 
   if (typeof icons[name] === 'undefined') {
@@ -31,27 +55,6 @@ export default function getMapIcon(name = 'drugoe', zoom = 1) {
 
   return iconCache[name][zoom];
 }
-
-const ICON_MAP = {
-  9: 'podmetalka',
-  1: 'polivalka',
-  2: 'samosval',
-  4: 'pogruzchik',
-  5: 'pogruzchik',
-  6: 'reagent',
-  7: 'reagent_tverd',
-  8: 'trotuar',
-  11: 'greider',
-  13: 'musorovoz',
-  16: 'traktor',
-  18: 'musorovoz',
-  19: 'musorovoz',
-  20: 'musorovoz',
-  21: 'musorovoz',
-  22: 'musorovoz',
-  23: 'musorovoz',
-  1000: 'neizvesten',
-};
 
 export function getIcon(id) {
   const icon = ICON_MAP[id] || 'drugoe';

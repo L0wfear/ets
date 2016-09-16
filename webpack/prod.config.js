@@ -5,7 +5,6 @@ var notifyStats = require('./utils/notifyStats');
 var CleanPlugin = require('clean-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var strip = require('strip-loader');
 
 var assetsPath = path.join(__dirname, '..', 'dist');
 var alias = require('./alias');
@@ -30,7 +29,7 @@ module.exports = {
   module: {
     loaders: [
       { test: /\.(jpe?g|png|gif|svg)$/, loader: 'url', query: { limit: 10240 } },
-      { test: /\.jsx?$/, exclude: /node_modules/, loaders: [strip.loader('debug'), 'babel?stage=0&optional=runtime&plugins=typecheck'] },
+      { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?stage=0&optional=runtime&plugins=typecheck'] },
       { test: /\.json$/, loader: 'json-loader' },
       // { test: /\.(eot|woff|woff2|ttf|svg)(\?v=\d+\.\d+\.\d+)?/, loader: 'url-loader?limit=100000&name=fonts/[name].[ext]' },
       { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', '!raw!sass?outputStyle=expanded') }

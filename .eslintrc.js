@@ -15,7 +15,6 @@ module.exports = {
   "parser": "babel-eslint",
   "rules": {
     "strict": "off",
-    "import/no-extraneous-dependencies": "off",
     "no-tabs": "error",
     "no-mixed-spaces-and-tabs": "off",
     "no-confusing-arrow": "off",

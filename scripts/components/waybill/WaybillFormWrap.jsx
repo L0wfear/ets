@@ -1,17 +1,15 @@
-import React, { Component } from 'react';
-import moment from 'moment';
+import React from 'react';
 import _ from 'lodash';
+import { autobind } from 'core-decorators';
 import Div from 'components/ui/Div.jsx';
-import WaybillForm from './WaybillForm.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
-import { getDefaultBill } from '../../stores/WaybillsStore.js';
-import { isNotNull, isEmpty, hasOdometer, saveData } from 'utils/functions';
-import { waybillSchema, waybillClosingSchema } from 'models/WaybillModel.js';
-import config from '../../config.js';
-import Taxes from './Taxes.jsx';
 import { getWarningNotification } from 'utils/notifications';
-
+import { isNotNull, saveData } from 'utils/functions';
+import { waybillSchema, waybillClosingSchema } from 'models/WaybillModel.js';
 import { FluxContext } from 'utils/decorators';
+import WaybillForm from './WaybillForm.jsx';
+import { getDefaultBill } from '../../stores/WaybillsStore.js';
+import Taxes from './Taxes.jsx';
 
 function calculateWaybillMetersDiff(waybill, field, value) {
   // Для уже созданных ПЛ
@@ -33,6 +31,7 @@ function calculateWaybillMetersDiff(waybill, field, value) {
 }
 
 @FluxContext
+@autobind
 export default class WaybillFormWrap extends FormWrap {
   constructor(props) {
     super(props);
@@ -78,11 +77,11 @@ export default class WaybillFormWrap extends FormWrap {
           const equipmentFuelGiven = waybill.equipment_fuel_given ? parseFloat(waybill.equipment_fuel_given) : 0;
           const equipmentFuelTaxes = Taxes.calculateFinalResult(waybill.equipment_tax_data);
 
-          if (!!waybill.equipment_fuel) {
-            waybill.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
-            waybill.equipment_fuel_end = (equipmentFuelStart + equipmentFuelGiven - equipmentFuelTaxes).toFixed(3);
+          if (waybill.equipment_fuel) {
+            waybill.fuel_end = ((fuelStart + fuelGiven) - fuelTaxes).toFixed(3);
+            waybill.equipment_fuel_end = ((equipmentFuelStart + equipmentFuelGiven) - equipmentFuelTaxes).toFixed(3);
           } else {
-            waybill.fuel_end = (fuelStart + fuelGiven - fuelTaxes - equipmentFuelTaxes).toFixed(3);
+            waybill.fuel_end = ((fuelStart + fuelGiven) - fuelTaxes - equipmentFuelTaxes).toFixed(3);
           }
 
           // Расчет пробегов
@@ -105,8 +104,8 @@ export default class WaybillFormWrap extends FormWrap {
               formState: waybill,
               formErrors,
               canPrint: false,
-              canSave: !!!_.filter(formErrors, (v, k) => k === 'fuel_end' ? false : v).length,
-              canClose: !!!_.filter(formErrors).length,
+              canSave: !_.filter(formErrors, (v, k) => k === 'fuel_end' ? false : v).length,
+              canClose: !_.filter(formErrors).length,
             });
           } else {
             this.setState({
@@ -119,8 +118,8 @@ export default class WaybillFormWrap extends FormWrap {
           this.setState({
             formState: waybill,
             canPrint: true,
-            canSave: !!!_.filter(this.validate(waybill, {})).length,
-            canClose: !!!_.filter(this.validate(waybill, {})).length,
+            canSave: !_.filter(this.validate(waybill, {})).length,
+            canClose: !_.filter(this.validate(waybill, {})).length,
             formErrors: this.validate(waybill, {}),
           });
         }
@@ -139,14 +138,14 @@ export default class WaybillFormWrap extends FormWrap {
     const equipmentFuelGiven = formState.equipment_fuel_given ? parseFloat(formState.equipment_fuel_given) : 0;
     const equipmentFuelTaxes = Taxes.calculateFinalResult(formState.equipment_tax_data);
 
-    if (!!formState.equipment_fuel) {
-      formState.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
-      formState.equipment_fuel_end = (equipmentFuelStart + equipmentFuelGiven - equipmentFuelTaxes).toFixed(3);
+    if (formState.equipment_fuel) {
+      formState.fuel_end = ((fuelStart + fuelGiven) - fuelTaxes).toFixed(3);
+      formState.equipment_fuel_end = ((equipmentFuelStart + equipmentFuelGiven) - equipmentFuelTaxes).toFixed(3);
     } else {
-      formState.fuel_end = (fuelStart + fuelGiven - fuelTaxes - equipmentFuelTaxes).toFixed(3);
+      formState.fuel_end = ((fuelStart + fuelGiven) - fuelTaxes - equipmentFuelTaxes).toFixed(3);
     }
 
-    if (!!!formState.status || formState.status === 'draft') {
+    if (!formState.status || formState.status === 'draft') {
       this.schema = waybillSchema;
       formErrors = this.validate(formState, formErrors);
     } else if (formState.status && formState.status === 'active') {
@@ -156,8 +155,8 @@ export default class WaybillFormWrap extends FormWrap {
       if (typeof formErrors.odometr_end === 'undefined') formErrors.motohours_end = undefined;
     }
 
-    newState.canSave = !!!_.filter(formErrors, (v, k) => k === 'fuel_end' ? false : v).length;
-    newState.canClose = !!!_.filter(formErrors).length;
+    newState.canSave = !_.filter(formErrors, (v, k) => k === 'fuel_end' ? false : v).length;
+    newState.canClose = !_.filter(formErrors).length;
 
     newState.formState = formState;
     newState.formErrors = formErrors;
@@ -198,9 +197,7 @@ export default class WaybillFormWrap extends FormWrap {
   }
 
   handleMultipleChange(fields) {
-    const { formErrors } = this.state;
     let formState = _.cloneDeep(this.state.formState);
-    const newState = {};
     _.mapKeys(fields, (value, field) => {
       formState[field] = value;
       formState = calculateWaybillMetersDiff(formState, field, value);
@@ -223,7 +220,7 @@ export default class WaybillFormWrap extends FormWrap {
     const currentWaybillId = formState.id;
 
     const callback = (createdWaybillId) => {
-      const waybill_id = createdWaybillId ? createdWaybillId : currentWaybillId;
+      const waybill_id = createdWaybillId || currentWaybillId;
       flux.getActions('waybills').printWaybill(print_form_type, waybill_id)
         .then(({ blob, fileName }) => {
           saveData(blob, fileName);
@@ -243,7 +240,7 @@ export default class WaybillFormWrap extends FormWrap {
     const waybillStatus = formState.status;
     const { flux } = this.context;
 
-    if (!!!waybillStatus) { // если создаем ПЛ
+    if (!waybillStatus) { // если создаем ПЛ
       if (typeof callback === 'function') {
         formState.status = 'draft';
         const r = await flux.getActions('waybills').createWaybill(formState);
@@ -341,18 +338,21 @@ export default class WaybillFormWrap extends FormWrap {
   }
 
   render() {
-    return 	(<Div hidden={!this.props.showForm}>
-              <WaybillForm formState={this.state.formState}
-                onSubmit={this.handleFormSubmit.bind(this)}
-                handlePrint={this.handlePrint.bind(this)}
-                handleClose={this.handleClose.bind(this)}
-                handleFormChange={this.handleFormStateChange.bind(this)}
-                handleMultipleChange={this.handleMultipleChange.bind(this)}
-                show={this.props.showForm}
-                onHide={this.props.onFormHide}
-                {...this.state}
-              />
-            </Div>);
+    return (
+      <Div hidden={!this.props.showForm}>
+        <WaybillForm
+          formState={this.state.formState}
+          onSubmit={this.handleFormSubmit}
+          handlePrint={this.handlePrint}
+          handleClose={this.handleClose}
+          handleFormChange={this.handleFormStateChange}
+          handleMultipleChange={this.handleMultipleChange}
+          show={this.props.showForm}
+          onHide={this.props.onFormHide}
+          {...this.state}
+        />
+      </Div>
+    );
   }
 
 }

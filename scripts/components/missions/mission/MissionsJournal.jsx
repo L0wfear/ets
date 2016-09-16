@@ -1,14 +1,13 @@
 import React from 'react';
 import { Button, Glyphicon, ButtonToolbar } from 'react-bootstrap';
-import MissionsTable from './MissionsTable.jsx';
-import MissionFormWrap from './MissionFormWrap.jsx';
-import MissionRejectForm from './MissionRejectForm.jsx';
 import MissionInfoFormWrap from 'components/dashboard/MissionInfoFormWrap.jsx';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
-import { saveData } from 'utils/functions';
 import { getWarningNotification } from 'utils/notifications';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import _ from 'lodash';
+import MissionsTable from './MissionsTable.jsx';
+import MissionFormWrap from './MissionFormWrap.jsx';
+import MissionRejectForm from './MissionRejectForm.jsx';
 
 @connectToStores(['missions', 'objects', 'employees', 'routes'])
 @staticProps({
@@ -51,9 +50,8 @@ export default class MissionsJournal extends CheckableElementsList {
 
     if (this.state.selectedElement === null) {
       return true;
-    } else {
-      return this.state.selectedElement.status !== 'assigned';
     }
+    return this.state.selectedElement.status !== 'assigned';
   }
 
   checkDisabledDelete() {

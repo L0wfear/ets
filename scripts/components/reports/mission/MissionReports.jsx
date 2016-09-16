@@ -7,53 +7,52 @@ import { getReportNotReadyNotification } from 'utils/notifications';
 import { FluxContext, HistoryContext, exportable, staticProps, connectToStores } from 'utils/decorators';
 import MissionReportsTable from './MissionReportsTable.jsx';
 
-let MissionReportsDatepicker = (props) => {
-	return (
-		<Row>
-			<Col md={3}>
-			</Col>
-			<Col md={6} className="faxogramms-date-range">
-				<Div className="inline-block faxogramms-date">
-					<Datepicker date={ props.mission_date_start_from } onChange={props.handleChange.bind(null, 'mission_date_start_from')}/>
-				</Div>
-				<Div className="date-divider">—</Div>
-				<Div className="inline-block">
-					<Datepicker date={ props.mission_date_end_to } onChange={props.handleChange.bind(null, 'mission_date_end_to')}/>
-				</Div>
-			</Col>
+const MissionReportsDatepicker = (props) => {
+  return (
+    <Row>
+      <Col md={3} />
+      <Col md={6} className="faxogramms-date-range">
+        <Div className="inline-block faxogramms-date">
+          <Datepicker date={props.mission_date_start_from} onChange={props.handleChange.bind(null, 'mission_date_start_from')} />
+        </Div>
+        <Div className="date-divider">—</Div>
+        <Div className="inline-block">
+          <Datepicker date={props.mission_date_end_to} onChange={props.handleChange.bind(null, 'mission_date_end_to')} />
+        </Div>
+      </Col>
       <Col md={3}>
         <Button bsSize="small" onClick={props.onClick.bind(this)}>Сформировать отчет</Button>
       </Col>
-		</Row>
-	);
-}
+    </Row>
+  );
+};
 
 @connectToStores(['missions'])
 @FluxContext
 @HistoryContext
 @staticProps({
-	entity: 'car_odh_travel_report'
+  entity: 'car_odh_travel_report',
 })
 @exportable
 export default class MissionReports extends Component {
 
-	constructor(props) {
-		super(props);
+  constructor(props) {
+    super(props);
 
     let [mission_date_start_from, mission_date_end_to] = getDatesByShift();
 
-		this.state = {
+    this.state = {
       mission_date_start_from,
       mission_date_end_to,
-		};
-	}
+    };
+  }
 
-	componentDidMount() {
-		const { flux } = this.context;
-		flux.getActions('missions').getMissionReports();
-	}
+  componentDidMount() {
+    const { flux } = this.context;
+    flux.getActions('missions').getMissionReports();
+  }
 
-  onReportSelect({props}) {
+  onReportSelect({ props }) {
     const id = props.data.id;
     if (props.data.status !== 'success') {
       global.NOTIFICATION_SYSTEM._addNotification(getReportNotReadyNotification(this.context.flux));
@@ -63,24 +62,22 @@ export default class MissionReports extends Component {
   }
 
   handleChange(field, value) {
-		this.setState({[field]: value});
-	}
-
-  createMissionReport() {
-		const { flux } = this.context;
-		flux.getActions('missions').createMissionReport(this.state.mission_date_start_from, this.state.mission_date_end_to);
+    this.setState({ [field]: value });
   }
 
-	render() {
-		const { missionReportsList } = this.props;
+  createMissionReport() {
+    const { flux } = this.context;
+    flux.getActions('missions').createMissionReport(this.state.mission_date_start_from, this.state.mission_date_end_to);
+  }
 
-		return (
-			<div className="ets-page-wrap">
-  			<MissionReportsDatepicker handleChange={this.handleChange.bind(this)} onClick={this.createMissionReport.bind(this)} {...this.state}/>
-				<MissionReportsTable data={missionReportsList} onRowSelected={this.onReportSelect.bind(this)}>
-				</MissionReportsTable>
-			</div>
-		);
+  render() {
+    const { missionReportsList } = this.props;
 
-	}
+    return (
+      <div className="ets-page-wrap">
+        <MissionReportsDatepicker handleChange={this.handleChange.bind(this)} onClick={this.createMissionReport.bind(this)} {...this.state} />
+        <MissionReportsTable data={missionReportsList} onRowSelected={this.onReportSelect.bind(this)} />
+      </div>
+    );
+  }
 }

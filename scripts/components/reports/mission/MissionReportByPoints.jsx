@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import connectToStores from 'flummox/connect';
 import Table from 'components/ui/table/DataTable.jsx';
 
-let tableMeta = {
-	cols: [
+const tableMeta = {
+  cols: [
     {
       name: 'name',
       displayName: 'Наименование пункта назначения',
@@ -18,65 +18,67 @@ let tableMeta = {
       type: 'string',
       filter: {
         type: 'select',
-				labelFunction: (data) => data === 'fail' ? 'Не пройден' : 'Пройден'
+        labelFunction: data => data === 'fail' ? 'Не пройден' : 'Пройден',
       },
     },
-	]
+  ],
 };
 
-let MissionReportByPointsTable = (props) => {
+const MissionReportByPointsTable = (props) => {
+  const renderers = {
+    status: ({ data }) => <div>{data === 'fail' ? 'Не пройден' : 'Пройден'}</div>,
+  };
 
-	const renderers = {
-    status: ({data}) => <div>{data === 'fail' ? 'Не пройден' : 'Пройден'}</div>,
-	};
-
-	return <Table title='Прохождение заданий по пунктам назначения'
-								tableMeta={tableMeta}
-								results={props.data}
-								renderers={renderers}
-								{...props} />
-
-}
+  return (
+    <Table
+      title="Прохождение заданий по пунктам назначения"
+      tableMeta={tableMeta}
+      results={props.data}
+      renderers={renderers}
+      {...props}
+    />
+  );
+};
 
 class MissionReportByPoints extends Component {
 
-	static propTypes = {
-		renderOnly: PropTypes.bool,
-		onElementChange: PropTypes.func
-	}
+  static propTypes = {
+    renderOnly: PropTypes.bool,
+    onElementChange: PropTypes.func,
+  }
 
-	constructor(props) {
-		super(props);
-		this.state = {
-		};
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+  }
 
-	async componentDidMount() {
-		if (!this.props.renderOnly) {
-			await this.context.flux.getActions('missions').getMissionReportById(this.props.routeParams.id);
-			this.context.flux.getActions('missions').getMissionReportByPoints(this.props.routeParams.index);
-		}
-	}
+  async componentDidMount() {
+    if (!this.props.renderOnly) {
+      await this.context.flux.getActions('missions').getMissionReportById(this.props.routeParams.id);
+      this.context.flux.getActions('missions').getMissionReportByPoints(this.props.routeParams.index);
+    }
+  }
 
-	selectElement(el) {
-		if (typeof this.props.onElementChange === 'function')
-		this.props.onElementChange(el.props.data[this.selectField]);
-	}
+  selectElement(el) {
+    if (typeof this.props.onElementChange === 'function') {
+      this.props.onElementChange(el.props.data[this.selectField]);
+    }
+  }
 
-	render() {
-		const { renderOnly = false } = this.props;
+  render() {
+    const { renderOnly = false } = this.props;
 
-		return (
-			<div className="ets-page-wrap">
-				<MissionReportByPointsTable noHeader={renderOnly} onRowSelected={this.selectElement.bind(this)} data={this.props.selectedReportDataPoints || []} {...this.props} >
-				</MissionReportByPointsTable>
-			</div>
-		);
-	}
+    return (
+      <div className="ets-page-wrap">
+        <MissionReportByPointsTable noHeader={renderOnly} onRowSelected={this.selectElement.bind(this)} data={this.props.selectedReportDataPoints || []} {...this.props} />
+      </div>
+    );
+  }
 }
 
 MissionReportByPoints.contextTypes = {
-	flux: React.PropTypes.object,
+  flux: React.PropTypes.object,
 };
 
 export default connectToStores(MissionReportByPoints, ['missions']);

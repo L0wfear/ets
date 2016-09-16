@@ -57,7 +57,7 @@ export default class CoverageReport extends Component {
   }
 
   onFeatureClick(feature, ev, map) {
-    let { id, name, state } = feature.getProperties();
+    const { id, name, state } = feature.getProperties();
     if (state === 2) return;
     const mission = this.state.coverageReport.find(r => r.missions.find(m => m.objects.indexOf(+id) > -1)).missions.find(m => m.objects.indexOf(+id) > -1);
     if (name) {
@@ -134,7 +134,9 @@ export default class CoverageReport extends Component {
         <Div>
           <Row>
             <Col md={3}>
-              <Field type="select" label="Подразделение"
+              <Field
+                type="select"
+                label="Подразделение"
                 options={COMPANY_ELEMENTS}
                 value={this.state.structure_id}
                 onChange={this.handleChange.bind(this, 'structure_id')}
@@ -157,7 +159,7 @@ export default class CoverageReport extends Component {
             </Col>
             <Col md={6} />
           </Row>
-          {!!this.state.coverageReport ? <Row>
+          {this.state.coverageReport ? <Row>
             <Col md={7}>
               <Div className="route-creating">
                 <PolyMap
@@ -210,13 +212,15 @@ const ObjectsCoverReportTable = (props) => {
     isChecked: ({ data }) => <input type="checkbox" />,
   };
 
-  return (<Table
-    title="Отчет"
-    tableMeta={tableMeta}
-    results={props.data}
-    renderers={renderers}
-    enumerated={false}
-    multiSelection
-    {...props}
-  />);
+  return (
+    <Table
+      title="Отчет"
+      tableMeta={tableMeta}
+      results={props.data}
+      renderers={renderers}
+      enumerated={false}
+      multiSelection
+      {...props}
+    />
+  );
 };

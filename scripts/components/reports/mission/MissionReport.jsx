@@ -1,18 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connectToStores, HistoryContext, FluxContext, exportable } from 'utils/decorators';
 import { Button, Glyphicon } from 'react-bootstrap';
 import MissionReportTable from './MissionReportTable.jsx';
 
 @connectToStores(['missions'])
+@exportable({ entity: 'car_odh_travel_report' })
 @HistoryContext
 @FluxContext
-@exportable
 export default class MissionReport extends Component {
 
-  constructor(props) {
-    super(props);
-
-    this.entity = 'car_odh_travel_report/' + this.props.routeParams.id;
+  static get propTypes() {
+    return {
+      routeParams: PropTypes.object,
+      selectedReportData: PropTypes.array,
+    };
   }
 
   componentDidMount() {
@@ -22,12 +23,13 @@ export default class MissionReport extends Component {
 
   onReportSelect({ props }) {
     const index = props.data.index;
+    const { id } = this.props.routeParams;
     if (props.data.report_by_odh) {
-      this.context.history.pushState(null, '/mission-report/' + this.props.routeParams.id + '/odhs/' + index);
+      this.context.history.pushState(null, `/mission-report/${id}/odhs/${index}`);
     } else if (props.data.report_by_dt) {
-      this.context.history.pushState(null, '/mission-report/' + this.props.routeParams.id + '/dts/' + index);
+      this.context.history.pushState(null, `/mission-report/${id}/dts/${index}`);
     } else if (props.data.report_by_point) {
-      this.context.history.pushState(null, '/mission-report/' + this.props.routeParams.id + '/points/' + index);
+      this.context.history.pushState(null, `/mission-report/${id}/points/${index}`);
     }
   }
 
@@ -37,7 +39,7 @@ export default class MissionReport extends Component {
     return (
       <div className="ets-page-wrap">
         <MissionReportTable data={selectedReportData} onRowSelected={this.onReportSelect.bind(this)}>
-          <Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt" /></Button>
+          <Button bsSize="small" onClick={() => this.props.export({}, true)}><Glyphicon glyph="download-alt" /></Button>
         </MissionReportTable>
       </div>
     );

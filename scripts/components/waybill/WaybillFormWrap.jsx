@@ -313,7 +313,7 @@ export default class WaybillFormWrap extends FormWrap {
     const { formState } = this.state;
     const prevStatus = formState.status;
     if (!taxesControl) {
-      global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Необходимо заполнить нормы для расчета топлива!'));
+      global.NOTIFICATION_SYSTEM.addNotification(getWarningNotification('Необходимо заполнить нормы для расчета топлива!'));
       return;
     }
     confirmDialog({

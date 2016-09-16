@@ -1,6 +1,6 @@
 import { PropTypes } from 'react';
 import flummoxConnectToStores from 'flummox/connect';
-import exportable from './exportable.js';
+import exportable from './exportable.jsx';
 
 /**
  * Добавляет flux в static contextTypes класса

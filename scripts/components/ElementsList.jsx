@@ -16,6 +16,8 @@ class ElementsList extends React.Component {
   static get propTypes() {
     return {
       location: PropTypes.object,
+      exportable: PropTypes.bool,
+      export: PropTypes.func,
     };
   }
 
@@ -190,6 +192,7 @@ class ElementsList extends React.Component {
    */
   getButtons() {
     // Операции, заданные в статической переменной operations класса-наследника
+    console.log(this.props);
     const operations = this.constructor.operations || [];
     const entity = this.constructor.entity;
     const buttons = [];
@@ -222,12 +225,12 @@ class ElementsList extends React.Component {
         />
       );
     }
-    if (this.exportable) {
+    if (this.props.exportable) {
       buttons.push(
         <Button
           key={buttons.length}
           bsSize="small"
-          onClick={() => this.export()}
+          onClick={() => this.props.export()}
         >
           <Glyphicon glyph="download-alt" />
         </Button>

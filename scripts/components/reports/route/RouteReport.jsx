@@ -78,22 +78,21 @@ const RouteOdhCoveringReportTable = (props) => {
     status: ({ data }) => <div>{!isEmpty(data) ? getStatusLabel(data) : ''}</div>,
   };
 
-  return (<Table title="Покрытие ОДХ маршрутами"
-    tableMeta={tableMeta}
-    results={props.data}
-    renderers={renderers}
-    {...props}
-  />);
+  return (
+    <Table
+      title="Покрытие ОДХ маршрутами"
+      tableMeta={tableMeta}
+      results={props.data}
+      renderers={renderers}
+      {...props}
+    />
+  );
 };
 
 @connectToStores(['routes'])
+@exportable({ entity: 'route_odh_covering_report/' })
 @FluxContext
-@exportable
 export default class RouteOdhCoveringReport extends Component {
-  constructor(props) {
-    super(props);
-    this.entity = 'route_odh_covering_report/' + this.props.routeParams.id;
-  }
 
   componentDidMount() {
     const { flux } = this.context;
@@ -106,7 +105,7 @@ export default class RouteOdhCoveringReport extends Component {
     return (
       <div className="ets-page-wrap">
         <RouteOdhCoveringReportTable data={selectedReportData} >
-          <Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt" /></Button>
+          <Button bsSize="small" onClick={() => this.props.export({}, true)}><Glyphicon glyph="download-alt" /></Button>
         </RouteOdhCoveringReportTable>
       </div>
     );

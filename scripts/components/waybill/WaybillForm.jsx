@@ -101,7 +101,7 @@ class WaybillForm extends Form {
       const currentMissions = formState.mission_id_list;
       const newMissions = currentMissions.filter(el => availableMissions.indexOf(el) > -1);
       this.props.handleFormChange('mission_id_list', newMissions);
-      notificate && global.NOTIFICATION_SYSTEM._addNotification(notifications.missionsByCarAndDateUpdateNotification);
+      notificate && global.NOTIFICATION_SYSTEM.addNotification(notifications.missionsByCarAndDateUpdateNotification);
     });
   }
 

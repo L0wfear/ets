@@ -18,7 +18,7 @@ class AppNotificationSystem extends NotificationSystem {
   }
 
 
-  _addNotification(notification) {
+  addNotification(notification) {
     this._notificationSystem.addNotification(notification)
   }
 

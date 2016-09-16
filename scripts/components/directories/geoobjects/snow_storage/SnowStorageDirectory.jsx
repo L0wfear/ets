@@ -12,11 +12,6 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 })
 // @exportable
 export default class SnowStorageDirectory extends ElementsList {
-
-  constructor(props, context) {
-    super(props);
-  }
-
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;

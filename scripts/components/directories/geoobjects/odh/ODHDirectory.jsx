@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import ODHTable from './ODHTable.jsx';
-import ElementsList from 'components/ElementsList.jsx';
-import OdhFormWrap from './OdhFormWrap.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import ElementsList from 'components/ElementsList.jsx';
+import ODHTable from './ODHTable.jsx';
+import OdhFormWrap from './OdhFormWrap.jsx';
 
 @connectToStores(['geoObjects'])
+@exportable({ path: 'geozones', entity: 'odh' })
 @staticProps({
   path: 'geozones',
   entity: 'odh',
@@ -13,13 +14,7 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
   formComponent: OdhFormWrap,
   operations: ['READ'],
 })
-@exportable
 export default class ODHDirectory extends ElementsList {
-
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;

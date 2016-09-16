@@ -28,7 +28,7 @@ export default class OdhCoverageReportPrintForm extends Component {
 			</Modal.Body>
 			<Modal.Footer>
 				<Div className="inline-block">
-					<Button onClick={::this.export}>ОК</Button>
+					<Button onClick={::this.props.export}>ОК</Button>
 					<Button onClick={this.props.onFormHide}>Отмена</Button>
 				</Div>
 			</Modal.Footer>

@@ -15,6 +15,8 @@ export default class CheckableElementsList extends ElementsList {
 
   static propTypes = {
     onListStateChange: PropTypes.func,
+    exportable: PropTypes.bool,
+    export: PropTypes.func,
   }
 
   constructor(props) {
@@ -97,9 +99,9 @@ export default class CheckableElementsList extends ElementsList {
         />
       );
     }
-    if (this.exportable) {
+    if (this.props.exportable) {
       buttons.push(
-        <Button key={buttons.length} bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt" /></Button>
+        <Button key={buttons.length} bsSize="small" onClick={() => this.props.export()}><Glyphicon glyph="download-alt" /></Button>
       );
     }
     return buttons;

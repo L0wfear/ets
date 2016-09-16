@@ -9,6 +9,7 @@ import DutyMissionsTable from './DutyMissionsTable.jsx';
 import DutyMissionFormWrap from './DutyMissionFormWrap.jsx';
 
 @connectToStores(['missions', 'objects'])
+@exportable({ entity: 'duty_mission' })
 @staticProps({
   entity: 'duty_mission',
   listName: 'dutyMissionsList',
@@ -17,7 +18,6 @@ import DutyMissionFormWrap from './DutyMissionFormWrap.jsx';
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
   exportable: true,
 })
-@exportable
 @autobind
 export default class DutyMissionsJournal extends CheckableElementsList {
 
@@ -45,9 +45,8 @@ export default class DutyMissionsJournal extends CheckableElementsList {
 
     if (this.state.selectedElement === null) {
       return true;
-    } else {
-      return this.state.selectedElement.status !== 'assigned';
     }
+    return this.state.selectedElement.status !== 'assigned';
   }
 
   completeMission() {
@@ -78,7 +77,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       this.setState({
         checkedElements: {},
       });
-      global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Отметить как "Выполненые" можно только назначенные наряд-задания!'));
+      global.NOTIFICATION_SYSTEM.addNotification(getWarningNotification('Отметить как "Выполненые" можно только назначенные наряд-задания!'));
     } else {
       this.completeMission();
     }
@@ -98,9 +97,8 @@ export default class DutyMissionsJournal extends CheckableElementsList {
         }
       });
       this.setState({ checkedElements: {} });
-      global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Отметить как "Невыполненые" можно только назначенные наряд-задания!'));
-    }
-    else {
+      global.NOTIFICATION_SYSTEM.addNotification(getWarningNotification('Отметить как "Невыполненые" можно только назначенные наряд-задания!'));
+    } else {
       this.rejectMission();
     }
   }
@@ -121,7 +119,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       });
 
       if (isNotDeleted) {
-        global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Удалились только задания со статусом "Не назначено"!'));
+        global.NOTIFICATION_SYSTEM.addNotification(getWarningNotification('Удалились только задания со статусом "Не назначено"!'));
       }
       this.setState({
         checkedElements: {},

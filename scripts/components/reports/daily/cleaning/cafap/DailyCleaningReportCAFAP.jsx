@@ -1,13 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Input, Button, Glyphicon } from 'react-bootstrap';
 import { FluxContext, connectToStores, exportable } from 'utils/decorators';
 import { getFormattedDateTime } from 'utils/dates';
 import DailyCleaningReportCAFAPTable from './DailyCleaningReportCAFAPTable.jsx';
 
 @connectToStores(['missions'])
+@exportable({ entity: 'geozone_element_traveled_daily_report__cafap' })
 @FluxContext
-@exportable
 export default class DailyCleaningReportCAFAP extends Component {
+
+  static get propTypes() {
+    return {
+      routeParams: PropTypes.object,
+    };
+  }
 
   constructor(props) {
     super(props);
@@ -17,8 +23,6 @@ export default class DailyCleaningReportCAFAP extends Component {
       dateFrom: '',
       dateTo: '',
     };
-
-    this.entity = 'geozone_element_traveled_daily_report__cafap/' + this.props.routeParams.id;
   }
 
   async componentDidMount() {
@@ -42,7 +46,7 @@ export default class DailyCleaningReportCAFAP extends Component {
             <Input type="text" readOnly value={dateFrom} /> —
             <Input type="text" readOnly value={dateTo} />
           </div>
-          <Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt" /></Button>
+          <Button bsSize="small" onClick={() => this.props.export({}, true)}><Glyphicon glyph="download-alt" /></Button>
         </DailyCleaningReportCAFAPTable>
       </div>
     );

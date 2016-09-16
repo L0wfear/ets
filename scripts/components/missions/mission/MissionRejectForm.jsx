@@ -89,7 +89,7 @@ class MissionRejectForm extends Component {
       }
     }
     if (!resolve.errors || resolve.errors && !resolve.errors.length) {
-      global.NOTIFICATION_SYSTEM._addNotification(reassignMissionSuccessNotification);
+      global.NOTIFICATION_SYSTEM.addNotification(reassignMissionSuccessNotification);
       this.props.onReject(true);
     };
   }

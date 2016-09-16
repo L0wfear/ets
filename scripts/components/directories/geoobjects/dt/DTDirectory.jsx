@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import DTTable from './DTTable.jsx';
 import ElementsList from 'components/ElementsList.jsx';
-import DtFormWrap from './DtFormWrap.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import DtFormWrap from './DtFormWrap.jsx';
+import DTTable from './DTTable.jsx';
 
 @connectToStores(['geoObjects'])
+@exportable({ path: 'geozones', entity: 'dt' })
 @staticProps({
   path: 'geozones',
   entity: 'dt',
@@ -13,7 +14,6 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
   formComponent: DtFormWrap,
   operations: ['READ'],
 })
-@exportable
 export default class DTDirectory extends ElementsList {
   componentDidMount() {
     super.componentDidMount();

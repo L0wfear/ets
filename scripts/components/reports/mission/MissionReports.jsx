@@ -28,18 +28,18 @@ const MissionReportsDatepicker = (props) => {
 };
 
 @connectToStores(['missions'])
+@exportable({ entity: 'car_odh_travel_report' })
 @FluxContext
 @HistoryContext
 @staticProps({
   entity: 'car_odh_travel_report',
 })
-@exportable
 export default class MissionReports extends Component {
 
   constructor(props) {
     super(props);
 
-    let [mission_date_start_from, mission_date_end_to] = getDatesByShift();
+    const [mission_date_start_from, mission_date_end_to] = getDatesByShift();
 
     this.state = {
       mission_date_start_from,
@@ -55,7 +55,7 @@ export default class MissionReports extends Component {
   onReportSelect({ props }) {
     const id = props.data.id;
     if (props.data.status !== 'success') {
-      global.NOTIFICATION_SYSTEM._addNotification(getReportNotReadyNotification(this.context.flux));
+      global.NOTIFICATION_SYSTEM.addNotification(getReportNotReadyNotification(this.context.flux));
     } else {
       this.context.history.pushState(null, `/mission-report/${id}`);
     }

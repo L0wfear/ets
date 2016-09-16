@@ -6,9 +6,9 @@ import { Button, Glyphicon } from 'react-bootstrap';
 
 const getTableMeta = (props) => {
   const displayNameByElement = {
-    'roadway': 'Площадь проезжей части, м2',
-    'footway': 'Площадь тротуаров с мехуборкой, м2',
-    'yard': 'Механизированная площадь двора, м2'
+    roadway: 'Площадь проезжей части, м2',
+    footway: 'Площадь тротуаров с мехуборкой, м2',
+    yard: 'Механизированная площадь двора, м2',
   };
 
   const tableMeta = {
@@ -71,17 +71,24 @@ const MissionReportTable = (props) => {
 
   // if (!props.data.length) return <div/>
 
-  return (<Table title="Статус по выполнению технологических операций"
-    tableMeta={tableMeta}
-    results={props.data}
-    renderers={renderers}
-    {...props}
-  />);
+  return (
+    <Table
+      title="Статус по выполнению технологических операций"
+      tableMeta={tableMeta}
+      results={props.data}
+      renderers={renderers}
+      {...props}
+    />
+  );
 };
 
-@exportable
+@exportable({ entity: 'status_of_technical_operation_execution_weekly_report' })
 class MissionReport extends Component {
 
+  static contextTypes = {
+    history: React.PropTypes.object,
+    flux: React.PropTypes.object,
+  }
 
   constructor(props) {
     super(props);
@@ -89,7 +96,6 @@ class MissionReport extends Component {
     this.state = {
       selectedReportData: [],
     };
-    this.entity = 'status_of_technical_operation_execution_weekly_report/' + this.props.routeParams.id;
   }
 
   async componentDidMount() {
@@ -114,16 +120,11 @@ class MissionReport extends Component {
     return (
       <div className="ets-page-wrap">
         <MissionReportTable data={selectedReportData} element={element} onRowSelected={this.onReportSelect.bind(this)}>
-          <Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt" /></Button>
+          <Button bsSize="small" onClick={() => this.props.export({}, true)}><Glyphicon glyph="download-alt" /></Button>
         </MissionReportTable>
       </div>
     );
   }
 }
-
-MissionReport.contextTypes = {
-  history: React.PropTypes.object,
-  flux: React.PropTypes.object,
-};
 
 export default connectToStores(MissionReport, ['missions']);

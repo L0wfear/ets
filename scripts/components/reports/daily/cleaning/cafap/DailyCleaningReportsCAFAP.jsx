@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import Table from 'components/ui/table/DataTable.jsx';
-import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
 import { getToday9am, getTomorrow9am } from 'utils/dates';
 import { getReportNotReadyNotification2 } from 'utils/notifications';
 import DailyReportHeader from 'components/reports/DailyReportHeader.jsx';
 import _ from 'lodash';
-import { FluxContext, HistoryContext, exportable, staticProps, connectToStores } from 'utils/decorators';
+import { FluxContext, HistoryContext, staticProps, connectToStores } from 'utils/decorators';
 import DailyCleaningReportsCAFAPTable from './DailyCleaningReportsCAFAPTable.jsx';
 
 @connectToStores(['reports'])
@@ -14,13 +12,12 @@ import DailyCleaningReportsCAFAPTable from './DailyCleaningReportsCAFAPTable.jsx
 @staticProps({
   entity: 'geozone_element_traveled_daily_report__cafap',
 })
-@exportable
 export default class DailyCleaningReportsCAFAP extends Component {
 
   constructor(props) {
     super(props);
 
-    let [date_start, date_end] = [getToday9am(), getTomorrow9am()];
+    const [date_start, date_end] = [getToday9am(), getTomorrow9am()];
 
     this.state = {
       date_start,
@@ -39,7 +36,7 @@ export default class DailyCleaningReportsCAFAP extends Component {
   onReportSelect({ props }) {
     const id = props.data.id;
     if (props.data.status !== 'success' && props.data.status !== 'fail') {
-      global.NOTIFICATION_SYSTEM._addNotification(getReportNotReadyNotification2(this.context.flux));
+      global.NOTIFICATION_SYSTEM.addNotification(getReportNotReadyNotification2(this.context.flux));
     } else if (props.data.status !== 'fail') {
       this.context.history.pushState(null, `/daily-cleaning-report-cafap/${props.data.element}/${id}`);
     }

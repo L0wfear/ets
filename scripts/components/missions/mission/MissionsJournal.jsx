@@ -11,13 +11,13 @@ import MissionFormWrap from './MissionFormWrap.jsx';
 import MissionRejectForm from './MissionRejectForm.jsx';
 
 @connectToStores(['missions', 'objects', 'employees', 'routes'])
+@exportable({ entity: 'mission' })
 @staticProps({
   entity: 'mission',
   listName: 'missionsList',
   tableComponent: MissionsTable,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
-@exportable
 @autobind
 export default class MissionsJournal extends CheckableElementsList {
 
@@ -82,7 +82,7 @@ export default class MissionsJournal extends CheckableElementsList {
         } else error = true;
       });
       this.setState({ checkedElements: {} });
-      if (error) global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Отметить как "Выполненые" можно только назначенные задания!'));
+      if (error) global.NOTIFICATION_SYSTEM.addNotification(getWarningNotification('Отметить как "Выполненые" можно только назначенные задания!'));
     } else {
       this.completeMission();
     }
@@ -104,7 +104,7 @@ export default class MissionsJournal extends CheckableElementsList {
         } else error = true;
       });
       this.setState({ checkedElements: {} });
-      if (error) global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Отметить как "Невыполненые" можно только назначенные задания!'));
+      if (error) global.NOTIFICATION_SYSTEM.addNotification(getWarningNotification('Отметить как "Невыполненые" можно только назначенные задания!'));
     }
     else {
       this.rejectMission();
@@ -128,7 +128,7 @@ export default class MissionsJournal extends CheckableElementsList {
       });
 
       if (isNotDeleted) {
-        global.NOTIFICATION_SYSTEM._addNotification(getWarningNotification('Удалились только задания со статусом "Не назначено"!'));
+        global.NOTIFICATION_SYSTEM.addNotification(getWarningNotification('Удалились только задания со статусом "Не назначено"!'));
       }
       this.setState({
         checkedElements: {},

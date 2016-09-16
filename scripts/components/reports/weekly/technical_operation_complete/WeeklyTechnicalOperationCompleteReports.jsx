@@ -110,18 +110,18 @@ const WeeklyTechnicalOperationCompleteReportsTable = (props) => {
 };
 
 @connectToStores(['reports'])
+@exportable({ entity: 'status_of_technical_operation_execution_weekly_report' })
 @FluxContext
 @HistoryContext
 @staticProps({
   entity: 'status_of_technical_operation_execution_weekly_report',
 })
-@exportable
 export default class WeeklyTechnicalOperationCompleteReports extends Component {
 
   constructor(props) {
     super(props);
 
-    let [date_start, date_end] = [getToday9am(), getTomorrow9am()];
+    const [date_start, date_end] = [getToday9am(), getTomorrow9am()];
 
     this.state = {
       date_start,
@@ -140,7 +140,7 @@ export default class WeeklyTechnicalOperationCompleteReports extends Component {
   onReportSelect({ props }) {
     const id = props.data.id;
     if (props.data.status !== 'success' && props.data.status !== 'fail') {
-      global.NOTIFICATION_SYSTEM._addNotification(getReportNotReadyNotification3(this.context.flux));
+      global.NOTIFICATION_SYSTEM.addNotification(getReportNotReadyNotification3(this.context.flux));
     } else if (props.data.status !== 'fail') {
       this.context.history.pushState(null, `/weekly-technical-operation-complete-report/${props.data.element}/${id}`);
     }
@@ -168,7 +168,7 @@ export default class WeeklyTechnicalOperationCompleteReports extends Component {
           data={weeklyTechnicalOperationCompleteReportsList}
           onRowSelected={this.onReportSelect.bind(this)}
         >
-          {/* <Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt"/></Button> */}
+          {/* <Button bsSize="small" onClick={() => this.props.export()}><Glyphicon glyph="download-alt"/></Button> */}
         </WeeklyTechnicalOperationCompleteReportsTable>
       </div>
     );

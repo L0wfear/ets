@@ -4,13 +4,13 @@ import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 
 @connectToStores(['geoObjects'])
+@exportable({ path: 'geozones', entity: 'danger_zone' })
 @staticProps({
   path: 'geozones',
   entity: 'danger_zone',
   listName: 'dangerZonesList',
   tableComponent: DangerZonesTable,
 })
-@exportable
 export default class DangerZonesDirectory extends ElementsList {
 
   constructor(props, context) {

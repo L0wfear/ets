@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { getToday9am, getTomorrow9am } from 'utils/dates';
 import { getReportNotReadyNotification2 } from 'utils/notifications';
 import DailyReportHeader from 'components/reports/DailyReportHeader.jsx';
-import { FluxContext, HistoryContext, exportable, staticProps, connectToStores } from 'utils/decorators';
+import { FluxContext, HistoryContext, staticProps, connectToStores } from 'utils/decorators';
 import DailyCleaningReportsETSTable from './DailyCleaningReportsETSTable.jsx';
 
 @connectToStores(['reports'])
@@ -11,8 +11,13 @@ import DailyCleaningReportsETSTable from './DailyCleaningReportsETSTable.jsx';
 @staticProps({
   entity: 'geozone_element_traveled_daily_report__ets',
 })
-@exportable
 export default class DailyCleaningReportsETS extends Component {
+
+  static get propTypes() {
+    return {
+      dailyCleaningReportsListETS: PropTypes.array,
+    };
+  }
 
   constructor(props) {
     super(props);
@@ -36,7 +41,7 @@ export default class DailyCleaningReportsETS extends Component {
   onReportSelect({ props }) {
     const id = props.data.id;
     if (props.data.status !== 'success' && props.data.status !== 'fail') {
-      global.NOTIFICATION_SYSTEM._addNotification(getReportNotReadyNotification2(this.context.flux));
+      global.NOTIFICATION_SYSTEM.addNotification(getReportNotReadyNotification2(this.context.flux));
     } else if (props.data.status !== 'fail') {
       this.context.history.pushState(null, `/daily-cleaning-report-ets/${props.data.element}/${id}`);
     }

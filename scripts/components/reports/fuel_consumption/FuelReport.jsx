@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
-import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
-import FuelReportTable from './FuelReportTable.jsx';
+import { Button, Glyphicon } from 'react-bootstrap';
+import _ from 'lodash';
 import { getToday9am, getTomorrow9am, createValidDate } from 'utils/dates';
-import FuelReportHeader from './FuelReportHeader.jsx';
-import { saveData } from 'utils/functions';
 import { connectToStores, FluxContext, HistoryContext, staticProps, exportable } from 'utils/decorators';
+import FuelReportTable from './FuelReportTable.jsx';
+import FuelReportHeader from './FuelReportHeader.jsx';
 
 @connectToStores(['reports'])
+@exportable({ entity: 'fuel_consumption_report' })
 @FluxContext
 @HistoryContext
 @staticProps({
   entity: 'fuel_consumption_report',
 })
-@exportable
 export default class FuelReport extends Component {
 
   constructor(props) {
@@ -38,12 +38,12 @@ export default class FuelReport extends Component {
     const payload = _.cloneDeep(this.state);
     payload.date_from = createValidDate(payload.date_from);
     payload.date_to = createValidDate(payload.date_to);
-    this.export(payload);
+    this.props.export(payload);
   }
 
 
   render() {
-    let { fuelReport = [] } = this.props;
+    const { fuelReport = [] } = this.props;
 
     return (
       <div className="ets-page-wrap">

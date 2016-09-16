@@ -77,9 +77,9 @@ class App extends Component {
             console.log(error);
             if (error === 401) {
               flux.getActions('session').logout();
-              return global.NOTIFICATION_SYSTEM._addNotification(loginErrorNotification);
+              return global.NOTIFICATION_SYSTEM.addNotification(loginErrorNotification);
             }
-            return global.NOTIFICATION_SYSTEM._addNotification(getErrorNotification(error));
+            return global.NOTIFICATION_SYSTEM.addNotification(getErrorNotification(error));
           });
   }
 

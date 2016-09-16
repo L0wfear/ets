@@ -85,23 +85,26 @@ const RouteOdhCoveringReportsTable = (props) => {
     timestamp_process_end: ({ data }) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
   };
 
-  return (<Table title="Покрытие ОДХ маршрутами"
-    tableMeta={tableMeta}
-    results={props.data}
-    renderers={renderers}
-    initialSort={tableMeta.cols[2].name}
-    initialSortAscending={false}
-    {...props}
-  />);
+  return (
+    <Table
+      title="Покрытие ОДХ маршрутами"
+      tableMeta={tableMeta}
+      results={props.data}
+      renderers={renderers}
+      initialSort={tableMeta.cols[2].name}
+      initialSortAscending={false}
+      {...props}
+    />
+  );
 };
 
 @connectToStores(['routes', 'objects'])
+@exportable({ entity: 'route_odh_covering_report' })
 @FluxContext
 @HistoryContext
 @staticProps({
   entity: 'route_odh_covering_report',
 })
-@exportable
 export default class RouteOdhCoveringReports extends Component {
 
   constructor(props) {
@@ -122,12 +125,13 @@ export default class RouteOdhCoveringReports extends Component {
 
   onReportSelect({ props }) {
     const id = props.data.id;
-    this.context.history.pushState(null, '/route-report/' + id);
+    this.context.history.pushState(null, `/route-report/${id}`);
   }
 
   handleGenerationTypeChange(type) {
     this.setState({ generationType: type });
   }
+
   createRouteReport() {
     console.log(' creating report', this.state.generationType);
     const { flux } = this.context;
@@ -150,7 +154,7 @@ export default class RouteOdhCoveringReports extends Component {
           />
         </Div>
         <RouteOdhCoveringReportsTable data={reportsList} onRowSelected={this.onReportSelect.bind(this)}>
-          {/* <Button bsSize="small" onClick={() => this.export()}><Glyphicon glyph="download-alt" /></Button> */}
+          {/* <Button bsSize="small" onClick={() => this.props.export()}><Glyphicon glyph="download-alt" /></Button> */}
         </RouteOdhCoveringReportsTable>
       </div>
     );

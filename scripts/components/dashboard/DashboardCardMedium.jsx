@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import Div from 'components/ui/Div.jsx';
 import { Panel, Collapse, Glyphicon, Fade, Well } from 'react-bootstrap';
 import { FluxContext } from 'utils/decorators';
+import cx from 'classnames';
 import DashboardCardHeader from './DashboardCardHeader.jsx';
 import DashboardItemChevron from './DashboardItemChevron.jsx';
-import cx from 'classnames';
 
 @FluxContext
 export default class DashboardCardMedium extends React.Component {

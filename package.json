@@ -102,7 +102,7 @@
     "build:study": "STAND=study webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
     "dev:test": "STAND=test NODE_ENV=development PORT=3000 node webpack/webpack-dev-server.js",
     "dev:study": "STAND=study NODE_ENV=development PORT=3000 node webpack/webpack-dev-server.js",
-    "lint": "eslint -c .eslintrc.js scripts",
+    "lint": "eslint -c .eslintrc.js --ext .js --ext .jsx scripts",
     "esdoc": "esdoc -c esdoc.json"
   },
   "engines": {

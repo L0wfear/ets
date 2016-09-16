@@ -46,7 +46,6 @@ export default class Track {
     this.points = null;
     this.continuousUpdating = true;
     this.onUpdateCallback = () => {};
-    this.getTrack = window.__ETS_CONTAINER__.flux.getActions('cars').getTrack;
   }
 
   isLoaded() {
@@ -127,7 +126,7 @@ export default class Track {
   }
 
 
-  fetch(from_dt = getStartOfToday(), to_dt = new Date().getTime()) {
+  fetch(flux, from_dt = getStartOfToday(), to_dt = new Date().getTime()) {
     const id = this.owner.point.id;
     const updating = this.continuousUpdating;
 
@@ -138,7 +137,7 @@ export default class Track {
 
     this.continuousUpdating = false;
 
-    return this.getTrack(id, from_dt, to_dt)
+    return flux.getActions('cars').getTrack(id, from_dt, to_dt)
                 .then((track) => {
                   this.points = track;
                   this.continuousUpdating = updating;
@@ -396,9 +395,8 @@ export default class Track {
 
 
   // TODO refactor
-  async getTrackPointTooltip(trackPoint, prevPoint, nextPoint) {
+  async getTrackPointTooltip(flux, trackPoint, prevPoint, nextPoint) {
     let missions = [];
-    const { flux } = window.__ETS_CONTAINER__;
     const vectorObject = await flux.getActions('cars')
         .getVectorObject(trackPoint, prevPoint, nextPoint);
     // это рак вызванный косяком бекенда
@@ -412,16 +410,14 @@ export default class Track {
     let { nsat,
           speed_avg,
           speed_max,
-          direction,
           timestamp,
-          distance } = trackPoint,
-      [latitude, longitude] = roundCoordinates(trackPoint.coords_msk, 6),
-      geoObjects = null,
-      gov_number = this.owner.point.car.gov_number;
+          distance } = trackPoint;
+    const [latitude, longitude] = roundCoordinates(trackPoint.coords_msk, 6);
+    const gov_number = this.owner.point.car.gov_number;
 
     distance = typeof distance === 'number' ? Math.floor(distance) : distance;
     timestamp = new Date(timestamp * 1000);
-    const dt = makeDate(timestamp) + ' ' + makeTime(timestamp, true);
+    const dt = `${makeDate(timestamp)} ${makeTime(timestamp, true)}`;
 
     return function makePopup() {
       let objectsString;

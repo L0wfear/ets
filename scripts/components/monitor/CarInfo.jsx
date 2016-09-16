@@ -1,16 +1,17 @@
-import React, { Component } from 'react';
-import Panel from 'components/ui/Panel.jsx';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import { Button, Glyphicon } from 'react-bootstrap';
 import { getStatusById } from 'constants/statuses';
-import config from '../../config.js';
 import { makeDate, makeTime, makeDateFromUnix, getStartOfToday } from 'utils/dates';
-import FuelChart from 'components/ui/charts/FuelChart.jsx';
-import SpeedChart from 'components/ui/charts/SpeedChart.jsx';
 import { roundCoordinates } from 'utils/geo';
+import Panel from 'components/ui/Panel.jsx';
 import DatePicker from 'components/ui/DatePicker.jsx';
-import { getTypeById } from 'utils/labelFunctions';
+import config from '../../config.js';
 import MissionFormWrap from '../missions/mission/MissionFormWrap.jsx';
 
+@connect(
+  state => state.types
+)
 class VehicleAttributes extends Component {
 
   constructor(props) {
@@ -22,7 +23,7 @@ class VehicleAttributes extends Component {
   }
 
   parseProps(props) {
-    const vehicle = props.vehicle;
+    const { typesIndex, vehicle } = props;
     const car = vehicle.car;
 
     const attributes = [];
@@ -37,13 +38,13 @@ class VehicleAttributes extends Component {
 
     const makeLastPointString = (point) => {
       const dt = new Date(point.timestamp * 1000);
-      return makeDate(dt) + ' ' + makeTime(dt, true) + ' [' + roundCoordinates(point.coords_msk) + ']';
+      return `${makeDate(dt)} ${makeTime(dt, true)} [${roundCoordinates(point.coords_msk)}]`;
     };
 
     addAttribute('Рег. номер ТС', car.gov_number);
     addAttribute('ID БНСО', vehicle.id);
     getStatusById(vehicle.status) && addAttribute('Статус', getStatusById(vehicle.status).title);
-    getTypeById(car.type_id) && addAttribute('Тип техники', getTypeById(car.type_id).title);
+    typesIndex[car.type_id] && addAttribute('Тип техники', typesIndex[car.type_id].title);
     // getModelById(car.model_id) && addAttribute('Шасси', getModelById(car.model_id).title)
 
     if (props.lastPoint) {
@@ -84,7 +85,8 @@ export default class CarInfo extends Component {
 
   static get propTypes() {
     return {
-
+      car: PropTypes.object,
+      flux: PropTypes.object,
     };
   }
 
@@ -164,7 +166,7 @@ export default class CarInfo extends Component {
   }
 
   fetchTrack(props = this.props) {
-    let { from_dt, to_dt, tillNow } = this.state;
+    const { from_dt, to_dt } = this.state;
     const track = props.car.marker.track;
 
     // обновление инфы о последней точке при обновлении трэка
@@ -175,7 +177,7 @@ export default class CarInfo extends Component {
       }
     });
 
-    track.fetch(from_dt, to_dt);
+    track.fetch(this.props.flux, from_dt, to_dt);
   }
 
   async componentDidMount() {
@@ -271,20 +273,26 @@ export default class CarInfo extends Component {
     return (
       <div className="car-info-tracking">
         <Panel title="Трекинг" className="chart-datepickers-wrap">
-          <DatePicker onChange={date => this.setState({ from_dt_: date })}
-            date={this.state.from_dt_} disabled={tillNow} ref="from_dt"
-          />&nbsp;–&nbsp;
-          <DatePicker onChange={date => this.setState({ to_dt_: date })}
-            date={this.state.to_dt_} disabled={tillNow} ref="to_dt"
+          <DatePicker
+            onChange={date => this.setState({ from_dt_: date })}
+            date={this.state.from_dt_}
+            disabled={tillNow}
+          />
+          &nbsp;–&nbsp;
+          <DatePicker
+            onChange={date => this.setState({ to_dt_: date })}
+            date={this.state.to_dt_}
+            disabled={tillNow}
           />
           {/* <label className="gradient-checkbox">
             <input type="checkbox" checked={showGradient} ref="showGradient" onChange={this.onShowGradientChange.bind(this)}/> С градиентом
           </label>*/}
           <label className="till-now-checkbox">
-            <input type="checkbox" checked={tillNow} ref="tillNow" onChange={this.onTillNowChange.bind(this)} /> За сегодня
+            <input type="checkbox" checked={tillNow} onChange={this.onTillNowChange.bind(this)} /> За сегодня
           </label>
 
-          <Button title="Перезагрузить данные"
+          <Button
+            title="Перезагрузить данные"
             className="reload-button"
             onClick={this.fetchVehicleData.bind(this)}
             disabled={tillNow}
@@ -311,16 +319,18 @@ export default class CarInfo extends Component {
   }
 
   renderMissions() {
-    let { missions = [] } = this.state;
+    const { missions = [] } = this.state;
     let missionsRender = (<div style={{ textAlign: 'left', overflow: 'hidden', textOverflow: 'ellipsis' }}>
       {missions.map((mission) => {
-        return (<span
-          key={mission.id}
-          onClick={this.setMissionById.bind(this, mission.id)}
-          style={{ whiteSpace: 'nowrap', display: 'block', cursor: 'pointer' }}
-        >
-          {`№${mission.number} - ${mission.technical_operation_name}`}
-        </span>);
+        return (
+          <span
+            key={mission.id}
+            onClick={this.setMissionById.bind(this, mission.id)}
+            style={{ whiteSpace: 'nowrap', display: 'block', cursor: 'pointer' }}
+          >
+            {`№${mission.number} - ${mission.technical_operation_name}`}
+          </span>
+        );
       })}
     </div>);
 
@@ -331,7 +341,8 @@ export default class CarInfo extends Component {
         <Panel title="Задания" className="chart-datepickers-wrap">
           {missionsRender}
         </Panel>
-        <MissionFormWrap onFormHide={() => this.setState({ showMissionForm: false })}
+        <MissionFormWrap
+          onFormHide={() => this.setState({ showMissionForm: false })}
           showForm={this.state.showMissionForm}
           element={this.state.selectedMission}
         />
@@ -340,7 +351,7 @@ export default class CarInfo extends Component {
   }
 
   render() {
-    const car = this.props.car;
+    const { car } = this.props;
 
     if (!car) {
       return null;

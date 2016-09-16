@@ -1,17 +1,15 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
-import { Modal, Row, Col, FormControls, Button, DropdownButton, Dropdown, Glyphicon, MenuItem } from 'react-bootstrap';
-import Datepicker from 'components/ui/DatePicker.jsx';
-import Field from 'components/ui/Field.jsx';
+import { autobind } from 'core-decorators';
+import { Modal, Row, Col, Button } from 'react-bootstrap';
 import Div from 'components/ui/Div.jsx';
-import moment from 'moment';
 import _ from 'lodash';
-import Form from '../compositions/Form.jsx';
 import HybridMap from 'components/map/HybridMap.jsx';
 import FluxComponent from 'flummox/component';
 import MissionReportByODH from 'components/reports/mission/MissionReportByODH.jsx';
 import MissionReportByDT from 'components/reports/mission/MissionReportByDT.jsx';
 import MissionReportByPoints from 'components/reports/mission/MissionReportByPoints.jsx';
+import Form from '../compositions/Form.jsx';
 
 const getDataTraveledYet = (data) => {
   if (typeof data === 'string') {
@@ -20,7 +18,8 @@ const getDataTraveledYet = (data) => {
   return !isNaN(parseInt(data, 10)) ? parseInt(data, 10) : '-';
 };
 
-export class MissionInfoForm extends Form {
+@autobind
+class MissionInfoForm extends Form {
 
   constructor(props) {
     super(props);
@@ -58,7 +57,7 @@ export class MissionInfoForm extends Form {
           selectedObjects = r.result.report_by_point.filter(p => p.status === 'success');
         }
         if (r.result.route_check_unit) {
-          _.each(missionReport, mr => mr.route_check_unit = r.result.route_check_unit);
+          _.each(missionReport, mr => (mr.route_check_unit = r.result.route_check_unit));
         }
         this.setState({ missionReport, routeType, missionReportFull: r.result, selectedObjects });
       }
@@ -74,7 +73,6 @@ export class MissionInfoForm extends Form {
   componentWillUnmount() {
     this.context.flux.getActions('points').closeConnection();
     this.context.flux.getActions('points').setSingleCarTrack(null);
-    console.warn('UNMOUNT MISSION INFO FORM');
   }
 
   handleSelectedElementChange(id) {
@@ -87,8 +85,7 @@ export class MissionInfoForm extends Form {
 
   render() {
     const state = this.props.formState;
-    const { selectedODHId } = this.state;
-    let { geozonePolys = {} } = this.props;
+    const { geozonePolys = {} } = this.props;
     const object_list = _.cloneDeep(this.state.object_list || []);
     const polys = _.keyBy(object_list, 'object_id');
     if (!state.car_gov_number) return <div />;
@@ -106,22 +103,24 @@ export class MissionInfoForm extends Form {
           <Row>
 
             <Col md={6} style={{ height: 400 }}>
-              <FluxComponent connectToStores={{
-                points: store => ({
-                  points: store.state.points,
-                  selected: store.getSelectedPoint(),
-                }),
-                settings: store => ({
-                  showPlates: store.state.showPlates,
-                  showTrack: store.state.showTrack,
-                  showPolygons: store.state.showPolygons,
-                  showSelectedElement: store.state.showSelectedElement,
-                }),
-                session: store => ({
-                  zoom: store.getCurrentUser().getCompanyMapConfig().zoom,
-                  center: store.getCurrentUser().getCompanyMapConfig().coordinates,
-                }),
-              }}>
+              <FluxComponent
+                connectToStores={{
+                  points: store => ({
+                    points: store.state.points,
+                    selected: store.getSelectedPoint(),
+                  }),
+                  settings: store => ({
+                    showPlates: store.state.showPlates,
+                    showTrack: store.state.showTrack,
+                    showPolygons: store.state.showPolygons,
+                    showSelectedElement: store.state.showSelectedElement,
+                  }),
+                  session: store => ({
+                    zoom: store.getCurrentUser().getCompanyMapConfig().zoom,
+                    center: store.getCurrentUser().getCompanyMapConfig().coordinates,
+                  }),
+                }}
+              >
 
                 <HybridMap
                   polys={polys}
@@ -138,10 +137,10 @@ export class MissionInfoForm extends Form {
             <Col md={6}>
               <Div hidden={!(this.state.missionReport && this.state.missionReport.length > 0)}>
                 <Div style={{ marginTop: -35 }} hidden={this.state.missionReportFull && !this.state.missionReportFull.report_by_odh}>
-                  <MissionReportByODH renderOnly enumerated={false} selectedReportDataODHS={this.state.missionReport} onElementChange={this.handleSelectedElementChange.bind(this)} />
+                  <MissionReportByODH renderOnly enumerated={false} selectedReportDataODHS={this.state.missionReport} onElementChange={this.handleSelectedElementChange} />
                 </Div>
                 <Div style={{ marginTop: -35 }} hidden={this.state.missionReportFull && !this.state.missionReportFull.report_by_dt}>
-                  <MissionReportByDT renderOnly enumerated={false} selectedReportDataDTS={this.state.missionReport} onElementChange={this.handleSelectedElementChange.bind(this)} />
+                  <MissionReportByDT renderOnly enumerated={false} selectedReportDataDTS={this.state.missionReport} onElementChange={this.handleSelectedElementChange} />
                 </Div>
                 <Div style={{ marginTop: -35 }} hidden={this.state.missionReportFull && !this.state.missionReportFull.report_by_point}>
                   <MissionReportByPoints renderOnly enumerated={false} selectedReportDataPoints={this.state.missionReport} />
@@ -165,7 +164,7 @@ export class MissionInfoForm extends Form {
 
         <Modal.Footer>
           <Div>
-            <Button onClick={this.handleSubmit.bind(this)} >{'Закрыть'}</Button>
+            <Button onClick={this.handleSubmit} >{'Закрыть'}</Button>
           </Div>
         </Modal.Footer>
 

@@ -197,7 +197,7 @@ export default class OpenLayersMap extends Component {
             }
           });
           // console.log( 'trackpoint  found', possibleTrackPoint);
-          const makePopupFn = await track.getTrackPointTooltip(possibleTrackPoint, prevPoint, nextPoint);
+          const makePopupFn = await track.getTrackPointTooltip(this.props.flux, possibleTrackPoint, prevPoint, nextPoint);
           this.popup.show(pointCoords, makePopupFn());
           return;
         }

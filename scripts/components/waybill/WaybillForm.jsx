@@ -5,7 +5,6 @@ import Field from 'components/ui/Field.jsx';
 import DivForEnhance from 'components/ui/Div.jsx';
 import Taxes from './Taxes.jsx';
 import { isNotNull, isEmpty, hasOdometer } from 'utils/functions';
-import { createValidDateTime } from 'utils/dates';
 import Form from '../compositions/Form.jsx';
 import MissionFormWrap from '../missions/mission/MissionFormWrap.jsx';
 import { getDefaultMission } from '../../stores/MissionsStore.js';
@@ -231,7 +230,7 @@ class WaybillForm extends Form {
     const { appConfig } = this.props;
     let taxesControl = false;
 
-    const { carsList = [], carsIndex = {}, driversList = [], employeesList = [], fuelTypes = [], missionsList = [] } = this.props;
+    const { carsList = [], carsIndex = {}, driversList = [], employeesList = [], missionsList = [] } = this.props;
     const CARS = carsList.map(c => ({
       value: c.asuods_id,
       gov_number: c.gov_number,
@@ -246,7 +245,7 @@ class WaybillForm extends Form {
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false }));
 
 
-    const IS_CREATING = !!!state.status;
+    const IS_CREATING = !state.status;
     const IS_CLOSING = state.status && state.status === 'active';
     const IS_POST_CREATING = state.status && state.status === 'draft';
     const IS_DISPLAY = state.status && state.status === 'closed';
@@ -286,7 +285,10 @@ class WaybillForm extends Form {
         <Modal.Body>
           <Row>
             <Col md={6}>
-              <Field type="select" label="Ответственное лицо" error={errors.responsible_person_id}
+              <Field
+                type="select"
+                label="Ответственное лицо"
+                error={errors.responsible_person_id}
                 hidden={!(IS_CREATING || IS_POST_CREATING)}
                 options={MASTERS}
                 value={employeeFIOLabelFunction(state.responsible_person_id, true)}
@@ -380,14 +382,21 @@ class WaybillForm extends Form {
               />
             </Col>
             <Col md={6}>
-              <Field type="select" label="Водитель (возможен поиск по табельному номеру)" error={errors.driver_id}
+              <Field
+                type="select"
+                label="Водитель (возможен поиск по табельному номеру)"
+                error={errors.driver_id}
                 hidden={!(IS_CREATING || IS_POST_CREATING)}
                 options={DRIVERS}
                 value={state.driver_id}
                 onChange={this.handleChange.bind(this, 'driver_id')}
               />
 
-              <Field type="string" label="Водитель" readOnly hidden={IS_CREATING || IS_POST_CREATING}
+              <Field
+                type="string"
+                label="Водитель"
+                readOnly
+                hidden={IS_CREATING || IS_POST_CREATING}
                 value={employeeFIOLabelFunction(state.driver_id, true)}
               />
             </Col>
@@ -552,17 +561,38 @@ class WaybillForm extends Form {
                     value={state.equipment_fuel_type}
                     onChange={this.handleChange.bind(this, 'equipment_fuel_type')}
                   />
-                  <Field type="number" label="Выезд, л" error={errors.equipment_fuel_start}
-                    value={state.equipment_fuel_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'equipment_fuel_start')}
+                  <Field
+                    type="number"
+                    label="Выезд, л"
+                    error={errors.equipment_fuel_start}
+                    value={state.equipment_fuel_start}
+                    disabled={IS_CLOSING || IS_DISPLAY}
+                    onChange={this.handleChange.bind(this, 'equipment_fuel_start')}
                   />
-                  <Field type="number" label="Выдать, л" error={errors.equipment_fuel_to_give}
-                    value={state.equipment_fuel_to_give} disabled={(IS_CLOSING || IS_DISPLAY) && !(this.state.canEditIfClose && !!state.equipment_fuel)} onChange={this.handleChange.bind(this, 'equipment_fuel_to_give')}
+                  <Field
+                    type="number"
+                    label="Выдать, л"
+                    error={errors.equipment_fuel_to_give}
+                    value={state.equipment_fuel_to_give}
+                    disabled={(IS_CLOSING || IS_DISPLAY) && !(this.state.canEditIfClose && !!state.equipment_fuel)}
+                    onChange={this.handleChange.bind(this, 'equipment_fuel_to_give')}
                   />
-                  <Field type="number" label="Выдано, л" error={errors.equipment_fuel_given}
-                    value={state.equipment_fuel_given} hidden={!(IS_CLOSING || IS_DISPLAY)} disabled={IS_DISPLAY && !(this.state.canEditIfClose && !!state.equipment_fuel)} onChange={this.handleChange.bind(this, 'equipment_fuel_given')}
+                  <Field
+                    type="number"
+                    label="Выдано, л"
+                    error={errors.equipment_fuel_given}
+                    value={state.equipment_fuel_given}
+                    hidden={!(IS_CLOSING || IS_DISPLAY)}
+                    disabled={IS_DISPLAY && !(this.state.canEditIfClose && !!state.equipment_fuel)}
+                    onChange={this.handleChange.bind(this, 'equipment_fuel_given')}
                   />
-                  <Field type="number" label="Возврат, л" error={errors.equipment_fuel_end}
-                    value={state.equipment_fuel_end} hidden={!(IS_CLOSING || IS_DISPLAY)} disabled
+                  <Field
+                    type="number"
+                    label="Возврат, л"
+                    error={errors.equipment_fuel_end}
+                    value={state.equipment_fuel_end}
+                    hidden={!(IS_CLOSING || IS_DISPLAY)}
+                    disabled
                   />
                 </Div>
               </Div>

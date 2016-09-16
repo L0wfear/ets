@@ -3,10 +3,10 @@ import { autobind } from 'core-decorators';
 
 import BaseDiv from 'components/ui/Div.jsx';
 import { Panel, Button } from 'react-bootstrap';
+import { enhanceWithPermissions } from 'components/util/RequirePermissions.jsx';
 import MissionFormWrap from '../missions/mission/MissionFormWrap.jsx';
 import DutyMissionFormWrap from '../missions/duty_mission/DutyMissionFormWrap.jsx';
 import WaybillFormWrap from '../waybill/WaybillFormWrap.jsx';
-import { enhanceWithPermissions } from 'components/util/RequirePermissions.jsx';
 
 const Div = enhanceWithPermissions(BaseDiv);
 

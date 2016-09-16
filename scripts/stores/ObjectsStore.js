@@ -144,18 +144,6 @@ export default class ObjectsStore extends Store {
     this.setState({ positionsList: positions.result });
   }
 
-  getTechOperationById(id) {
-    return _.find(this.state.technicalOperationsList, to => to.id === id) || {};
-  }
-
-  getCarById(asuods_id) {
-    return _.find(this.state.carsList, c => c.asuods_id === asuods_id) || {};
-  }
-
-  getTypeById(id) {
-    return _.find(this.state.typesList, t => t.id === id) || {};
-  }
-
   handleGetConfig(appConfig) {
     this.setState({ appConfig });
   }

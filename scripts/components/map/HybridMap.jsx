@@ -1,16 +1,20 @@
 import React from 'react';
-import Map from './Map.jsx';
-import CarMarker from './markers/car/CarMarker.js';
-import LegendWrapper from './LegendWrapper.jsx';
+import { connect } from 'react-redux';
 import { GeoJSON, getPointStyle, getPolyStyle } from 'utils/ol';
 import { polyState, polyStyles } from 'constants/polygons.js';
 import { getVectorArrowStyle } from 'constants/vectors.js';
 import FluxComponent from 'flummox/component';
 import _ from 'lodash';
+import Map from './Map.jsx';
+import CarMarker from './markers/car/CarMarker.js';
+import LegendWrapper from './LegendWrapper.jsx';
 
 let POLYS_LAYER = null;
 
 // TODO синхронизировать с Map, чтобы один класс мог поддерживать все геометрии
+@connect(
+  state => state.types
+)
 export default class HybridMap extends Map {
   constructor(props, context) {
     super(props, context);
@@ -204,7 +208,7 @@ export default class HybridMap extends Map {
               prevPoint = track.points[i - 1] ? track.points[i - 1] : null;
             }
           });
-          const makePopupFn = await track.getTrackPointTooltip(possibleTrackPoint, prevPoint, nextPoint);
+          const makePopupFn = await track.getTrackPointTooltip(this.props.flux, possibleTrackPoint, prevPoint, nextPoint);
           this.popup.show(pointCoords, makePopupFn());
           return;
         }

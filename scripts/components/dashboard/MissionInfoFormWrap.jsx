@@ -1,7 +1,7 @@
 import React from 'react';
+import Div from 'components/ui/Div.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';
 import MissionInfoForm from './MissionInfoForm.jsx';
-import Div from 'components/ui/Div.jsx';
 
 export default class MissionInfoFormWrap extends FormWrap {
 
@@ -14,8 +14,8 @@ export default class MissionInfoFormWrap extends FormWrap {
       <Div hidden={!this.props.showForm}>
         <MissionInfoForm
           formState={this.state.formState}
-          onSubmit={this.handleFormSubmit.bind(this)}
-          handleFormChange={this.handleFormStateChange.bind(this)}
+          onSubmit={this.handleFormSubmit}
+          handleFormChange={this.handleFormStateChange}
           show={this.props.showForm}
           onHide={this.props.onFormHide}
           {...this.state}

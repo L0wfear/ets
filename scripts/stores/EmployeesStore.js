@@ -1,7 +1,6 @@
 import { Store } from 'flummox';
-import _ from 'lodash';
 
-class EmployeeStore extends Store {
+export default class EmployeeStore extends Store {
 
   constructor(flux) {
     super();
@@ -24,13 +23,8 @@ class EmployeeStore extends Store {
   }
 
   handleGetDrivers({ result }) {
+    console.log(result);
     this.setState({ driversList: result });
   }
 
-  getEmployeeById(id) {
-    return _.find(this.state.employeesList, e => e.id === id);
-  }
-
 }
-
-export default EmployeeStore;

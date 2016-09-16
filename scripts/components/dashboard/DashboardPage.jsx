@@ -3,11 +3,11 @@ import _ from 'lodash';
 import { Row, Col } from 'react-bootstrap';
 import Div from 'components/ui/Div.jsx';
 import cx from 'classnames';
+import { FluxContext, connectToStores } from 'utils/decorators';
 import DashboardCardMedium from './DashboardCardMedium.jsx';
 import DashboardManagementCard from './DashboardManagementCard.jsx';
 import DashboardPageHeader from './DashboardPageHeader.jsx';
 import customCards from './customCards/index.js';
-import { FluxContext, connectToStores } from 'utils/decorators';
 
 @connectToStores(['dashboard', 'loading'])
 @FluxContext
@@ -94,7 +94,8 @@ export default class DashboardPage extends React.Component {
             const DashboardCard = customCards[c.key] || DashboardCardMedium;
             return (
               <Col key={j} md={4} className={cardClassname}>
-                <DashboardCard title={c.title}
+                <DashboardCard
+                  title={c.title}
                   items={c.items}
                   dashboardKey={c.key}
                   itemsTitle={c.itemsTitle}

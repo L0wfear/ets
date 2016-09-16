@@ -1,7 +1,12 @@
-import { Router, Route, RouteHandler, Link, Redirect } from 'react-router';
+import { Router, Route, Redirect } from 'react-router';
 import { createHashHistory } from 'history';
 import { render } from 'react-dom';
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { Provider } from 'react-redux';
+import { bindFlux } from 'utils/labelFunctions';
+import { AuthCheckService } from 'api/Services';
+import Flux from 'config/flux.js';
+import { loginErrorNotification, getErrorNotification } from 'utils/notifications';
 // TODO сделать модуль containers по аналогии с другими модулями
 import LoginPage from './login/LoginPage.jsx';
 import WaybillJournal from './waybill/WaybillJournal.jsx';
@@ -15,34 +20,26 @@ import CompanyStructure from './company_structure/CompanyStructure.jsx';
 import missions from './missions';
 import directories from './directories';
 import reports from './reports';
-import { AuthCheckService } from 'api/Services';
-
-import { fetchEvergisToken } from '../utils/evergis.js';
-import Flux from 'config/flux.js';
 
 import createStore from '../redux/create';
-import { Provider } from 'react-redux';
 
-import { loginErrorNotification, getErrorNotification } from 'utils/notifications';
 // TODO вынести в отдельный файл
 const flux = new Flux();
-window.__ETS_CONTAINER__ = {
-  flux,
-};
+bindFlux(flux);
 
 class App extends Component {
+
+  static get propTypes() {
+    return {
+      location: PropTypes.object,
+      children: PropTypes.node,
+    };
+  }
 
   static get childContextTypes() {
     return {
       flux: React.PropTypes.object,
       loadData: React.PropTypes.func,
-    };
-  }
-
-  getChildContext() {
-    return {
-      flux,
-      loadData: this.loadData.bind(this),
     };
   }
 
@@ -54,6 +51,17 @@ class App extends Component {
     };
   }
 
+  getChildContext() {
+    return {
+      flux,
+      loadData: this.loadData.bind(this),
+    };
+  }
+
+  componentDidMount() {
+    this.loadData();
+  }
+
   loadData() {
     this.setState({ loading: true });
     if (!flux.getStore('session').isLoggedIn()) {
@@ -61,11 +69,9 @@ class App extends Component {
     }
     return AuthCheckService.get()
           // .then(() => fetchEvergisToken())
+          .then(() => flux.getActions('objects').getConfig())
           .then(() => {
-            return flux.getActions('objects').getConfig();
-          })
-          .then(() => {
-            this.setState({loading: false});
+            this.setState({ loading: false });
           })
           .catch((error) => {
             console.log(error);
@@ -73,13 +79,8 @@ class App extends Component {
               flux.getActions('session').logout();
               return global.NOTIFICATION_SYSTEM._addNotification(loginErrorNotification);
             }
-            global.NOTIFICATION_SYSTEM._addNotification(getErrorNotification(error));
-            console.error(error);
+            return global.NOTIFICATION_SYSTEM._addNotification(getErrorNotification(error));
           });
-  }
-
-  componentDidMount() {
-    this.loadData();
   }
 
   render() {

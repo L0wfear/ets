@@ -141,7 +141,7 @@ class MissionReportByODH extends ElementsList {
     const { renderOnly = false } = this.props;
 
     return (
-      <div className="ets-page-wrap">
+      <div className="ets-page-wrap" ref={node => (this.node = node)}>
         <MissionReportByODHTable noHeader={renderOnly} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={this.selectField} data={this.props.selectedReportDataODHS || []} {...this.props} />
       </div>
     );

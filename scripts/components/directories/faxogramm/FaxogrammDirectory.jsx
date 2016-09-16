@@ -58,7 +58,7 @@ class FaxogrammDirectory extends ElementsList {
     const faxogrammInfoData = [{ id: 0, order_info: faxogramm.order_info }];
 
     return (
-      <div className="ets-page-wrap">
+      <div className="ets-page-wrap" ref={node => (this.node = node)}>
         <FaxogrammsDatepicker handleChange={this.handleChange.bind(this)} {...this.state} />
         <FaxogrammsTable data={faxogrammsList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'} {...this.props}>
           <Button onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}>Создать задания</Button>

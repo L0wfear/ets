@@ -8,30 +8,30 @@ const TWO_MINUTES = 1000 * 60 * 2;
 
 @connectToStores(['reports'])
 @staticProps({
-	listName: 'odhCoverageReport',
-	tableComponent: OdhCoverageReportTable,
-	formComponent: OdhCoverageReportPrintForm,
-	operations: ['LIST']
+  listName: 'odhCoverageReport',
+  tableComponent: OdhCoverageReportTable,
+  formComponent: OdhCoverageReportPrintForm,
+  operations: ['LIST']
 })
 export default class OdhCoverageReport extends ElementsList {
 
-	constructor(props) {
-		super(props);
-		this.exportable = true;
-	}
+  constructor(props) {
+    super(props);
+    this.exportable = true;
+  }
 
-	componentDidMount() {
-		super.componentDidMount();
-		const { flux } = this.context;
+  componentDidMount() {
+    super.componentDidMount();
+    const { flux } = this.context;
     flux.getActions('reports').getOdhCoverageReport();
     this.refreshInterval = setInterval(() => {
       flux.getActions('reports').getOdhCoverageReport();
     }, TWO_MINUTES);
   }
 
-	export() {
-		this.setState({showForm: true});
-	}
+  export() {
+    this.setState({showForm: true});
+  }
 
   componentWillUnmount() {
     clearInterval(this.refreshInterval);

@@ -48,7 +48,7 @@ export default class WaybillsActions extends Actions {
 
   getWaybillJournalReport(state) {
     const payload = _.cloneDeep(state);
-    payload.month = payload.month + 1;
+    payload.month += 1;
     return WaybillJournalReportService.postBlob(payload);
   }
 

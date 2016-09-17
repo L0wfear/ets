@@ -12,3 +12,7 @@ export function parseFilename(contentDisposition) {
   }
   return filename;
 }
+
+export default {
+  parseFilename,
+};

@@ -23,7 +23,6 @@ export default class EmployeeStore extends Store {
   }
 
   handleGetDrivers({ result }) {
-    console.log(result);
     this.setState({ driversList: result });
   }
 

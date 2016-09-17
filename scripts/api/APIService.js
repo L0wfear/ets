@@ -1,8 +1,7 @@
-import { getJSON, postJSON, deleteJSON, putJSON, getBlob, postBlob } from '../adapter.js';
 import { getWarningNotification } from 'utils/notifications';
-import { RequestWarningError } from 'utils/errors';
-import { mocks } from './mocks';
 import urljoin from 'url-join';
+import { getJSON, postJSON, deleteJSON, putJSON, getBlob, postBlob } from '../adapter.js';
+import { mocks } from './mocks';
 
 export default class APIService {
 
@@ -23,8 +22,8 @@ export default class APIService {
     this.get = this.get.bind(this);
     this.processResponse = this.processResponse.bind(this);
 
-    this.logFunction = (method) => console.info(`API SERVICE ${method} ${this.url}`);
-    this.warningNotificationFunction = (warning) => global.NOTIFICATION_SYSTEM.addNotification(getWarningNotification(warning));
+    this.logFunction = method => console.info(`API SERVICE ${method} ${this.url}`);
+    this.warningNotificationFunction = warning => global.NOTIFICATION_SYSTEM.addNotification(getWarningNotification(warning));
   }
 
   processResponse(r, callback) {
@@ -33,7 +32,7 @@ export default class APIService {
       if (Array.isArray(r.warnings)) {
         r.warnings.map(w => this.warningNotificationFunction(w));
       } else if (typeof r.warnings === 'string') {
-        this.warningNotificationFunction(w);
+        this.warningNotificationFunction(r.warnings);
       }
       throw new Error('Request warnings is not empty!');
     }
@@ -43,16 +42,15 @@ export default class APIService {
     } else if (callback === false) {
       // If forced to prevent callback we return just response
       return r;
-    } else {
-      // By default response of any CRUD operation is response of GET request after that operation
-      return this.get();
     }
+    // By default response of any CRUD operation is response of GET request after that operation
+    return this.get();
   }
 
   get(payload = {}) {
     if (this.useMock && mocks[this.serviceName]) {
       this.log('GET MOCK');
-      return new Promise((res, rej) => {
+      return new Promise((res) => {
         setTimeout(() => {
           res(mocks[this.serviceName].get(payload));
         }, 500);
@@ -82,21 +80,21 @@ export default class APIService {
     this.log('POST');
     const url = this.url;
     this.resetPath();
-    return postJSON(url, payload, type, blob).then((r) => this.processResponse(r, callback));
+    return postJSON(url, payload, type, blob).then(r => this.processResponse(r, callback));
   }
 
   put(payload = {}, callback, type = 'form') {
     this.log('PUT');
     const url = this.url;
     this.resetPath();
-    return putJSON(url, payload, type).then((r) => this.processResponse(r, callback));
+    return putJSON(url, payload, type).then(r => this.processResponse(r, callback));
   }
 
   delete(payload = {}, callback, type = 'form') {
     this.log('DELETE');
     const url = this.url;
     this.resetPath();
-    return deleteJSON(url, payload, type).then((r) => this.processResponse(r, callback));
+    return deleteJSON(url, payload, type).then(r => this.processResponse(r, callback));
   }
 
   getUrl() {

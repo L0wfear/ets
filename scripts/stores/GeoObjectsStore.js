@@ -88,7 +88,7 @@ export default class GeoObjectsStore extends Store {
     const geozonePolys = {};
     const odhPolys = {};
     const dtPolys = {};
-    geozones.map((g) => {
+    geozones.forEach((g) => {
       if (g.geozone_type === 'ROAD') {
         odhPolys[g.id] = {
           shape: JSON.parse(g.shape),
@@ -116,10 +116,9 @@ export default class GeoObjectsStore extends Store {
     const { type, data = {} } = response;
     const { rows = [] } = data.result;
     const polys = {};
-    rows.map((geozone) => {
-      const data = geozone;
+    rows.forEach((geozone) => {
       const shape = JSON.parse(geozone.shape);
-      data.featureType = type;
+      geozone.featureType = type;
       delete data.shape;
       polys[geozone.id] = Object.assign({}, {
         shape,
@@ -145,9 +144,7 @@ export default class GeoObjectsStore extends Store {
   getSelectedPolys() {
     const { selectedPolysTypes } = this.state;
     const polys = {};
-    selectedPolysTypes.map((type) => {
-      Object.assign(polys, this.state[`${type}Polys`]);
-    });
+    selectedPolysTypes.map(type => Object.assign(polys, this.state[`${type}Polys`]));
 
     return polys;
   }

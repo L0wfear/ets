@@ -1,86 +1,17 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
+import { autobind } from 'core-decorators';
+import find from 'lodash/find';
 import { Button, Glyphicon } from 'react-bootstrap';
-import { getStatusById } from 'constants/statuses';
-import { makeDate, makeTime, makeDateFromUnix, getStartOfToday } from 'utils/dates';
-import { roundCoordinates } from 'utils/geo';
+import { makeDateFromUnix, getStartOfToday } from 'utils/dates';
 import Panel from 'components/ui/Panel.jsx';
 import DatePicker from 'components/ui/DatePicker.jsx';
+import cx from 'classnames';
+// import SpeedChart from 'components/ui/charts/SpeedChart.jsx';
 import config from '../../config.js';
 import MissionFormWrap from '../missions/mission/MissionFormWrap.jsx';
+import VehicleAttributes from './VehicleAttributes.jsx';
 
-@connect(
-  state => state.types
-)
-class VehicleAttributes extends Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      attributes: [],
-    };
-  }
-
-  parseProps(props) {
-    const { typesIndex, vehicle } = props;
-    const car = vehicle.car;
-
-    const attributes = [];
-    const addAttribute = (name, value) => {
-      if (typeof value !== 'undefined') {
-        attributes.push({
-          name,
-          value,
-        });
-      }
-    };
-
-    const makeLastPointString = (point) => {
-      const dt = new Date(point.timestamp * 1000);
-      return `${makeDate(dt)} ${makeTime(dt, true)} [${roundCoordinates(point.coords_msk)}]`;
-    };
-
-    addAttribute('Рег. номер ТС', car.gov_number);
-    addAttribute('ID БНСО', vehicle.id);
-    getStatusById(vehicle.status) && addAttribute('Статус', getStatusById(vehicle.status).title);
-    typesIndex[car.type_id] && addAttribute('Тип техники', typesIndex[car.type_id].title);
-    // getModelById(car.model_id) && addAttribute('Шасси', getModelById(car.model_id).title)
-
-    if (props.lastPoint) {
-      // todo при клике на "последнюю точку" центрировать по координатам
-      addAttribute('Последняя точка', makeLastPointString(props.lastPoint));
-    } else {
-      addAttribute('Последняя точка', makeLastPointString({
-        timestamp: vehicle.timestamp,
-        coords_msk: vehicle.coords_msk,
-      }));
-    }
-
-    return attributes;
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState(state => (state.attributes = this.parseProps(nextProps)));
-  }
-
-  renderAttribute({ name, value }) {
-    return (
-      <div key={name} className="vehicle-attributes-list__item">
-           {name}: <span className="value">{value}</span>
-      </div>
-    );
-  }
-
-  render() {
-    return (
-      <div className="vehicle-attributes-list">
-        {this.state.attributes.map(attribute => this.renderAttribute(attribute))}
-      </div>
-    );
-  }
-}
-
+@autobind
 export default class CarInfo extends Component {
 
   static get propTypes() {
@@ -105,21 +36,47 @@ export default class CarInfo extends Component {
       from_dt_: getStartOfToday(),
       to_dt_: new Date(),
       tillNow: true,
+      car: {},
     };
   }
 
-  // TODO переместить это на более высокий уровень абстракции
-  zoomToTrack() {
-    const store = this.store;
-    store.setTracking(false);
-    this.setState({ trackingMode: false });
+  async componentDidMount() {
+    const { flux } = this.props;
+    if (this.props.car && !this.state.imageUrl) {
+      this.fetchImage();
+      this.fetchTrack();
+      const carsList = flux.getStore('objects').state.carsList;
+      const car = find(carsList, c => c.gov_number === this.props.car.car.gov_number);
+      if (car) {
+        const car_id = car.asuods_id;
+        const missions = await flux.getActions('missions').getMissionsByCarAndDates(car_id, this.state.from_dt, this.state.to_dt, true, 1);
+        this.setState({ missions: missions.result.rows, car });
+      }
+    }
+  }
 
-    const marker = this.props.car.marker;
-    const extent = marker.track.getExtent();
-    const map = marker.map;
-    const view = map.getView();
+  async componentWillReceiveProps(props) {
+    if (props.car !== this.props.car) {
+      this.fetchImage(props);
+      this.fetchTrack(props);
+      this.stopTrackPlaying();
+      this.setState({ trackPaused: 'stopped' });
+    }
+    if (props.car.id !== this.props.car.id) {
+      const carsList = this.props.flux.getStore('objects').state.carsList;
+      const car = find(carsList, c => c.gov_number === this.props.car.car.gov_number);
+      if (car) {
+        const car_id = car.asuods_id;
+        const missions = await this.props.flux.getActions('missions').getMissionsByCarAndDates(car_id, this.state.from_dt, this.state.to_dt, true, 1);
+        this.setState({ missions: missions.result.rows, car });
+      }
+    }
+  }
 
-    view.fit(extent, map.getSize(), { padding: [50, 550, 50, 50] });
+  componentWillUnmount() {
+    const track = this.props.car.marker.track;
+    track.onUpdate();
+    this.stopTrackPlaying();
   }
 
   toggleCarTracking() {
@@ -180,44 +137,6 @@ export default class CarInfo extends Component {
     track.fetch(this.props.flux, from_dt, to_dt);
   }
 
-  async componentDidMount() {
-    if (this.props.car && !this.state.imageUrl) {
-      this.fetchImage();
-      this.fetchTrack();
-      const carsList = this.props.flux.getStore('objects').state.carsList;
-      const car = _.find(carsList, car => car.gov_number === this.props.car.car.gov_number);
-      if (car) {
-        const car_id = car.asuods_id;
-        const missions = await this.props.flux.getActions('missions').getMissionsByCarAndDates(car_id, this.state.from_dt, this.state.to_dt, true, 1);
-        this.setState({ missions: missions.result.rows });
-      }
-    }
-  }
-
-  async componentWillReceiveProps(props) {
-    if (props.car !== this.props.car) {
-      this.fetchImage(props);
-      this.fetchTrack(props);
-      this.stopTrackPlaying();
-      this.setState({ trackPaused: 'stopped' });
-    }
-    if (props.car.id !== this.props.car.id) {
-      const carsList = this.props.flux.getStore('objects').state.carsList;
-      const car = _.find(carsList, car => car.gov_number === this.props.car.car.gov_number);
-      if (car) {
-        const car_id = car.asuods_id;
-        const missions = await this.props.flux.getActions('missions').getMissionsByCarAndDates(car_id, this.state.from_dt, this.state.to_dt, true, 1);
-        this.setState({ missions: missions.result.rows });
-      }
-    }
-  }
-
-  componentWillUnmount() {
-    const track = this.props.car.marker.track;
-    track.onUpdate();
-    this.stopTrackPlaying();
-  }
-
   toggleTrackPlaying() {
     const { marker } = this.props.car;
     marker.togglePlay();
@@ -235,6 +154,20 @@ export default class CarInfo extends Component {
     this.setState({ selectedMission: response.result.rows[0], showMissionForm: true });
   }
 
+  // TODO переместить это на более высокий уровень абстракции
+  zoomToTrack() {
+    const store = this.store;
+    store.setTracking(false);
+    this.setState({ trackingMode: false });
+
+    const marker = this.props.car.marker;
+    const extent = marker.track.getExtent();
+    const map = marker.map;
+    const view = map.getView();
+
+    view.fit(extent, map.getSize(), { padding: [50, 550, 50, 50] });
+  }
+
   renderModel() {
     const { imageUrl, trackingMode } = this.state;
     const { car } = this.props;
@@ -243,32 +176,32 @@ export default class CarInfo extends Component {
     const marker = car.marker;
     const isTrackLoaded = marker.hasTrackLoaded();
 
-    const trackBtnClass = 'toggle-tracking-mode btn-sm btn track-btn ' + (trackingMode ? 'tracking' : 'btn-default');
-    const trackBtnIconClass = 'glyphicon glyphicon-screenshot ' + (trackingMode ? 'tracking-animate' : '');
-    const zoomToTrackClass = 'zoom-to-track-extent btn-sm btn ' + (isTrackLoaded ? 'btn-default' : 'btn-disabled');
+    const trackBtnClass = cx('toggle-tracking-mode', 'btn-sm', 'btn', 'track-btn', { tracking: trackingMode, 'btn-default': !trackingMode });
+    const trackBtnIconClass = cx('glyphicon', 'glyphicon-screenshot', { 'tracking-animate': trackingMode });
+    const zoomToTrackClass = cx('zoom-to-track-extent', 'btn-sm', 'btn', { 'btn-default': isTrackLoaded, 'btn-disabled': !isTrackLoaded });
 
     return (
       <Panel title={title}>
-        <button disabled={this.state.trackPaused !== 'stopped'} className={trackBtnClass} onClick={this.toggleCarTracking.bind(this)} title="Следить за машиной">
+        <button disabled={this.state.trackPaused !== 'stopped'} className={trackBtnClass} onClick={this.toggleCarTracking} title="Следить за машиной">
           <span className={trackBtnIconClass} />&nbsp;{trackingMode ? 'Следим' : 'Следить'}
         </button>
-        <button disabled={this.state.trackPaused !== 'stopped'} className={zoomToTrackClass} onClick={isTrackLoaded && this.zoomToTrack.bind(this)} title="Показать трек">
+        <button disabled={this.state.trackPaused !== 'stopped'} className={zoomToTrackClass} onClick={isTrackLoaded && this.zoomToTrack} title="Показать трек">
           <span className="glyphicon glyphicon-resize-full" />&nbsp;Трек
         </button>
-        <img className="car-info-image" src={imageUrl ? config.images + imageUrl : ''} />
-        <VehicleAttributes vehicle={car} lastPoint={marker.hasTrackLoaded() && marker.track.getLastPoint()} />
+        <img role="presentation" className="car-info-image" src={imageUrl ? config.images + imageUrl : ''} />
+        <VehicleAttributes point={car} car={this.state.car} lastPoint={marker.hasTrackLoaded() && marker.track.getLastPoint()} />
         {marker.track.getLegend()}
       </Panel>
     );
   }
 
   renderData() {
-    const store = this.store;
     const marker = this.props.car.marker;
     const tillNow = this.state.tillNow;
-    const reloadBtnCN = 'glyphicon glyphicon-repeat ' + (tillNow && marker.hasTrackLoaded() ? 'tracking-animate' : '');
+    const reloadBtnCN = cx('glyphicon', 'glyphicon-repeat', { 'tracking-animate': tillNow && marker.hasTrackLoaded() });
 
-    const showGradient = store.state.showTrackingGradient;
+    // const store = this.store;
+    // const showGradient = store.state.showTrackingGradient;
 
     return (
       <div className="car-info-tracking">
@@ -285,24 +218,24 @@ export default class CarInfo extends Component {
             disabled={tillNow}
           />
           {/* <label className="gradient-checkbox">
-            <input type="checkbox" checked={showGradient} ref="showGradient" onChange={this.onShowGradientChange.bind(this)}/> С градиентом
+            <input type="checkbox" checked={showGradient} ref="showGradient" onChange={this.onShowGradientChange}/> С градиентом
           </label>*/}
           <label className="till-now-checkbox">
-            <input type="checkbox" checked={tillNow} onChange={this.onTillNowChange.bind(this)} /> За сегодня
+            <input type="checkbox" checked={tillNow} onChange={this.onTillNowChange} /> За сегодня
           </label>
 
           <Button
             title="Перезагрузить данные"
             className="reload-button"
-            onClick={this.fetchVehicleData.bind(this)}
+            onClick={this.fetchVehicleData}
             disabled={tillNow}
           >
             <span className={reloadBtnCN} />
           </Button>
 
           <div className="track-player">
-            <Button onClick={this.toggleTrackPlaying.bind(this)}><Glyphicon glyph={this.state.trackPaused ? 'play' : 'pause'} /></Button>
-            <Button disabled={this.state.trackPaused === 'stopped'} onClick={this.stopTrackPlaying.bind(this)}><Glyphicon glyph={'stop'} /></Button>
+            <Button onClick={this.toggleTrackPlaying}><Glyphicon glyph={this.state.trackPaused ? 'play' : 'pause'} /></Button>
+            <Button disabled={this.state.trackPaused === 'stopped'} onClick={this.stopTrackPlaying}><Glyphicon glyph={'stop'} /></Button>
           </div>
 
           {this.state.trackPaused !== 'stopped' && <dl className="car-info-play-info">
@@ -320,9 +253,9 @@ export default class CarInfo extends Component {
 
   renderMissions() {
     const { missions = [] } = this.state;
-    let missionsRender = (<div style={{ textAlign: 'left', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-      {missions.map((mission) => {
-        return (
+    let missionsRender = (
+      <div style={{ textAlign: 'left', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        {missions.map(mission =>
           <span
             key={mission.id}
             onClick={this.setMissionById.bind(this, mission.id)}
@@ -330,9 +263,9 @@ export default class CarInfo extends Component {
           >
             {`№${mission.number} - ${mission.technical_operation_name}`}
           </span>
-        );
-      })}
-    </div>);
+        )}
+      </div>
+    );
 
     if (!missions.length) missionsRender = 'Нет данных';
 
@@ -367,7 +300,7 @@ export default class CarInfo extends Component {
         {this.renderData()}
         {this.renderMissions()}
         {/* <FuelChart from={this.state.from_dt} to={this.state.to_dt} id={car.id}/>*/}
-        {/* <SpeedChart track={marker.hasTrackLoaded() && marker.track}/>*/}
+        {/* <SpeedChart track={marker.hasTrackLoaded() && marker.track} />*/}
       </div>
     );
   }

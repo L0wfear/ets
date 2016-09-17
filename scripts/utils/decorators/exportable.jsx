@@ -10,7 +10,7 @@ export function toUrlWithParams(url, data) {
   return `${url}?${params}`;
 }
 
-function exportable(options) {
+export default function exportable(options) {
   return function decorateWithExportableFeatures(ComposedComponent) {
     return @autobind class Exportable extends Component {
 
@@ -75,6 +75,3 @@ function exportable(options) {
     };
   };
 }
-
-
-export default exportable;

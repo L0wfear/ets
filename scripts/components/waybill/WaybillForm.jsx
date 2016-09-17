@@ -1,16 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { autobind } from 'core-decorators';
 import connectToStores from 'flummox/connect';
 import { Modal, Input, Row, Col, Button, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
 import Field from 'components/ui/Field.jsx';
 import DivForEnhance from 'components/ui/Div.jsx';
-import Taxes from './Taxes.jsx';
 import { isNotNull, isEmpty, hasOdometer } from 'utils/functions';
-import Form from '../compositions/Form.jsx';
-import MissionFormWrap from '../missions/mission/MissionFormWrap.jsx';
-import { getDefaultMission } from '../../stores/MissionsStore.js';
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { notifications } from 'utils/notifications';
 import _ from 'lodash';
+import Form from '../compositions/Form.jsx';
+import Taxes from './Taxes.jsx';
+import MissionFormWrap from '../missions/mission/MissionFormWrap.jsx';
+import { getDefaultMission } from '../../stores/MissionsStore.js';
 import { enhanceWithPermissions } from '../util/RequirePermissions.jsx';
 
 const Div = enhanceWithPermissions(DivForEnhance);
@@ -52,7 +53,6 @@ class WaybillForm extends Form {
     const { formState } = this.props;
     if (formState.status === 'active') {
       const car = _.find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
-      const car_model_id = car.model_id;
       const fuel_correction_rate = car.fuel_correction_rate || 1;
       flux.getActions('fuelRates').getFuelRatesByCarModel(formState.car_id).then((r) => {
         const fuelRates = r.result.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date }));
@@ -251,7 +251,8 @@ class WaybillForm extends Form {
     const IS_DISPLAY = state.status && state.status === 'closed';
 
     const car = carsIndex[state.car_id];
-    const CAR_HAS_ODOMETER = state.gov_number ? hasOdometer(state.gov_number) : car && car.gov_number ? hasOdometer(car.gov_number) : null;
+    const CAR_HAS_ODOMETER = state.gov_number ? hasOdometer(state.gov_number) : null;
+    console.log(CAR_HAS_ODOMETER);
 
     let title = '';
 
@@ -499,7 +500,8 @@ class WaybillForm extends Form {
 
           <Row>
             <Col md={8}>
-              <Taxes hidden={!(IS_DISPLAY || IS_CLOSING) || state.status === 'draft' || (IS_DISPLAY && state.tax_data && state.tax_data.length === 0) || (IS_DISPLAY && !!!state.tax_data)}
+              <Taxes
+                hidden={!(IS_DISPLAY || IS_CLOSING) || state.status === 'draft' || (IS_DISPLAY && state.tax_data && state.tax_data.length === 0) || (IS_DISPLAY && !state.tax_data)}
                 readOnly={!IS_CLOSING && !this.state.canEditIfClose}
                 title={'Расчет топлива по норме'}
                 taxes={state.tax_data}
@@ -553,9 +555,12 @@ class WaybillForm extends Form {
                   <Input type="checkbox" checked={!!state.equipment_fuel} disabled={IS_CLOSING || IS_DISPLAY} onClick={this.handleEquipmentFuelChange.bind(this, !!!state.equipment_fuel)} />
                   <label>Показать расход топлива для оборудования</label>
                 </Div>
-                <Div hidden={!!!state.equipment_fuel}>
+                <Div hidden={!state.equipment_fuel}>
                   <h4> Топливо для оборудования</h4>
-                  <Field type="select" label="Тип топлива" error={errors.equipment_fuel_type}
+                  <Field
+                    type="select"
+                    label="Тип топлива"
+                    error={errors.equipment_fuel_type}
                     disabled={IS_CLOSING || IS_DISPLAY}
                     options={FUEL_TYPES}
                     value={state.equipment_fuel_type}
@@ -607,7 +612,7 @@ class WaybillForm extends Form {
         <Modal.Footer>
           <Div>
             <Div className={'inline-block'} style={{ marginRight: 5 }} hidden={!(IS_CREATING || IS_POST_CREATING)}>
-              <Button title="Обновить" onClick={this.refresh.bind(this)} disabled={isEmpty(state.car_id)}><Glyphicon glyph="refresh" /></Button>
+              <Button title="Обновить" onClick={this.refresh} disabled={isEmpty(state.car_id)}><Glyphicon glyph="refresh" /></Button>
             </Div>
             <Div className="inline-block">
               <Dropdown id="waybill-print-dropdown" dropup disabled={!this.props.canSave} onSelect={this.props.handlePrint.bind(this, state.status !== 'draft' && !IS_CREATING)}>
@@ -623,7 +628,7 @@ class WaybillForm extends Form {
               </Dropdown>&nbsp;
             </Div>
             <Div permissions={['waybill.update_closed']} className={'inline-block'} hidden={state.status === 'closed' && !this.state.canEditIfClose}>
-              <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave && !this.state.canEditIfClose}>Сохранить</Button>
+              <Button onClick={this.handleSubmit} disabled={!this.props.canSave && !this.state.canEditIfClose}>Сохранить</Button>
             </Div>
             <Div className={'inline-block'} style={{ marginLeft: 4 }} hidden={state.status === 'closed' || !(this.props.formState.status && this.props.formState.status === 'active')}>
               <Button onClick={() => this.props.handleClose(taxesControl)} disabled={!this.props.canClose}>Закрыть ПЛ</Button>

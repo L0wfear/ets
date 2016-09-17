@@ -10,7 +10,7 @@ export default class OdhCoverageReportMock extends Mock {
         percentage_one: 12,
         percentage_two: '77.2',
         percentage_three: 76,
-        'total_percentage': 22.2,
+        total_percentage: 22.2,
       },
     ];
   }

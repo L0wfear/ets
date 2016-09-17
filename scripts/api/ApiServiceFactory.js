@@ -1,5 +1,5 @@
-import APIService from './APIService.js';
 import urljoin from 'url-join';
+import APIService from './APIService.js';
 
 export default class ApiServiceFactory {
 

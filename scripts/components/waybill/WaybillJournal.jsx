@@ -1,10 +1,13 @@
 import React from 'react';
-import { Glyphicon, ButtonToolbar, Dropdown, MenuItem } from 'react-bootstrap';
+import { autobind } from 'core-decorators';
+import { Glyphicon, ButtonToolbar, Dropdown, MenuItem as BootstrapMenuItem } from 'react-bootstrap';
+import CheckableElementsList from 'components/CheckableElementsList.jsx';
+import { connectToStores, staticProps, bindable } from 'utils/decorators';
 import WaybillFormWrap from './WaybillFormWrap.jsx';
 import WaybillPrintForm from './WaybillPrintForm.jsx';
-import CheckableElementsList from 'components/CheckableElementsList.jsx';
-import { connectToStores, staticProps } from 'utils/decorators';
 import WaybillsTable from './WaybillsTable.jsx';
+
+const MenuItem = bindable(BootstrapMenuItem);
 
 @connectToStores(['waybills', 'objects', 'employees'])
 @staticProps({
@@ -14,6 +17,7 @@ import WaybillsTable from './WaybillsTable.jsx';
   formComponent: WaybillFormWrap,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
+@autobind
 export default class WaybillJournal extends CheckableElementsList {
 
   constructor(props, context) {
@@ -52,8 +56,8 @@ export default class WaybillJournal extends CheckableElementsList {
             <Glyphicon glyph="download-alt" />
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            <MenuItem onClick={this.showPrintForm.bind(this, 1)}>Журнал путевых листов (ТМФ №8)</MenuItem>
-            <MenuItem onClick={this.showPrintForm.bind(this, 2)}>Отчет по выработке ТС</MenuItem>
+            <MenuItem bindOnClick={1} onClick={this.showPrintForm}>Журнал путевых листов (ТМФ №8)</MenuItem>
+            <MenuItem bindOnClick={2} onClick={this.showPrintForm}>Отчет по выработке ТС</MenuItem>
           </Dropdown.Menu>
         </Dropdown>
       </ButtonToolbar>

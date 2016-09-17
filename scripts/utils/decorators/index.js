@@ -1,6 +1,7 @@
 import { PropTypes } from 'react';
 import flummoxConnectToStores from 'flummox/connect';
 import exportable from './exportable.jsx';
+import bindable from './bindable.jsx';
 
 /**
  * Добавляет flux в static contextTypes класса
@@ -47,6 +48,7 @@ function connectToStores(...args) {
 
 export default {
   exportable,
+  bindable,
   connectToStores,
   FluxContext,
   HistoryContext,

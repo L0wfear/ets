@@ -78,7 +78,8 @@ export default class DashboardStore extends Store {
   }
 
   handleGetDashboardComponent({ key, component }) {
-    let { componentsList, componentsIndex } = this.state;
+    const { componentsIndex } = this.state;
+    let { componentsList } = this.state;
     if (!component.result) return;
     const componentSchema = _.find(this.getComponentsByPermissions(), c => c.key === key);
     if (!componentSchema) return;

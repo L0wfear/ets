@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
-import { Sparklines, SparklinesLine } from '../../../vendor/Sparklines.js';
 import Panel from 'components/ui/Panel.jsx';
-import Preloader from '../Preloader.jsx'
+import { Sparklines, SparklinesLine } from 'react-sparklines';
+import Preloader from '../Preloader.jsx';
 
 const HEADERS = {
   fuel: 'График уровня топлива',
-  speed: 'График скорости'
-}
+  speed: 'График скорости',
+};
 
 export default class Graph extends Component {
 
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       data: [],
-      loaded: false
-    }
+      loaded: false,
+    };
     this.type = '';
   }
 
@@ -32,37 +32,47 @@ export default class Graph extends Component {
   }
 
   renderChart() {
-    let data = this.state.data;
+    const data = this.state.data;
 
-    return  <div style={{
-              fontSize: '10px'
-            }}>
-              <Sparklines data={data} width={400} height={90} margin={6} style={{
-                marginBottom: '10px'
-              }}>
-        	      <SparklinesLine style={{
-                  strokeWidth: 1,
-                  stroke: 'orange',
-                  fill: 'orange',
-                  fillOpacity: '0.25'
-                }}/>
-              </Sparklines>
-            {this.renderLegend()}
-            </div>
+    if (!data.length) {
+      return <div> Нет данных </div>;
+    }
+
+    return (
+      <div style={{ fontSize: '10px' }}>
+        <Sparklines
+          data={data}
+          width={400}
+          height={90}
+          margin={6}
+          style={{
+            marginBottom: '10px',
+          }}
+        >
+          <SparklinesLine
+            style={{
+              strokeWidth: 1,
+              stroke: 'orange',
+              fill: 'orange',
+              fillOpacity: '0.25',
+            }}
+          />
+        </Sparklines>
+        {this.renderLegend()}
+      </div>
+    );
   }
 
   render() {
-    //console.log('rendering graph', this.type, this.state, this.props)
-    let {loaded, data} = this.state;
+    const { loaded } = this.state;
 
-    return <Panel title={HEADERS[this.type]}>
-           {loaded ?
-              data.length ?
-                this.renderChart()
-                :
-                <div> Нет данных </div>
-            : <Preloader type="graph" style={{height: 103}}/>}
-          </Panel>
+    return (
+      <Panel title={HEADERS[this.type]}>
+        {loaded ?
+          this.renderChart()
+        : <Preloader type="graph" style={{ height: 103 }} />}
+      </Panel>
+    );
   }
 
 }

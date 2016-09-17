@@ -17,16 +17,10 @@ var serverOptions = {
   stats: {colors: true}
 };
 
-// var Express = require('express');
-// var app = new Express();
-// app.use(require('webpack-dev-middleware')(compiler, serverOptions));
-// app.use(require('webpack-hot-middleware')(compiler));
-// app.use(require('webpack-hot-middleware')(compiler));
-
 var devServer = new WebpackDevServer(compiler, serverOptions);
 
 
-devServer.listen(port, host, function onAppListening(err) {
+devServer.listen(port, '0.0.0.0', function onAppListening(err) {
   if (err) {
     console.error(err);
   } else {

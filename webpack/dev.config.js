@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const notifyStats = require('./utils/notifyStats');
+const version = require('./utils/getVersion');
 const host = 'localhost';
 const port = 3000;
 const alias = require('./alias');
@@ -50,6 +51,7 @@ module.exports = {
         // Useful to reduce the size of client-side libraries, e.g. react
         NODE_ENV: JSON.stringify('development'),
         STAND: JSON.stringify(stand),
+        VERSION: JSON.stringify(version)
       },
     }),
     new webpack.IgnorePlugin(/\.json$/),

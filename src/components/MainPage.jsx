@@ -13,6 +13,14 @@ import PERMISSIONS from 'constants/permissions';
 import enhanceWithPermissions from './util/RequirePermissions.jsx';
 import defaultUser from '../assets/images/avatar-default.png';
 
+let VERSION_DESCRIPTION;
+try {
+  const VERSION = process.env.VERSION;
+  VERSION_DESCRIPTION = `Версия ${VERSION}`;
+} catch (e) {
+  VERSION_DESCRIPTION = '';
+}
+
 const ROLES = {
   master: 'Мастер',
   dispatcher: 'Диспетчер',
@@ -181,7 +189,12 @@ export default class MainPage extends React.Component {
           <LoadingOverlay />
         </div>
 
-        <div className="app-footer">{this.state.user.company_name}</div>
+        <div className="app-footer">
+          {this.state.user.company_name}
+          <span style={{ position: 'absolute', right: 20 }}>
+            {VERSION_DESCRIPTION}
+          </span>
+        </div>
       </div>
     );
   }

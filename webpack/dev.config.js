@@ -1,11 +1,10 @@
 const path = require('path');
 const webpack = require('webpack');
 const notifyStats = require('./utils/notifyStats');
-const alias = require('./alias');
-
-const assetsPath = path.resolve(__dirname, '../dist');
 const host = 'localhost';
 const port = 3000;
+const alias = require('./alias');
+
 const stand = process.env.STAND || 'development';
 
 module.exports = {
@@ -16,35 +15,26 @@ module.exports = {
       'webpack-dev-server/client?http://' + host + ':' + port,
       'webpack/hot/only-dev-server',
       './scripts/index.js',
+      './scripts/assets/main.scss'
     ],
   },
   output: {
-    path: assetsPath,
+    path: path.join(__dirname, '..', 'dist'),
+    publicPath: '/dist/',
     filename: '[name].js',
-    chunkFilename: '[name]-[chunkhash].js',
-    publicPath: 'http://' + host + ':' + port + '/dist/',
   },
   module: {
     loaders: [
-      { test: /\.(jpe?g|png|gif|svg)$/, loader: 'url', query: { limit: 10240 } },
       { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['react-hot', 'babel-loader'] },
       { test: /\.json$/, loader: 'json-loader' },
-      { test: /\.scss$/, loader: 'style!css?modules&importLoaders=2&localIdentName=[local]___[hash:base64:5]!sass?outputStyle=expanded&sourceMap=true&sourceMapContents=true' },
-
-      { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/font-woff' },
-      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream' },
-      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file' },
+      { test: /\.(jpe?g|png|gif)$/, loader: 'url-loader?limit=10000&name=images/[name].[ext]' },
+      { test: /\.(eot|woff|woff2|ttf|svg)(\?v=\d+\.\d+\.\d+)?/, loader: 'url-loader?limit=100000&name=fonts/[name].[ext]' },
+      { test: /\.s?css$/, loaders: ['style', 'css-loader?sourceMap', 'resolve-url', 'sass-loader?sourceMap'] },
       { test: /ol-base\.js/, loader: 'imports?define=>false' },
     ],
   },
-  node: {
-    fs: 'empty',
-  },
-  browser: {
-    fs: 'empty',
-  },
   resolve: {
-    root: path.resolve(__dirname, '..', 'scripts'),
+    root: __dirname,
     alias,
     modulesDirectories: [
       'scripts',

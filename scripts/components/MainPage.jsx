@@ -11,6 +11,7 @@ import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
 import { FluxContext, HistoryContext } from 'utils/decorators';
 import PERMISSIONS from 'constants/permissions';
 import enhanceWithPermissions from './util/RequirePermissions.jsx';
+import defaultUser from '../assets/images/avatar-default.png';
 
 const ROLES = {
   master: 'Мастер',
@@ -156,7 +157,7 @@ export default class MainPage extends React.Component {
           <Nav pullRight>
             <NavItem className="navbar-user">
               <div className="navbar-user__avatar">
-                <img role="presentation" src="images/avatar-default.png" className="navbar-user__avatar-img" />
+                <img role="presentation" src={defaultUser} className="navbar-user__avatar-img" />
               </div>
               <div className="navbar-user__data">
                 <div className="navbar-user__data-type">{ROLES[user.role || ''] || ''}</div>

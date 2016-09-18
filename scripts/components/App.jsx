@@ -68,13 +68,12 @@ class App extends Component {
       return this.setState({ loading: false });
     }
     return AuthCheckService.get()
-          // .then(() => fetchEvergisToken())
           .then(() => flux.getActions('objects').getConfig())
           .then(() => {
             this.setState({ loading: false });
           })
           .catch((error) => {
-            console.log(error);
+            console.log(error); // eslint-disable-line
             if (error === 401) {
               flux.getActions('session').logout();
               return global.NOTIFICATION_SYSTEM.notify(loginErrorNotification);
@@ -90,7 +89,6 @@ class App extends Component {
 
 function requireAuth(nextState, replaceState) {
   if (!flux.getStore('session').isLoggedIn() || !flux.getStore('session').getCurrentUser().role) {
-    console.warn('USER IS NOT LOGGED IN');
     replaceState({ nextPathname: nextState.location.pathname }, '/login');
     return;
   }
@@ -177,5 +175,5 @@ render(
   <Provider store={createStore()}>
     {routes}
   </Provider>,
-  document.getElementById('content')
+  document.getElementById('container')
 );

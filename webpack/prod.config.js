@@ -1,45 +1,40 @@
-// Webpack config for creating the production bundle.
 var path = require('path');
 var webpack = require('webpack');
 var notifyStats = require('./utils/notifyStats');
 var CleanPlugin = require('clean-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-var assetsPath = path.join(__dirname, '..', 'dist');
 var alias = require('./alias');
 
 var stand = process.env.STAND || 'production';
 
 module.exports = {
-  context: path.resolve(__dirname, '../'),
+  context: path.resolve(__dirname, '..'),
   entry: {
     'app': [
       './scripts/index.js'
     ],
-    'style': 'raw!./styles/main.scss'
+    // 'style': 'raw!./styles/main.scss'
   },
   output: {
-    path: assetsPath,
+    path: path.join(__dirname, '..', 'dist'),
     filename: '[name].js',
-    chunkFilename: '[name]-[chunkhash].js',
-    publicPath: '../dist/'
+    /* если оставить publicPath то HtmlWebpackPlugin будет вставлять скрипты со ссылкой на него
+     * а нам это не нужно т.к. index.html генерится в dist
+     */
+    // publicPath: '/dist/',
   },
   module: {
     loaders: [
-      { test: /\.(jpe?g|png|gif|svg)$/, loader: 'url', query: { limit: 10240 } },
       { test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader' },
       { test: /\.json$/, loader: 'json-loader' },
-      // { test: /\.(eot|woff|woff2|ttf|svg)(\?v=\d+\.\d+\.\d+)?/, loader: 'url-loader?limit=100000&name=fonts/[name].[ext]' },
-      { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', '!raw!sass?outputStyle=expanded') }
-      //  { test: /\.scss$/, loaders: ['style','css-loader?sourceMap', 'resolve-url', 'sass-loader?sourceMap'] }
+      { test: /\.hbs?$/, loader: 'handlebars-loader' },
+      { test: /\.(png|jpe?g|gif)$/, loader: 'url-loader?limit=10000&name=images/[name].[ext]' },
+      { test: /\.(eot|woff|woff2|ttf|svg)(\?v=\d+\.\d+\.\d+)?/, loader: 'url-loader?limit=100000&name=fonts/[name].[ext]' },
+      { test: /\.scss$/, loader: ExtractTextPlugin.extract('style','css-loader!resolve-url!sass-loader?sourceMap') }
     ]
-  },
-  node: {
-    fs: "empty"
-  },
-  browser: {
-    fs: "empty"
   },
   resolve: {
     root: __dirname,
@@ -53,9 +48,6 @@ module.exports = {
   plugins: [
     new CleanPlugin(['dist'], {
       root: path.resolve(__dirname, '..')
-    }),
-    new ExtractTextPlugin('../dist/[name].css', {
-      allChunks: true
     }),
     new webpack.DefinePlugin({
       __CLIENT__: true,
@@ -73,7 +65,6 @@ module.exports = {
         STAND: JSON.stringify(stand)
       }
     }),
-
     // optimizations
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
@@ -86,22 +77,18 @@ module.exports = {
     }),
     new CopyWebpackPlugin([
       {
-        from: path.join(__dirname, '..', 'fonts'),
+        from: path.join(__dirname, '..', 'scripts', 'assets', 'fonts'),
         to: 'fonts'
       },
       {
-        from: path.join(__dirname, '..', 'images'),
+        from: path.join(__dirname, '..', 'scripts', 'assets', 'images'),
         to: 'images'
-      },
-      // TODO добавить, обсудив деплой
-      // {
-      //   from: path.join(__dirname, '..', 'index.html'),
-      // }
+      }
     ]),
-    new webpack.DefinePlugin({
-      __CLIENT__: true,
-      __SERVER__: false,
-      __DEVELOPMENT__: false,
+    new ExtractTextPlugin('./css/[name].css'),
+    new HtmlWebpackPlugin({
+      title: 'ЕТС',
+      template: path.resolve(__dirname, 'templates', 'index.hbs')
     }),
     function () {
       this.plugin('done', notifyStats);

@@ -6,21 +6,19 @@ var compiler = webpack(webpackConfig);
 var host = process.env.HOST || 'localhost';
 var port = 3000;
 var serverOptions = {
-  // contentBase: 'http://' + host + ':' + port,
-  quiet: true,
+  quiet: false,
   noInfo: true,
   hot: true,
   inline: true,
   lazy: false,
   publicPath: webpackConfig.output.publicPath,
   headers: {"Access-Control-Allow-Origin": "*"},
-  stats: {colors: true}
+  stats: { colors: true }
 };
 
 var devServer = new WebpackDevServer(compiler, serverOptions);
 
-
-devServer.listen(port, '0.0.0.0', function onAppListening(err) {
+devServer.listen(port, host, function onAppListening(err) {
   if (err) {
     console.error(err);
   } else {

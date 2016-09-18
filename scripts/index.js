@@ -10,13 +10,7 @@ import 'whatwg-fetch';
 /* 3rd party js */
 import '!script!openlayers/dist/ol.js';
 import 'ol3-popup/src/ol3-popup.js';
-/* 3rd party css */
-// TODO переместить в dependencies.scss, добавив правильный лоадер
-import '!style!raw!openlayers/dist/ol.css';
-import '!style!raw!ol3-popup/src/ol3-popup.css';
-import '!style!raw!../styles/bootstrap.min.css';
-import '!style!raw!sass!../styles/main.scss';
-import '!style!raw!react-select/dist/react-select.css';
+import './assets/main.scss';
 /* Старт приложения */
 import './components/App';
 /* Вспомогательные утилиты,
@@ -24,7 +18,6 @@ import './components/App';
  */
 import './components/ui/NotificationSystem';
 import './components/ui/Prompt';
-
 /* Проставляем NODE_ENV для оптимизации работы некоторых библиотек */
 global.NODE_ENV = process.env.NODE_ENV;
 /* Глобальный формат даты для всех дейтпикеров и строк */

@@ -23,7 +23,7 @@ export default class APIService {
     this.processResponse = this.processResponse.bind(this);
 
     this.logFunction = method => console.info(`API SERVICE ${method} ${this.url}`);
-    this.warningNotificationFunction = warning => global.NOTIFICATION_SYSTEM.addNotification(getWarningNotification(warning));
+    this.warningNotificationFunction = warning => global.NOTIFICATION_SYSTEM.notify(getWarningNotification(warning));
   }
 
   processResponse(r, callback) {

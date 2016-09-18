@@ -1,21 +1,20 @@
 import React, { PropTypes } from 'react';
-import { Input, Label, Container, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon, Collapse } from 'react-bootstrap';
+import { Input, Button, Glyphicon, Collapse } from 'react-bootstrap';
+import { isEmpty } from 'utils/functions';
+import _ from 'lodash';
 import Div from '../../Div.jsx';
 import Datepicker from '../../DatePicker.jsx';
 import IntervalPicker from '../../IntervalPicker.jsx';
-import { isEmpty } from 'utils/functions';
 import EtsSelect from '../../EtsSelect.jsx';
 
-import _ from 'lodash';
-import cx from 'classnames';
-
 const FilterSelect = (props) => {
-  return <EtsSelect
-      type="filter-select"
-      searchingText="Поиск..."
-      clearAllText="Очистить"
-      addLabelText='Добавить "{label}"?'
-      {...props} />;
+  return (<EtsSelect
+    type="filter-select"
+    searchingText="Поиск..."
+    clearAllText="Очистить"
+    addLabelText='Добавить "{label}"?'
+    {...props}
+  />);
 };
 
 class FilterRow extends React.Component {
@@ -26,14 +25,14 @@ class FilterRow extends React.Component {
       type: PropTypes.string,
       labelFunction: PropTypes.func,
       availableOptions: PropTypes.array,
-      tableData: PropTypes.array
+      tableData: PropTypes.array,
     };
   }
 
   static get defaultProps() {
     return {
-      labelFunction: (v) => v,
-      tableData: []
+      labelFunction: v => v,
+      tableData: [],
     };
   }
 
@@ -41,36 +40,36 @@ class FilterRow extends React.Component {
     const props = this.props;
 
     const { value, name, displayName, type, labelFunction,
-      availableOptions, tableData } = props;
-    let input = <Input type="text" value={value} onChange={props.onChange}/>;
+      availableOptions, onChange, onMultiChange, tableData } = props;
+    let input = <Input type="text" value={value} onChange={onChange} />;
 
     if (type) {
       if (type === 'select' || type === 'multiselect') {
-        let options = availableOptions || _(props.tableData)
+        let options = availableOptions || _(tableData)
                         .uniqBy(name)
-                        .map((d) => ({
+                        .map(d => ({
                           value: typeof d[name] === 'boolean' ? +d[name] : d[name],
                           label: labelFunction(d[name]),
                         }))
                         .value();
         if (type === 'select') {
-          if (name === "operation_id") {
-            options = options.sort((a,b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
+          if (name === 'operation_id') {
+            options = options.sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
           }
-          input = <FilterSelect options={options} value={value} onChange={props.onChange}/>;
+          input = <FilterSelect options={options} value={value} onChange={onChange} />;
         } else if (type === 'multiselect') {
           input = (
             <Div className="filter-multiselect-container">
-              <FilterSelect options={options} multi={true} value={value} onChange={props.onMultiChange} />
+              <FilterSelect options={options} multi value={value} onChange={onMultiChange} />
             </Div>
           );
         }
       }
       if (type === 'date') {
-        input = <Datepicker className="filter-datepicker" date={value} onChange={props.onChange} time={false} />;
+        input = <Datepicker className="filter-datepicker" date={value} onChange={onChange} time={false} />;
       }
       if (type === 'date_interval') {
-        input = <IntervalPicker interval={value} onChange={props.onChange} />;
+        input = <IntervalPicker interval={value} onChange={onChange} />;
       }
     }
 
@@ -87,10 +86,11 @@ export default class Filter extends React.Component {
 
   static get propTypes() {
     return {
+      values: PropTypes.object,
       show: PropTypes.bool,
       tableData: PropTypes.array,
       onHide: PropTypes.func,
-      onSubmit: PropTypes.func.isRequired
+      onSubmit: PropTypes.func.isRequired,
     };
   }
 
@@ -103,27 +103,27 @@ export default class Filter extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    this.setState({filterValues: props.values});
+    this.setState({ filterValues: props.values });
   }
 
   handleFilterValueChange(key, e) {
-    const filterValues = {...this.state.filterValues};
+    const filterValues = { ...this.state.filterValues };
 
-    filterValues[key] = !!e.target ? e.target.value : e;
+    filterValues[key] = e.target ? e.target.value : e;
 
-    this.setState({filterValues});
+    this.setState({ filterValues });
   }
 
   handleFilterMultipleValueChange(key, v) {
-    const filterValues = {...this.state.filterValues};
-    let data = !isEmpty(v) ? v.split(',') : [];
+    const filterValues = { ...this.state.filterValues };
+    const data = !isEmpty(v) ? v.split(',') : [];
 
     filterValues[key] = data;
     if (data.length === 0) {
       delete filterValues[key];
     }
 
-    this.setState({filterValues});
+    this.setState({ filterValues });
   }
 
   submit() {
@@ -150,7 +150,7 @@ export default class Filter extends React.Component {
     const { filterValues } = this.state;
     const { tableData, options } = this.props;
 
-    const filterRows = options.map( (option, i) => {
+    const filterRows = options.map((option, i) => {
       const { filter = {}, name, displayName } = option;
       const { type, labelFunction, options } = filter;
       return (
@@ -164,7 +164,8 @@ export default class Filter extends React.Component {
           availableOptions={options}
           displayName={displayName}
           onChange={this.handleFilterValueChange.bind(this, name)}
-          onMultiChange={this.handleFilterMultipleValueChange.bind(this, name)} />
+          onMultiChange={this.handleFilterMultipleValueChange.bind(this, name)}
+        />
       );
     });
 
@@ -174,7 +175,7 @@ export default class Filter extends React.Component {
           <Div className="filter-buttons">
             <Button onClick={this.submit.bind(this)}>Применить</Button>
             <Button onClick={this.reset.bind(this)}>Сброс</Button>
-            <span className="filter-close" onClick={this.props.onHide}><Glyphicon glyph="remove"/></span>
+            <span className="filter-close" onClick={this.props.onHide}><Glyphicon glyph="remove" /></span>
           </Div>
           {filterRows}
         </Div>

@@ -42,9 +42,11 @@ const MissionReportByPointsTable = (props) => {
 
 class MissionReportByPoints extends Component {
 
-  static propTypes = {
-    renderOnly: PropTypes.bool,
-    onElementChange: PropTypes.func,
+  static get propTypes() {
+    return {
+      renderOnly: PropTypes.bool,
+      onElementChange: PropTypes.func,
+    };
   }
 
   constructor(props) {

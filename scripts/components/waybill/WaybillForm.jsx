@@ -12,7 +12,7 @@ import Form from '../compositions/Form.jsx';
 import Taxes from './Taxes.jsx';
 import MissionFormWrap from '../missions/mission/MissionFormWrap.jsx';
 import { getDefaultMission } from '../../stores/MissionsStore.js';
-import { enhanceWithPermissions } from '../util/RequirePermissions.jsx';
+import enhanceWithPermissions from '../util/RequirePermissions.jsx';
 
 const Div = enhanceWithPermissions(DivForEnhance);
 
@@ -101,7 +101,7 @@ class WaybillForm extends Form {
       const currentMissions = formState.mission_id_list;
       const newMissions = currentMissions.filter(el => availableMissions.indexOf(el) > -1);
       this.props.handleFormChange('mission_id_list', newMissions);
-      notificate && global.NOTIFICATION_SYSTEM.addNotification(notifications.missionsByCarAndDateUpdateNotification);
+      notificate && global.NOTIFICATION_SYSTEM.notify(notifications.missionsByCarAndDateUpdateNotification);
     });
   }
 

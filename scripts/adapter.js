@@ -124,14 +124,14 @@ function checkResponse(url, response, body, method) {
     const serviceName = usedUrl.split('/')[usedUrl.split('/').length - 2];
 
     if (response.status === 500) {
-      global.NOTIFICATION_SYSTEM.addNotification(getServerErrorNotification(`/${method} ${serviceName}, код ответа 500`));
+      global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`/${method} ${serviceName}, код ответа 500`));
     } else if (body && body.errors && body.errors.length) {
       const error = `ERROR /${method} ${usedUrl}`;
       console.error(error);
 
-      body.errors.map((er) => {
+      body.errors.forEach((er) => {
         console.error(er);
-        return global.NOTIFICATION_SYSTEM.addNotification(getServerErrorNotification(`/${method} ${serviceName}`));
+        global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`/${method} ${serviceName}`));
       });
       throw new Error('Errors in response body');
     }

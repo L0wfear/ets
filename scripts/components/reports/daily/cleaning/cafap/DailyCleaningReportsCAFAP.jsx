@@ -36,7 +36,7 @@ export default class DailyCleaningReportsCAFAP extends Component {
   onReportSelect({ props }) {
     const id = props.data.id;
     if (props.data.status !== 'success' && props.data.status !== 'fail') {
-      global.NOTIFICATION_SYSTEM.addNotification(getReportNotReadyNotification2(this.context.flux));
+      global.NOTIFICATION_SYSTEM.notify(getReportNotReadyNotification2(this.context.flux));
     } else if (props.data.status !== 'fail') {
       this.context.history.pushState(null, `/daily-cleaning-report-cafap/${props.data.element}/${id}`);
     }

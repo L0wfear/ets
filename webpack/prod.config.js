@@ -15,7 +15,6 @@ module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
     'app': [
-      'whatwg-fetch',
       './scripts/index.js'
     ],
     'style': 'raw!./styles/main.scss'
@@ -29,7 +28,7 @@ module.exports = {
   module: {
     loaders: [
       { test: /\.(jpe?g|png|gif|svg)$/, loader: 'url', query: { limit: 10240 } },
-      { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?stage=0&optional=runtime&plugins=typecheck'] },
+      { test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader' },
       { test: /\.json$/, loader: 'json-loader' },
       // { test: /\.(eot|woff|woff2|ttf|svg)(\?v=\d+\.\d+\.\d+)?/, loader: 'url-loader?limit=100000&name=fonts/[name].[ext]' },
       { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', '!raw!sass?outputStyle=expanded') }
@@ -42,7 +41,6 @@ module.exports = {
   browser: {
     fs: "empty"
   },
-  progress: true,
   resolve: {
     root: __dirname,
     alias: alias,

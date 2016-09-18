@@ -6,13 +6,13 @@ import cx from 'classnames';
 import ClickOutHandler from 'react-onclickout';
 import Griddle from 'griddle-react';
 import { autobind } from 'core-decorators';
+import { isEmpty } from 'utils/functions';
 
 import ColumnControl from './ColumnControl.jsx';
 import Filter from './filter/Filter.jsx';
 import FilterButton from './filter/FilterButton.jsx';
 import Paginator from '../Paginator.jsx';
 import Div from '../Div.jsx';
-import { isEmpty } from 'utils/functions';
 
 @autobind
 export default class Table extends React.Component {
@@ -51,12 +51,13 @@ export default class Table extends React.Component {
       noFilter: PropTypes.bool,
       noTitle: PropTypes.bool,
       noHeader: PropTypes.bool,
-      preventNoDataMessage: PropTypes.bool,
       enableSort: PropTypes.bool,
 
       title: PropTypes.string,
 
       tableMeta: PropTypes.object,
+      filterValues: PropTypes.object,
+      highlight: PropTypes.array,
 
       columnControl: PropTypes.bool,
       // TODO реализовать обработку вне
@@ -93,7 +94,6 @@ export default class Table extends React.Component {
       multiSelection: false,
       serverPagination: false,
       noDataMessage: 'Нет данных',
-      preventNoDataMessage: false,
 
       noFilter: false,
       noHeader: false,
@@ -134,10 +134,11 @@ export default class Table extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.filterValues) {
+    const { filterValues, columnControl } = this.props;
+    if (filterValues) {
       this.setState({ filterValues: this.props.filterValues });
     }
-    if (this.props.columnControl) {
+    if (columnControl) {
       const columnControlValues = JSON.parse(localStorage.getItem(this.props.columnControlStorageName)) || [];
       this.setState({ columnControlValues });
     }
@@ -236,7 +237,7 @@ export default class Table extends React.Component {
     const checked = _(this.props.results)
       .filter(r => this.shouldBeRendered(r))
       .reduce((cur, val) => { cur[val.id] = val; return cur; }, {});
-    this.props.onAllRowsChecked(checked, this.state.globalCheckboxState ? false : true);
+    this.props.onAllRowsChecked(checked, !this.state.globalCheckboxState);
     this.setState({ globalCheckboxState: !this.state.globalCheckboxState }, () => {
       this.forceUpdate();
     });
@@ -270,7 +271,7 @@ export default class Table extends React.Component {
       });
     }
 
-    const metadata = _.reduce(tableMetaCols, (cur, col, i) => {
+    const metadata = _.reduce(tableMetaCols, (cur, col) => {
       if (col.display === false) {
         return cur;
       }
@@ -310,7 +311,7 @@ export default class Table extends React.Component {
   }
 
   getTypeByKey(key) {
-    const col = _.find(this.props.tableMeta.cols, col => col.name === key);
+    const col = _.find(this.props.tableMeta.cols, c => c.name === key);
     const colFilterType = col.filter && col.filter.type ? col.filter.type : '';
     return colFilterType;
   }
@@ -362,7 +363,7 @@ export default class Table extends React.Component {
     return isValid;
   }
 
-  processSelected(selected, selectField, onRowSelected, el, i) {
+  processSelected(selected, selectField, onRowSelected, el) {
     el.isChecked = this.props.checked && this.props.checked[el.id] && this.shouldBeRendered(el);
     if (!selected || typeof onRowSelected === 'undefined') {
       el.isSelected = false;
@@ -374,8 +375,8 @@ export default class Table extends React.Component {
     return el;
   }
 
-  processHighlighted(highlight, el, i) {
-    el.isHighlighted === false;
+  processHighlighted(highlight, el) {
+    el.isHighlighted = false;
     if (highlight.length > 0) {
       highlight.forEach((obj) => {
         const field = Object.keys(obj)[0];
@@ -385,7 +386,7 @@ export default class Table extends React.Component {
     return el;
   }
 
-  processEmptyCols(tableCols, el, i) {
+  processEmptyCols(tableCols, el) {
     _.each(tableCols, (col) => {
       if (typeof el[col] === 'undefined') {
         el[col] = null;
@@ -437,8 +438,8 @@ export default class Table extends React.Component {
 
   render() {
     const { tableMeta, renderers, onRowSelected, selected,
-      selectField, checked, title, noTitle, multiSelection, noFilter,
-      enumerated, enableSort, noDataMessage, className, noHeader,
+      selectField, title, noTitle, noFilter,
+      enableSort, noDataMessage, className, noHeader,
       refreshable, columnControl, highlight, serverPagination } = this.props;
     const { initialSort, initialSortAscending, columnControlValues } = this.state;
 

@@ -20,7 +20,7 @@ export default class FieldWrap extends React.Component {
         fieldProps = {
           type: 'string',
           label: field.displayName,
-          readOnly: ! !!field.form.editable,
+          readOnly: !!!field.form.editable,
           hidden: field.form.hidden,
           value,
           error,
@@ -31,7 +31,7 @@ export default class FieldWrap extends React.Component {
         fieldProps = {
           type: 'number',
           label: field.displayName,
-          disabled: ! !!field.form.editable,
+          disabled: !!!field.form.editable,
           hidden: field.form.hidden,
           value,
           error,
@@ -42,7 +42,7 @@ export default class FieldWrap extends React.Component {
         fieldProps = {
           type: 'select2',
           label: field.displayName,
-          disabled: ! !!field.form.editable,
+          disabled: !!!field.form.editable,
           hidden: field.form.hidden,
           value,
           error,
@@ -57,7 +57,6 @@ export default class FieldWrap extends React.Component {
   }
 
   render() {
-
     const { field } = this.props;
 
     return (

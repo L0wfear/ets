@@ -13,7 +13,6 @@ module.exports = {
   context: path.resolve(__dirname, '..'),
   entry: {
     'app': [
-      'whatwg-fetch',
       'webpack-dev-server/client?http://' + host + ':' + port,
       'webpack/hot/only-dev-server',
       './scripts/index.js',
@@ -28,7 +27,7 @@ module.exports = {
   module: {
     loaders: [
       { test: /\.(jpe?g|png|gif|svg)$/, loader: 'url', query: { limit: 10240 } },
-      { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['react-hot', 'babel?stage=0&optional=runtime&plugins=typecheck'] },
+      { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['react-hot', 'babel-loader'] },
       { test: /\.json$/, loader: 'json-loader' },
       { test: /\.scss$/, loader: 'style!css?modules&importLoaders=2&localIdentName=[local]___[hash:base64:5]!sass?outputStyle=expanded&sourceMap=true&sourceMapContents=true' },
 
@@ -41,11 +40,9 @@ module.exports = {
   node: {
     fs: 'empty',
   },
-
   browser: {
     fs: 'empty',
   },
-  progress: true,
   resolve: {
     root: path.resolve(__dirname, '..', 'scripts'),
     alias,

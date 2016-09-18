@@ -1,10 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Select from 'react-select';
 
-class EstSelect extends Component {
-  constructor(props) {
-    super(props);
-  }
+export default class EstSelect extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.multi) {
@@ -23,10 +20,8 @@ class EstSelect extends Component {
   }
 
   render() {
-    const { placeholder = 'Выберите...', noResultsText = 'Ничего не найдено'} = this.props;
+    const { placeholder = 'Выберите...', noResultsText = 'Ничего не найдено' } = this.props;
 
     return <Select {...this.props} placeholder={placeholder} noResultsText={noResultsText} />;
   }
 }
-
-export default EstSelect;

@@ -140,7 +140,7 @@ export default class WeeklyTechnicalOperationCompleteReports extends Component {
   onReportSelect({ props }) {
     const id = props.data.id;
     if (props.data.status !== 'success' && props.data.status !== 'fail') {
-      global.NOTIFICATION_SYSTEM.addNotification(getReportNotReadyNotification3(this.context.flux));
+      global.NOTIFICATION_SYSTEM.notify(getReportNotReadyNotification3(this.context.flux));
     } else if (props.data.status !== 'fail') {
       this.context.history.pushState(null, `/weekly-technical-operation-complete-report/${props.data.element}/${id}`);
     }

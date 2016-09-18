@@ -1,87 +1,98 @@
 import React from 'react';
+import { Input } from 'react-bootstrap';
+import cx from 'classnames';
 import EtsSelect from './EtsSelect.jsx';
 import DatePicker from './DatePicker.jsx';
 import Div from './Div.jsx';
-import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
-import cx from 'classnames';
 
-class Field extends React.Component {
+export default class Field extends React.Component {
 
-  constructor(props) {
-    super(props);
+  static get propTypes() {
+    return {
+      value: React.PropTypes.any,
+      type: React.PropTypes.string.isRequired,
+      label: React.PropTypes.string,
+      hidden: React.PropTypes.bool,
+      onChange: React.PropTypes.func,
+      error: React.PropTypes.string,
+      readOnly: React.PropTypes.bool,
+      className: React.PropTypes.string,
+    };
   }
 
   renderBoolean() {
-    const { label = ''} = this.props;
-    return <Div hidden={this.props.hidden}>
-      <label>{label}</label>
-      <input type="checkbox" style={{fontSize: '20px', marginLeft: '5px'}} checked={this.props.value} onChange={this.props.onChange} />
-    </Div>
+    const { label = '' } = this.props;
+    return (
+      <Div hidden={this.props.hidden}>
+        <label>{label}</label>
+        <input type="checkbox" style={{ fontSize: '20px', marginLeft: '5px' }} checked={this.props.value} onChange={this.props.onChange} />
+      </Div>
+    );
   }
 
   renderNumber() {
-    const { error, label = ''} = this.props;
-    const inputClassName = cx({'has-error': error});
-    return <Div hidden={this.props.hidden}>
-             <Input type="number" className={inputClassName} {...this.props} />
-             <Div hidden={!error} className="error">{error}</Div>
-           </Div>
+    const { error } = this.props;
+    const inputClassName = cx({ 'has-error': error });
+    return (
+      <Div hidden={this.props.hidden}>
+        <Input type="number" className={inputClassName} {...this.props} />
+        <Div hidden={!error} className="error">{error}</Div>
+      </Div>
+    );
   }
 
   renderDate() {
     const { error, label = '', readOnly = false } = this.props;
-    const dateClassName = cx({'has-error': error});
-    return  <Div hidden={this.props.hidden} style={{marginBottom: 15}}>
-      <label style={{minHeight: 15}}>{label}</label>
-      <DatePicker {...this.props} className={dateClassName}/>
-      <Div hidden={!error} className="error" style={{marginTop: 4}}>{error}</Div>
-    </Div>;
+    const dateClassName = cx({ 'has-error': error });
+    return (
+      <Div hidden={this.props.hidden} style={{ marginBottom: 15 }}>
+        <label style={{ minHeight: 15 }}>{label}</label>
+        <DatePicker {...this.props} className={dateClassName} />
+        <Div hidden={!error} className="error" style={{ marginTop: 4 }}>{error}</Div>
+      </Div>
+    );
   }
 
   renderSelect() {
-    const { error, label = '', className = ''} = this.props;
-    const selectClassName = cx({'has-error': error});
-    return  <Div hidden={this.props.hidden} className={className} style={{marginBottom: 15}}>
-      <label>{label}</label>
-      <EtsSelect {...this.props} className={selectClassName}/>
-      <Div hidden={!error} className="error" style={{marginTop: 4}}>{error}</Div>
-    </Div>;
+    const { error, label = '', className = '' } = this.props;
+    const selectClassName = cx({ 'has-error': error });
+    return (
+      <Div hidden={this.props.hidden} className={className} style={{ marginBottom: 15 }}>
+        <label>{label}</label>
+        <EtsSelect {...this.props} className={selectClassName} />
+        <Div hidden={!error} className="error" style={{ marginTop: 4 }}>{error}</Div>
+      </Div>
+    );
   }
 
   renderString() {
     const { error, label = '', readOnly = false, className = '' } = this.props;
-    const inputClassName = cx({'has-error': error});
+    const inputClassName = cx({ 'has-error': error });
     return !readOnly ?
-           <Div hidden={this.props.hidden} style={this.props.wrapStyle || {}}>
-             <Input type="text" className={inputClassName} {...this.props} />
-             <Div hidden={!error} className="error">{error}</Div>
-           </Div>:
-           <Div hidden={this.props.hidden} className={className}>
-             <label style={{paddingTop:5}}>{this.props.label}</label><br/>
-             {this.props.value}
-           </Div>
+      <Div hidden={this.props.hidden} style={this.props.wrapStyle || {}}>
+        <Input type="text" className={inputClassName} {...this.props} />
+        <Div hidden={!error} className="error">{error}</Div>
+      </Div> :
+      <Div hidden={this.props.hidden} className={className}>
+        <label style={{ paddingTop: 5 }}>{this.props.label}</label><br />
+        {this.props.value}
+      </Div>;
   }
 
   renderFieldByType(type) {
     switch (type) {
       case 'string':
         return this.renderString();
-        break;
       case 'select':
         return this.renderSelect();
-        break;
       case 'date':
         return this.renderDate();
-        break;
       case 'number':
         return this.renderNumber();
-        break;
       case 'boolean':
         return this.renderBoolean();
-        break;
       default:
         return this.renderString();
-        break;
     }
   }
 
@@ -92,9 +103,3 @@ class Field extends React.Component {
   }
 
 }
-
-Field.propTypes = {
-  type: React.PropTypes.string.isRequired,
-};
-
-export default Field;

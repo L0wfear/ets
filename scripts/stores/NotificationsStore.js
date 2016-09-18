@@ -30,13 +30,13 @@ export default class NotificationsStore extends Store {
 
   handleMissionCreate(response) {
     if (this.checkResponse(response)) {
-      global.NOTIFICATION_SYSTEM.addNotification(notifications.missionCreateSuccessNotification);
+      global.NOTIFICATION_SYSTEM.notify(notifications.missionCreateSuccessNotification);
     }
   }
 
   handleMissionsCreate(response) {
     if (this.checkResponse(response)) {
-      global.NOTIFICATION_SYSTEM.addNotification(notifications.missionsCreationSuccessNotification);
+      global.NOTIFICATION_SYSTEM.notify(notifications.missionsCreationSuccessNotification);
     }
   }
 

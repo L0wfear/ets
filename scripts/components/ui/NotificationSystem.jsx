@@ -10,16 +10,15 @@ document.body.appendChild(notificationsDiv);
   INFO
   https://github.com/igorprado/react-notification-system
  */
-class AppNotificationSystem extends NotificationSystem {
+class AppNotificationSystem extends React.Component {
 
   constructor(props) {
-    super(props)
+    super(props);
     this._notify = this.notify.bind(this);
   }
 
-
-  addNotification(notification) {
-    this._notificationSystem.addNotification(notification)
+  notifyWithObject(notification) {
+    this._notificationSystem.addNotification(notification);
   }
 
   /**
@@ -28,27 +27,25 @@ class AppNotificationSystem extends NotificationSystem {
    * @param type success|error|warning|info
    */
   notify(text, type = 'success') {
-
+    if (typeof text === 'object') {
+      return this.notifyWithObject(text);
+    }
     if (typeof this._notificationSystem === 'undefined') {
-      return
+      return undefined;
     }
 
-    this._notificationSystem.addNotification({
+    return this._notificationSystem.addNotification({
       message: text,
       level: type,
-      position: 'tc'
+      position: 'tc',
     });
-  }
-
-  componentDidMount() {
-    this._notificationSystem = this.refs.notificationSystem;
   }
 
   render() {
     return (
-      <NotificationSystem ref="notificationSystem"/>
+      <NotificationSystem ref={node => (this._notificationSystem = node)} />
     );
   }
 }
 
-global.NOTIFICATION_SYSTEM = render(<AppNotificationSystem/>, document.getElementById('notifications'));
+global.NOTIFICATION_SYSTEM = render(<AppNotificationSystem />, document.getElementById('notifications'));

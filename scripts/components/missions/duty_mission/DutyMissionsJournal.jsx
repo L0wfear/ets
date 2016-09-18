@@ -77,7 +77,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       this.setState({
         checkedElements: {},
       });
-      global.NOTIFICATION_SYSTEM.addNotification(getWarningNotification('Отметить как "Выполненые" можно только назначенные наряд-задания!'));
+      global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Выполненые" можно только назначенные наряд-задания!'));
     } else {
       this.completeMission();
     }
@@ -97,7 +97,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
         }
       });
       this.setState({ checkedElements: {} });
-      global.NOTIFICATION_SYSTEM.addNotification(getWarningNotification('Отметить как "Невыполненые" можно только назначенные наряд-задания!'));
+      global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Невыполненые" можно только назначенные наряд-задания!'));
     } else {
       this.rejectMission();
     }
@@ -119,7 +119,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       });
 
       if (isNotDeleted) {
-        global.NOTIFICATION_SYSTEM.addNotification(getWarningNotification('Удалились только задания со статусом "Не назначено"!'));
+        global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Удалились только задания со статусом "Не назначено"!'));
       }
       this.setState({
         checkedElements: {},

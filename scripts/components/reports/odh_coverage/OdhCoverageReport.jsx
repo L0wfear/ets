@@ -1,4 +1,5 @@
 import React from 'react';
+import { autobind } from 'core-decorators';
 import { connectToStores, staticProps } from 'utils/decorators';
 import ElementsList from 'components/ElementsList.jsx';
 import OdhCoverageReportTable from './OdhCoverageReportTable.jsx';
@@ -11,8 +12,9 @@ const TWO_MINUTES = 1000 * 60 * 2;
   listName: 'odhCoverageReport',
   tableComponent: OdhCoverageReportTable,
   formComponent: OdhCoverageReportPrintForm,
-  operations: ['LIST']
+  operations: ['LIST'],
 })
+@autobind
 export default class OdhCoverageReport extends ElementsList {
 
   constructor(props) {
@@ -30,7 +32,7 @@ export default class OdhCoverageReport extends ElementsList {
   }
 
   export() {
-    this.setState({showForm: true});
+    this.setState({ showForm: true });
   }
 
   componentWillUnmount() {

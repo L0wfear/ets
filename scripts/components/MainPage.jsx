@@ -10,7 +10,7 @@ import { autobind } from 'core-decorators';
 import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
 import { FluxContext, HistoryContext } from 'utils/decorators';
 import PERMISSIONS from 'constants/permissions';
-import { enhanceWithPermissions } from './util/RequirePermissions.jsx';
+import enhanceWithPermissions from './util/RequirePermissions.jsx';
 
 const ROLES = {
   master: 'Мастер',

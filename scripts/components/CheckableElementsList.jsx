@@ -13,10 +13,12 @@ import { ButtonCreate, ButtonRead, ButtonDelete } from './ui/buttons/CRUD.jsx';
  */
 export default class CheckableElementsList extends ElementsList {
 
-  static propTypes = {
-    onListStateChange: PropTypes.func,
-    exportable: PropTypes.bool,
-    export: PropTypes.func,
+  static get propTypes() {
+    return {
+      onListStateChange: PropTypes.func,
+      exportable: PropTypes.bool,
+      export: PropTypes.func,
+    };
   }
 
   constructor(props) {

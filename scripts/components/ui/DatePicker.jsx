@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 import moment from 'moment';
 import localizer from 'react-widgets/lib/localizers/moment';
-localizer( moment );
 
-//import rome from 'rome';
-//import 'globalize/lib/cultures/globalize.culture.ru-RU';
-//import 'globalize';
+localizer(moment);
+
+// import rome from 'rome';
+// import 'globalize/lib/cultures/globalize.culture.ru-RU';
+// import 'globalize';
 //
 
 export default class DatePicker extends Component {
@@ -15,14 +16,14 @@ export default class DatePicker extends Component {
     super(props);
   }
 
-  shouldComponentUpdate(props, state) {
+  shouldComponentUpdate(props) {
     return props.date !== this.props.date || props.disabled !== this.props.disabled;
   }
 
   render() {
     let { time = true, date, disabled, min, max } = this.props;
-    let DATE_FORMAT = time ? `${global.APP_DATE_FORMAT} HH:mm` : `${global.APP_DATE_FORMAT}`;
-    let TIME_FORMAT = 'HH:mm';
+    const DATE_FORMAT = time ? `${global.APP_DATE_FORMAT} HH:mm` : `${global.APP_DATE_FORMAT}`;
+    const TIME_FORMAT = 'HH:mm';
 
     if (typeof date === 'string') {
       date = moment(date).toDate();
@@ -36,26 +37,25 @@ export default class DatePicker extends Component {
 
     if (typeof max === 'string') {
       max = moment(max).toDate();
-    } else if (typeof max === 'undefined' || max === null){
+    } else if (typeof max === 'undefined' || max === null) {
       max = new Date(2099, 11, 31);
     }
 
-    //return //<input disabled={this.props.disabled}/>
     return (
       <DateTimePicker
-          onChange={this.props.onChange}
-          format={DATE_FORMAT}
-          timeFormat={TIME_FORMAT}
-          culture="ru-RU"
-          className="chart-datepicker"
-          disabled={disabled}
-          step={5}
-          min={min}
-          max={max}
-          //messages={translation}
-          value={date}
-          time={time}/>
+        onChange={this.props.onChange}
+        format={DATE_FORMAT}
+        timeFormat={TIME_FORMAT}
+        culture="ru-RU"
+        className="chart-datepicker"
+        disabled={disabled}
+        step={5}
+        min={min}
+        max={max}
+        // messages={translation}
+        value={date}
+        time={time}
+      />
     );
-
   }
 }

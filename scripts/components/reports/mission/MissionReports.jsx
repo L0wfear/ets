@@ -55,7 +55,7 @@ export default class MissionReports extends Component {
   onReportSelect({ props }) {
     const id = props.data.id;
     if (props.data.status !== 'success') {
-      global.NOTIFICATION_SYSTEM.addNotification(getReportNotReadyNotification(this.context.flux));
+      global.NOTIFICATION_SYSTEM.notify(getReportNotReadyNotification(this.context.flux));
     } else {
       this.context.history.pushState(null, `/mission-report/${id}`);
     }

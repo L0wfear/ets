@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connectToStores } from 'utils/decorators';
 
-function enhanceWithPermissions(ComposedComponent) {
+export default function enhanceWithPermissions(ComposedComponent) {
   return @connectToStores('session') class extends Component {
 
     static get propTypes() {
@@ -52,7 +52,3 @@ function enhanceWithPermissions(ComposedComponent) {
     }
   };
 }
-
-export default {
-  enhanceWithPermissions,
-};

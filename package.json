@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "0.8.1",
+    "version": "0.8.2",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -100,7 +100,11 @@
         "esdoc": "esdoc -c esdoc.json",
         "bump": "node webpack/utils/updateVersion.js"
     },
-    "pre-commit": "bump",
+    "config": {
+      "ghooks": {
+        "pre-commit": "npm run bump"
+      }
+    },
     "engines": {
         "node": ">=5.1.0",
         "npm": ">=3.5.2"

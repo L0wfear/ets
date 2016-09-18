@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "0.8.2",
+    "version": "0.8.4",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -101,9 +101,9 @@
         "bump": "node webpack/utils/updateVersion.js"
     },
     "config": {
-      "ghooks": {
-        "pre-commit": "npm run bump"
-      }
+        "ghooks": {
+            "pre-commit": "npm run bump && git add package.json"
+        }
     },
     "engines": {
         "node": ">=5.1.0",

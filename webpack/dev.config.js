@@ -14,8 +14,8 @@ module.exports = {
     'app': [
       'webpack-dev-server/client?http://' + host + ':' + port,
       'webpack/hot/only-dev-server',
-      './scripts/index.js',
-      './scripts/assets/main.scss'
+      './src/index.js',
+      './src/assets/main.scss'
     ],
   },
   output: {
@@ -37,7 +37,7 @@ module.exports = {
     root: __dirname,
     alias,
     modulesDirectories: [
-      'scripts',
+      'src',
       'node_modules',
     ],
     extensions: ['', '.json', '.js', '.jsx'],

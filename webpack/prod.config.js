@@ -14,9 +14,8 @@ module.exports = {
   context: path.resolve(__dirname, '..'),
   entry: {
     'app': [
-      './scripts/index.js'
-    ],
-    // 'style': 'raw!./styles/main.scss'
+      './src/index.js'
+    ]
   },
   output: {
     path: path.join(__dirname, '..', 'dist'),
@@ -40,7 +39,7 @@ module.exports = {
     root: __dirname,
     alias: alias,
     modulesDirectories: [
-      'scripts',
+      'src',
       'node_modules'
     ],
     extensions: ['', '.json', '.js', '.jsx']
@@ -77,11 +76,11 @@ module.exports = {
     }),
     new CopyWebpackPlugin([
       {
-        from: path.join(__dirname, '..', 'scripts', 'assets', 'fonts'),
+        from: path.join(__dirname, '..', 'src', 'assets', 'fonts'),
         to: 'fonts'
       },
       {
-        from: path.join(__dirname, '..', 'scripts', 'assets', 'images'),
+        from: path.join(__dirname, '..', 'src', 'assets', 'images'),
         to: 'images'
       }
     ]),

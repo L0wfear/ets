@@ -1,13 +1,14 @@
-var path = require('path');
-var express = require('express');
-var app = express();
+const path = require('path');
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 9000;
 
 app.use(express.static('dist'));
 
-app.get('*', function(req, res){
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
-app.listen(9000, function () {
-  console.log('Example app listening on port 9000!');
+app.listen(9000, () => {
+  console.log(`Server listening on port ${port}!`);
 });

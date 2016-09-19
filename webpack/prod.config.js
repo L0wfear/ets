@@ -5,9 +5,9 @@ var CleanPlugin = require('clean-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var versionUtils = require('./utils/version');
 
 var alias = require('./alias');
-
 var stand = process.env.STAND || 'production';
 
 module.exports = {
@@ -19,7 +19,7 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, '..', 'dist'),
-    filename: '[name].js',
+    filename: '[name].[hash].js',
     /* если оставить publicPath то HtmlWebpackPlugin будет вставлять скрипты со ссылкой на него
      * а нам это не нужно т.к. index.html генерится в dist
      */
@@ -62,7 +62,7 @@ module.exports = {
         // Useful to reduce the size of client-side libraries, e.g. react
         NODE_ENV: JSON.stringify('production'),
         STAND: JSON.stringify(stand),
-        VERSION: JSON.stringify(version)
+        VERSION: JSON.stringify(versionUtils.version)
       }
     }),
     // optimizations

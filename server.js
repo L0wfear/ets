@@ -11,4 +11,5 @@ app.get('*', (req, res) => {
 
 app.listen(9000, () => {
   console.log(`Server listening on port ${port}!`);
+  require("openurl").open(`http://localhost:${port}`);
 });

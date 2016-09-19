@@ -1,3 +1,5 @@
+import { config as configureRaven } from './config/raven.js';
+
 const PROTO = window.location.protocol;
 const WS_PROTO = 'wss:';
 
@@ -12,11 +14,14 @@ const STANDS = {
 };
 
 try {
-  if (process.env.APIHOST) {
+  const HOST = process.env.APIHOST;
+  const STAND = process.env.STAND;
+  if (HOST) {
     config.backend = `${PROTO}//${process.env.APIHOST}`;
-  } else if (process.env.STAND) {
-    config.backend = STANDS[process.env.STAND] || STANDS.test;
+  } else if (STAND) {
+    config.backend = STANDS[STAND] || STANDS.test;
   }
+  // configureRaven();
 } catch (e) {
   console.log(e);
 }

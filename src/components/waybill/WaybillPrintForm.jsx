@@ -56,7 +56,7 @@ class WaybillPrintForm extends Component {
   render() {
     const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
       'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'].map((m, i) => ({ label: m, value: i }));
-    const YEARS = Array.from({ length: 11 }, (y, i) => ({ label: `${i}2016`, value: i + 2016 }));
+    const YEARS = Array.from({ length: 11 }, (y, i) => ({ label: `${i + 2016}`, value: i + 2016 }));
 
     return (
       <Modal {...this.props} show={!!this.props.show} bsSize="small">

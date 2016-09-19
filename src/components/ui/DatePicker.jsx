@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
-import moment from 'moment';
 import localizer from 'react-widgets/lib/localizers/moment';
+import moment from 'moment';
+import 'moment/locale/ru';
 
 localizer(moment);
 
@@ -12,8 +13,14 @@ localizer(moment);
 
 export default class DatePicker extends Component {
 
-  constructor(props) {
-    super(props);
+  static get propTypes() {
+    return {
+      time: PropTypes.bool,
+      date: PropTypes.any,
+      disabled: PropTypes.any,
+      min: PropTypes.any,
+      max: PropTypes.any,
+    };
   }
 
   shouldComponentUpdate(props) {
@@ -21,7 +28,8 @@ export default class DatePicker extends Component {
   }
 
   render() {
-    let { time = true, date, disabled, min, max } = this.props;
+    const { time = true, disabled } = this.props;
+    let { date, min, max } = this.props;
     const DATE_FORMAT = time ? `${global.APP_DATE_FORMAT} HH:mm` : `${global.APP_DATE_FORMAT}`;
     const TIME_FORMAT = 'HH:mm';
 
@@ -50,8 +58,8 @@ export default class DatePicker extends Component {
         className="chart-datepicker"
         disabled={disabled}
         step={5}
-        min={min}
-        max={max}
+      //  min={min}
+      //  max={max}
         // messages={translation}
         value={date}
         time={time}

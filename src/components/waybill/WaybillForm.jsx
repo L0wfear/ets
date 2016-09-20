@@ -476,7 +476,8 @@ class WaybillForm extends Form {
                     type="number"
                     label="Выдать, л"
                     error={errors.fuel_to_give}
-                    value={state.fuel_to_give} disabled={(IS_CLOSING || IS_DISPLAY) && !this.state.canEditIfClose} onChange={this.handleChange.bind(this, 'fuel_to_give')}
+                    value={state.fuel_to_give}
+                    disabled={(IS_CLOSING || IS_DISPLAY)} onChange={this.handleChange.bind(this, 'fuel_to_give')}
                   />
 
                   <Field
@@ -579,7 +580,7 @@ class WaybillForm extends Form {
                     label="Выдать, л"
                     error={errors.equipment_fuel_to_give}
                     value={state.equipment_fuel_to_give}
-                    disabled={(IS_CLOSING || IS_DISPLAY) && !(this.state.canEditIfClose && !!state.equipment_fuel)}
+                    disabled={(IS_CLOSING || IS_DISPLAY)}
                     onChange={this.handleChange.bind(this, 'equipment_fuel_to_give')}
                   />
                   <Field

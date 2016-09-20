@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
-import Form from 'compositions/Form.jsx';
+import Form from 'components/compositions/Form.jsx';
 import connectToStores from 'flummox/connect';
 import config from '../../../config.js';
 
@@ -27,7 +27,7 @@ class CarForm extends Form {
 
   render() {
     const state = this.props.formState;
-    const { ownersIndex = {}, modelsIndex = {}, typesIndex = {} } = this.props;
+    const { ownersIndex = {}, typesIndex = {} } = this.props;
     const owner = ownersIndex[state.owner_id] || {};
     const type = typesIndex[state.type_id] || {};
     const { companyStructureList = [] } = this.state;
@@ -51,19 +51,25 @@ class CarForm extends Form {
             </Col>
 
             <Col md={6}>
-              <Field type="select" label="Подразделение"
+              <Field
+                type="select"
+                label="Подразделение"
                 options={COMPANY_ELEMENTS}
                 value={state.company_structure_id}
                 clearable={false}
                 onChange={this.handleChange.bind(this, 'company_structure_id')}
               />
 
-               <Field type="string" label="Гаражный номер"
+               <Field
+                 type="string"
+                 label="Гаражный номер"
                  value={state.garage_number}
                  onChange={this.handleChange.bind(this, 'garage_number')}
                />
 
-              <Field type="number" label="Поправочный коэффициент"
+              <Field
+                type="number"
+                label="Поправочный коэффициент"
                 value={state.fuel_correction_rate}
                 onChange={this.handleChange.bind(this, 'fuel_correction_rate')}
               />

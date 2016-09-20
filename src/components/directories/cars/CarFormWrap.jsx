@@ -1,6 +1,6 @@
 import React from 'react';
+import FormWrap from 'components/compositions/FormWrap.jsx';
 import CarForm from './CarForm.jsx';
-import FormWrap from 'compositions/FormWrap.jsx';
 
 export default class CarFormWrap extends FormWrap {
 

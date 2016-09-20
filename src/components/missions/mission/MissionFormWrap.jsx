@@ -4,7 +4,7 @@ import moment from 'moment';
 import Div from 'components/ui/Div.jsx';
 import MissionForm from './MissionForm.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
-import { validateField } from 'validate/validateField.js';
+import { validateField } from 'utils/validate/validateField.js';
 import { getDefaultMission } from 'stores/MissionsStore.js';
 import { isEmpty, saveData, printData } from 'utils/functions';
 import { missionSchema } from 'models/MissionModel.js';

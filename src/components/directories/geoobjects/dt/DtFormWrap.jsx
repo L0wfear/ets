@@ -1,5 +1,5 @@
 import React from 'react';
-import FormWrap from 'compositions/FormWrap.jsx';
+import FormWrap from 'components/compositions/FormWrap.jsx';
 import DtForm from './DtForm.jsx';
 import Div from 'components/ui/Div.jsx';
 

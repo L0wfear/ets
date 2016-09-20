@@ -27,9 +27,7 @@ project
 │    └─── redux      - конфигурация и вся бизнес-логика redux
 │    └─── stores     - flummox stores
 │    └─── utils      - дополнительные утилиты/функции
-│    └─── validate
 │    └─── vendor     - 3rd-party js, которые невозможно подключить с помощью npm
-│    │    adapter.js
 │    │    config.js  - конфигурация клиентской части приложения
 │    │    index.js   - стартовый файл приложения
 └─── webpack

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
 import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
-import Form from 'compositions/Form.jsx';
+import Form from 'components/compositions/Form.jsx';
 
 export default class FuelOperationForm extends Form {
 

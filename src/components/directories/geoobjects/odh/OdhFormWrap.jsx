@@ -1,5 +1,5 @@
 import React from 'react';
-import FormWrap from 'compositions/FormWrap.jsx';
+import FormWrap from 'components/compositions/FormWrap.jsx';
 import OdhForm from './OdhForm.jsx';
 import Div from 'components/ui/Div.jsx';
 

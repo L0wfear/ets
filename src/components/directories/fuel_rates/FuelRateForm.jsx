@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import Field from 'components/ui/Field.jsx';
-import Form from 'compositions/Form.jsx';
+import Form from 'components/compositions/Form.jsx';
 import { connectToStores } from 'utils/decorators';
 
 @connectToStores(['fuelRates', 'objects'])

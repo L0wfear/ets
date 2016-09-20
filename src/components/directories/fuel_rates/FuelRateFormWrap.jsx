@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import FuelRateForm from './FuelRateForm.jsx';
-import FormWrap from 'compositions/FormWrap.jsx';
+import FormWrap from 'components/compositions/FormWrap.jsx';
 import { fuelRateSchema, defaultElement } from './fuelRateSchema.js';
 
 export default class FuelRateFormWrap extends FormWrap {

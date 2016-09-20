@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { autobind } from 'core-decorators';
-import { validateField } from 'validate/validateField.js';
+import { validateField } from 'utils/validate/validateField.js';
 import { FluxContext } from 'utils/decorators';
 import { isEmpty } from 'utils/functions';
 import { saveDataSuccessNotification } from 'utils/notifications';

@@ -1,6 +1,6 @@
 import { getWarningNotification } from 'utils/notifications';
 import urljoin from 'url-join';
-import { getJSON, postJSON, deleteJSON, putJSON, getBlob, postBlob } from '../adapter.js';
+import { getJSON, postJSON, deleteJSON, putJSON, getBlob, postBlob } from './adapter.js';
 import { mocks } from './mocks';
 
 export default class APIService {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import FormWrap from 'compositions/FormWrap.jsx';
+import FormWrap from 'components/compositions/FormWrap.jsx';
 import FuelRateForm from './FuelOperationForm.jsx';
 
 export const fuelOperationSchema = {

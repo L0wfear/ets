@@ -15,7 +15,7 @@ import Paginator from '../Paginator.jsx';
 import Div from '../Div.jsx';
 
 @autobind
-export default class Table extends React.Component {
+export default class DataTable extends React.Component {
 
   /**
    * Свойства компонента
@@ -317,11 +317,12 @@ export default class Table extends React.Component {
   }
 
   shouldBeRendered(obj) {
+    const { filterValues } = this.state;
     // Здесь проводится проверка на то, фильтруется ли объект
     // если в результате isValid === false, то объект не рендерится в таблице
     // проверка берется по this.state.filterValues
     let isValid = true;
-    _.mapKeys(this.state.filterValues, (value, key) => {
+    _.mapKeys(filterValues, (value, key) => {
       if (obj[key] === null) {
         isValid = false;
         return;
@@ -350,6 +351,10 @@ export default class Table extends React.Component {
               isValid = false;
             }
           } else if (!(_.find(obj[key], el => el.id && value.indexOf(el.id.toString()) > -1))) {
+            isValid = false;
+          }
+        } else if (typeof obj[key] === 'boolean') {
+          if (value.map(v => !!parseInt(v, 10)).indexOf(obj[key]) === -1) {
             isValid = false;
           }
         } else if (value.indexOf(obj[key].toString()) === -1) {

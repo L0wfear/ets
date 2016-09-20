@@ -16,6 +16,7 @@ import enhanceWithPermissions from '../util/RequirePermissions.jsx';
 
 const Div = enhanceWithPermissions(DivForEnhance);
 
+@autobind
 class WaybillForm extends Form {
 
   constructor(props) {
@@ -252,7 +253,6 @@ class WaybillForm extends Form {
 
     const car = carsIndex[state.car_id];
     const CAR_HAS_ODOMETER = state.gov_number ? hasOdometer(state.gov_number) : null;
-    console.log(CAR_HAS_ODOMETER);
 
     let title = '';
 
@@ -375,7 +375,7 @@ class WaybillForm extends Form {
                 hidden={!(IS_CREATING || IS_POST_CREATING)}
                 options={CARS}
                 value={state.car_id}
-                onChange={this.onCarChange.bind(this)}
+                onChange={this.onCarChange}
               />
 
               <Field type="string" label="Транспортное средство" className="white-space-pre-wrap" readOnly hidden={IS_CREATING || IS_POST_CREATING}
@@ -537,10 +537,11 @@ class WaybillForm extends Form {
                   value={state.mission_id_list}
                   disabled={isEmpty(state.car_id) || IS_DISPLAY}
                   clearable={false}
-                  onChange={this.handleMissionsChange.bind(this)}
+                  onChange={this.handleMissionsChange}
                 />
-                 <Button style={{ marginTop: 10 }} onClick={this.createMission.bind(this)} disabled={isEmpty(state.car_id) || IS_DISPLAY}>Создать задание</Button>
-                <MissionFormWrap onFormHide={this.onMissionFormHide.bind(this)}
+                <Button style={{ marginTop: 10 }} onClick={this.createMission} disabled={isEmpty(state.car_id) || IS_DISPLAY}>Создать задание</Button>
+                <MissionFormWrap
+                  onFormHide={this.onMissionFormHide}
                   showForm={this.state.showMissionForm}
                   element={this.state.selectedMission}
                   fromWaybill

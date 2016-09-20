@@ -6,16 +6,6 @@ import _ from 'lodash';
 import Div from '../../Div.jsx';
 import FilterRow from './FilterRow.jsx';
 
-// const FilterSelect = (props) => {
-//   return (<EtsSelect
-//     type="filter-select"
-//     searchingText="Поиск..."
-//     clearAllText="Очистить"
-//     addLabelText='Добавить "{label}"?'
-//     {...props}
-//   />);
-// };
-
 @autobind
 export default class Filter extends React.Component {
 

@@ -1,15 +1,18 @@
 import React from 'react';
+import { autobind } from 'core-decorators';
 import { Input } from 'react-bootstrap';
 import cx from 'classnames';
 import EtsSelect from './EtsSelect.jsx';
 import DatePicker from './DatePicker.jsx';
 import Div from './Div.jsx';
 
+@autobind
 export default class Field extends React.Component {
 
   static get propTypes() {
     return {
       value: React.PropTypes.any,
+      key: React.PropTypes.string,
       type: React.PropTypes.string.isRequired,
       label: React.PropTypes.string,
       hidden: React.PropTypes.bool,
@@ -18,6 +21,10 @@ export default class Field extends React.Component {
       readOnly: React.PropTypes.bool,
       className: React.PropTypes.string,
     };
+  }
+
+  onChange(...args) {
+    this.props.onChange(this.props.key, ...args);
   }
 
   renderBoolean() {

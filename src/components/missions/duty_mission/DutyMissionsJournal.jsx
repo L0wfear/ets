@@ -67,17 +67,22 @@ export default class DutyMissionsJournal extends CheckableElementsList {
 
   completeCheckedElements() {
     if (Object.keys(this.state.checkedElements).length !== 0) {
+      let hasNotAssigned = false;
       _.forEach(this.state.checkedElements, (mission) => {
         if (mission.status === 'assigned') {
           const updatedMission = _.cloneDeep(mission);
           updatedMission.status = 'complete';
           this.context.flux.getActions('missions').updateDutyMission(updatedMission);
+        } else {
+          hasNotAssigned = true;
         }
       });
       this.setState({
         checkedElements: {},
       });
-      global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Выполненые" можно только назначенные наряд-задания!'));
+      if (hasNotAssigned) {
+        global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Выполненые" можно только назначенные наряд-задания!'));
+      }
     } else {
       this.completeMission();
     }
@@ -85,6 +90,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
 
   rejectCheckedElements() {
     if (Object.keys(this.state.checkedElements).length !== 0) {
+      let hasNotAssigned = false;
       _.forEach(this.state.checkedElements, (mission) => {
         if (mission.status === 'assigned') {
           const reason = prompt(`Введите причину для наряд-задания №${mission.number}`, '');
@@ -94,10 +100,14 @@ export default class DutyMissionsJournal extends CheckableElementsList {
             updatedMission.comment = reason;
             this.context.flux.getActions('missions').updateDutyMission(updatedMission);
           }
+        } else {
+          hasNotAssigned = true;
         }
       });
       this.setState({ checkedElements: {} });
-      global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Невыполненые" можно только назначенные наряд-задания!'));
+      if (hasNotAssigned) {
+        global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Невыполненые" можно только назначенные наряд-задания!'));
+      }
     } else {
       this.rejectMission();
     }

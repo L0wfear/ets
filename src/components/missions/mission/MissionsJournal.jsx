@@ -105,8 +105,7 @@ export default class MissionsJournal extends CheckableElementsList {
       });
       this.setState({ checkedElements: {} });
       if (error) global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Невыполненые" можно только назначенные задания!'));
-    }
-    else {
+    } else {
       this.rejectMission();
     }
   }

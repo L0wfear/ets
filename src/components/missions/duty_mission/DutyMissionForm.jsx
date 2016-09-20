@@ -94,7 +94,6 @@ export class DutyMissionForm extends Form {
         polys: this.props.geozonePolys,
         technical_operation_id: this.props.formState.technical_operation_id,
         object_list: [],
-        type: 'vector',
       };
       this.setState({
         showRouteForm: true,

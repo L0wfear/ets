@@ -32,9 +32,7 @@ export default class RouteForm extends Form {
   }
 
   setRouteTypeOptionsBasedOnTechnicalOperation(technical_operation_id, technicalOperationsList = this.props.technicalOperationsList, routeTypeValue = null, resetState = true) {
-    const technicalOperation = _.find(technicalOperationsList, (o) => {
-      return o.id === technical_operation_id;
-    });
+    const technicalOperation = _.find(technicalOperationsList, o => o.id === technical_operation_id);
 
     const route_type_options = [];
 
@@ -43,20 +41,28 @@ export default class RouteForm extends Form {
         case 'ОДХ':
           route_type_options.push({ value: 'vector', label: 'Вручную' });
           route_type_options.push({ value: 'simple', label: 'Выбор из ОДХ' });
-          !routeTypeValue ? routeTypeValue = 'simple' : null;
+          if (!routeTypeValue) {
+            routeTypeValue = 'simple';
+          }
           break;
         case 'ПН':
           route_type_options.push({ value: 'points', label: 'Выбор пунктов назначения' });
-          !routeTypeValue && routeTypeValue !== 'simple' ? routeTypeValue = 'points' : null;
+          if (!routeTypeValue && routeTypeValue !== 'simple') {
+            routeTypeValue = 'points';
+          }
           break;
         case 'ДТ':
           route_type_options.push({ value: 'simple_dt', label: 'Выбор из ДТ' });
-          !routeTypeValue && routeTypeValue !== 'simple' ? routeTypeValue = 'simple_dt' : null;
+          if (!routeTypeValue && routeTypeValue !== 'simple') {
+            routeTypeValue = 'simple_dt';
+          }
+          break;
+        default:
           break;
       }
     });
 
-    this.setState({ 'ROUTE_TYPE_OPTIONS': route_type_options, 'routeTypeDisabled': routeTypeValue ? false : true });
+    this.setState({ ROUTE_TYPE_OPTIONS: route_type_options, routeTypeDisabled: !routeTypeValue });
     this.props.fromMission && this.handleTypeChange(routeTypeValue);
     this.props.handleFormChange('type', routeTypeValue);
     resetState && this.props.resetState();
@@ -86,7 +92,12 @@ export default class RouteForm extends Form {
       this.setRouteTypeOptionsBasedOnTechnicalOperation(formState.technical_operation_id, technicalOperationsList, formState.type, false);
     }
 
-    const getObjectIdByType = type => type === 'points' ? 3 : type === 'simple_dt' ? 2 : 1;
+    const OBJECTS_BY_TYPE = {
+      points: 3,
+      simple_dt: 2,
+    };
+
+    const getObjectIdByType = type => OBJECTS_BY_TYPE[type] || 1;
 
     // this.getTechnicalOperationsByType(formState.type);
     if (formState.copy) {

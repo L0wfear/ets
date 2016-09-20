@@ -3,16 +3,17 @@ import { OwnersService } from 'api/Services';
 const GET = 'ets/owners/GET';
 
 const initialState = {
-  list: []
+  list: [],
 };
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
-    case GET:
+    case GET: {
       const { count } = state;
       return {
-        list: [12]
+        list: [12],
       };
+    }
     default:
       return state;
   }
@@ -21,6 +22,6 @@ export default function reducer(state = initialState, action = {}) {
 export function getOwners() {
   return {
     type: GET,
-    payload: OwnersService.get()
+    payload: OwnersService.get(),
   };
 }

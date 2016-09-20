@@ -6,7 +6,7 @@ const GET = 'ets/types/GET';
 
 const initialState = {
   typesList: [],
-  typesIndex: {}
+  typesIndex: {},
 };
 
 export default handleActions({
@@ -15,21 +15,21 @@ export default handleActions({
       return {
         ...state,
         typesList: payload,
-        typesIndex: keyBy(payload, 'id')
-      }
+        typesIndex: keyBy(payload, 'id'),
+      };
     },
-    throw(state, data) {
+    throw() {
 
-    }
-  }
-}, initialState)
+    },
+  },
+}, initialState);
 
 export function getTypes() {
   return {
     type: GET,
     payload: TypesService.get(),
     meta: {
-      loading: true
-    }
-  }
+      loading: true,
+    },
+  };
 }

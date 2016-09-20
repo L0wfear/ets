@@ -75,7 +75,7 @@ export default class FuelRateActions extends Actions {
       payload.equipment = !!formState.equipment || false;
     }
 
-    return FuelOperationsService.post(payload);
+    return FuelOperationsService.post(payload, null, 'json');
   }
 
   updateFuelOperation(formState) {
@@ -86,14 +86,14 @@ export default class FuelRateActions extends Actions {
       payload.name = formState.name;
       payload.equipment = !!formState.equipment || false;
     }
-    return FuelOperationsService.put(payload);
+    return FuelOperationsService.put(payload, null, 'json');
   }
 
   deleteFuelOperation(id) {
     const payload = {
       id,
     };
-    return FuelOperationsService.delete(payload);
+    return FuelOperationsService.delete(payload, null, 'json');
   }
 
 }

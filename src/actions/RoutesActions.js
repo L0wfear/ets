@@ -1,6 +1,5 @@
 import { Actions } from 'flummox';
 import _ from 'lodash';
-import { createValidDateTime } from 'utils/dates';
 import {
   RouteService,
   RouteReportsService,
@@ -119,13 +118,8 @@ export default class RoutesActions extends Actions {
   }
 
   validateRoute(route) {
-    // TODO разобраться почему операция константная
-    const route_vector = {
-      technical_operation_id: 55, // route.technical_operation_id,
-      object_list: route.object_list,
-    };
     const payload = {
-      technical_operation_id: 55, // route.technical_operation_id,
+      technical_operation_id: route.technical_operation_id,
       object_list: route.object_list,
     };
     return RouteValidateService.post(payload, false, 'json');

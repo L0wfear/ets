@@ -47,7 +47,7 @@ export default class EmployeesActions extends Actions {
 
   deleteEmployee(id) {
     const payload = { id };
-    return EmployeeService.delete(payload);
+    return EmployeeService.delete(payload, null, 'json');
   }
 
 }

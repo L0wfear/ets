@@ -113,7 +113,6 @@ class RouteCreating extends Component {
         state: 2,
         id,
         distance,
-        technical_operation_id: 55,
       });
     }
 
@@ -234,7 +233,7 @@ class RouteCreating extends Component {
           </Col>
           <Col md={3}>
             <Div hidden={route.type !== 'simple'} className="odh-container">
-              <Input type="checkbox" label="Выбрать все" onChange={this.handleCheckbox.bind(this, 'odh', ODHS.map(o => o.value).join(','))} />
+              <Input type="checkbox" label="Выбрать все" disabled={!ODHS.length} onChange={this.handleCheckbox.bind(this, 'odh', ODHS.map(o => o.value).join(','))} />
               <Field type="select" label="Список выбранных ОДХ"
                 multi
                 options={ODHS}
@@ -243,7 +242,7 @@ class RouteCreating extends Component {
               />
             </Div>
             <Div hidden={route.type !== 'simple_dt'} className="odh-container">
-              <Input type="checkbox" label="Выбрать все" onChange={this.handleCheckbox.bind(this, 'dt', DTS.map(o => o.value).join(','))} />
+              <Input type="checkbox" disabled={!DTS.length} label="Выбрать все" onChange={this.handleCheckbox.bind(this, 'dt', DTS.map(o => o.value).join(','))} />
               <Field type="select" label="Список выбранных ДТ"
                 multi
                 options={DTS}

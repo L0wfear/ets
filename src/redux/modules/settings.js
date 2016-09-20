@@ -1,4 +1,3 @@
-import { TypesService } from 'api/Services';
 import { handleActions } from 'redux-actions';
 import keyBy from 'lodash/keyBy';
 
@@ -10,7 +9,7 @@ const initialState = {
   showPolygons: true,
   showSelectedElement: true,
   showGeoobjects: false,
-  showMarkers: true
+  showMarkers: true,
 };
 
 export default handleActions({
@@ -19,21 +18,10 @@ export default handleActions({
       return {
         ...state,
         typesList: payload,
-        typesIndex: keyBy(payload, 'id')
-      }
+        typesIndex: keyBy(payload, 'id'),
+      };
     },
-    throw(state, data) {
-
-    }
-  }
-}, initialState)
-
-export function getTypes() {
-  return {
-    type: GET,
-    payload: TypesService.get(),
-    meta: {
-      loading: true
-    }
-  }
-}
+    throw() {
+    },
+  },
+}, initialState);

@@ -8,5 +8,6 @@ import types from './types';
 export default combineReducers({
   owners,
   types,
-  loading: loadingReducer
+  loading: loadingReducer,
+  settings,
 });

@@ -313,7 +313,7 @@ export default class MissionsActions extends Actions {
       mission_date_start_from: createValidDateTime(mission_date_start_from),
       mission_date_end_to: createValidDateTime(mission_date_end_to),
     };
-    return MissionReportsService.post(payload);
+    return MissionReportsService.post(payload, null, 'json');
   }
 
   getMissionReportByODHs(index) {

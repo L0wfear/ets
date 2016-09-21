@@ -13,9 +13,9 @@ import odhNormDataSummer from './odh_norm_data_summer/ODHNormDataSummerList.jsx'
 import efficiency from './efficiency/EfficiencyList.jsx';
 import organizations from './organizations/OrganizationsDirectory.jsx';
 import technicalOperations from './technical_operation/TechnicalOperationsDirectory.jsx';
-import geoobjects from './geoobjects';
+import * as geoobjects from './geoobjects';
 
-export default {
+export {
   carTypes,
   cars,
   employees,

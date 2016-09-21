@@ -7,7 +7,7 @@
  import all from './RouteReports.jsx';
  import single from './RouteReport.jsx';
 
- export default {
+ export {
    all,
    single,
  };

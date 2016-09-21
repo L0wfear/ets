@@ -3,8 +3,8 @@
  * Еженедельные отчеты
  * technicalOperationComplete - статус по выполнению технологических операций
  */
- import technicalOperationComplete from './technical_operation_complete';
+ import * as technicalOperationComplete from './technical_operation_complete';
 
- export default {
+ export {
    technicalOperationComplete,
  };

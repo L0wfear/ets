@@ -46,7 +46,7 @@ function connectToStores(...args) {
   };
 }
 
-export default {
+export {
   exportable,
   bindable,
   connectToStores,

@@ -8,7 +8,7 @@ import msp from './msp/MSPDirectory.jsx';
 import pgm from './pgm/PGMDirectory.jsx';
 import snowStorage from './snow_storage/SnowStorageDirectory.jsx';
 
-export default {
+export {
   dt,
   odh,
   carpool,

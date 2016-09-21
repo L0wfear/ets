@@ -3,8 +3,8 @@
  * Ежедневные отчеты
  * cleaning -  отчеты по уборке
  */
- import cleaning from './cleaning';
+ import * as cleaning from './cleaning';
 
- export default {
+ export {
    cleaning,
  };

@@ -4,6 +4,6 @@
  */
 import RequestWarningError from './RequestWarningError.js';
 
-export default {
+export {
   RequestWarningError,
 };

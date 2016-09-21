@@ -19,7 +19,7 @@ import waybills from './WaybillsActions.js';
 import geoObjects from './GeoObjectsActions.js';
 import odh from './ODHActions.js';
 
-export default {
+export {
   cars,
   odh,
   companyStructure,

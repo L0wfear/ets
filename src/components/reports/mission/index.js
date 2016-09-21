@@ -13,7 +13,7 @@ import singleByDT from './MissionReportByDT.jsx';
 import singleByODH from './MissionReportByODH.jsx';
 import singleByPoints from './MissionReportByPoints.jsx';
 
-export default {
+export {
   all,
   single,
   singleByDT,

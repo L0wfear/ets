@@ -5,15 +5,15 @@
 import analytics from './Analytics.jsx';
 import coverage from './CoverageReport.jsx';
 import fuelConsumption from './fuel_consumption/FuelReport.jsx';
-import odh from './ODHReports.jsx';
-import mission from './mission';
-import route from './route';
-import daily from './daily';
-import weekly from './weekly';
 import odhCoverageReport from './odh_coverage/OdhCoverageReport.jsx';
-import carFuncTypeUsage from './car_func_type_usage';
+import odh from './ODHReports.jsx';
+import * as mission from './mission';
+import * as route from './route';
+import * as daily from './daily';
+import * as weekly from './weekly';
+import * as carFuncTypeUsage from './car_func_type_usage';
 
-export default {
+export {
   analytics,
   coverage,
   fuelConsumption,

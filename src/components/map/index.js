@@ -7,7 +7,7 @@ import polyMap from './PolyMap.jsx';
 import map from './Map.jsx';
 import hybridMap from './HybridMap.jsx';
 
-export default {
+export {
   drawMap,
   polyMap,
   map,

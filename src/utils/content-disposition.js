@@ -1,6 +1,6 @@
 import utf8 from 'utf8';
 
-export function parseFilename(contentDisposition) {
+function parseFilename(contentDisposition) {
   let filename;
   try {
     const result = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(contentDisposition);
@@ -13,6 +13,6 @@ export function parseFilename(contentDisposition) {
   return filename;
 }
 
-export default {
+export {
   parseFilename,
 };

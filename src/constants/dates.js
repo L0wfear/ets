@@ -1,5 +1,5 @@
 const APP_DATE_FORMAT = 'DD.MM.YYYY';
 
-export default {
+export {
   APP_DATE_FORMAT,
 };

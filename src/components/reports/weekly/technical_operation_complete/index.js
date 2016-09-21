@@ -7,7 +7,7 @@
  import all from './WeeklyTechnicalOperationCompleteReports.jsx';
  import single from './WeeklyTechnicalOperationCompleteReport.jsx';
 
- export default {
+ export {
    all,
    single,
  };

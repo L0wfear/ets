@@ -7,7 +7,7 @@
  import all from './DailyCleaningReportsCAFAP.jsx';
  import single from './DailyCleaningReportCAFAP.jsx';
 
- export default {
+ export {
    all,
    single,
  };

@@ -18,7 +18,7 @@ import loading from './LoadingStore.js';
 import notifications from './NotificationsStore.js';
 import geoObjects from './GeoObjectsStore.js';
 
-export default {
+export {
   dashboard,
   employees,
   fuelRates,

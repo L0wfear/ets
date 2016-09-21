@@ -6,7 +6,7 @@ import dutyMissionModel from './DutyMissionModel.js';
 import dutyMissionTemplateModel from './DutyMissionTemplateModel.js';
 import User from './User.js';
 
-export default {
+export {
   User,
   dutyMissionModel,
   dutyMissionTemplateModel,

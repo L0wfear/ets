@@ -1,6 +1,6 @@
 import { Flummox } from 'flummox';
-import actions from '../actions';
-import stores from '../stores';
+import * as actions from '../actions';
+import * as stores from '../stores';
 
 export default class Flux extends Flummox {
 

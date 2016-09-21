@@ -16,10 +16,9 @@ import MonitorPage from './monitor/MonitorPage.jsx';
 import LoadingPage from './LoadingPage.jsx';
 import DashboardPage from './dashboard/DashboardPage.jsx';
 import CompanyStructure from './company_structure/CompanyStructure.jsx';
-
-import missions from './missions';
-import directories from './directories';
-import reports from './reports';
+import * as missions from './missions';
+import * as directories from './directories';
+import * as reports from './reports';
 
 import createStore from '../redux/create';
 

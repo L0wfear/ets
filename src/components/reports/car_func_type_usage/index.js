@@ -5,6 +5,6 @@
  */
  import all from './CarFuncTypeUsageReports.jsx';
 
- export default {
-   all
- }
+ export {
+   all,
+ };

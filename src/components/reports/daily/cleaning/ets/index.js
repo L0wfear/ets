@@ -7,7 +7,7 @@
  import all from './DailyCleaningReportsETS.jsx';
  import single from './DailyCleaningReportETS.jsx';
 
- export default {
+ export {
    all,
    single,
  };

@@ -9,7 +9,7 @@ export default function createStore() {
 
   const finalCreateStore = applyMiddleware(...middleware)(_createStore);
 
-  const reducer = require('./modules/reducer');
+  const reducer = require('./modules/reducer').default;
   const store = finalCreateStore(reducer);
 
   if (__DEVELOPMENT__ && module.hot) {

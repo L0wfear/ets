@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button, Glyphicon } from 'react-bootstrap';
 import RouteInfo from 'components/route/RouteInfo.jsx';
@@ -173,7 +173,10 @@ export class DutyMissionForm extends Form {
           <Row>
 
             <Col md={6}>
-              <Field type="select" label="Технологическая операция" error={errors.technical_operation_id}
+              <Field
+                type="select"
+                label="Технологическая операция"
+                error={errors.technical_operation_id}
                 disabled={IS_DISPLAY || !!state.route_id}
                 options={TECH_OPERATIONS}
                 value={state.technical_operation_id}
@@ -185,7 +188,7 @@ export class DutyMissionForm extends Form {
               <Row>
                  <Col md={6}>
                   <label style={{ position: 'absolute', right: -7, top: 31, fontWeight: 400 }}>—</label>
-                   <Div>
+                  <Div>
                     <Field
                       type="date"
                       label="Время выполнения, планируемое:"
@@ -291,13 +294,17 @@ export class DutyMissionForm extends Form {
                 options={MISSIONS}
                 value={state.car_mission_id}
                 onChange={this.handleChange.bind(this, 'car_mission_id')}
-              /></Col>
+              />
+            </Col>
           </Row>
 
           <Row>
             <Col md={6}>
-              <Field type="select" label="Маршрут" error={errors.route_id}
-                disabled={IS_DISPLAY || !!!state.technical_operation_id}
+              <Field
+                type="select"
+                label="Маршрут"
+                error={errors.route_id}
+                disabled={IS_DISPLAY || !state.technical_operation_id}
                 options={ROUTES}
                 value={state.route_id}
                 onChange={this.handleRouteIdChange.bind(this)}
@@ -323,7 +330,8 @@ export class DutyMissionForm extends Form {
           </Div>
         </Modal.Footer>
 
-        <RouteFormWrap element={route}
+        <RouteFormWrap
+          element={route}
           onFormHide={this.onFormHide.bind(this)}
           showForm={this.state.showRouteForm}
           fromMission

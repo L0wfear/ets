@@ -65,15 +65,27 @@ export default class RoutesActions extends Actions {
     if (route) {
       /* TODO нужно чтобы с бека присылались типы объектов
        * чтобы избавиться от этого map */
-      route.object_list.map((el) => {
-        if (!el.shape && el.coordinates) {
-          el.shape = {
-            type: 'Point',
-            coordinates: el.coordinates,
+      if (route.type === 'points') {
+        route.object_list.map((el) => {
+          if (!el.shape && el.coordinates) {
+            el.shape = {
+              type: 'Point',
+              coordinates: el.coordinates,
+            };
+          }
+          return el;
+        });
+      } else if (route.type === 'vector') {
+        route.object_list.map((object) => {
+          const start = [object.begin.x_msk, object.begin.y_msk];
+          const end = [object.end.x_msk, object.end.y_msk];
+          object.shape = {
+            type: 'LineString',
+            coordinates: [start, end],
           };
-        }
-        return el;
-      });
+          return object;
+        });
+      }
     }
 
     return route;

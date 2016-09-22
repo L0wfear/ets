@@ -1,10 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import { autobind } from 'core-decorators';
 import { Row, Col, Input } from 'react-bootstrap';
+import { connectToStores } from 'utils/decorators';
+import _ from 'lodash';
+import Div from 'components/ui/Div.jsx';
 import PolyMap from '../map/PolyMap.jsx';
 import ODHList from './ODHList.jsx';
-import Div from 'components/ui/Div.jsx';
 
+@connectToStores(['geoObjects'])
 @autobind
 export default class RouteInfo extends Component {
 
@@ -12,6 +15,7 @@ export default class RouteInfo extends Component {
     return {
       route: PropTypes.object,
       mapOnly: PropTypes.bool,
+      geozonePolys: PropTypes.object,
     };
   }
 
@@ -40,19 +44,35 @@ export default class RouteInfo extends Component {
   }
 
   render() {
-    const route = this.props.route;
+    const { route, geozonePolys = {}, mapOnly } = this.props;
     const { object_list = [] } = route;
     const manual = route.type === 'vector';
-    const polys = object_list.map(({ shape, name, state }) => ({ shape, name, state }));
+    const polys = _(_.cloneDeep(object_list))
+      .map((object) => {
+        if (geozonePolys[object.object_id] && (['points', 'vector'].indexOf(route.type) === -1)) {
+          object.shape = geozonePolys[object.object_id].shape;
+        }
+        return object;
+      })
+      .keyBy((o) => {
+        // TODO попросить бек чтобы у каждого объекта был id
+        if (route.type === 'vector') {
+          return o.id;
+        }
+        if (route.type === 'points') {
+          return o.coordinates.join(',');
+        }
+        return o.object_id;
+      })
+      .value();
 
     const odh_list = route.odh_list || object_list.filter(o => o.type);
 
     return (
       <Div style={{ marginTop: 18 }}>
-        <Div className="route-name" hidden={this.props.mapOnly}><b>{route.name}</b></Div>
+        <Div className="route-name" hidden={mapOnly}><b>{route.name}</b></Div>
         <Div>
           <Row>
-
             <Col md={8}>
               <Div className="route-creating">
                 <PolyMap

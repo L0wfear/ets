@@ -83,8 +83,8 @@ export default class GeoObjectsStore extends Store {
     this.setState({ selectedPolysTypes });
   }
 
-  handleGetGeozones(data) {
-    const geozones = data.result;
+  handleGetGeozones({ result }) {
+    const geozones = result;
     const geozonePolys = {};
     const odhPolys = {};
     const dtPolys = {};

@@ -1,17 +1,17 @@
 import React from 'react';
-import PolyMap from './PolyMap.jsx';
 import { Glyphicon } from 'react-bootstrap';
+import { autobind } from 'core-decorators';
 import { getVectorArrowStyle } from 'constants/vectors.js';
 import Div from 'components/ui/Div.jsx';
 import _ from 'lodash';
-
+import PolyMap from './PolyMap.jsx';
 
 // Компонент используется для отрисовки векторов и точек на карте
+@autobind
 export default class DrawMap extends PolyMap {
   constructor(props) {
     super(props);
 
-    console.warn('DRAWMAP CONSTRUCTOR');
     if (this.props.objectsType === 'vector') {
       this.addDrawInteraction('LineString');
     } else {
@@ -21,7 +21,7 @@ export default class DrawMap extends PolyMap {
 
   componentDidMount() {
     const map = this.map;
-    const container = this.refs.container;
+    const container = this._container;
 
     map.setTarget(container);
 
@@ -50,8 +50,6 @@ export default class DrawMap extends PolyMap {
       }
     }
     if (nextProps.objectsType !== this.props.objectsType) {
-      // !!this.pointsVectorLayer && this.map.removeLayer(this.pointsVectorLayer);
-      // !!this.vectorLayer && this.map.removeLayer(this.vectorLayer);
       this.map.removeInteraction(this.draw);
       if (nextProps.objectsType === 'vector') {
         this.addDrawInteraction('LineString');
@@ -61,25 +59,29 @@ export default class DrawMap extends PolyMap {
     }
   }
 
-  onClick(ev) {
-    const map = this.map;
-    const pixel = ev.pixel; // координаты клика во viewport
+  shouldComponentUpdate() {
+    return true;
+  }
 
-    map.forEachFeatureAtPixel(pixel, (feature, layer) => {
-      const { state } = feature.getProperties();
-      if (state && state !== 1) {
-        this.props.onDrawFeatureClick(feature, ev, this);
-      }
-    });
+  onClick(ev) {
+    if (this.drawSetToEnd) {
+      const map = this.map;
+      const pixel = ev.pixel; // координаты клика во viewport
+
+      map.forEachFeatureAtPixel(pixel, (feature) => {
+        const { state } = feature.getProperties();
+        if (state && state !== 1) {
+          this.props.onDrawFeatureClick(feature, ev, this);
+        }
+      });
+    }
   }
 
   onMouseMove(ev) {
     const pixel = ev.pixel;
     const map = this.map;
     const el = this.map.getViewport();
-    const hit = map.forEachFeatureAtPixel(pixel, (feature, layer) => {
-      return feature.getProperties().state >= 2 ? true : false;
-    });
+    const hit = map.forEachFeatureAtPixel(pixel, feature => feature.getProperties().state >= 2);
 
     el.style.cursor = hit ? 'pointer' : '';
   }
@@ -117,6 +119,8 @@ export default class DrawMap extends PolyMap {
       this.props.onDrawFeatureAdd(featureSegment, featureSegment.getGeometry().getCoordinates(), featureSegment.getGeometry().getLength());
     });
     this.draw.setActive(false);
+    this.drawSetToEnd = false;
+    setTimeout(() => (this.drawSetToEnd = true), 300);
   }
 
   onPointDrawEnd(ev) {
@@ -143,6 +147,7 @@ export default class DrawMap extends PolyMap {
       source: vectorSource,
     });
 
+    // TODO нужна ли эта строчка?
     !!this.vectorLayer && map.removeLayer(this.vectorLayer);
     this.pointsVectorLayer = pointsVectorLayer;
 
@@ -152,8 +157,7 @@ export default class DrawMap extends PolyMap {
   renderRoute(object_list = []) {
     const map = this.map;
     const vectorSource = new ol.source.Vector({ wrapX: false });
-    object_list = _.uniqBy(object_list, o => o.id);
-    // console.log(object_list.length, _.uniq(object_list, o => o.id).length);
+    object_list = _.uniqBy(object_list, 'id');
     _.each(object_list, (object) => {
       const start = [object.begin.x_msk, object.begin.y_msk];
       const end = [object.end.x_msk, object.end.y_msk];
@@ -211,19 +215,13 @@ export default class DrawMap extends PolyMap {
     this.props.removeLastDrawFeature();
   }
 
-  shouldComponentUpdate() {
-    return true;
-  }
-
   render() {
     return (
-      <div>
-        <div ref="container" style={{ opacity: 1 }} className="openlayers-container">
-          <Div hidden={!this.props.object_list.length}>
-            <button className="continue-route-button" onClick={this.addPoint.bind(this)}><Glyphicon glyph="pencil" /></button>
-            <button className="delete-last-point-button" onClick={this.removeLastPoint.bind(this)}><Glyphicon glyph="remove" /></button>
-          </Div>
-        </div>
+      <div ref={node => (this._container = node)} className="openlayers-container">
+        <Div hidden={!this.props.object_list.length}>
+          <button className="continue-route-button" onClick={this.addPoint}><Glyphicon glyph="pencil" /></button>
+          <button className="delete-last-point-button" onClick={this.removeLastPoint}><Glyphicon glyph="remove" /></button>
+        </Div>
       </div>
     );
   }

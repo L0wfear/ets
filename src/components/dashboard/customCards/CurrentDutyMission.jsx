@@ -1,14 +1,14 @@
 import React from 'react';
 import Div from 'components/ui/Div.jsx';
 import { Panel, Collapse, Glyphicon, Fade, Well, Button, Modal } from 'react-bootstrap';
-import DashboardCardMedium from '../DashboardCardMedium.jsx';
-import DashboardCardHeader from '../DashboardCardHeader.jsx';
-import DashboardItemChevron from '../DashboardItemChevron.jsx';
 import RouteInfo from 'components/route/RouteInfo.jsx';
 import { getFormattedDateTimeSeconds } from 'utils/dates';
 import cx from 'classnames';
 import { isEmpty } from 'utils/functions';
 import { FluxContext } from 'utils/decorators';
+import DashboardCardMedium from '../DashboardCardMedium.jsx';
+import DashboardCardHeader from '../DashboardCardHeader.jsx';
+import DashboardItemChevron from '../DashboardItemChevron.jsx';
 
 @FluxContext
 export default class CurrentDutyMissions extends DashboardCardMedium {
@@ -66,7 +66,7 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
     this.props.refreshCard();
   }
 
-  renderSubitems(subItems) {
+  renderSubitems() {
     return this.renderSelectedMission();
   }
 
@@ -75,13 +75,13 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
   }
 
   renderCollapsibleSubitems(item, i) {
-    let { subItems = [] } = item;
+    const { subItems = [] } = item;
 
     return (
       <Collapse in={this.state.selectedItem === i}>
         <Div className={!this.canView ? 'no-pointer-events' : 'pointer'}>
           <ul>
-            {subItems.map((item, key) => <li key={key} onClick={this.selectedDutyMission.bind(this, key)}>{item.title || item}</li>)}
+            {subItems.map((subItem, key) => <li key={key} onClick={this.selectedDutyMission.bind(this, key)}>{subItem.title || subItem}</li>)}
           </ul>
         </Div>
       </Collapse>
@@ -119,7 +119,7 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
   renderCustomCardForm() {
     if (!this.state.selectedDutyMission || !this.state.route) return (<div />);
     return (
-      <Modal show={this.state.showCurrentDutyMissionForm} onHide={() => this.setState({ showCurrentDutyMissionForm: false })} backdrop="static">
+      <Modal bsSize="large" show={this.state.showCurrentDutyMissionForm} onHide={() => this.setState({ showCurrentDutyMissionForm: false })} backdrop="static">
 
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">Бригадир {this.state.selectedDutyMission.foreman_fio}</Modal.Title>

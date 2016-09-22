@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import Table from 'components/ui/table/DataTable.jsx';
 
-let tableMeta = {
+const tableMeta = {
   cols: [
     {
       name: 'name',
@@ -15,7 +15,7 @@ let tableMeta = {
       type: 'string',
       filter: {
         type: 'select',
-      }
+      },
     },
     {
       name: 'note',
@@ -33,25 +33,29 @@ let tableMeta = {
         type: 'select',
       },
     },
-  ]
+  ],
 };
 
 export default (props) => {
-	const renderers = {
-		id: ({data}) => {
-			return (
-				<div>
-					<Button className="action-button" onClick={props.onActionEdit.bind(null, data)}>Редактировать</Button>
-					<Button className="action-button" onClick={props.onActionDelete.bind(null, data)}>Удалить</Button>
-				</div>
-			);
-		}
+  const renderers = {
+    id: ({ data }) => {
+      return (
+        <div>
+          <Button className="action-button" onClick={props.onActionEdit.bind(null, data)}>Редактировать</Button>
+          <Button className="action-button" onClick={props.onActionDelete.bind(null, data)}>Удалить</Button>
+        </div>
+      );
+    },
   };
 
-	return <Table title="Структура предприятия"
-								results={props.data}
-								renderers={renderers}
-								tableMeta={tableMeta}
-								isHierarchical={true}
-								{...props}/>;
-}
+  return (
+    <Table
+      title="Структура предприятия"
+      results={props.data}
+      renderers={renderers}
+      tableMeta={tableMeta}
+      isHierarchical
+      {...props}
+    />
+  );
+};

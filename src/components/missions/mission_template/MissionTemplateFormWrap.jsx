@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { autobind } from 'core-decorators';
 import _ from 'lodash';
 import Div from 'components/ui/Div.jsx';
-import MissionTemplateForm from './MissionTemplateForm.jsx';
-import MissionsCreationForm from './MissionsCreationForm.jsx';
 import { getDefaultMissionTemplate, getDefaultMissionsCreationTemplate } from 'stores/MissionsStore.js';
 import { isEmpty } from 'utils/functions';
 import { validateField } from 'utils/validate/validateField.js';
 import { missionTemplateSchema } from 'models/MissionTemplateModel.js';
 import { missionsCreationTemplateSchema } from 'models/MissionsCreationTemplateModel.js';
 import FormWrap from 'components/compositions/FormWrap.jsx';
+import MissionTemplateForm from './MissionTemplateForm.jsx';
+import MissionsCreationForm from './MissionsCreationForm.jsx';
 
 const validateMissionsCreationTemplate = (mission, errors) => {
   const missionsCreationTemplateErrors = _.clone(errors);
@@ -20,6 +21,7 @@ const validateMissionsCreationTemplate = (mission, errors) => {
   return missionsCreationTemplateErrors;
 };
 
+@autobind
 export default class MissionFormWrap extends FormWrap {
 
   constructor(props) {
@@ -83,8 +85,8 @@ export default class MissionFormWrap extends FormWrap {
         <Div hidden={!this.props.showForm}>
           <MissionTemplateForm
             formState={this.state.formState}
-            onSubmit={this.handleFormSubmit.bind(this)}
-            handleFormChange={this.handleFormStateChange.bind(this)}
+            onSubmit={this.handleFormSubmit}
+            handleFormChange={this.handleFormStateChange}
             show={this.props.showForm}
             onHide={this.props.onFormHide}
             {...this.state}
@@ -97,8 +99,8 @@ export default class MissionFormWrap extends FormWrap {
       <Div hidden={!this.props.showForm}>
         <MissionsCreationForm
           formState={this.state.formState}
-          onSubmit={this.handleFormSubmit.bind(this)}
-          handleFormChange={this.handleFormStateChange.bind(this)}
+          onSubmit={this.handleFormSubmit}
+          handleFormChange={this.handleFormStateChange}
           show={this.props.showForm}
           onHide={this.props.onFormHide}
           missions={this.props.missions}

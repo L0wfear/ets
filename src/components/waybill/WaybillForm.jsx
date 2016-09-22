@@ -296,10 +296,18 @@ class WaybillForm extends Form {
                 onChange={this.handleChange.bind(this, 'responsible_person_id')}
               />
 
-              <Field type="string" label="Ответственное лицо" readOnly hidden={IS_CREATING || IS_POST_CREATING || !state.responsible_person_id}
+              <Field
+                type="string"
+                label="Ответственное лицо"
+                readOnly
+                hidden={IS_CREATING || IS_POST_CREATING || !state.responsible_person_id}
                 value={employeeFIOLabelFunction(state.responsible_person_id, true)}
               />
-              <Field type="string" label="Ответственное лицо" readOnly hidden={IS_CREATING || IS_POST_CREATING || state.responsible_person_id}
+              <Field
+                type="string"
+                label="Ответственное лицо"
+                readOnly
+                hidden={IS_CREATING || IS_POST_CREATING || state.responsible_person_id}
                 value={'Не указано'}
               />
             </Col>
@@ -370,7 +378,10 @@ class WaybillForm extends Form {
           <br />
           <Row>
             <Col md={6}>
-              <Field type="select" label="Транспортное средство (поиск по рег. номер ТС)" error={errors.car_id}
+              <Field
+                type="select"
+                label="Транспортное средство (поиск по рег. номер ТС)"
+                error={errors.car_id}
                 className="white-space-pre-wrap"
                 hidden={!(IS_CREATING || IS_POST_CREATING)}
                 options={CARS}
@@ -378,7 +389,12 @@ class WaybillForm extends Form {
                 onChange={this.onCarChange}
               />
 
-              <Field type="string" label="Транспортное средство" className="white-space-pre-wrap" readOnly hidden={IS_CREATING || IS_POST_CREATING}
+              <Field
+                type="string"
+                label="Транспортное средство"
+                className="white-space-pre-wrap"
+                readOnly
+                hidden={IS_CREATING || IS_POST_CREATING}
                 value={car ? `${car.gov_number} [${car.special_model_name || ''}${car.special_model_name ? '/' : ''}${car.model_name || ''}]` : 'Н/Д'}
               />
             </Col>
@@ -408,15 +424,23 @@ class WaybillForm extends Form {
               <Div hidden={!CAR_HAS_ODOMETER}>
                 <Col md={4}>
                   <h4>Одометр</h4>
-                  <Field type="number" label="Выезд, км" error={errors.odometr_start}
+                  <Field
+                    type="number"
+                    label="Выезд, км"
+                    error={errors.odometr_start}
                     value={state.odometr_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'odometr_start')}
                   />
 
-                  <Field type="number" label="Возврат, км" error={errors.odometr_end}
+                  <Field
+                    type="number"
+                    label="Возврат, км"
+                    error={errors.odometr_end}
                     value={state.odometr_end} hidden={!(IS_CLOSING || IS_DISPLAY)} disabled={IS_DISPLAY && !this.state.canEditIfClose} onChange={this.handleChange.bind(this, 'odometr_end')}
                   />
 
-                  <Field type="number" label="Пробег, км"
+                  <Field
+                    type="number"
+                    label="Пробег, км"
                     value={state.odometr_diff} hidden={!(IS_CLOSING || IS_DISPLAY)} disabled
                   />
                 </Col>

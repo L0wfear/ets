@@ -325,7 +325,6 @@ export default class WaybillFormWrap extends FormWrap {
         formState.status = 'closed';
         await this.context.flux.getActions('waybills').updateWaybill(formState);
       } catch (e) {
-        console.log(e);
         formState.status = prevStatus;
         await this.context.flux.getActions('waybills').updateWaybill(formState);
         this.context.flux.getActions('waybills').getWaybills();

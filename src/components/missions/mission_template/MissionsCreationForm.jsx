@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import Field from 'components/ui/Field.jsx';

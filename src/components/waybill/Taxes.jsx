@@ -18,11 +18,14 @@ export default class Taxes extends Component {
   static get propTypes() {
     return {
       type: PropTypes.string.isRequired,
+      title: PropTypes.string,
+      noDataMessage: PropTypes.string,
       taxes: PropTypes.arrayOf(PropTypes.object),
       readOnly: PropTypes.bool,
+      hidden: PropTypes.bool,
       correctionRate: PropTypes.number,
       baseFactValue: PropTypes.string,
-
+      fuelRates: PropTypes.array,
       onChange: PropTypes.func.isRequired,
     };
   }
@@ -38,7 +41,7 @@ export default class Taxes extends Component {
     if (!data || (data && !data.length)) {
       return 0;
     }
-    const result = _.reduce(data, (res, cur, i) => {
+    const result = _.reduce(data, (res, cur) => {
       if (typeof cur.RESULT !== 'undefined') {
         res += parseFloat(cur.RESULT);
       }
@@ -51,7 +54,7 @@ export default class Taxes extends Component {
     if (!data || (data && !data.length)) {
       return 0;
     }
-    const result = _.reduce(data, (res, cur, i) => {
+    const result = _.reduce(data, (res, cur) => {
       if (!isEmpty(cur.FACT_VALUE)) {
         res += parseFloat(cur.FACT_VALUE);
       }
@@ -170,8 +173,8 @@ export default class Taxes extends Component {
   }
 
   render() {
-    const { taxes = this.state.tableData, fuelRates = [], type,
-      title = 'Расчет топлива по норме',
+    const { taxes = this.state.tableData, fuelRates = [],
+      title = 'Расчет топлива по норме', hidden,
       noDataMessage = 'Для данного ТС нормы расхода топлива не указаны',
       baseFactValue } = this.props;
     const hasTaxes = taxes.length > 0;
@@ -184,7 +187,7 @@ export default class Taxes extends Component {
     });
 
     return (
-      <Div className="taxi-calc-block" hidden={this.props.hidden}>
+      <Div className="taxi-calc-block" hidden={hidden}>
         <Div className="some-header">
           <h4>{title}</h4>
           <Div hidden={fuelRates.length || hasTaxes}>
@@ -200,7 +203,8 @@ export default class Taxes extends Component {
           </Div>
         </Div>
         <Div hidden={!hasTaxes}>
-          <Table title="Расчет топлива по норме"
+          <Table
+            title="Расчет топлива по норме"
             columnCaptions={this.tableCaptions}
             data={taxes}
             tableCols={this.tableCols}

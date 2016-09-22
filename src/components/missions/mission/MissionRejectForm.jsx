@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
-import moment from 'moment';
-import { Modal, Button, Glyphicon, Row, Col } from 'react-bootstrap';
+import { Modal, Button, Row, Col } from 'react-bootstrap';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import Datepicker from 'components/ui/DatePicker.jsx';
@@ -17,27 +16,27 @@ class MissionRejectForm extends Component {
       comment: '',
       car_id: null,
       date_start: null,
-      date_end: null
+      date_end: null,
     };
   }
 
   async handleChange(field, e) {
     switch (field) {
       case 'comment':
-        this.setState({comment: e.target.value});
+        this.setState({ comment: e.target.value });
         break;
       case 'car_id':
-        let mission_id = this.props.mission.mission_id || this.props.mission.id;
-        let payload = {
+        const mission_id = this.props.mission.mission_id || this.props.mission.id;
+        const payload = {
           car_id: e,
-          mission_id
+          mission_id,
         };
-        let result = await this.context.flux.getActions('missions').getMissionReassignationParameters(payload);
-        let data = result ? result.result : null
-        this.setState({[field]: e, data});
+        const result = await this.context.flux.getActions('missions').getMissionReassignationParameters(payload);
+        const data = result ? result.result : null;
+        this.setState({ [field]: e, data });
         break;
       default:
-        this.setState({[field]: e});
+        this.setState({ [field]: e });
     }
   }
 
@@ -47,11 +46,11 @@ class MissionRejectForm extends Component {
     if (!this.state.data) {
       let mission = await this.context.flux.getActions('missions').getMissionById(this.state.mission_id);
       mission = mission.result.rows[0];
-  		mission.status = 'fail';
-  		mission.comment = this.state.comment;
-  	  resolve = await this.context.flux.getActions('missions').updateMission(mission);
+      mission.status = 'fail';
+      mission.comment = this.state.comment;
+      resolve = await this.context.flux.getActions('missions').updateMission(mission);
     } else {
-      switch(this.state.data.mark) {
+      switch (this.state.data.mark) {
         case 'create':
           payload = {
             car_id: this.state.car_id,
@@ -64,7 +63,7 @@ class MissionRejectForm extends Component {
           break;
         case 'update':
           if (this.state.data.missions) {
-            let missions = _.cloneDeep(this.state.data.missions);
+            const missions = _.cloneDeep(this.state.data.missions);
             payload = {
               car_id: this.state.car_id,
               mission_id: this.state.mission_id,
@@ -72,18 +71,18 @@ class MissionRejectForm extends Component {
               missions,
               date_start: this.state.date_start,
               date_end: this.state.date_end,
-              waybill_id: this.state.data.waybill_id
+              waybill_id: this.state.data.waybill_id,
             };
           } else {
-             payload = {
+            payload = {
               car_id: this.state.car_id,
               mission_id: this.state.mission_id,
               comment: this.state.comment,
               date_start: this.state.date_start,
               date_end: this.state.date_end,
-              waybill_id: this.state.data.waybill_id
+              waybill_id: this.state.data.waybill_id,
             };
-          };
+          }
           resolve = await this.context.flux.getActions('missions').updateMissionFromReassignation(payload);
           break;
       }
@@ -91,17 +90,17 @@ class MissionRejectForm extends Component {
     if (!resolve.errors || resolve.errors && !resolve.errors.length) {
       global.NOTIFICATION_SYSTEM.notify(reassignMissionSuccessNotification);
       this.props.onReject(true);
-    };
+    }
   }
 
   handleMissionsDateChange(field, mission_id, value) {
-    let {missions} = this.state.data;
+    const { missions } = this.state.data;
     missions.forEach((mission) => {
       if (mission.id === mission_id) {
         mission[field] = createValidDateTime(value);
-      };
+      }
     });
-    this.setState({missions});
+    this.setState({ missions });
   }
 
   componentWillReceiveProps() {
@@ -110,14 +109,14 @@ class MissionRejectForm extends Component {
       comment: '',
       date_end: null,
       date_start: null,
-      result: null
+      result: null,
     });
     if (this.props.mission) {
-      let mission_id = this.props.mission.mission_id || this.props.mission.id;
-      let date_start = this.props.mission.mission_date_start || this.props.mission.date_start;
-      let date_end = this.props.mission.mission_date_end || this.props.mission.date_end;
-      this.setState({mission_id, date_end, date_start});
-    };
+      const mission_id = this.props.mission.mission_id || this.props.mission.id;
+      const date_start = this.props.mission.mission_date_start || this.props.mission.date_start;
+      const date_end = this.props.mission.mission_date_end || this.props.mission.date_end;
+      this.setState({ mission_id, date_end, date_start });
+    }
   }
 
   componentDidMount() {
@@ -126,36 +125,37 @@ class MissionRejectForm extends Component {
 
   render() {
     let { state, props } = this;
-    let errors = [];
-    let CARS = (props.carsList && props.mission) ? props.carsList.map((e) => ({value: e.asuods_id, label: e.gov_number})).filter((e) => e.label !== props.mission.car_gov_number) : [];
-    let title = props.mission ? 'Задание, ТС: '+props.mission.car_gov_number : '';
-    let missions = this.state.data ? this.state.data.missions : null;
-    let datePickers = missions && missions.map((mission, i) => {
+    const errors = [];
+    const CARS = (props.carsList && props.mission) ? props.carsList.map(e => ({ value: e.asuods_id, label: e.gov_number })).filter(e => e.label !== props.mission.car_gov_number) : [];
+    const title = props.mission ? 'Задание, ТС: ' + props.mission.car_gov_number : '';
+    const missions = this.state.data ? this.state.data.missions : null;
+    const datePickers = missions && missions.map((mission, i) => {
       return (
-        <Row style={{marginBottom: '4px'}} key={i}>
-          <Col md={4} style={{paddingRight: '0'}}>
+        <Row style={{ marginBottom: '4px' }} key={i}>
+          <Col md={4} style={{ paddingRight: '0' }}>
             <div
-                title={mission.technical_operation_name}
-                style={{
-                  paddingTop: "9px",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden"
-                }}>
+              title={mission.technical_operation_name}
+              style={{
+                paddingTop: '9px',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+              }}
+            >
               {`№: ${mission.number} (${mission.technical_operation_name})`}
             </div>
           </Col>
-          <Col md={8} style={{textAlign: "right", paddingLeft: '0', whiteSpace: "nowrap"}}>
+          <Col md={8} style={{ textAlign: 'right', paddingLeft: '0', whiteSpace: 'nowrap' }}>
             <Div className="inline-block reports-date">
-              <Datepicker date={mission.date_start} onChange={this.handleMissionsDateChange.bind(this, 'date_start', mission.id)}/>
+              <Datepicker date={mission.date_start} onChange={this.handleMissionsDateChange.bind(this, 'date_start', mission.id)} />
             </Div>
             {' — '}
             <Div className="inline-block reports-date">
-              <Datepicker date={mission.date_end} onChange={this.handleMissionsDateChange.bind(this, 'date_end', mission.id)}/>
+              <Datepicker date={mission.date_end} onChange={this.handleMissionsDateChange.bind(this, 'date_end', mission.id)} />
             </Div>
           </Col>
         </Row>
-      )
+      );
     });
 
     return (
@@ -167,40 +167,42 @@ class MissionRejectForm extends Component {
 
             <Modal.Body>
               <Field
-                  type="string"
-                  label="Введите причину:"
-                  value={state.comment}
-                  error={errors['comment']}
-                  onChange={this.handleChange.bind(this, 'comment')} />
+                type="string"
+                label="Введите причину:"
+                value={state.comment}
+                error={errors.comment}
+                onChange={this.handleChange.bind(this, 'comment')}
+              />
               <Field
-                  type="select"
-                  label="Переназначить задание на:"
-                  error={errors['car_id']}
-                  options={CARS}
-                  value={state.car_id}
-                  onChange={this.handleChange.bind(this, 'car_id')}
-                  clearable={true} />
-              <br/>
+                type="select"
+                label="Переназначить задание на:"
+                error={errors.car_id}
+                options={CARS}
+                value={state.car_id}
+                onChange={this.handleChange.bind(this, 'car_id')}
+                clearable
+              />
+              <br />
               {state.data && state.data.missions ? <Div>
-                <label style={{marginBottom: "10px"}}>
+                <label style={{ marginBottom: '10px' }}>
                   {`Задание будет добавлено в п.л. №${state.data.waybill_number} (Выезд: ${getFormattedDateTime(state.data.waybill_plan_departure_date)}, Возвращение: ${getFormattedDateTime(state.data.waybill_plan_arrival_date)})`}
                 </label>
-                <Row style={{marginBottom: '4px'}}>
-                  <Col md={4} style={{paddingRight: '0'}}>
+                <Row style={{ marginBottom: '4px' }}>
+                  <Col md={4} style={{ paddingRight: '0' }}>
                     <div style={{
-                      paddingTop: "9px",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                      overflow: "hidden"
+                      paddingTop: '9px',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
                     }}>Переносимое задание</div>
                   </Col>
-                  <Col md={8} style={{textAlign: "right", paddingLeft: '0', whiteSpace: "nowrap"}}>
+                  <Col md={8} style={{ textAlign: 'right', paddingLeft: '0', whiteSpace: 'nowrap' }}>
                     <Div className="inline-block reports-date">
-                      <Datepicker date={state.date_start} onChange={this.handleChange.bind(this, 'date_start')}/>
+                      <Datepicker date={state.date_start} onChange={this.handleChange.bind(this, 'date_start')} />
                     </Div>
                     {' — '}
                     <Div className="inline-block reports-date">
-                      <Datepicker date={state.date_end} onChange={this.handleChange.bind(this, 'date_end')}/>
+                      <Datepicker date={state.date_end} onChange={this.handleChange.bind(this, 'date_end')} />
                     </Div>
                   </Col>
                 </Row>
@@ -215,13 +217,13 @@ class MissionRejectForm extends Component {
               </Div>
             </Modal.Footer>
 
-			</Modal>
-    )
+      </Modal>
+    );
   }
 }
 
 MissionRejectForm.contextTypes = {
-	flux: React.PropTypes.object,
+  flux: React.PropTypes.object,
 };
 
 export default connectToStores(MissionRejectForm, ['objects', 'missions']);

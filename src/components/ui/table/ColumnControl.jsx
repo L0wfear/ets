@@ -1,12 +1,18 @@
-import React, { Component } from 'react';
-import { Modal, Row, Col, Button, Glyphicon, Input } from 'react-bootstrap';
-import Div from '../Div.jsx';
+import React, { Component, PropTypes } from 'react';
+import { Modal, Button, Glyphicon, Input } from 'react-bootstrap';
 import cx from 'classnames';
+import Div from '../Div.jsx';
 
 export default class ColumnControl extends Component {
 
-  constructor(props) {
-    super(props);
+  static get propTypes() {
+    return {
+      onChange: PropTypes.func,
+      active: PropTypes.bool,
+      show: PropTypes.bool,
+      options: PropTypes.array,
+      values: PropTypes.array,
+    };
   }
 
   checkboxChange(name) {
@@ -20,7 +26,9 @@ export default class ColumnControl extends Component {
     });
 
     const rows = this.props.options.map((option, i) => {
-      if (option.name === 'rowNumber') return;
+      if (option.name === 'rowNumber') {
+        return;
+      }
       return (
         <div key={i} style={{ marginLeft: 20 }}>
           <span onClick={this.checkboxChange.bind(this, option.name)} style={{ cursor: 'pointer' }}>

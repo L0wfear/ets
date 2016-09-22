@@ -46,6 +46,10 @@ export function saveData(blob, fileName) {
   setTimeout(() => window.URL.revokeObjectURL(url), 100);
 }
 
+/**
+ * [printData description]
+ * @param  {[type]} blob [description]
+ */
 export function printData(blob) {
   const url = window.URL.createObjectURL(new Blob([blob], { type: 'application/pdf' }));
   const iframe = document.createElement('iframe');

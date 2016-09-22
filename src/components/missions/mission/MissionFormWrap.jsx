@@ -11,85 +11,84 @@ import { missionSchema } from 'models/MissionModel.js';
 
 class MissionFormWrap extends FormWrap {
 
-	constructor(props, context) {
-		super(props);
+  constructor(props, context) {
+    super(props);
 
-		this.schema = missionSchema;
-		this.createAction = (formState) => {
-			return context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill);
-		};
-		this.updateAction = context.flux.getActions('missions').updateMission;
-	}
+    this.schema = missionSchema;
+    this.createAction = (formState) => {
+      return context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill);
+    };
+    this.updateAction = context.flux.getActions('missions').updateMission;
+  }
 
-	componentWillReceiveProps(props) {
-		if (props.showForm && (props.showForm !== this.props.showForm)) {
-			let mission = props.element === null ? getDefaultMission() : _.clone(props.element);
-			let formErrors = this.validate(mission, {});
-			this.setState({
-				formState: mission,
-				canSave: ! !!_.filter(this.validate(mission, {})).length,
-				formErrors
-			});
-		}
-	}
+  componentWillReceiveProps(props) {
+    if (props.showForm && (props.showForm !== this.props.showForm)) {
+      const mission = props.element === null ? getDefaultMission() : _.clone(props.element);
+      const formErrors = this.validate(mission, {});
+      this.setState({
+        formState: mission,
+        canSave: !!!_.filter(this.validate(mission, {})).length,
+        formErrors,
+      });
+    }
+  }
 
-	validate(formState, errors) {
-		let formErrors = _.clone(errors);
-		_.each(missionSchema.properties, prop => {
-			formErrors[prop.key] = validateField(prop, formState[prop.key], formState, missionSchema);
-		});
+  validate(formState, errors) {
+    const formErrors = _.clone(errors);
+    _.each(missionSchema.properties, (prop) => {
+      formErrors[prop.key] = validateField(prop, formState[prop.key], formState, missionSchema);
+    });
 
-		if ((this.props.fromWaybill && this.props.waybillStartDate) || (this.props.fromWaybill && this.props.waybillEndDate)) {
-			if (moment(formState.date_start).toDate().getTime() < moment(this.props.waybillStartDate).toDate().getTime()) {
-				formErrors.date_start = `Дата не должна выходить за пределы путевого листа`;
-			}
+    if ((this.props.fromWaybill && this.props.waybillStartDate) || (this.props.fromWaybill && this.props.waybillEndDate)) {
+      if (moment(formState.date_start).toDate().getTime() < moment(this.props.waybillStartDate).toDate().getTime()) {
+        formErrors.date_start = 'Дата не должна выходить за пределы путевого листа';
+      }
 
-			if (moment(formState.date_end).toDate().getTime() > moment(this.props.waybillEndDate).toDate().getTime()) {
-				formErrors.date_end = `Дата не должна выходить за пределы путевого листа`;
-			}
-		}
+      if (moment(formState.date_end).toDate().getTime() > moment(this.props.waybillEndDate).toDate().getTime()) {
+        formErrors.date_end = 'Дата не должна выходить за пределы путевого листа';
+      }
+    }
 
-		return formErrors;
-	}
+    return formErrors;
+  }
 
-	handlePrint(event, print_form_type = 1) {
-		let f = this.state.formState;
-		const { flux } = this.context;
-		let data = {mission_id: f.id};
+  handlePrint(event, print_form_type = 1) {
+    const f = this.state.formState;
+    const { flux } = this.context;
+    const data = { mission_id: f.id };
 
-		global.map.once('postcompose', function(event) {
-			let routeImageBase64Data = event.context.canvas.toDataURL('image/png');
-			data.image = routeImageBase64Data;
-			flux.getActions('missions').printMission(data).then(({blob}) => {
-				print_form_type === 1 ? saveData(blob, `Задание №${f.number}.pdf`) : printData(blob);
-			});
-		});
-		global.map.render();
-	}
+    global.map.once('postcompose', (event) => {
+      const routeImageBase64Data = event.context.canvas.toDataURL('image/png');
+      data.image = routeImageBase64Data;
+      flux.getActions('missions').printMission(data).then(({ blob }) => {
+        print_form_type === 1 ? saveData(blob, `Задание №${f.number}.pdf`) : printData(blob);
+      });
+    });
+    global.map.render();
+  }
 
-	render() {
+  render() {
+    const props = {
+      show: this.props.showForm,
+      onHide: this.props.onFormHide,
+      fromWaybill: this.props.fromWaybill,
+      waybillStartDate: this.props.waybillStartDate,
+      waybillEndDate: this.props.waybillEndDate,
+    };
 
-		let props = {
-			show: this.props.showForm,
-			onHide: this.props.onFormHide,
-			fromWaybill: this.props.fromWaybill,
-			waybillStartDate: this.props.waybillStartDate,
-			waybillEndDate: this.props.waybillEndDate,
-		};
-
-		return (
-			<Div hidden={!this.props.showForm}>
-				<MissionForm
-						formState = {this.state.formState}
-						onSubmit={this.handleFormSubmit.bind(this)}
-						handleFormChange={this.handleFormStateChange.bind(this)}
-						handlePrint={this.handlePrint.bind(this)}
-						{...props}
-						{...this.state}/>
-			</Div>
-		)
-
-	}
+    return (
+      <Div hidden={!this.props.showForm}>
+        <MissionForm
+          formState={this.state.formState}
+          onSubmit={this.handleFormSubmit.bind(this)}
+          handleFormChange={this.handleFormStateChange.bind(this)}
+          handlePrint={this.handlePrint.bind(this)}
+          {...props}
+          {...this.state}
+        />
+      </Div>
+    );
+  }
 
 }
 

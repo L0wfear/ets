@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import _ from 'lodash';
 import Div from '../Div.jsx';
 
@@ -9,7 +9,26 @@ const HeaderCell = ({ renderer, children, value }) => {
   return <th className="ets-table-header-cell">{children}</th>;
 };
 
+HeaderCell.propTypes = {
+  renderer: PropTypes.func,
+  children: PropTypes.node,
+  value: PropTypes.any,
+};
+
 export default class Table extends Component {
+
+  static get propTypes() {
+    return {
+      headerRenderers: PropTypes.any,
+      pageSize: PropTypes.number,
+      columnCaptions: PropTypes.array,
+      tableCols: PropTypes.array,
+      onRowSelected: PropTypes.func,
+      data: PropTypes.array,
+      cellRenderers: PropTypes.object,
+      usePagination: PropTypes.bool,
+    };
+  }
 
   static defaultProps = {
     headerRenderers: {},
@@ -23,19 +42,21 @@ export default class Table extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-  //	this.setPage(1);
+  onRowClick(id) {
+    if (this.props.onRowSelected !== undefined) {
+      this.setState({
+        selectedRow: id,
+      });
+      this.props.onRowSelected(id);
+    }
   }
 
-  renderHeader() {
-    return (
-      <tr className="ets-table-header">
-        {this.props.columnCaptions.map((o, i) => {
-          const renderer = this.props.headerRenderers[this.props.tableCols[i]];
-          return <HeaderCell key={i} renderer={renderer} value={o}>{o}</HeaderCell>;
-        })}
-      </tr>
-    );
+  getNumPages() {
+    let num = Math.floor(this.props.data.length / this.props.pageSize);
+    if (this.props.data.length % this.props.pageSize > 0) {
+      num += 1;
+    }
+    return num;
   }
 
   getPage() {
@@ -50,34 +71,29 @@ export default class Table extends Component {
     };
   }
 
-  getNumPages() {
-    let num = Math.floor(this.props.data.length / this.props.pageSize);
-    if (this.props.data.length % this.props.pageSize > 0) {
-      num++;
-    }
-    return num;
-  }
-
   setPage(num) {
     this.setState({
       currentPage: num,
     });
   }
 
-  onRowClick(id) {
-    if (this.props.onRowSelected !== undefined) {
-      this.setState({
-        selectedRow: id,
-      });
-      this.props.onRowSelected(id);
-    }
+  renderHeader() {
+    return (
+      <tr className="ets-table-header">
+        {this.props.columnCaptions.map((o, i) => {
+          const renderer = this.props.headerRenderers[this.props.tableCols[i]];
+          return <HeaderCell key={i} renderer={renderer} value={o}>{o}</HeaderCell>;
+        })}
+      </tr>
+    );
   }
 
   render() {
     const page = this.getPage();
     const { usePagination = true } = this.props;
     const rows = page.data.map((o, i) =>
-      <Row renderers={this.props.cellRenderers}
+      <Row
+        renderers={this.props.cellRenderers}
         key={i}
         cells={o}
         index={i}
@@ -99,7 +115,7 @@ export default class Table extends Component {
         <Div className="ets-table-pagination" hidden={!usePagination}>
           {<Pager {...this.getPage()} />}
         </Div>
-       </div>
+      </div>
     );
   }
 }
@@ -133,15 +149,15 @@ const Row = (props) => {
     });
   }
 
-
   const cn = 'ets-table-row' + (props.selected ? ' selected' : '');
 
   return <tr className={cn} onClick={props.handleClick.bind(this, props.cells.ID || props.index)}>{cells}</tr>;
 };
 
-const PageLink = props => <span className="table-page-link" onClick={props.handleClick.bind(this, props.pageNum)}>
-                      {props.children}
-                    </span>;
+const PageLink = props =>
+  <span className="table-page-link" onClick={props.handleClick.bind(this, props.pageNum)}>
+    {props.children}
+  </span>;
 
 const Pager = (props) => {
   const links = [];
@@ -166,7 +182,15 @@ const Pager = (props) => {
     }
   }
 
-  return (<div className="pagination">
-           {links}
-         </div>);
+  return (
+    <div className="pagination">
+      {links}
+    </div>
+  );
+};
+
+Pager.propTypes = {
+  currentPage: PropTypes.number,
+  numPages: PropTypes.number,
+  handleClick: PropTypes.func,
 };

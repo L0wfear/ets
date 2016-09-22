@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import connectToStores from 'flummox/connect';
-import { Modal, Row, Col, FormControls, Button } from 'react-bootstrap';
+import { Modal, Row, Col, Button } from 'react-bootstrap';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import RouteInfo from 'components/route/RouteInfo.jsx';
@@ -62,7 +62,6 @@ class MissionTemplateForm extends MissionForm {
     }
 
     const route = this.state.selectedRoute;
-    const odh_list = route ? route.odh_list || route.object_list : [];
 
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">

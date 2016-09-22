@@ -3,11 +3,15 @@ import { polyState } from 'constants/polygons.js';
 import { Button } from 'react-bootstrap';
 import Div from 'components/ui/Div.jsx';
 import each from 'lodash/each';
+import uniqBy from 'lodash/uniqBy';
 
 export default function ODHList(props) {
+  const { showSelectable, checkRoute } = props;
+  let { odh_list = [], odh_fail_list = [] } = props;
   const ODHS = [];
   const ODHS_FAIL = [];
-  const { odh_list = [], odh_fail_list = [], showSelectable, checkRoute } = props;
+  odh_list = uniqBy(odh_list, 'object_id');
+  odh_fail_list = uniqBy(odh_fail_list, 'object_id');
 
   each(odh_list, (odh, index) => {
     if (showSelectable || odh.state !== polyState.SELECTABLE) {

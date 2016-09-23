@@ -1,4 +1,5 @@
 import { Store } from 'flummox';
+import { setUserContext } from 'config/raven';
 import createFio from '../utils/create-fio.js';
 import { User } from '../models';
 
@@ -32,6 +33,7 @@ export default class SessionStore extends Store {
     }
 
     currentUser = new User(currentUser);
+    setUserContext(currentUser);
 
     this.state = {
       currentUser,
@@ -48,6 +50,7 @@ export default class SessionStore extends Store {
     localStorage.setItem(SESSION_KEY, JSON.stringify(session));
     localStorage.setItem('current_user', JSON.stringify(currentUser));
     this.flux.getStore('dashboard').resetState();
+    setUserContext(currentUser);
     currentUser = new User(currentUser);
     this.setState({
       currentUser,

@@ -36,6 +36,11 @@ export default class RouteInfo extends Component {
     };
   }
 
+  componentDidMount() {
+    const { flux } = this.context;
+    flux.getActions('geoObjects').getGeozones();
+  }
+
   onFeatureClick(feature, ev, map) {
     const { name } = feature.getProperties();
     if (name) {
@@ -46,7 +51,6 @@ export default class RouteInfo extends Component {
   render() {
     const { route, geozonePolys = {}, mapOnly } = this.props;
     const { object_list = [] } = route;
-    console.log(route);
     const manual = route.type === 'vector';
     const polys = _(_.cloneDeep(object_list))
       .map((object) => {

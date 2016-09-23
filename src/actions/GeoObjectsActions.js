@@ -6,6 +6,7 @@ import {
   GeozoneService,
   GeozonesService,
 } from 'api/Services';
+import { getValueFromCache, put } from 'utils/cache';
 
 export default class GeoObjectsActions extends Actions {
 
@@ -36,8 +37,14 @@ export default class GeoObjectsActions extends Actions {
     return DTService.put(payload);
   }
 
-  getGeozones() {
-    return GeozoneService.get();
+  async getGeozones() {
+    const cachedValue = getValueFromCache('GeozoneService.get()');
+    if (cachedValue) {
+      return cachedValue;
+    }
+    const geozones = await GeozoneService.get();
+    put('GeozoneService.get()', geozones);
+    return geozones;
   }
 
   async getGeozoneByTypeWithGeometry(type) {

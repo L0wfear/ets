@@ -6,11 +6,6 @@ import 'moment/locale/ru';
 
 localizer(moment);
 
-// import rome from 'rome';
-// import 'globalize/lib/cultures/globalize.culture.ru-RU';
-// import 'globalize';
-//
-
 export default class DatePicker extends Component {
 
   static get propTypes() {
@@ -20,6 +15,7 @@ export default class DatePicker extends Component {
       disabled: PropTypes.any,
       min: PropTypes.any,
       max: PropTypes.any,
+      onChange: PropTypes.func,
     };
   }
 
@@ -58,8 +54,8 @@ export default class DatePicker extends Component {
         className="chart-datepicker"
         disabled={disabled}
         step={5}
-      //  min={min}
-      //  max={max}
+        // min={min}
+        // max={max}
         // messages={translation}
         value={date}
         time={time}

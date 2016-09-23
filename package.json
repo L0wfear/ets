@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "0.8.19",
+    "version": "0.8.20",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -99,7 +99,7 @@
         "build:study": "STAND=study webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
         "dev:test": "STAND=test NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
         "dev:study": "STAND=study NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
-        "lint": "eslint -c .eslintrc.js --ext .js --ext .jsx src",
+        "lint": "eslint -c .eslintrc.js --fix --ext .js --ext .jsx src",
         "esdoc": "esdoc -c esdoc.json",
         "bump": "node webpack/utils/updateVersion.js"
     },

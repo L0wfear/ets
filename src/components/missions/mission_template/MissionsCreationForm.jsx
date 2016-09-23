@@ -67,7 +67,8 @@ class MissionsCreationForm extends Form {
                 type="number"
                 label="Количество проходов"
                 error={errors.passes_count}
-                value={state.passes_count} onChange={this.handleChange.bind(this, 'passes_count')}
+                value={state.passes_count}
+                onChange={this.handleChange.bind(this, 'passes_count')}
                 min={0}
               />
             </Col>

@@ -108,7 +108,7 @@ export default class Table extends Component {
         {/* <p className="ets-table-caption">{this.props.title}</p>*/}
         <table>
           <tbody>
-             {this.renderHeader()}
+            {this.renderHeader()}
             {rows}
           </tbody>
         </table>
@@ -119,8 +119,6 @@ export default class Table extends Component {
     );
   }
 }
-
-const Cell = props => <td className="ets-table-cell"> {props.children} </td>;
 
 const Row = (props) => {
   const cells = [];
@@ -157,7 +155,8 @@ const Row = (props) => {
 const PageLink = props =>
   <span className="table-page-link" onClick={props.handleClick.bind(this, props.pageNum)}>
     {props.children}
-  </span>;
+  </span>
+;
 
 const Pager = (props) => {
   const links = [];

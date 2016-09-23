@@ -8,6 +8,7 @@ export default class ColumnControl extends Component {
   static get propTypes() {
     return {
       onChange: PropTypes.func,
+      onClick: PropTypes.func,
       active: PropTypes.bool,
       show: PropTypes.bool,
       options: PropTypes.array,

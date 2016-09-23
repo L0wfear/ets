@@ -28,7 +28,7 @@ class CarsLegendWrapper extends Component {
       filter: PropTypes.object,
       storeHandleSetFilter: PropTypes.func,
       byStatus: PropTypes.object,
-      byConnectionStatus: PropTypes.object
+      byConnectionStatus: PropTypes.object,
     };
   }
 
@@ -150,7 +150,7 @@ class Toolbar extends Component {
   static get propTypes() {
     return {
       selectedPolysTypes: PropTypes.array,
-      filter: PropTypes.object
+      filter: PropTypes.object,
     };
   }
 

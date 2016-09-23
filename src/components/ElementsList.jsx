@@ -192,7 +192,6 @@ class ElementsList extends React.Component {
    */
   getButtons() {
     // Операции, заданные в статической переменной operations класса-наследника
-    console.log(this.props);
     const operations = this.constructor.operations || [];
     const entity = this.constructor.entity;
     const buttons = [];

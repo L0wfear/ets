@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { autobind } from 'core-decorators';
 import connectToStores from 'flummox/connect';
 import _ from 'lodash';
+import { routeSchema } from 'models/RouteModel.js';
 import RouteForm from './RouteForm.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';
-import { routeSchema } from 'models/RouteModel.js';
 
+@autobind
 class RouteFormWrap extends FormWrap {
 
   constructor(props) {
@@ -84,17 +86,17 @@ class RouteFormWrap extends FormWrap {
     const props = this.props;
 
     return props.showForm ?
-    <RouteForm
-      formState={this.state.formState}
-      onSubmit={this.handleFormSubmit.bind(this)}
-      handleFormChange={this.handleFormStateChange.bind(this)}
-      show={this.props.showForm}
-      onHide={this.props.onFormHide}
-      resetState={this.resetFormState.bind(this)}
-      fromMission={this.props.fromMission}
-      {...this.state}
-    />
-    : null;
+      <RouteForm
+        formState={this.state.formState}
+        onSubmit={this.handleFormSubmit}
+        handleFormChange={this.handleFormStateChange}
+        show={this.props.showForm}
+        onHide={this.props.onFormHide}
+        resetState={this.resetFormState}
+        fromMission={this.props.fromMission}
+        {...this.state}
+      />
+      : null;
   }
 
 }

@@ -142,7 +142,6 @@ export const notifications = {
 };
 
 export function getWarningNotification(message) {
-console.log(message);
   return {
     title: 'Внимание',
     message: `${message}`,

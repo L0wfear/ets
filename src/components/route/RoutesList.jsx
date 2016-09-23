@@ -4,12 +4,11 @@ import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
 import _ from 'lodash';
 import cx from 'classnames';
 import connectToStores from 'flummox/connect';
-
-import RouteInfo from './RouteInfo.jsx';
-import RouteFormWrap from './RouteFormWrap.jsx';
 import Div from 'components/ui/Div.jsx';
 import Filter from 'components/ui/table/filter/Filter.jsx';
 import FilterButton from 'components/ui/table/filter/FilterButton.jsx';
+import RouteInfo from './RouteInfo.jsx';
+import RouteFormWrap from './RouteFormWrap.jsx';
 
 @autobind
 class RoutesList extends Component {
@@ -53,6 +52,13 @@ class RoutesList extends Component {
       });
       this.setState({ filterValues });
     }
+  }
+
+  onFormHide() {
+    this.setState({
+      showForm: false,
+      selectedRoute: null,
+    });
   }
 
   shouldBeRendered(obj) {
@@ -107,7 +113,6 @@ class RoutesList extends Component {
   }
 
   copyRoute() {
-    console.log(this.state);
     const copiedRoute = _.cloneDeep(this.state.selectedRoute);
     delete copiedRoute.name;
     delete copiedRoute.id;
@@ -134,13 +139,6 @@ class RoutesList extends Component {
 
   handleChange(selectedRoute) {
     this.setState({ selectedRoute });
-  }
-
-  onFormHide() {
-    this.setState({
-      showForm: false,
-      selectedRoute: null,
-    });
   }
 
   handleDropdown(name) {
@@ -214,17 +212,19 @@ class RoutesList extends Component {
     const simpleRoutes = techOperRoutes.map((o, i) => {
       const hidden = !!!(state.showId.indexOf(o.id + 's') + 1);
       const routes = o.routes.filter(r => r.type === 'simple');
-      if (routes.length) return (
-        <div key={i + o}>
-          <h6 style={{ marginLeft: '15px', marginRight: '5px' }}><span style={{ cursor: 'pointer' }} onClick={this.handleDropdown.bind(this, o.id + 's')}>{o.name}{!hidden ? ' \u25BC' : ' \u25BA'}</span></h6>
-          <Div hidden={hidden}>
-            {routes.map((r, i) => {
-              const cn = cx('sidebar__list-item', { 'active': route && r.id === route.id });
-              return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>;
-            })}
-          </Div>
-        </div>
-      );
+      if (routes.length) {
+        return (
+          <div key={i + o}>
+            <h6 style={{ marginLeft: '15px', marginRight: '5px' }}><span style={{ cursor: 'pointer' }} onClick={this.handleDropdown.bind(this, o.id + 's')}>{o.name}{!hidden ? ' \u25BC' : ' \u25BA'}</span></h6>
+            <Div hidden={hidden}>
+              {routes.map((r, i) => {
+                const cn = cx('sidebar__list-item', { 'active': route && r.id === route.id });
+                return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>;
+              })}
+            </Div>
+          </div>
+        );
+      }
     });
 
     const simpleRoutes2 = techOperRoutes.map((o, i) => {
@@ -276,20 +276,20 @@ class RoutesList extends Component {
             </header>
             <div className="sidebar__list-container" style={{ marginBottom: '30px !important', marginLeft: 20, top: '70px' }}>
               <ul className="sidebar__list">
-                <h5><span style={{ cursor: 'pointer' }} onClick={this.handleDropdown.bind(this, 'manual')}>Построенные вручную{!!(state.showId.indexOf('manual') + 1) ? ' \u25BC' : ' \u25BA'}</span></h5>
-                <Div hidden={(!!!(state.showId.indexOf('manual') + 1))}>{vectorRoutes}</Div>
+                <h5><span style={{ cursor: 'pointer' }} onClick={this.handleDropdown.bind(this, 'manual')}>Построенные вручную{(state.showId.indexOf('manual') + 1) ? ' \u25BC' : ' \u25BA'}</span></h5>
+                <Div hidden={(!(state.showId.indexOf('manual') + 1))}>{vectorRoutes}</Div>
               </ul>
               <ul className="sidebar__list">
-                <h5><span style={{ cursor: 'pointer' }} onClick={this.handleDropdown.bind(this, 'odh')}>Маршруты по ОДХ{!!(state.showId.indexOf('odh') + 1) ? ' \u25BC' : ' \u25BA'}</span></h5>
-                <Div hidden={(!!!(state.showId.indexOf('odh') + 1))}>{simpleRoutes}</Div>
+                <h5><span style={{ cursor: 'pointer' }} onClick={this.handleDropdown.bind(this, 'odh')}>Маршруты по ОДХ{(state.showId.indexOf('odh') + 1) ? ' \u25BC' : ' \u25BA'}</span></h5>
+                <Div hidden={(!(state.showId.indexOf('odh') + 1))}>{simpleRoutes}</Div>
               </ul>
               <ul className="sidebar__list">
-                <h5><span style={{ cursor: 'pointer' }} onClick={this.handleDropdown.bind(this, 'dt')}>Маршруты по ДТ{!!(state.showId.indexOf('dt') + 1) ? ' \u25BC' : ' \u25BA'}</span></h5>
-                <Div hidden={(!!!(state.showId.indexOf('dt') + 1))}>{simpleRoutes2}</Div>
+                <h5><span style={{ cursor: 'pointer' }} onClick={this.handleDropdown.bind(this, 'dt')}>Маршруты по ДТ{(state.showId.indexOf('dt') + 1) ? ' \u25BC' : ' \u25BA'}</span></h5>
+                <Div hidden={(!(state.showId.indexOf('dt') + 1))}>{simpleRoutes2}</Div>
               </ul>
               <ul className="sidebar__list">
-                <h5><span style={{ cursor: 'pointer' }} onClick={this.handleDropdown.bind(this, 'dp')}>Маршруты по пунктам назначения{!!(state.showId.indexOf('dp') + 1) ? ' \u25BC' : ' \u25BA'}</span></h5>
-                <Div hidden={(!!!(state.showId.indexOf('dp') + 1))}>{pointsRoutes}</Div>
+                <h5><span style={{ cursor: 'pointer' }} onClick={this.handleDropdown.bind(this, 'dp')}>Маршруты по пунктам назначения{(state.showId.indexOf('dp') + 1) ? ' \u25BC' : ' \u25BA'}</span></h5>
+                <Div hidden={(!(state.showId.indexOf('dp') + 1))}>{pointsRoutes}</Div>
               </ul>
             </div>
           </Col>
@@ -298,7 +298,7 @@ class RoutesList extends Component {
               <div className="waybills-buttons">
                 <FilterButton
                   show={this.state.filterModalIsOpen}
-                  active={_.keys(this.state.filterValues).length}
+                  active={!!_.keys(this.state.filterValues).length}
                   onClick={this.toggleFilter}
                 />
                 <Button bsSize="small" onClick={this.createRoute}><Glyphicon glyph="plus" /> Создать маршрут</Button>

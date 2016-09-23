@@ -17,8 +17,8 @@ export default class CarFormWrap extends FormWrap {
     return props.showForm ?
       <CarForm
         formState={this.state.formState}
-        onSubmit={this.handleFormSubmit.bind(this)}
-        handleFormChange={this.handleFormStateChange.bind(this)}
+        onSubmit={this.handleFormSubmit}
+        handleFormChange={this.handleFormStateChange}
         show={this.props.showForm}
         onHide={this.props.onFormHide}
         {...this.state}

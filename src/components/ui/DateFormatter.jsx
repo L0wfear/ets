@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import moment from 'moment';
 
-const DateFormatter = (props) => {
-  const { time = false, empty = '' } = props;
-  if (!props.date) {
+export default function DateFormatter({ time = false, empty = '', date }) {
+  if (!date) {
     return <div>{empty}</div>;
   }
-  const date = moment(props.date).format(`${global.APP_DATE_FORMAT}${time ? ' HH:mm' : ''}`);
-  return <div>{date}</div>;
-};
+  const formattedDate = moment(date).format(`${global.APP_DATE_FORMAT}${time ? ' HH:mm' : ''}`);
+  return <div>{formattedDate}</div>;
+}
 
-export default DateFormatter;
+DateFormatter.propTypes = {
+  time: PropTypes.bool,
+  empty: PropTypes.string,
+  date: PropTypes.any,
+};

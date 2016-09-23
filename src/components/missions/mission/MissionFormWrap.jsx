@@ -2,14 +2,14 @@ import React from 'react';
 import _ from 'lodash';
 import moment from 'moment';
 import Div from 'components/ui/Div.jsx';
-import MissionForm from './MissionForm.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import { validateField } from 'utils/validate/validateField.js';
 import { getDefaultMission } from 'stores/MissionsStore.js';
-import { isEmpty, saveData, printData } from 'utils/functions';
+import { saveData, printData } from 'utils/functions';
 import { missionSchema } from 'models/MissionModel.js';
+import MissionForm from './MissionForm.jsx';
 
-class MissionFormWrap extends FormWrap {
+export default class MissionFormWrap extends FormWrap {
 
   constructor(props, context) {
     super(props);
@@ -27,7 +27,7 @@ class MissionFormWrap extends FormWrap {
       const formErrors = this.validate(mission, {});
       this.setState({
         formState: mission,
-        canSave: !!!_.filter(this.validate(mission, {})).length,
+        canSave: !_.filter(this.validate(mission, {})).length,
         formErrors,
       });
     }
@@ -52,7 +52,7 @@ class MissionFormWrap extends FormWrap {
     return formErrors;
   }
 
-  handlePrint(event, print_form_type = 1) {
+  handlePrint(ev, print_form_type = 1) {
     const f = this.state.formState;
     const { flux } = this.context;
     const data = { mission_id: f.id };
@@ -91,5 +91,3 @@ class MissionFormWrap extends FormWrap {
   }
 
 }
-
-export default MissionFormWrap;

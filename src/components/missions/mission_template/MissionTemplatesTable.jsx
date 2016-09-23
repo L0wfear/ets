@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 
 const getTableMeta = () => {
@@ -67,7 +67,6 @@ const getTableMeta = () => {
 
   return tableMeta;
 };
-
 
 export default (props) => {
   return (

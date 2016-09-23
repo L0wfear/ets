@@ -45,7 +45,7 @@ class DailyReportHeader extends Component {
 
   static get propTypes() {
     return {
-      handleChange: PropTypes.func
+      handleChange: PropTypes.func,
     };
   }
 

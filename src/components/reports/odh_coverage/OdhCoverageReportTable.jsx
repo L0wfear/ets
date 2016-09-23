@@ -59,8 +59,9 @@ const OdhCoverageReportTable = (props) => {
       enumerated={false}
       tableMeta={getTableMeta(props)}
       className="waybills-table"
-      {...props}/>
+      {...props}
+    />
   );
-}
+};
 
 export default OdhCoverageReportTable;

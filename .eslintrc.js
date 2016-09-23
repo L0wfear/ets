@@ -18,13 +18,14 @@ module.exports = {
     "no-tabs": "error",
     "no-mixed-spaces-and-tabs": "off",
     "no-confusing-arrow": "off",
-    "quote-props": "warn",
+    "quote-props": "off", // временно
     "no-underscore-dangle": ["error", { "allowAfterThis": true }],
     "class-methods-use-this": "off",
     "max-len": ["off", 120],
     "camelcase": ["off"], // временно
     "no-param-reassign": ["off"], // временно
     "no-unused-expressions": ["error", { "allowShortCircuit": true }],
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "jsx-a11y/no-static-element-interactions": ["off"],
     // react
     "react/forbid-prop-types": ["off"]

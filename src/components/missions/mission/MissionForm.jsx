@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react';
 import connectToStores from 'flummox/connect';
-import { Modal, Row, Col, FormControls, Button, DropdownButton, Dropdown, Glyphicon, MenuItem, Input } from 'react-bootstrap';
+import { autobind } from 'core-decorators';
+import { Modal, Row, Col, Button, Dropdown, Glyphicon, MenuItem } from 'react-bootstrap';
 import RouteInfo from 'components/route/RouteInfo.jsx';
 import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
-import ODHList from 'components/route/ODHList.jsx';
 import Field from 'components/ui/Field.jsx';
 import EtsSelect from 'components/ui/EtsSelect.jsx';
 import Div from 'components/ui/Div.jsx';
 import moment from 'moment';
-import cx from 'classnames';
 import { isEmpty } from 'utils/functions';
 import Form from 'components/compositions/Form.jsx';
 
+@autobind
 export class MissionForm extends Form {
 
   constructor(props) {
@@ -41,9 +41,7 @@ export class MissionForm extends Form {
   async handleCarIdChange(v) {
     this.handleChange('car_id', v);
 
-    if (!!!this.props.formState.status) {
-
-    } else { // в режиме редактирования по ТС сортируются тех.операции
+    if (this.props.formState.status) {
       this.handleChange('technical_operation_id', undefined);
       this.handleRouteIdChange(undefined);
       try {
@@ -60,13 +58,11 @@ export class MissionForm extends Form {
     this.handleChange('technical_operation_id', v);
     this.handleRouteIdChange(undefined);
 
-    if (!!!this.props.formState.status && !this.props.fromWaybill) {
+    if (!this.props.formState.status && !this.props.fromWaybill) {
       this.handleChange('car_id', undefined);
       const carsList = await this.context.flux.getActions('cars')
                                             .getCarsByTechnicalOperation(v);
       this.setState({ carsList });
-    } else {
-
     }
 
     try {
@@ -115,7 +111,7 @@ export class MissionForm extends Form {
   }
 
   createNewRoute() {
-    this.context.flux.getActions('geoObjects').getGeozones().then((v) => {
+    this.context.flux.getActions('geoObjects').getGeozones().then(() => {
       const newR = {
         name: '',
         polys: this.props.geozonePolys,
@@ -171,12 +167,10 @@ export class MissionForm extends Form {
     const CARS = carsList.map(c => ({ value: c.asuods_id, label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]` }));
     const ROUTES = routesList.map(({ id, name }) => ({ value: id, label: name }));
 
-    console.log('form state is ', state);
     // является ли задание отложенным
     const isDeferred = moment(state.date_start).toDate().getTime() > moment().toDate().getTime();
 
-    const IS_CREATING = !!!state.status;
-    const IS_COMPLETED = (state.status === 'complete' || state.status === 'fail');
+    const IS_CREATING = !state.status;
     const IS_POST_CREATING_NOT_ASSIGNED = state.status === 'not_assigned' || this.props.fromWaybill;
     const IS_POST_CREATING_ASSIGNED = state.status === 'assigned' && isDeferred;
     const IS_DISPLAY = !IS_CREATING && !(IS_POST_CREATING_NOT_ASSIGNED || IS_POST_CREATING_ASSIGNED);// (!!state.status && state.status !== 'not_assigned') || (!isDeferred && !IS_CREATING);
@@ -187,7 +181,6 @@ export class MissionForm extends Form {
     }
 
     const route = this.state.selectedRoute;
-    const odh_list = route ? route.odh_list || route.object_list : [];
 
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
@@ -200,7 +193,10 @@ export class MissionForm extends Form {
 
           <Row>
             <Col md={6}>
-              <Field type="select" label="Транспортное средство" error={errors.car_id}
+              <Field
+                type="select"
+                label="Транспортное средство"
+                error={errors.car_id}
                 className="white-space-pre-wrap"
                 disabled={IS_POST_CREATING_ASSIGNED ||
                     IS_POST_CREATING_NOT_ASSIGNED ||
@@ -209,14 +205,14 @@ export class MissionForm extends Form {
                   (IS_CREATING && isEmpty(state.technical_operation_id))}
                 options={CARS}
                 value={state.car_id}
-                onChange={this.handleCarIdChange.bind(this)}
+                onChange={this.handleCarIdChange}
               />
 
             </Col>
 
-             <Col md={3}>
-               <label style={{ position: 'absolute', right: -7, top: 31, fontWeight: 400 }}>—</label>
-               <Div>
+            <Col md={3}>
+              <label style={{ position: 'absolute', right: -7, top: 31, fontWeight: 400 }}>—</label>
+              <Div>
                 <Field
                   type="date"
                   label="Время выполнения:"
@@ -228,9 +224,9 @@ export class MissionForm extends Form {
                   onChange={this.handleChange.bind(this, 'date_start')}
                 />
               </Div>
-             </Col>
-             <Col md={3}>
-               <Div>
+            </Col>
+            <Col md={3}>
+              <Div>
                 <Field
                   type="date"
                   label=""
@@ -242,12 +238,13 @@ export class MissionForm extends Form {
                   onChange={this.handleChange.bind(this, 'date_end')}
                 />
               </Div>
-             </Col>
+            </Col>
           </Row>
 
           <Row>
             <Col md={6}>
-              <Field type="string"
+              <Field
+                type="string"
                 label="Комментарий"
                 value={state.comment}
                 onChange={this.handleChange.bind(this, 'comment')}
@@ -255,7 +252,8 @@ export class MissionForm extends Form {
               />
             </Col>
             <Col md={3}>
-              <Field type="select"
+              <Field
+                type="select"
                 label="Источник получения задания"
                 error={errors.mission_source_id}
                 disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY}
@@ -265,9 +263,13 @@ export class MissionForm extends Form {
               />
             </Col>
             <Col md={3}>
-              <Field type="number" label="Количество проходов" error={errors.passes_count}
+              <Field
+                type="number"
+                label="Количество проходов"
+                error={errors.passes_count}
                 disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY}
-                value={state.passes_count} onChange={this.handleChange.bind(this, 'passes_count')}
+                value={state.passes_count}
+                onChange={this.handleChange.bind(this, 'passes_count')}
                 min={0}
               />
             </Col>
@@ -275,27 +277,31 @@ export class MissionForm extends Form {
 
           <Row>
             <Col md={12}>
-              <Field type="select"
+              <Field
+                type="select"
                 label="Технологическая операция"
                 error={errors.technical_operation_id}
                 disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY || isEmpty(state.car_id))}
                 options={TECH_OPERATIONS}
                 value={state.technical_operation_id}
-                onChange={this.handleTechnicalOperationChange.bind(this)}
+                onChange={this.handleTechnicalOperationChange}
               />
             </Col>
           </Row>
 
           <Row>
             <Col md={6}>
-              <Field type="select" label="Маршрут" error={errors.route_id}
-                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !!!state.technical_operation_id}
+              <Field
+                type="select"
+                label="Маршрут"
+                error={errors.route_id}
+                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.technical_operation_id}
                 options={ROUTES}
                 value={state.route_id}
-                onChange={this.handleRouteIdChange.bind(this)}
+                onChange={this.handleRouteIdChange}
               />
               <Div hidden={state.route_id}>
-                <Button onClick={this.createNewRoute.bind(this)} disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.technical_operation_id}>Создать новый</Button>
+                <Button onClick={this.createNewRoute} disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.technical_operation_id}>Создать новый</Button>
               </Div>
             </Col>
             <Col md={6}>
@@ -304,7 +310,6 @@ export class MissionForm extends Form {
               </Div>
             </Col>
           </Row>
-
 
         </Modal.Body>
 
@@ -329,13 +334,13 @@ export class MissionForm extends Form {
                 <MenuItem eventKey={2}>Печать</MenuItem>
               </Dropdown.Menu>
             </Dropdown>
-            <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>Сохранить</Button>
+            <Button onClick={this.handleSubmit} disabled={!this.props.canSave}>Сохранить</Button>
           </Div>
         </Modal.Footer>
 
         <RouteFormWrap
           element={route}
-          onFormHide={this.onFormHide.bind(this)}
+          onFormHide={this.onFormHide}
           showForm={this.state.showRouteForm}
           fromMission
         />

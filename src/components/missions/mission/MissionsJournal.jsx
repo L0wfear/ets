@@ -93,7 +93,6 @@ export default class MissionsJournal extends CheckableElementsList {
     if (Object.keys(this.state.checkedElements).length !== 0) {
       _.forEach(this.state.checkedElements, (mission) => {
         if (mission.status === 'assigned') {
-          console.log('mission', mission);
           const reason = prompt(`Введите причину для задания №${mission.number}`, '');
           if (reason) {
             const updatedMission = _.cloneDeep(mission);

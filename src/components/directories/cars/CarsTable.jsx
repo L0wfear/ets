@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 
 const getCondition = data => parseInt(data, 10) > 0 ? 'Исправно' : 'Неисправно';

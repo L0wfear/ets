@@ -40,7 +40,10 @@ class MissionsCreationForm extends Form {
           </Row>
           <Row>
             <Col md={12}>
-              <Field type="select" label="Источник получения задания" error={errors.mission_source_id}
+              <Field
+                type="select"
+                label="Источник получения задания"
+                error={errors.mission_source_id}
                 options={MISSION_SOURCES}
                 value={state.mission_source_id}
                 onChange={this.handleChange.bind(this, 'mission_source_id')}

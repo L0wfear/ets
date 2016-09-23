@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import CarTypesTable from './CarTypesTable.jsx';
+import React from 'react';
 import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps } from 'utils/decorators';
+import CarTypesTable from './CarTypesTable.jsx';
 
 @connectToStores(['objects'])
 @staticProps({

@@ -480,7 +480,7 @@ export default class DataTable extends React.Component {
             {!noFilter && <FilterButton
               disabled={this.props.isHierarchical}
               show={this.state.filterModalIsOpen}
-              active={_.keys(this.state.filterValues).length}
+              active={!!_.keys(this.state.filterValues).length}
               onClick={this.toggleFilter}
             />}
             {refreshable &&

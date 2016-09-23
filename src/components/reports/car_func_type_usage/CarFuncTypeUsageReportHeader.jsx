@@ -15,7 +15,7 @@ class CarFuncTypeUsageReportHeader extends Component {
 
     this.state = {
       companyOptions: [],
-      selectedCompany: null
+      selectedCompany: null,
     };
   }
 
@@ -31,58 +31,60 @@ class CarFuncTypeUsageReportHeader extends Component {
   }
 
   componentWillMount() {
-		const { flux } = this.context;
+		                                                                                const { flux } = this.context;
     const user = flux.getStore('session').getCurrentUser();
-    const companyOptions = [{value: user.company_id, label: user.company_name}];
-    this.setState({companyOptions});
+    const companyOptions = [{ value: user.company_id, label: user.company_name }];
+    this.setState({ companyOptions });
   }
 
   render() {
-    let props = this.props;
+    const props = this.props;
     const { companyOptions } = this.state;
     let { geozone_type, company_id = null, date_start, date_end } = this.props;
-    let OBJECTS = [{value: 'odh', label: 'Объект дорожного хозяйства'}, {value: 'dt', label: 'Дворовая территория'}];
+    const OBJECTS = [{ value: 'odh', label: 'Объект дорожного хозяйства' }, { value: 'dt', label: 'Дворовая территория' }];
 
-  	return (
+  	                                        return (
       <Div>
     		<Row>
     			<Col md={3}>
             <Field type="select"
-                   label="Объекты"
-                   options={OBJECTS}
-                   value={geozone_type}
-                   onChange={this.handleGeozoneTypeChange.bind(this)}
-                   clearable={false}/>
+              label="Объекты"
+              options={OBJECTS}
+              value={geozone_type}
+              onChange={this.handleGeozoneTypeChange.bind(this)}
+              clearable={false}
+            />
     			</Col>
     			<Col md={4}>
             <Div><label>Период формирования</label></Div>
     				<Div className="inline-block reports-date">
-    					<Datepicker date={ date_start } onChange={props.handleChange.bind(null, 'date_start')}/>
+    					<Datepicker date={date_start} onChange={props.handleChange.bind(null, 'date_start')} />
     				</Div>
     				<Div className="inline-block reports-date">
-    					<Datepicker date={ date_end } onChange={props.handleChange.bind(null, 'date_end')}/>
+    					<Datepicker date={date_end} onChange={props.handleChange.bind(null, 'date_end')} />
     				</Div>
     			</Col>
           <Col md={3} className={'vehicle-types-container'}>
             <Field type="select"
-                   label="Учреждение"
-                   options={companyOptions}
-                   value={company_id}
-                   onChange={this.props.handleChange.bind(null, 'company_id')}/>
+              label="Учреждение"
+              options={companyOptions}
+              value={company_id}
+              onChange={this.props.handleChange.bind(null, 'company_id')}
+            />
           </Col>
-          <Col md={2} style={{marginTop: 28}}>
+          <Col md={2} style={{ marginTop: 28 }}>
             <Button bsSize="small" onClick={props.onClick.bind(this)}>Сформировать отчет</Button>
           </Col>
     		</Row>
 
       </Div>
-  	)
+  	);
   }
 
 }
 
 CarFuncTypeUsageReportHeader.contextTypes = {
-  flux: React.PropTypes.object
-}
+  flux: React.PropTypes.object,
+};
 
 export default connectToStores(CarFuncTypeUsageReportHeader, ['objects']);

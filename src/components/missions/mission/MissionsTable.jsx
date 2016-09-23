@@ -128,12 +128,12 @@ export default (props) => {
     id: (meta) => {
       if (meta.rowData.status === 'not_assigned') return <div>Нет данных</div>;
       return (
-          <div>
-            <span onClick={() => props.mapView(meta.data)}>
-              <Glyphicon glyph="info-sign" />
-            </span>
-          </div>
-        );
+        <div>
+          <span onClick={() => props.mapView(meta.data)}>
+            <Glyphicon glyph="info-sign" />
+          </span>
+        </div>
+      );
     },
   };
 

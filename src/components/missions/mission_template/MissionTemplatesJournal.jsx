@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { autobind } from 'core-decorators';
 import _ from 'lodash';
 import { Button, Glyphicon } from 'react-bootstrap';
-import MissionTemplateFormWrap from './MissionTemplateFormWrap.jsx';
-import MissionTemplatesTable from './MissionTemplatesTable.jsx';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { connectToStores, staticProps } from 'utils/decorators';
+import MissionTemplateFormWrap from './MissionTemplateFormWrap.jsx';
+import MissionTemplatesTable from './MissionTemplatesTable.jsx';
 
 @connectToStores(['missions', 'objects', 'employees', 'routes'])
 @staticProps({

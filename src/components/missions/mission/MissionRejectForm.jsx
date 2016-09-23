@@ -9,6 +9,7 @@ import { reassignMissionSuccessNotification } from 'utils/notifications.js';
 import _ from 'lodash';
 
 class MissionRejectForm extends Component {
+
   constructor(props) {
     super(props);
 

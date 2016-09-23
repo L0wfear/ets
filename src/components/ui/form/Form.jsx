@@ -10,6 +10,9 @@ export default class Form extends Component {
     this.state = {};
   }
 
+  componentDidMount() {
+  }
+
   handleChange(field, e) {
     this.props.handleFormChange(field, e);
   }
@@ -17,9 +20,6 @@ export default class Form extends Component {
   handleSubmit() {
     console.log('submitting car form', this.props.formState);
     this.props.onSubmit(this.props.formState);
-  }
-
-  componentDidMount() {
   }
 
   mapProperties(property, index) {

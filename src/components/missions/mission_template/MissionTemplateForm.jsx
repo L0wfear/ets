@@ -96,8 +96,12 @@ class MissionTemplateForm extends MissionForm {
                 value={state.car_id}
                 onChange={this.handleChange.bind(this, 'car_id')}
               />
-              <Field type="number" label="Количество проходов" error={errors.passes_count}
-                value={state.passes_count} onChange={this.handleChange.bind(this, 'passes_count')} min="0"
+              <Field
+                type="number"
+                label="Количество проходов"
+                error={errors.passes_count}
+                value={state.passes_count}
+                onChange={this.handleChange.bind(this, 'passes_count')} min="0"
               />
             </Col>
 
@@ -120,7 +124,7 @@ class MissionTemplateForm extends MissionForm {
                 error={errors.route_id}
                 options={ROUTES}
                 value={state.route_id}
-                disabled={!!!state.technical_operation_id}
+                disabled={!state.technical_operation_id}
                 onChange={this.handleRouteIdChange.bind(this)}
                 clearable
               />

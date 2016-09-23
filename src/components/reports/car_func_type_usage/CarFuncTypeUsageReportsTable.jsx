@@ -8,7 +8,7 @@ const tableMeta = {
 			                                                                                displayName: 'Учреждение',
 			                                                                                type: 'string',
 			                                                                                filter: {
-				                                        type: 'select',
+				                                        type: 'multiselect',
 			},
 		                                        },
 		                                        {
@@ -16,7 +16,7 @@ const tableMeta = {
 			                                                                                displayName: 'Тип техники',
 			                                                                                type: 'string',
 			                                                                                filter: {
-  type: 'select',
+  type: 'multiselect',
 			},
 		                                        },
 		                                        {
@@ -24,7 +24,7 @@ const tableMeta = {
 			                                                                                displayName: 'Кол-во техники указанного типа',
 			                                                                                type: 'number',
 			                                                                                filter: {
-  type: 'select',
+  type: 'multiselect',
 			},
 		                                        },
 		                                        {
@@ -32,7 +32,7 @@ const tableMeta = {
 			                                                                                displayName: 'Технологическая операция',
 			                                                                                type: 'string',
 			                                                                                filter: {
-  type: 'select',
+  type: 'multiselect',
 			},
 		                                        },
 		                                        {
@@ -40,7 +40,7 @@ const tableMeta = {
 			                                                                                displayName: 'Задействованная техника',
 			                                                                                type: 'number',
 			                                                                                filter: {
-  type: 'select',
+  type: 'multiselect',
 			},
 		                                        },
 	],

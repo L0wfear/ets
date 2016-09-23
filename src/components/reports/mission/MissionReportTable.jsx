@@ -8,7 +8,7 @@ const tableMeta = {
       displayName: '№ Задания',
       type: 'string',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -16,7 +16,7 @@ const tableMeta = {
       displayName: 'Название',
       type: 'string',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -24,7 +24,7 @@ const tableMeta = {
       displayName: 'Водитель',
       type: 'string',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -32,7 +32,7 @@ const tableMeta = {
       displayName: 'Рег. номер ТС',
       type: 'string',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -40,7 +40,7 @@ const tableMeta = {
       displayName: 'Тех. операция',
       type: 'string',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -48,7 +48,7 @@ const tableMeta = {
       displayName: 'Маршрут',
       type: 'string',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {

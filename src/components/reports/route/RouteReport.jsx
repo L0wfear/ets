@@ -13,7 +13,7 @@ const tableMeta = {
       displayName: 'Тех. операция',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -21,7 +21,7 @@ const tableMeta = {
       displayName: 'ОДХ',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {

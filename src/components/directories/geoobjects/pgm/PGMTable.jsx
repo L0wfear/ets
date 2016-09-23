@@ -8,7 +8,7 @@ const tableMeta = {
       displayName: 'Наименование',
       type: 'string',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -16,7 +16,7 @@ const tableMeta = {
       displayName: 'Адрес',
       type: 'string',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {

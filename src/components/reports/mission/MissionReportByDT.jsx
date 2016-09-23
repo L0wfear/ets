@@ -12,7 +12,7 @@ const getTableMeta = (props) => {
         displayName: 'ДТ',
         type: 'string',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
       },
       {
@@ -63,7 +63,7 @@ const getTableMeta = (props) => {
         type: 'string',
         display: props.data && props.data[0] && props.data[0].route_check_unit ? true : false,
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
       },
     ],

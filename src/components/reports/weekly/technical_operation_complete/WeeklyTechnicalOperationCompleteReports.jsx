@@ -22,7 +22,7 @@ const tableMeta = {
       displayName: 'Статус',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
         labelFunction: getReportStatusLabel,
       },
     },
@@ -31,7 +31,7 @@ const tableMeta = {
       displayName: 'Объект',
       type: 'number',
       filter: {
-        type: 'select',
+        type: 'multiselect',
         labelFunction: getGeozoneTypeLabel,
       },
     },
@@ -40,7 +40,7 @@ const tableMeta = {
       displayName: 'Элемент',
       type: 'number',
       filter: {
-        type: 'select',
+        type: 'multiselect',
         labelFunction: el => getElementLabel(el),
       },
     },

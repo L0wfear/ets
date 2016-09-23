@@ -8,7 +8,7 @@ const tableMeta = {
       displayName: 'Норматив по содержанию ОДХ',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -21,7 +21,7 @@ const tableMeta = {
       name: 'consumable_material',
       displayName: 'Расходный материал',
       filter: {
-        type: 'select',
+        type: 'multiselect',
         labelFunction: consumable_material => consumable_material ? 'Да' : 'Нет',
       },
     },

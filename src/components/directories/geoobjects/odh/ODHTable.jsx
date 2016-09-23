@@ -9,7 +9,7 @@ const getTableMeta = () => {
         displayName: 'Название',
         type: 'string',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
       },
       {
@@ -17,7 +17,7 @@ const getTableMeta = () => {
         displayName: 'Категория',
         type: 'string',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
       },
       {

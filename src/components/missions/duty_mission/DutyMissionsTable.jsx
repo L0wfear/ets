@@ -17,7 +17,7 @@ const getTableMeta = (props) => {
         displayName: 'Статус',
         type: 'string',
         filter: {
-          type: 'select',
+          type: 'multiselect',
           labelFunction: s => DUTY_MISSION_STATUS_LABELS[s],
         },
         cssClassName: 'width120',
@@ -27,7 +27,7 @@ const getTableMeta = (props) => {
         displayName: 'Номер',
         type: 'number',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
         cssClassName: 'width60',
       },
@@ -36,7 +36,7 @@ const getTableMeta = (props) => {
         displayName: 'Источник',
         type: 'number',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
         cssClassName: 'width120',
       },
@@ -45,7 +45,7 @@ const getTableMeta = (props) => {
         displayName: 'Технологическая операция',
         type: 'number',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
       },
       {
@@ -69,7 +69,7 @@ const getTableMeta = (props) => {
         displayName: 'Маршрут',
         type: 'number',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
         cssClassName: 'width120',
       },
@@ -86,7 +86,7 @@ const getTableMeta = (props) => {
         displayName: 'Комментарий',
         type: 'string',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
         cssClassName: 'width120',
       },
@@ -95,7 +95,7 @@ const getTableMeta = (props) => {
         displayName: 'Задание на ТС',
         type: 'string',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
       },
     ],

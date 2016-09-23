@@ -8,7 +8,7 @@ const tableMeta = {
       displayName: 'Полное наименование',
       type: 'string',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
       cssClassName: 'width300',
     },
@@ -17,7 +17,7 @@ const tableMeta = {
       displayName: 'Краткое наименование',
       type: 'string',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
       cssClassName: 'width300',
     },

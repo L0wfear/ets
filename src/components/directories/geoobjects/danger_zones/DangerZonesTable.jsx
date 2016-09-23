@@ -8,7 +8,7 @@ const tableMeta = {
       displayName: 'Адрес',
       type: 'string',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {

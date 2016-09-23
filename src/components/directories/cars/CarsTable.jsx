@@ -10,7 +10,7 @@ const tableMeta = {
       displayName: 'Рег. номер ТС',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -18,7 +18,7 @@ const tableMeta = {
       displayName: 'Модель ТС',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -26,7 +26,7 @@ const tableMeta = {
       displayName: 'Марка шасси ТС',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -34,7 +34,7 @@ const tableMeta = {
       displayName: 'Тип',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -42,7 +42,7 @@ const tableMeta = {
       displayName: 'Состояние',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
         labelFunction: getCondition,
       },
     },
@@ -51,7 +51,7 @@ const tableMeta = {
       displayName: 'Гаражный номер',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -59,7 +59,7 @@ const tableMeta = {
       displayName: 'Поправочный коэффициент',
       type: 'number',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -67,7 +67,7 @@ const tableMeta = {
       displayName: 'Подразделение предприятия',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -75,7 +75,7 @@ const tableMeta = {
       displayName: 'Код БНСО',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -83,7 +83,7 @@ const tableMeta = {
       displayName: 'Оборудование ДКМ',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
   ],

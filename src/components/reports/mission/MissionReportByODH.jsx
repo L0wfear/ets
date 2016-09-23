@@ -11,7 +11,7 @@ const getTableMeta = (props) => {
         displayName: 'ОДХ',
         type: 'string',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
       },
       {
@@ -56,7 +56,7 @@ const getTableMeta = (props) => {
         type: 'string',
         display: props.data && props.data[0] && props.data[0].route_check_unit,
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
       },
     ],

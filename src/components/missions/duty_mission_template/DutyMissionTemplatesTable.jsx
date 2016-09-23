@@ -15,7 +15,7 @@ const getTableMeta = () => {
         displayName: 'Маршрут',
         type: 'string',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
       },
       {
@@ -23,7 +23,7 @@ const getTableMeta = () => {
         displayName: 'Технологическая операция',
         type: 'string',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
       },
       {

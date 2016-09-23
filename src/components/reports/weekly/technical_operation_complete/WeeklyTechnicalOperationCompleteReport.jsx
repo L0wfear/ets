@@ -18,7 +18,7 @@ const getTableMeta = (props) => {
         displayName: 'Наименование объекта',
         type: 'string',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
       },
       {
@@ -26,7 +26,7 @@ const getTableMeta = (props) => {
         displayName: 'Количество техопераций',
         type: 'string',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
       },
       {
@@ -52,7 +52,7 @@ const getTableMeta = (props) => {
         displayName: 'Выполнено ТО, количество',
         type: 'string',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
       },
     ],

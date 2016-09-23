@@ -8,14 +8,14 @@ const tableMeta = {
       displayName: 'Операция',
       type: 'number',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
       name: 'equipment',
       displayName: 'Для спецоборудования',
       filter: {
-        type: 'select',
+        type: 'multiselect',
         labelFunction: equipment => equipment ? 'Да' : 'Нет',
       },
       cssClassName: 'width150',

@@ -10,7 +10,7 @@ const tableMeta = {
       type: 'text',
       cssClassName: 'width300justify',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -32,7 +32,7 @@ const tableMeta = {
       displayName: 'Должность',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -40,7 +40,7 @@ const tableMeta = {
       displayName: 'Водительское удостоверение',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -48,7 +48,7 @@ const tableMeta = {
       displayName: 'Специальное удостоверение',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -56,7 +56,7 @@ const tableMeta = {
       displayName: 'Подразделение',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -64,7 +64,7 @@ const tableMeta = {
       displayName: 'Текущее состояние',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
         labelFunction: l => l ? 'Работает' : 'Не работает',
       },
     },
@@ -73,7 +73,7 @@ const tableMeta = {
       displayName: 'Телефон',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -81,7 +81,7 @@ const tableMeta = {
       displayName: 'Медицинская справка',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -97,7 +97,7 @@ const tableMeta = {
       displayName: 'СНИЛС №',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
   ],

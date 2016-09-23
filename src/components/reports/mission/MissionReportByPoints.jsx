@@ -9,7 +9,7 @@ const tableMeta = {
       displayName: 'Наименование пункта назначения',
       type: 'string',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -17,7 +17,7 @@ const tableMeta = {
       displayName: 'Статус',
       type: 'string',
       filter: {
-        type: 'select',
+        type: 'multiselect',
         labelFunction: data => data === 'fail' ? 'Не пройден' : 'Пройден',
       },
     },

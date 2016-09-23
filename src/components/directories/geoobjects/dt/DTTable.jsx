@@ -9,7 +9,7 @@ const getTableMeta = () => {
         displayName: 'Название ДТ',
         type: 'string',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
       },
       {

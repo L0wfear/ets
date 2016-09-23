@@ -8,7 +8,7 @@ const tableMeta = {
       displayName: 'Технологическая операция',
       type: 'string',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -16,7 +16,7 @@ const tableMeta = {
       displayName: 'Норматив содержания ОДХ',
       type: 'string',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {

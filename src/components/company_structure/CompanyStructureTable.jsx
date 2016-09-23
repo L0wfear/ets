@@ -14,7 +14,7 @@ const tableMeta = {
       displayName: 'Тип',
       type: 'string',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -22,7 +22,7 @@ const tableMeta = {
       displayName: 'Примечание',
       type: 'string',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -30,7 +30,7 @@ const tableMeta = {
       displayName: 'Действия',
       type: 'string',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
   ],
@@ -55,6 +55,7 @@ export default (props) => {
       renderers={renderers}
       tableMeta={tableMeta}
       isHierarchical
+      noFilter
       {...props}
     />
   );

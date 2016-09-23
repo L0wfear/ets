@@ -16,7 +16,7 @@ const getTableMeta = (props) => {
         displayName: 'Наименование объекта',
         type: 'string',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
       },
       {
@@ -48,7 +48,7 @@ const getTableMeta = (props) => {
         displayName: 'Плановое посещение',
         type: 'string',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
       },
       {
@@ -62,7 +62,7 @@ const getTableMeta = (props) => {
         displayName: 'Статус посещения',
         type: 'string',
         filter: {
-          type: 'select',
+          type: 'multiselect',
           labelFunction: getPeriodicReportStatusLabel,
         },
       },

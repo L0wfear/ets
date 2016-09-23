@@ -9,7 +9,7 @@ const tableMeta = {
       displayName: 'Дата приказа',
       type: 'date',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -17,7 +17,7 @@ const tableMeta = {
       displayName: 'Операция',
       type: 'number',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -35,7 +35,7 @@ const tableMeta = {
       displayName: 'Модель ТС',
       type: 'string',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -43,7 +43,7 @@ const tableMeta = {
       displayName: 'Марка шасси',
       type: 'number',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -51,7 +51,7 @@ const tableMeta = {
       displayName: 'Для спецоборудования',
       type: 'boolean',
       filter: {
-        type: 'select',
+        type: 'multiselect',
         labelFunction: d => d ? 'Да' : 'Нет',
       },
     },

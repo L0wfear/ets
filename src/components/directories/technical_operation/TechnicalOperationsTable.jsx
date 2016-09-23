@@ -25,7 +25,7 @@ const getTableMeta = (props) => {
         displayName: 'Вид работ',
         type: 'number',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
       },
       {
@@ -33,7 +33,7 @@ const getTableMeta = (props) => {
         displayName: 'Наименование',
         type: 'string',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
       },
       {
@@ -41,7 +41,7 @@ const getTableMeta = (props) => {
         displayName: 'Сезон',
         type: 'string',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
         cssClassName: 'width80',
       },
@@ -50,7 +50,7 @@ const getTableMeta = (props) => {
         displayName: 'Максимальная скорость',
         type: 'number',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
       },
       {
@@ -58,7 +58,7 @@ const getTableMeta = (props) => {
         displayName: 'Тип проверки',
         type: 'string',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
       },
       {
@@ -77,7 +77,7 @@ const getTableMeta = (props) => {
         displayName: 'С участием РКУ',
         type: 'boolean',
         filter: {
-          type: 'select',
+          type: 'multiselect',
           labelFunction: data => data ? 'Да' : 'Нет',
         },
       },
@@ -86,7 +86,7 @@ const getTableMeta = (props) => {
         displayName: 'Учет в отчетах',
         type: 'boolean',
         filter: {
-          type: 'select',
+          type: 'multiselect',
           labelFunction: data => data ? 'Да' : 'Нет',
         },
       },

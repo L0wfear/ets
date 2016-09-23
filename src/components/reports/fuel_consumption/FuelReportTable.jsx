@@ -9,7 +9,7 @@ const tableMeta = {
       type: 'text',
       cssClassName: 'width-fuel-report-large',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -18,7 +18,7 @@ const tableMeta = {
       type: 'text',
       cssClassName: 'width-fuel-report-large',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -27,7 +27,7 @@ const tableMeta = {
       type: 'text',
       cssClassName: 'width-fuel-report-large',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -117,7 +117,7 @@ const tableMeta = {
       type: 'text',
       cssClassName: 'width-fuel-report-small',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {

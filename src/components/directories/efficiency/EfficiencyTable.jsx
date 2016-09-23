@@ -9,7 +9,7 @@ const tableMeta = {
       displayName: 'Технологическая операция',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -17,7 +17,7 @@ const tableMeta = {
       displayName: 'Источник',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
         labelFunction: source => +source ? 'Справочник показателей норм на содержание ОДХ' : 'Реестр ОДХ',
       },
     },
@@ -26,7 +26,7 @@ const tableMeta = {
       displayName: 'Площадная характеристика',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {

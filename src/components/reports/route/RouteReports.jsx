@@ -14,7 +14,7 @@ const tableMeta = {
       displayName: 'Статус',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
         labelFunction: getReportStatusLabel,
       },
     },
@@ -23,7 +23,7 @@ const tableMeta = {
       displayName: 'Тех. операция',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -55,7 +55,7 @@ const tableMeta = {
       displayName: 'Кол-во непокрытых',
       type: 'number',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -63,7 +63,7 @@ const tableMeta = {
       displayName: 'Общее кол-во',
       type: 'number',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -71,7 +71,7 @@ const tableMeta = {
       displayName: 'Кол-во покрытых',
       type: 'number',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
   ],

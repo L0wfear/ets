@@ -44,6 +44,7 @@ export default class FilterRow extends React.Component {
                           value: typeof d[name] === 'boolean' ? +d[name] : d[name],
                           label: labelFunction(d[name]),
                         }))
+                        .filter(d => d.label !== null)
                         .value();
         if (type === 'select') {
           if (name === 'operation_id') {

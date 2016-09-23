@@ -16,7 +16,7 @@ const getTableMeta = (props) => {
         displayName: 'Дата создания',
         type: 'date',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
       },
       {
@@ -24,7 +24,7 @@ const getTableMeta = (props) => {
         displayName: 'Начало действия',
         type: 'number',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
       },
       {
@@ -32,7 +32,7 @@ const getTableMeta = (props) => {
         displayName: 'Окончание действия',
         type: 'number',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
       },
       {
@@ -40,7 +40,7 @@ const getTableMeta = (props) => {
         displayName: 'Тип',
         type: 'string',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
         cssClassName: 'width60',
       },
@@ -49,7 +49,7 @@ const getTableMeta = (props) => {
         displayName: 'Статус',
         type: 'string',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
       },
       {
@@ -57,7 +57,7 @@ const getTableMeta = (props) => {
         displayName: 'ПГМ',
         type: 'number',
         filter: {
-          type: 'select',
+          type: 'multiselect',
         },
         cssClassName: 'width120',
       },

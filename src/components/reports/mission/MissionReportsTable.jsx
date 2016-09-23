@@ -10,7 +10,7 @@ const tableMeta = {
       displayName: 'Статус',
       type: 'text',
       filter: {
-        type: 'select',
+        type: 'multiselect',
         labelFunction: getReportStatusLabel,
       },
     },
@@ -19,7 +19,7 @@ const tableMeta = {
       displayName: 'Задание',
       type: 'number',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -27,7 +27,7 @@ const tableMeta = {
       displayName: 'Тех. операция',
       type: 'number',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {

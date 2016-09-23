@@ -16,7 +16,7 @@ const tableMeta = {
       displayName: 'Наименование',
       type: 'string',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -24,7 +24,7 @@ const tableMeta = {
       displayName: 'Краткое наименование',
       type: 'string',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {
@@ -48,7 +48,7 @@ const tableMeta = {
       displayName: 'Почтовый адрес',
       type: 'string',
       filter: {
-        type: 'select',
+        type: 'multiselect',
       },
     },
     {

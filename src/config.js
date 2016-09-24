@@ -21,7 +21,7 @@ try {
   } else if (STAND) {
     config.backend = STANDS[STAND] || STANDS.test;
   }
-  configureRaven();
+  // configureRaven();
 } catch (e) {
   console.log(e);
 }

@@ -156,6 +156,51 @@ const tableMeta = {
         type: 'input',
       },
     },
+    {
+      name: 'equipment_fuel_type_name',
+      displayName: 'Тип топлива оборуд.',
+      type: 'text',
+      cssClassName: 'width-fuel-report-small',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
+      name: 'equipment_fuel_start',
+      displayName: 'Топливо. Выезд оборуд.',
+      type: 'number',
+      cssClassName: 'width-fuel-report-small',
+      filter: {
+        type: 'input',
+      },
+    },
+    {
+      name: 'equipment_fuel_given',
+      displayName: 'Топливо. Выдано оборуд.',
+      type: 'number',
+      cssClassName: 'width-fuel-report-small',
+      filter: {
+        type: 'input',
+      },
+    },
+    {
+      name: 'equipment_fuel_end',
+      displayName: 'Топливо. Возврат оборуд.',
+      type: 'number',
+      cssClassName: 'width-fuel-report-small',
+      filter: {
+        type: 'input',
+      },
+    },
+    {
+      name: 'equipment_fuel_fact',
+      displayName: 'Топливо. Расход оборуд.',
+      type: 'number',
+      cssClassName: 'width-fuel-report-small',
+      filter: {
+        type: 'input',
+      },
+    },
   ],
 };
 

@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Div from 'components/ui/Div.jsx';
 import { Glyphicon } from 'react-bootstrap';
 
-const DashboardItemChevron = (props) => {
+// TODO переделать в реюзабл компонент Chevron
+
+export default function Chevron(props) {
   if (props.direction === 'left') {
     return (
       <Div className="card-chevron-left" hidden={props.hidden}>
@@ -16,6 +18,9 @@ const DashboardItemChevron = (props) => {
       <Glyphicon glyph="menu-right" />
     </Div>
   );
-};
+}
 
-export default DashboardItemChevron;
+Chevron.propTypes = {
+  direction: PropTypes.string,
+  hidden: PropTypes.bool,
+};

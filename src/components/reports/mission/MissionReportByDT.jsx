@@ -17,13 +17,13 @@ const getTableMeta = (props) => {
       },
       {
         name: 'route_check_value',
-        displayName: `Нужно пройти (${props.data[0].route_check_unit})`,
+        displayName: `Нужно пройти (${props.data[0] && props.data[0].route_check_unit})`,
         type: 'string',
         filter: false,
       },
       {
         name: 'traveled',
-        displayName: `Пройдено в рабочем режиме (${props.data[0].route_check_unit})*`,
+        displayName: `Пройдено в рабочем режиме (${props.data[0] && props.data[0].route_check_unit})*`,
         type: 'string',
         filter: false,
       },
@@ -35,7 +35,7 @@ const getTableMeta = (props) => {
       // },
       {
         name: 'left',
-        displayName: `Осталось (${props.data[0].route_check_unit})`,
+        displayName: `Осталось (${props.data[0] && props.data[0].route_check_unit})`,
         type: 'string',
         filter: false,
       },
@@ -105,12 +105,19 @@ const MissionReportByDTTable = (props) => {
     tableMeta.cols = tableMeta.cols.filter(c => c.name !== 'route_with_speed');
   }
 
-  return (<Table title="Прохождение заданий по ДТ"
-    tableMeta={tableMeta}
-    results={props.data}
-    renderers={renderers}
-    {...props}
-  />);
+  if (!(props.data && props.data.length)) {
+    return <div />;
+  }
+
+  return (
+    <Table
+      title="Прохождение заданий по ДТ"
+      tableMeta={tableMeta}
+      results={props.data}
+      renderers={renderers}
+      {...props}
+    />
+  );
 };
 
 class MissionReportByDT extends ElementsList {

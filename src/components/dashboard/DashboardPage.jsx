@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import _ from 'lodash';
+import { autobind } from 'core-decorators';
 import { Row, Col } from 'react-bootstrap';
 import Div from 'components/ui/Div.jsx';
 import cx from 'classnames';
@@ -10,6 +11,7 @@ import DashboardPageHeader from './DashboardPageHeader.jsx';
 import customCards from './customCards/index.js';
 
 @connectToStores(['dashboard', 'loading'])
+@autobind
 @FluxContext
 export default class DashboardPage extends React.Component {
 
@@ -76,7 +78,7 @@ export default class DashboardPage extends React.Component {
 
     const lists = _(componentsList).chunk(3).value();
     const rows = [];
-    lists.map((row, i) => {
+    lists.forEach((row, i) => {
       rows.push(
         <Row key={i} className="cards-row">
           {row.map((c, j) => {
@@ -121,7 +123,7 @@ export default class DashboardPage extends React.Component {
             {rows}
           </Col>
           <Col md={3}>
-            <DashboardManagementCard refreshCard={this.refreshCard.bind(this)} />
+            <DashboardManagementCard refreshCard={this.refreshCard} />
           </Col>
         </Row>
       </Div>

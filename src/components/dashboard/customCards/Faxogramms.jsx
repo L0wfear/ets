@@ -1,10 +1,10 @@
 import React from 'react';
 import Div from 'components/ui/Div.jsx';
 import { Glyphicon, Button } from 'react-bootstrap';
+import { FluxContext } from 'utils/decorators';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
 import FaxogrammMissionsFormWrap from '../../directories/faxogramm/FaxogrammMissionsFormWrap.jsx';
 import PDFViewModal from './PDFViewModal.jsx';
-import { FluxContext } from 'utils/decorators';
 
 @FluxContext
 export default class Faxogramms extends DashboardCardMedium {

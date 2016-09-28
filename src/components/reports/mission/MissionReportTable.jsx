@@ -72,11 +72,13 @@ export default (props) => {
     route_left_percentage: ({ data }) => <div>{ data ? parseFloat(data) * 100 + '%' : 'Нет данных'}</div>,
   };
 
-  return (<Table
-    title="Прохождение заданий"
-    tableMeta={tableMeta}
-    results={props.data}
-    renderers={renderers}
-    {...props}
-  />);
+  return (
+    <Table
+      title="Прохождение заданий"
+      tableMeta={tableMeta}
+      results={props.data}
+      renderers={renderers}
+      {...props}
+    />
+  );
 };

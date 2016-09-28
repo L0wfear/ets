@@ -20,7 +20,6 @@ export default class FutureMissions extends DashboardCardMedium {
       .getActions('missions')
       .getMissionById(this.props.items[itemIndex].mission_id)
       .then((m) => {
-        console.log(m);
         this.setState({ selectedMission: m.result.rows[0], showMissionForm: true });
       });
     }

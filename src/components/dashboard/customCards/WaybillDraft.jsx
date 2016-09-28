@@ -36,20 +36,22 @@ export default class WaybillDraft extends WaybillClosed {
 
     return this.props.items.map((item, i) => {
       const itemClassName = cx('dashboard-card-item', { 'pointer': (item.data) || (item.subItems && item.subItems.length) || (this.action), 'no-pointer-events': !canView });
-      return (<Div key={i} className={itemClassName} >
-        {typeof item.value !== 'undefined' ?
-          <Div className="dashboard-card-item-inner-singlevalue" onClick={this.selectItem.bind(this, i)}>
-            {item.value}
-          </Div>
-          :
+      return (
+        <Div key={i} className={itemClassName} >
+          {typeof item.value !== 'undefined' ?
+            <Div className="dashboard-card-item-inner-singlevalue" onClick={this.selectItem.bind(this, i)}>
+              {item.value}
+            </Div>
+            :
             <Div className="dashboard-card-item-inner" onClick={this.selectItem.bind(this, i)}>
               {item.title}
             </Div>
-        }
-        {
-          typeof this.renderCollapsibleSubitems === 'function' ? this.renderCollapsibleSubitems(item, i) : ''
-        }
-      </Div>);
+          }
+          {
+            typeof this.renderCollapsibleSubitems === 'function' ? this.renderCollapsibleSubitems(item, i) : ''
+          }
+        </Div>
+      );
     });
   }
 

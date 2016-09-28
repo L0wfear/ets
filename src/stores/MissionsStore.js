@@ -87,18 +87,25 @@ class MissionsStore extends Store {
   }
 
   handleGetMissionReportByODHs(index) {
-    const missionReport = this.state.selectedReportData;
-    this.setState({ selectedReportDataODHS: missionReport[index].report_by_odh });
+    // TODO убрать добавку route_check_unit
+    const missionReport = this.state.selectedReportData[index];
+    const selectedReportDataODHS = missionReport.report_by_odh;
+    _.each(selectedReportDataODHS, r => (r.route_check_unit = missionReport.route_check_unit));
+    this.setState({ selectedReportDataODHS });
   }
 
   handleGetMissionReportByPoints(index) {
-    const missionReport = this.state.selectedReportData;
-    this.setState({ selectedReportDataPoints: missionReport[index].report_by_point });
+    const missionReport = this.state.selectedReportData[index];
+    const selectedReportDataPoints = missionReport.report_by_point;
+    this.setState({ selectedReportDataPoints });
   }
 
   handleGetMissionReportByDTs(index) {
-    const missionReport = this.state.selectedReportData;
-    this.setState({ selectedReportDataDTS: missionReport[index].report_by_dt });
+    // TODO убрать добавку route_check_unit
+    const missionReport = this.state.selectedReportData[index];
+    const selectedReportDataDTS = missionReport.report_by_dt;
+    _.each(selectedReportDataDTS, r => (r.route_check_unit = missionReport.route_check_unit));
+    this.setState({ selectedReportDataDTS });
   }
 
 }

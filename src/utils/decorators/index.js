@@ -2,6 +2,9 @@ import { PropTypes } from 'react';
 import flummoxConnectToStores from 'flummox/connect';
 import exportable from './exportable.jsx';
 import bindable from './bindable.jsx';
+import wrappedRef from './wrappedRef.jsx';
+
+// TODO перенести HOC в отдельную папку, т.к. они могут использоваться не только как декораторы
 
 /**
  * Добавляет flux в static contextTypes класса
@@ -49,6 +52,7 @@ function connectToStores(...args) {
 export {
   exportable,
   bindable,
+  wrappedRef,
   connectToStores,
   FluxContext,
   HistoryContext,

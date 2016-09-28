@@ -27,10 +27,10 @@ class MissionInfoForm extends Form {
     this.state = {
       object_list: [],
       missionReport: [],
-      missionReportFull: {},
       selectedObjects: [],
       selectedElementId: null,
       selectedPoint: null,
+      routeType: null,
     };
   }
 
@@ -59,7 +59,7 @@ class MissionInfoForm extends Form {
         if (r.result.route_check_unit) {
           _.each(missionReport, mr => (mr.route_check_unit = r.result.route_check_unit));
         }
-        this.setState({ missionReport, routeType, missionReportFull: r.result, selectedObjects });
+        this.setState({ missionReport, routeType, selectedObjects });
       }
     });
     flux.getActions('routes').getRouteById(formState.route_id, true).then((route) => {
@@ -85,6 +85,7 @@ class MissionInfoForm extends Form {
 
   render() {
     const state = this.props.formState;
+    const { routeType } = this.state;
     const { geozonePolys = {} } = this.props;
     const object_list = _.cloneDeep(this.state.object_list || []);
     const polys = _.keyBy(object_list, 'object_id');
@@ -125,7 +126,7 @@ class MissionInfoForm extends Form {
                 <HybridMap
                   polys={polys}
                   maxSpeed={state.technical_operation_max_speed}
-                  routeType={this.state.routeType}
+                  routeType={routeType}
                   selectedObjects={this.state.selectedObjects}
                   selectedPoly={geozonePolys[this.state.selectedElementId]}
                   car_gov_number={state.car_gov_number}
@@ -135,14 +136,14 @@ class MissionInfoForm extends Form {
             </Col>
 
             <Col md={6}>
-              <Div hidden={!(this.state.missionReport && this.state.missionReport.length > 0)}>
-                <Div style={{ marginTop: -35 }} hidden={this.state.missionReportFull && !this.state.missionReportFull.report_by_odh}>
+              <Div style={{ marginTop: -35 }} hidden={!(this.state.missionReport && this.state.missionReport.length > 0)}>
+                <Div hidden={routeType !== 'odh'}>
                   <MissionReportByODH renderOnly enumerated={false} selectedReportDataODHS={this.state.missionReport} onElementChange={this.handleSelectedElementChange} />
                 </Div>
-                <Div style={{ marginTop: -35 }} hidden={this.state.missionReportFull && !this.state.missionReportFull.report_by_dt}>
+                <Div hidden={routeType !== 'dt'}>
                   <MissionReportByDT renderOnly enumerated={false} selectedReportDataDTS={this.state.missionReport} onElementChange={this.handleSelectedElementChange} />
                 </Div>
-                <Div style={{ marginTop: -35 }} hidden={this.state.missionReportFull && !this.state.missionReportFull.report_by_point}>
+                <Div hidden={routeType !== 'point'}>
                   <MissionReportByPoints renderOnly enumerated={false} selectedReportDataPoints={this.state.missionReport} />
                 </Div>
               </Div>

@@ -4,6 +4,7 @@ import Table from 'components/ui/table/DataTable.jsx';
 import ElementsList from 'components/ElementsList.jsx';
 
 const getTableMeta = (props) => {
+
   const tableMeta = {
     cols: [
       {
@@ -16,19 +17,19 @@ const getTableMeta = (props) => {
       },
       {
         name: 'route_check_value',
-        displayName: `Нужно пройти (${props.data[0].route_check_unit})`,
+        displayName: `Нужно пройти (${props.data[0] && props.data[0].route_check_unit})`,
         type: 'string',
         filter: false,
       },
       {
         name: 'traveled',
-        displayName: `Пройдено в рабочем режиме (${props.data[0].route_check_unit})*`,
+        displayName: `Пройдено в рабочем режиме (${props.data[0] && props.data[0].route_check_unit})*`,
         type: 'string',
         filter: false,
       },
       {
         name: 'left',
-        displayName: `Осталось (${props.data[0].route_check_unit})`,
+        displayName: `Осталось (${props.data[0] && props.data[0].route_check_unit})`,
         type: 'string',
         filter: false,
       },
@@ -96,6 +97,10 @@ const MissionReportByODHTable = (props) => {
     </div>;
   } else {
     tableMeta.cols = tableMeta.cols.filter(c => c.name !== 'route_with_speed');
+  }
+
+  if (!(props.data && props.data.length)) {
+    return <div />;
   }
 
   return (

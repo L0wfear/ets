@@ -5,6 +5,7 @@ import { parseFilename } from 'utils/content-disposition.js';
 import config from 'config';
 import _ from 'lodash';
 
+// TODO поменять на urlencode и использовать для составления параметров
 export function toUrlWithParams(url, data) {
   const params = _.map(data, (v, k) => `${k}=${encodeURIComponent(v)}`).join('&');
   return `${url}?${params}`;

@@ -1,14 +1,16 @@
 import React from 'react';
 import Div from 'components/ui/Div.jsx';
-import { Panel, Collapse, Glyphicon, Fade, Well, Button, Modal } from 'react-bootstrap';
+import { Panel as BootstrapPanel, Collapse, Glyphicon, Fade, Well, Button, Modal } from 'react-bootstrap';
 import RouteInfo from 'components/route/RouteInfo.jsx';
 import { getFormattedDateTimeSeconds } from 'utils/dates';
 import cx from 'classnames';
 import { isEmpty } from 'utils/functions';
-import { FluxContext } from 'utils/decorators';
+import { FluxContext, wrappedRef } from 'utils/decorators';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
 import DashboardCardHeader from '../DashboardCardHeader.jsx';
 import DashboardItemChevron from '../DashboardItemChevron.jsx';
+
+const Panel = wrappedRef(BootstrapPanel);
 
 @FluxContext
 export default class CurrentDutyMissions extends DashboardCardMedium {
@@ -173,7 +175,7 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
 
     return (
       <Div md={12}>
-        <Panel className="dashboard-card" header={Header} bsStyle="success" ref="card">
+        <Panel className="dashboard-card" header={Header} bsStyle="success" wrappedRef={node => (this._card = node)}>
           <Div className="dashboard-card-items">
             {firstItems}
             <Collapse in={this.state.fullListOpen}>

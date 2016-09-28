@@ -46,6 +46,8 @@ class MissionReportByPoints extends Component {
     return {
       renderOnly: PropTypes.bool,
       onElementChange: PropTypes.func,
+      routeParams: PropTypes.object,
+      selectedReportDataPoints: PropTypes.array,
     };
   }
 

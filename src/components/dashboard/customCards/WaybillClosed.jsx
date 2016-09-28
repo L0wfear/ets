@@ -1,8 +1,10 @@
 import React from 'react';
-import DashboardCardMedium from '../DashboardCardMedium.jsx';
+import { autobind } from 'core-decorators';
 import { FluxContext } from 'utils/decorators';
+import DashboardCardMedium from '../DashboardCardMedium.jsx';
 import WaybillFormWrap from '../../waybill/WaybillFormWrap.jsx';
 
+@autobind
 @FluxContext
 export default class WaybillClosed extends DashboardCardMedium {
 
@@ -28,7 +30,7 @@ export default class WaybillClosed extends DashboardCardMedium {
       <ul>
         {subItems.map((item, i) => (
           <li key={i} onClick={this.action.bind(this, item)}>
-              {`№${item.data.waybill_number}, ${item.data.car_gov_number}, ${item.data.driver_fio}`}
+            {`№${item.data.waybill_number}, ${item.data.car_gov_number}, ${item.data.driver_fio}`}
           </li>
         ))}
       </ul>
@@ -37,7 +39,8 @@ export default class WaybillClosed extends DashboardCardMedium {
 
   onFormHide() {
     this.props.refreshCard('waybill_draft');
-    this.props.refreshCard('waybill_active');
+    this.props.refreshCard('waybill_in_progress');
+    this.props.refreshCard('waybill_completed');
     this.props.refreshCard('waybill_closed');
     this.props.refreshCard('current_missions');
     this.setState({ showWaybillForm: false });

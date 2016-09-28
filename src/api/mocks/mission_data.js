@@ -9,9 +9,6 @@ export default class MissionDataMock extends Mock {
       {
         car_gov_number: '8308АЕ77',
         driver_fio: 'Гошовський Василь Павлович',
-        driver_phone: null,
-        estimated_finish_time: '2016-07-12T01:08:47',
-        estimated_time_left: '4.0:25.0',
         left: 44228,
         mission_date_end: '2016-06-23T19:00:00',
         mission_date_start: '2016-06-23T07:00:00',

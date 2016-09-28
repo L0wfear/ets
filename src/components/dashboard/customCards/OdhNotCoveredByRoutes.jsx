@@ -1,8 +1,8 @@
 import React from 'react';
 import Div from 'components/ui/Div.jsx';
 import { Button } from 'react-bootstrap';
-import DashboardCardMedium from '../DashboardCardMedium.jsx';
 import cx from 'classnames';
+import DashboardCardMedium from '../DashboardCardMedium.jsx';
 
 export default class OdhNotCoveredByRoutes extends DashboardCardMedium {
 
@@ -40,9 +40,9 @@ export default class OdhNotCoveredByRoutes extends DashboardCardMedium {
             {item.value}
           </Div>
           :
-            <Div className="dashboard-card-item-inner" onClick={this.selectItem.bind(this, i)}>
-              {item.title}
-            </Div>
+          <Div className="dashboard-card-item-inner" onClick={this.selectItem.bind(this, i)}>
+            {item.title}
+          </Div>
         }
         {
           typeof this.renderCollapsibleSubitems === 'function' ? this.renderCollapsibleSubitems(item, i) : ''

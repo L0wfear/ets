@@ -1,10 +1,12 @@
 import React, { Component, PropTypes } from 'react';
+import { autobind } from 'core-decorators';
 import { connectToStores, HistoryContext, FluxContext, exportable } from 'utils/decorators';
 import { Button, Glyphicon } from 'react-bootstrap';
 import MissionReportTable from './MissionReportTable.jsx';
 
 @connectToStores(['missions'])
 @exportable({ entity: 'car_odh_travel_report' })
+@autobind
 @HistoryContext
 @FluxContext
 export default class MissionReport extends Component {
@@ -13,6 +15,7 @@ export default class MissionReport extends Component {
     return {
       routeParams: PropTypes.object,
       selectedReportData: PropTypes.array,
+      export: PropTypes.func,
     };
   }
 
@@ -38,7 +41,7 @@ export default class MissionReport extends Component {
 
     return (
       <div className="ets-page-wrap">
-        <MissionReportTable data={selectedReportData} onRowSelected={this.onReportSelect.bind(this)}>
+        <MissionReportTable data={selectedReportData} onRowSelected={this.onReportSelect}>
           <Button bsSize="small" onClick={() => this.props.export({}, true)}><Glyphicon glyph="download-alt" /></Button>
         </MissionReportTable>
       </div>

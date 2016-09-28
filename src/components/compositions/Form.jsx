@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
 import { autobind } from 'core-decorators';
 import { FluxContext } from 'utils/decorators';
 
@@ -28,7 +28,6 @@ export default class Form extends React.Component {
   }
 
   handleChange(field, e) {
-    console.info('HANDLE FORM CHANGE');
     return this.props.handleFormChange(field, e);
   }
 
@@ -37,7 +36,6 @@ export default class Form extends React.Component {
   }
 
   handleSubmit() {
-    console.info('SUBMITTING FORM', this.props.formState);
     this.props.onSubmit();
   }
 

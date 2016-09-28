@@ -1,14 +1,30 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { PropTypes } from 'react';
+import { autobind } from 'core-decorators';
 import Div from 'components/ui/Div.jsx';
-import { Panel, Collapse, Glyphicon, Fade, Well } from 'react-bootstrap';
-import { FluxContext } from 'utils/decorators';
+import { Panel as BootstrapPanel, Collapse, Glyphicon, Fade, Well } from 'react-bootstrap';
+import { FluxContext, wrappedRef } from 'utils/decorators';
 import cx from 'classnames';
 import DashboardCardHeader from './DashboardCardHeader.jsx';
 import DashboardItemChevron from './DashboardItemChevron.jsx';
 
+const Panel = wrappedRef(BootstrapPanel);
+
+@autobind
 @FluxContext
 export default class DashboardCardMedium extends React.Component {
+
+  static get propTypes() {
+    return {
+      refreshCard: PropTypes.func,
+      openSubitemsList: PropTypes.func,
+      items: PropTypes.array,
+      title: PropTypes.string,
+      loading: PropTypes.bool,
+      direction: PropTypes.string,
+      itemOpened: PropTypes.bool,
+      itemsTitle: PropTypes.string,
+    };
+  }
 
   constructor(props) {
     super(props);
@@ -22,7 +38,7 @@ export default class DashboardCardMedium extends React.Component {
   }
 
   componentDidMount() {
-    const cardWidth = ReactDOM.findDOMNode(this.refs.card).offsetWidth;
+    const cardWidth = this._card.offsetWidth;
     this.setState({ cardWidth });
   }
 
@@ -37,7 +53,7 @@ export default class DashboardCardMedium extends React.Component {
   }
 
   toggleFullList() {
-    this.setState({ fullListOpen: !!!this.state.fullListOpen });
+    this.setState({ fullListOpen: !this.state.fullListOpen });
   }
 
   refreshCard() {
@@ -55,20 +71,22 @@ export default class DashboardCardMedium extends React.Component {
   renderItems() {
     return this.props.items.map((item, i) => {
       const itemClassName = cx('dashboard-card-item', { 'pointer': (item.data) || (item.subItems && item.subItems.length) || (this.action) });
-      return (<Div key={i} className={itemClassName} >
-        {typeof item.value !== 'undefined' ?
-          <Div className="dashboard-card-item-inner-singlevalue" onClick={this.selectItem.bind(this, i)}>
-            {item.value}
-          </Div>
-          :
+      return (
+        <Div key={i} className={itemClassName} >
+          {typeof item.value !== 'undefined' ?
+            <Div className="dashboard-card-item-inner-singlevalue" onClick={this.selectItem.bind(this, i)}>
+              {item.value}
+            </Div>
+            :
             <Div className="dashboard-card-item-inner" onClick={this.selectItem.bind(this, i)}>
               {item.title}
             </Div>
-        }
-        {
-          typeof this.renderCollapsibleSubitems === 'function' ? this.renderCollapsibleSubitems(item, i) : ''
-        }
-      </Div>);
+          }
+          {
+            typeof this.renderCollapsibleSubitems === 'function' ? this.renderCollapsibleSubitems(item, i) : ''
+          }
+        </Div>
+      );
     });
   }
 
@@ -91,13 +109,13 @@ export default class DashboardCardMedium extends React.Component {
     }
     const firstItems = items.slice(0, 2);
     const otherItems = items.slice(2, items.length);
-    const Header = <DashboardCardHeader title={this.props.title} loading={this.props.loading} onClick={this.refreshCard.bind(this)} />;
+    const Header = <DashboardCardHeader title={this.props.title} loading={this.props.loading} onClick={this.refreshCard} />;
 
     // отрефакторить
 
     return (
       <Div md={12}>
-        <Panel className="dashboard-card" header={Header} bsStyle="success" ref="card">
+        <Panel className="dashboard-card" header={Header} bsStyle="success" wrappedRef={node => (this._card = node)}>
           <Div className="dashboard-card-items">
             {firstItems}
             <Collapse in={this.state.fullListOpen}>
@@ -109,10 +127,10 @@ export default class DashboardCardMedium extends React.Component {
 
           <Div className="menu-down-block" hidden={otherItems.length === 0}>
             <Div style={{ textAlign: 'center' }} hidden={this.state.fullListOpen}>
-              <Glyphicon glyph="menu-down" className="pointer" onClick={this.toggleFullList.bind(this)} />
+              <Glyphicon glyph="menu-down" className="pointer" onClick={this.toggleFullList} />
             </Div>
             <Div style={{ textAlign: 'center' }} hidden={!this.state.fullListOpen}>
-              <Glyphicon glyph="menu-up" className="pointer" onClick={this.toggleFullList.bind(this)} />
+              <Glyphicon glyph="menu-up" className="pointer" onClick={this.toggleFullList} />
             </Div>
           </Div>
 
@@ -123,17 +141,15 @@ export default class DashboardCardMedium extends React.Component {
 
         <Div style={styleObject} hidden={(subItems.length === 0 && !data) || !this.props.itemOpened} className={cx('dashboard-card-info', { active: selectedItem !== null && this.props.itemOpened })} >
           <Fade in={selectedItem !== null && this.props.itemOpened}>
-            <div>
-              <Well>
-                <Div className="card-glyph-remove" onClick={this.selectItem.bind(this, null)}>
-                  <Glyphicon glyph="remove" />
-                </Div>
-                <h5>{this.props.itemsTitle || (selectedItem !== null ? selectedItem.title : '')}</h5>
-                <div style={{ marginTop: 15 }} />
-                {this.renderSubitems(subItems)}
-                {typeof this.renderCustomCardData === 'function' ? this.renderCustomCardData() : null}
-              </Well>
-            </div>
+            <Well>
+              <Div className="card-glyph-remove" onClick={this.selectItem.bind(this, null)}>
+                <Glyphicon glyph="remove" />
+              </Div>
+              <h5>{this.props.itemsTitle || (selectedItem !== null ? selectedItem.title : '')}</h5>
+              <div style={{ marginTop: 15 }} />
+              {this.renderSubitems(subItems)}
+              {typeof this.renderCustomCardData === 'function' ? this.renderCustomCardData() : null}
+            </Well>
           </Fade>
         </Div>
         {typeof this.renderCustomCardForm === 'function' ? this.renderCustomCardForm() : null}

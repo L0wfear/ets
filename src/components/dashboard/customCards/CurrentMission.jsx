@@ -1,15 +1,19 @@
 import React from 'react';
+import { autobind } from 'core-decorators';
 import Div from 'components/ui/Div.jsx';
-import { Panel, Collapse, Glyphicon, Fade, Well, Button } from 'react-bootstrap';
+import { Panel as BootstrapPanel, Collapse, Glyphicon, Fade, Well, Button } from 'react-bootstrap';
 import { getFormattedDateTimeSeconds } from 'utils/dates';
+import cx from 'classnames';
+import moment from 'moment';
+import { isEmpty } from 'utils/functions';
+import { wrappedRef } from 'utils/decorators';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
 import DashboardCardHeader from '../DashboardCardHeader.jsx';
 import DashboardItemChevron from '../DashboardItemChevron.jsx';
-import cx from 'classnames';
-import moment from 'moment';
 import MissionInfoFormWrap from '../MissionInfoFormWrap.jsx';
-import { isEmpty } from 'utils/functions';
 import MissionRejectForm from '../../missions/mission/MissionRejectForm.jsx';
+
+const Panel = wrappedRef(BootstrapPanel);
 
 const getDataTraveledYet = (data) => {
   if (typeof data === 'string') {
@@ -25,7 +29,7 @@ const getEstimatedFinishTime = (data) => {
   return moment(data).format(`${global.APP_DATE_FORMAT} HH:mm`);
 };
 
-
+@autobind
 export default class CurrentMission extends DashboardCardMedium {
 
   constructor(props, context) {
@@ -50,7 +54,7 @@ export default class CurrentMission extends DashboardCardMedium {
     this.props.refreshCard();
   }
 
-  async rejectMission(id) {
+  rejectMission() {
     this.setState({ showMissionRejectForm: true });
   }
 
@@ -81,22 +85,14 @@ export default class CurrentMission extends DashboardCardMedium {
     this.setState({ showMissionInfoForm: true, mission: data });
   }
 
-  renderSelectedMission() {
-
-  }
-
-  renderSubitems(subItems) {
-    return this.renderSelectedMission();
-  }
-
   renderCollapsibleSubitems(item, i) {
-    let { subItems = [] } = item;
+    const { subItems = [] } = item;
 
     return (
       <Collapse in={this.state.selectedItem === i}>
         <Div className={!this.canView ? 'no-pointer-events' : 'pointer'}>
           <ul>
-            {subItems.map((item, key) => <li key={key} onClick={this.selectMission.bind(this, key)}>{item.title || item}</li>)}
+            {subItems.map((subItem, key) => <li key={key} onClick={this.selectMission.bind(this, key)}>{subItem.title || subItem}</li>)}
           </ul>
         </Div>
       </Collapse>
@@ -133,7 +129,7 @@ export default class CurrentMission extends DashboardCardMedium {
         </Div>
         <MissionRejectForm
           show={this.state.showMissionRejectForm}
-          onReject={this.onReject.bind(this)}
+          onReject={this.onReject}
           mission={data}
         />
       </Div>
@@ -160,15 +156,17 @@ export default class CurrentMission extends DashboardCardMedium {
       const itemClassName = cx('dashboard-card-item-inner', { 'pointer': (item.data) || (item.subItems && item.subItems.length) || (this.action) });
       const status = item.title.split('').reverse().join('').split(' ')[0].split('').reverse().join('');
       const title = item.title.split(status)[0];
-      return (<Div key={i} className="dashboard-card-item">
-        <Div className={itemClassName} onClick={this.selectItem.bind(this, i)}>
-          {title}
-          <span title='Кол-во заданий в статусе "Назначено" / Общее кол-во заданий на текущую тех.операцию'>
-            {status}
-          </span>
+      return (
+        <Div key={i} className="dashboard-card-item">
+          <Div className={itemClassName} onClick={this.selectItem.bind(this, i)}>
+            {title}
+            <span title='Кол-во заданий в статусе "Назначено" / Общее кол-во заданий на текущую тех.операцию'>
+              {status}
+            </span>
+          </Div>
+          {typeof this.renderCollapsibleSubitems === 'function' ? this.renderCollapsibleSubitems(item, i) : ''}
         </Div>
-        {typeof this.renderCollapsibleSubitems === 'function' ? this.renderCollapsibleSubitems(item, i) : ''}
-        </Div>);
+      );
     });
     let styleObject = {
       width: this.state.cardWidth, marginLeft: this.state.cardWidth + 30,
@@ -183,14 +181,13 @@ export default class CurrentMission extends DashboardCardMedium {
     }
     const firstItems = items.slice(0, 2);
     const otherItems = items.slice(2, items.length);
-    // let dashboardCardClass = cx('dashboard-card', {'visibilityHidden'});
-    const Header = <DashboardCardHeader title={this.props.title} loading={this.props.loading} onClick={this.refreshCard.bind(this)} />;
+    const Header = <DashboardCardHeader title={this.props.title} loading={this.props.loading} onClick={this.refreshCard} />;
 
     // отрефакторить
 
     return (
       <Div md={12}>
-        <Panel className="dashboard-card" header={Header} bsStyle="success" ref="card">
+        <Panel className="dashboard-card" header={Header} bsStyle="success" wrappedRef={node => (this._card = node)}>
           <Div className="dashboard-card-items">
             {firstItems}
             <Collapse in={this.state.fullListOpen}>
@@ -202,10 +199,10 @@ export default class CurrentMission extends DashboardCardMedium {
 
           <Div className="menu-down-block" hidden={otherItems.length === 0}>
             <Div style={{ textAlign: 'center' }} hidden={this.state.fullListOpen}>
-              <Glyphicon glyph="menu-down" className="pointer" onClick={this.toggleFullList.bind(this)} />
+              <Glyphicon glyph="menu-down" className="pointer" onClick={this.toggleFullList} />
             </Div>
             <Div style={{ textAlign: 'center' }} hidden={!this.state.fullListOpen}>
-              <Glyphicon glyph="menu-up" className="pointer" onClick={this.toggleFullList.bind(this)} />
+              <Glyphicon glyph="menu-up" className="pointer" onClick={this.toggleFullList} />
             </Div>
           </Div>
 
@@ -216,17 +213,14 @@ export default class CurrentMission extends DashboardCardMedium {
 
         <Div style={styleObject} hidden={(subItems.length === 0 && !data) || !this.props.itemOpened} className={cx('dashboard-card-info', { active: selectedItem !== null && this.props.itemOpened })} >
           <Fade in={selectedItem !== null && this.props.itemOpened}>
-            <div>
-              <Well>
-                <Div className="card-glyph-remove" onClick={this.selectItem.bind(this, null)}>
-                  <Glyphicon glyph="remove" />
-                </Div>
-                <h5>{this.props.itemsTitle || (selectedItem !== null ? selectedItem.title : '')}</h5>
-                <div style={{ marginTop: 15 }} />
-                {this.renderSubitems(subItems)}
-                {typeof this.renderCustomCardData === 'function' ? this.renderCustomCardData() : null}
-              </Well>
-            </div>
+            <Well>
+              <Div className="card-glyph-remove" onClick={this.selectItem.bind(this, null)}>
+                <Glyphicon glyph="remove" />
+              </Div>
+              <h5>{this.props.itemsTitle || (selectedItem !== null ? selectedItem.title : '')}</h5>
+              <div style={{ marginTop: 15 }} />
+              {typeof this.renderCustomCardData === 'function' ? this.renderCustomCardData() : null}
+            </Well>
           </Fade>
         </Div>
         {typeof this.renderCustomCardForm === 'function' ? this.renderCustomCardForm() : null}

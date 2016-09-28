@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "0.8.26",
+    "version": "0.8.27",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -95,8 +95,8 @@
         "webpack-hot-middleware": "^2.12.2"
     },
     "scripts": {
-        "build:test": "STAND=test webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
-        "build:study": "STAND=study webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
+        "build:test": "STAND=test NODE_ENV=production webpack --config webpack/prod.config.js",
+        "build:study": "STAND=study NODE_ENV=production webpack --config webpack/prod.config.js",
         "dev:test": "STAND=test NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
         "dev:study": "STAND=study NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
         "lint": "eslint -c .eslintrc.js --fix --ext .js --ext .jsx src",

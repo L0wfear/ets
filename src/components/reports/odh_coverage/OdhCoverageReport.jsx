@@ -26,9 +26,9 @@ export default class OdhCoverageReport extends ElementsList {
     super.componentDidMount();
     const { flux } = this.context;
     flux.getActions('reports').getOdhCoverageReport();
-    this.refreshInterval = setInterval(() => {
-      flux.getActions('reports').getOdhCoverageReport();
-    }, TWO_MINUTES);
+    // this.refreshInterval = setInterval(() => {
+    //   flux.getActions('reports').getOdhCoverageReport();
+    // }, TWO_MINUTES);
   }
 
   export() {
@@ -36,6 +36,6 @@ export default class OdhCoverageReport extends ElementsList {
   }
 
   componentWillUnmount() {
-    clearInterval(this.refreshInterval);
+    // clearInterval(this.refreshInterval);
   }
 }

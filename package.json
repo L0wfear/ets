@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "0.8.27",
+    "version": "0.8.28",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -39,7 +39,6 @@
         "node-sass": "^3.2.0",
         "ol3-popup": "walkermatt/ol3-popup",
         "openlayers": "^3.17.1",
-        "pdfobject": "^2.0.201604172",
         "raven-js": "^3.7.0",
         "raw-loader": "^0.5.1",
         "react": "^0.14.3",
@@ -49,7 +48,6 @@
         "react-notification-system": "^0.2.10",
         "react-onclickout": "^2.0.4",
         "react-pdf-js": "^1.0.25",
-        "react-pdfjs": "^1.0.7",
         "react-redux": "^4.4.5",
         "react-router": "^1.0.1",
         "react-select": "^0.9.1",

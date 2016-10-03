@@ -70,6 +70,16 @@ export function getYesterday9am() {
   return new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 9, 0);
 }
 
+export function getDate9am(date) {
+  const now = new Date(date);
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 0);
+}
+
+export function getNextDay859am(date) {
+  const now = new Date(date);
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 8, 59);
+}
+
 export function getToday9am() {
   const now = new Date();
 

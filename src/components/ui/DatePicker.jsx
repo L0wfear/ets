@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 import localizer from 'react-widgets/lib/localizers/moment';
+import cx from 'classnames';
 import moment from 'moment';
 import 'moment/locale/ru';
 
@@ -16,6 +17,7 @@ export default class DatePicker extends Component {
       min: PropTypes.any,
       max: PropTypes.any,
       onChange: PropTypes.func,
+      className: PropTypes.string,
     };
   }
 
@@ -24,7 +26,7 @@ export default class DatePicker extends Component {
   }
 
   render() {
-    const { time = true, disabled } = this.props;
+    const { time = true, disabled, className = '' } = this.props;
     let { date, min, max } = this.props;
     const DATE_FORMAT = time ? `${global.APP_DATE_FORMAT} HH:mm` : `${global.APP_DATE_FORMAT}`;
     const TIME_FORMAT = 'HH:mm';
@@ -45,13 +47,15 @@ export default class DatePicker extends Component {
       max = new Date(2099, 11, 31);
     }
 
+    const datePickerClassName = cx('chart-datepicker', className);
+
     return (
       <DateTimePicker
         onChange={this.props.onChange}
         format={DATE_FORMAT}
         timeFormat={TIME_FORMAT}
         culture="ru-RU"
-        className="chart-datepicker"
+        className={datePickerClassName}
         disabled={disabled}
         step={5}
         // min={min}

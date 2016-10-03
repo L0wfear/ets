@@ -62,7 +62,7 @@ export default class MissionsActions extends Actions {
 
     // возвращает статусы задания, которые мы будем искать, в зависимости от статуса ПЛ
     // если у ПЛ нет статуса, то нужны исключительно неназначенные задания!
-    const getMissionFilterStatus = waybillStatus => !!waybillStatus ? undefined : 'not_assigned';
+    const getMissionFilterStatus = waybillStatus => waybillStatus ? undefined : 'not_assigned';
 
     const status = getMissionFilterStatus(waybillStatus);
 
@@ -126,7 +126,7 @@ export default class MissionsActions extends Actions {
     return MissionService.put(payload, true, 'json');
   }
 
-  printMission(data, url) {
+  printMission(data) {
     const payload = _.cloneDeep(data);
 
     return MissionPrintService.postBlob(payload);

@@ -5,8 +5,18 @@ const CITY_DASHBOARD_API_FACTORY = new ApiServiceFactory({
   apiUrl: 'http://ods.mos.ru/ssd/city-dashboard',
 });
 
+export const TrackService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('tracks');
+
 const ETS_API_FACTORY = new ApiServiceFactory({
   apiUrl: config.backend,
+  headers: () => {
+    const token = JSON.parse(window.localStorage.getItem('ets-session'));
+    return {
+      'Authorization': `Token ${token}`,
+      'Accept': 'application/json',
+      'Access-Control-Expose-Headers': 'Content-Disposition',
+    };
+  },
 });
 
 export const RootService = ETS_API_FACTORY.createApiServiceAdapter('', {});
@@ -22,7 +32,6 @@ export const LatestWaybillDriverService = ETS_API_FACTORY.createApiServiceAdapte
 export const CarService = ETS_API_FACTORY.createApiServiceAdapter('car_actual', {});
 export const CarImageService = ETS_API_FACTORY.createApiServiceAdapter('car_image', {});
 export const CarInfoService = ETS_API_FACTORY.createApiServiceAdapter('car_additional_info', {});
-export const TrackService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('tracks');
 
 /* Рабочий стол */
 export const DashboardService = ETS_API_FACTORY.createApiServiceAdapter('dashboard');

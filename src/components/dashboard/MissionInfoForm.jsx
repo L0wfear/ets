@@ -25,7 +25,6 @@ class MissionInfoForm extends Form {
     super(props);
 
     this.state = {
-      object_list: [],
       missionReport: [],
       selectedObjects: [],
       selectedElementId: null,
@@ -40,6 +39,8 @@ class MissionInfoForm extends Form {
     flux.getActions('points').createConnection();
     flux.getActions('points').setSingleCarTrack(formState.car_gov_number);
     flux.getActions('points').setSingleCarTrackDates([formState.mission_date_start, formState.mission_date_end]);
+    await flux.getActions('geoObjects').getGeozones();
+    const route = await flux.getActions('routes').getRouteById(formState.route_id, true);
     await flux.getActions('missions').getMissionLastReport(formState.mission_id).then((r) => {
       if (r.result) {
         let missionReport = [];
@@ -59,13 +60,11 @@ class MissionInfoForm extends Form {
         if (r.result.route_check_unit) {
           _.each(missionReport, mr => (mr.route_check_unit = r.result.route_check_unit));
         }
-        this.setState({ missionReport, routeType, selectedObjects });
+        this.setState({ missionReport, routeType, selectedObjects, route });
+      } else {
+        this.setState({ route });
       }
     });
-    flux.getActions('routes').getRouteById(formState.route_id, true).then((route) => {
-      this.setState({ object_list: route ? route.object_list : [] });
-    });
-    flux.getActions('geoObjects').getGeozones();
     flux.getActions('objects').getTypes();
     flux.getActions('objects').getCars();
   }
@@ -85,10 +84,28 @@ class MissionInfoForm extends Form {
 
   render() {
     const state = this.props.formState;
-    const { routeType } = this.state;
+    const { routeType, route = {} } = this.state;
     const { geozonePolys = {} } = this.props;
-    const object_list = _.cloneDeep(this.state.object_list || []);
-    const polys = _.keyBy(object_list, 'object_id');
+    const { object_list = [] } = route;
+    const polys = _(_.cloneDeep(object_list))
+      .map((object) => {
+        if (geozonePolys[object.object_id] && (['points', 'vector'].indexOf(route.type) === -1)) {
+          object.shape = geozonePolys[object.object_id].shape;
+        }
+        return object;
+      })
+      .keyBy((o) => {
+        // TODO попросить бек чтобы у каждого объекта был id
+        if (route.type === 'vector') {
+          return o.id;
+        }
+        if (route.type === 'points') {
+          return o.coordinates.join(',').replace('-', '');
+        }
+        return o.object_id;
+      })
+      .value();
+    console.log(polys);
     if (!state.car_gov_number) return <div />;
     const title = `Информация о задании. Рег. номер ТС: ${state.car_gov_number}`;
 
@@ -126,7 +143,6 @@ class MissionInfoForm extends Form {
                 <HybridMap
                   polys={polys}
                   maxSpeed={state.technical_operation_max_speed}
-                  routeType={routeType}
                   selectedObjects={this.state.selectedObjects}
                   selectedPoly={geozonePolys[this.state.selectedElementId]}
                   car_gov_number={state.car_gov_number}

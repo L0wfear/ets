@@ -2,6 +2,7 @@ import { Store } from 'flummox';
 import { setUserContext } from 'config/raven';
 import createFio from '../utils/create-fio.js';
 import { User } from '../models';
+import { clear } from 'utils/cache';
 
 const SESSION_KEY = 'ets-session';
 const defaultUser = {
@@ -43,6 +44,7 @@ export default class SessionStore extends Store {
   }
 
   handleLogin(data) {
+    clear();
     data.payload.fio = createFio(data.payload);
     const session = data.token;
     let currentUser = data.payload;

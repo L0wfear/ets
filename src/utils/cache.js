@@ -1,4 +1,4 @@
-const cache = {};
+let cache = {};
 
 export function getValueFromCache(key) {
   return cache[key] || null;
@@ -6,4 +6,8 @@ export function getValueFromCache(key) {
 
 export function put(key, value) {
   cache[key] = value;
+}
+
+export function clear() {
+  cache = {};
 }

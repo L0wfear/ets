@@ -18,7 +18,8 @@ function checkResponse(url, response, body, method) {
   const serviceName = usedUrl.split('/')[usedUrl.split('/').length - 2];
 
   if (response.status === 500) {
-    global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`/${method} ${serviceName}, код ответа 500`));
+    // global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`/${method} ${serviceName}, код ответа 500`));
+    throw new Error('Server responded with 500');
   } else if (body && body.errors && body.errors.length) {
     const error = `ERROR /${method} ${usedUrl}`;
     console.error(error);
@@ -62,16 +63,26 @@ function httpMethod(url, data = {}, method, type) {
     url = `${url}?${urlencode(data)}`;
   }
 
-  return fetch(url, options).then((r) => {
+  return fetch(url, options).then((async)(r) => {
     if (r.status === 401) {
       window.localStorage.clear();
       window.location.reload();
       // return new Promise((res, rej) => rej(r.status));
     } else {
-      return r.json().then((responseBody) => {
-        checkResponse(url, r, responseBody, method);
+      try {
+        const responseBody = await r.json();
+        try {
+          checkResponse(url, r, responseBody, method);
+        } catch (e) {
+          return new Promise((res, rej) => rej());
+        }
         return new Promise(res => res(responseBody));
-      });
+      } catch (e) {
+        console.error('Неверный формат ответа с сервера', url);
+        return new Promise((res, rej) => rej());
+      }
+      // return r.json().then((responseBody) => {
+      // });
     }
   });
 }

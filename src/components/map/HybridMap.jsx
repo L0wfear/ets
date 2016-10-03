@@ -218,7 +218,7 @@ export default class HybridMap extends Map {
 
   render() {
     return (
-      <div ref="container" className="openlayers-container">
+      <div ref={node => (this._container = node)} className="openlayers-container">
         <FluxComponent connectToStores={['settings']}>
           <LegendWrapper
             controls={['track', 'route', 'element']}

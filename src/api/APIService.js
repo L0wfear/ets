@@ -28,6 +28,7 @@ export default class APIService {
   }
 
   processResponse(r, callback) {
+    console.log(r);
     if (r.warnings && r.warnings.length) {
       // Show warnings
       if (Array.isArray(r.warnings)) {

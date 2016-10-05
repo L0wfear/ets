@@ -84,6 +84,14 @@ const getTableMeta = () => {
         type: 'string',
       },
       {
+        name: 'plan_departure_date',
+        displayName: 'Выезд план',
+        type: 'date',
+        filter: {
+          type: 'date',
+        },
+      },
+      {
         name: 'fact_departure_date',
         displayName: 'Выезд факт',
         type: 'date',
@@ -193,6 +201,7 @@ export default (props) => {
     driver_id: ({ data }) => <div>{employeeFIOLabelFunction(data)}</div>,
     date_create: ({ data }) => <DateFormatter date={data} />,
     closing_date: ({ data }) => <DateFormatter date={data} />,
+    plan_departure_date: ({ data }) => <DateFormatter date={data} time />,
     fact_departure_date: ({ data }) => <DateFormatter date={data} time />,
     fact_arrival_date: ({ data }) => <DateFormatter date={data} time />,
     car_special_model_name: (meta) => {

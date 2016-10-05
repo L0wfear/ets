@@ -52,9 +52,8 @@ class RouteCreating extends Component {
     this.props.onChange('object_list', object_list);
   }
 
-  onFeatureClick(feature, ev, map) {
+  onFeatureClick(feature) {
     const { id, name, state } = feature.getProperties();
-    console.log(map.map.getView().getCenter(), map.map.getView().getZoom());
 
     const polys = _.cloneDeep(this.props.route.polys);
 
@@ -75,7 +74,7 @@ class RouteCreating extends Component {
     }
   }
 
-  onDrawFeatureClick(feature, ev) {
+  onDrawFeatureClick(feature) {
     const { id, state } = feature.getProperties();
 
     const { object_list } = this.props.route;
@@ -146,7 +145,8 @@ class RouteCreating extends Component {
   }
 
   onGeozoneSelectChange(type, v) {
-    let { object_list, polys } = this.props.route;
+    let { object_list } = this.props.route;
+    const { polys } = this.props.route;
     const { geozonePolys } = this.props;
     const odhs = v.split(',');
     if (odhs.length > object_list.length) {
@@ -167,7 +167,8 @@ class RouteCreating extends Component {
   }
 
   handleCheckbox(type, v, e) {
-    let { object_list, polys } = this.props.route;
+    let { object_list } = this.props.route;
+    const { polys } = this.props.route;
     const { geozonePolys } = this.props;
     const odhs = v.split(',').map(e => parseInt(e, 10));
     object_list.forEach((obj) => {
@@ -181,9 +182,7 @@ class RouteCreating extends Component {
       });
     } else {
       object_list = [];
-      _.forEach(polys, (e) => {
-        e.state = polyState.SELECTABLE;
-      });
+      _.forEach(polys, e => (e.state = polyState.SELECTABLE));
     }
 
     this.props.onChange('polys', polys);
@@ -234,7 +233,9 @@ class RouteCreating extends Component {
           <Col md={3}>
             <Div hidden={route.type !== 'simple'} className="odh-container">
               <Input type="checkbox" label="Выбрать все" disabled={!ODHS.length} onChange={this.handleCheckbox.bind(this, 'odh', ODHS.map(o => o.value).join(','))} />
-              <Field type="select" label="Список выбранных ОДХ"
+              <Field
+                type="select"
+                label="Список выбранных ОДХ"
                 multi
                 options={ODHS}
                 value={route.object_list.map(o => o.object_id).join(',')}
@@ -243,7 +244,9 @@ class RouteCreating extends Component {
             </Div>
             <Div hidden={route.type !== 'simple_dt'} className="odh-container">
               <Input type="checkbox" disabled={!DTS.length} label="Выбрать все" onChange={this.handleCheckbox.bind(this, 'dt', DTS.map(o => o.value).join(','))} />
-              <Field type="select" label="Список выбранных ДТ"
+              <Field
+                type="select"
+                label="Список выбранных ДТ"
                 multi
                 options={DTS}
                 value={route.object_list.map(o => o.object_id).join(',')}

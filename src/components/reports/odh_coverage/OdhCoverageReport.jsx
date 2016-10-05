@@ -47,7 +47,7 @@ export default class OdhCoverageReport extends Component {
 
   getReport() {
     const { flux } = this.context;
-    flux.getActions('reports').getOdhCoverageReport(this.state.date_start, this.state.date_end);
+    flux.getActions('reports').getOdhCoverageReport(/*this.state.date_start, this.state.date_end*/);
   }
 
   handleDateStartChange(date) {
@@ -67,7 +67,7 @@ export default class OdhCoverageReport extends Component {
 
     return (
       <div className="ets-page-wrap">
-        <OdhCoverageReportHeader {...this.state} onSubmit={this.getReport} onChange={this.handleDateStartChange} />
+        {/*<OdhCoverageReportHeader {...this.state} onSubmit={this.getReport} onChange={this.handleDateStartChange} />*/}
         <OdhCoverageReportTable data={odhCoverageReport}>
           <Button bsSize="small" onClick={this.export}><Glyphicon glyph="download-alt" /></Button>
         </OdhCoverageReportTable>

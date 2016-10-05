@@ -124,10 +124,13 @@ export default class ReportsActions extends Actions {
   }
 
   getOdhCoverageReport(date_start, date_end) {
-    const payload = {
-      date_start: createValidDateTime(date_start),
-      date_end: createValidDateTime(date_end),
-    };
+    const payload = {};
+    if (date_start) {
+      payload.date_start = createValidDateTime(date_start);
+    }
+    if (date_end) {
+      payload.date_end = createValidDateTime(date_end);
+    }
 
     return OdhCoverageReportService.get(payload);
   }

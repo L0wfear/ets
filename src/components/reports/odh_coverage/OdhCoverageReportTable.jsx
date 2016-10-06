@@ -31,11 +31,11 @@ const getTableMeta = () => {
         displayName: 'Подметательно-уборочная техника',
         type: 'floatFixed1',
       },
-      {
-        name: 'total_percentage',
-        displayName: 'Итого',
-        type: 'floatFixed1',
-      },
+      // {
+      //   name: 'total_percentage',
+      //   displayName: 'Итого',
+      //   type: 'floatFixed1',
+      // },
     ],
   };
 

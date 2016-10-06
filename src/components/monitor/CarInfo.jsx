@@ -60,11 +60,11 @@ export default class CarInfo extends Component {
       this.fetchImage(props);
       this.fetchTrack(props);
       this.stopTrackPlaying();
-      this.setState({ trackPaused: 'stopped' });
+      this.setState({ trackPaused: 'stopped', car: props.car });
     }
     if (props.car.id !== this.props.car.id) {
       const carsList = this.props.flux.getStore('objects').state.carsList;
-      const car = find(carsList, c => c.gov_number === this.props.car.car.gov_number);
+      const car = find(carsList, c => c.gov_number === props.car.car.gov_number);
       if (car) {
         const car_id = car.asuods_id;
         const missions = await this.props.flux.getActions('missions').getMissionsByCarAndDates(car_id, this.state.from_dt, this.state.to_dt, true, 1);

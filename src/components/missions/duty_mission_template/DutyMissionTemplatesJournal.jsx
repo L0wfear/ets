@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { autobind } from 'core-decorators';
 import { Button } from 'react-bootstrap';
-import DutyMissionTemplateFormWrap from './DutyMissionTemplateFormWrap.jsx';
-import DutyMissionTemplatesTable from './DutyMissionTemplatesTable.jsx';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { connectToStores, staticProps } from 'utils/decorators';
+import DutyMissionTemplateFormWrap from './DutyMissionTemplateFormWrap.jsx';
+import DutyMissionTemplatesTable from './DutyMissionTemplatesTable.jsx';
 
 @connectToStores(['missions', 'objects', 'employees', 'routes'])
 @staticProps({

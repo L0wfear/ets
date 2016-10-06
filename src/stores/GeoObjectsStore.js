@@ -119,10 +119,10 @@ export default class GeoObjectsStore extends Store {
     rows.forEach((geozone) => {
       const shape = JSON.parse(geozone.shape);
       geozone.featureType = type;
-      delete data.shape;
+      delete geozone.shape;
       polys[geozone.id] = Object.assign({}, {
         shape,
-        data,
+        data: geozone,
       });
     });
     const polysByType = `${type}Polys`;

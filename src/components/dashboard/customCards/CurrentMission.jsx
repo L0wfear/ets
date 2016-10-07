@@ -134,7 +134,6 @@ export default class CurrentMission extends DashboardCardMedium {
             <li><b>Пройдено в рабочем режиме:</b> {getDataTraveledYet([report_data.traveled, report_data.check_unit].join(' '))}</li>
             <li><b>Пройдено с рабочей скоростью:</b> {getDataTraveledYet([report_data.traveled, report_data.check_unit, report_data.time_work_speed].join(' '))}</li>
             <li><b>Пройдено с превышением рабочей скорости:</b> {getDataTraveledYet([report_data.traveled_high_speed, report_data.check_unit, report_data.time_high_speed].join(' '))}</li>
-            <li><b>{route_data.type}</b></li>
             {this.canView ? <div><a className="pointer" onClick={(e) => { e.preventDefault(); this.missionAction(selectedMission); }}>Подробнее...</a></div> : ''}
             {this.canCompleteOrReject ? <Div className="text-right">
               <Button className="dashboard-card-action-button" onClick={this.completeMission.bind(this, mission_data.id)}>Выполнено</Button>

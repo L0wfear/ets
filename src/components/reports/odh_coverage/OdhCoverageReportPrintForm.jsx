@@ -3,6 +3,7 @@ import { autobind } from 'core-decorators';
 import { FluxContext } from 'utils/decorators';
 import { Button, Modal } from 'react-bootstrap';
 import { saveData } from 'utils/functions';
+import { getToday9am, getTomorrow9am, getDate9am, getYesterday9am, getToday859am, getFormattedDateTime } from 'utils/dates';
 import Datepicker from 'components/ui/DatePicker.jsx';
 import Div from 'components/ui/Div.jsx';
 
@@ -17,9 +18,11 @@ export default class OdhCoverageReportPrintForm extends Component {
   constructor(props) {
     super(props);
 
+    const [date_start, date_end] = [getYesterday9am(), getToday859am()];
+
     this.state = {
-      date_start: new Date(),
-      date_end: new Date(),
+      date_start,
+      date_end,
     };
   }
 
@@ -29,7 +32,7 @@ export default class OdhCoverageReportPrintForm extends Component {
     const { exportType } = this.props;
     const { flux } = this.context;
     flux.getActions('reports').getOdhCoverageReport(date_start, date_end, 'xls')
-      .then(({ blob }) => { saveData(blob, 'Отчет "Фактическое выполнение заданий за смену".xls'); });
+      .then(({ blob }) => { saveData(blob, `Отчет по посещению ОДХ в период с ${getFormattedDateTime(date_start)} по ${getFormattedDateTime(date_end)}.xls`); });
   }
 
   render() {

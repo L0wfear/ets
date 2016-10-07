@@ -38,7 +38,7 @@ export function createValidDateTime(date) {
 
 export function getFormattedDateTime(date) {
   if (!date) return '';
-  return moment.utc(date).format(`${global.APP_DATE_FORMAT} HH:mm`);
+  return moment(date).format(`${global.APP_DATE_FORMAT} HH:mm`);
 }
 
 export function getFormattedDateTimeSeconds(date) {

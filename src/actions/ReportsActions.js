@@ -123,13 +123,16 @@ export default class ReportsActions extends Actions {
     return WeeklyTechnicalOperationCompleteReportsService.post(payload, true, 'json');
   }
 
-  getOdhCoverageReport(date_start, date_end) {
+  getOdhCoverageReport(date_start, date_end, format) {
     const payload = {};
     if (date_start) {
       payload.date_start = createValidDateTime(date_start);
     }
     if (date_end) {
       payload.date_end = createValidDateTime(date_end);
+    }
+    if (format) {
+      payload.format = format;
     }
 
     return OdhCoverageReportService.get(payload);

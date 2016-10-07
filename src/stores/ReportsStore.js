@@ -47,7 +47,7 @@ export default class ReportsStore extends Store {
   }
 
   handleGetOdhCoverageReport({ result }) {
-    this.setState({ odhCoverageReport: result });
+    this.setState({ odhCoverageReport: result.rows });
   }
 
 }

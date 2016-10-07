@@ -79,7 +79,6 @@ class WaybillForm extends Form {
         });
       });
     }
-
     this.getMissionsByCarAndDates(formState, false);
     await flux.getActions('objects').getCars();
     await flux.getActions('employees').getEmployees();

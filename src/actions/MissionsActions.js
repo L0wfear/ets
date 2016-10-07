@@ -133,11 +133,7 @@ export default class MissionsActions extends Actions {
   }
 
   getMissionData(mission_id) {
-    const payload = {
-      mission_id,
-    };
-
-    return MissionDataService.get(payload);
+    return MissionDataService.path(mission_id).get();
   }
 
 

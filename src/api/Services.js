@@ -75,7 +75,6 @@ export const ODHNormService = ETS_API_FACTORY.createApiServiceAdapter('odh_norm'
 export const ODHNormDataSummerService = ETS_API_FACTORY.createApiServiceAdapter('odh_norm_data_summer', { useMock: true });
 export const EfficiencyService = ETS_API_FACTORY.createApiServiceAdapter('efficiency', { useMock: true });
 
-
 /* Geoobjects - Геообъекты */
 export const ODHService = ETS_API_FACTORY.createApiServiceAdapter('odh', {});
 export const DTService = ETS_API_FACTORY.createApiServiceAdapter('dt', {});
@@ -98,3 +97,10 @@ export const CarFuncTypeUsageReportService = ETS_API_FACTORY.createApiServiceAda
 export const WeeklyTechnicalOperationCompleteReportsService = ETS_API_FACTORY.createApiServiceAdapter('status_of_technical_operation_execution_weekly_report', {});
 export const CoverageReportService = ETS_API_FACTORY.createApiServiceAdapter('current_coverage_report', {});
 export const OdhCoverageReportService = ETS_API_FACTORY.createApiServiceAdapter('odh_coverage_report', {});
+
+// async function a() {
+//   const respo = await MissionDataService.path(60446).get();
+//   console.info(respo);
+// }
+//
+// a();

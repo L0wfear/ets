@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import './preloader.scss';
 import preloaderGif from '../../assets/images/infinity.gif';
 
 export default function Preloader({ style, type }) {
@@ -12,7 +13,7 @@ export default function Preloader({ style, type }) {
         <img src={preloaderGif} style={style} alt="Идет загрузка" />
       );
     default:
-      return <div />;
+      return <div className="custom-preloader" />;
   }
 }
 

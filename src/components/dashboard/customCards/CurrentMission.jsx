@@ -7,6 +7,8 @@ import cx from 'classnames';
 import moment from 'moment';
 import { isEmpty } from 'utils/functions';
 import { wrappedRef } from 'utils/decorators';
+// TODO move to HOC
+import Preloader from 'components/ui/Preloader.jsx';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
 import DashboardCardHeader from '../DashboardCardHeader.jsx';
 import DashboardItemChevron from '../DashboardItemChevron.jsx';
@@ -39,6 +41,7 @@ export default class CurrentMission extends DashboardCardMedium {
       showMissionInfoForm: false,
       showMissionRejectForm: false,
       selectedMission: null,
+      customCardLoading: false,
     });
 
     this.canView = context.flux.getStore('session').getPermission('mission.read');
@@ -75,14 +78,18 @@ export default class CurrentMission extends DashboardCardMedium {
     }
   }
 
-  selectMission(i) {
-    this.setState({ selectedMission: i });
+  selectMission(id) {
+    const { flux } = this.context;
+    this.setState({ customCardLoading: true });
+    flux.getActions('missions').getMissionData(id).then((res) => {
+      this.setState({ selectedMission: res.result, customCardLoading: false });
+    });
     this.props.openSubitemsList(this.state.selectedItem === null);
   }
 
-  missionAction(data) {
+  missionAction() {
     this.props.openSubitemsList(true);
-    this.setState({ showMissionInfoForm: true, mission: data });
+    this.setState({ showMissionInfoForm: true });
   }
 
   renderCollapsibleSubitems(item, i) {
@@ -92,7 +99,7 @@ export default class CurrentMission extends DashboardCardMedium {
       <Collapse in={this.state.selectedItem === i}>
         <Div className={!this.canView ? 'no-pointer-events' : 'pointer'}>
           <ul>
-            {subItems.map((subItem, key) => <li key={key} onClick={this.selectMission.bind(this, key)}>{subItem.title || subItem}</li>)}
+            {subItems.map((subItem, key) => <li key={key} onClick={this.selectMission.bind(this, subItem.id)}>{subItem.title || subItem}</li>)}
           </ul>
         </Div>
       </Collapse>
@@ -100,38 +107,46 @@ export default class CurrentMission extends DashboardCardMedium {
   }
 
   renderCustomCardData() {
-    const selectedItemIndex = this.state.selectedItem;
-    const selectedMissionIndex = this.state.selectedMission;
-    if (isEmpty(selectedItemIndex) || isEmpty(selectedMissionIndex)) return <div />;
-    const selectedItem = this.props.items[selectedItemIndex].subItems[selectedMissionIndex] || null;
-    const data = selectedItem !== null ? selectedItem.data || {} : {};
+    const { customCardLoading, selectedMission } = this.state;
+    if (selectedMission === null) return <div />;
+    const { mission_data, car_data, report_data, route_data,
+      technical_operation_data, waybill_data } = selectedMission;
+    if (customCardLoading) {
+      return <Preloader />;
+    }
+
+    const data = {
+      ...mission_data,
+      car_gov_number: car_data.gov_number,
+    };
 
     return (
       <Div>
-        <Div hidden={!data || (data && !data.mission_name)}>
+        <Div hidden={Object.keys(selectedMission) === 0}>
           <ul>
-            <li><b>Задание:</b> {data.mission_name}</li>
-            <li><b>Тех. операция:</b> {data.technical_operation_name}</li>
-            <li><b>Водитель:</b> {data.driver_fio}</li>
-            <li><b>Рег. номер ТС:</b> {data.car_gov_number}</li>
-            <li><b>Начало задания:</b> {getFormattedDateTimeSeconds(data.mission_date_start)}</li>
-            <li><b>Окончание задания:</b> {getFormattedDateTimeSeconds(data.mission_date_end)}</li>
-            <li><b>Расчетное время выполнения:</b> {getEstimatedFinishTime(data.estimated_finish_time || 'Подсчет')}</li>
-            <li><b>Пройдено в рабочем режиме:</b> {getDataTraveledYet(data.traveled_yet)}</li>
-            <li><b>Пройдено с рабочей скоростью:</b> {getDataTraveledYet(data.route_with_work_speed + data.with_work_speed_time)}</li>
-            <li><b>Пройдено с превышением рабочей скорости:</b> {getDataTraveledYet(data.route_with_high_speed + data.with_high_speed_time)}</li>
-            {this.canView ? <li><a className="pointer" onClick={(e) => { e.preventDefault(); this.missionAction(data); }}>Подробнее...</a></li> : ''}
+            <li><b>Задание:</b> {mission_data.name}</li>
+            <li><b>Тех. операция:</b> {technical_operation_data.name}</li>
+            <li><b>Водитель:</b> {car_data.driver_fio}</li>
+            <li><b>Рег. номер ТС:</b> {car_data.gov_number}</li>
+            <li><b>Начало задания:</b> {getFormattedDateTimeSeconds(mission_data.date_start)}</li>
+            <li><b>Окончание задания:</b> {getFormattedDateTimeSeconds(mission_data.date_end)}</li>
+            <li><b>Расчетное время выполнения:</b> {getEstimatedFinishTime(report_data.estimated_finish_time || 'Подсчет')}</li>
+            <li><b>Пройдено в рабочем режиме:</b> {getDataTraveledYet([report_data.traveled, report_data.check_unit].join(' '))}</li>
+            <li><b>Пройдено с рабочей скоростью:</b> {getDataTraveledYet([report_data.traveled, report_data.check_unit, report_data.time_work_speed].join(' '))}</li>
+            <li><b>Пройдено с превышением рабочей скорости:</b> {getDataTraveledYet([report_data.traveled_high_speed, report_data.check_unit, report_data.time_high_speed].join(' '))}</li>
+            <li><b>{route_data.type}</b></li>
+            {this.canView ? <div><a className="pointer" onClick={(e) => { e.preventDefault(); this.missionAction(selectedMission); }}>Подробнее...</a></div> : ''}
             {this.canCompleteOrReject ? <Div className="text-right">
-              <Button className="dashboard-card-action-button" onClick={this.completeMission.bind(this, data.mission_id)}>Выполнено</Button>
-              <Button className="dashboard-card-action-button" onClick={this.rejectMission.bind(this, data.mission_id)}>Не выполнено</Button>
+              <Button className="dashboard-card-action-button" onClick={this.completeMission.bind(this, mission_data.id)}>Выполнено</Button>
+              <Button className="dashboard-card-action-button" onClick={this.rejectMission.bind(this, mission_data.id)}>Не выполнено</Button>
             </Div> : ''}
           </ul>
         </Div>
-        <MissionRejectForm
+        {this.state.showMissionRejectForm && <MissionRejectForm
           show={this.state.showMissionRejectForm}
           onReject={this.onReject}
           mission={data}
-        />
+        />}
       </Div>
     );
   }
@@ -141,7 +156,7 @@ export default class CurrentMission extends DashboardCardMedium {
       <MissionInfoFormWrap
         onFormHide={() => this.setState({ showMissionInfoForm: false })}
         showForm={this.state.showMissionInfoForm}
-        element={this.state.mission}
+        element={this.state.selectedMission}
         {...this.props}
       />
     );

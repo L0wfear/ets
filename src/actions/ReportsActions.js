@@ -133,6 +133,7 @@ export default class ReportsActions extends Actions {
     }
     if (format) {
       payload.format = format;
+      return OdhCoverageReportService.getBlob(payload);
     }
 
     return OdhCoverageReportService.get(payload);

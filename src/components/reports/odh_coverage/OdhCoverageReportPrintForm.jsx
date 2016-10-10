@@ -13,6 +13,7 @@ export default class OdhCoverageReportPrintForm extends Component {
 
   static propTypes = {
     exportType: PropTypes.number,
+    onFormHide: PropTypes.func,
   }
 
   constructor(props) {
@@ -31,8 +32,9 @@ export default class OdhCoverageReportPrintForm extends Component {
     const { date_start, date_end } = this.state;
     const { exportType } = this.props;
     const { flux } = this.context;
-    flux.getActions('reports').getOdhCoverageReport(date_start, date_end, 'xls')
+    flux.getActions('reports').exportOdhCoverageReport(date_start, date_end, 'xls')
       .then(({ blob }) => { saveData(blob, `Отчет по посещению ОДХ в период с ${getFormattedDateTime(date_start)} по ${getFormattedDateTime(date_end)}.xls`); });
+    this.props.onFormHide();
   }
 
   render() {

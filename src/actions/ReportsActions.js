@@ -131,12 +131,22 @@ export default class ReportsActions extends Actions {
     if (date_end) {
       payload.date_end = createValidDateTime(date_end);
     }
-    if (format) {
-      payload.format = format;
-      return OdhCoverageReportService.getBlob(payload);
-    }
 
     return OdhCoverageReportService.get(payload);
+  }
+
+  exportOdhCoverageReport(date_start, date_end, format) {
+    const payload = {};
+    if (date_start) {
+      payload.date_start = createValidDateTime(date_start);
+    }
+    if (date_end) {
+      payload.date_end = createValidDateTime(date_end);
+    }
+    if (format) {
+      payload.format = format;
+    }
+    return OdhCoverageReportService.getBlob(payload);
   }
 
 }

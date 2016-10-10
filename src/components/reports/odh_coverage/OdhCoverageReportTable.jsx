@@ -18,32 +18,32 @@ const getTableMeta = () => {
       },
       {
         name: 'percentage_one_distance',
-        displayName: 'Содержание проезжей части',
-        type: 'floatFixed1',
-      },
-      {
-        name: 'percentage_one_passes',
-        displayName: 'Итого % выполнения тех. операций по проезжей части',
-        type: 'floatFixed1',
-      },
-      {
-        name: 'percentage_two_distance',
-        displayName: 'Содержание лотков и осевых на проезжей части',
-        type: 'floatFixed1',
-      },
-      {
-        name: 'percentage_two_passes',
-        displayName: 'Итого % выполнения тех. операций по содержанию лотков и осевых на проезжей части',
-        type: 'floatFixed1',
-      },
-      {
-        name: 'percentage_three_distance',
         displayName: 'Содержание тротуаров',
         type: 'floatFixed1',
       },
       {
-        name: 'percentage_three_passes',
+        name: 'percentage_one_passes',
         displayName: 'Итого % выполнения тех. операций по содержанию тротуаров',
+        type: 'floatFixed1',
+      },
+      {
+        name: 'percentage_two_distance',
+        displayName: 'Содержание проезжей части',
+        type: 'floatFixed1',
+      },
+      {
+        name: 'percentage_two_passes',
+        displayName: 'Итого % выполнения тех. операций по содержанию проезжей части',
+        type: 'floatFixed1',
+      },
+      {
+        name: 'percentage_three_distance',
+        displayName: 'Содержание лотков и осевых на проезжей части',
+        type: 'floatFixed1',
+      },
+      {
+        name: 'percentage_three_passes',
+        displayName: 'Итого % выполнения тех. операций по содержанию лотков и осевых на проезжей части',
         type: 'floatFixed1',
       },
       // {

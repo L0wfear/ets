@@ -240,7 +240,7 @@ export default class CarInfo extends Component {
 
           {this.state.trackPaused !== 'stopped' && <dl className="car-info-play-info">
             <dt>Координаты:</dt>
-            <dd>{parseFloat(marker.currentCoords[0]).toFixed(5)}, {parseFloat(marker.currentCoords[1]).toFixed(5)}</dd>
+            <dd>{parseFloat(marker.currentCoords[1]).toFixed(5)}, {parseFloat(marker.currentCoords[0]).toFixed(5)}</dd>
             <dt>Время:</dt>
             <dd>{makeDateFromUnix(marker.currentTime)}</dd>
             <dt>Скорость:</dt>

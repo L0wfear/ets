@@ -1,4 +1,5 @@
 import { getWarningNotification } from 'utils/notifications';
+import RequestWarningError from 'utils/errors/RequestWarningError';
 import urljoin from 'url-join';
 import { getJSON, postJSON, deleteJSON, putJSON, getBlob, postBlob } from './adapter.js';
 import { mocks } from './mocks';
@@ -30,11 +31,14 @@ export default class APIService {
     if (r.warnings && r.warnings.length) {
       // Show warnings
       if (Array.isArray(r.warnings)) {
-        r.warnings.map(w => this.warningNotificationFunction(w));
-      } else if (typeof r.warnings === 'string') {
-        this.warningNotificationFunction(r.warnings);
+        r.warnings.forEach(w => {
+          this.warningNotificationFunction(w.message || w);
+          throw new RequestWarningError(w);
+        });
+      } else if (r.warnings && r.warnings.message || typeof r.warnings === 'string') {
+        this.warningNotificationFunction(r.warnings.message || r.warnings);
+        throw new RequestWarningError(r.warnings);
       }
-      throw new Error('Request warnings is not empty!');
     }
     if (typeof callback === 'function') {
       // If callback is specified, call it

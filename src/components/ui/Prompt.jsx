@@ -37,7 +37,7 @@ class Prompt extends React.Component {
   }
 
   ok() {
-    this.state.res();
+    this.state.res(this.state);
     this.hide();
   }
 
@@ -50,13 +50,13 @@ class Prompt extends React.Component {
     return (
       <Modal
         show={this.state.isVisible}
-        bsSize="small"
+        bsSize={"small"}
       >
         <Modal.Header>
           {this.state.title}
         </Modal.Header>
         <Modal.Body>
-          {this.state.body}
+          {typeof this.state.body === 'function' ? this.state.body(this) : this.state.body}
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={this.ok}>Ок</Button>

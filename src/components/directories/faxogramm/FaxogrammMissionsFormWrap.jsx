@@ -4,6 +4,7 @@ import Div from 'components/ui/Div.jsx';
 import FaxogrammMissionsForm from './FaxogrammMissionsForm.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import { isEmpty } from 'utils/functions';
+import IntervalPicker from 'components/ui/IntervalPicker.jsx';
 
 class FaxogrammMissionsFormWrap extends FormWrap {
 
@@ -24,20 +25,66 @@ class FaxogrammMissionsFormWrap extends FormWrap {
     }
   }
 
-  handleFormSubmit() {
+  async handleFormSubmit() {
     const { flux } = this.context;
     const { formState } = this.state;
-    const payload = {
+    let payload = {
       mission_source_id: '4',
       faxogramm_id: formState.id,
       date_start: formState.order_date,
       date_end: formState.order_date_to,
       assign_to_waybill: formState.assign_to_waybill,
     };
-    flux.getActions('missions').createMissions(formState.missionJournalState.checkedElements, payload);
 
+    const createMissions = async (element) => {
+        try {
+          await flux.getActions('missions').createMissions(element, payload);
+        } catch (e) {
+          if (e && e.message.code === 'no_active_waybill') {
+            confirmDialog({
+              title: `Для ТС не существует активного ПЛ`,
+              body: `Создать черновик ПЛ?`,
+            })
+            .then((async) () => {
+              payload.assign_to_waybill = 'assign_to_draft';
+              await createMissions();
+            })
+            .catch(() => {});
+          }
+          if (e && e.message.code === 'invalid_period') {
+            const waybillNumber = e.message.message.split('№')[1].split(' ')[0];
+            const dateStart = e.message.message.split('(')[1].split(' - ')[0];
+            const dateEnd = e.message.message.split(' - ')[1].slice(0,-1);
+
+            let body = (self) => <div>
+              <label>
+                Задание будет добавлено в ПЛ № {waybillNumber}
+              </label>
+              <div>{e.message.message}</div>
+              Введите даты задания <IntervalPicker
+                interval={self.state.interval}
+                onChange={interval => self.setState({interval})} />
+            </div>;
+
+            confirmDialog({
+              title: `Пересечение времени задания и ПЛ №${waybillNumber}`,
+              body
+            })
+            .then((async) (state) => {
+              payload.date_start = state.interval[0];
+              payload.date_end = state.interval[1];
+              await createMissions();
+            })
+            .catch(() => {});
+          }
+          return;
+        }
+      };
+
+    _.keys(formState.missionJournalState.checkedElements)
+      .map(key => formState.missionJournalState.checkedElements[key])
+      .forEach(async (element) => await createMissions({[element.id]: element}));
     this.props.onFormHide();
-
     return;
   }
 

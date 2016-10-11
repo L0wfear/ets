@@ -5,7 +5,7 @@ import Table from 'components/ui/table/DataTable.jsx';
 const tableMeta = {
   cols: [
     {
-      name: 'name',
+      name: 'object_name',
       displayName: 'Наименование пункта назначения',
       type: 'string',
       filter: {

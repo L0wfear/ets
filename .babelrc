@@ -1,18 +1,25 @@
 {
-  "presets": [
-    "latest",
-    "stage-0",
-    "react"
-  ],
-  "plugins": [
-    "transform-decorators-legacy",
-    [
-      "typecheck",
-      {
-        "disable": {
-          "production": true
-        }
-      }
-    ]
-  ]
+  "env": {
+    "development": {
+      "presets": [
+        "latest",
+        "stage-0",
+        "react"
+      ],
+      "plugins": [
+        "transform-decorators-legacy",
+        "typecheck"
+      ]
+    },
+    "production": {
+      "presets": [
+        "latest",
+        "stage-0",
+        "react"
+      ],
+      "plugins": [
+        "transform-decorators-legacy"
+      ]
+    }
+  }
 }

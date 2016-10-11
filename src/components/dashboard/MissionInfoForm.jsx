@@ -25,47 +25,32 @@ class MissionInfoForm extends Form {
     super(props);
 
     this.state = {
-      object_list: [],
       missionReport: [],
       selectedObjects: [],
       selectedElementId: null,
       selectedPoint: null,
-      routeType: null,
     };
   }
 
   async componentDidMount() {
     const { formState } = this.props;
+    const { mission_data, car_data, report_data, route_data,
+      technical_operation_data, waybill_data } = formState;
     const { flux } = this.context;
     flux.getActions('points').createConnection();
-    flux.getActions('points').setSingleCarTrack(formState.car_gov_number);
-    flux.getActions('points').setSingleCarTrackDates([formState.mission_date_start, formState.mission_date_end]);
-    await flux.getActions('missions').getMissionLastReport(formState.mission_id).then((r) => {
-      if (r.result) {
-        let missionReport = [];
-        let selectedObjects = [];
-        let routeType = 'simple';
-        if (r.result.report_by_odh) {
-          missionReport = r.result.report_by_odh;
-          routeType = 'odh';
-        } else if (r.result.report_by_dt) {
-          missionReport = r.result.report_by_dt;
-          routeType = 'dt';
-        } else if (r.result.report_by_point) {
-          missionReport = r.result.report_by_point;
-          routeType = 'point';
-          selectedObjects = r.result.report_by_point.filter(p => p.status === 'success');
-        }
-        if (r.result.route_check_unit) {
-          _.each(missionReport, mr => (mr.route_check_unit = r.result.route_check_unit));
-        }
-        this.setState({ missionReport, routeType, selectedObjects });
-      }
-    });
-    flux.getActions('routes').getRouteById(formState.route_id, true).then((route) => {
-      this.setState({ object_list: route ? route.object_list : [] });
-    });
-    flux.getActions('geoObjects').getGeozones();
+    flux.getActions('points').setSingleCarTrack(car_data.gov_number);
+    flux.getActions('points').setSingleCarTrackDates([mission_data.date_start, mission_data.date_end]);
+    await flux.getActions('geoObjects').getGeozones();
+    const route = await flux.getActions('routes').getRouteById(route_data.id, true);
+    let missionReport = report_data.entries;
+    if (!missionReport) {
+      missionReport = [];
+    }
+    const selectedObjects = missionReport.filter(p => p.status === 'success');
+    if (report_data.check_unit) {
+      _.each(missionReport, mr => (mr.route_check_unit = report_data.check_unit));
+    }
+    this.setState({ missionReport, selectedObjects, route });
     flux.getActions('objects').getTypes();
     flux.getActions('objects').getCars();
   }
@@ -85,12 +70,32 @@ class MissionInfoForm extends Form {
 
   render() {
     const state = this.props.formState;
-    const { routeType } = this.state;
+    const { mission_data, car_data, report_data, route_data,
+      technical_operation_data, waybill_data } = state;
+    const routeType = route_data.type;
+    const { route = {} } = this.state;
     const { geozonePolys = {} } = this.props;
-    const object_list = _.cloneDeep(this.state.object_list || []);
-    const polys = _.keyBy(object_list, 'object_id');
-    if (!state.car_gov_number) return <div />;
-    const title = `Информация о задании. Рег. номер ТС: ${state.car_gov_number}`;
+    const { object_list = [] } = route;
+    const polys = _(_.cloneDeep(object_list))
+      .map((object) => {
+        if (geozonePolys[object.object_id] && (['points', 'vector'].indexOf(route.type) === -1)) {
+          object.shape = geozonePolys[object.object_id].shape;
+        }
+        return object;
+      })
+      .keyBy((o) => {
+        // TODO попросить бек чтобы у каждого объекта был id
+        if (route.type === 'vector') {
+          return o.id;
+        }
+        if (route.type === 'points') {
+          return o.coordinates.join(',').replace('-', '');
+        }
+        return o.object_id;
+      })
+      .value();
+    if (!car_data.gov_number) return <div />;
+    const title = `Информация о задании. Рег. номер ТС: ${car_data.gov_number}`;
 
     return (
       <Modal {...this.props} bsSize="large" className="mission-info-modal" backdrop="static">
@@ -125,11 +130,10 @@ class MissionInfoForm extends Form {
 
                 <HybridMap
                   polys={polys}
-                  maxSpeed={state.technical_operation_max_speed}
-                  routeType={routeType}
+                  maxSpeed={technical_operation_data.max_speed}
                   selectedObjects={this.state.selectedObjects}
                   selectedPoly={geozonePolys[this.state.selectedElementId]}
-                  car_gov_number={state.car_gov_number}
+                  car_gov_number={car_data.gov_number}
                 />
 
               </FluxComponent>
@@ -137,13 +141,13 @@ class MissionInfoForm extends Form {
 
             <Col md={6}>
               <Div style={{ marginTop: -35 }} hidden={!(this.state.missionReport && this.state.missionReport.length > 0)}>
-                <Div hidden={routeType !== 'odh'}>
+                <Div hidden={routeType !== 'simple' && routeType !== 'vector'}>
                   <MissionReportByODH renderOnly enumerated={false} selectedReportDataODHS={this.state.missionReport} onElementChange={this.handleSelectedElementChange} />
                 </Div>
-                <Div hidden={routeType !== 'dt'}>
+                <Div hidden={routeType !== 'simple_dt'}>
                   <MissionReportByDT renderOnly enumerated={false} selectedReportDataDTS={this.state.missionReport} onElementChange={this.handleSelectedElementChange} />
                 </Div>
-                <Div hidden={routeType !== 'point'}>
+                <Div hidden={routeType !== 'points'}>
                   <MissionReportByPoints renderOnly enumerated={false} selectedReportDataPoints={this.state.missionReport} />
                 </Div>
               </Div>
@@ -157,8 +161,8 @@ class MissionInfoForm extends Form {
           <Div>
             * - расстояние, учитываемое при прохождении задания<br />
             ** - пройдено с рабочей скоростью / пройдено с превышением рабочей скорости<br />
-            <b>Пройдено с рабочей скоростью:</b> {getDataTraveledYet(state.route_with_work_speed + state.with_work_speed_time)}<br />
-            <b>Пройдено с превышением рабочей скорости:</b> {getDataTraveledYet(state.route_with_high_speed + state.with_high_speed_time)}
+            <li><b>Пройдено с рабочей скоростью:</b> {getDataTraveledYet([report_data.traveled, report_data.check_unit, report_data.time_work_speed].join(' '))}</li>
+            <li><b>Пройдено с превышением рабочей скорости:</b> {getDataTraveledYet([report_data.traveled_high_speed, report_data.check_unit, report_data.time_high_speed].join(' '))}</li>
           </Div>
 
         </Modal.Body>

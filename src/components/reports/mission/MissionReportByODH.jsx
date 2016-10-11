@@ -8,7 +8,7 @@ const getTableMeta = (props) => {
   const tableMeta = {
     cols: [
       {
-        name: 'odh_name',
+        name: 'object_name',
         displayName: 'ОДХ',
         type: 'string',
         filter: {
@@ -16,7 +16,7 @@ const getTableMeta = (props) => {
         },
       },
       {
-        name: 'route_check_value',
+        name: 'check_value',
         displayName: `Нужно пройти (${props.data[0] && props.data[0].route_check_unit})`,
         type: 'string',
         filter: false,
@@ -77,6 +77,7 @@ const MissionReportByODHTable = (props) => {
     traveled: meta => <div>{ parseFloat(meta.data).toFixed(2) + ' ' + meta.rowData.route_check_unit }</div>,
     route_check_length: ({ data }) => <div>{ data }</div>,
     route_check_value: meta => <div>{ meta.data + ' ' + meta.rowData.route_check_unit }</div>,
+    route_with_speed: meta => <div>{`${parseFloat(meta.rowData.traveled / 1000).toFixed(3)} / ${parseFloat(meta.rowData.traveled_high_speed / 1000).toFixed(3)}`}</div>
   };
 
   if (props.renderOnly) {

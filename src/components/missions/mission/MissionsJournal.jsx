@@ -143,8 +143,9 @@ export default class MissionsJournal extends CheckableElementsList {
   }
 
   async mapView(id) {
-    const mission = await this.context.flux.getActions('missions').getMissionData(id);
-    this.setState({ mission: mission.result[0], showMissionInfoForm: true });
+    this.context.flux.getActions('missions').getMissionData(id).then((res) => {
+      this.setState({ mission: res.result, showMissionInfoForm: true });
+    });
   }
 
   getForms() {

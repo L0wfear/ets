@@ -243,18 +243,18 @@ export default class WaybillFormWrap extends FormWrap {
     if (!waybillStatus) { // если создаем ПЛ
       if (typeof callback === 'function') {
         formState.status = 'draft';
-        const r = await flux.getActions('waybills').createWaybill(formState);
-        // TODO сейчас возвращается один ПЛ
-        const id = _.max(r.result, res => res.id).id;
-        formState.status = 'active';
-        formState.id = id;
         try {
+          const r = await flux.getActions('waybills').createWaybill(formState);
+          // TODO сейчас возвращается один ПЛ
+          const id = _.max(r.result, res => res.id).id;
+          formState.status = 'active';
+          formState.id = id;
           await flux.getActions('waybills').updateWaybill(formState);
+          callback(id);
         } catch (e) {
           console.log(e);
           return;
         }
-        callback(id);
       } else {
         formState.status = 'draft';
         try {

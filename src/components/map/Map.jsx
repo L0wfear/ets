@@ -64,7 +64,7 @@ export default class OpenLayersMap extends Component {
     const renderFn = this.renderCanvas.bind(this);
     const canvasLayer = new ol.layer.Image({
       source: new ol.source.ImageCanvas({
-        canvasFunction(extent, res, pixelRatio, size, proj) {
+        canvasFunction(extent, res, pixelRatio, size) {
           if (!this.canvas) {
             this.canvas = document.createElement('canvas');
             self.canvas = this.canvas;
@@ -103,9 +103,8 @@ export default class OpenLayersMap extends Component {
    */
   componentDidMount() {
     const map = this.map;
-    const container = this.refs.container;
 
-    map.setTarget(container);
+    map.setTarget(this._container);
     // Оставлю это здесь. так делать не надо, канвас начинает адово тупить
     // this.triggerRenderEventKey = map.on('postcompose', this.triggerRender.bind(this));
     // this.triggerRender();
@@ -457,7 +456,7 @@ export default class OpenLayersMap extends Component {
   render() {
     return (
       <div key="olmap">
-        <div ref="container" className="openlayers-container" />
+        <div ref={node => (this._container = node)} className="openlayers-container" />
       </div>
     );
   }

@@ -1,33 +1,61 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { autobind } from 'core-decorators';
+import { FluxContext } from 'utils/decorators';
 import { Button, Modal } from 'react-bootstrap';
+import { saveData } from 'utils/functions';
+import { getToday9am, getTomorrow9am, getDate9am, getYesterday9am, getToday859am, getFormattedDateTime } from 'utils/dates';
 import Datepicker from 'components/ui/DatePicker.jsx';
 import Div from 'components/ui/Div.jsx';
 
+@FluxContext
 @autobind
 export default class OdhCoverageReportPrintForm extends Component {
+
+  static propTypes = {
+    exportType: PropTypes.number,
+    onFormHide: PropTypes.func,
+  }
+
   constructor(props) {
     super(props);
 
+    const [date_start, date_end] = [getYesterday9am(), getToday859am()];
+
     this.state = {
-      date: new Date(),
+      date_start,
+      date_end,
     };
   }
 
   export() {
     const payload = { date: this.state.date };
-    console.log('ждем бэкенд', this.state.date);
+    const { date_start, date_end } = this.state;
+    const { exportType } = this.props;
+    const { flux } = this.context;
+    flux.getActions('reports').exportOdhCoverageReport(date_start, date_end, 'xls')
+      .then(({ blob }) => { saveData(blob, `Отчет по посещению ОДХ в период с ${getFormattedDateTime(date_start)} по ${getFormattedDateTime(date_end)}.xls`); });
+    this.props.onFormHide();
   }
 
   render() {
+    const { exportType } = this.props;
     return (
-      <Modal show={this.props.showForm} bsSize="small">
+      <Modal show={this.props.showForm}>
         <Modal.Header>
-          <Modal.Title id="contained-modal-title-lg">Печать ежедневного отчета</Modal.Title>
+          <Modal.Title id="contained-modal-title-lg">Печать отчета за заданный период</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <label>Выберите дату:</label>
-          <Datepicker time={false} date={this.state.date} onChange={date => this.setState({ date })} />
+          {
+            exportType === 1 ?
+            <div style={{ textAlign: 'center' }}>
+              <Datepicker className="inline-block" time={false} date={this.state.date_start} onChange={date => this.setState({ date_start: date })} />
+            </div>
+            :
+            <div style={{ textAlign: 'center' }}>
+              <Datepicker className="inline-block" date={this.state.date_start} onChange={date => this.setState({ date_start: date })} />
+              <Datepicker className="inline-block" style={{ marginLeft: 40 }} date={this.state.date_end} onChange={date => this.setState({ date_end: date })} />
+            </div>
+          }
         </Modal.Body>
         <Modal.Footer>
           <Div className="inline-block">

@@ -60,12 +60,15 @@ export default class DashboardPage extends React.Component {
       key = forcedKey;
     }
     const { loadingComponents } = this.state;
-    loadingComponents.push(key);
+    if (loadingComponents.indexOf(key) === -1) {
+      loadingComponents.push(key);
+    }
     this.setState({ loadingComponents });
-    this.context.flux.getActions('dashboard').getDashboardComponent(key).then(() => {
+    this.context.flux.getActions('dashboard').getDashboardComponent(key).then(({ key }) => {
       const { loadingComponents } = this.state;
-      loadingComponents.splice(_.findIndex(loadingComponents, key), 1);
+      loadingComponents.splice(loadingComponents.indexOf(key), 1);
       setTimeout(() => this.setState({ loadingComponents }), 500);
+    }).catch(() => {
     });
   }
 

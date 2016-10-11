@@ -38,7 +38,7 @@ export function createValidDateTime(date) {
 
 export function getFormattedDateTime(date) {
   if (!date) return '';
-  return moment.utc(date).format(`${global.APP_DATE_FORMAT} HH:mm`);
+  return moment(date).format(`${global.APP_DATE_FORMAT} HH:mm`);
 }
 
 export function getFormattedDateTimeSeconds(date) {
@@ -68,6 +68,16 @@ export function getYesterday9am() {
   const now = new Date();
 
   return new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 9, 0);
+}
+
+export function getDate9am(date) {
+  const now = new Date(date);
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 0);
+}
+
+export function getNextDay859am(date) {
+  const now = new Date(date);
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 8, 59);
 }
 
 export function getToday9am() {

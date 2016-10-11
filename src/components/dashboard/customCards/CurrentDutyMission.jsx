@@ -48,7 +48,7 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
 
   async completeMission(id) {
     let mission = await this.context.flux.getActions('missions').getDutyMissionById(id);
-    mission = mission.result[0];
+    mission = mission.result.rows[0];
     mission.status = 'complete';
     await this.context.flux.getActions('missions').updateDutyMission(mission);
     this.selectItem(null);
@@ -59,7 +59,7 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
     const reason = prompt('Введите причину', '');
     if (reason) {
       let mission = await this.context.flux.getActions('missions').getDutyMissionById(id);
-      mission = mission.result[0];
+      mission = mission.result.rows[0];
       mission.status = 'fail';
       mission.comment = reason;
       this.context.flux.getActions('missions').updateDutyMission(mission);

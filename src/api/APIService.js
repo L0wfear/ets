@@ -1,7 +1,8 @@
 import { getWarningNotification } from 'utils/notifications';
 import RequestWarningError from 'utils/errors/RequestWarningError';
 import urljoin from 'url-join';
-import { getJSON, postJSON, deleteJSON, putJSON, getBlob, postBlob } from './adapter.js';
+import { getJSON, postJSON, deleteJSON, putJSON } from './adapter.js';
+import { getBlob, postBlob } from './adapterBlob.js';
 import { mocks } from './mocks';
 
 export default class APIService {
@@ -28,6 +29,7 @@ export default class APIService {
   }
 
   processResponse(r, callback) {
+    console.log(r);
     if (r.warnings && r.warnings.length) {
       // Show warnings
       if (Array.isArray(r.warnings)) {

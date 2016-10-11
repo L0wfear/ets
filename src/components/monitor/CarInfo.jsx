@@ -60,11 +60,11 @@ export default class CarInfo extends Component {
       this.fetchImage(props);
       this.fetchTrack(props);
       this.stopTrackPlaying();
-      this.setState({ trackPaused: 'stopped' });
+      this.setState({ trackPaused: 'stopped', car: props.car });
     }
     if (props.car.id !== this.props.car.id) {
       const carsList = this.props.flux.getStore('objects').state.carsList;
-      const car = find(carsList, c => c.gov_number === this.props.car.car.gov_number);
+      const car = find(carsList, c => c.gov_number === props.car.car.gov_number);
       if (car) {
         const car_id = car.asuods_id;
         const missions = await this.props.flux.getActions('missions').getMissionsByCarAndDates(car_id, this.state.from_dt, this.state.to_dt, true, 1);
@@ -240,7 +240,7 @@ export default class CarInfo extends Component {
 
           {this.state.trackPaused !== 'stopped' && <dl className="car-info-play-info">
             <dt>Координаты:</dt>
-            <dd>{parseFloat(marker.currentCoords[0]).toFixed(5)}, {parseFloat(marker.currentCoords[1]).toFixed(5)}</dd>
+            <dd>{parseFloat(marker.currentCoords[1]).toFixed(5)}, {parseFloat(marker.currentCoords[0]).toFixed(5)}</dd>
             <dt>Время:</dt>
             <dd>{makeDateFromUnix(marker.currentTime)}</dd>
             <dt>Скорость:</dt>

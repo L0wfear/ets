@@ -70,11 +70,9 @@ class FaxogrammMissionsFormWrap extends FormWrap {
           const dateEnd = e.message.message.split(' - ')[1].slice(0,-1);
 
           let body = (self) => <div>
-            <label>
-              Задание будет добавлено в ПЛ № {waybillNumber}
-            </label>
-            <div>{e.message.message}</div>
-            Введите даты задания <IntervalPicker
+            <div>{e.message.message}</div><br/>
+            <center>Введите даты задания:</center>
+            <IntervalPicker
               interval={self.state.interval}
               onChange={interval => self.setState({interval})} />
           </div>;
@@ -82,7 +80,7 @@ class FaxogrammMissionsFormWrap extends FormWrap {
           let cancel = false;
           try {
             const state = await confirmDialog({
-              title: `Пересечение времени задания и ПЛ №${waybillNumber}`,
+              title: <b>{`Задание будет добавлено в ПЛ №${waybillNumber}`}</b>,
               body
             });
           }

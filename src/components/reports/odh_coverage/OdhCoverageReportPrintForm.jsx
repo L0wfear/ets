@@ -31,10 +31,12 @@ export default class OdhCoverageReportPrintForm extends Component {
     const payload = { date: this.state.date };
     const { date_start, date_end } = this.state;
     const { exportType } = this.props;
-    const { flux } = this.context;
-    flux.getActions('reports').exportOdhCoverageReport(date_start, date_end, 'xls')
-      .then(({ blob }) => { saveData(blob, `Отчет по посещению ОДХ в период с ${getFormattedDateTime(date_start)} по ${getFormattedDateTime(date_end)}.xls`); });
+    // const { flux } = this.context;
+    //
+    // flux.getActions('reports').exportOdhCoverageReport(date_start, date_end, 'xls')
+    //   .then(({ blob }) => { saveData(blob, `Отчет по посещению ОДХ в период с ${getFormattedDateTime(date_start)} по ${getFormattedDateTime(date_end)}.xls`); });
     this.props.onFormHide();
+    this.props.onExport(date_start, date_end);
   }
 
   render() {

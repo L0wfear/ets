@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { Button, Glyphicon, Dropdown, MenuItem as BootstrapMenuItem } from 'react-bootstrap';
 import { autobind } from 'core-decorators';
 import { connectToStores, FluxContext, bindable } from 'utils/decorators';
-import { getToday9am, getTomorrow9am, getDate9am, getNextDay859am } from 'utils/dates';
+import { getToday9am, getTomorrow9am, getDate9am, getNextDay859am, getFormattedDateTime } from 'utils/dates';
+import { saveData } from 'utils/functions';
+import Preloader from 'components/ui/Preloader.jsx';
 import OdhCoverageReportTable from './OdhCoverageReportTable.jsx';
 import OdhCoverageReportPrintForm from './OdhCoverageReportPrintForm.jsx';
 import OdhCoverageReportHeader from './OdhCoverageReportHeader.jsx';
@@ -33,6 +35,8 @@ export default class OdhCoverageReport extends Component {
     this.state = {
       date_start,
       date_end,
+      isLoading: false,
+      isExporting: false,
     };
   }
 
@@ -59,13 +63,26 @@ export default class OdhCoverageReport extends Component {
     this.setState({ date_start, date_end });
   }
 
-
-  export(exportType) {
+  showForm(exportType) {
     this.setState({ showForm: true, exportType });
+  }
+
+  export(date_start, date_end) {
+    const { flux } = this.context;
+
+    this.setState({ isExporting: true });
+    flux.getActions('reports').exportOdhCoverageReport(date_start, date_end, 'xls')
+      .then(({ blob }) => {
+        saveData(blob, `Отчет по посещению ОДХ в период с ${getFormattedDateTime(date_start)} по ${getFormattedDateTime(date_end)}.xls`);
+        this.setState({ isExporting: false });
+      });
   }
 
   render() {
     const { odhCoverageReport = [] } = this.props;
+    const { isExporting } = this.state;
+    const exportGlyph = isExporting ? 'refresh' : 'download-alt';
+    const iconClassname = isExporting ? 'glyphicon-spin' : '';
 
     return (
       <div className="ets-page-wrap">
@@ -73,11 +90,11 @@ export default class OdhCoverageReport extends Component {
         <OdhCoverageReportTable data={odhCoverageReport}>
           <Dropdown id="dropdown-print" pullRight>
             <Dropdown.Toggle noCaret bsSize="small">
-              <Glyphicon glyph="download-alt" />
+              <Glyphicon disabled={isExporting} className={iconClassname} glyph={exportGlyph} />
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {/*<MenuItem bindOnClick={1} onClick={this.export}>Ежедневный отчет</MenuItem>*/}
-              <MenuItem bindOnClick={2} onClick={this.export}>Отчет за заданный период</MenuItem>
+              <MenuItem bindOnClick={2} onClick={this.showForm}>Отчет за заданный период</MenuItem>
             </Dropdown.Menu>
           </Dropdown>
         </OdhCoverageReportTable>
@@ -85,6 +102,7 @@ export default class OdhCoverageReport extends Component {
           showForm={this.state.showForm}
           onFormHide={() => this.setState({ showForm: false })}
           exportType={this.state.exportType}
+          onExport={this.export}
         />
       </div>
     );

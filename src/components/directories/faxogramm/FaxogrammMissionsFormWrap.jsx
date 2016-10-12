@@ -78,8 +78,9 @@ class FaxogrammMissionsFormWrap extends FormWrap {
           </div>;
 
           let cancel = false;
+          let state;
           try {
-            const state = await confirmDialog({
+            state = await confirmDialog({
               title: <b>{`Задание будет добавлено в ПЛ №${waybillNumber}`}</b>,
               body
             });

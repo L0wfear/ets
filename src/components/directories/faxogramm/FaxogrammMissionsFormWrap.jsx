@@ -43,21 +43,18 @@ class FaxogrammMissionsFormWrap extends FormWrap {
       } catch (e) {
         error = true;
         if (e && e.message.code === 'no_active_waybill') {
-          confirmDialog({
+          await confirmDialog({
             title: `Для ТС не существует активного ПЛ`,
             body: `Создать черновик ПЛ?`,
           })
-          .then((async) () => {
-            let newPayload = {
-              mission_source_id: '4',
-              faxogramm_id: payload.id,
-              date_start: payload.order_date,
-              date_end: payload.order_date_to,
-              assign_to_waybill: 'assign_to_draft',
-            };
-            await createMissions(element, newPayload);
-          })
-          .catch(() => {});
+          let newPayload = {
+            mission_source_id: '4',
+            faxogramm_id: payload.id,
+            date_start: payload.order_date,
+            date_end: payload.order_date_to,
+            assign_to_waybill: 'assign_to_draft',
+          };
+          await createMissions(element, newPayload);
         }
         if (e && e.message.code === 'invalid_period') {
           const waybillNumber = e.message.message.split('№')[1].split(' ')[0];

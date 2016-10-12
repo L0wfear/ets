@@ -43,18 +43,26 @@ class FaxogrammMissionsFormWrap extends FormWrap {
       } catch (e) {
         error = true;
         if (e && e.message.code === 'no_active_waybill') {
-          await confirmDialog({
-            title: `Для ТС не существует активного ПЛ`,
-            body: `Создать черновик ПЛ?`,
-          })
-          let newPayload = {
-            mission_source_id: '4',
-            faxogramm_id: payload.id,
-            date_start: payload.order_date,
-            date_end: payload.order_date_to,
-            assign_to_waybill: 'assign_to_draft',
-          };
-          await createMissions(element, newPayload);
+          let cancel = false;
+          try {
+            await confirmDialog({
+              title: `Для ТС не существует активного ПЛ`,
+              body: `Создать черновик ПЛ?`,
+            })
+          }
+          catch (error) {
+            cancel = true;
+          }
+          if (!cancel) {
+            let newPayload = {
+              mission_source_id: '4',
+              faxogramm_id: payload.id,
+              date_start: payload.order_date,
+              date_end: payload.order_date_to,
+              assign_to_waybill: 'assign_to_draft',
+            };
+            await createMissions(element, newPayload);
+          }
         }
         if (e && e.message.code === 'invalid_period') {
           const waybillNumber = e.message.message.split('№')[1].split(' ')[0];
@@ -71,18 +79,26 @@ class FaxogrammMissionsFormWrap extends FormWrap {
               onChange={interval => self.setState({interval})} />
           </div>;
 
-          const state = await confirmDialog({
-            title: `Пересечение времени задания и ПЛ №${waybillNumber}`,
-            body
-          });
-          let newPayload = {
-            mission_source_id: '4',
-            faxogramm_id: payload.id,
-            date_start: state.interval[0],
-            date_end: state.interval[1],
-            assign_to_waybill: payload.assign_to_waybill,
-          };
-          await createMissions(element, newPayload);
+          let cancel = false;
+          try {
+            const state = await confirmDialog({
+              title: `Пересечение времени задания и ПЛ №${waybillNumber}`,
+              body
+            });
+          }
+          catch (error) {
+            cancel = true;
+          }
+          if (!cancel) {
+            let newPayload = {
+              mission_source_id: '4',
+              faxogramm_id: payload.id,
+              date_start: state.interval[0],
+              date_end: state.interval[1],
+              assign_to_waybill: payload.assign_to_waybill,
+            };
+            await createMissions(element, newPayload);
+          }
         }
       }
       return error;

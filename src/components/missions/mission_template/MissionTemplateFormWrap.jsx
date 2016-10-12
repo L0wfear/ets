@@ -10,6 +10,7 @@ import { missionsCreationTemplateSchema } from 'models/MissionsCreationTemplateM
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import MissionTemplateForm from './MissionTemplateForm.jsx';
 import MissionsCreationForm from './MissionsCreationForm.jsx';
+import IntervalPicker from 'components/ui/IntervalPicker.jsx';
 
 const validateMissionsCreationTemplate = (mission, errors) => {
   const missionsCreationTemplateErrors = _.clone(errors);
@@ -70,12 +71,93 @@ export default class MissionFormWrap extends FormWrap {
       }
       this.props.onFormHide();
     } else {
-      try {
-        await flux.getActions('missions').createMissions(this.props.missions, formState);
-      } catch (e) {
-        return;
+      let payload = {
+        mission_source_id: formState.mission_source_id,
+        passes_count: formState.passes_count,
+        date_start: formState.date_start,
+        date_end: formState.date_end,
+        assign_to_waybill: formState.assign_to_waybill,
+      };
+
+      const createMissions = async (element, payload) => {
+        let error = false;
+        try {
+          await flux.getActions('missions').createMissions(element, payload);
+        } catch (e) {
+          error = true;
+          if (e && e.message.code === 'no_active_waybill') {
+            let cancel = false;
+            try {
+              await confirmDialog({
+                title: `Для ТС не существует активного ПЛ`,
+                body: `Создать черновик ПЛ?`,
+              })
+            }
+            catch (error) {
+              cancel = true;
+            }
+            if (!cancel) {
+              let newPayload = {
+                mission_source_id: payload.mission_source_id,
+                passes_count: payload.passes_count,
+                date_start: payload.date_start,
+                date_end: payload.date_end,
+                assign_to_waybill: 'assign_to_draft',
+              };
+              await createMissions(element, newPayload);
+            }
+          }
+          if (e && e.message.code === 'invalid_period') {
+            const waybillNumber = e.message.message.split('№')[1].split(' ')[0];
+            const dateStart = e.message.message.split('(')[1].split(' - ')[0];
+            const dateEnd = e.message.message.split(' - ')[1].slice(0,-1);
+
+            let body = (self) => <div>
+              <div>{e.message.message}</div><br/>
+              <center>Введите даты задания:</center>
+              <IntervalPicker
+                interval={self.state.interval}
+                onChange={interval => self.setState({interval})} />
+            </div>;
+
+            let cancel = false;
+            let state;
+            try {
+              state = await confirmDialog({
+                title: <b>{`Задание будет добавлено в ПЛ №${waybillNumber}`}</b>,
+                body
+              });
+            }
+            catch (error) {
+              cancel = true;
+            }
+            if (!cancel) {
+              let newPayload = {
+                mission_source_id: payload.mission_source_id,
+                passes_count: payload.passes_count,
+                date_start: state.interval[0],
+                date_end: state.interval[1],
+                assign_to_waybill: payload.assign_to_waybill,
+              };
+              await createMissions(element, newPayload);
+            }
+          }
+        }
+        return error;
+      };
+
+      const missions = _.keys(this.props.missions)
+        .map(key => this.props.missions[key]);
+
+      let closeForm = true;
+
+      for (let m of missions) {
+        const e = await createMissions({[m.id]: m}, payload);
+        if (e) closeForm = false;
       }
-      this.props.onFormHide(true);
+
+      closeForm && this.props.onFormHide(true);
+      return;
     }
   }
 

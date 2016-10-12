@@ -96,7 +96,6 @@ export default class ReportsActions extends Actions {
     payload.date_from = createValidDateTime(payload.date_from);
     payload.date_to = createValidDateTime(payload.date_to);
 
-    // TODO blob
     return AnalyticsService.postBlob(payload);
   }
 

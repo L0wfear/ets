@@ -46,8 +46,8 @@ export default class Analytics extends Component {
 
     const dateName = makeDate(this.state.date_from) + '-' + makeDate(this.state.date_to);
     flux.getActions('reports').getAnalytics(this.state)
-      .then(({ blob }) => {
-        saveData(blob, `${reportName} ${dateName}.xls`);
+      .then(({ blob, fileName }) => {
+        saveData(blob, fileName);
       });
   }
 

@@ -109,6 +109,10 @@ export default class RouteForm extends Form {
     this.setState({ technicalOperationsList });
   }
 
+  handleSubmit(isTemplate) {
+    this.props.onSubmit(isTemplate);
+  }
+
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
@@ -175,7 +179,14 @@ export default class RouteForm extends Form {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button disabled={!this.props.canSave} onClick={this.handleSubmit}>Сохранить</Button>
+          {this.props.fromMission ?
+            <div>
+              <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this, 1)}>Сохранить как шаблон</Button>
+              <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this, 0)}>Сохранить</Button>
+            </div>
+          :
+            <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this, 1)}>Сохранить</Button>
+          }
         </Modal.Footer>
 
       </Modal>

@@ -32,7 +32,7 @@ function checkResponse(url, response, body, method) {
   }
 }
 
-function httpMethod(url, data = {}, method, type) {
+function httpMethod(url, data = {}, method, type, params = {}) {
   let body;
   data = { ...data };
   const token = JSON.parse(window.localStorage.getItem('ets-session'));
@@ -59,6 +59,7 @@ function httpMethod(url, data = {}, method, type) {
         break;
     }
     options.body = body;
+    url = `${url}?${urlencode(params)}`;
   } else {
     url = `${url}?${urlencode(data)}`;
   }
@@ -91,8 +92,8 @@ export function getJSON(url, data = {}) {
   return httpMethod(url, data, 'GET', undefined);
 }
 
-export function postJSON(url, data = {}, type = 'form') {
-  return httpMethod(url, data, 'POST', type);
+export function postJSON(url, data = {}, type = 'form', params = {}) {
+  return httpMethod(url, data, 'POST', type, params);
 }
 
 export function putJSON(url, data, type = 'form') {

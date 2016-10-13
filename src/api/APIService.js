@@ -29,7 +29,6 @@ export default class APIService {
   }
 
   processResponse(r, callback) {
-    console.log(r);
     if (r.warnings && r.warnings.length) {
       // Show warnings
       if (Array.isArray(r.warnings)) {
@@ -82,11 +81,11 @@ export default class APIService {
     return postBlob(url, payload);
   }
 
-  post(payload = {}, callback, type = 'form', blob = false) {
+  post(payload = {}, callback, type = 'form', params = {}) {
     this.log('POST');
     const url = this.url;
     this.resetPath();
-    return postJSON(url, payload, type, blob).then(r => this.processResponse(r, callback));
+    return postJSON(url, payload, type, params).then(r => this.processResponse(r, callback));
   }
 
   put(payload = {}, callback, type = 'form') {

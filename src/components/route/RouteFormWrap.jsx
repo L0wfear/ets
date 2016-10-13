@@ -43,13 +43,13 @@ class RouteFormWrap extends FormWrap {
     this.setState({ formState });
   }
 
-  async handleFormSubmit() {
+  async handleFormSubmit(isTemplate) {
     const { flux } = this.context;
     const { formState } = this.state;
     let result;
 
     if (!formState.id) {
-      result = await flux.getActions('routes').createRoute(formState);
+      result = await flux.getActions('routes').createRoute(formState, isTemplate);
     } else {
       result = await flux.getActions('routes').updateRoute(formState);
     }

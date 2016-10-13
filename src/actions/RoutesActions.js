@@ -91,13 +91,16 @@ export default class RoutesActions extends Actions {
     return route;
   }
 
-  async createRoute(route) {
+  async createRoute(route, isTemplate = 0) {
     const payload = _.cloneDeep(route);
+    const params = {
+      is_template: +isTemplate
+    };
     delete payload.polys;
     delete payload.odh_list;
     delete payload.odh_fail_list;
     delete payload.copy;
-    const createdRoute = await RouteService.post(payload, false, 'json');
+    const createdRoute = await RouteService.post(payload, false, 'json', params);
     const routes = await RouteService.get();
     return { createdRoute, routes };
   }

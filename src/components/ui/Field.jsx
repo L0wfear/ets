@@ -5,6 +5,33 @@ import cx from 'classnames';
 import EtsSelect from './EtsSelect.jsx';
 import DatePicker from './DatePicker.jsx';
 import Div from './Div.jsx';
+import Preloader from './Preloader.jsx';
+
+function StringField(props) {
+  const { error, label = '', readOnly = false, className = '',
+    value, wrapStyle, hidden, isLoading } = props;
+  const inputClassName = cx({ 'has-error': error });
+
+  if (isLoading) {
+    return (
+      <Div hidden={hidden}>
+        <label style={{ paddingTop: 5 }}>{label}</label><br />
+        <Preloader type="field" />
+      </Div>
+    );
+  }
+
+  return !readOnly ?
+    <Div hidden={hidden} style={wrapStyle || {}}>
+      <Input type="text" className={inputClassName} {...props} />
+      <Div hidden={!error} className="error">{error}</Div>
+    </Div> :
+    <Div hidden={hidden} className={className}>
+      <label style={{ paddingTop: 5 }}>{label}</label><br />
+      {value}
+    </Div>;
+}
+
 
 @autobind
 export default class Field extends React.Component {
@@ -73,17 +100,7 @@ export default class Field extends React.Component {
   }
 
   renderString() {
-    const { error, label = '', readOnly = false, className = '' } = this.props;
-    const inputClassName = cx({ 'has-error': error });
-    return !readOnly ?
-      <Div hidden={this.props.hidden} style={this.props.wrapStyle || {}}>
-        <Input type="text" className={inputClassName} {...this.props} />
-        <Div hidden={!error} className="error">{error}</Div>
-      </Div> :
-      <Div hidden={this.props.hidden} className={className}>
-        <label style={{ paddingTop: 5 }}>{this.props.label}</label><br />
-        {this.props.value}
-      </Div>;
+    return <StringField {...this.props} />;
   }
 
   renderFieldByType(type) {

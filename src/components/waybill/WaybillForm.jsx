@@ -31,6 +31,7 @@ class WaybillForm extends Form {
       showMissionForm: false,
       selectedMission: null,
       canEditIfClose: null,
+      loadingFields: {},
     };
   }
 
@@ -46,6 +47,14 @@ class WaybillForm extends Form {
         !_.isEqual(currentState.plan_arrival_date, nextState.plan_arrival_date) ||
         !_.isEqual(currentState.plan_departure_date, nextState.plan_departure_date)) {
       this.getMissionsByCarAndDates(nextState);
+    }
+
+    if (currentState.status === 'active') {
+      if (currentState.car_id !== nextState.car_id ||
+          !_.isEqual(currentState.fact_arrival_date, nextState.fact_arrival_date) ||
+          !_.isEqual(currentState.fact_departure_date, nextState.fact_departure_date)) {
+        this.getCarDistance(nextState);
+      }
     }
   }
 
@@ -68,6 +77,7 @@ class WaybillForm extends Form {
           });
         });
       });
+      this.getCarDistance(formState);
     } else if (formState.status === 'closed') {
       /* В случае, если ПЛ закрыт, мы получаем список всех операций, чтобы
          отобразить их в таксировке как ТС, так и оборудования, так как
@@ -78,6 +88,7 @@ class WaybillForm extends Form {
           equipmentOperations: fuelOperations.result,
         });
       });
+      this.getCarDistance(formState);
     }
     this.getMissionsByCarAndDates(formState, false);
     await flux.getActions('objects').getCars();
@@ -91,7 +102,8 @@ class WaybillForm extends Form {
   }
 
   getMissionsByCarAndDates(formState, notificate = true) {
-    this.context.flux.getActions('missions').getMissionsByCarAndDates(
+    const { flux } = this.context;
+    flux.getActions('missions').getMissionsByCarAndDates(
       formState.car_id,
       formState.plan_departure_date,
       formState.plan_arrival_date,
@@ -105,8 +117,30 @@ class WaybillForm extends Form {
     });
   }
 
+  getCarDistance(formState) {
+    const { flux } = this.context;
+    const { loadingFields } = this.state;
+    const car = _.find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
+    loadingFields.distance = true;
+    this.setState({ loadingFields });
+    flux.getActions('cars').getCarDistance(car.gps_code, formState.fact_departure_date, formState.fact_arrival_date)
+      .then(({ distance }) => {
+        this.props.handleFormChange('distance', parseFloat(distance / 100).toFixed(2));
+        const { loadingFields } = this.state;
+        loadingFields.distance = false;
+        this.setState({ loadingFields });
+      })
+      .catch(() => {
+        // this.props.handleFormChange('distance', parseFloat(distance / 100).toFixed(2));
+        const { loadingFields } = this.state;
+        loadingFields.distance = false;
+        this.setState({ loadingFields });
+      });
+  }
+
   getLatestWaybillDriver(formState) {
-    this.context.flux.getActions('waybills').getLatestWaybillDriver(
+    const { flux } = this.context;
+    flux.getActions('waybills').getLatestWaybillDriver(
       formState.car_id,
       formState.driver_id
     ).then((response) => {
@@ -227,6 +261,7 @@ class WaybillForm extends Form {
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
+    const { loadingFields } = this.state;
     const { appConfig } = this.props;
     let taxesControl = false;
 
@@ -625,6 +660,16 @@ class WaybillForm extends Form {
                     disabled
                   />
                 </Div>
+              </Div>
+              <Div hidden={!(IS_CLOSING || IS_DISPLAY)}>
+                <Field
+                  type="string"
+                  label="Пройдено, км"
+                  error={errors.distance}
+                  value={state.distance}
+                  isLoading={loadingFields.distance}
+                  disabled
+                />
               </Div>
             </Col>
           </Row>

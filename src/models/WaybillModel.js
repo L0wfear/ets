@@ -74,6 +74,12 @@ export const waybillSchema = {
       type: 'floatFixed3',
       required: false,
     },
+    {
+      key: 'distance',
+      title: 'Пройдено, км',
+      required: false,
+      type: 'floatFixed3',
+    }
   ],
   dependencies: {
     'odometr_start': [
@@ -190,6 +196,17 @@ const closingDependencies = {
     {
       type: 'gte',
       field: 'odometr_start',
+    },
+  ],
+  'distance': [
+    {
+      validator: (value, formData) => {
+        console.log(value, formData.odometr_diff);
+        console.log(Math.abs((parseFloat(formData.odometr_diff) - parseFloat(value)) / 100))
+        if (Math.abs((parseFloat(formData.odometr_diff) - parseFloat(value)) / 100) > 0.1) {
+          return 'Расхождение в показателях пробега';
+        }
+      },
     },
   ],
 };

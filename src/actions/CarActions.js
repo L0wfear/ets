@@ -8,6 +8,7 @@ import {
   CarImageService,
   VectorObjectService,
   TrackService,
+  TrackDistanceService
 } from 'api/Services';
 
 export default class CarActions extends Actions {
@@ -64,6 +65,16 @@ export default class CarActions extends Actions {
         point.coords_msk = swapCoords(point.coords_msk);
         return point;
       }));
+  }
+
+  getCarDistance(gps_code, from_dt, to_dt) {
+    const payload = {
+      gps_code,
+      from_dt: makeUnixTime(from_dt),
+      to_dt: makeUnixTime(to_dt),
+    };
+
+    return TrackDistanceService.get(payload);
   }
 
   getCarImage(car_id, type_id, model_id) {

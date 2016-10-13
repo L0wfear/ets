@@ -1,6 +1,16 @@
 import _ from 'lodash';
 import { getServerErrorNotification } from 'utils/notifications';
 
+let headers = {};
+
+export function setHeaders(requestHeaders) {
+  headers = requestHeaders;
+}
+
+export function getHeaders() {
+  return headers;
+}
+
 export function toFormData(data) {
   const formData = new FormData();
   _.mapKeys(data, (v, k) => {
@@ -47,6 +57,10 @@ function httpMethod(url, data = {}, method, type, params = {}) {
   };
   if (url.indexOf('city-dashboard') > -1) {
     delete options.headers;
+  }
+  if (url.indexOf('get_length') > -1) {
+    delete options.headers;
+    delete options.credentials;
   }
 
   if (typeof type === 'string') {

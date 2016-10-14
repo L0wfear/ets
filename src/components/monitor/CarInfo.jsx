@@ -197,6 +197,7 @@ export default class CarInfo extends Component {
 
   renderData() {
     const marker = this.props.car.marker;
+    const isTrackLoaded = marker.hasTrackLoaded();
     const tillNow = this.state.tillNow;
     const reloadBtnCN = cx('glyphicon', 'glyphicon-repeat', { 'tracking-animate': tillNow && marker.hasTrackLoaded() });
 
@@ -232,6 +233,12 @@ export default class CarInfo extends Component {
           >
             <span className={reloadBtnCN} />
           </Button>
+
+          <div>
+            <div className="vehicle-attributes-list__item" style={{ marginLeft: 5, marginTop: 5, marginBottom: 5}}>
+              Протяженность, км: <span className="value">{isTrackLoaded && marker.track.getDistance()}</span>
+            </div>
+          </div>
 
           <div className="track-player">
             <Button onClick={this.toggleTrackPlaying}><Glyphicon glyph={this.state.trackPaused ? 'play' : 'pause'} /></Button>

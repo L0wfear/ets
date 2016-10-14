@@ -125,6 +125,18 @@ export default class Track {
     );
   }
 
+  getDistance() {
+    return parseFloat(this.points.reduce((prev, curr) => {
+      function isFloat(n) {
+        return n === +n && n !== (n | 0);
+      }
+      if (curr && isFloat(curr.distance)) {
+        prev += curr.distance;
+      }
+      return prev;
+    }, 0.000) / 1000).toFixed(3);
+  }
+
 
   fetch(flux, from_dt = getStartOfToday(), to_dt = new Date().getTime()) {
     const id = this.owner.point.id;

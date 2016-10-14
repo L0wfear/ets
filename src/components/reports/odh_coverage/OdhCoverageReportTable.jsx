@@ -23,7 +23,7 @@ const getTableMeta = () => {
       },
       {
         name: 'percentage_one_passes',
-        displayName: 'Итого % выполнения тех. операций по содержанию тротуаров',
+        displayName: 'Выполнение тех. операций по содержанию тротуаров',
         type: 'floatFixed1',
       },
       {
@@ -33,7 +33,7 @@ const getTableMeta = () => {
       },
       {
         name: 'percentage_two_passes',
-        displayName: 'Итого % выполнения тех. операций по содержанию проезжей части',
+        displayName: 'Выполнение тех. операций по проезжей части',
         type: 'floatFixed1',
       },
       {
@@ -43,7 +43,7 @@ const getTableMeta = () => {
       },
       {
         name: 'percentage_three_passes',
-        displayName: 'Итого % выполнения тех. операций по содержанию лотков и осевых на проезжей части',
+        displayName: 'Выполнение тех. операций по содержанию лотков и осевых на проезжей части',
         type: 'floatFixed1',
       },
       // {

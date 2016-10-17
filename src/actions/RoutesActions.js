@@ -94,7 +94,7 @@ export default class RoutesActions extends Actions {
   async createRoute(route, isTemplate = 0) {
     const payload = _.cloneDeep(route);
     const params = {
-      is_template: +isTemplate
+      is_template: +isTemplate,
     };
     delete payload.polys;
     delete payload.odh_list;

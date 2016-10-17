@@ -58,10 +58,6 @@ function httpMethod(url, data = {}, method, type, params = {}) {
   if (url.indexOf('city-dashboard') > -1) {
     delete options.headers;
   }
-  if (url.indexOf('get_length') > -1) {
-    delete options.headers;
-    delete options.credentials;
-  }
 
   if (typeof type === 'string') {
     switch (type) {

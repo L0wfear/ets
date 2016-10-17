@@ -125,7 +125,7 @@ class WaybillForm extends Form {
     this.setState({ loadingFields });
     flux.getActions('cars').getCarDistance(car.gps_code, formState.fact_departure_date, formState.fact_arrival_date)
       .then(({ distance }) => {
-        this.props.handleFormChange('distance', parseFloat(distance / 100).toFixed(2));
+        this.props.handleFormChange('distance', parseFloat(distance / 1000).toFixed(3));
         const { loadingFields } = this.state;
         loadingFields.distance = false;
         this.setState({ loadingFields });

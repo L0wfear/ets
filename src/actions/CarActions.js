@@ -8,7 +8,7 @@ import {
   CarImageService,
   VectorObjectService,
   TrackService,
-  TrackDistanceService
+  TrackDistanceService,
 } from 'api/Services';
 
 export default class CarActions extends Actions {
@@ -72,6 +72,7 @@ export default class CarActions extends Actions {
       gps_code,
       from_dt: makeUnixTime(from_dt),
       to_dt: makeUnixTime(to_dt),
+      version: 2,
     };
 
     return TrackDistanceService.get(payload);

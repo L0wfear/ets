@@ -5,13 +5,7 @@ const CITY_DASHBOARD_API_FACTORY = new ApiServiceFactory({
   apiUrl: 'http://ods.mos.ru/ssd/city-dashboard',
 });
 
-const TEST_API_FACTORY = new ApiServiceFactory({
-  apiUrl: 'http://10.127.32.23:6006',
-});
-
-// get_length/?gps_code=909731&from_dt=1467007200&to_dt=1467093540
-export const TrackDistanceService = TEST_API_FACTORY.createApiServiceAdapter('get_length');
-
+export const TrackDistanceService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('get_length');
 export const TrackService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('tracks');
 
 const ETS_API_FACTORY = new ApiServiceFactory({

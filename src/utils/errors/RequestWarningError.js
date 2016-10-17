@@ -1,5 +1,3 @@
 import ExtendableError from './ExtendableError.js';
 
-class RequestWarningError extends ExtendableError {}
-
-export default RequestWarningError;
+export default class RequestWarningError extends ExtendableError {}

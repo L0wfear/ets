@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import { getToday9am, getTomorrow9am, getFormattedDateTimeSeconds } from 'utils/dates';
 import { getReportNotReadyNotification3 } from 'utils/notifications';
+import { REPORT_STATUSES } from 'constants/statuses';
 import DailyReportHeader from 'components/reports/DailyReportHeader.jsx';
-import { getReportStatusLabel, getGeozoneTypeLabel } from 'utils/labelFunctions';
+import { getGeozoneTypeLabel } from 'utils/labelFunctions';
 import { FluxContext, HistoryContext, exportable, staticProps, connectToStores } from 'utils/decorators';
 import find from 'lodash/find';
 
@@ -23,7 +24,7 @@ const tableMeta = {
       type: 'text',
       filter: {
         type: 'multiselect',
-        labelFunction: getReportStatusLabel,
+        labelFunction: s => REPORT_STATUSES[s] || REPORT_STATUSES.default,
       },
     },
     {
@@ -89,7 +90,7 @@ const tableMeta = {
 
 const WeeklyTechnicalOperationCompleteReportsTable = (props) => {
   const renderers = {
-    status: ({ data }) => <div>{data ? getReportStatusLabel(data) : ''}</div>,
+    status: ({ data }) => <div>{REPORT_STATUSES[data] || REPORT_STATUSES.default}</div>,
     geozone_type: ({ data }) => <div>{data ? getGeozoneTypeLabel(data) : ''}</div>,
     element: ({ data }) => <div>{data ? getElementLabel(data) : ''}</div>,
     date_start: ({ data }) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,

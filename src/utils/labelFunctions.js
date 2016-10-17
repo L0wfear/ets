@@ -6,51 +6,9 @@ export function bindFlux(fluxInstance) {
   flux = fluxInstance;
 }
 
-export function waybillStatusLabelFunction(s) {
-  switch (s) {
-    case 'draft':
-      return 'Черновик';
-    case 'active':
-      return 'Активен';
-    case 'closed':
-      return 'Закрыт';
-    default:
-      return 'Н/Д';
-  }
-}
-
-export function waybillMissionsCompleteStatusLabelFunction(status) {
-  return status === true ? 'Все задания завершены' : 'Есть незавершенные задания';
-}
-
-export function getReportStatusLabel(status) {
-  switch (status) {
-    case 'fail':
-      return 'Ошибка';
-    case 'success':
-      return 'Обработан';
-    case 'in progress':
-      return 'В обработке';
-    case 'wait':
-      return 'В очереди';
-    default:
-      return 'Н/Д';
-  }
-}
-
+// TODO убрать
 export function getGeozoneTypeLabel(type) {
   return type === 'odh' ? 'Объект дорожного хозяйства' : 'Дворовая территория';
-}
-
-export function getPeriodicReportStatusLabel(s) {
-  const statuses = {
-    full_traveled: 'Пройдено полностью',
-    not_traveled: 'Не пройдено',
-    traveled_less_than_half: 'Пройдено меньше половины',
-    traveled_more_than_half: 'Пройдено больше половины',
-  };
-
-  return statuses[s];
 }
 
 // TODO обращений к сторам быть не должно, нужно получать данные из бека

@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
-import { getReportStatusLabel } from 'utils/labelFunctions';
+import { REPORT_STATUSES } from 'constants/statuses';
 import { getFormattedDateTimeSeconds } from 'utils/dates';
 
 const tableMeta = {
@@ -11,7 +11,7 @@ const tableMeta = {
       type: 'text',
       filter: {
         type: 'multiselect',
-        labelFunction: getReportStatusLabel,
+        labelFunction: s => REPORT_STATUSES[s] || REPORT_STATUSES.default,
       },
     },
     {
@@ -53,7 +53,7 @@ const tableMeta = {
 
 export default (props) => {
   const renderers = {
-    status: ({ data }) => <div>{data ? getReportStatusLabel(data) : ''}</div>,
+    status: ({ data }) => <div>{REPORT_STATUSES[data] || REPORT_STATUSES.default}</div>,
     timestamp_create: ({ data }) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
     timestamp_process_begin: ({ data }) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
     timestamp_process_end: ({ data }) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,

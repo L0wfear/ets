@@ -1,11 +1,14 @@
 import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
+import { WAYBILL_STATUSES } from 'constants/statuses';
 import {
   employeeFIOLabelFunction,
-  waybillStatusLabelFunction,
-  waybillMissionsCompleteStatusLabelFunction,
 } from 'utils/labelFunctions';
+
+function waybillMissionsCompleteStatusLabelFunction(status) {
+  return status === true ? 'Все задания завершены' : 'Есть незавершенные задания';
+}
 
 const getTableMeta = () => {
   const tableMeta = {
@@ -16,7 +19,7 @@ const getTableMeta = () => {
         type: 'string',
         filter: {
           type: 'multiselect',
-          labelFunction: waybillStatusLabelFunction,
+          labelFunction: s => WAYBILL_STATUSES[s] || WAYBILL_STATUSES.default,
         },
       },
       {
@@ -196,7 +199,7 @@ const getTableMeta = () => {
 
 export default (props) => {
   const renderers = {
-    status: ({ data }) => <div>{waybillStatusLabelFunction(data)}</div>,
+    status: ({ data }) => <div>{WAYBILL_STATUSES[data] || WAYBILL_STATUSES.default}</div>,
     responsible_person_id: ({ data }) => <div>{employeeFIOLabelFunction(data)}</div>,
     driver_id: ({ data }) => <div>{employeeFIOLabelFunction(data)}</div>,
     date_create: ({ data }) => <DateFormatter date={data} />,

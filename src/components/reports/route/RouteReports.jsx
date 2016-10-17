@@ -3,8 +3,8 @@ import Table from 'components/ui/table/DataTable.jsx';
 import { Button } from 'react-bootstrap';
 import EtsSelect from 'components/ui/EtsSelect.jsx';
 import Div from 'components/ui/Div.jsx';
+import { REPORT_STATUSES } from 'constants/statuses';
 import { getFormattedDateTimeSeconds } from 'utils/dates';
-import { getReportStatusLabel } from 'utils/labelFunctions';
 import { FluxContext, HistoryContext, exportable, staticProps, connectToStores } from 'utils/decorators';
 
 const tableMeta = {
@@ -15,7 +15,7 @@ const tableMeta = {
       type: 'text',
       filter: {
         type: 'multiselect',
-        labelFunction: getReportStatusLabel,
+        labelFunction: s => REPORT_STATUSES[s] || REPORT_STATUSES.default,
       },
     },
     {
@@ -79,7 +79,7 @@ const tableMeta = {
 
 const RouteOdhCoveringReportsTable = (props) => {
   const renderers = {
-    status: ({ data }) => <div>{data ? getReportStatusLabel(data) : ''}</div>,
+    status: ({ data }) => <div>{REPORT_STATUSES[data] || REPORT_STATUSES.default}</div>,
     timestamp_create: ({ data }) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
     timestamp_process_begin: ({ data }) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,
     timestamp_process_end: ({ data }) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,

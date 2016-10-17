@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
-import { getPeriodicReportStatusLabel } from 'utils/labelFunctions';
+import { PERIODIC_REPORT_STATUSES } from 'constants/statuses';
 
 const getTableMeta = (props) => {
   const displayNameByElement = {
@@ -63,7 +63,7 @@ const getTableMeta = (props) => {
         type: 'string',
         filter: {
           type: 'multiselect',
-          labelFunction: getPeriodicReportStatusLabel,
+          labelFunction: s => PERIODIC_REPORT_STATUSES[s] || PERIODIC_REPORT_STATUSES.default
         },
       },
     ],
@@ -75,7 +75,7 @@ const getTableMeta = (props) => {
 export default (props) => {
   const renderers = {
     car_type_list: ({ data }) => <div>{data.map(el => el.name).join(', ')}</div>,
-    status: ({ data }) => <div>{getPeriodicReportStatusLabel(data) || ''}</div>,
+    status: ({ data }) => <div>{PERIODIC_REPORT_STATUSES[data] || PERIODIC_REPORT_STATUSES.default}</div>,
     gov_number_list: ({ data }) => <div>{data && data.join ? data.join(', ') : ''}</div>,
   };
 

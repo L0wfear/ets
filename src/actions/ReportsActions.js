@@ -84,13 +84,6 @@ export default class ReportsActions extends Actions {
     return FuelReportService.get(payload);
   }
 
-  printFuelReport(data) {
-    const payload = _.cloneDeep(data);
-    payload.date_from = createValidDate(payload.date_from);
-    payload.date_to = createValidDate(payload.date_to);
-    return FuelReportService.post(payload, false, 'json', true);
-  }
-
   getAnalytics(data) {
     const payload = _.cloneDeep(data);
     payload.date_from = createValidDateTime(payload.date_from);
@@ -122,7 +115,7 @@ export default class ReportsActions extends Actions {
     return WeeklyTechnicalOperationCompleteReportsService.post(payload, true, 'json');
   }
 
-  getOdhCoverageReport(date_start, date_end, format) {
+  getOdhCoverageReport(date_start, date_end) {
     const payload = {};
     if (date_start) {
       payload.date_start = createValidDateTime(date_start);

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import find from 'lodash/find';
 import Table from 'components/ui/table/DataTable.jsx';
-import { getReportStatusLabel, getGeozoneTypeLabel } from 'utils/labelFunctions';
+import { REPORT_STATUSES } from 'constants/statuses';
+import { getGeozoneTypeLabel } from 'utils/labelFunctions';
 import { getFormattedDateTimeSeconds } from 'utils/dates';
 
 const getElementLabel = (el) => {
@@ -20,7 +21,7 @@ const tableMeta = {
       type: 'text',
       filter: {
         type: 'multiselect',
-        labelFunction: getReportStatusLabel,
+        labelFunction: s => REPORT_STATUSES[s] || REPORT_STATUSES.default,
       },
     },
     {
@@ -86,7 +87,7 @@ const tableMeta = {
 
 export default (props) => {
   const renderers = {
-    status: ({ data }) => <div>{data ? getReportStatusLabel(data) : ''}</div>,
+    status: ({ data }) => <div>{REPORT_STATUSES[data] || REPORT_STATUSES.default}</div>,
     geozone_type: ({ data }) => <div>{data ? getGeozoneTypeLabel(data) : ''}</div>,
     element: ({ data }) => <div>{data ? getElementLabel(data) : ''}</div>,
     date_start: ({ data }) => <div>{data ? getFormattedDateTimeSeconds(data) : ''}</div>,

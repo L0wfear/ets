@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Glyphicon, Dropdown, MenuItem as BootstrapMenuItem } from 'react-bootstrap';
+import { Button, Glyphicon, Dropdown, MenuItem as BootstrapMenuItem, Input } from 'react-bootstrap';
 import { autobind } from 'core-decorators';
 import { connectToStores, FluxContext, bindable } from 'utils/decorators';
 import { getToday9am, getTomorrow9am, getDate9am, getNextDay859am, getFormattedDateTime } from 'utils/dates';
@@ -51,9 +51,11 @@ export default class OdhCoverageReport extends Component {
     // clearInterval(this.refreshInterval);
   }
 
-  getReport() {
+  async getReport() {
     const { flux } = this.context;
-    flux.getActions('reports').getOdhCoverageReport(/*this.state.date_start, this.state.date_end*/);
+    const res = await flux.getActions('reports').getOdhCoverageReport(/*this.state.date_start, this.state.date_end*/);
+    const dates = res.result.meta;
+    if (dates.date_start) this.setState({date_start: dates.date_start, date_end: new Date()})
   }
 
   handleDateStartChange(date) {
@@ -80,7 +82,7 @@ export default class OdhCoverageReport extends Component {
 
   render() {
     const { odhCoverageReport = [] } = this.props;
-    const { isExporting } = this.state;
+    const { isExporting, date_start, date_end } = this.state;
     const exportGlyph = isExporting ? 'refresh' : 'download-alt';
     const iconClassname = isExporting ? 'glyphicon-spin' : '';
 
@@ -88,6 +90,11 @@ export default class OdhCoverageReport extends Component {
       <div className="ets-page-wrap">
         {/*<OdhCoverageReportHeader {...this.state} onSubmit={this.getReport} onChange={this.handleDateStartChange} />*/}
         <OdhCoverageReportTable data={odhCoverageReport}>
+          <div className="daily-cleaning-report-period">
+            Период формирования:
+            <Input type="text" readOnly value={getFormattedDateTime(date_start)} /> —
+            <Input type="text" readOnly value={getFormattedDateTime(date_end)} />
+          </div>
           <Dropdown id="dropdown-print" pullRight>
             <Dropdown.Toggle noCaret bsSize="small">
               <Glyphicon disabled={isExporting} className={iconClassname} glyph={exportGlyph} />

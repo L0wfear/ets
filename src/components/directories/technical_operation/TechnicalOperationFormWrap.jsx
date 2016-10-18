@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import Div from 'components/ui/Div.jsx';
-import TechnicalOperationForm from './TechnicalOperationForm.jsx';
+import BaseTechnicalOperationForm from './TechnicalOperationForm.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import { technicalOperationSchema } from 'models/TechOperationModel.js';
+import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
+
+const TechnicalOperationForm = enhanceWithPermissions(BaseTechnicalOperationForm);
 
 export default class TechnicalOperationFormWrap extends FormWrap {
 
@@ -17,6 +20,8 @@ export default class TechnicalOperationFormWrap extends FormWrap {
     return (
       <Div hidden={!this.props.showForm}>
         <TechnicalOperationForm
+          permissions={['technical_operation.update']}
+          addPermissionProp={true}
           formState={this.state.formState}
           onSubmit={this.handleFormSubmit.bind(this)}
           handleFormChange={this.handleFormStateChange.bind(this)}

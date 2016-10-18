@@ -9,6 +9,7 @@ export default class FuelOperationForm extends Form {
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
+    const {isPermitted} = this.props;
 
     return (
       <Modal {...this.props} backdrop="static">
@@ -27,6 +28,7 @@ export default class FuelOperationForm extends Form {
                 value={state.name}
                 error={errors.name}
                 onChange={this.handleChange.bind(this, 'name')}
+                disabled={!isPermitted}
               />
 
               <label>Для спецоборудования</label>
@@ -34,6 +36,7 @@ export default class FuelOperationForm extends Form {
                 style={{ marginLeft: '10px' }}
                 checked={!!state.equipment}
                 onClick={this.handleChange.bind(this, 'equipment', !!!state.equipment)}
+                disabled={!isPermitted}
               />
             </Col>
 
@@ -42,7 +45,7 @@ export default class FuelOperationForm extends Form {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>Сохранить</Button>
+          <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || !isPermitted}>Сохранить</Button>
         </Modal.Footer>
 
       </Modal>

@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import FuelRateForm from './FuelRateForm.jsx';
+import BaseFuelRateForm from './FuelRateForm.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import { fuelRateSchema, defaultElement } from './fuelRateSchema.js';
+import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
+
+const FuelRateForm = enhanceWithPermissions(BaseFuelRateForm);
 
 export default class FuelRateFormWrap extends FormWrap {
 
@@ -20,6 +23,8 @@ export default class FuelRateFormWrap extends FormWrap {
     return props.showForm ?
       <FuelRateForm
         formState={this.state.formState}
+        permissions={['fuel_consumption_rate.update']}
+        addPermissionProp={true}
         onSubmit={this.handleFormSubmit.bind(this)}
         handleFormChange={this.handleFormStateChange.bind(this)}
         show={this.props.showForm}

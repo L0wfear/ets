@@ -27,7 +27,7 @@ class CarForm extends Form {
 
   render() {
     const state = this.props.formState;
-    const { ownersIndex = {}, typesIndex = {} } = this.props;
+    const { ownersIndex = {}, typesIndex = {}, isPermitted = false } = this.props;
     const owner = ownersIndex[state.owner_id] || {};
     const type = typesIndex[state.type_id] || {};
     const { companyStructureList = [] } = this.state;
@@ -58,20 +58,23 @@ class CarForm extends Form {
                 value={state.company_structure_id}
                 clearable={false}
                 onChange={this.handleChange.bind(this, 'company_structure_id')}
+                disabled={!isPermitted}
               />
 
-               <Field
-                 type="string"
-                 label="Гаражный номер"
-                 value={state.garage_number}
-                 onChange={this.handleChange.bind(this, 'garage_number')}
-               />
+              <Field
+                type="string"
+                label="Гаражный номер"
+                value={state.garage_number}
+                onChange={this.handleChange.bind(this, 'garage_number')}
+                disabled={!isPermitted}
+              />
 
               <Field
                 type="number"
                 label="Поправочный коэффициент"
                 value={state.fuel_correction_rate}
                 onChange={this.handleChange.bind(this, 'fuel_correction_rate')}
+                disabled={!isPermitted}
               />
             </Col>
 
@@ -94,7 +97,7 @@ class CarForm extends Form {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+          <Button disabled={!isPermitted} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
         </Modal.Footer>
 
       </Modal>

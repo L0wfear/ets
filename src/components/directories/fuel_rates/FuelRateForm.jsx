@@ -17,7 +17,7 @@ export default class FuelRateForm extends Form {
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
-    const { modelsList = [], operations = [], specialModelsList = [] } = this.props;
+    const { modelsList = [], operations = [], specialModelsList = [], isPermitted = false } = this.props;
     const MODELS = modelsList.map(m => ({ value: m.id, label: m.title }));
     const SPECIALMODELS = specialModelsList.map(m => ({ value: m.id, label: m.name }));
     const OPERATIONS = operations
@@ -42,6 +42,7 @@ export default class FuelRateForm extends Form {
                 date={state.order_date}
                 onChange={this.handleChange.bind(this, 'order_date')}
                 time={false}
+                disabled={!isPermitted}
               />
 
               <Field
@@ -52,6 +53,7 @@ export default class FuelRateForm extends Form {
                 clearable={false}
                 value={state.operation_id}
                 onChange={this.handleChange.bind(this, 'operation_id')}
+                disabled={!isPermitted}
               />
 
               <Field
@@ -60,6 +62,7 @@ export default class FuelRateForm extends Form {
                 error={errors.summer_rate}
                 value={state.summer_rate}
                 onChange={this.handleChange.bind(this, 'summer_rate')}
+                disabled={!isPermitted}
               />
 
               <Field
@@ -68,6 +71,7 @@ export default class FuelRateForm extends Form {
                 error={errors.winter_rate}
                 value={state.winter_rate}
                 onChange={this.handleChange.bind(this, 'winter_rate')}
+                disabled={!isPermitted}
               />
 
               <Field
@@ -78,6 +82,7 @@ export default class FuelRateForm extends Form {
                 clearable={false}
                 value={state.car_special_model_id}
                 onChange={this.handleChange.bind(this, 'car_special_model_id')}
+                disabled={!isPermitted}
               />
 
               <Field
@@ -88,6 +93,7 @@ export default class FuelRateForm extends Form {
                 options={MODELS}
                 value={state.car_model_id}
                 onChange={this.handleChange.bind(this, 'car_model_id')}
+                disabled={!isPermitted}
               />
 
             </Col>
@@ -97,7 +103,7 @@ export default class FuelRateForm extends Form {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+          <Button disabled={!this.props.canSave || !isPermitted} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
         </Modal.Footer>
 
       </Modal>

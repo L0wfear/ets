@@ -9,6 +9,7 @@ export default function enhanceWithPermissions(ComposedComponent) {
         userPermissions: PropTypes.array.isRequired,
         permissions: PropTypes.array,
         oneOfPermissions: PropTypes.array,
+        addPermissionProp: PropTypes.bool
       };
     }
 
@@ -17,6 +18,7 @@ export default function enhanceWithPermissions(ComposedComponent) {
         userPermissions: [],
         permissions: [],
         oneOfPermissions: [],
+        addPermissionProp: false
       };
     }
 
@@ -36,7 +38,7 @@ export default function enhanceWithPermissions(ComposedComponent) {
         return true;
       }
 
-      return permissions.filter(p => userPermissions.indexOf(p) + 1).length;
+      return !!permissions.filter(p => userPermissions.indexOf(p) + 1).length;
     }
 
     /**
@@ -45,10 +47,11 @@ export default function enhanceWithPermissions(ComposedComponent) {
      * @return {?React.Component}
      */
     render() {
-      if (!this.isPermitted()) {
+      const isPermitted = this.isPermitted();
+      if (!isPermitted && !this.props.addPermissionProp) {
         return null;
       }
-      return <ComposedComponent {...this.props} />;
+      return <ComposedComponent isPermitted={isPermitted} {...this.props} />;
     }
   };
 }

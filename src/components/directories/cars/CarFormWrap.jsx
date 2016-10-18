@@ -1,6 +1,9 @@
 import React from 'react';
 import FormWrap from 'components/compositions/FormWrap.jsx';
-import CarForm from './CarForm.jsx';
+import BaseCarForm from './CarForm.jsx';
+import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
+
+const CarForm = enhanceWithPermissions(BaseCarForm);
 
 export default class CarFormWrap extends FormWrap {
 
@@ -18,6 +21,8 @@ export default class CarFormWrap extends FormWrap {
       <CarForm
         formState={this.state.formState}
         onSubmit={this.handleFormSubmit}
+        permissions={['car.update']}
+        addPermissionProp={true}
         handleFormChange={this.handleFormStateChange}
         show={this.props.showForm}
         onHide={this.props.onFormHide}

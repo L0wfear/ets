@@ -38,7 +38,7 @@ export default class TechnicalOperationForm extends Form {
     const state = this.props.formState;
     const errors = this.props.formErrors;
     const title = 'Тех. операция';
-    const { workKindsList = [], typesList = [], technicalOperationsObjectsList = [], technicalOperationsTypesList = [] } = this.props;
+    const { workKindsList = [], typesList = [], technicalOperationsObjectsList = [], technicalOperationsTypesList = [], isPermitted = false } = this.props;
 
     const WORK_KINDS = workKindsList.map(({ id, name }) => ({ value: id, label: name }));
     const SEASONS = seasonsList.map(({ id, name }) => ({ value: id, label: name }));
@@ -61,6 +61,7 @@ export default class TechnicalOperationForm extends Form {
               <Field type="string" label="Наименование"
                 value={state.name}
                 onChange={this.handleChange.bind(this, 'name')}
+                disabled={!isPermitted}
                 error={errors[name]}
               />
             </Col>
@@ -71,6 +72,7 @@ export default class TechnicalOperationForm extends Form {
                 value={state.objects.map(cft => cft.id).join(',')}
                 options={TECHNICAL_OPERATION_OBJECTS}
                 onChange={this.handleObjectsChange.bind(this)}
+                disabled={!isPermitted}
               />
             </Col>
 
@@ -82,6 +84,7 @@ export default class TechnicalOperationForm extends Form {
                 options={SEASONS}
                 onChange={this.handleChange.bind(this, 'season_id')}
                 error={errors[name]}
+                disabled={!isPermitted}
               />
             </Col>
           </Row>
@@ -93,6 +96,7 @@ export default class TechnicalOperationForm extends Form {
                 value={state.work_kind_id}
                 onChange={this.handleChange.bind(this, 'work_kind_id')}
                 error={errors[name]}
+                disabled={!isPermitted}
               />
             </Col>
             <Col md={2}>
@@ -100,6 +104,7 @@ export default class TechnicalOperationForm extends Form {
                 options={NEEDS_BRIGADE_OPTIONS}
                 value={+state.needs_brigade}
                 onChange={this.handleChange.bind(this, 'needs_brigade')}
+                disabled={!isPermitted}
               />
             </Col>
             <Col md={2}>
@@ -107,6 +112,7 @@ export default class TechnicalOperationForm extends Form {
                 value={state.max_speed}
                 onChange={this.handleChange.bind(this, 'max_speed')}
                 error={errors[name]}
+                disabled={!isPermitted}
               />
             </Col>
 
@@ -116,6 +122,7 @@ export default class TechnicalOperationForm extends Form {
                 value={state.check_type}
                 clearable={false}
                 onChange={this.handleChange.bind(this, 'check_type')}
+                disabled={!isPermitted}
               />
             </Col>
             <Col md={2}>
@@ -123,6 +130,7 @@ export default class TechnicalOperationForm extends Form {
                 options={NEEDS_BRIGADE_OPTIONS}
                 value={+state.use_in_reports}
                 onChange={this.handleChange.bind(this, 'use_in_reports')}
+                disabled={!isPermitted}
               />
             </Col>
           </Row>
@@ -134,6 +142,7 @@ export default class TechnicalOperationForm extends Form {
                 value={_.uniq(state.car_func_types.map(cft => cft.id)).join(',')}
                 options={CAR_TYPES}
                 onChange={this.handleCarFuncTypesChange.bind(this)}
+                disabled={!isPermitted}
               />
             </Col>
           </Row>
@@ -142,7 +151,7 @@ export default class TechnicalOperationForm extends Form {
 
         <Modal.Footer>
           <Div className="inline-block">
-            <Button onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+            <Button disabled={!isPermitted} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
           </Div>
         </Modal.Footer>
       </Modal>

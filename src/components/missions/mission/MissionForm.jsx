@@ -199,10 +199,10 @@ export class MissionForm extends Form {
                 error={errors.car_id}
                 className="white-space-pre-wrap"
                 disabled={IS_POST_CREATING_ASSIGNED ||
-                    IS_POST_CREATING_NOT_ASSIGNED ||
-                    IS_DISPLAY ||
-                    this.props.fromWaybill ||
-                  (IS_CREATING && isEmpty(state.technical_operation_id))}
+                  IS_POST_CREATING_NOT_ASSIGNED ||
+                  IS_DISPLAY ||
+                  this.props.fromWaybill ||
+                (IS_CREATING && isEmpty(state.technical_operation_id))}
                 options={CARS}
                 value={state.car_id}
                 onChange={this.handleCarIdChange}

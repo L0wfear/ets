@@ -1,7 +1,7 @@
 import { config as configureRaven } from './config/raven.js';
 
 const PROTO = window.location.protocol;
-const WS_PROTO = 'wss:';
+const WS_PROTO = 'ws:';
 
 const config = {
   ws: `${WS_PROTO}//ods.mos.ru/ssd/city-dashboard/stream`,

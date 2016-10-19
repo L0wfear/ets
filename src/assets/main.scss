@@ -2818,6 +2818,20 @@ div.none {
   z-index: 99999;
 }
 
+.gost-weak-loading-overlay {
+  position: fixed;
+  left: 20px;
+  bottom: 50px;
+  width: 120px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border: 1px solid #666;
+  border-radius: 8px;
+  text-align: center;
+  padding: 10px;
+  color: #777;
+  z-index: 99999;
+}
+
 .width120 {
   width: 120px !important;
 }

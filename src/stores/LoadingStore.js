@@ -17,7 +17,7 @@ export default class LoadingStore extends Store {
     const companyStructureActions = flux.getActions('companyStructure');
     const reportsActions = flux.getActions('reports');
 
-    this.reg(
+    this.reg(false,
       waybillsActions.deleteWaybill,
       waybillsActions.createWaybill,
       waybillsActions.updateWaybill,
@@ -43,18 +43,6 @@ export default class LoadingStore extends Store {
       objectsActions.getWorkKinds,
       objectsActions.getFaxogramms,
 
-      /* Geoobjects */
-      geoObjectsActions.getODHs,
-      geoObjectsActions.updateODH,
-      geoObjectsActions.getDTs,
-      geoObjectsActions.updateDT,
-      geoObjectsActions.getGeozoneByTypeWithGeometry,
-      geoObjectsActions.getGeozoneByType,
-
-      carActions.updateCarAdditionalInfo,
-      carActions.getTrack,
-      carActions.getCarsByTechnicalOperation,
-
       employeesActions.getEmployees,
       employeesActions.updateEmployee,
       employeesActions.createEmployee,
@@ -65,8 +53,6 @@ export default class LoadingStore extends Store {
       missionsActons.getMissionReassignationParameters,
       missionsActons.createMissionFromReassignation,
       missionsActons.updateMissionFromReassignation,
-      missionsActons.getMissionsByCarAndDates,
-      missionsActons.getMissionsByCarAndTimestamp,
       missionsActons.getMissionById,
       missionsActons.getMissionSources,
       missionsActons.createMission,
@@ -136,34 +122,68 @@ export default class LoadingStore extends Store {
 
     );
 
+    this.reg(true,
+      geoObjectsActions.getODHs,
+      geoObjectsActions.updateODH,
+      geoObjectsActions.getDTs,
+      geoObjectsActions.updateDT,
+      geoObjectsActions.getGeozoneByTypeWithGeometry,
+      geoObjectsActions.getGeozoneByType,
+
+      carActions.updateCarAdditionalInfo,
+      carActions.getTrack,
+      carActions.getCarsByTechnicalOperation,
+
+      missionsActons.getMissionsByCarAndDates,
+      missionsActons.getMissionsByCarAndTimestamp,
+    );
+
     this.state = {
       operationsCount: 0,
+      weakOperationsCount: 0
     };
   }
 
-  reg(...actions) {
-    actions.forEach(action => this.registerAsync(action, this.inc.bind(this, action), this.dec, this.dec));
+  reg(weak, ...actions) {
+    actions.forEach(action => this.registerAsync(action,
+      () => this.inc(action, weak),
+      () => this.dec(weak),
+      () => this.dec(weak)
+    ));
   }
+
+  inc(action, weak) {
+    if (weak) {
+      let { weakOperationsCount } = this.state;
+      weakOperationsCount += 1;
+      this.setState({ weakOperationsCount });
+    } else {
+      let { operationsCount } = this.state;
+      operationsCount += 1;
+      this.setState({ operationsCount });
+    }
+  }
+
+  dec(weak) {
+    if (weak) {
+      let { weakOperationsCount } = this.state;
+      weakOperationsCount -= 1;
+      this.setState({ weakOperationsCount });
+    } else {
+      let { operationsCount } = this.state;
+      operationsCount -= 1;
+      this.setState({ operationsCount });
+    }
+  }
+
+
 
   isLoading() {
     return this.state.operationsCount > 0;
   }
 
-  inc(action) {
-    // console.info(action); // to watch actions stack
-    let { operationsCount } = this.state;
-
-    operationsCount += 1;
-
-    this.setState({ operationsCount });
-  }
-
-  dec() {
-    let { operationsCount } = this.state;
-
-    operationsCount -= 1;
-
-    this.setState({ operationsCount });
+  isWeakLoading() {
+    return this.state.weakOperationsCount > 0;
   }
 
 }

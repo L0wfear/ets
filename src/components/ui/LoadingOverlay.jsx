@@ -14,12 +14,14 @@ export default class LoadingOverlay extends React.Component {
     const { isLoading } = this.props;
     const store = flux.getStore('loading');
     const storeIsLoading = store.isLoading();
-    const display = storeIsLoading || isLoading ? 'block' : 'none';
+    const storeIsWeakLoading = store.isWeakLoading();
 
-    return (
-      <div className="gost-loading-overlay" style={{ display }}>
-        <Preloader type="mainpage" visible={isLoading} />
-      </div>
-    );
+    if (storeIsLoading || isLoading) {
+      return <Preloader type="mainpage" />
+    } else if (!storeIsLoading && !isLoading && storeIsWeakLoading) {
+      return <Preloader type="field" />
+    } else {
+      return <div style={{display: 'none'}}/>
+    }
   }
 }

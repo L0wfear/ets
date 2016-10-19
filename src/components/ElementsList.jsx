@@ -31,6 +31,7 @@ class ElementsList extends React.Component {
       elementsList: [],
       showForm: false,
       selectedElement: null,
+      readPermission: false
     };
 
     this.selectField = this.constructor.selectField || 'id';
@@ -45,7 +46,8 @@ class ElementsList extends React.Component {
       this.node.setAttribute('tabindex', 1);
       this.node.onkeydown = this.onKeyPress.bind(this);
     }
-
+    const readPermission = this.context.flux.getStore('session').state.userPermissions.indexOf(`${this.entity}.read`) > -1;
+    this.setState({readPermission});
     this.init();
   }
 
@@ -95,7 +97,7 @@ class ElementsList extends React.Component {
       setTimeout(() => {
         // В случае если за DOUBLECLICK_TIMEOUT (мс) кликнули по одному и тому же элементу больше 1 раза
         if (this.clicks !== 1) {
-          if (this.state.selectedElement && id === this.state.selectedElement[this.selectField]) {
+          if (this.state.selectedElement && id === this.state.selectedElement[this.selectField] && this.state.readPermission) {
             onDoubleClick.call(this);
           }
         }
@@ -162,7 +164,7 @@ class ElementsList extends React.Component {
       return;
     }
 
-    if (e.code === 'Enter' && this.state.selectedElement !== null) {
+    if (e.code === 'Enter' && this.state.selectedElement !== null && this.state.readPermission) {
       this.showForm();
     }
 

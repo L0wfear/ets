@@ -43,6 +43,7 @@ export default class MasterManagementCard extends React.Component {
   }
 
   onDutyMissionFormHide() {
+    this.props.refreshCard(null, null, 'current_duty_missions');
     this.setState({ showDutyMissionForm: false });
   }
 

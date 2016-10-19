@@ -139,6 +139,7 @@ export default class CarInfo extends Component {
 
   toggleTrackPlaying() {
     const { marker } = this.props.car;
+    this.state.trackingMode && this.toggleCarTracking();
     marker.togglePlay();
     this.setState({ trackPaused: !this.state.trackPaused });
   }

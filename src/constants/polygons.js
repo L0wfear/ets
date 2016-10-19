@@ -10,7 +10,7 @@ export const polyStyles = {
       color: 'rgba(0,0,0,0.2)',
     }),
     stroke: new ol.style.Stroke({
-      color: 'grey',
+      color: '#333',
       width: 1,
     }),
   }),

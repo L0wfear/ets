@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import CarpoolTable from './CarpoolTable.jsx';
 import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
 
 @connectToStores(['geoObjects'])
 @exportable({ path: 'geozones', entity: 'carpool' })
@@ -10,6 +11,7 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
   entity: 'carpool',
   listName: 'carpoolsList',
   tableComponent: CarpoolTable,
+  formComponent: GeoObjectsMapModal,
 })
 export default class CarpoolDirectory extends ElementsList {
 

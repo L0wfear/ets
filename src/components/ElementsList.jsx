@@ -328,6 +328,7 @@ class ElementsList extends React.Component {
         onFormHide={this.onFormHide}
         showForm={this.state.showForm}
         element={this.state.selectedElement}
+        entity={this.entity}
       />
     );
 

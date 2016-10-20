@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import SSPTable from './SSPTable.jsx';
+import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
 
 @connectToStores(['geoObjects'])
 @exportable({ path: 'geozones', entity: 'ssp' })
@@ -10,6 +11,7 @@ import SSPTable from './SSPTable.jsx';
   entity: 'ssp',
   listName: 'sspsList',
   tableComponent: SSPTable,
+  formComponent: GeoObjectsMapModal
 })
 export default class SSPDirectory extends ElementsList {
   componentDidMount() {

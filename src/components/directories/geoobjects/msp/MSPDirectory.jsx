@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import MSPTable from './MSPTable.jsx';
 import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
 
 @connectToStores(['geoObjects'])
 @exportable({ path: 'geozones', entity: 'msp' })
@@ -10,6 +11,7 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
   entity: 'msp',
   listName: 'mspsList',
   tableComponent: MSPTable,
+  formComponent: GeoObjectsMapModal
 })
 export default class MSPDirectory extends ElementsList {
   componentDidMount() {

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import PGMTable from './PGMTable.jsx';
+import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
 
 @connectToStores(['geoObjects'])
 @staticProps({
@@ -9,6 +10,7 @@ import PGMTable from './PGMTable.jsx';
   entity: 'pgm',
   listName: 'pgmsList',
   tableComponent: PGMTable,
+  formComponent: GeoObjectsMapModal
 })
 // @exportable
 export default class PGMDirectory extends ElementsList {

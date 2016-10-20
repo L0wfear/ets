@@ -21,6 +21,12 @@ export const waybillSchema = {
       required: true,
     },
     {
+      key: 'responsible_person_id',
+      title: 'Ответственное лицо',
+      type: 'number',
+      required: true,
+    },
+    {
       key: 'car_id',
       title: 'Транспортное средство',
       type: 'number',

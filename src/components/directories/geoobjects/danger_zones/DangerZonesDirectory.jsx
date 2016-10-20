@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import DangerZonesTable from './DangerZonesTable.jsx';
 import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
+
 
 @connectToStores(['geoObjects'])
 @exportable({ path: 'geozones', entity: 'danger_zone' })
@@ -10,6 +12,7 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
   entity: 'danger_zone',
   listName: 'dangerZonesList',
   tableComponent: DangerZonesTable,
+  formComponent: GeoObjectsMapModal,
 })
 export default class DangerZonesDirectory extends ElementsList {
 

@@ -35,11 +35,10 @@ export default class LoadingStore extends Store {
       fuelRateActions.getFuelRatesByCarModel,
       fuelRateActions.getEquipmentFuelRatesByCarModel,
 
-      objectsActions.getCars,
       objectsActions.getModels,
+      objectsActions.getTypes,
       objectsActions.getSpecialModels,
       objectsActions.getCustomers,
-      objectsActions.getTypes,
       objectsActions.getWorkKinds,
       objectsActions.getFaxogramms,
 
@@ -123,6 +122,8 @@ export default class LoadingStore extends Store {
     );
 
     this.reg(true,
+      objectsActions.getCars,
+
       geoObjectsActions.getODHs,
       geoObjectsActions.updateODH,
       geoObjectsActions.getDTs,
@@ -140,23 +141,23 @@ export default class LoadingStore extends Store {
 
     this.state = {
       operationsCount: 0,
-      weakOperationsCount: 0
+      lazyOperationsCount: 0
     };
   }
 
-  reg(weak, ...actions) {
+  reg(lazy, ...actions) {
     actions.forEach(action => this.registerAsync(action,
-      () => this.inc(action, weak),
-      () => this.dec(weak),
-      () => this.dec(weak)
+      () => this.inc(action, lazy),
+      () => this.dec(lazy),
+      () => this.dec(lazy)
     ));
   }
 
-  inc(action, weak) {
-    if (weak) {
-      let { weakOperationsCount } = this.state;
-      weakOperationsCount += 1;
-      this.setState({ weakOperationsCount });
+  inc(action, lazy) {
+    if (lazy) {
+      let { lazyOperationsCount } = this.state;
+      lazyOperationsCount += 1;
+      this.setState({ lazyOperationsCount });
     } else {
       let { operationsCount } = this.state;
       operationsCount += 1;
@@ -164,11 +165,11 @@ export default class LoadingStore extends Store {
     }
   }
 
-  dec(weak) {
-    if (weak) {
-      let { weakOperationsCount } = this.state;
-      weakOperationsCount -= 1;
-      this.setState({ weakOperationsCount });
+  dec(lazy) {
+    if (lazy) {
+      let { lazyOperationsCount } = this.state;
+      lazyOperationsCount -= 1;
+      this.setState({ lazyOperationsCount });
     } else {
       let { operationsCount } = this.state;
       operationsCount -= 1;
@@ -182,8 +183,8 @@ export default class LoadingStore extends Store {
     return this.state.operationsCount > 0;
   }
 
-  isWeakLoading() {
-    return this.state.weakOperationsCount > 0;
+  isLazyLoading() {
+    return this.state.lazyOperationsCount > 0;
   }
 
 }

@@ -19,6 +19,7 @@ const tableMeta = {
     },
     {
       name: 'consumable_material',
+      display: false,
       displayName: 'Расходный материал',
       filter: {
         type: 'multiselect',
@@ -33,7 +34,7 @@ export default (props) => {
     consumable_material: ({ data }) => <div style={{ textAlign: 'center' }}><input type="checkbox" checked={!!data} readOnly /></div>,
   };
 
-  return (<Table title="Нормативы по содержанию ОДХ"
+  return (<Table title="Справочник расходных материалов"
     results={props.data}
     tableMeta={tableMeta}
     renderers={renderers}

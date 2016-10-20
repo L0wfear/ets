@@ -123,7 +123,7 @@ export default class MainPage extends React.Component {
               <MenuItem permissions={['fuel_operation.list']} active={path === '/fuel-operations'} href="#/fuel-operations">Справочник операций для расчета топлива</MenuItem>
               <MenuItem permissions={['type.list']} active={path === '/car-func-types'} href="#/car-func-types">Справочник типов техники</MenuItem>
               <MenuItem permissions={['odh.list']} active={path === '/odh'} href="#/odh">Справочник ОДХ</MenuItem>
-              <MenuItem permissions={['odh_norm.list']} active={path === '/odh-norm'} href="#/odh-norm">Справочник нормативов по содержанию ОДХ</MenuItem>
+              <MenuItem permissions={['odh_norm.list']} active={path === '/odh-norm'} href="#/odh-norm">Справочник расходных материалов</MenuItem>
               <MenuItem permissions={['odh_norm_data_summer.list']} active={path === '/odh-norm-data-summer'} href="#/odh-norm-data-summer">Справочник показателей норм по содержанию ОДХ (лето)</MenuItem>
               <MenuItem permissions={['efficiency.list']} active={path === '/efficiency'} href="#/efficiency">Реестр показателей для расчета эффективности</MenuItem>
               <MenuItem permissions={['dt.list']} active={path === '/dt'} href="#/dt">Справочник ДТ</MenuItem>

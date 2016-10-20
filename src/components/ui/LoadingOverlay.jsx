@@ -19,7 +19,7 @@ export default class LoadingOverlay extends React.Component {
     if (storeIsLoading) {
       return <Preloader type="mainpage" />
     } else if (!storeIsLoading && (isLoading || storeIsLazyLoading)) {
-      return <Preloader type="field" />
+      return <Preloader type="lazy" />
     } else {
       return <div style={{display: 'none'}}/>
     }

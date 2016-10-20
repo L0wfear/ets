@@ -104,7 +104,7 @@ export default class WaybillFormWrap extends FormWrap {
               formState: waybill,
               formErrors,
               canPrint: false,
-              canSave: !_.filter(formErrors, (v, k) => k === 'fuel_end' ? false : v).length,
+              canSave: !_.filter(formErrors, (v, k) => ['fuel_end', 'distance'].indexOf(k) > -1 ? false : v).length,
               canClose: !_.filter(formErrors).length,
             });
           } else {

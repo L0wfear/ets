@@ -42,7 +42,7 @@ class GeoObjectsMapModal extends Component {
     }) : '';
 
     return (
-      <Modal show={this.props.showForm} onHide={this.props.onFormHide} backdrop="static">
+      <Modal show={this.props.showForm} onHide={this.props.onFormHide} bsSize="large" backdrop="static">
 
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">Просмотр объекта</Modal.Title>
@@ -50,10 +50,10 @@ class GeoObjectsMapModal extends Component {
 
         <Modal.Body>
           <Row>
-            <Col md={5}>
+            <Col md={4}>
               {form}
             </Col>
-            <Col md={7}>
+            <Col md={8}>
               <Div className="route-creating">
                 <PolyMap
                   onFeatureClick={() => {}}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SnowStorageTable from './SnowStorageTable.jsx';
+import SnowStorageTable, { tableMeta } from './SnowStorageTable.jsx';
 import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
@@ -10,7 +10,8 @@ import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
   entity: 'snowStorage',
   listName: 'snowStoragesList',
   tableComponent: SnowStorageTable,
-  formComponent: GeoObjectsMapModal
+  formComponent: GeoObjectsMapModal,
+  formMeta: tableMeta
 })
 // @exportable
 export default class SnowStorageDirectory extends ElementsList {

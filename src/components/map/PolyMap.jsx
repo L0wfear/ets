@@ -31,7 +31,7 @@ export default class PolyMap extends Component {
       center: props.center,
       zoom: props.zoom,
       minZoom: 2,
-      maxZoom: 13,
+      maxZoom: props.maxZoom || 13,
       projection: PROJECTION,
       extent: PROJECTION.getExtent(),
     });

@@ -329,6 +329,7 @@ class ElementsList extends React.Component {
         showForm={this.state.showForm}
         element={this.state.selectedElement}
         entity={this.entity}
+        meta={this.constructor.formMeta}
       />
     );
 

@@ -13,20 +13,12 @@ class GeoObjectsMapModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      zoom: null,
-      center: null,
-      polys: {},
+      polys: {}
     };
   }
 
   componentDidMount() {
-    const sessionStore = this.context.flux.getStore('session');
     this.context.flux.getActions('geoObjects').getGeozoneByTypeWithGeometry(this.props.entity);
-
-    this.setState({
-      zoom: sessionStore.getCurrentUser().getCompanyMapConfig().zoom,
-      center: sessionStore.getCurrentUser().getCompanyMapConfig().coordinates,
-    });
   }
 
   componentWillReceiveProps(props) {
@@ -38,6 +30,17 @@ class GeoObjectsMapModal extends Component {
   }
 
   render() {
+
+    const FIELDS = _.zipObject(this.props.meta.cols.map(e => e.name), this.props.meta.cols.map(e => e.displayName));
+    const form = this.props.element ? _.map(FIELDS, (name, key) => {
+      if (this.props.element[key]) return (
+        <Div key={key} style={{marginBottom: 10}}>
+          <label style={{display: 'block', margin: 0}}>{name}:</label>
+          {this.props.element[key]}
+        </Div>
+      )
+    }) : '';
+
     return (
       <Modal show={this.props.showForm} onHide={this.props.onFormHide} backdrop="static">
 
@@ -46,14 +49,20 @@ class GeoObjectsMapModal extends Component {
         </Modal.Header>
 
         <Modal.Body>
-          <Div className="route-creating">
-            <PolyMap
-              onFeatureClick={() => {}}
-              polys={this.state.polys}
-              zoom={this.state.zoom}
-              center={this.state.center}
-            />
-          </Div>
+          <Row>
+            <Col md={5}>
+              {form}
+            </Col>
+            <Col md={7}>
+              <Div className="route-creating">
+                <PolyMap
+                  onFeatureClick={() => {}}
+                  polys={this.state.polys}
+                  maxZoom={11}
+                />
+              </Div>
+            </Col>
+          </Row>
         </Modal.Body>
 
       </Modal>

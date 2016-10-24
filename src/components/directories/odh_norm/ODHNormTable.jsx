@@ -5,14 +5,14 @@ const tableMeta = {
   cols: [
     {
       name: 'name',
-      displayName: 'Норматив по содержанию ОДХ',
+      displayName: 'Наименование',
       type: 'text',
       filter: {
         type: 'multiselect',
       },
     },
     {
-      name: 'unit',
+      name: 'measure_unit_name', //unit
       displayName: 'Единица измерения',
       type: 'text',
       filter: false,

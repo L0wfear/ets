@@ -3,6 +3,7 @@ import {
   ODHNormService,
   ODHNormDataSummerService,
   EfficiencyService,
+  MeasureUnitService
 } from 'api/Services';
 import _ from 'lodash';
 
@@ -12,6 +13,10 @@ export default class ODHActions extends Actions {
     return ODHNormService.get();
   }
 
+  getMeasureUnits() {
+    return MeasureUnitService.get();
+  }
+
   updateODHNorm(formState) {
     const payload = _.clone(formState);
     return ODHNormService.path(formState.id).put(payload, true, 'json');
@@ -19,7 +24,7 @@ export default class ODHActions extends Actions {
 
   createODHNorm(formState) {
     const payload = _.clone(formState);
-    if (typeof payload.consumable_material === 'undefined') payload.consumable_material = false;
+    // if (typeof payload.consumable_material === 'undefined') payload.consumable_material = false;
     return ODHNormService.post(payload, true, 'json');
   }
 

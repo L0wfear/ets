@@ -24,6 +24,7 @@ export default class ODHNormList extends ElementsList {
     super.componentDidMount();
     const { flux } = this.context;
     flux.getActions('odh').getODHNorm();
+    flux.getActions('odh').getMeasureUnits();
   }
 
 }

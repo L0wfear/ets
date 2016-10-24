@@ -11,6 +11,7 @@ export default class ODHNormForm extends Form {
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
+    const {isPermitted = false} = this.props;
     const IS_CREATING = !state.id;
     const MEASUREUNITS = this.props.measureUnitList.map(({ id, name }) => ({ value: id, label: name }));
     const title = IS_CREATING ? 'Добавление расходного материала' : 'Изменение расходного материала'; //'Добавление норматива по содержанию ОДХ' : 'Изменение норматива по содержанию ОДХ';
@@ -28,6 +29,7 @@ export default class ODHNormForm extends Form {
               value={state.name}
               error={errors.name}
               onChange={this.handleChange.bind(this, 'name')}
+              disabled={!isPermitted}
             />
           </Div>
           <Div>
@@ -38,6 +40,7 @@ export default class ODHNormForm extends Form {
               options={MEASUREUNITS}
               error={errors.measure_unit_id}
               onChange={this.handleChange.bind(this, 'measure_unit_id')}
+              disabled={!isPermitted}
             />
             {/* <Field
               type="string"
@@ -58,7 +61,7 @@ export default class ODHNormForm extends Form {
           </Div> */}
         </Modal.Body>
         <Modal.Footer>
-          <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+          <Button disabled={!this.props.canSave || !isPermitted} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
         </Modal.Footer>
       </Modal>
     );

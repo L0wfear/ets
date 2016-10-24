@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import ODHNormForm from './ODHNormForm.jsx';
+import BaseODHNormForm from './ODHNormForm.jsx';
 import FormWrap from '../../compositions/FormWrap.jsx';
 import { schema as odhNormSchema, defaultElement } from 'models/ODHNorm.js';
+import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
+
+
+const ODHNormForm = enhanceWithPermissions(BaseODHNormForm);
 
 export default class ODHNormFormWrap extends FormWrap {
 
@@ -19,6 +23,8 @@ export default class ODHNormFormWrap extends FormWrap {
       <ODHNormForm
         formState={this.state.formState}
         formErrors={this.state.formErrors}
+        permissions={['odh_norm.update']}
+        addPermissionProp={true}
         canSave={this.state.canSave}
         onSubmit={this.handleFormSubmit.bind(this)}
         handleFormChange={this.handleFormStateChange.bind(this)}

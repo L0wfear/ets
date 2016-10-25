@@ -2,7 +2,8 @@ import { Actions } from 'flummox';
 import _ from 'lodash';
 import { createValidDateTime } from 'utils/dates';
 import { isEmpty } from 'utils/functions';
-import { MissionReportsService,
+import {
+  MissionReportsService,
   MissionService,
   MissionReassignationService,
   MissionSourceService,
@@ -309,7 +310,7 @@ export default class MissionsActions extends Actions {
       mission_date_start_from: createValidDateTime(mission_date_start_from),
       mission_date_end_to: createValidDateTime(mission_date_end_to),
     };
-    return MissionReportsService.post(payload, null, 'json');
+    return MissionReportsService.post(payload);
   }
 
   getMissionReportByODHs(index) {

@@ -129,7 +129,7 @@ export default class RoutesActions extends Actions {
 
   createRouteReport(operation_id) {
     const payload = { operation_id };
-    return RouteReportsService.post(payload);
+    return RouteReportsService.post(payload, null, 'json');
   }
 
   validateRoute(route) {

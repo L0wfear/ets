@@ -24,7 +24,7 @@ export default class GeoObjectsActions extends Actions {
       company_structure_id: formState.company_structure_id || null,
     };
 
-    return ODHService.put(payload);
+    return ODHService.put(payload, null, 'json');
   }
 
   updateDT(formState) {
@@ -34,7 +34,7 @@ export default class GeoObjectsActions extends Actions {
       company_structure_id: formState.company_structure_id || null,
     };
 
-    return DTService.put(payload);
+    return DTService.put(payload, null, 'json');
   }
 
   async getGeozones() {

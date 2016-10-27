@@ -127,7 +127,7 @@ class MissionReportByODH extends ElementsList {
   constructor(props) {
     super(props);
 
-    this.selectField = 'odh_id';
+    this.selectField = props.selectField || 'odh_id';
     this.mainListName = 'selectedReportDataODHS';
   }
 

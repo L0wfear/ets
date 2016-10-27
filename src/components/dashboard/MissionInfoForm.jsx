@@ -61,6 +61,7 @@ class MissionInfoForm extends Form {
   }
 
   handleSelectedElementChange(id) {
+    console.log(id);
     this.setState({ selectedElementId: id });
   }
 
@@ -142,10 +143,10 @@ class MissionInfoForm extends Form {
             <Col md={6}>
               <Div style={{ marginTop: -35 }} hidden={!(this.state.missionReport && this.state.missionReport.length > 0)}>
                 <Div hidden={routeType !== 'simple' && routeType !== 'vector'}>
-                  <MissionReportByODH renderOnly enumerated={false} selectedReportDataODHS={this.state.missionReport} onElementChange={this.handleSelectedElementChange} />
+                  <MissionReportByODH renderOnly enumerated={false} selectedReportDataODHS={this.state.missionReport} onElementChange={this.handleSelectedElementChange} selectField={'object_id'} />
                 </Div>
                 <Div hidden={routeType !== 'simple_dt'}>
-                  <MissionReportByDT renderOnly enumerated={false} selectedReportDataDTS={this.state.missionReport} onElementChange={this.handleSelectedElementChange} />
+                  <MissionReportByDT renderOnly enumerated={false} selectedReportDataDTS={this.state.missionReport} onElementChange={this.handleSelectedElementChange} selectField={'object_id'} />
                 </Div>
                 <Div hidden={routeType !== 'points'}>
                   <MissionReportByPoints renderOnly enumerated={false} selectedReportDataPoints={this.state.missionReport} />

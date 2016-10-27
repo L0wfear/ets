@@ -133,7 +133,7 @@ class MissionReportByDT extends ElementsList {
   constructor(props) {
     super(props);
 
-    this.selectField = 'dt_id';
+    this.selectField = props.selectField || 'dt_id';
     this.mainListName = 'selectedReportDataDTS';
   }
 

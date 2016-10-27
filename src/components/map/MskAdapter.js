@@ -1,8 +1,7 @@
-import MapServerConfig from './MapServerConfig.js';
-import EVERGIS_TOKEN, { getToken, fetchEvergisToken, isFetchingToken, attemptsLimitExceeded } from 'utils/evergis.js';
+import { getToken, fetchEvergisToken, isFetchingToken, attemptsLimitExceeded } from 'utils/evergis.js';
 import _ from 'lodash';
+import MapServerConfig from './MapServerConfig.js';
 
-const INITIAL_EXTENT = MapServerConfig.initialExtent;
 const FULL_EXTENT = MapServerConfig.fullExtent;
 const TILES_URL = '//gisoiv.mos.ru/IntegrationGIS/SpatialProcessor/IIS/egko/MapServer/tile';
 const TILE_SIZE = MapServerConfig.tileInfo.rows;

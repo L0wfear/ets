@@ -46,6 +46,11 @@ const getTableMeta = () => {
         type: 'number',
       },
       {
+        name: 'footway_length',
+        displayName: 'Длина тротуара (п.м.)',
+        type: 'number',
+      },
+      {
         name: 'auto_footway_area',
         displayName: 'Площадь механизированной уборки тротуаров (кв.м.)',
         type: 'number',

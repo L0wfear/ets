@@ -77,8 +77,8 @@ export default class WaybillsActions extends Actions {
       payload.fact_departure_date = createValidDateTime(payload.fact_departure_date);
       payload.fact_arrival_date = createValidDateTime(payload.fact_arrival_date);
     } else {
-      payload.fact_departure_date = createValidDateTime(payload.plan_departure_date);
-      payload.fact_arrival_date = createValidDateTime(payload.plan_arrival_date);
+      payload.fact_departure_date = createValidDateTime(payload.fact_departure_date);
+      payload.fact_arrival_date = createValidDateTime(payload.fact_arrival_date);
     }
 
     if (payload.tax_data) {

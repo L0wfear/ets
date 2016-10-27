@@ -11,8 +11,9 @@ export const missionSchema = {
       title: 'Количество проходов',
       type: 'number',
       required: true,
+      integer: true,
       max: 10,
-      min: 0,
+      min: 1,
     },
     {
       key: 'car_id',

@@ -11,7 +11,8 @@ export const missionTemplateSchema = {
       title: 'Количество проходов',
       type: 'number',
       required: true,
-      min: 0,
+      integer: true,
+      min: 1,
       max: 10,
     },
     {

@@ -17,6 +17,15 @@ const fixedValidators = [
     },
   },
   {
+    name: 'integer',
+    validator(config, data) {
+      if (!data && data !== 0) {
+        return undefined;
+      }
+      return typeof data !== 'number' && !/^\d+$/.test(data) ? `Поле ${config.title || config.key} должно быть целочисленным` : undefined;
+    },
+  },
+  {
     name: 'min',
     validator(config, data) {
       if (typeof config.min === 'undefined') return undefined;

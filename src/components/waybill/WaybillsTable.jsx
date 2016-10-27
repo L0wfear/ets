@@ -202,7 +202,7 @@ export default (props) => {
     status: ({ data }) => <div>{WAYBILL_STATUSES[data] || WAYBILL_STATUSES.default}</div>,
     responsible_person_id: ({ data }) => <div>{employeeFIOLabelFunction(data)}</div>,
     driver_id: ({ data }) => <div>{employeeFIOLabelFunction(data)}</div>,
-    date_create: ({ data }) => <DateFormatter date={data} />,
+    date_create: ({ data }) => <DateFormatter date={data} time />,
     closing_date: ({ data }) => <DateFormatter date={data} />,
     plan_departure_date: ({ data }) => <DateFormatter date={data} time />,
     fact_departure_date: ({ data }) => <DateFormatter date={data} time />,

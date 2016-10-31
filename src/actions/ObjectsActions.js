@@ -1,6 +1,7 @@
 import { Actions } from 'flummox';
 import { isEmpty } from 'utils/functions';
 import { createValidDateTime } from 'utils/dates';
+import _ from 'lodash';
 import {
   FaxogrammService,
   WorkKindsService,
@@ -12,6 +13,8 @@ import {
   SpecialModelService,
   OrganizationsService,
   ConfigService,
+  MaterialConsumptionRateService,
+  CleanCategoriesService,
 } from 'api/Services';
 
 export default class ObjectsActions extends Actions {
@@ -75,6 +78,28 @@ export default class ObjectsActions extends Actions {
 
   getConfig() {
     return ConfigService.get();
+  }
+
+  getMaterialConsumptionRate() {
+    return MaterialConsumptionRateService.get();
+  }
+
+  createMaterialConsumptionRate(formState) {
+    const payload = _.clone(formState);
+    return MaterialConsumptionRateService.post(payload, null, 'json');
+  }
+
+  updateMaterialConsumptionRate(formState) {
+    const payload = _.clone(formState);
+    return MaterialConsumptionRateService.path(formState.id).put(payload, null, 'json');
+  }
+
+  deleteMaterialConsumptionRate(formState) {
+    return MaterialConsumptionRateService.path(formState.id).delete();
+  }
+
+  getCleanCategories() {
+    return CleanCategoriesService.get();
   }
 
 }

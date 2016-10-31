@@ -9,6 +9,7 @@ import faxogramm from './faxogramm/FaxogrammDirectory.jsx';
 import fuelOperations from './fuel_operations/FuelOperationsDirectory.jsx';
 import fuelRates from './fuel_rates/FuelRatesDirectory.jsx';
 import odhNorm from './odh_norm/ODHNormList.jsx';
+import materialConsumptionRate from './material_consumption_rate/MaterialConsumptionRateDirectory.jsx';
 import odhNormDataSummer from './odh_norm_data_summer/ODHNormDataSummerList.jsx';
 import efficiency from './efficiency/EfficiencyList.jsx';
 import organizations from './organizations/OrganizationsDirectory.jsx';
@@ -23,6 +24,7 @@ export {
   odhNorm,
   odhNormDataSummer,
   efficiency,
+  materialConsumptionRate,
   fuelOperations,
   fuelRates,
   organizations,

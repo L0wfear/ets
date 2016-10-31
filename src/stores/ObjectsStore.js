@@ -24,6 +24,8 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getFaxogramms, this.handleGetFaxogramms);
     this.register(objectsActions.getPositions, this.handleGetPositions);
     this.register(objectsActions.getConfig, this.handleGetConfig);
+    this.register(objectsActions.getMaterialConsumptionRate, this.handleGetMaterialConsumptionRate);
+    this.register(objectsActions.getCleanCategories, this.handleGetCleanCategories);
 
     this.register(companyStructreActions.getCompanyStructure, this.handleGetCompanyStructure);
     this.register(companyStructreActions.getCompanyList, this.handleGetCompanyList);
@@ -52,6 +54,8 @@ export default class ObjectsStore extends Store {
       companyStructureList: [],
       positionsList: [],
       organizations: [],
+      materialConsumptionRateList: [],
+      cleanCategoriesList: [],
 
       appConfig: {},
 
@@ -146,6 +150,14 @@ export default class ObjectsStore extends Store {
 
   handleGetConfig(appConfig) {
     this.setState({ appConfig });
+  }
+
+  handleGetMaterialConsumptionRate(rates) {
+    this.setState({ materialConsumptionRateList: rates.result });
+  }
+
+  handleGetCleanCategories(categories) {
+    this.setState({ cleanCategoriesList: categories.result });
   }
 
 }

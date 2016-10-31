@@ -152,6 +152,7 @@ const routes = (
       <Route path="car-func-types" component={directories.carTypes} onEnter={requireAuth} />
       <Route path="cars" component={directories.cars} onEnter={requireAuth} />
       <Route path="odh-norm" component={directories.odhNorm} onEnter={requireAuth} />
+      <Route path="material-consumption-rate" component={directories.materialConsumptionRate} onEnter={requireAuth} />
       <Route path="odh-norm-data-summer" component={directories.odhNormDataSummer} onEnter={requireAuth} />
       <Route path="efficiency" component={directories.efficiency} onEnter={requireAuth} />
       {/* НСИ - Реестры и справочники - Геоинструментарий */}

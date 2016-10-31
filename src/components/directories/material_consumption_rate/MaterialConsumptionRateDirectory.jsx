@@ -5,7 +5,7 @@ import MaterialConsumptionRateTable from './MaterialConsumptionRateTable.jsx';
 
 @connectToStores(['objects'])
 @staticProps({
-  entity: 'material_consumtion_rate',
+  entity: 'material_consumption_rate',
   listName: 'materialConsumptionRateList',
   tableComponent: MaterialConsumptionRateTable,
   formComponent: MaterialConsumptionRateFormWrap,

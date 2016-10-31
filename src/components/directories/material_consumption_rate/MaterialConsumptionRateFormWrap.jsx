@@ -23,7 +23,7 @@ export default class MaterialConsumptionRateFormWrap extends FormWrap {
       <MaterialConsumptionRateForm
         formState={this.state.formState}
         formErrors={this.state.formErrors}
-        permissions={['material_consumtion_rate.update']}
+        permissions={['material_consumption_rate.update']}
         addPermissionProp
         canSave={this.state.canSave}
         onSubmit={this.handleFormSubmit.bind(this)}

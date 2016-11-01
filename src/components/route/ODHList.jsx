@@ -6,23 +6,14 @@ import each from 'lodash/each';
 import uniqBy from 'lodash/uniqBy';
 
 export default function ODHList(props) {
-  const { showSelectable, checkRoute } = props;
+  const { checkRoute } = props;
   let { odh_list = [], odh_fail_list = [] } = props;
-  const ODHS = [];
-  const ODHS_FAIL = [];
-  odh_list = uniqBy(odh_list, 'object_id');
-  odh_fail_list = uniqBy(odh_fail_list, 'object_id');
 
-  each(odh_list, (odh, index) => {
-    if (showSelectable || odh.state !== polyState.SELECTABLE) {
-      const speed_type = odh.state === polyState.IDLE ? 'холостой' : 'рабочий';
-      ODHS.push(<li key={index}>{`${odh.name || odh.object_name} (${speed_type} ход)`}</li>);
-    }
+  const ODHS = odh_list.map((odh, index) => {
+    const speed_type = odh.state === polyState.IDLE ? 'холостой' : 'рабочий';
+    return <li key={index}>{`${odh.odh_name} (${speed_type} ход)`}</li>
   });
-
-  each(odh_fail_list, (odh, index) => {
-    ODHS_FAIL.push(<li key={index}>{`${odh.name || odh.odh_name}`}</li>);
-  });
+  const ODHS_FAIL = odh_fail_list.map((odh, index) => <li key={index}>{`${odh.odh_name}`}</li>);
 
   return (
     <Div>

@@ -446,7 +446,7 @@ export default class DataTable extends React.Component {
       selectField, title, noTitle, noFilter,
       enableSort, noDataMessage, className, noHeader,
       refreshable, columnControl, highlight, serverPagination } = this.props;
-    const { initialSort, initialSortAscending, columnControlValues } = this.state;
+    const { initialSort, initialSortAscending, columnControlValues, isHierarchical } = this.state;
 
     const tableMetaCols = _.cloneDeep(tableMeta.cols);
     let data = _.cloneDeep(this.props.results);
@@ -481,7 +481,7 @@ export default class DataTable extends React.Component {
               show={this.state.filterModalIsOpen}
               active={!!_.keys(this.state.filterValues).length}
               onClick={this.toggleFilter}
-            />}
+                          />}
             {refreshable &&
               <Button
                 bsSize="small"
@@ -499,7 +499,7 @@ export default class DataTable extends React.Component {
             values={this.state.filterValues}
             options={tableMetaCols.filter(el => el.filter !== false)}
             tableData={this.props.results}
-          />}
+                        />}
         </Div>
         <Griddle
           results={results}
@@ -512,7 +512,7 @@ export default class DataTable extends React.Component {
           useCustomPagerComponent
           externalChangeSort={this.handleChangeSort}
           customPagerComponent={serverPagination ? <Div /> : Paginator}
-          onRowClick={onRowSelected}
+          onRowClick={!isHierarchical ? onRowSelected : null}
           rowMetadata={rowMetadata}
           onKeyPress={this.handleKeyPress}
           noDataMessage={noDataMessage ? noDataMessage : noFilter ? '' : 'Нет данных'}

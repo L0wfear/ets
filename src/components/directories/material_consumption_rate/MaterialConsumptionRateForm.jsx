@@ -7,6 +7,11 @@ import Form from '../../compositions/Form.jsx';
 @connectToStores(['objects', 'odh'])
 export default class MaterialConsumptionRateForm extends Form {
 
+  handleChangeCategory(value) {
+    this.handleChange('clean_subcategory_id', null);
+    this.handleChange('clean_category_id', value);
+  }
+
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
@@ -70,7 +75,7 @@ export default class MaterialConsumptionRateForm extends Form {
                 error={errors.clean_category_id}
                 options={CATEGORIES}
                 value={state.clean_category_id}
-                onChange={this.handleChange.bind(this, 'clean_category_id')}
+                onChange={this.handleChangeCategory.bind(this)}
                 disabled={!isPermitted}
               />
             </Col>
@@ -81,7 +86,7 @@ export default class MaterialConsumptionRateForm extends Form {
                 error={errors.clean_subcategory_id}
                 disabled={!isPermitted || SUBCATEGORIES.length === 0}
                 options={SUBCATEGORIES}
-                value={SUBCATEGORIES.length === 0 ? null : state.clean_subcategory_id}
+                value={state.clean_subcategory_id}
                 onChange={this.handleChange.bind(this, 'clean_subcategory_id')}
               />
             </Col>

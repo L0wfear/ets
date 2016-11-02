@@ -30,10 +30,10 @@ export default class MaterialConsumptionRateForm extends Form {
                 type="select"
                 label="Технологическая операция"
                 error={errors.technical_operation_id}
-                disabled={false}
                 options={TECH_OPERATIONS}
                 value={state.technical_operation_id}
                 onChange={this.handleChange.bind(this, 'technical_operation_id')}
+                disabled={!isPermitted}
               />
             </Col>
           </Row>
@@ -43,10 +43,10 @@ export default class MaterialConsumptionRateForm extends Form {
                 type="select"
                 label="Расходный материал"
                 error={errors.consumable_material_id}
-                disabled={false}
                 options={CONSUMABLE_MATERIALS}
                 value={state.consumable_material_id}
                 onChange={this.handleChange.bind(this, 'consumable_material_id')}
+                disabled={!isPermitted}
               />
             </Col>
           </Row>
@@ -60,6 +60,7 @@ export default class MaterialConsumptionRateForm extends Form {
                 options={[{ value: 0, label: 'Зима' }, { value: 1, label: 'Лето' }]}
                 value={state.season_id}
                 onChange={this.handleChange.bind(this, 'season_id')}
+                disabled={!isPermitted}
               />
             </Col>
             <Col md={3}>
@@ -67,10 +68,10 @@ export default class MaterialConsumptionRateForm extends Form {
                 type="select"
                 label="Категория"
                 error={errors.clean_category_id}
-                disabled={false}
                 options={CATEGORIES}
                 value={state.clean_category_id}
                 onChange={this.handleChange.bind(this, 'clean_category_id')}
+                disabled={!isPermitted}
               />
             </Col>
             <Col md={3}>
@@ -78,7 +79,7 @@ export default class MaterialConsumptionRateForm extends Form {
                 type="select"
                 label="Подкатегория"
                 error={errors.clean_subcategory_id}
-                disabled={SUBCATEGORIES.length === 0}
+                disabled={!isPermitted || SUBCATEGORIES.length === 0}
                 options={SUBCATEGORIES}
                 value={state.clean_subcategory_id}
                 onChange={this.handleChange.bind(this, 'clean_subcategory_id')}
@@ -91,6 +92,7 @@ export default class MaterialConsumptionRateForm extends Form {
                 error={errors.value}
                 value={state.value}
                 onChange={this.handleChange.bind(this, 'value')}
+                disabled={!isPermitted}
               />
             </Col>
           </Row>

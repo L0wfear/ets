@@ -7,7 +7,7 @@ import * as floatFixed3 from './validateFloatFixed3.js';
 import * as datetime from './validateDateTime.js';
 import * as string from './validateString.js';
 import * as array from './validateArray.js';
-// import * as date from './validateDate.js';
+import * as date from './validateDate.js';
 // import * as integer from './validateInteger';
 // import * as bool from './validateBool';
 // import * as reference from './validateReference';
@@ -26,7 +26,7 @@ const validators = {
   floatFixed3,
   string,
   array,
-  // date,
+  date,
   // integer,
   // bool,
   // reference,

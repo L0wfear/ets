@@ -42,6 +42,7 @@ export default class FuelRateForm extends Form {
                 date={state.order_date}
                 onChange={this.handleChange.bind(this, 'order_date')}
                 time={false}
+                error={errors.order_date}
                 disabled={!isPermitted}
               />
 

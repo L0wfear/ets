@@ -3,6 +3,12 @@ import { isEmpty } from 'utils/functions';
 export const fuelRateSchema = {
   properties: [
     {
+      key: 'order_date',
+      title: 'Дата приказа',
+      type: 'date',
+      required: true,
+    },
+    {
       key: 'operation_id',
       title: 'Операция',
       type: 'number',

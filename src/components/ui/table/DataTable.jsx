@@ -481,7 +481,7 @@ export default class DataTable extends React.Component {
               show={this.state.filterModalIsOpen}
               active={!!_.keys(this.state.filterValues).length}
               onClick={this.toggleFilter}
-                          />}
+            />}
             {refreshable &&
               <Button
                 bsSize="small"
@@ -499,7 +499,7 @@ export default class DataTable extends React.Component {
             values={this.state.filterValues}
             options={tableMetaCols.filter(el => el.filter !== false)}
             tableData={this.props.results}
-                        />}
+          />}
         </Div>
         <Griddle
           results={results}

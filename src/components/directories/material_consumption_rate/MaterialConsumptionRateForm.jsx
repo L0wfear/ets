@@ -81,7 +81,7 @@ export default class MaterialConsumptionRateForm extends Form {
                 error={errors.clean_subcategory_id}
                 disabled={!isPermitted || SUBCATEGORIES.length === 0}
                 options={SUBCATEGORIES}
-                value={state.clean_subcategory_id}
+                value={SUBCATEGORIES.length === 0 ? null : state.clean_subcategory_id}
                 onChange={this.handleChange.bind(this, 'clean_subcategory_id')}
               />
             </Col>

@@ -119,6 +119,8 @@ export default (props) => {
     use_in_reports: ({ data }) => <input type="checkbox" disabled checked={!!data} />,
   };
 
+  const currentSeason = 'Зима'; // TODO поменять, когда сезон можно будет получать с бэка
+
   return (<Table
     title="Реестр технологических операций"
     results={props.data}
@@ -126,5 +128,6 @@ export default (props) => {
     renderers={renderers}
     initialSort={'id'}
     {...props}
+    filterValues={{ season_name: [currentSeason, 'Всесезон'] }}
   />);
 };

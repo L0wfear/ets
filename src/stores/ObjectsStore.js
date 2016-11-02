@@ -25,6 +25,9 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getPositions, this.handleGetPositions);
     this.register(objectsActions.getConfig, this.handleGetConfig);
     this.register(objectsActions.getMaterialConsumptionRate, this.handleGetMaterialConsumptionRate);
+    this.register(objectsActions.createMaterialConsumptionRate, this.handleGetMaterialConsumptionRate);
+    this.register(objectsActions.updateMaterialConsumptionRate, this.handleGetMaterialConsumptionRate);
+    this.register(objectsActions.deleteMaterialConsumptionRate, this.handleGetMaterialConsumptionRate);
     this.register(objectsActions.getCleanCategories, this.handleGetCleanCategories);
 
     this.register(companyStructreActions.getCompanyStructure, this.handleGetCompanyStructure);

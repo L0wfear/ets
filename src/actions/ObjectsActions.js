@@ -86,12 +86,12 @@ export default class ObjectsActions extends Actions {
 
   createMaterialConsumptionRate(formState) {
     const payload = _.clone(formState);
-    return MaterialConsumptionRateService.post(payload, null, 'json');
+    return MaterialConsumptionRateService.post(payload, true, 'json');
   }
 
   updateMaterialConsumptionRate(formState) {
     const payload = _.clone(formState);
-    return MaterialConsumptionRateService.path(formState.id).put(payload, null, 'json');
+    return MaterialConsumptionRateService.path(formState.id).put(payload, true, 'json');
   }
 
   deleteMaterialConsumptionRate(formState) {

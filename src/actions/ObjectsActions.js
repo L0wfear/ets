@@ -94,8 +94,8 @@ export default class ObjectsActions extends Actions {
     return MaterialConsumptionRateService.path(formState.id).put(payload, true, 'json');
   }
 
-  deleteMaterialConsumptionRate(formState) {
-    return MaterialConsumptionRateService.path(formState.id).delete();
+  deleteMaterialConsumptionRate(id) {
+    return MaterialConsumptionRateService.path(id).delete({}, true, 'json');
   }
 
   getCleanCategories() {

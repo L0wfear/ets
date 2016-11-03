@@ -8,12 +8,11 @@ import uniqBy from 'lodash/uniqBy';
 export default function ODHList(props) {
   const { checkRoute } = props;
   let { odh_list = [], odh_fail_list = [] } = props;
-
   const ODHS = odh_list.map((odh, index) => {
     const speed_type = odh.state === polyState.IDLE ? 'холостой' : 'рабочий';
-    return <li key={index}>{`${odh.odh_name} (${speed_type} ход)`}</li>
+    return <li key={index}>{`${odh.name || odh.odh_name || odh.object_name} (${speed_type} ход)`}</li>
   });
-  const ODHS_FAIL = odh_fail_list.map((odh, index) => <li key={index}>{`${odh.odh_name}`}</li>);
+  const ODHS_FAIL = odh_fail_list.map((odh, index) => <li key={index}>{`${odh.name || odh.odh_name || odh.object_name}`}</li>);
 
   return (
     <Div>

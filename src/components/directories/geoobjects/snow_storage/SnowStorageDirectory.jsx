@@ -7,7 +7,7 @@ import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
 @connectToStores(['geoObjects'])
 @staticProps({
   path: 'geozones',
-  entity: 'snowStorage',
+  entity: 'snow_storage',
   listName: 'snowStoragesList',
   tableComponent: SnowStorageTable,
   formComponent: GeoObjectsMapModal,

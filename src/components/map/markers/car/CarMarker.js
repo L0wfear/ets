@@ -194,7 +194,7 @@ export default class CarMarker extends Marker {
   renderSmall = (options) => {
     const point = this.point;
     const zoomRatio = this.getZoomRatio();
-    const radius = this.radius = SMALL_ICON_RADIUS * zoomRatio;
+    const radius = this.radius = SMALL_ICON_RADIUS * zoomRatio * DEVICE_PIXEL_RATIO;
 
     const image = getSmallIcon(point.status, zoomRatio);
 
@@ -205,19 +205,20 @@ export default class CarMarker extends Marker {
       const drawCoords = this.map.projectToPixel(this.coords);
 
       context.fillStyle = 'white';
-
+      context.font = `${10 * DEVICE_PIXEL_RATIO}px Verdana`;
       const width = context.measureText(title).width;
-      const padding = 1 * zoomRatio;
+      const height = 10 * DEVICE_PIXEL_RATIO;
+      const padding = 2 * DEVICE_PIXEL_RATIO;
 
-      // dont try to understand
-      const rectWidth = width + padding + (radius - 3);
-      const rectHeight = radius + 4;
-      const rectOffsetY = drawCoords.y - (radius / 2) - 2;
+      const rectWidth = width + (2 * padding) + radius;
+      const rectHeight = height + (2 * padding);
+      const rectOffsetY = drawCoords.y - radius;
 
-      context.fillRect(drawCoords.x - rectWidth, rectOffsetY, rectWidth, rectHeight);
+      context.fillRect(drawCoords.x, rectOffsetY, rectWidth, rectHeight);
+      context.strokeRect(drawCoords.x - 1, rectOffsetY - 1, rectWidth + 2, rectHeight + 2);
       context.fillStyle = 'black';
       context.textBaseline = 'middle';
-      context.fillText(title, drawCoords.x - (rectWidth + padding), drawCoords.y);
+      context.fillText(title, drawCoords.x + padding + radius, rectOffsetY + height - padding - 2);
     }
 
     return image;
@@ -270,8 +271,8 @@ export default class CarMarker extends Marker {
       const height = 13 * DEVICE_PIXEL_RATIO;
       const padding = 6 * DEVICE_PIXEL_RATIO;
 
-      let rectWidth = width + (2 * padding) + radius;
-      let rectHeight = height + (2 * padding);
+      const rectWidth = width + (2 * padding) + radius;
+      const rectHeight = height + (2 * padding);
       const rectOffsetY = (drawCoords.y + padding) - (2 * radius);
 
       if (tipAngle >= 0.5 * Math.PI && tipAngle <= 1.5 * Math.PI) {
@@ -285,7 +286,7 @@ export default class CarMarker extends Marker {
         context.strokeRect((drawCoords.x - rectWidth) + 1, rectOffsetY - 1, rectWidth + 2, rectHeight + 2);
         context.fillStyle = 'black';
         context.textBaseline = 'middle';
-        context.fillText(text, drawCoords.x - rectWidth + padding, rectOffsetY + height);
+        context.fillText(text, (drawCoords.x - rectWidth) + padding, rectOffsetY + height);
       }
     }
 

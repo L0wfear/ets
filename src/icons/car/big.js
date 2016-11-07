@@ -1,6 +1,6 @@
 const icons = {};
 const iconCache = {};
-
+const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
 const ICON_MAP = {
   9: 'podmetalka',
   1: 'polivalka',
@@ -41,7 +41,7 @@ export default function getMapIcon(name = 'drugoe', zoom = 1) {
 
 
   if (!cached) {
-    const line = 40 * zoom;
+    const line = 20 * DEVICE_PIXEL_RATIO * zoom;
     const canvas = document.createElement('canvas');
     canvas.width = canvas.height = line;
     const ctx = canvas.getContext('2d');

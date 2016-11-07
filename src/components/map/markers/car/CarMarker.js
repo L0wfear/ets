@@ -274,18 +274,20 @@ export default class CarMarker extends Marker {
 
       rectWidth *= DEVICE_PIXEL_RATIO;
 
-      context.font = `${12 * DEVICE_PIXEL_RATIO}px \'Helvetica Neue\'`;
+      context.font = `${13 * DEVICE_PIXEL_RATIO}px \'Verdana\'`;
 
       if (tipAngle >= 0.5 * Math.PI && tipAngle <= 1.5 * Math.PI) {
         context.fillRect(drawCoords.x, rectOffsetY, rectWidth, rectHeight);
+        context.strokeRect(drawCoords.x + 1, rectOffsetY + 1, rectWidth + 1, rectHeight + 1);
         context.fillStyle = 'black';
         context.textBaseline = 'middle';
-        context.fillText(text, drawCoords.x + padding + radius, drawCoords.y);
+        context.fillText(text, drawCoords.x + 2*padding + radius, drawCoords.y-2*padding);
       } else {
         context.fillRect(drawCoords.x - rectWidth, rectOffsetY, rectWidth, rectHeight);
+        context.strokeRect(1 + (drawCoords.x - rectWidth), rectOffsetY + 1, rectWidth + 1, rectHeight + 1);
         context.fillStyle = 'black';
         context.textBaseline = 'middle';
-        context.fillText(text, drawCoords.x - (rectWidth + padding), drawCoords.y);
+        context.fillText(text, drawCoords.x - (rectWidth - padding), drawCoords.y - 2*padding);
       }
     }
 

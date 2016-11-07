@@ -56,17 +56,17 @@ class CarsLegendWrapper extends Component {
 
     const items = statuses
       .map(s => Object.assign({ amount: byStatus[s.id] }, s))
-      .map((item, i) => {
-        return (
-          <li key={i}>
-            <StatusComponent
-              active={filter.status.indexOf(item.id) !== -1}
-              status={item}
-              onClick={() => this.toggleFilter(item)}
-            />
-          </li>
-        );
-      });
+      .map((item, i) =>
+         (
+           <li key={i}>
+             <StatusComponent
+               active={filter.status.indexOf(item.id) !== -1}
+               status={item}
+               onClick={() => this.toggleFilter(item)}
+             />
+           </li>
+        )
+      );
 
     return (
       <div className="legend-wrapper app-toolbar-fill">
@@ -114,17 +114,17 @@ const ShowGeoobjectsCheckbox = (props) => {
     props.flux.getActions('settings').setShowGeoobjects(checked);
   }
 
-  const geoObjectsList = ['dt', 'odh', 'ssp', 'msp', 'carpool', 'fueling_water', 'danger_zone', 'pgm_store', 'snow_storage'].map((type, index) => {
-    return (
-      <li key={index}>
-        <div className="checkbox">
-          <label style={{ fontSize: '13px', fontWeight: '200' }}>
-            <input type="checkbox" checked={selectedPolysTypes.indexOf(GEOOBJECTS_TYPES[type]) > -1} onChange={e => setSelectedPolysType(type)} /> {GEOOBJECTS_TYPES_LABELS[type]}
-          </label>
-        </div>
-      </li>
-    );
-  });
+  const geoObjectsList = ['dt', 'odh', 'ssp', 'msp', 'carpool', 'fueling_water', 'danger_zone', 'pgm_store', 'snow_storage'].map((type, index) =>
+     (
+       <li key={index}>
+         <div className="checkbox">
+           <label style={{ fontSize: '13px', fontWeight: '200' }}>
+             <input type="checkbox" checked={selectedPolysTypes.indexOf(GEOOBJECTS_TYPES[type]) > -1} onChange={e => setSelectedPolysType(type)} /> {GEOOBJECTS_TYPES_LABELS[type]}
+           </label>
+         </div>
+       </li>
+    )
+  );
 
   return (
     <div className="app-toolbar-fill app-toolbar-show-geoobjects" >

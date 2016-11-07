@@ -120,6 +120,33 @@ const getTableMeta = () => {
         },
       },
       {
+        name: 'created_by_employee_name',
+        displayName: 'Создан',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+          labelFunction: employeeFIOLabelFunction,
+        },
+      },
+      {
+        name: 'activated_by_employee_name',
+        displayName: 'Выдан',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+          labelFunction: employeeFIOLabelFunction,
+        },
+      },
+      {
+        name: 'closed_by_employee_name',
+        displayName: 'Закрыт',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+          labelFunction: employeeFIOLabelFunction,
+        },
+      },
+      {
         name: 'odometr_start',
         displayName: 'Одометр. Выезд',
         cssClassName: 'width20',

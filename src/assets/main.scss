@@ -2540,8 +2540,8 @@ body {
 
   &-window {
     min-width: 250px;
-    // max-height: 600px;
-    // overflow: scroll;
+    max-height: 600px;
+    overflow: scroll;
   }
 
   .rw-select {

@@ -263,31 +263,29 @@ export default class CarMarker extends Marker {
 
     if (options.showPlates && title) {
       context.fillStyle = 'white';
+      context.font = `${13 * DEVICE_PIXEL_RATIO}px Verdana`;
 
       const text = title;
       const width = context.measureText(text).width;
-      const padding = 3;
+      const height = 13 * DEVICE_PIXEL_RATIO;
+      const padding = 6 * DEVICE_PIXEL_RATIO;
 
-      let rectWidth = width + (2 * padding) + radius + 7;
-      const rectHeight = (2 * radius) - 9;
-      const rectOffsetY = drawCoords.y - (radius + 5);
-
-      rectWidth *= DEVICE_PIXEL_RATIO;
-
-      context.font = `${13 * DEVICE_PIXEL_RATIO}px \'Verdana\'`;
+      let rectWidth = width + (2 * padding) + radius;
+      let rectHeight = height + (2 * padding);
+      const rectOffsetY = (drawCoords.y + padding) - (2 * radius);
 
       if (tipAngle >= 0.5 * Math.PI && tipAngle <= 1.5 * Math.PI) {
         context.fillRect(drawCoords.x, rectOffsetY, rectWidth, rectHeight);
-        context.strokeRect(drawCoords.x + 1, rectOffsetY + 1, rectWidth + 1, rectHeight + 1);
+        context.strokeRect(drawCoords.x - 1, rectOffsetY - 1, rectWidth + 2, rectHeight + 2);
         context.fillStyle = 'black';
         context.textBaseline = 'middle';
-        context.fillText(text, drawCoords.x + 2*padding + radius, drawCoords.y-2*padding);
+        context.fillText(text, drawCoords.x + padding + radius, rectOffsetY + height);
       } else {
         context.fillRect(drawCoords.x - rectWidth, rectOffsetY, rectWidth, rectHeight);
-        context.strokeRect(1 + (drawCoords.x - rectWidth), rectOffsetY + 1, rectWidth + 1, rectHeight + 1);
+        context.strokeRect((drawCoords.x - rectWidth) + 1, rectOffsetY - 1, rectWidth + 2, rectHeight + 2);
         context.fillStyle = 'black';
         context.textBaseline = 'middle';
-        context.fillText(text, drawCoords.x - (rectWidth - padding), drawCoords.y - 2*padding);
+        context.fillText(text, drawCoords.x - rectWidth + padding, rectOffsetY + height);
       }
     }
 

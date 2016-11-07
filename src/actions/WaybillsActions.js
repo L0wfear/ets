@@ -73,13 +73,8 @@ export default class WaybillsActions extends Actions {
     payload.plan_arrival_date = createValidDateTime(payload.plan_arrival_date);
     payload.equipment_fuel = +payload.equipment_fuel;
 
-    if (payload.status === 'closed') {
-      payload.fact_departure_date = createValidDateTime(payload.fact_departure_date);
-      payload.fact_arrival_date = createValidDateTime(payload.fact_arrival_date);
-    } else {
-      payload.fact_departure_date = createValidDateTime(payload.fact_departure_date);
-      payload.fact_arrival_date = createValidDateTime(payload.fact_arrival_date);
-    }
+    payload.fact_departure_date = createValidDateTime(payload.fact_departure_date);
+    payload.fact_arrival_date = createValidDateTime(payload.fact_arrival_date);
 
     if (payload.tax_data) {
       const tax_data = payload.tax_data.filter((t) => {

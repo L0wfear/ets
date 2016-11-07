@@ -249,6 +249,8 @@ export default class WaybillFormWrap extends FormWrap {
           const id = _.max(r.result, res => res.id).id;
           formState.status = 'active';
           formState.id = id;
+          formState.fact_departure_date = formState.plan_departure_date;
+          formState.fact_arrival_date = formState.plan_arrival_date;
           await flux.getActions('waybills').updateWaybill(formState);
           callback(id);
         } catch (e) {

@@ -26,6 +26,7 @@ class RouteFormWrap extends FormWrap {
         });
       } else {
         formState = {};
+        formState.structure_id = this.context.flux.getStore('session').getCurrentUser().structure_id;
       }
       const formErrors = this.validate(formState, {});
       this.setState({

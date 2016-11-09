@@ -10,6 +10,7 @@ import Div from 'components/ui/Div.jsx';
 import moment from 'moment';
 import { isEmpty } from 'utils/functions';
 import Form from 'components/compositions/Form.jsx';
+import _ from 'lodash';
 
 @autobind
 export class MissionForm extends Form {
@@ -154,9 +155,12 @@ export class MissionForm extends Form {
     const state = this.props.formState;
     const errors = this.props.formErrors;
 
-    const { missionSourcesList = [] } = this.props;
+    const { missionSourcesList = [], companyStructureList = [] } = this.props;
     const { technicalOperationsList = [], routesList = [], carsList = [] } = this.state;
 
+    const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
+
+    const STRUCTURES = companyStructureList.map(({ id, name }) => ({ value: id, label: name }));
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
     const MISSION_SOURCES = missionSourcesList.map(({ id, name }) => ({ value: id, label: name }));
     const ASSIGN_OPTIONS = [
@@ -169,6 +173,21 @@ export class MissionForm extends Form {
 
     // является ли задание отложенным
     const isDeferred = moment(state.date_start).toDate().getTime() > moment().toDate().getTime();
+
+    let STRUCTURE_FIELD_VIEW = false;
+    let STRUCTURE_FIELD_READONLY = false;
+    let STRUCTURE_FIELD_DELETABLE = false;
+
+    if (currentStructureId !== null && STRUCTURES.length === 1 && currentStructureId === STRUCTURES[0].value) {
+      STRUCTURE_FIELD_VIEW = true;
+      STRUCTURE_FIELD_READONLY = true;
+    } else if (currentStructureId !== null && STRUCTURES.length > 1 && _.find(STRUCTURES, el => el.value === currentStructureId)) {
+      STRUCTURE_FIELD_VIEW = true;
+    } else if (currentStructureId === null && STRUCTURES.length > 1) {
+      STRUCTURE_FIELD_VIEW = true;
+      STRUCTURE_FIELD_DELETABLE = true;
+    }
+
 
     const IS_CREATING = !state.status;
     const IS_POST_CREATING_NOT_ASSIGNED = state.status === 'not_assigned' || this.props.fromWaybill;
@@ -276,7 +295,7 @@ export class MissionForm extends Form {
           </Row>
 
           <Row>
-            <Col md={12}>
+            <Col md={9}>
               <Field
                 type="select"
                 label="Технологическая операция"
@@ -287,6 +306,17 @@ export class MissionForm extends Form {
                 onChange={this.handleTechnicalOperationChange}
               />
             </Col>
+            {STRUCTURE_FIELD_VIEW && <Col md={3}>
+              <Field type="select"
+                label="Подразделение"
+                error={errors.structure_id}
+                disabled={STRUCTURE_FIELD_READONLY}
+                clearable={STRUCTURE_FIELD_DELETABLE}
+                options={STRUCTURES}
+                value={state.structure_id}
+                onChange={this.handleChange.bind(this, 'structure_id')}
+              />
+            </Col>}
           </Row>
 
           <Row>

@@ -15,15 +15,19 @@ export default class MissionFormWrap extends FormWrap {
     super(props);
 
     this.schema = missionSchema;
-    this.createAction = (formState) => {
-      return context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill);
-    };
+    this.createAction = formState =>
+       context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill)
+    ;
     this.updateAction = context.flux.getActions('missions').updateMission;
   }
 
   componentWillReceiveProps(props) {
     if (props.showForm && (props.showForm !== this.props.showForm)) {
       const mission = props.element === null ? getDefaultMission() : _.clone(props.element);
+      if (typeof mission.structure_id === 'undefined') {
+        const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
+        mission.structure_id = currentStructureId;
+      }
       const formErrors = this.validate(mission, {});
       this.setState({
         formState: mission,

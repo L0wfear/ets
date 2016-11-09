@@ -7,6 +7,12 @@ export const missionSchema = {
       required: true,
     },
     {
+      key: 'structure_id',
+      title: 'Подразделение',
+      type: 'number',
+      required: false,
+    },
+    {
       key: 'passes_count',
       title: 'Количество проходов',
       type: 'number',

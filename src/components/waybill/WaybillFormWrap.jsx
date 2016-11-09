@@ -49,6 +49,10 @@ export default class WaybillFormWrap extends FormWrap {
     if (props.showForm && props.showForm !== this.props.showForm) {
       if (props.element === null) {
         const defaultBill = getDefaultBill();
+        if (typeof defaultBill.structure_id === 'undefined') {
+          const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
+          defaultBill.structure_id = currentStructureId;
+        }
         this.schema = waybillSchema;
         this.setState({
           formState: defaultBill,

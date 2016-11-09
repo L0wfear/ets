@@ -265,7 +265,7 @@ class WaybillForm extends Form {
     const { appConfig } = this.props;
     let taxesControl = false;
 
-    const { carsList = [], carsIndex = {}, driversList = [], employeesList = [], missionsList = [] } = this.props;
+    const { carsList = [], carsIndex = {}, driversList = [], employeesList = [], missionsList = [], companyStructureList = [] } = this.props;
     const CARS = carsList.map(c => ({
       value: c.asuods_id,
       gov_number: c.gov_number,
@@ -279,6 +279,21 @@ class WaybillForm extends Form {
     const MASTERS = employeesList.filter(e => [2, 4, 5, 7, 14].indexOf(e.position_id) > -1).map(m => ({ value: m.id, data: m, label: `${m.last_name} ${m.first_name} ${m.middle_name}` })).filter(e => e.data.active === true);
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false }));
 
+    const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
+    const STRUCTURES = companyStructureList.map(({ id, name }) => ({ value: id, label: name }));
+
+    let STRUCTURE_FIELD_VIEW = false;
+    let STRUCTURE_FIELD_READONLY = false;
+    let STRUCTURE_FIELD_DELETABLE = false;
+    if (currentStructureId !== null && STRUCTURES.length === 1 && currentStructureId === STRUCTURES[0].value) {
+      STRUCTURE_FIELD_VIEW = true;
+      STRUCTURE_FIELD_READONLY = true;
+    } else if (currentStructureId !== null && STRUCTURES.length > 1 && _.find(STRUCTURES, el => el.value === currentStructureId)) {
+      STRUCTURE_FIELD_VIEW = true;
+    } else if (currentStructureId === null && STRUCTURES.length > 1) {
+      STRUCTURE_FIELD_VIEW = true;
+      STRUCTURE_FIELD_DELETABLE = true;
+    }
 
     const IS_CREATING = !state.status;
     const IS_CLOSING = state.status && state.status === 'active';
@@ -432,7 +447,7 @@ class WaybillForm extends Form {
                 value={car ? `${car.gov_number} [${car.special_model_name || ''}${car.special_model_name ? '/' : ''}${car.model_name || ''}]` : 'Н/Д'}
               />
             </Col>
-            <Col md={6}>
+            <Col md={STRUCTURE_FIELD_VIEW ? 3 : 6}>
               <Field
                 type="select"
                 label="Водитель (возможен поиск по табельному номеру)"
@@ -451,6 +466,18 @@ class WaybillForm extends Form {
                 value={employeeFIOLabelFunction(state.driver_id, true)}
               />
             </Col>
+            {STRUCTURE_FIELD_VIEW && <Col md={3}>
+              <Field
+                type="select"
+                label="Подразделение"
+                error={errors.structure_id}
+                disabled={STRUCTURE_FIELD_READONLY}
+                clearable={STRUCTURE_FIELD_DELETABLE}
+                options={STRUCTURES}
+                value={state.structure_id}
+                onChange={this.handleChange.bind(this, 'structure_id')}
+              />
+            </Col>}
           </Row>
 
           <Row>

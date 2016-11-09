@@ -44,6 +44,7 @@ class RoutesList extends Component {
     flux.getActions('routes').getRoutes();
     flux.getActions('technicalOperation').getTechnicalOperations();
     flux.getActions('technicalOperation').getTechnicalOperationsObjects();
+    flux.getActions('companyStructure').getCompanyStructure();
     flux.getActions('geoObjects').getGeozones();
     if (this.props.location.query) {
       const filterValues = {};

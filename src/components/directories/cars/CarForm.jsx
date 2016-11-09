@@ -76,6 +76,12 @@ class CarForm extends Form {
                 onChange={this.handleChange.bind(this, 'fuel_correction_rate')}
                 disabled={!isPermitted}
               />
+              <Field
+                type="boolean"
+                label="Общее"
+                value={state.is_common}
+                onChange={this.handleChange.bind(this, 'is_common', !state.is_common)}
+              />
             </Col>
 
           </Row>

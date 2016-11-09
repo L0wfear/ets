@@ -27,6 +27,9 @@ export default class CarActions extends Actions {
     if (car.company_structure_id) {
       payload.company_structure_id = car.company_structure_id;
     }
+    if (car.is_common) {
+      payload.is_common = car.is_common;
+    }
 
     return CarInfoService.post(payload, CarService.get);
   }

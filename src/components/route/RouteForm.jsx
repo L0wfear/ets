@@ -101,9 +101,9 @@ export default class RouteForm extends Form {
 
     // this.getTechnicalOperationsByType(formState.type);
     if (formState.copy) {
-      technicalOperationsList = technicalOperationsList.filter((to) => {
-        return to.objects.find(o => o.id === getObjectIdByType(formState.type));
-      });
+      technicalOperationsList = technicalOperationsList.filter(to =>
+         to.objects.find(o => o.id === getObjectIdByType(formState.type))
+      );
     }
 
     this.setState({ technicalOperationsList });
@@ -117,7 +117,26 @@ export default class RouteForm extends Form {
     const state = this.props.formState;
     const errors = this.props.formErrors;
     const { ROUTE_TYPE_OPTIONS, technicalOperationsList = [] } = this.state;
+    const { companyStructureList = [] } = this.props;
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
+
+    const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
+    const STRUCTURES = companyStructureList.map(({ id, name }) => ({ value: id, label: name }));
+
+    let STRUCTURE_FIELD_VIEW = false;
+    let STRUCTURE_FIELD_READONLY = false;
+    let STRUCTURE_FIELD_DELETABLE = false;
+
+    if (currentStructureId !== null && STRUCTURES.length === 1 && currentStructureId === STRUCTURES[0].value) {
+      STRUCTURE_FIELD_VIEW = true;
+      STRUCTURE_FIELD_READONLY = true;
+    } else if (currentStructureId !== null && STRUCTURES.length > 1 && _.find(STRUCTURES, el => el.value === currentStructureId)) {
+      STRUCTURE_FIELD_VIEW = true;
+    } else if (currentStructureId === null && STRUCTURES.length > 1) {
+      STRUCTURE_FIELD_VIEW = true;
+      STRUCTURE_FIELD_DELETABLE = true;
+    }
+
 
     const title = state.id ? 'Изменение маршрута' : 'Создание нового маршрута';
 
@@ -131,12 +150,12 @@ export default class RouteForm extends Form {
         <Modal.Body>
 
           <Row>
-            <Col md={4}>
+            <Col md={STRUCTURE_FIELD_VIEW ? 3 : 4}>
               <Field type="string" label="Название маршрута" value={state.name} onChange={v => this.handleChange('name', v)} error={errors.name} />
             </Col>
 
             <Div hidden={this.props.forceTechnicalOperation}>
-              <Col md={4}>
+              <Col md={STRUCTURE_FIELD_VIEW ? 3 : 4}>
                 <Field
                   type="select"
                   label="Технологическая операция"
@@ -149,9 +168,22 @@ export default class RouteForm extends Form {
                 />
               </Col>
             </Div>
-
+            <Div hidden={!STRUCTURE_FIELD_VIEW}>
+              <Col md={3}>
+                <Field
+                  type="select"
+                  label="Подразделение"
+                  error={errors.structure_id}
+                  disabled={STRUCTURE_FIELD_READONLY}
+                  clearable={STRUCTURE_FIELD_DELETABLE}
+                  options={STRUCTURES}
+                  value={state.structure_id}
+                  onChange={this.handleChange.bind(this, 'structure_id')}
+                />
+              </Col>
+            </Div>
             <Div hidden={this.props.forceRouteType}>
-              <Col md={4}>
+              <Col md={STRUCTURE_FIELD_VIEW ? 3 : 4}>
                 <Field
                   type="select"
                   label="Способ построения маршрута"

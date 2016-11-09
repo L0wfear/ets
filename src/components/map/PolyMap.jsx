@@ -144,7 +144,8 @@ export default class PolyMap extends Component {
     POLYS_LAYER = polysLayer;
 
     map.addLayer(polysLayer);
-    map.getView().fit(polysLayer.getSource().getExtent(), map.getSize());
+    const extent = polysLayer.getSource().getExtent();
+    extent[0] !== Infinity && map.getView().fit(extent, map.getSize());
   }
 
   shouldComponentUpdate() {

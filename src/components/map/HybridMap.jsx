@@ -138,7 +138,8 @@ export default class HybridMap extends Map {
 
     vectorSource.addFeature(feature);
 
-    map.getView().fit(feature.getGeometry().getExtent(), map.getSize());
+    const extent = feature.getGeometry().getExtent();
+    extent[0] !== Infinity && map.getView().fit(extent, map.getSize());
     map.getView().setZoom(7);
 
     !!this.selectedPolysLayer && map.removeLayer(this.selectedPolysLayer);

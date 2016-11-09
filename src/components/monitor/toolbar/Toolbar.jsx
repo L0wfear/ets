@@ -28,6 +28,7 @@ class CarsLegendWrapper extends Component {
       filter: PropTypes.object,
       storeHandleSetFilter: PropTypes.func,
       byStatus: PropTypes.object,
+      storeFilter: PropTypes.array,
       byConnectionStatus: PropTypes.object,
     };
   }
@@ -67,12 +68,19 @@ class CarsLegendWrapper extends Component {
            </li>
         )
       );
-
     return (
       <div className="legend-wrapper app-toolbar-fill">
         <ul style={{ paddingLeft: 0 }}>
-          <li style={{ fontSize: '16px', textAlign: 'center' }}>
-            <span> Активно:
+          <li style={{ fontSize: '16px' }}>
+            <span className={cx({ 'half-visible': !this.props.storeFilter.status.length })}>
+              <button
+                className={'status-filter-icon'}
+                onClick={() => this.props.storeHandleSetFilter({
+                  status: !this.props.storeFilter.status.length ? [1, 2, 3, 4] : [],
+                })}
+                style={{ backgroundColor: 'white' }}
+              />
+              Активно:
               <span>&nbsp;{totalOnline}</span>
             </span>
           </li>

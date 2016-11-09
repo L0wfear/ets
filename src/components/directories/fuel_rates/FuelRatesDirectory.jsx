@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import FuelRateFormWrap from './FuelRateFormWrap.jsx';
 import FuelRatesTable from './FuelRatesTable.jsx';
 import ElementsList from 'components/ElementsList.jsx';
-import { connectToStores, staticProps } from 'utils/decorators';
+import { connectToStores, staticProps, exportable } from 'utils/decorators';
 
 @connectToStores(['fuelRates', 'objects'])
+@exportable({ entity: 'fuel_consumption_rates' })
 @staticProps({
   entity: 'fuel_consumption_rate',
   listName: 'rates',

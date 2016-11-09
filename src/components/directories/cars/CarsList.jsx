@@ -1,10 +1,11 @@
 import React from 'react';
-import { connectToStores, staticProps } from 'utils/decorators';
+import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import ElementsList from 'components/ElementsList.jsx';
 import CarFormWrap from './CarFormWrap.jsx';
 import CarsTable from './CarsTable.jsx';
 
 @connectToStores(['objects'])
+@exportable({ entity: 'car_actual' })
 @staticProps({
   entity: 'car',
   listName: 'carsList',

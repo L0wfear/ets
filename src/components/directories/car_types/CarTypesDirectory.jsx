@@ -1,9 +1,10 @@
 import React from 'react';
 import ElementsList from 'components/ElementsList.jsx';
-import { connectToStores, staticProps } from 'utils/decorators';
+import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import CarTypesTable from './CarTypesTable.jsx';
 
 @connectToStores(['objects'])
+@exportable({ entity: 'car_func_type' })
 @staticProps({
   entity: 'type',
   listName: 'typesList',

@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import ElementsList from 'components/ElementsList.jsx';
 import ODHNormFormWrap from './ODHNormFormWrap.jsx';
 import ODHNormTable from './ODHNormTable.jsx';
-import { connectToStores, staticProps } from 'utils/decorators';
+import { connectToStores, staticProps, exportable } from 'utils/decorators';
 
 @connectToStores(['odh'])
+@exportable({ entity: 'comsumable_material' })
 @staticProps({
   entity: 'odh_norm',
   listName: 'odhNormList',

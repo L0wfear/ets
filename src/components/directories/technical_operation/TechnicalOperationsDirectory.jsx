@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import TechnicalOperationFormWrap from './TechnicalOperationFormWrap.jsx';
 import TechnicalOperationsTable from './TechnicalOperationsTable.jsx';
 import ElementsList from 'components/ElementsList.jsx';
-import { connectToStores, staticProps } from 'utils/decorators';
+import { connectToStores, staticProps, exportable } from 'utils/decorators';
 
 @connectToStores(['objects'])
+@exportable({ entity: 'technical_operation' })
 @staticProps({
   entity: 'technical_operation',
   listName: 'technicalOperationsList',

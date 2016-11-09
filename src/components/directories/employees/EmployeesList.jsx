@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import ElementsList from 'components/ElementsList.jsx';
 import EmployeeFormWrap from './EmployeeFormWrap.jsx';
 import EmployeesTable from './EmployeesTable.jsx';
-import { connectToStores, staticProps } from 'utils/decorators';
+import { connectToStores, staticProps, exportable } from 'utils/decorators';
 
 @connectToStores(['employees', 'objects'])
+@exportable({ entity: 'employee' })
 @staticProps({
   entity: 'employee',
   listName: 'employeesList',

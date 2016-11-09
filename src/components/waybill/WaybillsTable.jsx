@@ -125,7 +125,6 @@ const getTableMeta = () => {
         type: 'string',
         filter: {
           type: 'multiselect',
-          labelFunction: employeeFIOLabelFunction,
         },
       },
       {
@@ -134,7 +133,6 @@ const getTableMeta = () => {
         type: 'string',
         filter: {
           type: 'multiselect',
-          labelFunction: employeeFIOLabelFunction,
         },
       },
       {
@@ -143,7 +141,6 @@ const getTableMeta = () => {
         type: 'string',
         filter: {
           type: 'multiselect',
-          labelFunction: employeeFIOLabelFunction,
         },
       },
       {

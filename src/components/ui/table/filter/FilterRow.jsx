@@ -47,15 +47,16 @@ export default class FilterRow extends React.Component {
                         }))
                         .filter(d => d.label !== null)
                         .value();
-        if (!!value && !_.find(options, o => o.value === value)) {
-          value = null;
-        }
         if (type === 'select') {
+          if (!!value && !_.find(options, o => o.value === value)) {
+            value = null;
+          }
           if (name === 'operation_id') {
             options = options.sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
           }
           input = <EtsSelect options={options} value={value} onChange={onChange} />;
         } else if (type === 'multiselect') {
+          if (value && !!value.length) value = value.filter(v => _.find(options, o => o.value === v));
           input = (
             <Div className="filter-multiselect-container">
               <EtsSelect options={options} multi delimiter={'$'} value={value} onChange={onMultiChange} />

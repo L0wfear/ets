@@ -32,8 +32,9 @@ export default class FilterRow extends React.Component {
   }
 
   render() {
-    const { value, name, displayName, type, labelFunction,
+    const { name, displayName, type, labelFunction,
       availableOptions, onChange, onMultiChange, tableData } = this.props;
+    let { value } = this.props;
     let input = <Input type="text" value={value} onChange={onChange} />;
 
     if (type) {
@@ -46,6 +47,9 @@ export default class FilterRow extends React.Component {
                         }))
                         .filter(d => d.label !== null)
                         .value();
+        if (!!value && !_.find(options, o => o.value === value)) {
+          value = null;
+        }
         if (type === 'select') {
           if (name === 'operation_id') {
             options = options.sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));

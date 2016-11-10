@@ -22,3 +22,4 @@ import './components/ui/Prompt';
 global.NODE_ENV = process.env.NODE_ENV;
 /* Глобальный формат даты для всех дейтпикеров и строк */
 global.APP_DATE_FORMAT = 'DD.MM.YYYY';
+global.SESSION_KEY = 'ets-session-test';

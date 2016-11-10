@@ -1,13 +1,11 @@
 import { parseFilename } from 'utils/content-disposition.js';
 
-const SESSION_KEY = 'ets-session-test';
-
 function urlencode(jsonObject) {
   return Object.keys(jsonObject).map(k => `${k}=${encodeURIComponent(jsonObject[k])}`).join('&');
 }
 
 function httpMethodBlob(url, data, method) {
-  const token = JSON.parse(window.localStorage.getItem(SESSION_KEY));
+  const token = JSON.parse(window.localStorage.getItem(global.SESSION_KEY));
 
   const options = {
     method,

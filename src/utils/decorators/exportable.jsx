@@ -4,7 +4,6 @@ import { saveData } from 'utils/functions';
 import { parseFilename } from 'utils/content-disposition.js';
 import config from 'config';
 import _ from 'lodash';
-const SESSION_KEY = 'ets-session-test';
 
 // TODO поменять на urlencode и использовать для составления параметров
 export function toUrlWithParams(url, data) {
@@ -30,7 +29,7 @@ export default function exportable(options) {
       }
 
       exportFunction(payload = {}, useRouteParams) {
-        const token = JSON.parse(window.localStorage.getItem(SESSION_KEY));
+        const token = JSON.parse(window.localStorage.getItem(global.SESSION_KEY));
         let id = '';
         if (useRouteParams) {
           id = this.props.routeParams.id;

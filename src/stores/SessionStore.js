@@ -4,7 +4,6 @@ import createFio from '../utils/create-fio.js';
 import { User } from '../models';
 import { clear } from 'utils/cache';
 
-const SESSION_KEY = 'ets-session-test';
 const defaultUser = {
   login: 'mayor',
   password: 'mayor',
@@ -26,7 +25,7 @@ export default class SessionStore extends Store {
     let currentUser;
 
     try {
-      storedSession = JSON.parse(localStorage.getItem(SESSION_KEY));
+      storedSession = JSON.parse(localStorage.getItem(global.SESSION_KEY));
       currentUser = JSON.parse(localStorage.getItem('current_user'));
     } catch (e) {
       storedSession = null;
@@ -49,7 +48,7 @@ export default class SessionStore extends Store {
     const session = data.token;
     let currentUser = data.payload;
 
-    localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+    localStorage.setItem(global.SESSION_KEY, JSON.stringify(session));
     localStorage.setItem('current_user', JSON.stringify(currentUser));
     this.flux.getStore('dashboard').resetState();
     setUserContext(currentUser);
@@ -66,8 +65,7 @@ export default class SessionStore extends Store {
   }
 
   handleLogout(message) {
-    localStorage.removeItem(SESSION_KEY);
-    localStorage.removeItem('current_user');
+    localStorage.removeItem(global.SESSION_KEY);
     this.setState({
       session: null,
       sessionError: message || null,

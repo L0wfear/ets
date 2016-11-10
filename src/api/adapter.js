@@ -1,8 +1,6 @@
 import _ from 'lodash';
 import { getServerErrorNotification } from 'utils/notifications';
 
-
-const SESSION_KEY = 'ets-session-test';
 let headers = {};
 
 export function setHeaders(requestHeaders) {
@@ -47,7 +45,7 @@ function checkResponse(url, response, body, method) {
 function httpMethod(url, data = {}, method, type, params = {}) {
   let body;
   data = { ...data };
-  const token = JSON.parse(window.localStorage.getItem(SESSION_KEY));
+  const token = JSON.parse(window.localStorage.getItem(global.SESSION_KEY));
 
   const options = {
     method,

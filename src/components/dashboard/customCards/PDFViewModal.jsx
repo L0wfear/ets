@@ -3,9 +3,6 @@ import { Modal } from 'react-bootstrap';
 import PDF from 'react-pdf-js';
 import Preloader from '../../ui/Preloader.jsx';
 
-const SESSION_KEY = 'ets-session-test';
-
-
 export default class PDFViewModal extends Component {
 
   static get propTypes() {
@@ -25,7 +22,7 @@ export default class PDFViewModal extends Component {
 
   componentWillReceiveProps(nextProps) {
     window.URL.revokeObjectURL(this.state.url);
-    const token = JSON.parse(window.localStorage.getItem(SESSION_KEY));
+    const token = JSON.parse(window.localStorage.getItem(global.SESSION_KEY));
     // TODO blob
     if (nextProps.url !== this.props.url && nextProps.url !== null) {
       fetch(nextProps.url, {

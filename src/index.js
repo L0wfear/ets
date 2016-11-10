@@ -19,7 +19,3 @@ import './components/App';
 import './components/ui/NotificationSystem';
 import './components/ui/Prompt';
 /* Проставляем NODE_ENV для оптимизации работы некоторых библиотек */
-global.NODE_ENV = process.env.NODE_ENV;
-/* Глобальный формат даты для всех дейтпикеров и строк */
-global.APP_DATE_FORMAT = 'DD.MM.YYYY';
-global.SESSION_KEY = 'ets-session-test';

@@ -4,7 +4,7 @@ import createFio from '../utils/create-fio.js';
 import { User } from '../models';
 import { clear } from 'utils/cache';
 
-const SESSION_KEY = 'ets-session';
+const SESSION_KEY = 'ets-session-test';
 const defaultUser = {
   login: 'mayor',
   password: 'mayor',

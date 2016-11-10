@@ -1,6 +1,8 @@
 import ApiServiceFactory from './ApiServiceFactory.js';
 import config from '../config.js';
 
+const SESSION_KEY = 'ets-session-test';
+
 const CITY_DASHBOARD_API_FACTORY = new ApiServiceFactory({
   apiUrl: 'http://ods.mos.ru/ssd/city-dashboard',
 });
@@ -11,7 +13,7 @@ export const TrackService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('
 const ETS_API_FACTORY = new ApiServiceFactory({
   apiUrl: config.backend,
   headers: () => {
-    const token = JSON.parse(window.localStorage.getItem('ets-session'));
+    const token = JSON.parse(window.localStorage.getItem(SESSION_KEY));
     return {
       'Authorization': `Token ${token}`,
       'Accept': 'application/json',

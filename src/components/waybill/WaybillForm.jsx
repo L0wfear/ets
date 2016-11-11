@@ -265,7 +265,7 @@ class WaybillForm extends Form {
     const { appConfig } = this.props;
     let taxesControl = false;
 
-    const { carsList = [], carsIndex = {}, driversList = [], employeesList = [], missionsList = [], companyStructureList = [] } = this.props;
+    const { carsList = [], carsIndex = {}, driversList = [], employeesList = [], missionsList = [] } = this.props;
     const CARS = carsList.map(c => ({
       value: c.asuods_id,
       gov_number: c.gov_number,
@@ -280,7 +280,7 @@ class WaybillForm extends Form {
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false }));
 
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
-    const STRUCTURES = companyStructureList.map(({ id, name }) => ({ value: id, label: name }));
+    const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
 
     let STRUCTURE_FIELD_VIEW = false;
     let STRUCTURE_FIELD_READONLY = false;

@@ -45,7 +45,6 @@ export default class MissionsJournal extends CheckableElementsList {
     super.componentDidMount();
     const { flux } = this.context;
     flux.getActions('missions').getMissions();
-    flux.getActions('companyStructure').getCompanyStructure();
   }
 
   checkDisabled() {

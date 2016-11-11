@@ -47,6 +47,23 @@ class MissionTemplateForm extends MissionForm {
     const errors = this.props.formErrors;
     const { technicalOperationsList = [], routesList = [], carsList = [] } = this.state;
 
+    const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
+    const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
+
+    let STRUCTURE_FIELD_VIEW = false;
+    let STRUCTURE_FIELD_READONLY = false;
+    let STRUCTURE_FIELD_DELETABLE = false;
+
+    if (currentStructureId !== null && STRUCTURES.length === 1 && currentStructureId === STRUCTURES[0].value) {
+      STRUCTURE_FIELD_VIEW = true;
+      STRUCTURE_FIELD_READONLY = true;
+    } else if (currentStructureId !== null && STRUCTURES.length > 1 && _.find(STRUCTURES, el => el.value === currentStructureId)) {
+      STRUCTURE_FIELD_VIEW = true;
+    } else if (currentStructureId === null && STRUCTURES.length > 1) {
+      STRUCTURE_FIELD_VIEW = true;
+      STRUCTURE_FIELD_DELETABLE = true;
+    }
+
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
     const ROUTES = routesList.map(({ id, name }) => ({ value: id, label: name }));
     const CARS = carsList.map(c => ({ value: c.asuods_id, label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]` }));
@@ -72,7 +89,7 @@ class MissionTemplateForm extends MissionForm {
 
         <Modal.Body>
           <Row>
-            <Col md={12}>
+            <Col md={STRUCTURE_FIELD_VIEW ? 9 : 12}>
               <Field
                 type="select"
                 label="Технологическая операция"
@@ -83,6 +100,17 @@ class MissionTemplateForm extends MissionForm {
                 onChange={this.handleTechnicalOperationChange.bind(this)}
               />
             </Col>
+            {STRUCTURE_FIELD_VIEW && <Col md={3}>
+              <Field type="select"
+                label="Подразделение"
+                error={errors.structure_id}
+                disabled={STRUCTURE_FIELD_READONLY}
+                clearable={STRUCTURE_FIELD_DELETABLE}
+                options={STRUCTURES}
+                value={state.structure_id}
+                onChange={this.handleChange.bind(this, 'structure_id')}
+              />
+            </Col>}
           </Row>
           <Row>
             <Col md={6}>

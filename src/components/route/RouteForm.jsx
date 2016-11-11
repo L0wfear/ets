@@ -1,14 +1,12 @@
 import React from 'react';
 import _ from 'lodash';
 import { autobind } from 'core-decorators';
-import { connectToStores } from 'utils/decorators';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import RouteCreating from './RouteCreating.jsx';
 import Form from '../compositions/Form.jsx';
 
-@connectToStores(['objects'])
 @autobind
 export default class RouteForm extends Form {
 
@@ -117,11 +115,10 @@ export default class RouteForm extends Form {
     const state = this.props.formState;
     const errors = this.props.formErrors;
     const { ROUTE_TYPE_OPTIONS, technicalOperationsList = [] } = this.state;
-    const { companyStructureList = [] } = this.props;
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
 
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
-    const STRUCTURES = companyStructureList.map(({ id, name }) => ({ value: id, label: name }));
+    const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
 
     let STRUCTURE_FIELD_VIEW = false;
     let STRUCTURE_FIELD_READONLY = false;

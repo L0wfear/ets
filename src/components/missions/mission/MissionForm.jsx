@@ -155,12 +155,9 @@ export class MissionForm extends Form {
     const state = this.props.formState;
     const errors = this.props.formErrors;
 
-    const { missionSourcesList = [], companyStructureList = [] } = this.props;
+    const { missionSourcesList = [] } = this.props;
     const { technicalOperationsList = [], routesList = [], carsList = [] } = this.state;
 
-    const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
-
-    const STRUCTURES = companyStructureList.map(({ id, name }) => ({ value: id, label: name }));
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
     const MISSION_SOURCES = missionSourcesList.map(({ id, name }) => ({ value: id, label: name }));
     const ASSIGN_OPTIONS = [
@@ -173,6 +170,9 @@ export class MissionForm extends Form {
 
     // является ли задание отложенным
     const isDeferred = moment(state.date_start).toDate().getTime() > moment().toDate().getTime();
+
+    const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
+    const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
 
     let STRUCTURE_FIELD_VIEW = false;
     let STRUCTURE_FIELD_READONLY = false;

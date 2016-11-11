@@ -14,6 +14,7 @@ class DutyMissionFormWrap extends FormWrap {
 
     this.schema = dutyMissionSchema;
     this.defaultElement = getDefaultDutyMission();
+    this.defaultElement.structure_id = context.flux.getStore('session').getCurrentUser().structure_id;
     this.createAction = (async) (formState) => {
       await context.flux.getActions('missions').createDutyMission(formState);
       context.flux.getActions('missions').getDutyMissions();

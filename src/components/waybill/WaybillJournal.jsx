@@ -37,7 +37,6 @@ export default class WaybillJournal extends CheckableElementsList {
     flux.getActions('waybills').getWaybills();
     flux.getActions('employees').getEmployees();
     flux.getActions('objects').getCars();
-    flux.getActions('companyStructure').getCompanyStructure();
   }
 
   showPrintForm(printNumber) {

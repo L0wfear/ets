@@ -161,6 +161,23 @@ export class DutyMissionForm extends Form {
     const route = this.state.selectedRoute;
     const IS_DISPLAY = !!state.status && state.status !== 'not_assigned';
 
+    const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
+    const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
+
+    let STRUCTURE_FIELD_VIEW = false;
+    let STRUCTURE_FIELD_READONLY = false;
+    let STRUCTURE_FIELD_DELETABLE = false;
+
+    if (currentStructureId !== null && STRUCTURES.length === 1 && currentStructureId === STRUCTURES[0].value) {
+      STRUCTURE_FIELD_VIEW = true;
+      STRUCTURE_FIELD_READONLY = true;
+    } else if (currentStructureId !== null && STRUCTURES.length > 1 && _.find(STRUCTURES, el => el.value === currentStructureId)) {
+      STRUCTURE_FIELD_VIEW = true;
+    } else if (currentStructureId === null && STRUCTURES.length > 1) {
+      STRUCTURE_FIELD_VIEW = true;
+      STRUCTURE_FIELD_DELETABLE = true;
+    }
+
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
 
@@ -186,7 +203,7 @@ export class DutyMissionForm extends Form {
 
             <Col md={6}>
               <Row>
-                 <Col md={6}>
+                <Col md={6}>
                   <label style={{ position: 'absolute', right: -7, top: 31, fontWeight: 400 }}>—</label>
                   <Div>
                     <Field
@@ -198,8 +215,8 @@ export class DutyMissionForm extends Form {
                       onChange={this.handleChange.bind(this, 'plan_date_start')}
                     />
                   </Div>
-                 </Col>
-                 <Col md={6}>
+                </Col>
+                <Col md={6}>
                   <Div>
                     <Field
                       type="date"
@@ -211,11 +228,11 @@ export class DutyMissionForm extends Form {
                       onChange={this.handleChange.bind(this, 'plan_date_end')}
                     />
                   </Div>
-                 </Col>
+                </Col>
 
                 <Div hidden={!(IS_CLOSING || IS_COMPLETED)}>
-                   <Col md={6}>
-                     <label style={{ position: 'absolute', right: -7, top: 31, fontWeight: 400 }}>—</label>
+                  <Col md={6}>
+                    <label style={{ position: 'absolute', right: -7, top: 31, fontWeight: 400 }}>—</label>
                     <Div>
                       <Field
                         type="date"
@@ -226,8 +243,8 @@ export class DutyMissionForm extends Form {
                         onChange={this.handleChange.bind(this, 'fact_date_start')}
                       />
                     </Div>
-                   </Col>
-                   <Col md={6}>
+                  </Col>
+                  <Col md={6}>
                     <Div>
                       <Field
                         type="date"
@@ -239,7 +256,7 @@ export class DutyMissionForm extends Form {
                         onChange={this.handleChange.bind(this, 'fact_date_end')}
                       />
                     </Div>
-                   </Col>
+                  </Col>
                 </Div>
               </Row>
             </Col>
@@ -260,7 +277,7 @@ export class DutyMissionForm extends Form {
               />
             </Col>
 
-            <Col md={6}>
+            <Col md={STRUCTURE_FIELD_VIEW ? 3 : 6}>
               <Field type="select" label="Бригада" error={errors.brigade_employee_id_list}
                 multi
                 disabled={IS_DISPLAY}
@@ -269,6 +286,17 @@ export class DutyMissionForm extends Form {
                 onChange={this.handleBrigadeIdListChange.bind(this)}
               />
             </Col>
+            {STRUCTURE_FIELD_VIEW && <Col md={3}>
+              <Field type="select"
+                label="Подразделение"
+                error={errors.structure_id}
+                disabled={STRUCTURE_FIELD_READONLY}
+                clearable={STRUCTURE_FIELD_DELETABLE}
+                options={STRUCTURES}
+                value={state.structure_id}
+                onChange={this.handleChange.bind(this, 'structure_id')}
+              />
+            </Col>}
           </Row>
 
 

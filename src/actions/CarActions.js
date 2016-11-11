@@ -54,20 +54,23 @@ export default class CarActions extends Actions {
 
   getTrack(id, from_dt, to_dt) {
     const payload = {
+      version: 3,
+      gps_code: id,
       from_dt: makeUnixTime(from_dt),
       to_dt: makeUnixTime(to_dt),
-      version: 2,
     };
 
     return TrackService
-      .path(id)
       .get(payload)
-      .then(points => points.map((point) => {
-          // wrap coords for OpenLayers
-        point.coords = swapCoords(point.coords);
-        point.coords_msk = swapCoords(point.coords_msk);
-        return point;
-      }));
+      .then((obj) => {
+        obj.track = obj.track.map((point) => {
+            // wrap coords for OpenLayers
+          point.coords = swapCoords(point.coords);
+          point.coords_msk = swapCoords(point.coords_msk);
+          return point;
+        });
+        return obj;
+      });
   }
 
   getCarDistance(gps_code, from_dt, to_dt) {

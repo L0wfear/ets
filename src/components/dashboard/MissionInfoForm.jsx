@@ -1,5 +1,7 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
+import moment from 'moment';
+import { connectToStores as connect } from 'utils/decorators';
 import { autobind } from 'core-decorators';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import Div from 'components/ui/Div.jsx';
@@ -18,6 +20,7 @@ const getDataTraveledYet = (data) => {
   return !isNaN(parseInt(data, 10)) ? parseInt(data, 10) : '-';
 };
 
+@connect(['objects'])
 @autobind
 class MissionInfoForm extends Form {
 
@@ -29,13 +32,13 @@ class MissionInfoForm extends Form {
       selectedObjects: [],
       selectedElementId: null,
       selectedPoint: null,
+      parkingCount: 0,
     };
   }
 
   async componentDidMount() {
     const { formState } = this.props;
-    const { mission_data, car_data, report_data, route_data,
-      technical_operation_data, waybill_data } = formState;
+    const { mission_data, car_data, report_data, route_data } = formState;
     const { flux } = this.context;
     flux.getActions('points').createConnection();
     flux.getActions('points').setSingleCarTrack(car_data.gov_number);
@@ -61,7 +64,6 @@ class MissionInfoForm extends Form {
   }
 
   handleSelectedElementChange(id) {
-    console.log(id);
     this.setState({ selectedElementId: id });
   }
 
@@ -69,10 +71,16 @@ class MissionInfoForm extends Form {
     this.setState({ selectedPoint: point });
   }
 
+  componentWillReceiveProps(props) {
+    if (props.track.time_of_parking && this.props.track.time_of_parking !== this.state.parkingCount) {
+      this.setState({ parkingCount: props.track.time_of_parking });
+    }
+  }
+
   render() {
     const state = this.props.formState;
-    const { mission_data, car_data, report_data, route_data,
-      technical_operation_data, waybill_data } = state;
+    const { car_data, report_data, route_data,
+      technical_operation_data } = state;
     const routeType = route_data.type;
     const { route = {} } = this.state;
     const { geozonePolys = {} } = this.props;
@@ -164,6 +172,7 @@ class MissionInfoForm extends Form {
             ** - пройдено с рабочей скоростью / пройдено с превышением рабочей скорости<br />
             <li><b>Пройдено с рабочей скоростью:</b> {getDataTraveledYet([report_data.traveled, report_data.check_unit, report_data.time_work_speed].join(' '))}</li>
             <li><b>Пройдено с превышением рабочей скорости:</b> {getDataTraveledYet([report_data.traveled_high_speed, report_data.check_unit, report_data.time_high_speed].join(' '))}</li>
+            <li><b>Общее время стоянок:</b> {moment.unix(this.state.parkingCount).format('HH:mm:ss')}</li>
           </Div>
 
         </Modal.Body>

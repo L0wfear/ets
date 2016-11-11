@@ -150,8 +150,8 @@ export default class Track {
     this.continuousUpdating = false;
 
     return flux.getActions('cars').getTrack(id, from_dt, to_dt)
-                .then((track) => {
-                  this.points = track;
+                .then((obj) => {
+                  this.points = obj.track;
                   this.continuousUpdating = updating;
                   this.render();
                   this.onUpdateCallback();

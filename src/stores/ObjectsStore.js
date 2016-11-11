@@ -12,6 +12,7 @@ export default class ObjectsStore extends Store {
     const companyStructreActions = flux.getActions('companyStructure');
 
     this.register(carActions.updateCarAdditionalInfo, this.handleGetCars);
+    this.register(carActions.getTrack, this.handleGetTrack);
 
     this.register(objectsActions.getCars, this.handleGetCars);
     this.register(objectsActions.getModels, this.handleGetModels);
@@ -44,6 +45,7 @@ export default class ObjectsStore extends Store {
 
     this.state = {
       carsList: [],
+      track: {},
       customersList: [],
       typesList: [],
       modelsList: [],
@@ -107,6 +109,10 @@ export default class ObjectsStore extends Store {
     });
     const carsIndex = _.keyBy(carsList, 'asuods_id');
     this.setState({ carsList, carsIndex });
+  }
+
+  handleGetTrack(track) {
+    this.setState({ track });
   }
 
   handleGetModels(modelsList) {

@@ -447,7 +447,7 @@ class WaybillForm extends Form {
                 value={car ? `${car.gov_number} [${car.special_model_name || ''}${car.special_model_name ? '/' : ''}${car.model_name || ''}]` : 'Н/Д'}
               />
             </Col>
-            <Col md={STRUCTURE_FIELD_VIEW ? 3 : 6}>
+            <Col md={STRUCTURE_FIELD_VIEW ? 3 : 6} style={{ marginTop: '-20px' }}>
               <Field
                 type="select"
                 label="Водитель (возможен поиск по табельному номеру)"

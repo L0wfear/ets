@@ -61,4 +61,5 @@ export const schema = {
 
 export const defaultElement = {
   active: 1,
+  is_common: 0,
 };

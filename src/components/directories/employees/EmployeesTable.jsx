@@ -100,6 +100,15 @@ const tableMeta = {
         type: 'multiselect',
       },
     },
+    {
+      name: 'is_common',
+      displayName: 'Общее',
+      type: 'text',
+      filter: {
+        type: 'select',
+        labelFunction: l => l ? 'Да' : 'Нет',
+      },
+    },
   ],
 };
 
@@ -116,6 +125,7 @@ export default (props) => {
     birthday: ({ data }) => <DateFormatter date={data} />,
     active: ({ data }) => <div>{data === true ? 'Работает' : 'Не работает'}</div>,
     medical_certificate_date: ({ data }) => <DateFormatter date={data} />,
+    is_common: ({ data }) => <input type="checkbox" disabled checked={!!data} />,
   };
 
   return (<Table

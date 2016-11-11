@@ -38,7 +38,6 @@ export default class EmployeeForm extends Form {
     const IS_CREATING = !!!state.id;
 
     let title = 'Изменение сотрудника';
-
     if (IS_CREATING) title = 'Создание сотрудника';
 
     return (
@@ -46,158 +45,172 @@ export default class EmployeeForm extends Form {
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
         </Modal.Header>
-
-        <Modal.Body>
-
+        <Div style={{ padding: 15 }}>
           <Row>
-
             <Col md={6}>
-              <Div>
-                <Field
-                  type="string"
-                  label="Фамилия"
-                  value={state.last_name}
-                  error={errors.last_name}
-                  onChange={this.handleChange.bind(this, 'last_name')}
-                />
-              </Div>
-              <Div>
-                <Field
-                  type="string"
-                  label="Имя"
-                  value={state.first_name}
-                  error={errors.first_name}
-                  onChange={this.handleChange.bind(this, 'first_name')}
-                />
-              </Div>
-              <Div>
-                <Field
-                  type="string"
-                  label="Отчество"
-                  value={state.middle_name}
-                  error={errors.middle_name}
-                  onChange={this.handleChange.bind(this, 'middle_name')}
-                />
-              </Div>
-              <Div>
-                <Field
-                  type="date"
-                  label="Дата рождения"
-                  date={state.birthday}
-                  time={false}
-                  error={errors.birthday}
-                  onChange={this.handleChange.bind(this, 'birthday')}
-                />
-              </Div>
-              <Div>
-                <Field
-                  type="string"
-                  label="Телефон"
-                  value={state.phone}
-                  error={errors.phone}
-                  onChange={this.handleChange.bind(this, 'phone')}
-                />
-              </Div>
-              <Div>
-                <Field
-                  type="select"
-                  label="Должность"
-                  options={POSITION_ELEMENTS}
-                  value={state.position_id}
-                  error={errors.position_id}
-                  onChange={this.handleChange.bind(this, 'position_id')}
-                />
-              </Div>
-              <Div>
-                <Field type="select" label="Подразделение"
-                  options={COMPANY_ELEMENTS}
-                  value={state.company_structure_id}
-                  onChange={this.handleChange.bind(this, 'company_structure_id')}
-                />
-              </Div>
+              <Field
+                type="string"
+                label="Фамилия"
+                value={state.last_name}
+                error={errors.last_name}
+                onChange={this.handleChange.bind(this, 'last_name')}
+              />
             </Col>
-
             <Col md={6}>
-              <Div>
-                <Field
-                  type="number"
-                  label="Табельный номер"
-                  value={state.personnel_number}
-                  error={errors.personnel_number}
-                  onChange={this.handleChange.bind(this, 'personnel_number')}
-                />
-              </Div>
-              <Div>
-                <Field
-                  type="string"
-                  label="Специальное удостоверение"
-                  value={state.special_license}
-                  error={errors.special_license}
-                  onChange={this.handleChange.bind(this, 'special_license')}
-                />
-              </Div>
-              <Div>
-                <Field
-                  type="string"
-                  label="Водительское удостоверение"
-                  value={state.drivers_license}
-                  error={errors.drivers_license}
-                  onChange={this.handleChange.bind(this, 'drivers_license')}
-                />
-              </Div>
-              <Div>
-                <Field
-                  type="select"
-                  label="Предпочитаемое ТрС"
-                  value={state.prefer_car}
-                  options={CARS}
-                  error={errors.prefer_car}
-                  onChange={this.handleChange.bind(this, 'prefer_car')}
-                />
-              </Div>
-              <Div>
-                <Field
-                  type="select"
-                  label="Состояние"
-                  value={state.active ? 1 : 0}
-                  options={DRIVER_STATES}
-                  error={errors.active}
-                  onChange={this.handleChange.bind(this, 'active')}
-                />
-              </Div>
-              <Div>
-                <Field
-                  type="string"
-                  label="Медицинская справка №"
-                  value={state.medical_certificate}
-                  error={errors.medical_certificate}
-                  onChange={this.handleChange.bind(this, 'medical_certificate')}
-                />
-              </Div>
-              <Div>
-                <Field
-                  type="date"
-                  label="Срок действия медицинской справки"
-                  date={state.medical_certificate_date}
-                  time={false}
-                  error={errors.medical_certificate_date}
-                  onChange={this.handleChange.bind(this, 'medical_certificate_date')}
-                />
-              </Div>
-              <Div>
-                <Field
-                  type="string"
-                  label="СНИЛС №"
-                  value={state.snils}
-                  error={errors.snils}
-                  onChange={this.handleChange.bind(this, 'snils')}
-                />
-              </Div>
+              <Field
+                type="number"
+                label="Табельный номер"
+                value={state.personnel_number}
+                error={errors.personnel_number}
+                onChange={this.handleChange.bind(this, 'personnel_number')}
+              />
             </Col>
-
           </Row>
-
-        </Modal.Body>
+          <Row>
+            <Col md={6}>
+              <Field
+                type="string"
+                label="Имя"
+                value={state.first_name}
+                error={errors.first_name}
+                onChange={this.handleChange.bind(this, 'first_name')}
+              />
+            </Col>
+            <Col md={6}>
+              <Field
+                type="string"
+                label="Специальное удостоверение"
+                value={state.special_license}
+                error={errors.special_license}
+                onChange={this.handleChange.bind(this, 'special_license')}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6}>
+              <Field
+                type="string"
+                label="Отчество"
+                value={state.middle_name}
+                error={errors.middle_name}
+                onChange={this.handleChange.bind(this, 'middle_name')}
+              />
+            </Col>
+            <Col md={6}>
+              <Field
+                type="string"
+                label="Водительское удостоверение"
+                value={state.drivers_license}
+                error={errors.drivers_license}
+                onChange={this.handleChange.bind(this, 'drivers_license')}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6}>
+              <Field
+                type="date"
+                label="Дата рождения"
+                date={state.birthday}
+                time={false}
+                error={errors.birthday}
+                onChange={this.handleChange.bind(this, 'birthday')}
+              />
+            </Col>
+            <Col md={6}>
+              <Field
+                type="select"
+                label="Предпочитаемое ТрС"
+                value={state.prefer_car}
+                options={CARS}
+                error={errors.prefer_car}
+                onChange={this.handleChange.bind(this, 'prefer_car')}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6}>
+              <Field
+                type="string"
+                label="Телефон"
+                value={state.phone}
+                error={errors.phone}
+                onChange={this.handleChange.bind(this, 'phone')}
+              />
+            </Col>
+            <Col md={6}>
+              <Field
+                type="select"
+                label="Состояние"
+                value={state.active ? 1 : 0}
+                options={DRIVER_STATES}
+                error={errors.active}
+                onChange={this.handleChange.bind(this, 'active')}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6}>
+              <Field
+                type="select"
+                label="Должность"
+                options={POSITION_ELEMENTS}
+                value={state.position_id}
+                error={errors.position_id}
+                onChange={this.handleChange.bind(this, 'position_id')}
+              />
+            </Col>
+            <Col md={6}>
+              <Field
+                type="string"
+                label="Медицинская справка №"
+                value={state.medical_certificate}
+                error={errors.medical_certificate}
+                onChange={this.handleChange.bind(this, 'medical_certificate')}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6}>
+              <Field type="select" label="Подразделение"
+                options={COMPANY_ELEMENTS}
+                value={state.company_structure_id}
+                onChange={this.handleChange.bind(this, 'company_structure_id')}
+              />
+            </Col>
+            <Col md={6}>
+              <Field
+                type="date"
+                label="Срок действия медицинской справки"
+                date={state.medical_certificate_date}
+                time={false}
+                error={errors.medical_certificate_date}
+                onChange={this.handleChange.bind(this, 'medical_certificate_date')}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6}>
+              <Field
+                type="select"
+                label="Общее"
+                options={[{ label: 'Да', value: 1 }, { label: 'Нет', value: 0 }]}
+                value={state.is_common ? 1 : 0}
+                onChange={this.handleChange.bind(this, 'is_common')}
+              />
+            </Col>
+            <Col md={6}>
+              <Field
+                type="string"
+                label="СНИЛС №"
+                value={state.snils}
+                error={errors.snils}
+                onChange={this.handleChange.bind(this, 'snils')}
+              />
+            </Col>
+          </Row>
+        </Div>
+        <Modal.Body />
         <Modal.Footer>
           <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
         </Modal.Footer>

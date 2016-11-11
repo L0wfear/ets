@@ -86,6 +86,15 @@ const tableMeta = {
         type: 'multiselect',
       },
     },
+    {
+      name: 'is_common',
+      displayName: 'Общее',
+      type: 'text',
+      filter: {
+        type: 'select',
+        labelFunction: l => l ? 'Да' : 'Нет'
+      },
+    },
   ],
 };
 
@@ -95,6 +104,7 @@ const CarsTable = (props) => {
     fuel_correction_rate: ({ data }) => <div>{data ? parseFloat(data).toFixed(2) : ''}</div>,
     garage_number: ({ data }) => <div>{data && data !== 'null' ? data : ''}</div>,
     model_name: ({ data }) => <div className="white-space-pre-wrap">{data}</div>,
+    is_common: ({ data }) => <input type="checkbox" disabled checked={!!data} />,
   };
 
   return (<Table

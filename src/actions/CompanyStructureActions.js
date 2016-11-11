@@ -23,7 +23,7 @@ export default class CompanyStructureActions extends Actions {
       id,
     };
 
-    return CompanyStructureService.delete(payload);
+    return CompanyStructureService.delete(payload, true, 'json');
   }
 
   getCompanyStructure() {

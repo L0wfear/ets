@@ -6,7 +6,9 @@ import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import RouteCreating from './RouteCreating.jsx';
 import Form from '../compositions/Form.jsx';
+import { connectToStores } from 'utils/decorators';
 
+@connectToStores(['objects'])
 @autobind
 export default class RouteForm extends Form {
 

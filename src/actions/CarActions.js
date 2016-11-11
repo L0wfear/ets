@@ -28,10 +28,12 @@ export default class CarActions extends Actions {
       payload.company_structure_id = car.company_structure_id;
     }
     if (car.is_common) {
-      payload.is_common = car.is_common;
+      payload.is_common = 1;
+    } else {
+      payload.is_common = 0;
     }
 
-    return CarInfoService.post(payload, CarService.get);
+    return CarService.put(payload, CarService.get);
   }
 
   getVectorObject(selectedPoint, prevPoint, nextPoint) {

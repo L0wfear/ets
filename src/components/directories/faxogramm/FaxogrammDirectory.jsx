@@ -11,9 +11,7 @@ import FaxogrammsTable from './FaxogrammsTable.jsx';
 import FaxogrammInfoTable from './FaxogrammInfoTable.jsx';
 import FaxogrammOperationInfoTable from './FaxogrammOperationInfoTable.jsx';
 import { saveData } from 'utils/functions';
-import { exportable } from 'utils/decorators';
 
-@exportable({ entity: 'faxogramm' })
 class FaxogrammDirectory extends ElementsList {
 
   constructor(props, context) {
@@ -65,7 +63,6 @@ class FaxogrammDirectory extends ElementsList {
         <FaxogrammsTable data={faxogrammsList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'} {...this.props}>
           <Button onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}>Создать задания</Button>
           <Button onClick={this.saveFaxogramm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="download-alt" /></Button>
-          <Button onClick={() => this.props.export()}><Glyphicon glyph="download-alt" /> Выгрузить список</Button>
         </FaxogrammsTable>
         <FaxogrammMissionsFormWrap onFormHide={this.onFormHide.bind(this)}
           showForm={this.state.showForm}

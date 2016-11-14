@@ -63,7 +63,7 @@ export class MissionForm extends Form {
       this.handleChange('car_id', undefined);
       const carsList = await this.context.flux.getActions('cars')
                                             .getCarsByTechnicalOperation(v);
-      this.setState({ carsList });
+      this.setState({ carsList: carsList.rows });
     }
 
     try {
@@ -99,8 +99,9 @@ export class MissionForm extends Form {
     }
 
     technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsByCarId(mission.car_id);
+    technicalOperationsList = technicalOperationsList.rows;
     const carsListResponse = await objectsActions.getCars();
-    carsList = carsListResponse.result;
+    carsList = carsListResponse.result.rows;
     missionsActions.getMissionSources();
 
     this.setState({

@@ -7,12 +7,12 @@ import { isEmpty } from 'utils/functions';
 export default class FuelRateActions extends Actions {
 
   getFuelRates() {
-    return FuelConsumptionRateService.get();
+    return FuelConsumptionRateService.get().then(r => ({result: r.result.rows}));
   }
 
   getFuelRatesByCarModel(car_id) {
     const payload = { car_id };
-    return FuelConsumptionRateService.get(payload);
+    return FuelConsumptionRateService.get(payload).then(r => ({result: r.result.rows}));
   }
 
   getEquipmentFuelRatesByCarModel(car_id) {
@@ -20,11 +20,11 @@ export default class FuelRateActions extends Actions {
       car_id,
       for_equipment: 1,
     };
-    return FuelConsumptionRateService.get(payload);
+    return FuelConsumptionRateService.get(payload).then(r => ({result: r.result.rows}));
   }
 
   getFuelOperations() {
-    return FuelOperationsService.get();
+    return FuelOperationsService.get().then(r => ({result: r.result.rows}));
   }
 
   createFuelRate(rate) {

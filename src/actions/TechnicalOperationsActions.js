@@ -14,7 +14,7 @@ export default class TechnicalOperationsActions extends Actions {
   }
 
   getTechnicalOperations(all) {
-    return TechnicalOperationService.get({ actual_seasons: all ? 0 : 1 });
+    return TechnicalOperationService.get({ actual_seasons: all ? 0 : 1 }).then(r => ({result: r.result.rows}));
   }
 
   async getTechnicalOperationsByCarId(car_id) {
@@ -24,7 +24,7 @@ export default class TechnicalOperationsActions extends Actions {
     }
     payload.actual_seasons = 1;
     const response = await TechnicalOperationService.get(payload);
-    return response.result || [];
+    return response.result.rows || [];
   }
 
   async getTechnicalOperationsWithBrigades() {
@@ -33,7 +33,7 @@ export default class TechnicalOperationsActions extends Actions {
     };
     payload.actual_seasons = 1;
     const response = await TechnicalOperationService.get(payload);
-    return response.result || [];
+    return response.result.rows || [];
   }
 
   async getTechnicalOperationsByObjectsType(type) {
@@ -61,7 +61,7 @@ export default class TechnicalOperationsActions extends Actions {
     }
     payload.actual_seasons = 1;
     const response = await TechnicalOperationService.get(payload);
-    return response.result || [];
+    return response.result.rows || [];
   }
 
   updateTechnicalOperation(data) {

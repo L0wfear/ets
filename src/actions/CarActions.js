@@ -51,7 +51,7 @@ export default class CarActions extends Actions {
       delete payload.technical_operation_id;
     }
     const response = await CarService.get(payload);
-    return response.result || [];
+    return response.result.rows || [];
   }
 
   getTrack(id, from_dt, to_dt) {

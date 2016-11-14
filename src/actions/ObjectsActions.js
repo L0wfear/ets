@@ -26,7 +26,7 @@ export default class ObjectsActions extends Actions {
     } else {
       delete payload.technical_operation_id;
     }
-    return CarService.get(payload);
+    return CarService.get(payload).then(r => ({result: r.result.rows}));
   }
 
   getModels() {
@@ -81,7 +81,7 @@ export default class ObjectsActions extends Actions {
   }
 
   getMaterialConsumptionRate() {
-    return MaterialConsumptionRateService.get();
+    return MaterialConsumptionRateService.get().then(r => ({result: r.result.rows}));
   }
 
   createMaterialConsumptionRate(formState) {

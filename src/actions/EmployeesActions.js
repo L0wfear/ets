@@ -6,12 +6,13 @@ import _ from 'lodash';
 
 export default class EmployeesActions extends Actions {
 
-  getEmployees(isBrigade = false) {
+  async getEmployees(isBrigade = false) {
     const payload = {};
     if (isBrigade) {
       payload.active = 1;
     }
-    return EmployeeService.get(payload);
+    let res = await EmployeeService.get(payload);
+    return ({result: res.result.rows})
   }
 
   getDrivers() {

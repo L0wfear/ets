@@ -133,7 +133,7 @@ class MissionTemplateForm extends MissionForm {
               />
             </Col>
 
-             <Col md={6}>
+            <Col md={6}>
               <Field
                 type="string"
                 label="Комментарий"
@@ -141,7 +141,7 @@ class MissionTemplateForm extends MissionForm {
                 onChange={this.handleChange.bind(this, 'comment')}
                 error={errors.comment}
               />
-             </Col>
+            </Col>
           </Row>
 
           <Row>

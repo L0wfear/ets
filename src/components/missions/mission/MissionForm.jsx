@@ -117,6 +117,7 @@ export class MissionForm extends Form {
         name: '',
         polys: this.props.geozonePolys,
         technical_operation_id: this.props.formState.technical_operation_id,
+        structure_id: this.props.formState.structure_id,
         object_list: [],
       };
       this.setState({
@@ -310,7 +311,7 @@ export class MissionForm extends Form {
               <Field type="select"
                 label="Подразделение"
                 error={errors.structure_id}
-                disabled={STRUCTURE_FIELD_READONLY}
+                disabled={STRUCTURE_FIELD_READONLY || (this.props.fromWaybill && state.structure_id !== null)}
                 clearable={STRUCTURE_FIELD_DELETABLE}
                 options={STRUCTURES}
                 value={state.structure_id}

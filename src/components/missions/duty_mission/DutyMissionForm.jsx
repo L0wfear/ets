@@ -93,6 +93,7 @@ export class DutyMissionForm extends Form {
         name: '',
         polys: this.props.geozonePolys,
         technical_operation_id: this.props.formState.technical_operation_id,
+        structure_id: this.props.formState.structure_id,
         object_list: [],
       };
       this.setState({

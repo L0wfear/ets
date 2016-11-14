@@ -173,7 +173,7 @@ export default class RouteForm extends Form {
                   type="select"
                   label="Подразделение"
                   error={errors.structure_id}
-                  disabled={STRUCTURE_FIELD_READONLY}
+                  disabled={STRUCTURE_FIELD_READONLY || (this.props.fromMission && state.structure_id !== null)}
                   clearable={STRUCTURE_FIELD_DELETABLE}
                   options={STRUCTURES}
                   value={state.structure_id}

@@ -65,13 +65,13 @@ class WaybillForm extends Form {
       const car = _.find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
       const fuel_correction_rate = car.fuel_correction_rate || 1;
       flux.getActions('fuelRates').getFuelRatesByCarModel(formState.car_id).then((r) => {
-        const fuelRates = r.result.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date }));
+        const fuelRates = r.result.rows.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date }));
         flux.getActions('fuelRates').getFuelOperations().then((fuelOperations) => {
-          const operations = _.filter(fuelOperations.result, op => _.find(fuelRates, fr => fr.operation_id === op.id));
+          const operations = _.filter(fuelOperations.result.rows, op => _.find(fuelRates, fr => fr.operation_id === op.id));
           flux.getActions('fuelRates').getEquipmentFuelRatesByCarModel(formState.car_id).then((equipmentFuelRatesResponse) => {
-            const equipmentFuelRates = equipmentFuelRatesResponse.result.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date }));
+            const equipmentFuelRates = equipmentFuelRatesResponse.result.rows.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date }));
             flux.getActions('fuelRates').getFuelOperations().then((equipmentFuelOperations) => {
-              const equipmentOperations = _.filter(equipmentFuelOperations.result, op => _.find(equipmentFuelRates, fr => fr.operation_id === op.id));
+              const equipmentOperations = _.filter(equipmentFuelOperations.result.rows, op => _.find(equipmentFuelRates, fr => fr.operation_id === op.id));
               this.setState({ fuelRates, operations, fuel_correction_rate, equipmentFuelRates, equipmentOperations });
             });
           });
@@ -84,8 +84,8 @@ class WaybillForm extends Form {
          выбор операций в любом случае недоступен */
       flux.getActions('fuelRates').getFuelOperations().then((fuelOperations) => {
         this.setState({
-          operations: fuelOperations.result,
-          equipmentOperations: fuelOperations.result,
+          operations: fuelOperations.result.rows,
+          equipmentOperations: fuelOperations.result.rows,
         });
       });
       this.getCarDistance(formState);

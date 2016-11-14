@@ -78,7 +78,8 @@ export default class RouteForm extends Form {
   async getTechnicalOperationsByType(type) {
     const { flux } = this.context;
 
-    const technicalOperationsList = await flux.getActions('technicalOperation').getTechnicalOperationsByObjectsType(type);
+    let technicalOperationsList = await flux.getActions('technicalOperation').getTechnicalOperationsByObjectsType(type);
+    technicalOperationsList = technicalOperationsList.rows;
     this.setState({ technicalOperationsList });
   }
 
@@ -86,7 +87,7 @@ export default class RouteForm extends Form {
     const { flux } = this.context;
     const { formState } = this.props;
     const technicalOperationsResponse = await flux.getActions('technicalOperation').getTechnicalOperations();
-    let technicalOperationsList = technicalOperationsResponse.result;
+    let technicalOperationsList = technicalOperationsResponse.result.rows;
 
     if (formState.technical_operation_id && !formState.copy) {
       this.setRouteTypeOptionsBasedOnTechnicalOperation(formState.technical_operation_id, technicalOperationsList, formState.type, false);

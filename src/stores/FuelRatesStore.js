@@ -22,11 +22,11 @@ export default class FuelRatesStore extends Store {
   }
 
   handleGetFuelRates(rates) {
-    this.setState({ rates: rates.result });
+    this.setState({ rates: rates.result.rows });
   }
 
   handleGetFuelOperations({ result }) {
-    this.setState({ operations: result });
+    this.setState({ operations: result.rows });
   }
 
 }

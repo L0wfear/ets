@@ -100,7 +100,7 @@ export default class ObjectsStore extends Store {
   }
 
   handleGetCars(cars) {
-    const carsList = cars.result.map((c) => {
+    const carsList = cars.result.rows.map((c) => {
       const model = _.find(this.state.modelsList, m => m.id === c.model_id);
       c.model = model ? model.title : 'Н/Д';
       const type = _.find(this.state.typesList, t => t.id === c.type_id);
@@ -138,7 +138,7 @@ export default class ObjectsStore extends Store {
   }
 
   handleGetTechOperations(techOperations) {
-    this.setState({ technicalOperationsList: techOperations.result });
+    this.setState({ technicalOperationsList: techOperations.result.rows });
   }
 
   handleGetWorkKinds(workKinds) {
@@ -162,7 +162,7 @@ export default class ObjectsStore extends Store {
   }
 
   handleGetMaterialConsumptionRate(rates) {
-    this.setState({ materialConsumptionRateList: rates.result });
+    this.setState({ materialConsumptionRateList: rates.result.rows });
   }
 
   handleGetCleanCategories(categories) {

@@ -19,7 +19,7 @@ export default class EmployeeStore extends Store {
   }
 
   handleGetEmployees({ result }) {
-    this.setState({ employeesList: result });
+    this.setState({ employeesList: result.rows });
   }
 
   handleGetDrivers({ result }) {

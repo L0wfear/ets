@@ -11,8 +11,8 @@ export default class EmployeesActions extends Actions {
     if (isBrigade) {
       payload.active = 1;
     }
-    let res = await EmployeeService.get(payload);
-    return ({result: res.result.rows})
+    const res = await EmployeeService.get(payload);
+    return ({ result: res.result.rows });
   }
 
   getDrivers() {
@@ -32,7 +32,7 @@ export default class EmployeesActions extends Actions {
     _.mapKeys(payload, (v, k) => {
       isEmpty(v) ? payload[k] = null : undefined;
     });
-    return EmployeeService.put(payload, true, 'json');
+    return EmployeeService.put(payload, () => EmployeeService.get().then(r => ({ result: r.result.rows })), 'json');
   }
 
   createEmployee(formState) {
@@ -43,12 +43,12 @@ export default class EmployeesActions extends Actions {
     delete payload.position_key;
     payload.active = !!payload.active;
     _.mapKeys(payload, (v, k) => isEmpty(v) ? payload[k] = null : undefined);
-    return EmployeeService.post(payload, true, 'json');
+    return EmployeeService.post(payload, () => EmployeeService.get().then(r => ({ result: r.result.rows })), 'json');
   }
 
   deleteEmployee(id) {
     const payload = { id };
-    return EmployeeService.delete(payload, null, 'json');
+    return EmployeeService.delete(payload, () => EmployeeService.get().then(r => ({ result: r.result.rows })), 'json');
   }
 
 }

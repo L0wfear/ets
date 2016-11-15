@@ -33,7 +33,7 @@ export default class CarActions extends Actions {
       payload.is_common = 0;
     }
 
-    return CarService.put(payload, CarService.get);
+    return CarService.put(payload, () => CarService.get().then(r => ({ result: r.result.rows })), 'json');
   }
 
   getVectorObject(selectedPoint, prevPoint, nextPoint) {

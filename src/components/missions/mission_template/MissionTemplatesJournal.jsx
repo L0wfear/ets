@@ -39,8 +39,6 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
       formType: 'ViewForm',
     });
   }
-  // // снова подтягиваем все актуальные машины
-  // flux.getActions('objects').getCars();
 
   componentDidMount() {
     super.componentDidMount();

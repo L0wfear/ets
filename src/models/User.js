@@ -43,10 +43,10 @@ export default class User extends Model {
     this.role = user.role;
     this.user_id = user.user_id;
     this.structure_id = user.structure_id;
-    this.structures = user.structures;
-    this.map_config = user.map_config;
+    this.structures = user.structures || [];
+    this.map_config = user.map_config || {};
     this.fio = user.fio;
-    this.permissions = user.permissions;
+    this.permissions = user.permissions || [];
   }
 
   getCompanyMapConfig = () => {

@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "0.8.134",
+    "version": "0.8.135",
     "description": "",
     "main": "app.js",
     "private": true,

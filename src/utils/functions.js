@@ -39,7 +39,7 @@ export function saveData(blob, fileName) {
   a.style = 'display: none';
   const url = window.URL.createObjectURL(blob);
   a.href = url;
-  a.download = 'Отчет';
+  a.download = 'Отчет.xls';
   if (fileName) {
     a.download = fileName;
   }

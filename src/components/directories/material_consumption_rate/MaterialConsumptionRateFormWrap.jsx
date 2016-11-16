@@ -14,6 +14,7 @@ export default class MaterialConsumptionRateFormWrap extends FormWrap {
 
     this.defaultElement = defaultElement;
     this.schema = materialConsumptionRateSchema;
+    console.log(this.schema)
     this.createAction = context.flux.getActions('objects').createMaterialConsumptionRate;
     this.updateAction = context.flux.getActions('objects').updateMaterialConsumptionRate;
   }

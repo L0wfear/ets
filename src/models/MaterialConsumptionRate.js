@@ -1,4 +1,4 @@
-export const odhNormSchema = {
+export const schema = {
   properties: [
     {
       key: 'technical_operation_id',
@@ -28,12 +28,12 @@ export const odhNormSchema = {
       key: 'clean_subcategory_id',
       title: 'Подкатегория',
       type: 'number',
-      required: true,
+      required: false,
     },
     {
       key: 'value',
       title: 'Норма',
-      type: 'string',
+      type: 'floatFixed3',
       required: true,
     },
   ],

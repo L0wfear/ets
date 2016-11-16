@@ -17,12 +17,12 @@ export const fuelRateSchema = {
     {
       key: 'summer_rate',
       title: 'Норма для летнего периода',
-      type: 'number',
+      type: 'floatFixed3',
     },
     {
       key: 'winter_rate',
       title: 'Норма для зимнего периода',
-      type: 'number',
+      type: 'floatFixed3',
     },
     {
       key: 'car_special_model_id',

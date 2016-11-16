@@ -275,6 +275,8 @@ export default class WaybillFormWrap extends FormWrap {
     } else if (waybillStatus === 'draft') { // если ПЛ обновляем
       if (typeof callback === 'function') {
         formState.status = 'active';
+        formState.fact_departure_date = formState.plan_departure_date;
+        formState.fact_arrival_date = formState.plan_arrival_date;
         try {
           await flux.getActions('waybills').updateWaybill(formState);
         } catch (e) {

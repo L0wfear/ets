@@ -19,7 +19,16 @@ export function employeeFIOLabelFunction(employeeId, fullFlag = false) {
     return '';
   }
   let result = `${employee.last_name} `;
-  result += fullFlag ? `${employee.first_name || ''} ${employee.middle_name || ''}` : `${employee.first_name[0] && employee.first_name[0] + '.' || ''} ${employee.middle_name[0] && employee.middle_name[0] + '.' || ''}`;
+  if (fullFlag) {
+    result += `${employee.first_name || ''} ${employee.middle_name || ''}`;
+  } else {
+    if (employee.first_name && employee.first_name[0]) {
+      result += employee.first_name[0]  + '.';
+    }
+    if (employee.middle_name && employee.middle_name[0]) {
+      result += employee.middle_name[0] + '.';
+    }
+  }
 
   return result;
 }

@@ -346,7 +346,6 @@ export class MissionForm extends Form {
 
         <Modal.Footer>
           <Div className="inline-block assignToWaybillCheck" style={{ width: '300px', textAlign: 'left !important', height: '22px', marginRight: '20px' }} hidden={!!state.status || this.props.fromWaybill}>
-            {/* <Input type="checkbox" value={state.assign_to_waybill} onClick={this.handleChange.bind(this, 'assign_to_waybill', !!!state.assign_to_waybill)}/> */}
             <EtsSelect
               type="select"
               options={ASSIGN_OPTIONS}

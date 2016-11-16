@@ -17,8 +17,6 @@ class MissionTemplateForm extends DutyMissionForm {
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
     const ROUTES = routesList.map(({ id, name }) => ({ value: id, label: name }));
 
-    console.log('form state is ', state);
-
     const IS_CREATING = true;
 
     let title = 'Задание';

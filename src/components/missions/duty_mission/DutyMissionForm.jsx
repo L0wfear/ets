@@ -17,7 +17,6 @@ export class DutyMissionForm extends Form {
       selectedRoute: null,
       showRouteForm: false,
       routesList: [],
-
     };
   }
 
@@ -42,8 +41,7 @@ export class DutyMissionForm extends Form {
     this.context.flux.getActions('missions').getMissions(v);
 
     const routesList = await this.context.flux.getActions('routes')
-                                            .getRoutesByTechnicalOperation(v);
-
+      .getRoutesByTechnicalOperation(v);
     if (routesList.length === 1) {
       this.handleRouteIdChange(routesList[0].id);
     }
@@ -143,7 +141,7 @@ export class DutyMissionForm extends Form {
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
     const MISSION_SOURCES = missionSourcesList.map(({ id, name }) => ({ value: id, label: name }));
     const ROUTES = routesList.map(({ id, name }) => ({ value: id, label: name }));
-    const EMPLOYEES = employeesList.map(d => ({ value: d.id, label: `${d.last_name} ${d.first_name} ${d.middle_name}` }));
+    const EMPLOYEES = employeesList.map(d => ({ value: d.id, label: `${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''}` }));
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => {
       return { id, value: id, label: `№${number} (${technical_operation_name})` };
     });

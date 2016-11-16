@@ -277,7 +277,7 @@ class WaybillForm extends Form {
       const personnel_number = d.personnel_number ? `[${d.personnel_number}] ` : '';
       return { value: d.id, label: `${personnel_number}${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''}` };
     });
-    const MASTERS = employeesList.filter(e => [2, 4, 5, 7, 14].indexOf(e.position_id) > -1).map(m => ({ value: m.id, data: m, label: `${m.last_name} ${m.first_name} ${m.middle_name}` })).filter(e => e.data.active === true);
+    const MASTERS = employeesList.filter(e => [2, 4, 5, 7, 14].indexOf(e.position_id) > -1).map(m => ({ value: m.id, data: m, label: `${m.last_name || ''} ${m.first_name || ''} ${m.middle_name || ''}` })).filter(e => e.data.active === true);
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false }));
 
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;

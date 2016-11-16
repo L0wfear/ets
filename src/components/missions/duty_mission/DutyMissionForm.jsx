@@ -289,7 +289,7 @@ export class DutyMissionForm extends Form {
               <Field type="select"
                 label="Подразделение"
                 error={errors.structure_id}
-                disabled={STRUCTURE_FIELD_READONLY}
+                disabled={STRUCTURE_FIELD_READONLY || (!IS_CREATING && state.status !== 'not_assigned')}
                 clearable={STRUCTURE_FIELD_DELETABLE}
                 options={STRUCTURES}
                 value={state.structure_id}

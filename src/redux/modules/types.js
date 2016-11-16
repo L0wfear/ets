@@ -12,10 +12,12 @@ const initialState = {
 export default handleActions({
   [GET]: {
     next(state, { payload }) {
+      const { result } = payload;
+      const { rows } = result;
       return {
         ...state,
-        typesList: payload,
-        typesIndex: keyBy(payload, 'id'),
+        typesList: rows,
+        typesIndex: keyBy(rows, 'id'),
       };
     },
     throw() {

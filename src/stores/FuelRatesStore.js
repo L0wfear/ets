@@ -21,8 +21,8 @@ export default class FuelRatesStore extends Store {
     };
   }
 
-  handleGetFuelRates(rates) {
-    this.setState({ rates: rates.result });
+  handleGetFuelRates({ result }) {
+    this.setState({ rates: result });
   }
 
   handleGetFuelOperations({ result }) {

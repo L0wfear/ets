@@ -3,6 +3,10 @@ import _ from 'lodash';
 import { TechnicalOperationService, TechnicalOperationObjectsService, TechnicalOperationTypesService } from 'api/Services';
 import { isEmpty } from 'utils/functions';
 
+function getTechnicalOperations(payload = {}) {
+  return TechnicalOperationService.get(payload).then(r => ({ result: r.result.rows }));
+}
+
 export default class TechnicalOperationsActions extends Actions {
 
   getTechnicalOperationsObjects() {
@@ -14,7 +18,10 @@ export default class TechnicalOperationsActions extends Actions {
   }
 
   getTechnicalOperations(all) {
-    return TechnicalOperationService.get({ actual_seasons: all ? 0 : 1 }).then(r => ({result: r.result.rows}));
+    const payload = {
+      actual_seasons: all ? 0 : 1,
+    };
+    return getTechnicalOperations(payload);
   }
 
   async getTechnicalOperationsByCarId(car_id) {
@@ -38,8 +45,8 @@ export default class TechnicalOperationsActions extends Actions {
 
   async getTechnicalOperationsByObjectsType(type) {
     const objects = [];
-    const getObjectByTypeName = (type) => {
-      switch (type) {
+    const getObjectByTypeName = (objectsType) => {
+      switch (objectsType) {
         case 'simple_dt':
           objects.push({ name: 'ОДХ', id: 1 });
           break;
@@ -48,6 +55,8 @@ export default class TechnicalOperationsActions extends Actions {
           break;
         case 'points':
           objects.push({ name: 'ПН', id: 3 });
+          break;
+        default:
           break;
       }
     };
@@ -72,7 +81,7 @@ export default class TechnicalOperationsActions extends Actions {
     delete payload.work_kind_name;
     delete payload.check_type_name;
     delete payload.object_name;
-    return TechnicalOperationService.put(payload, null, 'json');
+    return TechnicalOperationService.put(payload, getTechnicalOperations, 'json');
   }
 
 }

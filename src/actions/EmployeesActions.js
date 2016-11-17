@@ -4,6 +4,10 @@ import { createValidDate } from 'utils/dates';
 import { isEmpty } from 'utils/functions';
 import _ from 'lodash';
 
+function getEmployees(payload = {}) {
+  return EmployeeService.get(payload).then(r => ({ result: r.result.rows }));
+}
+
 export default class EmployeesActions extends Actions {
 
   async getEmployees(isBrigade = false) {
@@ -11,8 +15,7 @@ export default class EmployeesActions extends Actions {
     if (isBrigade) {
       payload.active = 1;
     }
-    const res = await EmployeeService.get(payload);
-    return ({ result: res.result.rows });
+    return getEmployees(payload);
   }
 
   getDrivers() {
@@ -30,9 +33,11 @@ export default class EmployeesActions extends Actions {
     payload.active = !!payload.active;
 
     _.mapKeys(payload, (v, k) => {
-      isEmpty(v) ? payload[k] = null : undefined;
+      if (isEmpty(v)) {
+        payload[k] = null;
+      }
     });
-    return EmployeeService.put(payload, () => EmployeeService.get().then(r => ({ result: r.result.rows })), 'json');
+    return EmployeeService.put(payload, getEmployees, 'json');
   }
 
   createEmployee(formState) {
@@ -42,13 +47,13 @@ export default class EmployeesActions extends Actions {
     delete payload.position_name;
     delete payload.position_key;
     payload.active = !!payload.active;
-    _.mapKeys(payload, (v, k) => isEmpty(v) ? payload[k] = null : undefined);
-    return EmployeeService.post(payload, () => EmployeeService.get().then(r => ({ result: r.result.rows })), 'json');
+    _.mapKeys(payload, (v, k) => isEmpty(v) ? (payload[k] = null) : undefined);
+    return EmployeeService.post(payload, getEmployees, 'json');
   }
 
   deleteEmployee(id) {
     const payload = { id };
-    return EmployeeService.delete(payload, () => EmployeeService.get().then(r => ({ result: r.result.rows })), 'json');
+    return EmployeeService.delete(payload, getEmployees, 'json');
   }
 
 }

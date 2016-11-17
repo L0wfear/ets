@@ -1,18 +1,29 @@
 import { Actions } from 'flummox';
 import { createValidDate } from 'utils/dates';
 import _ from 'lodash';
-import { FuelConsumptionRateService, FuelOperationsService } from 'api/Services';
+import {
+  FuelConsumptionRateService,
+  FuelOperationsService,
+} from 'api/Services';
 import { isEmpty } from 'utils/functions';
+
+function getFuelOperations(payload = {}) {
+  return FuelOperationsService.get(payload).then(r => ({ result: r.result.rows }));
+}
+
+function getFuelRates(payload = {}) {
+  return FuelConsumptionRateService.get(payload).then(r => ({ result: r.result.rows }));
+}
 
 export default class FuelRateActions extends Actions {
 
   getFuelRates() {
-    return FuelConsumptionRateService.get().then(r => ({result: r.result.rows}));
+    return getFuelRates();
   }
 
   getFuelRatesByCarModel(car_id) {
     const payload = { car_id };
-    return FuelConsumptionRateService.get(payload).then(r => ({result: r.result.rows}));
+    return getFuelRates(payload);
   }
 
   getEquipmentFuelRatesByCarModel(car_id) {
@@ -20,11 +31,7 @@ export default class FuelRateActions extends Actions {
       car_id,
       for_equipment: 1,
     };
-    return FuelConsumptionRateService.get(payload).then(r => ({result: r.result.rows}));
-  }
-
-  getFuelOperations() {
-    return FuelOperationsService.get().then(r => ({result: r.result.rows}));
+    return getFuelRates(payload);
   }
 
   createFuelRate(rate) {
@@ -40,7 +47,7 @@ export default class FuelRateActions extends Actions {
       }
     });
 
-    return FuelConsumptionRateService.post(payload, null, 'json');
+    return FuelConsumptionRateService.post(payload, getFuelRates, 'json');
   }
 
   updateFuelRate(newFuelRate) {
@@ -58,14 +65,18 @@ export default class FuelRateActions extends Actions {
       }
     });
 
-    return FuelConsumptionRateService.put(payload, null, 'json');
+    return FuelConsumptionRateService.put(payload, getFuelRates, 'json');
   }
 
   deleteFuelRate(id) {
     const payload = {
       id,
     };
-    return FuelConsumptionRateService.delete(payload, null, 'json');
+    return FuelConsumptionRateService.delete(payload, getFuelRates, 'json');
+  }
+
+  getFuelOperations() {
+    return getFuelOperations();
   }
 
   createFuelOperation(formState) {
@@ -75,7 +86,7 @@ export default class FuelRateActions extends Actions {
       payload.equipment = !!formState.equipment || false;
     }
 
-    return FuelOperationsService.post(payload, null, 'json');
+    return FuelOperationsService.post(payload, getFuelOperations, 'json');
   }
 
   updateFuelOperation(formState) {
@@ -86,14 +97,14 @@ export default class FuelRateActions extends Actions {
       payload.name = formState.name;
       payload.equipment = !!formState.equipment || false;
     }
-    return FuelOperationsService.put(payload, null, 'json');
+    return FuelOperationsService.put(payload, getFuelOperations, 'json');
   }
 
   deleteFuelOperation(id) {
     const payload = {
       id,
     };
-    return FuelOperationsService.delete(payload, null, 'json');
+    return FuelOperationsService.delete(payload, getFuelOperations, 'json');
   }
 
 }

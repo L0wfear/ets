@@ -13,11 +13,10 @@ export default handleActions({
   [GET]: {
     next(state, { payload }) {
       const { result } = payload;
-      const { rows } = result;
       return {
         ...state,
-        typesList: rows,
-        typesIndex: keyBy(rows, 'id'),
+        typesList: result,
+        typesIndex: keyBy(result, 'id'),
       };
     },
     throw() {
@@ -29,7 +28,7 @@ export default handleActions({
 export function getTypes() {
   return {
     type: GET,
-    payload: TypesService.get(),
+    payload: TypesService.get().then(r => ({ result: r.result.rows })),
     meta: {
       loading: true,
     },

@@ -136,7 +136,7 @@ export default class RouteForm extends Form {
       STRUCTURE_FIELD_DELETABLE = true;
     }
 
-
+    console.log(this.props.structureId)
     const title = state.id ? 'Изменение маршрута' : 'Создание нового маршрута';
 
     return (
@@ -173,7 +173,7 @@ export default class RouteForm extends Form {
                   type="select"
                   label="Подразделение"
                   error={errors.structure_id}
-                  disabled={STRUCTURE_FIELD_READONLY || (this.props.fromMission && state.structure_id !== null)}
+                  disabled={STRUCTURE_FIELD_READONLY || (this.props.fromMission && this.props.structureId)}
                   clearable={STRUCTURE_FIELD_DELETABLE}
                   options={STRUCTURES}
                   value={state.structure_id}

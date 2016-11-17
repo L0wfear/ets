@@ -44,40 +44,41 @@ class CarFuncTypeUsageReportHeader extends Component {
     const OBJECTS = [{ value: 'odh', label: 'Объект дорожного хозяйства' }, { value: 'dt', label: 'Дворовая территория' }];
 
   	                                        return (
-      <Div>
-    		<Row>
-    			<Col md={3}>
-            <Field type="select"
-              label="Объекты"
-              options={OBJECTS}
-              value={geozone_type}
-              onChange={this.handleGeozoneTypeChange.bind(this)}
-              clearable={false}
-            />
-    			</Col>
-    			<Col md={4}>
-            <Div><label>Период формирования</label></Div>
-    				<Div className="inline-block reports-date">
-    					<Datepicker date={date_start} onChange={props.handleChange.bind(null, 'date_start')} />
-    				</Div>
-    				<Div className="inline-block reports-date">
-    					<Datepicker date={date_end} onChange={props.handleChange.bind(null, 'date_end')} />
-    				</Div>
-    			</Col>
-          <Col md={3} className={'vehicle-types-container'}>
-            <Field type="select"
-              label="Учреждение"
-              options={companyOptions}
-              value={company_id}
-              onChange={this.props.handleChange.bind(null, 'company_id')}
-            />
-          </Col>
-          <Col md={2} style={{ marginTop: 28 }}>
-            <Button bsSize="small" onClick={props.onClick.bind(this)}>Сформировать отчет</Button>
-          </Col>
-    		</Row>
+    <Div>
+      <Row>
+        <Col md={3}>
+          <Field type="select"
+            label="Объекты"
+            options={OBJECTS}
+            disabled // временно
+            value={geozone_type}
+            onChange={this.handleGeozoneTypeChange.bind(this)}
+            clearable={false}
+          />
+        </Col>
+        <Col md={4}>
+          <Div><label>Период формирования</label></Div>
+          <Div className="inline-block reports-date">
+            <Datepicker date={date_start} onChange={props.handleChange.bind(null, 'date_start')} />
+          </Div>
+          <Div className="inline-block reports-date">
+            <Datepicker date={date_end} onChange={props.handleChange.bind(null, 'date_end')} />
+          </Div>
+        </Col>
+        <Col md={3} className={'vehicle-types-container'}>
+          <Field type="select"
+            label="Учреждение"
+            options={companyOptions}
+            value={company_id}
+            onChange={this.props.handleChange.bind(null, 'company_id')}
+          />
+        </Col>
+        <Col md={2} style={{ marginTop: 28 }}>
+          <Button bsSize="small" onClick={props.onClick.bind(this)}>Сформировать отчет</Button>
+        </Col>
+      </Row>
 
-      </Div>
+    </Div>
   	);
   }
 

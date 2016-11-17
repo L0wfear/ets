@@ -6,6 +6,8 @@ import Div from 'components/ui/Div.jsx';
 import { REPORT_STATUSES } from 'constants/statuses';
 import { getFormattedDateTimeSeconds } from 'utils/dates';
 import { FluxContext, HistoryContext, exportable, staticProps, connectToStores } from 'utils/decorators';
+import { getReportNotReadyNotification2 } from 'utils/notifications';
+
 
 const tableMeta = {
   cols: [
@@ -125,7 +127,11 @@ export default class RouteOdhCoveringReports extends Component {
 
   onReportSelect({ props }) {
     const id = props.data.id;
-    this.context.history.pushState(null, `/route-report/${id}`);
+    if (props.data.status !== 'success' && props.data.status !== 'fail') {
+      global.NOTIFICATION_SYSTEM.notify(getReportNotReadyNotification2(this.context.flux));
+    } else if (props.data.status !== 'fail') {
+      this.context.history.pushState(null, `/route-report/${id}`);
+    }
   }
 
   handleGenerationTypeChange(type) {

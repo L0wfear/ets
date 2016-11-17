@@ -361,6 +361,7 @@ export class DutyMissionForm extends Form {
           element={route}
           onFormHide={this.onFormHide.bind(this)}
           showForm={this.state.showRouteForm}
+          structureId={state.structure_id}
           fromMission
         />
       </Modal>

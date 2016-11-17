@@ -125,7 +125,7 @@ export default class ObjectsStore extends Store {
   }
 
   handleGetTypes({ result }) {
-    const typesList = result.rows;
+    const typesList = result;
     const typesIndex = _.keyBy(typesList, 'id');
     this.setState({ typesList, typesIndex });
   }

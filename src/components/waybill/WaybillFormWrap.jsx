@@ -109,7 +109,7 @@ export default class WaybillFormWrap extends FormWrap {
               formErrors,
               canPrint: false,
               canSave: !_.filter(formErrors, (v, k) => ['fuel_end', 'distance'].indexOf(k) > -1 ? false : v).length,
-              canClose: !_.filter(formErrors).length,
+              canClose: !_.filter(formErrors, (v, k) => ['distance'].indexOf(k) > -1 ? false : v).length,
             });
           } else {
             this.setState({
@@ -159,8 +159,8 @@ export default class WaybillFormWrap extends FormWrap {
       if (typeof formErrors.odometr_end === 'undefined') formErrors.motohours_end = undefined;
     }
 
-    newState.canSave = !_.filter(formErrors, (v, k) => k === 'fuel_end' ? false : v).length;
-    newState.canClose = !_.filter(formErrors).length;
+    newState.canSave = !_.filter(formErrors, (v, k) => ['distance', 'fuel_end'].indexOf(k) > -1 ? false : v).length;
+    newState.canClose = !_.filter(formErrors, (v, k) => ['distance'].indexOf(k) > -1 ? false : v).length;
 
     newState.formState = formState;
     newState.formErrors = formErrors;

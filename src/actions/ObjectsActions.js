@@ -17,6 +17,14 @@ import {
   CleanCategoriesService,
 } from 'api/Services';
 
+function getTypes(payload = {}) {
+  return TypesService.get(payload).then(r => ({ result: r.result.rows }));
+}
+
+function getMaterialConsumptionRates(payload = {}) {
+  return MaterialConsumptionRateService.get(payload).then(r => ({ result: r.result.rows }));
+}
+
 export default class ObjectsActions extends Actions {
 
   getCars(technical_operation_id) {
@@ -42,7 +50,7 @@ export default class ObjectsActions extends Actions {
   }
 
   getTypes() {
-    return TypesService.get();
+    return getTypes();
   }
 
   getOrganizations() {
@@ -81,21 +89,21 @@ export default class ObjectsActions extends Actions {
   }
 
   getMaterialConsumptionRate() {
-    return MaterialConsumptionRateService.get().then(r => ({ result: r.result.rows }));
+    return getMaterialConsumptionRates();
   }
 
   createMaterialConsumptionRate(formState) {
     const payload = _.clone(formState);
-    return MaterialConsumptionRateService.post(payload, true, 'json');
+    return MaterialConsumptionRateService.post(payload, getMaterialConsumptionRates, 'json');
   }
 
   updateMaterialConsumptionRate(formState) {
     const payload = _.clone(formState);
-    return MaterialConsumptionRateService.path(formState.id).put(payload, true, 'json');
+    return MaterialConsumptionRateService.path(formState.id).put(payload, getMaterialConsumptionRates, 'json');
   }
 
   deleteMaterialConsumptionRate(id) {
-    return MaterialConsumptionRateService.path(id).delete({}, true, 'json');
+    return MaterialConsumptionRateService.path(id).delete({}, getMaterialConsumptionRates, 'json');
   }
 
   getCleanCategories() {

@@ -134,9 +134,9 @@ export default class LoadingStore extends Store {
       carActions.updateCarAdditionalInfo,
       carActions.getTrack,
       carActions.getCarsByTechnicalOperation,
+      carActions.getCarMissionsByTimestamp,
 
       missionsActons.getMissionsByCarAndDates,
-      missionsActons.getMissionsByCarAndTimestamp,
     );
 
     this.state = {

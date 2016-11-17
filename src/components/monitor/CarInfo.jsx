@@ -49,8 +49,8 @@ export default class CarInfo extends Component {
       const car = find(carsList, c => c.gov_number === this.props.car.car.gov_number);
       if (car) {
         const car_id = car.asuods_id;
-        const missions = await flux.getActions('missions').getMissionsByCarAndDates(car_id, this.state.from_dt, this.state.to_dt, true, 1);
-        this.setState({ missions: missions.result.rows, car });
+        const missions = await flux.getActions('cars').getCarMissions(car_id, this.state.from_dt, this.state.to_dt);
+        this.setState({ missions: missions.result, car });
       }
     }
   }
@@ -67,8 +67,8 @@ export default class CarInfo extends Component {
       const car = find(carsList, c => c.gov_number === props.car.car.gov_number);
       if (car) {
         const car_id = car.asuods_id;
-        const missions = await this.props.flux.getActions('missions').getMissionsByCarAndDates(car_id, this.state.from_dt, this.state.to_dt, true, 1);
-        this.setState({ missions: missions.result.rows, car });
+        const missions = await this.props.flux.getActions('cars').getCarMissions(car_id, this.state.from_dt, this.state.to_dt);
+        this.setState({ missions: missions.result, car });
       }
     }
   }
@@ -117,9 +117,8 @@ export default class CarInfo extends Component {
   fetchImage(props = this.props) {
     const { flux } = this.props;
     const car = props.car;
-    const model_id = car.car.model_id;
     const type_id = car.car.type_id;
-    flux.getActions('cars').getCarImage(car.id, type_id, model_id).then(url => this.setState({ imageUrl: url }));
+    flux.getActions('cars').getCarImage(type_id).then(url => this.setState({ imageUrl: url }));
   }
 
   fetchTrack(props = this.props) {

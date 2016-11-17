@@ -1,15 +1,19 @@
 import { Actions } from 'flummox';
 import { isEmpty } from 'utils/functions';
-import { makeUnixTime } from 'utils/dates';
+import { makeUnixTime, createValidDateTime } from 'utils/dates';
 import { swapCoords } from 'utils/geo';
 import {
-  CarInfoService,
   CarService,
   CarImageService,
+  CarMissionService,
   VectorObjectService,
   TrackService,
   TrackDistanceService,
 } from 'api/Services';
+
+function getCarMissions(payload = {}) {
+  return CarMissionService.get(payload).then(r => ({ result: r.result }));
+}
 
 export default class CarActions extends Actions {
 
@@ -86,14 +90,29 @@ export default class CarActions extends Actions {
     return TrackDistanceService.get(payload);
   }
 
-  getCarImage(car_id, type_id, model_id) {
+  getCarImage(type_id) {
     const payload = {
-      car_id,
       type_id,
-      model_id,
     };
 
     return CarImageService.get(payload);
+  }
+
+  getCarMissions(car_id, date_from, date_to) {
+    const payload = {
+      car_id,
+      date_from: createValidDateTime(date_from),
+      date_to: createValidDateTime(date_to),
+    };
+    return getCarMissions(payload);
+  }
+
+  getCarMissionsByTimestamp(car_id, point_timestamp) {
+    const payload = {
+      car_id,
+      point_timestamp,
+    };
+    return getCarMissions(payload);
   }
 
 }

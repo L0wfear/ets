@@ -32,7 +32,7 @@ export const LatestWaybillDriverService = ETS_API_FACTORY.createApiServiceAdapte
 /* ТС */
 export const CarService = ETS_API_FACTORY.createApiServiceAdapter('car_actual', {});
 export const CarImageService = ETS_API_FACTORY.createApiServiceAdapter('car_image', {});
-export const CarInfoService = ETS_API_FACTORY.createApiServiceAdapter('car_additional_info', {});
+export const CarMissionService = ETS_API_FACTORY.createApiServiceAdapter('car_mission', {});
 
 /* Рабочий стол */
 export const DashboardService = ETS_API_FACTORY.createApiServiceAdapter('dashboard');

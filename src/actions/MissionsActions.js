@@ -32,15 +32,6 @@ export default class MissionsActions extends Actions {
     return MissionService.get(payload);
   }
 
-  getMissionsByCarAndTimestamp(car_id, timestamp) {
-    const payload = {
-      car_id,
-      point_timestamp: timestamp,
-    };
-
-    return MissionService.get(payload);
-  }
-
   getMissionReassignationParameters(payload) {
     if (!payload.car_id) return;
     return MissionReassignationService.get(payload);

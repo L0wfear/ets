@@ -10,7 +10,7 @@ import _ from 'lodash';
 export default class ODHActions extends Actions {
 
   getODHNorm() {
-    return ODHNormService.get();
+    return ODHNormService.get().then(r => ({ result: r.result.rows }));
   }
 
   getMeasureUnits() {

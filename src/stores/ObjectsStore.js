@@ -163,7 +163,8 @@ export default class ObjectsStore extends Store {
   }
 
   handleGetMaterialConsumptionRate(rates) {
-    this.setState({ materialConsumptionRateList: rates.result });
+    const materialConsumptionRateList = rates.result.rows || rates.result;
+    this.setState({ materialConsumptionRateList });
   }
 
   handleGetCleanCategories(categories) {

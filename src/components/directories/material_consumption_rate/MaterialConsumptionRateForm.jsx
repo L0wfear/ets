@@ -62,7 +62,7 @@ export default class MaterialConsumptionRateForm extends Form {
                 label="Сезон"
                 error={errors.season_id}
                 disabled={false}
-                options={[{ value: 0, label: 'Зима' }, { value: 1, label: 'Лето' }]}
+                options={[{ value: 2, label: 'Зима' }, { value: 1, label: 'Лето' }]}
                 value={state.season_id}
                 onChange={this.handleChange.bind(this, 'season_id')}
                 disabled={!isPermitted}

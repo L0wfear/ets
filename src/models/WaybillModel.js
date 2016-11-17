@@ -207,8 +207,8 @@ const closingDependencies = {
   'distance': [
     {
       validator: (value, formData) => {
-        console.log(value, formData.odometr_diff);
-        console.log(Math.abs((parseFloat(formData.odometr_diff) - parseFloat(value)) / 100))
+        // console.log(value, formData.odometr_diff);
+        // console.log(Math.abs((parseFloat(formData.odometr_diff) - parseFloat(value)) / 100))
         if (Math.abs((parseFloat(formData.odometr_diff) - parseFloat(value)) / 100) > 0.1) {
           return 'Расхождение в показателях пробега';
         }

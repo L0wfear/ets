@@ -7,10 +7,14 @@ import {
 } from 'api/Services';
 import _ from 'lodash';
 
+function getODHNorm() {
+  return ODHNormService.get().then(r => ({ result: r.result.rows }));
+}
+
 export default class ODHActions extends Actions {
 
   getODHNorm() {
-    return ODHNormService.get().then(r => ({ result: r.result.rows }));
+    return getODHNorm();
   }
 
   updateODHNorm(formState) {

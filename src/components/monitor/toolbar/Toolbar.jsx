@@ -117,17 +117,32 @@ const ShowGeoobjectsCheckbox = (props) => {
     props.flux.getActions('geoObjects').setSelectedPolysType(GEOOBJECTS_TYPES[type]);
   }
 
-  function setShowGeoobjects(checked) {
+  function setShowGeoobjects(show) {
     props.flux.getActions('geoObjects').setSelectedPolysType(null);
-    props.flux.getActions('settings').setShowGeoobjects(checked);
+    props.flux.getActions('settings').setShowGeoobjects(show);
   }
 
+  function selectAllGeoobjects(checked) {
+    if (checked) {
+      props.flux.getActions('settings').setShowGeoobjects(checked);
+    }
+    ['dt', 'odh', 'ssp', 'msp', 'carpool', 'fueling_water', 'danger_zone', 'pgm_store', 'snow_storage']
+      .filter(g => checked ? selectedPolysTypes.indexOf(GEOOBJECTS_TYPES[g]) === -1 : selectedPolysTypes.indexOf(GEOOBJECTS_TYPES[g]) > -1)
+      .forEach(g => setSelectedPolysType(g));
+  }
+
+  const allSelected = selectedPolysTypes.length === Object.keys(GEOOBJECTS_TYPES).length;
   const geoObjectsList = ['dt', 'odh', 'ssp', 'msp', 'carpool', 'fueling_water', 'danger_zone', 'pgm_store', 'snow_storage'].map((type, index) =>
      (
        <li key={index}>
          <div className="checkbox">
            <label style={{ fontSize: '13px', fontWeight: '200' }}>
-             <input type="checkbox" checked={selectedPolysTypes.indexOf(GEOOBJECTS_TYPES[type]) > -1} onChange={e => setSelectedPolysType(type)} /> {GEOOBJECTS_TYPES_LABELS[type]}
+             <input
+               type="checkbox"
+               checked={selectedPolysTypes.indexOf(GEOOBJECTS_TYPES[type]) > -1}
+               onChange={() => setSelectedPolysType(type)}
+             />
+             {GEOOBJECTS_TYPES_LABELS[type]}
            </label>
          </div>
        </li>
@@ -137,8 +152,15 @@ const ShowGeoobjectsCheckbox = (props) => {
   return (
     <div className="app-toolbar-fill app-toolbar-show-geoobjects" >
       <div className="checkbox">
-        <label style={{ fontSize: '13px', fontWeight: '200' }}>
-          <input type="checkbox" checked={props.showGeoobjects} onChange={e => setShowGeoobjects(e.target.checked)} /> Объекты
+        <input
+          style={{ marginLeft: 0 }}
+          type="checkbox"
+          checked={allSelected}
+          onChange={e => selectAllGeoobjects(e.target.checked)}
+        />
+        <label style={{ fontSize: '13px', fontWeight: '200', paddingLeft: 0, marginLeft: 20 }} onClick={() => setShowGeoobjects(!props.showGeoobjects)}>
+          Объекты
+          <span style={{ fontSize: 10, marginLeft: 3 }}>{props.showGeoobjects ? ' \u25BC' : ' \u25BA'}</span>
         </label>
       </div>
       <ul style={listStyle}>

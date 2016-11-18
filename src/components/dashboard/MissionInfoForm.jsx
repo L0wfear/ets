@@ -1,7 +1,7 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
-import moment from 'moment';
 import { connectToStores as connect } from 'utils/decorators';
+import { secondsToTime } from 'utils/dates';
 import { autobind } from 'core-decorators';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import Div from 'components/ui/Div.jsx';
@@ -172,7 +172,7 @@ class MissionInfoForm extends Form {
             ** - пройдено с рабочей скоростью / пройдено с превышением рабочей скорости<br />
             <li><b>Пройдено с рабочей скоростью:</b> {getDataTraveledYet([report_data.traveled, report_data.check_unit, report_data.time_work_speed].join(' '))}</li>
             <li><b>Пройдено с превышением рабочей скорости:</b> {getDataTraveledYet([report_data.traveled_high_speed, report_data.check_unit, report_data.time_high_speed].join(' '))}</li>
-            <li><b>Общее время стоянок:</b> {moment.unix(this.state.parkingCount).format('HH:mm:ss')}</li>
+            <li><b>Общее время стоянок:</b> {this.state.parkingCount ? secondsToTime(this.state.parkingCount) : 'Рассчитывается...'}</li>
           </Div>
 
         </Modal.Body>

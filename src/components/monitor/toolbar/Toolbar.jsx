@@ -123,9 +123,6 @@ const ShowGeoobjectsCheckbox = (props) => {
   }
 
   function selectAllGeoobjects(checked) {
-    if (checked) {
-      props.flux.getActions('settings').setShowGeoobjects(checked);
-    }
     ['dt', 'odh', 'ssp', 'msp', 'carpool', 'fueling_water', 'danger_zone', 'pgm_store', 'snow_storage']
       .filter(g => checked ? selectedPolysTypes.indexOf(GEOOBJECTS_TYPES[g]) === -1 : selectedPolysTypes.indexOf(GEOOBJECTS_TYPES[g]) > -1)
       .forEach(g => setSelectedPolysType(g));

@@ -15,6 +15,7 @@ import {
   ConfigService,
   MaterialConsumptionRateService,
   CleanCategoriesService,
+  MaintenanceWorkService,
 } from 'api/Services';
 
 function getTypes(payload = {}) {
@@ -108,6 +109,24 @@ export default class ObjectsActions extends Actions {
 
   getCleanCategories() {
     return CleanCategoriesService.get();
+  }
+
+  getMaintenanceWork() {
+    return MaintenanceWorkService.get();
+  }
+
+  createMaintenanceWork(formState) {
+    const payload = _.clone(formState);
+    return MaintenanceWorkService.post(payload, this.getMaintenanceWork, 'json');
+  }
+
+  updateMaintenanceWork(formState) {
+    const payload = _.clone(formState);
+    return MaintenanceWorkService.path(formState.id).put(payload, this.getMaintenanceWork, 'json');
+  }
+
+  deleteMaintenanceWork(id) {
+    return MaintenanceWorkService.path(id).delete({}, this.getMaintenanceWork, 'json');
   }
 
 }

@@ -33,6 +33,10 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.createMaintenanceWork, this.handleGetMaintenanceWork);
     this.register(objectsActions.updateMaintenanceWork, this.handleGetMaintenanceWork);
     this.register(objectsActions.deleteMaintenanceWork, this.handleGetMaintenanceWork);
+    this.register(objectsActions.getCleaningRate, this.handleGetCleaningRate);
+    this.register(objectsActions.createCleaningRate, this.handleGetCleaningRate);
+    this.register(objectsActions.updateCleaningRate, this.handleGetCleaningRate);
+    this.register(objectsActions.deleteCleaningRate, this.handleGetCleaningRate);
     this.register(objectsActions.getCleanCategories, this.handleGetCleanCategories);
 
     this.register(companyStructreActions.getCompanyStructure, this.handleGetCompanyStructure);
@@ -66,6 +70,7 @@ export default class ObjectsStore extends Store {
       materialConsumptionRateList: [],
       cleanCategoriesList: [],
       maintenanceWorkList: [],
+      cleaningRateList: [],
 
       appConfig: {},
 
@@ -175,6 +180,11 @@ export default class ObjectsStore extends Store {
   handleGetMaintenanceWork(r) {
     const maintenanceWorkList = r.result.rows || r.result;
     this.setState({ maintenanceWorkList });
+  }
+
+  handleGetCleaningRate(r) {
+    const cleaningRateList = r.result.rows || r.result;
+    this.setState({ cleaningRateList });
   }
 
   handleGetCleanCategories(categories) {

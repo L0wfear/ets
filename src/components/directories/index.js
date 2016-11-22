@@ -10,6 +10,7 @@ import fuelOperations from './fuel_operations/FuelOperationsDirectory.jsx';
 import fuelRates from './fuel_rates/FuelRatesDirectory.jsx';
 import odhNorm from './odh_norm/ODHNormList.jsx';
 import maintenanceWork from './maintenance_work/MaintenanceWorkDirectory.jsx';
+import cleaningRate from './cleaning_rate/CleaningRateDirectory.jsx';
 import materialConsumptionRate from './material_consumption_rate/MaterialConsumptionRateDirectory.jsx';
 import odhNormDataSummer from './odh_norm_data_summer/ODHNormDataSummerList.jsx';
 import efficiency from './efficiency/EfficiencyList.jsx';
@@ -28,6 +29,7 @@ export {
   maintenanceWork,
   materialConsumptionRate,
   fuelOperations,
+  cleaningRate,
   fuelRates,
   organizations,
   technicalOperations,

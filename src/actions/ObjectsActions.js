@@ -16,6 +16,7 @@ import {
   MaterialConsumptionRateService,
   CleanCategoriesService,
   MaintenanceWorkService,
+  CleaningRateService,
 } from 'api/Services';
 
 function getTypes(payload = {}) {
@@ -127,6 +128,27 @@ export default class ObjectsActions extends Actions {
 
   deleteMaintenanceWork(id) {
     return MaintenanceWorkService.path(id).delete({}, this.getMaintenanceWork, 'json');
+  }
+
+  getCleaningRate(type) {
+    const payload = { type };
+    return CleaningRateService.get(payload);
+  }
+
+  createCleaningRate(type, formState) {
+    const payload = _.clone(formState);
+    payload.type = type;
+    return CleaningRateService.post(payload, this.getCleaningRate.bind(this, type), 'json');
+  }
+
+  updateCleaningRate(type, formState) {
+    const payload = _.clone(formState);
+    payload.type = type;
+    return CleaningRateService.path(formState.id).put(payload, this.getCleaningRate.bind(this, type), 'json');
+  }
+
+  deleteCleaningRate(type, id) {
+    return CleaningRateService.path(id).delete({}, this.getCleaningRate.bind(this, type), 'json');
   }
 
 }

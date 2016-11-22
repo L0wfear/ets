@@ -1,0 +1,59 @@
+import React from 'react';
+import Table from 'components/ui/table/DataTable.jsx';
+
+const tableMeta = {
+  cols: [
+    {
+      name: 'technical_operation_name',
+      displayName: 'Технологическая операция',
+      type: 'string',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
+      name: 'property',
+      displayName: 'Площадная характеристика',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
+      name: 'value',
+      displayName: 'Коэффициент',
+    },
+  ],
+};
+
+function getProperties(value) {
+  const properties = {
+    total_area: 'Общая площадь (кв.м.)',
+    distance: 'Протяженность (п.м.)',
+    roadway_area: 'Площадь проезжей части (кв.м.)',
+    footway_area: 'Площадь тротуаров (кв.м.)',
+    cleaning_area: 'Площадь уборки (кв.м.)',
+    auto_footway_area: 'Площадь механизированной уборки тротуаров (кв.м.)',
+    manual_footway_area: 'Площадь ручной уборки тротуаров (кв.м.)',
+    snow_area: 'Площадь уборки снега (кв.м.)',
+    gutters_length: 'Протяженность лотков (п.м.)',
+    clean_area: 'Общая уборочная площадь (кв.м.)',
+    mechanical_clean_area: 'Площадь механизированной уборки (кв.м.)',
+  };
+  return properties[value];
+}
+
+export default (props) => {
+  const renderers = {
+    property: ({ data }) => <div>{getProperties(data)}</div>,
+  };
+
+  return (
+    <Table
+      title=""
+      results={props.data}
+      tableMeta={tableMeta}
+      renderers={renderers}
+      {...props}
+    />
+  );
+};

@@ -51,7 +51,10 @@ export default class FormWrap extends Component {
         canSave: !_.filter(formErrors).length,
       });
     }
+    this.inheritedComponentWillReceiveProps(props);
   }
+
+  inheritedComponentWillReceiveProps() {}
 
   validate(formState, errors) {
     if (typeof this.schema === 'undefined') return errors;

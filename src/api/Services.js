@@ -79,6 +79,7 @@ export const CleanCategoriesService = ETS_API_FACTORY.createApiServiceAdapter('c
 export const ODHNormDataSummerService = ETS_API_FACTORY.createApiServiceAdapter('odh_norm_data_summer', { useMock: true });
 export const EfficiencyService = ETS_API_FACTORY.createApiServiceAdapter('efficiency', { useMock: true });
 export const MaintenanceWorkService = ETS_API_FACTORY.createApiServiceAdapter('maintenance_work', {});
+export const CleaningRateService = ETS_API_FACTORY.createApiServiceAdapter('cleaning_rate', {});
 
 /* Geoobjects - Геообъекты */
 export const ODHService = ETS_API_FACTORY.createApiServiceAdapter('odh', {});

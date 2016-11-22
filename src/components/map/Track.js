@@ -435,7 +435,7 @@ export default class Track {
       let objectsString;
       let missionsString;
       // Объекты на точке
-      if (vectorObject.result) {
+      if (vectorObject.result && vectorObject.result[0] && vectorObject.result[1]) {
         if (vectorObject.result[0].asuods_id && vectorObject.result[1].asuods_id) {
           if (vectorObject.result[0].asuods_id === vectorObject.result[1].asuods_id) {
             objectsString = vectorObject.result[0].name ? vectorObject.result[0].name : '';

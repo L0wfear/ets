@@ -45,7 +45,6 @@ export default class CleaningRate extends Component {
     return (
       <div>
         <div className="cleaning-rate-header">
-          <span>Показатели для расчета эффективности работы бригад</span>
           <ButtonGroup>
             <Button active={this.state.type === 'odh'} onClick={() => this.setState({ type: 'odh' })}>ОДХ</Button>
             <Button active={this.state.type === 'dt'} onClick={() => this.setState({ type: 'dt' })}>ДТ</Button>

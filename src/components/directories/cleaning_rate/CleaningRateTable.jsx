@@ -49,7 +49,7 @@ export default (props) => {
 
   return (
     <Table
-      title=""
+      title="Показатели для расчета эффективности работы бригад"
       results={props.data}
       tableMeta={tableMeta}
       renderers={renderers}

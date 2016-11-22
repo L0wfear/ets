@@ -27,7 +27,7 @@ export default (props) => {
 
   return (
     <Table
-      title="Операции для расчета топлива"
+      title="Показатели регламентных работ"
       results={props.data}
       tableMeta={tableMeta}
       renderers={renderers}

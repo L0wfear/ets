@@ -22,8 +22,14 @@ const tableMeta = {
       cssClassName: 'width300',
     },
     {
-      name: 'plow_width',
-      displayName: 'Ширина уборочного оборудования',
+      name: 'plow_width_odh',
+      displayName: 'Ширина уборочного оборудования на ОДХ',
+      type: 'string',
+      filter: false,
+    },
+    {
+      name: 'plow_width_dt',
+      displayName: 'Ширина уборочного оборудования на ДТ',
       type: 'string',
       filter: false,
     },

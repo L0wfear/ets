@@ -110,7 +110,7 @@ const missionCreateSuccessNotification = {
 
 const missionsByCarAndDateUpdateNotification = {
   title: '',
-  message: 'Доступные для выбранного ТС и планируемых дат задания изменены',
+  message: 'Доступные для выбранного ТС и интервала времени задания изменены',
   level: 'info',
   dismissible: true,
   position: 'tr',

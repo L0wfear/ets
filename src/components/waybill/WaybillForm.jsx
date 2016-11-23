@@ -54,6 +54,7 @@ class WaybillForm extends Form {
           !_.isEqual(currentState.fact_arrival_date, nextState.fact_arrival_date) ||
           !_.isEqual(currentState.fact_departure_date, nextState.fact_departure_date)) {
         this.getCarDistance(nextState);
+        this.getMissionsByCarAndDates(nextState);
       }
     }
   }
@@ -103,10 +104,12 @@ class WaybillForm extends Form {
 
   getMissionsByCarAndDates(formState, notificate = true) {
     const { flux } = this.context;
+    const departure_date = formState.fact_departure_date || formState.plan_departure_date;
+    const arrival_date = formState.fact_arrival_date || formState.plan_arrival_date;
     flux.getActions('missions').getMissionsByCarAndDates(
       formState.car_id,
-      formState.plan_departure_date,
-      formState.plan_arrival_date,
+      departure_date,
+      arrival_date,
       formState.status
     ).then((response) => {
       const availableMissions = response && response.result ? response.result.rows.map(el => el.id) : [];
@@ -692,7 +695,7 @@ class WaybillForm extends Form {
               <Div hidden={!(IS_CLOSING || IS_DISPLAY)}>
                 <Field
                   type="string"
-                  label="Пройдено, км"
+                  label="Пройдено по Глонасс"
                   error={errors.distance}
                   value={state.distance}
                   isLoading={loadingFields.distance}

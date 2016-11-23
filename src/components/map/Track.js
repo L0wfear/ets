@@ -416,7 +416,7 @@ export default class Track {
     const car = carsList.find(c => c.gov_number === this.owner.point.car.gov_number);
     if (car) {
       missions = await flux.getActions('cars')
-          .getCarMissionsByTimestamp(car.asuods_id, trackPoint.timestamp);
+          .getCarMissionsByTimestamp(car.asuods_id, trackPoint.timestamp + 10800); // +3 часа
       missions = missions.result;
     }
     let { nsat,

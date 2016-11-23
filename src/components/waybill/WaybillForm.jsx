@@ -695,7 +695,7 @@ class WaybillForm extends Form {
               <Div hidden={!(IS_CLOSING || IS_DISPLAY)}>
                 <Field
                   type="string"
-                  label="Пройдено по Глонасс"
+                  label="Пройдено по Глонасс, км"
                   error={errors.distance}
                   value={state.distance}
                   isLoading={loadingFields.distance}

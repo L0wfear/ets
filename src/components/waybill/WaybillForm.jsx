@@ -345,7 +345,7 @@ class WaybillForm extends Form {
                   label="Выдан"
                   readOnly
                   hidden={!IS_DISPLAY && !IS_CLOSING}
-                  value={state.created_by_employee_name}
+                  value={state.activated_by_employee_name}
                 />
                 <Field
                   type="string"

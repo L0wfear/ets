@@ -17,10 +17,12 @@ const tableMeta = {
       filter: {
         type: 'multiselect',
       },
+      cssClassName: 'width150',
     },
     {
       name: 'value',
       displayName: 'Коэффициент',
+      cssClassName: 'width80',
     },
   ],
 };

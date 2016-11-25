@@ -22,6 +22,7 @@ const tableMeta = {
       displayName: 'Сезон',
       type: 'text',
       filter: false,
+      cssClassName: 'width80',
     },
     {
       name: 'clean_category_name',
@@ -40,6 +41,7 @@ const tableMeta = {
       displayName: 'Норма',
       type: 'text',
       filter: false,
+      cssClassName: 'width60',
     },
   ],
 };

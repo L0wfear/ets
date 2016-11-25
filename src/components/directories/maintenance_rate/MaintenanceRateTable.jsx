@@ -24,6 +24,7 @@ const tableMeta = {
       filter: {
         type: 'multiselect',
       },
+      cssClassName: 'width80',
     },
     {
       name: 'clean_category_name',
@@ -42,6 +43,7 @@ const tableMeta = {
     {
       name: 'value',
       displayName: 'Норма',
+      cssClassName: 'width60',
     },
   ],
 };

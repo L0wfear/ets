@@ -338,33 +338,36 @@ class WaybillForm extends Form {
 
         <Modal.Body>
           <Row>
-            <Col md={6}>
-              <Field
-                type="select"
-                label="Ответственное лицо"
-                error={errors.responsible_person_id}
-                hidden={!(IS_CREATING || IS_POST_CREATING)}
-                options={MASTERS}
-                value={employeeFIOLabelFunction(state.responsible_person_id, true)}
-                onChange={this.handleChange.bind(this, 'responsible_person_id')}
-              />
-
-              <Field
-                type="string"
-                label="Ответственное лицо"
-                readOnly
-                hidden={IS_CREATING || IS_POST_CREATING || !state.responsible_person_id}
-                value={employeeFIOLabelFunction(state.responsible_person_id, true)}
-              />
-              <Field
-                type="string"
-                label="Ответственное лицо"
-                readOnly
-                hidden={IS_CREATING || IS_POST_CREATING || state.responsible_person_id}
-                value={'Не указано'}
-              />
-            </Col>
-
+            <Div>
+              {IS_DISPLAY || IS_CLOSING ? <Col md={3}>
+                <Field
+                  type="string"
+                  label="Выдан"
+                  readOnly
+                  hidden={!IS_DISPLAY && !IS_CLOSING}
+                  value={state.created_by_employee_name}
+                />
+                <Field
+                  type="string"
+                  label="Закрыт"
+                  readOnly
+                  hidden={!IS_DISPLAY}
+                  value={state.closed_by_employee_name}
+                />
+              </Col> : ''}
+              {STRUCTURE_FIELD_VIEW && <Col md={!IS_DISPLAY && !IS_CLOSING ? 6 : 3}>
+                <Field
+                  type="select"
+                  label="Подразделение"
+                  error={errors.structure_id}
+                  disabled={STRUCTURE_FIELD_READONLY || !IS_CREATING}
+                  clearable={STRUCTURE_FIELD_DELETABLE}
+                  options={STRUCTURES}
+                  value={state.structure_id}
+                  onChange={this.handleChange.bind(this, 'structure_id')}
+                />
+              </Col>}
+            </Div>
             <Div hidden={!(IS_CREATING || IS_POST_CREATING)}>
               <Col md={3}>
                 <Field
@@ -451,7 +454,7 @@ class WaybillForm extends Form {
                 value={car ? `${car.gov_number} [${car.special_model_name || ''}${car.special_model_name ? '/' : ''}${car.model_name || ''}]` : 'Н/Д'}
               />
             </Col>
-            <Col md={STRUCTURE_FIELD_VIEW ? 3 : 6} style={!(IS_CREATING || IS_POST_CREATING) && STRUCTURE_FIELD_VIEW ? { marginTop: '-20px' } : null}>
+            <Col md={6}>
               <Field
                 type="select"
                 label="Водитель (возможен поиск по табельному номеру)"
@@ -470,18 +473,6 @@ class WaybillForm extends Form {
                 value={employeeFIOLabelFunction(state.driver_id, true)}
               />
             </Col>
-            {STRUCTURE_FIELD_VIEW && <Col md={3}>
-              <Field
-                type="select"
-                label="Подразделение"
-                error={errors.structure_id}
-                disabled={STRUCTURE_FIELD_READONLY || !IS_CREATING}
-                clearable={STRUCTURE_FIELD_DELETABLE}
-                options={STRUCTURES}
-                value={state.structure_id}
-                onChange={this.handleChange.bind(this, 'structure_id')}
-              />
-            </Col>}
           </Row>
 
           <Row>

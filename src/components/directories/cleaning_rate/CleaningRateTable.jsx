@@ -1,32 +1,6 @@
 import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 
-const tableMeta = {
-  cols: [
-    {
-      name: 'technical_operation_name',
-      displayName: 'Технологическая операция',
-      type: 'string',
-      filter: {
-        type: 'multiselect',
-      },
-    },
-    {
-      name: 'property',
-      displayName: 'Площадная характеристика',
-      filter: {
-        type: 'multiselect',
-      },
-      cssClassName: 'width150',
-    },
-    {
-      name: 'value',
-      displayName: 'Коэффициент',
-      cssClassName: 'width80',
-    },
-  ],
-};
-
 function getProperties(value) {
   const properties = {
     total_area: 'Общая площадь (кв.м.)',
@@ -43,6 +17,33 @@ function getProperties(value) {
   };
   return properties[value];
 }
+
+const tableMeta = {
+  cols: [
+    {
+      name: 'technical_operation_name',
+      displayName: 'Технологическая операция',
+      type: 'string',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
+      name: 'property',
+      displayName: 'Площадная характеристика',
+      filter: {
+        type: 'multiselect',
+        labelFunction: v => getProperties(v),
+      },
+      cssClassName: 'width150',
+    },
+    {
+      name: 'value',
+      displayName: 'Коэффициент',
+      cssClassName: 'width80',
+    },
+  ],
+};
 
 export default (props) => {
   const renderers = {

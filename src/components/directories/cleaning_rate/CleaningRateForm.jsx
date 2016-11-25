@@ -35,7 +35,7 @@ export default class CleaningRateForm extends Form {
     return (
       <Modal {...this.props} backdrop="static" bgSize="small">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{!state.id ? 'Добавление' : 'Изменение'} показателя регламентных работ</Modal.Title>
+          <Modal.Title id="contained-modal-title-lg">{!state.id ? 'Добавление' : 'Изменение'} показателя для расчета эффективности</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Field

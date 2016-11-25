@@ -50,7 +50,7 @@ export default class CleaningRate extends Component {
             <Button active={this.state.type === 'dt'} onClick={() => this.setState({ type: 'dt' })}>ДТ</Button>
           </ButtonGroup>
         </div>
-        <CleaningRateDirectory type={type} />
+        <CleaningRateDirectory type={type} key={type} />
       </div>
     );
   }

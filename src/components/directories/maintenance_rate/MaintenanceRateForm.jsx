@@ -25,7 +25,7 @@ export default class MaintenanceRateForm extends Form {
     return (
       <Modal {...this.props} backdrop="static" bsSize="large">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{!state.id ? 'Добавление' : 'Изменение'} показателя регламентных работ</Modal.Title>
+          <Modal.Title id="contained-modal-title-lg">{!state.id ? 'Добавление' : 'Изменение'} нормы на содержание {this.props.type === 'odh' ? 'ОДХ' : 'ДТ'}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Row>

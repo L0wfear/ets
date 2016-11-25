@@ -45,6 +45,11 @@ const tableMeta = {
       displayName: 'Норма',
       cssClassName: 'width60',
     },
+    {
+      name: 'measure_unit_name',
+      displayName: 'Единица измерения',
+      cssClassName: 'width60',
+    },
   ],
 };
 

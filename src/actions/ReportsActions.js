@@ -9,6 +9,7 @@ import {
   CoverageReportService,
   AnalyticsService,
   OdhCoverageReportService,
+  DtCoverageReportService,
   CarFuncTypeUsageReportService,
 } from 'api/Services';
 
@@ -139,6 +140,32 @@ export default class ReportsActions extends Actions {
       payload.format = format;
     }
     return OdhCoverageReportService.getBlob(payload);
+  }
+
+  getDtCoverageReport(date_start, date_end) {
+    const payload = {};
+    if (date_start) {
+      payload.date_start = createValidDateTime(date_start);
+    }
+    if (date_end) {
+      payload.date_end = createValidDateTime(date_end);
+    }
+
+    return DtCoverageReportService.get(payload);
+  }
+
+  exportDtCoverageReport(date_start, date_end, format) {
+    const payload = {};
+    if (date_start) {
+      payload.date_start = createValidDateTime(date_start);
+    }
+    if (date_end) {
+      payload.date_end = createValidDateTime(date_end);
+    }
+    if (format) {
+      payload.format = format;
+    }
+    return DtCoverageReportService.getBlob(payload);
   }
 
 }

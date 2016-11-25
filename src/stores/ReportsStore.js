@@ -14,6 +14,7 @@ export default class ReportsStore extends Store {
     this.register(reportsActions.getWeeklyTechnicalOperationCompleteReports, this.handleGetWeeklyTechnicalOperationCompleteReports);
     this.register(reportsActions.createWeeklyTechnicalOperationCompleteReport, this.handleGetWeeklyTechnicalOperationCompleteReports);
     this.register(reportsActions.getOdhCoverageReport, this.handleGetOdhCoverageReport);
+    this.register(reportsActions.getDtCoverageReport, this.handleGetDtCoverageReport);
     this.register(reportsActions.getCarFuncTypeUsageReports, this.handleGetCarFuncTypeUsageReports);
 
     this.state = {
@@ -23,6 +24,7 @@ export default class ReportsStore extends Store {
       fuelReport: [],
       weeklyTechnicalOperationCompleteReportsList: [],
       odhCoverageReport: [],
+      dtCoverageReport: [],
     };
   }
 
@@ -48,6 +50,10 @@ export default class ReportsStore extends Store {
 
   handleGetOdhCoverageReport({ result }) {
     this.setState({ odhCoverageReport: result.rows });
+  }
+
+  handleGetDtCoverageReport({ result }) {
+    this.setState({ dtCoverageReport: result.rows });
   }
 
 }

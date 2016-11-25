@@ -118,6 +118,7 @@ const routes = (
       <Route path="monitor" component={MonitorPage} onEnter={requireAuth} />
       {/* Отчет префекта */}
       <Route path="odh_coverage_report" component={reports.odhCoverageReport} onEnter={requireAuth} />
+      <Route path="dt_coverage_report" component={reports.dtCoverageReport} onEnter={requireAuth} />
       <Route path="dashboard" component={DashboardPage} onEnter={requireAuth} />
       <Route path="waybill-journal" component={WaybillJournal} onEnter={requireAuth} />
       <Route path="company-structure" component={CompanyStructure} onEnter={requireAuth} />

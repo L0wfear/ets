@@ -54,6 +54,7 @@ const PERMISSIONS = {
     'list': 'report.list',
   },
   'odh_coverage_report': 'odh_coverage_report',
+  'dt_coverage_report': 'dt_coverage_report',
   'route': {
     'list': 'route.list',
     'create': 'route.create',

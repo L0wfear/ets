@@ -11,7 +11,8 @@ export default class NotificationsStore extends Store {
 
     this.register(missionsActons.createMission, this.handleMissionCreate);
     this.register(missionsActons.createMissions, this.handleMissionsCreate);
-    this.register(reportsActions.getOdhCoverageReport, this.handleGetOdhCoverageReport);
+    this.register(reportsActions.getOdhCoverageReport, this.handleGetCoverageReport);
+    this.register(reportsActions.getDtCoverageReport, this.handleGetCoverageReport);
 
     this.state = {
       operationsCount: 0,
@@ -40,7 +41,7 @@ export default class NotificationsStore extends Store {
     }
   }
 
-  handleGetOdhCoverageReport() {
+  handleGetCoverageReport() {
     global.NOTIFICATION_SYSTEM.notify('Отчет обновлен', 'info');
   }
 

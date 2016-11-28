@@ -36,7 +36,9 @@ export default class MissionFormWrap extends FormWrap {
       if (props.formType === 'ViewForm') {
         const mission = props.element === null ? getDefaultMissionTemplate() : _.clone(props.element);
         const formErrors = this.validate(mission, {});
-        mission.structure_id = this.context.flux.getStore('session').getCurrentUser().structure_id;
+        if (mission.structure_id == null) {
+          mission.structure_id = this.context.flux.getStore('session').getCurrentUser().structure_id;
+        }
         this.setState({
           formState: mission,
           canSave: !_.filter(formErrors).length, // false,

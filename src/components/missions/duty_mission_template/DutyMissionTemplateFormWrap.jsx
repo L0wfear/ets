@@ -33,9 +33,8 @@ class DutyMissionTemplateFormWrap extends FormWrap {
     if (props.showForm && props.showForm !== this.props.showForm) {
       if (props.formType === 'ViewForm') {
         const mission = props.element === null ? getDefaultDutyMissionTemplate() : _.clone(props.element);
-        if (typeof mission.structure_id === 'undefined') {
-          const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
-          mission.structure_id = currentStructureId;
+        if (mission.structure_id == null) {
+          mission.structure_id = this.context.flux.getStore('session').getCurrentUser().structure_id;
         }
         const formErrors = this.validate(mission, {});
         this.setState({

@@ -2,8 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { autobind } from 'core-decorators';
 import { FluxContext } from 'utils/decorators';
 import { Button, Modal } from 'react-bootstrap';
-import { saveData } from 'utils/functions';
-import { getToday9am, getTomorrow9am, getDate9am, getYesterday9am, getToday859am, getFormattedDateTime } from 'utils/dates';
+import { getToday0am } from 'utils/dates';
 import Datepicker from 'components/ui/DatePicker.jsx';
 import Div from 'components/ui/Div.jsx';
 
@@ -19,7 +18,7 @@ export default class DtCoverageReportPrintForm extends Component {
   constructor(props) {
     super(props);
 
-    const [date_start, date_end] = [getYesterday9am(), getToday859am()];
+    const [date_start, date_end] = [getToday0am(), new Date()];
 
     this.state = {
       date_start,
@@ -28,9 +27,7 @@ export default class DtCoverageReportPrintForm extends Component {
   }
 
   export() {
-    const payload = { date: this.state.date };
     const { date_start, date_end } = this.state;
-    const { exportType } = this.props;
     // const { flux } = this.context;
     //
     // flux.getActions('reports').exportDtCoverageReport(date_start, date_end, 'xls')
@@ -47,8 +44,7 @@ export default class DtCoverageReportPrintForm extends Component {
           <Modal.Title id="contained-modal-title-lg">Печать отчета за заданный период</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {
-            exportType === 1 ?
+          {exportType === 1 ?
             <div style={{ textAlign: 'center' }}>
               <Datepicker className="inline-block" time={false} date={this.state.date_start} onChange={date => this.setState({ date_start: date })} />
             </div>

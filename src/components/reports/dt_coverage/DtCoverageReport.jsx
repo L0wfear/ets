@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import { Button, Glyphicon, Dropdown, MenuItem as BootstrapMenuItem, Input } from 'react-bootstrap';
+import { Glyphicon, Dropdown, MenuItem as BootstrapMenuItem, Input } from 'react-bootstrap';
 import { autobind } from 'core-decorators';
 import { connectToStores, FluxContext, bindable } from 'utils/decorators';
-import { getToday9am, getTomorrow9am, getDate9am, getNextDay859am, getFormattedDateTime } from 'utils/dates';
+import { getToday0am, getFormattedDateTime } from 'utils/dates';
 import { saveData } from 'utils/functions';
-import Preloader from 'components/ui/Preloader.jsx';
 import DtCoverageReportTable from './DtCoverageReportTable.jsx';
 import DtCoverageReportPrintForm from './DtCoverageReportPrintForm.jsx';
-import DtCoverageReportHeader from './DtCoverageReportHeader.jsx';
+// import DtCoverageReportHeader from './DtCoverageReportHeader.jsx';
 
-const TWO_MINUTES = 1000 * 60 * 2;
+// const TWO_MINUTES = 1000 * 60 * 2;
 
 const MenuItem = bindable(BootstrapMenuItem);
 
@@ -30,7 +29,7 @@ export default class DtCoverageReport extends Component {
   constructor(props) {
     super(props);
 
-    const [date_start, date_end] = [getToday9am(), getTomorrow9am()];
+    const [date_start, date_end] = [getToday0am(), new Date()];
 
     this.state = {
       date_start,
@@ -58,12 +57,12 @@ export default class DtCoverageReport extends Component {
     if (dates.date_start) this.setState({ date_start: dates.date_start, date_end: new Date() });
   }
 
-  handleDateStartChange(date) {
-    const date_start = getDate9am(date);
-    const date_end = getNextDay859am(date);
-
-    this.setState({ date_start, date_end });
-  }
+  // handleDateStartChange(date) {
+  //   const date_start = getDate0am(date);
+  //   const date_end = new Date();
+  //
+  //   this.setState({ date_start, date_end });
+  // }
 
   showForm(exportType) {
     this.setState({ showForm: true, exportType });

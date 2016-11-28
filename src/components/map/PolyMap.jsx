@@ -70,7 +70,7 @@ export default class PolyMap extends Component {
 
     this.enableInteractions();
 
-    this.renderPolygons(this.props.polys);
+    this.renderPolygons(this.props.polys, true);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -104,7 +104,7 @@ export default class PolyMap extends Component {
     global.map = this.map;
   }
 
-  renderPolygons(polys = {}) {
+  renderPolygons(polys = {}, fit) {
     const map = this.map;
     const vectorSource = new ol.source.Vector();
     let styleFunction = polyStyles[polyState.SELECTABLE];
@@ -144,8 +144,12 @@ export default class PolyMap extends Component {
     POLYS_LAYER = polysLayer;
 
     map.addLayer(polysLayer);
+    fit && this.fitToExtent(polysLayer);
+  }
+
+  fitToExtent(polysLayer) {
     const extent = polysLayer.getSource().getExtent();
-    extent[0] !== Infinity && map.getView().fit(extent, map.getSize());
+    extent[0] !== Infinity && this.map.getView().fit(extent, this.map.getSize());
   }
 
   shouldComponentUpdate() {

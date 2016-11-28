@@ -136,7 +136,6 @@ export default class RouteForm extends Form {
       STRUCTURE_FIELD_DELETABLE = true;
     }
 
-    console.log(this.props.structureId)
     const title = state.id ? 'Изменение маршрута' : 'Создание нового маршрута';
 
     return (

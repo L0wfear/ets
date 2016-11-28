@@ -222,7 +222,7 @@ export class MissionForm extends Form {
                   IS_POST_CREATING_NOT_ASSIGNED ||
                   IS_DISPLAY ||
                   this.props.fromWaybill ||
-                (IS_CREATING && isEmpty(state.technical_operation_id))}
+                  (IS_CREATING && isEmpty(state.technical_operation_id))}
                 options={CARS}
                 value={state.car_id}
                 onChange={this.handleCarIdChange}
@@ -364,7 +364,7 @@ export class MissionForm extends Form {
                 <MenuItem eventKey={2}>Печать</MenuItem>
               </Dropdown.Menu>
             </Dropdown>
-            <Button onClick={this.handleSubmit} disabled={!this.props.canSave}>Сохранить</Button>
+            <Button onClick={this.handleSubmit} disabled={!this.props.canSave}>{IS_CREATING ? 'Создать' : 'Сохранить'}</Button>
           </Div>
         </Modal.Footer>
 

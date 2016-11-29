@@ -20,12 +20,12 @@ export const waybillSchema = {
       type: 'number',
       required: true,
     },
-    {
-      key: 'responsible_person_id',
-      title: 'Ответственное лицо',
-      type: 'number',
-      required: true,
-    },
+    // {
+    //   key: 'responsible_person_id',
+    //   title: 'Ответственное лицо',
+    //   type: 'number',
+    //   required: false,
+    // },
     {
       key: 'car_id',
       title: 'Транспортное средство',
@@ -82,7 +82,7 @@ export const waybillSchema = {
     },
     {
       key: 'distance',
-      title: 'Пройдено, км',
+      title: 'Пройдено по Глонасс, км',
       required: false,
       type: 'floatFixed3',
     }

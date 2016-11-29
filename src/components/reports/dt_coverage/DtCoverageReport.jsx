@@ -53,8 +53,8 @@ export default class DtCoverageReport extends Component {
   async getReport() {
     const { flux } = this.context;
     const res = await flux.getActions('reports').getDtCoverageReport(/*this.state.date_start, this.state.date_end*/);
-    const dates = res.result.meta;
-    if (dates.date_start) this.setState({ date_start: dates.date_start, date_end: new Date() });
+    // const dates = res.result.meta;
+    // if (dates.date_start) this.setState({ date_start: dates.date_start, date_end: new Date() });
   }
 
   // handleDateStartChange(date) {

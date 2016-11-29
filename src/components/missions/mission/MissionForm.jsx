@@ -364,7 +364,7 @@ export class MissionForm extends Form {
                 <MenuItem eventKey={2}>Печать</MenuItem>
               </Dropdown.Menu>
             </Dropdown>
-            <Button onClick={this.handleSubmit} disabled={!this.props.canSave}>{IS_CREATING ? 'Создать' : 'Сохранить'}</Button>
+            <Button onClick={this.handleSubmit} disabled={!this.props.canSave}>Сохранить</Button>
           </Div>
         </Modal.Footer>
 

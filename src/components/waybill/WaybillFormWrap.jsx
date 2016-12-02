@@ -164,7 +164,6 @@ export default class WaybillFormWrap extends FormWrap {
 
     newState.formState = formState;
     newState.formErrors = formErrors;
-
     this.setState(newState);
   }
 
@@ -206,7 +205,6 @@ export default class WaybillFormWrap extends FormWrap {
       formState[field] = value;
       formState = calculateWaybillMetersDiff(formState, field, value);
     });
-
     this.handleFieldsChange(formState);
   }
 

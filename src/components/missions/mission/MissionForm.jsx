@@ -78,6 +78,12 @@ export class MissionForm extends Form {
     }
   }
 
+  handleStructureIdChange(v) {
+    const carsList = this.props.carsList.filter(c => v == null ? true : (c.company_structure_id === v || c.is_common));
+    if (!_.find(carsList, c => c.asuods_id === this.props.formState.car_id)) this.handleChange('car_id', null);
+    this.handleChange('structure_id', v);
+  }
+
   async componentDidMount() {
     const mission = this.props.formState;
     const { flux } = this.context;
@@ -166,7 +172,12 @@ export class MissionForm extends Form {
       { value: 'assign_to_active', label: 'Добавить в активный ПЛ' },
       { value: 'assign_to_draft', label: 'Создать/добавить в черновик ПЛ' },
     ];
-    const CARS = carsList.map(c => ({ value: c.asuods_id, label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]` }));
+    const CARS = carsList
+      .filter(c => !state.structure_id ? true : (c.company_structure_id === state.structure_id || c.is_common))
+      .map(c => ({
+        value: c.asuods_id,
+        label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`
+      }));
     const ROUTES = routesList.map(({ id, name }) => ({ value: id, label: name }));
 
     // является ли задание отложенным
@@ -315,7 +326,7 @@ export class MissionForm extends Form {
                 clearable={STRUCTURE_FIELD_DELETABLE}
                 options={STRUCTURES}
                 value={state.structure_id}
-                onChange={this.handleChange.bind(this, 'structure_id')}
+                onChange={this.handleStructureIdChange}
               />
             </Col>}
           </Row>

@@ -262,6 +262,15 @@ class WaybillForm extends Form {
     this.handleChange('mission_id_list', shouldBeChanged ? data : f.mission_id_list);
   }
 
+  handleStructureIdChange(v) {
+    const carsList = this.props.carsList.filter(c => v == null ? true : (c.company_structure_id === v || c.is_common));
+    if (!_.find(carsList, c => c.asuods_id === this.props.formState.car_id)) {
+      this.props.handleMultipleChange({ car_id: '', driver_id: '', structure_id: v });
+    } else {
+      this.handleChange('structure_id', v);
+    }
+  }
+
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
@@ -270,17 +279,18 @@ class WaybillForm extends Form {
     let taxesControl = false;
 
     const { carsList = [], carsIndex = {}, driversList = [], employeesList = [], missionsList = [] } = this.props;
-    const CARS = carsList.map(c => ({
-      value: c.asuods_id,
-      gov_number: c.gov_number,
-      label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`,
-    }));
+    const CARS = carsList
+      .filter(c => !state.structure_id ? true : (c.company_structure_id === state.structure_id || c.is_common))
+      .map(c => ({
+        value: c.asuods_id,
+        gov_number: c.gov_number,
+        label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`,
+      }));
     const FUEL_TYPES = _.map(appConfig.enums.FUEL_TYPE, (v, k) => ({ value: k, label: v }));
     const DRIVERS = driversList.map((d) => {
       const personnel_number = d.personnel_number ? `[${d.personnel_number}] ` : '';
       return { value: d.id, label: `${personnel_number}${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''}` };
     });
-    const MASTERS = employeesList.filter(e => [2, 4, 5, 7, 14].indexOf(e.position_id) > -1).map(m => ({ value: m.id, data: m, label: `${m.last_name || ''} ${m.first_name || ''} ${m.middle_name || ''}` })).filter(e => e.data.active === true);
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false }));
 
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
@@ -364,7 +374,7 @@ class WaybillForm extends Form {
                   clearable={STRUCTURE_FIELD_DELETABLE}
                   options={STRUCTURES}
                   value={state.structure_id}
-                  onChange={this.handleChange.bind(this, 'structure_id')}
+                  onChange={this.handleStructureIdChange}
                 />
               </Col>}
             </Div>

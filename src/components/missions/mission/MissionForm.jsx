@@ -79,8 +79,10 @@ export class MissionForm extends Form {
   }
 
   handleStructureIdChange(v) {
-    const carsList = this.props.carsList.filter(c => v == null ? true : (c.company_structure_id === v || c.is_common));
+    const carsList = this.props.carsList.filter(c => !v || c.is_common || c.company_structure_id === v);
+    const routesList = this.state.routesList.filter(r => !v || r.structure_id === v)
     if (!_.find(carsList, c => c.asuods_id === this.props.formState.car_id)) this.handleChange('car_id', null);
+    if (!_.find(routesList, r => r.id === this.props.formState.route_id)) this.handleChange('route_id', null);
     this.handleChange('structure_id', v);
   }
 
@@ -173,13 +175,14 @@ export class MissionForm extends Form {
       { value: 'assign_to_draft', label: 'Создать/добавить в черновик ПЛ' },
     ];
     const CARS = carsList
-      .filter(c => !state.structure_id ? true : (c.company_structure_id === state.structure_id || c.is_common))
+      .filter(c => !state.structure_id || c.is_common || c.company_structure_id === state.structure_id)
       .map(c => ({
         value: c.asuods_id,
         label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`
       }));
-    const ROUTES = routesList.map(({ id, name }) => ({ value: id, label: name }));
-
+    const ROUTES = routesList
+      .filter(r => !state.structure_id || r.structure_id === state.structure_id)
+      .map(({ id, name }) => ({ value: id, label: name }));
     // является ли задание отложенным
     const isDeferred = moment(state.date_start).toDate().getTime() > moment().toDate().getTime();
 

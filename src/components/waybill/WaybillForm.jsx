@@ -280,7 +280,7 @@ class WaybillForm extends Form {
 
     const { carsList = [], carsIndex = {}, driversList = [], employeesList = [], missionsList = [] } = this.props;
     const CARS = carsList
-      .filter(c => !state.structure_id ? true : (c.company_structure_id === state.structure_id || c.is_common))
+      .filter(c => !state.structure_id || c.is_common || c.company_structure_id === state.structure_id)
       .map(c => ({
         value: c.asuods_id,
         gov_number: c.gov_number,

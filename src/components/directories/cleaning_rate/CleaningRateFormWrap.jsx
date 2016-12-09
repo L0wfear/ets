@@ -26,6 +26,12 @@ export const cleaningRateSchema = {
       type: 'floatFixed3',
       required: true,
     },
+    {
+      key: 'measure_unit_id',
+      title: 'Единица измерения',
+      type: 'number',
+      required: true,
+    },
   ],
 };
 

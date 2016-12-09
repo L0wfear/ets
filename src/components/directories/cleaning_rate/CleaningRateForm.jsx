@@ -15,6 +15,7 @@ function getProperties(type = 'odh') {
     { label: 'Площадь ручной уборки тротуаров (кв.м.)', value: 'manual_footway_area' },
     { label: 'Площадь уборки снега (кв.м.)', value: 'snow_area' },
     { label: 'Протяженность лотков (п.м.)', value: 'gutters_length' },
+    { label: 'Кол-во убираемых остановок (ед.)', value: 'station_number' },
   ] : [
     { label: 'Общая площадь (кв.м.)', value: 'total_area' },
     { label: 'Общая уборочная площадь (кв.м.)', value: 'clean_area' },
@@ -23,15 +24,17 @@ function getProperties(type = 'odh') {
   return properties;
 }
 
-@connectToStores(['objects'])
+@connectToStores(['objects', 'odh'])
 export default class CleaningRateForm extends Form {
 
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
-    const { isPermitted, technicalOperationsList, type } = this.props;
+    const { isPermitted, technicalOperationsList, measureUnitList, type } = this.props;
     const TECHNICAL_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
     const PROPERTIES = getProperties(type);
+    const MEASUREUNITS = measureUnitList.map(({ id, name }) => ({ value: id, label: name }));
+
     return (
       <Modal {...this.props} backdrop="static" bgSize="small">
         <Modal.Header closeButton>
@@ -62,6 +65,15 @@ export default class CleaningRateForm extends Form {
             value={state.value}
             error={errors.value}
             onChange={e => this.handleChange('value', e)}
+            disabled={!isPermitted}
+          />
+          <Field
+            type="select"
+            label="Единица измерения"
+            options={MEASUREUNITS}
+            value={state.measure_unit_id}
+            error={errors.measure_unit_id}
+            onChange={e => this.handleChange('measure_unit_id', e)}
             disabled={!isPermitted}
           />
         </Modal.Body>

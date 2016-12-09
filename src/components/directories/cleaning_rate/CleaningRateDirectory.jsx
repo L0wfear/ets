@@ -26,6 +26,7 @@ class CleaningRateDirectory extends ElementsList {
     const { flux } = this.context;
     flux.getActions('objects').getCleaningRate(this.props.type);
     flux.getActions('technicalOperation').getTechnicalOperations();
+    flux.getActions('odh').getMeasureUnits();
   }
 
   inheritedComponentWillReceiveProps(props) {

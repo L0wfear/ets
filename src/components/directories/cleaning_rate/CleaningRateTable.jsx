@@ -14,6 +14,7 @@ function getProperties(value) {
     gutters_length: 'Протяженность лотков (п.м.)',
     clean_area: 'Общая уборочная площадь (кв.м.)',
     mechanical_clean_area: 'Площадь механизированной уборки (кв.м.)',
+    station_number: 'Кол-во убираемых остановок (ед.)',
   };
   return properties[value];
 }
@@ -40,6 +41,11 @@ const tableMeta = {
     {
       name: 'value',
       displayName: 'Коэффициент',
+      cssClassName: 'width80',
+    },
+    {
+      name: 'measure_unit_name',
+      displayName: 'Единица измерения',
       cssClassName: 'width80',
     },
   ],

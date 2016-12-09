@@ -76,7 +76,7 @@ export default (props) => {
 
   return (
     <Table
-      title="Статистика выхода техники за период"
+      title="Работа бригад по ручной уборке"
       tableMeta={tableMeta}
       results={props.data}
       renderers={renderers}

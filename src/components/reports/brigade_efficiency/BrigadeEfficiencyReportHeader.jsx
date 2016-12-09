@@ -71,7 +71,7 @@ class BrigadeEfficiencyReportHeader extends Component {
             onChange={this.props.handleChange.bind(null, 'company_id')}
             />
           </Col> */}
-          <Col md={4} style={{ marginTop: 28 }}>
+          <Col md={4} style={{ marginTop: 28, textAlign: 'right' }}>
             <Button bsSize="small" onClick={props.onClick.bind(this)}>Сформировать отчет</Button>
           </Col>
         </Row>

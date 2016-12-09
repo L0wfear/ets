@@ -105,6 +105,7 @@ export const WeeklyTechnicalOperationCompleteReportsService = ETS_API_FACTORY.cr
 export const CoverageReportService = ETS_API_FACTORY.createApiServiceAdapter('current_coverage_report', {});
 export const OdhCoverageReportService = ETS_API_FACTORY.createApiServiceAdapter('odh_coverage_report', {});
 export const DtCoverageReportService = ETS_API_FACTORY.createApiServiceAdapter('dt_coverage_report', {});
+export const BrigadeEfficiencyReportService = ETS_API_FACTORY.createApiServiceAdapter('brigade_efficiency_report', {});
 
 // async function a() {
 //   const respo = await MissionDataService.path(60446).get();

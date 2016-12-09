@@ -121,6 +121,7 @@ export default class LoadingStore extends Store {
       reportsActions.getOdhCoverageReport,
       reportsActions.getDtCoverageReport,
       reportsActions.getCarFuncTypeUsageReports,
+      reportsActions.getBrigadeEfficiencyReports,
 
     );
 
@@ -179,8 +180,6 @@ export default class LoadingStore extends Store {
       this.setState({ operationsCount });
     }
   }
-
-
 
   isLoading() {
     return this.state.operationsCount > 0;

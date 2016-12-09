@@ -149,6 +149,7 @@ export default class MainPage extends React.Component {
                 <MenuItem active={path === '/route-reports'} href="#/route-reports">Покрытие ОДХ маршрутами</MenuItem>
                 <MenuItem active={path === '/mission-reports'} href="#/mission-reports">Прохождение заданий</MenuItem>
                 <MenuItem active={path === '/car_func_type_usage_reports'} href="#/car_func_type_usage_reports">Статистика выхода техники</MenuItem>
+                <MenuItem active={path === '/brigade-efficiency-reports'} href="#/brigade-efficiency-reports">Работа бригад по ручной уборке</MenuItem>
               </NavDropdown>
               <NavDropdown title="Регламентированные отчеты" id="nav-dropdown-3-2">
                 <MenuItem active={path === '/fuel-consumption-report'} href="#/fuel-consumption-report">Расход топлива</MenuItem>

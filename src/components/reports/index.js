@@ -13,6 +13,7 @@ import * as route from './route';
 import * as daily from './daily';
 import * as weekly from './weekly';
 import * as carFuncTypeUsage from './car_func_type_usage';
+import * as brigadeEfficiency from './brigade_efficiency';
 
 export {
   analytics,
@@ -26,4 +27,5 @@ export {
   odhCoverageReport,
   dtCoverageReport,
   carFuncTypeUsage,
+  brigadeEfficiency,
 };

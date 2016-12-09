@@ -35,8 +35,8 @@ export default class MissionRejectForm extends Component {
     this.context.flux.getActions('objects').getCars();
   }
 
-  componentWillReceiveProps() {
-    if (this.props.show === false) {
+  componentWillReceiveProps(props) {
+    if (props.show === false) {
       this.setState({
         car_id: null,
         comment: '',
@@ -45,11 +45,17 @@ export default class MissionRejectForm extends Component {
         result: null,
       });
     }
-    if (this.props.mission) {
-      const mission_id = this.props.mission.mission_id || this.props.mission.id;
-      const date_start = this.props.mission.mission_date_start || this.props.mission.date_start;
-      const date_end = this.props.mission.mission_date_end || this.props.mission.date_end;
+    if (props.mission) {
+      const mission_id = props.mission.mission_id || props.mission.id;
+      const date_start = props.mission.mission_date_start || props.mission.date_start;
+      const date_end = props.mission.mission_date_end || props.mission.date_end;
       this.setState({ mission_id, date_end, date_start });
+    }
+  }
+
+  componentWillUpdate(props, state) {
+    if (state.car_id && !this.state.car_id) {
+      this.setState({ comment: 'Перенос задания с рег. номер ТС, с которого переназначили задание' });
     }
   }
 
@@ -141,7 +147,8 @@ export default class MissionRejectForm extends Component {
 
   render() {
     const { state, props } = this;
-    const errors = [];
+    const errors = {};
+    if (!state.comment) errors.comment = 'Поле должно быть обязательно заполнено';
     const CARS = (props.carsList && props.mission) ? props.carsList.map(e => ({ value: e.asuods_id, label: e.gov_number })).filter(e => e.label !== props.mission.car_gov_number) : [];
     const title = props.mission ? `Задание, ТС: ${props.mission.car_gov_number}` : '';
     const missions = this.state.data ? this.state.data.missions : null;
@@ -228,7 +235,7 @@ export default class MissionRejectForm extends Component {
 
         <Modal.Footer>
           <Div>
-            <Button onClick={this.handleSubmit.bind(this)} >{'Сохранить'}</Button>
+            <Button disabled={!!errors.comment} onClick={this.handleSubmit.bind(this)} >{'Сохранить'}</Button>
             <Button onClick={props.onReject.bind(this, false)} >{'Отменить'}</Button>
           </Div>
         </Modal.Footer>

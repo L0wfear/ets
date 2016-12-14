@@ -8,7 +8,7 @@ const getTableMeta = (props) => {
   const tableMeta = {
     cols: [
       {
-        name: 'object_name',
+        name: 'odh_name',
         displayName: 'ОДХ',
         type: 'string',
         filter: {
@@ -16,7 +16,7 @@ const getTableMeta = (props) => {
         },
       },
       {
-        name: 'check_value',
+        name: 'route_check_value',
         displayName: `Нужно пройти (${props.data[0] && props.data[0].route_check_unit})`,
         type: 'string',
         filter: false,

@@ -55,7 +55,7 @@ export default class MissionRejectForm extends Component {
 
   componentWillUpdate(props, state) {
     if (state.car_id && !this.state.car_id) {
-      this.setState({ comment: 'Перенос задания с рег. номер ТС, с которого переназначили задание' });
+      this.setState({ comment: `Перенос задания с ТС: ${props.mission.car_gov_number}` });
     }
   }
 
@@ -152,34 +152,34 @@ export default class MissionRejectForm extends Component {
     const CARS = (props.carsList && props.mission) ? props.carsList.map(e => ({ value: e.asuods_id, label: e.gov_number })).filter(e => e.label !== props.mission.car_gov_number) : [];
     const title = props.mission ? `Задание, ТС: ${props.mission.car_gov_number}` : '';
     const missions = this.state.data ? this.state.data.missions : null;
-    const datePickers = missions && missions.map((mission, i) => {
-      return (
-        <Row style={{ marginBottom: '4px' }} key={i}>
-          <Col md={4} style={{ paddingRight: '0' }}>
-            <div
-              title={mission.technical_operation_name}
-              style={{
-                paddingTop: '9px',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-              }}
-            >
-              {`№: ${mission.number} (${mission.technical_operation_name})`}
-            </div>
-          </Col>
-          <Col md={8} style={{ textAlign: 'right', paddingLeft: '0', whiteSpace: 'nowrap' }}>
-            <Div className="inline-block reports-date">
-              <Datepicker date={mission.date_start} onChange={this.handleMissionsDateChange.bind(this, 'date_start', mission.id)} />
-            </Div>
-            {' — '}
-            <Div className="inline-block reports-date">
-              <Datepicker date={mission.date_end} onChange={this.handleMissionsDateChange.bind(this, 'date_end', mission.id)} />
-            </Div>
-          </Col>
-        </Row>
-      );
-    });
+    const datePickers = missions && missions.map((mission, i) =>
+       (
+         <Row style={{ marginBottom: '4px' }} key={i}>
+           <Col md={4} style={{ paddingRight: '0' }}>
+             <div
+               title={mission.technical_operation_name}
+               style={{
+                 paddingTop: '9px',
+                 textOverflow: 'ellipsis',
+                 whiteSpace: 'nowrap',
+                 overflow: 'hidden',
+               }}
+             >
+               {`№: ${mission.number} (${mission.technical_operation_name})`}
+             </div>
+           </Col>
+           <Col md={8} style={{ textAlign: 'right', paddingLeft: '0', whiteSpace: 'nowrap' }}>
+             <Div className="inline-block reports-date">
+               <Datepicker date={mission.date_start} onChange={this.handleMissionsDateChange.bind(this, 'date_start', mission.id)} />
+             </Div>
+             {' — '}
+             <Div className="inline-block reports-date">
+               <Datepicker date={mission.date_end} onChange={this.handleMissionsDateChange.bind(this, 'date_end', mission.id)} />
+             </Div>
+           </Col>
+         </Row>
+      )
+    );
 
     return (
       <Modal {...props} dialogClassName="mission-reject-info-modal" backdrop="static">
@@ -217,7 +217,8 @@ export default class MissionRejectForm extends Component {
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
-                }}>Переносимое задание</div>
+                }}
+                >Переносимое задание</div>
               </Col>
               <Col md={8} style={{ textAlign: 'right', paddingLeft: '0', whiteSpace: 'nowrap' }}>
                 <Div className="inline-block reports-date">

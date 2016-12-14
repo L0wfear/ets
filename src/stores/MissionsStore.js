@@ -117,7 +117,7 @@ export function getDefaultMission(date_start = getToday9am(), date_end = getTomo
     description: '',
     date_start,
     date_end,
-    assign_to_waybill: 'assign_to_draft',
+    assign_to_waybill: 'assign_to_new_draft',
     mission_source_id: 3,
     passes_count: 1,
   };
@@ -161,7 +161,7 @@ export function getDefaultMissionsCreationTemplate() {
   return {
     date_start: getToday9am(),
     date_end: getTomorrow9am(),
-    assign_to_waybill: 'assign_to_draft',
+    assign_to_waybill: 'assign_to_new_draft',
     mission_source_id: 4,
     passes_count: 1,
   };

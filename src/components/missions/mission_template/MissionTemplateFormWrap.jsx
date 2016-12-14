@@ -74,7 +74,7 @@ export default class MissionFormWrap extends FormWrap {
       }
       this.props.onFormHide();
     } else {
-      let payload = {
+      const payload = {
         mission_source_id: formState.mission_source_id,
         passes_count: formState.passes_count,
         date_start: formState.date_start,
@@ -92,20 +92,19 @@ export default class MissionFormWrap extends FormWrap {
             let cancel = false;
             try {
               await confirmDialog({
-                title: `Для ТС не существует активного ПЛ`,
-                body: `Создать черновик ПЛ?`,
-              })
-            }
-            catch (error) {
+                title: 'Для ТС не существует активного ПЛ',
+                body: 'Создать черновик ПЛ?',
+              });
+            } catch (error) {
               cancel = true;
             }
             if (!cancel) {
-              let newPayload = {
+              const newPayload = {
                 mission_source_id: payload.mission_source_id,
                 passes_count: payload.passes_count,
                 date_start: payload.date_start,
                 date_end: payload.date_end,
-                assign_to_waybill: 'assign_to_draft',
+                assign_to_waybill: 'assign_to_new_draft',
               };
               await createMissions(element, newPayload);
             }
@@ -113,14 +112,15 @@ export default class MissionFormWrap extends FormWrap {
           if (e && e.message.code === 'invalid_period') {
             const waybillNumber = e.message.message.split('№')[1].split(' ')[0];
             const dateStart = e.message.message.split('(')[1].split(' - ')[0];
-            const dateEnd = e.message.message.split(' - ')[1].slice(0,-1);
+            const dateEnd = e.message.message.split(' - ')[1].slice(0, -1);
 
-            let body = (self) => <div>
-              <div>{e.message.message}</div><br/>
+            const body = self => <div>
+              <div>{e.message.message}</div><br />
               <center>Введите даты задания:</center>
               <IntervalPicker
                 interval={self.state.interval}
-                onChange={interval => self.setState({interval})} />
+                onChange={interval => self.setState({ interval })}
+              />
             </div>;
 
             let cancel = false;
@@ -128,14 +128,13 @@ export default class MissionFormWrap extends FormWrap {
             try {
               state = await confirmDialog({
                 title: <b>{`Задание будет добавлено в ПЛ №${waybillNumber}`}</b>,
-                body
+                body,
               });
-            }
-            catch (error) {
+            } catch (error) {
               cancel = true;
             }
             if (!cancel) {
-              let newPayload = {
+              const newPayload = {
                 mission_source_id: payload.mission_source_id,
                 passes_count: payload.passes_count,
                 date_start: state.interval[0],
@@ -154,8 +153,8 @@ export default class MissionFormWrap extends FormWrap {
 
       let closeForm = true;
 
-      for (let m of missions) {
-        const e = await createMissions({[m.id]: m}, payload);
+      for (const m of missions) {
+        const e = await createMissions({ [m.id]: m }, payload);
         if (e) closeForm = false;
       }
 

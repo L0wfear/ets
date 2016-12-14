@@ -107,7 +107,7 @@ export default class Track {
     colors[colors.length - 1].speed += '+';
 
     const legend = colors.map((obj, i) => {
-      const text = obj.speed + (obj.till ? ' – ' + obj.till : '') + ' км/ч';
+      const text = `${obj.speed + (obj.till ? ` – ${obj.till}` : '')} км/ч`;
       const color = obj.color;
 
       return (

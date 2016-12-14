@@ -18,11 +18,11 @@ const COLORS_ZOOM_THRESHOLD = 6;
 export function getTrackColor(speed, maxSpeed, opacity = 1) {
   let result = TRACK_COLORS.green; // green by default
 
-  if (speed >= 0 && speed < maxSpeed) {
+  if (speed >= 0 && speed <= maxSpeed) {
     result = TRACK_COLORS.green;
   }
 
-  if (speed >= maxSpeed) {
+  if (speed > maxSpeed) {
     result = TRACK_COLORS.red;
   }
 

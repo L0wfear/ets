@@ -1,7 +1,7 @@
 import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 
-const getTableMeta = () => {
+const getTableMeta = (props) => {
   const tableMeta = {
     cols: [
       {
@@ -33,6 +33,17 @@ const getTableMeta = () => {
         filter: false,
         cssClassName: 'width300',
       },
+      {
+        name: 'structure_id',
+        displayName: 'Подразделение',
+        cssClassName: 'width80',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+          options: props.structures.map(({ id, name }) => ({ value: id, label: name })),
+        },
+        display: props.structures.length,
+      },
     ],
   };
 
@@ -43,6 +54,7 @@ const getTableMeta = () => {
 export default props =>
   <Table
     title="Шаблоны наряд-заданий"
+    renderers={{ structure_id: ({ data }) => <div>{props.structures.find(s => s.id === data) ? props.structures.find(s => s.id === data).name : ''}</div> }}
     results={props.data}
     tableMeta={getTableMeta(props)}
     initialSort={'number'}

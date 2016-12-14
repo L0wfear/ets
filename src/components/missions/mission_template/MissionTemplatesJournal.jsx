@@ -111,7 +111,9 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
   }
 
   getAdditionalProps() {
+    const { structures } = this.context.flux.getStore('session').getCurrentUser();
     return {
+      structures,
       noHeader: this.props.renderOnly,
       noDataMessage: this.props.payload.faxogramm_id ? 'Для выбранной факсограммы нет подходящих шаблонов заданий' : null,
     };

@@ -185,8 +185,10 @@ export default class MissionsJournal extends CheckableElementsList {
   }
 
   getAdditionalProps() {
+    const { structures } = this.context.flux.getStore('session').getCurrentUser();
     return {
       mapView: this.mapView,
+      structures,
     };
   }
 

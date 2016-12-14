@@ -84,4 +84,9 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
 
     return buttons;
   }
+
+  getAdditionalProps() {
+    const { structures } = this.context.flux.getStore('session').getCurrentUser();
+    return { structures };
+  }
 }

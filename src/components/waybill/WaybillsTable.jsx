@@ -10,7 +10,7 @@ function waybillMissionsCompleteStatusLabelFunction(status) {
   return status === true ? 'Все задания завершены' : 'Есть незавершенные задания';
 }
 
-const getTableMeta = () => {
+const getTableMeta = (props) => {
   const tableMeta = {
     cols: [
       {
@@ -215,6 +215,17 @@ const getTableMeta = () => {
           type: 'input',
         },
       },
+      {
+        name: 'structure_id',
+        displayName: 'Подразделение',
+        cssClassName: 'width80',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+          options: props.structures.map(({ id, name }) => ({ value: id, label: name })),
+        },
+        display: props.structures.length,
+      },
     ],
   };
 
@@ -237,6 +248,7 @@ export default (props) => {
       return <div className="white-space-pre-wrap">{`${spModel}/${model}`}</div>;
     },
     all_missions_completed_or_failed: ({ data }) => <div>{waybillMissionsCompleteStatusLabelFunction(data)}</div>,
+    structure_id: ({ data }) => <div>{props.structures.find(s => s.id === data) ? props.structures.find(s => s.id === data).name : ''}</div>,
   };
 
   return (

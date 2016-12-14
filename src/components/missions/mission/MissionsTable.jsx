@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Glyphicon } from 'react-bootstrap';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 import Table from 'components/ui/table/DataTable.jsx';
@@ -113,6 +113,17 @@ const getTableMeta = (props) => {
         filter: false,
         cssClassName: 'map-view',
       },
+      {
+        name: 'structure_id',
+        displayName: 'Подразделение',
+        cssClassName: 'width80',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+          options: props.structures.map(({ id, name }) => ({ value: id, label: name })),
+        },
+        display: props.structures.length,
+      },
     ],
   };
 
@@ -135,6 +146,7 @@ export default (props) => {
         </div>
       );
     },
+    structure_id: ({ data }) => <div>{props.structures.find(s => s.id === data) ? props.structures.find(s => s.id === data).name : ''}</div>,
   };
 
   return (

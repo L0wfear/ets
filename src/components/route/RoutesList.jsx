@@ -160,7 +160,9 @@ class RoutesList extends Component {
 
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
     const OBJECTS = technicalOperationsObjectsList.map(({ type, full_name }) => ({ value: type, label: full_name }));
-    const filterOptions = [
+    const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
+
+    let filterOptions = [
       {
         name: 'technical_operation_id',
         displayName: 'Тех. операция',
@@ -179,24 +181,33 @@ class RoutesList extends Component {
       },
     ];
 
+    if (STRUCTURES.length) filterOptions = filterOptions.concat({
+      name: 'structure_id',
+      displayName: 'Подразделение',
+      filter: {
+        type: 'multiselect',
+        options: STRUCTURES,
+      },
+    });
+
     routesList = routesList.filter(r => this.shouldBeRendered(r));
     routesList = _.sortBy(routesList, o => o.name.toLowerCase());
 
-    const techOperRoutes = technicalOperationsList.map((e) => {
-      return {
-        routes: routesList.filter(r => r.technical_operation_id === e.id),
-        name: e.name,
-        id: e.id,
-      };
-    }).filter(e => e.routes.length).sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+    const techOperRoutes = technicalOperationsList.map(e =>
+       ({
+         routes: routesList.filter(r => r.technical_operation_id === e.id),
+         name: e.name,
+         id: e.id,
+       })
+    ).filter(e => e.routes.length).sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
 
     const vectorRoutes = techOperRoutes.map((o, i) => {
-      const hidden = !(state.showId.indexOf(o.id + 'v') + 1);
+      const hidden = !(state.showId.indexOf(`${o.id}v`) + 1);
       const routes = o.routes.filter(r => r.type === 'vector');
       if (routes.length) {
         return (
           <div key={i + o}>
-            <h6 style={{ marginLeft: '15px', marginRight: '5px' }}><span style={{ cursor: 'pointer' }} onClick={this.handleDropdown.bind(this, o.id + 'v')}>{o.name}{!hidden ? ' \u25BC' : ' \u25BA'}</span></h6>
+            <h6 style={{ marginLeft: '15px', marginRight: '5px' }}><span style={{ cursor: 'pointer' }} onClick={this.handleDropdown.bind(this, `${o.id}v`)}>{o.name}{!hidden ? ' \u25BC' : ' \u25BA'}</span></h6>
             <Div hidden={hidden}>
               {routes.map((r, i) => {
                 const cn = cx('sidebar__list-item', { 'active': route && r.id === route.id });
@@ -210,12 +221,12 @@ class RoutesList extends Component {
     });
 
     const simpleRoutes = techOperRoutes.map((o, i) => {
-      const hidden = !!!(state.showId.indexOf(o.id + 's') + 1);
+      const hidden = !!!(state.showId.indexOf(`${o.id}s`) + 1);
       const routes = o.routes.filter(r => r.type === 'simple');
       if (routes.length) {
         return (
           <div key={i + o}>
-            <h6 style={{ marginLeft: '15px', marginRight: '5px' }}><span style={{ cursor: 'pointer' }} onClick={this.handleDropdown.bind(this, o.id + 's')}>{o.name}{!hidden ? ' \u25BC' : ' \u25BA'}</span></h6>
+            <h6 style={{ marginLeft: '15px', marginRight: '5px' }}><span style={{ cursor: 'pointer' }} onClick={this.handleDropdown.bind(this, `${o.id}s`)}>{o.name}{!hidden ? ' \u25BC' : ' \u25BA'}</span></h6>
             <Div hidden={hidden}>
               {routes.map((r, i) => {
                 const cn = cx('sidebar__list-item', { 'active': route && r.id === route.id });
@@ -228,12 +239,12 @@ class RoutesList extends Component {
     });
 
     const simpleRoutes2 = techOperRoutes.map((o, i) => {
-      const hidden = !(state.showId.indexOf(o.id + 's2') + 1);
+      const hidden = !(state.showId.indexOf(`${o.id}s2`) + 1);
       const routes = o.routes.filter(r => r.type === 'simple_dt');
       if (routes.length) {
         return (
           <div key={i + o}>
-            <h6 style={{ marginLeft: '15px', marginRight: '5px' }}><span style={{ cursor: 'pointer' }} onClick={this.handleDropdown.bind(this, o.id + 's2')}>{o.name}{!hidden ? ' \u25BC' : ' \u25BA'}</span></h6>
+            <h6 style={{ marginLeft: '15px', marginRight: '5px' }}><span style={{ cursor: 'pointer' }} onClick={this.handleDropdown.bind(this, `${o.id}s2`)}>{o.name}{!hidden ? ' \u25BC' : ' \u25BA'}</span></h6>
             <Div hidden={hidden}>
               {routes.map((r, i) => {
                 const cn = cx('sidebar__list-item', { 'active': route && r.id === route.id });
@@ -247,12 +258,12 @@ class RoutesList extends Component {
     });
 
     const pointsRoutes = techOperRoutes.map((o, i) => {
-      const hidden = !(state.showId.indexOf(o.id + 'p') + 1);
+      const hidden = !(state.showId.indexOf(`${o.id}p`) + 1);
       const routes = o.routes.filter(r => r.type === 'points');
       if (routes.length) {
         return (
           <div key={i + o}>
-            <h6 style={{ marginLeft: '15px', marginRight: '5px' }}><span style={{ cursor: 'pointer' }} onClick={this.handleDropdown.bind(this, o.id + 'p')}>{o.name}{!hidden ? ' \u25BC' : ' \u25BA'}</span></h6>
+            <h6 style={{ marginLeft: '15px', marginRight: '5px' }}><span style={{ cursor: 'pointer' }} onClick={this.handleDropdown.bind(this, `${o.id}p`)}>{o.name}{!hidden ? ' \u25BC' : ' \u25BA'}</span></h6>
             <Div hidden={hidden}>
               {routes.map((r, i) => {
                 const cn = cx('sidebar__list-item', { 'active': route && r.id === route.id });

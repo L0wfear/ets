@@ -98,6 +98,17 @@ const getTableMeta = (props) => {
           type: 'multiselect',
         },
       },
+      {
+        name: 'structure_id',
+        displayName: 'Подразделение',
+        cssClassName: 'width80',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+          options: props.structures.map(({ id, name }) => ({ value: id, label: name })),
+        },
+        display: props.structures.length,
+      },
     ],
   };
 
@@ -110,6 +121,7 @@ export default (props) => {
     status: ({ data }) => <div>{DUTY_MISSION_STATUS_LABELS[data]}</div>,
     plan_date_start: ({ data }) => <DateFormatter date={data} time />,
     plan_date_end: ({ data }) => <DateFormatter date={data} time />,
+    structure_id: ({ data }) => <div>{props.structures.find(s => s.id === data) ? props.structures.find(s => s.id === data).name : ''}</div>,
   };
 
   return (<Table title="Журнал наряд-заданий"

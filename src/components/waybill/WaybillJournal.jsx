@@ -43,6 +43,11 @@ export default class WaybillJournal extends CheckableElementsList {
     this.setState({ showPrintForm: printNumber });
   }
 
+  getAdditionalProps() {
+    const { structures } = this.context.flux.getStore('session').getCurrentUser();
+    return { structures };
+  }
+
   /**
    * @override
    */

@@ -309,6 +309,8 @@ class WaybillForm extends Form {
       STRUCTURE_FIELD_DELETABLE = true;
     }
 
+    const EMPLOYEES = employeesList.map(({ id, full_name }) => ({ value: id, label: full_name }));
+
     const IS_CREATING = !state.status;
     const IS_CLOSING = state.status && state.status === 'active';
     const IS_POST_CREATING = state.status && state.status === 'draft';
@@ -375,6 +377,16 @@ class WaybillForm extends Form {
                   options={STRUCTURES}
                   value={state.structure_id}
                   onChange={this.handleStructureIdChange}
+                />
+                <Field
+                  type="select"
+                  label="Сопровождающий"
+                  error={errors.accompanying_person_id}
+                  clearable
+                  disabled={IS_CLOSING || IS_DISPLAY}
+                  options={EMPLOYEES}
+                  value={state.accompanying_person_id}
+                  onChange={this.handleChange.bind(this, 'accompanying_person_id')}
                 />
               </Col>}
             </Div>

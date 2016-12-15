@@ -33,11 +33,11 @@ export default class APIService {
       // Show warnings
       if (Array.isArray(r.warnings)) {
         r.warnings.forEach(w => {
-          this.warningNotificationFunction(w.message || w);
+          !w.hidden && this.warningNotificationFunction(w.message || w);
           throw new RequestWarningError(w);
         });
       } else if (r.warnings && r.warnings.message || typeof r.warnings === 'string') {
-        this.warningNotificationFunction(r.warnings.message || r.warnings);
+        !r.warnings.hidden && this.warningNotificationFunction(r.warnings.message || r.warnings);
         throw new RequestWarningError(r.warnings);
       }
     }

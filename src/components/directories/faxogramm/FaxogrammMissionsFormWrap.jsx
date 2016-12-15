@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 import _ from 'lodash';
 import Div from 'components/ui/Div.jsx';
-import FaxogrammMissionsForm from './FaxogrammMissionsForm.jsx';
-import FormWrap from 'components/compositions/FormWrap.jsx';
 import { isEmpty } from 'utils/functions';
+import { autobind } from 'core-decorators';
+import FormWrap from 'components/compositions/FormWrap.jsx';
 import IntervalPicker from 'components/ui/IntervalPicker.jsx';
+import FaxogrammMissionsForm from './FaxogrammMissionsForm.jsx';
 
+@autobind
 class FaxogrammMissionsFormWrap extends FormWrap {
 
   componentWillReceiveProps(props) {
@@ -28,7 +30,7 @@ class FaxogrammMissionsFormWrap extends FormWrap {
   async handleFormSubmit() {
     const { flux } = this.context;
     const { formState } = this.state;
-    const payload = {
+    const initPayload = {
       mission_source_id: '4',
       faxogramm_id: formState.id,
       date_start: formState.order_date,
@@ -49,7 +51,7 @@ class FaxogrammMissionsFormWrap extends FormWrap {
               title: 'Для ТС не существует активного ПЛ',
               body: 'Создать черновик ПЛ?',
             });
-          } catch (error) {
+          } catch (er) {
             cancel = true;
           }
           if (!cancel) {
@@ -65,8 +67,6 @@ class FaxogrammMissionsFormWrap extends FormWrap {
         }
         if (e && e.message.code === 'invalid_period') {
           const waybillNumber = e.message.message.split('№')[1].split(' ')[0];
-          const dateStart = e.message.message.split('(')[1].split(' - ')[0];
-          const dateEnd = e.message.message.split(' - ')[1].slice(0, -1);
 
           const body = self => <div>
             <div>{e.message.message}</div><br />
@@ -84,7 +84,7 @@ class FaxogrammMissionsFormWrap extends FormWrap {
               title: <b>{`Задание будет добавлено в ПЛ №${waybillNumber}`}</b>,
               body,
             });
-          } catch (error) {
+          } catch (er) {
             cancel = true;
           }
           if (!cancel) {
@@ -108,7 +108,7 @@ class FaxogrammMissionsFormWrap extends FormWrap {
     let closeForm = true;
 
     for (const m of missions) {
-      const e = await createMissions({ [m.id]: m }, payload);
+      const e = await createMissions({ [m.id]: m }, initPayload);
       if (e) closeForm = false;
     }
 
@@ -121,8 +121,8 @@ class FaxogrammMissionsFormWrap extends FormWrap {
       <Div hidden={!this.props.showForm}>
         <FaxogrammMissionsForm
           formState={this.state.formState}
-          onSubmit={this.handleFormSubmit.bind(this)}
-          handleFormChange={this.handleFormStateChange.bind(this)}
+          onSubmit={this.handleFormSubmit}
+          handleFormChange={this.handleFormStateChange}
           show={this.props.showForm}
           onHide={this.props.onFormHide}
           {...this.state}

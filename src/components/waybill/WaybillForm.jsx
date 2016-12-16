@@ -367,17 +367,18 @@ class WaybillForm extends Form {
                   value={state.closed_by_employee_name}
                 />
               </Col> : ''}
-              {STRUCTURE_FIELD_VIEW && <Col md={!IS_DISPLAY && !IS_CLOSING ? 6 : 3}>
-                <Field
-                  type="select"
-                  label="Подразделение"
-                  error={errors.structure_id}
-                  disabled={STRUCTURE_FIELD_READONLY || !IS_CREATING}
-                  clearable={STRUCTURE_FIELD_DELETABLE}
-                  options={STRUCTURES}
-                  value={state.structure_id}
-                  onChange={this.handleStructureIdChange}
-                />
+              <Col md={!IS_DISPLAY && !IS_CLOSING ? 6 : 3}>
+                {STRUCTURE_FIELD_VIEW &&
+                  <Field
+                    type="select"
+                    label="Подразделение"
+                    error={errors.structure_id}
+                    disabled={STRUCTURE_FIELD_READONLY || !IS_CREATING}
+                    clearable={STRUCTURE_FIELD_DELETABLE}
+                    options={STRUCTURES}
+                    value={state.structure_id}
+                    onChange={this.handleStructureIdChange}
+                  />}
                 <Field
                   type="select"
                   label="Сопровождающий"
@@ -388,7 +389,7 @@ class WaybillForm extends Form {
                   value={state.accompanying_person_id}
                   onChange={this.handleChange.bind(this, 'accompanying_person_id')}
                 />
-              </Col>}
+              </Col>
             </Div>
             <Div hidden={!(IS_CREATING || IS_POST_CREATING)}>
               <Col md={3}>

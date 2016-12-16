@@ -208,8 +208,12 @@ body.application hr {
   top: 120px;
   bottom: 0;
   right: 0;
+  padding-right: 20px;
   overflow-x: hidden;
   overflow-y: auto;
+  h5 {
+    font-weight: normal;
+  }
   //background-color: #ff0; // test
 }
 
@@ -220,7 +224,7 @@ body.application hr {
   &-item {
     display: block;
     margin: 0 0 8px 0;
-    padding: 5px 30px;
+    padding: 5px 5px;
     //height: 32px;
     font-size: 16px;
     color: $colorLink;

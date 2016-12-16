@@ -152,11 +152,39 @@ class RoutesList extends Component {
     this.setState({ showId });
   }
 
+  renderItem(collection, parentName = '') {
+    if (Array.isArray(collection)) {
+      return collection.map((r, i) => {
+        const cn = cx('sidebar__list-item', { 'active': this.state.selectedRoute && r.id === this.state.selectedRoute.id });
+        return <li className={cn} onClick={() => this.selectRoute(r.id)} key={i}>{r.name}</li>;
+      });
+    }
+    return _.map(collection, (childrenCollection, name) => {
+      const hidden = !(this.state.showId.indexOf(parentName + name) + 1);
+      return (<div key={name}>
+        <h5>
+          <span style={{ cursor: 'pointer' }} onClick={() => this.handleDropdown(parentName + name)}>
+            {name}
+            <span
+              style={{
+                fontSize: 9,
+                position: 'relative',
+                top: -1
+              }}
+            >{!hidden ? ' \u25BC' : ' \u25BA'}</span>
+          </span>
+        </h5>
+        <Div hidden={hidden} style={{ paddingLeft: 10 }}>
+          {this.renderItem(childrenCollection, parentName + name)}
+        </Div>
+      </div>);
+    });
+  }
+
   render() {
     let { routesList = [] } = this.props;
     const { technicalOperationsList = [], technicalOperationsObjectsList = [] } = this.props;
     const route = this.state.selectedRoute;
-    const state = this.state;
 
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
     const OBJECTS = technicalOperationsObjectsList.map(({ type, full_name }) => ({ value: type, label: full_name }));
@@ -181,99 +209,45 @@ class RoutesList extends Component {
       },
     ];
 
-    if (STRUCTURES.length) filterOptions = filterOptions.concat({
-      name: 'structure_id',
-      displayName: 'Подразделение',
-      filter: {
-        type: 'multiselect',
-        options: STRUCTURES,
-      },
-    });
+    if (STRUCTURES.length) {
+      filterOptions = filterOptions.concat({
+        name: 'structure_id',
+        displayName: 'Подразделение',
+        filter: {
+          type: 'multiselect',
+          options: STRUCTURES,
+        },
+      }); }
+
+    const TYPES = {
+      vector: 'Построенные вручную',
+      simple: 'Маршруты по ОДХ',
+      simple_dt: 'Маршруты по ДТ',
+      points: 'Маршруты по пунктам назначения',
+    };
 
     routesList = routesList.filter(r => this.shouldBeRendered(r));
     routesList = _.sortBy(routesList, o => o.name.toLowerCase());
-
-    const techOperRoutes = technicalOperationsList.map(e =>
-       ({
-         routes: routesList.filter(r => r.technical_operation_id === e.id),
-         name: e.name,
-         id: e.id,
-       })
-    ).filter(e => e.routes.length).sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
-
-    const vectorRoutes = techOperRoutes.map((o, i) => {
-      const hidden = !(state.showId.indexOf(`${o.id}v`) + 1);
-      const routes = o.routes.filter(r => r.type === 'vector');
-      if (routes.length) {
-        return (
-          <div key={i + o}>
-            <h6 style={{ marginLeft: '15px', marginRight: '5px' }}><span style={{ cursor: 'pointer' }} onClick={this.handleDropdown.bind(this, `${o.id}v`)}>{o.name}{!hidden ? ' \u25BC' : ' \u25BA'}</span></h6>
-            <Div hidden={hidden}>
-              {routes.map((r, i) => {
-                const cn = cx('sidebar__list-item', { 'active': route && r.id === route.id });
-                return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>;
-              })}
-            </Div>
-          </div>
-        );
-      }
-      return null;
+    routesList.forEach((r) => {
+      r.structure_name = _.get(STRUCTURES.find(t => t.value === r.structure_id), 'label');
+      r.type_name = TYPES[r.type];
+      r.technical_operation_name = _.get(technicalOperationsList.find(t => t.id === r.technical_operation_id), 'name');
     });
+    routesList = routesList.filter(r => r.technical_operation_name).sort((a, b) => a.technical_operation_name.toLowerCase().localeCompare(b.technical_operation_name.toLowerCase()));
 
-    const simpleRoutes = techOperRoutes.map((o, i) => {
-      const hidden = !!!(state.showId.indexOf(`${o.id}s`) + 1);
-      const routes = o.routes.filter(r => r.type === 'simple');
-      if (routes.length) {
-        return (
-          <div key={i + o}>
-            <h6 style={{ marginLeft: '15px', marginRight: '5px' }}><span style={{ cursor: 'pointer' }} onClick={this.handleDropdown.bind(this, `${o.id}s`)}>{o.name}{!hidden ? ' \u25BC' : ' \u25BA'}</span></h6>
-            <Div hidden={hidden}>
-              {routes.map((r, i) => {
-                const cn = cx('sidebar__list-item', { 'active': route && r.id === route.id });
-                return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>;
-              })}
-            </Div>
-          </div>
-        );
+    routesList = _.groupBy(routesList, r => r.type_name);
+    _.forOwn(routesList, (ar1, key1) => {
+      routesList[key1] = _(ar1)
+        .sortBy(r => r.structure_id)
+        .groupBy(r => r.structure_name || 'Без подразделения')
+        .value();
+      if (Object.keys(routesList[key1]).length === 1 && Object.keys(routesList[key1])[0] === 'Без подразделения') {
+        routesList[key1] = _.groupBy(ar1, r => r.technical_operation_name);
+      } else {
+        _.forOwn(routesList[key1], (ar2, key2) => {
+          routesList[key1][key2] = _.groupBy(ar2, r => r.technical_operation_name);
+        });
       }
-    });
-
-    const simpleRoutes2 = techOperRoutes.map((o, i) => {
-      const hidden = !(state.showId.indexOf(`${o.id}s2`) + 1);
-      const routes = o.routes.filter(r => r.type === 'simple_dt');
-      if (routes.length) {
-        return (
-          <div key={i + o}>
-            <h6 style={{ marginLeft: '15px', marginRight: '5px' }}><span style={{ cursor: 'pointer' }} onClick={this.handleDropdown.bind(this, `${o.id}s2`)}>{o.name}{!hidden ? ' \u25BC' : ' \u25BA'}</span></h6>
-            <Div hidden={hidden}>
-              {routes.map((r, i) => {
-                const cn = cx('sidebar__list-item', { 'active': route && r.id === route.id });
-                return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>;
-              })}
-            </Div>
-          </div>
-        );
-      }
-      return null;
-    });
-
-    const pointsRoutes = techOperRoutes.map((o, i) => {
-      const hidden = !(state.showId.indexOf(`${o.id}p`) + 1);
-      const routes = o.routes.filter(r => r.type === 'points');
-      if (routes.length) {
-        return (
-          <div key={i + o}>
-            <h6 style={{ marginLeft: '15px', marginRight: '5px' }}><span style={{ cursor: 'pointer' }} onClick={this.handleDropdown.bind(this, `${o.id}p`)}>{o.name}{!hidden ? ' \u25BC' : ' \u25BA'}</span></h6>
-            <Div hidden={hidden}>
-              {routes.map((r, i) => {
-                const cn = cx('sidebar__list-item', { 'active': route && r.id === route.id });
-                return <li className={cn} onClick={this.selectRoute.bind(this, r.id)} key={i}>{r.name}</li>;
-              })}
-            </Div>
-          </div>
-        );
-      }
-      return null;
     });
 
     return (
@@ -286,22 +260,7 @@ class RoutesList extends Component {
               </div>
             </header>
             <div className="sidebar__list-container" style={{ marginBottom: '30px !important', marginLeft: 20, top: '70px' }}>
-              <ul className="sidebar__list">
-                <h5><span style={{ cursor: 'pointer' }} onClick={this.handleDropdown.bind(this, 'manual')}>Построенные вручную{(state.showId.indexOf('manual') + 1) ? ' \u25BC' : ' \u25BA'}</span></h5>
-                <Div hidden={(!(state.showId.indexOf('manual') + 1))}>{vectorRoutes}</Div>
-              </ul>
-              <ul className="sidebar__list">
-                <h5><span style={{ cursor: 'pointer' }} onClick={this.handleDropdown.bind(this, 'odh')}>Маршруты по ОДХ{(state.showId.indexOf('odh') + 1) ? ' \u25BC' : ' \u25BA'}</span></h5>
-                <Div hidden={(!(state.showId.indexOf('odh') + 1))}>{simpleRoutes}</Div>
-              </ul>
-              <ul className="sidebar__list">
-                <h5><span style={{ cursor: 'pointer' }} onClick={this.handleDropdown.bind(this, 'dt')}>Маршруты по ДТ{(state.showId.indexOf('dt') + 1) ? ' \u25BC' : ' \u25BA'}</span></h5>
-                <Div hidden={(!(state.showId.indexOf('dt') + 1))}>{simpleRoutes2}</Div>
-              </ul>
-              <ul className="sidebar__list">
-                <h5><span style={{ cursor: 'pointer' }} onClick={this.handleDropdown.bind(this, 'dp')}>Маршруты по пунктам назначения{(state.showId.indexOf('dp') + 1) ? ' \u25BC' : ' \u25BA'}</span></h5>
-                <Div hidden={(!(state.showId.indexOf('dp') + 1))}>{pointsRoutes}</Div>
-              </ul>
+              {this.renderItem(routesList)}
             </div>
           </Col>
           <Col xs={7} md={9} className="col-xs-offset-5 col-md-offset-3">

@@ -10,8 +10,13 @@ export default class FuelRateForm extends Form {
   componentDidMount() {
     const { flux } = this.context;
     flux.getActions('fuelRates').getFuelOperations();
-    flux.getActions('objects').getModels();
     flux.getActions('objects').getSpecialModels();
+    this.context.flux.getActions('objects').getModels(this.props.formState.car_special_model_id);
+  }
+
+  handleSpecialModelChange(value) {
+    this.context.flux.getActions('objects').getModels(value);
+    this.handleChange('car_special_model_id', value);
   }
 
   render() {
@@ -82,7 +87,7 @@ export default class FuelRateForm extends Form {
                 options={SPECIALMODELS}
                 clearable={false}
                 value={state.car_special_model_id}
-                onChange={this.handleChange.bind(this, 'car_special_model_id')}
+                onChange={value => this.handleSpecialModelChange(value)}
                 disabled={!isPermitted}
               />
 
@@ -94,7 +99,7 @@ export default class FuelRateForm extends Form {
                 options={MODELS}
                 value={state.car_model_id}
                 onChange={this.handleChange.bind(this, 'car_model_id')}
-                disabled={!isPermitted}
+                disabled={!isPermitted || !state.car_special_model_id}
               />
 
             </Col>

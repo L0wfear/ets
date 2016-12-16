@@ -40,8 +40,9 @@ export default class ObjectsActions extends Actions {
     return CarService.get(payload).then(r => ({ result: r.result.rows }));
   }
 
-  getModels() {
-    return ModelsService.get();
+  getModels(special_model_id) {
+    const payload = special_model_id ? { special_model_id } : null;
+    return ModelsService.get(payload);
   }
 
   getSpecialModels() {

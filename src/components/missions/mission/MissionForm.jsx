@@ -276,13 +276,15 @@ export class MissionForm extends Form {
           </Row>
 
           <Row>
-            <Col md={6}>
+            <Col md={3}>
               <Field
-                type="string"
-                label="Комментарий"
-                value={state.comment}
-                onChange={this.handleChange.bind(this, 'comment')}
-                error={errors.comment}
+                type="number"
+                label="Кол-во проходов"
+                error={errors.passes_count}
+                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY}
+                value={state.passes_count}
+                onChange={this.handleChange.bind(this, 'passes_count')}
+                min={0}
               />
             </Col>
             <Col md={3}>
@@ -296,15 +298,21 @@ export class MissionForm extends Form {
                 onChange={this.handleChange.bind(this, 'mission_source_id')}
               />
             </Col>
-            <Col md={3}>
+            {state.order_number != null && <Col md={2}>
               <Field
-                type="number"
-                label="Количество проходов"
-                error={errors.passes_count}
-                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY}
-                value={state.passes_count}
-                onChange={this.handleChange.bind(this, 'passes_count')}
-                min={0}
+                type="string"
+                label="Номер факсограммы"
+                readOnly
+                value={state.order_number}
+              />
+            </Col>}
+            <Col md={state.order_number != null ? 4 : 6}>
+              <Field
+                type="string"
+                label="Комментарий"
+                value={state.comment}
+                onChange={this.handleChange.bind(this, 'comment')}
+                error={errors.comment}
               />
             </Col>
           </Row>

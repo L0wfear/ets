@@ -300,7 +300,7 @@ export class DutyMissionForm extends Form {
 
 
           <Row>
-            <Col md={6}>
+            <Col md={state.order_number != null ? 3 : 6}>
               <Field type="select" label="Источник получения задания" error={errors.mission_source_id}
                 disabled={IS_DISPLAY}
                 options={MISSION_SOURCES}
@@ -308,6 +308,14 @@ export class DutyMissionForm extends Form {
                 onChange={this.handleChange.bind(this, 'mission_source_id')}
               />
             </Col>
+            {state.order_number != null && <Col md={3}>
+              <Field
+                type="string"
+                label="Номер факсограммы"
+                readOnly
+                value={state.order_number}
+              />
+            </Col>}
             <Col md={6}>
               <Field type="string" label="Комментарий" value={state.comment} onChange={this.handleChange.bind(this, 'comment')} error={errors.comment} />
             </Col>

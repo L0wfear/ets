@@ -1,9 +1,10 @@
 import React from 'react';
 import { getStartOfToday, makeDate, makeTime } from 'utils/dates';
-import { TRACK_COLORS, TRACK_LINE_OPACITY, TRACK_LINE_WIDTH, TRACK_POINT_RADIUS, SHOW_ONLY_POINTS_WITH_SPEED_CHANGES } from 'constants/track.js';
-import { getTrackPointByColor } from '../../icons/track/points.js';
 import { swapCoords, roundCoordinates } from 'utils/geo';
 import { isEmpty, hexToRgba } from 'utils/functions';
+import { TRACK_COLORS, TRACK_LINE_OPACITY, TRACK_LINE_WIDTH, TRACK_POINT_RADIUS, SHOW_ONLY_POINTS_WITH_SPEED_CHANGES } from 'constants/track.js';
+import { getTrackPointByColor } from '../../icons/track/points.js';
+import ParkingIcon from '../../icons/track/parking.svg';
 
 const DRAW_POINTS = true;
 const COLORS_ZOOM_THRESHOLD = 6;
@@ -44,6 +45,7 @@ export default class Track {
     this.owner = owner;
 
     this.points = null;
+    this.parkings = [];
     this.continuousUpdating = true;
     this.onUpdateCallback = () => {};
   }
@@ -151,6 +153,7 @@ export default class Track {
 
     return flux.getActions('cars').getTrack(id, from_dt, to_dt)
                 .then((obj) => {
+                  this.parkings = obj.parkings;
                   this.points = obj.track;
                   this.continuousUpdating = updating;
                   this.render();
@@ -165,10 +168,29 @@ export default class Track {
 
     if (zoom > COLORS_ZOOM_THRESHOLD) {
       this.renderInColors(speed);
+      this.renderParkings();
     } else {
       this.renderSimple();
     }
     this.owner._reactMap.triggerRender();
+  }
+
+  renderParkings() {
+    const { ctx, parkings } = this;
+    const iconSize = 20 * window.devicePixelRatio;
+    if (parkings.length) {
+      parkings.forEach((p) => {
+        const coords = this.map.projectToPixel(swapCoords(p.start_point.coords_msk));
+        const icon = new Image();
+        icon.onload = () => ctx.drawImage(icon,
+          coords.x - iconSize/2,
+          coords.y - iconSize/2,
+          iconSize,
+          iconSize,
+        );
+        icon.src = ParkingIcon;
+      });
+    }
   }
 
   renderSimple() {
@@ -387,6 +409,20 @@ export default class Track {
       }
     }
 
+    this.parkings.length && this.parkings.forEach((p) => {
+      const point = p.start_point;
+      const pixelCoords = this.map.projectToPixel(swapCoords(point.coords_msk));
+      const radius = 20;
+
+      const dx = pixelCoords.x - projectedPixel.x;
+      const dy = pixelCoords.y - projectedPixel.y;
+
+      if (dx * dx + dy * dy < radius * radius) {
+        selected = viewportPoints.find(p => p.coords_msk[0] === point.coords_msk[1] && p.coords_msk[1] === point.coords_msk[0]);
+      }
+    })
+
+
     return selected;
   }
 
@@ -405,13 +441,32 @@ export default class Track {
     return returns;
   }
 
+  makeParkingPopup(parking) {
+    const start = `${makeDate(new Date(parking.start_point.timestamp * 1000))} ${makeTime(new Date(parking.start_point.timestamp * 1000), true)}`
+    const end = `${makeDate(new Date(parking.end_point.timestamp * 1000))} ${makeTime(new Date(parking.end_point.timestamp * 1000), true)}`
+    const diff = makeTime(new Date((parking.end_point.timestamp - parking.start_point.timestamp) * 1000), true);
+    return () => `
+      <div>
+        <div class="header">
+          <span class="gov-number">Зона стоянки:</span>
+        </div>
+        <div class="geo-objects">Начало: ${start}</div>
+        <div class="geo-objects">Конец: ${end}</div>
+        <div class="geo-objects">Время стоянки: ${diff}</div>
+      </div>
+    `;
+  }
+
 
   // TODO refactor
   async getTrackPointTooltip(flux, trackPoint, prevPoint, nextPoint) {
+    const parking = this.parkings.find(p => p.start_point.coords_msk[0] === trackPoint.coords_msk[1] && p.start_point.coords_msk[1] === trackPoint.coords_msk[0]);
+    if (parking) {
+      return this.makeParkingPopup(parking);
+    }
     let missions = [];
     const vectorObject = await flux.getActions('cars')
         .getVectorObject(trackPoint, prevPoint, nextPoint);
-    // это рак вызванный косяком бекенда
     const carsList = flux.getStore('objects').state.carsList;
     const car = carsList.find(c => c.gov_number === this.owner.point.car.gov_number);
     if (car) {

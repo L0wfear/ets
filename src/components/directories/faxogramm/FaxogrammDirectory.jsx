@@ -61,7 +61,7 @@ class FaxogrammDirectory extends ElementsList {
       <div className="ets-page-wrap" ref={node => (this.node = node)}>
         <FaxogrammsDatepicker handleChange={this.handleChange.bind(this)} {...this.state} />
         <FaxogrammsTable data={faxogrammsList} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={'id'} {...this.props}>
-          <Button onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null}>Создать задания</Button>
+          <Button onClick={this.showForm.bind(this)} disabled={this.state.selectedElement === null || faxogramm.order_status_id !== 2}>Создать задания</Button>
           <Button onClick={this.saveFaxogramm.bind(this)} disabled={this.state.selectedElement === null}><Glyphicon glyph="download-alt" /></Button>
         </FaxogrammsTable>
         <FaxogrammMissionsFormWrap onFormHide={this.onFormHide.bind(this)}

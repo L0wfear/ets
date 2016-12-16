@@ -46,6 +46,8 @@ export default class Track {
 
     this.points = null;
     this.parkings = [];
+    this.parkingIcon = new Image();
+    this.parkingIcon.src = ParkingIcon;
     this.continuousUpdating = true;
     this.onUpdateCallback = () => {};
   }
@@ -181,14 +183,12 @@ export default class Track {
     if (parkings.length) {
       parkings.forEach((p) => {
         const coords = this.map.projectToPixel(swapCoords(p.start_point.coords_msk));
-        const icon = new Image();
-        icon.onload = () => ctx.drawImage(icon,
+        ctx.drawImage(this.parkingIcon,
           coords.x - iconSize/2,
           coords.y - iconSize/2,
           iconSize,
           iconSize,
         );
-        icon.src = ParkingIcon;
       });
     }
   }

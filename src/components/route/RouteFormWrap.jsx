@@ -67,12 +67,8 @@ class RouteFormWrap extends FormWrap {
     const routesByName = routesList
       .filter(r => r.id !== formState.id)
       .map(r => r.name);
-    let value;
-    if (f === 'name') {
-      value = e !== undefined && e !== null && !!e.target ? e.target.value : e;
-    } else {
-      value = formState.name;
-    }
+    const value = formState.name;
+
     if (routesByName.includes(value)) {
       if (!formErrors.name) {
         formErrors.name = 'Маршрут с данным названием уже существует!';

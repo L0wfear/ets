@@ -226,26 +226,26 @@ class RoutesList extends Component {
       points: 'Маршруты по пунктам назначения',
     };
 
-    routesList = routesList.filter(r => this.shouldBeRendered(r));
-    routesList = _.sortBy(routesList, o => o.name.toLowerCase());
-    routesList.forEach((r) => {
+    let ROUTES = _.cloneDeep(routesList).filter(r => this.shouldBeRendered(r));
+    ROUTES = _.sortBy(ROUTES, o => o.name.toLowerCase());
+    ROUTES.forEach((r) => {
       r.structure_name = _.get(STRUCTURES.find(t => t.value === r.structure_id), 'label');
       r.type_name = TYPES[r.type];
       r.technical_operation_name = _.get(technicalOperationsList.find(t => t.id === r.technical_operation_id), 'name');
     });
-    routesList = routesList.filter(r => r.technical_operation_name).sort((a, b) => a.technical_operation_name.toLowerCase().localeCompare(b.technical_operation_name.toLowerCase()));
+    ROUTES = ROUTES.filter(r => r.technical_operation_name).sort((a, b) => a.technical_operation_name.toLowerCase().localeCompare(b.technical_operation_name.toLowerCase()));
 
-    routesList = _.groupBy(routesList, r => r.type_name);
-    _.forOwn(routesList, (ar1, key1) => {
-      routesList[key1] = _(ar1)
+    ROUTES = _.groupBy(ROUTES, r => r.type_name);
+    _.forOwn(ROUTES, (ar1, key1) => {
+      ROUTES[key1] = _(ar1)
         .sortBy(r => r.structure_id)
         .groupBy(r => r.structure_name || 'Без подразделения')
         .value();
-      if (Object.keys(routesList[key1]).length === 1 && Object.keys(routesList[key1])[0] === 'Без подразделения') {
-        routesList[key1] = _.groupBy(ar1, r => r.technical_operation_name);
+      if (Object.keys(ROUTES[key1]).length === 1 && Object.keys(ROUTES[key1])[0] === 'Без подразделения') {
+        ROUTES[key1] = _.groupBy(ar1, r => r.technical_operation_name);
       } else {
-        _.forOwn(routesList[key1], (ar2, key2) => {
-          routesList[key1][key2] = _.groupBy(ar2, r => r.technical_operation_name);
+        _.forOwn(ROUTES[key1], (ar2, key2) => {
+          ROUTES[key1][key2] = _.groupBy(ar2, r => r.technical_operation_name);
         });
       }
     });
@@ -260,7 +260,7 @@ class RoutesList extends Component {
               </div>
             </header>
             <div className="sidebar__list-container" style={{ marginBottom: '30px !important', marginLeft: 20, top: '70px' }}>
-              {this.renderItem(routesList)}
+              {this.renderItem(ROUTES)}
             </div>
           </Col>
           <Col xs={7} md={9} className="col-xs-offset-5 col-md-offset-3">

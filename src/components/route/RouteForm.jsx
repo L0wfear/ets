@@ -188,7 +188,7 @@ export default class RouteForm extends Form {
                   options={ROUTE_TYPE_OPTIONS}
                   value={state.type}
                   clearable={false}
-                  disabled={this.state.routeTypeDisabled || !!state.id || state.copy}
+                  disabled={this.state.routeTypeDisabled || state.copy}
                   onChange={this.handleTypeChange}
                 />
               </Col>

@@ -65,12 +65,21 @@ export default class ObjectsActions extends Actions {
     return WorkKindsService.get();
   }
 
-  getFaxogramms(page, create_date_from, create_date_to) {
+  getFaxogramms(limit, offset, sort_by, filter, create_date_from, create_date_to) {
+    const filterValues = _.cloneDeep(filter);
+    Object.keys(filterValues).forEach((k) => {
+      if (Array.isArray(filterValues[k])) {
+        filterValues[`${k}__in`] = filterValues[k];
+        delete filterValues[k];
+      }
+    });
+    filterValues.create_date__gte = createValidDateTime(create_date_from);
+    filterValues.create_date__lte = createValidDateTime(create_date_to);
     const payload = {
-      page,
-      on_page: 15,
-      create_date_from: createValidDateTime(create_date_from),
-      create_date_to: createValidDateTime(create_date_to),
+      limit,
+      offset,
+      sort_by,
+      filter: JSON.stringify(filterValues),
     };
     return FaxogrammService.get(payload);
   }

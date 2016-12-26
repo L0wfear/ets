@@ -16,7 +16,7 @@ const getTableMeta = (props) => {
         displayName: 'Дата создания',
         type: 'date',
         filter: {
-          type: 'multiselect',
+          type: 'datetime',
         },
       },
       {
@@ -24,7 +24,7 @@ const getTableMeta = (props) => {
         displayName: 'Начало действия',
         type: 'number',
         filter: {
-          type: 'multiselect',
+          type: 'datetime',
         },
       },
       {
@@ -32,7 +32,7 @@ const getTableMeta = (props) => {
         displayName: 'Окончание действия',
         type: 'number',
         filter: {
-          type: 'multiselect',
+          type: 'datetime',
         },
       },
       {
@@ -41,6 +41,10 @@ const getTableMeta = (props) => {
         type: 'string',
         filter: {
           type: 'multiselect',
+          options: [
+            { label: 'Зима', value: 'Зима' },
+            { label: 'Лето', value: 'Лето' },
+          ],
         },
         cssClassName: 'width60',
       },
@@ -50,17 +54,21 @@ const getTableMeta = (props) => {
         type: 'string',
         filter: {
           type: 'multiselect',
+          options: [
+            { label: 'Опубликовано', value: 'Опубликовано' },
+            { label: 'Отменено', value: 'Отменено' },
+          ],
         },
       },
-      {
-        name: 'pgm_deny',
-        displayName: 'ПГМ',
-        type: 'number',
-        filter: {
-          type: 'multiselect',
-        },
-        cssClassName: 'width120',
-      },
+      // {
+      //   name: 'pgm_deny',
+      //   displayName: 'ПГМ',
+      //   type: 'number',
+      //   filter: {
+      //     type: 'multiselect',
+      //   },
+      //   cssClassName: 'width120',
+      // },
     ],
   };
 
@@ -82,6 +90,9 @@ export default (props) => {
     renderers={renderers}
     tableMeta={getTableMeta(props)}
     serverPagination
+    enumerated={false}
+    externalFilter={props.changeFilter}
+    externalChangeSort={props.changeSort}
     initialSort={'create_date'}
     initialSortAscending={false}
     {...props}

@@ -67,6 +67,9 @@ export default class FilterRow extends React.Component {
       if (type === 'date') {
         input = <Datepicker className="filter-datepicker" date={value} onChange={onChange} time={false} />;
       }
+      if (type === 'datetime') {
+        input = <Datepicker className="filter-datepicker" date={value} onChange={onChange} time />;
+      }
       if (type === 'date_interval') {
         input = <IntervalPicker interval={value} onChange={onChange} />;
       }

@@ -83,7 +83,7 @@ export default class ObjectsStore extends Store {
       typesIndex: {},
       technicalOperationsObjectsIndex: {},
 
-      faxogrammsMaxPage: 0,
+      faxogrammsTotalCount: 0,
     };
   }
 
@@ -165,7 +165,7 @@ export default class ObjectsStore extends Store {
   }
 
   handleGetFaxogramms(faxogramms) {
-    this.setState({ faxogrammsList: faxogramms.result, faxogrammsMaxPage: faxogramms.total_pages });
+    this.setState({ faxogrammsList: faxogramms.result, faxogrammsTotalCount: faxogramms.total_count });
   }
 
   handleGetPositions(positions) {

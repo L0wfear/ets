@@ -226,7 +226,6 @@ class RouteCreating extends Component {
                 polys={route.polys}
                 objectsType={route.type}
                 manualDraw={this.props.manual}
-                edit={!!route.id}
               />
             </Div>
           </Col>

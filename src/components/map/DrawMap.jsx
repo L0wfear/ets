@@ -146,7 +146,6 @@ export default class DrawMap extends PolyMap {
     const pointsVectorLayer = new ol.layer.Vector({
       source: vectorSource,
     });
-
     // TODO нужна ли эта строчка?
     !!this.vectorLayer && map.removeLayer(this.vectorLayer);
     this.pointsVectorLayer = pointsVectorLayer;
@@ -171,7 +170,6 @@ export default class DrawMap extends PolyMap {
 
       vectorSource.addFeature(feature);
     });
-
     !!this.vectorLayer && map.removeLayer(this.vectorLayer);
 
     const vectorLayer = new ol.layer.Vector({

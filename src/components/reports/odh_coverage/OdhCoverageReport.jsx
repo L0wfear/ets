@@ -69,7 +69,7 @@ export default class OdhCoverageReport extends Component {
     this.setState({ showForm: true, exportType });
   }
 
-  export(date_start, date_end) {
+  export(date_start = this.state.date_start, date_end = this.state.date_end) {
     const { flux } = this.context;
 
     this.setState({ isExporting: true });
@@ -100,7 +100,7 @@ export default class OdhCoverageReport extends Component {
               <Glyphicon disabled={isExporting} className={iconClassname} glyph={exportGlyph} />
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              {/*<MenuItem bindOnClick={1} onClick={this.export}>Ежедневный отчет</MenuItem>*/}
+              <MenuItem bindOnClick={1} onClick={() => this.export()}>Ежедневный отчет</MenuItem>
               <MenuItem bindOnClick={2} onClick={this.showForm}>Отчет за заданный период</MenuItem>
             </Dropdown.Menu>
           </Dropdown>

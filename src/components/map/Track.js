@@ -1,5 +1,5 @@
 import React from 'react';
-import { getStartOfToday, makeDate, makeTime } from 'utils/dates';
+import { getStartOfToday, makeDate, makeTime, secondsToTime } from 'utils/dates';
 import { swapCoords, roundCoordinates } from 'utils/geo';
 import { isEmpty, hexToRgba } from 'utils/functions';
 import { TRACK_COLORS, TRACK_LINE_OPACITY, TRACK_LINE_WIDTH, TRACK_POINT_RADIUS, SHOW_ONLY_POINTS_WITH_SPEED_CHANGES } from 'constants/track.js';
@@ -444,7 +444,7 @@ export default class Track {
   makeParkingPopup(parking) {
     const start = `${makeDate(new Date(parking.start_point.timestamp * 1000))} ${makeTime(new Date(parking.start_point.timestamp * 1000), true)}`
     const end = `${makeDate(new Date(parking.end_point.timestamp * 1000))} ${makeTime(new Date(parking.end_point.timestamp * 1000), true)}`
-    const diff = makeTime(new Date((parking.end_point.timestamp - parking.start_point.timestamp) * 1000), true);
+    const diff = secondsToTime(parking.end_point.timestamp - parking.start_point.timestamp);
     return () => `
       <div>
         <div class="header">

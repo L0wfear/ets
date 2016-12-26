@@ -11,6 +11,8 @@ import moment from 'moment';
 import { isEmpty } from 'utils/functions';
 import Form from 'components/compositions/Form.jsx';
 import _ from 'lodash';
+import CarAvailableIcon from 'assets/images/car_available.png';
+import CarNotAvailableIcon from 'assets/images/car_not_available.png';
 
 @autobind
 export class MissionForm extends Form {
@@ -160,6 +162,18 @@ export class MissionForm extends Form {
     this.setState(stateChangeObject);
   }
 
+  renderCarOptions(o) {
+    return (
+      <div>
+        {o.available ?
+          <img role="presentation" height="20" src={CarAvailableIcon} style={{ marginRight: 10, marginTop: -2 }} /> :
+          <img role="presentation" height="20" src={CarNotAvailableIcon} style={{ marginRight: 10, marginTop: -2 }} />
+        }
+        {o.label}
+      </div>
+    );
+  }
+
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
@@ -178,6 +192,7 @@ export class MissionForm extends Form {
       .filter(c => !state.structure_id || c.is_common || c.company_structure_id === state.structure_id)
       .map(c => ({
         value: c.asuods_id,
+        available: c.available,
         label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`,
       }));
     const ROUTES = routesList
@@ -238,6 +253,7 @@ export class MissionForm extends Form {
                   this.props.fromWaybill ||
                   (IS_CREATING && isEmpty(state.technical_operation_id))}
                 options={CARS}
+                optionRenderer={this.renderCarOptions}
                 value={state.car_id}
                 onChange={this.handleCarIdChange}
               />

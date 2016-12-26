@@ -235,7 +235,7 @@ export default class CarInfo extends Component {
           </Button>
 
           <div>
-            <div className="vehicle-attributes-list__item" style={{ marginLeft: 5, marginTop: 5, marginBottom: 5}}>
+            <div className="vehicle-attributes-list__item" style={{ marginLeft: 5, marginTop: 5, marginBottom: 5 }}>
               Протяженность, км: <span className="value">{isTrackLoaded && marker.track.getDistance()}</span>
             </div>
           </div>
@@ -260,6 +260,7 @@ export default class CarInfo extends Component {
 
   renderMissions() {
     const { missions = [] } = this.state;
+    console.log(this.props.car.marker.track.parkings, missions)
     let missionsRender = (
       <div style={{ textAlign: 'left', overflow: 'hidden', textOverflow: 'ellipsis' }}>
         {missions.map(mission =>

@@ -14,12 +14,17 @@ const getTableMeta = (props) => {
   const tableMeta = {
     cols: [
       {
+        name: 'number',
+        displayName: 'Номер',
+        type: 'number',
+      },
+      {
         name: 'status',
         displayName: 'Статус',
         type: 'string',
         filter: {
           type: 'multiselect',
-          labelFunction: s => WAYBILL_STATUSES[s] || WAYBILL_STATUSES.default,
+          options: Object.keys(WAYBILL_STATUSES).map(key => ({ label: WAYBILL_STATUSES[key], value: key })),
         },
       },
       {
@@ -28,13 +33,11 @@ const getTableMeta = (props) => {
         type: 'string',
         filter: {
           type: 'multiselect',
-          labelFunction: waybillMissionsCompleteStatusLabelFunction,
+          options: [
+            { label: 'Все задания завершены', value: 'true' },
+            { label: 'Есть незавершенные задания', value: 'false' }
+          ],
         },
-      },
-      {
-        name: 'number',
-        displayName: 'Номер',
-        type: 'number',
       },
       {
         name: 'date_create',
@@ -58,7 +61,7 @@ const getTableMeta = (props) => {
         type: 'string',
         filter: {
           type: 'multiselect',
-          labelFunction: employeeFIOLabelFunction,
+          options: props.driversList.map(e => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
         },
       },
       {
@@ -68,6 +71,7 @@ const getTableMeta = (props) => {
         type: 'string',
         filter: {
           type: 'multiselect',
+          options: props.carsList.map(e => ({ label: e.gov_number, value: e.gov_number }))
         },
       },
       {
@@ -116,7 +120,7 @@ const getTableMeta = (props) => {
         type: 'string',
         filter: {
           type: 'multiselect',
-          labelFunction: employeeFIOLabelFunction,
+          options: props.employeesList.map(e => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
         },
       },
       {
@@ -125,6 +129,7 @@ const getTableMeta = (props) => {
         type: 'string',
         filter: {
           type: 'multiselect',
+          options: props.employeesList.map(e => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
         },
       },
       {
@@ -133,6 +138,7 @@ const getTableMeta = (props) => {
         type: 'string',
         filter: {
           type: 'multiselect',
+          options: props.employeesList.map(e => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
         },
       },
       {
@@ -141,6 +147,7 @@ const getTableMeta = (props) => {
         type: 'string',
         filter: {
           type: 'multiselect',
+          options: props.employeesList.map(e => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
         },
       },
       {
@@ -257,9 +264,13 @@ export default (props) => {
       results={props.data}
       renderers={renderers}
       initialSort={'number'}
+      enumerated={false}
       initialSortAscending={false}
       tableMeta={getTableMeta(props)}
       columnControl
+      serverPagination
+      externalFilter={props.changeFilter}
+      externalChangeSort={props.changeSort}
       className="waybills-table"
       highlight={[{ status: 'active' }]}
       columnControlStorageName={'waybillsColumnControl'}

@@ -12,8 +12,21 @@ import {
 
 export default class WaybillsActions extends Actions {
 
-  getWaybills() {
-    return WaybillService.get();
+  getWaybills(limit, offset, sort_by, filter) {
+    const filterValues = _.cloneDeep(filter);
+    Object.keys(filterValues).forEach((k) => {
+      if (Array.isArray(filterValues[k])) {
+        filterValues[`${k}__in`] = filterValues[k];
+        delete filterValues[k];
+      }
+    });
+    const payload = {
+      limit,
+      offset,
+      sort_by,
+      filter: JSON.stringify(filterValues),
+    };
+    return WaybillService.get(payload);
   }
 
   getLastClosedWaybill(car_id) {
@@ -77,15 +90,15 @@ export default class WaybillsActions extends Actions {
     payload.fact_arrival_date = createValidDateTime(payload.fact_arrival_date);
 
     if (payload.tax_data) {
-      const tax_data = payload.tax_data.filter((t) => {
-        return !isEmpty(t.FACT_VALUE);
-      });
+      const tax_data = payload.tax_data.filter(t =>
+         !isEmpty(t.FACT_VALUE)
+      );
       payload.tax_data = tax_data;
     }
     if (payload.equipment_tax_data) {
-      const equipment_tax_data = payload.equipment_tax_data.filter((t) => {
-        return !isEmpty(t.FACT_VALUE);
-      });
+      const equipment_tax_data = payload.equipment_tax_data.filter(t =>
+         !isEmpty(t.FACT_VALUE)
+      );
       payload.equipment_tax_data = equipment_tax_data;
     }
 

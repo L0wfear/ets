@@ -57,6 +57,7 @@ export default class DataTable extends React.Component {
 
       tableMeta: PropTypes.object,
       filterValues: PropTypes.object,
+      externalFilter: PropTypes.func,
       highlight: PropTypes.array,
 
       columnControl: PropTypes.bool,
@@ -162,8 +163,7 @@ export default class DataTable extends React.Component {
     if (props.initialSortAscending && props.initialSortAscending !== this.state.initialSortAscending) {
       initialSortAscending = props.initialSortAscending;
     }
-
-    this.setState({ initialSort, initialSortAscending });
+    this.setState({ initialSort, initialSortAscending, filterValues: props.filterValues });
   }
 
   shouldComponentUpdate(nextProps) {
@@ -188,6 +188,10 @@ export default class DataTable extends React.Component {
 
   saveFilter(filterValues) {
     console.log('SAVE FILTER', filterValues);
+    if (this.props.externalFilter) {
+      this.props.externalFilter(filterValues);
+      return;
+    }
     if (typeof this.props.onAllRowsChecked === 'function') {
       this.props.onAllRowsChecked(_.reduce(this.props.results, (cur, val) => { cur[val.id] = val; return cur; }, {}), false);
     }
@@ -445,7 +449,7 @@ export default class DataTable extends React.Component {
     const { tableMeta, renderers, onRowSelected, selected,
       selectField, title, noTitle, noFilter,
       enableSort, noDataMessage, className, noHeader,
-      refreshable, columnControl, highlight, serverPagination } = this.props;
+      refreshable, columnControl, highlight, serverPagination, externalChangeSort } = this.props;
     const { initialSort, initialSortAscending, columnControlValues, isHierarchical } = this.state;
 
     const tableMetaCols = _.cloneDeep(tableMeta.cols);
@@ -481,7 +485,7 @@ export default class DataTable extends React.Component {
               show={this.state.filterModalIsOpen}
               active={!!_.keys(this.state.filterValues).length}
               onClick={this.toggleFilter}
-            />}
+                          />}
             {refreshable &&
               <Button
                 bsSize="small"
@@ -499,7 +503,7 @@ export default class DataTable extends React.Component {
             values={this.state.filterValues}
             options={tableMetaCols.filter(el => el.filter !== false)}
             tableData={this.props.results}
-          />}
+                        />}
         </Div>
         <Griddle
           results={results}
@@ -510,12 +514,12 @@ export default class DataTable extends React.Component {
           columns={tableCols}
           resultsPerPage={15}
           useCustomPagerComponent
-          externalChangeSort={this.handleChangeSort}
+          externalChangeSort={externalChangeSort || this.handleChangeSort}
           customPagerComponent={serverPagination ? <Div /> : Paginator}
           onRowClick={!isHierarchical ? onRowSelected : null}
           rowMetadata={rowMetadata}
           onKeyPress={this.handleKeyPress}
-          noDataMessage={noDataMessage ? noDataMessage : noFilter ? '' : 'Нет данных'}
+          noDataMessage={noDataMessage || noFilter ? '' : 'Нет данных'}
         />
       </Div>
     );

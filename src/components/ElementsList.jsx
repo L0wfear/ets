@@ -41,13 +41,16 @@ class ElementsList extends React.Component {
     this.clicks = 0;
   }
 
+  componentWillMount() {
+    const readPermission = this.context.flux.getStore('session').state.userPermissions.indexOf(`${this.entity}.read`) > -1;
+    this.setState({ readPermission });
+  }
+
   componentDidMount() {
     if (!this.keyPressDisabled) {
       this.node.setAttribute('tabindex', 1);
       this.node.onkeydown = this.onKeyPress.bind(this);
     }
-    const readPermission = this.context.flux.getStore('session').state.userPermissions.indexOf(`${this.entity}.read`) > -1;
-    this.setState({readPermission});
     this.init();
   }
 
@@ -343,16 +346,22 @@ class ElementsList extends React.Component {
     return forms;
   }
 
+  additionalRender() {
+    return '';
+  }
+
   /**
    * React render
    */
   render() {
     const table = this.getTable();
     const forms = this.getForms();
+    const additionalRender = this.additionalRender();
 
     return (
       <div className="ets-page-wrap" ref={node => (this.node = node)}>
         {table}
+        {additionalRender}
         {forms}
       </div>
     );

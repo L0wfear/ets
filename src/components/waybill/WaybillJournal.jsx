@@ -2,6 +2,7 @@ import React from 'react';
 import { autobind } from 'core-decorators';
 import { Glyphicon, ButtonToolbar, Dropdown, MenuItem as BootstrapMenuItem } from 'react-bootstrap';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
+import Paginator from 'components/ui/Paginator.jsx';
 import { connectToStores, staticProps, bindable } from 'utils/decorators';
 import WaybillFormWrap from './WaybillFormWrap.jsx';
 import WaybillPrintForm from './WaybillPrintForm.jsx';
@@ -27,6 +28,9 @@ export default class WaybillJournal extends CheckableElementsList {
 
     this.state = Object.assign(this.state, {
       showPrintForm: false,
+      page: 0,
+      sortBy: ['number:desc'],
+      filter: {},
     });
   }
 
@@ -34,9 +38,16 @@ export default class WaybillJournal extends CheckableElementsList {
     super.componentDidMount();
 
     const { flux } = this.context;
-    flux.getActions('waybills').getWaybills();
+    flux.getActions('waybills').getWaybills(15, 0, this.state.sortBy, this.state.filter);
     flux.getActions('employees').getEmployees();
+    flux.getActions('employees').getDrivers();
     flux.getActions('objects').getCars();
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (nextState.page !== this.state.page || nextState.sortBy !== this.state.sortBy) {
+      this.context.flux.getActions('waybills').getWaybills(15, nextState.page * 15, nextState.sortBy, nextState.filter);
+    }
   }
 
   showPrintForm(printNumber) {
@@ -45,7 +56,12 @@ export default class WaybillJournal extends CheckableElementsList {
 
   getAdditionalProps() {
     const { structures } = this.context.flux.getStore('session').getCurrentUser();
-    return { structures };
+    const changeSort = (field, direction) => this.setState({ sortBy: `${field}:${direction ? 'asc' : 'desc'}` });
+    const changeFilter = (filter) => {
+      this.context.flux.getActions('waybills').getWaybills(15, this.state.page * 15, this.state.sortBy, filter);
+      this.setState({ filter });
+    }
+    return { structures, changeSort, changeFilter, filterValues: this.state.filter };
   }
 
   /**
@@ -86,5 +102,9 @@ export default class WaybillJournal extends CheckableElementsList {
     );
 
     return forms;
+  }
+
+  additionalRender() {
+    return <Paginator currentPage={this.state.page} maxPage={Math.ceil(this.props.totalCount / 15)} setPage={page => this.setState({ page })} firstLastButtons />;
   }
 }

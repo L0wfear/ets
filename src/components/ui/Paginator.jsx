@@ -8,6 +8,7 @@ export default class Paginator extends React.Component {
     return {
       currentPage: PropTypes.number,
       maxPage: PropTypes.number,
+      firstLastButtons: PropTypes.bool,
       setPage: PropTypes.func,
     };
   }
@@ -66,13 +67,13 @@ export default class Paginator extends React.Component {
 
     const options = [];
 
-    // if(currentPage && maxPage >= 3 && currentPage !== 0 && currentPage !== 1) {
-    //   options.push(
-    //     <li className="aui-nav-first" key="first">
-    //       <a className="pointer" onClick={this.first}>Первая</a>
-    //     </li>
-    //   );
-    // }
+    if (currentPage && maxPage >= 3 && currentPage !== 0 && currentPage !== 1 && this.props.firstLastButtons) {
+      options.push(
+        <li className="aui-nav-first" key="first">
+          <a className="pointer" onClick={this.first}>Первая</a>
+        </li>
+      );
+    }
 
     if (currentPage > 0) {
       options.push(
@@ -113,13 +114,13 @@ export default class Paginator extends React.Component {
       );
     }
 
-    // if(maxPage >= 3 && currentPage !== maxPage - 1 && currentPage !== maxPage - 2) {
-    //   options.push(
-    //     <li className="aui-nav-last" key="last">
-    //       <a className="pointer" onClick={this.last}>Последняя</a>
-    //     </li>
-    //   );
-    // }
+    if (maxPage >= 3 && currentPage !== maxPage - 1 && currentPage !== maxPage - 2 && this.props.firstLastButtons) {
+      options.push(
+        <li className="aui-nav-last" key="last">
+          <a className="pointer" onClick={this.last}>Последняя</a>
+        </li>
+      );
+    }
 
     return (
       <ol className="pagination">

@@ -34,7 +34,7 @@ export const WAYBILL_STATUSES = {
   draft: 'Черновик',
   active: 'Активен',
   closed: 'Закрыт',
-  default: 'Н/Д',
+  // default: 'Н/Д',
 };
 
 export const PERIODIC_REPORT_STATUSES = {

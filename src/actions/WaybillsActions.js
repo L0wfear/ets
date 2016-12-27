@@ -12,7 +12,7 @@ import {
 
 export default class WaybillsActions extends Actions {
 
-  getWaybills(limit, offset, sort_by, filter) {
+  getWaybills(limit = 15, offset = 0, sort_by = ['number:desc'], filter = {}) {
     const filterValues = _.cloneDeep(filter);
     Object.keys(filterValues).forEach((k) => {
       if (Array.isArray(filterValues[k])) {

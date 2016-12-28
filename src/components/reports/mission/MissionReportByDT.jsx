@@ -8,7 +8,7 @@ const getTableMeta = (props) => {
   const tableMeta = {
     cols: [
       {
-        name: 'dt_name',
+        name: 'object_name',
         displayName: 'ДТ',
         type: 'string',
         filter: {

@@ -438,7 +438,7 @@ export default class OpenLayersMap extends Component {
         oldMarker.setPoint(point);
       } else {
         this.markers[key] = new CarMarker(point, this, {
-          maxSpeed: typesIndex[point.car.type_id].speed_max,
+          maxSpeed: _.get(typesIndex[point.car.type_id], 'speed_max') || 0,
         });
       }
     }

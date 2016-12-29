@@ -56,6 +56,7 @@ export default class DashboardPage extends React.Component {
   }
 
   refreshCard(key, id, forcedKey) {
+    if (key === 'external_applications') return;
     if (typeof forcedKey === 'string' && forcedKey.indexOf('_') > -1) {
       key = forcedKey;
     }

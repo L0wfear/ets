@@ -1,4 +1,5 @@
 import current_missions from './CurrentMission.jsx';
+import external_applications from './ExternalApplications.jsx';
 import faxogramms from './Faxogramms.jsx';
 import current_duty_missions from './CurrentDutyMission.jsx';
 import waybill_in_progress from './WaybillInProgress.jsx';
@@ -11,6 +12,7 @@ import odh_not_covered_by_missions_of_current_shift from './OdhNotCoveredByMissi
 
 const customCards = {
   current_missions,
+  external_applications,
   future_missions,
   faxogramms,
   current_duty_missions,

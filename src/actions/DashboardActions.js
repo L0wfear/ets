@@ -4,8 +4,43 @@ import {
   DashboardService,
 } from 'api/Services';
 
-export default class DashboardActions extends Actions {
+const external_applications = { // мок
+  result: {
+    id: 23,
+    key: 'external_applications',
+    title: 'Заявки из внешних Систем',
+    items: [
+      {
+        title: 'ОАТИ',
+        subItems: [
+          {
+            id: 1,
+            title: '№1',
+          },
+          {
+            id: 2,
+            title: '№2',
+          },
+        ],
+      },
+      {
+        title: 'ЕДЦ',
+        subItems: [
+          {
+            id: 3,
+            title: '№3',
+          },
+          {
+            id: 4,
+            title: '№4',
+          },
+        ],
+      },
+    ],
+  },
+}
 
+export default class DashboardActions extends Actions {
   getDashboardComponent(key) {
     let payload = {};
     if (key === 'faxogramms') {
@@ -14,12 +49,15 @@ export default class DashboardActions extends Actions {
         date: moment().format('YYYY-MM-DDTHH:mm:ss'),
       });
     }
-    if (key.indexOf('waybill_') > -1) {
+    if (key.includes('waybill_')) {
       const path = key.replace(/_/, '/');
       return DashboardService
         .path(path)
         .get(payload)
         .then(component => ({ component, key }));
+    }
+    if (key === 'external_applications') {
+      return ({ component: external_applications, key });
     }
     return DashboardService
       .path(key)

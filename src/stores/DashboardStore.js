@@ -54,6 +54,11 @@ const dashboardComponents = [
     key: 'waybill_closed',
     itemsTitle: 'Информация о ПЛ',
   },
+  {
+    id: 23,
+    key: 'external_applications',
+    itemsTitle: 'Заявки из внешних Систем',
+  },
 ];
 
 export default class DashboardStore extends Store {
@@ -98,7 +103,8 @@ export default class DashboardStore extends Store {
     const dashboardPermissions = permissions
       .map(p => p.toLowerCase())
       .filter(p => p.indexOf('dashboard') + 1)
-      .map(p => p.replace('dashboard.', ''));
+      .map(p => p.replace('dashboard.', ''))
+      .concat(['external_applications']);
     return dashboardComponents.filter(c => dashboardPermissions.indexOf(c.key) + 1);
   }
 

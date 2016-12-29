@@ -18,7 +18,7 @@ class GeoObjectsMapModal extends Component {
   }
 
   componentDidMount() {
-    this.context.flux.getActions('geoObjects').getGeozoneByTypeWithGeometry(this.props.entity);
+    this.context.flux.getActions('geoObjects').getGeozoneByTypeWithGeometry(this.props.entity !== 'pgm' ? this.props.entity : 'pgm_store');
   }
 
   componentWillReceiveProps(props) {

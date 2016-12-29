@@ -28,7 +28,7 @@ class CarsLegendWrapper extends Component {
       filter: PropTypes.object,
       storeHandleSetFilter: PropTypes.func,
       byStatus: PropTypes.object,
-      storeFilter: PropTypes.array,
+      storeFilter: PropTypes.object,
       byConnectionStatus: PropTypes.object,
     };
   }

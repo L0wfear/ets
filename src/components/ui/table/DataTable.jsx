@@ -164,7 +164,8 @@ export default class DataTable extends React.Component {
       initialSortAscending = props.initialSortAscending;
     }
 
-    if (props.filterValues) {
+    if (props.filterValues && Object.keys(props.filterValues).length) {
+      console.log(props.filterValues)
       this.setState({ initialSort, initialSortAscending, filterValues: props.filterValues })
     } else {
       this.setState({ initialSort, initialSortAscending });

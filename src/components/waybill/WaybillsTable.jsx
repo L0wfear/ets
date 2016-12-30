@@ -35,7 +35,7 @@ const getTableMeta = (props) => {
           type: 'multiselect',
           options: [
             { label: 'Все задания завершены', value: 'true' },
-            { label: 'Есть незавершенные задания', value: 'false' }
+            { label: 'Есть незавершенные задания', value: 'false' },
           ],
         },
       },

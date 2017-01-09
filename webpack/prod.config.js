@@ -88,7 +88,7 @@ module.exports = {
         to: 'images'
       }
     ]),
-    new ExtractTextPlugin('./css/[name].css'),
+    new ExtractTextPlugin('./css/[name].[hash].css'),
     new HtmlWebpackPlugin({
       title: 'ЕТС',
       template: path.resolve(__dirname, 'templates', 'index.hbs')

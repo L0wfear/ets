@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { autobind } from 'core-decorators';
 import find from 'lodash/find';
 import { Button, Glyphicon } from 'react-bootstrap';
-import { makeDateFromUnix, getStartOfToday } from 'utils/dates';
+import { makeDateFromUnix, getStartOfToday, makeUnixTime, secondsToTime } from 'utils/dates';
 import Panel from 'components/ui/Panel.jsx';
 import DatePicker from 'components/ui/DatePicker.jsx';
 import cx from 'classnames';
@@ -260,18 +260,31 @@ export default class CarInfo extends Component {
 
   renderMissions() {
     const { missions = [] } = this.state;
-    console.log(this.props.car.marker.track.parkings, missions)
+    const { parkings } = this.props.car.marker.track;
     let missionsRender = (
       <div style={{ textAlign: 'left', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-        {missions.map(mission =>
-          <span
-            key={mission.id}
-            onClick={this.setMissionById.bind(this, mission.id)}
-            style={{ whiteSpace: 'nowrap', display: 'block', cursor: 'pointer' }}
-          >
-            {`№${mission.number} - ${mission.technical_operation_name}`}
-          </span>
-        )}
+        {missions.map((mission) => {
+          const missionStart = makeUnixTime(mission.date_start);
+          const missionEnd = makeUnixTime(mission.date_end);
+          const parkingTime = parkings.map((p) => {
+            const start = p.start_point.timestamp > missionStart ? p.start_point.timestamp : missionStart;
+            const end = p.end_point.timestamp < missionEnd ? p.start_point.timestamp : missionEnd;
+            if (end < start) return 0;
+            return end - start;
+          }).reduce((a, b) => a + b);
+          return (
+            <div>
+              <span
+                key={mission.id}
+                onClick={this.setMissionById.bind(this, mission.id)}
+                style={{ whiteSpace: 'nowrap', display: 'block', cursor: 'pointer' }}
+              >
+                {`№${mission.number} - ${mission.technical_operation_name}`}
+              </span>
+              <span style={{ color: '#666' }}>{`Время стоянок: ${secondsToTime(parkingTime)}`}</span>
+            </div>
+          )
+        })}
       </div>
     );
 

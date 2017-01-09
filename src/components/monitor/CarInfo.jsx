@@ -260,22 +260,21 @@ export default class CarInfo extends Component {
 
   renderMissions() {
     const { missions = [] } = this.state;
-    const { parkings } = this.props.car.marker.track;
+    const { parkings = [] } = this.props.car.marker.track;
     let missionsRender = (
       <div style={{ textAlign: 'left', overflow: 'hidden', textOverflow: 'ellipsis' }}>
         {missions.map((mission) => {
           const missionStart = makeUnixTime(mission.date_start);
           const missionEnd = makeUnixTime(mission.date_end);
-          const parkingTime = parkings.map((p) => {
+          const parkingTime = parkings.length ? parkings.map((p) => {
             const start = p.start_point.timestamp > missionStart ? p.start_point.timestamp : missionStart;
             const end = p.end_point.timestamp < missionEnd ? p.start_point.timestamp : missionEnd;
             if (end < start) return 0;
             return end - start;
-          }).reduce((a, b) => a + b);
+          }).reduce((a, b) => a + b) : 0;
           return (
-            <div>
+            <div key={mission.id}>
               <span
-                key={mission.id}
                 onClick={this.setMissionById.bind(this, mission.id)}
                 style={{ whiteSpace: 'nowrap', display: 'block', cursor: 'pointer' }}
               >
@@ -283,7 +282,7 @@ export default class CarInfo extends Component {
               </span>
               <span style={{ color: '#666' }}>{`Время стоянок: ${secondsToTime(parkingTime)}`}</span>
             </div>
-          )
+          );
         })}
       </div>
     );

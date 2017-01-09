@@ -58,6 +58,13 @@ class WaybillPrintForm extends Component {
       'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'].map((m, i) => ({ label: m, value: i }));
     const YEARS = Array.from({ length: 11 }, (y, i) => ({ label: `${i + 2016}`, value: i + 2016 }));
 
+    const errors = {
+      month: !this.state.month ? 'Поле "Месяц" обязательно для заполнения' : '',
+      year: !this.state.year ? 'Поле "Год" обязательно для заполнения' : '',
+      date_from: !this.state.date_from ? 'Поле обязательно для заполнения' : '',
+      date_to: !this.state.date_to ? 'Поле обязательно для заполнения' : '',
+    };
+    const DISABLE_SUBMIT = this.props.show === 1 ? !!(errors.month || errors.year) : !!(errors.date_to || errors.date_from);
     return (
       <Modal {...this.props} show={!!this.props.show} bsSize="small">
 
@@ -76,6 +83,7 @@ class WaybillPrintForm extends Component {
                 value={this.state.month}
                 clearable={false}
                 onChange={v => this.handleChange('month', v)}
+                error={errors.month}
               />
               <br />
               <Field
@@ -85,6 +93,7 @@ class WaybillPrintForm extends Component {
                 value={this.state.year}
                 clearable={false}
                 onChange={v => this.handleChange('year', v)}
+                error={errors.year}
               />
             </div>
             :
@@ -93,15 +102,16 @@ class WaybillPrintForm extends Component {
                 <Datepicker time={false} date={this.state.date_from} onChange={v => this.handleChange('date_from', v)} />
               </Div>
               <Div className="inline-block reports-date">
-                <Datepicker time={false} date={this.state.date_to} onChange={v => this.handleChange('date_to', v)} />
+                <Datepicker time={false} min={this.state.date_from} date={this.state.date_to} onChange={v => this.handleChange('date_to', v)} />
               </Div>
+              {DISABLE_SUBMIT ? <label style={{ color: 'red', fontWeight: 'normal', fontSize: 12, marginTop: 10 }}>Даты должны быть указаны</label> : ''}
             </div>
           }
         </Modal.Body>
 
         <Modal.Footer>
           <Div className="inline-block">
-            <Button onClick={this.handleSubmit}>ОК</Button>
+            <Button disabled={DISABLE_SUBMIT} onClick={this.handleSubmit}>ОК</Button>
             <Button onClick={this.props.hide}>Отмена</Button>
           </Div>
         </Modal.Footer>

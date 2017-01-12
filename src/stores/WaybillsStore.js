@@ -37,6 +37,6 @@ export function getDefaultBill() {
     odometr_start: null,
     motohours_start: null,
     mission_id_list: [],
-    company_id: JSON.parse(localStorage.getItem('current_user')).company_id,
+    company_id: JSON.parse(localStorage.getItem(global.CURRENT_USER)).company_id,
   };
 }

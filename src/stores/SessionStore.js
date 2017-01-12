@@ -26,7 +26,7 @@ export default class SessionStore extends Store {
 
     try {
       storedSession = JSON.parse(localStorage.getItem(global.SESSION_KEY));
-      currentUser = JSON.parse(localStorage.getItem('current_user'));
+      currentUser = JSON.parse(localStorage.getItem(global.CURRENT_USER));
     } catch (e) {
       storedSession = null;
       currentUser = defaultUser;
@@ -49,7 +49,7 @@ export default class SessionStore extends Store {
     let currentUser = data.payload;
 
     localStorage.setItem(global.SESSION_KEY, JSON.stringify(session));
-    localStorage.setItem('current_user', JSON.stringify(currentUser));
+    localStorage.setItem(global.CURRENT_USER, JSON.stringify(currentUser));
     this.flux.getStore('dashboard').resetState();
     setUserContext(currentUser);
     currentUser = new User(currentUser);

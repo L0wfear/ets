@@ -193,6 +193,9 @@ export default class MainPage extends React.Component {
           <div className="wrap">
             {this.props.children}
           </div>
+          <span style={{ position: 'absolute', right: 8, bottom: 5, opacity: 0.2 }}>
+            {VERSION_DESCRIPTION}
+          </span>
         </div>
       );
     }

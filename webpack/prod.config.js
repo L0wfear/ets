@@ -32,7 +32,7 @@ module.exports = {
       { test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader' },
       { test: /\.json$/, loader: 'json-loader' },
       { test: /\.hbs?$/, loader: 'handlebars-loader' },
-      { test: /\.(png|jpe?g|gif)$/, loader: 'url-loader?limit=10000&name=images/[name].[ext]' },
+      { test: /\.(png|jpe?g|gif)$/, loader: 'url-loader?limit=1000000&name=images/[name].[ext]' },
       { test: /\.(eot|woff|woff2|ttf|svg)(\?v=\d+\.\d+\.\d+)?/, loader: 'url-loader?limit=100000&name=fonts/[name].[ext]' },
       { test: /\.scss$/, loader: ExtractTextPlugin.extract('style','css-loader!resolve-url!sass-loader?sourceMap') }
     ]

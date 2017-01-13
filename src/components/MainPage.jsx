@@ -87,8 +87,6 @@ export default class MainPage extends React.Component {
     const { user } = this.state;
     const path = this.props.location.pathname;
 
-    if (path === '/login') return this.renderEmptyHeader();
-
     return (
       <Navbar justified fluid>
 
@@ -188,6 +186,16 @@ export default class MainPage extends React.Component {
   }
 
   render() {
+    const path = this.props.location.pathname;
+    if (path === '/login') {
+      return (
+        <div className="loginpage">
+          <div className="wrap">
+            {this.props.children}
+          </div>
+        </div>
+      );
+    }
     return (
       <div className="app">
         <div className="app-navigation">{this.renderHeader()}</div>

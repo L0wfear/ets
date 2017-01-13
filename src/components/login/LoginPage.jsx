@@ -21,13 +21,6 @@ export default class LoginPage extends Component {
     };
   }
 
-  handleChange(field, e) {
-    const value = e !== undefined && e !== null && !!e.target ? e.target.value : e;
-    this.setState({
-      [field]: value,
-    });
-  }
-
   onSigninClick(e) {
     e.preventDefault();
     const { login, password } = this.state;
@@ -47,18 +40,29 @@ export default class LoginPage extends Component {
     });
   }
 
+  handleChange(field, e) {
+    const value = e !== undefined && e !== null && !!e.target ? e.target.value : e;
+    this.setState({
+      [field]: value,
+    });
+  }
+
   render() {
     const { login, password } = this.state;
     const disabled = login.length === 0 || password.length === 0;
 
     return (
-      <form style={{ paddingTop: 40 }} onSubmit={this.onSigninClick}>
+      <form onSubmit={this.onSigninClick}>
         <div className="form-signin">
-          <label className="sr-only">Имя пользователя</label>
-          <input type="text" className="form-control" placeholder="Имя пользователя" value={login} onChange={this.handleChange.bind(this, 'login')} />
-          <label className="sr-only">Пароль</label>
-          <input type="password" className="form-control" placeholder="Пароль" value={password} onChange={this.handleChange.bind(this, 'password')} />
-          <button role="button" className="btn btn-lg btn-primary btn-block" disabled={disabled} onClick={this.onSigninClick}>Вход</button>
+          <div className="ets-header">ЕТС</div>
+          <div className="form-content">
+            <label>Система мониторинга</label>
+            <input type="text" className="form-control" placeholder="Логин" value={login} onChange={this.handleChange.bind(this, 'login')} />
+            <input type="password" className="form-control" placeholder="Пароль" value={password} onChange={this.handleChange.bind(this, 'password')} />
+            <button role="button" className="btn btn-lg btn-primary btn-block" disabled={disabled} onClick={this.onSigninClick}>Войти</button>
+            <hr />
+            <div className="dit-logo" />
+          </div>
         </div>
       </form>
     );

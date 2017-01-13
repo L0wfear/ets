@@ -3,6 +3,7 @@
 @import './waybill.scss';
 @import './reports.scss';
 @import './media.scss';
+@import url('https://fonts.googleapis.com/css?family=Roboto:900,700,500,400');
 
 $colorLink: #0081d6;
 $colorGreen: #6a9e56;
@@ -17,6 +18,97 @@ $navbarPaddingA: 22px;
 
 body {
   color: #000;
+}
+
+.loginpage {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: url('images/bg.gif') no-repeat center center fixed;
+  .wrap {
+    display: table;
+    width: 100%;
+    height: 100%;
+  }
+  form {
+    display: table-cell;
+    width: 100%;
+    height: 100%;
+    vertical-align: middle;
+  }
+  .form-signin {
+    max-width: 400px;
+    padding: 0;
+    background: #efefef;
+    -webkit-box-shadow: 0px 0px 80px 0px rgba(0,0,0,0.4);
+    -moz-box-shadow: 0px 0px 80px 0px rgba(0,0,0,0.4);
+    box-shadow: 0px 0px 80px 0px rgba(0,0,0,0.4);
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Chrome/Safari/Opera */
+     -khtml-user-select: none; /* Konqueror */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none;
+  }
+  .ets-header {
+    width: 100%;
+    height: 90px;
+    background: #7fc650;
+    color: white;
+    padding: 4px;
+    text-align: center;
+    font-size: 60px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .form-content {
+    padding: 30px;
+    text-align: center;
+    label {
+      font-size: 16px;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 25px;
+    }
+    input {
+      height: 44px;
+      background: #fff;
+      border: 0;
+      margin-bottom: 25px !important;
+    }
+    button {
+      background: #706b77;
+      color: white;
+      text-transform: uppercase;
+      font-size: 14px;
+      font-family: 'Roboto', sans-serif;
+      padding: 15px;
+      height: 44px;
+      letter-spacing: 0.5px;
+      font-weight: 500;
+      &:hover {
+        background: #9994a1 !important;
+      }
+      &[disabled] {
+        background: #a6a6a6 !important;
+      }
+    }
+    hr {
+      border-top: 1px solid #706b77 !important;
+    }
+    .dit-logo {
+      background: url('images/jkh.png');
+      background-position: center;
+      background-repeat: no-repeat;
+      width: 100%;
+      height: 77px;
+    }
+  }
 }
 
 #container {

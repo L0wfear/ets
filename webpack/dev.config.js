@@ -28,7 +28,7 @@ module.exports = {
     loaders: [
       { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['react-hot', 'babel-loader'] },
       { test: /\.json$/, loader: 'json-loader' },
-      { test: /\.(jpe?g|png|gif)$/, loader: 'url-loader?limit=10000&name=images/[name].[ext]' },
+      { test: /\.(jpe?g|png|gif)$/, loader: 'url-loader?limit=1000000&name=images/[name].[ext]' },
       { test: /\.(eot|woff|woff2|ttf|svg)(\?v=\d+\.\d+\.\d+)?/, loader: 'url-loader?limit=100000&name=fonts/[name].[ext]' },
       { test: /\.s?css$/, loaders: ['style', 'css-loader?sourceMap', 'resolve-url', 'sass-loader?sourceMap'] },
       { test: /ol-base\.js/, loader: 'imports?define=>false' },

@@ -45,7 +45,7 @@ export default class WaybillJournal extends CheckableElementsList {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (nextState.page !== this.state.page || nextState.sortBy !== this.state.sortBy) {
+    if (nextState.page !== this.state.page || nextState.sortBy !== this.state.sortBy || nextState.filter !== this.state.filter) {
       this.context.flux.getActions('waybills').getWaybills(15, nextState.page * 15, nextState.sortBy, nextState.filter);
     }
   }
@@ -57,10 +57,7 @@ export default class WaybillJournal extends CheckableElementsList {
   getAdditionalProps() {
     const { structures } = this.context.flux.getStore('session').getCurrentUser();
     const changeSort = (field, direction) => this.setState({ sortBy: `${field}:${direction ? 'asc' : 'desc'}` });
-    const changeFilter = (filter) => {
-      this.context.flux.getActions('waybills').getWaybills(15, this.state.page * 15, this.state.sortBy, filter);
-      this.setState({ filter });
-    }
+    const changeFilter = filter => this.setState({ filter });
     return { structures, changeSort, changeFilter, filterValues: this.state.filter };
   }
 

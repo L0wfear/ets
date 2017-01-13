@@ -115,16 +115,7 @@ const getTableMeta = (props) => {
         },
       },
       {
-        name: 'responsible_person_id',
-        displayName: 'Мастер',
-        type: 'string',
-        filter: {
-          type: 'multiselect',
-          options: props.employeesList.map(e => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
-        },
-      },
-      {
-        name: 'created_by_employee_name',
+        name: 'created_by_employee_id',
         displayName: 'Создан',
         type: 'string',
         filter: {
@@ -133,7 +124,7 @@ const getTableMeta = (props) => {
         },
       },
       {
-        name: 'activated_by_employee_name',
+        name: 'activated_by_employee_id',
         displayName: 'Выдан',
         type: 'string',
         filter: {
@@ -142,7 +133,7 @@ const getTableMeta = (props) => {
         },
       },
       {
-        name: 'closed_by_employee_name',
+        name: 'closed_by_employee_id',
         displayName: 'Закрыт',
         type: 'string',
         filter: {
@@ -244,6 +235,9 @@ export default (props) => {
     status: ({ data }) => <div>{WAYBILL_STATUSES[data] || WAYBILL_STATUSES.default}</div>,
     responsible_person_id: ({ data }) => <div>{employeeFIOLabelFunction(data)}</div>,
     driver_id: ({ data }) => <div>{employeeFIOLabelFunction(data)}</div>,
+    created_by_employee_id: ({ data }) => <div>{employeeFIOLabelFunction(data)}</div>,
+    activated_by_employee_id: ({ data }) => <div>{employeeFIOLabelFunction(data)}</div>,
+    closed_by_employee_id: ({ data }) => <div>{employeeFIOLabelFunction(data)}</div>,
     date_create: ({ data }) => <DateFormatter date={data} time />,
     closing_date: ({ data }) => <DateFormatter date={data} />,
     plan_departure_date: ({ data }) => <DateFormatter date={data} time />,

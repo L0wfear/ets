@@ -163,10 +163,8 @@ export default class DataTable extends React.Component {
     if (props.initialSortAscending && props.initialSortAscending !== this.state.initialSortAscending) {
       initialSortAscending = props.initialSortAscending;
     }
-
-    if (props.filterValues && Object.keys(props.filterValues).length) {
-      console.log(props.filterValues)
-      this.setState({ initialSort, initialSortAscending, filterValues: props.filterValues })
+    if (props.externalFilter) {
+      this.setState({ initialSort, initialSortAscending, filterValues: props.filterValues });
     } else {
       this.setState({ initialSort, initialSortAscending });
     }
@@ -364,7 +362,7 @@ export default class DataTable extends React.Component {
             isValid = false;
           }
         } else if (typeof obj[key] === 'boolean') {
-          if (value.map(v => !!parseInt(v, 10)).indexOf(obj[key]) === -1) {
+          if (value.map(v => typeof v === 'string' ? v === 'true' : !!parseInt(v, 10)).indexOf(obj[key]) === -1) {
             isValid = false;
           }
         } else if (value.indexOf(obj[key].toString()) === -1) {

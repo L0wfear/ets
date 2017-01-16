@@ -215,7 +215,7 @@ export default class CarInfo extends Component {
             <div key={mission.id}>
               <span
                 onClick={this.setMissionById.bind(this, mission.id)}
-                style={{ whiteSpace: 'nowrap', display: 'block', cursor: 'pointer' }}
+                style={{ whiteSpace: 'nowrap', display: 'block', cursor: 'pointer', overflow: 'hidden', textOverflow: 'ellipsis' }}
               >
                 {`№${mission.number} - ${mission.technical_operation_name}`}
               </span>

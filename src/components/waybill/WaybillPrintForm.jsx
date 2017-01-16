@@ -20,7 +20,7 @@ class WaybillPrintForm extends Component {
     super(props);
 
     this.state = {
-      month: new Date().getMonth(),
+      month: new Date().getMonth() + 1,
       year: new Date().getYear() + 1900,
       date_from: getToday9am(),
       date_to: getTomorrow9am(),
@@ -34,14 +34,14 @@ class WaybillPrintForm extends Component {
         'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
       await this.context.flux.getActions('waybills')
         .getWaybillJournalReport(this.state)
-        .then(({ blob }) => { saveData(blob, `Отчет по журналу ПЛ за ${MONTHS[this.state.month]} ${this.state.year}.xls`); });
+        .then(({ blob }) => { saveData(blob, `Отчет по журналу ПЛ за ${MONTHS[this.state.month - 1]} ${this.state.year}.xls`); });
     } else {
       await this.context.flux.getActions('waybills')
         .getWaybillsReport(this.state)
         .then(({ blob }) => { saveData(blob, `Отчет по выработке ТС за ${makeDate(this.state.date_from)} - ${makeDate(this.state.date_to)}.xls`); });
     }
     this.setState({
-      month: new Date().getMonth(),
+      month: new Date().getMonth() + 1,
       year: new Date().getYear() + 1900,
       date_from: getToday9am(),
       date_to: getTomorrow9am(),
@@ -55,7 +55,7 @@ class WaybillPrintForm extends Component {
 
   render() {
     const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
-      'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'].map((m, i) => ({ label: m, value: i }));
+      'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'].map((m, i) => ({ label: m, value: i + 1 }));
     const YEARS = Array.from({ length: 11 }, (y, i) => ({ label: `${i + 2016}`, value: i + 2016 }));
 
     const errors = {
@@ -80,6 +80,7 @@ class WaybillPrintForm extends Component {
                 type="select"
                 label="Месяц"
                 options={MONTHS}
+                sortingFunction={(a, b) => a.value - b.value}
                 value={this.state.month}
                 clearable={false}
                 onChange={v => this.handleChange('month', v)}

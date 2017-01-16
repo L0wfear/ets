@@ -214,7 +214,7 @@ export default class RouteForm extends Form {
               <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this, 1)}>Сохранить как шаблон</Button>
               <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this, 0)}>{state.id ? 'Сохранить' : 'Создать'}</Button>
             </div>
-          :
+            :
             <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this, 1)}>Сохранить как шаблон</Button>
           }
         </Modal.Footer>

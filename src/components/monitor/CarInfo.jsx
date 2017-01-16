@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { autobind } from 'core-decorators';
 import find from 'lodash/find';
-import { Button, Glyphicon } from 'react-bootstrap';
+import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
 import { makeDateFromUnix, getStartOfToday, makeUnixTime, secondsToTime } from 'utils/dates';
 import Panel from 'components/ui/Panel.jsx';
 import DatePicker from 'components/ui/DatePicker.jsx';
@@ -37,6 +37,7 @@ export default class CarInfo extends Component {
       to_dt_: new Date(),
       tillNow: true,
       car: {},
+      menu: 0,
     };
   }
 
@@ -168,7 +169,7 @@ export default class CarInfo extends Component {
     view.fit(extent, map.getSize(), { padding: [50, 550, 50, 50] });
   }
 
-  renderModel() {
+  renderMain() {
     const { imageUrl, trackingMode } = this.state;
     const { car } = this.props;
 
@@ -189,13 +190,70 @@ export default class CarInfo extends Component {
           <span className="glyphicon glyphicon-resize-full" />&nbsp;Трек
         </button>
         <img role="presentation" className="car-info-image" src={imageUrl ? config.images + imageUrl : ''} />
-        <VehicleAttributes point={car} car={this.state.car} lastPoint={marker.hasTrackLoaded() && marker.track.getLastPoint()} />
         {marker.track.getLegend()}
       </Panel>
     );
   }
 
-  renderData() {
+  renderInfo() {
+    const { missions = [] } = this.state;
+    const { car } = this.props;
+    const { marker } = car;
+    const { parkings = [] } = this.props.car.marker.track;
+    let missionsRender = (
+      <div style={{ textAlign: 'left', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        {missions.map((mission) => {
+          const missionStart = makeUnixTime(mission.date_start);
+          const missionEnd = makeUnixTime(mission.date_end);
+          const parkingTime = parkings.length ? parkings.map((p) => {
+            const start = p.start_point.timestamp > missionStart ? p.start_point.timestamp : missionStart;
+            const end = p.end_point.timestamp < missionEnd ? p.end_point.timestamp : missionEnd;
+            if (end < start) return 0;
+            return end - start;
+          }).reduce((a, b) => a + b) : 0;
+          return (
+            <div key={mission.id}>
+              <span
+                onClick={this.setMissionById.bind(this, mission.id)}
+                style={{ whiteSpace: 'nowrap', display: 'block', cursor: 'pointer' }}
+              >
+                {`№${mission.number} - ${mission.technical_operation_name}`}
+              </span>
+              <span style={{ color: '#666' }}>{`Время стоянок: ${secondsToTime(parkingTime)}`}</span>
+            </div>
+          );
+        })}
+      </div>
+    );
+
+    if (!missions.length) missionsRender = 'Нет данных';
+
+    return (
+      <div className="car-info-tracking">
+        <Panel>
+          <VehicleAttributes point={car} car={this.state.car} lastPoint={marker.hasTrackLoaded() && marker.track.getLastPoint()} />
+        </Panel>
+        <Panel title="Задания" className="chart-datepickers-wrap">
+          {missionsRender}
+        </Panel>
+        <MissionFormWrap
+          onFormHide={() => this.setState({ showMissionForm: false })}
+          showForm={this.state.showMissionForm}
+          element={this.state.selectedMission}
+        />
+      </div>
+    );
+  }
+
+  renderGraphs() {
+    return (
+      <div>
+        aaaa
+      </div>
+    );
+  }
+
+  renderTracking() {
     const marker = this.props.car.marker;
     const isTrackLoaded = marker.hasTrackLoaded();
     const tillNow = this.state.tillNow;
@@ -258,53 +316,9 @@ export default class CarInfo extends Component {
     );
   }
 
-  renderMissions() {
-    const { missions = [] } = this.state;
-    const { parkings = [] } = this.props.car.marker.track;
-    let missionsRender = (
-      <div style={{ textAlign: 'left', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-        {missions.map((mission) => {
-          const missionStart = makeUnixTime(mission.date_start);
-          const missionEnd = makeUnixTime(mission.date_end);
-          const parkingTime = parkings.length ? parkings.map((p) => {
-            const start = p.start_point.timestamp > missionStart ? p.start_point.timestamp : missionStart;
-            const end = p.end_point.timestamp < missionEnd ? p.start_point.timestamp : missionEnd;
-            if (end < start) return 0;
-            return end - start;
-          }).reduce((a, b) => a + b) : 0;
-          return (
-            <div key={mission.id}>
-              <span
-                onClick={this.setMissionById.bind(this, mission.id)}
-                style={{ whiteSpace: 'nowrap', display: 'block', cursor: 'pointer' }}
-              >
-                {`№${mission.number} - ${mission.technical_operation_name}`}
-              </span>
-              <span style={{ color: '#666' }}>{`Время стоянок: ${secondsToTime(parkingTime)}`}</span>
-            </div>
-          );
-        })}
-      </div>
-    );
-
-    if (!missions.length) missionsRender = 'Нет данных';
-
-    return (
-      <div className="car-info-tracking">
-        <Panel title="Задания" className="chart-datepickers-wrap">
-          {missionsRender}
-        </Panel>
-        <MissionFormWrap
-          onFormHide={() => this.setState({ showMissionForm: false })}
-          showForm={this.state.showMissionForm}
-          element={this.state.selectedMission}
-        />
-      </div>
-    );
-  }
-
   render() {
     const { car } = this.props;
+    const { menu } = this.state;
 
     if (!car) {
       return null;
@@ -316,9 +330,15 @@ export default class CarInfo extends Component {
     return (
       <div className="car-info" key={marker.id}>
         <h3 className="car-info-plate">{plate}</h3>
-        {this.renderModel()}
-        {this.renderData()}
-        {this.renderMissions()}
+        {this.renderMain()}
+        <ButtonGroup className="car-info-menu">
+          <Button onClick={() => this.setState({ menu: 0 })}>Информация</Button>
+          <Button onClick={() => this.setState({ menu: 1 })} disabled>Графики</Button>
+          <Button onClick={() => this.setState({ menu: 2 })}>Трекинг</Button>
+        </ButtonGroup>
+        {menu === 0 && this.renderInfo()}
+        {menu === 1 && this.renderGraphs()}
+        {menu === 2 && this.renderTracking()}
         {/* <FuelChart from={this.state.from_dt} to={this.state.to_dt} id={car.id}/>*/}
         {/* <SpeedChart track={marker.hasTrackLoaded() && marker.track} />*/}
       </div>

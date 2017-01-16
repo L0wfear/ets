@@ -3,9 +3,9 @@ import React from 'react';
 export default function Panel({ title, children }) {
   return (
     <div className="chart-wrapper">
-      <div className="chart-title">
+      {title ? <div className="chart-title">
         {title}
-      </div>
+      </div> : ''}
       <div className="chart-stage" style={{ textAlign: 'center' }}>
         {children}
       </div>

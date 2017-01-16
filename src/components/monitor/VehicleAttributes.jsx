@@ -65,7 +65,7 @@ export default class VehicleAttributes extends Component {
   render() {
     return (
       <div className="vehicle-attributes-list">
-        {this.state.attributes.map(attribute => this.renderAttribute(attribute))}
+        {this.state.attributes.length ? this.state.attributes.map(attribute => this.renderAttribute(attribute)) : 'Загрузка...'}
       </div>
     );
   }

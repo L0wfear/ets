@@ -629,7 +629,7 @@ body.application {
   .zoom-to-track-extent {
     width: 100px;
     position: absolute;
-    right: 14px;
+    right: 8px;
     top: 40px;
     padding: 4px 11px 4px 7px;
     .glyphicon {
@@ -2140,7 +2140,7 @@ body {
 
   .track-btn {
     position: absolute;
-    right: 14px;
+    right: 8px;
     top: 8px;
     padding: 4px 11px 4px 7px;
     // width:83px;
@@ -2157,6 +2157,16 @@ body {
     margin: 10px;
     width: 250px;
     min-height: 100px;
+  }
+
+  &-menu {
+    width: 100%;
+    .btn {
+      width: 32.9%;
+    }
+    .btn:not(:last-child) {
+      margin-right: 4px;
+    }
   }
 }
 
@@ -2222,7 +2232,6 @@ body {
 
 .vehicle-attributes-list {
   padding: 10px 0;
-  border-top: 1px solid #ddd;
   margin: 0 5px;
 
   &__item {

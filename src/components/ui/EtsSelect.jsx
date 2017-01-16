@@ -8,6 +8,7 @@ export default class EstSelect extends Component {
       placeholder: PropTypes.string,
       noResultsText: PropTypes.string,
       options: PropTypes.array,
+      sortingFunction: PropTypes.func,
     };
   }
 
@@ -28,8 +29,7 @@ export default class EstSelect extends Component {
   }
 
   render() {
-    const { placeholder = 'Выберите...', noResultsText = 'Ничего не найдено', options = [] } = this.props;
-    const sortedOptions = options.sort((a, b) => {
+    const { placeholder = 'Выберите...', noResultsText = 'Ничего не найдено', options = [], sortingFunction = (a, b) => {
       if (typeof a.label === 'number') {
         return a.label - b.label;
       }
@@ -37,7 +37,8 @@ export default class EstSelect extends Component {
         return a.label.toLowerCase().localeCompare(b.label.toLowerCase());
       }
       return a.label - b.label;
-    });
+    } } = this.props;
+    const sortedOptions = options.sort(sortingFunction);
 
     return <Select {...this.props} options={sortedOptions} placeholder={placeholder} noResultsText={noResultsText} />;
   }

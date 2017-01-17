@@ -1,6 +1,10 @@
 import ApiServiceFactory from './ApiServiceFactory.js';
 import config from '../config.js';
 
+const TRACK_API_FACTORY = new ApiServiceFactory({ // бэк молодец
+  apiUrl: process.env.STAND === 'test' ? 'http://10.127.32.23:6006/' : 'http://ods.mos.ru/ssd/city-dashboard',
+});
+
 const CITY_DASHBOARD_API_FACTORY = new ApiServiceFactory({
   apiUrl: 'http://ods.mos.ru/ssd/city-dashboard',
 });

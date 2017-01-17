@@ -157,6 +157,7 @@ export default class Track {
                 .then((obj) => {
                   this.parkings = obj.parkings;
                   this.points = obj.track;
+                  this.sensors = obj.sensors;
                   this.continuousUpdating = updating;
                   this.render();
                   this.onUpdateCallback();
@@ -184,8 +185,8 @@ export default class Track {
       parkings.forEach((p) => {
         const coords = this.map.projectToPixel(swapCoords(p.start_point.coords_msk));
         ctx.drawImage(this.parkingIcon,
-          coords.x - iconSize/2,
-          coords.y - iconSize/2,
+          coords.x - iconSize / 2,
+          coords.y - iconSize / 2,
           iconSize,
           iconSize,
         );
@@ -420,7 +421,7 @@ export default class Track {
       if (dx * dx + dy * dy < radius * radius) {
         selected = viewportPoints.find(p => p.coords_msk[0] === point.coords_msk[1] && p.coords_msk[1] === point.coords_msk[0]);
       }
-    })
+    });
 
 
     return selected;
@@ -442,8 +443,8 @@ export default class Track {
   }
 
   makeParkingPopup(parking) {
-    const start = `${makeDate(new Date(parking.start_point.timestamp * 1000))} ${makeTime(new Date(parking.start_point.timestamp * 1000), true)}`
-    const end = `${makeDate(new Date(parking.end_point.timestamp * 1000))} ${makeTime(new Date(parking.end_point.timestamp * 1000), true)}`
+    const start = `${makeDate(new Date(parking.start_point.timestamp * 1000))} ${makeTime(new Date(parking.start_point.timestamp * 1000), true)}`;
+    const end = `${makeDate(new Date(parking.end_point.timestamp * 1000))} ${makeTime(new Date(parking.end_point.timestamp * 1000), true)}`;
     const diff = secondsToTime(parking.end_point.timestamp - parking.start_point.timestamp);
     return () => `
       <div>

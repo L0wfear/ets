@@ -64,6 +64,7 @@ export default class CarActions extends Actions {
       gps_code: id,
       from_dt: makeUnixTime(from_dt),
       to_dt: makeUnixTime(to_dt),
+      sensors: 1,
     };
 
     return TrackService

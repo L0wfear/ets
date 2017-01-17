@@ -1,8 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { autobind } from 'core-decorators';
 import find from 'lodash/find';
+import groupBy from 'lodash/groupBy';
+import flatten from 'lodash/flatten';
 import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
 import { makeDateFromUnix, getStartOfToday, makeUnixTime, secondsToTime } from 'utils/dates';
+import { sensorsMapOptions } from 'constants/sensors.js';
 import Panel from 'components/ui/Panel.jsx';
 import DatePicker from 'components/ui/DatePicker.jsx';
 import cx from 'classnames';
@@ -10,6 +13,7 @@ import cx from 'classnames';
 import config from '../../config.js';
 import MissionFormWrap from '../missions/mission/MissionFormWrap.jsx';
 import VehicleAttributes from './VehicleAttributes.jsx';
+import LineChart from './LineChart';
 
 @autobind
 export default class CarInfo extends Component {
@@ -37,7 +41,8 @@ export default class CarInfo extends Component {
       to_dt_: new Date(),
       tillNow: true,
       car: {},
-      menu: 0,
+      tab: 0,
+      graphTab: 1,
     };
   }
 
@@ -169,6 +174,17 @@ export default class CarInfo extends Component {
     view.fit(extent, map.getSize(), { padding: [50, 550, 50, 50] });
   }
 
+  showOnMap(timestamp, e) {
+    const threshold = e.point.series.closestPointRange ? e.point.series.closestPointRange : 0;
+    const points = this.props.car.marker.track.points.filter(p => (timestamp >= p.timestamp - threshold) && (timestamp <= p.timestamp + threshold));
+    const point = points.length === 1 ? points[0] : points.reduce((prev, curr) => (Math.abs(curr.speed_avg - e.point.y) < Math.abs(prev.speed_avg - e.point.y) ? curr : prev));
+    const extent = [point.coords_msk[0], point.coords_msk[1], point.coords_msk[0], point.coords_msk[1]];
+    const map = this.props.car.marker.map;
+    const track = this.props.car.marker.track;
+    map.getView().fit(extent, map.getSize(), { padding: [50, 550, 50, 50] });
+    map.get('parent').handleFeatureClick(track, point);
+  }
+
   renderMain() {
     const { imageUrl, trackingMode } = this.state;
     const { car } = this.props;
@@ -245,10 +261,65 @@ export default class CarInfo extends Component {
     );
   }
 
+  renderSpeedGraph() {
+    const { points } = this.props.car.marker.track;
+    const timestamps = points.map(p => p.timestamp);
+    const sensorsData = [];
+    let sensorsList = points.filter(p => p.sensors && p.sensors.equipment).map((p) => {
+      p.sensors.equipment.forEach((s) => { s.timestamp = p.timestamp; });
+      return p.sensors.equipment;
+    });
+    sensorsList = groupBy(flatten(sensorsList), s => s.id);
+    Object.keys(sensorsList).forEach((id, i) => {
+      const sensorOptions = sensorsMapOptions(i, this.props.car.marker.track.maxSpeed);
+      const values = sensorsList[id].map(s => [s.timestamp, sensorOptions.value]);
+      sensorsData.push({
+        name: `Датчик №${i + 1}`,
+        connectNulls: false,
+        color: sensorOptions.color,
+        data: timestamps.map((t) => {
+          const s = values.find(v => v[0] === t);
+          if (s && s[1]) {
+            return s[1];
+          }
+          return null;
+        }),
+      });
+    });
+
+    if (!points) return <Panel>Загрузка...</Panel>;
+    const data = [
+      {
+        name: 'Скорость ТС',
+        data: points.map(p => parseInt(p.speed_avg, 10)),
+        color: 'rgba(90, 242, 18, 1)',
+      },
+      {
+        name: 'Максимальная скорость',
+        data: points.map(() => parseInt(this.props.car.marker.track.maxSpeed, 10)),
+        color: 'rgba(205, 17, 71, 1)',
+      },
+    ].concat(sensorsData).map((d) => {
+      d.data = d.data.map((v, i) => [timestamps[i], v]);
+      return d;
+    });
+    return <LineChart data={data} onClick={e => this.showOnMap(e.point.x, e)} />;
+  }
+
+  renderFuelGraph() {
+    return <Panel>Загрузка...</Panel>;
+  }
+
   renderGraphs() {
     return (
       <div>
-        aaaa
+        <ButtonGroup className="car-info-graph-menu">
+          <Button disabled className={!this.state.graphTab && 'active'} onClick={() => this.setState({ graphTab: 0 })}>Датчики топлива</Button>
+          <Button className={this.state.graphTab && 'active'} onClick={() => this.setState({ graphTab: 1 })}>Датчики скорости</Button>
+        </ButtonGroup>
+        <Panel>
+          {this.state.graphTab ? this.renderSpeedGraph() : this.renderFuelGraph()}
+        </Panel>
       </div>
     );
   }
@@ -318,7 +389,7 @@ export default class CarInfo extends Component {
 
   render() {
     const { car } = this.props;
-    const { menu } = this.state;
+    const { tab } = this.state;
 
     if (!car) {
       return null;
@@ -332,13 +403,13 @@ export default class CarInfo extends Component {
         <h3 className="car-info-plate">{plate}</h3>
         {this.renderMain()}
         <ButtonGroup className="car-info-menu">
-          <Button onClick={() => this.setState({ menu: 0 })}>Информация</Button>
-          <Button onClick={() => this.setState({ menu: 1 })} disabled>Графики</Button>
-          <Button onClick={() => this.setState({ menu: 2 })}>Трекинг</Button>
+          <Button className={this.state.tab === 0 && 'active'} onClick={() => this.setState({ tab: 0 })}>Информация</Button>
+          <Button className={this.state.tab === 1 && 'active'} onClick={() => this.setState({ tab: 1 })}>Графики</Button>
+          <Button className={this.state.tab === 2 && 'active'} onClick={() => this.setState({ tab: 2 })}>Трекинг</Button>
         </ButtonGroup>
-        {menu === 0 && this.renderInfo()}
-        {menu === 1 && this.renderGraphs()}
-        {menu === 2 && this.renderTracking()}
+        {tab === 0 && this.renderInfo()}
+        {tab === 1 && this.renderGraphs()}
+        {tab === 2 && this.renderTracking()}
         {/* <FuelChart from={this.state.from_dt} to={this.state.to_dt} id={car.id}/>*/}
         {/* <SpeedChart track={marker.hasTrackLoaded() && marker.track} />*/}
       </div>

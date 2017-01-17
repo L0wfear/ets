@@ -362,7 +362,7 @@ export default class DataTable extends React.Component {
             isValid = false;
           }
         } else if (typeof obj[key] === 'boolean') {
-          if (value.map(v => typeof v === 'string' ? v === 'true' : !!parseInt(v, 10)).indexOf(obj[key]) === -1) {
+          if (value.map(v => typeof v === 'string' ? v === 'true' || v === '1' : !!parseInt(v, 10)).indexOf(obj[key]) === -1) {
             isValid = false;
           }
         } else if (value.indexOf(obj[key].toString()) === -1) {

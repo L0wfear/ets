@@ -91,6 +91,7 @@ export default class OpenLayersMap extends Component {
     map.enableInteractions = this.enableInteractions.bind(this);
 
     this.map = map;
+    map.set('parent', this);
     this.map.projectToPixel = coordinates => projectToPixel(this.map, coordinates);
 
     this.state = {
@@ -170,8 +171,23 @@ export default class OpenLayersMap extends Component {
     el.style.cursor = changeCursor || hit ? 'pointer' : '';
   }
 
+  async handleFeatureClick(track, possibleTrackPoint) {
+    const pointCoords = possibleTrackPoint.coords_msk;
+    let prevPoint = null;
+    let nextPoint = null;
+    track.points.forEach((point, i) => {
+      if (point.coords === possibleTrackPoint.coords) {
+        nextPoint = track.points[i + 1] ? track.points[i + 1] : null;
+        prevPoint = track.points[i - 1] ? track.points[i - 1] : null;
+      }
+    });
+    // console.log( 'trackpoint  found', possibleTrackPoint);
+    const makePopupFn = await track.getTrackPointTooltip(this.props.flux, possibleTrackPoint, prevPoint, nextPoint);
+    this.popup.show(pointCoords, makePopupFn());
+  }
 
-  async onClick(ev) {
+
+  onClick(ev) {
     const map = this.map;
     const pixel = ev.pixel; // координаты клика во viewport
     const coordinate = ev.coordinate;
@@ -186,18 +202,7 @@ export default class OpenLayersMap extends Component {
         const track = marker.track;
         const possibleTrackPoint = track.getPointAtCoordinate(coordinate);
         if (possibleTrackPoint !== null) {
-          const pointCoords = possibleTrackPoint.coords_msk;
-          let prevPoint = null;
-          let nextPoint = null;
-          track.points.forEach((point, i) => {
-            if (point.coords === possibleTrackPoint.coords) {
-              nextPoint = track.points[i + 1] ? track.points[i + 1] : null;
-              prevPoint = track.points[i - 1] ? track.points[i - 1] : null;
-            }
-          });
-          // console.log( 'trackpoint  found', possibleTrackPoint);
-          const makePopupFn = await track.getTrackPointTooltip(this.props.flux, possibleTrackPoint, prevPoint, nextPoint);
-          this.popup.show(pointCoords, makePopupFn());
+          this.handleFeatureClick(track, possibleTrackPoint);
           return;
         }
       }

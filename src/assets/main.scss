@@ -2161,8 +2161,18 @@ body {
 
   &-menu {
     width: 100%;
+    margin-bottom: 4px;
     .btn {
       width: 32.9%;
+    }
+    .btn:not(:last-child) {
+      margin-right: 4px;
+    }
+  }
+  &-graph-menu {
+    width: 100%;
+    .btn {
+      width: 49.66%;
     }
     .btn:not(:last-child) {
       margin-right: 4px;

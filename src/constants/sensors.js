@@ -1,0 +1,28 @@
+const data = {
+  0: {
+    color: 'rgba(43, 18, 242, 1)',
+    ratio: 0.9,
+  },
+  1: {
+    color: 'rgba(130, 18, 242, 1)',
+    ratio: 0.8,
+  },
+  2: {
+    color: 'rgba(242, 18, 173, 1)',
+    ratio: 0.7,
+  },
+  3: {
+    color: 'rgba(18, 242, 229, 1)',
+    ratio: 0.6,
+  },
+  4: {
+    color: 'rgba(242, 240, 18, 1)',
+    ratio: 0.5,
+  },
+};
+
+
+export const sensorsMapOptions = (index, maxSpeed) => ({
+  color: data[index].color,
+  value: maxSpeed * data[index].ratio,
+})

@@ -570,13 +570,13 @@ export default class Track {
 
 
   // TODO refactor
-  async getTrackPointTooltip(flux, trackPoint, prevPoint, nextPoint) {
-    let event = {
+  async getTrackPointTooltip(flux, trackPoint, prevPoint, nextPoint, forceEvent) {
+    const event = {
       data: null,
       id: null,
     };
     Object.keys(this.events).forEach((k) => {
-      if (this.sensorsState.level.includes(k)) {
+      if (forceEvent || this.sensorsState.level.includes(k)) {
         event.data = this.events[k].find(p => p.start_point.coords_msk[0] === trackPoint.coords_msk[1] && p.start_point.coords_msk[1] === trackPoint.coords_msk[0]);
         event.id = k;
       }

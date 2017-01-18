@@ -178,23 +178,15 @@ export default class CarInfo extends Component {
     view.fit(extent, map.getSize(), { padding: [50, 550, 50, 50] });
   }
 
-  showOnMap(timestamp, e) {
-    const threshold = e.point.series.closestPointRange ? e.point.series.closestPointRange : 0;
+  showOnMap(timestamp, e, event) {
+    const threshold = e && e.point.series.closestPointRange ? e.point.series.closestPointRange : 0;
     const points = this.props.car.marker.track.points.filter(p => (timestamp >= p.timestamp - threshold) && (timestamp <= p.timestamp + threshold));
     const point = points.length === 1 ? points[0] : points.reduce((prev, curr) => (Math.abs(curr.speed_avg - e.point.y) < Math.abs(prev.speed_avg - e.point.y) ? curr : prev));
     const extent = [point.coords_msk[0], point.coords_msk[1], point.coords_msk[0], point.coords_msk[1]];
     const map = this.props.car.marker.map;
     const track = this.props.car.marker.track;
     map.getView().fit(extent, map.getSize(), { padding: [50, 550, 50, 50], maxZoom: 13 });
-    map.get('parent').handleFeatureClick(track, point);
-  }
-
-  showOnMapEvent(d) {
-    const map = this.props.car.marker.map;
-    const track = this.props.car.marker.track;
-    const extent = [d.start_point.coords_msk[1], d.start_point.coords_msk[0], d.start_point.coords_msk[1], d.start_point.coords_msk[0]];
-    map.getView().fit(extent, map.getSize(), { padding: [50, 550, 50, 50], maxZoom: 13 });
-    map.get('parent').handleEventClick(track, d);
+    map.get('parent').handleFeatureClick(track, point, event);
   }
 
   toggleSensor(field, id) {
@@ -384,7 +376,7 @@ export default class CarInfo extends Component {
 
   renderEventTable(data) {
     const rows = data.map((d, i) => (
-      <tr key={i} onClick={() => this.showOnMapEvent(d)}>
+      <tr key={i} onClick={() => this.showOnMap(d.start_point.timestamp, null, true)}>
         <td>{d.date}</td>
         <td>{d.type_name}</td>
         <td>{d.value}</td>

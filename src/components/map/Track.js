@@ -6,9 +6,8 @@ import { TRACK_COLORS, TRACK_LINE_OPACITY, TRACK_LINE_WIDTH, TRACK_POINT_RADIUS,
 import { sensorsMapOptions } from 'constants/sensors.js';
 import { getTrackPointByColor } from '../../icons/track/points.js';
 import ParkingIcon from '../../icons/track/parking.svg';
-import FuelIcon1 from '../../icons/track/oil-01.jpeg';
-import FuelIcon2 from '../../icons/track/oil-02.jpeg';
-import FuelIcon3 from '../../icons/track/oil-03.jpeg';
+import FuelIcon1 from '../../icons/track/oil-01.png';
+import FuelIcon2 from '../../icons/track/oil-02.png';
 
 const DRAW_POINTS = true;
 const COLORS_ZOOM_THRESHOLD = 6;
@@ -55,17 +54,16 @@ export default class Track {
       equipment: [],
     };
     this.parkings = [];
+    this.events = {};
 
     this.parkingIcon = new Image();
     this.parkingIcon.src = ParkingIcon;
 
-    this.fuelIcons = [];
-    this.fuelIcons[0] = new Image();
-    this.fuelIcons[0].src = FuelIcon1;
-    this.fuelIcons[1] = new Image();
-    this.fuelIcons[1].src = FuelIcon2;
-    this.fuelIcons[2] = new Image();
-    this.fuelIcons[2].src = FuelIcon3;
+    this.fuelIcons = {};
+    this.fuelIcons.leak = new Image();
+    this.fuelIcons.leak.src = FuelIcon2;
+    this.fuelIcons.refill = new Image();
+    this.fuelIcons.refill.src = FuelIcon1;
 
     this.continuousUpdating = true;
     this.onUpdateCallback = () => {};
@@ -175,6 +173,7 @@ export default class Track {
     return flux.getActions('cars').getTrack(id, from_dt, to_dt)
                 .then((obj) => {
                   this.parkings = obj.parkings;
+                  this.events = obj.events;
                   this.points = obj.track;
                   this.sensors = obj.sensors;
                   this.continuousUpdating = updating;
@@ -215,27 +214,17 @@ export default class Track {
   }
 
   renderFuelEvents() {
-    const { ctx, points } = this;
+    const { ctx, events } = this;
     const iconSize = 20 * window.devicePixelRatio;
-    if (points.length) {
-      points.forEach((p) => {
-        if (p.sensors && p.sensors.level) {
-          p.sensors.level.forEach((s) => {
-            if (this.sensorsState.level.includes(`${s.id}`)) {
-              console.log(s)
-              //распознать тип ситуации
-              //отрисовать соответствующую иконку
-              // ctx.drawImage(this.fuelIcons[type],
-              //   coords.x - iconSize / 2,
-              //   coords.y - iconSize / 2,
-              //   iconSize,
-              //   iconSize,
-              // );
-            }
-          });
-        }
-      })
-    }
+    Object.keys(events).forEach(k => this.sensorsState.level.includes(k) && events[k].forEach((e) => {
+      const coords = this.map.projectToPixel(swapCoords(e.start_point.coords_msk));
+      ctx.drawImage(this.fuelIcons[e.type],
+        coords.x - iconSize / 2,
+        coords.y - iconSize / 2,
+        iconSize,
+        iconSize,
+      );
+    }));
   }
 
   renderSimple() {
@@ -509,6 +498,19 @@ export default class Track {
       }
     });
 
+    Object.keys(this.events).forEach(k => this.sensorsState.level.includes(k) && this.events[k].forEach((p) => {
+      const point = p.start_point;
+      const pixelCoords = this.map.projectToPixel(swapCoords(point.coords_msk));
+      const radius = 20;
+
+      const dx = pixelCoords.x - projectedPixel.x;
+      const dy = pixelCoords.y - projectedPixel.y;
+
+      if (dx * dx + dy * dy < radius * radius) {
+        selected = viewportPoints.find(p => p.coords_msk[0] === point.coords_msk[1] && p.coords_msk[1] === point.coords_msk[0]);
+      }
+    }));
+
 
     return selected;
   }
@@ -546,9 +548,42 @@ export default class Track {
     `;
   }
 
+  makeEventPopup(event, id) {
+    const type = event.type === 'leak' ? 'Слив топлива' : 'Заправка топлива';
+    const value = event.val;
+    const start = `${makeDate(new Date(event.start_point.timestamp * 1000))} ${makeTime(new Date(event.start_point.timestamp * 1000), true)}`;
+    const diff = secondsToTime(event.end_point.timestamp - event.start_point.timestamp);
+    return () => `
+      <div style="font-weight: normal;">
+        <div class="header" style="padding-left: 10px;">
+          ${type}:
+        </div>
+        <div style="padding:10px;">
+          <div><b>Датчик:</b> ${id}</div>
+          <div><b>Кол-во:</b> ${Math.abs(value)} л</div>
+          <div><b>Дата и время:</b> ${start}</div>
+          <div><b>Потраченное время:</b> ${diff}</div>
+        </div>
+      </div>
+    `;
+  }
+
 
   // TODO refactor
   async getTrackPointTooltip(flux, trackPoint, prevPoint, nextPoint) {
+    let event = {
+      data: null,
+      id: null,
+    };
+    Object.keys(this.events).forEach((k) => {
+      if (this.sensorsState.level.includes(k)) {
+        event.data = this.events[k].find(p => p.start_point.coords_msk[0] === trackPoint.coords_msk[1] && p.start_point.coords_msk[1] === trackPoint.coords_msk[0]);
+        event.id = k;
+      }
+    });
+    if (event.data) {
+      return this.makeEventPopup(event.data, event.id);
+    }
     const parking = this.parkings.find(p => p.start_point.coords_msk[0] === trackPoint.coords_msk[1] && p.start_point.coords_msk[1] === trackPoint.coords_msk[0]);
     if (parking) {
       return this.makeParkingPopup(parking);

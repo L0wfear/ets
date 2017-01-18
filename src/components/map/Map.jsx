@@ -189,6 +189,9 @@ export default class OpenLayersMap extends Component {
     this.popup.show(pointCoords, makePopupFn());
   }
 
+  handleEventClick(track, point) {
+    this.popup.show([point.start_point.coords_msk[1], point.start_point.coords_msk[0]], track.makeEventPopup(point, point.id)());
+  }
 
   onClick(ev) {
     const map = this.map;

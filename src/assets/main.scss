@@ -2191,6 +2191,30 @@ body {
       width: auto;
     }
   }
+
+  &-event-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 2px;
+    margin-bottom: 30px;
+    thead {
+      background: #555;
+      color: white;
+      tr {
+        td {
+          width: 33%;
+          padding: 4px;
+        }
+      }
+    }
+    tbody {
+      td {
+        cursor: pointer;
+        border-bottom: 1px solid #DDD;
+        padding: 4px;
+      }
+    }
+  }
 }
 
 .feature-info {

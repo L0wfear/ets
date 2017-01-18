@@ -4,7 +4,7 @@ import find from 'lodash/find';
 import groupBy from 'lodash/groupBy';
 import flatten from 'lodash/flatten';
 import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
-import { makeDateFromUnix, getStartOfToday, makeUnixTime, secondsToTime } from 'utils/dates';
+import { makeDateFromUnix, getStartOfToday, makeUnixTime, secondsToTime, makeDate, makeTime } from 'utils/dates';
 import { sensorsMapOptions } from 'constants/sensors.js';
 import Panel from 'components/ui/Panel.jsx';
 import DatePicker from 'components/ui/DatePicker.jsx';
@@ -185,8 +185,16 @@ export default class CarInfo extends Component {
     const extent = [point.coords_msk[0], point.coords_msk[1], point.coords_msk[0], point.coords_msk[1]];
     const map = this.props.car.marker.map;
     const track = this.props.car.marker.track;
-    map.getView().fit(extent, map.getSize(), { padding: [50, 550, 50, 50] });
+    map.getView().fit(extent, map.getSize(), { padding: [50, 550, 50, 50], maxZoom: 13 });
     map.get('parent').handleFeatureClick(track, point);
+  }
+
+  showOnMapEvent(d) {
+    const map = this.props.car.marker.map;
+    const track = this.props.car.marker.track;
+    const extent = [d.start_point.coords_msk[1], d.start_point.coords_msk[0], d.start_point.coords_msk[1], d.start_point.coords_msk[0]];
+    map.getView().fit(extent, map.getSize(), { padding: [50, 550, 50, 50], maxZoom: 13 });
+    map.get('parent').handleEventClick(track, d);
   }
 
   toggleSensor(field, id) {
@@ -324,7 +332,7 @@ export default class CarInfo extends Component {
   }
 
   renderFuelChart() {
-    const { points } = this.props.car.marker.track;
+    const { points, events } = this.props.car.marker.track;
     if (!points) return 'Загрузка...';
     if (!points.length) return 'Нет данных';
     const timestamps = points.map(p => p.timestamp);
@@ -354,7 +362,48 @@ export default class CarInfo extends Component {
       d.data = d.data.map((v, i) => [timestamps[i], v]);
       return d;
     });
-    return <LineChart name="fuelChart" data={data} onClick={e => this.showOnMap(e.point.x, e)} />;
+
+    let sumEvents = [];
+    Object.keys(events).forEach((k) => {
+      events[k].forEach(e => e.id = k);
+      sumEvents = sumEvents.concat(events[k]);
+    });
+    sumEvents = sumEvents.map(e => ({
+      ...e,
+      date: `${makeDate(new Date(e.start_point.timestamp * 1000))} ${makeTime(new Date(e.start_point.timestamp * 1000), true)}`,
+      type_name: e.type === 'leak' ? 'Слив' : 'Заправка',
+      value: `${Math.abs(e.val)} л`,
+    }));
+    return (
+      <div>
+        <LineChart name="fuelChart" data={data} onClick={e => this.showOnMap(e.point.x, e)} />
+        {this.renderEventTable(sumEvents)}
+      </div>
+    );
+  }
+
+  renderEventTable(data) {
+    const rows = data.map((d, i) => (
+      <tr key={i} onClick={() => this.showOnMapEvent(d)}>
+        <td>{d.date}</td>
+        <td>{d.type_name}</td>
+        <td>{d.value}</td>
+      </tr>
+    ));
+    return (
+      <table className="car-info-event-table">
+        <thead>
+          <tr>
+            <td>Дата и время</td>
+            <td>Событие</td>
+            <td>Уровень</td>
+          </tr>
+        </thead>
+        <tbody>
+          {rows}
+        </tbody>
+      </table>
+    );
   }
 
   renderCharts() {
@@ -448,10 +497,10 @@ export default class CarInfo extends Component {
       <div>
         <div className="car-info-sensors-toggle">
           <label>Датчики уровня топлива</label>
-          {fuelIdList.map((id, i) => (
+          {fuelIdList.map(id => (
             <div key={id} onClick={() => this.toggleSensor('level', id)}>
-              <input type="checkbox" checked={this.state.sensors.level.includes(id) && 'checked'} />
-              {` ДУТ №${i + 1}`}
+              <input type="checkbox" onChange={() => {}} checked={this.state.sensors.level.includes(id) && 'checked'} />
+              {` ДУТ №${id}`}
             </div>
           ))}
         </div>
@@ -459,7 +508,7 @@ export default class CarInfo extends Component {
           <label>Датчики навесного оборудования</label>
           {equipmentIdList.map((id, i) => (
             <div key={id} onClick={() => this.toggleSensor('equipment', id)}>
-              <input type="checkbox" checked={this.state.sensors.equipment.includes(id) && 'checked'} />
+              <input type="checkbox" onChange={() => {}} checked={this.state.sensors.equipment.includes(id) && 'checked'} />
               {` Датчик №${i + 1}`}
             </div>
           ))}

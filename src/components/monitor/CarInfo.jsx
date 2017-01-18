@@ -263,6 +263,8 @@ export default class CarInfo extends Component {
 
   renderSpeedGraph() {
     const { points } = this.props.car.marker.track;
+    if (!points) return 'Загрузка...';
+    if (!points.length) return 'Нет данных';
     const timestamps = points.map(p => p.timestamp);
     const sensorsData = [];
     let sensorsList = points.filter(p => p.sensors && p.sensors.equipment).map((p) => {
@@ -286,8 +288,6 @@ export default class CarInfo extends Component {
         }),
       });
     });
-
-    if (!points) return <Panel>Загрузка...</Panel>;
     const data = [
       {
         name: 'Скорость ТС',

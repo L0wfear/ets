@@ -115,10 +115,6 @@ export default class OpenLayersMap extends Component {
     this.enableInteractions();
   }
 
-  componentWillUnmount() {
-    this.disableInteractions();
-  }
-
   componentWillReceiveProps(nextProps) {
     const hasPoints = nextProps.points !== undefined;
     const hasPolys = nextProps.polys !== undefined;
@@ -135,8 +131,15 @@ export default class OpenLayersMap extends Component {
     }
   }
 
-  triggerRender() {
-    this.canvasLayer.getSource().changed();
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state.zoom !== nextState.zoom) {
+      return true;
+    }
+    return false;
+  }
+
+  componentWillUnmount() {
+    this.disableInteractions();
   }
 
   onMouseMove(ev) {
@@ -350,6 +353,10 @@ export default class OpenLayersMap extends Component {
     return canvas;
   }
 
+  triggerRender() {
+    this.canvasLayer.getSource().changed();
+  }
+
   enableInteractions() {
     const map = this.map;
     const interactions = map.getInteractions();
@@ -448,14 +455,6 @@ export default class OpenLayersMap extends Component {
       }
     }
     this.triggerRender();
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    // Делаем ререндер компонента только в случае изменения зума для передачи в легенду
-    if (this.state.zoom !== nextState.zoom) {
-      return true;
-    }
-    return false;
   }
 
   render() {

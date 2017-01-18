@@ -35,7 +35,14 @@ class MonitorPage extends Component {
 
   render() {
     return (
-      <div>
+      <div
+        style={{
+          position: 'fixed',
+          width: '100%',
+          top: 0,
+          bottom: '30px',
+        }}
+      >
 
         <Toolbar />
 

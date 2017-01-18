@@ -592,12 +592,11 @@ body.application {
   padding: 0px 10px;
   position: absolute;
   top: 48px;
+  bottom: 0;
   width: 500px;
   background-color: rgba(#f2f2f2, 0.8);
-  height: 100%;
   box-shadow: 0 0 3px rgba(#000, 0.3);
   right: 0;
-  height: 100%;
   overflow: auto;
 
   &-sm {
@@ -2268,7 +2267,7 @@ body {
   background-color: rgba(0, 0, 0, 0.75);
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
   border-radius: 6px;
-  top: 305px;
+  top: 370px;
   left: 20px;
   z-index: 9999;
 

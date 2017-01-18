@@ -49,14 +49,14 @@ const getTableMeta = (props) => {
         cssClassName: 'width60',
       },
       {
-        name: 'order_status_name',
+        name: 'order_status_id',
         displayName: 'Статус',
         type: 'string',
         filter: {
           type: 'multiselect',
           options: [
-            { label: 'Опубликовано', value: 'Опубликовано' },
-            { label: 'Отменено', value: 'Отменено' },
+            { label: 'Опубликовано', value: 2 },
+            { label: 'Отменено', value: 3 },
           ],
         },
       },
@@ -78,6 +78,7 @@ const getTableMeta = (props) => {
 
 export default (props) => {
   const renderers = {
+    order_status_id: ({ data }) => <div>{data === 2 ? 'Опубликовано' : 'Отменено'}</div>,
     order_date: ({ data }) => <DateFormatter date={data} time empty={'Не указано'} />,
     order_date_to: ({ data }) => <DateFormatter date={data} time empty={'Не указано'} />,
     create_date: ({ data }) => <DateFormatter date={data} time empty={'Не указано'} />,

@@ -92,7 +92,7 @@ const tableMeta = {
       type: 'text',
       filter: {
         type: 'select',
-        labelFunction: l => l ? 'Да' : 'Нет'
+        options: [{ label: 'Да', value: 1 }, { label: 'Нет', value: 0 }],
       },
     },
   ],

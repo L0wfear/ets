@@ -15,17 +15,19 @@ const tableMeta = {
       name: 'measure_unit_name', //unit
       displayName: 'Единица измерения',
       type: 'text',
-      filter: false,
-    },
-    {
-      name: 'consumable_material',
-      display: false,
-      displayName: 'Расходный материал',
       filter: {
         type: 'multiselect',
-        labelFunction: consumable_material => consumable_material ? 'Да' : 'Нет',
       },
     },
+    // {
+    //   name: 'consumable_material',
+    //   display: false,
+    //   displayName: 'Расходный материал',
+    //   filter: {
+    //     type: 'multiselect',
+    //     labelFunction: consumable_material => consumable_material ? 'Да' : 'Нет',
+    //   },
+    // },
   ],
 };
 

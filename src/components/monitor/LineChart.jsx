@@ -37,6 +37,10 @@ export default class LineChart extends Component {
         y: 220,
       },
 
+      credits: {
+        enabled: false,
+      },
+
       plotOptions: {
         line: {
           connectNulls: false,

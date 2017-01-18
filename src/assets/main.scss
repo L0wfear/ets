@@ -1933,8 +1933,6 @@ body {
 }
 
 .ol-popup {
-
-  width: 405px;
   white-space: nowrap;
   font-weight: 200;
   padding: 0px !important;
@@ -2169,7 +2167,7 @@ body {
       margin-right: 4px;
     }
   }
-  &-graph-menu {
+  &-chart-menu {
     width: 100%;
     .btn {
       width: 49.66%;
@@ -2181,12 +2179,16 @@ body {
 
   &-sensors-toggle {
     text-align: left;
+    margin-bottom: 10px;
     label {
       font-weight: normal;
       font-style: italic;
+      margin-left: -20px;
     }
-    div {
-      padding-left: 20px;
+    padding-left: 25px;
+    div, input {
+      cursor: pointer;
+      width: auto;
     }
   }
 }

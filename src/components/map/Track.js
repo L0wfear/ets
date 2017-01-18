@@ -533,13 +533,15 @@ export default class Track {
     const end = `${makeDate(new Date(parking.end_point.timestamp * 1000))} ${makeTime(new Date(parking.end_point.timestamp * 1000), true)}`;
     const diff = secondsToTime(parking.end_point.timestamp - parking.start_point.timestamp);
     return () => `
-      <div>
-        <div class="header">
-          <span class="gov-number">Зона стоянки:</span>
+      <div style="font-weight: normal;">
+        <div class="header" style="padding-left: 10px;">
+          Зона стоянки:
         </div>
-        <div class="geo-objects">Начало: ${start}</div>
-        <div class="geo-objects">Конец: ${end}</div>
-        <div class="geo-objects">Время стоянки: ${diff}</div>
+        <div style="padding:10px;">
+          <div><b>Начало:</b> ${start}</div>
+          <div><b>Конец:</b> ${end}</div>
+          <div><b>Время стоянки:</b> ${diff}</div>
+        </div>
       </div>
     `;
   }

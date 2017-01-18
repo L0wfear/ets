@@ -42,7 +42,7 @@ export default class CarInfo extends Component {
       tillNow: true,
       car: {},
       tab: 0,
-      graphTab: 0,
+      chartTab: 0,
       sensors: {
         equipment: [],
         level: [],
@@ -278,7 +278,7 @@ export default class CarInfo extends Component {
     );
   }
 
-  renderSpeedGraph() {
+  renderSpeedChart() {
     const { points } = this.props.car.marker.track;
     if (!points) return 'Загрузка...';
     if (!points.length) return 'Нет данных';
@@ -323,7 +323,7 @@ export default class CarInfo extends Component {
     return <LineChart name="speedChart" data={data} onClick={e => this.showOnMap(e.point.x, e)} />;
   }
 
-  renderFuelGraph() {
+  renderFuelChart() {
     const { points } = this.props.car.marker.track;
     if (!points) return 'Загрузка...';
     if (!points.length) return 'Нет данных';
@@ -357,15 +357,15 @@ export default class CarInfo extends Component {
     return <LineChart name="fuelChart" data={data} onClick={e => this.showOnMap(e.point.x, e)} />;
   }
 
-  renderGraphs() {
+  renderCharts() {
     return (
       <div>
-        <ButtonGroup className="car-info-graph-menu">
-          <Button className={!this.state.graphTab && 'active'} onClick={() => this.setState({ graphTab: 0 })}>Датчики топлива</Button>
-          <Button className={this.state.graphTab && 'active'} onClick={() => this.setState({ graphTab: 1 })}>Датчики скорости</Button>
+        <ButtonGroup className="car-info-chart-menu">
+          <Button className={!this.state.chartTab && 'active'} onClick={() => this.setState({ chartTab: 0 })}>Датчики топлива</Button>
+          <Button className={this.state.chartTab && 'active'} onClick={() => this.setState({ chartTab: 1 })}>Датчики скорости</Button>
         </ButtonGroup>
         <Panel>
-          {this.state.graphTab ? this.renderSpeedGraph() : this.renderFuelGraph()}
+          {this.state.chartTab ? this.renderSpeedChart() : this.renderFuelChart()}
         </Panel>
       </div>
     );
@@ -415,7 +415,8 @@ export default class CarInfo extends Component {
               Протяженность, км: <span className="value">{isTrackLoaded && marker.track.getDistance()}</span>
             </div>
           </div>
-
+        </Panel>
+        <Panel title="Проигрывание трека">
           <div className="track-player">
             <Button onClick={this.toggleTrackPlaying}><Glyphicon glyph={this.state.trackPaused ? 'play' : 'pause'} /></Button>
             <Button disabled={this.state.trackPaused === 'stopped'} onClick={this.stopTrackPlaying}><Glyphicon glyph={'stop'} /></Button>
@@ -448,8 +449,8 @@ export default class CarInfo extends Component {
         <div className="car-info-sensors-toggle">
           <label>Датчики уровня топлива</label>
           {fuelIdList.map((id, i) => (
-            <div key={id}>
-              <input type="checkbox" checked={this.state.sensors.level.includes(id) && 'checked'} onClick={() => this.toggleSensor('level', id)} />
+            <div key={id} onClick={() => this.toggleSensor('level', id)}>
+              <input type="checkbox" checked={this.state.sensors.level.includes(id) && 'checked'} />
               {` ДУТ №${i + 1}`}
             </div>
           ))}
@@ -457,8 +458,8 @@ export default class CarInfo extends Component {
         <div className="car-info-sensors-toggle">
           <label>Датчики навесного оборудования</label>
           {equipmentIdList.map((id, i) => (
-            <div key={id}>
-              <input type="checkbox" checked={this.state.sensors.equipment.includes(id) && 'checked'} onClick={() => this.toggleSensor('equipment', id)} />
+            <div key={id} onClick={() => this.toggleSensor('equipment', id)}>
+              <input type="checkbox" checked={this.state.sensors.equipment.includes(id) && 'checked'} />
               {` Датчик №${i + 1}`}
             </div>
           ))}
@@ -488,7 +489,7 @@ export default class CarInfo extends Component {
           <Button className={this.state.tab === 2 && 'active'} onClick={() => this.setState({ tab: 2 })}>Трекинг</Button>
         </ButtonGroup>
         {tab === 0 && this.renderInfo()}
-        {tab === 1 && this.renderGraphs()}
+        {tab === 1 && this.renderCharts()}
         {tab === 2 && this.renderTracking()}
         {/* <FuelChart from={this.state.from_dt} to={this.state.to_dt} id={car.id}/>*/}
         {/* <SpeedChart track={marker.hasTrackLoaded() && marker.track} />*/}

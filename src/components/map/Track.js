@@ -3,8 +3,12 @@ import { getStartOfToday, makeDate, makeTime, secondsToTime } from 'utils/dates'
 import { swapCoords, roundCoordinates } from 'utils/geo';
 import { isEmpty, hexToRgba } from 'utils/functions';
 import { TRACK_COLORS, TRACK_LINE_OPACITY, TRACK_LINE_WIDTH, TRACK_POINT_RADIUS, SHOW_ONLY_POINTS_WITH_SPEED_CHANGES } from 'constants/track.js';
+import { sensorsMapOptions } from 'constants/sensors.js';
 import { getTrackPointByColor } from '../../icons/track/points.js';
 import ParkingIcon from '../../icons/track/parking.svg';
+import FuelIcon1 from '../../icons/track/oil-01.jpeg';
+import FuelIcon2 from '../../icons/track/oil-02.jpeg';
+import FuelIcon3 from '../../icons/track/oil-03.jpeg';
 
 const DRAW_POINTS = true;
 const COLORS_ZOOM_THRESHOLD = 6;
@@ -33,6 +37,7 @@ export function getTrackColor(speed, maxSpeed, opacity = 1) {
 /**
  * Трек на карте
  */
+ // TODO РЕФАКТОР!!!!
 export default class Track {
 
   constructor(owner) {
@@ -45,9 +50,23 @@ export default class Track {
     this.owner = owner;
 
     this.points = null;
+    this.sensorsState = {
+      level: [],
+      equipment: [],
+    };
     this.parkings = [];
+
     this.parkingIcon = new Image();
     this.parkingIcon.src = ParkingIcon;
+
+    this.fuelIcons = [];
+    this.fuelIcons[0] = new Image();
+    this.fuelIcons[0].src = FuelIcon1;
+    this.fuelIcons[1] = new Image();
+    this.fuelIcons[1].src = FuelIcon2;
+    this.fuelIcons[2] = new Image();
+    this.fuelIcons[2].src = FuelIcon3;
+
     this.continuousUpdating = true;
     this.onUpdateCallback = () => {};
   }
@@ -172,6 +191,7 @@ export default class Track {
     if (zoom > COLORS_ZOOM_THRESHOLD) {
       this.renderInColors(speed);
       this.renderParkings();
+      this.renderFuelEvents();
     } else {
       this.renderSimple();
     }
@@ -191,6 +211,30 @@ export default class Track {
           iconSize,
         );
       });
+    }
+  }
+
+  renderFuelEvents() {
+    const { ctx, points } = this;
+    const iconSize = 20 * window.devicePixelRatio;
+    if (points.length) {
+      points.forEach((p) => {
+        if (p.sensors && p.sensors.level) {
+          p.sensors.level.forEach((s) => {
+            if (this.sensorsState.level.includes(`${s.id}`)) {
+              console.log(s)
+              //распознать тип ситуации
+              //отрисовать соответствующую иконку
+              // ctx.drawImage(this.fuelIcons[type],
+              //   coords.x - iconSize / 2,
+              //   coords.y - iconSize / 2,
+              //   iconSize,
+              //   iconSize,
+              // );
+            }
+          });
+        }
+      })
     }
   }
 
@@ -311,13 +355,55 @@ export default class Track {
     ctx.moveTo(firstPoint.x, firstPoint.y);
 
     let prevRgbaColor = getTrackColor(track[0].speed_avg, this.maxSpeed, TRACK_LINE_OPACITY);
+
+    if (this.sensorsState.equipment.length) {
+      if (track[0].sensors && track[0].sensors.equipment) {
+        track[0].sensors.equipment.forEach((s, index) => {
+          if (this.sensorsState.equipment.includes(`${s.id}`)) {
+            prevRgbaColor = sensorsMapOptions(index).color;
+          }
+        });
+      } else {
+        prevRgbaColor = 'rgba(134, 134, 134, 1)';
+      }
+    }
+
     ctx.strokeStyle = prevRgbaColor;
 
     for (let i = 1, till = track.length - 1; i < till; i++) {
-      const coords = this.map.projectToPixel(track[i].coords_msk);
-      const speed = track[i].speed_avg;
-      const rgbaColor = getTrackColor(speed, this.maxSpeed, TRACK_LINE_OPACITY);
-      const hexColor = getTrackColor(speed, this.maxSpeed);
+      const p = track[i];
+      const coords = this.map.projectToPixel(p.coords_msk);
+      const speed = p.speed_avg;
+      let rgbaColor = getTrackColor(speed, this.maxSpeed, TRACK_LINE_OPACITY);
+      let hexColor = getTrackColor(speed, this.maxSpeed);
+
+      if (this.sensorsState.equipment.length) {
+        if (p.sensors && p.sensors.equipment) {
+          p.sensors.equipment.forEach((s, index) => {
+            if (this.sensorsState.equipment.includes(`${s.id}`)) {
+              rgbaColor = sensorsMapOptions(index).color;
+              hexColor = sensorsMapOptions(index).color;
+            }
+          });
+        } else {
+          rgbaColor = 'rgba(134, 134, 134, 1)';
+          hexColor = '#8b8888';
+        }
+      }
+
+      if (this.sensorsState.equipment.length) {
+        if (p.sensors && p.sensors.equipment) {
+          p.sensors.equipment.forEach((s, index) => {
+            if (this.sensorsState.equipment.includes(`${s.id}`)) {
+              rgbaColor = sensorsMapOptions(index).color;
+              hexColor = sensorsMapOptions(index).color;
+            }
+          });
+        } else {
+          rgbaColor = 'rgba(134, 134, 134, 1)';
+          hexColor = '#8b8888';
+        }
+      }
 
       // если предыдущий цвет не соответствует новому
       // нужно закрыть предыдущую линию

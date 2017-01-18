@@ -22,7 +22,7 @@ const data = {
 };
 
 
-export const sensorsMapOptions = (index, maxSpeed) => ({
+export const sensorsMapOptions = (index, maxSpeed = 0) => ({
   color: data[index].color,
   value: maxSpeed * data[index].ratio,
 })

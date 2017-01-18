@@ -2178,6 +2178,17 @@ body {
       margin-right: 4px;
     }
   }
+
+  &-sensors-toggle {
+    text-align: left;
+    label {
+      font-weight: normal;
+      font-style: italic;
+    }
+    div {
+      padding-left: 20px;
+    }
+  }
 }
 
 .feature-info {

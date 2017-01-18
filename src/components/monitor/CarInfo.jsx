@@ -42,7 +42,11 @@ export default class CarInfo extends Component {
       tillNow: true,
       car: {},
       tab: 0,
-      graphTab: 1,
+      graphTab: 0,
+      sensors: {
+        equipment: [],
+        level: [],
+      },
     };
   }
 
@@ -185,6 +189,19 @@ export default class CarInfo extends Component {
     map.get('parent').handleFeatureClick(track, point);
   }
 
+  toggleSensor(field, id) {
+    const { sensors } = this.state;
+    const index = sensors[field].indexOf(id);
+    if (index > -1) {
+      sensors[field].splice(index, 1);
+    } else {
+      sensors[field].push(id);
+    }
+    this.props.car.marker.track.sensorsState = sensors;
+    this.props.car.marker.track.render();
+    this.setState({ sensors });
+  }
+
   renderMain() {
     const { imageUrl, trackingMode } = this.state;
     const { car } = this.props;
@@ -303,18 +320,48 @@ export default class CarInfo extends Component {
       d.data = d.data.map((v, i) => [timestamps[i], v]);
       return d;
     });
-    return <LineChart data={data} onClick={e => this.showOnMap(e.point.x, e)} />;
+    return <LineChart name="speedChart" data={data} onClick={e => this.showOnMap(e.point.x, e)} />;
   }
 
   renderFuelGraph() {
-    return <Panel>Загрузка...</Panel>;
+    const { points } = this.props.car.marker.track;
+    if (!points) return 'Загрузка...';
+    if (!points.length) return 'Нет данных';
+    const timestamps = points.map(p => p.timestamp);
+    const sensorsData = [];
+    let sensorsList = points.filter(p => p.sensors && p.sensors.level).map((p) => {
+      p.sensors.level.forEach((s) => { s.timestamp = p.timestamp; });
+      return p.sensors.level;
+    });
+    sensorsList = groupBy(flatten(sensorsList), s => s.id);
+    Object.keys(sensorsList).forEach((id, i) => {
+      const color = sensorsMapOptions(i).color;
+      const values = sensorsList[id].map(s => [s.timestamp, s.val]);
+      sensorsData.push({
+        name: `ДУТ №${i + 1}`,
+        connectNulls: false,
+        color,
+        data: timestamps.map((t) => {
+          const s = values.find(v => v[0] === t);
+          if (s && s[1]) {
+            return s[1];
+          }
+          return null;
+        }),
+      });
+    });
+    const data = sensorsData.map((d) => {
+      d.data = d.data.map((v, i) => [timestamps[i], v]);
+      return d;
+    });
+    return <LineChart name="fuelChart" data={data} onClick={e => this.showOnMap(e.point.x, e)} />;
   }
 
   renderGraphs() {
     return (
       <div>
         <ButtonGroup className="car-info-graph-menu">
-          <Button disabled className={!this.state.graphTab && 'active'} onClick={() => this.setState({ graphTab: 0 })}>Датчики топлива</Button>
+          <Button className={!this.state.graphTab && 'active'} onClick={() => this.setState({ graphTab: 0 })}>Датчики топлива</Button>
           <Button className={this.state.graphTab && 'active'} onClick={() => this.setState({ graphTab: 1 })}>Датчики скорости</Button>
         </ButtonGroup>
         <Panel>
@@ -383,6 +430,39 @@ export default class CarInfo extends Component {
             <dd>{marker.currentSpeed}</dd>
           </dl>}
         </Panel>
+        <Panel title="Отображение датчиков на треке">
+          {this.renderSensorsToggle()}
+        </Panel>
+      </div>
+    );
+  }
+
+  renderSensorsToggle() {
+    const { points } = this.props.car.marker.track;
+    if (!points) return 'Загрузка...';
+    if (!points.length) return 'Нет данных';
+    const equipmentIdList = Object.keys(groupBy(flatten(points.filter(p => p.sensors && p.sensors.equipment).map(p => p.sensors.equipment)), s => s.id));
+    const fuelIdList = Object.keys(groupBy(flatten(points.filter(p => p.sensors && p.sensors.level).map(p => p.sensors.level)), s => s.id));
+    return (
+      <div>
+        <div className="car-info-sensors-toggle">
+          <label>Датчики уровня топлива</label>
+          {fuelIdList.map((id, i) => (
+            <div key={id}>
+              <input type="checkbox" checked={this.state.sensors.level.includes(id) && 'checked'} onClick={() => this.toggleSensor('level', id)} />
+              {` ДУТ №${i + 1}`}
+            </div>
+          ))}
+        </div>
+        <div className="car-info-sensors-toggle">
+          <label>Датчики навесного оборудования</label>
+          {equipmentIdList.map((id, i) => (
+            <div key={id}>
+              <input type="checkbox" checked={this.state.sensors.equipment.includes(id) && 'checked'} onClick={() => this.toggleSensor('equipment', id)} />
+              {` Датчик №${i + 1}`}
+            </div>
+          ))}
+        </div>
       </div>
     );
   }

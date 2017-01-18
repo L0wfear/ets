@@ -11,7 +11,15 @@ export default class LineChart extends Component {
   }
 
   componentDidMount() {
-    this.createChart();
+    this.createChart(this.props);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.name !== this.props.name) {
+      this.chart.destroy();
+      this.chart = null;
+      this.createChart();
+    }
   }
 
   componentWillUnmount() {

@@ -66,6 +66,13 @@ export default class CarActions extends Actions {
       to_dt: makeUnixTime(to_dt),
       sensors: 1,
     };
+    // const payload = {
+    //   version: 3,
+    //   gps_code: 1017132,
+    //   from_dt: 1483293600,
+    //   to_dt: 1483343940,
+    //   sensors: 1,
+    // };
 
     return TrackService
       .get(payload)

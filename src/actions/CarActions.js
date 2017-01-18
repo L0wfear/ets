@@ -59,19 +59,13 @@ export default class CarActions extends Actions {
   }
 
   getTrack(id, from_dt, to_dt) {
-    // const payload = {
-    //   version: 3,
-    //   gps_code: id,
-    //   from_dt: makeUnixTime(from_dt),
-    //   to_dt: makeUnixTime(to_dt),
-    //   sensors: 1,
-    // };
     const payload = {
       version: 3,
-      gps_code: 1017132,
-      from_dt: 1483293600,
-      to_dt: 1483343940,
+      gps_code: id,
+      from_dt: makeUnixTime(from_dt),
+      to_dt: makeUnixTime(to_dt),
       sensors: 1,
+      test: 1, //временно
     };
 
     return TrackService

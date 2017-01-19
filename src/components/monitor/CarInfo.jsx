@@ -78,7 +78,14 @@ export default class CarInfo extends Component {
       if (car) {
         const car_id = car.asuods_id;
         const missions = await this.props.flux.getActions('cars').getCarMissions(car_id, this.state.from_dt, this.state.to_dt);
-        this.setState({ missions: missions.result, car });
+        this.setState({
+          missions: missions.result,
+          car,
+          sensors: {
+            equipment: [],
+            level: [],
+          },
+        });
       }
     }
   }
@@ -178,7 +185,7 @@ export default class CarInfo extends Component {
     view.fit(extent, map.getSize(), { padding: [50, 550, 50, 50] });
   }
 
-  showOnMap(timestamp, e, event) {
+  showOnMap(timestamp, e, event, d) {
     const threshold = e && e.point.series.closestPointRange ? e.point.series.closestPointRange : 0;
     const points = this.props.car.marker.track.points.filter(p => (timestamp >= p.timestamp - threshold) && (timestamp <= p.timestamp + threshold));
     const point = points.length === 1 ? points[0] : points.reduce((prev, curr) => (Math.abs(curr.speed_avg - e.point.y) < Math.abs(prev.speed_avg - e.point.y) ? curr : prev));
@@ -376,7 +383,7 @@ export default class CarInfo extends Component {
 
   renderEventTable(data) {
     const rows = data.map((d, i) => (
-      <tr key={i} onClick={() => this.showOnMap(d.start_point.timestamp, null, true)}>
+      <tr key={i} onClick={() => this.showOnMap(d.start_point.timestamp, null, true, d)}>
         <td>{d.date}</td>
         <td>{d.type_name}</td>
         <td>{d.value}</td>

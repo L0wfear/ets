@@ -577,14 +577,14 @@ export default class Track {
     };
     Object.keys(this.events).forEach((k) => {
       if (forceEvent || this.sensorsState.level.includes(k)) {
-        event.data = this.events[k].find(p => p.start_point.coords_msk[0] === trackPoint.coords_msk[1] && p.start_point.coords_msk[1] === trackPoint.coords_msk[0]);
+        event.data = this.events[k].find(p => p.start_point.timestamp === trackPoint.timestamp);
         event.id = k;
       }
     });
     if (event.data) {
       return this.makeEventPopup(event.data, event.id);
     }
-    const parking = this.parkings.find(p => p.start_point.coords_msk[0] === trackPoint.coords_msk[1] && p.start_point.coords_msk[1] === trackPoint.coords_msk[0]);
+    const parking = this.parkings.find(p => p.start_point.timestamp === trackPoint.timestamp);
     if (parking) {
       return this.makeParkingPopup(parking);
     }

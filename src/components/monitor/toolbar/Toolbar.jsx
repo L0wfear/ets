@@ -128,7 +128,7 @@ const ShowGeoobjectsCheckbox = (props) => {
       .forEach(g => setSelectedPolysType(g));
   }
 
-  const allSelected = selectedPolysTypes.length === Object.keys(GEOOBJECTS_TYPES).length;
+  const allSelected = selectedPolysTypes.length === Object.keys(GEOOBJECTS_TYPES).length - 1;
   const geoObjectsList = ['dt', 'odh', 'ssp', 'msp', 'carpool', 'fueling_water', 'danger_zone', 'pgm_store', 'snow_storage'].map((type, index) =>
      (
        <li key={index}>

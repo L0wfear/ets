@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { autobind } from 'core-decorators';
 import { Input } from 'react-bootstrap';
 import _ from 'lodash';
+import moment from 'moment';
 import EtsSelect from '../../EtsSelect.jsx';
 import Div from '../../Div.jsx';
 import Datepicker from '../../DatePicker.jsx';
@@ -65,7 +66,7 @@ export default class FilterRow extends React.Component {
         }
       }
       if (type === 'date') {
-        input = <Datepicker className="filter-datepicker" date={value} onChange={onChange} time={false} />;
+        input = <Datepicker className="filter-datepicker" date={value} onChange={v => onChange(moment(v).format('YYYY-MM-DD'))} time={false} />;
       }
       if (type === 'datetime') {
         input = <Datepicker className="filter-datepicker" date={value} onChange={onChange} time />;

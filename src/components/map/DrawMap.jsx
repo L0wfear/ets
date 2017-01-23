@@ -43,9 +43,11 @@ export default class DrawMap extends PolyMap {
     }
     if (nextProps.draw_object_list !== undefined && nextProps.objectsType === 'vector') {
       this.draw.setActive(false);
+      this.drawSetToEnd = true;
       this.renderRoute(nextProps.draw_object_list);
     }
     if (!nextProps.draw_object_list || nextProps.draw_object_list.length === 0) {
+      this.drawSetToEnd = false;
       this.draw.setActive(true);
     }
     if (nextProps.object_list !== undefined && nextProps.objectsType === 'points') {

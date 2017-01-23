@@ -17,7 +17,7 @@ export default class RouteForm extends Form {
 
     this.state = {
       ROUTE_TYPE_OPTIONS: [
-        { value: 'vector', label: 'Вручную' },
+        // { value: 'vector', label: 'Вручную' },
         { value: 'simple', label: 'Выбор из ОДХ' },
         { value: 'simple_dt', label: 'Выбор из ДТ' },
         { value: 'points', label: 'Выбор пунктов назначения' },
@@ -27,8 +27,17 @@ export default class RouteForm extends Form {
   }
 
   handleTypeChange(v) {
-    this.handleChange('type', v);
-    this.props.resetState();
+    if (['vector', 'simple'].includes(this.props.formState.type) && ['vector', 'simple'].includes(v)) {
+      this.handleChange('type', v);
+      const { polys, object_list } = this.props.formState;
+      _.each(object_list.filter(o => !!o.object_id), (o) => {
+        if (polys[o.object_id]) polys[o.object_id].state = o.state;
+      });
+      this.handleChange('polys', polys);
+    } else {
+      this.handleChange('type', v);
+      this.props.resetState();
+    }
   }
 
   setRouteTypeOptionsBasedOnTechnicalOperation(technical_operation_id, technicalOperationsList = this.props.technicalOperationsList, routeTypeValue = null, resetState = true) {
@@ -39,7 +48,7 @@ export default class RouteForm extends Form {
     technicalOperation.objects.forEach((obj) => {
       switch (obj.name) {
         case 'ОДХ':
-          route_type_options.push({ value: 'vector', label: 'Вручную' });
+          // route_type_options.push({ value: 'vector', label: 'Вручную' });
           route_type_options.push({ value: 'simple', label: 'Выбор из ОДХ' });
           if (!routeTypeValue) {
             routeTypeValue = 'simple';
@@ -186,7 +195,7 @@ export default class RouteForm extends Form {
                   type="select"
                   label="Способ построения маршрута"
                   options={ROUTE_TYPE_OPTIONS}
-                  value={state.type}
+                  value={state.type !== 'vector' ? state.type : 'simple'}
                   clearable={false}
                   disabled={this.state.routeTypeDisabled || state.copy}
                   onChange={this.handleTypeChange}
@@ -196,14 +205,25 @@ export default class RouteForm extends Form {
           </Row>
 
           <Row className={'routes-form-map-wrapper'}>
-            <Col md={12}>
-              <Div hidden={state.type !== 'simple' && state.type !== 'simple_dt'}>
-                <RouteCreating route={state} onChange={this.handleChange} />
-              </Div>
-              <Div hidden={state.type !== 'vector' && state.type !== 'points'}>
-                <RouteCreating route={state} manual onChange={this.handleChange} />
-              </Div>
-            </Col>
+            <Div hidden={!state.type}>
+              <Col md={12}>
+                <Div hidden={state.type !== 'simple' && state.type !== 'vector'} className="vector-toggle">
+                  <Button
+                    onClick={() => this.handleTypeChange('vector')}
+                    className={state.type === 'vector' && 'active'}
+                  >
+                    Вручную
+                  </Button>
+                  <Button
+                    onClick={() => this.handleTypeChange('simple')}
+                    className={state.type === 'simple' && 'active'}
+                  >
+                    Выбор из ОДХ
+                  </Button>
+                </Div>
+                <RouteCreating route={state} manual={state.type === 'vector' || state.type === 'points'} onChange={this.handleChange} />
+              </Col>
+            </Div>
           </Row>
 
         </Modal.Body>

@@ -5,7 +5,7 @@ import { connectToStores } from 'utils/decorators';
 import _ from 'lodash';
 import Div from 'components/ui/Div.jsx';
 import PolyMap from '../map/PolyMap.jsx';
-import ODHList from './ODHList.jsx';
+import CheckList from './CheckList.jsx';
 
 @connectToStores(['geoObjects'])
 @autobind
@@ -91,7 +91,7 @@ export default class RouteInfo extends Component {
             </Col>
 
             <Col md={4}>
-              <ODHList showSelectable odh_list={odh_list} />
+              <CheckList showSelectable list={odh_list} />
               <Div style={{ marginTop: 20 }} hidden={route.type !== 'points'}>
                 {route.object_list.map((o, i) => {
                   const label = `Пункт назначения №${i + 1} ${o.name ? '(' + o.name + ')' : ''}`;

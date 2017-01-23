@@ -8,7 +8,7 @@ import Div from 'components/ui/Div.jsx';
 import { polyState } from 'constants/polygons.js';
 import DrawMap from '../map/DrawMap.jsx';
 import PolyMap from '../map/PolyMap.jsx';
-import ODHList from './ODHList.jsx';
+import CheckList from './CheckList.jsx';
 
 @autobind
 class RouteCreating extends Component {
@@ -36,22 +36,6 @@ class RouteCreating extends Component {
     };
   }
 
-  setODH(id, name, state) {
-    const { object_list } = this.props.route;
-    const objectIndex = _.findIndex(object_list, o => o.object_id == id);
-    const type = this.props.route.type === 'simple_dt' ? 'dt' : 'odh';
-
-    if (state === polyState.SELECTABLE) {
-      object_list.splice(objectIndex, 1);
-    } else if (objectIndex > -1) {
-      object_list[objectIndex] = { object_id: parseInt(id, 10), type, name, state };
-    } else {
-      object_list.push({ object_id: parseInt(id, 10), type, name, state });
-    }
-
-    this.props.onChange('object_list', object_list);
-  }
-
   onFeatureClick(feature) {
     const { id, name, state } = feature.getProperties();
 
@@ -77,8 +61,8 @@ class RouteCreating extends Component {
   onDrawFeatureClick(feature) {
     const { id, state } = feature.getProperties();
 
-    const { object_list } = this.props.route;
-    const objectIndex = _.findIndex(object_list, o => o.id === id);
+    const { draw_object_list } = this.props.route;
+    const objectIndex = _.findIndex(draw_object_list, o => o.id === id);
 
     if (state) {
       let nextState;
@@ -90,23 +74,23 @@ class RouteCreating extends Component {
       }
 
       if (objectIndex > -1) {
-        object_list[objectIndex].state = nextState;
+        draw_object_list[objectIndex].state = nextState;
       }
     }
 
-    this.props.onChange('object_list', object_list);
+    this.props.onChange('draw_object_list', draw_object_list);
   }
 
   onDrawFeatureAdd(feature, coordinates, distance) {
     const { id } = feature.getProperties();
-    const { object_list } = this.props.route;
+    const { draw_object_list } = this.props.route;
 
-    const routeHasObject = _.find(object_list, (o) => {
-      return o.begin.x_msk === coordinates[0][0] && o.begin.y_msk === coordinates[0][1];
-    });
+    const routeHasObject = _.find(draw_object_list, o =>
+       o.begin.x_msk === coordinates[0][0] && o.begin.y_msk === coordinates[0][1]
+    );
 
     if (!routeHasObject) {
-      object_list.push({
+      draw_object_list.push({
         begin: { x_msk: coordinates[0][0], y_msk: coordinates[0][1] },
         end: { x_msk: coordinates[1][0], y_msk: coordinates[1][1] },
         state: 2,
@@ -115,7 +99,7 @@ class RouteCreating extends Component {
       });
     }
 
-    this.props.onChange('object_list', object_list);
+    this.props.onChange('draw_object_list', draw_object_list);
   }
 
   onPointAdd(coordinates) {
@@ -124,23 +108,6 @@ class RouteCreating extends Component {
       coordinates,
       name: '',
     });
-    this.props.onChange('object_list', object_list);
-  }
-
-  checkRoute() {
-    const { flux } = this.context;
-    flux.getActions('routes').validateRoute(this.props.route).then((r) => {
-      const result = r.result;
-      const odh_list = result.odh_validate_result.filter(res => res.status !== 'fail');
-      const odh_fail_list = result.odh_validate_result.filter(res => res.status === 'fail');
-      this.props.onChange('odh_list', odh_list);
-      this.props.onChange('odh_fail_list', odh_fail_list);
-    });
-  }
-
-  removeLastDrawFeature() {
-    const { object_list } = this.props.route;
-    object_list.splice(-1, 1);
     this.props.onChange('object_list', object_list);
   }
 
@@ -166,6 +133,50 @@ class RouteCreating extends Component {
     this.props.onChange('object_list', object_list);
   }
 
+  onObjectNameChange(i, v) {
+    const { object_list } = this.props.route;
+    object_list[i].name = v.target.value;
+    this.props.onChange('object_list', object_list);
+  }
+
+  setODH(id, name, state) {
+    const { object_list } = this.props.route;
+    const objectIndex = _.findIndex(object_list, o => o.object_id == id);
+    const type = this.props.route.type === 'simple_dt' ? 'dt' : 'odh';
+
+    if (state === polyState.SELECTABLE) {
+      object_list.splice(objectIndex, 1);
+    } else if (objectIndex > -1) {
+      object_list[objectIndex] = { object_id: parseInt(id, 10), type, name, state };
+    } else {
+      object_list.push({ object_id: parseInt(id, 10), type, name, state });
+    }
+
+    this.props.onChange('object_list', object_list);
+  }
+
+  checkRoute() {
+    const { flux } = this.context;
+    flux.getActions('routes').validateRoute(this.props.route).then((r) => {
+      const result = r.result;
+      let { object_list } = this.props.route;
+      const newObjects = result.odh_validate_result.filter(res => res.status !== 'fail').map(o => ({
+        name: o.odh_name,
+        object_id: o.odh_id,
+        state: 2,
+        type: 'odh',
+      }))
+      object_list = _.uniqBy(object_list.concat(newObjects), o => o.object_id);
+      this.props.onChange('object_list', object_list);
+    });
+  }
+
+  removeLastDrawFeature() {
+    const { draw_object_list } = this.props.route;
+    draw_object_list.splice(-1, 1);
+    this.props.onChange('draw_object_list', draw_object_list);
+  }
+
   handleCheckbox(type, v, e) {
     let { object_list } = this.props.route;
     const { polys } = this.props.route;
@@ -189,12 +200,6 @@ class RouteCreating extends Component {
     this.props.onChange('object_list', object_list);
   }
 
-  onObjectNameChange(i, v) {
-    const { object_list } = this.props.route;
-    object_list[i].name = v.target.value;
-    this.props.onChange('object_list', object_list);
-  }
-
   removeObject(i) {
     const { object_list } = this.props.route;
     object_list.splice(i, 1);
@@ -204,8 +209,9 @@ class RouteCreating extends Component {
   render() {
     const route = this.props.route;
     const Map = this.props.manual ? DrawMap : PolyMap;
-    const odh_list = route.odh_list || route.object_list.filter(o => o.type);
-    const odh_fail_list = route.odh_fail_list || [];
+    const list = route.object_list.filter(o => o.type);
+    const polys = route.type === 'simple_dt' ? this.props.dtPolys : this.props.odhPolys;
+    const fail_list = _.map(polys, (v, k) => ({ name: v.name, object_id: parseInt(k, 10), type: 'odh', state: v.state })).filter(o => !list.find(e => e.object_id === o.object_id));
     const ODHS = _.map(this.props.odhPolys, (v, k) => ({ label: v.name, value: k }));
     const DTS = _.map(this.props.dtPolys, (v, k) => ({ label: v.name, value: k }));
 
@@ -223,6 +229,7 @@ class RouteCreating extends Component {
                 zoom={this.state.zoom}
                 center={this.state.center}
                 object_list={route.object_list}
+                draw_object_list={route.draw_object_list}
                 polys={route.polys}
                 objectsType={route.type}
                 manualDraw={this.props.manual}
@@ -231,7 +238,7 @@ class RouteCreating extends Component {
           </Col>
           <Col md={3}>
             <Div hidden={route.type !== 'simple'} className="odh-container">
-              <Input type="checkbox" label="Выбрать все" disabled={!ODHS.length} onChange={this.handleCheckbox.bind(this, 'odh', ODHS.map(o => o.value).join(','))} />
+              <Input type="checkbox" label="Выбрать все" disabled={!ODHS.length} checked={!fail_list.length} onChange={this.handleCheckbox.bind(this, 'odh', ODHS.map(o => o.value).join(','))} />
               <Field
                 type="select"
                 label="Список выбранных ОДХ"
@@ -242,7 +249,7 @@ class RouteCreating extends Component {
               />
             </Div>
             <Div hidden={route.type !== 'simple_dt'} className="odh-container">
-              <Input type="checkbox" disabled={!DTS.length} label="Выбрать все" onChange={this.handleCheckbox.bind(this, 'dt', DTS.map(o => o.value).join(','))} />
+              <Input type="checkbox" disabled={!DTS.length} label="Выбрать все" checked={!fail_list.length} onChange={this.handleCheckbox.bind(this, 'dt', DTS.map(o => o.value).join(','))} />
               <Field
                 type="select"
                 label="Список выбранных ДТ"
@@ -252,10 +259,17 @@ class RouteCreating extends Component {
                 onChange={this.onGeozoneSelectChange.bind(this, 'dt')}
               />
             </Div>
-            <ODHList odh_list={odh_list} odh_fail_list={odh_fail_list} checkRoute={route.type === 'vector' ? this.checkRoute : null} />
+            <Div hidden={route.type === 'points'}>
+              <CheckList
+                name={route.type === 'simple_dt' ? 'ДТ' : 'ОДХ'}
+                list={list}
+                fail_list={fail_list}
+                checkRoute={route.type === 'vector' ? this.checkRoute : null}
+              />
+            </Div>
             <Div className="destination-points" hidden={route.type !== 'points'}>
               {route.object_list.map((o, i) => {
-                const label = `Пункт назначения №${i + 1} ${o.name ? '( ' + o.name + ' )' : ''}`;
+                const label = `Пункт назначения №${i + 1} ${o.name ? `( ${o.name} )` : ''}`;
                 return (
                   <Div className="destination-point" key={i}>
                     <Input type="text" label={label} value={o.name} onChange={this.onObjectNameChange.bind(this, i)} />

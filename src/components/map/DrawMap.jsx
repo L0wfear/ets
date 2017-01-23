@@ -30,7 +30,7 @@ export default class DrawMap extends PolyMap {
     this.renderPolygons(this.props.polys);
 
     if (this.props.objectsType === 'vector') {
-      this.renderRoute(this.props.object_list);
+      this.renderRoute(this.props.draw_object_list);
     }
     if (this.props.objectsType === 'points') {
       this.renderRoutePoints(this.props.object_list);
@@ -41,13 +41,15 @@ export default class DrawMap extends PolyMap {
     if (nextProps.polys !== undefined) {
       this.renderPolygons(nextProps.polys);
     }
-    if (nextProps.object_list !== undefined) {
-      if (nextProps.objectsType === 'vector') {
-        this.renderRoute(nextProps.object_list);
-      }
-      if (nextProps.objectsType === 'points') {
-        this.renderRoutePoints(nextProps.object_list);
-      }
+    if (nextProps.draw_object_list !== undefined && nextProps.objectsType === 'vector') {
+      this.draw.setActive(false);
+      this.renderRoute(nextProps.draw_object_list);
+    }
+    if (!nextProps.draw_object_list || nextProps.draw_object_list.length === 0) {
+      this.draw.setActive(true);
+    }
+    if (nextProps.object_list !== undefined && nextProps.objectsType === 'points') {
+      this.renderRoutePoints(nextProps.object_list);
     }
     if (nextProps.objectsType !== this.props.objectsType) {
       this.map.removeInteraction(this.draw);
@@ -108,7 +110,8 @@ export default class DrawMap extends PolyMap {
 
   onDrawEnd(ev) {
     const { feature } = ev;
-    let id = this.props.object_list.length > 0 ? this.props.object_list.length : 0;
+    const length = this.props.objectsType === 'vector' ? this.props.draw_object_list.length : this.props.object_list.length;
+    let id = length > 0 ? length : 0;
     const geometry = feature.getGeometry();
     geometry.forEachSegment((start, end) => {
       const featureSegment = new ol.Feature({
@@ -183,12 +186,13 @@ export default class DrawMap extends PolyMap {
 
   onPointAdd(e, draw) {
     const { coordinates } = e;
+    const objectList = this.props.objectsType === 'vector' ? this.props.draw_object_list : this.props.object_list;
     const end = coordinates;
-    const startObject = _.last(this.props.object_list);
+    const startObject = _.last(objectList);
     const start = [startObject.end.x_msk, startObject.end.y_msk];
     const featureSegment = new ol.Feature({
       geometry: new ol.geom.LineString([start, end]),
-      id: this.props.object_list.length,
+      id: objectList.length,
     });
     featureSegment.setStyle(getVectorArrowStyle(featureSegment));
     this.props.onDrawFeatureAdd(featureSegment, featureSegment.getGeometry().getCoordinates(), featureSegment.getGeometry().getLength());
@@ -197,7 +201,8 @@ export default class DrawMap extends PolyMap {
 
   addPoint() {
     this.draw.setActive(true);
-    const startObject = _.last(this.props.object_list);
+    const objectList = this.props.objectsType === 'vector' ? this.props.draw_object_list : this.props.object_list;
+    const startObject = _.last(objectList);
     const start = [startObject.begin.x_msk, startObject.begin.y_msk];
     const end = [startObject.end.x_msk, startObject.end.y_msk];
     const featureSegment = new ol.Feature({
@@ -207,18 +212,20 @@ export default class DrawMap extends PolyMap {
   }
 
   removeLastPoint() {
-    if (this.props.object_list.length === 1) {
+    const objectList = this.props.objectsType === 'vector' ? this.props.draw_object_list : this.props.object_list;
+    if (objectList.length === 1) {
       this.draw.setActive(true);
     }
     this.props.removeLastDrawFeature();
   }
 
   render() {
+    const objectList = this.props.objectsType === 'vector' ? this.props.draw_object_list : this.props.object_list;
     return (
       <div ref={node => (this._container = node)} className="openlayers-container">
-        <Div hidden={!this.props.object_list.length}>
-          <button className="continue-route-button" onClick={this.addPoint}><Glyphicon glyph="pencil" /></button>
-          <button className="delete-last-point-button" onClick={this.removeLastPoint}><Glyphicon glyph="remove" /></button>
+        <Div>
+          <button disabled={!objectList.length} className="continue-route-button" onClick={this.addPoint}><Glyphicon glyph="pencil" /></button>
+          <button disabled={!objectList.length} className="delete-last-point-button" onClick={this.removeLastPoint}><Glyphicon glyph="remove" /></button>
         </Div>
       </div>
     );

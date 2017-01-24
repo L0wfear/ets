@@ -9,6 +9,11 @@ import PolyMap from './PolyMap.jsx';
 // Компонент используется для отрисовки векторов и точек на карте
 @autobind
 export default class DrawMap extends PolyMap {
+  static defaultProps = {
+    draw_object_list: [],
+    object_list: [],
+  }
+
   constructor(props) {
     super(props);
 

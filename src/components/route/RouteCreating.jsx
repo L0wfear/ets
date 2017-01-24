@@ -159,15 +159,13 @@ class RouteCreating extends Component {
     const { flux } = this.context;
     flux.getActions('routes').validateRoute(this.props.route).then((r) => {
       const result = r.result;
-      let { object_list } = this.props.route;
-      const newObjects = result.odh_validate_result.filter(res => res.status !== 'fail').map(o => ({
+      const draw_odh_list = result.odh_validate_result.filter(res => res.status !== 'fail').map(o => ({
         name: o.odh_name,
         object_id: o.odh_id,
         state: 2,
         type: 'odh',
-      }))
-      object_list = _.uniqBy(object_list.concat(newObjects), o => o.object_id);
-      this.props.onChange('object_list', object_list);
+      }));
+      this.props.onChange('draw_odh_list', draw_odh_list);
     });
   }
 
@@ -209,9 +207,10 @@ class RouteCreating extends Component {
   render() {
     const route = this.props.route;
     const Map = this.props.manual ? DrawMap : PolyMap;
-    const list = route.object_list.filter(o => o.type);
+    const list = route.object_list.filter(o => o.type) || [];
+    const draw_list = route.draw_odh_list || [];
     const polys = route.type === 'simple_dt' ? this.props.dtPolys : this.props.odhPolys;
-    const fail_list = _.map(polys, (v, k) => ({ name: v.name, object_id: parseInt(k, 10), type: 'odh', state: v.state })).filter(o => !list.find(e => e.object_id === o.object_id));
+    const fail_list = _.map(polys, (v, k) => ({ name: v.name, object_id: parseInt(k, 10), type: 'odh', state: v.state })).filter(o => !list.concat(draw_list).find(e => e.object_id === o.object_id));
     const ODHS = _.map(this.props.odhPolys, (v, k) => ({ label: v.name, value: k }));
     const DTS = _.map(this.props.dtPolys, (v, k) => ({ label: v.name, value: k }));
 
@@ -263,6 +262,7 @@ class RouteCreating extends Component {
               <CheckList
                 name={route.type === 'simple_dt' ? 'ДТ' : 'ОДХ'}
                 list={list}
+                draw_list={draw_list}
                 fail_list={fail_list}
                 checkRoute={route.type === 'vector' ? this.checkRoute : null}
               />

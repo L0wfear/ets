@@ -99,6 +99,7 @@ export default class RoutesActions extends Actions {
     delete payload.polys;
     delete payload.odh_list;
     delete payload.odh_fail_list;
+    delete payload.draw_odh_list;
     delete payload.copy;
     const createdRoute = await RouteService.post(payload, false, 'json', params);
     const routes = await RouteService.get();
@@ -115,6 +116,7 @@ export default class RoutesActions extends Actions {
     delete payload.polys;
     delete payload.odh_list;
     delete payload.odh_fail_list;
+    delete payload.draw_odh_list;
     _.each(payload.object_list, o => delete o.shape);
     return RouteService.put(payload, null, 'json');
   }

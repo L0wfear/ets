@@ -7,8 +7,12 @@ import uniqBy from 'lodash/uniqBy';
 
 export default function ODHList(props) {
   const { checkRoute, name } = props;
-  let { list = [], fail_list = [] } = props;
+  let { list = [], fail_list = [], draw_list = [] } = props;
   const LIST = list.map((odh, index) => {
+    const speed_type = odh.state === polyState.IDLE ? 'холостой' : 'рабочий';
+    return <li key={index}>{`${odh.name || odh.odh_name || odh.object_name} (${speed_type} ход)`}</li>
+  });
+  const DRAW_LIST = draw_list.map((odh, index) => {
     const speed_type = odh.state === polyState.IDLE ? 'холостой' : 'рабочий';
     return <li key={index}>{`${odh.name || odh.odh_name || odh.object_name} (${speed_type} ход)`}</li>
   });
@@ -20,8 +24,12 @@ export default function ODHList(props) {
         <Button onClick={checkRoute} style={{ marginTop: 11 }}>Проверить маршрут</Button>
       </Div>
       <Div hidden={!list.length} className="odh-list">
-        <h4>Список {name}</h4>
+        <h4>Список {name} {DRAW_LIST.length ? '(Выбор из ОДХ)' : ''}</h4>
         <ul>{LIST}</ul>
+      </Div>
+      <Div hidden={!DRAW_LIST.length} className="odh-list">
+        <h4>Список {name} (Вручную)</h4>
+        <ul>{DRAW_LIST}</ul>
       </Div>
       <Div hidden={!fail_list.length} className="odh-list">
         <h4>Список непокрытых {name}</h4>

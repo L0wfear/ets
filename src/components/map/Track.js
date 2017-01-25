@@ -494,7 +494,7 @@ export default class Track {
       const dy = pixelCoords.y - projectedPixel.y;
 
       if (dx * dx + dy * dy < radius * radius) {
-        selected = viewportPoints.find(p => p.coords_msk[0] === point.coords_msk[1] && p.coords_msk[1] === point.coords_msk[0]);
+        selected = viewportPoints.find(p => p.timestamp === point.timestamp);
       }
     });
 
@@ -507,7 +507,7 @@ export default class Track {
       const dy = pixelCoords.y - projectedPixel.y;
 
       if (dx * dx + dy * dy < radius * radius) {
-        selected = viewportPoints.find(p => p.coords_msk[0] === point.coords_msk[1] && p.coords_msk[1] === point.coords_msk[0]);
+        selected = viewportPoints.find(p => p.timestamp === point.timestamp);
       }
     }));
 

@@ -51,7 +51,6 @@ export default class LineChart extends Component {
 
       plotOptions: {
         line: {
-          connectNulls: false,
           lineWidth: 1,
           states: {
             hover: {

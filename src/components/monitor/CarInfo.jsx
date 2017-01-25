@@ -3,6 +3,7 @@ import { autobind } from 'core-decorators';
 import find from 'lodash/find';
 import groupBy from 'lodash/groupBy';
 import flatten from 'lodash/flatten';
+import get from 'lodash/get';
 import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
 import { makeDateFromUnix, getStartOfToday, makeUnixTime, secondsToTime, makeDate, makeTime } from 'utils/dates';
 import { sensorsMapOptions } from 'constants/sensors.js';
@@ -334,7 +335,7 @@ export default class CarInfo extends Component {
     const { points, events } = this.props.car.marker.track;
     if (!points) return 'Загрузка...';
     if (!points.length) return 'Нет данных';
-    const timestamps = points.map(p => p.timestamp);
+    const timestamps = points.filter(p => get(p, 'sensors.level.length', false)).map(p => p.timestamp);
     const sensorsData = [];
     let sensorsList = points.filter(p => p.sensors && p.sensors.level).map((p) => {
       p.sensors.level.forEach((s) => { s.timestamp = p.timestamp; });

@@ -25,6 +25,8 @@ export default class DrawMap extends PolyMap {
   }
 
   componentDidMount() {
+    super.componentDidMount();
+
     const map = this.map;
     const container = this._container;
 

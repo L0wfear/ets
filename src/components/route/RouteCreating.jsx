@@ -236,48 +236,50 @@ class RouteCreating extends Component {
             </Div>
           </Col>
           <Col md={3}>
-            <Div hidden={route.type !== 'simple'} className="odh-container">
-              <Input type="checkbox" label="Выбрать все" disabled={!ODHS.length} checked={!fail_list.length} onChange={this.handleCheckbox.bind(this, 'odh', ODHS.map(o => o.value).join(','))} />
-              <Field
-                type="select"
-                label="Список выбранных ОДХ"
-                multi
-                options={ODHS}
-                value={route.object_list.map(o => o.object_id).join(',')}
-                onChange={this.onGeozoneSelectChange.bind(this, 'odh')}
-              />
-            </Div>
-            <Div hidden={route.type !== 'simple_dt'} className="odh-container">
-              <Input type="checkbox" disabled={!DTS.length} label="Выбрать все" checked={!fail_list.length} onChange={this.handleCheckbox.bind(this, 'dt', DTS.map(o => o.value).join(','))} />
-              <Field
-                type="select"
-                label="Список выбранных ДТ"
-                multi
-                options={DTS}
-                value={route.object_list.map(o => o.object_id).join(',')}
-                onChange={this.onGeozoneSelectChange.bind(this, 'dt')}
-              />
-            </Div>
-            <Div hidden={route.type === 'points'}>
-              <CheckList
-                name={route.type === 'simple_dt' ? 'ДТ' : 'ОДХ'}
-                list={list}
-                draw_list={draw_list}
-                fail_list={fail_list}
-                checkRoute={route.type === 'vector' ? this.checkRoute : null}
-              />
-            </Div>
-            <Div className="destination-points" hidden={route.type !== 'points'}>
-              {route.object_list.map((o, i) => {
-                const label = `Пункт назначения №${i + 1} ${o.name ? `( ${o.name} )` : ''}`;
-                return (
-                  <Div className="destination-point" key={i}>
-                    <Input type="text" label={label} value={o.name} onChange={this.onObjectNameChange.bind(this, i)} />
-                    <Button className="inline-block" onClick={this.removeObject.bind(this, i)}><Glyphicon glyph="remove" /></Button>
-                  </Div>
-                );
-              })}
-            </Div>
+            <div style={{ overflowY: 'auto', height: 510 }}>
+              <Div hidden={route.type !== 'simple'} className="odh-container">
+                <Input type="checkbox" label="Выбрать все" disabled={!ODHS.length} checked={!fail_list.length} onChange={this.handleCheckbox.bind(this, 'odh', ODHS.map(o => o.value).join(','))} />
+                <Field
+                  type="select"
+                  label="Список выбранных ОДХ"
+                  multi
+                  options={ODHS}
+                  value={route.object_list.map(o => o.object_id).join(',')}
+                  onChange={this.onGeozoneSelectChange.bind(this, 'odh')}
+                />
+              </Div>
+              <Div hidden={route.type !== 'simple_dt'} className="odh-container">
+                <Input type="checkbox" disabled={!DTS.length} label="Выбрать все" checked={!fail_list.length} onChange={this.handleCheckbox.bind(this, 'dt', DTS.map(o => o.value).join(','))} />
+                <Field
+                  type="select"
+                  label="Список выбранных ДТ"
+                  multi
+                  options={DTS}
+                  value={route.object_list.map(o => o.object_id).join(',')}
+                  onChange={this.onGeozoneSelectChange.bind(this, 'dt')}
+                />
+              </Div>
+              <Div hidden={route.type === 'points'}>
+                <CheckList
+                  name={route.type === 'simple_dt' ? 'ДТ' : 'ОДХ'}
+                  list={list}
+                  draw_list={draw_list}
+                  fail_list={fail_list}
+                  checkRoute={route.type === 'vector' ? this.checkRoute : null}
+                />
+              </Div>
+              <Div className="destination-points" hidden={route.type !== 'points'}>
+                {route.object_list.map((o, i) => {
+                  const label = `Пункт назначения №${i + 1} ${o.name ? `( ${o.name} )` : ''}`;
+                  return (
+                    <Div className="destination-point" key={i}>
+                      <Input type="text" label={label} value={o.name} onChange={this.onObjectNameChange.bind(this, i)} />
+                      <Button className="inline-block" onClick={this.removeObject.bind(this, i)}><Glyphicon glyph="remove" /></Button>
+                    </Div>
+                  );
+                })}
+              </Div>
+            </div>
           </Col>
         </Row>
       </div>

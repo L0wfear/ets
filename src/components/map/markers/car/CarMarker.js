@@ -33,7 +33,7 @@ export default class CarMarker extends Marker {
   constructor(point, map, options) {
     super(point, map, options);
     point.marker = this;
-    this.coords = wrapCoords(swapCoords(point.coords_msk));
+    this.coords = swapCoords(point.coords_msk);
     this.track = null;
     this.animating = false;
     this.currentIndex = 0;

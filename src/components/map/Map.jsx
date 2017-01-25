@@ -416,13 +416,12 @@ export default class OpenLayersMap extends Component {
     function containsCoordinate(extent, coordinates) {
       const x = coordinates[0];
       const y = coordinates[1];
-      return extent[0] <= x && x <= extent[2] && extent[1] <= y && y <= extent[3];
+      return (extent[0] <= x && x <= extent[2]) && (extent[1] <= y && y <= extent[3]);
     }
 
     for (let i = 0, till = keys.length; i < till; i++) {
       const key = keys[i];
       const marker = markers[key];
-
       if (containsCoordinate(bounds, marker.coords) && marker.isVisible()) {
         markersInBounds.push(marker);
       }
@@ -433,17 +432,8 @@ export default class OpenLayersMap extends Component {
 
   updatePoints(updatedPoints) {
     const { typesIndex } = this.props;
-    const keys = Object.keys(updatedPoints);
-
-    for (let i = 0, till = keys.length; i < till; i++) {
-      const key = keys[i];
+    Object.keys(updatedPoints).forEach((key) => {
       const point = updatedPoints[key];
-
-      // TODO это че такое
-      if (point.timestamp === 1420074000000) {
-        continue;
-      }
-
       const oldMarker = this.markers[key];
       if (oldMarker) {
         oldMarker.setPoint(point);
@@ -452,7 +442,7 @@ export default class OpenLayersMap extends Component {
           maxSpeed: _.get(typesIndex[point.car.type_id], 'speed_max') || 0,
         });
       }
-    }
+    });
     this.triggerRender();
   }
 

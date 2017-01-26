@@ -63,6 +63,8 @@ export default (props) => {
     <Table
       title="Прохождение заданий"
       tableMeta={tableMeta}
+      initialSort={'timestamp_create'}
+      initialSortAscending={false}
       results={props.data}
       renderers={renderers}
       {...props}

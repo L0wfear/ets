@@ -166,6 +166,7 @@ const routes = (
       <Route path="maintenance-work" component={directories.maintenanceWork} onEnter={requireAuth} />
       <Route path="cleaning-rate" component={directories.cleaningRate} onEnter={requireAuth} />
       <Route path="maintenance-rate" component={directories.maintenanceRate} onEnter={requireAuth} />
+      <Route path="user-action-log" component={directories.userActionLog} onEnter={requireAuth} />
       {/* НСИ - Реестры и справочники - Геоинструментарий */}
       <Route path="odh" component={directories.geoobjects.odh} onEnter={requireAuth} />
       <Route path="dt" component={directories.geoobjects.dt} onEnter={requireAuth} />

@@ -18,6 +18,7 @@ import {
   MaintenanceWorkService,
   MaintenanceRateService,
   CleaningRateService,
+  UserActionLogService,
 } from 'api/Services';
 
 function getTypes(payload = {}) {
@@ -181,6 +182,14 @@ export default class ObjectsActions extends Actions {
 
   deleteMaintenanceRate(type, id) {
     return MaintenanceRateService.path(id).delete({}, this.getMaintenanceRate.bind(this, type), 'json');
+  }
+
+  getUserActionLog(p = {}) {
+    const payload = {
+      date_start: createValidDateTime(p.date_start),
+      date_end: createValidDateTime(p.date_end),
+    };
+    return UserActionLogService.get(payload);
   }
 
 }

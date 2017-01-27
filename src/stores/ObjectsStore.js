@@ -42,6 +42,7 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.updateMaintenanceRate, this.handleGetMaintenanceRate);
     this.register(objectsActions.deleteMaintenanceRate, this.handleGetMaintenanceRate);
     this.register(objectsActions.getCleanCategories, this.handleGetCleanCategories);
+    this.register(objectsActions.getUserActionLog, this.handleGetUserActionLog);
 
     this.register(companyStructreActions.getCompanyStructure, this.handleGetCompanyStructure);
     this.register(companyStructreActions.getCompanyList, this.handleGetCompanyList);
@@ -75,6 +76,7 @@ export default class ObjectsStore extends Store {
       cleanCategoriesList: [],
       maintenanceWorkList: [],
       cleaningRateList: [],
+      userActionLogList: [],
 
       appConfig: {},
 
@@ -198,6 +200,10 @@ export default class ObjectsStore extends Store {
 
   handleGetCleanCategories(categories) {
     this.setState({ cleanCategoriesList: categories.result });
+  }
+
+  handleGetUserActionLog(userActionLogList) {
+    this.setState({ userActionLogList: userActionLogList.result });
   }
 
 }

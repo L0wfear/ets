@@ -81,6 +81,7 @@ export const EfficiencyService = ETS_API_FACTORY.createApiServiceAdapter('effici
 export const MaintenanceWorkService = ETS_API_FACTORY.createApiServiceAdapter('maintenance_work', {});
 export const MaintenanceRateService = ETS_API_FACTORY.createApiServiceAdapter('maintenance_rate', {});
 export const CleaningRateService = ETS_API_FACTORY.createApiServiceAdapter('cleaning_rate', {});
+export const UserActionLogService = ETS_API_FACTORY.createApiServiceAdapter('user_action_log', {});
 
 /* Geoobjects - Геообъекты */
 export const ODHService = ETS_API_FACTORY.createApiServiceAdapter('odh', {});

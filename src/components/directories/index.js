@@ -15,6 +15,7 @@ import cleaningRate from './cleaning_rate/CleaningRateDirectory.jsx';
 import materialConsumptionRate from './material_consumption_rate/MaterialConsumptionRateDirectory.jsx';
 import odhNormDataSummer from './odh_norm_data_summer/ODHNormDataSummerList.jsx';
 import efficiency from './efficiency/EfficiencyList.jsx';
+import userActionLog from './user_action_log/UserActionLogList.jsx';
 import organizations from './organizations/OrganizationsDirectory.jsx';
 import technicalOperations from './technical_operation/TechnicalOperationsDirectory.jsx';
 import * as geoobjects from './geoobjects';
@@ -36,4 +37,5 @@ export {
   organizations,
   technicalOperations,
   geoobjects,
+  userActionLog,
 };

@@ -324,7 +324,7 @@ export default class CarInfo extends Component {
         data: points.map(() => parseInt(this.props.car.marker.track.maxSpeed, 10)),
         color: 'rgba(205, 17, 71, 1)',
       },
-    ].concat(sensorsData).map((d) => {
+    ].map((d) => {
       d.data = d.data.map((v, i) => [timestamps[i], v]);
       return d;
     });

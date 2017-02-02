@@ -168,6 +168,9 @@ const PERMISSIONS = {
       'update': 'work_kind.update',
       'delete': 'work_kind.delete',
     },
+    'user_action_log': {
+      'list': 'user_action_log.list',
+    },
   },
   'administration': 'administration',
 };

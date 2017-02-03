@@ -237,7 +237,7 @@ class RouteCreating extends Component {
           </Col>
           <Col md={3}>
             <div style={{ overflowY: 'auto', height: 510 }}>
-              <Div hidden={route.type !== 'simple'} className="odh-container">
+              <Div hidden={route.type !== 'mixed'} className="odh-container">
                 <Input type="checkbox" label="Выбрать все" disabled={!ODHS.length} checked={!fail_list.length} onChange={this.handleCheckbox.bind(this, 'odh', ODHS.map(o => o.value).join(','))} />
                 <Field
                   type="select"
@@ -265,7 +265,7 @@ class RouteCreating extends Component {
                   list={list}
                   draw_list={draw_list}
                   fail_list={fail_list}
-                  checkRoute={route.type === 'vector' ? this.checkRoute : null}
+                  checkRoute={route.type === 'mixed' ? this.checkRoute : null}
                 />
               </Div>
               <Div className="destination-points" hidden={route.type !== 'points'}>

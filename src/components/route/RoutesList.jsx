@@ -32,7 +32,6 @@ class RoutesList extends Component {
     this.state = {
       selectedRoute: null,
       showForm: false,
-      isVectorRouteSelected: false,
       filterValues: {},
       filterModalIsOpen: false,
       showId: [-1],
@@ -169,7 +168,7 @@ class RoutesList extends Component {
               style={{
                 fontSize: 9,
                 position: 'relative',
-                top: -1
+                top: -1,
               }}
             >{!hidden ? ' \u25BC' : ' \u25BA'}</span>
           </span>
@@ -220,8 +219,9 @@ class RoutesList extends Component {
       }); }
 
     const TYPES = {
-      vector: 'Построенные вручную',
+      mixed: 'Маршруты по ОДХ',
       simple: 'Маршруты по ОДХ',
+      vector: 'Маршруты по ОДХ',
       simple_dt: 'Маршруты по ДТ',
       points: 'Маршруты по пунктам назначения',
     };

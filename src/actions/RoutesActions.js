@@ -63,10 +63,8 @@ export default class RoutesActions extends Actions {
       : null;
 
     if (route) {
-      /* TODO нужно чтобы с бека присылались типы объектов
-       * чтобы избавиться от этого map */
       if (route.type === 'points') {
-        route.object_list.map((el) => {
+        route.object_list.forEach((el) => {
           if (!el.shape && el.coordinates) {
             el.shape = {
               type: 'Point',
@@ -75,8 +73,9 @@ export default class RoutesActions extends Actions {
           }
           return el;
         });
-      } else if (route.type === 'vector') {
-        route.object_list.map((object) => {
+      } else if (route.type === 'mixed') {
+        route.draw_odh_list = [];
+        route.draw_object_list.forEach((object) => {
           const start = [object.begin.x_msk, object.begin.y_msk];
           const end = [object.end.x_msk, object.end.y_msk];
           object.shape = {
@@ -84,6 +83,12 @@ export default class RoutesActions extends Actions {
             coordinates: [start, end],
           };
           return object;
+        });
+        route.object_list.forEach((object, i) => {
+          if (object.from_vectors) {
+            route.draw_odh_list.push(object);
+            route.object_list.splice(i, 1);
+          }
         });
       }
     }

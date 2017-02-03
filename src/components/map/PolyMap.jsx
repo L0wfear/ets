@@ -71,6 +71,9 @@ export default class PolyMap extends Component {
     this.enableInteractions();
 
     this.renderPolygons(this.props.polys, true);
+    if (this.props.objectsType === 'mixed') {
+      this.renderRoute(this.props.draw_object_list);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -80,6 +83,43 @@ export default class PolyMap extends Component {
       }
       this.renderPolygons(nextProps.polys);
     }
+  }
+
+  shouldComponentUpdate() {
+    return false;
+  }
+
+  onMouseMove(ev) {
+    const pixel = ev.pixel;
+    const map = this.map;
+    const el = this.map.getViewport();
+    const hit = map.forEachFeatureAtPixel(pixel, () => true);
+
+    el.style.cursor = hit ? 'pointer' : '';
+  }
+
+  onClick(ev) {
+    const map = this.map;
+    const pixel = ev.pixel; // координаты клика во viewport
+
+    map.forEachFeatureAtPixel(pixel, (feature) => {
+      this.props.onFeatureClick(feature, ev, this);
+    });
+  }
+
+  /**
+   * Вызывается при манипуляциях с картой, таких как перемещение видимой
+   * области, зуммирование
+   * @method
+   */
+  onMoveEnd() {
+    const zoom = this.map.getView().getZoom();
+    console.info(`Центр карты: [${this.map.getView().getCenter()}], зум: ${zoom}`); // eslint-disable-line
+  }
+
+  fitToExtent(polysLayer) {
+    const extent = polysLayer.getSource().getExtent();
+    extent[0] !== Infinity && this.map.getView().fit(extent, this.map.getSize());
   }
 
   enableInteractions() {
@@ -145,43 +185,6 @@ export default class PolyMap extends Component {
 
     map.addLayer(polysLayer);
     fit && this.fitToExtent(polysLayer);
-  }
-
-  fitToExtent(polysLayer) {
-    const extent = polysLayer.getSource().getExtent();
-    extent[0] !== Infinity && this.map.getView().fit(extent, this.map.getSize());
-  }
-
-  shouldComponentUpdate() {
-    return false;
-  }
-
-  onMouseMove(ev) {
-    const pixel = ev.pixel;
-    const map = this.map;
-    const el = this.map.getViewport();
-    const hit = map.forEachFeatureAtPixel(pixel, () => true);
-
-    el.style.cursor = hit ? 'pointer' : '';
-  }
-
-  onClick(ev) {
-    const map = this.map;
-    const pixel = ev.pixel; // координаты клика во viewport
-
-    map.forEachFeatureAtPixel(pixel, (feature) => {
-      this.props.onFeatureClick(feature, ev, this);
-    });
-  }
-
-  /**
-   * Вызывается при манипуляциях с картой, таких как перемещение видимой
-   * области, зуммирование
-   * @method
-   */
-  onMoveEnd() {
-    const zoom = this.map.getView().getZoom();
-    console.info(`Центр карты: [${this.map.getView().getCenter()}], зум: ${zoom}`); // eslint-disable-line
   }
 
   render() {

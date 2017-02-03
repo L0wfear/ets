@@ -17,7 +17,7 @@ export default class DrawMap extends PolyMap {
   constructor(props) {
     super(props);
 
-    if (this.props.objectsType === 'vector') {
+    if (this.props.objectsType === 'mixed') {
       this.addDrawInteraction('LineString');
     } else {
       this.addDrawInteraction('Point');
@@ -36,7 +36,7 @@ export default class DrawMap extends PolyMap {
 
     this.renderPolygons(this.props.polys);
 
-    if (this.props.objectsType === 'vector') {
+    if (this.props.objectsType === 'mixed') {
       this.renderRoute(this.props.draw_object_list);
     }
     if (this.props.objectsType === 'points') {
@@ -48,7 +48,7 @@ export default class DrawMap extends PolyMap {
     if (nextProps.polys !== undefined) {
       this.renderPolygons(nextProps.polys);
     }
-    if (nextProps.draw_object_list !== undefined && nextProps.objectsType === 'vector') {
+    if (nextProps.draw_object_list !== undefined && nextProps.objectsType === 'mixed') {
       this.draw.setActive(false);
       this.drawSetToEnd = true;
       this.renderRoute(nextProps.draw_object_list);
@@ -62,7 +62,7 @@ export default class DrawMap extends PolyMap {
     }
     if (nextProps.objectsType !== this.props.objectsType) {
       this.map.removeInteraction(this.draw);
-      if (nextProps.objectsType === 'vector') {
+      if (nextProps.objectsType === 'mixed') {
         this.addDrawInteraction('LineString');
       } else {
         this.addDrawInteraction('Point');
@@ -119,7 +119,7 @@ export default class DrawMap extends PolyMap {
 
   onDrawEnd(ev) {
     const { feature } = ev;
-    const length = this.props.objectsType === 'vector' ? this.props.draw_object_list.length : this.props.object_list.length;
+    const length = this.props.objectsType === 'mixed' ? this.props.draw_object_list.length : this.props.object_list.length;
     let id = length > 0 ? length : 0;
     const geometry = feature.getGeometry();
     geometry.forEachSegment((start, end) => {
@@ -195,7 +195,7 @@ export default class DrawMap extends PolyMap {
 
   onPointAdd(e, draw) {
     const { coordinates } = e;
-    const objectList = this.props.objectsType === 'vector' ? this.props.draw_object_list : this.props.object_list;
+    const objectList = this.props.objectsType === 'mixed' ? this.props.draw_object_list : this.props.object_list;
     const end = coordinates;
     const startObject = _.last(objectList);
     const start = [startObject.end.x_msk, startObject.end.y_msk];
@@ -210,7 +210,7 @@ export default class DrawMap extends PolyMap {
 
   addPoint() {
     this.draw.setActive(true);
-    const objectList = this.props.objectsType === 'vector' ? this.props.draw_object_list : this.props.object_list;
+    const objectList = this.props.objectsType === 'mixed' ? this.props.draw_object_list : this.props.object_list;
     const startObject = _.last(objectList);
     const start = [startObject.begin.x_msk, startObject.begin.y_msk];
     const end = [startObject.end.x_msk, startObject.end.y_msk];
@@ -221,7 +221,7 @@ export default class DrawMap extends PolyMap {
   }
 
   removeLastPoint() {
-    const objectList = this.props.objectsType === 'vector' ? this.props.draw_object_list : this.props.object_list;
+    const objectList = this.props.objectsType === 'mixed' ? this.props.draw_object_list : this.props.object_list;
     if (objectList.length === 1) {
       this.draw.setActive(true);
     }
@@ -229,7 +229,7 @@ export default class DrawMap extends PolyMap {
   }
 
   render() {
-    const objectList = this.props.objectsType === 'vector' ? this.props.draw_object_list : this.props.object_list;
+    const objectList = this.props.objectsType === 'mixed' ? this.props.draw_object_list : this.props.object_list;
     return (
       <div ref={node => (this._container = node)} className="openlayers-container">
         <Div>

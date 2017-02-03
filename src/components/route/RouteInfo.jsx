@@ -51,17 +51,17 @@ export default class RouteInfo extends Component {
   render() {
     const { route, geozonePolys = {}, mapOnly } = this.props;
     const { object_list = [] } = route;
-    const manual = route.type === 'vector';
+    const manual = route.type === 'mixed';
     const polys = _(_.cloneDeep(object_list))
       .map((object) => {
-        if (geozonePolys[object.object_id] && (['points', 'vector'].indexOf(route.type) === -1)) {
+        if (geozonePolys[object.object_id] && (['points', 'mixed'].indexOf(route.type) === -1)) {
           object.shape = geozonePolys[object.object_id].shape;
         }
         return object;
       })
       .keyBy((o) => {
         // TODO попросить бек чтобы у каждого объекта был id
-        if (route.type === 'vector') {
+        if (route.type === 'mixed') {
           return o.id;
         }
         if (route.type === 'points') {
@@ -94,7 +94,7 @@ export default class RouteInfo extends Component {
               <CheckList showSelectable list={odh_list} />
               <Div style={{ marginTop: 20 }} hidden={route.type !== 'points'}>
                 {route.object_list.map((o, i) => {
-                  const label = `Пункт назначения №${i + 1} ${o.name ? '(' + o.name + ')' : ''}`;
+                  const label = `Пункт назначения №${i + 1} ${o.name ? `(${  o.name  })` : ''}`;
                   return <Input key={i} label={label} />;
                 })}
               </Div>

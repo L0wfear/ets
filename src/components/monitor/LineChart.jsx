@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import Highcharts from 'highcharts/highstock';
-import { makeTime } from 'utils/dates';
+import { makeTime, makeDate } from 'utils/dates';
 
 
 export default class LineChart extends Component {
@@ -8,6 +8,7 @@ export default class LineChart extends Component {
     onClick: PropTypes.func,
     name: PropTypes.string,
     data: PropTypes.array,
+    showX: PropTypes.bool,
   }
 
   componentDidMount() {
@@ -80,10 +81,29 @@ export default class LineChart extends Component {
         opposite: false,
       },
 
+      navigator: {
+        xAxis: {
+          labels: {
+            formatter() {
+              return `<b>${makeDate(new Date(this.value * 1000))} ${makeTime(new Date(this.value * 1000))}</b>`;
+            },
+          },
+        },
+      },
+
       tooltip: {
-        show: 'false',
-        headerFormat: '<br/>',
+        formatter: this.props.showX ? function () {
+          let s = `<b>${makeDate(new Date(this.x * 1000))} ${makeTime(new Date(this.x * 1000))}</b>`;
+
+          this.points.forEach((point) => {
+            s += `<br/><span style="color: ${point.color}">\u25CF</span> ${point.series.name}: ${parseFloat(point.y).toFixed(3)}`;
+          });
+
+          return s;
+        } : null,
+        shared: true,
         valueDecimals: 0,
+        headerFormat: '<br/>',
       },
 
       series: this.props.data,

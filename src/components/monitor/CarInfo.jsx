@@ -302,6 +302,7 @@ export default class CarInfo extends Component {
       const values = sensorsList[id].map(s => [s.timestamp, sensorOptions.value]);
       sensorsData.push({
         name: `Датчик №${i + 1}`,
+        enableMouseTracking: false,
         connectNulls: false,
         color: sensorOptions.color,
         data: timestamps.map((t) => {
@@ -324,7 +325,7 @@ export default class CarInfo extends Component {
         data: points.map(() => parseInt(this.props.car.marker.track.maxSpeed, 10)),
         color: 'rgba(205, 17, 71, 1)',
       },
-    ].map((d) => {
+    ].concat(sensorsData).map((d) => {
       d.data = d.data.map((v, i) => [timestamps[i], v]);
       return d;
     });
@@ -365,7 +366,7 @@ export default class CarInfo extends Component {
 
     let sumEvents = [];
     Object.keys(events).forEach((k) => {
-      events[k].forEach(e => e.id = k);
+      events[k].forEach(e => (e.id = k));
       sumEvents = sumEvents.concat(events[k]);
     });
     sumEvents = sumEvents.map(e => ({
@@ -376,7 +377,7 @@ export default class CarInfo extends Component {
     }));
     return (
       <div>
-        <LineChart name="fuelChart" data={data} onClick={e => this.showOnMap(e.point.x, e)} />
+        <LineChart name="fuelChart" data={data} showX onClick={e => this.showOnMap(e.point.x, e)} />
         {this.renderEventTable(sumEvents)}
       </div>
     );

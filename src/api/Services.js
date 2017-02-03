@@ -4,9 +4,12 @@ import config from '../config.js';
 const CITY_DASHBOARD_API_FACTORY = new ApiServiceFactory({
   apiUrl: 'http://ods.mos.ru/ssd/city-dashboard',
 });
+const DEV_TRACK_API_FACTORY = new ApiServiceFactory({
+  apiUrl: 'http://10.127.32.23:6006/',
+});
 
 export const TrackDistanceService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('get_length');
-export const TrackService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('tracks');
+export const TrackService = process.env.STAND === 'test' ? DEV_TRACK_API_FACTORY.createApiServiceAdapter('tracks') : CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('tracks');
 
 const ETS_API_FACTORY = new ApiServiceFactory({
   apiUrl: config.backend,

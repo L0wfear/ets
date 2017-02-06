@@ -43,7 +43,6 @@ export default class DrawMap extends PolyMap {
       this.renderRoutePoints(this.props.object_list);
     }
     if (this.props.draw_object_list.length) {
-      console.log('aaaa')
       this.draw.setActive(false);
       this.drawSetToEnd = true;
     }

@@ -18,4 +18,4 @@ import './components/App';
  */
 import './components/ui/NotificationSystem';
 import './components/ui/Prompt';
-/* Проставляем NODE_ENV для оптимизации работы некоторых библиотек */
+import './config/raven.js';

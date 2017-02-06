@@ -1,5 +1,3 @@
-import { config as configureRaven } from './config/raven.js';
-
 const PROTO = window.location.protocol;
 const WS_PROTO = 'ws:';
 
@@ -21,7 +19,6 @@ try {
   } else if (STAND) {
     config.backend = STANDS[STAND] || STANDS.test;
   }
-  // configureRaven();
 } catch (e) {
   console.log(e);
 }

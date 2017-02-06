@@ -19,7 +19,7 @@ const getTableMeta = (props) => {
         type: 'string',
         filter: {
           type: 'multiselect',
-          labelFunction: s => MISSION_STATUS_LABELS[s],
+          options: Object.keys(MISSION_STATUS_LABELS).map(key => ({ label: MISSION_STATUS_LABELS[key], value: key })),
         },
         cssClassName: 'width120',
       },
@@ -27,18 +27,12 @@ const getTableMeta = (props) => {
         name: 'number',
         displayName: 'Номер',
         type: 'number',
-        filter: {
-          type: 'multiselect',
-        },
         cssClassName: 'width60',
       },
       {
         name: 'waybill_number',
         displayName: 'Путевой лист',
         type: 'number',
-        filter: {
-          type: 'multiselect',
-        },
         cssClassName: 'width60',
       },
       {
@@ -47,6 +41,10 @@ const getTableMeta = (props) => {
         type: 'number',
         filter: {
           type: 'multiselect',
+          options: [
+            { label: 'Регламентные работы', value: 'Регламентные работы' },
+            { label: 'Факсограмма', value: 'Факсограмма' },
+          ],
         },
         cssClassName: 'width150',
       },
@@ -55,7 +53,7 @@ const getTableMeta = (props) => {
         displayName: 'Начало',
         type: 'date',
         filter: {
-          type: 'date',
+          type: 'datetime',
         },
       },
       {
@@ -63,7 +61,7 @@ const getTableMeta = (props) => {
         displayName: 'Завершение',
         type: 'date',
         filter: {
-          type: 'date',
+          type: 'datetime',
         },
       },
       {
@@ -72,6 +70,7 @@ const getTableMeta = (props) => {
         type: 'number',
         filter: {
           type: 'multiselect',
+          options: props.carsList.map(e => ({ label: e.gov_number, value: e.gov_number })),
         },
         cssClassName: 'width120',
       },
@@ -81,6 +80,7 @@ const getTableMeta = (props) => {
         type: 'number',
         filter: {
           type: 'multiselect',
+          options: props.routesList.map(({ name }) => ({ label: name, value: name })),
         },
         cssClassName: 'width120',
       },
@@ -88,9 +88,6 @@ const getTableMeta = (props) => {
         name: 'passes_count',
         displayName: 'Количество проходов',
         type: 'number',
-        filter: {
-          type: 'multiselect',
-        },
         cssClassName: 'width120',
       },
       {
@@ -99,6 +96,7 @@ const getTableMeta = (props) => {
         type: 'number',
         filter: {
           type: 'multiselect',
+          options: props.technicalOperationsList.map(({ name }) => ({ value: name, label: name })),
         },
       },
       {
@@ -154,6 +152,10 @@ export default (props) => {
       title="Журнал заданий"
       results={props.data}
       renderers={renderers}
+      enumerated={false}
+      serverPagination
+      externalFilter={props.changeFilter}
+      externalChangeSort={props.changeSort}
       tableMeta={getTableMeta(props)}
       initialSort={'number'}
       initialSortAscending={false}

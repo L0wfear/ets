@@ -22,8 +22,20 @@ export default class MissionsActions extends Actions {
 
   /* ---------- MISSION ---------- */
 
-  getMissions(technical_operation_id) {
-    const payload = {};
+  getMissions(technical_operation_id, limit = 15, offset = 0, sort_by = ['number:desc'], filter = {}) {
+    const filterValues = _.cloneDeep(filter);
+    Object.keys(filterValues).forEach((k) => {
+      if (Array.isArray(filterValues[k])) {
+        filterValues[`${k}__in`] = filterValues[k];
+        delete filterValues[k];
+      }
+    });
+    const payload = {
+      limit,
+      offset,
+      sort_by,
+      filter: JSON.stringify(filterValues),
+    };
 
     if (!isEmpty(technical_operation_id)) {
       payload.technical_operation_id = technical_operation_id;

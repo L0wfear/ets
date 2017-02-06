@@ -6,6 +6,7 @@ import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { getWarningNotification } from 'utils/notifications';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import _ from 'lodash';
+import Paginator from 'components/ui/Paginator.jsx';
 import MissionsTable from './MissionsTable.jsx';
 import MissionFormWrap from './MissionFormWrap.jsx';
 import MissionRejectForm from './MissionRejectForm.jsx';
@@ -38,13 +39,25 @@ export default class MissionsJournal extends CheckableElementsList {
     this.state = Object.assign(this.state, {
       showMissionRejectForm: false,
       showMissionInfoForm: false,
+      page: 0,
+      sortBy: ['number:desc'],
+      filter: {},
     });
   }
 
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
-    flux.getActions('missions').getMissions();
+    flux.getActions('missions').getMissions(null, 15, 0, this.state.sortBy, this.state.filter);
+    flux.getActions('objects').getCars();
+    flux.getActions('routes').getRoutes();
+    flux.getActions('technicalOperation').getTechnicalOperations();
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (nextState.page !== this.state.page || nextState.sortBy !== this.state.sortBy || nextState.filter !== this.state.filter) {
+      this.context.flux.getActions('missions').getMissions(null, 15, nextState.page * 15, nextState.sortBy, nextState.filter);
+    }
   }
 
   checkDisabled() {
@@ -186,10 +199,19 @@ export default class MissionsJournal extends CheckableElementsList {
 
   getAdditionalProps() {
     const { structures } = this.context.flux.getStore('session').getCurrentUser();
+    const changeSort = (field, direction) => this.setState({ sortBy: `${field}:${direction ? 'asc' : 'desc'}` });
+    const changeFilter = filter => this.setState({ filter });
     return {
       mapView: this.mapView,
       structures,
+      changeSort,
+      changeFilter,
+      filterValues: this.state.filter,
     };
+  }
+
+  additionalRender() {
+    return <Paginator currentPage={this.state.page} maxPage={Math.ceil(this.props.totalCount / 15)} setPage={page => this.setState({ page })} firstLastButtons />;
   }
 
 }

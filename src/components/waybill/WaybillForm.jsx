@@ -217,7 +217,7 @@ class WaybillForm extends Form {
   }
 
   onMissionFormHide(result) {
-    const id = result && result.result && result.result[0] ? result.result[0].id : null;
+    const id = result && result.result ? result.result.id : null;
     if (id) {
       const { mission_id_list } = this.props.formState;
       mission_id_list.push(id);

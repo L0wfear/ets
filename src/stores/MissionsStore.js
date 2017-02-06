@@ -47,6 +47,7 @@ class MissionsStore extends Store {
   }
 
   handleGetMissions(missions) {
+    if (!missions.result.meta) return;
     this.setState({ missionsList: missions.result.rows, totalCount: missions.result.meta.total_count });
   }
 

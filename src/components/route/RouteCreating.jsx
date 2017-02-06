@@ -51,7 +51,7 @@ class RouteCreating extends Component {
       } else if (state === polyState.IDLE) {
         nextState = polyState.SELECTABLE;
       }
-
+      if (!polys[id]) return;
       polys[id].state = nextState;
       this.props.onChange('polys', polys);
       this.setODH(id, name, nextState);
@@ -63,7 +63,6 @@ class RouteCreating extends Component {
 
     const { draw_object_list } = this.props.route;
     const objectIndex = _.findIndex(draw_object_list, o => o.id === id);
-
     if (state) {
       let nextState;
 
@@ -157,6 +156,10 @@ class RouteCreating extends Component {
 
   checkRoute() {
     const { flux } = this.context;
+    if (!this.props.route.draw_object_list.length) {
+      this.props.onChange('draw_odh_list', []);
+      return;
+    }
     flux.getActions('routes').validateRoute(this.props.route).then((r) => {
       const result = r.result;
       const draw_odh_list = result.odh_validate_result.filter(res => res.status !== 'fail').map(o => ({

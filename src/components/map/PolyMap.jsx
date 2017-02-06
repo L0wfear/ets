@@ -200,7 +200,7 @@ export default class PolyMap extends Component {
       const end = [object.end.x_msk, object.end.y_msk];
       const feature = new ol.Feature({
         geometry: new ol.geom.LineString([start, end]),
-        id: object.object_id,
+        id: object.object_id || object.id,
         state: object.state,
         distance: object.distance,
       });

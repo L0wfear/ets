@@ -42,6 +42,11 @@ export default class DrawMap extends PolyMap {
     if (this.props.objectsType === 'points') {
       this.renderRoutePoints(this.props.object_list);
     }
+    if (this.props.draw_object_list.length) {
+      console.log('aaaa')
+      this.draw.setActive(false);
+      this.drawSetToEnd = true;
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -53,7 +58,7 @@ export default class DrawMap extends PolyMap {
       this.drawSetToEnd = true;
       this.renderRoute(nextProps.draw_object_list);
     }
-    if (!nextProps.draw_object_list || nextProps.draw_object_list.length === 0) {
+    if (nextProps.draw_object_list.length === 0) {
       this.drawSetToEnd = false;
       this.draw.setActive(true);
     }

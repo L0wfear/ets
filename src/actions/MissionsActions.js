@@ -95,6 +95,7 @@ export default class MissionsActions extends Actions {
     const payload = _.clone(mission);
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
+    payload.hidden = false;
     if (typeof payload.assign_to_waybill === 'undefined') payload.assign_to_waybill = 'not_assign';
     if (!callback) payload.assign_to_waybill = 'not_assign';
     return MissionService.post(payload, callback, 'json');
@@ -156,6 +157,7 @@ export default class MissionsActions extends Actions {
       payload.date_end = date_end;
       payload.mission_source_id = missionsCreationTemplateCopy.mission_source_id;
       payload.assign_to_waybill = missionsCreationTemplateCopy.assign_to_waybill;
+      payload.hidden = true;
       if (!isEmpty(missionsCreationTemplateCopy.passes_count)) {
         payload.passes_count = parseInt(missionsCreationTemplateCopy.passes_count, 10);
       }

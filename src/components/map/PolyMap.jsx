@@ -85,7 +85,7 @@ export default class PolyMap extends Component {
       }
       this.renderPolygons(nextProps.polys);
     }
-    if (nextProps.draw_object_list !== undefined && nextProps.objectsType === 'mixed') {
+    if (nextProps.draw_object_list !== undefined) {
       this.renderRoute(nextProps.draw_object_list);
     }
   }
@@ -195,13 +195,12 @@ export default class PolyMap extends Component {
   renderRoute(object_list = []) {
     const map = this.map;
     const vectorSource = new ol.source.Vector({ wrapX: false });
-    object_list = uniqBy(object_list, 'id');
     each(object_list, (object) => {
       const start = [object.begin.x_msk, object.begin.y_msk];
       const end = [object.end.x_msk, object.end.y_msk];
       const feature = new ol.Feature({
         geometry: new ol.geom.LineString([start, end]),
-        id: object.id,
+        id: object.object_id,
         state: object.state,
         distance: object.distance,
       });

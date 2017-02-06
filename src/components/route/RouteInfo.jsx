@@ -50,29 +50,27 @@ export default class RouteInfo extends Component {
 
   render() {
     const { route, geozonePolys = {}, mapOnly } = this.props;
-    const { object_list = [] } = route;
+    const { object_list = [], draw_object_list = [] } = route;
     const manual = route.type === 'mixed';
     const polys = _(_.cloneDeep(object_list))
       .map((object) => {
-        if (geozonePolys[object.object_id] && (['points', 'mixed'].indexOf(route.type) === -1)) {
+        if (geozonePolys[object.object_id] && route.type !== 'points') {
           object.shape = geozonePolys[object.object_id].shape;
         }
         return object;
       })
       .keyBy((o) => {
         // TODO попросить бек чтобы у каждого объекта был id
-        if (route.type === 'mixed') {
-          return o.id;
-        }
+        // if (route.type === 'mixed') {
+        //   return o.id;
+        // }
         if (route.type === 'points') {
           return o.coordinates.join(',');
         }
         return o.object_id;
       })
       .value();
-
     const odh_list = route.odh_list || object_list.filter(o => o.type);
-
     return (
       <Div style={{ marginTop: 18 }}>
         <Div className="route-name" hidden={mapOnly}><b>{route.name}</b></Div>
@@ -84,7 +82,10 @@ export default class RouteInfo extends Component {
                   onFeatureClick={this.onFeatureClick}
                   zoom={this.state.zoom}
                   center={this.state.center}
+                  object_list={route.object_list}
+                  draw_object_list={draw_object_list}
                   polys={polys}
+                  objectsType={route.type}
                   manual={manual}
                 />
               </Div>
@@ -94,7 +95,7 @@ export default class RouteInfo extends Component {
               <CheckList showSelectable list={odh_list} />
               <Div style={{ marginTop: 20 }} hidden={route.type !== 'points'}>
                 {route.object_list.map((o, i) => {
-                  const label = `Пункт назначения №${i + 1} ${o.name ? `(${  o.name  })` : ''}`;
+                  const label = `Пункт назначения №${i + 1} ${o.name ? `(${o.name})` : ''}`;
                   return <Input key={i} label={label} />;
                 })}
               </Div>

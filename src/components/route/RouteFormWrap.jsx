@@ -20,6 +20,7 @@ class RouteFormWrap extends FormWrap {
       let formState = null;
       if (props.element !== null) {
         formState = _.cloneDeep(props.element);
+        formState.draw_odh_list = _.cloneDeep(formState.draw_object_list);
         formState.polys = formState.type === 'simple_dt' ? _.cloneDeep(props.dtPolys) : _.cloneDeep(props.odhPolys);
         _.each(formState.object_list.filter(o => !!o.object_id), (o) => {
           if (formState.polys[o.object_id]) formState.polys[o.object_id].state = o.state;

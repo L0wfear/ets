@@ -38,7 +38,7 @@ class RoutesList extends Component {
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     const { flux } = this.context;
     flux.getActions('routes').getRoutes();
     flux.getActions('technicalOperation').getTechnicalOperations();

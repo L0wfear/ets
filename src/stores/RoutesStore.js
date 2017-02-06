@@ -24,7 +24,7 @@ export default class RoutesStore extends Store {
   }
 
   handleGetRoutes(routes) {
-    this.setState({ routesList: routes.result });
+    this.setState({ routesList: routes.result || routes.routes.result });
   }
 
   handleGetRouteReports(reports) {

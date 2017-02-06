@@ -3,6 +3,7 @@ import { polyState, polyStyles } from 'constants/polygons.js';
 import { getVectorArrowStyle } from 'constants/vectors.js';
 import { getPolyStyle, GeoJSON } from 'utils/ol';
 import each from 'lodash/each';
+import uniqBy from 'lodash/uniqBy';
 import { PROJECTION, ArcGisLayer } from './MskAdapter.js';
 
 let POLYS_LAYER = null;
@@ -71,6 +72,7 @@ export default class PolyMap extends Component {
     this.enableInteractions();
 
     this.renderPolygons(this.props.polys, true);
+
     if (this.props.objectsType === 'mixed') {
       this.renderRoute(this.props.draw_object_list);
     }
@@ -82,6 +84,9 @@ export default class PolyMap extends Component {
         this.popup.hide();
       }
       this.renderPolygons(nextProps.polys);
+    }
+    if (nextProps.draw_object_list !== undefined && nextProps.objectsType === 'mixed') {
+      this.renderRoute(nextProps.draw_object_list);
     }
   }
 
@@ -185,6 +190,34 @@ export default class PolyMap extends Component {
 
     map.addLayer(polysLayer);
     fit && this.fitToExtent(polysLayer);
+  }
+
+  renderRoute(object_list = []) {
+    const map = this.map;
+    const vectorSource = new ol.source.Vector({ wrapX: false });
+    object_list = uniqBy(object_list, 'id');
+    each(object_list, (object) => {
+      const start = [object.begin.x_msk, object.begin.y_msk];
+      const end = [object.end.x_msk, object.end.y_msk];
+      const feature = new ol.Feature({
+        geometry: new ol.geom.LineString([start, end]),
+        id: object.id,
+        state: object.state,
+        distance: object.distance,
+      });
+      feature.setStyle(getVectorArrowStyle(feature));
+
+      vectorSource.addFeature(feature);
+    });
+    !!this.vectorLayer && map.removeLayer(this.vectorLayer);
+
+    const vectorLayer = new ol.layer.Vector({
+      source: vectorSource,
+    });
+
+    this.vectorLayer = vectorLayer;
+
+    map.addLayer(vectorLayer);
   }
 
   render() {

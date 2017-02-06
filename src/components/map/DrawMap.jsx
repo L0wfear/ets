@@ -165,34 +165,6 @@ export default class DrawMap extends PolyMap {
     map.addLayer(pointsVectorLayer);
   }
 
-  renderRoute(object_list = []) {
-    const map = this.map;
-    const vectorSource = new ol.source.Vector({ wrapX: false });
-    object_list = _.uniqBy(object_list, 'id');
-    _.each(object_list, (object) => {
-      const start = [object.begin.x_msk, object.begin.y_msk];
-      const end = [object.end.x_msk, object.end.y_msk];
-      const feature = new ol.Feature({
-        geometry: new ol.geom.LineString([start, end]),
-        id: object.id,
-        state: object.state,
-        distance: object.distance,
-      });
-      feature.setStyle(getVectorArrowStyle(feature));
-
-      vectorSource.addFeature(feature);
-    });
-    !!this.vectorLayer && map.removeLayer(this.vectorLayer);
-
-    const vectorLayer = new ol.layer.Vector({
-      source: vectorSource,
-    });
-
-    this.vectorLayer = vectorLayer;
-
-    map.addLayer(vectorLayer);
-  }
-
   onPointAdd(e, draw) {
     const { coordinates } = e;
     const objectList = this.props.objectsType === 'mixed' ? this.props.draw_object_list : this.props.object_list;

@@ -3799,3 +3799,8 @@ div.none {
   }
 
 }
+
+.dropdown-menu > .open.dropdown > .dropdown-menu {
+  left: 100%;
+  margin-top: -32px;
+}

@@ -92,7 +92,7 @@ export default class RouteInfo extends Component {
             </Col>
 
             <Col md={4}>
-              <CheckList showSelectable list={odh_list} />
+              <CheckList showSelectable list={odh_list} draw_list={draw_object_list} />
               <Div style={{ marginTop: 20 }} hidden={route.type !== 'points'}>
                 {route.object_list.map((o, i) => {
                   const label = `Пункт назначения №${i + 1} ${o.name ? `(${o.name})` : ''}`;

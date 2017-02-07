@@ -85,6 +85,7 @@ export default class CurrentMission extends DashboardCardMedium {
       this.setState({ selectedMission: res.result, customCardLoading: false });
     });
     this.props.openSubitemsList(this.state.selectedItem === null);
+    document.getElementById('dashboard-time').scrollIntoView();
   }
 
   missionAction() {

@@ -299,7 +299,7 @@ export default class CarInfo extends Component {
     sensorsList = groupBy(flatten(sensorsList), s => s.id);
     Object.keys(sensorsList).forEach((id, i) => {
       const sensorOptions = sensorsMapOptions(i, this.props.car.marker.track.maxSpeed);
-      const values = sensorsList[id].map(s => [s.timestamp, sensorOptions.value]);
+      const values = sensorsList[id].map(s => [s.timestamp, s.val ? sensorOptions.value : 0]);
       sensorsData.push({
         name: `Датчик №${i + 1}`,
         enableMouseTracking: false,

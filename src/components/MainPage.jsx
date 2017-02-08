@@ -179,6 +179,10 @@ export default class MainPage extends React.Component {
           </Nav>
 
           <Nav pullRight>
+            <NavDropdown title="Руководство пользователей" id="nav-dropdown-4">
+              <MenuItem href="http://ets.tech.mos.ru/ets-test/docs/%D0%A0%D1%83%D0%BA%D0%BE%D0%B2%D0%BE%D0%B4%D1%81%D1%82%D0%B2%D0%BE%20%D0%9C%D0%B0%D1%81%D1%82%D0%B5%D1%80%D0%B0_27_01_2016.docx">Руководство Мастера</MenuItem>
+              <MenuItem href="http://ets.tech.mos.ru/ets-test/docs/%D0%A0%D1%83%D0%BA%D0%BE%D0%B2%D0%BE%D0%B4%D1%81%D1%82%D0%B2%D0%BE%20%D0%B4%D0%B8%D1%81%D0%BF%D0%B5%D1%82%D1%87%D0%B5%D1%80%D0%B0%20_27_01_2017.docx">Руководство Диспетчера</MenuItem>
+            </NavDropdown>
             <NavItem className="navbar-user">
               <div className="navbar-user__avatar">
                 <img role="presentation" src={defaultUser} className="navbar-user__avatar-img" />

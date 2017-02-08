@@ -137,6 +137,22 @@ export default class PointsStore extends Store {
     this.setState({ singleCarTrackDates: dates });
   }
 
+  handleUpdateTrack() {
+    const points = Object.assign({}, this.state.points);
+    if (this.state.singleCarTrack) {
+      if (!this.state.selected) {
+        _.map(points, (p) => {
+          const car = p.car;
+          if (car && car.gov_number === this.state.singleCarTrack && p.marker) { // заменить на car.gps_code
+            p.marker.createTrack();
+            p.marker.track.fetch(this.flux, this.state.singleCarTrackDates[0] || undefined, this.state.singleCarTrackDates[1] || undefined);
+            this.handleSelectPoint(p);
+          }
+        });
+      }
+    }
+  }
+
   /**
     * Обновляет точки
     * @method
@@ -152,18 +168,6 @@ export default class PointsStore extends Store {
     const points = Object.assign({}, this.state.points);
 
     // TODO отрефакторить механизм обработки получения точек для 1 БНСО
-    if (this.state.singleCarTrack) {
-      if (!this.state.selected) {
-        _.map(points, (p) => {
-          const car = p.car;
-          if (car && car.gov_number === this.state.singleCarTrack && p.marker) { // заменить на car.gps_code
-            p.marker.createTrack();
-            p.marker.track.fetch(this.flux, this.state.singleCarTrackDates[0] || undefined, this.state.singleCarTrackDates[1] || undefined);
-            this.handleSelectPoint(p);
-          }
-        });
-      }
-    }
 
     for (const key in update) {
       const pointUpdate = update[key];

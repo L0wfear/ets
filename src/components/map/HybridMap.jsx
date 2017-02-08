@@ -47,6 +47,7 @@ export default class HybridMap extends Map {
         });
       }
     }
+    this.props.flux.getStore('points').handleUpdateTrack([]);
     this.triggerRender();
   }
 

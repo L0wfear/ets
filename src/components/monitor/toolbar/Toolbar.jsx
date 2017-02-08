@@ -189,7 +189,7 @@ class Toolbar extends Component {
   focusOnLonelyCar() {
     const store = this.context.flux.getStore('points');
     const onlyPoint = store.getVisiblePoints()[0];
-    const map = olmap;
+    const map = global.olmap;
     const view = map.getView();
     const size = map.getSize();
 

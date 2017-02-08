@@ -91,6 +91,7 @@ export default class OpenLayersMap extends Component {
     map.enableInteractions = this.enableInteractions.bind(this);
 
     this.map = map;
+    global.olmap = map;
     map.set('parent', this);
     this.map.projectToPixel = coordinates => projectToPixel(this.map, coordinates);
 

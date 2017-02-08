@@ -62,6 +62,7 @@ class WaybillForm extends Form {
   async componentDidMount() {
     const { flux } = this.context;
     const { formState } = this.props;
+
     if (formState.status === 'active') {
       const car = _.find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
       const fuel_correction_rate = car.fuel_correction_rate || 1;
@@ -91,6 +92,7 @@ class WaybillForm extends Form {
       });
       this.getCarDistance(formState);
     }
+
     this.getMissionsByCarAndDates(formState, false);
     await flux.getActions('objects').getCars();
     await flux.getActions('employees').getEmployees();
@@ -98,7 +100,7 @@ class WaybillForm extends Form {
     if (formState && formState.id) {
       const waybillInfo = await flux.getActions('waybills').getWaybill(formState.id);
       const canEditIfClose = waybillInfo.result.closed_editable && flux.getStore('session').getPermission('waybill.update_closed') || false;
-      this.setState({ canEditIfClose });
+      this.setState({ canEditIfClose, origFormState: formState });
     }
   }
 
@@ -106,6 +108,7 @@ class WaybillForm extends Form {
     const { flux } = this.context;
     const departure_date = formState.fact_departure_date || formState.plan_departure_date;
     const arrival_date = formState.fact_arrival_date || formState.plan_arrival_date;
+    const oldMissions = this.props.missionsList;
     flux.getActions('missions').getMissionsByCarAndDates(
       formState.car_id,
       departure_date,
@@ -114,7 +117,20 @@ class WaybillForm extends Form {
     ).then((response) => {
       const availableMissions = response && response.result ? response.result.rows.map(el => el.id) : [];
       const currentMissions = formState.mission_id_list;
-      const newMissions = currentMissions.filter(el => availableMissions.indexOf(el) > -1);
+      let newMissions = [];
+      if (formState.status === 'active') {
+        newMissions = currentMissions;
+        let { notAvailableMissions = [] } = this.state;
+        notAvailableMissions = notAvailableMissions
+          .concat(currentMissions
+            .filter(el => !availableMissions.includes(el) && !notAvailableMissions.find(m => m.id === el))
+            .map(id => oldMissions.find(el => el.id === id))
+          )
+          .filter(m => m);
+        this.setState({ notAvailableMissions });
+      } else {
+        newMissions = currentMissions.filter(el => availableMissions.includes(el));
+      }
       this.props.handleFormChange('mission_id_list', newMissions);
       notificate && global.NOTIFICATION_SYSTEM.notify(notifications.missionsByCarAndDateUpdateNotification);
     });
@@ -274,10 +290,9 @@ class WaybillForm extends Form {
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
-    const { loadingFields } = this.state;
+    const { loadingFields, origFormState = {}, notAvailableMissions = [] } = this.state;
     const { appConfig } = this.props;
     let taxesControl = false;
-
     const { carsList = [], carsIndex = {}, driversList = [], employeesList = [], missionsList = [] } = this.props;
     const CARS = carsList
       .filter(c => !state.structure_id || c.is_common || c.company_structure_id === state.structure_id)
@@ -292,6 +307,7 @@ class WaybillForm extends Form {
       return { value: d.id, label: `${personnel_number}${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''}` };
     });
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false }));
+    const OUTSIDEMISSIONS = notAvailableMissions.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false, number, className: 'yellow' }));
 
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
     const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
@@ -636,12 +652,15 @@ class WaybillForm extends Form {
                   error={errors.mission_id_list}
                   multi
                   className="task-container"
-                  options={MISSIONS}
+                  options={MISSIONS.concat(OUTSIDEMISSIONS)}
                   value={state.mission_id_list}
                   disabled={isEmpty(state.car_id) || IS_DISPLAY}
                   clearable={false}
                   onChange={this.handleMissionsChange}
                 />
+                {(new Date(origFormState.fact_arrival_date).getTime() > new Date(state.fact_arrival_date).getTime()) && (state.status === 'active') && (
+                  <div style={{ color: 'red' }}>{`Задания: ${OUTSIDEMISSIONS.map(m => `№${m.number}`).join(', ')} не входят в интервал путевого листа. После сохранения путевого листа время задания будет уменьшено и приравнено к времени "Возвращение факт." данного путевого листа`}</div>
+                )}
                 <Button style={{ marginTop: 10 }} onClick={this.createMission} disabled={isEmpty(state.car_id) || IS_DISPLAY}>Создать задание</Button>
                 <MissionFormWrap
                   onFormHide={this.onMissionFormHide}

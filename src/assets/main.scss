@@ -3804,3 +3804,12 @@ div.none {
   left: 100%;
   margin-top: -32px;
 }
+
+.yellow {
+  border-color: #ecd53f;
+  background-color: rgba(237, 234, 191, 0.6);
+  color: #a79521;
+  .Select-item-icon {
+    border-color: #ecd53f;
+  }
+}

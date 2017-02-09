@@ -1,5 +1,7 @@
 import Raven from 'raven-js';
 
+const ACTIVE = process.env.NODE_ENV === 'production';
+
 const SENTRY_KEYS_BY_STAND = {
   'test': '74b98d69b05c4a958c4c247eecaf74a4',
   'study': '2a7cb44593f2419e8f123f52435a3fb0',
@@ -18,11 +20,15 @@ const URL = `http://${SENTRY_KEYS_BY_STAND[process.env.STAND]}@ets.tech.mos.ru/s
 // }
 
 export function setUserContext(user) {
-  Raven.setUserContext(user);
+  if (ACTIVE) {
+    Raven.setUserContext(user);
+  }
 }
 
 export function resetUserContext() {
-  Raven.setUserContext();
+  if (ACTIVE) {
+    Raven.setUserContext();
+  }
 }
 
 export function setTransport() {
@@ -36,4 +42,6 @@ export function setTransport() {
   });
 }
 
-Raven.config(URL).install();
+if (ACTIVE) {
+  Raven.config(URL).install();
+}

@@ -13,16 +13,16 @@ const fixedValidators = [
       if (!data && data !== 0) {
         return undefined;
       }
-      return typeof data !== 'number' && !/^[-  +]?[0-9]*\.?,?[0-9]{1,3}$/.test(data) ? `Поле ${config.title || config.key} должно быть числом` : undefined;
-    },
-  },
-  {
-    name: 'integer',
-    validator(config, data) {
-      if (!data && data !== 0) {
-        return undefined;
+      let error = '';
+      if (config.float) {
+        const regexp = new RegExp(`^[ +]?[0-9]*\.?,?[0-9]{1,${config.float}}$`);
+        error = typeof data !== 'number' && !regexp.test(data) ? `Поле ${config.title || config.key} должно быть неотрицательным числом с ${config.float} знаками после запятой` : undefined;
       }
-      return typeof data !== 'number' && !/^\d+$/.test(data) ? `Поле ${config.title || config.key} должно быть целочисленным` : undefined;
+      if (config.integer) {
+        error = error || (typeof data !== 'number' && !/^\d+$/.test(data) ? `Поле ${config.title || config.key} должно быть целочисленным` : undefined);
+      }
+      error = error || (typeof data !== 'number' && isNaN(data) ? `Поле ${config.title || config.key} должно быть числом` : undefined);
+      return error;
     },
   },
   {

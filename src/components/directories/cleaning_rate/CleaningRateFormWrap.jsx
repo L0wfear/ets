@@ -23,7 +23,8 @@ export const cleaningRateSchema = {
     {
       key: 'value',
       title: 'Коэффициент',
-      type: 'floatFixed3',
+      type: 'number',
+      float: 3,
       required: true,
     },
     {

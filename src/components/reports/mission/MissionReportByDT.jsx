@@ -77,13 +77,13 @@ const MissionReportByDTTable = (props) => {
   const tableMeta = getTableMeta(props);
 
   const renderers = {
-    left_percentage: ({ data }) => <div>{ parseFloat(parseFloat(data) * 100).toFixed(0) + '%'}</div>,
-    traveled_percentage: ({ data }) => <div>{ parseFloat(parseFloat(data) * 100).toFixed(0) + '%'}</div>,
-    left: meta => <div>{ parseFloat(meta.data).toFixed(2) + ' ' + meta.rowData.route_check_unit }</div>,
-    traveled: meta => <div>{ parseFloat(meta.data).toFixed(2) + ' ' + meta.rowData.route_check_unit }</div>,
+    left_percentage: ({ data }) => <div>{ `${parseFloat(parseFloat(data) * 100).toFixed(0)}%`}</div>,
+    traveled_percentage: ({ data }) => <div>{ `${parseFloat(parseFloat(data) * 100).toFixed(0)}%`}</div>,
+    left: meta => <div>{ `${parseFloat(meta.data).toFixed(2)} ${meta.rowData.route_check_unit}` }</div>,
+    traveled: meta => <div>{ `${parseFloat(meta.data).toFixed(2)} ${meta.rowData.route_check_unit}` }</div>,
     route_check_length: ({ data }) => <div>{ data }</div>,
-    check_value: meta => <div>{ meta.data + ' ' + meta.rowData.route_check_unit }</div>,
-    route_with_speed: meta => <div>{`${parseFloat(meta.rowData.traveled / 1000).toFixed(3)} / ${parseFloat(meta.rowData.traveled_high_speed / 1000).toFixed(3)}`}</div>
+    check_value: meta => <div>{ `${meta.data} ${meta.rowData.route_check_unit}` }</div>,
+    route_with_speed: meta => <div>{`${parseFloat(meta.rowData.traveled / 1000).toFixed(3)} / ${parseFloat(meta.rowData.traveled_high_speed / 1000).toFixed(3)}`}</div>,
   };
 
   if (props.renderOnly) {
@@ -93,14 +93,14 @@ const MissionReportByDTTable = (props) => {
     delete renderers.left_percentage;
     delete renderers.traveled_percentage;
     renderers.left = data => <div>
-      {parseFloat(data.data).toFixed(2) + ' ' + data.rowData.route_check_unit}
+      {`${data.rowData.route_check_unit === 'раз' ? parseInt(data.data, 10) : parseFloat(data.data).toFixed(2)} ${data.rowData.route_check_unit}`}
       <br />
-      {`(${parseFloat(parseFloat(data.rowData.left_percentage) * 100).toFixed(0) + '%'})`}
+      {`(${`${parseFloat(parseFloat(data.rowData.left_percentage) * 100).toFixed(0)}%`})`}
     </div>;
     renderers.traveled = data => <div>
-      {parseFloat(data.data).toFixed(2) + ' ' + data.rowData.route_check_unit}
+      {`${data.rowData.route_check_unit === 'раз' ? parseInt(data.data, 10) : parseFloat(data.data).toFixed(2)} ${data.rowData.route_check_unit}`}
       <br />
-      {`(${parseFloat(parseFloat(data.rowData.traveled_percentage) * 100).toFixed(0) + '%'})`}
+      {`(${`${parseFloat(parseFloat(data.rowData.traveled_percentage) * 100).toFixed(0)}%`})`}
     </div>;
   } else {
     tableMeta.cols = tableMeta.cols.filter(c => c.name !== 'route_with_speed');

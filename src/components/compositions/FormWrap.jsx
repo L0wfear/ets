@@ -91,6 +91,12 @@ export default class FormWrap extends Component {
     const { formState } = this.state;
     let result = null;
 
+    this.schema.properties.forEach((p) => {
+      if (p.type === 'number' && p.float) {
+        formState[p.key] = parseFloat(formState[p.key]).toFixed(p.float);
+      }
+    });
+
     // понять, обновлять форму или создавать новую
     // можно по отсутствию уникального идентификатора
     if (isEmpty(formState[uniqueField])) {

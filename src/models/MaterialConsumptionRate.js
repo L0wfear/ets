@@ -33,7 +33,8 @@ export const schema = {
     {
       key: 'value',
       title: 'Норма',
-      type: 'floatFixed3',
+      type: 'number',
+      float: 3,
       required: true,
     },
   ],

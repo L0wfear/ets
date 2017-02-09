@@ -1,14 +1,15 @@
 import Raven from 'raven-js';
 
 const ACTIVE = process.env.NODE_ENV === 'production';
-
+// test // http://79c9fa1b267c454ca680692b9d2d4d25@172.17.31.73:9000/7
+// study // http://bde014009c3f4c80bd3e840296fd94c9@172.17.31.73:9000/8
 const SENTRY_KEYS_BY_STAND = {
-  'test': '74b98d69b05c4a958c4c247eecaf74a4',
-  'study': '2a7cb44593f2419e8f123f52435a3fb0',
+  'test': '79c9fa1b267c454ca680692b9d2d4d25', // http://172.17.31.73:9000/sentry/ets-frontend-dev/
+  'study': 'bde014009c3f4c80bd3e840296fd94c9', // http://172.17.31.73:9000/sentry/ets-frontend-prod/
 };
 const SENTRY_PROJECTS_BY_STAND = {
-  'test': 2,
-  'study': 3,
+  'test': 7,
+  'study': 8,
 };
 
 const SENTRY_PROXY_URL = 'http://ets.tech.mos.ru/sentry';

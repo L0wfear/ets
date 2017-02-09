@@ -152,7 +152,7 @@ export default class WaybillFormWrap extends FormWrap {
     if (!formState.status || formState.status === 'draft') {
       this.schema = waybillSchema;
       formErrors = this.validate(formState, formErrors);
-    } else if (formState.status && formState.status === 'active') {
+    } else if (formState.status && formState.status !== 'draft') {
       this.schema = waybillClosingSchema;
       formErrors = this.validate(formState, formErrors);
       if (typeof formErrors.motohours_end === 'undefined') formErrors.odometr_end = undefined;
@@ -195,7 +195,6 @@ export default class WaybillFormWrap extends FormWrap {
         lastEquipmentTax.RESULT = Taxes.getResult(lastEquipmentTax);
       }
     }
-
     this.handleFieldsChange(formState);
   }
 

@@ -7,7 +7,7 @@ const config = {
 };
 
 const STANDS = {
-  test: `${PROTO}//213.79.88.5/ets-test/services`,
+  test: `${PROTO}//ets.tech.mos.ru/ets-test/services`,
   study: `${PROTO}//213.79.88.5/ets-study/services`,
 };
 

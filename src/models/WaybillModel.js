@@ -189,7 +189,7 @@ const closingProperties = [
     title: 'Счетчик моточасов оборудования.Возврат',
     type: 'number',
     float: 3,
-    required: false,
+    required: true,
   },
 ];
 

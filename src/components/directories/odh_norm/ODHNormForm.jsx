@@ -11,7 +11,7 @@ export default class ODHNormForm extends Form {
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
-    const {isPermitted = false} = this.props;
+    const { isPermitted = false } = this.props;
     const IS_CREATING = !state.id;
     const MEASUREUNITS = this.props.measureUnitList.map(({ id, name }) => ({ value: id, label: name }));
     const title = IS_CREATING ? 'Добавление расходного материала' : 'Изменение расходного материала'; //'Добавление норматива по содержанию ОДХ' : 'Изменение норматива по содержанию ОДХ';

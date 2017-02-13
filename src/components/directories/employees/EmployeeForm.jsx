@@ -28,7 +28,7 @@ export default class EmployeeForm extends Form {
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
-    const { carsList = [], positionsList = [] } = this.props;
+    const { carsList = [], positionsList = [], isPermitted = false } = this.props;
     const { companyStructureList = [] } = this.state;
     const CARS = carsList.map(c => ({ value: c.asuods_id, label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]` }));
     const COMPANY_ELEMENTS = companyStructureList.map(el => ({ value: el.id, label: el.name }));
@@ -53,6 +53,7 @@ export default class EmployeeForm extends Form {
                 label="Фамилия"
                 value={state.last_name}
                 error={errors.last_name}
+                disabled={!isPermitted}
                 onChange={this.handleChange.bind(this, 'last_name')}
               />
             </Col>
@@ -62,6 +63,7 @@ export default class EmployeeForm extends Form {
                 label="Табельный номер"
                 value={state.personnel_number}
                 error={errors.personnel_number}
+                disabled={!isPermitted}
                 onChange={this.handleChange.bind(this, 'personnel_number')}
               />
             </Col>
@@ -73,6 +75,7 @@ export default class EmployeeForm extends Form {
                 label="Имя"
                 value={state.first_name}
                 error={errors.first_name}
+                disabled={!isPermitted}
                 onChange={this.handleChange.bind(this, 'first_name')}
               />
             </Col>
@@ -82,6 +85,7 @@ export default class EmployeeForm extends Form {
                 label="Специальное удостоверение"
                 value={state.special_license}
                 error={errors.special_license}
+                disabled={!isPermitted}
                 onChange={this.handleChange.bind(this, 'special_license')}
               />
             </Col>
@@ -93,6 +97,7 @@ export default class EmployeeForm extends Form {
                 label="Отчество"
                 value={state.middle_name}
                 error={errors.middle_name}
+                disabled={!isPermitted}
                 onChange={this.handleChange.bind(this, 'middle_name')}
               />
             </Col>
@@ -102,6 +107,7 @@ export default class EmployeeForm extends Form {
                 label="Водительское удостоверение"
                 value={state.drivers_license}
                 error={errors.drivers_license}
+                disabled={!isPermitted}
                 onChange={this.handleChange.bind(this, 'drivers_license')}
               />
             </Col>
@@ -114,6 +120,7 @@ export default class EmployeeForm extends Form {
                 date={state.birthday}
                 time={false}
                 error={errors.birthday}
+                disabled={!isPermitted}
                 onChange={this.handleChange.bind(this, 'birthday')}
               />
             </Col>
@@ -124,6 +131,7 @@ export default class EmployeeForm extends Form {
                 value={state.prefer_car}
                 options={CARS}
                 error={errors.prefer_car}
+                disabled={!isPermitted}
                 onChange={this.handleChange.bind(this, 'prefer_car')}
               />
             </Col>
@@ -135,6 +143,7 @@ export default class EmployeeForm extends Form {
                 label="Телефон"
                 value={state.phone}
                 error={errors.phone}
+                disabled={!isPermitted}
                 onChange={this.handleChange.bind(this, 'phone')}
               />
             </Col>
@@ -145,6 +154,7 @@ export default class EmployeeForm extends Form {
                 value={state.active ? 1 : 0}
                 options={DRIVER_STATES}
                 error={errors.active}
+                disabled={!isPermitted}
                 onChange={this.handleChange.bind(this, 'active')}
               />
             </Col>
@@ -157,6 +167,7 @@ export default class EmployeeForm extends Form {
                 options={POSITION_ELEMENTS}
                 value={state.position_id}
                 error={errors.position_id}
+                disabled={!isPermitted}
                 onChange={this.handleChange.bind(this, 'position_id')}
               />
             </Col>
@@ -166,6 +177,7 @@ export default class EmployeeForm extends Form {
                 label="Медицинская справка №"
                 value={state.medical_certificate}
                 error={errors.medical_certificate}
+                disabled={!isPermitted}
                 onChange={this.handleChange.bind(this, 'medical_certificate')}
               />
             </Col>
@@ -175,6 +187,7 @@ export default class EmployeeForm extends Form {
               <Field type="select" label="Подразделение"
                 options={COMPANY_ELEMENTS}
                 value={state.company_structure_id}
+                disabled={!isPermitted}
                 onChange={this.handleChange.bind(this, 'company_structure_id')}
               />
             </Col>
@@ -185,6 +198,7 @@ export default class EmployeeForm extends Form {
                 date={state.medical_certificate_date}
                 time={false}
                 error={errors.medical_certificate_date}
+                disabled={!isPermitted}
                 onChange={this.handleChange.bind(this, 'medical_certificate_date')}
               />
             </Col>
@@ -196,6 +210,7 @@ export default class EmployeeForm extends Form {
                 label="Общее"
                 options={[{ label: 'Да', value: 1 }, { label: 'Нет', value: 0 }]}
                 value={state.is_common ? 1 : 0}
+                disabled={!isPermitted}
                 onChange={this.handleChange.bind(this, 'is_common')}
               />
             </Col>
@@ -205,6 +220,7 @@ export default class EmployeeForm extends Form {
                 label="СНИЛС №"
                 value={state.snils}
                 error={errors.snils}
+                disabled={!isPermitted}
                 onChange={this.handleChange.bind(this, 'snils')}
               />
             </Col>

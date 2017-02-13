@@ -14,13 +14,6 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE'],
 })
 export default class EmployeesList extends ElementsList {
-
-  constructor(props, context) {
-    super(props, context);
-    // DELETE пока не используется
-    // this.removeElementAction = context.flux.getActions('employees').deleteEmployee;
-  }
-
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;

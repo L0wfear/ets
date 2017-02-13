@@ -1,7 +1,11 @@
-import React, { Component } from 'react';
-import EmployeeForm from './EmployeeForm.jsx';
-import FormWrap from '../../compositions/FormWrap.jsx';
+import React from 'react';
+import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
 import { schema as employeeSchema, defaultElement } from 'models/Employee.js';
+import BaseEmployeeForm from './EmployeeForm.jsx';
+import FormWrap from '../../compositions/FormWrap.jsx';
+
+
+const EmployeeForm = enhanceWithPermissions(BaseEmployeeForm);
 
 export default class EmployeeFormWrap extends FormWrap {
 
@@ -19,6 +23,8 @@ export default class EmployeeFormWrap extends FormWrap {
       <EmployeeForm
         formState={this.state.formState}
         formErrors={this.state.formErrors}
+        permissions={['employee.update']}
+        addPermissionProp
         canSave={this.state.canSave}
         onSubmit={this.handleFormSubmit.bind(this)}
         handleFormChange={this.handleFormStateChange.bind(this)}

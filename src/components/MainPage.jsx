@@ -175,7 +175,7 @@ export default class MainPage extends React.Component {
 
             <NavItem permissions={[PERMISSIONS.route.list]} active={path === '/routes-list'} href="#/routes-list">Маршруты</NavItem>
             <NavItem permissions={[PERMISSIONS.company_structure.list]} active={path === '/company-structure'} href="#/company-structure">Структура предприятия</NavItem>
-            <NavItem permissions={[PERMISSIONS.administration]} title="Администрирование" href="http://172.17.31.72/admin"><Glyphicon glyph="list-alt" /></NavItem>
+            <NavItem permissions={[PERMISSIONS.administration]} title="Администрирование" href={`http://213.79.88.5/${process.env.STAND === 'test' ? 'ets-test/' : ''}admin`}><Glyphicon glyph="list-alt" /></NavItem>
           </Nav>
 
           <Nav pullRight>

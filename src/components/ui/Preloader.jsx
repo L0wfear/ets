@@ -7,7 +7,7 @@ export default function Preloader({ style, type }) {
   switch (type) {
     case 'mainpage':
       return (
-        <div className="gost-loading-overlay">
+        <div className="gost-loading-overlay" id="loadingOverlay">
           <div className="cssload-loader" />
         </div>
       );
@@ -17,7 +17,7 @@ export default function Preloader({ style, type }) {
       );
     case 'field':
       return (
-          <img src={preloaderFieldGif} alt="Идет загрузка" />
+        <img src={preloaderFieldGif} alt="Идет загрузка" />
       );
     case 'lazy':
       return (

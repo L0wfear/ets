@@ -1,5 +1,6 @@
 import React from 'react';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
+import ModalBody from 'components/ui/Modal';
 import { connectToStores } from 'utils/decorators';
 import Field from 'components/ui/Field.jsx';
 import Form from '../../compositions/Form.jsx';
@@ -28,7 +29,7 @@ export default class MaterialConsumptionRateForm extends Form {
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <ModalBody>
           <Row>
             <Col md={12}>
               <Field
@@ -101,7 +102,7 @@ export default class MaterialConsumptionRateForm extends Form {
               />
             </Col>
           </Row>
-        </Modal.Body>
+        </ModalBody>
         <Modal.Footer>
           <Button disabled={!this.props.canSave || !isPermitted} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
         </Modal.Footer>

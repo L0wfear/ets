@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Row, Col } from 'react-bootstrap';
+import ModalBody from 'components/ui/Modal';
 import FieldWrap from '../FieldWrap.jsx';
 // deprecated
 export default class Form extends Component {
@@ -50,14 +51,14 @@ export default class Form extends Component {
       <Modal {...this.props} backdrop="static">
 
         <Modal.Header closeButton>
-            <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
+          <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
+        <ModalBody>
 
           {rows}
 
-        </Modal.Body>
+        </ModalBody>
 
         <Modal.Footer>
           {/* <Button onClick={this.handleSubmit.bind(this)}>Сохранить</Button>*/}

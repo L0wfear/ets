@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Modal, Button } from 'react-bootstrap';
+import ModalBody from 'components/ui/Modal';
 import { autobind } from 'core-decorators';
 
 const promptDiv = document.createElement('div');
@@ -55,9 +56,9 @@ class Prompt extends React.Component {
         <Modal.Header>
           {this.state.title}
         </Modal.Header>
-        <Modal.Body>
+        <ModalBody>
           {typeof this.state.body === 'function' ? this.state.body(this) : this.state.body}
-        </Modal.Body>
+        </ModalBody>
         <Modal.Footer>
           <Button onClick={this.ok}>Ок</Button>
           <Button onClick={this.cancel}>Отмена</Button>

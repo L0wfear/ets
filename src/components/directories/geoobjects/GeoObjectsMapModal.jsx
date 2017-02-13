@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connectToStores, FluxContext } from 'utils/decorators';
 import { GEOOBJECTS_TYPES } from 'constants/geoobjects';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
+import ModalBody from 'components/ui/Modal';
 import PolyMap from '../../map/PolyMap.jsx';
 import Div from 'components/ui/Div.jsx';
 import _ from 'lodash';
@@ -48,7 +49,7 @@ class GeoObjectsMapModal extends Component {
           <Modal.Title id="contained-modal-title-lg">Просмотр объекта</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
+        <ModalBody>
           <Row>
             <Col md={4}>
               {form}
@@ -63,7 +64,7 @@ class GeoObjectsMapModal extends Component {
               </Div>
             </Col>
           </Row>
-        </Modal.Body>
+        </ModalBody>
 
       </Modal>
     );

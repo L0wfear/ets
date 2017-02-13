@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Modal } from 'react-bootstrap';
+import ModalBody from 'components/ui/Modal';
 import PDF from 'react-pdf-js';
 import Preloader from '../../ui/Preloader.jsx';
 
@@ -44,14 +45,14 @@ export default class PDFViewModal extends Component {
   render() {
     return (
       <Modal {...this.props} onHide={this.onHide.bind(this)}>
-        <Modal.Body bsClass="null">
+        <ModalBody bsClass="null">
           {!this.state.url
             ?
             <Preloader type="mainpage" visible={this.props.show} />
             :
             <PDF file={this.state.url} />
           }
-        </Modal.Body>
+        </ModalBody>
       </Modal>
     );
   }

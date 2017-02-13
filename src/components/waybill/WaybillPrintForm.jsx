@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { autobind } from 'core-decorators';
 import Div from 'components/ui/Div.jsx';
 import { Modal, Button } from 'react-bootstrap';
+import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
 import Datepicker from 'components/ui/DatePicker.jsx';
 import { getToday9am, getTomorrow9am, makeDate } from 'utils/dates';
@@ -72,7 +73,7 @@ class WaybillPrintForm extends Component {
           <Modal.Title id="contained-modal-title-lg">Печать журнала ПЛ</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
+        <ModalBody>
           <span style={{ marginBottom: 15, display: 'block' }}>Выберите период:</span>
           {this.props.show === 1 ?
             <div>
@@ -108,7 +109,7 @@ class WaybillPrintForm extends Component {
               {DISABLE_SUBMIT ? <label style={{ color: 'red', fontWeight: 'normal', fontSize: 12, marginTop: 10 }}>Даты должны быть указаны</label> : ''}
             </div>
           }
-        </Modal.Body>
+        </ModalBody>
 
         <Modal.Footer>
           <Div className="inline-block">

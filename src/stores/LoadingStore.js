@@ -37,6 +37,7 @@ export default class LoadingStore extends Store {
 
       objectsActions.getModels,
       objectsActions.getTypes,
+      objectsActions.getCars,
       objectsActions.getSpecialModels,
       objectsActions.getCustomers,
       objectsActions.getWorkKinds,
@@ -127,8 +128,6 @@ export default class LoadingStore extends Store {
     );
 
     this.reg(true,
-      objectsActions.getCars,
-
       geoObjectsActions.getODHs,
       geoObjectsActions.updateODH,
       geoObjectsActions.getDTs,

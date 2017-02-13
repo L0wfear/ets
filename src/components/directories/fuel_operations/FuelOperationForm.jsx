@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Input, Label, Row, Col, FormControls, Button, DropdownButton, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
+import ModalBody from 'components/ui/Modal';
 import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
@@ -17,7 +18,7 @@ export default class FuelOperationForm extends Form {
           <Modal.Title id="contained-modal-title-lg">{!state.id ? 'Добавление' : 'Изменение'} операции для расчета топлива</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
+        <ModalBody>
 
           <Row>
 
@@ -42,7 +43,7 @@ export default class FuelOperationForm extends Form {
 
           </Row>
 
-        </Modal.Body>
+        </ModalBody>
 
         <Modal.Footer>
           <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || !isPermitted}>Сохранить</Button>

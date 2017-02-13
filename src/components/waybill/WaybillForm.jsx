@@ -2,6 +2,7 @@ import React from 'react';
 import { autobind } from 'core-decorators';
 import connectToStores from 'flummox/connect';
 import { Modal, Input, Row, Col, Button, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
+import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
 import DivForEnhance from 'components/ui/Div.jsx';
 import { isNotNull, isEmpty, hasOdometer } from 'utils/functions';
@@ -364,7 +365,7 @@ class WaybillForm extends Form {
           <Modal.Title id="contained-modal-title-lg">{title} { IS_POST_CREATING && '(возможна корректировка)'} { (IS_DISPLAY || IS_CLOSING) && `№ ${state.number}`}</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
+        <ModalBody>
           <Row>
             <Div>
               {IS_DISPLAY || IS_CLOSING ? <Col md={3}>
@@ -741,7 +742,7 @@ class WaybillForm extends Form {
           <Row>
             <Col md={8} />
           </Row>
-        </Modal.Body>
+        </ModalBody>
 
         <Modal.Footer>
           <Div>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import ModalBody from 'components/ui/Modal';
 import EtsSelect from 'components/ui/EtsSelect.jsx';
 import Div from 'components/ui/Div.jsx';
 import Form from 'components/compositions/Form.jsx';
@@ -32,13 +33,13 @@ class FaxogrammMissionsForm extends Form {
           <Modal.Title id="contained-modal-title-lg">Создание заданий</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
+        <ModalBody>
           <MissionTemplatesJournal
             payload={payload}
             renderOnly
             onListStateChange={this.handleChange.bind(this, 'missionJournalState')}
           />
-        </Modal.Body>
+        </ModalBody>
 
         <Modal.Footer>
           <Div className="inline-block assignToWaybillCheck" style={{ width: '300px', textAlign: 'left !important', height: '22px', marginRight: '20px' }}>

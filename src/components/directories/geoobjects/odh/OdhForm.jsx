@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
+import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
 import connectToStores from 'flummox/connect';
@@ -31,7 +32,7 @@ class OdhForm extends Form {
           <Modal.Title id="contained-modal-title-lg">Объект дорожного хозяйства</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
+        <ModalBody>
 
           <Row>
             <Col md={12}>
@@ -45,7 +46,7 @@ class OdhForm extends Form {
             </Col>
           </Row>
 
-        </Modal.Body>
+        </ModalBody>
 
         <Modal.Footer>
           <Button onClick={this.handleSubmit.bind(this)}>Сохранить</Button>

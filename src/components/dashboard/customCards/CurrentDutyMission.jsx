@@ -1,6 +1,7 @@
 import React from 'react';
 import Div from 'components/ui/Div.jsx';
 import { Panel as BootstrapPanel, Collapse, Glyphicon, Fade, Well, Button, Modal } from 'react-bootstrap';
+import ModalBody from 'components/ui/Modal';
 import RouteInfo from 'components/route/RouteInfo.jsx';
 import { getFormattedDateTimeSeconds } from 'utils/dates';
 import cx from 'classnames';
@@ -127,9 +128,9 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
           <Modal.Title id="contained-modal-title-lg">Бригадир {this.state.selectedDutyMission.foreman_fio}</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
+        <ModalBody>
           <RouteInfo route={this.state.route} mapOnly />
-        </Modal.Body>
+        </ModalBody>
 
       </Modal>
     );

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
+import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import RouteInfo from '../../route/RouteInfo.jsx';
@@ -51,7 +52,7 @@ class MissionTemplateForm extends DutyMissionForm {
           <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
+        <ModalBody>
 
           <Row>
             <Col md={6}>
@@ -101,7 +102,7 @@ class MissionTemplateForm extends DutyMissionForm {
             </Col>
           </Row>
 
-        </Modal.Body>
+        </ModalBody>
 
         <Modal.Footer>
           <Div hidden={state.status === 'closed'}>

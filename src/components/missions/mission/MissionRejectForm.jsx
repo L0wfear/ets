@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connectToStores, FluxContext } from 'utils/decorators';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
+import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import Datepicker from 'components/ui/DatePicker.jsx';
@@ -188,7 +189,7 @@ export default class MissionRejectForm extends Component {
           <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
+        <ModalBody>
           <Field
             type="string"
             label="Введите причину:"
@@ -232,7 +233,7 @@ export default class MissionRejectForm extends Component {
             </Row>
           </Div> : ''}
           {datePickers}
-        </Modal.Body>
+        </ModalBody>
 
         <Modal.Footer>
           <Div>

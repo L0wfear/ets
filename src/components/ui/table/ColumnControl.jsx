@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Modal, Button, Glyphicon, Input } from 'react-bootstrap';
+import ModalBody from 'components/ui/Modal';
 import cx from 'classnames';
 import Div from '../Div.jsx';
 
@@ -47,9 +48,9 @@ export default class ColumnControl extends Component {
         </Button>
         <Div hidden={!this.props.show} className={'column-control-container'}>
           <Div className="column-control-container-window">
-            <Modal.Body>
+            <ModalBody>
               {rows}
-            </Modal.Body>
+            </ModalBody>
           </Div>
         </Div>
       </Div>

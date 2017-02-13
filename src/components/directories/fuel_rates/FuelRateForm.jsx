@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
+import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
 import { connectToStores } from 'utils/decorators';
@@ -35,7 +36,7 @@ export default class FuelRateForm extends Form {
           <Modal.Title id="contained-modal-title-lg">{!state.id ? 'Добавление' : 'Изменение'} нормы расхода топлива</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
+        <ModalBody>
 
           <Row>
 
@@ -106,7 +107,7 @@ export default class FuelRateForm extends Form {
 
           </Row>
 
-        </Modal.Body>
+        </ModalBody>
 
         <Modal.Footer>
           <Button disabled={!this.props.canSave || !isPermitted} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>

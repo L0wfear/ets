@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { autobind } from 'core-decorators';
 import { FluxContext } from 'utils/decorators';
 import { Button, Modal } from 'react-bootstrap';
+import ModalBody from 'components/ui/Modal';
 import { getToday0am } from 'utils/dates';
 import Datepicker from 'components/ui/DatePicker.jsx';
 import Div from 'components/ui/Div.jsx';
@@ -43,7 +44,7 @@ export default class DtCoverageReportPrintForm extends Component {
         <Modal.Header>
           <Modal.Title id="contained-modal-title-lg">Печать отчета за заданный период</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <ModalBody>
           {exportType === 1 ?
             <div style={{ textAlign: 'center' }}>
               <Datepicker className="inline-block" time={false} date={this.state.date_start} onChange={date => this.setState({ date_start: date })} />
@@ -54,7 +55,7 @@ export default class DtCoverageReportPrintForm extends Component {
               <Datepicker className="inline-block" style={{ marginLeft: 40 }} date={this.state.date_end} onChange={date => this.setState({ date_end: date })} />
             </div>
           }
-        </Modal.Body>
+        </ModalBody>
         <Modal.Footer>
           <Div className="inline-block">
             <Button onClick={this.export}>ОК</Button>

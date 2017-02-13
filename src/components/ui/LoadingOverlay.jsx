@@ -10,31 +10,25 @@ import Preloader from './Preloader.jsx';
 @FluxContext
 export default class LoadingOverlay extends React.Component {
 
-  componentDidUpdate() {
+  state = {
+    show: true,
+  }
+
+  componentWillReceiveProps(nextProps) {
     const modals = document.getElementsByClassName('modal-body');
-    const overlay = document.getElementById('loadingOverlay');
-    if (!overlay || !modals.length) return;
-    const style = overlay.style;
-    const rect = modals[0].getBoundingClientRect();
-    style.position = 'fixed';
-    style.left = `${rect.left}px`;
-    style.right = `${rect.right}px`;
-    style.top = `${rect.top}px`;
-    style.bottom = `${rect.bottom}px`;
-    style.width = `${rect.width}px`;
-    style.height = `${rect.height}px`;
+    this.setState({ show: !modals.length || !nextProps.main });
   }
 
   render() {
     const { flux } = this.context;
     const { isLoading } = this.props;
+    const { show } = this.state;
     const store = flux.getStore('loading');
     const storeIsLoading = store.isLoading();
     const storeIsLazyLoading = store.isLazyLoading();
-
-    if (storeIsLoading) {
+    if (storeIsLoading && show) {
       return <Preloader type="mainpage" />;
-    } else if (!storeIsLoading && (isLoading || storeIsLazyLoading)) {
+    } else if (!storeIsLoading && (isLoading || storeIsLazyLoading) && show) {
       return <Preloader type="lazy" />;
     }
     return <div style={{ display: 'none' }} />;

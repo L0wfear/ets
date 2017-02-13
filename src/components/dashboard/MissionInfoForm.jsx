@@ -4,6 +4,7 @@ import { connectToStores as connect } from 'utils/decorators';
 import { secondsToTime } from 'utils/dates';
 import { autobind } from 'core-decorators';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
+import ModalBody from 'components/ui/Modal';
 import Div from 'components/ui/Div.jsx';
 import _ from 'lodash';
 import HybridMap from 'components/map/HybridMap.jsx';
@@ -113,7 +114,7 @@ class MissionInfoForm extends Form {
           <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
+        <ModalBody>
 
           <Row>
 
@@ -176,7 +177,7 @@ class MissionInfoForm extends Form {
             <li><b>Общее время стоянок:</b> {this.state.parkingCount ? secondsToTime(this.state.parkingCount) : 'Рассчитывается...'}</li>
           </Div>
 
-        </Modal.Body>
+        </ModalBody>
 
         <Modal.Footer>
           <Div>

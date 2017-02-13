@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
+import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import Form from '../compositions/Form.jsx';
@@ -37,7 +38,7 @@ class CompanyStructureForm extends Form {
           <Modal.Title id="contained-modal-title-lg">Создание подразделения</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
+        <ModalBody>
 
           <Row>
             <Col md={12}>
@@ -91,7 +92,7 @@ class CompanyStructureForm extends Form {
             </Col>
           </Row>
 
-        </Modal.Body>
+        </ModalBody>
 
         <Modal.Footer>
           <Div hidden={state.status === 'closed'}>

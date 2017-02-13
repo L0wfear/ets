@@ -1,6 +1,7 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button, Glyphicon } from 'react-bootstrap';
+import ModalBody from 'components/ui/Modal';
 import RouteInfo from 'components/route/RouteInfo.jsx';
 import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
 import Field from 'components/ui/Field.jsx';
@@ -184,7 +185,7 @@ export class DutyMissionForm extends Form {
           <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
+        <ModalBody>
 
           <Row>
 
@@ -355,7 +356,7 @@ export class DutyMissionForm extends Form {
             </Col>
           </Row>
 
-        </Modal.Body>
+        </ModalBody>
 
         <Modal.Footer>
           <Div className="inline-block" >

@@ -219,7 +219,7 @@ export default class MainPage extends React.Component {
 
         <div className="app-content">
           {this.props.children}
-          <LoadingOverlay />
+          <LoadingOverlay main />
         </div>
 
         <div className="app-footer">

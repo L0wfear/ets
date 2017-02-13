@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
+import ModalBody from 'components/ui/Modal';
 import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
 import Form from '../../compositions/Form.jsx';
@@ -226,7 +227,7 @@ export default class EmployeeForm extends Form {
             </Col>
           </Row>
         </Div>
-        <Modal.Body />
+        <ModalBody />
         <Modal.Footer>
           <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
         </Modal.Footer>

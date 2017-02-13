@@ -1,5 +1,6 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
 import { connectToStores } from 'utils/decorators';
@@ -18,7 +19,7 @@ export default class MaintenanceWorkForm extends Form {
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">{!state.id ? 'Добавление' : 'Изменение'} показателя регламентных работ</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <ModalBody>
           <Field
             type="string"
             label="Наименование"
@@ -36,7 +37,7 @@ export default class MaintenanceWorkForm extends Form {
             onChange={e => this.handleChange('measure_unit_id', e)}
             disabled={!isPermitted}
           />
-        </Modal.Body>
+        </ModalBody>
         <Modal.Footer>
           <Button onClick={() => this.handleSubmit()} disabled={!this.props.canSave || !isPermitted}>Сохранить</Button>
         </Modal.Footer>

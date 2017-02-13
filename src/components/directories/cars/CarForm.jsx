@@ -1,5 +1,6 @@
 import React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
+import ModalBody from 'components/ui/Modal';
 import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
@@ -40,7 +41,7 @@ class CarForm extends Form {
           <Modal.Title id="contained-modal-title-lg">Карточка транспортного средства</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
+        <ModalBody>
 
           <Row>
 
@@ -100,7 +101,7 @@ class CarForm extends Form {
 
           </Row>
 
-        </Modal.Body>
+        </ModalBody>
 
         <Modal.Footer>
           <Button disabled={!isPermitted} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>

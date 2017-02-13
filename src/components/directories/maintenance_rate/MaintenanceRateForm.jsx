@@ -1,5 +1,6 @@
 import React from 'react';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
+import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
 import { connectToStores } from 'utils/decorators';
@@ -27,7 +28,7 @@ export default class MaintenanceRateForm extends Form {
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">{!state.id ? 'Добавление' : 'Изменение'} нормы на содержание {this.props.type === 'odh' ? 'ОДХ' : 'ДТ'}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <ModalBody>
           <Row>
             <Col md={12}>
               <Field
@@ -99,7 +100,7 @@ export default class MaintenanceRateForm extends Form {
               />
             </Col>
           </Row>
-        </Modal.Body>
+        </ModalBody>
         <Modal.Footer>
           <Button onClick={() => this.handleSubmit()} disabled={!this.props.canSave || !isPermitted}>Сохранить</Button>
         </Modal.Footer>

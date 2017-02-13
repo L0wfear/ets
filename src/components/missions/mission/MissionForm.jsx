@@ -2,6 +2,7 @@ import React from 'react';
 import connectToStores from 'flummox/connect';
 import { autobind } from 'core-decorators';
 import { Modal, Row, Col, Button, Dropdown, Glyphicon, MenuItem } from 'react-bootstrap';
+import ModalBody from 'components/ui/Modal';
 import RouteInfo from 'components/route/RouteInfo.jsx';
 import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
 import Field from 'components/ui/Field.jsx';
@@ -238,7 +239,7 @@ export class MissionForm extends Form {
           <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
+        <ModalBody>
 
           <Row>
             <Col md={6}>
@@ -380,7 +381,7 @@ export class MissionForm extends Form {
             </Col>
           </Row>
 
-        </Modal.Body>
+        </ModalBody>
 
         <Modal.Footer>
           <Div className="inline-block assignToWaybillCheck" style={{ width: '300px', textAlign: 'left !important', height: '22px', marginRight: '20px' }} hidden={!!state.status || this.props.fromWaybill}>

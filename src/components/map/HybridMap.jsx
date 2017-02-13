@@ -122,6 +122,10 @@ export default class HybridMap extends Map {
     POLYS_LAYER = polysLayer;
 
     map.addLayer(polysLayer);
+    if (this.props.routeCenter) {
+      const extent = polysLayer.getSource().getExtent();
+      extent[0] !== Infinity && map.getView().fit(extent, map.getSize());
+    }
   }
 
   renderSelectedPoly(selectedPoly, showSelectedElement) {

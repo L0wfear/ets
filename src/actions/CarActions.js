@@ -41,6 +41,7 @@ export default class CarActions extends Actions {
   }
 
   getVectorObject(selectedPoint, prevPoint, nextPoint) {
+    if (!prevPoint || !selectedPoint || !nextPoint) return { result: null };
     const payload = {
       coordinates: [prevPoint.coords_msk, selectedPoint.coords_msk, nextPoint.coords_msk],
     };

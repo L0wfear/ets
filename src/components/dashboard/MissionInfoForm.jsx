@@ -139,6 +139,7 @@ class MissionInfoForm extends Form {
 
                 <HybridMap
                   polys={polys}
+                  routeCenter
                   maxSpeed={technical_operation_data.max_speed}
                   selectedObjects={this.state.selectedObjects}
                   selectedPoly={geozonePolys[this.state.selectedElementId]}

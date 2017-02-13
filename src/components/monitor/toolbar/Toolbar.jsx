@@ -186,6 +186,11 @@ class Toolbar extends Component {
     this._pointsStore = this.context.flux.getStore('points');
   }
 
+  shouldComponentUpdate() {
+    // сделать обновление только во время изменений!
+    return true;
+  }
+
   focusOnLonelyCar() {
     const store = this.context.flux.getStore('points');
     const onlyPoint = store.getVisiblePoints()[0];
@@ -195,11 +200,6 @@ class Toolbar extends Component {
 
     view.centerOn(onlyPoint.marker.coords, size, [size[0] / 2, size[1] / 2]);
     view.setZoom(15);
-  }
-
-  shouldComponentUpdate() {
-    // сделать обновление только во время изменений!
-    return true;
   }
 
   render() {
@@ -224,7 +224,6 @@ class Toolbar extends Component {
     const carsCount = Object.keys(byConnectionStatus)
                           .map(k => byConnectionStatus[k])
                           .reduce((a, b) => a + b);
-
     return (
       <div className="app-toolbar">
         <div className="row">

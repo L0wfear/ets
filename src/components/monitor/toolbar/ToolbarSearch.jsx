@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 import { autobind } from 'core-decorators';
 import Filter from './Filter.jsx';
 import ToolbarControl from './ToolbarControl.jsx';
@@ -30,7 +31,7 @@ export default class ToolbarSearch extends Component {
   }
 
   onToggle() {
-    const inputDOM = React.findDOMNode(this.refs.search_text).firstChild;
+    const inputDOM = ReactDOM.findDOMNode(this.search_text).firstChild;
     setTimeout(() => {
       inputDOM.focus();
     }, 150);
@@ -47,7 +48,7 @@ export default class ToolbarSearch extends Component {
 
     return (
       <ToolbarControl controlType="search" top="0px" btnClass={this.state.btnClassName} onToggle={this.onToggle}>
-        <Filter ref="search_text" onFilterChange={this.onFilterChange} className="bnso-filter" title="рег. номер ТС или номер БНСО" name="bnso_gos" />
+        <Filter ref={e => (this.search_text = e)} onFilterChange={this.onFilterChange} className="bnso-filter" title="рег. номер ТС или номер БНСО" name="bnso_gos" />
         {this.state.canFocus && <button style={style} onClick={this.props.focusOnLonelyCar} className="btn btn-default btn-sm"><span className="glyphicon glyphicon-screenshot" />&nbsp;Показать</button>}
       </ToolbarControl>
     );

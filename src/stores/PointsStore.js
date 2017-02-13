@@ -245,7 +245,9 @@ export default class PointsStore extends Store {
     const filter = Object.assign({}, this.state.filter, update);
     const selected = this.state.selected;
 
-    this.setState(Object.assign({}, { filter, selected }, this.countDimensions()));
+    this.setState(Object.assign({}, { filter, selected }), () => {
+      this.setState(Object.assign({}, this.countDimensions()));
+    });
   }
 
   /**
@@ -369,11 +371,11 @@ export default class PointsStore extends Store {
       }
     }
     // Фильтрация по номеру БНСО (GPS) или Гос. номеру ТС
-    if (filter.bnso_gos && filter.bnso_gos.length > 0) {
+    if (filter.bnso_gos) {
       const text = filter.bnso_gos.toLowerCase();
       visible = visible && (
-        point.car.gps_code.toLowerCase().indexOf(text) + 1 ||
-        point.car.gov_number.toLowerCase().indexOf(text) + 1
+        point.car.gps_code.toLowerCase().includes(text) ||
+        point.car.gov_number.toLowerCase().includes(text)
       );
       if (!visible) {
         return false;

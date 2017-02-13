@@ -43,6 +43,33 @@ export default class Filter extends Component {
     this.store = context.flux.getStore('points');
   }
 
+  onSomethingChange(value) {
+    const callback =
+      this.props.onFilterChange !== undefined ?
+        () => { this.props.onFilterChange(value); }
+        :
+        () => {};
+
+    this.store.handleSetFilter({
+      [this.props.name]: value,
+    }, callback);
+  }
+
+  onChange(value) {
+    value = value.map(i => i.id);
+    this.onSomethingChange(value);
+  }
+
+  onChangeSingle(value) {
+    value = value.id;
+    this.onSomethingChange(value);
+  }
+
+  onChangeQuery(value) {
+    value = value.currentTarget.value;
+    this.onSomethingChange(value);
+  }
+
   renderSearch(options) {
     return (
       <div className="app-toolbar-filter">
@@ -69,40 +96,13 @@ export default class Filter extends Component {
           textField="title"
           defaultValue={[]}
           placeholder={this.props.title}
-          onChange={value => this.onChangeQuery.bind(this)(value)}
+          onChange={value => this.onChangeQuery(value)}
           filter={filter}
           messages={messages}
           {...this.props}
         />
       </div>
     );
-  }
-
-  onSomethingChange(value) {
-    const callback =
-      this.props.onFilterChange !== undefined ?
-        () => { this.props.onFilterChange(value); }
-        :
-        () => {};
-
-    this.store.handleSetFilter({
-      [this.props.name]: value,
-    }, callback);
-  }
-
-  onChange(value) {
-    value = value.map(i => i.id);
-    this.onSomethingChange(value);
-  }
-
-  onChangeSingle(value) {
-    value = value.id;
-    this.onSomethingChange(value);
-  }
-
-  onChangeQuery(value) {
-    value = value.currentTarget.value;
-    this.onSomethingChange(value);
   }
 
   render() {

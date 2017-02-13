@@ -3,12 +3,14 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import ElementsList from 'components/ElementsList.jsx';
 import ODHTable from './ODHTable.jsx';
 import OdhFormWrap from './OdhFormWrap.jsx';
+import schema from './ODHSchema';
 
 @connectToStores(['geoObjects'])
 @exportable({ path: 'geozones', entity: 'odh' })
 @staticProps({
   path: 'geozones',
   entity: 'odh',
+  schema,
   listName: 'odhsList',
   tableComponent: ODHTable,
   formComponent: OdhFormWrap,

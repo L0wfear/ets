@@ -1,6 +1,8 @@
 import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import { PERIODIC_REPORT_STATUSES } from 'constants/statuses';
+import { isEmpty } from 'utils/functions';
+
 
 const getTableMeta = (props) => {
   const displayNameByElement = {
@@ -74,6 +76,9 @@ const getTableMeta = (props) => {
 
 export default (props) => {
   const renderers = {
+    geozone_element_area: ({ data }) => <div>{!isEmpty(data) ? parseFloat(data).toFixed(2) : ''}</div>,
+    fact_traveled_area: ({ data }) => <div>{!isEmpty(data) ? parseFloat(data).toFixed(2) : ''}</div>,
+    fact_traveled_percentage: ({ data }) => <div>{!isEmpty(data) ? parseFloat(data).toFixed(2) : ''}</div>,
     car_type_list: ({ data }) => <div>{data.map(el => el.name).join(', ')}</div>,
     status: ({ data }) => <div>{PERIODIC_REPORT_STATUSES[data] || PERIODIC_REPORT_STATUSES.default}</div>,
     gov_number_list: ({ data }) => <div>{data && data.join ? data.join(', ') : ''}</div>,

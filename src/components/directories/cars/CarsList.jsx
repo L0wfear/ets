@@ -3,12 +3,14 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import ElementsList from 'components/ElementsList.jsx';
 import CarFormWrap from './CarFormWrap.jsx';
 import CarsTable from './CarsTable.jsx';
+import schema from './CarSchema.js';
 
 @connectToStores(['objects'])
 @exportable({ entity: 'car_actual' })
 @staticProps({
   entity: 'car',
   listName: 'carsList',
+  schema,
   selectField: 'asuods_id',
   tableComponent: CarsTable,
   formComponent: CarFormWrap,

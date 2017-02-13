@@ -56,6 +56,15 @@ class ElementsList extends React.Component {
 
   componentWillReceiveProps(props) {
     const elementsList = props[this.mainListName] || [];
+    const schemaProperties = this.constructor.schema ? this.constructor.schema.properties : null;
+    if (schemaProperties) {
+      elementsList.forEach((el) => {
+        Object.keys(el).forEach((k) => {
+          const field = schemaProperties.find(p => (p.key === k) && p.float);
+          if (field && el[k] != null && el[k] !== '') el[k] = parseFloat(el[k]).toFixed(field.float);
+        });
+      });
+    }
     this.setState({ elementsList });
     this.inheritedComponentWillReceiveProps(props);
   }

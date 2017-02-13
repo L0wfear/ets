@@ -72,6 +72,7 @@ const tableMeta = {
 const RouteOdhCoveringReportTable = (props) => {
   const renderers = {
     delta: ({ data }) => <div>{!isEmpty(data) ? parseFloat(data).toFixed(2) : ''}</div>,
+    distance: ({ data }) => <div>{!isEmpty(data) ? parseFloat(data).toFixed(2) : ''}</div>,
     traveled: ({ data }) => <div>{!isEmpty(data) ? parseFloat(data).toFixed(2) : ''}</div>,
     footway_length: ({ data }) => <div>{!isEmpty(data) ? parseFloat(data).toFixed(2) : ''}</div>,
     gutters_length: ({ data }) => <div>{!isEmpty(data) ? parseFloat(data).toFixed(2) : ''}</div>,

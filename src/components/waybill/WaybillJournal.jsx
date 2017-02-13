@@ -4,6 +4,7 @@ import { Glyphicon, ButtonToolbar, Dropdown, MenuItem as BootstrapMenuItem } fro
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import Paginator from 'components/ui/Paginator.jsx';
 import { connectToStores, staticProps, bindable } from 'utils/decorators';
+import { waybillClosingSchema } from 'models/WaybillModel';
 import WaybillFormWrap from './WaybillFormWrap.jsx';
 import WaybillPrintForm from './WaybillPrintForm.jsx';
 import WaybillsTable from './WaybillsTable.jsx';
@@ -14,6 +15,7 @@ const MenuItem = bindable(BootstrapMenuItem);
 @staticProps({
   entity: 'waybill',
   listName: 'waybillsList',
+  schema: waybillClosingSchema,
   tableComponent: WaybillsTable,
   formComponent: WaybillFormWrap,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],

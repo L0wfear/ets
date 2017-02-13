@@ -5,6 +5,7 @@ import { getToday9am, getTomorrow9am, createValidDate } from 'utils/dates';
 import { connectToStores, FluxContext, HistoryContext, staticProps, exportable } from 'utils/decorators';
 import FuelReportTable from './FuelReportTable.jsx';
 import FuelReportHeader from './FuelReportHeader.jsx';
+import schema from './FuelReportSchema';
 
 @connectToStores(['reports'])
 @exportable({ entity: 'fuel_consumption_report' })
@@ -44,6 +45,12 @@ export default class FuelReport extends Component {
 
   render() {
     const { fuelReport = [] } = this.props;
+    fuelReport.forEach((el) => {
+      Object.keys(el).forEach((k) => {
+        const field = schema.find(p => (p.key === k) && p.float);
+        if (field && !isNaN(el[k])) el[k] = parseFloat(el[k]).toFixed(field.float);
+      });
+    });
 
     return (
       <div className="ets-page-wrap">

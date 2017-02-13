@@ -3,12 +3,14 @@ import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import DtFormWrap from './DtFormWrap.jsx';
 import DTTable from './DTTable.jsx';
+import schema from './DTSchema';
 
 @connectToStores(['geoObjects'])
 @exportable({ path: 'geozones', entity: 'dt' })
 @staticProps({
   path: 'geozones',
   entity: 'dt',
+  schema,
   listName: 'dtsList',
   tableComponent: DTTable,
   formComponent: DtFormWrap,

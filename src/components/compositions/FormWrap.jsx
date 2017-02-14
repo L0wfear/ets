@@ -90,12 +90,13 @@ export default class FormWrap extends Component {
     const uniqueField = this.uniqueField || 'id';
     const { formState } = this.state;
     let result = null;
-
-    this.schema.properties.forEach((p) => {
-      if (p.type === 'number' && p.float) {
-        formState[p.key] = parseFloat(formState[p.key]).toFixed(p.float);
-      }
-    });
+    if (this.schema) {
+      this.schema.properties.forEach((p) => {
+        if (p.type === 'number' && p.float) {
+          formState[p.key] = !isNaN(formState[p.key]) ? parseFloat(formState[p.key]).toFixed(p.float) : null;
+        }
+      });
+    }
 
     // понять, обновлять форму или создавать новую
     // можно по отсутствию уникального идентификатора

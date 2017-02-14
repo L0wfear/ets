@@ -89,16 +89,15 @@ export class MissionForm extends Form {
     this.handleChange('structure_id', v);
   }
 
-  async componentDidMount() {
+  async componentWillMount() {
     const mission = this.props.formState;
     const { flux } = this.context;
-    const objectsActions = flux.getActions('objects');
     const technicalOperationsActions = flux.getActions('technicalOperation');
     const routesActions = flux.getActions('routes');
     const missionsActions = flux.getActions('missions');
 
     let { selectedRoute } = this.state;
-    let { technicalOperationsList, routesList, carsList } = this.props;
+    let { technicalOperationsList, routesList } = this.props;
 
     if (!isEmpty(mission.route_id)) {
       selectedRoute = await routesActions.getRouteById(mission.route_id, false);
@@ -110,8 +109,7 @@ export class MissionForm extends Form {
     }
 
     technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsByCarId(mission.car_id);
-    const carsListResponse = await objectsActions.getCars();
-    carsList = carsListResponse.result;
+    const carsList = this.props.carsList;
     missionsActions.getMissionSources();
 
     this.setState({

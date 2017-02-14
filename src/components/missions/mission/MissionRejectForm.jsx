@@ -32,10 +32,6 @@ export default class MissionRejectForm extends Component {
     };
   }
 
-  componentDidMount() {
-    this.context.flux.getActions('objects').getCars();
-  }
-
   componentWillReceiveProps(props) {
     if (props.show === false) {
       this.setState({

@@ -15,7 +15,7 @@ const fixedValidators = [
           return MUST_BE_GREATER_THAN;
         }
       }
-      return value <= dependentFieldValue ? MUST_BE_GREATER_THAN : undefined;
+      return +value <= +dependentFieldValue ? MUST_BE_GREATER_THAN : undefined;
     },
   },
 ];

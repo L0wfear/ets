@@ -89,15 +89,13 @@ export default class WaybillFormWrap extends FormWrap {
           }
 
           // Расчет пробегов
-          waybill.odometr_diff = parseFloat((waybill.odometr_end || 0) - (waybill.odometr_start || 0)).toFixed(3);
-          waybill.motohours_diff = parseFloat((waybill.motohours_end || 0) - (waybill.motohours_start || 0)).toFixed(3);
-          waybill.motohours_equip_diff = parseFloat((waybill.motohours_equip_end || 0) - (waybill.motohours_equip_start || 0)).toFixed(3);
+          waybill.odometr_diff = waybill.odometr_end ? parseFloat((waybill.odometr_end || 0) - (waybill.odometr_start || 0)).toFixed(3) : null;
+          waybill.motohours_diff = waybill.motohours_end ? parseFloat((waybill.motohours_end) - (waybill.motohours_start || 0)).toFixed(3) : null;
+          waybill.motohours_equip_diff = waybill.motohours_equip_end ? parseFloat((waybill.motohours_equip_end || 0) - (waybill.motohours_equip_start || 0)).toFixed(3) : null;
 
           if (props.element.status === 'active') {
             this.schema = waybillClosingSchema;
             const formErrors = this.validate(waybill, {});
-            if (typeof formErrors.motohours_end === 'undefined') formErrors.odometr_end = undefined;
-            if (typeof formErrors.odometr_end === 'undefined') formErrors.motohours_end = undefined;
             this.setState({
               formState: waybill,
               formErrors,
@@ -149,8 +147,6 @@ export default class WaybillFormWrap extends FormWrap {
     } else if (formState.status && formState.status !== 'draft') {
       this.schema = waybillClosingSchema;
       formErrors = this.validate(formState, formErrors);
-      if (typeof formErrors.motohours_end === 'undefined') formErrors.odometr_end = undefined;
-      if (typeof formErrors.odometr_end === 'undefined') formErrors.motohours_end = undefined;
     }
 
     newState.canSave = !_.filter(formErrors, (v, k) => ['distance', 'fuel_end'].indexOf(k) > -1 ? false : v).length;

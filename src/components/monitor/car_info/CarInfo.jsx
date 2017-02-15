@@ -3,18 +3,17 @@ import { autobind } from 'core-decorators';
 import find from 'lodash/find';
 import groupBy from 'lodash/groupBy';
 import flatten from 'lodash/flatten';
-import get from 'lodash/get';
 import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
-import { makeDateFromUnix, getStartOfToday, makeUnixTime, secondsToTime, makeDate, makeTime } from 'utils/dates';
-import { sensorsMapOptions } from 'constants/sensors.js';
+import { makeDateFromUnix, getStartOfToday } from 'utils/dates';
 import Panel from 'components/ui/Panel.jsx';
 import DatePicker from 'components/ui/DatePicker.jsx';
 import cx from 'classnames';
-// import SpeedChart from 'components/ui/charts/SpeedChart.jsx';
-import config from '../../config.js';
-import MissionFormWrap from '../missions/mission/MissionFormWrap.jsx';
-import VehicleAttributes from './VehicleAttributes.jsx';
-import LineChart from './LineChart';
+import config from '../../../config.js';
+import Charts from './Charts.jsx';
+import VehicleInfo from './VehicleInfo.jsx';
+
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable jsx-a11y/label-has-for */
 
 @autobind
 export default class CarInfo extends Component {
@@ -33,17 +32,11 @@ export default class CarInfo extends Component {
       imageUrl: null,
       trackPaused: 'stopped',
       trackingMode: false,
-      missions: [],
-      showMissionForm: false,
-      selectedMission: null,
       from_dt: getStartOfToday(),
       to_dt: new Date(),
-      from_dt_: getStartOfToday(),
-      to_dt_: new Date(),
       tillNow: true,
       car: {},
       tab: 0,
-      chartTab: 0,
       sensors: {
         equipment: [],
         level: [],
@@ -51,43 +44,25 @@ export default class CarInfo extends Component {
     };
   }
 
-  async componentDidMount() {
-    const { flux } = this.props;
-    if (this.props.car && !this.state.imageUrl) {
+  componentDidMount() {
+    if (this.props.car) {
       this.fetchImage();
       this.fetchTrack();
-      const carsList = flux.getStore('objects').state.carsList;
-      const car = find(carsList, c => c.gov_number === this.props.car.car.gov_number);
-      if (car) {
-        const car_id = car.asuods_id;
-        const missions = await flux.getActions('cars').getCarMissions(car_id, this.state.from_dt, this.state.to_dt);
-        this.setState({ missions: missions.result, car });
-      }
     }
   }
 
-  async componentWillReceiveProps(props) {
-    if (props.car !== this.props.car) {
+  componentWillReceiveProps(props) {
+    if (props.car.id !== this.props.car.id) {
       this.fetchImage(props);
       this.fetchTrack(props);
       this.stopTrackPlaying();
-      this.setState({ trackPaused: 'stopped', car: props.car });
-    }
-    if (props.car.id !== this.props.car.id) {
-      const carsList = this.props.flux.getStore('objects').state.carsList;
-      const car = find(carsList, c => c.gov_number === props.car.car.gov_number);
-      if (car) {
-        const car_id = car.asuods_id;
-        const missions = await this.props.flux.getActions('cars').getCarMissions(car_id, this.state.from_dt, this.state.to_dt);
-        this.setState({
-          missions: missions.result,
-          car,
-          sensors: {
-            equipment: [],
-            level: [],
-          },
-        });
-      }
+      this.setState({
+        trackPaused: 'stopped',
+        sensors: {
+          equipment: [],
+          level: [],
+        },
+      });
     }
   }
 
@@ -95,14 +70,6 @@ export default class CarInfo extends Component {
     const track = this.props.car.marker.track;
     track.onUpdate();
     this.stopTrackPlaying();
-  }
-
-  toggleCarTracking() {
-    const store = this.store;
-    const trackingMode = store.state.trackingMode;
-    store.setTracking(!trackingMode);
-
-    this.setState({ trackingMode: !trackingMode });
   }
 
   onTillNowChange() {
@@ -167,9 +134,12 @@ export default class CarInfo extends Component {
     this.setState({ trackPaused: 'stopped' });
   }
 
-  async setMissionById(id) {
-    const response = await this.props.flux.getActions('missions').getMissionById(id);
-    this.setState({ selectedMission: response.result.rows[0], showMissionForm: true });
+  toggleCarTracking() {
+    const store = this.store;
+    const trackingMode = store.state.trackingMode;
+    store.setTracking(!trackingMode);
+
+    this.setState({ trackingMode: !trackingMode });
   }
 
   // TODO переместить это на более высокий уровень абстракции
@@ -184,17 +154,6 @@ export default class CarInfo extends Component {
     const view = map.getView();
 
     view.fit(extent, map.getSize(), { padding: [50, 550, 50, 50] });
-  }
-
-  showOnMap(timestamp, e, event, d) {
-    const threshold = e && e.point.series.closestPointRange ? e.point.series.closestPointRange : 0;
-    const points = this.props.car.marker.track.points.filter(p => (timestamp >= p.timestamp - threshold) && (timestamp <= p.timestamp + threshold));
-    const point = points.length === 1 ? points[0] : points.reduce((prev, curr) => (Math.abs(curr.speed_avg - e.point.y) < Math.abs(prev.speed_avg - e.point.y) ? curr : prev));
-    const extent = [point.coords_msk[0], point.coords_msk[1], point.coords_msk[0], point.coords_msk[1]];
-    const map = this.props.car.marker.map;
-    const track = this.props.car.marker.track;
-    setTimeout(() => map.getView().fit(extent, map.getSize(), { padding: [50, 550, 50, 50], maxZoom: 13 }), 100);
-    map.get('parent').handleFeatureClick(track, point, event);
   }
 
   toggleSensor(field, id) {
@@ -233,191 +192,6 @@ export default class CarInfo extends Component {
         <img role="presentation" className="car-info-image" src={imageUrl ? config.images + imageUrl : ''} />
         {marker.track.getLegend()}
       </Panel>
-    );
-  }
-
-  renderInfo() {
-    const { missions = [] } = this.state;
-    const { car } = this.props;
-    const { marker } = car;
-    const { parkings = [] } = this.props.car.marker.track;
-    let missionsRender = (
-      <div style={{ textAlign: 'left', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-        {missions.map((mission) => {
-          const missionStart = makeUnixTime(mission.date_start);
-          const missionEnd = makeUnixTime(mission.date_end);
-          const parkingTime = parkings.length ? parkings.map((p) => {
-            const start = p.start_point.timestamp > missionStart ? p.start_point.timestamp : missionStart;
-            const end = p.end_point.timestamp < missionEnd ? p.end_point.timestamp : missionEnd;
-            if (end < start) return 0;
-            return end - start;
-          }).reduce((a, b) => a + b) : 0;
-          return (
-            <div key={mission.id}>
-              <span
-                onClick={this.setMissionById.bind(this, mission.id)}
-                style={{ whiteSpace: 'nowrap', display: 'block', cursor: 'pointer', overflow: 'hidden', textOverflow: 'ellipsis' }}
-              >
-                {`№${mission.number} - ${mission.technical_operation_name}`}
-              </span>
-              <span style={{ color: '#666' }}>{`Время стоянок: ${secondsToTime(parkingTime)}`}</span>
-            </div>
-          );
-        })}
-      </div>
-    );
-
-    if (!missions.length) missionsRender = 'Нет данных';
-
-    return (
-      <div className="car-info-tracking">
-        <Panel>
-          <VehicleAttributes point={car} car={this.state.car} lastPoint={marker.hasTrackLoaded() && marker.track.getLastPoint()} />
-        </Panel>
-        <Panel title="Задания" className="chart-datepickers-wrap">
-          {missionsRender}
-        </Panel>
-        <MissionFormWrap
-          onFormHide={() => this.setState({ showMissionForm: false })}
-          showForm={this.state.showMissionForm}
-          element={this.state.selectedMission}
-        />
-      </div>
-    );
-  }
-
-  renderSpeedChart() {
-    const { points } = this.props.car.marker.track;
-    if (!points) return 'Загрузка...';
-    if (!points.length) return 'Нет данных';
-    const timestamps = points.map(p => p.timestamp);
-    const sensorsData = [];
-    let sensorsList = points.filter(p => p.sensors && p.sensors.equipment).map((p) => {
-      p.sensors.equipment.forEach((s) => { s.timestamp = p.timestamp; });
-      return p.sensors.equipment;
-    });
-    sensorsList = groupBy(flatten(sensorsList), s => s.id);
-    Object.keys(sensorsList).forEach((id, i) => {
-      const sensorOptions = sensorsMapOptions(i, this.props.car.marker.track.maxSpeed);
-      const values = sensorsList[id].map(s => [s.timestamp, s.val ? sensorOptions.value : 0]);
-      sensorsData.push({
-        name: `Датчик №${i + 1}`,
-        enableMouseTracking: false,
-        connectNulls: false,
-        color: sensorOptions.color,
-        data: timestamps.map((t) => {
-          const s = values.find(v => v[0] === t);
-          if (s && s[1]) {
-            return s[1];
-          }
-          return null;
-        }),
-      });
-    });
-    const data = [
-      {
-        name: 'Скорость ТС',
-        data: points.map(p => parseInt(p.speed_avg, 10)),
-        color: 'rgba(90, 242, 18, 1)',
-      },
-      {
-        name: 'Максимальная скорость',
-        data: points.map(() => parseInt(this.props.car.marker.track.maxSpeed, 10)),
-        color: 'rgba(205, 17, 71, 1)',
-      },
-    ].concat(sensorsData).map((d) => {
-      d.data = d.data.map((v, i) => [timestamps[i], v]);
-      return d;
-    });
-    return <LineChart name="speedChart" data={data} onClick={e => this.showOnMap(e.point.x, e)} />;
-  }
-
-  renderFuelChart() {
-    const { points, events } = this.props.car.marker.track;
-    if (!points) return 'Загрузка...';
-    if (!points.length) return 'Нет данных';
-    const timestamps = points.filter(p => get(p, 'sensors.level.length', false)).map(p => p.timestamp);
-    const sensorsData = [];
-    let sensorsList = points.filter(p => p.sensors && p.sensors.level).map((p) => {
-      p.sensors.level.forEach((s) => { s.timestamp = p.timestamp; });
-      return p.sensors.level;
-    });
-    sensorsList = groupBy(flatten(sensorsList), s => s.id);
-    Object.keys(sensorsList).forEach((id, i) => {
-      const color = sensorsMapOptions(i).color;
-      const values = sensorsList[id].map(s => [s.timestamp, s.val]);
-      sensorsData.push({
-        name: `ДУТ №${i + 1}`,
-        connectNulls: false,
-        color,
-        data: timestamps.map((t) => {
-          const s = values.find(v => v[0] === t);
-          if (s && s[1]) {
-            return s[1];
-          }
-          return null;
-        }),
-      });
-    });
-    const data = sensorsData.map((d) => {
-      d.data = d.data.map((v, i) => [timestamps[i], v]);
-      return d;
-    });
-
-    let sumEvents = [];
-    Object.keys(events).forEach((k) => {
-      events[k].forEach(e => (e.id = k));
-      sumEvents = sumEvents.concat(events[k]);
-    });
-    sumEvents = sumEvents.map(e => ({
-      ...e,
-      date: `${makeDate(new Date(e.start_point.timestamp * 1000))} ${makeTime(new Date(e.start_point.timestamp * 1000), true)}`,
-      type_name: e.type === 'leak' ? 'Слив' : 'Заправка',
-      value: `${Math.abs(e.val)} л`,
-    }));
-    return (
-      <div>
-        <LineChart name="fuelChart" data={data} showX onClick={e => this.showOnMap(e.point.x, e)} />
-        {this.renderEventTable(sumEvents)}
-      </div>
-    );
-  }
-
-  renderEventTable(data) {
-    const rows = data.map((d, i) => (
-      <tr key={i} onClick={() => this.showOnMap(d.start_point.timestamp, null, true, d)}>
-        <td>{d.date}</td>
-        <td>{d.type_name}</td>
-        <td>{d.value}</td>
-      </tr>
-    ));
-    return (
-      <table className="car-info-event-table">
-        <thead>
-          <tr>
-            <td>Дата и время</td>
-            <td>Событие</td>
-            <td>Уровень</td>
-          </tr>
-        </thead>
-        <tbody>
-          {rows}
-        </tbody>
-      </table>
-    );
-  }
-
-  renderCharts() {
-    return (
-      <div>
-        <ButtonGroup className="car-info-chart-menu">
-          <Button className={!this.state.chartTab && 'active'} onClick={() => this.setState({ chartTab: 0 })}>Датчики топлива</Button>
-          <Button className={this.state.chartTab && 'active'} onClick={() => this.setState({ chartTab: 1 })}>Датчики скорости</Button>
-        </ButtonGroup>
-        <Panel>
-          {this.state.chartTab ? this.renderSpeedChart() : this.renderFuelChart()}
-        </Panel>
-      </div>
     );
   }
 
@@ -520,7 +294,7 @@ export default class CarInfo extends Component {
 
   render() {
     const { car } = this.props;
-    const { tab } = this.state;
+    const { tab, from_dt, to_dt } = this.state;
 
     if (!car) {
       return null;
@@ -538,11 +312,9 @@ export default class CarInfo extends Component {
           <Button className={this.state.tab === 1 && 'active'} onClick={() => this.setState({ tab: 1 })}>Графики</Button>
           <Button className={this.state.tab === 2 && 'active'} onClick={() => this.setState({ tab: 2 })}>Трекинг</Button>
         </ButtonGroup>
-        {tab === 0 && this.renderInfo()}
-        {tab === 1 && this.renderCharts()}
+        {tab === 0 && <VehicleInfo car={car} from_dt={from_dt} to_dt={to_dt} flux={this.props.flux} />}
+        {tab === 1 && <Charts car={car} />}
         {tab === 2 && this.renderTracking()}
-        {/* <FuelChart from={this.state.from_dt} to={this.state.to_dt} id={car.id}/>*/}
-        {/* <SpeedChart track={marker.hasTrackLoaded() && marker.track} />*/}
       </div>
     );
   }

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import Div from 'components/ui/Div.jsx';
 import cx from 'classnames';
 import { autobind } from 'core-decorators';
-import CarInfo from './CarInfo.jsx';
+import CarInfo from './car_info/CarInfo.jsx';
 import FeatureInfo from './FeatureInfo.jsx';
 
 @autobind
@@ -28,6 +28,18 @@ export default class Sidebar extends Component {
     return true;
   }
 
+  close() {
+    const { selected, selectedFeature } = this.props;
+    let store;
+    if (selected) {
+      store = this.props.flux.getStore('points');
+      store.handleSelectPoint(false);
+    } else if (selectedFeature) {
+      store = this.props.flux.getStore('geoObjects');
+      store.handleSelectFeature(null);
+    }
+  }
+
   renderFeatureInfo() {
     const { selectedFeature } = this.props;
     return <FeatureInfo feature={selectedFeature} />;
@@ -46,18 +58,6 @@ export default class Sidebar extends Component {
       return this.renderCarInfo();
     }
     return <div />;
-  }
-
-  close() {
-    const { selected, selectedFeature } = this.props;
-    let store;
-    if (selected) {
-      store = this.props.flux.getStore('points');
-      store.handleSelectPoint(false);
-    } else if (selectedFeature) {
-      store = this.props.flux.getStore('geoObjects');
-      store.handleSelectFeature(null);
-    }
   }
 
   render() {

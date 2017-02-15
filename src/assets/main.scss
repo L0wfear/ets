@@ -352,6 +352,25 @@ body.application hr {
   }
 }
 
+.chart-checkbox {
+  margin-bottom: 10px;
+  text-align: left;
+  width: 100%;
+  position: absolute;
+  top: 310px;
+  cursor: pointer;
+  user-select: none;
+  input {
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+    margin-left: 5px;
+    cursor: pointer;
+    position: relative;
+    top: 1px;
+  }
+}
+
 .chart-wrapper {
   background: #fff;
   border: 1px solid #e2e2e2;

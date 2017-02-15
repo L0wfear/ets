@@ -14,6 +14,7 @@ export default class VehicleAttributes extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (!nextProps.car) return;
     this.setState(state => (state.attributes = this.parseProps(nextProps)));
   }
 
@@ -34,7 +35,6 @@ export default class VehicleAttributes extends Component {
       const dt = new Date(p.timestamp * 1000);
       return `${makeDate(dt)} ${makeTime(dt, true)} [${roundCoordinates(point.coords_msk)}]`;
     };
-
     addAttribute('Рег. номер ТС', car.gov_number);
     addAttribute('ID БНСО', point.id);
     getStatusById(point.status) && addAttribute('Статус', getStatusById(point.status).title);

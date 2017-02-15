@@ -249,7 +249,7 @@ class ElementsList extends React.Component {
         <Button
           key={buttons.length}
           bsSize="small"
-          onClick={() => this.props.export()}
+          onClick={() => this.props.export(this.exportPayload, this.exportUseRouteParams)}
         >
           <Glyphicon glyph="download-alt" />
         </Button>

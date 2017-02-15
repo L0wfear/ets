@@ -2,7 +2,7 @@ import React from 'react';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import ElementsList from 'components/ElementsList.jsx';
 import Datepicker from 'components/ui/DatePicker.jsx';
-import { getToday0am, getToday2359 } from 'utils/dates';
+import { getToday0am, getToday2359, createValidDateTime } from 'utils/dates';
 import UserActionLogTable from './UserActionLogTable.jsx';
 
 @connectToStores(['objects'])
@@ -20,6 +20,11 @@ export default class UserActionLogList extends ElementsList {
     date_end: getToday2359(),
   }
 
+  exportPayload = {
+    date_start: createValidDateTime(this.state.date_start),
+    date_end: createValidDateTime(this.state.date_end),
+  };
+
   async componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
@@ -28,6 +33,10 @@ export default class UserActionLogList extends ElementsList {
 
   componentWillUpdate(nextProps, nextState) {
     if (this.state.date_start !== nextState.date_start || this.state.date_end !== nextState.date_end) {
+      this.exportPayload = {
+        date_start: createValidDateTime(nextState.date_start),
+        date_end: createValidDateTime(nextState.date_end),
+      };
       this.context.flux.getActions('objects').getUserActionLog(nextState);
     }
   }

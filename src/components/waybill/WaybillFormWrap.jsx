@@ -171,19 +171,15 @@ export default class WaybillFormWrap extends FormWrap {
       if (field === 'odometr_end' && formState.odometr_diff > 0) {
         lastTax.FACT_VALUE = formState.odometr_diff;
         lastTax.RESULT = Taxes.getResult(lastTax);
-      } else {
-        lastTax.FACT_VALUE = null;
-        lastTax.RESULT = Taxes.getResult(lastTax);
       }
-
       if (field === 'motohours_end' && formState.motohours_diff > 0) {
         lastTax.FACT_VALUE = formState.motohours_diff;
         lastTax.RESULT = Taxes.getResult(lastTax);
-      } else {
+      }
+      if (formState.odometr_diff < 0 || formState.motohours_diff < 0) {
         lastTax.FACT_VALUE = null;
         lastTax.RESULT = Taxes.getResult(lastTax);
       }
-
       if (field === 'motohours_equip_end' && formState.equipment_tax_data
         && formState.equipment_tax_data.length && formState.motohours_equip_diff > 0) {
         const lastEquipmentTax = _.last(formState.equipment_tax_data);

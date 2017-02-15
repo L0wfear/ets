@@ -11,38 +11,6 @@ import { MissionForm } from '../mission/MissionForm.jsx';
 
 class MissionTemplateForm extends MissionForm {
 
-  async componentDidMount() {
-    const mission = this.props.formState;
-    const { flux } = this.context;
-    const objectsActions = flux.getActions('objects');
-    const technicalOperationsActions = flux.getActions('technicalOperation');
-    const routesActions = flux.getActions('routes');
-    const missionsActions = flux.getActions('missions');
-
-    let { selectedRoute } = this.state;
-    let { technicalOperationsList, routesList, carsList } = this.props;
-
-    if (!isEmpty(mission.route_id)) {
-      selectedRoute = await routesActions.getRouteById(mission.route_id);
-    }
-
-    if (!isEmpty(mission.technical_operation_id)) {
-      routesList = await routesActions.getRoutesByTechnicalOperation(mission.technical_operation_id);
-    }
-
-    technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsByCarId(mission.car_id);
-    const carsListResponse = await objectsActions.getCars(mission.technical_operation_id);
-    carsList = carsListResponse.result;
-    missionsActions.getMissionSources();
-
-    this.setState({
-      carsList,
-      technicalOperationsList,
-      routesList,
-      selectedRoute,
-    });
-  }
-
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
@@ -68,8 +36,6 @@ class MissionTemplateForm extends MissionForm {
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
     const ROUTES = routesList.map(({ id, name }) => ({ value: id, label: name }));
     const CARS = carsList.map(c => ({ value: c.asuods_id, label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]` }));
-
-    console.log('form state is ', state);
 
     const IS_CREATING = true;
 

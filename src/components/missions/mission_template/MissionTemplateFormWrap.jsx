@@ -8,9 +8,9 @@ import { validateField } from 'utils/validate/validateField.js';
 import { missionTemplateSchema } from 'models/MissionTemplateModel.js';
 import { missionsCreationTemplateSchema } from 'models/MissionsCreationTemplateModel.js';
 import FormWrap from 'components/compositions/FormWrap.jsx';
+import IntervalPicker from 'components/ui/IntervalPicker.jsx';
 import MissionTemplateForm from './MissionTemplateForm.jsx';
 import MissionsCreationForm from './MissionsCreationForm.jsx';
-import IntervalPicker from 'components/ui/IntervalPicker.jsx';
 
 const validateMissionsCreationTemplate = (mission, errors) => {
   const missionsCreationTemplateErrors = _.clone(errors);

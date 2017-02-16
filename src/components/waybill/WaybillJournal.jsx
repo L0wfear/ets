@@ -103,6 +103,11 @@ export default class WaybillJournal extends CheckableElementsList {
     return forms;
   }
 
+  formCallback() {
+    const { page, sortBy, filter } = this.state;
+    this.context.flux.getActions('waybills').getWaybills(15, page * 15, sortBy, filter);
+  }
+
   additionalRender() {
     return <Paginator currentPage={this.state.page} maxPage={Math.ceil(this.props.totalCount / 15)} setPage={page => this.setState({ page })} firstLastButtons />;
   }

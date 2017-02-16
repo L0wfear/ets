@@ -156,6 +156,9 @@ class ElementsList extends React.Component {
     });
   }
 
+  @autobind
+  formCallback() {}
+
   /**
    * Вызывает диалог подтверждения удаления выбранного элемента и в случае подтверждения удаляет выбранный элемент
    * метод не будет исполняться в случае отсутствия выбранного элемента и не
@@ -347,6 +350,7 @@ class ElementsList extends React.Component {
         showForm={this.state.showForm}
         element={this.state.selectedElement}
         entity={this.entity}
+        onCallback={this.formCallback}
         meta={this.constructor.formMeta}
         {...this.props}
       />

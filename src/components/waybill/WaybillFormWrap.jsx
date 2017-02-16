@@ -261,12 +261,11 @@ export default class WaybillFormWrap extends FormWrap {
         try {
           await flux.getActions('waybills').createWaybill(formState);
         } catch (e) {
-          await flux.getActions('waybills').getWaybills();
           console.log(e);
           return;
         }
       }
-      await flux.getActions('waybills').getWaybills();
+      this.props.onCallback();
       this.props.onFormHide();
     } else if (waybillStatus === 'draft') { // если ПЛ обновляем
       if (typeof callback === 'function') {
@@ -279,7 +278,7 @@ export default class WaybillFormWrap extends FormWrap {
           return;
         }
         callback();
-        flux.getActions('waybills').getWaybills();
+        this.props.onCallback();
         this.props.onFormHide();
       } else {
         try {
@@ -287,7 +286,7 @@ export default class WaybillFormWrap extends FormWrap {
         } catch (e) {
           return;
         }
-        flux.getActions('waybills').getWaybills();
+        this.props.onCallback();
         this.props.onFormHide();
       }
     } else if (waybillStatus === 'active') {
@@ -297,7 +296,7 @@ export default class WaybillFormWrap extends FormWrap {
         console.log(e);
         return;
       }
-      flux.getActions('waybills').getWaybills();
+      this.props.onCallback();
       this.props.onFormHide();
     } else if (waybillStatus === 'closed') {
       try {
@@ -306,7 +305,7 @@ export default class WaybillFormWrap extends FormWrap {
         console.log(e);
         return;
       }
-      flux.getActions('waybills').getWaybills();
+      this.props.onCallback();
       this.props.onFormHide();
     }
 
@@ -331,10 +330,10 @@ export default class WaybillFormWrap extends FormWrap {
       } catch (e) {
         formState.status = prevStatus;
         await this.context.flux.getActions('waybills').updateWaybill(formState);
-        this.context.flux.getActions('waybills').getWaybills();
+        this.props.onCallback();
         return;
       }
-      this.context.flux.getActions('waybills').getWaybills();
+      this.props.onCallback();
       this.props.onFormHide();
     })
     .catch(() => {});

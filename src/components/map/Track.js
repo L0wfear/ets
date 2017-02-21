@@ -643,7 +643,7 @@ export default class Track {
           <div class="geo-objects">${objectsString}</div>
           <div class="geo-objects">${missionsString}</div>
           <div class="some-info">
-            <div class="speed">V<sub>ср</sub> = ${speed_avg}км/ч<br/>V<sub>макс</sub> = ${speed_max}км/ч</div>
+            <div class="speed">V<sub>ср</sub> = ${speed_avg ? `${speed_avg}км/ч` : 'Нет данных'}<br/>V<sub>макс</sub> = ${speed_max ? `${speed_max}км/ч` : 'Нет данных'}</div>
             <div class="distance">${distance}м</div>
             <div class="coords">${longitude}<br/>${latitude}</div>
             <div class="nsat">${nsat} спутников</div>

@@ -10,11 +10,6 @@ export default (props) => {
         type: 'string',
       },
       {
-        name: 'num_exec',
-        displayName: 'Количество выполнений',
-        type: 'string',
-      },
-      {
         name: 'object_type_name',
         displayName: 'Тип объекта',
         type: 'string',
@@ -22,6 +17,11 @@ export default (props) => {
       {
         name: 'elem',
         displayName: 'Элемент',
+        type: 'string',
+      },
+      {
+        name: 'num_exec',
+        displayName: 'Количество выполнений',
         type: 'string',
       },
     ],

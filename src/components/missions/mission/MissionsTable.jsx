@@ -27,12 +27,18 @@ const getTableMeta = (props) => {
         name: 'number',
         displayName: 'Номер',
         type: 'number',
+        filter: {
+          type: 'advanced-string',
+        },
         cssClassName: 'width60',
       },
       {
         name: 'waybill_number',
         displayName: 'Путевой лист',
         type: 'number',
+        filter: {
+          type: 'advanced-string',
+        },
         cssClassName: 'width60',
       },
       {
@@ -53,7 +59,7 @@ const getTableMeta = (props) => {
         displayName: 'Начало',
         type: 'date',
         filter: {
-          type: 'datetime',
+          type: 'advanced-datetime',
         },
       },
       {
@@ -61,7 +67,7 @@ const getTableMeta = (props) => {
         displayName: 'Завершение',
         type: 'date',
         filter: {
-          type: 'datetime',
+          type: 'advanced-datetime',
         },
       },
       {
@@ -88,6 +94,9 @@ const getTableMeta = (props) => {
         name: 'passes_count',
         displayName: 'Количество проходов',
         type: 'number',
+        filter: {
+          type: 'advanced-string',
+        },
         cssClassName: 'width120',
       },
       {

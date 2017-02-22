@@ -17,6 +17,9 @@ const getTableMeta = (props) => {
         name: 'number',
         displayName: 'Номер',
         type: 'number',
+        filter: {
+          type: 'advanced-string',
+        },
       },
       {
         name: 'status',
@@ -44,7 +47,7 @@ const getTableMeta = (props) => {
         displayName: 'Дата создания',
         type: 'date',
         filter: {
-          type: 'date',
+          type: 'advanced-date',
         },
       },
       {
@@ -52,7 +55,7 @@ const getTableMeta = (props) => {
         displayName: 'Дата закрытия',
         type: 'date',
         filter: {
-          type: 'date',
+          type: 'advanced-date',
         },
       },
       {
@@ -95,7 +98,7 @@ const getTableMeta = (props) => {
         displayName: 'Выезд план',
         type: 'date',
         filter: {
-          type: 'date',
+          type: 'advanced-date',
         },
       },
       {
@@ -103,7 +106,7 @@ const getTableMeta = (props) => {
         displayName: 'Выезд факт',
         type: 'date',
         filter: {
-          type: 'date',
+          type: 'advanced-date',
         },
       },
       {
@@ -111,7 +114,7 @@ const getTableMeta = (props) => {
         displayName: 'Возвращение факт',
         type: 'date',
         filter: {
-          type: 'date',
+          type: 'advanced-date',
         },
       },
       {
@@ -147,7 +150,7 @@ const getTableMeta = (props) => {
         cssClassName: 'width20',
         type: 'number',
         filter: {
-          type: 'input',
+          type: 'advanced-string',
         },
       },
       {
@@ -156,7 +159,7 @@ const getTableMeta = (props) => {
         cssClassName: 'width20',
         type: 'number',
         filter: {
-          type: 'input',
+          type: 'advanced-string',
         },
       },
       {
@@ -165,7 +168,7 @@ const getTableMeta = (props) => {
         cssClassName: 'width20',
         type: 'number',
         filter: {
-          type: 'input',
+          type: 'advanced-string',
         },
       },
       {
@@ -174,7 +177,7 @@ const getTableMeta = (props) => {
         cssClassName: 'width20',
         type: 'number',
         filter: {
-          type: 'input',
+          type: 'advanced-string',
         },
       },
       {
@@ -183,7 +186,7 @@ const getTableMeta = (props) => {
         cssClassName: 'width20',
         type: 'number',
         filter: {
-          type: 'input',
+          type: 'advanced-string',
         },
       },
       {
@@ -192,7 +195,7 @@ const getTableMeta = (props) => {
         cssClassName: 'width20',
         type: 'number',
         filter: {
-          type: 'input',
+          type: 'advanced-string',
         },
       },
       {
@@ -201,7 +204,7 @@ const getTableMeta = (props) => {
         cssClassName: 'width20',
         type: 'number',
         filter: {
-          type: 'input',
+          type: 'advanced-string',
         },
       },
       {
@@ -210,7 +213,7 @@ const getTableMeta = (props) => {
         cssClassName: 'width20',
         type: 'number',
         filter: {
-          type: 'input',
+          type: 'advanced-string',
         },
       },
       {

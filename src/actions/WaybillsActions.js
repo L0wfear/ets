@@ -19,6 +19,10 @@ export default class WaybillsActions extends Actions {
         filterValues[`${k}__in`] = filterValues[k];
         delete filterValues[k];
       }
+      if (typeof filterValues[k] === 'object') {
+        Object.keys(filterValues[k]).forEach(key => (filterValues[key] = filterValues[k][key]));
+        delete filterValues[k];
+      }
     });
     const payload = {
       limit,

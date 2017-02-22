@@ -4,6 +4,7 @@ import { Input } from 'react-bootstrap';
 import _ from 'lodash';
 import moment from 'moment';
 import EtsSelect from '../../EtsSelect.jsx';
+import AdvancedInput from '../../AdvancedInput.jsx';
 import Div from '../../Div.jsx';
 import Datepicker from '../../DatePicker.jsx';
 import IntervalPicker from '../../IntervalPicker.jsx';
@@ -64,6 +65,15 @@ export default class FilterRow extends React.Component {
             </Div>
           );
         }
+      }
+      if (type === 'advanced-string') {
+        input = <AdvancedInput name={name} filterValue={value} onChange={onChange} />;
+      }
+      if (type === 'advanced-date') {
+        input = <AdvancedInput name={name} filterValue={value} onChange={onChange} date />;
+      }
+      if (type === 'advanced-datetime') {
+        input = <AdvancedInput name={name} filterValue={value} onChange={onChange} date time />;
       }
       if (type === 'date') {
         input = <Datepicker className="filter-datepicker" date={value} onChange={v => onChange(moment(v).format('YYYY-MM-DD'))} time={false} />;

@@ -325,6 +325,7 @@ export default class DataTable extends React.Component {
   }
 
   shouldBeRendered(obj) {
+    if (this.props.externalFilter) return true;
     const { filterValues } = this.state;
     // Здесь проводится проверка на то, фильтруется ли объект
     // если в результате isValid === false, то объект не рендерится в таблице

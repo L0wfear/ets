@@ -14,6 +14,16 @@ export default (props) => {
         displayName: 'Количество выполнений',
         type: 'string',
       },
+      {
+        name: 'object_type_name',
+        displayName: 'Тип объекта',
+        type: 'string',
+      },
+      {
+        name: 'elem',
+        displayName: 'Элемент',
+        type: 'string',
+      },
     ],
   };
 

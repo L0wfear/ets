@@ -33,6 +33,10 @@ function calculateWaybillMetersDiff(waybill, field, value) {
 @FluxContext
 @autobind
 export default class WaybillFormWrap extends FormWrap {
+  static defaultProps = {
+    onCallback: () => {},
+  }
+
   constructor(props) {
     super(props);
 

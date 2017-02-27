@@ -29,6 +29,10 @@ const MissionReportByPointsTable = (props) => {
     status: ({ data }) => <div>{data === 'fail' ? 'Не пройден' : 'Пройден'}</div>,
   };
 
+  if (!(props.data && props.data.length)) {
+    return <div>Нет данных о прохождении задания</div>;
+  }
+
   return (
     <Table
       title="Прохождение заданий по пунктам назначения"

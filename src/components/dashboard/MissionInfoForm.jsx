@@ -152,7 +152,7 @@ class MissionInfoForm extends Form {
 
             <Col md={6}>
               <Div style={{ marginTop: -35 }} hidden={!(this.state.missionReport && this.state.missionReport.length > 0)}>
-                <Div hidden={routeType !== 'simple' && routeType !== 'vector'}>
+                <Div hidden={routeType !== 'simple' && routeType !== 'vector' && routeType !== 'mixed'}>
                   <MissionReportByODH renderOnly enumerated={false} selectedReportDataODHS={this.state.missionReport} onElementChange={this.handleSelectedElementChange} selectField={'object_id'} />
                 </Div>
                 <Div hidden={routeType !== 'simple_dt'}>

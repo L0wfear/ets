@@ -107,7 +107,7 @@ const MissionReportByDTTable = (props) => {
   }
 
   if (!(props.data && props.data.length)) {
-    return <div />;
+    return <div>Нет данных о прохождении задания</div>;
   }
 
   return (

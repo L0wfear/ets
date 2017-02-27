@@ -34,6 +34,7 @@ export default class CarInfo extends Component {
       trackingMode: false,
       from_dt: getStartOfToday(),
       to_dt: new Date(),
+      from_dt_: getStartOfToday(),
       tillNow: true,
       car: {},
       tab: 0,

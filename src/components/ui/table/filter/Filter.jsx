@@ -33,8 +33,11 @@ export default class Filter extends React.Component {
 
   handleFilterValueChange(key, e) {
     const filterValues = { ...this.state.filterValues };
-
-    filterValues[key] = e.target ? e.target.value : e;
+    if (!e) {
+      delete filterValues[key];
+    } else {
+      filterValues[key] = e.target ? e.target.value : e;
+    }
 
     this.setState({ filterValues });
   }

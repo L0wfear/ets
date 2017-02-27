@@ -80,7 +80,7 @@ export default class AdvancedInput extends Component {
       }
     }
     this.setState({ value });
-    if (date) {
+    if (date && filterValue) {
       Object.keys(filterValue).forEach((k) => {
         filterValue[k] = time ? createValidDateTime(filterValue[k]) : createValidDate(filterValue[k]);
       });

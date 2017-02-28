@@ -8,7 +8,7 @@ import {
   CarMissionService,
   VectorObjectService,
   TrackService,
-  TrackDistanceService,
+  InfoService,
 } from 'api/Services';
 
 function getCarMissions(payload = {}) {
@@ -82,15 +82,15 @@ export default class CarActions extends Actions {
       });
   }
 
-  getCarDistance(gps_code, from_dt, to_dt) {
+  getCarInfo(gps_code, from_dt, to_dt) {
     const payload = {
       gps_code,
       from_dt: makeUnixTime(from_dt),
       to_dt: makeUnixTime(to_dt),
-      version: 2,
+      version: 3,
     };
 
-    return TrackDistanceService.get(payload);
+    return InfoService.get(payload);
   }
 
   getCarImage(type_id) {

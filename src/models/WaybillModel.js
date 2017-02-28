@@ -99,22 +99,20 @@ export const waybillSchema = {
     'odometr_start': [
       {
         validator: (value, formData) => {
-          if (hasOdometer(formData.gov_number)) {
-            if (isEmpty(value)) {
-              return 'Поле "Одометр.Выезд" должно быть заполнено';
-            }
+          if (hasOdometer(formData.gov_number) && isEmpty(value)) {
+            return 'Поле "Одометр.Выезд" должно быть заполнено';
           }
+          return false;
         },
       },
     ],
     'motohours_start': [
       {
         validator: (value, formData) => {
-          if (!hasOdometer(formData.gov_number)) {
-            if (isEmpty(value)) {
-              return 'Поле "Счетчик моточасов.Выезд" должно быть заполнено';
-            }
+          if (!hasOdometer(formData.gov_number) && isEmpty(value)) {
+            return 'Поле "Счетчик моточасов.Выезд" должно быть заполнено';
           }
+          return false;
         },
       },
     ],
@@ -191,6 +189,12 @@ const closingProperties = [
     float: 3,
     required: 'motohours_equip_start',
   },
+  {
+    key: 'consumption',
+    title: 'Расход по ДУТ',
+    type: 'number',
+    float: 3,
+  },
 ];
 
 const closingDependencies = {
@@ -225,6 +229,7 @@ const closingDependencies = {
         if (Math.abs((parseFloat(formData.odometr_diff || formData.motohours_diff || 0) - parseFloat(value || 0)) / 100) > 0.1) {
           return 'Расхождение в показателях пробега';
         }
+        return false;
       },
     },
   ],

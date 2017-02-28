@@ -6,6 +6,7 @@ const CITY_DASHBOARD_API_FACTORY = new ApiServiceFactory({
 });
 
 export const TrackDistanceService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('get_length');
+export const InfoService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('info', {});
 export const TrackService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('tracks');
 
 const ETS_API_FACTORY = new ApiServiceFactory({

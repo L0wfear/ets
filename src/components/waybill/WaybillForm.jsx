@@ -142,18 +142,22 @@ class WaybillForm extends Form {
     const { loadingFields } = this.state;
     const car = _.find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
     loadingFields.distance = true;
+    loadingFields.consumption = true;
     this.setState({ loadingFields });
-    flux.getActions('cars').getCarDistance(car.gps_code, formState.fact_departure_date, formState.fact_arrival_date)
-      .then(({ distance }) => {
+    flux.getActions('cars').getCarInfo(car.gps_code, formState.fact_departure_date, formState.fact_arrival_date)
+      .then(({ distance, consumption }) => {
         this.props.handleFormChange('distance', parseFloat(distance / 1000).toFixed(3));
+        this.props.handleFormChange('consumption', consumption !== null ? parseFloat(consumption).toFixed(3) : null);
         const { loadingFields } = this.state;
         loadingFields.distance = false;
+        loadingFields.consumption = false;
         this.setState({ loadingFields });
       })
       .catch(() => {
         // this.props.handleFormChange('distance', parseFloat(distance / 100).toFixed(2));
         const { loadingFields } = this.state;
         loadingFields.distance = false;
+        loadingFields.consumption = false;
         this.setState({ loadingFields });
       });
   }
@@ -733,6 +737,16 @@ class WaybillForm extends Form {
                   error={errors.distance}
                   value={state.distance}
                   isLoading={loadingFields.distance}
+                  disabled
+                />
+              </Div>
+              <Div hidden={!(IS_CLOSING || IS_DISPLAY)}>
+                <Field
+                  type="string"
+                  label="Расход по ДУТ, л"
+                  error={errors.consumption}
+                  value={state.consumption}
+                  isLoading={loadingFields.consumption}
                   disabled
                 />
               </Div>

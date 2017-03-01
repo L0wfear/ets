@@ -8,7 +8,7 @@ const TYPES = [
   { value: '=', label: '=' },
   { value: 'lt', label: '<' },
   { value: 'gt', label: '>' },
-  { value: '<>', label: '<>' },
+  { value: '<>', label: '≠' },
   { value: '><', label: '><' },
 ];
 
@@ -94,14 +94,15 @@ export default class AdvancedInput extends Component {
     return (
       <div className="advanced-string-input">
         <EtsSelect
+          sortingFunction={() => {}}
           options={TYPES}
           value={type}
           clearable={false}
           onChange={v => this.handleTypeChange(v)}
         />
         {!date ? <div className="inputs">
-          <Input type="text" value={type === '><' && value ? value[0] : value} onChange={e => this.handleChange(e.target.value, 0)} />
-          {type === '><' && <Input type="text" value={value ? value[1] : value} onChange={e => this.handleChange(e.target.value, 1)} />}
+          <Input type="number" min="0" value={type === '><' && value ? value[0] : value} onChange={e => this.handleChange(e.target.value, 0)} />
+          {type === '><' && <Input type="number" min="0" value={value ? value[1] : value} onChange={e => this.handleChange(e.target.value, 1)} />}
         </div> : <div className="datepickers">
           <Datepicker date={type === '><' && value ? value[0] : value} onChange={v => this.handleChange(v, 0)} time={time} />
           {type === '><' && <Datepicker date={type === '><' && value ? value[1] : value} onChange={v => this.handleChange(v, 1)} time={time} />}

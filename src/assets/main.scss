@@ -3839,7 +3839,10 @@ div.none {
     width: 50px;
     display: inline-block;
     .Select-menu-outer {
-      width: 40px;
+      width: 50px;
+    }
+    .Select-option {
+      text-align: center;
     }
   }
   .inputs {

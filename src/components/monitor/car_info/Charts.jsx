@@ -98,7 +98,7 @@ export default class Charts extends Component {
       d.data = d.data.map((v, i) => [timestamps[i], v]);
       return d;
     });
-    return <LineChart name="speedChart" data={data} onClick={e => this.showOnMap(e.point.x, e)} />;
+    return <LineChart name="speedChart" data={data} showX onClick={e => this.showOnMap(e.point.x, e)} />;
   }
 
   renderFuelChart() {

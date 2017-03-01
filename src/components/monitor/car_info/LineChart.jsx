@@ -70,6 +70,7 @@ export default class LineChart extends Component {
       },
 
       xAxis: {
+        ordinal: false,
         labels: {
           formatter() {
             return `${makeTime(new Date(this.value * 1000))}`;

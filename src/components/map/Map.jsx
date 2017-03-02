@@ -439,6 +439,7 @@ export default class OpenLayersMap extends Component {
       if (oldMarker) {
         oldMarker.setPoint(point);
       } else {
+        if (!typesIndex[point.car.type_id]) console.log('нет данных о типе, список всех типов:', typesIndex);
         this.markers[key] = new CarMarker(point, this, {
           maxSpeed: _.get(typesIndex[point.car.type_id], 'speed_max') || 0,
         });

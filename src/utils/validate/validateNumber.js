@@ -50,6 +50,5 @@ export function validate(config, value, data) {
     .map(({ validator }) => validator(config, value, data))
     .filter()
     .first();
-
-  return error;
+  return config.validation === false ? undefined : error;
 }

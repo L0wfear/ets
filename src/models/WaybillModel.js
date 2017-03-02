@@ -194,6 +194,7 @@ const closingProperties = [
     title: 'Расход по ДУТ',
     type: 'number',
     float: 3,
+    validation: false,
   },
 ];
 

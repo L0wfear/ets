@@ -34,6 +34,7 @@ class MonitorPage extends Component {
   }
 
   render() {
+    if (!this.props.typesList.length) return <div>Загрузка...</div>;
     return (
       <div
         style={{

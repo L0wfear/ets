@@ -114,7 +114,7 @@ class RouteCreating extends Component {
     let { object_list } = this.props.route;
     const { polys } = this.props.route;
     const { geozonePolys } = this.props;
-    const odhs = v.split(',');
+    const odhs = (v || '').split(',');
     if (odhs.length > object_list.length) {
       const object_id = _.last(odhs);
       object_list.push({ object_id: parseInt(object_id, 10), type, name: geozonePolys[object_id].name, state: polyState.ENABLED });

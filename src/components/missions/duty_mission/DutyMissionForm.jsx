@@ -293,6 +293,7 @@ export class DutyMissionForm extends Form {
                 disabled={STRUCTURE_FIELD_READONLY || (!IS_CREATING && state.status !== 'not_assigned')}
                 clearable={STRUCTURE_FIELD_DELETABLE}
                 options={STRUCTURES}
+                emptyValue={null}
                 value={state.structure_id}
                 onChange={this.handleChange.bind(this, 'structure_id')}
               />

@@ -397,6 +397,7 @@ class WaybillForm extends Form {
                     disabled={STRUCTURE_FIELD_READONLY || !IS_CREATING}
                     clearable={STRUCTURE_FIELD_DELETABLE}
                     options={STRUCTURES}
+                    emptyValue={null}
                     value={state.structure_id}
                     onChange={this.handleStructureIdChange}
                   />}

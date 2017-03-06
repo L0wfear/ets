@@ -138,6 +138,7 @@ export default class CoverageReport extends Component {
                 type="select"
                 label="Подразделение"
                 options={COMPANY_ELEMENTS}
+                emptyValue={null}
                 value={this.state.structure_id}
                 onChange={this.handleChange.bind(this, 'structure_id')}
               />

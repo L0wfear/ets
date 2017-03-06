@@ -189,6 +189,7 @@ export default class EmployeeForm extends Form {
                 options={COMPANY_ELEMENTS}
                 value={state.company_structure_id}
                 disabled={!isPermitted}
+                emptyValue={null}
                 onChange={this.handleChange.bind(this, 'company_structure_id')}
               />
             </Col>

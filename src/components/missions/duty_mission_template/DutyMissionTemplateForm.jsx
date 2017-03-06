@@ -89,6 +89,7 @@ class MissionTemplateForm extends DutyMissionForm {
                 disabled={STRUCTURE_FIELD_READONLY}
                 clearable={STRUCTURE_FIELD_DELETABLE}
                 options={STRUCTURES}
+                emptyValue={null}
                 value={state.structure_id}
                 onChange={this.handleChange.bind(this, 'structure_id')}
               />

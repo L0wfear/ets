@@ -351,6 +351,7 @@ export class MissionForm extends Form {
                 disabled={STRUCTURE_FIELD_READONLY || (this.props.fromWaybill && state.structure_id) || (!IS_CREATING && !IS_POST_CREATING_NOT_ASSIGNED)}
                 clearable={STRUCTURE_FIELD_DELETABLE}
                 options={STRUCTURES}
+                emptyValue={null}
                 value={state.structure_id}
                 onChange={this.handleStructureIdChange}
               />

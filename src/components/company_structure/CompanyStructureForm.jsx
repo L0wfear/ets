@@ -45,6 +45,7 @@ class CompanyStructureForm extends Form {
               <Field
                 type="select"
                 label="Родительское подразделение"
+                emptyValue={null}
                 error={errors.parent_id}
                 options={COMPANY_ELEMENTS}
                 value={state.parent_id}

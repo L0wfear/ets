@@ -174,6 +174,7 @@ export default class RouteForm extends Form {
                   disabled={STRUCTURE_FIELD_READONLY || (this.props.fromMission && this.props.structureId)}
                   clearable={STRUCTURE_FIELD_DELETABLE}
                   options={STRUCTURES}
+                  emptyValue={null}
                   value={state.structure_id}
                   onChange={this.handleChange.bind(this, 'structure_id')}
                 />

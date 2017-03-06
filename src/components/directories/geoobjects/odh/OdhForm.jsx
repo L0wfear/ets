@@ -40,6 +40,7 @@ class OdhForm extends Form {
                 type="select"
                 label="Подразделение"
                 options={COMPANY_ELEMENTS}
+                emptyValue={null}
                 value={state.company_structure_id}
                 onChange={this.handleChange.bind(this, 'company_structure_id')}
               />

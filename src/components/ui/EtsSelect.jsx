@@ -9,6 +9,8 @@ export default class EstSelect extends Component {
       noResultsText: PropTypes.string,
       options: PropTypes.array,
       sortingFunction: PropTypes.func,
+      emptyValue: PropTypes.string,
+      onChange: PropTypes.func,
     };
   }
 
@@ -29,7 +31,7 @@ export default class EstSelect extends Component {
   }
 
   render() {
-    const { placeholder = 'Выберите...', noResultsText = 'Ничего не найдено', options = [], sortingFunction = (a, b) => {
+    const { placeholder = 'Выберите...', emptyValue = '', noResultsText = 'Ничего не найдено', options = [], sortingFunction = (a, b) => {
       if (typeof a.label === 'number') {
         return a.label - b.label;
       }
@@ -40,6 +42,6 @@ export default class EstSelect extends Component {
     } } = this.props;
     const sortedOptions = options.sort(sortingFunction);
 
-    return <Select {...this.props} onChange={(v, a) => this.props.onChange(v !== '' ? v : null, a)} options={sortedOptions} placeholder={placeholder} noResultsText={noResultsText} />;
+    return <Select {...this.props} onChange={(v, a) => this.props.onChange(v === '' ? emptyValue : v, a)} options={sortedOptions} placeholder={placeholder} noResultsText={noResultsText} />;
   }
 }

@@ -57,10 +57,7 @@ export default class AdvancedInput extends Component {
       }
       case '<>': {
         value = v;
-        filterValue = {
-          [`${name}__gt`]: v,
-          [`${name}__lt`]: v,
-        };
+        filterValue = { [`${name}__neq`]: v };
         break;
       }
       case 'lt': {
@@ -75,7 +72,7 @@ export default class AdvancedInput extends Component {
       }
       default: {
         value = v;
-        filterValue = v;
+        filterValue = { [`${name}__eq`]: v };;
         break;
       }
     }

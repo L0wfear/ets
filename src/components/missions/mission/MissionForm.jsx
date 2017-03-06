@@ -97,19 +97,21 @@ export class MissionForm extends Form {
     const missionsActions = flux.getActions('missions');
 
     let { selectedRoute } = this.state;
-    let { technicalOperationsList, routesList } = this.props;
+    let { technicalOperationsList, routesList, carsList } = this.props;
 
     if (!isEmpty(mission.route_id)) {
       selectedRoute = await routesActions.getRouteById(mission.route_id, false);
     }
 
-    if (!isEmpty(mission.technical_operation_id) && !isEmpty(mission.id)) {
-      // routesList = await routesActions.getRoutesByTechnicalOperation(mission.technical_operation_id);
+    if (!isEmpty(mission.technical_operation_id)) {
+      carsList = await this.context.flux.getActions('cars').getCarsByTechnicalOperation(mission.technical_operation_id);
+    }
+
+    if (!isEmpty(mission.id)) {
       routesList = await routesActions.getRoutesByMissionId(mission.id);
     }
 
     technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsByCarId(mission.car_id);
-    const carsList = this.props.carsList;
     missionsActions.getMissionSources();
 
     this.setState({

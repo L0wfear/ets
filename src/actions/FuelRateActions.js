@@ -51,19 +51,13 @@ export default class FuelRateActions extends Actions {
   }
 
   updateFuelRate(newFuelRate) {
-    const payload = _.clone(newFuelRate);
+    const payload = { ...newFuelRate };
     delete payload.rate_on_date;
     delete payload.season;
     delete payload.car_model_name;
     delete payload.car_special_model_name;
 
     payload.order_date = createValidDate(payload.order_date);
-
-    _.mapKeys(payload, (v, k) => {
-      if (isEmpty(v)) {
-        payload[k] = 'null';
-      }
-    });
 
     return FuelConsumptionRateService.put(payload, getFuelRates, 'json');
   }

@@ -93,7 +93,7 @@ export default class FormWrap extends Component {
     if (this.schema) {
       this.schema.properties.forEach((p) => {
         if (p.type === 'number' && p.float) {
-          formState[p.key] = !isNaN(formState[p.key]) ? parseFloat(formState[p.key]).toFixed(p.float) : null;
+          formState[p.key] = !isNaN(formState[p.key]) && formState[p.key] !== null ? parseFloat(formState[p.key]) : null;
         }
       });
     }

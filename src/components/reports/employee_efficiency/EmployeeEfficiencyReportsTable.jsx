@@ -35,6 +35,7 @@ const tableMeta = {
       filter: {
         type: 'multiselect',
       },
+      cssClassName: 'width80',
     },
     {
       name: 'trashcans',
@@ -73,5 +74,5 @@ export default (props) => {
       renderers={renderers}
       {...props}
     />
-	);
+  );
 };

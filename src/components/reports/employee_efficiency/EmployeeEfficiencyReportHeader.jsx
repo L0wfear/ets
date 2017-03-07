@@ -20,6 +20,5 @@ export default ({ date_end, date_start, handleChange, onClick }) => (
         <Button bsSize="small" onClick={() => onClick()}>Сформировать отчет</Button>
       </Col>
     </Row>
-
   </Div>
 );

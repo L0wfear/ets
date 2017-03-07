@@ -42,6 +42,10 @@ export default class AdvancedInput extends Component {
     let { filterValue } = this.props;
     const { type } = this.state;
     let { value } = this.state;
+    if (v === null) {
+      filterValue = null;
+      return this.props.onChange(filterValue);
+    }
     switch (type) {
       case '><': {
         if (!Array.isArray(value)) value = date ? [new Date(), new Date()] : ['', ''];
@@ -72,7 +76,7 @@ export default class AdvancedInput extends Component {
       }
       default: {
         value = v;
-        filterValue = { [`${name}__eq`]: v };;
+        filterValue = { [`${name}__eq`]: v };
         break;
       }
     }
@@ -82,7 +86,7 @@ export default class AdvancedInput extends Component {
         filterValue[k] = time ? createValidDateTime(filterValue[k]) : createValidDate(filterValue[k]);
       });
     }
-    this.props.onChange(filterValue);
+    return this.props.onChange(filterValue);
   }
 
   render() {

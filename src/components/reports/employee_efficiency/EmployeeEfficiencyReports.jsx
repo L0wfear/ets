@@ -15,24 +15,16 @@ import EmployeeEfficiencyReportsTable from './EmployeeEfficiencyReportsTable.jsx
 @autobind
 export default class EmployeeEfficiencyReports extends Component {
 
-  static get propTypes() {
-    return {
-      employeeEfficiencyReportsList: PropTypes.array,
-    };
+  static propTypes = {
+    employeeEfficiencyReportsList: PropTypes.array,
   }
 
-  constructor(props) {
-    super(props);
-
-    const [date_start, date_end] = [getToday9am(), getTomorrow9am()];
-
-    this.state = {
-      date_start,
-      date_end,
-    };
+  state = {
+    date_start: getToday9am(),
+    date_end: getTomorrow9am(),
   }
 
-  getCleanState(state) {
+  getExportPayload(state) {
     return {
       date_start: createValidDateTime(state.date_start),
       date_end: createValidDateTime(state.date_end),
@@ -50,14 +42,6 @@ export default class EmployeeEfficiencyReports extends Component {
 
   render() {
     const { employeeEfficiencyReportsList = [] } = this.props;
-    // let currentCombination;
-    // _.each(employeeEfficiencyReportsList, (el) => {
-    //   if (!currentCombination || currentCombination !== `${el.company_name}${el.func_type}`) {
-    //     currentCombination = `${el.company_name}${el.func_type}`;
-    //   } else {
-    //     el.hidden = true;
-    //   }
-    // });
 
     return (
       <div className="ets-page-wrap">
@@ -69,7 +53,7 @@ export default class EmployeeEfficiencyReports extends Component {
         <EmployeeEfficiencyReportsTable
           data={employeeEfficiencyReportsList}
         >
-          <Button disabled={!employeeEfficiencyReportsList.length} bsSize="small" onClick={() => this.props.export(this.getCleanState(this.state))}><Glyphicon glyph="download-alt" /></Button>
+          <Button disabled={!employeeEfficiencyReportsList.length} bsSize="small" onClick={() => this.props.export(this.getExportPayload(this.state))}><Glyphicon glyph="download-alt" /></Button>
         </EmployeeEfficiencyReportsTable>
       </div>
     );

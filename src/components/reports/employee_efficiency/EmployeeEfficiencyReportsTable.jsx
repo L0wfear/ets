@@ -71,7 +71,6 @@ export default (props) => {
       tableMeta={tableMeta}
       results={props.data}
       renderers={renderers}
-      enableSort={false}
       {...props}
     />
 	);

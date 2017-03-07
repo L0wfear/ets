@@ -17,6 +17,7 @@ export default class ReportsStore extends Store {
     this.register(reportsActions.getDtCoverageReport, this.handleGetDtCoverageReport);
     this.register(reportsActions.getCarFuncTypeUsageReports, this.handleGetCarFuncTypeUsageReports);
     this.register(reportsActions.getBrigadeEfficiencyReports, this.handleGetBrigadeEfficiencyReports);
+    this.register(reportsActions.getEmployeeEfficiencyReports, this.handleGetEmployeeEfficiencyReports);
 
     this.state = {
       dailyCleaningReportsListETS: [],
@@ -39,6 +40,10 @@ export default class ReportsStore extends Store {
 
   handleGetBrigadeEfficiencyReports({ result }) {
     this.setState({ brigadeEfficiencyReportsList: result.rows });
+  }
+
+  handleGetEmployeeEfficiencyReports({ result }) {
+    this.setState({ employeeEfficiencyReportsList: result.rows });
   }
 
   handleGetDailyCleaningReportsETS(dailyCleaningReports) {

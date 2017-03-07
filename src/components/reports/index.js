@@ -14,6 +14,7 @@ import * as daily from './daily';
 import * as weekly from './weekly';
 import * as carFuncTypeUsage from './car_func_type_usage';
 import * as brigadeEfficiency from './brigade_efficiency';
+import * as employeeEfficiency from './employee_efficiency';
 
 export {
   analytics,
@@ -28,4 +29,5 @@ export {
   dtCoverageReport,
   carFuncTypeUsage,
   brigadeEfficiency,
+  employeeEfficiency,
 };

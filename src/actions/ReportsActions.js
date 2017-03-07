@@ -12,6 +12,7 @@ import {
   DtCoverageReportService,
   CarFuncTypeUsageReportService,
   BrigadeEfficiencyReportService,
+  EmployeeEfficiencyReportService,
 } from 'api/Services';
 
 export default class ReportsActions extends Actions {
@@ -174,6 +175,13 @@ export default class ReportsActions extends Actions {
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
     return BrigadeEfficiencyReportService.get(payload);
+  }
+
+  getEmployeeEfficiencyReports(data) {
+    const payload = _.cloneDeep(data);
+    payload.date_start = createValidDateTime(payload.date_start);
+    payload.date_end = createValidDateTime(payload.date_end);
+    return EmployeeEfficiencyReportService.get(payload);
   }
 
 }

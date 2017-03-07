@@ -6,6 +6,8 @@ import { autobind } from 'core-decorators';
 import EmployeeEfficiencyReportHeader from './EmployeeEfficiencyReportHeader.jsx';
 import EmployeeEfficiencyReportsTable from './EmployeeEfficiencyReportsTable.jsx';
 
+console.log(EmployeeEfficiencyReportHeader, EmployeeEfficiencyReportsTable);
+
 @connectToStores(['reports'])
 @exportable({ entity: 'employee_efficiency_report' })
 @FluxContext

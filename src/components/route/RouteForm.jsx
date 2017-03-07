@@ -159,7 +159,7 @@ export default class RouteForm extends Form {
                   options={TECH_OPERATIONS}
                   value={state.technical_operation_id}
                   onChange={this.handleTechChange}
-                  disabled={this.props.fromMission}
+                  disabled={this.props.fromMission || state.id}
                   clearable={false}
                   error={errors.technical_operation_id}
                 />

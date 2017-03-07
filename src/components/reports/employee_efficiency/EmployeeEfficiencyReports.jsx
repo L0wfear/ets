@@ -3,7 +3,6 @@ import { Button, Glyphicon } from 'react-bootstrap';
 import { getToday9am, getTomorrow9am, createValidDateTime } from 'utils/dates';
 import { FluxContext, connectToStores, exportable, staticProps } from 'utils/decorators';
 import { autobind } from 'core-decorators';
-import _ from 'lodash';
 import EmployeeEfficiencyReportHeader from './EmployeeEfficiencyReportHeader.jsx';
 import EmployeeEfficiencyReportsTable from './EmployeeEfficiencyReportsTable.jsx';
 

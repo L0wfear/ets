@@ -42,7 +42,7 @@ export default class AdvancedInput extends Component {
     let { filterValue } = this.props;
     const { type } = this.state;
     let { value } = this.state;
-    if (v === null) {
+    if (v === null || v === '' || v === undefined) {
       filterValue = null;
       return this.props.onChange(filterValue);
     }

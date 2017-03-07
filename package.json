@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "0.10.31",
+    "version": "0.10.32",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -95,7 +95,7 @@
         "webpack-hot-middleware": "^2.12.2"
     },
     "scripts": {
-        "build:test": "STAND=test NODE_ENV=production webpack --config webpack/prod.config.js",
+        "build:test": "STAND=test NODE_ENV=development webpack --config webpack/prod.config.js",
         "build:study": "STAND=study NODE_ENV=production webpack --config webpack/prod.config.js",
         "dev:test": "STAND=test NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
         "dev:study": "STAND=study NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",

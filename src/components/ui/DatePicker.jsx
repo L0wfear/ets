@@ -23,7 +23,7 @@ export default class DatePicker extends Component {
   }
 
   shouldComponentUpdate(props) {
-    return props.date !== this.props.date || props.disabled !== this.props.disabled;
+    return props.date !== this.props.date || props.disabled !== this.props.disabled || props.time !== this.props.time;
   }
 
   render() {

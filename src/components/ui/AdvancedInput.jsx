@@ -60,11 +60,11 @@ export default class AdvancedInput extends Component {
         break;
       }
       case '<>': {
-        v.setHours(0, 0, 0, 0);
+        if (date) v.setHours(0, 0, 0, 0);
         value = v;
         filterValue = {
           [`${name}__lt`]: v,
-          [`${name}__gte`]: new Date(v.getTime() + (60 * 60 * 24 * 1000)),
+          [`${name}__gte`]: date ? new Date(v.getTime() + (60 * 60 * 24 * 1000)) : `${parseFloat(v) + 1}`,
         };
         break;
       }
@@ -79,11 +79,11 @@ export default class AdvancedInput extends Component {
         break;
       }
       default: {
-        v.setHours(0, 0, 0, 0);
+        if (date) v.setHours(0, 0, 0, 0);
         value = v;
         filterValue = {
           [`${name}__gte`]: v,
-          [`${name}__lt`]: new Date(v.getTime() + (60 * 60 * 24 * 1000)),
+          [`${name}__lt`]: date ? new Date(v.getTime() + (60 * 60 * 24 * 1000)) : `${parseFloat(v) + 1}`,
         };
         break;
       }

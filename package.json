@@ -95,18 +95,13 @@
         "webpack-hot-middleware": "^2.12.2"
     },
     "scripts": {
-        "build:test": "STAND=test NODE_ENV=production webpack --config webpack/prod.config.js",
-        "build:study": "STAND=study NODE_ENV=production webpack --config webpack/prod.config.js",
+        "build:test": "STAND=test NODE_ENV=production webpack --config webpack/prod.config.js --stack-size=100000",
+        "build:study": "STAND=study NODE_ENV=production webpack --config webpack/prod.config.js --stack-size=100000",
         "dev:test": "STAND=test NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
         "dev:study": "STAND=study NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
         "lint": "eslint -c .eslintrc.js --fix --ext .js --ext .jsx src",
         "esdoc": "esdoc -c esdoc.json",
         "bump": "node webpack/utils/updateVersion.js"
-    },
-    "config": {
-        "ghooks": {
-            "pre-commit": "npm run bump && git add package.json"
-        }
     },
     "engines": {
         "node": ">=5.1.0",

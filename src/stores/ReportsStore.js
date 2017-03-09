@@ -27,6 +27,8 @@ export default class ReportsStore extends Store {
       weeklyTechnicalOperationCompleteReportsList: [],
       odhCoverageReport: [],
       dtCoverageReport: [],
+      employeeEfficiencyReportsList: [],
+      brigadeEfficiencyReportsList: [],
     };
   }
 

@@ -35,6 +35,10 @@ export default class BrigadeEfficiencyReports extends Component {
     };
   }
 
+  componentWillMount() {
+    this.createBrigadeEfficiencyReportETS(this.state);
+  }
+
   getCleanState(state) {
     return {
       ...state,

@@ -6,8 +6,6 @@ import { autobind } from 'core-decorators';
 import EmployeeEfficiencyReportHeader from './EmployeeEfficiencyReportHeader.jsx';
 import EmployeeEfficiencyReportsTable from './EmployeeEfficiencyReportsTable.jsx';
 
-console.log(EmployeeEfficiencyReportHeader, EmployeeEfficiencyReportsTable);
-
 @connectToStores(['reports'])
 @exportable({ entity: 'employee_efficiency_report' })
 @FluxContext
@@ -24,6 +22,10 @@ export default class EmployeeEfficiencyReports extends Component {
   state = {
     date_start: getToday9am(),
     date_end: getTomorrow9am(),
+  }
+
+  componentWillMount() {
+    this.createEmployeeEfficiencyReport(this.state);
   }
 
   getExportPayload(state) {

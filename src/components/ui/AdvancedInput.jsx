@@ -38,7 +38,7 @@ export default class AdvancedInput extends Component {
   }
 
   handleChange(v, index = 0) {
-    const { name, date, time } = this.props;
+    const { name, date } = this.props;
     let { filterValue } = this.props;
     const { type } = this.state;
     let { value } = this.state;
@@ -52,8 +52,8 @@ export default class AdvancedInput extends Component {
         value[index] = v;
         if (typeof filterValue !== 'object') {
           filterValue = {
-            [`${name}__gte`]: null,
-            [`${name}__lte`]: null,
+            [`${name}__gte`]: new Date(),
+            [`${name}__lte`]: new Date(),
           };
         }
         filterValue = { ...filterValue, [`${name}__${index === 0 ? 'gte' : 'lte'}`]: v };

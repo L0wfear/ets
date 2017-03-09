@@ -81,6 +81,7 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
     delete copiedElement.name;
     this.setState({
       showForm: true,
+      formType: 'ViewForm',
       selectedElement: _.cloneDeep(copiedElement),
     });
   }

@@ -173,6 +173,7 @@ export default class MissionFormWrap extends FormWrap {
             handleFormChange={this.handleFormStateChange}
             show={this.props.showForm}
             onHide={this.props.onFormHide}
+            template
             {...this.state}
           />
         </Div>

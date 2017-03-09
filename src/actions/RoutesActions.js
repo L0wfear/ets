@@ -27,19 +27,20 @@ export default class RoutesActions extends Actions {
     return response.result || [];
   }
 
-  async getRoutesByDutyMissionId(duty_mission_id) {
-    const payload = { duty_mission_id };
+  async getRoutesByDutyMissionId(id, isTemplate) {
+    const payload = isTemplate ? { duty_mission_template_id: id } : { duty_mission_id: id };
 
-    if (!duty_mission_id) {
+    if (!id) {
       delete payload.duty_mission_id;
+      delete payload.duty_mission_template_id;
     }
 
     const response = await RouteService.get(payload);
     return response.result || [];
   }
 
-  async getRoutesByMissionId(mission_id) {
-    const payload = { mission_id };
+  async getRoutesByMissionId(id, isTemplate) {
+    const payload = isTemplate ? { mission_template_id: id } : { mission_id: id };
 
     const response = await RouteService.get(payload);
     return response.result || [];

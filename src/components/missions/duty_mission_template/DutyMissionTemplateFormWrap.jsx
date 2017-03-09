@@ -81,6 +81,7 @@ class DutyMissionTemplateFormWrap extends FormWrap {
             handleFormChange={this.handleFormStateChange.bind(this)}
             show={this.props.showForm}
             onHide={this.props.onFormHide}
+            template
             {...this.state}
           />
         </Div>

@@ -19,7 +19,6 @@ export default class AdvancedInput extends Component {
     filterValue: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     onChange: PropTypes.func,
     date: PropTypes.bool,
-    time: PropTypes.bool,
   }
 
   state = {

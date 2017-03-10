@@ -188,42 +188,32 @@ export default class Track {
     const zoom = map.getView().getZoom();
 
     if (zoom > COLORS_ZOOM_THRESHOLD) {
+      this.addParkingsToTrack();
+      this.addFuelEventsToTrack();
       this.renderInColors(speed);
-      this.renderParkings();
-      this.renderFuelEvents();
     } else {
       this.renderSimple();
     }
     this.owner._reactMap.triggerRender();
   }
 
-  renderParkings() {
-    const { ctx, parkings } = this;
-    const iconSize = 20 * window.devicePixelRatio;
+  addParkingsToTrack() {
+    const { parkings, points } = this;
     if (parkings.length) {
       parkings.forEach((p) => {
-        const coords = this.map.projectToPixel(swapCoords(p.start_point.coords_msk));
-        ctx.drawImage(this.parkingIcon,
-          coords.x - iconSize / 2,
-          coords.y - iconSize / 2,
-          iconSize,
-          iconSize,
-        );
+        const { timestamp } = p.start_point;
+        const point = points.find(e => e.timestamp === timestamp);
+        point.parking = true;
       });
     }
   }
 
-  renderFuelEvents() {
-    const { ctx, events } = this;
-    const iconSize = 20 * window.devicePixelRatio;
+  addFuelEventsToTrack() {
+    const { events, points } = this;
     Object.keys(events).forEach(k => this.sensorsState.level.includes(k) && events[k].forEach((e) => {
-      const coords = this.map.projectToPixel(swapCoords(e.start_point.coords_msk));
-      ctx.drawImage(this.fuelIcons[e.type],
-        coords.x - iconSize / 2,
-        coords.y - iconSize / 2,
-        iconSize,
-        iconSize,
-      );
+      const { timestamp } = e.start_point;
+      const point = points.find(p => p.timestamp === timestamp);
+      point.event = e.type;
     }));
   }
 
@@ -323,7 +313,9 @@ export default class Track {
     const owner = this.owner;
     const track = this.points;
     const TRACK_LINE_WIDTH = DRAW_POINTS ? 4 : TRACK_LINE_WIDTH;
+    const iconSize = 20 * window.devicePixelRatio;
     const ctx = this.ctx;
+    const freezed = track.every(p => p.coords_msk[0] === track[0].coords_msk[0] && p.coords_msk[1] === track[0].coords_msk[1]);
 
 
     if (!track || track.length < 2) {
@@ -365,6 +357,7 @@ export default class Track {
       const speed = p.speed_avg;
       let rgbaColor = getTrackColor(speed, this.maxSpeed, TRACK_LINE_OPACITY);
       let hexColor = getTrackColor(speed, this.maxSpeed);
+      ctx.globalCompositeOperation = 'destination-over';
 
       if (this.sensorsState.equipment.length) {
         if (p.sensors && p.sensors.equipment) {
@@ -451,6 +444,25 @@ export default class Track {
 
       prevCoords = coords;
       prevRgbaColor = rgbaColor;
+
+      ctx.globalCompositeOperation = 'source-over';
+      if (p.parking) {
+        const shift = p.event !== undefined || freezed ? 20 : 0;
+        ctx.drawImage(this.parkingIcon,
+          coords.x - (iconSize / 2) - shift,
+          coords.y - (iconSize / 2) - shift,
+          iconSize,
+          iconSize,
+        );
+      } else if (p.event !== undefined) {
+        const shift = p.parking || freezed ? -20 : 0;
+        ctx.drawImage(this.fuelIcons[p.event],
+          coords.x - (iconSize / 2) - shift,
+          coords.y - (iconSize / 2) - shift,
+          iconSize,
+          iconSize,
+        );
+      }
     }
 
     // если машина в движении - дорисовываем еще одну точку, чтобы трэк не обрывался

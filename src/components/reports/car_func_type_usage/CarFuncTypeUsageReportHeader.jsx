@@ -50,7 +50,6 @@ class CarFuncTypeUsageReportHeader extends Component {
           <Field type="select"
             label="Объекты"
             options={OBJECTS}
-            disabled // временно
             value={geozone_type}
             onChange={this.handleGeozoneTypeChange.bind(this)}
             clearable={false}

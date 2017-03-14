@@ -88,14 +88,14 @@ class MissionInfoForm extends Form {
     const { object_list = [] } = route;
     const polys = _(_.cloneDeep(object_list))
       .map((object) => {
-        if (geozonePolys[object.object_id] && (['points', 'vector'].indexOf(route.type) === -1)) {
+        if (geozonePolys[object.object_id] && (['points', 'mixed'].indexOf(route.type) === -1)) {
           object.shape = geozonePolys[object.object_id].shape;
         }
         return object;
       })
       .keyBy((o) => {
         // TODO попросить бек чтобы у каждого объекта был id
-        if (route.type === 'vector') {
+        if (route.type === 'mixed') {
           return o.id;
         }
         if (route.type === 'points') {
@@ -152,7 +152,7 @@ class MissionInfoForm extends Form {
 
             <Col md={6}>
               <Div style={{ marginTop: -35 }} hidden={!(this.state.missionReport && this.state.missionReport.length > 0)}>
-                <Div hidden={routeType !== 'simple' && routeType !== 'vector' && routeType !== 'mixed'}>
+                <Div hidden={routeType !== 'mixed'}>
                   <MissionReportByODH renderOnly enumerated={false} selectedReportDataODHS={this.state.missionReport} onElementChange={this.handleSelectedElementChange} selectField={'object_id'} />
                 </Div>
                 <Div hidden={routeType !== 'simple_dt'}>

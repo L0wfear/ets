@@ -47,10 +47,10 @@ export default class TechnicalOperationsActions extends Actions {
     const objects = [];
     const getObjectByTypeName = (objectsType) => {
       switch (objectsType) {
-        case 'simple_dt':
+        case 'mixed':
           objects.push({ name: 'ОДХ', id: 1 });
           break;
-        case 'simple':
+        case 'simple_dt':
           objects.push({ name: 'ДТ', id: 2 });
           break;
         case 'points':

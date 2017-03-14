@@ -93,7 +93,7 @@ export default class ObjectsStore extends Store {
     const result = technicalOperationsObjects.result;
     _.each(result, (obj) => {
       if (obj.short_name === 'ОДХ') {
-        obj.type = 'simple';
+        obj.type = 'mixed';
       } else if (obj.short_name === 'ДТ') {
         obj.type = 'simple_dt';
       } else if (obj.short_name === 'ПН') {

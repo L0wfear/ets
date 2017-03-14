@@ -27,7 +27,7 @@ export default class VehicleInfo extends Component {
       const selectedCar = carsList.find(c => c.gov_number === car.car.gov_number);
       if (selectedCar) {
         const car_id = selectedCar.asuods_id;
-        const missions = await flux.getActions('cars').getCarMissions(car_id, from_dt, to_dt);
+        const missions = await flux.getActions('cars').getCarMissions(car_id);
         this.setState({ missions: missions.result, car: selectedCar });
       }
     }
@@ -40,7 +40,7 @@ export default class VehicleInfo extends Component {
       const selectedCar = carsList.find(c => c.gov_number === props.car.car.gov_number);
       if (selectedCar) {
         const car_id = selectedCar.asuods_id;
-        const missions = await flux.getActions('cars').getCarMissions(car_id, from_dt, to_dt);
+        const missions = await flux.getActions('cars').getCarMissions(car_id);
         this.setState({ missions: missions.result, car: selectedCar });
       }
     }

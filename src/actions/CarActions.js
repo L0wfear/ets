@@ -101,11 +101,9 @@ export default class CarActions extends Actions {
     return CarImageService.get(payload);
   }
 
-  getCarMissions(car_id, date_from, date_to) {
+  getCarMissions(car_id) {
     const payload = {
       car_id,
-      date_from: createValidDateTime(date_from),
-      date_to: createValidDateTime(date_to),
     };
     return getCarMissions(payload);
   }

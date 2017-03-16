@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { getToday9am, getTomorrow9am } from 'utils/dates';
+import { getYesterday9am, getToday859am } from 'utils/dates';
 import { getReportNotReadyNotification2 } from 'utils/notifications';
 import DailyReportHeader from 'components/reports/DailyReportHeader.jsx';
 import { FluxContext, HistoryContext, staticProps, connectToStores } from 'utils/decorators';
@@ -22,7 +22,7 @@ export default class DailyCleaningReportsETS extends Component {
   constructor(props) {
     super(props);
 
-    const [date_start, date_end] = [getToday9am(), getTomorrow9am()];
+    const [date_start, date_end] = [getYesterday9am(), getToday859am()];
 
     this.state = {
       date_start,

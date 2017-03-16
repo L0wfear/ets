@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
-import { getToday9am, getTomorrow9am, createValidDateTime } from 'utils/dates';
+import { getYesterday9am, getToday859am, createValidDateTime } from 'utils/dates';
 import { FluxContext, connectToStores, exportable, staticProps } from 'utils/decorators';
 import _ from 'lodash';
 import CarFuncTypeUsageReportHeader from './CarFuncTypeUsageReportHeader.jsx';
@@ -23,7 +23,7 @@ export default class CarFuncTypeUsageReports extends Component {
   constructor(props) {
     super(props);
 
-    const [date_start, date_end] = [getToday9am(), getTomorrow9am()];
+    const [date_start, date_end] = [getYesterday9am(), getToday859am()];
 
     this.state = {
       date_start,

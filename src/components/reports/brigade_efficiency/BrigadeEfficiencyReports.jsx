@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
-import { getToday9am, getTomorrow9am, createValidDateTime } from 'utils/dates';
+import { getYesterday9am, getToday859am, createValidDateTime } from 'utils/dates';
 import { FluxContext, connectToStores, exportable, staticProps } from 'utils/decorators';
 import { autobind } from 'core-decorators';
 import _ from 'lodash';
@@ -25,7 +25,7 @@ export default class BrigadeEfficiencyReports extends Component {
   constructor(props) {
     super(props);
 
-    const [date_start, date_end] = [getToday9am(), getTomorrow9am()];
+    const [date_start, date_end] = [getYesterday9am(), getToday859am()];
 
     this.state = {
       date_start,

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
-import { getToday9am, getTomorrow9am, getFormattedDateTimeSeconds } from 'utils/dates';
+import { getYesterday9am, getToday859am, getFormattedDateTimeSeconds } from 'utils/dates';
 import { getReportNotReadyNotification3 } from 'utils/notifications';
 import { REPORT_STATUSES } from 'constants/statuses';
 import DailyReportHeader from 'components/reports/DailyReportHeader.jsx';
@@ -122,7 +122,7 @@ export default class WeeklyTechnicalOperationCompleteReports extends Component {
   constructor(props) {
     super(props);
 
-    const [date_start, date_end] = [getToday9am(), getTomorrow9am()];
+    const [date_start, date_end] = [getYesterday9am(), getToday859am()];
 
     this.state = {
       date_start,

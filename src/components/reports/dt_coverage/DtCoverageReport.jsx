@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Glyphicon, Dropdown, MenuItem as BootstrapMenuItem, Input } from 'react-bootstrap';
 import { autobind } from 'core-decorators';
 import { connectToStores, FluxContext, bindable } from 'utils/decorators';
-import { getToday0am, getFormattedDateTime } from 'utils/dates';
+import { getYesterday9am, getToday859am, getFormattedDateTime } from 'utils/dates';
 import { saveData } from 'utils/functions';
 import DtCoverageReportTable from './DtCoverageReportTable.jsx';
 import DtCoverageReportPrintForm from './DtCoverageReportPrintForm.jsx';
@@ -29,7 +29,7 @@ export default class DtCoverageReport extends Component {
   constructor(props) {
     super(props);
 
-    const [date_start, date_end] = [getToday0am(), new Date()];
+    const [date_start, date_end] = [getYesterday9am(), getToday859am()];
 
     this.state = {
       date_start,

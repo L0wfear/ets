@@ -88,7 +88,7 @@ class MissionInfoForm extends Form {
     const { object_list = [] } = route;
     const polys = _(_.cloneDeep(object_list))
       .map((object) => {
-        if (geozonePolys[object.object_id] && (['points', 'mixed'].indexOf(route.type) === -1)) {
+        if (geozonePolys[object.object_id] && route.type !== 'points') {
           object.shape = geozonePolys[object.object_id].shape;
         }
         return object;

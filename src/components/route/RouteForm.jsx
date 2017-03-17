@@ -136,6 +136,7 @@ export default class RouteForm extends Form {
     }
 
     const title = state.id ? 'Изменение маршрута' : 'Создание нового маршрута';
+    const canSave = this.props.canSave && (state.object_list.length || state.draw_object_list.length);
 
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
@@ -222,11 +223,11 @@ export default class RouteForm extends Form {
         <Modal.Footer>
           {this.props.fromMission ?
             <div>
-              <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this, 1)}>Сохранить как шаблон</Button>
-              <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this, 0)}>{state.id ? 'Сохранить' : 'Создать'}</Button>
+              <Button disabled={!canSave} onClick={this.handleSubmit.bind(this, 1)}>Сохранить как шаблон</Button>
+              <Button disabled={!canSave} onClick={this.handleSubmit.bind(this, 0)}>{state.id ? 'Сохранить' : 'Создать'}</Button>
             </div>
             :
-              <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this, 1)}>Сохранить как шаблон</Button>
+              <Button disabled={!canSave} onClick={this.handleSubmit.bind(this, 1)}>Сохранить как шаблон</Button>
           }
         </Modal.Footer>
 

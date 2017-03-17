@@ -16,7 +16,13 @@ export const routeSchema = {
       key: 'object_list',
       title: 'Геоданные маршрута',
       type: 'array',
-      required: true,
+      required: false,
+    },
+    {
+      key: 'draw_object_list',
+      title: 'Геоданные маршрута',
+      type: 'array',
+      required: false,
     },
   ],
 };

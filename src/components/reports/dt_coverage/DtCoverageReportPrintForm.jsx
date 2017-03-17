@@ -3,7 +3,7 @@ import { autobind } from 'core-decorators';
 import { FluxContext } from 'utils/decorators';
 import { Button, Modal } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
-import { getToday0am } from 'utils/dates';
+import { getYesterday9am, getToday859am } from 'utils/dates';
 import Datepicker from 'components/ui/DatePicker.jsx';
 import Div from 'components/ui/Div.jsx';
 
@@ -19,7 +19,7 @@ export default class DtCoverageReportPrintForm extends Component {
   constructor(props) {
     super(props);
 
-    const [date_start, date_end] = [getToday0am(), new Date()];
+    const [date_start, date_end] = [getYesterday9am(), getToday859am()];
 
     this.state = {
       date_start,

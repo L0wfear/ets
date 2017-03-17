@@ -4,7 +4,7 @@ import { Button, Row, Col } from 'react-bootstrap';
 import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
 import Datepicker from 'components/ui/DatePicker.jsx';
-import { getToday859am, getYesterday0am, getYesterday9am, getYesterday2359 } from 'utils/dates';
+import { getToday859am, getYesterday9am } from 'utils/dates';
 import { isEmpty } from 'utils/functions';
 
 // TODO поправить на получение типов из специального сервиса
@@ -63,8 +63,8 @@ class DailyReportHeader extends Component {
     } else {
       this.props.handleChange('car_type_id_list', []);
       this.props.handleChange('element', 'yard');
-      this.props.handleChange('date_start', getYesterday0am());
-      this.props.handleChange('date_end', getYesterday2359());
+      this.props.handleChange('date_start', getYesterday9am());
+      this.props.handleChange('date_end', getToday859am());
     }
   }
 

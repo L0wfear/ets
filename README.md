@@ -44,17 +44,21 @@ project
 
 ### Development
 
-`npm run dev:test` (подключение к тестовому серверу)
+`npm run dev` (подключение к development серверу (gost-group.com))
 
-`npm run dev:study` (подключение к production-серверу)
+`npm run dev:test` (подключение к тестовому серверу (mos.ru))
+
+`npm run dev:study` (подключение к production-серверу (mos.ru))
 
 ## Сборка приложения
 
 Сборка приложения выполняется командами:
 
-`npm run build:test` (сборка версии приложения для подключения к тестовому серверу)
+`npm run build` (сборка версии приложения для подключения к development серверу (gost-group.com))
 
-`npm run build:study` (сборка версии приложения для подключения к production серверу)
+`npm run build:test` (сборка версии приложения для подключения к тестовому серверу (mos.ru))
+
+`npm run build:study` (сборка версии приложения для подключения к production серверу (mos.ru))
 
 Файлы сборки помещаются в папку `dist`.
 

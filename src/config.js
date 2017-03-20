@@ -9,6 +9,7 @@ const config = {
 const STANDS = {
   test: `${PROTO}//ets.tech.mos.ru/ets-test/services`,
   study: `${PROTO}//ets.tech.mos.ru/ets-study/services`,
+  dev: `${PROTO}//dev-ets.gost-group.com/ets-dev/services`,
 };
 
 try {

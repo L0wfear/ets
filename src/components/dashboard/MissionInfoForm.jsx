@@ -85,7 +85,7 @@ class MissionInfoForm extends Form {
     const routeType = route_data.type;
     const { route = {} } = this.state;
     const { geozonePolys = {} } = this.props;
-    const { object_list = [] } = route;
+    const { object_list = [], draw_object_list = [] } = route;
     const polys = _(_.cloneDeep(object_list))
       .map((object) => {
         if (geozonePolys[object.object_id] && route.type !== 'points') {
@@ -100,6 +100,9 @@ class MissionInfoForm extends Form {
         return o.object_id;
       })
       .value();
+    draw_object_list.forEach((o) => {
+      polys[o.object_id] = o;
+    });
     if (!car_data.gov_number) return <div />;
     const title = `Информация о задании. Рег. номер ТС: ${car_data.gov_number}`;
 

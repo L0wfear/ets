@@ -87,7 +87,7 @@ export default class HybridMap extends Map {
           feature.setStyle(getVectorArrowStyle(feature));
         } else if (poly.shape && poly.shape.type !== 'Point') {
           feature.setStyle(polyStyles[poly.state]);
-        } else { // Если точка
+        } else if (poly.shape && poly.shape.type === 'Point') {
           if (this.props.selectedObjects) {
             let succeed = false;
             _.each(this.props.selectedObjects, (o) => {

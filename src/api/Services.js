@@ -2,7 +2,7 @@ import ApiServiceFactory from './ApiServiceFactory.js';
 import config from '../config.js';
 
 const CITY_DASHBOARD_API_FACTORY = new ApiServiceFactory({
-  apiUrl: `http://ods.mos.ru/ssd/city-dashboard${process.env.STAND === 'test' ? '-dev' : ''}`,
+  apiUrl: `http://ods.mos.ru/ssd/city-dashboard${process.env.STAND !== 'prod' ? '-dev' : ''}`,
 });
 
 export const TrackDistanceService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('get_length');

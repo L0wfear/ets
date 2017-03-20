@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "0.11.19",
+    "version": "0.11.21",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -95,11 +95,11 @@
         "webpack-hot-middleware": "^2.12.2"
     },
     "scripts": {
-        "build:test": "STAND=test NODE_ENV=production webpack --config webpack/prod.config.js --stack-size=100000",
-        "build:study": "STAND=study NODE_ENV=production USE_SOURCE_MAPS=true webpack --config webpack/prod.config.js --stack-size=100000",
+        "build:stage": "STAND=stage NODE_ENV=production webpack --config webpack/prod.config.js --stack-size=100000",
+        "build:prod": "STAND=prod NODE_ENV=production USE_SOURCE_MAPS=true webpack --config webpack/prod.config.js --stack-size=100000",
         "build": "STAND=dev NODE_ENV=production webpack --config webpack/prod.config.js --stack-size=100000",
-        "dev:test": "STAND=test NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
-        "dev:study": "STAND=study NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
+        "dev:stage": "STAND=stage NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
+        "dev:prod": "STAND=prod NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
         "dev": "STAND=dev NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
         "lint": "eslint -c .eslintrc.js --fix --ext .js --ext .jsx src",
         "esdoc": "esdoc -c esdoc.json",

@@ -7,8 +7,8 @@ const config = {
 };
 
 const STANDS = {
-  test: `${PROTO}//ets.tech.mos.ru/ets-test/services`,
-  study: `${PROTO}//ets.tech.mos.ru/ets-study/services`,
+  stage: `${PROTO}//ets.tech.mos.ru/ets-test/services`,
+  prod: `${PROTO}//ets.tech.mos.ru/ets-study/services`,
   dev: `${PROTO}//dev-ets.gost-group.com/ets-dev/services`,
 };
 
@@ -18,7 +18,7 @@ try {
   if (HOST) {
     config.backend = `${PROTO}//${process.env.APIHOST}`;
   } else if (STAND) {
-    config.backend = STANDS[STAND] || STANDS.test;
+    config.backend = STANDS[STAND] || STANDS.dev;
   }
 } catch (e) {
   console.log(e);

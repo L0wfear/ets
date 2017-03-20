@@ -1,22 +1,22 @@
 import Raven from 'raven-js';
 
 const ACTIVE = process.env.NODE_ENV === 'production';
-// test // http://79c9fa1b267c454ca680692b9d2d4d25@172.17.31.73:9000/7
-// study // http://bde014009c3f4c80bd3e840296fd94c9@172.17.31.73:9000/8
+// stage // http://79c9fa1b267c454ca680692b9d2d4d25@172.17.31.73:9000/7
+// prod // http://bde014009c3f4c80bd3e840296fd94c9@172.17.31.73:9000/8
 // dev // http://6abe791fb4544929a9845cebb7a194df@46.161.0.203/7
 const SENTRY_KEYS_BY_STAND = {
-  'test': '79c9fa1b267c454ca680692b9d2d4d25', // http://172.17.31.73:9000/sentry/ets-frontend-dev/
-  'study': 'bde014009c3f4c80bd3e840296fd94c9', // http://172.17.31.73:9000/sentry/ets-frontend-prod/
+  'stage': '79c9fa1b267c454ca680692b9d2d4d25', // http://172.17.31.73:9000/sentry/ets-frontend-dev/
+  'prod': 'bde014009c3f4c80bd3e840296fd94c9', // http://172.17.31.73:9000/sentry/ets-frontend-prod/
   'dev': '6abe791fb4544929a9845cebb7a194df',
 };
 const SENTRY_PROJECTS_BY_STAND = {
-  'test': 7,
-  'study': 8,
+  'stage': 7,
+  'prod': 8,
   'dev': 7,
 };
 const SENTRY_HOST_BY_STAND = {
-  'test': 'ets.tech.mos.ru/sentry',
-  'study': 'ets.tech.mos.ru/sentry',
+  'stage': 'ets.tech.mos.ru/sentry',
+  'prod': 'ets.tech.mos.ru/sentry',
   'dev': '46.161.0.203',
 };
 

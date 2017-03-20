@@ -18,4 +18,8 @@ export default [
   { key: 'odometr_diff', float: 3 },
   { key: 'odometr_end', float: 3 },
   { key: 'odometr_start', float: 3 },
+  { key: 'sensor_consumption', float: 3 },
+  { key: 'consumption_diff', float: 3 },
+  { key: 'track_length', float: 3 },
+  { key: 'length_diff', float: 3 },
 ];

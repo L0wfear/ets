@@ -201,17 +201,51 @@ const tableMeta = {
         type: 'input',
       },
     },
+    {
+      name: 'sensor_consumption',
+      displayName: 'Расход по ДУТ, л',
+      type: 'number',
+      cssClassName: 'width-fuel-report-small',
+      filter: {
+        type: 'input',
+      },
+    },
+    {
+      name: 'consumption_diff',
+      displayName: 'Разница расхода',
+      type: 'number',
+      cssClassName: 'width-fuel-report-small',
+      filter: {
+        type: 'input',
+      },
+    },
+    {
+      name: 'track_length',
+      displayName: 'Пройдено по Глонасс, км',
+      type: 'number',
+      cssClassName: 'width-fuel-report-small',
+      filter: {
+        type: 'input',
+      },
+    },
+    {
+      name: 'length_diff',
+      displayName: 'Разница пробега',
+      type: 'number',
+      cssClassName: 'width-fuel-report-small',
+      filter: {
+        type: 'input',
+      },
+    },
   ],
 };
 
-export default (props) => {
-  return (
-    <Table
-      title="Отчет по топливу"
-      tableMeta={tableMeta}
-      results={props.data}
-      enumerated={false}
-      {...props}
-    />
-  );
-};
+export default props => (
+  <Table
+    title="Отчет по топливу"
+    tableMeta={tableMeta}
+    results={props.data}
+    enumerated={false}
+    {...props}
+  />
+);

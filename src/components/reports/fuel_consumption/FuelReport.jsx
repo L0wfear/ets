@@ -48,7 +48,7 @@ export default class FuelReport extends Component {
     fuelReport.forEach((el) => {
       Object.keys(el).forEach((k) => {
         const field = schema.find(p => (p.key === k) && p.float);
-        if (field && !isNaN(el[k])) el[k] = parseFloat(el[k]).toFixed(field.float);
+        if (field && !isNaN(el[k]) && el[k] != null && el[k] !== '') el[k] = parseFloat(el[k]).toFixed(field.float);
       });
     });
 

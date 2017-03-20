@@ -140,6 +140,12 @@ class WaybillForm extends Form {
   getCarDistance(formState) {
     const { flux } = this.context;
     const { loadingFields } = this.state;
+    if (formState.status === 'closed') {
+      loadingFields.distance = formState.track_length;
+      loadingFields.consumption = formState.sensor_consumption;
+      this.setState({ loadingFields });
+      return;
+    }
     const car = _.find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
     loadingFields.distance = true;
     loadingFields.consumption = true;

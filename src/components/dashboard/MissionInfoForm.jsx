@@ -94,12 +94,8 @@ class MissionInfoForm extends Form {
         return object;
       })
       .keyBy((o) => {
-        // TODO попросить бек чтобы у каждого объекта был id
-        if (route.type === 'mixed') {
-          return o.id;
-        }
         if (route.type === 'points') {
-          return o.coordinates.join(',').replace('-', '');
+          return o.coordinates.join(',');
         }
         return o.object_id;
       })

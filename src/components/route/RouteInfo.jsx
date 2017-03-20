@@ -60,10 +60,6 @@ export default class RouteInfo extends Component {
         return object;
       })
       .keyBy((o) => {
-        // TODO попросить бек чтобы у каждого объекта был id
-        // if (route.type === 'mixed') {
-        //   return o.id;
-        // }
         if (route.type === 'points') {
           return o.coordinates.join(',');
         }

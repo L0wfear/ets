@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Glyphicon, Dropdown, MenuItem as BootstrapMenuItem, Input } from 'react-bootstrap';
 import { autobind } from 'core-decorators';
 import { connectToStores, FluxContext, bindable } from 'utils/decorators';
-import { getToday9am, getTomorrow9am, getDate9am, getNextDay859am, getFormattedDateTime } from 'utils/dates';
+import { getToday859am, getYesterday9am, getDate9am, getNextDay859am, getFormattedDateTime } from 'utils/dates';
 import { saveData } from 'utils/functions';
 import Preloader from 'components/ui/Preloader.jsx';
 import OdhCoverageReportTable from './OdhCoverageReportTable.jsx';
@@ -30,7 +30,7 @@ export default class OdhCoverageReport extends Component {
   constructor(props) {
     super(props);
 
-    const [date_start, date_end] = [getToday9am(), getTomorrow9am()];
+    const [date_start, date_end] = [getYesterday9am(), getToday859am()];
 
     this.state = {
       date_start,
@@ -55,7 +55,7 @@ export default class OdhCoverageReport extends Component {
     const { flux } = this.context;
     const res = await flux.getActions('reports').getOdhCoverageReport(/*this.state.date_start, this.state.date_end*/);
     const dates = res.result.meta;
-    if (dates.date_start) this.setState({date_start: dates.date_start, date_end: new Date()})
+    if (dates.date_start) this.setState({ date_start: dates.date_start, date_end: new Date() });
   }
 
   handleDateStartChange(date) {

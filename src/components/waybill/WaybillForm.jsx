@@ -141,8 +141,8 @@ class WaybillForm extends Form {
     const { flux } = this.context;
     const { loadingFields } = this.state;
     if (formState.status === 'closed') {
-      loadingFields.distance = formState.track_length;
-      loadingFields.consumption = formState.sensor_consumption;
+      loadingFields.distance = false;
+      loadingFields.consumption = false;
       this.setState({ loadingFields });
       return;
     }
@@ -742,7 +742,7 @@ class WaybillForm extends Form {
                   type="string"
                   label="Пройдено по Глонасс, км"
                   error={errors.distance}
-                  value={state.distance}
+                  value={state.distance || state.track_length}
                   isLoading={loadingFields.distance}
                   disabled
                 />
@@ -752,7 +752,7 @@ class WaybillForm extends Form {
                   type="string"
                   label="Расход по ДУТ, л"
                   error={errors.consumption}
-                  value={state.consumption}
+                  value={state.consumption || state.sensor_consumption}
                   isLoading={loadingFields.consumption}
                   disabled
                 />

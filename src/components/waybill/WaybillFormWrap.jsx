@@ -104,8 +104,8 @@ export default class WaybillFormWrap extends FormWrap {
               formState: waybill,
               formErrors,
               canPrint: false,
-              canSave: !_.filter(formErrors, (v, k) => ['fuel_end', 'distance'].indexOf(k) > -1 ? false : v).length,
-              canClose: !_.filter(formErrors, (v, k) => ['distance'].indexOf(k) > -1 ? false : v).length,
+              canSave: !_.filter(formErrors, (v, k) => ['fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length,
+              canClose: !_.filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length,
             });
           } else {
             this.setState({
@@ -153,8 +153,8 @@ export default class WaybillFormWrap extends FormWrap {
       formErrors = this.validate(formState, formErrors);
     }
 
-    newState.canSave = !_.filter(formErrors, (v, k) => ['distance', 'fuel_end'].indexOf(k) > -1 ? false : v).length;
-    newState.canClose = !_.filter(formErrors, (v, k) => ['distance'].indexOf(k) > -1 ? false : v).length;
+    newState.canSave = !_.filter(formErrors, (v, k) => ['fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length;
+    newState.canClose = !_.filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length;
 
     newState.formState = formState;
     newState.formErrors = formErrors;

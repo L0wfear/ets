@@ -147,6 +147,7 @@ export default class PolyMap extends Component {
   init() {
     // TODO рак
     global.map = this.map;
+    global.map.reset = () => this.componentDidMount();
   }
 
   renderPolygons(polys = {}, fit) {

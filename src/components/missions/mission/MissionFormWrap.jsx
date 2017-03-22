@@ -5,7 +5,7 @@ import Div from 'components/ui/Div.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import { validateField } from 'utils/validate/validateField.js';
 import { getDefaultMission } from 'stores/MissionsStore.js';
-import { saveData, printData } from 'utils/functions';
+import { saveData, printData, resizeBase64 } from 'utils/functions';
 import { missionSchema } from 'models/MissionModel.js';
 import MissionForm from './MissionForm.jsx';
 
@@ -59,10 +59,11 @@ export default class MissionFormWrap extends FormWrap {
     const f = this.state.formState;
     const { flux } = this.context;
     const data = { mission_id: f.id };
-
-    global.map.once('postcompose', (event) => {
-      const routeImageBase64Data = event.context.canvas.toDataURL('image/png');
+    global.map.reset();
+    global.map.once('postcompose', async (event) => {
+      const routeImageBase64Data = await resizeBase64(event.context.canvas.toDataURL('image/png'));
       data.image = routeImageBase64Data;
+      console.log(data);
       flux.getActions('missions').printMission(data).then(({ blob }) => {
         print_form_type === 1 ? saveData(blob, `Задание №${f.number}.pdf`) : printData(blob);
       });

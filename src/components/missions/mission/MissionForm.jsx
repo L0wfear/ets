@@ -362,7 +362,7 @@ export class MissionForm extends Form {
           </Row>
 
           <Row>
-            <Col md={6}>
+            <Col md={12}>
               <Field
                 type="select"
                 label="Маршрут"
@@ -376,7 +376,9 @@ export class MissionForm extends Form {
                 <Button onClick={this.createNewRoute} disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.technical_operation_id}>Создать новый</Button>
               </Div>
             </Col>
-            <Col md={6}>
+          </Row>
+          <Row>
+            <Col md={12}>
               <Div hidden={this.state.selectedRoute === null} className="mission-form-map-wrapper">
                 <RouteInfo route={this.state.selectedRoute} mapOnly />
               </Div>

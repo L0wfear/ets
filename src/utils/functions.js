@@ -98,3 +98,23 @@ export function hexToRgba(hex, opacity) {
   const blue = parseInt(result[3], 16);
   return `rgba(${red}, ${green}, ${blue}, ${opacity})`;
 }
+
+export function resizeBase64(base64) {
+  return new Promise((res) => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    const image = new Image();
+
+    image.onload = () => {
+      canvas.width = image.width / window.devicePixelRatio;
+      canvas.height = image.height / window.devicePixelRatio;
+      ctx.drawImage(image,
+        0, 0, image.width, image.height,
+        0, 0, canvas.width, canvas.height
+      );
+      res(canvas.toDataURL('image/png', 0.7));
+    };
+    image.src = base64;
+  });
+}

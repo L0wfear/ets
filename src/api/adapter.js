@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { getServerErrorNotification } from 'utils/notifications';
+import { checkInternalErrors } from 'utils/raven';
 
 let headers = {};
 
@@ -74,27 +75,27 @@ function httpMethod(url, data = {}, method, type, params = {}) {
     url = `${url}?${urlencode(data)}`;
   }
 
-  return fetch(url, options).then((async)(r) => {
+  return fetch(url, options).then(async (r) => {
     if (r.status === 401) {
       window.localStorage.clear();
-      window.location.reload();
+      return window.location.reload();
       // return new Promise((res, rej) => rej(r.status));
-    } else {
+    }
+    try {
+      const responseBody = await r.json();
       try {
-        const responseBody = await r.json();
-        try {
-          checkResponse(url, r, responseBody, method);
-        } catch (e) {
-          return new Promise((res, rej) => rej());
-        }
-        return new Promise(res => res(responseBody));
+        checkInternalErrors(responseBody);
+        checkResponse(url, r, responseBody, method);
       } catch (e) {
-        console.error('Неверный формат ответа с сервера', url);
         return new Promise((res, rej) => rej());
       }
-      // return r.json().then((responseBody) => {
-      // });
+      return new Promise(res => res(responseBody));
+    } catch (e) {
+      console.error('Неверный формат ответа с сервера', url);
+      return new Promise((res, rej) => rej());
     }
+    // return r.json().then((responseBody) => {
+    // });
   });
 }
 

@@ -74,8 +74,7 @@ export default class CarInfo extends Component {
   }
 
   onTillNowChange() {
-    const tillNow = this.state.tillNow;
-    const notTillNow = !tillNow;
+    const notTillNow = !this.state.tillNow;
     const state = { tillNow: notTillNow };
 
     if (notTillNow) {
@@ -86,8 +85,7 @@ export default class CarInfo extends Component {
     const track = this.props.car.marker.track;
     track.setContinuousUpdating(notTillNow);
 
-    this.setState(state);
-    this.fetchTrack();
+    this.setState(state, this.fetchTrack);
   }
 
   onShowGradientChange() {

@@ -186,14 +186,15 @@ export default class DrawMap extends PolyMap {
 
   addPoint() {
     this.draw.setActive(true);
-    const objectList = this.props.objectsType === 'mixed' ? this.props.draw_object_list : this.props.object_list;
-    const startObject = _.last(objectList);
-    const start = [startObject.begin.x_msk, startObject.begin.y_msk];
-    const end = [startObject.end.x_msk, startObject.end.y_msk];
-    const featureSegment = new ol.Feature({
-      geometry: new ol.geom.LineString([start, end]),
-    });
-    this.draw.extend(featureSegment);
+    this.drawSetToEnd = false;
+    // const objectList = this.props.objectsType === 'mixed' ? this.props.draw_object_list : this.props.object_list;
+    // const startObject = _.last(objectList);
+    // const start = [startObject.begin.x_msk, startObject.begin.y_msk];
+    // const end = [startObject.end.x_msk, startObject.end.y_msk];
+    // const featureSegment = new ol.Feature({
+    //   geometry: new ol.geom.LineString([start, end]),
+    // });
+    // this.draw.extend(featureSegment);
   }
 
   removeLastPoint() {

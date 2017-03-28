@@ -25,13 +25,24 @@ const tableMeta = {
       name: 'plow_width_odh',
       displayName: 'Ширина уборочного оборудования на ОДХ',
       type: 'string',
-      filter: false,
     },
     {
       name: 'plow_width_dt',
       displayName: 'Ширина уборочного оборудования на ДТ',
       type: 'string',
-      filter: false,
+    },
+    {
+      name: 'season_name',
+      displayName: 'Сезон',
+      type: 'string',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
+      name: 'speed_max',
+      displayName: 'Максимальная скорость',
+      type: 'string',
     },
   ],
 };

@@ -120,16 +120,16 @@ export default class MainPage extends React.Component {
               <MenuItem permissions={['faxogramm.list']} active={path === '/faxogramms'} href="#/faxogramms">Реестр факсограмм</MenuItem>
               <MenuItem permissions={['technical_operation.list']} active={path === '/technical-operations'} href="#/technical-operations">Реестр технологических операций</MenuItem>
               <MenuItem divider />
-              <NavDropdown title="Транспортные средства" id="nav-dropdown-2-1">
+              <NavDropdown oneOfPermissions={['type.list', 'car.list']} title="Транспортные средства" id="nav-dropdown-2-1">
                 <MenuItem permissions={['type.list']} active={path === '/car-func-types'} href="#/car-func-types">Типы техники</MenuItem>
                 <MenuItem permissions={['car.list']} active={path === '/cars'} href="#/cars">Реестр транспортных средств</MenuItem>
               </NavDropdown>
-              <NavDropdown title="Нормативные показатели" id="nav-dropdown-2-2">
+              <NavDropdown oneOfPermissions={['material_consumption_rate.list', 'fuel_consumption_rate.list', 'maintenance_rate.list']} title="Нормативные показатели" id="nav-dropdown-2-2">
                 <MenuItem permissions={['material_consumption_rate.list']} active={path === '/material-consumption-rate'} href="#/material-consumption-rate">Нормы на расход расходных материалов</MenuItem>
                 <MenuItem permissions={['fuel_consumption_rate.list']} active={path === '/fuel-rates'} href="#/fuel-rates">Нормы расхода топлива</MenuItem>
                 <MenuItem permissions={['maintenance_rate.list']} active={path === '/maintenance-rate'} href="#/maintenance-rate">Нормы на содержание объектов</MenuItem>
               </NavDropdown>
-              <NavDropdown title="Геообъекты" id="nav-dropdown-2-3">
+              <NavDropdown oneOfPermissions={['odh.list', 'dt.list', 'ssp.list', 'msp.list', 'fueling_water.list', 'carpool.list', 'danger_zone.list', 'pgm.list', 'snow_storage.list']} title="Геообъекты" id="nav-dropdown-2-3">
                 <MenuItem permissions={['odh.list']} active={path === '/odh'} href="#/odh">Справочник ОДХ</MenuItem>
                 <MenuItem permissions={['dt.list']} active={path === '/dt'} href="#/dt">Справочник ДТ</MenuItem>
                 <MenuItem permissions={['ssp.list']} active={path === '/ssp'} href="#/ssp">Справочник ССП</MenuItem>
@@ -140,7 +140,7 @@ export default class MainPage extends React.Component {
                 <MenuItem permissions={['pgm.list']} active={path === '/pgm'} href="#/pgm">Справочник пунктов отпуска ПГМ</MenuItem>
                 <MenuItem permissions={['snow_storage.list']} active={path === '/snow-storage'} href="#/snow-storage">Справочник пунктов временного складирования снега</MenuItem>
               </NavDropdown>
-              <NavDropdown title="Показатели для расчета" id="nav-dropdown-2-4">
+              <NavDropdown oneOfPermissions={['cleaning_rate.list', 'odh_norm.list', 'maintenance_work.list', 'fuel_operation.list', 'odh_norm_data_summer.list', 'efficiency.list']} title="Показатели для расчета" id="nav-dropdown-2-4">
                 <MenuItem permissions={['cleaning_rate.list']} active={path === '/cleaning-rate'} href="#/cleaning-rate">Показатели для расчета эффективности работы бригад</MenuItem>
                 <MenuItem permissions={['odh_norm.list']} active={path === '/odh-norm'} href="#/odh-norm">Расходные материалы</MenuItem>
                 <MenuItem permissions={['maintenance_work.list']} active={path === '/maintenance-work'} href="#/maintenance-work">Показатели регламентных работ</MenuItem>
@@ -148,7 +148,7 @@ export default class MainPage extends React.Component {
                 <MenuItem permissions={['odh_norm_data_summer.list']} active={path === '/odh-norm-data-summer'} href="#/odh-norm-data-summer">Показатели норм по содержанию ОДХ (лето)</MenuItem>
                 <MenuItem permissions={['efficiency.list']} active={path === '/efficiency'} href="#/efficiency">Показатели для расчета эффективности</MenuItem>
               </NavDropdown>
-              <MenuItem divider />
+              <MenuItem permissions={['user_action_log.list']} divider />
               <MenuItem permissions={['user_action_log.list']} active={path === '/user-action-log'} href="#/user-action-log">Журнал действий пользователя</MenuItem>
               {/* <MenuItem active={path === '/organizations'} href="#/organizations">Справочник организаций</MenuItem>*/}
             </NavDropdown>

@@ -24,6 +24,8 @@ export default class User extends Model {
       structure_id: 'integer',
       map_config: 'object',
       fio: 'string',
+      okrug_id: 'integer',
+      okrug_name: 'string',
     };
   }
 
@@ -47,6 +49,8 @@ export default class User extends Model {
     this.map_config = user.map_config || {};
     this.fio = user.fio;
     this.permissions = user.permissions || [];
+    this.okrug_id = user.okrug_id;
+    this.okrug_name = user.okrug_name;
   }
 
   getCompanyMapConfig = () => {

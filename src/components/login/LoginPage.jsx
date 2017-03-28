@@ -32,7 +32,7 @@ export default class LoginPage extends Component {
 
     flux.getActions('session').login(user).then((data) => {
       this.context.loadData();
-      if (['dispatcher', 'master'].indexOf(data.payload.role) > -1) {
+      if (['dispatcher', 'master'].indexOf(data.payload.role) > -1 && data.payload.okrug_id === null) {
         this.context.history.pushState(null, '/dashboard');
       } else {
         this.context.history.pushState(null, '/monitor');

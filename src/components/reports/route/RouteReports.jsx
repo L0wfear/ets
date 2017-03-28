@@ -12,6 +12,14 @@ import { getReportNotReadyNotification2 } from 'utils/notifications';
 const tableMeta = {
   cols: [
     {
+      name: 'company_name',
+      displayName: 'Учреждение',
+      type: 'string',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
       name: 'status',
       displayName: 'Статус',
       type: 'text',

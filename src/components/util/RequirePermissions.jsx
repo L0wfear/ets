@@ -9,7 +9,8 @@ export default function enhanceWithPermissions(ComposedComponent) {
         userPermissions: PropTypes.array.isRequired,
         permissions: PropTypes.array,
         oneOfPermissions: PropTypes.array,
-        addPermissionProp: PropTypes.bool
+        addPermissionProp: PropTypes.bool,
+        hidden: PropTypes.bool,
       };
     }
 
@@ -18,7 +19,8 @@ export default function enhanceWithPermissions(ComposedComponent) {
         userPermissions: [],
         permissions: [],
         oneOfPermissions: [],
-        addPermissionProp: false
+        addPermissionProp: false,
+        hidden: false,
       };
     }
 
@@ -47,6 +49,7 @@ export default function enhanceWithPermissions(ComposedComponent) {
      * @return {?React.Component}
      */
     render() {
+      if (this.props.hidden) return null;
       const isPermitted = this.isPermitted();
       if (!isPermitted && !this.props.addPermissionProp) {
         return null;

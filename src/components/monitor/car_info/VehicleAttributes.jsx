@@ -20,7 +20,6 @@ export default class VehicleAttributes extends Component {
 
   parseProps(props) {
     const { point, car } = props;
-
     const attributes = [];
     const addAttribute = (name, value) => {
       if (typeof value !== 'undefined') {
@@ -65,7 +64,7 @@ export default class VehicleAttributes extends Component {
   render() {
     return (
       <div className="vehicle-attributes-list">
-        {this.state.attributes.length ? this.state.attributes.map(attribute => this.renderAttribute(attribute)) : 'Загрузка...'}
+        {this.state.attributes.length ? this.state.attributes.map(attribute => this.renderAttribute(attribute)) : 'Нет данных'}
       </div>
     );
   }

@@ -83,14 +83,15 @@ export default class VehicleInfo extends Component {
     );
 
     if (!missions.length) missionsRender = 'Нет данных';
+    const notOkrug = this.props.flux.getStore('session').getCurrentUser().okrug_id === null;
     return (
       <div className="car-info-tracking">
         <Panel>
           <VehicleAttributes point={car} car={this.state.car} lastPoint={marker.hasTrackLoaded() && marker.track.getLastPoint()} />
         </Panel>
-        <Panel title="Задания" className="chart-datepickers-wrap">
+        {notOkrug && <Panel title="Задания" className="chart-datepickers-wrap">
           {missionsRender}
-        </Panel>
+        </Panel>}
         <MissionFormWrap
           onFormHide={() => this.setState({ showMissionForm: false })}
           showForm={this.state.showMissionForm}

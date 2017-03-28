@@ -6,6 +6,14 @@ import { getFormattedDateTimeSeconds } from 'utils/dates';
 const tableMeta = {
   cols: [
     {
+      name: 'company_name',
+      displayName: 'Учреждение',
+      type: 'string',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
       name: 'status',
       displayName: 'Статус',
       type: 'text',

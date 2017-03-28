@@ -100,9 +100,10 @@ function requireAuth(nextState, replaceState) {
 }
 
 function checkLoggedIn(nextState, replaceState) {
-  const role = flux.getStore('session').getCurrentUser().role;
+  const user = flux.getStore('session').getCurrentUser();
+  const { role, okrug_id } = user;
   if (flux.getStore('session').isLoggedIn() && role) {
-    if (['dispatcher', 'master'].indexOf(role) > -1) {
+    if (['dispatcher', 'master'].indexOf(role) > -1 && okrug_id === null) {
       replaceState({}, '/dashboard');
     } else {
       replaceState({}, '/monitor');

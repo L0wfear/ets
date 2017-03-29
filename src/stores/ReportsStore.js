@@ -15,6 +15,7 @@ export default class ReportsStore extends Store {
     this.register(reportsActions.createWeeklyTechnicalOperationCompleteReport, this.handleGetWeeklyTechnicalOperationCompleteReports);
     this.register(reportsActions.getOdhCoverageReport, this.handleGetOdhCoverageReport);
     this.register(reportsActions.getDtCoverageReport, this.handleGetDtCoverageReport);
+    this.register(reportsActions.getTrackEventsReport, this.handleGetTrackEventsReport);
     this.register(reportsActions.getCarFuncTypeUsageReports, this.handleGetCarFuncTypeUsageReports);
     this.register(reportsActions.getBrigadeEfficiencyReports, this.handleGetBrigadeEfficiencyReports);
     this.register(reportsActions.getEmployeeEfficiencyReports, this.handleGetEmployeeEfficiencyReports);
@@ -29,11 +30,16 @@ export default class ReportsStore extends Store {
       dtCoverageReport: [],
       employeeEfficiencyReportsList: [],
       brigadeEfficiencyReportsList: [],
+      trackEventsReport: [],
     };
   }
 
   handleGetFuelReport({ result }) {
     this.setState({ fuelReport: result.rows });
+  }
+
+  handleGetTrackEventsReport({ result }) {
+    this.setState({ trackEventsReport: result.rows });
   }
 
   handleGetCarFuncTypeUsageReports({ result }) {

@@ -13,6 +13,7 @@ import {
   CarFuncTypeUsageReportService,
   BrigadeEfficiencyReportService,
   EmployeeEfficiencyReportService,
+  TrackEventsReportService,
 } from 'api/Services';
 
 export default class ReportsActions extends Actions {
@@ -182,6 +183,17 @@ export default class ReportsActions extends Actions {
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
     return EmployeeEfficiencyReportService.get(payload);
+  }
+
+  getTrackEventsReport(data) {
+    const payload = {};
+    if (data.date_start) {
+      payload.date_start = createValidDateTime(data.date_start);
+    }
+    if (data.date_end) {
+      payload.date_end = createValidDateTime(data.date_end);
+    }
+    return TrackEventsReportService.get(payload);
   }
 
 }

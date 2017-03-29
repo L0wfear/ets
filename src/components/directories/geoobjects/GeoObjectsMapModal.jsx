@@ -31,7 +31,6 @@ class GeoObjectsMapModal extends Component {
   }
 
   render() {
-
     const FIELDS = _.zipObject(this.props.meta.cols.map(e => e.name), this.props.meta.cols.map(e => e.displayName));
     const form = this.props.element ? _.map(FIELDS, (name, key) => {
       if (this.props.element[key]) return (

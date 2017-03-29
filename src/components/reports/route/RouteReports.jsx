@@ -102,7 +102,7 @@ const RouteOdhCoveringReportsTable = (props) => {
       tableMeta={tableMeta(props)}
       results={props.data}
       renderers={renderers}
-      initialSort={tableMeta.cols[2].name}
+      initialSort={tableMeta(props).cols[2].name}
       initialSortAscending={false}
       {...props}
     />

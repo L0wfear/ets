@@ -9,12 +9,13 @@ import { FluxContext, HistoryContext, exportable, staticProps, connectToStores }
 import { getReportNotReadyNotification2 } from 'utils/notifications';
 
 
-const tableMeta = {
+export const tableMeta = props => ({
   cols: [
     {
       name: 'company_name',
       displayName: 'Учреждение',
-      type: 'string',
+      type: 'text',
+      display: props ? props.isOkrug : false,
       filter: {
         type: 'multiselect',
       },
@@ -85,7 +86,7 @@ const tableMeta = {
       },
     },
   ],
-};
+});
 
 const RouteOdhCoveringReportsTable = (props) => {
   const renderers = {
@@ -98,7 +99,7 @@ const RouteOdhCoveringReportsTable = (props) => {
   return (
     <Table
       title="Покрытие ОДХ маршрутами"
-      tableMeta={tableMeta}
+      tableMeta={tableMeta(props)}
       results={props.data}
       renderers={renderers}
       initialSort={tableMeta.cols[2].name}
@@ -108,7 +109,7 @@ const RouteOdhCoveringReportsTable = (props) => {
   );
 };
 
-@connectToStores(['routes', 'objects'])
+@connectToStores(['routes', 'objects', 'session'])
 @exportable({ entity: 'route_odh_covering_report' })
 @FluxContext
 @HistoryContext

@@ -2,8 +2,17 @@ import React, { Component } from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import moment from 'moment';
 
-const tableMeta = {
+export const tableMeta = props => ({
   cols: [
+    {
+      name: 'company_name',
+      displayName: 'Учреждение',
+      type: 'text',
+      display: props ? props.isOkrug : false,
+      filter: {
+        type: 'multiselect',
+      },
+    },
     {
       name: 'order_date',
       displayName: 'Дата приказа',
@@ -56,7 +65,7 @@ const tableMeta = {
       },
     },
   ],
-};
+});
 
 export default (props) => {
   const renderers = {
@@ -67,7 +76,7 @@ export default (props) => {
   return (<Table
     title="Нормы расхода топлива"
     results={props.data}
-    tableMeta={tableMeta}
+    tableMeta={tableMeta(props)}
     renderers={renderers}
     {...props}
   />);

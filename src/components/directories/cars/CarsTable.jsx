@@ -3,8 +3,17 @@ import Table from 'components/ui/table/DataTable.jsx';
 
 const getCondition = data => parseInt(data, 10) > 0 ? 'Исправно' : 'Неисправно';
 
-const tableMeta = {
+const tableMeta = props => ({
   cols: [
+    {
+      name: 'company_name',
+      displayName: 'Учреждение',
+      type: 'text',
+      display: props.isOkrug,
+      filter: {
+        type: 'multiselect',
+      },
+    },
     {
       name: 'gov_number',
       displayName: 'Рег. номер ТС',
@@ -96,7 +105,7 @@ const tableMeta = {
       },
     },
   ],
-};
+});
 
 const CarsTable = (props) => {
   const renderers = {
@@ -109,7 +118,7 @@ const CarsTable = (props) => {
 
   return (<Table
     title="Реестр транспортных средств"
-    tableMeta={tableMeta}
+    tableMeta={tableMeta(props)}
     results={props.data}
     renderers={renderers}
     {...props}

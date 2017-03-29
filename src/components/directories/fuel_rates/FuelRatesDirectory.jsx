@@ -5,7 +5,7 @@ import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import { fuelRateSchema } from './fuelRateSchema.js';
 
-@connectToStores(['fuelRates', 'objects'])
+@connectToStores(['fuelRates', 'objects', 'session'])
 @exportable({ entity: 'fuel_consumption_rates' })
 @staticProps({
   entity: 'fuel_consumption_rate',

@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 
-export const tableMeta = {
+export const tableMeta = props => ({
   cols: [
+    {
+      name: 'company_name',
+      displayName: 'Учреждение',
+      type: 'text',
+      display: props ? props.isOkrug : false,
+      filter: {
+        type: 'multiselect',
+      },
+    },
     {
       name: 'name',
       displayName: 'Полное наименование',
@@ -20,7 +29,7 @@ export const tableMeta = {
       },
     },
   ],
-};
+});
 
 const FuelingWaterStationsTable = (props) => {
   const renderers = {
@@ -30,7 +39,7 @@ const FuelingWaterStationsTable = (props) => {
   return (<Table
     title="Базы гидрантов"
     results={props.data}
-    tableMeta={tableMeta}
+    tableMeta={tableMeta(props)}
     renderers={renderers}
     {...props}
   />);

@@ -5,7 +5,7 @@ import DtFormWrap from './DtFormWrap.jsx';
 import DTTable from './DTTable.jsx';
 import schema from './DTSchema';
 
-@connectToStores(['geoObjects'])
+@connectToStores(['geoObjects', 'session'])
 @exportable({ path: 'geozones', entity: 'dt' })
 @staticProps({
   path: 'geozones',

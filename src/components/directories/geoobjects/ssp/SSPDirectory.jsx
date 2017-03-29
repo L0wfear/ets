@@ -5,7 +5,7 @@ import SSPTable, { tableMeta } from './SSPTable.jsx';
 import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
 import schema from './schema';
 
-@connectToStores(['geoObjects'])
+@connectToStores(['geoObjects', 'session'])
 @exportable({ path: 'geozones', entity: 'ssp' })
 @staticProps({
   path: 'geozones',
@@ -14,7 +14,7 @@ import schema from './schema';
   listName: 'sspsList',
   tableComponent: SSPTable,
   formComponent: GeoObjectsMapModal,
-  formMeta: tableMeta
+  formMeta: tableMeta(),
 })
 export default class SSPDirectory extends ElementsList {
   componentDidMount() {

@@ -4,14 +4,14 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import PGMTable, { tableMeta } from './PGMTable.jsx';
 import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
 
-@connectToStores(['geoObjects'])
+@connectToStores(['geoObjects', 'session'])
 @staticProps({
   path: 'geozones',
   entity: 'pgm',
   listName: 'pgmsList',
   tableComponent: PGMTable,
   formComponent: GeoObjectsMapModal,
-  formMeta: tableMeta
+  formMeta: tableMeta(),
 })
 // @exportable
 export default class PGMDirectory extends ElementsList {

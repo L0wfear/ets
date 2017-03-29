@@ -5,7 +5,7 @@ import Datepicker from 'components/ui/DatePicker.jsx';
 import { getToday0am, getToday2359, createValidDateTime } from 'utils/dates';
 import UserActionLogTable from './UserActionLogTable.jsx';
 
-@connectToStores(['objects'])
+@connectToStores(['objects', 'session'])
 @exportable({ entity: 'user_action_log' })
 @staticProps({
   entity: 'user_action_log',

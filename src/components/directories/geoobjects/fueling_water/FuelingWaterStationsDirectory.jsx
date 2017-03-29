@@ -4,7 +4,7 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import FuelingWaterStationsTable, { tableMeta } from './FuelingWaterStationsTable.jsx';
 import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
 
-@connectToStores(['geoObjects'])
+@connectToStores(['geoObjects', 'session'])
 @exportable({ path: 'geozones', entity: 'fueling_water' })
 @staticProps({
   path: 'geozones',
@@ -12,7 +12,7 @@ import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
   listName: 'fuelingWaterStationsList',
   tableComponent: FuelingWaterStationsTable,
   formComponent: GeoObjectsMapModal,
-  formMeta: tableMeta
+  formMeta: tableMeta(),
 })
 export default class FuelingWaterStationsDirectory extends ElementsList {
   componentDidMount() {

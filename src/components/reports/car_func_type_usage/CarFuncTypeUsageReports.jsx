@@ -6,7 +6,7 @@ import _ from 'lodash';
 import CarFuncTypeUsageReportHeader from './CarFuncTypeUsageReportHeader.jsx';
 import CarFuncTypeUsageReportsTable from './CarFuncTypeUsageReportsTable.jsx';
 
-@connectToStores(['reports'])
+@connectToStores(['reports', 'session'])
 @exportable({ entity: 'car_func_type_usage_report' })
 @FluxContext
 @staticProps({

@@ -2,8 +2,17 @@ import React, { Component } from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 
-const tableMeta = {
+export const tableMeta = props => ({
   cols: [
+    {
+      name: 'company_name',
+      displayName: 'Учреждение',
+      type: 'text',
+      display: props ? props.isOkrug : false,
+      filter: {
+        type: 'multiselect',
+      },
+    },
     {
       name: 'timestamp',
       displayName: 'Дата действия',
@@ -53,7 +62,7 @@ const tableMeta = {
       },
     },
   ],
-};
+});
 
 const UserActionLogTable = (props) => {
   const renderers = {
@@ -65,7 +74,7 @@ const UserActionLogTable = (props) => {
     initialSort="timestamp"
     initialSortAscending={false}
     results={props.data}
-    tableMeta={tableMeta}
+    tableMeta={tableMeta(props)}
     renderers={renderers}
     {...props}
   />);

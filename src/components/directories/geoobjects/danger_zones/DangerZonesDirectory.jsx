@@ -6,7 +6,7 @@ import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
 import schema from './schema';
 
 
-@connectToStores(['geoObjects'])
+@connectToStores(['geoObjects', 'session'])
 @exportable({ path: 'geozones', entity: 'danger_zone' })
 @staticProps({
   path: 'geozones',
@@ -15,7 +15,7 @@ import schema from './schema';
   listName: 'dangerZonesList',
   tableComponent: DangerZonesTable,
   formComponent: GeoObjectsMapModal,
-  formMeta: tableMeta
+  formMeta: tableMeta(),
 })
 export default class DangerZonesDirectory extends ElementsList {
 

@@ -5,7 +5,7 @@ import ODHTable from './ODHTable.jsx';
 import OdhFormWrap from './OdhFormWrap.jsx';
 import schema from './ODHSchema';
 
-@connectToStores(['geoObjects'])
+@connectToStores(['geoObjects', 'session'])
 @exportable({ path: 'geozones', entity: 'odh' })
 @staticProps({
   path: 'geozones',

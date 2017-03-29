@@ -5,7 +5,7 @@ import CarFormWrap from './CarFormWrap.jsx';
 import CarsTable from './CarsTable.jsx';
 import schema from './CarSchema.js';
 
-@connectToStores(['objects'])
+@connectToStores(['objects', 'session'])
 @exportable({ entity: 'car_actual' })
 @staticProps({
   entity: 'car',

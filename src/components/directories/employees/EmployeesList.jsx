@@ -4,7 +4,7 @@ import EmployeeFormWrap from './EmployeeFormWrap.jsx';
 import EmployeesTable from './EmployeesTable.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 
-@connectToStores(['employees', 'objects'])
+@connectToStores(['employees', 'objects', 'session'])
 @exportable({ entity: 'employee' })
 @staticProps({
   entity: 'employee',

@@ -27,7 +27,7 @@ const MissionReportsDatepicker = (props) => {
   );
 };
 
-@connectToStores(['missions'])
+@connectToStores(['missions', 'session'])
 @exportable({ entity: 'car_odh_travel_report' })
 @FluxContext
 @HistoryContext

@@ -5,7 +5,7 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
 import schema from './schema';
 
-@connectToStores(['geoObjects'])
+@connectToStores(['geoObjects', 'session'])
 @exportable({ path: 'geozones', entity: 'msp' })
 @staticProps({
   path: 'geozones',
@@ -14,7 +14,7 @@ import schema from './schema';
   listName: 'mspsList',
   tableComponent: MSPTable,
   formComponent: GeoObjectsMapModal,
-  formMeta: tableMeta
+  formMeta: tableMeta(),
 })
 export default class MSPDirectory extends ElementsList {
   componentDidMount() {

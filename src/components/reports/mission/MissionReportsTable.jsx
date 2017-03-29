@@ -3,12 +3,13 @@ import Table from 'components/ui/table/DataTable.jsx';
 import { REPORT_STATUSES } from 'constants/statuses';
 import { getFormattedDateTimeSeconds } from 'utils/dates';
 
-const tableMeta = {
+export const tableMeta = props => ({
   cols: [
     {
       name: 'company_name',
       displayName: 'Учреждение',
-      type: 'string',
+      type: 'text',
+      display: props ? props.isOkrug : false,
       filter: {
         type: 'multiselect',
       },
@@ -57,7 +58,7 @@ const tableMeta = {
       filter: false,
     },
   ],
-};
+});
 
 export default (props) => {
   const renderers = {
@@ -70,7 +71,7 @@ export default (props) => {
   return (
     <Table
       title="Прохождение заданий"
-      tableMeta={tableMeta}
+      tableMeta={tableMeta(props)}
       initialSort={'timestamp_create'}
       initialSortAscending={false}
       results={props.data}

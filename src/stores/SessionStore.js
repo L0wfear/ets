@@ -37,6 +37,7 @@ export default class SessionStore extends Store {
 
     this.state = {
       currentUser,
+      isOkrug: false,
       session: storedSession,
       userPermissions: currentUser.permissions,
     };
@@ -56,6 +57,7 @@ export default class SessionStore extends Store {
     this.setState({
       currentUser,
       session,
+      isOkrug: data.payload.okrug_id !== null,
       userPermissions: currentUser.permissions,
     });
   }

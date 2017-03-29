@@ -4,7 +4,7 @@ import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
 
-@connectToStores(['geoObjects'])
+@connectToStores(['geoObjects', 'session'])
 @exportable({ path: 'geozones', entity: 'carpool' })
 @staticProps({
   path: 'geozones',
@@ -12,7 +12,7 @@ import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
   listName: 'carpoolsList',
   tableComponent: CarpoolTable,
   formComponent: GeoObjectsMapModal,
-  formMeta: tableMeta
+  formMeta: tableMeta(),
 })
 export default class CarpoolDirectory extends ElementsList {
 

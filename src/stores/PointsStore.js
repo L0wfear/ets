@@ -220,7 +220,6 @@ export default class PointsStore extends Store {
       0: 0,
       1: 0,
     };
-
     for (const key in points) {
       const point = points[key];
       if (this.isPointVisible(point)) {
@@ -281,9 +280,8 @@ export default class PointsStore extends Store {
    * @param {object} data.payload - данные о пользователе
    */
   handleLogin({ payload }) {
-    this.handleSetFilter({ owner: [payload.company_id] });
+    // this.handleSetFilter({ owner: [payload.company_id] });
   }
-
   /**
    * Возвращает прошедшие фильтрацию точки
    * @method
@@ -291,7 +289,6 @@ export default class PointsStore extends Store {
    */
   getVisiblePoints() {
     const visiblePoints = [];
-
     for (const k in this.state.points) {
       const point = this.state.points[k];
       if (this.isPointVisible(point)) {

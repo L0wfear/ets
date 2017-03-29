@@ -7,7 +7,7 @@ const config = {
 };
 
 const STANDS = {
-  stage: `${PROTO}//ets.tech.mos.ru/ets-test/services`,
+  stage: `${PROTO}//ets.tech.mos.ru/ets-stage/services`,
   prod: `${PROTO}//ets.tech.mos.ru/ets-study/services`,
   dev: `${PROTO}//dev-ets.gost-group.com/services`,
 };

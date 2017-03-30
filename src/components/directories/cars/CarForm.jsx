@@ -13,15 +13,13 @@ class CarForm extends Form {
     super(props);
 
     this.state = {
-      imageUrl: null,
+      type_image_name: null,
       companyStructureList: [],
     };
   }
 
-  async componentDidMount() {
+  async componentWillMount() {
     const { flux } = this.context;
-    const car = this.props.formState;
-    flux.getActions('cars').getCarImage(car.type_id).then(imageUrl => this.setState({ imageUrl }));
     const companyStructureList = await flux.getActions('companyStructure').getLinearCompanyStructureForUser();
     this.setState({ companyStructureList });
   }
@@ -46,8 +44,8 @@ class CarForm extends Form {
           <Row>
 
             <Col md={6}>
-              <Div hidden={!this.state.imageUrl}>
-                <img role="presentation" src={config.images + this.state.imageUrl} className="car-form-image" />
+              <Div hidden={!state.type_image_name}>
+                <img role="presentation" src={config.images + state.type_image_name} className="car-form-image" />
               </Div>
             </Col>
 

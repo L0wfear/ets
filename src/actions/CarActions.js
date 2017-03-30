@@ -4,16 +4,11 @@ import { makeUnixTime, createValidDateTime } from 'utils/dates';
 import { swapCoords } from 'utils/geo';
 import {
   CarService,
-  CarImageService,
-  CarMissionService,
+  CarInfoService,
   VectorObjectService,
   TrackService,
   InfoService,
 } from 'api/Services';
-
-function getCarMissions(payload = {}) {
-  return CarMissionService.get(payload).then(r => ({ result: r.result }));
-}
 
 export default class CarActions extends Actions {
 
@@ -93,19 +88,11 @@ export default class CarActions extends Actions {
     return InfoService.get(payload);
   }
 
-  getCarImage(type_id) {
-    const payload = {
-      type_id,
-    };
-
-    return CarImageService.get(payload);
-  }
-
   getCarMissions(car_id) {
     const payload = {
       car_id,
     };
-    return getCarMissions(payload);
+    return CarInfoService.get(payload).then(r => ({ result: r.result.missions }));
   }
 
   getCarMissionsByTimestamp(car_id, point_timestamp) {
@@ -113,7 +100,7 @@ export default class CarActions extends Actions {
       car_id,
       point_timestamp,
     };
-    return getCarMissions(payload);
+    return CarInfoService.get(payload).then(r => ({ result: r.result.missions }));
   }
 
 }

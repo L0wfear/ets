@@ -99,10 +99,9 @@ export default class CarInfo extends Component {
   }
 
   fetchImage(props = this.props) {
-    const { flux } = this.props;
-    const car = props.car;
-    const type_id = car.car.type_id;
-    flux.getActions('cars').getCarImage(type_id).then(url => this.setState({ imageUrl: url }));
+    const carList = props.flux.getStore('objects').state.carsList;
+    const car = carList.find(c => c.gov_number === props.car.car.gov_number);
+    this.setState({ imageUrl: car ? car.type_image_name : null });
   }
 
   fetchTrack(props = this.props) {

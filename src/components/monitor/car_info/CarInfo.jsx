@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { autobind } from 'core-decorators';
+import { TRACK_COLORS } from 'constants/track.js';
 import find from 'lodash/find';
 import groupBy from 'lodash/groupBy';
 import flatten from 'lodash/flatten';
@@ -11,6 +12,7 @@ import cx from 'classnames';
 import config from '../../../config.js';
 import Charts from './Charts.jsx';
 import VehicleInfo from './VehicleInfo.jsx';
+
 
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable jsx-a11y/label-has-for */
@@ -47,14 +49,14 @@ export default class CarInfo extends Component {
 
   componentDidMount() {
     if (this.props.car) {
-      this.fetchImage();
+      this.fetchCarInfo();
       this.fetchTrack();
     }
   }
 
   componentWillReceiveProps(props) {
     if (props.car.id !== this.props.car.id) {
-      this.fetchImage(props);
+      this.fetchCarInfo(props);
       this.fetchTrack(props);
       this.stopTrackPlaying();
       this.setState({
@@ -94,14 +96,31 @@ export default class CarInfo extends Component {
     store.handleSetShowGradient(!flag);
   }
 
-  fetchVehicleData() {
-    this.setState({ from_dt: this.state.from_dt_, to_dt: this.state.to_dt_ }, this.fetchTrack);
+  getLegend() {
+    const speed = this.state.maxSpeed;
+    return (
+      <div className="track-legend">
+        <div className="track-legend-item">
+          <div className="track-legend-point" style={{ backgroundColor: TRACK_COLORS.green }} />
+          <div className="track-legend-text">0 км/ч</div>
+        </div>
+        <div className="track-legend-item">
+          <div className="track-legend-point" style={{ backgroundColor: TRACK_COLORS.red }} />
+          <div className="track-legend-text">{speed != null ? `${speed}+ км/ч` : 'нет данных'}</div>
+        </div>
+      </div>
+    );
   }
 
-  fetchImage(props = this.props) {
+  async fetchCarInfo(props = this.props) {
     const carList = props.flux.getStore('objects').state.carsList;
     const car = carList.find(c => c.gov_number === props.car.car.gov_number);
-    this.setState({ imageUrl: car ? car.type_image_name : null });
+    const info = await this.props.flux.getActions('cars').getCarInfo(car.asuods_id);
+    this.setState({ missions: info.missions, maxSpeed: info.max_speed, imageUrl: car ? car.type_image_name : null });
+  }
+
+  fetchVehicleData() {
+    this.setState({ from_dt: this.state.from_dt_, to_dt: this.state.to_dt_ }, this.fetchTrack);
   }
 
   fetchTrack(props = this.props) {
@@ -188,7 +207,7 @@ export default class CarInfo extends Component {
           <span className="glyphicon glyphicon-resize-full" />&nbsp;Трек
         </button>
         <img role="presentation" className="car-info-image" src={imageUrl ? config.images + imageUrl : ''} />
-        {marker.track.getLegend()}
+        {this.getLegend()}
       </Panel>
     );
   }
@@ -292,7 +311,7 @@ export default class CarInfo extends Component {
 
   render() {
     const { car } = this.props;
-    const { tab, from_dt, to_dt } = this.state;
+    const { tab, from_dt, to_dt, missions } = this.state;
 
     if (!car) {
       return null;
@@ -310,7 +329,7 @@ export default class CarInfo extends Component {
           <Button className={this.state.tab === 1 && 'active'} onClick={() => this.setState({ tab: 1 })}>Графики</Button>
           <Button className={this.state.tab === 2 && 'active'} onClick={() => this.setState({ tab: 2 })}>Трекинг</Button>
         </ButtonGroup>
-        {tab === 0 && <VehicleInfo car={car} from_dt={from_dt} to_dt={to_dt} flux={this.props.flux} />}
+        {tab === 0 && <VehicleInfo missions={missions} car={car} from_dt={from_dt} to_dt={to_dt} flux={this.props.flux} />}
         {tab === 1 && <Charts car={car} />}
         {tab === 2 && this.renderTracking()}
       </div>

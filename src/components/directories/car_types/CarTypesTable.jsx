@@ -40,7 +40,7 @@ const tableMeta = {
       },
     },
     {
-      name: 'speed_max',
+      name: 'speed_limit',
       displayName: 'Максимальная скорость',
       type: 'string',
     },

@@ -26,9 +26,7 @@ export default class VehicleInfo extends Component {
       const carsList = flux.getStore('objects').state.carsList;
       const selectedCar = carsList.find(c => c.gov_number === car.car.gov_number);
       if (selectedCar) {
-        const car_id = selectedCar.asuods_id;
-        const missions = await flux.getActions('cars').getCarMissions(car_id);
-        this.setState({ missions: missions.result, car: selectedCar });
+        this.setState({ car: selectedCar });
       }
     }
   }
@@ -39,9 +37,7 @@ export default class VehicleInfo extends Component {
       const carsList = flux.getStore('objects').state.carsList;
       const selectedCar = carsList.find(c => c.gov_number === props.car.car.gov_number);
       if (selectedCar) {
-        const car_id = selectedCar.asuods_id;
-        const missions = await flux.getActions('cars').getCarMissions(car_id);
-        this.setState({ missions: missions.result, car: selectedCar });
+        this.setState({ car: selectedCar });
       }
     }
   }
@@ -52,8 +48,7 @@ export default class VehicleInfo extends Component {
   }
 
   render() {
-    const { missions = [] } = this.state;
-    const { car } = this.props;
+    const { car, missions = [] } = this.props;
     const { marker } = car;
     const { parkings = [] } = this.props.car.marker.track;
     let missionsRender = (

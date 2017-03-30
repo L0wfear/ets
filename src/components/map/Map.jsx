@@ -432,17 +432,13 @@ export default class OpenLayersMap extends Component {
   }
 
   updatePoints(updatedPoints) {
-    const { typesIndex } = this.props;
     Object.keys(updatedPoints).forEach((key) => {
       const point = updatedPoints[key];
       const oldMarker = this.markers[key];
       if (oldMarker) {
         oldMarker.setPoint(point);
       } else {
-        if (!typesIndex[point.car.type_id]) console.log('нет данных о типе, список всех типов:', typesIndex);
-        this.markers[key] = new CarMarker(point, this, {
-          maxSpeed: _.get(typesIndex[point.car.type_id], 'speed_max') || 0,
-        });
+        this.markers[key] = new CarMarker(point, this, {});
       }
     });
     this.triggerRender();

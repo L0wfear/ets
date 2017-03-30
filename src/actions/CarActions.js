@@ -77,7 +77,7 @@ export default class CarActions extends Actions {
       });
   }
 
-  getCarInfo(gps_code, from_dt, to_dt) {
+  getInfoFromCar(gps_code, from_dt, to_dt) {
     const payload = {
       gps_code,
       from_dt: makeUnixTime(from_dt),
@@ -88,11 +88,11 @@ export default class CarActions extends Actions {
     return InfoService.get(payload);
   }
 
-  getCarMissions(car_id) {
+  getCarInfo(car_id) {
     const payload = {
       car_id,
     };
-    return CarInfoService.get(payload).then(r => ({ result: r.result.missions }));
+    return CarInfoService.get(payload).then(r => r.result);
   }
 
   getCarMissionsByTimestamp(car_id, point_timestamp) {

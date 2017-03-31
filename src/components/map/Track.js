@@ -334,7 +334,7 @@ export default class Track {
 
     ctx.beginPath();
     ctx.moveTo(firstPoint.x, firstPoint.y);
-
+    console.log(this.maxSpeed)
     let prevRgbaColor = getTrackColor(track[0].speed_avg, this.maxSpeed, TRACK_LINE_OPACITY);
 
     if (this.sensorsState.equipment.length) {

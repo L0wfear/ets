@@ -116,6 +116,7 @@ export default class CarInfo extends Component {
     const carList = props.flux.getStore('objects').state.carsList;
     const car = carList.find(c => c.gov_number === props.car.car.gov_number);
     const info = await this.props.flux.getActions('cars').getCarInfo(car.asuods_id);
+    props.car.marker.track.maxSpeed = info.max_speed;
     this.setState({ missions: info.missions, maxSpeed: info.max_speed, imageUrl: car ? car.type_image_name : null });
   }
 
@@ -126,7 +127,6 @@ export default class CarInfo extends Component {
   fetchTrack(props = this.props) {
     const { from_dt, to_dt } = this.state;
     const track = props.car.marker.track;
-
     // обновление инфы о последней точке при обновлении трэка
     track.onUpdate(() => {
       const dt = new Date();

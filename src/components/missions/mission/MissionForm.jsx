@@ -379,7 +379,7 @@ export class MissionForm extends Form {
           </Row>
           <Row>
             <Col md={12}>
-              <Div hidden={this.state.selectedRoute === null} className="mission-form-map-wrapper">
+              <Div hidden={route ? route.id == null : true} className="mission-form-map-wrapper">
                 <RouteInfo route={this.state.selectedRoute} mapOnly />
               </Div>
             </Col>

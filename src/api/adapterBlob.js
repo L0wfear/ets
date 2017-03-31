@@ -24,6 +24,7 @@ function httpMethodBlob(url, data, method) {
   return fetch(url, options)
     .then((async) (r) => {
       const fileName = parseFilename(r.headers.get('Content-Disposition'));
+      console.log(fileName)
       const blob = await r.blob();
       return {
         blob,

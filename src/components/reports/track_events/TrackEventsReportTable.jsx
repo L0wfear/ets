@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 import { Glyphicon } from 'react-bootstrap';
+import schema from './TrackEventsReportSchema';
 
 const tableMeta = {
   cols: [
@@ -72,9 +73,9 @@ const tableMeta = {
     {
       name: 'event_value',
       displayName: 'Объем, л',
-      type: 'text',
+      type: 'number',
       filter: {
-        type: 'string',
+        type: 'number',
       },
     },
     {
@@ -86,17 +87,28 @@ const tableMeta = {
   ],
 };
 
-const renderers = props => ({
-  started_at: ({ data }) => <DateFormatter date={data} time />,
-  finished_at: ({ data }) => <DateFormatter date={data} time />,
-  coords: (meta) => (
-    <div>
-      <span onClick={() => props.mapView(meta.data.split(', '))}>
-        <Glyphicon glyph="info-sign" />
-      </span>
-    </div>
-  ),
-});
+const renderers = (props) => {
+  const floats = {};
+  schema.forEach((p) => {
+    if (p.float) {
+      floats[p.key] = ({ data }) => <div>
+        {p && !isNaN(data) && data != null && data !== '' ? parseFloat(data).toFixed(p.float) : data}
+      </div>;
+    }
+  });
+  return ({
+    ...floats,
+    started_at: ({ data }) => <DateFormatter date={data} time />,
+    finished_at: ({ data }) => <DateFormatter date={data} time />,
+    coords: (meta) => (
+      <div>
+        <span onClick={() => props.mapView(meta.data.split(', '))}>
+          <Glyphicon glyph="info-sign" />
+        </span>
+      </div>
+    ),
+  });
+};
 
 export default props => (
   <Table

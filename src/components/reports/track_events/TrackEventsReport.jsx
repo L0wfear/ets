@@ -5,7 +5,6 @@ import { getToday9am, getTomorrow9am, createValidDateTime } from 'utils/dates';
 import { connectToStores, FluxContext, HistoryContext, staticProps, exportable } from 'utils/decorators';
 import TrackEventsReportTable from './TrackEventsReportTable.jsx';
 import TrackEventsReportHeader from './TrackEventsReportHeader.jsx';
-import schema from './TrackEventsReportSchema';
 import MapModal from '../MapModal.jsx';
 
 @connectToStores(['reports'])
@@ -48,12 +47,6 @@ export default class TrackEventsReport extends Component {
 
   render() {
     const { trackEventsReport = [] } = this.props;
-    trackEventsReport.forEach((el) => {
-      Object.keys(el).forEach((k) => {
-        const field = schema.find(p => (p.key === k) && p.float);
-        if (field && !isNaN(el[k]) && el[k] != null && el[k] !== '') el[k] = parseFloat(el[k]).toFixed(field.float);
-      });
-    });
 
     return (
       <div className="ets-page-wrap">

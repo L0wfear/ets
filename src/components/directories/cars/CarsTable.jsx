@@ -39,7 +39,7 @@ const tableMeta = props => ({
       },
     },
     {
-      name: 'type',
+      name: 'type_name',
       displayName: 'Тип',
       type: 'text',
       filter: {

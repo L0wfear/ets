@@ -88,7 +88,7 @@ const tableMeta = props => ({
       },
     },
     {
-      name: 'equipment',
+      name: 'type_name',
       displayName: 'Оборудование ДКМ',
       type: 'text',
       filter: {

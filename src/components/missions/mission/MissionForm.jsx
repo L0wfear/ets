@@ -351,7 +351,7 @@ export class MissionForm extends Form {
               <Field type="select"
                 label="Подразделение"
                 error={errors.structure_id}
-                disabled={STRUCTURE_FIELD_READONLY || (this.props.fromWaybill && state.structure_id) || (!IS_CREATING && !IS_POST_CREATING_NOT_ASSIGNED)}
+                disabled={STRUCTURE_FIELD_READONLY || this.props.fromWaybill || (!IS_CREATING && !IS_POST_CREATING_NOT_ASSIGNED)}
                 clearable={STRUCTURE_FIELD_DELETABLE}
                 options={STRUCTURES}
                 emptyValue={null}

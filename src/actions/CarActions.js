@@ -63,6 +63,13 @@ export default class CarActions extends Actions {
       sensors: 1,
       // test: 1, //временно
     };
+    // const payload = {
+    //   version: 3,
+    //   gps_code: 1026826,
+    //   from_dt: 1491304400,
+    //   to_dt: 1491504400,
+    //   sensors: 1,
+    // };
 
     return TrackService
       .get(payload)

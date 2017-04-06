@@ -18,7 +18,7 @@ export const tableMeta = props => ({
       displayName: 'Дата приказа',
       type: 'date',
       filter: {
-        type: 'multiselect',
+        type: 'date',
       },
     },
     {

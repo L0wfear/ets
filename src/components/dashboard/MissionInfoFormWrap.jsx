@@ -15,6 +15,7 @@ export default class MissionInfoFormWrap extends FormWrap {
     return (
       <Div hidden={!this.props.showForm}>
         <MissionInfoForm
+          {...this.props}
           formState={this.state.formState}
           onSubmit={this.handleFormSubmit}
           handleFormChange={this.handleFormStateChange}

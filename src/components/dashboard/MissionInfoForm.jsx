@@ -8,6 +8,7 @@ import ModalBody from 'components/ui/Modal';
 import Div from 'components/ui/Div.jsx';
 import _ from 'lodash';
 import HybridMap from 'components/map/HybridMap.jsx';
+import Preloader from 'components/ui/Preloader.jsx';
 import FluxComponent from 'flummox/component';
 import MissionReportByODH from 'components/reports/mission/MissionReportByODH.jsx';
 import MissionReportByDT from 'components/reports/mission/MissionReportByDT.jsx';
@@ -105,7 +106,7 @@ class MissionInfoForm extends Form {
     });
     if (!car_data.gov_number) return <div />;
     const title = `Информация о задании. Рег. номер ТС: ${car_data.gov_number}`;
-
+    const { equipmentData } = this.props;
     return (
       <Modal {...this.props} bsSize="large" className="mission-info-modal" backdrop="static">
 
@@ -174,7 +175,7 @@ class MissionInfoForm extends Form {
             <li><b>Пройдено с рабочей скоростью:</b> {getDataTraveledYet([report_data.traveled, report_data.check_unit, report_data.time_work_speed].join(' '))}</li>
             <li><b>Пройдено с превышением рабочей скорости:</b> {getDataTraveledYet([report_data.traveled_high_speed, report_data.check_unit, report_data.time_high_speed].join(' '))}</li>
             <li><b>Общее время стоянок:</b> {this.state.parkingCount ? secondsToTime(this.state.parkingCount) : 'Рассчитывается...'}</li>
-            <li><b>Общий пробег с работающим оборудованием:</b> {parseFloat(this.props.formState.mission_data.equipment_length / 1000).toFixed(3)} км</li>
+            <li><b>Общий пробег с работающим оборудованием:</b> {equipmentData == null ? <Preloader type="field" /> : `${parseFloat(equipmentData / 1000).toFixed(3)} км`}</li>
           </Div>
 
         </ModalBody>

@@ -125,7 +125,7 @@ const ReportTable = (props) => {
 };
 
 @connectToStores(['reports'])
-// @exportable({ entity: 'route_odh_covering_report/' })
+@exportable({ entity: 'track_events' })
 @FluxContext
 export default class TrackEventsReport extends Component {
 
@@ -144,6 +144,16 @@ export default class TrackEventsReport extends Component {
     flux.getActions('reports').getTrackEventsReport(payload);
   }
 
+  printReport() {
+    const payload = {
+      company_id: this.props.routeParams.company_id,
+      event_type: this.props.routeParams.event_type,
+      date_start: this.props.routeParams.date_start,
+      date_end: this.props.routeParams.date_end,
+    };
+    this.props.export(payload);
+  }
+
   mapView(coords) {
     this.setState({ coords, showMap: true });
   }
@@ -154,7 +164,7 @@ export default class TrackEventsReport extends Component {
     return (
       <div className="ets-page-wrap">
         <ReportTable data={trackEventsReport} mapView={coords => this.mapView(coords)}>
-          {false && <Button bsSize="small" onClick={() => this.props.export({}, true)}><Glyphicon glyph="download-alt" /></Button>}
+          <Button bsSize="small" onClick={() => this.printReport()}><Glyphicon glyph="download-alt" /></Button>
         </ReportTable>
         <MapModal coords={this.state.coords} showForm={this.state.showMap} onFormHide={() => this.setState({ showMap: false })} />
       </div>

@@ -44,7 +44,7 @@ export default class ToolbarFilters extends Component {
     } else {
       types = this.props.typesList;
     }
-
+    types = types.map(t => ({ title: t.short_name, ...t }));
     return {
       types,
     };

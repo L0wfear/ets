@@ -42,6 +42,7 @@ export default class CurrentMission extends DashboardCardMedium {
       showMissionRejectForm: false,
       selectedMission: null,
       customCardLoading: true,
+      equipmentData: null,
     });
 
     this.canView = context.flux.getStore('session').getPermission('mission.read');
@@ -78,6 +79,17 @@ export default class CurrentMission extends DashboardCardMedium {
     }
   }
 
+  async getEquipmentData(gps_code, date_start, date_end) {
+    const { flux } = this.context;
+    this.setState({ loadingFields: true, equipmentData: null });
+    const equipmentData = await flux.getActions('cars').getTrack(gps_code, date_start, date_end)
+      .then(r => Object.keys(r.equipment)
+        .map(k => r.equipment[k].distance)
+        .reduce((a, b) => a + b, 0)
+      );
+    this.setState({ loadingFields: false, equipmentData });
+  }
+
   async selectMission(id) {
     const { flux } = this.context;
     this.setState({ customCardLoading: true });
@@ -85,9 +97,8 @@ export default class CurrentMission extends DashboardCardMedium {
     const missionData = await flux.getActions('missions').getMissionData(id).then(r => r.result);
     const cars = await flux.getActions('objects').getCars().then(r => r.result);
     const carGpsCode = cars.find(c => c.gov_number === missionData.car_data.gov_number).gps_code;
-    const equipmentData = await flux.getActions('cars').getTrack(carGpsCode, missionData.mission_data.date_start, missionData.mission_data.date_end).then(r => Object.keys(r.equipment).map(k => r.equipment[k].distance).reduce((a, b) => a + b, 0));
-    missionData.mission_data.equipment_length = equipmentData;
-    this.setState({ selectedMission: missionData, customCardLoading: false });
+    this.setState({ selectedMission: missionData, customCardLoading: false },
+      () => this.getEquipmentData(carGpsCode, missionData.mission_data.date_start, missionData.mission_data.date_end));
     document.getElementById('dashboard-time').scrollIntoView();
   }
 
@@ -111,7 +122,7 @@ export default class CurrentMission extends DashboardCardMedium {
   }
 
   renderCustomCardData() {
-    const { customCardLoading, selectedMission } = this.state;
+    const { customCardLoading, selectedMission, loadingFields, equipmentData } = this.state;
     if (selectedMission === null) return <div />;
     const { mission_data, car_data, report_data, route_data,
       technical_operation_data, waybill_data } = selectedMission;
@@ -138,7 +149,7 @@ export default class CurrentMission extends DashboardCardMedium {
             <li><b>Пройдено в рабочем режиме:</b> {getDataTraveledYet([report_data.traveled, report_data.check_unit].join(' '))}</li>
             <li><b>Пройдено с рабочей скоростью:</b> {getDataTraveledYet([report_data.traveled, report_data.check_unit, report_data.time_work_speed].join(' '))}</li>
             <li><b>Пройдено с превышением рабочей скорости:</b> {getDataTraveledYet([report_data.traveled_high_speed, report_data.check_unit, report_data.time_high_speed].join(' '))}</li>
-            <li><b>Общий пробег с работающим оборудованием:</b> {parseFloat(mission_data.equipment_length / 1000).toFixed(3)} км</li>
+            <li><b>Общий пробег с работающим оборудованием:</b> {loadingFields ? <Preloader type="field" /> : `${parseFloat(equipmentData / 1000).toFixed(3)} км`}</li>
             {this.canView ? <div><a className="pointer" onClick={(e) => { e.preventDefault(); this.missionAction(selectedMission); }}>Подробнее...</a></div> : ''}
             {this.canCompleteOrReject ? <Div className="text-right">
               <Button className="dashboard-card-action-button" onClick={this.completeMission.bind(this, mission_data.id)}>Выполнено</Button>
@@ -161,6 +172,7 @@ export default class CurrentMission extends DashboardCardMedium {
         onFormHide={() => this.setState({ showMissionInfoForm: false })}
         showForm={this.state.showMissionInfoForm}
         element={this.state.selectedMission}
+        equipmentData={this.state.equipmentData}
         {...this.props}
       />
     );

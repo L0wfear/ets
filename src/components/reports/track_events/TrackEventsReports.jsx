@@ -6,7 +6,7 @@ import TrackEventsReportsTable from './TrackEventsReportsTable.jsx';
 import TrackEventsReportsHeader from './TrackEventsReportsHeader.jsx';
 
 @connectToStores(['reports'])
-@exportable({ entity: 'track_events' })
+@exportable({ entity: 'track_events/aggregate' })
 @FluxContext
 @HistoryContext
 @staticProps({

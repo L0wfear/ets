@@ -7,7 +7,6 @@ import coverage from './CoverageReport.jsx';
 import fuelConsumption from './fuel_consumption/FuelReport.jsx';
 import odhCoverageReport from './odh_coverage/OdhCoverageReport.jsx';
 import dtCoverageReport from './dt_coverage/DtCoverageReport.jsx';
-import trackEventsReport from './track_events/TrackEventsReport.jsx';
 import odh from './ODHReports.jsx';
 import * as mission from './mission';
 import * as route from './route';
@@ -16,6 +15,7 @@ import * as weekly from './weekly';
 import * as carFuncTypeUsage from './car_func_type_usage';
 import * as brigadeEfficiency from './brigade_efficiency';
 import * as employeeEfficiency from './employee_efficiency';
+import * as trackEvents from './track_events';
 
 export {
   analytics,
@@ -31,5 +31,5 @@ export {
   carFuncTypeUsage,
   brigadeEfficiency,
   employeeEfficiency,
-  trackEventsReport,
+  trackEvents,
 };

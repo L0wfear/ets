@@ -185,7 +185,7 @@ export default class ReportsActions extends Actions {
     return EmployeeEfficiencyReportService.get(payload);
   }
 
-  getTrackEventsReport(data) {
+  getTrackEventsReports(data) {
     const payload = {};
     if (data.date_start) {
       payload.date_start = createValidDateTime(data.date_start);
@@ -193,6 +193,10 @@ export default class ReportsActions extends Actions {
     if (data.date_end) {
       payload.date_end = createValidDateTime(data.date_end);
     }
+    return TrackEventsReportService.path('aggregate').get(payload);
+  }
+
+  getTrackEventsReport(payload) {
     return TrackEventsReportService.get(payload);
   }
 

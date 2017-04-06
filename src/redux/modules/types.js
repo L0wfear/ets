@@ -16,7 +16,7 @@ export default handleActions({
       return {
         ...state,
         typesList: result,
-        typesIndex: keyBy(result, 'id'),
+        typesIndex: keyBy(result, 'asuods_id'),
       };
     },
     throw() {

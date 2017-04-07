@@ -16,10 +16,10 @@ export default class TrackEventsReports extends Component {
 
   constructor(props) {
     super(props);
-
+    const { date_start = getToday9am(), date_end = getTomorrow9am() } = props.location.query;
     this.state = {
-      date_start: getToday9am(),
-      date_end: getTomorrow9am(),
+      date_start,
+      date_end,
     };
   }
 

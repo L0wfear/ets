@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
-import { Button, Glyphicon } from 'react-bootstrap';
-import { connectToStores, FluxContext, exportable } from 'utils/decorators';
+import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
+import Div from 'components/ui/Div.jsx';
+import { connectToStores, FluxContext, HistoryContext, exportable } from 'utils/decorators';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
+import Datepicker from 'components/ui/DatePicker.jsx';
 import schema from './TrackEventsReportsSchema';
 import MapModal from '../MapModal.jsx';
+
 
 const tableMeta = {
   cols: [
@@ -127,6 +130,7 @@ const ReportTable = (props) => {
 @connectToStores(['reports'])
 @exportable({ entity: 'track_events' })
 @FluxContext
+@HistoryContext
 export default class TrackEventsReport extends Component {
 
   state = {
@@ -158,11 +162,42 @@ export default class TrackEventsReport extends Component {
     this.setState({ coords, showMap: true });
   }
 
+  pushBack() {
+    const query = {
+      date_start: this.props.routeParams.date_start,
+      date_end: this.props.routeParams.date_end,
+    }
+    this.context.history.pushState(null, '/track-events-reports', query);
+  }
+
+  renderHeader() {
+    return (
+      <Div>
+        <Row>
+          <Col md={4} />
+          <Col md={5}>
+            <Div><label>Период формирования</label></Div>
+            <Div className="inline-block reports-date">
+              <Datepicker disabled time={false} date={this.props.routeParams.date_start} />
+            </Div>
+            <Div className="inline-block reports-date">
+              <Datepicker disabled time={false} date={this.props.routeParams.date_end} />
+            </Div>
+          </Col>
+          <Col md={3}>
+            <Button style={{position: 'relative', top: 30}} bsSize="small" onClick={() => this.pushBack()}>Назад</Button>
+          </Col>
+        </Row>
+      </Div>
+    );
+  }
+
   render() {
     const { trackEventsReport = [] } = this.props;
 
     return (
       <div className="ets-page-wrap">
+        {this.renderHeader()}
         <ReportTable data={trackEventsReport} mapView={coords => this.mapView(coords)}>
           <Button bsSize="small" onClick={() => this.printReport()}><Glyphicon glyph="download-alt" /></Button>
         </ReportTable>

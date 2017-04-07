@@ -52,6 +52,7 @@ export default class SessionStore extends Store {
     localStorage.setItem(global.SESSION_KEY, JSON.stringify(session));
     localStorage.setItem(global.CURRENT_USER, JSON.stringify(currentUser));
     this.flux.getStore('dashboard').resetState();
+    this.flux.getStore('reports').resetState();
     setUserContext(currentUser);
     currentUser = new User(currentUser);
     this.setState({

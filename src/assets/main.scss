@@ -188,12 +188,19 @@ body.application hr {
   background-color: #292929;
   color: #fff;
 
+  .container-fluid {
+    padding: 0 !important;
+    padding-left: 15px !important;
+  }
+
   .navbar-nav > li {
     @media (min-width: 768px) {
       & > a {
         // for: min-height: 64px;
         padding-top: $navbarPaddingA;
         padding-bottom: $navbarPaddingA;
+        padding-left: 10px;
+        padding-right: 10px;
       }
     }
 

@@ -43,7 +43,7 @@ export const maintenanceRateSchema = {
       title: 'Норма',
       type: 'number',
       float: 3,
-      required: 'true',
+      required: true,
     },
   ],
 };

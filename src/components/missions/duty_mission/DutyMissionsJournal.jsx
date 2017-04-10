@@ -15,7 +15,7 @@ import DutyMissionFormWrap from './DutyMissionFormWrap.jsx';
   listName: 'dutyMissionsList',
   tableComponent: DutyMissionsTable,
   formComponent: DutyMissionFormWrap,
-  operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
+  operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE', 'CHECK'],
   exportable: true,
 })
 @autobind

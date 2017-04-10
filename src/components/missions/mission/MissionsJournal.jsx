@@ -17,7 +17,7 @@ import MissionRejectForm from './MissionRejectForm.jsx';
   entity: 'mission',
   listName: 'missionsList',
   tableComponent: MissionsTable,
-  operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
+  operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE', 'CHECK'],
 })
 @autobind
 export default class MissionsJournal extends CheckableElementsList {

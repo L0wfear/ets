@@ -60,8 +60,14 @@ export default class CheckableElementsList extends ElementsList {
    */
   getTableProps() {
     const tableProps = super.getTableProps();
-
-    return Object.assign(tableProps, this.getCheckedProps());
+    const operations = ['delete'];
+    const check = this.constructor.operations.includes('CHECK');
+    const entity = this.constructor.entity;
+    const gp = p => this.context.flux.getStore('session').getPermission(p);
+    const noPermission = !check && operations.every(o => !gp(`${entity}.${o}`));
+    return noPermission
+      ? Object.assign(tableProps, this.getCheckedProps(), { multiSelection: false })
+      : Object.assign(tableProps, this.getCheckedProps());
   }
 
   /**

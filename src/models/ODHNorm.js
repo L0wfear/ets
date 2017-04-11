@@ -1,22 +1,16 @@
-export const odhNormSchema = {
+export const schema = {
   properties: [
     {
       key: 'name',
-      title: 'Норматив содержания ОДХ',
+      title: 'Наименование',
       type: 'string',
       required: true,
     },
     {
-      key: 'unit',
+      key: 'measure_unit_id',
       title: 'Единица измерения',
-      type: 'string',
-      required: false,
-    },
-    {
-      key: 'consumable_material',
-      title: 'Расходный материал',
       type: 'number',
-      required: false,
+      required: true,
     },
   ],
 };

@@ -12,7 +12,17 @@ export default class ToolbarFilters extends Component {
     haveFilters: PropTypes.bool,
     store: PropTypes.object,
   }
+  shouldComponentUpdate(nextProps) {
+    /**
+     * Предотвращаем постоянное передёргивания мульти-селекта в начальное состояние.
+     */
+    const shouldUpdate = (
+      this.props.typesIndex && nextProps.typesIndex &&
+      Object.keys(this.props.typesIndex).length !== Object.keys(nextProps.typesIndex).length
+    );
 
+    return shouldUpdate;
+  }
   doAdditiveFilters() {
     const { typesIndex } = this.props;
     const propsFilters = this.props.filters;

@@ -37,7 +37,7 @@ export default class SessionStore extends Store {
 
     this.state = {
       currentUser,
-      isOkrug: false,
+      isOkrug: currentUser.okrug_id !== null,
       session: storedSession,
       userPermissions: currentUser.permissions,
     };

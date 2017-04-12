@@ -13,6 +13,7 @@ export default class User extends Model {
     return {
       company_id: 'integer',
       company_name: 'string',
+      companies: 'array',
       first_name: 'string',
       last_name: 'string',
       middle_name: 'string',
@@ -38,6 +39,7 @@ export default class User extends Model {
 
     this.company_id = user.company_id;
     this.company_name = user.company_name;
+    this.companies = user.companies || [];
     this.first_name = user.first_name;
     this.last_name = user.last_name;
     this.middle_name = user.middle_name;

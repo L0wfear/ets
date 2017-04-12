@@ -11,6 +11,7 @@ import {
   OdhCoverageReportService,
   DtCoverageReportService,
   CarFuncTypeUsageReportService,
+  CarFuncTypeUsageDetailReportService,
   BrigadeEfficiencyReportService,
   EmployeeEfficiencyReportService,
   TrackEventsReportService,
@@ -33,6 +34,10 @@ export default class ReportsActions extends Actions {
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
     return CarFuncTypeUsageReportService.get(payload);
+  }
+
+  getCarFuncTypeUsageDetailReport(data) {
+    return CarFuncTypeUsageDetailReportService.get(data);
   }
 
   getCarFuncTypeUsageReportById(id) {

@@ -17,6 +17,45 @@ class CarFuncTypeUsageReportHeader extends Component {
       companyOptions: [],
       selectedCompany: null,
     };
+
+    this.handleCompanyIdChange = props.handleChange.bind(null, 'company_id');
+    this.handleStartDateChange = props.handleChange.bind(null, 'date_start');
+    this.handleEndDateChange = props.handleChange.bind(null, 'date_end');
+    this.handleGeozoneTypeChange = this.handleGeozoneTypeChange.bind(this);
+    this.handleSubmit = props.onClick.bind(this);
+  }
+
+  componentWillMount() {
+    const { flux } = this.context;
+    const user = flux.getStore('session').getCurrentUser();
+    let companyOptions = [];
+    let selectedCompany = null;
+    const queryParamCompanuId = this.props.urlQueryParams.company_id;
+
+    if (this.props.isOkrug) {
+      companyOptions = user.companies.map(item => ({
+        value: item.id,
+        label: item.name,
+      }));
+
+      // selectedCompany = queryParamCompanuId || null;
+    } else {
+      companyOptions = [{ value: user.company_id, label: user.company_name }];
+      selectedCompany = queryParamCompanuId || user.company_id;
+    }
+
+    this.setState({
+      companyOptions,
+      selectedCompany,
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.company_id !== nextProps.company_id) {
+      this.setState({
+        selectedCompany: nextProps.company_id,
+      });
+    }
   }
 
   handleGeozoneTypeChange(v) {
@@ -25,58 +64,65 @@ class CarFuncTypeUsageReportHeader extends Component {
     this.props.handleChange('date_end', getToday859am());
   }
 
-  componentWillMount() {
-		                                                                                const { flux } = this.context;
-    const user = flux.getStore('session').getCurrentUser();
-    const companyOptions = [{ value: user.company_id, label: user.company_name }];
-    this.setState({ companyOptions });
-  }
-
   render() {
-    const props = this.props;
-    const { companyOptions } = this.state;
-    let { geozone_type, company_id = null, date_start, date_end } = this.props;
+    const { companyOptions, selectedCompany } = this.state;
+    const { geozone_type, date_start, date_end } = this.props;
     const OBJECTS = [{ value: 'odh', label: 'Объект дорожного хозяйства' }, { value: 'dt', label: 'Дворовая территория' }];
 
-  	                                        return (
-    <Div>
-      <Row>
-        <Col md={3}>
-          <Field type="select"
-            label="Объекты"
-            options={OBJECTS}
-            value={geozone_type}
-            onChange={this.handleGeozoneTypeChange.bind(this)}
-            clearable={false}
-          />
-        </Col>
-        <Col md={4}>
-          <Div><label>Период формирования</label></Div>
-          <Div className="inline-block reports-date">
-            <Datepicker date={date_start} onChange={props.handleChange.bind(null, 'date_start')} />
-          </Div>
-          <Div className="inline-block reports-date">
-            <Datepicker date={date_end} onChange={props.handleChange.bind(null, 'date_end')} />
-          </Div>
-        </Col>
-        <Col md={3} className={'vehicle-types-container'}>
-          <Field type="select"
-            label="Учреждение"
-            options={companyOptions}
-            value={company_id}
-            onChange={this.props.handleChange.bind(null, 'company_id')}
-          />
-        </Col>
-        <Col md={2} style={{ marginTop: 28 }}>
-          <Button bsSize="small" onClick={props.onClick.bind(this)}>Сформировать отчет</Button>
-        </Col>
-      </Row>
+    return (
+      <Div>
+        <Row>
+          <Col md={3}>
+            <Field
+              type="select"
+              label="Объекты"
+              options={OBJECTS}
+              value={geozone_type}
+              onChange={this.handleGeozoneTypeChange}
+              clearable={false}
+            />
+          </Col>
+          <Col md={4}>
+            <Div><label htmlFor=" ">Период формирования</label></Div>
+            <Div className="inline-block reports-date">
+              <Datepicker date={date_start} onChange={this.handleStartDateChange} />
+            </Div>
+            <Div className="inline-block reports-date">
+              <Datepicker date={date_end} onChange={this.handleEndDateChange} />
+            </Div>
+          </Col>
+          <Col md={3} className={'vehicle-types-container'}>
+            <Field
+              type="select"
+              label="Организация"
+              options={companyOptions}
+              value={selectedCompany}
+              onChange={this.handleCompanyIdChange}
+            />
+          </Col>
+          <Col md={2} style={{ marginTop: 28 }}>
+            <Button bsSize="small" onClick={this.handleSubmit}>Сформировать отчет</Button>
+          </Col>
+        </Row>
 
-    </Div>
-  	);
+      </Div>
+    );
   }
 
 }
+
+CarFuncTypeUsageReportHeader.propTypes = {
+  handleChange: React.PropTypes.func,
+  onClick: React.PropTypes.func,
+  geozone_type: React.PropTypes.string,
+  company_id: React.PropTypes.oneOfType([
+    React.PropTypes.string,
+    React.PropTypes.number,
+  ]),
+  isOkrug: React.PropTypes.bool,
+  date_start: React.PropTypes.instanceOf(Date),
+  date_end: React.PropTypes.instanceOf(Date),
+};
 
 CarFuncTypeUsageReportHeader.contextTypes = {
   flux: React.PropTypes.object,

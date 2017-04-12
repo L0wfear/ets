@@ -18,6 +18,7 @@ export default class ReportsStore extends Store {
     this.register(reportsActions.getTrackEventsReport, this.handleGetTrackEventsReport);
     this.register(reportsActions.getTrackEventsReports, this.handleGetTrackEventsReports);
     this.register(reportsActions.getCarFuncTypeUsageReports, this.handleGetCarFuncTypeUsageReports);
+    this.register(reportsActions.getCarFuncTypeUsageDetailReport, this.handleGetCarFuncTypeUsageDetailReport);
     this.register(reportsActions.getBrigadeEfficiencyReports, this.handleGetBrigadeEfficiencyReports);
     this.register(reportsActions.getEmployeeEfficiencyReports, this.handleGetEmployeeEfficiencyReports);
 
@@ -25,6 +26,7 @@ export default class ReportsStore extends Store {
       dailyCleaningReportsListETS: [],
       dailyCleaningReportsListCAFAP: [],
       carFuncTypeUsageReportsList: [],
+      carFuncTypeUsageDetailReportList: [],
       fuelReport: [],
       weeklyTechnicalOperationCompleteReportsList: [],
       odhCoverageReport: [],
@@ -52,6 +54,10 @@ export default class ReportsStore extends Store {
 
   handleGetCarFuncTypeUsageReports({ result }) {
     this.setState({ carFuncTypeUsageReportsList: result.rows });
+  }
+
+  handleGetCarFuncTypeUsageDetailReport({ result }) {
+    this.setState({ carFuncTypeUsageDetailReportList: result.rows });
   }
 
   handleGetBrigadeEfficiencyReports({ result }) {

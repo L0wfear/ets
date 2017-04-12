@@ -9,9 +9,6 @@ import TrackEventsReportsHeader from './TrackEventsReportsHeader.jsx';
 @exportable({ entity: 'track_events/aggregate' })
 @FluxContext
 @HistoryContext
-@staticProps({
-  entity: 'track_events_reports',
-})
 export default class TrackEventsReports extends Component {
 
   constructor(props) {

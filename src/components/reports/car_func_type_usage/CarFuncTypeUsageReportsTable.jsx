@@ -1,21 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 
 export const tableMeta = props => ({
   cols: [
     {
       name: 'company_name',
-      displayName: 'Учреждение',
+      displayName: 'Организация',
       type: 'text',
-      display: props ? props.isOkrug : false,
-      filter: {
-        type: 'multiselect',
-      },
-    },
-    {
-      name: 'func_type',
-      displayName: 'Тип техники',
-      type: 'string',
+      display: props.isOkrug,
       filter: {
         type: 'multiselect',
       },
@@ -24,14 +16,6 @@ export const tableMeta = props => ({
       name: 'total_cars_count',
       displayName: 'Кол-во техники указанного типа',
       type: 'number',
-      filter: {
-        type: 'multiselect',
-      },
-    },
-    {
-      name: 'technical_operation',
-      displayName: 'Технологическая операция',
-      type: 'string',
       filter: {
         type: 'multiselect',
       },

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import BaseODHNormForm from './ODHNormForm.jsx';
 import FormWrap from '../../compositions/FormWrap.jsx';
-import { schema as odhNormSchema, defaultElement } from 'models/ODHNorm.js';
+import { schema } from 'models/ODHNorm.js';
 import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
 
 
@@ -12,8 +12,7 @@ export default class ODHNormFormWrap extends FormWrap {
   constructor(props, context) {
     super(props);
 
-    this.defaultElement = defaultElement;
-    this.schema = odhNormSchema;
+    this.schema = schema;
     this.createAction = context.flux.getActions('odh').createODHNorm;
     this.updateAction = context.flux.getActions('odh').updateODHNorm;
   }

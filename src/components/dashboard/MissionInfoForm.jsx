@@ -22,7 +22,6 @@ const getDataTraveledYet = (data) => {
   return !isNaN(parseInt(data, 10)) ? parseInt(data, 10) : '-';
 };
 
-@connect(['objects'])
 @autobind
 class MissionInfoForm extends Form {
 

@@ -92,6 +92,7 @@ const tableMeta = {
     {
       name: 'coords_wgs',
       displayName: 'Координаты WGS',
+      display: false,
       filter: false,
       cssClassName: 'map-view',
     },

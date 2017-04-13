@@ -163,6 +163,7 @@ class ElementsList extends React.Component {
    * Вызывает диалог подтверждения удаления выбранного элемента и в случае подтверждения удаляет выбранный элемент
    * метод не будет исполняться в случае отсутствия выбранного элемента и не
    * определенной в классе-наследнике функции this.removeElementAction
+   * this.removeElementCallback переопределяет операцию по умолчанию ([serviceName].get) после удаления
    */
   @autobind
   removeElement() {
@@ -170,11 +171,13 @@ class ElementsList extends React.Component {
       return;
     }
 
+    const removeCallback = this.removeElementCallback || (() => {});
+
     confirmDialog({
       title: 'Внимание',
       body: 'Вы уверены, что хотите удалить выбранный элемент?',
     })
-    .then(() => this.removeElementAction(this.state.selectedElement[this.selectField]))
+    .then(() => this.removeElementAction(this.state.selectedElement[this.selectField]), removeCallback)
     .catch(() => {});
   }
 

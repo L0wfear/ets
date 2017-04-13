@@ -27,6 +27,7 @@ export default class WaybillJournal extends CheckableElementsList {
     super(props);
 
     this.removeElementAction = context.flux.getActions('waybills').deleteWaybill;
+    this.removeElementCallback = this.removeElementCallback.bind(this);
 
     this.state = Object.assign(this.state, {
       showPrintForm: false,
@@ -50,6 +51,10 @@ export default class WaybillJournal extends CheckableElementsList {
     if (nextState.page !== this.state.page || nextState.sortBy !== this.state.sortBy || nextState.filter !== this.state.filter) {
       this.context.flux.getActions('waybills').getWaybills(15, nextState.page * 15, nextState.sortBy, nextState.filter);
     }
+  }
+
+  removeElementCallback() {
+    return this.context.flux.getActions('waybills').getWaybills(15, this.state.page, this.state.sortBy, this.state.filter);
   }
 
   showPrintForm(printNumber) {

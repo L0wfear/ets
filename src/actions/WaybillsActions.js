@@ -40,9 +40,9 @@ export default class WaybillsActions extends Actions {
     return WaybillService.path('closed').get(payload);
   }
 
-  deleteWaybill(id) {
+  deleteWaybill(id, callback) {
     const payload = { id };
-    return WaybillService.delete(payload, true, 'json');
+    return WaybillService.delete(payload, callback, 'json');
   }
 
   getLatestWaybillDriver(car_id, driver_id) {

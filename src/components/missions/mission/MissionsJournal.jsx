@@ -26,6 +26,8 @@ export default class MissionsJournal extends CheckableElementsList {
     super(props);
 
     this.removeElementAction = context.flux.getActions('missions').removeMission;
+    this.removeElementCallback = this.removeElementCallback.bind(this);
+
     this.removeDisabled = () => {
       if (Object.keys(this.state.checkedElements).length !== 0) return false;
 
@@ -58,6 +60,10 @@ export default class MissionsJournal extends CheckableElementsList {
     if (nextState.page !== this.state.page || nextState.sortBy !== this.state.sortBy || nextState.filter !== this.state.filter) {
       this.context.flux.getActions('missions').getMissions(null, 15, nextState.page * 15, nextState.sortBy, nextState.filter);
     }
+  }
+
+  removeElementCallback() {
+    return this.context.flux.getActions('missions').getMissions(null, 15, this.state.page, this.state.sortBy, this.state.filter);
   }
 
   checkDisabled() {
@@ -132,7 +138,7 @@ export default class MissionsJournal extends CheckableElementsList {
 
       _.forEach(this.state.checkedElements, (mission) => {
         if (mission.status === 'not_assigned') {
-          this.removeElementAction(mission.id);
+          this.removeElementAction(mission.id, this.removeElementCallback);
         } else {
           isNotDeleted = true;
         }

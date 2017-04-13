@@ -143,8 +143,9 @@ export default class CheckableElementsList extends ElementsList {
     if (Object.keys(this.state.checkedElements).length !== 0) {
       if (!confirm('Вы уверены, что хотите удалить выбранные элементы?')) return;
 
+      const removeCallback = this.removeElementCallback || (() => {});
       each(this.state.checkedElements, (element) => {
-        this.removeElementAction(element[this.selectField]);
+        this.removeElementAction(element[this.selectField], removeCallback);
       });
       this.setState({
         checkedElements: {},

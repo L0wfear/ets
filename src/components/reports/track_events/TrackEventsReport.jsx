@@ -84,13 +84,27 @@ const tableMeta = {
       },
     },
     {
-      name: 'coords',
-      displayName: 'Координаты',
+      name: 'coords_msk',
+      displayName: 'Координаты МСК',
+      filter: false,
+      cssClassName: 'map-view',
+    },
+    {
+      name: 'coords_wgs',
+      displayName: 'Координаты WGS',
       filter: false,
       cssClassName: 'map-view',
     },
   ],
 };
+
+const MapButtonRenderer = props => (
+  <div>
+    <span onClick={() => props.mapView(props.data.split(', '))}>
+      <Glyphicon glyph="info-sign" />
+    </span>
+  </div>
+);
 
 const ReportTable = (props) => {
   const renderers = () => {
@@ -106,13 +120,8 @@ const ReportTable = (props) => {
       ...floats,
       started_at: ({ data }) => <DateFormatter date={data} time />,
       finished_at: ({ data }) => <DateFormatter date={data} time />,
-      coords: (meta) => (
-        <div>
-          <span onClick={() => props.mapView(meta.data.split(', '))}>
-            <Glyphicon glyph="info-sign" />
-          </span>
-        </div>
-      ),
+      coords_msk: meta => <MapButtonRenderer data={meta.data} mapView={props.mapView} />,
+      coords_wgs: meta => <MapButtonRenderer data={meta.data} mapView={props.mapView} />,
     });
   };
 

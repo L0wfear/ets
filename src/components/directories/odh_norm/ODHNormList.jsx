@@ -5,7 +5,7 @@ import ODHNormTable from './ODHNormTable.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 
 @connectToStores(['odh'])
-@exportable({ entity: 'comsumable_material' })
+@exportable({ entity: 'consumable_material' })
 @staticProps({
   entity: 'odh_norm',
   listName: 'odhNormList',

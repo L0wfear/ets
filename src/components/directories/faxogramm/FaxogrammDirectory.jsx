@@ -13,6 +13,8 @@ import FaxogrammsTable from './FaxogrammsTable.jsx';
 import FaxogrammInfoTable from './FaxogrammInfoTable.jsx';
 import FaxogrammOperationInfoTable from './FaxogrammOperationInfoTable.jsx';
 
+const MAX_ITEMS_PER_PAGE = 15;
+
 @autobind
 class FaxogrammDirectory extends ElementsList {
 
@@ -38,14 +40,41 @@ class FaxogrammDirectory extends ElementsList {
     this.getFaxogramms();
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    if (nextState.page !== this.state.page || nextState.sortBy !== this.state.sortBy) {
-      this.context.flux.getActions('objects').getFaxogramms(15, nextState.page * 15, nextState.sortBy, nextState.filter, this.state.create_date_from, this.state.create_date_to);
+  async componentWillUpdate(nextProps, nextState) {
+    if (
+      nextState.page !== this.state.page ||
+      nextState.sortBy !== this.state.sortBy ||
+      nextState.filter !== this.state.filter
+    ) {
+      const pageOffset = nextState.page * MAX_ITEMS_PER_PAGE;
+      const objects = await this.context.flux.getActions('objects').getFaxogramms(
+        MAX_ITEMS_PER_PAGE,
+        pageOffset,
+        nextState.sortBy,
+        nextState.filter,
+        this.state.create_date_from,
+        this.state.create_date_to
+      );
+
+      const { total_count } = objects;
+      const resultCount = objects.result.length;
+
+      if (resultCount === 0 && total_count > 0) {
+        const offset = (Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1) * MAX_ITEMS_PER_PAGE;
+        this.context.flux.getActions('objects').getFaxogramms(
+          MAX_ITEMS_PER_PAGE,
+          offset,
+          nextState.sortBy,
+          nextState.filter,
+          this.state.create_date_from,
+          this.state.create_date_to
+        );
+      }
     }
   }
 
   getFaxogramms() {
-    this.context.flux.getActions('objects').getFaxogramms(15, this.state.page * 15, this.state.sortBy, this.state.filter, this.state.create_date_from, this.state.create_date_to);
+    this.context.flux.getActions('objects').getFaxogramms(MAX_ITEMS_PER_PAGE, this.state.page * MAX_ITEMS_PER_PAGE, this.state.sortBy, this.state.filter, this.state.create_date_from, this.state.create_date_to);
   }
 
   saveFaxogramm() {
@@ -59,7 +88,7 @@ class FaxogrammDirectory extends ElementsList {
     // const { structures } = this.context.flux.getStore('session').getCurrentUser();
     const changeSort = (field, direction) => this.setState({ sortBy: `${field}:${direction ? 'asc' : 'desc'}` });
     const changeFilter = (filter) => {
-      this.context.flux.getActions('objects').getFaxogramms(15, this.state.page * 15, this.state.sortBy, filter, this.state.create_date_from, this.state.create_date_to);
+      this.context.flux.getActions('objects').getFaxogramms(MAX_ITEMS_PER_PAGE, this.state.page * MAX_ITEMS_PER_PAGE, this.state.sortBy, filter, this.state.create_date_from, this.state.create_date_to);
       this.setState({ filter });
     };
     return { changeSort, changeFilter, filterValues: this.state.filter };
@@ -94,7 +123,7 @@ class FaxogrammDirectory extends ElementsList {
           element={this.state.selectedElement}
           {...this.props}
         />
-        <Paginator currentPage={this.state.page} maxPage={Math.ceil(this.props.faxogrammsTotalCount / 15)} setPage={page => this.setState({ page })} firstLastButtons />
+        <Paginator currentPage={this.state.page} maxPage={Math.ceil(this.props.faxogrammsTotalCount / MAX_ITEMS_PER_PAGE)} setPage={page => this.setState({ page })} firstLastButtons />
         <Div hidden={this.state.selectedElement === null}>
           <Row>
             <h4 style={{ marginLeft: 20, fontWeight: 'bold' }}>Расшифровка факсограммы</h4>

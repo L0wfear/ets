@@ -11,6 +11,8 @@ import MissionsTable from './MissionsTable.jsx';
 import MissionFormWrap from './MissionFormWrap.jsx';
 import MissionRejectForm from './MissionRejectForm.jsx';
 
+const MAX_ITEMS_PER_PAGE = 15;
+
 @connectToStores(['missions', 'objects', 'employees', 'routes'])
 @exportable({ entity: 'mission' })
 @staticProps({
@@ -50,20 +52,35 @@ export default class MissionsJournal extends CheckableElementsList {
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
-    flux.getActions('missions').getMissions(null, 15, 0, this.state.sortBy, this.state.filter);
+    flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, 0, this.state.sortBy, this.state.filter);
     flux.getActions('objects').getCars();
     flux.getActions('routes').getRoutes();
     flux.getActions('technicalOperation').getTechnicalOperations();
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    if (nextState.page !== this.state.page || nextState.sortBy !== this.state.sortBy || nextState.filter !== this.state.filter) {
-      this.context.flux.getActions('missions').getMissions(null, 15, nextState.page * 15, nextState.sortBy, nextState.filter);
+  async componentWillUpdate(nextProps, nextState) {
+    if (
+      nextState.page !== this.state.page ||
+      nextState.sortBy !== this.state.sortBy ||
+      nextState.filter !== this.state.filter
+    ) {
+      this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, nextState.page * MAX_ITEMS_PER_PAGE, nextState.sortBy, nextState.filter);
+
+      const pageOffset = nextState.page * MAX_ITEMS_PER_PAGE;
+      const missions = await this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, pageOffset, nextState.sortBy, nextState.filter);
+
+      const { total_count } = missions.result.meta;
+      const resultCount = missions.result.rows.length;
+
+      if (resultCount === 0 && total_count > 0) {
+        const offset = (Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1) * MAX_ITEMS_PER_PAGE;
+        this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, offset, nextState.sortBy, nextState.filter);
+      }
     }
   }
 
   removeElementCallback() {
-    return this.context.flux.getActions('missions').getMissions(null, 15, this.state.page, this.state.sortBy, this.state.filter);
+    return this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, 0, this.state.sortBy, this.state.filter);
   }
 
   checkDisabled() {
@@ -217,7 +234,7 @@ export default class MissionsJournal extends CheckableElementsList {
   }
 
   additionalRender() {
-    return <Paginator currentPage={this.state.page} maxPage={Math.ceil(this.props.totalCount / 15)} setPage={page => this.setState({ page })} firstLastButtons />;
+    return <Paginator currentPage={this.state.page} maxPage={Math.ceil(this.props.totalCount / MAX_ITEMS_PER_PAGE)} setPage={page => this.setState({ page })} firstLastButtons />;
   }
 
 }

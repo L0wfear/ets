@@ -9,7 +9,7 @@ const DUTY_MISSION_STATUS_LABELS = {
   'fail': 'Не выполнено',
 };
 
-const getTableMeta = (props) => {
+export const getTableMeta = (props) => {
   const tableMeta = {
     cols: [
       {

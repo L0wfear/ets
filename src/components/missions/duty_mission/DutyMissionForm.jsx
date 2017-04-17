@@ -139,7 +139,7 @@ export class DutyMissionForm extends Form {
 
     const { missionSourcesList = [], employeesList = [], missionsList = [] } = this.props;
     const { technicalOperationsList = [], routesList = [] } = this.state;
-
+    
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
     const MISSION_SOURCES = missionSourcesList.map(({ id, name }) => ({ value: id, label: name }));
     const ROUTES = routesList.map(({ id, name }) => ({ value: id, label: name }));
@@ -178,6 +178,10 @@ export class DutyMissionForm extends Form {
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_DELETABLE = true;
     }
+
+    const brigade_employee_id_list = !state.brigade_employee_id_list
+      ? []
+      : state.brigade_employee_id_list.filter(b => b.id || b.employee_id).map(b => b.id || b.employee_id).join(',');
 
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
@@ -283,7 +287,7 @@ export class DutyMissionForm extends Form {
                 multi
                 disabled={IS_DISPLAY}
                 options={EMPLOYEES}
-                value={state.brigade_employee_id_list.filter(b => b.id || b.employee_id).map(b => b.id || b.employee_id).join(',')}
+                value={brigade_employee_id_list}
                 onChange={this.handleBrigadeIdListChange.bind(this)}
               />
             </Col>

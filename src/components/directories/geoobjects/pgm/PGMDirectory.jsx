@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
 import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import PGMTable, { tableMeta } from './PGMTable.jsx';
 import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
 
 @connectToStores(['geoObjects', 'session'])
+@exportable({ entity: 'geozones/pgm_store' })
 @staticProps({
   path: 'geozones',
   entity: 'pgm',
@@ -13,7 +13,6 @@ import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
   formComponent: GeoObjectsMapModal,
   formMeta: tableMeta(),
 })
-// @exportable
 export default class PGMDirectory extends ElementsList {
   componentDidMount() {
     super.componentDidMount();

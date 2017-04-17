@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import SnowStorageTable, { tableMeta } from './SnowStorageTable.jsx';
 import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import SnowStorageTable, { tableMeta } from './SnowStorageTable.jsx';
 import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
 
 @connectToStores(['geoObjects', 'session'])
+@exportable({ entity: 'geozones/snow_storage' })
 @staticProps({
   path: 'geozones',
   entity: 'snow_storage',
@@ -13,7 +13,6 @@ import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
   formComponent: GeoObjectsMapModal,
   formMeta: tableMeta(),
 })
-// @exportable
 export default class SnowStorageDirectory extends ElementsList {
   componentDidMount() {
     super.componentDidMount();

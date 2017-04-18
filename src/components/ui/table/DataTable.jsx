@@ -275,6 +275,7 @@ export default class DataTable extends React.Component {
         displayName: '№',
         cssClassName: 'width30',
         filter: false,
+        sortable: false,
         customComponent: renderers.rowNumber,
       });
     }
@@ -287,6 +288,7 @@ export default class DataTable extends React.Component {
       const metaObject = {
         columnName: col.name,
         displayName: col.customHeaderComponent ? col.customHeaderComponent : col.displayName,
+        sortable: (typeof col.sortable === 'boolean') ? col.sortable : true,
       };
 
       if (typeof renderers[col.name] === 'function') {

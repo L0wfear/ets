@@ -6,6 +6,9 @@ import { isEmpty } from 'utils/functions';
 import { saveDataSuccessNotification } from 'utils/notifications';
 import _ from 'lodash';
 
+const SAVE_BUTTON_LABEL_PROGRESS = 'Сохранение...';
+const SAVE_BUTTON_LABEL_DEFAULT = 'Сохранить';
+
 /**
  * FormWrap базовый класс хранения и работы с состоянием формы
  * @validate валидация состояния формы в соответствии со схемой (this.schema обязателен)
@@ -33,6 +36,8 @@ export default class FormWrap extends Component {
       formErrors: {},
       canSave: false,
       canPrint: false,
+      saveButtonLabel: 'Сохранить',
+      saveButtonEnability: true,
     };
   }
 
@@ -103,8 +108,20 @@ export default class FormWrap extends Component {
     if (isEmpty(formState[uniqueField])) {
       if (typeof this.createAction === 'function') {
         try {
+          this.setState({
+            saveButtonLabel: SAVE_BUTTON_LABEL_PROGRESS,
+            saveButtonEnability: false,
+          });
           result = await this.createAction(formState);
+          this.setState({
+            saveButtonLabel: SAVE_BUTTON_LABEL_DEFAULT,
+            saveButtonEnability: true,
+          });
         } catch (e) {
+          this.setState({
+            saveButtonLabel: SAVE_BUTTON_LABEL_DEFAULT,
+            saveButtonEnability: true,
+          });
           console.warn(e);
           return;
         }
@@ -114,8 +131,20 @@ export default class FormWrap extends Component {
     } else {
       if (typeof this.updateAction === 'function') {
         try {
+          this.setState({
+            saveButtonLabel: SAVE_BUTTON_LABEL_PROGRESS,
+            saveButtonEnability: false,
+          });
           result = await this.updateAction(formState);
+          this.setState({
+            saveButtonLabel: SAVE_BUTTON_LABEL_DEFAULT,
+            saveButtonEnability: true,
+          });
         } catch (e) {
+          this.setState({
+            saveButtonLabel: SAVE_BUTTON_LABEL_DEFAULT,
+            saveButtonEnability: true,
+          });
           console.warn(e);
           return;
         }
@@ -134,7 +163,7 @@ export default class FormWrap extends Component {
 
   render() {
     throw new TypeError('FormWrap: do not call abstract method FormWrap#render from child.');
-    return <Component {...this.props} {...this.state} />;
+    // return <Component {...this.props} {...this.state} />;
   }
 
 }

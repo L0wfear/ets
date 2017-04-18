@@ -177,7 +177,10 @@ class ElementsList extends React.Component {
       title: 'Внимание',
       body: 'Вы уверены, что хотите удалить выбранный элемент?',
     })
-    .then(() => this.removeElementAction(this.state.selectedElement[this.selectField]), removeCallback)
+    .then(() => {
+      this.removeElementAction(this.state.selectedElement[this.selectField], removeCallback);
+      this.setState({ selectedElement: null });
+    })
     .catch(() => {});
   }
 

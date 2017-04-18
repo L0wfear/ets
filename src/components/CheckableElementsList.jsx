@@ -119,7 +119,7 @@ export default class CheckableElementsList extends ElementsList {
    * Определяет, есть ли на текущий момент выбранные элементы
    */
   hasCheckedElements() {
-    return Object.keys(this.state.checkedElements).length;
+    return Object.keys(this.state.checkedElements).length > 0;
   }
 
   /**

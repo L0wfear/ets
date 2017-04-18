@@ -5,6 +5,7 @@ import Field from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
 import { connectToStores } from 'utils/decorators';
 
+
 @connectToStores(['odh'])
 export default class MaintenanceWorkForm extends Form {
 
@@ -39,7 +40,10 @@ export default class MaintenanceWorkForm extends Form {
           />
         </ModalBody>
         <Modal.Footer>
-          <Button onClick={() => this.handleSubmit()} disabled={!this.props.canSave || !isPermitted}>Сохранить</Button>
+          <Button
+            onClick={() => this.handleSubmit()}
+            disabled={!this.props.canSave || !isPermitted || !this.props.saveButtonEnability}
+          >{this.props.saveButtonLabel}</Button>
         </Modal.Footer>
       </Modal>
     );

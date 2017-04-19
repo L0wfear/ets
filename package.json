@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "0.12.17",
+    "version": "0.12.18",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -28,7 +28,7 @@
         "file-loader": "^0.8.4",
         "flummox": "^3.1.0",
         "ghooks": "^1.3.2",
-        "griddle-react": "git://github.com/amorphousxd/griddle-ets.git",
+        "griddle-react": "git+ssh://git@bitbucket.org/gostgroup/griddle-ets.git",
         "handlebars-loader": "^1.4.0",
         "highcharts": "^5.0.6",
         "history": "^1.17.0",

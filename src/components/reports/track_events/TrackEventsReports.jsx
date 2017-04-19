@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
 import { getToday9am, getTomorrow9am, createValidDateTime } from 'utils/dates';
-import { connectToStores, FluxContext, HistoryContext, staticProps, exportable } from 'utils/decorators';
+import { connectToStores, FluxContext, HistoryContext, exportable } from 'utils/decorators';
 import TrackEventsReportsTable from './TrackEventsReportsTable.jsx';
 import TrackEventsReportsHeader from './TrackEventsReportsHeader.jsx';
 

@@ -107,7 +107,8 @@ export const WeeklyTechnicalOperationCompleteReportsService = ETS_API_FACTORY.cr
 export const CoverageReportService = ETS_API_FACTORY.createApiServiceAdapter('current_coverage_report', {});
 export const OdhCoverageReportService = ETS_API_FACTORY.createApiServiceAdapter('odh_coverage_report', {});
 export const DtCoverageReportService = ETS_API_FACTORY.createApiServiceAdapter('dt_coverage_report', {});
-export const BrigadeEfficiencyReportService = ETS_API_FACTORY.createApiServiceAdapter('brigade_efficiency_report', {});
+export const BrigadeAndEmployeeEfficiencyReport1LService = ETS_API_FACTORY.createApiServiceAdapter('efficiency_for_okrug_report', {});
+export const BrigadeEfficiencyReport2LService = ETS_API_FACTORY.createApiServiceAdapter('brigade_efficiency_report', {});
 export const EmployeeEfficiencyReportService = ETS_API_FACTORY.createApiServiceAdapter('employee_efficiency_report', {});
 export const TrackEventsReportService = ETS_API_FACTORY.createApiServiceAdapter('track_events', {});
 

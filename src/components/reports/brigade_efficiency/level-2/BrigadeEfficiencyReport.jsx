@@ -11,7 +11,7 @@ import { getTableMeta as dutyMissionTableMeta } from 'components/missions/duty_m
 import { DutyMissionService } from 'api/Services';
 
 import BrigadeEfficiencyReportHeader from './BrigadeEfficiencyReportHeader.jsx';
-import BrigadeEfficiencyReportsTable from './BrigadeEfficiencyReportsTable.jsx';
+import BrigadeEfficiencyReportTable from './BrigadeEfficiencyReportTable.jsx';
 
 @connectToStores(['reports'])
 @exportable({ entity: 'brigade_efficiency_report' })
@@ -20,7 +20,7 @@ import BrigadeEfficiencyReportsTable from './BrigadeEfficiencyReportsTable.jsx';
   entity: 'brigade_efficiency_report',
 })
 @autobind
-export default class BrigadeEfficiencyReports extends Component {
+export default class BrigadeEfficiencyReport extends Component {
 
   static get propTypes() {
     return {
@@ -34,12 +34,10 @@ export default class BrigadeEfficiencyReports extends Component {
     const [date_start, date_end] = [getYesterday9am(), getToday859am()];
 
     this.state = {
-      dutyMissionFormVisibility: false,
-      dutyMissionSelectedItem: null,
       date_start,
       date_end,
       object_type: 'odh',
-      // company_id: null,
+      company_id: null,
     };
   }
 
@@ -110,16 +108,15 @@ export default class BrigadeEfficiencyReports extends Component {
     return (
       <div className="ets-page-wrap">
         <BrigadeEfficiencyReportHeader
-          handleChange={this.handleChange}
-          onClick={this.createBrigadeEfficiencyReportETS}
+          readOnly
           {...this.state}
         />
-        <BrigadeEfficiencyReportsTable
+        <BrigadeEfficiencyReportTable
           data={brigadeEfficiencyReportsList}
           onDutyNumberLinkClick={this.handleonDutyNumberLinkClick}
         >
           <Button disabled={!brigadeEfficiencyReportsList.length} bsSize="small" onClick={() => this.props.export(this.getCleanState(this.state))}><Glyphicon glyph="download-alt" /></Button>
-        </BrigadeEfficiencyReportsTable>
+        </BrigadeEfficiencyReportTable>
         {dutyNumberForm}
       </div>
     );

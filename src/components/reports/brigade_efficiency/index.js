@@ -3,8 +3,10 @@
  * Статистика выхода техники за период
  * all - все отчеты
  */
- import all from './BrigadeEfficiencyReports.jsx';
+ import firstLevel from './level-1/BrigadeEfficiencyReport.jsx';
+ import secondLevel from './level-2/BrigadeEfficiencyReport.jsx';
 
  export {
-   all,
+   firstLevel,
+   secondLevel,
  };

@@ -4,10 +4,46 @@ import Table from 'components/ui/table/DataTable.jsx';
 const tableMeta = {
   cols: [
     {
+      name: 'okrug_name',
+      displayName: 'Округ',
+      type: 'text',
+      cssClassName: 'width-fuel-report-large',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
+      name: 'district_name',
+      displayName: 'Район',
+      type: 'text',
+      cssClassName: 'width-fuel-report-large',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
+      name: 'company_name',
+      displayName: 'Организация',
+      type: 'text',
+      cssClassName: 'width-fuel-report-xlarge',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
+      name: 'fuel_type_name',
+      displayName: 'Тип топлива',
+      type: 'text',
+      cssClassName: 'width-fuel-report-large',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
       name: 'car_model_name',
       displayName: 'Модель ТС',
       type: 'text',
-      cssClassName: 'width-fuel-report-large',
+      cssClassName: 'width-fuel-report-xlarge',
       filter: {
         type: 'multiselect',
       },
@@ -23,7 +59,7 @@ const tableMeta = {
     },
     {
       name: 'car_garage_number',
-      displayName: 'Гаражный номер ТС',
+      displayName: 'Гар. номер ТС',
       type: 'text',
       cssClassName: 'width-fuel-report-large',
       filter: {
@@ -31,199 +67,28 @@ const tableMeta = {
       },
     },
     {
-      name: 'odometr_start',
-      displayName: 'Одометр. Выезд',
-      type: 'number',
-      cssClassName: 'width-fuel-report-small',
-      filter: {
-        type: 'input',
-      },
-    },
-    {
-      name: 'odometr_end',
-      displayName: 'Одометр. Возврат',
-      type: 'number',
-      cssClassName: 'width-fuel-report-small',
-      filter: {
-        type: 'input',
-      },
-    },
-    {
       name: 'odometr_diff',
-      displayName: 'Одометр. Пробег',
+      displayName: 'Одометр ТС. Пробег, км',
       type: 'number',
-      cssClassName: 'width-fuel-report-small',
-      filter: {
-        type: 'input',
-      },
-    },
-    {
-      name: 'motohours_start',
-      displayName: 'Счетчик моточасов. Выезд',
-      type: 'number',
-      cssClassName: 'width-fuel-report-small',
-      filter: {
-        type: 'input',
-      },
-    },
-    {
-      name: 'motohours_end',
-      displayName: 'Счетчик моточасов. Возврат',
-      type: 'number',
-      cssClassName: 'width-fuel-report-small',
+      cssClassName: 'width-fuel-report-large',
       filter: {
         type: 'input',
       },
     },
     {
       name: 'motohours_diff',
-      displayName: 'Счетчик моточасов. Пробег',
+      displayName: 'Счетчик моточасов ТС. Пробег, м/ч',
       type: 'number',
-      cssClassName: 'width-fuel-report-small',
-      filter: {
-        type: 'input',
-      },
-    },
-    {
-      name: 'motohours_equip_start',
-      displayName: 'Счет. обор. моточасов. Выезд',
-      type: 'number',
-      cssClassName: 'width-fuel-report-small',
-      filter: {
-        type: 'input',
-      },
-    },
-    {
-      name: 'motohours_equip_end',
-      displayName: 'Счет. обор. моточасов. Возврат',
-      type: 'number',
-      cssClassName: 'width-fuel-report-small',
-      filter: {
-        type: 'input',
-      },
-    },
-    {
-      name: 'motohours_equip_diff',
-      displayName: 'Счет. обор. моточасов. Пробег',
-      type: 'number',
-      cssClassName: 'width-fuel-report-small',
-      filter: {
-        type: 'input',
-      },
-    },
-    {
-      name: 'fuel_type_name',
-      displayName: 'Тип топлива',
-      type: 'text',
-      cssClassName: 'width-fuel-report-small',
-      filter: {
-        type: 'multiselect',
-      },
-    },
-    {
-      name: 'fuel_start',
-      displayName: 'Топливо. Выезд',
-      type: 'number',
-      cssClassName: 'width-fuel-report-small',
-      filter: {
-        type: 'input',
-      },
-    },
-    {
-      name: 'fuel_given',
-      displayName: 'Топливо. Выдано',
-      type: 'number',
-      cssClassName: 'width-fuel-report-small',
-      filter: {
-        type: 'input',
-      },
-    },
-    {
-      name: 'fuel_end',
-      displayName: 'Топливо. Возврат',
-      type: 'number',
-      cssClassName: 'width-fuel-report-small',
-      filter: {
-        type: 'input',
-      },
-    },
-    {
-      name: 'fuel_fact',
-      displayName: 'Топливо. Расход',
-      type: 'number',
-      cssClassName: 'width-fuel-report-small',
-      filter: {
-        type: 'input',
-      },
-    },
-    {
-      name: 'equipment_fuel_type_name',
-      displayName: 'Тип топлива оборуд.',
-      type: 'text',
-      cssClassName: 'width-fuel-report-small',
-      filter: {
-        type: 'multiselect',
-      },
-    },
-    {
-      name: 'equipment_fuel_start',
-      displayName: 'Топливо. Выезд оборуд.',
-      type: 'number',
-      cssClassName: 'width-fuel-report-small',
-      filter: {
-        type: 'input',
-      },
-    },
-    {
-      name: 'equipment_fuel_given',
-      displayName: 'Топливо. Выдано оборуд.',
-      type: 'number',
-      cssClassName: 'width-fuel-report-small',
-      filter: {
-        type: 'input',
-      },
-    },
-    {
-      name: 'equipment_fuel_end',
-      displayName: 'Топливо. Возврат оборуд.',
-      type: 'number',
-      cssClassName: 'width-fuel-report-small',
-      filter: {
-        type: 'input',
-      },
-    },
-    {
-      name: 'equipment_fuel_fact',
-      displayName: 'Топливо. Расход оборуд.',
-      type: 'number',
-      cssClassName: 'width-fuel-report-small',
-      filter: {
-        type: 'input',
-      },
-    },
-    {
-      name: 'sensor_consumption',
-      displayName: 'Расход по ДУТ, л',
-      type: 'number',
-      cssClassName: 'width-fuel-report-small',
-      filter: {
-        type: 'input',
-      },
-    },
-    {
-      name: 'consumption_diff',
-      displayName: 'Разница расхода',
-      type: 'number',
-      cssClassName: 'width-fuel-report-small',
+      cssClassName: 'width-fuel-report-large',
       filter: {
         type: 'input',
       },
     },
     {
       name: 'track_length',
-      displayName: 'Пройдено по Глонасс, км',
+      displayName: 'Пройдено ТС по Глонасс, км',
       type: 'number',
-      cssClassName: 'width-fuel-report-small',
+      cssClassName: 'width-fuel-report-large',
       filter: {
         type: 'input',
       },
@@ -232,7 +97,52 @@ const tableMeta = {
       name: 'length_diff',
       displayName: 'Разница пробега',
       type: 'number',
-      cssClassName: 'width-fuel-report-small',
+      cssClassName: 'width-fuel-report-large',
+      filter: {
+        type: 'input',
+      },
+    },
+    {
+      name: 'equipment_fuel_diff',
+      displayName: 'Топливо NC. Расход, л',
+      type: 'number',
+      cssClassName: 'width-fuel-report-large',
+      filter: {
+        type: 'input',
+      },
+    },
+    {
+      name: 'sensor_consumption',
+      displayName: 'Расход ТС по ДУТ, л',
+      type: 'number',
+      cssClassName: 'width-fuel-report-large',
+      filter: {
+        type: 'input',
+      },
+    },
+    {
+      name: 'consumption_diff',
+      displayName: 'Разница расхода ТС, л',
+      type: 'number',
+      cssClassName: 'width-fuel-report-large',
+      filter: {
+        type: 'input',
+      },
+    },
+    {
+      name: 'motohours_equip_diff',
+      displayName: 'Счетчик моточасов оборудования. Пробег, м/ч',
+      type: 'number',
+      cssClassName: 'width-fuel-report-large',
+      filter: {
+        type: 'input',
+      },
+    },
+    {
+      name: 'equipment_fuel_diff',
+      displayName: 'Топливо оборудования. Расход, л',
+      type: 'number',
+      cssClassName: 'width-fuel-report-large',
       filter: {
         type: 'input',
       },

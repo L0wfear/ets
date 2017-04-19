@@ -1,4 +1,5 @@
 @import './vendor.scss';
+@import './data-table.scss';
 @import './utils.scss';
 @import './waybill.scss';
 @import './reports.scss';
@@ -3076,21 +3077,6 @@ div.none {
 .width-nowrap {
   white-space: nowrap !important;
   width: 20px !important;
-}
-
-.width-fuel-report-small {
-  font-size: 10px !important;
-  padding: 4px !important;
-  max-width: 66px !important;
-  min-width: 66px !important;
-  width: 66px !important;
-}
-.width-fuel-report-large {
-  font-size: 10px !important;
-  padding: 4px !important;
-  max-width: 90px !important;
-  min-width: 90px !important;
-  width: 90px !important;
 }
 
 .routes-list {

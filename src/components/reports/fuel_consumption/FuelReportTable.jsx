@@ -95,7 +95,7 @@ const tableMeta = {
     },
     {
       name: 'length_diff',
-      displayName: 'Разница пробега',
+      displayName: 'Разница пробега ТС, км',
       type: 'number',
       cssClassName: 'width-fuel-report-large',
       filter: {
@@ -103,8 +103,8 @@ const tableMeta = {
       },
     },
     {
-      name: 'equipment_fuel_diff',
-      displayName: 'Топливо NC. Расход, л',
+      name: 'fuel_diff',
+      displayName: 'Топливо ТC. Расход, л',
       type: 'number',
       cssClassName: 'width-fuel-report-large',
       filter: {

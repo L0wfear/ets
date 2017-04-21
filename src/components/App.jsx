@@ -151,11 +151,11 @@ const routes = (
       <Route path="weekly-technical-operation-complete-reports" component={reports.weekly.technicalOperationComplete.all} onEnter={requireAuth} />
       <Route path="weekly-technical-operation-complete-report/:element/:id" component={reports.weekly.technicalOperationComplete.single} onEnter={requireAuth} />
       {/* Отчеты - Задания */}
-      <Route path="mission-reports" component={reports.mission.all} onEnter={requireAuth} />
-      <Route path="mission-report/:id" component={reports.mission.single} onEnter={requireAuth} />
-      <Route path="mission-report/:id/odhs/:index" component={reports.mission.singleByODH} onEnter={requireAuth} />
-      <Route path="mission-report/:id/dts/:index" component={reports.mission.singleByDT} onEnter={requireAuth} />
-      <Route path="mission-report/:id/points/:index" component={reports.mission.singleByPoints} onEnter={requireAuth} />
+      <Route path="mission-report" component={reports.mission.all} onEnter={requireAuth}>
+        <Route path=":id/odhs/:index" component={reports.mission.singleByODH} onEnter={requireAuth} />
+        <Route path=":id/dts/:index" component={reports.mission.singleByDT} onEnter={requireAuth} />
+        <Route path=":id/points/:index" component={reports.mission.singleByPoints} onEnter={requireAuth} />
+      </Route>
       {/* НСИ - Реестры и справочники */}
       <Route path="employees" component={directories.employees} onEnter={requireAuth} />
       <Route path="faxogramms" component={directories.faxogramm} onEnter={requireAuth} />

@@ -62,7 +62,7 @@ export default function exportable(options) {
 
       export(payload = {}, useRouteParams = false) {
         if (typeof this.exportFunction === 'function') {
-          this.exportFunction(payload, useRouteParams)
+          return this.exportFunction(payload, useRouteParams)
             .then(({ blob, fileName }) => {
               saveData(blob, fileName);
             });

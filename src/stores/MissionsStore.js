@@ -19,8 +19,6 @@ class MissionsStore extends Store {
     this.register(missionsActons.removeMissionTemplate, this.handleGetMissionTemplates);
     this.register(missionsActons.updateMissionTemplate, this.handleGetMissionTemplates);
     this.register(missionsActons.getMissionReports, this.handleGetMissionReports);
-    this.register(missionsActons.createMissionReport, this.handleGetMissionReports);
-    this.register(missionsActons.getMissionReportById, this.handleGetMissionReportById);
     this.register(missionsActons.getMissionReportByODHs, this.handleGetMissionReportByODHs);
     this.register(missionsActons.getMissionReportByPoints, this.handleGetMissionReportByPoints);
     this.register(missionsActons.getMissionReportByDTs, this.handleGetMissionReportByDTs);
@@ -38,7 +36,6 @@ class MissionsStore extends Store {
       missionsList: [],
       missionSourcesList: [],
       missionTemplatesList: [],
-      missionReportsList: [],
       selectedReportData: [],
       selectedReportDataODHS: [],
       dutyMissionsList: [],
@@ -71,11 +68,7 @@ class MissionsStore extends Store {
     return _.find(this.state.missionSourcesList, ms => ms.id === id) || {};
   }
 
-  handleGetMissionReports(missionReports) {
-    this.setState({ missionReportsList: missionReports.result.rows });
-  }
-
-  handleGetMissionReportById(data) {
+  handleGetMissionReports(data) {
     // let selectedReportData = data.result[0].result.result.map((r,i) => {
     //   r.index = i;
     //   return r;

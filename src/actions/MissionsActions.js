@@ -306,20 +306,12 @@ export default class MissionsActions extends Actions {
   /* ---------- MISSION REPORTS ---------- */
 
 
-  getMissionReports() {
-    return MissionReportsService.get();
-  }
-
-  getMissionReportById(id) {
-    return MissionReportsService.path(id).get();
-  }
-
-  createMissionReport(mission_date_start_from, mission_date_end_to) {
+  getMissionReports({ mission_date_start_from, mission_date_end_to }) {
     const payload = {
       mission_date_start_from: createValidDateTime(mission_date_start_from),
       mission_date_end_to: createValidDateTime(mission_date_end_to),
     };
-    return MissionReportsService.post(payload);
+    return MissionReportsService.get(payload);
   }
 
   getMissionReportByODHs(index) {

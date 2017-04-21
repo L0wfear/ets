@@ -139,7 +139,6 @@ class MissionReportByDT extends ElementsList {
 
   async componentDidMount() {
     if (!this.props.renderOnly) {
-      await this.context.flux.getActions('missions').getMissionReportById(this.props.routeParams.id);
       this.context.flux.getActions('missions').getMissionReportByDTs(this.props.routeParams.index);
     }
   }
@@ -155,9 +154,14 @@ class MissionReportByDT extends ElementsList {
     const { renderOnly = false } = this.props;
 
     return (
-      <div className="ets-page-wrap" ref={node => (this.node = node)}>
-        <MissionReportByDTTable noHeader={renderOnly} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={this.selectField} data={this.props.selectedReportDataDTS || []} {...this.props} />
-      </div>
+      <MissionReportByDTTable
+        noHeader={renderOnly}
+        onRowSelected={this.selectElement.bind(this)}
+        selected={this.state.selectedElement}
+        selectField={this.selectField}
+        data={this.props.selectedReportDataDTS || []}
+        {...this.props}
+      />
     );
   }
 }

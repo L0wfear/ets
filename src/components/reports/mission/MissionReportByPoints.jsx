@@ -63,7 +63,6 @@ class MissionReportByPoints extends Component {
 
   async componentDidMount() {
     if (!this.props.renderOnly) {
-      await this.context.flux.getActions('missions').getMissionReportById(this.props.routeParams.id);
       this.context.flux.getActions('missions').getMissionReportByPoints(this.props.routeParams.index);
     }
   }
@@ -78,9 +77,12 @@ class MissionReportByPoints extends Component {
     const { renderOnly = false } = this.props;
 
     return (
-      <div className="ets-page-wrap">
-        <MissionReportByPointsTable noHeader={renderOnly} onRowSelected={this.selectElement.bind(this)} data={this.props.selectedReportDataPoints || []} {...this.props} />
-      </div>
+      <MissionReportByPointsTable
+        noHeader={renderOnly}
+        onRowSelected={this.selectElement.bind(this)}
+        data={this.props.selectedReportDataPoints || []}
+        {...this.props}
+      />
     );
   }
 }

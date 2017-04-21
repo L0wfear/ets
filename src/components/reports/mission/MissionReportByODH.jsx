@@ -132,7 +132,6 @@ class MissionReportByODH extends ElementsList {
 
   async componentDidMount() {
     if (!this.props.renderOnly) {
-      await this.context.flux.getActions('missions').getMissionReportById(this.props.routeParams.id);
       this.context.flux.getActions('missions').getMissionReportByODHs(this.props.routeParams.index);
     }
   }
@@ -148,9 +147,14 @@ class MissionReportByODH extends ElementsList {
     const { renderOnly = false } = this.props;
 
     return (
-      <div className="ets-page-wrap" ref={node => (this.node = node)}>
-        <MissionReportByODHTable noHeader={renderOnly} onRowSelected={this.selectElement.bind(this)} selected={this.state.selectedElement} selectField={this.selectField} data={this.props.selectedReportDataODHS || []} {...this.props} />
-      </div>
+      <MissionReportByODHTable
+        noHeader={renderOnly}
+        onRowSelected={this.selectElement.bind(this)}
+        selected={this.state.selectedElement}
+        selectField={this.selectField}
+        data={this.props.selectedReportDataODHS || []}
+        {...this.props}
+      />
     );
   }
 }

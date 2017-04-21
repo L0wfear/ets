@@ -73,11 +73,11 @@ export default class MissionReport extends Component {
     const id = props.data.mission_id;
 
     if (props.data.report_by_odh) {
-      this.context.history.pushState(null, `/mission-report/${id}/odhs/${index}`);
+      this.context.history.pushState(null, `/mission-reports/${id}/odhs/${index}`);
     } else if (props.data.report_by_dt) {
-      this.context.history.pushState(null, `/mission-report/${id}/dts/${index}`);
+      this.context.history.pushState(null, `/mission-reports/${id}/dts/${index}`);
     } else if (props.data.report_by_point) {
-      this.context.history.pushState(null, `/mission-report/${id}/points/${index}`);
+      this.context.history.pushState(null, `/mission-reports/${id}/points/${index}`);
     }
   }
 

@@ -56,7 +56,7 @@ function httpMethod(url, data = {}, method, type, params = {}) {
     },
     credentials: 'include',
   };
-  if (url.indexOf('city-dashboard') > -1) {
+  if (url.indexOf('tracks-caching') > -1) {
     delete options.headers;
   }
 

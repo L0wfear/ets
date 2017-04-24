@@ -1,33 +1,23 @@
 import React, { Component, PropTypes } from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
-import each from 'lodash/each';
 
 import { getServerErrorNotification } from 'utils/notifications';
 import { getYesterday9am, getToday859am, createValidDateTime } from 'utils/dates';
-import { FluxContext, connectToStores, exportable, staticProps } from 'utils/decorators';
+import { FluxContext, connectToStores, exportable, HistoryContext } from 'utils/decorators';
 import { autobind } from 'core-decorators';
 import DutyMissionForm from 'components/missions/duty_mission/DutyMissionFormWrap.jsx';
 import { getTableMeta as dutyMissionTableMeta } from 'components/missions/duty_mission/DutyMissionsTable.jsx';
 import { DutyMissionService } from 'api/Services';
 
-import BrigadeEfficiencyReportHeader from './BrigadeEfficiencyReportHeader.jsx';
+import BrigadeEfficiencyReportHeader from './../level-1/BrigadeEfficiencyReportHeader.jsx';
 import BrigadeEfficiencyReportTable from './BrigadeEfficiencyReportTable.jsx';
 
 @connectToStores(['reports'])
 @exportable({ entity: 'brigade_efficiency_report' })
 @FluxContext
-@staticProps({
-  entity: 'brigade_efficiency_report',
-})
+@HistoryContext
 @autobind
-export default class BrigadeEfficiencyReport extends Component {
-
-  static get propTypes() {
-    return {
-      brigadeEfficiencyReportsList: PropTypes.array,
-    };
-  }
-
+class BrigadeEfficiencyReport extends Component {
   constructor(props) {
     super(props);
 
@@ -38,13 +28,15 @@ export default class BrigadeEfficiencyReport extends Component {
       date_end,
       object_type: 'odh',
       company_id: null,
+      dutyMissionFormVisibility: false,
+      dutyMissionSelectedItem: null,
     };
   }
-
   componentWillMount() {
-    this.createBrigadeEfficiencyReportETS(this.state);
+    const { flux } = this.context;
+    this.setState(this.props.location.query)
+    flux.getActions('reports').getBrigadeEfficiencyReport2L(this.props.location.query);
   }
-
   getCleanState(state) {
     return {
       ...state,
@@ -52,11 +44,6 @@ export default class BrigadeEfficiencyReport extends Component {
       date_end: createValidDateTime(state.date_end),
     };
   }
-
-  handleChange(field, value) {
-    this.setState({ [field]: value });
-  }
-
   async handleonDutyNumberLinkClick(data) {
     try {
       const dutyMission = await DutyMissionService.path(`${data}/`).get();
@@ -72,26 +59,21 @@ export default class BrigadeEfficiencyReport extends Component {
       global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification('duty_mission (Журнал наряд-заданий)'));
     }
   }
-
   handleDutyMissionFormVisibility() {
     this.setState({ dutyMissionFormVisibility: false });
   }
-
   createBrigadeEfficiencyReportETS() {
     const { flux } = this.context;
     flux.getActions('reports').getBrigadeEfficiencyReports(this.state);
   }
-
+  export() {
+    this.props.export(this.getCleanState(this.state));
+  }
+  pushBack() {
+    this.context.history.pushState(null, '/brigade-efficiency-report');
+  }
   render() {
-    const { brigadeEfficiencyReportsList = [] } = this.props;
-    let currentCombination;
-    each(brigadeEfficiencyReportsList, (el) => {
-      if (!currentCombination || currentCombination !== `${el.company_name}${el.func_type}`) {
-        currentCombination = `${el.company_name}${el.func_type}`;
-      } else {
-        el.hidden = true;
-      }
-    });
+    const { brigadeEfficiencyReport2L = [] } = this.props;
 
     const formSchema = dutyMissionTableMeta({ structures: [] });
 
@@ -106,19 +88,30 @@ export default class BrigadeEfficiencyReport extends Component {
     );
 
     return (
-      <div className="ets-page-wrap">
-        <BrigadeEfficiencyReportHeader
-          readOnly
-          {...this.state}
-        />
+      <div>
         <BrigadeEfficiencyReportTable
-          data={brigadeEfficiencyReportsList}
+          data={brigadeEfficiencyReport2L}
           onDutyNumberLinkClick={this.handleonDutyNumberLinkClick}
         >
-          <Button disabled={!brigadeEfficiencyReportsList.length} bsSize="small" onClick={() => this.props.export(this.getCleanState(this.state))}><Glyphicon glyph="download-alt" /></Button>
+          <Button
+            disabled={!brigadeEfficiencyReport2L.length}
+            bsSize="small"
+            onClick={this.export}
+          ><Glyphicon glyph="download-alt" /></Button>
+          <Button bsSize="small" onClick={this.pushBack}>Назад</Button>
         </BrigadeEfficiencyReportTable>
         {dutyNumberForm}
       </div>
     );
   }
 }
+
+BrigadeEfficiencyReport.propTypes = {
+  brigadeEfficiencyReport2L: PropTypes.array,
+  export: PropTypes.func,
+  location: React.PropTypes.shape({
+    query: React.PropTypes.shape({}),
+  }),
+};
+
+export default BrigadeEfficiencyReport;

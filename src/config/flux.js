@@ -17,3 +17,7 @@ export default class Flux extends Flummox {
   }
 
 }
+
+const flux = new Flux();
+
+export { flux };

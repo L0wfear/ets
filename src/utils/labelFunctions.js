@@ -1,10 +1,9 @@
 import find from 'lodash/find';
+
+import { flux } from './../config/flux';
 // Модуль для функций, использующихся при рендеринге поля фильтра в гридах
 // TODO переделать на нормальный i18n
-let flux = null;
-export function bindFlux(fluxInstance) {
-  flux = fluxInstance;
-}
+
 
 // TODO убрать
 export function getGeozoneTypeLabel(type) {

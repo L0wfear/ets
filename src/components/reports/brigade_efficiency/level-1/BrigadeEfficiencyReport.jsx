@@ -18,7 +18,11 @@ export default class BrigadeEfficiencyReport extends Component {
   static get propTypes() {
     return {
       brigadeAndEmployeeEfficiencyReport1L: PropTypes.array,
+      children: PropTypes.node,
       export: PropTypes.func,
+      location: React.PropTypes.shape({
+        query: React.PropTypes.shape({}),
+      }),
     };
   }
 
@@ -34,18 +38,19 @@ export default class BrigadeEfficiencyReport extends Component {
     };
   }
 
-  componentWillMount() {
-    // this.createBrigadeEfficiencyReport(this.state);
+  componentWillUnmount() {
+    this.context.flux.getActions('reports').clearStateList('brigadeAndEmployeeEfficiencyReport1L');
   }
 
   onReportSelect({ props }) {
     const query = {
-      company_id: props.data.company_id,
+      company_id: props.data.id,
       date_start: createValidDateTime(this.state.date_start),
       date_end: createValidDateTime(this.state.date_end),
       object_type: this.state.object_type,
     };
-    // this.context.history.pushState(null, '/brigade-efficiency-report-l2/', query);
+
+    this.context.history.pushState(null, '/level/2', query);
   }
 
   getCleanState(state) {
@@ -56,8 +61,8 @@ export default class BrigadeEfficiencyReport extends Component {
     };
   }
 
+
   handleChange(field, value) {
-    console.log(field, value, this);
     this.setState({ [field]: value });
   }
 
@@ -72,26 +77,33 @@ export default class BrigadeEfficiencyReport extends Component {
 
   render() {
     const { brigadeAndEmployeeEfficiencyReport1L = [] } = this.props;
+    const isFirstLevel = Object.keys(this.props.location.query).length > 0;
+
+    const mainTable = (
+      <BrigadeEfficiencyReportTable
+        data={brigadeAndEmployeeEfficiencyReport1L}
+        onRowSelected={this.onReportSelect}
+      >
+        <Button
+          disabled={!brigadeAndEmployeeEfficiencyReport1L.length}
+          bsSize="small"
+          onClick={this.export}
+        >
+          <Glyphicon glyph="download-alt" />
+        </Button>
+      </BrigadeEfficiencyReportTable>
+    );
 
     return (
       <div className="ets-page-wrap">
         <BrigadeEfficiencyReportHeader
           handleChange={this.handleChange}
           onClick={this.createBrigadeEfficiencyReport}
+          readOnly={isFirstLevel}
           {...this.state}
         />
-        <BrigadeEfficiencyReportTable
-          data={brigadeAndEmployeeEfficiencyReport1L}
-          onRowSelected={this.onReportSelect}
-        >
-          <Button
-            disabled={!brigadeAndEmployeeEfficiencyReport1L.length}
-            bsSize="small"
-            onClick={this.export}
-          >
-            <Glyphicon glyph="download-alt" />
-          </Button>
-        </BrigadeEfficiencyReportTable>
+        {!isFirstLevel && mainTable}
+        {this.props.children}
       </div>
     );
   }

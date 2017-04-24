@@ -22,6 +22,7 @@ export default class ReportsStore extends Store {
     this.register(reportsActions.getBrigadeAndEmployeeEfficiencyReport1L, this.handleGetBrigadeAndEmployeeEfficiencyReport1L);
     this.register(reportsActions.getBrigadeEfficiencyReport2L, this.handleGetBrigadeEfficiencyReport2L);
     this.register(reportsActions.getEmployeeEfficiencyReports, this.handleGetEmployeeEfficiencyReports);
+    this.register(reportsActions.clearStateList, this.handleClearStateList);
 
     this.initialState = {
       dailyCleaningReportsListETS: [],
@@ -98,4 +99,7 @@ export default class ReportsStore extends Store {
     this.setState({ ...this.initialState });
   }
 
+  handleClearStateList(listName) {
+    this.setState({ [listName]: [] });
+  }
 }

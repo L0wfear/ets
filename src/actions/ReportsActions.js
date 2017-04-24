@@ -13,6 +13,7 @@ import {
   CarFuncTypeUsageReportService,
   CarFuncTypeUsageDetailReportService,
   BrigadeAndEmployeeEfficiencyReport1LService,
+  BrigadeEfficiencyReport2LService,
   EmployeeEfficiencyReportService,
   TrackEventsReportService,
 } from 'api/Services';
@@ -183,6 +184,13 @@ export default class ReportsActions extends Actions {
     return BrigadeAndEmployeeEfficiencyReport1LService.get(payload);
   }
 
+  getBrigadeEfficiencyReport2L(data) {
+    const payload = _.cloneDeep(data);
+    payload.date_start = createValidDateTime(payload.date_start);
+    payload.date_end = createValidDateTime(payload.date_end);
+    return BrigadeEfficiencyReport2LService.get(payload);
+  }
+
   getEmployeeEfficiencyReports(data) {
     const payload = _.cloneDeep(data);
     payload.date_start = createValidDateTime(payload.date_start);
@@ -205,4 +213,7 @@ export default class ReportsActions extends Actions {
     return TrackEventsReportService.get(payload);
   }
 
+  clearStateList(listName) {
+    return listName;
+  }
 }

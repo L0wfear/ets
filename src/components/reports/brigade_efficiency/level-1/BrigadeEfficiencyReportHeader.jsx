@@ -4,29 +4,13 @@ import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
 import Datepicker from 'components/ui/DatePicker.jsx';
 import { getToday859am, getYesterday9am } from 'utils/dates';
+import { bindable } from 'utils/decorators';
+
+const DatePicker = bindable(Datepicker);
 
 // TODO поправить на получение типов из специального сервиса
 const OBJECTS = [{ value: 'odh', label: 'Объект дорожного хозяйства' }, { value: 'dt', label: 'Дворовая территория' }];
 
-const onChangeBinder = Component => (...bindArgs) =>
-  class ChangeBinderComponent extends React.Component {
-    onChange = (e) => {
-      this.props.onChange(...bindArgs, e);
-    }
-
-    render() {
-      return (
-        <Component
-          {...this.props}
-          onChange={this.onChange}
-        />
-      );
-    }
-  };
-
-const bindedDatePicker = onChangeBinder(Datepicker);
-const StartDatePicker = bindedDatePicker('date_start');
-const EndDatePicker = bindedDatePicker('date_end');
 
 class BrigadeEfficiencyReportHeader extends React.Component {
 
@@ -37,7 +21,7 @@ class BrigadeEfficiencyReportHeader extends React.Component {
   }
 
   render() {
-    let { object_type, date_start, date_end } = this.props;
+    const { object_type, date_start, date_end } = this.props;
     return (
       <Div>
         <Row>
@@ -55,18 +39,19 @@ class BrigadeEfficiencyReportHeader extends React.Component {
           <Col md={4}>
             <Div><label htmlFor=" ">Период формирования</label></Div>
             <Div className="inline-block reports-date">
-              <StartDatePicker
+              <DatePicker
                 date={date_start}
                 onChange={this.props.handleChange}
                 disabled={this.props.readOnly}
-
+                bindOnChange={'date_start'}
               />
             </Div>
             <Div className="inline-block reports-date">
-              <EndDatePicker
+              <DatePicker
                 date={date_end}
                 onChange={this.props.handleChange}
                 disabled={this.props.readOnly}
+                bindOnChange={'date_end'}
               />
             </Div>
           </Col>
@@ -84,6 +69,9 @@ BrigadeEfficiencyReportHeader.propTypes = {
   handleChange: React.PropTypes.func,
   onClick: React.PropTypes.func,
   readOnly: React.PropTypes.bool,
+  object_type: React.PropTypes.string,
+  date_start: React.PropTypes.instanceOf(Date),
+  date_end: React.PropTypes.instanceOf(Date),
 };
 
 BrigadeEfficiencyReportHeader.defaultProps = {

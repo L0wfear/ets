@@ -12,7 +12,7 @@ import '!script!openlayers/dist/ol.js';
 import 'ol3-popup/src/ol3-popup.js';
 import './assets/main.scss';
 /* Старт приложения */
-import './components/App';
+import './bootstrap';
 /* Вспомогательные утилиты,
  * требующие постоянного нахождения в специфичном элементе в DOM
  */

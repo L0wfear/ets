@@ -27,6 +27,7 @@ module.exports = {
   module: {
     loaders: [
       { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['react-hot', 'babel-loader'] },
+      { test: /\.tsx?$/, exclude: /node_modules/, loaders: ['react-hot', 'babel-loader', 'ts-loader'] },
       { test: /\.json$/, loader: 'json-loader' },
       { test: /\.(jpe?g|png|gif)$/, loader: 'url-loader?limit=1000000&name=images/[name].[ext]' },
       { test: /\.(eot|woff|woff2|ttf|svg)(\?v=\d+\.\d+\.\d+)?/, loader: 'url-loader?limit=100000&name=fonts/[name].[ext]' },
@@ -41,7 +42,7 @@ module.exports = {
       'src',
       'node_modules',
     ],
-    extensions: ['', '.json', '.js', '.jsx'],
+    extensions: ['', '.json', '.js', '.jsx', '.ts', '.tsx'],
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),

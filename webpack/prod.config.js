@@ -30,6 +30,7 @@ module.exports = {
   module: {
     loaders: [
       { test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader' },
+      { test: /\.tsx?$/, exclude: /node_modules/, loaders: ['react-hot', 'babel-loader', 'ts-loader'] },
       { test: /\.json$/, loader: 'json-loader' },
       { test: /\.hbs?$/, loader: 'handlebars-loader' },
       { test: /\.(png|jpe?g|gif)$/, loader: 'url-loader?limit=1000000&name=images/[name].[ext]' },
@@ -44,7 +45,7 @@ module.exports = {
       'src',
       'node_modules'
     ],
-    extensions: ['', '.json', '.js', '.jsx']
+    extensions: ['', '.json', '.js', '.jsx', '.ts', '.tsx']
   },
   plugins: [
     new CleanPlugin(['dist'], {

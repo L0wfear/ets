@@ -1,0 +1,35 @@
+{
+  "extends": ["tslint:recommended"],
+  "rules": {
+    "quotemark": [
+      "single",
+      "jsx-double"
+    ],
+    "no-var-requires": false,
+    "arrow-parens": [
+      true,
+      "ban-single-arg-parens"
+    ],
+    "member-ordering": [
+      true 
+    ],
+    "member-access": [
+      false
+    ],
+    "object-literal-sort-keys": false,
+    "prefer-method-signature": true,
+    "ordered-imports": [
+      false
+    ],
+    "array-type": [
+      false
+    ],
+    "trailing-comma": [
+      true,
+      {
+        "singleline": "never",
+        "multiline": "always"
+      }
+    ]
+  }
+}

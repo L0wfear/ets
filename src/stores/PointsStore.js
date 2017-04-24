@@ -280,7 +280,7 @@ export default class PointsStore extends Store {
    * @param {object} data.payload - данные о пользователе
    */
   handleLogin({ payload }) {
-    // this.handleSetFilter({ owner: [payload.company_id] });
+    this.handleSetFilter({ owner: [payload.company_id] });
   }
   /**
    * Возвращает прошедшие фильтрацию точки

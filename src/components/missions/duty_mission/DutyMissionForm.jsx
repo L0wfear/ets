@@ -137,7 +137,7 @@ export class DutyMissionForm extends Form {
 
     const EMPLOYEES_RKU_FILTER = 'brigade_worker';
 
-    const { missionSourcesList = [], employeesList = [], missionsList = [] } = this.props;
+    const { missionSourcesList = [], employeesList = [], missionsList = [], readOnly = false } = this.props;
     const { technicalOperationsList = [], routesList = [] } = this.state;
     
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
@@ -199,7 +199,7 @@ export class DutyMissionForm extends Form {
                 type="select"
                 label="Технологическая операция"
                 error={errors.technical_operation_id}
-                disabled={IS_DISPLAY || !!state.route_id}
+                disabled={IS_DISPLAY || !!state.route_id || readOnly}
                 options={TECH_OPERATIONS}
                 value={state.technical_operation_id}
                 onChange={this.handleTechnicalOperationChange.bind(this)}
@@ -216,7 +216,7 @@ export class DutyMissionForm extends Form {
                       label="Время выполнения, планируемое:"
                       error={errors.plan_date_start}
                       date={state.plan_date_start}
-                      disabled={IS_DISPLAY}
+                      disabled={IS_DISPLAY || readOnly}
                       onChange={this.handleChange.bind(this, 'plan_date_start')}
                     />
                   </Div>
@@ -228,7 +228,7 @@ export class DutyMissionForm extends Form {
                       label=""
                       error={errors.plan_date_end}
                       date={state.plan_date_end}
-                      disabled={IS_DISPLAY}
+                      disabled={IS_DISPLAY || readOnly}
                       min={state.plan_date_start}
                       onChange={this.handleChange.bind(this, 'plan_date_end')}
                     />
@@ -244,7 +244,7 @@ export class DutyMissionForm extends Form {
                         label="Время выполнения, фактическое:"
                         error={errors.fact_date_start}
                         date={state.fact_date_start}
-                        disabled={IS_CLOSED}
+                        disabled={IS_CLOSED || readOnly}
                         onChange={this.handleChange.bind(this, 'fact_date_start')}
                       />
                     </Div>
@@ -257,7 +257,7 @@ export class DutyMissionForm extends Form {
                         error={errors.fact_date_end}
                         date={state.fact_date_end}
                         min={state.fact_date_start}
-                        disabled={IS_CLOSED}
+                        disabled={IS_CLOSED || readOnly}
                         onChange={this.handleChange.bind(this, 'fact_date_end')}
                       />
                     </Div>
@@ -275,7 +275,7 @@ export class DutyMissionForm extends Form {
                 type="select"
                 label="Бригадир"
                 error={errors.foreman_id}
-                disabled={IS_DISPLAY}
+                disabled={IS_DISPLAY || readOnly}
                 options={EMPLOYEES}
                 value={state.foreman_id}
                 onChange={this.handleChange.bind(this, 'foreman_id')}
@@ -285,7 +285,7 @@ export class DutyMissionForm extends Form {
             <Col md={STRUCTURE_FIELD_VIEW ? 3 : 6}>
               <Field type="select" label="Бригада" error={errors.brigade_employee_id_list}
                 multi
-                disabled={IS_DISPLAY}
+                disabled={IS_DISPLAY || readOnly}
                 options={EMPLOYEES}
                 value={brigade_employee_id_list}
                 onChange={this.handleBrigadeIdListChange.bind(this)}
@@ -295,7 +295,7 @@ export class DutyMissionForm extends Form {
               <Field type="select"
                 label="Подразделение"
                 error={errors.structure_id}
-                disabled={STRUCTURE_FIELD_READONLY || (!IS_CREATING && state.status !== 'not_assigned')}
+                disabled={STRUCTURE_FIELD_READONLY || (!IS_CREATING && state.status !== 'not_assigned') || readOnly}
                 clearable={STRUCTURE_FIELD_DELETABLE}
                 options={STRUCTURES}
                 emptyValue={null}
@@ -309,7 +309,7 @@ export class DutyMissionForm extends Form {
           <Row>
             <Col md={state.order_number != null ? 3 : 6}>
               <Field type="select" label="Источник получения задания" error={errors.mission_source_id}
-                disabled={IS_DISPLAY}
+                disabled={IS_DISPLAY || readOnly}
                 options={MISSION_SOURCES}
                 value={state.mission_source_id}
                 onChange={this.handleChange.bind(this, 'mission_source_id')}
@@ -324,7 +324,14 @@ export class DutyMissionForm extends Form {
               />
             </Col>}
             <Col md={6}>
-              <Field type="string" label="Комментарий" value={state.comment} onChange={this.handleChange.bind(this, 'comment')} error={errors.comment} />
+              <Field
+                type="string"
+                label="Комментарий"
+                value={state.comment}
+                disabled={readOnly}
+                onChange={this.handleChange.bind(this, 'comment')}
+                error={errors.comment}
+              />
             </Col>
           </Row>
 
@@ -332,7 +339,7 @@ export class DutyMissionForm extends Form {
             <Col md={6} />
             <Col md={6}>
               <Field type="select" label="Задание на ТС" error={errors.car_mission_id}
-                disabled={IS_DISPLAY}
+                disabled={IS_DISPLAY || readOnly}
                 options={MISSIONS}
                 value={state.car_mission_id}
                 onChange={this.handleChange.bind(this, 'car_mission_id')}
@@ -346,13 +353,16 @@ export class DutyMissionForm extends Form {
                 type="select"
                 label="Маршрут"
                 error={errors.route_id}
-                disabled={IS_DISPLAY || !state.technical_operation_id}
+                disabled={IS_DISPLAY || !state.technical_operation_id || readOnly}
                 options={ROUTES}
                 value={state.route_id}
                 onChange={this.handleRouteIdChange.bind(this)}
               />
               <Div hidden={state.route_id}>
-                <Button onClick={this.createNewRoute.bind(this)} disabled={IS_DISPLAY || !state.technical_operation_id}>Создать новый</Button>
+                <Button
+                  onClick={this.createNewRoute.bind(this)}
+                  disabled={IS_DISPLAY || !state.technical_operation_id || readOnly}
+                >Создать новый</Button>
               </Div>
             </Col>
             <Col md={6}>
@@ -366,9 +376,9 @@ export class DutyMissionForm extends Form {
 
         <Modal.Footer>
           <Div className="inline-block" >
-            <Button onClick={this.props.onPrint} disabled={!this.props.canSave}>
+            <Button onClick={this.props.onPrint} disabled={!this.props.canSave || readOnly}>
               <Glyphicon glyph="download-alt" /> {state.status !== 'not_assigned' ? 'Просмотр' : 'Выдать'}</Button>
-            <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>{'Сохранить'}</Button>
+            <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || readOnly}>{'Сохранить'}</Button>
           </Div>
         </Modal.Footer>
 

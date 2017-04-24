@@ -8,7 +8,7 @@ import Div from './Div.jsx';
 import Preloader from './Preloader.jsx';
 
 function StringField(props) {
-  const { error, label = '', readOnly = false, className = '',
+  const { error, label = '', readOnly = false, disabled = false, className = '',
     value, wrapStyle, hidden, isLoading } = props;
   const inputClassName = cx({ 'has-error': error });
 
@@ -23,7 +23,7 @@ function StringField(props) {
 
   return !readOnly ?
     <Div hidden={hidden} style={wrapStyle || {}}>
-      <Input type="text" className={inputClassName} {...props} />
+      <Input type="text" disabled={disabled} className={inputClassName} {...props} />
       <Div hidden={!error} className="error">{error}</Div>
     </Div> :
     <Div hidden={hidden} className={className}>
@@ -93,7 +93,7 @@ export default class Field extends React.Component {
     return (
       <Div hidden={this.props.hidden} className={className} style={{ marginBottom: 15 }}>
         <label>{label}</label>
-        <EtsSelect {...this.props} disabled={readOnly} className={selectClassName} />
+        <EtsSelect {...this.props} disabled={readOnly || this.props.disabled} className={selectClassName} />
         <Div hidden={!error} className="error" style={{ marginTop: 4 }}>{error}</Div>
       </Div>
     );

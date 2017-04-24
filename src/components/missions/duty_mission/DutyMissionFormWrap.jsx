@@ -49,6 +49,7 @@ class DutyMissionFormWrap extends FormWrap {
         show={this.props.showForm}
         onHide={this.props.onFormHide}
         fromWaybill={this.props.fromWaybill}
+        readOnly={this.props.readOnly}
         {...this.state}
       />
     </Div>);

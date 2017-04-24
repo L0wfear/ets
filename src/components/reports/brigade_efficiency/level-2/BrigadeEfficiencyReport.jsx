@@ -84,6 +84,7 @@ class BrigadeEfficiencyReport extends Component {
         showForm={this.state.dutyMissionFormVisibility}
         element={this.state.dutyMissionSelectedItem}
         meta={formSchema}
+        readOnly
       />
     );
 

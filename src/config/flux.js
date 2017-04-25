@@ -1,4 +1,5 @@
 import { Flummox } from 'flummox';
+
 import * as actions from '../actions';
 import * as stores from '../stores';
 
@@ -15,9 +16,4 @@ export default class Flux extends Flummox {
       this.createStore(storeName, stores[storeName], this);
     }
   }
-
 }
-
-const flux = new Flux();
-
-export { flux };

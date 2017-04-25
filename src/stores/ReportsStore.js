@@ -21,7 +21,7 @@ export default class ReportsStore extends Store {
     this.register(reportsActions.getCarFuncTypeUsageDetailReport, this.handleGetCarFuncTypeUsageDetailReport);
     this.register(reportsActions.getBrigadeAndEmployeeEfficiencyReport1L, this.handleGetBrigadeAndEmployeeEfficiencyReport1L);
     this.register(reportsActions.getBrigadeEfficiencyReport2L, this.handleGetBrigadeEfficiencyReport2L);
-    this.register(reportsActions.getEmployeeEfficiencyReports, this.handleGetEmployeeEfficiencyReports);
+    this.register(reportsActions.getEmployeeEfficiencyReport2L, this.handleGetEmployeeEfficiencyReport2L);
     this.register(reportsActions.clearStateList, this.handleClearStateList);
 
     this.initialState = {
@@ -33,8 +33,8 @@ export default class ReportsStore extends Store {
       weeklyTechnicalOperationCompleteReportsList: [],
       odhCoverageReport: [],
       dtCoverageReport: [],
-      employeeEfficiencyReportsList: [],
-      brigadeEfficiencyReport1L: [],
+      employeeEfficiencyReport2L: [],
+      brigadeAndEmployeeEfficiencyReport1L: [],
       brigadeEfficiencyReport2L: [],
       trackEventsReport: [],
       trackEventsReports: [],
@@ -71,8 +71,8 @@ export default class ReportsStore extends Store {
     this.setState({ brigadeEfficiencyReport2L: result.rows });
   }
 
-  handleGetEmployeeEfficiencyReports({ result }) {
-    this.setState({ employeeEfficiencyReportsList: result.rows });
+  handleGetEmployeeEfficiencyReport2L({ result }) {
+    this.setState({ employeeEfficiencyReport2L: result.rows });
   }
 
   handleGetDailyCleaningReportsETS(dailyCleaningReports) {

@@ -191,7 +191,7 @@ export default class ReportsActions extends Actions {
     return BrigadeEfficiencyReport2LService.get(payload);
   }
 
-  getEmployeeEfficiencyReports(data) {
+  getEmployeeEfficiencyReport2L(data) {
     const payload = _.cloneDeep(data);
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);

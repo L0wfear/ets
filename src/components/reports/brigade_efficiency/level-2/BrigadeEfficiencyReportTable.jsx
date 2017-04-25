@@ -79,10 +79,6 @@ class DutyNumberLinkComponent extends Component {
 
 export default (props) => {
   const renderers = {
-    // rowNumber: meta => <div>{meta.rowData.hidden ? '' : meta.data}</div>,
-    // company_name: meta => <div>{meta.rowData.hidden ? '' : meta.data}</div>,
-    // func_type: meta => <div>{meta.rowData.hidden ? '' : meta.data}</div>,
-    // total_cars_count: meta => <div>{meta.rowData.hidden ? '' : meta.data}</div>,
     number: meta => <DutyNumberLinkComponent data={meta.data} onClick={props.onDutyNumberLinkClick} />,
   };
 

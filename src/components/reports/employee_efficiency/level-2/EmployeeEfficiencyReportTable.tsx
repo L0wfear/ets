@@ -1,7 +1,11 @@
-import React from 'react';
-import Table from 'components/ui/table/DataTable.jsx';
+import * as React from 'react';
 
-const tableMeta = {
+import { IDataTableSchema } from 'components/ui/table/@types/DataTable/schema.h';
+
+import DataTable from 'components/ui/table/DataTable.jsx';
+const Table: any = DataTable;
+
+const tableMeta: IDataTableSchema = {
   cols: [
     {
       name: 'company_name',
@@ -58,21 +62,18 @@ const tableMeta = {
   ],
 };
 
-export default (props) => {
-  const renderers = {
-    // rowNumber: meta => <div>{meta.rowData.hidden ? '' : meta.data}</div>,
-    // company_name: meta => <div>{meta.rowData.hidden ? '' : meta.data}</div>,
-    // func_type: meta => <div>{meta.rowData.hidden ? '' : meta.data}</div>,
-    // total_cars_count: meta => <div>{meta.rowData.hidden ? '' : meta.data}</div>,
-  };
+interface IPropsEmployeeEfficiencyReportTable {
+  data: object[];
+  title: string;
+}
 
-  return (
-    <Table
-      title="Работа сотрудников по ручной уборке"
-      tableMeta={tableMeta}
-      results={props.data}
-      renderers={renderers}
-      {...props}
-    />
-  );
-};
+const EmployeeEfficiencyReportTable: React.StatelessComponent<IPropsEmployeeEfficiencyReportTable> = props =>
+  <Table
+    title={props.title}
+    tableMeta={tableMeta}
+    results={props.data}
+    renderers={{}}
+    {...props}
+  />;
+
+export { EmployeeEfficiencyReportTable };

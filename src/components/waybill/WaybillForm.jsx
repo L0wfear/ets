@@ -34,6 +34,8 @@ class WaybillForm extends Form {
       canEditIfClose: null,
       loadingFields: {},
     };
+
+    this.employeeFIOLabelFunction = () => {};
   }
 
   componentWillReceiveProps(props) {
@@ -63,6 +65,7 @@ class WaybillForm extends Form {
   async componentDidMount() {
     const { flux } = this.context;
     const { formState } = this.props;
+    this.employeeFIOLabelFunction = employeeFIOLabelFunction(flux);
 
     if (formState.status === 'active') {
       const car = _.find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
@@ -521,7 +524,7 @@ class WaybillForm extends Form {
                 label="Водитель"
                 readOnly
                 hidden={IS_CREATING || IS_POST_CREATING}
-                value={employeeFIOLabelFunction(state.driver_id, true)}
+                value={this.employeeFIOLabelFunction(state.driver_id, true)}
               />
             </Col>
           </Row>

@@ -1,6 +1,5 @@
 import find from 'lodash/find';
 
-import { flux } from './../config/flux';
 // Модуль для функций, использующихся при рендеринге поля фильтра в гридах
 // TODO переделать на нормальный i18n
 
@@ -11,7 +10,7 @@ export function getGeozoneTypeLabel(type) {
 }
 
 // TODO обращений к сторам быть не должно, нужно получать данные из бека
-export function employeeFIOLabelFunction(employeeId, fullFlag = false) {
+export const employeeFIOLabelFunction = flux => (employeeId, fullFlag = false) => {
   const employees = flux.getStore('employees').state.employeesList;
   const employee = find(employees, e => e.id === employeeId);
   if (!employee) {

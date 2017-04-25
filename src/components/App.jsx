@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
 import { AuthCheckService } from 'api/Services';
-import { flux } from 'config/flux.js';
 import { loginErrorNotification, getErrorNotification } from 'utils/notifications';
 import MainPage from './MainPage.jsx';
 import LoadingPage from './LoadingPage.jsx';
@@ -18,6 +17,7 @@ class App extends Component {
     return {
       location: PropTypes.object,
       children: PropTypes.node,
+      flux: PropTypes.shape({}),
     };
   }
 
@@ -38,7 +38,7 @@ class App extends Component {
 
   getChildContext() {
     return {
-      flux,
+      flux: this.props.flux,
       loadData: this.loadData.bind(this),
     };
   }
@@ -48,6 +48,7 @@ class App extends Component {
   }
 
   loadData() {
+    const { flux } = this.props;
     this.setState({ loading: true });
     if (!flux.getStore('session').isLoggedIn()) {
       return this.setState({ loading: false });
@@ -68,7 +69,9 @@ class App extends Component {
   }
 
   render() {
-    return !this.state.loading ? <MainPage location={this.props.location}>{this.props.children}</MainPage> : <LoadingPage loaded={this.state.loading} />;
+    return !this.state.loading
+      ? <MainPage location={this.props.location}>{this.props.children}</MainPage>
+      : <LoadingPage loaded={this.state.loading} />;
   }
 }
 

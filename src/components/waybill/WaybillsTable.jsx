@@ -2,15 +2,14 @@ import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 import { WAYBILL_STATUSES } from 'constants/statuses';
-import {
-  employeeFIOLabelFunction,
-} from 'utils/labelFunctions';
+import { employeeFIOLabelFunction as _employeeFIOLabelFunction } from 'utils/labelFunctions';
 
 function waybillMissionsCompleteStatusLabelFunction(status) {
   return status === true ? 'Все задания завершены' : 'Есть незавершенные задания';
 }
 
 const getTableMeta = (props) => {
+  const { employeeFIOLabelFunction } = props;
   const tableMeta = {
     cols: [
       {
@@ -255,6 +254,12 @@ export default (props) => {
     structure_id: ({ data }) => <div>{props.structures.find(s => s.id === data) ? props.structures.find(s => s.id === data).name : ''}</div>,
   };
 
+  const employeeFIOLabelFunction = _employeeFIOLabelFunction(props.flux);
+  const extProps = {
+    ...props,
+    employeeFIOLabelFunction,
+  };
+
   return (
     <Table
       title="Журнал путевых листов"
@@ -263,7 +268,7 @@ export default (props) => {
       initialSort={'number'}
       enumerated={false}
       initialSortAscending={false}
-      tableMeta={getTableMeta(props)}
+      tableMeta={getTableMeta(extProps)}
       columnControl
       serverPagination
       externalFilter={props.changeFilter}

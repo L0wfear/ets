@@ -122,8 +122,9 @@ export default class LoadingStore extends Store {
       reportsActions.getDtCoverageReport,
       reportsActions.getCarFuncTypeUsageReports,
       reportsActions.getCarFuncTypeUsageDetailReport,
-      reportsActions.getBrigadeEfficiencyReports,
-      reportsActions.getEmployeeEfficiencyReports,
+      reportsActions.getBrigadeAndEmployeeEfficiencyReport1L,
+      reportsActions.getBrigadeEfficiencyReport2L,
+      reportsActions.getEmployeeEfficiencyReport2L,
       reportsActions.getTrackEventsReports,
       reportsActions.getTrackEventsReport,
 

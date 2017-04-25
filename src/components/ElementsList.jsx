@@ -330,7 +330,11 @@ class ElementsList extends React.Component {
     }
 
     return (
-      <TableComponent {...this.getTableProps()} {...this.props}>
+      <TableComponent
+        {...this.getTableProps()}
+        {...this.props}
+        flux={this.context.flux}
+      >
         {this.getButtons()}
       </TableComponent>
     );

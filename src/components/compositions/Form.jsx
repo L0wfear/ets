@@ -40,7 +40,6 @@ export default class Form extends React.Component {
   }
 
   render() {
-    console.log('Form', this.props);
     return <Component {...this.props} {...this.state} />;
   }
 

@@ -180,6 +180,8 @@ export default class Track {
                   this.render();
                   this.onUpdateCallback();
                   console.log('track fetched for', this.owner);
+
+                  return obj;
                 });
   }
 

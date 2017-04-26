@@ -44,6 +44,7 @@ export default class CarInfo extends Component {
         equipment: [],
         level: [],
       },
+      sensorsInfo: {},
     };
   }
 
@@ -135,7 +136,11 @@ export default class CarInfo extends Component {
       }
     });
 
-    track.fetch(this.props.flux, from_dt, to_dt);
+    track.fetch(this.props.flux, from_dt, to_dt).then((tracks) => {
+      this.setState({
+        sensorsInfo: tracks.sensors,
+      });
+    });
   }
 
   toggleTrackPlaying() {
@@ -301,7 +306,7 @@ export default class CarInfo extends Component {
           {equipmentIdList.map((id, i) => (
             <div key={id} onClick={() => this.toggleSensor('equipment', id)}>
               <input type="checkbox" onChange={() => {}} checked={this.state.sensors.equipment.includes(id) && 'checked'} />
-              {` Датчик №${i + 1}`}
+              {` Датчик №${i + 1} - ${this.state.sensorsInfo[id] && this.state.sensorsInfo[id].type_name}`}
             </div>
           ))}
         </div>

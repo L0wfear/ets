@@ -43,19 +43,31 @@ export default class MissionsJournal extends CheckableElementsList {
     this.state = Object.assign(this.state, {
       showMissionRejectForm: false,
       showMissionInfoForm: false,
+      equipmentData: [],
       page: 0,
       sortBy: ['number:desc'],
       filter: {},
     });
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
     flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, 0, this.state.sortBy, this.state.filter);
     flux.getActions('objects').getCars();
     flux.getActions('routes').getRoutes();
     flux.getActions('technicalOperation').getTechnicalOperations();
+
+    if (!this.state.mission) { return; }
+    const { car_data, mission_data } = this.state.mission;
+    const cars = await flux.getActions('objects').getCars().then(r => r.result);
+    const carGpsCode = cars.find(c => c.gov_number === car_data.gov_number).gps_code;
+    const equipmentData = await flux.getActions('cars').getTrack(carGpsCode, mission_data.date_start, mission_data.date_end)
+      .then(r => Object.keys(r.equipment)
+        .map(k => r.equipment[k].distance)
+        .reduce((a, b) => a + b, 0)
+      );
+    this.setState({ equipmentData });
   }
 
   async componentWillUpdate(nextProps, nextState) {
@@ -187,6 +199,7 @@ export default class MissionsJournal extends CheckableElementsList {
   }
 
   getForms() {
+    console.log('MissionsJournal getForms', this.state);
     return [
       <div key={'forms'}>
         <MissionFormWrap
@@ -204,6 +217,7 @@ export default class MissionsJournal extends CheckableElementsList {
           onFormHide={() => this.setState({ showMissionInfoForm: false })}
           showForm={this.state.showMissionInfoForm}
           element={this.state.mission}
+          equipmentData={this.state.equipmentData}
         />
       </div>,
     ];

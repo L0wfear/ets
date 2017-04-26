@@ -34,6 +34,10 @@ export default class VehicleAttributes extends Component {
       const dt = new Date(p.timestamp * 1000);
       return `${makeDate(dt)} ${makeTime(dt, true)} [${roundCoordinates(point.coords_msk)}]`;
     };
+
+    if (this.props.isOkrug) {
+      addAttribute('Организация', car.company_name);
+    }
     addAttribute('Рег. номер ТС', car.gov_number);
     addAttribute('ID БНСО', point.id);
     getStatusById(point.status) && addAttribute('Статус', getStatusById(point.status).title);

@@ -82,7 +82,7 @@ export default class VehicleInfo extends Component {
     return (
       <div className="car-info-tracking">
         <Panel>
-          <VehicleAttributes point={car} car={this.state.car} lastPoint={marker.hasTrackLoaded() && marker.track.getLastPoint()} />
+          <VehicleAttributes isOkrug={!notOkrug} point={car} car={this.state.car} lastPoint={marker.hasTrackLoaded() && marker.track.getLastPoint()} />
         </Panel>
         {notOkrug && <Panel title="Задания" className="chart-datepickers-wrap">
           {missionsRender}

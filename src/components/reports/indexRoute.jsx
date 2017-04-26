@@ -12,7 +12,12 @@ const reportRoutes = (props) => {
       <Route path="route-reports" component={reports.route.all} onEnter={requireAuth} />
       <Route path="route-report/:id" component={reports.route.single} onEnter={requireAuth} />
       <Route path="coverage-report" component={reports.coverage} onEnter={requireAuth} />
-      <Route path="fuel-consumption-report" component={reports.fuelConsumption} onEnter={requireAuth} />
+
+      <Redirect from="fuel-consumption-report" to="fuel-consumption-report/level/1" />
+      <Route path="fuel-consumption-report/level/1" component={reports.fuelConsumption.firstLevel} onEnter={requireAuth}>
+        <Route path="/fuel-consumption-report/level/2" component={reports.fuelConsumption.secondLevel} onEnter={requireAuth} />
+      </Route>
+
       <Route path="analytics" component={reports.analytics} onEnter={requireAuth} />
       <Route path="car_func_type_usage_reports" component={reports.carFuncTypeUsage.all} onEnter={requireAuth} />
       <Route path="car_func_type_usage_report" component={reports.carFuncTypeUsage.single} onEnter={requireAuth} />

@@ -29,7 +29,8 @@ export default class ReportsStore extends Store {
       dailyCleaningReportsListCAFAP: [],
       carFuncTypeUsageReportsList: [],
       carFuncTypeUsageDetailReportList: [],
-      fuelReport: [],
+      fuelReportL1: [],
+      fuelReportL2: [],
       weeklyTechnicalOperationCompleteReportsList: [],
       odhCoverageReport: [],
       dtCoverageReport: [],
@@ -43,8 +44,9 @@ export default class ReportsStore extends Store {
     this.state = this.initialState;
   }
 
-  handleGetFuelReport({ result }) {
-    this.setState({ fuelReport: result.rows });
+  handleGetFuelReport({ data, level }) {
+    console.log('handleGetFuelReport', data, level);
+    this.setState({ [`fuelReportL${level}`]: data.result.rows });
   }
 
   handleGetTrackEventsReport({ result }) {

@@ -13,7 +13,7 @@ class FuelReportHeader extends Component {
     super(props);
   }
 
-  handleFuelTypeChange(v) {
+  handleFuelTypeChange = (v) => {
     const data = !isEmpty(v) ? v : null;
     this.props.handleChange('fuel_type', data);
   }
@@ -31,10 +31,20 @@ class FuelReportHeader extends Component {
           <Col md={5}>
             <Div><label>Период формирования</label></Div>
             <Div className="inline-block reports-date">
-              <Datepicker time={false} date={props.date_from} onChange={props.handleChange.bind(null, 'date_from')} />
+              <Datepicker
+                time={false}
+                date={props.date_from}
+                disabled={props.readOnly}
+                onChange={props.handleChange.bind(null, 'date_from')}
+              />
             </Div>
             <Div className="inline-block reports-date">
-              <Datepicker time={false} date={props.date_to} onChange={props.handleChange.bind(null, 'date_to')} />
+              <Datepicker
+                time={false}
+                date={props.date_to}
+                disabled={props.readOnly}
+                onChange={props.handleChange.bind(null, 'date_to')}
+              />
             </Div>
           </Col>
           <Col md={3} className={'fuel-types-container'}>
@@ -42,7 +52,8 @@ class FuelReportHeader extends Component {
               label="Тип топлива"
               options={FUEL_TYPES}
               value={props.fuel_type}
-              onChange={this.handleFuelTypeChange.bind(this)}
+              disabled={props.readOnly}
+              onChange={this.handleFuelTypeChange}
             />
           </Col>
         </Row>
@@ -50,7 +61,12 @@ class FuelReportHeader extends Component {
         <Row style={{ marginTop: 20 }}>
           <Col md={9} />
           <Col md={3}>
-            <Button bsSize="small" onClick={props.onClick.bind(this)}>Сформировать отчет</Button>
+            { !props.readOnly &&
+              <Button
+                bsSize="small"
+                onClick={props.onClick}
+              >Сформировать отчет</Button>
+            }
           </Col>
         </Row>
       </Div>

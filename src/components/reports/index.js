@@ -4,7 +4,7 @@
  */
 import analytics from './Analytics.jsx';
 import coverage from './CoverageReport.jsx';
-import fuelConsumption from './fuel_consumption/FuelReport.jsx';
+import * as fuelConsumption from './fuel_consumption';
 import odhCoverageReport from './odh_coverage/OdhCoverageReport.jsx';
 import dtCoverageReport from './dt_coverage/DtCoverageReport.jsx';
 import odh from './ODHReports.jsx';

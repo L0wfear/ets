@@ -85,13 +85,15 @@ export default class ReportsActions extends Actions {
     return DailyCleaningReportsServiceCAFAP.path(id).get();
   }
 
-  //
-
-  getFuelReport(data) {
+  getFuelReport(data, level) {
     const payload = _.cloneDeep(data);
     payload.date_from = createValidDate(payload.date_from);
     payload.date_to = createValidDate(payload.date_to);
-    return FuelReportService.get(payload);
+
+    return FuelReportService.get(payload).then(result => ({
+      data: result,
+      level,
+    }));
   }
 
   getAnalytics(data) {

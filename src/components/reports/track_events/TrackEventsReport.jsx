@@ -40,7 +40,8 @@ export default class TrackEventsReport extends Component {
   }
 
   mapView(coords) {
-    this.setState({ coords, showMap: true });
+    const coordinates = [coords[1], coords[0]];
+    this.setState({ coords: coordinates, showMap: true });
   }
 
   pushBack() {

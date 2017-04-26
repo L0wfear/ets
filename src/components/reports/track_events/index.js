@@ -1,7 +1,7 @@
- import all from './TrackEventsReports.jsx';
- import single from './TrackEventsReport.jsx';
+ import firstLevel from './level-1/TrackEventsReport.jsx';
+ import secondLevel from './level-2/TrackEventsReport.jsx';
 
  export {
-   all,
-   single,
+   firstLevel,
+   secondLevel,
  };

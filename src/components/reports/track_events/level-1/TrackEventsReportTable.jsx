@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
-import { Glyphicon } from 'react-bootstrap';
 import { isEmpty } from 'utils/functions';
 
 const tableMeta = {

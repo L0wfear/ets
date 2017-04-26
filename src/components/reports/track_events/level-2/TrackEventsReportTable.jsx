@@ -3,7 +3,7 @@ import { Glyphicon } from 'react-bootstrap';
 
 import Table from 'components/ui/table/DataTable.jsx';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
-import schema from './TrackEventsReportsSchema';
+import schema from './TrackEventsReportSchema';
 
 const tableMeta = {
   cols: [

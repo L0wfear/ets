@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 
 const tableMeta = {
@@ -17,6 +17,15 @@ const tableMeta = {
       displayName: 'Район',
       type: 'text',
       cssClassName: 'width-fuel-report-large',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
+      name: 'company_name',
+      displayName: 'Организация',
+      type: 'text',
+      cssClassName: 'width-fuel-report-xlarge',
       filter: {
         type: 'multiselect',
       },

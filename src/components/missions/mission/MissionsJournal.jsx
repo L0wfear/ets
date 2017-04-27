@@ -43,7 +43,7 @@ export default class MissionsJournal extends CheckableElementsList {
     this.state = Object.assign(this.state, {
       showMissionRejectForm: false,
       showMissionInfoForm: false,
-      equipmentData: [],
+      equipmentData: null,
       page: 0,
       sortBy: ['number:desc'],
       filter: {},
@@ -57,17 +57,6 @@ export default class MissionsJournal extends CheckableElementsList {
     flux.getActions('objects').getCars();
     flux.getActions('routes').getRoutes();
     flux.getActions('technicalOperation').getTechnicalOperations();
-
-    if (!this.state.mission) { return; }
-    const { car_data, mission_data } = this.state.mission;
-    const cars = await flux.getActions('objects').getCars().then(r => r.result);
-    const carGpsCode = cars.find(c => c.gov_number === car_data.gov_number).gps_code;
-    const equipmentData = await flux.getActions('cars').getTrack(carGpsCode, mission_data.date_start, mission_data.date_end)
-      .then(r => Object.keys(r.equipment)
-        .map(k => r.equipment[k].distance)
-        .reduce((a, b) => a + b, 0)
-      );
-    this.setState({ equipmentData });
   }
 
   async componentWillUpdate(nextProps, nextState) {
@@ -193,13 +182,25 @@ export default class MissionsJournal extends CheckableElementsList {
   }
 
   async mapView(id) {
-    this.context.flux.getActions('missions').getMissionData(id).then((res) => {
-      this.setState({ mission: res.result, showMissionInfoForm: true });
-    });
+    const { flux } = this.context;
+
+    const res = await this.context.flux.getActions('missions').getMissionData(id);
+    const mission = res.result;
+    const { car_data, mission_data } = mission;
+    this.setState({ mission, showMissionInfoForm: true });
+
+    const cars = await flux.getActions('objects').getCars().then(r => r.result);
+    const carGpsCode = cars.find(c => c.gov_number === car_data.gov_number).gps_code;
+    const equipmentData = await flux.getActions('cars').getTrack(carGpsCode, mission_data.date_start, mission_data.date_end)
+      .then(r => Object.keys(r.equipment)
+        .map(k => r.equipment[k].distance)
+        .reduce((a, b) => a + b, 0)
+      );
+
+    this.setState({ equipmentData });
   }
 
   getForms() {
-    console.log('MissionsJournal getForms', this.state);
     return [
       <div key={'forms'}>
         <MissionFormWrap

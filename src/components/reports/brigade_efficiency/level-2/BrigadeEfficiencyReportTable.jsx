@@ -12,6 +12,22 @@ const tableMeta = {
       },
     },
     {
+      name: 'okrug_name',
+      displayName: 'Округ',
+      type: 'string',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
+      name: 'district_name',
+      displayName: 'Район',
+      type: 'string',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
       name: 'technical_operation_name',
       displayName: 'Технологическая операция',
       type: 'string',

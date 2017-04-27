@@ -31,6 +31,15 @@ const tableMeta = {
       },
     },
     {
+      name: 'fuel_type_name',
+      displayName: 'Тип топлива',
+      type: 'text',
+      cssClassName: 'width-fuel-report-large',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
       name: 'odometr_diff',
       displayName: 'Одометр ТС. Пробег, км',
       type: 'number',

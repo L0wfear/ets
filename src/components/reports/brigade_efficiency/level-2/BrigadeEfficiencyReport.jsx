@@ -9,7 +9,6 @@ import DutyMissionForm from 'components/missions/duty_mission/DutyMissionFormWra
 import { getTableMeta as dutyMissionTableMeta } from 'components/missions/duty_mission/DutyMissionsTable.jsx';
 import { DutyMissionService } from 'api/Services';
 
-import BrigadeEfficiencyReportHeader from './../level-1/BrigadeEfficiencyReportHeader.jsx';
 import BrigadeEfficiencyReportTable from './BrigadeEfficiencyReportTable.jsx';
 
 @connectToStores(['reports'])

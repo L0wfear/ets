@@ -5,7 +5,7 @@ const tableMeta = {
   cols: [
     {
       name: 'company_name',
-      displayName: 'Учреждение',
+      displayName: 'Организация',
       type: 'string',
       filter: {
         type: 'multiselect',

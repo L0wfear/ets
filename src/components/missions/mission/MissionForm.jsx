@@ -85,7 +85,10 @@ export class MissionForm extends Form {
     const carsList = this.props.carsList.filter(c => !v || c.is_common || c.company_structure_id === v);
     const routesList = this.state.routesList.filter(r => !v || r.structure_id === v);
     if (!_.find(carsList, c => c.asuods_id === this.props.formState.car_id)) this.handleChange('car_id', null);
-    if (!_.find(routesList, r => r.id === this.props.formState.route_id)) this.handleChange('route_id', null);
+    if (!_.find(routesList, r => r.id === this.props.formState.route_id)) {
+      this.handleChange('route_id', null);
+      this.handleRouteIdChange(undefined);
+    }
     this.handleChange('structure_id', v);
   }
 
@@ -197,9 +200,20 @@ export class MissionForm extends Form {
         available: c.available,
         label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`,
       }));
-    const ROUTES = routesList
-      .filter(r => !state.structure_id || r.structure_id === state.structure_id)
-      .map(({ id, name }) => ({ value: id, label: name }));
+
+    const route = this.state.selectedRoute;
+    const routes = routesList.filter(r => !state.structure_id || r.structure_id === state.structure_id);
+
+    const filteredRoutes = (
+      route !== null &&
+      route.id !== undefined &&
+      routes.find(item => item.value === route.id) === undefined
+    ) ? routes.concat([route]) : routes;
+
+    const ROUTES = _.uniqBy(
+      filteredRoutes.map(({ id, name }) => ({ value: id, label: name })),
+      'value',
+    );
     // является ли задание отложенным
     const isDeferred = moment(state.date_start).toDate().getTime() > moment().toDate().getTime();
 
@@ -231,7 +245,6 @@ export class MissionForm extends Form {
       title = 'Создание задания';
     }
 
-    const route = this.state.selectedRoute;
 
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">

@@ -34,7 +34,11 @@ class MissionTemplateForm extends MissionForm {
     }
 
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
-    const ROUTES = routesList.map(({ id, name }) => ({ value: id, label: name }));
+
+    const ROUTES = routesList
+      .filter(route => route.technical_operation_id === state.technical_operation_id)
+      .map(({ id, name }) => ({ value: id, label: name }));
+
     const CARS = carsList.map(c => ({ value: c.asuods_id, label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]` }));
 
     const IS_CREATING = true;

@@ -7,6 +7,8 @@ import Datepicker from 'components/ui/DatePicker.jsx';
 import { getToday9am, getTomorrow9am, createValidDate } from 'utils/dates';
 import { bindable } from 'utils/decorators';
 
+import ReportHeaderWrapper from './ReportHeaderWrapper';
+
 const DatePicker: any = bindable(Datepicker);
 
 class ReportHeader extends React.Component<any, any> {
@@ -73,4 +75,4 @@ class ReportHeader extends React.Component<any, any> {
   }
 }
 
-export default ReportHeader;
+export default ReportHeaderWrapper<any>(ReportHeader);

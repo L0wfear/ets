@@ -20,9 +20,9 @@ const fakeSchemaRenderer = (schema, reportProps) => schema;
 class ReportContainer extends React.Component<IPropsReportContainer, IStateReportContainer> {
   componentWillMount() {
     if (Object.keys(this.props.location.query).length > 0) {
-      this.getInitialReportData(this.props.location.query);
+      this.getReportData(this.props.location.query);
     } else {
-      this.getInitiaReportMeta();
+      this.getTableMetaInfo();
     }
   }
 
@@ -32,23 +32,23 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 
     if (!isEqual(query, nextQuery)) {
       if (Object.keys(nextQuery).length > 0) {
-        this.getInitialReportData(nextQuery);
+        this.getReportData(nextQuery);
       } else {
-        this.getInitiaReportMeta();
+        this.getTableMetaInfo();
         this.props.setInitialState();
       }
     }
   }
 
-  getInitialReportData(query) {
+  getReportData(query) {
     try {
-      this.props.getInitialReport(this.props.serviceName, query);
+      this.props.getReportData(this.props.serviceName, query);
     } catch (error) {
       global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(error));
     }
   }
 
-  getInitiaReportMeta() {
+  getTableMetaInfo() {
     try {
       this.props.getTableMetaInfo(this.props.serviceName);
     } catch (error) {
@@ -117,7 +117,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
   }
 
   handleReportPrint = () => {
-
+    this.props.export(this.props.location.query);
   }
 
   makeTableSchema() {
@@ -143,6 +143,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 
   render() {
     const Header = this.props.headerComponent;
+    // TODO поправить гриддл для динамического отображения хедера
     const tableMeta = this.makeTableSchema();
     const moveUpIsPermitted = 'higher' in this.props.meta.levels;
     const currentLevel =  this.props.meta.levels.current.level || '';

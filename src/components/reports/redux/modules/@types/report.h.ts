@@ -35,3 +35,8 @@ export interface IReportStateProps {
   reportMetaFetching: boolean;
   reportDataFetching: boolean;
 }
+
+export type IGetTableMetaInfo = (serviceName: string) => (dispatch: any) => Promise<any>;
+export type IGetReportData = (serviceName: string, getOpts?: object) => (dispatch: any) => Promise<any>;
+export type IGetInitialReport = (serviceName: string, getOpts?: object) => (dispatch: any) => Promise<any>;
+export type ISetInitialState = () => object;

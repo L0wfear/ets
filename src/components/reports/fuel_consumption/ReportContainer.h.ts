@@ -1,18 +1,19 @@
-import { IHistoryInjected } from 'utils/@types/common.h';
+import { IHistoryInjected, IExportableTableList } from 'utils/@types/common.h';
 import { IReportProps } from 'components/reports/@types/common.h';
-import { IReportStateProps } from 'components/reports/redux/modules/@types/report.h';
+import * as ReduxTypes from 'components/reports/redux/modules/@types/report.h';
 
 export interface IPropsReportContainer extends
+  IExportableTableList,
   IHistoryInjected,
   IReportProps,
-  IReportStateProps {
+  ReduxTypes.IReportStateProps {
   /**
    * AC. Gets report meta info and report data
    */
-  setInitialState(): void;
-  getInitialReport(serviceName: string, getOpts: object): Promise<void>;
-  getReportData(serviceName: string, getOpts: object): Promise<void>;
-  getTableMetaInfo(serviceName: string): Promise<void>;
+  setInitialState: ReduxTypes.ISetInitialState;
+  getInitialReport: ReduxTypes.IGetInitialReport;
+  getReportData: ReduxTypes.IGetReportData;
+  getTableMetaInfo: ReduxTypes.IGetTableMetaInfo;
 }
 
 export interface IStateReportContainer {

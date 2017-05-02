@@ -3,7 +3,7 @@ import './preloader.scss';
 import preloaderGif from '../../assets/images/infinity.gif';
 import preloaderFieldGif from '../../assets/images/preloader-field.gif';
 
-export default function Preloader({ style, type }) {
+export default function Preloader({ style = {}, type = '' }) {
   switch (type) {
     case 'mainpage':
       return (

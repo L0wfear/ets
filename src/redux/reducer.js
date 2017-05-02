@@ -1,11 +1,14 @@
 import { combineReducers } from 'redux';
 import { loadingReducer } from 'redux-promise-loading';
 
-import settings from './settings';
-import owners from './owners';
-import types from './types';
+import reports from 'components/reports/redux/reducer.tsx';
+
+import settings from './modules/settings';
+import owners from './modules/owners';
+import types from './modules/types';
 
 export default combineReducers({
+  reports,
   owners,
   types,
   loading: loadingReducer,

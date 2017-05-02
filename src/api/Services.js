@@ -1,5 +1,7 @@
 import ApiServiceFactory from './ApiServiceFactory.js';
-import config from '../config.js';
+import ETS_API_FACTORY from './EtsAPIServiceFactory';
+
+import * as reports from './reports';
 
 const CITY_DASHBOARD_API_FACTORY = new ApiServiceFactory({
   apiUrl: `http://ods.mos.ru/ssd/tracks-caching${process.env.STAND !== 'prod' ? '-dev' : ''}`,
@@ -8,18 +10,6 @@ const CITY_DASHBOARD_API_FACTORY = new ApiServiceFactory({
 export const TrackDistanceService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('get_length');
 export const InfoService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('info', {});
 export const TrackService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('tracks');
-
-const ETS_API_FACTORY = new ApiServiceFactory({
-  apiUrl: config.backend,
-  headers: () => {
-    const token = JSON.parse(window.localStorage.getItem(global.SESSION_KEY));
-    return {
-      'Authorization': `Token ${token}`,
-      'Accept': 'application/json',
-      'Access-Control-Expose-Headers': 'Content-Disposition',
-    };
-  },
-});
 
 export const RootService = ETS_API_FACTORY.createApiServiceAdapter('', {});
 export const ConfigService = ETS_API_FACTORY.createApiServiceAdapter('config', {});
@@ -111,6 +101,8 @@ export const BrigadeAndEmployeeEfficiencyReport1LService = ETS_API_FACTORY.creat
 export const BrigadeEfficiencyReport2LService = ETS_API_FACTORY.createApiServiceAdapter('brigade_efficiency_report', {});
 export const EmployeeEfficiencyReportService = ETS_API_FACTORY.createApiServiceAdapter('employee_efficiency_report', {});
 export const TrackEventsReportService = ETS_API_FACTORY.createApiServiceAdapter('track_events', {});
+
+export { reports };
 
 // async function a() {
 //   const respo = await MissionDataService.path(60446).get();

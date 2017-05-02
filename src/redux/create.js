@@ -9,12 +9,12 @@ export default function createStore() {
 
   const finalCreateStore = applyMiddleware(...middleware)(_createStore);
 
-  const reducer = require('./modules/reducer').default;
+  const reducer = require('./reducer').default;
   const store = finalCreateStore(reducer);
 
   if (__DEVELOPMENT__ && module.hot) {
-    module.hot.accept('./modules/reducer', () => {
-      store.replaceReducer(require('./modules/reducer').default);
+    module.hot.accept('./reducer', () => {
+      store.replaceReducer(require('./reducer').default);
     });
   }
 

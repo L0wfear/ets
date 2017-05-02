@@ -10,8 +10,9 @@ export interface IHistoryLocation {
   query: IHistoryQuery;
 }
 
-export interface IHistoryInjectable {
+export interface IHistoryInjected {
   location: IHistoryLocation;
+  history: any;
 }
 
 export interface IComponentEventHandler {

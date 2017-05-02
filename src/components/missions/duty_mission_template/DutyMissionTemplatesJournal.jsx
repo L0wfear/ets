@@ -70,7 +70,7 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
    */
   getButtons() {
     const buttons = super.getButtons();
-
+    // TODO отображение Сформировать наряд-задание в зависимости от прав 
     buttons.push(
       <Button
         key={buttons.length + 1}

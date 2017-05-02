@@ -101,10 +101,26 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
 
   getButtons() {
     const buttons = super.getButtons();
+    const canCreateMission = (
+      _.keys(this.state.checkedElements).length > 0 ||
+      this.state.selectedElement !== null
+    );
 
     const additionalButtons = [
-      <Button key={buttons.length + 1} bsSize="small" onClick={this.createMissions} disabled={_.keys(this.state.checkedElements).length === 0}>Сформировать задание</Button>,
-      <Button key={buttons.length + 2} bsSize="small" onClick={this.copyElement} disabled={this.state.selectedElement === null}><Glyphicon glyph="copy" /> Копировать</Button>,
+      <Button
+        key={buttons.length + 1}
+        bsSize="small"
+        onClick={this.createMissions}
+        disabled={!canCreateMission}
+      >Сформировать задание</Button>,
+      <Button
+        key={buttons.length + 2}
+        bsSize="small"
+        onClick={this.copyElement}
+        disabled={this.state.selectedElement === null}
+      >
+        <Glyphicon glyph="copy" /> Копировать
+      </Button>,
     ];
     buttons.push(...additionalButtons);
 

@@ -142,7 +142,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
 
   getButtons() {
     const buttons = super.getButtons();
-
+    // TODO отображение 2 кнопорей в зависимости от прав
     buttons.push(
       <ButtonToolbar key={buttons.length}>
         <Button bsSize="small" onClick={this.completeCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</Button>

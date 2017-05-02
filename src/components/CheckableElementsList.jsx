@@ -59,11 +59,13 @@ export default class CheckableElementsList extends ElementsList {
    * @override
    */
   getTableProps() {
+    // TODO отображение чекбокса в зависимости от прав
     const tableProps = super.getTableProps();
     const operations = ['delete'];
     const check = this.constructor.operations.includes('CHECK');
     const entity = this.constructor.entity;
     const gp = p => this.context.flux.getStore('session').getPermission(p);
+
     const noPermission = !check && operations.every(o => !gp(`${entity}.${o}`));
     return noPermission
       ? Object.assign(tableProps, this.getCheckedProps(), { multiSelection: false })

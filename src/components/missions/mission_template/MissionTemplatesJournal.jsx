@@ -12,7 +12,7 @@ import MissionTemplatesTable from './MissionTemplatesTable.jsx';
   entity: 'mission_template',
   listName: 'missionTemplatesList',
   tableComponent: MissionTemplatesTable,
-  operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
+  operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE', 'CHECK'],
 })
 @autobind
 export default class MissionTemplatesJournal extends CheckableElementsList {
@@ -105,7 +105,7 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
       _.keys(this.state.checkedElements).length > 0 ||
       this.state.selectedElement !== null
     );
-
+    // TODO отображение Сформировать задание в зависимости от прав 
     const additionalButtons = [
       <Button
         key={buttons.length + 1}

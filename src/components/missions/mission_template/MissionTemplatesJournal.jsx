@@ -7,6 +7,24 @@ import { connectToStores, staticProps } from 'utils/decorators';
 import MissionTemplateFormWrap from './MissionTemplateFormWrap.jsx';
 import MissionTemplatesTable from './MissionTemplatesTable.jsx';
 
+const getMissionList = (checkedItems, selectedItem) => {
+  if (Object.keys(checkedItems).length > 0) {
+    return checkedItems;
+  }
+
+  if (selectedItem === null) {
+    return checkedItems;
+  }
+
+  if (checkedItems[selectedItem.id]) {
+    return checkedItems;
+  }
+
+  return {
+    [selectedItem.id]: selectedItem,
+  };
+};
+
 @connectToStores(['missions', 'objects', 'employees', 'routes'])
 @staticProps({
   entity: 'mission_template',
@@ -87,6 +105,8 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
   }
 
   getForms() {
+    const missions = getMissionList(this.state.checkedElements, this.state.selectedElement);
+
     return [
       <MissionTemplateFormWrap
         key={'form'}
@@ -94,7 +114,7 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
         showForm={this.state.showForm}
         element={this.state.selectedElement}
         formType={this.state.formType}
-        missions={this.state.checkedElements}
+        missions={missions}
       />,
     ];
   }

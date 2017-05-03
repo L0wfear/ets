@@ -74,7 +74,7 @@ export default class MissionFormWrap extends FormWrap {
       }
       this.props.onFormHide();
     } else {
-      const payload = {
+      const externalPayload = {
         mission_source_id: formState.mission_source_id,
         passes_count: formState.passes_count,
         date_start: formState.date_start,
@@ -95,7 +95,7 @@ export default class MissionFormWrap extends FormWrap {
                 title: 'Для ТС не существует активного ПЛ',
                 body: 'Создать черновик ПЛ?',
               });
-            } catch (error) {
+            } catch (err) {
               cancel = true;
             }
             if (!cancel) {
@@ -111,8 +111,6 @@ export default class MissionFormWrap extends FormWrap {
           }
           if (e && e.message.code === 'invalid_period') {
             const waybillNumber = e.message.message.split('№')[1].split(' ')[0];
-            const dateStart = e.message.message.split('(')[1].split(' - ')[0];
-            const dateEnd = e.message.message.split(' - ')[1].slice(0, -1);
 
             const body = self => <div>
               <div>{e.message.message}</div><br />
@@ -130,7 +128,7 @@ export default class MissionFormWrap extends FormWrap {
                 title: <b>{`Задание будет добавлено в ПЛ №${waybillNumber}`}</b>,
                 body,
               });
-            } catch (error) {
+            } catch (err) {
               cancel = true;
             }
             if (!cancel) {
@@ -154,7 +152,7 @@ export default class MissionFormWrap extends FormWrap {
       let closeForm = true;
 
       for (const m of missions) {
-        const e = await createMissions({ [m.id]: m }, payload);
+        const e = await createMissions({ [m.id]: m }, externalPayload);
         if (e) closeForm = false;
       }
 

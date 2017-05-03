@@ -4,7 +4,7 @@ import { withProps } from 'recompose';
 import { IReportProps } from 'components/reports/@types/common.h';
 
 import { exportable } from 'utils/decorators';
-import ReportContainer from './ReportContainer';
+import ReportContainer from 'components/reports/common/ReportContainer';
 import ReportHeader from './ReportHeader';
 
 const serviceUrl = 'fuel_consumption_report';

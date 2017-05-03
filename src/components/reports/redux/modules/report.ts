@@ -74,6 +74,7 @@ export const getReportData: ReduxTypes.IGetReportData = (serviceName, getOpts = 
 
 const getReportDataReducer = (state, { payload }) => ({
   ...state,
+  tableMetaInfo: payload.result.meta.fields,
   meta: payload.result.meta,
   list: payload.result.rows,
 });

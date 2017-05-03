@@ -5,7 +5,7 @@ import { Button, Glyphicon } from 'react-bootstrap';
 import { omit, isEqual } from 'lodash';
 
 import { IDataTableColSchema, IDataTableSelectedRow } from 'components/ui/table/@types/DataTable/schema.h';
-import { IPropsReportContainer, IStateReportContainer } from './ReportContainer.h';
+import { IPropsReportContainer, IStateReportContainer } from './@types/ReportContainer.h';
 
 import Preloader from 'components/ui/Preloader.jsx';
 import { getServerErrorNotification } from 'utils/notifications';
@@ -143,9 +143,9 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 
   render() {
     const Header = this.props.headerComponent;
-    // TODO поправить гриддл для динамического отображения хедера
     const tableMeta = this.makeTableSchema();
     const moveUpIsPermitted = 'higher' in this.props.meta.levels;
+    const moveDownIsPermitted = 'lower' in this.props.meta.levels;
     const currentLevel =  this.props.meta.levels.current.level || '';
 
     const preloader = (
@@ -156,9 +156,10 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       moveUpIsPermitted &&
       <Button bsSize="small" onClick={this.handleMoveUp}>На уровень выше</Button>
     );
-    const title = currentLevel === ''
-      ? `${this.props.title}`
-      : `${this.props.title} (${currentLevel})`;
+
+    // const title = currentLevel === ''
+    //   ? `${this.props.title}`
+    //   : `${this.props.title} (${currentLevel})`;
 
     return (
       <div className="ets-page-wrap">
@@ -168,7 +169,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
           // readOnly={moveUpIsPermitted}
         />
         <Table
-          title={title}
+          title={this.props.title}
           tableMeta={tableMeta}
           results={this.props.list}
           renderers={this.props.renderers || {}}

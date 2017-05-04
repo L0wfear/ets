@@ -1,3 +1,15 @@
+interface IDataTableSelectedRowPropsData {
+  rowNumber: string;
+}
+
+interface IDataTableSelectedRowProps {
+  data: IDataTableSelectedRowPropsData;
+}
+
+export interface IDataTableSelectedRow {
+  props: IDataTableSelectedRowProps;
+}
+
 type FieldTypes =
   'multiselect' |
   'select' |
@@ -8,7 +20,7 @@ interface IDataTableColFilter {
   type: FieldTypes;
 }
 
-interface IDataTableColSchema {
+export interface IDataTableColSchema {
   /**
    * Field name for data binding
    */
@@ -20,11 +32,11 @@ interface IDataTableColSchema {
   /**
    * Field display type
    */
-  type: string;
+  type?: string;
   /**
    * Table result filter type and other filter options
    */
-  filter?: IDataTableColFilter;
+  filter?: IDataTableColFilter | boolean;
   /**
    * CSS custom class for columns styling
    */

@@ -14,7 +14,7 @@ import * as daily from './daily';
 import * as weekly from './weekly';
 import * as carFuncTypeUsage from './car_func_type_usage';
 import brigadeEfficiency from './brigade_efficiency/report.ts';
-import * as employeeEfficiency from './employee_efficiency';
+import employeeEfficiency from './employee_efficiency/report.ts';
 import * as trackEvents from './track_events';
 
 export {

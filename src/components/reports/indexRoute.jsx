@@ -29,11 +29,8 @@ const reportRoutes = (props) => {
       </Route>
 
       <Route path="brigade-efficiency-report" component={reports.brigadeEfficiency} onEnter={requireAuth} />
+      <Route path="employee-efficiency-report" component={reports.employeeEfficiency} onEnter={requireAuth} />
 
-      <Redirect from="employee-efficiency-report" to="employee-efficiency-report/level/1" />
-      <Route path="employee-efficiency-report/level/1" component={reports.employeeEfficiency.firstLevel} onEnter={requireAuth}>
-        <Route path="/employee-efficiency-report/level/2" component={reports.employeeEfficiency.secondLevel} onEnter={requireAuth} />
-      </Route>
       <Route path="daily-cleaning-reports-ets" component={reports.daily.cleaning.ets.all} onEnter={requireAuth} />
       <Route path="daily-cleaning-report-ets/:element/:id" component={reports.daily.cleaning.ets.single} onEnter={requireAuth} />
       <Route path="daily-cleaning-reports-cafap" component={reports.daily.cleaning.cafap.all} onEnter={requireAuth} />

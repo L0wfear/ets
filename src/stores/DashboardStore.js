@@ -54,11 +54,11 @@ const dashboardComponents = [
     key: 'waybill_closed',
     itemsTitle: 'Информация о ПЛ',
   },
-  {
-    id: 23,
-    key: 'external_applications',
-    itemsTitle: 'Заявки из внешних Систем',
-  },
+  // {
+  //   id: 23,
+  //   key: 'external_applications',
+  //   itemsTitle: 'Заявки из внешних Систем',
+  // },
 ];
 
 export default class DashboardStore extends Store {

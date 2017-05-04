@@ -155,8 +155,7 @@ const Row = (props) => {
 const PageLink = props =>
   <span className="table-page-link" onClick={props.handleClick.bind(this, props.pageNum)}>
     {props.children}
-  </span>
-;
+  </span>;
 
 const Pager = (props) => {
   const links = [];

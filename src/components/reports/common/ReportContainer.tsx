@@ -22,6 +22,8 @@ const fakeSchemaMaker = (schema, reportProps) => schema;
 
 class ReportContainer extends React.Component<IPropsReportContainer, IStateReportContainer> {
   componentWillMount() {
+    // Так сторе один на все отчёты, необходимо его чистить в начале.
+    this.props.setInitialState();
     if (Object.keys(this.props.location.query).length > 0) {
       this.getReportData(this.props.location.query);
     } else {
@@ -174,6 +176,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
   }
 
   render() {
+    const { enumerated = false, enableSort = true } = this.props;
     const Header = this.props.headerComponent;
     const tableMeta = this.makeTableSchema();
     const moveUpIsPermitted = 'higher' in this.props.meta.levels;
@@ -208,7 +211,8 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
           results={this.props.list}
           renderers={this.props.renderers || {}}
           onRowSelected={this.handleMoveDown}
-          enumerated={false}
+          enumerated={enumerated}
+          enableSort={enableSort}
         >
           <Button
             bsSize="small"

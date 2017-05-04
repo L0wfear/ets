@@ -32,9 +32,9 @@ React.ComponentClass<IPropsReportHeaderWrapper & IStateReportHeaderWrapper> {
         return;
       }
 
-      if (queryStateLength === 0) {
-        this.setState({ headerState: {} });
-      }
+      // if (queryStateLength === 0) {
+      //   this.setState({ headerState: {} });
+      // }
     }
     handleChange = (field: string, value: any) => {
       this.setState({

@@ -3,6 +3,8 @@ export interface IReportProps {
   serviceName: string;
   serviceUrl: string;
   reportUrl: string;
+  enumerated?: boolean;
+  enableSort?: boolean;
   headerComponent: any;
   renderers?: {
     [field: string]: (rowMeta) => any;

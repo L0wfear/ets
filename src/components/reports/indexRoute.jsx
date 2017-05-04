@@ -28,10 +28,8 @@ const reportRoutes = (props) => {
         <Route path="/track-events-reports/level/2" component={reports.trackEvents.secondLevel} onEnter={requireAuth} />
       </Route>
 
-      <Redirect from="brigade-efficiency-report" to="brigade-efficiency-report/level/1" />
-      <Route path="brigade-efficiency-report/level/1" component={reports.brigadeEfficiency.firstLevel} onEnter={requireAuth}>
-        <Route path="/brigade-efficiency-report/level/2" component={reports.brigadeEfficiency.secondLevel} onEnter={requireAuth} />
-      </Route>
+      <Route path="brigade-efficiency-report" component={reports.brigadeEfficiency} onEnter={requireAuth} />
+
       <Redirect from="employee-efficiency-report" to="employee-efficiency-report/level/1" />
       <Route path="employee-efficiency-report/level/1" component={reports.employeeEfficiency.firstLevel} onEnter={requireAuth}>
         <Route path="/employee-efficiency-report/level/2" component={reports.employeeEfficiency.secondLevel} onEnter={requireAuth} />

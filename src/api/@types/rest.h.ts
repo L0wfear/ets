@@ -2,7 +2,8 @@
 export interface IResponseDataResult<RowType, MetaType> {
   meta?: MetaType;
   rows: RowType[];
-  warnings?: any;
+  warnings?: any[];
+  errors?: any[];
 }
 
 export interface IResponseData<RowType, MetaType> {

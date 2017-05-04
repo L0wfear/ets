@@ -11,6 +11,7 @@ export const DailyCleaningReportsServiceETS = ETS_API_FACTORY.createApiServiceAd
 export const DailyCleaningReportsServiceCAFAP = ETS_API_FACTORY.createApiServiceAdapter(
   'geozone_element_traveled_daily_report__cafap', {},
 );
+export const BrigadeEfficiencyReport = ETS_API_FACTORY.createApiServiceAdapter('reports/efficiency/brigade', {});
 export const FuelReportService = ETS_API_FACTORY.createApiServiceAdapter('fuel_consumption_report', {});
 export const AnalyticsService = ETS_API_FACTORY.createApiServiceAdapter('analytical_reports', {});
 export const CarFuncTypeUsageReportService = ETS_API_FACTORY.createApiServiceAdapter('car_usage_by_company', {});

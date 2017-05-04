@@ -13,6 +13,13 @@ React.ComponentClass<IPropsReportHeaderWrapper & IStateReportHeaderWrapper> {
   type IPropsHeader = IPropsReportHeaderWrapper & IStateReportHeaderWrapper;
 
   return class Header extends React.Component<IPropsHeader, IStateReportHeaderWrapper> {
+    clonedState: any;
+    constructor() {
+      super();
+      this.state = {
+        headerState: {},
+      };
+    }
     componentWillReceiveProps(nextProps) {
       const { queryState } = nextProps;
       const queryStateLength = Object.keys(queryState).length;
@@ -21,25 +28,27 @@ React.ComponentClass<IPropsReportHeaderWrapper & IStateReportHeaderWrapper> {
         queryStateLength > 0 &&
         !isEqual(this.state, queryState)
       ) {
-        this.setState(queryState);
+        this.setState({ headerState: queryState });
         return;
       }
 
       if (queryStateLength === 0) {
-        this.setState({});
-        return;
+        this.setState({ headerState: {} });
       }
     }
     handleChange = (field: string, value: any) => {
       this.setState({
-        [field]: value,
+        headerState: {
+          ...this.state.headerState,
+          [field]: value,
+        },
       });
     }
     render() {
       return (
         <SourceHeader
           {...this.props as any}
-          {...this.state as any}
+          {...this.state.headerState as any}
           handleChange={this.handleChange}
         />
       );

@@ -1,5 +1,9 @@
-export interface IStateReportHeaderWrapper {
+export interface IHeaderState {
   [fieldName: string]: any;
+}
+
+export interface IStateReportHeaderWrapper {
+  headerState: IHeaderState;
 }
 
 export interface IPropsReportHeaderWrapper {

@@ -1,3 +1,5 @@
+import { IResponseData } from 'api/@types/rest.h';
+
 interface IReportMetaFieldDetails {
   /**
    * Table header full name
@@ -23,7 +25,7 @@ interface IReportMetaLevels {
   lower?: IReportMetaLevelDetails;
 }
 
-interface IReportMeta {
+export interface IReportMeta {
   fields?: IReportMetaField[];
   levels?: IReportMetaLevels;
 }
@@ -37,6 +39,6 @@ export interface IReportStateProps {
 }
 
 export type IGetTableMetaInfo = (serviceName: string) => (dispatch: any) => Promise<any>;
-export type IGetReportData = (serviceName: string, getOpts?: object) => (dispatch: any) => Promise<any>;
-export type IGetInitialReport = (serviceName: string, getOpts?: object) => (dispatch: any) => Promise<any>;
+export type IGetReportData =
+  (serviceName: string, getOpts?: object) => (dispatch: any) => Promise<IResponseData<any, IReportMeta>>;
 export type ISetInitialState = () => object;

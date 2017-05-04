@@ -36,7 +36,7 @@ export interface IDataTableColSchema {
   /**
    * Table result filter type and other filter options
    */
-  filter?: IDataTableColFilter;
+  filter?: IDataTableColFilter | boolean;
   /**
    * CSS custom class for columns styling
    */

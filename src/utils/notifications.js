@@ -151,3 +151,12 @@ export function getWarningNotification(message) {
     autoDismiss: 5,
   };
 }
+
+export const noItemsInfoNotification = (items, msg = 'По данному запросу нет записей') => {
+  if (items.length === 0) {
+    global.NOTIFICATION_SYSTEM.notify(msg, 'info');
+    return true;
+  }
+
+  return false;
+};

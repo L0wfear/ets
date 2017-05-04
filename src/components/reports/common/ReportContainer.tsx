@@ -6,16 +6,19 @@ import { omit, isEqual } from 'lodash';
 
 import { IDataTableColSchema, IDataTableSelectedRow } from 'components/ui/table/@types/DataTable/schema.h';
 import { IPropsReportContainer, IStateReportContainer } from './@types/ReportContainer.h';
+import { IResponseData } from 'api/@types/rest.h';
 
 import Preloader from 'components/ui/Preloader.jsx';
-import { getServerErrorNotification } from 'utils/notifications';
+import { getServerErrorNotification, noItemsInfoNotification } from 'utils/notifications';
 import * as reportActionCreators from 'components/reports/redux/modules/report';
 import { HistoryContext } from 'utils/decorators';
 import DataTable from 'components/ui/table/DataTable.jsx';
 
+// Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
 const Table: any = DataTable;
 
-const fakeSchemaRenderer = (schema, reportProps) => schema;
+// Используется, если явно не указан генератор схемы.
+const fakeSchemaMaker = (schema, reportProps) => schema;
 
 class ReportContainer extends React.Component<IPropsReportContainer, IStateReportContainer> {
   componentWillMount() {
@@ -30,6 +33,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     const { query } = this.props.location;
     const nextQuery = nextProps.location.query;
 
+    // Если урл поменялся и он не пустой, то делаем запрос данных.
     if (!isEqual(query, nextQuery)) {
       if (Object.keys(nextQuery).length > 0) {
         this.getReportData(nextQuery);
@@ -40,11 +44,12 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     }
   }
 
-  getReportData(query) {
+  async getReportData(query) {
     try {
-      this.props.getReportData(this.props.serviceName, query);
+      const data = await this.props.getReportData(this.props.serviceName, query);
+      noItemsInfoNotification(data.result.rows);
     } catch (error) {
-      global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(error));
+      global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(this.props.serviceUrl));
     }
   }
 
@@ -52,24 +57,49 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     try {
       this.props.getTableMetaInfo(this.props.serviceName);
     } catch (error) {
-      global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(error));
+      console.error(error);
+      global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(this.props.serviceUrl));
     }
   }
 
   handleReportSubmit = async (headerData: object) => {
     try {
-      await this.props.getReportData(this.props.serviceName, headerData);
+      // Если урл пустой, то делаем запрос на основе параметров из хедера.
+      if (Object.keys(this.props.location.query).length === 0) {
+        const data = await this.props.getReportData(this.props.serviceName, headerData);
+        if (noItemsInfoNotification(data.result.rows)) {
+          return;
+        }
+
+        const query = {
+          ...headerData,
+          level: data.result.meta.levels.current.level,
+        };
+
+        this.props.history.pushState(null, this.props.reportUrl, query);
+
+        return;
+      }
+
+      // Просто меняем урл и его изменение подхватится и будет произведён запрос данных.
       const query = {
+        ...this.props.location.query,
         ...headerData,
-        level: this.props.meta.levels.current.level,
       };
+
+      // Не пишем истрорию при одинаковых запросах.
+      if (isEqual(this.props.location.query, query)) {
+        return;
+      }
+
       this.props.history.pushState(null, this.props.reportUrl, query);
     } catch (error) {
-      global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(error));
+      console.error(error);
+      global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(this.props.serviceUrl));
     }
   }
 
-  handleMoveDown = async (selectedRow: IDataTableSelectedRow) => {
+  handleMoveDown = (selectedRow: IDataTableSelectedRow) => {
     const moveDownIsPermitted = 'lower' in this.props.meta.levels;
     if (!moveDownIsPermitted) {
       return;
@@ -89,14 +119,15 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     const filteredQuery = omit(query, currentLevelSelector);
 
     try {
-      await this.props.getReportData(this.props.serviceName, filteredQuery);
+      // await this.props.getReportData(this.props.serviceName, filteredQuery);
       this.props.history.pushState(null, this.props.reportUrl, filteredQuery);
     } catch (error) {
-      global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(error));
+      console.error(error);
+      global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(this.props.serviceUrl));
     }
   }
 
-  handleMoveUp = async () => {
+  handleMoveUp = () => {
     const higherLevel = this.props.meta.levels.higher.level;
     const currentLevelSelector = this.props.meta.levels.current.pk_field;
     const headerState = this.props.location.query;
@@ -109,10 +140,11 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     const filteredQuery = omit(query, currentLevelSelector);
 
     try {
-      await this.props.getReportData(this.props.serviceName, filteredQuery);
+      // await this.props.getReportData(this.props.serviceName, filteredQuery);
       this.props.history.pushState(null, this.props.reportUrl, filteredQuery);
     } catch (error) {
-      global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(error));
+      console.error(error);
+      global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(this.props.serviceUrl));
     }
   }
 
@@ -121,7 +153,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
   }
 
   makeTableSchema() {
-    const { schemaRenderers = {}, tableMetaInfo } = this.props;
+    const { schemaMakers = {}, tableMetaInfo } = this.props;
 
     const cols = tableMetaInfo.map(field => {
       const fieldName = Object.keys(field)[0];
@@ -132,7 +164,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         displayName: fieldValue.name,
       };
 
-      const renderer = schemaRenderers[fieldName] || fakeSchemaRenderer;
+      const renderer = schemaMakers[fieldName] || fakeSchemaMaker;
       const finalSchema = renderer(initialSchema, this.props);
 
       return finalSchema;
@@ -146,6 +178,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     const tableMeta = this.makeTableSchema();
     const moveUpIsPermitted = 'higher' in this.props.meta.levels;
     const moveDownIsPermitted = 'lower' in this.props.meta.levels;
+    const isListEmpty = this.props.list.length === 0;
     const currentLevel =  this.props.meta.levels.current.level || '';
 
     const preloader = (
@@ -154,6 +187,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     );
     const moveUpButton = (
       moveUpIsPermitted &&
+      !isListEmpty &&
       <Button bsSize="small" onClick={this.handleMoveUp}>На уровень выше</Button>
     );
 
@@ -176,7 +210,11 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
           onRowSelected={this.handleMoveDown}
           enumerated={false}
         >
-          <Button bsSize="small" onClick={this.handleReportPrint}><Glyphicon glyph="download-alt" /></Button>
+          <Button
+            bsSize="small"
+            disabled={isListEmpty}
+            onClick={this.handleReportPrint}
+          ><Glyphicon glyph="download-alt" /></Button>
           {moveUpButton}
         </ Table>
         {preloader}

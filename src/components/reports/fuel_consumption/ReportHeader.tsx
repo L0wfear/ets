@@ -5,14 +5,14 @@ import { isEqual, pick } from 'lodash';
 import {
   IPropsReportHeaderCommon,
   IPropsReportHeaderWrapper,
-} from 'components/reports/hoc/@types/ReportHeaderWrapper.h';
+} from 'components/reports/common/@types/ReportHeaderWrapper.h';
 
 import Field from 'components/ui/Field.jsx';
 import Datepicker from 'components/ui/DatePicker.jsx';
 import { getToday9am, getTomorrow9am, createValidDate } from 'utils/dates';
 import { bindable } from 'utils/decorators';
 
-import ReportHeaderWrapper from 'components/reports/hoc/ReportHeaderWrapper';
+import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
 
 const DatePicker: any = bindable(Datepicker);
 
@@ -47,24 +47,32 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
 
     return (
       <Row style={headerStyle}>
-        <Col md={2}>
-          <DatePicker
-            date={date_from}
-            onChange={this.props.handleChange}
-            bindOnChange={'date_from'}
-            disabled={readOnly}
-          />
+        <Col md={12}>
+          <label>Период формирования</label>
         </Col>
-        <Col md={2}>
-          <DatePicker
-            date={date_to}
-            onChange={this.props.handleChange}
-            bindOnChange={'date_to'}
-            disabled={readOnly}
-          />
-        </Col>
-        <Col md={2}>
-          <Button hidden={this.props.readOnly} onClick={this.handleSubmit}>Сформировать отчёт</Button>
+        <Col md={9}>
+          <Row>
+            <Col md={3}>
+              <DatePicker
+                date={date_from}
+                onChange={this.props.handleChange}
+                bindOnChange={'date_from'}
+                disabled={readOnly}
+              />
+            </Col>
+            <Col md={3}>
+              <DatePicker
+                date={date_to}
+                onChange={this.props.handleChange}
+                bindOnChange={'date_to'}
+                disabled={readOnly}
+              />
+            </Col>
+            <Col md={3}>
+              <Button block hidden={this.props.readOnly} onClick={this.handleSubmit}>Сформировать отчёт</Button>
+            </Col>
+
+          </Row>
         </Col>
       </Row>
     );

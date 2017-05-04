@@ -79,17 +79,6 @@ const getReportDataReducer = (state, { payload }) => ({
   list: payload.result.rows,
 });
 
-export const getInitialReport: ReduxTypes.IGetInitialReport = (serviceName, getOpts = {}) => dispatch =>
-  new Promise(async (resolve, reject) => {
-    try {
-      // await dispatch(getTableMetaInfo(serviceName));
-      await dispatch(getReportData(serviceName, getOpts));
-      resolve();
-    } catch (error) {
-      reject(error);
-    }
-  });
-
 export const setInitialState: ReduxTypes.ISetInitialState = () => ({ type: 'SET_INITIAL_STATE' });
 
 export default function reducer(state = initialState, action) {

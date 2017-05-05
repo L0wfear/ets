@@ -190,13 +190,8 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     );
     const moveUpButton = (
       moveUpIsPermitted &&
-      !isListEmpty &&
       <Button bsSize="small" onClick={this.handleMoveUp}>На уровень выше</Button>
     );
-
-    // const title = currentLevel === ''
-    //   ? `${this.props.title}`
-    //   : `${this.props.title} (${currentLevel})`;
 
     return (
       <div className="ets-page-wrap">

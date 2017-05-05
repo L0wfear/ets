@@ -21,8 +21,8 @@ const Table: any = DataTable;
 const fakeSchemaMaker = (schema, reportProps) => schema;
 
 class ReportContainer extends React.Component<IPropsReportContainer, IStateReportContainer> {
-  componentWillMount() {
-    // Так сторе один на все отчёты, необходимо его чистить в начале.
+  componentDidMount() {
+    // Так как стор один на все отчёты, необходимо его чистить в начале.
     this.props.setInitialState();
     if (Object.keys(this.props.location.query).length > 0) {
       this.getReportData(this.props.location.query);
@@ -108,30 +108,27 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     }
 
     const lowerLevel = this.props.meta.levels.lower.level;
-    const lowerLevelSelector = this.props.meta.levels.lower.pk_field;
-    const currentLevelSelector = this.props.meta.levels.current.pk_field;
+    const lowerLevelSelectors = this.props.meta.levels.lower.filter
+      .map(selector => ({[selector]: selectedRow.props.data[selector] }))
+      .reduce((prev, next) => ({ ...prev, ...next }));
+
+    const currentLevelSelectors = this.props.meta.levels.current.filter;
     const headerState = this.props.location.query;
 
     const query = {
       ...headerState,
       level: lowerLevel,
-      [lowerLevelSelector]: selectedRow.props.data[lowerLevelSelector],
+      ...lowerLevelSelectors,
     };
 
-    const filteredQuery = omit(query, currentLevelSelector);
+    const filteredQuery = omit(query, currentLevelSelectors);
 
-    try {
-      // await this.props.getReportData(this.props.serviceName, filteredQuery);
-      this.props.history.pushState(null, this.props.reportUrl, filteredQuery);
-    } catch (error) {
-      console.error(error);
-      global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(this.props.serviceUrl));
-    }
+    this.props.history.pushState(null, this.props.reportUrl, filteredQuery);
   }
 
   handleMoveUp = () => {
     const higherLevel = this.props.meta.levels.higher.level;
-    const currentLevelSelector = this.props.meta.levels.current.pk_field;
+    const currentLevelSelectors = this.props.meta.levels.current.filter;
     const headerState = this.props.location.query;
 
     const query = {
@@ -139,15 +136,9 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       level: higherLevel,
     };
 
-    const filteredQuery = omit(query, currentLevelSelector);
+    const filteredQuery = omit(query, currentLevelSelectors);
 
-    try {
-      // await this.props.getReportData(this.props.serviceName, filteredQuery);
-      this.props.history.pushState(null, this.props.reportUrl, filteredQuery);
-    } catch (error) {
-      console.error(error);
-      global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(this.props.serviceUrl));
-    }
+    this.props.history.pushState(null, this.props.reportUrl, filteredQuery);
   }
 
   handleReportPrint = () => {

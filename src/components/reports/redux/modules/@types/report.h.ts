@@ -13,10 +13,10 @@ interface IReportMetaField {
 
 interface IReportMetaLevelDetails {
   level?: string;
-  /**
-   * Table row selector id
-   */
+  // Table row selector id
   pk_field?: string;
+  // New row selector ids
+  filter?: string[];
 }
 
 interface IReportMetaLevels {

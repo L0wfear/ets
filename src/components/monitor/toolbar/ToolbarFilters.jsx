@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react';
+import toArray from 'lodash/toArray';
+
 import Filter from './Filter.jsx';
 import TypeComponent from './TypeComponent.jsx';
 import ToolbarControl from './ToolbarControl.jsx';
@@ -23,63 +25,41 @@ export default class ToolbarFilters extends Component {
 
     return shouldUpdate;
   }
-  doAdditiveFilters() {
-    const { typesIndex } = this.props;
-    const propsFilters = this.props.filters;
-    const cars = this.props.store.state.points;
-
-    let types = [];
-    const typeIds = [];
-
-    // фильтруем машины по владельцу и типу
-    Object.keys(cars).forEach((key) => {
-      const car = cars[key].car;
-      if (car !== undefined) {
-        if (!{}.hasOwnProperty.call(car, 'owner_id')) {
-          car.owner_id = 0;
-        } // dirty fix
-
-        // если владелец указан
-        if (propsFilters.owner.length > 0) {
-          if (propsFilters.owner.indexOf(car.owner_id) > -1 && typeIds.indexOf(car.type_id) === -1) {
-            typeIds.push(car.type_id);
-          }
-        }
-      }
-    });
-
-    // наполняем селектор типов
-    if (typeIds.length > 0) {
-      types = typeIds.map(id => typesIndex[id]);
-    } else {
-      types = this.props.typesList;
-    }
-    types = types.filter(t => !!t).map(t => ({ title: t.short_name, ...t }));
-    return {
-      types,
-    };
-  }
 
   render() {
+    const { flux } = this.props.store;
     const filters = [];
-    const additiveFilters = this.doAdditiveFilters();
-
-    if (additiveFilters === undefined) throw new Error('additive filters is undefined, something went wrong');
+    const carTypes = toArray(this.props.typesIndex).map(t => ({ title: t.short_name, ...t }));
 
     filters.push(
       <Filter
-        key={'filter_basic'}
+        key={'carTypesFilter'}
         name="type"
         title="Тип техники"
-        options={additiveFilters.types}
+        options={carTypes}
         search
         itemComponent={TypeComponent}
         valueComponent={TypeComponent}
       />
     );
 
+    if (flux.getStore('session').state.isOkrug) {
+      const orgs = flux.getStore('session').getCurrentUser().companies.map(c => ({ title: c.name, ...c }));
+      filters.push(
+        <Filter
+          key={'ownerFilter'}
+          name="owner"
+          title="Организации"
+          options={orgs}
+          search
+          itemComponent={TypeComponent}
+          valueComponent={TypeComponent}
+        />
+      );
+    }
+
     const style = {
-      width: '258px',
+      width: '300px',
       borderRadius: '0px 6px 6px 6px',
       padding: '18px',
       paddingRight: '30px',

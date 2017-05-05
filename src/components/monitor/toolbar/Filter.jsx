@@ -82,6 +82,7 @@ export default class Filter extends Component {
           filter={filter}
           messages={messages}
           placeholder={this.props.title}
+          className="map-filter__input"
           {...this.props}
         />
       </div>
@@ -114,7 +115,6 @@ export default class Filter extends Component {
     if (this.props.search) {
       return this.renderSearch(options);
     }
-
     return (
       <div className="app-toolbar-filter">
         <span className="title">{this.props.title}</span>

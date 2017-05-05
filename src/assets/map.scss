@@ -1,0 +1,12 @@
+.map-filter__input {
+  input {
+    text-overflow: clip;
+  }
+  ul > li {
+    max-width: 300px;
+    span {
+      white-space: normal;
+      font-size: 14px;
+    }
+  }
+}

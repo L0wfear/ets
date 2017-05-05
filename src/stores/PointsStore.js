@@ -68,7 +68,7 @@ export default class PointsStore extends Store {
       filter: {
         status: statuses.map(s => s.id),
         type: [],
-        owner: currentUser.company_id ? [currentUser.company_id] : [],
+        owner: [],
       },
       byStatus: {
         1: 0,
@@ -280,7 +280,7 @@ export default class PointsStore extends Store {
    * @param {object} data.payload - данные о пользователе
    */
   handleLogin({ payload }) {
-    this.handleSetFilter({ owner: [payload.company_id] });
+    // this.handleSetFilter({ owner: [payload.company_id] });
   }
   /**
    * Возвращает прошедшие фильтрацию точки

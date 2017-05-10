@@ -3,6 +3,23 @@ import Div from 'components/ui/Div.jsx';
 import CompanyStructureForm from './CompanyStructureForm.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';
 
+export const companyStructureSchema = {
+  properties: [
+    {
+      key: 'type',
+      title: 'Тип подразделения',
+      type: 'number',
+      required: true,
+    },
+    {
+      key: 'name',
+      title: 'Наименование',
+      type: 'string',
+      required: true,
+    },
+  ],
+};
+
 export default class CompanyStructureFormWrap extends FormWrap {
 
   constructor(props, context) {
@@ -10,6 +27,7 @@ export default class CompanyStructureFormWrap extends FormWrap {
 
     this.createAction = context.flux.getActions('companyStructure').createCompanyElement;
     this.updateAction = context.flux.getActions('companyStructure').updateCompanyElement;
+    this.schema = companyStructureSchema;
   }
 
   render() {

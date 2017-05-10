@@ -112,7 +112,6 @@ export default class LoadingStore extends Store {
       reportsActions.getDailyCleaningReportsCAFAP,
       reportsActions.getDailyCleaningReportByIdCAFAP,
       reportsActions.createDailyCleaningReportCAFAP,
-      reportsActions.getFuelReport,
       reportsActions.getAnalytics,
       reportsActions.getWeeklyTechnicalOperationCompleteReports,
       reportsActions.getWeeklyTechnicalOperationCompleteReportById,
@@ -122,9 +121,6 @@ export default class LoadingStore extends Store {
       reportsActions.getDtCoverageReport,
       reportsActions.getCarFuncTypeUsageReports,
       reportsActions.getCarFuncTypeUsageDetailReport,
-      reportsActions.getBrigadeAndEmployeeEfficiencyReport1L,
-      reportsActions.getBrigadeEfficiencyReport2L,
-      reportsActions.getEmployeeEfficiencyReport2L,
       reportsActions.getTrackEventsReports,
       reportsActions.getTrackEventsReport,
 

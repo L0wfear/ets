@@ -164,7 +164,7 @@ class RouteCreating extends Component {
       const result = r.result;
       const draw_odh_list = result.odh_validate_result.filter(res => res.status !== 'fail').map(o => ({
         name: o.odh_name,
-        object_id: o.odh_id,
+        object_id: o.obj_id,
         state: 2,
         type: 'odh',
       }));

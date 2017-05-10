@@ -83,7 +83,7 @@ class MissionsStore extends Store {
   handleGetMissionReportByODHs(index) {
     // TODO убрать добавку route_check_unit
     const missionReport = this.state.selectedReportData[index];
-    const selectedReportDataODHS = missionReport.report_by_odh;
+    const selectedReportDataODHS = missionReport.report_by_obj;
     _.each(selectedReportDataODHS, r => (r.route_check_unit = missionReport.route_check_unit));
     this.setState({ selectedReportDataODHS });
   }

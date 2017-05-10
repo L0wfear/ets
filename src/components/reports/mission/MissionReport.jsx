@@ -43,7 +43,7 @@ const MissionReportsDatepicker = props =>
   </Row>;
 
 @connectToStores(['missions'])
-@exportable({ entity: 'car_odh_travel_report' })
+@exportable({ entity: 'car_travel_report' })
 @autobind
 @HistoryContext
 @FluxContext
@@ -54,6 +54,7 @@ export default class MissionReport extends Component {
       params: PropTypes.object,
       selectedReportData: PropTypes.array,
       export: PropTypes.func,
+      children: PropTypes.element,
     };
   }
   componentWillMount() {
@@ -72,7 +73,7 @@ export default class MissionReport extends Component {
     const index = props.data.index;
     const id = props.data.mission_id;
 
-    if (props.data.report_by_odh) {
+    if (props.data.report_by_obj) {
       this.context.history.pushState(null, `/mission-reports/${id}/odhs/${index}`);
     } else if (props.data.report_by_dt) {
       this.context.history.pushState(null, `/mission-reports/${id}/dts/${index}`);

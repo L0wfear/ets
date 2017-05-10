@@ -10,7 +10,6 @@ export default class ReportsStore extends Store {
     this.register(reportsActions.getDailyCleaningReportsCAFAP, this.handleGetDailyCleaningReportsCAFAP);
     this.register(reportsActions.createDailyCleaningReportETS, this.handleGetDailyCleaningReportsETS);
     this.register(reportsActions.createDailyCleaningReportCAFAP, this.handleGetDailyCleaningReportsCAFAP);
-    this.register(reportsActions.getFuelReport, this.handleGetFuelReport);
     this.register(reportsActions.getWeeklyTechnicalOperationCompleteReports, this.handleGetWeeklyTechnicalOperationCompleteReports);
     this.register(reportsActions.createWeeklyTechnicalOperationCompleteReport, this.handleGetWeeklyTechnicalOperationCompleteReports);
     this.register(reportsActions.getOdhCoverageReport, this.handleGetOdhCoverageReport);
@@ -19,9 +18,6 @@ export default class ReportsStore extends Store {
     this.register(reportsActions.getTrackEventsReports, this.handleGetTrackEventsReports);
     this.register(reportsActions.getCarFuncTypeUsageReports, this.handleGetCarFuncTypeUsageReports);
     this.register(reportsActions.getCarFuncTypeUsageDetailReport, this.handleGetCarFuncTypeUsageDetailReport);
-    this.register(reportsActions.getBrigadeAndEmployeeEfficiencyReport1L, this.handleGetBrigadeAndEmployeeEfficiencyReport1L);
-    this.register(reportsActions.getBrigadeEfficiencyReport2L, this.handleGetBrigadeEfficiencyReport2L);
-    this.register(reportsActions.getEmployeeEfficiencyReport2L, this.handleGetEmployeeEfficiencyReport2L);
     this.register(reportsActions.clearStateList, this.handleClearStateList);
 
     this.initialState = {
@@ -29,24 +25,14 @@ export default class ReportsStore extends Store {
       dailyCleaningReportsListCAFAP: [],
       carFuncTypeUsageReportsList: [],
       carFuncTypeUsageDetailReportList: [],
-      fuelReportL1: [],
-      fuelReportL2: [],
       weeklyTechnicalOperationCompleteReportsList: [],
       odhCoverageReport: [],
       dtCoverageReport: [],
-      employeeEfficiencyReport2L: [],
-      brigadeAndEmployeeEfficiencyReport1L: [],
-      brigadeEfficiencyReport2L: [],
       trackEventsReport: [],
       trackEventsReports: [],
     };
 
     this.state = this.initialState;
-  }
-
-  handleGetFuelReport({ data, level }) {
-    console.log('handleGetFuelReport', data, level);
-    this.setState({ [`fuelReportL${level}`]: data.result.rows });
   }
 
   handleGetTrackEventsReport({ result }) {
@@ -63,18 +49,6 @@ export default class ReportsStore extends Store {
 
   handleGetCarFuncTypeUsageDetailReport({ result }) {
     this.setState({ carFuncTypeUsageDetailReportList: result.rows });
-  }
-
-  handleGetBrigadeAndEmployeeEfficiencyReport1L({ result }) {
-    this.setState({ brigadeAndEmployeeEfficiencyReport1L: result.rows });
-  }
-
-  handleGetBrigadeEfficiencyReport2L({ result }) {
-    this.setState({ brigadeEfficiencyReport2L: result.rows });
-  }
-
-  handleGetEmployeeEfficiencyReport2L({ result }) {
-    this.setState({ employeeEfficiencyReport2L: result.rows });
   }
 
   handleGetDailyCleaningReportsETS(dailyCleaningReports) {

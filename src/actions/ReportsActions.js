@@ -1,20 +1,16 @@
 import { Actions } from 'flummox';
-import { createValidDateTime, createValidDate } from 'utils/dates';
+import { createValidDateTime } from 'utils/dates';
 import _ from 'lodash';
 import {
   DailyCleaningReportsServiceETS,
   DailyCleaningReportsServiceCAFAP,
   WeeklyTechnicalOperationCompleteReportsService,
-  FuelReportService,
   CoverageReportService,
   AnalyticsService,
   OdhCoverageReportService,
   DtCoverageReportService,
   CarFuncTypeUsageReportService,
   CarFuncTypeUsageDetailReportService,
-  BrigadeAndEmployeeEfficiencyReport1LService,
-  BrigadeEfficiencyReport2LService,
-  EmployeeEfficiencyReportService,
   TrackEventsReportService,
 } from 'api/Services';
 
@@ -83,17 +79,6 @@ export default class ReportsActions extends Actions {
 
   getDailyCleaningReportByIdCAFAP(id) {
     return DailyCleaningReportsServiceCAFAP.path(id).get();
-  }
-
-  getFuelReport(data, level) {
-    const payload = _.cloneDeep(data);
-    payload.date_from = createValidDate(payload.date_from);
-    payload.date_to = createValidDate(payload.date_to);
-
-    return FuelReportService.get(payload).then(result => ({
-      data: result,
-      level,
-    }));
   }
 
   getAnalytics(data) {
@@ -177,27 +162,6 @@ export default class ReportsActions extends Actions {
       payload.format = format;
     }
     return DtCoverageReportService.getBlob(payload);
-  }
-
-  getBrigadeAndEmployeeEfficiencyReport1L(data) {
-    const payload = _.cloneDeep(data);
-    payload.date_start = createValidDateTime(payload.date_start);
-    payload.date_end = createValidDateTime(payload.date_end);
-    return BrigadeAndEmployeeEfficiencyReport1LService.get(payload);
-  }
-
-  getBrigadeEfficiencyReport2L(data) {
-    const payload = _.cloneDeep(data);
-    payload.date_start = createValidDateTime(payload.date_start);
-    payload.date_end = createValidDateTime(payload.date_end);
-    return BrigadeEfficiencyReport2LService.get(payload);
-  }
-
-  getEmployeeEfficiencyReport2L(data) {
-    const payload = _.cloneDeep(data);
-    payload.date_start = createValidDateTime(payload.date_start);
-    payload.date_end = createValidDateTime(payload.date_end);
-    return EmployeeEfficiencyReportService.get(payload);
   }
 
   getTrackEventsReports(data) {

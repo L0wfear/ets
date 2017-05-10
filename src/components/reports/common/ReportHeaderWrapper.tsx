@@ -47,8 +47,8 @@ React.ComponentClass<IPropsReportHeaderWrapper & IStateReportHeaderWrapper> {
     render() {
       return (
         <SourceHeader
-          {...this.props as any}
-          {...this.state.headerState as any}
+          {...this.props}
+          {...this.state.headerState}
           handleChange={this.handleChange}
         />
       );

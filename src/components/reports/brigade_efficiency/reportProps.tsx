@@ -1,15 +1,25 @@
-import { withProps } from 'recompose';
+import * as React from 'react';
 
 import { IReportProps } from 'components/reports/@types/common.h';
 
-import { exportable } from 'utils/decorators';
+import { bindable } from 'utils/decorators';
 import { multiselectFilterSchema } from 'components/reports/common/utils';
-import ReportContainer from 'components/reports/common/ReportContainer';
 import ReportHeader from './ReportHeader';
 
-const serviceUrl = '/reports/efficiency/brigade';
+export const serviceUrl = '/reports/efficiency/brigade';
 const reportUrl = 'brigade-efficiency-report';
 const serviceName = 'BrigadeEfficiencyReport';
+
+
+interface IPropsDutyNumberLink {
+  dutyNumber: string;
+  onClick: any;
+}
+
+const DutyNumberLinkComponent: React.StatelessComponent<IPropsDutyNumberLink> = props =>
+  <div><a className="pointer" onClick={props.onClick}>{props.dutyNumber}</a></div>;
+
+const DutyNumberLink: any = bindable(DutyNumberLinkComponent);
 
 
 const schemaMakers = {
@@ -20,7 +30,14 @@ const schemaMakers = {
   foreman_name: schema => multiselectFilterSchema(schema),
 };
 
-const renderers = {};
+export const renderers = onDutyNumberLinkClick => ({
+  number: meta =>
+    <DutyNumberLink
+      dutyNumber={meta.data}
+      onClick={onDutyNumberLinkClick}
+      bindOnClick={meta.data}
+    />,
+});
 
 const reportProps: IReportProps = {
   title: 'Работа бригад по ручной уборке',
@@ -29,12 +46,7 @@ const reportProps: IReportProps = {
   serviceUrl,
   enumerated: true,
   headerComponent: ReportHeader,
-  renderers,
   schemaMakers,
 };
 
-const ExportableReportContainer = exportable({
-  entity: serviceUrl,
-})(ReportContainer);
-
-export default withProps(reportProps)(ExportableReportContainer);
+export default reportProps;

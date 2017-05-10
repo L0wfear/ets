@@ -6,8 +6,35 @@ const getCondition = data => parseInt(data, 10) > 0 ? 'Исправно' : 'Не
 const tableMeta = props => ({
   cols: [
     {
-      name: 'company_name',
-      displayName: 'Учреждение',
+      name: 'okrug_name',
+      displayName: 'Округ',
+      type: 'text',
+      display: props.isOkrug,
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
+      name: 'company_name_customer',
+      displayName: 'Заказчик',
+      type: 'text',
+      display: props.isOkrug,
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
+      name: 'company_name_contractor',
+      displayName: 'Подрядчик',
+      type: 'text',
+      display: props.isOkrug,
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
+      name: 'owner_name',
+      displayName: 'Владелец',
       type: 'text',
       display: props.isOkrug,
       filter: {
@@ -88,14 +115,6 @@ const tableMeta = props => ({
       },
     },
     {
-      name: 'type_name',
-      displayName: 'Оборудование ДКМ',
-      type: 'text',
-      filter: {
-        type: 'multiselect',
-      },
-    },
-    {
       name: 'is_common',
       displayName: 'Общее',
       type: 'text',
@@ -114,6 +133,8 @@ const CarsTable = (props) => {
     garage_number: ({ data }) => <div>{data && data !== 'null' ? data : ''}</div>,
     model_name: ({ data }) => <div className="white-space-pre-wrap">{data}</div>,
     is_common: ({ data }) => <input type="checkbox" disabled checked={!!data} />,
+    company_name_customer: ({ rowData }) => <span>{rowData.company_name}</span>,
+    company_name_contractor: ({ rowData }) => <span>{rowData.company_name}</span>,
   };
 
   return (<Table

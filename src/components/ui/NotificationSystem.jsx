@@ -26,7 +26,7 @@ class AppNotificationSystem extends React.Component {
    * @param text
    * @param type success|error|warning|info
    */
-  notify(text, type = 'success') {
+  notify(text, type = 'success', position = 'tc') {
     if (typeof text === 'object') {
       return this.notifyWithObject(text);
     }
@@ -37,7 +37,7 @@ class AppNotificationSystem extends React.Component {
     return this._notificationSystem.addNotification({
       message: text,
       level: type,
-      position: 'tc',
+      position,
     });
   }
 

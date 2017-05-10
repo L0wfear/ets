@@ -116,6 +116,11 @@ export default class CarInfo extends Component {
   async fetchCarInfo(props = this.props) {
     const carList = props.flux.getStore('objects').state.carsList;
     const car = carList.find(c => c.gov_number === props.car.car.gov_number);
+    if (!car) {
+      global.NOTIFICATION_SYSTEM.notify(`Нет информации по выбранной автомашине с гос. номером ${props.car.car.gov_number}`, 'info', 'tr');
+      return;
+    }
+
     const info = await this.props.flux.getActions('cars').getCarInfo(car.asuods_id);
     props.car.marker.track.maxSpeed = info.max_speed;
     this.setState({ missions: info.missions, maxSpeed: info.max_speed, imageUrl: car ? car.type_image_name : null });

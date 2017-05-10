@@ -25,9 +25,11 @@ class CarForm extends Form {
   }
 
   render() {
+    console.log(this.props.formState);
     const state = this.props.formState;
     const { ownersIndex = {}, typesIndex = {}, isPermitted = false } = this.props;
     const owner = ownersIndex[state.owner_id] || {};
+    console.log(typesIndex);
     const type = typesIndex[state.type_id] || {};
     const { companyStructureList = [] } = this.state;
     const COMPANY_ELEMENTS = companyStructureList.map(el => ({ value: el.id, label: el.name }));
@@ -94,7 +96,7 @@ class CarForm extends Form {
 
               <Field type="string" label="Марка шасси" readOnly value={state.model_name || 'Не указано'} />
 
-              <Field type="string" label="Тип" readOnly value={type.title || 'Не указано'} />
+              <Field type="string" label="Тип" readOnly value={type.short_name || 'Не указано'} />
             </Col>
 
           </Row>

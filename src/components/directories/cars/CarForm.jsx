@@ -25,11 +25,9 @@ class CarForm extends Form {
   }
 
   render() {
-    console.log(this.props.formState);
     const state = this.props.formState;
     const { ownersIndex = {}, typesIndex = {}, isPermitted = false } = this.props;
     const owner = ownersIndex[state.owner_id] || {};
-    console.log(typesIndex);
     const type = typesIndex[state.type_id] || {};
     const { companyStructureList = [] } = this.state;
     const COMPANY_ELEMENTS = companyStructureList.map(el => ({ value: el.id, label: el.name }));

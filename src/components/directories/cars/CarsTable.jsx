@@ -10,27 +10,28 @@ const tableMeta = props => ({
       displayName: 'Округ',
       type: 'text',
       display: props.isOkrug,
-      filter: {
-        type: 'multiselect',
-      },
+      filter: props.isOkrug ? { type: 'multiselect' } : false,
     },
     {
       name: 'company_name_customer',
       displayName: 'Заказчик',
       type: 'text',
       display: props.isOkrug,
-      filter: {
-        type: 'multiselect',
-      },
+      filter: false,
     },
     {
       name: 'company_name_contractor',
       displayName: 'Подрядчик',
       type: 'text',
       display: props.isOkrug,
-      filter: {
-        type: 'multiselect',
-      },
+      filter: false,
+    },
+    {
+      name: 'company_name',
+      displayName: 'Заказчик/Подрядчик',
+      type: 'text',
+      display: false,
+      filter: props.isOkrug ? { type: 'multiselect' } : false,
     },
     {
       name: 'owner_name',
@@ -137,13 +138,15 @@ const CarsTable = (props) => {
     company_name_contractor: ({ rowData }) => <span>{rowData.company_name}</span>,
   };
 
-  return (<Table
-    title="Реестр транспортных средств"
-    tableMeta={tableMeta(props)}
-    results={props.data}
-    renderers={renderers}
-    {...props}
-  />);
+  return (
+    <Table
+      title="Реестр транспортных средств"
+      tableMeta={tableMeta(props)}
+      results={props.data}
+      renderers={renderers}
+      {...props}
+    />
+  );
 };
 
 export default CarsTable;

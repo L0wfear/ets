@@ -9,6 +9,7 @@ import { isNotNull, isEmpty, hasOdometer } from 'utils/functions';
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { notifications } from 'utils/notifications';
 import _ from 'lodash';
+import { filter, map, flow } from 'lodash/fp';
 import Form from '../compositions/Form.jsx';
 import Taxes from './Taxes.jsx';
 import MissionFormWrap from '../missions/mission/MissionFormWrap.jsx';
@@ -308,13 +309,41 @@ class WaybillForm extends Form {
     const { appConfig } = this.props;
     let taxesControl = false;
     const { carsList = [], carsIndex = {}, driversList = [], employeesList = [], missionsList = [] } = this.props;
-    const CARS = carsList
-      .filter(c => !state.structure_id || c.is_common || c.company_structure_id === state.structure_id)
-      .map(c => ({
-        value: c.asuods_id,
-        gov_number: c.gov_number,
-        label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`,
-      }));
+
+    const vehicleFilter = filter(c =>
+      !state.structure_id ||
+      c.is_common ||
+      c.company_structure_id === state.structure_id
+    );
+
+    const carFilter = flow(
+      vehicleFilter,
+      filter(c => !c.is_trailer)
+    );
+    const trailerFilter = flow(
+      vehicleFilter,
+      filter(c => c.is_trailer)
+    );
+
+    const vehicleMapper = map(c => ({
+      value: c.asuods_id,
+      gov_number: c.gov_number,
+      label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`,
+    }));
+
+    const getCars = flow(
+      carFilter,
+      vehicleMapper,
+    );
+
+    const getTrailers = flow(
+      trailerFilter,
+      vehicleMapper,
+    );
+
+    const CARS = getCars(carsList);
+    const TRAILERS = getTrailers(carsList);
+
     const FUEL_TYPES = _.map(appConfig.enums.FUEL_TYPE, (v, k) => ({ value: k, label: v }));
     const DRIVERS = driversList.map((d) => {
       const personnel_number = d.personnel_number ? `[${d.personnel_number}] ` : '';
@@ -347,6 +376,7 @@ class WaybillForm extends Form {
     const IS_DISPLAY = state.status && state.status === 'closed';
 
     const car = carsIndex[state.car_id];
+    const trailer = carsIndex[state.trailer_id];
     const CAR_HAS_ODOMETER = state.gov_number ? hasOdometer(state.gov_number) : null;
 
     let title = '';
@@ -509,6 +539,27 @@ class WaybillForm extends Form {
               />
             </Col>
             <Col md={6}>
+              <Field
+                type="select"
+                label="Прицеп"
+                error={errors.trailer_id}
+                className="white-space-pre-wrap"
+                hidden={!(IS_CREATING || IS_POST_CREATING)}
+                options={TRAILERS}
+                value={state.trailer_id}
+                onChange={this.handleChange.bind(this, 'trailer_id')}
+              />
+
+              <Field
+                type="string"
+                label="Прицеп"
+                className="white-space-pre-wrap"
+                readOnly
+                hidden={IS_CREATING || IS_POST_CREATING}
+                value={trailer ? `${trailer.gov_number} [${trailer.special_model_name || ''}${trailer.special_model_name ? '/' : ''}${trailer.model_name || ''}]` : 'Н/Д'}
+              />
+            </Col>
+            <Col md={12}>
               <Field
                 type="select"
                 label="Водитель (возможен поиск по табельному номеру)"

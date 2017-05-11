@@ -33,6 +33,12 @@ export const waybillSchema = {
       required: true,
     },
     {
+      key: 'trailer_id',
+      title: 'Прицеп',
+      type: 'number',
+      required: false,
+    },
+    {
       key: 'fuel_start',
       title: 'Топливо.Выезд',
       type: 'number',

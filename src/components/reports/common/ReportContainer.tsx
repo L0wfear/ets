@@ -21,6 +21,12 @@ const Table: any = DataTable;
 const fakeSchemaMaker = (schema, reportProps) => schema;
 
 class ReportContainer extends React.Component<IPropsReportContainer, IStateReportContainer> {
+  constructor() {
+    super();
+    this.state = {
+      filterResetting: false,
+    };
+  }
   componentDidMount() {
     // Так как стор один на все отчёты, необходимо его чистить в начале.
     this.props.setInitialState();
@@ -39,10 +45,14 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     if (!isEqual(query, nextQuery)) {
       if (Object.keys(nextQuery).length > 0) {
         this.getReportData(nextQuery);
+        this.setState({ filterResetting: true });
       } else {
         this.getTableMetaInfo();
         this.props.setInitialState();
+        this.setState({ filterResetting: true });
       }
+    } else {
+      this.setState({ filterResetting: false });
     }
   }
 
@@ -199,6 +209,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
           onRowSelected={this.handleMoveDown}
           enumerated={enumerated}
           enableSort={enableSort}
+          filterResetting={this.state.filterResetting}
         >
           <Button
             bsSize="small"

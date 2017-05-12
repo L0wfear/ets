@@ -57,6 +57,7 @@ export default class DataTable extends React.Component {
 
       tableMeta: PropTypes.object,
       filterValues: PropTypes.object,
+      filterResetting: PropTypes.bool,
       externalFilter: PropTypes.func,
       highlight: PropTypes.array,
 
@@ -97,6 +98,7 @@ export default class DataTable extends React.Component {
       noDataMessage: 'Нет данных',
 
       noFilter: false,
+      filterResetting: false,
       noHeader: false,
       noTitle: false,
 
@@ -167,6 +169,10 @@ export default class DataTable extends React.Component {
       this.setState({ initialSort, initialSortAscending, filterValues: props.filterValues });
     } else {
       this.setState({ initialSort, initialSortAscending });
+    }
+
+    if (props.filterResetting) {
+      this.setState({ filterValues: {} });
     }
   }
 
@@ -488,11 +494,13 @@ export default class DataTable extends React.Component {
                 />
               </ClickOutHandler>
             }
-            {!noFilter && <FilterButton
-              show={this.state.filterModalIsOpen}
-              active={!!_.keys(this.state.filterValues).length}
-              onClick={this.toggleFilter}
-                          />}
+            {!noFilter &&
+              <FilterButton
+                show={this.state.filterModalIsOpen}
+                active={!!_.keys(this.state.filterValues).length}
+                onClick={this.toggleFilter}
+              />
+            }
             {refreshable &&
               <Button
                 bsSize="small"
@@ -503,14 +511,16 @@ export default class DataTable extends React.Component {
             }
             {this.props.children}
           </div>
-          {!noFilter && <Filter
-            show={this.state.filterModalIsOpen}
-            onSubmit={this.saveFilter}
-            onHide={this.closeFilter}
-            values={this.state.filterValues}
-            options={tableMetaCols.filter(el => el.filter !== false)}
-            tableData={this.props.results}
-                        />}
+          {!noFilter &&
+            <Filter
+              show={this.state.filterModalIsOpen}
+              onSubmit={this.saveFilter}
+              onHide={this.closeFilter}
+              values={this.state.filterValues}
+              options={tableMetaCols.filter(el => el.filter !== false)}
+              tableData={this.props.results}
+            />
+          }
         </Div>
         <Griddle
           results={results}

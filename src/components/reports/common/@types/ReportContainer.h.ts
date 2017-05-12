@@ -16,4 +16,6 @@ export interface IPropsReportContainer extends
   getTableMetaInfo(serviceName: string): Promise<any>;
 }
 
-export interface IStateReportContainer {}
+export interface IStateReportContainer {
+  filterResetting: boolean;
+}

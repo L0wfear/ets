@@ -19,6 +19,7 @@ const schemaMakers = {
   fuel_type_name: schema => multiselectFilterSchema(schema),
   car_model_name: schema => multiselectFilterSchema(schema),
   car_gov_number: schema => multiselectFilterSchema(schema),
+  employee_name: schema => multiselectFilterSchema(schema),
 };
 
 const renderers = {};

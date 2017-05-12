@@ -1,6 +1,8 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button, Glyphicon } from 'react-bootstrap';
+import last from 'lodash/last';
+
 import ModalBody from 'components/ui/Modal';
 import RouteInfo from 'components/route/RouteInfo.jsx';
 import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
@@ -8,6 +10,10 @@ import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import { isEmpty } from 'utils/functions';
 import Form from 'components/compositions/Form.jsx';
+
+const onlyActiveEmployeeNotification = () => {
+  global.NOTIFICATION_SYSTEM.notify('В наряд-задание можно добавить только активного на данный момент времени сотрудника', 'info');
+};
 
 export class DutyMissionForm extends Form {
 
@@ -49,9 +55,32 @@ export class DutyMissionForm extends Form {
 
     this.setState({ routesList });
   }
+  isActiveEmployee(id) {
+    return this.props.employeesList
+      .filter(employee => employee.active)
+      .map(employee => employee.id)
+      .indexOf(parseInt(id, 10)) !== -1;
+  }
+
+  handleForemanIdChange = (foreman_id) => {
+    let value = foreman_id;
+
+    if (value !== '' && !this.isActiveEmployee(value)) {
+      onlyActiveEmployeeNotification();
+      value = this.props.formState.foreman_id;
+    }
+    this.props.handleFormChange('foreman_id', value);
+  }
 
   handleBrigadeIdListChange(v) {
     const data = v.split(',');
+    const lastEmployee = last(data);
+
+    if (lastEmployee !== '' && !this.isActiveEmployee(lastEmployee)) {
+      onlyActiveEmployeeNotification();
+      data.pop();
+    }
+
     const { employeesList = [] } = this.props;
     const brigade_employee_id_list = employeesList.filter(e => data.indexOf(e.id.toString()) > -1);
     this.props.handleFormChange('brigade_employee_id_list', brigade_employee_id_list);
@@ -78,7 +107,7 @@ export class DutyMissionForm extends Form {
 
     missionsActions.getMissions(mission.technical_operation_id);
     missionsActions.getMissionSources();
-    flux.getActions('employees').getEmployees(true);
+    flux.getActions('employees').getEmployees();
     const technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsWithBrigades();
     this.setState({
       selectedRoute,
@@ -135,18 +164,21 @@ export class DutyMissionForm extends Form {
     const state = this.props.formState;
     const errors = this.props.formErrors;
 
-    const EMPLOYEES_RKU_FILTER = 'brigade_worker';
-
     const { missionSourcesList = [], employeesList = [], missionsList = [], readOnly = false } = this.props;
     const { technicalOperationsList = [], routesList = [] } = this.state;
-    
+
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
     const MISSION_SOURCES = missionSourcesList.map(({ id, name }) => ({ value: id, label: name }));
     const ROUTES = routesList.map(({ id, name }) => ({ value: id, label: name }));
-    const EMPLOYEES = employeesList.map(d => ({ value: d.id, label: `${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''}` }));
-    const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => {
-      return { id, value: id, label: `№${number} (${technical_operation_name})` };
-    });
+    const EMPLOYEES = employeesList.map(d => ({
+      value: d.id,
+      label: `${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''} ${!d.active ? '(Неактивный сотрудник)' : ''}`,
+    }));
+    const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({
+      id,
+      value: id,
+      label: `№${number} (${technical_operation_name})`,
+    }));
 
     const IS_CREATING = !!!state.number;
     const IS_CLOSING = state.status && state.status === 'assigned';
@@ -278,7 +310,7 @@ export class DutyMissionForm extends Form {
                 disabled={IS_DISPLAY || readOnly}
                 options={EMPLOYEES}
                 value={state.foreman_id}
-                onChange={this.handleChange.bind(this, 'foreman_id')}
+                onChange={this.handleForemanIdChange}
               />
             </Col>
 

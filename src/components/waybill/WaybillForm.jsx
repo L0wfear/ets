@@ -3,10 +3,9 @@ import { autobind } from 'core-decorators';
 import connectToStores from 'flummox/connect';
 import { Modal, Input, Row, Col, Button, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
 import _ from 'lodash';
-import { filter, map, flow } from 'lodash/fp';
+import { pipe, filter, cond, map, T } from 'ramda';
+
 import ModalBody from 'components/ui/Modal';
-
-
 import Field from 'components/ui/Field.jsx';
 import DivForEnhance from 'components/ui/Div.jsx';
 import {
@@ -16,7 +15,7 @@ import {
   isThreeDigitGovNumber,
   isFourDigitGovNumber,
 } from 'utils/functions';
-import { caseObject, switcher, defaultCase } from 'utils/fp';
+
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { notifications } from 'utils/notifications';
 import Form from '../compositions/Form.jsx';
@@ -34,11 +33,11 @@ const vehicleFilter = structure_id => filter(c =>
   c.company_structure_id === structure_id
 );
 
-const carFilter = structure_id => flow(
+const carFilter = structure_id => pipe(
   vehicleFilter(structure_id),
   filter(c => !c.is_trailer)
 );
-const trailerFilter = structure_id => flow(
+const trailerFilter = structure_id => pipe(
   vehicleFilter(structure_id),
   filter(c => c.is_trailer)
 );
@@ -49,45 +48,29 @@ const vehicleMapper = map(c => ({
   label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`,
 }));
 
-const getCars = structure_id => flow(
+const getCars = structure_id => pipe(
   carFilter(structure_id),
   vehicleMapper,
 );
 
-const getTrailers = structure_id => flow(
+const getTrailers = structure_id => pipe(
   trailerFilter(structure_id),
   vehicleMapper,
 );
 
 
-const driverHasLicense = driver =>
-  driver.drivers_license !== undefined &&
-  driver.drivers_license !== null &&
-  driver.drivers_license !== '';
-
-const driverHasSpecialLicense = driver =>
-  driver.special_license !== undefined &&
-  driver.special_license !== null &&
-  driver.special_license !== '';
+const isNotEmpty = value => ![undefined, null, ''].includes(value);
+const driverHasLicense = ({ drivers_license }) => isNotEmpty(drivers_license);
+const driverHasSpecialLicense = ({ special_license }) => isNotEmpty(special_license);
 
 const getDrivers = (number = '', driversList) => {
-  const hasLicense = caseObject(
-    isThreeDigitGovNumber(number),
-    () => driverHasLicense,
-  );
+  const licenceSwitcher = cond([
+    [isThreeDigitGovNumber, () => driverHasLicense],
+    [isFourDigitGovNumber, () => driverHasSpecialLicense],
+    [T, () => driver => driver],
+  ]);
 
-  const hasSpecialLicense = caseObject(
-    isFourDigitGovNumber(number),
-    () => driverHasSpecialLicense,
-  );
-
-  const licenceSwitcher = switcher();
-
-  const driverFilter = licenceSwitcher(
-    hasLicense,
-    hasSpecialLicense,
-    defaultCase(() => item => item),
-  );
+  const driverFilter = licenceSwitcher(number);
 
   return driversList
     .filter(driverFilter)
@@ -415,9 +398,7 @@ class WaybillForm extends Form {
 
     const driversEnability = state.car_id !== null && state.car_id !== '';
 
-    const DRIVERS = driversEnability
-      ? getDrivers(state.gov_number, driversList)
-      : [];
+    const DRIVERS = getDrivers(state.gov_number, driversList);
 
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false }));
     const OUTSIDEMISSIONS = notAvailableMissions.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false, number, className: 'yellow' }));

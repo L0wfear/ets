@@ -2,14 +2,23 @@ import React from 'react';
 import { autobind } from 'core-decorators';
 import connectToStores from 'flummox/connect';
 import { Modal, Input, Row, Col, Button, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
-import ModalBody from 'components/ui/Modal';
-import Field from 'components/ui/Field.jsx';
-import DivForEnhance from 'components/ui/Div.jsx';
-import { isNotNull, isEmpty, hasOdometer } from 'utils/functions';
-import { employeeFIOLabelFunction } from 'utils/labelFunctions';
-import { notifications } from 'utils/notifications';
 import _ from 'lodash';
 import { filter, map, flow } from 'lodash/fp';
+import ModalBody from 'components/ui/Modal';
+
+
+import Field from 'components/ui/Field.jsx';
+import DivForEnhance from 'components/ui/Div.jsx';
+import {
+  isNotNull,
+  isEmpty,
+  hasOdometer,
+  isThreeDigitGovNumber,
+  isFourDigitGovNumber,
+} from 'utils/functions';
+import { caseObject, switcher, defaultCase } from 'utils/fp';
+import { employeeFIOLabelFunction } from 'utils/labelFunctions';
+import { notifications } from 'utils/notifications';
 import Form from '../compositions/Form.jsx';
 import Taxes from './Taxes.jsx';
 import MissionFormWrap from '../missions/mission/MissionFormWrap.jsx';
@@ -17,6 +26,76 @@ import { getDefaultMission } from '../../stores/MissionsStore.js';
 import enhanceWithPermissions from '../util/RequirePermissions.jsx';
 
 const Div = enhanceWithPermissions(DivForEnhance);
+
+// declarative functional approach
+const vehicleFilter = structure_id => filter(c =>
+  !structure_id ||
+  c.is_common ||
+  c.company_structure_id === structure_id
+);
+
+const carFilter = structure_id => flow(
+  vehicleFilter(structure_id),
+  filter(c => !c.is_trailer)
+);
+const trailerFilter = structure_id => flow(
+  vehicleFilter(structure_id),
+  filter(c => c.is_trailer)
+);
+
+const vehicleMapper = map(c => ({
+  value: c.asuods_id,
+  gov_number: c.gov_number,
+  label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`,
+}));
+
+const getCars = structure_id => flow(
+  carFilter(structure_id),
+  vehicleMapper,
+);
+
+const getTrailers = structure_id => flow(
+  trailerFilter(structure_id),
+  vehicleMapper,
+);
+
+
+const driverHasLicense = driver =>
+  driver.drivers_license !== undefined &&
+  driver.drivers_license !== null &&
+  driver.drivers_license !== '';
+
+const driverHasSpecialLicense = driver =>
+  driver.special_license !== undefined &&
+  driver.special_license !== null &&
+  driver.special_license !== '';
+
+const getDrivers = (number = '', driversList) => {
+  const hasLicense = caseObject(
+    isThreeDigitGovNumber(number),
+    () => driverHasLicense,
+  );
+
+  const hasSpecialLicense = caseObject(
+    isFourDigitGovNumber(number),
+    () => driverHasSpecialLicense,
+  );
+
+  const licenceSwitcher = switcher();
+
+  const driverFilter = licenceSwitcher(
+    hasLicense,
+    hasSpecialLicense,
+    defaultCase(() => item => item),
+  );
+
+  return driversList
+    .filter(driverFilter)
+    .map((d) => {
+      const personnel_number = d.personnel_number ? `[${d.personnel_number}] ` : '';
+      return { value: d.id, label: `${personnel_number}${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''}` };
+    });
+};
 
 @autobind
 class WaybillForm extends Form {
@@ -179,7 +258,16 @@ class WaybillForm extends Form {
       formState.driver_id
     ).then((response) => {
       const newDriverId = response && response.result ? response.result.driver_id : null;
-      if (newDriverId) this.props.handleFormChange('driver_id', newDriverId);
+      if (newDriverId) {
+        const driver = this.props.driversList.find(item => item.driver_id === newDriverId) || {};
+        const { gov_number } = formState;
+        const hasLicense = isThreeDigitGovNumber(gov_number) && driverHasLicense(driver);
+        const hasSpecialLicense = isFourDigitGovNumber(gov_number) && driverHasSpecialLicense(driver);
+
+        if (hasLicense || hasSpecialLicense) {
+          this.props.handleFormChange('driver_id', newDriverId);
+        }
+      }
     });
   }
 
@@ -195,6 +283,7 @@ class WaybillForm extends Form {
       const lastCarUsedWaybillObject = await flux.getActions('waybills').getLastClosedWaybill(car_id);
       const lastCarUsedWaybill = lastCarUsedWaybillObject.result;
       const additionalFields = this.getFieldsToChangeBasedOnLastWaybill(lastCarUsedWaybill);
+
       fieldsToChange = {
         ...fieldsToChange,
         ...additionalFields,
@@ -310,45 +399,26 @@ class WaybillForm extends Form {
     let taxesControl = false;
     const { carsList = [], carsIndex = {}, driversList = [], employeesList = [], missionsList = [] } = this.props;
 
-    const vehicleFilter = filter(c =>
-      !state.structure_id ||
-      c.is_common ||
-      c.company_structure_id === state.structure_id
-    );
+    const getCarsByStructId = getCars(state.structure_id);
+    const getTrailersByStructId = getTrailers(state.structure_id);
 
-    const carFilter = flow(
-      vehicleFilter,
-      filter(c => !c.is_trailer)
-    );
-    const trailerFilter = flow(
-      vehicleFilter,
-      filter(c => c.is_trailer)
-    );
-
-    const vehicleMapper = map(c => ({
-      value: c.asuods_id,
-      gov_number: c.gov_number,
-      label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`,
-    }));
-
-    const getCars = flow(
-      carFilter,
-      vehicleMapper,
-    );
-
-    const getTrailers = flow(
-      trailerFilter,
-      vehicleMapper,
-    );
-
-    const CARS = getCars(carsList);
-    const TRAILERS = getTrailers(carsList);
+    const CARS = getCarsByStructId(carsList);
+    const TRAILERS = getTrailersByStructId(carsList);
 
     const FUEL_TYPES = _.map(appConfig.enums.FUEL_TYPE, (v, k) => ({ value: k, label: v }));
-    const DRIVERS = driversList.map((d) => {
-      const personnel_number = d.personnel_number ? `[${d.personnel_number}] ` : '';
-      return { value: d.id, label: `${personnel_number}${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''}` };
-    });
+
+    // const DRIVERS = driversList.map((d) => {
+    //   const personnel_number = d.personnel_number ? `[${d.personnel_number}] ` : '';
+    //   return { value: d.id, label: `${personnel_number}${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''}` };
+    // });
+
+
+    const driversEnability = state.car_id !== null && state.car_id !== '';
+
+    const DRIVERS = driversEnability
+      ? getDrivers(state.gov_number, driversList)
+      : [];
+
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false }));
     const OUTSIDEMISSIONS = notAvailableMissions.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false, number, className: 'yellow' }));
 
@@ -563,8 +633,9 @@ class WaybillForm extends Form {
               <Field
                 type="select"
                 label="Водитель (возможен поиск по табельному номеру)"
-                error={errors.driver_id}
+                error={driversEnability ? errors.driver_id : undefined}
                 hidden={!(IS_CREATING || IS_POST_CREATING)}
+                readOnly={!driversEnability}
                 options={DRIVERS}
                 value={state.driver_id}
                 onChange={this.handleChange.bind(this, 'driver_id')}

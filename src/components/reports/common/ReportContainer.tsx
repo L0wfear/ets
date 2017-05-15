@@ -2,7 +2,7 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button, Glyphicon } from 'react-bootstrap';
-import { omit, isEqual } from 'lodash';
+import { omit, isEqual, difference } from 'lodash';
 
 import { IDataTableColSchema, IDataTableSelectedRow } from 'components/ui/table/@types/DataTable/schema.h';
 import { IPropsReportContainer, IStateReportContainer } from './@types/ReportContainer.h';
@@ -118,11 +118,13 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     }
 
     const lowerLevel = this.props.meta.levels.lower.level;
+    const lowerLevelFilters = this.props.meta.levels.lower.filter;
     const lowerLevelSelectors = this.props.meta.levels.lower.filter
       .map(selector => ({[selector]: selectedRow.props.data[selector] }))
       .reduce((prev, next) => ({ ...prev, ...next }));
 
-    const currentLevelSelectors = this.props.meta.levels.current.filter;
+
+    const currentLevelFilters = this.props.meta.levels.current.filter;
     const headerState = this.props.location.query;
 
     const query = {
@@ -131,7 +133,8 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       ...lowerLevelSelectors,
     };
 
-    const filteredQuery = omit(query, currentLevelSelectors);
+    const filterDifference = difference(currentLevelFilters, lowerLevelFilters);
+    const filteredQuery = omit(query, filterDifference);
 
     this.props.history.pushState(null, this.props.reportUrl, filteredQuery);
   }

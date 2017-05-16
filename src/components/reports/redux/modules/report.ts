@@ -23,6 +23,9 @@ const initialState: ReduxTypes.IReportStateProps = {
     },
   },
   tableMetaInfo: [],
+  summaryList: [],
+  summaryMeta: {},
+  summaryTableMetaInfo: [],
   reportMetaFetching: false,
   reportDataFetching: false,
 };
@@ -44,7 +47,7 @@ export const getTableMetaInfo: ReduxTypes.IGetTableMetaInfo = serviceName => dis
       });
       resolve(payload);
     } catch (error) {
-      dispatch({ type: GET_REPORT_META_ERROR });
+      dispatch({ type: GET_REPORT_META_ERROR, error });
       reject(error);
     }
   });
@@ -54,7 +57,7 @@ const getTableMetaInfoReducer = (state, { payload }) => ({
   tableMetaInfo: payload,
 });
 
-export const getReportData: ReduxTypes.IGetReportData = (serviceName, getOpts = {}) => dispatch =>
+export const getReportData: ReduxTypes.IGetReportData = (serviceName, getOpts = {}, reportType = '') => dispatch =>
   new Promise(async (resolve, reject) => {
     try {
       dispatch({ type: GET_REPORT_DATA_START });
@@ -63,21 +66,34 @@ export const getReportData: ReduxTypes.IGetReportData = (serviceName, getOpts = 
 
       dispatch({
         type: GET_REPORT_DATA,
-        payload,
+        payload: {
+          data: payload,
+          reportType,
+        },
       });
       resolve(payload);
     } catch (error) {
-      dispatch({ type: GET_REPORT_DATA_ERROR });
+      dispatch({ type: GET_REPORT_DATA_ERROR, error });
       reject(error);
     }
   });
 
-const getReportDataReducer = (state, { payload }) => ({
-  ...state,
-  tableMetaInfo: payload.result.meta.fields,
-  meta: payload.result.meta,
-  list: payload.result.rows,
-});
+const getReportDataReducer = (state, { payload }) => {
+  const { data, reportType } = payload;
+  const newState = reportType !== 'summary' ? {
+    ...state,
+    tableMetaInfo: data.result.meta.fields,
+    meta: data.result.meta,
+    list: data.result.rows,
+  } : {
+    ...state,
+    summaryTableMetaInfo: data.result.meta.fields,
+    summaryMeta: data.result.meta,
+    summaryList: data.result.rows,
+  };
+
+  return newState;
+};
 
 export const setInitialState: ReduxTypes.ISetInitialState = () => ({ type: 'SET_INITIAL_STATE' });
 

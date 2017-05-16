@@ -6,6 +6,7 @@ import { omit, isEqual, difference } from 'lodash';
 
 import { IDataTableColSchema, IDataTableSelectedRow } from 'components/ui/table/@types/DataTable/schema.h';
 import { IPropsReportContainer, IStateReportContainer } from './@types/ReportContainer.h';
+import { ReportDataPromise } from 'components/reports/redux/modules/@types/report.h';
 import { IResponseData } from 'api/@types/rest.h';
 
 import Preloader from 'components/ui/Preloader.jsx';
@@ -37,14 +38,14 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     }
   }
 
-  componentWillReceiveProps(nextProps: IPropsReportContainer) {
+  async componentWillReceiveProps(nextProps: IPropsReportContainer) {
     const { query } = this.props.location;
     const nextQuery = nextProps.location.query;
 
     // Если урл поменялся и он не пустой, то делаем запрос данных.
     if (!isEqual(query, nextQuery)) {
       if (Object.keys(nextQuery).length > 0) {
-        this.getReportData(nextQuery);
+        await this.getReportData(nextQuery);
         this.setState({ filterResetting: true });
       } else {
         this.getTableMetaInfo();
@@ -56,13 +57,30 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     }
   }
 
-  async getReportData(query) {
-    try {
-      const data = await this.props.getReportData(this.props.serviceName, query);
-      noItemsInfoNotification(data.result.rows);
-    } catch (error) {
-      global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(this.props.serviceUrl));
-    }
+  getReportData(query): ReportDataPromise {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const data = await this.props.getReportData(this.props.serviceName, query);
+        noItemsInfoNotification(data.result.rows);
+
+        if (data.result.rows.length > 0) {
+          const hasSummaryLevel = 'summary' in data.result.meta.levels;
+
+          if (hasSummaryLevel) {
+            const summaryQuery = {
+              ...query,
+              level: data.result.meta.levels.summary.level,
+            };
+
+            await this.props.getReportData(this.props.serviceName, summaryQuery, 'summary');
+          }
+        }
+        resolve(data);
+      } catch (error) {
+        global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${error}`));
+        reject(error);
+      }
+    });
   }
 
   getTableMetaInfo() {
@@ -70,7 +88,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       this.props.getTableMetaInfo(this.props.serviceName);
     } catch (error) {
       console.error(error);
-      global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(this.props.serviceUrl));
+      global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${error}`));
     }
   }
 
@@ -78,7 +96,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     try {
       // Если урл пустой, то делаем запрос на основе параметров из хедера.
       if (Object.keys(this.props.location.query).length === 0) {
-        const data = await this.props.getReportData(this.props.serviceName, headerData);
+        const data = await this.getReportData(headerData);
         if (noItemsInfoNotification(data.result.rows)) {
           return;
         }
@@ -107,7 +125,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       this.props.history.pushState(null, this.props.reportUrl, query);
     } catch (error) {
       console.error(error);
-      global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(this.props.serviceUrl));
+      global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${error}`));
     }
   }
 
@@ -158,9 +176,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     this.props.export(this.props.location.query);
   }
 
-  makeTableSchema() {
-    const { schemaMakers = {}, tableMetaInfo } = this.props;
-
+  makeTableSchema(schemaMakers = {}, tableMetaInfo) {
     const cols = tableMetaInfo.map(field => {
       const fieldName = Object.keys(field)[0];
       const fieldValue = field[fieldName];
@@ -180,13 +196,22 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
   }
 
   render() {
-    const { enumerated = false, enableSort = true } = this.props;
+    const {
+      enumerated = false,
+      enableSort = true,
+      schemaMakers,
+      tableMetaInfo,
+      summaryTableMetaInfo,
+    } = this.props;
+
     const Header = this.props.headerComponent;
-    const tableMeta = this.makeTableSchema();
+
+    const tableMeta = this.makeTableSchema(schemaMakers, tableMetaInfo);
+    const summaryTableMeta = this.makeTableSchema({}, summaryTableMetaInfo);
+
     const moveUpIsPermitted = 'higher' in this.props.meta.levels;
     const moveDownIsPermitted = 'lower' in this.props.meta.levels;
     const isListEmpty = this.props.list.length === 0;
-    const currentLevel =  this.props.meta.levels.current.level || '';
 
     const preloader = (
       (this.props.reportMetaFetching || this.props.reportDataFetching) &&
@@ -197,12 +222,26 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       <Button bsSize="small" onClick={this.handleMoveUp}>На уровень выше</Button>
     );
 
+    const isSummaryEnable = 'summary' in this.props.meta.levels && this.props.summaryList.length > 0;
+
+    const summaryTable = (isSummaryEnable &&
+      <Table
+        title={'Итого'}
+        tableMeta={summaryTableMeta}
+        results={this.props.summaryList}
+        renderers={{}}
+        onRowSelected={undefined}
+        enumerated={false}
+        enableSort={false}
+        noFilter
+      />
+    );
+
     return (
       <div className="ets-page-wrap">
         <Header
           queryState={this.props.location.query}
           onClick={this.handleReportSubmit}
-          // readOnly={moveUpIsPermitted}
         />
         <Table
           title={this.props.title}
@@ -221,6 +260,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
           ><Glyphicon glyph="download-alt" /></Button>
           {moveUpButton}
         </ Table>
+        {summaryTable}
         {preloader}
       </div>
     );

@@ -119,9 +119,7 @@ export function resizeBase64(base64) {
   });
 }
 
-const characters = '[а-я-А-Я-a-z-A-Z]';
-const isThreeDigitGovNumberRegexp = new RegExp(`^${characters}{1}\\d{3}${characters}{2}\\d{3}$`);
-const isFourDigitGovNumberRegexp = new RegExp(`^\\d{4}${characters}{2}\\d{3}$`);
+const isFourDigitGovNumberRegexp = /\d{4}/;
 
-export const isThreeDigitGovNumber = number => isThreeDigitGovNumberRegexp.test(number);
+export const isThreeDigitGovNumber = number => !isFourDigitGovNumberRegexp.test(number);
 export const isFourDigitGovNumber = number => isFourDigitGovNumberRegexp.test(number);

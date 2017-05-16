@@ -9,6 +9,7 @@
     "isolatedModules": false,
     "experimentalDecorators": true,
     "moduleResolution": "node",
+    "noUnusedLocals": true,
     "noLib": false,
     "noEmit": false,
     "jsx": "react",

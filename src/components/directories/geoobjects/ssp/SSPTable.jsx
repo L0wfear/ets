@@ -49,7 +49,7 @@ export const tableMeta = props => ({
 
 export default props => (
   <Table
-    title="Пункты временного складирования снега"
+    title="Стационарные снегоплавильные пункты"
     results={props.data}
     tableMeta={tableMeta(props)}
     {...props}

@@ -5,13 +5,13 @@ export const waybillSchema = {
     {
       key: 'plan_departure_date',
       title: 'Выезд план.',
-      type: 'datetime',
+      type: 'date',
       required: true,
     },
     {
       key: 'plan_arrival_date',
       title: 'Возвращение план.',
-      type: 'datetime',
+      type: 'date',
       required: true,
     },
     {
@@ -136,13 +136,13 @@ const closingProperties = [
   {
     key: 'fact_departure_date',
     title: 'Выезд факт.',
-    type: 'datetime',
+    type: 'date',
     required: true,
   },
   {
     key: 'fact_arrival_date',
     title: 'Возвращение факт.',
-    type: 'datetime',
+    type: 'date',
     required: true,
   },
   {

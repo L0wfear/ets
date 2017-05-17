@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 
@@ -16,7 +16,7 @@ const getTableMeta = (props) => {
         displayName: 'Дата создания',
         type: 'date',
         filter: {
-          type: 'datetime',
+          type: 'date',
         },
       },
       {
@@ -24,7 +24,7 @@ const getTableMeta = (props) => {
         displayName: 'Начало действия',
         type: 'number',
         filter: {
-          type: 'datetime',
+          type: 'date',
         },
       },
       {
@@ -32,7 +32,7 @@ const getTableMeta = (props) => {
         displayName: 'Окончание действия',
         type: 'number',
         filter: {
-          type: 'datetime',
+          type: 'date',
         },
       },
       {
@@ -79,9 +79,9 @@ const getTableMeta = (props) => {
 export default (props) => {
   const renderers = {
     order_status_id: ({ data }) => <div>{data === 2 ? 'Опубликовано' : 'Отменено'}</div>,
-    order_date: ({ data }) => <DateFormatter date={data} time empty={'Не указано'} />,
-    order_date_to: ({ data }) => <DateFormatter date={data} time empty={'Не указано'} />,
-    create_date: ({ data }) => <DateFormatter date={data} time empty={'Не указано'} />,
+    order_date: ({ data }) => <DateFormatter date={data} empty={'Не указано'} />,
+    order_date_to: ({ data }) => <DateFormatter date={data} empty={'Не указано'} />,
+    create_date: ({ data }) => <DateFormatter date={data} empty={'Не указано'} />,
     pgm_deny: ({ data }) => <div>{data === 1 ? 'Не применять' : 'Применять'}</div>,
   };
 

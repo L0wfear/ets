@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import connectToStores from 'flummox/connect';
 import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
 import ElementsList from 'components/ElementsList.jsx';
 import Paginator from 'components/ui/Paginator.jsx';
 import Div from 'components/ui/Div.jsx';
 import { saveData } from 'utils/functions';
-import { getToday0am, getToday2359 } from 'utils/dates';
+import { getToday0am, getToday2359, createValidDate } from 'utils/dates';
 import { autobind } from 'core-decorators';
 import FaxogrammsDatepicker from './FaxogrammsDatepicker.jsx';
 import FaxogrammMissionsFormWrap from './FaxogrammMissionsFormWrap.jsx';
@@ -52,8 +52,8 @@ class FaxogrammDirectory extends ElementsList {
         pageOffset,
         nextState.sortBy,
         nextState.filter,
-        this.state.create_date_from,
-        this.state.create_date_to
+        createValidDate(this.state.create_date_from),
+        createValidDate(this.state.create_date_to),
       );
 
       const { total_count } = objects;
@@ -66,15 +66,22 @@ class FaxogrammDirectory extends ElementsList {
           offset,
           nextState.sortBy,
           nextState.filter,
-          this.state.create_date_from,
-          this.state.create_date_to
+          createValidDate(this.state.create_date_from),
+          createValidDate(this.state.create_date_to),
         );
       }
     }
   }
 
   getFaxogramms() {
-    this.context.flux.getActions('objects').getFaxogramms(MAX_ITEMS_PER_PAGE, this.state.page * MAX_ITEMS_PER_PAGE, this.state.sortBy, this.state.filter, this.state.create_date_from, this.state.create_date_to);
+    this.context.flux.getActions('objects').getFaxogramms(
+      MAX_ITEMS_PER_PAGE,
+      this.state.page * MAX_ITEMS_PER_PAGE,
+      this.state.sortBy,
+      this.state.filter,
+      createValidDate(this.state.create_date_from),
+      createValidDate(this.state.create_date_to),
+    );
   }
 
   saveFaxogramm() {
@@ -88,7 +95,14 @@ class FaxogrammDirectory extends ElementsList {
     // const { structures } = this.context.flux.getStore('session').getCurrentUser();
     const changeSort = (field, direction) => this.setState({ sortBy: `${field}:${direction ? 'asc' : 'desc'}` });
     const changeFilter = (filter) => {
-      this.context.flux.getActions('objects').getFaxogramms(MAX_ITEMS_PER_PAGE, this.state.page * MAX_ITEMS_PER_PAGE, this.state.sortBy, filter, this.state.create_date_from, this.state.create_date_to);
+      this.context.flux.getActions('objects').getFaxogramms(
+        MAX_ITEMS_PER_PAGE,
+        this.state.page * MAX_ITEMS_PER_PAGE,
+        this.state.sortBy,
+        filter,
+        createValidDate(this.state.create_date_from),
+        createValidDate(this.state.create_date_to),
+      );
       this.setState({ filter });
     };
     return { changeSort, changeFilter, filterValues: this.state.filter };
@@ -105,7 +119,7 @@ class FaxogrammDirectory extends ElementsList {
 
     return (
       <div className="ets-page-wrap" ref={node => (this.node = node)}>
-        <FaxogrammsDatepicker handleChange={this.handleChange} {...this.state} />
+        <FaxogrammsDatepicker time={false} handleChange={this.handleChange} {...this.state} />
         <FaxogrammsTable
           data={faxogrammsList}
           onRowSelected={this.selectElement}

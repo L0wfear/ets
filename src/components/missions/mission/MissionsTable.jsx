@@ -59,7 +59,7 @@ const getTableMeta = (props) => {
         displayName: 'Начало',
         type: 'date',
         filter: {
-          type: 'advanced-datetime',
+          type: 'advanced-date',
         },
       },
       {
@@ -67,7 +67,7 @@ const getTableMeta = (props) => {
         displayName: 'Завершение',
         type: 'date',
         filter: {
-          type: 'advanced-datetime',
+          type: 'advanced-date',
         },
       },
       {

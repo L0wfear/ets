@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Input from 'react-bootstrap/lib/Input';
-import { createValidDateTime } from '../../utils/dates';
+import { createValidDateTime, createValidDate } from '../../utils/dates';
 import EtsSelect from './EtsSelect';
 import Datepicker from './DatePicker';
 
@@ -21,6 +21,7 @@ export default class AdvancedInput extends Component {
     date: PropTypes.bool,
     singleFilter: PropTypes.bool,
     filterType: PropTypes.string,
+    time: PropTypes.bool,
   }
 
   state = {
@@ -45,7 +46,7 @@ export default class AdvancedInput extends Component {
   }
 
   handleChange(v, index = 0) {
-    const { name, date } = this.props;
+    const { name, date, time } = this.props;
     let { filterValue } = this.props;
     const { type } = this.state;
     let { value } = this.state;
@@ -66,15 +67,15 @@ export default class AdvancedInput extends Component {
         filterValue = { ...filterValue, [`${name}__${index === 0 ? 'gte' : 'lte'}`]: v };
         break;
       }
-      case '<>': {
-        if (date) v.setHours(0, 0, 0, 0);
-        value = v;
-        filterValue = {
-          [`${name}__lt`]: v,
-          [`${name}__gte`]: date ? new Date(v.getTime() + (60 * 60 * 24 * 1000)) : `${parseFloat(v) + 1}`,
-        };
-        break;
-      }
+      // case '<>': {
+      //   if (date) v.setHours(0, 0, 0, 0);
+      //   value = v;
+      //   filterValue = {
+      //     [`${name}__lt`]: v,
+      //     [`${name}__gte`]: date ? new Date(v.getTime() + (60 * 60 * 24 * 1000)) : `${parseFloat(v) + 1}`,
+      //   };
+      //   break;
+      // }
       case 'lt': {
         value = v;
         filterValue = { [`${name}__lt`]: v };
@@ -90,6 +91,16 @@ export default class AdvancedInput extends Component {
         filterValue = { [`${name}__like`]: `%${v}%` };
         break;
       }
+      case '=': {
+        value = v;
+        filterValue = { [`${name}__eq`]: v };
+        break;
+      }
+      case '<>': {
+        value = v;
+        filterValue = { [`${name}__neq`]: v };
+        break;
+      }
       default: {
         if (date) v.setHours(0, 0, 0, 0);
         value = v;
@@ -103,7 +114,7 @@ export default class AdvancedInput extends Component {
     this.setState({ value });
     if (date && filterValue) {
       Object.keys(filterValue).forEach((k) => {
-        filterValue[k] = createValidDateTime(filterValue[k]);
+        filterValue[k] = time ? createValidDateTime(filterValue[k]) : createValidDate(filterValue[k]);
       });
     }
     return this.props.onChange(filterValue);

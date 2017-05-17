@@ -69,6 +69,9 @@ export default class FilterRow extends React.Component {
       if (type === 'advanced-string') {
         input = <AdvancedInput name={name} filterValue={value} onChange={onChange} />;
       }
+      if (type === 'advanced-string-like') {
+        input = <AdvancedInput name={name} filterValue={value} onChange={onChange} singleFilter filterType={'like'} />;
+      }
       if (type === 'advanced-date') {
         input = <AdvancedInput name={name} filterValue={value} onChange={onChange} date />;
       }

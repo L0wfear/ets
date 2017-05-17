@@ -19,6 +19,8 @@ export default class AdvancedInput extends Component {
     filterValue: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     onChange: PropTypes.func,
     date: PropTypes.bool,
+    singleFilter: PropTypes.bool,
+    filterType: PropTypes.string,
   }
 
   state = {
@@ -28,6 +30,12 @@ export default class AdvancedInput extends Component {
 
   componentWillReceiveProps(props) {
     if (!props.filterValue) this.setState({ value: null });
+
+    if (props.filterType) {
+      this.setState({
+        type: props.filterType,
+      });
+    }
   }
 
   handleTypeChange(v) {
@@ -77,6 +85,11 @@ export default class AdvancedInput extends Component {
         filterValue = { [`${name}__gt`]: v };
         break;
       }
+      case 'like': {
+        value = v;
+        filterValue = { [`${name}__like`]: `%${v}%` };
+        break;
+      }
       default: {
         if (date) v.setHours(0, 0, 0, 0);
         value = v;
@@ -100,6 +113,16 @@ export default class AdvancedInput extends Component {
     const { type, value } = this.state;
     const { date } = this.props;
     const time = type !== '=' && type !== '<>';
+    if (this.props.singleFilter) {
+      return (
+        <Input
+          type="text"
+          value={value}
+          onChange={e => this.handleChange(e.target.value)}
+        />
+      );
+    }
+
     return (
       <div className="advanced-string-input">
         <EtsSelect

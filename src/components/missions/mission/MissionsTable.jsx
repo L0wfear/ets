@@ -85,8 +85,7 @@ const getTableMeta = (props) => {
         displayName: 'Маршрут',
         type: 'number',
         filter: {
-          type: 'multiselect',
-          options: props.routesList.map(({ name }) => ({ label: name, value: name })),
+          type: 'advanced-string-like',
         },
         cssClassName: 'width120',
       },

@@ -87,7 +87,6 @@ export const RouteReportsService = ETS_API_FACTORY.createApiServiceAdapter('rout
 export const WaybillJournalReportService = ETS_API_FACTORY.createApiServiceAdapter('waybill_journal_report', {});
 export const WaybillsReportService = ETS_API_FACTORY.createApiServiceAdapter('waybills_report', {});
 export const MissionLastReportService = ETS_API_FACTORY.createApiServiceAdapter('mission_last_report', {});
-export const DailyCleaningReportsServiceETS = ETS_API_FACTORY.createApiServiceAdapter('geozone_element_traveled_daily_report__ets', {});
 export const DailyCleaningReportsServiceCAFAP = ETS_API_FACTORY.createApiServiceAdapter('geozone_element_traveled_daily_report__cafap', {});
 export const AnalyticsService = ETS_API_FACTORY.createApiServiceAdapter('analytical_reports', {});
 export const CarFuncTypeUsageReportService = ETS_API_FACTORY.createApiServiceAdapter('car_usage_by_company', {});

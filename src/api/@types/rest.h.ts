@@ -1,3 +1,6 @@
+export interface IResponseRowObject<IdType> {
+  id: IdType;
+}
 
 export interface IResponseDataResult<RowType, MetaType> {
   meta?: MetaType;

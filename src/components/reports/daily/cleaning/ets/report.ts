@@ -7,29 +7,24 @@ import { multiselectFilterSchema, commonSchemaMakers } from 'components/reports/
 import ReportContainer from 'components/reports/common/ReportContainer';
 import ReportHeader from './ReportHeader';
 
-const serviceUrl = 'reports/efficiency/employee';
-const reportUrl = 'employee-efficiency-report';
-const serviceName = 'EmployeeEfficiencyReport';
-
+const serviceUrl = 'cleaning_status_report';
+const reportUrl = 'daily-cleaning-reports-ets';
+const serviceName = 'DailyCleaningReportsServiceETS';
 
 const schemaMakers = {
   ...commonSchemaMakers,
-  fuel_type_name: schema => multiselectFilterSchema(schema),
-  car_model_name: schema => multiselectFilterSchema(schema),
-  car_gov_number: schema => multiselectFilterSchema(schema),
-  employee_name: schema => multiselectFilterSchema(schema),
+  status: schema => multiselectFilterSchema(schema),
 };
 
 const renderers = {};
 
 const reportProps: IReportProps = {
-  title: 'Работа сотрудников по ручной уборке',
+  title: 'Статус по уборке',
   serviceName,
   reportUrl,
   serviceUrl,
   headerComponent: ReportHeader,
   renderers,
-  enumerated: true,
   schemaMakers,
 };
 

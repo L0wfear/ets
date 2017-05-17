@@ -1,10 +1,10 @@
-export interface IHeaderState {
+export interface IStateReportHeaderWrapper {
   [fieldName: string]: any;
 }
 
-export interface IStateReportHeaderWrapper {
-  headerState: IHeaderState;
-}
+// export interface IStateReportHeaderWrapper {
+//   headerState: IHeaderState;
+// }
 
 export interface IPropsReportHeaderWrapper {
   handleChange(field: string, value: any): void;

@@ -31,6 +31,7 @@ const reportProps: IReportProps = {
   serviceUrl,
   headerComponent: ReportHeader,
   renderers,
+  enumerated: true,
   schemaMakers,
 };
 

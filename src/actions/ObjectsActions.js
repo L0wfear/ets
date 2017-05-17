@@ -1,6 +1,6 @@
 import { Actions } from 'flummox';
 import { isEmpty } from 'utils/functions';
-import { createValidDateTime } from 'utils/dates';
+import { createValidDateTime, createValidDate } from 'utils/dates';
 import _ from 'lodash';
 import {
   FaxogrammService,
@@ -74,8 +74,8 @@ export default class ObjectsActions extends Actions {
         delete filterValues[k];
       }
     });
-    filterValues.create_date__gte = createValidDateTime(create_date_from);
-    filterValues.create_date__lte = createValidDateTime(create_date_to);
+    filterValues.create_date__gte = createValidDate(create_date_from);
+    filterValues.create_date__lte = createValidDate(create_date_to);
     const payload = {
       limit,
       offset,

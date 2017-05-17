@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { Button, Row, Col } from 'react-bootstrap';
-import { isEqual, pick } from 'lodash';
 
 import {
   IPropsReportHeaderCommon,
   IPropsReportHeaderWrapper,
 } from 'components/reports/common/@types/ReportHeaderWrapper.h';
 
-import Field from 'components/ui/Field.jsx';
 import Datepicker from 'components/ui/DatePicker.jsx';
 import { getToday9am, getTomorrow9am, createValidDate } from 'utils/dates';
 import { bindable } from 'utils/decorators';

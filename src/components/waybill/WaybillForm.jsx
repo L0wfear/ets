@@ -510,6 +510,7 @@ class WaybillForm extends Form {
                   label="Выезд план."
                   error={errors.plan_departure_date}
                   date={state.plan_departure_date}
+                  time={false}
                   onChange={this.handleChange.bind(this, 'plan_departure_date')}
                 />
               </Col>
@@ -521,6 +522,7 @@ class WaybillForm extends Form {
                   label="Возвращение план."
                   error={errors.plan_arrival_date}
                   date={state.plan_arrival_date}
+                  time={false}
                   min={state.plan_departure_date}
                   onChange={this.handleChange.bind(this, 'plan_arrival_date')}
                 />
@@ -534,6 +536,7 @@ class WaybillForm extends Form {
                   label="Выезд план."
                   error={errors.plan_departure_date}
                   date={state.plan_departure_date}
+                  time={false}
                   disabled
                   onChange={() => true}
                 />
@@ -542,6 +545,7 @@ class WaybillForm extends Form {
                   label="Выезд факт."
                   error={errors.fact_departure_date}
                   date={state.fact_departure_date}
+                  time={false}
                   disabled={IS_DISPLAY}
                   onChange={this.handleChange.bind(this, 'fact_departure_date')}
                 />
@@ -552,6 +556,7 @@ class WaybillForm extends Form {
                   label="Возвращение план."
                   error={errors.plan_arrival_date}
                   date={state.plan_arrival_date}
+                  time={false}
                   disabled
                   onChange={() => true}
                 />
@@ -560,6 +565,7 @@ class WaybillForm extends Form {
                   label="Возвращение факт."
                   error={errors.fact_arrival_date}
                   date={state.fact_arrival_date}
+                  time={false}
                   disabled={IS_DISPLAY}
                   onChange={this.handleChange.bind(this, 'fact_arrival_date')}
                 />

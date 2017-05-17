@@ -59,7 +59,7 @@ const getTableMeta = (props) => {
         displayName: 'Начало',
         type: 'date',
         filter: {
-          type: 'advanced-datetime',
+          type: 'advanced-date',
         },
       },
       {
@@ -67,7 +67,7 @@ const getTableMeta = (props) => {
         displayName: 'Завершение',
         type: 'date',
         filter: {
-          type: 'advanced-datetime',
+          type: 'advanced-date',
         },
       },
       {
@@ -85,8 +85,7 @@ const getTableMeta = (props) => {
         displayName: 'Маршрут',
         type: 'number',
         filter: {
-          type: 'multiselect',
-          options: props.routesList.map(({ name }) => ({ label: name, value: name })),
+          type: 'advanced-string-like',
         },
         cssClassName: 'width120',
       },

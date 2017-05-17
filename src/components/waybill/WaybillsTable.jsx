@@ -240,11 +240,11 @@ export default (props) => {
     created_by_employee_id: ({ data }) => <div>{employeeFIOLabelFunction(data)}</div>,
     activated_by_employee_id: ({ data }) => <div>{employeeFIOLabelFunction(data)}</div>,
     closed_by_employee_id: ({ data }) => <div>{employeeFIOLabelFunction(data)}</div>,
-    date_create: ({ data }) => <DateFormatter date={data} time />,
+    date_create: ({ data }) => <DateFormatter date={data} />,
     closing_date: ({ data }) => <DateFormatter date={data} />,
-    plan_departure_date: ({ data }) => <DateFormatter date={data} time />,
-    fact_departure_date: ({ data }) => <DateFormatter date={data} time />,
-    fact_arrival_date: ({ data }) => <DateFormatter date={data} time />,
+    plan_departure_date: ({ data }) => <DateFormatter date={data} />,
+    fact_departure_date: ({ data }) => <DateFormatter date={data} />,
+    fact_arrival_date: ({ data }) => <DateFormatter date={data} />,
     car_special_model_name: (meta) => {
       const spModel = meta.data === null ? '- ' : meta.data;
       const model = meta.rowData.car_model_name === null ? ' -' : meta.rowData.car_model_name;

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Button, Row, Col } from 'react-bootstrap';
-import { isEqual, pick } from 'lodash';
 
 import {
   IPropsReportHeaderCommon,

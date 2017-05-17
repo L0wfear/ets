@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { isEqual, pick } from 'lodash';
+import { isEqual } from 'lodash';
 
 import {
-  IPropsReportHeaderCommon,
   IPropsReportHeaderWrapper,
   IStateReportHeaderWrapper,
 } from './@types/ReportHeaderWrapper.h';

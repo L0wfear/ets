@@ -1,6 +1,5 @@
 import { IHistoryInjected, IExportableTableList } from 'utils/@types/common.h';
 import { IReportProps } from 'components/reports/@types/common.h';
-import { IResponseData } from 'api/@types/rest.h';
 import * as ReduxTypes from 'components/reports/redux/modules/@types/report.h';
 
 export interface IPropsReportContainer extends

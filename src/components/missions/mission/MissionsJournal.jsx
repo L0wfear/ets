@@ -55,7 +55,7 @@ export default class MissionsJournal extends CheckableElementsList {
     const { flux } = this.context;
     flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, 0, this.state.sortBy, this.state.filter);
     flux.getActions('objects').getCars();
-    flux.getActions('routes').getRoutes();
+    flux.getActions('routes').getRoutes(undefined, false);
     flux.getActions('technicalOperation').getTechnicalOperations();
   }
 

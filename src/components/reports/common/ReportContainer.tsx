@@ -7,12 +7,10 @@ import { omit, isEqual, difference } from 'lodash';
 import { IDataTableColSchema, IDataTableSelectedRow } from 'components/ui/table/@types/DataTable/schema.h';
 import { IPropsReportContainer, IStateReportContainer } from './@types/ReportContainer.h';
 import { ReportDataPromise } from 'components/reports/redux/modules/@types/report.h';
-import { IResponseData } from 'api/@types/rest.h';
 
 import Preloader from 'components/ui/Preloader.jsx';
 import { getServerErrorNotification, noItemsInfoNotification } from 'utils/notifications';
 import * as reportActionCreators from 'components/reports/redux/modules/report';
-import { HistoryContext } from 'utils/decorators';
 import DataTable from 'components/ui/table/DataTable.jsx';
 
 // Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
@@ -210,7 +208,6 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     const summaryTableMeta = this.makeTableSchema({}, summaryTableMetaInfo);
 
     const moveUpIsPermitted = 'higher' in this.props.meta.levels;
-    const moveDownIsPermitted = 'lower' in this.props.meta.levels;
     const isListEmpty = this.props.list.length === 0;
 
     const preloader = (

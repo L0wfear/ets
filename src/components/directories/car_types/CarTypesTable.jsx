@@ -55,6 +55,7 @@ export default (props) => {
       tableMeta={tableMeta}
       initialSort={'full_name'}
       {...props}
+      onRowSelected={undefined}
     />
   );
 };

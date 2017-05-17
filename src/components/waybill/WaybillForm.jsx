@@ -3,7 +3,7 @@ import { autobind } from 'core-decorators';
 import connectToStores from 'flummox/connect';
 import { Modal, Input, Row, Col, Button, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
 import _ from 'lodash';
-import { pipe, filter, cond, map, T } from 'ramda';
+import { flow, filter, cond, map } from 'lodash/fp';
 
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
@@ -33,11 +33,11 @@ const vehicleFilter = structure_id => filter(c =>
   c.company_structure_id === structure_id
 );
 
-const carFilter = structure_id => pipe(
+const carFilter = structure_id => flow(
   vehicleFilter(structure_id),
   filter(c => !c.is_trailer)
 );
-const trailerFilter = structure_id => pipe(
+const trailerFilter = structure_id => flow(
   vehicleFilter(structure_id),
   filter(c => c.is_trailer)
 );
@@ -48,12 +48,12 @@ const vehicleMapper = map(c => ({
   label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`,
 }));
 
-const getCars = structure_id => pipe(
+const getCars = structure_id => flow(
   carFilter(structure_id),
   vehicleMapper,
 );
 
-const getTrailers = structure_id => pipe(
+const getTrailers = structure_id => flow(
   trailerFilter(structure_id),
   vehicleMapper,
 );
@@ -67,7 +67,7 @@ const getDrivers = (number = '', driversList) => {
   const licenceSwitcher = cond([
     [isThreeDigitGovNumber, () => driverHasLicense],
     [isFourDigitGovNumber, () => driverHasSpecialLicense],
-    [T, () => driver => driver],
+    [() => true, () => driver => driver],
   ]);
 
   const driverFilter = licenceSwitcher(number);

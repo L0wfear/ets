@@ -13,7 +13,9 @@ const serviceName = 'DailyCleaningReportsServiceETS';
 
 const schemaMakers = {
   ...commonSchemaMakers,
-  status: schema => multiselectFilterSchema(schema),
+  geozone_name: schema => multiselectFilterSchema(schema),
+  cars_func_type_name: schema => multiselectFilterSchema(schema),
+  progress_status: schema => multiselectFilterSchema(schema),
 };
 
 const renderers = {};

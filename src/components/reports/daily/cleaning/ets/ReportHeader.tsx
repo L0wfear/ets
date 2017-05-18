@@ -59,6 +59,8 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
 
     if (isDtGeozone) {
       this.props.handleChange('element_type', 'yard');
+    } else {
+      this.props.handleChange('element_type', 'roadway');
     }
 
     this.props.handleChange('geozone_type', value);

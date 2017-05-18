@@ -24,6 +24,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     super();
     this.state = {
       filterResetting: false,
+      fetchedByButton: false,
     };
   }
   componentDidMount() {
@@ -42,6 +43,15 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 
     // Если урл поменялся и он не пустой, то делаем запрос данных.
     if (!isEqual(query, nextQuery)) {
+      /**
+       * Первый запрос с кнопки меняет урл, поэтому происходит повторный запрос.
+       * Данная проверка исключает такую ситуацию.
+       */
+      if (this.state.fetchedByButton) {
+        this.setState({ fetchedByButton: false });
+        return;
+      }
+
       if (Object.keys(nextQuery).length > 0) {
         await this.getReportData(nextQuery);
         this.setState({ filterResetting: true });
@@ -59,9 +69,8 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     return new Promise(async (resolve, reject) => {
       try {
         const data = await this.props.getReportData(this.props.serviceName, query);
-        noItemsInfoNotification(data.result.rows);
 
-        if (data.result.rows.length > 0) {
+        if (!noItemsInfoNotification(data.result.rows)) {
           const hasSummaryLevel = 'summary' in data.result.meta.levels;
 
           if (hasSummaryLevel) {
@@ -99,12 +108,22 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
           return;
         }
 
+
         const query = {
           ...headerData,
           level: data.result.meta.levels.current.level,
         };
 
-        this.props.history.pushState(null, this.props.reportUrl, query);
+        /**
+         * Сделано синхронно, чтобы на момент изменения просов с урлом стейт был уже обновлён.
+         */
+        this.setState(prevState => {
+          this.props.history.pushState(null, this.props.reportUrl, query);
+
+          return {
+            fetchedByButton: true,
+          };
+        });
 
         return;
       }

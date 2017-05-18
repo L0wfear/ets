@@ -1,3 +1,7 @@
+interface ISchemaRenderer {
+  [field: string]: (rowMeta) => any;
+}
+
 export interface IReportProps {
   title: string;
   serviceName: string;
@@ -6,10 +10,10 @@ export interface IReportProps {
   enumerated?: boolean;
   enableSort?: boolean;
   headerComponent: any;
-  renderers?: {
-    [field: string]: (rowMeta) => any;
-  };
+  renderers?: ISchemaRenderer;
+  summaryRenderes?: ISchemaRenderer;
   schemaMakers?: {
     [field: string]: (schemaMeta: object, reportProps: object) => object;
   };
+  headerStateMaker?(state: any): any;
 }

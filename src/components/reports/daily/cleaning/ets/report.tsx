@@ -1,9 +1,14 @@
+import * as React from 'react';
 import { withProps } from 'recompose';
 
 import { IReportProps } from 'components/reports/@types/common.h';
 
 import { exportable } from 'utils/decorators';
-import { multiselectFilterSchema, commonSchemaMakers } from 'components/reports/common/utils';
+import {
+  multiselectFilterSchema,
+  commonSchemaMakers,
+  parseSelectListQueryParams,
+} from 'components/reports/common/utils';
 import ReportContainer from 'components/reports/common/ReportContainer';
 import ReportHeader from './ReportHeader';
 
@@ -18,7 +23,11 @@ const schemaMakers = {
   progress_status: schema => multiselectFilterSchema(schema),
 };
 
-const renderers = {};
+const renderers = {
+  cars_gov_numbers: ({ data }) => <span>{data.join(', ')}</span>,
+};
+
+const headerStateMaker = queryState => parseSelectListQueryParams(queryState, ['car_func_types_ids']);
 
 const reportProps: IReportProps = {
   title: 'Статус по уборке',
@@ -27,7 +36,9 @@ const reportProps: IReportProps = {
   serviceUrl,
   headerComponent: ReportHeader,
   renderers,
+  summaryRenderes: renderers,
   schemaMakers,
+  headerStateMaker,
 };
 
 const ExportableReportContainer = exportable({

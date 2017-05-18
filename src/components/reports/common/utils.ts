@@ -29,3 +29,23 @@ export const commonSchemaMakers: ICommonSchemaMakers = {
   district_name: schema => multiselectFilterSchema(schema),
   company_name: schema => multiselectFilterSchema(schema),
 };
+
+export function parseSelectListQueryParams(query: any, params: Array<string> = []): any {
+  if (Object.keys(query).length === 0) {
+    return query;
+  }
+
+  return params.map(p => {
+
+    const paramValue = query[p] || '';
+
+    const newQuery = paramValue === '' ? {
+      [p]: paramValue,
+    } : {
+      [p]: JSON.parse(paramValue),
+    };
+
+    return newQuery;
+  })
+  .reduce((prev, curr) => ({ ...prev, ...curr }), query);
+}

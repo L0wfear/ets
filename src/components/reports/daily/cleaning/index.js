@@ -2,7 +2,7 @@
  * @module reports/daily/cleaning
  * Ежедневные отчеты по уборке
  */
- import * as ets from './ets';
+ import ets from './ets/report.ts';
  import * as cafap from './cafap';
 
  export {

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { IReportProps } from 'components/reports/@types/common.h';
 
 import { bindable } from 'utils/decorators';
-import { multiselectFilterSchema } from 'components/reports/common/utils';
+import { multiselectFilterSchema, commonSchemaMakers } from 'components/reports/common/utils';
 import ReportHeader from './ReportHeader';
 
 export const serviceUrl = '/reports/efficiency/brigade';
@@ -23,9 +23,7 @@ const DutyNumberLink: any = bindable(DutyNumberLinkComponent);
 
 
 const schemaMakers = {
-  okrug_name: schema => multiselectFilterSchema(schema),
-  district_name: schema => multiselectFilterSchema(schema),
-  company_name: schema => multiselectFilterSchema(schema),
+  ...commonSchemaMakers,
   technical_operation_name: schema => multiselectFilterSchema(schema),
   foreman_name: schema => multiselectFilterSchema(schema),
 };

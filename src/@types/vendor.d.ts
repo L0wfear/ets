@@ -7,5 +7,6 @@ declare module NodeJS  {
     NOTIFICATION_SYSTEM: {
       notify(text: string | object, type?: string, position?: string);
     };
+    SESSION_KEY: string;
   }
 }

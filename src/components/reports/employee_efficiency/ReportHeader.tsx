@@ -11,6 +11,7 @@ import { getToday9am, getTomorrow9am, createValidDateTime } from 'utils/dates';
 import { bindable } from 'utils/decorators';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
+import Div from 'components/ui/Div.jsx';
 
 const DatePicker: any = bindable(Datepicker);
 
@@ -40,32 +41,31 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
 
     return (
       <Row className="report-page__header">
-        <Col md={12}>
-          <label>Период формирования</label>
+        <Col md={4}></Col>
+        <Col md={4}>
+        <Div><label htmlFor=" ">Период формирования</label></Div>
+        <Div className="inline-block reports-date">
+          <DatePicker
+            date={date_start}
+            onChange={this.props.handleChange}
+            bindOnChange={'date_start'}
+            disabled={readOnly}
+          />
+        </Div>
+        <Div className="inline-block reports-date">
+          <DatePicker
+            date={date_end}
+            onChange={this.props.handleChange}
+            bindOnChange={'date_end'}
+            disabled={readOnly}
+          />
+        </Div>
         </Col>
-        <Col md={9}>
-          <Row>
-            <Col md={3}>
-              <DatePicker
-                date={date_start}
-                onChange={this.props.handleChange}
-                bindOnChange={'date_start'}
-                disabled={readOnly}
-              />
-            </Col>
-            <Col md={3}>
-              <DatePicker
-                date={date_end}
-                onChange={this.props.handleChange}
-                bindOnChange={'date_end'}
-                disabled={readOnly}
-              />
-            </Col>
-            <Col md={3}>
-              <Button block hidden={this.props.readOnly} onClick={this.handleSubmit}>Сформировать отчёт</Button>
-            </Col>
-
-          </Row>
+        <Col md={4} style={{ marginTop: 28, textAlign: 'right' }}>
+          <Button
+            hidden={this.props.readOnly}
+            onClick={this.handleSubmit}
+          >Сформировать отчёт</Button>
         </Col>
       </Row>
     );

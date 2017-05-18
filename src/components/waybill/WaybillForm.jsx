@@ -242,7 +242,9 @@ class WaybillForm extends Form {
     ).then((response) => {
       const newDriverId = response && response.result ? response.result.driver_id : null;
       if (newDriverId) {
-        const driver = this.props.driversList.find(item => item.driver_id === newDriverId) || {};
+        const driver = this.props.driversList.find(item => item.driver_id === newDriverId) || null;
+        if (driver === null) return;
+
         const { gov_number } = formState;
         const hasLicense = isThreeDigitGovNumber(gov_number) && driverHasLicense(driver);
         const hasSpecialLicense = isFourDigitGovNumber(gov_number) && driverHasSpecialLicense(driver);
@@ -250,7 +252,15 @@ class WaybillForm extends Form {
         if (hasLicense || hasSpecialLicense) {
           this.props.handleFormChange('driver_id', newDriverId);
         }
+
+        return;
       }
+
+      /**
+       * Сбрасываем водителя, так как в новом, отфильтрованнои по ТС
+       * списке, водителей может уже не быть.
+       */
+      this.props.handleFormChange('driver_id', '');
     });
   }
 
@@ -270,6 +280,14 @@ class WaybillForm extends Form {
       fieldsToChange = {
         ...fieldsToChange,
         ...additionalFields,
+      };
+    } else {
+      /**
+       * Если ТС не выбрано, то и ранее выбранного водителя не должно быть.
+       */
+      fieldsToChange = {
+        ...fieldsToChange,
+        driver_id: '',
       };
     }
 

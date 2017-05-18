@@ -16,7 +16,6 @@ React.ComponentClass<IPropsReportHeaderWrapper & IStateReportHeaderWrapper> {
     constructor() {
       super();
       this.state = {
-        headerState: {},
       };
     }
     componentWillReceiveProps(nextProps) {
@@ -27,7 +26,7 @@ React.ComponentClass<IPropsReportHeaderWrapper & IStateReportHeaderWrapper> {
         queryStateLength > 0 &&
         !isEqual(this.state, queryState)
       ) {
-        this.setState({ headerState: queryState });
+        this.setState({ ...queryState });
         return;
       }
 
@@ -37,17 +36,14 @@ React.ComponentClass<IPropsReportHeaderWrapper & IStateReportHeaderWrapper> {
     }
     handleChange = (field: string, value: any) => {
       this.setState({
-        headerState: {
-          ...this.state.headerState,
-          [field]: value,
-        },
+        [field]: value,
       });
     }
     render() {
       return (
         <SourceHeader
           {...this.props}
-          {...this.state.headerState}
+          {...this.state}
           handleChange={this.handleChange}
         />
       );

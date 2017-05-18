@@ -45,6 +45,10 @@ export interface IReportStateProps {
 export type ReportDataPromise = Promise<IResponseData<any, IReportMeta>>;
 
 export type IGetTableMetaInfo = (serviceName: string) => (dispatch: any) => Promise<any>;
-export type IGetReportData = (serviceName: string, getOpts?: object, reportType?: string) =>
-  (dispatch: any) => ReportDataPromise;
+export type IGetReportData = (
+  serviceName: string,
+  getOpts?: object,
+  reportType?: string,
+) => (dispatch: any) => ReportDataPromise;
+
 export type ISetInitialState = () => object;

@@ -11,7 +11,11 @@ export interface IPropsReportContainer extends
    * AC. Gets report meta info and report data
    */
   setInitialState: ReduxTypes.ISetInitialState;
-  getReportData(serviceName: string, getOpts?: object, reportType?: string): ReduxTypes.ReportDataPromise;
+  getReportData(
+    serviceName: string,
+    getOpts?: object,
+    reportType?: string,
+  ): ReduxTypes.ReportDataPromise;
   getTableMetaInfo(serviceName: string): Promise<any>;
 }
 

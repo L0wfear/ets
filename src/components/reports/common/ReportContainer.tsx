@@ -2,7 +2,7 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button, Glyphicon } from 'react-bootstrap';
-import { omit, isEqual, difference } from 'lodash';
+import { omit, isEqual, difference, identity, intersection, keys, pick } from 'lodash';
 
 import { IDataTableColSchema, IDataTableSelectedRow } from 'components/ui/table/@types/DataTable/schema.h';
 import { IPropsReportContainer, IStateReportContainer } from './@types/ReportContainer.h';
@@ -15,9 +15,6 @@ import DataTable from 'components/ui/table/DataTable.jsx';
 
 // Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
 const Table: any = DataTable;
-
-// Используется, если явно не указан генератор схемы.
-const fakeSchemaMaker = (schema, reportProps) => schema;
 
 class ReportContainer extends React.Component<IPropsReportContainer, IStateReportContainer> {
   constructor() {
@@ -79,7 +76,11 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
               level: data.result.meta.levels.summary.level,
             };
 
-            await this.props.getReportData(this.props.serviceName, summaryQuery, 'summary');
+            await this.props.getReportData(
+              this.props.serviceName,
+              summaryQuery,
+              'summary',
+            );
           }
         }
         resolve(data);
@@ -128,11 +129,19 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         return;
       }
 
-      // Просто меняем урл и его изменение подхватится и будет произведён запрос данных.
-      const query = {
+      /**
+       * Необходимо взять именно пересечение полей объектов,
+       * чтобы не параметры урла фомировались именно из состояния хедера отчёта.
+       */
+      const mergedQuery = {
         ...this.props.location.query,
         ...headerData,
       };
+
+      const query = pick(mergedQuery, intersection(
+        keys(this.props.location.query),
+        keys(headerData),
+      ));
 
       // Не пишем истрорию при одинаковых запросах.
       if (isEqual(this.props.location.query, query)) {
@@ -203,7 +212,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         displayName: fieldValue.name,
       };
 
-      const renderer = schemaMakers[fieldName] || fakeSchemaMaker;
+      const renderer = schemaMakers[fieldName] || identity;
       const finalSchema = renderer(initialSchema, this.props);
 
       return finalSchema;
@@ -245,7 +254,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         title={'Итого'}
         tableMeta={summaryTableMeta}
         results={this.props.summaryList}
-        renderers={{}}
+        renderers={this.props.summaryRenderes || {}}
         onRowSelected={undefined}
         enumerated={false}
         enableSort={false}
@@ -253,10 +262,13 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       />
     );
 
+    const stateMaker = this.props.headerStateMaker || identity;
+    const queryState = stateMaker(this.props.location.query);
+
     return (
       <div className="ets-page-wrap">
         <Header
-          queryState={this.props.location.query}
+          queryState={queryState}
           onClick={this.handleReportSubmit}
         />
         <Table

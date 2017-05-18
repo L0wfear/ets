@@ -26,8 +26,8 @@ interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeade
   date_end: string;
   geozone_type: string;
   element_type: string;
-  car_type_id_list: string;
-  typesList: IVehicleTypes[];
+  car_func_types_ids: any;
+  typesList: Array<IVehicleTypes>;
 }
 
 @connectToStores(['objects'])
@@ -43,7 +43,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       date_end = getToday859am(),
       geozone_type = 'odh',
       element_type = 'roadway',
-      car_type_id_list = '',
+      car_func_types_ids = '',
     } = this.props;
 
     return {
@@ -51,7 +51,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       date_end,
       geozone_type,
       element_type,
-      car_type_id_list,
+      car_func_types_ids,
     };
   }
   handleGeoObjectChange = (field, value) => {
@@ -71,20 +71,22 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       date_end,
       geozone_type,
       element_type,
-      car_type_id_list,
+      car_func_types_ids,
     } = this.getState();
+
+    const carIdsArray = typeof car_func_types_ids === 'string' ? [car_func_types_ids] : car_func_types_ids;
 
     const requestBody = {
       date_start: createValidDateTime(date_start),
       date_end: createValidDateTime(date_end),
       geozone_type,
       element_type,
-      car_type_id_list: car_type_id_list.split(','),
+      car_func_types_ids: `[${[...carIdsArray].join(',')}]`,
     };
 
-    this.props.onClick(car_type_id_list !== ''
+    this.props.onClick(car_func_types_ids !== ''
       ? requestBody
-      : omit(requestBody, 'car_type_id_list'),
+      : omit(requestBody, 'car_func_types_ids'),
     );
   }
   render() {
@@ -93,7 +95,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       date_end,
       geozone_type,
       element_type,
-      car_type_id_list,
+      car_func_types_ids,
     } = this.getState();
 
     const { typesList = [] } = this.props;
@@ -149,9 +151,9 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
               label="Типы ТС"
               multi
               options={CAR_TYPES}
-              value={car_type_id_list}
+              value={car_func_types_ids}
               onChange={this.props.handleChange}
-              bindOnChange={'car_type_id_list'}
+              bindOnChange={'car_func_types_ids'}
             />
           </Col>
         </Row>

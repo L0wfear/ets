@@ -241,7 +241,7 @@ export default (props) => {
     activated_by_employee_id: ({ data }) => <div>{employeeFIOLabelFunction(data)}</div>,
     closed_by_employee_id: ({ data }) => <div>{employeeFIOLabelFunction(data)}</div>,
     date_create: ({ data }) => <DateFormatter date={data} time />,
-    closing_date: ({ data }) => <DateFormatter date={data} />,
+    closing_date: ({ data }) => <DateFormatter date={data} time />,
     plan_departure_date: ({ data }) => <DateFormatter date={data} time />,
     fact_departure_date: ({ data }) => <DateFormatter date={data} time />,
     fact_arrival_date: ({ data }) => <DateFormatter date={data} time />,

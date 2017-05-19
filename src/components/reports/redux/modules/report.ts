@@ -1,5 +1,6 @@
 import { FetchingStatusReducerFactory } from 'utils/redux-utils';
 import { reports } from 'api/Services';
+import { hasWarningNotification } from 'utils/notifications';
 import * as ReduxTypes from './@types/report.h';
 
 const SET_INITIAL_STATE = 'SET_INITIAL_STATE';
@@ -57,21 +58,28 @@ const getTableMetaInfoReducer = (state, { payload }) => ({
   tableMetaInfo: payload,
 });
 
+
 export const getReportData: ReduxTypes.IGetReportData = (serviceName, getOpts = {}, reportType = '') => dispatch =>
   new Promise(async (resolve, reject) => {
     try {
       dispatch({ type: GET_REPORT_DATA_START });
-      const payload = await reports[serviceName].get(getOpts);
+      const response = await reports[serviceName].get(getOpts);
+
+      if (hasWarningNotification(response)) {
+        dispatch({ type: GET_REPORT_DATA_DONE });
+        return;
+      }
+
       dispatch({ type: GET_REPORT_DATA_DONE });
 
       dispatch({
         type: GET_REPORT_DATA,
         payload: {
-          data: payload,
+          data: response,
           reportType,
         },
       });
-      resolve(payload);
+      resolve(response);
     } catch (error) {
       dispatch({ type: GET_REPORT_DATA_ERROR, error });
       reject(error);

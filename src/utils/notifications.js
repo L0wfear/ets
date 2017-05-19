@@ -152,11 +152,20 @@ export function getWarningNotification(message) {
   };
 }
 
-export const noItemsInfoNotification = (items, msg = 'По данному запросу нет записей') => {
+export function noItemsInfoNotification(items, msg = 'По данному запросу нет записей') {
   if (items.length === 0) {
     global.NOTIFICATION_SYSTEM.notify(msg, 'info');
     return true;
   }
 
   return false;
-};
+}
+
+export function hasWarningNotification(response) {
+  if (response.warnings) {
+    global.NOTIFICATION_SYSTEM.notify(getWarningNotification(response.warnings.message || response.warnings));
+    return true;
+  }
+
+  return false;
+}

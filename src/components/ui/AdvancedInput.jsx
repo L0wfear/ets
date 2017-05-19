@@ -46,7 +46,7 @@ export default class AdvancedInput extends Component {
   }
 
   handleChange(v, index = 0) {
-    const { name, date, time } = this.props;
+    const { name, date, time = false } = this.props;
     let { filterValue } = this.props;
     const { type } = this.state;
     let { value } = this.state;
@@ -122,8 +122,8 @@ export default class AdvancedInput extends Component {
 
   render() {
     const { type, value } = this.state;
-    const { date } = this.props;
-    const time = type !== '=' && type !== '<>';
+    const { date, time = false } = this.props;
+
     if (this.props.singleFilter) {
       return (
         <Input

@@ -2,7 +2,13 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button, Glyphicon } from 'react-bootstrap';
-import { omit, isEqual, difference, identity, intersection, keys, pick } from 'lodash';
+import {
+  omit,
+  isEqual,
+  difference,
+  identity,
+  pick,
+} from 'lodash';
 
 import { IDataTableColSchema, IDataTableSelectedRow } from 'components/ui/table/@types/DataTable/schema.h';
 import { IPropsReportContainer, IStateReportContainer } from './@types/ReportContainer.h';
@@ -101,9 +107,11 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
   }
 
   handleReportSubmit = async (headerData: object) => {
+    const locationQuery = this.props.location.query;
+
     try {
       // Если урл пустой, то делаем запрос на основе параметров из хедера.
-      if (Object.keys(this.props.location.query).length === 0) {
+      if (Object.keys(locationQuery).length === 0) {
         const data = await this.getReportData(headerData);
         if (noItemsInfoNotification(data.result.rows)) {
           return;
@@ -130,25 +138,20 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       }
 
       /**
-       * Необходимо взять именно пересечение полей объектов,
-       * чтобы не параметры урла фомировались именно из состояния хедера отчёта.
+       * Если урл не пустой, то берём из него только мета-информацию.
        */
-      const mergedQuery = {
-        ...this.props.location.query,
+      const newQuery = {
         ...headerData,
+        ...pick(locationQuery, this.props.meta.levels.current.filter),
+        level: this.props.meta.levels.current.level,
       };
 
-      const query = pick(mergedQuery, intersection(
-        keys(this.props.location.query),
-        keys(headerData),
-      ));
-
       // Не пишем истрорию при одинаковых запросах.
-      if (isEqual(this.props.location.query, query)) {
+      if (isEqual(locationQuery, newQuery)) {
         return;
       }
 
-      this.props.history.pushState(null, this.props.reportUrl, query);
+      this.props.history.pushState(null, this.props.reportUrl, newQuery);
     } catch (error) {
       console.error(error);
       global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${error}`));
@@ -247,7 +250,10 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       <Button bsSize="small" onClick={this.handleMoveUp}>На уровень выше</Button>
     );
 
-    const isSummaryEnable = 'summary' in this.props.meta.levels && this.props.summaryList.length > 0;
+    const isSummaryEnable = (
+      'summary' in this.props.meta.levels &&
+      this.props.summaryList.length > 0
+    );
 
     const summaryTable = (isSummaryEnable &&
       <Table

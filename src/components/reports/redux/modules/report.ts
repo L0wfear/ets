@@ -93,6 +93,9 @@ const getReportDataReducer = (state, { payload }) => {
     tableMetaInfo: data.result.meta.fields,
     meta: data.result.meta,
     list: data.result.rows,
+    summaryList: [],
+    summaryMeta: {},
+    summaryTableMetaInfo: [],
   } : {
     ...state,
     summaryTableMetaInfo: data.result.meta.fields,

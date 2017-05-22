@@ -254,6 +254,7 @@ export default class MissionsJournal extends CheckableElementsList {
       changeSort,
       changeFilter,
       filterValues: this.state.filter,
+      rowNumberOffset: this.state.page * MAX_ITEMS_PER_PAGE,
     };
   }
 

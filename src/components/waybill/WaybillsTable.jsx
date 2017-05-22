@@ -234,6 +234,7 @@ const getTableMeta = (props) => {
 
 export default (props) => {
   const renderers = {
+    rowNumber: ({ data }) => <span>{props.rowNumberOffset + data}</span>,
     status: ({ data }) => <div>{WAYBILL_STATUSES[data] || WAYBILL_STATUSES.default}</div>,
     responsible_person_id: ({ data }) => <div>{employeeFIOLabelFunction(data)}</div>,
     driver_id: ({ data }) => <div>{employeeFIOLabelFunction(data)}</div>,
@@ -266,7 +267,7 @@ export default (props) => {
       results={props.data}
       renderers={renderers}
       initialSort={'number'}
-      enumerated={false}
+      enumerated
       initialSortAscending={false}
       tableMeta={getTableMeta(extProps)}
       columnControl

@@ -84,7 +84,13 @@ export default class WaybillJournal extends CheckableElementsList {
     const { structures } = this.context.flux.getStore('session').getCurrentUser();
     const changeSort = (field, direction) => this.setState({ sortBy: `${field}:${direction ? 'asc' : 'desc'}` });
     const changeFilter = filter => this.setState({ filter });
-    return { structures, changeSort, changeFilter, filterValues: this.state.filter };
+    return {
+      structures,
+      changeSort,
+      changeFilter,
+      filterValues: this.state.filter,
+      rowNumberOffset: this.state.page * MAX_ITEMS_PER_PAGE,
+    };
   }
 
   /**

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 
 const getTableMeta = (props) => {
-  const CAR_TYPES = props.typesList.map(({ id, full_name }) => ({ value: id, label: full_name }));
+  const CAR_TYPES = props.typesList.map(({ asuods_id, full_name }) => ({ value: asuods_id, label: full_name }));
   const OBJECT = [
     {
       value: 1,

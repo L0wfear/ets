@@ -29,7 +29,7 @@ class ODHReports extends Component {
 
   render() {
     const { typesList = [] } = this.props;
-    const TYPES = typesList.map(({ id, full_name }) => ({ label: full_name, value: id }));
+    const TYPES = typesList.map(({ asuods_id, full_name }) => ({ label: full_name, value: asuods_id }));
 
     return (
       <div className="ets-page-wrap">

@@ -100,8 +100,8 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
 
     const { typesList = [] } = this.props;
 
-    const CAR_TYPES = uniqBy(typesList, 'id')
-      .map(t => ({ value: t.id, label: t.full_name }));
+    const CAR_TYPES = uniqBy(typesList, 'asuods_id')
+      .map(t => ({ value: t.asuods_id, label: t.full_name }));
 
     const isDtGeozone = geozone_type === 'dt';
 

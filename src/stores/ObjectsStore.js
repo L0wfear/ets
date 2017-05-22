@@ -119,7 +119,7 @@ export default class ObjectsStore extends Store {
     const carsList = cars.result.map((c) => {
       const model = _.find(this.state.modelsList, m => m.id === c.model_id);
       c.model = model ? model.title : 'Н/Д';
-      const type = _.find(this.state.typesList, t => t.id === c.type_id);
+      const type = _.find(this.state.typesList, t => t.asuods_id === c.type_id);
       c.type = type ? type.title : 'Н/Д';
       return c;
     });
@@ -142,7 +142,7 @@ export default class ObjectsStore extends Store {
 
   handleGetTypes({ result }) {
     const typesList = result;
-    const typesIndex = _.keyBy(typesList, 'id');
+    const typesIndex = _.keyBy(typesList, 'asuods_id');
     this.setState({ typesList, typesIndex });
   }
 

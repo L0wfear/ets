@@ -60,7 +60,7 @@ export default class EmployeeForm extends Form {
             </Col>
             <Col md={6}>
               <Field
-                type="number"
+                type="string"
                 label="Табельный номер"
                 value={state.personnel_number}
                 error={errors.personnel_number}

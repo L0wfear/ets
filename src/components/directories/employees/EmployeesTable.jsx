@@ -33,8 +33,10 @@ export const tableMeta = props => ({
     {
       name: 'personnel_number',
       displayName: 'Табельный номер',
-      type: '',
-      filter: {},
+      type: 'text',
+      filter: {
+        type: 'text',
+      },
     },
     {
       name: 'position_name',

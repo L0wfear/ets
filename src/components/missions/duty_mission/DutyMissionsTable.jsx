@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 import Table from 'components/ui/table/DataTable.jsx';
 
-const DUTY_MISSION_STATUS_LABELS = {
+export const DUTY_MISSION_STATUS_LABELS = {
   'assigned': 'Назначено',
   'not_assigned': 'Не назначено',
   'complete': 'Выполнено',

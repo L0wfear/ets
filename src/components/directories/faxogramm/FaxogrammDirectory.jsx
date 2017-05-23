@@ -5,7 +5,7 @@ import ElementsList from 'components/ElementsList.jsx';
 import Paginator from 'components/ui/Paginator.jsx';
 import Div from 'components/ui/Div.jsx';
 import { saveData } from 'utils/functions';
-import { getToday0am, getToday2359, createValidDate } from 'utils/dates';
+import { getToday0am, getToday2359 } from 'utils/dates';
 import { autobind } from 'core-decorators';
 import FaxogrammsDatepicker from './FaxogrammsDatepicker.jsx';
 import FaxogrammMissionsFormWrap from './FaxogrammMissionsFormWrap.jsx';
@@ -52,8 +52,8 @@ class FaxogrammDirectory extends ElementsList {
         pageOffset,
         nextState.sortBy,
         nextState.filter,
-        createValidDate(this.state.create_date_from),
-        createValidDate(this.state.create_date_to),
+        this.state.create_date_from,
+        this.state.create_date_to,
       );
 
       const { total_count } = objects;
@@ -66,8 +66,8 @@ class FaxogrammDirectory extends ElementsList {
           offset,
           nextState.sortBy,
           nextState.filter,
-          createValidDate(this.state.create_date_from),
-          createValidDate(this.state.create_date_to),
+          this.state.create_date_from,
+          this.state.create_date_to,
         );
       }
     }
@@ -79,8 +79,8 @@ class FaxogrammDirectory extends ElementsList {
       this.state.page * MAX_ITEMS_PER_PAGE,
       this.state.sortBy,
       this.state.filter,
-      createValidDate(this.state.create_date_from),
-      createValidDate(this.state.create_date_to),
+      this.state.create_date_from,
+      this.state.create_date_to,
     );
   }
 
@@ -100,8 +100,8 @@ class FaxogrammDirectory extends ElementsList {
         this.state.page * MAX_ITEMS_PER_PAGE,
         this.state.sortBy,
         filter,
-        createValidDate(this.state.create_date_from),
-        createValidDate(this.state.create_date_to),
+        this.state.create_date_from,
+        this.state.create_date_to,
       );
       this.setState({ filter });
     };
@@ -119,7 +119,7 @@ class FaxogrammDirectory extends ElementsList {
 
     return (
       <div className="ets-page-wrap" ref={node => (this.node = node)}>
-        <FaxogrammsDatepicker time={false} handleChange={this.handleChange} {...this.state} />
+        <FaxogrammsDatepicker handleChange={this.handleChange} {...this.state} />
         <FaxogrammsTable
           data={faxogrammsList}
           onRowSelected={this.selectElement}

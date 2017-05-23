@@ -14,7 +14,7 @@ const getTableMeta = (props) => {
       {
         name: 'create_date',
         displayName: 'Дата создания',
-        type: 'date',
+        type: 'datetime',
         filter: {
           type: 'date',
         },
@@ -22,7 +22,7 @@ const getTableMeta = (props) => {
       {
         name: 'order_date',
         displayName: 'Начало действия',
-        type: 'number',
+        type: 'datetime',
         filter: {
           type: 'date',
         },
@@ -30,7 +30,7 @@ const getTableMeta = (props) => {
       {
         name: 'order_date_to',
         displayName: 'Окончание действия',
-        type: 'number',
+        type: 'datetime',
         filter: {
           type: 'date',
         },
@@ -79,9 +79,9 @@ const getTableMeta = (props) => {
 export default (props) => {
   const renderers = {
     order_status_id: ({ data }) => <div>{data === 2 ? 'Опубликовано' : 'Отменено'}</div>,
-    order_date: ({ data }) => <DateFormatter date={data} empty={'Не указано'} />,
-    order_date_to: ({ data }) => <DateFormatter date={data} empty={'Не указано'} />,
-    create_date: ({ data }) => <DateFormatter date={data} empty={'Не указано'} />,
+    order_date: ({ data }) => <DateFormatter date={data} time empty={'Не указано'} />,
+    order_date_to: ({ data }) => <DateFormatter date={data} time empty={'Не указано'} />,
+    create_date: ({ data }) => <DateFormatter date={data} time empty={'Не указано'} />,
     pgm_deny: ({ data }) => <div>{data === 1 ? 'Не применять' : 'Применять'}</div>,
   };
 

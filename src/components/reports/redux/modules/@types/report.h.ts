@@ -7,8 +7,14 @@ interface IReportMetaFieldDetails {
   name: string;
 }
 
+
+
 interface IReportMetaField {
   [headerName: string]: IReportMetaFieldDetails;
+}
+
+export interface IReportTableMeta {
+  fields?: IReportMetaField[];
 }
 
 interface IReportMetaLevelDetails {
@@ -36,7 +42,7 @@ export interface IReportStateProps {
   meta: IReportMeta;
   summaryList: object[];
   summaryMeta: IReportMeta;
-  tableMetaInfo: IReportMetaField[];
+  tableMetaInfo: IReportTableMeta;
   summaryTableMetaInfo: IReportMetaField[];
   reportMetaFetching: boolean;
   reportDataFetching: boolean;

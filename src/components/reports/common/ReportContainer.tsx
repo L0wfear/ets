@@ -12,7 +12,7 @@ import {
 
 import { IDataTableColSchema, IDataTableSelectedRow } from 'components/ui/table/@types/DataTable/schema.h';
 import { IPropsReportContainer, IStateReportContainer } from './@types/ReportContainer.h';
-import { ReportDataPromise } from 'components/reports/redux/modules/@types/report.h';
+import { ReportDataPromise, IReportTableMeta } from 'components/reports/redux/modules/@types/report.h';
 
 import Preloader from 'components/ui/Preloader.jsx';
 import { getServerErrorNotification, noItemsInfoNotification } from 'utils/notifications';
@@ -73,7 +73,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       try {
         const data = await this.props.getReportData(this.props.serviceName, query);
 
-        if (!noItemsInfoNotification(data.result.rows)) {
+        if (data.result.rows.length > 0) {
           const hasSummaryLevel = 'summary' in data.result.meta.levels;
 
           if (hasSummaryLevel) {
@@ -205,8 +205,8 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     this.props.export(this.props.location.query);
   }
 
-  makeTableSchema(schemaMakers = {}, tableMetaInfo) {
-    const cols = tableMetaInfo.map(field => {
+  makeTableSchema(schemaMakers = {}, tableMetaInfo: IReportTableMeta) {
+    const cols = tableMetaInfo.fields.map(field => {
       const fieldName = Object.keys(field)[0];
       const fieldValue = field[fieldName];
 
@@ -236,7 +236,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     const Header = this.props.headerComponent;
 
     const tableMeta = this.makeTableSchema(schemaMakers, tableMetaInfo);
-    const summaryTableMeta = this.makeTableSchema({}, summaryTableMetaInfo);
+    const summaryTableMeta = this.makeTableSchema({}, { fields: summaryTableMetaInfo });
 
     const moveUpIsPermitted = 'higher' in this.props.meta.levels;
     const isListEmpty = this.props.list.length === 0;

@@ -53,22 +53,6 @@ export function getServerErrorNotification(errorService) {
   };
 }
 
-
-export function getReportNotReadyNotification(flux) {
-  return {
-    title: 'Внимание',
-    message: 'Отчет еще не обработан',
-    level: 'info',
-    dismissible: true,
-    position: 'tc',
-    autoDismiss: 5,
-    action: {
-      label: 'Обновить список',
-      callback: () => flux.getActions('missions').getMissionReports(),
-    },
-  };
-}
-
 export function getReportNotReadyNotification2(flux) {
   return {
     title: 'Внимание',
@@ -152,13 +136,8 @@ export function getWarningNotification(message) {
   };
 }
 
-export function noItemsInfoNotification(items, msg = 'По данному запросу нет записей') {
-  if (items.length === 0) {
-    global.NOTIFICATION_SYSTEM.notify(msg, 'info');
-    return true;
-  }
-
-  return false;
+export function noItemsInfoNotification(msg = 'По данному запросу нет записей') {
+  global.NOTIFICATION_SYSTEM.notify(msg, 'info');
 }
 
 export function hasWarningNotification(response) {

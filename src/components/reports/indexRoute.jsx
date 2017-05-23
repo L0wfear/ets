@@ -38,11 +38,7 @@ const reportRoutes = (props) => {
       <Route path="weekly-technical-operation-complete-reports" component={reports.weekly.technicalOperationComplete.all} onEnter={requireAuth} />
       <Route path="weekly-technical-operation-complete-report/:element/:id" component={reports.weekly.technicalOperationComplete.single} onEnter={requireAuth} />
       {/* Отчеты - Задания */}
-      <Route path="mission-reports" component={reports.mission.all} onEnter={requireAuth}>
-        <Route path=":id/odhs/:index" component={reports.mission.singleByODH} onEnter={requireAuth} />
-        <Route path=":id/dts/:index" component={reports.mission.singleByDT} onEnter={requireAuth} />
-        <Route path=":id/points/:index" component={reports.mission.singleByPoints} onEnter={requireAuth} />
-      </Route>
+      <Route path="mission-reports" component={reports.mission} onEnter={requireAuth} />
       {/* Отчет префекта */}
       <Route path="odh_coverage_report" component={reports.odhCoverageReport} onEnter={requireAuth} />
       <Route path="dt_coverage_report" component={reports.dtCoverageReport} onEnter={requireAuth} />

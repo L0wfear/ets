@@ -107,7 +107,6 @@ export default class LoadingStore extends Store {
       companyStructureActions.deleteCompanyElement,
 
       reportsActions.getDailyCleaningReportsETS,
-      reportsActions.getDailyCleaningReportByIdETS,
       reportsActions.createDailyCleaningReportETS,
       reportsActions.getDailyCleaningReportsCAFAP,
       reportsActions.getDailyCleaningReportByIdCAFAP,

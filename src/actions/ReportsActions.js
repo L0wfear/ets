@@ -59,10 +59,6 @@ export default class ReportsActions extends Actions {
     return DailyCleaningReportsServiceETS.get();
   }
 
-  getDailyCleaningReportByIdETS(id) {
-    return DailyCleaningReportsServiceETS.path(id).get();
-  }
-
   // Cleaning - CAFAP
 
   createDailyCleaningReportCAFAP(data) {

@@ -72,9 +72,9 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     return new Promise(async (resolve, reject) => {
       try {
         const data = await this.props.getReportData(this.props.serviceName, query);
+        const hasSummaryLevel = 'summary' in data.result.meta.levels;
 
         if (data.result.rows.length > 0) {
-          const hasSummaryLevel = 'summary' in data.result.meta.levels;
 
           if (hasSummaryLevel) {
             const summaryQuery = {
@@ -89,6 +89,12 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
             );
           }
         }
+
+        if (data.result.rows.length === 0) {
+          noItemsInfoNotification();
+        }
+
+
         resolve(data);
       } catch (error) {
         global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${error}`));
@@ -113,7 +119,8 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       // Если урл пустой, то делаем запрос на основе параметров из хедера.
       if (Object.keys(locationQuery).length === 0) {
         const data = await this.getReportData(headerData);
-        if (noItemsInfoNotification(data.result.rows)) {
+
+        if (data.result.rows.length === 0) {
           return;
         }
 

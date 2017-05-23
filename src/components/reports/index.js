@@ -8,7 +8,7 @@ import fuelConsumption from './fuel_consumption/report.ts';
 import odhCoverageReport from './odh_coverage/OdhCoverageReport.jsx';
 import dtCoverageReport from './dt_coverage/DtCoverageReport.jsx';
 import odh from './ODHReports.jsx';
-import * as mission from './mission';
+import mission from './mission/report.ts';
 import * as route from './route';
 import * as daily from './daily';
 import * as weekly from './weekly';

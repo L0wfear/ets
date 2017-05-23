@@ -149,10 +149,17 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
 
   getAdditionalProps() {
     const { structures } = this.context.flux.getStore('session').getCurrentUser();
+    const technicalOperationIdsList = this.props.technicalOperationsList.map(item => item.id);
+
+    const missionTemplatesList = this.props.missionTemplatesList
+      .filter(mission => technicalOperationIdsList.includes(mission.technical_operation_id));
+
+
     return {
       structures,
       noHeader: this.props.renderOnly,
       noDataMessage: this.props.payload.faxogramm_id ? 'Для выбранной факсограммы нет подходящих шаблонов заданий' : null,
+      data: missionTemplatesList,
     };
   }
 }

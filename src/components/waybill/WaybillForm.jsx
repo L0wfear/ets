@@ -370,17 +370,16 @@ class WaybillForm extends Form {
   }
 
   handleMissionsChange(v) {
-    const f = this.props.formState;
-    const data = !isEmpty(v) ? v.split(',').map(d => parseInt(d, 10)) : [];
+    const { formState } = this.props;
+    const newFormData = !isEmpty(v) ? v.split(',').map(d => parseInt(d, 10)) : [];
+
     let shouldBeChanged = true;
-    if (f.status === 'active') {
-      _.each(f.mission_id_list, (id) => {
-        if (data.indexOf(id) === -1) {
-          shouldBeChanged = false;
-        }
-      });
+
+    if (formState.status === 'active') {
+      shouldBeChanged = newFormData.length >= 1;
     }
-    this.handleChange('mission_id_list', shouldBeChanged ? data : f.mission_id_list);
+
+    this.handleChange('mission_id_list', shouldBeChanged ? newFormData : formState.mission_id_list);
   }
 
   handleStructureIdChange(v) {

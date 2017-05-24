@@ -2,8 +2,6 @@ import { Actions } from 'flummox';
 import { createValidDateTime } from 'utils/dates';
 import _ from 'lodash';
 import {
-  DailyCleaningReportsServiceETS,
-  DailyCleaningReportsServiceCAFAP,
   WeeklyTechnicalOperationCompleteReportsService,
   CoverageReportService,
   AnalyticsService,
@@ -43,38 +41,6 @@ export default class ReportsActions extends Actions {
     };
 
     return CarFuncTypeUsageReportService.get(payload);
-  }
-
-  // Cleaning - ETS
-
-  createDailyCleaningReportETS(data) {
-    const payload = _.cloneDeep(data);
-    payload.date_start = createValidDateTime(payload.date_start);
-    payload.date_end = createValidDateTime(payload.date_end);
-    // payload.car_type_id_list = payload.car_type_id_list);
-    return DailyCleaningReportsServiceETS.post(payload, true, 'json');
-  }
-
-  getDailyCleaningReportsETS() {
-    return DailyCleaningReportsServiceETS.get();
-  }
-
-  // Cleaning - CAFAP
-
-  createDailyCleaningReportCAFAP(data) {
-    const payload = _.cloneDeep(data);
-    payload.date_start = createValidDateTime(payload.date_start);
-    payload.date_end = createValidDateTime(payload.date_end);
-    // payload.car_type_id_list = payload.car_type_id_list);
-    return DailyCleaningReportsServiceCAFAP.post(payload, true, 'json');
-  }
-
-  getDailyCleaningReportsCAFAP() {
-    return DailyCleaningReportsServiceCAFAP.get();
-  }
-
-  getDailyCleaningReportByIdCAFAP(id) {
-    return DailyCleaningReportsServiceCAFAP.path(id).get();
   }
 
   getAnalytics(data) {

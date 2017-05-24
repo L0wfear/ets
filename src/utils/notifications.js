@@ -53,7 +53,7 @@ export function getServerErrorNotification(errorService) {
   };
 }
 
-export function getReportNotReadyNotification2(flux) {
+export function getReportNotReadyNotification2() {
   return {
     title: 'Внимание',
     message: 'Отчет еще не обработан',
@@ -61,10 +61,6 @@ export function getReportNotReadyNotification2(flux) {
     dismissible: true,
     position: 'tc',
     autoDismiss: 5,
-    action: {
-      label: 'Обновить список',
-      callback: () => flux.getActions('reports').getDailyCleaningReportsETS(),
-    },
   };
 }
 

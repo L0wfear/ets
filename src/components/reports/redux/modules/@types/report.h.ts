@@ -9,7 +9,7 @@ interface IReportMetaFieldDetails {
 
 
 
-interface IReportMetaField {
+export interface IReportMetaField {
   [headerName: string]: IReportMetaFieldDetails;
 }
 
@@ -35,6 +35,7 @@ interface IReportMetaLevels {
 export interface IReportMeta {
   fields?: IReportMetaField[];
   levels?: IReportMetaLevels;
+  [field: string]: any;
 }
 
 export interface IReportStateProps {

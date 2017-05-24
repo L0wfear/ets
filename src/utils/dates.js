@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { equalOr } from './functions';
 
 export function makeDate(date) {
   return moment(date).format(`${global.APP_DATE_FORMAT}`);
@@ -132,3 +133,25 @@ export function secondsToTime(secs) {
   minutes = minutes % 60;
   return `${pad(hours)}:${pad(minutes)}:${pad(secs)}`;
 }
+
+export const getCurrentSeason = (summerStart = null, summerEnd = null) => {
+  if (equalOr([summerStart, summerEnd], null)) {
+    return '';
+  }
+
+  const date = new Date();
+  const currentDay = date.getDate();
+  const currentMonth = date.getMonth();
+
+  const [summerStartMonth, summerStartDay] = summerStart;
+  const [summerEndMonth, summerEndDay] = summerEnd;
+
+  const isLessOrEqualThanEnd = currentMonth <= summerEndMonth && currentDay <= summerEndDay;
+  const isBiggerOrEqualThanStart = currentMonth >= summerStartMonth && currentDay >= summerStartDay;
+
+  if (isLessOrEqualThanEnd && isBiggerOrEqualThanStart) {
+    return 'summer';
+  }
+
+  return 'winter';
+};

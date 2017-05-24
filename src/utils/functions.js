@@ -123,3 +123,50 @@ const isFourDigitGovNumberRegexp = /\d{4}/;
 
 export const isThreeDigitGovNumber = number => !isFourDigitGovNumberRegexp.test(number);
 export const isFourDigitGovNumber = number => isFourDigitGovNumberRegexp.test(number);
+
+
+function qualizer(values = [], matchValue, mapFn, reduceFn) {
+  if (values.length === 0) {
+    return undefined !== matchValue;
+  }
+
+  return values
+    .map(mapFn)
+    .reduce(reduceFn);
+}
+
+export function equalOr(values, matchValue) {
+  return qualizer(
+    values,
+    matchValue,
+    value => value === matchValue,
+    (prev, curr) => prev || curr
+  );
+}
+
+export function equalAnd(values, matchValue) {
+  return qualizer(
+    values,
+    matchValue,
+    value => value === matchValue,
+    (prev, curr) => prev && curr
+  );
+}
+
+export function notEqualOr(values, matchValue) {
+  return qualizer(
+    values,
+    matchValue,
+    value => value !== matchValue,
+    (prev, curr) => prev || curr
+  );
+}
+
+export function notEqualAnd(values, matchValue) {
+  return qualizer(
+    values,
+    matchValue,
+    value => value !== matchValue,
+    (prev, curr) => prev && curr
+  );
+}

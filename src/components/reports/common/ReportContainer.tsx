@@ -12,6 +12,7 @@ import {
 
 import { IDataTableColSchema, IDataTableSelectedRow } from 'components/ui/table/@types/DataTable/schema.h';
 import { IPropsReportContainer, IStateReportContainer } from './@types/ReportContainer.h';
+import { IPropsReportHeaderCommon } from './@types/ReportHeaderWrapper.h';
 import { ReportDataPromise, IReportTableMeta } from 'components/reports/redux/modules/@types/report.h';
 
 import Preloader from 'components/ui/Preloader.jsx';
@@ -240,7 +241,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       summaryTableMetaInfo,
     } = this.props;
 
-    const Header = this.props.headerComponent;
+    const Header: React.ComponentClass<IPropsReportHeaderCommon> = this.props.headerComponent;
 
     const tableMeta = this.makeTableSchema(schemaMakers, tableMetaInfo);
     const summaryTableMeta = this.makeTableSchema({}, { fields: summaryTableMetaInfo });
@@ -275,12 +276,17 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       />
     );
 
+    /**
+     * Через специальный для каждого хедера колбэк обрабатываются параметры урла,
+     * которые должны быть в специальном для каждого элемента ввода формате.
+     */
     const stateMaker = this.props.headerStateMaker || identity;
     const queryState = stateMaker(this.props.location.query);
 
     return (
       <div className="ets-page-wrap">
         <Header
+          tableMeta={this.props.tableMetaInfo}
           queryState={queryState}
           onClick={this.handleReportSubmit}
         />

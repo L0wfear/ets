@@ -6,10 +6,6 @@ export default class ReportsStore extends Store {
     super();
 
     const reportsActions = flux.getActions('reports');
-    this.register(reportsActions.getDailyCleaningReportsETS, this.handleGetDailyCleaningReportsETS);
-    this.register(reportsActions.getDailyCleaningReportsCAFAP, this.handleGetDailyCleaningReportsCAFAP);
-    this.register(reportsActions.createDailyCleaningReportETS, this.handleGetDailyCleaningReportsETS);
-    this.register(reportsActions.createDailyCleaningReportCAFAP, this.handleGetDailyCleaningReportsCAFAP);
     this.register(reportsActions.getWeeklyTechnicalOperationCompleteReports, this.handleGetWeeklyTechnicalOperationCompleteReports);
     this.register(reportsActions.createWeeklyTechnicalOperationCompleteReport, this.handleGetWeeklyTechnicalOperationCompleteReports);
     this.register(reportsActions.getOdhCoverageReport, this.handleGetOdhCoverageReport);
@@ -21,8 +17,6 @@ export default class ReportsStore extends Store {
     this.register(reportsActions.clearStateList, this.handleClearStateList);
 
     this.initialState = {
-      dailyCleaningReportsListETS: [],
-      dailyCleaningReportsListCAFAP: [],
       carFuncTypeUsageReportsList: [],
       carFuncTypeUsageDetailReportList: [],
       weeklyTechnicalOperationCompleteReportsList: [],
@@ -49,14 +43,6 @@ export default class ReportsStore extends Store {
 
   handleGetCarFuncTypeUsageDetailReport({ result }) {
     this.setState({ carFuncTypeUsageDetailReportList: result.rows });
-  }
-
-  handleGetDailyCleaningReportsETS(dailyCleaningReports) {
-    this.setState({ dailyCleaningReportsListETS: dailyCleaningReports.result.rows });
-  }
-
-  handleGetDailyCleaningReportsCAFAP(dailyCleaningReports) {
-    this.setState({ dailyCleaningReportsListCAFAP: dailyCleaningReports.result.rows });
   }
 
   handleGetWeeklyTechnicalOperationCompleteReports(weeklyTechnicalOperationCompleteReports) {

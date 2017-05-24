@@ -3,7 +3,7 @@
  * Ежедневные отчеты по уборке
  */
  import ets from './ets/report.tsx';
- import * as cafap from './cafap';
+ import cafap from './cafap/report.tsx';
 
  export {
    ets,

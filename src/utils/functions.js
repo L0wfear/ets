@@ -3,6 +3,9 @@
  * @module utils/functions
  */
 
+import includes from 'lodash/includes';
+import every from 'lodash/every';
+
 /**
  * Стандартная проверка на null/undefined в js
  * @param {any} value
@@ -125,63 +128,29 @@ export const isThreeDigitGovNumber = number => !isFourDigitGovNumberRegexp.test(
 export const isFourDigitGovNumber = number => isFourDigitGovNumberRegexp.test(number);
 
 
-function comparator(values = [], matchValue, mapFn, reduceFn) {
-  if (values.length === 0) {
-    return undefined !== matchValue;
-  }
-
-  return values
-    .map(mapFn)
-    .reduce(reduceFn);
-}
-
-const equalMap = matchValue => value => value === matchValue;
-const notEqualMap = matchValue => value => value !== matchValue;
-const orReduce = (prev, curr) => prev || curr;
-const andReduce = (prev, curr) => prev && curr;
-
 /**
  * Example:
  * const a = 1, b = 2, c = 3;
  * a === 1 || b === 1 || c === 1 // true
  * isEqualOr([1, 2, 3], 1) // true
  */
-export const isEqualOr = (values, matchValue) => comparator(
-  values,
-  matchValue,
-  equalMap(matchValue),
-  orReduce
-);
+export const isEqualOr = (values = [], matchValue) => includes(values, matchValue);
+
 /**
  * Example:
  * a === 1 && b === 1 && c === 1 // false
  * isEqualAnd([1, 2, 3], 1) // false
  */
-export const isEqualAnd = (values, matchValue) => comparator(
-  values,
-  matchValue,
-  equalMap(matchValue),
-  andReduce
-);
+export const isEqualAnd = (values = [], matchValue) => every(values, matchValue);
 /**
  * Example:
-  * a !== 1 || b !== 1 || c !== 1 // true
+ * a !== 1 || b !== 1 || c !== 1 // true
  * isNotEqualOr([1, 2, 3], 1) // true
  */
-export const isNotEqualOr = (values, matchValue) => comparator(
-  values,
-  matchValue,
-  notEqualMap(matchValue),
-  orReduce
-);
+export const isNotEqualOr = (values = [], matchValue) => !isEqualAnd(values, matchValue);
 /**
  * Example:
-  * a !== 1 && b !== 1 && c !== 1 // false
+ * a !== 1 && b !== 1 && c !== 1 // false
  * isNotEqualAnd([1, 2, 3], 1) // false
  */
-export const isNotEqualAnd = (values, matchValue) => comparator(
-  values,
-  matchValue,
-  notEqualMap(matchValue),
-  andReduce
-);
+export const isNotEqualAnd = (values = [], matchValue) => !isEqualOr(values, matchValue);

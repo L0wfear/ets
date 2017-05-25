@@ -2698,15 +2698,17 @@ body {
 }
 
 .log-interval-picker {
+  display: flex;
   position: absolute;
   top: 84px;
   left: calc(50% - 250px);
-  div {
-    display: inline-block;
-  }
+
   .date-divider {
     margin-left: 10px;
     margin-right: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 }
 

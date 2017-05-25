@@ -21,6 +21,10 @@ import {
   UserActionLogService,
 } from 'api/Services';
 
+import {
+  MedicalStatsService,
+} from 'api/nsi';
+
 function getTypes(payload = {}) {
   return TypesService.get(payload).then(r => ({ result: r.result.rows }));
 }
@@ -190,6 +194,14 @@ export default class ObjectsActions extends Actions {
       date_end: createValidDateTime(p.date_end),
     };
     return UserActionLogService.get(payload);
+  }
+
+  getMedicalStats(p = {}) {
+    const payload = {
+      date_start: createValidDateTime(p.date_start),
+      date_end: createValidDateTime(p.date_end),
+    };
+    return MedicalStatsService.get(payload);
   }
 
 }

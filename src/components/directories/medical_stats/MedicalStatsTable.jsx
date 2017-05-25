@@ -1,64 +1,71 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 
 export const tableMeta = props => ({
   cols: [
     {
-      name: 'company_name',
-      displayName: 'Учреждение',
-      type: 'text',
-      display: props ? props.isOkrug : false,
-      filter: {
-        type: 'multiselect',
-      },
-    },
-    {
-      name: 'timestamp',
-      displayName: 'Дата действия',
-      type: 'text',
-      filter: {
-        type: 'datetime',
-      },
-    },
-    {
-      name: 'user_login',
-      displayName: 'Логин пользователя',
-      type: 'text',
-      filter: {
-        type: 'multiselect',
-      },
-    },
-    {
-      name: 'remote_ip',
-      displayName: 'IP адрес',
-      type: 'text',
-      filter: {
-        type: 'multiselect',
-      },
-    },
-    // {
-    //   name: 'action',
-    //   displayName: 'Название страницы',
-    //   type: 'text',
-    //   filter: {
-    //     type: 'multiselect',
-    //   },
-    // },
-    {
-      name: 'entity_number',
-      displayName: 'Номер документа',
+      name: 'id',
+      displayName: '№п / п',
       type: 'text',
       filter: {
         type: 'string',
       },
     },
     {
-      name: 'action_name',
-      displayName: 'Действие',
+      name: 'employee_name',
+      displayName: 'ФИО сотрудника',
       type: 'text',
       filter: {
         type: 'multiselect',
+      },
+    },
+    {
+      name: 'employee_birthday',
+      displayName: 'Дата рождения',
+      type: 'date',
+      filter: {
+        type: 'date',
+      },
+    },
+    {
+      name: 'employee_position',
+      displayName: 'Должность',
+      type: 'text',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
+      name: 'allowed',
+      displayName: 'Результат мед.осмотра',
+      type: 'text',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
+      name: 'conclusion',
+      displayName: 'Заключение о результате мед.осмотра',
+      type: 'text',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
+      name: 'type_name',
+      displayName: 'Тип мед.осмотра',
+      type: 'text',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
+      name: 'sign_datetime',
+      displayName: 'Дата и время подписи результата мед.осмотра',
+      type: 'datetime',
+      filter: {
+        type: 'datetime',
       },
     },
   ],
@@ -66,18 +73,21 @@ export const tableMeta = props => ({
 
 const UserActionLogTable = (props) => {
   const renderers = {
-    timestamp: ({ data }) => <DateFormatter date={data} time />,
+    employee_birthday: ({ data }) => <DateFormatter date={data} />,
+    sign_datetime: ({ data }) => <DateFormatter date={data} time />,
   };
 
-  return (<Table
-    title="Журнал действий пользователей"
-    initialSort="timestamp"
-    initialSortAscending={false}
-    results={props.data}
-    tableMeta={tableMeta(props)}
-    renderers={renderers}
-    {...props}
-  />);
+  return (
+    <Table
+      title="Статистика прохождения мед. осмотров"
+      initialSortAscending={false}
+      results={props.data}
+      tableMeta={tableMeta(props)}
+      renderers={renderers}
+      enumerated={false}
+      {...props}
+    />
+  );
 };
 
 export default UserActionLogTable;

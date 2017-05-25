@@ -1,56 +1,56 @@
 import React from 'react';
-import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import { staticProps, exportable, connectToStores } from 'utils/decorators';
 import ElementsList from 'components/ElementsList.jsx';
 import Datepicker from 'components/ui/DatePicker.jsx';
 import { getToday0am, getToday2359, createValidDateTime } from 'utils/dates';
 import MedicalStatsTable from './MedicalStatsTable.jsx';
 
 @connectToStores(['objects', 'session'])
-@exportable({ entity: 'user_action_log' })
+@exportable({ entity: 'medical_stats' })
 @staticProps({
-  entity: 'user_action_log',
-  listName: 'userActionLogList',
+  entity: 'medical_stats',
+  listName: 'medicalStatsList',
   tableComponent: MedicalStatsTable,
   operations: ['LIST'],
 })
 export default class MedicalStatsList extends ElementsList {
 
   state = {
-    date_start: getToday0am(),
-    date_end: getToday2359(),
+    mission_date_start_from: getToday0am(),
+    mission_date_end_to: getToday2359(),
   }
 
   exportPayload = {
-    date_start: createValidDateTime(this.state.date_start),
-    date_end: createValidDateTime(this.state.date_end),
+    mission_date_start_from: createValidDateTime(this.state.mission_date_start_from),
+    mission_date_end_to: createValidDateTime(this.state.mission_date_end_to),
   };
 
   async componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
-    await flux.getActions('objects').getUserActionLog(this.state);
+    await flux.getActions('objects').getMedicalStats(this.state);
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (this.state.date_start !== nextState.date_start || this.state.date_end !== nextState.date_end) {
+    if (this.state.mission_date_start_from !== nextState.mission_date_start_from || this.state.mission_date_end_to !== nextState.mission_date_end_to) {
       this.exportPayload = {
-        date_start: createValidDateTime(nextState.date_start),
-        date_end: createValidDateTime(nextState.date_end),
+        mission_date_start_from: createValidDateTime(nextState.mission_date_start_from),
+        mission_date_end_to: createValidDateTime(nextState.mission_date_end_to),
       };
-      this.context.flux.getActions('objects').getUserActionLog(nextState);
+      this.context.flux.getActions('objects').getMedicalStats(nextState);
     }
   }
 
   additionalRender() {
-    const { date_start, date_end } = this.state;
+    const { mission_date_start_from, mission_date_end_to } = this.state;
     return (
       <div className="log-interval-picker">
         <div className="inline-block faxogramms-date">
-          <Datepicker date={date_start} onChange={v => this.setState({ date_start: v })} />
+          <Datepicker date={mission_date_start_from} onChange={v => this.setState({ mission_date_start_from: v })} />
         </div>
         <div className="date-divider">—</div>
         <div className="inline-block">
-          <Datepicker date={date_end} onChange={v => this.setState({ date_end: v })} />
+          <Datepicker date={mission_date_end_to} onChange={v => this.setState({ mission_date_end_to: v })} />
         </div>
       </div>
     );

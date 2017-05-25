@@ -125,7 +125,7 @@ export const isThreeDigitGovNumber = number => !isFourDigitGovNumberRegexp.test(
 export const isFourDigitGovNumber = number => isFourDigitGovNumberRegexp.test(number);
 
 
-function qualizer(values = [], matchValue, mapFn, reduceFn) {
+function comparator(values = [], matchValue, mapFn, reduceFn) {
   if (values.length === 0) {
     return undefined !== matchValue;
   }
@@ -135,38 +135,53 @@ function qualizer(values = [], matchValue, mapFn, reduceFn) {
     .reduce(reduceFn);
 }
 
-export function equalOr(values, matchValue) {
-  return qualizer(
-    values,
-    matchValue,
-    value => value === matchValue,
-    (prev, curr) => prev || curr
-  );
-}
+const equalMap = matchValue => value => value === matchValue;
+const notEqualMap = matchValue => value => value !== matchValue;
+const orReduce = (prev, curr) => prev || curr;
+const andReduce = (prev, curr) => prev && curr;
 
-export function equalAnd(values, matchValue) {
-  return qualizer(
-    values,
-    matchValue,
-    value => value === matchValue,
-    (prev, curr) => prev && curr
-  );
-}
-
-export function notEqualOr(values, matchValue) {
-  return qualizer(
-    values,
-    matchValue,
-    value => value !== matchValue,
-    (prev, curr) => prev || curr
-  );
-}
-
-export function notEqualAnd(values, matchValue) {
-  return qualizer(
-    values,
-    matchValue,
-    value => value !== matchValue,
-    (prev, curr) => prev && curr
-  );
-}
+/**
+ * Example:
+ * const a = 1, b = 2, c = 3;
+ * a === 1 || b === 1 || c === 1 // true
+ * isEqualOr([1, 2, 3], 1) // true
+ */
+export const isEqualOr = (values, matchValue) => comparator(
+  values,
+  matchValue,
+  equalMap(matchValue),
+  orReduce
+);
+/**
+ * Example:
+ * a === 1 && b === 1 && c === 1 // false
+ * isEqualAnd([1, 2, 3], 1) // false
+ */
+export const isEqualAnd = (values, matchValue) => comparator(
+  values,
+  matchValue,
+  equalMap(matchValue),
+  andReduce
+);
+/**
+ * Example:
+  * a !== 1 || b !== 1 || c !== 1 // true
+ * isNotEqualOr([1, 2, 3], 1) // true
+ */
+export const isNotEqualOr = (values, matchValue) => comparator(
+  values,
+  matchValue,
+  notEqualMap(matchValue),
+  orReduce
+);
+/**
+ * Example:
+  * a !== 1 && b !== 1 && c !== 1 // false
+ * isNotEqualAnd([1, 2, 3], 1) // false
+ */
+export const isNotEqualAnd = (values, matchValue) => comparator(
+  values,
+  matchValue,
+  notEqualMap(matchValue),
+  andReduce
+);

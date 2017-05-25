@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { equalOr } from './functions';
+import { isEqualOr } from './functions';
 
 export function makeDate(date) {
   return moment(date).format(`${global.APP_DATE_FORMAT}`);
@@ -135,7 +135,7 @@ export function secondsToTime(secs) {
 }
 
 export const getCurrentSeason = (summerStart = null, summerEnd = null) => {
-  if (equalOr([summerStart, summerEnd], null)) {
+  if (isEqualOr([summerStart, summerEnd], null)) {
     return '';
   }
 

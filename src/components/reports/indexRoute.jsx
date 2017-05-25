@@ -2,10 +2,6 @@ import React from 'react';
 import { Route, Redirect } from 'react-router';
 
 import * as reports from './index.js';
-      // <Redirect from="fuel-consumption-report" to="fuel-consumption-report/level/1" />
-      // <Route path="fuel-consumption-report/level/1" component={reports.fuelConsumption.firstLevel} onEnter={requireAuth}>
-      //   <Route path="/fuel-consumption-report/level/2" component={reports.fuelConsumption.secondLevel} onEnter={requireAuth} />
-      // </Route>
 
 const reportRoutes = (props) => {
   const { requireAuth } = props;
@@ -53,4 +49,4 @@ reportRoutes.propTypes = {
 };
 
 
-export { reportRoutes };
+export default reportRoutes;

@@ -55,6 +55,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     });
   }
   render() {
+    const { readOnly } = this.props;
     const {
       date_start,
       date_end,
@@ -73,6 +74,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
               bindOnChange={'object_type'}
               onChange={this.props.handleChange}
               clearable={false}
+              disabled={readOnly}
             />
           </Col>
           <Col md={4}>
@@ -82,6 +84,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
                 date={date_start}
                 onChange={this.props.handleChange}
                 bindOnChange={'date_start'}
+                disabled={readOnly}
               />
             </Div>
             <Div className="inline-block reports-date">
@@ -89,11 +92,16 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
                 date={date_end}
                 onChange={this.props.handleChange}
                 bindOnChange={'date_end'}
+                disabled={readOnly}
               />
             </Div>
           </Col>
           <Col md={4} style={{ marginTop: 28, textAlign: 'right' }}>
-            <Button bsSize="small" onClick={this.handleSubmit}>Сформировать отчет</Button>
+            <Button
+              bsSize="small"
+              onClick={this.handleSubmit}
+              disabled={readOnly}
+            >Сформировать отчет</Button>
           </Col>
         </Row>
       </Div>

@@ -38,6 +38,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     const {
       mission_date_start_from = timeShift[0],
       mission_date_end_to = timeShift[1],
+      readOnly,
     } = this.props;
 
     return (
@@ -49,6 +50,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
               date={mission_date_start_from}
               onChange={this.props.handleChange}
               bindOnChange={'mission_date_start_from'}
+              disabled={readOnly}
             />
           </Div>
           <Div className="date-divider">—</Div>
@@ -57,12 +59,14 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
               date={mission_date_end_to}
               onChange={this.props.handleChange}
               bindOnChange={'mission_date_end_to'}
+              disabled={readOnly}
             />
           </Div>
         </Col>
         <Col md={3}>
           <Button
             bsSize="small"
+            disabled={readOnly}
             onClick={this.handleSubmit}
           >Сформировать отчёт</Button>
         </Col>

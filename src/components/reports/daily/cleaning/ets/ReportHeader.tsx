@@ -98,7 +98,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       car_func_types_ids,
     } = this.getState();
 
-    const { typesList = [] } = this.props;
+    const { typesList = [], readOnly } = this.props;
 
     const CAR_TYPES = uniqBy(typesList, 'asuods_id')
       .map(t => ({ value: t.asuods_id, label: t.full_name }));
@@ -116,13 +116,14 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
               onChange={this.handleGeoObjectChange}
               bindOnChange={'geozone_type'}
               clearable={false}
+              disabled={readOnly}
             />
           </Col>
           <Col md={2}>
             <Field type="select"
               label="Элемент"
               options={GEOZONE_ELEMENTS[geozone_type]}
-              disabled={isDtGeozone}
+              disabled={isDtGeozone || readOnly}
               value={element_type}
               onChange={this.props.handleChange}
               bindOnChange={'element_type'}
@@ -136,6 +137,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
                 date={date_start}
                 onChange={this.props.handleChange}
                 bindOnChange={'date_start'}
+                disabled={readOnly}
               />
             </Div>
             <Div className="inline-block reports-date">
@@ -143,6 +145,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
                 date={date_end}
                 onChange={this.props.handleChange}
                 bindOnChange={'date_end'}
+                disabled={readOnly}
               />
             </Div>
           </Col>
@@ -154,6 +157,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
               value={car_func_types_ids}
               onChange={this.props.handleChange}
               bindOnChange={'car_func_types_ids'}
+              disabled={readOnly}
             />
           </Col>
         </Row>
@@ -161,7 +165,11 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
         <Row style={{ marginTop: 20 }}>
           <Col md={9} />
           <Col md={3}>
-            <Button bsSize="small" onClick={this.handleSubmit}>Сформировать отчет</Button>
+            <Button
+              bsSize="small"
+              onClick={this.handleSubmit}
+              disabled={readOnly}
+            >Сформировать отчет</Button>
           </Col>
         </Row>
       </Div>

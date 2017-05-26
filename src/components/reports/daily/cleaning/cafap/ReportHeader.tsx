@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Button, Row, Col } from 'react-bootstrap';
-import { omit, get } from 'lodash';
+import { get } from 'lodash';
+import { cond } from 'lodash/fp';
 
 import {
   IPropsReportHeaderCommon,
@@ -77,22 +78,38 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       car_func_types_groups,
     } = this.getState();
 
-    const carIdsArray = typeof car_func_types_groups === 'string' ? [car_func_types_groups] : car_func_types_groups;
+    const getRequestBody = cond([
+      [({ carTypeGroups }) => carTypeGroups !== '', ({ state, carTypeGroups }) => {
+        const carTypeStrings = carTypeGroups
+          .split(',')
+          .map(item => `"${item}"`)
+          .join(',');
 
-    const requestBody = {
+        return {
+          ...state,
+          car_func_types_groups: `[${carTypeStrings}]`,
+        };
+      }],
+      [() => true, ({ state }) => state ],
+    ]);
+
+
+    const initialState = {
       date_start: createValidDateTime(date_start),
       date_end: createValidDateTime(date_end),
       geozone_type,
       element_type,
-      car_func_types_groups: `[${[...carIdsArray.map(item => `"${item}"`)].join(',')}]`,
     };
 
-    this.props.onClick(car_func_types_groups !== ''
-      ? requestBody
-      : omit(requestBody, 'car_func_types_groups'),
-    );
+    const requestBody = getRequestBody({
+      state: initialState,
+      carTypeGroups: car_func_types_groups,
+    });
+
+    this.props.onClick(requestBody);
   }
   render() {
+    const { readOnly } = this.props;
     const {
       date_start,
       date_end,
@@ -122,13 +139,14 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
               onChange={this.handleGeoObjectChange}
               bindOnChange={'geozone_type'}
               clearable={false}
+              disabled={readOnly}
             />
           </Col>
           <Col md={2}>
             <Field type="select"
               label="Элемент"
               options={GEOZONE_ELEMENTS[geozone_type]}
-              disabled={isDtGeozone}
+              disabled={isDtGeozone || readOnly}
               value={element_type}
               onChange={this.props.handleChange}
               bindOnChange={'element_type'}
@@ -142,6 +160,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
                 date={date_start}
                 onChange={this.props.handleChange}
                 bindOnChange={'date_start'}
+                disabled={readOnly}
               />
             </Div>
             <Div className="inline-block reports-date">
@@ -149,6 +168,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
                 date={date_end}
                 onChange={this.props.handleChange}
                 bindOnChange={'date_end'}
+                disabled={readOnly}
               />
             </Div>
           </Col>
@@ -160,6 +180,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
               value={car_func_types_groups}
               onChange={this.props.handleChange}
               bindOnChange={'car_func_types_groups'}
+              disabled={readOnly}
             />
           </Col>
         </Row>
@@ -167,7 +188,11 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
         <Row style={{ marginTop: 20 }}>
           <Col md={9} />
           <Col md={3}>
-            <Button bsSize="small" onClick={this.handleSubmit}>Сформировать отчет</Button>
+            <Button
+              bsSize="small"
+              onClick={this.handleSubmit}
+              disabled={readOnly}
+            >Сформировать отчет</Button>
           </Col>
         </Row>
       </Div>

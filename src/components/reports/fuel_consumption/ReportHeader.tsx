@@ -64,7 +64,10 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
               />
             </Col>
             <Col md={3}>
-              <Button block hidden={this.props.readOnly} onClick={this.handleSubmit}>Сформировать отчёт</Button>
+              <Button block
+                disabled={this.props.readOnly}
+                onClick={this.handleSubmit}
+              >Сформировать отчёт</Button>
             </Col>
 
           </Row>

@@ -60,12 +60,13 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
 
     if (isDtGeozone) {
       this.props.handleChange('element_type', 'yard');
+      this.props.handleChange('car_func_types_groups', 'all');
     } else {
       this.props.handleChange('element_type', 'roadway');
+      this.props.handleChange('car_func_types_groups', undefined);
     }
 
     this.props.handleChange('geozone_type', value);
-    this.props.handleChange('car_func_types_groups', undefined);
   }
   handleSubmit = () => {
     const {
@@ -83,7 +84,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       date_end: createValidDateTime(date_end),
       geozone_type,
       element_type,
-      car_func_types_groups: `[${[...carIdsArray].join(',')}]`,
+      car_func_types_groups: `[${[...carIdsArray.map(item => `"${item}"`)].join(',')}]`,
     };
 
     this.props.onClick(car_func_types_groups !== ''
@@ -105,7 +106,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     const carTypes = get(this.props.tableMeta.car_func_types, [geozone_type, season]);
 
     const CAR_TYPES = carTypes
-      ? Object.keys(carTypes).map(t => ({ value: `"${t}"`, label: carTypes[t] }))
+      ? Object.keys(carTypes).map(t => ({ value: `${t}`, label: carTypes[t] }))
       : [];
 
     const isDtGeozone = geozone_type === 'dt';

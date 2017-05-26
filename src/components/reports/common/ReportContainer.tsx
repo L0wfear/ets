@@ -154,7 +154,10 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         level: this.props.meta.levels.current.level,
       };
 
-      // Не пишем истрорию при одинаковых запросах.
+      /**
+       * Не пишем историю при одинаковых запросах.
+       * Соотвественно новый запрос на сервер будет игнорирован.
+       */
       if (isEqual(locationQuery, newQuery)) {
         return;
       }
@@ -283,10 +286,15 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     const stateMaker = this.props.headerStateMaker || identity;
     const queryState = stateMaker(this.props.location.query);
 
+    const mergedTableMetaInfo = {
+      ...tableMetaInfo,
+      ...this.props.meta,
+    };
+
     return (
       <div className="ets-page-wrap">
         <Header
-          tableMeta={this.props.tableMetaInfo}
+          tableMeta={mergedTableMetaInfo}
           queryState={queryState}
           onClick={this.handleReportSubmit}
         />

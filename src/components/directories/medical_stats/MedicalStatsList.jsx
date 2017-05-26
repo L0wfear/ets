@@ -16,13 +16,13 @@ import MedicalStatsTable from './MedicalStatsTable.jsx';
 export default class MedicalStatsList extends ElementsList {
 
   state = {
-    mission_date_start_from: getToday0am(),
-    mission_date_end_to: getToday2359(),
+    date_from: getToday0am(),
+    date_to: getToday2359(),
   }
 
   exportPayload = {
-    mission_date_start_from: createValidDateTime(this.state.mission_date_start_from),
-    mission_date_end_to: createValidDateTime(this.state.mission_date_end_to),
+    date_from: createValidDateTime(this.state.date_from),
+    date_to: createValidDateTime(this.state.date_to),
   };
 
   async componentDidMount() {
@@ -32,25 +32,25 @@ export default class MedicalStatsList extends ElementsList {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (this.state.mission_date_start_from !== nextState.mission_date_start_from || this.state.mission_date_end_to !== nextState.mission_date_end_to) {
+    if (this.state.date_from !== nextState.date_from || this.state.date_to !== nextState.date_to) {
       this.exportPayload = {
-        mission_date_start_from: createValidDateTime(nextState.mission_date_start_from),
-        mission_date_end_to: createValidDateTime(nextState.mission_date_end_to),
+        date_from: createValidDateTime(nextState.date_from),
+        date_to: createValidDateTime(nextState.date_to),
       };
       this.context.flux.getActions('objects').getMedicalStats(nextState);
     }
   }
 
   additionalRender() {
-    const { mission_date_start_from, mission_date_end_to } = this.state;
+    const { date_from, date_to } = this.state;
     return (
       <div className="log-interval-picker">
         <div className="inline-block faxogramms-date">
-          <Datepicker date={mission_date_start_from} onChange={v => this.setState({ mission_date_start_from: v })} />
+          <Datepicker date={date_from} onChange={v => this.setState({ date_from: v })} />
         </div>
         <div className="date-divider">—</div>
         <div className="inline-block">
-          <Datepicker date={mission_date_end_to} onChange={v => this.setState({ mission_date_end_to: v })} />
+          <Datepicker date={date_to} onChange={v => this.setState({ date_to: v })} />
         </div>
       </div>
     );

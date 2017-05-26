@@ -198,8 +198,8 @@ export default class ObjectsActions extends Actions {
 
   getMedicalStats(p = {}) {
     const payload = {
-      date_start: createValidDateTime(p.date_start),
-      date_end: createValidDateTime(p.date_end),
+      date_from: createValidDateTime(p.date_from),
+      date_to: createValidDateTime(p.date_to),
     };
     return MedicalStatsService.get(payload);
   }

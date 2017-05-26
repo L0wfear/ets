@@ -31,6 +31,7 @@ const headerStateMaker = queryState => parseSelectListQueryParams(queryState, ['
 
 const reportProps: IReportProps = {
   title: 'Статус по уборке',
+  enumerated: true,
   serviceName,
   reportUrl,
   serviceUrl,

@@ -8,3 +8,6 @@ export const MissionReportsService = ETS_API_FACTORY.createApiServiceAdapter('ca
 export const DailyCleaningReportsServiceCAFAP = ETS_API_FACTORY.createApiServiceAdapter(
   'cleaning_status_cafap_report', {},
 );
+export const CleaningStatusTechOpReportService = ETS_API_FACTORY.createApiServiceAdapter(
+  'cleaning_status_tech_op_report', {},
+);

@@ -2,7 +2,6 @@ import { Actions } from 'flummox';
 import { createValidDateTime } from 'utils/dates';
 import _ from 'lodash';
 import {
-  WeeklyTechnicalOperationCompleteReportsService,
   CoverageReportService,
   AnalyticsService,
   OdhCoverageReportService,
@@ -57,21 +56,6 @@ export default class ReportsActions extends Actions {
     delete payload.coverageReport;
     if (!payload.structure_id) payload.structure_id = null;
     return CoverageReportService.get(payload);
-  }
-
-  getWeeklyTechnicalOperationCompleteReports() {
-    return WeeklyTechnicalOperationCompleteReportsService.get();
-  }
-
-  getWeeklyTechnicalOperationCompleteReportById(id) {
-    return WeeklyTechnicalOperationCompleteReportsService.path(id).get();
-  }
-
-  createWeeklyTechnicalOperationCompleteReport(data) {
-    const payload = _.cloneDeep(data);
-    payload.date_start = createValidDateTime(payload.date_start);
-    payload.date_end = createValidDateTime(payload.date_end);
-    return WeeklyTechnicalOperationCompleteReportsService.post(payload, true, 'json');
   }
 
   getOdhCoverageReport(date_start, date_end) {

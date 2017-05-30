@@ -108,9 +108,6 @@ export default class LoadingStore extends Store {
       companyStructureActions.deleteCompanyElement,
 
       reportsActions.getAnalytics,
-      reportsActions.getWeeklyTechnicalOperationCompleteReports,
-      reportsActions.getWeeklyTechnicalOperationCompleteReportById,
-      reportsActions.createWeeklyTechnicalOperationCompleteReport,
       reportsActions.getCoverageReport,
       reportsActions.getOdhCoverageReport,
       reportsActions.getDtCoverageReport,

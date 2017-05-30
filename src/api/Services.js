@@ -90,7 +90,6 @@ export const MissionLastReportService = ETS_API_FACTORY.createApiServiceAdapter(
 export const AnalyticsService = ETS_API_FACTORY.createApiServiceAdapter('analytical_reports', {});
 export const CarFuncTypeUsageReportService = ETS_API_FACTORY.createApiServiceAdapter('car_usage_by_company', {});
 export const CarFuncTypeUsageDetailReportService = ETS_API_FACTORY.createApiServiceAdapter('car_usage_by_func_type', {});
-export const WeeklyTechnicalOperationCompleteReportsService = ETS_API_FACTORY.createApiServiceAdapter('status_of_technical_operation_execution_weekly_report', {});
 export const CoverageReportService = ETS_API_FACTORY.createApiServiceAdapter('current_coverage_report', {});
 export const OdhCoverageReportService = ETS_API_FACTORY.createApiServiceAdapter('odh_coverage_report', {});
 export const DtCoverageReportService = ETS_API_FACTORY.createApiServiceAdapter('dt_coverage_report', {});

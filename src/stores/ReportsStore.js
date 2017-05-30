@@ -6,8 +6,6 @@ export default class ReportsStore extends Store {
     super();
 
     const reportsActions = flux.getActions('reports');
-    this.register(reportsActions.getWeeklyTechnicalOperationCompleteReports, this.handleGetWeeklyTechnicalOperationCompleteReports);
-    this.register(reportsActions.createWeeklyTechnicalOperationCompleteReport, this.handleGetWeeklyTechnicalOperationCompleteReports);
     this.register(reportsActions.getOdhCoverageReport, this.handleGetOdhCoverageReport);
     this.register(reportsActions.getDtCoverageReport, this.handleGetDtCoverageReport);
     this.register(reportsActions.getTrackEventsReport, this.handleGetTrackEventsReport);
@@ -19,7 +17,6 @@ export default class ReportsStore extends Store {
     this.initialState = {
       carFuncTypeUsageReportsList: [],
       carFuncTypeUsageDetailReportList: [],
-      weeklyTechnicalOperationCompleteReportsList: [],
       odhCoverageReport: [],
       dtCoverageReport: [],
       trackEventsReport: [],
@@ -43,10 +40,6 @@ export default class ReportsStore extends Store {
 
   handleGetCarFuncTypeUsageDetailReport({ result }) {
     this.setState({ carFuncTypeUsageDetailReportList: result.rows });
-  }
-
-  handleGetWeeklyTechnicalOperationCompleteReports(weeklyTechnicalOperationCompleteReports) {
-    this.setState({ weeklyTechnicalOperationCompleteReportsList: weeklyTechnicalOperationCompleteReports.result.rows });
   }
 
   handleGetOdhCoverageReport({ result }) {

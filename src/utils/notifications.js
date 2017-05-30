@@ -64,21 +64,6 @@ export function getReportNotReadyNotification2() {
   };
 }
 
-export function getReportNotReadyNotification3(flux) {
-  return {
-    title: 'Внимание',
-    message: 'Отчет еще не обработан',
-    level: 'info',
-    dismissible: true,
-    position: 'tc',
-    autoDismiss: 5,
-    action: {
-      label: 'Обновить список',
-      callback: () => flux.getActions('reports').getWeeklyTechnicalOperationCompleteReports(),
-    },
-  };
-}
-
 const missionCreateSuccessNotification = {
   title: '',
   message: 'Задание создано успешно',

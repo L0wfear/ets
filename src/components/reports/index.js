@@ -11,7 +11,7 @@ import odh from './ODHReports.jsx';
 import mission from './mission/report.ts';
 import * as route from './route';
 import * as daily from './daily';
-import * as weekly from './weekly';
+import cleaningStatusTechOp from './cleaning_status_tech_op/report.tsx';
 import * as carFuncTypeUsage from './car_func_type_usage';
 import brigadeEfficiency from './brigade_efficiency/report.tsx';
 import employeeEfficiency from './employee_efficiency/report.ts';
@@ -25,7 +25,7 @@ export {
   odh,
   route,
   daily,
-  weekly,
+  cleaningStatusTechOp,
   odhCoverageReport,
   dtCoverageReport,
   carFuncTypeUsage,

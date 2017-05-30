@@ -31,8 +31,7 @@ const reportRoutes = (props) => {
 
       <Route path="daily-cleaning-reports-cafap" component={reports.daily.cleaning.cafap} onEnter={requireAuth} />
 
-      <Route path="weekly-technical-operation-complete-reports" component={reports.weekly.technicalOperationComplete.all} onEnter={requireAuth} />
-      <Route path="weekly-technical-operation-complete-report/:element/:id" component={reports.weekly.technicalOperationComplete.single} onEnter={requireAuth} />
+      <Route path="cleaning-status-tech-op-report" component={reports.cleaningStatusTechOp} onEnter={requireAuth} />
       {/* Отчеты - Задания */}
       <Route path="mission-reports" component={reports.mission} onEnter={requireAuth} />
       {/* Отчет префекта */}

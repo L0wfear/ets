@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { autobind } from 'core-decorators';
 import { TRACK_COLORS } from 'constants/track.js';
-import find from 'lodash/find';
 import groupBy from 'lodash/groupBy';
 import flatten from 'lodash/flatten';
 import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';

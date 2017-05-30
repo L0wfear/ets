@@ -18,6 +18,7 @@ const serviceName = 'DailyCleaningReportsServiceCAFAP';
 
 const schemaMakers = {
   ...commonSchemaMakers,
+  city_name: schema => multiselectFilterSchema(schema),
   geozone_name: schema => multiselectFilterSchema(schema),
   cars_func_type_name: schema => multiselectFilterSchema(schema),
   progress_status: schema => multiselectFilterSchema(schema),

@@ -34,12 +34,11 @@ export const tableMeta = () => ({
       },
     },
     {
-      name: 'allowed',
+      name: 'allowed_name',
       displayName: 'Результат мед.осмотра',
       type: 'text',
       filter: {
         type: 'select',
-        options: Object.keys(allowedDictionary).map(key => ({ label: allowedDictionary[key], value: key })),
       },
     },
     {
@@ -72,7 +71,6 @@ export const tableMeta = () => ({
 const UserActionLogTable = (props) => {
   const renderers = {
     employee_birthday: ({ data }) => <DateFormatter date={data} />,
-    allowed: ({ data }) => <span>{allowedDictionary[Number(data)]}</span>,
   };
 
   return (

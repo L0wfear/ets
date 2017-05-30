@@ -71,6 +71,7 @@ export const tableMeta = () => ({
 const UserActionLogTable = (props) => {
   const renderers = {
     employee_birthday: ({ data }) => <DateFormatter date={data} />,
+    sign_datetime: ({ data }) => <DateFormatter date={data} time />,
   };
 
   return (

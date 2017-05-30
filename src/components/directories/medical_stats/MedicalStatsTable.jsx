@@ -2,16 +2,13 @@ import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 
-export const tableMeta = props => ({
+const allowedDictionary = {
+  0: 'Не допущен',
+  1: 'Допущен',
+};
+
+export const tableMeta = () => ({
   cols: [
-    {
-      name: 'id',
-      displayName: '№п / п',
-      type: 'text',
-      filter: {
-        type: 'string',
-      },
-    },
     {
       name: 'employee_name',
       displayName: 'ФИО сотрудника',
@@ -41,7 +38,8 @@ export const tableMeta = props => ({
       displayName: 'Результат мед.осмотра',
       type: 'text',
       filter: {
-        type: 'multiselect',
+        type: 'select',
+        options: Object.keys(allowedDictionary).map(key => ({ label: allowedDictionary[key], value: key })),
       },
     },
     {
@@ -74,17 +72,18 @@ export const tableMeta = props => ({
 const UserActionLogTable = (props) => {
   const renderers = {
     employee_birthday: ({ data }) => <DateFormatter date={data} />,
-    sign_datetime: ({ data }) => <DateFormatter date={data} time />,
+    allowed: ({ data }) => <span>{allowedDictionary[Number(data)]}</span>,
   };
 
   return (
     <Table
       title="Статистика прохождения мед. осмотров"
-      initialSortAscending={false}
       results={props.data}
       tableMeta={tableMeta(props)}
       renderers={renderers}
-      enumerated={false}
+      rowNumberLabel="№ п/п"
+      rowNumberClassName="width60"
+      enumerated
       {...props}
     />
   );

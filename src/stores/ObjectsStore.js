@@ -209,7 +209,7 @@ export default class ObjectsStore extends Store {
   }
 
   handleGetMedicalStats(medicalStatsList) {
-    this.setState({ medicalStatsList: medicalStatsList.result });
+    this.setState({ medicalStatsList: medicalStatsList.result.rows });
   }
 
 }

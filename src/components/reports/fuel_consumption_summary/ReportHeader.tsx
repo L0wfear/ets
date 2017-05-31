@@ -20,22 +20,11 @@ interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeade
 }
 
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
-  getState() {
+  handleSubmit = () => {
     const {
       date_from = getToday9am(),
       date_to = getTomorrow9am(),
     } = this.props;
-
-    return {
-      date_from,
-      date_to,
-    };
-  }
-  handleSubmit = () => {
-    const {
-      date_from,
-      date_to,
-    } = this.getState();
 
     this.props.onClick({
       date_from: createValidDate(date_from),
@@ -43,12 +32,11 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     });
   }
   render() {
-    const { readOnly } = this.props;
-
     const {
-      date_from,
-      date_to,
-    } = this.getState();
+      readOnly,
+      date_from = getToday9am(),
+      date_to = getTomorrow9am(),
+    } = this.props;
 
     return (
       <Row className="report-page__header">

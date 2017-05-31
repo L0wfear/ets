@@ -14,6 +14,7 @@ const reportRoutes = (props) => {
       <Route path="coverage-report" component={reports.coverage} onEnter={requireAuth} />
 
       <Route path="fuel-consumption-report" component={reports.fuelConsumption} onEnter={requireAuth} />
+      <Route path="fuel-consumption-summary-report" component={reports.fuelConsumptionSummary} onEnter={requireAuth} />
 
       <Route path="analytics" component={reports.analytics} onEnter={requireAuth} />
       <Route path="car-usage-report" component={reports.carUsage} onEnter={requireAuth} />

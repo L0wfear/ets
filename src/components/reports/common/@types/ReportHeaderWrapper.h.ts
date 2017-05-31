@@ -1,6 +1,7 @@
-export interface IStateReportHeaderWrapper {
-  [fieldName: string]: any;
-}
+import { IReportMeta } from 'components/reports/redux/modules/@types/report.h';
+import IStringKeyHashTable = ETSCore.Types.IStringKeyHashTable;
+
+export interface IStateReportHeaderWrapper extends IStringKeyHashTable<any> {}
 
 // export interface IStateReportHeaderWrapper {
 //   headerState: IHeaderState;
@@ -11,6 +12,8 @@ export interface IPropsReportHeaderWrapper {
 }
 
 export interface IPropsReportHeaderCommon {
+  tableMeta: IReportMeta;
   onClick(headerState: object): void;
-  readOnly: boolean;
+  queryState: IStringKeyHashTable<string>;
+  readOnly?: boolean;
 }

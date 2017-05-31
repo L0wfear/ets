@@ -30,6 +30,9 @@ export const commonSchemaMakers: ICommonSchemaMakers = {
   company_name: schema => multiselectFilterSchema(schema),
 };
 
+/**
+ * Преобразовываем параметры урла в валидные для селект-листа данные.
+ */
 export function parseSelectListQueryParams(query: any, params: Array<string> = []): any {
   if (Object.keys(query).length === 0) {
     return query;

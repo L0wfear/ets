@@ -2,11 +2,18 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button, Glyphicon } from 'react-bootstrap';
-import { omit, isEqual, difference, identity, intersection, keys, pick } from 'lodash';
+import {
+  omit,
+  isEqual,
+  difference,
+  identity,
+  pick,
+} from 'lodash';
 
 import { IDataTableColSchema, IDataTableSelectedRow } from 'components/ui/table/@types/DataTable/schema.h';
 import { IPropsReportContainer, IStateReportContainer } from './@types/ReportContainer.h';
-import { ReportDataPromise } from 'components/reports/redux/modules/@types/report.h';
+import { IPropsReportHeaderCommon } from './@types/ReportHeaderWrapper.h';
+import { ReportDataPromise, IReportTableMeta } from 'components/reports/redux/modules/@types/report.h';
 
 import Preloader from 'components/ui/Preloader.jsx';
 import { getServerErrorNotification, noItemsInfoNotification } from 'utils/notifications';
@@ -66,9 +73,9 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     return new Promise(async (resolve, reject) => {
       try {
         const data = await this.props.getReportData(this.props.serviceName, query);
+        const hasSummaryLevel = 'summary' in data.result.meta.levels;
 
-        if (!noItemsInfoNotification(data.result.rows)) {
-          const hasSummaryLevel = 'summary' in data.result.meta.levels;
+        if (data.result.rows.length > 0) {
 
           if (hasSummaryLevel) {
             const summaryQuery = {
@@ -83,6 +90,12 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
             );
           }
         }
+
+        if (data.result.rows.length === 0) {
+          noItemsInfoNotification();
+        }
+
+
         resolve(data);
       } catch (error) {
         global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${error}`));
@@ -101,11 +114,14 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
   }
 
   handleReportSubmit = async (headerData: object) => {
+    const locationQuery = this.props.location.query;
+
     try {
       // Если урл пустой, то делаем запрос на основе параметров из хедера.
-      if (Object.keys(this.props.location.query).length === 0) {
+      if (Object.keys(locationQuery).length === 0) {
         const data = await this.getReportData(headerData);
-        if (noItemsInfoNotification(data.result.rows)) {
+
+        if (data.result.rows.length === 0) {
           return;
         }
 
@@ -130,25 +146,23 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       }
 
       /**
-       * Необходимо взять именно пересечение полей объектов,
-       * чтобы не параметры урла фомировались именно из состояния хедера отчёта.
+       * Если урл не пустой, то берём из него только мета-информацию.
        */
-      const mergedQuery = {
-        ...this.props.location.query,
+      const newQuery = {
         ...headerData,
+        ...pick(locationQuery, this.props.meta.levels.current.filter),
+        level: this.props.meta.levels.current.level,
       };
 
-      const query = pick(mergedQuery, intersection(
-        keys(this.props.location.query),
-        keys(headerData),
-      ));
-
-      // Не пишем истрорию при одинаковых запросах.
-      if (isEqual(this.props.location.query, query)) {
+      /**
+       * Не пишем историю при одинаковых запросах.
+       * Соотвественно новый запрос на сервер будет игнорирован.
+       */
+      if (isEqual(locationQuery, newQuery)) {
         return;
       }
 
-      this.props.history.pushState(null, this.props.reportUrl, query);
+      this.props.history.pushState(null, this.props.reportUrl, newQuery);
     } catch (error) {
       console.error(error);
       global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${error}`));
@@ -202,8 +216,8 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     this.props.export(this.props.location.query);
   }
 
-  makeTableSchema(schemaMakers = {}, tableMetaInfo) {
-    const cols = tableMetaInfo.map(field => {
+  makeTableSchema(schemaMakers = {}, tableMetaInfo: IReportTableMeta) {
+    const cols = tableMetaInfo.fields.map(field => {
       const fieldName = Object.keys(field)[0];
       const fieldValue = field[fieldName];
 
@@ -230,10 +244,10 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       summaryTableMetaInfo,
     } = this.props;
 
-    const Header = this.props.headerComponent;
+    const Header: React.ComponentClass<IPropsReportHeaderCommon> = this.props.headerComponent;
 
     const tableMeta = this.makeTableSchema(schemaMakers, tableMetaInfo);
-    const summaryTableMeta = this.makeTableSchema({}, summaryTableMetaInfo);
+    const summaryTableMeta = this.makeTableSchema({}, { fields: summaryTableMetaInfo });
 
     const moveUpIsPermitted = 'higher' in this.props.meta.levels;
     const isListEmpty = this.props.list.length === 0;
@@ -247,7 +261,10 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       <Button bsSize="small" onClick={this.handleMoveUp}>На уровень выше</Button>
     );
 
-    const isSummaryEnable = 'summary' in this.props.meta.levels && this.props.summaryList.length > 0;
+    const isSummaryEnable = (
+      'summary' in this.props.meta.levels &&
+      this.props.summaryList.length > 0
+    );
 
     const summaryTable = (isSummaryEnable &&
       <Table
@@ -262,14 +279,25 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       />
     );
 
+    /**
+     * Через специальный для каждого хедера колбэк обрабатываются параметры урла,
+     * которые должны быть в специальном для каждого элемента ввода формате.
+     */
     const stateMaker = this.props.headerStateMaker || identity;
     const queryState = stateMaker(this.props.location.query);
+
+    const mergedTableMetaInfo = {
+      ...tableMetaInfo,
+      ...this.props.meta,
+    };
 
     return (
       <div className="ets-page-wrap">
         <Header
+          tableMeta={mergedTableMetaInfo}
           queryState={queryState}
           onClick={this.handleReportSubmit}
+          readOnly={moveUpIsPermitted}
         />
         <Table
           title={this.props.title}
@@ -280,6 +308,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
           enumerated={enumerated}
           enableSort={enableSort}
           filterResetting={this.state.filterResetting}
+          {...this.props.tableProps}
         >
           <Button
             bsSize="small"

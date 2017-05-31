@@ -7,6 +7,7 @@ export interface IReportProps {
   serviceName: string;
   serviceUrl: string;
   reportUrl: string;
+  tableProps?: any;
   enumerated?: boolean;
   enableSort?: boolean;
   headerComponent: any;

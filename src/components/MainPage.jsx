@@ -148,6 +148,8 @@ export default class MainPage extends React.Component {
                 <MenuItem permissions={['odh_norm_data_summer.list']} active={path === '/odh-norm-data-summer'} href="#/odh-norm-data-summer">Показатели норм по содержанию ОДХ (лето)</MenuItem>
                 <MenuItem permissions={['efficiency.list']} active={path === '/efficiency'} href="#/efficiency">Показатели для расчета эффективности</MenuItem>
               </NavDropdown>
+              <MenuItem permissions={['medical_stats.list']} divider />
+              <MenuItem permissions={['medical_stats.list']} active={path === '/medical-stats'} href="#/medical-stats">Статистика прохождения мед. осмотров</MenuItem>
               <MenuItem permissions={['user_action_log.list']} divider />
               <MenuItem permissions={['user_action_log.list']} active={path === '/user-action-log'} href="#/user-action-log">Журнал действий пользователя</MenuItem>
               {/* <MenuItem active={path === '/organizations'} href="#/organizations">Справочник организаций</MenuItem>*/}
@@ -157,16 +159,17 @@ export default class MainPage extends React.Component {
               <NavDropdown title="Оперативные отчеты" id="nav-dropdown-3-1">
                 <MenuItem active={path === '/route-reports'} href="#/route-reports">Покрытие ОДХ маршрутами</MenuItem>
                 <MenuItem active={path === '/mission-reports'} href="#/mission-reports">Прохождение заданий</MenuItem>
-                <MenuItem active={path === '/car_func_type_usage_reports'} href="#/car_func_type_usage_reports">Статистика выхода техники</MenuItem>
+                <MenuItem active={path === '/car-usage-report'} href="#/car-usage-report">Статистика выхода техники</MenuItem>
                 <MenuItem active={path === '/brigade-efficiency-report'} href="#/brigade-efficiency-report">Работа бригад по ручной уборке</MenuItem>
                 <MenuItem active={path === '/employee-efficiency-report'} href="#/employee-efficiency-report">Работа сотрудников по ручной уборке</MenuItem>
               </NavDropdown>
               <NavDropdown title="Регламентированные отчеты" id="nav-dropdown-3-2">
                 <MenuItem active={path === '/fuel-consumption-report'} href="#/fuel-consumption-report">Расход топлива</MenuItem>
+                <MenuItem active={path === '/fuel-consumption-summary-report'} href="#/fuel-consumption-summary-report">Сводный отчет расхода топлива</MenuItem>
                 <MenuItem active={path === '/track-events-reports'} href="#/track-events-reports">Возможные сливы топлива</MenuItem>
                 <MenuItem active={path === '/daily-cleaning-reports-ets'} href="#/daily-cleaning-reports-ets">Статус по уборке</MenuItem>
                 <MenuItem active={path === '/daily-cleaning-reports-cafap'} href="#/daily-cleaning-reports-cafap">Статус по уборке (ЦАФАП)</MenuItem>
-                <MenuItem active={path === '/weekly-technical-operation-complete-reports'} href="#/weekly-technical-operation-complete-reports">Статус по выполнению технологических операций</MenuItem>
+                <MenuItem active={path === '/cleaning-status-tech-op-report'} href="#/cleaning-status-tech-op-report">Статус по выполнению технологических операций</MenuItem>
               </NavDropdown>
               <NavDropdown title="Графические отчеты" id="nav-dropdown-3-3">
                 <MenuItem active={path === '/coverage-report'} href="#/coverage-report">

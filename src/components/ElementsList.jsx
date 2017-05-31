@@ -254,8 +254,10 @@ class ElementsList extends React.Component {
       );
     }
     if (this.props.exportable) {
+      const isEmptyList = this.props[this.mainListName] && this.props[this.mainListName].length === 0;
       buttons.push(
         <Button
+          disabled={isEmptyList}
           key={buttons.length}
           bsSize="small"
           onClick={() => this.props.export(this.exportPayload, this.exportUseRouteParams)}

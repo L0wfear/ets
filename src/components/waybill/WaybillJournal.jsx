@@ -55,21 +55,25 @@ export default class WaybillJournal extends CheckableElementsList {
       nextState.sortBy !== this.state.sortBy ||
       nextState.filter !== this.state.filter
     ) {
-      const pageOffset = nextState.page * MAX_ITEMS_PER_PAGE;
-      const waybills = await this.context.flux.getActions('waybills').getWaybills(MAX_ITEMS_PER_PAGE, pageOffset, nextState.sortBy, nextState.filter);
-
-      const { total_count } = waybills;
-      const resultCount = waybills.result.length;
-
-      if (resultCount === 0 && total_count > 0) {
-        const offset = (Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1) * MAX_ITEMS_PER_PAGE;
-        this.context.flux.getActions('waybills').getWaybills(MAX_ITEMS_PER_PAGE, offset, nextState.sortBy, nextState.filter);
-      }
+      this.updateList(nextState);
     }
   }
 
   removeElementCallback() {
     return this.context.flux.getActions('waybills').getWaybills(MAX_ITEMS_PER_PAGE, 0, this.state.sortBy, this.state.filter);
+  }
+
+  async updateList(state) {
+    const pageOffset = state.page * MAX_ITEMS_PER_PAGE;
+    const waybills = await this.context.flux.getActions('waybills').getWaybills(MAX_ITEMS_PER_PAGE, pageOffset, state.sortBy, state.filter);
+
+    const { total_count } = waybills;
+    const resultCount = waybills.result.length;
+
+    if (resultCount === 0 && total_count > 0) {
+      const offset = (Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1) * MAX_ITEMS_PER_PAGE;
+      this.context.flux.getActions('waybills').getWaybills(MAX_ITEMS_PER_PAGE, offset, state.sortBy, state.filter);
+    }
   }
 
   showPrintForm(printNumber) {
@@ -80,7 +84,13 @@ export default class WaybillJournal extends CheckableElementsList {
     const { structures } = this.context.flux.getStore('session').getCurrentUser();
     const changeSort = (field, direction) => this.setState({ sortBy: `${field}:${direction ? 'asc' : 'desc'}` });
     const changeFilter = filter => this.setState({ filter });
-    return { structures, changeSort, changeFilter, filterValues: this.state.filter };
+    return {
+      structures,
+      changeSort,
+      changeFilter,
+      filterValues: this.state.filter,
+      rowNumberOffset: this.state.page * MAX_ITEMS_PER_PAGE,
+    };
   }
 
   /**
@@ -124,8 +134,7 @@ export default class WaybillJournal extends CheckableElementsList {
   }
 
   formCallback() {
-    const { page, sortBy, filter } = this.state;
-    this.context.flux.getActions('waybills').getWaybills(MAX_ITEMS_PER_PAGE, page * MAX_ITEMS_PER_PAGE, sortBy, filter);
+    this.updateList(this.state);
   }
 
   additionalRender() {

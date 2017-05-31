@@ -11,6 +11,7 @@ import DivForEnhance from 'components/ui/Div.jsx';
 import {
   isNotNull,
   isEmpty,
+  isNotEqualAnd,
   hasOdometer,
   isThreeDigitGovNumber,
   isFourDigitGovNumber,
@@ -58,8 +59,7 @@ const getTrailers = structure_id => flow(
   vehicleMapper,
 );
 
-
-const isNotEmpty = value => ![undefined, null, ''].includes(value);
+const isNotEmpty = value => isNotEqualAnd([undefined, null, ''], value);
 const driverHasLicense = ({ drivers_license }) => isNotEmpty(drivers_license);
 const driverHasSpecialLicense = ({ special_license }) => isNotEmpty(special_license);
 
@@ -370,17 +370,22 @@ class WaybillForm extends Form {
   }
 
   handleMissionsChange(v) {
-    const f = this.props.formState;
-    const data = !isEmpty(v) ? v.split(',').map(d => parseInt(d, 10)) : [];
-    let shouldBeChanged = true;
-    if (f.status === 'active') {
-      _.each(f.mission_id_list, (id) => {
-        if (data.indexOf(id) === -1) {
-          shouldBeChanged = false;
-        }
-      });
-    }
-    this.handleChange('mission_id_list', shouldBeChanged ? data : f.mission_id_list);
+    const { formState } = this.props;
+    const newFormData = !isEmpty(v) ? v.split(',').map(d => parseInt(d, 10)) : [];
+
+    const changer = flow(
+      ({ state, status, newDataLength }) => status === 'active' ? newDataLength >= 1 : state,
+      ({ state, canDelete }) => state && canDelete,
+    );
+
+    const shouldBeChanged = changer({
+      state: true,
+      status: formState.status,
+      newDataLength: newFormData.length,
+      canDelete: formState.can_delete_missions,
+    });
+
+    this.handleChange('mission_id_list', shouldBeChanged ? newFormData : formState.mission_id_list);
   }
 
   handleStructureIdChange(v) {

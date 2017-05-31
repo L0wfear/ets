@@ -5,14 +5,15 @@
 import analytics from './Analytics.jsx';
 import coverage from './CoverageReport.jsx';
 import fuelConsumption from './fuel_consumption/report.ts';
+import fuelConsumptionSummary from './fuel_consumption_summary/report.ts';
 import odhCoverageReport from './odh_coverage/OdhCoverageReport.jsx';
 import dtCoverageReport from './dt_coverage/DtCoverageReport.jsx';
 import odh from './ODHReports.jsx';
-import * as mission from './mission';
+import mission from './mission/report.ts';
 import * as route from './route';
 import * as daily from './daily';
-import * as weekly from './weekly';
-import * as carFuncTypeUsage from './car_func_type_usage';
+import cleaningStatusTechOp from './cleaning_status_tech_op/report.tsx';
+import carUsage from './car_usage/report.ts';
 import brigadeEfficiency from './brigade_efficiency/report.tsx';
 import employeeEfficiency from './employee_efficiency/report.ts';
 import * as trackEvents from './track_events';
@@ -21,14 +22,15 @@ export {
   analytics,
   coverage,
   fuelConsumption,
+  fuelConsumptionSummary,
   mission,
   odh,
   route,
   daily,
-  weekly,
+  cleaningStatusTechOp,
   odhCoverageReport,
   dtCoverageReport,
-  carFuncTypeUsage,
+  carUsage,
   brigadeEfficiency,
   employeeEfficiency,
   trackEvents,

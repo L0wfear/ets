@@ -3,6 +3,9 @@
  * @module utils/functions
  */
 
+import includes from 'lodash/includes';
+import every from 'lodash/every';
+
 /**
  * Стандартная проверка на null/undefined в js
  * @param {any} value
@@ -123,3 +126,31 @@ const isFourDigitGovNumberRegexp = /\d{4}/;
 
 export const isThreeDigitGovNumber = number => !isFourDigitGovNumberRegexp.test(number);
 export const isFourDigitGovNumber = number => isFourDigitGovNumberRegexp.test(number);
+
+
+/**
+ * Example:
+ * const a = 1, b = 2, c = 3;
+ * a === 1 || b === 1 || c === 1 // true
+ * isEqualOr([1, 2, 3], 1) // true
+ */
+export const isEqualOr = (values = [], matchValue) => includes(values, matchValue);
+
+/**
+ * Example:
+ * a === 1 && b === 1 && c === 1 // false
+ * isEqualAnd([1, 2, 3], 1) // false
+ */
+export const isEqualAnd = (values = [], matchValue) => every(values, matchValue);
+/**
+ * Example:
+ * a !== 1 || b !== 1 || c !== 1 // true
+ * isNotEqualOr([1, 2, 3], 1) // true
+ */
+export const isNotEqualOr = (values = [], matchValue) => !isEqualAnd(values, matchValue);
+/**
+ * Example:
+ * a !== 1 && b !== 1 && c !== 1 // false
+ * isNotEqualAnd([1, 2, 3], 1) // false
+ */
+export const isNotEqualAnd = (values = [], matchValue) => !isEqualOr(values, matchValue);

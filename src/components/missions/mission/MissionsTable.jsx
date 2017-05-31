@@ -139,6 +139,7 @@ const getTableMeta = (props) => {
 
 export default (props) => {
   const renderers = {
+    rowNumber: ({ data }) => <span>{props.rowNumberOffset + data}</span>,
     status: ({ data }) => <div>{MISSION_STATUS_LABELS[data]}</div>,
     date_start: ({ data }) => <DateFormatter date={data} time />,
     date_end: ({ data }) => <DateFormatter date={data} time />,
@@ -160,7 +161,7 @@ export default (props) => {
       title="Журнал заданий"
       results={props.data}
       renderers={renderers}
-      enumerated={false}
+      enumerated
       serverPagination
       externalFilter={props.changeFilter}
       externalChangeSort={props.changeSort}

@@ -29,6 +29,7 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
     super.componentDidMount();
     const { flux } = this.context;
     const { payload = {} } = this.props;
+    flux.getActions('technicalOperation').getTechnicalOperations();
     flux.getActions('missions').getDutyMissionTemplates(payload);
     flux.getActions('missions').getMissionSources();
   }
@@ -87,6 +88,14 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
 
   getAdditionalProps() {
     const { structures } = this.context.flux.getStore('session').getCurrentUser();
-    return { structures };
+    const technicalOperationIdsList = this.props.technicalOperationsList.map(item => item.id);
+
+    const dutyMissionTemplatesList = this.props.dutyMissionTemplatesList
+      .filter(mission => technicalOperationIdsList.includes(mission.technical_operation_id));
+
+    return {
+      structures,
+      data: dutyMissionTemplatesList,
+    };
   }
 }

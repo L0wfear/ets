@@ -11,7 +11,7 @@ import MissionsTable from './MissionsTable.jsx';
 import MissionFormWrap from './MissionFormWrap.jsx';
 import MissionRejectForm from './MissionRejectForm.jsx';
 
-const MAX_ITEMS_PER_PAGE = 15;
+export const MAX_ITEMS_PER_PAGE = 15;
 
 @connectToStores(['missions', 'objects', 'employees', 'routes'])
 @exportable({ entity: 'mission' })
@@ -58,24 +58,28 @@ export default class MissionsJournal extends CheckableElementsList {
     flux.getActions('technicalOperation').getTechnicalOperations();
   }
 
-  async componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps, nextState) {
     if (
       nextState.page !== this.state.page ||
       nextState.sortBy !== this.state.sortBy ||
       nextState.filter !== this.state.filter
     ) {
-      this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, nextState.page * MAX_ITEMS_PER_PAGE, nextState.sortBy, nextState.filter);
+      this.refreshList(nextState);
+    }
+  }
 
-      const pageOffset = nextState.page * MAX_ITEMS_PER_PAGE;
-      const missions = await this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, pageOffset, nextState.sortBy, nextState.filter);
+  async refreshList(state = this.state) {
+    this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, state.page * MAX_ITEMS_PER_PAGE, state.sortBy, state.filter);
 
-      const { total_count } = missions.result.meta;
-      const resultCount = missions.result.rows.length;
+    const pageOffset = state.page * MAX_ITEMS_PER_PAGE;
+    const missions = await this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, pageOffset, state.sortBy, state.filter);
 
-      if (resultCount === 0 && total_count > 0) {
-        const offset = (Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1) * MAX_ITEMS_PER_PAGE;
-        this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, offset, nextState.sortBy, nextState.filter);
-      }
+    const { total_count } = missions.result.meta;
+    const resultCount = missions.result.rows.length;
+
+    if (resultCount === 0 && total_count > 0) {
+      const offset = (Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1) * MAX_ITEMS_PER_PAGE;
+      this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, offset, state.sortBy, state.filter);
     }
   }
 
@@ -99,10 +103,11 @@ export default class MissionsJournal extends CheckableElementsList {
     );
   }
 
-  completeMission() {
+  async completeMission() {
     const mission = _.cloneDeep(this.state.selectedElement);
     mission.status = 'complete';
-    this.context.flux.getActions('missions').updateMission(mission);
+    await this.context.flux.getActions('missions').updateMission(mission, false);
+    this.refreshList(this.state);
   }
 
   rejectMission() {
@@ -112,11 +117,12 @@ export default class MissionsJournal extends CheckableElementsList {
   completeCheckedElements() {
     let error = false;
     if (Object.keys(this.state.checkedElements).length !== 0) {
-      _.forEach(this.state.checkedElements, (mission) => {
+      _.forEach(this.state.checkedElements, async (mission) => {
         if (mission.status === 'assigned') {
           const updatedMission = _.cloneDeep(mission);
           updatedMission.status = 'complete';
-          this.context.flux.getActions('missions').updateMission(updatedMission);
+          await this.context.flux.getActions('missions').updateMission(updatedMission, false);
+          this.refreshList(this.state);
         } else error = true;
       });
       this.setState({ checkedElements: {} });
@@ -129,14 +135,15 @@ export default class MissionsJournal extends CheckableElementsList {
   rejectCheckedElements() {
     let error = false;
     if (Object.keys(this.state.checkedElements).length !== 0) {
-      _.forEach(this.state.checkedElements, (mission) => {
+      _.forEach(this.state.checkedElements, async (mission) => {
         if (mission.status === 'assigned') {
           const reason = prompt(`Введите причину для задания №${mission.number}`, '');
           if (reason) {
             const updatedMission = _.cloneDeep(mission);
             updatedMission.status = 'fail';
             updatedMission.comment = reason;
-            this.context.flux.getActions('missions').updateMission(updatedMission);
+            await this.context.flux.getActions('missions').updateMission(updatedMission, false);
+            this.refreshList(this.state);
           }
         } else error = true;
       });
@@ -177,7 +184,7 @@ export default class MissionsJournal extends CheckableElementsList {
 
   onReject(refresh) {
     this.setState({ showMissionRejectForm: false });
-    refresh && this.context.flux.getActions('missions').getMissions();
+    refresh && this.refreshList(this.state);
   }
 
   async mapView(id) {
@@ -206,6 +213,7 @@ export default class MissionsJournal extends CheckableElementsList {
           onFormHide={this.onFormHide}
           showForm={this.state.showForm}
           element={this.state.selectedElement}
+          refreshTableList={this.refreshList}
           {...this.props}
         />
         <MissionRejectForm
@@ -247,6 +255,7 @@ export default class MissionsJournal extends CheckableElementsList {
       changeSort,
       changeFilter,
       filterValues: this.state.filter,
+      rowNumberOffset: this.state.page * MAX_ITEMS_PER_PAGE,
     };
   }
 

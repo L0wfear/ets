@@ -43,6 +43,7 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.deleteMaintenanceRate, this.handleGetMaintenanceRate);
     this.register(objectsActions.getCleanCategories, this.handleGetCleanCategories);
     this.register(objectsActions.getUserActionLog, this.handleGetUserActionLog);
+    this.register(objectsActions.getMedicalStats, this.handleGetMedicalStats);
 
     this.register(companyStructreActions.getCompanyStructure, this.handleGetCompanyStructure);
     this.register(companyStructreActions.getCompanyList, this.handleGetCompanyList);
@@ -77,6 +78,7 @@ export default class ObjectsStore extends Store {
       maintenanceWorkList: [],
       cleaningRateList: [],
       userActionLogList: [],
+      medicalStatsList: [],
 
       appConfig: {},
 
@@ -119,7 +121,7 @@ export default class ObjectsStore extends Store {
     const carsList = cars.result.map((c) => {
       const model = _.find(this.state.modelsList, m => m.id === c.model_id);
       c.model = model ? model.title : 'Н/Д';
-      const type = _.find(this.state.typesList, t => t.id === c.type_id);
+      const type = _.find(this.state.typesList, t => t.asuods_id === c.type_id);
       c.type = type ? type.title : 'Н/Д';
       return c;
     });
@@ -142,7 +144,7 @@ export default class ObjectsStore extends Store {
 
   handleGetTypes({ result }) {
     const typesList = result;
-    const typesIndex = _.keyBy(typesList, 'id');
+    const typesIndex = _.keyBy(typesList, 'asuods_id');
     this.setState({ typesList, typesIndex });
   }
 
@@ -204,6 +206,10 @@ export default class ObjectsStore extends Store {
 
   handleGetUserActionLog(userActionLogList) {
     this.setState({ userActionLogList: userActionLogList.result.rows });
+  }
+
+  handleGetMedicalStats(medicalStatsList) {
+    this.setState({ medicalStatsList: medicalStatsList.result.rows });
   }
 
 }

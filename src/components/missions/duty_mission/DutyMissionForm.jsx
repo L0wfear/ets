@@ -11,9 +11,7 @@ import Div from 'components/ui/Div.jsx';
 import { isEmpty } from 'utils/functions';
 import Form from 'components/compositions/Form.jsx';
 
-const onlyActiveEmployeeNotification = () => {
-  global.NOTIFICATION_SYSTEM.notify('В наряд-задание можно добавить только активного на данный момент времени сотрудника', 'info');
-};
+import { FormTitle, onlyActiveEmployeeNotification } from './utils';
 
 export class DutyMissionForm extends Form {
 
@@ -185,7 +183,12 @@ export class DutyMissionForm extends Form {
     const IS_COMPLETED = state.status && state.status === 'complete';
     const IS_CLOSED = state.status === 'complete' || state.status === 'fail';
 
-    let title = `Наряд-задание № ${state.number || ''}`;
+    let title = (
+      <FormTitle
+        number={state.number || ''}
+        status={state.status}
+      />
+    );
 
     if (IS_CREATING) {
       title = 'Создание наряд-задания';
@@ -408,7 +411,7 @@ export class DutyMissionForm extends Form {
 
         <Modal.Footer>
           <Div className="inline-block" >
-            <Button onClick={this.props.onPrint} disabled={!this.props.canSave || readOnly}>
+            <Button onClick={this.props.onPrint} disabled={!this.props.canSave}>
               <Glyphicon glyph="download-alt" /> {state.status !== 'not_assigned' ? 'Просмотр' : 'Выдать'}</Button>
             <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || readOnly}>{'Сохранить'}</Button>
           </Div>

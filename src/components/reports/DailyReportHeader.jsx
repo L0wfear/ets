@@ -99,7 +99,7 @@ class DailyReportHeader extends Component {
         { value: 'footway', label: 'Тротуар' },
     ]
       : [{ value: 'yard', label: 'Двор' }];
-    const CAR_TYPES = typesList.map(t => ({ value: t.id, label: t.full_name }));
+    const CAR_TYPES = typesList.map(t => ({ value: t.asuods_id, label: t.full_name }));
 
     return (
       <Div>

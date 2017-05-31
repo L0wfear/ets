@@ -54,6 +54,7 @@ export default class DataTable extends React.Component {
       enableSort: PropTypes.bool,
 
       title: PropTypes.string,
+      rowNumberLabel: PropTypes.string,
 
       tableMeta: PropTypes.object,
       filterValues: PropTypes.object,
@@ -259,7 +260,7 @@ export default class DataTable extends React.Component {
   }
 
   initializeMetadata(tableMetaCols = [], renderers = {}) {
-    const { multiSelection, enumerated } = this.props;
+    const { multiSelection, enumerated, rowNumberLabel = '№', rowNumberClassName = 'width30' } = this.props;
     const initialArray = [];
 
     if (multiSelection) {
@@ -278,8 +279,8 @@ export default class DataTable extends React.Component {
     if (enumerated && !this.state.isHierarchical) {
       initialArray.push({
         columnName: 'rowNumber',
-        displayName: '№',
-        cssClassName: 'width30',
+        displayName: rowNumberLabel,
+        cssClassName: rowNumberClassName,
         filter: false,
         sortable: false,
         customComponent: renderers.rowNumber,

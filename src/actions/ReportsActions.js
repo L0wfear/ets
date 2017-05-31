@@ -2,85 +2,14 @@ import { Actions } from 'flummox';
 import { createValidDateTime } from 'utils/dates';
 import _ from 'lodash';
 import {
-  DailyCleaningReportsServiceETS,
-  DailyCleaningReportsServiceCAFAP,
-  WeeklyTechnicalOperationCompleteReportsService,
   CoverageReportService,
   AnalyticsService,
   OdhCoverageReportService,
   DtCoverageReportService,
-  CarFuncTypeUsageReportService,
-  CarFuncTypeUsageDetailReportService,
   TrackEventsReportService,
 } from 'api/Services';
 
 export default class ReportsActions extends Actions {
-
-  // Статистика выхода техники за период
-
-  createCarFuncTypeUsageReport(data) {
-    const payload = _.cloneDeep(data);
-    payload.date_start = createValidDateTime(payload.date_start);
-    payload.date_end = createValidDateTime(payload.date_end);
-    // payload.car_type_id_list = payload.car_type_id_list);
-    return CarFuncTypeUsageReportService.post(payload, true, 'json');
-  }
-
-  getCarFuncTypeUsageReports(data) {
-    const payload = _.cloneDeep(data);
-    payload.date_start = createValidDateTime(payload.date_start);
-    payload.date_end = createValidDateTime(payload.date_end);
-    return CarFuncTypeUsageReportService.get(payload);
-  }
-
-  getCarFuncTypeUsageDetailReport(data) {
-    return CarFuncTypeUsageDetailReportService.get(data);
-  }
-
-  getCarFuncTypeUsageReportById(id) {
-    const payload = {
-      id,
-    };
-
-    return CarFuncTypeUsageReportService.get(payload);
-  }
-
-  // Cleaning - ETS
-
-  createDailyCleaningReportETS(data) {
-    const payload = _.cloneDeep(data);
-    payload.date_start = createValidDateTime(payload.date_start);
-    payload.date_end = createValidDateTime(payload.date_end);
-    // payload.car_type_id_list = payload.car_type_id_list);
-    return DailyCleaningReportsServiceETS.post(payload, true, 'json');
-  }
-
-  getDailyCleaningReportsETS() {
-    return DailyCleaningReportsServiceETS.get();
-  }
-
-  getDailyCleaningReportByIdETS(id) {
-    return DailyCleaningReportsServiceETS.path(id).get();
-  }
-
-  // Cleaning - CAFAP
-
-  createDailyCleaningReportCAFAP(data) {
-    const payload = _.cloneDeep(data);
-    payload.date_start = createValidDateTime(payload.date_start);
-    payload.date_end = createValidDateTime(payload.date_end);
-    // payload.car_type_id_list = payload.car_type_id_list);
-    return DailyCleaningReportsServiceCAFAP.post(payload, true, 'json');
-  }
-
-  getDailyCleaningReportsCAFAP() {
-    return DailyCleaningReportsServiceCAFAP.get();
-  }
-
-  getDailyCleaningReportByIdCAFAP(id) {
-    return DailyCleaningReportsServiceCAFAP.path(id).get();
-  }
-
   getAnalytics(data) {
     const payload = _.cloneDeep(data);
     payload.date_from = createValidDateTime(payload.date_from);
@@ -95,21 +24,6 @@ export default class ReportsActions extends Actions {
     delete payload.coverageReport;
     if (!payload.structure_id) payload.structure_id = null;
     return CoverageReportService.get(payload);
-  }
-
-  getWeeklyTechnicalOperationCompleteReports() {
-    return WeeklyTechnicalOperationCompleteReportsService.get();
-  }
-
-  getWeeklyTechnicalOperationCompleteReportById(id) {
-    return WeeklyTechnicalOperationCompleteReportsService.path(id).get();
-  }
-
-  createWeeklyTechnicalOperationCompleteReport(data) {
-    const payload = _.cloneDeep(data);
-    payload.date_start = createValidDateTime(payload.date_start);
-    payload.date_end = createValidDateTime(payload.date_end);
-    return WeeklyTechnicalOperationCompleteReportsService.post(payload, true, 'json');
   }
 
   getOdhCoverageReport(date_start, date_end) {

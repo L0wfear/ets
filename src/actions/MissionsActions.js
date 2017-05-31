@@ -122,7 +122,7 @@ export default class MissionsActions extends Actions {
     return MissionService.delete(payload, callback, 'json');
   }
 
-  updateMission(mission) {
+  updateMission(mission, autoUpdate = true) {
     const payload = _.cloneDeep(mission);
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
@@ -132,7 +132,7 @@ export default class MissionsActions extends Actions {
     delete payload.route_name;
     delete payload.mission_source_name;
     delete payload.waybill_number;
-    return MissionService.put(payload, true, 'json');
+    return MissionService.put(payload, autoUpdate, 'json');
   }
 
   printMission(data) {

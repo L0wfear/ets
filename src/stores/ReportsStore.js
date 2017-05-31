@@ -6,26 +6,14 @@ export default class ReportsStore extends Store {
     super();
 
     const reportsActions = flux.getActions('reports');
-    this.register(reportsActions.getDailyCleaningReportsETS, this.handleGetDailyCleaningReportsETS);
-    this.register(reportsActions.getDailyCleaningReportsCAFAP, this.handleGetDailyCleaningReportsCAFAP);
-    this.register(reportsActions.createDailyCleaningReportETS, this.handleGetDailyCleaningReportsETS);
-    this.register(reportsActions.createDailyCleaningReportCAFAP, this.handleGetDailyCleaningReportsCAFAP);
-    this.register(reportsActions.getWeeklyTechnicalOperationCompleteReports, this.handleGetWeeklyTechnicalOperationCompleteReports);
-    this.register(reportsActions.createWeeklyTechnicalOperationCompleteReport, this.handleGetWeeklyTechnicalOperationCompleteReports);
     this.register(reportsActions.getOdhCoverageReport, this.handleGetOdhCoverageReport);
     this.register(reportsActions.getDtCoverageReport, this.handleGetDtCoverageReport);
     this.register(reportsActions.getTrackEventsReport, this.handleGetTrackEventsReport);
     this.register(reportsActions.getTrackEventsReports, this.handleGetTrackEventsReports);
-    this.register(reportsActions.getCarFuncTypeUsageReports, this.handleGetCarFuncTypeUsageReports);
-    this.register(reportsActions.getCarFuncTypeUsageDetailReport, this.handleGetCarFuncTypeUsageDetailReport);
+
     this.register(reportsActions.clearStateList, this.handleClearStateList);
 
     this.initialState = {
-      dailyCleaningReportsListETS: [],
-      dailyCleaningReportsListCAFAP: [],
-      carFuncTypeUsageReportsList: [],
-      carFuncTypeUsageDetailReportList: [],
-      weeklyTechnicalOperationCompleteReportsList: [],
       odhCoverageReport: [],
       dtCoverageReport: [],
       trackEventsReport: [],
@@ -41,26 +29,6 @@ export default class ReportsStore extends Store {
 
   handleGetTrackEventsReports({ result }) {
     this.setState({ trackEventsReports: result.rows });
-  }
-
-  handleGetCarFuncTypeUsageReports({ result }) {
-    this.setState({ carFuncTypeUsageReportsList: result.rows });
-  }
-
-  handleGetCarFuncTypeUsageDetailReport({ result }) {
-    this.setState({ carFuncTypeUsageDetailReportList: result.rows });
-  }
-
-  handleGetDailyCleaningReportsETS(dailyCleaningReports) {
-    this.setState({ dailyCleaningReportsListETS: dailyCleaningReports.result.rows });
-  }
-
-  handleGetDailyCleaningReportsCAFAP(dailyCleaningReports) {
-    this.setState({ dailyCleaningReportsListCAFAP: dailyCleaningReports.result.rows });
-  }
-
-  handleGetWeeklyTechnicalOperationCompleteReports(weeklyTechnicalOperationCompleteReports) {
-    this.setState({ weeklyTechnicalOperationCompleteReportsList: weeklyTechnicalOperationCompleteReports.result.rows });
   }
 
   handleGetOdhCoverageReport({ result }) {

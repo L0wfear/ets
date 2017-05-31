@@ -43,7 +43,7 @@ export default class TechnicalOperationForm extends Form {
 
     const WORK_KINDS = workKindsList.map(({ id, name }) => ({ value: id, label: name }));
     const SEASONS = seasonsList.map(({ id, name }) => ({ value: id, label: name }));
-    const CAR_TYPES = typesList.map(({ id, full_name }) => ({ value: id, label: full_name }));
+    const CAR_TYPES = typesList.map(({ asuods_id, full_name }) => ({ value: asuods_id, label: full_name }));
     const TECHNICAL_OPERATION_OBJECTS = technicalOperationsObjectsList.map(({ id, full_name }) => ({ value: id, label: full_name }));
     const NEEDS_BRIGADE_OPTIONS = [{ value: 1, label: 'Да' }, { value: 0, label: 'Нет' }];
     const TECHNICAL_OPERATION_TYPES = technicalOperationsTypesList.map(({ name, key }) => ({ value: key, label: name }));

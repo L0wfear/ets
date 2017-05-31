@@ -63,7 +63,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
         </Col>
         <Col md={4} style={{ marginTop: 28, textAlign: 'right' }}>
           <Button
-            hidden={this.props.readOnly}
+            disabled={this.props.readOnly}
             onClick={this.handleSubmit}
           >Сформировать отчёт</Button>
         </Col>

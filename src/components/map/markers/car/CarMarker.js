@@ -1,5 +1,5 @@
 import { getStatusById } from 'constants/statuses';
-import { swapCoords, wrapCoords } from 'utils/geo';
+import { swapCoords } from 'utils/geo';
 import { getPointStyle } from 'utils/ol';
 import _ from 'lodash';
 import {
@@ -41,6 +41,12 @@ export default class CarMarker extends Marker {
     this.currentSpeed = 0;
     this.currentTime = 0;
     this.new = true;
+
+    this.vectorLayer = new ol.layer.Vector({
+      source: new ol.source.Vector({
+        features: [],
+      }),
+    });
   }
 
   isAnimating() {
@@ -66,11 +72,7 @@ export default class CarMarker extends Marker {
     // });
 
     // TODO сделать константный лейер для карты, а то будет каждый раз создаваться
-    this.vectorLayer = new ol.layer.Vector({
-      source: new ol.source.Vector({
-        features: [],
-      }),
-    });
+
     this.map.addLayer(this.vectorLayer);
 
     const map = this.map;
@@ -106,7 +108,9 @@ export default class CarMarker extends Marker {
     this.currentTime = 0;
     this.new = true;
     this.map.enableInteractions();
+
     if (this.vectorLayer) this.map.removeLayer(this.vectorLayer);
+
     this.setVisible(true);
     this.store.unpauseRendering();
     this.map.unByKey(this.animateEventKey);
@@ -126,6 +130,7 @@ export default class CarMarker extends Marker {
       this.vectorLayer.getSource().addFeature(pausedMarker);
     } else {
       if (this.vectorLayer) this.map.removeLayer(this.vectorLayer);
+
       this.animate();
     }
   }

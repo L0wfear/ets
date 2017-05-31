@@ -1,4 +1,6 @@
 import React from 'react';
+import isEqual from 'lodash/isEqual';
+
 import { getStartOfToday, makeDate, makeTime, secondsToTime } from 'utils/dates';
 import { swapCoords, roundCoordinates } from 'utils/geo';
 import { isEmpty, hexToRgba } from 'utils/functions';
@@ -19,7 +21,16 @@ const COLORS_ZOOM_THRESHOLD = 6;
  * @return color string
  */
 
-export function getTrackColor(speed, maxSpeed, opacity = 1) {
+export function getTrackColor(speed, maxSpeed = 0, opacity = 1) {
+  let result = TRACK_COLORS.green; // green by default
+  if (maxSpeed > 0) {
+    result = TRACK_COLORS.red;
+  }
+
+  return opacity === 1 ? result : hexToRgba(result, opacity);
+}
+
+export function getLegendTrackColor(speed, maxSpeed, opacity = 1) {
   let result = TRACK_COLORS.green; // green by default
 
   if (speed >= 0 && speed <= maxSpeed) {
@@ -103,7 +114,7 @@ export default class Track {
   getLegend() {
     const colors = [];
 
-    let prevColor = getTrackColor(0, this.maxSpeed);
+    let prevColor = getLegendTrackColor(0, this.maxSpeed);
 
     function addColor(color, speed) {
       if (colors.length > 0) {
@@ -118,7 +129,7 @@ export default class Track {
     addColor(prevColor, 0);
 
     for (let i = 0, till = 100; i <= till; i++) {
-      const color = getTrackColor(i, this.maxSpeed);
+      const color = getLegendTrackColor(i, this.maxSpeed);
       if (color !== prevColor) {
         addColor(color, i);
         prevColor = color;
@@ -314,7 +325,7 @@ export default class Track {
   renderInColors() {
     const owner = this.owner;
     const track = this.points;
-    const TRACK_LINE_WIDTH = DRAW_POINTS ? 4 : TRACK_LINE_WIDTH;
+    const LINE_WIDTH = DRAW_POINTS ? 4 : TRACK_LINE_WIDTH;
     const iconSize = 20 * window.devicePixelRatio;
     const ctx = this.ctx;
     const freezed = track.every(p => p.coords_msk[0] === track[0].coords_msk[0] && p.coords_msk[1] === track[0].coords_msk[1]);
@@ -330,14 +341,14 @@ export default class Track {
     const firstPoint = this.map.projectToPixel(track[0].coords_msk);
     let prevCoords = firstPoint;
 
-    ctx.lineWidth = TRACK_LINE_WIDTH;
+    ctx.lineWidth = LINE_WIDTH;
     ctx.lineCap = 'butt';
     ctx.lineJoin = 'round';
 
     ctx.beginPath();
     ctx.moveTo(firstPoint.x, firstPoint.y);
-    console.log(this.maxSpeed)
-    let prevRgbaColor = getTrackColor(track[0].speed_avg, this.maxSpeed, TRACK_LINE_OPACITY);
+
+    let prevRgbaColor = getTrackColor(track[0].speed_avg, track[0].speed_max, TRACK_LINE_OPACITY);
 
     if (this.sensorsState.equipment.length) {
       if (track[0].sensors && track[0].sensors.equipment) {
@@ -354,26 +365,22 @@ export default class Track {
     ctx.strokeStyle = prevRgbaColor;
 
     for (let i = 1, till = track.length - 1; i < till; i++) {
+      const prevPoint = track[i - 1];
       const p = track[i];
+
+      /**
+       * Так как приходят одинаковые по координатам точки, но с разными скоростями,
+       * необходимо пропускать такие точки для корректной отрисовки.
+       */
+      if (isEqual(prevPoint.coords, p.coords)) continue;
+
       const coords = this.map.projectToPixel(p.coords_msk);
       const speed = p.speed_avg;
-      let rgbaColor = getTrackColor(speed, this.maxSpeed, TRACK_LINE_OPACITY);
-      let hexColor = getTrackColor(speed, this.maxSpeed);
-      ctx.globalCompositeOperation = 'destination-over';
+      const maxSpeed = p.speed_max;
+      let rgbaColor = getTrackColor(speed, maxSpeed, TRACK_LINE_OPACITY);
+      let hexColor = getTrackColor(speed, maxSpeed);
 
-      if (this.sensorsState.equipment.length) {
-        if (p.sensors && p.sensors.equipment) {
-          p.sensors.equipment.forEach((s, index) => {
-            if (this.sensorsState.equipment.includes(`${s.id}`)) {
-              rgbaColor = sensorsMapOptions(index).color;
-              hexColor = sensorsMapOptions(index).color;
-            }
-          });
-        } else {
-          rgbaColor = 'rgba(134, 134, 134, 1)';
-          hexColor = '#8b8888';
-        }
-      }
+      ctx.globalCompositeOperation = 'destination-over';
 
       if (this.sensorsState.equipment.length) {
         if (p.sensors && p.sensors.equipment) {
@@ -420,14 +427,14 @@ export default class Track {
         // start new path
         // and reset color && lineWidth
         ctx.strokeStyle = rgbaColor;
-        ctx.lineWidth = TRACK_LINE_WIDTH;
+        ctx.lineWidth = LINE_WIDTH;
         ctx.beginPath();
         ctx.moveTo(coords.x, coords.y);
       } else {
  // если цвет не менялся
 
         ctx.strokeStyle = prevRgbaColor;
-        ctx.lineWidth = TRACK_LINE_WIDTH;
+        ctx.lineWidth = LINE_WIDTH;
         ctx.lineTo(coords.x, coords.y);
 
         // оптимизация, типа
@@ -438,7 +445,7 @@ export default class Track {
           this.drawTrackPoint(coords, hexColor);
 
           ctx.strokeStyle = rgbaColor;
-          ctx.lineWidth = TRACK_LINE_WIDTH;
+          ctx.lineWidth = LINE_WIDTH;
           ctx.beginPath();
           ctx.moveTo(coords.x, coords.y);
         }
@@ -617,6 +624,11 @@ export default class Track {
           speed_max,
           timestamp,
           distance } = trackPoint;
+
+    const maxSpeed = parseInt(speed_max, 10);
+    const speed = parseInt(speed_avg, 10);
+    const nsatCount = parseInt(nsat, 10);
+    const distanceCount = parseInt(distance, 10);
     const [latitude, longitude] = roundCoordinates(trackPoint.coords_msk, 6);
     const gov_number = this.owner.point.car.gov_number;
 
@@ -657,10 +669,10 @@ export default class Track {
           <div class="geo-objects">${objectsString}</div>
           <div class="geo-objects">${missionsString}</div>
           <div class="some-info">
-            <div class="speed">V<sub>ср</sub> = ${speed_avg ? `${speed_avg}км/ч` : 'Нет данных'}<br/>V<sub>макс</sub> = ${speed_max ? `${speed_max}км/ч` : 'Нет данных'}</div>
-            <div class="distance">${distance}м</div>
+            <div class="speed">V<sub>ср</sub> = ${!isNaN(speed) ? `${speed}км/ч` : 'Нет данных'}<br/>V<sub>макс</sub> = ${!isNaN(maxSpeed) ? `${maxSpeed}км/ч` : 'Нет данных'}</div>
+            <div class="distance">${isNaN(distanceCount) ? 'Н/Д' : `${distanceCount}м`}</div>
             <div class="coords">${longitude}<br/>${latitude}</div>
-            <div class="nsat">${nsat} спутников</div>
+            <div class="nsat">${isNaN(nsatCount) ? 0 : nsatCount} спутников</div>
           </div>
         </div>
       `;

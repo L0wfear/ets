@@ -3,6 +3,8 @@ import { reports } from 'api/Services';
 import { hasWarningNotification } from 'utils/notifications';
 import * as ReduxTypes from './@types/report.h';
 
+type IState = ReduxTypes.IReportStateProps;
+
 const SET_INITIAL_STATE = 'SET_INITIAL_STATE';
 const GET_REPORT_DATA = 'GET_REPORT_DATA';
 const GET_REPORT_DATA_START = 'GET_REPORT_DATA_START';
@@ -16,14 +18,16 @@ const metaFetchingStatusReducer = FetchingStatusReducerFactory('reportMeta');
 const dataFetchingStatusReducer = FetchingStatusReducerFactory('reportData');
 
 
-const initialState: ReduxTypes.IReportStateProps = {
+const initialState: IState = {
   list: [],
   meta: {
     levels: {
       current: {},
     },
   },
-  tableMetaInfo: [],
+  tableMetaInfo: {
+    fields: [],
+  },
   summaryList: [],
   summaryMeta: {},
   summaryTableMetaInfo: [],
@@ -53,9 +57,11 @@ export const getTableMetaInfo: ReduxTypes.IGetTableMetaInfo = serviceName => dis
     }
   });
 
-const getTableMetaInfoReducer = (state, { payload }) => ({
+const getTableMetaInfoReducer = (state: IState, { payload }) => ({
   ...state,
-  tableMetaInfo: payload,
+  tableMetaInfo: {
+    ...payload,
+  },
 });
 
 
@@ -86,13 +92,19 @@ export const getReportData: ReduxTypes.IGetReportData = (serviceName, getOpts = 
     }
   });
 
-const getReportDataReducer = (state, { payload }) => {
+const getReportDataReducer = (state: IState, { payload }) => {
   const { data, reportType } = payload;
   const newState = reportType !== 'summary' ? {
     ...state,
-    tableMetaInfo: data.result.meta.fields,
+    tableMetaInfo: {
+      ...state.tableMetaInfo,
+      fields: data.result.meta.fields,
+    },
     meta: data.result.meta,
     list: data.result.rows,
+    summaryList: [],
+    summaryMeta: {},
+    summaryTableMetaInfo: [],
   } : {
     ...state,
     summaryTableMetaInfo: data.result.meta.fields,

@@ -20,9 +20,16 @@ const schemaMakers = {
 
 const renderers = {};
 
+const tableProps = {
+  rowNumberLabel: "№ п/п",
+  rowNumberClassName: "width60",
+};
+
 const reportProps: IReportProps = {
   title: 'Отчёт по топливу',
   serviceName,
+  enumerated: true,
+  tableProps,
   reportUrl,
   serviceUrl,
   headerComponent: ReportHeader,

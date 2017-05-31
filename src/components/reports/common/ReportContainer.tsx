@@ -308,6 +308,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
           enumerated={enumerated}
           enableSort={enableSort}
           filterResetting={this.state.filterResetting}
+          {...this.props.tableProps}
         >
           <Button
             bsSize="small"

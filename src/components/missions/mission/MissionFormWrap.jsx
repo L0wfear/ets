@@ -15,10 +15,7 @@ export default class MissionFormWrap extends FormWrap {
     super(props);
 
     this.schema = missionSchema;
-    this.createAction = formState =>
-       context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill)
-    ;
-    this.updateAction = context.flux.getActions('missions').updateMission;
+    this.createAction = formState => context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill);
   }
 
   componentWillReceiveProps(props) {
@@ -34,6 +31,21 @@ export default class MissionFormWrap extends FormWrap {
         formErrors,
       });
     }
+  }
+  /**
+   * @override
+   * @param {*} formState
+   */
+  updateAction(formState) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        await this.context.flux.getActions('missions').updateMission(formState, false);
+        await this.props.refreshTableList();
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
   }
 
   validate(formState, errors) {
@@ -63,7 +75,7 @@ export default class MissionFormWrap extends FormWrap {
     global.map.once('postcompose', async (event) => {
       const routeImageBase64Data = await resizeBase64(event.context.canvas.toDataURL('image/png'));
       data.image = routeImageBase64Data;
-      console.log(data);
+
       flux.getActions('missions').printMission(data).then(({ blob }) => {
         print_form_type === 1 ? saveData(blob, `Задание №${f.number}.pdf`) : printData(blob);
       });

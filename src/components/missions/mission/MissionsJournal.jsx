@@ -11,7 +11,7 @@ import MissionsTable from './MissionsTable.jsx';
 import MissionFormWrap from './MissionFormWrap.jsx';
 import MissionRejectForm from './MissionRejectForm.jsx';
 
-const MAX_ITEMS_PER_PAGE = 15;
+export const MAX_ITEMS_PER_PAGE = 15;
 
 @connectToStores(['missions', 'objects', 'employees', 'routes'])
 @exportable({ entity: 'mission' })
@@ -64,11 +64,11 @@ export default class MissionsJournal extends CheckableElementsList {
       nextState.sortBy !== this.state.sortBy ||
       nextState.filter !== this.state.filter
     ) {
-      this.updateList(nextState);
+      this.refreshList(nextState);
     }
   }
 
-  async updateList(state) {
+  async refreshList(state = this.state) {
     this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, state.page * MAX_ITEMS_PER_PAGE, state.sortBy, state.filter);
 
     const pageOffset = state.page * MAX_ITEMS_PER_PAGE;
@@ -107,7 +107,7 @@ export default class MissionsJournal extends CheckableElementsList {
     const mission = _.cloneDeep(this.state.selectedElement);
     mission.status = 'complete';
     await this.context.flux.getActions('missions').updateMission(mission, false);
-    this.updateList(this.state);
+    this.refreshList(this.state);
   }
 
   rejectMission() {
@@ -122,7 +122,7 @@ export default class MissionsJournal extends CheckableElementsList {
           const updatedMission = _.cloneDeep(mission);
           updatedMission.status = 'complete';
           await this.context.flux.getActions('missions').updateMission(updatedMission, false);
-          this.updateList(this.state);
+          this.refreshList(this.state);
         } else error = true;
       });
       this.setState({ checkedElements: {} });
@@ -143,7 +143,7 @@ export default class MissionsJournal extends CheckableElementsList {
             updatedMission.status = 'fail';
             updatedMission.comment = reason;
             await this.context.flux.getActions('missions').updateMission(updatedMission, false);
-            this.updateList(this.state);
+            this.refreshList(this.state);
           }
         } else error = true;
       });
@@ -184,7 +184,7 @@ export default class MissionsJournal extends CheckableElementsList {
 
   onReject(refresh) {
     this.setState({ showMissionRejectForm: false });
-    refresh && this.updateList(this.state);
+    refresh && this.refreshList(this.state);
   }
 
   async mapView(id) {
@@ -213,6 +213,7 @@ export default class MissionsJournal extends CheckableElementsList {
           onFormHide={this.onFormHide}
           showForm={this.state.showForm}
           element={this.state.selectedElement}
+          refreshTableList={this.refreshList}
           {...this.props}
         />
         <MissionRejectForm

@@ -30,6 +30,20 @@ export function getTrackColor(speed, maxSpeed = 0, opacity = 1) {
   return opacity === 1 ? result : hexToRgba(result, opacity);
 }
 
+export function getLegendTrackColor(speed, maxSpeed, opacity = 1) {
+  let result = TRACK_COLORS.green; // green by default
+
+  if (speed >= 0 && speed <= maxSpeed) {
+    result = TRACK_COLORS.green;
+  }
+
+  if (speed > maxSpeed) {
+    result = TRACK_COLORS.red;
+  }
+
+  return opacity === 1 ? result : hexToRgba(result, opacity);
+}
+
 /**
  * Трек на карте
  */
@@ -100,7 +114,7 @@ export default class Track {
   getLegend() {
     const colors = [];
 
-    let prevColor = getTrackColor(0, this.maxSpeed);
+    let prevColor = getLegendTrackColor(0, this.maxSpeed);
 
     function addColor(color, speed) {
       if (colors.length > 0) {
@@ -115,7 +129,7 @@ export default class Track {
     addColor(prevColor, 0);
 
     for (let i = 0, till = 100; i <= till; i++) {
-      const color = getTrackColor(i, this.maxSpeed);
+      const color = getLegendTrackColor(i, this.maxSpeed);
       if (color !== prevColor) {
         addColor(color, i);
         prevColor = color;

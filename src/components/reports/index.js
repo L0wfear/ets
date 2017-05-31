@@ -12,7 +12,7 @@ import mission from './mission/report.ts';
 import * as route from './route';
 import * as daily from './daily';
 import cleaningStatusTechOp from './cleaning_status_tech_op/report.tsx';
-import * as carFuncTypeUsage from './car_func_type_usage';
+import carUsage from './car_usage/report.ts';
 import brigadeEfficiency from './brigade_efficiency/report.tsx';
 import employeeEfficiency from './employee_efficiency/report.ts';
 import * as trackEvents from './track_events';
@@ -28,7 +28,7 @@ export {
   cleaningStatusTechOp,
   odhCoverageReport,
   dtCoverageReport,
-  carFuncTypeUsage,
+  carUsage,
   brigadeEfficiency,
   employeeEfficiency,
   trackEvents,

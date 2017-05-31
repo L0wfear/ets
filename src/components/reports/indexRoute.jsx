@@ -16,8 +16,7 @@ const reportRoutes = (props) => {
       <Route path="fuel-consumption-report" component={reports.fuelConsumption} onEnter={requireAuth} />
 
       <Route path="analytics" component={reports.analytics} onEnter={requireAuth} />
-      <Route path="car_func_type_usage_reports" component={reports.carFuncTypeUsage.all} onEnter={requireAuth} />
-      <Route path="car_func_type_usage_report" component={reports.carFuncTypeUsage.single} onEnter={requireAuth} />
+      <Route path="car-usage-report" component={reports.carUsage} onEnter={requireAuth} />
 
       <Redirect from="track-events-reports" to="track-events-reports/level/1" />
       <Route path="track-events-reports/level/1" component={reports.trackEvents.firstLevel} onEnter={requireAuth}>

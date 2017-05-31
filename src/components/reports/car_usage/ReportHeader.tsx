@@ -21,7 +21,7 @@ const Field: any = bindable(FieldComponent);
 interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
   date_start: Date;
   date_end: Date;
-  object_type: string;
+  geozone_type: string;
 }
 
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
@@ -29,27 +29,27 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     const {
       date_start = getYesterday9am(),
       date_end = getToday859am(),
-      object_type = 'dt',
+      geozone_type = 'dt',
     } = this.props;
 
     return {
       date_start,
       date_end,
-      object_type,
+      geozone_type,
     };
   }
   handleSubmit = () => {
     const {
       date_start,
       date_end,
-      object_type,
+      geozone_type,
     } = this.getState();
 
 
     this.props.onClick({
       date_start: createValidDateTime(date_start),
       date_end: createValidDateTime(date_end),
-      object_type,
+      geozone_type,
     });
   }
   render() {
@@ -57,7 +57,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     const {
       date_start,
       date_end,
-      object_type,
+      geozone_type,
     } = this.getState();
 
     return (
@@ -68,8 +68,8 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
               type="select"
               label="Объекты"
               options={GEOZONE_OBJECTS}
-              value={object_type}
-              bindOnChange={'object_type'}
+              value={geozone_type}
+              bindOnChange={'geozone_type'}
               onChange={this.props.handleChange}
               clearable={false}
               disabled={readOnly}

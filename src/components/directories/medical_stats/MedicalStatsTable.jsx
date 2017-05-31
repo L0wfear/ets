@@ -2,11 +2,6 @@ import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 
-const allowedDictionary = {
-  0: 'Не допущен',
-  1: 'Допущен',
-};
-
 export const tableMeta = () => ({
   cols: [
     {
@@ -82,6 +77,7 @@ const UserActionLogTable = (props) => {
       renderers={renderers}
       rowNumberLabel="№ п/п"
       rowNumberClassName="width60"
+      initialSort={false}
       enumerated
       {...props}
     />

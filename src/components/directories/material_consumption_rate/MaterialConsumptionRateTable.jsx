@@ -15,32 +15,42 @@ const tableMeta = {
       name: 'consumable_material_name',
       displayName: 'Расходный материал',
       type: 'text',
-      filter: false,
+      filter: {
+        type: 'multiselect',
+      },
     },
     {
       name: 'season_name',
       displayName: 'Сезон',
       type: 'text',
-      filter: false,
+      filter: {
+        type: 'multiselect',
+      },
       cssClassName: 'width80',
     },
     {
       name: 'clean_category_name',
       displayName: 'Категория',
       type: 'text',
-      filter: false,
+      filter: {
+        type: 'multiselect',
+      },
     },
     {
       name: 'clean_subcategory_name',
       displayName: 'Подкатегория',
       type: 'text',
-      filter: false,
+      filter: {
+        type: 'multiselect',
+      },
     },
     {
       name: 'value',
       displayName: 'Норма',
-      type: 'text',
-      filter: false,
+      type: 'number',
+      filter: {
+        type: 'number',
+      },
       cssClassName: 'width60',
     },
   ],

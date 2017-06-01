@@ -57,7 +57,7 @@ export const tableMeta = () => ({
       displayName: 'Дата и время подписи результата мед.осмотра',
       type: 'datetime',
       filter: {
-        type: 'datetime',
+        type: 'date',
       },
     },
   ],

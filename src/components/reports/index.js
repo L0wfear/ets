@@ -13,7 +13,7 @@ import mission from './mission/report.ts';
 import * as route from './route';
 import * as daily from './daily';
 import cleaningStatusTechOp from './cleaning_status_tech_op/report.tsx';
-import carUsage from './car_usage/report.ts';
+import carUsage from './car_usage/report';
 import brigadeEfficiency from './brigade_efficiency/report.tsx';
 import employeeEfficiency from './employee_efficiency/report.ts';
 import * as trackEvents from './track_events';

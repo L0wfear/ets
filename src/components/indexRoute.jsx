@@ -58,6 +58,4 @@ routes.propTypes = {
   flux: React.PropTypes.shape({}),
 };
 
-export {
-  routes,
-};
+export default routes;

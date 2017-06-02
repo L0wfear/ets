@@ -297,7 +297,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
           tableMeta={mergedTableMetaInfo}
           queryState={queryState}
           onClick={this.handleReportSubmit}
-          readOnly={moveUpIsPermitted}
+          readOnly={false}
         />
         <Table
           title={this.props.title}

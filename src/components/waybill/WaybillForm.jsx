@@ -3,7 +3,7 @@ import { autobind } from 'core-decorators';
 import connectToStores from 'flummox/connect';
 import { Modal, Input, Row, Col, Button, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
 import _ from 'lodash';
-import { flow, filter, cond, map } from 'lodash/fp';
+import * as R from 'ramda';
 
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
@@ -28,33 +28,33 @@ import enhanceWithPermissions from '../util/RequirePermissions.jsx';
 const Div = enhanceWithPermissions(DivForEnhance);
 
 // declarative functional approach
-const vehicleFilter = structure_id => filter(c =>
+const vehicleFilter = structure_id => R.filter(c =>
   !structure_id ||
   c.is_common ||
   c.company_structure_id === structure_id
 );
 
-const carFilter = structure_id => flow(
+const carFilter = structure_id => R.pipe(
   vehicleFilter(structure_id),
-  filter(c => !c.is_trailer)
+  R.filter(c => !c.is_trailer)
 );
-const trailerFilter = structure_id => flow(
+const trailerFilter = structure_id => R.pipe(
   vehicleFilter(structure_id),
-  filter(c => c.is_trailer)
+  R.filter(c => c.is_trailer)
 );
 
-const vehicleMapper = map(c => ({
+const vehicleMapper = R.map(c => ({
   value: c.asuods_id,
   gov_number: c.gov_number,
   label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`,
 }));
 
-const getCars = structure_id => flow(
+const getCars = structure_id => R.pipe(
   carFilter(structure_id),
   vehicleMapper,
 );
 
-const getTrailers = structure_id => flow(
+const getTrailers = structure_id => R.pipe(
   trailerFilter(structure_id),
   vehicleMapper,
 );
@@ -64,10 +64,10 @@ const driverHasLicense = ({ drivers_license }) => isNotEmpty(drivers_license);
 const driverHasSpecialLicense = ({ special_license }) => isNotEmpty(special_license);
 
 const getDrivers = (number = '', driversList) => {
-  const licenceSwitcher = cond([
-    [isThreeDigitGovNumber, () => driverHasLicense],
-    [isFourDigitGovNumber, () => driverHasSpecialLicense],
-    [() => true, () => driver => driver],
+  const licenceSwitcher = R.cond([
+    [isThreeDigitGovNumber, R.always(driverHasLicense)],
+    [isFourDigitGovNumber, R.always(driverHasSpecialLicense)],
+    [R.T, R.always(R.identity)],
   ]);
 
   const driverFilter = licenceSwitcher(number);
@@ -373,7 +373,7 @@ class WaybillForm extends Form {
     const { formState } = this.props;
     const newFormData = !isEmpty(v) ? v.split(',').map(d => parseInt(d, 10)) : [];
 
-    const changer = flow(
+    const changer = R.pipe(
       ({ state, status, newDataLength }) => status === 'active' ? newDataLength >= 1 : state,
       ({ state, canDelete }) => state && canDelete,
     );

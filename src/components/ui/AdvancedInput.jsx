@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import Input from 'react-bootstrap/lib/Input';
+import isEqual from 'lodash/isEqual';
+
 import { createValidDateTime, createValidDate } from '../../utils/dates';
 import EtsSelect from './EtsSelect';
 import Datepicker from './DatePicker';
@@ -30,7 +32,7 @@ export default class AdvancedInput extends Component {
   }
 
   componentWillReceiveProps(props) {
-    if (!props.filterValue) this.setState({ value: null });
+    // if (!props.filterValue) this.setState({ value: null });
 
     if (props.filterType) {
       this.setState({
@@ -39,10 +41,16 @@ export default class AdvancedInput extends Component {
     }
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    if (!isEqual(this.state.type, nextState.type)) {
+      this.handleChange(nextState.value);
+    }
+  }
+
   handleTypeChange(v) {
-    this.setState({ type: v, value: null });
-    const filterValue = '';
-    this.props.onChange(filterValue);
+    this.setState({ type: v });
+    // const filterValue = '';
+    // this.props.onChange(filterValue);
   }
 
   handleChange(v, index = 0) {
@@ -134,6 +142,41 @@ export default class AdvancedInput extends Component {
       );
     }
 
+    const defaultInput = (
+      <div className="inputs">
+        <Input
+          type="number"
+          min="0"
+          value={type === '><' && value ? value[0] : value}
+          onChange={e => this.handleChange(e.target.value, 0)}
+        />
+        {type === '><' &&
+          <Input
+            type="number"
+            min="0"
+            value={value ? value[1] : value}
+            onChange={e => this.handleChange(e.target.value, 1)}
+          />
+        }
+      </div>
+    );
+
+    const dateInput = (
+      <div className="datepickers">
+        <Datepicker
+          date={type === '><' && value ? value[0] : value}
+          onChange={v => this.handleChange(v, 0)}
+          time={time}
+        />
+        {type === '><' &&
+          <Datepicker
+            date={type === '><' && value ? value[1] : value}
+            onChange={v => this.handleChange(v, 1)} time={time}
+          />
+        }
+      </div>
+    );
+
     return (
       <div className="advanced-string-input">
         <EtsSelect
@@ -143,13 +186,7 @@ export default class AdvancedInput extends Component {
           clearable={false}
           onChange={v => this.handleTypeChange(v)}
         />
-        {!date ? <div className="inputs">
-          <Input type="number" min="0" value={type === '><' && value ? value[0] : value} onChange={e => this.handleChange(e.target.value, 0)} />
-          {type === '><' && <Input type="number" min="0" value={value ? value[1] : value} onChange={e => this.handleChange(e.target.value, 1)} />}
-        </div> : <div className="datepickers">
-          <Datepicker date={type === '><' && value ? value[0] : value} onChange={v => this.handleChange(v, 0)} time={time} />
-          {type === '><' && <Datepicker date={type === '><' && value ? value[1] : value} onChange={v => this.handleChange(v, 1)} time={time} />}
-        </div>}
+        {!date ? defaultInput : dateInput}
       </div>
     );
   }

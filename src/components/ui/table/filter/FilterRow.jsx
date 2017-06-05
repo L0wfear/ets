@@ -3,8 +3,9 @@ import { autobind } from 'core-decorators';
 import { Input } from 'react-bootstrap';
 import _ from 'lodash';
 import moment from 'moment';
+
+import FilterInput from 'components/ui/input/FilterInput/FilterInput';
 import EtsSelect from '../../EtsSelect.jsx';
-import AdvancedInput from '../../AdvancedInput.jsx';
 import Div from '../../Div.jsx';
 import Datepicker from '../../DatePicker.jsx';
 import IntervalPicker from '../../IntervalPicker.jsx';
@@ -66,17 +67,20 @@ export default class FilterRow extends React.Component {
           );
         }
       }
+      if (type === 'advanced-number') {
+        input = <FilterInput fieldName={name} inputType="number" onChange={onChange} />;
+      }
       if (type === 'advanced-string') {
-        input = <AdvancedInput name={name} filterValue={value} onChange={onChange} />;
+        input = <FilterInput fieldName={name} inputType="string" onChange={onChange} />;
       }
       if (type === 'advanced-string-like') {
-        input = <AdvancedInput name={name} filterValue={value} onChange={onChange} singleFilter filterType={'like'} />;
+        input = <FilterInput fieldName={name} inputType="string" onChange={onChange} single filterType="like" />;
       }
       if (type === 'advanced-date') {
-        input = <AdvancedInput name={name} filterValue={value} onChange={onChange} date />;
+        input = <FilterInput fieldName={name} inputType="date" onChange={onChange} />;
       }
       if (type === 'advanced-datetime') {
-        input = <AdvancedInput name={name} filterValue={value} onChange={onChange} date time />;
+        input = <FilterInput fieldName={name} inputType="datetime" onChange={onChange} />;
       }
       if (type === 'date') {
         input = <Datepicker className="filter-datepicker" date={value} onChange={v => onChange(moment(v).format('YYYY-MM-DD'))} time={false} />;

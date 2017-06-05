@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Button, Row, Col } from 'react-bootstrap';
 import { get } from 'lodash';
-import { cond } from 'lodash/fp';
+import * as R from 'ramda';
 
 import {
   IPropsReportHeaderCommon,
@@ -78,7 +78,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       car_func_types_groups,
     } = this.getState();
 
-    const getRequestBody = cond([
+    const getRequestBody = R.cond([
       [({ carTypeGroups }) => carTypeGroups !== '', ({ state, carTypeGroups }) => {
         const carTypeStrings = carTypeGroups
           .split(',')

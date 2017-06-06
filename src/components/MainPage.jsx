@@ -160,13 +160,13 @@ export default class MainPage extends React.Component {
                 <MenuItem active={path === '/route-reports'} href="#/route-reports">Покрытие ОДХ маршрутами</MenuItem>
                 <MenuItem active={path === '/mission-reports'} href="#/mission-reports">Прохождение заданий</MenuItem>
                 <MenuItem active={path === '/car-usage-report'} href="#/car-usage-report">Статистика выхода техники</MenuItem>
+                <MenuItem active={path === '/track-events-reports'} href="#/track-events-reports">Возможные сливы топлива</MenuItem>
                 <MenuItem active={path === '/brigade-efficiency-report'} href="#/brigade-efficiency-report">Работа бригад по ручной уборке</MenuItem>
                 <MenuItem active={path === '/employee-efficiency-report'} href="#/employee-efficiency-report">Работа сотрудников по ручной уборке</MenuItem>
               </NavDropdown>
               <NavDropdown title="Регламентированные отчеты" id="nav-dropdown-3-2">
                 <MenuItem active={path === '/fuel-consumption-report'} href="#/fuel-consumption-report">Расход топлива</MenuItem>
                 <MenuItem active={path === '/fuel-consumption-summary-report'} href="#/fuel-consumption-summary-report">Сводный отчет расхода топлива</MenuItem>
-                <MenuItem active={path === '/track-events-reports'} href="#/track-events-reports">Возможные сливы топлива</MenuItem>
                 <MenuItem active={path === '/daily-cleaning-reports-ets'} href="#/daily-cleaning-reports-ets">Статус по уборке</MenuItem>
                 <MenuItem active={path === '/daily-cleaning-reports-cafap'} href="#/daily-cleaning-reports-cafap">Статус по уборке (ЦАФАП)</MenuItem>
                 <MenuItem active={path === '/cleaning-status-tech-op-report'} href="#/cleaning-status-tech-op-report">Статус по выполнению технологических операций</MenuItem>

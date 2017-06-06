@@ -8,27 +8,14 @@ export default class ReportsStore extends Store {
     const reportsActions = flux.getActions('reports');
     this.register(reportsActions.getOdhCoverageReport, this.handleGetOdhCoverageReport);
     this.register(reportsActions.getDtCoverageReport, this.handleGetDtCoverageReport);
-    this.register(reportsActions.getTrackEventsReport, this.handleGetTrackEventsReport);
-    this.register(reportsActions.getTrackEventsReports, this.handleGetTrackEventsReports);
-
     this.register(reportsActions.clearStateList, this.handleClearStateList);
 
     this.initialState = {
       odhCoverageReport: [],
       dtCoverageReport: [],
-      trackEventsReport: [],
-      trackEventsReports: [],
     };
 
     this.state = this.initialState;
-  }
-
-  handleGetTrackEventsReport({ result }) {
-    this.setState({ trackEventsReport: result.rows });
-  }
-
-  handleGetTrackEventsReports({ result }) {
-    this.setState({ trackEventsReports: result.rows });
   }
 
   handleGetOdhCoverageReport({ result }) {

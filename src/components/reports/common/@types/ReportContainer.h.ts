@@ -22,4 +22,5 @@ export interface IPropsReportContainer extends
 export interface IStateReportContainer {
   filterResetting: boolean;
   fetchedByButton: boolean;
+  exportFetching: boolean;
 }

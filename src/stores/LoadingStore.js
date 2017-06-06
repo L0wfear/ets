@@ -111,9 +111,6 @@ export default class LoadingStore extends Store {
       reportsActions.getCoverageReport,
       reportsActions.getOdhCoverageReport,
       reportsActions.getDtCoverageReport,
-      reportsActions.getTrackEventsReports,
-      reportsActions.getTrackEventsReport,
-
     );
 
     this.reg(true,

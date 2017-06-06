@@ -6,7 +6,6 @@ import {
   AnalyticsService,
   OdhCoverageReportService,
   DtCoverageReportService,
-  TrackEventsReportService,
 } from 'api/Services';
 
 export default class ReportsActions extends Actions {
@@ -76,21 +75,6 @@ export default class ReportsActions extends Actions {
       payload.format = format;
     }
     return DtCoverageReportService.getBlob(payload);
-  }
-
-  getTrackEventsReports(data) {
-    const payload = {};
-    if (data.date_start) {
-      payload.date_start = createValidDateTime(data.date_start);
-    }
-    if (data.date_end) {
-      payload.date_end = createValidDateTime(data.date_end);
-    }
-    return TrackEventsReportService.path('aggregate').get(payload);
-  }
-
-  getTrackEventsReport(payload) {
-    return TrackEventsReportService.get(payload);
   }
 
   clearStateList(listName) {

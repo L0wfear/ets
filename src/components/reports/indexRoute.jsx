@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router';
+import { Route } from 'react-router';
 
 import * as reports from './index.js';
 
@@ -19,10 +19,7 @@ const reportRoutes = (props) => {
       <Route path="analytics" component={reports.analytics} onEnter={requireAuth} />
       <Route path="car-usage-report" component={reports.carUsage} onEnter={requireAuth} />
 
-      <Redirect from="track-events-reports" to="track-events-reports/level/1" />
-      <Route path="track-events-reports/level/1" component={reports.trackEvents.firstLevel} onEnter={requireAuth}>
-        <Route path="/track-events-reports/level/2" component={reports.trackEvents.secondLevel} onEnter={requireAuth} />
-      </Route>
+      <Route path="track-events-reports" component={reports.trackEvents} onEnter={requireAuth} />
 
       <Route path="brigade-efficiency-report" component={reports.brigadeEfficiency} onEnter={requireAuth} />
       <Route path="employee-efficiency-report" component={reports.employeeEfficiency} onEnter={requireAuth} />

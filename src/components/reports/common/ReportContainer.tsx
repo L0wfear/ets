@@ -29,6 +29,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     this.state = {
       filterResetting: false,
       fetchedByButton: false,
+      exportFetching: false,
     };
   }
   componentDidMount() {
@@ -212,8 +213,10 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     this.props.history.pushState(null, this.props.reportUrl, filteredQuery);
   }
 
-  handleReportPrint = () => {
-    this.props.export(this.props.location.query);
+  handleReportPrint = async () => {
+    this.setState({ exportFetching: true });
+    await this.props.export(this.props.location.query);
+    this.setState({ exportFetching: false });
   }
 
   makeTableSchema(schemaMakers = {}, tableMetaInfo: IReportTableMeta) {
@@ -253,7 +256,11 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     const isListEmpty = this.props.list.length === 0;
 
     const preloader = (
-      (this.props.reportMetaFetching || this.props.reportDataFetching) &&
+      (
+        this.props.reportMetaFetching ||
+        this.props.reportDataFetching ||
+        this.state.exportFetching
+      ) &&
       <Preloader type="mainpage"/>
     );
     const moveUpButton = (

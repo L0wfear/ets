@@ -93,6 +93,5 @@ export const CarFuncTypeUsageDetailReportService = ETS_API_FACTORY.createApiServ
 export const CoverageReportService = ETS_API_FACTORY.createApiServiceAdapter('current_coverage_report', {});
 export const OdhCoverageReportService = ETS_API_FACTORY.createApiServiceAdapter('odh_coverage_report', {});
 export const DtCoverageReportService = ETS_API_FACTORY.createApiServiceAdapter('dt_coverage_report', {});
-export const TrackEventsReportService = ETS_API_FACTORY.createApiServiceAdapter('track_events', {});
 
 export { reports };

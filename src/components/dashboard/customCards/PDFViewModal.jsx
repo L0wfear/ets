@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { Modal } from 'react-bootstrap';
-import ModalBody from 'components/ui/Modal';
 import PDF from 'react-pdf-js';
+
+import ModalBody from 'components/ui/Modal';
 import Preloader from '../../ui/Preloader.jsx';
 
 export default class PDFViewModal extends Component {
@@ -10,7 +11,7 @@ export default class PDFViewModal extends Component {
     return {
       onHide: PropTypes.func,
       show: PropTypes.bool,
-      url: PropTypes.string,
+      blob: PropTypes.any,
     };
   }
 
@@ -21,36 +22,26 @@ export default class PDFViewModal extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  async componentWillReceiveProps(nextProps) {
     window.URL.revokeObjectURL(this.state.url);
-    const token = JSON.parse(window.localStorage.getItem(global.SESSION_KEY));
-    // TODO blob
-    if (nextProps.url !== this.props.url && nextProps.url !== null) {
-      fetch(nextProps.url, {
-        headers: {
-          'Authorization': `Token ${token}`,
-        },
-      }).then(r => r.blob().then((blob) => {
-        const url = window.URL.createObjectURL(blob);
-        this.setState({ url });
-      }));
+    if (nextProps.blob !== this.props.blob && nextProps.blob !== null) {
+      const url = window.URL.createObjectURL(nextProps.blob);
+      this.setState({ url });
     }
   }
 
-  onHide() {
+  onHide = () => {
     this.setState({ url: '' });
     this.props.onHide();
   }
 
   render() {
     return (
-      <Modal {...this.props} onHide={this.onHide.bind(this)}>
+      <Modal {...this.props} onHide={this.onHide}>
         <ModalBody bsClass="null">
           {!this.state.url
-            ?
-            <Preloader type="mainpage" visible={this.props.show} />
-            :
-            <PDF file={this.state.url} />
+            ? <Preloader type="mainpage" visible={this.props.show} />
+            : <PDF file={this.state.url} />
           }
         </ModalBody>
       </Modal>

@@ -1,6 +1,8 @@
 import React from 'react';
-import Div from 'components/ui/Div.jsx';
 import { Glyphicon, Button } from 'react-bootstrap';
+
+import { FaxogrammService } from 'api/Services';
+import Div from 'components/ui/Div.jsx';
 import { FluxContext } from 'utils/decorators';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
 import FaxogrammMissionsFormWrap from '../../directories/faxogramm/FaxogrammMissionsFormWrap.jsx';
@@ -25,6 +27,10 @@ export default class Faxogramms extends DashboardCardMedium {
 
   async showPDFViewModal(data) {
     const url = await this.context.flux.getActions('objects').getFaxogrammPDFUrl(data.id);
+    const { blob } = await FaxogrammService.path(data.id).getBlob();
+    if (blob === null) {
+      return;
+    }
     this.setState({ showPDFViewModal: true, url });
   }
 
@@ -47,9 +53,9 @@ export default class Faxogramms extends DashboardCardMedium {
           {canCreateMission ? <Button className="dashboard-card-action-button" onClick={(e) => { e.preventDefault(); this.showFaxogrammForm(data); }}>Сформировать задания</Button> : ''}
         </Div>
         <PDFViewModal
-          url={this.state.url}
+          blob={this.state.blob}
           show={this.state.showPDFViewModal}
-          onHide={() => this.setState({ showPDFViewModal: false, url: null })}
+          onHide={() => this.setState({ showPDFViewModal: false, blob: null })}
         />
       </Div>
     );

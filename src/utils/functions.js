@@ -7,6 +7,33 @@ import includes from 'lodash/includes';
 import every from 'lodash/every';
 
 /**
+ * Example:
+ * const a = 1, b = 2, c = 3;
+ * a === 1 || b === 1 || c === 1 // true
+ * isEqualOr([1, 2, 3], 1) // true
+ */
+export const isEqualOr = (values = [], matchValue) => includes(values, matchValue);
+
+/**
+ * Example:
+ * a === 1 && b === 1 && c === 1 // false
+ * isEqualAnd([1, 2, 3], 1) // false
+ */
+export const isEqualAnd = (values = [], matchValue) => every(values, matchValue);
+/**
+ * Example:
+ * a !== 1 || b !== 1 || c !== 1 // true
+ * isNotEqualOr([1, 2, 3], 1) // true
+ */
+export const isNotEqualOr = (values = [], matchValue) => !isEqualAnd(values, matchValue);
+/**
+ * Example:
+ * a !== 1 && b !== 1 && c !== 1 // false
+ * isNotEqualAnd([1, 2, 3], 1) // false
+ */
+export const isNotEqualAnd = (values = [], matchValue) => !isEqualOr(values, matchValue);
+
+/**
  * Стандартная проверка на null/undefined в js
  * @param {any} value
  * @return {boolean}
@@ -37,6 +64,8 @@ export function isEmpty(value) {
 }
 
 export function saveData(blob, fileName) {
+  if (isEqualOr([blob, fileName], null)) return;
+
   const a = document.createElement('a');
   document.body.appendChild(a);
   a.style = 'display: none';
@@ -128,29 +157,4 @@ export const isThreeDigitGovNumber = number => !isFourDigitGovNumberRegexp.test(
 export const isFourDigitGovNumber = number => isFourDigitGovNumberRegexp.test(number);
 
 
-/**
- * Example:
- * const a = 1, b = 2, c = 3;
- * a === 1 || b === 1 || c === 1 // true
- * isEqualOr([1, 2, 3], 1) // true
- */
-export const isEqualOr = (values = [], matchValue) => includes(values, matchValue);
 
-/**
- * Example:
- * a === 1 && b === 1 && c === 1 // false
- * isEqualAnd([1, 2, 3], 1) // false
- */
-export const isEqualAnd = (values = [], matchValue) => every(values, matchValue);
-/**
- * Example:
- * a !== 1 || b !== 1 || c !== 1 // true
- * isNotEqualOr([1, 2, 3], 1) // true
- */
-export const isNotEqualOr = (values = [], matchValue) => !isEqualAnd(values, matchValue);
-/**
- * Example:
- * a !== 1 && b !== 1 && c !== 1 // false
- * isNotEqualAnd([1, 2, 3], 1) // false
- */
-export const isNotEqualAnd = (values = [], matchValue) => !isEqualOr(values, matchValue);

@@ -1,4 +1,5 @@
 import { parseFilename } from 'utils/content-disposition.js';
+import { hasWarningNotification } from 'utils/notifications';
 
 function urlencode(jsonObject) {
   return Object.keys(jsonObject).map(k => `${k}=${encodeURIComponent(jsonObject[k])}`).join('&');
@@ -22,10 +23,22 @@ function httpMethodBlob(url, data, method) {
   }
 
   return fetch(url, options)
-    .then((async) (r) => {
-      const fileName = parseFilename(r.headers.get('Content-Disposition'));
-      console.log(fileName)
+    .then(async (r) => {
+      const contentDisposition = r.headers.get('Content-Disposition');
+      const defaultResult = {
+        blob: null,
+        fileName: null,
+      };
+
+      if (contentDisposition === null) {
+        const response = await r.json();
+        hasWarningNotification(response);
+        return defaultResult;
+      }
+
       const blob = await r.blob();
+      const fileName = parseFilename(contentDisposition);
+
       return {
         blob,
         fileName,

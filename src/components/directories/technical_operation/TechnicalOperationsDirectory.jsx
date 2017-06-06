@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 import TechnicalOperationFormWrap from './TechnicalOperationFormWrap.jsx';
 import TechnicalOperationsTable from './TechnicalOperationsTable.jsx';
 import ElementsList from 'components/ElementsList.jsx';

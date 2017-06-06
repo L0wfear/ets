@@ -15,6 +15,7 @@ import {
   hasOdometer,
   isThreeDigitGovNumber,
   isFourDigitGovNumber,
+  isEqualOr,
 } from 'utils/functions';
 
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
@@ -372,9 +373,19 @@ class WaybillForm extends Form {
   handleMissionsChange(v) {
     const { formState } = this.props;
     const newFormData = !isEmpty(v) ? v.split(',').map(d => parseInt(d, 10)) : [];
+    const oldFormData = formState.mission_id_list;
+    const STATUS_LIST = ['active', 'draft'];
 
     const changer = R.pipe(
-      ({ state, status, newDataLength }) => status === 'active' ? newDataLength >= 1 : state,
+      payload => isEqualOr(STATUS_LIST, payload.status)
+        ? {
+          ...payload,
+          state: payload.newDataLength >= 1,
+        }
+        : {
+          ...payload,
+          state: false,
+        },
       ({ state, canDelete }) => state && canDelete,
     );
 
@@ -385,7 +396,7 @@ class WaybillForm extends Form {
       canDelete: formState.can_delete_missions,
     });
 
-    this.handleChange('mission_id_list', shouldBeChanged ? newFormData : formState.mission_id_list);
+    this.handleChange('mission_id_list', shouldBeChanged ? newFormData : oldFormData);
   }
 
   handleStructureIdChange(v) {

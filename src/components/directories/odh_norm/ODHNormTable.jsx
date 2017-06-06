@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 
 const tableMeta = {
@@ -36,10 +36,13 @@ export default (props) => {
     consumable_material: ({ data }) => <div style={{ textAlign: 'center' }}><input type="checkbox" checked={!!data} readOnly /></div>,
   };
 
-  return (<Table title="Справочник расходных материалов"
-    results={props.data}
-    tableMeta={tableMeta}
-    renderers={renderers}
-    {...props}
-  />);
+  return (
+    <Table
+      title="Справочник расходных материалов"
+      results={props.data}
+      tableMeta={tableMeta}
+      renderers={renderers}
+      {...props}
+    />
+  );
 };

@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 import ElementsList from 'components/ElementsList.jsx';
 import ODHNormFormWrap from './ODHNormFormWrap.jsx';
 import ODHNormTable from './ODHNormTable.jsx';

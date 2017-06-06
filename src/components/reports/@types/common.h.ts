@@ -3,7 +3,7 @@ interface ISchemaRenderer {
 }
 
 export interface IReportProps {
-  title: string;
+  title: string | JSX.Element | null;
   serviceName: string;
   serviceUrl: string;
   reportUrl: string;

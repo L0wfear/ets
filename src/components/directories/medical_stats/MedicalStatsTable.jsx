@@ -57,7 +57,7 @@ export const tableMeta = () => ({
       displayName: 'Дата и время подписи результата мед.осмотра',
       type: 'datetime',
       filter: {
-        type: 'datetime',
+        type: 'date',
       },
     },
   ],
@@ -71,15 +71,16 @@ const UserActionLogTable = (props) => {
 
   return (
     <Table
+      {...props}
       title="Статистика прохождения мед. осмотров"
       results={props.data}
       tableMeta={tableMeta(props)}
       renderers={renderers}
       rowNumberLabel="№ п/п"
       rowNumberClassName="width60"
-      initialSort={false}
+      onRowSelected={undefined}
+      initialSort={undefined}
       enumerated
-      {...props}
     />
   );
 };

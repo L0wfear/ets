@@ -22,3 +22,21 @@
   margin-bottom: 10px;
   margin-top: 10px;
 }
+
+// car usage report component
+.car-usage-report-title {
+  display: flex;
+}
+
+.car-usage-report-title__popover {
+  max-width: 600px;
+  text-align: justify;
+}
+
+.car-usage-report-title__info-sign {
+  font-size: 22px;
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

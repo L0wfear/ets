@@ -49,6 +49,9 @@ const tableMeta = {
       name: 'measure_unit_name',
       displayName: 'Единица измерения',
       cssClassName: 'width60',
+      filter: {
+        type: 'multiselect',
+      },
     },
   ],
 };

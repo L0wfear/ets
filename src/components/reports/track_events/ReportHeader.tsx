@@ -7,7 +7,7 @@ import {
 } from 'components/reports/common/@types/ReportHeaderWrapper.h';
 
 import Datepicker from 'components/ui/DatePicker.jsx';
-import { getToday9am, getTomorrow9am, createValidDateTime } from 'utils/dates';
+import { getToday9am, getTomorrow9am, createValidDate } from 'utils/dates';
 import { bindable } from 'utils/decorators';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
@@ -28,8 +28,8 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     } = this.props;
 
     this.props.onClick({
-      date_start: createValidDateTime(date_start),
-      date_end: createValidDateTime(date_end),
+      date_start: createValidDate(date_start),
+      date_end: createValidDate(date_end),
     });
   }
   render() {

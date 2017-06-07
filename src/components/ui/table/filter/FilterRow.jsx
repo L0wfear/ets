@@ -68,25 +68,27 @@ export default class FilterRow extends React.Component {
         }
       }
       if (type === 'advanced-number') {
-        input = <FilterInput fieldName={name} inputType="number" onChange={onChange} />;
+        input = <FilterInput filterValue={value} fieldName={name} inputType="number" onChange={onChange} />;
       }
       if (type === 'advanced-string') {
-        input = <FilterInput fieldName={name} inputType="string" onChange={onChange} />;
+        input = <FilterInput filterValue={value} fieldName={name} inputType="string" onChange={onChange} />;
       }
       if (type === 'advanced-string-like') {
-        input = <FilterInput fieldName={name} inputType="string" onChange={onChange} single filterType="like" />;
+        input = <FilterInput filterValue={value} fieldName={name} inputType="string" onChange={onChange} single filterType="like" />;
       }
       if (type === 'advanced-date') {
-        input = <FilterInput fieldName={name} inputType="date" onChange={onChange} />;
+        input = <FilterInput filterValue={value} fieldName={name} inputType="date" onChange={onChange} />;
       }
       if (type === 'advanced-datetime') {
-        input = <FilterInput fieldName={name} inputType="datetime" onChange={onChange} />;
+        input = <FilterInput filterValue={value} fieldName={name} inputType="datetime" onChange={onChange} />;
       }
       if (type === 'date') {
-        input = <Datepicker className="filter-datepicker" date={value} onChange={v => onChange(moment(v).format('YYYY-MM-DD'))} time={false} />;
+        input = <FilterInput filterValue={value} fieldName={name} inputType="date" onChange={onChange} single />;
+        // input = <Datepicker className="filter-datepicker" date={value} onChange={v => (console.log(v), onChange(moment(v).format('YYYY-MM-DD')))} time={false} />;
       }
       if (type === 'datetime') {
-        input = <Datepicker className="filter-datepicker" date={value} onChange={onChange} time />;
+        input = <FilterInput filterValue={value} fieldName={name} inputType="datetime" onChange={onChange} single />;
+        // input = <Datepicker className="filter-datepicker" date={value} onChange={onChange} time />;
       }
       if (type === 'date_interval') {
         input = <IntervalPicker interval={value} onChange={onChange} />;

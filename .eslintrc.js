@@ -16,6 +16,7 @@ module.exports = {
   "rules": {
     "strict": "off",
     "no-tabs": "error",
+    "no-continue": "off",
     "no-mixed-spaces-and-tabs": "off",
     "no-confusing-arrow": "off",
     "quote-props": "off", // временно

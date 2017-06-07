@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isEqual } from 'lodash';
+import { isEqual, isEmpty } from 'lodash';
 import * as R from 'ramda';
 
 import filterTypeHandler from './filterTypeHandler';
@@ -7,9 +7,11 @@ import Input from './Input';
 import { FILTER_VALUES, FILTER_SELECT_TYPES } from './constants';
 import { createValidDateTime, createValidDate } from 'utils/dates';
 import EtsSelect from 'components/ui/EtsSelect';
+import { isEqualOr } from 'utils/functions';
 
 
 interface IPropsFilterInput {
+  nativeDatetime: boolean;
   fieldName: string;
   filterValue: string | object;
   filterType?: string;
@@ -37,34 +39,6 @@ const datetimeFilterValueMaker = (value, type) => R.cond([
   inputValue: value,
 });
 
-const getInputFilter = R.cond([
-  [
-    R.either(inputTypeIf('string'), inputTypeIf('number')),
-    ({ value, fieldName, filterType, inputType, handleFilterValueChange }) =>
-      <InputFilter
-        type={inputType}
-        onChange={handleFilterValueChange}
-        fieldName={fieldName}
-        filterType={filterType}
-        value={value}
-        interval={isEqual(filterType, FILTER_VALUES.INTERVAL)}
-      />,
-  ],
-  [
-    R.either(inputTypeIf('datetime'), inputTypeIf('date')),
-    ({ value, fieldName, filterType, inputType, handleFilterValueChange }) =>
-      <InputFilter
-        type={inputType}
-        onChange={handleFilterValueChange}
-        fieldName={fieldName}
-        filterType={filterType}
-        value={value}
-        interval={isEqual(filterType, FILTER_VALUES.INTERVAL)}
-        filterValueMaker={datetimeFilterValueMaker}
-      />,
-  ],
-]);
-
 class FilterInput extends React.Component<IPropsFilterInput, IStateFilterInput> {
   constructor() {
     super();
@@ -73,6 +47,14 @@ class FilterInput extends React.Component<IPropsFilterInput, IStateFilterInput> 
       type: 'eq',
       value: [],
     };
+  }
+  componentWillReceiveProps(nextProps: IPropsFilterInput) {
+    if (
+      !isEqual(this.props.filterValue, nextProps.filterValue) &&
+      isEmpty(nextProps.filterValue)
+    ) {
+      this.setState({ value: [null] });
+    }
   }
   handleTypeChange = newType => {
     this.setState({ type: newType });
@@ -83,6 +65,11 @@ class FilterInput extends React.Component<IPropsFilterInput, IStateFilterInput> 
     this.props.onChange(filterValue);
   }
   render() {
+    const isDatetimeInput = isEqualOr(['date', 'datetime'], this.props.inputType);
+    const filterValueMaker = isDatetimeInput && !this.props.nativeDatetime
+      ? datetimeFilterValueMaker
+      : R.identity;
+
     if (this.props.single) {
       return (
         <InputFilter
@@ -91,17 +78,22 @@ class FilterInput extends React.Component<IPropsFilterInput, IStateFilterInput> 
           fieldName={this.props.fieldName}
           filterType={this.props.filterType}
           value={this.state.value}
+          filterValueMaker={filterValueMaker}
         />
       );
     }
 
-    const filterField = getInputFilter({
-      filterType: this.state.type,
-      inputType: this.props.inputType,
-      value: this.state.value,
-      fieldName: this.props.fieldName,
-      handleFilterValueChange: this.handleFilterValueChange,
-    });
+    const filterField = (
+      <InputFilter
+        type={this.props.inputType}
+        onChange={this.handleFilterValueChange}
+        fieldName={this.props.fieldName}
+        filterType={this.state.type}
+        value={this.state.value}
+        interval={isEqual(this.state.type, FILTER_VALUES.INTERVAL)}
+        filterValueMaker={filterValueMaker}
+      />
+    );
 
     return (
       <div className="advanced-string-input">

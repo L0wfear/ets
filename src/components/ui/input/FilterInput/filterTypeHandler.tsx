@@ -12,7 +12,10 @@ const filterTypeIf = filterMatch => R.propEq('filterType', filterMatch);
 function singleFilterTypeHandler(SourcerFilterInput) {
   return class FilterInputHOC extends React.Component<IPropsExtendedInput, any> {
     componentWillReceiveProps(nextProps) {
-      if (!isEqual(this.props.filterType, nextProps.filterType)) {
+      if (
+        !isEqual(this.props.filterType, nextProps.filterType) &&
+        !isEqual(this.props.value, nextProps.value)
+      ) {
         this.handleChange(nextProps.value, nextProps.filterType);
       }
     }
@@ -25,7 +28,7 @@ function singleFilterTypeHandler(SourcerFilterInput) {
           ({ inputValue, fieldName }) => {
             const val = filterValueMaker(inputValue, this.props.type);
 
-            return isEqualOr(['', null, undefined], val) ? null : { [`${fieldName}__eq`]: val[0] };
+            return isEqualOr(['', null, undefined], val[0]) ? null : { [`${fieldName}__eq`]: val[0] };
           },
         ],
         [
@@ -33,7 +36,7 @@ function singleFilterTypeHandler(SourcerFilterInput) {
           ({ inputValue, fieldName }) => {
             const val = filterValueMaker(inputValue, this.props.type);
 
-            return isEqualOr(['', null, undefined], val) ? null : { [`${fieldName}__neq`]: val[0] };
+            return isEqualOr(['', null, undefined], val[0]) ? null : { [`${fieldName}__neq`]: val[0] };
           },
         ],
         [
@@ -41,7 +44,7 @@ function singleFilterTypeHandler(SourcerFilterInput) {
           ({ inputValue, fieldName }) => {
             const val = filterValueMaker(inputValue, this.props.type);
 
-            return isEqualOr(['', null, undefined], val) ? null : { [`${fieldName}__lt`]: val[0] };
+            return isEqualOr(['', null, undefined], val[0]) ? null : { [`${fieldName}__lt`]: val[0] };
           },
         ],
         [
@@ -49,7 +52,7 @@ function singleFilterTypeHandler(SourcerFilterInput) {
           ({ inputValue, fieldName }) => {
             const val = filterValueMaker(inputValue, this.props.type);
 
-            return isEqualOr(['', null, undefined], val) ? null : { [`${fieldName}__gt`]: val[0] };
+            return isEqualOr(['', null, undefined], val[0]) ? null : { [`${fieldName}__gt`]: val[0] };
           },
         ],
         [
@@ -57,7 +60,7 @@ function singleFilterTypeHandler(SourcerFilterInput) {
           ({ inputValue, fieldName }) => {
             const val = filterValueMaker(inputValue, this.props.type);
 
-            return isEqualOr(['', null, undefined], val) ? null : { [`${fieldName}__like`]: val[0] };
+            return isEqualOr(['', null, undefined], val[0]) ? null : { [`${fieldName}__like`]: val[0] };
           },
         ],
         [
@@ -73,6 +76,14 @@ function singleFilterTypeHandler(SourcerFilterInput) {
               [`${this.props.fieldName}__gte`]: intervalValue[0],
               [`${fieldName}__lte`]: intervalValue[1],
             };
+          },
+        ],
+        [
+          R.T,
+          ({ inputValue, fieldName }) => {
+            const val = filterValueMaker(inputValue, this.props.type);
+
+            return isEqualOr(['', null, undefined], val[0]) ? null : val[0];
           },
         ],
       ]);

@@ -16,7 +16,7 @@ import cleaningStatusTechOp from './cleaning_status_tech_op/report.tsx';
 import carUsage from './car_usage/report';
 import brigadeEfficiency from './brigade_efficiency/report.tsx';
 import employeeEfficiency from './employee_efficiency/report.ts';
-import trackEvents from './track_events/report.ts';
+import trackEvents from './track_events/Report';
 
 export {
   analytics,

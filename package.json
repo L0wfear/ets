@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "0.9.54",
+    "version": "0.9.55",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -39,7 +39,7 @@
         "minimist": "^1.2.0",
         "moment": "^2.10.6",
         "node-sass": "^3.2.0",
-        "ol3-popup": "walkermatt/ol3-popup",
+        "ol3-popup": "github:walkermatt/ol3-popup",
         "openlayers": "^3.17.1",
         "ramda": "^0.24.1",
         "raven-js": "^3.7.0",

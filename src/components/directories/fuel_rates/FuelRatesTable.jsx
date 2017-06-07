@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import moment from 'moment';
 
@@ -73,11 +73,13 @@ export default (props) => {
     operation_equipment: ({ data }) => <div style={{ textAlign: 'center' }}><input type="checkbox" checked={!!data} readOnly /></div>,
   };
 
-  return (<Table
-    title="Нормы расхода топлива"
-    results={props.data}
-    tableMeta={tableMeta(props)}
-    renderers={renderers}
-    {...props}
-  />);
+  return (
+    <Table
+      title="Нормы расхода топлива"
+      results={props.data}
+      tableMeta={tableMeta(props)}
+      renderers={renderers}
+      {...props}
+    />
+  );
 };

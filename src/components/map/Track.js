@@ -20,17 +20,7 @@ const COLORS_ZOOM_THRESHOLD = 6;
  * @param speed
  * @return color string
  */
-
-export function getTrackColor(speed, maxSpeed = 0, opacity = 1) {
-  let result = TRACK_COLORS.green; // green by default
-  if (maxSpeed > 0) {
-    result = TRACK_COLORS.red;
-  }
-
-  return opacity === 1 ? result : hexToRgba(result, opacity);
-}
-
-export function getLegendTrackColor(speed, maxSpeed, opacity = 1) {
+export function getTrackColor(speed, maxSpeed, opacity = 1) {
   let result = TRACK_COLORS.green; // green by default
 
   if (speed >= 0 && speed <= maxSpeed) {
@@ -114,7 +104,7 @@ export default class Track {
   getLegend() {
     const colors = [];
 
-    let prevColor = getLegendTrackColor(0, this.maxSpeed);
+    let prevColor = getTrackColor(0, this.maxSpeed);
 
     function addColor(color, speed) {
       if (colors.length > 0) {
@@ -129,7 +119,7 @@ export default class Track {
     addColor(prevColor, 0);
 
     for (let i = 0, till = 100; i <= till; i++) {
-      const color = getLegendTrackColor(i, this.maxSpeed);
+      const color = getTrackColor(i, this.maxSpeed);
       if (color !== prevColor) {
         addColor(color, i);
         prevColor = color;
@@ -348,7 +338,7 @@ export default class Track {
     ctx.beginPath();
     ctx.moveTo(firstPoint.x, firstPoint.y);
 
-    let prevRgbaColor = getTrackColor(track[0].speed_avg, track[0].speed_max, TRACK_LINE_OPACITY);
+    let prevRgbaColor = getTrackColor(track[0].speed_avg, this.maxSpeed, TRACK_LINE_OPACITY);
 
     if (this.sensorsState.equipment.length) {
       if (track[0].sensors && track[0].sensors.equipment) {
@@ -375,8 +365,8 @@ export default class Track {
       if (isEqual(prevPoint.coords, p.coords)) continue;
 
       const coords = this.map.projectToPixel(p.coords_msk);
-      const speed = p.speed_avg;
-      const maxSpeed = p.speed_max;
+      const speed = p.speed_max;
+      const { maxSpeed } = this;
       let rgbaColor = getTrackColor(speed, maxSpeed, TRACK_LINE_OPACITY);
       let hexColor = getTrackColor(speed, maxSpeed);
 

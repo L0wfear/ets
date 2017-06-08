@@ -6,7 +6,7 @@ import {
   IPropsReportHeaderCommon,
   IPropsReportHeaderWrapper,
 } from 'components/reports/common/@types/ReportHeaderWrapper.h';
-import { IVehicleTypes } from 'api/@types/services.h';
+import { IVehicleType } from 'api/@types/services.h';
 
 import { connectToStores } from 'utils/decorators';
 import Div from 'components/ui/Div.jsx';
@@ -27,7 +27,7 @@ interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeade
   geozone_type: string;
   element_type: string;
   car_func_types_ids: any;
-  typesList: Array<IVehicleTypes>;
+  typesList: Array<IVehicleType>;
 }
 
 @connectToStores(['objects'])

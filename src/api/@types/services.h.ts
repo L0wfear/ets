@@ -4,16 +4,21 @@ interface IStringHashTable {
   [field: string]: string;
 }
 
-export interface IVehicleTypes extends IResponseRowObject<number> {
+export interface IVehicleType extends IResponseRowObject<number> {
   asuods_id: number;
   full_name: string;
+  gov_number: string;
   is_trailer: boolean;
+  is_common: boolean;
   plow_width_dt: number;
   plow_width_odh: number;
   season_id: number;
   season_name: string;
   short_name: string;
+  model_name: string;
+  special_model_name: string;
   speed_limit: number;
+  company_structure_id: string;
 }
 
   // "defaults": {

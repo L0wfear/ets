@@ -100,6 +100,10 @@ export default class FormWrap extends Component {
         if (p.type === 'number' && p.float) {
           formState[p.key] = !isNaN(formState[p.key]) && formState[p.key] !== null ? parseFloat(formState[p.key]) : null;
         }
+        if (p.type === 'number' && p.integer) {
+          const parsedValue = parseInt(formState[p.key], 10);
+          formState[p.key] = !isNaN(parsedValue) ? parsedValue : null;
+        }
       });
     }
 

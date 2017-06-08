@@ -37,6 +37,7 @@ export const fuelRateSchema = {
       title: 'Марка шасси',
       type: 'number',
       required: false,
+      integer: true, // parse value to integer before sending to server
     },
   ],
   dependencies: {

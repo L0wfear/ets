@@ -3,7 +3,6 @@ import { autobind } from 'core-decorators';
 import connectToStores from 'flummox/connect';
 import { Modal, Input, Row, Col, Button, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
 import _ from 'lodash';
-import * as R from 'ramda';
 
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
@@ -11,12 +10,12 @@ import DivForEnhance from 'components/ui/Div.jsx';
 import {
   isNotNull,
   isEmpty,
-  isNotEqualAnd,
   hasOdometer,
   isThreeDigitGovNumber,
   isFourDigitGovNumber,
   isEqualOr,
 } from 'utils/functions';
+import { driverHasLicense, driverHasSpecialLicense, getCars, getDrivers, getTrailers, validateTaxesControl } from './utils';
 
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { notifications } from 'utils/notifications';
@@ -30,58 +29,7 @@ const Div = enhanceWithPermissions(DivForEnhance);
 
 const STATUS_LIST = ['active', 'draft'];
 
-// declarative functional approach
-const vehicleFilter = structure_id => R.filter(c =>
-  !structure_id ||
-  c.is_common ||
-  c.company_structure_id === structure_id
-);
 
-const carFilter = structure_id => R.pipe(
-  vehicleFilter(structure_id),
-  R.filter(c => !c.is_trailer)
-);
-const trailerFilter = structure_id => R.pipe(
-  vehicleFilter(structure_id),
-  R.filter(c => c.is_trailer)
-);
-
-const vehicleMapper = R.map(c => ({
-  value: c.asuods_id,
-  gov_number: c.gov_number,
-  label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`,
-}));
-
-const getCars = structure_id => R.pipe(
-  carFilter(structure_id),
-  vehicleMapper,
-);
-
-const getTrailers = structure_id => R.pipe(
-  trailerFilter(structure_id),
-  vehicleMapper,
-);
-
-const isNotEmpty = value => isNotEqualAnd([undefined, null, ''], value);
-const driverHasLicense = ({ drivers_license }) => isNotEmpty(drivers_license);
-const driverHasSpecialLicense = ({ special_license }) => isNotEmpty(special_license);
-
-const getDrivers = (number = '', driversList) => {
-  const licenceSwitcher = R.cond([
-    [isThreeDigitGovNumber, R.always(driverHasLicense)],
-    [isFourDigitGovNumber, R.always(driverHasSpecialLicense)],
-    [R.T, R.always(R.identity)],
-  ]);
-
-  const driverFilter = licenceSwitcher(number);
-
-  return driversList
-    .filter(driverFilter)
-    .map((d) => {
-      const personnel_number = d.personnel_number ? `[${d.personnel_number}] ` : '';
-      return { value: d.id, label: `${personnel_number}${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''}` };
-    });
-};
 
 @autobind
 class WaybillForm extends Form {
@@ -469,9 +417,7 @@ class WaybillForm extends Form {
       title = 'Создание нового путевого листа';
     }
 
-    if (state.tax_data) {
-      taxesControl = !!state.tax_data[0] && !isEmpty(state.tax_data[0].FACT_VALUE);
-    }
+    taxesControl = validateTaxesControl([state.tax_data, state.equipment_tax_data]);
 
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">

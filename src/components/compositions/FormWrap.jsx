@@ -117,7 +117,6 @@ export default class FormWrap extends Component {
             saveButtonLabel: SAVE_BUTTON_LABEL_DEFAULT,
             saveButtonEnability: true,
           });
-          global.NOTIFICATION_SYSTEM.notify(saveDataSuccessNotification);
         } catch (e) {
           this.setState({
             saveButtonLabel: SAVE_BUTTON_LABEL_DEFAULT,

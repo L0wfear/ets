@@ -67,7 +67,7 @@ export default class Paginator extends React.Component {
 
     const options = [];
 
-    if (currentPage && maxPage >= 3 && currentPage !== 0 && currentPage !== 1 && this.props.firstLastButtons) {
+    if (currentPage && maxPage >= 3 && currentPage !== 0 && this.props.firstLastButtons) {
       options.push(
         <li className="aui-nav-first" key="first">
           <a className="pointer" onClick={this.first}>Первая</a>
@@ -114,7 +114,7 @@ export default class Paginator extends React.Component {
       );
     }
 
-    if (maxPage >= 3 && currentPage !== maxPage - 1 && currentPage !== maxPage - 2 && this.props.firstLastButtons) {
+    if (maxPage >= 3 && currentPage !== maxPage - 1 && this.props.firstLastButtons) {
       options.push(
         <li className="aui-nav-last" key="last">
           <a className="pointer" onClick={this.last}>Последняя</a>

@@ -8,6 +8,7 @@ import {
   difference,
   identity,
   pick,
+  isEmpty,
 } from 'lodash';
 
 import { IDataTableColSchema, IDataTableSelectedRow } from 'components/ui/table/@types/DataTable/schema.h';
@@ -96,7 +97,6 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
           noItemsInfoNotification();
         }
 
-
         resolve(data);
       } catch (error) {
         global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${error}`));
@@ -181,7 +181,6 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     const lowerLevelSelectors = this.props.meta.levels.lower.filter
       .map(selector => ({[selector]: selectedRow.props.data[selector] }))
       .reduce((prev, next) => ({ ...prev, ...next }));
-
 
     const currentLevelFilters = this.props.meta.levels.current.filter;
     const headerState = this.props.location.query;
@@ -298,6 +297,8 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       ...this.props.meta,
     };
 
+    const title = isEmpty(mergedTableMetaInfo.name) ? this.props.title : mergedTableMetaInfo.name;
+
     return (
       <div className="ets-page-wrap">
         <Header
@@ -307,7 +308,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
           readOnly={false}
         />
         <Table
-          title={this.props.title}
+          title={title}
           tableMeta={tableMeta}
           results={this.props.list}
           renderers={this.props.renderers || {}}

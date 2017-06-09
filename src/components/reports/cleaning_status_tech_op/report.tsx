@@ -30,7 +30,7 @@ const renderers = {
 const headerStateMaker = queryState => parseSelectListQueryParams(queryState, ['car_func_types_ids']);
 
 const reportProps: IReportProps = {
-  title: 'Статус по выполнению технологических операций',
+  title: 'Статус по выполнению городских заданий',
   enumerated: true,
   serviceName,
   reportUrl,

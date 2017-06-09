@@ -93,7 +93,7 @@ export default class Analytics extends Component {
       />{e}<br /></div>);
     });
 
-    const COMPANY = companyList && companyList.map(({ id, name }) => ({ value: id, label: name }));
+    const COMPANY = companyList && companyList.map(({ company_id, company_name }) => ({ value: company_id, label: company_name }));
 
     return (
       <div className="ets-page-wrap">

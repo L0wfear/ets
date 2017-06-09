@@ -13,7 +13,7 @@ function singleFilterTypeHandler(SourcerFilterInput) {
   return class FilterInputHOC extends React.Component<IPropsExtendedInput, any> {
     componentWillReceiveProps(nextProps) {
       if (
-        !isEqual(this.props.filterType, nextProps.filterType) &&
+        !isEqual(this.props.filterType, nextProps.filterType) ||
         !isEqual(this.props.value, nextProps.value)
       ) {
         this.handleChange(nextProps.value, nextProps.filterType);

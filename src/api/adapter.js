@@ -78,8 +78,8 @@ function httpMethod(url, data = {}, method, type, params = {}) {
   return fetch(url, options).then(async (r) => {
     if (r.status === 401) {
       window.localStorage.clear();
-      return window.location.reload();
-      // return new Promise((res, rej) => rej(r.status));
+      window.location.reload();
+      return new Promise((res, rej) => rej(r.status));
     }
     try {
       const responseBody = await r.json();

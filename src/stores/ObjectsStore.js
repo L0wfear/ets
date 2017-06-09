@@ -22,6 +22,7 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getFuelTypes, this.handleGetFuelTypes);
     this.register(objectsActions.getWorkKinds, this.handleGetWorkKinds);
     this.register(objectsActions.getOrganizations, this.handleGetOrganizations);
+    this.register(objectsActions.updateOrganizations, this.handleUpdateOrganizations);
     this.register(objectsActions.getFaxogramms, this.handleGetFaxogramms);
     this.register(objectsActions.getPositions, this.handleGetPositions);
     this.register(objectsActions.getConfig, this.handleGetConfig);
@@ -188,6 +189,10 @@ export default class ObjectsStore extends Store {
   handleGetMaintenanceWork(r) {
     const maintenanceWorkList = r.result.rows || r.result;
     this.setState({ maintenanceWorkList });
+  }
+  handleUpdateOrganizations(r) {
+    const organizations = r.result.rows || r.result;
+    this.setState({ organizations });
   }
 
   handleGetCleaningRate(r) {

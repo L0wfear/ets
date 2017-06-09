@@ -1,20 +1,21 @@
-import React, { Component } from 'react';
+import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps } from 'utils/decorators';
 import OrganizationsTable from './OrganizationsTable.jsx';
-import ElementsList from 'components/ElementsList.jsx';
+import OrganizationsFormWrap from './OrganizationsFormWrap';
 
 @connectToStores(['objects'])
 @staticProps({
-  entity: 'organization',
+  entity: 'companies',
   listName: 'organizations',
+  selectField: 'company_id',
   tableComponent: OrganizationsTable,
+  formComponent: OrganizationsFormWrap,
+  operations: ['LIST', 'READ', 'UPDATE'],
 })
 export default class OrganizationsDirectory extends ElementsList {
-
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
     flux.getActions('objects').getOrganizations();
   }
-
 }

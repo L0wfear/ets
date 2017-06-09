@@ -12,3 +12,6 @@ export const GEOZONE_ELEMENTS = {
     { value: 'yard', label: 'Двор' },
   ],
 };
+
+export const YES_NO_SELECT_OPTIONS_BOOL = [{ label: 'Да', value: true }, { label: 'Нет', value: false }];
+export const YES_NO_SELECT_OPTIONS_INT = [{ label: 'Да', value: 1 }, { label: 'Нет', value: 0 }];

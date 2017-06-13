@@ -226,6 +226,12 @@ const getTableMeta = (props) => {
         },
         display: props.structures.length,
       },
+      {
+        name: 'comment',
+        displayName: 'Комментарий',
+        type: 'string',
+        filter: false,
+      },
     ],
   };
 

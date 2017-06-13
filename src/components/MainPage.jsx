@@ -169,7 +169,7 @@ export default class MainPage extends React.Component {
                 <MenuItem active={path === '/fuel-consumption-summary-report'} href="#/fuel-consumption-summary-report">Сводный отчет расхода топлива</MenuItem>
                 <MenuItem active={path === '/daily-cleaning-reports-ets'} href="#/daily-cleaning-reports-ets">Статус по уборке</MenuItem>
                 <MenuItem active={path === '/daily-cleaning-reports-cafap'} href="#/daily-cleaning-reports-cafap">Статус по уборке (ЦАФАП)</MenuItem>
-                <MenuItem active={path === '/cleaning-status-tech-op-report'} href="#/cleaning-status-tech-op-report">Статус по выполнению технологических операций</MenuItem>
+                <MenuItem active={path === '/cleaning-status-tech-op-report'} href="#/cleaning-status-tech-op-report">Статус по выполнению городских заданий</MenuItem>
               </NavDropdown>
               <NavDropdown title="Графические отчеты" id="nav-dropdown-3-3">
                 <MenuItem active={path === '/coverage-report'} href="#/coverage-report">

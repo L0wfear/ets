@@ -78,14 +78,19 @@ const getTableMeta = (props) => {
       },
       {
         name: 'car_special_model_name',
-        displayName: 'Модель ТС/Марка шасси',
+        displayName: 'Модель ТС',
         type: 'string',
+        filter: {
+          type: 'advanced-string-like',
+        },
       },
       {
         name: 'car_model_name',
         displayName: 'Марка шасси',
         type: 'string',
-        display: false,
+        filter: {
+          type: 'advanced-string-like',
+        },
       },
       {
         name: 'garage_number',
@@ -261,11 +266,6 @@ export default (props) => {
     plan_departure_date: ({ data }) => <DateFormatter date={data} time />,
     fact_departure_date: ({ data }) => <DateFormatter date={data} time />,
     fact_arrival_date: ({ data }) => <DateFormatter date={data} time />,
-    car_special_model_name: (meta) => {
-      const spModel = meta.data === null ? '- ' : meta.data;
-      const model = meta.rowData.car_model_name === null ? ' -' : meta.rowData.car_model_name;
-      return <div className="white-space-pre-wrap">{`${spModel}/${model}`}</div>;
-    },
     all_missions_completed_or_failed: ({ data }) => <div>{waybillMissionsCompleteStatusLabelFunction(data)}</div>,
     structure_id: ({ data }) => <div>{props.structures.find(s => s.id === data) ? props.structures.find(s => s.id === data).name : ''}</div>,
   };

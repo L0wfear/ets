@@ -60,7 +60,7 @@ function singleFilterTypeHandler(SourcerFilterInput) {
           ({ inputValue, fieldName }) => {
             const val = filterValueMaker(inputValue, this.props.type);
 
-            return isEqualOr(['', null, undefined], val[0]) ? null : { [`${fieldName}__like`]: val[0] };
+            return isEqualOr(['', null, undefined], val[0]) ? null : { [`${fieldName}__like`]: `%${val[0]}%` };
           },
         ],
         [

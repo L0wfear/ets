@@ -29,7 +29,8 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     super();
     this.state = {
       filterResetting: false,
-      fetchedByButton: false,
+      fetchedBySubmitButton: false,
+      fetchedByMoveDownButton: false,
       exportFetching: false,
     };
   }
@@ -53,8 +54,8 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
        * Первый запрос с кнопки меняет урл, поэтому происходит повторный запрос.
        * Данная проверка исключает такую ситуацию.
        */
-      if (this.state.fetchedByButton) {
-        this.setState({ fetchedByButton: false });
+      if (this.state.fetchedBySubmitButton) {
+        this.setState({ fetchedBySubmitButton: false });
         return;
       }
 
@@ -77,20 +78,24 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         const data = await this.props.getReportData(this.props.serviceName, query);
         const hasSummaryLevel = 'summary' in data.result.meta.levels;
 
-        if (data.result.rows.length > 0) {
+        if (this.state.fetchedByMoveDownButton) {
+          this.props.setSummaryTableData({
+            summaryList: [this.props.prevList[0]],
+            summaryMeta: {...this.props.prevMeta},
+            summaryTableMetaInfo: [...this.props.prevTableMetaInfo.fields],
+          });
+          this.setState({ fetchedByMoveDownButton: false });
+        } else if (hasSummaryLevel) {
+          const summaryQuery = {
+            ...query,
+            level: data.result.meta.levels.summary.level,
+          };
 
-          if (hasSummaryLevel) {
-            const summaryQuery = {
-              ...query,
-              level: data.result.meta.levels.summary.level,
-            };
-
-            await this.props.getReportData(
-              this.props.serviceName,
-              summaryQuery,
-              'summary',
-            );
-          }
+          await this.props.getReportData(
+            this.props.serviceName,
+            summaryQuery,
+            'summary',
+          );
         }
 
         if (data.result.rows.length === 0) {
@@ -126,7 +131,6 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
           return;
         }
 
-
         const query = {
           ...headerData,
           level: data.result.meta.levels.current.level,
@@ -139,7 +143,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
           this.props.history.pushState(null, this.props.reportUrl, query);
 
           return {
-            fetchedByButton: true,
+            fetchedBySubmitButton: true,
           };
         });
 
@@ -194,7 +198,14 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     const filterDifference = difference(currentLevelFilters, lowerLevelFilters);
     const filteredQuery = omit(query, filterDifference);
 
-    this.props.history.pushState(null, this.props.reportUrl, filteredQuery);
+    this.setState(prevState => {
+      this.props.history.pushState(null, this.props.reportUrl, filteredQuery);
+
+      return {
+        fetchedByMoveDownButton: true,
+      };
+    });
+
   }
 
   handleMoveUp = () => {

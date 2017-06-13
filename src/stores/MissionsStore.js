@@ -118,13 +118,12 @@ export function getDefaultMission(date_start = getToday9am(), date_end = getTomo
 }
 
 export function getDefaultDutyMission() {
-  // let dates = getDatesByShift();
   return {
     status: 'not_assigned',
     plan_date_start: getToday9am(),
     plan_date_end: getTomorrow9am(),
-    fact_date_start: getToday9am(),
-    fact_date_end: getTomorrow9am(),
+    fact_date_start: null,
+    fact_date_end: null,
     brigade_employee_id_list: [],
     comment: '',
     car_mission_id: 0,

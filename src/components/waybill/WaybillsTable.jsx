@@ -207,6 +207,15 @@ const getTableMeta = (props) => {
         },
       },
       {
+        name: 'fuel_given',
+        displayName: 'Топливо. Выдано, л',
+        cssClassName: 'width20',
+        type: 'number',
+        filter: {
+          type: 'advanced-string',
+        },
+      },
+      {
         name: 'fuel_end',
         displayName: 'Топливо. Возврат',
         cssClassName: 'width20',

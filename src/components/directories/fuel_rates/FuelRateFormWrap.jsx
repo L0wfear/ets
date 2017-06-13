@@ -19,7 +19,7 @@ export default class FuelRateFormWrap extends FormWrap {
 
   render() {
     const props = this.props;
-    console.log('form state', this.state.formState);
+
     return props.showForm ?
       <FuelRateForm
         formState={this.state.formState}

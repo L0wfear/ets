@@ -12,7 +12,7 @@ const nsiRoutes = (props) => {
       <Route path="faxogramms" component={directories.faxogramm} onEnter={requireAuth} />
       <Route path="fuel-rates" component={directories.fuelRates} onEnter={requireAuth} />
       <Route path="fuel-operations" component={directories.fuelOperations} onEnter={requireAuth} />
-      <Route path="organizations" component={directories.organizations} onEnter={requireAuth} />
+      <Route path="companies" component={directories.organizations} onEnter={requireAuth} />
       <Route path="technical-operations" component={directories.technicalOperations} onEnter={requireAuth} />
       <Route path="car-func-types" component={directories.carTypes} onEnter={requireAuth} />
       <Route path="cars" component={directories.cars} onEnter={requireAuth} />

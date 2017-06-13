@@ -66,6 +66,11 @@ export default class ObjectsActions extends Actions {
     return OrganizationsService.get();
   }
 
+  updateOrganizations(formState) {
+    const payload = _.clone(formState);
+    return OrganizationsService.path(formState.id).put(payload, this.getOrganizations, 'json');
+  }
+
   getWorkKinds() {
     return WorkKindsService.get();
   }

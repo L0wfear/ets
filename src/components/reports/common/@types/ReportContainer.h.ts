@@ -11,6 +11,7 @@ export interface IPropsReportContainer extends
    * AC. Gets report meta info and report data
    */
   setInitialState: ReduxTypes.ISetInitialState;
+  setSummaryTableData: ReduxTypes.ISetSummaryTableDataState;
   getReportData(
     serviceName: string,
     getOpts?: object,
@@ -21,6 +22,7 @@ export interface IPropsReportContainer extends
 
 export interface IStateReportContainer {
   filterResetting: boolean;
-  fetchedByButton: boolean;
+  fetchedBySubmitButton: boolean;
+  fetchedByMoveDownButton: boolean;
   exportFetching: boolean;
 }

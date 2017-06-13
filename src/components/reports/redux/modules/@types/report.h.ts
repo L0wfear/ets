@@ -35,16 +35,25 @@ interface IReportMetaLevels {
 export interface IReportMeta {
   fields?: IReportMetaField[];
   levels?: IReportMetaLevels;
+  name?: string;
   [field: string]: any;
 }
 
-export interface IReportStateProps {
-  list: object[];
-  meta: IReportMeta;
+interface ISummaryTableData {
   summaryList: object[];
   summaryMeta: IReportMeta;
-  tableMetaInfo: IReportTableMeta;
   summaryTableMetaInfo: IReportMetaField[];
+}
+
+export interface IReportStateProps extends ISummaryTableData {
+  list: object[];
+  meta: IReportMeta;
+  tableMetaInfo: IReportTableMeta;
+
+  prevList: object[];
+  prevMeta: IReportMeta;
+  prevTableMetaInfo: IReportTableMeta;
+
   reportMetaFetching: boolean;
   reportDataFetching: boolean;
 }
@@ -59,3 +68,4 @@ export type IGetReportData = (
 ) => (dispatch: any) => ReportDataPromise;
 
 export type ISetInitialState = () => object;
+export type ISetSummaryTableDataState = (tableData: ISummaryTableData) => object;

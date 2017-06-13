@@ -6,6 +6,7 @@ import * as ReduxTypes from './@types/report.h';
 type IState = ReduxTypes.IReportStateProps;
 
 const SET_INITIAL_STATE = 'SET_INITIAL_STATE';
+const SET_SUMMARY_TABLE_DATA = 'SET_SUMMARY_TABLE_DATA';
 const GET_REPORT_DATA = 'GET_REPORT_DATA';
 const GET_REPORT_DATA_START = 'GET_REPORT_DATA_START';
 const GET_REPORT_DATA_DONE = 'GET_REPORT_DATA_DONE';
@@ -28,6 +29,17 @@ const initialState: IState = {
   tableMetaInfo: {
     fields: [],
   },
+
+  prevList: [],
+  prevMeta: {
+    levels: {
+      current: {},
+    },
+  },
+  prevTableMetaInfo: {
+    fields: [],
+  },
+
   summaryList: [],
   summaryMeta: {},
   summaryTableMetaInfo: [],
@@ -102,6 +114,13 @@ const getReportDataReducer = (state: IState, { payload }) => {
     },
     meta: data.result.meta,
     list: data.result.rows,
+
+    prevTableMetaInfo: {
+      ...state.tableMetaInfo,
+    },
+    prevMeta: { ...state.meta },
+    prevList: [...state.list],
+
     summaryList: [],
     summaryMeta: {},
     summaryTableMetaInfo: [],
@@ -115,11 +134,26 @@ const getReportDataReducer = (state: IState, { payload }) => {
   return newState;
 };
 
+export const setSummaryTableData: ReduxTypes.ISetSummaryTableDataState = tableData => ({
+  type: 'SET_SUMMARY_TABLE_DATA',
+  payload: {
+    ...tableData,
+  },
+});
+
+export const setSummaryTableDataReducer = (state, { payload: { summaryTableMetaInfo, summaryMeta, summaryList } }) => ({
+  ...state,
+  summaryTableMetaInfo,
+  summaryMeta,
+  summaryList,
+});
+
 export const setInitialState: ReduxTypes.ISetInitialState = () => ({ type: 'SET_INITIAL_STATE' });
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case SET_INITIAL_STATE: return initialState;
+    case SET_SUMMARY_TABLE_DATA: return setSummaryTableDataReducer(state, action);
     case GET_REPORT_DATA: return getReportDataReducer(state, action);
     case GET_TABLE_METAINFO: return getTableMetaInfoReducer(state, action);
 

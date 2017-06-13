@@ -28,7 +28,7 @@ const getTableMeta = (props) => {
         filter: false,
       },
       {
-        name: 'left',
+        name: 'left_percentage',
         displayName: `Осталось (${props.data[0] && props.data[0].route_check_unit})`,
         type: 'string',
         filter: false,
@@ -57,11 +57,11 @@ const MissionReportByDTTable = (props) => {
         {`(${`${parseFloat(parseFloat(data.data) * 100).toFixed(0)}%`})`}
       </div>
     ),
-    left: data => (
+    left_percentage: data => (
       <div>
-        {`${data.rowData.route_check_unit === 'раз' ? parseInt(data.data, 10) : parseFloat(data.data).toFixed(2)} ${data.rowData.route_check_unit}`}
+        {`${data.rowData.route_check_unit === 'раз' ? parseInt(data.rowData.left, 10) : parseFloat(data.rowData.left).toFixed(2)} ${data.rowData.route_check_unit}`}
         <br />
-        {`(${`${parseFloat(parseFloat(data.rowData.left_percentage) * 100).toFixed(0)}%`})`}
+        {`(${`${parseFloat(parseFloat(data.data) * 100).toFixed(0)}%`})`}
       </div>
     ),
     check_value: meta => <div>{ `${meta.data} ${meta.rowData.route_check_unit}` }</div>,

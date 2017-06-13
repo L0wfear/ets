@@ -6,28 +6,47 @@ export default class NotificationsStore extends Store {
   constructor(flux) {
     super();
 
-    const missionsActons = flux.getActions('missions');
+    const missionsActions = flux.getActions('missions');
     const reportsActions = flux.getActions('reports');
-    const routesActions = flux.getActions('routes');
-    const waybillsActions = flux.getActions('waybills');
 
-    this.register(missionsActons.createMission, this.handleMissionCreate);
-    this.register(missionsActons.createMissions, this.handleMissionsCreate);
+    const saveNotificationQueue = [
+      {
+        actions: flux.getActions('odh'),
+        actionNames: ['createODHNorm', 'updateODHNorm'],
+      },
+      {
+        actions: flux.getActions('routes'),
+        actionNames: ['createRoute', 'updateRoute', 'updateRoute'],
+      },
+      {
+        actions: flux.getActions('waybills'),
+        actionNames: ['updateWaybill', 'createWaybill'],
+      },
+      {
+        actions: missionsActions,
+        actionNames: [
+          'createDutyMissionTemplate',
+          'updateMission',
+          'updateMissionTemplate',
+          'createDutyMissions',
+          'updateDutyMissionTemplate',
+        ],
+      },
+    ];
+
+    saveNotificationQueue.forEach(opts =>
+      opts.actionNames.forEach(name =>
+        this.register(opts.actions[name], this.handleSave)
+    ));
+
+
+    // this.register(missionsActions.updateMissionFromReassignation, this.handleSave);
+    // this.register(missionsActions.createMissionFromReassignation, this.handleSave);
+
+    this.register(missionsActions.createMission, this.handleMissionCreate);
+    this.register(missionsActions.createMissions, this.handleMissionsCreate);
     this.register(reportsActions.getOdhCoverageReport, this.handleGetCoverageReport);
     this.register(reportsActions.getDtCoverageReport, this.handleGetCoverageReport);
-
-    this.register(missionsActons.updateMission, this.handleSave);
-    this.register(missionsActons.updateMissionTemplate, this.handleSave);
-    this.register(missionsActons.createDutyMissions, this.handleSave);
-    this.register(missionsActons.updateDutyMissionTemplate, this.handleSave);
-    this.register(missionsActons.createDutyMissionTemplate, this.handleSave);
-    // this.register(missionsActons.updateMissionFromReassignation, this.handleSave);
-    // this.register(missionsActons.createMissionFromReassignation, this.handleSave);
-    this.register(routesActions.createRoute, this.handleSave);
-    this.register(routesActions.updateRoute, this.handleSave);
-    this.register(routesActions.updateRoute, this.handleSave);
-    this.register(waybillsActions.updateWaybill, this.handleSave);
-    this.register(waybillsActions.createWaybill, this.handleSave);
 
     this.state = {
       operationsCount: 0,
@@ -63,5 +82,4 @@ export default class NotificationsStore extends Store {
   handleSave() {
     global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
   }
-
 }

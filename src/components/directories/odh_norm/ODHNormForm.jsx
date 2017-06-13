@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import Div from 'components/ui/Div.jsx';

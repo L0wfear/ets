@@ -204,7 +204,7 @@ export default class CarInfo extends Component {
     const isTrackLoaded = marker.hasTrackLoaded();
 
     const trackBtnClass = cx('toggle-tracking-mode', 'btn-sm', 'btn', 'track-btn', { tracking: trackingMode, 'btn-default': !trackingMode });
-    const trackBtnIconClass = cx('glyphicon', 'glyphicon-screenshot', { 'tracking-animate': trackingMode });
+    const trackBtnIconClass = cx('glyphicon', 'glyphicon-screenshot', { 'tracking-animate': false });
     const zoomToTrackClass = cx('zoom-to-track-extent', 'btn-sm', 'btn', { 'btn-default': isTrackLoaded, 'btn-disabled': !isTrackLoaded });
 
     return (
@@ -225,7 +225,7 @@ export default class CarInfo extends Component {
     const marker = this.props.car.marker;
     const isTrackLoaded = marker.hasTrackLoaded();
     const tillNow = this.state.tillNow;
-    const reloadBtnCN = cx('glyphicon', 'glyphicon-repeat', { 'tracking-animate': tillNow && marker.hasTrackLoaded() });
+    const reloadBtnCN = cx('glyphicon', 'glyphicon-repeat', { 'tracking-animate': false });
 
     // const store = this.store;
     // const showGradient = store.state.showTrackingGradient;

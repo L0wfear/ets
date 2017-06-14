@@ -3,7 +3,6 @@ import * as React from 'react';
 import { IReportProps } from 'components/reports/@types/common.h';
 
 import { bindable } from 'utils/decorators';
-import { multiselectFilterSchema, commonSchemaMakers } from 'components/reports/common/utils';
 import ReportHeader from './ReportHeader';
 
 export const serviceUrl = '/reports/efficiency/brigade';
@@ -21,12 +20,7 @@ const DutyNumberLinkComponent: React.StatelessComponent<IPropsDutyNumberLink> = 
 
 const DutyNumberLink: any = bindable(DutyNumberLinkComponent);
 
-
-const schemaMakers = {
-  ...commonSchemaMakers,
-  technical_operation_name: schema => multiselectFilterSchema(schema),
-  foreman_name: schema => multiselectFilterSchema(schema),
-};
+const schemaMakers = {};
 
 export const renderers = onDutyNumberLinkClick => ({
   number: meta =>

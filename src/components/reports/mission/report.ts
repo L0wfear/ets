@@ -3,7 +3,6 @@ import { withProps } from 'recompose';
 import { IReportProps } from 'components/reports/@types/common.h';
 
 import { exportable } from 'utils/decorators';
-import { multiselectFilterSchema, commonSchemaMakers } from 'components/reports/common/utils';
 import ReportContainer from 'components/reports/common/ReportContainer';
 import ReportHeader from './ReportHeader';
 
@@ -11,10 +10,7 @@ const serviceUrl = 'car_travel_report';
 const reportUrl = 'mission-reports';
 const serviceName = 'MissionReportsService';
 
-const schemaMakers = {
-  ...commonSchemaMakers,
-  city_name: schema => multiselectFilterSchema(schema),
-};
+const schemaMakers = {};
 
 const renderers = {};
 

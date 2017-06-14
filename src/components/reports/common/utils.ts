@@ -16,19 +16,7 @@ export function noFilterSchema(schema: IDataTableColSchema): IDataTableColSchema
   };
 }
 
-type ICommonSchemaMakerFunction = (schema: IDataTableColSchema) => IDataTableColSchema;
-
-interface ICommonSchemaMakers {
-  okrug_name: ICommonSchemaMakerFunction;
-  district_name: ICommonSchemaMakerFunction;
-  company_name: ICommonSchemaMakerFunction;
-}
-
-export const commonSchemaMakers: ICommonSchemaMakers = {
-  okrug_name: schema => multiselectFilterSchema(schema),
-  district_name: schema => multiselectFilterSchema(schema),
-  company_name: schema => multiselectFilterSchema(schema),
-};
+export type ICommonSchemaMakerFunction = (schema: IDataTableColSchema) => IDataTableColSchema;
 
 /**
  * Преобразовываем параметры урла в валидные для селект-листа данные.

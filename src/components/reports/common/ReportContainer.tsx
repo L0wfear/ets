@@ -237,6 +237,9 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       const initialSchema: IDataTableColSchema = {
         name: fieldName,
         displayName: fieldValue.name,
+        filter: {
+          type: 'multiselect',
+        },
       };
 
       const renderer = schemaMakers[fieldName] || identity;

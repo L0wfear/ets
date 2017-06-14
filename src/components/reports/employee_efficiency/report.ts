@@ -3,7 +3,6 @@ import { withProps } from 'recompose';
 import { IReportProps } from 'components/reports/@types/common.h';
 
 import { exportable } from 'utils/decorators';
-import { multiselectFilterSchema, commonSchemaMakers } from 'components/reports/common/utils';
 import ReportContainer from 'components/reports/common/ReportContainer';
 import ReportHeader from './ReportHeader';
 
@@ -12,13 +11,7 @@ const reportUrl = 'employee-efficiency-report';
 const serviceName = 'EmployeeEfficiencyReport';
 
 
-const schemaMakers = {
-  ...commonSchemaMakers,
-  fuel_type_name: schema => multiselectFilterSchema(schema),
-  car_model_name: schema => multiselectFilterSchema(schema),
-  car_gov_number: schema => multiselectFilterSchema(schema),
-  employee_name: schema => multiselectFilterSchema(schema),
-};
+const schemaMakers = {};
 
 const renderers = {};
 

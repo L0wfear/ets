@@ -4,7 +4,6 @@ import * as React from 'react';
 import { IReportProps } from 'components/reports/@types/common.h';
 
 import { exportable } from 'utils/decorators';
-import { multiselectFilterSchema, commonSchemaMakers } from 'components/reports/common/utils';
 import ReportContainer from 'components/reports/common/ReportContainer';
 import ReportHeader from './ReportHeader';
 import Title from './Title';
@@ -14,10 +13,7 @@ const reportUrl = 'car-usage-report';
 const serviceName = 'CarUsageReportService';
 
 
-const schemaMakers = {
-  ...commonSchemaMakers,
-  func_type_group: schema => multiselectFilterSchema(schema),
-};
+const schemaMakers = {};
 
 const renderers = {};
 

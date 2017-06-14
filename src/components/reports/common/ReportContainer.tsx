@@ -252,6 +252,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     const {
       enumerated = false,
       enableSort = true,
+      initialSort = false,
       schemaMakers,
       tableMetaInfo,
       summaryTableMetaInfo,
@@ -292,6 +293,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         onRowSelected={undefined}
         enumerated={false}
         enableSort={false}
+        initialSort={false}
         noFilter
       />
     );
@@ -327,6 +329,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
           enumerated={enumerated}
           enableSort={enableSort}
           filterResetting={this.state.filterResetting}
+          initialSort={initialSort}
           {...this.props.tableProps}
         >
           <Button

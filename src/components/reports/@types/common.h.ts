@@ -9,6 +9,7 @@ export interface IReportProps {
   reportUrl: string;
   tableProps?: any;
   enumerated?: boolean;
+  initialSort?: boolean;
   enableSort?: boolean;
   headerComponent: any;
   renderers?: ISchemaRenderer;

@@ -24,5 +24,6 @@ export interface IStateReportContainer {
   filterResetting: boolean;
   fetchedBySubmitButton: boolean;
   fetchedByMoveDownButton: boolean;
+  selectedRowNumber: number;
   exportFetching: boolean;
 }

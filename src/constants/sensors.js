@@ -24,5 +24,5 @@ const data = {
 
 export const sensorsMapOptions = (index, maxSpeed = 0) => ({
   color: data[index].color,
-  value: maxSpeed * data[index].ratio,
-})
+  value: maxSpeed === 10 ? maxSpeed - (15 * index) : maxSpeed - (10 * index),
+});

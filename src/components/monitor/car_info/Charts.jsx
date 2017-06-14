@@ -56,7 +56,7 @@ export default class Charts extends Component {
   }
 
   renderSpeedChart() {
-    const { points } = this.props.car.marker.track;
+    const { points, sensors } = this.props.car.marker.track;
     if (!points) return 'Загрузка...';
     if (!points.length) return 'Нет данных';
     const timestamps = points.map(p => p.timestamp);
@@ -70,7 +70,7 @@ export default class Charts extends Component {
       const sensorOptions = sensorsMapOptions(i, this.props.car.marker.track.maxSpeed);
       const values = sensorsList[id].map(s => [s.timestamp, s.val ? sensorOptions.value : 0]);
       sensorsData.push({
-        name: `Датчик №${i + 1}`,
+        name: `Датчик №${i + 1} - ${sensors[id] && sensors[id].type_name}`,
         enableMouseTracking: false,
         connectNulls: false,
         color: sensorOptions.color,

@@ -35,6 +35,7 @@ export default class ToolbarFilters extends Component {
       <Filter
         key={'carTypesFilter'}
         name="type"
+        valueField={'asuods_id'}
         title="Тип техники"
         options={carTypes}
         search

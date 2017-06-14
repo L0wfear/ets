@@ -28,12 +28,19 @@ export default class Filter extends Component {
       onFilterChange: PropTypes.func,
       search: PropTypes.bool,
       options: PropTypes.arrayOf(PropTypes.object),
+      valueField: PropTypes.string,
     };
   }
 
   static get contextTypes() {
     return {
       flux: PropTypes.object,
+    };
+  }
+
+  static get defaultProps() {
+    return {
+      valueField: 'id',
     };
   }
 
@@ -56,7 +63,7 @@ export default class Filter extends Component {
   }
 
   onChange(value) {
-    value = value.map(i => i.id);
+    value = value.map(i => i[this.props.valueField]);
     this.onSomethingChange(value);
   }
 
@@ -74,7 +81,7 @@ export default class Filter extends Component {
     return (
       <div className="app-toolbar-filter">
         <Multiselect
-          valueField="id"
+          valueField={this.props.valueField}
           textField="title"
           defaultValue={[]}
           data={options}
@@ -93,7 +100,7 @@ export default class Filter extends Component {
     return (
       <div>
         <input
-          valueField="id"
+          valueField={this.props.valueField}
           textField="title"
           defaultValue={[]}
           placeholder={this.props.title}
@@ -119,7 +126,7 @@ export default class Filter extends Component {
       <div className="app-toolbar-filter">
         <span className="title">{this.props.title}</span>
         <DropdownList
-          valueField="id"
+          valueField={this.props.valueField}
           textField="title"
           defaultValue={null}
           data={options}

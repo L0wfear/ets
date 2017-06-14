@@ -244,6 +244,7 @@ const getTableMeta = (props) => {
         name: 'comment',
         displayName: 'Комментарий',
         type: 'string',
+        cssClassName: 'min-width200',
         filter: false,
       },
     ],

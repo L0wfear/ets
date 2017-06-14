@@ -202,6 +202,13 @@ const closingProperties = [
     float: 3,
     validation: false,
   },
+  {
+    key: 'comment',
+    title: 'Комментарий',
+    type: 'string',
+    required: false,
+    maxLength: 256,
+  },
 ];
 
 const closingDependencies = {

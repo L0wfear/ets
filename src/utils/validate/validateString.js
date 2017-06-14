@@ -16,6 +16,24 @@ const fixedValidators = [
       return typeof data !== 'string' ? `Поле ${config.title || config.key} должно быть строкой` : undefined;
     },
   },
+  {
+    name: 'length',
+    validator(config, data) {
+      if (typeof data !== 'string') {
+        return undefined;
+      }
+
+      if (data.length < config.minLength) {
+        return `Длина поля должна быть больше минимального количества символов (${config.minLength})`;
+      }
+
+      if (data.length > config.maxLength) {
+        return `Длина поля не должна превышать максимальное количество символов (${config.maxLength})`;
+      }
+
+      return undefined;
+    },
+  },
 ];
 
 export function validate(config, data) {

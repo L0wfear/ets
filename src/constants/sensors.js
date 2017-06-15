@@ -26,3 +26,10 @@ export const sensorsMapOptions = (index, maxSpeed = 0) => ({
   color: data[index].color,
   value: maxSpeed === 10 ? maxSpeed - (15 * index) : maxSpeed - (10 * index),
 });
+
+export const sensorTrackColor = {
+  1: '#ffff00',
+  2: '#0000ff',
+  3: '#800080',
+  4: '#ffa500',
+};

@@ -27,9 +27,19 @@ export const sensorsMapOptions = (index, maxSpeed = 0) => ({
   value: maxSpeed === 10 ? maxSpeed - (15 * index) : maxSpeed - (10 * index),
 });
 
-export const sensorTrackColor = {
-  1: '#ffff00',
-  2: '#0000ff',
-  3: '#800080',
-  4: '#ffa500',
+export const sensorTrackColor = [
+  '#607D8B',
+  '#FFEB3B',
+  '#2196F3',
+  '#673AB7',
+  '#FF9800',
+];
+
+export const getTrackSensorColor = (selectedSensors, trackSensors) => {
+  if (trackSensors) {
+    const sensorCount = trackSensors.filter(s => selectedSensors.includes(`${s.id}`)).length;
+    return sensorTrackColor[sensorCount];
+  }
+
+  return sensorTrackColor[0];
 };

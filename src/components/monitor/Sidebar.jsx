@@ -33,6 +33,10 @@ export default class Sidebar extends Component {
     let store;
     if (selected) {
       store = this.props.flux.getStore('points');
+      selected.marker.track.sensorsState = {
+        equipment: [],
+        level: [],
+      };
       store.handleSelectPoint(false);
     } else if (selectedFeature) {
       store = this.props.flux.getStore('geoObjects');

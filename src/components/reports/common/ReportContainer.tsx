@@ -179,7 +179,6 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
   }
 
   handleMoveDown = (selectedRow: IDataTableSelectedRow) => {
-    console.log('row', selectedRow);
     const moveDownIsPermitted = 'lower' in this.props.meta.levels;
     if (!moveDownIsPermitted) {
       return;

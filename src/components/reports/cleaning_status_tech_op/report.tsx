@@ -12,7 +12,12 @@ const serviceUrl = 'cleaning_status_tech_op_report';
 const reportUrl = 'cleaning-status-tech-op-report';
 const serviceName = 'CleaningStatusTechOpReportService';
 
-const schemaMakers = {};
+const schemaMakers = {
+  cars_gov_numbers: schema => ({
+    ...schema,
+    filter: false,
+  }),
+};
 
 const renderers = {
   cars_gov_numbers: ({ data }) => <span>{data.join(', ')}</span>,

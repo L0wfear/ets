@@ -52,3 +52,5 @@ export const REPORT_STATUSES = {
   wait: 'В очереди',
   default: 'Н/Д',
 };
+
+export const LOAD_PROCESS_TEXT = 'Загрузка...';

@@ -1,16 +1,45 @@
 import React, { Component, PropTypes } from 'react';
+import { groupBy, flatten, get } from 'lodash';
 import { autobind } from 'core-decorators';
-import { TRACK_COLORS } from 'constants/track.js';
-import groupBy from 'lodash/groupBy';
-import flatten from 'lodash/flatten';
 import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
+import cx from 'classnames';
+
+import { sensorTrackColor } from 'constants/sensors';
+import { LOAD_PROCESS_TEXT } from 'constants/statuses';
+import { TRACK_COLORS } from 'constants/track.js';
 import { makeDateFromUnix, getStartOfToday } from 'utils/dates';
 import Panel from 'components/ui/Panel.jsx';
 import DatePicker from 'components/ui/DatePicker.jsx';
-import cx from 'classnames';
 import config from '../../../config.js';
 import Charts from './Charts.jsx';
 import VehicleInfo from './VehicleInfo.jsx';
+
+const SensorColorLegend = ({ colors }) => {
+  const rectStyle = {
+    width: 30,
+    height: 10,
+    display: 'inline-block',
+    marginRight: 10,
+    border: '1px solid black',
+  };
+
+  const itemStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    cursor: 'default',
+  };
+
+  const items = colors.map((color, i) => (
+    <div style={itemStyle}>
+      <div style={{ ...rectStyle, backgroundColor: color }} />
+      <span>{`${i + 1} ${i === 0 ? 'датчик' : 'датчика'} в работе`}</span>
+    </div>
+  ));
+
+  return (
+    <div>{items}</div>
+  );
+};
 
 
 /* eslint-disable no-underscore-dangle */
@@ -59,6 +88,10 @@ export default class CarInfo extends Component {
       this.fetchCarInfo(props);
       this.fetchTrack(props);
       this.stopTrackPlaying();
+      props.car.marker.track.sensorsState = {
+        equipment: [],
+        level: [],
+      };
       this.setState({
         trackPaused: 'stopped',
         sensors: {
@@ -307,13 +340,23 @@ export default class CarInfo extends Component {
         </div>
         <div className="car-info-sensors-toggle">
           <label>Датчики навесного оборудования</label>
-          {equipmentIdList.map((id, i) => (
-            <div key={id} onClick={() => this.toggleSensor('equipment', id)}>
-              <input type="checkbox" onChange={() => {}} checked={this.state.sensors.equipment.includes(id) && 'checked'} />
-              {` Датчик №${i + 1} - ${this.state.sensorsInfo[id] && this.state.sensorsInfo[id].type_name}`}
-            </div>
-          ))}
+          {
+            equipmentIdList.map((id, i) => {
+              const sensorName = get(this.state.sensorsInfo, [id, 'type_name']);
+              return (
+                <div key={id} onClick={() => this.toggleSensor('equipment', id)}>
+                  <input type="checkbox" onChange={() => {}} checked={this.state.sensors.equipment.includes(id) && 'checked'} />
+                  {` Датчик №${i + 1} - ${sensorName || LOAD_PROCESS_TEXT}`}
+                </div>
+              );
+            })
+        }
         </div>
+        {equipmentIdList.length > 0 &&
+          <div className="car-info-sensors-toggle" >
+            <SensorColorLegend colors={sensorTrackColor.slice(1)} />
+          </div>
+        }
       </div>
     );
   }

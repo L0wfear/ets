@@ -1,11 +1,12 @@
 import React from 'react';
-import isEqual from 'lodash/isEqual';
+
+import { isEqual, get, pick, toArray } from 'lodash';
 
 import { getStartOfToday, makeDate, makeTime, secondsToTime } from 'utils/dates';
 import { swapCoords, roundCoordinates } from 'utils/geo';
 import { isEmpty, hexToRgba } from 'utils/functions';
 import { TRACK_COLORS, TRACK_LINE_OPACITY, TRACK_LINE_WIDTH, TRACK_POINT_RADIUS, SHOW_ONLY_POINTS_WITH_SPEED_CHANGES } from 'constants/track.js';
-import { sensorsMapOptions } from 'constants/sensors.js';
+import { getTrackSensorColor } from 'constants/sensors.js';
 import { getTrackPointByColor } from '../../icons/track/points.js';
 import ParkingIcon from '../../icons/track/parking.svg';
 import FuelIcon1 from '../../icons/track/oil-01.png';
@@ -341,15 +342,7 @@ export default class Track {
     let prevRgbaColor = getTrackColor(track[0].speed_avg, this.maxSpeed, TRACK_LINE_OPACITY);
 
     if (this.sensorsState.equipment.length) {
-      if (track[0].sensors && track[0].sensors.equipment) {
-        track[0].sensors.equipment.forEach((s, index) => {
-          if (this.sensorsState.equipment.includes(`${s.id}`)) {
-            prevRgbaColor = sensorsMapOptions(index).color;
-          }
-        });
-      } else {
-        prevRgbaColor = 'rgba(134, 134, 134, 1)';
-      }
+      prevRgbaColor = getTrackSensorColor(this.sensorsState.equipment, get(track[0], ['sensors', 'equipment']));
     }
 
     ctx.strokeStyle = prevRgbaColor;
@@ -373,17 +366,8 @@ export default class Track {
       ctx.globalCompositeOperation = 'destination-over';
 
       if (this.sensorsState.equipment.length) {
-        if (p.sensors && p.sensors.equipment) {
-          p.sensors.equipment.forEach((s, index) => {
-            if (this.sensorsState.equipment.includes(`${s.id}`)) {
-              rgbaColor = sensorsMapOptions(index).color;
-              hexColor = sensorsMapOptions(index).color;
-            }
-          });
-        } else {
-          rgbaColor = 'rgba(134, 134, 134, 1)';
-          hexColor = '#8b8888';
-        }
+        rgbaColor = getTrackSensorColor(this.sensorsState.equipment, get(p, ['sensors', 'equipment']));
+        hexColor = getTrackSensorColor(this.sensorsState.equipment, get(p, ['sensors', 'equipment']));
       }
 
       // если предыдущий цвет не соответствует новому
@@ -603,17 +587,18 @@ export default class Track {
     const vectorObject = await flux.getActions('cars')
         .getVectorObject(trackPoint, prevPoint, nextPoint);
     const carsList = flux.getStore('objects').state.carsList;
+
     const car = carsList.find(c => c.gov_number === this.owner.point.car.gov_number);
     if (car) {
       missions = await flux.getActions('cars')
           .getCarMissionsByTimestamp(car.asuods_id, trackPoint.timestamp + 10800); // +3 часа
       missions = missions.result;
     }
-    let { nsat,
-          speed_avg,
-          speed_max,
-          timestamp,
-          distance } = trackPoint;
+
+    let { timestamp, distance } = trackPoint;
+    const { nsat, speed_avg, speed_max } = trackPoint;
+    const { track: { sensors } } = flux.getStore('objects').state;
+    const pointSensors = get(trackPoint, ['sensors', 'equipment']);
 
     const maxSpeed = parseInt(speed_max, 10);
     const speed = parseInt(speed_avg, 10);
@@ -629,6 +614,8 @@ export default class Track {
     return function makePopup() {
       let objectsString;
       let missionsString;
+      let sensorsString;
+      let sensorsVisibility = 'none';
       // Объекты на точке
       if (vectorObject.result && vectorObject.result[0] && vectorObject.result[1]) {
         if (vectorObject.result[0].asuods_id && vectorObject.result[1].asuods_id) {
@@ -650,6 +637,16 @@ export default class Track {
         missionsString = 'Нет выполняемых заданий';
       }
 
+      if (pointSensors) {
+        sensorsVisibility = 'block';
+        const sensorNames = toArray(pick(sensors, pointSensors.map(p => `${p.id}`)));
+        sensorsString = `
+          <div style="margin-bottom: 5px;">Работающие датчики навесного оборудования</div>
+          ${sensorNames.map((p, i) => `<div style="margin-left: 10px;">Датчик №${i + 1} - ${p.type_name}</div>`).join('')}
+        `;
+      }
+
+
       return `
         <div>
           <div class="header">
@@ -658,6 +655,7 @@ export default class Track {
           </div>
           <div class="geo-objects">${objectsString}</div>
           <div class="geo-objects">${missionsString}</div>
+          <div style="display: ${sensorsVisibility}" class="geo-objects">${sensorsString}</div>
           <div class="some-info">
             <div class="speed">V<sub>ср</sub> = ${!isNaN(speed) ? `${speed}км/ч` : 'Нет данных'}<br/>V<sub>макс</sub> = ${!isNaN(maxSpeed) ? `${maxSpeed}км/ч` : 'Нет данных'}</div>
             <div class="distance">${isNaN(distanceCount) ? 'Н/Д' : `${distanceCount}м`}</div>

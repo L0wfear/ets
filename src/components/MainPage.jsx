@@ -171,11 +171,13 @@ export default class MainPage extends React.Component {
                 <MenuItem active={path === '/daily-cleaning-reports-cafap'} href="#/daily-cleaning-reports-cafap">Статус по уборке (ЦАФАП)</MenuItem>
                 <MenuItem active={path === '/cleaning-status-tech-op-report'} href="#/cleaning-status-tech-op-report">Статус по выполнению городских заданий</MenuItem>
               </NavDropdown>
-              <NavDropdown title="Графические отчеты" id="nav-dropdown-3-3">
-                <MenuItem active={path === '/coverage-report'} href="#/coverage-report">
-                  Графический отчет покрытия объектов городского хозяйства (ОДХ, ДТ)
-                </MenuItem>
-              </NavDropdown>
+              {
+                // <NavDropdown title="Графические отчеты" id="nav-dropdown-3-3">
+                //   <MenuItem active={path === '/coverage-report'} href="#/coverage-report">
+                //     Графический отчет покрытия объектов городского хозяйства (ОДХ, ДТ)
+                //   </MenuItem>
+                // </NavDropdown>
+              }
               <MenuItem active={path === '/analytics'} href="#/analytics">Аналитика</MenuItem>
             </NavDropdown>
 

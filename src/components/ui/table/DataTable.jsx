@@ -14,6 +14,21 @@ import FilterButton from './filter/FilterButton.jsx';
 import Paginator from '../Paginator.jsx';
 import Div from '../Div.jsx';
 
+const getFilterTypeByKey = (key, tableMeta) => {
+  const col = _.find(tableMeta.cols, c => c.name === key);
+  const colFilterType = col.filter && col.filter.type ? col.filter.type : '';
+  return colFilterType;
+};
+
+const isStringArrayData = (filterValue, fieldValue, fieldKey, tableMeta) =>
+  typeof filterValue === 'string' &&
+  _.isArray(fieldValue) &&
+  getFilterTypeByKey(fieldKey, tableMeta) === 'string';
+
+const stringArrayDataMatching = (filterValue, fieldValueArray) =>
+  fieldValueArray.filter(v => v.match(filterValue) !== null).length > 0;
+
+
 @autobind
 export default class DataTable extends React.Component {
 
@@ -327,10 +342,8 @@ export default class DataTable extends React.Component {
     };
   }
 
-  getTypeByKey(key) {
-    const col = _.find(this.props.tableMeta.cols, c => c.name === key);
-    const colFilterType = col.filter && col.filter.type ? col.filter.type : '';
-    return colFilterType;
+  getFilterTypeByKey(key) {
+    return getFilterTypeByKey(key, this.props.tableMeta);
   }
 
   shouldBeRendered(obj) {
@@ -350,11 +363,11 @@ export default class DataTable extends React.Component {
         if (moment(obj[key]).format(global.APP_DATE_FORMAT) !== moment(value).format(global.APP_DATE_FORMAT)) {
           isValid = false;
         }
-      } else if (key.indexOf('date') > -1 && _.isArray(value) && this.getTypeByKey(key) !== 'date_interval') {
+      } else if (key.indexOf('date') > -1 && _.isArray(value) && this.getFilterTypeByKey(key) !== 'date_interval') {
         if (value.indexOf(moment(obj[key]).format(global.APP_DATE_FORMAT)) === -1) {
           isValid = false;
         }
-      } else if (key.indexOf('date') > -1 && _.isArray(value) && this.getTypeByKey(key) === 'date_interval') {
+      } else if (key.indexOf('date') > -1 && _.isArray(value) && this.getFilterTypeByKey(key) === 'date_interval') {
         const intervalPickerDate1 = moment(value[0]).toDate().getTime() || 0;
         const intervalPickerDate2 = moment(value[1]).toDate().getTime() || Infinity;
         const valueDate = moment(obj[key]).toDate().getTime();
@@ -378,6 +391,8 @@ export default class DataTable extends React.Component {
         } else if (value.indexOf(obj[key].toString()) === -1) {
           isValid = false;
         }
+      } else if (isStringArrayData(value, obj[key], key, this.props.tableMeta)) {
+        isValid = stringArrayDataMatching(value, obj[key]);
       } else if (obj[key] != value) {
         isValid = false;
       }

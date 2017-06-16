@@ -21,7 +21,7 @@ export type ICommonSchemaMakerFunction = (schema: IDataTableColSchema) => IDataT
 /**
  * Преобразовываем параметры урла в валидные для селект-листа данные.
  */
-export function parseSelectListQueryParams(query: any, params: Array<string> = []): any {
+export function parseMultiSelectListQueryParams(query: any, params: Array<string> = []): any {
   if (Object.keys(query).length === 0) {
     return query;
   }

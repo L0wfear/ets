@@ -157,7 +157,7 @@ export default class MainPage extends React.Component {
 
             <NavDropdown oneOfPermissions={[PERMISSIONS.report.list]} title="Отчеты" id="nav-dropdown-3">
               <NavDropdown title="Оперативные отчеты" id="nav-dropdown-3-1">
-                <MenuItem active={path === '/route-reports'} href="#/route-reports">Покрытие ОДХ маршрутами</MenuItem>
+                <MenuItem active={path === '/route-odh-coverage-report'} href="#/route-odh-coverage-report">Покрытие ОДХ маршрутами</MenuItem>
                 <MenuItem active={path === '/mission-reports'} href="#/mission-reports">Прохождение заданий</MenuItem>
                 <MenuItem active={path === '/car-usage-report'} href="#/car-usage-report">Статистика выхода техники</MenuItem>
                 <MenuItem active={path === '/track-events-reports'} href="#/track-events-reports">Отчет по возможным сливам топлива</MenuItem>

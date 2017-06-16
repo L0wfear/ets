@@ -1,4 +1,4 @@
-import { IResponseRowObject } from './rest.h';
+import { IResponseRowObject, INamedObject } from './rest.h';
 
 interface IStringHashTable {
   [field: string]: string;
@@ -19,6 +19,21 @@ export interface IVehicleType extends IResponseRowObject<number> {
   special_model_name: string;
   speed_limit: number;
   company_structure_id: string;
+}
+
+export interface ITechnicalOperationType extends IResponseRowObject<number> {
+  check_type: string;
+  check_type_name: string;
+  max_speed: number;
+  name: string;
+  needs_brigade: boolean;
+  object_name: string;
+  objects: INamedObject;
+  season_id: number;
+  season_name: string;
+  use_in_reports: boolean;
+  work_kind_id: number;
+  work_kind_name: string;
 }
 
   // "defaults": {

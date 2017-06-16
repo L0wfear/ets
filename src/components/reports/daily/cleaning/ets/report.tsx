@@ -4,7 +4,7 @@ import { withProps } from 'recompose';
 import { IReportProps } from 'components/reports/@types/common.h';
 
 import { exportable } from 'utils/decorators';
-import { parseSelectListQueryParams } from 'components/reports/common/utils';
+import { parseMultiSelectListQueryParams } from 'components/reports/common/utils';
 import ReportContainer from 'components/reports/common/ReportContainer';
 import ReportHeader from './ReportHeader';
 
@@ -18,7 +18,7 @@ const renderers = {
   cars_gov_numbers: ({ data }) => <span>{data.join(', ')}</span>,
 };
 
-const headerStateMaker = queryState => parseSelectListQueryParams(queryState, ['car_func_types_ids']);
+const headerStateMaker = queryState => parseMultiSelectListQueryParams(queryState, ['car_func_types_ids']);
 
 const reportProps: IReportProps = {
   title: 'Статус по уборке',

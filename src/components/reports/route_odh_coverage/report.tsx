@@ -3,25 +3,30 @@ import { withProps } from 'recompose';
 
 import { IReportProps } from 'components/reports/@types/common.h';
 
-import { exportable } from 'utils/decorators';
 import { parseMultiSelectListQueryParams } from 'components/reports/common/utils';
+import { exportable } from 'utils/decorators';
 import ReportContainer from 'components/reports/common/ReportContainer';
 import ReportHeader from './ReportHeader';
 
-const serviceUrl = 'cleaning_status_cafap_report';
-const reportUrl = 'daily-cleaning-reports-cafap';
-const serviceName = 'DailyCleaningReportsServiceCAFAP';
+const serviceUrl = 'route_odh_coverage_report';
+const reportUrl = 'route-odh-coverage-report';
+const serviceName = 'RouteODHCoverageReportService';
 
-const schemaMakers = {};
-
-const renderers = {
-  cars_gov_numbers: ({ data }) => <span>{data.join(', ')}</span>,
+const schemaMakers = {
+  routes_names: schema => ({
+    ...schema,
+    filter: {
+      type: 'string',
+    },
+  }),
 };
-
-const headerStateMaker = queryState => parseMultiSelectListQueryParams(queryState, ['car_func_types_groups']);
+const renderers = {
+  routes_names: ({ data }) => <span>{data.join(', ')}</span>,
+};
+const headerStateMaker = queryState => parseMultiSelectListQueryParams(queryState, ['technical_operations_ids']);
 
 const reportProps: IReportProps = {
-  title: 'Статус по уборке (ЦАФАП)',
+  title: 'Покрытие ОДХ маршрутами',
   enumerated: true,
   serviceName,
   reportUrl,

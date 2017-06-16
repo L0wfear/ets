@@ -12,3 +12,8 @@ export interface IResponseDataResult<RowType, MetaType> {
 export interface IResponseData<RowType, MetaType> {
   result: IResponseDataResult<RowType, MetaType>;
 }
+
+export interface INamedObject {
+  id: number;
+  name: string;
+}

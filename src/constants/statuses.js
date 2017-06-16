@@ -54,3 +54,4 @@ export const REPORT_STATUSES = {
 };
 
 export const LOAD_PROCESS_TEXT = 'Загрузка...';
+export const NO_DATA_TEXT = 'Нет данных';

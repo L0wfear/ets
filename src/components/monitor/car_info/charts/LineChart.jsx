@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import Highcharts from 'highcharts/highstock';
-import { makeTime, makeDate } from 'utils/dates';
 
+import { makeTime, makeDate } from 'utils/dates';
 
 export default class LineChart extends Component {
   static propTypes = {
@@ -15,12 +15,10 @@ export default class LineChart extends Component {
     this.createChart(this.props);
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.name !== this.props.name) {
-      this.chart.destroy();
-      this.chart = null;
-      this.createChart();
-    }
+  componentDidUpdate() {
+    this.chart.destroy();
+    this.chart = null;
+    this.createChart();
   }
 
   componentWillUnmount() {

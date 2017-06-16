@@ -30,7 +30,7 @@ const SensorColorLegend = ({ colors }) => {
   };
 
   const items = colors.map((color, i) => (
-    <div style={itemStyle}>
+    <div style={itemStyle} key={i}>
       <div style={{ ...rectStyle, backgroundColor: color }} />
       <span>{`${i + 1} ${i === 0 ? 'датчик' : 'датчика'} в работе`}</span>
     </div>
@@ -62,6 +62,7 @@ export default class CarInfo extends Component {
       imageUrl: null,
       trackPaused: 'stopped',
       trackingMode: false,
+      trackPoints: [],
       from_dt: getStartOfToday(),
       to_dt: new Date(),
       from_dt_: getStartOfToday(),
@@ -173,9 +174,10 @@ export default class CarInfo extends Component {
       }
     });
 
-    track.fetch(this.props.flux, from_dt, to_dt).then((tracks) => {
+    track.fetch(this.props.flux, from_dt, to_dt).then((trackInfo) => {
       this.setState({
-        sensorsInfo: tracks.sensors,
+        sensorsInfo: trackInfo.sensors,
+        trackPoints: trackInfo.track,
       });
     });
   }
@@ -382,7 +384,9 @@ export default class CarInfo extends Component {
           <Button className={this.state.tab === 2 && 'active'} onClick={() => this.setState({ tab: 2 })}>Трекинг</Button>
         </ButtonGroup>
         {tab === 0 && <VehicleInfo missions={missions} car={car} from_dt={from_dt} to_dt={to_dt} flux={this.props.flux} />}
-        {tab === 1 && <Charts car={car} />}
+        <div className={tab !== 1 ? 'hidden' : ''}>
+          <Charts trackPoints={this.state.trackPoints} car={car} />
+        </div>
         {tab === 2 && this.renderTracking()}
       </div>
     );

@@ -37,7 +37,7 @@ export const sensorTrackColor = [
 
 export const getTrackSensorColor = (selectedSensors, trackSensors) => {
   if (trackSensors) {
-    const sensorCount = trackSensors.filter(s => selectedSensors.includes(`${s.id}`)).length;
+    const sensorCount = trackSensors.filter(s => selectedSensors.includes(`${s.id}`) && s.val !== 0).length;
     return sensorTrackColor[sensorCount];
   }
 

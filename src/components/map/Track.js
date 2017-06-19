@@ -614,7 +614,7 @@ export default class Track {
     let { timestamp, distance } = trackPoint;
     const { nsat, speed_avg, speed_max } = trackPoint;
     const { track: { sensors } } = flux.getStore('objects').state;
-    const pointSensors = get(trackPoint, ['sensors', 'equipment']);
+    const pointSensors = get(trackPoint, ['sensors', 'equipment'], []).filter(s => s.val !== 0);
 
     const maxSpeed = parseInt(speed_max, 10);
     const speed = parseInt(speed_avg, 10);
@@ -653,7 +653,7 @@ export default class Track {
         missionsString = 'Нет выполняемых заданий';
       }
 
-      if (pointSensors) {
+      if (pointSensors.length > 0) {
         sensorsVisibility = 'block';
         const sensorNames = toArray(pick(sensors, pointSensors.map(p => `${p.id}`)));
         sensorsString = `

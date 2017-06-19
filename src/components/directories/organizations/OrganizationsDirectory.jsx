@@ -4,8 +4,8 @@ import OrganizationsTable from './OrganizationsTable.jsx';
 import OrganizationsFormWrap from './OrganizationsFormWrap';
 @connectToStores(['objects'])
 @staticProps({
-  entity: 'companies',
-  listName: 'companyList',
+  entity: 'company',
+  listName: 'organizations',
   selectField: 'company_id',
   tableComponent: OrganizationsTable,
   formComponent: OrganizationsFormWrap,
@@ -15,6 +15,6 @@ export default class OrganizationsDirectory extends ElementsList {
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
-    flux.getActions('companyStructure').getCompanyList();
+    flux.getActions('objects').getOrganizations();
   }
 }

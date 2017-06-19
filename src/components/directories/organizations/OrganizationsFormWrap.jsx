@@ -41,7 +41,7 @@ export default class MaintenanceWorkFormWrap extends FormWrap {
     return props.showForm ?
       <OrganizationsForm
         formState={this.state.formState}
-        permissions={['companies.update']}
+        permissions={['company.update']}
         addPermissionProp
         onSubmit={this.handleFormSubmit}
         handleFormChange={this.handleFormStateChange}

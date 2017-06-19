@@ -102,7 +102,6 @@ export default class LoadingStore extends Store {
       technicalOperationsActions.getTechnicalOperationsByCarId,
 
       companyStructureActions.getCompanyStructure,
-      companyStructureActions.getCompanyList,
       companyStructureActions.getLinearCompanyStructure,
       companyStructureActions.getLinearCompanyStructureForUser,
       companyStructureActions.updateCompanyElement,

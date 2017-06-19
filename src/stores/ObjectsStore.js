@@ -47,7 +47,6 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getMedicalStats, this.handleGetMedicalStats);
 
     this.register(companyStructreActions.getCompanyStructure, this.handleGetCompanyStructure);
-    this.register(companyStructreActions.getCompanyList, this.handleGetCompanyList);
     this.register(companyStructreActions.updateCompanyElement, this.handleGetCompanyStructure);
     this.register(companyStructreActions.deleteCompanyElement, this.handleGetCompanyStructure);
     this.register(companyStructreActions.createCompanyElement, this.handleGetCompanyStructure);
@@ -112,10 +111,6 @@ export default class ObjectsStore extends Store {
 
   handleGetCompanyStructure(companyStructure) {
     this.setState({ companyStructureList: companyStructure.result });
-  }
-
-  handleGetCompanyList(companyList) {
-    this.setState({ companyList: companyList.result });
   }
 
   handleGetCars(cars) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { groupBy, flatten, get, isEqual } from 'lodash';
+import { groupBy, flatten, get, isEqual, toArray } from 'lodash';
 import { shouldUpdate } from 'recompose';
 
 import { LOAD_PROCESS_TEXT, NO_DATA_TEXT } from 'constants/statuses';
@@ -69,17 +69,14 @@ const FuelChartSFC = props => {
     return d;
   });
 
-  let sumEvents = [];
-  Object.keys(events).forEach((k) => {
-    events[k].forEach(e => (e.id = k));
-    sumEvents = sumEvents.concat(events[k]);
-  });
-  sumEvents = sumEvents.map(e => ({
-    ...e,
-    date: `${makeDate(new Date(e.start_point.timestamp * 1000))} ${makeTime(new Date(e.start_point.timestamp * 1000), true)}`,
-    type_name: e.type === 'leak' ? 'Слив' : 'Заправка',
-    value: `${Math.abs(e.val)} л`,
-  }));
+  const sumEvents = flatten(toArray(events))
+    .map(e => ({
+      ...e,
+      date: `${makeDate(new Date(e.start_point.timestamp * 1000))} ${makeTime(new Date(e.start_point.timestamp * 1000), true)}`,
+      type_name: e.type === 'leak' ? 'Слив' : 'Заправка',
+      value: `${Math.abs(e.val)} л`,
+    }));
+
   return (
     <div>
       <LineChart

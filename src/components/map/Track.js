@@ -214,11 +214,16 @@ export default class Track {
 
   addFuelEventsToTrack() {
     const { events, points } = this;
-    Object.keys(events).forEach(k => this.sensorsState.level.includes(k) && events[k].forEach((e) => {
-      const { timestamp } = e.start_point;
-      const point = points.find(p => p.timestamp === timestamp);
-      point.event = e.type;
-    }));
+    Object.keys(events).forEach((k) => {
+      events[k].forEach((e) => {
+        const { timestamp } = e.start_point;
+        for (let i = 0; i < points.length; ++i) {
+          if (points[i].timestamp === timestamp) {
+            points[i].event = this.sensorsState.level.includes(k) ? e.type : undefined;
+          }
+        }
+      });
+    });
   }
 
   renderSimple() {
@@ -352,10 +357,13 @@ export default class Track {
       const p = track[i];
 
       /**
+       * TODO Выяснить, почему приходят одинаковые точки.
        * Так как приходят одинаковые по координатам точки, но с разными скоростями,
        * необходимо пропускать такие точки для корректной отрисовки.
        */
-      if (isEqual(prevPoint.coords, p.coords)) continue;
+      // if (isEqual(prevPoint.coords, p.coords)) {
+      //   continue;
+      // }
 
       const coords = this.map.projectToPixel(p.coords_msk);
       const speed = p.speed_max;
@@ -437,7 +445,8 @@ export default class Track {
           iconSize,
           iconSize,
         );
-      } else if (p.event !== undefined) {
+      }
+      if (p.event !== undefined) {
         const shift = p.parking || freezed ? -20 : 0;
         ctx.drawImage(this.fuelIcons[p.event],
           coords.x - (iconSize / 2) - shift,
@@ -576,13 +585,20 @@ export default class Track {
         event.id = k;
       }
     });
-    if (event.data) {
-      return this.makeEventPopup(event.data, event.id);
-    }
+
     const parking = this.parkings.find(p => p.start_point.timestamp === trackPoint.timestamp);
-    if (parking) {
-      return this.makeParkingPopup(parking);
+
+    const joinedPopup = `
+      <div>
+        ${event.data ? this.makeEventPopup(event.data, event.id)() : ''}
+        ${parking ? this.makeParkingPopup(parking)() : ''}
+      </div>
+    `;
+
+    if (event.data || parking) {
+      return () => joinedPopup;
     }
+
     let missions = [];
     const vectorObject = await flux.getActions('cars')
         .getVectorObject(trackPoint, prevPoint, nextPoint);

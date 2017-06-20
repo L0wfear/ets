@@ -1,6 +1,6 @@
 import { Actions } from 'flummox';
-import { EmployeeService, DriverService } from 'api/Services';
-import { createValidDate } from 'utils/dates';
+import { EmployeeService, DriverService, WaybillDriverService } from 'api/Services';
+import { createValidDate, createValidDateTime } from 'utils/dates';
 import { isEmpty } from 'utils/functions';
 import _ from 'lodash';
 
@@ -20,6 +20,17 @@ export default class EmployeesActions extends Actions {
 
   getDrivers() {
     return DriverService.get();
+  }
+
+  getWaybillDrivers({ type = 'before', date_from, date_to, ...restPayload }) {
+    const opts = {
+      ...restPayload,
+      date_from: createValidDateTime(date_from),
+      date_to: createValidDateTime(date_to),
+      type,
+    };
+
+    return WaybillDriverService.get(opts);
   }
 
   updateEmployee(formState) {

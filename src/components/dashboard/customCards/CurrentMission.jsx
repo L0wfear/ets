@@ -1,11 +1,11 @@
 import React from 'react';
-import { autobind } from 'core-decorators';
-import Div from 'components/ui/Div.jsx';
-import { Panel as BootstrapPanel, Collapse, Glyphicon, Fade, Well, Button } from 'react-bootstrap';
-import { getFormattedDateTimeSeconds } from 'utils/dates';
-import cx from 'classnames';
 import moment from 'moment';
-import { isEmpty } from 'utils/functions';
+import { autobind } from 'core-decorators';
+import { Panel as BootstrapPanel, Collapse, Glyphicon, Fade, Well, Button } from 'react-bootstrap';
+import cx from 'classnames';
+
+import Div from 'components/ui/Div.jsx';
+import { getFormattedDateTimeSeconds } from 'utils/dates';
 import { wrappedRef } from 'utils/decorators';
 // TODO move to HOC
 import Preloader from 'components/ui/Preloader.jsx';
@@ -14,6 +14,11 @@ import DashboardCardHeader from '../DashboardCardHeader.jsx';
 import DashboardItemChevron from '../DashboardItemChevron.jsx';
 import MissionInfoFormWrap from '../MissionInfoFormWrap.jsx';
 import MissionRejectForm from '../../missions/mission/MissionRejectForm.jsx';
+
+const MedViewLabel = props =>
+  <div style={{ marginBottom: 5, marginTop: 5 }}>
+    <span style={{ fontSize: 16, color: 'red' }}>{props.children}</span>
+  </div>;
 
 const Panel = wrappedRef(BootstrapPanel);
 
@@ -135,6 +140,8 @@ export default class CurrentMission extends DashboardCardMedium {
       car_gov_number: car_data.gov_number,
     };
 
+    const medLabelVisibility = car_data.driver_allowed !== undefined && !car_data.driver_allowed;
+
     return (
       <Div>
         <Div hidden={Object.keys(selectedMission) === 0}>
@@ -142,6 +149,7 @@ export default class CurrentMission extends DashboardCardMedium {
             <li><b>Задание:</b> {mission_data.name}</li>
             <li><b>Тех. операция:</b> {technical_operation_data.name}</li>
             <li><b>Водитель:</b> {car_data.driver_fio}</li>
+            {medLabelVisibility && <MedViewLabel>Не пройден внеплановый мед. осмотр</MedViewLabel>}
             <li><b>Рег. номер ТС:</b> {car_data.gov_number}</li>
             <li><b>Начало задания:</b> {getFormattedDateTimeSeconds(mission_data.date_start)}</li>
             <li><b>Окончание задания:</b> {getFormattedDateTimeSeconds(mission_data.date_end)}</li>

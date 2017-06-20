@@ -80,6 +80,8 @@ class WaybillForm extends Form {
     const { flux } = this.context;
     const { formState } = this.props;
     this.employeeFIOLabelFunction = employeeFIOLabelFunction(flux);
+    const IS_CREATING = !this.props.formState.status;
+    const IS_DRAFT = this.props.formState.status && this.props.formState.status === 'draft';
 
     if (formState.status === 'active') {
       const car = _.find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
@@ -114,7 +116,14 @@ class WaybillForm extends Form {
     this.getMissionsByCarAndDates(formState, false);
     await flux.getActions('objects').getCars();
     await flux.getActions('employees').getEmployees();
-    await flux.getActions('employees').getDrivers();
+
+    if (IS_CREATING || IS_DRAFT) {
+      await flux.getActions('employees').getWaybillDrivers({
+        company_id: this.props.formState.company_id,
+        date_from: this.props.formState.plan_departure_date,
+        date_to: this.props.formState.plan_arrival_date,
+      });
+    }
     if (formState && formState.id) {
       const waybillInfo = await flux.getActions('waybills').getWaybill(formState.id);
       const canEditIfClose = waybillInfo.result.closed_editable && flux.getStore('session').getPermission('waybill.update_closed') || false;
@@ -193,7 +202,7 @@ class WaybillForm extends Form {
     ).then((response) => {
       const newDriverId = response && response.result ? response.result.driver_id : null;
       if (newDriverId) {
-        const driver = this.props.driversList.find(item => item.driver_id === newDriverId) || null;
+        const driver = this.props.waybillDriversList.find(item => item.driver_id === newDriverId) || null;
         if (driver === null) return;
 
         const { gov_number } = formState;
@@ -349,7 +358,7 @@ class WaybillForm extends Form {
     const { loadingFields, origFormState = {}, notAvailableMissions = [] } = this.state;
     const { appConfig } = this.props;
     let taxesControl = false;
-    const { carsList = [], carsIndex = {}, driversList = [], employeesList = [], missionsList = [] } = this.props;
+    const { carsList = [], carsIndex = {}, waybillDriversList = [], employeesList = [], missionsList = [] } = this.props;
 
     const getCarsByStructId = getCars(state.structure_id);
     const getTrailersByStructId = getTrailers(state.structure_id);
@@ -359,7 +368,7 @@ class WaybillForm extends Form {
 
     const FUEL_TYPES = _.map(appConfig.enums.FUEL_TYPE, (v, k) => ({ value: k, label: v }));
 
-    // const DRIVERS = driversList.map((d) => {
+    // const DRIVERS = waybillDriversList.map((d) => {
     //   const personnel_number = d.personnel_number ? `[${d.personnel_number}] ` : '';
     //   return { value: d.id, label: `${personnel_number}${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''}` };
     // });
@@ -367,7 +376,8 @@ class WaybillForm extends Form {
 
     const driversEnability = state.car_id !== null && state.car_id !== '';
 
-    const DRIVERS = getDrivers(state.gov_number, driversList);
+    const DRIVERS = getDrivers(state.gov_number, waybillDriversList);
+
 
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false }));
     const OUTSIDEMISSIONS = notAvailableMissions.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false, number, className: 'yellow' }));
@@ -391,9 +401,9 @@ class WaybillForm extends Form {
     const EMPLOYEES = employeesList.map(({ id, full_name }) => ({ value: id, label: full_name }));
 
     const IS_CREATING = !state.status;
-    const IS_CLOSING = state.status && state.status === 'active';
-    const IS_POST_CREATING = state.status && state.status === 'draft';
-    const IS_DISPLAY = state.status && state.status === 'closed';
+    const IS_ACTIVE = state.status && state.status === 'active';
+    const IS_DRAFT = state.status && state.status === 'draft';
+    const IS_CLOSED = state.status && state.status === 'closed';
 
     const car = carsIndex[state.car_id];
     const trailer = carsIndex[state.trailer_id];
@@ -405,47 +415,51 @@ class WaybillForm extends Form {
       title = 'Создать новый путевой лист';
     }
 
-    if (IS_CLOSING) {
+    if (IS_ACTIVE) {
       title = 'Закрыть путевой лист';
     }
 
-    if (IS_DISPLAY) {
+    if (IS_CLOSED) {
       title = 'Просмотр путевого листа ';
     }
 
-    if (IS_POST_CREATING) {
+    if (IS_DRAFT) {
       title = 'Создание нового путевого листа';
     }
 
     taxesControl = validateTaxesControl([state.tax_data, state.equipment_tax_data]);
+    
+    if (IS_DRAFT && state.driver_id !== undefined && DRIVERS.every(d => d.value !== state.driver_id)) {
+      DRIVERS.push({ label: this.employeeFIOLabelFunction(state.driver_id), value: state.driver_id });
+    }
 
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
 
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{title} { IS_POST_CREATING && '(возможна корректировка)'} { (IS_DISPLAY || IS_CLOSING) && `№ ${state.number}`}</Modal.Title>
+          <Modal.Title id="contained-modal-title-lg">{title} { IS_DRAFT && '(возможна корректировка)'} { (IS_CLOSED || IS_ACTIVE) && `№ ${state.number}`}</Modal.Title>
         </Modal.Header>
 
         <ModalBody>
           <Row>
             <Div>
-              {IS_DISPLAY || IS_CLOSING ? <Col md={3}>
+              {IS_CLOSED || IS_ACTIVE ? <Col md={3}>
                 <Field
                   type="string"
                   label="Выдан"
                   readOnly
-                  hidden={!IS_DISPLAY && !IS_CLOSING}
+                  hidden={!IS_CLOSED && !IS_ACTIVE}
                   value={state.activated_by_employee_name}
                 />
                 <Field
                   type="string"
                   label="Закрыт"
                   readOnly
-                  hidden={!IS_DISPLAY}
+                  hidden={!IS_CLOSED}
                   value={state.closed_by_employee_name}
                 />
               </Col> : ''}
-              <Col md={!IS_DISPLAY && !IS_CLOSING ? 6 : 3}>
+              <Col md={!IS_CLOSED && !IS_ACTIVE ? 6 : 3}>
                 {STRUCTURE_FIELD_VIEW &&
                   <Field
                     type="select"
@@ -463,14 +477,14 @@ class WaybillForm extends Form {
                   label="Сопровождающий"
                   error={errors.accompanying_person_id}
                   clearable
-                  disabled={IS_CLOSING || IS_DISPLAY}
+                  disabled={IS_ACTIVE || IS_CLOSED}
                   options={EMPLOYEES}
                   value={state.accompanying_person_id}
                   onChange={this.handleChange.bind(this, 'accompanying_person_id')}
                 />
               </Col>
             </Div>
-            <Div hidden={!(IS_CREATING || IS_POST_CREATING)}>
+            <Div hidden={!(IS_CREATING || IS_DRAFT)}>
               <Col md={3}>
                 <Field
                   type="date"
@@ -481,7 +495,7 @@ class WaybillForm extends Form {
                 />
               </Col>
             </Div>
-            <Div hidden={!(IS_CREATING || IS_POST_CREATING)}>
+            <Div hidden={!(IS_CREATING || IS_DRAFT)}>
               <Col md={3}>
                 <Field
                   type="date"
@@ -494,7 +508,7 @@ class WaybillForm extends Form {
               </Col>
             </Div>
 
-            <Div hidden={!(IS_CLOSING || IS_DISPLAY)}>
+            <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
               <Col md={3}>
                 <Field
                   type="date"
@@ -509,7 +523,7 @@ class WaybillForm extends Form {
                   label="Выезд факт."
                   error={errors.fact_departure_date}
                   date={state.fact_departure_date}
-                  disabled={IS_DISPLAY}
+                  disabled={IS_CLOSED}
                   onChange={this.handleChange.bind(this, 'fact_departure_date')}
                 />
               </Col>
@@ -527,7 +541,7 @@ class WaybillForm extends Form {
                   label="Возвращение факт."
                   error={errors.fact_arrival_date}
                   date={state.fact_arrival_date}
-                  disabled={IS_DISPLAY}
+                  disabled={IS_CLOSED}
                   onChange={this.handleChange.bind(this, 'fact_arrival_date')}
                 />
               </Col>
@@ -541,7 +555,7 @@ class WaybillForm extends Form {
                 label="Транспортное средство (поиск по рег. номер ТС)"
                 error={errors.car_id}
                 className="white-space-pre-wrap"
-                hidden={!(IS_CREATING || IS_POST_CREATING)}
+                hidden={!(IS_CREATING || IS_DRAFT)}
                 options={CARS}
                 value={state.car_id}
                 onChange={this.onCarChange}
@@ -552,7 +566,7 @@ class WaybillForm extends Form {
                 label="Транспортное средство"
                 className="white-space-pre-wrap"
                 readOnly
-                hidden={IS_CREATING || IS_POST_CREATING}
+                hidden={IS_CREATING || IS_DRAFT}
                 value={car ? `${car.gov_number} [${car.special_model_name || ''}${car.special_model_name ? '/' : ''}${car.model_name || ''}]` : 'Н/Д'}
               />
             </Col>
@@ -562,7 +576,7 @@ class WaybillForm extends Form {
                 label="Прицеп"
                 error={errors.trailer_id}
                 className="white-space-pre-wrap"
-                hidden={!(IS_CREATING || IS_POST_CREATING)}
+                hidden={!(IS_CREATING || IS_DRAFT)}
                 options={TRAILERS}
                 value={state.trailer_id}
                 onChange={this.handleChange.bind(this, 'trailer_id')}
@@ -573,7 +587,7 @@ class WaybillForm extends Form {
                 label="Прицеп"
                 className="white-space-pre-wrap"
                 readOnly
-                hidden={IS_CREATING || IS_POST_CREATING}
+                hidden={IS_CREATING || IS_DRAFT}
                 value={trailer ? `${trailer.gov_number} [${trailer.special_model_name || ''}${trailer.special_model_name ? '/' : ''}${trailer.model_name || ''}]` : 'Н/Д'}
               />
             </Col>
@@ -582,7 +596,7 @@ class WaybillForm extends Form {
                 type="select"
                 label="Водитель (возможен поиск по табельному номеру)"
                 error={driversEnability ? errors.driver_id : undefined}
-                hidden={!(IS_CREATING || IS_POST_CREATING)}
+                hidden={!(IS_CREATING || IS_DRAFT)}
                 readOnly={!driversEnability}
                 options={DRIVERS}
                 value={state.driver_id}
@@ -593,7 +607,7 @@ class WaybillForm extends Form {
                 type="string"
                 label="Водитель"
                 readOnly
-                hidden={IS_CREATING || IS_POST_CREATING}
+                hidden={IS_CREATING || IS_DRAFT}
                 value={this.employeeFIOLabelFunction(state.driver_id, true)}
               />
             </Col>
@@ -608,20 +622,20 @@ class WaybillForm extends Form {
                     type="number"
                     label="Выезд, км"
                     error={errors.odometr_start}
-                    value={state.odometr_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'odometr_start')}
+                    value={state.odometr_start} disabled={IS_ACTIVE || IS_CLOSED} onChange={this.handleChange.bind(this, 'odometr_start')}
                   />
 
                   <Field
                     type="number"
                     label="Возврат, км"
                     error={errors.odometr_end}
-                    value={state.odometr_end} hidden={!(IS_CLOSING || IS_DISPLAY)} disabled={IS_DISPLAY && !this.state.canEditIfClose} onChange={this.handleChange.bind(this, 'odometr_end')}
+                    value={state.odometr_end} hidden={!(IS_ACTIVE || IS_CLOSED)} disabled={IS_CLOSED && !this.state.canEditIfClose} onChange={this.handleChange.bind(this, 'odometr_end')}
                   />
 
                   <Field
                     type="number"
                     label="Пробег, км"
-                    value={state.odometr_diff} hidden={!(IS_CLOSING || IS_DISPLAY)} disabled
+                    value={state.odometr_diff} hidden={!(IS_ACTIVE || IS_CLOSED)} disabled
                   />
                 </Col>
               </Div>
@@ -629,15 +643,15 @@ class WaybillForm extends Form {
                 <Col md={4}>
                   <h4>Счетчик моточасов</h4>
                   <Field type="number" label="Выезд, м/ч" error={errors.motohours_start}
-                    value={state.motohours_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'motohours_start')}
+                    value={state.motohours_start} disabled={IS_ACTIVE || IS_CLOSED} onChange={this.handleChange.bind(this, 'motohours_start')}
                   />
 
                   <Field type="number" label="Возврат, м/ч" error={errors.motohours_end}
-                    value={state.motohours_end} hidden={!(IS_CLOSING || IS_DISPLAY)} disabled={IS_DISPLAY && !this.state.canEditIfClose} onChange={this.handleChange.bind(this, 'motohours_end')}
+                    value={state.motohours_end} hidden={!(IS_ACTIVE || IS_CLOSED)} disabled={IS_CLOSED && !this.state.canEditIfClose} onChange={this.handleChange.bind(this, 'motohours_end')}
                   />
 
                   <Field type="number" label="Пробег, м/ч"
-                    value={state.motohours_diff} hidden={!(IS_CLOSING || IS_DISPLAY)} disabled
+                    value={state.motohours_diff} hidden={!(IS_ACTIVE || IS_CLOSED)} disabled
                   />
                 </Col>
               </Div>
@@ -645,15 +659,15 @@ class WaybillForm extends Form {
                 <Col md={4}>
                   <h4>Счетчик моточасов оборудования</h4>
                   <Field type="number" label="Выезд, м/ч" error={errors.motohours_equip_start}
-                    value={state.motohours_equip_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'motohours_equip_start')}
+                    value={state.motohours_equip_start} disabled={IS_ACTIVE || IS_CLOSED} onChange={this.handleChange.bind(this, 'motohours_equip_start')}
                   />
 
                   <Field type="number" label="Возврат, м/ч" error={errors.motohours_equip_end}
-                    value={state.motohours_equip_end} hidden={!(IS_CLOSING || IS_DISPLAY)} disabled={IS_DISPLAY && !this.state.canEditIfClose} onChange={this.handleChange.bind(this, 'motohours_equip_end')}
+                    value={state.motohours_equip_end} hidden={!(IS_ACTIVE || IS_CLOSED)} disabled={IS_CLOSED && !this.state.canEditIfClose} onChange={this.handleChange.bind(this, 'motohours_equip_end')}
                   />
 
                   <Field type="number" label="Пробег, м/ч"
-                    value={state.motohours_equip_diff} hidden={!(IS_CLOSING || IS_DISPLAY)} disabled
+                    value={state.motohours_equip_diff} hidden={!(IS_ACTIVE || IS_CLOSED)} disabled
                   />
                 </Col>
               </Div>
@@ -663,7 +677,7 @@ class WaybillForm extends Form {
                   <h4> Топливо </h4>
 
                   <Field type="select" label="Тип топлива" error={errors.fuel_type}
-                    disabled={IS_CLOSING || IS_DISPLAY}
+                    disabled={IS_ACTIVE || IS_CLOSED}
                     options={FUEL_TYPES}
                     value={state.fuel_type}
                     onChange={this.handleChange.bind(this, 'fuel_type')}
@@ -673,7 +687,7 @@ class WaybillForm extends Form {
                     type="number"
                     label="Выезд, л"
                     error={errors.fuel_start}
-                    value={state.fuel_start} disabled={IS_CLOSING || IS_DISPLAY} onChange={this.handleChange.bind(this, 'fuel_start')}
+                    value={state.fuel_start} disabled={IS_ACTIVE || IS_CLOSED} onChange={this.handleChange.bind(this, 'fuel_start')}
                   />
 
                   <Field
@@ -681,21 +695,21 @@ class WaybillForm extends Form {
                     label="Выдать, л"
                     error={errors.fuel_to_give}
                     value={state.fuel_to_give}
-                    disabled={(IS_CLOSING || IS_DISPLAY)} onChange={this.handleChange.bind(this, 'fuel_to_give')}
+                    disabled={(IS_ACTIVE || IS_CLOSED)} onChange={this.handleChange.bind(this, 'fuel_to_give')}
                   />
 
                   <Field
                     type="number"
                     label="Выдано, л"
                     error={errors.fuel_given}
-                    value={state.fuel_given} hidden={!(IS_CLOSING || IS_DISPLAY)} disabled={IS_DISPLAY && !this.state.canEditIfClose} onChange={this.handleChange.bind(this, 'fuel_given')}
+                    value={state.fuel_given} hidden={!(IS_ACTIVE || IS_CLOSED)} disabled={IS_CLOSED && !this.state.canEditIfClose} onChange={this.handleChange.bind(this, 'fuel_given')}
                   />
 
                   <Field
                     type="number"
                     label="Возврат, л"
                     error={errors.fuel_end}
-                    value={state.fuel_end} hidden={!(IS_CLOSING || IS_DISPLAY)} disabled
+                    value={state.fuel_end} hidden={!(IS_ACTIVE || IS_CLOSED)} disabled
                   />
 
                 </Col>
@@ -706,8 +720,8 @@ class WaybillForm extends Form {
           <Row>
             <Col md={8}>
               <Taxes
-                hidden={!(IS_DISPLAY || IS_CLOSING) || state.status === 'draft' || (IS_DISPLAY && state.tax_data && state.tax_data.length === 0) || (IS_DISPLAY && !state.tax_data)}
-                readOnly={!IS_CLOSING && !this.state.canEditIfClose}
+                hidden={!(IS_CLOSED || IS_ACTIVE) || state.status === 'draft' || (IS_CLOSED && state.tax_data && state.tax_data.length === 0) || (IS_CLOSED && !state.tax_data)}
+                readOnly={!IS_ACTIVE && !this.state.canEditIfClose}
                 title={'Расчет топлива по норме'}
                 taxes={state.tax_data}
                 operations={this.state.operations}
@@ -718,8 +732,8 @@ class WaybillForm extends Form {
                 type={CAR_HAS_ODOMETER ? 'odometr' : 'motohours'}
               />
               <Taxes
-                hidden={!(IS_DISPLAY || IS_CLOSING) || state.status === 'draft' || (IS_DISPLAY && state.equipment_tax_data && state.equipment_tax_data.length === 0) || (IS_DISPLAY && !!!state.equipment_tax_data)}
-                readOnly={!IS_CLOSING && !this.state.canEditIfClose}
+                hidden={!(IS_CLOSED || IS_ACTIVE) || state.status === 'draft' || (IS_CLOSED && state.equipment_tax_data && state.equipment_tax_data.length === 0) || (IS_CLOSED && !!!state.equipment_tax_data)}
+                readOnly={!IS_ACTIVE && !this.state.canEditIfClose}
                 taxes={state.equipment_tax_data}
                 operations={this.state.equipmentOperations}
                 fuelRates={this.state.equipmentFuelRates}
@@ -739,14 +753,14 @@ class WaybillForm extends Form {
                   className="task-container"
                   options={MISSIONS.concat(OUTSIDEMISSIONS)}
                   value={state.mission_id_list}
-                  disabled={isEmpty(state.car_id) || IS_DISPLAY}
+                  disabled={isEmpty(state.car_id) || IS_CLOSED}
                   clearable={false}
                   onChange={this.handleMissionsChange}
                 />
                 {(new Date(origFormState.fact_arrival_date).getTime() > new Date(state.fact_arrival_date).getTime()) && (state.status === 'active') && (
                   <div style={{ color: 'red' }}>{`Задания: ${OUTSIDEMISSIONS.map(m => `№${m.number}`).join(', ')} не входят в интервал путевого листа. После сохранения путевого листа время задания будет уменьшено и приравнено к времени "Возвращение факт." данного путевого листа`}</div>
                 )}
-                <Button style={{ marginTop: 10 }} onClick={this.createMission} disabled={isEmpty(state.car_id) || IS_DISPLAY}>Создать задание</Button>
+                <Button style={{ marginTop: 10 }} onClick={this.createMission} disabled={isEmpty(state.car_id) || IS_CLOSED}>Создать задание</Button>
                 <MissionFormWrap
                   onFormHide={this.onMissionFormHide}
                   showForm={this.state.showMissionForm}
@@ -761,7 +775,7 @@ class WaybillForm extends Form {
             <Col md={4}>
               <Div hidden={!state.car_id}>
                 <Div className="equipment-fuel-checkbox" hidden={!state.car_id}>
-                  <Input type="checkbox" checked={!!state.equipment_fuel} disabled={IS_CLOSING || IS_DISPLAY} onClick={this.handleEquipmentFuelChange.bind(this, !!!state.equipment_fuel)} />
+                  <Input type="checkbox" checked={!!state.equipment_fuel} disabled={IS_ACTIVE || IS_CLOSED} onClick={this.handleEquipmentFuelChange.bind(this, !!!state.equipment_fuel)} />
                   <label>Показать расход топлива для оборудования</label>
                 </Div>
                 <Div hidden={!state.equipment_fuel}>
@@ -770,7 +784,7 @@ class WaybillForm extends Form {
                     type="select"
                     label="Тип топлива"
                     error={errors.equipment_fuel_type}
-                    disabled={IS_CLOSING || IS_DISPLAY}
+                    disabled={IS_ACTIVE || IS_CLOSED}
                     options={FUEL_TYPES}
                     value={state.equipment_fuel_type}
                     onChange={this.handleChange.bind(this, 'equipment_fuel_type')}
@@ -780,7 +794,7 @@ class WaybillForm extends Form {
                     label="Выезд, л"
                     error={errors.equipment_fuel_start}
                     value={state.equipment_fuel_start}
-                    disabled={IS_CLOSING || IS_DISPLAY}
+                    disabled={IS_ACTIVE || IS_CLOSED}
                     onChange={this.handleChange.bind(this, 'equipment_fuel_start')}
                   />
                   <Field
@@ -788,7 +802,7 @@ class WaybillForm extends Form {
                     label="Выдать, л"
                     error={errors.equipment_fuel_to_give}
                     value={state.equipment_fuel_to_give}
-                    disabled={(IS_CLOSING || IS_DISPLAY)}
+                    disabled={(IS_ACTIVE || IS_CLOSED)}
                     onChange={this.handleChange.bind(this, 'equipment_fuel_to_give')}
                   />
                   <Field
@@ -796,8 +810,8 @@ class WaybillForm extends Form {
                     label="Выдано, л"
                     error={errors.equipment_fuel_given}
                     value={state.equipment_fuel_given}
-                    hidden={!(IS_CLOSING || IS_DISPLAY)}
-                    disabled={IS_DISPLAY && !(this.state.canEditIfClose && !!state.equipment_fuel)}
+                    hidden={!(IS_ACTIVE || IS_CLOSED)}
+                    disabled={IS_CLOSED && !(this.state.canEditIfClose && !!state.equipment_fuel)}
                     onChange={this.handleChange.bind(this, 'equipment_fuel_given')}
                   />
                   <Field
@@ -805,12 +819,12 @@ class WaybillForm extends Form {
                     label="Возврат, л"
                     error={errors.equipment_fuel_end}
                     value={state.equipment_fuel_end}
-                    hidden={!(IS_CLOSING || IS_DISPLAY)}
+                    hidden={!(IS_ACTIVE || IS_CLOSED)}
                     disabled
                   />
                 </Div>
               </Div>
-              <Div hidden={!(IS_CLOSING || IS_DISPLAY)}>
+              <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
                 <Field
                   type="string"
                   label="Пройдено по Глонасс, км"
@@ -820,7 +834,7 @@ class WaybillForm extends Form {
                   disabled
                 />
               </Div>
-              <Div hidden={!(IS_CLOSING || IS_DISPLAY)}>
+              <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
                 <Field
                   type="string"
                   label="Расход по ДУТ, л"
@@ -840,7 +854,7 @@ class WaybillForm extends Form {
 
         <Modal.Footer>
           <Div>
-            <Div className={'inline-block'} style={{ marginRight: 5 }} hidden={!(IS_CREATING || IS_POST_CREATING)}>
+            <Div className={'inline-block'} style={{ marginRight: 5 }} hidden={!(IS_CREATING || IS_DRAFT)}>
               <Button title="Обновить" onClick={this.refresh} disabled={isEmpty(state.car_id)}><Glyphicon glyph="refresh" /></Button>
             </Div>
             <Div className="inline-block">

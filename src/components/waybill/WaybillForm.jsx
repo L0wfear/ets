@@ -80,6 +80,8 @@ class WaybillForm extends Form {
     const { flux } = this.context;
     const { formState } = this.props;
     this.employeeFIOLabelFunction = employeeFIOLabelFunction(flux);
+    const IS_CREATING = !this.props.formState.status;
+    const IS_DRAFT = this.props.formState.status && this.props.formState.status === 'draft';
 
     if (formState.status === 'active') {
       const car = _.find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
@@ -114,7 +116,14 @@ class WaybillForm extends Form {
     this.getMissionsByCarAndDates(formState, false);
     await flux.getActions('objects').getCars();
     await flux.getActions('employees').getEmployees();
-    await flux.getActions('employees').getDrivers();
+
+    if (IS_CREATING || IS_DRAFT) {
+      await flux.getActions('employees').getWaybillDrivers({
+        company_id: this.props.formState.company_id,
+        date_from: this.props.formState.plan_departure_date,
+        date_to: this.props.formState.plan_arrival_date,
+      });
+    }
     if (formState && formState.id) {
       const waybillInfo = await flux.getActions('waybills').getWaybill(formState.id);
       const canEditIfClose = waybillInfo.result.closed_editable && flux.getStore('session').getPermission('waybill.update_closed') || false;
@@ -193,7 +202,7 @@ class WaybillForm extends Form {
     ).then((response) => {
       const newDriverId = response && response.result ? response.result.driver_id : null;
       if (newDriverId) {
-        const driver = this.props.driversList.find(item => item.driver_id === newDriverId) || null;
+        const driver = this.props.waybillDriversList.find(item => item.driver_id === newDriverId) || null;
         if (driver === null) return;
 
         const { gov_number } = formState;
@@ -349,7 +358,7 @@ class WaybillForm extends Form {
     const { loadingFields, origFormState = {}, notAvailableMissions = [] } = this.state;
     const { appConfig } = this.props;
     let taxesControl = false;
-    const { carsList = [], carsIndex = {}, driversList = [], employeesList = [], missionsList = [] } = this.props;
+    const { carsList = [], carsIndex = {}, waybillDriversList = [], employeesList = [], missionsList = [] } = this.props;
 
     const getCarsByStructId = getCars(state.structure_id);
     const getTrailersByStructId = getTrailers(state.structure_id);
@@ -359,7 +368,7 @@ class WaybillForm extends Form {
 
     const FUEL_TYPES = _.map(appConfig.enums.FUEL_TYPE, (v, k) => ({ value: k, label: v }));
 
-    // const DRIVERS = driversList.map((d) => {
+    // const DRIVERS = waybillDriversList.map((d) => {
     //   const personnel_number = d.personnel_number ? `[${d.personnel_number}] ` : '';
     //   return { value: d.id, label: `${personnel_number}${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''}` };
     // });
@@ -367,7 +376,8 @@ class WaybillForm extends Form {
 
     const driversEnability = state.car_id !== null && state.car_id !== '';
 
-    const DRIVERS = getDrivers(state.gov_number, driversList);
+    const DRIVERS = getDrivers(state.gov_number, waybillDriversList);
+
 
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false }));
     const OUTSIDEMISSIONS = notAvailableMissions.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false, number, className: 'yellow' }));
@@ -418,6 +428,10 @@ class WaybillForm extends Form {
     }
 
     taxesControl = validateTaxesControl([state.tax_data, state.equipment_tax_data]);
+    
+    if (IS_DRAFT && state.driver_id !== undefined && DRIVERS.every(d => d.value !== state.driver_id)) {
+      DRIVERS.push({ label: this.employeeFIOLabelFunction(state.driver_id), value: state.driver_id });
+    }
 
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
@@ -746,7 +760,7 @@ class WaybillForm extends Form {
                 {(new Date(origFormState.fact_arrival_date).getTime() > new Date(state.fact_arrival_date).getTime()) && (state.status === 'active') && (
                   <div style={{ color: 'red' }}>{`Задания: ${OUTSIDEMISSIONS.map(m => `№${m.number}`).join(', ')} не входят в интервал путевого листа. После сохранения путевого листа время задания будет уменьшено и приравнено к времени "Возвращение факт." данного путевого листа`}</div>
                 )}
-                <Button style={{ marginTop: 10, marginBottom: 10 }} onClick={this.createMission} disabled={isEmpty(state.car_id) || IS_CLOSED}>Создать задание</Button>
+                <Button style={{ marginTop: 10 }} onClick={this.createMission} disabled={isEmpty(state.car_id) || IS_CLOSED}>Создать задание</Button>
                 <MissionFormWrap
                   onFormHide={this.onMissionFormHide}
                   showForm={this.state.showMissionForm}

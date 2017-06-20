@@ -37,6 +37,7 @@ export const SpecialModelService = ETS_API_FACTORY.createApiServiceAdapter('spec
 export const TypesService = ETS_API_FACTORY.createApiServiceAdapter('types', {});
 export const EmployeeService = ETS_API_FACTORY.createApiServiceAdapter('employee', {});
 export const DriverService = ETS_API_FACTORY.createApiServiceAdapter('driver', {});
+export const WaybillDriverService = ETS_API_FACTORY.createApiServiceAdapter('medical_stats/allowed_drivers', {});
 export const FuelTypeService = ETS_API_FACTORY.createApiServiceAdapter('fuel_type', {});
 export const FuelConsumptionRateService = ETS_API_FACTORY.createApiServiceAdapter('fuel_consumption_rates', {});
 export const FuelOperationsService = ETS_API_FACTORY.createApiServiceAdapter('fuel_operations', {});

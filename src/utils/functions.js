@@ -3,8 +3,7 @@
  * @module utils/functions
  */
 
-import includes from 'lodash/includes';
-import every from 'lodash/every';
+import { isPlainObject, every, includes } from 'lodash';
 
 /**
  * Example:
@@ -156,5 +155,19 @@ const isFourDigitGovNumberRegexp = /\d{4}/;
 export const isThreeDigitGovNumber = number => !isFourDigitGovNumberRegexp.test(number);
 export const isFourDigitGovNumber = number => isFourDigitGovNumberRegexp.test(number);
 
+/**
+ * Flattens object shallow
+ * @param {object} inputObject
+ */
+export function flattenObject(inputObject) {
+  const f = {};
+  Object.keys(inputObject).forEach((k) => {
+    if (isPlainObject(inputObject[k])) {
+      Object.keys(inputObject[k]).forEach(key => (f[key] = inputObject[k][key]));
+    } else {
+      f[k] = inputObject[k];
+    }
+  });
 
-
+  return f;
+}

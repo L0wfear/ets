@@ -19,7 +19,6 @@ class DutyMissionFormWrap extends FormWrap {
       await context.flux.getActions('missions').createDutyMission(formState);
       context.flux.getActions('missions').getDutyMissions();
     };
-    this.updateAction = context.flux.getActions('missions').updateDutyMission;
   }
 
   async handleFormPrint() {
@@ -37,6 +36,22 @@ class DutyMissionFormWrap extends FormWrap {
     await this.context.flux.getActions('missions').printDutyMission(id).then(({ blob }) => { saveData(blob, `Печатная форма наряд-задания №${id}.pdf`); });
     this.context.flux.getActions('missions').getDutyMissions();
     this.props.onFormHide();
+  }
+
+  /**
+   * @override
+   * @param {*} formState
+   */
+  updateAction(formState) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        await this.context.flux.getActions('missions').updateDutyMission(formState, false);
+        await this.props.refreshTableList();
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
   }
 
   render() {

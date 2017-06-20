@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Label } from 'react-bootstrap';
 
-import { DUTY_MISSION_STATUS_LABELS } from './DutyMissionsTable';
+import { MISSION_STATUS_LABELS as DUTY_MISSION_STATUS_LABELS } from 'constants/dictionary';
 
 export const onlyActiveEmployeeNotification = () => {
   global.NOTIFICATION_SYSTEM.notify('В наряд-задание можно добавить только активного на данный момент времени сотрудника', 'info');

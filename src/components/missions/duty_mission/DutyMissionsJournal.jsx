@@ -1,10 +1,13 @@
 import React from 'react';
 import { autobind } from 'core-decorators';
+import _ from 'lodash';
 import { Button, Glyphicon, ButtonToolbar } from 'react-bootstrap';
+
+import { MAX_ITEMS_PER_PAGE } from 'constants/view';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { getWarningNotification } from 'utils/notifications';
-import _ from 'lodash';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import Paginator from 'components/ui/Paginator.jsx';
 import DutyMissionsTable from './DutyMissionsTable.jsx';
 import DutyMissionFormWrap from './DutyMissionFormWrap.jsx';
 
@@ -14,7 +17,6 @@ import DutyMissionFormWrap from './DutyMissionFormWrap.jsx';
   entity: 'duty_mission',
   listName: 'dutyMissionsList',
   tableComponent: DutyMissionsTable,
-  formComponent: DutyMissionFormWrap,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE', 'CHECK'],
   exportable: true,
 })
@@ -32,13 +34,47 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       }
       return this.state.selectedElement && this.state.selectedElement.status !== 'not_assigned';
     };
+
+    this.state = {
+      ...this.state,
+      page: 0,
+      sortBy: ['number:desc'],
+      filter: {},
+    };
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (
+      nextState.page !== this.state.page ||
+      nextState.sortBy !== this.state.sortBy ||
+      nextState.filter !== this.state.filter
+    ) {
+      this.refreshList(nextState);
+    }
   }
 
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
-    flux.getActions('missions').getDutyMissions();
+    flux.getActions('technicalOperation').getTechnicalOperations();
+    flux.getActions('missions').getDutyMissions(MAX_ITEMS_PER_PAGE, 0, this.state.sortBy, this.state.filter);
   }
+
+  async refreshList(state = this.state) {
+    this.context.flux.getActions('missions').getDutyMissions(MAX_ITEMS_PER_PAGE, state.page * MAX_ITEMS_PER_PAGE, state.sortBy, state.filter);
+
+    const pageOffset = state.page * MAX_ITEMS_PER_PAGE;
+    const missions = await this.context.flux.getActions('missions').getDutyMissions(MAX_ITEMS_PER_PAGE, pageOffset, state.sortBy, state.filter);
+
+    const { total_count } = missions.result.meta;
+    const resultCount = missions.result.rows.length;
+
+    if (resultCount === 0 && total_count > 0) {
+      const offset = (Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1) * MAX_ITEMS_PER_PAGE;
+      this.context.flux.getActions('missions').getDutyMissions(MAX_ITEMS_PER_PAGE, offset, state.sortBy, state.filter);
+    }
+  }
+
 
   checkDisabled() {
     if (Object.keys(this.state.checkedElements).length !== 0) return false;
@@ -53,6 +89,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     const mission = _.cloneDeep(this.state.selectedElement);
     mission.status = 'complete';
     this.context.flux.getActions('missions').updateDutyMission(mission);
+    this.refreshList(this.state);
   }
 
   rejectMission() {
@@ -62,6 +99,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       mission.status = 'fail';
       mission.comment = reason;
       this.context.flux.getActions('missions').updateDutyMission(mission);
+      this.refreshList(this.state);
     }
   }
 
@@ -73,6 +111,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
           const updatedMission = _.cloneDeep(mission);
           updatedMission.status = 'complete';
           this.context.flux.getActions('missions').updateDutyMission(updatedMission);
+          this.refreshList(this.state);
         } else {
           hasNotAssigned = true;
         }
@@ -99,6 +138,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
             updatedMission.status = 'fail';
             updatedMission.comment = reason;
             this.context.flux.getActions('missions').updateDutyMission(updatedMission);
+            this.refreshList(this.state);
           }
         } else {
           hasNotAssigned = true;
@@ -154,8 +194,41 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     return buttons;
   }
 
+  getForms() {
+    return (
+      <DutyMissionFormWrap
+        onFormHide={this.onFormHide}
+        showForm={this.state.showForm}
+        element={this.state.selectedElement}
+        refreshTableList={this.refreshList}
+        {...this.props}
+      />
+    );
+  }
+
   getAdditionalProps() {
     const { structures } = this.context.flux.getStore('session').getCurrentUser();
-    return { structures };
+
+    const changeSort = (field, direction) => this.setState({ sortBy: `${field}:${direction ? 'asc' : 'desc'}` });
+    const changeFilter = filter => this.setState({ filter });
+
+    return {
+      structures,
+      changeSort,
+      changeFilter,
+      filterValues: this.state.filter,
+      rowNumberOffset: this.state.page * MAX_ITEMS_PER_PAGE,
+    };
+  }
+
+  additionalRender() {
+    return (
+      <Paginator
+        currentPage={this.state.page}
+        maxPage={Math.ceil(this.props.totalCount / MAX_ITEMS_PER_PAGE)}
+        setPage={page => this.setState({ page })}
+        firstLastButtons
+      />
+    );
   }
 }

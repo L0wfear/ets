@@ -1,13 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
+
+import { MISSION_STATUS_LABELS as DUTY_MISSION_STATUS_LABELS } from 'constants/dictionary';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 import Table from 'components/ui/table/DataTable.jsx';
-
-export const DUTY_MISSION_STATUS_LABELS = {
-  'assigned': 'Назначено',
-  'not_assigned': 'Не назначено',
-  'complete': 'Выполнено',
-  'fail': 'Не выполнено',
-};
 
 export const getTableMeta = (props) => {
   const tableMeta = {
@@ -18,7 +13,7 @@ export const getTableMeta = (props) => {
         type: 'string',
         filter: {
           type: 'multiselect',
-          labelFunction: s => DUTY_MISSION_STATUS_LABELS[s],
+          options: Object.keys(DUTY_MISSION_STATUS_LABELS).map(key => ({ label: DUTY_MISSION_STATUS_LABELS[key], value: key })),
         },
         cssClassName: 'width120',
       },
@@ -46,6 +41,7 @@ export const getTableMeta = (props) => {
         type: 'number',
         filter: {
           type: 'multiselect',
+          options: props.technicalOperationsList.map(({ name }) => ({ value: name, label: name })),
         },
       },
       {
@@ -53,7 +49,7 @@ export const getTableMeta = (props) => {
         displayName: 'Начало план.',
         type: 'date',
         filter: {
-          type: 'date_interval',
+          type: 'advanced-date',
         },
       },
       {
@@ -61,7 +57,7 @@ export const getTableMeta = (props) => {
         displayName: 'Завершение план.',
         type: 'date',
         filter: {
-          type: 'date_interval',
+          type: 'advanced-date',
         },
       },
       {
@@ -69,7 +65,7 @@ export const getTableMeta = (props) => {
         displayName: 'Маршрут',
         type: 'number',
         filter: {
-          type: 'multiselect',
+          type: 'advanced-string-like',
         },
         cssClassName: 'width120',
       },
@@ -78,7 +74,7 @@ export const getTableMeta = (props) => {
         displayName: 'Бригадир',
         type: 'string',
         filter: {
-          type: 'string',
+          type: 'advanced-string-like',
         },
       },
       {
@@ -118,6 +114,7 @@ export const getTableMeta = (props) => {
 
 export default (props) => {
   const renderers = {
+    rowNumber: ({ data }) => <span>{props.rowNumberOffset + data}</span>,
     status: ({ data }) => <div>{DUTY_MISSION_STATUS_LABELS[data]}</div>,
     plan_date_start: ({ data }) => <DateFormatter date={data} time />,
     plan_date_end: ({ data }) => <DateFormatter date={data} time />,
@@ -128,6 +125,9 @@ export default (props) => {
     results={props.data}
     renderers={renderers}
     tableMeta={getTableMeta(props)}
+    serverPagination
+    externalFilter={props.changeFilter}
+    externalChangeSort={props.changeSort}
     initialSort={'number'}
     initialSortAscending={false}
     multiSelection

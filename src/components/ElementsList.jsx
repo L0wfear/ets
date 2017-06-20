@@ -1,8 +1,10 @@
 import React, { PropTypes } from 'react';
 import find from 'lodash/find';
 import { autobind } from 'core-decorators';
-import { FluxContext } from 'utils/decorators';
 import { Button, Glyphicon } from 'react-bootstrap';
+
+import Preloader from 'components/ui/Preloader';
+import { FluxContext } from 'utils/decorators';
 import { ButtonCreate, ButtonRead, ButtonDelete } from './ui/buttons/CRUD.jsx';
 
 /**
@@ -31,7 +33,8 @@ class ElementsList extends React.Component {
       elementsList: [],
       showForm: false,
       selectedElement: null,
-      readPermission: false
+      readPermission: false,
+      exportFetching: false,
     };
 
     this.selectField = this.constructor.selectField || 'id';
@@ -215,6 +218,15 @@ class ElementsList extends React.Component {
     return this.state.selectedElement === null;
   }
 
+  handleExport = async () => {
+    try {
+      this.setState({ exportFetching: true });
+      await this.props.export(this.exportPayload, this.exportUseRouteParams);
+      this.setState({ exportFetching: false });
+    } catch (error) {
+      this.setState({ exportFetching: false });
+    }
+  }
   /**
    * Определяет и возвращает массив кнопок для CRUD операций
    * @return {Component[]} Buttons - массив кнопок
@@ -260,7 +272,7 @@ class ElementsList extends React.Component {
           disabled={isEmptyList}
           key={buttons.length}
           bsSize="small"
-          onClick={() => this.props.export(this.exportPayload, this.exportUseRouteParams)}
+          onClick={this.handleExport}
         >
           <Glyphicon glyph="download-alt" />
         </Button>
@@ -382,12 +394,14 @@ class ElementsList extends React.Component {
     const table = this.getTable();
     const forms = this.getForms();
     const additionalRender = this.additionalRender();
+    const preloader = this.state.exportFetching && <Preloader type="mainpage"/>;
 
     return (
       <div className="ets-page-wrap" ref={node => (this.node = node)}>
         {table}
         {additionalRender}
         {forms}
+        {preloader}
       </div>
     );
   }

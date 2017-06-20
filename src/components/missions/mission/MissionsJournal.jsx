@@ -1,17 +1,17 @@
 import React from 'react';
 import { autobind } from 'core-decorators';
+import _ from 'lodash';
 import { Button, Glyphicon, ButtonToolbar } from 'react-bootstrap';
+
+import { MAX_ITEMS_PER_PAGE } from 'constants/view';
 import MissionInfoFormWrap from 'components/dashboard/MissionInfoFormWrap.jsx';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { getWarningNotification } from 'utils/notifications';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import _ from 'lodash';
 import Paginator from 'components/ui/Paginator.jsx';
 import MissionsTable from './MissionsTable.jsx';
 import MissionFormWrap from './MissionFormWrap.jsx';
 import MissionRejectForm from './MissionRejectForm.jsx';
-
-export const MAX_ITEMS_PER_PAGE = 15;
 
 @connectToStores(['missions', 'objects', 'employees', 'routes'])
 @exportable({ entity: 'mission' })
@@ -260,7 +260,13 @@ export default class MissionsJournal extends CheckableElementsList {
   }
 
   additionalRender() {
-    return <Paginator currentPage={this.state.page} maxPage={Math.ceil(this.props.totalCount / MAX_ITEMS_PER_PAGE)} setPage={page => this.setState({ page })} firstLastButtons />;
+    return (
+      <Paginator
+        currentPage={this.state.page}
+        maxPage={Math.ceil(this.props.totalCount / MAX_ITEMS_PER_PAGE)}
+        setPage={page => this.setState({ page })}
+        firstLastButtons
+      />
+    );
   }
-
 }

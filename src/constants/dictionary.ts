@@ -1,3 +1,10 @@
+export const MISSION_STATUS_LABELS = {
+  assigned: 'Назначено',
+  not_assigned: 'Не назначено',
+  complete: 'Выполнено',
+  fail: 'Не выполнено',
+};
+
 export const GEOZONE_OBJECTS = [
   { value: 'odh', label: 'Объект дорожного хозяйства' },
   { value: 'dt', label: 'Дворовая территория' },

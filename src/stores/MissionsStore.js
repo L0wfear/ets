@@ -57,7 +57,8 @@ class MissionsStore extends Store {
   }
 
   handleGetDutyMissions(dutyMissions) {
-    this.setState({ dutyMissionsList: dutyMissions.result.rows });
+    if (!dutyMissions.result.meta) return;
+    this.setState({ dutyMissionsList: dutyMissions.result.rows, totalCount: dutyMissions.result.meta.total_count });
   }
 
   handleGetDutyMissionTemplates(dutyMissionTemplates) {

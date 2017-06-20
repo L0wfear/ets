@@ -20,3 +20,9 @@ const app = (
 );
 
 render(app, appNode);
+
+if (process.env.STAND === 'dev') {
+  console.log('%c🚧 Это сообщение отображается только на development-сервере. 🚧', 'background: #691a99; color: #68efad; font-size: 26px;');
+  console.log('%cКатя, остановись!', 'background: #691a99; color: #68efad; font-size: 30px;');
+  console.log('%cЕсли здесь появляются красные сообщения, это не значит, что это баг системы.', 'background: #691a99; color: #68efad; font-size: 26px;');
+}

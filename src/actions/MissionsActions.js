@@ -1,7 +1,10 @@
 import { Actions } from 'flummox';
 import _ from 'lodash';
+import L from 'lodash/fp';
+import * as R from 'ramda';
+import { MAX_ITEMS_PER_PAGE } from 'constants/view';
 import { createValidDateTime } from 'utils/dates';
-import { isEmpty } from 'utils/functions';
+import { isEmpty, flattenObject } from 'utils/functions';
 import {
   MissionReportsService,
   MissionService,
@@ -17,23 +20,19 @@ import {
   MissionDataService,
 } from 'api/Services';
 
+export const parseFilterObject = filter => _.mapKeys(
+  flattenObject(filter),
+  (value, key) => _.isArray(value) ? `${key}__in` : key,
+);
+
 export default class MissionsActions extends Actions {
 
 
   /* ---------- MISSION ---------- */
 
-  getMissions(technical_operation_id, limit = 15, offset = 0, sort_by = ['number:desc'], filter = {}) {
-    const filterValues = _.cloneDeep(filter);
-    Object.keys(filterValues).forEach((k) => {
-      if (Array.isArray(filterValues[k])) {
-        filterValues[`${k}__in`] = filterValues[k];
-        delete filterValues[k];
-      }
-      if (typeof filterValues[k] === 'object') {
-        Object.keys(filterValues[k]).forEach(key => (filterValues[key] = filterValues[k][key]));
-        delete filterValues[k];
-      }
-    });
+  getMissions(technical_operation_id, limit = MAX_ITEMS_PER_PAGE, offset = 0, sort_by = ['number:desc'], filter = {}) {
+    const filterValues = parseFilterObject(filter);
+
     const payload = {
       limit,
       offset,
@@ -204,8 +203,16 @@ export default class MissionsActions extends Actions {
   /* ---------- MISSION DUTY ---------- */
 
 
-  getDutyMissions() {
-    return DutyMissionService.get({});
+  getDutyMissions(limit = MAX_ITEMS_PER_PAGE, offset = 0, sort_by = ['number:desc'], filter = {}) {
+    const filterValues = parseFilterObject(filter);
+    const payload = {
+      limit,
+      offset,
+      sort_by,
+      filter: JSON.stringify(filterValues),
+    };
+
+    return DutyMissionService.get(payload);
   }
 
   getDutyMissionById(id) {
@@ -224,7 +231,7 @@ export default class MissionsActions extends Actions {
     return DutyMissionService.post(payload, false, 'json');
   }
 
-  updateDutyMission(mission) {
+  updateDutyMission(mission, autoUpdate = true) {
     const payload = _.cloneDeep(mission);
     delete payload.number;
     delete payload.technical_operation_name;
@@ -236,7 +243,7 @@ export default class MissionsActions extends Actions {
     payload.fact_date_start = createValidDateTime(payload.fact_date_start);
     payload.fact_date_end = createValidDateTime(payload.fact_date_end);
     payload.brigade_employee_id_list = payload.brigade_employee_id_list.map(b => b.id || b.employee_id);
-    return DutyMissionService.put(payload, null, 'json');
+    return DutyMissionService.put(payload, autoUpdate, 'json');
   }
 
   removeDutyMission(id) {

@@ -111,7 +111,7 @@ export default class CheckableElementsList extends ElementsList {
     }
     if (this.props.exportable) {
       buttons.push(
-        <Button key={buttons.length} bsSize="small" onClick={() => this.props.export()}><Glyphicon glyph="download-alt" /></Button>
+        <Button key={buttons.length} bsSize="small" onClick={this.handleExport}><Glyphicon glyph="download-alt" /></Button>
       );
     }
     return buttons;

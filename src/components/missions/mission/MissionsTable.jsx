@@ -1,14 +1,9 @@
 import React from 'react';
 import { Glyphicon } from 'react-bootstrap';
+
+import { MISSION_STATUS_LABELS } from 'constants/dictionary';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 import Table from 'components/ui/table/DataTable.jsx';
-
-const MISSION_STATUS_LABELS = {
-  'assigned': 'Назначено',
-  'not_assigned': 'Не назначено',
-  'complete': 'Выполнено',
-  'fail': 'Не выполнено',
-};
 
 const getTableMeta = (props) => {
   const tableMeta = {

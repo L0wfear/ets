@@ -1,8 +1,6 @@
 import { Actions } from 'flummox';
 import _ from 'lodash';
-import L from 'lodash/fp';
-import * as R from 'ramda';
-import { MAX_ITEMS_PER_PAGE } from 'constants/view';
+import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import { createValidDateTime } from 'utils/dates';
 import { isEmpty, flattenObject } from 'utils/functions';
 import {
@@ -18,7 +16,7 @@ import {
   MissionPrintService,
   DutyMissionPrintService,
   MissionDataService,
-} from 'api/Services';
+} from 'api/missions';
 
 export const parseFilterObject = filter => _.mapKeys(
   flattenObject(filter),

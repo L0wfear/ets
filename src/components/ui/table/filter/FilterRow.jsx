@@ -2,12 +2,10 @@ import React, { PropTypes } from 'react';
 import { autobind } from 'core-decorators';
 import { Input } from 'react-bootstrap';
 import _ from 'lodash';
-import moment from 'moment';
 
 import FilterInput from 'components/ui/input/FilterInput/FilterInput';
 import EtsSelect from '../../EtsSelect.jsx';
 import Div from '../../Div.jsx';
-import Datepicker from '../../DatePicker.jsx';
 import IntervalPicker from '../../IntervalPicker.jsx';
 
 @autobind

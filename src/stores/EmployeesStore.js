@@ -9,6 +9,7 @@ export default class EmployeeStore extends Store {
     this.register(employeesActions.getEmployees, this.handleGetEmployees);
     this.register(employeesActions.getWaybillDrivers, this.handleGetWaybillDrivers);
     this.register(employeesActions.getDrivers, this.handleGetDrivers);
+    this.register(employeesActions.getForemans, this.handleGetForemans);
     this.register(employeesActions.updateEmployee, this.handleGetEmployees);
     this.register(employeesActions.createEmployee, this.handleGetEmployees);
     this.register(employeesActions.deleteEmployee, this.handleGetEmployees);
@@ -16,6 +17,7 @@ export default class EmployeeStore extends Store {
     this.state = {
       employeesList: [],
       driversList: [],
+      foremanList: [],
       waybillDriversList: [],
     };
   }
@@ -26,6 +28,10 @@ export default class EmployeeStore extends Store {
 
   handleGetDrivers({ result }) {
     this.setState({ driversList: result });
+  }
+
+  handleGetForemans({ result }) {
+    this.setState({ foremanList: result });
   }
 
   handleGetWaybillDrivers({ result }) {

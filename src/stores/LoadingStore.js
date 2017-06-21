@@ -55,6 +55,7 @@ export default class LoadingStore extends Store {
       employeesActions.deleteEmployee,
       employeesActions.getDrivers,
       employeesActions.getWaybillDrivers,
+      employeesActions.getForemans,
 
       missionsActons.getMissions,
       missionsActons.getMissionReassignationParameters,

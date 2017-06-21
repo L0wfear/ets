@@ -3,7 +3,7 @@ import { autobind } from 'core-decorators';
 import _ from 'lodash';
 import { Button, Glyphicon, ButtonToolbar } from 'react-bootstrap';
 
-import { MAX_ITEMS_PER_PAGE } from 'constants/view';
+import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import MissionInfoFormWrap from 'components/dashboard/MissionInfoFormWrap.jsx';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { getWarningNotification } from 'utils/notifications';

@@ -25,7 +25,7 @@ export function roundCoordinates(coords, level = 4) {
 }
 
 export function hasTrackPointsChanged(currentPoints, nextPoints) {
-  if (isEmpty(currentPoints)) {
+  if (isEmpty(currentPoints) || isEmpty(nextPoints)) {
     return true;
   }
 

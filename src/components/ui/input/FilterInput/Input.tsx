@@ -54,7 +54,10 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
     this.props.onChange(newValue);
   }
   renderDate() {
-    const { time = false, value } = this.props;
+    const {
+      time = this.props.type === 'datetime',
+      value,
+    } = this.props;
 
     return (
       <div className="datepickers">

@@ -4,7 +4,12 @@ import { MISSION_STATUS_LABELS as DUTY_MISSION_STATUS_LABELS } from 'constants/d
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 import Table from 'components/ui/table/DataTable.jsx';
 
-export const getTableMeta = (props) => {
+export const getTableMeta = ({
+  structures = [],
+  missionSourcesList = [],
+  technicalOperationsList = [],
+  foremanList = [],
+}) => {
   const tableMeta = {
     cols: [
       {
@@ -22,7 +27,7 @@ export const getTableMeta = (props) => {
         displayName: 'Номер',
         type: 'number',
         filter: {
-          type: 'multiselect',
+          type: 'advanced-number',
         },
         cssClassName: 'width60',
       },
@@ -32,6 +37,7 @@ export const getTableMeta = (props) => {
         type: 'number',
         filter: {
           type: 'multiselect',
+          options: missionSourcesList.map(({ name }) => ({ value: name, label: name })),
         },
         cssClassName: 'width120',
       },
@@ -41,7 +47,7 @@ export const getTableMeta = (props) => {
         type: 'number',
         filter: {
           type: 'multiselect',
-          options: props.technicalOperationsList.map(({ name }) => ({ value: name, label: name })),
+          options: technicalOperationsList.map(({ name }) => ({ value: name, label: name })),
         },
       },
       {
@@ -49,7 +55,7 @@ export const getTableMeta = (props) => {
         displayName: 'Начало план.',
         type: 'date',
         filter: {
-          type: 'advanced-date',
+          type: 'advanced-datetime',
         },
       },
       {
@@ -57,7 +63,7 @@ export const getTableMeta = (props) => {
         displayName: 'Завершение план.',
         type: 'date',
         filter: {
-          type: 'advanced-date',
+          type: 'advanced-datetime',
         },
       },
       {
@@ -74,7 +80,8 @@ export const getTableMeta = (props) => {
         displayName: 'Бригадир',
         type: 'string',
         filter: {
-          type: 'advanced-string-like',
+          type: 'multiselect',
+          options: foremanList.map(({ fio, id }) => ({ value: id, label: fio })),
         },
       },
       {
@@ -82,7 +89,7 @@ export const getTableMeta = (props) => {
         displayName: 'Комментарий',
         type: 'string',
         filter: {
-          type: 'multiselect',
+          type: 'advanced-string-like',
         },
         cssClassName: 'width120',
       },
@@ -91,7 +98,7 @@ export const getTableMeta = (props) => {
         displayName: 'Задание на ТС',
         type: 'string',
         filter: {
-          type: 'multiselect',
+          type: 'advanced-string-like',
         },
       },
       {
@@ -101,9 +108,9 @@ export const getTableMeta = (props) => {
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: props.structures.map(({ id, name }) => ({ value: id, label: name })),
+          options: structures.map(({ id, name }) => ({ value: id, label: name })),
         },
-        display: props.structures.length,
+        display: structures.length,
       },
     ],
   };

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { IStateBrigadeEfficiency } from './@types/report.h';
 
 import { getServerErrorNotification } from 'utils/notifications';
-import { DutyMissionService } from 'api/Services';
+import { DutyMissionService } from 'api/missions';
 import { exportable } from 'utils/decorators';
 import { getTableMeta as dutyMissionTableMeta } from 'components/missions/duty_mission/DutyMissionsTable.jsx';
 import DutyMissionForm from 'components/missions/duty_mission/DutyMissionFormWrap.jsx';

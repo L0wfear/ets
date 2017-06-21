@@ -3,7 +3,7 @@ import { Modal, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
-import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary.ts';
+import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
 
 
 export default class OrganizationsForm extends Form {

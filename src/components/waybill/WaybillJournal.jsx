@@ -1,6 +1,8 @@
 import React from 'react';
 import { autobind } from 'core-decorators';
 import { Glyphicon, ButtonToolbar, Dropdown, MenuItem as BootstrapMenuItem } from 'react-bootstrap';
+
+import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import Paginator from 'components/ui/Paginator.jsx';
 import { connectToStores, staticProps, bindable } from 'utils/decorators';
@@ -10,8 +12,6 @@ import WaybillPrintForm from './WaybillPrintForm.jsx';
 import WaybillsTable from './WaybillsTable.jsx';
 
 const MenuItem = bindable(BootstrapMenuItem);
-
-const MAX_ITEMS_PER_PAGE = 15;
 
 @connectToStores(['waybills', 'objects', 'employees'])
 @staticProps({

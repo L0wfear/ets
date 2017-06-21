@@ -1,5 +1,5 @@
 import { Actions } from 'flummox';
-import { EmployeeService, DriverService, WaybillDriverService } from 'api/Services';
+import { EmployeeService, DriverService, WaybillDriverService, ForemanService } from 'api/Services';
 import { createValidDate, createValidDateTime } from 'utils/dates';
 import { isEmpty } from 'utils/functions';
 import _ from 'lodash';
@@ -20,6 +20,10 @@ export default class EmployeesActions extends Actions {
 
   getDrivers() {
     return DriverService.get();
+  }
+
+  getForemans() {
+    return ForemanService.get();
   }
 
   getWaybillDrivers({ type = 'before', date_from, date_to, ...restPayload }) {

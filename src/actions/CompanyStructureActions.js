@@ -1,5 +1,5 @@
 import { Actions } from 'flummox';
-import { CompanyStructureService, CompanyService } from 'api/Services';
+import { CompanyStructureService } from 'api/Services';
 import _ from 'lodash';
 
 export default class CompanyStructureActions extends Actions {

@@ -3,7 +3,7 @@ import { autobind } from 'core-decorators';
 import _ from 'lodash';
 import { Button, Glyphicon, ButtonToolbar } from 'react-bootstrap';
 
-import { MAX_ITEMS_PER_PAGE } from 'constants/view';
+import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { getWarningNotification } from 'utils/notifications';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
@@ -11,7 +11,7 @@ import Paginator from 'components/ui/Paginator.jsx';
 import DutyMissionsTable from './DutyMissionsTable.jsx';
 import DutyMissionFormWrap from './DutyMissionFormWrap.jsx';
 
-@connectToStores(['missions', 'objects'])
+@connectToStores(['missions', 'objects', 'employees'])
 @exportable({ entity: 'duty_mission' })
 @staticProps({
   entity: 'duty_mission',
@@ -58,6 +58,9 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     const { flux } = this.context;
     flux.getActions('technicalOperation').getTechnicalOperations();
     flux.getActions('missions').getDutyMissions(MAX_ITEMS_PER_PAGE, 0, this.state.sortBy, this.state.filter);
+    flux.getActions('missions').getMissionSources();
+    flux.getActions('employees').getForemans();
+    flux.getActions('companyStructure').getLinearCompanyStructure();
   }
 
   async refreshList(state = this.state) {

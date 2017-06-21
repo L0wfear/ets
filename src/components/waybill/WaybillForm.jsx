@@ -29,8 +29,6 @@ const Div = enhanceWithPermissions(DivForEnhance);
 
 const STATUS_LIST = ['active', 'draft'];
 
-
-
 @autobind
 class WaybillForm extends Form {
 
@@ -80,8 +78,6 @@ class WaybillForm extends Form {
     const { flux } = this.context;
     const { formState } = this.props;
     this.employeeFIOLabelFunction = employeeFIOLabelFunction(flux);
-    const IS_CREATING = !this.props.formState.status;
-    const IS_DRAFT = this.props.formState.status && this.props.formState.status === 'draft';
 
     if (formState.status === 'active') {
       const car = _.find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
@@ -117,20 +113,39 @@ class WaybillForm extends Form {
     await flux.getActions('objects').getCars();
     await flux.getActions('employees').getEmployees();
 
-    if (IS_CREATING || IS_DRAFT) {
-      await flux.getActions('employees').getWaybillDrivers({
-        company_id: this.props.formState.company_id,
-        date_from: this.props.formState.plan_departure_date,
-        date_to: this.props.formState.plan_arrival_date,
-      });
-    }
+    this.getWaybillDrivers();
+
     if (formState && formState.id) {
       const waybillInfo = await flux.getActions('waybills').getWaybill(formState.id);
       const canEditIfClose = waybillInfo.result.closed_editable && flux.getStore('session').getPermission('waybill.update_closed') || false;
       this.setState({ canEditIfClose, origFormState: formState });
     }
   }
+  handlePlanDepartureDates(field, value) {
+    if (value === null) {
+      return;
+    }
 
+    this.getWaybillDrivers({
+      [field]: value,
+    });
+    this.handleChange(field, value);
+  }
+  async getWaybillDrivers({
+    plan_departure_date = this.props.formState.plan_departure_date,
+    plan_arrival_date = this.props.formState.plan_arrival_date,
+  } = {}) {
+    const IS_CREATING = !this.props.formState.status;
+    const IS_DRAFT = this.props.formState.status && this.props.formState.status === 'draft';
+
+    if (IS_CREATING || IS_DRAFT) {
+      await this.context.flux.getActions('employees').getWaybillDrivers({
+        company_id: this.props.formState.company_id,
+        date_from: plan_departure_date,
+        date_to: plan_arrival_date,
+      });
+    }
+  }
   getMissionsByCarAndDates(formState, notificate = true) {
     const { flux } = this.context;
     const departure_date = formState.fact_departure_date || formState.plan_departure_date;
@@ -491,7 +506,8 @@ class WaybillForm extends Form {
                   label="Выезд план."
                   error={errors.plan_departure_date}
                   date={state.plan_departure_date}
-                  onChange={this.handleChange.bind(this, 'plan_departure_date')}
+                  // onChange={this.handleChange.bind(this, 'plan_departure_date')}
+                  onChange={this.handlePlanDepartureDates.bind(this, 'plan_departure_date')}
                 />
               </Col>
             </Div>
@@ -503,7 +519,8 @@ class WaybillForm extends Form {
                   error={errors.plan_arrival_date}
                   date={state.plan_arrival_date}
                   min={state.plan_departure_date}
-                  onChange={this.handleChange.bind(this, 'plan_arrival_date')}
+                  // onChange={this.handleChange.bind(this, 'plan_arrival_date')}
+                  onChange={this.handlePlanDepartureDates.bind(this, 'plan_arrival_date')}
                 />
               </Col>
             </Div>

@@ -9,9 +9,7 @@ export const tableMeta = props => ({
       displayName: 'Учреждение',
       type: 'text',
       display: props ? props.isOkrug : false,
-      filter: {
-        type: 'multiselect',
-      },
+      filter: props && props.isOkrug ? { type: 'multiselect' } : false,
     },
     {
       name: 'full_name',
@@ -138,7 +136,7 @@ export default (props) => {
     medical_certificate_date: ({ data }) => <DateFormatter date={data} />,
     is_common: ({ data }) => <input type="checkbox" disabled checked={!!data} />,
   };
-
+  console.log(props);
   return (<Table
     title="Реестр сотрудников"
     results={data}

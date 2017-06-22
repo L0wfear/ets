@@ -23,6 +23,7 @@ class MissionsStore extends Store {
     this.register(missionsActons.getMissionReportByPoints, this.handleGetMissionReportByPoints);
     this.register(missionsActons.getMissionReportByDTs, this.handleGetMissionReportByDTs);
     this.register(missionsActons.getDutyMissions, this.handleGetDutyMissions);
+    this.register(missionsActons.getCarDutyMissions, this.handleGetCarDutyMissions);
     this.register(missionsActons.createDutyMission, this.handleGetDutyMissions);
     this.register(missionsActons.updateDutyMission, this.handleGetDutyMissions);
     this.register(missionsActons.removeDutyMission, this.handleGetDutyMissions);
@@ -39,6 +40,7 @@ class MissionsStore extends Store {
       selectedReportData: [],
       selectedReportDataODHS: [],
       dutyMissionsList: [],
+      carDutyMissionList: [],
       dutyMissionTemplatesList: [],
     };
   }
@@ -63,6 +65,10 @@ class MissionsStore extends Store {
 
   handleGetDutyMissionTemplates(dutyMissionTemplates) {
     this.setState({ dutyMissionTemplatesList: dutyMissionTemplates.result });
+  }
+
+  handleGetCarDutyMissions(carDutyMissions) {
+    this.setState({ carDutyMissionList: carDutyMissions.result });
   }
 
   getMissionSourceById(id) {

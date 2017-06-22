@@ -11,7 +11,7 @@ const filterTypeIf = filterMatch => R.propEq('filterType', filterMatch);
 
 function singleFilterTypeHandler(SourcerFilterInput) {
   return class FilterInputHOC extends React.Component<IPropsExtendedInput, any> {
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: IPropsExtendedInput) {
       if (
         !isEqual(this.props.filterType, nextProps.filterType) ||
         !isEqual(this.props.value, nextProps.value)
@@ -87,7 +87,6 @@ function singleFilterTypeHandler(SourcerFilterInput) {
           },
         ],
       ]);
-
       const filterValue = getFilterValue({
         inputValue: value,
         fieldName: this.props.fieldName,

@@ -1,7 +1,9 @@
 import React from 'react';
 import { autobind } from 'core-decorators';
 import { Glyphicon, ButtonToolbar, Dropdown, MenuItem as BootstrapMenuItem } from 'react-bootstrap';
+import { get } from 'lodash';
 
+import { getServerSortingField, extractTableMeta } from 'components/ui/table/utils';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import Paginator from 'components/ui/Paginator.jsx';
@@ -9,7 +11,7 @@ import { connectToStores, staticProps, bindable } from 'utils/decorators';
 import { waybillClosingSchema } from 'models/WaybillModel';
 import WaybillFormWrap from './WaybillFormWrap.jsx';
 import WaybillPrintForm from './WaybillPrintForm.jsx';
-import WaybillsTable from './WaybillsTable.jsx';
+import WaybillsTable, { getTableMeta } from './WaybillsTable.jsx';
 
 const MenuItem = bindable(BootstrapMenuItem);
 
@@ -19,6 +21,7 @@ const MenuItem = bindable(BootstrapMenuItem);
   listName: 'waybillsList',
   schema: waybillClosingSchema,
   tableComponent: WaybillsTable,
+  tableMeta: extractTableMeta(getTableMeta()),
   formComponent: WaybillFormWrap,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
@@ -82,7 +85,8 @@ export default class WaybillJournal extends CheckableElementsList {
 
   getAdditionalProps() {
     const { structures } = this.context.flux.getStore('session').getCurrentUser();
-    const changeSort = (field, direction) => this.setState({ sortBy: `${field}:${direction ? 'asc' : 'desc'}` });
+    const changeSort = (field, direction) =>
+      this.setState({ sortBy: getServerSortingField(field, direction, get(this.tableMeta, [field, 'sort', 'serverFieldName'])) });
     const changeFilter = filter => this.setState({ filter });
     return {
       structures,

@@ -6,6 +6,8 @@ import {
   NavDropdown as BootstrapNavDropdown,
   MenuItem as BootstrapMenuItem,
 } from 'react-bootstrap';
+
+import config from 'config';
 import { autobind } from 'core-decorators';
 import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
 import { FluxContext, HistoryContext } from 'utils/decorators';
@@ -188,8 +190,8 @@ export default class MainPage extends React.Component {
 
           <Nav pullRight>
             <NavDropdown title="Руководство пользователей" id="nav-dropdown-4">
-              <MenuItem href="http://ets.tech.mos.ru/ets-test/docs/Руководство-мастера.docx">Руководство Мастера</MenuItem>
-              <MenuItem href="http://ets.tech.mos.ru/ets-test/docs/Руководство-диспетчера.docx">Руководство Диспетчера</MenuItem>
+              <MenuItem href={`${config.docs}Руководство-мастера.docx`}>Руководство Мастера</MenuItem>
+              <MenuItem href={`${config.docs}Руководство-диспетчера.docx`}>Руководство Диспетчера</MenuItem>
             </NavDropdown>
             <NavItem className="navbar-user">
               <div className="navbar-user__avatar">

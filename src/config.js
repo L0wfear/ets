@@ -1,9 +1,16 @@
 const PROTO = window.location.protocol;
 const WS_PROTO = 'ws:';
 
+const DOC_URL = {
+  dev: `${PROTO}//dev-ets.gost-group.com/docs/`,
+  stage: `${PROTO}//ets.tech.mos.ru/ets-stage/docs/`,
+  prod: `${PROTO}//ets.tech.mos.ru/ets-study/docs/`,
+};
+
 const config = {
   ws: `${WS_PROTO}//ods.mos.ru/ssd/city-dashboard/stream`,
   images: `${PROTO}//ods.mos.ru/ssd/ets/data/images/`,
+  docs: DOC_URL[process.env.STAND],
 };
 
 const STANDS = {

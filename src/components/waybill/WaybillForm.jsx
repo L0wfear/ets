@@ -217,7 +217,7 @@ class WaybillForm extends Form {
     ).then((response) => {
       const newDriverId = response && response.result ? response.result.driver_id : null;
       if (newDriverId) {
-        const driver = this.props.waybillDriversList.find(item => item.driver_id === newDriverId) || null;
+        const driver = this.props.waybillDriversList.find(item => item.id === newDriverId) || null;
         if (driver === null) return;
 
         const { gov_number } = formState;

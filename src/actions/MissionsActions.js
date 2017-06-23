@@ -16,6 +16,7 @@ import {
   MissionPrintService,
   DutyMissionPrintService,
   MissionDataService,
+  CarDutyMissionService,
 } from 'api/missions';
 
 export const parseFilterObject = filter => _.mapKeys(
@@ -257,6 +258,9 @@ export default class MissionsActions extends Actions {
 
   /* ---------- MISSION DUTY TEMPLATES ---------- */
 
+  getCarDutyMissions() {
+    return CarDutyMissionService.get();
+  }
 
   getDutyMissionTemplates() {
     return DutyMissionTemplateService.get({});

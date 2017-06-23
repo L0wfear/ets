@@ -8,8 +8,13 @@ function waybillMissionsCompleteStatusLabelFunction(status) {
   return status === true ? 'Все задания завершены' : 'Есть незавершенные задания';
 }
 
-const getTableMeta = (props) => {
-  const { employeeFIOLabelFunction } = props;
+export const getTableMeta = ({
+  employeeFIOLabelFunction = () => {},
+  waybillDriversList = [],
+  carsList = [],
+  employeesList = [],
+  structures = [],
+} = {}) => {
   const tableMeta = {
     cols: [
       {
@@ -63,7 +68,7 @@ const getTableMeta = (props) => {
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: props.waybillDriversList.map(e => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
+          options: waybillDriversList.map(e => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
         },
       },
       {
@@ -73,7 +78,7 @@ const getTableMeta = (props) => {
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: props.carsList.map(e => ({ label: e.gov_number, value: e.gov_number }))
+          options: carsList.map(e => ({ label: e.gov_number, value: e.gov_number }))
         },
       },
       {
@@ -125,27 +130,36 @@ const getTableMeta = (props) => {
         name: 'created_by_employee_id',
         displayName: 'Создан',
         type: 'string',
+        sort: {
+          serverFieldName: 'created_by_employee_name',
+        },
         filter: {
           type: 'multiselect',
-          options: props.employeesList.map(e => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
+          options: employeesList.map(e => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
         },
       },
       {
         name: 'activated_by_employee_id',
         displayName: 'Выдан',
         type: 'string',
+        sort: {
+          serverFieldName: 'activated_by_employee_name',
+        },
         filter: {
           type: 'multiselect',
-          options: props.employeesList.map(e => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
+          options: employeesList.map(e => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
         },
       },
       {
         name: 'closed_by_employee_id',
         displayName: 'Закрыт',
         type: 'string',
+        sort: {
+          serverFieldName: 'closed_by_employee_name',
+        },
         filter: {
           type: 'multiselect',
-          options: props.employeesList.map(e => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
+          options: employeesList.map(e => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
         },
       },
       {
@@ -236,9 +250,9 @@ const getTableMeta = (props) => {
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: props.structures.map(({ id, name }) => ({ value: id, label: name })),
+          options: structures.map(({ id, name }) => ({ value: id, label: name })),
         },
-        display: props.structures.length,
+        display: structures.length,
       },
       {
         name: 'comment',

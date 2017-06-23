@@ -88,6 +88,7 @@ export default class Filter extends React.Component {
           value={filterValues[name]}
           type={type}
           name={name}
+          serverFieldName={filter.serverFieldName}
           labelFunction={labelFunction}
           availableOptions={options}
           displayName={displayName}

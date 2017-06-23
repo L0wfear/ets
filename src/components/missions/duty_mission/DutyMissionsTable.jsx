@@ -9,7 +9,8 @@ export const getTableMeta = ({
   missionSourcesList = [],
   technicalOperationsList = [],
   foremanList = [],
-}) => {
+  carDutyMissionList = [],
+} = {}) => {
   const tableMeta = {
     cols: [
       {
@@ -81,6 +82,7 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
+          serverFieldName: 'foreman_id',
           options: foremanList.map(({ fio, id }) => ({ value: id, label: fio })),
         },
       },
@@ -98,7 +100,9 @@ export const getTableMeta = ({
         displayName: 'Задание на ТС',
         type: 'string',
         filter: {
-          type: 'advanced-string-like',
+          type: 'multiselect',
+          serverFieldName: 'car_mission_id',
+          options: carDutyMissionList.map(({ id, car_mission_name }) => ({ value: id, label: car_mission_name })),
         },
       },
       {
@@ -106,6 +110,9 @@ export const getTableMeta = ({
         displayName: 'Подразделение',
         cssClassName: 'width80',
         type: 'string',
+        sort: {
+          serverFieldName: 'structure_name',
+        },
         filter: {
           type: 'multiselect',
           options: structures.map(({ id, name }) => ({ value: id, label: name })),
@@ -117,7 +124,6 @@ export const getTableMeta = ({
 
   return tableMeta;
 };
-
 
 export default (props) => {
   const renderers = {

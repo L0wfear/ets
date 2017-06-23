@@ -40,6 +40,7 @@ class ElementsList extends React.Component {
     this.selectField = this.constructor.selectField || 'id';
     this.mainListName = this.constructor.listName || undefined;
     this.entity = this.constructor.entity;
+    this.tableMeta = this.constructor.tableMeta || {};
 
     this.clicks = 0;
   }

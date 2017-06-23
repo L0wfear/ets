@@ -11,7 +11,7 @@ import {
   isEmpty,
 } from 'lodash';
 
-import { IDataTableColSchema, IDataTableSelectedRow } from 'components/ui/table/@types/DataTable/schema.h';
+import { IDataTableColSchema, IDataTableSelectedRow } from 'components/ui/table/@types/schema.h';
 import { IPropsReportContainer, IStateReportContainer } from './@types/ReportContainer.h';
 import { IPropsReportHeaderCommon } from './@types/ReportHeaderWrapper.h';
 import { ReportDataPromise, IReportTableMeta } from 'components/reports/redux/modules/@types/report.h';

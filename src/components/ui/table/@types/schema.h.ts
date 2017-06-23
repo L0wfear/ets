@@ -46,3 +46,7 @@ export interface IDataTableColSchema {
 export interface IDataTableSchema {
   cols: IDataTableColSchema[];
 }
+
+export interface IExtractedDataTableSchema {
+  [columnName: string]: IDataTableColSchema;
+}

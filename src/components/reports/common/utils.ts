@@ -1,4 +1,4 @@
-import { IDataTableColSchema } from 'components/ui/table/@types/DataTable/schema.h';
+import { IDataTableColSchema } from 'components/ui/table/@types/schema.h';
 
 export function multiselectFilterSchema(schema: IDataTableColSchema): IDataTableColSchema {
   return {

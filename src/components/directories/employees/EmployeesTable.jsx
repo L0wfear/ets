@@ -136,7 +136,7 @@ export default (props) => {
     medical_certificate_date: ({ data }) => <DateFormatter date={data} />,
     is_common: ({ data }) => <input type="checkbox" disabled checked={!!data} />,
   };
-  console.log(props);
+
   return (<Table
     title="Реестр сотрудников"
     results={data}

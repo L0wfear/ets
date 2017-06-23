@@ -7,8 +7,9 @@ import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { getWarningNotification } from 'utils/notifications';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import { extractTableMeta, getServerSortingField, toServerFilteringObject } from 'components/ui/table/utils';
 import Paginator from 'components/ui/Paginator.jsx';
-import DutyMissionsTable from './DutyMissionsTable.jsx';
+import DutyMissionsTable, { getTableMeta } from './DutyMissionsTable.jsx';
 import DutyMissionFormWrap from './DutyMissionFormWrap.jsx';
 
 @connectToStores(['missions', 'objects', 'employees'])
@@ -17,6 +18,7 @@ import DutyMissionFormWrap from './DutyMissionFormWrap.jsx';
   entity: 'duty_mission',
   listName: 'dutyMissionsList',
   tableComponent: DutyMissionsTable,
+  tableMeta: extractTableMeta(getTableMeta()),
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE', 'CHECK'],
   exportable: true,
 })
@@ -59,22 +61,25 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     flux.getActions('technicalOperation').getTechnicalOperations();
     flux.getActions('missions').getDutyMissions(MAX_ITEMS_PER_PAGE, 0, this.state.sortBy, this.state.filter);
     flux.getActions('missions').getMissionSources();
+    flux.getActions('missions').getCarDutyMissions();
     flux.getActions('employees').getForemans();
     flux.getActions('companyStructure').getLinearCompanyStructure();
   }
 
   async refreshList(state = this.state) {
-    this.context.flux.getActions('missions').getDutyMissions(MAX_ITEMS_PER_PAGE, state.page * MAX_ITEMS_PER_PAGE, state.sortBy, state.filter);
+    const filter = toServerFilteringObject(state.filter, this.tableMeta);
+
+    this.context.flux.getActions('missions').getDutyMissions(MAX_ITEMS_PER_PAGE, state.page * MAX_ITEMS_PER_PAGE, state.sortBy, filter);
 
     const pageOffset = state.page * MAX_ITEMS_PER_PAGE;
-    const missions = await this.context.flux.getActions('missions').getDutyMissions(MAX_ITEMS_PER_PAGE, pageOffset, state.sortBy, state.filter);
+    const missions = await this.context.flux.getActions('missions').getDutyMissions(MAX_ITEMS_PER_PAGE, pageOffset, state.sortBy, filter);
 
     const { total_count } = missions.result.meta;
     const resultCount = missions.result.rows.length;
 
     if (resultCount === 0 && total_count > 0) {
       const offset = (Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1) * MAX_ITEMS_PER_PAGE;
-      this.context.flux.getActions('missions').getDutyMissions(MAX_ITEMS_PER_PAGE, offset, state.sortBy, state.filter);
+      this.context.flux.getActions('missions').getDutyMissions(MAX_ITEMS_PER_PAGE, offset, state.sortBy, filter);
     }
   }
 
@@ -212,7 +217,9 @@ export default class DutyMissionsJournal extends CheckableElementsList {
   getAdditionalProps() {
     const { structures } = this.context.flux.getStore('session').getCurrentUser();
 
-    const changeSort = (field, direction) => this.setState({ sortBy: `${field}:${direction ? 'asc' : 'desc'}` });
+    const changeSort = (field, direction) =>
+      this.setState({ sortBy: getServerSortingField(field, direction, _.get(this.tableMeta, [field, 'sort', 'serverFieldName'])) });
+
     const changeFilter = filter => this.setState({ filter });
 
     return {

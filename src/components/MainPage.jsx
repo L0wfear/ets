@@ -192,6 +192,7 @@ export default class MainPage extends React.Component {
             <NavDropdown title="Руководство пользователей" id="nav-dropdown-4">
               <MenuItem href={`${config.docs}Руководство-мастера.docx`}>Руководство Мастера</MenuItem>
               <MenuItem href={`${config.docs}Руководство-диспетчера.docx`}>Руководство Диспетчера</MenuItem>
+              <MenuItem href={`${config.docs}Руководство-окружного-пользователя.docx`}>Руководство окружного пользователя</MenuItem>
             </NavDropdown>
             <NavItem className="navbar-user">
               <div className="navbar-user__avatar">

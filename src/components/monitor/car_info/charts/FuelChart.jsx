@@ -81,6 +81,7 @@ const FuelChartSFC = props => {
     <div>
       <LineChart
         name={rawData ? 'fuelChartRaw' : 'fuelChart'}
+        updateOnly
         data={data}
         showX
         onClick={props.onMapClick}

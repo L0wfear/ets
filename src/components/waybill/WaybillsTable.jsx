@@ -63,7 +63,7 @@ const getTableMeta = (props) => {
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: props.driversList.map(e => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
+          options: props.waybillDriversList.map(e => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
         },
       },
       {

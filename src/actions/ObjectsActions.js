@@ -11,7 +11,7 @@ import {
   PositionService,
   ModelsService,
   SpecialModelService,
-  OrganizationsService,
+  CompanyService,
   ConfigService,
   MaterialConsumptionRateService,
   CleanCategoriesService,
@@ -63,12 +63,12 @@ export default class ObjectsActions extends Actions {
   }
 
   getOrganizations() {
-    return OrganizationsService.get();
+    return CompanyService.get();
   }
 
   updateOrganizations(formState) {
     const payload = _.clone(formState);
-    return OrganizationsService.path(formState.id).put(payload, this.getOrganizations, 'json');
+    return CompanyService.path(formState.id).put(payload, this.getOrganizations, 'json');
   }
 
   getWorkKinds() {

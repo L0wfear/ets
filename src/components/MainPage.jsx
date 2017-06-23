@@ -121,7 +121,7 @@ export default class MainPage extends React.Component {
               <MenuItem permissions={['employee.list']} active={path === '/employees'} href="#/employees">Реестр сотрудников</MenuItem>
               <MenuItem permissions={['faxogramm.list']} active={path === '/faxogramms'} href="#/faxogramms">Реестр факсограмм</MenuItem>
               <MenuItem permissions={['technical_operation.list']} active={path === '/technical-operations'} href="#/technical-operations">Реестр технологических операций</MenuItem>
-              <MenuItem permissions={['companies.list']} active={path === '/companies'} href="#/companies">Реестр организаций</MenuItem>
+              <MenuItem permissions={['company.list']} active={path === '/companies'} href="#/companies">Реестр организаций</MenuItem>
               <MenuItem divider />
               <NavDropdown oneOfPermissions={['type.list', 'car.list']} title="Транспортные средства" id="nav-dropdown-2-1">
                 <MenuItem permissions={['type.list']} active={path === '/car-func-types'} href="#/car-func-types">Типы техники</MenuItem>

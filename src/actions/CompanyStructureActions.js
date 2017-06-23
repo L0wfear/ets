@@ -30,10 +30,6 @@ export default class CompanyStructureActions extends Actions {
     return CompanyStructureService.get();
   }
 
-  getCompanyList() {
-    return CompanyService.get();
-  }
-
   async getLinearCompanyStructure() {
     const payload = {
       linear: true,

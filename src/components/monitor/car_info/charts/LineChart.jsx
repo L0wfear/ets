@@ -16,6 +16,14 @@ export default class LineChart extends Component {
   }
 
   componentDidUpdate() {
+    /**
+     * Кол-во серий данных +1, так как навигатор под графиком тоже включен в серию данных.
+     */
+    if (this.chart.series.length > 0 && this.chart.series.length === this.props.data.length + 1) {
+      this.props.data.forEach((newSeries, i) => this.chart.series[i].update(newSeries));
+      return;
+    }
+
     this.chart.destroy();
     this.chart = null;
     this.createChart();

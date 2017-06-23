@@ -74,10 +74,14 @@ export default class Filter extends React.Component {
     this.props.onSubmit({});
   }
 
+  checkDisabledButton(filterValues) {
+    return Object.keys(filterValues).length === 0;
+  }
+
   render() {
     const { filterValues } = this.state;
     const { tableData, options } = this.props;
-
+    
     const filterRows = options.map((option, i) => {
       const { filter = {}, name, displayName } = option;
       const { type, labelFunction, options } = filter;
@@ -103,7 +107,7 @@ export default class Filter extends React.Component {
         <Div className="filter-container">
           <Div className="filter-buttons">
             <Button onClick={this.submit}>Применить</Button>
-            <Button onClick={this.reset}>Сброс</Button>
+            <Button onClick={this.reset} disabled={this.checkDisabledButton(filterValues)}>Сброс</Button>
             <span className="filter-close" onClick={this.props.onHide}><Glyphicon glyph="remove" /></span>
           </Div>
           {filterRows}

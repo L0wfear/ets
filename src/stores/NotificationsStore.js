@@ -26,7 +26,7 @@ export default class NotificationsStore extends Store {
         actions: missionsActions,
         actionNames: [
           'createDutyMissionTemplate',
-          'updateMission',
+          // 'updateMission',
           'updateMissionTemplate',
           'createDutyMissions',
           'updateDutyMissionTemplate',

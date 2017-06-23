@@ -12,7 +12,14 @@ const serviceUrl = 'cleaning_status_report';
 const reportUrl = 'daily-cleaning-reports-ets';
 const serviceName = 'DailyCleaningReportsServiceETS';
 
-const schemaMakers = {};
+const schemaMakers = {
+    cars_gov_numbers: schema => ({
+    ...schema,
+    filter: {
+      type: 'string',
+    },
+  }),
+};
 
 const renderers = {
   cars_gov_numbers: ({ data }) => <span>{data.join(', ')}</span>,

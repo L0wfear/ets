@@ -7,9 +7,14 @@ export default class NotificationsStore extends Store {
     super();
 
     const missionsActions = flux.getActions('missions');
+    const objectsActions = flux.getActions('objects');
     const reportsActions = flux.getActions('reports');
 
     const saveNotificationQueue = [
+      {
+        actions: objectsActions,
+        actionNames: ['createMaintenanceRate', 'deleteMaintenanceRate'],
+      },
       {
         actions: flux.getActions('odh'),
         actionNames: ['createODHNorm', 'updateODHNorm'],

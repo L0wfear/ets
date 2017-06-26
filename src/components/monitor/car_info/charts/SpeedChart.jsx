@@ -1,5 +1,5 @@
 import React from 'react';
-import { groupBy, flatten } from 'lodash';
+import { groupBy, flatten, get, isEqual } from 'lodash';
 import { shouldUpdate } from 'recompose';
 
 import { LOAD_PROCESS_TEXT, NO_DATA_TEXT } from 'constants/statuses';
@@ -21,11 +21,14 @@ const SpeedChartSFC = props => {
     return p.sensors.equipment;
   });
   sensorsList = groupBy(flatten(sensorsList), s => s.id);
+
   Object.keys(sensorsList).forEach((id, i) => {
     const sensorOptions = sensorsMapOptions(i, props.car.marker.track.maxSpeed);
     const values = sensorsList[id].map(s => [s.timestamp, s.val ? sensorOptions.value : 0]);
+    const sensorName = get(sensors, [id, 'type_name']);
+
     sensorsData.push({
-      name: `Датчик №${i + 1} - ${sensors[id] && sensors[id].type_name}`,
+      name: `Датчик №${i + 1} - ${sensorName || LOAD_PROCESS_TEXT}`,
       enableMouseTracking: false,
       connectNulls: false,
       color: sensorOptions.color,
@@ -65,5 +68,11 @@ const SpeedChartSFC = props => {
 };
 
 export default shouldUpdate(
-  (props, nextProps) => hasTrackPointsChanged(props.trackPoints, nextProps.trackPoints)
+  (props, nextProps) => {
+    const sensors = Object.keys(get(props, 'car.marker.track.sensors', {}));
+    const nextSensors = Object.keys(get(nextProps, 'car.marker.track.sensors', {}));
+    const hasSensorsChanged = !isEqual(sensors, nextSensors);
+
+    return hasTrackPointsChanged(props.trackPoints, nextProps.trackPoints) || hasSensorsChanged;
+  }
 )(SpeedChartSFC);

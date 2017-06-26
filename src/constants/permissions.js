@@ -171,6 +171,12 @@ const PERMISSIONS = {
     'user_action_log': {
       'list': 'user_action_log.list',
     },
+    'medical_stats': {
+      'list': 'medical_stats.list',
+    },
+    'company': {
+      'list': 'company.list',
+    },
   },
   'administration': 'administration',
 };

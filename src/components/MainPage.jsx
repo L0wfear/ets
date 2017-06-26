@@ -123,6 +123,7 @@ export default class MainPage extends React.Component {
               <MenuItem permissions={['technical_operation.list']} active={path === '/technical-operations'} href="#/technical-operations">Реестр технологических операций</MenuItem>
               <MenuItem permissions={['company.list']} active={path === '/companies'} href="#/companies">Реестр организаций</MenuItem>
               <MenuItem divider />
+
               <NavDropdown oneOfPermissions={['type.list', 'car.list']} title="Транспортные средства" id="nav-dropdown-2-1">
                 <MenuItem permissions={['type.list']} active={path === '/car-func-types'} href="#/car-func-types">Типы техники</MenuItem>
                 <MenuItem permissions={['car.list']} active={path === '/cars'} href="#/cars">Реестр транспортных средств</MenuItem>
@@ -151,9 +152,9 @@ export default class MainPage extends React.Component {
                 <MenuItem permissions={['odh_norm_data_summer.list']} active={path === '/odh-norm-data-summer'} href="#/odh-norm-data-summer">Показатели норм по содержанию ОДХ (лето)</MenuItem>
                 <MenuItem permissions={['efficiency.list']} active={path === '/efficiency'} href="#/efficiency">Показатели для расчета эффективности</MenuItem>
               </NavDropdown>
-              <MenuItem permissions={['medical_stats.list']} divider />
+
               <MenuItem permissions={['medical_stats.list']} active={path === '/medical-stats'} href="#/medical-stats">Статистика прохождения мед. осмотров</MenuItem>
-              <MenuItem permissions={['user_action_log.list']} divider />
+              <MenuItem permissions={['medical_stats.list']} divider />
               <MenuItem permissions={['user_action_log.list']} active={path === '/user-action-log'} href="#/user-action-log">Журнал действий пользователя</MenuItem>
             </NavDropdown>
 

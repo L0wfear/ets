@@ -76,7 +76,6 @@ export default class Filter extends React.Component {
   }
 
   checkDisabledButton(filterValues) {
-    console.log(filterValues);
     return Object.keys(filterValues).length === 0;
   }
 

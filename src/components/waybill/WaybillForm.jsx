@@ -873,6 +873,16 @@ class WaybillForm extends Form {
                   error={errors.comment}
                 />
               </Col>
+              <Col md={4}>
+                <Field
+                  type="string"
+                  label="Непройденные мед. осмотры"
+                  disabled
+                  value={state.failed_medical_stat_types}
+                  onChange={this.handleChange.bind(this, 'failed_medical_stat_types')}
+                  error={errors.failed_medical_stat_types}
+                />
+              </Col>
             </Div>
           </Row>
 

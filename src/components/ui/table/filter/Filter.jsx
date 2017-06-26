@@ -33,7 +33,8 @@ export default class Filter extends React.Component {
 
   handleFilterValueChange(key, e) {
     const filterValues = { ...this.state.filterValues };
-    if (!e) {
+
+    if (!e || isEmpty(e.target ? e.target.value : e)) {
       delete filterValues[key];
     } else {
       filterValues[key] = e.target ? e.target.value : e;
@@ -75,6 +76,7 @@ export default class Filter extends React.Component {
   }
 
   checkDisabledButton(filterValues) {
+    console.log(filterValues);
     return Object.keys(filterValues).length === 0;
   }
 

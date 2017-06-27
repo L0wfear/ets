@@ -1,3 +1,4 @@
+import Raven from 'raven-js';
 import { Store } from 'flummox';
 import { autobind } from 'core-decorators';
 import _ from 'lodash';
@@ -105,7 +106,10 @@ export default class PointsStore extends Store {
       this.handleUpdatePoints(JSON.parse(data));
     };
 
-    this.ws.onclose = () => {
+    this.ws.onclose = (event) => {
+      if (event.code === 1006) {
+        Raven.captureException(new Error('1006: A connection was closed abnormally (that is, with no close frame being sent). A low level WebSocket error.'));
+      }
       // console.warn('WEBSOCKET - Потеряно соединение с WebSocket, пытаемся переподключиться');
     };
     this.ws.onerror = () => {

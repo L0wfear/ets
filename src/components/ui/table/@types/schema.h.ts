@@ -41,6 +41,10 @@ export interface IDataTableColSchema {
    * CSS custom class for columns styling
    */
   cssClassName?: string;
+  /**
+   * Custom table header component
+   */
+  customHeaderComponent?: JSX.Element;
 }
 
 export interface IDataTableSchema {
@@ -49,4 +53,12 @@ export interface IDataTableSchema {
 
 export interface IExtractedDataTableSchema {
   [columnName: string]: IDataTableColSchema;
+}
+
+export interface ISchemaRenderer {
+  [field: string]: (rowMeta) => JSX.Element;
+}
+
+export interface ISchemaMaker  {
+  [field: string]: (schemaMeta: IDataTableColSchema, reportProps: object) => IDataTableColSchema;
 }

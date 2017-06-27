@@ -31,13 +31,17 @@ export default class MissionsJournal extends CheckableElementsList {
     this.removeElementCallback = this.removeElementCallback.bind(this);
 
     this.removeDisabled = () => {
-      if (Object.keys(this.state.checkedElements).length !== 0) return false;
+      const keysChEl = Object.keys(this.state.checkedElements);
+
+      if (keysChEl.length !== 0) {
+        return !keysChEl.every(el => this.state.checkedElements[el].status === 'assigned');
+      }
 
       if (this.state.selectedElement === null) {
         return true;
       }
 
-      return this.state.selectedElement.status !== 'not_assigned';
+      return this.state.selectedElement.status !== 'assigned';
     };
 
     this.state = Object.assign(this.state, {
@@ -84,15 +88,21 @@ export default class MissionsJournal extends CheckableElementsList {
   }
 
   removeElementCallback() {
-    return this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, 0, this.state.sortBy, this.state.filter);
+    global.NOTIFICATION_SYSTEM.notify('Данные успешно удалены', 'success');
+    this.refreshList();
   }
 
   checkDisabled() {
-    if (Object.keys(this.state.checkedElements).length !== 0) return false;
+    const keysChEl = Object.keys(this.state.checkedElements);
+
+    if (keysChEl.length !== 0) {
+      return !keysChEl.every(el => this.state.checkedElements[el].status === 'assigned');
+    }
 
     if (this.state.selectedElement === null) {
       return true;
     }
+
     return this.state.selectedElement.status !== 'assigned';
   }
 
@@ -107,6 +117,7 @@ export default class MissionsJournal extends CheckableElementsList {
     const mission = _.cloneDeep(this.state.selectedElement);
     mission.status = 'complete';
     await this.context.flux.getActions('missions').updateMission(mission, false);
+    global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
     this.refreshList(this.state);
   }
 
@@ -122,11 +133,16 @@ export default class MissionsJournal extends CheckableElementsList {
           const updatedMission = _.cloneDeep(mission);
           updatedMission.status = 'complete';
           await this.context.flux.getActions('missions').updateMission(updatedMission, false);
-          this.refreshList(this.state);
         } else error = true;
       });
+
+      this.refreshList(this.state);
       this.setState({ checkedElements: {} });
-      if (error) global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Выполненые" можно только назначенные задания!'));
+      if (error) {
+        global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Выполненые" можно только назначенные задания!'));
+      } else {
+        global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
+      }
     } else {
       this.completeMission();
     }
@@ -143,12 +159,16 @@ export default class MissionsJournal extends CheckableElementsList {
             updatedMission.status = 'fail';
             updatedMission.comment = reason;
             await this.context.flux.getActions('missions').updateMission(updatedMission, false);
-            this.refreshList(this.state);
           }
         } else error = true;
       });
+      this.refreshList(this.state);
       this.setState({ checkedElements: {} });
-      if (error) global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Невыполненые" можно только назначенные задания!'));
+      if (error) {
+        global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Невыполненые" можно только назначенные задания!'));
+      } else {
+        global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
+      }
     } else {
       this.rejectMission();
     }
@@ -164,7 +184,7 @@ export default class MissionsJournal extends CheckableElementsList {
 
       _.forEach(this.state.checkedElements, (mission) => {
         if (mission.status === 'not_assigned') {
-          this.removeElementAction(mission.id, this.removeElementCallback);
+          this.removeElementAction(mission.id, false);
         } else {
           isNotDeleted = true;
         }
@@ -172,7 +192,11 @@ export default class MissionsJournal extends CheckableElementsList {
 
       if (isNotDeleted) {
         global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Удалились только задания со статусом "Не назначено"!'));
+      } else {
+        global.NOTIFICATION_SYSTEM.notify('Данные успешно удалены', 'success');
       }
+
+      this.refreshList();
       this.setState({
         checkedElements: {},
         selectedElement: null,

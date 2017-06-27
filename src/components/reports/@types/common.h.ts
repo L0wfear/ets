@@ -1,6 +1,4 @@
-interface ISchemaRenderer {
-  [field: string]: (rowMeta) => any;
-}
+import { ISchemaRenderer, ISchemaMaker } from 'components/ui/table/@types/schema.h';
 
 export interface IReportProps {
   title: string | JSX.Element | null;
@@ -14,8 +12,6 @@ export interface IReportProps {
   headerComponent: any;
   renderers?: ISchemaRenderer;
   summaryRenderes?: ISchemaRenderer;
-  schemaMakers?: {
-    [field: string]: (schemaMeta: object, reportProps: object) => object;
-  };
+  schemaMakers?: ISchemaMaker;
   headerStateMaker?(state: any): any;
 }

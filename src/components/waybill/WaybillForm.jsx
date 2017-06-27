@@ -27,7 +27,7 @@ import enhanceWithPermissions from '../util/RequirePermissions.jsx';
 
 const Div = enhanceWithPermissions(DivForEnhance);
 
-const STATUS_LIST = ['active', 'draft'];
+const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
 @autobind
 class WaybillForm extends Form {
@@ -348,11 +348,15 @@ class WaybillForm extends Form {
     const { formState } = this.props;
     const newFormData = !isEmpty(v) ? v.split(',').map(d => parseInt(d, 10)) : [];
     const oldFormData = formState.mission_id_list;
+    const IS_CREATING = !formState.status;
 
     const shouldBeChanged = (
-      isEqualOr(STATUS_LIST, formState.status) &&
-      newFormData.length >= 1 &&
-      formState.can_delete_missions
+      IS_CREATING ||
+      (
+        isEqualOr(MISSIONS_RESTRICTION_STATUS_LIST, formState.status) &&
+        newFormData.length >= 1 &&
+        formState.can_delete_missions
+      )
     );
 
     this.handleChange('mission_id_list', shouldBeChanged ? newFormData : oldFormData);
@@ -871,6 +875,16 @@ class WaybillForm extends Form {
                   value={state.comment}
                   onChange={this.handleChange.bind(this, 'comment')}
                   error={errors.comment}
+                />
+              </Col>
+              <Col md={4}>
+                <Field
+                  type="string"
+                  label="Непройденные мед. осмотры"
+                  disabled
+                  value={state.failed_medical_stat_types}
+                  onChange={this.handleChange.bind(this, 'failed_medical_stat_types')}
+                  error={errors.failed_medical_stat_types}
                 />
               </Col>
             </Div>

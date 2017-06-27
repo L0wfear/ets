@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import ElementsList from 'components/ElementsList.jsx';
-import { connectToStores, staticProps } from 'utils/decorators';
+import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import MaintenanceRateFormWrap from './MaintenanceRateFormWrap.jsx';
 import MaintenanceRateTable from './MaintenanceRateTable.jsx';
 
 @connectToStores(['objects'])
-// @exportable({ entity: 'cleaning_rate' })
+@exportable({ entity: 'maintenance_rate' })
 @staticProps({
   entity: 'maintenance_rate',
   listName: 'maintenanceRateList',
@@ -19,8 +19,12 @@ class MaintenanceRateDirectory extends ElementsList {
   constructor(props, context) {
     super(props);
     this.removeElementAction = context.flux.getActions('objects').deleteMaintenanceRate.bind(this, props.type);
-  }
 
+    this.setExportType(props.type);
+  }
+  setExportType(type) {
+    this.exportPayload = { type };
+  }
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
@@ -32,6 +36,7 @@ class MaintenanceRateDirectory extends ElementsList {
 
   inheritedComponentWillReceiveProps(props) {
     if (props.type !== this.props.type) {
+      this.setExportType(props.type);
       this.context.flux.getActions('objects').getMaintenanceRate(props.type);
       this.removeElementAction = this.context.flux.getActions('objects').deleteMaintenanceRate.bind(this, props.type);
     }

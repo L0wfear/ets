@@ -261,6 +261,15 @@ export const getTableMeta = ({
         cssClassName: 'min-width200',
         filter: false,
       },
+      {
+        name: 'failed_medical_stat_types',
+        displayName: 'Непройденные мед. осмотры',
+        type: 'string',
+        cssClassName: 'min-width200',
+        filter: {
+          type: 'advanced-string-like',
+        },
+      },
     ],
   };
 

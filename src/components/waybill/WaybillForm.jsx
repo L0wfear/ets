@@ -27,7 +27,7 @@ import enhanceWithPermissions from '../util/RequirePermissions.jsx';
 
 const Div = enhanceWithPermissions(DivForEnhance);
 
-const STATUS_LIST = ['active', 'draft'];
+const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
 @autobind
 class WaybillForm extends Form {
@@ -348,11 +348,15 @@ class WaybillForm extends Form {
     const { formState } = this.props;
     const newFormData = !isEmpty(v) ? v.split(',').map(d => parseInt(d, 10)) : [];
     const oldFormData = formState.mission_id_list;
+    const IS_CREATING = !formState.status;
 
     const shouldBeChanged = (
-      isEqualOr(STATUS_LIST, formState.status) &&
-      newFormData.length >= 1 &&
-      formState.can_delete_missions
+      IS_CREATING ||
+      (
+        isEqualOr(MISSIONS_RESTRICTION_STATUS_LIST, formState.status) &&
+        newFormData.length >= 1 &&
+        formState.can_delete_missions
+      )
     );
 
     this.handleChange('mission_id_list', shouldBeChanged ? newFormData : oldFormData);

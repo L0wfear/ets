@@ -205,24 +205,15 @@ export default class DrawMap extends PolyMap {
     this.props.removeLastDrawFeature();
   }
 
-  drawMap(showFl) {
-    if (showFl) {
-      return (
-        <Div>
-          <button className="continue-route-button" onClick={this.addPoint}><Glyphicon glyph="pencil" /></button>
-          <button className="delete-last-point-button" onClick={this.removeLastPoint}><Glyphicon glyph="remove" /></button>
-        </Div>
-      );
-    }
-    return (<Div />);
-  }
-
   render() {
     const objectList = this.props.objectsType === 'mixed' ? this.props.draw_object_list : this.props.object_list;
 
     return (
       <div ref={node => (this._container = node)} className="openlayers-container">
-        {this.drawMap(objectList.length)}
+        <Div hidden={!objectList.length}>
+          <button className="continue-route-button" onClick={this.addPoint}><Glyphicon glyph="pencil" /></button>
+          <button className="delete-last-point-button" onClick={this.removeLastPoint}><Glyphicon glyph="remove" /></button>
+        </Div>
       </div>
     );
   }

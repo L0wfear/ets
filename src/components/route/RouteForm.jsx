@@ -27,6 +27,7 @@ export default class RouteForm extends Form {
   }
 
   handleTypeChange(v) {
+    this.setState({ vector: false })
     this.handleChange('type', v);
     this.props.resetState();
   }
@@ -207,7 +208,10 @@ export default class RouteForm extends Form {
                     Вручную
                   </Button>
                   <Button
-                    onClick={() => this.setState({ vector: false })}
+                    onClick={() => {
+                      this.setState({ vector: false }); 
+                      this.handleChange('draw_object_list', []);
+                    }}
                     className={!this.state.vector && 'active'}
                   >
                     Выбор из ОДХ

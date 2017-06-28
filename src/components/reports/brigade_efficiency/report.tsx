@@ -6,9 +6,11 @@ import { getServerErrorNotification } from 'utils/notifications';
 import { DutyMissionService } from 'api/missions';
 import { exportable } from 'utils/decorators';
 import { getTableMeta as dutyMissionTableMeta } from 'components/missions/duty_mission/DutyMissionsTable.jsx';
-import DutyMissionForm from 'components/missions/duty_mission/DutyMissionFormWrap.jsx';
+import DutyMissionFormSCC from 'components/missions/duty_mission/DutyMissionFormWrap.jsx';
 import ReportContainer from 'components/reports/common/ReportContainer';
 import reportProps, { serviceUrl, renderers } from './reportProps';
+
+const DutyMissionForm: any = DutyMissionFormSCC;
 
 @exportable({
   entity: serviceUrl,

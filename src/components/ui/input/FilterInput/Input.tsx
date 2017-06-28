@@ -2,7 +2,10 @@ import * as React from 'react';
 import * as Input from 'react-bootstrap/lib/Input';
 import * as R from 'ramda';
 
+import { IPropsDatePicker } from 'components/ui/@types/DatePicker.h';
 import Datepicker from 'components/ui/DatePicker';
+
+const DataPicker: React.ComponentClass<IPropsDatePicker> = Datepicker;
 
 export interface IPropsExtendedInput {
   type: string;
@@ -61,13 +64,13 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
 
     return (
       <div className="datepickers">
-        <Datepicker
+        <DataPicker
           date={value[0]}
           onChange={this.handleFirstInput}
           time={time}
         />
         {this.props.interval &&
-          <Datepicker
+          <DataPicker
             date={value[1]}
             onChange={this.handleSecondInput}
             time={time}

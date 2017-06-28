@@ -27,7 +27,7 @@ export default class Analytics extends Component {
 
     this.state = {
       report_ids: [],
-      company_ids: [],
+      companies_ids: [],
       transcript: false,
       date_from,
       date_to,
@@ -41,11 +41,12 @@ export default class Analytics extends Component {
 
   handleSubmit() {
     const { flux } = this.context;
+    const state = {
+      ...this.state,
+      companies_ids: this.state.companies_ids.length === 0 ? null : this.state.companies_ids,
+    };
 
-    const reportName = this.state.report_ids.length === 1 ? this.reports[this.state.report_ids[0]] : 'Отчет';
-
-    const dateName = makeDate(this.state.date_from) + '-' + makeDate(this.state.date_to);
-    flux.getActions('reports').getAnalytics(this.state)
+    flux.getActions('reports').getAnalytics(state)
       .then(({ blob, fileName }) => {
         saveData(blob, fileName);
       });
@@ -59,12 +60,12 @@ export default class Analytics extends Component {
       index === -1 ? report_ids.push(id) : report_ids.splice(index, 1);
 
       this.setState({ report_ids });
-    } else if (field === 'company_ids') {
-      let { company_ids, transcript } = this.state;
-      company_ids = value ? ('' + value).split(',') : [];
-      company_ids = company_ids.map(e => parseFloat(e));
-      if (company_ids.length > 1) transcript = false;
-      this.setState({ company_ids, transcript });
+    } else if (field === 'companies_ids') {
+      let { companies_ids, transcript } = this.state;
+      companies_ids = value ? ('' + value).split(',') : [];
+      companies_ids = companies_ids.map(e => parseFloat(e));
+      if (companies_ids.length > 1) transcript = false;
+      this.setState({ companies_ids, transcript });
     } else {
       this.setState({ [field]: value });
     }
@@ -78,7 +79,7 @@ export default class Analytics extends Component {
     } else {
       value = '';
     }
-    this.handleChange('company_ids', value);
+    this.handleChange('companies_ids', value);
   }
 
   render() {
@@ -120,11 +121,11 @@ export default class Analytics extends Component {
               <input
                 style={{ marginRight: '5px', marginLeft: '10px' }}
                 type="checkbox"
-                disabled={this.state.company_ids.length > 1}
+                disabled={this.state.companies_ids.length > 1}
                 checked={this.state.transcript}
                 onChange={this.handleChange.bind(this, 'transcript', !this.state.transcript)}
               />
-              <span style={{ color: this.state.company_ids.length > 1 ? 'grey' : 'black' }}>c расшифровкой</span>
+              <span style={{ color: this.state.companies_ids.length > 1 ? 'grey' : 'black' }}>c расшифровкой</span>
             </Row>
           </Col>
           <Col md={5}>
@@ -132,17 +133,9 @@ export default class Analytics extends Component {
               <Field type="select" label="Учреждение"
                 multi
                 options={COMPANY}
-                value={this.state.company_ids.join(',')}
-                onChange={this.handleChange.bind(this, 'company_ids')}
+                value={this.state.companies_ids.join(',')}
+                onChange={this.handleChange.bind(this, 'companies_ids')}
               />
-                <Div style={{ marginLeft: '-9px', marginTop: '8px' }}>
-                <input
-                  style={{ marginRight: '5px', marginLeft: '10px' }}
-                  type="checkbox"
-                  onChange={this.handleCheckbox.bind(this)}
-                />
-                <span>Выбрать все</span>
-              </Div>
             </Div>
           </Col>
           <Col md={2} />

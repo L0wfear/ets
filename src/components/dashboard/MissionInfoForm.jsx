@@ -22,6 +22,16 @@ const getDataTraveledYet = (data) => {
   return !isNaN(parseInt(data, 10)) ? parseInt(data, 10) : '-';
 };
 
+const toFixed = (data = []) => {
+  const toFixedValue = 2;
+
+  if (!!data.length && (data[1] === 'кв. м.' || data[1] === 'м.')) {
+    data[0] = parseFloat(data[0]).toFixed(toFixedValue);
+  }
+
+  return data;
+};
+
 @autobind
 class MissionInfoForm extends Form {
 
@@ -171,10 +181,18 @@ class MissionInfoForm extends Form {
           <Div>
             * - расстояние, учитываемое при прохождении задания<br />
             ** - пройдено с рабочей скоростью / пройдено с превышением рабочей скорости<br />
-            <li><b>Пройдено с рабочей скоростью:</b> {getDataTraveledYet([report_data.traveled_raw, report_data.check_unit, report_data.time_work_speed].join(' '))}</li>
-            <li><b>Пройдено с превышением рабочей скорости:</b> {getDataTraveledYet([report_data.traveled_high_speed, report_data.check_unit, report_data.time_high_speed].join(' '))}</li>
-            <li><b>Общее время стоянок:</b> {this.state.parkingCount ? secondsToTime(this.state.parkingCount) : 'Рассчитывается...'}</li>
-            <li><b>Общий пробег с работающим оборудованием:</b> {equipmentData == null ? <Preloader type="field" /> : `${parseFloat(equipmentData / 1000).toFixed(3)} км`}</li>
+            <li><b>Пройдено с рабочей скоростью:</b>
+              {getDataTraveledYet([...toFixed([report_data.traveled_raw, report_data.check_unit]), report_data.time_work_speed].join(' '))}
+            </li>
+            <li><b>Пройдено с превышением рабочей скорости:</b> 
+              {getDataTraveledYet([...toFixed([report_data.traveled_high_speed, report_data.check_unit]), report_data.time_high_speed].join(' '))}
+            </li>
+            <li><b>Общее время стоянок:</b>
+              {this.state.parkingCount ? secondsToTime(this.state.parkingCount) : 'Рассчитывается...'}
+            </li>
+            <li><b>Общий пробег с работающим оборудованием:</b>
+              {equipmentData == null ? <Preloader type="field" /> : `${parseFloat(equipmentData / 1000).toFixed(3)} км`}
+            </li>
           </Div>
 
         </ModalBody>

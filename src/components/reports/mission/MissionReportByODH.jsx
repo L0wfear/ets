@@ -63,7 +63,7 @@ const MissionReportByODHTable = (props) => {
         {`(${`${parseFloat(parseFloat(data.data) * 100).toFixed(0)}%`})`}
       </div>
     ),
-    check_value: meta => <div>{ `${meta.data} ${meta.rowData.route_check_unit}` }</div>,
+    check_value: meta => <div>{ `${meta.rowData.route_check_unit === 'кв. м.' || meta.rowData.route_check_unit === 'м.' ? parseFloat(meta.data).toFixed(2) : meta.data} ${meta.rowData.route_check_unit}` }</div>,
     route_with_speed: meta => <div>{`${parseFloat(meta.rowData.traveled / 1000).toFixed(3)} / ${parseFloat(meta.rowData.traveled_high_speed / 1000).toFixed(3)}`}</div>,
   };
 

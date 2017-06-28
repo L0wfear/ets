@@ -32,7 +32,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       fetchedBySubmitButton: false,
       fetchedByMoveDownButton: false,
       exportFetching: false,
-      selectedRowNumber: null,
+      selectedRow: null,
     };
   }
   componentDidMount() {
@@ -81,13 +81,13 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 
         if (this.state.fetchedByMoveDownButton) {
           this.props.setSummaryTableData({
-            summaryList: [this.props.prevList[this.state.selectedRowNumber - 1]],
+            summaryList: [this.state.selectedRow],
             summaryMeta: {...this.props.prevMeta},
             summaryTableMetaInfo: [...this.props.prevTableMetaInfo.fields],
           });
           this.setState({
             fetchedByMoveDownButton: false,
-              selectedRowNumber: null,
+              selectedRow: null,
           });
         } else if (hasSummaryLevel) {
           const summaryQuery = {
@@ -207,7 +207,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 
       return {
         fetchedByMoveDownButton: true,
-        selectedRowNumber: selectedRow.props.data.rowNumber,
+        selectedRow: selectedRow.props.data,
       };
     });
 

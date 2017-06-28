@@ -1,4 +1,5 @@
-interface IDataTableSelectedRowPropsData {
+export interface IDataTableSelectedRowPropsData {
+  [fieldName: string]: any;
   rowNumber: string;
 }
 

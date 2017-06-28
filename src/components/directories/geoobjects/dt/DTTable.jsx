@@ -36,7 +36,10 @@ export const tableMeta = props => ({
     {
       name: 'company_structure_name',
       displayName: 'Подразделение',
-      type: 'text',
+      type: 'string',
+      filter: {
+        type: 'multiselect',
+      },
     },
   ],
 });

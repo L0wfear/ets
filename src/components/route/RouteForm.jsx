@@ -74,6 +74,10 @@ export default class RouteForm extends Form {
       this.setRouteTypeOptionsBasedOnTechnicalOperation(v);
     }
   }
+  handleClick() {
+    this.setState({ vector: false });
+    this.handleChange('draw_object_list', []);
+  }
 
   async getTechnicalOperationsByType(type) {
     const { flux } = this.context;
@@ -208,10 +212,7 @@ export default class RouteForm extends Form {
                     Вручную
                   </Button>
                   <Button
-                    onClick={() => {
-                      this.setState({ vector: false }); 
-                      this.handleChange('draw_object_list', []);
-                    }}
+                    onClick={this.handleClick}
                     className={!this.state.vector && 'active'}
                   >
                     Выбор из ОДХ

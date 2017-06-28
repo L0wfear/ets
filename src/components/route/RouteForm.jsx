@@ -27,7 +27,7 @@ export default class RouteForm extends Form {
   }
 
   handleTypeChange(v) {
-    this.setState({ vector: false })
+    this.setState({ vector: false });
     this.handleChange('type', v);
     this.props.resetState();
   }

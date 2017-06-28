@@ -24,6 +24,7 @@ export default class RouteForm extends Form {
       ],
       routeTypeDisabled: true,
     };
+    this.handleClickSelectFromODH = this.handleClickSelectFromODH.bind(this);
   }
 
   handleTypeChange(v) {
@@ -74,7 +75,8 @@ export default class RouteForm extends Form {
       this.setRouteTypeOptionsBasedOnTechnicalOperation(v);
     }
   }
-  handleClick() {
+
+  handleClickSelectFromODH() {
     this.setState({ vector: false });
     this.handleChange('draw_object_list', []);
   }
@@ -212,7 +214,7 @@ export default class RouteForm extends Form {
                     Вручную
                   </Button>
                   <Button
-                    onClick={this.handleClick}
+                    onClick={this.handleClickSelectFromODH}
                     className={!this.state.vector && 'active'}
                   >
                     Выбор из ОДХ

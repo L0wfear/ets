@@ -118,13 +118,14 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
     );
   }
   render() {
-    const getInput = R.cond([
-      [R.propEq('type', 'number'), () => this.renderNumber()],
-      [R.either(R.propEq('type', 'datetime'), R.propEq('type', 'date')), () => this.renderDate()],
-      [R.T, () => this.renderString()],
-    ]);
+    switch (this.props.type) {
+      case 'number': return this.renderNumber();
+      case 'date':
+      case 'datetime':
+        return this.renderDate();
 
-    return getInput({ type: this.props.type });
+      default: return this.renderString();
+    }
   }
 }
 

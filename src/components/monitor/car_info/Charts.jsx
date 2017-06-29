@@ -40,7 +40,7 @@ export default class Charts extends Component {
     const extent = [point.coords_msk[0], point.coords_msk[1], point.coords_msk[0], point.coords_msk[1]];
     const map = this.props.car.marker.map;
     const track = this.props.car.marker.track;
-    setTimeout(() => map.getView().fit(extent, map.getSize(), { padding: [50, 550, 50, 50], maxZoom: 13 }), 100);
+    setTimeout(() => map.getView().fit(extent, { padding: [50, 550, 50, 50], maxZoom: 13 }), 100);
     map.get('parent').handleFeatureClick(track, point, event);
   }
 

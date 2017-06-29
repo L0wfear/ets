@@ -23,7 +23,6 @@ class OdhForm extends Form {
   render() {
     const state = this.props.formState;
     const { companyStructureList = [] } = this.state;
-    console.log(state,companyStructureList);
     const COMPANY_ELEMENTS = companyStructureList.map(el => ({ value: el.id, label: el.name }));
 
     return (
@@ -44,14 +43,6 @@ class OdhForm extends Form {
                 emptyValue={null}
                 value={state.company_structure_id}
                 onChange={this.handleChange.bind(this, 'company_structure_id')}
-              />
-            </Col>
-            <Col md={12}>
-              <Field
-                type="text"
-                label="Подразделение"
-                value={state.company_structure_name}
-                readOnly={true}
               />
             </Col>
           </Row>

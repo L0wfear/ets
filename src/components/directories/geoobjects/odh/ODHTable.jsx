@@ -89,7 +89,7 @@ export const tableMeta = props => ({
 
 const ODHTable = (props) => {
   const renderers = {};
-  console.log(props)
+
   return (<Table
     title="Реестр ОДХ"
     results={props.data}

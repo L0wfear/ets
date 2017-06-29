@@ -79,7 +79,8 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     } = this.getState();
 
     const getRequestBody = R.cond([
-      [({ carTypeGroups }) => carTypeGroups !== '', ({ state, carTypeGroups }) => {
+      [R.complement(R.propEq('carTypeGroups', '')),
+      ({ state, carTypeGroups }) => {
         const carTypeStrings = carTypeGroups
           .split(',')
           .map(item => `"${item}"`)
@@ -90,9 +91,8 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
           car_func_types_groups: `[${carTypeStrings}]`,
         };
       }],
-      [() => true, ({ state }) => state ],
+      [R.T, R.identity(R.prop('state'))],
     ]);
-
 
     const initialState = {
       date_start: createValidDateTime(date_start),

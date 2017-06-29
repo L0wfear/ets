@@ -1,9 +1,12 @@
 import * as React from 'react';
 
-import MapModal from 'components/reports/MapModal.jsx';
+import { IPropsMapModal } from 'components/reports/@types/MapModal.h';
+import MapModalSCC from 'components/reports/MapModal.jsx';
 import { exportable } from 'utils/decorators';
 import ReportContainer from 'components/reports/common/ReportContainer';
 import reportProps, { serviceUrl, renderers } from './reportProps';
+
+const MapModal: React.ComponentClass<IPropsMapModal> = MapModalSCC;
 
 interface IStateTrackEventReport {
   mapFormVisibility: boolean;

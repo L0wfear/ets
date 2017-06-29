@@ -24,9 +24,11 @@ export default class RouteForm extends Form {
       ],
       routeTypeDisabled: true,
     };
+    this.handleClickSelectFromODH = this.handleClickSelectFromODH.bind(this);
   }
 
   handleTypeChange(v) {
+    this.setState({ vector: false });
     this.handleChange('type', v);
     this.props.resetState();
   }
@@ -72,6 +74,11 @@ export default class RouteForm extends Form {
     if (!this.props.formState.copy) {
       this.setRouteTypeOptionsBasedOnTechnicalOperation(v);
     }
+  }
+
+  handleClickSelectFromODH() {
+    this.setState({ vector: false });
+    this.handleChange('draw_object_list', []);
   }
 
   async getTechnicalOperationsByType(type) {
@@ -207,7 +214,7 @@ export default class RouteForm extends Form {
                     Вручную
                   </Button>
                   <Button
-                    onClick={() => this.setState({ vector: false })}
+                    onClick={this.handleClickSelectFromODH}
                     className={!this.state.vector && 'active'}
                   >
                     Выбор из ОДХ

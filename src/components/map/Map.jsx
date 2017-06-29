@@ -392,11 +392,11 @@ export default class OpenLayersMap extends Component {
     const interactions = this.map.getInteractions();
 
     if (this._handlers !== null) {
-      // map.unByKey(this._handlers.singleclick);
-      // map.unByKey(this._handlers.pointermove);
-      // map.unByKey(this._handlers.moveend);
+      // ol.Observable.unByKey(this._handlers.singleclick);
+      // ol.Observable.unByKey(this._handlers.pointermove);
+      // ol.Observable.unByKey(this._handlers.moveend);
       for (const eventKey in this._handlers) {
-        map.unByKey(this._handlers[eventKey]);
+        ol.Observable.unByKey(this._handlers[eventKey]);
       }
       this._handlers = null;
 
@@ -405,7 +405,7 @@ export default class OpenLayersMap extends Component {
       });
     }
     if (this.triggerRenderEventKey) {
-      map.unByKey(this.triggerRenderEventKey);
+      ol.Observable.unByKey(this.triggerRenderEventKey);
     }
   }
 

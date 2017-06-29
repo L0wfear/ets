@@ -22,8 +22,23 @@ class DtForm extends Form {
 
   render() {
     const state = this.props.formState;
+    const { columnMetadata } = this.props;
+
     const { companyStructureList = [] } = this.state;
     const COMPANY_ELEMENTS = companyStructureList.map(el => ({ value: el.id, label: el.name }));
+
+    const INPUT_VAL = {
+      company_structure_name: {
+        type: 'select',
+        options: COMPANY_ELEMENTS,
+        emptyValue: null,
+        onChange: this.handleChange.bind(this, 'company_structure_id'),
+      },
+    };
+    const STATIC_VAL = {
+      type: 'string',
+      readOnly: true,
+    };
 
     return (
       <Modal {...this.props} backdrop="static">
@@ -33,20 +48,17 @@ class DtForm extends Form {
         </Modal.Header>
 
         <ModalBody>
-
-          <Row>
-            <Col md={12}>
-              <Field
-                type="select"
-                label="Подразделение"
-                options={COMPANY_ELEMENTS}
-                emptyValue={null}
-                value={state.company_structure_id}
-                onChange={this.handleChange.bind(this, 'company_structure_id')}
-              />
-            </Col>
-          </Row>
-
+          {columnMetadata.map(d =>
+            <Row key={d.columnName}>
+              <Col md={12}>
+                <Field
+                  label={d.displayName}
+                  value={state[d.columnName]}
+                  {...(d.columnName in INPUT_VAL ? INPUT_VAL[d.columnName] : STATIC_VAL)}
+                />
+              </Col>
+            </Row>
+          )}
         </ModalBody>
 
         <Modal.Footer>

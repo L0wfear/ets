@@ -33,6 +33,7 @@ export default class FormWrap extends Component {
 
     this.state = {
       formState: {},
+      columnMetadata: [],
       formErrors: {},
       canSave: false,
       canPrint: false,
@@ -52,6 +53,7 @@ export default class FormWrap extends Component {
       const formErrors = this.validate(element, {});
       this.setState({
         formState: element,
+        columnMetadata: [...props.columnMetadata],
         formErrors,
         canSave: !_.filter(formErrors).length,
       });

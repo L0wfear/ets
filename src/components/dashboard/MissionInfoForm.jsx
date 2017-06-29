@@ -15,21 +15,38 @@ import MissionReportByDT from 'components/reports/mission/MissionReportByDT.jsx'
 import MissionReportByPoints from 'components/reports/mission/MissionReportByPoints.jsx';
 import Form from '../compositions/Form.jsx';
 
-const getDataTraveledYet = (data) => {
-  if (typeof data === 'string') {
-    return data;
-  }
-  return !isNaN(parseInt(data, 10)) ? parseInt(data, 10) : '-';
+const VALUE_FOR_FIXED = {
+  _TWO_f: {
+    val: 2,
+    list: [
+      'кв. м.',
+      'м.',
+    ],
+  },
+  _THREE_f: {
+    val: 3,
+    list: [
+      'км',
+    ],
+  },
+  floatFixed: (data, val) => parseFloat(data).toFixed(val),
 };
 
-const toFixed = (data = []) => {
-  const toFixedValue = 2;
+const checkFixed = (data, key) => {
+  const clone = [...data];
 
-  if (!!data.length && (data[1] === 'кв. м.' || data[1] === 'м.')) {
-    data[0] = parseFloat(data[0]).toFixed(toFixedValue);
+  if (VALUE_FOR_FIXED[key].list.includes(data[1])) {
+    clone[0] = VALUE_FOR_FIXED.floatFixed(clone[0], VALUE_FOR_FIXED[key].val);
   }
 
-  return data;
+  return clone;
+};
+
+const getDataTraveledYet = (data) => {
+  if (typeof data === 'object') {
+    return data.join(' ');
+  }
+  return !isNaN(parseInt(data, 10)) ? parseInt(data, 10) : '-';
 };
 
 @autobind
@@ -116,6 +133,11 @@ class MissionInfoForm extends Form {
     if (!car_data.gov_number) return <div />;
     const title = `Информация о задании. Рег. номер ТС: ${car_data.gov_number}`;
     const { equipmentData } = this.props;
+
+    const traveled_rawAndCheck_unit = checkFixed([report_data.traveled_raw, report_data.check_unit], '_TWO_f');
+    const traveled_high_speedCheck_unit = checkFixed([report_data.traveled_high_speed, report_data.check_unit], '_TWO_f');
+    const equipmentDataAndCheck_unit = checkFixed([equipmentData / 1000, 'км'], '_THREE_f');
+
     return (
       <Modal {...this.props} bsSize="large" className="mission-info-modal" backdrop="static">
 
@@ -182,16 +204,16 @@ class MissionInfoForm extends Form {
             * - расстояние, учитываемое при прохождении задания<br />
             ** - пройдено с рабочей скоростью / пройдено с превышением рабочей скорости<br />
             <li><b>Пройдено с рабочей скоростью:</b>
-              {getDataTraveledYet([...toFixed([report_data.traveled_raw, report_data.check_unit]), report_data.time_work_speed].join(' '))}
+              {getDataTraveledYet([...traveled_rawAndCheck_unit, report_data.time_work_speed])}
             </li>
             <li><b>Пройдено с превышением рабочей скорости:</b> 
-              {getDataTraveledYet([...toFixed([report_data.traveled_high_speed, report_data.check_unit]), report_data.time_high_speed].join(' '))}
+              {getDataTraveledYet([...traveled_high_speedCheck_unit, report_data.time_high_speed])}
             </li>
             <li><b>Общее время стоянок:</b>
               {this.state.parkingCount ? secondsToTime(this.state.parkingCount) : 'Рассчитывается...'}
             </li>
             <li><b>Общий пробег с работающим оборудованием:</b>
-              {equipmentData == null ? <Preloader type="field" /> : `${parseFloat(equipmentData / 1000).toFixed(3)} км`}
+              {equipmentData == null ? <Preloader type="field" /> : `${getDataTraveledYet(equipmentDataAndCheck_unit)}`}
             </li>
           </Div>
 

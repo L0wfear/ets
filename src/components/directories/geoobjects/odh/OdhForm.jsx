@@ -19,7 +19,7 @@ class OdhForm extends Form {
     const companyStructureList = await this.context.flux.getActions('companyStructure').getLinearCompanyStructureForUser();
     this.setState({ companyStructureList });
   }
-// here
+
   render() {
     const state = this.props.formState;
     const { companyStructureList = [] } = this.state;

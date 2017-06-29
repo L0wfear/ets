@@ -3,6 +3,55 @@ import connectToStores from 'flummox/connect';
 import Table from 'components/ui/table/DataTable.jsx';
 import ElementsList from 'components/ElementsList.jsx';
 
+const VALUE_FOR_FIXED = {
+  TWO_F: {
+    val: 2,
+    list: [
+      'кв. м.',
+      'м.',
+    ],
+    type: 'floatFixed',
+  },
+  THREE_F: {
+    val: 3,
+    list: [
+      'км',
+    ],
+    type: 'floatFixed',
+  },
+  TEN_I: {
+    val: 10,
+    list: [
+      'раз',
+    ],
+    type: 'intFixed',
+    another: {
+      val: 2,
+      type: 'floatFixed',
+    },
+  },
+  floatFixed: (data, val) => parseFloat(data).toFixed(val),
+  intFixed: (data, val) => parseInt(data, val),
+};
+
+const checkFixed = (data, key) => {
+  const clone = [...data];
+
+  if (VALUE_FOR_FIXED[key].list.includes(data[1])) {
+    clone[0] = VALUE_FOR_FIXED[VALUE_FOR_FIXED[key].type](
+      clone[0],
+      VALUE_FOR_FIXED[key].val
+    );
+  } else if ('another' in VALUE_FOR_FIXED[key]) {
+    clone[0] = VALUE_FOR_FIXED[VALUE_FOR_FIXED[key].another.type](
+      clone[0],
+      VALUE_FOR_FIXED[key].another.val
+    );
+  }
+
+  return clone;
+};
+
 const getTableMeta = (props) => {
   const tableMeta = {
     cols: [
@@ -51,20 +100,20 @@ const MissionReportByODHTable = (props) => {
   const renderers = {
     traveled_percentage: data => (
       <div>
-        {`${data.rowData.route_check_unit === 'раз' ? parseInt(data.rowData.traveled, 10) : parseFloat(data.rowData.traveled).toFixed(2)} ${data.rowData.route_check_unit}`}
+        {`${checkFixed([data.rowData.traveled, data.rowData.route_check_unit], 'TEN_I').join(' ')}`}
         <br />
         {`(${`${parseFloat(parseFloat(data.data) * 100).toFixed(0)}%`})`}
       </div>
     ),
     left_percentage: data => (
       <div>
-        {`${data.rowData.route_check_unit === 'раз' ? parseInt(data.rowData.left, 10) : parseFloat(data.rowData.left).toFixed(2)} ${data.rowData.route_check_unit}`}
+        {`${checkFixed([data.rowData.left, data.rowData.route_check_unit], 'TEN_I').join(' ')}`}
         <br />
-        {`(${`${parseFloat(parseFloat(data.data) * 100).toFixed(0)}%`})`}
+        {`(${`${VALUE_FOR_FIXED.floatFixed(data.data * 100, 0)}%`})`}
       </div>
     ),
-    check_value: meta => <div>{ `${meta.data} ${meta.rowData.route_check_unit}` }</div>,
-    route_with_speed: meta => <div>{`${parseFloat(meta.rowData.traveled / 1000).toFixed(3)} / ${parseFloat(meta.rowData.traveled_high_speed / 1000).toFixed(3)}`}</div>,
+    check_value: meta => <div>{ `${checkFixed([meta.data, meta.rowData.route_check_unit], 'TWO_F').join(' ')}` }</div>,
+    route_with_speed: meta => <div>{`${VALUE_FOR_FIXED.floatFixed(meta.rowData.traveled / 1000, 3)} / ${VALUE_FOR_FIXED.floatFixed(meta.rowData.traveled_high_speed / 1000, 3)}`}</div>,
   };
 
   if (!(props.data && props.data.length)) {

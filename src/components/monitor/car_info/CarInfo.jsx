@@ -214,7 +214,7 @@ export default class CarInfo extends Component {
     const map = marker.map;
     const view = map.getView();
 
-    view.fit(extent, map.getSize(), { padding: [50, 550, 50, 50] });
+    view.fit(extent, { padding: [50, 550, 50, 50] });
   }
 
   toggleSensor(field, id) {

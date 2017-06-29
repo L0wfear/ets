@@ -16,6 +16,7 @@ export default class DtFormWrap extends FormWrap {
       <Div hidden={!this.props.showForm}>
         <DtForm
           formState={this.state.formState}
+          formMeta={this.props.meta}
           columnMetadata={this.state.columnMetadata}
           onSubmit={this.handleFormSubmit.bind(this)}
           handleFormChange={this.handleFormStateChange.bind(this)}

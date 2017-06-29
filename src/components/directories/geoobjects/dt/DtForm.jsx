@@ -32,7 +32,7 @@ class DtForm extends Form {
         type: 'select',
         options: COMPANY_ELEMENTS,
         emptyValue: null,
-        onChange: this.handleChange.bind(this, 'company_structure_id'),
+        onChange: (...arg) => this.handleChange('company_structure_id', ...arg),
       },
     };
     const STATIC_VAL = {

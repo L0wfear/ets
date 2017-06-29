@@ -33,7 +33,6 @@ class ElementsList extends React.Component {
       elementsList: [],
       showForm: false,
       selectedElement: null,
-      columnMetadata: [],
       readPermission: false,
       exportFetching: false,
     };
@@ -104,10 +103,8 @@ class ElementsList extends React.Component {
 
     if (props.fromKey) {
       const selectedElement = find(this.state.elementsList, el => el.id ? el.id === id : el[this.selectField] === id);
-      const columnMetadata = [...props.columnSettings.columnMetadata.filter(d => d.columnName !== 'rowNubmer')];
-
       if (selectedElement) {
-        this.setState({ selectedElement, columnMetadata });
+        this.setState({ selectedElement });
       }
       return;
     }
@@ -118,9 +115,7 @@ class ElementsList extends React.Component {
       const selectedElement = find(this.state.elementsList,
         el => el.id ? el.id === id : el[this.selectField] === id
       );
-      const columnMetadata = [...props.columnSettings.columnMetadata.filter(d => d.columnName !== 'rowNumber')];
-
-      this.setState({ selectedElement, columnMetadata });
+      this.setState({ selectedElement });
       setTimeout(() => {
         // В случае если за DOUBLECLICK_TIMEOUT (мс) кликнули по одному и тому же элементу больше 1 раза
         if (this.clicks !== 1) {
@@ -141,7 +136,6 @@ class ElementsList extends React.Component {
     this.setState({
       showForm: true,
       selectedElement: null,
-      columnMetadata: [],
     });
   }
 
@@ -163,7 +157,6 @@ class ElementsList extends React.Component {
     this.setState({
       showForm: false,
       selectedElement: null,
-      columnMetadata: [],
     });
   }
 
@@ -190,7 +183,7 @@ class ElementsList extends React.Component {
     })
     .then(() => {
       this.removeElementAction(this.state.selectedElement[this.selectField], removeCallback);
-      this.setState({ selectedElement: null, columnMetadata: [] });
+      this.setState({ selectedElement: null });
     })
     .catch(() => {});
   }
@@ -297,7 +290,6 @@ class ElementsList extends React.Component {
     return {
       onRowSelected: this.selectElement,
       selected: this.state.selectedElement,
-      columnMetadata: this.state.columnMetadata,
       selectField: this.selectField,
     };
   }
@@ -382,7 +374,6 @@ class ElementsList extends React.Component {
         onFormHide={this.onFormHide}
         showForm={this.state.showForm}
         element={this.state.selectedElement}
-        columnMetadata={this.state.columnMetadata}
         entity={this.entity}
         onCallback={this.formCallback}
         meta={this.constructor.formMeta}

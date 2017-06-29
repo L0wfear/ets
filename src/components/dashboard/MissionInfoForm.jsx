@@ -16,14 +16,14 @@ import MissionReportByPoints from 'components/reports/mission/MissionReportByPoi
 import Form from '../compositions/Form.jsx';
 
 const VALUE_FOR_FIXED = {
-  _TWO_f: {
+  TWO_F: {
     val: 2,
     list: [
       'кв. м.',
       'м.',
     ],
   },
-  _THREE_f: {
+  THREE_F: {
     val: 3,
     list: [
       'км',
@@ -134,9 +134,9 @@ class MissionInfoForm extends Form {
     const title = `Информация о задании. Рег. номер ТС: ${car_data.gov_number}`;
     const { equipmentData } = this.props;
 
-    const traveled_rawAndCheck_unit = checkFixed([report_data.traveled_raw, report_data.check_unit], '_TWO_f');
-    const traveled_high_speedCheck_unit = checkFixed([report_data.traveled_high_speed, report_data.check_unit], '_TWO_f');
-    const equipmentDataAndCheck_unit = checkFixed([equipmentData / 1000, 'км'], '_THREE_f');
+    const traveled_rawAndCheck_unit = checkFixed([report_data.traveled_raw, report_data.check_unit], 'TWO_F');
+    const traveled_high_speedCheck_unit = checkFixed([report_data.traveled_high_speed, report_data.check_unit], 'TWO_F');
+    const equipmentDataAndCheck_unit = checkFixed([equipmentData / 1000, 'км'], 'THREE_F');
 
     return (
       <Modal {...this.props} bsSize="large" className="mission-info-modal" backdrop="static">

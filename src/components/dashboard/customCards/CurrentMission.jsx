@@ -16,14 +16,14 @@ import MissionInfoFormWrap from '../MissionInfoFormWrap.jsx';
 import MissionRejectForm from '../../missions/mission/MissionRejectForm.jsx';
 
 const VALUE_FOR_FIXED = {
-  _TWO_F: {
+  TWO_F: {
     val: 2,
     list: [
       'кв. м.',
       'м.',
     ],
   },
-  _THREE_F: {
+  THREE_F: {
     val: 3,
     list: [
       'км',
@@ -170,9 +170,9 @@ export default class CurrentMission extends DashboardCardMedium {
 
     const medLabelVisibility = car_data.driver_allowed !== undefined && !car_data.driver_allowed;
 
-    const traveledAndCheck_unit = checkFixed([report_data.traveled, report_data.check_unit], '_TWO_F');
-    const traveled_high_speedAndCheck_unit = checkFixed([report_data.traveled_high_speed, report_data.check_unit], '_TWO_F');
-    const equipmentDataAndCheck_unit = checkFixed([equipmentData / 1000, 'км'], '_THREE_F');
+    const traveledAndCheck_unit = checkFixed([report_data.traveled, report_data.check_unit], 'TWO_F');
+    const traveled_high_speedAndCheck_unit = checkFixed([report_data.traveled_high_speed, report_data.check_unit], 'TWO_F');
+    const equipmentDataAndCheck_unit = checkFixed([equipmentData / 1000, 'км'], 'THREE_F');
 
     return (
       <Div>

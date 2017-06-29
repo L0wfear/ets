@@ -4,7 +4,7 @@ import Table from 'components/ui/table/DataTable.jsx';
 import ElementsList from 'components/ElementsList.jsx';
 
 const VALUE_FOR_FIXED = {
-  _TWO_F: {
+  TWO_F: {
     val: 2,
     list: [
       'кв. м.',
@@ -12,14 +12,14 @@ const VALUE_FOR_FIXED = {
     ],
     type: 'floatFixed',
   },
-  _THREE_F: {
+  THREE_F: {
     val: 3,
     list: [
       'км',
     ],
     type: 'floatFixed',
   },
-  _TEN_I: {
+  TEN_I: {
     val: 10,
     list: [
       'раз',
@@ -100,19 +100,19 @@ const MissionReportByODHTable = (props) => {
   const renderers = {
     traveled_percentage: data => (
       <div>
-        {`${checkFixed([data.rowData.traveled, data.rowData.route_check_unit], '_TEN_I').join(' ')}`}
+        {`${checkFixed([data.rowData.traveled, data.rowData.route_check_unit], 'TEN_I').join(' ')}`}
         <br />
         {`(${`${parseFloat(parseFloat(data.data) * 100).toFixed(0)}%`})`}
       </div>
     ),
     left_percentage: data => (
       <div>
-        {`${checkFixed([data.rowData.left, data.rowData.route_check_unit], '_TEN_I').join(' ')}`}
+        {`${checkFixed([data.rowData.left, data.rowData.route_check_unit], 'TEN_I').join(' ')}`}
         <br />
         {`(${`${VALUE_FOR_FIXED.floatFixed(data.data * 100, 0)}%`})`}
       </div>
     ),
-    check_value: meta => <div>{ `${checkFixed([meta.data, meta.rowData.route_check_unit], '_TWO_F').join(' ')}` }</div>,
+    check_value: meta => <div>{ `${checkFixed([meta.data, meta.rowData.route_check_unit], 'TWO_F').join(' ')}` }</div>,
     route_with_speed: meta => <div>{`${VALUE_FOR_FIXED.floatFixed(meta.rowData.traveled / 1000, 3)} / ${VALUE_FOR_FIXED.floatFixed(meta.rowData.traveled_high_speed / 1000, 3)}`}</div>,
   };
 

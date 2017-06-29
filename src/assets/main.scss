@@ -2008,7 +2008,10 @@ body {
       width: auto;
     }
 
-    tbody {
+    tbody{
+      .griddle-footer{
+          background-color: #f7f7f7 !important;
+      }
       
       tr {
         cursor: pointer;

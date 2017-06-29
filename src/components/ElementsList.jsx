@@ -103,7 +103,6 @@ class ElementsList extends React.Component {
 
     if (props.fromKey) {
       const selectedElement = find(this.state.elementsList, el => el.id ? el.id === id : el[this.selectField] === id);
-
       if (selectedElement) {
         this.setState({ selectedElement });
       }

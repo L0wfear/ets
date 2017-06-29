@@ -481,8 +481,8 @@ export default class DataTable extends React.Component {
       refreshable, columnControl, highlight, serverPagination, externalChangeSort } = this.props;
     const { initialSort, initialSortAscending, columnControlValues, isHierarchical } = this.state;
 
-    const tableMetaCols = _.cloneDeep(tableMeta.cols);
-    let data = _.cloneDeep(this.props.results);
+    const tableMetaCols = (tableMeta.cols);
+    let data = (this.props.results);
 
     if (typeof this.props.results === 'string') {
       data = [];

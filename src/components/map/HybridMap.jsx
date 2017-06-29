@@ -124,7 +124,7 @@ export default class HybridMap extends Map {
     map.addLayer(polysLayer);
     if (this.props.routeCenter) {
       const extent = polysLayer.getSource().getExtent();
-      extent[0] !== Infinity && map.getView().fit(extent, map.getSize());
+      extent[0] !== Infinity && map.getView().fit(extent);
     }
   }
 
@@ -144,7 +144,7 @@ export default class HybridMap extends Map {
     vectorSource.addFeature(feature);
 
     const extent = feature.getGeometry().getExtent();
-    extent[0] !== Infinity && map.getView().fit(extent, map.getSize());
+    extent[0] !== Infinity && map.getView().fit(extent);
     map.getView().setZoom(7);
 
     !!this.selectedPolysLayer && map.removeLayer(this.selectedPolysLayer);

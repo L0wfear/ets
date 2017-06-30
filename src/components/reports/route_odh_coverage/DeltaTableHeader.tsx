@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Popover, OverlayTrigger } from 'react-bootstrap';
+import { Glyphicon } from 'react-bootstrap';
 
 interface IPropsDeltaTableHeader {
   tooltip?: string;
@@ -13,13 +14,18 @@ const DeltaTableHeader: React.SFC<IPropsDeltaTableHeader> = ({ tooltip, name }) 
     </Popover>
   );
   return (
-    <OverlayTrigger
-      trigger={['hover', 'focus']}
-      overlay={popover}
-      placement="top"
-    >
+    <div>
       <span>{name}</span>
-    </OverlayTrigger>
+      <OverlayTrigger
+        trigger={['hover', 'focus']}
+        overlay={popover}
+        placement="top"
+      >
+        <Glyphicon
+          glyph="info-sign"
+        />
+      </OverlayTrigger>
+    </div>
   );
 };
 

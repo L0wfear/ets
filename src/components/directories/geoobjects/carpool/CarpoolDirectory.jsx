@@ -13,6 +13,7 @@ import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
   tableComponent: CarpoolTable,
   formComponent: GeoObjectsMapModal,
   formMeta: tableMeta(),
+  operations: ['READ'],
 })
 export default class CarpoolDirectory extends ElementsList {
 

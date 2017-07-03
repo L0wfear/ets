@@ -56,6 +56,7 @@ class RoutesList extends Component {
   onFormHide() {
     this.setState({
       showForm: false,
+      selectedRoute: null,
     });
   }
 
@@ -278,7 +279,7 @@ class RoutesList extends Component {
         });
       }
     });
-
+    console.log(route)
     return (
       <div className="ets-page-wrap routes-list">
         <Row>

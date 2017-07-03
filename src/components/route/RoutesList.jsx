@@ -279,7 +279,7 @@ class RoutesList extends Component {
         });
       }
     });
-    console.log(route)
+
     return (
       <div className="ets-page-wrap routes-list">
         <Row>

@@ -16,6 +16,7 @@ export default class OdhFormWrap extends FormWrap {
       <Div hidden={!this.props.showForm}>
         <OdhForm
           formState={this.state.formState}
+          formMeta={this.props.meta}
           onSubmit={this.handleFormSubmit.bind(this)}
           handleFormChange={this.handleFormStateChange.bind(this)}
           show={this.props.showForm}

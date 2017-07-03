@@ -60,26 +60,9 @@ class RoutesList extends Component {
     });
   }
 
-  onFormChange(selectedRouter) {
-    const { showId } = this.state;
 
-    const STRUCTURES = this.getStructures();
-    const { technicalOperationsList = [] } = this.props;
 
-    const type = this.getTypesMarsh(selectedRouter.type);
-    const structure_name = type + _.get(STRUCTURES.find(t => t.value === selectedRouter.structure_id), 'label') || 'Без подразделения';
-    const technical_operation_name = structure_name + _.get(technicalOperationsList.find(t => t.id === selectedRouter.technical_operation_id), 'name');
-
-    [type, structure_name, technical_operation_name].forEach(r => showId.includes(r) ? '' : showId.push(r));
-
-    this.setState({
-      showForm: false,
-      selectedRouter,
-      showId,
-    });
-  }
-
-  getTypesMarsh(type) {
+  getTypeRoute(type) {
     switch (type) {
       case 'mixed':
       case 'simple':
@@ -96,6 +79,25 @@ class RoutesList extends Component {
 
   getStructures() {
     return this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
+  }
+
+  selectedRoute(selectedRouter) {
+    const { showId } = this.state;
+
+    const STRUCTURES = this.getStructures();
+    const { technicalOperationsList = [] } = this.props;
+
+    const type = this.getTypeRoute(selectedRouter.type);
+    const structure_name = type + _.get(STRUCTURES.find(t => t.value === selectedRouter.structure_id), 'label') || 'Без подразделения';
+    const technical_operation_name = structure_name + _.get(technicalOperationsList.find(t => t.id === selectedRouter.technical_operation_id), 'name');
+
+    [type, structure_name, technical_operation_name].forEach(r => showId.includes(r) ? '' : showId.push(r));
+
+    this.setState({
+      showForm: false,
+      selectedRouter,
+      showId,
+    });
   }
 
   shouldBeRendered(obj) {
@@ -260,7 +262,7 @@ class RoutesList extends Component {
     ROUTES = _.sortBy(ROUTES, o => o.name.toLowerCase());
     ROUTES.forEach((r) => {
       r.structure_name = _.get(STRUCTURES.find(t => t.value === r.structure_id), 'label');
-      r.type_name = this.getTypesMarsh(r.type);
+      r.type_name = this.getTypeRoute(r.type);
       r.technical_operation_name = _.get(technicalOperationsList.find(t => t.id === r.technical_operation_id), 'name');
     });
     ROUTES = ROUTES.filter(r => r.technical_operation_name).sort((a, b) => a.technical_operation_name.toLowerCase().localeCompare(b.technical_operation_name.toLowerCase()));
@@ -323,7 +325,7 @@ class RoutesList extends Component {
               <RouteFormWrap
                 element={route}
                 onFormHide={this.onFormHide}
-                onFormChange={this.onFormChange}
+                selectedRoute={this.selectedRoute}
                 showForm={this.state.showForm}
                 routesList={routesList}
               />

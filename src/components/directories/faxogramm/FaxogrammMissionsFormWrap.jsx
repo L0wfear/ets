@@ -2,6 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import Div from 'components/ui/Div.jsx';
 import { isEmpty } from 'utils/functions';
+import { getToday9am, getToday859am } from 'utils/dates.js';
 import { autobind } from 'core-decorators';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import IntervalPicker from 'components/ui/IntervalPicker.jsx';
@@ -24,6 +25,17 @@ class FaxogrammMissionsFormWrap extends FormWrap {
         canSave: !_.filter(formErrors).length, // false,
         formErrors,
       });
+    }
+  }
+
+  setDefTime(date, index) {
+    switch (index) {
+      case 0:
+        return getToday9am(date);
+      case 1:
+        return getToday859am(date);
+      default:
+        return date;
     }
   }
 
@@ -74,6 +86,7 @@ class FaxogrammMissionsFormWrap extends FormWrap {
             <IntervalPicker
               interval={self.state.interval}
               onChange={interval => self.setState({ interval })}
+              setDefTime={this.setDefTime}
             />
           </div>;
 

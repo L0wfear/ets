@@ -9,7 +9,14 @@ export default class IntervalPicker extends Component {
 
   handleChange(index, data) {
     let { interval = [null, null] } = this.props;
-    interval[index] = data;
+    const { setDefTime = r => r } = this.props;
+
+    if (!interval[index]) {
+      interval[index] = setDefTime(data, index);
+    } else {
+      interval[index] = data;
+    }
+
     this.props.onChange(interval);
   }
 

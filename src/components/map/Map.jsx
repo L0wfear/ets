@@ -7,6 +7,9 @@ import { getVectorArrowStyle } from 'constants/vectors.js';
 import { GeoJSON, defaultZoom } from 'utils/ol';
 import _ from 'lodash';
 
+import Measure from './controls/measure/measure.js';
+
+
 let POLYS_LAYER = null;
 // TODO move to settings
 const SIDEBAR_WIDTH_PX = 500;
@@ -42,6 +45,7 @@ export default class OpenLayersMap extends Component {
 
   constructor(props, context) {
     super(props, context);
+
     const self = this;
 
     this.markers = {};
@@ -95,8 +99,10 @@ export default class OpenLayersMap extends Component {
     map.set('parent', this);
     this.map.projectToPixel = coordinates => projectToPixel(this.map, coordinates);
 
+    this.setActiveMeasure = measureActive => this.setState({ measureActive })
     this.state = {
       zoom: null,
+      
     };
   }
 
@@ -191,6 +197,9 @@ export default class OpenLayersMap extends Component {
   }
 
   onClick(ev) {
+    if (this.state.measureActive) {
+      return 0;
+    }
     const map = this.map;
     const pixel = ev.pixel; // координаты клика во viewport
     const coordinate = ev.coordinate;
@@ -448,6 +457,7 @@ export default class OpenLayersMap extends Component {
     return (
       <div key="olmap">
         <div ref={node => (this._container = node)} className="openlayers-container" />
+        <Measure map={this.map} setActiveMeasure={this.setActiveMeasure} />
       </div>
     );
   }

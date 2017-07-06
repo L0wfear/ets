@@ -454,7 +454,7 @@ export default class OpenLayersMap extends Component {
     return (
       <div key="olmap">
         <div ref={node => (this._container = node)} className="openlayers-container" />
-        <Measure map={this.map} setActiveMeasure={this.setActiveMeasure} />
+        <Measure map={this.map} setActiveMeasure={this.setMeasureActive} />
       </div>
     );
   }

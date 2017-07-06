@@ -9,7 +9,6 @@ import _ from 'lodash';
 
 import Measure from './controls/measure/measure.js';
 
-
 let POLYS_LAYER = null;
 // TODO move to settings
 const SIDEBAR_WIDTH_PX = 500;
@@ -45,7 +44,6 @@ export default class OpenLayersMap extends Component {
 
   constructor(props, context) {
     super(props, context);
-
     const self = this;
 
     this.markers = {};
@@ -99,10 +97,9 @@ export default class OpenLayersMap extends Component {
     map.set('parent', this);
     this.map.projectToPixel = coordinates => projectToPixel(this.map, coordinates);
 
-    this.setActiveMeasure = measureActive => this.setState({ measureActive })
+    this.setMeasureActive = measureActive => this.setState({ measureActive });
     this.state = {
       zoom: null,
-      
     };
   }
 

@@ -97,11 +97,12 @@ export default class OpenLayersMap extends Component {
     map.set('parent', this);
     this.map.projectToPixel = coordinates => projectToPixel(this.map, coordinates);
 
-    this.setMeasureActive = measureActive => this.setState({ measureActive });
     this.state = {
       zoom: null,
     };
   }
+  
+  setMeasureActive = measureActive => this.setState({ measureActive });
 
   /**
    * initialization here

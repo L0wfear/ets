@@ -8,6 +8,8 @@ export default class DrawLine {
   }
 
   set title(val) {
+    this.geomLength = val;
+
     const length = Math.round(val * 100) / 100;
     let output = 0;
 
@@ -18,10 +20,6 @@ export default class DrawLine {
     }
 
     this.measureTooltips.measureTooltipElement.innerHTML = output.join(' ');
-  }
-
-  get title() {
-    return this.measureTooltips.measureTooltipElement.innerHTML;
   }
 
   set poisition(coor) {
@@ -55,7 +53,7 @@ export default class DrawLine {
     this.poisition = this.geom.getLastCoordinate();
   }
 
-  endDraw(e) {
+  endDraw() {
     this.isDrawn = true;
 
     this.measureTooltips.measureTooltipElement.className = 'tooltip tooltip-static';
@@ -103,7 +101,7 @@ export default class DrawLine {
     this.geom.setCoordinates(this.geom.getCoordinates().slice(0, -1));
     this.updateData();
 
-    return !!+this.title;
+    return !!+this.geomLength;
   }
 
   createMarker() {

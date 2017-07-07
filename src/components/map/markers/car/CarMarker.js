@@ -86,13 +86,15 @@ export default class CarMarker extends Marker {
     });
 
     setTimeout(() => {
-      this.animateEventKey = this.map.on('postcompose', this.animateToTrack.bind(this));
-      this.setVisible(false);
-      this.map.disableInteractions();
-      this.animateStartTime = new Date().getTime();
-      this.image = this.getImage({ selected: true });
-      this.radius = this.image.width / 2;
-      this.map.render();
+      if (this.animating) {
+        this.animateEventKey = this.map.on('postcompose', this.animateToTrack.bind(this));
+        this.setVisible(false);
+        this.map.disableInteractions();
+        this.animateStartTime = new Date().getTime();
+        this.image = this.getImage({ selected: true });
+        this.radius = this.image.width / 2;
+        this.map.render();
+      }
     }, 1500);
   }
 

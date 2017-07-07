@@ -200,6 +200,11 @@ export default class WaybillFormWrap extends FormWrap {
       formState[field] = value;
       formState = calculateWaybillMetersDiff(formState, field, value);
     });
+    if (formState.gov_number.match(/\d{4}/)) {
+      delete formState.odometr_start;
+    } else {
+      delete formState.motohours_start;
+    }
     this.handleFieldsChange(formState);
   }
 

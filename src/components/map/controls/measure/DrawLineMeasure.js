@@ -7,8 +7,17 @@ export default class DrawLine {
     this.isDrawn = false;
   }
 
-  set title(text) {
-    this.measureTooltips.measureTooltipElement.innerHTML = text;
+  set title(val) {
+    const length = Math.round(val * 100) / 100;
+    let output = 0;
+
+    if (length > 1000) {
+      output = [Math.round(length / 10) / 100, 'km'];
+    } else {
+      output = [Math.round(length * 100) / 100, 'm'];
+    }
+
+    this.measureTooltips.measureTooltipElement.innerHTML = output.join(' ');
   }
 
   get title() {

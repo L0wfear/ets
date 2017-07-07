@@ -84,9 +84,9 @@ export default class VehicleInfo extends Component {
         <Panel>
           <VehicleAttributes isOkrug={!notOkrug} point={car} car={this.state.car} lastPoint={marker.hasTrackLoaded() && marker.track.getLastPoint()} />
         </Panel>
-        {notOkrug && <Panel title="Задания" className="chart-datepickers-wrap">
+        <Panel title="Задания" className="chart-datepickers-wrap">
           {missionsRender}
-        </Panel>}
+        </Panel>
         <MissionFormWrap
           onFormHide={() => this.setState({ showMissionForm: false })}
           showForm={this.state.showMissionForm}

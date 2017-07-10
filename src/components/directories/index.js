@@ -20,6 +20,8 @@ import userActionLog from './user_action_log/UserActionLogList.jsx';
 import organizations from './organizations/OrganizationsDirectory.jsx';
 import technicalOperations from './technical_operation/TechnicalOperationsDirectory.jsx';
 import * as geoobjects from './geoobjects';
+import batteryReg from './battery_registry/BatteryRegList.jsx';
+
 
 export {
   carTypes,
@@ -40,4 +42,5 @@ export {
   technicalOperations,
   geoobjects,
   userActionLog,
+  batteryReg,
 };

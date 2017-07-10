@@ -42,13 +42,14 @@ export default class SessionStore extends Store {
       userPermissions: currentUser.permissions,
     };
   }
-
+// TODO
   handleLogin(data) {
     clear();
     data.payload.fio = createFio(data.payload);
     const session = data.token;
     let currentUser = data.payload;
-
+    // убрать это
+    currentUser.permissions = currentUser.permissions.concat(['battery_registry.list', 'battery_registry.create', 'battery_registry.read', 'battery_registry.update', 'battery_registry.delete']);
     localStorage.setItem(global.SESSION_KEY, JSON.stringify(session));
     localStorage.setItem(global.CURRENT_USER, JSON.stringify(currentUser));
     this.flux.getStore('dashboard').resetState();

@@ -89,7 +89,7 @@ export default class MainPage extends React.Component {
     const { user } = this.state;
     const path = this.props.location.pathname;
     const isOkrug = user.okrug_id !== null;
-
+// TODO изменить разрешение ** на нужное и добавить компоненты
     return (
       <Navbar justified fluid>
 
@@ -124,9 +124,13 @@ export default class MainPage extends React.Component {
               <MenuItem permissions={['company.list']} active={path === '/companies'} href="#/companies">Реестр организаций</MenuItem>
               <MenuItem divider />
 
-              <NavDropdown oneOfPermissions={['type.list', 'car.list']} title="Транспортные средства" id="nav-dropdown-2-1">
+              <NavDropdown oneOfPermissions={['type.list', 'car.list', 'battery_registry.list', 'spare_part.list']} title="Транспортные средства" id="nav-dropdown-2-1">
                 <MenuItem permissions={['type.list']} active={path === '/car-func-types'} href="#/car-func-types">Типы техники</MenuItem>
                 <MenuItem permissions={['car.list']} active={path === '/cars'} href="#/cars">Реестр транспортных средств</MenuItem>
+                <MenuItem permissions={['battery_registry.list']} active={path === '/battery-registry'} href="#/battery-registry">Реестр аккумуляторов</MenuItem>
+                <MenuItem permissions={['**.list']} href="#">Реестр шин</MenuItem>
+                <MenuItem permissions={['spare_part.list']} active={path === '/spare-part'} href="#/spare-part">Реестр запчастей</MenuItem>
+                <MenuItem permissions={['**.list']} href="#">Реестр регламентов технического обслуживания</MenuItem>
               </NavDropdown>
               <NavDropdown oneOfPermissions={['material_consumption_rate.list', 'fuel_consumption_rate.list', 'maintenance_rate.list']} title="Нормативные показатели" id="nav-dropdown-2-2">
                 <MenuItem permissions={['material_consumption_rate.list']} active={path === '/material-consumption-rate'} href="#/material-consumption-rate">Нормы на расход расходных материалов</MenuItem>

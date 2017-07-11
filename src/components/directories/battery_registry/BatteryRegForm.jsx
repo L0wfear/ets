@@ -6,6 +6,10 @@ import Field from 'components/ui/Field.jsx';
 import Form from '../../compositions/Form.jsx';
 import { connectToStores } from 'utils/decorators';
 
+
+// TODO переделать DITETS-633
+const org = Array(4).fill(1).map((d, i) => d = `-- демо Организация ${i}`);
+
 @connectToStores(['objects'])
 export default class BaseBatteryForm extends Form {
 
@@ -17,10 +21,10 @@ export default class BaseBatteryForm extends Form {
   // https://gost-jira.atlassian.net/wiki/pages/viewpage.action?pageId=91324941
 
   getData(state) {
-    const whatShow = ['name_org', 'battery_brand__name', 'battery_manufacturer__name', 'battery__serial_number', 'battery__lifetime_months', 'battery__released_at'];
+    const whatShow = ['battery_brand__name', 'battery_manufacturer__name', 'battery__serial_number', 'battery__lifetime_months', 'battery__released_at'];
     const errors = this.props.formErrors;
 
-    const wh = this.props.cols.reduce((obj, oneVal) => {
+    const wh = (this.props.cols.reduce((obj, oneVal) => {
       if (whatShow.includes(oneVal.name)) {
         obj.push({
           type : oneVal.type,
@@ -31,15 +35,28 @@ export default class BaseBatteryForm extends Form {
         });
       }
       return obj;
-    }, [], this);
+    }, [], this));
     return wh;
+  };
+
+  getNameOrg(state, fields) {
+    return {
+      label: fields.name_org.displayName,
+      value: state.name_org,
+      type: 'select',
+      options: org.map((el, i) => ({ value: i, label: el })),
+      emptyValue: null,
+      onChange: (...arg) => this.handleChange(fields.name_org.name, ...arg),
+    }
   }
 
   render() {
     const state = this.props.formState;
+    const fields = this.props.cols.reduce((obj, val) => Object.assign(obj, { [val.name]: val }), {});
 
     const title = !!!state.battery__id ? 'Добавление нового аккумулятора' : 'Изменение существующего аккумулятора';
     const dataForForm = this.getData(state);
+    const getNameOrg = this.getNameOrg(state, fields);
 
     return (
       <Modal {...this.props} backdrop="static">
@@ -47,6 +64,13 @@ export default class BaseBatteryForm extends Form {
           <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
         </Modal.Header>
         <Div style={{ padding: 15 }}>
+          <Row key={-1}>
+            <Col md={12}>
+              <Field
+              {...getNameOrg}
+              />
+            </Col>
+          </Row>
           {dataForForm.map((d, i) => {
             switch (d.type) {
               case 'date':

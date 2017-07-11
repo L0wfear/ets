@@ -20,7 +20,6 @@ export default class LoadingStore extends Store {
 
     this.reg(false,
       autoBaseActions.getAutobaseListByType,
-      autoBaseActions.batteryBrand,
 
       waybillsActions.deleteWaybill,
       waybillsActions.createWaybill,

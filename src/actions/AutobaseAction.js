@@ -52,4 +52,15 @@ export default class EmployeesActions extends Actions {
       'json',
     );
   }
+
+  batteryManufacturer(method, formState) {
+    const payload = cloneDeep(formState);
+    const { batteryManufacturer } = AUTOBASE;
+
+    return AutoBase.path(batteryManufacturer)[method](
+      payload,
+      this.getAutobaseListByType.bind(null, 'batteryManufacturer'),
+      'json',
+    );
+  }
 }

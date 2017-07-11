@@ -14,7 +14,7 @@ export default class NotificationsStore extends Store {
     const saveNotificationQueue = [
       {
         actions: autoBaseActions,
-        actionNames: ['batteryBrand'],
+        actionNames: ['batteryBrand', 'batteryManufacturer'],
       },
       {
         actions: objectsActions,

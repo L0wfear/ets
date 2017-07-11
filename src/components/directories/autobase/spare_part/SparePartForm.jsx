@@ -12,10 +12,10 @@ export default class SparePartForm extends Form {
   async componentDidMount() {
     const { flux } = this.context;
 
-    const AllGroup = await flux.getActions('autobase').getSparePartGroup().data.results.rows;
-    //const AllUnits = await this.getGroup(flux);
-    console.log(AllGroup)
-    this.setState({ AllGroup });
+    const AllGroup = await flux.getActions('autobase').getSparePartGroup();
+    const AllUnits = await flux.getActions('autobase').getSparePartMeasureUnit();
+
+    this.setState({ AllGroup, AllUnits });
   }
 
  
@@ -26,8 +26,10 @@ export default class SparePartForm extends Form {
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
-    console.log(this.state)
-    const GROUP_OPTIONS = [];
+    const { AllGroup = [], AllUnits = []} = this.state;
+
+    const GROUP_OPTIONS = AllGroup.map(el => ({ value: el.id, label: el.name }));
+    const UNIT_OPTIONS = AllUnits.map(el => ({ value: el.id, label: el.name }));
 
     const IS_CREATING = !!!state.id;
 
@@ -80,7 +82,7 @@ export default class SparePartForm extends Form {
                 type="select"
                 label="Единица измерения"
                 error={errors.measure_unit_id}
-                options={GROUP_OPTIONS}
+                options={UNIT_OPTIONS}
                 value={state.measure_unit_id}
                 onChange={this.handleChange.bind(this, 'measure_unit_id')}
               />
@@ -100,7 +102,7 @@ export default class SparePartForm extends Form {
         </Div>
         <ModalBody />
         <Modal.Footer>
-          <Button disabled={true} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+          <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
         </Modal.Footer>
       </Modal>
     );

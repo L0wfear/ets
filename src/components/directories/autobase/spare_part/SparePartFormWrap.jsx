@@ -13,6 +13,9 @@ export default class SparePartFormWrap extends FormWrap {
 
     this.schema = schema;
     this.preventDefaultNotification = true;
+
+    this.createAction = context.flux.getActions('autobase').sparePart.bind(null, 'post');
+    this.updateAction = context.flux.getActions('autobase').sparePart.bind(null, 'put');
   }
 
   render() {

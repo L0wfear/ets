@@ -11,12 +11,13 @@ import SparePartFormWrap from './SparePartFormWrap';
   listName: 'sparePartList',
   formComponent: SparePartFormWrap,
   tableComponent: SparePartTable,
-  operations: ['LIST', 'CREATE', 'READ', 'UPDATE'],
+  operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 export default class SparePartList extends ElementsList {
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
     flux.getActions('autobase').getAutobaseListByType('sparePart');
+    this.removeElementAction = flux.getActions('autobase').deleteLineFromSarePart;
   }
 }

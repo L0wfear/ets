@@ -90,24 +90,31 @@ export default class EmployeesActions extends Actions {
     };
   }
 
-  getSparePartGroup() {
+  async getSparePartGroup() {
     const payload = {};
 
-    const response = AutoBase.path('spare_part_group').get(payload);
+    const response = await AutoBase.path('spare_part_group').get(payload);
 
-    return {
-      data: response,
-    };
+    return response.result.rows || [];
   }
 
-  getSparePartMeasureUnit() {
+  async getSparePartMeasureUnit() {
     const payload = {};
 
-    const response = AutoBase.path('measure_unit').get(payload);
+    const response = await AutoBase.path('measure_unit').get(payload);
 
-    return {
-      data: response,
-    };
+    return response.result.rows || [];
+  }
+
+  sparePart(method, formState) {
+    const payload = cloneDeep(formState);
+    const { sparePart } = AUTOBASE;
+
+    return AutoBase.path(sparePart)[method](
+      payload,
+      this.getAutobaseListByType.bind(null, 'sparePart'),
+      'json',
+    );
   }
 
   batteryBrand(method, formState) {
@@ -128,6 +135,19 @@ export default class EmployeesActions extends Actions {
     return AutoBase.path(batteryManufacturer)[method](
       payload,
       this.getAutobaseListByType.bind(null, 'batteryManufacturer'),
+      'json',
+    );
+  }
+
+  deleteLineFromSarePart(formState) {
+    const payload = { id: formState };
+    const type = 'sparePart';
+
+    const trueType = AUTOBASE[type];
+
+    return AutoBase.path(trueType).delete(
+      payload,
+      this.getAutobaseListByType.bind(null, type),
       'json',
     );
   }

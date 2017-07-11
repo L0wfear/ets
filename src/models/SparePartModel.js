@@ -18,5 +18,17 @@ export const schema = {
       type: 'number',
       required: true,
     },
+    {
+      key: 'spare_part_group_id',
+      title: 'Группа',
+      type: 'number',
+      required: true,
+    },
+    {
+      key: 'measure_unit_id',
+      title: 'Цена, руб.',
+      type: 'number',
+      required: true,
+    },
   ],
 };

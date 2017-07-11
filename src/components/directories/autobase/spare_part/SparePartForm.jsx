@@ -12,16 +12,13 @@ export default class SparePartForm extends Form {
   async componentDidMount() {
     const { flux } = this.context;
 
-    const AllGroup = this.getGroup(flux);
-    const AllUnits = this.getGroup(flux);
-
-    this.setState({ AllGroup, AllUnits });
+    const AllGroup = await flux.getActions('autobase').getSparePartGroup().data.results.rows;
+    //const AllUnits = await this.getGroup(flux);
+    console.log(AllGroup)
+    this.setState({ AllGroup });
   }
 
-  getGroup(flux) {
-    return flux.getActions('autobase').getSparePartGroup();
-  }
-
+ 
   getUnits(flux) {
     return flux.getActions('autobase').getSparePartMeasureUnit();
   }

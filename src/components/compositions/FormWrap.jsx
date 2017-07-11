@@ -156,7 +156,7 @@ export default class FormWrap extends Component {
         throw new Error('Update action called but not specified');
       }
       // в случае успешного обновления выдаем всплывающее окно
-      global.NOTIFICATION_SYSTEM.notify(saveDataSuccessNotification);
+      if (!this.preventDefaultNotification) global.NOTIFICATION_SYSTEM.notify(saveDataSuccessNotification);
     }
 
     // закрываем форму только в случае отсутствия исключительных ситуаций

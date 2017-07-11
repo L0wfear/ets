@@ -1,13 +1,13 @@
 import { Actions } from 'flummox';
+import { cloneDeep } from 'lodash';
 import { AutoBase } from 'api/Services';
-import AUTOBASE_CONSTANT from '../constants/autobase.js';
+import AUTOBASE from '../constants/autobase.js';
 import { createValidDate, createValidDateTime } from 'utils/dates';
-import _ from 'lodash';
 
 export default class EmployeesActions extends Actions {
 
   async getAutobaseListByType(type) {
-    const trueType = AUTOBASE_CONSTANT[type];
+    const trueType = AUTOBASE[type];
     const payload = {};
 
     const response = await AutoBase.path(trueType).get(payload);
@@ -19,10 +19,10 @@ export default class EmployeesActions extends Actions {
   }
 
   async createBatteryReg(formState) {
-    const payload = _.cloneDeep(formState);
+    const payload = cloneDeep(formState);
     console.log(payload)
     /*
-    const response = await AutoBase.path(AUTOBASE_CONSTANT.btr).post(payload);
+    const response = await AutoBase.path(AUTOBASE.btr).post(payload);
       return {
         type,
         data: response,
@@ -31,10 +31,10 @@ export default class EmployeesActions extends Actions {
   }
 
   async updateBattareReg(formState) {
-    const payload = _.cloneDeep(formState);
+    const payload = cloneDeep(formState);
     console.log(payload);
     /*
-      const response = await AutoBase.path(AUTOBASE_CONSTANT.btr).post(payload);
+      const response = await AutoBase.path(AUTOBASE.btr).post(payload);
       return {
         type,
         data: response,
@@ -42,4 +42,14 @@ export default class EmployeesActions extends Actions {
       */
   }
 
+  batteryBrand(method, formState) {
+    const payload = cloneDeep(formState);
+    const { batteryBrand } = AUTOBASE;
+
+    return AutoBase.path(batteryBrand)[method](
+      payload,
+      this.getAutobaseListByType.bind(null, 'batteryBrand'),
+      'json',
+    );
+  }
 }

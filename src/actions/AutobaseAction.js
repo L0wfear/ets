@@ -18,21 +18,28 @@ export default class EmployeesActions extends Actions {
     };
   }
 
-  updateAutobaseListByType(type) {
-    const trueType = AUTOBASE_CONSTANT[type];
-
-    return async (formState) => {
-      const payload = _.cloneDeep(formState);
-      console.log(type, trueType, payload);
-      /*
-      const response = await AutoBase.path(trueType).post(payload);
+  async createBatteryReg(formState) {
+    const payload = _.cloneDeep(formState);
+    console.log(payload)
+    /*
+    const response = await AutoBase.path(AUTOBASE_CONSTANT.btr).post(payload);
       return {
         type,
         data: response,
       };
       */
-    };
   }
 
+  async updateBattareReg(formState) {
+    const payload = _.cloneDeep(formState);
+    console.log(payload);
+    /*
+      const response = await AutoBase.path(AUTOBASE_CONSTANT.btr).post(payload);
+      return {
+        type,
+        data: response,
+      };
+      */
+  }
 
 }

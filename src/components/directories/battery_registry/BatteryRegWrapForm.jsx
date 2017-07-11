@@ -13,9 +13,9 @@ export default class EmployeeFormWrap extends FormWrap {
   constructor(props, context) {
     super(props);
     this.schema = schema;
-    this.createAction = (...arg) => console.log('create', arg);
     this.uniqueField = 'battery__id';
-    this.updateAction = context.flux.getActions('autobase').updateAutobaseListByType('btr');
+    this.updateAction = context.flux.getActions('autobase').updateBattareReg;
+    this.createAction = context.flux.getActions('autobase').createBatteryReg;
   }
 
   render() {

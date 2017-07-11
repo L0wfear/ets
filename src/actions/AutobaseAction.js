@@ -90,6 +90,26 @@ export default class EmployeesActions extends Actions {
     };
   }
 
+  getSparePartGroup() {
+    const payload = {};
+
+    const response = AutoBase.path('spare_part_group').get(payload);
+
+    return {
+      data: response,
+    };
+  }
+
+  getSparePartMeasureUnit() {
+    const payload = {};
+
+    const response = AutoBase.path('measure_unit').get(payload);
+
+    return {
+      data: response,
+    };
+  }
+
   batteryBrand(method, formState) {
     const payload = cloneDeep(formState);
     const { batteryBrand } = AUTOBASE;

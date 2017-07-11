@@ -22,7 +22,7 @@ import technicalOperations from './technical_operation/TechnicalOperationsDirect
 import * as geoobjects from './geoobjects';
 import batteryReg from './battery_registry/BatteryRegList.jsx';
 import batteryBrand from './battery_brand/BatteryBrandList.jsx';
-
+import sparePart from './spare_part/SparePartList.jsx';
 
 export {
   carTypes,
@@ -45,4 +45,5 @@ export {
   userActionLog,
   batteryReg,
   batteryBrand,
+  sparePart,
 };

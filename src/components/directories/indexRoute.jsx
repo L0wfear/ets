@@ -18,7 +18,7 @@ const nsiRoutes = (props) => {
       <Route path="cars" component={directories.cars} onEnter={requireAuth} />
       <Route path="battery-registry" component={directories.batteryReg} onEnter={requireAuth} />
       <Route path="battery-brand" component={directories.batteryBrand} onEnter={requireAuth} />
-      <Route path="spare-part" component={directories.employees} onEnter={requireAuth} />
+      <Route path="spare-part" component={directories.sparePart} onEnter={requireAuth} />
       <Route path="odh-norm" component={directories.odhNorm} onEnter={requireAuth} />
       <Route path="material-consumption-rate" component={directories.materialConsumptionRate} onEnter={requireAuth} />
       <Route path="odh-norm-data-summer" component={directories.odhNormDataSummer} onEnter={requireAuth} />

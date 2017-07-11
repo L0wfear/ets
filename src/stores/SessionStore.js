@@ -1,8 +1,10 @@
 import { Store } from 'flummox';
+
+import { autobase } from 'api/mocks/permissions';
+import { clear } from 'utils/cache';
 import { setUserContext } from 'config/raven';
 import createFio from '../utils/create-fio.js';
 import { User } from '../models';
-import { clear } from 'utils/cache';
 
 const defaultUser = {
   login: 'mayor',
@@ -48,8 +50,13 @@ export default class SessionStore extends Store {
     data.payload.fio = createFio(data.payload);
     const session = data.token;
     let currentUser = data.payload;
+
     // убрать это
-    currentUser.permissions = currentUser.permissions.concat(['battery_registry.list', 'battery_registry.create', 'battery_registry.read', 'battery_registry.update', 'battery_registry.delete']);
+    currentUser.permissions = [
+      ...currentUser.permissions,
+      ...autobase,
+    ];
+
     localStorage.setItem(global.SESSION_KEY, JSON.stringify(session));
     localStorage.setItem(global.CURRENT_USER, JSON.stringify(currentUser));
     this.flux.getStore('dashboard').resetState();

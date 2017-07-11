@@ -105,7 +105,16 @@ export default class BaseBatteryForm extends Form {
                 );
             }
           })}
-          
+          { !!state.battery__id && <Row>
+            <Col md={12}>
+              <Field
+                type={'string'}
+                label={'Количество месяцев наработки'}
+                value={'--'}
+                readOnly={true}
+              />
+            </Col>
+          </Row> }
         </Div>
         <ModalBody />
         <Modal.Footer>

@@ -26,8 +26,8 @@ export const schema = {
     },
     {
       key: 'battery__released_at',
-      title: 'Изготовитель',
-      type: 'date',
+      title: 'Дата выпуска',
+      type: 'datetime',
       required: true,
     },
   ],

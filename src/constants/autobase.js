@@ -1,3 +1,3 @@
-export default{
+export default {
   'btr': 'battery_registry',
 };

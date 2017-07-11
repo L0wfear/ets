@@ -18,13 +18,15 @@ export default class BaseBatteryForm extends Form {
 
   getData(state) {
     const whatShow = ['battery_brand__name', 'battery_manufacturer__name', 'battery__serial_number', 'battery__lifetime_months', 'battery__released_at'];
+    const errors = this.props.formErrors;
 
-    const wh = this.props.cols.reduce( (obj,oneVal) => {
+    const wh = this.props.cols.reduce((obj, oneVal) => {
       if (whatShow.includes(oneVal.name)) {
         obj.push({
           type : oneVal.type,
           label: oneVal.displayName,
           value: state[oneVal.name],
+          error: errors[oneVal.name],
           onChange: this.handleChange.bind(this, oneVal.name),
         });
       }
@@ -32,7 +34,6 @@ export default class BaseBatteryForm extends Form {
     }, [], this);
     return wh;
   }
-
 
   render() {
     const state = this.props.formState;
@@ -46,7 +47,7 @@ export default class BaseBatteryForm extends Form {
           <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
         </Modal.Header>
         <Div style={{ padding: 15 }}>
-          {dataForForm.map((d,i) => {
+          {dataForForm.map((d, i) => {
             switch (d.type) {
               case 'date':
                 return (
@@ -56,6 +57,7 @@ export default class BaseBatteryForm extends Form {
                         type={d.type}
                         label={d.label}
                         date={d.value}
+                        error={d.error}
                         onChange={d.onChange}
                         time={false}
                       />
@@ -70,6 +72,7 @@ export default class BaseBatteryForm extends Form {
                         type={d.type}
                         label={d.label}
                         value={d.value}
+                        error={d.error}
                         date={d.value}
                         onChange={d.onChange}
                       />

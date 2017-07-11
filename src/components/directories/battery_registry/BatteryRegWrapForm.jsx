@@ -23,8 +23,8 @@ export default class EmployeeFormWrap extends FormWrap {
     return this.props.showForm ?
       <BatteryForm
         formState={this.state.formState}
-        cols={this.props.meta.cols}
         formErrors={this.state.formErrors}
+        cols={this.props.meta.cols}
         permissions={[`${entity}.update`]}
         addPermissionProp
         canSave={this.state.canSave}

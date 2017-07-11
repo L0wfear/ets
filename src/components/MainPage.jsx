@@ -124,13 +124,13 @@ export default class MainPage extends React.Component {
               <MenuItem permissions={['company.list']} active={path === '/companies'} href="#/companies">Реестр организаций</MenuItem>
               <MenuItem divider />
 
-              <NavDropdown oneOfPermissions={['type.list', 'car.list', 'battery_registry.list', 'battery_brand.list', 'battery_manufacturer', 'spare_part.list']} title="Транспортные средства" id="nav-dropdown-2-1">
+              <NavDropdown oneOfPermissions={['type.list', 'car.list', 'battery_registry.list', 'battery_brand.list', 'battery_manufacturer', 'spare_part.list', 'tire.list']} title="Транспортные средства" id="nav-dropdown-2-1">
                 <MenuItem permissions={['type.list']} active={path === '/car-func-types'} href="#/car-func-types">Типы техники</MenuItem>
                 <MenuItem permissions={['car.list']} active={path === '/cars'} href="#/cars">Реестр транспортных средств</MenuItem>
                 <MenuItem permissions={['battery_registry.list']} active={path === '/battery-registry'} href="#/battery-registry">Реестр аккумуляторов</MenuItem>
                 <MenuItem permissions={['battery_brand.list']} active={path === '/battery-brand'} href="#/battery-brand">Марки аккумуляторов</MenuItem>
                 <MenuItem permissions={['battery_manufacturer.list']} active={path === '/battery-manufacturer'} href="#/battery-manufacturer">Производители аккумуляторов</MenuItem>
-                <MenuItem permissions={['**.list']} href="#">Реестр шин</MenuItem>
+                <MenuItem permissions={['tire.list']} active={path === '/tire'} href="#/tire">Реестр шин</MenuItem>
                 <MenuItem permissions={['spare_part.list']} active={path === '/spare-part'} href="#/spare-part">Реестр запчастей</MenuItem>
                 <MenuItem permissions={['**.list']} href="#">Реестр регламентов технического обслуживания</MenuItem>
               </NavDropdown>

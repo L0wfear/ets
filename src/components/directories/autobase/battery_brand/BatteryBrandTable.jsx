@@ -35,7 +35,6 @@ export default (props) => {
     results={props.data}
     tableMeta={tableMeta(props)}
     renderers={renderers}
-    enumerated={false}
     // initialSort={'full_name'}
     {...props}
   />);

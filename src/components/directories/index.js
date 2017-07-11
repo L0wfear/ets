@@ -21,6 +21,7 @@ import organizations from './organizations/OrganizationsDirectory.jsx';
 import technicalOperations from './technical_operation/TechnicalOperationsDirectory.jsx';
 import * as geoobjects from './geoobjects';
 import batteryReg from './battery_registry/BatteryRegList.jsx';
+import batteryBrand from './battery_brand/BatteryBrandList.jsx';
 
 
 export {
@@ -43,4 +44,5 @@ export {
   geoobjects,
   userActionLog,
   batteryReg,
+  batteryBrand,
 };

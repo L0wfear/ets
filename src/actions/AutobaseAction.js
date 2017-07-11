@@ -18,9 +18,24 @@ export default class EmployeesActions extends Actions {
     };
   }
 
+  /*
+  POST /autobase/battery_registry/
+{
+    'battery__brand_id': {'type': int, 'required': True},
+    'battery__serial_number': {'type': str, 'required': True},
+    'battery__lifetime_months': {'type': int, 'required': True},
+    'battery__released_at': {'type': 'date', 'required': True},
+    'battery_on_car__car_id': {'type': int, 'required': False},
+    'battery_on_car__installed_at': {'type': 'date', 'required': False},
+    'battery_on_car__uninstalled_at': {'type': 'date', 'required': False},
+        }
+*/
   async createBatteryReg(formState) {
     const payload = _.cloneDeep(formState);
-    console.log(payload)
+
+    payload.battery__released_at = createValidDate(payload.battery__released_at);
+
+    console.log(payload);
     /*
     const response = await AutoBase.path(AUTOBASE_CONSTANT.btr).post(payload);
       return {
@@ -30,16 +45,49 @@ export default class EmployeesActions extends Actions {
       */
   }
 
+/*
+// ID батареи
+   'battery__id': {'type': int, 'required': True},
+   'battery__brand_id': {'type': int, 'required': True},
+    'battery__serial_number': {'type': str, 'required': True},
+    'battery__lifetime_months': {'type': int, 'required': True},
+    'battery__released_at': {'type': 'date', 'required': True},
+
+    // ID в таблице-связке (батерея на машине). 
+    // По сути это и есть ID записи реестра.
+    'battery_on_car__id': {'type': int, 'required': True},
+
+    'battery_on_car__car_id': {'type': int, 'required': False},
+    'battery_on_car__installed_at': {'type': 'date', 'required': False},
+    'battery_on_car__uninstalled_at': {'type': 'date', 'required': False},
+        }
+*/
   async updateBattareReg(formState) {
-    const payload = _.cloneDeep(formState);
-    console.log(payload);
-    /*
-      const response = await AutoBase.path(AUTOBASE_CONSTANT.btr).post(payload);
-      return {
-        type,
-        data: response,
-      };
-      */
+    console.log(formState);
+    const payload = {};
+    const keysForm = Object.keys(formState);
+
+    payload.battery__id = formState.battery__id;
+    payload.battery__brand_id = formState.battery__brand_id;
+    payload.battery__serial_number = formState.battery__serial_number;
+    payload.battery__lifetime_months = formState.battery__lifetime_months;
+    payload.battery__released_at = createValidDate(formState.battery__released_at);
+    payload.battery_on_car__id = formState.battery_on_car__id;
+
+    ['battery_on_car__car_id', 'battery_on_car__installed_at', 'battery_on_car__uninstalled_at'].filter(d => keysForm.includes(d) && !!formState[d]).forEach((d) => {
+      if (['battery_on_car__installed_at', 'battery_on_car__uninstalled_at'].includes(d)) {
+        payload[d] = createValidDate(formState[d]);
+      } else {
+        payload[d] = formState[d];
+      }
+    });
+
+    const response = await AutoBase.path(AUTOBASE_CONSTANT.btr).put(payload, false, 'json');
+    console.log(response);
+    return {
+      type,
+      data: response,
+    };
   }
 
 }

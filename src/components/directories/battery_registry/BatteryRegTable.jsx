@@ -5,6 +5,14 @@ import DateFormatter from 'components/ui/DateFormatter.jsx';
 export const tableMeta = props => ({
   cols: [
     {
+      name: 'name_org',
+      displayName: 'Организация',
+      type: 'text',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
       name: 'battery_brand__name',
       displayName: 'Марка аккумулятора',
       type: 'text',
@@ -29,6 +37,12 @@ export const tableMeta = props => ({
       },
     },
     {
+      name: 'todo_pr_date_install',
+      displayName: 'Пробег на дату установки',
+      type: 'text',
+      filter: false,
+    },
+    {
       name: 'battery_manufacturer__name',
       displayName: 'Изготовитель',
       type: 'text',
@@ -45,8 +59,8 @@ export const tableMeta = props => ({
       },
     },
     {
-      name: 'battery__id',
-      displayName: 'Регистрационный номер??',
+      name: 'car__gov_number',
+      displayName: 'Регистрационный номер',
       type: 'text',
       filter: {
         type: 'multiselect',
@@ -65,7 +79,9 @@ export const tableMeta = props => ({
 
 export default (props) => {
   const { data = [] } = props;
+
   const renderers = {
+    todo_pr_date_install: () => (<span>-</span>), 
     battery__released_at: ({ data }) => (<DateFormatter date={data} />),
     battery_on_car__installed_at: ({ data }) => (<DateFormatter date={data} />),
   };

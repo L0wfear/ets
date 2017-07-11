@@ -17,7 +17,7 @@ export default class BaseBatteryForm extends Form {
   // https://gost-jira.atlassian.net/wiki/pages/viewpage.action?pageId=91324941
 
   getData(state) {
-    const whatShow = ['battery_brand__name', 'battery_manufacturer__name', 'battery__serial_number', 'battery__lifetime_months', 'battery__released_at'];
+    const whatShow = ['name_org', 'battery_brand__name', 'battery_manufacturer__name', 'battery__serial_number', 'battery__lifetime_months', 'battery__released_at'];
     const errors = this.props.formErrors;
 
     const wh = this.props.cols.reduce((obj, oneVal) => {
@@ -42,7 +42,7 @@ export default class BaseBatteryForm extends Form {
     const dataForForm = this.getData(state);
 
     return (
-      <Modal {...this.props} bsSize="large" backdrop="static">
+      <Modal {...this.props} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
         </Modal.Header>
@@ -52,7 +52,7 @@ export default class BaseBatteryForm extends Form {
               case 'date':
                 return (
                   <Row key={i}>
-                    <Col md={6}>
+                    <Col md={12}>
                       <Field
                         type={d.type}
                         label={d.label}
@@ -67,7 +67,7 @@ export default class BaseBatteryForm extends Form {
               default:
                 return (
                   <Row key={i}>
-                    <Col md={6}>
+                    <Col md={12}>
                       <Field
                         type={d.type}
                         label={d.label}
@@ -85,7 +85,7 @@ export default class BaseBatteryForm extends Form {
         </Div>
         <ModalBody />
         <Modal.Footer>
-          <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+          <Button disabled={true} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
         </Modal.Footer>
       </Modal>
     );

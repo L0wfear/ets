@@ -1,0 +1,24 @@
+import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import AUTOBASE from 'constants/autobase';
+import ElementsList from 'components/ElementsList.jsx';
+import TireFormWrap from './TireFormWrap.jsx';
+import TireTable from './TireTable.jsx';
+
+@connectToStores(['autobase', 'session'])
+@exportable({ entity: `autobase/${AUTOBASE.tire}` })
+@staticProps({
+  entity: AUTOBASE.tire,
+  listName: 'tireList',
+  tableComponent: TireTable,
+  formComponent: TireFormWrap,
+  operations: ['LIST', 'CREATE', 'READ', 'UPDATE'],
+})
+export default class TireList extends ElementsList {
+  componentDidMount() {
+    super.componentDidMount();
+    const { flux } = this.context;
+    flux.getActions('autobase').getAutobaseListByType('tire');
+    flux.getActions('autobase').getAutobaseListByType('tireSize');
+    flux.getActions('autobase').getAutobaseListByType('tireModel');
+  }
+}

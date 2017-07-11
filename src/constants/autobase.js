@@ -3,4 +3,7 @@ export default {
   batteryBrand: 'battery_brand',
   batteryManufacturer: 'battery_manufacturer',
   sparePart: 'spare_part',
+  tire: 'tire',
+  tireSize: 'tire_size',
+  tireModel: 'tire_model',
 };

@@ -17,7 +17,6 @@ export default (props) => {
     title="Производители аккумуляторов"
     results={props.data}
     tableMeta={tableMeta(props)}
-    enumerated={false}
     // initialSort={'full_name'}
     {...props}
   />);

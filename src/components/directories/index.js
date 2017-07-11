@@ -20,12 +20,10 @@ import userActionLog from './user_action_log/UserActionLogList.jsx';
 import organizations from './organizations/OrganizationsDirectory.jsx';
 import technicalOperations from './technical_operation/TechnicalOperationsDirectory.jsx';
 import * as geoobjects from './geoobjects';
-import batteryReg from './battery_registry/BatteryRegList.jsx';
-import batteryBrand from './battery_brand/BatteryBrandList.jsx';
-import batteryManufacturer from './battery_manufacturer/BatteryManufacturerList.jsx';
-
+import * as autobase from './autobase';
 
 export {
+  autobase,
   carTypes,
   cars,
   employees,
@@ -44,7 +42,4 @@ export {
   technicalOperations,
   geoobjects,
   userActionLog,
-  batteryReg,
-  batteryBrand,
-  batteryManufacturer,
 };

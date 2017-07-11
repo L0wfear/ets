@@ -5,7 +5,7 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import AUTOBASE_NAME from 'constants/autobase.js';
 
 @connectToStores(['autobase', 'objects', 'session'])
-@exportable({ entity: 'autobase' })
+@exportable({ entity: `autobase/${AUTOBASE_NAME.btr}` })
 @staticProps({
   entity: AUTOBASE_NAME.btr,
   listName: 'btrList',

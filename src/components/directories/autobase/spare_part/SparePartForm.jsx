@@ -5,15 +5,31 @@ import ModalBody from 'components/ui/Modal';
 import { connectToStores } from 'utils/decorators';
 import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
-import Form from '../../compositions/Form.jsx';
+import Form from 'components/compositions/Form.jsx';
 
 @connectToStores(['autobase'])
 export default class SparePartForm extends Form {
+  async componentDidMount() {
+    const { flux } = this.context;
+
+    const AllGroup = this.getGroup(flux);
+    const AllUnits = this.getGroup(flux);
+
+    this.setState({ AllGroup, AllUnits });
+  }
+
+  getGroup(flux) {
+    return flux.getActions('autobase').getSparePartGroup();
+  }
+
+  getUnits(flux) {
+    return flux.getActions('autobase').getSparePartMeasureUnit();
+  }
 
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
-
+    console.log(this.state)
     const GROUP_OPTIONS = [];
 
     const IS_CREATING = !!!state.id;

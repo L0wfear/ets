@@ -1,7 +1,7 @@
 import React from 'react';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
-import BaseSparePartForm from './SparePartForm';
-import FormWrap from '../../compositions/FormWrap';
+import BaseSparePartForm from './SparePartForm.jsx';
+import FormWrap from 'components/compositions/FormWrap.jsx';
 import { schema } from 'models/SparePartModel.js';
 
 const SparePartForm = enhanceWithPermissions(BaseSparePartForm);

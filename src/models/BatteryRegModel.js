@@ -1,5 +1,11 @@
 export const schema = {
   properties: [
+     {
+      key: 'id_org',
+      title: 'Организация',
+      type: 'string',
+      required: true,
+    },
     {
       key: 'battery_brand__name',
       title: 'Марка аккумулятора',
@@ -27,7 +33,7 @@ export const schema = {
     {
       key: 'battery__released_at',
       title: 'Дата выпуска',
-      type: 'datetime',
+      type: 'date',
       required: true,
     },
   ],

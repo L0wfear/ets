@@ -1,7 +1,7 @@
 export const schema = {
   properties: [
      {
-      key: 'name_org',
+      key: 'id_org',
       title: 'Организация',
       type: 'string',
       required: true,

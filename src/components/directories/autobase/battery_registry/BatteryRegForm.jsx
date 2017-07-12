@@ -5,7 +5,7 @@ import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
 import { connectToStores } from 'utils/decorators';
-
+import { isEmpty } from 'utils/functions';
 
 // TODO переделать DITETS-633
 
@@ -39,7 +39,7 @@ export default class BaseBatteryForm extends Form {
       type: 'select',
       options: ORG_NAME_OPTION,
       emptyValue: null,
-      onChange: this.onChageWrap('name_org'),
+      onChange: this.onChageWrap('id_org'),
     };
   }
 
@@ -53,10 +53,16 @@ export default class BaseBatteryForm extends Form {
       emptyValue: null,
       onChange: (...arg) => {
         const [battery_brand__name_id, second_arg] = arg;
-        const { manufacturer_id, label } = second_arg[0].manufacturer_id;
+        let manufacturer_id = null;
+        let battery_brand__name = null;
+
+        if (!isEmpty(second_arg[0])) {
+          manufacturer_id = second_arg[0].manufacturer_id;
+          battery_brand__name = second_arg[0].label;
+        }
 
         this.handleChange('battery_brand__name_id', battery_brand__name_id);
-        this.handleChange('battery_brand__name', label);
+        this.handleChange('battery_brand__name', battery_brand__name);
         this.handleChange('battery__brand_id', manufacturer_id);
       },
     };
@@ -109,8 +115,10 @@ export default class BaseBatteryForm extends Form {
     const BATTERY_BRAND_OPTION = batteryBrandList.map(el => ({ value: el.id, label: el.name, manufacturer_id: el.manufacturer_id }));
     const BATTERY_BRAND_MANUFACTURER_OPTION = batteryBrandList.reduce((obj, el) => Object.assign(obj, { [el.manufacturer_id]: el.manufacturer_name }), {});
 
-    const nameOrg = this.getNameOrg(state.name_org, fields.name_org.displayName, errors.name_org, ORG_NAME_OPTION);
+    const nameOrg = this.getNameOrg(orgName[state.id_org], fields.name_org.displayName, errors.name_org, ORG_NAME_OPTION);
     const batteryBrand = this.getBatteryBrand(state.battery_brand__name, fields.battery_brand__name.displayName, errors.battery_brand__name, BATTERY_BRAND_OPTION);
+
+
     const batteryManifactoryName = this.getBatteryManifactoryName(BATTERY_BRAND_MANUFACTURER_OPTION[state.battery__brand_id], fields.battery_manufacturer__name.displayName);
     const dataForForm = this.getData(state, fields, errors);
     const dateRelase = this.getDate(state, fields, errors, 'battery__released_at');

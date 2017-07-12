@@ -1,9 +1,9 @@
 export const schema = {
   properties: [
-     {
+    {
       key: 'id_org',
       title: 'Организация',
-      type: 'string',
+      type: 'number',
       required: true,
     },
     {

@@ -52,7 +52,7 @@ export default class BaseBatteryForm extends Form {
       options: BATTERY_BRAND_OPTION,
       emptyValue: null,
       onChange: (...arg) => {
-        const [battery_brand__name_id, second_arg] = arg;
+        const [battery__brand_id, second_arg] = arg;
         let manufacturer_id = null;
         let battery_brand__name = null;
 
@@ -61,7 +61,7 @@ export default class BaseBatteryForm extends Form {
           battery_brand__name = second_arg[0].label;
         }
 
-        this.handleChange('battery_brand__name_id', battery_brand__name_id);
+        this.handleChange('battery_brand__name_id', battery__brand_id);
         this.handleChange('battery_brand__name', battery_brand__name);
         this.handleChange('battery__brand_id', manufacturer_id);
       },
@@ -114,9 +114,9 @@ export default class BaseBatteryForm extends Form {
     const ORG_NAME_OPTION = orgName.map((el, i) => ({ value: i, label: el }));
     const BATTERY_BRAND_OPTION = batteryBrandList.map(el => ({ value: el.id, label: el.name, manufacturer_id: el.manufacturer_id }));
     const BATTERY_BRAND_MANUFACTURER_OPTION = batteryBrandList.reduce((obj, el) => Object.assign(obj, { [el.manufacturer_id]: el.manufacturer_name }), {});
-
-    const nameOrg = this.getNameOrg(orgName[state.id_org], fields.name_org.displayName, errors.name_org, ORG_NAME_OPTION);
-    const batteryBrand = this.getBatteryBrand(state.battery_brand__name, fields.battery_brand__name.displayName, errors.battery_brand__name, BATTERY_BRAND_OPTION);
+    console.log(state);
+    const nameOrg = this.getNameOrg(state.id_org, fields.name_org.displayName, errors.name_org, ORG_NAME_OPTION);
+    const batteryBrand = this.getBatteryBrand(state.battery__brand_id, fields.battery_brand__name.displayName, errors.battery_brand__name, BATTERY_BRAND_OPTION);
 
 
     const batteryManifactoryName = this.getBatteryManifactoryName(BATTERY_BRAND_MANUFACTURER_OPTION[state.battery__brand_id], fields.battery_manufacturer__name.displayName);

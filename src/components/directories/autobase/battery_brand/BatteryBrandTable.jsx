@@ -1,5 +1,4 @@
 import React from 'react';
-import { keyBy, get } from 'lodash';
 import Table from 'components/ui/table/DataTable.jsx';
 
 export const tableMeta = props => ({
@@ -11,31 +10,24 @@ export const tableMeta = props => ({
       filter: { type: 'multiselect' },
     },
     {
-      name: 'manufacturer_id',
+      name: 'manufacturer_name',
       displayName: 'Производитель аккумулятора',
       type: 'text',
+      cssClassName: 'width300',
       filter: {
         type: 'multiselect',
-        options: props.batteryManufacturerList.map(({ id, name }) => ({ value: id, label: name })),
+        options: props.batteryManufacturerList.map(({ name }) => ({ value: name, label: name })),
       },
     },
   ],
 });
 
 export default (props) => {
-  // TODO Убрать как будет готово поле на бэке
-  const batteryManufacturerList = keyBy(props.batteryManufacturerList, 'id');
-
-  const renderers = {
-    manufacturer_id: ({ data }) => <span>{get(batteryManufacturerList, [data, 'name'], 'Нет данных')}</span>,
-  };
-
   return (<Table
     title="Марки аккумуляторов"
     results={props.data}
     tableMeta={tableMeta(props)}
-    renderers={renderers}
-    // initialSort={'full_name'}
+    initialSort={false}
     {...props}
   />);
 };

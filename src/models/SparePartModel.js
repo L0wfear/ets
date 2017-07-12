@@ -16,7 +16,7 @@ export const schema = {
       key: 'price',
       title: 'Цена',
       type: 'number',
-      required: true,
+      required: false,
     },
     {
       key: 'spare_part_group_id',

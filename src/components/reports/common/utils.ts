@@ -1,4 +1,26 @@
+import { isArray } from 'lodash';
+
 import { IDataTableColSchema } from 'components/ui/table/@types/schema.h';
+
+/**
+ * Когда с сервера будут приходить типы полей, то такая штука будет не нужна.
+ */
+export const defaultSchemaMaker = (list: any[] = []) => (schema: IDataTableColSchema): IDataTableColSchema => {
+  if (list.length === 0) {
+    return schema;
+  }
+
+  if (isArray(list[0][schema.name])) {
+    return {
+      ...schema,
+        filter: {
+          type: 'string',
+        },
+    };
+  }
+
+  return schema;
+};
 
 export function multiselectFilterSchema(schema: IDataTableColSchema): IDataTableColSchema {
   return {

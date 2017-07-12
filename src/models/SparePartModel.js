@@ -1,22 +1,31 @@
 export const schema = {
   properties: [
     {
+      key: 'company_id',
+      title: 'Организация',
+      type: 'number',
+      required: true,
+    },
+    {
       key: 'number',
       title: 'Номер',
       type: 'string',
       required: true,
+      maxLength: 128,
     },
     {
       key: 'name',
       title: 'Наименование',
       type: 'string',
       required: true,
+      maxLength: 1024,
     },
     {
       key: 'price',
       title: 'Цена',
       type: 'number',
-      required: true,
+      required: false,
+      maxLength: 128,
     },
     {
       key: 'spare_part_group_id',
@@ -26,7 +35,7 @@ export const schema = {
     },
     {
       key: 'measure_unit_id',
-      title: 'Цена, руб.',
+      title: 'Единица измерения',
       type: 'number',
       required: true,
     },

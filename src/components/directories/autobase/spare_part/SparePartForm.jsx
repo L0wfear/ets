@@ -7,7 +7,7 @@ import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
 
-@connectToStores(['autobase'])
+@connectToStores(['autobase', 'objects'])
 export default class SparePartForm extends Form {
   async componentDidMount() {
     const { flux } = this.context;
@@ -18,18 +18,19 @@ export default class SparePartForm extends Form {
     this.setState({ AllGroup, AllUnits });
   }
 
- 
-  getUnits(flux) {
-    return flux.getActions('autobase').getSparePartMeasureUnit();
-  }
+  handleChangeWrap = name => (...arg) => this.handleChange(name, ...arg);
+  handleSubmitWrap = (...arg) => this.handleSubmit(...arg);
 
   render() {
+    console.log(this.props)
     const state = this.props.formState;
     const errors = this.props.formErrors;
-    const { AllGroup = [], AllUnits = []} = this.state;
+    const { organizations = [] } = this.props;
+    const { AllGroup = [], AllUnits = [] } = this.state;
 
     const GROUP_OPTIONS = AllGroup.map(el => ({ value: el.id, label: el.name }));
     const UNIT_OPTIONS = AllUnits.map(el => ({ value: el.id, label: el.name }));
+    const ORN_OPTION = organizations.map(el => ({ value: el.company_id, label: el.short_name }));
 
     const IS_CREATING = !!!state.id;
 
@@ -46,11 +47,23 @@ export default class SparePartForm extends Form {
             <Col md={12}>
               <Field
                 type="select"
+                label="Организация"
+                error={errors.company_id}
+                options={ORN_OPTION}
+                value={state.company_id}
+                onChange={this.handleChangeWrap('company_id')}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={12}>
+              <Field
+                type="select"
                 label="Группа"
                 error={errors.spare_part_group_id}
                 options={GROUP_OPTIONS}
                 value={state.spare_part_group_id}
-                onChange={this.handleChange.bind(this, 'spare_part_group_id')}
+                onChange={this.handleChangeWrap('spare_part_group_id')}
               />
             </Col>
           </Row>
@@ -61,7 +74,7 @@ export default class SparePartForm extends Form {
                 label="Номер"
                 value={state.number}
                 error={errors.number}
-                onChange={this.handleChange.bind(this, 'number')}
+                onChange={this.handleChangeWrap('number')}
               />
             </Col>
           </Row>
@@ -72,7 +85,7 @@ export default class SparePartForm extends Form {
                 label="Наименование"
                 value={state.name}
                 error={errors.name}
-                onChange={this.handleChange.bind(this, 'name')}
+                onChange={this.handleChangeWrap('name')}
               />
             </Col>
           </Row>
@@ -84,7 +97,7 @@ export default class SparePartForm extends Form {
                 error={errors.measure_unit_id}
                 options={UNIT_OPTIONS}
                 value={state.measure_unit_id}
-                onChange={this.handleChange.bind(this, 'measure_unit_id')}
+                onChange={this.handleChangeWrap('measure_unit_id')}
               />
             </Col>
           </Row>
@@ -95,14 +108,14 @@ export default class SparePartForm extends Form {
                 label="Цена, руб."
                 value={state.price}
                 error={errors.price}
-                onChange={this.handleChange.bind(this, 'price')}
+                onChange={this.handleChangeWrap('price')}
               />
             </Col>
           </Row>
         </Div>
         <ModalBody />
         <Modal.Footer>
-          <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+          <Button disabled={!this.props.canSave} onClick={this.handleSubmitWrap}>Сохранить</Button>
         </Modal.Footer>
       </Modal>
     );

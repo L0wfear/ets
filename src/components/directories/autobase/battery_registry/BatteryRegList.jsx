@@ -1,6 +1,6 @@
 import ElementsList from 'components/ElementsList.jsx';
 import BatteryRegTable, { tableMeta } from './BatteryRegTable.jsx';
-import BatteryRegWrapForm from './BatteryRegWrapForm.jsx';
+import BatteryRegFormWrap from './BatteryRegFormWrap.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import AUTOBASE_NAME from 'constants/autobase.js';
 
@@ -9,8 +9,7 @@ import AUTOBASE_NAME from 'constants/autobase.js';
 @staticProps({
   entity: AUTOBASE_NAME.btr,
   listName: 'btrList',
-  selectField: 'battery__id',
-  formComponent: BatteryRegWrapForm,
+  formComponent: BatteryRegFormWrap,
   tableComponent: BatteryRegTable,
   formMeta: tableMeta(),
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE'],
@@ -20,5 +19,6 @@ export default class BatteryRegList extends ElementsList {
     super.componentDidMount();
     const { flux } = this.context;
     flux.getActions('autobase').getAutobaseListByType('btr');
+    flux.getActions('objects').getOrganizations();
   }
 }

@@ -21,6 +21,19 @@ export interface IVehicleType extends IResponseRowObject<number> {
   company_structure_id: string;
 }
 
+export interface IVehicle {
+  asuods_id: number;
+  type_name: string;
+  owner_name: string;
+  type_image_name: string;
+  company_structure_id: string;
+  garage_number: string;
+  fuel_correction_rate: number;
+  is_common: boolean;
+  gov_number: string;
+  model_name: string;
+}
+
 export interface ITechnicalOperationType extends IResponseRowObject<number> {
   check_type: string;
   check_type_name: string;

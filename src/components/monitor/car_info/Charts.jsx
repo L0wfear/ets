@@ -10,17 +10,27 @@ import FuelChart from './charts/FuelChart';
 
 
 export default class Charts extends Component {
-
   static propTypes = {
     car: PropTypes.object,
     trackPoints: PropTypes.arrayOf({}),
   }
-
   state = {
     chartTab: 0,
     rawData: false,
+    hasTrackChanged: false,
   }
-
+  componentWillReceiveProps(nextProps) {
+    if (hasTrackPointsChanged(this.props.trackPoints, nextProps.trackPoints)) {
+      this.setState({
+        rawData: false,
+        hasTrackChanged: true,
+      });
+    } else {
+      this.setState({
+        hasTrackChanged: false,
+      });
+    }
+  }
   shouldComponentUpdate(nextProps, nextState) {
     if (isEqual(this.state.chartTab, nextState.chartTab)) {
       return (
@@ -32,7 +42,6 @@ export default class Charts extends Component {
     return true;
   }
   onMapClick = e => this.showOnMap(e.point.x, e)
-
   showOnMap = (timestamp, e, event) => {
     const threshold = e && e.point.series.closestPointRange ? e.point.series.closestPointRange : 0;
     const points = this.props.trackPoints.filter(p => (timestamp >= p.timestamp - threshold) && (timestamp <= p.timestamp + threshold));
@@ -43,9 +52,7 @@ export default class Charts extends Component {
     setTimeout(() => map.getView().fit(extent, { padding: [50, 550, 50, 50], maxZoom: 13 }), 100);
     map.get('parent').handleFeatureClick(track, point, event);
   }
-
   handleSourceDataCheck = () => this.setState({ rawData: !this.state.rawData })
-
   render() {
     return (
       <div>
@@ -61,12 +68,14 @@ export default class Charts extends Component {
               showOnMap={this.showOnMap}
               rawData={this.state.rawData}
               onSourceDataCheck={this.handleSourceDataCheck}
+              hasTrackChanged={this.state.hasTrackChanged}
             />
           </ExtDiv>
           <ExtDiv hidden={this.state.chartTab !== 1}>
             <SpeedChart
               {...this.props}
               onMapClick={this.onMapClick}
+              hasTrackChanged={this.state.hasTrackChanged}
             />
           </ExtDiv>
         </Panel>

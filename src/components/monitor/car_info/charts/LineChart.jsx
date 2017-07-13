@@ -9,6 +9,7 @@ export default class LineChart extends Component {
     name: PropTypes.string,
     data: PropTypes.array,
     showX: PropTypes.bool,
+    forceUpdate: PropTypes.bool,
   }
 
   componentDidMount() {
@@ -19,7 +20,10 @@ export default class LineChart extends Component {
     /**
      * Кол-во серий данных +1, так как навигатор под графиком тоже включен в серию данных.
      */
-    if (this.chart.series.length > 0 && this.chart.series.length === this.props.data.length + 1) {
+    if (
+      (this.chart.series.length > 0 && this.chart.series.length === this.props.data.length + 1) &&
+      !this.props.forceUpdate
+    ) {
       this.props.data.forEach((newSeries, i) => this.chart.series[i].update(newSeries));
       return;
     }

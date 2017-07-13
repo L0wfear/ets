@@ -85,6 +85,7 @@ const FuelChartSFC = props => {
         data={data}
         showX
         onClick={props.onMapClick}
+        forceUpdate={props.hasTrackChanged}
       />
       <div className="chart-checkbox" onClick={props.onSourceDataCheck}>
         <input readOnly type="checkbox" checked={rawData} />

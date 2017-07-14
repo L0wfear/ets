@@ -1,6 +1,12 @@
 export const schema = {
   properties: [
     {
+      key: 'company_id',
+      title: 'Организация',
+      type: 'number',
+      required: true,
+    },
+    {
       key: 'number',
       title: 'Номер',
       type: 'string',
@@ -26,7 +32,7 @@ export const schema = {
     },
     {
       key: 'measure_unit_id',
-      title: 'Цена, руб.',
+      title: 'Единица измерения',
       type: 'number',
       required: true,
     },

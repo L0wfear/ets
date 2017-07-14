@@ -1,9 +1,16 @@
 import React from 'react';
-import { keyBy, get } from 'lodash';
 import Table from 'components/ui/table/DataTable.jsx';
 
-export const tableMeta = props => ({
+export const tableMeta = () => ({
   cols: [
+    {
+      name: 'company_name',
+      displayName: 'Организация',
+      type: 'text',
+      filter: {
+        type: 'multiselect',
+      },
+    },
     {
       name: 'group_name',
       displayName: 'Группа',
@@ -36,7 +43,7 @@ export const tableMeta = props => ({
     },
     {
       name: 'price',
-      displayName: 'Цена',
+      displayName: 'Цена, руб.',
       type: 'text',
       filter: {
         type: 'text',
@@ -46,15 +53,10 @@ export const tableMeta = props => ({
 });
 
 export default (props) => {
-  // TODO Убрать как будет готово поле на бэке
-
-  const renderers = {};
-
   return (<Table
     title="Реестр запчастей"
     results={props.data}
     tableMeta={tableMeta(props)}
-    renderers={renderers}
     enumerated={false}
     {...props}
   />);

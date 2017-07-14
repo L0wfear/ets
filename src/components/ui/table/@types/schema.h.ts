@@ -61,7 +61,7 @@ export interface IExtractedDataTableSchema {
 }
 
 export interface ISchemaRenderer {
-  [field: string]: (rowMeta) => JSX.Element;
+  [field: string]: (rowMeta: IDataTableSelectedRowProps) => JSX.Element;
 }
 
 export interface ISchemaMaker  {

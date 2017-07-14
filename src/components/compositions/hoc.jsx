@@ -1,7 +1,7 @@
 import { withHandlers, compose, withState } from 'recompose';
 
 export const onChangeWithKeys = withHandlers({
-  onChange: props => e => props.onChange(...props.bindKeys, e),
+  onChange: props => e => props.onChange(...props.boundKeys, e),
 });
 
 export const tabable = compose(

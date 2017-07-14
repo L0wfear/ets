@@ -2,6 +2,8 @@ import React from 'react';
 import { autobind } from 'core-decorators';
 import { Input } from 'react-bootstrap';
 import cx from 'classnames';
+
+import { onChangeWithKeys } from 'components/compositions/hoc';
 import EtsSelect from './EtsSelect.jsx';
 import DatePicker from './DatePicker.jsx';
 import Div from './Div.jsx';
@@ -127,3 +129,5 @@ export default class Field extends React.Component {
   }
 
 }
+
+export const ExtField = onChangeWithKeys(Field);

@@ -6,7 +6,7 @@ import {
   IPropsReportHeaderCommon,
   IPropsReportHeaderWrapper,
 } from 'components/reports/common/@types/ReportHeaderWrapper.h';
-import { ITechnicalOperationType } from 'api/@types/services.h';
+import { ITechnicalOperationType } from 'api/@types/services/index.h';
 
 import { connectToStores } from 'utils/decorators';
 import FieldComponent from 'components/ui/Field.jsx';

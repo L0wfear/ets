@@ -6,7 +6,7 @@ import {
   IPropsReportHeaderCommon,
   IPropsReportHeaderWrapper,
 } from 'components/reports/common/@types/ReportHeaderWrapper.h';
-import { IVehicleType } from 'api/@types/services.h';
+import { IVehicleType } from 'api/@types/services/index.h';
 
 import { connectToStores } from 'utils/decorators';
 import Div from 'components/ui/Div.jsx';

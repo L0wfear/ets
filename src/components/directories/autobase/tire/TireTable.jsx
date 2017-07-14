@@ -109,7 +109,7 @@ export default (props) => {
     results={props.data}
     tableMeta={sortedMeta}
     renderers={renderers}
-    // initialSort={'full_name'}
+    initialSort={false}
     {...props}
   />);
 };

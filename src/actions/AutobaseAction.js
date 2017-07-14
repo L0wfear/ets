@@ -6,9 +6,8 @@ import { createValidDate, createValidDateTime } from 'utils/dates';
 
 export default class EmployeesActions extends Actions {
 
-  async getAutobaseListByType(type) {
+  async getAutobaseListByType(type, payload) {
     const trueType = AUTOBASE[type];
-    const payload = {};
 
     const response = await AutoBase.path(trueType).get(payload);
 

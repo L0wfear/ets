@@ -31,6 +31,10 @@ export interface IDataTableColSchema {
    */
   displayName?: string;
   /**
+   * Show/hide table column
+   */
+  display?: boolean;
+  /**
    * Field display type
    */
   type?: string;
@@ -61,5 +65,5 @@ export interface ISchemaRenderer {
 }
 
 export interface ISchemaMaker  {
-  [field: string]: (schemaMeta: IDataTableColSchema, reportProps: object) => IDataTableColSchema;
+  [field: string]: (schemaMeta: IDataTableColSchema, someProps?: object) => IDataTableColSchema;
 }

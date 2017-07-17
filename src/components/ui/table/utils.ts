@@ -2,9 +2,9 @@
  * Утилиты для работы с таблицей
  */
 import { prop, indexBy } from 'ramda';
-import { mapKeys, get, isEmpty } from 'lodash';
+import { mapKeys, get, isEmpty, identity, sortBy } from 'lodash';
 
-import { IDataTableSchema, IExtractedDataTableSchema, IDataTableColSchema } from 'components/ui/table/@types/schema.h';
+import { IDataTableSchema, IExtractedDataTableSchema, IDataTableColSchema, ISchemaMaker } from 'components/ui/table/@types/schema.h';
 
 export function extractTableMeta(columnMeta: IDataTableSchema): IExtractedDataTableSchema {
   return indexBy<IDataTableColSchema, IExtractedDataTableSchema>(prop('name'), columnMeta.cols);
@@ -27,4 +27,21 @@ export function toServerFilteringObject<FilterItem = any>(
 
     return serverFieldName === undefined ? key : serverFieldName;
   });
+}
+
+export function makeSchema({ cols = [] }: IDataTableSchema, makers: ISchemaMaker): IDataTableSchema {
+  const newCols = cols.map(col => {
+    const maker = makers[col.name] || identity;
+    return maker(col);
+  });
+
+  return { cols: newCols };
+}
+
+export function sortSchemaCols({ cols = [] }: IDataTableSchema, key: string = 'orderNum'): IDataTableSchema {
+  return { cols: sortBy<IDataTableColSchema>(cols, key) };
+}
+
+export function hiddeColumns(schema: IDataTableColSchema): IDataTableColSchema {
+  return ({ ...schema, display: false });
 }

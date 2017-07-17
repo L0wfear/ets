@@ -60,7 +60,7 @@ export default class CarInfo extends Component {
     this.store = this.props.flux.getStore('points');
     this.state = {
       imageUrl: null,
-      trackPaused: 'stopped',
+      trackPaused: true,
       trackingMode: false,
       trackPoints: [],
       from_dt: getStartOfToday(),
@@ -94,7 +94,7 @@ export default class CarInfo extends Component {
         level: [],
       };
       this.setState({
-        trackPaused: 'stopped',
+        trackPaused: true,
         sensors: {
           equipment: [],
           level: [],
@@ -192,7 +192,7 @@ export default class CarInfo extends Component {
   stopTrackPlaying() {
     const { marker } = this.props.car;
     marker.stopAnimation();
-    this.setState({ trackPaused: 'stopped' });
+    this.setState({ trackPaused: true });
   }
 
   toggleCarTracking() {
@@ -214,7 +214,7 @@ export default class CarInfo extends Component {
     const map = marker.map;
     const view = map.getView();
 
-    view.fit(extent, map.getSize(), { padding: [50, 550, 50, 50] });
+    view.fit(extent, { padding: [50, 550, 50, 50] });
   }
 
   toggleSensor(field, id) {
@@ -244,10 +244,10 @@ export default class CarInfo extends Component {
 
     return (
       <Panel title={title}>
-        <button disabled={this.state.trackPaused !== 'stopped'} className={trackBtnClass} onClick={this.toggleCarTracking} title="Следить за машиной">
+        <button disabled={!this.state.trackPaused} className={trackBtnClass} onClick={this.toggleCarTracking} title="Следить за машиной">
           <span className={trackBtnIconClass} />&nbsp;{trackingMode ? 'Следим' : 'Следить'}
         </button>
-        <button disabled={this.state.trackPaused !== 'stopped'} className={zoomToTrackClass} onClick={isTrackLoaded && this.zoomToTrack} title="Показать трек">
+        <button disabled={!this.state.trackPaused} className={zoomToTrackClass} onClick={isTrackLoaded && this.zoomToTrack} title="Показать трек">
           <span className="glyphicon glyphicon-resize-full" />&nbsp;Трек
         </button>
         <img role="presentation" className="car-info-image" src={imageUrl ? config.images + imageUrl : ''} />
@@ -304,10 +304,10 @@ export default class CarInfo extends Component {
         <Panel title="Проигрывание трека">
           <div className="track-player">
             <Button onClick={this.toggleTrackPlaying}><Glyphicon glyph={this.state.trackPaused ? 'play' : 'pause'} /></Button>
-            <Button disabled={this.state.trackPaused === 'stopped'} onClick={this.stopTrackPlaying}><Glyphicon glyph={'stop'} /></Button>
+            <Button disabled={this.state.trackPaused} onClick={this.stopTrackPlaying}><Glyphicon glyph={'stop'} /></Button>
           </div>
 
-          {this.state.trackPaused !== 'stopped' && <dl className="car-info-play-info">
+          {!this.state.trackPaused && <dl className="car-info-play-info">
             <dt>Координаты:</dt>
             <dd>{parseFloat(marker.currentCoords[1]).toFixed(5)}, {parseFloat(marker.currentCoords[0]).toFixed(5)}</dd>
             <dt>Время:</dt>

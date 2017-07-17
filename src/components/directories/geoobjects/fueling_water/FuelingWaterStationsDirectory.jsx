@@ -13,6 +13,7 @@ import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
   tableComponent: FuelingWaterStationsTable,
   formComponent: GeoObjectsMapModal,
   formMeta: tableMeta(),
+  operations: ['READ'],
 })
 export default class FuelingWaterStationsDirectory extends ElementsList {
   componentDidMount() {

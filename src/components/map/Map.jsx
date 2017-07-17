@@ -7,6 +7,8 @@ import { getVectorArrowStyle } from 'constants/vectors.js';
 import { GeoJSON, defaultZoom } from 'utils/ol';
 import _ from 'lodash';
 
+import Measure from './controls/measure/measure.js';
+
 let POLYS_LAYER = null;
 // TODO move to settings
 const SIDEBAR_WIDTH_PX = 500;
@@ -99,6 +101,8 @@ export default class OpenLayersMap extends Component {
       zoom: null,
     };
   }
+  
+  setMeasureActive = measureActive => this.setState({ measureActive });
 
   /**
    * initialization here
@@ -191,6 +195,9 @@ export default class OpenLayersMap extends Component {
   }
 
   onClick(ev) {
+    if (this.state.measureActive) {
+      return 0;
+    }
     const map = this.map;
     const pixel = ev.pixel; // координаты клика во viewport
     const coordinate = ev.coordinate;
@@ -392,11 +399,11 @@ export default class OpenLayersMap extends Component {
     const interactions = this.map.getInteractions();
 
     if (this._handlers !== null) {
-      // map.unByKey(this._handlers.singleclick);
-      // map.unByKey(this._handlers.pointermove);
-      // map.unByKey(this._handlers.moveend);
+      // ol.Observable.unByKey(this._handlers.singleclick);
+      // ol.Observable.unByKey(this._handlers.pointermove);
+      // ol.Observable.unByKey(this._handlers.moveend);
       for (const eventKey in this._handlers) {
-        map.unByKey(this._handlers[eventKey]);
+        ol.Observable.unByKey(this._handlers[eventKey]);
       }
       this._handlers = null;
 
@@ -405,7 +412,7 @@ export default class OpenLayersMap extends Component {
       });
     }
     if (this.triggerRenderEventKey) {
-      map.unByKey(this.triggerRenderEventKey);
+      ol.Observable.unByKey(this.triggerRenderEventKey);
     }
   }
 
@@ -448,6 +455,7 @@ export default class OpenLayersMap extends Component {
     return (
       <div key="olmap">
         <div ref={node => (this._container = node)} className="openlayers-container" />
+        <Measure map={this.map} setActiveMeasure={this.setMeasureActive} />
       </div>
     );
   }

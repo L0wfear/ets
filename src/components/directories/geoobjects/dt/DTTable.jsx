@@ -8,9 +8,7 @@ export const tableMeta = props => ({
       displayName: 'Учреждение',
       type: 'text',
       display: props ? props.isOkrug : false,
-      filter: {
-        type: 'multiselect',
-      },
+      filter: props && props.isOkrug ? { type: 'multiselect' } : false,
     },
     {
       name: 'object_address',
@@ -38,7 +36,10 @@ export const tableMeta = props => ({
     {
       name: 'company_structure_name',
       displayName: 'Подразделение',
-      type: 'text',
+      type: 'string',
+      filter: {
+        type: 'multiselect',
+      },
     },
   ],
 });

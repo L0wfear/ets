@@ -31,13 +31,17 @@ export default class MissionsJournal extends CheckableElementsList {
     this.removeElementCallback = this.removeElementCallback.bind(this);
 
     this.removeDisabled = () => {
-      if (Object.keys(this.state.checkedElements).length !== 0) return false;
+      const keysChEl = Object.keys(this.state.checkedElements);
+
+      if (keysChEl.length !== 0) {
+        return !keysChEl.every(el => this.state.checkedElements[el].status === 'assigned');
+      }
 
       if (this.state.selectedElement === null) {
         return true;
       }
 
-      return this.state.selectedElement.status !== 'not_assigned';
+      return this.state.selectedElement.status !== 'assigned';
     };
 
     this.state = Object.assign(this.state, {
@@ -89,11 +93,16 @@ export default class MissionsJournal extends CheckableElementsList {
   }
 
   checkDisabled() {
-    if (Object.keys(this.state.checkedElements).length !== 0) return false;
+    const keysChEl = Object.keys(this.state.checkedElements);
+
+    if (keysChEl.length !== 0) {
+      return !keysChEl.every(el => this.state.checkedElements[el].status === 'assigned');
+    }
 
     if (this.state.selectedElement === null) {
       return true;
     }
+
     return this.state.selectedElement.status !== 'assigned';
   }
 

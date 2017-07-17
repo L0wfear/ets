@@ -60,6 +60,46 @@ class RoutesList extends Component {
     });
   }
 
+
+
+  getTypeRoute(type) {
+    switch (type) {
+      case 'mixed':
+      case 'simple':
+      case 'vector':
+        return 'Маршруты по ОДХ';
+      case 'simple_dt':
+        return 'Маршруты по ДТ';
+      case 'points':
+        return 'Маршруты по пунктам назначения';
+      default:
+        return 'error';
+    }
+  }
+
+  getStructures() {
+    return this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
+  }
+
+  selectedRoute(selectedRouter) {
+    const { showId } = this.state;
+
+    const STRUCTURES = this.getStructures();
+    const { technicalOperationsList = [] } = this.props;
+
+    const type = this.getTypeRoute(selectedRouter.type);
+    const structure_name = type + _.get(STRUCTURES.find(t => t.value === selectedRouter.structure_id), 'label') || 'Без подразделения';
+    const technical_operation_name = structure_name + _.get(technicalOperationsList.find(t => t.id === selectedRouter.technical_operation_id), 'name');
+
+    [type, structure_name, technical_operation_name].forEach(r => showId.includes(r) ? '' : showId.push(r));
+
+    this.setState({
+      showForm: false,
+      selectedRouter,
+      showId,
+    });
+  }
+
   shouldBeRendered(obj) {
     let isValid = true;
     _.mapKeys(this.state.filterValues, (value, key) => {
@@ -187,7 +227,7 @@ class RoutesList extends Component {
 
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
     const OBJECTS = technicalOperationsObjectsList.map(({ type, full_name }) => ({ value: type, label: full_name }));
-    const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
+    const STRUCTURES = this.getStructures();
 
     let filterOptions = [
       {
@@ -218,19 +258,11 @@ class RoutesList extends Component {
         },
       }); }
 
-    const TYPES = {
-      mixed: 'Маршруты по ОДХ',
-      simple: 'Маршруты по ОДХ',
-      vector: 'Маршруты по ОДХ',
-      simple_dt: 'Маршруты по ДТ',
-      points: 'Маршруты по пунктам назначения',
-    };
-
     let ROUTES = _.cloneDeep(routesList).filter(r => this.shouldBeRendered(r));
     ROUTES = _.sortBy(ROUTES, o => o.name.toLowerCase());
     ROUTES.forEach((r) => {
       r.structure_name = _.get(STRUCTURES.find(t => t.value === r.structure_id), 'label');
-      r.type_name = TYPES[r.type];
+      r.type_name = this.getTypeRoute(r.type);
       r.technical_operation_name = _.get(technicalOperationsList.find(t => t.id === r.technical_operation_id), 'name');
     });
     ROUTES = ROUTES.filter(r => r.technical_operation_name).sort((a, b) => a.technical_operation_name.toLowerCase().localeCompare(b.technical_operation_name.toLowerCase()));
@@ -293,6 +325,7 @@ class RoutesList extends Component {
               <RouteFormWrap
                 element={route}
                 onFormHide={this.onFormHide}
+                selectedRoute={this.selectedRoute}
                 showForm={this.state.showForm}
                 routesList={routesList}
               />

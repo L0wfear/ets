@@ -15,6 +15,33 @@ import DashboardItemChevron from '../DashboardItemChevron.jsx';
 import MissionInfoFormWrap from '../MissionInfoFormWrap.jsx';
 import MissionRejectForm from '../../missions/mission/MissionRejectForm.jsx';
 
+const VALUE_FOR_FIXED = {
+  TWO_F: {
+    val: 2,
+    list: [
+      'кв. м.',
+      'м.',
+    ],
+  },
+  THREE_F: {
+    val: 3,
+    list: [
+      'км',
+    ],
+  },
+  floatFixed: (data, val) => parseFloat(data).toFixed(val),
+};
+
+const checkFixed = (data, key) => {
+  const clone = [...data];
+
+  if (VALUE_FOR_FIXED[key].list.includes(data[1])) {
+    clone[0] = VALUE_FOR_FIXED.floatFixed(clone[0], VALUE_FOR_FIXED[key].val);
+  }
+
+  return clone;
+};
+
 const MedViewLabel = props =>
   <div style={{ marginBottom: 5, marginTop: 5 }}>
     <span style={{ fontSize: 16, color: 'red' }}>{props.children}</span>
@@ -23,9 +50,10 @@ const MedViewLabel = props =>
 const Panel = wrappedRef(BootstrapPanel);
 
 const getDataTraveledYet = (data) => {
-  if (typeof data === 'string') {
-    return data;
+  if (typeof data === 'object') {
+    return data.join(' ');
   }
+
   return !isNaN(parseInt(data, 10)) ? parseInt(data, 10) : '-';
 };
 
@@ -142,22 +170,48 @@ export default class CurrentMission extends DashboardCardMedium {
 
     const medLabelVisibility = car_data.driver_allowed !== undefined && !car_data.driver_allowed;
 
+    const traveledAndCheck_unit = checkFixed([report_data.traveled, report_data.check_unit], 'TWO_F');
+    const traveled_high_speedAndCheck_unit = checkFixed([report_data.traveled_high_speed, report_data.check_unit], 'TWO_F');
+    const equipmentDataAndCheck_unit = checkFixed([equipmentData / 1000, 'км'], 'THREE_F');
+
     return (
       <Div>
         <Div hidden={Object.keys(selectedMission) === 0}>
           <ul>
-            <li><b>Задание:</b> {mission_data.name}</li>
-            <li><b>Тех. операция:</b> {technical_operation_data.name}</li>
-            <li><b>Водитель:</b> {car_data.driver_fio}</li>
+            <li><b>Задание:</b>
+              {mission_data.name}
+            </li>
+            <li><b>Тех. операция:</b>
+              {technical_operation_data.name}
+            </li>
+            <li><b>Водитель:</b>
+              {car_data.driver_fio}
+            </li>
             {medLabelVisibility && <MedViewLabel>Не пройден внеплановый мед. осмотр</MedViewLabel>}
-            <li><b>Рег. номер ТС:</b> {car_data.gov_number}</li>
-            <li><b>Начало задания:</b> {getFormattedDateTimeSeconds(mission_data.date_start)}</li>
-            <li><b>Окончание задания:</b> {getFormattedDateTimeSeconds(mission_data.date_end)}</li>
-            <li><b>Расчетное время выполнения:</b> {getEstimatedFinishTime(report_data.estimated_finish_time || 'Подсчет')}</li>
-            <li><b>Пройдено в рабочем режиме:</b> {getDataTraveledYet([report_data.traveled, report_data.check_unit].join(' '))}</li>
-            <li><b>Пройдено с рабочей скоростью:</b> {getDataTraveledYet([report_data.traveled, report_data.check_unit, report_data.time_work_speed].join(' '))}</li>
-            <li><b>Пройдено с превышением рабочей скорости:</b> {getDataTraveledYet([report_data.traveled_high_speed, report_data.check_unit, report_data.time_high_speed].join(' '))}</li>
-            <li><b>Общий пробег с работающим оборудованием:</b> {loadingFields ? <Preloader type="field" /> : `${parseFloat(equipmentData / 1000).toFixed(3)} км`}</li>
+            <li><b>Рег. номер ТС:</b>
+              {car_data.gov_number}
+            </li>
+            <li><b>Начало задания:</b>
+              {getFormattedDateTimeSeconds(mission_data.date_start)}
+            </li>
+            <li><b>Окончание задания:</b>
+              {getFormattedDateTimeSeconds(mission_data.date_end)}
+            </li>
+            <li><b>Расчетное время выполнения:</b>
+              {getEstimatedFinishTime(report_data.estimated_finish_time || 'Подсчет')}
+            </li>
+            <li><b>Пройдено в рабочем режиме:</b>
+              {getDataTraveledYet(traveledAndCheck_unit)}
+            </li>
+            <li><b>Пройдено с рабочей скоростью:</b>
+              {getDataTraveledYet([...traveledAndCheck_unit, report_data.time_work_speed])}
+            </li>
+            <li><b>Пройдено с превышением рабочей скорости:</b>
+              {getDataTraveledYet([...traveled_high_speedAndCheck_unit, report_data.time_high_speed])}
+            </li>
+            <li><b>Общий пробег с работающим оборудованием:</b>
+              {loadingFields ? <Preloader type="field" /> : `${getDataTraveledYet(equipmentDataAndCheck_unit)}`}
+            </li>
             {this.canView ? <div><a className="pointer" onClick={(e) => { e.preventDefault(); this.missionAction(selectedMission); }}>Подробнее...</a></div> : ''}
             {this.canCompleteOrReject ? <Div className="text-right">
               <Button className="dashboard-card-action-button" onClick={this.completeMission.bind(this, mission_data.id)}>Выполнено</Button>

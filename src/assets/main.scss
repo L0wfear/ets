@@ -2009,27 +2009,30 @@ body {
     }
 
     tbody {
-      &:first-of-type {
-        tr {
-          cursor: pointer;
+      
+      .griddle-footer{
+          background-color: #ffffff !important;
+      }
+      
+      tr {
+        cursor: pointer;
 
-          &:nth-child(even) > td {
-            background-color: #f7f7f7 !important;
-          }
+        &:nth-child(even) > td {
+          background-color: #f7f7f7 !important;
+        }
 
-          &.highlighted-row > td {
-            background-color: $colorYellow !important;
-          }
+        &.highlighted-row > td {
+          background-color: $colorYellow !important;
+        }
 
-          &:hover > td {
-            background-color: $colorLightGreen !important;
-            color: white !important;
-          }
+        &:hover > td {
+          background-color: $colorLightGreen !important;
+          color: white !important;
+        }
 
-          &.selected-row > td {
-            background-color: $colorGreen !important;
-            color: white !important;
-          }
+        &.selected-row > td {
+          background-color: $colorGreen !important;
+          color: white !important;
         }
       }
 
@@ -2844,8 +2847,17 @@ div.none {
 
 .company-structure .griddle-body {
   tbody {
-
-      tr {
+    &:nth-child(even){
+      background-color: #f7f7f7 !important;
+    }
+   
+    tr {
+      &.expanded > td {
+        background-color: $colorGreen !important;
+        color: white !important;
+      }
+      
+      &:nth-of-type(n+2){
         cursor: pointer;
 
         &:nth-child(even) > td {
@@ -2861,6 +2873,7 @@ div.none {
           background-color: $colorYellow !important;
         }
       }
+    }
 
     td {
       vertical-align: top;
@@ -3054,6 +3067,14 @@ div.none {
       position: relative;
       left: 0;
       width: 100%;
+    }
+  }
+}
+
+.griddle-container {
+  thead {
+    span.glyphicon.glyphicon-info-sign {
+      margin-left: 5px;
     }
   }
 }

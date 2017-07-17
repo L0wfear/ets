@@ -1,5 +1,18 @@
 import React, { Component, PropTypes } from 'react';
 import Select from 'react-select';
+import { isString, isNumber } from 'lodash';
+
+const defaultSortingFunction = (a, b) => {
+  if (isNumber(a.label)) {
+    return a.label - b.label;
+  }
+
+  if (isString(a.label) && isString(b.label)) {
+    return a.label.toLowerCase().localeCompare(b.label.toLowerCase());
+  }
+
+  return a.label - b.label;
+};
 
 export default class EstSelect extends Component {
 
@@ -29,22 +42,24 @@ export default class EstSelect extends Component {
       }
     }
   }
+  handleChange = (linearValue, objectValue) => {
+    const { emptyValue = '' } = this.props;
+    this.props.onChange(linearValue === '' ? emptyValue : linearValue, objectValue);
+  }
   render() {
-    const { placeholder = 'Выберите...', emptyValue = '', noResultsText = 'Ничего не найдено', options = [], sortingFunction = (a, b) => {
-      if (typeof a.label === 'number') {
-        return a.label - b.label;
-      }
-      if (a.label && b.label) {
-        return a.label.toLowerCase().localeCompare(b.label.toLowerCase());
-      }
-      return a.label - b.label;
-    } } = this.props;
+    const {
+      placeholder = 'Выберите...',
+      noResultsText = 'Ничего не найдено',
+      options = [],
+      sortingFunction = defaultSortingFunction,
+    } = this.props;
+
     const sortedOptions = options.sort(sortingFunction);
 
     return (
       <Select
         {...this.props}
-        onChange={(v, a) => this.props.onChange(v === '' ? emptyValue : v, a)}
+        onChange={this.handleChange}
         options={sortedOptions}
         placeholder={placeholder}
         noResultsText={noResultsText}

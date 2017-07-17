@@ -149,45 +149,47 @@ export default class GeoObjectsStore extends Store {
     return polys;
   }
 
-  handleSelectFeature(selectedFeature) {
+  handleSelectFeature(selectedFeature = false) {
     // TODO рефакторинг
-    if (selectedFeature !== null) {
-      if (this.state.selectedFeature !== null) {
-        const typePrev = this.state.selectedFeature.featureType;
-        const polysByTypePrev = `${typePrev}Polys`;
-        const polysPrev = this.state[polysByTypePrev];
-        delete polysPrev[this.state.selectedFeature.id].selected;
+    if (!!selectedFeature) {
+      if (selectedFeature !== null) {
+        if (this.state.selectedFeature !== null) {
+          const typePrev = this.state.selectedFeature.featureType;
+          const polysByTypePrev = `${typePrev}Polys`;
+          const polysPrev = this.state[polysByTypePrev];
+          delete polysPrev[this.state.selectedFeature.id].selected;
 
-        const type = selectedFeature.featureType;
+          const type = selectedFeature.featureType;
+          const polysByType = `${type}Polys`;
+          const polys = this.state[polysByType];
+          polys[selectedFeature.id].selected = true;
+          this.setState({
+            selectedFeature,
+            [polysByTypePrev]: polysPrev,
+            [polysByType]: polys,
+          });
+        } else {
+          const type = selectedFeature.featureType;
+          const polysByType = `${type}Polys`;
+          const polys = this.state[polysByType];
+          polys[selectedFeature.id].selected = true;
+          this.setState({
+            selectedFeature,
+            [polysByType]: polys,
+          });
+        }
+      } else if (this.state.selectedFeature !== null) {
+        const type = this.state.selectedFeature.featureType;
         const polysByType = `${type}Polys`;
         const polys = this.state[polysByType];
-        polys[selectedFeature.id].selected = true;
+        delete polys[this.state.selectedFeature.id].selected;
         this.setState({
           selectedFeature,
-          [polysByTypePrev]: polysPrev,
           [polysByType]: polys,
         });
       } else {
-        const type = selectedFeature.featureType;
-        const polysByType = `${type}Polys`;
-        const polys = this.state[polysByType];
-        polys[selectedFeature.id].selected = true;
-        this.setState({
-          selectedFeature,
-          [polysByType]: polys,
-        });
+        this.setState({ selectedFeature });
       }
-    } else if (this.state.selectedFeature !== null) {
-      const type = this.state.selectedFeature.featureType;
-      const polysByType = `${type}Polys`;
-      const polys = this.state[polysByType];
-      delete polys[this.state.selectedFeature.id].selected;
-      this.setState({
-        selectedFeature,
-        [polysByType]: polys,
-      });
-    } else {
-      this.setState({ selectedFeature });
     }
   }
 

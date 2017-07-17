@@ -78,25 +78,23 @@ export default class CarMarker extends Marker {
     const map = this.map;
     const coords = this.animatePoints[0].coords;
     const view = map.getView();
-
     const duration = 1500;
-    const start = +new Date();
-    const pan = ol.animation.pan({
+
+    view.animate({
       duration,
-      source: view.getCenter(),
-      start,
+      center: coords,
     });
-    map.beforeRender(pan);
-    view.setCenter(coords);
 
     setTimeout(() => {
-      this.animateEventKey = this.map.on('postcompose', this.animateToTrack.bind(this));
-      this.setVisible(false);
-      this.map.disableInteractions();
-      this.animateStartTime = new Date().getTime();
-      this.image = this.getImage({ selected: true });
-      this.radius = this.image.width / 2;
-      this.map.render();
+      if (this.animating) {
+        this.animateEventKey = this.map.on('postcompose', this.animateToTrack.bind(this));
+        this.setVisible(false);
+        this.map.disableInteractions();
+        this.animateStartTime = new Date().getTime();
+        this.image = this.getImage({ selected: true });
+        this.radius = this.image.width / 2;
+        this.map.render();
+      }
     }, 1500);
   }
 
@@ -113,14 +111,14 @@ export default class CarMarker extends Marker {
 
     this.setVisible(true);
     this.store.unpauseRendering();
-    this.map.unByKey(this.animateEventKey);
+    ol.Observable.unByKey(this.animateEventKey);
   }
 
   togglePlay() {
     if (this.animating) {
       this.animating = false;
       this.map.enableInteractions();
-      this.map.unByKey(this.animateEventKey);
+      ol.Observable.unByKey(this.animateEventKey);
 
       const pausedMarker = new ol.Feature({
         type: 'geoMarker',

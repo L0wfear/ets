@@ -63,6 +63,7 @@ const SpeedChartSFC = props => {
       data={data}
       showX
       onClick={props.onMapClick}
+      forceUpdate={props.hasTrackChanged}
     />
   );
 };

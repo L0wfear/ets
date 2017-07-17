@@ -2,6 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import Div from 'components/ui/Div.jsx';
 import { isEmpty } from 'utils/functions';
+import { getToday9am, getTomorrow9am } from 'utils/dates.js';
 import { autobind } from 'core-decorators';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import IntervalPicker from 'components/ui/IntervalPicker.jsx';
@@ -74,6 +75,7 @@ class FaxogrammMissionsFormWrap extends FormWrap {
             <IntervalPicker
               interval={self.state.interval}
               onChange={interval => self.setState({ interval })}
+              defDate={[getToday9am(), getTomorrow9am()]}
             />
           </div>;
 

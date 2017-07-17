@@ -1,8 +1,10 @@
 import { Store } from 'flummox';
+
+import { autobase } from 'api/mocks/permissions';
+import { clear } from 'utils/cache';
 import { setUserContext } from 'config/raven';
 import createFio from '../utils/create-fio.js';
 import { User } from '../models';
-import { clear } from 'utils/cache';
 
 const defaultUser = {
   login: 'mayor',
@@ -42,12 +44,18 @@ export default class SessionStore extends Store {
       userPermissions: currentUser.permissions,
     };
   }
-
+// TODO
   handleLogin(data) {
     clear();
     data.payload.fio = createFio(data.payload);
     const session = data.token;
     let currentUser = data.payload;
+
+    // убрать это
+    currentUser.permissions = [
+      ...currentUser.permissions,
+      ...autobase,
+    ];
 
     localStorage.setItem(global.SESSION_KEY, JSON.stringify(session));
     localStorage.setItem(global.CURRENT_USER, JSON.stringify(currentUser));

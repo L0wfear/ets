@@ -12,6 +12,7 @@ import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
   tableComponent: SnowStorageTable,
   formComponent: GeoObjectsMapModal,
   formMeta: tableMeta(),
+  operations: ['READ'],
 })
 export default class SnowStorageDirectory extends ElementsList {
   componentDidMount() {

@@ -1,14 +1,15 @@
 import React from 'react';
-import { Modal, Row, Col, Button } from 'react-bootstrap';
+import { Modal, Button, Tab, Tabs } from 'react-bootstrap';
+
 import ModalBody from 'components/ui/Modal';
-import Div from 'components/ui/Div.jsx';
-import Field from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
 import connectToStores from 'flummox/connect';
-import config from '../../../config.js';
+import { tabable } from 'components/compositions/hoc';
+import InfoTab from './tabs/InfoTab';
+import BatteryTab from './tabs/BatteryTab';
+import TireTab from './tabs/TireTab';
 
 class CarForm extends Form {
-
   constructor(props) {
     super(props);
 
@@ -17,18 +18,29 @@ class CarForm extends Form {
       companyStructureList: [],
     };
   }
+  componentWillReceiveProps(props) {
+    const { flux } = this.context;
+    const currentState = this.props.formState;
+    const nextState = props.formState;
 
+    if (nextState.asuods_id !== currentState.asuods_id && nextState.asuods_id) {
+      this.props.handleTabSelect(1);
+      const payload = {
+        car_id: nextState.asuods_id,
+      };
+
+      flux.getActions('autobase').getAutobaseListByType('btr', payload);
+      flux.getActions('autobase').getAutobaseListByType('tire', payload);
+    }
+  }
   async componentWillMount() {
     const { flux } = this.context;
     const companyStructureList = await flux.getActions('companyStructure').getLinearCompanyStructureForUser();
     this.setState({ companyStructureList });
   }
-
   render() {
     const state = this.props.formState;
-    const { ownersIndex = {}, typesIndex = {}, isPermitted = false } = this.props;
-    const owner = ownersIndex[state.owner_id] || {};
-    const type = typesIndex[state.type_id] || {};
+    const { isPermitted = false } = this.props;
     const { companyStructureList = [] } = this.state;
     const COMPANY_ELEMENTS = companyStructureList.map(el => ({ value: el.id, label: el.name }));
 
@@ -40,65 +52,30 @@ class CarForm extends Form {
         </Modal.Header>
 
         <ModalBody>
-
-          <Row>
-
-            <Col md={6}>
-              <Div hidden={!state.type_image_name}>
-                <img role="presentation" src={config.images + state.type_image_name} className="car-form-image" />
-              </Div>
-            </Col>
-
-            <Col md={6}>
-              <Field
-                type="select"
-                label="Подразделение"
-                options={COMPANY_ELEMENTS}
-                value={state.company_structure_id}
-                clearable={false}
-                onChange={this.handleChange.bind(this, 'company_structure_id')}
-                disabled={!isPermitted}
+          <Tabs activeKey={this.props.tabKey} onSelect={this.props.handleTabSelect} id="refs-car-tabs">
+            <Tab eventKey={1} title="Информация">
+              <InfoTab
+                state={state}
+                companyElements={COMPANY_ELEMENTS}
+                isPermitted={isPermitted}
+                onChange={this.handleChange}
               />
-
-              <Field
-                type="string"
-                label="Гаражный номер"
-                value={state.garage_number}
-                onChange={this.handleChange.bind(this, 'garage_number')}
-                disabled={!isPermitted}
+            </Tab>
+            <Tab eventKey={2} title="Аккумуляторы">
+              <BatteryTab
+                data={this.props.btrList}
               />
-
-              <Field
-                type="number"
-                label="Поправочный коэффициент"
-                value={state.fuel_correction_rate}
-                onChange={this.handleChange.bind(this, 'fuel_correction_rate')}
-                disabled={!isPermitted}
+            </Tab>
+            <Tab eventKey={3} title="Шины">
+              <TireTab
+                data={this.props.tireList}
               />
-              <Field
-                type="boolean"
-                label="Общее"
-                value={state.is_common}
-                onChange={this.handleChange.bind(this, 'is_common', !state.is_common)}
-              />
-            </Col>
-
-          </Row>
-
-          <Row>
-
-            <Col md={6}>
-              <Field type="string" label="Владелец" readOnly value={owner.title || 'Не указано'} />
-
-              <Field type="string" label="Рег. номер ТС" readOnly value={state.gov_number || 'Не указано'} />
-
-              <Field type="string" label="Марка шасси" readOnly value={state.model_name || 'Не указано'} />
-
-              <Field type="string" label="Тип" readOnly value={type.short_name || 'Не указано'} />
-            </Col>
-
-          </Row>
-
+            </Tab>
+            <Tab eventKey={4} title="Страхование" disabled>Tab 3 content</Tab>
+            <Tab eventKey={5} title="ДТП" disabled>Tab 3 content</Tab>
+            <Tab eventKey={6} title="ТО и ремонты" disabled>Tab 3 content</Tab>
+            <Tab eventKey={7} title="Техосмотр" disabled>Tab 3 content</Tab>
+          </Tabs>
         </ModalBody>
 
         <Modal.Footer>
@@ -110,4 +87,4 @@ class CarForm extends Form {
   }
 }
 
-export default connectToStores(CarForm, ['objects']);
+export default tabable(connectToStores(CarForm, ['objects', 'autobase']));

@@ -18,6 +18,7 @@ import technicalOperation from './TechnicalOperationsActions.js';
 import waybills from './WaybillsActions.js';
 import geoObjects from './GeoObjectsActions.js';
 import odh from './ODHActions.js';
+import autobase from './AutobaseAction.js';
 
 export {
   cars,
@@ -36,4 +37,5 @@ export {
   technicalOperation,
   waybills,
   geoObjects,
+  autobase,
 };

@@ -17,6 +17,7 @@ import waybills from './WaybillsStore.js';
 import loading from './LoadingStore.js';
 import notifications from './NotificationsStore.js';
 import geoObjects from './GeoObjectsStore.js';
+import autobase from './AutobaseStore.js';
 
 export {
   dashboard,
@@ -34,4 +35,5 @@ export {
   loading,
   notifications,
   geoObjects,
+  autobase,
 };

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import ElementsList from 'components/ElementsList.jsx';
-import ODHTable from './ODHTable.jsx';
+import ODHTable, { tableMeta } from './ODHTable.jsx';
 import OdhFormWrap from './OdhFormWrap.jsx';
 import schema from './ODHSchema';
 
@@ -14,6 +14,7 @@ import schema from './ODHSchema';
   listName: 'odhsList',
   tableComponent: ODHTable,
   formComponent: OdhFormWrap,
+  formMeta: tableMeta(),
   operations: ['READ'],
 })
 export default class ODHDirectory extends ElementsList {

@@ -25,6 +25,7 @@ export const schema = {
       title: 'Цена',
       type: 'number',
       required: false,
+      maxLength: 128,
     },
     {
       key: 'spare_part_group_id',

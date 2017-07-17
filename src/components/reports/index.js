@@ -10,6 +10,7 @@ import odhCoverageReport from './odh_coverage/OdhCoverageReport.jsx';
 import dtCoverageReport from './dt_coverage/DtCoverageReport.jsx';
 import odh from './ODHReports.jsx';
 import mission from './mission/report.ts';
+import missionProgress from './mission_progress/report.ts';
 import routeOdhCoverage from './route_odh_coverage/report';
 import * as daily from './daily';
 import cleaningStatusTechOp from './cleaning_status_tech_op/report.tsx';
@@ -24,6 +25,7 @@ export {
   fuelConsumption,
   fuelConsumptionSummary,
   mission,
+  missionProgress,
   odh,
   routeOdhCoverage,
   daily,

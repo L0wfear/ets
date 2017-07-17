@@ -57,7 +57,6 @@ export default (props) => {
     title="Реестр запчастей"
     results={props.data}
     tableMeta={tableMeta(props)}
-    enumerated={false}
     {...props}
   />);
 };

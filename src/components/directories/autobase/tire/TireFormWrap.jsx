@@ -7,12 +7,6 @@ import BaseTireForm from './TireForm';
 export const tireSchema = {
   properties: [
     {
-      key: 'company_id',
-      title: 'Организация',
-      type: 'number',
-      required: true,
-    },
-    {
       key: 'tire_model_id',
       title: 'Модель шины',
       type: 'number',
@@ -45,6 +39,7 @@ export default class TireFormWrap extends FormWrap {
     this.preventDefaultNotification = true;
     this.createAction = context.flux.getActions('autobase').tire.bind(null, 'post');
     this.updateAction = context.flux.getActions('autobase').tire.bind(null, 'put');
+    this.removeElementAction = context.flux.getActions('autobase').removeTire;
   }
 
   render() {

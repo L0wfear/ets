@@ -10,4 +10,7 @@ export interface IPropsDataTable<TResultObject> {
   enableSort?: boolean;
   initialSort?: boolean | string;
   noFilter?: boolean;
+  usePagination?: boolean;
+  selectField?: string;
+  selected?: TResultObject;
 }

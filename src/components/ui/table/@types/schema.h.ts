@@ -1,10 +1,11 @@
 export interface IDataTableSelectedRowPropsData {
   [fieldName: string]: any;
-  rowNumber: string;
+  rowNumber: number;
 }
 
 interface IDataTableSelectedRowProps {
-  data: IDataTableSelectedRowPropsData;
+  data: any;
+  rowData: IDataTableSelectedRowPropsData;
 }
 
 export interface IDataTableSelectedRow {

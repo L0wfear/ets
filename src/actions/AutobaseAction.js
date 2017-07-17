@@ -121,13 +121,25 @@ export default class EmployeesActions extends Actions {
   tire(method, formState) {
     const payload = {
       ...formState,
-      tire_to_car: get(formState, 'tire_to_car', []),
+      tire_to_car: get(formState, 'tire_to_car', []).map(item => ({
+        ...item,
+        installed_at: createValidDate(item.installed_at),
+        uninstalled_at: createValidDate(item.uninstalled_at),
+      })),
     };
     const { tire } = AUTOBASE;
     const path = parsePutPath(tire, method, formState);
 
     return AutoBase.path(path)[method](
       payload,
+      this.getAutobaseListByType.bind(null, 'tire'),
+      'json',
+    );
+  }
+  removeTire(id) {
+    const { tire } = AUTOBASE;
+    return AutoBase.path(tire).path(id).delete(
+      {},
       this.getAutobaseListByType.bind(null, 'tire'),
       'json',
     );

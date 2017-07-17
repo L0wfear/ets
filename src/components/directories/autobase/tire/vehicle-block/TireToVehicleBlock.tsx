@@ -1,46 +1,34 @@
 import * as React from 'react';
-import { Button, ButtonToolbar } from 'react-bootstrap';
 
-import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
-import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';
-import { ITireToCar} from 'api/@types/services/autobase.h';
+import { THOCPropsDataTableInput } from 'components/ui/table/@types/DataTableInputWrapper.h';
 
-import DataTableComponent from 'components/ui/table/DataTable';
-import { meta, renderers } from './table-schema';
+import { connectToStores, FluxContext } from 'utils/decorators';
+import DataTableInput from 'components/ui/table/DataTableInput';
+import { meta, renderers, validationSchema } from './table-schema';
 
-const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
-
-interface IPropsTireToVehicleBlock {
-  list: ITireToCar[];
+interface IPropsTireToVehicleBlock extends THOCPropsDataTableInput {
+  tireId: number;
 }
 
-interface IStateTireToVehicleBlock {
-
-}
-
-class TireToVehicleBlock extends React.Component<IPropsTireToVehicleBlock, IStateTireToVehicleBlock> {
+@connectToStores(['autobase'])
+@FluxContext
+class TireToVehicleBlock extends React.Component<IPropsTireToVehicleBlock, any> {
+  componentDidMount() {
+    this.context.flux.getActions('autobase').getAutobaseListByType('tireAvailibleCar', {
+      tire_id: this.props.tireId,
+    });
+  }
   render() {
-    const extendedRenderers: ISchemaRenderer  = renderers(this.props);
-
     return (
-      <div>
-        <div className="pull-right">
-          <ButtonToolbar>
-            <Button>Добавить ТС</Button>
-            <Button>Удалить ТС</Button>
-          </ButtonToolbar>
-        </div>
-        <DataTable
-          title=""
-          results={[]}
-          tableMeta={meta}
-          renderers={extendedRenderers}
-          noFilter
-          enumerated={false}
-          enableSort={false}
-          initialSort={false}
-        />
-      </div>
+      <DataTableInput
+        tableSchema={meta}
+        renderers={renderers}
+        validationSchema={validationSchema}
+        addButtonLabel="Добавить ТС"
+        removeButtonLable="Удалить ТС"
+        stackOrder
+        {...this.props}
+      />
     );
   }
 }

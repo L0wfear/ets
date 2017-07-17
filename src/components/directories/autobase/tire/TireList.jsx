@@ -11,7 +11,7 @@ import TireTable from './TireTable.jsx';
   listName: 'tireList',
   tableComponent: TireTable,
   formComponent: TireFormWrap,
-  operations: ['LIST', 'CREATE', 'READ', 'UPDATE'],
+  operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 export default class TireList extends ElementsList {
   componentDidMount() {

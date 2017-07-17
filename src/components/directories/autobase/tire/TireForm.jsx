@@ -1,35 +1,41 @@
 import React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 
+import { onChangeWithKeys } from 'components/compositions/hoc';
 import ModalBody from 'components/ui/Modal';
 import { connectToStores } from 'utils/decorators';
 import { ExtDiv } from 'components/ui/Div.jsx';
 import { ExtField } from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
-import TireToVehicleBlock from './vehicle-block/TireToVehicleBlock';
+import TireToVehicleBlockComponent from './vehicle-block/TireToVehicleBlock';
 
-@connectToStores(['autobase', 'objects'])
+const TireToVehicleBlock = onChangeWithKeys(TireToVehicleBlockComponent);
+
+@connectToStores(['autobase'])
 export default class TireForm extends Form {
-
+  state = {
+    canSave: true,
+  };
   async componentDidMount() {
     const { flux } = this.context;
     flux.getActions('autobase').getAutobaseListByType('tireSize');
     flux.getActions('autobase').getAutobaseListByType('tireModel');
-    flux.getActions('objects').getOrganizations();
   }
-
+  handleTireToCarValidity = ({ isValidInput }) => {
+    this.setState({
+      canSave: isValidInput,
+    });
+  }
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
     const {
       tireModelList = [],
       tireSizeList = [],
-      organizations = [],
       isPermitted = false,
     } = this.props;
     const TIRE_MODEL = tireModelList.map(({ id, name }) => ({ value: id, label: name }));
     const TIRE_SIZE = tireSizeList.map(({ id, name }) => ({ value: id, label: name }));
-    const COMPANIES = organizations.map(({ company_id, company_name }) => ({ value: company_id, label: company_name }));
 
     const IS_CREATING = state.id === undefined;
 
@@ -43,18 +49,6 @@ export default class TireForm extends Form {
         </Modal.Header>
         <ExtDiv style={{ padding: 15 }}>
           <Row>
-            <Col md={12}>
-              <ExtField
-                type="select"
-                label="Организация"
-                options={COMPANIES}
-                value={state.company_id}
-                error={errors.company_id}
-                disabled={!isPermitted}
-                onChange={this.handleChange}
-                boundKeys={['company_id']}
-              />
-            </Col>
             <Col md={12}>
               <ExtField
                 type="select"
@@ -103,16 +97,20 @@ export default class TireForm extends Form {
             <ExtDiv hidden={IS_CREATING}>
               <Col md={12}>
                 <h4>Транспортное средство, на котором установлена шина</h4>
-                <TireToVehicleBlock />
+                <TireToVehicleBlock
+                  onChange={this.handleChange}
+                  boundKeys={['tire_to_car']}
+                  inputList={state.tire_to_car || []}
+                  onValidation={this.handleTireToCarValidity}
+                  tireId={state.id}
+                />
               </Col>
             </ExtDiv>
           </Row>
         </ExtDiv>
         <ModalBody />
         <Modal.Footer>
-          <Button disabled={IS_CREATING} onClick={() => {}}>Удалить</Button>
-          <Button disabled={IS_CREATING} onClick={() => {}}>Создать копирование</Button>
-          <Button disabled={!this.props.canSave} onClick={this.handleSubmit}>Сохранить</Button>
+          <Button disabled={!this.props.canSave || !this.state.canSave} onClick={this.handleSubmit}>Сохранить</Button>
         </Modal.Footer>
       </Modal>
     );

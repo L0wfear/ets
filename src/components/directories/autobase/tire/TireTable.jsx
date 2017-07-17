@@ -14,19 +14,10 @@ export const tableMeta = ({
   const schema = {
     cols: [
       {
-        name: 'company_name',
-        displayName: 'Организация',
-        type: 'text',
-        orderNum: 0,
-        filter: {
-          type: 'multiselect',
-        },
-      },
-      {
         name: 'tire_model_id',
         displayName: 'Модель шины',
         type: 'text',
-        orderNum: 1,
+        orderNum: 0,
         filter: {
           type: 'multiselect',
           options: tireModelList.map(({ id, name }) => ({ value: id, label: name })),
@@ -36,7 +27,7 @@ export const tableMeta = ({
         name: 'tire_size_id',
         displayName: 'Размер',
         type: 'text',
-        orderNum: 2,
+        orderNum: 1,
         filter: {
           type: 'multiselect',
           options: tireSizeList.map(({ id, name }) => ({ value: id, label: name })),
@@ -46,7 +37,7 @@ export const tableMeta = ({
         name: 'odometr_diff',
         displayName: 'Пробег, км',
         type: 'text',
-        orderNum: 3,
+        orderNum: 2,
         filter: {
           type: 'string',
         },
@@ -55,7 +46,7 @@ export const tableMeta = ({
         name: 'motohours_diff',
         displayName: 'Наработка, мч',
         type: 'text',
-        orderNum: 4,
+        orderNum: 3,
         filter: {
           type: 'string',
         },
@@ -64,7 +55,7 @@ export const tableMeta = ({
         name: 'comment',
         displayName: 'Комментарий',
         type: 'text',
-        orderNum: 5,
+        orderNum: 4,
         filter: {
           type: 'string',
         },
@@ -73,7 +64,7 @@ export const tableMeta = ({
         name: 'gov_number',
         displayName: 'Рег. номер ТС',
         type: 'text',
-        orderNum: 6,
+        orderNum: 5,
         filter: {
           type: 'string',
         },
@@ -82,7 +73,7 @@ export const tableMeta = ({
         name: 'installed_at',
         displayName: 'Дата монтажа',
         type: 'date',
-        orderNum: 7,
+        orderNum: 6,
         filter: {
           type: 'date',
         },

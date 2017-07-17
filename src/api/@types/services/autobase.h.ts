@@ -3,3 +3,8 @@ export interface ITireToCar {
   installed_at: string;
   uninstalled_at: string;
 }
+
+export interface ITireAvailableCar {
+  car_id: number;
+  gov_number: string;
+}

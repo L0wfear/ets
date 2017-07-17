@@ -11,12 +11,14 @@ export const schema = {
       title: 'Номер',
       type: 'string',
       required: true,
+      maxLength: 128,
     },
     {
       key: 'name',
       title: 'Наименование',
       type: 'string',
       required: true,
+      maxLength: 1024,
     },
     {
       key: 'price',

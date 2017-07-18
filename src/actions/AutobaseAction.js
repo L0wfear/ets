@@ -6,10 +6,10 @@ import { createValidDate } from 'utils/dates';
 
 export default class EmployeesActions extends Actions {
 
-  async getAutobaseListByType(type, payload) {
+  async getAutobaseListByType(type) {
     const trueType = AUTOBASE[type];
 
-    const response = await AutoBase.path(trueType).get(payload);
+    const response = await AutoBase.path(trueType).get();
 
     return {
       type,
@@ -45,6 +45,11 @@ export default class EmployeesActions extends Actions {
       this.getAutobaseListByType.bind(null, 'btr'),
       'json',
     );
+  }
+
+  removeBattery(id) {
+    const payload = { id };
+    return AutoBase.path(AUTOBASE.btr).delete(payload, false, 'json');
   }
 
   async getSparePartGroup() {

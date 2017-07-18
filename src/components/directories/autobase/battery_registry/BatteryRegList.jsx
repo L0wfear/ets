@@ -12,7 +12,7 @@ import AUTOBASE_NAME from 'constants/autobase.js';
   formComponent: BatteryRegFormWrap,
   tableComponent: BatteryRegTable,
   formMeta: tableMeta(),
-  operations: ['LIST', 'CREATE', 'READ', 'UPDATE'],
+  operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 export default class BatteryRegList extends ElementsList {
   componentDidMount() {
@@ -20,5 +20,8 @@ export default class BatteryRegList extends ElementsList {
     const { flux } = this.context;
     flux.getActions('autobase').getAutobaseListByType('btr');
     flux.getActions('objects').getOrganizations();
+
+    this.removeElementAction = flux.getActions('autobase').removeBattery;
+
   }
 }

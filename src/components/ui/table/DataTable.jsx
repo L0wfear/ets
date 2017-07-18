@@ -413,6 +413,22 @@ export default class DataTable extends React.Component {
     return el;
   }
 
+  sortingLoweCase(lowerCaseSorting, a, b) {
+    if (lowerCaseSorting) {
+      let one = a[this.state.initialSort];
+      let two = b[this.state.initialSort];
+
+      if (typeof one === 'string') {
+        one = one.toLocaleLowerCase();
+        two = two.toLocaleLowerCase();
+      }
+
+      return ((one > two) + !this.state.initialSortAscending) % 2;
+    }
+
+    return true;
+  }
+
   processHighlighted(highlight, el) {
     el.isHighlighted = false;
     if (highlight.length > 0) {
@@ -433,11 +449,12 @@ export default class DataTable extends React.Component {
     return el;
   }
 
-  processTableData(data, tableCols, selected, selectField, onRowSelected, highlight = []) {
+  processTableData(data, tableCols, selected, selectField, onRowSelected, lowerCaseSorting, highlight = []) {
     return _(data)
            .map(this.processEmptyCols.bind(this, tableCols))
            .map(this.processHighlighted.bind(this, highlight))
            .map(this.processSelected.bind(this, selected, selectField, onRowSelected))
+           .sort(this.sortingLoweCase.bind(this, lowerCaseSorting))
            .filter(this.shouldBeRendered)
            .value();
   }
@@ -478,8 +495,9 @@ export default class DataTable extends React.Component {
     const { tableMeta, renderers, onRowSelected, selected,
       selectField, title, noTitle, noFilter,
       enableSort, noDataMessage, className, noHeader,
-      refreshable, columnControl, highlight, serverPagination, externalChangeSort } = this.props;
-    const { initialSort, initialSortAscending, columnControlValues, isHierarchical } = this.state;
+      refreshable, columnControl, highlight, serverPagination, externalChangeSort,
+      lowerCaseSorting = false } = this.props;
+    const { initialSort = '', initialSortAscending, columnControlValues, isHierarchical } = this.state;
 
     const tableMetaCols = (tableMeta.cols);
     let data = (this.props.results);
@@ -493,7 +511,7 @@ export default class DataTable extends React.Component {
     const rowMetadata = this.initializeRowMetadata();
     const tableClassName = cx('data-table', className);
 
-    const results = this.processTableData(data, tableCols, selected, selectField, onRowSelected, highlight);
+    const results = this.processTableData(data, tableCols, selected, selectField, onRowSelected, lowerCaseSorting, highlight);
 
     return (
       <Div className={tableClassName}>
@@ -553,6 +571,7 @@ export default class DataTable extends React.Component {
           rowMetadata={rowMetadata}
           onKeyPress={this.handleKeyPress}
           noDataMessage={noDataMessage || noFilter ? '' : 'Нет данных'}
+          lowerCaseSorting={lowerCaseSorting}
         />
       </Div>
     );

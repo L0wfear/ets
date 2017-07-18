@@ -1,8 +1,10 @@
 import { Actions } from 'flummox';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, get } from 'lodash';
 import { AutoBase } from 'api/Services';
 import AUTOBASE from '../constants/autobase.js';
 import { createValidDate } from 'utils/dates';
+
+const parsePutPath = (entity, method, formState, idKey = 'id') => `${entity}/${method === 'put' ? formState[idKey] : ''}`;
 
 export default class EmployeesActions extends Actions {
 
@@ -79,6 +81,32 @@ export default class EmployeesActions extends Actions {
     );
   }
 
+  tire(method, formState) {
+    const payload = {
+      ...formState,
+      tire_to_car: get(formState, 'tire_to_car', []).map(item => ({
+        ...item,
+        installed_at: createValidDate(item.installed_at),
+        uninstalled_at: createValidDate(item.uninstalled_at),
+      })),
+    };
+    const { tire } = AUTOBASE;
+    const path = parsePutPath(tire, method, formState);
+
+    return AutoBase.path(path)[method](
+      payload,
+      this.getAutobaseListByType.bind(null, 'tire'),
+      'json',
+    );
+  }
+  removeTire(id) {
+    const { tire } = AUTOBASE;
+    return AutoBase.path(tire).path(id).delete(
+      {},
+      this.getAutobaseListByType.bind(null, 'tire'),
+      'json',
+    );
+  }
   batteryBrand(method, formState) {
     const payload = cloneDeep(formState);
     const { batteryBrand } = AUTOBASE;

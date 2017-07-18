@@ -6,4 +6,5 @@ export default {
   tire: 'tire',
   tireSize: 'tire_size',
   tireModel: 'tire_model',
+  tireAvailibleCar: 'tire_available_car',
 };

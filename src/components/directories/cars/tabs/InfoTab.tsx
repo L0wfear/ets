@@ -3,7 +3,7 @@ import { Row, Col } from 'react-bootstrap';
 
 import { IReactSelectOption } from 'components/ui/@types/EtsSelect.h';
 import { IBaseForm } from 'components/ui/@types/Form.h';
-import { IVehicle } from 'api/@types/services.h';
+import { IVehicle } from 'api/@types/services/index.h';
 
 import { onChangeWithKeys } from 'components/compositions/hoc';
 import Div from 'components/ui/Div.jsx';
@@ -34,7 +34,7 @@ const InfoTab: React.SFC<IPropsInfoTab> = props =>
           value={props.state.company_structure_id}
           clearable={false}
           onChange={props.onChange}
-          bindKeys={['company_structure_id']}
+          boundKeys={['company_structure_id']}
           disabled={!props.isPermitted}
         />
 
@@ -43,7 +43,7 @@ const InfoTab: React.SFC<IPropsInfoTab> = props =>
           label="Гаражный номер"
           value={props.state.garage_number}
           onChange={props.onChange}
-          bindKeys={['garage_number']}
+          boundKeys={['garage_number']}
           disabled={!props.isPermitted}
         />
 
@@ -52,7 +52,7 @@ const InfoTab: React.SFC<IPropsInfoTab> = props =>
           label="Поправочный коэффициент"
           value={props.state.fuel_correction_rate}
           onChange={props.onChange}
-          bindKeys={['fuel_correction_rate']}
+          boundKeys={['fuel_correction_rate']}
           disabled={!props.isPermitted}
         />
         <Field
@@ -60,7 +60,7 @@ const InfoTab: React.SFC<IPropsInfoTab> = props =>
           label="Общее"
           value={props.state.is_common}
           onChange={props.onChange}
-          bindKeys={['is_common', !props.state.is_common]}
+          boundKeys={['is_common', !props.state.is_common]}
         />
       </Col>
     </Row>

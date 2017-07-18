@@ -29,3 +29,31 @@ th.width-fuel-report-large {
 th.width-fuel-report-xlarge {
   text-align: center !important;
 }
+
+
+.date-table-input {
+  .griddle-body {
+  .rw-calendar-popup {
+    table {
+      td, th {
+        padding: 0px;
+      }
+      border-collapse: initial;
+      border-spacing: 0px;
+    }
+  }
+    // max-height: 400px;
+    tbody {
+      tr {
+        &:hover > td {
+          background-color: #ECEFF1 !important;
+          color: white !important;
+        }
+        &.selected-row > td {
+          background-color: #CFD8DC !important;
+          color: white !important;
+        }
+      }
+    }
+  }
+}

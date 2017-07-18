@@ -37,8 +37,9 @@ export default class TireFormWrap extends FormWrap {
 
     this.schema = tireSchema;
     this.preventDefaultNotification = true;
-    // this.createAction = context.flux.getActions('autobase').tire.bind(null, 'post');
-    // this.updateAction = context.flux.getActions('autobase').tire.bind(null, 'put');
+    this.createAction = context.flux.getActions('autobase').tire.bind(null, 'post');
+    this.updateAction = context.flux.getActions('autobase').tire.bind(null, 'put');
+    this.removeElementAction = context.flux.getActions('autobase').removeTire;
   }
 
   render() {

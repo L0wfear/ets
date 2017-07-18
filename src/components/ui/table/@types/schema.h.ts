@@ -1,10 +1,11 @@
 export interface IDataTableSelectedRowPropsData {
   [fieldName: string]: any;
-  rowNumber: string;
+  rowNumber: number;
 }
 
 interface IDataTableSelectedRowProps {
-  data: IDataTableSelectedRowPropsData;
+  data: any;
+  rowData: IDataTableSelectedRowPropsData;
 }
 
 export interface IDataTableSelectedRow {
@@ -61,7 +62,7 @@ export interface IExtractedDataTableSchema {
 }
 
 export interface ISchemaRenderer {
-  [field: string]: (rowMeta) => JSX.Element;
+  [field: string]: (rowMeta: IDataTableSelectedRowProps) => JSX.Element;
 }
 
 export interface ISchemaMaker  {

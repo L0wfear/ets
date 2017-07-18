@@ -10,7 +10,7 @@ export const tableMeta = ({
   const schema = {
     cols: [
       {
-        name: 'name_org',
+        name: 'company_name',
         displayName: 'Организация',
         type: 'text',
         orderNum: 0,
@@ -19,7 +19,7 @@ export const tableMeta = ({
         },
       },
       {
-        name: 'battery_brand__name',
+        name: 'brand_name',
         displayName: 'Марка аккумулятора',
         type: 'text',
         orderNum: 2,
@@ -28,7 +28,7 @@ export const tableMeta = ({
         },
       },
       {
-        name: 'battery__serial_number',
+        name: 'serial_number',
         displayName: 'Серийный номер',
         type: 'text',
         orderNum: 3,
@@ -37,7 +37,7 @@ export const tableMeta = ({
         },
       },
       {
-        name: 'battery__lifetime_months',
+        name: 'lifetime_months',
         displayName: 'Срок службы, мес.',
         type: 'text',
         orderNum: 4,
@@ -53,7 +53,7 @@ export const tableMeta = ({
         filter: false,
       },
       {
-        name: 'battery_manufacturer__name',
+        name: 'manufacturer_name',
         displayName: 'Изготовитель',
         type: 'text',
         orderNum: 6,
@@ -62,7 +62,7 @@ export const tableMeta = ({
         },
       },
       {
-        name: 'battery__released_at',
+        name: 'released_at',
         displayName: 'Дата выпуска',
         orderNum: 6,
         type: 'date',
@@ -71,7 +71,7 @@ export const tableMeta = ({
         },
       },
       {
-        name: 'car__gov_number',
+        name: 'gov_number',
         displayName: 'Регистрационный номер',
         orderNum: 7,
         type: 'text',
@@ -80,7 +80,7 @@ export const tableMeta = ({
         },
       },
       {
-        name: 'battery_on_car__installed_at',
+        name: 'installed_at',
         displayName: 'Дата установки',
         type: '',
         orderNum: 8,
@@ -111,7 +111,6 @@ export default (props) => {
     results={data}
     tableMeta={sortedMeta}
     renderers={renderers}
-    initialSort={false}
     {...props}
   />);
 };

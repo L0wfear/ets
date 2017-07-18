@@ -415,19 +415,15 @@ export default class DataTable extends React.Component {
   }
 
   sortingLoweCase(lowerCaseSorting, a, b) {
-    if (lowerCaseSorting) {
-      let one = a[this.state.initialSort];
-      let two = b[this.state.initialSort];
+    let one = a[this.state.initialSort];
+    let two = b[this.state.initialSort];
 
-      if (typeof one === 'string') {
-        one = one.toLocaleLowerCase();
-        two = two.toLocaleLowerCase();
-      }
-
-      return ((one > two) + !this.state.initialSortAscending) % 2;
+    if (typeof one === 'string') {
+      one = one.toLocaleLowerCase();
+      two = two.toLocaleLowerCase();
     }
 
-    return true;
+    return ((one > two) + !this.state.initialSortAscending) % 2;
   }
 
   processHighlighted(highlight, el) {
@@ -451,13 +447,22 @@ export default class DataTable extends React.Component {
   }
 
   processTableData(data, tableCols, selected, selectField, onRowSelected, lowerCaseSorting, highlight = []) {
+    if (lowerCaseSorting) {
+      // TODO переделать сортировку
+      return _(data)
+            .map(this.processEmptyCols.bind(this, tableCols))
+            .map(this.processHighlighted.bind(this, highlight))
+            .map(this.processSelected.bind(this, selected, selectField, onRowSelected))
+            .sort(this.sortingLoweCase.bind(this, lowerCaseSorting))
+            .filter(this.shouldBeRendered)
+            .value();
+    }
     return _(data)
-           .map(this.processEmptyCols.bind(this, tableCols))
-           .map(this.processHighlighted.bind(this, highlight))
-           .map(this.processSelected.bind(this, selected, selectField, onRowSelected))
-           .sort(this.sortingLoweCase.bind(this, lowerCaseSorting))
-           .filter(this.shouldBeRendered)
-           .value();
+          .map(this.processEmptyCols.bind(this, tableCols))
+          .map(this.processHighlighted.bind(this, highlight))
+          .map(this.processSelected.bind(this, selected, selectField, onRowSelected))
+          .filter(this.shouldBeRendered)
+          .value();
   }
 
   handleChangeSort(sortingColumnName, ascendingSort) {

@@ -42,6 +42,13 @@ const fixedValidators = [
       return value > config.max ? `Поле "${config.title || config.key}" должно быть не больше ${config.max}` : undefined;
     },
   },
+  {
+    name: 'maxLength',
+    validator(config, value) {
+      if (typeof config.maxLength === 'undefined') return undefined;
+      return String(value).length > config.maxLength ? `Поле "${config.title || config.key}" должно содержать не больше ${config.maxLength} символов` : undefined;
+    },
+  },
 ];
 
 export function validate(config, value, data) {

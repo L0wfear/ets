@@ -1,10 +1,11 @@
 import { Actions } from 'flummox';
-import { cloneDeep, get } from 'lodash';
+import { cloneDeep, get, omit } from 'lodash';
 import { AutoBase } from 'api/Services';
 import AUTOBASE from '../constants/autobase.js';
 import { createValidDate, createValidDateTime } from 'utils/dates';
 
 const parsePutPath = (entity, method, formState, idKey = 'id') => `${entity}/${method === 'put' ? formState[idKey] : ''}`;
+const clearPayload = state => omit(state, ['rowNumber', 'isHighlighted', 'isSelected']);
 
 export default class EmployeesActions extends Actions {
 
@@ -122,7 +123,7 @@ export default class EmployeesActions extends Actions {
     const payload = {
       ...formState,
       tire_to_car: get(formState, 'tire_to_car', []).map(item => ({
-        ...item,
+        ...clearPayload(item),
         installed_at: createValidDate(item.installed_at),
         uninstalled_at: createValidDate(item.uninstalled_at),
       })),
@@ -138,7 +139,7 @@ export default class EmployeesActions extends Actions {
   }
   removeTire(id) {
     const { tire } = AUTOBASE;
-    return AutoBase.path(tire).path(id).delete(
+    return AutoBase.path(`${tire}/${id}`).delete(
       {},
       this.getAutobaseListByType.bind(null, 'tire'),
       'json',

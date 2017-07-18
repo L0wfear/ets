@@ -14,6 +14,10 @@ import TireTable from './TireTable.jsx';
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 export default class TireList extends ElementsList {
+  constructor(props, context) {
+    super(props);
+    this.removeElementAction = context.flux.getActions('autobase').removeTire;
+  }
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;

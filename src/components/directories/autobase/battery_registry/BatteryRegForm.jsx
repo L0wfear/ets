@@ -81,7 +81,7 @@ export default class BaseBatteryForm extends Form {
     const BATTERY_BRAND_MANUFACTURER_OPTION = batteryBrandList.reduce((obj, el) => Object.assign(obj, { [el.id]: el.manufacturer_name }), {});
     const ORGANIZATIONS_OPTION = organizations.map(el => ({ value: el.company_id, label: el.company_name }));
 
-    const companies = this.getDataForOption(state.company_id, fields.company_name.displayName, errors.company_id, ORGANIZATIONS_OPTION, 'company_id');
+    const companies = this.getDataForOption(state.company_id, 'Организация', errors.company_id, ORGANIZATIONS_OPTION, 'company_id');
     const batteryBrand = this.getDataForOption(state.brand_id, fields.brand_name.displayName, errors.brand_id, BATTERY_BRAND_OPTION, 'brand_id');
     const batteryManifactoryName = this.getDataForDisabledData(BATTERY_BRAND_MANUFACTURER_OPTION[state.brand_id], fields.manufacturer_name.displayName);
     const dataForForm = this.getDataOrigin(state, fields, errors, ['serial_number', 'lifetime_months']);

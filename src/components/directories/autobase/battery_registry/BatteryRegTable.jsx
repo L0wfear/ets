@@ -10,15 +10,6 @@ export const tableMeta = ({
   const schema = {
     cols: [
       {
-        name: 'company_name',
-        displayName: 'Организация',
-        type: 'text',
-        orderNum: 0,
-        filter: {
-          type: 'multiselect',
-        },
-      },
-      {
         name: 'brand_name',
         displayName: 'Марка аккумулятора',
         type: 'text',
@@ -38,19 +29,12 @@ export const tableMeta = ({
       },
       {
         name: 'lifetime_months',
-        displayName: 'Срок службы, мес.',
+        displayName: 'Срок службы',
         type: 'text',
         orderNum: 4,
         filter: {
           type: 'text',
         },
-      },
-      {
-        name: 'todo_pr_date_install',
-        displayName: 'Пробег на дату установки',
-        type: 'text',
-        orderNum: 5,
-        filter: false,
       },
       {
         name: 'manufacturer_name',
@@ -72,7 +56,7 @@ export const tableMeta = ({
       },
       {
         name: 'gov_number',
-        displayName: 'Регистрационный номер',
+        displayName: 'Рег. номер ТС',
         orderNum: 7,
         type: 'text',
         filter: {

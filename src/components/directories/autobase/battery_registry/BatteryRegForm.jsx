@@ -1,22 +1,35 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
+
+import { onChangeWithKeys } from 'components/compositions/hoc';
 import ModalBody from 'components/ui/Modal';
-import Div from 'components/ui/Div.jsx';
+import Div, { ExtDiv } from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
 import { connectToStores } from 'utils/decorators';
+import TireToVehicleBlockComponent from './vehicle-block/TireToVehicleBlock';
+
+const TireToVehicleBlock = onChangeWithKeys(TireToVehicleBlockComponent);
 
 @connectToStores(['objects'])
 export default class BaseBatteryForm extends Form {
+  state = {
+    canSave: true,
+  };
 
   async componentDidMount() {
-    const state = this.props.formState;
     const { flux } = this.context;
 
     const batteryBrand = await flux.getActions('autobase').getAutobaseListByType('batteryBrand');
     const batteryBrandList = batteryBrand.data.result.rows;
 
     this.setState({ batteryBrandList });
+  }
+
+  handleTireToCarValidity = ({ isValidInput }) => {
+    this.setState({
+      canSave: isValidInput,
+    });
   }
 
   onChageWrap = name => (...arg) => this.handleChange(name, ...arg);
@@ -110,21 +123,31 @@ export default class BaseBatteryForm extends Form {
           <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
         </Modal.Header>
         <Div style={{ padding: 15 }}>
+          <Row>
           {
             show.map((oneRow, i) => (
-              <Row key={i}>
                 <Col md={12}>
                   <Field
                     {...oneRow}
                   />
                 </Col>
-              </Row>
             ))
           }
+          <Col hidden={IS_CREATING} md={12}>
+            <h4>Транспортное средство, на котором установлен аккумулятор</h4>
+            <TireToVehicleBlock
+              onChange={this.handleChange}
+              boundKeys={['battery_to_car']}
+              inputList={state.battery_to_car || []}
+              onValidation={this.handleTireToCarValidity}
+              tireId={state.id}
+            />
+          </Col>
+         </Row>
         </Div>
         <ModalBody />
         <Modal.Footer>
-          <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+          <Button disabled={!this.props.canSave || !this.state.canSave} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
         </Modal.Footer>
       </Modal>
     );

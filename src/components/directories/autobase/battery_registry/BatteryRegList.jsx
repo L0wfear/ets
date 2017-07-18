@@ -1,16 +1,16 @@
-import ElementsList from 'components/ElementsList.jsx';
-import BatteryRegTable, { tableMeta } from './BatteryRegTable.jsx';
-import BatteryRegFormWrap from './BatteryRegFormWrap.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import AUTOBASE_NAME from 'constants/autobase.js';
+import AUTOBASE from 'constants/autobase';
+import ElementsList from 'components/ElementsList.jsx';
+import BatteryRegFormWrap from './BatteryRegFormWrap.jsx';
+import BatteryRegTable, { tableMeta } from './BatteryRegTable.jsx';
 
 @connectToStores(['autobase', 'objects', 'session'])
-@exportable({ entity: `autobase/${AUTOBASE_NAME.btr}` })
+@exportable({ entity: `autobase/${AUTOBASE.btr}` })
 @staticProps({
-  entity: AUTOBASE_NAME.btr,
+  entity: AUTOBASE.btr,
   listName: 'btrList',
-  formComponent: BatteryRegFormWrap,
   tableComponent: BatteryRegTable,
+  formComponent: BatteryRegFormWrap,
   formMeta: tableMeta(),
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })

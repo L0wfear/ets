@@ -37,7 +37,7 @@ export default class EmployeesActions extends Actions {
     if (method == 'put') {
       btr += `/${formState.id}`;
       // TODO исправить, когда появится таблица //uoiasfy
-      payload.battery_to_car = [];
+      // payload.battery_to_car = [];
     }
 
     return AutoBase.path(btr)[method](

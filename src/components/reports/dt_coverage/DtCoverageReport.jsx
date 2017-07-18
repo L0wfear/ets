@@ -29,7 +29,7 @@ export default class DtCoverageReport extends Component {
   constructor(props) {
     super(props);
 
-    const [date_start, date_end] = [getToday9am(), getNextDay859am()];
+    const [date_start, date_end] = [getToday9am(), new Date()];
 
     this.state = {
       date_start,

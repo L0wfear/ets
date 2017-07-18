@@ -30,7 +30,7 @@ export default class OdhCoverageReport extends Component {
   constructor(props) {
     super(props);
 
-    const [date_start, date_end] = [getYesterday9am(), getToday859am()];
+    const [date_start, date_end] = [getYesterday9am(), new Date()];
 
     this.state = {
       date_start,

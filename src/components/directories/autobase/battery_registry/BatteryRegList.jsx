@@ -7,7 +7,7 @@ import AUTOBASE_NAME from 'constants/autobase.js';
 @connectToStores(['autobase', 'objects', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE_NAME.btr}` })
 @staticProps({
-  entity: AUTOBASE_NAME.btr,
+  entity: 'autobase_battery',
   listName: 'btrList',
   formComponent: BatteryRegFormWrap,
   tableComponent: BatteryRegTable,

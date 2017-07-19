@@ -1,12 +1,6 @@
 export const schema = {
   properties: [
     {
-      key: 'company_id',
-      title: 'Организация',
-      type: 'number',
-      required: true,
-    },
-    {
       key: 'number',
       title: 'Номер',
       type: 'string',

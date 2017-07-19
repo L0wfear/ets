@@ -7,7 +7,7 @@ import BatteryRegTable, { tableMeta } from './BatteryRegTable.jsx';
 @connectToStores(['autobase', 'objects', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.btr}` })
 @staticProps({
-  entity: AUTOBASE.btr,
+  entity: 'autobase_battery',
   listName: 'btrList',
   tableComponent: BatteryRegTable,
   formComponent: BatteryRegFormWrap,

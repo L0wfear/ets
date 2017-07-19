@@ -85,7 +85,6 @@ export default class BaseBatteryForm extends Form {
     const state = this.props.formState;
     const errors = this.props.formErrors;
     const fields = this.props.cols.reduce((obj, val) => Object.assign(obj, { [val.name]: val }), {});
-    console.log(state);
 
     const BATTERY_BRAND_OPTION = batteryBrandList.map(el => ({ value: el.id, label: el.name, manufacturer_id: el.manufacturer_id }));
     if (BATTERY_BRAND_OPTION.length === 0) {

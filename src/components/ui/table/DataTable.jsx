@@ -28,7 +28,6 @@ const isStringArrayData = (filterValue, fieldValue, fieldKey, tableMeta) =>
 const stringArrayDataMatching = (filterValue, fieldValueArray) =>
   fieldValueArray.filter(v => v.match(filterValue) !== null).length > 0;
 
-
 @autobind
 export default class DataTable extends React.Component {
 
@@ -393,6 +392,8 @@ export default class DataTable extends React.Component {
         }
       } else if (isStringArrayData(value, obj[key], key, this.props.tableMeta)) {
         isValid = stringArrayDataMatching(value, obj[key]);
+      } else if (typeof obj[key] === 'string') {
+        isValid = stringArrayDataMatching(value, [obj[key]]);
       } else if (obj[key] != value) {
         isValid = false;
       }

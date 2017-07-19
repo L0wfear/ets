@@ -1,24 +1,26 @@
-import ElementsList from 'components/ElementsList.jsx';
-import BatteryRegTable, { tableMeta } from './BatteryRegTable.jsx';
-import BatteryRegWrapForm from './BatteryRegWrapForm.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import AUTOBASE_NAME from 'constants/autobase.js';
+import AUTOBASE from 'constants/autobase';
+import ElementsList from 'components/ElementsList.jsx';
+import BatteryRegFormWrap from './BatteryRegFormWrap.jsx';
+import BatteryRegTable, { tableMeta } from './BatteryRegTable.jsx';
 
 @connectToStores(['autobase', 'objects', 'session'])
-@exportable({ entity: `autobase/${AUTOBASE_NAME.btr}` })
+@exportable({ entity: `autobase/${AUTOBASE.btr}` })
 @staticProps({
-  entity: 'autobase_battery',
+  entity: AUTOBASE.btr,
   listName: 'btrList',
-  selectField: 'battery__id',
-  formComponent: BatteryRegWrapForm,
   tableComponent: BatteryRegTable,
+  formComponent: BatteryRegFormWrap,
   formMeta: tableMeta(),
-  operations: ['LIST', 'CREATE', 'READ', 'UPDATE'],
+  operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 export default class BatteryRegList extends ElementsList {
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
     flux.getActions('autobase').getAutobaseListByType('btr');
+    flux.getActions('objects').getOrganizations();
+
+    this.removeElementAction = flux.getActions('autobase').removeBattery;
   }
 }

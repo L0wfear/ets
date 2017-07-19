@@ -9,4 +9,5 @@ export default {
   tireAvailibleCar: 'tire_available_car',
   actualBatteriesOnCar: 'actual_batteries_on_car',
   actualTiresOnCar: 'actual_tires_on_car',
+  batteryAvailableCar: 'battery_available_car',
 };

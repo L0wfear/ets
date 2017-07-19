@@ -368,6 +368,7 @@ export class MissionForm extends Form {
                 clearable={STRUCTURE_FIELD_DELETABLE}
                 options={STRUCTURES}
                 emptyValue={null}
+                placeholder={''}
                 value={state.structure_id}
                 onChange={this.handleStructureIdChange}
               />

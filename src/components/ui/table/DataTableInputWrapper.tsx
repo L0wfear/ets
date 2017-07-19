@@ -77,7 +77,7 @@ function DataTableInput(SourceComponent: React.ComponentClass<TPropsDataTableInp
       this.validate(newItems);
     }
     handleRowSelected = selectedRow => {
-      console.log('selectedRow', selectedRow);
+      // console.log('selectedRow', selectedRow);
     }
     render() {
 

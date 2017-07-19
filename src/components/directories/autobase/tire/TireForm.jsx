@@ -94,7 +94,7 @@ export default class TireForm extends Form {
                 boundKeys={['comment']}
               />
             </Col>
-            <ExtDiv hidden={IS_CREATING}>
+            <ExtDiv nonExist={IS_CREATING}>
               <Col md={12}>
                 <h4>Транспортное средство, на котором установлена шина</h4>
                 <TireToVehicleBlock

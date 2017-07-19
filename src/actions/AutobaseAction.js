@@ -123,6 +123,14 @@ export default class EmployeesActions extends Actions {
       'json',
     );
   }
+  removeBatteryBrand(id) {
+    const { batteryBrand } = AUTOBASE;
+    return AutoBase.path(`${batteryBrand}/${id}`).delete(
+      {},
+      this.getAutobaseListByType.bind(null, 'batteryBrand'),
+      'json',
+    );
+  }
 
   batteryManufacturer(method, formState) {
     const payload = cloneDeep(formState);
@@ -130,6 +138,14 @@ export default class EmployeesActions extends Actions {
 
     return AutoBase.path(batteryManufacturer)[method](
       payload,
+      this.getAutobaseListByType.bind(null, 'batteryManufacturer'),
+      'json',
+    );
+  }
+  removeBatteryManufacturer(id) {
+    const { batteryManufacturer } = AUTOBASE;
+    return AutoBase.path(`${batteryManufacturer}/${id}`).delete(
+      {},
       this.getAutobaseListByType.bind(null, 'batteryManufacturer'),
       'json',
     );

@@ -74,7 +74,18 @@ export default class SparePartForm extends Form {
               />
             </Col>
           </Row>
-
+          <Row>
+            <Col md={12}>
+              <Field
+                type="select"
+                label="Единица измерения"
+                error={errors.measure_unit_id}
+                options={UNIT_OPTIONS}
+                value={state.measure_unit_id}
+                onChange={this.handleChangeWrap('measure_unit_id')}
+              />
+            </Col>
+          </Row>
           <Row>
             <Col md={12}>
               <Field

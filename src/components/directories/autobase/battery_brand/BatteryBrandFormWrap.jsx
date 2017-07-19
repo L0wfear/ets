@@ -35,11 +35,13 @@ export default class BatteryBrandFormWrap extends FormWrap {
   }
 
   render() {
+    const { entity } = this.props;
+
     return this.props.showForm ?
       <BatteryBrandForm
         formState={this.state.formState}
         formErrors={this.state.formErrors}
-        permissions={['battery_brand.update']}
+        permissions={[`${entity}.update`]}
         addPermissionProp
         canSave={this.state.canSave}
         onSubmit={this.handleFormSubmit.bind(this)}

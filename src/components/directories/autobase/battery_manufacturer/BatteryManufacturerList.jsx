@@ -7,7 +7,7 @@ import BatteryManufacturerTable from './BatteryManufacturerTable';
 @connectToStores(['autobase', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.batteryManufacturer}` })
 @staticProps({
-  entity: AUTOBASE.batteryManufacturer,
+  entity: 'autobase_battery_manufacturer',
   listName: 'batteryManufacturerList',
   tableComponent: BatteryManufacturerTable,
   formComponent: BatteryManufacturerFormWrap,

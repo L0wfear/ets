@@ -5,9 +5,9 @@ function getFullAccess(entity) {
 }
 
 export const autobase: string[] = [
-  ...getFullAccess('battery_registry'),
+  ...getFullAccess('battery'),
   ...getFullAccess('battery_brand'),
   ...getFullAccess('battery_manufacturer'),
-  ...getFullAccess('tire_registry'),
-  ...getFullAccess('spare_part_registry'),
+  ...getFullAccess('tire'),
+  ...getFullAccess('spare_part'),
 ];

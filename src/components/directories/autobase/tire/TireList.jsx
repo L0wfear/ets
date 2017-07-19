@@ -7,7 +7,7 @@ import TireTable from './TireTable.jsx';
 @connectToStores(['autobase', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.tire}` })
 @staticProps({
-  entity: AUTOBASE.tire,
+  entity: 'autobase_tire',
   listName: 'tireList',
   tableComponent: TireTable,
   formComponent: TireFormWrap,

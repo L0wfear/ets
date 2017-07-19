@@ -19,11 +19,12 @@ export default class SparePartFormWrap extends FormWrap {
   }
 
   render() {
+    const { entity } = this.props;
     return this.props.showForm ?
       <SparePartForm
         formState={this.state.formState}
         formErrors={this.state.formErrors}
-        permissions={['spare_part_registry.update']}
+        permissions={[`${entity}.update`]}
         addPermissionProp
         canSave={this.state.canSave}
         onSubmit={this.handleFormSubmit.bind(this)}

@@ -7,7 +7,7 @@ import SparePartFormWrap from './SparePartFormWrap';
 @connectToStores(['autobase', 'objects', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.sparePart}` })
 @staticProps({
-  entity: AUTOBASE.sparePart,
+  entity: 'autobase_spare_part',
   listName: 'sparePartList',
   formComponent: SparePartFormWrap,
   tableComponent: SparePartTable,

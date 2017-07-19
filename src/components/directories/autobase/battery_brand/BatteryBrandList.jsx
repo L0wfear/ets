@@ -7,7 +7,7 @@ import BatteryBrandTable from './BatteryBrandTable.jsx';
 @connectToStores(['autobase', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.batteryBrand}` })
 @staticProps({
-  entity: AUTOBASE.batteryBrand,
+  entity: 'autobase_battery_brand',
   listName: 'batteryBrandList',
   tableComponent: BatteryBrandTable,
   formComponent: BatteryBrandFormWrap,

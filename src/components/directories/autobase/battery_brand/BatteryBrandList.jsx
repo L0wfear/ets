@@ -11,9 +11,13 @@ import BatteryBrandTable from './BatteryBrandTable.jsx';
   listName: 'batteryBrandList',
   tableComponent: BatteryBrandTable,
   formComponent: BatteryBrandFormWrap,
-  operations: ['LIST', 'CREATE', 'READ', 'UPDATE'],
+  operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 export default class BatteryBrandList extends ElementsList {
+  constructor(props, context) {
+    super(props);
+    this.removeElementAction = context.flux.getActions('autobase').removeBatteryBrand;
+  }
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;

@@ -9,6 +9,7 @@ const schemaMakers = {
   gov_number: hiddeColumns,
   comment: hiddeColumns,
   company_name: hiddeColumns,
+  cloneButton: hiddeColumns,
   installed_at: schema => ({ ...schema, orderNum: 1 }),
   tire_size_id: schema => ({ ...schema, displayName: 'Размер шины' }),
 };

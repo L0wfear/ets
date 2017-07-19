@@ -1,8 +1,9 @@
 import React from 'react';
+
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
-import { schema } from 'models/BatteryRegModel.js';
 import BaseBatteryForm from './BatteryRegForm.jsx';
+import { schema } from 'models/BatteryRegModel.js';
 
 const BatteryForm = enhanceWithPermissions(BaseBatteryForm);
 
@@ -13,8 +14,9 @@ export default class EmployeeFormWrap extends FormWrap {
     this.schema = schema;
     this.preventDefaultNotification = true;
 
-    this.updateAction = context.flux.getActions('autobase').batteryReg.bind(null, 'put');
-    this.createAction = context.flux.getActions('autobase').batteryReg.bind(null, 'post');
+    this.updateAction = context.flux.getActions('autobase').battery.bind(null, 'put');
+    this.createAction = context.flux.getActions('autobase').battery.bind(null, 'post');
+    this.removeElementAction = context.flux.getActions('autobase').removeBattery;
   }
 
   render() {

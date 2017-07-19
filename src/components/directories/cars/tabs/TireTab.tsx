@@ -10,8 +10,9 @@ const schemaMakers = {
   comment: hiddeColumns,
   company_name: hiddeColumns,
   cloneButton: hiddeColumns,
+  tire_size_id: schema => ({ ...schema, name: 'tire_size_name', displayName: 'Размер шины' }),
+  tire_model_id: schema => ({ ...schema, name: 'tire_model_name' }),
   installed_at: schema => ({ ...schema, orderNum: 1 }),
-  tire_size_id: schema => ({ ...schema, displayName: 'Размер шины' }),
 };
 
 interface IPropsTireTab extends IBaseForm {

@@ -120,16 +120,18 @@ export default class EmployeesActions extends Actions {
   }
 
   tire(method, formState) {
+    const cleanFormState = clearPayload(formState);
+
     const payload = {
-      ...formState,
-      tire_to_car: get(formState, 'tire_to_car', []).map(item => ({
+      ...cleanFormState,
+      tire_to_car: get(cleanFormState, 'tire_to_car', []).map(item => ({
         ...clearPayload(item),
         installed_at: createValidDate(item.installed_at),
         uninstalled_at: createValidDate(item.uninstalled_at),
       })),
     };
     const { tire } = AUTOBASE;
-    const path = parsePutPath(tire, method, formState);
+    const path = parsePutPath(tire, method, cleanFormState);
 
     return AutoBase.path(path)[method](
       payload,
@@ -140,6 +142,14 @@ export default class EmployeesActions extends Actions {
   removeTire(id) {
     const { tire } = AUTOBASE;
     return AutoBase.path(`${tire}/${id}`).delete(
+      {},
+      this.getAutobaseListByType.bind(null, 'tire'),
+      'json',
+    );
+  }
+  cloneTire(id) {
+    const { tire } = AUTOBASE;
+    return AutoBase.path(`${tire}/${id}/copy`).post(
       {},
       this.getAutobaseListByType.bind(null, 'tire'),
       'json',

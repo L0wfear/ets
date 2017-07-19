@@ -8,6 +8,6 @@ export const autobase: string[] = [
   ...getFullAccess('battery_registry'),
   ...getFullAccess('battery_brand'),
   ...getFullAccess('battery_manufacturer'),
-  ...getFullAccess('tire'),
+  ...getFullAccess('tire_registry'),
   ...getFullAccess('spare_part'),
 ];

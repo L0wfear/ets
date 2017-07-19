@@ -48,8 +48,8 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
       <div className="date-table-input">
          <div className="pull-right">
           <ButtonToolbar>
-            <Button onClick={this.handleAddVehicle}>{addButtonLabel}</Button>
-            <Button disabled={this.state.selected === null} onClick={this.handleRemoveVehicle}>{removeButtonLable}</Button>
+            <Button disabled={this.props.disabled} onClick={this.handleAddVehicle}>{addButtonLabel}</Button>
+            <Button disabled={this.state.selected === null || this.props.disabled} onClick={this.handleRemoveVehicle}>{removeButtonLable}</Button>
           </ButtonToolbar>
         </div>
         <DataTable

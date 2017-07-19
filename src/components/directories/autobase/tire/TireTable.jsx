@@ -1,10 +1,13 @@
 import React from 'react';
+import { Button } from 'react-bootstrap';
 import { get } from 'lodash';
 
+import { onClickWithKeys } from 'components/compositions/hoc';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 import Table from 'components/ui/table/DataTable.jsx';
 import { makeSchema, sortSchemaCols } from 'components/ui/table/utils';
 
+const CloneButton = onClickWithKeys(Button);
 
 export const tableMeta = ({
   tireModelList = [],
@@ -78,6 +81,12 @@ export const tableMeta = ({
           type: 'date',
         },
       },
+      {
+        name: 'cloneButton',
+        displayName: '',
+        filter: false,
+        orderNum: 7,
+      },
     ],
   };
 
@@ -90,6 +99,11 @@ export default (props) => {
     tire_model_id: ({ data }) => <div>{get(tireModelList.find(s => s.id === data), 'name', '')}</div>,
     tire_size_id: ({ data }) => <div>{get(tireSizeList.find(s => s.id === data), 'name', '')}</div>,
     installed_at: ({ data }) => <DateFormatter date={data} />,
+    cloneButton: meta =>
+      <CloneButton
+        onClick={props.onCloneClick}
+        boundKeys={[meta.rowData.id]}
+      >Создать копированием</CloneButton>,
   };
 
   const meta = tableMeta(props);

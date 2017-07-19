@@ -2,6 +2,7 @@ import { IDataTableSchema, IDataTableSelectedRow } from 'components/ui/table/@ty
 import { IValidationSchema } from 'components/ui/form/@types/validation.h';
 
 export interface IPropsDataTableInputWrapper {
+  disabled?: boolean;
   validationSchema?: IValidationSchema;
   tableSchema: IDataTableSchema;
   inputList: any[];

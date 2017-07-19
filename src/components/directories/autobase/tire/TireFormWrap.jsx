@@ -46,7 +46,7 @@ export default class TireFormWrap extends FormWrap {
       <TireForm
         formState={this.state.formState}
         formErrors={this.state.formErrors}
-        permissions={['tire.update']}
+        permissions={['tire_registry.update']}
         addPermissionProp
         canSave={this.state.canSave}
         onSubmit={this.handleFormSubmit.bind(this)}

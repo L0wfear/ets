@@ -102,6 +102,7 @@ export default class TireForm extends Form {
                   boundKeys={['tire_to_car']}
                   inputList={state.tire_to_car || []}
                   onValidation={this.handleTireToCarValidity}
+                  disabled={!isPermitted}
                   tireId={state.id}
                 />
               </Col>

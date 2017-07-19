@@ -22,15 +22,12 @@ export default class SparePartForm extends Form {
   handleSubmitWrap = (...arg) => this.handleSubmit(...arg);
 
   render() {
-    console.log(this.props)
     const state = this.props.formState;
     const errors = this.props.formErrors;
-    const { organizations = [] } = this.props;
     const { AllGroup = [], AllUnits = [] } = this.state;
 
     const GROUP_OPTIONS = AllGroup.map(el => ({ value: el.id, label: el.name }));
     const UNIT_OPTIONS = AllUnits.map(el => ({ value: el.id, label: el.name }));
-    const ORN_OPTION = organizations.map(el => ({ value: el.company_id, label: el.short_name }));
 
     const IS_CREATING = !!!state.id;
 
@@ -43,18 +40,6 @@ export default class SparePartForm extends Form {
           <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
         </Modal.Header>
         <Div style={{ padding: 15 }}>
-          <Row>
-            <Col md={12}>
-              <Field
-                type="select"
-                label="Организация"
-                error={errors.company_id}
-                options={ORN_OPTION}
-                value={state.company_id}
-                onChange={this.handleChangeWrap('company_id')}
-              />
-            </Col>
-          </Row>
           <Row>
             <Col md={12}>
               <Field
@@ -89,18 +74,7 @@ export default class SparePartForm extends Form {
               />
             </Col>
           </Row>
-          <Row>
-            <Col md={12}>
-              <Field
-                type="select"
-                label="Единица измерения"
-                error={errors.measure_unit_id}
-                options={UNIT_OPTIONS}
-                value={state.measure_unit_id}
-                onChange={this.handleChangeWrap('measure_unit_id')}
-              />
-            </Col>
-          </Row>
+
           <Row>
             <Col md={12}>
               <Field

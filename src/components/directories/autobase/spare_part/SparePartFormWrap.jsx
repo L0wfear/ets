@@ -23,7 +23,7 @@ export default class SparePartFormWrap extends FormWrap {
       <SparePartForm
         formState={this.state.formState}
         formErrors={this.state.formErrors}
-        permissions={['spare_part.update']}
+        permissions={['spare_part_registry.update']}
         addPermissionProp
         canSave={this.state.canSave}
         onSubmit={this.handleFormSubmit.bind(this)}

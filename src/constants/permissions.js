@@ -184,12 +184,12 @@ const PERMISSIONS = {
       'update': 'battery_registry.update',
       'delete': 'battery_registry.delete',
     },
-    'spare_part': {
-      'list': 'spare_part.list',
-      'create': 'spare_part.create',
-      'read': 'spare_part.read',
-      'update': 'spare_part.update',
-      'delete': 'spare_part.delete',
+    'spare_part_registry': {
+      'list': 'spare_part_registry.list',
+      'create': 'spare_part_registry.create',
+      'read': 'spare_part_registry.read',
+      'update': 'spare_part_registry.update',
+      'delete': 'spare_part_registry.delete',
     },
   },
   'administration': 'administration',

@@ -6,7 +6,7 @@ import { ExtField } from 'components/ui/Field.jsx';
 import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
 import { IPropsDataTableInputRenderer, TRendererFunction  } from 'components/ui/table/@types/DataTableInput.h';
 import { IValidationSchema } from 'components/ui/form/@types/validation.h';
-import { ITireAvailableCar } from 'api/@types/services/autobase.h';
+import { IBatteryAvailableCar } from 'api/@types/services/autobase.h';
 
 export const validationSchema: IValidationSchema = {
   properties: [
@@ -22,11 +22,6 @@ export const validationSchema: IValidationSchema = {
 export const meta: IDataTableSchema = {
   cols: [
     {
-      name: 'car_id',
-      displayName: 'Рег. номер ТС',
-      type: 'select',
-    },
-    {
       name: 'installed_at',
       displayName: 'Дата монтажа',
       type: 'date',
@@ -38,11 +33,16 @@ export const meta: IDataTableSchema = {
       type: "date",
       cssClassName: 'width150',
     },
+    {
+      name: 'car_id',
+      displayName: 'Рег. номер ТС',
+      type: 'select',
+    },
   ],
 };
 
 interface IPropsCarIdRenderer extends IPropsDataTableInputRenderer {
-  vehicleList: ITireAvailableCar[];
+  vehicleList: IBatteryAvailableCar[];
 }
 
 const CarIdRenderer: React.SFC<IPropsCarIdRenderer> = ({ value, outputListErrors = [], vehicleList = [], onChange, index}) =>
@@ -77,7 +77,7 @@ const UninstalledAtRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value,
   />;
 
 export const renderers: TRendererFunction = (props, onListItemChange) => {
-  const vehicleList = props.tireAvailibleCarList.map(({ car_id, gov_number }) => ({ label: gov_number, value: car_id }));
+  const vehicleList = props.batteryAvailableCarList.map(({ car_id, gov_number }) => ({ label: gov_number, value: car_id }));
 
   return {
     car_id: rowMeta =>

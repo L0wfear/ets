@@ -6,16 +6,16 @@ import { connectToStores, FluxContext } from 'utils/decorators';
 import DataTableInput from 'components/ui/table/DataTableInput';
 import { meta, renderers, validationSchema } from './table-schema';
 
-interface IPropsTireToVehicleBlock extends THOCPropsDataTableInput {
-  tireId: number;
+interface IPropsBatteryToVehicleBlock extends THOCPropsDataTableInput {
+  batteryId: number;
 }
 
 @connectToStores(['autobase'])
 @FluxContext
-class TireToVehicleBlock extends React.Component<IPropsTireToVehicleBlock, any> {
+class BatteryToVehicleBlock extends React.Component<IPropsBatteryToVehicleBlock, any> {
   componentDidMount() {
-    this.context.flux.getActions('autobase').getAutobaseListByType('tireAvailibleCar', {
-      tire_id: this.props.tireId,
+    this.context.flux.getActions('autobase').getAutobaseListByType('batteryAvailableCar', {
+      battery_id: this.props.batteryId,
     });
   }
   render() {
@@ -33,4 +33,4 @@ class TireToVehicleBlock extends React.Component<IPropsTireToVehicleBlock, any> 
   }
 }
 
-export default TireToVehicleBlock;
+export default BatteryToVehicleBlock;

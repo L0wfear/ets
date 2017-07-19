@@ -22,6 +22,5 @@ export default class BatteryRegList extends ElementsList {
     flux.getActions('objects').getOrganizations();
 
     this.removeElementAction = flux.getActions('autobase').removeBattery;
-
   }
 }

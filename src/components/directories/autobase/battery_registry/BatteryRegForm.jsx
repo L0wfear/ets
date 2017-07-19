@@ -3,13 +3,13 @@ import { Modal, Row, Col, Button } from 'react-bootstrap';
 
 import { onChangeWithKeys } from 'components/compositions/hoc';
 import ModalBody from 'components/ui/Modal';
-import Div, { ExtDiv } from 'components/ui/Div.jsx';
+import { ExtDiv } from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
 import { connectToStores } from 'utils/decorators';
-import TireToVehicleBlockComponent from './vehicle-block/TireToVehicleBlock';
+import BatteryToVehicleBlockComponent from './vehicle-block/BatteryToVehicleBlock';
 
-const TireToVehicleBlock = onChangeWithKeys(TireToVehicleBlockComponent);
+const BatteryVehicleBlock = onChangeWithKeys(BatteryToVehicleBlockComponent);
 
 @connectToStores(['objects'])
 export default class BaseBatteryForm extends Form {
@@ -26,7 +26,7 @@ export default class BaseBatteryForm extends Form {
     this.setState({ batteryBrandList });
   }
 
-  handleTireToCarValidity = ({ isValidInput }) => {
+  handleBatteryToCarValidity = ({ isValidInput }) => {
     this.setState({
       canSave: isValidInput,
     });
@@ -82,10 +82,10 @@ export default class BaseBatteryForm extends Form {
   render() {
     const { batteryBrandList = [] } = this.state;
     const { organizations = [] } = this.props;
-
     const state = this.props.formState;
     const errors = this.props.formErrors;
     const fields = this.props.cols.reduce((obj, val) => Object.assign(obj, { [val.name]: val }), {});
+    console.log(state);
 
     const BATTERY_BRAND_OPTION = batteryBrandList.map(el => ({ value: el.id, label: el.name, manufacturer_id: el.manufacturer_id }));
     if (BATTERY_BRAND_OPTION.length === 0) {
@@ -116,35 +116,38 @@ export default class BaseBatteryForm extends Form {
 
     let title = 'Изменение существующего аккумулятора';
     if (IS_CREATING) title = 'Добавление нового аккумулятора';
-
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
         </Modal.Header>
-        <Div style={{ padding: 15 }}>
+        <ExtDiv style={{ padding: 15 }}>
           <Row>
-          {
-            show.map((oneRow, i) => (
-                <Col md={12}>
+            {
+              show.map((oneRow, i) => (
+                <Col key={i} md={12}>
                   <Field
                     {...oneRow}
                   />
                 </Col>
-            ))
-          }
-          <Col hidden={IS_CREATING} md={12}>
-            <h4>Транспортное средство, на котором установлен аккумулятор</h4>
-            <TireToVehicleBlock
-              onChange={this.handleChange}
-              boundKeys={['battery_to_car']}
-              inputList={state.battery_to_car || []}
-              onValidation={this.handleTireToCarValidity}
-              tireId={state.id}
-            />
-          </Col>
-         </Row>
-        </Div>
+              ))
+            }
+            {!IS_CREATING &&
+              <ExtDiv hidden={IS_CREATING}>
+                <Col md={12}>
+                  <h4>Транспортное средство, на котором установлен аккумулятор</h4>
+                  <BatteryVehicleBlock
+                    onChange={this.handleChange}
+                    boundKeys={['battery_to_car']}
+                    inputList={state.battery_to_car || []}
+                    onValidation={this.handleBatteryToCarValidity}
+                    batteryId={state.id}
+                  />
+                </Col>
+              </ExtDiv>
+            }
+          </Row>
+        </ExtDiv>
         <ModalBody />
         <Modal.Footer>
           <Button disabled={!this.props.canSave || !this.state.canSave} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>

@@ -82,9 +82,9 @@ export default (props) => {
   const { data = [] } = props;
 
   const renderers = {
-    todo_pr_date_install: () => (<span>-</span>), 
-    battery__released_at: ({ data }) => (<DateFormatter date={data} />),
-    battery_on_car__installed_at: ({ data }) => (<DateFormatter date={data} />),
+    todo_pr_date_install: () => (<span>-</span>),
+    released_at: ({ data }) => (<DateFormatter date={data} />),
+    installed_at: ({ data }) => (<DateFormatter date={data} />),
   };
 
   const meta = tableMeta(props);

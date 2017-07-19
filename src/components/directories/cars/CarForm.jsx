@@ -29,8 +29,8 @@ class CarForm extends Form {
         car_id: nextState.asuods_id,
       };
 
-      flux.getActions('autobase').getAutobaseListByType('btr', payload);
-      flux.getActions('autobase').getAutobaseListByType('tire', payload);
+      flux.getActions('autobase').getAutobaseListByType('actualBatteriesOnCar', payload);
+      flux.getActions('autobase').getAutobaseListByType('actualTiresOnCar', payload);
     }
   }
   async componentWillMount() {
@@ -63,12 +63,12 @@ class CarForm extends Form {
             </Tab>
             <Tab eventKey={2} title="Аккумуляторы">
               <BatteryTab
-                data={this.props.btrList}
+                data={this.props.actualBatteriesOnCarList}
               />
             </Tab>
             <Tab eventKey={3} title="Шины">
               <TireTab
-                data={this.props.tireList}
+                data={this.props.actualTiresOnCarList}
               />
             </Tab>
             <Tab eventKey={4} title="Страхование" disabled>Tab 3 content</Tab>

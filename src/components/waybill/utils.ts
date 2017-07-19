@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 
-import { IVehicleType } from 'api/@types/services.h';
+import { IVehicleType } from 'api/@types/services/index.h';
 
 import {
   isNotEqualAnd,

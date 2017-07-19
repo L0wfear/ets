@@ -1,8 +1,4 @@
-import { IResponseRowObject, INamedObject } from './rest.h';
-
-interface IStringHashTable {
-  [field: string]: string;
-}
+import { IResponseRowObject, INamedObject } from 'api/@types/rest.h';
 
 export interface IVehicleType extends IResponseRowObject<number> {
   asuods_id: number;
@@ -70,8 +66,8 @@ export interface ITechnicalOperationType extends IResponseRowObject<number> {
   // }
 
 export interface IAppConfig {
-  defaults: IStringHashTable;
-  enums: IStringHashTable;
+  defaults: ETSCore.Types.IStringKeyHashTable<string>;
+  enums: ETSCore.Types.IStringKeyHashTable<string>;
   summer_start: [
     /*month*/number,
     /*day*/number

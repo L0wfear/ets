@@ -1,10 +1,13 @@
 import React from 'react';
+import { Button } from 'react-bootstrap';
 import { get } from 'lodash';
 
+import { onClickWithKeys } from 'components/compositions/hoc';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 import Table from 'components/ui/table/DataTable.jsx';
 import { makeSchema, sortSchemaCols } from 'components/ui/table/utils';
 
+const CloneButton = onClickWithKeys(Button);
 
 export const tableMeta = ({
   tireModelList = [],
@@ -14,19 +17,10 @@ export const tableMeta = ({
   const schema = {
     cols: [
       {
-        name: 'company_name',
-        displayName: 'Организация',
-        type: 'text',
-        orderNum: 0,
-        filter: {
-          type: 'multiselect',
-        },
-      },
-      {
         name: 'tire_model_id',
         displayName: 'Модель шины',
         type: 'text',
-        orderNum: 1,
+        orderNum: 0,
         filter: {
           type: 'multiselect',
           options: tireModelList.map(({ id, name }) => ({ value: id, label: name })),
@@ -36,7 +30,7 @@ export const tableMeta = ({
         name: 'tire_size_id',
         displayName: 'Размер',
         type: 'text',
-        orderNum: 2,
+        orderNum: 1,
         filter: {
           type: 'multiselect',
           options: tireSizeList.map(({ id, name }) => ({ value: id, label: name })),
@@ -46,7 +40,7 @@ export const tableMeta = ({
         name: 'odometr_diff',
         displayName: 'Пробег, км',
         type: 'text',
-        orderNum: 3,
+        orderNum: 2,
         filter: {
           type: 'string',
         },
@@ -55,7 +49,7 @@ export const tableMeta = ({
         name: 'motohours_diff',
         displayName: 'Наработка, мч',
         type: 'text',
-        orderNum: 4,
+        orderNum: 3,
         filter: {
           type: 'string',
         },
@@ -64,7 +58,7 @@ export const tableMeta = ({
         name: 'comment',
         displayName: 'Комментарий',
         type: 'text',
-        orderNum: 5,
+        orderNum: 4,
         filter: {
           type: 'string',
         },
@@ -73,7 +67,7 @@ export const tableMeta = ({
         name: 'gov_number',
         displayName: 'Рег. номер ТС',
         type: 'text',
-        orderNum: 6,
+        orderNum: 5,
         filter: {
           type: 'string',
         },
@@ -82,10 +76,16 @@ export const tableMeta = ({
         name: 'installed_at',
         displayName: 'Дата монтажа',
         type: 'date',
-        orderNum: 7,
+        orderNum: 6,
         filter: {
           type: 'date',
         },
+      },
+      {
+        name: 'cloneButton',
+        displayName: '',
+        filter: false,
+        orderNum: 7,
       },
     ],
   };
@@ -99,6 +99,11 @@ export default (props) => {
     tire_model_id: ({ data }) => <div>{get(tireModelList.find(s => s.id === data), 'name', '')}</div>,
     tire_size_id: ({ data }) => <div>{get(tireSizeList.find(s => s.id === data), 'name', '')}</div>,
     installed_at: ({ data }) => <DateFormatter date={data} />,
+    cloneButton: meta =>
+      <CloneButton
+        onClick={props.onCloneClick}
+        boundKeys={[meta.rowData.id]}
+      >Создать копированием</CloneButton>,
   };
 
   const meta = tableMeta(props);
@@ -109,7 +114,7 @@ export default (props) => {
     results={props.data}
     tableMeta={sortedMeta}
     renderers={renderers}
-    // initialSort={'full_name'}
+    initialSort={false}
     {...props}
   />);
 };

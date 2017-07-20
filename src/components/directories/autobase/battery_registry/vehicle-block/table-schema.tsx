@@ -4,7 +4,7 @@ import { get } from 'lodash';
 import { ExtField } from 'components/ui/Field.jsx';
 
 import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
-import { IPropsDataTableInputRenderer, TRendererFunction  } from 'components/ui/table/@types/DataTableInput.h';
+import { IPropsDataTableInputRenderer, TRendererFunction  } from 'components/ui/table/DataTableInput/DataTableInput.h';
 import { IValidationSchema } from 'components/ui/form/@types/validation.h';
 import { IBatteryAvailableCar } from 'api/@types/services/autobase.h';
 

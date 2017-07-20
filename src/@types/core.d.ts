@@ -7,5 +7,8 @@ declare namespace ETSCore {
     interface INumberKeyHashTable<ValueType = any> {
       [key: number]: ValueType;
     }
+
+    type TReactComponent<TInjectedProps> = React.ComponentClass<TInjectedProps> | React.SFC<TInjectedProps>;
+    type THOCFunction<TSourceProps, TResultHOCProps> = (SourceComponent: ETSCore.Types.TReactComponent<TSourceProps>) => React.ComponentClass<TResultHOCProps>;
   }
 }

@@ -1,14 +1,16 @@
 import * as React from 'react';
 import { each, toArray } from 'lodash';
 
-import { IStateDataTableInputWrapper, THOCPropsDataTableInput } from 'components/ui/table/@types/DataTableInputWrapper.h';
-import { IPropsDataTableInput } from 'components/ui/table/@types/DataTableInput.h';
-type TPropsDataTableInput = THOCPropsDataTableInput & IPropsDataTableInput;
+import {
+  TPropsDataTableInputWrapper,
+  TInjectedPropsDataTableInputWrapper,
+  IStateDataTableInputWrapper,
+} from './DataTableInputWrapper.h';
 
 import { validateField } from 'utils/validate/validateField';
 
-function DataTableInput(SourceComponent: React.ComponentClass<TPropsDataTableInput>) {
-  return class DataTableInputHOC extends React.Component<TPropsDataTableInput, IStateDataTableInputWrapper> {
+const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableInputWrapper, TPropsDataTableInputWrapper> = SourceComponent =>
+  class DataTableInputWrapperHOC extends React.Component<TPropsDataTableInputWrapper, IStateDataTableInputWrapper> {
     state = {
       outputListErrors: [],
       isValidInput: true,
@@ -95,6 +97,5 @@ function DataTableInput(SourceComponent: React.ComponentClass<TPropsDataTableInp
       );
     }
   };
-}
 
-export default DataTableInput;
+export default DataTableInputWrapper;

@@ -38,6 +38,11 @@ export const meta: IDataTableSchema = {
       displayName: 'Рег. номер ТС',
       type: 'select',
     },
+    {
+      name: 'prob_on_date',
+      displayName: 'Пробег на дату установки',
+      type: 'input',
+    },
   ],
 };
 
@@ -76,6 +81,16 @@ const UninstalledAtRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value,
     boundKeys={[index, 'uninstalled_at']}
   />;
 
+const PropOnDateRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value, onChange, index}) =>
+  <ExtField
+    type="input"
+    label=""
+    value={value}
+    onChange={onChange}
+    boundKeys={[index, 'prob_on_date']}
+    disabled={true}
+  />;
+
 export const renderers: TRendererFunction = (props, onListItemChange) => {
   const vehicleList = props.batteryAvailableCarList.map(({ car_id, gov_number }) => ({ label: gov_number, value: car_id }));
 
@@ -97,6 +112,13 @@ export const renderers: TRendererFunction = (props, onListItemChange) => {
       />,
     uninstalled_at: rowMeta =>
       <UninstalledAtRenderer
+        {...props}
+        onChange={onListItemChange}
+        value={rowMeta.data}
+        index={rowMeta.rowData.rowNumber - 1}
+      />,
+    prob_on_date: rowMeta =>
+      <PropOnDateRenderer
         {...props}
         onChange={onListItemChange}
         value={rowMeta.data}

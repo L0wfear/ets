@@ -5,10 +5,10 @@ import BatteryRegFormWrap from './BatteryRegFormWrap.jsx';
 import BatteryRegTable, { tableMeta } from './BatteryRegTable.jsx';
 
 @connectToStores(['autobase', 'objects', 'session'])
-@exportable({ entity: `autobase/${AUTOBASE.btr}` })
+@exportable({ entity: `autobase/${AUTOBASE.batteryRegistry}` })
 @staticProps({
   entity: 'autobase_battery',
-  listName: 'btrList',
+  listName: 'batteryRegistryList',
   tableComponent: BatteryRegTable,
   formComponent: BatteryRegFormWrap,
   formMeta: tableMeta(),
@@ -18,7 +18,7 @@ export default class BatteryRegList extends ElementsList {
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
-    flux.getActions('autobase').getAutobaseListByType('btr');
+    flux.getActions('autobase').getAutobaseListByType('batteryRegistry');
     flux.getActions('objects').getOrganizations();
 
     this.removeElementAction = flux.getActions('autobase').removeBattery;

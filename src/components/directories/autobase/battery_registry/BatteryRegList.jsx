@@ -15,12 +15,16 @@ import BatteryRegTable, { tableMeta } from './BatteryRegTable.jsx';
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 export default class BatteryRegList extends ElementsList {
+  constructor(props, context) {
+    super(props);
+    this.removeElementAction = context.flux.getActions('autobase').removeBattery;
+  }
+
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
     flux.getActions('autobase').getAutobaseListByType('batteryRegistry');
-    flux.getActions('objects').getOrganizations();
-
-    this.removeElementAction = flux.getActions('autobase').removeBattery;
+    flux.getActions('autobase').getAutobaseListByType('batteryBrand');
+    flux.getActions('autobase').getAutobaseListByType('batteryManufacturer');
   }
 }

@@ -21,6 +21,7 @@ import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { notifications } from 'utils/notifications';
 import Form from '../compositions/Form.jsx';
 import Taxes from './Taxes.jsx';
+import WaybillFooter from './form/WaybillFooter';
 import MissionFormWrap from '../missions/mission/MissionFormWrap.jsx';
 import { getDefaultMission } from '../../stores/MissionsStore.js';
 import enhanceWithPermissions from '../util/RequirePermissions.jsx';
@@ -510,7 +511,6 @@ class WaybillForm extends Form {
                   label="Выезд план."
                   error={errors.plan_departure_date}
                   date={state.plan_departure_date}
-                  // onChange={this.handleChange.bind(this, 'plan_departure_date')}
                   onChange={this.handlePlanDepartureDates.bind(this, 'plan_departure_date')}
                 />
               </Col>
@@ -523,7 +523,6 @@ class WaybillForm extends Form {
                   error={errors.plan_arrival_date}
                   date={state.plan_arrival_date}
                   min={state.plan_departure_date}
-                  // onChange={this.handleChange.bind(this, 'plan_arrival_date')}
                   onChange={this.handlePlanDepartureDates.bind(this, 'plan_arrival_date')}
                 />
               </Col>
@@ -896,30 +895,19 @@ class WaybillForm extends Form {
         </ModalBody>
 
         <Modal.Footer>
-          <Div>
-            <Div className={'inline-block'} style={{ marginRight: 5 }} hidden={!(IS_CREATING || IS_DRAFT)}>
-              <Button title="Обновить" onClick={this.refresh} disabled={isEmpty(state.car_id)}><Glyphicon glyph="refresh" /></Button>
-            </Div>
-            <Div className="inline-block">
-              <Dropdown id="waybill-print-dropdown" dropup disabled={!this.props.canSave} onSelect={this.props.handlePrint.bind(this, state.status !== 'draft' && !IS_CREATING)}>
-                <Dropdown.Toggle disabled={!this.props.canSave}>
-                  <Glyphicon glyph="download-alt" /> {state.status === 'closed' || state.status === 'active' ? 'Просмотр' : 'Выдать'}
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <MenuItem eventKey={'plate_special'}>Форма 3-С</MenuItem>
-                  <MenuItem eventKey={'plate_truck'}>Форма 4-П</MenuItem>
-                  <MenuItem eventKey={'plate_bus'}>Форма №6 (спец)</MenuItem>
-                  <MenuItem eventKey={'plate_car'}>Форма №3</MenuItem>
-                </Dropdown.Menu>
-              </Dropdown>&nbsp;
-            </Div>
-            <Div permissions={['waybill.update_closed']} className={'inline-block'} hidden={state.status === 'closed' && !this.state.canEditIfClose}>
-              <Button onClick={this.handleSubmit} disabled={!this.props.canSave && !this.state.canEditIfClose}>Сохранить</Button>
-            </Div>
-            <Div className={'inline-block'} style={{ marginLeft: 4 }} hidden={state.status === 'closed' || !(this.props.formState.status && this.props.formState.status === 'active')}>
-              <Button onClick={() => this.props.handleClose(taxesControl)} disabled={!this.props.canClose}>Закрыть ПЛ</Button>
-            </Div>
-          </Div>
+          <WaybillFooter
+            isCreating={IS_CREATING}
+            isDraft={IS_DRAFT}
+            canSave={this.props.canSave}
+            canClose={this.props.canClose}
+            formState={this.props.formState}
+            state={state}
+            taxesControl={taxesControl}
+            refresh={this.refresh}
+            handleSubmit={this.handleSubmit}
+            handleClose={this.props.handleClose}
+            handlePrint={this.props.handlePrint}
+          />
         </Modal.Footer>
 
       </Modal>

@@ -163,7 +163,7 @@ export default class WaybillFormWrap extends FormWrap {
 
 
   handleFormStateChange(field, e) {
-    const value = e !== undefined && !!e.target ? e.target.value : e;
+    const value = _.get(e, ['target', 'value'], e);
     let formState = _.cloneDeep(this.state.formState);
     formState[field] = value;
 

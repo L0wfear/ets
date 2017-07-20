@@ -7,6 +7,7 @@ import { hiddeColumns } from 'components/ui/table/utils';
 
 const schemaMakers = {
   gov_number: hiddeColumns,
+  company_id: hiddeColumns,
   comment: hiddeColumns,
   company_name: hiddeColumns,
   cloneButton: hiddeColumns,

@@ -4,7 +4,7 @@ import ElementsList from 'components/ElementsList.jsx';
 import TireFormWrap from './TireFormWrap.jsx';
 import TireTable from './TireTable.jsx';
 
-@connectToStores(['autobase', 'session'])
+@connectToStores(['autobase', 'objects', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.tire}` })
 @staticProps({
   entity: 'autobase_tire',
@@ -24,6 +24,7 @@ export default class TireList extends ElementsList {
     flux.getActions('autobase').getAutobaseListByType('tire');
     flux.getActions('autobase').getAutobaseListByType('tireSize');
     flux.getActions('autobase').getAutobaseListByType('tireModel');
+    flux.getActions('objects').getOrganizations();
   }
   handleCloneClick = (tireId) => {
     this.context.flux.getActions('autobase').cloneTire(tireId);

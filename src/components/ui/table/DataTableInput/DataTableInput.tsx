@@ -2,11 +2,11 @@ import * as React from 'react';
 import { Button, ButtonToolbar } from 'react-bootstrap';
 
 import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
-import { IPropsDataTableInput, IStateDataTableInput  } from 'components/ui/table/@types/DataTableInput.h';
-import { ISchemaRenderer, IDataTableSelectedRow } from 'components/ui/table/@types/schema.h';
+import { IDataTableSelectedRow, ISchemaRenderer } from 'components/ui/table/@types/schema.h';
+import { IPropsDataTableInput, IStateDataTableInput } from 'components/ui/table/DataTableInput/DataTableInput.h';
 
 import DataTableComponent from 'components/ui/table/DataTable';
-import DataTableInputWrapper from 'components/ui/table/DataTableInputWrapper';
+import DataTableInputWrapper from 'components/ui/table/DataTableInputWrapper/DataTableInputWrapper';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
@@ -71,4 +71,4 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
   }
 }
 
-export default DataTableInputWrapper(DataTableInput) as React.ComponentClass<IPropsDataTableInput>;
+export default DataTableInputWrapper(DataTableInput);

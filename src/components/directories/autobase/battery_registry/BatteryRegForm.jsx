@@ -60,7 +60,7 @@ export default class BaseBatteryForm extends Form {
     return whatLook.map(el => (
       {
         type: fields[el].type,
-        label: fields[el].displayName,
+        label: fields[el].displayName + (el === 'lifetime_months' ? ' мес.' : ''),
         value: state[el],
         error: errors[el],
         onChange: this.onChageWrap(el),

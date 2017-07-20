@@ -34,21 +34,21 @@ export default class EmployeesActions extends Actions {
     };
     payload.released_at = createValidDate(payload.released_at);
 
-    const { btr } = AUTOBASE;
-    const path = parsePutPath(btr, method, formState);
+    const { batteryRegistry } = AUTOBASE;
+    const path = parsePutPath(batteryRegistry, method, formState);
     return AutoBase.path(path)[method](
       payload,
-      this.getAutobaseListByType.bind(null, 'btr'),
+      this.getAutobaseListByType.bind(null, 'batteryRegistry'),
       'json',
     );
   }
 
   removeBattery(id) {
-    const { btr } = AUTOBASE;
+    const { batteryRegistry } = AUTOBASE;
 
-    return AutoBase.path(`${btr}/${id}`).delete(
+    return AutoBase.path(`${batteryRegistry}/${id}`).delete(
       {},
-      this.getAutobaseListByType.bind(null, 'btr'),
+      this.getAutobaseListByType.bind(null, 'batteryRegistry'),
       'json',
     );
   }

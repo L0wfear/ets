@@ -1,5 +1,5 @@
 export default {
-  btr: 'battery_registry',
+  batteryRegistry: 'battery_registry',
   batteryBrand: 'battery_brand',
   batteryManufacturer: 'battery_manufacturer',
   tire: 'tire_registry',

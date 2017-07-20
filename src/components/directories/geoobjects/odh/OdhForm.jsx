@@ -43,7 +43,7 @@ class OdhForm extends Form {
       <Modal {...this.props} backdrop="static">
 
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">Дворовая территория</Modal.Title>
+          <Modal.Title id="contained-modal-title-lg">Реестр ОДХ</Modal.Title>
         </Modal.Header>
 
         <ModalBody>

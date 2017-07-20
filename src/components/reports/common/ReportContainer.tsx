@@ -299,7 +299,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         results={this.props.summaryList}
         renderers={this.props.summaryRenderes || {}}
         onRowSelected={undefined}
-        enumerated={false}
+        enumerated={enumerated}
         enableSort={false}
         initialSort={false}
         noFilter

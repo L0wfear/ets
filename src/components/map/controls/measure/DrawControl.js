@@ -2,77 +2,103 @@ import DrawLine from './DrawLineMeasure.js';
 
 export default class DrawControl {
   constructor(props) {
-    this.draw = new ol.interaction.Draw({
+    this.props = props;
+    const draw = new ol.interaction.Draw({
       source: props.source,
       type: 'LineString',
-      style: this.getStyle(),
+      style: new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: 'rgba(0, 0, 0, 0.5)',
+          lineDash: [10, 10],
+          width: 2,
+        }),
+        image: new ol.style.Circle({
+          radius: 5,
+          stroke: new ol.style.Stroke({
+            color: 'rgba(0, 0, 0, 0.1)',
+          }),
+          fill: new ol.style.Fill({
+            color: 'rgba(0, 0, 255, 0.8)',
+          }),
+        }),
+      }),
     });
 
-    this.sketch = null;
-    this.curLineString = {};
-    this.listener = {};
+    this.state = {
+      draw,
+      sketch: {},
+      listener: {},
+      curLineString: {},
+      count: 0,
+    };
 
-    this.props = props;
     this.setOnForDraw();
   }
 
-  getStyle() {
-    return new ol.style.Style({
-      stroke: new ol.style.Stroke({
-        color: 'rgba(0, 0, 0, 0.5)',
-        lineDash: [10, 10],
-        width: 2,
-      }),
-      image: new ol.style.Circle({
-        radius: 5,
-        stroke: new ol.style.Stroke({
-          color: 'rgba(0, 0, 0, 0.1)',
-        }),
-        fill: new ol.style.Fill({
-          color: 'rgba(0, 0, 255, 0.8)',
-        }),
-      }),
-    });
-  }
-
   setOnForDraw() {
-    this.draw.on(
+    const { draw } = this.state;
+
+    draw.on(
       'drawstart',
       (e) => {
-        this.sketch = e.feature;
+        const { count } = this.state;
+        const sketch = e.feature;
 
-        this.curLineString = new DrawLine(this.sketch);
-        const measureToolTip = this.curLineString.createMeasureTooltip();
+        const curLineString = new DrawLine(sketch, count);
+        const measureToolTip = curLineString.createMeasureTooltip();
         this.props.map.addOverlay(measureToolTip);
 
-        this.props.addLineString(this.curLineString);
+        this.props.addLineString(curLineString);
 
-        this.listener = this.sketch.getGeometry().on('change', () => this.curLineString.updateData());
+        const listener = sketch.getGeometry().on('change', () => curLineString.updateData());
+
+        this.state = {
+          ...this.state,
+          sketch,
+          listener,
+          curLineString,
+          count: count + 1,
+        };
 
         this.props.setStatus(true);
       });
 
-    this.draw.on(
+    draw.on(
       'drawend',
       () => {
-        this.props.addToSource(this.curLineString.endDraw())
+        const { curLineString, listener } = this.state;
+        const sketch = null;
+
+        this.props.addToSource(curLineString.endDraw());
         this.props.setStatus(false);
 
-        this.sketch = null;
-        ol.Observable.unByKey(this.listener);
+        ol.Observable.unByKey(listener);
+
+        this.state = {
+          ...this.state,
+          sketch,
+          listener,
+        };
       });
   }
 
   addToInteraction() {
-    this.props.map.addInteraction(this.draw);
+    const { map } = this.props;
+    const { draw } = this.state;
+
+    map.addInteraction(draw);
   }
 
   removeFromInteraction() {
-    this.props.map.removeInteraction(this.draw);
+    const { map } = this.props;
+    const { draw } = this.state;
+
+    map.removeInteraction(draw);
   }
   removeLastPoint() {
-    if (this.curLineString.checkCount()) {
-      this.draw.removeLastPoint();
+    const { curLineString, draw } = this.state;
+    if (curLineString.checkCount()) {
+      draw.removeLastPoint();
     }
   }
 }

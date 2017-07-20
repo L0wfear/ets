@@ -123,6 +123,12 @@ export default class WaybillsActions extends Actions {
     delete payload.car_model_name;
     delete payload.garage_number;
 
+    if (payload.gov_number.match(/\d{4}/)) {
+      delete payload.odometr_start;
+    } else {
+      delete payload.motohours_start;
+    }
+
     _.mapKeys(payload, (v, k) => isEmpty(v) ? payload[k] = null : undefined);
 
     if (isEmpty(payload.motohours_equip_start)) {

@@ -1,6 +1,8 @@
 export default class DrawLine {
-  constructor(feature) {
+  constructor(feature, id) {
     this.feature = feature;
+    this.id = id;
+
     this.geom = feature.getGeometry();
     this.color = this.getRandomColor();
 
@@ -60,6 +62,9 @@ export default class DrawLine {
     this.measureTooltips.measureTooltip.setOffset([0, -7]);
     this.feature.setStyle(this.getStyleForLine());
     this.createMarker();
+
+    this.feature.setId(`measure_linestring_${this.id}`);
+    this.lastMarkerFeature.setId(`measure_point_${this.id}`);
 
     return this.lastMarkerFeature;
   }

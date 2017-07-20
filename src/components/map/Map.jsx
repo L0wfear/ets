@@ -7,7 +7,7 @@ import { getVectorArrowStyle } from 'constants/vectors.js';
 import { GeoJSON, defaultZoom } from 'utils/ol';
 import _ from 'lodash';
 
-import Measure from './controls/measure/measure.js';
+import Measure from './controls/measure/measure.jsx';
 
 let POLYS_LAYER = null;
 // TODO move to settings
@@ -195,9 +195,9 @@ export default class OpenLayersMap extends Component {
   }
 
   onClick(ev) {
-    if (this.state.measureActive) {
-      return 0;
-    }
+    // проверка - активна ли линейка
+    if (this.state.measureActive) return;
+
     const map = this.map;
     const pixel = ev.pixel; // координаты клика во viewport
     const coordinate = ev.coordinate;
@@ -239,7 +239,10 @@ export default class OpenLayersMap extends Component {
 
     if (typeof this.props.onFeatureClick === 'function') {
       map.forEachFeatureAtPixel(pixel, (feature, layer) => {
-        this.props.onFeatureClick(feature, ev, this);
+        const id = feature.getId();
+        if (!id || (!!id && !id.match('measure'))) {
+          this.props.onFeatureClick(feature, ev, this);
+        }
       });
     }
   }

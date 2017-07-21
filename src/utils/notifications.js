@@ -123,7 +123,13 @@ export function noItemsInfoNotification(msg = 'По данному запрос�
 
 export function hasWarningNotification(response) {
   if (response.warnings) {
-    global.NOTIFICATION_SYSTEM.notify(getWarningNotification(response.warnings.message || response.warnings));
+    if (Array.isArray(response.warnings)) {
+      response.warnings.forEach((w) => {
+        !w.hidden && global.NOTIFICATION_SYSTEM.notify(getWarningNotification(w.message || w));
+      });
+    } else if ((response.warnings && response.warnings.message) || typeof response.warnings === 'string') {
+      !response.warnings.hidden && global.NOTIFICATION_SYSTEM.notify(getWarningNotification(response.warnings.message || response.warnings));
+    }
     return true;
   }
 

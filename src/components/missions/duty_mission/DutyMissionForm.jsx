@@ -422,6 +422,7 @@ export class DutyMissionForm extends Form {
           onFormHide={this.onFormHide.bind(this)}
           showForm={this.state.showRouteForm}
           structureId={state.structure_id}
+          selectedRoute={selectedRoute => this.setState({ selectedRoute })}
           fromMission
         />
       </Modal>

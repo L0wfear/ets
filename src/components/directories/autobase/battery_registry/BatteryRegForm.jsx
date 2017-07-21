@@ -36,7 +36,7 @@ export default class BaseBatteryForm extends Form {
     const [
       state = {},
       errors = {},
-    ] = [this.props.formState, this.props.formError];
+    ] = [this.props.formState, this.props.formErrors];
 
     const fields = cols.reduce((obj, val) => Object.assign(obj, { [val.name]: val }), {});
 
@@ -110,7 +110,7 @@ export default class BaseBatteryForm extends Form {
               <Field
                 type={'string'}
                 label={'Количество месяцев наработки'}
-                value={'----'}
+                value={state.worked_months}
                 disabled
               />
             </Col>

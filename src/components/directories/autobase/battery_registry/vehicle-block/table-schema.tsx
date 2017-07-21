@@ -39,7 +39,7 @@ export const meta: IDataTableSchema = {
       type: 'select',
     },
     {
-      name: 'prob_on_date',
+      name: 'odometr_start',
       displayName: 'Пробег на дату установки',
       type: 'input',
     },
@@ -85,7 +85,7 @@ const PropOnDateRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value, on
   <ExtField
     type="input"
     label=""
-    value={value}
+    value={value || '-'}
     onChange={onChange}
     boundKeys={[index, 'prob_on_date']}
     disabled={true}
@@ -117,7 +117,7 @@ export const renderers: TRendererFunction = (props, onListItemChange) => {
         value={rowMeta.data}
         index={rowMeta.rowData.rowNumber - 1}
       />,
-    prob_on_date: rowMeta =>
+    odometr_start: rowMeta =>
       <PropOnDateRenderer
         {...props}
         onChange={onListItemChange}

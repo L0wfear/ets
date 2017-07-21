@@ -13,6 +13,16 @@ export const tableMeta = ({
   const schema = {
     cols: [
       {
+        name: 'company_name',
+        displayName: 'Организация',
+        type: 'text',
+        orderNum: 2,
+        filter: {
+          type: 'multiselect',
+          options: batteryBrandList.map(({ id, name }) => ({ value: id, label: name })),
+        },
+      },
+      {
         name: 'brand_id',
         displayName: 'Марка аккумулятора',
         type: 'text',
@@ -38,6 +48,15 @@ export const tableMeta = ({
         orderNum: 4,
         filter: {
           type: 'text',
+        },
+      },
+      {
+        name: 'worked_months',
+        displayName: 'Пробег на дату установки',
+        type: 'number',
+        orderNum: 4,
+        filter: {
+          type: 'number',
         },
       },
       {

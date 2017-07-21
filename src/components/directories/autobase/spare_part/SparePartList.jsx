@@ -4,7 +4,7 @@ import ElementsList from 'components/ElementsList.jsx';
 import SparePartTable from './SparePartTable.jsx';
 import SparePartFormWrap from './SparePartFormWrap';
 
-@connectToStores(['autobase', 'objects', 'session'])
+@connectToStores(['autobase', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.sparePart}` })
 @staticProps({
   entity: 'autobase_spare_part',
@@ -16,9 +16,11 @@ import SparePartFormWrap from './SparePartFormWrap';
 export default class SparePartList extends ElementsList {
   componentDidMount() {
     super.componentDidMount();
-    
+
     const { flux } = this.context;
     flux.getActions('autobase').getAutobaseListByType('sparePart');
+    flux.getActions('autobase').getAutobaseListByType('measureUnit');
+    flux.getActions('autobase').getAutobaseListByType('sparePartGroup');
 
     this.removeElementAction = flux.getActions('autobase').deleteLineFromSarePart;
   }

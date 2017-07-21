@@ -4,6 +4,8 @@ export default {
   batteryManufacturer: 'battery_manufacturer',
   tire: 'tire_registry',
   sparePart: 'spare_part_registry',
+  sparePartGroup: 'spare_part_group',
+  measureUnit: 'measure_unit',
   tireSize: 'tire_size',
   tireModel: 'tire_model',
   tireAvailibleCar: 'tire_available_car',

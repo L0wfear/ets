@@ -7,16 +7,8 @@ import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
 
-@connectToStores(['autobase', 'objects'])
+@connectToStores(['autobase'])
 export default class SparePartForm extends Form {
-  async componentDidMount() {
-    const { flux } = this.context;
-
-    const AllGroup = await flux.getActions('autobase').getSparePartGroup();
-    const AllUnits = await flux.getActions('autobase').getSparePartMeasureUnit();
-
-    this.setState({ AllGroup, AllUnits });
-  }
 
   handleChangeWrap = name => (...arg) => this.handleChange(name, ...arg);
   handleSubmitWrap = (...arg) => this.handleSubmit(...arg);
@@ -24,12 +16,12 @@ export default class SparePartForm extends Form {
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
-    const { AllGroup = [], AllUnits = [] } = this.state;
+    const { sparePartGroupList = [], measureUnitList = [] } = this.props;
 
-    const GROUP_OPTIONS = AllGroup.map(el => ({ value: el.id, label: el.name }));
-    const UNIT_OPTIONS = AllUnits.map(el => ({ value: el.id, label: el.name }));
+    const SPARE_PART_GROUP_OPTION = sparePartGroupList.map(el => ({ value: el.id, label: el.name }));
+    const MEASURE_UNIT_OPTIONS = measureUnitList.map(el => ({ value: el.id, label: el.name }));
 
-    const IS_CREATING = !!!state.id;
+    const IS_CREATING = !state.id;
 
     let title = 'Изменение записи';
     if (IS_CREATING) title = 'Создание записи';
@@ -46,7 +38,7 @@ export default class SparePartForm extends Form {
                 type="select"
                 label="Группа"
                 error={errors.spare_part_group_id}
-                options={GROUP_OPTIONS}
+                options={SPARE_PART_GROUP_OPTION}
                 value={state.spare_part_group_id}
                 onChange={this.handleChangeWrap('spare_part_group_id')}
               />
@@ -80,7 +72,7 @@ export default class SparePartForm extends Form {
                 type="select"
                 label="Единица измерения"
                 error={errors.measure_unit_id}
-                options={UNIT_OPTIONS}
+                options={MEASURE_UNIT_OPTIONS}
                 value={state.measure_unit_id}
                 onChange={this.handleChangeWrap('measure_unit_id')}
               />

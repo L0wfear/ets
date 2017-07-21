@@ -554,7 +554,7 @@ export default class Track {
 
   makeEventPopup(event, id) {
     const type = event.type === 'leak' ? 'Слив топлива' : 'Заправка топлива';
-    const value = event.val;
+    const value = event.event_val;
     const start = `${makeDate(new Date(event.start_point.timestamp * 1000))} ${makeTime(new Date(event.start_point.timestamp * 1000), true)}`;
     const diff = secondsToTime(event.end_point.timestamp - event.start_point.timestamp);
     return () => `

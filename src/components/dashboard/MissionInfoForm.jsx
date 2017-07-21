@@ -127,8 +127,9 @@ class MissionInfoForm extends Form {
         return o.object_id;
       })
       .value();
-    draw_object_list.forEach((o) => {
-      polys[o.object_id] = o;
+    // Здесь попадались объекты с одинаковым id, поэтому некоторые объекты перетирались.
+    draw_object_list.forEach((o, i) => {
+      polys[`${o.object_id}_index_${i}`] = o;
     });
     if (!car_data.gov_number) return <div />;
     const title = `Информация о задании. Рег. номер ТС: ${car_data.gov_number}`;

@@ -56,8 +56,9 @@ class RouteFormWrap extends FormWrap {
     } else {
       result = await flux.getActions('routes').updateRoute(formState);
     }
-
-    this.props.selectedRoute(formState);
+    if (typeof this.props.selectedRoute === 'function') {
+      this.props.selectedRoute(formState);
+    }
   }
 
   async handleFormStateChange(f, e) {

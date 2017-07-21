@@ -52,7 +52,7 @@ export const tableMeta = ({
       },
       {
         name: 'worked_months',
-        displayName: 'Пробег на дату установки',
+        displayName: 'Количество месяцев наработки',
         type: 'number',
         orderNum: 4,
         filter: {

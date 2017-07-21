@@ -152,7 +152,6 @@ class MissionTemplateForm extends MissionForm {
           onFormHide={this.onFormHide.bind(this)}
           showForm={this.state.showRouteForm}
           structureId={state.structure_id}
-          selectedRoute={selectedRoute => this.setState({ selectedRoute })}
           fromMission
         />
 

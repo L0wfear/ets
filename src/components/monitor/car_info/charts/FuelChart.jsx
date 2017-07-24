@@ -34,11 +34,11 @@ const EventTable = props => {
 };
 
 const FuelChartSFC = props => {
-  const { events } = props.car.marker.track;
+  const events = get(props, ['car', 'marker', 'track', 'events'], null);
   const points = props.trackPoints;
   const { rawData } = props;
 
-  if (!points) return <span>{LOAD_PROCESS_TEXT}</span>;
+  if (!points || events === null) return <span>{LOAD_PROCESS_TEXT}</span>;
   if (!points.length) return <span>{NO_DATA_TEXT}</span>;
 
   const timestamps = points.filter(p => get(p, 'sensors.level.length', false)).map(p => p.timestamp);

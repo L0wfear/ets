@@ -1,5 +1,5 @@
-import { getToken, fetchEvergisToken, isFetchingToken, attemptsLimitExceeded } from 'utils/evergis.js';
 import _ from 'lodash';
+import EverGisTokenService from 'api/map/EverGisTokenService';
 import MapServerConfig from './MapServerConfig.js';
 
 const FULL_EXTENT = MapServerConfig.fullExtent;
@@ -7,6 +7,7 @@ const TILES_URL = '//gisoiv.mos.ru/IntegrationGIS/SpatialProcessor/IIS/egko/MapS
 const TILE_SIZE = MapServerConfig.tileInfo.rows;
 const ORIGIN = MapServerConfig.tileInfo.origin;
 const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
+const evergisTokenService = new EverGisTokenService();
 
 export function projectToPixel(map, coordinates) {
   let x;
@@ -47,7 +48,7 @@ function tileUrl(tileCoord) {
   const z = tileCoord[0];
   const x = tileCoord[1];
   const y = -tileCoord[2] - 1;
-  return `${TILES_URL}/${z}/${y}/${x}?_sb=${getToken()}`;
+  return `${TILES_URL}/${z}/${y}/${x}?_sb=${evergisTokenService.getToken()}`;
 }
 
 const ArcGisSource = new ol.source.TileImage({
@@ -65,18 +66,19 @@ const ArcGisSource = new ol.source.TileImage({
 ArcGisSource.on('tileloadstart', () => {
 });
 
+function onErrorsLimitCallback() {
+  console.error('EVERGIS TOKEN ATTEMPTS LIMIT EXCEEDED');
+}
+
 ArcGisSource.on('tileloaderror', () => {
-  function onErrorsLimit() {
-    console.error('EVERGIS TOKEN ATTEMPTS LIMIT EXCEEDED');
-  }
-  onErrorsLimit = _.debounce(onErrorsLimit, 1000);
+  const onErrorsLimit = _.debounce(onErrorsLimitCallback, 1000);
 
   // TODO идентифицировать ошибку конкретно токена
-  if (!isFetchingToken() && !attemptsLimitExceeded()) {
-    fetchEvergisToken().then(() => {
+  if (!evergisTokenService.isFetchingToken() && !evergisTokenService.attemptsLimitExceeded()) {
+    evergisTokenService.fetchToken().then(() => {
       ArcGisSource.refresh();
     });
-  } else if (attemptsLimitExceeded()) {
+  } else if (evergisTokenService.attemptsLimitExceeded()) {
     onErrorsLimit();
   }
 });

@@ -85,7 +85,7 @@ export default class CarInfo extends Component {
   }
 
   componentWillReceiveProps(props) {
-    if (props.car.id !== this.props.car.id) {
+    if (props.car.id !== this.props.car.id || props.car.track !== this.props.car.track) {
       this.fetchCarInfo(props);
       this.fetchTrack(props);
       this.stopTrackPlaying();
@@ -148,6 +148,9 @@ export default class CarInfo extends Component {
 
   async fetchCarInfo(props = this.props) {
     const carList = props.flux.getStore('objects').state.carsList;
+    const track = props.car.marker.track;
+    if (!track) return;
+
     const car = carList.find(c => c.gov_number === props.car.car.gov_number);
     if (!car) {
       global.NOTIFICATION_SYSTEM.notify(`Нет информации по выбранной автомашине с гос. номером ${props.car.car.gov_number}`, 'info', 'tr');
@@ -155,7 +158,7 @@ export default class CarInfo extends Component {
     }
 
     const info = await this.props.flux.getActions('cars').getCarInfo(car.asuods_id);
-    props.car.marker.track.maxSpeed = info.max_speed;
+    track.maxSpeed = info.max_speed;
     this.setState({ missions: info.missions, maxSpeed: info.max_speed, imageUrl: car ? car.type_image_name : null });
   }
 
@@ -166,6 +169,8 @@ export default class CarInfo extends Component {
   fetchTrack(props = this.props) {
     const { from_dt, to_dt } = this.state;
     const track = props.car.marker.track;
+    if (!track) return;
+
     // обновление инфы о последней точке при обновлении трэка
     track.onUpdate(() => {
       const dt = new Date();
@@ -231,7 +236,9 @@ export default class CarInfo extends Component {
   }
 
   renderMain() {
-    const { imageUrl, trackingMode } = this.state;
+    const { imageUrl } = this.state;
+    const trackingMode = this.state.trackingMode || this.store.state.trackingMode;
+    console.log('trackingMode', trackingMode);
     const { car } = this.props;
 
     const title = ''; // должен быть model title

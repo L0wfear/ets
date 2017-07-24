@@ -3,9 +3,10 @@ import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 import connectToStores from 'flummox/connect';
 import cx from 'classnames';
+import { get, isEqual, last } from 'lodash';
+
 import { FluxContext } from 'utils/decorators';
 import GeometryLegendWrapper from 'components/map/LegendWrapper.jsx';
-
 import statuses from 'constants/statuses';
 import { GEOOBJECTS_TYPES, GEOOBJECTS_TYPES_LABELS } from 'constants/geoobjects';
 import FluxComponent from 'flummox/component';
@@ -185,21 +186,25 @@ class Toolbar extends Component {
     super(props, context);
     this._pointsStore = this.context.flux.getStore('points');
   }
-
   shouldComponentUpdate() {
     // сделать обновление только во время изменений!
     return true;
   }
-
   focusOnLonelyCar() {
     const store = this.context.flux.getStore('points');
-    const onlyPoint = store.getVisiblePoints()[0];
+    const carPoint = store.getVisiblePoints()[0];
     const map = global.olmap;
     const view = map.getView();
     const size = map.getSize();
 
-    view.centerOn(onlyPoint.marker.coords, size, [size[0] / 2, size[1] / 2]);
+    view.centerOn(carPoint.marker.coords, size, [size[0] / 2, size[1] / 2]);
     view.setZoom(15);
+
+    store.handleSelectPoint(carPoint);
+    // Это очень жёсткий хак. После выпила флюммокса такое делать не придётся.
+    setTimeout(() => {
+      store.setTracking(true);
+    }, 200);
   }
 
   render() {

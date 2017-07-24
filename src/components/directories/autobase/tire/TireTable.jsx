@@ -19,7 +19,7 @@ export const tableMeta = ({
     cols: [
       {
         name: 'company_id',
-        displayName: 'Организацяи',
+        displayName: 'Организация',
         type: 'text',
         orderNum: -1,
         filter: {

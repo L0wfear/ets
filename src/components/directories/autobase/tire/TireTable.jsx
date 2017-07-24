@@ -10,12 +10,23 @@ import { makeSchema, sortSchemaCols } from 'components/ui/table/utils';
 const CloneButton = onClickWithKeys(Button);
 
 export const tableMeta = ({
+  organizations = [],
   tireModelList = [],
   tireSizeList = [],
   schemaMakers = {},
 } = {}) => {
   const schema = {
     cols: [
+      {
+        name: 'company_id',
+        displayName: 'Организация',
+        type: 'text',
+        orderNum: -1,
+        filter: {
+          type: 'multiselect',
+          options: organizations.map(({ company_id, short_name }) => ({ value: company_id, label: short_name })),
+        },
+      },
       {
         name: 'tire_model_id',
         displayName: 'Модель шины',
@@ -94,8 +105,9 @@ export const tableMeta = ({
 };
 
 export default (props) => {
-  const { tireModelList = [], tireSizeList = [] } = props;
+  const { organizations = [], tireModelList = [], tireSizeList = [] } = props;
   const renderers = {
+    company_id: ({ data }) => <div>{get(organizations.find(s => s.company_id === data), 'short_name', '')}</div>,
     tire_model_id: ({ data }) => <div>{get(tireModelList.find(s => s.id === data), 'name', '')}</div>,
     tire_size_id: ({ data }) => <div>{get(tireSizeList.find(s => s.id === data), 'name', '')}</div>,
     installed_at: ({ data }) => <DateFormatter date={data} />,

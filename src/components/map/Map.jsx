@@ -248,10 +248,9 @@ export default class OpenLayersMap extends Component {
     }
 
     clickedMarker = this.getSelectedCar(coordinate);
-    this._pointsStore.handleSelectPoint(clickedMarker.point);
-    // if (clickedMarker) {
-    //   this.handleCarSelect(clickedMarker);
-    // }
+    if (clickedMarker) {
+      this._pointsStore.handleSelectPoint(clickedMarker.point);
+    }
 
     if (typeof this.props.onFeatureClick === 'function') {
       map.forEachFeatureAtPixel(pixel, (feature, layer) => {

@@ -43,7 +43,7 @@ export default class TireForm extends Form {
     if (IS_CREATING) title = 'Создание записи';
 
     return (
-      <Modal {...this.props} backdrop="static">
+      <Modal {...this.props} bsSize="lg" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
         </Modal.Header>

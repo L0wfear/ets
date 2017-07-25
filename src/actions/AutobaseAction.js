@@ -80,6 +80,17 @@ export default class EmployeesActions extends Actions {
     );
   }
 
+  techInspection(method, formState) {
+    const payload = cloneDeep(formState);
+    const { techInspection } = AUTOBASE;
+
+    return AutoBase.path(techInspection)[method](
+      payload,
+      this.getAutobaseListByType.bind(null, 'techInspection'),
+      'json',
+    );
+  }
+
   tire(method, formState) {
     const cleanFormState = clearPayload(formState);
 
@@ -177,6 +188,19 @@ export default class EmployeesActions extends Actions {
   deleteLineFromSarePart(formState) {
     const payload = { id: formState };
     const type = 'sparePart';
+
+    const trueType = AUTOBASE[type];
+
+    return AutoBase.path(trueType).delete(
+      payload,
+      this.getAutobaseListByType.bind(null, type),
+      'json',
+    );
+  }
+
+  removeTechInspection(formState) {
+    const payload = { car_id: formState };
+    const type = 'techInspection';
 
     const trueType = AUTOBASE[type];
 

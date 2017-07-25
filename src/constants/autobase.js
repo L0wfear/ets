@@ -12,6 +12,10 @@ export default {
   actualBatteriesOnCar: 'actual_batteries_on_car',
   actualTiresOnCar: 'actual_tires_on_car',
   batteryAvailableCar: 'battery_available_car',
+<<<<<<< Updated upstream
   techMaintOrder: 'tech_maintenance_order_registry',
   techMaintType: 'tech_maintenance_type',
+=======
+  techInspection: 'tech_inspection_registry',
+>>>>>>> Stashed changes
 };

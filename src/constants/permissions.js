@@ -191,6 +191,13 @@ const PERMISSIONS = {
       'update': 'spare_part_registry.update',
       'delete': 'spare_part_registry.delete',
     },
+    autobase_tech_inspection: {
+      'list': 'autobase_tech_inspection.list',
+      'create': 'autobase_tech_inspection.create',
+      'read': 'autobase_tech_inspection.read',
+      'update': 'autobase_tech_inspection.update',
+      'delete': 'autobase_tech_inspection.delete',
+    }
   },
   'administration': 'administration',
 };

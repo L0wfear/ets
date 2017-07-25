@@ -5,6 +5,7 @@ import batteryManufacturer from './battery_manufacturer/BatteryManufacturerList.
 import techMaintOrder from './tech_maintenance_order_registry/TechMaintOrderList.jsx';
 import sparePart from './spare_part/SparePartList.jsx';
 import techInspection from './tech_inspection/TechInspectionList.jsx';
+import insurancePolicy from './insurance_policy/InsurancePolicyList.jsx';
 
 export {
   tire,
@@ -14,4 +15,5 @@ export {
   sparePart,
   techMaintOrder,
   techInspection,
+  insurancePolicy,
 };

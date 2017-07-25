@@ -210,4 +210,29 @@ export default class EmployeesActions extends Actions {
       'json',
     );
   }
+
+  insurancePolicy(method, formState) {
+    const payload = {
+      ...formState,
+      date_start: createValidDate(formState.date_start),
+      date_end: createValidDate(formState.date_end),
+    };
+
+    const { insurancePolicy } = AUTOBASE;
+
+    return AutoBase.path(insurancePolicy)[method](
+      payload,
+      this.getAutobaseListByType.bind(null, 'insurancePolicy'),
+      'json',
+    );
+  }
+
+  removeInsurancePolicy(id) {
+    const { batteryBrand } = AUTOBASE;
+    return AutoBase.path(`${batteryBrand}/${id}`).delete(
+      {},
+      this.getAutobaseListByType.bind(null, 'techInspection'),
+      'json',
+    );
+  }
 }

@@ -8,6 +8,7 @@ import { tabable } from 'components/compositions/hoc';
 import InfoTab from './tabs/InfoTab';
 import BatteryTab from './tabs/BatteryTab';
 import TireTab from './tabs/TireTab';
+import InsurancePolicy from './tabs/InsurancePolicy.tsx';
 import TechInspetionTab from './tabs/TechInspetionTab.tsx';
 
 class CarForm extends Form {
@@ -33,6 +34,8 @@ class CarForm extends Form {
       flux.getActions('autobase').getAutobaseListByType('actualBatteriesOnCar', payload);
       flux.getActions('autobase').getAutobaseListByType('actualTiresOnCar', payload);
       flux.getActions('autobase').getAutobaseListByType('techInspection', payload);
+      flux.getActions('autobase').getAutobaseListByType('insurancePolicy', payload);
+      flux.getActions('autobase').getAutobaseListByType('insuranceType');
     }
   }
   async componentWillMount() {
@@ -73,7 +76,10 @@ class CarForm extends Form {
                 data={this.props.actualTiresOnCarList}
               />
             </Tab>
-            <Tab eventKey={4} title="Страхование" disabled>Tab 3 content</Tab>
+            <Tab eventKey={4} title="Страхование">
+              <TireTab
+                data={this.props.insurancePolicy}
+              /></Tab>
             <Tab eventKey={5} title="ДТП" disabled>Tab 3 content</Tab>
             <Tab eventKey={6} title="ТО и ремонты" disabled>Tab 3 content</Tab>
             <Tab eventKey={7} title="Техосмотр">

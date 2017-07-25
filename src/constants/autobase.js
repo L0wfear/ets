@@ -16,4 +16,6 @@ export default {
   techMaintType: 'tech_maintenance_type',
   measureUnitRun: 'measure_unit_run',
   techInspection: 'tech_inspection_registry',
+  insurancePolicy: 'insurance_policy_registry',
+  insuranceType: 'insurance_type',
 };

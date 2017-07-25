@@ -50,7 +50,7 @@ export default class SessionStore extends Store {
     data.payload.fio = createFio(data.payload);
     const session = data.token;
     let currentUser = data.payload;
-
+    console.log(autobase)
     // Здесь можно вставлять моковые пермишины
     currentUser.permissions = [
       ...currentUser.permissions,

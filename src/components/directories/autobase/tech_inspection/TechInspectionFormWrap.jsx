@@ -1,12 +1,52 @@
 import React from 'react';
-import enhanceWithPermissions from 'components/util/RequirePermissions';
-import BaseTechInspectionForm from './TechInspectionForm.jsx';
+
 import FormWrap from 'components/compositions/FormWrap.jsx';
-import { schema } from 'models/TechInspectionModel.js';
+import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
+import BaseTechInspectionForm from './TechInspectionForm';
 
 const TechInspectionForm = enhanceWithPermissions(BaseTechInspectionForm);
 
-export default class SparePartFormWrap extends FormWrap {
+export const schema = {
+  properties: [
+    {
+      key: 'reg_number',
+      title: 'Регистрационный номер',
+      type: 'number',
+      required: true,
+      maxLength: 21,
+    },
+    {
+      key: 'date_end',
+      title: 'Срок действия до',
+      type: 'date',
+      required: true,
+    },
+    {
+      key: 'date_start',
+      title: 'Дата прохождения',
+      type: 'date',
+      required: true,
+    },
+    {
+      key: 'tech_operator',
+      title: 'Оператор технического осмотра / пункт технического осмотра',
+      type: 'text',
+      maxLength: 256,
+    },
+    {
+      key: 'is_allowed',
+      title: 'Заключение о возможности/невозможности эксплуатации ТС',
+      type: 'number',
+    },
+    {
+      key: 'note',
+      title: 'Примечание прохождения',
+      type: 'text',
+    },
+  ],
+};
+
+export default class TechInspectionFormWrap extends FormWrap {
 
   constructor(props, context) {
     super(props);
@@ -35,5 +75,4 @@ export default class SparePartFormWrap extends FormWrap {
       />
       : null;
   }
-
 }

@@ -1,27 +1,28 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'constants/autobase';
 import ElementsList from 'components/ElementsList.jsx';
-import TechInspectionTable, { tableMeta } from './TechInspectionTable.jsx';
 import TechInspectionFormWrap from './TechInspectionFormWrap';
+import TechInspectionTable, { tableMeta } from './TechInspectionTable';
 
-// TODO permission
 @connectToStores(['autobase', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.techInspection}` })
 @staticProps({
-  entity: AUTOBASE.techInspection,
-  listName: 'techInspectionList',
-  formComponent: TechInspectionTable,
-  tableComponent: TechInspectionFormWrap,
+  entity: 'autobase_tech_inspection',
+  listName: 'insurancePolicyList',
+  tableComponent: TechInspectionTable,
+  formComponent: TechInspectionFormWrap,
   formMeta: tableMeta(),
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
-export default class techInspection extends ElementsList {
+export default class TechInspectionList extends ElementsList {
+  constructor(props, context) {
+    super(props);
+    this.removeElementAction = context.flux.getActions('autobase').removeTechInspection;
+  }
+
   componentDidMount() {
     super.componentDidMount();
-
     const { flux } = this.context;
     flux.getActions('autobase').getAutobaseListByType('techInspection');
-
-    this.removeElementAction = flux.getActions('autobase').removeTechInspection;
   }
 }

@@ -80,17 +80,6 @@ export default class EmployeesActions extends Actions {
     );
   }
 
-  techInspection(method, formState) {
-    const payload = cloneDeep(formState);
-    const { techInspection } = AUTOBASE;
-
-    return AutoBase.path(techInspection)[method](
-      payload,
-      this.getAutobaseListByType.bind(null, 'techInspection'),
-      'json',
-    );
-  }
-
   tire(method, formState) {
     const cleanFormState = clearPayload(formState);
 
@@ -194,6 +183,21 @@ export default class EmployeesActions extends Actions {
     return AutoBase.path(trueType).delete(
       payload,
       this.getAutobaseListByType.bind(null, type),
+      'json',
+    );
+  }
+
+  techInspection(method, formState) {
+    const payload = {
+      ...formState,
+      date_start: createValidDate(formState.date_start),
+      date_end: createValidDate(formState.date_end),
+    };
+    const { techInspection } = AUTOBASE;
+
+    return AutoBase.path(techInspection)[method](
+      payload,
+      this.getAutobaseListByType.bind(null, 'techInspection'),
       'json',
     );
   }

@@ -2,39 +2,42 @@ import React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 
 import ModalBody from 'components/ui/Modal';
-import { connectToStores } from 'utils/decorators';
-import Div from 'components/ui/Div.jsx';
+import { ExtDiv } from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
+import { connectToStores } from 'utils/decorators';
+
 
 @connectToStores(['autobase'])
-export default class TechInspectionForm extends Form {
+export default class BaseTechInspectionForm extends Form {
 
-  handleChangeWrap = name => (...arg) => this.handleChange(name, ...arg);
-  handleSubmitWrap = (...arg) => this.handleSubmit(...arg);
+  onChageWrap = name => (...arg) => this.handleChange(name, ...arg);
 
   render() {
-    const state = this.props.formState;
-    const errors = this.props.formErrors;
+    const {
+      isPermitted = false,
+      cols = [],
+    } = this.props;
 
-    const { cols = [],
-            isPermitted = false,
-           } = this.props;
+    const [
+      state = {},
+      errors = {},
+    ] = [this.props.formState, this.props.formErrors];
 
     const fields = cols.reduce((obj, val) => Object.assign(obj, { [val.name]: val }), {});
-    const IS_ALLOWED_OPTION = [{ id: true, value: 'Да' }, { id: false, value: 'Нет' }];
+    const IS_ALLOWED_OPTION = [{ value: true, label: 'Да' }, { value: false, label: 'Нет' }];
 
     const IS_CREATING = !state.id;
 
     let title = 'Изменение записи';
-    if (IS_CREATING) title = 'Создание записи';
+    if (IS_CREATING) title = 'Добавление записи';
 
     return (
-      <Modal {...this.props} bsSize="large" backdrop="static">
+      <Modal {...this.props} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
         </Modal.Header>
-        <Div style={{ padding: 15 }}>
+        <ExtDiv style={{ padding: 15 }}>
           <Row>
             <Col md={12}>
               <Field
@@ -65,13 +68,14 @@ export default class TechInspectionForm extends Form {
               <Field
                 type={fields.date_start.type}
                 label={fields.date_start.displayName}
-                value={state.date_start}
+                date={state.date_start}
+                time={false}
                 error={errors.date_start}
                 onChange={this.onChageWrap('date_start')}
                 disabled={!isPermitted}
               />
               <Field
-                type={fields.is_allowed.type}
+                type={'select'}
                 label={fields.is_allowed.displayName}
                 value={state.is_allowed}
                 error={errors.is_allowed}
@@ -90,7 +94,7 @@ export default class TechInspectionForm extends Form {
               />
             </Col>
           </Row>
-        </Div>
+        </ExtDiv>
         <ModalBody />
         <Modal.Footer>
           <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>

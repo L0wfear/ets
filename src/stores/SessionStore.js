@@ -1,6 +1,6 @@
 import { Store } from 'flummox';
 
-// import { autobase } from 'api/mocks/permissions';
+import { autobase } from 'api/mocks/permissions';
 import { clear } from 'utils/cache';
 import { setUserContext } from 'config/raven';
 import createFio from '../utils/create-fio.js';
@@ -54,6 +54,7 @@ export default class SessionStore extends Store {
     // Здесь можно вставлять моковые пермишины
     currentUser.permissions = [
       ...currentUser.permissions,
+      ...autobase,
     ];
 
     localStorage.setItem(global.SESSION_KEY, JSON.stringify(session));

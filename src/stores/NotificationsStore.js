@@ -19,11 +19,8 @@ export default class NotificationsStore extends Store {
           'batteryManufacturer',
           'sparePart',
           'tire',
-          'removeTire',
           'cloneTire',
           'battery',
-          'removeBatteryManufacturer',
-          'removeBatteryBrand',
         ],
       },
       {
@@ -54,9 +51,25 @@ export default class NotificationsStore extends Store {
       },
     ];
 
+    const removeNotificationQueue = [
+      {
+        actions: autoBaseActions,
+        actionNames: [
+          'removeBattery',
+          'removeTire',
+          'removeBatteryManufacturer',
+          'removeBatteryBrand',
+        ],
+      },
+    ];
+
     saveNotificationQueue.forEach(opts =>
       opts.actionNames.forEach(name =>
         this.register(opts.actions[name], this.handleSave)
+    ));
+    removeNotificationQueue.forEach(opts =>
+      opts.actionNames.forEach(name =>
+        this.register(opts.actions[name], this.handleRemove)
     ));
 
 
@@ -101,5 +114,8 @@ export default class NotificationsStore extends Store {
 
   handleSave() {
     global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
+  }
+  handleRemove() {
+    global.NOTIFICATION_SYSTEM.notify('Запись успешно удалена', 'success');
   }
 }

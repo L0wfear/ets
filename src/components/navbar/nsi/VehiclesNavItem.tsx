@@ -35,6 +35,7 @@ const VehicleNavItem: React.SFC<IPropsVehicleNavItem> = ({ path }) =>
     <MenuItem permissions={['autobase_tire.list']} active={path === '/tire'} href="#/tire">Реестр шин</MenuItem>
     <MenuItem permissions={['autobase_spare_part.list']} active={path === '/spare-part'} href="#/spare-part">Реестр запчастей</MenuItem>
     <MenuItem permissions={['autobase_tech_maintenance_order.list']} active={path === '/tech-maintenance-order-registry'} href="#/tech-maintenance-order-registry">Реестр регламентов ТО</MenuItem>
+    <MenuItem permissions={['autobase_tech_inspection.list']} active={path === '/tech-inspection'} href="#/tech-inspection">Техосмотр</MenuItem>
   </NavDropdown>;
 
 export default VehicleNavItem;

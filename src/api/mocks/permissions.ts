@@ -11,4 +11,5 @@ export const autobase: string[] = [
   // ...getFullAccess('tire'),
   // ...getFullAccess('spare_part'),
   ...getFullAccess('autobase_tech_maintenance_order'),
+  ...getFullAccess('autobase_tech_inspection'),
 ];

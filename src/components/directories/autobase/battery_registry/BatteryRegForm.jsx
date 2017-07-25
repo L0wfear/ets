@@ -45,7 +45,7 @@ export default class BaseBatteryForm extends Form {
     const IS_CREATING = !state.id;
 
     let title = 'Изменение существующего аккумулятора';
-    if (IS_CREATING) title = 'Добавление нового аккумулятора'
+    if (IS_CREATING) title = 'Добавление нового аккумулятора';
 
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">

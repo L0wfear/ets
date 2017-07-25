@@ -21,7 +21,7 @@ export const tableMeta = ({
         name: 'company_id',
         displayName: 'Организация',
         type: 'text',
-        rowNum: -1,
+        orderNum: -1,
         filter: {
           type: 'multiselect',
           options: organizations.map(({ company_id, short_name }) => ({ value: company_id, label: short_name })),

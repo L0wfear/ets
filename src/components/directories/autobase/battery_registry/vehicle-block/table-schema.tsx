@@ -16,6 +16,12 @@ export const validationSchema: IValidationSchema = {
       type: 'number',
       required: true,
     },
+    {
+      key: 'installed_at',
+      title: 'Дата монтажа',
+      type: 'date',
+      required: true,
+    },
   ],
 };
 
@@ -61,12 +67,13 @@ const CarIdRenderer: React.SFC<IPropsCarIdRenderer> = ({ value, outputListErrors
     boundKeys={[index, 'car_id']}
   />;
 
-const InstalledAtRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value, onChange, index}) =>
+const InstalledAtRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value, outputListErrors, onChange, index}) =>
   <ExtField
     type="date"
     label=""
     date={value}
     time={false}
+    error={get(outputListErrors[index], 'installed_at', '')}
     onChange={onChange}
     boundKeys={[index, 'installed_at']}
   />;

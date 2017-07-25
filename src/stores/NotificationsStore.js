@@ -22,7 +22,6 @@ export default class NotificationsStore extends Store {
           'removeTire',
           'cloneTire',
           'battery',
-          'removeBattery',
           'removeBatteryManufacturer',
           'removeBatteryBrand',
         ],

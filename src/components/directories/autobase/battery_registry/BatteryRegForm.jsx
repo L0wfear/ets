@@ -88,7 +88,7 @@ export default class BaseBatteryForm extends Form {
             <Col md={12}>
               <Field
                 type={fields.lifetime_months.type}
-                label={`${fields.lifetime_months.displayName} мес.`}
+                label={`${fields.lifetime_months.displayName}, мес.`}
                 value={state.lifetime_months}
                 error={errors.lifetime_months}
                 onChange={this.onChageWrap('lifetime_months')}

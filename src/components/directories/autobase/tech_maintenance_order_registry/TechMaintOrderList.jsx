@@ -4,7 +4,7 @@ import ElementsList from 'components/ElementsList.jsx';
 import TechMaintOrderFormWrap from './TechMaintOrderFormWrap';
 import TechMaintOrderTable from './TechMaintOrderTable';
 
-@connectToStores(['autobase', 'session'])
+@connectToStores(['autobase', 'session', 'objects'])
 @exportable({ entity: `autobase/${AUTOBASE.techMaintOrder}` })
 @staticProps({
   entity: 'autobase_tech_maintenance_order',
@@ -22,5 +22,10 @@ export default class TechMaintOrderList extends ElementsList {
     super.componentDidMount();
     const { flux } = this.context;
     flux.getActions('autobase').getAutobaseListByType('techMaintOrder');
+
+    // filter field dependecies
+    flux.getActions('objects').getSpecialModels();
+    flux.getActions('autobase').getAutobaseListByType('techMaintType');
+    flux.getActions('autobase').getAutobaseListByType('measureUnitRun');
   }
 }

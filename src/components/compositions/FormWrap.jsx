@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import { autobind } from 'core-decorators';
+
 import { validateField } from 'utils/validate/validateField.js';
 import { FluxContext } from 'utils/decorators';
 import { isEmpty } from 'utils/functions';
 import { saveDataSuccessNotification } from 'utils/notifications';
-import _ from 'lodash';
 
 const SAVE_BUTTON_LABEL_PROGRESS = 'Сохранение...';
 const SAVE_BUTTON_LABEL_DEFAULT = 'Сохранить';
@@ -94,29 +95,37 @@ export default class FormWrap extends Component {
   async handleFormSubmit() {
     const uniqueField = this.uniqueField || 'id';
     const { formState } = this.state;
+    let resultFormState = formState;
     let result = null;
+
     if (this.schema) {
       this.schema.properties.forEach((p) => {
         if (p.type === 'number' && p.float) {
           formState[p.key] = !isNaN(formState[p.key]) && formState[p.key] !== null ? parseFloat(formState[p.key]) : null;
+          resultFormState = formState;
         }
         if (p.type === 'number' && p.integer) {
           const parsedValue = parseInt(formState[p.key], 10);
           formState[p.key] = !isNaN(parsedValue) ? parsedValue : null;
+          resultFormState = formState;
+        }
+
+        if (typeof p.isSubmitted === 'function') {
+          resultFormState = p.isSubmitted(formState) ? formState : _.omit(formState, p.key);
         }
       });
     }
 
     // понять, обновлять форму или создавать новую
     // можно по отсутствию уникального идентификатора
-    if (isEmpty(formState[uniqueField])) {
+    if (isEmpty(resultFormState[uniqueField])) {
       if (typeof this.createAction === 'function') {
         try {
           this.setState({
             saveButtonLabel: SAVE_BUTTON_LABEL_PROGRESS,
             saveButtonEnability: false,
           });
-          result = await this.createAction(formState);
+          result = await this.createAction(resultFormState);
           this.setState({
             saveButtonLabel: SAVE_BUTTON_LABEL_DEFAULT,
             saveButtonEnability: true,
@@ -139,7 +148,7 @@ export default class FormWrap extends Component {
             saveButtonLabel: SAVE_BUTTON_LABEL_PROGRESS,
             saveButtonEnability: false,
           });
-          result = await this.updateAction(formState);
+          result = await this.updateAction(resultFormState);
           this.setState({
             saveButtonLabel: SAVE_BUTTON_LABEL_DEFAULT,
             saveButtonEnability: true,

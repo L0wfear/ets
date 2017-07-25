@@ -165,7 +165,7 @@ export default class EmployeesActions extends Actions {
       'json',
     );
   }
-  removetechMaintOrder(id) {
+  removeTechMaintOrder(id) {
     const { techMaintOrder } = AUTOBASE;
     return AutoBase.path(`${techMaintOrder}/${id}`).delete(
       {},

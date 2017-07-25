@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import Select from 'react-select';
 import { isString, isNumber } from 'lodash';
 
+export const defaultSelectListMapper = ({ id, name }) => ({ value: id, label: name });
+
 const defaultSortingFunction = (a, b) => {
   if (isNumber(a.label)) {
     return a.label - b.label;

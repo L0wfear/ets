@@ -1,3 +1,5 @@
+import { IReactSelectOption } from 'components/ui/@types/EtsSelect.h';
+
 export interface IDataTableSelectedRowPropsData {
   [fieldName: string]: any;
   rowNumber: number;
@@ -20,6 +22,7 @@ type FieldTypes =
 
 interface IDataTableColFilter {
   type: FieldTypes;
+  options?: IReactSelectOption[];
 }
 
 export interface IDataTableColSchema {

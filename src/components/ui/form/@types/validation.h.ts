@@ -1,10 +1,23 @@
-export interface IValidationSchemaProperties {
+interface IValidationSchemaProperties<TValue, TFormData> {
   key: string;
   required?: boolean;
+  integer?: boolean;
   title: string;
-  type: 'number' | 'string' | 'date' | 'datetime';
+  maxLength?: number;
+  max?: number;
+  min?: number;
+  isSubmitted?(value: TValue, formData: TFormData): boolean;
+  type: 'number' | 'string' | 'date' | 'datetime' | 'boolean';
 }
 
-export interface IValidationSchema {
-  properties: IValidationSchemaProperties[];
+interface IValidationSchemaDependensyField<TValue, TFormData> {
+  validator?(value: TValue, formData: TFormData): boolean | string;
+}
+interface IValidationSchemaDependencies<TValue, TFormData> {
+  [field: string]: IValidationSchemaDependensyField<TValue, TFormData>[];
+}
+
+export interface IValidationSchema<TValue = any, TFormData = any> {
+  properties: IValidationSchemaProperties<TValue, TFormData>[];
+  dependencies?: IValidationSchemaDependencies<TValue, TFormData>;
 }

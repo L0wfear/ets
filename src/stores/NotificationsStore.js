@@ -21,6 +21,7 @@ export default class NotificationsStore extends Store {
           'tire',
           'cloneTire',
           'battery',
+          'techMaintOrder',
         ],
       },
       {
@@ -59,6 +60,7 @@ export default class NotificationsStore extends Store {
           'removeTire',
           'removeBatteryManufacturer',
           'removeBatteryBrand',
+          'removeTechMaintOrder',
         ],
       },
     ];

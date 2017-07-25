@@ -1,6 +1,7 @@
 export interface IReactSelectOption {
   label: number | string;
   value: number | string;
+  [additionalFields: string]: any;
 }
 
 export interface IPropsEtsSelect {

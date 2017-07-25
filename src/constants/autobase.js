@@ -14,4 +14,5 @@ export default {
   batteryAvailableCar: 'battery_available_car',
   techMaintOrder: 'tech_maintenance_order_registry',
   techMaintType: 'tech_maintenance_type',
+  measureUnitRun: 'measure_unit_run',
 };

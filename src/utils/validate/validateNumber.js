@@ -31,15 +31,17 @@ const fixedValidators = [
   {
     name: 'min',
     validator(config, value) {
-      if (typeof config.min === 'undefined') return undefined;
-      return value < config.min ? `Поле "${config.title || config.key}" должно быть не меньше ${config.min}` : undefined;
+      const parsedValue = parseInt(value, 10);
+      if (typeof config.min === 'undefined' || isNaN(parsedValue)) return undefined;
+      return parsedValue < config.min ? `Поле "${config.title || config.key}" должно быть не меньше ${config.min}` : undefined;
     },
   },
   {
     name: 'max',
     validator(config, value) {
-      if (typeof config.max === 'undefined') return undefined;
-      return value > config.max ? `Поле "${config.title || config.key}" должно быть не больше ${config.max}` : undefined;
+      const parsedValue = parseInt(value, 10);
+      if (typeof config.max === 'undefined' || isNaN(parsedValue)) return undefined;
+      return parsedValue > config.max ? `Поле "${config.title || config.key}" должно быть не больше ${config.max}` : undefined;
     },
   },
   {

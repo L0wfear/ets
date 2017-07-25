@@ -2,10 +2,9 @@ import * as React from 'react';
 
 import { IBaseForm } from 'components/ui/@types/Form.h';
 
-import BatteryRegTable from 'components/directories/autobase/battery_registry/BatteryRegTable';
+import Table from 'components/directories/autobase/insurance_policy/InsurancePolicyTable';
 
 const schemaMakers = {
-  insurance_type_id: schema => ({ ...schema, name: 'insurance_type_name', displayName: 'TODO Руслан | + insurance_type_name' }),
 };
 
 interface IPropsBatteryTab extends IBaseForm {
@@ -13,7 +12,7 @@ interface IPropsBatteryTab extends IBaseForm {
 }
 
 const BatteryTab: React.SFC<IPropsBatteryTab> = ({ data = [] }) =>
-  <BatteryRegTable
+  <Table
     title={''}
     results={data}
     schemaMakers={schemaMakers}

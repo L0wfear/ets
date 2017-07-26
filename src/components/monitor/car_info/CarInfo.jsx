@@ -238,7 +238,6 @@ export default class CarInfo extends Component {
   renderMain() {
     const { imageUrl } = this.state;
     const trackingMode = this.state.trackingMode || this.store.state.trackingMode;
-    console.log('trackingMode', trackingMode);
     const { car } = this.props;
 
     const title = ''; // должен быть model title

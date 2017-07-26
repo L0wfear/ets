@@ -8,7 +8,7 @@ import TechInspectionTable, { tableMeta } from './TechInspectionTable';
 @exportable({ entity: `autobase/${AUTOBASE.techInspection}` })
 @staticProps({
   entity: 'autobase_tech_inspection',
-  listName: 'insurancePolicyList',
+  listName: 'techInspectionList',
   tableComponent: TechInspectionTable,
   formComponent: TechInspectionFormWrap,
   formMeta: tableMeta(),

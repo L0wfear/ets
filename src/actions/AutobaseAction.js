@@ -187,8 +187,9 @@ export default class EmployeesActions extends Actions {
     );
   }
 
-  techInspection(method, formState) {
+  techInspection(method, car_id, formState) {
     const payload = {
+      ...car_id,
       ...formState,
       date_start: createValidDate(formState.date_start),
       date_end: createValidDate(formState.date_end),
@@ -202,24 +203,23 @@ export default class EmployeesActions extends Actions {
     );
   }
 
-  removeTechInspection(formState) {
-    const payload = { car_id: formState };
-    const type = 'techInspection';
+  removeTechInspection(id) {
+    const { techInspection } = AUTOBASE;
 
-    return AutoBase.path(AUTOBASE[type]).delete(
-      payload,
-      this.getAutobaseListByType.bind(null, type),
+    return AutoBase.path(`${techInspection}/${id}`).delete(
+      {},
+      this.getAutobaseListByType.bind(null, 'techInspection'),
       'json',
     );
   }
 
-  insurancePolicy(method, formState) {
+  insurancePolicy(method, car_id, formState) {
     const payload = {
+      ...car_id,
       ...formState,
       date_start: createValidDate(formState.date_start),
       date_end: createValidDate(formState.date_end),
     };
-
     const { insurancePolicy } = AUTOBASE;
 
     return AutoBase.path(insurancePolicy)[method](
@@ -229,13 +229,12 @@ export default class EmployeesActions extends Actions {
     );
   }
 
-  removeInsurancePolicy(formState) {
-    const payload = { car_id: formState };
-    const type = 'insurancePolicy';
+  removeInsurancePolicy(id) {
+    const { insurancePolicy } = AUTOBASE;
 
-    return AutoBase.path(AUTOBASE[type]).delete(
-      payload,
-      this.getAutobaseListByType.bind(null, type),
+    return AutoBase.path(`${insurancePolicy}/${id}`).delete(
+      {},
+      this.getAutobaseListByType.bind(null, 'insurancePolicy'),
       'json',
     );
   }

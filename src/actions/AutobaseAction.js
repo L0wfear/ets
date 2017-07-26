@@ -206,9 +206,7 @@ export default class EmployeesActions extends Actions {
     const payload = { car_id: formState };
     const type = 'techInspection';
 
-    const trueType = AUTOBASE[type];
-
-    return AutoBase.path(trueType).delete(
+    return AutoBase.path(AUTOBASE[type]).delete(
       payload,
       this.getAutobaseListByType.bind(null, type),
       'json',
@@ -231,11 +229,13 @@ export default class EmployeesActions extends Actions {
     );
   }
 
-  removeInsurancePolicy(id) {
-    const { batteryBrand } = AUTOBASE;
-    return AutoBase.path(`${batteryBrand}/${id}`).delete(
-      {},
-      this.getAutobaseListByType.bind(null, 'techInspection'),
+  removeInsurancePolicy(formState) {
+    const payload = { car_id: formState };
+    const type = 'insurancePolicy';
+
+    return AutoBase.path(AUTOBASE[type]).delete(
+      payload,
+      this.getAutobaseListByType.bind(null, type),
       'json',
     );
   }

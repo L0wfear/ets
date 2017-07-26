@@ -31,8 +31,8 @@ export default class BaseBatteryForm extends Form {
 
     const IS_CREATING = !state.id;
 
-    let title = 'Изменение существующего аккумулятора';
-    if (IS_CREATING) title = 'Добавление нового аккумулятора';
+    let title = 'Изменение записи';
+    if (IS_CREATING) title = 'Добавление записи';
 
     return (
       <Modal {...this.props} backdrop="static">
@@ -103,11 +103,11 @@ export default class BaseBatteryForm extends Form {
                 disabled={!isPermitted}
               />
               <Field
-                type={fields.qwe.type}
-                label={fields.qwe.displayName}
-                value={state.qwe}
-                error={errors.qwe}
-                onChange={this.onChageWrap('qwe')}
+                type={fields.lifetime_months.type}
+                label={fields.lifetime_months.displayName}
+                value={state.lifetime_months}
+                error={errors.lifetime_months}
+                onChange={this.onChageWrap('lifetime_months')}
                 disabled={!isPermitted}
               />
               <Field

@@ -8,8 +8,8 @@ import { tabable } from 'components/compositions/hoc';
 import InfoTab from './tabs/InfoTab';
 import BatteryTab from './tabs/BatteryTab';
 import TireTab from './tabs/TireTab';
-import InsurancePolicy from './tabs/InsurancePolicy.tsx';
-import TechInspetionTab from './tabs/TechInspetionTab.tsx';
+import InsurancePolicyList from 'components/directories/autobase/insurance_policy/InsurancePolicyList.jsx';
+import TechInspectionList from 'components/directories/autobase/tech_inspection/TechInspectionList.jsx';
 
 class CarForm extends Form {
   constructor(props) {
@@ -77,14 +77,17 @@ class CarForm extends Form {
               />
             </Tab>
             <Tab eventKey={4} title="Страхование">
-              <TireTab
-                data={this.props.insurancePolicy}
-              /></Tab>
+              <InsurancePolicyList
+                car_id={state.asuods_id}
+                {...this.props}
+              />
+            </Tab>
             <Tab eventKey={5} title="ДТП" disabled>Tab 3 content</Tab>
             <Tab eventKey={6} title="ТО и ремонты" disabled>Tab 3 content</Tab>
             <Tab eventKey={7} title="Техосмотр">
-              <TechInspetionTab
-                data={this.props.techInspectionList}
+              <TechInspectionList
+                car_id={state.asuods_id}
+                {...this.props}
               />
             </Tab>
           </Tabs>

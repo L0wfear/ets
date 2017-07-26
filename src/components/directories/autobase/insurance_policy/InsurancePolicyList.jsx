@@ -17,14 +17,16 @@ import InsurancePolicyTable, { tableMeta } from './InsurancePolicyTable';
 export default class InsurancePolicyList extends ElementsList {
   constructor(props, context) {
     super(props);
+
     this.removeElementAction = context.flux.getActions('autobase').removeInsurancePolicy;
   }
 
   componentDidMount() {
+    const { car_id = -1 } = this.props;
+
     super.componentDidMount();
     const { flux } = this.context;
-    flux.getActions('autobase').getAutobaseListByType('insurancePolicy');
+    flux.getActions('autobase').getAutobaseListByType('insurancePolicy', { car_id });
     flux.getActions('autobase').getAutobaseListByType('insuranceType');
-    
   }
 }

@@ -53,7 +53,7 @@ const schema = {
       required: true,
     },
     {
-      key: 'qwe',
+      key: 'lifetime_months',
       title: 'Срок действия, мес.',
       type: 'number',
       maxLength: 128,
@@ -73,12 +73,12 @@ export default class InsurancePolicyFormWrap extends FormWrap {
 
   constructor(props, context) {
     super(props);
-
+    const { car_id } = props;
     this.schema = schema;
     this.preventDefaultNotification = true;
 
-    this.updateAction = context.flux.getActions('autobase').insurancePolicy.bind(null, 'put');
-    this.createAction = context.flux.getActions('autobase').insurancePolicy.bind(null, 'post');
+    this.createAction = context.flux.getActions('autobase').insurancePolicy.bind(null, 'post', { car_id });
+    this.updateAction = context.flux.getActions('autobase').insurancePolicy.bind(null, 'put', { car_id });
   }
 
   render() {

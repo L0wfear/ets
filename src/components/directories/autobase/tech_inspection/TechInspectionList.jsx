@@ -23,6 +23,8 @@ export default class TechInspectionList extends ElementsList {
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
-    flux.getActions('autobase').getAutobaseListByType('techInspection');
+    const { car_id } = this.props;
+
+    flux.getActions('autobase').getAutobaseListByType('techInspection', { car_id });
   }
 }

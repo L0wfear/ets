@@ -50,12 +50,13 @@ export default class TechInspectionFormWrap extends FormWrap {
 
   constructor(props, context) {
     super(props);
+    const { car_id } = this.props;
 
     this.schema = schema;
     this.preventDefaultNotification = true;
 
-    this.createAction = context.flux.getActions('autobase').techInspection.bind(null, 'post');
-    this.updateAction = context.flux.getActions('autobase').techInspection.bind(null, 'put');
+    this.createAction = context.flux.getActions('autobase').techInspection.bind(null, 'post', { car_id });
+    this.updateAction = context.flux.getActions('autobase').techInspection.bind(null, 'put', { car_id });
   }
 
   render() {

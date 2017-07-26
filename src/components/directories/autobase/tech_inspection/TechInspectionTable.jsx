@@ -102,6 +102,7 @@ export default (props) => {
     results={props.data}
     tableMeta={sortedMeta}
     renderers={renderers}
+    noFilter
     {...props}
   />);
 };

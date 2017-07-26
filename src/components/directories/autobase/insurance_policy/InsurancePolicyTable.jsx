@@ -76,7 +76,7 @@ export const tableMeta = ({
         },
       },
       {
-        name: 'qwe',
+        name: 'lifetime_months',
         displayName: 'Срок действия, мес.',
         orderNum: 7,
         type: 'number',
@@ -116,6 +116,7 @@ export default (props) => {
     results={props.data}
     tableMeta={sortedMeta}
     renderers={renderers}
+    noFilter
     {...props}
   />);
 };

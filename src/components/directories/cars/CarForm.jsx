@@ -50,7 +50,7 @@ class CarForm extends Form {
     const COMPANY_ELEMENTS = companyStructureList.map(el => ({ value: el.id, label: el.name }));
 
     return (
-      <Modal {...this.props} backdrop="static">
+      <Modal {...this.props} bsSize="lg" backdrop="static">
 
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">Карточка транспортного средства</Modal.Title>

@@ -10,25 +10,25 @@ import {
   TECH_MAIN_ORDER_SEQUENCE_SELECT_OPTIONS,
   IS_NOT_SELECT_OPTIONS_INT,
 } from 'constants/dictionary';
-import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
+// import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 import DataTableComponent from 'components/ui/table/DataTable';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
 export function tableMeta({
-  techMaintTypeList = [],
-  specialModelsList = [],
-  measureUnitRunList = [],
+  // techMaintTypeList = [],
+  // specialModelsList = [],
+  // measureUnitRunList = [],
 } = {}): IDataTableSchema {
   const meta: IDataTableSchema = {
     cols: [
       {
-        name: 'tech_maintenance_type_id',
+        name: 'tech_maintenance_type_name',
         displayName: 'Тип ТО',
         type: 'select',
         filter: {
           type: 'multiselect',
-          options: techMaintTypeList.map(defaultSelectListMapper),
+          // options: techMaintTypeList.map(defaultSelectListMapper),
         },
       },
       {
@@ -49,12 +49,12 @@ export function tableMeta({
         },
       },
       {
-        name: 'car_model_id',
+        name: 'car_model_name',
         displayName: 'Модель ТС',
         type: 'select',
         filter: {
           type: 'multiselect',
-          options: specialModelsList.map(defaultSelectListMapper),
+          // options: specialModelsList.map(defaultSelectListMapper),
         },
       },
       {
@@ -75,12 +75,12 @@ export function tableMeta({
         },
       },
       {
-        name: 'measure_unit_run_id',
+        name: 'measure_unit_run_name',
         displayName: 'Пробег измеряется',
         type: 'select',
         filter: {
           type: 'multiselect',
-          options: measureUnitRunList.map(defaultSelectListMapper),
+          // options: measureUnitRunList.map(defaultSelectListMapper),
         },
       },
       {
@@ -107,9 +107,9 @@ export function tableMeta({
 }
 
 const renderers: ISchemaRenderer = {
-  tech_maintenance_type_id: meta => <div>{meta.rowData.tech_maintenance_type_name}</div>,
-  car_model_id: meta => <div>{meta.rowData.car_model_name}</div>,
-  measure_unit_run_id: meta => <div>{meta.rowData.measure_unit_run_name}</div>,
+  // tech_maintenance_type_id: meta => <div>{meta.rowData.tech_maintenance_type_name}</div>,
+  // car_model_id: meta => <div>{meta.rowData.car_model_name}</div>,
+  // measure_unit_run_id: meta => <div>{meta.rowData.measure_unit_run_name}</div>,
   interval_time_type: meta => <div>{TIME_MEASURES[meta.data]}</div>,
   is_periodic: meta => <input type="checkbox" disabled checked={meta.data} />,
 };

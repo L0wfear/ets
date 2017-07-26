@@ -1,5 +1,6 @@
 import React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
+import { get } from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
 import { connectToStores } from 'utils/decorators';
@@ -16,9 +17,25 @@ import {
 export default class TechMaintOrderForm extends Form {
   async componentDidMount() {
     const { flux } = this.context;
+    const { tech_maintenance_type_id = '' } = this.props.formState;
     flux.getActions('objects').getSpecialModels();
     flux.getActions('autobase').getAutobaseListByType('techMaintType');
-    flux.getActions('autobase').getAutobaseListByType('measureUnitRun');
+
+    if (tech_maintenance_type_id !== '') {
+      this.context.flux.getActions('autobase').getAutobaseListByType('measureUnitRun', {
+        tech_maintenance_type_id,
+      });
+    }
+  }
+  handleTechMaintTypeChange = (key, value) => {
+    if (value !== '') {
+      this.context.flux.getActions('autobase').getAutobaseListByType('measureUnitRun', {
+        tech_maintenance_type_id: value,
+      });
+    }
+
+    this.handleChange('measure_unit_run_id', null);
+    this.handleChange(key, value);
   }
   render() {
     const state = this.props.formState;
@@ -39,6 +56,8 @@ export default class TechMaintOrderForm extends Form {
     let title = 'Изменение записи';
     if (IS_CREATING) title = 'Создание записи';
 
+    const tech_maintenance_type_id = get(state, 'tech_maintenance_type_id', '');
+
     return (
       <Modal {...this.props} backdrop="static">
         <Modal.Header closeButton>
@@ -54,7 +73,7 @@ export default class TechMaintOrderForm extends Form {
                 value={state.tech_maintenance_type_id}
                 error={errors.tech_maintenance_type_id}
                 disabled={!isPermitted}
-                onChange={this.handleChange}
+                onChange={this.handleTechMaintTypeChange}
                 boundKeys={['tech_maintenance_type_id']}
               />
             </Col>
@@ -123,7 +142,7 @@ export default class TechMaintOrderForm extends Form {
                 options={MEASURE_UNITS_RUN}
                 value={state.measure_unit_run_id}
                 error={errors.measure_unit_run_id}
-                disabled={!isPermitted}
+                disabled={!isPermitted || tech_maintenance_type_id === ''}
                 onChange={this.handleChange}
                 boundKeys={['measure_unit_run_id']}
               />

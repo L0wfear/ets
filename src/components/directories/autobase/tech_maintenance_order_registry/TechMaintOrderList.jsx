@@ -24,8 +24,8 @@ export default class TechMaintOrderList extends ElementsList {
     flux.getActions('autobase').getAutobaseListByType('techMaintOrder');
 
     // filter field dependecies
-    flux.getActions('objects').getSpecialModels();
-    flux.getActions('autobase').getAutobaseListByType('techMaintType');
-    flux.getActions('autobase').getAutobaseListByType('measureUnitRun');
+    // flux.getActions('objects').getSpecialModels();
+    // flux.getActions('autobase').getAutobaseListByType('techMaintType');
+    // flux.getActions('autobase').getAutobaseListByType('measureUnitRun');
   }
 }

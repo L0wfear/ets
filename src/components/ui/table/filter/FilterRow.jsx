@@ -4,9 +4,9 @@ import { Input } from 'react-bootstrap';
 import _ from 'lodash';
 
 import FilterInput from 'components/ui/input/FilterInput/FilterInput';
-import EtsSelect from '../../EtsSelect.jsx';
+import EtsSelect from 'components/ui/input/EtsSelect';
 import Div from '../../Div.jsx';
-import IntervalPicker from '../../IntervalPicker.jsx';
+import IntervalPicker from 'components/ui/input/IntervalPicker';
 
 @autobind
 export default class FilterRow extends React.Component {

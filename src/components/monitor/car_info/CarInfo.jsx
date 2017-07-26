@@ -9,7 +9,7 @@ import { LOAD_PROCESS_TEXT } from 'constants/statuses';
 import { TRACK_COLORS } from 'constants/track.js';
 import { makeDateFromUnix, getStartOfToday } from 'utils/dates';
 import Panel from 'components/ui/Panel.jsx';
-import DatePicker from 'components/ui/DatePicker.jsx';
+import DatePicker from 'components/ui/input/DatePicker';
 import config from '../../../config.js';
 import Charts from './Charts.jsx';
 import VehicleInfo from './VehicleInfo.jsx';

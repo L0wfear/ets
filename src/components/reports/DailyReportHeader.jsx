@@ -3,7 +3,7 @@ import connectToStores from 'flummox/connect';
 import { Button, Row, Col } from 'react-bootstrap';
 import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
-import Datepicker from 'components/ui/DatePicker.jsx';
+import Datepicker from 'components/ui/input/DatePicker';
 import { getToday859am, getYesterday9am } from 'utils/dates';
 import { isEmpty } from 'utils/functions';
 

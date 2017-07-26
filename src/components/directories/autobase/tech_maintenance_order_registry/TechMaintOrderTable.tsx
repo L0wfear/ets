@@ -10,7 +10,7 @@ import {
   TECH_MAIN_ORDER_SEQUENCE_SELECT_OPTIONS,
   IS_NOT_SELECT_OPTIONS_INT,
 } from 'constants/dictionary';
-import { defaultSelectListMapper } from 'components/ui/EtsSelect';
+import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 import DataTableComponent from 'components/ui/table/DataTable';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;

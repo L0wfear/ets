@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import Div from 'components/ui/Div.jsx';
 import { Button, Row, Col } from 'react-bootstrap';
 import Field from 'components/ui/Field.jsx';
-import Datepicker from 'components/ui/DatePicker.jsx';
-import { getToday9am, getTomorrow9am, makeDate } from 'utils/dates';
+import Datepicker from 'components/ui/input/DatePicker';
+import { getToday9am, getTomorrow9am } from 'utils/dates';
 import { saveData } from 'utils/functions';
 import { connectToStores, FluxContext } from 'utils/decorators';
 

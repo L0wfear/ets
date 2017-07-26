@@ -6,7 +6,7 @@ import ModalBody from 'components/ui/Modal';
 import RouteInfo from 'components/route/RouteInfo.jsx';
 import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
 import Field from 'components/ui/Field.jsx';
-import EtsSelect from 'components/ui/EtsSelect.jsx';
+import EtsSelect from 'components/ui/input/EtsSelect';
 import Div from 'components/ui/Div.jsx';
 import moment from 'moment';
 import { isEmpty } from 'utils/functions';

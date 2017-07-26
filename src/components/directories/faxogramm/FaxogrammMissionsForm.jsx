@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
-import EtsSelect from 'components/ui/EtsSelect.jsx';
+import EtsSelect from 'components/ui/input/EtsSelect';
 import Div from 'components/ui/Div.jsx';
 import Form from 'components/compositions/Form.jsx';
 import _ from 'lodash';

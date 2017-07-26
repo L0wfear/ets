@@ -5,7 +5,7 @@ import ModalBody from 'components/ui/Modal';
 import { connectToStores } from 'utils/decorators';
 import Div, { ExtDiv } from 'components/ui/Div.jsx';
 import { ExtField } from 'components/ui/Field.jsx';
-import { defaultSelectListMapper } from 'components/ui/EtsSelect';
+import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 import Form from 'components/compositions/Form.jsx';
 import {
   TIME_MEASURES_SELECT_OPTIONS,

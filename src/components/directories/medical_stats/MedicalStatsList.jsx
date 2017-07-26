@@ -1,7 +1,7 @@
 import React from 'react';
 import { staticProps, exportable, connectToStores } from 'utils/decorators';
 import ElementsList from 'components/ElementsList.jsx';
-import Datepicker from 'components/ui/DatePicker.jsx';
+import Datepicker from 'components/ui/input/DatePicker';
 import { getToday0am, getToday2359, createValidDateTime } from 'utils/dates';
 import MedicalStatsTable from './MedicalStatsTable.jsx';
 

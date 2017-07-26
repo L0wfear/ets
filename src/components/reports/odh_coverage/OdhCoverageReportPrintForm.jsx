@@ -5,7 +5,7 @@ import { Button, Modal } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import { saveData } from 'utils/functions';
 import { getToday9am, getTomorrow9am, getDate9am, getYesterday9am, getToday859am, getFormattedDateTime } from 'utils/dates';
-import Datepicker from 'components/ui/DatePicker.jsx';
+import Datepicker from 'components/ui/input/DatePicker';
 import Div from 'components/ui/Div.jsx';
 
 @FluxContext

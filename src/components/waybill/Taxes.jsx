@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { autobind } from 'core-decorators';
 import Table from 'components/ui/table/Table.jsx';
 import { Input, Button } from 'react-bootstrap';
-import EtsSelect from 'components/ui/EtsSelect.jsx';
+import EtsSelect from 'components/ui/input/EtsSelect';
 import Div from 'components/ui/Div.jsx';
 import { isEmpty } from 'utils/functions';
 import cx from 'classnames';

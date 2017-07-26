@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col, Button, ButtonToolbar } from 'react-bootstrap';
-import Datepicker from 'components/ui/DatePicker.jsx';
+import Datepicker from 'components/ui/input/DatePicker';
 import Field from 'components/ui/Field.jsx';
 import connectToStores from 'flummox/connect';
 

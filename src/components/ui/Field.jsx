@@ -4,8 +4,8 @@ import { Input } from 'react-bootstrap';
 import cx from 'classnames';
 
 import { onChangeWithKeys } from 'components/compositions/hoc';
-import EtsSelect from './EtsSelect.jsx';
-import DatePicker from './DatePicker.jsx';
+import DatePicker from 'components/ui/input/DatePicker';
+import EtsSelect from 'components/ui/input/EtsSelect';
 import Div from './Div.jsx';
 import Preloader from './Preloader.jsx';
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Row, Col } from 'react-bootstrap';
 import Div from 'components/ui/Div.jsx';
-import Datepicker from 'components/ui/DatePicker.jsx';
+import Datepicker from 'components/ui/input/DatePicker';
 
 export default class OdhCoverageReportHeader extends Component {
 

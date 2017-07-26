@@ -8,7 +8,7 @@ import {
 
 import Div from 'components/ui/Div.jsx';
 import FieldComponent from 'components/ui/Field.jsx';
-import Datepicker from 'components/ui/DatePicker.jsx';
+import Datepicker from 'components/ui/input/DatePicker';
 import { getToday859am, getYesterday9am , createValidDateTime } from 'utils/dates';
 import { bindable } from 'utils/decorators';
 import { GEOZONE_OBJECTS } from 'constants/dictionary';

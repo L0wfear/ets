@@ -7,7 +7,7 @@ import Input from './Input';
 import { FILTER_VALUES, FILTER_SELECT_TYPES } from './constants';
 import { createValidDateTime, createValidDate } from 'utils/dates';
 import { IPropsEtsSelect } from 'components/ui/@types/EtsSelect.h';
-import ETSSelect from 'components/ui/EtsSelect';
+import ETSSelect from 'components/ui/input/EtsSelect';
 import { isEqualOr } from 'utils/functions';
 
 const EtsSelect: React.ComponentClass<IPropsEtsSelect> = ETSSelect;

@@ -7,7 +7,7 @@ import {
   LARGE_ICON_RADIUS,
 } from 'constants/CarIcons.js';
 import CoordsAnimation from './CoordsAnimation.js';
-import { getSmallIcon, getBigIcon } from '../../../../icons/car.js';
+import { getSmallIcon, getBigIcon } from 'assets/icons/car.js';
 import Marker from '../BaseMarker.js';
 import Track from '../../Track.js';
 

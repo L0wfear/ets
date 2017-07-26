@@ -94,7 +94,7 @@ export default class MainPage extends React.Component {
     const path = this.props.location.pathname;
     const isOkrug = user.okrug_id !== null;
     const defaultProps = { isOkrug, path };
-// TODO изменить разрешение ** на нужное и добавить компоненты
+
     return (
       <Navbar justified fluid>
 

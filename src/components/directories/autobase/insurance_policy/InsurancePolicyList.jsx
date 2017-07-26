@@ -4,7 +4,7 @@ import ElementsList from 'components/ElementsList.jsx';
 import InsurancePolicyFormWrap from './InsurancePolicyFormWrap.jsx';
 import InsurancePolicyTable, { tableMeta } from './InsurancePolicyTable';
 
-@connectToStores(['autobase', 'session'])
+@connectToStores(['autobase', 'objects', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.insurancePolicy}` })
 @staticProps({
   entity: 'autobase_insurance_policy_registry',
@@ -22,11 +22,15 @@ export default class InsurancePolicyList extends ElementsList {
   }
 
   componentDidMount() {
-    const { car_id = -1 } = this.props;
-
     super.componentDidMount();
     const { flux } = this.context;
-    flux.getActions('autobase').getAutobaseListByType('insurancePolicy', { car_id });
+    const { car_id = -1 } = this.props;
+    if (car_id === -1) {
+      flux.getActions('autobase').getAutobaseListByType('insurancePolicy');
+    } else {
+      flux.getActions('autobase').getAutobaseListByType('insurancePolicy', car_id);
+    }
     flux.getActions('autobase').getAutobaseListByType('insuranceType');
+    flux.getActions('objects').getCars();
   }
 }

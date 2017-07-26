@@ -1,16 +1,25 @@
 import React from 'react';
 import { get } from 'lodash';
 
-import { makeSchema, sortSchemaCols } from 'components/ui/table/utils';
 import Table from 'components/ui/table/DataTable.jsx';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 
 export const tableMeta = ({
+  carsList = [],
   insuranceTypeList = [],
-  schemaMakers = {},
-} = {}) => {
-  const schema = {
+} = {}) => (
+  {
     cols: [
+      {
+        name: 'car_id',
+        displayName: 'Транспортное средство',
+        type: 'number',
+        orderNum: 0.5,
+        filter: {
+          type: 'multiselect',
+          options: carsList.map(el => ({ value: el.asuods_id, label: el.gov_number })),
+        },
+      },
       {
         name: 'insurer',
         displayName: 'Страховая организация',
@@ -76,15 +85,6 @@ export const tableMeta = ({
         },
       },
       {
-        name: 'lifetime_months',
-        displayName: 'Срок действия, мес.',
-        orderNum: 7,
-        type: 'number',
-        filter: {
-          type: 'multiselect',
-        },
-      },
-      {
         name: 'price',
         displayName: 'Стоимость, руб.',
         type: 'number',
@@ -94,29 +94,30 @@ export const tableMeta = ({
         },
       },
     ],
-  };
-
-  return makeSchema(schema, schemaMakers);
-};
+  }
+);
 
 export default (props) => {
-  const { insuranceTypeList = [] } = props;
-
+  const { insuranceTypeList = [], carsList = [], car_id = 0 } = props;
+  console.log(carsList)
   const renderers = {
     insurance_type_id: ({ data }) => <div>{get(insuranceTypeList.find(s => s.id === data), 'name', '')}</div>,
     date_start: ({ data }) => (<DateFormatter date={data} />),
     date_end: ({ data }) => (<DateFormatter date={data} />),
+    car_id: ({ data }) => <div>{get(carsList.find(s => s.asuods_id === data), 'gov_number', '---')}</div>,
   };
 
-  const meta = tableMeta(props);
-  const sortedMeta = sortSchemaCols(meta);
+  let meta = tableMeta(props);
+  if (!!car_id) {
+    meta = { cols: meta.cols.filter(el => el.name !== 'car_id') };
+  }
 
   return (<Table
     title="Реестр страховок"
     results={props.data}
-    tableMeta={sortedMeta}
+    tableMeta={meta}
     renderers={renderers}
-    noFilter
+    noFilter={!!car_id}
     {...props}
   />);
 };

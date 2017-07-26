@@ -14,6 +14,6 @@ export {
   batteryManufacturer,
   sparePart,
   techMaintOrder,
-//  techInspection,
-//  insurancePolicy,
+  techInspection,
+  insurancePolicy,
 };

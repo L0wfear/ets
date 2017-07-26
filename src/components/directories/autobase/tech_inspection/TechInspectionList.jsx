@@ -4,7 +4,7 @@ import ElementsList from 'components/ElementsList.jsx';
 import TechInspectionFormWrap from './TechInspectionFormWrap';
 import TechInspectionTable, { tableMeta } from './TechInspectionTable';
 
-@connectToStores(['autobase', 'session'])
+@connectToStores(['autobase', 'objects', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.techInspection}` })
 @staticProps({
   entity: 'autobase_tech_inspection',
@@ -23,8 +23,13 @@ export default class TechInspectionList extends ElementsList {
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
-    const { car_id } = this.props;
+    const { car_id = -1 } = this.props;
 
-    flux.getActions('autobase').getAutobaseListByType('techInspection', { car_id });
+    if (car_id === -1) {
+      flux.getActions('autobase').getAutobaseListByType('techInspection');
+    } else {
+      flux.getActions('autobase').getAutobaseListByType('techInspection', car_id);
+    }
+    flux.getActions('objects').getCars();
   }
 }

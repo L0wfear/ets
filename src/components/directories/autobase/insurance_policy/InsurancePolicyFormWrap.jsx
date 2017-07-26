@@ -9,6 +9,12 @@ const InsurancePolicyForm = enhanceWithPermissions(BaseInsurancePolicyForm);
 const schema = {
   properties: [
     {
+      key: 'car_id',
+      title: 'Регистрационный номер',
+      type: 'number',
+      required: true,
+    },
+    {
       key: 'insurer',
       title: 'Страховая организация',
       type: 'string',
@@ -53,13 +59,6 @@ const schema = {
       required: true,
     },
     {
-      key: 'lifetime_months',
-      title: 'Срок действия, мес.',
-      type: 'number',
-      maxLength: 128,
-      required: true,
-    },
-    {
       key: 'price',
       title: 'Стоимость, руб.',
       type: 'number',
@@ -73,21 +72,21 @@ export default class InsurancePolicyFormWrap extends FormWrap {
 
   constructor(props, context) {
     super(props);
-    const { car_id } = props;
     this.schema = schema;
     this.preventDefaultNotification = true;
 
-    this.createAction = context.flux.getActions('autobase').insurancePolicy.bind(null, 'post', { car_id });
-    this.updateAction = context.flux.getActions('autobase').insurancePolicy.bind(null, 'put', { car_id });
+    this.createAction = context.flux.getActions('autobase').insurancePolicy.bind(null, 'post');
+    this.updateAction = context.flux.getActions('autobase').insurancePolicy.bind(null, 'put');
   }
 
   render() {
-    const { entity } = this.props;
+    const { entity, car_id = -1 } = this.props;
     return this.props.showForm ?
       <InsurancePolicyForm
         formState={this.state.formState}
         formErrors={this.state.formErrors}
         cols={this.props.meta.cols}
+        car_id={car_id}
         permissions={[`${entity}.update`]}
         addPermissionProp
         canSave={this.state.canSave}

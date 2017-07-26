@@ -187,13 +187,13 @@ export default class EmployeesActions extends Actions {
     );
   }
 
-  techInspection(method, car_id, formState) {
+  techInspection(method, formState) {
     const payload = {
-      ...car_id,
       ...formState,
       date_start: createValidDate(formState.date_start),
       date_end: createValidDate(formState.date_end),
     };
+
     const { techInspection } = AUTOBASE;
 
     return AutoBase.path(techInspection)[method](
@@ -213,9 +213,8 @@ export default class EmployeesActions extends Actions {
     );
   }
 
-  insurancePolicy(method, car_id, formState) {
+  insurancePolicy(method, formState) {
     const payload = {
-      ...car_id,
       ...formState,
       date_start: createValidDate(formState.date_start),
       date_end: createValidDate(formState.date_end),

@@ -3,13 +3,26 @@ import { Modal, Row, Col, Button } from 'react-bootstrap';
 
 import ModalBody from 'components/ui/Modal';
 import { ExtDiv } from 'components/ui/Div.jsx';
-import Field from 'components/ui/Field.jsx';
+import Field, { ExtField } from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
+
 import { connectToStores } from 'utils/decorators';
 
 
-@connectToStores(['autobase'])
+@connectToStores(['autobase', 'objects'])
 export default class BaseTechInspectionForm extends Form {
+  async componentWillMount() {
+    const { flux } = this.context;
+    const carsList = await flux.getActions('objects').getCars();
+
+    const { car_id = -1 } = this.props;
+
+    if (car_id >= 0) {
+      this.handleChange('car_id', car_id);
+    }
+
+    this.setState({ carsList: carsList.result });
+  }
 
   onChageWrap = name => (...arg) => this.handleChange(name, ...arg);
 
@@ -17,6 +30,7 @@ export default class BaseTechInspectionForm extends Form {
     const {
       isPermitted = false,
       cols = [],
+      car_id = -1,
     } = this.props;
 
     const [
@@ -24,9 +38,10 @@ export default class BaseTechInspectionForm extends Form {
       errors = {},
     ] = [this.props.formState, this.props.formErrors];
 
-    const fields = cols.reduce((obj, val) => Object.assign(obj, { [val.name]: val }), {});
-    const IS_ALLOWED_OPTION = [{ value: true, label: 'Да' }, { value: false, label: 'Нет' }];
+    const { carsList = [] } = this.state;
 
+    const fields = cols.reduce((obj, val) => Object.assign(obj, { [val.name]: val }), {});
+    const CAR_LIST_OPTION = carsList.map(el => ({ value: el.asuods_id, label: el.gov_number }));
     const IS_CREATING = !state.id;
 
     let title = 'Изменение записи';
@@ -40,6 +55,18 @@ export default class BaseTechInspectionForm extends Form {
         <ExtDiv style={{ padding: 15 }}>
           <Row>
             <Col md={12}>
+              {IS_CREATING && car_id === -1 && 
+                <Field
+                  type="select"
+                  label="Номер транспортного средства"
+                  value={state.car_id}
+                  error={errors.car_id}
+                  options={CAR_LIST_OPTION}
+                  emptyValue={null}
+                  onChange={this.onChageWrap('car_id')}
+                  disabled={!isPermitted}
+                />
+              }
               <Field
                 type={fields.reg_number.type}
                 label={fields.reg_number.displayName}
@@ -74,14 +101,14 @@ export default class BaseTechInspectionForm extends Form {
                 onChange={this.onChageWrap('date_start')}
                 disabled={!isPermitted}
               />
-              <Field
-                type={'select'}
+              <ExtField
+                type={'boolean'}
                 label={fields.is_allowed.displayName}
                 value={state.is_allowed}
                 error={errors.is_allowed}
-                options={IS_ALLOWED_OPTION}
                 emptyValue={null}
-                onChange={this.onChageWrap('is_allowed')}
+                onChange={this.handleChange}
+                boundKeys={['is_allowed', !state.is_allowed]}
                 disabled={!isPermitted}
               />
               <Field

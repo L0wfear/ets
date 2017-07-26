@@ -1,13 +1,13 @@
 import React from 'react';
+import { get } from 'lodash';
 
-import { makeSchema, sortSchemaCols } from 'components/ui/table/utils';
 import Table from 'components/ui/table/DataTable.jsx';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 
 export const tableMeta = ({
-  schemaMakers = {},
-} = {}) => {
-  const schema = {
+  carsList = [],
+} = {}) => (
+  {
     cols: [
       {
         name: 'company_name',
@@ -16,6 +16,16 @@ export const tableMeta = ({
         orderNum: 1,
         filter: {
           type: 'multiselect',
+        },
+      },
+      {
+        name: 'car_id',
+        displayName: 'Транспортное средство',
+        type: 'number',
+        orderNum: 1.5,
+        filter: {
+          type: 'multiselect',
+          options: carsList.map(el => ({ value: el.asuods_id, label: el.gov_number })),
         },
       },
       {
@@ -68,9 +78,7 @@ export const tableMeta = ({
         displayName: 'Заключение о возможности/невозможности эксплуатации ТС',
         type: 'boolean',
         orderNum: 6,
-        filter: {
-          type: 'boolean',
-        },
+        filter: false,
       },
       {
         name: 'note',
@@ -82,27 +90,31 @@ export const tableMeta = ({
         },
       },
     ],
-  };
-
-  return makeSchema(schema, schemaMakers);
-};
+  }
+);
 
 export default (props) => {
+  const { carsList = [], car_id = 0  } = props;
 
   const renderers = {
     date_start: ({ data }) => (<DateFormatter date={data} />),
     date_end: ({ data }) => (<DateFormatter date={data} />),
+    is_allowed: ({ data }) => <input type="checkbox" disabled checked={data} />,
+    car_id: ({ data }) => <div>{get(carsList.find(s => s.asuods_id === data), 'gov_number', '---')}</div>,
   };
 
-  const meta = tableMeta(props);
-  const sortedMeta = sortSchemaCols(meta);
-
+  let meta = tableMeta(props);
+  if (!!car_id) {
+    meta = { cols: meta.cols.filter(el => el.name !== 'car_id') };
+  }
+  
+  
   return (<Table
     title="Реестр техосмотров"
     results={props.data}
-    tableMeta={sortedMeta}
+    tableMeta={meta}
     renderers={renderers}
-    noFilter
+    noFilter={!!car_id}
     {...props}
   />);
 };

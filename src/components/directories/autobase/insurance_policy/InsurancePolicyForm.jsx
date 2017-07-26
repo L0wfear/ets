@@ -8,8 +8,20 @@ import Form from 'components/compositions/Form.jsx';
 import { connectToStores } from 'utils/decorators';
 
 
-@connectToStores(['autobase'])
-export default class BaseBatteryForm extends Form {
+@connectToStores(['autobase', 'objects'])
+export default class InsurancePolicyForm extends Form {
+  async componentWillMount() {
+    const { flux } = this.context;
+    const carsList = await flux.getActions('objects').getCars();
+
+    const { car_id = -1 } = this.props;
+
+    if (car_id >= 0) {
+      this.handleChange('car_id', car_id);
+    }
+
+    this.setState({ carsList: carsList.result });
+  }
 
   onChageWrap = name => (...arg) => this.handleChange(name, ...arg);
 
@@ -18,6 +30,7 @@ export default class BaseBatteryForm extends Form {
       insuranceTypeList = [],
       isPermitted = false,
       cols = [],
+      car_id = -1,
     } = this.props;
 
     const [
@@ -25,9 +38,12 @@ export default class BaseBatteryForm extends Form {
       errors = {},
     ] = [this.props.formState, this.props.formErrors];
 
+    const { carsList = [] } = this.state;
+
     const fields = cols.reduce((obj, val) => Object.assign(obj, { [val.name]: val }), {});
 
     const INSURANCE_TYPE_OPTION = insuranceTypeList.map(el => ({ value: el.id, label: el.name }));
+    const CAR_LIST_OPTION = carsList.map(el => ({ value: el.asuods_id, label: el.gov_number }));
 
     const IS_CREATING = !state.id;
 
@@ -42,6 +58,18 @@ export default class BaseBatteryForm extends Form {
         <ExtDiv style={{ padding: 15 }}>
           <Row>
             <Col md={12}>
+              {IS_CREATING && car_id === -1 && 
+                <Field
+                  type="select"
+                  label="Номер транспортного средства"
+                  value={state.car_id}
+                  error={errors.car_id}
+                  options={CAR_LIST_OPTION}
+                  emptyValue={null}
+                  onChange={this.onChageWrap('car_id')}
+                  disabled={!isPermitted}
+                />
+              }
               <Field
                 type={fields.insurer.type}
                 label={fields.insurer.displayName}
@@ -100,14 +128,6 @@ export default class BaseBatteryForm extends Form {
                 time={false}
                 error={errors.date_end}
                 onChange={this.onChageWrap('date_end')}
-                disabled={!isPermitted}
-              />
-              <Field
-                type={fields.lifetime_months.type}
-                label={fields.lifetime_months.displayName}
-                value={state.lifetime_months}
-                error={errors.lifetime_months}
-                onChange={this.onChageWrap('lifetime_months')}
                 disabled={!isPermitted}
               />
               <Field

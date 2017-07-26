@@ -74,5 +74,16 @@ export const formValidationSchema: IValidationSchema = {
         },
       },
     ],
+    measure_unit_run_id: [
+      {
+        validator(value, { tech_maintenance_type_id = '' }) {
+          if (tech_maintenance_type_id === '') {
+            return getRequiredFieldMessage('Тип ТО');
+          }
+
+          return '';
+        },
+      },
+    ],
   },
 };

@@ -17,7 +17,25 @@ export default class TechMaintFormWrap extends FormWrap {
     this.createAction = context.flux.getActions('autobase').techMaint.bind(null, 'post');
     this.updateAction = context.flux.getActions('autobase').techMaint.bind(null, 'put');
   }
+  // TODO Надо избавляться от наследования и делать композицию компонентов
+  inheritedComponentWillReceiveProps(nextProps) {
+    if (this.props.showForm !== nextProps.showForm) {
+      const {
+        car_id,
+        car_model_id,
+        gov_number,
+      } = nextProps;
 
+      this.setState({
+        formState: {
+          ...this.state.formState,
+          car_id,
+          car_model_id,
+          gov_number,
+        },
+      });
+    }
+  }
   render() {
     const { entity } = this.props;
 

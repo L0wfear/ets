@@ -5,6 +5,7 @@ import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';
 import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 
 import DataTableComponent from 'components/ui/table/DataTable';
+import DateFormatter from 'components/ui/DateFormatter';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
@@ -13,7 +14,7 @@ export function tableMeta({
   const meta: IDataTableSchema = {
     cols: [
       {
-        name: 'company_id',
+        name: 'repair_company_name',
         displayName: 'Исполнитель ремонта',
         type: 'select',
         filter: {
@@ -21,11 +22,11 @@ export function tableMeta({
         },
       },
       {
-        name: 'tech_maintenance_order_id',
+        name: 'tech_maintenance_orders_text',
         displayName: 'Регламент ТО',
-        type: 'select',
+        type: 'string',
         filter: {
-          type: 'multiselect',
+          type: 'string',
         },
       },
       {
@@ -69,7 +70,7 @@ export function tableMeta({
         },
       },
       {
-        name: 'motohours_fact',
+        name: 'odometr_fact',
         displayName: 'Пробег на момент ТО, км',
         type: 'number',
         filter: {
@@ -77,7 +78,7 @@ export function tableMeta({
         },
       },
       {
-        name: 'odometr_fact',
+        name: 'motohours_fact',
         displayName: 'Счетчик м/ч на момент ТО, м/ч',
         type: 'number',
         filter: {
@@ -99,7 +100,10 @@ export function tableMeta({
 }
 
 const renderers: ISchemaRenderer = {
-
+  plan_date_start: ({ data }) => <DateFormatter date={data} time={false} />,
+  plan_date_end: ({ data }) => <DateFormatter date={data} time={false} />,
+  fact_date_start: ({ data }) => <DateFormatter date={data} time={false} />,
+  fact_date_end: ({ data }) => <DateFormatter date={data} time={false} />,
 };
 
 const Table: React.SFC<any> = props => {

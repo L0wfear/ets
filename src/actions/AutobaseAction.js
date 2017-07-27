@@ -174,6 +174,25 @@ export default class EmployeesActions extends Actions {
     );
   }
 
+  techMaint(method, formState) {
+    const payload = cloneDeep(formState);
+    const { techMaint } = AUTOBASE;
+
+    return AutoBase.path(techMaint)[method](
+      payload,
+      this.getAutobaseListByType.bind(null, 'techMaint'),
+      'json',
+    );
+  }
+  removeTechMaint(id) {
+    const { techMaint } = AUTOBASE;
+    return AutoBase.path(`${techMaint}/${id}`).delete(
+      {},
+      this.getAutobaseListByType.bind(null, 'techMaint'),
+      'json',
+    );
+  }
+
   deleteLineFromSarePart(formState) {
     const payload = { id: formState };
     const type = 'sparePart';

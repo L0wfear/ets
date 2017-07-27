@@ -13,6 +13,7 @@ export default {
   actualTiresOnCar: 'actual_tires_on_car',
   batteryAvailableCar: 'battery_available_car',
   techMaintOrder: 'tech_maintenance_order_registry',
+  techMaint: 'tech_maintenance_registry',
   techMaintType: 'tech_maintenance_type',
   measureUnitRun: 'measure_unit_run',
   techInspection: 'tech_inspection_registry',

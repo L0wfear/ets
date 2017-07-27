@@ -3,31 +3,19 @@ import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
-import connectToStores from 'flummox/connect';
+import { connectToStores } from 'utils/decorators';
+import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 
-class OdhForm extends Form {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      companyStructureList: [],
-    };
-  }
-
-  async componentDidMount() {
-    const companyStructureList = await this.context.flux.getActions('companyStructure').getLinearCompanyStructureForUser();
-    this.setState({ companyStructureList });
-  }
-
+@connectToStores(['geoObjects', 'companyStructure'])
+export default class OdhForm extends Form {
   render() {
     const [state, meta] = [this.props.formState, this.props.formMeta];
 
-    const { companyStructureList = [] } = this.state;
-    const COMPANY_ELEMENTS = companyStructureList.map(el => ({ value: el.id, label: el.name }));
+    const { companyStructureList = [] } = this.props;
+    const COMPANY_ELEMENTS = companyStructureList.map(defaultSelectListMapper);
 
     const INPUT_VAL = {
-      company_structure_name: {
+      company_structure_id: {
         type: 'select',
         options: COMPANY_ELEMENTS,
         emptyValue: null,
@@ -68,5 +56,3 @@ class OdhForm extends Form {
     );
   }
 }
-
-export default connectToStores(OdhForm, ['geoObjects']);

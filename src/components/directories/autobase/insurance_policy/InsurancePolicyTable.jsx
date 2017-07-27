@@ -99,7 +99,7 @@ export const tableMeta = ({
 
 export default (props) => {
   const { insuranceTypeList = [], carsList = [], car_id = 0 } = props;
-  console.log(carsList)
+
   const renderers = {
     insurance_type_id: ({ data }) => <div>{get(insuranceTypeList.find(s => s.id === data), 'name', '')}</div>,
     date_start: ({ data }) => (<DateFormatter date={data} />),

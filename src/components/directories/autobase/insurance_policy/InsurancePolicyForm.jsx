@@ -3,33 +3,31 @@ import { Modal, Row, Col, Button } from 'react-bootstrap';
 
 import ModalBody from 'components/ui/Modal';
 import { ExtDiv } from 'components/ui/Div.jsx';
-import Field from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/Field.jsx';
+import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 import Form from 'components/compositions/Form.jsx';
 import { connectToStores } from 'utils/decorators';
 
 
 @connectToStores(['autobase', 'objects'])
 export default class InsurancePolicyForm extends Form {
-  async componentWillMount() {
+  componentWillMount() {
     const { flux } = this.context;
-    const carsList = await flux.getActions('objects').getCars();
+    flux.getActions('objects').getCars();
 
     const { car_id = -1 } = this.props;
 
     if (car_id >= 0) {
       this.handleChange('car_id', car_id);
     }
-
-    this.setState({ carsList: carsList.result });
   }
-
-  onChageWrap = name => (...arg) => this.handleChange(name, ...arg);
 
   render() {
     const {
       insuranceTypeList = [],
       isPermitted = false,
       cols = [],
+      carsList = [],
       car_id = -1,
     } = this.props;
 
@@ -38,11 +36,9 @@ export default class InsurancePolicyForm extends Form {
       errors = {},
     ] = [this.props.formState, this.props.formErrors];
 
-    const { carsList = [] } = this.state;
-
     const fields = cols.reduce((obj, val) => Object.assign(obj, { [val.name]: val }), {});
 
-    const INSURANCE_TYPE_OPTION = insuranceTypeList.map(el => ({ value: el.id, label: el.name }));
+    const INSURANCE_TYPE_OPTION = insuranceTypeList.map(defaultSelectListMapper);
     const CAR_LIST_OPTION = carsList.map(el => ({ value: el.asuods_id, label: el.gov_number }));
 
     const IS_CREATING = !state.id;
@@ -59,83 +55,92 @@ export default class InsurancePolicyForm extends Form {
           <Row>
             <Col md={12}>
               {IS_CREATING && car_id === -1 && 
-                <Field
+                <ExtField
                   type="select"
                   label="Номер транспортного средства"
                   value={state.car_id}
                   error={errors.car_id}
                   options={CAR_LIST_OPTION}
                   emptyValue={null}
-                  onChange={this.onChageWrap('car_id')}
+                  onChange={this.handleChange}
+                  boundKeys={['car_id']}
                   disabled={!isPermitted}
                 />
               }
-              <Field
+              <ExtField
                 type={fields.insurer.type}
                 label={fields.insurer.displayName}
                 value={state.insurer}
                 error={errors.insurer}
-                onChange={this.onChageWrap('insurer')}
+                onChange={this.handleChange}
+                boundKeys={['insurer']}
                 disabled={!isPermitted}
               />
-              <Field
+              <ExtField
                 type={fields.insurance_name.type}
                 label={fields.insurance_name.displayName}
                 value={state.insurance_name}
                 error={errors.insurance_name}
-                onChange={this.onChageWrap('insurance_name')}
+                onChange={this.handleChange}
+                boundKeys={['insurance_name']}
                 disabled={!isPermitted}
               />
-              <Field
+              <ExtField
                 type={'select'}
                 label={fields.insurance_type_id.displayName}
                 value={state.insurance_type_id}
                 error={errors.insurance_type_id}
                 options={INSURANCE_TYPE_OPTION}
                 emptyValue={null}
-                onChange={this.onChageWrap('insurance_type_id')}
+                onChange={this.handleChange}
+                boundKeys={['insurance_type_id']}
                 disabled={!isPermitted}
               />
-              <Field
+              <ExtField
                 type={fields.seria.type}
                 label={fields.seria.displayName}
                 value={state.seria}
                 error={errors.seria}
-                onChange={this.onChageWrap('seria')}
+                onChange={this.handleChange}
+                boundKeys={['seria']}
                 disabled={!isPermitted}
               />
-              <Field
+              <ExtField
                 type={fields.number.type}
                 label={fields.number.displayName}
                 value={state.number}
                 error={errors.number}
-                onChange={this.onChageWrap('number')}
+                onChange={this.handleChange}
+                boundKeys={['number']}
                 disabled={!isPermitted}
               />
-              <Field
+              <ExtField
                 type={fields.date_start.type}
                 label={fields.date_start.displayName}
                 date={state.date_start}
                 time={false}
                 error={errors.date_start}
-                onChange={this.onChageWrap('date_start')}
+                onChange={this.handleChange}
+                boundKeys={['date_start']}
                 disabled={!isPermitted}
               />
-              <Field
+              <ExtField
                 type={fields.date_end.type}
                 label={fields.date_end.displayName}
                 date={state.date_end}
                 time={false}
                 error={errors.date_end}
-                onChange={this.onChageWrap('date_end')}
+                onChange={this.handleChange}
+                boundKeys={['date_end']}
                 disabled={!isPermitted}
               />
-              <Field
+              <ExtField
                 type={fields.price.type}
                 label={fields.price.displayName}
                 value={state.price}
                 error={errors.price}
-                onChange={this.onChageWrap('price')}
+                onChange={this.handleChange}
+                boundKeys={['price']}
                 disabled={!isPermitted}
               />
             </Col>

@@ -30,8 +30,8 @@ export default class BatteryBrandFormWrap extends FormWrap {
 
     this.schema = batteryBrandSchema;
     this.preventDefaultNotification = true;
-    this.createAction = context.flux.getActions('autobase').batteryBrand.bind(null, 'post');
-    this.updateAction = context.flux.getActions('autobase').batteryBrand.bind(null, 'put');
+    this.createAction = context.flux.getActions('autobase').changeDataInDB.bind(null, 'batteryBrand', 'post');
+    this.updateAction = context.flux.getActions('autobase').changeDataInDB.bind(null, 'batteryBrand', 'put');
   }
 
   render() {

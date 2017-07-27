@@ -17,7 +17,7 @@ import TechInspectionTable, { tableMeta } from './TechInspectionTable';
 export default class TechInspectionList extends ElementsList {
   constructor(props, context) {
     super(props);
-    this.removeElementAction = context.flux.getActions('autobase').removeTechInspection;
+    this.removeElementAction = context.flux.getActions('autobase').removeDataFromDB.bind(null, 'techInspection');
   }
 
   componentDidMount() {

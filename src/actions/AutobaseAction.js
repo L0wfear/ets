@@ -256,4 +256,32 @@ export default class EmployeesActions extends Actions {
       'json',
     );
   }
+
+  repair(method, formState) {
+    const payload = Object.entries(formState).reduce((obj, [key, value]) => {
+      if (key.includes('date')) {
+        obj[key] = createValidDate(value);
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }, {});
+    const { repair } = AUTOBASE;
+
+    return AutoBase.path(repair)[method](
+      payload,
+      this.getAutobaseListByType.bind(null, 'repair'),
+      'json',
+    );
+  }
+
+  removeRepair(id) {
+    const { repair } = AUTOBASE;
+
+    return AutoBase.path(`${repair}/${id}`).delete(
+      {},
+      this.getAutobaseListByType.bind(null, 'repair'),
+      'json',
+    );
+  }
 }

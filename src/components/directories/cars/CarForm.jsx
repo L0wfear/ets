@@ -12,6 +12,7 @@ import TireTab from './tabs/TireTab';
 import InsurancePolicyList from 'components/directories/autobase/insurance_policy/InsurancePolicyList.jsx';
 import TechInspectionList from 'components/directories/autobase/tech_inspection/TechInspectionList.jsx';
 import TechMaintList from 'components/directories/autobase/tech_maintenance_registry/TechMaintList.jsx';
+import RepairList from 'components/directories/autobase/repair/RepairList.jsx';
 
 class CarForm extends Form {
   constructor(props) {
@@ -35,9 +36,6 @@ class CarForm extends Form {
 
       flux.getActions('autobase').getAutobaseListByType('actualBatteriesOnCar', payload);
       flux.getActions('autobase').getAutobaseListByType('actualTiresOnCar', payload);
-      flux.getActions('autobase').getAutobaseListByType('techInspection', payload);
-      flux.getActions('autobase').getAutobaseListByType('insurancePolicy', payload);
-      flux.getActions('autobase').getAutobaseListByType('insuranceType');
     }
   }
   async componentWillMount() {
@@ -116,9 +114,11 @@ class CarForm extends Form {
               gov_number={state.gov_number}
             />
           </TabContent>
-
           <TabContent eventKey="6.2" tabKey={this.props.tabKey}>
-            rep
+            <RepairList
+              car_id={state.asuods_id}
+              {...this.props}
+            />
           </TabContent>
 
           <TabContent eventKey="7" tabKey={this.props.tabKey}>

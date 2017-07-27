@@ -19,5 +19,7 @@ export default {
   techInspection: 'tech_inspection_registry',
   insurancePolicy: 'insurance_policy_registry',
   insuranceType: 'insurance_type',
+  repair: 'repair_registry',
   repairCompany: 'repair_company',
+  repairType: 'repair_type',
 };

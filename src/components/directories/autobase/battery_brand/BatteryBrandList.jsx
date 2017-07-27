@@ -16,7 +16,7 @@ import BatteryBrandTable from './BatteryBrandTable.jsx';
 export default class BatteryBrandList extends ElementsList {
   constructor(props, context) {
     super(props);
-    this.removeElementAction = context.flux.getActions('autobase').removeDataFromDB.bind(null, 'batteryBrand');
+    this.removeElementAction = context.flux.getActions('autobase').removeBatteryBrand.bind;
   }
   componentDidMount() {
     super.componentDidMount();

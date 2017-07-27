@@ -60,8 +60,8 @@ export default class TechInspectionFormWrap extends FormWrap {
     this.schema = schema;
     this.preventDefaultNotification = true;
 
-    this.createAction = context.flux.getActions('autobase').changeDataInDB.bind(null, 'techInspection', 'post');
-    this.updateAction = context.flux.getActions('autobase').changeDataInDB.bind(null, 'techInspection', 'put');
+    this.createAction = context.flux.getActions('autobase').techInspection.bind(null, 'post');
+    this.updateAction = context.flux.getActions('autobase').techInspection.bind(null, 'put');
   }
 
   render() {

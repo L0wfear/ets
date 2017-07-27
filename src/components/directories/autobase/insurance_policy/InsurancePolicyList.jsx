@@ -17,7 +17,7 @@ import InsurancePolicyTable, { tableMeta } from './InsurancePolicyTable';
 export default class InsurancePolicyList extends ElementsList {
   constructor(props, context) {
     super(props);
-    this.removeElementAction = context.flux.getActions('autobase').removeDataFromDB.bind(null, 'insurancePolicy');
+    this.removeElementAction = context.flux.getActions('autobase').removeInsurancePolicy;
   }
 
   componentDidMount() {

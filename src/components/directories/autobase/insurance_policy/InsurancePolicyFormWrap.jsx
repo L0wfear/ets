@@ -75,8 +75,8 @@ export default class InsurancePolicyFormWrap extends FormWrap {
     this.schema = schema;
     this.preventDefaultNotification = true;
 
-    this.createAction = context.flux.getActions('autobase').changeDataInDB.bind(null, 'insurancePolicy', 'post');
-    this.updateAction = context.flux.getActions('autobase').changeDataInDB.bind(null, 'insurancePolicy', 'put');
+    this.createAction = context.flux.getActions('autobase').insurancePolicy.bind(null, 'post');
+    this.updateAction = context.flux.getActions('autobase').insurancePolicy.bind(null, 'put');
   }
 
   render() {

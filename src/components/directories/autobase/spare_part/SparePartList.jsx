@@ -16,7 +16,7 @@ import SparePartFormWrap from './SparePartFormWrap';
 export default class SparePartList extends ElementsList {
   constructor(props, context) {
     super(props);
-    this.removeElementAction = context.flux.getActions('autobase').removeDataFromDB.bind(null, 'sparePart');
+    this.removeElementAction = context.flux.getActions('autobase').removeSparePart;
   }
   componentDidMount() {
     super.componentDidMount();

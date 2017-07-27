@@ -15,11 +15,17 @@ export default class NotificationsStore extends Store {
       {
         actions: autoBaseActions,
         actionNames: [
+          'batteryBrand',
+          'batteryManufacturer',
           'batteryRegistry',
+          'insurancePolicy',
+          'repair',
+          'sparePart',
+          'techInspection',
+          'techMaintOrder',
+          'techMaint',
           'tire',
           'cloneTire',
-          'techMaintOrder',
-          'changeDataInDB',
         ],
       },
       {
@@ -54,9 +60,16 @@ export default class NotificationsStore extends Store {
       {
         actions: autoBaseActions,
         actionNames: [
-          'removeBattery',
+          'removeBatteryBrand',
+          'removeBatteryManufacturer',
+          'removeBatteryRegistry',
+          'removeInsurancePolicy',
+          'removeRepair',
+          'removeSparePart',
+          'removeTechInspection',
           'removeTechMaintOrder',
-          'removeDataFromDB',
+          'removeTechMaint',
+          'removeTire',
         ],
       },
     ];

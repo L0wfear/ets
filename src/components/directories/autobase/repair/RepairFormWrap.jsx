@@ -78,8 +78,8 @@ export default class RepairFormWrap extends FormWrap {
     this.schema = schema;
     this.preventDefaultNotification = true;
 
-    this.createAction = context.flux.getActions('autobase').changeDataInDB.bind(null, 'repair', 'post');
-    this.updateAction = context.flux.getActions('autobase').changeDataInDB.bind(null, 'repair', 'put');
+    this.createAction = context.flux.getActions('autobase').repair.bind(null, 'post');
+    this.updateAction = context.flux.getActions('autobase').repair.bind(null, 'put');
   }
 
   render() {

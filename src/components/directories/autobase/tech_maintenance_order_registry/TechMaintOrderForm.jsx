@@ -10,7 +10,7 @@ import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 import Form from 'components/compositions/Form.jsx';
 import {
   TIME_MEASURES_SELECT_OPTIONS,
-  TECH_MAIN_ORDER_SEQUENCE_SELECT_OPTIONS,
+  SEQUENCE_1_TO_20_SELECT_OPTIONS,
 } from 'constants/dictionary';
 
 @connectToStores(['autobase', 'objects'])
@@ -82,7 +82,7 @@ export default class TechMaintOrderForm extends Form {
                 <ExtField
                   type="select"
                   label="Последовательность ТО"
-                  options={TECH_MAIN_ORDER_SEQUENCE_SELECT_OPTIONS}
+                  options={SEQUENCE_1_TO_20_SELECT_OPTIONS}
                   value={state.sequence}
                   error={errors.sequence}
                   disabled={!isPermitted}

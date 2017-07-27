@@ -11,6 +11,7 @@ import BatteryTab from './tabs/BatteryTab';
 import TireTab from './tabs/TireTab';
 import InsurancePolicyList from 'components/directories/autobase/insurance_policy/InsurancePolicyList.jsx';
 import TechInspectionList from 'components/directories/autobase/tech_inspection/TechInspectionList.jsx';
+import TechMaintList from 'components/directories/autobase/tech_maintenance_registry/TechMaintList.jsx';
 import RepairList from 'components/directories/autobase/repair/RepairList.jsx';
 
 class CarForm extends Form {
@@ -107,9 +108,12 @@ class CarForm extends Form {
           </TabContent>
 
           <TabContent eventKey="6.1" tabKey={this.props.tabKey}>
-            tech
+            <TechMaintList
+              car_id={state.asuods_id}
+              car_model_id={state.model_id}
+              gov_number={state.gov_number}
+            />
           </TabContent>
-
           <TabContent eventKey="6.2" tabKey={this.props.tabKey}>
             <RepairList
               car_id={state.asuods_id}

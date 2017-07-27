@@ -1,177 +1,178 @@
 import React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
-import { get } from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
+import { DataTimeField, Field, MultiSelectField } from 'components/ui/input/fields';
 import { connectToStores } from 'utils/decorators';
-import Div, { ExtDiv } from 'components/ui/Div.jsx';
-import { ExtField } from 'components/ui/Field.jsx';
+import { ExtDiv } from 'components/ui/Div.jsx';
 import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 import Form from 'components/compositions/Form.jsx';
 import {
-  TIME_MEASURES_SELECT_OPTIONS,
-  SEQUENCE_1_TO_20_SELECT_OPTIONS,
-} from 'constants/dictionary';
+  isThreeDigitGovNumber,
+  isFourDigitGovNumber,
+} from 'utils/functions';
 
 @connectToStores(['autobase', 'objects'])
 export default class TechMaintForm extends Form {
   async componentDidMount() {
     const { flux } = this.context;
-    const { tech_maintenance_type_id = '' } = this.props.formState;
-    flux.getActions('objects').getSpecialModels();
-    flux.getActions('autobase').getAutobaseListByType('techMaintType');
+    const { car_model_id } = this.props.formState;
 
-    if (tech_maintenance_type_id !== '') {
-      this.context.flux.getActions('autobase').getAutobaseListByType('measureUnitRun', {
-        tech_maintenance_type_id,
-      });
-    }
-  }
-  handleTechMaintTypeChange = (key, value) => {
-    if (value !== '') {
-      this.context.flux.getActions('autobase').getAutobaseListByType('measureUnitRun', {
-        tech_maintenance_type_id: value,
-      });
-    }
+    flux.getActions('autobase').getAutobaseListByType('repairCompany');
+    flux.getActions('autobase').getAutobaseListByType('techMaintOrder', {
+      car_model_id,
+    });
 
-    this.handleChange('measure_unit_run_id', null);
-    this.handleChange(key, value);
+    // if (car_id !== null) {
+    //   flux.getActions('objects').getCars();
+    // }
   }
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
     const {
-      techMaintTypeList = [],
-      specialModelsList = [],
-      measureUnitRunList = [],
+      repairCompanyList = [],
+      techMaintOrderList = [],
       isPermitted = false,
     } = this.props;
 
-    const TECH_MAINT_TYPE = techMaintTypeList.map(defaultSelectListMapper);
-    const VEHICLE_MODELS = specialModelsList.map(defaultSelectListMapper);
-    const MEASURE_UNITS_RUN = measureUnitRunList.map(defaultSelectListMapper);
+    const REPAIR_COMPANIES = repairCompanyList.map(defaultSelectListMapper);
+    const TECH_MAINT_ORDERS = techMaintOrderList.map(({ entity_name, id }) => ({ label: entity_name + id, value: id }));
 
     const IS_CREATING = !!!state.id;
 
     let title = 'Изменение записи';
     if (IS_CREATING) title = 'Создание записи';
 
-    const tech_maintenance_type_id = get(state, 'tech_maintenance_type_id', '');
 
     return (
       <Modal {...this.props} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
         </Modal.Header>
-        <Div style={{ padding: 15 }}>
+        <div style={{ padding: 15 }}>
           <Row>
             <Col md={12}>
-              <ExtField
+              <Field
                 type="select"
-                label="Тип ТО"
-                options={TECH_MAINT_TYPE}
-                value={state.tech_maintenance_type_id}
-                error={errors.tech_maintenance_type_id}
+                label="Исполнитель ремонта"
+                options={REPAIR_COMPANIES}
+                value={state.repair_company_id}
+                error={errors.repair_company_id}
                 disabled={!isPermitted}
-                onChange={this.handleTechMaintTypeChange}
-                boundKeys={['tech_maintenance_type_id']}
+                onChange={this.handleChange}
+                boundKeys={['repair_company_id']}
               />
             </Col>
             <Col md={12}>
-              <ExtDiv hidden={state.is_periodic}>
-                <ExtField
-                  type="select"
-                  label="Последовательность ТО"
-                  options={SEQUENCE_1_TO_20_SELECT_OPTIONS}
-                  value={state.sequence}
-                  error={errors.sequence}
+              <MultiSelectField
+                integer
+                label="Регламент ТО"
+                options={TECH_MAINT_ORDERS}
+                value={state.tech_maintenance_order_ids}
+                error={errors.tech_maintenance_order_ids}
+                disabled={!isPermitted}
+                onChange={this.handleChange}
+                boundKeys={['tech_maintenance_order_ids']}
+              />
+            </Col>
+            <Col md={12}>
+              <Field
+                type="string"
+                label="Номер документа"
+                value={state.number}
+                error={errors.number}
+                disabled={!isPermitted}
+                onChange={this.handleChange}
+                boundKeys={['number']}
+              />
+            </Col>
+            <Col md={6}>
+              <DataTimeField
+                time={false}
+                label="Плановая дата начала"
+                date={state.plan_date_start}
+                error={errors.plan_date_start}
+                disabled={!isPermitted}
+                onChange={this.handleChange}
+                boundKeys={['plan_date_start']}
+              />
+            </Col>
+            <Col md={6}>
+              <DataTimeField
+                time={false}
+                label="Плановая дата окончания"
+                date={state.plan_date_end}
+                error={errors.plan_date_end}
+                disabled={!isPermitted}
+                onChange={this.handleChange}
+                boundKeys={['plan_date_end']}
+              />
+            </Col>
+            <Col md={6}>
+              <DataTimeField
+                time={false}
+                label="Фактическая дата начала"
+                date={state.fact_date_start}
+                error={errors.fact_date_start}
+                disabled={!isPermitted}
+                onChange={this.handleChange}
+                boundKeys={['fact_date_start']}
+              />
+            </Col>
+            <Col md={6}>
+              <DataTimeField
+                time={false}
+                label="Фактическая дата окончания"
+                date={state.fact_date_end}
+                error={errors.fact_date_end}
+                disabled={!isPermitted}
+                onChange={this.handleChange}
+                boundKeys={['fact_date_end']}
+              />
+            </Col>
+            <Col md={12}>
+              <ExtDiv hidden={!isThreeDigitGovNumber(state.gov_number)}>
+                <Field
+                  type="number"
+                  label="Пробег на момент ТО, км"
+                  error={errors.odometr_fact}
                   disabled={!isPermitted}
+                  value={state.odometr_fact}
                   onChange={this.handleChange}
-                  boundKeys={['sequence']}
+                  boundKeys={['odometr_fact']}
                 />
               </ExtDiv>
             </Col>
             <Col md={12}>
-              <ExtField
+              <ExtDiv hidden={!isFourDigitGovNumber(state.gov_number)}>
+                <Field
+                  type="number"
+                  label="Счетчик м/ч на момент ТО, м/ч"
+                  error={errors.motohours_fact}
+                  disabled={!isPermitted}
+                  value={state.motohours_fact}
+                  onChange={this.handleChange}
+                  boundKeys={['motohours_fact']}
+                />
+              </ExtDiv>
+            </Col>
+            <Col md={12}>
+              <Field
                 type="string"
-                label="Описание"
-                value={state.description}
-                error={errors.description}
+                label="Примечание"
+                value={state.note}
+                error={errors.note}
                 disabled={!isPermitted}
                 onChange={this.handleChange}
-                boundKeys={['description']}
+                boundKeys={['note']}
               />
             </Col>
             <Col md={12}>
-              <ExtField
-                type="select"
-                label="Модель ТС"
-                options={VEHICLE_MODELS}
-                value={state.car_model_id}
-                error={errors.car_model_id}
-                disabled={!isPermitted}
-                onChange={this.handleChange}
-                boundKeys={['car_model_id']}
-              />
-            </Col>
-            <Col md={12}>
-              <ExtField
-                type="boolean"
-                label="Признак периодического ТО"
-                value={state.is_periodic}
-                disabled={!isPermitted}
-                onChange={this.handleChange}
-                boundKeys={['is_periodic', !state.is_periodic]}
-              />
-            </Col>
-            <Col md={12}>
-              <ExtField
-                type="number"
-                label="Интервал до следующего ТО (по пробегу)"
-                error={errors.interval_km}
-                disabled={!isPermitted}
-                value={state.interval_km}
-                onChange={this.handleChange}
-                boundKeys={['interval_km']}
-              />
-            </Col>
-            <Col md={12}>
-              <ExtField
-                type="select"
-                label="Пробег измеряется"
-                options={MEASURE_UNITS_RUN}
-                value={state.measure_unit_run_id}
-                error={errors.measure_unit_run_id}
-                disabled={!isPermitted || tech_maintenance_type_id === ''}
-                onChange={this.handleChange}
-                boundKeys={['measure_unit_run_id']}
-              />
-            </Col>
-            <Col md={12}>
-              <ExtField
-                type="number"
-                label="Интервал до следующего ТО (по времени)"
-                error={errors.interval_time}
-                disabled={!isPermitted}
-                value={state.interval_time}
-                onChange={this.handleChange}
-                boundKeys={['interval_time']}
-              />
-            </Col>
-            <Col md={12}>
-              <ExtField
-                type="select"
-                label="Время измеряется"
-                options={TIME_MEASURES_SELECT_OPTIONS}
-                value={state.interval_time_type}
-                error={errors.interval_time_type}
-                disabled={!isPermitted}
-                onChange={this.handleChange}
-                boundKeys={['interval_time_type']}
-              />
+              <label htmlFor=" ">Файл</label>
             </Col>
           </Row>
-        </Div>
+        </div>
         <ModalBody />
         <Modal.Footer>
           <Button disabled={!this.props.canSave} onClick={this.handleSubmit}>Сохранить</Button>

@@ -4,100 +4,93 @@ import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
 import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';
 import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 
-import {
-  TIME_MEASURES,
-  TIME_MEASURES_SELECT_OPTIONS,
-  SEQUENCE_1_TO_20_SELECT_OPTIONS,
-  IS_NOT_SELECT_OPTIONS_INT,
-} from 'constants/dictionary';
-// import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 import DataTableComponent from 'components/ui/table/DataTable';
+import DateFormatter from 'components/ui/DateFormatter';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
 export function tableMeta({
-  // techMaintTypeList = [],
-  // specialModelsList = [],
-  // measureUnitRunList = [],
 } = {}): IDataTableSchema {
   const meta: IDataTableSchema = {
     cols: [
       {
-        name: 'tech_maintenance_type_name',
-        displayName: 'Тип ТО',
+        name: 'repair_company_name',
+        displayName: 'Исполнитель ремонта',
         type: 'select',
         filter: {
           type: 'multiselect',
-          // options: techMaintTypeList.map(defaultSelectListMapper),
         },
       },
       {
-        name: 'sequence',
-        displayName: 'Последовательность ТО',
-        type: 'select',
+        name: 'tech_maintenance_orders_text',
+        displayName: 'Регламент ТО',
+        type: 'string',
         filter: {
-          type: 'multiselect',
-          options: SEQUENCE_1_TO_20_SELECT_OPTIONS,
+          type: 'string',
         },
       },
       {
-        name: 'description',
-        displayName: 'Описание',
+        name: 'number',
+        displayName: 'Номер документа',
         type: 'text',
         filter: {
           type: 'string',
         },
       },
       {
-        name: 'car_model_name',
-        displayName: 'Модель ТС',
-        type: 'select',
+        name: 'plan_date_start',
+        displayName: 'Плановая дата начала',
+        type: 'date',
         filter: {
-          type: 'multiselect',
-          // options: specialModelsList.map(defaultSelectListMapper),
+          type: 'date',
         },
       },
       {
-        name: 'is_periodic',
-        displayName: 'Признак периодического ТО',
-        type: 'boolean',
+        name: 'plan_date_end',
+        displayName: 'Плановая дата окончания',
+        type: 'date',
         filter: {
-          type: 'multiselect',
-          options: IS_NOT_SELECT_OPTIONS_INT,
+          type: 'date',
         },
       },
       {
-        name: 'interval_km',
-        displayName: 'Интервал до следующего ТО (по пробегу)',
+        name: 'fact_date_start',
+        displayName: 'Фактическая дата начала',
+        type: 'date',
+        filter: {
+          type: 'date',
+        },
+      },
+      {
+        name: 'fact_date_end',
+        displayName: 'Фактическая дата окончания',
+        type: 'date',
+        filter: {
+          type: 'date',
+        },
+      },
+      {
+        name: 'odometr_fact',
+        displayName: 'Пробег на момент ТО, км',
         type: 'number',
         filter: {
           type: 'string',
         },
       },
       {
-        name: 'measure_unit_run_name',
-        displayName: 'Пробег измеряется',
-        type: 'select',
-        filter: {
-          type: 'multiselect',
-          // options: measureUnitRunList.map(defaultSelectListMapper),
-        },
-      },
-      {
-        name: 'interval_time',
-        displayName: 'Интервал до следующего ТО (по времени)',
+        name: 'motohours_fact',
+        displayName: 'Счетчик м/ч на момент ТО, м/ч',
         type: 'number',
         filter: {
           type: 'string',
         },
       },
       {
-        name: 'interval_time_type',
-        displayName: 'Время измеряется',
-        type: 'select',
+        name: 'note',
+        displayName: 'Примечание',
+        type: 'string',
         filter: {
-          type: 'multiselect',
-          options: TIME_MEASURES_SELECT_OPTIONS,
+          type: 'string',
         },
       },
     ],
@@ -107,17 +100,16 @@ export function tableMeta({
 }
 
 const renderers: ISchemaRenderer = {
-  // tech_maintenance_type_id: meta => <div>{meta.rowData.tech_maintenance_type_name}</div>,
-  // car_model_id: meta => <div>{meta.rowData.car_model_name}</div>,
-  // measure_unit_run_id: meta => <div>{meta.rowData.measure_unit_run_name}</div>,
-  interval_time_type: meta => <div>{TIME_MEASURES[meta.data]}</div>,
-  is_periodic: meta => <input type="checkbox" disabled checked={meta.data} />,
+  plan_date_start: ({ data }) => <DateFormatter date={data} time={false} />,
+  plan_date_end: ({ data }) => <DateFormatter date={data} time={false} />,
+  fact_date_start: ({ data }) => <DateFormatter date={data} time={false} />,
+  fact_date_end: ({ data }) => <DateFormatter date={data} time={false} />,
 };
 
 const Table: React.SFC<any> = props => {
   return (
     <DataTable
-      title="Реестр регламентов ТО"
+      title="Тех. обслуживание"
       results={props.data}
       tableMeta={tableMeta(props)}
       renderers={renderers}

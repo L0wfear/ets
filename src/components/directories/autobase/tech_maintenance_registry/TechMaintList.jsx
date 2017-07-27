@@ -1,27 +1,27 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'constants/autobase';
 import ElementsList from 'components/ElementsList.jsx';
-import TechMaintOrderFormWrap from './TechMaintOrderFormWrap';
-import TechMaintOrderTable from './TechMaintOrderTable';
+import TechMaintFormWrap from './TechMaintFormWrap';
+import TechMaintTable from './TechMaintTable';
 
 @connectToStores(['autobase', 'session', 'objects'])
-@exportable({ entity: `autobase/${AUTOBASE.techMaintOrder}` })
+@exportable({ entity: `autobase/${AUTOBASE.techMaint}` })
 @staticProps({
-  entity: 'autobase_tech_maintenance_order',
-  listName: 'techMaintOrderList',
-  tableComponent: TechMaintOrderTable,
-  formComponent: TechMaintOrderFormWrap,
+  entity: 'autobase_tech_maintenance_registry',
+  listName: 'techMaintList',
+  tableComponent: TechMaintTable,
+  formComponent: TechMaintFormWrap,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
-export default class TechMaintOrderList extends ElementsList {
+export default class TechMaintList extends ElementsList {
   constructor(props, context) {
     super(props);
-    this.removeElementAction = context.flux.getActions('autobase').removeTechMaintOrder;
+    this.removeElementAction = context.flux.getActions('autobase').removeTechMaint;
   }
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
-    flux.getActions('autobase').getAutobaseListByType('techMaintOrder');
+    flux.getActions('autobase').getAutobaseListByType('techMaint');
 
     // filter field dependecies
     // flux.getActions('objects').getSpecialModels();

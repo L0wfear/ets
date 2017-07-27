@@ -7,7 +7,7 @@ import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 import {
   TIME_MEASURES,
   TIME_MEASURES_SELECT_OPTIONS,
-  TECH_MAIN_ORDER_SEQUENCE_SELECT_OPTIONS,
+  SEQUENCE_1_TO_20_SELECT_OPTIONS,
   IS_NOT_SELECT_OPTIONS_INT,
 } from 'constants/dictionary';
 // import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
@@ -37,7 +37,7 @@ export function tableMeta({
         type: 'select',
         filter: {
           type: 'multiselect',
-          options: TECH_MAIN_ORDER_SEQUENCE_SELECT_OPTIONS,
+          options: SEQUENCE_1_TO_20_SELECT_OPTIONS,
         },
       },
       {

@@ -9,6 +9,6 @@ export const onClickWithKeys = withHandlers({
 });
 
 export const tabable = compose(
-  withState('tabKey', 'setTabKey', ({ defaultTabKey = 1 }) => defaultTabKey),
-  withHandlers({ handleTabSelect: ({ setTabKey }) => key => setTabKey(key) })
+  withState('tabKey', 'setTabKey', ({ defaultTabKey = '1' }) => defaultTabKey),
+  withHandlers({ handleTabSelect: ({ setTabKey }) => (key1, key2) => setTabKey(typeof key1 === 'string' ? key1 : key2) })
 );

@@ -18,6 +18,8 @@ type FieldTypes =
   'multiselect' |
   'select' |
   'string' |
+  'date' |
+  'datetime' |
   'number';
 
 interface IDataTableColFilter {

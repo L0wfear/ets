@@ -3,7 +3,7 @@ import { Modal, Row, Col, Button } from 'react-bootstrap';
 
 import ModalBody from 'components/ui/Modal';
 import { ExtDiv } from 'components/ui/Div.jsx';
-import Field, { ExtField } from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
 
 import { connectToStores } from 'utils/decorators';
@@ -11,25 +11,25 @@ import { connectToStores } from 'utils/decorators';
 
 @connectToStores(['autobase', 'objects'])
 export default class BaseTechInspectionForm extends Form {
-  async componentWillMount() {
+  componentWillMount() {
     const { flux } = this.context;
-    const carsList = await flux.getActions('objects').getCars();
+    const { formState, car_id = -1 } = this.props;
 
-    const { car_id = -1 } = this.props;
+    flux.getActions('objects').getCars();
 
+    if (!formState.id) {
+      this.handleChange('is_allowed', false);
+    }
     if (car_id >= 0) {
       this.handleChange('car_id', car_id);
     }
-
-    this.setState({ carsList: carsList.result });
   }
-
-  onChageWrap = name => (...arg) => this.handleChange(name, ...arg);
 
   render() {
     const {
       isPermitted = false,
       cols = [],
+      carsList = [],
       car_id = -1,
     } = this.props;
 
@@ -37,8 +37,6 @@ export default class BaseTechInspectionForm extends Form {
       state = {},
       errors = {},
     ] = [this.props.formState, this.props.formErrors];
-
-    const { carsList = [] } = this.state;
 
     const fields = cols.reduce((obj, val) => Object.assign(obj, { [val.name]: val }), {});
     const CAR_LIST_OPTION = carsList.map(el => ({ value: el.asuods_id, label: el.gov_number }));
@@ -56,49 +54,54 @@ export default class BaseTechInspectionForm extends Form {
           <Row>
             <Col md={12}>
               {IS_CREATING && car_id === -1 && 
-                <Field
+                <ExtField
                   type="select"
                   label="Номер транспортного средства"
                   value={state.car_id}
                   error={errors.car_id}
                   options={CAR_LIST_OPTION}
                   emptyValue={null}
-                  onChange={this.onChageWrap('car_id')}
+                  onChange={this.handleChange}
+                  boundKeys={['car_id']}
                   disabled={!isPermitted}
                 />
               }
-              <Field
+              <ExtField
                 type={fields.reg_number.type}
                 label={fields.reg_number.displayName}
                 value={state.reg_number}
                 error={errors.reg_number}
-                onChange={this.onChageWrap('reg_number')}
+                onChange={this.handleChange}
+                boundKeys={['reg_number']}
                 disabled={!isPermitted}
               />
-              <Field
+              <ExtField
                 type={fields.date_end.type}
                 label={fields.date_end.displayName}
                 date={state.date_end}
                 time={false}
                 error={errors.date_end}
-                onChange={this.onChageWrap('date_end')}
+                onChange={this.handleChange}
+                boundKeys={['date_end']}
                 disabled={!isPermitted}
               />
-              <Field
+              <ExtField
                 type={fields.tech_operator.type}
                 label={fields.tech_operator.displayName}
                 value={state.tech_operator}
                 error={errors.tech_operator}
-                onChange={this.onChageWrap('tech_operator')}
+                onChange={this.handleChange}
+                boundKeys={['tech_operator']}
                 disabled={!isPermitted}
               />
-              <Field
+              <ExtField
                 type={fields.date_start.type}
                 label={fields.date_start.displayName}
                 date={state.date_start}
                 time={false}
                 error={errors.date_start}
-                onChange={this.onChageWrap('date_start')}
+                onChange={this.handleChange}
+                boundKeys={['date_start']}
                 disabled={!isPermitted}
               />
               <ExtField
@@ -111,12 +114,13 @@ export default class BaseTechInspectionForm extends Form {
                 boundKeys={['is_allowed', !state.is_allowed]}
                 disabled={!isPermitted}
               />
-              <Field
+              <ExtField
                 type={fields.note.type}
                 label={fields.note.displayName}
                 value={state.note}
                 error={errors.note}
-                onChange={this.onChageWrap('note')}
+                onChange={this.handleChange}
+                boundKeys={['note']}
                 disabled={!isPermitted}
               />
             </Col>

@@ -14,6 +14,10 @@ import SparePartFormWrap from './SparePartFormWrap';
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 export default class SparePartList extends ElementsList {
+  constructor(props, context) {
+    super(props);
+    this.removeElementAction = context.flux.getActions('autobase').removeDataFromDB.bind(null, 'sparePart');
+  }
   componentDidMount() {
     super.componentDidMount();
 
@@ -22,6 +26,5 @@ export default class SparePartList extends ElementsList {
     flux.getActions('autobase').getAutobaseListByType('measureUnit');
     flux.getActions('autobase').getAutobaseListByType('sparePartGroup');
 
-    this.removeElementAction = flux.getActions('autobase').deleteLineFromSarePart;
   }
 }

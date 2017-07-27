@@ -43,7 +43,6 @@ export const schema = {
       key: 'is_allowed',
       title: 'Заключение о возможности/невозможности эксплуатации ТС',
       type: 'boolean',
-      required: true,
     },
     {
       key: 'note',
@@ -61,8 +60,8 @@ export default class TechInspectionFormWrap extends FormWrap {
     this.schema = schema;
     this.preventDefaultNotification = true;
 
-    this.createAction = context.flux.getActions('autobase').techInspection.bind(null, 'post');
-    this.updateAction = context.flux.getActions('autobase').techInspection.bind(null, 'put');
+    this.createAction = context.flux.getActions('autobase').changeDataInDB.bind(null, 'techInspection', 'post');
+    this.updateAction = context.flux.getActions('autobase').changeDataInDB.bind(null, 'techInspection', 'put');
   }
 
   render() {

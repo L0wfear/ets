@@ -4,13 +4,12 @@ import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import { connectToStores } from 'utils/decorators';
 import Div from 'components/ui/Div.jsx';
-import Field from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/Field.jsx';
+import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 import Form from 'components/compositions/Form.jsx';
 
 @connectToStores(['autobase'])
 export default class SparePartForm extends Form {
-
-  handleChangeWrap = name => (...arg) => this.handleChange(name, ...arg);
   handleSubmitWrap = (...arg) => this.handleSubmit(...arg);
 
   render() {
@@ -18,8 +17,8 @@ export default class SparePartForm extends Form {
     const errors = this.props.formErrors;
     const { sparePartGroupList = [], measureUnitList = [] } = this.props;
 
-    const SPARE_PART_GROUP_OPTION = sparePartGroupList.map(el => ({ value: el.id, label: el.name }));
-    const MEASURE_UNIT_OPTIONS = measureUnitList.map(el => ({ value: el.id, label: el.name }));
+    const SPARE_PART_GROUP_OPTION = sparePartGroupList.map(defaultSelectListMapper);
+    const MEASURE_UNIT_OPTIONS = measureUnitList.map(defaultSelectListMapper);
 
     const IS_CREATING = !state.id;
 
@@ -34,58 +33,47 @@ export default class SparePartForm extends Form {
         <Div style={{ padding: 15 }}>
           <Row>
             <Col md={12}>
-              <Field
+              <ExtField
                 type="select"
                 label="Группа"
                 error={errors.spare_part_group_id}
                 options={SPARE_PART_GROUP_OPTION}
                 value={state.spare_part_group_id}
-                onChange={this.handleChangeWrap('spare_part_group_id')}
+                onChange={this.handleChange}
+                boundKeys={['spare_part_group_id']}
               />
-            </Col>
-          </Row>
-          <Row>
-            <Col md={12}>
-              <Field
+              <ExtField
                 type="string"
                 label="Номер"
                 value={state.number}
                 error={errors.number}
-                onChange={this.handleChangeWrap('number')}
+                onChange={this.handleChange}
+                boundKeys={['number']}
               />
-            </Col>
-          </Row>
-          <Row>
-            <Col md={12}>
-              <Field
+              <ExtField
                 type="string"
                 label="Наименование"
                 value={state.name}
                 error={errors.name}
-                onChange={this.handleChangeWrap('name')}
+                onChange={this.handleChange}
+                boundKeys={['name']}
               />
-            </Col>
-          </Row>
-          <Row>
-            <Col md={12}>
-              <Field
+              <ExtField
                 type="select"
                 label="Единица измерения"
                 error={errors.measure_unit_id}
                 options={MEASURE_UNIT_OPTIONS}
                 value={state.measure_unit_id}
-                onChange={this.handleChangeWrap('measure_unit_id')}
+                onChange={this.handleChange}
+                boundKeys={['measure_unit_id']}
               />
-            </Col>
-          </Row>
-          <Row>
-            <Col md={12}>
-              <Field
+              <ExtField
                 type="string"
                 label="Цена, руб."
                 value={state.price}
                 error={errors.price}
-                onChange={this.handleChangeWrap('price')}
+                onChange={this.handleChange}
+                boundKeys={['price']}
               />
             </Col>
           </Row>

@@ -23,7 +23,7 @@ export default class EmployeesActions extends Actions {
     };
   }
 
-  battery(method, formState) {
+  batteryRegistry(method, formState) {
     const payload = {
       ...formState,
       battery_to_car: get(formState, 'battery_to_car', []).map(item => ({
@@ -39,43 +39,6 @@ export default class EmployeesActions extends Actions {
     return AutoBase.path(path)[method](
       payload,
       this.getAutobaseListByType.bind(null, 'batteryRegistry'),
-      'json',
-    );
-  }
-
-  removeBattery(id) {
-    const { batteryRegistry } = AUTOBASE;
-
-    return AutoBase.path(`${batteryRegistry}/${id}`).delete(
-      {},
-      this.getAutobaseListByType.bind(null, 'batteryRegistry'),
-      'json',
-    );
-  }
-
-  async getSparePartGroup() {
-    const payload = {};
-
-    const response = await AutoBase.path('spare_part_group').get(payload);
-
-    return response.result.rows || [];
-  }
-
-  async getSparePartMeasureUnit() {
-    const payload = {};
-
-    const response = await AutoBase.path('measure_unit').get(payload);
-
-    return response.result.rows || [];
-  }
-
-  sparePart(method, formState) {
-    const payload = cloneDeep(formState);
-    const { sparePart } = AUTOBASE;
-
-    return AutoBase.path(sparePart)[method](
-      payload,
-      this.getAutobaseListByType.bind(null, 'sparePart'),
       'json',
     );
   }
@@ -100,57 +63,12 @@ export default class EmployeesActions extends Actions {
       'json',
     );
   }
-  removeTire(id) {
-    const { tire } = AUTOBASE;
-    return AutoBase.path(`${tire}/${id}`).delete(
-      {},
-      this.getAutobaseListByType.bind(null, 'tire'),
-      'json',
-    );
-  }
+
   cloneTire(id) {
     const { tire } = AUTOBASE;
     return AutoBase.path(`${tire}/${id}/copy`).post(
       {},
       this.getAutobaseListByType.bind(null, 'tire'),
-      'json',
-    );
-  }
-
-  batteryBrand(method, formState) {
-    const payload = cloneDeep(formState);
-    const { batteryBrand } = AUTOBASE;
-
-    return AutoBase.path(batteryBrand)[method](
-      payload,
-      this.getAutobaseListByType.bind(null, 'batteryBrand'),
-      'json',
-    );
-  }
-  removeBatteryBrand(id) {
-    const { batteryBrand } = AUTOBASE;
-    return AutoBase.path(`${batteryBrand}/${id}`).delete(
-      {},
-      this.getAutobaseListByType.bind(null, 'batteryBrand'),
-      'json',
-    );
-  }
-
-  batteryManufacturer(method, formState) {
-    const payload = cloneDeep(formState);
-    const { batteryManufacturer } = AUTOBASE;
-
-    return AutoBase.path(batteryManufacturer)[method](
-      payload,
-      this.getAutobaseListByType.bind(null, 'batteryManufacturer'),
-      'json',
-    );
-  }
-  removeBatteryManufacturer(id) {
-    const { batteryManufacturer } = AUTOBASE;
-    return AutoBase.path(`${batteryManufacturer}/${id}`).delete(
-      {},
-      this.getAutobaseListByType.bind(null, 'batteryManufacturer'),
       'json',
     );
   }
@@ -174,71 +92,7 @@ export default class EmployeesActions extends Actions {
     );
   }
 
-  deleteLineFromSarePart(formState) {
-    const payload = { id: formState };
-    const type = 'sparePart';
-
-    const trueType = AUTOBASE[type];
-
-    return AutoBase.path(trueType).delete(
-      payload,
-      this.getAutobaseListByType.bind(null, type),
-      'json',
-    );
-  }
-
-  techInspection(method, formState) {
-    const payload = {
-      ...formState,
-      date_start: createValidDate(formState.date_start),
-      date_end: createValidDate(formState.date_end),
-    };
-
-    const { techInspection } = AUTOBASE;
-
-    return AutoBase.path(techInspection)[method](
-      payload,
-      this.getAutobaseListByType.bind(null, 'techInspection'),
-      'json',
-    );
-  }
-
-  removeTechInspection(id) {
-    const { techInspection } = AUTOBASE;
-
-    return AutoBase.path(`${techInspection}/${id}`).delete(
-      {},
-      this.getAutobaseListByType.bind(null, 'techInspection'),
-      'json',
-    );
-  }
-
-  insurancePolicy(method, formState) {
-    const payload = {
-      ...formState,
-      date_start: createValidDate(formState.date_start),
-      date_end: createValidDate(formState.date_end),
-    };
-    const { insurancePolicy } = AUTOBASE;
-
-    return AutoBase.path(insurancePolicy)[method](
-      payload,
-      this.getAutobaseListByType.bind(null, 'insurancePolicy'),
-      'json',
-    );
-  }
-
-  removeInsurancePolicy(id) {
-    const { insurancePolicy } = AUTOBASE;
-
-    return AutoBase.path(`${insurancePolicy}/${id}`).delete(
-      {},
-      this.getAutobaseListByType.bind(null, 'insurancePolicy'),
-      'json',
-    );
-  }
-
-  repair(method, formState) {
+  changeDataInDB(type, method, formState) {
     const payload = Object.entries(formState).reduce((obj, [key, value]) => {
       if (key.includes('date')) {
         obj[key] = createValidDate(value);
@@ -247,21 +101,21 @@ export default class EmployeesActions extends Actions {
       }
       return obj;
     }, {});
-    const { repair } = AUTOBASE;
 
-    return AutoBase.path(repair)[method](
+    const trueType = AUTOBASE[type];
+
+    return AutoBase.path(trueType)[method](
       payload,
-      this.getAutobaseListByType.bind(null, 'repair'),
+      this.getAutobaseListByType.bind(null, type),
       'json',
     );
   }
+  removeDataFromDB(type, id) {
+    const trueType = AUTOBASE[type];
 
-  removeRepair(id) {
-    const { repair } = AUTOBASE;
-
-    return AutoBase.path(`${repair}/${id}`).delete(
+    return AutoBase.path(`${trueType}/${id}`).delete(
       {},
-      this.getAutobaseListByType.bind(null, 'repair'),
+      this.getAutobaseListByType.bind(null, type),
       'json',
     );
   }

@@ -17,7 +17,7 @@ import BatteryRegTable, { tableMeta } from './BatteryRegTable.jsx';
 export default class BatteryRegList extends ElementsList {
   constructor(props, context) {
     super(props);
-    this.removeElementAction = context.flux.getActions('autobase').removeBattery;
+    this.removeElementAction = context.flux.getActions('autobase').removeDataFromDB.bind(null, 'batteryRegistry');
   }
 
   componentDidMount() {

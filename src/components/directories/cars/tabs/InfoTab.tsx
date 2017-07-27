@@ -31,43 +31,50 @@ const InfoTab: React.SFC<IPropsInfoTab> = props =>
           <img role="presentation" src={config.images + props.state.type_image_name} className="car-form-image" />
         </Div>
       </Col>
-
       <Col md={8}>
-        <Field
-          type="select"
-          label="Подразделение"
-          options={props.companyElements}
-          value={props.state.company_structure_id}
-          clearable={false}
-          onChange={props.onChange}
-          boundKeys={['company_structure_id']}
-          disabled={!props.isPermitted}
-        />
-
-        <Field
-          type="string"
-          label="Гаражный номер"
-          value={props.state.garage_number}
-          onChange={props.onChange}
-          boundKeys={['garage_number']}
-          disabled={!props.isPermitted}
-        />
-
-        <Field
-          type="number"
-          label="Поправочный коэффициент"
-          value={props.state.fuel_correction_rate}
-          onChange={props.onChange}
-          boundKeys={['fuel_correction_rate']}
-          disabled={!props.isPermitted}
-        />
-        <Field
-          type="boolean"
-          label="Общее"
-          value={props.state.is_common}
-          onChange={props.onChange}
-          boundKeys={['is_common', !props.state.is_common]}
-        />
+        <Row>
+          <Col md={4}>
+            <Field
+              type="select"
+              label="Подразделение"
+              options={props.companyElements}
+              value={props.state.company_structure_id}
+              clearable={false}
+              onChange={props.onChange}
+              boundKeys={['company_structure_id']}
+              disabled={!props.isPermitted}
+            />
+          </Col>
+          <Col md={4}>
+            <Field
+              type="string"
+              label="Гаражный номер"
+              value={props.state.garage_number}
+              onChange={props.onChange}
+              boundKeys={['garage_number']}
+              disabled={!props.isPermitted}
+            />
+          </Col>
+          <Col md={4}>
+            <Field
+              type="number"
+              label="Поправочный коэффициент"
+              value={props.state.fuel_correction_rate}
+              onChange={props.onChange}
+              boundKeys={['fuel_correction_rate']}
+              disabled={!props.isPermitted}
+            />
+          </Col>
+        </Row>
+        <Col>
+          <Field
+            type="boolean"
+            label="Общее"
+            value={props.state.is_common}
+            onChange={props.onChange}
+            boundKeys={['is_common', !props.state.is_common]}
+          />
+        </Col>
       </Col>
     </Row>
 

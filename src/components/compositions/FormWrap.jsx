@@ -94,38 +94,35 @@ export default class FormWrap extends Component {
   // отправка формы
   async handleFormSubmit() {
     const uniqueField = this.uniqueField || 'id';
-    const { formState } = this.state;
-    let resultFormState = formState;
+    let { formState } = this.state;
     let result = null;
 
     if (this.schema) {
       this.schema.properties.forEach((p) => {
         if (p.type === 'number' && p.float) {
           formState[p.key] = !isNaN(formState[p.key]) && formState[p.key] !== null ? parseFloat(formState[p.key]) : null;
-          resultFormState = formState;
         }
         if (p.type === 'number' && p.integer) {
           const parsedValue = parseInt(formState[p.key], 10);
           formState[p.key] = !isNaN(parsedValue) ? parsedValue : null;
-          resultFormState = formState;
         }
 
         if (typeof p.isSubmitted === 'function') {
-          resultFormState = p.isSubmitted(formState) ? formState : _.omit(formState, p.key);
+          formState = p.isSubmitted(formState) ? formState : _.omit(formState, p.key);
         }
       });
     }
 
     // понять, обновлять форму или создавать новую
     // можно по отсутствию уникального идентификатора
-    if (isEmpty(resultFormState[uniqueField])) {
+    if (isEmpty(formState[uniqueField])) {
       if (typeof this.createAction === 'function') {
         try {
           this.setState({
             saveButtonLabel: SAVE_BUTTON_LABEL_PROGRESS,
             saveButtonEnability: false,
           });
-          result = await this.createAction(resultFormState);
+          result = await this.createAction(formState);
           this.setState({
             saveButtonLabel: SAVE_BUTTON_LABEL_DEFAULT,
             saveButtonEnability: true,
@@ -148,7 +145,7 @@ export default class FormWrap extends Component {
             saveButtonLabel: SAVE_BUTTON_LABEL_PROGRESS,
             saveButtonEnability: false,
           });
-          result = await this.updateAction(resultFormState);
+          result = await this.updateAction(formState);
           this.setState({
             saveButtonLabel: SAVE_BUTTON_LABEL_DEFAULT,
             saveButtonEnability: true,

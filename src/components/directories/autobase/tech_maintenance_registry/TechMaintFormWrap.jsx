@@ -2,27 +2,45 @@ import React from 'react';
 
 import FormWrap from 'components/compositions/FormWrap';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
-import BaseTechMaintOrderForm from './TechMaintOrderForm';
+import BaseTechMaintForm from './TechMaintForm';
 import { formValidationSchema } from './schema';
 
-const TechMaintOrderForm = enhanceWithPermissions(BaseTechMaintOrderForm);
+const TechMaintForm = enhanceWithPermissions(BaseTechMaintForm);
 
-export default class TechMaintOrderFormWrap extends FormWrap {
+export default class TechMaintFormWrap extends FormWrap {
 
   constructor(props, context) {
     super(props);
 
     this.schema = formValidationSchema;
     this.preventDefaultNotification = true;
-    this.createAction = context.flux.getActions('autobase').techMaintOrder.bind(null, 'post');
-    this.updateAction = context.flux.getActions('autobase').techMaintOrder.bind(null, 'put');
+    this.createAction = context.flux.getActions('autobase').techMaint.bind(null, 'post');
+    this.updateAction = context.flux.getActions('autobase').techMaint.bind(null, 'put');
   }
+  // TODO Надо избавляться от наследования и делать композицию компонентов
+  inheritedComponentWillReceiveProps(nextProps) {
+    if (this.props.showForm !== nextProps.showForm) {
+      const {
+        car_id,
+        car_model_id,
+        gov_number,
+      } = nextProps;
 
+      this.setState({
+        formState: {
+          ...this.state.formState,
+          car_id,
+          car_model_id,
+          gov_number,
+        },
+      });
+    }
+  }
   render() {
     const { entity } = this.props;
 
     return this.props.showForm ?
-      <TechMaintOrderForm
+      <TechMaintForm
         formState={this.state.formState}
         formErrors={this.state.formErrors}
         permissions={[`${entity}.update`]}

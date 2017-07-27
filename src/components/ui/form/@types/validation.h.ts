@@ -2,12 +2,12 @@ interface IValidationSchemaProperties<TValue, TFormData> {
   key: string;
   required?: boolean;
   integer?: boolean;
-  title: string;
+  title?: string;
   maxLength?: number;
   max?: number;
   min?: number;
   isSubmitted?(value: TValue, formData: TFormData): boolean;
-  type: 'number' | 'string' | 'date' | 'datetime' | 'boolean';
+  type?: 'number' | 'string' | 'date' | 'datetime' | 'boolean' | 'array';
 }
 
 interface IValidationSchemaDependensyField<TValue, TFormData> {

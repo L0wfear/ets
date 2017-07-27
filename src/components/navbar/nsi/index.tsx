@@ -42,6 +42,7 @@ const NsiNavItem: React.SFC<IPropsNsiNavItem> = ({ path }) =>
       'autobase_spare_part.list',
       'autobase_tire.list',
       'autobase_tech_maintenance_order.list',
+      // 'autobase_tech_maintenance_registry.list',
     ]} title="Транспортные средства" id="nav-dropdown-2-1">
       <MenuItem role="MENU_ROLE" permissions={['type.list']} active={path === '/car-func-types'} href="#/car-func-types">Типы техники</MenuItem>
       <MenuItem permissions={['car.list']} active={path === '/cars'} href="#/cars">Реестр транспортных средств</MenuItem>
@@ -51,6 +52,7 @@ const NsiNavItem: React.SFC<IPropsNsiNavItem> = ({ path }) =>
       <MenuItem permissions={['autobase_tire.list']} active={path === '/tire'} href="#/tire">Реестр шин</MenuItem>
       <MenuItem permissions={['autobase_spare_part.list']} active={path === '/spare-part'} href="#/spare-part">Реестр запчастей</MenuItem>
       <MenuItem permissions={['autobase_tech_maintenance_order.list']} active={path === '/tech-maintenance-order-registry'} href="#/tech-maintenance-order-registry">Реестр регламентов ТО</MenuItem>
+      {/* <MenuItem permissions={['autobase_tech_maintenance_registry.list']} active={path === '/tech-maintenance-registry'} href="#/tech-maintenance-registry">Тех. обслуживание</MenuItem> */}
       <MenuItem permissions={['autobase_tech_inspection.list']} active={path === '/tech-inspection'} href="#/tech-inspection">Техосмотр</MenuItem>
       <MenuItem permissions={['autobase_insurance_policy_registry.list']} active={path === '/insurance-policyn'} href="#/insurance-policy">Страховка</MenuItem>
     </NavDropdown>

@@ -35,7 +35,7 @@ export const formValidationSchema: IValidationSchema = {
       required: false,
     },
     {
-      key: 'interval_km',
+      key: 'interval_probeg',
       title: 'Интервал до следующего ТО (по пробегу)',
       type: 'number',
       max: 128,

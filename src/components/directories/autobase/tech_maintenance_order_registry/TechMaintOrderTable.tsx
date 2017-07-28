@@ -67,7 +67,7 @@ export function tableMeta({
         },
       },
       {
-        name: 'interval_km',
+        name: 'interval_probeg',
         displayName: 'Интервал до следующего ТО (по пробегу)',
         type: 'number',
         filter: {

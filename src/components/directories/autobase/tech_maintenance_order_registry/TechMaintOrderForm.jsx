@@ -128,11 +128,11 @@ export default class TechMaintOrderForm extends Form {
               <ExtField
                 type="number"
                 label="Интервал до следующего ТО (по пробегу)"
-                error={errors.interval_km}
+                error={errors.interval_probeg}
                 disabled={!isPermitted}
-                value={state.interval_km}
+                value={state.interval_probeg}
                 onChange={this.handleChange}
-                boundKeys={['interval_km']}
+                boundKeys={['interval_probeg']}
               />
             </Col>
             <Col md={12}>

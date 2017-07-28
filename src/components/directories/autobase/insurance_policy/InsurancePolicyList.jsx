@@ -2,7 +2,7 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'constants/autobase';
 import ElementsList from 'components/ElementsList.jsx';
 import InsurancePolicyFormWrap from './InsurancePolicyFormWrap.jsx';
-import InsurancePolicyTable, { tableMeta } from './InsurancePolicyTable';
+import InsurancePolicyTable, { tableMeta } from './InsurancePolicyTable.tsx';
 
 @connectToStores(['autobase', 'objects', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.insurancePolicy}` })

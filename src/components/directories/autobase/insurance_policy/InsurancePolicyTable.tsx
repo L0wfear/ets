@@ -1,20 +1,25 @@
-import React from 'react';
+import * as React from 'react';
 import { get } from 'lodash';
 
-import Table from 'components/ui/table/DataTable.jsx';
-import DateFormatter from 'components/ui/DateFormatter.jsx';
+import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
+import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';
+import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 
-export const tableMeta = ({
+import DataTableComponent from 'components/ui/table/DataTable';
+import DateFormatter from 'components/ui/DateFormatter';
+
+const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
+
+export function tableMeta({
   carsList = [],
   insuranceTypeList = [],
-} = {}) => (
-  {
+} = {}): IDataTableSchema {
+  const meta: IDataTableSchema = {
     cols: [
       {
         name: 'car_id',
         displayName: 'Транспортное средство',
-        type: 'number',
-        orderNum: 0.5,
+        type: 'select',
         filter: {
           type: 'multiselect',
           options: carsList.map(el => ({ value: el.asuods_id, label: el.gov_number })),
@@ -23,8 +28,7 @@ export const tableMeta = ({
       {
         name: 'insurer',
         displayName: 'Страховая организация',
-        type: 'text',
-        orderNum: 1,
+        type: 'select',
         filter: {
           type: 'multiselect',
         },
@@ -32,8 +36,7 @@ export const tableMeta = ({
       {
         name: 'insurance_name',
         displayName: 'Наименование страхования',
-        type: 'text',
-        orderNum: 2,
+        type: 'select',
         filter: {
           type: 'multiselect',
         },
@@ -41,8 +44,7 @@ export const tableMeta = ({
       {
         name: 'insurance_type_id',
         displayName: 'Тип страхования',
-        type: 'text',
-        orderNum: 3,
+        type: 'select',
         filter: {
           type: 'multiselect',
           options: insuranceTypeList.map(({ id, name }) => ({ value: id, label: name })),
@@ -51,26 +53,23 @@ export const tableMeta = ({
       {
         name: 'seria',
         displayName: 'Серия',
-        type: 'text',
-        orderNum: 4,
+        type: 'select',
         filter: {
-          type: 'text',
+          type: 'multiselect',
         },
       },
       {
         name: 'number',
         displayName: 'Номер',
-        type: 'number',
-        orderNum: 5,
+        type: 'select',
         filter: {
-          type: 'number',
+          type: 'multiselect',
         },
       },
       {
         name: 'date_start',
         displayName: 'Дата начала действия',
         type: 'date',
-        orderNum: 6,
         filter: {
           type: 'date',
         },
@@ -78,7 +77,6 @@ export const tableMeta = ({
       {
         name: 'date_end',
         displayName: 'Дата окончания действия',
-        orderNum: 6,
         type: 'date',
         filter: {
           type: 'date',
@@ -88,22 +86,23 @@ export const tableMeta = ({
         name: 'price',
         displayName: 'Стоимость, руб.',
         type: 'number',
-        orderNum: 8,
         filter: {
           type: 'date',
         },
       },
     ],
-  }
-);
+  };
 
-export default (props) => {
+  return meta;
+}
+
+const Table: React.SFC<any> = props  => {
   const { insuranceTypeList = [], carsList = [], car_id = 0 } = props;
 
-  const renderers = {
+  const renderers: ISchemaRenderer = {
     insurance_type_id: ({ data }) => <div>{get(insuranceTypeList.find(s => s.id === data), 'name', '')}</div>,
-    date_start: ({ data }) => (<DateFormatter date={data} />),
-    date_end: ({ data }) => (<DateFormatter date={data} />),
+    date_start: ({ data }) => <DateFormatter date={data} time={false} />,
+    date_end: ({ data }) => <DateFormatter date={data} time={false} />,
     car_id: ({ data }) => <div>{get(carsList.find(s => s.asuods_id === data), 'gov_number', '---')}</div>,
   };
 
@@ -112,12 +111,16 @@ export default (props) => {
     meta = { cols: meta.cols.filter(el => el.name !== 'car_id') };
   }
 
-  return (<Table
-    title="Реестр страховок"
-    results={props.data}
-    tableMeta={meta}
-    renderers={renderers}
-    noFilter={!!car_id}
-    {...props}
-  />);
+  return (
+    <DataTable
+      title="Реестр страховок"
+      results={props.data}
+      tableMeta={meta}
+      renderers={renderers}
+      noFilter={!!car_id}
+      {...props}
+    />
+  );
 };
+
+export default Table;

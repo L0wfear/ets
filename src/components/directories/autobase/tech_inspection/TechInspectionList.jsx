@@ -28,7 +28,7 @@ export default class TechInspectionList extends ElementsList {
     if (car_id === -1) {
       flux.getActions('autobase').getAutobaseListByType('techInspection');
     } else {
-      flux.getActions('autobase').getAutobaseListByType('techInspection', car_id);
+      flux.getActions('autobase').getAutobaseListByType('techInspection', { car_id });
     }
     flux.getActions('objects').getCars();
   }

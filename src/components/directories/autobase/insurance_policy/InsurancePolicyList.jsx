@@ -24,10 +24,11 @@ export default class InsurancePolicyList extends ElementsList {
     super.componentDidMount();
     const { flux } = this.context;
     const { car_id = -1 } = this.props;
+
     if (car_id === -1) {
       flux.getActions('autobase').getAutobaseListByType('insurancePolicy');
     } else {
-      flux.getActions('autobase').getAutobaseListByType('insurancePolicy', car_id);
+      flux.getActions('autobase').getAutobaseListByType('insurancePolicy', { car_id });
     }
     flux.getActions('autobase').getAutobaseListByType('insuranceType');
     flux.getActions('objects').getCars();

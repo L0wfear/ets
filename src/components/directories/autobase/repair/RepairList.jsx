@@ -28,7 +28,7 @@ export default class RepareList extends ElementsList {
     if (car_id === -1) {
       flux.getActions('autobase').getAutobaseListByType('repair');
     } else {
-      flux.getActions('autobase').getAutobaseListByType('repair', car_id);
+      flux.getActions('autobase').getAutobaseListByType('repair', { car_id });
     }
     flux.getActions('objects').getCars();
     flux.getActions('autobase').getAutobaseListByType('repairCompany');

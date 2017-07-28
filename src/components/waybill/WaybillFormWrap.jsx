@@ -196,7 +196,15 @@ export default class WaybillFormWrap extends FormWrap {
 
   handleMultipleChange(fields) {
     let formState = _.cloneDeep(this.state.formState);
-    _.mapKeys(fields, (value, field) => {
+    const { car_id = -1 } = this.state.formState;
+
+    if (car_id !== formState.car_id) {
+      delete formState.equipment_fuel_start;
+      delete formState.fuel_start;
+      delete formState.motohours_equip_start;
+    }
+
+    Object.entries(fields).forEach(([field, value]) => {
       formState[field] = value;
       formState = calculateWaybillMetersDiff(formState, field, value);
     });

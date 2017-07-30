@@ -92,9 +92,12 @@ export default class EmployeesActions extends Actions {
   insurancePolicy(method, formState) {
     const payload = {
       ...formState,
-      date_start: createValidDate(formState.date_start),
-      date_end: createValidDate(formState.date_end),
     };
+    ['created_at', 'updated_at', 'date_start', 'date_end'].forEach((key) => {
+      if (formState.hasOwnProperty(key)) {
+        payload[key] = createValidDate(formState[key]);
+      }
+    });
     const { insurancePolicy } = AUTOBASE;
 
     return AutoBase.path(insurancePolicy)[method](

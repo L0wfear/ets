@@ -47,9 +47,9 @@ export function tableMeta({
       {
         name: 'number',
         displayName: 'Номер документа',
-        type: 'select',
+        type: 'string',
         filter: {
-          type: 'multiselect',
+          type: 'string',
         },
       },
       {
@@ -87,9 +87,9 @@ export function tableMeta({
       {
         name: 'description',
         displayName: 'Описание неисправности',
-        type: 'select',
+        type: 'string',
         filter: {
-          type: 'multiselect',
+          type: 'string',
         },
       },
       {

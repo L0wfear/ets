@@ -3,7 +3,7 @@ import React from 'react';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
 import BaseRepairForm from './RepairForm';
-import { schformValidationSchemaema } from './schema';
+import { formValidationSchema } from './schema';
 
 const RepairForm = enhanceWithPermissions(BaseRepairForm);
 
@@ -12,7 +12,7 @@ export default class RepairFormWrap extends FormWrap {
   constructor(props, context) {
     super(props);
 
-    this.schema = schformValidationSchemaema;
+    this.schema = formValidationSchema;
     this.preventDefaultNotification = true;
 
     this.createAction = context.flux.getActions('autobase').repair.bind(null, 'post');

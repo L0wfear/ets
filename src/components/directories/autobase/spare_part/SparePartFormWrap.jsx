@@ -2,7 +2,7 @@ import React from 'react';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
 import BaseSparePartForm from './SparePartForm.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
-import { schformValidationSchemaema } from './schema';
+import { formValidationSchema } from './schema';
 
 const SparePartForm = enhanceWithPermissions(BaseSparePartForm);
 
@@ -10,8 +10,7 @@ export default class SparePartFormWrap extends FormWrap {
 
   constructor(props, context) {
     super(props);
-
-    this.schema = schformValidationSchemaema;
+    this.schema = formValidationSchema;
     this.preventDefaultNotification = true;
 
     this.createAction = context.flux.getActions('autobase').sparePart.bind(null, 'post');

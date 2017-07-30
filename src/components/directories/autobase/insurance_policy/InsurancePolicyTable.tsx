@@ -28,17 +28,17 @@ export function tableMeta({
       {
         name: 'insurer',
         displayName: 'Страховая организация',
-        type: 'select',
+        type: 'string',
         filter: {
-          type: 'multiselect',
+          type: 'string',
         },
       },
       {
         name: 'insurance_name',
         displayName: 'Наименование страхования',
-        type: 'select',
+        type: 'string',
         filter: {
-          type: 'multiselect',
+          type: 'string',
         },
       },
       {
@@ -53,17 +53,17 @@ export function tableMeta({
       {
         name: 'seria',
         displayName: 'Серия',
-        type: 'select',
+        type: 'string',
         filter: {
-          type: 'multiselect',
+          type: 'string',
         },
       },
       {
         name: 'number',
         displayName: 'Номер',
-        type: 'select',
+        type: 'number',
         filter: {
-          type: 'multiselect',
+          type: 'number',
         },
       },
       {
@@ -87,7 +87,7 @@ export function tableMeta({
         displayName: 'Стоимость, руб.',
         type: 'number',
         filter: {
-          type: 'date',
+          type: 'number',
         },
       },
     ],

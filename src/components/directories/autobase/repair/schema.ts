@@ -22,8 +22,8 @@ export const formValidationSchema: IValidationSchema = {
     },
     {
       key: 'number',
-      title: 'Регистрационный номер',
-      type: 'number',
+      title: 'Номер документа',
+      type: 'string',
       maxLength: 128,
     },
     {

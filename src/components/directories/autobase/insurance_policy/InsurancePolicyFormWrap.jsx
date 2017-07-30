@@ -3,7 +3,7 @@ import React from 'react';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
 import BaseInsurancePolicyForm from './InsurancePolicyForm';
-import { schformValidationSchemaema } from './schema';
+import { formValidationSchema } from './schema';
 
 const InsurancePolicyForm = enhanceWithPermissions(BaseInsurancePolicyForm);
 
@@ -11,7 +11,7 @@ export default class InsurancePolicyFormWrap extends FormWrap {
 
   constructor(props, context) {
     super(props);
-    this.schema = schformValidationSchemaema;
+    this.schema = formValidationSchema;
     this.preventDefaultNotification = true;
 
     this.createAction = context.flux.getActions('autobase').insurancePolicy.bind(null, 'post');

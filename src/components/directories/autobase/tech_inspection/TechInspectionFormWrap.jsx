@@ -20,6 +20,7 @@ export const schema = {
       type: 'number',
       required: true,
       maxLength: 21,
+      minLength: 21,
     },
     {
       key: 'date_end',
@@ -56,12 +57,13 @@ export default class TechInspectionFormWrap extends FormWrap {
 
   constructor(props, context) {
     super(props);
+    const { car_id = -1 } = props;
 
     this.schema = schema;
     this.preventDefaultNotification = true;
 
-    this.createAction = context.flux.getActions('autobase').techInspection.bind(null, 'post');
-    this.updateAction = context.flux.getActions('autobase').techInspection.bind(null, 'put');
+    this.createAction = context.flux.getActions('autobase').techInspection.bind(null, 'post', car_id === -1 ? {} : { car_id });
+    this.updateAction = context.flux.getActions('autobase').techInspection.bind(null, 'put', car_id === -1 ? {} : { car_id });
   }
 
   render() {

@@ -11,12 +11,13 @@ export default class RepairFormWrap extends FormWrap {
 
   constructor(props, context) {
     super(props);
+    const { car_id = -1 } = props;
 
     this.schema = formValidationSchema;
     this.preventDefaultNotification = true;
 
-    this.createAction = context.flux.getActions('autobase').repair.bind(null, 'post');
-    this.updateAction = context.flux.getActions('autobase').repair.bind(null, 'put');
+    this.createAction = context.flux.getActions('autobase').repair.bind(null, 'post', car_id === -1 ? {} : { car_id });
+    this.updateAction = context.flux.getActions('autobase').repair.bind(null, 'put', car_id === -1 ? {} : { car_id });
   }
 
   render() {

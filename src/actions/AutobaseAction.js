@@ -91,7 +91,7 @@ export default class EmployeesActions extends Actions {
     );
   }
 
-  insurancePolicy(method, formState) {
+  insurancePolicy(method, payloadCallBack, formState) {
     const payload = {
       ...formState,
     };
@@ -105,7 +105,7 @@ export default class EmployeesActions extends Actions {
     const path = parsePutPath(insurancePolicy, method, formState);
     return AutoBase.path(path)[method](
       payload,
-      this.getAutobaseListByType.bind(null, 'insurancePolicy'),
+      this.getAutobaseListByType.bind(null, 'insurancePolicy', payloadCallBack),
       'json',
     );
   }
@@ -119,7 +119,7 @@ export default class EmployeesActions extends Actions {
     );
   }
 
-  repair(method, formState) {
+  repair(method, payloadCallBack, formState) {
     const payload = Object.entries(formState).reduce((obj, [key, value]) => {
       if (key.includes('date')) {
         obj[key] = createValidDate(value);
@@ -134,7 +134,7 @@ export default class EmployeesActions extends Actions {
     const path = parsePutPath(repair, method, formState);
     return AutoBase.path(path)[method](
       payload,
-      this.getAutobaseListByType.bind(null, 'repair'),
+      this.getAutobaseListByType.bind(null, 'repair', payloadCallBack),
       'json',
     );
   }
@@ -168,7 +168,7 @@ export default class EmployeesActions extends Actions {
     );
   }
 
-  techInspection(method, formState) {
+  techInspection(method, payloadCallBack, formState) {
     const payload = {
       ...formState,
       date_start: createValidDate(formState.date_start),
@@ -178,9 +178,10 @@ export default class EmployeesActions extends Actions {
     const { techInspection } = AUTOBASE;
 
     const path = parsePutPath(techInspection, method, formState);
+
     return AutoBase.path(path)[method](
       payload,
-      this.getAutobaseListByType.bind(null, 'techInspection'),
+      this.getAutobaseListByType.bind(null, 'techInspection', payloadCallBack),
       'json',
     );
   }
@@ -214,14 +215,14 @@ export default class EmployeesActions extends Actions {
     );
   }
 
-  techMaint(method, formState) {
+  techMaint(method, payloadCallBack, formState) {
     const payload = cloneDeep(formState);
     const { techMaint } = AUTOBASE;
 
     const path = parsePutPath(techMaint, method, formState);
     return AutoBase.path(path)[method](
       payload,
-      this.getAutobaseListByType.bind(null, 'techMaint'),
+      this.getAutobaseListByType.bind(null, 'techMaint', payloadCallBack),
       'json',
     );
   }

@@ -1,20 +1,9 @@
 import React from 'react';
-import { get } from 'lodash';
 
 import Table from 'components/ui/table/DataTable.jsx';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 
-export const tableMeta = ({
-  carsList = [],
-  data = [],
-} = {}) => {
-  const data__car_id = data.map(el => el.car_id);
-  const trueCarsList = carsList.reduce((arr, el) => {
-    if (data__car_id.includes(el.asuods_id)) {
-      arr.push({ value: el.asuods_id, label: el.gov_number });
-    }
-    return arr;
-  }, []);
+export const tableMeta = () => {
   const meta = {
     cols: [
       {
@@ -26,13 +15,11 @@ export const tableMeta = ({
         },
       },
       {
-        name: 'car_id',
+        name: 'gov_number',
         displayName: 'Транспортное средство',
         type: 'number',
         filter: {
           type: 'multiselect',
-          options: trueCarsList,
-          // options: carsList.map(el => ({ value: el.asuods_id, label: el.gov_number })),
         },
       },
       {
@@ -90,21 +77,18 @@ export const tableMeta = ({
 };
 
 export default (props) => {
-  const { carsList = [], car_id = 0  } = props;
+  const { car_id = -1  } = props;
 
   const renderers = {
     date_start: ({ data }) => (<DateFormatter date={data} />),
     date_end: ({ data }) => (<DateFormatter date={data} />),
     is_allowed: ({ data }) => <input type="checkbox" disabled checked={data} />,
-    car_id: ({ data }) => <div>{get(carsList.find(s => s.asuods_id === data), 'gov_number', '---')}</div>,
   };
 
-  let meta = tableMeta(props);
-  if (!!car_id) {
+  let meta = tableMeta();
+  if (car_id === -1) {
     meta = { cols: meta.cols.filter(el => el.name !== 'car_id') };
   }
-  
-  
   return (<Table
     title="Реестр техосмотров"
     results={props.data}

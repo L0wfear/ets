@@ -52,7 +52,7 @@ export const formValidationSchema: IValidationSchema = {
       key: 'interval_time',
       title: 'Интервал до следующего ТО (по времени)',
       type: 'number',
-      max: 128,
+      maxLength: 128,
       integer: true,
     },
     {

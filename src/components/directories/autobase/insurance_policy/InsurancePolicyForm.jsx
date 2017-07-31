@@ -87,7 +87,7 @@ export default class InsurancePolicyForm extends Form {
               />
               <ExtField
                 type={'select'}
-                label={fields.insurance_type_id.displayName}
+                label={fields.insurance_type_name.displayName}
                 value={state.insurance_type_id}
                 error={errors.insurance_type_id}
                 options={INSURANCE_TYPE_OPTION}

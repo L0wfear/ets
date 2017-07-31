@@ -6,14 +6,21 @@ import DateFormatter from 'components/ui/DateFormatter.jsx';
 
 export const tableMeta = ({
   carsList = [],
-} = {}) => (
-  {
+  data = [],
+} = {}) => {
+  const data__car_id = data.map(el => el.car_id);
+  const trueCarsList = carsList.reduce((arr, el) => {
+    if (data__car_id.includes(el.asuods_id)) {
+      arr.push({ value: el.asuods_id, label: el.gov_number });
+    }
+    return arr;
+  }, []);
+  const meta = {
     cols: [
       {
         name: 'company_name',
         displayName: 'Организация',
         type: 'text',
-        orderNum: 1,
         filter: {
           type: 'multiselect',
         },
@@ -22,10 +29,10 @@ export const tableMeta = ({
         name: 'car_id',
         displayName: 'Транспортное средство',
         type: 'number',
-        orderNum: 1.5,
         filter: {
           type: 'multiselect',
-          options: carsList.map(el => ({ value: el.asuods_id, label: el.gov_number })),
+          options: trueCarsList,
+          // options: carsList.map(el => ({ value: el.asuods_id, label: el.gov_number })),
         },
       },
       {
@@ -34,32 +41,21 @@ export const tableMeta = ({
         type: 'number',
         orderNum: 2,
         filter: {
-          type: 'multiselect',
+          type: 'number',
         },
       },
       {
         name: 'date_end',
         displayName: 'Срок действия до',
         type: 'date',
-        orderNum: 3,
         filter: {
           type: 'date',
-        },
-      },
-      {
-        name: 'insurance_type_id',
-        displayName: 'Тип страхования',
-        type: 'text',
-        orderNum: 3,
-        filter: {
-          type: 'multiselect',
         },
       },
       {
         name: 'tech_operator',
         displayName: 'Оператор технического осмотра / пункт технического осмотра',
         type: 'text',
-        orderNum: 4,
         filter: {
           type: 'text',
         },
@@ -68,7 +64,6 @@ export const tableMeta = ({
         name: 'date_start',
         displayName: 'Дата прохождения',
         type: 'date',
-        orderNum: 5,
         filter: {
           type: 'date',
         },
@@ -77,7 +72,6 @@ export const tableMeta = ({
         name: 'is_allowed',
         displayName: 'Заключение о возможности/невозможности эксплуатации ТС',
         type: 'boolean',
-        orderNum: 6,
         filter: false,
       },
       {
@@ -90,8 +84,10 @@ export const tableMeta = ({
         },
       },
     ],
-  }
-);
+  };
+
+  return meta;
+};
 
 export default (props) => {
   const { carsList = [], car_id = 0  } = props;

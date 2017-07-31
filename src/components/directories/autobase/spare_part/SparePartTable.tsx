@@ -49,12 +49,12 @@ export function tableMeta({
         },
       },
       {
-        name: 'measure_unit_id',
+        name: 'measure_unit_name',
         displayName: 'Единица измерения',
         type: 'select',
         filter: {
           type: 'multiselect',
-          options: measureUnitList.map(({ id, name }) => ({ value: id, label: name })),
+          // options: measureUnitList.map(({ id, name }) => ({ value: id, label: name })),
         },
       },
       {

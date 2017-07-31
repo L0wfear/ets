@@ -11,37 +11,27 @@ import DateFormatter from 'components/ui/DateFormatter';
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
 export function tableMeta({
-  carsList = [],
   repairCompanyList = [],
   repairTypeList = [],
 } = {}): IDataTableSchema {
   const meta: IDataTableSchema = {
     cols: [
       {
-        name: 'car_id',
-        displayName: 'Транспортное средство',
-        type: 'select',
-        filter: {
-          type: 'multiselect',
-          options: carsList.map(el => ({ value: el.asuods_id, label: el.gov_number })),
-        },
-      },
-      {
-        name: 'repair_company_id',
+        name: 'repair_company_name',
         displayName: 'Исполнитель ремонта',
         type: 'select',
         filter: {
           type: 'multiselect',
-          options: repairCompanyList.map(el => ({ value: el.id, label: el.name })),
+          // options: repairCompanyList.map(el => ({ value: el.id, label: el.name })),
         },
       },
       {
-        name: 'repair_type_id',
+        name: 'repair_type_name',
         displayName: 'Вид ремонта',
         type: 'select',
         filter: {
           type: 'multiselect',
-          options: repairTypeList.map(el => ({ value: el.id, label: el.name })),
+          //options: repairTypeList.map(el => ({ value: el.id, label: el.name })),
         },
       },
       {
@@ -112,7 +102,7 @@ const Table: React.SFC<any> = props  => {
           repairTypeList = [],
         } = props;
 
-  const renderers: ISchemaRenderer = {
+        const renderers: ISchemaRenderer = {
     plan_date_start: ({ data }) => (<DateFormatter date={data} />),
     plan_date_end: ({ data }) => (<DateFormatter date={data} />),
     fact_date_start: ({ data }) => (<DateFormatter date={data} />),

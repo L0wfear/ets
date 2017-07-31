@@ -71,7 +71,7 @@ export default class BaseTechInspectionForm extends Form {
             }
               <ExtField
                 type="select"
-                label={fields.repair_company_id.displayName}
+                label={fields.repair_company_name.displayName}
                 value={state.repair_company_id}
                 error={errors.repair_company_id}
                 options={REPARE_COMPANY_OPTION}
@@ -82,7 +82,7 @@ export default class BaseTechInspectionForm extends Form {
               />
               <ExtField
                 type="select"
-                label={fields.repair_type_id.displayName}
+                label={fields.repair_type_name.displayName}
                 value={state.repair_type_id}
                 error={errors.repair_type_id}
                 options={REPARE_TYPE_OPTION}

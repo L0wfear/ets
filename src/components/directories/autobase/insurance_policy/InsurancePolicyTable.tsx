@@ -13,7 +13,15 @@ const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent
 export function tableMeta({
   carsList = [],
   insuranceTypeList = [],
+  data = [],
 } = {}): IDataTableSchema {
+  const data__car_id = data.map(el => el.car_id);
+  const trueCarsList = carsList.reduce((arr, el) => {
+    if (data__car_id.includes(el.asuods_id)) {
+      arr.push({ value: el.asuods_id, label: el.gov_number });
+    }
+    return arr;
+  }, []);
   const meta: IDataTableSchema = {
     cols: [
       {
@@ -22,7 +30,8 @@ export function tableMeta({
         type: 'select',
         filter: {
           type: 'multiselect',
-          options: carsList.map(el => ({ value: el.asuods_id, label: el.gov_number })),
+          options: trueCarsList,
+          // options: carsList.map(el => ({ value: el.asuods_id, label: el.gov_number })),
         },
       },
       {
@@ -42,12 +51,12 @@ export function tableMeta({
         },
       },
       {
-        name: 'insurance_type_id',
+        name: 'insurance_type_name',
         displayName: 'Тип страхования',
         type: 'select',
         filter: {
           type: 'multiselect',
-          options: insuranceTypeList.map(({ id, name }) => ({ value: id, label: name })),
+          //options: insuranceTypeList.map(({ id, name }) => ({ value: id, label: name })),
         },
       },
       {

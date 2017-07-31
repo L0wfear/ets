@@ -78,6 +78,18 @@ export default class TechMaintOrderForm extends Form {
               />
             </Col>
             <Col md={12}>
+              <ExtField
+                type="select"
+                label="Пробег измеряется"
+                options={MEASURE_UNITS_RUN}
+                value={state.measure_unit_run_id}
+                error={errors.measure_unit_run_id}
+                disabled={!isPermitted || tech_maintenance_type_id === ''}
+                onChange={this.handleChange}
+                boundKeys={['measure_unit_run_id']}
+              />
+            </Col>
+            <Col md={12}>
               <ExtDiv hidden={state.is_periodic}>
                 <ExtField
                   type="select"
@@ -133,18 +145,6 @@ export default class TechMaintOrderForm extends Form {
                 value={state.interval_probeg}
                 onChange={this.handleChange}
                 boundKeys={['interval_probeg']}
-              />
-            </Col>
-            <Col md={12}>
-              <ExtField
-                type="select"
-                label="Пробег измеряется"
-                options={MEASURE_UNITS_RUN}
-                value={state.measure_unit_run_id}
-                error={errors.measure_unit_run_id}
-                disabled={!isPermitted || tech_maintenance_type_id === ''}
-                onChange={this.handleChange}
-                boundKeys={['measure_unit_run_id']}
               />
             </Col>
             <Col md={12}>

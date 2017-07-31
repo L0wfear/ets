@@ -4,7 +4,7 @@ export const formValidationSchema: IValidationSchema = {
   properties: [
     {
       key: 'car_id',
-      title: 'Регистрационный номер',
+      title: 'Номер транспортного средства',
       type: 'number',
       required: true,
     },

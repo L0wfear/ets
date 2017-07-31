@@ -102,7 +102,7 @@ export default class DataTable extends React.Component {
       selected: null,
       selectField: 'id',
 
-      initialSort: 'id',
+      initialSort: '',
       initialSortAscending: true,
 
       enableSort: true,
@@ -148,7 +148,7 @@ export default class DataTable extends React.Component {
     // Здесь производится инициализация начальной сортировки для того,
     // чтобы гриддл мог корректно отобразить хедер при первом рендеринге
     // важно устанавливать сортировку именно в willMount!
-    const { initialSort = 'id', initialSortAscending = true } = this.props;
+    const { initialSort = '', initialSortAscending = true } = this.props;
 
     this.setState({ initialSort, initialSortAscending });
   }
@@ -503,7 +503,7 @@ export default class DataTable extends React.Component {
       enableSort, noDataMessage, className, noHeader,
       refreshable, columnControl, highlight, serverPagination, externalChangeSort,
       lowerCaseSorting = false } = this.props;
-    const { initialSort = '', initialSortAscending, columnControlValues, isHierarchical } = this.state;
+    const { initialSort, initialSortAscending, columnControlValues, isHierarchical } = this.state;
 
     const tableMetaCols = (tableMeta.cols);
     let data = (this.props.results);

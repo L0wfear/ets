@@ -27,7 +27,8 @@ export default class EmployeesActions extends Actions {
     const payload = cloneDeep(formState);
     const { batteryBrand } = AUTOBASE;
 
-    return AutoBase.path(batteryBrand)[method](
+    const path = parsePutPath(batteryBrand, method, formState);
+    return AutoBase.path(path)[method](
       payload,
       this.getAutobaseListByType.bind(null, 'batteryBrand'),
       'json',
@@ -46,7 +47,8 @@ export default class EmployeesActions extends Actions {
     const payload = cloneDeep(formState);
     const { batteryManufacturer } = AUTOBASE;
 
-    return AutoBase.path(batteryManufacturer)[method](
+    const path = parsePutPath(batteryManufacturer, method, formState);
+    return AutoBase.path(path)[method](
       payload,
       this.getAutobaseListByType.bind(null, 'batteryManufacturer'),
       'json',
@@ -92,12 +94,16 @@ export default class EmployeesActions extends Actions {
   insurancePolicy(method, formState) {
     const payload = {
       ...formState,
-      date_start: createValidDate(formState.date_start),
-      date_end: createValidDate(formState.date_end),
     };
+    ['created_at', 'updated_at', 'date_start', 'date_end'].forEach((key) => {
+      if (formState.hasOwnProperty(key)) {
+        payload[key] = createValidDate(formState[key]);
+      }
+    });
     const { insurancePolicy } = AUTOBASE;
 
-    return AutoBase.path(insurancePolicy)[method](
+    const path = parsePutPath(insurancePolicy, method, formState);
+    return AutoBase.path(path)[method](
       payload,
       this.getAutobaseListByType.bind(null, 'insurancePolicy'),
       'json',
@@ -123,9 +129,10 @@ export default class EmployeesActions extends Actions {
       return obj;
     }, {});
 
-    const trueType = AUTOBASE.repair;
+    const { repair } = AUTOBASE;
 
-    return AutoBase.path(trueType)[method](
+    const path = parsePutPath(repair, method, formState);
+    return AutoBase.path(path)[method](
       payload,
       this.getAutobaseListByType.bind(null, 'repair'),
       'json',
@@ -145,7 +152,8 @@ export default class EmployeesActions extends Actions {
     const payload = cloneDeep(formState);
     const { sparePart } = AUTOBASE;
 
-    return AutoBase.path(sparePart)[method](
+    const path = parsePutPath(sparePart, method, formState);
+    return AutoBase.path(path)[method](
       payload,
       this.getAutobaseListByType.bind(null, 'sparePart'),
       'json',
@@ -169,7 +177,8 @@ export default class EmployeesActions extends Actions {
 
     const { techInspection } = AUTOBASE;
 
-    return AutoBase.path(techInspection)[method](
+    const path = parsePutPath(techInspection, method, formState);
+    return AutoBase.path(path)[method](
       payload,
       this.getAutobaseListByType.bind(null, 'techInspection'),
       'json',
@@ -189,7 +198,8 @@ export default class EmployeesActions extends Actions {
     const payload = cloneDeep(formState);
     const { techMaintOrder } = AUTOBASE;
 
-    return AutoBase.path(techMaintOrder)[method](
+    const path = parsePutPath(techMaintOrder, method, formState);
+    return AutoBase.path(path)[method](
       payload,
       this.getAutobaseListByType.bind(null, 'techMaintOrder'),
       'json',
@@ -208,7 +218,8 @@ export default class EmployeesActions extends Actions {
     const payload = cloneDeep(formState);
     const { techMaint } = AUTOBASE;
 
-    return AutoBase.path(techMaint)[method](
+    const path = parsePutPath(techMaint, method, formState);
+    return AutoBase.path(path)[method](
       payload,
       this.getAutobaseListByType.bind(null, 'techMaint'),
       'json',

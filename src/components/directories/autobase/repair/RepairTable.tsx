@@ -1,49 +1,45 @@
-import React from 'react';
+import * as React from 'react';
 import { get } from 'lodash';
 
-import Table from 'components/ui/table/DataTable.jsx';
-import DateFormatter from 'components/ui/DateFormatter.jsx';
+import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
+import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';
+import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 
-export const tableMeta = ({
-  carsList = [],
+import DataTableComponent from 'components/ui/table/DataTable';
+import DateFormatter from 'components/ui/DateFormatter';
+
+const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
+
+export function tableMeta({
   repairCompanyList = [],
   repairTypeList = [],
-} = {}) => (
-  {
+} = {}): IDataTableSchema {
+  const meta: IDataTableSchema = {
     cols: [
       {
-        name: 'car_id',
-        displayName: 'Транспортное средство',
-        type: 'number',
-        filter: {
-          type: 'multiselect',
-          options: carsList.map(el => ({ value: el.asuods_id, label: el.gov_number })),
-        },
-      },
-      {
-        name: 'repair_company_id',
+        name: 'repair_company_name',
         displayName: 'Исполнитель ремонта',
-        type: 'number',
+        type: 'select',
         filter: {
           type: 'multiselect',
-          options: repairCompanyList.map(el => ({ value: el.id, label: el.name })),
+          // options: repairCompanyList.map(el => ({ value: el.id, label: el.name })),
         },
       },
       {
-        name: 'repair_type_id',
+        name: 'repair_type_name',
         displayName: 'Вид ремонта',
-        type: 'number',
+        type: 'select',
         filter: {
           type: 'multiselect',
-          options: repairTypeList.map(el => ({ value: el.id, label: el.name })),
+          //options: repairTypeList.map(el => ({ value: el.id, label: el.name })),
         },
       },
       {
         name: 'number',
         displayName: 'Номер документа',
-        type: 'text',
+        type: 'string',
         filter: {
-          type: 'multiselect',
+          type: 'string',
         },
       },
       {
@@ -81,31 +77,32 @@ export const tableMeta = ({
       {
         name: 'description',
         displayName: 'Описание неисправности',
-        type: 'text',
+        type: 'string',
         filter: {
-          type: 'multiselect',
+          type: 'string',
         },
       },
       {
         name: 'note',
         displayName: 'Примечание',
-        type: 'text',
+        type: 'string',
         filter: {
-          type: 'text',
+          type: 'string',
         },
       },
     ],
-  }
-);
+  };
 
-export default (props) => {
+  return meta;
+}
+
+const Table: React.SFC<any> = props  => {
   const { carsList = [],
           repairCompanyList = [],
           repairTypeList = [],
-          car_id = 0  
         } = props;
 
-  const renderers = {
+        const renderers: ISchemaRenderer = {
     plan_date_start: ({ data }) => (<DateFormatter date={data} />),
     plan_date_end: ({ data }) => (<DateFormatter date={data} />),
     fact_date_start: ({ data }) => (<DateFormatter date={data} />),
@@ -115,17 +112,15 @@ export default (props) => {
     repair_type_id: ({ data }) => <div>{get(repairTypeList.find(s => s.id === data), 'name', '---')}</div>,
   };
 
-  let meta = tableMeta(props);
-  if (!!car_id) {
-    meta = { cols: meta.cols.filter(el => el.name !== 'car_id') };
-  }
-
-  return (<Table
-    title="Ремонты ТС"
-    results={props.data}
-    tableMeta={meta}
-    renderers={renderers}
-    noFilter={!!car_id}
-    {...props}
-  />);
+  return (
+    <DataTable
+      title="Ремонты ТС"
+      results={props.data}
+      tableMeta={tableMeta(props)}
+      renderers={renderers}
+      {...props}
+    />
+  );
 };
+
+export default Table;

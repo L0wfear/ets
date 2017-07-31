@@ -90,7 +90,7 @@ export const tableMeta = ({
 };
 
 export default (props) => {
-  const { carsList = [], car_id = 0  } = props;
+  const { carsList = [], car_id = -1  } = props;
 
   const renderers = {
     date_start: ({ data }) => (<DateFormatter date={data} />),
@@ -100,11 +100,9 @@ export default (props) => {
   };
 
   let meta = tableMeta(props);
-  if (!!car_id) {
+  if (car_id === -1) {
     meta = { cols: meta.cols.filter(el => el.name !== 'car_id') };
   }
-  
-  
   return (<Table
     title="Реестр техосмотров"
     results={props.data}

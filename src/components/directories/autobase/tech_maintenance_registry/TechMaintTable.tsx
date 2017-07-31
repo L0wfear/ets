@@ -113,6 +113,7 @@ const Table: React.SFC<any> = props => {
       results={props.data}
       tableMeta={tableMeta(props)}
       renderers={renderers}
+      noFilter={props.car_id !== undefined}
       // initialSort={'full_name'}
       {...props}
     />

@@ -11,11 +11,13 @@ export default class InsurancePolicyFormWrap extends FormWrap {
 
   constructor(props, context) {
     super(props);
+    const { car_id = -1 } = props;
+
     this.schema = formValidationSchema;
     this.preventDefaultNotification = true;
 
-    this.createAction = context.flux.getActions('autobase').insurancePolicy.bind(null, 'post');
-    this.updateAction = context.flux.getActions('autobase').insurancePolicy.bind(null, 'put');
+    this.createAction = context.flux.getActions('autobase').insurancePolicy.bind(null, 'post', car_id === -1 ? {} : { car_id });
+    this.updateAction = context.flux.getActions('autobase').insurancePolicy.bind(null, 'put', car_id === -1 ? {} : { car_id });
   }
 
   render() {

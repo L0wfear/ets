@@ -100,9 +100,10 @@ const Table: React.SFC<any> = props  => {
   const { carsList = [],
           repairCompanyList = [],
           repairTypeList = [],
+          car_id = -1,
         } = props;
 
-        const renderers: ISchemaRenderer = {
+  const renderers: ISchemaRenderer = {
     plan_date_start: ({ data }) => (<DateFormatter date={data} />),
     plan_date_end: ({ data }) => (<DateFormatter date={data} />),
     fact_date_start: ({ data }) => (<DateFormatter date={data} />),
@@ -118,6 +119,7 @@ const Table: React.SFC<any> = props  => {
       results={props.data}
       tableMeta={tableMeta(props)}
       renderers={renderers}
+      noFilter={car_id !== -1}
       {...props}
     />
   );

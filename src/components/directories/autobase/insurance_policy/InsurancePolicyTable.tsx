@@ -106,7 +106,7 @@ export function tableMeta({
 }
 
 const Table: React.SFC<any> = props  => {
-  const { insuranceTypeList = [], carsList = [], car_id = 0 } = props;
+  const { insuranceTypeList = [], carsList = [], car_id = -1 } = props;
 
   const renderers: ISchemaRenderer = {
     insurance_type_id: ({ data }) => <div>{get(insuranceTypeList.find(s => s.id === data), 'name', '')}</div>,
@@ -126,7 +126,7 @@ const Table: React.SFC<any> = props  => {
       results={props.data}
       tableMeta={meta}
       renderers={renderers}
-      noFilter={!!car_id}
+      noFilter={car_id !== -1}
       {...props}
     />
   );

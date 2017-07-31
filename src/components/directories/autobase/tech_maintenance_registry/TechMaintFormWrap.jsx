@@ -2,12 +2,10 @@ import React from 'react';
 
 import FormWrap from 'components/compositions/FormWrap';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
-import BaseTechMaintForm from './TechMaintForm';
+import TechMaintForm from './TechMaintForm';
 import { formValidationSchema } from './schema';
 
-const TechMaintForm = enhanceWithPermissions(BaseTechMaintForm);
-
-export default class TechMaintFormWrap extends FormWrap {
+class TechMaintFormWrap extends FormWrap {
 
   constructor(props, context) {
     super(props);
@@ -36,7 +34,8 @@ export default class TechMaintFormWrap extends FormWrap {
     }
   }
   render() {
-    const { entity } = this.props;
+    const { entity, saveButtonEnability = true } = this.props;
+    const canSave = this.props.isPermitted && this.state.canSave && saveButtonEnability;
 
     return this.props.showForm ?
       <TechMaintForm
@@ -44,7 +43,8 @@ export default class TechMaintFormWrap extends FormWrap {
         formErrors={this.state.formErrors}
         permissions={[`${entity}.update`]}
         addPermissionProp
-        canSave={this.state.canSave}
+        canSave={canSave}
+        isPermitted={this.props.isPermitted}
         onSubmit={this.handleFormSubmit}
         handleFormChange={this.handleFormStateChange}
         show={this.props.showForm}
@@ -54,3 +54,5 @@ export default class TechMaintFormWrap extends FormWrap {
   }
 
 }
+
+export default enhanceWithPermissions(TechMaintFormWrap);

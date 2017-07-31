@@ -1,11 +1,12 @@
 import React from 'react';
 import { autobind } from 'core-decorators';
-import { Input } from 'react-bootstrap';
+import { Input, Row, Col } from 'react-bootstrap';
 import cx from 'classnames';
 
 import { onChangeWithKeys } from 'components/compositions/hoc';
 import DatePicker from 'components/ui/input/DatePicker';
 import EtsSelect from 'components/ui/input/EtsSelect';
+import FileInput from 'components/ui/input/FileInput/FileInput';
 import Div from './Div.jsx';
 import Preloader from './Preloader.jsx';
 
@@ -89,6 +90,22 @@ export default class Field extends React.Component {
     );
   }
 
+  renderFile() {
+    const { error, label = '' } = this.props;
+    const errorClassName = cx({ 'has-error': error });
+
+    return (
+      <Div hidden={this.props.hidden} style={{ marginBottom: 15 }}>
+        <label htmlFor=" " style={{ minHeight: 15 }}>{label}</label>
+        <FileInput
+          {...this.props}
+          errorClassName={errorClassName}
+        />
+        <Div hidden={!error} className="error" style={{ marginTop: 4 }}>{error}</Div>
+      </Div>
+    );
+  }
+
   renderSelect() {
     const { error, label = '', className = '', readOnly = false } = this.props;
     const selectClassName = cx({ 'has-error': error });
@@ -113,6 +130,8 @@ export default class Field extends React.Component {
         return this.renderSelect();
       case 'date':
         return this.renderDate();
+      case 'file':
+        return this.renderFile();
       case 'number':
         return this.renderNumber();
       case 'boolean':

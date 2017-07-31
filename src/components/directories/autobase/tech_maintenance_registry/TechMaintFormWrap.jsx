@@ -28,7 +28,6 @@ export default class TechMaintFormWrap extends FormWrap {
 
       this.setState({
         formState: {
-          ...this.state.formState,
           car_id,
           car_model_id,
           gov_number,

@@ -1,8 +1,14 @@
 import React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 
+import Preloader from 'components/ui/Preloader.jsx';
 import ModalBody from 'components/ui/Modal';
-import { DataTimeField, Field, MultiSelectField } from 'components/ui/input/fields';
+import {
+  Field,
+  MultiSelectField,
+  DataTimeField,
+  // FileField,
+ } from 'components/ui/input/fields';
 import { connectToStores } from 'utils/decorators';
 import { ExtDiv } from 'components/ui/Div.jsx';
 import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
@@ -14,6 +20,9 @@ import {
 
 @connectToStores(['autobase', 'objects'])
 export default class TechMaintForm extends Form {
+  state = {
+    areFilesLoading: false,
+  }
   async componentDidMount() {
     const { flux } = this.context;
     const { car_model_id } = this.props.formState;
@@ -27,6 +36,7 @@ export default class TechMaintForm extends Form {
     //   flux.getActions('objects').getCars();
     // }
   }
+  hanleFileLoading = indicator => this.setState({ areFilesLoading: indicator })
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
@@ -50,6 +60,7 @@ export default class TechMaintForm extends Form {
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
         </Modal.Header>
+
         <div style={{ padding: 15 }}>
           <Row>
             <Col md={12}>
@@ -168,11 +179,23 @@ export default class TechMaintForm extends Form {
                 boundKeys={['note']}
               />
             </Col>
+            {/*
             <Col md={12}>
-              <label htmlFor=" ">Файл</label>
+              <FileField
+                multiple
+                label="Файл"
+                value={state.file}
+                error={errors.file}
+                onChange={this.handleChange}
+                boundKeys={['file']}
+                isLoading={this.hanleFileLoading}
+              />
             </Col>
+            */}
           </Row>
         </div>
+
+        {this.state.areFilesLoading && <Preloader type="mainpage" />}
         <ModalBody />
         <Modal.Footer>
           <Button disabled={!this.props.canSave} onClick={this.handleSubmit}>Сохранить</Button>

@@ -16,7 +16,8 @@ import TechMaintTable from './TechMaintTable';
 export default class TechMaintList extends ElementsList {
   constructor(props, context) {
     super(props);
-    this.removeElementAction = context.flux.getActions('autobase').removeTechMaint;
+    const { car_id = -1 } = props;
+    this.removeElementAction = context.flux.getActions('autobase').removeTechMaint.bind(null, car_id === -1 ? {} : { car_id });
   }
   componentDidMount() {
     super.componentDidMount();

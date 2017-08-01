@@ -91,7 +91,7 @@ export default class EmployeesActions extends Actions {
     );
   }
 
-  insurancePolicy(method, payloadCallBack, formState) {
+  insurancePolicy(method, boundPayload, formState) {
     const payload = {
       ...formState,
     };
@@ -105,21 +105,21 @@ export default class EmployeesActions extends Actions {
     const path = parsePutPath(insurancePolicy, method, formState);
     return AutoBase.path(path)[method](
       payload,
-      this.getAutobaseListByType.bind(null, 'insurancePolicy', payloadCallBack),
+      this.getAutobaseListByType.bind(null, 'insurancePolicy', boundPayload),
       'json',
     );
   }
-  removeInsurancePolicy(id) {
+  removeInsurancePolicy(boundPayload, id) {
     const { insurancePolicy } = AUTOBASE;
 
     return AutoBase.path(`${insurancePolicy}/${id}`).delete(
       {},
-      this.getAutobaseListByType.bind(null, 'insurancePolicy'),
+      this.getAutobaseListByType.bind(null, 'insurancePolicy', boundPayload),
       'json',
     );
   }
 
-  repair(method, payloadCallBack, formState) {
+  repair(method, boundPayload, formState) {
     const payload = Object.entries(formState).reduce((obj, [key, value]) => {
       if (key.includes('date')) {
         obj[key] = createValidDate(value);
@@ -134,16 +134,16 @@ export default class EmployeesActions extends Actions {
     const path = parsePutPath(repair, method, formState);
     return AutoBase.path(path)[method](
       payload,
-      this.getAutobaseListByType.bind(null, 'repair', payloadCallBack),
+      this.getAutobaseListByType.bind(null, 'repair', boundPayload),
       'json',
     );
   }
-  removeRepair(id) {
+  removeRepair(boundPayload, id) {
     const { repair } = AUTOBASE;
 
     return AutoBase.path(`${repair}/${id}`).delete(
       {},
-      this.getAutobaseListByType.bind(null, 'repair'),
+      this.getAutobaseListByType.bind(null, 'repair', boundPayload),
       'json',
     );
   }
@@ -171,7 +171,7 @@ export default class EmployeesActions extends Actions {
     );
   }
 
-  techInspection(method, payloadCallBack, formState) {
+  techInspection(method, boundPayload, formState) {
     const payload = {
       ...formState,
       date_start: createValidDate(formState.date_start),
@@ -184,16 +184,16 @@ export default class EmployeesActions extends Actions {
 
     return AutoBase.path(path)[method](
       payload,
-      this.getAutobaseListByType.bind(null, 'techInspection', payloadCallBack),
+      this.getAutobaseListByType.bind(null, 'techInspection', boundPayload),
       'json',
     );
   }
-  removeTechInspection(id) {
+  removeTechInspection(boundPayload, id) {
     const { techInspection } = AUTOBASE;
 
     return AutoBase.path(`${techInspection}/${id}`).delete(
       {},
-      this.getAutobaseListByType.bind(null, 'techInspection'),
+      this.getAutobaseListByType.bind(null, 'techInspection', boundPayload),
       'json',
     );
   }
@@ -218,22 +218,30 @@ export default class EmployeesActions extends Actions {
     );
   }
 
-  techMaint(method, payloadCallBack, formState) {
+  techMaint(method, boundPayload, formState) {
     const payload = cloneDeep(formState);
     const { techMaint } = AUTOBASE;
 
+    const formatedPayload = {
+      ...payload,
+      plan_date_start: createValidDate(payload.plan_date_start),
+      plan_date_end: createValidDate(payload.plan_date_end),
+      fact_date_start: createValidDate(payload.fact_date_start),
+      fact_date_end: createValidDate(payload.fact_date_end),
+    };
+
     const path = parsePutPath(techMaint, method, formState);
     return AutoBase.path(path)[method](
-      payload,
-      this.getAutobaseListByType.bind(null, 'techMaint', payloadCallBack),
+      formatedPayload,
+      this.getAutobaseListByType.bind(null, 'techMaint', boundPayload),
       'json',
     );
   }
-  removeTechMaint(id) {
+  removeTechMaint(boundPayload, id) {
     const { techMaint } = AUTOBASE;
     return AutoBase.path(`${techMaint}/${id}`).delete(
       {},
-      this.getAutobaseListByType.bind(null, 'techMaint'),
+      this.getAutobaseListByType.bind(null, 'techMaint', boundPayload),
       'json',
     );
   }

@@ -20,7 +20,11 @@ const nsiRoutes = (props) => {
       <Route path="battery-brand" component={directories.autobase.batteryBrand} onEnter={requireAuth} />
       <Route path="battery-manufacturer" component={directories.autobase.batteryManufacturer} onEnter={requireAuth} />
       <Route path="tire" component={directories.autobase.tire} onEnter={requireAuth} />
+      <Route path="tech-maintenance-order-registry" component={directories.autobase.techMaintOrder} onEnter={requireAuth} />
+      <Route path="tech-maintenance-registry" component={directories.autobase.techMaint} onEnter={requireAuth} />
       <Route path="spare-part" component={directories.autobase.sparePart} onEnter={requireAuth} />
+      <Route path="tech-inspection" component={directories.autobase.techInspection} onEnter={requireAuth} />
+      <Route path="insurance-policy" component={directories.autobase.insurancePolicy} onEnter={requireAuth} />
       <Route path="odh-norm" component={directories.odhNorm} onEnter={requireAuth} />
       <Route path="material-consumption-rate" component={directories.materialConsumptionRate} onEnter={requireAuth} />
       <Route path="odh-norm-data-summer" component={directories.odhNormDataSummer} onEnter={requireAuth} />

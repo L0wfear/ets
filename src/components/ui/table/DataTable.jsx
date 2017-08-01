@@ -15,14 +15,14 @@ import Paginator from '../Paginator.jsx';
 import Div from '../Div.jsx';
 
 const getFilterTypeByKey = (key, tableMeta) => {
-  const col = _.find(tableMeta.cols, c => c.name === key);
+  const col = tableMeta.cols.find(c => c.name === key);
   const colFilterType = col.filter && col.filter.type ? col.filter.type : '';
   return colFilterType;
 };
 
 const isStringArrayData = (filterValue, fieldValue, fieldKey, tableMeta) =>
   typeof filterValue === 'string' &&
-  _.isArray(fieldValue) &&
+  Array.isArray(fieldValue) &&
   getFilterTypeByKey(fieldKey, tableMeta) === 'string';
 
 const stringArrayDataMatching = (filterValue, fieldValueArray) =>
@@ -60,6 +60,7 @@ export default class DataTable extends React.Component {
       refreshable: PropTypes.bool,
       multiSelection: PropTypes.bool,
       serverPagination: PropTypes.bool,
+      lowerCaseSorting: PropTypes.bool,
       noDataMessage: PropTypes.string,
 
       noFilter: PropTypes.bool,
@@ -101,7 +102,7 @@ export default class DataTable extends React.Component {
       selected: null,
       selectField: 'id',
 
-      initialSort: 'id',
+      initialSort: '',
       initialSortAscending: true,
 
       enableSort: true,
@@ -110,6 +111,7 @@ export default class DataTable extends React.Component {
       refreshable: false,
       multiSelection: false,
       serverPagination: false,
+      lowerCaseSorting: false,
       noDataMessage: 'Нет данных',
 
       noFilter: false,
@@ -146,7 +148,7 @@ export default class DataTable extends React.Component {
     // Здесь производится инициализация начальной сортировки для того,
     // чтобы гриддл мог корректно отобразить хедер при первом рендеринге
     // важно устанавливать сортировку именно в willMount!
-    const { initialSort = 'id', initialSortAscending = true } = this.props;
+    const { initialSort = '', initialSortAscending = true } = this.props;
 
     this.setState({ initialSort, initialSortAscending });
   }
@@ -218,7 +220,7 @@ export default class DataTable extends React.Component {
       return;
     }
     if (typeof this.props.onAllRowsChecked === 'function') {
-      this.props.onAllRowsChecked(_.reduce(this.props.results, (cur, val) => { cur[val.id] = val; return cur; }, {}), false);
+      this.props.onAllRowsChecked(this.props.results.reduce((cur, val) => { cur[val.id] = val; return cur; }, {}), false);
     }
     this.setState({ filterValues, globalCheckboxState: false });
   }
@@ -301,7 +303,7 @@ export default class DataTable extends React.Component {
       });
     }
 
-    const metadata = _.reduce(tableMetaCols, (cur, col) => {
+    const metadata = tableMetaCols.reduce((cur, col) => {
       if (col.display === false) {
         return cur;
       }
@@ -352,35 +354,38 @@ export default class DataTable extends React.Component {
     // если в результате isValid === false, то объект не рендерится в таблице
     // проверка берется по this.state.filterValues
     let isValid = true;
-    _.mapKeys(filterValues, (value, key) => {
+
+    Object.entries(filterValues).forEach(([key, value]) => {
       if (obj[key] === null) {
         isValid = false;
         return;
       }
 
-      if (/(timestamp|date|birthday)/.test(key) && !_.isArray(value)) {
+      const IS_ARRAY = Array.isArray(value);
+
+      if (/(timestamp|date|birthday)/.test(key) && !IS_ARRAY) {
         if (moment(obj[key]).format(global.APP_DATE_FORMAT) !== moment(value).format(global.APP_DATE_FORMAT)) {
           isValid = false;
         }
-      } else if (key.indexOf('date') > -1 && _.isArray(value) && this.getFilterTypeByKey(key) !== 'date_interval') {
+      } else if (key.indexOf('date') > -1 && IS_ARRAY && this.getFilterTypeByKey(key) !== 'date_interval') {
         if (value.indexOf(moment(obj[key]).format(global.APP_DATE_FORMAT)) === -1) {
           isValid = false;
         }
-      } else if (key.indexOf('date') > -1 && _.isArray(value) && this.getFilterTypeByKey(key) === 'date_interval') {
+      } else if (key.indexOf('date') > -1 && IS_ARRAY && this.getFilterTypeByKey(key) === 'date_interval') {
         const intervalPickerDate1 = moment(value[0]).toDate().getTime() || 0;
         const intervalPickerDate2 = moment(value[1]).toDate().getTime() || Infinity;
         const valueDate = moment(obj[key]).toDate().getTime();
         if (!(intervalPickerDate1 < valueDate && valueDate < intervalPickerDate2)) {
           isValid = false;
         }
-      } else if (_.isArray(value)) {
-        if (_.isArray(obj[key])) {
-          const a = _.find(this.props.tableMeta.cols, e => e.name === key);
+      } else if (IS_ARRAY) {
+        if (Array.isArray(obj[key])) {
+          const a = this.props.tableMeta.cols.find(e => e.name === key);
           if (a.filter.strict) {
-            if (!(_.every(obj[key], el => el.id && value.indexOf(el.id.toString()) > -1) && obj[key].length === value.length)) {
+            if (!(obj[key].every(el => el.id && value.indexOf(el.id.toString()) > -1) && obj[key].length === value.length)) {
               isValid = false;
             }
-          } else if (!(_.find(obj[key], el => el.id && value.indexOf(el.id.toString()) > -1))) {
+          } else if (!(obj[key].find(el => el.id && value.indexOf(el.id.toString()) > -1))) {
             isValid = false;
           }
         } else if (typeof obj[key] === 'boolean') {
@@ -414,7 +419,7 @@ export default class DataTable extends React.Component {
     return el;
   }
 
-  sortingLoweCase(lowerCaseSorting, a, b) {
+  sortingLoweCase(a, b) {
     let one = a[this.state.initialSort];
     let two = b[this.state.initialSort];
 
@@ -423,7 +428,7 @@ export default class DataTable extends React.Component {
       two = two.toLocaleLowerCase();
     }
 
-    return ((one > two) + !this.state.initialSortAscending) % 2;
+    return (+(one > two) || (one === two) - 1) * Math.pow(-1, this.state.initialSortAscending + 1);
   }
 
   processHighlighted(highlight, el) {
@@ -438,7 +443,7 @@ export default class DataTable extends React.Component {
   }
 
   processEmptyCols(tableCols, el) {
-    _.each(tableCols, (col) => {
+    tableCols.forEach((col) => {
       if (typeof el[col] === 'undefined') {
         el[col] = null;
       }
@@ -446,23 +451,18 @@ export default class DataTable extends React.Component {
     return el;
   }
 
+  // TODO зачем _(data) ?
   processTableData(data, tableCols, selected, selectField, onRowSelected, lowerCaseSorting, highlight = []) {
-    if (lowerCaseSorting) {
-      // TODO переделать сортировку
-      return _(data)
-            .map(this.processEmptyCols.bind(this, tableCols))
-            .map(this.processHighlighted.bind(this, highlight))
-            .map(this.processSelected.bind(this, selected, selectField, onRowSelected))
-            .sort(this.sortingLoweCase.bind(this, lowerCaseSorting))
-            .filter(this.shouldBeRendered)
-            .value();
-    }
-    return _(data)
+    const tempData = data
           .map(this.processEmptyCols.bind(this, tableCols))
           .map(this.processHighlighted.bind(this, highlight))
-          .map(this.processSelected.bind(this, selected, selectField, onRowSelected))
-          .filter(this.shouldBeRendered)
-          .value();
+          .map(this.processSelected.bind(this, selected, selectField, onRowSelected));
+
+    if (lowerCaseSorting) {
+      tempData.sort(this.sortingLoweCase);
+    }
+
+    return tempData.filter(this.shouldBeRendered);
   }
 
   handleChangeSort(sortingColumnName, ascendingSort) {
@@ -486,8 +486,8 @@ export default class DataTable extends React.Component {
       direction = -1;
       e.preventDefault();
     }
-    const selected = _.find(data, el => el[this.props.selectField] === this.props.selected[this.props.selectField]);
-    const newSelected = _.find(data, el => el.rowNumber === selected.rowNumber + direction);
+    const selected = data.find(el => el[this.props.selectField] === this.props.selected[this.props.selectField]);
+    const newSelected = data.find(el => el.rowNumber === selected.rowNumber + direction);
 
     this.props.onRowSelected({
       props: {
@@ -503,7 +503,7 @@ export default class DataTable extends React.Component {
       enableSort, noDataMessage, className, noHeader,
       refreshable, columnControl, highlight, serverPagination, externalChangeSort,
       lowerCaseSorting = false } = this.props;
-    const { initialSort = '', initialSortAscending, columnControlValues, isHierarchical } = this.state;
+    const { initialSort, initialSortAscending, columnControlValues, isHierarchical } = this.state;
 
     const tableMetaCols = (tableMeta.cols);
     let data = (this.props.results);
@@ -537,7 +537,7 @@ export default class DataTable extends React.Component {
             {!noFilter &&
               <FilterButton
                 show={this.state.filterModalIsOpen}
-                active={!!_.keys(this.state.filterValues).length}
+                active={!!Object.keys(this.state.filterValues).length}
                 onClick={this.toggleFilter}
               />
             }

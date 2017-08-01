@@ -34,6 +34,6 @@
     "variable-name": [
       false
     ],
-    "max-line-length": [true, 200]
+    "max-line-length": [true, 300]
   }
 }

@@ -13,7 +13,7 @@ const EventTable = props => {
     <tr key={i} onClick={() => props.showOnMap(d.start_point.timestamp, null, true, d)}>
       <td>{d.date}</td>
       <td>{d.type_name}</td>
-      <td>{d.value}</td>
+      <td>{Math.abs(d.event_val)}</td>
     </tr>
   ));
 
@@ -23,7 +23,7 @@ const EventTable = props => {
         <tr>
           <td>Дата и время</td>
           <td>Событие</td>
-          <td>Уровень</td>
+          <td>Объем, л</td>
         </tr>
       </thead>
       <tbody>
@@ -34,11 +34,11 @@ const EventTable = props => {
 };
 
 const FuelChartSFC = props => {
-  const { events } = props.car.marker.track;
+  const events = get(props, ['car', 'marker', 'track', 'events'], null);
   const points = props.trackPoints;
   const { rawData } = props;
 
-  if (!points) return <span>{LOAD_PROCESS_TEXT}</span>;
+  if (!points || events === null) return <span>{LOAD_PROCESS_TEXT}</span>;
   if (!points.length) return <span>{NO_DATA_TEXT}</span>;
 
   const timestamps = points.filter(p => get(p, 'sensors.level.length', false)).map(p => p.timestamp);
@@ -91,7 +91,7 @@ const FuelChartSFC = props => {
         <input readOnly type="checkbox" checked={rawData} />
         Исходные данные датчиков
       </div>
-      {!rawData && <EventTable data={sumEvents} showOnMap={props.showOnMap} />}
+      <EventTable data={sumEvents} showOnMap={props.showOnMap} />
     </div>
   );
 };

@@ -11,12 +11,12 @@ export default class EmployeeFormWrap extends FormWrap {
 
   constructor(props, context) {
     super(props);
+
     this.schema = schema;
     this.preventDefaultNotification = true;
 
-    this.updateAction = context.flux.getActions('autobase').battery.bind(null, 'put');
-    this.createAction = context.flux.getActions('autobase').battery.bind(null, 'post');
-    this.removeElementAction = context.flux.getActions('autobase').removeBattery;
+    this.updateAction = context.flux.getActions('autobase').batteryRegistry.bind(null, 'put');
+    this.createAction = context.flux.getActions('autobase').batteryRegistry.bind(null, 'post');
   }
 
   render() {

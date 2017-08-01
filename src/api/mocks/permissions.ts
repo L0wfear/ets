@@ -5,9 +5,14 @@ function getFullAccess(entity) {
 }
 
 export const autobase: string[] = [
-  ...getFullAccess('battery'),
-  ...getFullAccess('battery_brand'),
-  ...getFullAccess('battery_manufacturer'),
-  ...getFullAccess('tire'),
-  ...getFullAccess('spare_part'),
+  // ...getFullAccess('battery'),
+  // ...getFullAccess('battery_brand'),
+  // ...getFullAccess('battery_manufacturer'),
+  // ...getFullAccess('tire'),
+  // ...getFullAccess('spare_part'),
+  ...getFullAccess('autobase_tech_maintenance_order'),
+  ...getFullAccess('autobase_tech_inspection'),
+  ...getFullAccess('autobase_insurance_policy_registry'),
+  ...getFullAccess('autobase_tech_maintenance_registry'),
+  ...getFullAccess('autobase_repair_registry'),
 ];

@@ -1,16 +1,16 @@
 import React from 'react';
 
-import { isEqual, get, pick, toArray } from 'lodash';
+import { get, pick, toArray } from 'lodash';
 
 import { getStartOfToday, makeDate, makeTime, secondsToTime } from 'utils/dates';
 import { swapCoords, roundCoordinates } from 'utils/geo';
 import { isEmpty, hexToRgba } from 'utils/functions';
 import { TRACK_COLORS, TRACK_LINE_OPACITY, TRACK_LINE_WIDTH, TRACK_POINT_RADIUS, SHOW_ONLY_POINTS_WITH_SPEED_CHANGES } from 'constants/track.js';
 import { getTrackSensorColor } from 'constants/sensors.js';
-import { getTrackPointByColor } from '../../icons/track/points.js';
-import ParkingIcon from '../../icons/track/parking.svg';
-import FuelIcon1 from '../../icons/track/oil-01.png';
-import FuelIcon2 from '../../icons/track/oil-02.png';
+import { getTrackPointByColor } from 'assets/icons/track/points.js';
+import ParkingIcon from 'assets/icons/track/parking.svg';
+import FuelIcon1 from 'assets/icons/track/oil-01.png';
+import FuelIcon2 from 'assets/icons/track/oil-02.png';
 
 const DRAW_POINTS = true;
 const COLORS_ZOOM_THRESHOLD = 6;
@@ -554,7 +554,7 @@ export default class Track {
 
   makeEventPopup(event, id) {
     const type = event.type === 'leak' ? 'Слив топлива' : 'Заправка топлива';
-    const value = event.val;
+    const value = event.event_val;
     const start = `${makeDate(new Date(event.start_point.timestamp * 1000))} ${makeTime(new Date(event.start_point.timestamp * 1000), true)}`;
     const diff = secondsToTime(event.end_point.timestamp - event.start_point.timestamp);
     return () => `

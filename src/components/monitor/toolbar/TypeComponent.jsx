@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { getIcon } from '../../../icons/car.js';
+import { getIcon } from 'assets/icons/car.js';
 
 export default class TypeComponent extends Component {
 

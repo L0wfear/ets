@@ -8,10 +8,10 @@ import { sensorsMapOptions } from 'constants/sensors.js';
 import LineChart from './LineChart';
 
 const SpeedChartSFC = props => {
-  const { sensors } = props.car.marker.track;
+  const sensors = get(props, ['car', 'marker', 'track', 'sensors'], null);
   const points = props.trackPoints;
 
-  if (!points) return <span>{LOAD_PROCESS_TEXT}</span>;
+  if (!points || sensors === null) return <span>{LOAD_PROCESS_TEXT}</span>;
   if (!points.length) return <span>{NO_DATA_TEXT}</span>;
 
   const timestamps = points.map(p => p.timestamp);

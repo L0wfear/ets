@@ -1,12 +1,6 @@
 export const schema = {
   properties: [
     {
-      key: 'company_id',
-      title: 'Организация',
-      type: 'number',
-      required: true,
-    },
-    {
       key: 'brand_id',
       title: 'Марка аккумулятора',
       type: 'number',

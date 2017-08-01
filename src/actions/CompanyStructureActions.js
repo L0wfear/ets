@@ -44,7 +44,6 @@ export default class CompanyStructureActions extends Actions {
       linear: true,
       descendants_by_user: true,
     };
-
     const response = await CompanyStructureService.get(payload);
     return response.result || [];
   }

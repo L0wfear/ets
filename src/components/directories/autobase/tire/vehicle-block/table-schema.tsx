@@ -4,7 +4,7 @@ import { get } from 'lodash';
 import { ExtField } from 'components/ui/Field.jsx';
 
 import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
-import { IPropsDataTableInputRenderer, TRendererFunction  } from 'components/ui/table/@types/DataTableInput.h';
+import { IPropsDataTableInputRenderer, TRendererFunction  } from 'components/ui/table/DataTableInput/DataTableInput.h';
 import { IValidationSchema } from 'components/ui/form/@types/validation.h';
 import { ITireAvailableCar } from 'api/@types/services/autobase.h';
 
@@ -28,21 +28,21 @@ export const validationSchema: IValidationSchema = {
 export const meta: IDataTableSchema = {
   cols: [
     {
-      name: 'car_id',
-      displayName: 'Рег. номер ТС',
-      type: 'select',
-    },
-    {
       name: 'installed_at',
       displayName: 'Дата монтажа',
       type: 'date',
-      cssClassName: 'width150',
+      cssClassName: 'width200',
     },
     {
       name: 'uninstalled_at',
       displayName: 'Дата демонтажа',
       type: "date",
-      cssClassName: 'width150',
+      cssClassName: 'width200',
+    },
+    {
+      name: 'car_id',
+      displayName: 'Рег. номер ТС',
+      type: 'select',
     },
   ],
 };

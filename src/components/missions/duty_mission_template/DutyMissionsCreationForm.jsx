@@ -4,7 +4,7 @@ import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
-import Datepicker from 'components/ui/DatePicker.jsx';
+import Datepicker from 'components/ui/input/DatePicker';
 import Form from 'components/compositions/Form.jsx';
 
 class MissionsCreationForm extends Form {

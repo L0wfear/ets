@@ -1,10 +1,10 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'constants/autobase';
 import ElementsList from 'components/ElementsList.jsx';
-import SparePartTable from './SparePartTable.jsx';
+import SparePartTable from './SparePartTable';
 import SparePartFormWrap from './SparePartFormWrap';
 
-@connectToStores(['autobase', 'objects', 'session'])
+@connectToStores(['autobase', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.sparePart}` })
 @staticProps({
   entity: 'autobase_spare_part',
@@ -14,12 +14,16 @@ import SparePartFormWrap from './SparePartFormWrap';
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 export default class SparePartList extends ElementsList {
+  constructor(props, context) {
+    super(props);
+    this.removeElementAction = context.flux.getActions('autobase').removeSparePart;
+  }
   componentDidMount() {
     super.componentDidMount();
-    
+
     const { flux } = this.context;
     flux.getActions('autobase').getAutobaseListByType('sparePart');
-
-    this.removeElementAction = flux.getActions('autobase').deleteLineFromSarePart;
+    flux.getActions('autobase').getAutobaseListByType('measureUnit');
+    flux.getActions('autobase').getAutobaseListByType('sparePartGroup');
   }
 }

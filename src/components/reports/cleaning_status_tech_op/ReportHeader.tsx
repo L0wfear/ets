@@ -11,7 +11,7 @@ import { IVehicleType } from 'api/@types/services/index.h';
 import { connectToStores } from 'utils/decorators';
 import Div from 'components/ui/Div.jsx';
 import FieldComponent from 'components/ui/Field.jsx';
-import Datepicker from 'components/ui/DatePicker.jsx';
+import Datepicker from 'components/ui/input/DatePicker';
 import { getYesterday9am, getToday859am, createValidDateTime } from 'utils/dates';
 import { bindable, FluxContext } from 'utils/decorators';
 import { GEOZONE_OBJECTS, GEOZONE_ELEMENTS } from 'constants/dictionary';

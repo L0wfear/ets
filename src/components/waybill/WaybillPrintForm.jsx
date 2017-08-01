@@ -4,7 +4,7 @@ import Div from 'components/ui/Div.jsx';
 import { Modal, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
-import Datepicker from 'components/ui/DatePicker.jsx';
+import Datepicker from 'components/ui/input/DatePicker';
 import { getToday9am, getTomorrow9am, makeDate } from 'utils/dates';
 import { saveData } from 'utils/functions';
 

@@ -163,7 +163,7 @@ export default class WaybillFormWrap extends FormWrap {
 
 
   handleFormStateChange(field, e) {
-    const value = e !== undefined && !!e.target ? e.target.value : e;
+    const value = _.get(e, ['target', 'value'], e);
     let formState = _.cloneDeep(this.state.formState);
     formState[field] = value;
 
@@ -196,15 +196,18 @@ export default class WaybillFormWrap extends FormWrap {
 
   handleMultipleChange(fields) {
     let formState = _.cloneDeep(this.state.formState);
-    _.mapKeys(fields, (value, field) => {
+    const { car_id = -1 } = this.state.formState;
+
+    if (car_id !== formState.car_id) {
+      delete formState.equipment_fuel_start;
+      delete formState.fuel_start;
+      delete formState.motohours_equip_start;
+    }
+
+    Object.entries(fields).forEach(([field, value]) => {
       formState[field] = value;
       formState = calculateWaybillMetersDiff(formState, field, value);
     });
-    if (formState.gov_number.match(/\d{4}/)) {
-      delete formState.odometr_start;
-    } else {
-      delete formState.motohours_start;
-    }
     this.handleFieldsChange(formState);
   }
 

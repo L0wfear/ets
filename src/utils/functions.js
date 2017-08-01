@@ -171,3 +171,7 @@ export function flattenObject(inputObject) {
 
   return f;
 }
+
+export const kbToBytes = (count = 1) => count * Math.pow(1024, 1);
+export const mbToBytes = (count = 1) => count * Math.pow(1024, 2);
+export const gbToBytes = (count = 1) => count * Math.pow(1024, 3);

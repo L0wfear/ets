@@ -1,13 +1,15 @@
 import React, { Component, PropTypes } from 'react';
+import _ from 'lodash';
+
 import CarMarker from './markers/car/CarMarker.js';
 import { PROJECTION, ArcGisLayer, projectToPixel } from './MskAdapter.js';
 import { polyStyles } from 'constants/polygons.js';
 import { pointStyles } from 'constants/points.js';
 import { getVectorArrowStyle } from 'constants/vectors.js';
 import { GeoJSON, defaultZoom } from 'utils/ol';
-import _ from 'lodash';
+import { swapCoords } from 'utils/geo';
 
-import Measure from './controls/measure/measure.js';
+import Measure from './controls/measure/measure.jsx';
 
 let POLYS_LAYER = null;
 // TODO move to settings
@@ -126,6 +128,14 @@ export default class OpenLayersMap extends Component {
     const polysHasChanged = hasPolys && !_.isEqual(this.props.polys, nextProps.polys);
     const showPolygonsChanged = hasPolys && nextProps.showPolygons !== this.props.showPolygons;
     const selectedFeatureChanged = !_.isEqual(this.props.selectedFeature, nextProps.selectedFeature);
+    const selectedCarChanged = !_.isEqual(this.props.selected, nextProps.selected);
+
+    if (selectedCarChanged && nextProps.selected !== null) {
+      const clickedMarker = this.getSelectedCar(swapCoords(nextProps.selected.coords_msk));
+      if (clickedMarker) {
+        this.handleCarSelect(clickedMarker);
+      }
+    }
 
     if (hasPoints) {
       this.updatePoints(nextProps.points);
@@ -193,15 +203,34 @@ export default class OpenLayersMap extends Component {
     const makePopupFn = await track.getTrackPointTooltip(this.props.flux, possibleTrackPoint, prevPoint, nextPoint, event);
     this.popup.show(pointCoords, makePopupFn());
   }
+  handleCarSelect(clickedMarker) {
+    clickedMarker.onClick();
 
-  onClick(ev) {
-    if (this.state.measureActive) {
-      return 0;
+    this._pointsStore.handleSelectPoint(clickedMarker.point);
+    this._geoObjectsStore.handleSelectFeature(null);
+    // прячем попап трэка
+    this.hidePopup();
+  }
+  getSelectedCar(coordinate) {
+    // по какому маркеру кликнули?
+    const markers = this.viewportVisibleMarkers;
+    for (const key in markers) {
+      const marker = markers[key];
+
+      if (marker.contains(coordinate)) {
+        return marker;
+      }
     }
+
+    return null;
+  }
+  onClick(ev) {
+    // проверка - активна ли линейка
+    if (this.state.measureActive) return;
+
     const map = this.map;
     const pixel = ev.pixel; // координаты клика во viewport
     const coordinate = ev.coordinate;
-    const store = this._pointsStore;
     let clickedMarker = null;
 
     // проверка – не кликнули на точку трэка?
@@ -218,28 +247,17 @@ export default class OpenLayersMap extends Component {
       }
     }
 
-    // по какому маркеру кликнули?
-    const markers = this.viewportVisibleMarkers;
-    for (const key in markers) {
-      const marker = markers[key];
-
-      if (marker.contains(coordinate)) {
-        clickedMarker = marker;
-        break;
-      }
-    }
-
+    clickedMarker = this.getSelectedCar(coordinate);
     if (clickedMarker) {
-      clickedMarker.onClick();
-      store.handleSelectPoint(clickedMarker.point);
-      this._geoObjectsStore.handleSelectFeature(null);
-      // прячем попап трэка
-      this.hidePopup();
+      this._pointsStore.handleSelectPoint(clickedMarker.point);
     }
 
     if (typeof this.props.onFeatureClick === 'function') {
       map.forEachFeatureAtPixel(pixel, (feature, layer) => {
-        this.props.onFeatureClick(feature, ev, this);
+        const id = feature.getId();
+        if (!id || (!!id && !id.match('measure'))) {
+          this.props.onFeatureClick(feature, ev, this);
+        }
       });
     }
   }

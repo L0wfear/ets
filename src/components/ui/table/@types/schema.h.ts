@@ -1,3 +1,5 @@
+import { IReactSelectOption } from 'components/ui/@types/EtsSelect.h';
+
 export interface IDataTableSelectedRowPropsData {
   [fieldName: string]: any;
   rowNumber: number;
@@ -16,10 +18,13 @@ type FieldTypes =
   'multiselect' |
   'select' |
   'string' |
+  'date' |
+  'datetime' |
   'number';
 
 interface IDataTableColFilter {
   type: FieldTypes;
+  options?: IReactSelectOption[];
 }
 
 export interface IDataTableColSchema {

@@ -1,12 +1,13 @@
 import * as React from 'react';
 
-import { THOCPropsDataTableInput } from 'components/ui/table/@types/DataTableInputWrapper.h';
+import { ISharedPropsDataTableInput } from 'components/ui/table/DataTableInput/DataTableInput.h';
+import { IExternalPropsDataTableInputWrapper } from 'components/ui/table/DataTableInputWrapper/DataTableInputWrapper.h';
 
 import { connectToStores, FluxContext } from 'utils/decorators';
-import DataTableInput from 'components/ui/table/DataTableInput';
+import DataTableInput from 'components/ui/table/DataTableInput/DataTableInput';
 import { meta, renderers, validationSchema } from './table-schema';
 
-interface IPropsBatteryToVehicleBlock extends THOCPropsDataTableInput {
+interface IPropsBatteryToVehicleBlock extends ISharedPropsDataTableInput, IExternalPropsDataTableInputWrapper{
   batteryId: number;
 }
 

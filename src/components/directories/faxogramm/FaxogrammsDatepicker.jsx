@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import Div from 'components/ui/Div.jsx';
-import Datepicker from 'components/ui/DatePicker.jsx';
+import Datepicker from 'components/ui/input/DatePicker';
 
 export default (props) => {
   return (

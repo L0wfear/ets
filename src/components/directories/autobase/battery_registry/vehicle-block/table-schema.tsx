@@ -4,7 +4,7 @@ import { get } from 'lodash';
 import { ExtField } from 'components/ui/Field.jsx';
 
 import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
-import { IPropsDataTableInputRenderer, TRendererFunction  } from 'components/ui/table/@types/DataTableInput.h';
+import { IPropsDataTableInputRenderer, TRendererFunction  } from 'components/ui/table/DataTableInput/DataTableInput.h';
 import { IValidationSchema } from 'components/ui/form/@types/validation.h';
 import { IBatteryAvailableCar } from 'api/@types/services/autobase.h';
 
@@ -14,6 +14,12 @@ export const validationSchema: IValidationSchema = {
       key: 'car_id',
       title: 'Рег. номер ТС',
       type: 'number',
+      required: true,
+    },
+    {
+      key: 'installed_at',
+      title: 'Дата монтажа',
+      type: 'date',
       required: true,
     },
   ],
@@ -38,6 +44,11 @@ export const meta: IDataTableSchema = {
       displayName: 'Рег. номер ТС',
       type: 'select',
     },
+    {
+      name: 'odometr_start',
+      displayName: 'Пробег на дату установки',
+      type: 'input',
+    },
   ],
 };
 
@@ -56,12 +67,13 @@ const CarIdRenderer: React.SFC<IPropsCarIdRenderer> = ({ value, outputListErrors
     boundKeys={[index, 'car_id']}
   />;
 
-const InstalledAtRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value, onChange, index}) =>
+const InstalledAtRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value, outputListErrors, onChange, index}) =>
   <ExtField
     type="date"
     label=""
     date={value}
     time={false}
+    error={get(outputListErrors[index], 'installed_at', '')}
     onChange={onChange}
     boundKeys={[index, 'installed_at']}
   />;
@@ -74,6 +86,16 @@ const UninstalledAtRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value,
     time={false}
     onChange={onChange}
     boundKeys={[index, 'uninstalled_at']}
+  />;
+
+const PropOnDateRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value, onChange, index}) =>
+  <ExtField
+    type="input"
+    label=""
+    value={value || '-'}
+    onChange={onChange}
+    boundKeys={[index, 'prob_on_date']}
+    disabled={true}
   />;
 
 export const renderers: TRendererFunction = (props, onListItemChange) => {
@@ -97,6 +119,13 @@ export const renderers: TRendererFunction = (props, onListItemChange) => {
       />,
     uninstalled_at: rowMeta =>
       <UninstalledAtRenderer
+        {...props}
+        onChange={onListItemChange}
+        value={rowMeta.data}
+        index={rowMeta.rowData.rowNumber - 1}
+      />,
+    odometr_start: rowMeta =>
+      <PropOnDateRenderer
         {...props}
         onChange={onListItemChange}
         value={rowMeta.data}

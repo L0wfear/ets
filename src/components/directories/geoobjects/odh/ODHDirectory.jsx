@@ -5,7 +5,7 @@ import ODHTable, { tableMeta } from './ODHTable.jsx';
 import OdhFormWrap from './OdhFormWrap.jsx';
 import schema from './ODHSchema';
 
-@connectToStores(['geoObjects', 'session'])
+@connectToStores(['geoObjects', 'companyStructure', 'session'])
 @exportable({ path: 'geozones', entity: 'odh' })
 @staticProps({
   path: 'geozones',
@@ -22,5 +22,6 @@ export default class ODHDirectory extends ElementsList {
     super.componentDidMount();
     const { flux } = this.context;
     flux.getActions('geoObjects').getGeozoneByType('odh');
+    flux.getActions('companyStructure').getLinearCompanyStructureForUser();
   }
 }

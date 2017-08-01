@@ -5,7 +5,7 @@ import { isEmpty } from 'utils/functions';
 import { getToday9am, getTomorrow9am } from 'utils/dates.js';
 import { autobind } from 'core-decorators';
 import FormWrap from 'components/compositions/FormWrap.jsx';
-import IntervalPicker from 'components/ui/IntervalPicker.jsx';
+import IntervalPicker from 'components/ui/input/IntervalPicker';
 import FaxogrammMissionsForm from './FaxogrammMissionsForm.jsx';
 
 @autobind

@@ -24,5 +24,15 @@ export const GEOZONE_ELEMENTS = {
   ],
 };
 
+export const TIME_MEASURES = {
+  year: 'Год.',
+  day: 'Дн.',
+  month: 'Мес.',
+};
+
+export const TIME_MEASURES_SELECT_OPTIONS = Object.keys(TIME_MEASURES).map(key => ({ label: TIME_MEASURES[key], value: key }));
+export const SEQUENCE_1_TO_20_SELECT_OPTIONS = new Array(20).fill(0).map((item, i) => ({ value: i + 1, label: i + 1 }));
+
 export const YES_NO_SELECT_OPTIONS_BOOL = [{ label: 'Да', value: true }, { label: 'Нет', value: false }];
 export const YES_NO_SELECT_OPTIONS_INT = [{ label: 'Да', value: 1 }, { label: 'Нет', value: 0 }];
+export const IS_NOT_SELECT_OPTIONS_INT = [{ label: 'Есть', value: 1 }, { label: 'Нет', value: 0 }];

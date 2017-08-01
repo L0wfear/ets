@@ -6,7 +6,7 @@ import {
   IPropsReportHeaderWrapper,
 } from 'components/reports/common/@types/ReportHeaderWrapper.h';
 
-import Datepicker from 'components/ui/DatePicker.jsx';
+import Datepicker from 'components/ui/input/DatePicker';
 import { getToday9am, getTomorrow9am, createValidDateTime } from 'utils/dates';
 import { bindable } from 'utils/decorators';
 

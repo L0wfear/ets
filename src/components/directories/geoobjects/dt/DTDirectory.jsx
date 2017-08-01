@@ -5,7 +5,7 @@ import DtFormWrap from './DtFormWrap.jsx';
 import DTTable, { tableMeta } from './DTTable.jsx';
 import schema from './DTSchema';
 
-@connectToStores(['geoObjects', 'session'])
+@connectToStores(['geoObjects', 'companyStructure', 'session'])
 @exportable({ path: 'geozones', entity: 'dt' })
 @staticProps({
   path: 'geozones',
@@ -22,5 +22,6 @@ export default class DTDirectory extends ElementsList {
     super.componentDidMount();
     const { flux } = this.context;
     flux.getActions('geoObjects').getGeozoneByType('dt');
+    flux.getActions('companyStructure').getLinearCompanyStructureForUser();
   }
 }

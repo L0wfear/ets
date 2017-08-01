@@ -20,8 +20,6 @@ export default class LoadingStore extends Store {
 
     this.reg(false,
       autoBaseActions.getAutobaseListByType,
-      autoBaseActions.getSparePartGroup,
-      autoBaseActions.getSparePartMeasureUnit,
 
       waybillsActions.deleteWaybill,
       waybillsActions.createWaybill,

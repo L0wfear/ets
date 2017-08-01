@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react';
+import { get } from 'lodash';
+
 import Panel from 'components/ui/Panel.jsx';
 import { makeUnixTime, secondsToTime } from 'utils/dates';
 import MissionFormWrap from '../../missions/mission/MissionFormWrap.jsx';
@@ -50,7 +52,8 @@ export default class VehicleInfo extends Component {
   render() {
     const { car, missions = [] } = this.props;
     const { marker } = car;
-    const { parkings = [] } = this.props.car.marker.track;
+    const parkings = get(this.props, ['car', 'marker', 'track'], []);
+
     let missionsRender = (
       <div style={{ textAlign: 'left', overflow: 'hidden', textOverflow: 'ellipsis' }}>
         {missions.map((mission) => {

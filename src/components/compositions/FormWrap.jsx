@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import { autobind } from 'core-decorators';
+
 import { validateField } from 'utils/validate/validateField.js';
 import { FluxContext } from 'utils/decorators';
 import { isEmpty } from 'utils/functions';
 import { saveDataSuccessNotification } from 'utils/notifications';
-import _ from 'lodash';
 
 const SAVE_BUTTON_LABEL_PROGRESS = 'Сохранение...';
 const SAVE_BUTTON_LABEL_DEFAULT = 'Сохранить';
@@ -93,8 +94,9 @@ export default class FormWrap extends Component {
   // отправка формы
   async handleFormSubmit() {
     const uniqueField = this.uniqueField || 'id';
-    const { formState } = this.state;
+    let { formState } = this.state;
     let result = null;
+
     if (this.schema) {
       this.schema.properties.forEach((p) => {
         if (p.type === 'number' && p.float) {
@@ -103,6 +105,10 @@ export default class FormWrap extends Component {
         if (p.type === 'number' && p.integer) {
           const parsedValue = parseInt(formState[p.key], 10);
           formState[p.key] = !isNaN(parsedValue) ? parsedValue : null;
+        }
+
+        if (typeof p.isSubmitted === 'function') {
+          formState = p.isSubmitted(formState) ? formState : _.omit(formState, p.key);
         }
       });
     }

@@ -177,20 +177,6 @@ const PERMISSIONS = {
     'company': {
       'list': 'company.list',
     },
-    'battery_registry': {
-      'list': 'battery_registry.list',
-      'create': 'battery_registry.create',
-      'read': 'battery_registry.read',
-      'update': 'battery_registry.update',
-      'delete': 'battery_registry.delete',
-    },
-    'spare_part_registry': {
-      'list': 'spare_part_registry.list',
-      'create': 'spare_part_registry.create',
-      'read': 'spare_part_registry.read',
-      'update': 'spare_part_registry.update',
-      'delete': 'spare_part_registry.delete',
-    },
   },
   'administration': 'administration',
 };

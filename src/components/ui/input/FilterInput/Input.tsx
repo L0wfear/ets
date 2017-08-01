@@ -3,7 +3,7 @@ import * as Input from 'react-bootstrap/lib/Input';
 import * as R from 'ramda';
 
 import { IPropsDatePicker } from 'components/ui/@types/DatePicker.h';
-import Datepicker from 'components/ui/DatePicker';
+import Datepicker from 'components/ui/input/DatePicker';
 
 const DataPicker: React.ComponentClass<IPropsDatePicker> = Datepicker;
 

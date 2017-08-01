@@ -18,6 +18,7 @@ import carUsage from './car_usage/report';
 import brigadeEfficiency from './brigade_efficiency/report.tsx';
 import employeeEfficiency from './employee_efficiency/report.ts';
 import trackEvents from './track_events/Report';
+import longTechMaintenance from './long_tech_maintenance/report.tsx';
 
 export {
   analytics,
@@ -36,4 +37,5 @@ export {
   brigadeEfficiency,
   employeeEfficiency,
   trackEvents,
+  longTechMaintenance,
 };

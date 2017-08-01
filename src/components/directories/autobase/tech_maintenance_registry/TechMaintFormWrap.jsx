@@ -9,12 +9,12 @@ class TechMaintFormWrap extends FormWrap {
 
   constructor(props, context) {
     super(props);
-    const { car_id = -1, car_model_id } = props;
+    const { car_id = -1 } = props;
 
     this.schema = formValidationSchema;
     this.preventDefaultNotification = true;
-    this.createAction = context.flux.getActions('autobase').techMaint.bind(null, 'post', car_id === -1 ? {} : { car_model_id });
-    this.updateAction = context.flux.getActions('autobase').techMaint.bind(null, 'put', car_id === -1 ? {} : { car_model_id });
+    this.createAction = context.flux.getActions('autobase').techMaint.bind(null, 'post', car_id === -1 ? {} : { car_id });
+    this.updateAction = context.flux.getActions('autobase').techMaint.bind(null, 'put', car_id === -1 ? {} : { car_id });
   }
   // TODO Надо избавляться от наследования и делать композицию компонентов
   inheritedComponentWillReceiveProps(nextProps) {
@@ -23,10 +23,14 @@ class TechMaintFormWrap extends FormWrap {
         car_id,
         car_model_id,
         gov_number,
+        element,
       } = nextProps;
+
+      const formState = element || {};
 
       this.setState({
         formState: {
+          ...formState,
           car_id,
           car_model_id,
           gov_number,

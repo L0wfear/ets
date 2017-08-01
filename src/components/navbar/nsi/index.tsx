@@ -55,7 +55,6 @@ const NsiNavItem: React.SFC<IPropsNsiNavItem> = ({ path }) =>
       {/* <MenuItem permissions={['autobase_tech_maintenance_registry.list']} active={path === '/tech-maintenance-registry'} href="#/tech-maintenance-registry">Тех. обслуживание</MenuItem> */}
       <MenuItem permissions={['autobase_tech_inspection.list']} active={path === '/tech-inspection'} href="#/tech-inspection">Реестр техосмотров</MenuItem>
       <MenuItem permissions={['autobase_insurance_policy_registry.list']} active={path === '/insurance-policyn'} href="#/insurance-policy">Реестр страховок</MenuItem>
-      <MenuItem permissions={['autobase_long_tech_maintenance.list']} active={path === '/long-tech-maintenance'} href="#/long-tech-maintenance">Отчет по транспортным средствам, простаивающим длительное время в ремонтной зоне</MenuItem>
     </NavDropdown>
 
     <NavDropdown oneOfPermissions={['material_consumption_rate.list', 'fuel_consumption_rate.list', 'maintenance_rate.list']} title="Нормативные показатели" id="nav-dropdown-2-2">

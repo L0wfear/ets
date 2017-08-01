@@ -21,12 +21,12 @@ export default class TechMaintList extends ElementsList {
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
-    const { car_id = -1 } = this.props;
+    const { car_id = -1, car_model_id } = this.props;
 
     if (car_id === -1) {
       flux.getActions('autobase').getAutobaseListByType('techMaint');
     } else {
-      flux.getActions('autobase').getAutobaseListByType('techMaint', { car_id });
+      flux.getActions('autobase').getAutobaseListByType('techMaint', { car_model_id });
     }
 
     // filter field dependecies

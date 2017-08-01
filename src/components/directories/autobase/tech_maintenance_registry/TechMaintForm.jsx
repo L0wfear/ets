@@ -47,7 +47,7 @@ export default class TechMaintForm extends Form {
     } = this.props;
 
     const REPAIR_COMPANIES = repairCompanyList.map(defaultSelectListMapper);
-    const TECH_MAINT_ORDERS = techMaintOrderList.map(({ entity_name, id }) => ({ label: entity_name + id, value: id }));
+    const TECH_MAINT_ORDERS = techMaintOrderList.map(({ tech_maintenance_type_name, id }) => ({ label: tech_maintenance_type_name, value: id }));
 
     const IS_CREATING = !!!state.id;
 

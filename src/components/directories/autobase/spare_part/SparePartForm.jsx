@@ -44,19 +44,19 @@ export default class SparePartForm extends Form {
               />
               <ExtField
                 type="string"
-                label="Номер поставки"
-                value={state.number}
-                error={errors.number}
-                onChange={this.handleChange}
-                boundKeys={['number']}
-              />
-              <ExtField
-                type="string"
                 label="Подгруппа"
                 value={state.name}
                 error={errors.name}
                 onChange={this.handleChange}
                 boundKeys={['name']}
+              />
+              <ExtField
+                type="string"
+                label="Номер поставки"
+                value={state.number}
+                error={errors.number}
+                onChange={this.handleChange}
+                boundKeys={['number']}
               />
               <ExtField
                 type="select"

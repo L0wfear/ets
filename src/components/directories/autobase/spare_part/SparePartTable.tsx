@@ -6,6 +6,7 @@ import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';
 import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 
 import DataTableComponent from 'components/ui/table/DataTable';
+import DateFormatter from 'components/ui/DateFormatter';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
@@ -58,11 +59,19 @@ export function tableMeta({
         },
       },
       {
-        name: 'price',
-        displayName: 'Цена, руб.',
+        name: 'quantity',
+        displayName: 'Количество',
         type: 'text',
         filter: {
           type: 'string',
+        },
+      },
+      {
+        name: 'supplied_at',
+        displayName: 'Дата поставки',
+        type: 'date',
+        filter: {
+          type: 'date',
         },
       },
     ],
@@ -77,6 +86,7 @@ const Table: React.SFC<any> = props  => {
   const renderers: ISchemaRenderer = {
     spare_part_group_id: ({ data }) => <div>{get(sparePartGroupList.find(s => s.id === data), 'name', '')}</div>,
     measure_unit_id: ({ data }) => <div>{get(measureUnitList.find(s => s.id === data), 'name', '')}</div>,
+    supplied_at: ({ data }) => (<DateFormatter date={data} />),
   };
 
   return (

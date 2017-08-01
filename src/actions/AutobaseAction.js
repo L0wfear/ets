@@ -149,7 +149,10 @@ export default class EmployeesActions extends Actions {
   }
 
   sparePart(method, formState) {
-    const payload = cloneDeep(formState);
+    const payload = {
+      ...formState,
+      supplied_at: createValidDate(formState.supplied_at),
+    };
     const { sparePart } = AUTOBASE;
 
     const path = parsePutPath(sparePart, method, formState);

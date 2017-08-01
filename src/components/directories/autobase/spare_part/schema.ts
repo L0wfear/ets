@@ -17,10 +17,10 @@ export const formValidationSchema: IValidationSchema = {
       maxLength: 1024,
     },
     {
-      key: 'price',
-      title: 'Цена',
+      key: 'quantity',
+      title: 'Количество',
       type: 'number',
-      required: false,
+      required: true,
       maxLength: 128,
       min: 0,
     },
@@ -35,6 +35,11 @@ export const formValidationSchema: IValidationSchema = {
       title: 'Единица измерения',
       type: 'number',
       required: true,
+    },
+    {
+      key: 'supplied_at',
+      title: 'Дата поставки',
+      type: 'date',
     },
   ],
 };

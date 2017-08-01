@@ -68,12 +68,21 @@ export default class SparePartForm extends Form {
                 boundKeys={['measure_unit_id']}
               />
               <ExtField
-                type="string"
-                label="Цена, руб."
-                value={state.price}
-                error={errors.price}
+                type="number"
+                label="Количество"
+                value={state.quantity}
+                error={errors.quantity}
                 onChange={this.handleChange}
-                boundKeys={['price']}
+                boundKeys={['quantity']}
+              />
+              <ExtField
+                type="date"
+                label="Дата поставки"
+                date={state.supplied_at}
+                time={false}
+                error={errors.supplied_at}
+                onChange={this.handleChange}
+                boundKeys={['supplied_at']}
               />
             </Col>
           </Row>

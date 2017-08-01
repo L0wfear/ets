@@ -25,6 +25,5 @@ export default class SparePartList extends ElementsList {
     flux.getActions('autobase').getAutobaseListByType('sparePart');
     flux.getActions('autobase').getAutobaseListByType('measureUnit');
     flux.getActions('autobase').getAutobaseListByType('sparePartGroup');
-
   }
 }

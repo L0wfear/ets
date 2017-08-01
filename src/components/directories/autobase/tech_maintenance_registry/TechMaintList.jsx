@@ -27,11 +27,7 @@ export default class TechMaintList extends ElementsList {
       flux.getActions('autobase').getAutobaseListByType('techMaint');
     } else {
       flux.getActions('autobase').getAutobaseListByType('techMaint', { car_id });
+      this.exportPayload = { car_id };
     }
-
-    // filter field dependecies
-    // flux.getActions('objects').getSpecialModels();
-    // flux.getActions('autobase').getAutobaseListByType('techMaintType');
-    // flux.getActions('autobase').getAutobaseListByType('measureUnitRun');
   }
 }

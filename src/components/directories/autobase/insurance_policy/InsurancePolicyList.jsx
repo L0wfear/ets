@@ -19,7 +19,6 @@ export default class InsurancePolicyList extends ElementsList {
     super(props);
     this.removeElementAction = context.flux.getActions('autobase').removeInsurancePolicy;
   }
-
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
@@ -29,6 +28,7 @@ export default class InsurancePolicyList extends ElementsList {
       flux.getActions('autobase').getAutobaseListByType('insurancePolicy');
     } else {
       flux.getActions('autobase').getAutobaseListByType('insurancePolicy', { car_id });
+      this.exportPayload = { car_id };
     }
     flux.getActions('autobase').getAutobaseListByType('insuranceType');
     flux.getActions('objects').getCars();

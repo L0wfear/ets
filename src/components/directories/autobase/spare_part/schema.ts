@@ -4,14 +4,14 @@ export const formValidationSchema: IValidationSchema = {
   properties: [
     {
       key: 'number',
-      title: 'Номер поставки',
+      title: 'Номер',
       type: 'string',
       required: true,
       maxLength: 128,
     },
     {
       key: 'name',
-      title: 'Подгруппа',
+      title: 'Наименование',
       type: 'string',
       required: true,
       maxLength: 1024,

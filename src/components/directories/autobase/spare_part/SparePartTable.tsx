@@ -35,7 +35,7 @@ export function tableMeta({
       },
       {
         name: 'number',
-        displayName: 'Номер поставки',
+        displayName: 'Номер',
         type: 'number',
         filter: {
           type: 'string',
@@ -43,7 +43,7 @@ export function tableMeta({
       },
       {
         name: 'name',
-        displayName: 'Подгруппа',
+        displayName: 'Наименование',
         type: 'text',
         filter: {
           type: 'string',

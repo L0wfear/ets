@@ -44,7 +44,7 @@ export default class SparePartForm extends Form {
               />
               <ExtField
                 type="string"
-                label="Номер поставки"
+                label="Номер"
                 value={state.number}
                 error={errors.number}
                 onChange={this.handleChange}
@@ -52,7 +52,7 @@ export default class SparePartForm extends Form {
               />
               <ExtField
                 type="string"
-                label="Подгруппа"
+                label="Наименование"
                 value={state.name}
                 error={errors.name}
                 onChange={this.handleChange}

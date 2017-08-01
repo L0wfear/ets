@@ -17,7 +17,8 @@ import InsurancePolicyTable, { tableMeta } from './InsurancePolicyTable.tsx';
 export default class InsurancePolicyList extends ElementsList {
   constructor(props, context) {
     super(props);
-    this.removeElementAction = context.flux.getActions('autobase').removeInsurancePolicy;
+    const { car_id = -1 } = props;
+    this.removeElementAction = context.flux.getActions('autobase').removeInsurancePolicy.bind(null, car_id === -1 ? {} : { car_id });
   }
   componentDidMount() {
     super.componentDidMount();

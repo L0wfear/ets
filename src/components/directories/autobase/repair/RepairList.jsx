@@ -17,7 +17,8 @@ import RepairTable, { tableMeta } from './RepairTable';
 export default class RepareList extends ElementsList {
   constructor(props, context) {
     super(props);
-    this.removeElementAction = context.flux.getActions('autobase').removeRepair;
+    const { car_id = -1 } = props;
+    this.removeElementAction = context.flux.getActions('autobase').removeRepair.bind(null, car_id === -1 ? {} : { car_id });
   }
 
   componentDidMount() {

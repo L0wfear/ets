@@ -110,7 +110,7 @@ class CarForm extends Form {
           <TabContent eventKey="6.1" tabKey={this.props.tabKey}>
             <TechMaintList
               car_id={state.asuods_id}
-              car_model_id={state.model_id}
+              car_model_id={state.special_model_id}
               gov_number={state.gov_number}
             />
           </TabContent>

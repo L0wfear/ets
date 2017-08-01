@@ -3,7 +3,9 @@ import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 
-export const tableMeta = () => {
+export const tableMeta = ({
+  car_id = -1,
+} = {}) => {
   const meta = {
     cols: [
       {
@@ -17,6 +19,7 @@ export const tableMeta = () => {
       {
         name: 'gov_number',
         displayName: 'Транспортное средство',
+        display: car_id === -1,
         type: 'number',
         filter: {
           type: 'multiselect',
@@ -85,7 +88,7 @@ export default (props) => {
     is_allowed: ({ data }) => <input type="checkbox" disabled checked={data} />,
   };
 
-  let meta = tableMeta();
+  let meta = tableMeta(props);
   if (car_id === -1) {
     meta = { cols: meta.cols.filter(el => el.name !== 'car_id') };
   }

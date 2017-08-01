@@ -9,12 +9,15 @@ import DateFormatter from 'components/ui/DateFormatter';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
-export function tableMeta(): IDataTableSchema {
+export function tableMeta({
+  car_id = -1,
+} = {}): IDataTableSchema {
   const meta: IDataTableSchema = {
     cols: [
       {
         name: 'gov_number',
         displayName: 'Транспортное средство',
+        display: car_id === -1,
         type: 'select',
         filter: {
           type: 'multiselect',
@@ -98,7 +101,7 @@ const Table: React.SFC<any> = props  => {
     date_end: ({ data }) => <DateFormatter date={data} time={false} />,
   };
 
-  let meta = tableMeta();
+  let meta = tableMeta(props);
   if (car_id === -1) {
     meta = { cols: meta.cols.filter(el => el.name !== 'car_id') };
   }

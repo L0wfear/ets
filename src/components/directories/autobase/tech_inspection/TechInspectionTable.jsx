@@ -94,7 +94,6 @@ export default (props) => {
     results={props.data}
     tableMeta={meta}
     renderers={renderers}
-    noFilter={!!car_id}
     {...props}
   />);
 };

@@ -58,6 +58,14 @@ const fixedValidators = [
       return String(value).length < config.minLength ? `Поле "${config.title || config.key}" должно содержать не меньше ${config.minLength} символов` : undefined;
     },
   },
+  {
+    name: 'equalLength',
+    validator(config, value) {
+      if (typeof config.equalLength === 'undefined') return undefined;
+      const stringPresent = String(value);
+      return stringPresent.length < config.equalLength || stringPresent.length > config.equalLength ? `Количество символов поля "${config.title || config.key}" должно быть равно ${config.equalLength}` : undefined;
+    },
+  },
 ];
 
 export function validate(config, value, data) {

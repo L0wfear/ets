@@ -22,4 +22,6 @@ export default {
   repair: 'repair_registry',
   repairCompany: 'repair_company',
   repairType: 'repair_type',
+  roadAccidentRegistry: 'road_accident_registry',
+  roadAccidentCause: 'road_accident_cause',
 };

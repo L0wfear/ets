@@ -15,5 +15,9 @@ export const autobase: string[] = [
   ...getFullAccess('autobase_insurance_policy_registry'),
   ...getFullAccess('autobase_tech_maintenance_registry'),
   ...getFullAccess('autobase_repair_registry'),
+<<<<<<< HEAD
   ...getFullAccess('autobase_long_tech_maintenance'),
+=======
+  ...getFullAccess('autobase_road_accident_registry'),
+>>>>>>> DITETS-629
 ];

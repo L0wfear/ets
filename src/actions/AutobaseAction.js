@@ -96,7 +96,7 @@ export default class EmployeesActions extends Actions {
       ...formState,
     };
     ['created_at', 'updated_at', 'date_start', 'date_end'].forEach((key) => {
-      if (formState.hasOwnProperty(key)) {
+      if (formState.key) {
         payload[key] = createValidDate(formState[key]);
       }
     });
@@ -144,6 +144,30 @@ export default class EmployeesActions extends Actions {
     return AutoBase.path(`${repair}/${id}`).delete(
       {},
       this.getAutobaseListByType.bind(null, 'repair', boundPayload),
+      'json',
+    );
+  }
+
+  roadAccident(method, boundPayload, formState) {
+    const payload = {
+      ...formState,
+      accident_date: createValidDate(formState.accident_date),
+    };
+    const { roadAccidentRegistry } = AUTOBASE;
+
+    const path = parsePutPath(roadAccidentRegistry, method, formState);
+    return AutoBase.path(path)[method](
+      payload,
+      this.getAutobaseListByType.bind(null, 'roadAccidentRegistry', boundPayload),
+      'json',
+    );
+  }
+  removeRoadAccident(boundPayload, id) {
+    const { roadAccidentRegistry } = AUTOBASE;
+
+    return AutoBase.path(`${roadAccidentRegistry}/${id}`).delete(
+      {},
+      this.getAutobaseListByType.bind(null, 'roadAccidentRegistry', boundPayload),
       'json',
     );
   }

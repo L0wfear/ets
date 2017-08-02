@@ -13,6 +13,7 @@ import InsurancePolicyList from 'components/directories/autobase/insurance_polic
 import TechInspectionList from 'components/directories/autobase/tech_inspection/TechInspectionList.jsx';
 import TechMaintList from 'components/directories/autobase/tech_maintenance_registry/TechMaintList.jsx';
 import RepairList from 'components/directories/autobase/repair/RepairList.jsx';
+import RoadAccidentList from 'components/directories/autobase/road_accident/RoadAccidentList.jsx';
 
 class CarForm extends Form {
   constructor(props) {
@@ -68,7 +69,7 @@ class CarForm extends Form {
             <NavItem eventKey="2" >Аккумуляторы</NavItem>
             <NavItem eventKey="3" >Шины</NavItem>
             <NavItem eventKey="4" >Страхование</NavItem>
-            <NavItem eventKey="5" disabled >ДТП</NavItem>
+            <NavItem eventKey="5" >ДТП</NavItem>
             <NavDropdown eventKey="6" title="ТО и ремонты" id="nav-dropdown">
               <MenuItem eventKey="6.1" active={this.props.tabKey === '6.1'}>Тех. обслуживание</MenuItem>
               <MenuItem eventKey="6.2" active={this.props.tabKey === '6.2'}>Ремонты ТС</MenuItem>
@@ -105,6 +106,10 @@ class CarForm extends Form {
           </TabContent>
 
           <TabContent eventKey="5" tabKey={this.props.tabKey}>
+            <RoadAccidentList
+              car_id={state.asuods_id}
+              {...this.props}
+            />
           </TabContent>
 
           <TabContent eventKey="6.1" tabKey={this.props.tabKey}>

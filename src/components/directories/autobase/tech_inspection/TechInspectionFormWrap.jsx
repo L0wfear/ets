@@ -19,8 +19,7 @@ export const schema = {
       title: 'Регистрационный номер',
       type: 'number',
       required: true,
-      maxLength: 21,
-      minLength: 21,
+      equalLength: 21,
     },
     {
       key: 'date_end',

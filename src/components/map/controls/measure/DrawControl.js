@@ -29,7 +29,7 @@ export default class DrawControl {
       sketch: {},
       listener: {},
       curLineString: {},
-      count: 0,
+      count: this.props.count,
     };
 
     this.setOnForDraw();
@@ -91,9 +91,10 @@ export default class DrawControl {
 
   removeFromInteraction() {
     const { map } = this.props;
-    const { draw } = this.state;
+    const { draw, count } = this.state;
 
     map.removeInteraction(draw);
+    this.props.setCount(count);
   }
   removeLastPoint() {
     const { curLineString, draw } = this.state;

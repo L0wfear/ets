@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 
-import { IVehicleType } from 'api/@types/services/index.h';
+import { IVehicle } from 'api/@types/services/index.h';
 
 import {
   isNotEqualAnd,
@@ -8,8 +8,13 @@ import {
   isFourDigitGovNumber,
 } from 'utils/functions';
 
+const VALID_VEHICLES_TYPES = {
+  GENERATOR: 69,
+  COMPRESSOR: 15,
+};
+
 // declarative functional approach
-const vehicleFilter = (structure_id: string) => R.filter<IVehicleType>(c =>
+const vehicleFilter = (structure_id: string) => R.filter<IVehicle>(c =>
   !structure_id ||
   c.is_common ||
   c.company_structure_id === structure_id,
@@ -17,14 +22,17 @@ const vehicleFilter = (structure_id: string) => R.filter<IVehicleType>(c =>
 
 const carFilter = structure_id => R.pipe(
   vehicleFilter(structure_id),
-  R.filter<IVehicleType>(c => !c.is_trailer),
+  R.filter<IVehicle>(c =>
+    !c.is_trailer ||
+    [VALID_VEHICLES_TYPES.COMPRESSOR, VALID_VEHICLES_TYPES.COMPRESSOR].includes (c.type_id),
+  ),
 );
 const trailerFilter = structure_id => R.pipe(
   vehicleFilter(structure_id),
-  R.filter<IVehicleType>(c => c.is_trailer),
+  R.filter<IVehicle>(c => c.is_trailer),
 );
 
-const vehicleMapper = R.map<IVehicleType, any>(c => ({
+const vehicleMapper = R.map<IVehicle, any>(c => ({
   value: c.asuods_id,
   gov_number: c.gov_number,
   label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`,

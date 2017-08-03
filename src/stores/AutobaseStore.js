@@ -18,8 +18,12 @@ export default class AutobaseStore extends Store {
 
   handleGetList(res) {
     const name = `${res.type}List`;
-    const { result } = res.data;
+    const { result = {} } = res.data;
+    const { rows = [], extra = false } = result;
 
-    this.setState({ [name]: result.rows });
+    this.setState({ [name]: rows });
+    if (extra) {
+      this.setState({ [`${name}Extra`]: extra });
+    }
   }
 }

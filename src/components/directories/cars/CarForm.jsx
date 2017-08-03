@@ -9,6 +9,7 @@ import { tabable } from 'components/compositions/hoc';
 import InfoTab from './tabs/InfoTab';
 import BatteryTab from './tabs/BatteryTab';
 import TireTab from './tabs/TireTab';
+import TechMaintTab from './tabs/TechMaintTab.tsx';
 import InsurancePolicyList from 'components/directories/autobase/insurance_policy/InsurancePolicyList.jsx';
 import TechInspectionList from 'components/directories/autobase/tech_inspection/TechInspectionList.jsx';
 import TechMaintList from 'components/directories/autobase/tech_maintenance_registry/TechMaintList.jsx';
@@ -37,6 +38,7 @@ class CarForm extends Form {
 
       flux.getActions('autobase').getAutobaseListByType('actualBatteriesOnCar', payload);
       flux.getActions('autobase').getAutobaseListByType('actualTiresOnCar', payload);
+      flux.getActions('autobase').getAutobaseListByType('techMaint', payload);
     }
   }
   async componentWillMount() {
@@ -53,7 +55,7 @@ class CarForm extends Form {
   }
   render() {
     const state = this.props.formState;
-    const { isPermitted = false } = this.props;
+    const { isPermitted = false, techMaintListExtra = {} } = this.props;
     const { companyStructureList = [] } = this.state;
     const COMPANY_ELEMENTS = companyStructureList.map(el => ({ value: el.id, label: el.name }));
 
@@ -113,11 +115,16 @@ class CarForm extends Form {
           </TabContent>
 
           <TabContent eventKey="6.1" tabKey={this.props.tabKey}>
-            <TechMaintList
-              car_id={state.asuods_id}
-              car_model_id={state.special_model_id}
-              gov_number={state.gov_number}
-            />
+            <TechMaintTab
+              type={state.gov_number && !!(state.gov_number).toString().match(/\d{4}/)}
+              techMaintListExtra={techMaintListExtra}
+            >
+              <TechMaintList
+                car_id={state.asuods_id}
+                car_model_id={state.special_model_id}
+                gov_number={state.gov_number}
+              />
+            </TechMaintTab>
           </TabContent>
           <TabContent eventKey="6.2" tabKey={this.props.tabKey}>
             <RepairList

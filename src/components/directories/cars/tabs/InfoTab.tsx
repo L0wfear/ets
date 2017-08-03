@@ -76,9 +76,6 @@ const InfoTab: React.SFC<IPropsInfoTab> = props =>
           />
         </Col>
       </Col>
-    </Row>
-
-    <Row>
       <Col md={4} />
       <Col md={8}>
         <Row>

@@ -75,11 +75,17 @@ export default class FormWrap extends Component {
 
   handleFormStateChange(field, e) {
     const value = e !== undefined && e !== null && !!e.target ? e.target.value : e;
-    console.info('Form changed', field, value);
     let { formErrors } = this.state;
     const { formState } = this.state;
     const newState = {};
-    formState[field] = value;
+
+    if (!!value && value !== '' && !(Array.isArray(value) && value.length === 0)) {
+      console.info('Form changed', field, value);
+      formState[field] = value;
+    } else {
+      console.info('Form deleted', field);
+      delete formState[field];
+    }
 
     formErrors = this.validate(formState, formErrors);
     newState.canSave = _(formErrors).map(v => !!v).filter(ev => ev === true).value().length === 0;

@@ -30,11 +30,17 @@ export default class FormWrap extends Component {
 
 
   handleFormStateChange(field, e) {
-    console.info('Form changed', field, e);
-
+    const value = !!e.target ? e.target.value : e;
     const formState = this.state.formState;
     const newState = {};
-    formState[field] = !!e.target ? e.target.value : e;
+
+    if (!!value && value !== '' && !(Array.isArray(value) && value.length === 0)) {
+      console.info('Form changed', field, e);
+      formState[field] = value;
+    } else {
+      console.info('Form deleted', field);
+      delete formState[field];
+    }
 
     newState.formState = formState;
 

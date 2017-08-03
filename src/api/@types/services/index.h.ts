@@ -2,6 +2,7 @@ import { IResponseRowObject, INamedObject } from 'api/@types/rest.h';
 
 export interface IVehicleType extends IResponseRowObject<number> {
   asuods_id: number;
+  type_id: number;
   full_name: string;
   gov_number: string;
   is_trailer: boolean;
@@ -18,6 +19,9 @@ export interface IVehicleType extends IResponseRowObject<number> {
 }
 
 export interface IVehicle {
+  type_id: number;
+  is_trailer: boolean;
+  special_model_name: string;
   asuods_id: number;
   type_name: string;
   owner_name: string;

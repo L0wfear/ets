@@ -58,7 +58,6 @@ export const formValidationSchema: IValidationSchema = {
       title: 'Стоимость, руб.',
       type: 'number',
       maxLength: 128,
-      required: true,
       min: 0,
     },
   ],

@@ -19,6 +19,7 @@ export default class Measure extends React.Component {
       isDrawing: false,
       ...this.setStyle('#ffcc33'),
       lineString: [],
+      count: 0,
     };
   }
 
@@ -89,7 +90,7 @@ export default class Measure extends React.Component {
   }
 
   addInteraction() {
-    const { source } = this.state;
+    const { source, count } = this.state;
     const { map } = this.props;
 
     const active = true;
@@ -97,6 +98,7 @@ export default class Measure extends React.Component {
     const draw = new DrawControl({
       map,
       source,
+      count,
       addToSource: feature => source.addFeature(feature),
       addLineString: (newLineString) => {
         const { lineString = [] } = this.state;
@@ -106,6 +108,7 @@ export default class Measure extends React.Component {
         this.setState({ lineString: copyLineString });
       },
       setStatus: isDrawing => this.setState({ isDrawing }),
+      setCount: c => this.setState({ count: c }),
     });
 
     draw.addToInteraction();

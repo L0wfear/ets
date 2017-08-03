@@ -102,7 +102,11 @@ export default class FormWrap extends Component {
     const uniqueField = this.uniqueField || 'id';
     let { formState } = this.state;
     let result = null;
-
+    Object.entries(formState).forEach(([key, val])=> {
+      if (typeof val === 'string') {
+        formState[key] = val.trim();
+      }
+    })
     if (this.schema) {
       this.schema.properties.forEach((p) => {
         if (p.type === 'number' && p.float) {

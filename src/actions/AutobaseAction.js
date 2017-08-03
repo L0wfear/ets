@@ -95,8 +95,9 @@ export default class EmployeesActions extends Actions {
     const payload = {
       ...formState,
     };
+
     ['created_at', 'updated_at', 'date_start', 'date_end'].forEach((key) => {
-      if (formState.key) {
+      if (!!formState[key]) {
         payload[key] = createValidDate(formState[key]);
       }
     });

@@ -21,6 +21,9 @@ export default class EmployeeFormWrap extends FormWrap {
 
   render() {
     const { entity } = this.props;
+    const { saveButtonEnability = true } = this.state;
+    const canSave = this.props.isPermitted && this.state.canSave && saveButtonEnability;
+  
     return this.props.showForm ?
       <BatteryForm
         formState={this.state.formState}
@@ -28,7 +31,7 @@ export default class EmployeeFormWrap extends FormWrap {
         cols={this.props.meta.cols}
         permissions={[`${entity}.update`]}
         addPermissionProp
-        canSave={this.state.canSave}
+        canSave={canSave}
         onSubmit={this.handleFormSubmit.bind(this)}
         handleFormChange={this.handleFormStateChange.bind(this)}
         show={this.props.showForm}

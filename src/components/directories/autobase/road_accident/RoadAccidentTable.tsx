@@ -98,7 +98,7 @@ const Table: React.SFC<any> = props  => {
 
   return (
     <DataTable
-      title="Ремонты ТС"
+      title="Реестр ДТП"
       results={props.data}
       tableMeta={tableMeta(props)}
       renderers={renderers}

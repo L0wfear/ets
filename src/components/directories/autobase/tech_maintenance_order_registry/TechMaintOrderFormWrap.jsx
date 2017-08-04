@@ -17,7 +17,8 @@ class TechMaintOrderFormWrap extends FormWrap {
   }
 
   render() {
-    const { entity, saveButtonEnability = true } = this.props;
+    const { entity } = this.props;
+    const { saveButtonEnability = true } = this.state;
     const canSave = this.props.isPermitted && this.state.canSave && saveButtonEnability;
 
     return this.props.showForm ?

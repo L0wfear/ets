@@ -22,6 +22,9 @@ export default class InsurancePolicyFormWrap extends FormWrap {
 
   render() {
     const { entity, car_id = -1 } = this.props;
+    const { saveButtonEnability = true } = this.state;
+    const canSave = this.props.isPermitted && this.state.canSave && saveButtonEnability;
+
     return this.props.showForm ?
       <InsurancePolicyForm
         formState={this.state.formState}
@@ -30,7 +33,7 @@ export default class InsurancePolicyFormWrap extends FormWrap {
         car_id={car_id}
         permissions={[`${entity}.update`]}
         addPermissionProp
-        canSave={this.state.canSave}
+        canSave={canSave}
         onSubmit={this.handleFormSubmit.bind(this)}
         handleFormChange={this.handleFormStateChange.bind(this)}
         show={this.props.showForm}

@@ -24,7 +24,10 @@ const carFilter = structure_id => R.pipe(
   vehicleFilter(structure_id),
   R.filter<IVehicle>(c =>
     !c.is_trailer ||
-    [VALID_VEHICLES_TYPES.COMPRESSOR, VALID_VEHICLES_TYPES.COMPRESSOR].includes (c.type_id),
+    [
+      VALID_VEHICLES_TYPES.COMPRESSOR,
+      VALID_VEHICLES_TYPES.GENERATOR,
+    ].includes (c.type_id),
   ),
 );
 const trailerFilter = structure_id => R.pipe(

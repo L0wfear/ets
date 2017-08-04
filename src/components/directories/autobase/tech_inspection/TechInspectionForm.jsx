@@ -15,11 +15,7 @@ export default class BaseTechInspectionForm extends Form {
     const { flux } = this.context;
     const { formState, car_id = -1 } = this.props;
 
-    flux.getActions('objects').getCars();
 
-    if (!formState.id) {
-      this.handleChange('is_allowed', false);
-    }
     if (car_id >= 0) {
       this.handleChange('car_id', car_id);
     }
@@ -86,7 +82,7 @@ export default class BaseTechInspectionForm extends Form {
                 disabled={!isPermitted}
               />
               <ExtField
-                type={fields.tech_operator.type}
+                type={'string'}
                 label={fields.tech_operator.displayName}
                 value={state.tech_operator}
                 error={errors.tech_operator}

@@ -1,17 +1,23 @@
-import React from 'react';
+import * as React from 'react';
 
-import Table from 'components/ui/table/DataTable.jsx';
-import DateFormatter from 'components/ui/DateFormatter.jsx';
+import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
+import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';
+import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 
-export const tableMeta = ({
+import DataTableComponent from 'components/ui/table/DataTable';
+import DateFormatter from 'components/ui/DateFormatter';
+
+const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
+
+export function tableMeta({
   car_id = -1,
-} = {}) => {
-  const meta = {
+} = {}): IDataTableSchema {
+  const meta: IDataTableSchema = {
     cols: [
       {
         name: 'company_name',
         displayName: 'Организация',
-        type: 'text',
+        type: 'string',
         filter: {
           type: 'multiselect',
         },
@@ -20,16 +26,13 @@ export const tableMeta = ({
         name: 'gov_number',
         displayName: 'Транспортное средство',
         display: car_id === -1,
-        type: 'number',
-        filter: {
-          type: 'multiselect',
-        },
+        type: 'string',
+        filter: car_id === -1 ? { type: 'multiselect' } : false,
       },
       {
         name: 'reg_number',
         displayName: 'Регистрационный номер',
         type: 'number',
-        orderNum: 2,
         filter: {
           type: 'number',
         },
@@ -45,9 +48,9 @@ export const tableMeta = ({
       {
         name: 'tech_operator',
         displayName: 'Оператор технического осмотра / пункт технического осмотра',
-        type: 'text',
+        type: 'select',
         filter: {
-          type: 'text',
+          type: 'multiselect',
         },
       },
       {
@@ -67,22 +70,21 @@ export const tableMeta = ({
       {
         name: 'note',
         displayName: 'Примечание',
-        type: 'text',
-        orderNum: 7,
+        type: 'string',
         filter: {
-          type: 'text',
+          type: 'string',
         },
       },
     ],
   };
 
   return meta;
-};
+}
 
-export default (props) => {
+const Table: React.SFC<any> = props  => {
   const { car_id = -1  } = props;
 
-  const renderers = {
+  const renderers: ISchemaRenderer = {
     date_start: ({ data }) => (<DateFormatter date={data} />),
     date_end: ({ data }) => (<DateFormatter date={data} />),
     is_allowed: ({ data }) => <input type="checkbox" disabled checked={data} />,
@@ -92,11 +94,15 @@ export default (props) => {
   if (car_id === -1) {
     meta = { cols: meta.cols.filter(el => el.name !== 'car_id') };
   }
-  return (<Table
-    title="Реестр техосмотров"
-    results={props.data}
-    tableMeta={meta}
-    renderers={renderers}
-    {...props}
-  />);
+  return (
+    <DataTable
+      title="Реестр техосмотров"
+      results={props.data}
+      tableMeta={tableMeta(props)}
+      renderers={renderers}
+      {...props}
+    />
+  );
 };
+
+export default Table;

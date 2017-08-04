@@ -2,9 +2,8 @@ import React from 'react';
 
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
-import BaseTechInspectionForm from './TechInspectionForm';
+import TechInspectionForm from './TechInspectionForm';
 
-const TechInspectionForm = enhanceWithPermissions(BaseTechInspectionForm);
 
 export const schema = {
   properties: [
@@ -52,7 +51,7 @@ export const schema = {
   ],
 };
 
-export default class TechInspectionFormWrap extends FormWrap {
+class TechInspectionFormWrap extends FormWrap {
 
   constructor(props, context) {
     super(props);
@@ -66,9 +65,9 @@ export default class TechInspectionFormWrap extends FormWrap {
   }
 
   render() {
-    const { entity, car_id = -1 } = this.props;
+    const { entity, car_id = -1, isPermitted = false } = this.props;
     const { saveButtonEnability = true } = this.state;
-    const canSave = this.props.isPermitted && this.state.canSave && saveButtonEnability;
+    const canSave = isPermitted && this.state.canSave && saveButtonEnability;
 
     return this.props.showForm ?
       <TechInspectionForm
@@ -78,6 +77,7 @@ export default class TechInspectionFormWrap extends FormWrap {
         car_id={car_id}
         permissions={[`${entity}.update`]}
         addPermissionProp
+        isPermitted={isPermitted}
         canSave={canSave}
         onSubmit={this.handleFormSubmit.bind(this)}
         handleFormChange={this.handleFormStateChange.bind(this)}
@@ -87,3 +87,5 @@ export default class TechInspectionFormWrap extends FormWrap {
       : null;
   }
 }
+
+export default enhanceWithPermissions(TechInspectionFormWrap);

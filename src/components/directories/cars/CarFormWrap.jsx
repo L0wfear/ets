@@ -23,7 +23,7 @@ export default class CarFormWrap extends FormWrap {
           formState={this.state.formState}
           onSubmit={this.handleFormSubmit}
           permissions={['car.update']}
-          addPermissionProp={true}
+          addPermissionProp
           handleFormChange={this.handleFormStateChange}
           show={this.props.showForm}
           onHide={this.props.onFormHide}

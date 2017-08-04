@@ -1,12 +1,11 @@
 import React from 'react';
-import enhanceWithPermissions from 'components/util/RequirePermissions';
-import BaseSparePartForm from './SparePartForm.jsx';
+
 import FormWrap from 'components/compositions/FormWrap.jsx';
+import enhanceWithPermissions from 'components/util/RequirePermissions';
+import SparePartForm from './SparePartForm.jsx';
 import { formValidationSchema } from './schema';
 
-const SparePartForm = enhanceWithPermissions(BaseSparePartForm);
-
-export default class SparePartFormWrap extends FormWrap {
+class SparePartFormWrap extends FormWrap {
 
   constructor(props, context) {
     super(props);
@@ -18,9 +17,9 @@ export default class SparePartFormWrap extends FormWrap {
   }
 
   render() {
-    const { entity } = this.props;
+    const { entity, isPermitted = false } = this.props;
     const { saveButtonEnability = true } = this.state;
-    const canSave = this.props.isPermitted && this.state.canSave && saveButtonEnability;
+    const canSave = isPermitted && this.state.canSave && saveButtonEnability;
 
     return this.props.showForm ?
       <SparePartForm
@@ -28,6 +27,7 @@ export default class SparePartFormWrap extends FormWrap {
         formErrors={this.state.formErrors}
         permissions={[`${entity}.update`]}
         addPermissionProp
+        isPermitted={isPermitted}
         canSave={canSave}
         onSubmit={this.handleFormSubmit.bind(this)}
         handleFormChange={this.handleFormStateChange.bind(this)}
@@ -36,5 +36,6 @@ export default class SparePartFormWrap extends FormWrap {
       />
       : null;
   }
-
 }
+
+export default enhanceWithPermissions(SparePartFormWrap);

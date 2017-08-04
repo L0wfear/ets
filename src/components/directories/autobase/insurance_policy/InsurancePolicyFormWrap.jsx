@@ -2,13 +2,10 @@ import React from 'react';
 
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
-import BaseInsurancePolicyForm from './InsurancePolicyForm';
+import InsurancePolicyForm from './InsurancePolicyForm';
 import { formValidationSchema } from './schema';
 
-const InsurancePolicyForm = enhanceWithPermissions(BaseInsurancePolicyForm);
-
-export default class InsurancePolicyFormWrap extends FormWrap {
-
+class InsurancePolicyFormWrap extends FormWrap {
   constructor(props, context) {
     super(props);
     const { car_id = -1 } = props;
@@ -21,9 +18,9 @@ export default class InsurancePolicyFormWrap extends FormWrap {
   }
 
   render() {
-    const { entity, car_id = -1 } = this.props;
+    const { entity, car_id = -1, isPermitted = false } = this.props;
     const { saveButtonEnability = true } = this.state;
-    const canSave = this.props.isPermitted && this.state.canSave && saveButtonEnability;
+    const canSave = isPermitted && this.state.canSave && saveButtonEnability;
 
     return this.props.showForm ?
       <InsurancePolicyForm
@@ -32,7 +29,7 @@ export default class InsurancePolicyFormWrap extends FormWrap {
         cols={this.props.meta.cols}
         car_id={car_id}
         permissions={[`${entity}.update`]}
-        addPermissionProp
+        isPermitted={isPermitted}
         canSave={canSave}
         onSubmit={this.handleFormSubmit.bind(this)}
         handleFormChange={this.handleFormStateChange.bind(this)}
@@ -42,3 +39,5 @@ export default class InsurancePolicyFormWrap extends FormWrap {
       : null;
   }
 }
+
+export default enhanceWithPermissions(InsurancePolicyFormWrap);

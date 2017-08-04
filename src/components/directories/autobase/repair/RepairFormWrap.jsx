@@ -2,13 +2,10 @@ import React from 'react';
 
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
-import BaseRepairForm from './RepairForm';
+import RepairForm from './RepairForm';
 import { formValidationSchema } from './schema';
 
-const RepairForm = enhanceWithPermissions(BaseRepairForm);
-
-export default class RepairFormWrap extends FormWrap {
-
+class RepairFormWrap extends FormWrap {
   constructor(props, context) {
     super(props);
     const { car_id = -1 } = props;
@@ -21,9 +18,9 @@ export default class RepairFormWrap extends FormWrap {
   }
 
   render() {
-    const { entity, car_id = -1 } = this.props;
+    const { entity, car_id = -1, isPermitted = false } = this.props;
     const { saveButtonEnability = true } = this.state;
-    const canSave = this.props.isPermitted && this.state.canSave && saveButtonEnability;
+    const canSave = isPermitted && this.state.canSave && saveButtonEnability;
 
     return this.props.showForm ?
       <RepairForm
@@ -33,6 +30,7 @@ export default class RepairFormWrap extends FormWrap {
         car_id={car_id}
         permissions={[`${entity}.update`]}
         addPermissionProp
+        isPermitted={isPermitted}
         canSave={canSave}
         onSubmit={this.handleFormSubmit.bind(this)}
         handleFormChange={this.handleFormStateChange.bind(this)}
@@ -42,3 +40,5 @@ export default class RepairFormWrap extends FormWrap {
       : null;
   }
 }
+
+export default enhanceWithPermissions(RepairFormWrap);

@@ -2,7 +2,7 @@ import React from 'react';
 
 import FormWrap from 'components/compositions/FormWrap';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
-import BaseBatteryManufacturerForm from './BatteryManufacturerForm';
+import BatteryManufacturerForm from './BatteryManufacturerForm';
 
 export const batteryManufacturerSchema = {
   properties: [
@@ -15,9 +15,8 @@ export const batteryManufacturerSchema = {
   ],
 };
 
-const BatteryManufacturerForm = enhanceWithPermissions(BaseBatteryManufacturerForm);
 
-export default class BatteryManufacturerFormWrap extends FormWrap {
+class BatteryManufacturerFormWrap extends FormWrap {
 
   constructor(props, context) {
     super(props);
@@ -29,15 +28,16 @@ export default class BatteryManufacturerFormWrap extends FormWrap {
   }
 
   render() {
-    const { entity } = this.props;
+    const { entity, isPermitted = false } = this.props;
     const { saveButtonEnability = true } = this.state;
-    const canSave = this.props.isPermitted && this.state.canSave && saveButtonEnability;
+    const canSave = isPermitted && this.state.canSave && saveButtonEnability;
 
     return this.props.showForm ?
       <BatteryManufacturerForm
         formState={this.state.formState}
         formErrors={this.state.formErrors}
         permissions={[`${entity}.update`]}
+        isPermitted={isPermitted}
         addPermissionProp
         canSave={canSave}
         onSubmit={this.handleFormSubmit.bind(this)}
@@ -49,3 +49,5 @@ export default class BatteryManufacturerFormWrap extends FormWrap {
   }
 
 }
+
+export default enhanceWithPermissions(BatteryManufacturerFormWrap);

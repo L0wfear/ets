@@ -103,14 +103,12 @@ class CarForm extends Form {
           <TabContent eventKey="4" tabKey={this.props.tabKey}>
             <InsurancePolicyList
               car_id={state.asuods_id}
-              {...this.props}
             />
           </TabContent>
 
           <TabContent eventKey="5" tabKey={this.props.tabKey}>
             <RoadAccidentList
               car_id={state.asuods_id}
-              {...this.props}
             />
           </TabContent>
 
@@ -129,14 +127,12 @@ class CarForm extends Form {
           <TabContent eventKey="6.2" tabKey={this.props.tabKey}>
             <RepairList
               car_id={state.asuods_id}
-              {...this.props}
             />
           </TabContent>
 
           <TabContent eventKey="7" tabKey={this.props.tabKey}>
             <TechInspectionList
               car_id={state.asuods_id}
-              {...this.props}
             />
           </TabContent>
         </ModalBody>

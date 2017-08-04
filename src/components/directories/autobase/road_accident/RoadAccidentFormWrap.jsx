@@ -2,12 +2,10 @@ import React from 'react';
 
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
-import BaseRoadAccidentFrom from './RoadAccidentForm';
+import RoadAccidentFrom from './RoadAccidentForm';
 import { formValidationSchema } from './schema';
 
-const RoadAccidentFrom = enhanceWithPermissions(BaseRoadAccidentFrom);
-
-export default class RoadAccidentFromWrap extends FormWrap {
+class RoadAccidentFromWrap extends FormWrap {
 
   constructor(props, context) {
     super(props);
@@ -21,9 +19,9 @@ export default class RoadAccidentFromWrap extends FormWrap {
   }
 
   render() {
-    const { entity, car_id = -1 } = this.props;
+    const { entity, car_id = -1, isPermitted = false } = this.props;
     const { saveButtonEnability = true } = this.state;
-    const canSave = this.props.isPermitted && this.state.canSave && saveButtonEnability;
+    const canSave = isPermitted && this.state.canSave && saveButtonEnability;
 
     return this.props.showForm ?
       <RoadAccidentFrom
@@ -33,6 +31,7 @@ export default class RoadAccidentFromWrap extends FormWrap {
         car_id={car_id}
         permissions={[`${entity}.update`]}
         addPermissionProp
+        isPermitted={isPermitted}
         canSave={canSave}
         onSubmit={this.handleFormSubmit.bind(this)}
         handleFormChange={this.handleFormStateChange.bind(this)}
@@ -42,3 +41,5 @@ export default class RoadAccidentFromWrap extends FormWrap {
       : null;
   }
 }
+
+export default enhanceWithPermissions(RoadAccidentFromWrap);

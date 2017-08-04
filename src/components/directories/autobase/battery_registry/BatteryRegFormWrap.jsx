@@ -2,12 +2,10 @@ import React from 'react';
 
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
-import BaseBatteryForm from './BatteryRegForm.jsx';
+import BatteryForm from './BatteryRegForm.jsx';
 import { schema } from 'models/BatteryRegModel.js';
 
-const BatteryForm = enhanceWithPermissions(BaseBatteryForm);
-
-export default class EmployeeFormWrap extends FormWrap {
+class EmployeeFormWrap extends FormWrap {
 
   constructor(props, context) {
     super(props);
@@ -20,9 +18,9 @@ export default class EmployeeFormWrap extends FormWrap {
   }
 
   render() {
-    const { entity } = this.props;
+    const { entity, isPermitted = false } = this.props;
     const { saveButtonEnability = true } = this.state;
-    const canSave = this.props.isPermitted && this.state.canSave && saveButtonEnability;
+    const canSave = isPermitted && this.state.canSave && saveButtonEnability;
   
     return this.props.showForm ?
       <BatteryForm
@@ -31,6 +29,7 @@ export default class EmployeeFormWrap extends FormWrap {
         cols={this.props.meta.cols}
         permissions={[`${entity}.update`]}
         addPermissionProp
+        isPermitted={isPermitted}
         canSave={canSave}
         onSubmit={this.handleFormSubmit.bind(this)}
         handleFormChange={this.handleFormStateChange.bind(this)}
@@ -40,3 +39,5 @@ export default class EmployeeFormWrap extends FormWrap {
       : null;
   }
 }
+
+export default enhanceWithPermissions(EmployeeFormWrap);

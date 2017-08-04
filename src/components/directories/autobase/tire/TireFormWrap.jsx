@@ -2,7 +2,7 @@ import React from 'react';
 
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
-import BaseTireForm from './TireForm';
+import TireForm from './TireForm';
 
 export const tireSchema = {
   properties: [
@@ -28,9 +28,8 @@ export const tireSchema = {
   ],
 };
 
-const TireForm = enhanceWithPermissions(BaseTireForm);
 
-export default class TireFormWrap extends FormWrap {
+class TireFormWrap extends FormWrap {
 
   constructor(props, context) {
     super(props);
@@ -42,9 +41,9 @@ export default class TireFormWrap extends FormWrap {
   }
 
   render() {
-    const { entity } = this.props;
+    const { entity, isPermitted = false } = this.props;
     const { saveButtonEnability = true } = this.state;
-    const canSave = this.props.isPermitted && this.state.canSave && saveButtonEnability;
+    const canSave = isPermitted && this.state.canSave && saveButtonEnability;
 
     return this.props.showForm ?
       <TireForm
@@ -52,6 +51,7 @@ export default class TireFormWrap extends FormWrap {
         formErrors={this.state.formErrors}
         permissions={[`${entity}.update`]}
         addPermissionProp
+        isPermitted={isPermitted}
         canSave={canSave}
         onSubmit={this.handleFormSubmit.bind(this)}
         handleFormChange={this.handleFormStateChange.bind(this)}
@@ -60,5 +60,6 @@ export default class TireFormWrap extends FormWrap {
       />
       : null;
   }
-
 }
+
+export default enhanceWithPermissions(TireFormWrap);

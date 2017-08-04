@@ -13,8 +13,7 @@ export default class SparePartForm extends Form {
   handleSubmitWrap = (...arg) => this.handleSubmit(...arg);
 
   render() {
-    const state = this.props.formState;
-    const errors = this.props.formErrors;
+    const [state, errors] = [this.props.formState, this.props.formErrors];
     const { sparePartGroupList = [], measureUnitList = [] } = this.props;
 
     const SPARE_PART_GROUP_OPTION = sparePartGroupList.map(defaultSelectListMapper);

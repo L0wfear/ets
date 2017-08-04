@@ -54,7 +54,6 @@ export default class TechMaintForm extends Form {
     let title = 'Изменение записи';
     if (IS_CREATING) title = 'Создание записи';
 
-
     return (
       <Modal {...this.props} backdrop="static">
         <Modal.Header closeButton>

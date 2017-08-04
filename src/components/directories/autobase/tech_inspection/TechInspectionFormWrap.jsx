@@ -3,53 +3,7 @@ import React from 'react';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
 import TechInspectionForm from './TechInspectionForm';
-
-
-export const schema = {
-  properties: [
-    {
-      key: 'car_id',
-      title: 'Регистрационный номер',
-      type: 'number',
-      required: true,
-    },
-    {
-      key: 'reg_number',
-      title: 'Регистрационный номер',
-      type: 'number',
-      required: true,
-      equalLength: 21,
-    },
-    {
-      key: 'date_end',
-      title: 'Срок действия до',
-      type: 'date',
-      required: true,
-    },
-    {
-      key: 'date_start',
-      title: 'Дата прохождения',
-      type: 'date',
-      required: true,
-    },
-    {
-      key: 'tech_operator',
-      title: 'Оператор технического осмотра / пункт технического осмотра',
-      type: 'text',
-      maxLength: 256,
-    },
-    {
-      key: 'is_allowed',
-      title: 'Заключение о возможности/невозможности эксплуатации ТС',
-      type: 'boolean',
-    },
-    {
-      key: 'note',
-      title: 'Примечание прохождения',
-      type: 'text',
-    },
-  ],
-};
+import { formValidationSchema } from './schema';
 
 class TechInspectionFormWrap extends FormWrap {
 
@@ -57,7 +11,7 @@ class TechInspectionFormWrap extends FormWrap {
     super(props);
     const { car_id = -1 } = props;
 
-    this.schema = schema;
+    this.schema = formValidationSchema;
     this.preventDefaultNotification = true;
 
     this.createAction = context.flux.getActions('autobase').techInspection.bind(null, 'post', car_id === -1 ? {} : { car_id });

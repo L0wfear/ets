@@ -153,6 +153,7 @@ export default class EmployeesActions extends Actions {
     const payload = {
       ...formState,
       accident_date: createValidDate(formState.accident_date),
+      is_guilty: !!formState.is_guilty,      
     };
     const { roadAccidentRegistry } = AUTOBASE;
 
@@ -201,6 +202,7 @@ export default class EmployeesActions extends Actions {
       ...formState,
       date_start: createValidDate(formState.date_start),
       date_end: createValidDate(formState.date_end),
+      is_allowed: !!formState.is_allowed,
     };
 
     const { techInspection } = AUTOBASE;

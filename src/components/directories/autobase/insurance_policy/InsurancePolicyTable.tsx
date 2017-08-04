@@ -19,9 +19,7 @@ export function tableMeta({
         displayName: 'Транспортное средство',
         display: car_id === -1,
         type: 'select',
-        filter: {
-          type: 'multiselect',
-        },
+        filter: car_id === -1 ? { type: 'multiselect' } : false,
       },
       {
         name: 'insurer',

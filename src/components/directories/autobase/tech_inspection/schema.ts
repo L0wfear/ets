@@ -13,10 +13,10 @@ export const formValidationSchema: IValidationSchema = {
     },
     {
       key: 'reg_number',
-      title: 'Регистрационный номер',
+      title: 'Номер диагностической карты',
       type: 'number',
       required: true,
-      equalLength: 21,
+      maxLength: 21,
     },
     {
       key: 'date_end',
@@ -52,7 +52,7 @@ export const formValidationSchema: IValidationSchema = {
       {
         validator(value = null, { date_start = null }) {
           if (!value) {
-            return getRequiredFieldMessage('Плановая дата окончания');
+            return getRequiredFieldMessage('Срок действия до');
           }
 
           if (date_start) {
@@ -61,7 +61,7 @@ export const formValidationSchema: IValidationSchema = {
 
             return end >= start
               ? ''
-              : '"Срок действия до" должен быть позже "Дата прохождения"';
+              : '"Срок действия до" не должен быть раньше "Даты прохождения"';
           }
 
           return '';

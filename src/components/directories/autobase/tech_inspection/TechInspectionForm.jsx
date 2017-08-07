@@ -14,11 +14,12 @@ export default class BaseTechInspectionForm extends Form {
   componentWillMount() {
     const { flux } = this.context;
     const { formState, car_id = -1 } = this.props;
-
+    const { is_allowed = false } = formState;
 
     if (car_id >= 0) {
       this.handleChange('car_id', car_id);
     }
+    this.handleChange('is_allowed', is_allowed);
   }
 
   render() {
@@ -101,13 +102,23 @@ export default class BaseTechInspectionForm extends Form {
                 disabled={!isPermitted}
               />
               <ExtField
-                type={'boolean'}
-                label={fields.is_allowed.displayName}
-                value={state.is_allowed}
+                type="boolean"
+                label="Заключение о возможности эксплуатации ТС"
+                value={state.is_allowed === true}
                 error={errors.is_allowed}
                 emptyValue={null}
                 onChange={this.handleChange}
-                boundKeys={['is_allowed', !state.is_allowed]}
+                boundKeys={['is_allowed', true]}
+                disabled={!isPermitted}
+              />
+              <ExtField
+                type="boolean"
+                label="Заключение о невозможности эксплуатации ТС"
+                value={state.is_allowed === false}
+                error={errors.is_allowed}
+                emptyValue={null}
+                onChange={this.handleChange}
+                boundKeys={['is_allowed', false]}
                 disabled={!isPermitted}
               />
               <ExtField

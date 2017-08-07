@@ -79,7 +79,7 @@ export default class FormWrap extends Component {
     const { formState } = this.state;
     const newState = {};
 
-    if (!!value && value !== '' && !(Array.isArray(value) && value.length === 0)) {
+    if ((!!value && value !== '' && !(Array.isArray(value) && value.length === 0)) || (typeof value === 'boolean')) {
       console.info('Form changed', field, value);
       formState[field] = value;
     } else {

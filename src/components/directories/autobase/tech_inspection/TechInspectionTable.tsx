@@ -63,7 +63,7 @@ export function tableMeta({
       },
       {
         name: 'is_allowed',
-        displayName: 'Заключение о возможности/невозможности эксплуатации ТС',
+        displayName: 'Заключение о возможности эксплуатации ТС',
         type: 'boolean',
         filter: false,
       },

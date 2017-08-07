@@ -63,7 +63,7 @@ export default class BaseTechInspectionForm extends Form {
                 />
               }
               <ExtField
-                type={fields.reg_number.type}
+                type={'string'}
                 label={fields.reg_number.displayName}
                 value={state.reg_number}
                 error={errors.reg_number}

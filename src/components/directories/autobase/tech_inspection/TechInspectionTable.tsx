@@ -31,7 +31,7 @@ export function tableMeta({
       },
       {
         name: 'reg_number',
-        displayName: 'Регистрационный номер',
+        displayName: 'Номер диагностической карты',
         type: 'number',
         filter: {
           type: 'number',
@@ -47,7 +47,7 @@ export function tableMeta({
       },
       {
         name: 'tech_operator',
-        displayName: 'Оператор технического осмотра / пункт технического осмотра',
+        displayName: 'Место выдачи',
         type: 'select',
         filter: {
           type: 'multiselect',

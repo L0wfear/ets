@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import ElementsList from 'components/ElementsList.jsx';
 import EmployeeFormWrap from './EmployeeFormWrap.jsx';
-import EmployeesTable from './EmployeesTable.jsx';
+import EmployeesTable from './EmployeesTable.tsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 
-@connectToStores(['employees', 'objects', 'session'])
+@connectToStores(['employees', 'objects', 'session', 'companyStructure'])
 @exportable({ entity: 'employee' })
 @staticProps({
   entity: 'employee',
@@ -18,6 +18,8 @@ export default class EmployeesList extends ElementsList {
     super.componentDidMount();
     const { flux } = this.context;
     flux.getActions('employees').getEmployees();
+    flux.getActions('objects').getCars();
+    flux.getActions('objects').getPositions();
+    flux.getActions('companyStructure').getLinearCompanyStructureForUser();
   }
-
 }

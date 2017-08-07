@@ -7,7 +7,7 @@ import DataTableComponent from 'components/ui/table/DataTable';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
-const getCondition: ILabelFunction = data => parseInt(data.toString(), 10) > 0 ? 'Исправно' : 'Неисправно';
+const getCondition: ILabelFunction = data => !!data ? 'Исправно' : 'Неисправно';
 
 export function tableMeta({
   isOkrug = false,

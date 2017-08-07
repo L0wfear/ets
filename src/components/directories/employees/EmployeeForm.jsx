@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import Div from 'components/ui/Div.jsx';
@@ -6,31 +6,17 @@ import Field from 'components/ui/Field.jsx';
 import Form from '../../compositions/Form.jsx';
 import { connectToStores } from 'utils/decorators';
 
-@connectToStores(['objects'])
+@connectToStores(['objects', 'companyStructure'])
 export default class EmployeeForm extends Form {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      cars: [],
-      companyStructureList: [],
-    };
-  }
-
-  async componentDidMount() {
-    const { flux } = this.context;
-    flux.getActions('objects').getCars();
-    flux.getActions('objects').getPositions();
-    const companyStructureList = await flux.getActions('companyStructure').getLinearCompanyStructureForUser();
-    this.setState({ companyStructureList });
-  }
-
   render() {
-    const state = this.props.formState;
-    const errors = this.props.formErrors;
-    const { carsList = [], positionsList = [], isPermitted = false } = this.props;
-    const { companyStructureList = [] } = this.state;
+    const [state, errors] = [this.props.formState, this.props.formErrors];
+    const {
+      carsList = [],
+      positionsList = [],
+      companyStructureList = [],
+      isPermitted = false,
+    } = this.props;
+
     const CARS = carsList.map(c => ({ value: c.asuods_id, label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]` }));
     const COMPANY_ELEMENTS = companyStructureList.map(el => ({ value: el.id, label: el.name }));
     const DRIVER_STATES = [{ value: 1, label: 'Работает' }, { value: 0, label: 'Не работает' }];

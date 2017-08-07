@@ -22,9 +22,12 @@ type FieldTypes =
   'datetime' |
   'number';
 
+export type ILabelFunction = (data: number|string) => string;
+
 interface IDataTableColFilter {
   type: FieldTypes;
   options?: IReactSelectOption[];
+  labelFunction?: ILabelFunction;
 }
 
 export interface IDataTableColSchema {

@@ -135,8 +135,8 @@ export default class InsurancePolicyForm extends Form {
                 disabled={!isPermitted}
               />
               <ExtField
-                type={'string'}
-                label={'Примечание'}
+                type={fields.note.type}
+                label={fields.note.displayName}
                 value={state.note}
                 error={errors.note}
                 onChange={this.handleChange}

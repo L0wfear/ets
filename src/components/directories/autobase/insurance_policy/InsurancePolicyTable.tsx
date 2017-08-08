@@ -85,6 +85,14 @@ export function tableMeta({
           type: 'number',
         },
       },
+      {
+        name: 'note',
+        displayName: 'Примечание',
+        type: 'string',
+        filter: {
+          type: 'string',
+        },
+      },
     ],
   };
 

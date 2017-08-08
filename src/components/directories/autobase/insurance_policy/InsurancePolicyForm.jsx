@@ -4,6 +4,7 @@ import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import { ExtDiv } from 'components/ui/Div.jsx';
 import { ExtField } from 'components/ui/Field.jsx';
+import { FileField } from 'components/ui/input/fields';
 import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 import Form from 'components/compositions/Form.jsx';
 import { connectToStores } from 'utils/decorators';
@@ -11,6 +12,9 @@ import { connectToStores } from 'utils/decorators';
 
 @connectToStores(['autobase', 'objects'])
 export default class InsurancePolicyForm extends Form {
+  state = {
+    areFilesLoading: false,
+  }
   componentWillMount() {
     const { flux } = this.context;
     flux.getActions('objects').getCars();
@@ -21,6 +25,8 @@ export default class InsurancePolicyForm extends Form {
       this.handleChange('car_id', car_id);
     }
   }
+
+  hanleFileLoading = indicator => this.setState({ areFilesLoading: indicator })
 
   render() {
     const {
@@ -54,7 +60,7 @@ export default class InsurancePolicyForm extends Form {
         <ExtDiv style={{ padding: 15 }}>
           <Row>
             <Col md={12}>
-              {IS_CREATING && car_id === -1 && 
+              {IS_CREATING && car_id === -1 &&
                 <ExtField
                   type="select"
                   label="Номер транспортного средства"
@@ -142,6 +148,14 @@ export default class InsurancePolicyForm extends Form {
                 onChange={this.handleChange}
                 boundKeys={['note']}
                 disabled={!isPermitted}
+              />
+              <FileField
+                label="Файл"
+                value={state.files}
+                error={errors.files}
+                onChange={this.handleChange}
+                boundKeys={['files']}
+                isLoading={this.hanleFileLoading}
               />
             </Col>
           </Row>

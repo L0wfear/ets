@@ -30,14 +30,6 @@ export function tableMeta({
         },
       },
       {
-        name: 'insurance_name',
-        displayName: 'Наименование страхования',
-        type: 'string',
-        filter: {
-          type: 'string',
-        },
-      },
-      {
         name: 'insurance_type_name',
         displayName: 'Тип страхования',
         type: 'select',

@@ -20,7 +20,6 @@ export const formValidationSchema: IValidationSchema = {
       title: 'Описание',
       type: 'string',
       maxLength: 2048,
-      required: true,
     },
     {
       key: 'car_model_id',

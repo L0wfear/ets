@@ -8,6 +8,7 @@ import Div, { ExtDiv } from 'components/ui/Div.jsx';
 import { ExtField } from 'components/ui/Field.jsx';
 import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 import Form from 'components/compositions/Form.jsx';
+import { FileField } from 'components/ui/input/fields';
 import {
   TIME_MEASURES_SELECT_OPTIONS,
   SEQUENCE_1_TO_20_SELECT_OPTIONS,
@@ -15,6 +16,9 @@ import {
 
 @connectToStores(['autobase', 'objects'])
 export default class TechMaintOrderForm extends Form {
+  state = {
+    areFilesLoading: false,
+  }
   async componentDidMount() {
     const { flux } = this.context;
     const { tech_maintenance_type_id = '' } = this.props.formState;
@@ -37,6 +41,7 @@ export default class TechMaintOrderForm extends Form {
     this.handleChange('measure_unit_run_id', null);
     this.handleChange(key, value);
   }
+  hanleFileLoading = indicator => this.setState({ areFilesLoading: indicator })
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
@@ -168,6 +173,16 @@ export default class TechMaintOrderForm extends Form {
                 disabled={!isPermitted}
                 onChange={this.handleChange}
                 boundKeys={['interval_time_type']}
+              />
+            </Col>
+            <Col md={12}>
+              <FileField
+                label="Файл"
+                value={state.files}
+                error={errors.files}
+                onChange={this.handleChange}
+                boundKeys={['files']}
+                isLoading={this.hanleFileLoading}
               />
             </Col>
           </Row>

@@ -3,7 +3,7 @@ import { Row, Col, Button as BootstrapButton } from 'react-bootstrap';
 import * as cx from 'classnames';
 
 import { onClickWithKeys } from 'components/compositions/hoc';
-import { IPropsFileInput, IStateFileInput } from './FileInput.h';
+import { IPropsFileInput, IStateFileInput, IFileWrapper } from './FileInput.h';
 
 const Button = onClickWithKeys(BootstrapButton);
 
@@ -35,18 +35,25 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
     this.fileInputNode.click();
   }
   render() {
-    const { buttonName = 'Добавить файл', errorClassName = '', value = [] } = this.props;
+    const { buttonName = 'Добавить файл', errorClassName = '', value = [], multiple = false } = this.props;
     const inputClass = cx(errorClassName);
     const inputStyle = { display: 'none' };
+    // NOTE Funny mock 🐈
+    const serverErrorFile: IFileWrapper = {
+      url: 'https://s1-ssl.dmcdn.net/Sp5Gv/1280x720-l9x.jpg',
+      name: '🐈 Ошибка на сервере. Невалидный файл. 🐈',
+    };
 
-    const fileList = value.map(({ name = 'Без названия', url, base64 }, i) =>
-      <FileListItem
-        index={i}
-        url={url || base64}
-        name={name}
-        onFileRemove={this.handleFileRemove}
-      />,
-    );
+    const fileList = value
+      .map(file => file === null ? serverErrorFile : file)
+      .map(({ name = 'Без названия', url, base64 } = serverErrorFile, i) =>
+        <FileListItem
+          index={i}
+          url={url || base64}
+          name={name}
+          onFileRemove={this.handleFileRemove}
+        />,
+      );
 
     return (
       <div>
@@ -54,13 +61,14 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
           <BootstrapButton onClick={this.handleFilePick}>{buttonName}</BootstrapButton>
           <input
             type="file"
+            value={''}
             style={inputStyle}
             className={inputClass}
             ref={ fileInputNode => this.fileInputNode = fileInputNode}
             accept={this.props.formats}
             disabled={this.props.disabled}
             onChange={this.props.onChange}
-            multiple={this.props.multiple}
+            multiple={multiple}
           />
       </div>
     );

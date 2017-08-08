@@ -55,6 +55,7 @@ export const fileFormatter = withHandlers({
     onChange,
     isLoading = identity,
     value = [],
+    multiple = false,
   }) => async e => {
     if (Array.isArray(e)) {
       onChange(e);
@@ -109,6 +110,11 @@ export const fileFormatter = withHandlers({
       ...fileWrapper,
       base64: base64List[i],
     }));
+
+    if (!multiple) {
+      onChange([...fileWrappers]);
+      return;
+    }
 
     onChange([...value, ...fileWrappers]);
   },

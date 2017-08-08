@@ -427,8 +427,12 @@ export default class DataTable extends React.Component {
       one = one.toLocaleLowerCase();
       two = two.toLocaleLowerCase();
     }
-
-    return (+(one > two) || (one === two) - 1) * Math.pow(-1, this.state.initialSortAscending + 1);
+    if (one > two) {
+      return 1 * Math.pow(-1, this.state.initialSortAscending + 1);
+    } else if (one < two) {
+      return -1 * Math.pow(-1, this.state.initialSortAscending + 1);
+    }
+    return 0;
   }
 
   processHighlighted(highlight, el) {
@@ -460,7 +464,7 @@ export default class DataTable extends React.Component {
 
     if (lowerCaseSorting) {
       tempData.sort(this.sortingLoweCase);
-    }
+    } 
 
     return tempData.filter(this.shouldBeRendered);
   }

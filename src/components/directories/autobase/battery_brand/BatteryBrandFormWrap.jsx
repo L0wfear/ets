@@ -3,29 +3,13 @@ import React from 'react';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
 import BatteryBrandForm from './BatteryBrandForm';
-
-export const batteryBrandSchema = {
-  properties: [
-    {
-      key: 'name',
-      title: 'Марка аккумулятора',
-      type: 'string',
-      required: true,
-    },
-    {
-      key: 'manufacturer_id',
-      title: 'Производитель аккумулятора',
-      type: 'number',
-      required: true,
-    },
-  ],
-};
+import { formValidationSchema } from './schema';
 
 class BatteryBrandFormWrap extends FormWrap {
   constructor(props, context) {
     super(props);
 
-    this.schema = batteryBrandSchema;
+    this.schema = formValidationSchema;
     this.preventDefaultNotification = true;
 
     this.createAction = context.flux.getActions('autobase').batteryBrand.bind(null, 'post');

@@ -22,7 +22,7 @@ interface IPropsTireTab extends IBaseForm {
 
 const TireTab: React.SFC<IPropsTireTab> = ({ data = [] }) =>
   <TireTable
-    title={''}
+    title={'Реестр шин'}
     results={data}
     schemaMakers={schemaMakers}
     onRowSelected={undefined}

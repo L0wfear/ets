@@ -21,7 +21,7 @@ interface IPropsBatteryTab extends IBaseForm {
 
 const BatteryTab: React.SFC<IPropsBatteryTab> = ({ data = [] }) =>
   <BatteryRegTable
-    title={''}
+    title={'Реестр аккумуляторов'}
     results={data}
     schemaMakers={schemaMakers}
     onRowSelected={undefined}

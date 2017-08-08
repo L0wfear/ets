@@ -1,0 +1,56 @@
+import React from 'react';
+import { Modal, Row, Col, Button } from 'react-bootstrap';
+
+import ModalBody from 'components/ui/Modal';
+import { connectToStores } from 'utils/decorators';
+import Div from 'components/ui/Div.jsx';
+import { ExtField } from 'components/ui/Field.jsx';
+import Form from 'components/compositions/Form.jsx';
+
+@connectToStores(['autobase'])
+export default class RepairCompanyForm extends Form {
+  handleSubmitWrap = (...arg) => this.handleSubmit(...arg);
+
+  render() {
+    const [state, errors] = [this.props.formState, this.props.formErrors];
+
+    const IS_CREATING = !state.id;
+
+    let title = 'Изменение записи';
+    if (IS_CREATING) title = 'Создание записи';
+
+    return (
+      <Modal {...this.props} backdrop="static">
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
+        </Modal.Header>
+        <Div style={{ padding: 15 }}>
+          <Row>
+            <Col md={12}>
+              <ExtField
+                type="string"
+                label="Наименование ремонтной организации"
+                value={state.name}
+                error={errors.name}
+                onChange={this.handleChange}
+                boundKeys={['name']}
+              />
+              <ExtField
+                type="string"
+                label="Примечание"
+                value={state.comment}
+                error={errors.comment}
+                onChange={this.handleChange}
+                boundKeys={['comment']}
+              />
+            </Col>
+          </Row>
+        </Div>
+        <ModalBody />
+        <Modal.Footer>
+          <Button disabled={!this.props.canSave} onClick={this.handleSubmitWrap}>Сохранить</Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+}

@@ -149,6 +149,26 @@ export default class EmployeesActions extends Actions {
     );
   }
 
+  repairCompany(method, formState) {
+    const payload = { ...formState };
+    const { repairCompany } = AUTOBASE;
+
+    const path = parsePutPath(repairCompany, method, formState);
+    return AutoBase.path(path)[method](
+      payload,
+      this.getAutobaseListByType.bind(null, 'repairCompany'),
+      'json',
+    );
+  }
+  removeRepairCompany(id) {
+    const { repairCompany } = AUTOBASE;
+    return AutoBase.path(`${repairCompany}/${id}`).delete(
+      {},
+      this.getAutobaseListByType.bind(null, 'repairCompany'),
+      'json',
+    );
+  }
+
   roadAccident(method, boundPayload, formState) {
     const payload = {
       ...formState,

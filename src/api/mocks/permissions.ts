@@ -16,4 +16,5 @@ export const autobase: string[] = [
   ...getFullAccess('autobase_tech_maintenance_registry'),
   ...getFullAccess('autobase_repair_registry'),
   ...getFullAccess('autobase_road_accident_registry'),
+  ...getFullAccess('autobase_repair_company'),
 ];

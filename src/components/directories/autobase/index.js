@@ -7,6 +7,7 @@ import techMaint from './tech_maintenance_registry/TechMaintList.jsx';
 import sparePart from './spare_part/SparePartList.jsx';
 import techInspection from './tech_inspection/TechInspectionList.jsx';
 import insurancePolicy from './insurance_policy/InsurancePolicyList.jsx';
+import repairCompany from './repair_company/RepairCompanyList.jsx';
 
 export {
   tire,
@@ -18,4 +19,5 @@ export {
   techMaint,
   techInspection,
   insurancePolicy,
+  repairCompany,
 };

@@ -15,7 +15,7 @@ export interface IStateFileInput {
 }
 
 export interface IFileWrapper {
-  nativeFile: File;
+  nativeFile?: File;
   name: string;
   url?: string;
   base64?: string;

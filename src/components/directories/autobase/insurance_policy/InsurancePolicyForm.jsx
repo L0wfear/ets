@@ -77,15 +77,6 @@ export default class InsurancePolicyForm extends Form {
                 disabled={!isPermitted}
               />
               <ExtField
-                type={fields.insurance_name.type}
-                label={fields.insurance_name.displayName}
-                value={state.insurance_name}
-                error={errors.insurance_name}
-                onChange={this.handleChange}
-                boundKeys={['insurance_name']}
-                disabled={!isPermitted}
-              />
-              <ExtField
                 type={'select'}
                 label={fields.insurance_type_name.displayName}
                 value={state.insurance_type_id}
@@ -141,6 +132,15 @@ export default class InsurancePolicyForm extends Form {
                 error={errors.price}
                 onChange={this.handleChange}
                 boundKeys={['price']}
+                disabled={!isPermitted}
+              />
+              <ExtField
+                type={'string'}
+                label={'Примечание'}
+                value={state.note}
+                error={errors.note}
+                onChange={this.handleChange}
+                boundKeys={['note']}
                 disabled={!isPermitted}
               />
             </Col>

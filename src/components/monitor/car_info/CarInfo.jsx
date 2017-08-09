@@ -330,7 +330,9 @@ export default class CarInfo extends Component {
   }
 
   renderSensorsToggle() {
-    const { points } = this.props.car.marker.track;
+    const { track = false } = this.props.car.marker;
+    if (!track) return 'Ошибка при загрузке трека';
+    const { points } = track;
     if (!points) return 'Загрузка...';
     if (!points.length) return 'Нет данных';
     const equipmentIdList = Object.keys(groupBy(flatten(points.filter(p => p.sensors && p.sensors.equipment).map(p => p.sensors.equipment)), s => s.id));

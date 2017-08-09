@@ -313,8 +313,10 @@ export default class DataTable extends React.Component {
         displayName: col.customHeaderComponent ? col.customHeaderComponent : col.displayName,
         sortable: (typeof col.sortable === 'boolean') ? col.sortable : true,
       };
-
-      if (typeof renderers[col.name] === 'function') {
+      if (col.type === 'string') {
+        const callbackF = (typeof renderers[col.name] === 'function' && renderers[col.name]) || false;
+        metaObject.customComponent = props => this.cutString(callbackF, props);
+      } else if (typeof renderers[col.name] === 'function') {
         metaObject.customComponent = renderers[col.name];
       }
 
@@ -327,6 +329,21 @@ export default class DataTable extends React.Component {
     }, initialArray);
 
     return metadata;
+  }
+  cutString = (callback, props) => {
+    const newProps = { ...props };
+    let { data = '' } = props;
+
+    if (typeof data === 'string' && data.split(' ').some(d => d.length > 20)) {
+      data = `${data.slice(0, 20)}...`;
+    }
+
+    newProps.data = data;
+
+    if (callback) {
+      return callback(newProps);
+    }
+    return (<div>{data}</div>);
   }
 
   initializeRowMetadata() {

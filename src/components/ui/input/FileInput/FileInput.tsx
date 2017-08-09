@@ -41,7 +41,7 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
     // NOTE Funny mock 🐈
     const serverErrorFile: IFileWrapper = {
       url: 'https://s1-ssl.dmcdn.net/Sp5Gv/1280x720-l9x.jpg',
-      name: '🐈 Ошибка на сервере. Невалидный файл. 🐈',
+      name: 'Ошибка на сервере. Невалидный файл.',
     };
 
     const fileList = value

@@ -20,6 +20,18 @@ export default class LoadingStore extends Store {
 
     this.reg(false,
       autoBaseActions.getAutobaseListByType,
+      autoBaseActions.batteryBrand,
+      autoBaseActions.batteryManufacturer,
+      autoBaseActions.batteryRegistry,
+      autoBaseActions.insurancePolicy,
+      autoBaseActions.repair,
+      autoBaseActions.repairCompany,
+      autoBaseActions.roadAccident,
+      autoBaseActions.sparePart,
+      autoBaseActions.techInspection,
+      autoBaseActions.techMaintOrder,
+      autoBaseActions.techMaint,
+      autoBaseActions.tire,
 
       waybillsActions.deleteWaybill,
       waybillsActions.createWaybill,

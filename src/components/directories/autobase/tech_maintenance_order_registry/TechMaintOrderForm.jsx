@@ -3,6 +3,7 @@ import { Modal, Row, Col, Button } from 'react-bootstrap';
 import { get } from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
+import { loadingOverlay } from 'components/ui/LoadingOverlay';
 import { connectToStores } from 'utils/decorators';
 import Div, { ExtDiv } from 'components/ui/Div.jsx';
 import { ExtField } from 'components/ui/Field.jsx';
@@ -14,6 +15,7 @@ import {
   SEQUENCE_1_TO_20_SELECT_OPTIONS,
 } from 'constants/dictionary';
 
+@loadingOverlay
 @connectToStores(['autobase', 'objects'])
 export default class TechMaintOrderForm extends Form {
   state = {
@@ -41,7 +43,6 @@ export default class TechMaintOrderForm extends Form {
     this.handleChange('measure_unit_run_id', null);
     this.handleChange(key, value);
   }
-  hanleFileLoading = indicator => this.setState({ areFilesLoading: indicator })
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
@@ -64,7 +65,7 @@ export default class TechMaintOrderForm extends Form {
     const tech_maintenance_type_id = get(state, 'tech_maintenance_type_id', '');
 
     return (
-      <Modal {...this.props} backdrop="static">
+      <Modal {...this.props} backdrop="static" >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
         </Modal.Header>
@@ -182,7 +183,7 @@ export default class TechMaintOrderForm extends Form {
                 error={errors.files}
                 onChange={this.handleChange}
                 boundKeys={['files']}
-                isLoading={this.hanleFileLoading}
+                isLoading={this.props.onOverlayLoading}
               />
             </Col>
           </Row>

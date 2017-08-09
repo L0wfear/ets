@@ -15,10 +15,7 @@ import { connectToStores } from 'utils/decorators';
 @connectToStores(['autobase', 'employees', 'objects'])
 export default class BaseRoadAccidentFrom extends Form {
   componentWillMount() {
-    const { flux } = this.context;
     const { car_id = -1 } = this.props;
-
-    flux.getActions('objects').getCars();
 
     if (car_id >= 0) {
       this.handleChange('car_id', car_id);
@@ -41,7 +38,7 @@ export default class BaseRoadAccidentFrom extends Form {
     const fields = cols.reduce((obj, val) => Object.assign(obj, { [val.name]: val }), {});
 
     const ROAD_ACCIDENT_CAUSE_OPTION = roadAccidentCauseList.map(defaultSelectListMapper);
-    const DRIVER_LIST_OPTION = driversList.map(el => ({ value: el.id, label: `${el.last_name} ${el.first_name[0]}.${el.middle_name ? el.middle_name[0] : ''}.`}) );
+    const DRIVER_LIST_OPTION = driversList.map(el => ({ value: el.id, label: `${el.last_name} ${el.first_name[0]}.${el.middle_name ? el.middle_name[0] : ''}.` }));
 
     const IS_CREATING = !state.id;
 
@@ -68,7 +65,7 @@ export default class BaseRoadAccidentFrom extends Form {
               />
               <ExtField
                 type="select"
-                label={fields.driver_id.displayName}
+                label={fields.driver_fio.displayName}
                 value={state.driver_id}
                 error={errors.driver_id}
                 options={DRIVER_LIST_OPTION}
@@ -79,7 +76,7 @@ export default class BaseRoadAccidentFrom extends Form {
               />
               <ExtField
                 type="select"
-                label={fields.cause_id.displayName}
+                label={fields.cause_name.displayName}
                 value={state.cause_id}
                 error={errors.cause_id}
                 options={ROAD_ACCIDENT_CAUSE_OPTION}

@@ -399,7 +399,7 @@ export default class DataTable extends React.Component {
         isValid = stringArrayDataMatching(value, obj[key]);
       } else if (typeof obj[key] === 'string') {
         isValid = stringArrayDataMatching(value, [obj[key]]);
-      } else if (obj[key] != value) {
+      } else if (obj[key] !== value) {
         isValid = false;
       }
     });
@@ -455,7 +455,6 @@ export default class DataTable extends React.Component {
     return el;
   }
 
-  // TODO зачем _(data) ?
   processTableData(data, tableCols, selected, selectField, onRowSelected, lowerCaseSorting, highlight = []) {
     const tempData = data
           .map(this.processEmptyCols.bind(this, tableCols))

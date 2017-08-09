@@ -1,10 +1,8 @@
 import * as React from 'react';
-import { get } from 'lodash';
 
 import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
 import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';
 import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
-import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 
 import DataTableComponent from 'components/ui/table/DataTable';
 import DateFormatter from 'components/ui/DateFormatter';
@@ -12,8 +10,6 @@ import DateFormatter from 'components/ui/DateFormatter';
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
 export function tableMeta({
-  roadAccidentCauseList = [],
-  driversList = [],
 } = {}): IDataTableSchema {
   const meta: IDataTableSchema = {
     cols: [
@@ -26,21 +22,19 @@ export function tableMeta({
         },
       },
       {
-        name: 'driver_id',
+        name: 'driver_fio',
         displayName: 'Водитель',
         type: 'select',
         filter: {
           type: 'multiselect',
-          options: driversList.map(el => ({ value: el.id, label: `${el.last_name} ${el.first_name[0]}.${el.middle_name ? el.middle_name[0] : ''}.`}) )
         },
       },
       {
-        name: 'cause_id',
+        name: 'cause_name',
         displayName: 'Причина ДТП',
         type: 'select',
         filter: {
           type: 'multiselect',
-          options: roadAccidentCauseList.map(defaultSelectListMapper),
         },
       },
       {
@@ -84,15 +78,10 @@ export function tableMeta({
 const Table: React.SFC<any> = props  => {
   const {
           car_id = -1,
-          roadAccidentCauseList = [],
-          driversList= [],
         } = props;
-  const driversList_option = driversList.map(el => ({ id: el.id, name: `${el.last_name} ${el.first_name[0]}.${el.middle_name ? el.middle_name[0] : ''}.`}) )
 
   const renderers: ISchemaRenderer = {
     accident_date: ({ data }) => (<DateFormatter date={data} />),
-    driver_id: ({ data }) => <div>{get(driversList_option.find(s => s.id === data), 'name', '---')}</div>,
-    cause_id: ({ data }) => <div>{get(roadAccidentCauseList.find(s => s.id === data), 'name', '---')}</div>,
     is_guilty: ({ data }) => <input type="checkbox" disabled checked={data} />,
   };
 

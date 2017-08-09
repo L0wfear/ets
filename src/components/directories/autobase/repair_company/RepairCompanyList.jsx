@@ -7,7 +7,7 @@ import RepairCompanyFormWrap from './RepairCompanyFormWrap';
 @connectToStores(['autobase', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.repairCompany}` })
 @staticProps({
-  entity: 'autobase_repair_company',
+  entity: 'autobase_company',
   listName: 'repairCompanyList',
   formComponent: RepairCompanyFormWrap,
   tableComponent: RepairCompanyTable,

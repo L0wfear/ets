@@ -196,12 +196,12 @@ export default class WaybillFormWrap extends FormWrap {
 
   handleMultipleChange(fields) {
     let formState = _.cloneDeep(this.state.formState);
-    const { car_id = -1 } = this.state.formState;
+    const { car_id = -1 } = fields;
 
     if (car_id !== formState.car_id) {
-      delete formState.equipment_fuel_start;
-      delete formState.fuel_start;
-      delete formState.motohours_equip_start;
+      formState.equipment_fuel_start = undefined;
+      formState.fuel_start = undefined;
+      formState.motohours_equip_start = undefined;
     }
 
     Object.entries(fields).forEach(([field, value]) => {

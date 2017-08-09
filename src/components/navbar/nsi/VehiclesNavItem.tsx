@@ -25,6 +25,7 @@ const oneOfPermissions = [
 
 interface IPropsVehicleNavItem extends IPropsNavbarItem {}
 
+// NOTE Старые права и неполный список
 const VehicleNavItem: React.SFC<IPropsVehicleNavItem> = ({ path }) =>
   <NavDropdown oneOfPermissions={oneOfPermissions} title="Транспортные средства" id="nav-dropdown-2-1">
     <MenuItem permissions={['type.list']} active={path === '/car-func-types'} href="#/car-func-types">Типы техники</MenuItem>

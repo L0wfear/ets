@@ -7,7 +7,7 @@ import RoadAccidentTable, { tableMeta } from './RoadAccidentTable';
 @connectToStores(['autobase', 'employees', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.roadAccidentRegistry}` })
 @staticProps({
-  entity: 'autobase_road_accident_registry',
+  entity: 'autobase_road_accident',
   listName: 'roadAccidentRegistryList',
   tableComponent: RoadAccidentTable,
   formComponent: RoadAccidentFormWrap,

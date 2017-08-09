@@ -330,6 +330,8 @@ export default class CarInfo extends Component {
   }
 
   renderSensorsToggle() {
+    const { track = false } = this.props.car.marker;
+    if (!track) return 'Ошибка при загрузке трека';
     const { points } = this.props.car.marker.track;
     if (!points) return 'Загрузка...';
     if (!points.length) return 'Нет данных';

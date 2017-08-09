@@ -288,7 +288,7 @@ class WaybillForm extends Form {
     this.props.handleMultipleChange(fieldsToChange);
   }
 
-  getFieldsToChangeBasedOnLastWaybill(lastCarUsedWaybill) {
+  getFieldsToChangeBasedOnLastWaybill([lastCarUsedWaybill]) {
     const fieldsToChange = {};
     if (isNotNull(lastCarUsedWaybill)) {
       if (isNotNull(lastCarUsedWaybill.fuel_end)) {

@@ -28,7 +28,7 @@ class CompanyStructureForm extends Form {
     const { companyStructureLinearList = [] } = this.state;
     const { parent_id = false } = state;
 
-    let COMPANY_ELEMENTS = companyStructureLinearList.map(el => ({ value: el.id, label: el.name }));
+    let COMPANY_ELEMENTS = companyStructureLinearList.filter(d => d.type !== 3).map(el => ({ value: el.id, label: el.name }));
     COMPANY_ELEMENTS = [{ value: null, label: 'Предприятие' }, ...COMPANY_ELEMENTS];
     const STRUCTURE_TYPES = [{ value: 3, label: 'ДЭУ' }];
     let parent_type_is_dek = false;
@@ -59,11 +59,6 @@ class CompanyStructureForm extends Form {
                 onChange={this.handleChange.bind(this, 'parent_id')}
                 clearable
               />
-            </Col>
-          </Row>
-
-          <Row>
-            <Col md={12}>
               <Field
                 type="select"
                 label="Тип подразделения"
@@ -73,11 +68,6 @@ class CompanyStructureForm extends Form {
                 onChange={this.handleChange.bind(this, 'type')}
                 clearable
               />
-            </Col>
-          </Row>
-
-          <Row>
-            <Col md={12}>
               <Field
                 type="string"
                 label="Наименование"
@@ -85,11 +75,6 @@ class CompanyStructureForm extends Form {
                 value={state.name}
                 onChange={this.handleChange.bind(this, 'name')}
               />
-            </Col>
-          </Row>
-
-          <Row>
-            <Col md={12}>
               <Field
                 type="string"
                 label="Примечание"

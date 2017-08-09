@@ -2,6 +2,8 @@ import React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 
 import ModalBody from 'components/ui/Modal';
+import { loadingOverlay } from 'components/ui/LoadingOverlay';
+import { FileField } from 'components/ui/input/fields';
 import { ExtDiv } from 'components/ui/Div.jsx';
 import { ExtField } from 'components/ui/Field.jsx';
 import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
@@ -9,7 +11,7 @@ import Form from 'components/compositions/Form.jsx';
 
 import { connectToStores } from 'utils/decorators';
 
-
+@loadingOverlay
 @connectToStores(['autobase', 'objects'])
 export default class BaseTechInspectionForm extends Form {
   componentWillMount() {
@@ -157,6 +159,14 @@ export default class BaseTechInspectionForm extends Form {
                 onChange={this.handleChange}
                 boundKeys={['note']}
                 disabled={!isPermitted}
+              />
+              <FileField
+                label="Файл"
+                value={state.files}
+                error={errors.files}
+                onChange={this.handleChange}
+                boundKeys={['files']}
+                isLoading={this.props.onOverlayLoading}
               />
             </Col>
           </Row>

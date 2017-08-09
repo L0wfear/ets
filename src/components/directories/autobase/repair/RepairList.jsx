@@ -7,7 +7,7 @@ import RepairTable, { tableMeta } from './RepairTable';
 @connectToStores(['autobase', 'objects', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.repair}` })
 @staticProps({
-  entity: 'autobase_repair_registry',
+  entity: 'autobase_repair',
   listName: 'repairList',
   tableComponent: RepairTable,
   formComponent: RepairFormWrap,

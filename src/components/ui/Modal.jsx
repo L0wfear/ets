@@ -1,6 +1,7 @@
 import React from 'react';
-import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
 import { Modal } from 'react-bootstrap';
+
+import LoadingOverlay from 'components/ui/LoadingOverlay';
 
 export default props => (
   <Modal.Body {...props}>

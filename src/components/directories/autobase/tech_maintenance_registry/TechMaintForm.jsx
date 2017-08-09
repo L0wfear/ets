@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 
-import Preloader from 'components/ui/Preloader.jsx';
+// import { loadingOverlay } from 'components/ui/LoadingOverlay';
 import ModalBody from 'components/ui/Modal';
 import {
   Field,
@@ -18,11 +18,9 @@ import {
   isFourDigitGovNumber,
 } from 'utils/functions';
 
+// @loadingOverlay
 @connectToStores(['autobase', 'objects'])
 export default class TechMaintForm extends Form {
-  state = {
-    areFilesLoading: false,
-  }
   async componentDidMount() {
     const { flux } = this.context;
     const { car_model_id } = this.props.formState;
@@ -36,7 +34,6 @@ export default class TechMaintForm extends Form {
     //   flux.getActions('objects').getCars();
     // }
   }
-  hanleFileLoading = indicator => this.setState({ areFilesLoading: indicator })
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
@@ -187,14 +184,12 @@ export default class TechMaintForm extends Form {
                 error={errors.file}
                 onChange={this.handleChange}
                 boundKeys={['file']}
-                isLoading={this.hanleFileLoading}
+                isLoading={this.props.onOverlayLoading}
               />
             </Col>
             */}
           </Row>
         </div>
-
-        {this.state.areFilesLoading && <Preloader type="mainpage" />}
         <ModalBody />
         <Modal.Footer>
           <Button disabled={!this.props.canSave} onClick={this.handleSubmit}>Сохранить</Button>

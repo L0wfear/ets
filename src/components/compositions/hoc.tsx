@@ -120,9 +120,9 @@ export const fileFormatter = withHandlers({
   },
 });
 
-export const MAX_SIZE_PER_FILE_MB = 10;
-export const MAX_SUM_FILE_SIZE_MB = 200;
-export const MAX_FILE_COUNT = 20;
+export const MAX_SIZE_PER_FILE_MB = 140;
+export const MAX_SUM_FILE_SIZE_MB = 140;
+export const MAX_FILE_COUNT = 140;
 
 export const fileCountLimiter = withHandlers({
   onChange: ({

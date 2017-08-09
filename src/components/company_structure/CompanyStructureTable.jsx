@@ -57,7 +57,6 @@ export default (props) => {
       isHierarchical
       noFilter
       {...props}
-      initialSort={false}
     />
   );
 };

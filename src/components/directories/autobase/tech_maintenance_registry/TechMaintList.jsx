@@ -7,7 +7,7 @@ import TechMaintTable from './TechMaintTable';
 @connectToStores(['autobase', 'session', 'objects'])
 @exportable({ entity: `autobase/${AUTOBASE.techMaint}` })
 @staticProps({
-  entity: 'autobase_tech_maintenance_registry',
+  entity: 'autobase_tech_maintenance',
   listName: 'techMaintList',
   tableComponent: TechMaintTable,
   formComponent: TechMaintFormWrap,

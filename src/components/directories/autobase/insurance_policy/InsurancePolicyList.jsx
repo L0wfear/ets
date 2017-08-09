@@ -7,7 +7,7 @@ import InsurancePolicyTable, { tableMeta } from './InsurancePolicyTable.tsx';
 @connectToStores(['autobase', 'objects', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.insurancePolicy}` })
 @staticProps({
-  entity: 'autobase_insurance_policy_registry',
+  entity: 'autobase_insurance_policy',
   listName: 'insurancePolicyList',
   tableComponent: InsurancePolicyTable,
   formComponent: InsurancePolicyFormWrap,

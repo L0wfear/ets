@@ -2841,8 +2841,18 @@ div.none {
 
 
 
-.company-structure .griddle-body table tbody tr:not(:first-child).child-row > td {
-  padding-left: 20px !important;
+.company-structure .griddle-body table tbody {
+  & tr.standard-row>td:first-child {
+    padding-left: 15px !important;
+  }
+  & tr:not(:first-child).child-row {
+    &> td:first-child {
+      padding-left: 20px !important;
+    }
+    &> td:not(:first-child) {
+      padding: 5px !important;
+    }
+  }
 }
 
 .company-structure .griddle-body {

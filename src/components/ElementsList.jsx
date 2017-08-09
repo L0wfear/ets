@@ -5,7 +5,7 @@ import { Button, Glyphicon } from 'react-bootstrap';
 
 import Preloader from 'components/ui/Preloader';
 import { FluxContext } from 'utils/decorators';
-import { ButtonCreate, ButtonRead, ButtonDelete } from './ui/buttons/CRUD.jsx';
+import { ButtonCreate, ButtonRead, ButtonDelete } from './ui/buttons/CRUD';
 
 /**
  * Базовый класс для отображения таблиц и привязанных к ним форм (модальных окон)

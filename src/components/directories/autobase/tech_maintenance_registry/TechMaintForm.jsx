@@ -1,13 +1,13 @@
 import React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 
-// import { loadingOverlay } from 'components/ui/LoadingOverlay';
+import { loadingOverlay } from 'components/ui/LoadingOverlay';
 import ModalBody from 'components/ui/Modal';
 import {
   Field,
   MultiSelectField,
   DataTimeField,
-  // FileField,
+  FileField,
  } from 'components/ui/input/fields';
 import { connectToStores } from 'utils/decorators';
 import { ExtDiv } from 'components/ui/Div.jsx';
@@ -18,7 +18,7 @@ import {
   isFourDigitGovNumber,
 } from 'utils/functions';
 
-// @loadingOverlay
+@loadingOverlay
 @connectToStores(['autobase', 'objects'])
 export default class TechMaintForm extends Form {
   async componentDidMount() {
@@ -175,7 +175,6 @@ export default class TechMaintForm extends Form {
                 boundKeys={['note']}
               />
             </Col>
-            {/*
             <Col md={12}>
               <FileField
                 multiple
@@ -187,7 +186,6 @@ export default class TechMaintForm extends Form {
                 isLoading={this.props.onOverlayLoading}
               />
             </Col>
-            */}
           </Row>
         </div>
         <ModalBody />

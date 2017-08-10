@@ -5,7 +5,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import each from 'lodash/each';
 import find from 'lodash/find';
 import ElementsList from './ElementsList.jsx';
-import { ButtonCreate, ButtonRead, ButtonDelete } from './ui/buttons/CRUD.jsx';
+import { ButtonCreate, ButtonRead, ButtonDelete } from './ui/buttons/CRUD';
 
 /**
  * ElementsList с возможностью обрабатывать таблицы с выбором элементов

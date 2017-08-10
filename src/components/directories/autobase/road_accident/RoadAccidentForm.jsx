@@ -35,10 +35,10 @@ export default class BaseRoadAccidentFrom extends Form {
       errors = {},
     ] = [this.props.formState, this.props.formErrors];
 
-    const fields = cols.reduce((obj, val) => Object.assign(obj, { [val.name]: val }), {});
+    const fields = cols.reduce((obj, val) => Object.assign(obj, { [val.key]: val }), {});
 
     const ROAD_ACCIDENT_CAUSE_OPTION = roadAccidentCauseList.map(defaultSelectListMapper);
-    const DRIVER_LIST_OPTION = driversList.map(el => ({ value: el.id, label: `${el.last_name} ${el.first_name[0]}.${el.middle_name ? el.middle_name[0] : ''}.` }));
+    const DRIVER_LIST_OPTION = driversList.map(el => ({ value: el.id, label: `${el.last_name} ${el.first_name[0]}.${el.middle_name ? el.middle_name[0] : ''}. | ${el.drivers_emplds}` }));
 
     const IS_CREATING = !state.id;
 
@@ -54,8 +54,8 @@ export default class BaseRoadAccidentFrom extends Form {
           <Row>
             <Col md={12}>
               <ExtField
-                type={fields.accident_date.type}
-                label={fields.accident_date.displayName}
+                type={'date'}
+                label={fields.accident_date.title}
                 date={state.accident_date}
                 time={false}
                 error={errors.accident_date}
@@ -65,7 +65,7 @@ export default class BaseRoadAccidentFrom extends Form {
               />
               <ExtField
                 type="select"
-                label={fields.driver_fio.displayName}
+                label={fields.drivers_emplds.title}
                 value={state.driver_id}
                 error={errors.driver_id}
                 options={DRIVER_LIST_OPTION}
@@ -76,7 +76,7 @@ export default class BaseRoadAccidentFrom extends Form {
               />
               <ExtField
                 type="select"
-                label={fields.cause_name.displayName}
+                label={fields.cause_name.title}
                 value={state.cause_id}
                 error={errors.cause_id}
                 options={ROAD_ACCIDENT_CAUSE_OPTION}
@@ -87,7 +87,7 @@ export default class BaseRoadAccidentFrom extends Form {
               />
               <ExtField
                 type={'string'}
-                label={fields.accident_place.displayName}
+                label={fields.accident_place.title}
                 value={state.accident_place}
                 error={errors.accident_place}
                 onChange={this.handleChange}
@@ -96,7 +96,7 @@ export default class BaseRoadAccidentFrom extends Form {
               />
               <ExtField
                 type={'boolean'}
-                label={fields.is_guilty.displayName}
+                label={fields.is_guilty.title}
                 value={state.is_guilty}
                 error={errors.is_guilty}
                 onChange={this.handleChange}
@@ -105,7 +105,7 @@ export default class BaseRoadAccidentFrom extends Form {
               />
               <ExtField
                 type={fields.damage_price.type}
-                label={fields.damage_price.displayName}
+                label={fields.damage_price.title}
                 value={state.damage_price}
                 error={errors.damage_price}
                 onChange={this.handleChange}
@@ -114,7 +114,7 @@ export default class BaseRoadAccidentFrom extends Form {
               />
               <ExtField
                 type={fields.comment.type}
-                label={fields.comment.displayName}
+                label={fields.comment.title}
                 value={state.comment}
                 error={errors.comment}
                 onChange={this.handleChange}

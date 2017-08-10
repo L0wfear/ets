@@ -12,7 +12,7 @@ export const formValidationSchema: IValidationSchema = {
       required: true,
     },
     {
-      key: 'driver_id',
+      key: 'drivers_emplds',
       title: 'Водитель',
       type: 'number',
       required: true,
@@ -41,6 +41,14 @@ export const formValidationSchema: IValidationSchema = {
       title: 'Примечание прохождения',
       type: 'string',
       maxLength: 2048,
+    },
+    {
+      key: 'cause_name',
+      title: 'Причина ДТП',
+    },
+    {
+      key: 'is_guilty',
+      title: 'Виновность',
     },
   ],
   dependencies: {

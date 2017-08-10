@@ -2,7 +2,7 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'constants/autobase';
 import ElementsList from 'components/ElementsList.jsx';
 import RoadAccidentFormWrap from './RoadAccidentFormWrap';
-import RoadAccidentTable, { tableMeta } from './RoadAccidentTable';
+import RoadAccidentTable from './RoadAccidentTable';
 
 @connectToStores(['autobase', 'employees', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.roadAccidentRegistry}` })
@@ -11,7 +11,6 @@ import RoadAccidentTable, { tableMeta } from './RoadAccidentTable';
   listName: 'roadAccidentRegistryList',
   tableComponent: RoadAccidentTable,
   formComponent: RoadAccidentFormWrap,
-  formMeta: tableMeta(),
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 export default class RoadAccidentList extends ElementsList {

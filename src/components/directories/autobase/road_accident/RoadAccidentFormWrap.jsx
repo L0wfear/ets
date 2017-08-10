@@ -27,7 +27,7 @@ class RoadAccidentFromWrap extends FormWrap {
       <RoadAccidentFrom
         formState={this.state.formState}
         formErrors={this.state.formErrors}
-        cols={this.props.meta.cols}
+        cols={formValidationSchema.properties}
         car_id={car_id}
         permissions={[`${entity}.update`]}
         addPermissionProp

@@ -22,7 +22,7 @@ export function tableMeta({
         },
       },
       {
-        name: 'driver_fio',
+        name: 'drivers_emplds',
         displayName: 'Водитель',
         type: 'select',
         filter: {

@@ -1,4 +1,4 @@
-export default interface ICRUD {
+export interface ICRUDButton {
   permissions?: string[];
   onClick?(...any): void;
   disabled?: boolean;

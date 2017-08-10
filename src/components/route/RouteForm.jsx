@@ -143,7 +143,7 @@ export default class RouteForm extends Form {
     }
 
     const title = state.id ? 'Изменение маршрута' : 'Создание нового маршрута';
-    const canSave = this.props.canSave && (state.object_list.length || state.draw_object_list.length);
+    const canSave = this.props.canSave && ((!!state.object_list && state.object_list.length) || (!!state.draw_object_list && state.draw_object_list.length));
 
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">

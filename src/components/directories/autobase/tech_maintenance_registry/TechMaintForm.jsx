@@ -179,10 +179,10 @@ export default class TechMaintForm extends Form {
               <FileField
                 multiple
                 label="Файл"
-                value={state.file}
-                error={errors.file}
+                value={state.files}
+                error={errors.files}
                 onChange={this.handleChange}
-                boundKeys={['file']}
+                boundKeys={['files']}
                 isLoading={this.props.onOverlayLoading}
               />
             </Col>

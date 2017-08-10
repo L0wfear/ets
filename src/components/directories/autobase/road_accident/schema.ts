@@ -12,7 +12,7 @@ export const formValidationSchema: IValidationSchema = {
       required: true,
     },
     {
-      key: 'drivers_emplds',
+      key: 'driver_id',
       title: 'Водитель',
       type: 'number',
       required: true,

@@ -122,6 +122,7 @@ export default class RouteForm extends Form {
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
+    const { object_list = [], draw_object_list = [] } = state;
     const { ROUTE_TYPE_OPTIONS, technicalOperationsList = [] } = this.state;
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
 
@@ -143,7 +144,7 @@ export default class RouteForm extends Form {
     }
 
     const title = state.id ? 'Изменение маршрута' : 'Создание нового маршрута';
-    const canSave = this.props.canSave && (state.object_list.length || state.draw_object_list.length);
+    const canSave = this.props.canSave && (object_list.length || draw_object_list.length);
 
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">

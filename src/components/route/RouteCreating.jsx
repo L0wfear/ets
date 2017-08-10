@@ -61,7 +61,7 @@ class RouteCreating extends Component {
   onDrawFeatureClick(feature) {
     const { id, state } = feature.getProperties();
 
-    const { draw_object_list } = this.props.route;
+    const { draw_object_list = [] } = this.props.route;
     const objectIndex = _.findIndex(draw_object_list, o => o.id === id);
     if (state) {
       let nextState;
@@ -82,7 +82,7 @@ class RouteCreating extends Component {
 
   onDrawFeatureAdd(feature, coordinates, distance) {
     const { id } = feature.getProperties();
-    const { draw_object_list } = this.props.route;
+    const { draw_object_list = [] } = this.props.route;
 
     const routeHasObject = _.find(draw_object_list, o =>
        o.begin.x_msk === coordinates[0][0] && o.begin.y_msk === coordinates[0][1]
@@ -102,7 +102,7 @@ class RouteCreating extends Component {
   }
 
   onPointAdd(coordinates) {
-    const { object_list } = this.props.route;
+    const { object_list = [] } = this.props.route;
     object_list.push({
       coordinates,
       name: '',
@@ -111,7 +111,7 @@ class RouteCreating extends Component {
   }
 
   onGeozoneSelectChange(type, v) {
-    let { object_list } = this.props.route;
+    let { object_list = [] } = this.props.route;
     const { polys } = this.props.route;
     const { geozonePolys } = this.props;
     const odhs = (v || '').split(',');
@@ -173,13 +173,13 @@ class RouteCreating extends Component {
   }
 
   removeLastDrawFeature() {
-    const { draw_object_list } = this.props.route;
+    const { draw_object_list = [] } = this.props.route;
     draw_object_list.splice(-1, 1);
     this.props.onChange('draw_object_list', draw_object_list);
   }
 
   handleCheckbox(type, v, e) {
-    let { object_list } = this.props.route;
+    let { object_list = [] } = this.props.route;
     const { polys } = this.props.route;
     const { geozonePolys } = this.props;
     const odhs = v.split(',').map(e => parseInt(e, 10));
@@ -202,16 +202,19 @@ class RouteCreating extends Component {
   }
 
   removeObject(i) {
-    const { object_list } = this.props.route;
+    const { object_list = [] } = this.props.route;
     object_list.splice(i, 1);
     this.props.onChange('object_list', object_list);
   }
 
   render() {
-    const route = this.props.route;
+    const {
+      route,
+      route: { draw_odh_list = [],  object_list = [] }
+    } = this.props;
     const Map = this.props.manual ? DrawMap : PolyMap;
-    const list = route.object_list.filter(o => o.type) || [];
-    const draw_list = route.draw_odh_list || [];
+    const list = object_list.filter(o => o.type);
+    const draw_list = draw_odh_list;
     const polys = route.type === 'simple_dt' ? this.props.dtPolys : this.props.odhPolys;
     const fail_list = _.map(polys, (v, k) => ({ name: v.name, object_id: parseInt(k, 10), type: 'odh', state: v.state })).filter(o => !list.concat(draw_list).find(e => e.object_id === o.object_id));
     const ODHS = _.map(this.props.odhPolys, (v, k) => ({ label: v.name, value: k }));
@@ -230,7 +233,7 @@ class RouteCreating extends Component {
                 removeLastDrawFeature={this.removeLastDrawFeature}
                 zoom={this.state.zoom}
                 center={this.state.center}
-                object_list={route.object_list}
+                object_list={object_list}
                 draw_object_list={route.draw_object_list}
                 polys={route.polys}
                 objectsType={route.type}
@@ -247,7 +250,7 @@ class RouteCreating extends Component {
                   label="Список выбранных ОДХ"
                   multi
                   options={ODHS}
-                  value={route.object_list.map(o => o.object_id).join(',')}
+                  value={object_list.map(o => o.object_id).join(',')}
                   onChange={this.onGeozoneSelectChange.bind(this, 'odh')}
                 />
               </Div>
@@ -258,7 +261,7 @@ class RouteCreating extends Component {
                   label="Список выбранных ДТ"
                   multi
                   options={DTS}
-                  value={route.object_list.map(o => o.object_id).join(',')}
+                  value={object_list.map(o => o.object_id).join(',')}
                   onChange={this.onGeozoneSelectChange.bind(this, 'dt')}
                 />
               </Div>
@@ -272,7 +275,7 @@ class RouteCreating extends Component {
                 />
               </Div>
               <Div className="destination-points" hidden={route.type !== 'points'}>
-                {route.object_list.map((o, i) => {
+                {object_list.map((o, i) => {
                   const label = `Пункт назначения №${i + 1} ${o.name ? `( ${o.name} )` : ''}`;
                   return (
                     <Div className="destination-point" key={i}>

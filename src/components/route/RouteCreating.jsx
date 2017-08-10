@@ -112,9 +112,10 @@ class RouteCreating extends Component {
 
   onGeozoneSelectChange(type, v) {
     let { object_list = [] } = this.props.route;
-    const { polys } = this.props.route;
-    const { geozonePolys } = this.props;
+    const { polys = {} } = this.props.route;
+    const { geozonePolys = {} } = this.props;
     const odhs = (v || '').split(',');
+
     if (odhs.length > object_list.length) {
       const object_id = _.last(odhs);
       object_list.push({ object_id: parseInt(object_id, 10), type, name: geozonePolys[object_id].name, state: polyState.ENABLED });
@@ -133,13 +134,13 @@ class RouteCreating extends Component {
   }
 
   onObjectNameChange(i, v) {
-    const { object_list } = this.props.route;
+    const { object_list = [] } = this.props.route;
     object_list[i].name = v.target.value;
     this.props.onChange('object_list', object_list);
   }
 
   setODH(id, name, state) {
-    const { object_list } = this.props.route;
+    const { object_list = [] } = this.props.route;
     const objectIndex = _.findIndex(object_list, o => o.object_id == id);
     const type = this.props.route.type === 'simple_dt' ? 'dt' : 'odh';
 
@@ -180,8 +181,8 @@ class RouteCreating extends Component {
 
   handleCheckbox(type, v, e) {
     let { object_list = [] } = this.props.route;
-    const { polys } = this.props.route;
-    const { geozonePolys } = this.props;
+    const { polys = {} } = this.props.route;
+    const { geozonePolys = {} } = this.props;
     const odhs = v.split(',').map(e => parseInt(e, 10));
     object_list.forEach((obj) => {
       const i = odhs.indexOf(obj.object_id);
@@ -208,13 +209,15 @@ class RouteCreating extends Component {
   }
 
   render() {
+    const { route = {} } = this.props;
     const {
-      route,
-      route: { draw_odh_list = [],  object_list = [] }
-    } = this.props;
+      object_list = [],
+      draw_object_list = [],
+    } = route;
+    const [draw_list = []] = [route.draw_odh_list];
+
     const Map = this.props.manual ? DrawMap : PolyMap;
-    const list = object_list.filter(o => o.type);
-    const draw_list = draw_odh_list;
+    const list = object_list.filter(o => o.type) || [];
     const polys = route.type === 'simple_dt' ? this.props.dtPolys : this.props.odhPolys;
     const fail_list = _.map(polys, (v, k) => ({ name: v.name, object_id: parseInt(k, 10), type: 'odh', state: v.state })).filter(o => !list.concat(draw_list).find(e => e.object_id === o.object_id));
     const ODHS = _.map(this.props.odhPolys, (v, k) => ({ label: v.name, value: k }));
@@ -234,7 +237,7 @@ class RouteCreating extends Component {
                 zoom={this.state.zoom}
                 center={this.state.center}
                 object_list={object_list}
-                draw_object_list={route.draw_object_list}
+                draw_object_list={draw_object_list}
                 polys={route.polys}
                 objectsType={route.type}
                 manualDraw={this.props.manual}

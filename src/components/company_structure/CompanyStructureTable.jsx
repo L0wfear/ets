@@ -7,7 +7,7 @@ const tableMeta = {
     {
       name: 'name',
       displayName: 'Название',
-      type: 'string',
+      type: 'text',
     },
     {
       name: 'type_display',

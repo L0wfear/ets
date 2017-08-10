@@ -144,7 +144,11 @@ export default class RouteForm extends Form {
     }
 
     const title = state.id ? 'Изменение маршрута' : 'Создание нового маршрута';
+<<<<<<< HEAD
     const canSave = this.props.canSave && (object_list.length || draw_object_list.length);
+=======
+    const canSave = this.props.canSave && ((!!state.object_list && state.object_list.length) || (!!state.draw_object_list && state.draw_object_list.length));
+>>>>>>> DITETS-1658
 
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">

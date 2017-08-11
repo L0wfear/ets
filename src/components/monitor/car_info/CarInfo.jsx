@@ -89,10 +89,14 @@ export default class CarInfo extends Component {
       this.fetchCarInfo(props);
       this.fetchTrack(props);
       this.stopTrackPlaying();
-      props.car.marker.track.sensorsState = {
-        equipment: [],
-        level: [],
-      };
+
+      // TODO понять почему track не приходит
+      if (!!props.car.marker.track) {
+        props.car.marker.track.sensorsState = {
+          equipment: [],
+          level: [],
+        };
+      }
       this.setState({
         trackPaused: true,
         sensors: {

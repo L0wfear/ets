@@ -50,9 +50,9 @@ export default class VehicleInfo extends Component {
   }
 
   render() {
-    const { car, missions = [] } = this.props;
-    const { marker } = car;
-    const parkings = get(this.props, ['car', 'marker', 'track'], []);
+    const { car = {}, missions = [] } = this.props;
+    const { marker = {} } = car;
+    const parkings = !!marker.track ? marker.track : [];
 
     let missionsRender = (
       <div style={{ textAlign: 'left', overflow: 'hidden', textOverflow: 'ellipsis' }}>

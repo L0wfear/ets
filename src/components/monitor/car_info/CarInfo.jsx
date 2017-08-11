@@ -90,7 +90,6 @@ export default class CarInfo extends Component {
       this.fetchTrack(props);
       this.stopTrackPlaying();
 
-      // TODO понять почему track не приходит
       if (!!props.car.marker.track) {
         props.car.marker.track.sensorsState = {
           equipment: [],

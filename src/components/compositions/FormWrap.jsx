@@ -84,7 +84,7 @@ export default class FormWrap extends Component {
       formState[field] = value;
     } else {
       console.info('Form deleted', field);
-      delete formState[field];
+      formState[field] = this.nullValueForField(field, formState[field]);
     }
 
     formErrors = this.validate(formState, formErrors);
@@ -95,6 +95,30 @@ export default class FormWrap extends Component {
 
 
     this.setState(newState);
+  }
+  nullValueForField(field, value) {
+    const { schema = {} } = this;
+    const { properties = [] } = schema;
+    const fieldsType = properties.reduce((obj, val) => Object.assign(obj, { [val.key]: val.type }), {});
+
+    switch (fieldsType[field]) {
+      case 'string':
+      case 'date':
+        return '';
+      case 'number': return null;
+      default:
+        if (typeof value === 'string') {
+          if (isNaN(+value)) return '';
+          return null;
+        }
+        if (Array.isArray(value)) {
+          return [];
+        }
+        if (typeof value === 'object') {
+          return {};
+        }
+        return 'say_Frontend';
+    }
   }
 
   // отправка формы

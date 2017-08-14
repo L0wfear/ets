@@ -8,9 +8,9 @@ import ReportContainer from 'components/reports/common/ReportContainer';
 import ReportHeader from './ReportHeader';
 import DateFormatter from 'components/ui/DateFormatter';
 
-const serviceUrl = 'long_tech_maintenance';
-const reportUrl = 'long-tech-maintenance';
-const serviceName = 'LongTechMaintenance';
+const serviceUrl = 'long_repair';
+const reportUrl = 'long-repair';
+const serviceName = 'LongRepair';
 
 const schemaMakers = {};
 

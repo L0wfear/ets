@@ -1,13 +1,11 @@
 import React from 'react';
 
-import { ExtDiv } from 'components/ui/Div.jsx';
 import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
-import BaseCarForm from './CarForm.jsx';
+import CarForm from './CarForm.jsx';
 
-const CarForm = enhanceWithPermissions(BaseCarForm);
 
-export default class CarFormWrap extends FormWrap {
+class CarFormWrap extends FormWrap {
 
   constructor(props, context) {
     super(props);
@@ -17,20 +15,26 @@ export default class CarFormWrap extends FormWrap {
   }
 
   render() {
-    return (
-      <ExtDiv hidden={!this.props.showForm}>
-        <CarForm
-          formState={this.state.formState}
-          onSubmit={this.handleFormSubmit}
-          permissions={['car.update']}
-          addPermissionProp
-          handleFormChange={this.handleFormStateChange}
-          show={this.props.showForm}
-          onHide={this.props.onFormHide}
-          {...this.state}
-        />
-      </ExtDiv>
-    );
-  }
+    const { entity, isPermitted = false } = this.props;
+    const { saveButtonEnability = true } = this.state;
+    const canSave = isPermitted && this.state.canSave && saveButtonEnability;
 
+    return this.props.showForm ?
+      <CarForm
+        formState={this.state.formState}
+        onSubmit={this.handleFormSubmit}
+        permissions={[`${entity}.update`]}
+        addPermissionProp
+        isPermitted={isPermitted}
+        handleFormChange={this.handleFormStateChange}
+        show={this.props.showForm}
+        onHide={this.props.onFormHide}
+        {...this.state}
+        canSave={canSave}
+      />
+      :
+      null;
+  }
 }
+
+export default enhanceWithPermissions(CarFormWrap);

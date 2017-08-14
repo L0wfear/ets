@@ -138,7 +138,7 @@ class CarForm extends Form {
         </ModalBody>
 
         <Modal.Footer>
-          <Button disabled={!isPermitted} onClick={this.handleSave}>Сохранить</Button>
+          <Button disabled={!this.props.canSave} onClick={this.handleSave}>Сохранить</Button>
         </Modal.Footer>
 
       </Modal>

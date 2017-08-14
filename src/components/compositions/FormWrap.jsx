@@ -79,13 +79,8 @@ export default class FormWrap extends Component {
     const { formState } = this.state;
     const newState = {};
 
-    if ((!!value && value !== '' && !(Array.isArray(value) && value.length === 0)) || (typeof value === 'boolean')) {
-      console.info('Form changed', field, value);
-      formState[field] = value;
-    } else {
-      console.info('Form deleted', field);
-      formState[field] = this.nullValueForField(field, formState[field]);
-    }
+    console.info('Form changed', field, value);
+    formState[field] = value;
 
     formErrors = this.validate(formState, formErrors);
     newState.canSave = _(formErrors).map(v => !!v).filter(ev => ev === true).value().length === 0;

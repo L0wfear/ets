@@ -19,6 +19,7 @@ export const schema = {
       type: 'number',
       required: true,
       maxLength: 128,
+      integer: true,
     },
     {
       key: 'released_at',

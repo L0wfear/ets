@@ -10,6 +10,7 @@ export const formValidationSchema: IValidationSchema = {
       title: 'Регистрационный номер',
       type: 'number',
       required: true,
+      integer: true,
     },
     {
       key: 'repair_company_id',

@@ -17,4 +17,4 @@ export const CarUsageReportService = ETS_API_FACTORY.createApiServiceAdapter('ca
 export const TrackEventsReportService = ETS_API_FACTORY.createApiServiceAdapter('track_events', {});
 export const RouteODHCoverageReportService = ETS_API_FACTORY.createApiServiceAdapter('route_odh_coverage_report', {});
 
-export const LongTechMaintenance = ETS_API_FACTORY.createApiServiceAdapter('long_tech_maintenance', {});
+export const LongRepair = ETS_API_FACTORY.createApiServiceAdapter('long_repair', {});

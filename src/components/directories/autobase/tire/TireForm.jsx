@@ -16,11 +16,6 @@ export default class TireForm extends Form {
   state = {
     canSave: true,
   };
-  async componentDidMount() {
-    const { flux } = this.context;
-    flux.getActions('autobase').getAutobaseListByType('tireSize');
-    flux.getActions('autobase').getAutobaseListByType('tireModel');
-  }
   handleTireToCarValidity = ({ isValidInput }) => {
     this.setState({
       canSave: isValidInput,
@@ -32,10 +27,13 @@ export default class TireForm extends Form {
     const {
       tireModelList = [],
       tireSizeList = [],
+      tireManufacturerList = [],
       isPermitted = false,
     } = this.props;
+    
     const TIRE_MODEL = tireModelList.map(({ id, name }) => ({ value: id, label: name }));
     const TIRE_SIZE = tireSizeList.map(({ id, name }) => ({ value: id, label: name }));
+    const TIRE_MANUFACTURER = tireManufacturerList.map(({ id, name }) => ({ value: id, label: name }));
 
     const IS_CREATING = state.id === undefined;
 
@@ -59,6 +57,18 @@ export default class TireForm extends Form {
                 disabled={!isPermitted}
                 onChange={this.handleChange}
                 boundKeys={['tire_model_id']}
+              />
+            </Col>
+            <Col md={12}>
+              <ExtField
+                type="select"
+                label="Производитель"
+                options={TIRE_MANUFACTURER}
+                value={state.tire_manufacturer_id}
+                error={errors.tire_manufacturer_id}
+                disabled={!isPermitted}
+                onChange={this.handleChange}
+                boundKeys={['tire_manufacturer_id']}
               />
             </Col>
             <Col md={12}>

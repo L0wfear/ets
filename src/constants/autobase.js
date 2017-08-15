@@ -8,6 +8,7 @@ export default {
   measureUnit: 'measure_unit',
   tireSize: 'tire_size',
   tireModel: 'tire_model',
+  tireManufacturer: 'tire_manufacturer',
   tireAvailibleCar: 'tire_available_car',
   actualBatteriesOnCar: 'actual_batteries_on_car',
   actualTiresOnCar: 'actual_tires_on_car',

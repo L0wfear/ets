@@ -30,6 +30,7 @@ const ReportsNavItem: React.SFC<IPropsReportsNavItem> = ({ path }) =>
       <MenuItem active={path === '/employee-efficiency-report'} href="#/employee-efficiency-report">Работа сотрудников по ручной уборке</MenuItem>
       <MenuItem active={path === '/mission-progress-report'} href="#/mission-progress-report">Отчет по уборке территорий</MenuItem>
       <MenuItem active={path === '/long-repair'} href="#/long-repair">Отчет по транспортным средствам, простаивающим длительное время в ремонтной зоне</MenuItem>
+      <MenuItem active={path === '/tech-maintenance-schedule'} href="#/tech-maintenance-schedule">График проведения технического обслуживания транспортных средств</MenuItem>
     </NavDropdown>
     <NavDropdown title="Регламентированные отчеты" id="nav-dropdown-3-2">
       <MenuItem active={path === '/fuel-consumption-report'} href="#/fuel-consumption-report">Расход топлива</MenuItem>

@@ -19,6 +19,7 @@ import brigadeEfficiency from './brigade_efficiency/report.tsx';
 import employeeEfficiency from './employee_efficiency/report.ts';
 import trackEvents from './track_events/Report';
 import longRepair from './long_repair/report.tsx';
+import techMaintenanceSchedule from './tech_maintenance_schedule/report.ts';
 
 export {
   analytics,
@@ -38,4 +39,5 @@ export {
   employeeEfficiency,
   trackEvents,
   longRepair,
+  techMaintenanceSchedule,
 };

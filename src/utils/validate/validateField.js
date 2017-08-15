@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 // import * as string from './validateString';
 // import * as text from './validateText';
 import * as number from './validateNumber.js';
@@ -71,7 +69,7 @@ export function validateField(config, value, formData, schema) {
 
   // If field validation is ok, we should check if it has some dependencies on other fields
   if (!error && schema.dependencies && schema.dependencies[config.key]) {
-    return _(schema.dependencies[config.key])
+    return schema.dependencies[config.key]
       .map((dependencyValidationConfig) => {
         const { type, field, validator } = dependencyValidationConfig;
         if (typeof validator === 'function') {
@@ -94,8 +92,7 @@ export function validateField(config, value, formData, schema) {
         }
         return validateFieldByDependencyType(type, config, value, dependentFieldConfig, dependentFieldValue, formData, schema);
       })
-      .filter()
-      .first();
+      .filter(d => !!d)[0];
   }
 
   return error;

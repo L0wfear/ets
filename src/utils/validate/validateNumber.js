@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 const fixedValidators = [
   {
     name: 'required',
@@ -70,9 +68,9 @@ const fixedValidators = [
 
 export function validate(config, value, data) {
   // console.warn(`VALIDATING ${config.key} with data = ${data}`);
-  const error = _(fixedValidators)
+  const error = fixedValidators
     .map(({ validator }) => validator(config, value, data))
-    .filter()
-    .first();
+    .filter(d => !!d)[0];
+
   return config.validation === false ? undefined : error;
 }

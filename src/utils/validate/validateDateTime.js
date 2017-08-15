@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 export const validators = [];
 
 const fixedValidators = [
@@ -31,10 +29,9 @@ const fixedValidators = [
 
 export function validate(config, data) {
   // console.warn(`VALIDATING ${config.key} with data = ${data}`);
-  const error = _(fixedValidators)
+  const error = fixedValidators
     .map(({ validator }) => validator(config, data))
-    .filter()
-    .first();
+    .filter(d => !!d)[0];
 
   return error;
 }

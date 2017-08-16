@@ -1,7 +1,10 @@
 import { Actions } from 'flummox';
 import { createValidDateTime, createValidDate } from 'utils/dates';
 import _ from 'lodash';
-import { isEmpty } from 'utils/functions';
+import {
+  hasOdometer,
+  isEmpty,
+} from 'utils/functions';
 import {
   WaybillService,
   LatestWaybillDriverService,
@@ -123,10 +126,10 @@ export default class WaybillsActions extends Actions {
     delete payload.car_model_name;
     delete payload.garage_number;
 
-    if (payload.gov_number.match(/\d{4}/)) {
-      delete payload.odometr_start;
-    } else {
+    if (hasOdometer(payload.gov_number)) {
       delete payload.motohours_start;
+    } else {
+      delete payload.odometr_start;
     }
 
     _.mapKeys(payload, (v, k) => isEmpty(v) ? payload[k] = null : undefined);

@@ -139,11 +139,11 @@ export default class CarInfo extends Component {
       <div className="track-legend">
         <div className="track-legend-item">
           <div className="track-legend-point" style={{ backgroundColor: TRACK_COLORS.green }} />
-          <div className="track-legend-text">0 км/ч</div>
+          <div className="track-legend-text">{`0-${!!speed ? speed : 0} км/ч`}</div>
         </div>
         <div className="track-legend-item">
           <div className="track-legend-point" style={{ backgroundColor: TRACK_COLORS.red }} />
-          <div className="track-legend-text">{speed != null ? `${speed}+ км/ч` : 'нет данных'}</div>
+          <div className="track-legend-text">{speed != null ? `${speed + 1}+ км/ч` : 'нет данных'}</div>
         </div>
       </div>
     );

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
+import { get } from 'lodash';
 
 import { onChangeWithKeys } from 'components/compositions/hoc';
 import ModalBody from 'components/ui/Modal';
@@ -27,13 +28,11 @@ export default class TireForm extends Form {
     const {
       tireModelList = [],
       tireSizeList = [],
-      tireManufacturerList = [],
       isPermitted = false,
     } = this.props;
     
     const TIRE_MODEL = tireModelList.map(({ id, name }) => ({ value: id, label: name }));
     const TIRE_SIZE = tireSizeList.map(({ id, name }) => ({ value: id, label: name }));
-    const TIRE_MANUFACTURER = tireManufacturerList.map(({ id, name }) => ({ value: id, label: name }));
 
     const IS_CREATING = state.id === undefined;
 
@@ -61,14 +60,11 @@ export default class TireForm extends Form {
             </Col>
             <Col md={12}>
               <ExtField
-                type="select"
-                label="Производитель"
-                options={TIRE_MANUFACTURER}
-                value={state.tire_manufacturer_id}
-                error={errors.tire_manufacturer_id}
-                disabled={!isPermitted}
-                onChange={this.handleChange}
-                boundKeys={['tire_manufacturer_id']}
+                type={'string'}
+                label={'Производитель'}
+                value={get(tireModelList.find(s => s.id === state.tire_model_id), 'tire_manufacturer_name', '')}
+                emptyValue={null}
+                disabled
               />
             </Col>
             <Col md={12}>

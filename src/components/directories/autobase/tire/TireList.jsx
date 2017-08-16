@@ -24,7 +24,6 @@ export default class TireList extends ElementsList {
     flux.getActions('autobase').getAutobaseListByType('tire');
     flux.getActions('autobase').getAutobaseListByType('tireSize');
     flux.getActions('autobase').getAutobaseListByType('tireModel');
-    flux.getActions('autobase').getAutobaseListByType('tireManufacturer');
     flux.getActions('objects').getOrganizations();
   }
   handleCloneClick = (tireId) => {

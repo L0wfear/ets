@@ -11,7 +11,7 @@ const fixedValidators = [
       if (!data && data !== 0) {
         return undefined;
       }
-      return typeof data !== 'number' && !/^[ +]?[0-9]*\.?,?[0-9]{1,3}$/.test(data) ? `Поле ${config.title || config.key} должно быть неотрицательным числом с 3 знаками после запятой` : undefined;
+      return typeof data !== 'number' && !/^[ +]?[0-9]*[\.,]?[0-9]{1,3}$/.test(data) ? `Поле ${config.title || config.key} должно быть неотрицательным числом с 3 знаками после запятой` : undefined;
     },
   },
   {

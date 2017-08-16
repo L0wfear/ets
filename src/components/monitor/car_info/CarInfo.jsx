@@ -335,7 +335,15 @@ export default class CarInfo extends Component {
   renderSensorsToggle() {
     const { track = false } = this.props.car.marker;
     if (!track) return 'Ошибка при загрузке трека';
-    const { points } = track;
+    const {
+      points,
+      sensors = {},
+    } = track;
+    const sensorByType = {
+      level: Object.entries(sensors).filter(([, value]) => value.type_slug === 'level').map(([key]) => key),
+      equipment: Object.entries(sensors).filter(([, value]) => value.type_slug === 'equipment').map(([key]) => key),
+    };
+    let counterForEquipment = 1;
     if (!points) return 'Загрузка...';
     if (!points.length) return 'Нет данных';
     const equipmentIdList = Object.keys(groupBy(flatten(points.filter(p => p.sensors && p.sensors.equipment).map(p => p.sensors.equipment)), s => s.id));
@@ -344,22 +352,40 @@ export default class CarInfo extends Component {
       <div>
         <div className="car-info-sensors-toggle">
           <label>Датчики уровня топлива</label>
-          {fuelIdList.map(id => (
-            <div key={id} onClick={() => this.toggleSensor('level', id)}>
-              <input type="checkbox" onChange={() => {}} checked={this.state.sensors.level.includes(id) && 'checked'} />
-              {` ДУТ №${id}`}
-            </div>
-          ))}
+          {sensorByType.level.map((id) => {
+            if (fuelIdList.includes(id)) {
+              return (
+                <div key={id} onClick={() => this.toggleSensor('level', id)}>
+                  <input type="checkbox" onChange={() => {}} checked={this.state.sensors.level.includes(id) && 'checked'} />
+                  {` ДУТ №${id}`}
+                </div>
+              );
+            }
+            return (
+              <div>
+                <span>{` ДУТ №${id}`}</span>
+                <span className="hint_detector">Нет данных</span>
+              </div>
+            );
+          })}
         </div>
         <div className="car-info-sensors-toggle">
           <label>Датчики навесного оборудования</label>
           {
-            equipmentIdList.map((id, i) => {
+            sensorByType.equipment.map((id, i) => {
               const sensorName = get(this.state.sensorsInfo, [id, 'type_name']);
+              if (equipmentIdList.includes(id)) {
+                return (
+                  <div key={id} onClick={() => this.toggleSensor('equipment', id)}>
+                    <input type="checkbox" onChange={() => {}} checked={this.state.sensors.equipment.includes(id) && 'checked'} />
+                    {` Датчик №${i + 1} - ${sensorName || LOAD_PROCESS_TEXT}`}
+                  </div>
+                );
+              }
               return (
-                <div key={id} onClick={() => this.toggleSensor('equipment', id)}>
-                  <input type="checkbox" onChange={() => {}} checked={this.state.sensors.equipment.includes(id) && 'checked'} />
-                  {` Датчик №${i + 1} - ${sensorName || LOAD_PROCESS_TEXT}`}
+                <div>
+                  <span>{` Датчик №${i + 1} - ${sensorName || LOAD_PROCESS_TEXT}`}</span>
+                  <span className="hint_detector">Нет данных</span>
                 </div>
               );
             })

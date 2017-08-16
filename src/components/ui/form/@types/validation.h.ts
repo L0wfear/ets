@@ -1,6 +1,7 @@
 interface IValidationSchemaProperties<TValue, TFormData> {
   key: string;
   required?: boolean;
+  float?: number;
   integer?: boolean;
   title?: string;
   maxLength?: number;

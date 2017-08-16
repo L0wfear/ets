@@ -23,6 +23,7 @@ export const formValidationSchema: IValidationSchema = {
       required: true,
       maxLength: 128,
       min: 0,
+      integer: true,
     },
     {
       key: 'spare_part_group_id',

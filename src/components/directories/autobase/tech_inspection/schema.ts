@@ -17,6 +17,7 @@ export const formValidationSchema: IValidationSchema = {
       type: 'number',
       required: true,
       maxLength: 21,
+      integer: true,
     },
     {
       key: 'date_end',

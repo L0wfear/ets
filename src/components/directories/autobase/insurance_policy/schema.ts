@@ -36,6 +36,7 @@ export const formValidationSchema: IValidationSchema = {
       maxLength: 128,
       required: true,
       min: 0,
+      integer: true,
     },
     {
       key: 'date_start',
@@ -55,6 +56,7 @@ export const formValidationSchema: IValidationSchema = {
       type: 'number',
       maxLength: 128,
       min: 0,
+      integer: true,
     },
     {
       key: 'note',

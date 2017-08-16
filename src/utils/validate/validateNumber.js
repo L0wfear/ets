@@ -7,8 +7,6 @@ const fixedValidators = [
       if (config.required && config.required !== true) {
         if (data[config.required] == null) return undefined;
       }
-      console.log(value)
-      
       return config.required && !value && value !== 0 ? `Поле "${config.title || config.key}" должно быть заполнено` : undefined;
     },
   },

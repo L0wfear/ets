@@ -20,9 +20,7 @@ const fixedValidators = [
       }
       let error = '';
       if (config.float) {
-        console.log(value)
         const regexp = new RegExp(`^[ +]?[0-9]*[\.,]?[0-9]{1,${config.float}}$`);
-        console.log(regexp.test(value))
         error = typeof value !== 'number' && !regexp.test(value) ? `Поле ${config.title || config.key} должно быть неотрицательным числом с ${config.float} знаками после запятой` : undefined;
       }
       if (config.integer) {

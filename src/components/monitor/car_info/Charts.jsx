@@ -44,13 +44,27 @@ export default class Charts extends Component {
   onMapClick = e => this.showOnMap(e.point.x, e)
   showOnMap = (timestamp, e, event) => {
     const threshold = e && e.point.series.closestPointRange ? e.point.series.closestPointRange : 0;
-    const points = this.props.trackPoints.filter(p => (timestamp >= p.timestamp - threshold) && (timestamp <= p.timestamp + threshold));
-    const point = points.length === 1 ? points[0] : points.reduce((prev, curr) => (Math.abs(curr.speed_avg - e.point.y) < Math.abs(prev.speed_avg - e.point.y) ? curr : prev));
-    const extent = [point.coords_msk[0], point.coords_msk[1], point.coords_msk[0], point.coords_msk[1]];
-    const map = this.props.car.marker.map;
-    const track = this.props.car.marker.track;
-    setTimeout(() => map.getView().fit(extent, { padding: [50, 550, 50, 50], maxZoom: 13 }), 100);
-    map.get('parent').handleFeatureClick(track, point, event);
+    const { trackPoints = [] } = this.props;
+
+    const point = trackPoints
+      .filter(p => Math.abs(timestamp - p.timestamp) <= threshold)
+      .sort((a, b) => {
+        const time_a = Math.abs(a.timestamp - timestamp);
+        const time_b = Math.abs(b.timestamp - timestamp);
+        if (time_a > time_b) return 1;
+        if (time_a < time_b) return -1;
+        return 0;
+      })[0];
+
+    if (point) {
+      const extent = [point.coords_msk[0], point.coords_msk[1], point.coords_msk[0], point.coords_msk[1]];
+      const map = this.props.car.marker.map;
+      const track = this.props.car.marker.track;
+      setTimeout(() => map.getView().fit(extent, { padding: [50, 550, 50, 50], maxZoom: 13 }), 100);
+      map.get('parent').handleFeatureClick(track, point, event);
+    } else {
+      console.warn(`Not found point // timestamp = ${timestamp} / threshold = ${threshold} //`);
+    }
   }
   handleSourceDataCheck = () => this.setState({ rawData: !this.state.rawData })
   render() {

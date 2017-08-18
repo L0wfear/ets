@@ -62,12 +62,14 @@ export const formValidationSchema: IValidationSchema = {
       title: 'Пробег на момент ТО, км',
       type: 'number',
       maxLength: 128,
+      integer: true,
     },
     {
       key: 'motohours_fact',
       title: 'Счетчик м/ч на момент ТО, м/ч',
       type: 'number',
       maxLength: 128,
+      integer: true,
     },
     {
       key: 'note',

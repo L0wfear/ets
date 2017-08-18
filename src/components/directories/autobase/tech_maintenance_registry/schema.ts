@@ -68,6 +68,7 @@ export const formValidationSchema: IValidationSchema = {
       title: 'Счетчик м/ч на момент ТО, м/ч',
       type: 'number',
       maxLength: 128,
+      integer: true,
     },
     {
       key: 'note',

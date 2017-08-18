@@ -207,16 +207,18 @@ export default class WaybillFormWrap extends FormWrap {
       delete formState.motohours_equip_start;
     }
 
+    Object.entries(fields).forEach(([field, value]) => {
+      formState[field] = value;
+      formState = calculateWaybillMetersDiff(formState, field, value);
+    });
+
+    /*
     if (hasOdometer(fields.gov_number)) {
       delete formState.motohours_start;
     } else {
       delete formState.odometr_start;
     }
-
-    Object.entries(fields).forEach(([field, value]) => {
-      formState[field] = value;
-      formState = calculateWaybillMetersDiff(formState, field, value);
-    });
+    */
     this.handleFieldsChange(formState);
   }
 

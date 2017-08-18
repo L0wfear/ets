@@ -4,7 +4,10 @@ import { autobind } from 'core-decorators';
 import Div from 'components/ui/Div.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import { getWarningNotification } from 'utils/notifications';
-import { isNotNull, saveData } from 'utils/functions';
+import {
+  hasOdometer,
+  saveData,
+} from 'utils/functions';
 import { waybillSchema, waybillClosingSchema } from 'models/WaybillModel.js';
 import { FluxContext } from 'utils/decorators';
 import WaybillForm from './WaybillForm.jsx';
@@ -199,9 +202,15 @@ export default class WaybillFormWrap extends FormWrap {
     const { car_id = -1 } = fields;
 
     if (car_id !== formState.car_id) {
-      formState.equipment_fuel_start = undefined;
-      formState.fuel_start = undefined;
-      formState.motohours_equip_start = undefined;
+      delete formState.equipment_fuel_start;
+      delete formState.fuel_start;
+      delete formState.motohours_equip_start;
+    }
+
+    if (hasOdometer(fields.gov_number)) {
+      delete formState.motohours_start;
+    } else {
+      delete formState.odometr_start;
     }
 
     Object.entries(fields).forEach(([field, value]) => {

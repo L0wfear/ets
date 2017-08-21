@@ -36,3 +36,4 @@ export const SEQUENCE_1_TO_20_SELECT_OPTIONS = new Array(20).fill(0).map((item, 
 export const YES_NO_SELECT_OPTIONS_BOOL = [{ label: 'Да', value: true }, { label: 'Нет', value: false }];
 export const YES_NO_SELECT_OPTIONS_INT = [{ label: 'Да', value: 1 }, { label: 'Нет', value: 0 }];
 export const IS_NOT_SELECT_OPTIONS_INT = [{ label: 'Есть', value: 1 }, { label: 'Нет', value: 0 }];
+export const READ_NOT_SELECT_OPTIONS_INT = [{ label: 'Прочитано', value: 1 }, { label: 'Не прочитано', value: 0 }];

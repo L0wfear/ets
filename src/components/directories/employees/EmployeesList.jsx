@@ -14,12 +14,29 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE'],
 })
 export default class EmployeesList extends ElementsList {
-  componentDidMount() {
+  constructor() {
+    super();
+    this.preventUrlFilters = true;
+  }
+  async componentDidMount() {
     super.componentDidMount();
+
     const { flux } = this.context;
-    flux.getActions('employees').getEmployees();
-    flux.getActions('objects').getCars();
-    flux.getActions('objects').getPositions();
-    flux.getActions('companyStructure').getLinearCompanyStructureForUser();
+    const employees = await flux.getActions('employees').getEmployees();
+    await flux.getActions('objects').getCars();
+    await flux.getActions('objects').getPositions();
+    await flux.getActions('companyStructure').getLinearCompanyStructureForUser();
+
+    if (this.props.location.query.employee_id) {
+      const employee_id = parseInt(this.props.location.query.employee_id, 10);
+      const selectedElement = employees.result.find(employee => employee.id === employee_id);
+
+      // NOTE Так надо, потому что открыть форму можно только через стейт родительского класса
+      this.setState({
+        ...this.state,
+        selectedElement,
+        showForm: true,
+      });
+    }
   }
 }

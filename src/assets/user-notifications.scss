@@ -1,0 +1,20 @@
+.user-notification-table {
+  .griddle-body {
+    table {
+      tbody {
+        tr {
+          &.highlighted-row-alert > td {
+            background-color: #EF9A9A !important;
+          }
+          &.highlighted-row-warning > td {
+            background-color: #FFE082 !important;
+          }
+
+          &.highlighted-row-alert:hover > td {
+            background-color: $colorLightGreen !important;
+          }
+        }
+      }
+    }
+  }
+}

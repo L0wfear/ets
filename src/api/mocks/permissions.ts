@@ -6,3 +6,7 @@ export function getFullAccess(entity) {
 
 export const autobase: string[] = [
 ];
+
+export const userNotification: string[] = [
+  ...getFullAccess('userNotification'),
+];

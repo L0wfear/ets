@@ -88,4 +88,6 @@ export const DtCoverageReportService = ETS_API_FACTORY.createApiServiceAdapter('
 export const AutoBase = ETS_API_FACTORY.createApiServiceAdapter('autobase', {});
 export const LongRepair = ETS_API_FACTORY.createApiServiceAdapter('long_repair', {});
 
+export const UserNotificationService = ETS_API_FACTORY.createApiServiceAdapter('notification_registry', {});
+
 export { reports };

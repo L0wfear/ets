@@ -8,6 +8,13 @@ import { connectToStores } from 'utils/decorators';
 
 @connectToStores(['objects', 'companyStructure'])
 export default class EmployeeForm extends Form {
+  handleSave = () => {
+    if (Object.keys(this.props.location.query).length > 0) {
+      this.props.history.replaceState(null, this.props.location.pathname, {});
+    }
+
+    this.handleSubmit();
+  }
   render() {
     const [state, errors] = [this.props.formState, this.props.formErrors];
     const {
@@ -216,7 +223,7 @@ export default class EmployeeForm extends Form {
         </Div>
         <ModalBody />
         <Modal.Footer>
-          <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+          <Button disabled={!this.props.canSave} onClick={this.handleSave}>Сохранить</Button>
         </Modal.Footer>
       </Modal>
     );

@@ -9,6 +9,7 @@ import WaybillJournal from 'components/waybill/WaybillJournal.jsx';
 import RoutesList from 'components/route/RoutesList.jsx';
 import MonitorPage from 'components/monitor/MonitorPage.jsx';
 import DashboardPage from 'components/dashboard/DashboardPage.jsx';
+import UserNotificationList from 'components/notifications/UserNotificationList';
 import CompanyStructure from 'components/company_structure/CompanyStructure.jsx';
 import * as missions from 'components/missions';
 
@@ -47,6 +48,7 @@ const routes = (props) => {
         {reportRoutes({ requireAuth })}
         {/* НСИ - Реестры и справочники */}
         {nsiRoutes({ requireAuth })}
+        <Route path="notification-registry" component={UserNotificationList} onEnter={requireAuth} />
         {/* Страница логина */}
         <Route path="login" component={LoginPage} onEnter={checkLoggedIn} />
       </Route>

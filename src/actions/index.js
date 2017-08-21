@@ -19,6 +19,7 @@ import waybills from './WaybillsActions.js';
 import geoObjects from './GeoObjectsActions.js';
 import odh from './ODHActions.js';
 import autobase from './AutobaseAction.js';
+import userNotifications from './userNotificationActions';
 
 export {
   cars,
@@ -38,4 +39,5 @@ export {
   waybills,
   geoObjects,
   autobase,
+  userNotifications,
 };

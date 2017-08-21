@@ -13,7 +13,12 @@ class CarFormWrap extends FormWrap {
     this.uniqueField = 'asuods_id';
     this.updateAction = context.flux.getActions('cars').updateCarAdditionalInfo;
   }
-
+  handleFormHide = () => {
+    if (Object.keys(this.props.location.query).length > 0) {
+      this.props.history.replaceState(null, this.props.location.pathname, {});
+    }
+    this.props.onFormHide();
+  }
   render() {
     const { entity, isPermitted = false } = this.props;
     const { saveButtonEnability = true } = this.state;
@@ -28,9 +33,11 @@ class CarFormWrap extends FormWrap {
         isPermitted={isPermitted}
         handleFormChange={this.handleFormStateChange}
         show={this.props.showForm}
-        onHide={this.props.onFormHide}
+        onHide={this.handleFormHide}
         {...this.state}
         canSave={canSave}
+        location={this.props.location}
+        history={this.props.history}
       />
       :
       null;

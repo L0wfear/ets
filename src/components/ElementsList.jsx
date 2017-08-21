@@ -41,6 +41,7 @@ class ElementsList extends React.Component {
     this.mainListName = this.constructor.listName || undefined;
     this.entity = this.constructor.entity;
     this.tableMeta = this.constructor.tableMeta || {};
+    this.preventUrlFilters = false;
 
     this.clicks = 0;
   }
@@ -303,7 +304,7 @@ class ElementsList extends React.Component {
     let basicProps = {
       data: this.props[listName],
     };
-    if (this.props.location && this.props.location.query) {
+    if (this.props.location && this.props.location.query && !this.preventUrlFilters) {
       basicProps = {
         ...basicProps,
         filterValues: this.props.location.query,

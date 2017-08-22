@@ -29,7 +29,7 @@ export default class IntervalPicker extends Component {
             с
           </Col>
           <Col md={11} style={{ padding: 0 }}>
-            <Datepicker date={interval[0]} onChange={this.handleChange.bind(this, 0)} max={interval[1]} />
+            <Datepicker time={this.props.time} date={interval[0]} onChange={this.handleChange.bind(this, 0)} max={interval[1]} />
           </Col>
         </Row>
         <Row style={{ margin: 0 }}>
@@ -37,7 +37,7 @@ export default class IntervalPicker extends Component {
             по
           </Col>
           <Col md={11} style={{ padding: 0 }}>
-            <Datepicker date={interval[1]} onChange={this.handleChange.bind(this, 1)} min={interval[0]} />
+            <Datepicker time={this.props.time} date={interval[1]} onChange={this.handleChange.bind(this, 1)} min={interval[0]} />
           </Col>
         </Row>
       </div>

@@ -219,15 +219,22 @@ class ElementsList extends React.Component {
   checkDisabledRead() {
     return this.state.selectedElement === null;
   }
-
-  handleExport = async () => {
+  async processExport(exportPayload = this.exportPayload) {
     try {
       this.setState({ exportFetching: true });
-      await this.props.export(this.exportPayload, this.exportUseRouteParams);
+      await this.props.export(exportPayload, this.exportUseRouteParams);
       this.setState({ exportFetching: false });
     } catch (error) {
       this.setState({ exportFetching: false });
     }
+  }
+  handleExport = () => {
+    if (typeof this.export === 'function') {
+      this.export();
+      return;
+    }
+
+    this.processExport();
   }
   /**
    * Определяет и возвращает массив кнопок для CRUD операций

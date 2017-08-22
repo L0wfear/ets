@@ -8,8 +8,10 @@ import MissionInfoFormWrap from 'components/dashboard/MissionInfoFormWrap.jsx';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { getWarningNotification } from 'utils/notifications';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
+
 import Paginator from 'components/ui/Paginator.jsx';
 import MissionsTable from './MissionsTable.jsx';
+import MissionPrintForm from './MissionPrintForm';
 import MissionFormWrap from './MissionFormWrap.jsx';
 import MissionRejectForm from './MissionRejectForm.jsx';
 
@@ -45,6 +47,7 @@ export default class MissionsJournal extends CheckableElementsList {
     };
 
     this.state = Object.assign(this.state, {
+      showPrintForm: false,
       showMissionRejectForm: false,
       showMissionInfoForm: false,
       equipmentData: null,
@@ -71,7 +74,6 @@ export default class MissionsJournal extends CheckableElementsList {
       this.refreshList(nextState);
     }
   }
-
   async refreshList(state = this.state) {
     this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, state.page * MAX_ITEMS_PER_PAGE, state.sortBy, state.filter);
 
@@ -251,6 +253,11 @@ export default class MissionsJournal extends CheckableElementsList {
           element={this.state.mission}
           equipmentData={this.state.equipmentData}
         />
+        <MissionPrintForm
+          onExport={this.processExport.bind(this)}
+          show={this.state.showPrintForm}
+          onHide={() => this.setState({ showPrintForm: false })}
+        />
       </div>,
     ];
   }
@@ -282,7 +289,9 @@ export default class MissionsJournal extends CheckableElementsList {
       rowNumberOffset: this.state.page * MAX_ITEMS_PER_PAGE,
     };
   }
-
+  export() {
+    this.setState({ showPrintForm: true });
+  }
   additionalRender() {
     return (
       <Paginator

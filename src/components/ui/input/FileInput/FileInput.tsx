@@ -58,7 +58,10 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
     return (
       <div>
         <Row>{fileList}</Row>
-          <BootstrapButton onClick={this.handleFilePick}>{buttonName}</BootstrapButton>
+          <BootstrapButton
+            disabled={this.props.disabled}
+            onClick={this.handleFilePick}
+          >{buttonName}</BootstrapButton>
           <input
             type="file"
             value={''}

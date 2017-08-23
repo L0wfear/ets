@@ -22,9 +22,9 @@ export const formValidationSchema: IValidationSchema = {
       maxLength: 2048,
     },
     {
-      key: 'car_model_id',
+      key: 'car_model_ids',
       title: 'Модель ТС',
-      type: 'number',
+      type: 'array',
       required: true,
     },
     {

@@ -41,3 +41,23 @@ export const GEOOBJECTS_TYPES_LABELS_SINGLE = {
   'fuelingWaterStation': 'База гидрантов',
   'bridges': 'Мосты',
 };
+
+const BASE_GEOOBJECTS_LIST = [
+  'dt',
+  'odh',
+  'ssp',
+  'msp',
+  'carpool',
+  'fueling_water',
+  'danger_zone',
+  'pgm_store',
+  'snow_storage',
+];
+
+export const GORMOST_GEOOBJECTS_LIST = [
+  'bridges',
+];
+
+export const GEOOBJECTS_LIST = [
+  ...BASE_GEOOBJECTS_LIST,
+];

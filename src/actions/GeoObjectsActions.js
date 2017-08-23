@@ -1,12 +1,5 @@
 import { Actions } from 'flummox';
 import { GEOOBJECTS_TYPES } from 'constants/geoobjects';
-// import {
-//   ODHService,
-//   DTService,
-//   GormostService,
-//   GeozoneService,
-//   GeozonesService,
-// } from 'api/Services';
 import * as services from 'api/Services';
 import { getValueFromCache, put } from 'utils/cache';
 
@@ -55,9 +48,9 @@ export default class GeoObjectsActions extends Actions {
       data: response,
     };
   }
-  async getGeozoneByType(type) {
+  async getGeozoneByType(type, serviceName = 'GeozonesService') {
     const payload = {};
-    const response = await services.GeozonesService.path(type).get(payload);
+    const response = await services[serviceName].path(type).get(payload);
     return {
       type: GEOOBJECTS_TYPES[type],
       data: response,

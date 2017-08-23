@@ -1,27 +1,6 @@
 import * as React from 'react';
 
-import { GEOOBJECTS_TYPES, GEOOBJECTS_TYPES_LABELS } from 'constants/geoobjects';
-
-const BASE_GEOOBJECTS_LIST = [
-  'dt',
-  'odh',
-  'ssp',
-  'msp',
-  'carpool',
-  'fueling_water',
-  'danger_zone',
-  'pgm_store',
-  'snow_storage',
-];
-
-const GORMOST_GEOOBJECTS_LIST = [
-  'bridges',
-];
-
-const GEOOBJECTS_LIST = [
-  ...BASE_GEOOBJECTS_LIST,
-  ...GORMOST_GEOOBJECTS_LIST,
-];
+import { GEOOBJECTS_TYPES, GEOOBJECTS_TYPES_LABELS, GEOOBJECTS_LIST, GORMOST_GEOOBJECTS_LIST } from 'constants/geoobjects';
 
 class ShowGeoobjectsCheckbox extends React.Component<any, any> {
   setSelectedPolysType(type) {

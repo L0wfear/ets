@@ -128,6 +128,7 @@ export default class BaseRoadAccidentFrom extends Form {
                 onChange={this.handleChange}
                 boundKeys={['files']}
                 isLoading={this.props.onOverlayLoading}
+                disabled={!isPermitted}
               />
             </Col>
           </Row>

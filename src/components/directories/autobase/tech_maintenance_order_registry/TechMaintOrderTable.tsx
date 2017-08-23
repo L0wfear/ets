@@ -51,10 +51,9 @@ export function tableMeta({
       {
         name: 'car_model_name',
         displayName: 'Модель ТС',
-        type: 'select',
+        type: 'string',
         filter: {
-          type: 'multiselect',
-          // options: specialModelsList.map(defaultSelectListMapper),
+          type: 'string',
         },
       },
       {

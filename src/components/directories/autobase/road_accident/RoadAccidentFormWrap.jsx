@@ -1,10 +1,12 @@
 import React from 'react';
 
+import { connectToStores } from 'utils/decorators';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
 import RoadAccidentFrom from './RoadAccidentForm';
 import { formValidationSchema } from './schema';
 
+@connectToStores(['session'])
 class RoadAccidentFromWrap extends FormWrap {
 
   constructor(props, context) {
@@ -20,8 +22,11 @@ class RoadAccidentFromWrap extends FormWrap {
 
   render() {
     const { entity, car_id = -1, isPermitted = false } = this.props;
+    const userCompanyId = this.props.currentUser.company_id;
+
+    const isBelongToUserCompany = this.state.formState.company_id === userCompanyId;
     const { saveButtonEnability = true } = this.state;
-    const canSave = isPermitted && this.state.canSave && saveButtonEnability;
+    const canSave = isPermitted && this.state.canSave && saveButtonEnability && isBelongToUserCompany;
 
     return this.props.showForm ?
       <RoadAccidentFrom
@@ -31,7 +36,7 @@ class RoadAccidentFromWrap extends FormWrap {
         car_id={car_id}
         permissions={[`${entity}.update`]}
         addPermissionProp
-        isPermitted={isPermitted}
+        isPermitted={isPermitted && isBelongToUserCompany}
         canSave={canSave}
         onSubmit={this.handleFormSubmit.bind(this)}
         handleFormChange={this.handleFormStateChange.bind(this)}

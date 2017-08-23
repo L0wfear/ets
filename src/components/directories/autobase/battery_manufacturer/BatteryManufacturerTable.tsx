@@ -8,7 +8,7 @@ import DataTableComponent from 'components/ui/table/DataTable';
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
 export function tableMeta({
-} = {}): IDataTableSchema {
+} = {}) {
   const meta: IDataTableSchema = {
     cols: [
       {

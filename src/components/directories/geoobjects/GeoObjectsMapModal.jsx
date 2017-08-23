@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
-import { connectToStores, FluxContext } from 'utils/decorators';
-import { GEOOBJECTS_TYPES } from 'constants/geoobjects';
-import { Modal, Row, Col, Button } from 'react-bootstrap';
-import ModalBody from 'components/ui/Modal';
-import PolyMap from '../../map/PolyMap.jsx';
-import Div from 'components/ui/Div.jsx';
 import _ from 'lodash';
+import L from 'lodash/fp';
+import { Modal, Row, Col } from 'react-bootstrap';
+
+import { connectToStores, FluxContext } from 'utils/decorators';
+import { GEOOBJECTS_TYPES, GORMOST_GEOOBJECTS_LIST } from 'constants/geoobjects';
+import Div from 'components/ui/Div.jsx';
+import ModalBody from 'components/ui/Modal';
+import PolyMap from 'components/map/PolyMap.jsx';
+
+const extractData = L.prop('data');
 
 @connectToStores(['geoObjects'])
 @FluxContext
@@ -19,7 +23,11 @@ class GeoObjectsMapModal extends Component {
   }
 
   componentDidMount() {
-    this.context.flux.getActions('geoObjects').getGeozoneByTypeWithGeometry(this.props.entity !== 'pgm' ? this.props.entity : 'pgm_store');
+    if (GORMOST_GEOOBJECTS_LIST.includes(this.props.entity)) {
+      this.context.flux.getActions('geoObjects').getGeozoneByTypeWithGeometry(this.props.entity, 'GormostService', {});
+    } else {
+      this.context.flux.getActions('geoObjects').getGeozoneByTypeWithGeometry(this.props.entity !== 'pgm' ? this.props.entity : 'pgm_store');
+    }
   }
 
   componentWillReceiveProps(props) {
@@ -31,14 +39,19 @@ class GeoObjectsMapModal extends Component {
   }
 
   render() {
+    console.log('props', this.props);
     const FIELDS = _.zipObject(this.props.meta.cols.map(e => e.name), this.props.meta.cols.map(e => e.displayName));
     const form = this.props.element ? _.map(FIELDS, (name, key) => {
-      if (this.props.element[key]) return (
-        <Div key={key} style={{marginBottom: 10}}>
-          <label style={{display: 'block', margin: 0}}>{name}:</label>
-          {this.props.element[key]}
-        </Div>
-      )
+      if (this.props.element[key]) {
+        const renderer = _.get(this.props, ['renderers', key], null) || extractData;
+
+        return (
+          <Div key={key} style={{marginBottom: 10}}>
+            <label style={{display: 'block', margin: 0}}>{name}:</label>
+            {renderer({ data: this.props.element[key] })}
+          </Div>
+        );
+      }
     }) : '';
 
     return (

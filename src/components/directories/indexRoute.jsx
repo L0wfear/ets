@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router';
 
+import geoobjectRoutes from 'components/directories/geoobjects/indexRoute';
 import * as directories from './index.js';
 
 const nsiRoutes = (props) => {
@@ -36,15 +37,7 @@ const nsiRoutes = (props) => {
       <Route path="maintenance-rate" component={directories.maintenanceRate} onEnter={requireAuth} />
       <Route path="user-action-log" component={directories.userActionLog} onEnter={requireAuth} />
       {/* НСИ - Реестры и справочники - Геоинструментарий */}
-      <Route path="odh" component={directories.geoobjects.odh} onEnter={requireAuth} />
-      <Route path="dt" component={directories.geoobjects.dt} onEnter={requireAuth} />
-      <Route path="ssp" component={directories.geoobjects.ssp} onEnter={requireAuth} />
-      <Route path="msp" component={directories.geoobjects.msp} onEnter={requireAuth} />
-      <Route path="pgm" component={directories.geoobjects.pgm} onEnter={requireAuth} />
-      <Route path="snow-storage" component={directories.geoobjects.snowStorage} onEnter={requireAuth} />
-      <Route path="fueling-water" component={directories.geoobjects.fuelingWater} onEnter={requireAuth} />
-      <Route path="carpool" component={directories.geoobjects.carpool} onEnter={requireAuth} />
-      <Route path="danger-zones" component={directories.geoobjects.dangerZones} onEnter={requireAuth} />
+      {geoobjectRoutes({ requireAuth })}
     </div>
   );
 

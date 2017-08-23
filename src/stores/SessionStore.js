@@ -1,6 +1,6 @@
 import { Store } from 'flummox';
 
-import { autobase, userNotification } from 'api/mocks/permissions';
+import { autobase, userNotification, getFullAccess } from 'api/mocks/permissions';
 import { clear } from 'utils/cache';
 import { setUserContext } from 'config/raven';
 import createFio from '../utils/create-fio.js';
@@ -10,6 +10,16 @@ const defaultUser = {
   login: 'mayor',
   password: 'mayor',
   role: 'mayor',
+};
+
+export const getSpecificPermissions = (user) => {
+  const permissions = [];
+
+  if (user.login === 'uvao_master') {
+    permissions.push(...getFullAccess('bridges'));
+  }
+
+  return permissions;
 };
 
 export default class SessionStore extends Store {
@@ -56,6 +66,7 @@ export default class SessionStore extends Store {
       ...currentUser.permissions,
       ...autobase,
       ...userNotification,
+      ...getSpecificPermissions(currentUser),
     ];
 
     localStorage.setItem(global.SESSION_KEY, JSON.stringify(session));

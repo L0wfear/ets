@@ -67,7 +67,7 @@ const NsiNavItem: React.SFC<IPropsNsiNavItem> = ({ path }) =>
       <MenuItem permissions={['maintenance_rate.list']} active={path === '/maintenance-rate'} href="#/maintenance-rate">Нормы на содержание объектов</MenuItem>
     </NavDropdown>
 
-    <NavDropdown oneOfPermissions={['odh.list', 'dt.list', 'ssp.list', 'msp.list', 'fueling_water.list', 'carpool.list', 'danger_zone.list', 'pgm.list', 'snow_storage.list']} title="Геообъекты" id="nav-dropdown-2-3">
+    <NavDropdown oneOfPermissions={['odh.list', 'bridges.list', 'dt.list', 'ssp.list', 'msp.list', 'fueling_water.list', 'carpool.list', 'danger_zone.list', 'pgm.list', 'snow_storage.list']} title="Геообъекты" id="nav-dropdown-2-3">
       <MenuItem permissions={['odh.list']} active={path === '/odh'} href="#/odh">Справочник ОДХ</MenuItem>
       <MenuItem permissions={['dt.list']} active={path === '/dt'} href="#/dt">Справочник ДТ</MenuItem>
       <MenuItem permissions={['ssp.list']} active={path === '/ssp'} href="#/ssp">Справочник ССП</MenuItem>
@@ -77,6 +77,7 @@ const NsiNavItem: React.SFC<IPropsNsiNavItem> = ({ path }) =>
       <MenuItem permissions={['danger_zone.list']} active={path === '/danger-zones'} href="#/danger-zones">Справочник особо опасных мест</MenuItem>
       <MenuItem permissions={['pgm.list']} active={path === '/pgm'} href="#/pgm">Справочник пунктов отпуска ПГМ</MenuItem>
       <MenuItem permissions={['snow_storage.list']} active={path === '/snow-storage'} href="#/snow-storage">Справочник пунктов временного складирования снега</MenuItem>
+      <MenuItem permissions={['bridges.list']} active={path === '/bridges'} href="#/bridges">Справочник мостов</MenuItem>
     </NavDropdown>
 
     <NavDropdown oneOfPermissions={['cleaning_rate.list', 'odh_norm.list', 'maintenance_work.list', 'fuel_operation.list', 'odh_norm_data_summer.list', 'efficiency.list']} title="Показатели для расчета" id="nav-dropdown-2-4">
@@ -94,4 +95,3 @@ const NsiNavItem: React.SFC<IPropsNsiNavItem> = ({ path }) =>
   </NavDropdown>;
 
 export default NsiNavItem;
-

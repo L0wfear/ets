@@ -109,7 +109,7 @@ class CarForm extends Form {
             />
           </TabContent>
 
-          <TabContent eventKey={CAR_TAB_INDEX.info} tabKey={this.props.tabKey}>
+          <TabContent eventKey={CAR_TAB_INDEX.battery} tabKey={this.props.tabKey}>
             <BatteryTab
               data={this.props.actualBatteriesOnCarList}
             />

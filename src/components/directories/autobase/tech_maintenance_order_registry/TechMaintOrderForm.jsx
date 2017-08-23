@@ -9,7 +9,10 @@ import Div, { ExtDiv } from 'components/ui/Div.jsx';
 import { ExtField } from 'components/ui/Field.jsx';
 import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 import Form from 'components/compositions/Form.jsx';
-import { FileField } from 'components/ui/input/fields';
+import {
+  FileField,
+  MultiSelectField,
+} from 'components/ui/input/fields';
 import {
   TIME_MEASURES_SELECT_OPTIONS,
   SEQUENCE_1_TO_20_SELECT_OPTIONS,
@@ -121,15 +124,15 @@ export default class TechMaintOrderForm extends Form {
               />
             </Col>
             <Col md={12}>
-              <ExtField
-                type="select"
+              <MultiSelectField
+                integer
                 label="Модель ТС"
                 options={VEHICLE_MODELS}
-                value={state.car_model_id}
-                error={errors.car_model_id}
+                value={state.car_model_ids}
+                error={errors.car_model_ids}
                 disabled={!isPermitted}
                 onChange={this.handleChange}
-                boundKeys={['car_model_id']}
+                boundKeys={['car_model_ids']}
               />
             </Col>
             <Col md={12}>

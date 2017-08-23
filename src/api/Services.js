@@ -71,6 +71,7 @@ export const FuelingWaterService = ETS_API_FACTORY.createApiServiceAdapter('fuel
 export const CarPoolService = ETS_API_FACTORY.createApiServiceAdapter('carpool', {});
 export const DangerZoneService = ETS_API_FACTORY.createApiServiceAdapter('danger_zone', {});
 export const GeozonesService = ETS_API_FACTORY.createApiServiceAdapter('geozones', {});
+export const GormostService = ETS_API_FACTORY.createApiServiceAdapter('gormost', {});
 
 /* Reports - Отчеты */
 export const MissionReportsService = ETS_API_FACTORY.createApiServiceAdapter('car_travel_report', {});

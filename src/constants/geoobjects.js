@@ -9,6 +9,7 @@ export const GEOOBJECTS_TYPES = {
   'danger_zone': 'dangerZone',
   'carpool': 'carpool',
   'fueling_water': 'fuelingWaterStation',
+  'bridges': 'bridges',
 };
 
 export const GEOOBJECTS_TYPES_LABELS = {
@@ -25,6 +26,7 @@ export const GEOOBJECTS_TYPES_LABELS = {
   'carpool': 'Автобазы',
   'fueling_water': 'Базы гидрантов',
   'fuelingWater': 'Базы гидрантов',
+  'bridges': 'Мосты',
 };
 
 export const GEOOBJECTS_TYPES_LABELS_SINGLE = {
@@ -37,4 +39,5 @@ export const GEOOBJECTS_TYPES_LABELS_SINGLE = {
   'dangerZone': 'Особо опасное место',
   'carpool': 'Автобаза',
   'fuelingWaterStation': 'База гидрантов',
+  'bridges': 'Мосты',
 };

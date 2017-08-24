@@ -20,6 +20,8 @@ export default class GeoObjectsStore extends Store {
     this.state = {
       odhsList: [],
       sspsList: [],
+      bridgessList: [],
+      pedestrian_tunnelssList: [],
       mspsList: [],
       pgmsList: [],
       snowStoragesList: [],
@@ -28,6 +30,8 @@ export default class GeoObjectsStore extends Store {
       carpoolsList: [],
       dangerZonesList: [],
 
+      bridgessIndex: {},
+      pedestrian_tunnelssIndex: {},
       odhsIndex: {},
       dtsIndex: {},
       sspsIndex: {},
@@ -44,6 +48,8 @@ export default class GeoObjectsStore extends Store {
       sspPolys: {},
       mspPolys: {},
       pgmPolys: {},
+      bridgesPolys: {},
+      pedestrian_tunnelsPolys: {},
       snowStoragePolys: {},
       fuelingWaterStationPolys: {},
       carpoolPolys: {},
@@ -120,7 +126,7 @@ export default class GeoObjectsStore extends Store {
       const shape = JSON.parse(geozone.shape);
       geozone.featureType = type;
       delete geozone.shape;
-      polys[geozone.id] = Object.assign({}, {
+      polys[geozone.global_id || geozone.id] = Object.assign({}, {
         shape,
         data: geozone,
       });

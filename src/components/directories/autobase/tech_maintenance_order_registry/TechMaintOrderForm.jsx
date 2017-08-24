@@ -187,6 +187,7 @@ export default class TechMaintOrderForm extends Form {
                 onChange={this.handleChange}
                 boundKeys={['files']}
                 isLoading={this.props.onOverlayLoading}
+                disabled={!isPermitted}
               />
             </Col>
           </Row>

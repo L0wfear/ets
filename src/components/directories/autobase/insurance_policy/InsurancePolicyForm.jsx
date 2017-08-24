@@ -156,6 +156,7 @@ export default class InsurancePolicyForm extends Form {
                 onChange={this.handleChange}
                 boundKeys={['files']}
                 isLoading={this.hanleFileLoading}
+                disabled={!isPermitted}
               />
             </Col>
           </Row>

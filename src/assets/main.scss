@@ -14,6 +14,11 @@ body {
   color: #000;
 }
 
+// NOTE Почему-то численное значение, переопределяемое в бутстрапе не делает текст жирным в некоторых браузерах.
+h5 {
+  font-weight: bold !important;
+}
+
 .loginpage {
   position: absolute;
   top: 0;

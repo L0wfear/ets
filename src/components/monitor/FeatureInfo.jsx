@@ -84,6 +84,14 @@ const Bridges = ({ feature }) =>
     <h5>Идентификатор моста</h5>{feature.global_id}
   </div>;
 
+const PedestrianTunnels = ({ feature }) =>
+  <div>
+    <h5>Наименование</h5>{feature.name}
+    <h5>Административный округ</h5>{feature.adm_area}
+    <h5>Район</h5>{feature.district}
+    <h5>Адресный ориентир</h5>{feature.location}
+  </div>;
+
 export default class FeatureInfo extends Component {
 
   static propTypes = {
@@ -138,6 +146,9 @@ export default class FeatureInfo extends Component {
         break;
       case 'bridges':
         Feature = Bridges;
+        break;
+      case 'pedestrian_tunnels':
+        Feature = PedestrianTunnels;
         break;
       default:
         Feature = () => <div />;

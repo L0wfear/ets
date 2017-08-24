@@ -10,6 +10,7 @@ export const GEOOBJECTS_TYPES = {
   'carpool': 'carpool',
   'fueling_water': 'fuelingWaterStation',
   'bridges': 'bridges',
+  'pedestrian_tunnels': 'pedestrian_tunnels',
 };
 
 export const GEOOBJECTS_TYPES_LABELS = {
@@ -27,6 +28,7 @@ export const GEOOBJECTS_TYPES_LABELS = {
   'fueling_water': 'Базы гидрантов',
   'fuelingWater': 'Базы гидрантов',
   'bridges': 'Мосты',
+  'pedestrian_tunnels': 'Пешеходные тоннели',
 };
 
 export const GEOOBJECTS_TYPES_LABELS_SINGLE = {
@@ -40,6 +42,7 @@ export const GEOOBJECTS_TYPES_LABELS_SINGLE = {
   'carpool': 'Автобаза',
   'fuelingWaterStation': 'База гидрантов',
   'bridges': 'Мосты',
+  'pedestrian_tunnels': 'Пешеходные тоннели',
 };
 
 const BASE_GEOOBJECTS_LIST = [
@@ -56,6 +59,7 @@ const BASE_GEOOBJECTS_LIST = [
 
 export const GORMOST_GEOOBJECTS_LIST = [
   'bridges',
+  'pedestrian_tunnels',
 ];
 
 export const GEOOBJECTS_LIST = [

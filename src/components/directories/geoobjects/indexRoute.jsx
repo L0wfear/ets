@@ -10,6 +10,7 @@ const geoobjectRoutes = (props) => {
       {/* НСИ - Реестры и справочники - Геоинструментарий */}
       <Route path="odh" component={directories.odh} onEnter={requireAuth} />
       <Route path="bridges" component={directories.bridges} onEnter={requireAuth} />
+      <Route path="pedestrian-tunnels" component={directories.pedestrian_tunnels} onEnter={requireAuth} />
       <Route path="dt" component={directories.dt} onEnter={requireAuth} />
       <Route path="ssp" component={directories.ssp} onEnter={requireAuth} />
       <Route path="msp" component={directories.msp} onEnter={requireAuth} />

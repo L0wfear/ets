@@ -18,6 +18,7 @@ export const getSpecificPermissions = (user) => {
   if (user.login === 'uvao_master') {
     permissions.push(...getFullAccess('bridges'));
     permissions.push(...getFullAccess('pedestrian_tunnels'));
+    permissions.push(...getFullAccess('pedestrian_tunnel_exits'));
   }
 
   return permissions;

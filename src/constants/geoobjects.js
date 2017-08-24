@@ -11,6 +11,7 @@ export const GEOOBJECTS_TYPES = {
   'fueling_water': 'fuelingWaterStation',
   'bridges': 'bridges',
   'pedestrian_tunnels': 'pedestrian_tunnels',
+  'pedestrian_tunnel_exits': 'pedestrian_tunnel_exits',
 };
 
 export const GEOOBJECTS_TYPES_LABELS = {
@@ -29,6 +30,7 @@ export const GEOOBJECTS_TYPES_LABELS = {
   'fuelingWater': 'Базы гидрантов',
   'bridges': 'Мосты',
   'pedestrian_tunnels': 'Пешеходные тоннели',
+  'pedestrian_tunnel_exits': 'Выходы из пешеходных тоннелей',
 };
 
 export const GEOOBJECTS_TYPES_LABELS_SINGLE = {
@@ -43,6 +45,7 @@ export const GEOOBJECTS_TYPES_LABELS_SINGLE = {
   'fuelingWaterStation': 'База гидрантов',
   'bridges': 'Мосты',
   'pedestrian_tunnels': 'Пешеходные тоннели',
+  'pedestrian_tunnel_exits': 'Выходы из пешеходных тоннелей',
 };
 
 const BASE_GEOOBJECTS_LIST = [
@@ -60,6 +63,7 @@ const BASE_GEOOBJECTS_LIST = [
 export const GORMOST_GEOOBJECTS_LIST = [
   'bridges',
   'pedestrian_tunnels',
+  'pedestrian_tunnel_exits',
 ];
 
 export const GEOOBJECTS_LIST = [

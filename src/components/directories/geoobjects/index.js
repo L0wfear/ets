@@ -2,6 +2,7 @@ import dt from './dt/DTDirectory.jsx';
 import odh from './odh/ODHDirectory.jsx';
 import carpool from './carpool/CarpoolDirectory.jsx';
 import bridges from './bridges/BridgeDirectory';
+import pedestrian_tunnel_exits from './pedestrian_tunnel_exits/PedestrianTunnelExitsDirectory';
 import pedestrian_tunnels from './pedestrian_tunnels/PedestrianTunnelsDirectory';
 import dangerZones from './danger_zones/DangerZonesDirectory.jsx';
 import fuelingWater from './fueling_water/FuelingWaterStationsDirectory.jsx';
@@ -22,4 +23,5 @@ export {
   pgm,
   snowStorage,
   pedestrian_tunnels,
+  pedestrian_tunnel_exits,
 };

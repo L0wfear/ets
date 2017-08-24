@@ -1,4 +1,5 @@
 import { Store } from 'flummox';
+import get from 'lodash/get';
 
 export default class GeoObjectsStore extends Store {
 
@@ -22,6 +23,8 @@ export default class GeoObjectsStore extends Store {
       sspsList: [],
       bridgessList: [],
       pedestrian_tunnelssList: [],
+      pedestrian_tunnel_exitssList: [],
+      fountainssList: [],
       mspsList: [],
       pgmsList: [],
       snowStoragesList: [],
@@ -31,7 +34,9 @@ export default class GeoObjectsStore extends Store {
       dangerZonesList: [],
 
       bridgessIndex: {},
+      fountainssIndex: {},
       pedestrian_tunnelssIndex: {},
+      pedestrian_tunnel_exitssIndex: {},
       odhsIndex: {},
       dtsIndex: {},
       sspsIndex: {},
@@ -49,7 +54,9 @@ export default class GeoObjectsStore extends Store {
       mspPolys: {},
       pgmPolys: {},
       bridgesPolys: {},
+      fountainsPolys: {},
       pedestrian_tunnelsPolys: {},
+      pedestrian_tunnel_exitsPolys: {},
       snowStoragePolys: {},
       fuelingWaterStationPolys: {},
       carpoolPolys: {},
@@ -158,35 +165,40 @@ export default class GeoObjectsStore extends Store {
   handleSelectFeature(selectedFeature = false) {
     if (selectedFeature !== null) {
       if (this.state.selectedFeature !== null) {
+        const featureId = get(this.state, 'selectedFeature.global_id', null) || get(this.state, 'selectedFeature.id', null);
+        const newFeatureId = get(selectedFeature, 'global_id', null) || get(selectedFeature, 'id', null);
+
         const typePrev = this.state.selectedFeature.featureType;
         const polysByTypePrev = `${typePrev}Polys`;
         const polysPrev = this.state[polysByTypePrev];
-        delete polysPrev[this.state.selectedFeature.id].selected;
+        delete polysPrev[featureId].selected;
 
         const type = selectedFeature.featureType;
         const polysByType = `${type}Polys`;
         const polys = this.state[polysByType];
-        polys[selectedFeature.id].selected = true;
+        polys[newFeatureId].selected = true;
         this.setState({
           selectedFeature,
           [polysByTypePrev]: polysPrev,
           [polysByType]: polys,
         });
       } else {
+        const newFeatureId = get(selectedFeature, 'global_id', null) || get(selectedFeature, 'id', null);
         const type = selectedFeature.featureType;
         const polysByType = `${type}Polys`;
         const polys = this.state[polysByType];
-        polys[selectedFeature.id].selected = true;
+        polys[newFeatureId].selected = true;
         this.setState({
           selectedFeature,
           [polysByType]: polys,
         });
       }
     } else if (this.state.selectedFeature !== null) {
+      const featureId = get(this.state, 'selectedFeature.global_id', null) || get(this.state, 'selectedFeature.id', null);
       const type = this.state.selectedFeature.featureType;
       const polysByType = `${type}Polys`;
       const polys = this.state[polysByType];
-      delete polys[this.state.selectedFeature.id].selected;
+      delete polys[featureId].selected;
       this.setState({
         selectedFeature,
         [polysByType]: polys,

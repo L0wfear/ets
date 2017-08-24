@@ -4,6 +4,7 @@ import carpool from './carpool/CarpoolDirectory.jsx';
 import bridges from './bridges/BridgeDirectory';
 import pedestrian_tunnel_exits from './pedestrian_tunnel_exits/PedestrianTunnelExitsDirectory';
 import pedestrian_tunnels from './pedestrian_tunnels/PedestrianTunnelsDirectory';
+import fountains from './fountains/FountainsDirectory';
 import dangerZones from './danger_zones/DangerZonesDirectory.jsx';
 import fuelingWater from './fueling_water/FuelingWaterStationsDirectory.jsx';
 import ssp from './ssp/SSPDirectory.jsx';
@@ -24,4 +25,5 @@ export {
   snowStorage,
   pedestrian_tunnels,
   pedestrian_tunnel_exits,
+  fountains,
 };

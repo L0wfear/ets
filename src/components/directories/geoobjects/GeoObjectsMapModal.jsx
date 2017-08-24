@@ -33,7 +33,7 @@ class GeoObjectsMapModal extends Component {
   componentWillReceiveProps(props) {
     if (props.showForm) {
       this.setState({
-        polys: _.pick(props[`${GEOOBJECTS_TYPES[props.entity]}Polys`], props.element.id)
+        polys: _.pick(props[`${GEOOBJECTS_TYPES[props.entity]}Polys`], props.element.global_id || props.element.id)
       })
     }
   }

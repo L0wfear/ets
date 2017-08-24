@@ -19,6 +19,7 @@ export const getSpecificPermissions = (user) => {
     permissions.push(...getFullAccess('bridges'));
     permissions.push(...getFullAccess('pedestrian_tunnels'));
     permissions.push(...getFullAccess('pedestrian_tunnel_exits'));
+    permissions.push(...getFullAccess('fountains'));
   }
 
   return permissions;

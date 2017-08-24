@@ -1,6 +1,6 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import ElementsList from 'components/ElementsList';
-import PedestrianTunnelExitsTable, { tableMeta, renderers } from './PedestrianTunnelExitsTable';
+import PedestrianTunnelExitsTable, { tableMeta } from './PedestrianTunnelExitsTable';
 import GeoObjectsMapModal from '../GeoObjectsMapModal';
 
 @connectToStores(['geoObjects', 'session'])
@@ -11,7 +11,6 @@ import GeoObjectsMapModal from '../GeoObjectsMapModal';
   listName: 'pedestrian_tunnel_exitssList',
   tableComponent: PedestrianTunnelExitsTable,
   formComponent: GeoObjectsMapModal,
-  formRenderers: renderers,
   formMeta: tableMeta(),
   operations: ['READ'],
 })

@@ -12,6 +12,7 @@ const geoobjectRoutes = (props) => {
       <Route path="bridges" component={directories.bridges} onEnter={requireAuth} />
       <Route path="pedestrian-tunnels" component={directories.pedestrian_tunnels} onEnter={requireAuth} />
       <Route path="pedestrian-tunnel-exits" component={directories.pedestrian_tunnel_exits} onEnter={requireAuth} />
+      <Route path="fountains" component={directories.fountains} onEnter={requireAuth} />
       <Route path="dt" component={directories.dt} onEnter={requireAuth} />
       <Route path="ssp" component={directories.ssp} onEnter={requireAuth} />
       <Route path="msp" component={directories.msp} onEnter={requireAuth} />

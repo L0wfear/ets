@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import Panel from 'components/ui/Panel.jsx';
+
+import DateFormatter from 'components/ui/DateFormatter';
+import Panel from 'components/ui/Panel';
 import { GEOOBJECTS_TYPES_LABELS_SINGLE } from 'constants/geoobjects';
 
 const DTFeature = ({ feature }) =>
@@ -73,6 +75,15 @@ const PGMFeature = ({ feature }) =>
   </div>
 ;
 
+const Bridges = ({ feature }) =>
+  <div>
+    <h5>Наименование</h5>{feature.name}
+    <h5>Район</h5>{feature.district}
+    <h5>Пересечение</h5>{feature.location}
+    <h5>Год ввода в эксплуатацию</h5><DateFormatter date={feature.created_at} time={false} />
+    <h5>Идентификатор моста</h5>{feature.global_id}
+  </div>;
+
 export default class FeatureInfo extends Component {
 
   static propTypes = {
@@ -124,6 +135,9 @@ export default class FeatureInfo extends Component {
         break;
       case 'snowStorage':
         Feature = SnowStorageFeature;
+        break;
+      case 'bridges':
+        Feature = Bridges;
         break;
       default:
         Feature = () => <div />;

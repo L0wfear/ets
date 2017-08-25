@@ -22,8 +22,9 @@ class RepairFormWrap extends FormWrap {
   render() {
     const { entity, car_id = -1, isPermitted = false } = this.props;
     const { saveButtonEnability = true } = this.state;
+    const { company_id = null } = this.state.formState;
     const userCompanyId = this.props.currentUser.company_id;
-    const isBelongToUserCompany = this.state.formState.company_id === userCompanyId;
+    const isBelongToUserCompany = company_id === null || company_id === userCompanyId;
     const canSave = isPermitted && this.state.canSave && saveButtonEnability && isBelongToUserCompany;
 
     return this.props.showForm ?

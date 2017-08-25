@@ -49,7 +49,7 @@ export function tableMeta({
         },
       },
       {
-        name: 'car_model_name',
+        name: 'car_models_text',
         displayName: 'Модель ТС',
         type: 'string',
         filter: {

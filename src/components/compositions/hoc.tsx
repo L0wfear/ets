@@ -13,15 +13,15 @@ export const onClickWithKeys = withHandlers({
 });
 
 export const tabable = compose(
-  withState('tabKey', 'setTabKey', ({ defaultTabKey = '1' }) => defaultTabKey),
-  withHandlers({ handleTabSelect: ({ setTabKey }) => (key1, key2) => setTabKey(typeof key1 === 'string' ? key1 : key2) })
+  withState('tabKey', 'setTabKey'),
+  withHandlers({ handleTabSelect: ({ setTabKey }) => (key1, key2) => setTabKey(typeof key1 === 'string' ? key1 : key2) }),
 );
 
 /**
  * Input fields enhacers
  */
 export const dateTimeFormatter = withHandlers({
-  onChange: ({ time = true, onChange }) => (eventValue) => {
+  onChange: ({ time = true, onChange }) => eventValue => {
     const validationFunction = time ? createValidDateTime : createValidDate;
     onChange(validationFunction(eventValue));
   },

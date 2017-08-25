@@ -23,6 +23,7 @@ const validators = {
   datetime,
   floatFixed3,
   string,
+  text: string,
   array,
   date,
   // integer,

@@ -2,7 +2,7 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import ElementsList from 'components/ElementsList.jsx';
 import CarFormWrap from './CarFormWrap.jsx';
 import CarsTable from './CarsTable.tsx';
-import schema from './CarSchema.js';
+import schema from './schema';
 
 @connectToStores(['objects', 'session'])
 @exportable({ entity: 'car_actual' })

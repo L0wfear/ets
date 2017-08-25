@@ -32,6 +32,16 @@ export interface IVehicle {
   is_common: boolean;
   gov_number: string;
   model_name: string;
+  exploitation_date_start: string;
+  note: string;
+  parking_address: string;
+}
+
+export interface IVehicleRegister {
+  register_certificate_number: number;
+  register_given_by: string;
+  register_given_at: Date;
+  register_note: string;
 }
 
 export interface ITechnicalOperationType extends IResponseRowObject<number> {

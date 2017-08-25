@@ -130,6 +130,8 @@ export default class LoadingStore extends Store {
       reportsActions.getCoverageReport,
       reportsActions.getOdhCoverageReport,
       reportsActions.getDtCoverageReport,
+
+      carActions.updateCarAdditionalInfo,
     );
 
     this.reg(true,
@@ -140,7 +142,6 @@ export default class LoadingStore extends Store {
       geoObjectsActions.getGeozoneByTypeWithGeometry,
       geoObjectsActions.getGeozoneByType,
 
-      carActions.updateCarAdditionalInfo,
       carActions.getTrack,
       carActions.getCarsByTechnicalOperation,
       carActions.getCarMissionsByTimestamp,

@@ -1,17 +1,37 @@
 import React from 'react';
 
+import { unpackObjectData } from 'api/utils';
 import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import CarForm from './CarForm.jsx';
-
+import schema from './schema';
 
 class CarFormWrap extends FormWrap {
 
   constructor(props, context) {
     super(props);
 
+    this.schema = schema;
     this.uniqueField = 'asuods_id';
     this.updateAction = context.flux.getActions('cars').updateCarAdditionalInfo;
+  }
+  async inheritedComponentWillReceiveProps(nextProps) {
+    if (this.props.showForm !== nextProps.showForm && nextProps.element) {
+      const {
+        element,
+      } = nextProps;
+
+      const formState = element || {};
+
+      const register_info = await this.context.flux.getActions('cars').getCarRegisterInfo(element.asuods_id) || {};
+
+      this.setState({
+        formState: {
+          ...formState,
+          ...unpackObjectData('register', register_info),
+        },
+      });
+    }
   }
   handleFormHide = () => {
     if (Object.keys(this.props.location.query).length > 0) {

@@ -13,13 +13,17 @@ import TechMaintList from 'components/directories/autobase/tech_maintenance_regi
 import RepairList from 'components/directories/autobase/repair/RepairList.jsx';
 import RoadAccidentList from 'components/directories/autobase/road_accident/RoadAccidentList.jsx';
 
-import InfoTab from './tabs/InfoTab';
+import MainInfoTab from './tabs/MainInfoTab';
+import RegisterInfoTab from './tabs/RegisterInfoTab';
 import BatteryTab from './tabs/BatteryTab';
 import TireTab from './tabs/TireTab';
 import TechMaintTab from './tabs/TechMaintTab.tsx';
 
 export const CAR_TAB_INDEX = {
   info: '1',
+  main_info: '1.1',
+  register_info: '1.2',
+  passport_info: '1.3',
   battery: '2',
   tire: '3',
   insurance_policy: '4',
@@ -30,6 +34,9 @@ export const CAR_TAB_INDEX = {
 };
 
 class CarForm extends Form {
+  static defaultProps = {
+    tabKey: CAR_TAB_INDEX.main_info,
+  }
   constructor(props) {
     super(props);
 
@@ -44,7 +51,7 @@ class CarForm extends Form {
     const nextState = props.formState;
 
     if (nextState.asuods_id !== currentState.asuods_id && nextState.asuods_id) {
-      this.props.handleTabSelect('1');
+      this.props.handleTabSelect(CAR_TAB_INDEX.main_info);
       const payload = {
         car_id: nextState.asuods_id,
       };
@@ -68,15 +75,16 @@ class CarForm extends Form {
       this.props.history.replaceState(null, this.props.location.pathname, {});
     }
 
-    if (this.props.tabKey !== CAR_TAB_INDEX.info) {
-      this.props.handleTabSelect(CAR_TAB_INDEX.info);
+    if (this.props.tabKey !== CAR_TAB_INDEX.main_info) {
+      this.props.handleTabSelect(CAR_TAB_INDEX.main_info);
     } else {
       this.handleSubmit();
     }
   }
   render() {
     const state = this.props.formState;
-    const { isPermitted = false, techMaintListExtra = {} } = this.props;
+    const errors = this.props.formErrors;
+    const { isPermitted = false, techMaintListExtra = {}, tabKey } = this.props;
     const { companyStructureList = [] } = this.state;
     const COMPANY_ELEMENTS = companyStructureList.map(el => ({ value: el.id, label: el.name }));
 
@@ -87,53 +95,82 @@ class CarForm extends Form {
         </Modal.Header>
 
         <ModalBody>
-          <Nav bsStyle="tabs" activeKey={this.props.tabKey} onSelect={this.props.handleTabSelect} id="refs-car-tabs">
-            <NavItem eventKey={CAR_TAB_INDEX.info}>Информация</NavItem>
+          <Nav bsStyle="tabs" activeKey={tabKey} onSelect={this.props.handleTabSelect} id="refs-car-tabs">
+            <NavDropdown eventKey="1" title="Информация">
+              <MenuItem
+                eventKey={CAR_TAB_INDEX.main_info}
+                active={tabKey === CAR_TAB_INDEX.main_info}
+              >Общая информация</MenuItem>
+              <MenuItem
+                eventKey={CAR_TAB_INDEX.register_info}
+                active={tabKey === CAR_TAB_INDEX.register_info}
+              >Информация о регистрации</MenuItem>
+              <MenuItem
+                eventKey={CAR_TAB_INDEX.passport_info}
+                active={tabKey === CAR_TAB_INDEX.passport_info}
+              >Паспорт ТС</MenuItem>
+            </NavDropdown>
             <NavItem eventKey={CAR_TAB_INDEX.battery}>Аккумуляторы</NavItem>
             <NavItem eventKey={CAR_TAB_INDEX.tire} >Шины</NavItem>
             <NavItem eventKey={CAR_TAB_INDEX.insurance_policy}>Страхование</NavItem>
             <NavItem eventKey={CAR_TAB_INDEX.road_accident} >ДТП</NavItem>
-            <NavDropdown eventKey="6" title="ТО и ремонты" id="nav-dropdown">
-              <MenuItem eventKey={CAR_TAB_INDEX.tech_maintenance} active={this.props.tabKey === '6.1'}>Тех. обслуживание</MenuItem>
-              <MenuItem eventKey={CAR_TAB_INDEX.repair} active={this.props.tabKey === '6.2'}>Ремонты ТС</MenuItem>
+            <NavDropdown eventKey="6" title="ТО и ремонты">
+              <MenuItem
+                eventKey={CAR_TAB_INDEX.tech_maintenance}
+                active={tabKey === CAR_TAB_INDEX.tech_maintenance}
+              >Тех. обслуживание</MenuItem>
+              <MenuItem
+                eventKey={CAR_TAB_INDEX.repair}
+                active={tabKey === CAR_TAB_INDEX.repair}
+              >Ремонты ТС</MenuItem>
             </NavDropdown>
             <NavItem eventKey={CAR_TAB_INDEX.tech_inspection} >Техосмотр</NavItem>
           </Nav>
 
-          <TabContent eventKey={CAR_TAB_INDEX.info} tabKey={this.props.tabKey}>
-            <InfoTab
+          <TabContent eventKey={CAR_TAB_INDEX.main_info} tabKey={tabKey}>
+            <MainInfoTab
               state={state}
+              errors={errors}
               companyElements={COMPANY_ELEMENTS}
               isPermitted={isPermitted}
               onChange={this.handleChange}
             />
           </TabContent>
 
-          <TabContent eventKey={CAR_TAB_INDEX.battery} tabKey={this.props.tabKey}>
+          <TabContent eventKey={CAR_TAB_INDEX.register_info} tabKey={tabKey}>
+            <RegisterInfoTab
+              state={state}
+              errors={errors}
+              isPermitted={isPermitted}
+              onChange={this.handleChange}
+            />
+          </TabContent>
+
+          <TabContent eventKey={CAR_TAB_INDEX.battery} tabKey={tabKey}>
             <BatteryTab
               data={this.props.actualBatteriesOnCarList}
             />
           </TabContent>
 
-          <TabContent eventKey={CAR_TAB_INDEX.tire} tabKey={this.props.tabKey}>
+          <TabContent eventKey={CAR_TAB_INDEX.tire} tabKey={tabKey}>
             <TireTab
               data={this.props.actualTiresOnCarList}
             />
           </TabContent>
 
-          <TabContent eventKey={CAR_TAB_INDEX.insurance_policy} tabKey={this.props.tabKey}>
+          <TabContent eventKey={CAR_TAB_INDEX.insurance_policy} tabKey={tabKey}>
             <InsurancePolicyList
               car_id={state.asuods_id}
             />
           </TabContent>
 
-          <TabContent eventKey={CAR_TAB_INDEX.road_accident} tabKey={this.props.tabKey}>
+          <TabContent eventKey={CAR_TAB_INDEX.road_accident} tabKey={tabKey}>
             <RoadAccidentList
               car_id={state.asuods_id}
             />
           </TabContent>
 
-          <TabContent eventKey={CAR_TAB_INDEX.tech_maintenance} tabKey={this.props.tabKey}>
+          <TabContent eventKey={CAR_TAB_INDEX.tech_maintenance} tabKey={tabKey}>
             <TechMaintTab
               type={state.gov_number && !!(state.gov_number).toString().match(/\d{4}/)}
               techMaintListExtra={techMaintListExtra}
@@ -145,13 +182,13 @@ class CarForm extends Form {
               />
             </TechMaintTab>
           </TabContent>
-          <TabContent eventKey={CAR_TAB_INDEX.repair} tabKey={this.props.tabKey}>
+          <TabContent eventKey={CAR_TAB_INDEX.repair} tabKey={tabKey}>
             <RepairList
               car_id={state.asuods_id}
             />
           </TabContent>
 
-          <TabContent eventKey={CAR_TAB_INDEX.tech_inspection} tabKey={this.props.tabKey}>
+          <TabContent eventKey={CAR_TAB_INDEX.tech_inspection} tabKey={tabKey}>
             <TechInspectionList
               car_id={state.asuods_id}
             />

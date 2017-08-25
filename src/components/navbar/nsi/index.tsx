@@ -9,12 +9,15 @@ import { IPropsNavbarItem } from 'components/navbar/@types/common.h';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
 import PERMISSIONS from 'constants/permissions';
 
-const GEOOBJECTS_ONEOF_PERMISSIONS = [
-  'odh.list',
+export const GORMOST_GEOOBJECTS_LIST_PERMISSIONS = [
   'bridges.list',
   'pedestrian_tunnels.list',
   'pedestrian_tunnel_exits.list',
   'fountains.list',
+];
+
+const GEOOBJECTS_ONEOF_PERMISSIONS = [
+  'odh.list',
   'dt.list',
   'ssp.list',
   'msp.list',
@@ -23,6 +26,7 @@ const GEOOBJECTS_ONEOF_PERMISSIONS = [
   'danger_zone.list',
   'pgm.list',
   'snow_storage.list',
+  ...GORMOST_GEOOBJECTS_LIST_PERMISSIONS,
 ];
 
 /* TODO не закрываются окна, после выбора в дочернем элементе

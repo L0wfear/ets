@@ -123,6 +123,7 @@ export default class BaseRoadAccidentFrom extends Form {
               />
               <FileField
                 label="Файл"
+                multiple
                 value={state.files}
                 error={errors.files}
                 onChange={this.handleChange}

@@ -31,7 +31,7 @@ export function tableMeta({
       },
       {
         name: 'created_at',
-        displayName: 'Дата создания',
+        displayName: 'Дата формирования уведомления',
         type: 'datetime',
         filter: false,
       },

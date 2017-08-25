@@ -4,6 +4,7 @@ import { IDataTableSchema, ILabelFunction } from 'components/ui/table/@types/sch
 import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 
 import DataTableComponent from 'components/ui/table/DataTable';
+import { YES_NO_SELECT_OPTIONS_INT } from 'constants/dictionary';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
@@ -129,8 +130,8 @@ export function tableMeta({
         displayName: 'Общее',
         type: 'string',
         filter: {
-          type: 'select',
-          options: [{ label: 'Да', value: 1 }, { label: 'Нет', value: 0 }],
+          type: 'multiselect',
+          options: YES_NO_SELECT_OPTIONS_INT,
         },
       },
     ],

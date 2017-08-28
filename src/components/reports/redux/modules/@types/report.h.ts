@@ -33,6 +33,7 @@ interface IReportMetaLevels {
 }
 
 export interface IReportMeta {
+  description?: string;
   fields?: IReportMetaField[];
   levels?: IReportMetaLevels;
   name?: string;

@@ -50,7 +50,6 @@ export default class MissionsJournal extends CheckableElementsList {
       showPrintForm: false,
       showMissionRejectForm: false,
       showMissionInfoForm: false,
-      equipmentData: null,
       page: 0,
       sortBy: ['number:desc'],
       filter: {},
@@ -214,22 +213,9 @@ export default class MissionsJournal extends CheckableElementsList {
   }
 
   async mapView(id) {
-    const { flux } = this.context;
-
     const res = await this.context.flux.getActions('missions').getMissionData(id);
     const mission = res.result;
-    const { car_data, mission_data } = mission;
     this.setState({ mission, showMissionInfoForm: true });
-
-    const cars = await flux.getActions('objects').getCars().then(r => r.result);
-    const carGpsCode = cars.find(c => c.gov_number === car_data.gov_number).gps_code;
-    const equipmentData = await flux.getActions('cars').getTrack(carGpsCode, mission_data.date_start, mission_data.date_end)
-      .then(r => Object.keys(r.equipment)
-        .map(k => r.equipment[k].distance)
-        .reduce((a, b) => a + b, 0)
-      );
-
-    this.setState({ equipmentData });
   }
 
   getForms() {
@@ -251,7 +237,6 @@ export default class MissionsJournal extends CheckableElementsList {
           onFormHide={() => this.setState({ showMissionInfoForm: false })}
           showForm={this.state.showMissionInfoForm}
           element={this.state.mission}
-          equipmentData={this.state.equipmentData}
         />
         <MissionPrintForm
           onExport={this.processExport.bind(this)}

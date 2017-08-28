@@ -162,7 +162,9 @@ class ElementsList extends React.Component {
   }
 
   @autobind
-  formCallback() {}
+  formCallback() {
+    this.onFormHide();
+  }
 
   /**
    * Вызывает диалог подтверждения удаления выбранного элемента и в случае подтверждения удаляет выбранный элемент

@@ -55,19 +55,18 @@ const FuelChartSFC = props => {
       name: `ДУТ №${i + 1}`,
       connectNulls: false,
       color,
-      data: timestamps.map((t) => {
-        const s = values.find(v => v[0] === t);
-        if (s && s[1]) {
-          return s[1];
+      data: timestamps.reduce((arr, t) => {
+        const one = values.find(v => v[0] === t);
+        if (one) {
+          arr.push([...one]);
         }
-        return null;
-      }),
+        return arr;
+      }, []),
+      values,
     });
   });
-  const data = sensorsData.map((d) => {
-    d.data = d.data.map((v, i) => [timestamps[i], v]);
-    return d;
-  });
+
+  const data = sensorsData;
 
   const sumEvents = flatten(toArray(events))
     .map(e => ({

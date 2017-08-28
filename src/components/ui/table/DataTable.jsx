@@ -68,7 +68,10 @@ export default class DataTable extends React.Component {
       noHeader: PropTypes.bool,
       enableSort: PropTypes.bool,
 
-      title: PropTypes.string,
+      title: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.object,
+      ]),
       rowNumberLabel: PropTypes.string,
 
       tableMeta: PropTypes.object,

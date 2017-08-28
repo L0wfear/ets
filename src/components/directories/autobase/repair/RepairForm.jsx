@@ -1,15 +1,27 @@
 import React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 
+import { connectToStores } from 'utils/decorators';
 import ModalBody from 'components/ui/Modal';
 import { loadingOverlay } from 'components/ui/LoadingOverlay';
 import { FileField } from 'components/ui/input/fields';
 import { ExtDiv } from 'components/ui/Div.jsx';
 import { ExtField } from 'components/ui/Field.jsx';
 import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
+import { AUTOBASE_REPAIR_STATUS } from 'constants/dictionary';
 import Form from 'components/compositions/Form.jsx';
 
-import { connectToStores } from 'utils/decorators';
+const STATUS_LIST = [
+  {
+    value: 'passed',
+    label: AUTOBASE_REPAIR_STATUS.passed,
+  },
+  {
+    value: 'failed',
+    label: AUTOBASE_REPAIR_STATUS.failed,
+  },
+];
+
 
 @loadingOverlay
 @connectToStores(['autobase', 'objects'])
@@ -167,6 +179,16 @@ export default class BaseTechInspectionForm extends Form {
                 onChange={this.handleChange}
                 boundKeys={['files']}
                 isLoading={this.props.onOverlayLoading}
+                disabled={!isPermitted}
+              />
+              <ExtField
+                type="select"
+                label={fields.status.displayName}
+                value={state.status}
+                error={errors.status}
+                options={STATUS_LIST}
+                onChange={this.handleChange}
+                boundKeys={['status']}
                 disabled={!isPermitted}
               />
             </Col>

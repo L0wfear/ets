@@ -7,6 +7,7 @@ import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 
 import DataTableComponent from 'components/ui/table/DataTable';
 import DateFormatter from 'components/ui/DateFormatter';
+import { AUTOBASE_REPAIR_STATUS } from 'constants/dictionary';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
@@ -90,6 +91,15 @@ export function tableMeta({
           type: 'string',
         },
       },
+      {
+        name: 'status',
+        displayName: 'Статус',
+        type: 'select',
+        filter: {
+          type: 'select',
+          // options: Object.keys(AUTOBASE_REPAIR_STATUS).map(key => ({ label: AUTOBASE_REPAIR_STATUS[key], value: key })),
+        },
+      },
     ],
   };
 
@@ -111,6 +121,7 @@ const Table: React.SFC<any> = props  => {
     car_id: ({ data }) => <div>{get(carsList.find(s => s.asuods_id === data), 'gov_number', '---')}</div>,
     repair_company_id: ({ data }) => <div>{get(repairCompanyList.find(s => s.id === data), 'name', '---')}</div>,
     repair_type_id: ({ data }) => <div>{get(repairTypeList.find(s => s.id === data), 'name', '---')}</div>,
+    status: ({ data }) => <div>{get(AUTOBASE_REPAIR_STATUS, data, '')}</div>,
   };
 
   return (

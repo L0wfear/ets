@@ -88,6 +88,9 @@ export const DtCoverageReportService = ETS_API_FACTORY.createApiServiceAdapter('
 
 export const AutoBase = ETS_API_FACTORY.createApiServiceAdapter('autobase', {});
 
+// список стран
+export const Country = ETS_API_FACTORY.createApiServiceAdapter('country', {});
+
 export const UserNotificationService = ETS_API_FACTORY.createApiServiceAdapter('notification_registry', {});
 
 export { reports };

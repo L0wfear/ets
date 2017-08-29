@@ -25,4 +25,7 @@ export default {
   repairType: 'repair_type',
   roadAccidentRegistry: 'road_accident_registry',
   roadAccidentCause: 'road_accident_cause',
+  carCategory: 'car_category',
+  engineType: 'engine_type',
+  propulsionType: 'propulsion_type',
 };

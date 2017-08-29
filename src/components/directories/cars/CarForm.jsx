@@ -6,6 +6,7 @@ import { tabable } from 'components/compositions/hoc';
 import ModalBody from 'components/ui/Modal';
 import TabContent from 'components/ui/containers/TabContent';
 import Form from 'components/compositions/Form.jsx';
+import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 
 import InsurancePolicyList from 'components/directories/autobase/insurance_policy/InsurancePolicyList.jsx';
 import TechInspectionList from 'components/directories/autobase/tech_inspection/TechInspectionList.jsx';
@@ -15,6 +16,7 @@ import RoadAccidentList from 'components/directories/autobase/road_accident/Road
 
 import MainInfoTab from './tabs/MainInfoTab';
 import RegisterInfoTab from './tabs/RegisterInfoTab';
+import PasportInfoTab from './tabs/PasportInfoTab';
 import BatteryTab from './tabs/BatteryTab';
 import TireTab from './tabs/TireTab';
 import TechMaintTab from './tabs/TechMaintTab.tsx';
@@ -68,6 +70,12 @@ class CarForm extends Form {
 
     const { flux } = this.context;
     const companyStructureList = await flux.getActions('companyStructure').getLinearCompanyStructureForUser();
+    flux.getActions('objects').getCountry();
+    flux.getActions('autobase').getAutobaseListByType('engineType');
+    flux.getActions('autobase').getAutobaseListByType('propulsionType');
+    flux.getActions('autobase').getAutobaseListByType('carCategory');
+    flux.getActions('objects').getTypes();
+
     this.setState({ companyStructureList });
   }
   handleSave = () => {
@@ -84,10 +92,23 @@ class CarForm extends Form {
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
-    const { isPermitted = false, techMaintListExtra = {}, tabKey } = this.props;
+    const {
+      isPermitted = false,
+      techMaintListExtra = {},
+      tabKey,
+      countryOptions = [],
+      engineTypeList = [],
+      propulsionTypeList = [],
+      carCategoryList = [],
+      typesList = [],
+    } = this.props;
     const { companyStructureList = [] } = this.state;
-    const COMPANY_ELEMENTS = companyStructureList.map(el => ({ value: el.id, label: el.name }));
-
+    const COMPANY_ELEMENTS = companyStructureList.map(defaultSelectListMapper);
+    const engineTypeOptions = engineTypeList.map(defaultSelectListMapper);
+    const propulsionTypeOptions = propulsionTypeList.map(defaultSelectListMapper);
+    const carCategoryOptions = carCategoryList.map(defaultSelectListMapper);
+    const typesOptions = typesList.map(el => ({ value: el.asuods_id, label: el.short_name }));
+    
     return (
       <Modal {...this.props} bsSize="lg" backdrop="static">
         <Modal.Header closeButton>
@@ -144,6 +165,20 @@ class CarForm extends Form {
               isPermitted={isPermitted}
               onChange={this.handleChange}
             />
+          </TabContent>
+          <TabContent eventKey={CAR_TAB_INDEX.passport_info} tabKey={tabKey}>
+            <PasportInfoTab
+              state={state}
+              errors={errors}
+              isPermitted={isPermitted}
+              onChange={this.handleChange}
+              handleTabSelect={this.props.handleTabSelect}
+              countryOptions={countryOptions}
+              engineTypeOptions={engineTypeOptions}
+              propulsionTypeOptions={propulsionTypeOptions}
+              carCategoryOptions={carCategoryOptions}
+              typesOptions={typesOptions}
+              />
           </TabContent>
 
           <TabContent eventKey={CAR_TAB_INDEX.battery} tabKey={tabKey}>

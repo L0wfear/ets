@@ -34,6 +34,8 @@ export default class CarActions extends Actions {
     fuel_correction_rate,
     company_structure_id = null,
     is_common,
+    passport_id,
+    passport_type = '',
     ...restPayload
   }) {
     const car_id = asuods_id;
@@ -47,10 +49,16 @@ export default class CarActions extends Actions {
       is_common: is_common ? 1 : 0,
       fuel_correction_rate: fuel_correction_rate ? parseFloat(fuel_correction_rate).toFixed(2) : null,
     };
-
     await this.updateCarRegisterInfo({
       car_id,
       ...packObjectData('register', restPayload),
+    });
+
+    await this.updateCarPassportInfo({
+      car_id,
+      type: passport_type.toUpperCase(),
+      ...packObjectData(`passport_${passport_type.toLowerCase()}`, restPayload),
+      id: passport_id,
     });
 
     return CarService.put(payload, () => CarService.get().then(r => ({ result: r.result.rows })), 'json');
@@ -58,6 +66,12 @@ export default class CarActions extends Actions {
   getCarRegisterInfo(car_id) {
     return AutoBase
       .path('car_registration_registry')
+      .get({ car_id })
+      .then(data => data.result.rows[0]);
+  }
+  getCarPassportRegistryInfo(car_id) {
+    return AutoBase
+      .path('car_passport_registry')
       .get({ car_id })
       .then(data => data.result.rows[0]);
   }
@@ -72,8 +86,21 @@ export default class CarActions extends Actions {
       given_at: createValidDate(given_at),
       ...restPayload,
     };
-
     await updateCarInfo(id, payload, 'car_registration_registry');
+  }
+
+  async updateCarPassportInfo({
+    id,
+    type,
+    given_at,
+    ...restPayload
+  }) {
+    const payload = {
+      ...restPayload,
+      given_at: createValidDate(given_at),
+      type,
+    };
+    await updateCarInfo(id, payload, `car_passport_${type.toLowerCase()}_registry`);
   }
 
   getVectorObject(selectedPoint, prevPoint, nextPoint) {

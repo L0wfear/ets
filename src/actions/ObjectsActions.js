@@ -19,6 +19,7 @@ import {
   MaintenanceRateService,
   CleaningRateService,
   UserActionLogService,
+  Country,
 } from 'api/Services';
 
 import {
@@ -207,6 +208,17 @@ export default class ObjectsActions extends Actions {
       date_to: createValidDateTime(p.date_to),
     };
     return MedicalStatsService.get(payload);
+  }
+
+  async getCountry(query) {
+    const payload = {};
+    if (!!query) payload.query = query;
+
+    const response = await Country.get(payload);
+
+    return {
+      data: response.result,
+    };
   }
 
 }

@@ -44,6 +44,57 @@ export interface IVehicleRegister {
   register_note: string;
 }
 
+export interface IVehiclePassport  extends IVehiclePassportGibdd, IVehiclePassportGtn {
+  passport_type: string;
+}
+
+export interface IVehiclePassportGibdd {
+  passport_gibdd_vin: number;
+  passport_gibdd_func_type_id: number;
+  passport_gibdd_category_id: number;
+  passport_gibdd_body_number: string;
+  passport_gibdd_body_color: string;
+  passport_gibdd_manufactured_at: number;
+  passport_gibdd_engine_model: string;
+  passport_gibdd_engine_number: string;
+  passport_gibdd_engine_power: number;
+  passport_gibdd_engine_volumne: number;
+  passport_gibdd_engine_type_id: number;
+  passport_gibdd_chassis: string;
+  passport_gibdd_max_weight: number;
+  passport_gibdd_empty_weight: number;
+  passport_gibdd_environmental_class: number;
+  passport_gibdd_origin_country_id: number;
+  passport_gibdd_exporter_country_id: number;
+  passport_gibdd_customs_restrictions: string;
+  passport_gibdd_customs_declaration: string;
+  passport_gibdd_address: string;
+  passport_gibdd_company_address: string;
+  passport_gibdd_given_at: string;
+  passport_gibdd_files: any;
+}
+
+export interface IVehiclePassportGtn {
+  passport_gtn_number: string;
+  passport_gtn_address: string;
+  passport_gtn_given_by: string;
+  passport_gtn_manufactured_at: number;
+  passport_gtn_engine_power: number;
+  passport_gtn_empty_weight: number;
+  passport_gtn_gearbox: string;
+  passport_gtn_propulsion_type_id: number;
+  passport_gtn_dimensions: string;
+  passport_gtn_manufacturer: string;
+  passport_gtn_conformity_certificate: string;
+  passport_gtn_tech_inspection_certificate: string;
+  passport_gtn_engine_number: string;
+  passport_gtn_body_color: string;
+  passport_gtn_body_number: string;
+  passport_gtn_axle_number: string;
+  passport_gtn_max_speed: number;
+  passport_gtn_files: any;
+}
+
 export interface ITechnicalOperationType extends IResponseRowObject<number> {
   check_type: string;
   check_type_name: string;

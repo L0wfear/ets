@@ -11,16 +11,17 @@ import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 import { AUTOBASE_REPAIR_STATUS } from 'constants/dictionary';
 import Form from 'components/compositions/Form.jsx';
 
-const STATUS_LIST = [
-  {
-    value: 'passed',
-    label: AUTOBASE_REPAIR_STATUS.passed,
-  },
-  {
-    value: 'failed',
-    label: AUTOBASE_REPAIR_STATUS.failed,
-  },
-];
+const STATUS_LIST = Object.keys(AUTOBASE_REPAIR_STATUS).map(key => ['passed', 'failed'].includes(key)
+  ? ({
+    value: key,
+    label: AUTOBASE_REPAIR_STATUS[key],
+  })
+  : ({
+    value: key,
+    label: AUTOBASE_REPAIR_STATUS[key],
+    disabled: true,
+  })
+);
 
 
 @loadingOverlay

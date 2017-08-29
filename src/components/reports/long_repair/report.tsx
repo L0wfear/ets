@@ -8,7 +8,7 @@ import ReportContainer from 'components/reports/common/ReportContainer';
 import ReportHeader from './ReportHeader';
 import DateFormatter from 'components/ui/DateFormatter';
 
-const serviceUrl = 'long_repair';
+const serviceUrl = 'autobase/reports/long_repair';
 const reportUrl = 'long-repair';
 const serviceName = 'LongRepair';
 

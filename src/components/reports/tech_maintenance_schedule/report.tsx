@@ -9,7 +9,7 @@ import { exportable } from 'utils/decorators';
 import ReportContainer from 'components/reports/common/ReportContainer';
 import ReportHeader from './ReportHeader';
 
-const serviceUrl = 'tech_maintenance_schedule';
+const serviceUrl = 'autobase/reports/tech_maintenance_schedule';
 const reportUrl = 'tech-maintenance-schedule';
 const serviceName = 'TechMaintenanceSchedule';
 

@@ -18,10 +18,10 @@ export const TrackEventsReportService = ETS_API_FACTORY.createApiServiceAdapter(
 export const RouteODHCoverageReportService = ETS_API_FACTORY.createApiServiceAdapter('route_odh_coverage_report', {});
 
 export const LongRepair = ETS_API_FACTORY.createApiServiceAdapter(
-  'long_repair',
+  'autobase/reports/long_repair',
    {},
 );
 export const TechMaintenanceSchedule = ETS_API_FACTORY.createApiServiceAdapter(
-  'tech_maintenance_schedule',
+  'autobase/reports/tech_maintenance_schedule',
   {},
 );

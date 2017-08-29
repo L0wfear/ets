@@ -124,15 +124,15 @@ export default class TechMaintOrderForm extends Form {
               />
             </Col>
             <Col md={12}>
-              <MultiSelectField
-                integer
+              <ExtField
+                type="select"
                 label="Модель ТС"
                 options={VEHICLE_MODELS}
-                value={state.car_model_ids}
-                error={errors.car_model_ids}
+                value={state.car_model_id}
+                error={errors.car_model_id}
                 disabled={!isPermitted}
                 onChange={this.handleChange}
-                boundKeys={['car_model_ids']}
+                boundKeys={['car_model_id']}
               />
             </Col>
             <Col md={12}>

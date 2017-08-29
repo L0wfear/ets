@@ -20,6 +20,7 @@ import employeeEfficiency from './employee_efficiency/report.ts';
 import trackEvents from './track_events/Report';
 import longRepair from './long_repair/report.tsx';
 import techMaintenanceSchedule from './tech_maintenance_schedule/report';
+import inquiryExpiringDate from './inquiry_expiring_date/report'
 
 export {
   analytics,
@@ -40,4 +41,5 @@ export {
   trackEvents,
   longRepair,
   techMaintenanceSchedule,
+  inquiryExpiringDate,
 };

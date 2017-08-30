@@ -12,7 +12,7 @@ import { FileField } from 'components/ui/input/fields';
 const Field = onChangeWithKeys(BaseField);
 
 @loadingOverlay
-class GibddTab extends React.Component<IPropsPassportInfoTab> {
+class GibddTab extends React.Component<IPropsPassportInfoTab, {}> {
   render() {
     const {
       state,

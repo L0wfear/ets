@@ -24,6 +24,7 @@ const reportRoutes = (props) => {
       <Route path="cleaning-status-tech-op-report" component={reports.cleaningStatusTechOp} onEnter={requireAuth} />
       <Route path="long-repair" component={reports.longRepair} onEnter={requireAuth} />
       <Route path="tech-maintenance-schedule" component={reports.techMaintenanceSchedule} onEnter={requireAuth} />
+      <Route path="inquiry-expiring-date" component={reports.inquiryExpiringDate} onEnter={requireAuth} />
       {/* Отчеты - Задания */}
       <Route path="mission-reports" component={reports.mission} onEnter={requireAuth} />
       {/* Отчет префекта */}

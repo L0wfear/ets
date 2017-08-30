@@ -25,3 +25,8 @@ export const TechMaintenanceSchedule = ETS_API_FACTORY.createApiServiceAdapter(
   'autobase/reports/tech_maintenance_schedule',
   {},
 );
+
+export const InquiryExpiringDate = ETS_API_FACTORY.createApiServiceAdapter(
+  'autobase/reports/inquiry_expiring_date',
+  {},
+);

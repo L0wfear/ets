@@ -226,7 +226,7 @@ class CarForm extends Form {
           <TabContent eventKey={CAR_TAB_INDEX.tech_inspection} tabKey={tabKey}>
             <TechInspectionList
               car_id={state.asuods_id}
-            />
+             />
           </TabContent>
         </ModalBody>
 

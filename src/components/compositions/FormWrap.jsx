@@ -74,7 +74,6 @@ export default class FormWrap extends Component {
   }
 
   handleFormStateChange(field, e) {
-    console.time('time')
     const value = e !== undefined && e !== null && !!e.target ? e.target.value : e;
     let { formErrors } = this.state;
     const { formState } = this.state;
@@ -89,8 +88,6 @@ export default class FormWrap extends Component {
     newState.formState = formState;
     newState.formErrors = formErrors;
 
-    console.timeEnd('time')
-    
     this.setState(newState);
   }
 

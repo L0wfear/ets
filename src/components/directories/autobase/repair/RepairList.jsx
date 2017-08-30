@@ -28,11 +28,11 @@ export default class RepareList extends ElementsList {
 
     if (car_id === -1) {
       flux.getActions('autobase').getAutobaseListByType('repair');
+      flux.getActions('objects').getCars();
     } else {
       flux.getActions('autobase').getAutobaseListByType('repair', { car_id });
       this.exportPayload = { car_id };
     }
-    flux.getActions('objects').getCars();
     flux.getActions('autobase').getAutobaseListByType('repairCompany');
     flux.getActions('autobase').getAutobaseListByType('repairType');
   }

@@ -45,7 +45,8 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getCleanCategories, this.handleGetCleanCategories);
     this.register(objectsActions.getUserActionLog, this.handleGetUserActionLog);
     this.register(objectsActions.getMedicalStats, this.handleGetMedicalStats);
-
+    this.register(objectsActions.getCountry, this.handleGetCountry);
+    
     this.register(companyStructreActions.getCompanyStructure, this.handleGetCompanyStructure);
     this.register(companyStructreActions.updateCompanyElement, this.handleGetCompanyStructure);
     this.register(companyStructreActions.deleteCompanyElement, this.handleGetCompanyStructure);
@@ -212,4 +213,10 @@ export default class ObjectsStore extends Store {
     this.setState({ medicalStatsList: medicalStatsList.result.rows });
   }
 
+  handleGetCountry({ data = [] }) {
+    this.setState({
+      countryList: data,
+      countryOptions: data.map(one => ({ value: one.id, label: one.short_name })),
+    });
+  }
 }

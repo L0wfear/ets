@@ -4,8 +4,10 @@ import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import { connectToStores } from 'utils/decorators';
 import Div from 'components/ui/Div.jsx';
-import Field from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
+
+import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 
 @connectToStores(['autobase'])
 export default class BatteryBrandForm extends Form {
@@ -14,7 +16,7 @@ export default class BatteryBrandForm extends Form {
     const state = this.props.formState;
     const errors = this.props.formErrors;
     const { batteryManufacturerList = [], isPermitted = false } = this.props;
-    const BATTERY_MANUFACTURER = batteryManufacturerList.map(({ id, name }) => ({ value: id, label: name }));
+    const BATTERY_MANUFACTURER = batteryManufacturerList.map(defaultSelectListMapper);
 
     const IS_CREATING = !!!state.id;
 
@@ -29,24 +31,26 @@ export default class BatteryBrandForm extends Form {
         <Div style={{ padding: 15 }}>
           <Row>
             <Col md={6}>
-              <Field
+              <ExtField
                 type="string"
                 label="Марка аккумулятора"
                 value={state.name}
                 error={errors.name}
                 disabled={!isPermitted}
-                onChange={this.handleChange.bind(this, 'name')}
+                onChange={this.handleChange}
+                boundKeys={['name']}
               />
             </Col>
             <Col md={6}>
-              <Field
+              <ExtField
                 type="select"
                 label="Производитель аккумулятора"
                 options={BATTERY_MANUFACTURER}
                 value={state.manufacturer_id}
                 error={errors.manufacturer_id}
                 disabled={!isPermitted}
-                onChange={this.handleChange.bind(this, 'manufacturer_id')}
+                onChange={this.handleChange}
+                boundKeys={['manufacturer_id']}
               />
             </Col>
           </Row>

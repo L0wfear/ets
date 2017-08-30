@@ -252,6 +252,7 @@ export default class WaybillFormWrap extends FormWrap {
    * @return {undefined}
    */
   async handleFormSubmit(state = this.state.formState, callback) {
+    console.log('handleFormSubmit')
     const formState = _.cloneDeep(state);
     const waybillStatus = formState.status;
     const { flux } = this.context;
@@ -289,7 +290,6 @@ export default class WaybillFormWrap extends FormWrap {
         }
       }
       this.props.onCallback();
-      this.props.onFormHide();
     } else if (waybillStatus === 'draft') { // если ПЛ обновляем
       if (typeof callback === 'function') {
         formState.status = 'active';
@@ -301,8 +301,7 @@ export default class WaybillFormWrap extends FormWrap {
           return;
         }
         callback();
-        this.props.onCallback();
-        this.props.onFormHide();
+        (await this.props.onCallback()) && this.props.onCallback();
       } else {
         try {
           await flux.getActions('waybills').updateWaybill(formState);
@@ -310,7 +309,6 @@ export default class WaybillFormWrap extends FormWrap {
           return;
         }
         this.props.onCallback();
-        this.props.onFormHide();
       }
     } else if (waybillStatus === 'active') {
       try {
@@ -320,7 +318,6 @@ export default class WaybillFormWrap extends FormWrap {
         return;
       }
       this.props.onCallback();
-      this.props.onFormHide();
     } else if (waybillStatus === 'closed') {
       try {
         await flux.getActions('waybills').updateWaybill(formState);
@@ -329,7 +326,6 @@ export default class WaybillFormWrap extends FormWrap {
         return;
       }
       this.props.onCallback();
-      this.props.onFormHide();
     }
 
     return;
@@ -357,7 +353,6 @@ export default class WaybillFormWrap extends FormWrap {
         return;
       }
       this.props.onCallback();
-      this.props.onFormHide();
     })
     .catch(() => {});
   }

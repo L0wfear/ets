@@ -71,6 +71,7 @@ export const FuelingWaterService = ETS_API_FACTORY.createApiServiceAdapter('fuel
 export const CarPoolService = ETS_API_FACTORY.createApiServiceAdapter('carpool', {});
 export const DangerZoneService = ETS_API_FACTORY.createApiServiceAdapter('danger_zone', {});
 export const GeozonesService = ETS_API_FACTORY.createApiServiceAdapter('geozones', {});
+export const GormostService = ETS_API_FACTORY.createApiServiceAdapter('gormost', {});
 
 /* Reports - Отчеты */
 export const MissionReportsService = ETS_API_FACTORY.createApiServiceAdapter('car_travel_report', {});
@@ -86,6 +87,10 @@ export const OdhCoverageReportService = ETS_API_FACTORY.createApiServiceAdapter(
 export const DtCoverageReportService = ETS_API_FACTORY.createApiServiceAdapter('dt_coverage_report', {});
 
 export const AutoBase = ETS_API_FACTORY.createApiServiceAdapter('autobase', {});
-export const LongTechMaintenance = ETS_API_FACTORY.createApiServiceAdapter('long_tech_maintenance', {});
+
+// список стран
+export const Country = ETS_API_FACTORY.createApiServiceAdapter('country', {});
+
+export const UserNotificationService = ETS_API_FACTORY.createApiServiceAdapter('notification_registry', {});
 
 export { reports };

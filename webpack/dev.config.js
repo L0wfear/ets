@@ -31,7 +31,16 @@ module.exports = {
       { test: /\.json$/, loader: 'json-loader' },
       { test: /\.(jpe?g|png|gif)$/, loader: 'url-loader?limit=1000000&name=images/[name].[ext]' },
       { test: /\.(eot|woff|woff2|ttf|svg)(\?v=\d+\.\d+\.\d+)?/, loader: 'url-loader?limit=100000&name=fonts/[name].[ext]' },
-      { test: /\.s?css$/, loaders: ['style', 'css-loader?sourceMap', 'resolve-url', 'sass-loader?sourceMap'] },
+      { test: /^((?!\.module).)*\.s?css$/, loaders: ['style', 'css-loader?sourceMap', 'resolve-url', 'sass-loader?sourceMap'] },
+      {
+        test: /\.module\.s?css$/,
+        loaders: [
+          'style',
+          'css-loader?sourceMap&modules&importLoaders=2&localIdentName=[path]___[name]__[local]___[hash:base64:5]',
+          'resolve-url',
+          'sass-loader?sourceMap'
+        ]
+      },
       { test: /ol-base\.js/, loader: 'imports?define=>false' },
     ],
   },

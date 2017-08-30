@@ -7,10 +7,16 @@
 @import './waybill.scss';
 @import './reports.scss';
 @import './media.scss';
+@import './user-notifications.scss';
 @import url('https://fonts.googleapis.com/css?family=Roboto:900,700,500,400');
 
 body {
   color: #000;
+}
+
+// NOTE Почему-то численное значение, переопределяемое в бутстрапе не делает текст жирным в некоторых браузерах.
+h5 {
+  font-weight: bold !important;
 }
 
 .loginpage {
@@ -2845,8 +2851,18 @@ div.none {
 
 
 
-.company-structure .griddle-body table tbody tr:not(:first-child).child-row > td {
-  padding-left: 20px !important;
+.company-structure .griddle-body table tbody {
+  & tr.standard-row>td:first-child {
+    padding-left: 15px !important;
+  }
+  & tr:not(:first-child).child-row {
+    &> td:first-child {
+      padding-left: 20px !important;
+    }
+    &> td:not(:first-child) {
+      padding: 5px !important;
+    }
+  }
 }
 
 .company-structure .griddle-body {
@@ -3081,4 +3097,8 @@ div.none {
       margin-left: 5px;
     }
   }
+}
+
+.textarea-field textarea{
+  resize: vertical;
 }

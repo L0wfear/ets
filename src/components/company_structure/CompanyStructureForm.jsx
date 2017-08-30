@@ -26,10 +26,19 @@ class CompanyStructureForm extends Form {
     const state = this.props.formState;
     const errors = this.props.formErrors;
     const { companyStructureLinearList = [] } = this.state;
+    const { parent_id = false } = state;
 
-    let COMPANY_ELEMENTS = companyStructureLinearList.map(el => ({ value: el.id, label: el.name }));
+    let COMPANY_ELEMENTS = companyStructureLinearList.filter(d => d.type !== 3).map(el => ({ value: el.id, label: el.name }));
     COMPANY_ELEMENTS = [{ value: null, label: 'Предприятие' }, ...COMPANY_ELEMENTS];
-    const STRUCTURE_TYPES = [{ value: 2, label: 'ДЭК' }, { value: 3, label: 'ДЭУ' }];
+    const STRUCTURE_TYPES = [{ value: 3, label: 'ДЭУ' }];
+    let parent_type_is_dek = false;
+
+    if (parent_id) {
+      parent_type_is_dek = companyStructureLinearList.find(d => d.id === parent_id).type === 2;
+    }
+    if (!parent_id || !parent_type_is_dek) {
+      STRUCTURE_TYPES.push({ value: 2, label: 'ДЭК' })
+    }
 
     return (
       <Modal {...this.props} backdrop="static">
@@ -37,9 +46,7 @@ class CompanyStructureForm extends Form {
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">Создание подразделения</Modal.Title>
         </Modal.Header>
-
         <ModalBody>
-
           <Row>
             <Col md={12}>
               <Field
@@ -52,11 +59,6 @@ class CompanyStructureForm extends Form {
                 onChange={this.handleChange.bind(this, 'parent_id')}
                 clearable
               />
-            </Col>
-          </Row>
-
-          <Row>
-            <Col md={12}>
               <Field
                 type="select"
                 label="Тип подразделения"
@@ -66,11 +68,6 @@ class CompanyStructureForm extends Form {
                 onChange={this.handleChange.bind(this, 'type')}
                 clearable
               />
-            </Col>
-          </Row>
-
-          <Row>
-            <Col md={12}>
               <Field
                 type="string"
                 label="Наименование"
@@ -78,11 +75,6 @@ class CompanyStructureForm extends Form {
                 value={state.name}
                 onChange={this.handleChange.bind(this, 'name')}
               />
-            </Col>
-          </Row>
-
-          <Row>
-            <Col md={12}>
               <Field
                 type="string"
                 label="Примечание"

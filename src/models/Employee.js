@@ -32,7 +32,7 @@ export const schema = {
     },
   ],
   dependencies: {
-    'drivers_license': [
+    drivers_license: [
       {
         validator: (value, formData) => {
           if (formData.position_id === 15 || formData.position_id === 24) {
@@ -44,7 +44,7 @@ export const schema = {
         },
       },
     ],
-    'special_license': [
+    special_license: [
       {
         validator: (value, formData) => {
           if (formData.position_id === 15 || formData.position_id === 24) {

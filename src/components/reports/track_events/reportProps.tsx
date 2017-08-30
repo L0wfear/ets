@@ -15,6 +15,12 @@ const schemaMakers = {
     ...schema,
     cssClassName: 'map-view',
   }),
+  event_value: schema => ({
+    ...schema,
+    filter: {
+      type: 'advanced-number',
+    },
+  }),
 };
 
 const ShowMapButtonSFC = props =>

@@ -8,25 +8,17 @@ import Griddle from 'griddle-react';
 import { autobind } from 'core-decorators';
 import { isEmpty } from 'utils/functions';
 
+import {
+  isStringArrayData,
+  stringArrayDataMatching,
+  parseAdvancedFilter,
+  getFilterTypeByKey,
+} from './utils';
 import ColumnControl from './ColumnControl.jsx';
 import Filter from './filter/Filter.jsx';
 import FilterButton from './filter/FilterButton.jsx';
 import Paginator from '../Paginator.jsx';
 import Div from '../Div.jsx';
-
-const getFilterTypeByKey = (key, tableMeta) => {
-  const col = tableMeta.cols.find(c => c.name === key);
-  const colFilterType = col.filter && col.filter.type ? col.filter.type : '';
-  return colFilterType;
-};
-
-const isStringArrayData = (filterValue, fieldValue, fieldKey, tableMeta) =>
-  typeof filterValue === 'string' &&
-  Array.isArray(fieldValue) &&
-  getFilterTypeByKey(fieldKey, tableMeta) === 'string';
-
-const stringArrayDataMatching = (filterValue, fieldValueArray) =>
-  fieldValueArray.filter(v => v.match(filterValue) !== null).length > 0;
 
 @autobind
 export default class DataTable extends React.Component {
@@ -68,13 +60,17 @@ export default class DataTable extends React.Component {
       noHeader: PropTypes.bool,
       enableSort: PropTypes.bool,
 
-      title: PropTypes.string,
+      title: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.object,
+      ]),
       rowNumberLabel: PropTypes.string,
 
       tableMeta: PropTypes.object,
       filterValues: PropTypes.object,
       filterResetting: PropTypes.bool,
       externalFilter: PropTypes.func,
+      highlightClassMapper: PropTypes.func,
       highlight: PropTypes.array,
 
       columnControl: PropTypes.bool,
@@ -313,8 +309,10 @@ export default class DataTable extends React.Component {
         displayName: col.customHeaderComponent ? col.customHeaderComponent : col.displayName,
         sortable: (typeof col.sortable === 'boolean') ? col.sortable : true,
       };
-
-      if (typeof renderers[col.name] === 'function') {
+      if (col.type === 'string') {
+        const callbackF = (typeof renderers[col.name] === 'function' && renderers[col.name]) || false;
+        metaObject.customComponent = props => this.cutString(callbackF, props);
+      } else if (typeof renderers[col.name] === 'function') {
         metaObject.customComponent = renderers[col.name];
       }
 
@@ -328,17 +326,38 @@ export default class DataTable extends React.Component {
 
     return metadata;
   }
+  cutString = (callback, props) => {
+    const newProps = { ...props };
+    let { data = '' } = props;
+
+    if (typeof data === 'string' && data.split(' ').some(d => d.length > 20)) {
+      data = `${data.slice(0, 20)}...`;
+    }
+
+    newProps.data = data;
+
+    if (callback) {
+      return callback(newProps);
+    }
+    return (<div>{data}</div>);
+  }
 
   initializeRowMetadata() {
+    const defaultClass = 'standard-row';
+
     return {
       'bodyCssClassName': (rowData) => {
         if (rowData.isSelected) {
           return 'selected-row';
         }
+        if (typeof this.props.highlightClassMapper === 'function') {
+          return this.props.highlightClassMapper(rowData) || defaultClass;
+        }
         if (rowData.isHighlighted) {
           return 'highlighted-row';
         }
-        return 'standard-row';
+
+        return defaultClass;
       },
     };
   }
@@ -399,7 +418,11 @@ export default class DataTable extends React.Component {
         isValid = stringArrayDataMatching(value, obj[key]);
       } else if (typeof obj[key] === 'string') {
         isValid = stringArrayDataMatching(value, [obj[key]]);
-      } else if (obj[key] != value) {
+      } else if (_.isPlainObject(value) && Object.keys(value).length > 0) {
+        const metaCol = this.props.tableMeta.cols.find(item => item.name === key);
+        const filterType = _.get(metaCol, 'filter.type', '');
+        isValid = parseAdvancedFilter(value, key, obj[key], filterType);
+      } else if (obj[key] !== value) {
         isValid = false;
       }
     });
@@ -427,8 +450,12 @@ export default class DataTable extends React.Component {
       one = one.toLocaleLowerCase();
       two = two.toLocaleLowerCase();
     }
-
-    return (+(one > two) || (one === two) - 1) * Math.pow(-1, this.state.initialSortAscending + 1);
+    if (one > two) {
+      return 1 * Math.pow(-1, this.state.initialSortAscending + 1);
+    } else if (one < two) {
+      return -1 * Math.pow(-1, this.state.initialSortAscending + 1);
+    }
+    return 0;
   }
 
   processHighlighted(highlight, el) {
@@ -451,7 +478,6 @@ export default class DataTable extends React.Component {
     return el;
   }
 
-  // TODO зачем _(data) ?
   processTableData(data, tableCols, selected, selectField, onRowSelected, lowerCaseSorting, highlight = []) {
     const tempData = data
           .map(this.processEmptyCols.bind(this, tableCols))
@@ -460,7 +486,7 @@ export default class DataTable extends React.Component {
 
     if (lowerCaseSorting) {
       tempData.sort(this.sortingLoweCase);
-    }
+    } 
 
     return tempData.filter(this.shouldBeRendered);
   }

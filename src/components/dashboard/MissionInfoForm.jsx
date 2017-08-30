@@ -1,6 +1,5 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
-import { connectToStores as connect } from 'utils/decorators';
 import { secondsToTime } from 'utils/dates';
 import { autobind } from 'core-decorators';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
@@ -8,7 +7,6 @@ import ModalBody from 'components/ui/Modal';
 import Div from 'components/ui/Div.jsx';
 import _ from 'lodash';
 import HybridMap from 'components/map/HybridMap.jsx';
-import Preloader from 'components/ui/Preloader.jsx';
 import FluxComponent from 'flummox/component';
 import MissionReportByODH from 'components/reports/mission/MissionReportByODH.jsx';
 import MissionReportByDT from 'components/reports/mission/MissionReportByDT.jsx';
@@ -43,9 +41,13 @@ const checkFixed = (data, key) => {
 };
 
 const getDataTraveledYet = (data) => {
+  if (data === null) {
+    return 0;
+  }
   if (typeof data === 'object') {
     return data.join(' ');
   }
+
   return !isNaN(parseInt(data, 10)) ? parseInt(data, 10) : '-';
 };
 
@@ -133,11 +135,11 @@ class MissionInfoForm extends Form {
     });
     if (!car_data.gov_number) return <div />;
     const title = `Информация о задании. Рег. номер ТС: ${car_data.gov_number}`;
-    const { equipmentData } = this.props;
+    const { element: { mission_data: { sensor_traveled_working = null } } } = this.props;
 
     const traveled_rawAndCheck_unit = checkFixed([report_data.traveled_raw, report_data.check_unit], 'TWO_F');
     const traveled_high_speedCheck_unit = checkFixed([report_data.traveled_high_speed, report_data.check_unit], 'TWO_F');
-    const equipmentDataAndCheck_unit = checkFixed([equipmentData / 1000, 'км'], 'THREE_F');
+    const sensor_traveled_workingAndCheck_unit = checkFixed([sensor_traveled_working / 1000, 'км'], 'THREE_F');
 
     return (
       <Modal {...this.props} bsSize="large" className="mission-info-modal" backdrop="static">
@@ -207,14 +209,14 @@ class MissionInfoForm extends Form {
             <li><b>Пройдено с рабочей скоростью:</b>
               {getDataTraveledYet([...traveled_rawAndCheck_unit, report_data.time_work_speed])}
             </li>
-            <li><b>Пройдено с превышением рабочей скорости:</b> 
+            <li><b>Пройдено с превышением рабочей скорости:</b>
               {getDataTraveledYet([...traveled_high_speedCheck_unit, report_data.time_high_speed])}
             </li>
             <li><b>Общее время стоянок:</b>
               {this.state.parkingCount ? secondsToTime(this.state.parkingCount) : 'Рассчитывается...'}
             </li>
             <li><b>Общий пробег с работающим оборудованием:</b>
-              {equipmentData == null ? <Preloader type="field" /> : `${getDataTraveledYet(equipmentDataAndCheck_unit)}`}
+              {`${getDataTraveledYet(sensor_traveled_workingAndCheck_unit)}`}
             </li>
           </Div>
 

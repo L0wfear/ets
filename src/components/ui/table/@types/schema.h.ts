@@ -5,13 +5,13 @@ export interface IDataTableSelectedRowPropsData {
   rowNumber: number;
 }
 
-interface IDataTableSelectedRowProps {
+interface IDataTableSelectedRowProps<TRowData> {
   data: any;
-  rowData: IDataTableSelectedRowPropsData;
+  rowData: TRowData;
 }
 
-export interface IDataTableSelectedRow {
-  props: IDataTableSelectedRowProps;
+export interface IDataTableSelectedRow<TRowData = IDataTableSelectedRowPropsData> {
+  props: IDataTableSelectedRowProps<TRowData>;
 }
 
 type FieldTypes =
@@ -69,8 +69,8 @@ export interface IExtractedDataTableSchema {
   [columnName: string]: IDataTableColSchema;
 }
 
-export interface ISchemaRenderer {
-  [field: string]: (rowMeta: IDataTableSelectedRowProps) => JSX.Element;
+export interface ISchemaRenderer<TRowData = IDataTableSelectedRowPropsData> {
+  [field: string]: (rowMeta: IDataTableSelectedRowProps<TRowData>) => JSX.Element;
 }
 
 export interface ISchemaMaker  {

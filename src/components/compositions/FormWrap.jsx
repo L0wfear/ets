@@ -88,7 +88,6 @@ export default class FormWrap extends Component {
     newState.formState = formState;
     newState.formErrors = formErrors;
 
-
     this.setState(newState);
   }
   nullValueForField(field, value) {

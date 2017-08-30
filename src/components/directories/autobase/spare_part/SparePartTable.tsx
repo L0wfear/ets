@@ -19,7 +19,7 @@ export function tableMeta({
       {
         name: 'company_name',
         displayName: 'Организация',
-        type: 'text',
+        type: 'string',
         filter: {
           type: 'string',
         },
@@ -44,7 +44,7 @@ export function tableMeta({
       {
         name: 'name',
         displayName: 'Подгруппа',
-        type: 'text',
+        type: 'string',
         filter: {
           type: 'string',
         },
@@ -61,7 +61,7 @@ export function tableMeta({
       {
         name: 'quantity',
         displayName: 'Количество',
-        type: 'text',
+        type: 'number',
         filter: {
           type: 'string',
         },

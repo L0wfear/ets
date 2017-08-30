@@ -264,10 +264,15 @@ export const getTableMeta = ({
       {
         name: 'failed_medical_stat_types',
         displayName: 'Непройденные мед. осмотры',
-        type: 'string',
+        type: 'select',
         cssClassName: 'min-width200',
         filter: {
-          type: 'advanced-string-like',
+          type: 'advanced-select-like',
+          options: [
+            { value: '%before%', label: 'предрейсовый' },
+            { value: '%after%', label: 'послерейсовый' },
+            { value: '%line%', label: 'внеплановый' },
+          ],
         },
       },
     ],

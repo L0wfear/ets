@@ -9,6 +9,7 @@ const Button = onClickWithKeys(BootstrapButton);
 
 const FileListItem: React.SFC<any> = ({
   onFileRemove,
+  disabled,
   index,
   name,
   url,
@@ -20,6 +21,7 @@ const FileListItem: React.SFC<any> = ({
       bsSize="xsmall"
       onClick={onFileRemove}
       boundKeys={[index]}
+      disabled={disabled}
     ><span>×</span>
     </Button>
   </Col>;
@@ -52,13 +54,17 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
           url={url || base64}
           name={name}
           onFileRemove={this.handleFileRemove}
+          disabled={this.props.disabled}
         />,
       );
 
     return (
       <div>
         <Row>{fileList}</Row>
-          <BootstrapButton onClick={this.handleFilePick}>{buttonName}</BootstrapButton>
+          <BootstrapButton
+            disabled={this.props.disabled}
+            onClick={this.handleFilePick}
+          >{buttonName}</BootstrapButton>
           <input
             type="file"
             value={''}

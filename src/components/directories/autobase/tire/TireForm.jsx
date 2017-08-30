@@ -1,5 +1,6 @@
 import React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
+import { get } from 'lodash';
 
 import { onChangeWithKeys } from 'components/compositions/hoc';
 import ModalBody from 'components/ui/Modal';
@@ -16,11 +17,6 @@ export default class TireForm extends Form {
   state = {
     canSave: true,
   };
-  async componentDidMount() {
-    const { flux } = this.context;
-    flux.getActions('autobase').getAutobaseListByType('tireSize');
-    flux.getActions('autobase').getAutobaseListByType('tireModel');
-  }
   handleTireToCarValidity = ({ isValidInput }) => {
     this.setState({
       canSave: isValidInput,
@@ -34,6 +30,7 @@ export default class TireForm extends Form {
       tireSizeList = [],
       isPermitted = false,
     } = this.props;
+    
     const TIRE_MODEL = tireModelList.map(({ id, name }) => ({ value: id, label: name }));
     const TIRE_SIZE = tireSizeList.map(({ id, name }) => ({ value: id, label: name }));
 
@@ -59,6 +56,15 @@ export default class TireForm extends Form {
                 disabled={!isPermitted}
                 onChange={this.handleChange}
                 boundKeys={['tire_model_id']}
+              />
+            </Col>
+            <Col md={12}>
+              <ExtField
+                type={'string'}
+                label={'Производитель'}
+                value={get(tireModelList.find(s => s.id === state.tire_model_id), 'tire_manufacturer_name', '')}
+                emptyValue={null}
+                disabled
               />
             </Col>
             <Col md={12}>

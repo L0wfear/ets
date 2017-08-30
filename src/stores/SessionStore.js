@@ -1,6 +1,6 @@
 import { Store } from 'flummox';
 
-import { autobase } from 'api/mocks/permissions';
+import { autobase, userNotification, getFullAccess } from 'api/mocks/permissions';
 import { clear } from 'utils/cache';
 import { setUserContext } from 'config/raven';
 import createFio from '../utils/create-fio.js';
@@ -10,6 +10,19 @@ const defaultUser = {
   login: 'mayor',
   password: 'mayor',
   role: 'mayor',
+};
+
+export const getSpecificPermissions = (user) => {
+  const permissions = [];
+
+  if (user.login === 'gormost') {
+    permissions.push(...getFullAccess('bridges'));
+    permissions.push(...getFullAccess('pedestrian_tunnels'));
+    permissions.push(...getFullAccess('pedestrian_tunnel_exits'));
+    permissions.push(...getFullAccess('fountains'));
+  }
+
+  return permissions;
 };
 
 export default class SessionStore extends Store {
@@ -50,11 +63,13 @@ export default class SessionStore extends Store {
     data.payload.fio = createFio(data.payload);
     const session = data.token;
     let currentUser = data.payload;
-    console.log(autobase)
+
     // Здесь можно вставлять моковые пермишины
     currentUser.permissions = [
       ...currentUser.permissions,
       ...autobase,
+      ...userNotification,
+      ...getSpecificPermissions(currentUser),
     ];
 
     localStorage.setItem(global.SESSION_KEY, JSON.stringify(session));

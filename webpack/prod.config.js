@@ -35,7 +35,8 @@ module.exports = {
       { test: /\.hbs?$/, loader: 'handlebars-loader' },
       { test: /\.(png|jpe?g|gif)$/, loader: 'url-loader?limit=1000000&name=images/[name].[ext]' },
       { test: /\.(eot|woff|woff2|ttf|svg)(\?v=\d+\.\d+\.\d+)?/, loader: 'url-loader?limit=100000&name=fonts/[name].[ext]' },
-      { test: /\.scss$/, loader: ExtractTextPlugin.extract('style','css-loader!resolve-url!sass-loader?sourceMap') }
+      { test: /^((?!\.module).)*\.s?css$/, loader: ExtractTextPlugin.extract('style','css-loader!resolve-url!sass-loader?sourceMap') },
+      { test: /\.module\.s?css$/, loader: ExtractTextPlugin.extract('style','css-loader?modules&importLoaders=2&localIdentName=[path]___[name]__[local]___[hash:base64:5]!resolve-url!sass-loader?sourceMap') }
     ]
   },
   resolve: {

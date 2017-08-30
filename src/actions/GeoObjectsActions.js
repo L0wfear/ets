@@ -1,32 +1,23 @@
 import { Actions } from 'flummox';
 import { GEOOBJECTS_TYPES } from 'constants/geoobjects';
-import {
-  ODHService,
-  DTService,
-  GeozoneService,
-  GeozonesService,
-} from 'api/Services';
+import * as services from 'api/Services';
 import { getValueFromCache, put } from 'utils/cache';
 
 export default class GeoObjectsActions extends Actions {
-
   getODHs() {
-    return ODHService.get();
+    return services.ODHService.get();
   }
-
   getDTs() {
-    return DTService.get();
+    return services.DTService.get();
   }
-
   updateODH(formState) {
     const payload = {
       id: formState.id,
       company_structure_id: formState.company_structure_id || null,
     };
 
-    return ODHService.put(payload, null, 'json');
+    return services.ODHService.put(payload, null, 'json');
   }
-
   updateDT(formState) {
     const payload = {
       id: formState.id,
@@ -34,41 +25,38 @@ export default class GeoObjectsActions extends Actions {
       company_structure_id: formState.company_structure_id || null,
     };
 
-    return DTService.put(payload, null, 'json');
+    return services.DTService.put(payload, null, 'json');
   }
-
   async getGeozones() {
     const cachedValue = getValueFromCache('GeozoneService.get()');
     if (cachedValue) {
       return cachedValue;
     }
-    const geozones = await GeozoneService.get();
+    const geozones = await services.GeozoneService.get();
     put('GeozoneService.get()', geozones);
     return geozones;
   }
+  async getGeozoneByTypeWithGeometry(
+    type,
+    serviceName = 'GeozonesService',
+    payload = { shape: 1 },
+  ) {
+    const response = await services[serviceName].path(type).get(payload);
 
-  async getGeozoneByTypeWithGeometry(type) {
-    const payload = {
-      shape: 1,
-    };
-    const response = await GeozonesService.path(type).get(payload);
     return {
       type: GEOOBJECTS_TYPES[type],
       data: response,
     };
   }
-
-  async getGeozoneByType(type) {
+  async getGeozoneByType(type, serviceName = 'GeozonesService') {
     const payload = {};
-    const response = await GeozonesService.path(type).get(payload);
+    const response = await services[serviceName].path(type).get(payload);
     return {
       type: GEOOBJECTS_TYPES[type],
       data: response,
     };
   }
-
   setSelectedPolysType(type) {
     return type;
   }
-
 }

@@ -65,6 +65,11 @@ export const formValidationSchema: IValidationSchema = {
       type: 'string',
       maxLength: 2048,
     },
+    {
+      key: 'status',
+      title: 'Статус',
+      type: 'array',
+    },
   ],
   dependencies: {
     plan_date_end: [
@@ -97,6 +102,17 @@ export const formValidationSchema: IValidationSchema = {
             return end >= start
               ? ''
               : '"Фактическая дата окончания" должна быть >= "Фактическая дата начала ремонта"';
+          }
+
+          return '';
+        },
+      },
+    ],
+    status: [
+      {
+        validator(value = null, { fact_date_start = null, fact_date_end = null }) {
+          if (fact_date_start && fact_date_end && !value) {
+            return getRequiredFieldMessage('Статус');
           }
 
           return '';

@@ -27,7 +27,8 @@ export default class EmployeeStore extends Store {
   }
 
   handleGetDrivers({ result }) {
-    this.setState({ driversList: result });
+    const newResult = this.setDopPropsInDrivers(result);
+    this.setState({ driversList: newResult });
   }
 
   handleGetForemans({ result }) {
@@ -36,6 +37,25 @@ export default class EmployeeStore extends Store {
 
   handleGetWaybillDrivers({ result }) {
     this.setState({ waybillDriversList: result.rows });
+  }
+
+  setDopPropsInDrivers(result = []) {
+    return result.map((row) => {
+      let {
+        position_name = '',
+        drivers_license = '',
+        special_license = '',
+      } = row;
+
+      position_name = (!!position_name && position_name) || '';
+      drivers_license = (!!drivers_license && drivers_license) || '';
+      special_license = (!!special_license && special_license) || '';
+
+      return {
+        ...row,
+        drivers_emplds: `${position_name} ${drivers_license}${(drivers_license !== '' && ' ') || ''}${special_license}`,
+      };
+    });
   }
 
 }

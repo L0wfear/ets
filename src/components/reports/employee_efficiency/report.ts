@@ -10,7 +10,6 @@ const serviceUrl = 'reports/efficiency/employee';
 const reportUrl = 'employee-efficiency-report';
 const serviceName = 'EmployeeEfficiencyReport';
 
-
 const schemaMakers = {};
 
 const renderers = {};

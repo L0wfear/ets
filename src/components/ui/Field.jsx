@@ -1,18 +1,19 @@
 import React from 'react';
 import { autobind } from 'core-decorators';
-import { Input, Row, Col } from 'react-bootstrap';
+import { Input } from 'react-bootstrap';
 import cx from 'classnames';
 
 import { onChangeWithKeys } from 'components/compositions/hoc';
 import DatePicker from 'components/ui/input/DatePicker';
 import EtsSelect from 'components/ui/input/EtsSelect';
 import FileInput from 'components/ui/input/FileInput/FileInput';
+// import TextInput from 'components/ui/input/TextInput/TextInput';
 import Div from './Div.jsx';
 import Preloader from './Preloader.jsx';
 
 function StringField(props) {
   const { error, label = '', readOnly = false, disabled = false, className = '',
-    value, wrapStyle, hidden, isLoading } = props;
+    value, wrapStyle, hidden, isLoading, inline = false } = props;
   const inputClassName = cx({ 'has-error': error });
 
   if (isLoading) {
@@ -30,9 +31,34 @@ function StringField(props) {
       <Div hidden={!error} className="error">{error}</Div>
     </Div> :
     <Div hidden={hidden} className={className}>
-      <label style={{ paddingTop: 5 }}>{label}</label><br />
+      <label style={{ paddingTop: 5, paddingRight: 5 }}>{label}</label>
+      {!inline && <br />}
       {value}
     </Div>;
+}
+
+function TextAreaField(props) {
+  const { error, label = '', readOnly = false, value, hidden, rows = 5, textAreaStyle = {} } = props;
+
+  const wrapperClassName = cx({
+    'textarea-field': true,
+    'has-error': error,
+  });
+
+  return (
+    <Div hidden={hidden} className={wrapperClassName}>
+      <label>{label}</label>
+      <textarea
+        style={textAreaStyle}
+        className="form-control form-group"
+        rows={rows}
+        disabled={readOnly}
+        onChange={props.onChange}
+        value={value}
+      >{value}</textarea>
+      <Div hidden={!error} className="error">{error}</Div>
+    </Div>
+  );
 }
 
 
@@ -62,7 +88,13 @@ export default class Field extends React.Component {
     return (
       <Div hidden={this.props.hidden}>
         <label>{label}</label>
-        <input type="checkbox" style={{ fontSize: '20px', marginLeft: '5px' }} checked={this.props.value} onChange={this.props.onChange} />
+        <input
+          type="checkbox"
+          style={{ fontSize: '20px', marginLeft: '5px' }}
+          checked={this.props.value}
+          onChange={this.props.onChange}
+          disabled={this.props.disabled}
+        />
       </Div>
     );
   }
@@ -121,11 +153,16 @@ export default class Field extends React.Component {
   renderString() {
     return <StringField {...this.props} />;
   }
+  renderText() {
+    return <TextAreaField {...this.props} />;
+  }
 
   renderFieldByType(type) {
     switch (type) {
       case 'string':
         return this.renderString();
+      case 'text':
+        return this.renderText();
       case 'select':
         return this.renderSelect();
       case 'date':

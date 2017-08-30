@@ -1,20 +1,30 @@
-import React, { Component } from 'react';
-import Table from 'components/ui/table/DataTable.jsx';
-import DateFormatter from 'components/ui/DateFormatter.jsx';
+import * as React from 'react';
 
-export const tableMeta = props => ({
-  cols: [
+import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
+import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';
+import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
+
+import DataTableComponent from 'components/ui/table/DataTable';
+import DateFormatter from 'components/ui/DateFormatter';
+
+const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
+
+export function tableMeta({
+  isOkrug = false,
+} = {}): IDataTableSchema {
+  const meta: IDataTableSchema = {
+    cols: [
     {
       name: 'company_name',
       displayName: 'Учреждение',
-      type: 'text',
-      display: props ? props.isOkrug : false,
-      filter: props && props.isOkrug ? { type: 'multiselect' } : false,
+      type: 'string',
+      display: isOkrug,
+      filter: isOkrug && { type: 'multiselect' } || false,
     },
     {
       name: 'full_name',
       displayName: 'Фамилия Имя Отчество',
-      type: 'text',
+      type: 'string',
       cssClassName: 'width300justify',
       filter: {
         type: 'multiselect',
@@ -23,7 +33,7 @@ export const tableMeta = props => ({
     {
       name: 'birthday',
       displayName: 'Дата рождения',
-      type: '',
+      type: 'date',
       filter: {
         type: 'date',
       },
@@ -31,15 +41,15 @@ export const tableMeta = props => ({
     {
       name: 'personnel_number',
       displayName: 'Табельный номер',
-      type: 'text',
+      type: 'string',
       filter: {
-        type: 'text',
+        type: 'string',
       },
     },
     {
       name: 'position_name',
       displayName: 'Должность',
-      type: 'text',
+      type: 'string',
       filter: {
         type: 'multiselect',
       },
@@ -47,7 +57,7 @@ export const tableMeta = props => ({
     {
       name: 'drivers_license',
       displayName: 'Водительское удостоверение',
-      type: 'text',
+      type: 'string',
       filter: {
         type: 'multiselect',
       },
@@ -55,7 +65,7 @@ export const tableMeta = props => ({
     {
       name: 'special_license',
       displayName: 'Специальное удостоверение',
-      type: 'text',
+      type: 'string',
       filter: {
         type: 'multiselect',
       },
@@ -63,7 +73,7 @@ export const tableMeta = props => ({
     {
       name: 'company_structure_name',
       displayName: 'Подразделение',
-      type: 'text',
+      type: 'string',
       filter: {
         type: 'multiselect',
       },
@@ -71,7 +81,7 @@ export const tableMeta = props => ({
     {
       name: 'active',
       displayName: 'Текущее состояние',
-      type: 'text',
+      type: 'string',
       filter: {
         type: 'multiselect',
         labelFunction: l => l ? 'Работает' : 'Не работает',
@@ -80,7 +90,7 @@ export const tableMeta = props => ({
     {
       name: 'phone',
       displayName: 'Телефон',
-      type: 'text',
+      type: 'string',
       filter: {
         type: 'multiselect',
       },
@@ -88,7 +98,7 @@ export const tableMeta = props => ({
     {
       name: 'medical_certificate',
       displayName: 'Медицинская справка',
-      type: 'text',
+      type: 'string',
       filter: {
         type: 'multiselect',
       },
@@ -104,7 +114,7 @@ export const tableMeta = props => ({
     {
       name: 'snils',
       displayName: 'СНИЛС №',
-      type: 'text',
+      type: 'string',
       filter: {
         type: 'multiselect',
       },
@@ -112,37 +122,38 @@ export const tableMeta = props => ({
     {
       name: 'is_common',
       displayName: 'Общее',
-      type: 'text',
+      type: 'select',
       filter: {
-        type: 'select',
-        labelFunction: l => l ? 'Да' : 'Нет',
+        type: 'multiselect',
+        options: [{ value: +true, label: 'Да' }, { value: +false, label: 'Нет' }],
       },
     },
-  ],
-});
+    ],
+  };
 
-export default (props) => {
-  const data = props.data;
-  data.forEach((e, i) => {
-    const last_name = e.last_name || '';
-    const first_name = e.first_name || '';
-    const middle_name = e.middle_name || '';
-    e.full_name = last_name + ' ' + first_name + ' ' + middle_name;
-  });
+  return meta;
+}
 
-  const renderers = {
+const Table: React.SFC<any> = props  => {
+
+  const renderers: ISchemaRenderer = {
+    full_name: ({ rowData }) => <span>{`${rowData.last_name || ''} ${rowData.first_name || ''} ${rowData.middle_name || ''}`}</span>,
     birthday: ({ data }) => <DateFormatter date={data} />,
     active: ({ data }) => <div>{data === true ? 'Работает' : 'Не работает'}</div>,
     medical_certificate_date: ({ data }) => <DateFormatter date={data} />,
     is_common: ({ data }) => <input type="checkbox" disabled checked={!!data} />,
   };
 
-  return (<Table
-    title="Реестр сотрудников"
-    results={data}
-    tableMeta={tableMeta(props)}
-    renderers={renderers}
-    initialSort={'full_name'}
-    {...props}
-  />);
+  return (
+    <DataTable
+      title="Реестр сотрудников"
+      results={props.data}
+      tableMeta={tableMeta(props)}
+      renderers={renderers}
+      initialSort={'full_name'}
+      {...props}
+    />
+  );
 };
+
+export default Table;

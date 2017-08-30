@@ -2,7 +2,7 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'constants/autobase';
 import ElementsList from 'components/ElementsList.jsx';
 import BatteryManufacturerFormWrap from './BatteryManufacturerFormWrap';
-import BatteryManufacturerTable from './BatteryManufacturerTable';
+import BatteryManufacturerTable from './BatteryManufacturerTable.tsx';
 
 @connectToStores(['autobase', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.batteryManufacturer}` })

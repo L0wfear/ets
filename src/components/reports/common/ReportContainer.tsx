@@ -11,6 +11,8 @@ import {
   isEmpty,
 } from 'lodash';
 
+import Title from './Title';
+
 import { IDataTableColSchema, IDataTableSelectedRow } from 'components/ui/table/@types/schema.h';
 import { IPropsReportContainer, IStateReportContainer } from './@types/ReportContainer.h';
 import { IPropsReportHeaderCommon } from './@types/ReportHeaderWrapper.h';
@@ -318,7 +320,13 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       ...this.props.meta,
     };
 
-    const title = isEmpty(mergedTableMetaInfo.name) ? this.props.title : mergedTableMetaInfo.name;
+    const title = isEmpty(mergedTableMetaInfo.name) ?
+      this.props.title
+      :
+      <Title
+        text={mergedTableMetaInfo.name}
+        hint={mergedTableMetaInfo.description}
+      />;
 
     return (
       <div className="ets-page-wrap">
@@ -337,7 +345,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
           enumerated={enumerated}
           enableSort={enableSort}
           filterResetting={this.state.filterResetting}
-          initialSort={initialSort}
+          initialSort={initialSort || ''}
           {...this.props.tableProps}
         >
           <Button

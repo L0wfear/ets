@@ -26,6 +26,8 @@ export default class EstSelect extends Component {
       sortingFunction: PropTypes.func,
       emptyValue: PropTypes.string,
       onChange: PropTypes.func,
+      fieldName: PropTypes.string,
+      selectType: PropTypes.string,
     };
   }
 
@@ -44,9 +46,19 @@ export default class EstSelect extends Component {
       }
     }
   }
+  // TODO Добавить человеческую обработку selectType
   handleChange = (linearValue, objectValue) => {
-    const { emptyValue = '' } = this.props;
-    this.props.onChange(linearValue === '' ? emptyValue : linearValue, objectValue);
+    const {
+      emptyValue = '',
+      selectType = false,
+      fieldName,
+    } = this.props;
+
+    if (selectType) {
+      this.props.onChange({ [`${fieldName}__${selectType}`]: linearValue === '' ? emptyValue : linearValue });
+    } else {
+      this.props.onChange(linearValue === '' ? emptyValue : linearValue, objectValue);
+    }
   }
   render() {
     const {

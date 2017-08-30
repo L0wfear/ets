@@ -9,6 +9,10 @@ export const GEOOBJECTS_TYPES = {
   'danger_zone': 'dangerZone',
   'carpool': 'carpool',
   'fueling_water': 'fuelingWaterStation',
+  'bridges': 'bridges',
+  'pedestrian_tunnels': 'pedestrian_tunnels',
+  'pedestrian_tunnel_exits': 'pedestrian_tunnel_exits',
+  'fountains': 'fountains',
 };
 
 export const GEOOBJECTS_TYPES_LABELS = {
@@ -25,6 +29,10 @@ export const GEOOBJECTS_TYPES_LABELS = {
   'carpool': 'Автобазы',
   'fueling_water': 'Базы гидрантов',
   'fuelingWater': 'Базы гидрантов',
+  'bridges': 'Мосты',
+  'pedestrian_tunnels': 'Пешеходные тоннели',
+  'pedestrian_tunnel_exits': 'Выходы из пешеходных тоннелей',
+  'fountains': 'Фонтаны',
 };
 
 export const GEOOBJECTS_TYPES_LABELS_SINGLE = {
@@ -37,4 +45,32 @@ export const GEOOBJECTS_TYPES_LABELS_SINGLE = {
   'dangerZone': 'Особо опасное место',
   'carpool': 'Автобаза',
   'fuelingWaterStation': 'База гидрантов',
+  'bridges': 'Мост',
+  'pedestrian_tunnels': 'Пешеходный тоннель',
+  'pedestrian_tunnel_exits': 'Выход из пешеходного тоннеля',
+  'fountains': 'Фонтан',
 };
+
+const BASE_GEOOBJECTS_LIST = [
+  'dt',
+  'odh',
+  'ssp',
+  'msp',
+  'carpool',
+  'fueling_water',
+  'danger_zone',
+  'pgm_store',
+  'snow_storage',
+];
+
+export const GORMOST_GEOOBJECTS_LIST = [
+  'bridges',
+  'pedestrian_tunnels',
+  'pedestrian_tunnel_exits',
+  'fountains',
+];
+
+export const GEOOBJECTS_LIST = [
+  ...BASE_GEOOBJECTS_LIST,
+  ...GORMOST_GEOOBJECTS_LIST,
+];

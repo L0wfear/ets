@@ -38,10 +38,19 @@ export const tableMeta = ({
         },
       },
       {
+        name: 'tire_manufacturer_name',
+        displayName: 'Производитель',
+        type: 'text',
+        orderNum: 1,
+        filter: {
+          type: 'multiselect',
+        },
+      },
+      {
         name: 'tire_size_id',
         displayName: 'Размер',
         type: 'text',
-        orderNum: 1,
+        orderNum: 2,
         filter: {
           type: 'multiselect',
           options: tireSizeList.map(({ id, name }) => ({ value: id, label: name })),
@@ -51,7 +60,7 @@ export const tableMeta = ({
         name: 'odometr_diff',
         displayName: 'Пробег, км',
         type: 'text',
-        orderNum: 2,
+        orderNum: 3,
         filter: {
           type: 'string',
         },
@@ -60,7 +69,7 @@ export const tableMeta = ({
         name: 'motohours_diff',
         displayName: 'Наработка, мч',
         type: 'text',
-        orderNum: 3,
+        orderNum: 4,
         filter: {
           type: 'string',
         },
@@ -69,7 +78,7 @@ export const tableMeta = ({
         name: 'comment',
         displayName: 'Комментарий',
         type: 'text',
-        orderNum: 4,
+        orderNum: 5,
         filter: {
           type: 'string',
         },
@@ -78,7 +87,7 @@ export const tableMeta = ({
         name: 'gov_number',
         displayName: 'Рег. номер ТС',
         type: 'text',
-        orderNum: 5,
+        orderNum: 6,
         filter: {
           type: 'string',
         },
@@ -87,7 +96,7 @@ export const tableMeta = ({
         name: 'installed_at',
         displayName: 'Дата монтажа',
         type: 'date',
-        orderNum: 6,
+        orderNum: 7,
         filter: {
           type: 'date',
         },
@@ -95,8 +104,8 @@ export const tableMeta = ({
       {
         name: 'cloneButton',
         displayName: '',
+        orderNum: 8,
         filter: false,
-        orderNum: 7,
       },
     ],
   };
@@ -126,7 +135,6 @@ export default (props) => {
     results={props.data}
     tableMeta={sortedMeta}
     renderers={renderers}
-    initialSort={false}
     {...props}
   />);
 };

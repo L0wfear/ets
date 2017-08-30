@@ -4,7 +4,7 @@ import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import { connectToStores } from 'utils/decorators';
 import Div from 'components/ui/Div.jsx';
-import Field from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
 
 @connectToStores(['autobase'])
@@ -21,20 +21,21 @@ export default class BatteryManufacturerForm extends Form {
     if (IS_CREATING) title = 'Создание записи';
 
     return (
-      <Modal {...this.props} bsSize="large" backdrop="static">
+      <Modal {...this.props} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
         </Modal.Header>
         <Div style={{ padding: 15 }}>
           <Row>
             <Col md={12}>
-              <Field
+              <ExtField
                 type="string"
                 label="Производитель аккумулятора"
                 value={state.name}
                 error={errors.name}
                 disabled={!isPermitted}
-                onChange={this.handleChange.bind(this, 'name')}
+                onChange={this.handleChange}
+                boundKeys={['name']}
               />
             </Col>
           </Row>

@@ -5,7 +5,7 @@ import { Button, Glyphicon } from 'react-bootstrap';
 
 import Preloader from 'components/ui/Preloader';
 import { FluxContext } from 'utils/decorators';
-import { ButtonCreate, ButtonRead, ButtonDelete } from './ui/buttons/CRUD.jsx';
+import { ButtonCreate, ButtonRead, ButtonDelete } from './ui/buttons/CRUD';
 
 /**
  * Базовый класс для отображения таблиц и привязанных к ним форм (модальных окон)
@@ -41,6 +41,7 @@ class ElementsList extends React.Component {
     this.mainListName = this.constructor.listName || undefined;
     this.entity = this.constructor.entity;
     this.tableMeta = this.constructor.tableMeta || {};
+    this.preventUrlFilters = false;
 
     this.clicks = 0;
   }
@@ -161,7 +162,9 @@ class ElementsList extends React.Component {
   }
 
   @autobind
-  formCallback() {}
+  formCallback() {
+    this.onFormHide();
+  }
 
   /**
    * Вызывает диалог подтверждения удаления выбранного элемента и в случае подтверждения удаляет выбранный элемент
@@ -310,7 +313,7 @@ class ElementsList extends React.Component {
     let basicProps = {
       data: this.props[listName],
     };
-    if (this.props.location && this.props.location.query) {
+    if (this.props.location && this.props.location.query && !this.preventUrlFilters) {
       basicProps = {
         ...basicProps,
         filterValues: this.props.location.query,
@@ -384,6 +387,7 @@ class ElementsList extends React.Component {
         entity={this.entity}
         onCallback={this.formCallback}
         meta={this.constructor.formMeta}
+        renderers={this.constructor.formRenderers}
         {...this.props}
       />
     );

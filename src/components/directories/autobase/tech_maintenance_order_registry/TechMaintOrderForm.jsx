@@ -9,7 +9,10 @@ import Div, { ExtDiv } from 'components/ui/Div.jsx';
 import { ExtField } from 'components/ui/Field.jsx';
 import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 import Form from 'components/compositions/Form.jsx';
-import { FileField } from 'components/ui/input/fields';
+import {
+  FileField,
+  MultiSelectField,
+} from 'components/ui/input/fields';
 import {
   TIME_MEASURES_SELECT_OPTIONS,
   SEQUENCE_1_TO_20_SELECT_OPTIONS,
@@ -184,6 +187,7 @@ export default class TechMaintOrderForm extends Form {
                 onChange={this.handleChange}
                 boundKeys={['files']}
                 isLoading={this.props.onOverlayLoading}
+                disabled={!isPermitted}
               />
             </Col>
           </Row>

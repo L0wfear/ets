@@ -54,7 +54,6 @@ export function tableMeta({
         type: 'select',
         filter: {
           type: 'multiselect',
-          // options: specialModelsList.map(defaultSelectListMapper),
         },
       },
       {

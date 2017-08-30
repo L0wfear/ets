@@ -1,5 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import Panel from 'components/ui/Panel.jsx';
+
+import DateFormatter from 'components/ui/DateFormatter';
+import { WorkingHours } from 'components/directories/geoobjects/fountains/FountainsTable'
+import Panel from 'components/ui/Panel';
 import { GEOOBJECTS_TYPES_LABELS_SINGLE } from 'constants/geoobjects';
 
 const DTFeature = ({ feature }) =>
@@ -73,6 +76,49 @@ const PGMFeature = ({ feature }) =>
   </div>
 ;
 
+const Bridges = ({ feature }) =>
+  <div>
+    <h5>Наименование</h5>{feature.name}
+    <h5>Район</h5>{feature.district}
+    <h5>Пересечение</h5>{feature.location}
+    <h5>Год ввода в эксплуатацию</h5><DateFormatter date={feature.created_at} time={false} />
+    <h5>Идентификатор моста</h5>{feature.global_id}
+  </div>;
+
+const PedestrianTunnels = ({ feature }) =>
+  <div>
+    <h5>Наименование</h5>{feature.name}
+    <h5>Административный округ</h5>{feature.adm_area}
+    <h5>Район</h5>{feature.district}
+    <h5>Адресный ориентир</h5>{feature.location}
+  </div>;
+
+const PedestrianTunnelExits = ({ feature }) =>
+  <div>
+    <h5>Наименование</h5>{feature.name}
+    <h5>Административный округ</h5>{feature.adm_area}
+    <h5>Район</h5>{feature.district}
+  </div>;
+
+const Fountains = ({ feature }) =>
+  <div>
+    <h5>Наименование</h5>{feature.name}
+    <h5>Административный округ</h5>{feature.adm_area}
+    <h5>Район</h5>{feature.district}
+    <h5>Адресный ориентир</h5>{feature.location}
+    <h5>Ведомственная принадлежность</h5>{feature.departmental_affiliation}
+    <h5>График работы</h5>
+    {feature.working_hours.map((item, i) => <WorkingHours key={i} day={item.DayOfWeek} hours={item.Hours} />)}
+    <h5>Балансодержатель</h5>{feature.balance_holder_name}
+    <h5>Телефон балансодержателя</h5>{feature.balance_holder_phone}
+    <h5>Электронная почта балансодержателя</h5>{feature.balance_holder_email}
+    <h5>Сайт балансодержателя</h5>
+    <a href={`//${feature.balance_holder_web_site}`}>{feature.balance_holder_web_site}</a>
+    <h5>Эксплуатирующая организация</h5>{feature.operation_organization_name}
+    <h5>Телефон эксплуатирующей организации</h5>{feature.operation_organization_phone}
+    <h5>Электронная почта эксплуатирующей организации</h5>{feature.operation_organization_email}
+  </div>;
+
 export default class FeatureInfo extends Component {
 
   static propTypes = {
@@ -124,6 +170,18 @@ export default class FeatureInfo extends Component {
         break;
       case 'snowStorage':
         Feature = SnowStorageFeature;
+        break;
+      case 'bridges':
+        Feature = Bridges;
+        break;
+      case 'fountains':
+        Feature = Fountains;
+        break;
+      case 'pedestrian_tunnels':
+        Feature = PedestrianTunnels;
+        break;
+      case 'pedestrian_tunnel_exits':
+        Feature = PedestrianTunnelExits;
         break;
       default:
         Feature = () => <div />;

@@ -17,7 +17,12 @@ export default class EmployeeFormWrap extends FormWrap {
     this.createAction = context.flux.getActions('employees').createEmployee;
     this.updateAction = context.flux.getActions('employees').updateEmployee;
   }
-
+  handleFormHide = () => {
+    if (Object.keys(this.props.location.query).length > 0) {
+      this.props.history.replaceState(null, this.props.location.pathname, {});
+    }
+    this.props.onFormHide();
+  }
   render() {
     return this.props.showForm ?
       <EmployeeForm
@@ -29,7 +34,9 @@ export default class EmployeeFormWrap extends FormWrap {
         onSubmit={this.handleFormSubmit.bind(this)}
         handleFormChange={this.handleFormStateChange.bind(this)}
         show={this.props.showForm}
-        onHide={this.props.onFormHide}
+        onHide={this.handleFormHide}
+        location={this.props.location}
+        history={this.props.history}
       />
       : null;
   }

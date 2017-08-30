@@ -8,21 +8,18 @@ import ReportContainer from 'components/reports/common/ReportContainer';
 import ReportHeader from './ReportHeader';
 import DateFormatter from 'components/ui/DateFormatter';
 
-const serviceUrl = 'long_tech_maintenance';
-const reportUrl = 'long-tech-maintenance';
-const serviceName = 'LongTechMaintenance';
+const serviceUrl = 'autobase/reports/inquiry_expiring_date';
+const reportUrl = 'inquiry-expiring-date';
+const serviceName = 'InquiryExpiringDate';
 
 const schemaMakers = {};
 
 const renderers = {
-  fact_date_start: ({ data }) => <DateFormatter date={data} />,
-  fact_date_end: ({ data }) => <DateFormatter date={data} />,
-  plan_date_start: ({ data }) => <DateFormatter date={data} />,
-  plan_date_end: ({ data }) => <DateFormatter date={data} />,
+  inquiry_date_end: ({ data }) => <DateFormatter date={data} />,
 };
 
 const reportProps: IReportProps = {
-  title: 'Отчет по транспортным средствам, простаивающим длительное время в ремонтной зоне',
+  title: 'Перечень справок, по которым подходит дата окончания действия',
   serviceName,
   reportUrl,
   serviceUrl,

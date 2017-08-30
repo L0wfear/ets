@@ -43,6 +43,14 @@ export const formValidationSchema: IValidationSchema = {
       type: 'string',
       maxLength: 2048,
     },
+    {
+      key: 'cause_name',
+      title: 'Причина ДТП',
+    },
+    {
+      key: 'is_guilty',
+      title: 'Виновность',
+    },
   ],
   dependencies: {
     plan_date_end: [

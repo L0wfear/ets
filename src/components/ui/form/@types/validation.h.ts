@@ -13,6 +13,7 @@ interface IValidationSchemaProperties<TValue, TFormData> {
   type?:
     'number' |
     'string' |
+    'text' |
     'date' |
     'datetime'|
     'boolean' |

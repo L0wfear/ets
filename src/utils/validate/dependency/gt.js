@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import moment from 'moment';
 import { isEmpty } from 'utils/functions';
 
@@ -22,10 +21,9 @@ const fixedValidators = [
 
 function validate(config, value, dependentFieldConfig, dependentFieldValue, formData, schema) {
   // console.warn(`VALIDATING ${config.key} with data = ${data}`);
-  const error = _(fixedValidators)
+  const error = fixedValidators
     .map(({ validator }) => validator(config, value, dependentFieldConfig, dependentFieldValue, formData, schema))
-    .filter()
-    .first();
+    .filter(d => !!d)[0];
 
   return error;
 }

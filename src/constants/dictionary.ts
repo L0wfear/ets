@@ -2,6 +2,13 @@
  * Всё то, что не приходит с бэка для заполнения данными выпадающих списков и других элементов интерфейса.
  */
 
+export const AUTOBASE_REPAIR_STATUS = {
+  passed: 'Пройден',
+  failed: 'Не пройден',
+  planned: 'Запланирован',
+  in_progress: 'Прохождение',
+};
+
 export const MISSION_STATUS_LABELS = {
   assigned: 'Назначено',
   not_assigned: 'Не назначено',
@@ -36,3 +43,4 @@ export const SEQUENCE_1_TO_20_SELECT_OPTIONS = new Array(20).fill(0).map((item, 
 export const YES_NO_SELECT_OPTIONS_BOOL = [{ label: 'Да', value: true }, { label: 'Нет', value: false }];
 export const YES_NO_SELECT_OPTIONS_INT = [{ label: 'Да', value: 1 }, { label: 'Нет', value: 0 }];
 export const IS_NOT_SELECT_OPTIONS_INT = [{ label: 'Есть', value: 1 }, { label: 'Нет', value: 0 }];
+export const READ_NOT_SELECT_OPTIONS_INT = [{ label: 'Прочитано', value: 1 }, { label: 'Не прочитано', value: 0 }];

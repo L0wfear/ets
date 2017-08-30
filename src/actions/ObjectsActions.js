@@ -217,7 +217,7 @@ export default class ObjectsActions extends Actions {
     const response = await Country.get(payload);
 
     return {
-      data: response.result,
+      data: response.result.rows,
     };
   }
 

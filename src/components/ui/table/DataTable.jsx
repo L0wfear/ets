@@ -8,25 +8,17 @@ import Griddle from 'griddle-react';
 import { autobind } from 'core-decorators';
 import { isEmpty } from 'utils/functions';
 
+import {
+  isStringArrayData,
+  stringArrayDataMatching,
+  parseAdvancedFilter,
+  getFilterTypeByKey,
+} from './utils';
 import ColumnControl from './ColumnControl.jsx';
 import Filter from './filter/Filter.jsx';
 import FilterButton from './filter/FilterButton.jsx';
 import Paginator from '../Paginator.jsx';
 import Div from '../Div.jsx';
-
-const getFilterTypeByKey = (key, tableMeta) => {
-  const col = tableMeta.cols.find(c => c.name === key);
-  const colFilterType = col.filter && col.filter.type ? col.filter.type : '';
-  return colFilterType;
-};
-
-const isStringArrayData = (filterValue, fieldValue, fieldKey, tableMeta) =>
-  typeof filterValue === 'string' &&
-  Array.isArray(fieldValue) &&
-  getFilterTypeByKey(fieldKey, tableMeta) === 'string';
-
-const stringArrayDataMatching = (filterValue, fieldValueArray) =>
-  fieldValueArray.filter(v => v.match(filterValue) !== null).length > 0;
 
 @autobind
 export default class DataTable extends React.Component {
@@ -426,6 +418,10 @@ export default class DataTable extends React.Component {
         isValid = stringArrayDataMatching(value, obj[key]);
       } else if (typeof obj[key] === 'string') {
         isValid = stringArrayDataMatching(value, [obj[key]]);
+      } else if (_.isPlainObject(value) && Object.keys(value).length > 0) {
+        const metaCol = this.props.tableMeta.cols.find(item => item.name === key);
+        const filterType = _.get(metaCol, 'filter.type', '');
+        isValid = parseAdvancedFilter(value, key, obj[key], filterType);
       } else if (obj[key] !== value) {
         isValid = false;
       }

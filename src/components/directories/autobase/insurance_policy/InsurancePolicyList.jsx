@@ -27,11 +27,11 @@ export default class InsurancePolicyList extends ElementsList {
 
     if (car_id === -1) {
       flux.getActions('autobase').getAutobaseListByType('insurancePolicy');
+      flux.getActions('objects').getCars();
     } else {
       flux.getActions('autobase').getAutobaseListByType('insurancePolicy', { car_id });
       this.exportPayload = { car_id };
     }
     flux.getActions('autobase').getAutobaseListByType('insuranceType');
-    flux.getActions('objects').getCars();
   }
 }

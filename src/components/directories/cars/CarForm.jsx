@@ -96,6 +96,7 @@ class CarForm extends Form {
       isPermitted = false,
       techMaintListExtra = {},
       tabKey,
+      carsList = [],
       countryOptions = [],
       engineTypeList = [],
       propulsionTypeList = [],
@@ -196,6 +197,7 @@ class CarForm extends Form {
           <TabContent eventKey={CAR_TAB_INDEX.insurance_policy} tabKey={tabKey}>
             <InsurancePolicyList
               car_id={state.asuods_id}
+              carsList={carsList}
             />
           </TabContent>
 
@@ -220,12 +222,14 @@ class CarForm extends Form {
           <TabContent eventKey={CAR_TAB_INDEX.repair} tabKey={tabKey}>
             <RepairList
               car_id={state.asuods_id}
+              carsList={carsList}
             />
           </TabContent>
 
           <TabContent eventKey={CAR_TAB_INDEX.tech_inspection} tabKey={tabKey}>
             <TechInspectionList
               car_id={state.asuods_id}
+              carsList={carsList}
             />
           </TabContent>
         </ModalBody>

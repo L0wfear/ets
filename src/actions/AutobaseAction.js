@@ -121,6 +121,9 @@ export default class EmployeesActions extends Actions {
   }
 
   repair(method, boundPayload, formState) {
+    const { repair } = AUTOBASE;
+    const path = parsePutPath(repair, method, formState);
+
     const payload = Object.entries(formState).reduce((obj, [key, value]) => {
       if (key.includes('date')) {
         obj[key] = createValidDate(value);
@@ -130,9 +133,8 @@ export default class EmployeesActions extends Actions {
       return obj;
     }, {});
 
-    const { repair } = AUTOBASE;
+    if (!payload.fact_date_start || !payload.fact_date_end) delete payload.status;
 
-    const path = parsePutPath(repair, method, formState);
     return AutoBase.path(path)[method](
       payload,
       this.getAutobaseListByType.bind(null, 'repair', boundPayload),

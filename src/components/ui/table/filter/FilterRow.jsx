@@ -38,7 +38,6 @@ export default class FilterRow extends React.Component {
       availableOptions, onChange, onMultiChange, tableData } = this.props;
     let { value } = this.props;
     let input = <Input type="text" value={value} onChange={onChange} />;
-
     if (type) {
       if (type === 'select' || type === 'multiselect' || type === 'advanced-select-like') {
         let options = availableOptions || _(tableData)
@@ -56,13 +55,9 @@ export default class FilterRow extends React.Component {
           if (name === 'operation_id') {
             options = options.sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
           }
-          if (type === 'advanced-select-like') {
-            input = <EtsSelect options={options} value={value} onChange={onChange} fieldName={name} selectType="like" />;
-          } else {
-            input = <EtsSelect options={options} value={value} onChange={onChange} />;
-          }
+          input = <EtsSelect options={options} value={value} onChange={onChange} />;
         } else if (type === 'multiselect') {
-          if (value && !!value.length) value = value.filter(v => _.find(options, o => o.value+'' === v));
+          if (value && !!value.length) value = value.filter(v => _.find(options, o => `${o.value}` === v));
           input = (
             <Div className="filter-multiselect-container">
               <EtsSelect options={options} multi delimiter={'$'} value={value} onChange={onMultiChange} />

@@ -46,7 +46,7 @@ export default class EstSelect extends Component {
       }
     }
   }
-  // TODO Добавить человеческую обработку selectType
+
   handleChange = (linearValue, objectValue) => {
     const {
       emptyValue = '',
@@ -54,11 +54,7 @@ export default class EstSelect extends Component {
       fieldName,
     } = this.props;
 
-    if (selectType) {
-      this.props.onChange({ [`${fieldName}__${selectType}`]: linearValue === '' ? emptyValue : linearValue });
-    } else {
-      this.props.onChange(linearValue === '' ? emptyValue : linearValue, objectValue);
-    }
+    this.props.onChange(linearValue === '' ? emptyValue : linearValue, objectValue);
   }
   render() {
     const {

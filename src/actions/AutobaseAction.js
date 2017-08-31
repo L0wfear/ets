@@ -133,8 +133,6 @@ export default class EmployeesActions extends Actions {
       return obj;
     }, {});
 
-    if (!payload.fact_date_start || !payload.fact_date_end) delete payload.status;
-
     return AutoBase.path(path)[method](
       payload,
       this.getAutobaseListByType.bind(null, 'repair', boundPayload),

@@ -121,7 +121,7 @@ const Table: React.SFC<any> = props  => {
     car_id: ({ data }) => <div>{get(carsList.find(s => s.asuods_id === data), 'gov_number', '---')}</div>,
     repair_company_id: ({ data }) => <div>{get(repairCompanyList.find(s => s.id === data), 'name', '---')}</div>,
     repair_type_id: ({ data }) => <div>{get(repairTypeList.find(s => s.id === data), 'name', '---')}</div>,
-    status: ({ data }) => <div>{get(AUTOBASE_REPAIR_STATUS, data, '')}</div>,
+    status: ({ data }) => <div>{AUTOBASE_REPAIR_STATUS[data] && AUTOBASE_REPAIR_STATUS[data].name || '---' }</div>,
   };
 
   return (

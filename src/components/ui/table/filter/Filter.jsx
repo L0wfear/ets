@@ -31,6 +31,16 @@ export default class Filter extends React.Component {
     this.setState({ filterValues: props.values });
   }
 
+  // TODO сделано для adv...-select-like
+  // из-за с проблем с именем 
+  // переделать
+  getName(name, type) {
+    switch (type) {
+      case 'advanced-select-like': return `${name}__like`;
+      default: return name;
+    }
+  }
+
   handleFilterValueChange(key, e) {
     const filterValues = { ...this.state.filterValues };
 
@@ -86,19 +96,20 @@ export default class Filter extends React.Component {
     const filterRows = options.map((option, i) => {
       const { filter = {}, name, displayName } = option;
       const { type, labelFunction, options } = filter;
+      
       return (
         <FilterRow
           tableData={tableData}
           key={i}
-          value={filterValues[name]}
+          value={filterValues[this.getName(name, type)]}
           type={type}
-          name={name}
+          name={this.getName(name, type)}
           serverFieldName={filter.serverFieldName}
           labelFunction={labelFunction}
           availableOptions={options}
           displayName={displayName}
-          onChange={(...args) => this.handleFilterValueChange(name, ...args)}
-          onMultiChange={(...args) => this.handleFilterMultipleValueChange(name, ...args)}
+          onChange={(...args) => this.handleFilterValueChange(this.getName(name, type), ...args)}
+          onMultiChange={(...args) => this.handleFilterMultipleValueChange(this.getName(name, type), ...args)}
         />
       );
     });

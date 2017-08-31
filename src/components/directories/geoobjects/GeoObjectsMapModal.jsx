@@ -22,9 +22,10 @@ class GeoObjectsMapModal extends Component {
     };
   }
 
+  // TODO убрать запрос shape
   componentDidMount() {
     if (GORMOST_GEOOBJECTS_LIST.includes(this.props.entity)) {
-      this.context.flux.getActions('geoObjects').getGeozoneByTypeWithGeometry(this.props.entity, 'GormostService', {});
+      //this.context.flux.getActions('geoObjects').getGeozoneByTypeWithGeometry(this.props.entity, 'GormostService', {});
     } else {
       this.context.flux.getActions('geoObjects').getGeozoneByTypeWithGeometry(this.props.entity !== 'pgm' ? this.props.entity : 'pgm_store');
     }
@@ -32,9 +33,20 @@ class GeoObjectsMapModal extends Component {
 
   componentWillReceiveProps(props) {
     if (props.showForm) {
-      this.setState({
-        polys: _.pick(props[`${GEOOBJECTS_TYPES[props.entity]}Polys`], props.element.global_id || props.element.id)
-      })
+      if (GORMOST_GEOOBJECTS_LIST.includes(this.props.entity)) {
+        this.setState({
+          polys: {
+            [props.element.global_id]: {
+              data: props.element,
+              shape: JSON.parse(props.element.shape),
+            },
+          },
+        })
+      } else {
+        this.setState({
+          polys: _.pick(props[`${GEOOBJECTS_TYPES[props.entity]}Polys`], props.element.global_id || props.element.id)
+        })
+      }
     }
   }
 

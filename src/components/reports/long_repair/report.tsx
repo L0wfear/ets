@@ -12,7 +12,32 @@ const serviceUrl = 'autobase/reports/long_repair';
 const reportUrl = 'long-repair';
 const serviceName = 'LongRepair';
 
-const schemaMakers = {};
+const schemaMakers = {
+  fact_date_start: schema => ({
+    ...schema,
+    filter: {
+      type: 'date',
+    },
+  }),
+  fact_date_end: schema => ({
+    ...schema,
+    filter: {
+      type: 'date',
+    },
+  }),
+  plan_date_start: schema => ({
+    ...schema,
+    filter: {
+      type: 'date',
+    },
+  }),
+  plan_date_end: schema => ({
+    ...schema,
+    filter: {
+      type: 'date',
+    },
+  }),
+};
 
 const renderers = {
   fact_date_start: ({ data }) => <DateFormatter date={data} />,

@@ -37,7 +37,7 @@ export default class BaseTechInspectionForm extends Form {
       this.handleChange('car_id', car_id);
     }
   }
-
+  
   render() {
     const {
       isPermitted = false,
@@ -190,7 +190,7 @@ export default class BaseTechInspectionForm extends Form {
                 options={STATUS_LIST}
                 onChange={this.handleChange}
                 boundKeys={['status']}
-                disabled={!isPermitted}
+                disabled={!isPermitted || (!state.fact_date_start || !state.fact_date_end)}
               />
             </Col>
           </Row>

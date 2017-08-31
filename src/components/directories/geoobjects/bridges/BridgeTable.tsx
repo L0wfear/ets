@@ -30,6 +30,14 @@ export function tableMeta({
       },
       {
         name: 'location',
+        displayName: 'Местоположение объекта',
+        display: false,
+        type: 'string',
+        filter: false,
+      },
+
+      {
+        name: 'crossing',
         displayName: 'Пересечение',
         type: 'string',
         filter: {
@@ -49,9 +57,7 @@ export function tableMeta({
         displayName: 'Идентификатор моста',
         display: false,
         type: 'string',
-        filter: {
-          type: 'multiselect',
-        },
+        filter: false,
       },
     ],
   };

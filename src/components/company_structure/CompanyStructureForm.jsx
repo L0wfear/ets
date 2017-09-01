@@ -8,24 +8,20 @@ import Form from '../compositions/Form.jsx';
 
 class CompanyStructureForm extends Form {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      companyStructureLinearList: [],
-    };
-  }
-
   async componentDidMount() {
     this.company_id = this.context.flux.getStore('session').getCurrentUser().company_id;
-    const companyStructureLinearList = await this.context.flux.getActions('companyStructure').getLinearCompanyStructure();
-    this.setState({ companyStructureLinearList });
   }
 
   render() {
-    const state = this.props.formState;
-    const errors = this.props.formErrors;
-    const { companyStructureLinearList = [] } = this.state;
+    const [
+      state = {},
+      errors = {},
+    ] = [
+      this.props.formState,
+      this.props.formErrors,
+    ];
+
+    const { companyStructureLinearList = [] } = this.props;
     const { parent_id = false } = state;
 
     let COMPANY_ELEMENTS = companyStructureLinearList.filter(d => d.type !== 3).map(el => ({ value: el.id, label: el.name }));

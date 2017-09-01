@@ -3,10 +3,24 @@
  */
 
 export const AUTOBASE_REPAIR_STATUS = {
-  passed: 'Пройден',
-  failed: 'Не пройден',
-  planned: 'Запланирован',
-  in_progress: 'Прохождение',
+  passed: {
+    name: 'Пройден',
+  },
+  failed: {
+    name: 'Не пройден',
+  },
+  planned: {
+    name: 'Запланирован',
+    disabled: true,
+  },
+  in_progress: {
+    name: 'Прохождение',
+    disabled: true,
+  },
+  empty: {
+    name: undefined,
+    disabled: true,
+  }
 };
 
 export const MISSION_STATUS_LABELS = {

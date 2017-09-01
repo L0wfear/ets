@@ -78,7 +78,7 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: carsList.map(e => ({ label: e.gov_number, value: e.gov_number }))
+          options: carsList.map(e => ({ label: e.gov_number, value: e.gov_number })),
         },
       },
       {

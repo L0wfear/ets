@@ -80,7 +80,8 @@ const Bridges = ({ feature }) =>
   <div>
     <h5>Наименование</h5>{feature.name}
     <h5>Район</h5>{feature.district}
-    <h5>Пересечение</h5>{feature.location}
+    <h5>Местоположение объекта</h5>{feature.location}
+    <h5>Пересечение</h5>{feature.crossing}
     <h5>Год ввода в эксплуатацию</h5><DateFormatter date={feature.created_at} time={false} />
     <h5>Идентификатор моста</h5>{feature.global_id}
   </div>;

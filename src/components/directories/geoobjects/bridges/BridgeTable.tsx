@@ -4,7 +4,6 @@ import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
 import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 
 import DataTableComponent from 'components/ui/table/DataTable';
-import DateFormatter from 'components/ui/DateFormatter';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
@@ -21,7 +20,7 @@ export function tableMeta({
         },
       },
       {
-        name: 'district',
+        name: 'district_text',
         displayName: 'Район',
         type: 'string',
         filter: {
@@ -30,6 +29,14 @@ export function tableMeta({
       },
       {
         name: 'location',
+        displayName: 'Местоположение объекта',
+        display: false,
+        type: 'string',
+        filter: false,
+      },
+
+      {
+        name: 'crossing',
         displayName: 'Пересечение',
         type: 'string',
         filter: {
@@ -37,11 +44,11 @@ export function tableMeta({
         },
       },
       {
-        name: 'created_at',
+        name: 'year_of_commissioning',
         displayName: 'Год ввода в эксплуатацию',
-        type: 'date',
+        type: 'select',
         filter: {
-          type: 'date',
+          type: 'multiselect',
         },
       },
       {
@@ -49,9 +56,7 @@ export function tableMeta({
         displayName: 'Идентификатор моста',
         display: false,
         type: 'string',
-        filter: {
-          type: 'multiselect',
-        },
+        filter: false,
       },
     ],
   };
@@ -60,7 +65,6 @@ export function tableMeta({
 }
 
 export const renderers = {
-  created_at: ({ data }) => <DateFormatter date={data} time={false} />,
 };
 
 export default (props) => {
@@ -69,7 +73,6 @@ export default (props) => {
       title="Мосты"
       results={props.data}
       tableMeta={tableMeta(props)}
-      renderers={renderers}
       {...props}
     />
   );

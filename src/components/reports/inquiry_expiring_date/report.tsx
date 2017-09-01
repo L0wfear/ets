@@ -12,7 +12,14 @@ const serviceUrl = 'autobase/reports/inquiry_expiring_date';
 const reportUrl = 'inquiry-expiring-date';
 const serviceName = 'InquiryExpiringDate';
 
-const schemaMakers = {};
+const schemaMakers = {
+  inquiry_date_end: schema => ({
+    ...schema,
+    filter: {
+      type: 'date',
+    },
+  }),
+};
 
 const renderers = {
   inquiry_date_end: ({ data }) => <DateFormatter date={data} />,

@@ -3,6 +3,7 @@ import { cloneDeep, get, omit } from 'lodash';
 import { AutoBase } from 'api/Services';
 import AUTOBASE from '../constants/autobase.js';
 import { createValidDate } from '../utils/dates';
+import { AUTOBASE_REPAIR_STATUS } from '../constants/dictionary';
 
 const parsePutPath = (entity, method, formState, idKey = 'id') => `${entity}/${method === 'put' ? formState[idKey] : ''}`;
 const clearPayload = state => omit(state, ['rowNumber', 'isHighlighted', 'isSelected']);
@@ -132,6 +133,16 @@ export default class EmployeesActions extends Actions {
       }
       return obj;
     }, {});
+
+    if (!AUTOBASE_REPAIR_STATUS.passed.reduce((bool, key) => bool && !!payload[key], true)) {
+      if (AUTOBASE_REPAIR_STATUS.in_progress.has.reduce((bool, key) => bool && payload[key], true)) {
+        payload.status = 'in_progress';
+      } else if (AUTOBASE_REPAIR_STATUS.planned.has.reduce((bool, key) => bool && payload[key], true)) {
+        payload.status = 'planned';
+      } else {
+        delete payload.status;
+      }
+    }
 
     return AutoBase.path(path)[method](
       payload,

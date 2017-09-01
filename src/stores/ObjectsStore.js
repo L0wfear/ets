@@ -48,6 +48,7 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getCountry, this.handleGetCountry);
     
     this.register(companyStructreActions.getCompanyStructure, this.handleGetCompanyStructure);
+    this.register(companyStructreActions.getLinearCompanyStructure, this.handleGetLinearCompanyStructure);
     this.register(companyStructreActions.updateCompanyElement, this.handleGetCompanyStructure);
     this.register(companyStructreActions.deleteCompanyElement, this.handleGetCompanyStructure);
     this.register(companyStructreActions.createCompanyElement, this.handleGetCompanyStructure);
@@ -113,6 +114,10 @@ export default class ObjectsStore extends Store {
   handleGetCompanyStructure(companyStructure) {
     this.setState({ companyStructureList: companyStructure.result });
   }
+  handleGetLinearCompanyStructure(companyStructureLinear) {
+    this.setState({ companyStructureLinearList: companyStructureLinear });
+  }
+  handleGetLinearCompanyStructure
 
   handleGetCars(cars) {
     const carsList = cars.result.map((c) => {

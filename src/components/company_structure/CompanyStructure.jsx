@@ -1,49 +1,37 @@
 import React from 'react';
-import { autobind } from 'core-decorators';
-import _ from 'lodash';
-import connectToStores from 'flummox/connect';
+
+import { connectToStores, staticProps } from 'utils/decorators';
 import { Button, Glyphicon } from 'react-bootstrap';
 import ElementsList from 'components/ElementsList.jsx';
 import CompanyStructureFormWrap from './CompanyStructureFormWrap.jsx';
 import CompanyStructureTable from './CompanyStructureTable.jsx';
 
-@autobind
-class CompanyStructure extends ElementsList {
-
-  constructor(props) {
-    super(props);
-
-    this.mainListName = 'companyStructureLinearList';
-  }
-
-  async getLinearCompanyStructure() {
-    const companyStructureLinearList = await this.context.flux.getActions('companyStructure').getLinearCompanyStructure();
-    this.setState({ companyStructureLinearList });
-  }
+@connectToStores(['objects', 'session'])
+@staticProps({
+  listName: 'companyStructureLinearList',
+})
+export default class CompanyStructure extends ElementsList {
 
   componentDidMount() {
     super.componentDidMount();
 
     const { flux } = this.context;
     flux.getActions('companyStructure').getCompanyStructure();
-    this.getLinearCompanyStructure();
+    flux.getActions('companyStructure').getLinearCompanyStructure();
   }
 
-  componentWillReceiveProps(props) {
-    if (!_.isEqual(props.companyStructureList, this.props.companyStructureList)) {
-      // TODO переделать
-      setTimeout(() => this.getLinearCompanyStructure(), 100);
-    }
-  }
-
-  editElement(id, e) {
+  editElement = (id, e) => {
     e.stopPropagation();
-    const selectedElement = _.find(this.state.companyStructureLinearList, el => el.id ? el.id === id : el[this.selectField] === id);
+
+    const { companyStructureLinearList = [] } = this.props;
+    const selectedElement = companyStructureLinearList.find(el => el.id ? el.id === id : el[this.selectField] === id);
+
     this.setState({ showForm: true, selectedElement });
   }
 
-  deleteElement(id, e) {
+  deleteElement = (id, e) => {
     e.stopPropagation();
+
     if (confirm('Вы уверены, что хотите удалить выбранный элемент?')) {
       this.context.flux.getActions('companyStructure').deleteCompanyElement(id);
     }
@@ -71,5 +59,3 @@ class CompanyStructure extends ElementsList {
     );
   }
 }
-
-export default connectToStores(CompanyStructure, ['objects']);

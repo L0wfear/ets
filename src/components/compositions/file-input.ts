@@ -103,7 +103,7 @@ export const fileCountLimiter = withHandlers({
     }
 
     if (allFiles.length > maxCount) {
-      global.NOTIFICATION_SYSTEM.notify(`Максимальное количество файлов для загрузки не должо быть больше ${maxCount}`, 'warning');
+      global.NOTIFICATION_SYSTEM.notify(`Максимальное количество файлов для загрузки не должо превышать ${maxCount}`, 'warning');
       return;
     }
 
@@ -115,7 +115,7 @@ export const fileCountLimiter = withHandlers({
     // }
 
     if (sumFileSize > maxSize) {
-      global.NOTIFICATION_SYSTEM.notify(`Максимальный сумарный объём всех файлов для загрузки не должен быть больше ${MAX_SUM_FILE_SIZE_MB} Мб`, 'warning');
+      global.NOTIFICATION_SYSTEM.notify(`Максимальный суммарный объём всех файлов для загрузки не должен превышать ${MAX_SUM_FILE_SIZE_MB} Мб`, 'warning');
       return;
     }
 

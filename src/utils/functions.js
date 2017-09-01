@@ -175,3 +175,12 @@ export function flattenObject(inputObject) {
 export const kbToBytes = (count = 1) => count * Math.pow(1024, 1);
 export const mbToBytes = (count = 1) => count * Math.pow(1024, 2);
 export const gbToBytes = (count = 1) => count * Math.pow(1024, 3);
+
+export function fromIterableListToArray(itetableList) {
+  const array = [];
+  for (const item of itetableList) {
+    array.push(item);
+  }
+
+  return array;
+}

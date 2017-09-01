@@ -20,7 +20,7 @@ export function tableMeta({
         },
       },
       {
-        name: 'district',
+        name: 'district_text',
         displayName: 'Район',
         type: 'string',
         filter: {

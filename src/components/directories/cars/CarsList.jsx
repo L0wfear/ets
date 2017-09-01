@@ -25,6 +25,8 @@ export default class CarsList extends ElementsList {
     const { flux } = this.context;
 
     await flux.getActions('objects').getTypes();
+    await flux.getActions('objects').getSensorTypes();
+
     const cars = await flux.getActions('objects').getCars();
 
     if (this.props.location.query.asuods_id) {

@@ -57,10 +57,16 @@ export const isStringArrayData = (filterValue, fieldValue, fieldKey, tableMeta) 
   Array.isArray(fieldValue) &&
   getFilterTypeByKey(fieldKey, tableMeta) === 'string';
 
+export const isNumberSelectArrayData = (filterValue, fieldValue, fieldKey, tableMeta) =>
+  typeof filterValue === 'number' &&
+  Array.isArray(fieldValue) &&
+  getFilterTypeByKey(fieldKey, tableMeta) === 'select';
+
 export const stringArrayDataMatching = (filterValue, fieldValueArray) =>
   fieldValueArray.filter(v => v.match(filterValue) !== null).length > 0;
 
-
+export const numberArrayDataMatching = (filterValue, fieldValueArray) =>
+  fieldValueArray.filter(v => v === filterValue).length > 0;
 
 const floatFormatter = value => parseFloat(value);
 const defaultFormatter = value => value;

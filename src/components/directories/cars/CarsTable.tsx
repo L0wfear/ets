@@ -5,6 +5,7 @@ import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 
 import DataTableComponent from 'components/ui/table/DataTable';
 import { YES_NO_SELECT_OPTIONS_INT } from 'constants/dictionary';
+import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
@@ -12,6 +13,7 @@ const getCondition: ILabelFunction = data => !!data ? 'Исправно' : 'Не
 
 export function tableMeta({
   isOkrug = false,
+  sensorTypesList = [],
 } = {}): IDataTableSchema {
   const meta: IDataTableSchema = {
     cols: [
@@ -134,6 +136,23 @@ export function tableMeta({
           options: YES_NO_SELECT_OPTIONS_INT,
         },
       },
+      {
+        name: 'equipment_sensors_types_ids',
+        displayName: 'Установленные КБМ',
+        type: 'string',
+        filter: {
+          type: 'select',
+          options: sensorTypesList.map(defaultSelectListMapper),
+        },
+      },
+      {
+        name: 'level_sensors_num',
+        displayName: 'Количество установленных ДУТ',
+        type: 'number',
+        filter: {
+          type: 'multiselect',
+        },
+      },
     ],
   };
 
@@ -149,6 +168,7 @@ const Table: React.SFC<any> = props  => {
     is_common: ({ data }) => <input type="checkbox" disabled checked={!!data} />,
     company_name_customer: ({ rowData }) => <span>{rowData.company_name}</span>,
     company_name_contractor: ({ rowData }) => <span>{rowData.company_name}</span>,
+    equipment_sensors_types_ids: ({ rowData }) => <span>{rowData.equipment_sensors_str}</span>,
   };
 
   return (

@@ -46,9 +46,9 @@ export function tableMeta({
       {
         name: 'year_of_commissioning',
         displayName: 'Год ввода в эксплуатацию',
-        type: 'date',
+        type: 'select',
         filter: {
-          type: 'date',
+          type: 'multiselect',
         },
       },
       {

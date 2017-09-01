@@ -18,6 +18,7 @@ export default class UserNotificationFormWrap extends FormWrap {
         show={this.props.showForm}
         onHide={this.handleFormHide}
         markAllAsRead={this.handleMarkAllAsRead}
+        goHref={this.props.history.push}
       />
       : null;
   }

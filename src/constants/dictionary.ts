@@ -5,22 +5,39 @@
 export const AUTOBASE_REPAIR_STATUS = {
   passed: {
     name: 'Пройден',
+    has: [
+      'plan_date_start',
+      'plan_date_end',
+      'fact_date_start',
+      'fact_date_end',
+    ],
   },
   failed: {
     name: 'Не пройден',
+    has: [
+      'plan_date_start',
+      'plan_date_end',
+      'fact_date_start',
+      'fact_date_end',
+    ],
   },
   planned: {
     name: 'Запланирован',
+    has: [
+      'plan_date_start',
+      'plan_date_end',
+    ],
     disabled: true,
   },
   in_progress: {
     name: 'Прохождение',
+    has: [
+      'plan_date_start',
+      'plan_date_end',
+      'fact_date_start',
+    ],
     disabled: true,
   },
-  empty: {
-    name: undefined,
-    disabled: true,
-  }
 };
 
 export const MISSION_STATUS_LABELS = {

@@ -11,12 +11,6 @@ import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 import { AUTOBASE_REPAIR_STATUS } from 'constants/dictionary';
 import Form from 'components/compositions/Form.jsx';
 
-const STATUS_DISABLED_OPTIONS = Object.entries(AUTOBASE_REPAIR_STATUS).filter(([, value]) => value.disabled).map(([key, value]) => ({
-  value: key,
-  label: value.name,
-  disabled: true,
-}));
-
 const STATUS_SELECT_OPTIONS = Object.entries(AUTOBASE_REPAIR_STATUS).filter(([, value]) => !value.disabled).map(([key, value]) => ({
   value: key,
   label: value.name,
@@ -34,37 +28,6 @@ export default class BaseTechInspectionForm extends Form {
     if (car_id >= 0) {
       this.handleChange('car_id', car_id);
     }
-    this.handleChange('status', this.getStatus());
-  }
-
-  getStatus(inputData = {}) {
-    const {
-      plan_date_start = false,
-      plan_date_end = false,
-      fact_date_start = false,
-      fact_date_end = false,
-    } = this.props.formState;
-
-    const date = {
-      plan_date_start,
-      plan_date_end,
-      fact_date_start,
-      fact_date_end,
-      ...inputData,
-    };
-
-    if (date.plan_date_start && date.plan_date_end && !date.fact_date_start && !date.fact_date_end) {
-      return 'planned';
-    } else if (date.fact_date_start && !date.fact_date_end) {
-      return 'in_progress';
-    } else if (!date.plan_date_start || !date.plan_date_end || !date.fact_date_start || !date.fact_date_end) {
-      return 'empty';
-    }
-    return '';
-  }
-  dateHandleChange = (nameDate, date) => {
-    this.handleChange(nameDate, date);
-    this.handleChange('status', this.getStatus({ [nameDate]: date }));
   }
 
   render() {
@@ -86,7 +49,6 @@ export default class BaseTechInspectionForm extends Form {
     const CAR_LIST_OPTION = carsList.map(el => ({ value: el.asuods_id, label: el.gov_number }));
     const REPARE_COMPANY_OPTION = repairCompanyList.map(defaultSelectListMapper);
     const REPARE_TYPE_OPTION = repairTypeList.map(defaultSelectListMapper);
-    const STATUS_OPTION = state.status && AUTOBASE_REPAIR_STATUS[state.status].disabled ? STATUS_DISABLED_OPTIONS : STATUS_SELECT_OPTIONS || [];
 
     const IS_CREATING = !state.id;
 
@@ -151,7 +113,7 @@ export default class BaseTechInspectionForm extends Form {
                 date={state.plan_date_start}
                 time={false}
                 error={errors.plan_date_start}
-                onChange={this.dateHandleChange}
+                onChange={this.handleChange}
                 boundKeys={['plan_date_start']}
                 disabled={!isPermitted}
               />
@@ -161,7 +123,7 @@ export default class BaseTechInspectionForm extends Form {
                 date={state.plan_date_end}
                 time={false}
                 error={errors.plan_date_end}
-                onChange={this.dateHandleChange}
+                onChange={this.handleChange}
                 boundKeys={['plan_date_end']}
                 disabled={!isPermitted}
               />
@@ -171,7 +133,7 @@ export default class BaseTechInspectionForm extends Form {
                 date={state.fact_date_start}
                 time={false}
                 error={errors.fact_date_start}
-                onChange={this.dateHandleChange}
+                onChange={this.handleChange}
                 boundKeys={['fact_date_start']}
                 disabled={!isPermitted}
               />
@@ -181,7 +143,7 @@ export default class BaseTechInspectionForm extends Form {
                 date={state.fact_date_end}
                 time={false}
                 error={errors.fact_date_end}
-                onChange={this.dateHandleChange}
+                onChange={this.handleChange}
                 boundKeys={['fact_date_end']}
                 disabled={!isPermitted}
               />
@@ -212,16 +174,20 @@ export default class BaseTechInspectionForm extends Form {
                 isLoading={this.props.onOverlayLoading}
                 disabled={!isPermitted}
               />
-              <ExtField
-                type="select"
-                label={fields.status.displayName}
-                value={state.status}
-                error={errors.status}
-                options={STATUS_OPTION}
-                onChange={this.handleChange}
-                boundKeys={['status']}
-                disabled={!isPermitted || (AUTOBASE_REPAIR_STATUS[state.status] && AUTOBASE_REPAIR_STATUS[state.status].disabled)}
-              />
+              {
+                state.fact_date_start && state.fact_date_end &&
+                  <ExtField
+                    type="select"
+                    label="Итог проведенного ремонта"
+                    value={state.status}
+                    error={errors.status}
+                    options={STATUS_SELECT_OPTIONS}
+                    emptyValue={null}
+                    onChange={this.handleChange}
+                    boundKeys={['status']}
+                    disabled={!isPermitted}
+                  />
+              }
             </Col>
           </Row>
         </ExtDiv>

@@ -2,8 +2,9 @@ import * as React from 'react';
 import { Row, Col, Button as BootstrapButton } from 'react-bootstrap';
 import * as cx from 'classnames';
 
-import { onClickWithKeys } from 'components/compositions/hoc';
 import { IPropsFileInput, IStateFileInput, IFileWrapper } from './FileInput.h';
+
+import { onClickWithKeys } from 'components/compositions/hoc';
 
 const Button = onClickWithKeys(BootstrapButton);
 

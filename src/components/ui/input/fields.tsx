@@ -5,9 +5,13 @@ import {
   dateTimeFormatter,
   onChangeWithKeys,
   multiSelectFormatter,
+} from 'components/compositions/hoc';
+
+import {
   fileFormatter,
   fileCountLimiter,
-} from 'components/compositions/hoc';
+} from 'components/compositions/file-input';
+
 import BaseField from 'components/ui/Field';
 
 const BaseDataTimeField = withProps({

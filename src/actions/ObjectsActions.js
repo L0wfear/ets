@@ -24,9 +24,10 @@ import {
 
 import {
   MedicalStatsService,
+  SensorTypeService,
 } from 'api/nsi';
 
-function getTypes(payload = {}) {
+function getTypes(payload = {}, serviceName = 'TypesService') {
   return TypesService.get(payload).then(r => ({ result: r.result.rows }));
 }
 
@@ -61,6 +62,10 @@ export default class ObjectsActions extends Actions {
 
   getTypes() {
     return getTypes();
+  }
+
+  getSensorTypes() {
+    return SensorTypeService.get().then(r => ({ result: r.result.rows }));
   }
 
   getOrganizations() {

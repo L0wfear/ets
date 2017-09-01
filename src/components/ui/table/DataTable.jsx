@@ -10,7 +10,9 @@ import { isEmpty } from 'utils/functions';
 
 import {
   isStringArrayData,
+  isNumberSelectArrayData,
   stringArrayDataMatching,
+  numberArrayDataMatching,
   parseAdvancedFilter,
   getFilterTypeByKey,
 } from './utils';
@@ -414,8 +416,18 @@ export default class DataTable extends React.Component {
         } else if (value.findIndex(d => d.toLowerCase() === obj[key].toString().toLowerCase()) === -1) {
           isValid = false;
         }
+        /**
+         * Фильтр: строка
+         * Значение: массив строк
+         */
       } else if (isStringArrayData(value, obj[key], key, this.props.tableMeta)) {
         isValid = stringArrayDataMatching(value, obj[key]);
+        /**
+         * Фильтр: селект лист из чисел
+         * Значение: массив чисел
+         */
+      } else if (isNumberSelectArrayData(value, obj[key], key, this.props.tableMeta)) {
+        isValid = numberArrayDataMatching(value, obj[key]);
       } else if (typeof obj[key] === 'string') {
         isValid = stringArrayDataMatching(value, [obj[key]]);
       } else if (_.isPlainObject(value) && Object.keys(value).length > 0) {

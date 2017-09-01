@@ -18,6 +18,7 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getModels, this.handleGetModels);
     this.register(objectsActions.getSpecialModels, this.handleGetSpecialModels);
     this.register(objectsActions.getTypes, this.handleGetTypes);
+    this.register(objectsActions.getSensorTypes, this.handleGetSensorTypes);
     this.register(objectsActions.getCustomers, this.handleGetCustomers);
     this.register(objectsActions.getFuelTypes, this.handleGetFuelTypes);
     this.register(objectsActions.getWorkKinds, this.handleGetWorkKinds);
@@ -64,6 +65,7 @@ export default class ObjectsStore extends Store {
       track: {},
       customersList: [],
       typesList: [],
+      sensorTypesList: [],
       modelsList: [],
       specialModelsList: [],
       fuelTypes: [],
@@ -148,6 +150,9 @@ export default class ObjectsStore extends Store {
     const typesList = result;
     const typesIndex = _.keyBy(typesList, 'asuods_id');
     this.setState({ typesList, typesIndex });
+  }
+  handleGetSensorTypes({ result }) {
+    this.setState({ sensorTypesList: result });
   }
 
   handleGetCustomers(customersList) {

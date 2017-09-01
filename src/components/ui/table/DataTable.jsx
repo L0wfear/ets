@@ -559,35 +559,40 @@ export default class DataTable extends React.Component {
 
     return (
       <Div className={tableClassName}>
-        <Div className="some-header" hidden={noHeader}>{noTitle ? '' : title}
-          <div className="waybills-buttons">
-            {columnControl &&
-              <ClickOutHandler onClickOut={this.closeColumnControl}>
-                <ColumnControl
-                  show={this.state.columnControlModalIsOpen}
-                  onChange={this.saveColumnControl}
-                  onClick={this.toggleColumnControl}
-                  values={this.state.columnControlValues}
-                  options={tableMetaCols.filter(el => el.display !== false)}
+        <Div className="some-header" hidden={noHeader}>
+          <div style={{ display: 'flex', 'justify-content': 'space-between' }}>
+            <div>
+              {noTitle ? '' : title}
+            </div>
+            <div className="waybills-buttons">
+              {columnControl &&
+                <ClickOutHandler onClickOut={this.closeColumnControl}>
+                  <ColumnControl
+                    show={this.state.columnControlModalIsOpen}
+                    onChange={this.saveColumnControl}
+                    onClick={this.toggleColumnControl}
+                    values={this.state.columnControlValues}
+                    options={tableMetaCols.filter(el => el.display !== false)}
+                  />
+                </ClickOutHandler>
+              }
+              {!noFilter &&
+                <FilterButton
+                  show={this.state.filterModalIsOpen}
+                  active={!!Object.keys(this.state.filterValues).length}
+                  onClick={this.toggleFilter}
                 />
-              </ClickOutHandler>
-            }
-            {!noFilter &&
-              <FilterButton
-                show={this.state.filterModalIsOpen}
-                active={!!Object.keys(this.state.filterValues).length}
-                onClick={this.toggleFilter}
-              />
-            }
-            {refreshable &&
-              <Button
-                bsSize="small"
-                onClick={this.props.onRefresh}
-              >
-                <Glyphicon glyph="refresh" />
-              </Button>
-            }
-            {this.props.children}
+              }
+              {refreshable &&
+                <Button
+                  bsSize="small"
+                  onClick={this.props.onRefresh}
+                >
+                  <Glyphicon glyph="refresh" />
+                </Button>
+              }
+              {this.props.children}
+            </div>
           </div>
           {!noFilter &&
             <Filter

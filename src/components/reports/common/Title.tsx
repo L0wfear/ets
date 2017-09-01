@@ -14,7 +14,7 @@ const Title: React.StatelessComponent<IPropsTitle> = props => {
   );
 
   return (
-    <div className="car-usage-report-title">
+    <div style={{ display: 'flex' }}>
       <span>{props.text}</span>
       {
         !!props.hint &&

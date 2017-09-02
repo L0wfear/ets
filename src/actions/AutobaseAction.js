@@ -134,7 +134,7 @@ export default class EmployeesActions extends Actions {
       return obj;
     }, {});
 
-    if (!AUTOBASE_REPAIR_STATUS.passed.reduce((bool, key) => bool && !!payload[key], true)) {
+    if (!AUTOBASE_REPAIR_STATUS.passed.has.reduce((bool, key) => bool && !!payload[key], true)) {
       if (AUTOBASE_REPAIR_STATUS.in_progress.has.reduce((bool, key) => bool && payload[key], true)) {
         payload.status = 'in_progress';
       } else if (AUTOBASE_REPAIR_STATUS.planned.has.reduce((bool, key) => bool && payload[key], true)) {

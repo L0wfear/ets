@@ -55,7 +55,10 @@ class CarForm extends Form {
   }
   render() {
     const state = this.props.formState;
-    const { isPermitted = false, techMaintListExtra = {} } = this.props;
+    const {
+      isPermitted = false,
+      techMaintListExtra = {},
+    } = this.props;
     const { companyStructureList = [] } = this.state;
     const COMPANY_ELEMENTS = companyStructureList.map(el => ({ value: el.id, label: el.name }));
 
@@ -133,7 +136,7 @@ class CarForm extends Form {
           <TabContent eventKey="7" tabKey={this.props.tabKey}>
             <TechInspectionList
               car_id={state.asuods_id}
-            />
+             />
           </TabContent>
         </ModalBody>
 

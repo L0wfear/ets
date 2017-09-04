@@ -88,7 +88,7 @@ export default class DashboardStore extends Store {
     const { componentsIndex } = this.state;
     let { componentsList } = this.state;
     if (!component.result) return;
-    const componentSchema = _.find(this.getComponentsByPermissions(dashboardComponentsKeyList, []), c => c.key === key);
+    const componentSchema = _.find(this.getComponentsByPermissionsAll(), c => c.key === key);
     if (!componentSchema) return;
     component.result.id = componentSchema.id;
     component.result.key = key;
@@ -98,6 +98,10 @@ export default class DashboardStore extends Store {
     componentsIndex[key] = component.result;
     componentsList = _(componentsIndex).toArray().sortBy('id').value();
     this.setState({ componentsList, componentsIndex });
+  }
+
+  getComponentsByPermissionsAll() {
+    return this.getComponentsByPermissions(dashboardComponentsKeyList, []);
   }
 
   getComponentsByPermissions(goodUpdateKeyList = dashboardComponentsKeyList, reduntUpdateList = ['current_missions']) {

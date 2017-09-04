@@ -31,9 +31,9 @@ export default class DashboardPage extends React.Component {
   }
 
   componentDidMount() {
-    this.componentsUpdateInterval = setTimeout(
+    this.componentsUpdateInterval = setInterval(
       this.refreshComponents.bind(this),
-      1000 * ((2 * 60) + (Math.round(Math.random() * 21) - 10))
+      (1000 * (2 * 60))
     );
     this.currentMissionsUpdateInterval = setInterval(
       this.refreshComponentCurrentMission.bind(this),
@@ -47,6 +47,7 @@ export default class DashboardPage extends React.Component {
   componentWillUnmount() {
     clearInterval(this.componentsUpdateInterval);
     clearInterval(this.currentMissionsUpdateInterval);
+    Object.values(this.componentsInterval).forEach(clearInterval)
     document.getElementsByTagName('html')[0].classList.remove('overflow-scroll');
   }
 
@@ -54,21 +55,21 @@ export default class DashboardPage extends React.Component {
     const { flux } = this.context;
     flux.getActions('geoObjects').getGeozones();
     const actions = flux.getActions('dashboard');
-    const components = flux.getStore('dashboard').getComponentsByPermissions(['current_missions'], []);
-    components.push(...flux.getStore('dashboard').getComponentsByPermissions());
+    const components = flux.getStore('dashboard').getComponentsByPermissionsAll();
+    this.componentsInterval = {};
+
     _.each(components, c => actions.getDashboardComponent(c.key));
   }
 
   refreshComponents() {
     const { flux } = this.context;
-    const time = 1000 * ((2 * 60) + (Math.round(Math.random() * 21) - 10));
-    const components = flux.getStore('dashboard').getComponentsByPermissions();
-    components.forEach(c => c.key !== this.state.itemOpenedKey ? this.refreshCard(c.key) : null);
 
-    this.componentsUpdateInterval = setTimeout(
-      this.refreshComponents.bind(this),
-      time,
-    );
+    const components = flux.getStore('dashboard').getComponentsByPermissions();
+    components.forEach((c) => {
+      if (c.key !== this.state.itemOpenedKey) {
+        this.componentsInterval[c.key] = setTimeout(this.refreshCard.bind(this, c.key), 1000 * Math.round(Math.random() * 21));
+      }
+    });
   }
 
   refreshComponentCurrentMission() {

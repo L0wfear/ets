@@ -31,13 +31,22 @@ export default class DashboardPage extends React.Component {
   }
 
   componentDidMount() {
-    this.componentsUpdateInterval = setInterval(this.refreshAll.bind(this), 1000 * 60);
+    this.componentsUpdateInterval = setTimeout(
+      this.refreshComponents.bind(this),
+      1000 * ((2 * 60) + (Math.round(Math.random() * 21) - 10))
+    );
+    this.currentMissionsUpdateInterval = setInterval(
+      this.refreshComponentCurrentMission.bind(this),
+      (1000 * 60)
+    );
+
     document.getElementsByTagName('html')[0].classList.add('overflow-scroll');
     this.init();
   }
 
   componentWillUnmount() {
     clearInterval(this.componentsUpdateInterval);
+    clearInterval(this.currentMissionsUpdateInterval);
     document.getElementsByTagName('html')[0].classList.remove('overflow-scroll');
   }
 
@@ -45,14 +54,27 @@ export default class DashboardPage extends React.Component {
     const { flux } = this.context;
     flux.getActions('geoObjects').getGeozones();
     const actions = flux.getActions('dashboard');
-    const components = flux.getStore('dashboard').getComponentsByPermissions();
+    const components = flux.getStore('dashboard').getComponentsByPermissions(['current_missions'], []);
+    components.push(...flux.getStore('dashboard').getComponentsByPermissions());
     _.each(components, c => actions.getDashboardComponent(c.key));
   }
 
-  refreshAll() {
+  refreshComponents() {
     const { flux } = this.context;
+    const time = 1000 * ((2 * 60) + (Math.round(Math.random() * 21) - 10));
     const components = flux.getStore('dashboard').getComponentsByPermissions();
-    _.each(components, c => c.key !== this.state.itemOpenedKey ? this.refreshCard(c.key) : null);
+    components.forEach(c => c.key !== this.state.itemOpenedKey ? this.refreshCard(c.key) : null);
+
+    this.componentsUpdateInterval = setTimeout(
+      this.refreshComponents.bind(this),
+      time,
+    );
+  }
+
+  refreshComponentCurrentMission() {
+    const { flux } = this.context;
+    const components = flux.getStore('dashboard').getComponentsByPermissions(['current_missions'], []);
+    components.forEach(c => c.key !== this.state.itemOpenedKey ? this.refreshCard(c.key) : null);
   }
 
   refreshCard(key, id, forcedKey) {

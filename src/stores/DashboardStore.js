@@ -61,6 +61,8 @@ const dashboardComponents = [
   // },
 ];
 
+const dashboardComponentsKeyList = dashboardComponents.reduce((arr, obj) => [...arr, obj.key], []);
+
 export default class DashboardStore extends Store {
 
   static get initialState() {
@@ -86,7 +88,7 @@ export default class DashboardStore extends Store {
     const { componentsIndex } = this.state;
     let { componentsList } = this.state;
     if (!component.result) return;
-    const componentSchema = _.find(this.getComponentsByPermissions(), c => c.key === key);
+    const componentSchema = _.find(this.getComponentsByPermissions(dashboardComponentsKeyList, []), c => c.key === key);
     if (!componentSchema) return;
     component.result.id = componentSchema.id;
     component.result.key = key;
@@ -98,16 +100,19 @@ export default class DashboardStore extends Store {
     this.setState({ componentsList, componentsIndex });
   }
 
-  getComponentsByPermissions() {
+  getComponentsByPermissions(goodUpdateKeyList = dashboardComponentsKeyList, reduntUpdateList = ['current_missions']) {
     const { permissions = [] } = this.flux.getStore('session').getCurrentUser();
+
     const dashboardPermissions = permissions
       .map(p => p.toLowerCase())
       .filter(p => p.indexOf('dashboard') + 1)
       .map(p => p.replace('dashboard.', ''))
-      .concat(['external_applications']);
-    return dashboardComponents.filter(c => dashboardPermissions.indexOf(c.key) + 1);
-  }
+      .concat(['external_applications'])
+      .filter(p => !reduntUpdateList.includes(p))
+      .filter(p => goodUpdateKeyList.includes(p));
 
+    return dashboardComponents.filter(c => dashboardPermissions.includes(c.key));
+  }
   resetState() {
     this.setState(_.cloneDeep(DashboardStore.initialState));
   }

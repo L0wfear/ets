@@ -1,16 +1,16 @@
 import React, { Component, PropTypes } from 'react';
-import { autobind } from 'core-decorators';
 import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
 import _ from 'lodash';
 import cx from 'classnames';
+import FluxComponent from 'flummox/component';
 import connectToStores from 'flummox/connect';
+
 import Div from 'components/ui/Div.jsx';
 import Filter from 'components/ui/table/filter/Filter.jsx';
 import FilterButton from 'components/ui/table/filter/FilterButton.jsx';
 import RouteInfo from './RouteInfo.jsx';
 import RouteFormWrap from './RouteFormWrap.jsx';
 
-@autobind
 class RoutesList extends Component {
 
   static get propTypes() {
@@ -44,6 +44,9 @@ class RoutesList extends Component {
     flux.getActions('technicalOperation').getTechnicalOperations(true);
     flux.getActions('technicalOperation').getTechnicalOperationsObjects();
     flux.getActions('geoObjects').getGeozones();
+    flux.getActions('geoObjects').getGeozoneByTypeWithGeometry('bridges', 'GormostService', {});
+    flux.getActions('geoObjects').setSelectedPolysType('bridges');
+
     if (this.props.location.query) {
       const filterValues = {};
       _.mapKeys(this.props.location.query, (v, k) => {
@@ -53,14 +56,12 @@ class RoutesList extends Component {
     }
   }
 
-  onFormHide() {
+  onFormHide = () => {
     this.setState({
       showForm: false,
       selectedRoute: null,
     });
   }
-
-
 
   getTypeRoute(type) {
     switch (type) {
@@ -81,7 +82,7 @@ class RoutesList extends Component {
     return this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
   }
 
-  selectedRoute(selectedRouter) {
+  selectedRoute = (selectedRouter) => {
     const { showId } = this.state;
 
     const STRUCTURES = this.getStructures();
@@ -115,29 +116,29 @@ class RoutesList extends Component {
     return isValid;
   }
 
-  closeFilter() {
+  closeFilter = () => {
     if (this.state.filterModalIsOpen === true) {
       this.setState({ filterModalIsOpen: false });
     }
   }
 
-  toggleFilter() {
+  toggleFilter = () => {
     this.setState({ filterModalIsOpen: !this.state.filterModalIsOpen });
   }
 
-  saveFilter(filterValues) {
+  saveFilter = (filterValues) => {
     console.info('SETTING FILTER VALUES', filterValues);
     this.setState({ filterValues });
   }
 
-  selectRoute(id) {
+  selectRoute = (id) => {
     const { flux } = this.context;
     flux.getActions('routes').getRouteById(id).then((route) => {
       this.setState({ selectedRoute: route });
     });
   }
 
-  createRoute() {
+  createRoute = () => {
     const newR = {
       name: '',
       polys: {},
@@ -151,7 +152,7 @@ class RoutesList extends Component {
     });
   }
 
-  copyRoute() {
+  copyRoute = () => {
     const copiedRoute = _.cloneDeep(this.state.selectedRoute);
     delete copiedRoute.name;
     delete copiedRoute.id;
@@ -162,7 +163,7 @@ class RoutesList extends Component {
     });
   }
 
-  deleteRoute() {
+  deleteRoute = () => {
     if (confirm('Вы уверены, что хотите удалить выбранный маршрут?')) {
       const { flux } = this.context;
       flux.getActions('routes').removeRoute(this.state.selectedRoute);
@@ -170,17 +171,17 @@ class RoutesList extends Component {
     }
   }
 
-  editRoute(route) {
+  editRoute = (route) => {
     this.setState({
       selectedRoute: route,
     });
   }
 
-  handleChange(selectedRoute) {
+  handleChange = (selectedRoute) => {
     this.setState({ selectedRoute });
   }
 
-  handleDropdown(name) {
+  handleDropdown = (name) => {
     const { showId } = this.state;
     const i = this.state.showId.indexOf(name);
     if (i < 0) {
@@ -191,7 +192,7 @@ class RoutesList extends Component {
     this.setState({ showId });
   }
 
-  renderItem(collection, parentName = '') {
+  renderItem = (collection, parentName = '') => {
     if (Array.isArray(collection)) {
       return collection.map((r, i) => {
         const cn = cx('sidebar__list-item', { 'active': this.state.selectedRoute && r.id === this.state.selectedRoute.id });
@@ -221,7 +222,7 @@ class RoutesList extends Component {
   }
 
   render() {
-    let { routesList = [] } = this.props;
+    const { routesList = [] } = this.props;
     const { technicalOperationsList = [], technicalOperationsObjectsList = [] } = this.props;
     const route = this.state.selectedRoute;
 
@@ -256,7 +257,8 @@ class RoutesList extends Component {
           type: 'multiselect',
           options: STRUCTURES,
         },
-      }); }
+      });
+    }
 
     let ROUTES = _.cloneDeep(routesList).filter(r => this.shouldBeRendered(r));
     ROUTES = _.sortBy(ROUTES, o => o.name.toLowerCase());
@@ -322,13 +324,21 @@ class RoutesList extends Component {
               <Div hidden={this.state.showForm || route === null}>
                 <RouteInfo route={route} />
               </Div>
-              <RouteFormWrap
-                element={route}
-                onFormHide={this.onFormHide}
-                selectedRoute={this.selectedRoute}
-                showForm={this.state.showForm}
-                routesList={routesList}
-              />
+              <FluxComponent
+                connectToStores={{
+                  geoObjects: store => ({
+                    bridgesPolys: store.getSelectedPolys(),
+                  }),
+                }}
+              >
+                <RouteFormWrap
+                  element={route}
+                  onFormHide={this.onFormHide}
+                  selectedRoute={this.selectedRoute}
+                  showForm={this.state.showForm}
+                  routesList={routesList}
+                />
+              </FluxComponent>
             </div>
           </Col>
         </Row>
@@ -338,4 +348,4 @@ class RoutesList extends Component {
   }
 }
 
-export default connectToStores(RoutesList, ['routes', 'objects']);
+export default connectToStores(RoutesList, ['routes', 'objects', 'geoObjects']);

@@ -155,7 +155,7 @@ export default class PolyMap extends Component {
     const vectorSource = new ol.source.Vector();
     let styleFunction = polyStyles[polyState.SELECTABLE];
 
-    each(polys, (poly, key) => {
+    Object.entries(polys).forEach(([key, poly]) => {
       const feature = new ol.Feature({
         geometry: GeoJSON.readGeometry(poly.shape),
         name: poly.name,

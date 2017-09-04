@@ -136,6 +136,7 @@ export default class GeoObjectsStore extends Store {
       polys[geozone.global_id || geozone.id] = Object.assign({}, {
         shape,
         data: geozone,
+        state: 1,
       });
     });
     const polysByType = `${type}Polys`;

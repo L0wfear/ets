@@ -14,7 +14,7 @@ import missionProgress from './mission_progress/report.ts';
 import routeOdhCoverage from './route_odh_coverage/report';
 import * as daily from './daily';
 import cleaningStatusTechOp from './cleaning_status_tech_op/report.tsx';
-import carUsage from './car_usage/report';
+import carUsageReportWithTrack from './car_usage_report_with_track/report';
 import brigadeEfficiency from './brigade_efficiency/report.tsx';
 import employeeEfficiency from './employee_efficiency/report.ts';
 import trackEvents from './track_events/Report';
@@ -35,7 +35,7 @@ export {
   cleaningStatusTechOp,
   odhCoverageReport,
   dtCoverageReport,
-  carUsage,
+  carUsageReportWithTrack,
   brigadeEfficiency,
   employeeEfficiency,
   trackEvents,

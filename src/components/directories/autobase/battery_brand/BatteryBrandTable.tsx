@@ -14,13 +14,13 @@ export function tableMeta({
       {
         name: 'name',
         displayName: 'Марка аккумулятора',
-        type: 'text',
+        type: 'select',
         filter: { type: 'multiselect' },
       },
       {
         name: 'manufacturer_name',
         displayName: 'Производитель аккумулятора',
-        type: 'text',
+        type: 'select',
         cssClassName: 'width300',
         filter: {
           type: 'multiselect',

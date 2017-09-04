@@ -15,7 +15,7 @@ export const tableMeta = ({
       {
         name: 'company_name',
         displayName: 'Организация',
-        type: 'text',
+        type: 'string',
         orderNum: 2,
         filter: {
           type: 'multiselect',
@@ -25,7 +25,7 @@ export const tableMeta = ({
       {
         name: 'brand_id',
         displayName: 'Марка аккумулятора',
-        type: 'text',
+        type: 'string',
         orderNum: 2,
         filter: {
           type: 'multiselect',
@@ -35,7 +35,7 @@ export const tableMeta = ({
       {
         name: 'serial_number',
         displayName: 'Серийный номер',
-        type: 'text',
+        type: 'string',
         orderNum: 3,
         filter: {
           type: 'multiselect',
@@ -44,10 +44,10 @@ export const tableMeta = ({
       {
         name: 'lifetime_months',
         displayName: 'Срок службы',
-        type: 'text',
+        type: 'number',
         orderNum: 4,
         filter: {
-          type: 'text',
+          type: 'number',
         },
       },
       {
@@ -62,7 +62,7 @@ export const tableMeta = ({
       {
         name: 'manufacturer_id',
         displayName: 'Изготовитель',
-        type: 'text',
+        type: 'select',
         orderNum: 6,
         filter: {
           type: 'multiselect',
@@ -82,7 +82,7 @@ export const tableMeta = ({
         name: 'gov_number',
         displayName: 'Рег. номер ТС',
         orderNum: 7,
-        type: 'text',
+        type: 'select',
         filter: {
           type: 'multiselect',
         },
@@ -90,7 +90,7 @@ export const tableMeta = ({
       {
         name: 'installed_at',
         displayName: 'Дата установки',
-        type: '',
+        type: 'date',
         orderNum: 8,
         filter: {
           type: 'date',

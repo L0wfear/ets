@@ -560,7 +560,7 @@ export default class DataTable extends React.Component {
     return (
       <Div className={tableClassName}>
         <Div className="some-header" hidden={noHeader}>
-          <div style={{ display: 'flex', 'justify-content': 'space-between' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <div>
               {noTitle ? '' : title}
             </div>

@@ -55,7 +55,7 @@ function TextAreaField(props) {
         disabled={readOnly}
         onChange={props.onChange}
         value={value}
-      >{value}</textarea>
+      />
       <Div hidden={!error} className="error">{error}</Div>
     </Div>
   );

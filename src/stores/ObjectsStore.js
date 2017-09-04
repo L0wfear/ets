@@ -211,8 +211,9 @@ export default class ObjectsStore extends Store {
     this.setState({ maintenanceRateList });
   }
 
-  handleGetCleanCategories(categories) {
-    this.setState({ cleanCategoriesList: categories.result });
+  handleGetCleanCategories(r) {
+    const cleanCategoriesList = r.result.rows || r.result;
+    this.setState({ cleanCategoriesList });
   }
 
   handleGetUserActionLog(userActionLogList) {

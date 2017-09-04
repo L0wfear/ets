@@ -122,7 +122,7 @@ export default class RouteForm extends Form {
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
-    const { object_list = [], draw_object_list = [] } = state;
+
     const { ROUTE_TYPE_OPTIONS, technicalOperationsList = [] } = this.state;
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
 
@@ -221,7 +221,12 @@ export default class RouteForm extends Form {
                     Выбор из ОДХ
                   </Button>
                 </Div>
-                <RouteCreating route={state} manual={this.state.vector || state.type === 'points'} onChange={this.handleChange} />
+                <RouteCreating
+                  route={state}
+                  manual={this.state.vector || state.type === 'points'}
+                  onChange={this.handleChange}
+                  bridgesPolys={this.props.bridgesPolys}
+                />
               </Col>
             </Div>
           </Row>
@@ -235,7 +240,7 @@ export default class RouteForm extends Form {
               <Button disabled={!canSave} onClick={this.handleSubmit.bind(this, 0)}>{state.id ? 'Сохранить' : 'Создать'}</Button>
             </div>
             :
-              <Button disabled={!canSave} onClick={this.handleSubmit.bind(this, 1)}>Сохранить как шаблон</Button>
+            <Button disabled={!canSave} onClick={this.handleSubmit.bind(this, 1)}>Сохранить как шаблон</Button>
           }
         </Modal.Footer>
 

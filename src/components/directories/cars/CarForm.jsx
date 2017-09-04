@@ -74,7 +74,6 @@ class CarForm extends Form {
     flux.getActions('autobase').getAutobaseListByType('engineType');
     flux.getActions('autobase').getAutobaseListByType('propulsionType');
     flux.getActions('autobase').getAutobaseListByType('carCategory');
-    flux.getActions('objects').getTypes();
 
     this.setState({ companyStructureList });
   }
@@ -102,6 +101,7 @@ class CarForm extends Form {
       carCategoryList = [],
       typesList = [],
     } = this.props;
+    console.log(typesList)
     const { companyStructureList = [] } = this.state;
     const COMPANY_ELEMENTS = companyStructureList.map(defaultSelectListMapper);
     const engineTypeOptions = engineTypeList.map(defaultSelectListMapper);

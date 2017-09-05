@@ -28,6 +28,7 @@ export default class BaseTechInspectionForm extends Form {
     if (car_id >= 0) {
       this.handleChange('car_id', car_id);
     }
+    this.handleChange('status', 'failed');
   }
 
   render() {

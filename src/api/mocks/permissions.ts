@@ -5,7 +5,6 @@ export function getFullAccess(entity) {
 }
 
 export const autobase: string[] = [
-  ...getFullAccess('autobase_tire_model'),
 ];
 
 export const userNotification: string[] = [

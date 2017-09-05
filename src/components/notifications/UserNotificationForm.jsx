@@ -44,7 +44,7 @@ const tech_inspection = ({ data: { tech_inspection_reg_number, car_id }, handleC
   <MainVehicleDesc
     linkText={tech_inspection_reg_number}
     textInfo="о государственном техосмотре"
-    onChandleClicklick={() => handleClick('cars', {
+    handleClick={() => handleClick('cars', {
       asuods_id: car_id,
       active_tab: CAR_TAB_INDEX.tech_inspection,
     })}
@@ -96,14 +96,7 @@ export default class UserNotificationForm extends Form {
     }
   }
   handleClick = (pathComponent, query) => {
-    const { goHref } = this.props;
-    const queryString = Object.entries(query).reduce((arr, [key, value]) => {
-      arr.push(`${key}=${value}`);
-      return arr;
-    },
-    []).join('&');
-
-    goHref(`${pathComponent}?${queryString}`);
+    this.props.history.replaceState(null, `/${pathComponent}`, query);
   }
   render() {
     const state = this.props.formState;

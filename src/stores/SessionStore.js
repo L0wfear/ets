@@ -109,14 +109,19 @@ export default class SessionStore extends Store {
 
   getPermission(permissionName) {
     const { permissions } = this.state.currentUser;
+    const permissionsReduce = permissions.reduce(
+      (obj, onePermission) => {
+        obj[onePermission] = onePermission;
+        return obj;
+      },
+      {},
+    );
+    console.log(permissionName)
     if (Array.isArray(permissionName)) {
-      permissionName.forEach((permission) => {
-        if (permissions.indexOf(permission) === -1) return false;
-      });
-      return true;
+      return permissionName.reduce((bool, permission) => bool && !!permissionsReduce[permission], true);
     }
 
-    return !!(permissions.indexOf(permissionName) + 1);
+    return !!permissionsReduce[permissionName];
   }
 
 }

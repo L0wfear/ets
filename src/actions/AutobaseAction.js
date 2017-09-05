@@ -341,4 +341,24 @@ export default class EmployeesActions extends Actions {
       'json',
     );
   }
+
+  tireModel(method, formState) {
+    const payload = cloneDeep(formState);
+    const { tireModel } = AUTOBASE;
+
+    const path = parsePutPath(tireModel, method, formState);
+    return AutoBase.path(path)[method](
+      payload,
+      this.getAutobaseListByType.bind(null, 'tireModel'),
+      'json',
+    );
+  }
+  removeTireModel(id) {
+    const { tireModel } = AUTOBASE;
+    return AutoBase.path(`${tireModel}/${id}`).delete(
+      {},
+      this.getAutobaseListByType.bind(null, 'tireModel'),
+      'json',
+    );
+  }
 }

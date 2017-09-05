@@ -46,6 +46,7 @@ const Table: React.SFC<any> = props  => (
     title="Реестр ремонтных организаций"
     results={props.data}
     tableMeta={tableMeta(props)}
+    lowerCaseSorting
     {...props}
   />
 );

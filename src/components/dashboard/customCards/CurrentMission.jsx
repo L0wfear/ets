@@ -162,7 +162,7 @@ export default class CurrentMission extends DashboardCardMedium {
     const traveledAndCheck_unit = checkFixed([report_data.traveled, report_data.check_unit], 'TWO_F');
     const traveled_high_speedAndCheck_unit = checkFixed([report_data.traveled_high_speed, report_data.check_unit], 'TWO_F');
     const sensor_traveled_workingAndCheck_unit = checkFixed([sensor_traveled_working / 1000, 'км'], 'THREE_F');
-
+    console.log(sensor_traveled_workingAndCheck_unit, sensor_traveled_working)
     return (
       <Div>
         <Div hidden={Object.keys(selectedMission) === 0}>
@@ -199,7 +199,7 @@ export default class CurrentMission extends DashboardCardMedium {
               {getDataTraveledYet([...traveled_high_speedAndCheck_unit, report_data.time_high_speed])}
             </li>
             <li><b>Общий пробег с работающим оборудованием:</b>
-              {`${getDataTraveledYet(sensor_traveled_workingAndCheck_unit)}`}
+              {`${sensor_traveled_working ? getDataTraveledYet(sensor_traveled_workingAndCheck_unit) : 'Данные будут отображены после выполнения задания'}`}
             </li>
             {this.canView ? <div><a className="pointer" onClick={(e) => { e.preventDefault(); this.missionAction(selectedMission); }}>Подробнее...</a></div> : ''}
             {this.canCompleteOrReject ? <Div className="text-right">

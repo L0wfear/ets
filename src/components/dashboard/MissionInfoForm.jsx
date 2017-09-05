@@ -216,7 +216,7 @@ class MissionInfoForm extends Form {
               {this.state.parkingCount ? secondsToTime(this.state.parkingCount) : 'Рассчитывается...'}
             </li>
             <li><b>Общий пробег с работающим оборудованием:</b>
-              {`${getDataTraveledYet(sensor_traveled_workingAndCheck_unit)}`}
+              {`${sensor_traveled_working ? getDataTraveledYet(sensor_traveled_workingAndCheck_unit) : 'Данные будут отображены после выполнения задания'}`}
             </li>
           </Div>
 

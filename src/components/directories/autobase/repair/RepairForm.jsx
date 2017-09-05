@@ -22,13 +22,17 @@ export default class BaseTechInspectionForm extends Form {
   componentWillMount() {
     const { flux } = this.context;
     const { car_id = -1 } = this.props;
+    const state = this.props.formState;
 
     flux.getActions('objects').getCars();
 
     if (car_id >= 0) {
       this.handleChange('car_id', car_id);
     }
-    this.handleChange('status', 'failed');
+
+    if (!(AUTOBASE_REPAIR_STATUS[state.status]) || (AUTOBASE_REPAIR_STATUS[state.status] && AUTOBASE_REPAIR_STATUS[state.status].disabled)) {
+      this.handleChange('status', 'failed');
+    }
   }
 
   render() {

@@ -61,6 +61,7 @@ const NsiNavItem: React.SFC<IPropsNsiNavItem> = ({ path }) =>
       'autobase_battery_manufacturer',
       'autobase_spare_part.list',
       'autobase_tire.list',
+      'autobase_tire_model.list',
       'autobase_tech_maintenance_order.list',
       'autobase_tech_inspection.list',
       'autobase_insurance_policy.list',
@@ -73,6 +74,7 @@ const NsiNavItem: React.SFC<IPropsNsiNavItem> = ({ path }) =>
       <MenuItem permissions={['autobase_battery_brand.list']} active={path === '/battery-brand'} href="#/battery-brand">Марки аккумуляторов</MenuItem>
       <MenuItem permissions={['autobase_battery_manufacturer.list']} active={path === '/battery-manufacturer'} href="#/battery-manufacturer">Производители аккумуляторов</MenuItem>
       <MenuItem permissions={['autobase_tire.list']} active={path === '/tire'} href="#/tire">Реестр шин</MenuItem>
+      <MenuItem permissions={['autobase_tire_model.list']} active={path === '/tire-model'} href="#/tire-model">Марки шин</MenuItem>
       <MenuItem permissions={['autobase_spare_part.list']} active={path === '/spare-part'} href="#/spare-part">Реестр запчастей</MenuItem>
       <MenuItem permissions={['autobase_tech_maintenance_order.list']} active={path === '/tech-maintenance-order-registry'} href="#/tech-maintenance-order-registry">Реестр регламентов ТО</MenuItem>
       {/* <MenuItem permissions={['autobase_tech_maintenance.list']} active={path === '/tech-maintenance-registry'} href="#/tech-maintenance-registry">Тех. обслуживание</MenuItem> */}

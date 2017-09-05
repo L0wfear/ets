@@ -1,4 +1,5 @@
 import tire from './tire/TireList.jsx';
+import tireModel from './tire_model/TireModelList.jsx';
 import batteryReg from './battery_registry/BatteryRegList.jsx';
 import batteryBrand from './battery_brand/BatteryBrandList.jsx';
 import batteryManufacturer from './battery_manufacturer/BatteryManufacturerList.jsx';
@@ -11,6 +12,7 @@ import repairCompany from './repair_company/RepairCompanyList.jsx';
 
 export {
   tire,
+  tireModel,
   batteryReg,
   batteryBrand,
   batteryManufacturer,

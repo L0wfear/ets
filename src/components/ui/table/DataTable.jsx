@@ -458,7 +458,7 @@ export default class DataTable extends React.Component {
     let one = a[this.state.initialSort];
     let two = b[this.state.initialSort];
 
-    if (typeof one === 'string') {
+    if (typeof one === 'string' && typeof two === 'string') {
       one = one.toLocaleLowerCase();
       two = two.toLocaleLowerCase();
     }
@@ -498,7 +498,7 @@ export default class DataTable extends React.Component {
 
     if (lowerCaseSorting) {
       tempData.sort(this.sortingLoweCase);
-    } 
+    }
 
     return tempData.filter(this.shouldBeRendered);
   }
@@ -554,8 +554,9 @@ export default class DataTable extends React.Component {
     const tableCols = columnMetadata.map(m => m.columnName).filter(c => columnControlValues.indexOf(c) === -1);
     const rowMetadata = this.initializeRowMetadata();
     const tableClassName = cx('data-table', className);
+    const customColumnSorting = lowerCaseSorting && !data.filter(d => !d[this.state.initialSort])[0];
 
-    const results = this.processTableData(data, tableCols, selected, selectField, onRowSelected, lowerCaseSorting, highlight);
+    const results = this.processTableData(data, tableCols, selected, selectField, onRowSelected, customColumnSorting, highlight);
 
     return (
       <Div className={tableClassName}>
@@ -620,7 +621,7 @@ export default class DataTable extends React.Component {
           rowMetadata={rowMetadata}
           onKeyPress={this.handleKeyPress}
           noDataMessage={noDataMessage || noFilter ? '' : 'Нет данных'}
-          lowerCaseSorting={lowerCaseSorting}
+          lowerCaseSorting={customColumnSorting}
         />
       </Div>
     );

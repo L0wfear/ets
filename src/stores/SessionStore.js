@@ -108,7 +108,11 @@ export default class SessionStore extends Store {
   }
 
   getPermission(permissionName) {
-    const { permissions } = this.state.currentUser;
+    const { permissions = [] } = this.state.currentUser;
+
+    if (!Array.isArray(permissionName)) {
+      return permissions.includes(permissionName);
+    }
     const permissionsReduce = permissions.reduce(
       (obj, onePermission) => {
         obj[onePermission] = onePermission;
@@ -116,12 +120,7 @@ export default class SessionStore extends Store {
       },
       {},
     );
-    console.log(permissionName)
-    if (Array.isArray(permissionName)) {
-      return permissionName.reduce((bool, permission) => bool && !!permissionsReduce[permission], true);
-    }
 
-    return !!permissionsReduce[permissionName];
+    return permissionName.reduce((bool, permission) => bool && !!permissionsReduce[permission], true);
   }
-
 }

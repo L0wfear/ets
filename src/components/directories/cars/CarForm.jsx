@@ -67,6 +67,11 @@ class CarForm extends Form {
     if (Object.keys(this.props.location.query).length > 0) {
       this.props.handleTabSelect(this.props.location.query.active_tab);
     }
+    const nextState = this.props.formState;
+
+    const payload = {
+      car_id: nextState.asuods_id,
+    };
 
     const { flux } = this.context;
     const companyStructureList = await flux.getActions('companyStructure').getLinearCompanyStructureForUser();
@@ -74,6 +79,9 @@ class CarForm extends Form {
     flux.getActions('autobase').getAutobaseListByType('engineType');
     flux.getActions('autobase').getAutobaseListByType('propulsionType');
     flux.getActions('autobase').getAutobaseListByType('carCategory');
+    flux.getActions('autobase').getAutobaseListByType('actualBatteriesOnCar', payload);
+    flux.getActions('autobase').getAutobaseListByType('actualTiresOnCar', payload);
+    flux.getActions('autobase').getAutobaseListByType('techMaint', payload);
 
     this.setState({ companyStructureList });
   }
@@ -101,7 +109,6 @@ class CarForm extends Form {
       carCategoryList = [],
       typesList = [],
     } = this.props;
-    console.log(typesList)
     const { companyStructureList = [] } = this.state;
     const COMPANY_ELEMENTS = companyStructureList.map(defaultSelectListMapper);
     const engineTypeOptions = engineTypeList.map(defaultSelectListMapper);

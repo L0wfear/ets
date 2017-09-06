@@ -74,8 +74,6 @@ export default class MissionsJournal extends CheckableElementsList {
     }
   }
   async refreshList(state = this.state) {
-    this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, state.page * MAX_ITEMS_PER_PAGE, state.sortBy, state.filter);
-
     const pageOffset = state.page * MAX_ITEMS_PER_PAGE;
     const missions = await this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, pageOffset, state.sortBy, state.filter);
 

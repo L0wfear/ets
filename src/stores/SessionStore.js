@@ -1,6 +1,6 @@
 import { Store } from 'flummox';
 
-import { autobase, userNotification, getFullAccess } from 'api/mocks/permissions';
+import { autobase, repair, userNotification, getFullAccess } from 'api/mocks/permissions';
 import { clear } from 'utils/cache';
 import { setUserContext } from 'config/raven';
 import createFio from '../utils/create-fio.js';
@@ -68,9 +68,11 @@ export default class SessionStore extends Store {
     currentUser.permissions = [
       ...currentUser.permissions,
       ...autobase,
+      ...repair,
       ...userNotification,
       ...getSpecificPermissions(currentUser),
     ];
+    console.log(repair)
 
     localStorage.setItem(global.SESSION_KEY, JSON.stringify(session));
     localStorage.setItem(global.CURRENT_USER, JSON.stringify(currentUser));

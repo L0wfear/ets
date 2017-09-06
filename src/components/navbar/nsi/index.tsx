@@ -83,13 +83,21 @@ const NsiNavItem: React.SFC<IPropsNsiNavItem> = ({ path }) =>
       <MenuItem permissions={['autobase_company.list']} active={path === '/repair-company'} href="#/repair-company">Реестр ремонтных организаций</MenuItem>
     </NavDropdown>
 
-    <NavDropdown oneOfPermissions={['material_consumption_rate.list', 'fuel_consumption_rate.list', 'maintenance_rate.list']} title="Нормативные показатели" id="nav-dropdown-2-2">
+    <NavDropdown oneOfPermissions={[
+      'repair_contractor.list',
+      'repair_state_program.list',
+    ]} title="Планирование работ по техническому содержанию объектов" id="nav-dropdown-2-2">
+      <MenuItem permissions={['repair_contractor.list']} active={path === '/contractor'} href="#/contractor">Справочника Подрядчиков</MenuItem>
+      <MenuItem permissions={['repair_state_program.list']} active={path === '/state-program'} href="#/state-program">Справочник государственных программ ремонта</MenuItem>
+    </NavDropdown>
+
+    <NavDropdown oneOfPermissions={['material_consumption_rate.list', 'fuel_consumption_rate.list', 'maintenance_rate.list']} title="Нормативные показатели" id="nav-dropdown-2-3">
       <MenuItem permissions={['material_consumption_rate.list']} active={path === '/material-consumption-rate'} href="#/material-consumption-rate">Нормы на расход расходных материалов</MenuItem>
       <MenuItem permissions={['fuel_consumption_rate.list']} active={path === '/fuel-rates'} href="#/fuel-rates">Нормы расхода топлива</MenuItem>
       <MenuItem permissions={['maintenance_rate.list']} active={path === '/maintenance-rate'} href="#/maintenance-rate">Нормы на содержание объектов</MenuItem>
     </NavDropdown>
 
-    <NavDropdown oneOfPermissions={GEOOBJECTS_ONEOF_PERMISSIONS} title="Геообъекты" id="nav-dropdown-2-3">
+    <NavDropdown oneOfPermissions={GEOOBJECTS_ONEOF_PERMISSIONS} title="Геообъекты" id="nav-dropdown-2-4">
       <MenuItem permissions={['odh.list']} active={path === '/odh'} href="#/odh">Справочник ОДХ</MenuItem>
       <MenuItem permissions={['dt.list']} active={path === '/dt'} href="#/dt">Справочник ДТ</MenuItem>
       <MenuItem permissions={['ssp.list']} active={path === '/ssp'} href="#/ssp">Справочник ССП</MenuItem>
@@ -105,7 +113,7 @@ const NsiNavItem: React.SFC<IPropsNsiNavItem> = ({ path }) =>
       <MenuItem permissions={['fountains.list']} active={path === '/fountains'} href="#/fountains">Фонтаны</MenuItem>
     </NavDropdown>
 
-    <NavDropdown oneOfPermissions={['cleaning_rate.list', 'odh_norm.list', 'maintenance_work.list', 'fuel_operation.list', 'odh_norm_data_summer.list', 'efficiency.list']} title="Показатели для расчета" id="nav-dropdown-2-4">
+    <NavDropdown oneOfPermissions={['cleaning_rate.list', 'odh_norm.list', 'maintenance_work.list', 'fuel_operation.list', 'odh_norm_data_summer.list', 'efficiency.list']} title="Показатели для расчета" id="nav-dropdown-2-5">
       <MenuItem permissions={['cleaning_rate.list']} active={path === '/cleaning-rate'} href="#/cleaning-rate">Показатели для расчета эффективности работы бригад</MenuItem>
       <MenuItem permissions={['odh_norm.list']} active={path === '/odh-norm'} href="#/odh-norm">Расходные материалы</MenuItem>
       <MenuItem permissions={['maintenance_work.list']} active={path === '/maintenance-work'} href="#/maintenance-work">Показатели регламентных работ</MenuItem>

@@ -19,6 +19,7 @@ import waybills from './WaybillsActions.js';
 import geoObjects from './GeoObjectsActions.js';
 import odh from './ODHActions.js';
 import autobase from './AutobaseAction.js';
+import repair from './RepairAction';
 import userNotifications from './UserNotificationActions.js';
 
 export {
@@ -40,4 +41,5 @@ export {
   geoObjects,
   autobase,
   userNotifications,
+  repair,
 };

@@ -7,6 +7,11 @@ export function getFullAccess(entity) {
 export const autobase: string[] = [
 ];
 
+export const repair: string[] = [
+  ...getFullAccess('repair_state_program'),
+  ...getFullAccess('repair_contractor'),
+];
+
 export const userNotification: string[] = [
   ...getFullAccess('userNotification'),
 ];

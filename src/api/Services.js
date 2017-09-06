@@ -88,6 +88,8 @@ export const DtCoverageReportService = ETS_API_FACTORY.createApiServiceAdapter('
 
 export const AutoBase = ETS_API_FACTORY.createApiServiceAdapter('autobase', {});
 
+export const Repair = ETS_API_FACTORY.createApiServiceAdapter('repair', {});
+
 // список стран
 export const Country = ETS_API_FACTORY.createApiServiceAdapter('country', {});
 

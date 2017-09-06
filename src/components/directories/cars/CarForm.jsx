@@ -109,6 +109,7 @@ class CarForm extends Form {
       carCategoryList = [],
       typesList = [],
     } = this.props;
+
     const { companyStructureList = [] } = this.state;
     const COMPANY_ELEMENTS = companyStructureList.map(defaultSelectListMapper);
     const engineTypeOptions = engineTypeList.map(defaultSelectListMapper);

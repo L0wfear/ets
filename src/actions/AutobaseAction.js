@@ -8,7 +8,7 @@ import { AUTOBASE_REPAIR_STATUS } from '../constants/dictionary';
 const parsePutPath = (entity, method, formState, idKey = 'id') => `${entity}/${method === 'put' ? formState[idKey] : ''}`;
 const clearPayload = state => omit(state, ['rowNumber', 'isHighlighted', 'isSelected']);
 
-export default class EmployeesActions extends Actions {
+export default class AutobaseActions extends Actions {
 
   async getAutobaseListByType(type, data) {
     const trueType = AUTOBASE[type];

@@ -2,12 +2,10 @@ import React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 
 import ModalBody from 'components/ui/Modal';
-import { connectToStores } from 'utils/decorators';
 import Div from 'components/ui/Div.jsx';
 import { ExtField } from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
 
-@connectToStores(['autobase'])
 export default class SparePartForm extends Form {
   handleSubmitWrap = (...arg) => this.handleSubmit(...arg);
 

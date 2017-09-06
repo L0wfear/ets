@@ -18,7 +18,7 @@ export default class SparePartForm extends Form {
     const IS_CREATING = !state.id;
 
     const STATE_PROGRAM_STATUS_OPTIONS = stateProgramStatusList.map(defaultSelectListMapper)
-    console.log(STATE_PROGRAM_STATUS_OPTIONS)
+
     let title = 'Изменение записи';
     if (IS_CREATING) title = 'Создание записи';
 

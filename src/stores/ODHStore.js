@@ -32,7 +32,7 @@ export default class ODHStore extends Store {
   }
 
   handleGetMeasureUnits({ result }) {
-    this.setState({ measureUnitList: result });
+    this.setState({ measureUnitList: result.rows || [] });
   }
 
   handleGetODHNormDataSummer({ result }) {

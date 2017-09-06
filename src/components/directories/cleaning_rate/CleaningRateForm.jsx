@@ -1,5 +1,7 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
+
+import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
@@ -31,10 +33,16 @@ export default class CleaningRateForm extends Form {
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
-    const { isPermitted, technicalOperationsList, measureUnitList, type } = this.props;
-    const TECHNICAL_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
+    const {
+      isPermitted = false,
+      technicalOperationsList = [],
+      measureUnitList = [],
+      type = 'odh',
+    } = this.props;
+
+    const TECHNICAL_OPERATIONS = technicalOperationsList.map(defaultSelectListMapper);
     const PROPERTIES = getProperties(type);
-    const MEASUREUNITS = measureUnitList.map(({ id, name }) => ({ value: id, label: name }));
+    const MEASUREUNIT_OPTIONS = measureUnitList.map(defaultSelectListMapper);
 
     return (
       <Modal {...this.props} backdrop="static" bgSize="small">
@@ -71,7 +79,7 @@ export default class CleaningRateForm extends Form {
           <Field
             type="select"
             label="Единица измерения"
-            options={MEASUREUNITS}
+            options={MEASUREUNIT_OPTIONS}
             value={state.measure_unit_id}
             error={errors.measure_unit_id}
             onChange={e => this.handleChange('measure_unit_id', e)}

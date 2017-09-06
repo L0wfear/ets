@@ -9,7 +9,7 @@ import { ExtField } from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
 
 @connectToStores(['repair'])
-export default class SparePartForm extends Form {
+export default class StateProgramForm extends Form {
   handleSubmitWrap = (...arg) => this.handleSubmit(...arg);
 
   render() {

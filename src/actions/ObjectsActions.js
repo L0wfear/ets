@@ -27,9 +27,6 @@ import {
   SensorTypeService,
 } from 'api/nsi';
 
-function getTypes(payload = {}, serviceName = 'TypesService') {
-  return TypesService.get(payload).then(r => ({ result: r.result.rows }));
-}
 
 function getMaterialConsumptionRates(payload = {}) {
   return MaterialConsumptionRateService.get(payload).then(r => ({ result: r.result.rows }));
@@ -47,9 +44,9 @@ export default class ObjectsActions extends Actions {
     return CarService.get(payload).then(r => ({ result: r.result.rows }));
   }
 
-  getModels(special_model_id) {
+  async getModels(special_model_id) {
     const payload = special_model_id ? { special_model_id } : null;
-    return ModelsService.get(payload);
+    return await ModelsService.get(payload);
   }
 
   getSpecialModels() {
@@ -60,8 +57,8 @@ export default class ObjectsActions extends Actions {
     return CustomersService.get();
   }
 
-  getTypes() {
-    return getTypes();
+  async getTypes(payload = {}) {
+    return await TypesService.get(payload);
   }
 
   getSensorTypes() {

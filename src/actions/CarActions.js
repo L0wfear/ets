@@ -167,7 +167,7 @@ export default class CarActions extends Actions {
     const payload = {
       car_id,
     };
-    return CarInfoService.get(payload).then(r => r.result);
+    return CarInfoService.get(payload).then(({ result = {} }) => result);
   }
 
   getCarMissionsByTimestamp(car_id, point_timestamp) {
@@ -175,7 +175,7 @@ export default class CarActions extends Actions {
       car_id,
       point_timestamp,
     };
-    return CarInfoService.get(payload).then(r => ({ result: r.result.missions }));
+    return CarInfoService.get(payload).then(({ result: { mission = [] } }) => mission);
   }
 
 }

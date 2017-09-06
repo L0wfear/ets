@@ -1,5 +1,7 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
+
+import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
@@ -12,8 +14,11 @@ export default class MaintenanceWorkForm extends Form {
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
-    const { isPermitted, measureUnitList } = this.props;
-    const MEASUREUNITS = measureUnitList.map(({ id, name }) => ({ value: id, label: name }));
+    const {
+      isPermitted = false,
+      measureUnitList = [],
+    } = this.props;
+    const MEASUREUNIT_OPTIONS = measureUnitList.map(defaultSelectListMapper);
 
     return (
       <Modal {...this.props} backdrop="static" bgSize="small">
@@ -34,7 +39,7 @@ export default class MaintenanceWorkForm extends Form {
             label="Единица измерения"
             value={state.measure_unit_id}
             error={errors.measure_unit_id}
-            options={MEASUREUNITS}
+            options={MEASUREUNIT_OPTIONS}
             onChange={e => this.handleChange('measure_unit_id', e)}
             disabled={!isPermitted}
           />

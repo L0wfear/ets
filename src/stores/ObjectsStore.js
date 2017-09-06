@@ -137,17 +137,17 @@ export default class ObjectsStore extends Store {
     this.setState({ track });
   }
 
-  handleGetModels(modelsList) {
-    const modelsIndex = _.keyBy(modelsList, 'id');
-    this.setState({ modelsList, modelsIndex });
+  handleGetModels({ result: { row = [] } }) {
+    const modelsIndex = _.keyBy(row, 'id');
+    this.setState({ modelsList: row, modelsIndex });
   }
 
   handleGetSpecialModels({ result }) {
     this.setState({ specialModelsList: result.rows });
   }
 
-  handleGetTypes({ result }) {
-    const typesList = result;
+  handleGetTypes({ result: { rows = [] } }) {
+    const typesList = rows;
     const typesIndex = _.keyBy(typesList, 'asuods_id');
     this.setState({ typesList, typesIndex });
   }

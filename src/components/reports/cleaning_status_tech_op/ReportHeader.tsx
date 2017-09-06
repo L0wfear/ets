@@ -98,7 +98,10 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       car_func_types_ids,
     } = this.getState();
 
-    const { typesList = [], readOnly } = this.props;
+    const {
+      typesList = [],
+      readOnly,
+    } = this.props;
 
     const CAR_TYPES = uniqBy(typesList, 'asuods_id')
       .map(t => ({ value: t.asuods_id, label: t.full_name }));

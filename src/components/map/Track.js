@@ -608,7 +608,6 @@ export default class Track {
     if (car) {
       missions = await flux.getActions('cars')
           .getCarMissionsByTimestamp(car.asuods_id, trackPoint.timestamp + 10800); // +3 часа
-      missions = missions.result || [];
     }
 
     let { timestamp, distance } = trackPoint;
@@ -647,7 +646,6 @@ export default class Track {
       }
 
       // Задания на точке
-      console.log(missions)
       if (missions.length) {
         missionsString = missions.map(m => `Задание №${m.number}`).join('<br/>');
       } else {

@@ -143,7 +143,7 @@ export default class ObjectsStore extends Store {
   }
 
   handleGetSpecialModels({ result }) {
-    this.setState({ specialModelsList: result.rows });
+    this.setState({ specialModelsList: result });
   }
 
   handleGetTypes({ result }) {

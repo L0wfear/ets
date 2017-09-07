@@ -93,7 +93,7 @@ export default class MaterialConsumptionRateForm extends Form {
             </Col>
             <Col md={3}>
               <Field
-                type="text"
+                type="string"
                 label="Норма"
                 error={errors.value}
                 value={state.value}

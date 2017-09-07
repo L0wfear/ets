@@ -60,7 +60,7 @@ export default class UserNotificationStore extends Store {
     };
   }
   handleGetNotifications({ result }) {
-    this.setState({ userNotificationList: result.rows });
+    this.setState({ userNotificationList: result.rows, countNotReadNum: result.rows });
   }
 
   handleGetUserNotificationInfo({ result, setNewCount }) {
@@ -72,9 +72,9 @@ export default class UserNotificationStore extends Store {
     setNewCount(not_read_num);
   }
 
-  handleChangesUserNotificationsCount({ type = 'dec' }) {
+  handleChangesUserNotificationsCount({ count = 0 }) {
     const { countNotReadNum, setNewCount } = this.state;
-    const newCountNotReadNum = this.changeNotification(type, countNotReadNum);
+    const newCountNotReadNum = this.changeNotification(count, countNotReadNum);
     setNewCount(newCountNotReadNum);
 
     this.setState({
@@ -82,12 +82,8 @@ export default class UserNotificationStore extends Store {
     });
   }
 
-  changeNotification(type, countNotReadNum) {
-    switch (type) {
-      case 'inc': return countNotReadNum + 1;
-      case 'dec': return countNotReadNum - 1;
-      case 'all_dec': return 0;
-      default: return countNotReadNum;
-    }
+  changeNotification(count, countNotReadNum) {
+    if (count === 'is_read_all') return 0;
+    return countNotReadNum + count;
   }
 }

@@ -28,13 +28,12 @@ export default class UserNotificationList extends CheckableElementsList {
       body: 'Вы уверены, что хотите отметить все уведомления как прочитанные?',
     })
     .then(() => {
-      this.context.flux.getActions('userNotifications').markAllAsRead('dec_all');
+      this.context.flux.getActions('userNotifications').markAllAsRead();
     })
     .catch(() => {});
   }
   handleMarkAsRead = (checkedItems) => {
     this.context.flux.getActions('userNotifications').markAsRead(
-      'dec',
       checkedItems,
     );
   }
@@ -43,7 +42,13 @@ export default class UserNotificationList extends CheckableElementsList {
    */
   getButtons() {
     const baseButtons = super.getButtons();
-    const checkedItems = map(this.state.checkedElements, (value, key) => parseInt(key, 10));
+    const checkedItems = Object.entries(this.state.checkedElements).reduce((obj, [key, el]) => {
+      if (!el.is_read) {
+        obj.push(parseInt(key, 10));
+      }
+
+      return obj;
+    }, []);
 
     const buttons = [
       <ButtonToolbar key={baseButtons.length}>

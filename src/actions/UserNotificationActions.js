@@ -16,23 +16,23 @@ export default class UserNotificationActions extends Actions {
       ...props,
     };
   }
-  changesUserNotificationsCount(type = 'dec') {
-    return { type };
+  changesUserNotificationsCount(count) {
+    return { count };
   }
 
-  markAsRead(type = 'dec', read_ids = [], update = this.getNotifications) {
+  async markAsRead(read_ids = [], update = this.getNotifications) {
     const payload = {
       read_ids,
     };
-
-    this.changesUserNotificationsCount(type);
-    return UserNotificationService.put(payload, update, 'json');
+    this.changesUserNotificationsCount(-read_ids.length);
+    return await UserNotificationService.put(payload, update, 'json');
   }
   markAllAsRead() {
     const payload = {
       is_read_all: true,
     };
 
+    this.changesUserNotificationsCount('is_read_all');
     return UserNotificationService.put(payload, this.getNotifications, 'json');
   }
 }

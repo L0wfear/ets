@@ -54,9 +54,10 @@ export default class CarMarker extends Marker {
   }
 
   animate() {
+    const { points = [] } = this.track;
     this.animating = true;
     this.store.pauseRendering();
-    if (this.new) this.animatePoints = _(this.track.points).map(t => ({ coords: t.coords_msk, speed: t.speed_avg, time: t.timestamp })).value();
+    if (this.new) this.animatePoints = points.map(t => ({ coords: t.coords_msk, speed: t.speed_avg, time: t.timestamp }));
     this.new = false;
     this.animatePoints.splice(0, this.currentIndex);
     // НЕ УДАЛЯТЬ

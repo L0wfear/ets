@@ -6,7 +6,7 @@ const tableMeta = {
     {
       name: 'full_name',
       displayName: 'Полное наименование',
-      type: 'string',
+      type: 'select',
       filter: {
         type: 'multiselect',
       },
@@ -15,7 +15,7 @@ const tableMeta = {
     {
       name: 'short_name',
       displayName: 'Краткое наименование',
-      type: 'string',
+      type: 'select',
       filter: {
         type: 'multiselect',
       },
@@ -31,10 +31,11 @@ const tableMeta = {
       displayName: 'Ширина уборочного оборудования на ДТ',
       type: 'string',
     },
+    
     {
       name: 'season_name',
       displayName: 'Сезон',
-      type: 'string',
+      type: 'select',
       filter: {
         type: 'multiselect',
       },
@@ -42,7 +43,10 @@ const tableMeta = {
     {
       name: 'speed_limit',
       displayName: 'Максимальная скорость',
-      type: 'string',
+      type: 'select',
+      filter: {
+        type: 'multiselect',
+      },
     },
   ],
 };

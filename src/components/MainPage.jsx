@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import {
   Navbar, Nav, Glyphicon,
+  Badge,
   NavItem as BootstrapNavItem,
   NavDropdown as BootstrapNavDropdown,
   MenuItem as BootstrapMenuItem,
@@ -54,19 +55,28 @@ export default class MainPage extends React.Component {
 
     this.state = {
       user: {},
+      countUserNotificationInfo: 0,
     };
   }
 
   componentWillMount() {
+    this.intiCheckCountUN();
+
     this.setState({
       user: this.context.flux.getStore('session').getCurrentUser(),
     });
   }
 
   componentWillReceiveProps() {
+    this.intiCheckCountUN();
+
     this.setState({
       user: this.context.flux.getStore('session').getCurrentUser(),
     });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.checkUsNotifInterval);
   }
 
   @autobind
@@ -74,6 +84,23 @@ export default class MainPage extends React.Component {
     const { flux, history } = this.context;
     flux.getActions('session').logout().then(() => {
       history.pushState(null, '/login');
+      clearInterval(this.checkUsNotifInterval);
+    });
+  }
+
+  intiCheckCountUN() {
+    const path = this.props.location.pathname;
+
+    if (!this.checkUsNotifInterval && (path !== '/login')) {
+      this.checkCountUserNotificationInfo();
+      this.checkUsNotifInterval = setInterval(() => this.checkCountUserNotificationInfo(), 1000 * 60 * 60);
+    }
+  }
+  async checkCountUserNotificationInfo() {
+    const { flux } = this.context;
+
+    await flux.getActions('userNotifications').getUserNotificationInfo({
+      setNewCount: countUserNotificationInfo => this.setState({ countUserNotificationInfo }),
     });
   }
 
@@ -90,7 +117,10 @@ export default class MainPage extends React.Component {
   }
 
   renderHeader() {
-    const { user } = this.state;
+    const {
+      user,
+      countUserNotificationInfo = 0,
+    } = this.state;
     const path = this.props.location.pathname;
     const isOkrug = user.okrug_id !== null;
     const defaultProps = { isOkrug, path };
@@ -121,7 +151,8 @@ export default class MainPage extends React.Component {
 
             <NavItem hidden={isOkrug} permissions={[PERMISSIONS.route.list]} active={path === '/routes-list'} href="#/routes-list">Маршруты</NavItem>
             <NavItem hidden={isOkrug} permissions={[PERMISSIONS.company_structure.list]} active={path === '/company-structure'} href="#/company-structure">Структура предприятия</NavItem>
-            <NavItem title="Уведомления пользователей" active={path === '/notification-registry'} href="#/notification-registry"><div style={{ fontSize: 18 }}><Glyphicon glyph="exclamation-sign" /></div></NavItem>
+            
+            <NavItem title="Уведомления пользователей" active={path === '/notification-registry'} href="#/notification-registry"><span>Уведомления <Badge>{countUserNotificationInfo}</Badge></span></NavItem>
             <NavItem hidden={isOkrug} permissions={[PERMISSIONS.administration]} title="Администрирование" href={`http://213.79.88.5/${process.env.STAND !== 'prod' ? 'ets-test/' : ''}admin`}><Glyphicon glyph="list-alt" /></NavItem>
           </Nav>
 

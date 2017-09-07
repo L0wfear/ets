@@ -54,12 +54,14 @@ export default class CarActions extends Actions {
       ...packObjectData('register', restPayload),
     });
 
-    await this.updateCarPassportInfo({
-      car_id,
-      type: passport_type.toUpperCase(),
-      ...packObjectData(`passport_${passport_type.toLowerCase()}`, restPayload),
-      id: passport_id,
-    });
+    if (!!passport_type) {
+      await this.updateCarPassportInfo({
+        car_id,
+        type: passport_type.toUpperCase(),
+        ...packObjectData(`passport_${passport_type.toLowerCase()}`, restPayload),
+        id: passport_id,
+      });
+    }
 
     return CarService.put(payload, () => CarService.get().then(r => ({ result: r.result.rows })), 'json');
   }

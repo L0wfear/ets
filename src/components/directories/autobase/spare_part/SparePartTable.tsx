@@ -27,7 +27,7 @@ export function tableMeta({
       {
         name: 'spare_part_group_id',
         displayName: 'Группа',
-        type: 'select',
+        type: 'string',
         filter: {
           type: 'multiselect',
           options: sparePartGroupList.map(({ id, name }) => ({ value: id, label: name })),
@@ -36,7 +36,7 @@ export function tableMeta({
       {
         name: 'number',
         displayName: 'Номер поставки',
-        type: 'number',
+        type: 'string',
         filter: {
           type: 'string',
         },
@@ -46,13 +46,13 @@ export function tableMeta({
         displayName: 'Подгруппа',
         type: 'string',
         filter: {
-          type: 'string',
+          type: 'multiselect',
         },
       },
       {
         name: 'measure_unit_name',
         displayName: 'Единица измерения',
-        type: 'select',
+        type: 'string',
         filter: {
           type: 'multiselect',
           // options: measureUnitList.map(({ id, name }) => ({ value: id, label: name })),
@@ -61,7 +61,7 @@ export function tableMeta({
       {
         name: 'quantity',
         displayName: 'Количество',
-        type: 'number',
+        type: 'string',
         filter: {
           type: 'string',
         },

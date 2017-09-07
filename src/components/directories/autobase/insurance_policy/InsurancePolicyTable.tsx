@@ -18,7 +18,7 @@ export function tableMeta({
         name: 'gov_number',
         displayName: 'Транспортное средство',
         display: car_id === -1,
-        type: 'select',
+        type: 'string',
         filter: car_id === -1 ? { type: 'multiselect' } : false,
       },
       {
@@ -32,7 +32,7 @@ export function tableMeta({
       {
         name: 'insurance_type_name',
         displayName: 'Тип страхования',
-        type: 'select',
+        type: 'string',
         filter: {
           type: 'multiselect',
         },

@@ -30,7 +30,7 @@ export const tableMeta = ({
       {
         name: 'tire_model_id',
         displayName: 'Модель шины',
-        type: 'text',
+        type: 'string',
         orderNum: 0,
         filter: {
           type: 'multiselect',
@@ -40,7 +40,7 @@ export const tableMeta = ({
       {
         name: 'tire_manufacturer_name',
         displayName: 'Производитель',
-        type: 'text',
+        type: 'string',
         orderNum: 1,
         filter: {
           type: 'multiselect',
@@ -49,7 +49,7 @@ export const tableMeta = ({
       {
         name: 'tire_size_id',
         displayName: 'Размер',
-        type: 'text',
+        type: 'string',
         orderNum: 2,
         filter: {
           type: 'multiselect',
@@ -59,7 +59,7 @@ export const tableMeta = ({
       {
         name: 'odometr_diff',
         displayName: 'Пробег, км',
-        type: 'text',
+        type: 'string',
         orderNum: 3,
         filter: {
           type: 'string',
@@ -68,7 +68,7 @@ export const tableMeta = ({
       {
         name: 'motohours_diff',
         displayName: 'Наработка, мч',
-        type: 'text',
+        type: 'string',
         orderNum: 4,
         filter: {
           type: 'string',
@@ -77,7 +77,7 @@ export const tableMeta = ({
       {
         name: 'comment',
         displayName: 'Комментарий',
-        type: 'text',
+        type: 'string',
         orderNum: 5,
         filter: {
           type: 'string',
@@ -86,7 +86,7 @@ export const tableMeta = ({
       {
         name: 'gov_number',
         displayName: 'Рег. номер ТС',
-        type: 'text',
+        type: 'string',
         orderNum: 6,
         filter: {
           type: 'string',

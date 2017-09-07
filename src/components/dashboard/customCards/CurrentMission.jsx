@@ -162,7 +162,7 @@ export default class CurrentMission extends DashboardCardMedium {
     const traveledAndCheck_unit = checkFixed([report_data.traveled, report_data.check_unit], 'TWO_F');
     const traveled_high_speedAndCheck_unit = checkFixed([report_data.traveled_high_speed, report_data.check_unit], 'TWO_F');
     const sensor_traveled_workingAndCheck_unit = checkFixed([sensor_traveled_working / 1000, 'км'], 'THREE_F');
-    console.log(sensor_traveled_workingAndCheck_unit, sensor_traveled_working)
+
     return (
       <Div>
         <Div hidden={Object.keys(selectedMission) === 0}>

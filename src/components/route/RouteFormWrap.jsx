@@ -104,4 +104,4 @@ class RouteFormWrap extends FormWrap {
 
 }
 
-export default connectToStores(RouteFormWrap, ['routes']);
+export default connectToStores(RouteFormWrap, ['routes', 'geoObjects']);

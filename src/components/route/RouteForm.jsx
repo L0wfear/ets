@@ -225,7 +225,6 @@ export default class RouteForm extends Form {
                   route={state}
                   manual={this.state.vector || state.type === 'points'}
                   onChange={this.handleChange}
-                  bridgesPolys={this.props.bridgesPolys}
                 />
               </Col>
             </Div>

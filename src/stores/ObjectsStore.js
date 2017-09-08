@@ -49,11 +49,10 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getCountry, this.handleGetCountry);
     
     this.register(companyStructreActions.getCompanyStructure, this.handleGetCompanyStructure);
-    this.register(companyStructreActions.getLinearCompanyStructure, this.handleGetLinearCompanyStructure);
     this.register(companyStructreActions.updateCompanyElement, this.handleGetCompanyStructure);
     this.register(companyStructreActions.deleteCompanyElement, this.handleGetCompanyStructure);
     this.register(companyStructreActions.createCompanyElement, this.handleGetCompanyStructure);
-
+    
     this.register(technicalOperationsActions.getTechnicalOperations, this.handleGetTechOperations);
     this.register(technicalOperationsActions.updateTechnicalOperation, this.handleGetTechOperations);
     this.register(technicalOperationsActions.getTechnicalOperationsObjects, this.handleGetTechnicalOperationsObjects);
@@ -75,6 +74,8 @@ export default class ObjectsStore extends Store {
       technicalOperationsObjectsList: [],
       technicalOperationsTypesList: [],
       companyStructureList: [],
+      companyStructureLinearList: [],
+      companyStructureLinearForUserList: [],
       positionsList: [],
       organizations: [],
       materialConsumptionRateList: [],
@@ -113,13 +114,20 @@ export default class ObjectsStore extends Store {
     this.setState({ technicalOperationsTypesList: technicalOperationsTypes.result });
   }
 
-  handleGetCompanyStructure(companyStructure) {
-    this.setState({ companyStructureList: companyStructure.result });
+  handleGetCompanyStructure({ data: { result = [] }, linear = false, descendants_by_user = false }) {
+    const myName = this.getNameCompanyStructureList(linear, descendants_by_user);
+
+    this.setState({ [myName]: result });
   }
-  handleGetLinearCompanyStructure(companyStructureLinear) {
-    this.setState({ companyStructureLinearList: companyStructureLinear });
+  getNameCompanyStructureList(linear, descendants_by_user) {
+    if (linear) {
+      if (descendants_by_user) {
+        return 'companyStructureLinearForUserList';
+      }
+      return 'companyStructureLinearList';
+    }
+    return 'companyStructureList';
   }
-  handleGetLinearCompanyStructure
 
   handleGetCars(cars) {
     const carsList = cars.result.map((c) => {
@@ -179,8 +187,8 @@ export default class ObjectsStore extends Store {
     this.setState({ faxogrammsList: faxogramms.result, faxogrammsTotalCount: faxogramms.total_count });
   }
 
-  handleGetPositions(positions) {
-    this.setState({ positionsList: positions.result });
+  handleGetPositions({ result: { rows = [] } }) {
+    this.setState({ positionsList: rows });
   }
 
   handleGetConfig(appConfig) {
@@ -192,9 +200,8 @@ export default class ObjectsStore extends Store {
     this.setState({ materialConsumptionRateList });
   }
 
-  handleGetMaintenanceWork(r) {
-    const maintenanceWorkList = r.result.rows || r.result;
-    this.setState({ maintenanceWorkList });
+  handleGetMaintenanceWork({ result: { rows = [] } }) {
+    this.setState({ maintenanceWorkList: rows });
   }
   handleUpdateOrganizations(r) {
     const organizations = r.result.rows || r.result;
@@ -224,10 +231,10 @@ export default class ObjectsStore extends Store {
     this.setState({ medicalStatsList: medicalStatsList.result.rows });
   }
 
-  handleGetCountry({ data = [] }) {
+  handleGetCountry({ result: { rows = [] } }) {
     this.setState({
-      countryList: data,
-      countryOptions: data.map(one => ({ value: one.id, label: one.short_name })),
+      countryList: rows,
+      countryOptions: rows.map(one => ({ value: one.id, label: one.short_name })),
     });
   }
 }

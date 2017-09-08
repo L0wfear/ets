@@ -1,17 +1,17 @@
 import { Actions } from 'flummox';
 import { CompanyStructureService } from 'api/Services';
-import _ from 'lodash';
+import { cloneDeep } from 'lodash';
 
 export default class CompanyStructureActions extends Actions {
 
   createCompanyElement(data) {
-    const payload = _.cloneDeep(data);
+    const payload = { ...data };
 
     return CompanyStructureService.post(payload, null, 'json');
   }
 
   updateCompanyElement(data) {
-    const payload = _.cloneDeep(data);
+    const payload = cloneDeep(data);
     delete payload.type_display;
     delete payload.legal_person_id;
 
@@ -26,26 +26,17 @@ export default class CompanyStructureActions extends Actions {
     return CompanyStructureService.delete(payload, true, 'json');
   }
 
-  getCompanyStructure() {
-    return CompanyStructureService.get();
-  }
+  async getCompanyStructure(linear = false, descendants_by_user = false) {
+    const payload = {};
+    if (linear) payload.linear = 'wft_back??';
+    if (descendants_by_user) payload.descendants_by_user = 'wft_back??';
 
-  async getLinearCompanyStructure() {
-    const payload = {
-      linear: true,
+    const data = await CompanyStructureService.get(payload);
+
+    return {
+      data,
+      linear,
+      descendants_by_user,
     };
-
-    const response = await CompanyStructureService.get(payload);
-    return response.result || [];
   }
-
-  async getLinearCompanyStructureForUser() {
-    const payload = {
-      linear: true,
-      descendants_by_user: true,
-    };
-    const response = await CompanyStructureService.get(payload);
-    return response.result || [];
-  }
-
 }

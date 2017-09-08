@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
+import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import ElementsList from 'components/ElementsList.jsx';
 import EmployeeFormWrap from './EmployeeFormWrap.jsx';
 import EmployeesTable from './EmployeesTable.tsx';
-import { connectToStores, staticProps, exportable } from 'utils/decorators';
 
-@connectToStores(['employees', 'objects', 'session', 'companyStructure'])
+@connectToStores(['employees', 'objects', 'session'])
 @exportable({ entity: 'employee' })
 @staticProps({
   entity: 'employee',
@@ -20,12 +19,14 @@ export default class EmployeesList extends ElementsList {
   }
   async componentDidMount() {
     super.componentDidMount();
+    const linear = true;
+    const descendants_by_user = true;
 
     const { flux } = this.context;
     const employees = await flux.getActions('employees').getEmployees();
     await flux.getActions('objects').getCars();
     await flux.getActions('objects').getPositions();
-    await flux.getActions('companyStructure').getLinearCompanyStructureForUser();
+    flux.getActions('companyStructure').getCompanyStructure(linear, descendants_by_user);
 
     if (this.props.location.query.employee_id) {
       const employee_id = parseInt(this.props.location.query.employee_id, 10);

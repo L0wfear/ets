@@ -14,10 +14,11 @@ export default class CompanyStructure extends ElementsList {
 
   componentDidMount() {
     super.componentDidMount();
+    const linear = true;
 
     const { flux } = this.context;
     flux.getActions('companyStructure').getCompanyStructure();
-    flux.getActions('companyStructure').getLinearCompanyStructure();
+    flux.getActions('companyStructure').getCompanyStructure(linear);
   }
 
   editElement = (id, e) => {

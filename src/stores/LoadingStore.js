@@ -63,6 +63,8 @@ export default class LoadingStore extends Store {
       objectsActions.getUserActionLog,
       objectsActions.getMedicalStats,
       objectsActions.getOrganizations,
+      objectsActions.createMaintenanceWork,
+      objectsActions.updateMaintenanceWork,
 
       employeesActions.getEmployees,
       employeesActions.updateEmployee,
@@ -120,8 +122,6 @@ export default class LoadingStore extends Store {
       technicalOperationsActions.getTechnicalOperationsByCarId,
 
       companyStructureActions.getCompanyStructure,
-      companyStructureActions.getLinearCompanyStructure,
-      companyStructureActions.getLinearCompanyStructureForUser,
       companyStructureActions.updateCompanyElement,
       companyStructureActions.createCompanyElement,
       companyStructureActions.deleteCompanyElement,
@@ -151,7 +151,7 @@ export default class LoadingStore extends Store {
 
     this.state = {
       operationsCount: 0,
-      lazyOperationsCount: 0
+      lazyOperationsCount: 0,
     };
   }
 

@@ -1,14 +1,17 @@
-import React, { Component } from 'react';
-import { get } from 'lodash';
+import * as React from 'react';
 
-import Table from 'components/ui/table/DataTable.jsx';
-import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
+import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
+import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';
+import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 
-export const tableMeta = ({
-  companyStructureList = [],
+import DataTableComponent from 'components/ui/table/DataTable';
+
+const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
+
+export function tableMeta({
   isOkrug = false,
- } = {}) => (
-  {
+} = {}): IDataTableSchema {
+  const meta: IDataTableSchema = {
     cols: [
       {
         name: 'company_name',
@@ -84,33 +87,33 @@ export const tableMeta = ({
         type: 'number',
       },
       {
-        name: 'company_structure_id',
+        name: 'company_structure_name',
         displayName: 'Подразделение',
         type: 'text',
         filter: {
           type: 'multiselect',
-          options: companyStructureList.map(defaultSelectListMapper),
         },
       },
     ],
-  }
-);
-
-const ODHTable = (props) => {
-  const { companyStructureList = [] } = props;
-
-  const renderers = {
-    company_structure_id: ({ data }) => <div>{get(companyStructureList.find(s => s.id === data), 'name', '---')}</div>,
   };
 
-  return (<Table
-    title="Реестр ОДХ"
-    results={props.data}
-    tableMeta={tableMeta(props)}
-    renderers={renderers}
-    initialSort={'name'}
-    {...props}
-  />);
+  return meta;
+}
+const Table: React.SFC<any> = props  => {
+  const renderers: ISchemaRenderer = {
+  };
+
+  return (
+    <DataTable
+      title="Реестр ОДХ"
+      results={props.data}
+      renderers={renderers}
+      tableMeta={tableMeta(props)}
+      initialSort={'name'}
+      {...props}
+    />
+  );
 };
 
-export default ODHTable;
+export default Table;
+;

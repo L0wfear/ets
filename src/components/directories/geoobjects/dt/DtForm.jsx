@@ -1,31 +1,23 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
+
+import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
+import { ExtField } from 'components/ui/Field.jsx';
 import ModalBody from 'components/ui/Modal';
-import Field from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
 import { connectToStores } from 'utils/decorators';
-import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 
-@connectToStores(['geoObjects', 'companyStructure'])
+@connectToStores(['objects'])
 export default class DtForm extends Form {
+  myHandleSubmit = () => this.handleSubmit();
+
   render() {
-    const [state, meta] = [this.props.formState, this.props.formMeta];
+    const [state, errors] = [this.props.formState, this.props.formErrors];
+    const {
+      companyStructureLinearForUserList = [],
+    } = this.props;
 
-    const { companyStructureList = [] } = this.state;
-    const COMPANY_ELEMENTS = companyStructureList.map(defaultSelectListMapper);
-
-    const INPUT_VAL = {
-      company_structure_name: {
-        type: 'select',
-        options: COMPANY_ELEMENTS,
-        emptyValue: null,
-        onChange: (...arg) => this.handleChange('company_structure_id', ...arg),
-      },
-    };
-    const STATIC_VAL = {
-      type: 'string',
-      readOnly: true,
-    };
+    const COMPANY_ELEMENTS = companyStructureLinearForUserList.map(defaultSelectListMapper);
 
     return (
       <Modal {...this.props} backdrop="static">
@@ -35,21 +27,54 @@ export default class DtForm extends Form {
         </Modal.Header>
 
         <ModalBody>
-          {meta.cols.map(d =>
-            <Row key={d.name}>
-              <Col md={12}>
-                <Field
-                  label={d.displayName}
-                  value={state[d.name]}
-                  {...(d.name in INPUT_VAL ? INPUT_VAL[d.name] : STATIC_VAL)}
-                />
-              </Col>
-            </Row>
-          )}
+          <Row>
+            <Col md={12}>
+              <ExtField
+                type="string"
+                label="Учреждение"
+                value={state.company_name}
+                readOnly
+              />
+              <ExtField
+                type="string"
+                label="Название ДТ"
+                value={state.object_address}
+                readOnly
+              />
+              <ExtField
+                type="string"
+                label="Общая площадь (кв.м.)"
+                value={state.total_area}
+                readOnly
+              />
+              <ExtField
+                type="string"
+                label="Общая уборочная площадь (кв.м.)"
+                value={state.clean_area}
+                readOnly
+              />
+              <ExtField
+                type="string"
+                label="Площадь механизированной уборки (кв.м.)"
+                value={state.auto_area}
+                readOnly
+              />
+              <ExtField
+                type="select"
+                label="Учреждение"
+                value={state.company_structure_id}
+                error={errors.company_structure_id}
+                options={COMPANY_ELEMENTS}
+                emptyValue={null}
+                onChange={this.handleChange}
+                boundKeys={['company_structure_id']}
+              />
+            </Col>
+          </Row>
         </ModalBody>
 
         <Modal.Footer>
-          <Button onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+          <Button onClick={this.myHandleSubmit}>Сохранить</Button>
         </Modal.Footer>
 
       </Modal>

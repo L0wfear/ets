@@ -14,7 +14,6 @@ import { connectToStores } from 'utils/decorators';
 @connectToStores(['autobase', 'objects'])
 export default class BaseTechInspectionForm extends Form {
   componentWillMount() {
-    const { flux } = this.context;
     const { formState, car_id = -1 } = this.props;
     const { is_allowed = false } = formState;
 
@@ -23,6 +22,8 @@ export default class BaseTechInspectionForm extends Form {
     }
     this.handleChange('is_allowed', is_allowed);
   }
+
+  myHandleSubmit = () => this.handleSubmit();
 
   render() {
     const {
@@ -52,7 +53,7 @@ export default class BaseTechInspectionForm extends Form {
         <ExtDiv style={{ padding: 15 }}>
           <Row>
             <Col md={12}>
-              {IS_CREATING && car_id === -1 && 
+              {IS_CREATING && car_id === -1 &&
                 <ExtField
                   type="select"
                   label="Номер транспортного средства"
@@ -147,7 +148,7 @@ export default class BaseTechInspectionForm extends Form {
         </ExtDiv>
         <ModalBody />
         <Modal.Footer>
-          <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+          <Button disabled={!this.props.canSave} onClick={this.myHandleSubmit}>Сохранить</Button>
         </Modal.Footer>
       </Modal>
     );

@@ -13,12 +13,6 @@ export const tireSchema = {
       required: true,
     },
     {
-      key: 'tire_manufacturer_id',
-      title: 'Производитель',
-      type: 'number',
-      required: true,
-    },
-    {
       key: 'tire_size_id',
       title: 'Размер',
       type: 'number',

@@ -9,7 +9,7 @@ import { connectToStores } from 'utils/decorators';
 import RouteCreating from './RouteCreating.jsx';
 import Form from '../compositions/Form.jsx';
 
-@connectToStores(['objects'])
+@connectToStores(['objects', 'geoObjects'])
 @autobind
 export default class RouteForm extends Form {
 

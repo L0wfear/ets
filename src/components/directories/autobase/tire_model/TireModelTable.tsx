@@ -14,13 +14,15 @@ export function tableMeta({
       {
         name: 'name',
         displayName: 'Марка шины',
-        type: 'select',
-        filter: { type: 'multiselect' },
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
       },
       {
         name: 'tire_manufacturer_name',
         displayName: 'Производитель шины',
-        type: 'select',
+        type: 'string',
         cssClassName: 'width300',
         filter: {
           type: 'multiselect',
@@ -37,7 +39,6 @@ const Table: React.SFC<any> = props  => (
     title="Марки шин"
     results={props.data}
     tableMeta={tableMeta(props)}
-    lowerCaseSorting
     {...props}
   />
 );

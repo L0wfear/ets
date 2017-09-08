@@ -16,7 +16,7 @@ export function tableMeta({
       {
         name: 'repair_company_name',
         displayName: 'Исполнитель ремонта',
-        type: 'select',
+        type: 'string',
         filter: {
           type: 'multiselect',
         },
@@ -32,7 +32,7 @@ export function tableMeta({
       {
         name: 'number',
         displayName: 'Номер документа',
-        type: 'text',
+        type: 'string',
         filter: {
           type: 'string',
         },

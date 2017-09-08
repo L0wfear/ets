@@ -317,3 +317,4 @@ RouteCreating.contextTypes = {
 };
 
 export default connectToStores(RouteCreating, ['routes', 'geoObjects']);
+

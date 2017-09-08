@@ -3,7 +3,6 @@ import { autobind } from 'core-decorators';
 import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
 import _ from 'lodash';
 import cx from 'classnames';
-import FluxComponent from 'flummox/component';
 import connectToStores from 'flummox/connect';
 
 import Div from 'components/ui/Div.jsx';
@@ -46,8 +45,6 @@ class RoutesList extends Component {
     flux.getActions('technicalOperation').getTechnicalOperations(true);
     flux.getActions('technicalOperation').getTechnicalOperationsObjects();
     flux.getActions('geoObjects').getGeozones();
-    flux.getActions('geoObjects').getGeozoneByTypeWithGeometry('bridges', 'GormostService', {});
-    flux.getActions('geoObjects').setSelectedPolysType('bridges');
 
     if (this.props.location.query) {
       const filterValues = {};
@@ -326,21 +323,13 @@ class RoutesList extends Component {
               <Div hidden={this.state.showForm || route === null}>
                 <RouteInfo route={route} />
               </Div>
-              <FluxComponent
-                connectToStores={{
-                  geoObjects: store => ({
-                    bridgesPolys: store.getSelectedPolys(),
-                  }),
-                }}
-              >
-                <RouteFormWrap
-                  element={route}
-                  onFormHide={this.onFormHide}
-                  selectedRoute={this.selectedRoute}
-                  showForm={this.state.showForm}
-                  routesList={routesList}
-                />
-              </FluxComponent>
+              <RouteFormWrap
+                element={route}
+                onFormHide={this.onFormHide}
+                selectedRoute={this.selectedRoute}
+                showForm={this.state.showForm}
+                routesList={routesList}
+              />
             </div>
           </Col>
         </Row>

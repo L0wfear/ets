@@ -116,7 +116,6 @@ class CarForm extends Form {
     const propulsionTypeOptions = propulsionTypeList.map(defaultSelectListMapper);
     const carCategoryOptions = carCategoryList.map(defaultSelectListMapper);
     const typesOptions = typesList.map(el => ({ value: el.asuods_id, label: el.short_name }));
-    
     return (
       <Modal {...this.props} bsSize="lg" backdrop="static">
         <Modal.Header closeButton>
@@ -186,7 +185,7 @@ class CarForm extends Form {
               propulsionTypeOptions={propulsionTypeOptions}
               carCategoryOptions={carCategoryOptions}
               typesOptions={typesOptions}
-              />
+            />
           </TabContent>
 
           <TabContent eventKey={CAR_TAB_INDEX.battery} tabKey={tabKey}>
@@ -234,11 +233,11 @@ class CarForm extends Form {
           <TabContent eventKey={CAR_TAB_INDEX.tech_inspection} tabKey={tabKey}>
             <TechInspectionList
               car_id={state.asuods_id}
-             />
+            />
           </TabContent>
         </ModalBody>
 
-        <Modal.Footer>
+        <Modal.Footer hidden={tabKey !== CAR_TAB_INDEX.info && !tabKey.includes('1.')}>
           <Button disabled={!this.props.canSave} onClick={this.handleSave}>Сохранить</Button>
         </Modal.Footer>
 

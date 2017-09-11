@@ -41,6 +41,7 @@ export default class UserNotificationList extends CheckableElementsList {
    * @override
    */
   getButtons() {
+    const { userNotificationList = [] } = this.props;
     const baseButtons = super.getButtons();
     const checkedItems = Object.entries(this.state.checkedElements).reduce((obj, [key, el]) => {
       if (!el.is_read) {
@@ -53,7 +54,7 @@ export default class UserNotificationList extends CheckableElementsList {
     const buttons = [
       <ButtonToolbar key={baseButtons.length}>
         {checkedItems.length > 0 && <Button onClick={this.handleMarkAsRead.bind(null, checkedItems)}>Отметить как прочитанное</Button>}
-        <Button onClick={this.handleMarkAllAsRead}>Отметить все как прочитанные</Button>
+        <Button disabled={!userNotificationList} onClick={this.handleMarkAllAsRead}>Отметить все как прочитанные</Button>
       </ButtonToolbar>,
       ...baseButtons,
     ];

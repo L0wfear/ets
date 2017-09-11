@@ -14,13 +14,15 @@ export function tableMeta({
       {
         name: 'name',
         displayName: 'Марка аккумулятора',
-        type: 'select',
-        filter: { type: 'multiselect' },
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
       },
       {
         name: 'manufacturer_name',
         displayName: 'Производитель аккумулятора',
-        type: 'select',
+        type: 'string',
         cssClassName: 'width300',
         filter: {
           type: 'multiselect',
@@ -37,7 +39,6 @@ const Table: React.SFC<any> = props  => (
     title="Марки аккумуляторов"
     results={props.data}
     tableMeta={tableMeta(props)}
-    lowerCaseSorting
     {...props}
   />
 );

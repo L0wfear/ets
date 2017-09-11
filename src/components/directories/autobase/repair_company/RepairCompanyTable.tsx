@@ -30,7 +30,7 @@ export function tableMeta({
       {
         name: 'comment',
         displayName: 'Примечание',
-        type: 'select',
+        type: 'string',
         filter: {
           type: 'multiselect',
         },
@@ -46,7 +46,6 @@ const Table: React.SFC<any> = props  => (
     title="Реестр ремонтных организаций"
     results={props.data}
     tableMeta={tableMeta(props)}
-    lowerCaseSorting
     {...props}
   />
 );

@@ -34,7 +34,7 @@ export function tableMeta({
         displayName: 'Номер диагностической карты',
         type: 'number',
         filter: {
-          type: 'number',
+          type: 'multiselect',
         },
       },
       {
@@ -48,7 +48,7 @@ export function tableMeta({
       {
         name: 'tech_operator',
         displayName: 'Место выдачи',
-        type: 'select',
+        type: 'string',
         filter: {
           type: 'multiselect',
         },

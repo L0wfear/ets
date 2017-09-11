@@ -24,7 +24,7 @@ export function tableMeta({
       {
         name: 'drivers_emplds',
         displayName: 'Водитель',
-        type: 'select',
+        type: 'string',
         filter: {
           type: 'multiselect',
         },
@@ -32,7 +32,7 @@ export function tableMeta({
       {
         name: 'cause_name',
         displayName: 'Причина ДТП',
-        type: 'select',
+        type: 'string',
         filter: {
           type: 'multiselect',
         },
@@ -40,7 +40,7 @@ export function tableMeta({
       {
         name: 'accident_place',
         displayName: 'Место ДТП',
-        type: 'select',
+        type: 'string',
         filter: {
           type: 'multiselect',
         },
@@ -48,7 +48,7 @@ export function tableMeta({
       {
         name: 'is_guilty',
         displayName: 'Виновность',
-        type: 'select',
+        type: 'string',
         filter: {
           type: 'multiselect',
         },

@@ -43,7 +43,7 @@ export function tableMeta({
       {
         name: 'description',
         displayName: 'Описание',
-        type: 'text',
+        type: 'string',
         filter: {
           type: 'string',
         },
@@ -51,7 +51,7 @@ export function tableMeta({
       {
         name: 'car_model_name',
         displayName: 'Модель ТС',
-        type: 'select',
+        type: 'string',
         filter: {
           type: 'multiselect',
         },
@@ -76,7 +76,7 @@ export function tableMeta({
       {
         name: 'measure_unit_run_name',
         displayName: 'Пробег измеряется',
-        type: 'select',
+        type: 'string',
         filter: {
           type: 'multiselect',
           // options: measureUnitRunList.map(defaultSelectListMapper),

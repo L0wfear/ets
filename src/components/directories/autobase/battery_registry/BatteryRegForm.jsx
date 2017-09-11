@@ -86,7 +86,7 @@ export default class BaseBatteryForm extends Form {
                 disabled={!isPermitted}
               />
               <ExtField
-                type={fields.released_at.type}
+                type={'date'}
                 label={fields.released_at.displayName}
                 date={state.released_at}
                 time={false}

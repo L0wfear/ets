@@ -10,11 +10,10 @@ function getEmployees(payload = {}) {
 
 export default class EmployeesActions extends Actions {
 
-  async getEmployees(isBrigade = false) {
-    const payload = {};
-    if (isBrigade) {
-      payload.active = 1;
-    }
+  async getEmployees(props) {
+    const payload = {
+      ...props,
+    };
     return getEmployees(payload);
   }
 

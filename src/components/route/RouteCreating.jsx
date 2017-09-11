@@ -21,7 +21,6 @@ class RouteCreating extends Component {
       manual: PropTypes.bool,
       odhPolys: PropTypes.object,
       dtPolys: PropTypes.object,
-      bridgesPolys: PropTypes.object,
     };
   }
 
@@ -35,6 +34,20 @@ class RouteCreating extends Component {
       zoom: sessionStore.getCurrentUser().getCompanyMapConfig().zoom,
       center: sessionStore.getCurrentUser().getCompanyMapConfig().coordinates,
     };
+  }
+
+  async componentDidMount() {
+    const { flux } = this.context;
+    const shwoBridge = flux.getStore('session').getPermission(['bridges.list']);
+
+    if (shwoBridge) {
+      await flux.getActions('geoObjects').getGeozoneByTypeWithGeometry('bridges', 'GormostService', {});
+      flux.getActions('geoObjects').setSelectedPolysType('bridges');
+
+      const bridgesPolys = flux.getStore('geoObjects').getSelectedPolys();
+
+      this.setState({ bridgesPolys });
+    }
   }
 
   onFeatureClick(feature) {
@@ -210,17 +223,19 @@ class RouteCreating extends Component {
   }
 
   render() {
-    const { route = {}, bridgesPolys = {} } = this.props;
+    const { route = {} } = this.props;
+    const { bridgesPolys = {} } = this.state;
     const {
       object_list = [],
       draw_object_list = [],
+      polys = {},
     } = route;
     const [draw_list = []] = [route.draw_odh_list];
-
     const Map = this.props.manual ? DrawMap : PolyMap;
+    const MapPolys = Object.assign({}, bridgesPolys, polys);
     const list = object_list.filter(o => o.type) || [];
-    const polys = route.type === 'simple_dt' ? this.props.dtPolys : this.props.odhPolys;
-    const fail_list = _.map(polys, (v, k) => ({ name: v.name, object_id: parseInt(k, 10), type: 'odh', state: v.state })).filter(o => !list.concat(draw_list).find(e => e.object_id === o.object_id));
+    const polysRT = route.type === 'simple_dt' ? this.props.dtPolys : this.props.odhPolys;
+    const fail_list = _.map(polysRT, (v, k) => ({ name: v.name, object_id: parseInt(k, 10), type: 'odh', state: v.state })).filter(o => !list.concat(draw_list).find(e => e.object_id === o.object_id));
     const ODHS = _.map(this.props.odhPolys, (v, k) => ({ label: v.name, value: k }));
     const DTS = _.map(this.props.dtPolys, (v, k) => ({ label: v.name, value: k }));
 
@@ -239,7 +254,7 @@ class RouteCreating extends Component {
                 center={this.state.center}
                 object_list={object_list}
                 draw_object_list={draw_object_list}
-                polys={Object.assign({}, bridgesPolys, route.polys)}
+                polys={MapPolys}
                 objectsType={route.type}
                 manualDraw={this.props.manual}
               />

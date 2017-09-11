@@ -108,15 +108,20 @@ export default class SessionStore extends Store {
   }
 
   getPermission(permissionName) {
-    const { permissions } = this.state.currentUser;
-    if (Array.isArray(permissionName)) {
-      permissionName.forEach((permission) => {
-        if (permissions.indexOf(permission) === -1) return false;
-      });
-      return true;
-    }
+    const { permissions = [] } = this.state.currentUser;
 
-    return !!(permissions.indexOf(permissionName) + 1);
+    if (!Array.isArray(permissionName)) {
+      return permissions.includes(permissionName);
+    }
+    const permissionsReduce = permissions.reduce(
+      (obj, onePermission) => {
+        obj[onePermission] = onePermission;
+        return obj;
+      },
+      {},
+    );
+
+    return permissionName.reduce((bool, permission) => bool && !!permissionsReduce[permission], true);
   }
 
 }

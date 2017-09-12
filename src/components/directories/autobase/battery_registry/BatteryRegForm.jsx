@@ -51,7 +51,7 @@ export default class BaseBatteryForm extends Form {
             <Col md={12}>
               <ExtField
                 type={'select'}
-                label={fields.brand_id.displayName}
+                label={fields.brand_name.displayName}
                 value={state.brand_id}
                 error={errors.brand_id}
                 options={BATTERY_BRAND_OPTION}
@@ -62,7 +62,7 @@ export default class BaseBatteryForm extends Form {
               />
               <ExtField
                 type={'string'}
-                label={fields.manufacturer_id.displayName}
+                label={fields.manufacturer_name.displayName}
                 value={get(batteryBrandList.find(s => s.id === state.brand_id), 'manufacturer_name', '')}
                 emptyValue={null}
                 disabled

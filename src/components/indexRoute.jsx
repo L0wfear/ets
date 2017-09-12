@@ -10,6 +10,7 @@ import RoutesList from 'components/route/RoutesList.jsx';
 import MonitorPage from 'components/monitor/MonitorPage.jsx';
 import DashboardPage from 'components/dashboard/DashboardPage.jsx';
 import UserNotificationList from 'components/notifications/UserNotificationList';
+import ProgramRegistryList from 'components/program_registry/ProgramRegistryList.jsx';
 import CompanyStructure from 'components/company_structure/CompanyStructure.jsx';
 import * as missions from 'components/missions';
 
@@ -48,6 +49,7 @@ const routes = (props) => {
         {reportRoutes({ requireAuth })}
         {/* НСИ - Реестры и справочники */}
         {nsiRoutes({ requireAuth })}
+        <Route path="program-registry" component={ProgramRegistryList} onEnter={requireAuth} />
         <Route path="notification-registry" component={UserNotificationList} onEnter={requireAuth} />
         {/* Страница логина */}
         <Route path="login" component={LoginPage} onEnter={checkLoggedIn} />

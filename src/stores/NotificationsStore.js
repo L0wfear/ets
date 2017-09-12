@@ -36,7 +36,8 @@ export default class NotificationsStore extends Store {
         actionNames: [
           'contractor',
           'stateProgram',
-        ]
+          'programRegistry',
+        ],
       },
       {
         actions: objectsActions,
@@ -89,6 +90,7 @@ export default class NotificationsStore extends Store {
         actionNames: [
           'removeСontractor',
           'removeStateProgram',
+          'removeProgramRegistry',
         ],
       },
     ];

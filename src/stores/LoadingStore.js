@@ -37,7 +37,8 @@ export default class LoadingStore extends Store {
       repairActions.getRepairListByType,
       repairActions.contractor,
       repairActions.removeСontractor,
-
+      repairActions.programRegistry,
+      
       waybillsActions.deleteWaybill,
       waybillsActions.createWaybill,
       waybillsActions.updateWaybill,

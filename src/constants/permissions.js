@@ -178,6 +178,9 @@ const PERMISSIONS = {
       'list': 'company.list',
     },
   },
+  repair: {
+    'list': 'repair_program_registry.list',
+  },
   'administration': 'administration',
 };
 

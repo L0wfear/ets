@@ -151,7 +151,8 @@ export default class MainPage extends React.Component {
 
             <NavItem hidden={isOkrug} permissions={[PERMISSIONS.route.list]} active={path === '/routes-list'} href="#/routes-list">Маршруты</NavItem>
             <NavItem hidden={isOkrug} permissions={[PERMISSIONS.company_structure.list]} active={path === '/company-structure'} href="#/company-structure">Структура предприятия</NavItem>
-            
+            <NavItem permissions={[PERMISSIONS.repair.list]} active={path === '/program-registry'} href="#/program-registry">Планирование ремонтных работ</NavItem>
+
             <NavItem title="Уведомления пользователей" active={path === '/notification-registry'} href="#/notification-registry"><span>Уведомления <Badge>{countUserNotificationInfo}</Badge></span></NavItem>
             <NavItem hidden={isOkrug} permissions={[PERMISSIONS.administration]} title="Администрирование" href={`http://213.79.88.5/${process.env.STAND !== 'prod' ? 'ets-test/' : ''}admin`}><Glyphicon glyph="list-alt" /></NavItem>
           </Nav>

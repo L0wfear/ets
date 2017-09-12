@@ -4,7 +4,6 @@ import { Route } from 'react-router';
 import directories from './index.js';
 
 const repairRoutes = (props) => {
-
   const { requireAuth } = props;
   const routes = (
     <div>

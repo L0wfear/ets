@@ -27,6 +27,7 @@ export function tableMeta({
         filter: {
           type: 'multiselect',
         },
+        cssClassName: 'col-md-5',
       },
     ],
   };

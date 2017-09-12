@@ -7,6 +7,7 @@ export default class NotificationsStore extends Store {
     super();
 
     const autoBaseActions = flux.getActions('autobase');
+    const repairActions = flux.getActions('repair');
     const missionsActions = flux.getActions('missions');
     const objectsActions = flux.getActions('objects');
     const reportsActions = flux.getActions('reports');
@@ -29,6 +30,13 @@ export default class NotificationsStore extends Store {
           'tire',
           'cloneTire',
         ],
+      },
+      {
+        actions: repairActions,
+        actionNames: [
+          'contractor',
+          'stateProgram',
+        ]
       },
       {
         actions: objectsActions,
@@ -74,6 +82,13 @@ export default class NotificationsStore extends Store {
           'removeTechMaintOrder',
           'removeTechMaint',
           'removeTire',
+        ],
+      },
+      {
+        actions: repairActions,
+        actionNames: [
+          'removeСontractor',
+          'removeStateProgram',
         ],
       },
     ];

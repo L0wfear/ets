@@ -6,6 +6,7 @@ export default class LoadingStore extends Store {
     super();
 
     const autoBaseActions = flux.getActions('autobase');
+    const repairActions = flux.getActions('repair');
     const geoObjectsActions = flux.getActions('geoObjects');
     const waybillsActions = flux.getActions('waybills');
     const fuelRateActions = flux.getActions('fuelRates');
@@ -32,6 +33,10 @@ export default class LoadingStore extends Store {
       autoBaseActions.techMaintOrder,
       autoBaseActions.techMaint,
       autoBaseActions.tire,
+
+      repairActions.getRepairListByType,
+      repairActions.contractor,
+      repairActions.removeСontractor,
 
       waybillsActions.deleteWaybill,
       waybillsActions.createWaybill,

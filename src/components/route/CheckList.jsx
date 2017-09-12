@@ -2,12 +2,13 @@ import React, { PropTypes } from 'react';
 import { polyState } from 'constants/polygons.js';
 import { Button } from 'react-bootstrap';
 import Div from 'components/ui/Div.jsx';
-import each from 'lodash/each';
-import uniqBy from 'lodash/uniqBy';
+import {
+  uniqBy,
+} from 'lodash';
 
 export default function ODHList(props) {
   const { checkRoute, name } = props;
-  let { list = [], fail_list = [], draw_list = [] } = props;
+  const { list = [], fail_list = [], draw_list = [] } = props;
   const LIST = list.map((odh, index) => {
     const speed_type = odh.state === polyState.IDLE ? 'холостой' : 'рабочий';
     return <li key={index}>{`${odh.name || odh.odh_name || odh.object_name} (${speed_type} ход)`}</li>

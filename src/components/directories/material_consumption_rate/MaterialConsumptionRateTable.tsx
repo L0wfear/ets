@@ -58,7 +58,7 @@ export function tableMeta({
         displayName: 'Норма',
         type: 'number',
         filter: {
-          type: 'number',
+          type: 'advanced-number',
         },
         cssClassName: 'width60',
       },

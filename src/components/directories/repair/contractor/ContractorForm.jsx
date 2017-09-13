@@ -122,7 +122,7 @@ export default class SparePartForm extends Form {
             </Col>
             <Col md={4}>
               <ExtField
-                type="number"
+                type="string"
                 label="БИК"
                 error={errors.bik}
                 value={state.bik}

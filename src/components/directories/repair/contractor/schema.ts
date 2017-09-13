@@ -12,21 +12,25 @@ export const formValidationSchema: IValidationSchema = {
       key: 'inn',
       title: 'ИНН',
       type: 'number',
+      integer: true,
     },
     {
       key: 'kpp',
       title: 'КПП',
       type: 'number',
+      integer: true,
     },
     {
       key: 'ogrn',
       title: 'ОГРН',
       type: 'number',
+      integer: true,
     },
     {
       key: 'okpo',
       title: 'ОКПО',
       type: 'number',
+      integer: true,
     },
     {
       key: 'postal_address',
@@ -52,6 +56,7 @@ export const formValidationSchema: IValidationSchema = {
       key: 'bik',
       title: 'БИК',
       type: 'number',
+      integer: true,
     },
   ],
 };

@@ -3,7 +3,7 @@ import { Button, ButtonGroup } from 'react-bootstrap';
 
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import REPAIR from 'constants/repair';
-import CheckableElementsList from 'components/CheckableElementsList.jsx';
+import ElementsList from 'components/ElementsList.jsx';
 import ObjectPropertyTable from './ObjectPropertyTable.tsx';
 
 @connectToStores(['repair', 'session'])
@@ -14,7 +14,7 @@ import ObjectPropertyTable from './ObjectPropertyTable.tsx';
   tableComponent: ObjectPropertyTable,
   operations: ['LIST'],
 })
-class ObjectPropertyList extends CheckableElementsList {
+class ObjectPropertyList extends ElementsList {
   constructor(props) {
     super(props);
 

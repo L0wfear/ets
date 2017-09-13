@@ -1,15 +1,13 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import ElementsList from 'components/ElementsList.jsx';
-import { schema } from 'models/MaterialConsumptionRate.js';
 import MaterialConsumptionRateFormWrap from './MaterialConsumptionRateFormWrap.jsx';
-import MaterialConsumptionRateTable from './MaterialConsumptionRateTable.jsx';
+import MaterialConsumptionRateTable from './MaterialConsumptionRateTable.tsx';
 
 @connectToStores(['objects'])
 @exportable({ entity: 'material_consumption_rate' })
 @staticProps({
   entity: 'material_consumption_rate',
   listName: 'materialConsumptionRateList',
-  schema,
   tableComponent: MaterialConsumptionRateTable,
   formComponent: MaterialConsumptionRateFormWrap,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],

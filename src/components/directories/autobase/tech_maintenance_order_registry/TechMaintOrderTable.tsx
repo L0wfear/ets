@@ -70,7 +70,7 @@ export function tableMeta({
         displayName: 'Интервал до следующего ТО (по пробегу)',
         type: 'number',
         filter: {
-          type: 'string',
+          type: 'advanced-number',
         },
       },
       {
@@ -87,7 +87,7 @@ export function tableMeta({
         displayName: 'Интервал до следующего ТО (по времени)',
         type: 'number',
         filter: {
-          type: 'string',
+          type: 'advanced-number',
         },
       },
       {

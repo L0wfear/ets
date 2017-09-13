@@ -31,11 +31,17 @@ export const tableMeta = props => ({
       name: 'summer_rate',
       displayName: 'Норма для летнего периода',
       type: 'number',
+      filter: {
+        type: 'advanced-number',
+      },
     },
     {
       name: 'winter_rate',
       displayName: 'Норма для зимнего периода',
       type: 'number',
+      filter: {
+        type: 'advanced-number',
+      }
     },
     {
       name: 'car_special_model_name',

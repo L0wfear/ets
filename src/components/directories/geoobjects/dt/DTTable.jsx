@@ -29,16 +29,25 @@ export const tableMeta = ({
         name: 'total_area',
         displayName: 'Общая площадь (кв.м.)',
         type: 'number',
+        filter: {
+          type: 'advanced-number',
+        },
       },
       {
         name: 'clean_area',
         displayName: 'Общая уборочная площадь (кв.м.)',
         type: 'number',
+        filter: {
+          type: 'advanced-number',
+        },
       },
       {
         name: 'auto_area',
         displayName: 'Площадь механизированной уборки (кв.м.)',
         type: 'number',
+        filter: {
+          type: 'advanced-number',
+        },
       },
       {
         name: 'company_structure_id',

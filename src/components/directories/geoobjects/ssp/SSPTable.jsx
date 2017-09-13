@@ -39,7 +39,7 @@ export const tableMeta = props => ({
       displayName: 'Производительность (куб. м в сутки)',
       type: 'number',
       filter: {
-        type: 'string',
+        type: 'advanced-number',
       },
     },
   ],

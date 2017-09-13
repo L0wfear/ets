@@ -23,7 +23,7 @@ export const tableMeta = props => ({
       displayName: 'Площадь на проезжей части, м²',
       type: 'number',
       filter: {
-        type: 'string',
+        type: 'advanced-number',
       },
     },
     {
@@ -31,7 +31,7 @@ export const tableMeta = props => ({
       displayName: 'Площадь на тротуаре, м²',
       type: 'number',
       filter: {
-        type: 'string',
+        type: 'advanced-number',
       },
     },
     {
@@ -39,7 +39,7 @@ export const tableMeta = props => ({
       displayName: 'Площадь на обочинах, м²',
       type: 'number',
       filter: {
-        type: 'string',
+        type: 'advanced-number',
       },
     },
   ],

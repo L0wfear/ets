@@ -20,6 +20,7 @@ type FieldTypes =
   'string' |
   'date' |
   'datetime' |
+  'advanced-number'|
   'number';
 
 export type ILabelFunction = (data: number|string) => string;

@@ -10,6 +10,9 @@ const getTableMeta = (props) => {
         displayName: 'Номер',
         type: 'number',
         cssClassName: 'width120',
+        filter: {
+          type: 'advanced-number',
+        }
       },
       {
         name: 'create_date',

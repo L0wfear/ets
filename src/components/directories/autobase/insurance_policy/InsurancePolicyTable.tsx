@@ -50,7 +50,7 @@ export function tableMeta({
         displayName: 'Номер',
         type: 'number',
         filter: {
-          type: 'number',
+          type: 'advanced-number',
         },
       },
       {
@@ -74,7 +74,7 @@ export function tableMeta({
         displayName: 'Стоимость, руб.',
         type: 'number',
         filter: {
-          type: 'number',
+          type: 'advanced-number',
         },
       },
       {

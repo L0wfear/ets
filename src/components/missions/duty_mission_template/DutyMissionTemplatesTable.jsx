@@ -9,6 +9,9 @@ const getTableMeta = (props) => {
         displayName: 'Номер',
         type: 'number',
         cssClassName: 'width60',
+        filter: {
+          type: 'advanced-number',
+        },
       },
       {
         name: 'route_name',

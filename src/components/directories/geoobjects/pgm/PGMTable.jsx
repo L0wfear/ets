@@ -31,7 +31,7 @@ export const tableMeta = props => ({
       displayName: 'Объем жидких ПГМ',
       type: 'number',
       filter: {
-        type: 'string',
+        type: 'advanced-number',
       },
     },
     {
@@ -39,7 +39,7 @@ export const tableMeta = props => ({
       displayName: 'Объем твердых ПГМ',
       type: 'number',
       filter: {
-        type: 'string',
+        type: 'advanced-number',
       },
     },
     {
@@ -47,7 +47,7 @@ export const tableMeta = props => ({
       displayName: 'Тип ПГМ',
       type: 'number',
       filter: {
-        type: 'string',
+        type: 'advanced-number',
       },
     },
   ],

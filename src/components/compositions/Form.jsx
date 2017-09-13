@@ -36,6 +36,7 @@ export default class Form extends React.Component {
   }
 
   handleSubmit() {
+    console.log('asd')
     this.props.onSubmit();
   }
 

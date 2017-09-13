@@ -38,7 +38,7 @@ export default class SparePartForm extends Form {
           <Row>
             <Col md={3}>
               <ExtField
-                type="number"
+                type="string"
                 label="ИНН"
                 error={errors.inn}
                 value={state.inn}
@@ -48,7 +48,7 @@ export default class SparePartForm extends Form {
             </Col>
             <Col md={3}>
               <ExtField
-                type="number"
+                type="string"
                 label="КПП"
                 error={errors.kpp}
                 value={state.kpp}
@@ -58,7 +58,7 @@ export default class SparePartForm extends Form {
             </Col>
             <Col md={3}>
               <ExtField
-                type="number"
+                type="string"
                 label="ОГРН"
                 error={errors.ogrn}
                 value={state.ogrn}
@@ -68,7 +68,7 @@ export default class SparePartForm extends Form {
             </Col>
             <Col md={3}>
               <ExtField
-                type="number"
+                type="string"
                 label="ОКПО"
                 error={errors.okpo}
                 value={state.okpo}

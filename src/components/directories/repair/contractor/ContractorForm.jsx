@@ -102,8 +102,8 @@ export default class SparePartForm extends Form {
           <Row>
             <Col md={4}>
               <ExtField
-                type="Телефон"
-                label="Группа"
+                type="string"
+                label="Телефон"
                 error={errors.phone}
                 value={state.phone}
                 onChange={this.handleChange}

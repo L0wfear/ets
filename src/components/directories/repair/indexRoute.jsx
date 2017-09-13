@@ -10,6 +10,7 @@ const repairRoutes = (props) => {
       {/* НСИ - Реестры и справочники - Планирование работ по техническому содержание объектов */}
       <Route path="contractor" component={directories.contractor} onEnter={requireAuth} />
       <Route path="state-program" component={directories.stateProgram} onEnter={requireAuth} />
+      <Route path="object-property-list" component={directories.objectProperty} onEnter={requireAuth} />
     </div>
   );
 

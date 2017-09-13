@@ -7,7 +7,7 @@ import REPAIR from '../constants/repair';
 const parsePutPath = (entity, method, formState, idKey = 'id') => `${entity}/${method === 'put' ? formState[idKey] : ''}`;
 export default class RepairActions extends Actions {
 
-  async getRepairListByType(type, data) {
+  async getRepairListByType(type, data, other = {}) {
     const trueType = REPAIR[type];
     const payload = {
       ...data,
@@ -18,6 +18,13 @@ export default class RepairActions extends Actions {
     return {
       type,
       data: response,
+      other,
+    };
+  }
+  setActiveList(listName, listNameTrue) {
+    return {
+      listName,
+      listNameTrue,
     };
   }
 

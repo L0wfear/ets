@@ -24,7 +24,7 @@ export default class ODHNormForm extends Form {
       isPermitted = false,
       measureUnitList = [],
     } = this.props;
-    console.log(measureUnitList)
+
     const IS_CREATING = !state.id;
     const MEASUREUNIT_OPTION = measureUnitList.map(defaultSelectListMapper);
 

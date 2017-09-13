@@ -3,4 +3,5 @@ export default {
   stateProgram: 'state_program',
   stateProgramStatus: 'state_program_status',
   programRegistry: 'program_registry',
+  objectProperty: 'object_property_list',
 };

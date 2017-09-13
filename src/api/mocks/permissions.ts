@@ -11,6 +11,7 @@ export const repair: string[] = [
   ...getFullAccess('repair_state_program'),
   ...getFullAccess('repair_contractor'),
   ...getFullAccess('repair_program_registry'),
+  ...getFullAccess('repair_object_property'),
 ];
 
 export const userNotification: string[] = [

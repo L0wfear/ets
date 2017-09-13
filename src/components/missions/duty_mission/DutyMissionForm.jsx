@@ -105,7 +105,7 @@ export class DutyMissionForm extends Form {
 
     missionsActions.getMissions(mission.technical_operation_id);
     missionsActions.getMissionSources();
-    flux.getActions('employees').getEmployees();
+    flux.getActions('employees').getEmployees({ 'active': true });
     const technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsWithBrigades();
     this.setState({
       selectedRoute,
@@ -162,8 +162,16 @@ export class DutyMissionForm extends Form {
     const state = this.props.formState;
     const errors = this.props.formErrors;
 
-    const { missionSourcesList = [], employeesList = [], missionsList = [], readOnly = false } = this.props;
-    const { technicalOperationsList = [], routesList = [] } = this.state;
+    const {
+      missionSourcesList = [],
+      employeesList = [],
+      missionsList = [],
+      readOnly = false,
+    } = this.props;
+    const {
+      technicalOperationsList = [],
+      routesList = [],
+    } = this.state;
 
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
     const MISSION_SOURCES = missionSourcesList.map(({ id, name }) => ({ value: id, label: name }));

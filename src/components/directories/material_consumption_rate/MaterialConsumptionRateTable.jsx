@@ -58,6 +58,7 @@ const tableMeta = {
 
 export default (props) => {
   const renderers = {
+    value: ({ data }) => <span>{ data === null || data === undefined ? '' : data.toFixed(3) }</span>,
   };
 
   return (<Table title="Справочник норм на расход расходных материалов"

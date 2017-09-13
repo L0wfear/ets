@@ -42,7 +42,7 @@ export default class WaybillFormWrap extends FormWrap {
 
   constructor(props) {
     super(props);
-
+    console.log(props)
     this.state = {
       formState: null,
       formErrors: {},
@@ -289,6 +289,7 @@ export default class WaybillFormWrap extends FormWrap {
           return;
         }
       }
+      console.log(this.props.onCallback, this.props)
       this.props.onCallback();
     } else if (waybillStatus === 'draft') { // если ПЛ обновляем
       if (typeof callback === 'function') {

@@ -31,7 +31,7 @@ export default class ProgramRegistryForm extends Form {
         </Div>
         <ModalBody />
         <Modal.Footer>
-          <Button disabled={!this.props.canSave} onClick={this.handleSubmitWrap}>Сохранить</Button>
+          <Button disabled onClick={this.handleSubmitWrap}>Сохранить</Button>
         </Modal.Footer>
       </Modal>
     );

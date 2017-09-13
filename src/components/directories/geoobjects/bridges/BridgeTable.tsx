@@ -29,7 +29,7 @@ export function tableMeta({
       },
       {
         name: 'location',
-        displayName: 'Местоположение объекта',
+        displayName: 'Местоположение',
         type: 'string',
         filter: false,
       },

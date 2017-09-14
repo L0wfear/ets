@@ -489,18 +489,74 @@ export default class DataTable extends React.Component {
     });
     return el;
   }
+  checkWhatFieldISortin(initialSort) {
+    const {
+      tableMeta: { cols = [] },
+    } = this.props;
+    const myTypeFromCols = (cols.find(col => col.name === initialSort) || {}).type;
 
-  processTableData(data, tableCols, selected, selectField, onRowSelected, lowerCaseSorting, highlight = []) {
-    const tempData = data
+    switch (myTypeFromCols) {
+      case 'number': return 'number';
+      case 'string': return 'string';
+      case 'boollean': return 'boollean';
+      default: return this.findMyTypeFromData(initialSort);
+    }
+  }
+  findMyTypeFromData(initialSort) {
+    const { results } = this.props;
+
+    return results.reduce((bool, line) => bool && (typeof line[initialSort] === 'number' || line[initialSort] === null), true) ? 'number' : 'string';
+  }
+
+  sortingData(type, a, b) {
+    let one = this.checkForCorrect(a[this.state.initialSort]);
+    let two = this.checkForCorrect(b[this.state.initialSort]);
+
+    if (type === 'string') {
+      try {
+        one = one.toLocaleLowerCase();
+        two = two.toLocaleLowerCase();
+      } catch (e) {
+        //  is boolean
+      }
+    }
+    if (one > two) {
+      return 1;
+    } else if (one < two) {
+      return -1;
+    }
+    return 0;
+  }
+  // max string - яяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяя 
+  // или как?
+  // поменять, если знаешь что вместо
+  checkForCorrect(val) {
+    if (val === null) return Number.MAX_SAFE_INTEGER;
+    if (val === '') return 'яяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяя';
+    return val;
+  }
+
+  processTableData(data, tableCols, selected, selectField, onRowSelected, highlight = []) {
+    const {
+      initialSort,
+      initialSortAscending,
+    } = this.state;
+
+    let tempData = data
           .map(this.processEmptyCols.bind(this, tableCols))
           .map(this.processHighlighted.bind(this, highlight))
-          .map(this.processSelected.bind(this, selected, selectField, onRowSelected));
+          .map(this.processSelected.bind(this, selected, selectField, onRowSelected))
+          .filter(this.shouldBeRendered);
 
-    if (lowerCaseSorting) {
-      tempData.sort(this.sortingLoweCase);
+    if (initialSort) {
+      tempData = tempData.sort(this.sortingData.bind(this, this.checkWhatFieldISortin(initialSort)));
+
+      if (!initialSortAscending) {
+        return tempData.reverse();
+      }
+      return tempData;
     }
-
-    return tempData.filter(this.shouldBeRendered);
+    return tempData;
   }
 
   handleChangeSort(sortingColumnName, ascendingSort) {
@@ -540,7 +596,7 @@ export default class DataTable extends React.Component {
       selectField, title, noTitle, noFilter,
       enableSort, noDataMessage, className, noHeader,
       refreshable, columnControl, highlight, serverPagination, externalChangeSort,
-      lowerCaseSorting = false } = this.props;
+    } = this.props;
     const { initialSort, initialSortAscending, columnControlValues, isHierarchical } = this.state;
 
     const tableMetaCols = (tableMeta.cols);
@@ -554,14 +610,13 @@ export default class DataTable extends React.Component {
     const tableCols = columnMetadata.map(m => m.columnName).filter(c => columnControlValues.indexOf(c) === -1);
     const rowMetadata = this.initializeRowMetadata();
     const tableClassName = cx('data-table', className);
-    const customColumnSorting = lowerCaseSorting && !data.filter(d => !d[this.state.initialSort])[0];
 
-    const results = this.processTableData(data, tableCols, selected, selectField, onRowSelected, customColumnSorting, highlight);
+    const results = this.processTableData(data, tableCols, selected, selectField, onRowSelected, highlight);
 
     return (
       <Div className={tableClassName}>
         <Div className="some-header" hidden={noHeader}>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', 'justify-content': 'space-between' }}>
             <div>
               {noTitle ? '' : title}
             </div>
@@ -606,6 +661,7 @@ export default class DataTable extends React.Component {
             />
           }
         </Div>
+        {/* lowerCaseSorting - сортировка в этом компоненте, а не в griddle.getDataForRender */}
         <Griddle
           results={results}
           enableSort={enableSort}
@@ -621,7 +677,7 @@ export default class DataTable extends React.Component {
           rowMetadata={rowMetadata}
           onKeyPress={this.handleKeyPress}
           noDataMessage={noDataMessage || noFilter ? '' : 'Нет данных'}
-          lowerCaseSorting={customColumnSorting}
+          lowerCaseSorting
         />
       </Div>
     );

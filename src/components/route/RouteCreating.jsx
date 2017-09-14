@@ -155,7 +155,7 @@ class RouteCreating extends Component {
 
   setODH(id, name, state) {
     const { object_list = [] } = this.props.route;
-    const objectIndex = _.findIndex(object_list, o => o.object_id === id);
+    const objectIndex = object_list.findIndex(d => d.object_id === +id);
     const type = this.props.route.type === 'simple_dt' ? 'dt' : 'odh';
 
     if (state === polyState.SELECTABLE) {

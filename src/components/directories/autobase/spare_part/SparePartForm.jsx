@@ -10,7 +10,7 @@ import Form from 'components/compositions/Form.jsx';
 
 @connectToStores(['autobase'])
 export default class SparePartForm extends Form {
-  handleSubmitWrap = (...arg) => this.handleSubmit(...arg);
+  handleSubmitWrap = () => this.handleSubmit();
 
   render() {
     const [state, errors] = [this.props.formState, this.props.formErrors];

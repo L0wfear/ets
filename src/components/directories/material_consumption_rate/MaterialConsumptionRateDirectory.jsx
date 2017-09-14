@@ -1,7 +1,7 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import ElementsList from 'components/ElementsList.jsx';
 import MaterialConsumptionRateFormWrap from './MaterialConsumptionRateFormWrap.jsx';
-import MaterialConsumptionRateTable from './MaterialConsumptionRateTable.jsx';
+import MaterialConsumptionRateTable from './MaterialConsumptionRateTable.tsx';
 
 @connectToStores(['objects'])
 @exportable({ entity: 'material_consumption_rate' })

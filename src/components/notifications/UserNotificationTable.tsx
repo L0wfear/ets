@@ -30,7 +30,6 @@ export function tableMeta({
         filter: {
           type: 'multiselect',
         },
-        display: false,
       },
       {
         name: 'title',

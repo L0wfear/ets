@@ -110,7 +110,6 @@ export default class UserNotificationForm extends Form {
     }
   }
   handleClick = (pathComponent, query) => {
-    console.log(query)
     this.props.history.replaceState(null, `/${pathComponent}`, query);
   }
   getDataForUserNotification(type, state) {
@@ -138,7 +137,6 @@ export default class UserNotificationForm extends Form {
   render() {
     const state = this.props.formState;
     const NotificationDesc = notificationComponents[state.type_code] || 'div';
-    console.log(this.getDataForUserNotification(state.type_code, state))
     return (
       <Modal {...this.props} backdrop="static">
         <Modal.Header closeButton>

@@ -74,7 +74,7 @@ export function tableMeta({
         displayName: 'Пробег на момент ТО, км',
         type: 'number',
         filter: {
-          type: 'string',
+          type: 'advanced-number',
         },
       },
       {
@@ -82,7 +82,7 @@ export function tableMeta({
         displayName: 'Счетчик м/ч на момент ТО, м/ч',
         type: 'number',
         filter: {
-          type: 'string',
+          type: 'advanced-number',
         },
       },
       {

@@ -42,7 +42,7 @@ export const tableMeta = ({
         type: 'number',
         orderNum: 4,
         filter: {
-          type: 'number',
+          type: 'advanced-number',
         },
       },
       {
@@ -51,7 +51,7 @@ export const tableMeta = ({
         type: 'number',
         orderNum: 4,
         filter: {
-          type: 'number',
+          type: 'advanced-number',
         },
       },
       {

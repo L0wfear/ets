@@ -40,51 +40,81 @@ export function tableMeta({
         name: 'total_area',
         displayName: 'Общая площадь (кв.м.)',
         type: 'number',
+        filter: {
+          type: 'advanced-number',
+        },
       },
       {
         name: 'distance',
         displayName: 'Протяженность (п.м.)',
         type: 'number',
+        filter: {
+          type: 'advanced-number',
+        },
       },
       {
         name: 'roadway_area',
         displayName: 'Площадь проезжей части (кв.м.)',
         type: 'number',
+        filter: {
+          type: 'advanced-number',
+        },
       },
       {
         name: 'footway_area',
         displayName: 'Площадь тротуаров (кв.м.)',
         type: 'number',
+        filter: {
+          type: 'advanced-number',
+        },
       },
       {
         name: 'cleaning_area',
         displayName: 'Площадь уборки (кв.м.)',
         type: 'number',
+        filter: {
+          type: 'advanced-number',
+        },
       },
       {
         name: 'footway_length',
         displayName: 'Длина тротуара (п.м.)',
         type: 'number',
+        filter: {
+          type: 'advanced-number',
+        },
       },
       {
         name: 'auto_footway_area',
         displayName: 'Площадь механизированной уборки тротуаров (кв.м.)',
         type: 'number',
+        filter: {
+          type: 'advanced-number',
+        },
       },
       {
         name: 'manual_footway_area',
         displayName: 'Площадь ручной уборки тротуаров (кв.м.)',
         type: 'number',
+        filter: {
+          type: 'advanced-number',
+        },
       },
       {
         name: 'snow_area',
         displayName: 'Площадь уборки снега (кв.м.)',
         type: 'number',
+        filter: {
+          type: 'advanced-number',
+        },
       },
       {
         name: 'gutters_length',
         displayName: 'Протяженность лотков (п.м.)',
         type: 'number',
+        filter: {
+          type: 'advanced-number',
+        },
       },
       {
         name: 'company_structure_name',

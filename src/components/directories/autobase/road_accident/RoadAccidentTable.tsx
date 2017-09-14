@@ -58,7 +58,7 @@ export function tableMeta({
         displayName: 'Стоимость ущерба, руб.',
         type: 'number',
         filter: {
-          type: 'number',
+          type: 'advanced-number',
         },
       },
       {

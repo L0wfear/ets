@@ -145,7 +145,7 @@ export function getDefaultDutyMissionsCreationTemplate() {
   return {
     date_start: getToday9am(),
     date_end: getTomorrow9am(),
-    mission_source_id: 4,
+    mission_source_id: 3,
   };
 }
 
@@ -161,7 +161,7 @@ export function getDefaultMissionsCreationTemplate() {
     date_start: getToday9am(),
     date_end: getTomorrow9am(),
     assign_to_waybill: 'assign_to_new_draft',
-    mission_source_id: 4,
+    mission_source_id: 3,
     passes_count: 1,
   };
 }

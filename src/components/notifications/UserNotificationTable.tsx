@@ -24,6 +24,15 @@ export function tableMeta({
         },
       },
       {
+        name: 'gov_number',
+        displayName: 'Рег. номер ТС',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
+        display: false,
+      },
+      {
         name: 'title',
         displayName: 'Заголовок',
         type: 'string',

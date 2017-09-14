@@ -101,7 +101,6 @@ export function tableMeta({
 
 const Table: React.SFC<any> = props  => {
   const renderers: ISchemaRenderer = {
-    percent: ({ data }) => <span>{`${data} %`}</span>,
     plan_date_start: ({ data }) => (<DateFormatter date={data} />),
     plan_date_end: ({ data }) => (<DateFormatter date={data} />),
     fact_date_start: ({ data }) => (<DateFormatter date={data} />),

@@ -42,7 +42,6 @@ export default class WaybillFormWrap extends FormWrap {
 
   constructor(props) {
     super(props);
-
     this.state = {
       formState: null,
       formErrors: {},

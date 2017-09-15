@@ -15,12 +15,10 @@ export default class StateProgramForm extends Form {
   render() {
     const [state, errors] = [this.props.formState, this.props.formErrors];
     const { stateProgramStatusList = [] } = this.props;
-    const IS_CREATING = !state.id;
 
     const STATE_PROGRAM_STATUS_OPTIONS = stateProgramStatusList.map(defaultSelectListMapper)
 
-    let title = 'Изменение записи';
-    if (IS_CREATING) title = 'Создание записи';
+    const title = 'Государственная программа ремонта';
 
     return (
       <Modal {...this.props} backdrop="static">

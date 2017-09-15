@@ -6,14 +6,15 @@ const tableMeta = {
     {
       name: 'technical_operation_name',
       displayName: 'Технологическая операция',
-      type: 'string',
+      type: 'text',
       filter: {
         type: 'multiselect',
       },
     },
     {
-      name: 'maintenance_work_name',
-      displayName: 'Наименование регламентной работы',
+      name: 'consumable_material_name',
+      displayName: 'Расходный материал',
+      type: 'text',
       filter: {
         type: 'multiselect',
       },
@@ -21,6 +22,7 @@ const tableMeta = {
     {
       name: 'season_name',
       displayName: 'Сезон',
+      type: 'text',
       filter: {
         type: 'multiselect',
       },
@@ -29,6 +31,7 @@ const tableMeta = {
     {
       name: 'clean_category_name',
       displayName: 'Категория',
+      type: 'text',
       filter: {
         type: 'multiselect',
       },
@@ -36,6 +39,7 @@ const tableMeta = {
     {
       name: 'clean_subcategory_name',
       displayName: 'Подкатегория',
+      type: 'text',
       filter: {
         type: 'multiselect',
       },
@@ -43,33 +47,23 @@ const tableMeta = {
     {
       name: 'value',
       displayName: 'Норма',
-      cssClassName: 'width60',
       type: 'number',
       filter: {
         type: 'advanced-number',
       },
-    },
-    {
-      name: 'measure_unit_name',
-      displayName: 'Единица измерения',
       cssClassName: 'width60',
-      filter: {
-        type: 'multiselect',
-      },
     },
   ],
 };
 
 export default (props) => {
-  const renderers = {};
+  const renderers = {
+  };
 
-  return (
-    <Table
-      title="Нормы на содержание объектов"
-      results={props.data}
-      tableMeta={tableMeta}
-      renderers={renderers}
-      {...props}
-    />
-  );
+  return (<Table title="Справочник норм на расход расходных материалов"
+    results={props.data}
+    tableMeta={tableMeta}
+    renderers={renderers}
+    {...props}
+  />);
 };

@@ -42,7 +42,6 @@ export default class WaybillFormWrap extends FormWrap {
 
   constructor(props) {
     super(props);
-
     this.state = {
       formState: null,
       formErrors: {},
@@ -252,7 +251,6 @@ export default class WaybillFormWrap extends FormWrap {
    * @return {undefined}
    */
   async handleFormSubmit(state = this.state.formState, callback) {
-    console.log('handleFormSubmit')
     const formState = _.cloneDeep(state);
     const waybillStatus = formState.status;
     const { flux } = this.context;

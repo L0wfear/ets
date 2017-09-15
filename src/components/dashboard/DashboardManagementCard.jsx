@@ -69,6 +69,7 @@ export default class MasterManagementCard extends React.Component {
         </Panel>
         <WaybillFormWrap
           onFormHide={this.onWaybillFormHide}
+          onCallback={this.onWaybillFormHide}
           showForm={this.state.showWaybillForm}
           element={null}
         />

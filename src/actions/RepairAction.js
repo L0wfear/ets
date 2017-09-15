@@ -69,6 +69,7 @@ export default class RepairActions extends Actions {
   }
   removeStateProgram(id) {
     const { stateProgram } = REPAIR;
+
     return Repair.path(`${stateProgram}/${id}`).delete(
       {},
       this.getRepairListByType.bind(null, 'stateProgram'),

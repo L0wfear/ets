@@ -44,6 +44,10 @@ const tableMeta = {
       name: 'value',
       displayName: 'Норма',
       cssClassName: 'width60',
+      type: 'number',
+      filter: {
+        type: 'advanced-number',
+      },
     },
     {
       name: 'measure_unit_name',

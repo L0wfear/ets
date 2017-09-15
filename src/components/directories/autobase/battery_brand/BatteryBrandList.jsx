@@ -22,6 +22,5 @@ export default class BatteryBrandList extends ElementsList {
     super.componentDidMount();
     const { flux } = this.context;
     flux.getActions('autobase').getAutobaseListByType('batteryBrand');
-    flux.getActions('autobase').getAutobaseListByType('batteryManufacturer');
   }
 }

@@ -12,8 +12,6 @@ import { AUTOBASE_REPAIR_STATUS } from 'constants/dictionary';
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
 export function tableMeta({
-  repairCompanyList = [],
-  repairTypeList = [],
 } = {}): IDataTableSchema {
   const meta: IDataTableSchema = {
     cols: [
@@ -23,7 +21,6 @@ export function tableMeta({
         type: 'select',
         filter: {
           type: 'multiselect',
-          // options: repairCompanyList.map(el => ({ value: el.id, label: el.name })),
         },
       },
       {
@@ -32,7 +29,6 @@ export function tableMeta({
         type: 'select',
         filter: {
           type: 'multiselect',
-          //options: repairTypeList.map(el => ({ value: el.id, label: el.name })),
         },
       },
       {
@@ -97,7 +93,6 @@ export function tableMeta({
         type: 'select',
         filter: {
           type: 'select',
-          // options: Object.keys(AUTOBASE_REPAIR_STATUS).map(key => ({ label: AUTOBASE_REPAIR_STATUS[key], value: key })),
         },
       },
     ],
@@ -108,8 +103,6 @@ export function tableMeta({
 
 const Table: React.SFC<any> = props  => {
   const { carsList = [],
-          repairCompanyList = [],
-          repairTypeList = [],
           car_id = -1,
         } = props;
 
@@ -119,8 +112,6 @@ const Table: React.SFC<any> = props  => {
     fact_date_start: ({ data }) => (<DateFormatter date={data} />),
     fact_date_end: ({ data }) => (<DateFormatter date={data} />),
     car_id: ({ data }) => <div>{get(carsList.find(s => s.asuods_id === data), 'gov_number', '---')}</div>,
-    repair_company_id: ({ data }) => <div>{get(repairCompanyList.find(s => s.id === data), 'name', '---')}</div>,
-    repair_type_id: ({ data }) => <div>{get(repairTypeList.find(s => s.id === data), 'name', '---')}</div>,
     status: ({ data }) => <div>{AUTOBASE_REPAIR_STATUS[data] && AUTOBASE_REPAIR_STATUS[data].name || '---' }</div>,
   };
 

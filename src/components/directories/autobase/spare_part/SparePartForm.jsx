@@ -10,14 +10,31 @@ import Form from 'components/compositions/Form.jsx';
 
 @connectToStores(['autobase'])
 export default class SparePartForm extends Form {
+  componentDidMount() {
+    const { flux } = this.context;
+
+    flux.getActions('autobase').getAutobaseListByType('measureUnit', {}, { makeOptions: true, selectListMapper: defaultSelectListMapper });
+    flux.getActions('autobase').getAutobaseListByType('sparePartGroup', {}, { makeOptions: true, selectListMapper: defaultSelectListMapper });
+  }
+
   handleSubmitWrap = () => this.handleSubmit();
 
   render() {
-    const [state, errors] = [this.props.formState, this.props.formErrors];
-    const { sparePartGroupList = [], measureUnitList = [] } = this.props;
+    const [
+      state,
+      errors,
+    ] = [
+      this.props.formState,
+      this.props.formErrors,
+    ];
 
-    const SPARE_PART_GROUP_OPTION = sparePartGroupList.map(defaultSelectListMapper);
-    const MEASURE_UNIT_OPTIONS = measureUnitList.map(defaultSelectListMapper);
+    const {
+      AutobaseOptions: {
+        measureUnitOptions = [],
+        sparePartGroupOptions = [],
+      },
+      isPermitted = false,
+    } = this.props;
 
     const IS_CREATING = !state.id;
 
@@ -36,10 +53,11 @@ export default class SparePartForm extends Form {
                 type="select"
                 label="Группа"
                 error={errors.spare_part_group_id}
-                options={SPARE_PART_GROUP_OPTION}
+                options={sparePartGroupOptions}
                 value={state.spare_part_group_id}
                 onChange={this.handleChange}
                 boundKeys={['spare_part_group_id']}
+                disabled={!isPermitted}
               />
               <ExtField
                 type="string"
@@ -48,6 +66,7 @@ export default class SparePartForm extends Form {
                 error={errors.name}
                 onChange={this.handleChange}
                 boundKeys={['name']}
+                disabled={!isPermitted}
               />
               <ExtField
                 type="string"
@@ -56,15 +75,17 @@ export default class SparePartForm extends Form {
                 error={errors.number}
                 onChange={this.handleChange}
                 boundKeys={['number']}
+                disabled={!isPermitted}
               />
               <ExtField
                 type="select"
                 label="Единица измерения"
                 error={errors.measure_unit_id}
-                options={MEASURE_UNIT_OPTIONS}
+                options={measureUnitOptions}
                 value={state.measure_unit_id}
                 onChange={this.handleChange}
                 boundKeys={['measure_unit_id']}
+                disabled={!isPermitted}
               />
               <ExtField
                 type="number"
@@ -73,6 +94,7 @@ export default class SparePartForm extends Form {
                 error={errors.quantity}
                 onChange={this.handleChange}
                 boundKeys={['quantity']}
+                disabled={!isPermitted}
               />
               <ExtField
                 type="date"
@@ -82,6 +104,7 @@ export default class SparePartForm extends Form {
                 error={errors.supplied_at}
                 onChange={this.handleChange}
                 boundKeys={['supplied_at']}
+                disabled={!isPermitted}
               />
             </Col>
           </Row>

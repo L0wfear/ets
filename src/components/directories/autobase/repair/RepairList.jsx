@@ -33,7 +33,5 @@ export default class RepareList extends ElementsList {
       flux.getActions('autobase').getAutobaseListByType('repair', { car_id });
       this.exportPayload = { car_id };
     }
-    flux.getActions('autobase').getAutobaseListByType('repairCompany');
-    flux.getActions('autobase').getAutobaseListByType('repairType');
   }
 }

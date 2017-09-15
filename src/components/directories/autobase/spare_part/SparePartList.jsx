@@ -23,7 +23,5 @@ export default class SparePartList extends ElementsList {
 
     const { flux } = this.context;
     flux.getActions('autobase').getAutobaseListByType('sparePart');
-    flux.getActions('autobase').getAutobaseListByType('measureUnit');
-    flux.getActions('autobase').getAutobaseListByType('sparePartGroup');
   }
 }

@@ -10,31 +10,26 @@ import { makeSchema, sortSchemaCols } from 'components/ui/table/utils';
 const CloneButton = onClickWithKeys(Button);
 
 export const tableMeta = ({
-  organizations = [],
-  tireModelList = [],
-  tireSizeList = [],
   schemaMakers = {},
 } = {}) => {
   const schema = {
     cols: [
       {
-        name: 'company_id',
+        name: 'company_name',
         displayName: 'Организация',
         type: 'text',
         orderNum: -1,
         filter: {
           type: 'multiselect',
-          options: organizations.map(({ company_id, short_name }) => ({ value: company_id, label: short_name })),
         },
       },
       {
-        name: 'tire_model_id',
+        name: 'tire_model_name',
         displayName: 'Модель шины',
         type: 'string',
         orderNum: 0,
         filter: {
           type: 'multiselect',
-          options: tireModelList.map(({ id, name }) => ({ value: id, label: name })),
         },
       },
       {
@@ -47,13 +42,12 @@ export const tableMeta = ({
         },
       },
       {
-        name: 'tire_size_id',
+        name: 'tire_size_name',
         displayName: 'Размер',
         type: 'string',
         orderNum: 2,
         filter: {
           type: 'multiselect',
-          options: tireSizeList.map(({ id, name }) => ({ value: id, label: name })),
         },
       },
       {
@@ -114,11 +108,8 @@ export const tableMeta = ({
 };
 
 export default (props) => {
-  const { organizations = [], tireModelList = [], tireSizeList = [] } = props;
+
   const renderers = {
-    company_id: ({ data }) => <div>{get(organizations.find(s => s.company_id === data), 'short_name', '')}</div>,
-    tire_model_id: ({ data }) => <div>{get(tireModelList.find(s => s.id === data), 'name', '')}</div>,
-    tire_size_id: ({ data }) => <div>{get(tireSizeList.find(s => s.id === data), 'name', '')}</div>,
     installed_at: ({ data }) => <DateFormatter date={data} />,
     cloneButton: meta =>
       <CloneButton

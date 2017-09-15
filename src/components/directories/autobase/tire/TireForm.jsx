@@ -17,6 +17,13 @@ export default class TireForm extends Form {
   state = {
     canSave: true,
   };
+  componentDidMount() {
+    const { flux } = this.context;
+
+    flux.getActions('autobase').getAutobaseListByType('tireSize');
+    flux.getActions('autobase').getAutobaseListByType('tireModel');
+    flux.getActions('objects').getOrganizations();
+  }
   handleTireToCarValidity = ({ isValidInput }) => {
     this.setState({
       canSave: isValidInput,
@@ -30,12 +37,12 @@ export default class TireForm extends Form {
       tireSizeList = [],
       isPermitted = false,
     } = this.props;
-    
-    const TIRE_MODEL = tireModelList.map(({ id, name }) => ({ value: id, label: name }));
+    console.log(tireModelList)
+    const TIRE_MODEL = tireModelList.map(({ id, name, tire_manufacturer_name }) => ({ value: id, label: name, tire_manufacturer_name }));
     const TIRE_SIZE = tireSizeList.map(({ id, name }) => ({ value: id, label: name }));
-
+    console.log(tireModelList)
     const IS_CREATING = state.id === undefined;
-
+    console.log(state.tire_model_id, TIRE_MODEL.find(s => s.value === state.tire_model_id))
     let title = 'Редактирование карточки шины';
     if (IS_CREATING) title = 'Создание записи';
 
@@ -62,7 +69,7 @@ export default class TireForm extends Form {
               <ExtField
                 type={'string'}
                 label={'Производитель'}
-                value={get(tireModelList.find(s => s.id === state.tire_model_id), 'tire_manufacturer_name', '')}
+                value={get(TIRE_MODEL.find(s => s.value === state.tire_model_id), 'tire_manufacturer_name', '')}
                 emptyValue={null}
                 disabled
               />

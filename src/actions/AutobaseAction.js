@@ -10,7 +10,7 @@ const clearPayload = state => omit(state, ['rowNumber', 'isHighlighted', 'isSele
 
 export default class AutobaseActions extends Actions {
 
-  async getAutobaseListByType(type, data) {
+  async getAutobaseListByType(type, data, other) {
     const trueType = AUTOBASE[type];
     const payload = {
       ...data,
@@ -21,6 +21,7 @@ export default class AutobaseActions extends Actions {
     return {
       type,
       data: response,
+      ...other,
     };
   }
 

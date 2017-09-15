@@ -31,7 +31,5 @@ export default class RoadAccidentList extends ElementsList {
       flux.getActions('autobase').getAutobaseListByType('roadAccidentRegistry', { car_id });
       this.exportPayload = { car_id };
     }
-    flux.getActions('employees').getDrivers();
-    flux.getActions('autobase').getAutobaseListByType('roadAccidentCause');
   }
 }

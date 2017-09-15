@@ -478,14 +478,13 @@ export default class DataTable extends React.Component {
     const myTypeFromCols = (cols.find(col => col.name === initialSort) || {}).type;
 
     switch (myTypeFromCols) {
-      case 'number': return 'numer';
+      case 'number': return 'number';
       case 'string': return 'string';
       case 'boollean': return 'boollean';
       default: return this.findMyTypeFromData(initialSort);
     }
   }
   findMyTypeFromData(initialSort) {
-    console.info(`add me '${initialSort}' type in tableMeta`);
     const { results } = this.props;
 
     return results.reduce((bool, line) => bool && (typeof line[initialSort] === 'number' || line[initialSort] === null), true) ? 'number' : 'string';
@@ -599,7 +598,7 @@ export default class DataTable extends React.Component {
     return (
       <Div className={tableClassName}>
         <Div className="some-header" hidden={noHeader}>
-          <div style={{ display: 'flex', 'justify-content': 'space-between' }}>
+          <div style={{ display: 'flex', 'justifyContent': 'space-between' }}>
             <div>
               {noTitle ? '' : title}
             </div>

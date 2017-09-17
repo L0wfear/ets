@@ -30,7 +30,7 @@ export default class StateProgramForm extends Form {
             <Col md={12}>
               <ExtField
                 type="string"
-                label="Наименование гос. программы"
+                label="Наименование государственной программы"
                 error={errors.name}
                 value={state.name}
                 onChange={this.handleChange}

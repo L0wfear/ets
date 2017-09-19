@@ -78,6 +78,6 @@ export default class AutobaseStore extends Store {
 
     AutobaseOptions[`${type}Options`] = rows.map(selectListMapper);
 
-    return AutobaseOptions;
+    return { AutobaseOptions };
   }
 }

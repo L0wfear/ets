@@ -4,4 +4,6 @@ export default {
   stateProgramStatus: 'state_program_status',
   programRegistry: 'program_registry',
   objectProperty: 'object_property_list',
+  repairType: 'repair_type',
+  programm: 'programm',
 };

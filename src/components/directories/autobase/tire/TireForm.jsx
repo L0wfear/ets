@@ -37,12 +37,12 @@ export default class TireForm extends Form {
       tireSizeList = [],
       isPermitted = false,
     } = this.props;
-    console.log(tireModelList)
+
     const TIRE_MODEL = tireModelList.map(({ id, name, tire_manufacturer_name }) => ({ value: id, label: name, tire_manufacturer_name }));
     const TIRE_SIZE = tireSizeList.map(({ id, name }) => ({ value: id, label: name }));
-    console.log(tireModelList)
+
     const IS_CREATING = state.id === undefined;
-    console.log(state.tire_model_id, TIRE_MODEL.find(s => s.value === state.tire_model_id))
+
     let title = 'Редактирование карточки шины';
     if (IS_CREATING) title = 'Создание записи';
 

@@ -43,8 +43,10 @@ export default class BaseTechInspectionForm extends Form {
       isPermitted = false,
       cols = [],
       carsList = [],
-      repairCompanyOptions = [],
-      repairTypeOptions = [],
+      AutobaseOptions: {
+        repairCompanyOptions = [],
+        repairTypeOptions = [],
+      },
       car_id = -1,
     } = this.props;
 

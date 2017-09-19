@@ -7,7 +7,7 @@ import REPAIR from '../constants/repair';
 const parsePutPath = (entity, method, formState, idKey = 'id') => `${entity}/${method === 'put' ? formState[idKey] : ''}`;
 export default class RepairActions extends Actions {
 
-  async getRepairListByType(type, data, other = {}) {
+  async getRepairListByType(type, data, other) {
     const trueType = REPAIR[type];
     const payload = {
       ...data,
@@ -18,7 +18,7 @@ export default class RepairActions extends Actions {
     return {
       type,
       data: response,
-      other,
+      ...other,
     };
   }
   setActiveList(listName, listNameTrue) {
@@ -78,7 +78,7 @@ export default class RepairActions extends Actions {
   }
 
   // DITETS-1033
-  programRegistry(method, formState) {
+  programRegistryPost(formState) {
     const payload = {
       ...formState,
     };
@@ -89,11 +89,11 @@ export default class RepairActions extends Actions {
     });
     const { programRegistry } = REPAIR;
 
-    const path = parsePutPath(programRegistry, method, formState);
+    const path = parsePutPath(programRegistry, 'post', formState);
 
-    return Repair.path(path)[method](
+    return Repair.path(path).post(
       payload,
-      this.getRepairListByType.bind(null, 'programRegistry'),
+      false,
       'json',
     );
   }

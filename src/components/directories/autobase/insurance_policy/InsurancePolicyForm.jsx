@@ -33,7 +33,9 @@ export default class InsurancePolicyForm extends Form {
     const {
       car_id = -1,
       carsList = [],
-      insuranceTypeOptions = [],
+      AutobaseOptions: {
+        insuranceTypeOptions = [],
+      },
       isPermitted = false,
     } = this.props;
 

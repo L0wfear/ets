@@ -129,6 +129,13 @@ class ElementsList extends React.Component {
     }
   }
 
+  setNewSelectedElement = (selectedElement) => {
+    this.setState({
+      showForm: true,
+      selectedElement,
+    });
+  }
+
   /**
    * Обнуляет выбранный элемент и открывает форму для создания нового
    */
@@ -384,6 +391,7 @@ class ElementsList extends React.Component {
         onFormHide={this.onFormHide}
         showForm={this.state.showForm}
         element={this.state.selectedElement}
+        setNewSelectedElement={this.setNewSelectedElement}
         entity={this.entity}
         onCallback={this.formCallback}
         meta={this.constructor.formMeta}

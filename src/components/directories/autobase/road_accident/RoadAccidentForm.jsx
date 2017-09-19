@@ -30,7 +30,9 @@ export default class BaseRoadAccidentFrom extends Form {
     const {
       isPermitted = false,
       cols = [],
-      roadAccidentCauseOptions = [],
+      AutobaseOptions: {
+        roadAccidentCauseOptions = [],
+      },
       driversList = [],
     } = this.props;
 

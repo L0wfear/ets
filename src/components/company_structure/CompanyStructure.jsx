@@ -1,13 +1,18 @@
 import React from 'react';
+import { Button as BootstrapButton, Glyphicon } from 'react-bootstrap';
 
 import { connectToStores, staticProps } from 'utils/decorators';
-import { Button, Glyphicon } from 'react-bootstrap';
 import ElementsList from 'components/ElementsList.jsx';
+import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
+
 import CompanyStructureFormWrap from './CompanyStructureFormWrap.jsx';
 import CompanyStructureTable from './CompanyStructureTable.jsx';
 
+const Button = enhanceWithPermissions(BootstrapButton);
+
 @connectToStores(['objects', 'session'])
 @staticProps({
+  entity: 'company_structure',
   listName: 'companyStructureLinearList',
 })
 export default class CompanyStructure extends ElementsList {
@@ -47,8 +52,9 @@ export default class CompanyStructure extends ElementsList {
           data={companyStructureList}
           onActionEdit={this.editElement}
           onActionDelete={this.deleteElement}
+          entity={this.entity}
         >
-          <Button bsSize="small" onClick={this.createElement}><Glyphicon glyph="plus" /> Добавить подразделение</Button>
+          <Button bsSize="small" permissions={[`${this.entity}.create`]} onClick={this.createElement}><Glyphicon glyph="plus" /> Добавить подразделение</Button>
         </CompanyStructureTable>
         <CompanyStructureFormWrap
           onFormHide={this.onFormHide}

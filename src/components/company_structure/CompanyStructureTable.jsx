@@ -1,6 +1,10 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
+import { Button as BootstrapButton } from 'react-bootstrap';
 import Table from 'components/ui/table/DataTable.jsx';
+
+import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
+
+const Button = enhanceWithPermissions(BootstrapButton);
 
 const tableMeta = {
   cols: [
@@ -41,8 +45,8 @@ export default (props) => {
     id: ({ data }) => {
       return (
         <div>
-          <Button className="action-button" onClick={props.onActionEdit.bind(null, data)}>Редактировать</Button>
-          <Button className="action-button" onClick={props.onActionDelete.bind(null, data)}>Удалить</Button>
+          <Button className="action-button" permissions={[`${props.entity}.update`]} onClick={props.onActionEdit.bind(null, data)}>Редактировать</Button>
+          <Button className="action-button" permissions={[`${props.entity}.delete`]} onClick={props.onActionDelete.bind(null, data)}>Удалить</Button>
         </div>
       );
     },

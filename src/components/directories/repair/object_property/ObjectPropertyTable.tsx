@@ -14,7 +14,7 @@ export function tableMeta({
     cols: [
       {
         name: 'name',
-        displayName: 'Наименование характиристики',
+        displayName: 'Наименование характеристики',
         type: 'string',
         filter: {
           type: 'multiselect',

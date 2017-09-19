@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import {
+  Col,
   Navbar, Nav, Glyphicon,
   NavItem as BootstrapNavItem,
   NavDropdown as BootstrapNavDropdown,
@@ -10,6 +11,7 @@ import {
 import config from 'config';
 import { autobind } from 'core-decorators';
 import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
+import Modal from 'components/modalTP/ModalTP.tsx';
 import { FluxContext, HistoryContext } from 'utils/decorators';
 import PERMISSIONS from 'constants/permissions';
 import enhanceWithPermissions from './util/RequirePermissions.jsx';
@@ -54,6 +56,7 @@ export default class MainPage extends React.Component {
 
     this.state = {
       user: {},
+      showForm: false,
     };
   }
 
@@ -76,6 +79,8 @@ export default class MainPage extends React.Component {
       history.pushState(null, '/login');
     });
   }
+  hideForm = () => this.setState({ showForm: false });
+  showForm = () => this.setState({ showForm: true });
 
   renderEmptyHeader() {
     return (
@@ -166,15 +171,28 @@ export default class MainPage extends React.Component {
         <div className="app-navigation">{this.renderHeader()}</div>
 
         <div className="app-content">
+          <Modal
+            title="Техническая поддержка"
+            text="Обратиться в службу технической поддержки можно по электронной почте ETS_support@mos.ru или по телефону: 8(495) 150-11-93"
+            show={this.state.showForm}
+            onHide={this.hideForm}
+          />
           {this.props.children}
           <LoadingOverlay main />
         </div>
 
         <div className="app-footer">
-          {this.state.user.company_name}
-          <span style={{ position: 'absolute', right: 20 }}>
-            {VERSION_DESCRIPTION}
-          </span>
+          <Col md={3}>
+            <span className="tp" onClick={this.showForm}>Техническая поддержка</span>
+          </Col>
+          <Col md={6}>
+            {this.state.user.company_name}
+          </Col>
+          <Col md={3} pullRight>
+            <span style={{ position: 'absolute', right: 20 }}>
+              {VERSION_DESCRIPTION}
+            </span>
+          </Col>
         </div>
       </div>
     );

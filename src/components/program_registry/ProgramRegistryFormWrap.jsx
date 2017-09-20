@@ -1,5 +1,5 @@
 import React from 'react';
-import { omit } from 'lodash';
+import { omit, cloneDeep } from 'lodash';
 
 import { isEmpty } from 'utils/functions';
 import FormWrap from 'components/compositions/FormWrap.jsx';
@@ -15,24 +15,71 @@ const firstStepFields = [
   'plan_date_start',
   'plan_date_end',
 ];
-
+// РЕФАКТОРИНГ
+// Писалось на скорую руку ( отмазки) )
 class ProgramRegistryFormWrap extends FormWrap {
   state = {
     fromCreating: false,
+    versionOptions: [],
+    activeVersion: 0,
   };
+  iLoad = false;
   constructor(props, context) {
     super(props);
     this.schema = formValidationSchema;
     this.preventDefaultNotification = true;
 
     this.createAction = context.flux.getActions('repair').programRegistryPost;
-    this.updateAction = context.flux.getActions('repair').programRegistryPut;
+  }
+  /**
+  * @override
+  */
+  componentWillReceiveProps(props) {
+    if (props) {
+      const uniqueField = this.uniqueField || 'id';
+
+      if (props.showForm && (props.showForm !== this.props.showForm) && props.element && !isEmpty(props.element[uniqueField])) {
+        if (props.element.id) {
+          this.updateVersionList(props.element.id);
+        }
+      } else if (props.showForm && (props.showForm !== this.props.showForm)) {
+        this.setState({ ...this.getFrowmStateAndError(props.element) });
+      }
+    }
+  }
+  async updateVersionList(id, activeVersionIdprops = false) {
+    this.iLoad = true;
+    const { result: { rows = [] } } = await this.context.flux.getActions('repair').getAllVersions(id);
+    this.iLoad = false;
+
+    const reduceVersionList = rows.reduce((newObj, d) => {
+      newObj[d.version_id] = d;
+      return newObj;
+    }, {});
+
+    const versionOptions = rows.map(d => ({ value: d.version_id, label: `${d.version_name} (${d.is_active ? 'Действующая' : 'Недействующая'})` }));
+
+    const activeVersionId = activeVersionIdprops || rows.find(d => d.is_active).version_id;
+
+    const {
+      formState = {},
+      formErrors = {},
+      canSave,
+    } = this.getFrowmStateAndError(reduceVersionList[activeVersionId]);
+    this.setState({
+      formState,
+      formErrors,
+      canSave,
+      versionOptions,
+      activeVersionId,
+      reduceVersionList,
+    });
   }
 
-  async handleSubmitFirstForm() {
+  async defSendFromState(callback) {
     let { formState } = this.state;
-    let result = null;
-    Object.entries(formState).forEach(([key, val])=> {
+
+    Object.entries(formState).forEach(([key, val]) => {
       if (typeof val === 'string') {
         formState[key] = val.trim();
       }
@@ -58,58 +105,97 @@ class ProgramRegistryFormWrap extends FormWrap {
         saveButtonLabel: 'Сохранение...',
         saveButtonEnability: false,
       });
-      result = await this.createAction(formState);
+      const result = await callback(formState);
       this.setState({
         saveButtonLabel: 'Сохранить',
         saveButtonEnability: true,
       });
+      return result;
     } catch (e) {
       this.setState({
         saveButtonLabel: 'Сохранить',
         saveButtonEnability: true,
       });
       console.warn(e);
-      return;
+      return { error: true };
     }
-    this.props.onFormHide();
-    this.setState({ fromCreating: true });
-    this.props.setNewSelectedElement(result.result.rows[0]);
   }
 
-  changeVersion = () => {
+  handleSubmitFirstForm = () => {
+    this.defSendFromState(this.context.flux.getActions('repair').programRegistryPost).then((result) => {
+      if (result.error) return;
 
+      this.props.onFormHide();
+      this.setState({ fromCreating: true });
+      this.props.setNewSelectedElement(result.result.rows[0]);
+    });
   }
 
+  changeVersion = (version) => {
+    const { reduceVersionList } = this.state;
+    const {
+      formState = {},
+      formErrors = {},
+      canSave,
+    } = this.getFrowmStateAndError(reduceVersionList[version]);
+
+    this.setState({
+      formState,
+      formErrors,
+      canSave,
+    });
+  }
   handleExportVersion = () => {
-    console.log('i download excel');
   }
   loadFile = () => {
-    console.log('i load');
   }
   makeVersion = () => {
-    console.log('i make');
   }
+
   sendToApply = () => {
-    console.log('i send');
+    this.defSendFromState(this.context.flux.getActions('repair').programVersionSendToReview).then(() => {
+      global.NOTIFICATION_SYSTEM.notify('Запрос на согласование отправлен', 'success');
+    });
   }
-  onSubmitWithouContinue = ({ close = true }) => {
-    console.log(close)
-    console.log('i save')
-    console.log(`form close ? - ${close}`)
+
+  onSubmitWithouContinue = (close = true) => {
+    this.defSendFromState(this.context.flux.getActions('repair').programVersionPut).then(() => {
+      if (close) {
+        this.props.onFormHide();
+      } else {
+        this.updateVersionList(this.state.formState.id, this.state.activeVersionId);
+      }
+    });
   }
-  onSubmitAndContinue = (e) => {
-    const ans = this.onSubmitWithouContinue({ close: false });
-    console.log('i continue');
+  onSubmitAndContinue = () => this.onSubmitWithouContinue(false);
+
+  getFrowmStateAndError(elementOld = null) {
+    let element = {};
+    if (elementOld !== null) {
+      element = cloneDeep(elementOld);
+    } else {
+      element = !isEmpty(this.defaultElement) ? cloneDeep(this.defaultElement) : {};
+    }
+    const formErrors = this.validate(element, {});
+
+    return {
+      formState: element,
+      formErrors,
+      canSave: Object.values(formErrors).reduce((boolean, oneError) => boolean && !oneError, true),
+    };
   }
+
   renderFromFirstCreate() {
     const { entity, isPermitted = false } = this.props;
     const { saveButtonEnability = true } = this.state;
-    const stateCanSave = Object.entries(this.state.canSave).reduce((obj, [key, val]) => {
+
+    const stateCanSave = Object.entries(this.state.formErrors).reduce((boolean, [key, oneError]) => {
       if (firstStepFields.includes(key)) {
-        obj[key] = val;
+        return boolean && !oneError;
       }
-      return obj;
-    }, {});
+      return boolean;
+    }, true);
+
     const canSave = isPermitted && stateCanSave && saveButtonEnability;
 
     return (
@@ -120,7 +206,7 @@ class ProgramRegistryFormWrap extends FormWrap {
         addPermissionProp
         isPermitted={isPermitted}
         canSave={canSave}
-        onSubmit={this.handleSubmitFirstForm.bind(this)}
+        onSubmit={this.handleSubmitFirstForm}
         handleFormChange={this.handleFormStateChange.bind(this)}
         show={this.props.showForm}
         onHide={this.props.onFormHide}
@@ -136,7 +222,10 @@ class ProgramRegistryFormWrap extends FormWrap {
     const {
       saveButtonEnability = true,
       fromCreating = false,
+      versionOptions = [],
+      activeVersionId = 0,
     } = this.state;
+
     const canSave = isPermitted && this.state.canSave && saveButtonEnability;
 
     return (
@@ -152,9 +241,9 @@ class ProgramRegistryFormWrap extends FormWrap {
         onHide={this.props.onFormHide}
         fromCreating={fromCreating}
 
-        version={0}
-        versionOptions={[]}
-        chnageVersion={this.changeVersion}
+        activeVersionId={activeVersionId}
+        versionOptions={versionOptions}
+        changeVersion={this.changeVersion}
 
         handleExportVersion={this.handleExportVersion}
         loadFile={this.loadFile}
@@ -168,8 +257,8 @@ class ProgramRegistryFormWrap extends FormWrap {
 
   render() {
     const { showForm } = this.props;
-    if (!showForm) return null;
-    console.log(this.props)
+    if (!showForm || this.iLoad) return null;
+
     const {
       formState = {},
     } = this.state;

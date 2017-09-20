@@ -5,5 +5,5 @@ export default {
   programRegistry: 'program_registry',
   objectProperty: 'object_property_list',
   repairType: 'repair_type',
-  programm: 'programm',
+  programVersion: 'program_version',
 };

@@ -114,9 +114,7 @@ export default class ObjectsStore extends Store {
     this.setState({ technicalOperationsTypesList: technicalOperationsTypes.result });
   }
 
-  handleGetCompanyStructure(ans) {
-    console.log(ans)
-    const { data: { result = [] }, linear = false, descendants_by_user = false } = ans;
+  handleGetCompanyStructure({ data: { result = [] }, linear = false, descendants_by_user = false }) {
     const myName = this.getNameCompanyStructureList(linear, descendants_by_user);
 
     this.setState({ [myName]: result });

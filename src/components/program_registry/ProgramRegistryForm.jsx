@@ -6,7 +6,7 @@ import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 import ModalBody from 'components/ui/Modal';
 import { connectToStores } from 'utils/decorators';
 import Div from 'components/ui/Div.jsx';
-import { ExtField } from 'components/ui/Field.jsx';
+import Field, { ExtField } from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
 
 @connectToStores(['repair', 'objects'])
@@ -39,7 +39,7 @@ export default class ProgramRegistryForm extends Form {
         contractorOptions = [],
       },
       organizations = [],
-      version,
+      activeVersionId,
       versionOptions = [],
     } = this.props;
     const IS_CREATING = !state.id;
@@ -55,14 +55,12 @@ export default class ProgramRegistryForm extends Form {
         <Div style={{ padding: '0px 15px' }}>
           <Row>
             <Col md={5} xsOffset={7}>
-              <ExtField
+              <Field
                 type="select"
                 label="Версия"
-                error={errors.is_active}
                 options={versionOptions}
-                value={version}
+                value={activeVersionId}
                 onChange={this.props.changeVersion}
-                boundKeys={['is_active']}
                 disabled={!isPermitted}
                 clearable={false}
               />
@@ -222,12 +220,18 @@ export default class ProgramRegistryForm extends Form {
         </Div>
         <ModalBody />
         <Modal.Footer>
-          <Button onClick={this.props.handleExportVersion}><Glyphicon glyph="download-alt" /></Button>
-          <Button onClick={this.props.loadFile}><Glyphicon glyph="file" /></Button>
-          <Button onClick={this.props.makeVersion}>Создать версию</Button>
-          <Button onClick={this.props.sendToApply}>Отправить на согласование</Button>
-          <Button bsStyle="primary" onClick={this.props.onSubmit}>Сохранить</Button>
-          <Button onClick={this.props.onSubmitAndContinue}>Сохранить и продолжить</Button>
+          { false &&
+            <Button onClick={this.props.handleExportVersion}><Glyphicon glyph="download-alt" /></Button>
+          }
+          { false &&
+            <Button onClick={this.props.loadFile}><Glyphicon glyph="file" /></Button>
+          }
+          { false &&
+            <Button disabled={true || !this.props.canSave} onClick={this.props.makeVersion}>Создать версию</Button>
+          }
+          <Button disabled={!this.props.canSave} onClick={this.props.sendToApply}>Отправить на согласование</Button>
+          <Button disabled={!this.props.canSave} bsStyle="primary" onClick={this.props.onSubmit}>Сохранить</Button>
+          <Button disabled={!this.props.canSave} onClick={this.props.onSubmitAndContinue}>Сохранить и продолжить</Button>
         </Modal.Footer>
       </Modal>
     );

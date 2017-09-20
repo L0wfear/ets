@@ -21,6 +21,17 @@ export default class RepairActions extends Actions {
       ...other,
     };
   }
+
+  async getAllVersions(id) {
+    const { programRegistry } = REPAIR;
+    const payload = {
+    };
+
+    const response = await Repair.path(`${programRegistry}/${id}`).get(payload);
+
+    return response;
+  }
+
   setActiveList(listName, listNameTrue) {
     return {
       listName,
@@ -78,7 +89,7 @@ export default class RepairActions extends Actions {
   }
 
   // DITETS-1033
-  programRegistryPost(formState) {
+  async programRegistryPost(formState) {
     const payload = {
       ...formState,
     };
@@ -90,13 +101,16 @@ export default class RepairActions extends Actions {
     const { programRegistry } = REPAIR;
 
     const path = parsePutPath(programRegistry, 'post', formState);
-
-    return Repair.path(path).post(
+    const ans = await Repair.path(path).post(
       payload,
       false,
       'json',
     );
+    this.getRepairListByType.bind(null, 'programRegistry');
+
+    return ans;
   }
+
   removeProgramRegistry(id) {
     const { programRegistry } = REPAIR;
     return Repair.path(`${programRegistry}/${id}`).delete(
@@ -105,5 +119,32 @@ export default class RepairActions extends Actions {
       'json',
     );
   }
+  programVersionPut(formState) {
+    const { programVersion } = REPAIR;
+    const payload = {
+      ...formState,
+    };
+    ['plan_date_start', 'plan_date_end', 'fact_date_start', 'fact_date_end'].forEach((key) => {
+      if (payload[key]) {
+        payload[key] = createValidDate(payload[key]);
+      }
+    });
+    const path = parsePutPath(programVersion, 'put', payload, 'version_id');
+    return Repair.path(path).put(
+      payload,
+      this.getRepairListByType.bind(null, 'programRegistry'),
+      'json',
+    );
+  }
+  async programVersionSendToReview(formState) {
+    const { programVersion } = REPAIR;
+    const payload = {};
 
+    const path = parsePutPath(programVersion, 'put', formState, 'version_id');
+    return Repair.path(`${path}/send_to_review`).put(
+      payload,
+      false,
+      'json',
+    );
+  }
 }

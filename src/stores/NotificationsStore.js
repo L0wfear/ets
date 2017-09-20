@@ -37,6 +37,7 @@ export default class NotificationsStore extends Store {
           'contractor',
           'stateProgram',
           'programRegistry',
+          'programVersionPut',
         ],
       },
       {

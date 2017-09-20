@@ -78,7 +78,7 @@ export default class ProgramRegistryForm extends Form {
                 boundKeys={['repair_type_id']}
                 disabled={!isPermitted}
                 clearable={false}
-                />
+              />
               <ExtField
                 type="date"
                 label="План. Начало"

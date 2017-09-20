@@ -74,7 +74,7 @@ export default class AutobaseStore extends Store {
   makeOption({ makeOptions = false, selectListMapper, type }, rows) {
     if (!makeOptions) return undefined;
 
-    const { AutobaseOptions } = this.state;
+    const AutobaseOptions = { ...this.state.AutobaseOptions };
 
     AutobaseOptions[`${type}Options`] = rows.map(selectListMapper);
 

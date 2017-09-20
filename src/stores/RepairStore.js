@@ -32,8 +32,8 @@ export default class RepairStore extends Store {
     this.setState({ ...setStateObject });
   }
   getNameList(type, { name = false }) {
-
     let nameList = type;
+
     if (name) {
       nameList = `${nameList}${name[0].toUpperCase()}${name.slice(1)}`;
     }
@@ -53,7 +53,8 @@ export default class RepairStore extends Store {
   makeOption({ makeOptions = false, selectListMapper, type }, rows) {
     if (!makeOptions) return undefined;
 
-    const { RepairOptions } = this.state;
+    const RepairOptions = { ...this.state.RepairOptions };
+
     RepairOptions[`${type}Options`] = rows.map(selectListMapper);
     return { RepairOptions };
   }

@@ -18,7 +18,6 @@ export default class ProgramRegistryForm extends Form {
       flux.getActions('repair').getRepairListByType('stateProgram', {}, { makeOptions: true, selectListMapper: defaultSelectListMapper });
     }
     flux.getActions('repair').getRepairListByType('contractor', {}, { makeOptions: true, selectListMapper: defaultSelectListMapper });
-    flux.getActions('objects').getOrganizations();
   }
 
   handleSubmitWrap = (...arg) => this.handleSubmit(...arg);
@@ -38,7 +37,6 @@ export default class ProgramRegistryForm extends Form {
         stateProgramOptions = [],
         contractorOptions = [],
       },
-      organizations = [],
       activeVersionId,
       versionOptions = [],
     } = this.props;
@@ -94,7 +92,7 @@ export default class ProgramRegistryForm extends Form {
               <ExtField
                 type="string"
                 label="Заказчик"
-                value={get(organizations.find(s => s.company_id === state.company_id), 'company_name', '')}
+                value={state.company_name}
                 readOnly
               />
             </Col>

@@ -49,9 +49,9 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getCountry, this.handleGetCountry);
 
     this.register(companyStructreActions.getCompanyStructure, this.handleGetCompanyStructure);
-    this.register(companyStructreActions.updateCompanyElement, this.handleGetCompanyStructure);
-    this.register(companyStructreActions.deleteCompanyElement, this.handleGetCompanyStructure);
-    this.register(companyStructreActions.createCompanyElement, this.handleGetCompanyStructure);
+    this.register(companyStructreActions.createCompanyElement, this.handleGetCompanyStructureAfterCUD);
+    this.register(companyStructreActions.updateCompanyElement, this.handleGetCompanyStructureAfterCUD);
+    this.register(companyStructreActions.deleteCompanyElement, this.handleGetCompanyStructureAfterCUD);
     
     this.register(technicalOperationsActions.getTechnicalOperations, this.handleGetTechOperations);
     this.register(technicalOperationsActions.updateTechnicalOperation, this.handleGetTechOperations);
@@ -114,10 +114,15 @@ export default class ObjectsStore extends Store {
     this.setState({ technicalOperationsTypesList: technicalOperationsTypes.result });
   }
 
-  handleGetCompanyStructure({ data: { result = [] }, linear = false, descendants_by_user = false }) {
+  handleGetCompanyStructure(ans) {
+    console.log(ans)
+    const { data: { result = [] }, linear = false, descendants_by_user = false } = ans;
     const myName = this.getNameCompanyStructureList(linear, descendants_by_user);
 
     this.setState({ [myName]: result });
+  }
+  handleGetCompanyStructureAfterCUD({ result = [] }) {
+    this.setState({ companyStructureList: result });
   }
   getNameCompanyStructureList(linear, descendants_by_user) {
     if (linear) {

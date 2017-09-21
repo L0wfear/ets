@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import {
+  Col,
   Navbar, Nav, Glyphicon,
   Badge,
   NavItem as BootstrapNavItem,
@@ -11,6 +12,7 @@ import {
 import config from 'config';
 import { autobind } from 'core-decorators';
 import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
+import ModalTP from 'components/modalTP/ModalTP.tsx';
 import { FluxContext, HistoryContext } from 'utils/decorators';
 import PERMISSIONS from 'constants/permissions';
 import enhanceWithPermissions from './util/RequirePermissions.jsx';
@@ -56,6 +58,7 @@ export default class MainPage extends React.Component {
     this.state = {
       user: {},
       countUserNotificationInfo: 0,
+      showForm: false,
     };
   }
 
@@ -103,6 +106,8 @@ export default class MainPage extends React.Component {
       setNewCount: countUserNotificationInfo => this.setState({ countUserNotificationInfo }),
     });
   }
+  hideForm = () => this.setState({ showForm: false });
+  showForm = () => this.setState({ showForm: true });
 
   renderEmptyHeader() {
     return (
@@ -198,15 +203,26 @@ export default class MainPage extends React.Component {
         <div className="app-navigation">{this.renderHeader()}</div>
 
         <div className="app-content">
+          <ModalTP
+            show={this.state.showForm}
+            onHide={this.hideForm}
+          />
           {this.props.children}
           <LoadingOverlay main />
         </div>
 
         <div className="app-footer">
-          {this.state.user.company_name}
-          <span style={{ position: 'absolute', right: 20 }}>
-            {VERSION_DESCRIPTION}
-          </span>
+          <Col md={3}>
+            <a className="tp" onClick={this.showForm}>Техническая поддержка</a>
+          </Col>
+          <Col md={6}>
+            {this.state.user.company_name}
+          </Col>
+          <Col md={3} pullRight>
+            <span style={{ position: 'absolute', right: 20 }}>
+              {VERSION_DESCRIPTION}
+            </span>
+          </Col>
         </div>
       </div>
     );

@@ -16,6 +16,7 @@ const Text =
 
 const ModalTP: React.SFC<IPropsModalTP> = props  =>
   <ModalForm
+    dialogClassName="custom-modalTP"
     title="Техническая поддержка"
     Text={Text}
     onHide={props.onHide}

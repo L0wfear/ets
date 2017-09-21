@@ -11,7 +11,7 @@ import {
 import config from 'config';
 import { autobind } from 'core-decorators';
 import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
-import Modal from 'components/modalTP/ModalTP.tsx';
+import ModalTP from 'components/modalTP/ModalTP.tsx';
 import { FluxContext, HistoryContext } from 'utils/decorators';
 import PERMISSIONS from 'constants/permissions';
 import enhanceWithPermissions from './util/RequirePermissions.jsx';
@@ -171,9 +171,7 @@ export default class MainPage extends React.Component {
         <div className="app-navigation">{this.renderHeader()}</div>
 
         <div className="app-content">
-          <Modal
-            title="Техническая поддержка"
-            text="Обратиться в службу технической поддержки можно по электронной почте ETS_support@mos.ru или по телефону: 8(495) 150-11-93"
+          <ModalTP
             show={this.state.showForm}
             onHide={this.hideForm}
           />
@@ -183,7 +181,7 @@ export default class MainPage extends React.Component {
 
         <div className="app-footer">
           <Col md={3}>
-            <span className="tp" onClick={this.showForm}>Техническая поддержка</span>
+            <a className="tp" onClick={this.showForm}>Техническая поддержка</a>
           </Col>
           <Col md={6}>
             {this.state.user.company_name}

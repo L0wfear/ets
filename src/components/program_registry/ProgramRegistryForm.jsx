@@ -1,21 +1,34 @@
 import React from 'react';
-import { Modal, Row, Col, Button, Glyphicon } from 'react-bootstrap';
-import { get } from 'lodash';
+import {
+  Modal,
+  Row,
+  Col,
+  Button,
+  Glyphicon,
+  OverlayTrigger,
+  Popover,
+} from 'react-bootstrap';
 
 import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 import ModalBody from 'components/ui/Modal';
 import { connectToStores } from 'utils/decorators';
 import Div from 'components/ui/Div.jsx';
 import Field, { ExtField } from 'components/ui/Field.jsx';
+
 import Form from 'components/compositions/Form.jsx';
+
 
 @connectToStores(['repair', 'objects'])
 export default class ProgramRegistryForm extends Form {
+  state = {
+    areFilesLoading: false,
+    fileIsShow: false,
+  }
   componentDidMount() {
     const { flux } = this.context;
     const { fromCreating } = this.props;
     if (!fromCreating) {
-      flux.getActions('repair').getRepairListByType('stateProgram', {}, { makeOptions: true, selectListMapper: defaultSelectListMapper });
+      flux.getActions('repair').getRepairListByType('stateProgram', { status: 'active' }, { makeOptions: true, selectListMapper: defaultSelectListMapper });
     }
     flux.getActions('repair').getRepairListByType('contractor', {}, { makeOptions: true, selectListMapper: defaultSelectListMapper });
   }
@@ -45,6 +58,15 @@ export default class ProgramRegistryForm extends Form {
     let title = 'Изменение записи';
     if (IS_CREATING) title = 'Создание записи';
 
+    const popoverFocus = (
+      <Popover id="popover-trigger-focus" title="Что должно произойти?">
+        <ul>
+          <li><span>Нужно ли отображать загруженные файлы?</span></li>
+          <li><span>Сколько их можно загружать?</span></li>
+          <li><span>Не лучше ли сделать обычное поле, как например Реестре страховок</span></li>
+        </ul>
+      </Popover>
+    );
     return (
       <Modal {...this.props} bsSize="lg" backdrop="static">
         <Modal.Header closeButton>
@@ -221,9 +243,9 @@ export default class ProgramRegistryForm extends Form {
           { false &&
             <Button onClick={this.props.handleExportVersion}><Glyphicon glyph="download-alt" /></Button>
           }
-          { false &&
-            <Button onClick={this.props.loadFile}><Glyphicon glyph="file" /></Button>
-          }
+          <OverlayTrigger trigger="focus" placement="top" overlay={popoverFocus}>
+            <Button disabled={!this.props.canSave}><Glyphicon glyph="file" /></Button>
+          </OverlayTrigger>
           { false &&
             <Button disabled={true || !this.props.canSave} onClick={this.props.makeVersion}>Создать версию</Button>
           }

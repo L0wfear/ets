@@ -43,7 +43,7 @@ class ProgramRegistryFormWrap extends FormWrap {
           this.updateVersionList(props.element.id);
         }
       } else if (props.showForm && (props.showForm !== this.props.showForm)) {
-        this.setState({ ...this.getFrowmStateAndError(props.element) });
+        this.setState({ ...this.getFrowmStateAndErrorAndCanSave(props.element) });
       }
     }
   }
@@ -61,15 +61,8 @@ class ProgramRegistryFormWrap extends FormWrap {
 
     const activeVersionId = activeVersionIdprops || rows.find(d => d.is_active).version_id;
 
-    const {
-      formState = {},
-      formErrors = {},
-      canSave,
-    } = this.getFrowmStateAndError(reduceVersionList[activeVersionId]);
     this.setState({
-      formState,
-      formErrors,
-      canSave,
+      ...this.getFrowmStateAndErrorAndCanSave(reduceVersionList[activeVersionId]),
       versionOptions,
       activeVersionId,
       reduceVersionList,
@@ -84,6 +77,7 @@ class ProgramRegistryFormWrap extends FormWrap {
         formState[key] = val.trim();
       }
     });
+
     if (this.schema) {
       this.schema.properties.forEach((p) => {
         if (p.type === 'number' && p.float) {
@@ -105,6 +99,7 @@ class ProgramRegistryFormWrap extends FormWrap {
         saveButtonLabel: 'Сохранение...',
         saveButtonEnability: false,
       });
+
       const result = await callback(formState);
       this.setState({
         saveButtonLabel: 'Сохранить',
@@ -122,9 +117,11 @@ class ProgramRegistryFormWrap extends FormWrap {
   }
 
   handleSubmitFirstForm = () => {
-    this.defSendFromState(this.context.flux.getActions('repair').programRegistryPost).then((result) => {
+    const callback = this.context.flux.getActions('repair').programRegistryPost;
+    this.defSendFromState(callback).then((result) => {
       if (result.error) return;
 
+      // форма не обновляет значения, если её не закрыть
       this.props.onFormHide();
       this.setState({ fromCreating: true });
       this.props.setNewSelectedElement(result.result.rows[0]);
@@ -133,17 +130,8 @@ class ProgramRegistryFormWrap extends FormWrap {
 
   changeVersion = (version) => {
     const { reduceVersionList } = this.state;
-    const {
-      formState = {},
-      formErrors = {},
-      canSave,
-    } = this.getFrowmStateAndError(reduceVersionList[version]);
 
-    this.setState({
-      formState,
-      formErrors,
-      canSave,
-    });
+    this.setState({ ...this.getFrowmStateAndErrorAndCanSave(reduceVersionList[version]) });
   }
   handleExportVersion = () => {
   }
@@ -153,13 +141,16 @@ class ProgramRegistryFormWrap extends FormWrap {
   }
 
   sendToApply = () => {
-    this.defSendFromState(this.context.flux.getActions('repair').programVersionSendToReview).then(() => {
+    const callback = this.context.flux.getActions('repair').programVersionSendToReview;
+    this.defSendFromState(callback).then(() => {
       global.NOTIFICATION_SYSTEM.notify('Запрос на согласование отправлен', 'success');
     });
   }
 
   onSubmitWithouContinue = (close = true) => {
-    this.defSendFromState(this.context.flux.getActions('repair').programVersionPut).then(() => {
+    const callback = this.context.flux.getActions('repair').programVersionPut;
+
+    this.defSendFromState(callback).then(() => {
       if (close) {
         this.props.onFormHide();
       } else {
@@ -169,7 +160,7 @@ class ProgramRegistryFormWrap extends FormWrap {
   }
   onSubmitAndContinue = () => this.onSubmitWithouContinue(false);
 
-  getFrowmStateAndError(elementOld = null) {
+  getFrowmStateAndErrorAndCanSave(elementOld = null) {
     let element = {};
     if (elementOld !== null) {
       element = cloneDeep(elementOld);

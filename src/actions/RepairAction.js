@@ -129,6 +129,7 @@ export default class RepairActions extends Actions {
         payload[key] = createValidDate(payload[key]);
       }
     });
+
     const path = parsePutPath(programVersion, 'put', payload, 'version_id');
     return Repair.path(path).put(
       payload,

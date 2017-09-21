@@ -13,7 +13,7 @@ export default class ProgramRegistryForm extends Form {
   componentDidMount() {
     const { flux } = this.context;
 
-    flux.getActions('repair').getRepairListByType('stateProgram', {}, { makeOptions: true, selectListMapper: defaultSelectListMapper });
+    flux.getActions('repair').getRepairListByType('stateProgram', { status: 'active' }, { makeOptions: true, selectListMapper: defaultSelectListMapper });
     flux.getActions('repair').getRepairListByType('repairType', {}, { makeOptions: true, selectListMapper: defaultSelectListMapper });
   }
 

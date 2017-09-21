@@ -45,6 +45,7 @@ export default class StateProgramForm extends Form {
                 value={state.status_id}
                 options={STATE_PROGRAM_STATUS_OPTIONS}
                 onChange={this.handleChange}
+                clearable={false}
                 boundKeys={['status_id']}
               />
             </Col>

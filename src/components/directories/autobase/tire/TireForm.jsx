@@ -63,6 +63,7 @@ export default class TireForm extends Form {
                 disabled={!isPermitted}
                 onChange={this.handleChange}
                 boundKeys={['tire_model_id']}
+                clearable={false}
               />
             </Col>
             <Col md={12}>
@@ -84,6 +85,7 @@ export default class TireForm extends Form {
                 disabled={!isPermitted}
                 onChange={this.handleChange}
                 boundKeys={['tire_size_id']}
+                clearable={false}
               />
             </Col>
             <ExtDiv hidden={IS_CREATING}>

@@ -63,6 +63,7 @@ export default class BaseTechInspectionForm extends Form {
                   emptyValue={null}
                   onChange={this.handleChange}
                   boundKeys={['car_id']}
+                  clearable={false}
                   disabled={!isPermitted}
                 />
               }

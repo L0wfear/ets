@@ -77,6 +77,7 @@ export default class BaseRoadAccidentFrom extends Form {
                 emptyValue={null}
                 onChange={this.handleChange}
                 boundKeys={['driver_id']}
+                clearable={false}
                 disabled={!isPermitted}
               />
               <ExtField
@@ -88,6 +89,7 @@ export default class BaseRoadAccidentFrom extends Form {
                 emptyValue={null}
                 onChange={this.handleChange}
                 boundKeys={['cause_id']}
+                clearable={false}
                 disabled={!isPermitted}
               />
               <ExtField

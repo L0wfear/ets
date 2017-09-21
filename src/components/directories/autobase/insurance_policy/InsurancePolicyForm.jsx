@@ -69,6 +69,7 @@ export default class InsurancePolicyForm extends Form {
                   emptyValue={null}
                   onChange={this.handleChange}
                   boundKeys={['car_id']}
+                  clearable={false}
                   disabled={!isPermitted}
                 />
               }
@@ -90,6 +91,7 @@ export default class InsurancePolicyForm extends Form {
                 emptyValue={null}
                 onChange={this.handleChange}
                 boundKeys={['insurance_type_id']}
+                clearable={false}
                 disabled={!isPermitted}
               />
               <ExtField

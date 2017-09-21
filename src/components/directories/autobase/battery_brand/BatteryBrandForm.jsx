@@ -68,6 +68,7 @@ export default class BatteryBrandForm extends Form {
                 disabled={!isPermitted}
                 onChange={this.handleChange}
                 boundKeys={['manufacturer_id']}
+                clearable={false}
               />
             </Col>
           </Row>

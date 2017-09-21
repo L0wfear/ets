@@ -35,18 +35,17 @@ class ProgramRegistryFormWrap extends FormWrap {
   * @override
   */
   componentWillReceiveProps(props) {
-    if (props) {
-      const uniqueField = this.uniqueField || 'id';
+    const uniqueField = this.uniqueField || 'id';
 
-      if (props.showForm && (props.showForm !== this.props.showForm) && props.element && !isEmpty(props.element[uniqueField])) {
-        if (props.element.id) {
-          this.updateVersionList(props.element.id);
-        }
-      } else if (props.showForm && (props.showForm !== this.props.showForm)) {
+    if (props.showForm && (props.showForm !== this.props.showForm)) {
+      if (props.element && !isEmpty(props.element[uniqueField]) && props.element.id) {
+        this.updateVersionList(props.element.id);
+      } else {
         this.setState({ ...this.getFrowmStateAndErrorAndCanSave(props.element) });
       }
     }
   }
+
   async updateVersionList(id, activeVersionIdprops = false) {
     this.iLoad = true;
     const { result: { rows = [] } } = await this.context.flux.getActions('repair').getAllVersions(id);

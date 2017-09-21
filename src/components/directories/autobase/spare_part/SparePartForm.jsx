@@ -58,6 +58,7 @@ export default class SparePartForm extends Form {
                 onChange={this.handleChange}
                 boundKeys={['spare_part_group_id']}
                 disabled={!isPermitted}
+                clearable={false}
               />
               <ExtField
                 type="string"
@@ -86,6 +87,7 @@ export default class SparePartForm extends Form {
                 onChange={this.handleChange}
                 boundKeys={['measure_unit_id']}
                 disabled={!isPermitted}
+                clearable={false}
               />
               <ExtField
                 type="number"

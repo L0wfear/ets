@@ -64,6 +64,7 @@ export default class BaseBatteryForm extends Form {
                 onChange={this.handleChange}
                 boundKeys={['brand_id']}
                 disabled={!isPermitted}
+                clearable={false}
               />
               <ExtField
                 type={'string'}

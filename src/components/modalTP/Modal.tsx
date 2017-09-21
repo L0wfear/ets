@@ -4,19 +4,25 @@ import {
 } from 'react-bootstrap';
 
 export interface IPropsModal {
-  show: boolean;
-  Text: any;
+  show?: boolean;
+  Text: object;
   title: string;
+  dialogClassName: string;
   onHide: any;
 }
 
 const Modal: React.SFC<IPropsModal> = props  => {
-  const { Text } = props;
+  const {
+    dialogClassName = '',
+    title,
+    Text,
+    show,
+  } = props;
 
   return (
-    <Modals show={props.show} onHide={props.onHide}>
+    <Modals show={show} onHide={props.onHide} dialogClassName={dialogClassName}>
       <Modals.Header closeButton>
-        <Modals.Title>{props.title}</Modals.Title>
+        <Modals.Title>{title}</Modals.Title>
       </Modals.Header>
       <Modals.Body>
         {Text}

@@ -249,14 +249,22 @@ class ElementsList extends React.Component {
    * Определяет и возвращает массив кнопок для CRUD операций
    * @return {Component[]} Buttons - массив кнопок
    */
-  getButtons() {
+  getButtons(propsButton = {}) {
     // Операции, заданные в статической переменной operations класса-наследника
     const operations = this.constructor.operations || [];
     const entity = this.constructor.entity;
     const buttons = [];
+
+    const {
+      BCbuttonName = 'Создать',
+      BRbuttonName = 'Просмотреть',
+      BDbuttonName = 'Удалить',
+    } = propsButton;
+
     if (operations.indexOf('CREATE') > -1) {
       buttons.push(
         <ButtonCreate
+          buttonName={BCbuttonName}
           key={buttons.length}
           onClick={this.createElement}
           permissions={[`${entity}.create`]}
@@ -266,6 +274,7 @@ class ElementsList extends React.Component {
     if (operations.indexOf('READ') > -1) {
       buttons.push(
         <ButtonRead
+          buttonName={BRbuttonName}
           key={buttons.length}
           onClick={this.showForm}
           disabled={this.checkDisabledRead()}
@@ -276,6 +285,7 @@ class ElementsList extends React.Component {
     if (operations.indexOf('DELETE') > -1) {
       buttons.push(
         <ButtonDelete
+          buttonName={BDbuttonName}
           key={buttons.length}
           onClick={this.removeElement}
           disabled={this.checkDisabledDelete()}

@@ -242,7 +242,11 @@ export class MissionForm extends Form {
     let title = `Задание № ${state.number || ''} ${state.status === 'fail' ? '(Не выполнено)' : ''}`;
 
     if (IS_CREATING) {
-      title = 'Создание задания';
+      title = (
+        <div>
+          <span>Создание задания</span>
+          <span style={{ marginLeft: 10, color: 'red' }}>Данное задание не будет учитываться по факсограмме</span>
+        </div>);
     }
 
 

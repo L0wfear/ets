@@ -18,6 +18,7 @@ export default class DashboardPage extends React.Component {
   static get propTypes() {
     return {
       componentsList: PropTypes.arrayOf(PropTypes.object),
+      history: PropTypes.Object,
     };
   }
 
@@ -99,6 +100,9 @@ export default class DashboardPage extends React.Component {
   openSubitemsList(key, clear) {
     this.setState({ itemOpenedKey: clear ? null : key });
   }
+  goToFaxogramm = () => {
+    this.props.history.push('/faxogramms');
+  }
 
   render() {
     const { componentsList = [] } = this.props;
@@ -150,7 +154,10 @@ export default class DashboardPage extends React.Component {
             {rows}
           </Col>
           <Col md={3}>
-            <DashboardManagementCard refreshCard={this.refreshCard} />
+            <DashboardManagementCard
+              refreshCard={this.refreshCard}
+              goToFaxogramm={this.goToFaxogramm}
+            />
           </Col>
         </Row>
       </Div>

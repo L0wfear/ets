@@ -53,10 +53,8 @@ export default class ProgramRegistryForm extends Form {
       activeVersionId,
       versionOptions = [],
     } = this.props;
-    const IS_CREATING = !state.id;
 
-    let title = 'Изменение записи';
-    if (IS_CREATING) title = 'Создание записи';
+    const title = 'Создание программы ремонта';
 
     const popoverFocus = (
       <Popover id="popover-trigger-focus" title="Что должно произойти?">
@@ -134,7 +132,7 @@ export default class ProgramRegistryForm extends Form {
             <Col md={3}>
               <ExtField
                 type="date"
-                label="Плановые сроки"
+                label="Плановые сроки:"
                 date={state.plan_date_start}
                 time={false}
                 error={errors.plan_date_start}
@@ -167,7 +165,7 @@ export default class ProgramRegistryForm extends Form {
             <Col md={3}>
               <ExtField
                 type="date"
-                label="Фактические сроки"
+                label="Фактические сроки:"
                 date={state.fact_date_start}
                 time={false}
                 error={errors.fact_date_start}
@@ -193,7 +191,7 @@ export default class ProgramRegistryForm extends Form {
               <ExtField
                 type="string"
                 label="Процент выполнения"
-                value={state.percent}
+                value={`${state.percent} %`}
                 readOnly
               />
             </Col>
@@ -214,7 +212,7 @@ export default class ProgramRegistryForm extends Form {
             <Col md={6}>
               <ExtField
                 type="string"
-                label="№ контракта"
+                label="№ договора"
                 value={state.contract_number}
                 error={errors.contract_number}
                 onChange={this.handleChange}

@@ -303,7 +303,6 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         onRowSelected={undefined}
         enumerated={enumerated}
         enableSort={false}
-        initialSort={false}
         noFilter
       />
     );

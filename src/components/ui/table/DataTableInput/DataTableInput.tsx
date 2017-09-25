@@ -64,7 +64,6 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
           usePagination={false}
           enumerated={false}
           enableSort={false}
-          initialSort={false}
         />
       </div>
     );

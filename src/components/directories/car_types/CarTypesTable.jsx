@@ -57,7 +57,6 @@ export default (props) => {
       title="Типы техники"
       results={props.data}
       tableMeta={tableMeta}
-      initialSort={undefined}
       {...props}
       onRowSelected={undefined}
     />

@@ -75,7 +75,7 @@ export default class ProgramRegistryForm extends Form {
             <Col md={5} xsOffset={7}>
               <Field
                 type="select"
-                label="Версия"
+                label="Версии"
                 options={versionOptions}
                 value={activeVersionId}
                 onChange={this.props.changeVersion}

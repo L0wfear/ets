@@ -23,6 +23,7 @@ export default class Analytics extends Component {
       'Транспортные средства',
       'Работники',
       'Расход топлива',
+      'Наряд - задания',
     ];
 
     this.state = {

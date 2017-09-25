@@ -45,6 +45,7 @@ export default class DataTable extends React.Component {
       selected: PropTypes.object,
       selectField: PropTypes.string,
 
+      firstUseExternalInitialSort: PropTypes.bool,
       initialSort: PropTypes.string,
       initialSortAscending: PropTypes.bool,
 
@@ -100,7 +101,8 @@ export default class DataTable extends React.Component {
       selected: null,
       selectField: 'id',
 
-      initialSort: '',
+      firstUseExternalInitialSort: true,
+      initialSort: false,
       initialSortAscending: true,
 
       enableSort: true,
@@ -137,18 +139,21 @@ export default class DataTable extends React.Component {
       columnControlValues: [],
       globalCheckboxState: false,
       isHierarchical: props.isHierarchical,
-      initialSort: 'id',
+      firstUseExternalInitialSort: true,
+      initialSort: false,
       initialSortAscending: true,
     };
   }
 
+  // Сортировка теперь тут
+  // По идеи гридлу это не надо
   componentWillMount() {
     // Здесь производится инициализация начальной сортировки для того,
     // чтобы гриддл мог корректно отобразить хедер при первом рендеринге
     // важно устанавливать сортировку именно в willMount!
-    const { initialSort = '', initialSortAscending = true } = this.props;
+    // const { initialSort = '', initialSortAscending = true } = this.props;
 
-    this.setState({ initialSort, initialSortAscending });
+    // this.setState({ initialSort, initialSortAscending });
   }
 
   componentDidMount() {
@@ -170,20 +175,32 @@ export default class DataTable extends React.Component {
       const el = document.getElementById('checkedColumn');
       if (el) el.checked = checked;
     }
+    let {
+      initialSort, initialSortAscending,
+      firstUseExternalInitialSort,
+    } = this.state;
 
-    let { initialSort, initialSortAscending } = this.state;
-
-    if (props.initialSort && props.initialSort !== this.state.initialSort) {
+    if (firstUseExternalInitialSort && props.initialSort && props.initialSort !== this.state.initialSort) {
       initialSort = props.initialSort;
+      firstUseExternalInitialSort = false;
     }
 
-    if (props.initialSortAscending && props.initialSortAscending !== this.state.initialSortAscending) {
+    if (firstUseExternalInitialSort && props.initialSortAscending && props.initialSortAscending !== this.state.initialSortAscending) {
       initialSortAscending = props.initialSortAscending;
     }
     if (props.externalFilter) {
-      this.setState({ initialSort, initialSortAscending, filterValues: props.filterValues });
+      this.setState({
+        initialSort,
+        initialSortAscending,
+        filterValues: props.filterValues,
+        firstUseExternalInitialSort,
+      });
     } else {
-      this.setState({ initialSort, initialSortAscending });
+      this.setState({
+        initialSort,
+        initialSortAscending,
+        firstUseExternalInitialSort,
+      });
     }
 
     if (props.filterResetting) {

@@ -79,7 +79,6 @@ const UserActionLogTable = (props) => {
       rowNumberLabel="№ п/п"
       rowNumberClassName="width60"
       onRowSelected={undefined}
-      initialSort={undefined}
       enumerated
     />
   );

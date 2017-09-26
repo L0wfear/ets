@@ -3,6 +3,8 @@ import _ from 'lodash';
 import { autobind } from 'core-decorators';
 import { Row, Col } from 'react-bootstrap';
 import Div from 'components/ui/Div.jsx';
+import ModalRule from 'components/modalTP/ModalRule.tsx';
+
 import cx from 'classnames';
 import { FluxContext, connectToStores } from 'utils/decorators';
 import DashboardCardMedium from './DashboardCardMedium.jsx';
@@ -104,6 +106,10 @@ export default class DashboardPage extends React.Component {
     this.props.history.push('/faxogramms');
   }
 
+  hideFormRule = () => {
+    this.props.history.pushState(null, '/dashboard');
+  }
+
   render() {
     const { componentsList = [] } = this.props;
 
@@ -145,9 +151,13 @@ export default class DashboardPage extends React.Component {
         </Row>
       );
     });
-
+    const path = this.props.location.pathname;
     return (
       <Div className="ets-page-wrap dashboard-page">
+        <ModalRule
+          show={path.includes('showFormRule')}
+          onHide={this.hideFormRule}
+        />
         <DashboardPageHeader />
         <Row>
           <Col md={9}>

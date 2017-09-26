@@ -38,6 +38,7 @@ const routes = (props) => {
         <Route path="monitor/:isFirst" component={MonitorPage} onEnter={requireAuth} />
         <Route path="monitor" component={MonitorPage} onEnter={requireAuth} />
         <Route path="dashboard" component={DashboardPage} onEnter={requireAuth} />
+        <Route path="dashboard/:isFirst" component={DashboardPage} onEnter={requireAuth} />
         <Route path="waybill-journal" component={WaybillJournal} onEnter={requireAuth} />
         <Route path="company-structure" component={CompanyStructure} onEnter={requireAuth} />
         <Route path="routes-list" component={RoutesList} onEnter={requireAuth} />

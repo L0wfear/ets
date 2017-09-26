@@ -262,7 +262,6 @@ export default class MissionsJournal extends CheckableElementsList {
   }
 
   getButtons() {
-    console.log(this.props)
     const superButtons = super.getButtons({
       BCbuttonName: 'Создать децентрализованное задание',
     });

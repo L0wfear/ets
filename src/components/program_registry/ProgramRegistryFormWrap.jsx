@@ -113,7 +113,7 @@ class ProgramRegistryFormWrap extends FormWrap {
       });
       console.warn(e);
 
-      return { error: true };
+      throw e;
     }
   }
 
@@ -139,7 +139,7 @@ class ProgramRegistryFormWrap extends FormWrap {
   loadFile = () => {
   }
   makeVersion = () => {
-    const callback = this.context.flux.getActions('repair').programRegistryPost;
+    const callback = this.context.flux.getActions('repair').programVersionCreateVersion;
     this.defSendFromState(callback, { program_id: this.props.element.id }).then(() => {
       // global.NOTIFICATION_SYSTEM.notify('Версия создана', 'success');
       this.updateVersionList(this.props.element.id, this.state.activeVersionId);
@@ -151,9 +151,9 @@ class ProgramRegistryFormWrap extends FormWrap {
   sendToApply = () => {
     const callback = this.context.flux.getActions('repair').programVersionSendToReview;
     this.defSendFromState(callback).then(() => {
-      // global.NOTIFICATION_SYSTEM.notify('Запрос на согласование отправлен', 'success');
+      global.NOTIFICATION_SYSTEM.notify('Запрос на согласование отправлен', 'success');
     }).catch(() => {
-      // global.NOTIFICATION_SYSTEM.notify('Запрос на согласование не отправлен', 'error');
+      global.NOTIFICATION_SYSTEM.notify('Запрос на согласование не отправлен', 'error');
     });
   }
 
@@ -189,25 +189,25 @@ class ProgramRegistryFormWrap extends FormWrap {
   applyVersion = () => {
     const callback = this.context.flux.getActions('repair').programVersionSendToApply;
     this.defSendFromState(callback).then(() => {
-      // global.NOTIFICATION_SYSTEM.notify('Хорошо', 'success');
+      global.NOTIFICATION_SYSTEM.notify('Версия применена', 'success');
     }).catch(() => {
-      // global.NOTIFICATION_SYSTEM.notify('Ошибка', 'error');
+      global.NOTIFICATION_SYSTEM.notify('Ошибка применения версии', 'error');
     });
   }
   canselVersion = () => {
     const callback = this.context.flux.getActions('repair').programVersionSendToCansel;
     this.defSendFromState(callback).then(() => {
-      // global.NOTIFICATION_SYSTEM.notify('Хорошо', 'success');
+      global.NOTIFICATION_SYSTEM.notify('Версия отменена', 'success');
     }).catch(() => {
-      // global.NOTIFICATION_SYSTEM.notify('Ошибка', 'error');
+      global.NOTIFICATION_SYSTEM.notify('Ошибка отмены версии', 'error');
     });
   }
   closeVersion = () => {
     const callback = this.context.flux.getActions('repair').programVersionSendToClose;
     this.defSendFromState(callback).then(() => {
-      // global.NOTIFICATION_SYSTEM.notify('Хорошо', 'success');
+      global.NOTIFICATION_SYSTEM.notify('Версия закрыта', 'success');
     }).catch(() => {
-      // global.NOTIFICATION_SYSTEM.notify('Ошибка', 'error');
+      global.NOTIFICATION_SYSTEM.notify('Ошибка закрытия версии', 'error');
     });
   }
 
@@ -293,7 +293,7 @@ class ProgramRegistryFormWrap extends FormWrap {
       formState = {},
     } = this.state;
     const uniqueField = this.uniqueField || 'id';
-    console.log(formState)
+
     if (isEmpty(formState[uniqueField])) {
       return this.renderFromFirstCreate();
     }

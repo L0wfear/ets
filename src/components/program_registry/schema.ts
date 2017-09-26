@@ -46,13 +46,11 @@ export const formValidationSchema: IValidationSchema = {
       key: 'fact_date_start',
       title: 'План. Начало',
       type: 'date',
-      required: true,
     },
     {
       key: 'fact_date_end',
       title: 'План. Завершение',
       type: 'date',
-      required: true,
     },
     {
       key: 'contractor_id',

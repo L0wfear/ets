@@ -139,17 +139,37 @@ export default class RepairActions extends Actions {
       'json',
     );
   }
+
+  async programVersionCreateVersion(formState) {
+    const payload = {
+      ...formState,
+    };
+    ['plan_date_start', 'plan_date_end', 'fact_date_start', 'fact_date_end'].forEach((key) => {
+      if (payload[key]) {
+        payload[key] = createValidDate(payload[key]);
+      }
+    });
+    const { programVersion } = REPAIR;
+
+    const path = parsePutPath(programVersion, 'post', formState);
+    return Repair.path(path).post(
+      payload,
+      false,
+      'json',
+    );
+  }
+
   async programVersionSendToReview(formState) {
-    return await this.programVersionSendFor('send_to_reviews', formState)
+    return await this.programVersionSendFor('send_to_reviews', formState);
   }
   async programVersionSendToApply(formState) {
-    return await this.programVersionSendFor('accept', formState)
+    return await this.programVersionSendFor('accept', formState);
   }
   async programVersionSendToCansel(formState) {
-    return await this.programVersionSendFor('reject', formState)
+    return await this.programVersionSendFor('reject', formState);
   }
   async programVersionSendToClose(formState) {
-    return await this.programVersionSendFor('close', formState)
+    return await this.programVersionSendFor('close', formState);
   }
 
   async programVersionSendFor(type, formState) {

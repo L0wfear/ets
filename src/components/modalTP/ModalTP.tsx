@@ -24,7 +24,7 @@ const Body: React.SFC<any> = props =>
         <a href="tel:84951501193">8(495) 150-11-93</a>
         </label>
       </div>
-      <label><a href={`${config.docs}Общие_рекомендации_по_обращению.docx`}>Общие правила подачи обращений</a></label>
+      <label><a href={`${config.docs}Общие_рекомендации_по_обращению.docx`}>Общие рекомендации по обращению</a></label>
 
     </div>
   </Modal.Body>;

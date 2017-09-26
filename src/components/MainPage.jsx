@@ -172,7 +172,7 @@ export default class MainPage extends React.Component {
               <MenuItem href={`${config.docs}Руководство-мастера.docx`}>Руководство Мастера</MenuItem>
               <MenuItem href={`${config.docs}Руководство-диспетчера.docx`}>Руководство Диспетчера</MenuItem>
               <MenuItem href={`${config.docs}Руководство-окружного-пользователя.docx`}>Руководство окружного пользователя</MenuItem>
-              <MenuItem href={`${config.docs}Общие_рекомендации_по_обращению.docx`}>ОБЩИЕ ПРАВИЛА ПОДАЧИ ОБРАЩЕНИЙ</MenuItem>
+              <MenuItem href={`${config.docs}Общие_рекомендации_по_обращению.docx`}>Общие рекомендации по обращению</MenuItem>
             </NavDropdown>
             <NavItem className="navbar-user">
               <div className="navbar-user__avatar">

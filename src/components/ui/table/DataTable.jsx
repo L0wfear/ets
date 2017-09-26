@@ -102,7 +102,7 @@ export default class DataTable extends React.Component {
       selectField: 'id',
 
       firstUseExternalInitialSort: true,
-      initialSort: false,
+      initialSort: '',
       initialSortAscending: true,
 
       enableSort: true,
@@ -140,7 +140,7 @@ export default class DataTable extends React.Component {
       globalCheckboxState: false,
       isHierarchical: props.isHierarchical,
       firstUseExternalInitialSort: true,
-      initialSort: false,
+      initialSort: '',
       initialSortAscending: true,
     };
   }
@@ -289,7 +289,32 @@ export default class DataTable extends React.Component {
     });
     event && event.stopPropagation();
   }
+  defaultIinitializeMetadata(tableMetaCols = [], renderers = {}) {
+    return tableMetaCols.reduce((cur, col) => {
+      if (col.display === false) {
+        return cur;
+      }
 
+      const metaObject = {
+        columnName: col.name,
+        displayName: col.customHeaderComponent ? col.customHeaderComponent : col.displayName,
+        sortable: (typeof col.sortable === 'boolean') ? col.sortable : true,
+      };
+      if (col.type === 'string') {
+        const callbackF = (typeof renderers[col.name] === 'function' && renderers[col.name]) || false;
+        metaObject.customComponent = props => this.cutString(callbackF, props);
+      } else if (typeof renderers[col.name] === 'function') {
+        metaObject.customComponent = renderers[col.name];
+      }
+
+      if (typeof col.cssClassName !== 'undefined') {
+        metaObject.cssClassName = col.cssClassName || '';
+      }
+
+      cur.push(metaObject);
+      return cur;
+    }, []);
+  }
   initializeMetadata(tableMetaCols = [], renderers = {}) {
     const { multiSelection, enumerated, rowNumberLabel = '№', rowNumberClassName = 'width30' } = this.props;
     const initialArray = [];
@@ -317,33 +342,9 @@ export default class DataTable extends React.Component {
         customComponent: renderers.rowNumber,
       });
     }
+    initialArray.push(...this.defaultIinitializeMetadata(tableMetaCols, renderers));
 
-    const metadata = tableMetaCols.reduce((cur, col) => {
-      if (col.display === false) {
-        return cur;
-      }
-
-      const metaObject = {
-        columnName: col.name,
-        displayName: col.customHeaderComponent ? col.customHeaderComponent : col.displayName,
-        sortable: (typeof col.sortable === 'boolean') ? col.sortable : true,
-      };
-      if (col.type === 'string') {
-        const callbackF = (typeof renderers[col.name] === 'function' && renderers[col.name]) || false;
-        metaObject.customComponent = props => this.cutString(callbackF, props);
-      } else if (typeof renderers[col.name] === 'function') {
-        metaObject.customComponent = renderers[col.name];
-      }
-
-      if (typeof col.cssClassName !== 'undefined') {
-        metaObject.cssClassName = col.cssClassName || '';
-      }
-
-      cur.push(metaObject);
-      return cur;
-    }, initialArray);
-
-    return metadata;
+    return initialArray;
   }
   cutString = (callback, props) => {
     const newProps = { ...props };

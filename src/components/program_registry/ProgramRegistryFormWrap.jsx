@@ -98,8 +98,8 @@ class ProgramRegistryFormWrap extends FormWrap {
         saveButtonLabel: 'Сохранение...',
         saveButtonEnability: false,
       });
-
       const result = await callback(formState);
+
       this.setState({
         saveButtonLabel: 'Сохранить',
         saveButtonEnability: true,
@@ -111,6 +111,7 @@ class ProgramRegistryFormWrap extends FormWrap {
         saveButtonEnability: true,
       });
       console.warn(e);
+      // Что тут должно быть?
       return { error: true };
     }
   }
@@ -143,6 +144,8 @@ class ProgramRegistryFormWrap extends FormWrap {
     const callback = this.context.flux.getActions('repair').programVersionSendToReview;
     this.defSendFromState(callback).then(() => {
       global.NOTIFICATION_SYSTEM.notify('Запрос на согласование отправлен', 'success');
+    }).catch(() => {
+      global.NOTIFICATION_SYSTEM.notify('Запрос на согласование не отправлен', 'error');
     });
   }
 
@@ -173,6 +176,31 @@ class ProgramRegistryFormWrap extends FormWrap {
       formErrors,
       canSave: Object.values(formErrors).reduce((boolean, oneError) => boolean && !oneError, true),
     };
+  }
+
+  applyVersion = () => {
+    const callback = this.context.flux.getActions('repair').programVersionSendToApply;
+    this.defSendFromState(callback).then(() => {
+      global.NOTIFICATION_SYSTEM.notify('Хорошо', 'success');
+    }).catch(() => {
+      global.NOTIFICATION_SYSTEM.notify('Ошибка', 'error');
+    });
+  }
+  canselVersion = () => {
+    const callback = this.context.flux.getActions('repair').programVersionSendToCansel;
+    this.defSendFromState(callback).then(() => {
+      global.NOTIFICATION_SYSTEM.notify('Хорошо', 'success');
+    }).catch(() => {
+      global.NOTIFICATION_SYSTEM.notify('Ошибка', 'error');
+    });
+  }
+  closeVersion = () => {
+    const callback = this.context.flux.getActions('repair').programVersionSendToClose;
+    this.defSendFromState(callback).then(() => {
+      global.NOTIFICATION_SYSTEM.notify('Хорошо', 'success');
+    }).catch(() => {
+      global.NOTIFICATION_SYSTEM.notify('Ошибка', 'error');
+    });
   }
 
   renderFromFirstCreate() {
@@ -241,6 +269,10 @@ class ProgramRegistryFormWrap extends FormWrap {
         sendToApply={this.sendToApply}
         onSubmit={this.onSubmitWithouContinue}
         onSubmitAndContinue={this.onSubmitAndContinue}
+
+        applyVersion={this.applyVersion}
+        canselVersion={this.canselVersion}
+        closeVersion={this.closeVersion}
       />
     );
   }

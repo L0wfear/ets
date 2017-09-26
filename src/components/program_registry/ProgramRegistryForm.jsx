@@ -238,18 +238,29 @@ export default class ProgramRegistryForm extends Form {
         </Div>
         <ModalBody />
         <Modal.Footer>
-          { false &&
-            <Button onClick={this.props.handleExportVersion}><Glyphicon glyph="download-alt" /></Button>
-          }
-          <OverlayTrigger trigger="focus" placement="top" overlay={popoverFocus}>
-            <Button disabled={!this.props.canSave}><Glyphicon glyph="file" /></Button>
-          </OverlayTrigger>
-          { false &&
-            <Button disabled={true || !this.props.canSave} onClick={this.props.makeVersion}>Создать версию</Button>
-          }
-          <Button disabled={!this.props.canSave} onClick={this.props.sendToApply}>Отправить на согласование</Button>
-          <Button disabled={!this.props.canSave} bsStyle="primary" onClick={this.props.onSubmit}>Сохранить</Button>
-          <Button disabled={!this.props.canSave} onClick={this.props.onSubmitAndContinue}>Сохранить и продолжить</Button>
+          <Row>
+            <Col md={12}>
+              { false &&
+                <Button onClick={this.props.handleExportVersion}><Glyphicon glyph="download-alt" /></Button>
+              }
+              <OverlayTrigger trigger="focus" placement="top" overlay={popoverFocus}>
+                <Button disabled={!this.props.canSave}><Glyphicon glyph="file" /></Button>
+              </OverlayTrigger>
+              { false &&
+                <Button disabled={true || !this.props.canSave} onClick={this.props.makeVersion}>Создать версию</Button>
+              }
+              <Button disabled={!this.props.canSave} onClick={this.props.sendToApply}>Отправить на согласование</Button>
+              <Button disabled={!this.props.canSave} bsStyle="primary" onClick={this.props.onSubmit}>Сохранить</Button>
+              <Button disabled={!this.props.canSave} onClick={this.props.onSubmitAndContinue}>Сохранить и продолжить</Button>
+            </Col>
+          </Row>
+          <Row style={{ marginTop: 5 }}>
+            <Col md={12}>
+              <Button disabled={!this.props.canSave} onClick={this.props.applyVersion}>Согласовать</Button>
+              <Button disabled={!this.props.canSave} bsStyle="primary" onClick={this.props.canselVersion}>Отклонить</Button>
+              <Button disabled={!this.props.canSave} onClick={this.props.closeVersion}>Закрыть программу (завершить)</Button>
+            </Col>
+          </Row>
         </Modal.Footer>
       </Modal>
     );

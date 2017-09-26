@@ -22,12 +22,17 @@ export default class RepairActions extends Actions {
     };
   }
 
-  async getAllVersions(id) {
+  async getAllVersionsById(id) {
     const { programVersion } = REPAIR;
     const payload = {
+      program_id: id,
     };
 
-    const response = await Repair.path(`${programVersion}?program_id=${id}`).get(payload);
+    const response = await Repair.path(`${programVersion}`).get(
+      payload,
+      false,
+      'json',
+    );
 
     return response;
   }

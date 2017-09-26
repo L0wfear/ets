@@ -48,7 +48,7 @@ class ProgramRegistryFormWrap extends FormWrap {
 
   async updateVersionList(id, activeVersionIdprops = false) {
     this.iLoad = true;
-    const { result: { rows = [] } } = await this.context.flux.getActions('repair').getAllVersions(id);
+    const { result: { rows = [] } } = await this.context.flux.getActions('repair').getAllVersionsById(id);
 
     this.iLoad = false;
 

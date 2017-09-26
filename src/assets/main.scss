@@ -2927,6 +2927,11 @@ div.none {
   transform: translateY(-75%);
 }
 
+.link-to-ruleTp {
+  cursor: pointer;
+  font-weight: bold;
+}
+
 .app-footer {
   position: fixed;
     bottom: 0;
@@ -2941,6 +2946,7 @@ div.none {
       color: white;
       cursor: pointer;
     }
+
 }
 
 .griddle:focus {

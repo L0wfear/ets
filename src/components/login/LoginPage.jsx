@@ -35,7 +35,7 @@ export default class LoginPage extends Component {
       if (['dispatcher', 'master'].indexOf(data.payload.role) > -1 && data.payload.okrug_id === null) {
         this.context.history.pushState(null, '/dashboard');
       } else {
-        this.context.history.pushState(null, '/monitor');
+        this.context.history.pushState(null, '/monitor/showFormRule');
       }
     });
   }

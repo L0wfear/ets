@@ -34,6 +34,7 @@ const routes = (props) => {
     <Router history={history}>
       <Redirect from="/" to="monitor" />
       <Route path="/" component={App}>
+        <Route path="monitor/:isFirst" component={MonitorPage} onEnter={requireAuth} />
         <Route path="monitor" component={MonitorPage} onEnter={requireAuth} />
         <Route path="dashboard" component={DashboardPage} onEnter={requireAuth} />
         <Route path="waybill-journal" component={WaybillJournal} onEnter={requireAuth} />

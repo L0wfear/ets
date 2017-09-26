@@ -12,6 +12,7 @@ import config from 'config';
 import { autobind } from 'core-decorators';
 import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
 import ModalTP from 'components/modalTP/ModalTP.tsx';
+import ModalRule from 'components/modalTP/ModalRule.tsx';
 import { FluxContext, HistoryContext } from 'utils/decorators';
 import PERMISSIONS from 'constants/permissions';
 import enhanceWithPermissions from './util/RequirePermissions.jsx';
@@ -79,8 +80,12 @@ export default class MainPage extends React.Component {
       history.pushState(null, '/login');
     });
   }
-  hideForm = () => this.setState({ showForm: false });
-  showForm = () => this.setState({ showForm: true });
+  hideFormTp = () => this.setState({ showFormTp: false });
+  showFormTp = () => this.setState({ showFormTp: true });
+
+  hideFormRule = () => {
+    this.context.history.pushState(null, '/monitor');
+  }
 
   renderEmptyHeader() {
     return (
@@ -135,6 +140,7 @@ export default class MainPage extends React.Component {
               <MenuItem href={`${config.docs}Руководство-мастера.docx`}>Руководство Мастера</MenuItem>
               <MenuItem href={`${config.docs}Руководство-диспетчера.docx`}>Руководство Диспетчера</MenuItem>
               <MenuItem href={`${config.docs}Руководство-окружного-пользователя.docx`}>Руководство окружного пользователя</MenuItem>
+              <MenuItem href={`${config.docs}Общие_рекомендации_по_обращению.docx`}>ОБЩИЕ ПРАВИЛА ПОДАЧИ ОБРАЩЕНИЙ</MenuItem>
             </NavDropdown>
             <NavItem className="navbar-user">
               <div className="navbar-user__avatar">
@@ -172,8 +178,12 @@ export default class MainPage extends React.Component {
 
         <div className="app-content">
           <ModalTP
-            show={this.state.showForm}
-            onHide={this.hideForm}
+            show={this.state.showFormTp}
+            onHide={this.hideFormTp}
+          />
+          <ModalRule
+            show={path.includes('showFormRule')}
+            onHide={this.hideFormRule}
           />
           {this.props.children}
           <LoadingOverlay main />
@@ -181,7 +191,7 @@ export default class MainPage extends React.Component {
 
         <div className="app-footer">
           <Col md={3}>
-            <a className="tp" onClick={this.showForm}>Техническая поддержка</a>
+            <a className="tp" onClick={this.showFormTp}>Техническая поддержка</a>
           </Col>
           <Col md={6}>
             {this.state.user.company_name}

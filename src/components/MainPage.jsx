@@ -59,7 +59,7 @@ export default class MainPage extends React.Component {
     this.state = {
       user: {},
       countUserNotificationInfo: 0,
-      showForm: false,
+      showFormTp: false,
     };
   }
 
@@ -127,6 +127,7 @@ export default class MainPage extends React.Component {
   }
 
   renderHeader() {
+
     const {
       user,
       countUserNotificationInfo = 0,

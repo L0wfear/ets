@@ -23,11 +23,11 @@ export default class RepairActions extends Actions {
   }
 
   async getAllVersions(id) {
-    const { programRegistry } = REPAIR;
+    const { programVersion } = REPAIR;
     const payload = {
     };
 
-    const response = await Repair.path(`${programRegistry}/${id}`).get(payload);
+    const response = await Repair.path(`${programVersion}?program_id=${id}`).get(payload);
 
     return response;
   }
@@ -132,7 +132,7 @@ export default class RepairActions extends Actions {
       }
     });
 
-    const path = parsePutPath(programVersion, 'put', payload, 'version_id');
+    const path = parsePutPath(programVersion, 'put', payload);
     return Repair.path(path).put(
       payload,
       this.getRepairListByType.bind(null, 'programRegistry'),
@@ -156,7 +156,7 @@ export default class RepairActions extends Actions {
     const { programVersion } = REPAIR;
     const payload = {};
 
-    const path = parsePutPath(programVersion, 'put', formState, 'version_id');
+    const path = parsePutPath(programVersion, 'put', formState);
     return Repair.path(`${path}/${type}`).put(
       payload,
       false,

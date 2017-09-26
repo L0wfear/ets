@@ -60,6 +60,12 @@ export default class LoginPage extends Component {
             <input type="text" className="form-control" placeholder="Логин" value={login} onChange={this.handleChange.bind(this, 'login')} />
             <input type="password" className="form-control" placeholder="Пароль" value={password} onChange={this.handleChange.bind(this, 'password')} />
             <button role="button" className="btn btn-lg btn-primary btn-block" disabled={disabled} onClick={this.onSigninClick}>Войти</button>
+            <div className="tp-messange">
+              <span>
+              Служба технической поддержки</span>
+              <a href="mailto:ETS_support@mos.ru">ETS_support@mos.ru</a>
+              <a href="tel:84951501193">8(495) 150-11-93</ a>
+            </div>
             <hr />
             <div className="dit-logo" />
           </div>

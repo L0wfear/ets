@@ -16,6 +16,9 @@ export const autobase: string[] = [
 ];
 
 export const repair: string[] = [
+  ...getFullAccess('repair_state_program'),
+  ...getFullAccess('repair_object_property'),
+  ...getFullAccess('repair_contractor'),
 ];
 
 export const userNotification: string[] = [

@@ -58,7 +58,7 @@ export default class ProgramRegistryForm extends Form {
       versionOptions = [],
       permissionForButton,
     } = this.props;
-
+    const { is_active = false } = state;
     const title = 'Создание программы ремонта';
 
     const buttonInFooterOne = [
@@ -104,7 +104,7 @@ export default class ProgramRegistryForm extends Form {
                 value={state.state_program_id}
                 onChange={this.handleChange}
                 boundKeys={['state_program_id']}
-                disabled={!isPermitted || !isPermittedByStatus}
+                disabled={!isPermitted || !isPermittedByStatus || !is_active}
                 clearable={false}
               />
             </Col>
@@ -136,7 +136,7 @@ export default class ProgramRegistryForm extends Form {
                 error={errors.name}
                 onChange={this.handleChange}
                 boundKeys={['name']}
-                disabled={!isPermitted || !isPermittedByStatus}
+                disabled={!isPermitted || !isPermittedByStatus || !is_active}
               />
             </Col>
             <Col md={3}>
@@ -148,7 +148,7 @@ export default class ProgramRegistryForm extends Form {
                 error={errors.plan_date_start}
                 onChange={this.handleChange}
                 boundKeys={['plan_date_start']}
-                disabled={!isPermitted || !isPermittedByStatus}
+                disabled={!isPermitted || !isPermittedByStatus || !is_active}
               />
             </Col>
             <Col md={3}>
@@ -159,7 +159,7 @@ export default class ProgramRegistryForm extends Form {
                 error={errors.plan_date_end}
                 onChange={this.handleChange}
                 boundKeys={['plan_date_end']}
-                disabled={!isPermitted || !isPermittedByStatus}
+                disabled={!isPermitted || !isPermittedByStatus || !is_active}
               />
             </Col>
           </Row>
@@ -181,7 +181,7 @@ export default class ProgramRegistryForm extends Form {
                 error={errors.fact_date_start}
                 onChange={this.handleChange}
                 boundKeys={['fact_date_start']}
-                disabled={!isPermitted || !isPermittedByStatus}
+                disabled={!isPermitted || !isPermittedByStatus || !is_active}
               />
             </Col>
             <Col md={3}>
@@ -192,7 +192,7 @@ export default class ProgramRegistryForm extends Form {
                 error={errors.fact_date_end}
                 onChange={this.handleChange}
                 boundKeys={['fact_date_end']}
-                disabled={!isPermitted || !isPermittedByStatus}
+                disabled={!isPermitted || !isPermittedByStatus || !is_active}
               />
             </Col>
           </Row>
@@ -216,7 +216,7 @@ export default class ProgramRegistryForm extends Form {
                 value={state.contractor_id}
                 onChange={this.handleChange}
                 boundKeys={['contractor_id']}
-                disabled={!isPermitted || !isPermittedByStatus}
+                disabled={!isPermitted || !isPermittedByStatus || !is_active}
               />
             </Col>
             <Col md={6}>
@@ -227,7 +227,7 @@ export default class ProgramRegistryForm extends Form {
                 error={errors.contract_number}
                 onChange={this.handleChange}
                 boundKeys={['contract_number']}
-                disabled={!isPermitted || !isPermittedByStatus}
+                disabled={!isPermitted || !isPermittedByStatus || !is_active}
               />
             </Col>
           </Row>
@@ -241,7 +241,7 @@ export default class ProgramRegistryForm extends Form {
                 error={errors.note}
                 boundKeys={['note']}
                 textAreaStyle={{ resize: 'none' }}
-                disabled={!isPermitted || !isPermittedByStatus}
+                disabled={!isPermitted || !isPermittedByStatus || !is_active}
               />
             </Col>
           </Row>

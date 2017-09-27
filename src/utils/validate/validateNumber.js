@@ -17,12 +17,12 @@ const fixedValidators = [
       let error = '';
       if (config.float) {
         const regexp = new RegExp(`^[ +]?[0-9]*[\.,]?[0-9]{1,${config.float}}$`);
-        error = typeof value !== 'number' && !regexp.test(value) ? `Поле ${config.title || config.key} должно быть неотрицательным числом с ${config.float} знаками после запятой` : undefined;
+        error = typeof value !== 'number' && !regexp.test(value) ? `Поле "${config.title || config.key}" должно быть неотрицательным числом с ${config.float} знаками после запятой` : undefined;
       }
       if (config.integer) {
         error = error || (typeof value !== 'number' && !/^\d+$/.test(value) ? `Поле ${config.title || config.key} должно быть целочисленным` : undefined);
       }
-      error = error || (typeof value !== 'number' && isNaN(value) ? `Поле ${config.title || config.key} должно быть числом` : undefined);
+      error = error || (typeof value !== 'number' && isNaN(value) ? `Поле "${config.title || config.key}" должно быть числом` : undefined);
       return error;
     },
   },

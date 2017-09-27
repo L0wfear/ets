@@ -26,7 +26,6 @@ class EmployeeFormWrap extends FormWrap {
       <BatteryForm
         formState={this.state.formState}
         formErrors={this.state.formErrors}
-        cols={this.props.meta.cols}
         permissions={[`${entity}.update`]}
         addPermissionProp
         isPermitted={isPermitted}

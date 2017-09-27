@@ -21,6 +21,7 @@ import organizations from './organizations/OrganizationsDirectory.jsx';
 import technicalOperations from './technical_operation/TechnicalOperationsDirectory.jsx';
 import * as geoobjects from './geoobjects';
 import * as autobase from './autobase';
+import * as repiar from './repair';
 
 export {
   autobase,
@@ -42,4 +43,5 @@ export {
   technicalOperations,
   geoobjects,
   userActionLog,
+  repiar,
 };

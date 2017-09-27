@@ -24,17 +24,19 @@ export default class InsurancePolicyForm extends Form {
     if (car_id >= 0) {
       this.handleChange('car_id', car_id);
     }
+    flux.getActions('autobase').getAutobaseListByType('insuranceType', {}, { makeOptions: true, selectListMapper: defaultSelectListMapper });
   }
-
+  handleSubmitWrap = () => this.handleSubmit();
   hanleFileLoading = indicator => this.setState({ areFilesLoading: indicator })
 
   render() {
     const {
-      insuranceTypeList = [],
-      isPermitted = false,
-      cols = [],
-      carsList = [],
       car_id = -1,
+      carsList = [],
+      AutobaseOptions: {
+        insuranceTypeOptions = [],
+      },
+      isPermitted = false,
     } = this.props;
 
     const [
@@ -42,9 +44,6 @@ export default class InsurancePolicyForm extends Form {
       errors = {},
     ] = [this.props.formState, this.props.formErrors];
 
-    const fields = cols.reduce((obj, val) => Object.assign(obj, { [val.name]: val }), {});
-
-    const INSURANCE_TYPE_OPTION = insuranceTypeList.map(defaultSelectListMapper);
     const CAR_LIST_OPTION = carsList.map(el => ({ value: el.asuods_id, label: el.gov_number }));
 
     const IS_CREATING = !state.id;
@@ -70,12 +69,13 @@ export default class InsurancePolicyForm extends Form {
                   emptyValue={null}
                   onChange={this.handleChange}
                   boundKeys={['car_id']}
+                  clearable={false}
                   disabled={!isPermitted}
                 />
               }
               <ExtField
-                type={fields.insurer.type}
-                label={fields.insurer.displayName}
+                type={'string'}
+                label={'Страховая организация'}
                 value={state.insurer}
                 error={errors.insurer}
                 onChange={this.handleChange}
@@ -84,18 +84,19 @@ export default class InsurancePolicyForm extends Form {
               />
               <ExtField
                 type={'select'}
-                label={fields.insurance_type_name.displayName}
+                label={'Тип страхования'}
                 value={state.insurance_type_id}
                 error={errors.insurance_type_id}
-                options={INSURANCE_TYPE_OPTION}
+                options={insuranceTypeOptions}
                 emptyValue={null}
                 onChange={this.handleChange}
                 boundKeys={['insurance_type_id']}
+                clearable={false}
                 disabled={!isPermitted}
               />
               <ExtField
-                type={fields.seria.type}
-                label={fields.seria.displayName}
+                type={'string'}
+                label={'Серия'}
                 value={state.seria}
                 error={errors.seria}
                 onChange={this.handleChange}
@@ -103,8 +104,8 @@ export default class InsurancePolicyForm extends Form {
                 disabled={!isPermitted}
               />
               <ExtField
-                type={fields.number.type}
-                label={fields.number.displayName}
+                type={'number'}
+                label={'Номер'}
                 value={state.number}
                 error={errors.number}
                 onChange={this.handleChange}
@@ -112,8 +113,8 @@ export default class InsurancePolicyForm extends Form {
                 disabled={!isPermitted}
               />
               <ExtField
-                type={fields.date_start.type}
-                label={fields.date_start.displayName}
+                type={'date'}
+                label={'Дата начала действия'}
                 date={state.date_start}
                 time={false}
                 error={errors.date_start}
@@ -122,8 +123,8 @@ export default class InsurancePolicyForm extends Form {
                 disabled={!isPermitted}
               />
               <ExtField
-                type={fields.date_end.type}
-                label={fields.date_end.displayName}
+                type={'date'}
+                label={'Дата окончания действия'}
                 date={state.date_end}
                 time={false}
                 error={errors.date_end}
@@ -132,8 +133,8 @@ export default class InsurancePolicyForm extends Form {
                 disabled={!isPermitted}
               />
               <ExtField
-                type={fields.price.type}
-                label={fields.price.displayName}
+                type={'number'}
+                label={'Стоимость, руб.'}
                 value={state.price}
                 error={errors.price}
                 onChange={this.handleChange}
@@ -141,8 +142,8 @@ export default class InsurancePolicyForm extends Form {
                 disabled={!isPermitted}
               />
               <ExtField
-                type={fields.note.type}
-                label={fields.note.displayName}
+                type={'text'}
+                label={'Примечание'}
                 value={state.note}
                 error={errors.note}
                 onChange={this.handleChange}
@@ -163,7 +164,7 @@ export default class InsurancePolicyForm extends Form {
         </ExtDiv>
         <ModalBody />
         <Modal.Footer>
-          <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+          <Button disabled={!this.props.canSave} onClick={this.handleSubmitWrap}>Сохранить</Button>
         </Modal.Footer>
       </Modal>
     );

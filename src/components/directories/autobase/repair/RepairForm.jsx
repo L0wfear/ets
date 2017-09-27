@@ -33,15 +33,20 @@ export default class BaseTechInspectionForm extends Form {
     if (!(AUTOBASE_REPAIR_STATUS[state.status]) || (AUTOBASE_REPAIR_STATUS[state.status] && AUTOBASE_REPAIR_STATUS[state.status].disabled)) {
       this.handleChange('status', 'failed');
     }
+    flux.getActions('autobase').getAutobaseListByType('repairCompany', {}, { makeOptions: true, selectListMapper: defaultSelectListMapper });
+    flux.getActions('autobase').getAutobaseListByType('repairType', {}, { makeOptions: true, selectListMapper: defaultSelectListMapper });
   }
+  handleSubmitWrap = () => this.handleSubmit();
 
   render() {
     const {
       isPermitted = false,
       cols = [],
       carsList = [],
-      repairCompanyList = [],
-      repairTypeList = [],
+      AutobaseOptions: {
+        repairCompanyOptions = [],
+        repairTypeOptions = [],
+      },
       car_id = -1,
     } = this.props;
 
@@ -52,8 +57,6 @@ export default class BaseTechInspectionForm extends Form {
 
     const fields = cols.reduce((obj, val) => Object.assign(obj, { [val.name]: val }), {});
     const CAR_LIST_OPTION = carsList.map(el => ({ value: el.asuods_id, label: el.gov_number }));
-    const REPARE_COMPANY_OPTION = repairCompanyList.map(defaultSelectListMapper);
-    const REPARE_TYPE_OPTION = repairTypeList.map(defaultSelectListMapper);
 
     const IS_CREATING = !state.id;
 
@@ -78,6 +81,7 @@ export default class BaseTechInspectionForm extends Form {
                 emptyValue={null}
                 onChange={this.handleChange}
                 boundKeys={['car_id']}
+                clearable={false}
                 disabled={!isPermitted}
               />
             }
@@ -86,10 +90,11 @@ export default class BaseTechInspectionForm extends Form {
                 label={fields.repair_company_name.displayName}
                 value={state.repair_company_id}
                 error={errors.repair_company_id}
-                options={REPARE_COMPANY_OPTION}
+                options={repairCompanyOptions}
                 emptyValue={null}
                 onChange={this.handleChange}
                 boundKeys={['repair_company_id']}
+                clearable={false}
                 disabled={!isPermitted}
               />
               <ExtField
@@ -97,7 +102,7 @@ export default class BaseTechInspectionForm extends Form {
                 label={fields.repair_type_name.displayName}
                 value={state.repair_type_id}
                 error={errors.repair_type_id}
-                options={REPARE_TYPE_OPTION}
+                options={repairTypeOptions}
                 emptyValue={null}
                 onChange={this.handleChange}
                 boundKeys={['repair_type_id']}
@@ -198,7 +203,7 @@ export default class BaseTechInspectionForm extends Form {
         </ExtDiv>
         <ModalBody />
         <Modal.Footer>
-          <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+          <Button disabled={!this.props.canSave} onClick={this.handleSubmitWrap}>Сохранить</Button>
         </Modal.Footer>
       </Modal>
     );

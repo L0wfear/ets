@@ -11,14 +11,31 @@ import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 
 @connectToStores(['autobase'])
 export default class BatteryBrandForm extends Form {
+  componentDidMount() {
+    const { flux } = this.context;
+
+    flux.getActions('autobase').getAutobaseListByType('batteryManufacturer', {}, { makeOptions: true, selectListMapper: defaultSelectListMapper });
+  }
+
+  handleSubmitWrap = () => this.handleSubmit();
 
   render() {
-    const state = this.props.formState;
-    const errors = this.props.formErrors;
-    const { batteryManufacturerList = [], isPermitted = false } = this.props;
-    const BATTERY_MANUFACTURER = batteryManufacturerList.map(defaultSelectListMapper);
+    const [
+      state,
+      errors,
+    ] = [
+      this.props.formState,
+      this.props.formErrors,
+    ];
 
-    const IS_CREATING = !!!state.id;
+    const {
+      AutobaseOptions: {
+        batteryManufacturerOptions = [],
+      },
+      isPermitted = false,
+    } = this.props;
+
+    const IS_CREATING = !state.id;
 
     let title = 'Изменение записи';
     if (IS_CREATING) title = 'Создание записи';
@@ -45,19 +62,20 @@ export default class BatteryBrandForm extends Form {
               <ExtField
                 type="select"
                 label="Производитель аккумулятора"
-                options={BATTERY_MANUFACTURER}
+                options={batteryManufacturerOptions}
                 value={state.manufacturer_id}
                 error={errors.manufacturer_id}
                 disabled={!isPermitted}
                 onChange={this.handleChange}
                 boundKeys={['manufacturer_id']}
+                clearable={false}
               />
             </Col>
           </Row>
         </Div>
         <ModalBody />
         <Modal.Footer>
-          <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+          <Button disabled={!this.props.canSave} onClick={this.handleSubmitWrap}>Сохранить</Button>
         </Modal.Footer>
       </Modal>
     );

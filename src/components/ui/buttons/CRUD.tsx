@@ -5,20 +5,20 @@ import { ICRUDButton } from 'components/ui/buttons/@types/index.h';
 
 const Button = enhanceWithPermissions(BootstrapButton);
 
-export const ButtonCreate: React.SFC<ICRUDButton> = ({ permissions, onClick, disabled }) =>
+export const ButtonCreate: React.SFC<ICRUDButton> = ({ permissions, onClick, disabled, buttonName = 'Создать' }) =>
   <Button bsSize="small" onClick={onClick} permissions={permissions} disabled={disabled}>
-    <Glyphicon glyph="plus" /> Создать
+    <Glyphicon glyph="plus" /> {buttonName}
   </Button>
 ;
 
-export const ButtonRead: React.SFC<ICRUDButton> = ({ permissions, onClick, disabled }) =>
+export const ButtonRead: React.SFC<ICRUDButton> = ({ permissions, onClick, disabled, buttonName = 'Просмотреть' }) =>
   <Button bsSize="small" onClick={onClick} disabled={disabled} permissions={permissions}>
-    <Glyphicon glyph="search" /> Просмотреть
+    <Glyphicon glyph="search" /> {buttonName}
   </Button>
 ;
 
-export const ButtonDelete: React.SFC<ICRUDButton> = ({ permissions, onClick, disabled }) =>
+export const ButtonDelete: React.SFC<ICRUDButton> = ({ permissions, onClick, disabled, buttonName = 'Удалить' }) =>
   <Button bsSize="small" onClick={onClick} disabled={disabled} permissions={permissions}>
-    <Glyphicon glyph="remove" /> Удалить
+    <Glyphicon glyph="remove" /> {buttonName}
   </Button>
 ;

@@ -28,7 +28,7 @@ export default handleActions({
 export function getTypes() {
   return {
     type: GET,
-    payload: TypesService.get().then(r => ({ result: r.result.rows })),
+    payload: TypesService.get().then(r => ({ result: r.result.rows || [] })),
     meta: {
       loading: true,
     },

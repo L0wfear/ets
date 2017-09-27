@@ -26,7 +26,6 @@ class InsurancePolicyFormWrap extends FormWrap {
       <InsurancePolicyForm
         formState={this.state.formState}
         formErrors={this.state.formErrors}
-        cols={this.props.meta.cols}
         car_id={car_id}
         permissions={[`${entity}.update`]}
         isPermitted={isPermitted}

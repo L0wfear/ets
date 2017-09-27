@@ -375,11 +375,23 @@ class WaybillForm extends Form {
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
-    const { loadingFields, origFormState = {}, notAvailableMissions = [] } = this.state;
-    const { appConfig } = this.props;
-    let taxesControl = false;
-    const { carsList = [], carsIndex = {}, waybillDriversList = [], employeesList = [], missionsList = [] } = this.props;
+    const {
+      loadingFields,
+      origFormState = {},
+      notAvailableMissions = [],
+    } = this.state;
 
+    const {
+      carsList = [],
+      carsIndex = {},
+      waybillDriversList = [],
+      employeesList = [],
+      missionsList = [],
+      appConfig,
+    } = this.props;
+
+    let taxesControl = false;
+    
     const getCarsByStructId = getCars(state.structure_id);
     const getTrailersByStructId = getTrailers(state.structure_id);
 

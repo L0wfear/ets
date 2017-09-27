@@ -9,13 +9,20 @@ import Form from 'components/compositions/Form.jsx';
 
 @connectToStores(['autobase'])
 export default class BatteryManufacturerForm extends Form {
+  handleSubmitWrap = () => this.handleSubmit();
 
   render() {
-    const state = this.props.formState;
-    const errors = this.props.formErrors;
+    const [
+      state,
+      errors,
+    ] = [
+      this.props.formState,
+      this.props.formErrors,
+    ];
+
     const { isPermitted = false } = this.props;
 
-    const IS_CREATING = !!!state.id;
+    const IS_CREATING = !state.id;
 
     let title = 'Изменение записи';
     if (IS_CREATING) title = 'Создание записи';
@@ -42,7 +49,7 @@ export default class BatteryManufacturerForm extends Form {
         </Div>
         <ModalBody />
         <Modal.Footer>
-          <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+          <Button disabled={!this.props.canSave} onClick={this.handleSubmitWrap}>Сохранить</Button>
         </Modal.Footer>
       </Modal>
     );

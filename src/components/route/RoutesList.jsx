@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { autobind } from 'core-decorators';
 import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
 import _ from 'lodash';
 import cx from 'classnames';
@@ -11,7 +10,6 @@ import FilterButton from 'components/ui/table/filter/FilterButton.jsx';
 import RouteInfo from './RouteInfo.jsx';
 import RouteFormWrap from './RouteFormWrap.jsx';
 
-@autobind
 class RoutesList extends Component {
 
   static get propTypes() {

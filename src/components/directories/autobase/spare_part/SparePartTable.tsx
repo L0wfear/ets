@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { get } from 'lodash';
 
 import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
 import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';
@@ -11,8 +10,6 @@ import DateFormatter from 'components/ui/DateFormatter';
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
 export function tableMeta({
-  sparePartGroupList = [],
-  measureUnitList = [],
 } = {}): IDataTableSchema {
   const meta: IDataTableSchema = {
     cols: [
@@ -25,12 +22,11 @@ export function tableMeta({
         },
       },
       {
-        name: 'spare_part_group_id',
+        name: 'group_name',
         displayName: 'Группа',
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: sparePartGroupList.map(({ id, name }) => ({ value: id, label: name })),
         },
       },
       {
@@ -55,7 +51,6 @@ export function tableMeta({
         type: 'string',
         filter: {
           type: 'multiselect',
-          // options: measureUnitList.map(({ id, name }) => ({ value: id, label: name })),
         },
       },
       {
@@ -81,11 +76,7 @@ export function tableMeta({
 }
 
 const Table: React.SFC<any> = props  => {
-  const { measureUnitList = [], sparePartGroupList = [] } = props;
-
   const renderers: ISchemaRenderer = {
-    spare_part_group_id: ({ data }) => <div>{get(sparePartGroupList.find(s => s.id === data), 'name', '')}</div>,
-    measure_unit_id: ({ data }) => <div>{get(measureUnitList.find(s => s.id === data), 'name', '')}</div>,
     supplied_at: ({ data }) => (<DateFormatter date={data} />),
   };
 

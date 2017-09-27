@@ -20,6 +20,7 @@ export default class DashboardPage extends React.Component {
   static get propTypes() {
     return {
       componentsList: PropTypes.arrayOf(PropTypes.object),
+      history: PropTypes.Object,
     };
   }
 
@@ -101,6 +102,10 @@ export default class DashboardPage extends React.Component {
   openSubitemsList(key, clear) {
     this.setState({ itemOpenedKey: clear ? null : key });
   }
+  goToFaxogramm = () => {
+    this.props.history.push('/faxogramms');
+  }
+
   hideFormRule = () => {
     this.props.history.pushState(null, '/dashboard');
   }
@@ -147,7 +152,6 @@ export default class DashboardPage extends React.Component {
       );
     });
     const path = this.props.location.pathname;
-    console.log(this.props);
     return (
       <Div className="ets-page-wrap dashboard-page">
         <ModalRule
@@ -160,7 +164,10 @@ export default class DashboardPage extends React.Component {
             {rows}
           </Col>
           <Col md={3}>
-            <DashboardManagementCard refreshCard={this.refreshCard} />
+            <DashboardManagementCard
+              refreshCard={this.refreshCard}
+              goToFaxogramm={this.goToFaxogramm}
+            />
           </Col>
         </Row>
       </Div>

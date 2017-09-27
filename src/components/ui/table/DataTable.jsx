@@ -55,6 +55,7 @@ export default class DataTable extends React.Component {
       refreshable: PropTypes.bool,
       multiSelection: PropTypes.bool,
       serverPagination: PropTypes.bool,
+      lowerCaseSorting: PropTypes.bool,
       noDataMessage: PropTypes.string,
 
       noFilter: PropTypes.bool,
@@ -101,7 +102,7 @@ export default class DataTable extends React.Component {
       selectField: 'id',
 
       firstUseExternalInitialSort: true,
-      initialSort: false,
+      initialSort: '',
       initialSortAscending: true,
 
       enableSort: true,
@@ -110,6 +111,7 @@ export default class DataTable extends React.Component {
       refreshable: false,
       multiSelection: false,
       serverPagination: false,
+      lowerCaseSorting: false,
       noDataMessage: 'Нет данных',
 
       noFilter: false,
@@ -138,7 +140,7 @@ export default class DataTable extends React.Component {
       globalCheckboxState: false,
       isHierarchical: props.isHierarchical,
       firstUseExternalInitialSort: true,
-      initialSort: false,
+      initialSort: '',
       initialSortAscending: true,
     };
   }
@@ -287,7 +289,32 @@ export default class DataTable extends React.Component {
     });
     event && event.stopPropagation();
   }
+  defaultIinitializeMetadata(tableMetaCols = [], renderers = {}) {
+    return tableMetaCols.reduce((cur, col) => {
+      if (col.display === false) {
+        return cur;
+      }
 
+      const metaObject = {
+        columnName: col.name,
+        displayName: col.customHeaderComponent ? col.customHeaderComponent : col.displayName,
+        sortable: (typeof col.sortable === 'boolean') ? col.sortable : true,
+      };
+      if (col.type === 'string') {
+        const callbackF = (typeof renderers[col.name] === 'function' && renderers[col.name]) || false;
+        metaObject.customComponent = props => this.cutString(callbackF, props);
+      } else if (typeof renderers[col.name] === 'function') {
+        metaObject.customComponent = renderers[col.name];
+      }
+
+      if (typeof col.cssClassName !== 'undefined') {
+        metaObject.cssClassName = col.cssClassName || '';
+      }
+
+      cur.push(metaObject);
+      return cur;
+    }, []);
+  }
   initializeMetadata(tableMetaCols = [], renderers = {}) {
     const { multiSelection, enumerated, rowNumberLabel = '№', rowNumberClassName = 'width30' } = this.props;
     const initialArray = [];
@@ -315,33 +342,9 @@ export default class DataTable extends React.Component {
         customComponent: renderers.rowNumber,
       });
     }
+    initialArray.push(...this.defaultIinitializeMetadata(tableMetaCols, renderers));
 
-    const metadata = tableMetaCols.reduce((cur, col) => {
-      if (col.display === false) {
-        return cur;
-      }
-
-      const metaObject = {
-        columnName: col.name,
-        displayName: col.customHeaderComponent ? col.customHeaderComponent : col.displayName,
-        sortable: (typeof col.sortable === 'boolean') ? col.sortable : true,
-      };
-      if (col.type === 'string') {
-        const callbackF = (typeof renderers[col.name] === 'function' && renderers[col.name]) || false;
-        metaObject.customComponent = props => this.cutString(callbackF, props);
-      } else if (typeof renderers[col.name] === 'function') {
-        metaObject.customComponent = renderers[col.name];
-      }
-
-      if (typeof col.cssClassName !== 'undefined') {
-        metaObject.cssClassName = col.cssClassName || '';
-      }
-
-      cur.push(metaObject);
-      return cur;
-    }, initialArray);
-
-    return metadata;
+    return initialArray;
   }
   cutString = (callback, props) => {
     const newProps = { ...props };
@@ -467,6 +470,22 @@ export default class DataTable extends React.Component {
       el.isSelected = el[selectField] === selected[selectField];
     }
     return el;
+  }
+
+  sortingLoweCase(a, b) {
+    let one = a[this.state.initialSort];
+    let two = b[this.state.initialSort];
+
+    if (typeof one === 'string' && typeof two === 'string') {
+      one = one.toLocaleLowerCase();
+      two = two.toLocaleLowerCase();
+    }
+    if (one > two) {
+      return 1 * Math.pow(-1, this.state.initialSortAscending + 1);
+    } else if (one < two) {
+      return -1 * Math.pow(-1, this.state.initialSortAscending + 1);
+    }
+    return 0;
   }
 
   processHighlighted(highlight, el) {

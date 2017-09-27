@@ -6,6 +6,7 @@ export default class LoadingStore extends Store {
     super();
 
     const autoBaseActions = flux.getActions('autobase');
+    const repairActions = flux.getActions('repair');
     const geoObjectsActions = flux.getActions('geoObjects');
     const waybillsActions = flux.getActions('waybills');
     const fuelRateActions = flux.getActions('fuelRates');
@@ -32,6 +33,14 @@ export default class LoadingStore extends Store {
       autoBaseActions.techMaintOrder,
       autoBaseActions.techMaint,
       autoBaseActions.tire,
+
+      repairActions.getRepairListByType,
+      repairActions.contractor,
+      repairActions.removeСontractor,
+      repairActions.programRegistry,
+      repairActions.removeProgramRegistry,
+      repairActions.stateProgram,
+      repairActions.removeStateProgram,
 
       waybillsActions.deleteWaybill,
       waybillsActions.createWaybill,
@@ -63,6 +72,8 @@ export default class LoadingStore extends Store {
       objectsActions.getUserActionLog,
       objectsActions.getMedicalStats,
       objectsActions.getOrganizations,
+      objectsActions.createMaintenanceWork,
+      objectsActions.updateMaintenanceWork,
 
       employeesActions.getEmployees,
       employeesActions.updateEmployee,
@@ -120,8 +131,6 @@ export default class LoadingStore extends Store {
       technicalOperationsActions.getTechnicalOperationsByCarId,
 
       companyStructureActions.getCompanyStructure,
-      companyStructureActions.getLinearCompanyStructure,
-      companyStructureActions.getLinearCompanyStructureForUser,
       companyStructureActions.updateCompanyElement,
       companyStructureActions.createCompanyElement,
       companyStructureActions.deleteCompanyElement,
@@ -151,7 +160,7 @@ export default class LoadingStore extends Store {
 
     this.state = {
       operationsCount: 0,
-      lazyOperationsCount: 0
+      lazyOperationsCount: 0,
     };
   }
 

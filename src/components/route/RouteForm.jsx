@@ -122,7 +122,7 @@ export default class RouteForm extends Form {
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
-    console.log(state)
+
     const { ROUTE_TYPE_OPTIONS, technicalOperationsList = [] } = this.state;
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
 

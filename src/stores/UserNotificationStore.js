@@ -53,12 +53,37 @@ export default class UserNotificationStore extends Store {
     const userNotificationActions = flux.getActions('userNotifications');
 
     this.register(userNotificationActions.getNotifications, this.handleGetNotifications);
-
+    this.register(userNotificationActions.getUserNotificationInfo, this.handleGetUserNotificationInfo);
+    this.register(userNotificationActions.changesUserNotificationsCount, this.handleChangesUserNotificationsCount)
     this.state = {
       userNotificationList: [],
     };
   }
   handleGetNotifications({ result }) {
-    this.setState({ userNotificationList: result.rows });
+    this.setState({ userNotificationList: result.rows, countNotReadNum: result.rows });
+  }
+
+  handleGetUserNotificationInfo({ result, setNewCount }) {
+    const { rows: { not_read_num = 0 } } = result;
+    this.setState({
+      countNotReadNum: not_read_num,
+      setNewCount,
+    });
+    setNewCount(not_read_num);
+  }
+
+  handleChangesUserNotificationsCount({ count = 0 }) {
+    const { countNotReadNum, setNewCount } = this.state;
+    const newCountNotReadNum = this.changeNotification(count, countNotReadNum);
+    setNewCount(newCountNotReadNum);
+
+    this.setState({
+      countNotReadNum: newCountNotReadNum,
+    });
+  }
+
+  changeNotification(count, countNotReadNum) {
+    if (count === 'is_read_all') return 0;
+    return countNotReadNum + count;
   }
 }

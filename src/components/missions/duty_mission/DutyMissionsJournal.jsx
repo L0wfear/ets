@@ -63,7 +63,6 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     flux.getActions('missions').getMissionSources();
     flux.getActions('missions').getCarDutyMissions();
     flux.getActions('employees').getForemans();
-    // flux.getActions('companyStructure').getLinearCompanyStructure();
   }
 
   async refreshList(state = this.state) {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
@@ -21,9 +21,21 @@ export default class FuelRateForm extends Form {
   }
 
   render() {
-    const state = this.props.formState;
-    const errors = this.props.formErrors;
-    const { modelsList = [], operations = [], specialModelsList = [], isPermitted = false } = this.props;
+    const [
+      state = {},
+      errors = {},
+    ] = [
+      this.props.formState,
+      this.props.formErrors,
+    ];
+
+    const {
+      modelsList = [],
+      operations = [],
+      specialModelsList = [],
+      isPermitted = false,
+    } = this.props;
+
     const MODELS = modelsList.map(m => ({ value: m.id, label: m.title }));
     const SPECIALMODELS = specialModelsList.map(m => ({ value: m.id, label: m.name }));
     const OPERATIONS = operations

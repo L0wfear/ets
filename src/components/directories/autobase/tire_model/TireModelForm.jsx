@@ -50,6 +50,7 @@ export default class TireModelForm extends Form {
                 disabled={!isPermitted}
                 onChange={this.handleChange}
                 boundKeys={['tire_manufacturer_id']}
+                clearable={false}
               />
             </Col>
           </Row>

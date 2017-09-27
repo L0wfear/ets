@@ -242,7 +242,11 @@ export class MissionForm extends Form {
     let title = `Задание № ${state.number || ''} ${state.status === 'fail' ? '(Не выполнено)' : ''}`;
 
     if (IS_CREATING) {
-      title = 'Создание задания';
+      title = (
+        <div>
+          <span>Создание задания</span>
+          <span style={{ marginLeft: 10, color: 'red' }}>Данное задание не будет учитываться по факсограмме</span>
+        </div>);
     }
 
 
@@ -328,6 +332,7 @@ export class MissionForm extends Form {
                 value={state.mission_source_id}
                 onChange={this.handleChange.bind(this, 'mission_source_id')}
               />
+              { IS_CREATING && <span style={{ opacity: 0.5 }}>{'Задания на основе факсограмм необходимо создавать во вкладке "НСИ"-"Реестр факсограмм".'}</span> }
             </Col>
             {state.order_number != null && <Col md={2}>
               <Field

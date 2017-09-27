@@ -2,7 +2,7 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'constants/autobase';
 import ElementsList from 'components/ElementsList.jsx';
 import InsurancePolicyFormWrap from './InsurancePolicyFormWrap.jsx';
-import InsurancePolicyTable, { tableMeta } from './InsurancePolicyTable.tsx';
+import InsurancePolicyTable from './InsurancePolicyTable.tsx';
 
 @connectToStores(['autobase', 'objects', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.insurancePolicy}` })
@@ -11,7 +11,6 @@ import InsurancePolicyTable, { tableMeta } from './InsurancePolicyTable.tsx';
   listName: 'insurancePolicyList',
   tableComponent: InsurancePolicyTable,
   formComponent: InsurancePolicyFormWrap,
-  formMeta: tableMeta(),
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 export default class InsurancePolicyList extends ElementsList {
@@ -32,6 +31,5 @@ export default class InsurancePolicyList extends ElementsList {
       flux.getActions('autobase').getAutobaseListByType('insurancePolicy', { car_id });
       this.exportPayload = { car_id };
     }
-    flux.getActions('autobase').getAutobaseListByType('insuranceType');
   }
 }

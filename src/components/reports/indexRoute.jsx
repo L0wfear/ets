@@ -15,7 +15,7 @@ const reportRoutes = (props) => {
       <Route path="fuel-consumption-report" component={reports.fuelConsumption} onEnter={requireAuth} />
       <Route path="fuel-consumption-summary-report" component={reports.fuelConsumptionSummary} onEnter={requireAuth} />
       <Route path="analytics" component={reports.analytics} onEnter={requireAuth} />
-      <Route path="car-usage-report" component={reports.carUsage} onEnter={requireAuth} />
+      <Route path="car-usage-report-with-track" component={reports.carUsageReportWithTrack} onEnter={requireAuth} />
       <Route path="track-events-reports" component={reports.trackEvents} onEnter={requireAuth} />
       <Route path="brigade-efficiency-report" component={reports.brigadeEfficiency} onEnter={requireAuth} />
       <Route path="employee-efficiency-report" component={reports.employeeEfficiency} onEnter={requireAuth} />

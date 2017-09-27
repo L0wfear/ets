@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Button, ButtonToolbar } from 'react-bootstrap';
-import map from 'lodash/map';
 
 import { connectToStores, staticProps } from 'utils/decorators';
+import { isEmpty } from 'utils/functions';
 import CheckableElementsList from 'components/CheckableElementsList';
 import UserNotificationFormWrap from './UserNotificationFormWrap';
 import UserNotificationTable from './UserNotificationTable';
@@ -33,19 +33,33 @@ export default class UserNotificationList extends CheckableElementsList {
     .catch(() => {});
   }
   handleMarkAsRead = (checkedItems) => {
-    this.context.flux.getActions('userNotifications').markAsRead(checkedItems);
+    this.context.flux.getActions('userNotifications').markAsRead(
+      checkedItems,
+    );
   }
   /**
    * @override
    */
   getButtons() {
+    const { userNotificationList = [] } = this.props;
+    const {
+      checkedElements = {},
+    } = this.state;
+
     const baseButtons = super.getButtons();
-    const checkedItems = map(this.state.checkedElements, (value, key) => parseInt(key, 10));
+    const checkedItems = Object.entries(checkedElements).reduce((obj, [key, el]) => {
+      if (!el.is_read) {
+        obj.push(parseInt(key, 10));
+      }
+
+      return obj;
+    }, []);
+    const allNotIsRead = !isEmpty(checkedItems) && !userNotificationList.some(oneN => !oneN.is_read);
 
     const buttons = [
       <ButtonToolbar key={baseButtons.length}>
         {checkedItems.length > 0 && <Button onClick={this.handleMarkAsRead.bind(null, checkedItems)}>Отметить как прочитанное</Button>}
-        <Button onClick={this.handleMarkAllAsRead}>Отметить все как прочитанные</Button>
+        <Button disabled={allNotIsRead} onClick={this.handleMarkAllAsRead}>Отметить все как прочитанные</Button>
       </ButtonToolbar>,
       ...baseButtons,
     ];

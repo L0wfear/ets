@@ -17,14 +17,22 @@ export default class BaseBatteryForm extends Form {
   state = {
     canSave: true,
   };
+  componentDidMount() {
+    const { flux } = this.context;
+
+    flux.getActions('autobase').getAutobaseListByType('batteryBrand', {}, { makeOptions: true, selectListMapper: el => ({ value: el.id, label: el.name, manufacturer_id: el.manufacturer_id }) });
+  }
+  handleSubmitWrap = () => this.handleSubmit();
 
   handleBatteryToCarValidity = ({ isValidInput }) => this.setState({ canSave: isValidInput })
 
   render() {
     const {
+      AutobaseOptions: {
+        batteryBrandOptions = [],
+      },
       batteryBrandList = [],
       isPermitted = false,
-      cols = [],
     } = this.props;
 
     const [
@@ -32,9 +40,6 @@ export default class BaseBatteryForm extends Form {
       errors = {},
     ] = [this.props.formState, this.props.formErrors];
 
-    const fields = cols.reduce((obj, val) => Object.assign(obj, { [val.name]: val }), {});
-
-    const BATTERY_BRAND_OPTION = batteryBrandList.map(el => ({ value: el.id, label: el.name, manufacturer_id: el.manufacturer_id }));
 
     const IS_CREATING = !state.id;
 
@@ -51,25 +56,26 @@ export default class BaseBatteryForm extends Form {
             <Col md={12}>
               <ExtField
                 type={'select'}
-                label={fields.brand_name.displayName}
+                label={'Марка аккумулятора'}
                 value={state.brand_id}
                 error={errors.brand_id}
-                options={BATTERY_BRAND_OPTION}
+                options={batteryBrandOptions}
                 emptyValue={null}
                 onChange={this.handleChange}
                 boundKeys={['brand_id']}
                 disabled={!isPermitted}
+                clearable={false}
               />
               <ExtField
                 type={'string'}
-                label={fields.manufacturer_name.displayName}
+                label={'Изготовитель'}
                 value={get(batteryBrandList.find(s => s.id === state.brand_id), 'manufacturer_name', '')}
                 emptyValue={null}
                 disabled
               />
               <ExtField
-                type={fields.serial_number.type}
-                label={fields.serial_number.displayName}
+                type={'string'}
+                label={'Серийный номер'}
                 value={state.serial_number}
                 error={errors.serial_number}
                 onChange={this.handleChange}
@@ -77,8 +83,8 @@ export default class BaseBatteryForm extends Form {
                 disabled={!isPermitted}
               />
               <ExtField
-                type={fields.lifetime_months.type}
-                label={`${fields.lifetime_months.displayName}, мес.`}
+                type={'number'}
+                label={'Срок службы, мес.'}
                 value={state.lifetime_months}
                 error={errors.lifetime_months}
                 onChange={this.handleChange}
@@ -87,7 +93,7 @@ export default class BaseBatteryForm extends Form {
               />
               <ExtField
                 type={'date'}
-                label={fields.released_at.displayName}
+                label={'Дата выпуска'}
                 date={state.released_at}
                 time={false}
                 error={errors.released_at}
@@ -120,7 +126,7 @@ export default class BaseBatteryForm extends Form {
         </ExtDiv>
         <ModalBody />
         <Modal.Footer>
-          <Button disabled={!this.props.canSave || !this.state.canSave} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+          <Button disabled={!this.props.canSave || !this.state.canSave} onClick={this.handleSubmitWrap}>Сохранить</Button>
         </Modal.Footer>
       </Modal>
     );

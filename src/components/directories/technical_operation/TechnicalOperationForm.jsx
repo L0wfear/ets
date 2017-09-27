@@ -30,7 +30,6 @@ export default class TechnicalOperationForm extends Form {
   componentDidMount() {
     const { flux } = this.context;
     flux.getActions('objects').getWorkKinds();
-    flux.getActions('objects').getTypes();
     flux.getActions('technicalOperation').getTechnicalOperationsObjects();
     flux.getActions('technicalOperation').getTechnicalOperationsTypes();
   }

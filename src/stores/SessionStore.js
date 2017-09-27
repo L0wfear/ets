@@ -1,6 +1,6 @@
 import { Store } from 'flummox';
 
-import { autobase, userNotification, getFullAccess } from 'api/mocks/permissions';
+import { autobase, repair, userNotification, getFullAccess } from 'api/mocks/permissions';
 import { clear } from 'utils/cache';
 import { setUserContext } from 'config/raven';
 import createFio from '../utils/create-fio.js';
@@ -68,6 +68,7 @@ export default class SessionStore extends Store {
     currentUser.permissions = [
       ...currentUser.permissions,
       ...autobase,
+      ...repair,
       ...userNotification,
       ...getSpecificPermissions(currentUser),
     ];
@@ -123,5 +124,4 @@ export default class SessionStore extends Store {
 
     return permissionName.reduce((bool, permission) => bool && !!permissionsReduce[permission], true);
   }
-
 }

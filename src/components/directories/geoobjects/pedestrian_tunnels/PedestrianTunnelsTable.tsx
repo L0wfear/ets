@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
+import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';
 import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 
 import DataTableComponent from 'components/ui/table/DataTable';
@@ -49,14 +50,21 @@ export function tableMeta({
   return meta;
 }
 
-export default (props) => {
+const Table: React.SFC<any> = props  => {
+  const renderers: ISchemaRenderer = {
+    location: ({ data }) => <span style={{ whiteSpace: 'pre-wrap' }}>{data}</span>,
+  };
+
   return (
     <DataTable
       title="Пешеходные тоннели"
       results={props.data}
+      renderers={renderers}
       enumerated
       tableMeta={tableMeta(props)}
       {...props}
     />
   );
 };
+
+export default Table;

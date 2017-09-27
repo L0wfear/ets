@@ -44,7 +44,6 @@ class CarForm extends Form {
 
     this.state = {
       type_image_name: null,
-      companyStructureList: [],
     };
   }
   componentWillReceiveProps(props) {
@@ -68,13 +67,15 @@ class CarForm extends Form {
       this.props.handleTabSelect(this.props.location.query.active_tab);
     }
     const nextState = this.props.formState;
+    const linear = true;
+    const descendants_by_user = true;
 
     const payload = {
       car_id: nextState.asuods_id,
     };
 
     const { flux } = this.context;
-    const companyStructureList = await flux.getActions('companyStructure').getLinearCompanyStructureForUser();
+    flux.getActions('companyStructure').getCompanyStructure(linear, descendants_by_user);
     flux.getActions('objects').getCountry();
     flux.getActions('autobase').getAutobaseListByType('engineType');
     flux.getActions('autobase').getAutobaseListByType('propulsionType');
@@ -82,8 +83,6 @@ class CarForm extends Form {
     flux.getActions('autobase').getAutobaseListByType('actualBatteriesOnCar', payload);
     flux.getActions('autobase').getAutobaseListByType('actualTiresOnCar', payload);
     flux.getActions('autobase').getAutobaseListByType('techMaint', payload);
-
-    this.setState({ companyStructureList });
   }
   handleSave = () => {
     if (Object.keys(this.props.location.query).length > 0) {
@@ -103,6 +102,7 @@ class CarForm extends Form {
       isPermitted = false,
       techMaintListExtra = {},
       tabKey,
+      companyStructureLinearForUserList = [],
       countryOptions = [],
       engineTypeList = [],
       propulsionTypeList = [],
@@ -110,12 +110,12 @@ class CarForm extends Form {
       typesList = [],
     } = this.props;
 
-    const { companyStructureList = [] } = this.state;
-    const COMPANY_ELEMENTS = companyStructureList.map(defaultSelectListMapper);
+    const COMPANY_ELEMENTS = companyStructureLinearForUserList.map(defaultSelectListMapper);
     const engineTypeOptions = engineTypeList.map(defaultSelectListMapper);
     const propulsionTypeOptions = propulsionTypeList.map(defaultSelectListMapper);
     const carCategoryOptions = carCategoryList.map(defaultSelectListMapper);
     const typesOptions = typesList.map(el => ({ value: el.asuods_id, label: el.short_name }));
+    
     return (
       <Modal {...this.props} bsSize="lg" backdrop="static">
         <Modal.Header closeButton>
@@ -185,7 +185,7 @@ class CarForm extends Form {
               propulsionTypeOptions={propulsionTypeOptions}
               carCategoryOptions={carCategoryOptions}
               typesOptions={typesOptions}
-            />
+              />
           </TabContent>
 
           <TabContent eventKey={CAR_TAB_INDEX.battery} tabKey={tabKey}>
@@ -233,11 +233,11 @@ class CarForm extends Form {
           <TabContent eventKey={CAR_TAB_INDEX.tech_inspection} tabKey={tabKey}>
             <TechInspectionList
               car_id={state.asuods_id}
-            />
+             />
           </TabContent>
         </ModalBody>
 
-        <Modal.Footer hidden={tabKey !== CAR_TAB_INDEX.info && !tabKey.includes('1.')}>
+        <Modal.Footer>
           <Button disabled={!this.props.canSave} onClick={this.handleSave}>Сохранить</Button>
         </Modal.Footer>
 

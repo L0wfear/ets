@@ -193,8 +193,13 @@ export default class CarInfo extends Component {
   toggleTrackPlaying() {
     const { marker } = this.props.car;
     this.state.trackingMode && this.toggleCarTracking();
-    marker.togglePlay();
-    this.setState({ trackPaused: !this.state.trackPaused });
+    const success = marker.togglePlay();
+    if (success) {
+      this.setState({ trackPaused: !this.state.trackPaused });
+    } else {
+      this.stopTrackPlaying();
+      global.NOTIFICATION_SYSTEM.notify('Информация о треке не загружена', 'warning');
+    }
   }
 
   stopTrackPlaying() {
@@ -312,7 +317,7 @@ export default class CarInfo extends Component {
         </Panel>
         <Panel title="Проигрывание трека">
           <div className="track-player">
-            <Button onClick={this.toggleTrackPlaying}><Glyphicon glyph={this.state.trackPaused ? 'play' : 'pause'} /></Button>
+            <Button disabled={!isTrackLoaded} onClick={this.toggleTrackPlaying}><Glyphicon glyph={this.state.trackPaused ? 'play' : 'pause'} /></Button>
             <Button disabled={this.state.trackPaused} onClick={this.stopTrackPlaying}><Glyphicon glyph={'stop'} /></Button>
           </div>
 

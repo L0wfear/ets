@@ -17,6 +17,7 @@ export default class MasterManagementCard extends React.Component {
     return {
       hidden: PropTypes.bool,
       refreshCard: PropTypes.func.isRequired,
+      goToFaxogramm: PropTypes.func.isRequired,
     };
   }
 
@@ -56,9 +57,14 @@ export default class MasterManagementCard extends React.Component {
               Создать путевой лист
             </Button>
           </Div>
+          <Div permissions={['faxogramm.list']} className="dashboard-btn-wrapper container-button-create-cz">
+            <Button bsSize="small" onClick={this.props.goToFaxogramm}>
+              Создать централизованное задание
+            </Button>
+          </Div>
           <Div permissions={['mission.create']} className="dashboard-btn-wrapper">
             <Button bsSize="small" onClick={() => this.setState({ showMissionForm: true })}>
-              Создать задание
+              Создать децентрализованное задание
             </Button>
           </Div>
           <Div permissions={['duty_mission.create']} className="dashboard-btn-wrapper">

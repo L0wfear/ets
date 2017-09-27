@@ -15,18 +15,24 @@ import { connectToStores } from 'utils/decorators';
 @connectToStores(['autobase', 'employees', 'objects'])
 export default class BaseRoadAccidentFrom extends Form {
   componentWillMount() {
+    const { flux } = this.context;
     const { car_id = -1 } = this.props;
 
     if (car_id >= 0) {
       this.handleChange('car_id', car_id);
     }
+    flux.getActions('employees').getDrivers();
+    flux.getActions('autobase').getAutobaseListByType('roadAccidentCause', {}, { makeOptions: true, selectListMapper: defaultSelectListMapper });
   }
+  handleSubmitWrap = (...arg) => this.handleSubmit(...arg);
 
   render() {
     const {
       isPermitted = false,
       cols = [],
-      roadAccidentCauseList = [],
+      AutobaseOptions: {
+        roadAccidentCauseOptions = [],
+      },
       driversList = [],
     } = this.props;
 
@@ -37,7 +43,6 @@ export default class BaseRoadAccidentFrom extends Form {
 
     const fields = cols.reduce((obj, val) => Object.assign(obj, { [val.key]: val }), {});
 
-    const ROAD_ACCIDENT_CAUSE_OPTION = roadAccidentCauseList.map(defaultSelectListMapper);
     const DRIVER_LIST_OPTION = driversList.map(el => ({ value: el.id, label: `${el.last_name} ${el.first_name[0]}.${el.middle_name ? el.middle_name[0] : ''}. | ${el.drivers_emplds}` }));
 
     const IS_CREATING = !state.id;
@@ -72,6 +77,7 @@ export default class BaseRoadAccidentFrom extends Form {
                 emptyValue={null}
                 onChange={this.handleChange}
                 boundKeys={['driver_id']}
+                clearable={false}
                 disabled={!isPermitted}
               />
               <ExtField
@@ -79,10 +85,11 @@ export default class BaseRoadAccidentFrom extends Form {
                 label={fields.cause_name.title}
                 value={state.cause_id}
                 error={errors.cause_id}
-                options={ROAD_ACCIDENT_CAUSE_OPTION}
+                options={roadAccidentCauseOptions}
                 emptyValue={null}
                 onChange={this.handleChange}
                 boundKeys={['cause_id']}
+                clearable={false}
                 disabled={!isPermitted}
               />
               <ExtField
@@ -136,7 +143,7 @@ export default class BaseRoadAccidentFrom extends Form {
         </ExtDiv>
         <ModalBody />
         <Modal.Footer>
-          <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+          <Button disabled={!this.props.canSave} onClick={this.handleSubmitWrap}>Сохранить</Button>
         </Modal.Footer>
       </Modal>
     );

@@ -1,7 +1,7 @@
 import { getStatusById } from 'constants/statuses';
 import { swapCoords } from 'utils/geo';
 import { getPointStyle } from 'utils/ol';
-import _ from 'lodash';
+
 import {
   SMALL_ICON_RADIUS,
   LARGE_ICON_RADIUS,
@@ -54,9 +54,12 @@ export default class CarMarker extends Marker {
   }
 
   animate() {
+    const { points = [] } = this.track;
+    if (points === null || points.length === 0) return false;
+
     this.animating = true;
     this.store.pauseRendering();
-    if (this.new) this.animatePoints = _(this.track.points).map(t => ({ coords: t.coords_msk, speed: t.speed_avg, time: t.timestamp })).value();
+    if (this.new) this.animatePoints = points.map(t => ({ coords: t.coords_msk, speed: t.speed_avg, time: t.timestamp }));
     this.new = false;
     this.animatePoints.splice(0, this.currentIndex);
     // НЕ УДАЛЯТЬ
@@ -74,7 +77,7 @@ export default class CarMarker extends Marker {
     // TODO сделать константный лейер для карты, а то будет каждый раз создаваться
 
     this.map.addLayer(this.vectorLayer);
-
+    
     const map = this.map;
     const coords = this.animatePoints[0].coords;
     const view = map.getView();
@@ -96,6 +99,7 @@ export default class CarMarker extends Marker {
         this.map.render();
       }
     }, 1500);
+    return true;
   }
 
   stopAnimation() {
@@ -126,11 +130,10 @@ export default class CarMarker extends Marker {
       });
       pausedMarker.setStyle(getPointStyle('black', 7));
       this.vectorLayer.getSource().addFeature(pausedMarker);
-    } else {
-      if (this.vectorLayer) this.map.removeLayer(this.vectorLayer);
-
-      this.animate();
+      return true;
     }
+    if (this.vectorLayer) this.map.removeLayer(this.vectorLayer);
+    return this.animate();
   }
 
   animateToTrack(event) {

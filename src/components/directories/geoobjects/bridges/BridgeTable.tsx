@@ -30,11 +30,9 @@ export function tableMeta({
       {
         name: 'location',
         displayName: 'Местоположение объекта',
-        display: false,
         type: 'string',
         filter: false,
       },
-
       {
         name: 'crossing',
         displayName: 'Пересечение',

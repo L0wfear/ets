@@ -84,6 +84,7 @@ export default class TechMaintOrderForm extends Form {
                 disabled={!isPermitted}
                 onChange={this.handleTechMaintTypeChange}
                 boundKeys={['tech_maintenance_type_id']}
+                clearable={false}
               />
             </Col>
             <Col md={12}>
@@ -95,6 +96,7 @@ export default class TechMaintOrderForm extends Form {
                 error={errors.measure_unit_run_id}
                 disabled={!isPermitted || tech_maintenance_type_id === ''}
                 onChange={this.handleChange}
+                clearable={false}
                 boundKeys={['measure_unit_run_id']}
               />
             </Col>
@@ -108,6 +110,7 @@ export default class TechMaintOrderForm extends Form {
                   error={errors.sequence}
                   disabled={!isPermitted}
                   onChange={this.handleChange}
+                  clearable={false}
                   boundKeys={['sequence']}
                 />
               </ExtDiv>
@@ -131,6 +134,7 @@ export default class TechMaintOrderForm extends Form {
                 value={state.car_model_id}
                 error={errors.car_model_id}
                 disabled={!isPermitted}
+                clearable={false}
                 onChange={this.handleChange}
                 boundKeys={['car_model_id']}
               />

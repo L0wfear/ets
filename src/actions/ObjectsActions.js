@@ -27,9 +27,6 @@ import {
   SensorTypeService,
 } from 'api/nsi';
 
-function getTypes(payload = {}, serviceName = 'TypesService') {
-  return TypesService.get(payload).then(r => ({ result: r.result.rows }));
-}
 
 function getMaterialConsumptionRates(payload = {}) {
   return MaterialConsumptionRateService.get(payload).then(r => ({ result: r.result.rows }));
@@ -47,9 +44,9 @@ export default class ObjectsActions extends Actions {
     return CarService.get(payload).then(r => ({ result: r.result.rows }));
   }
 
-  getModels(special_model_id) {
+  async getModels(special_model_id) {
     const payload = special_model_id ? { special_model_id } : null;
-    return ModelsService.get(payload);
+    return await ModelsService.get(payload);
   }
 
   getSpecialModels() {
@@ -60,8 +57,8 @@ export default class ObjectsActions extends Actions {
     return CustomersService.get();
   }
 
-  getTypes() {
-    return getTypes();
+  async getTypes(payload = {}) {
+    return await TypesService.get(payload);
   }
 
   getSensorTypes() {
@@ -122,12 +119,12 @@ export default class ObjectsActions extends Actions {
   }
 
   createMaterialConsumptionRate(formState) {
-    const payload = _.clone(formState);
+    const payload = { ...formState };
     return MaterialConsumptionRateService.post(payload, getMaterialConsumptionRates, 'json');
   }
 
   updateMaterialConsumptionRate(formState) {
-    const payload = _.clone(formState);
+    const payload = { ...formState };
     return MaterialConsumptionRateService.path(formState.id).put(payload, getMaterialConsumptionRates, 'json');
   }
 
@@ -144,12 +141,12 @@ export default class ObjectsActions extends Actions {
   }
 
   createMaintenanceWork(formState) {
-    const payload = _.clone(formState);
+    const payload = { ...formState };
     return MaintenanceWorkService.post(payload, this.getMaintenanceWork, 'json');
   }
 
   updateMaintenanceWork(formState) {
-    const payload = _.clone(formState);
+    const payload = { ...formState };
     return MaintenanceWorkService.path(formState.id).put(payload, this.getMaintenanceWork, 'json');
   }
 
@@ -163,14 +160,18 @@ export default class ObjectsActions extends Actions {
   }
 
   createCleaningRate(type, formState) {
-    const payload = _.clone(formState);
-    payload.type = type;
+    const payload = {
+      ...formState,
+      type,
+    };
     return CleaningRateService.post(payload, this.getCleaningRate.bind(this, type), 'json');
   }
 
   updateCleaningRate(type, formState) {
-    const payload = _.clone(formState);
-    payload.type = type;
+    const payload = {
+      ...formState,
+      type,
+    };
     return CleaningRateService.path(formState.id).put(payload, this.getCleaningRate.bind(this, type), 'json');
   }
 
@@ -184,14 +185,18 @@ export default class ObjectsActions extends Actions {
   }
 
   createMaintenanceRate(type, formState) {
-    const payload = _.clone(formState);
-    payload.type = type;
+    const payload = {
+      ...formState,
+      type,
+    };
     return MaintenanceRateService.post(payload, this.getMaintenanceRate.bind(this, type), 'json');
   }
 
   updateMaintenanceRate(type, formState) {
-    const payload = _.clone(formState);
-    payload.type = type;
+    const payload = {
+      ...formState,
+      type,
+    };
     return MaintenanceRateService.path(formState.id).put(payload, this.getMaintenanceRate.bind(this, type), 'json');
   }
 
@@ -215,15 +220,13 @@ export default class ObjectsActions extends Actions {
     return MedicalStatsService.get(payload);
   }
 
-  async getCountry(query) {
+  getCountry(query = false) {
     const payload = {};
-    if (!!query) payload.query = query;
+    if (query) {
+      payload.query = query;
+    }
 
-    const response = await Country.get(payload);
-
-    return {
-      data: response.result.rows,
-    };
+    return Country.get(payload);
   }
 
 }

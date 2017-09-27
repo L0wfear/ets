@@ -38,7 +38,7 @@ function StringField(props) {
 }
 
 function TextAreaField(props) {
-  const { error, label = '', readOnly = false, value, hidden, rows = 5, textAreaStyle = {} } = props;
+  const { error, label = '', readOnly = false, disabled = false, value, hidden, rows = 5, textAreaStyle = {} } = props;
 
   const wrapperClassName = cx({
     'textarea-field': true,
@@ -52,10 +52,10 @@ function TextAreaField(props) {
         style={textAreaStyle}
         className="form-control form-group"
         rows={rows}
-        disabled={readOnly}
+        disabled={readOnly || disabled}
         onChange={props.onChange}
         value={value}
-      >{value}</textarea>
+      />
       <Div hidden={!error} className="error">{error}</Div>
     </Div>
   );

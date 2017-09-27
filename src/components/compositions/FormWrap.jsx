@@ -51,10 +51,11 @@ export default class FormWrap extends Component {
         element = !isEmpty(this.defaultElement) ? _.cloneDeep(this.defaultElement) : {};
       }
       const formErrors = this.validate(element, {});
+
       this.setState({
         formState: element,
         formErrors,
-        canSave: !_.filter(formErrors).length,
+        canSave: Object.values(formErrors).reduce((boolean, oneError) => boolean && !oneError, true),
       });
     }
     this.inheritedComponentWillReceiveProps(props);
@@ -64,9 +65,11 @@ export default class FormWrap extends Component {
 
   validate(formState, errors) {
     if (typeof this.schema === 'undefined') return errors;
-    const formErrors = _.clone(errors);
+
+    const formErrors = { ...errors };
     const schema = this.schema;
-    _.each(schema.properties, (prop) => {
+
+    schema.properties.forEach((prop) => {
       formErrors[prop.key] = validateField(prop, formState[prop.key], formState, this.schema);
     });
 
@@ -83,7 +86,8 @@ export default class FormWrap extends Component {
     formState[field] = value;
 
     formErrors = this.validate(formState, formErrors);
-    newState.canSave = _(formErrors).map(v => !!v).filter(ev => ev === true).value().length === 0;
+
+    newState.canSave = Object.values(formErrors).reduce((boolean, oneError) => boolean && !oneError, true);
 
     newState.formState = formState;
     newState.formErrors = formErrors;

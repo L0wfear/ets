@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import _ from 'lodash';
+
+
 import Table from 'components/ui/table/DataTable.jsx';
 import { Button, Row, Col } from 'react-bootstrap';
 import { connectToStores, FluxContext } from 'utils/decorators';
-import _ from 'lodash';
-import Div from 'components/ui/Div.jsx';
-import Field from 'components/ui/Field.jsx';
+import { ExtDiv } from 'components/ui/Div.jsx';
+import { ExtField } from 'components/ui/Field.jsx';
 import PolyMap from '../map/PolyMap.jsx';
 
 function getStatusLabel(s) {
@@ -25,6 +27,26 @@ function getStatusLabel(s) {
 @connectToStores(['reports', 'session', 'objects', 'routes', 'geoObjects'])
 @FluxContext
 export default class CoverageReport extends Component {
+  static get propTypes() {
+    return {
+      companyStructureLinearForUserList: PropTypes.array,
+      odhsList: PropTypes.array,
+      dtsList: PropTypes.array,
+      odhPolys: PropTypes.array,
+      dtPolys: PropTypes.array,
+      currentUser: PropTypes.object,
+    };
+  }
+
+  static get defaultProps() {
+    return {
+      companyStructureLinearForUserList: [],
+      odhsList: [],
+      dtsList: [],
+      odhPolys: [],
+      dtPolys: [],
+    };
+  }
 
   constructor(props) {
     super(props);
@@ -33,30 +55,18 @@ export default class CoverageReport extends Component {
       structure_id: null,
       geozone_type: 'ODH',
       coverageReport: null,
-      companyStructureList: [],
       checkedMissions: {},
     };
   }
 
-  handleChange(field, value) {
-    this.setState({ [field]: value, coverageReport: null });
+  componentDidMount() {
+    const linear = true;
+    const descendants_by_user = true;
+
+    this.context.flux.getActions('companyStructure').getCompanyStructure(linear, descendants_by_user);
   }
 
-  async handleSubmit() {
-    const { flux } = this.context;
-    let coverageReport = await flux.getActions('reports').getCoverageReport(this.state);
-    await this.state.geozone_type === 'ODH' ? flux.getActions('geoObjects').getODHs() : flux.getActions('geoObjects').getDTs();
-    await flux.getActions('geoObjects').getGeozones();
-    coverageReport = coverageReport.result.map((item, i) => { item.id = i; return item; });
-    this.setState({ coverageReport, checkedMissions: _.extend({}, coverageReport) });
-  }
-
-  async componentDidMount() {
-    const companyStructureList = await this.context.flux.getActions('companyStructure').getLinearCompanyStructureForUser();
-    this.setState({ companyStructureList });
-  }
-
-  onFeatureClick(feature, ev, map) {
+  onFeatureClick = (feature, ev, map) => {
     const { id, name, state } = feature.getProperties();
     if (state === 2) return;
     const mission = this.state.coverageReport.find(r => r.missions.find(m => m.objects.indexOf(+id) > -1)).missions.find(m => m.objects.indexOf(+id) > -1);
@@ -68,7 +78,10 @@ export default class CoverageReport extends Component {
     }
   }
 
-  checkMission(id, state) {
+  onCheck() {
+  }
+
+  checkMission = (id, state) => {
     if (typeof id === 'number') {
       const missions = _.cloneDeep(this.state.checkedMissions);
       if (state) {
@@ -85,14 +98,33 @@ export default class CoverageReport extends Component {
     }
   }
 
-  onCheck() {
+  handleChange(field, value) {
+    this.setState({ [field]: value, coverageReport: null });
+  }
 
+  async handleSubmit() {
+    const { flux } = this.context;
+    const geozone_type = this.state.geozone_type === 'ODH' ? 'ODHs' : 'DT';
+
+    let coverageReport = await flux.getActions('reports').getCoverageReport(this.state);
+    await flux.getActions('geoObjects')[`get${geozone_type}`]();
+    await flux.getActions('geoObjects').getGeozones();
+    coverageReport = coverageReport.result.map((item, i) => { item.id = i; return item; });
+    this.setState({ coverageReport, checkedMissions: _.extend({}, coverageReport) });
   }
 
   render() {
-    const COMPANY_ELEMENTS = this.state.companyStructureList.map(el => ({ value: el.id, label: el.name }));
-    let object_list = this.state.geozone_type === 'ODH' ? this.props.odhsList : this.props.dtsList;
-    let polys = this.state.geozone_type === 'ODH' ? this.props.odhPolys : this.props.dtPolys;
+    const {
+      companyStructureLinearForUserList = [],
+      odhsList = [],
+      dtsList = [],
+      odhPolys = [],
+      dtPolys = [],
+
+    } = this.props;
+    const COMPANY_ELEMENTS = companyStructureLinearForUserList.map(el => ({ value: el.id, label: el.name }));
+    let object_list = this.state.geozone_type === 'ODH' ? odhsList : dtsList;
+    let polys = this.state.geozone_type === 'ODH' ? odhPolys : dtPolys;
 
     if (this.state.coverageReport && object_list) {
       let usedObjects = _.values(this.state.coverageReport).map(item => item.missions);
@@ -131,20 +163,21 @@ export default class CoverageReport extends Component {
 
     return (
       <div className="ets-page-wrap">
-        <Div>
+        <ExtDiv>
           <Row>
             <Col md={3}>
-              <Field
+              <ExtField
                 type="select"
                 label="Подразделение"
                 options={COMPANY_ELEMENTS}
                 emptyValue={null}
                 value={this.state.structure_id}
-                onChange={this.handleChange.bind(this, 'structure_id')}
+                onChange={this.handleChange}
+                boundKeys={['structure_id']}
               />
             </Col>
             <Col md={3}>
-              <Div className="coverage-report-radio">
+              <ExtDiv className="coverage-report-radio">
                 <input
                   type="radio"
                   checked={this.state.geozone_type === 'ODH'}
@@ -156,15 +189,15 @@ export default class CoverageReport extends Component {
                   onChange={() => this.handleChange('geozone_type', 'DT')}
                 /><span>ДТ</span>
                 <Button onClick={this.handleSubmit.bind(this)}>Показать отчет</Button>
-              </Div>
+              </ExtDiv>
             </Col>
             <Col md={6} />
           </Row>
           {this.state.coverageReport ? <Row>
             <Col md={7}>
-              <Div className="route-creating">
+              <ExtDiv className="route-creating">
                 <PolyMap
-                  onFeatureClick={this.onFeatureClick.bind(this)}
+                  onFeatureClick={this.onFeatureClick}
                   zoom={this.props.currentUser.map_config.zoom}
                   center={this.props.currentUser.map_config.coordinates}
                   object_list={object_list}
@@ -172,19 +205,19 @@ export default class CoverageReport extends Component {
                   objectsType={this.state.geozone_type.toLowerCase()}
                   edit={false}
                 />
-              </Div>
+              </ExtDiv>
             </Col>
             <Col md={5}>
               <ObjectsCoverReportTable
                 noHeader
                 data={this.state.coverageReport}
                 checked={this.state.checkedMissions}
-                onRowChecked={this.checkMission.bind(this)}
-                onAllRowsChecked={this.checkMission.bind(this)}
+                onRowChecked={this.checkMission}
+                onAllRowsChecked={this.checkMission}
               />
             </Col>
           </Row> : ''}
-        </Div>
+        </ExtDiv>
       </div>
     );
   }

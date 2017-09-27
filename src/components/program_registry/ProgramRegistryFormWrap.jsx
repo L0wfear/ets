@@ -43,7 +43,7 @@ class ProgramRegistryFormWrap extends FormWrap {
       newObj[buttonName] = context.flux.getStore('session').getPermission(buttonPerm);
       return newObj;
     }, {});
-    console.log(this.permissionForButton)
+
     this.state = {
       fromCreating: false,
       versionOptions: [],
@@ -151,12 +151,16 @@ class ProgramRegistryFormWrap extends FormWrap {
   changeVersion = (version) => {
     const { reduceVersionList } = this.state;
 
-    this.setState({ ...this.getFrowmStateAndErrorAndCanSave(reduceVersionList[version]) });
+    this.setState({
+      activeVersionId: version,
+      ...this.getFrowmStateAndErrorAndCanSave(reduceVersionList[version]),
+    });
   }
   handleExportVersion = () => {
-    global.NOTIFICATION_SYSTEM.notify('Не реализовано', 'warning');
+    global.NOTIFICATION_SYSTEM.notify('Не реализовано', 'error');
   }
   loadFile = () => {
+    global.NOTIFICATION_SYSTEM.notify('Не реализовано', 'error');
   }
   makeVersion = () => {
     const callback = this.context.flux.getActions('repair').programVersionCreateVersion;

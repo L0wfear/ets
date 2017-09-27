@@ -63,7 +63,7 @@ export default class ProgramRegistryForm extends Form {
 
     const buttonInFooterOne = [
       this.getButton(this.props.handleExportVersion, <Glyphicon glyph="download-alt" />, permissionForButton.exportPDF),
-      this.getButton(() => {}, <Glyphicon glyph="file" />, permissionForButton.downloadFile),
+      this.getButton(this.props.loadFile, <Glyphicon glyph="file" />, permissionForButton.downloadFile),
       this.getButton(this.props.makeVersion, 'Создать версию', permissionForButton.createVersion, this.props.canSave && state.status === 'accepted'),
       this.getButton(this.props.sendToApply, 'Отправить на согласование', permissionForButton.sendToApply, this.props.canSave && (state.status === 'draft' || state.status === 'rejected')),
       this.getButton(this.props.onSubmit, 'Сохранить', permissionForButton.onSubmit, this.props.canSave && (state.status === 'draft' || state.status === 'rejected')),

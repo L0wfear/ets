@@ -4,10 +4,16 @@ import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import ProgramRegistryTable from './ProgramRegistryTable.tsx';
 import ProgramRegistryFormWrap from './ProgramRegistryFormWrap';
 
+
+const statusForCancelRemove = [
+  'draft',
+  'rejected',
+];
+
 @connectToStores(['repair', 'session'])
 @exportable({ entity: `repair/${REPAIR.programRegistry}` })
 @staticProps({
-  entity: 'repair_program_registry',
+  entity: 'repair_program',
   listName: 'programRegistryList',
   tableComponent: ProgramRegistryTable,
   formComponent: ProgramRegistryFormWrap,
@@ -18,10 +24,36 @@ export default class ProgramRegistryList extends CheckableElementsList {
     super(props);
     this.removeElementAction = context.flux.getActions('repair').removeProgramRegistry;
   }
+
+  /**
+   * @override
+   */
+  removeElement() {
+    if (this.state.selectedElement === null) {
+      return;
+    }
+
+    const id = this.state.selectedElement[this.selectField];
+    if (!statusForCancelRemove.includes(this.state.selectedElement.status)) {
+      global.NOTIFICATION_SYSTEM.notify('Удаление запрещено (см. статус)', 'error');
+      return;
+    }
+
+    confirmDialog({
+      title: 'Внимание',
+      body: 'Вы уверены, что хотите удалить выбранный элемент?',
+    })
+    .then(() => {
+      this.removeElementAction(id);
+      this.setState({ selectedElement: null });
+    })
+    .catch(() => {});
+  }
+
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
-
+    console.log(this.props)
     flux.getActions('repair').getRepairListByType('programRegistry');
   }
 }

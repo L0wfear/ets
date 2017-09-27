@@ -15,14 +15,22 @@ const firstStepFields = [
   'plan_date_start',
   'plan_date_end',
 ];
+
+const existButtonInForm = {
+  exportPDF: 'repair_program_version.read',
+  downloadFile: 'repair_program_version.update',
+  createVersion: 'repair_program_version.create',
+  sendToApply: 'repair_program_version.update',
+  onSubmit: 'repair_program_version.create',
+  onSubmitAndContinue: 'repair_program_version.create',
+  applyVersion: 'repair_program_version.review',
+  canselVersion: 'repair_program_version.review',
+  closeVersion: 'repair_program_version.update',
+};
+
 // РЕФАКТОРИНГ
-// Писалось на скорую руку ( отмазки) )
+// Писалось на скорую руку ( отмазка )
 class ProgramRegistryFormWrap extends FormWrap {
-  state = {
-    fromCreating: false,
-    versionOptions: [],
-    activeVersion: 0,
-  };
   iLoad = false;
   constructor(props, context) {
     super(props);
@@ -30,6 +38,17 @@ class ProgramRegistryFormWrap extends FormWrap {
     this.preventDefaultNotification = true;
 
     this.createAction = context.flux.getActions('repair').programRegistryPost;
+
+    this.permissionForButton = Object.entries(existButtonInForm).reduce((newObj, [buttonName, buttonPerm]) => {
+      newObj[buttonName] = context.flux.getStore('session').getPermission(buttonPerm);
+      return newObj;
+    }, {});
+    console.log(this.permissionForButton)
+    this.state = {
+      fromCreating: false,
+      versionOptions: [],
+      activeVersion: 0,
+    };
   }
   /**
   * @override
@@ -135,16 +154,18 @@ class ProgramRegistryFormWrap extends FormWrap {
     this.setState({ ...this.getFrowmStateAndErrorAndCanSave(reduceVersionList[version]) });
   }
   handleExportVersion = () => {
+    global.NOTIFICATION_SYSTEM.notify('Не реализовано', 'warning');
   }
   loadFile = () => {
   }
   makeVersion = () => {
     const callback = this.context.flux.getActions('repair').programVersionCreateVersion;
+
     this.defSendFromState(callback, { program_id: this.props.element.id }).then(() => {
-      // global.NOTIFICATION_SYSTEM.notify('Версия создана', 'success');
+      global.NOTIFICATION_SYSTEM.notify('Версия создана', 'success');
       this.updateVersionList(this.props.element.id, this.state.activeVersionId);
     }).catch(() => {
-      // global.NOTIFICATION_SYSTEM.notify('Версия не создана', 'error');
+      global.NOTIFICATION_SYSTEM.notify('Ошибка создания версии', 'error');
     });
   }
 
@@ -203,12 +224,30 @@ class ProgramRegistryFormWrap extends FormWrap {
     });
   }
   closeVersion = () => {
+    const { fromState: { percent = 0 } } = this.state;
+
+    if (percent < 100) {
+      global.NOTIFICATION_SYSTEM.notify('Программа ремонта не выполнена', 'warning');
+      return;
+    }
+
     const callback = this.context.flux.getActions('repair').programVersionSendToClose;
     this.defSendFromState(callback).then(() => {
       global.NOTIFICATION_SYSTEM.notify('Версия закрыта', 'success');
     }).catch(() => {
       global.NOTIFICATION_SYSTEM.notify('Ошибка закрытия версии', 'error');
     });
+  }
+
+  checkIsPermittedByStatus(status) {
+    switch (status) {
+      case 'sent_to_review':
+      case 'accepted':
+      case 'closed':
+        return false;
+      default:
+        return true;
+    }
   }
 
   renderFromFirstCreate() {
@@ -251,8 +290,9 @@ class ProgramRegistryFormWrap extends FormWrap {
       versionOptions = [],
       activeVersionId = 0,
     } = this.state;
-
+    const permissionForButton = this.permissionForButton || {};
     const canSave = isPermitted && this.state.canSave && saveButtonEnability;
+    const isPermittedByStatus = this.checkIsPermittedByStatus(this.state.formState.status);
 
     return (
       <ProgramRegistryForm
@@ -261,11 +301,13 @@ class ProgramRegistryFormWrap extends FormWrap {
         permissions={[`${entity}.update`]}
         addPermissionProp
         isPermitted={isPermitted}
+        isPermittedByStatus={isPermittedByStatus}
         canSave={canSave}
         handleFormChange={this.handleFormStateChange.bind(this)}
         show={this.props.showForm}
         onHide={this.props.onFormHide}
         fromCreating={fromCreating}
+        permissionForButton={permissionForButton}
 
         activeVersionId={activeVersionId}
         versionOptions={versionOptions}

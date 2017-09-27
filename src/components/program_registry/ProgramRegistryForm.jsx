@@ -32,6 +32,9 @@ export default class ProgramRegistryForm extends Form {
     }
     flux.getActions('repair').getRepairListByType('contractor', {}, { makeOptions: true, selectListMapper: defaultSelectListMapper });
   }
+  getButton = (onClick, text, show = false, canSave = true) => (
+    show && <Button disabled={!canSave} onClick={onClick}>{text}</Button>
+  )
 
   handleSubmitWrap = (...arg) => this.handleSubmit(...arg);
 
@@ -46,25 +49,32 @@ export default class ProgramRegistryForm extends Form {
 
     const {
       isPermitted = false,
+      isPermittedByStatus = false,
       RepairOptions: {
         stateProgramOptions = [],
         contractorOptions = [],
       },
       activeVersionId,
       versionOptions = [],
+      permissionForButton,
     } = this.props;
 
     const title = 'Создание программы ремонта';
 
-    const popoverFocus = (
-      <Popover id="popover-trigger-focus" title="Что должно произойти?">
-        <ul>
-          <li><span>Нужно ли отображать загруженные файлы?</span></li>
-          <li><span>Сколько их можно загружать?</span></li>
-          <li><span>Не лучше ли сделать обычное поле, как например Реестре страховок</span></li>
-        </ul>
-      </Popover>
-    );
+    const buttonInFooterOne = [
+      this.getButton(this.props.handleExportVersion, <Glyphicon glyph="download-alt" />, permissionForButton.exportPDF),
+      this.getButton(() => {}, <Glyphicon glyph="file" />, permissionForButton.downloadFile),
+      this.getButton(this.props.makeVersion, 'Создать версию', permissionForButton.createVersion, this.props.canSave && state.status === 'accepted'),
+      this.getButton(this.props.sendToApply, 'Отправить на согласование', permissionForButton.sendToApply, this.props.canSave && (state.status === 'draft' || state.status === 'rejected')),
+      this.getButton(this.props.onSubmit, 'Сохранить', permissionForButton.onSubmit, this.props.canSave && (state.status === 'draft' || state.status === 'rejected')),
+      this.getButton(this.props.onSubmitAndContinue, 'Сохранить и продолжить', permissionForButton.onSubmitAndContinue, this.props.canSave && (state.status === 'draft' || state.status === 'rejected')),
+    ];
+    const buttonInFooterTwo = [
+      this.getButton(this.props.applyVersion, 'Согласовать', permissionForButton.applyVersion, this.props.canSave && state.status === 'sent_to_review'),
+      this.getButton(this.props.canselVersion, 'Отклонить', permissionForButton.canselVersion, this.props.canSave),
+      this.getButton(this.props.closeVersion, 'Закрыть программу (завершить)', permissionForButton.closeVersion, this.props.canSave && state.status === 'accepted'),
+    ];
+
     return (
       <Modal {...this.props} bsSize="lg" backdrop="static">
         <Modal.Header closeButton>
@@ -94,7 +104,7 @@ export default class ProgramRegistryForm extends Form {
                 value={state.state_program_id}
                 onChange={this.handleChange}
                 boundKeys={['state_program_id']}
-                disabled={!isPermitted}
+                disabled={!isPermitted || !isPermittedByStatus}
                 clearable={false}
               />
             </Col>
@@ -126,7 +136,7 @@ export default class ProgramRegistryForm extends Form {
                 error={errors.name}
                 onChange={this.handleChange}
                 boundKeys={['name']}
-                disabled={!isPermitted}
+                disabled={!isPermitted || !isPermittedByStatus}
               />
             </Col>
             <Col md={3}>
@@ -138,7 +148,7 @@ export default class ProgramRegistryForm extends Form {
                 error={errors.plan_date_start}
                 onChange={this.handleChange}
                 boundKeys={['plan_date_start']}
-                disabled={!isPermitted}
+                disabled={!isPermitted || !isPermittedByStatus}
               />
             </Col>
             <Col md={3}>
@@ -149,7 +159,7 @@ export default class ProgramRegistryForm extends Form {
                 error={errors.plan_date_end}
                 onChange={this.handleChange}
                 boundKeys={['plan_date_end']}
-                disabled={!isPermitted}
+                disabled={!isPermitted || !isPermittedByStatus}
               />
             </Col>
           </Row>
@@ -171,7 +181,7 @@ export default class ProgramRegistryForm extends Form {
                 error={errors.fact_date_start}
                 onChange={this.handleChange}
                 boundKeys={['fact_date_start']}
-                disabled={!isPermitted}
+                disabled={!isPermitted || !isPermittedByStatus}
               />
             </Col>
             <Col md={3}>
@@ -182,7 +192,7 @@ export default class ProgramRegistryForm extends Form {
                 error={errors.fact_date_end}
                 onChange={this.handleChange}
                 boundKeys={['fact_date_end']}
-                disabled={!isPermitted}
+                disabled={!isPermitted || !isPermittedByStatus}
               />
             </Col>
           </Row>
@@ -206,7 +216,7 @@ export default class ProgramRegistryForm extends Form {
                 value={state.contractor_id}
                 onChange={this.handleChange}
                 boundKeys={['contractor_id']}
-                disabled={!isPermitted}
+                disabled={!isPermitted || !isPermittedByStatus}
               />
             </Col>
             <Col md={6}>
@@ -217,7 +227,7 @@ export default class ProgramRegistryForm extends Form {
                 error={errors.contract_number}
                 onChange={this.handleChange}
                 boundKeys={['contract_number']}
-                disabled={!isPermitted}
+                disabled={!isPermitted || !isPermittedByStatus}
               />
             </Col>
           </Row>
@@ -231,7 +241,7 @@ export default class ProgramRegistryForm extends Form {
                 error={errors.note}
                 boundKeys={['note']}
                 textAreaStyle={{ resize: 'none' }}
-                disabled={!isPermitted}
+                disabled={!isPermitted || !isPermittedByStatus}
               />
             </Col>
           </Row>
@@ -240,28 +250,18 @@ export default class ProgramRegistryForm extends Form {
         <Modal.Footer>
           <Row>
             <Col md={12}>
-              { false &&
-                <Button onClick={this.props.handleExportVersion}><Glyphicon glyph="download-alt" /></Button>
-              }
               {
-                false &&
-                <OverlayTrigger trigger="focus" placement="top" overlay={popoverFocus}>
-                  <Button disabled={!this.props.canSave}><Glyphicon glyph="file" /></Button>
-                </OverlayTrigger>
+                buttonInFooterOne
               }
-              <Button disabled={!this.props.canSave} onClick={this.props.makeVersion}>Создать версию</Button>
-              <Button disabled={!this.props.canSave} onClick={this.props.sendToApply}>Отправить на согласование</Button>
-              <Button disabled={!this.props.canSave} bsStyle="primary" onClick={this.props.onSubmit}>Сохранить</Button>
-              <Button disabled={!this.props.canSave} onClick={this.props.onSubmitAndContinue}>Сохранить и продолжить</Button>
             </Col>
           </Row>
           <Row style={{ marginTop: 5 }}>
             <Col md={12}>
-              <Button disabled={!this.props.canSave} bsStyle="primary" onClick={this.props.applyVersion}>Согласовать</Button>
-              <Button disabled={!this.props.canSave} onClick={this.props.canselVersion}>Отклонить</Button>
-              <Button disabled={!this.props.canSave} onClick={this.props.closeVersion}>Закрыть программу (завершить)</Button>
+              {
+                buttonInFooterTwo
+              }
             </Col>
-          </Row>
+        </Row>
         </Modal.Footer>
       </Modal>
     );

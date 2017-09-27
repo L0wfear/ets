@@ -48,6 +48,7 @@ class ProgramRegistryFormWrap extends FormWrap {
       fromCreating: false,
       versionOptions: [],
       activeVersion: 0,
+      showFormMakeVersion: false,
     };
   }
   /**
@@ -163,13 +164,21 @@ class ProgramRegistryFormWrap extends FormWrap {
     global.NOTIFICATION_SYSTEM.notify('Не реализовано', 'error');
   }
   makeVersion = () => {
-    const callback = this.context.flux.getActions('repair').programVersionCreateVersion;
-
-    this.defSendFromState(callback, { program_id: this.props.element.id }).then(() => {
-      global.NOTIFICATION_SYSTEM.notify('Версия создана', 'success');
-      this.updateVersionList(this.props.element.id, this.state.activeVersionId);
-    }).catch(() => {
-      global.NOTIFICATION_SYSTEM.notify('Ошибка создания версии', 'error');
+    confirmDialog({
+      title: 'Внимание',
+      body: 'После создания новой версии программы ремонта, текущая версия станет недействующей и недоступной для ввода данных. Вы уверены, что хотите продолжить?',
+    })
+    .then(() => {
+      this.setState({
+        showFormMakeVersion: true,
+      });
+      const callback = this.context.flux.getActions('repair').programVersionCreateVersion;
+      this.defSendFromState(callback, { program_id: this.props.element.id }).then(() => {
+        global.NOTIFICATION_SYSTEM.notify('Версия создана', 'success');
+        this.updateVersionList(this.props.element.id, this.state.activeVersionId);
+      }).catch(() => {
+        global.NOTIFICATION_SYSTEM.notify('Ошибка создания версии', 'error');
+      });
     });
   }
 

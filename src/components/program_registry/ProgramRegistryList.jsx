@@ -53,7 +53,7 @@ export default class ProgramRegistryList extends CheckableElementsList {
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
-    console.log(this.props)
+
     flux.getActions('repair').getRepairListByType('programRegistry');
   }
 }

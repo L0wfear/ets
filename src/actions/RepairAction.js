@@ -165,7 +165,7 @@ export default class RepairActions extends Actions {
   }
 
   async programVersionSendToReview(formState) {
-    return await this.programVersionSendFor('send_to_reviews', formState);
+    return await this.programVersionSendFor('send_to_review', formState);
   }
   async programVersionSendToApply(formState) {
     return await this.programVersionSendFor('accept', formState);

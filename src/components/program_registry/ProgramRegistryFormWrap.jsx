@@ -65,6 +65,7 @@ class ProgramRegistryFormWrap extends FormWrap {
       }
     }
   }
+  handleFormStateChangeWrap = (...arg) => this.handleFormStateChange(...arg);
 
   async updateVersionList(id, activeVersionIdprops = false) {
     this.iLoad = true;
@@ -131,7 +132,7 @@ class ProgramRegistryFormWrap extends FormWrap {
         saveButtonLabel: 'Сохранить',
         saveButtonEnability: true,
       });
-      console.warn(e);
+      console.warn(e); // eslint-disable-line
 
       throw e;
     }
@@ -140,9 +141,6 @@ class ProgramRegistryFormWrap extends FormWrap {
   handleSubmitFirstForm = () => {
     const callback = this.context.flux.getActions('repair').programRegistryPost;
     this.defSendFromState(callback).then((result) => {
-      if (result.error) return;
-
-      // форма не обновляет значения, если её не закрыть
       this.props.onFormHide();
       this.setState({ fromCreating: true });
       this.props.setNewSelectedElement(result.result.rows[0]);
@@ -163,7 +161,7 @@ class ProgramRegistryFormWrap extends FormWrap {
   loadFile = () => {
     global.NOTIFICATION_SYSTEM.notify('Не реализовано', 'error');
   }
-  makeVersion = () => {
+  makeVersion = () =>
     confirmDialog({
       title: 'Внимание',
       body: 'После создания новой версии программы ремонта, текущая версия станет недействующей и недоступной для ввода данных. Вы уверены, что хотите продолжить?',
@@ -180,7 +178,6 @@ class ProgramRegistryFormWrap extends FormWrap {
         global.NOTIFICATION_SYSTEM.notify('Ошибка создания версии', 'error');
       });
     });
-  }
 
   sendToApply = () => {
     const callback = this.context.flux.getActions('repair').programVersionSendToReview;
@@ -285,7 +282,7 @@ class ProgramRegistryFormWrap extends FormWrap {
         isPermitted={isPermitted}
         canSave={canSave}
         onSubmit={this.handleSubmitFirstForm}
-        handleFormChange={this.handleFormStateChange.bind(this)}
+        handleFormChange={this.handleFormStateChangeWrap}
         show={this.props.showForm}
         onHide={this.props.onFormHide}
       />
@@ -316,7 +313,7 @@ class ProgramRegistryFormWrap extends FormWrap {
         isPermitted={isPermitted}
         isPermittedByStatus={isPermittedByStatus}
         canSave={canSave}
-        handleFormChange={this.handleFormStateChange.bind(this)}
+        handleFormChange={this.handleFormStateChangeWrap}
         show={this.props.showForm}
         onHide={this.props.onFormHide}
         fromCreating={fromCreating}

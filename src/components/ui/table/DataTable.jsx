@@ -540,6 +540,7 @@ export default class DataTable extends React.Component {
       initialSort,
       initialSortAscending,
     } = this.state;
+    const { externalChangeSort = false } = this.props;
 
     let tempData = data
           .map(this.processEmptyCols.bind(this, tableCols))
@@ -547,7 +548,7 @@ export default class DataTable extends React.Component {
           .map(this.processSelected.bind(this, selected, selectField, onRowSelected))
           .filter(this.shouldBeRendered);
 
-    if (initialSort) {
+    if (initialSort && !externalChangeSort) {
       tempData = tempData.sort(this.sortingData.bind(this, this.checkWhatFieldISortin(initialSort)));
 
       if (!initialSortAscending) {

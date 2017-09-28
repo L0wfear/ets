@@ -9,6 +9,7 @@ export default function enhanceWithPermissions(ComposedComponent) {
         userPermissions: PropTypes.array.isRequired,
         permissions: PropTypes.array,
         oneOfPermissions: PropTypes.array,
+        includesPartOfText: PropTypes.array,
         addPermissionProp: PropTypes.bool,
         hidden: PropTypes.bool,
       };
@@ -20,6 +21,7 @@ export default function enhanceWithPermissions(ComposedComponent) {
         permissions: [],
         oneOfPermissions: [],
         addPermissionProp: false,
+        includesPartOfText: false,
         hidden: false,
       };
     }
@@ -29,7 +31,11 @@ export default function enhanceWithPermissions(ComposedComponent) {
      * @return {boolean} isPermitted - доступен ли компонент для отображения
      */
     isPermitted() {
-      const { userPermissions, permissions, oneOfPermissions } = this.props;
+      const { includesPartOfText = false, userPermissions, permissions, oneOfPermissions } = this.props;
+      // В случае, если в на
+      if (includesPartOfText) {
+        return userPermissions.some(d => includesPartOfText.some(p => d.includes(p)));
+      }
       // В случае если достаточно наличия хоть одного доступа
       if (oneOfPermissions.length) {
         return userPermissions.filter(up => oneOfPermissions.indexOf(up) + 1).length;

@@ -106,7 +106,6 @@ const Table: React.SFC<any> = props  => {
     fact_date_start: ({ data }) => (<DateFormatter date={data} />),
     fact_date_end: ({ data }) => (<DateFormatter date={data} />),
   };
-  console.log(props)
 
   return (
     <DataTable

@@ -145,7 +145,7 @@ export default class RepairActions extends Actions {
     );
   }
 
-  async programVersionCreateVersion(formState) {
+  programVersionCreateVersion(formState) {
     const payload = {
       ...formState,
     };

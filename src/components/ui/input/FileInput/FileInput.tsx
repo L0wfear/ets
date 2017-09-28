@@ -15,7 +15,7 @@ const FileListItem: React.SFC<any> = ({
   name,
   url,
 }) =>
-  <Col style={{ marginBottom: 10 }} key={index} md={12}>
+  <Col style={{ marginBottom: 10 }} md={12}>
     <a href={url} target="_blanc">{decodeURI(name)}</a>
     <Button
       bsClass="close"
@@ -54,6 +54,7 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
       .map(file => file === null ? serverErrorFile : file)
       .map(({ name = 'Без названия', url, base64 } = serverErrorFile, i) =>
         <FileListItem
+          key={i}
           index={i}
           url={url || base64}
           name={name}

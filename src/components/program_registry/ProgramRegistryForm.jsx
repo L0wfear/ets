@@ -20,6 +20,7 @@ import MakeVersionFrom from './WorkForm/MakeVersionFrom.tsx';
 export default class ProgramRegistryForm extends Form {
   state = {
     makeVersionIsVisible: false,
+    mainButtonEnable: true,
   }
   componentDidMount() {
     const { flux } = this.context;
@@ -42,6 +43,12 @@ export default class ProgramRegistryForm extends Form {
   }
   handleMakeVersionClick = () => {
     this.props.makeVersion().then(() => this.hideMakeVersionForm());
+  }
+  sendToApply = () => {
+    this.setState({ mainButtonEnable: false });
+    this.props.sendToApply().then(() => {
+      this.setState({ mainButtonEnable: true })
+    });
   }
   render() {
     const [
@@ -66,6 +73,7 @@ export default class ProgramRegistryForm extends Form {
 
     const {
       makeVersionIsVisible = false,
+      mainButtonEnable = true,
     } = this.state;
 
     const {
@@ -259,10 +267,10 @@ export default class ProgramRegistryForm extends Form {
                 {[
                   this.getButton(0, this.props.handleExportVersion, <Glyphicon glyph="download-alt" />, permissionForButton.exportPDF),
                   this.getButton(1, this.props.loadFile, <Glyphicon glyph="file" />, permissionForButton.downloadFile),
-                  this.getButton(2, this.showMakeVersionForm, 'Создать версию', permissionForButton.createVersion, this.props.canSave && state.status === 'accepted'),
-                  this.getButton(3, this.props.sendToApply, 'Отправить на согласование', permissionForButton.sendToApply, this.props.canSave && (state.status === 'draft' || state.status === 'rejected')),
-                  this.getButton(4, this.props.onSubmit, 'Сохранить', permissionForButton.onSubmit, this.props.canSave && (state.status === 'draft' || state.status === 'rejected')),
-                  this.getButton(5, this.props.onSubmitAndContinue, 'Сохранить и продолжить', permissionForButton.onSubmitAndContinue, this.props.canSave && (state.status === 'draft' || state.status === 'rejected')),
+                  this.getButton(2, this.showMakeVersionForm, 'Создать версию', permissionForButton.createVersion, this.props.canSave && state.status === 'accepted' && mainButtonEnable),
+                  this.getButton(3, this.sendToApply, 'Отправить на согласование', permissionForButton.sendToApply, this.props.canSave && (state.status === 'draft' || state.status === 'rejected') && mainButtonEnable),
+                  this.getButton(4, this.props.onSubmit, 'Сохранить', permissionForButton.onSubmit, this.props.canSave && (state.status === 'draft' || state.status === 'rejected') && mainButtonEnable),
+                  this.getButton(5, this.props.onSubmitAndContinue, 'Сохранить и продолжить', permissionForButton.onSubmitAndContinue, this.props.canSave && (state.status === 'draft' || state.status === 'rejected') && mainButtonEnable),
                 ]}
               </Col>
             </Row>

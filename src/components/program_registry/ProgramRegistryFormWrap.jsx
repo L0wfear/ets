@@ -5,7 +5,7 @@ import { isEmpty } from 'utils/functions';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
 import ProgramRegistryFormCreate from './ProgramRegistryFormCreate';
-import ProgramRegistryForm from './ProgramRegistryForm';
+import ProgramRegistryFormBase from './ProgramRegistryForm';
 import { formValidationSchema } from './schema';
 
 const firstStepFields = [
@@ -27,6 +27,8 @@ const existButtonInForm = {
   canselVersion: 'repair_program_version.review',
   closeVersion: 'repair_program_version.update',
 };
+
+const ProgramRegistryForm = enhanceWithPermissions(ProgramRegistryFormBase);
 
 // РЕФАКТОРИНГ
 // Писалось на скорую руку ( отмазка )
@@ -314,7 +316,7 @@ class ProgramRegistryFormWrap extends FormWrap {
       <ProgramRegistryForm
         formState={this.state.formState}
         formErrors={this.state.formErrors}
-        permissions={[`${entity}.update`]}
+        permissions={['repair_program_version.update']}
         addPermissionProp
         isPermitted={isPermitted}
         isPermittedByStatus={isPermittedByStatus}

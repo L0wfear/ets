@@ -406,6 +406,7 @@ class ElementsList extends React.Component {
         onCallback={this.formCallback}
         meta={this.constructor.formMeta}
         renderers={this.constructor.formRenderers}
+        permissions={[`${this.entity}.read`]}
         {...this.props}
       />
     );

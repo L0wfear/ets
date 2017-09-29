@@ -256,7 +256,7 @@ class ProgramRegistryFormWrap extends FormWrap {
 
   checkIsPermittedByStatus(status) {
     switch (status) {
-      case 'sent_to_review':
+      case 'sent_on_review':
       case 'accepted':
       case 'closed':
         return false;

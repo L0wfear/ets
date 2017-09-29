@@ -9,7 +9,7 @@ export default function enhanceWithPermissions(ComposedComponent) {
         userPermissions: PropTypes.array.isRequired,
         permissions: PropTypes.array,
         oneOfPermissions: PropTypes.array,
-        includesPartOfText: PropTypes.array,
+        includesPartOfText: PropTypes.any,
         addPermissionProp: PropTypes.bool,
         hidden: PropTypes.bool,
       };

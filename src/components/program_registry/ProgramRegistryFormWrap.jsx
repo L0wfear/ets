@@ -39,7 +39,7 @@ class ProgramRegistryFormWrap extends FormWrap {
 
     this.createAction = context.flux.getActions('repair').programRegistryPost;
 
-    this.permissionForButton = Object.entries(existButtonInForm).reduce((newObj, [buttonName, buttonPerm]) => {
+    const permissionForButton = Object.entries(existButtonInForm).reduce((newObj, [buttonName, buttonPerm]) => {
       newObj[buttonName] = context.flux.getStore('session').getPermission(buttonPerm);
       return newObj;
     }, {});
@@ -49,6 +49,7 @@ class ProgramRegistryFormWrap extends FormWrap {
       versionOptions: [],
       activeVersion: 0,
       showFormMakeVersion: false,
+      permissionForButton,
     };
   }
   /**
@@ -181,8 +182,12 @@ class ProgramRegistryFormWrap extends FormWrap {
 
   sendToApply = () => {
     const callback = this.context.flux.getActions('repair').programVersionSendToReview;
-    this.defSendFromState(callback).then(() => {
+
+    return this.defSendFromState(callback).then(() => {
       global.NOTIFICATION_SYSTEM.notify('Запрос на согласование отправлен', 'success');
+      return this.updateVersionList(this.props.element.id, this.state.activeVersionId);
+    }).then(() => {
+      console.log('version is apdate');
     }).catch(() => {
       global.NOTIFICATION_SYSTEM.notify('Запрос на согласование не отправлен', 'error');
     });
@@ -299,8 +304,9 @@ class ProgramRegistryFormWrap extends FormWrap {
       fromCreating = false,
       versionOptions = [],
       activeVersionId = 0,
+      permissionForButton = {},
     } = this.state;
-    const permissionForButton = this.permissionForButton || {};
+
     const canSave = isPermitted && this.state.canSave && saveButtonEnability;
     const isPermittedByStatus = this.checkIsPermittedByStatus(this.state.formState.status);
 

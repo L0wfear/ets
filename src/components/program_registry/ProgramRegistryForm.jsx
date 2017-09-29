@@ -277,7 +277,7 @@ export default class ProgramRegistryForm extends Form {
             <Row style={{ marginTop: 5 }}>
               <Col md={12}>
                 {[
-                  this.getButton(20, this.props.applyVersion, 'Согласовать', permissionForButton.applyVersion, this.props.canSave && state.status === 'sent_to_review'),
+                  this.getButton(20, this.props.applyVersion, 'Согласовать', permissionForButton.applyVersion, this.props.canSave && state.status === 'sent_on_review'),
                   this.getButton(21, this.props.canselVersion, 'Отклонить', permissionForButton.canselVersion, this.props.canSave),
                   this.getButton(22, this.props.closeVersion, 'Закрыть программу (завершить)', permissionForButton.closeVersion, this.props.canSave && state.status === 'accepted'),
                 ]}

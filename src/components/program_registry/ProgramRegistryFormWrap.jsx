@@ -225,9 +225,9 @@ class ProgramRegistryFormWrap extends FormWrap {
   applyVersion = () => {
     const callback = this.context.flux.getActions('repair').programVersionSendToApply;
     this.defSendFromState(callback).then(() => {
-      global.NOTIFICATION_SYSTEM.notify('Версия применена', 'success');
+      global.NOTIFICATION_SYSTEM.notify('Версия согласована', 'success');
     }).catch(() => {
-      global.NOTIFICATION_SYSTEM.notify('Ошибка применения версии', 'error');
+      global.NOTIFICATION_SYSTEM.notify('Ошибка согласования версии', 'error');
     });
   }
   canselVersion = () => {

@@ -21,6 +21,7 @@ export default class ProgramRegistryForm extends Form {
   state = {
     makeVersionIsVisible: false,
     mainButtonEnable: true,
+    addFileModalShow: false,
   }
   componentDidMount() {
     const { flux } = this.context;
@@ -37,6 +38,9 @@ export default class ProgramRegistryForm extends Form {
   handleSubmitWrap = (...arg) => this.handleSubmit(...arg);
 
   showMakeVersionForm = () => this.setState({ makeVersionIsVisible: true })
+  showAddFileModal = () => this.setState({ addFileModalShow: true });
+  hideAddFileModal = () => this.setState({ addFileModalShow: false });
+  
   hideMakeVersionForm = () => {
     this.setState({ makeVersionIsVisible: false });
     this.handleChange('files', undefined);
@@ -74,6 +78,7 @@ export default class ProgramRegistryForm extends Form {
     const {
       makeVersionIsVisible = false,
       mainButtonEnable = true,
+      addFileModalShow = false,
     } = this.state;
 
     const {
@@ -81,15 +86,34 @@ export default class ProgramRegistryForm extends Form {
     } = state;
     const title = 'Создание программы ремонта';
 
+    let ModalFileProps = false;
+    if (makeVersionIsVisible || addFileModalShow) {
+      if (addFileModalShow) {
+        ModalFileProps = {
+          title: 'Прикреплённый файл',
+          show: addFileModalShow,
+          state,
+          onHide: this.hideAddFileModal,
+          onSubmit: this.hideAddFileModal,
+          handleChange: this.handleChange,
+          btName: 'Прикрепить',
+        };
+      } else if (makeVersionIsVisible){
+        ModalFileProps = {
+          title: 'Создание новой версии',
+          show: makeVersionIsVisible,
+          state,
+          onHide: this.hideMakeVersionForm,
+          onSubmit: this.handleMakeVersionClick,
+          handleChange: this.handleChange,
+          btName: 'Загрузить файл и создать версию',
+        };
+      }
+    }
+
     return (
       <div>
-        <MakeVersionFrom
-          show={makeVersionIsVisible}
-          state={state}
-          onHide={this.hideMakeVersionForm}
-          onSubmit={this.handleMakeVersionClick}
-          handleChange={this.handleChange}
-        />
+        {ModalFileProps && <MakeVersionFrom {...ModalFileProps} />}
         <Modal {...this.props} show={this.props.show && !makeVersionIsVisible} bsSize="lg" backdrop="static">
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
@@ -265,7 +289,7 @@ export default class ProgramRegistryForm extends Form {
             <Row>
               <Col md={12}>
                 {[
-                  this.getButton(0, this.props.handleExportVersion, <Glyphicon glyph="download-alt" />, permissionForButton.exportPDF),
+                  this.getButton(0, this.props.handleExportVersion, <Glyphicon glyph="download-alt" />, false && permissionForButton.exportPDF),
                   this.getButton(1, this.props.loadFile, <Glyphicon glyph="file" />, permissionForButton.downloadFile),
                   this.getButton(2, this.showMakeVersionForm, 'Создать версию', permissionForButton.createVersion, this.props.canSave && state.status === 'accepted' && mainButtonEnable),
                   this.getButton(3, this.sendToApply, 'Отправить на согласование', permissionForButton.sendToApply, this.props.canSave && (state.status === 'draft' || state.status === 'rejected') && mainButtonEnable),

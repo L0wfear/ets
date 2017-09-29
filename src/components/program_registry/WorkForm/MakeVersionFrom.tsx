@@ -21,7 +21,7 @@ class MakeFileModal extends React.Component<any, any> {
     return (
       <RB.Modal {...this.props} backdrop="static">
         <RB.Modal.Header closeButton>
-          <RB.Modal.Title id="contained-modal-title-lg">{ 'Создание новой версии' }</RB.Modal.Title>
+          <RB.Modal.Title id="contained-modal-title-lg">{this.props.title}</RB.Modal.Title>
         </RB.Modal.Header>
         <Div style={{ padding: '0px 15px' }}>
           <RB.Row>
@@ -38,7 +38,7 @@ class MakeFileModal extends React.Component<any, any> {
         </Div>
         <ModalBody />
         <RB.Modal.Footer>
-          <RB.Button disabled={!canSave} onClick={this.props.onSubmit}>{'Загрузить файл и создать версию'}</RB.Button>
+          <RB.Button disabled={!canSave} onClick={this.props.onSubmit}>{this.props.btName}</RB.Button>
         </RB.Modal.Footer>
       </RB.Modal>
     );

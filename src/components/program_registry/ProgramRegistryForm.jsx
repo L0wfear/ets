@@ -259,11 +259,10 @@ export default class ProgramRegistryForm extends Form {
                 {[
                   this.getButton(0, this.props.handleExportVersion, <Glyphicon glyph="download-alt" />, permissionForButton.exportPDF),
                   this.getButton(1, this.props.loadFile, <Glyphicon glyph="file" />, permissionForButton.downloadFile),
-                  this.getButton(2, this.showMakeVersionForm, 'Создать версию', permissionForButton.createVersion),
-                  this.getButton(3, this.props.makeVersion, 'Создать версию', permissionForButton.createVersion, this.props.canSave && state.status === 'accepted'),
-                  this.getButton(4, this.props.sendToApply, 'Отправить на согласование', permissionForButton.sendToApply, this.props.canSave && (state.status === 'draft' || state.status === 'rejected')),
-                  this.getButton(5, this.props.onSubmit, 'Сохранить', permissionForButton.onSubmit, this.props.canSave && (state.status === 'draft' || state.status === 'rejected')),
-                  this.getButton(6, this.props.onSubmitAndContinue, 'Сохранить и продолжить', permissionForButton.onSubmitAndContinue, this.props.canSave && (state.status === 'draft' || state.status === 'rejected')),
+                  this.getButton(2, this.showMakeVersionForm, 'Создать версию', permissionForButton.createVersion, this.props.canSave && state.status === 'accepted'),
+                  this.getButton(3, this.props.sendToApply, 'Отправить на согласование', permissionForButton.sendToApply, this.props.canSave && (state.status === 'draft' || state.status === 'rejected')),
+                  this.getButton(4, this.props.onSubmit, 'Сохранить', permissionForButton.onSubmit, this.props.canSave && (state.status === 'draft' || state.status === 'rejected')),
+                  this.getButton(5, this.props.onSubmitAndContinue, 'Сохранить и продолжить', permissionForButton.onSubmitAndContinue, this.props.canSave && (state.status === 'draft' || state.status === 'rejected')),
                 ]}
               </Col>
             </Row>

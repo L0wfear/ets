@@ -113,8 +113,7 @@ export default class RepairActions extends Actions {
     );
     // Для обновления таблицы
     // Не в callback, потому что нужен новый id, а не весь список
-    this.getRepairListByType.bind(null, 'programRegistry');
-
+    this.getRepairListByType('programRegistry');
     return ans;
   }
 
@@ -159,7 +158,7 @@ export default class RepairActions extends Actions {
     const path = parsePutPath(programVersion, 'post', formState);
     return Repair.path(path).post(
       payload,
-      false,
+      this.getRepairListByType.bind(null, 'programRegistry'),
       'json',
     );
   }
@@ -177,14 +176,14 @@ export default class RepairActions extends Actions {
     return await this.programVersionSendFor('close', formState);
   }
 
-  async programVersionSendFor(type, formState) {
+  programVersionSendFor(type, formState) {
     const { programVersion } = REPAIR;
     const payload = {};
 
     const path = parsePutPath(programVersion, 'put', formState);
     return Repair.path(`${path}/${type}`).put(
       payload,
-      false,
+      this.getRepairListByType.bind(null, 'programRegistry'),
       'json',
     );
   }

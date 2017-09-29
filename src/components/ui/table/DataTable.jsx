@@ -103,7 +103,7 @@ export default class DataTable extends React.Component {
 
       firstUseExternalInitialSort: true,
       initialSort: '',
-      initialSortAscending: true,
+      initialSortAscending: false,
 
       enableSort: true,
 
@@ -141,7 +141,7 @@ export default class DataTable extends React.Component {
       isHierarchical: props.isHierarchical,
       firstUseExternalInitialSort: true,
       initialSort: '',
-      initialSortAscending: true,
+      initialSortAscending: false,
     };
   }
 
@@ -559,6 +559,7 @@ export default class DataTable extends React.Component {
       initialSort,
       initialSortAscending,
     } = this.state;
+    console.log(initialSort, initialSortAscending)
     const { externalChangeSort = false } = this.props;
 
     let tempData = data

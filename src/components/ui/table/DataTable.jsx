@@ -559,7 +559,7 @@ export default class DataTable extends React.Component {
       initialSort,
       initialSortAscending,
     } = this.state;
-    console.log(initialSort, initialSortAscending)
+
     const { externalChangeSort = false } = this.props;
 
     let tempData = data

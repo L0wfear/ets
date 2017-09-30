@@ -189,7 +189,7 @@ class ProgramRegistryFormWrap extends FormWrap {
       global.NOTIFICATION_SYSTEM.notify('Запрос на согласование отправлен', 'success');
       return this.updateVersionList(this.props.element.id, this.state.activeVersionId);
     }).then(() => {
-      console.log('version is apdate');
+      console.log('version is update');
     }).catch(() => {
       global.NOTIFICATION_SYSTEM.notify('Запрос на согласование не отправлен', 'error');
     });

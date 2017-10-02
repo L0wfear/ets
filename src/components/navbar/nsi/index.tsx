@@ -86,11 +86,11 @@ const NsiNavItem: React.SFC<IPropsNsiNavItem> = ({ path }) =>
     <NavDropdown oneOfPermissions={[
       'repair_contractor.list',
       'repair_state_program.list',
-      'repair_object_property.list',
+      'ets_object_properties.list',
     ]} title="Планирование работ по техническому содержанию объектов" id="nav-dropdown-2-2">
       <MenuItem permissions={['repair_contractor.list']} active={path === '/contractor'} href="#/contractor">Справочник Подрядчиков</MenuItem>
       <MenuItem permissions={['repair_state_program.list']} active={path === '/state-program'} href="#/state-program">Справочник государственных программ ремонта</MenuItem>
-      <MenuItem permissions={['repair_object_property.list']} active={path === '/object-property-list'} href="#/object-property-list">Справочник характеристик объектов</MenuItem>
+      <MenuItem permissions={['ets_object_properties.list']} active={path === '/object-property-list'} href="#/object-property-list">Справочник характеристик объектов</MenuItem>
     </NavDropdown>
 
     <NavDropdown oneOfPermissions={['material_consumption_rate.list', 'fuel_consumption_rate.list', 'maintenance_rate.list']} title="Нормативные показатели" id="nav-dropdown-2-3">

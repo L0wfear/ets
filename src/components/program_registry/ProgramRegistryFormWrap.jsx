@@ -249,7 +249,7 @@ class ProgramRegistryFormWrap extends FormWrap {
     });
   }
   closeVersion = () => {
-    const { fromState: { percent = 0 } } = this.state;
+    const { formState: { percent = 0 } } = this.state;
 
     if (percent < 100) {
       global.NOTIFICATION_SYSTEM.notify('Программа ремонта не выполнена', 'warning');

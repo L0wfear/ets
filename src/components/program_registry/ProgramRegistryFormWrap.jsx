@@ -176,7 +176,9 @@ class ProgramRegistryFormWrap extends FormWrap {
       const callback = this.context.flux.getActions('repair').programVersionCreateVersion;
       this.defSendFromState(callback, { program_id: this.props.element.id }).then(() => {
         global.NOTIFICATION_SYSTEM.notify('Версия создана', 'success');
-        this.updateVersionList(this.props.element.id, this.state.activeVersionId);
+        return this.updateVersionList(this.props.element.id, this.state.activeVersionId);
+      }).then(() => {
+        console.log('version is update');
       }).catch(() => {
         global.NOTIFICATION_SYSTEM.notify('Ошибка создания версии', 'error');
       });
@@ -228,6 +230,9 @@ class ProgramRegistryFormWrap extends FormWrap {
     const callback = this.context.flux.getActions('repair').programVersionSendToApply;
     this.defSendFromState(callback).then(() => {
       global.NOTIFICATION_SYSTEM.notify('Версия согласована', 'success');
+      return this.updateVersionList(this.props.element.id, this.state.activeVersionId);
+    }).then(() => {
+      console.log('version is update');
     }).catch(() => {
       global.NOTIFICATION_SYSTEM.notify('Ошибка согласования версии', 'error');
     });
@@ -236,6 +241,9 @@ class ProgramRegistryFormWrap extends FormWrap {
     const callback = this.context.flux.getActions('repair').programVersionSendToCansel;
     this.defSendFromState(callback).then(() => {
       global.NOTIFICATION_SYSTEM.notify('Версия отменена', 'success');
+      return this.updateVersionList(this.props.element.id, this.state.activeVersionId);
+    }).then(() => {
+      console.log('version is update');
     }).catch(() => {
       global.NOTIFICATION_SYSTEM.notify('Ошибка отмены версии', 'error');
     });
@@ -251,6 +259,9 @@ class ProgramRegistryFormWrap extends FormWrap {
     const callback = this.context.flux.getActions('repair').programVersionSendToClose;
     this.defSendFromState(callback).then(() => {
       global.NOTIFICATION_SYSTEM.notify('Версия закрыта', 'success');
+      return this.updateVersionList(this.props.element.id, this.state.activeVersionId);
+    }).then(() => {
+      console.log('version is update');
     }).catch(() => {
       global.NOTIFICATION_SYSTEM.notify('Ошибка закрытия версии', 'error');
     });

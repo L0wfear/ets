@@ -9,7 +9,7 @@ import ObjectPropertyTable from './ObjectPropertyTable.tsx';
 @connectToStores(['repair', 'session'])
 @exportable({ entity: `repair/${REPAIR.objectProperty}` })
 @staticProps({
-  entity: 'repair_object_property',
+  entity: 'ets_object_properties',
   listName: 'objectPropertyList',
   tableComponent: ObjectPropertyTable,
   operations: ['LIST'],

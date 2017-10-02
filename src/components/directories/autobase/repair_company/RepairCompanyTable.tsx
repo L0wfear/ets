@@ -16,7 +16,7 @@ export function tableMeta({
         displayName: 'Организация',
         type: 'string',
         filter: {
-          type: 'string',
+          type: 'multiselect',
         },
       },
       {
@@ -24,7 +24,7 @@ export function tableMeta({
         displayName: 'Наименование ремонтной организации',
         type: 'string',
         filter: {
-          type: 'string',
+          type: 'multiselect',
         },
       },
       {

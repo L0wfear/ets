@@ -103,7 +103,7 @@ export default class UserNotificationForm extends Form {
 
     if (!state.is_read) {
       this.context.flux.getActions('userNotifications').markAsRead(
-        'dec',
+        [state.id],
         [state.id],
         false,
       );
@@ -129,7 +129,7 @@ export default class UserNotificationForm extends Form {
       return {
         employee_fio: state.data.employee_fio,
         employee_id: state.data.employee_id,
-      }
+      };
     }
     console.warn('addTypeDate in userNotificationForm');
     return {};

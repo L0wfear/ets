@@ -60,7 +60,7 @@ export default class UserNotificationStore extends Store {
     };
   }
   handleGetNotifications({ result }) {
-    this.setState({ userNotificationList: result.rows, countNotReadNum: result.rows });
+    this.setState({ userNotificationList: result.rows });
   }
 
   handleGetUserNotificationInfo({ result, setNewCount }) {

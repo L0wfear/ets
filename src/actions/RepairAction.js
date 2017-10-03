@@ -121,7 +121,7 @@ export default class RepairActions extends Actions {
     const { programRegistry } = REPAIR;
     return Repair.path(`${programRegistry}/${id}`).delete(
       {},
-      this.getRepairListByType.bind(null, 'programRegistry'),
+      this.getRepairListByType.bind(null, 'programVersion'),
       'json',
     );
   }

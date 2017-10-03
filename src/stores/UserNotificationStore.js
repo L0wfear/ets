@@ -53,11 +53,30 @@ export default class UserNotificationStore extends Store {
     const userNotificationActions = flux.getActions('userNotifications');
 
     this.register(userNotificationActions.getNotifications, this.handleGetNotifications);
+    this.register(userNotificationActions.getNotificationsPopup, this.handleGetNotificationsPopup);
+    this.register(userNotificationActions.decNotificationsPopup, this.handleDecNotificationsPopup);
     this.register(userNotificationActions.getUserNotificationInfo, this.handleGetUserNotificationInfo);
     this.register(userNotificationActions.changesUserNotificationsCount, this.handleChangesUserNotificationsCount)
     this.state = {
+      notificationPopupList: [],
       userNotificationList: [],
     };
+  }
+  handleGetNotificationsPopup({ result: { rows = [] } }) {
+    const notificationPopupList = rows;
+
+    this.setState({
+      notificationPopupList,
+      notificationPopupLast: notificationPopupList.slice(-1),
+    });
+  }
+  handleDecNotificationsPopup() {
+    const notificationPopupList = [...this.state.notificationPopupList].slice(0, -1);
+    const notificationPopupLast = notificationPopupList.slice(-1);
+    this.setState({
+      notificationPopupList,
+      notificationPopupLast,
+    });
   }
   handleGetNotifications({ result }) {
     this.setState({ userNotificationList: result.rows });

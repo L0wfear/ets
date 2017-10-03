@@ -13,7 +13,7 @@ const TYPE_CODE = {
     'tech_maintenance',
     'repair',
   ],
-  carT: [ 'tech_inspection' ],
+  carT: ['tech_inspection'],
   med: ['medical_certificate'],
 };
 
@@ -131,12 +131,16 @@ export default class UserNotificationForm extends Form {
         employee_id: state.data.employee_id,
       };
     }
+    if (type === 'order') {
+      return {};
+    }
     console.warn('addTypeDate in userNotificationForm');
     return {};
   }
   render() {
     const state = this.props.formState;
     const NotificationDesc = notificationComponents[state.type_code] || 'div';
+
     return (
       <Modal {...this.props} backdrop="static">
         <Modal.Header closeButton>

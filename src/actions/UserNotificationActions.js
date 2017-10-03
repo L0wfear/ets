@@ -9,6 +9,12 @@ export default class UserNotificationActions extends Actions {
   getNotifications(payload = {}) {
     return UserNotificationService.get(payload);
   }
+  getNotificationsPopup(payload = {}) {
+    return UserNotificationService.get(payload);
+  }
+  decNotificationsPopup(read_ids) {
+    return this.markAsRead(read_ids, false);
+  }
   async getUserNotificationInfo(props) {
     const data = await UserNotificationInfoService.get();
     return {

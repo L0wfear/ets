@@ -223,6 +223,8 @@ class RouteCreating extends Component {
   }
 
   render() {
+    const [errors = []] = [this.props.formErrors];
+
     const { route = {} } = this.props;
     const { bridgesPolys = {} } = this.state;
     const {
@@ -271,6 +273,7 @@ class RouteCreating extends Component {
                   options={ODHS}
                   value={object_list.map(o => o.object_id).join(',')}
                   onChange={this.onGeozoneSelectChange.bind(this, 'odh')}
+                  error={errors.object_list}
                 />
               </Div>
               <Div hidden={route.type !== 'simple_dt'} className="odh-container">
@@ -282,6 +285,7 @@ class RouteCreating extends Component {
                   options={DTS}
                   value={object_list.map(o => o.object_id).join(',')}
                   onChange={this.onGeozoneSelectChange.bind(this, 'dt')}
+                  error={errors.object_list}
                 />
               </Div>
               <Div hidden={route.type === 'points'}>

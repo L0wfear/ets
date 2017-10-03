@@ -18,6 +18,8 @@ import { FluxContext, HistoryContext } from 'utils/decorators';
 import PERMISSIONS from 'constants/permissions';
 import enhanceWithPermissions from './util/RequirePermissions.jsx';
 import defaultUser from '../assets/images/avatar-default.png';
+import getLoginPage from './loginPage.tsx';
+import NotificationModal from '../components/modal_notification/NotificationFaxogramm.tsx';
 
 import MissionsNavItem from './navbar/MissionsNavItem';
 import NsiNavItem from './navbar/nsi';
@@ -111,7 +113,7 @@ export default class MainPage extends React.Component {
   showFormTp = () => this.setState({ showFormTp: true });
 
   hideFormRule = () => {
-    this.context.history.pushState(null, '/monitor');
+    this.context.history.pushState(null, this.props.location.pathname.split('/').slice(0, -1).join('/'));
   }
 
   renderEmptyHeader() {
@@ -194,16 +196,7 @@ export default class MainPage extends React.Component {
   render() {
     const path = this.props.location.pathname;
     if (path === '/login') {
-      return (
-        <div className="loginpage">
-          <div className="wrap">
-            {this.props.children}
-          </div>
-          <span style={{ position: 'absolute', right: 8, bottom: 5, opacity: 0.2 }}>
-            {VERSION_DESCRIPTION}
-          </span>
-        </div>
-      );
+      return getLoginPage(this.props);
     }
     return (
       <div className="app">
@@ -220,6 +213,7 @@ export default class MainPage extends React.Component {
           />
           {this.props.children}
           <LoadingOverlay main />
+          {!path.includes('showFormRule') && <NotificationModal />}
         </div>
 
         <div className="app-footer">

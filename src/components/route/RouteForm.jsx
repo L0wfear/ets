@@ -225,6 +225,7 @@ export default class RouteForm extends Form {
                   route={state}
                   manual={this.state.vector || state.type === 'points'}
                   onChange={this.handleChange}
+                  formErrors={errors}
                 />
               </Col>
             </Div>

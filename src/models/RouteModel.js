@@ -16,7 +16,7 @@ export const routeSchema = {
       key: 'object_list',
       title: 'Геоданные маршрута',
       type: 'array',
-      required: false,
+      required: true,
     },
     {
       key: 'draw_object_list',

@@ -12,10 +12,14 @@ import ModalBody from 'components/ui/Modal';
 import { connectToStores } from 'utils/decorators';
 import Div from 'components/ui/Div.jsx';
 import Field, { ExtField } from 'components/ui/Field.jsx';
+import { loadingOverlay } from 'components/ui/LoadingOverlay';
+import { FileField } from 'components/ui/input/fields';
+
 import Form from 'components/compositions/Form.jsx';
 
 import MakeVersionFrom from './WorkForm/MakeVersionFrom.tsx';
 
+@loadingOverlay
 @connectToStores(['repair', 'objects'])
 export default class ProgramRegistryForm extends Form {
   state = {
@@ -283,6 +287,19 @@ export default class ProgramRegistryForm extends Form {
                 />
               </Col>
             </Row>
+            <Row>
+              <Col md={12}>
+                <FileField
+                  label="Файл"
+                  value={state.files}
+                  error={errors.files}
+                  onChange={this.handleChange}
+                  boundKeys={['files']}
+                  isLoading={this.props.onOverlayLoading}
+                  disabled={!isPermitted || !isPermittedByStatus || !is_active}
+                />
+              </Col>
+            </Row>
           </Div>
           <ModalBody />
           <Modal.Footer>
@@ -290,11 +307,10 @@ export default class ProgramRegistryForm extends Form {
               <Col md={12}>
                 {[
                   this.getButton(0, this.props.handleExportVersion, <Glyphicon glyph="download-alt" />, false && permissionForButton.exportPDF),
-                  this.getButton(1, this.props.loadFile, <Glyphicon glyph="file" />, permissionForButton.downloadFile),
-                  this.getButton(2, this.showMakeVersionForm, 'Создать версию', permissionForButton.createVersion, this.props.canSave && state.status === 'accepted' && mainButtonEnable),
-                  this.getButton(3, this.sendToApply, 'Отправить на согласование', permissionForButton.sendToApply, this.props.canSave && (state.status === 'draft' || state.status === 'rejected') && mainButtonEnable),
-                  this.getButton(4, this.props.onSubmit, 'Сохранить', permissionForButton.onSubmit, this.props.canSave && (state.status === 'draft' || state.status === 'rejected') && mainButtonEnable),
-                  this.getButton(5, this.props.onSubmitAndContinue, 'Сохранить и продолжить', permissionForButton.onSubmitAndContinue, this.props.canSave && (state.status === 'draft' || state.status === 'rejected') && mainButtonEnable),
+                  this.getButton(1, this.showMakeVersionForm, 'Создать версию', permissionForButton.createVersion, this.props.canSave && state.status === 'accepted' && mainButtonEnable),
+                  this.getButton(2, this.sendToApply, 'Отправить на согласование', permissionForButton.sendToApply, this.props.canSave && (state.status === 'draft' || state.status === 'rejected') && mainButtonEnable),
+                  this.getButton(3, this.props.onSubmit, 'Сохранить', permissionForButton.onSubmit, this.props.canSave && (state.status === 'draft' || state.status === 'rejected') && mainButtonEnable),
+                  this.getButton(4, this.props.onSubmitAndContinue, 'Сохранить и продолжить', permissionForButton.onSubmitAndContinue, this.props.canSave && (state.status === 'draft' || state.status === 'rejected') && mainButtonEnable),
                 ]}
               </Col>
             </Row>

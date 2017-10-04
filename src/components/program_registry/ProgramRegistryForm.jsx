@@ -280,6 +280,7 @@ export default class ProgramRegistryForm extends Form {
             <Row>
               <Col md={12}>
                 <FileField
+                  multiple
                   label="Файл"
                   value={state.files}
                   error={errors.files}

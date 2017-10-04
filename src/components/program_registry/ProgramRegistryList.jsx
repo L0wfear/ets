@@ -4,12 +4,6 @@ import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import ProgramRegistryTable from './ProgramRegistryTable.tsx';
 import ProgramRegistryFormWrap from './ProgramRegistryFormWrap';
 
-
-const statusForCancelRemove = [
-  'draft',
-  'rejected',
-];
-
 @connectToStores(['repair', 'session'])
 @exportable({ entity: `repair/${REPAIR.programRegistry}` })
 @staticProps({
@@ -18,6 +12,7 @@ const statusForCancelRemove = [
   tableComponent: ProgramRegistryTable,
   formComponent: ProgramRegistryFormWrap,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
+  selectField: 'version_id',
 })
 export default class ProgramRegistryList extends CheckableElementsList {
   constructor(props, context) {
@@ -28,28 +23,41 @@ export default class ProgramRegistryList extends CheckableElementsList {
   /**
    * @override
    */
-  removeElement() {
-    if (this.state.selectedElement === null) {
+  selectElement = ({ props }) => {
+    const DOUBLECLICK_TIMEOUT = 300;
+    function onDoubleClick() {
+      return this.setState({
+        showForm: true,
+      });
+    }
+
+    // TODO реализовать вызов ошибки в случае пустого айдишника
+    const id = props && props.data ? props.data[this.selectField] : null;
+
+    if (props.fromKey) {
+      const selectedElement = find(this.state.elementsList, el => el[this.selectField] === id);
+      if (selectedElement) {
+        this.setState({ selectedElement });
+      }
       return;
     }
 
-    const id = this.state.selectedElement[this.selectField];
-    if (!statusForCancelRemove.includes(this.state.selectedElement.status)) {
-      global.NOTIFICATION_SYSTEM.notify('Удаление запрещено (см. статус)', 'error');
-      return;
-    }
+    this.clicks += 1;
 
-    confirmDialog({
-      title: 'Внимание',
-      body: 'Вы уверены, что хотите удалить выбранный элемент?',
-    })
-    .then(() => {
-      this.removeElementAction(id);
-      this.setState({ selectedElement: null });
-    })
-    .catch(() => {});
+    if (this.clicks === 1) {
+      const selectedElement = this.state.elementsList.find(el => el[this.selectField] === id);
+      this.setState({ selectedElement });
+      setTimeout(() => {
+        // В случае если за DOUBLECLICK_TIMEOUT (мс) кликнули по одному и тому же элементу больше 1 раза
+        if (this.clicks !== 1) {
+          if (this.state.selectedElement && id === this.state.selectedElement[this.selectField] && this.state.readPermission) {
+            onDoubleClick.call(this);
+          }
+        }
+        this.clicks = 0;
+      }, DOUBLECLICK_TIMEOUT);
+    }
   }
-
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;

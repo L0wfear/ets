@@ -19,13 +19,19 @@ import Form from 'components/compositions/Form.jsx';
 
 import MakeVersionFrom from './WorkForm/MakeVersionFrom.tsx';
 
+const TextMakeVersion = (
+  <Row>
+    <Col md={12} style={{ marginBottom: 5 }}>После создания новой версии программы ремонта, текущая версия станет недействующей и недоступной для ввода данных.</Col>
+    <Col md={12} style={{ marginBottom: 5 }}>Если Вы уверены, что хотите продолжить, то необходимо приложить скан-копию документа ,на основании которого создается новая версия.</Col>
+  </Row>
+)
+
 @loadingOverlay
 @connectToStores(['repair', 'objects'])
 export default class ProgramRegistryForm extends Form {
   state = {
     makeVersionIsVisible: false,
     mainButtonEnable: true,
-    addFileModalShow: false,
   }
   componentDidMount() {
     const { flux } = this.context;
@@ -41,10 +47,10 @@ export default class ProgramRegistryForm extends Form {
 
   handleSubmitWrap = (...arg) => this.handleSubmit(...arg);
 
-  showMakeVersionForm = () => this.setState({ makeVersionIsVisible: true })
-  showAddFileModal = () => this.setState({ addFileModalShow: true });
-  hideAddFileModal = () => this.setState({ addFileModalShow: false });
-  
+  showMakeVersionForm = () => {
+    this.setState({ makeVersionIsVisible: true });
+  }
+
   hideMakeVersionForm = () => {
     this.setState({ makeVersionIsVisible: false });
     this.handleChange('files', undefined);
@@ -82,7 +88,6 @@ export default class ProgramRegistryForm extends Form {
     const {
       makeVersionIsVisible = false,
       mainButtonEnable = true,
-      addFileModalShow = false,
     } = this.state;
 
     const {
@@ -90,34 +95,20 @@ export default class ProgramRegistryForm extends Form {
     } = state;
     const title = 'Создание программы ремонта';
 
-    let ModalFileProps = false;
-    if (makeVersionIsVisible || addFileModalShow) {
-      if (addFileModalShow) {
-        ModalFileProps = {
-          title: 'Прикреплённый файл',
-          show: addFileModalShow,
-          state,
-          onHide: this.hideAddFileModal,
-          onSubmit: this.hideAddFileModal,
-          handleChange: this.handleChange,
-          btName: 'Прикрепить',
-        };
-      } else if (makeVersionIsVisible){
-        ModalFileProps = {
-          title: 'Создание новой версии',
-          show: makeVersionIsVisible,
-          state,
-          onHide: this.hideMakeVersionForm,
-          onSubmit: this.handleMakeVersionClick,
-          handleChange: this.handleChange,
-          btName: 'Загрузить файл и создать версию',
-        };
-      }
-    }
-
     return (
       <div>
-        {ModalFileProps && <MakeVersionFrom {...ModalFileProps} />}
+        {makeVersionIsVisible &&
+          <MakeVersionFrom
+            title={'Создание новой версии'}
+            TextBody={TextMakeVersion}
+            show={makeVersionIsVisible}
+            state={state}
+            onHide={this.hideMakeVersionForm}
+            onSubmit={this.handleMakeVersionClick}
+            handleChange={this.handleChange}
+            btName={'Загрузить файл и создать версию'}
+          />
+        }
         <Modal {...this.props} show={this.props.show && !makeVersionIsVisible} bsSize="lg" backdrop="static">
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>

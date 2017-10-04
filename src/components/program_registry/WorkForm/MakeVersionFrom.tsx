@@ -17,6 +17,7 @@ class MakeFileModal extends React.Component<any, any> {
   }
   render() {
     const canSave: boolean = this.getCanSave(this.props);
+    const { TextBody } = this.props;
 
     return (
       <RB.Modal {...this.props} backdrop="static">
@@ -24,6 +25,7 @@ class MakeFileModal extends React.Component<any, any> {
           <RB.Modal.Title id="contained-modal-title-lg">{this.props.title}</RB.Modal.Title>
         </RB.Modal.Header>
         <Div style={{ padding: '0px 15px' }}>
+          {TextBody}
           <RB.Row>
             <RB.Col md={12}>
               <FileField

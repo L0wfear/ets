@@ -50,7 +50,6 @@ class ProgramRegistryFormWrap extends FormWrap {
       fromCreating: false,
       versionOptions: [],
       activeVersion: 0,
-      showFormMakeVersion: false,
       permissionForButton,
     };
   }
@@ -164,27 +163,18 @@ class ProgramRegistryFormWrap extends FormWrap {
   loadFile = () => {
     global.NOTIFICATION_SYSTEM.notify('Не реализовано', 'error');
   }
-  makeVersion = () =>
-    confirmDialog({
-      title: 'Внимание',
-      body: 'После создания новой версии программы ремонта, текущая версия станет недействующей и недоступной для ввода данных. Вы уверены, что хотите продолжить?',
-    })
-    .then(() => {
-      this.setState({
-        showFormMakeVersion: true,
-      });
-      const callback = this.context.flux.getActions('repair').programVersionCreateVersion;
-      this.defSendFromState(callback, { program_id: this.props.element.id }).then(() => {
-        global.NOTIFICATION_SYSTEM.notify('Версия создана', 'success');
-        return this.updateVersionList(this.props.element.id, this.state.activeVersionId);
-      }).then(() => {
-        console.log('version is update');
-      }).catch(() => {
-        global.NOTIFICATION_SYSTEM.notify('Ошибка создания версии', 'error');
-      });
+  makeVersion = () => {
+    const callback = this.context.flux.getActions('repair').programVersionCreateVersion;
+
+    return this.defSendFromState(callback, { program_id: this.props.element.id }).then(() => {
+      global.NOTIFICATION_SYSTEM.notify('Версия создана', 'success');
+      return this.updateVersionList(this.props.element.id, this.state.activeVersionId);
+    }).then(() => {
+      console.log('version is update');
     }).catch(() => {
-      global.NOTIFICATION_SYSTEM.notify('Отмена создания версии', 'success');
+      global.NOTIFICATION_SYSTEM.notify('Ошибка создания версии', 'error');
     });
+  }
 
   sendToApply = () => {
     const callback = this.context.flux.getActions('repair').programVersionSendToReview;
@@ -311,7 +301,6 @@ class ProgramRegistryFormWrap extends FormWrap {
 
   renderFrom() {
     const {
-      entity,
       isPermitted = false,
     } = this.props;
     const {
@@ -322,11 +311,8 @@ class ProgramRegistryFormWrap extends FormWrap {
       permissionForButton = {},
     } = this.state;
 
-    console.log(isPermitted)
-
     const canSave = isPermitted && this.state.canSave && saveButtonEnability;
     const isPermittedByStatus = this.checkIsPermittedByStatus(this.state.formState.status);
-    console.log('---', entity)
     
     return (
       <ProgramRegistryForm

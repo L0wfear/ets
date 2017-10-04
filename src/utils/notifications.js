@@ -4,7 +4,7 @@ export const loginErrorNotification = {
   level: 'error',
   dismissible: false,
   position: 'tc',
-  autoDismiss: '',
+  autoDismiss: 0,
   action: {
     label: 'Перейти на страницу авторизации',
     callback() {
@@ -20,7 +20,7 @@ export const missionsCreationSuccessNotification = {
   level: 'success',
   dismissible: false,
   position: 'tc',
-  autoDismiss: '',
+  autoDismiss: 0,
 };
 
 export function getErrorNotification(error) {
@@ -30,7 +30,7 @@ export function getErrorNotification(error) {
     level: 'error',
     dismissible: false,
     position: 'tc',
-    autoDismiss: '',
+    autoDismiss: 0,
     action: {
       label: 'Перезагрузить',
       callback: () => window.location.reload(),
@@ -45,7 +45,7 @@ export function getServerErrorNotification(errorService) {
     level: 'error',
     dismissible: true,
     position: 'tr',
-    autoDismiss: '',
+    autoDismiss: 0,
     action: {
       label: 'Перезагрузить страницу',
       callback: () => window.location.reload(),
@@ -60,7 +60,7 @@ export function getReportNotReadyNotification2() {
     level: 'info',
     dismissible: true,
     position: 'tc',
-    autoDismiss: '',
+    autoDismiss: 0,
   };
 }
 
@@ -70,7 +70,7 @@ const missionCreateSuccessNotification = {
   level: 'success',
   dismissible: false,
   position: 'tc',
-  autoDismiss: '',
+  autoDismiss: 0,
 };
 
 const missionsByCarAndDateUpdateNotification = {
@@ -79,7 +79,7 @@ const missionsByCarAndDateUpdateNotification = {
   level: 'info',
   dismissible: true,
   position: 'tr',
-  autoDismiss: '',
+  autoDismiss: 0,
 };
 
 export const saveDataSuccessNotification = {
@@ -88,7 +88,7 @@ export const saveDataSuccessNotification = {
   level: 'success',
   dismissible: true,
   position: 'tc',
-  autoDismiss: '',
+  autoDismiss: 0,
 };
 
 export const reassignMissionSuccessNotification = {
@@ -97,7 +97,7 @@ export const reassignMissionSuccessNotification = {
   level: 'success',
   dismissible: true,
   position: 'tc',
-  autoDismiss: '',
+  autoDismiss: 0,
 };
 
 export const notifications = {
@@ -113,7 +113,7 @@ export function getWarningNotification(message) {
     level: 'warning',
     dismissible: true,
     position: 'tr',
-    autoDismiss: '',
+    autoDismiss: 0,
   };
 }
 

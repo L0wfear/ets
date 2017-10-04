@@ -182,6 +182,8 @@ class ProgramRegistryFormWrap extends FormWrap {
       }).catch(() => {
         global.NOTIFICATION_SYSTEM.notify('Ошибка создания версии', 'error');
       });
+    }).catch(() => {
+      global.NOTIFICATION_SYSTEM.notify('Отмена создания версии', 'success');
     });
 
   sendToApply = () => {

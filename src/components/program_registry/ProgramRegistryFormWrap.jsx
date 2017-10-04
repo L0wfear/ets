@@ -322,16 +322,18 @@ class ProgramRegistryFormWrap extends FormWrap {
       permissionForButton = {},
     } = this.state;
 
+    console.log(isPermitted)
+
     const canSave = isPermitted && this.state.canSave && saveButtonEnability;
     const isPermittedByStatus = this.checkIsPermittedByStatus(this.state.formState.status);
-
+    console.log('---', entity)
+    
     return (
       <ProgramRegistryForm
         formState={this.state.formState}
         formErrors={this.state.formErrors}
         permissions={['repair_program_version.update']}
         addPermissionProp
-        isPermitted={isPermitted}
         isPermittedByStatus={isPermittedByStatus}
         canSave={canSave}
         handleFormChange={this.handleFormStateChangeWrap}

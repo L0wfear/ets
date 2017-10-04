@@ -131,7 +131,6 @@ export default class ProgramRegistryForm extends Form {
                   options={versionOptions}
                   value={activeVersionId}
                   onChange={this.props.changeVersion}
-                  disabled={!isPermitted}
                   clearable={false}
                 />
               </Col>

@@ -24,6 +24,12 @@ export default class MissionFormWrap extends FormWrap {
       if (mission.structure_id == null) {
         mission.structure_id = this.context.flux.getStore('session').getCurrentUser().structure_id;
       }
+      if (props.fromFaxogrammMissionForm) {
+        mission.mission_source_id = 1;
+        mission.date_start = props.externalData.date_start;
+        mission.date_end = props.externalData.date_end;
+        mission.passes_count = props.externalData.passes_count;
+      }
       const formErrors = this.validate(mission, {});
       this.setState({
         formState: mission,
@@ -90,6 +96,10 @@ export default class MissionFormWrap extends FormWrap {
       fromWaybill: this.props.fromWaybill,
       waybillStartDate: this.props.waybillStartDate,
       waybillEndDate: this.props.waybillEndDate,
+      disabledProps: this.props.disabledProps || {},
+      externalData: this.props.externalData || {},
+      externalHanldeChanges: this.props.externalHanldeChanges || {},
+      fromFaxogrammMissionForm: this.props.fromFaxogrammMissionForm || false,
     };
 
     return (

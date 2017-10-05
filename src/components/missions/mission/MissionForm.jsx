@@ -69,6 +69,10 @@ export class MissionForm extends Form {
       this.setState({ carsList });
     }
 
+    if (this.props.fromFaxogrammMissionForm) {
+      this.handleChange('passes_count', this.props.externalHanldeChanges.handleGetPassesCount(v));
+    }
+
     try {
       const routesList = await this.context.flux.getActions('routes')
                                               .getRoutesByTechnicalOperation(v);
@@ -102,6 +106,8 @@ export class MissionForm extends Form {
 
     let { selectedRoute } = this.state;
     let { technicalOperationsList, routesList, carsList } = this.props;
+    let TECH_OPERATIONS = [];
+    const payloadForGetMission = {};
 
     if (!isEmpty(mission.route_id)) {
       selectedRoute = await routesActions.getRouteById(mission.route_id, false);
@@ -115,12 +121,20 @@ export class MissionForm extends Form {
       routesList = await routesActions.getRoutesByMissionId(mission.id, isTemplate);
     }
 
-    technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsByCarId(mission.car_id);
-    missionsActions.getMissionSources();
-
+    if (!this.props.fromFaxogrammMissionForm) {
+      technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsByCarId(mission.car_id);
+      TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
+    } else {
+      TECH_OPERATIONS = this.props.externalData.TECH_OPERATIONS;
+      payloadForGetMission.faxogramm_only = true;
+    }
+    await missionsActions.getMissionSources(payloadForGetMission);
+    if (this.props.fromFaxogrammMissionForm) {
+      this.handleChange('mission_source_id', this.props.missionSourcesList[0].id);
+    }
     this.setState({
       carsList,
-      technicalOperationsList,
+      TECH_OPERATIONS,
       routesList,
       selectedRoute,
     });
@@ -183,10 +197,13 @@ export class MissionForm extends Form {
     const state = this.props.formState;
     const errors = this.props.formErrors;
 
-    const { missionSourcesList = [] } = this.props;
-    const { technicalOperationsList = [], routesList = [], carsList = [] } = this.state;
+    const {
+      missionSourcesList = [],
+      disabledProps = {},
+      fromFaxogrammMissionForm = false,
+    } = this.props;
+    const { TECH_OPERATIONS = [], routesList = [], carsList = [] } = this.state;
 
-    const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
     const MISSION_SOURCES = missionSourcesList.map(({ id, name }) => ({ value: id, label: name }));
     const ASSIGN_OPTIONS = [
       { value: 'assign_to_active', label: 'Добавить в активный ПЛ' },
@@ -245,7 +262,7 @@ export class MissionForm extends Form {
       title = (
         <div>
           <span>Создание задания</span>
-          <span style={{ marginLeft: 10, color: 'red' }}>Данное задание не будет учитываться по факсограмме</span>
+          { !fromFaxogrammMissionForm && <span style={{ marginLeft: 10, color: 'red' }}>Данное задание не будет учитываться по факсограмме</span>}
         </div>);
     }
 
@@ -287,7 +304,7 @@ export class MissionForm extends Form {
                   label="Время выполнения:"
                   error={errors.date_start}
                   date={state.date_start}
-                  disabled={IS_DISPLAY}
+                  disabled={IS_DISPLAY || disabledProps.date_start}
                   min={this.props.fromWaybill && this.props.waybillStartDate ? this.props.waybillStartDate : null}
                   max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
                   onChange={this.handleChange.bind(this, 'date_start')}
@@ -301,7 +318,7 @@ export class MissionForm extends Form {
                   label=""
                   error={errors.date_end}
                   date={state.date_end}
-                  disabled={IS_DISPLAY}
+                  disabled={IS_DISPLAY || disabledProps.date_end}
                   min={state.date_start}
                   max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
                   onChange={this.handleChange.bind(this, 'date_end')}
@@ -316,7 +333,7 @@ export class MissionForm extends Form {
                 type="number"
                 label="Кол-во проходов"
                 error={errors.passes_count}
-                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY}
+                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || disabledProps.passes_count}
                 value={state.passes_count}
                 onChange={this.handleChange.bind(this, 'passes_count')}
                 min={0}
@@ -327,9 +344,9 @@ export class MissionForm extends Form {
                 type="select"
                 label="Источник получения задания"
                 error={errors.mission_source_id}
-                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY}
+                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || disabledProps.mission_source_id}
                 options={MISSION_SOURCES}
-                value={state.mission_source_id}
+                value={state.mission_source_id }
                 onChange={this.handleChange.bind(this, 'mission_source_id')}
               />
               { IS_CREATING && <span style={{ opacity: 0.5 }}>{'Задания на основе факсограмм необходимо создавать во вкладке "НСИ"-"Реестр факсограмм".'}</span> }

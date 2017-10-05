@@ -101,8 +101,8 @@ export default class MissionsActions extends Actions {
     return MissionService.get(payload);
   }
 
-  getMissionSources() {
-    return MissionSourceService.get();
+  getMissionSources(payload) {
+    return MissionSourceService.get(payload);
   }
 
   createMission(mission, callback) {

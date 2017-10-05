@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Button, Col } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import EtsSelect from 'components/ui/input/EtsSelect';
 import Div from 'components/ui/Div.jsx';
@@ -17,23 +17,6 @@ const disabledProps = {
   mission_source_id: true,
 };
 
-const mosk_technical_operations = [
-  {
-    id: 1,
-    tk_operation_name: 'Vova3',
-    num_exec: 3,
-  },
-  {
-    id: 2,
-    tk_operation_name: 'Vova2',
-    num_exec: 2,
-  },
-  {
-    id: 3,
-    tk_operation_name: 'Evg1',
-    num_exec: 1,
-  },
-];
 
 class FaxogrammMissionsForm extends Form {
 

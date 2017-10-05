@@ -1600,12 +1600,19 @@ body {
 }
 
 .ets-page-wrap {
-  padding: 20px /*30px;*/
+  padding: 20px; /*30px;*/
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
 }
+
 .some-header {
   font-size: 18px;
-  line-height: 40px;
+  display: flex;
+  justify-content: space-between;
 }
+
 
 .waybills-buttons {
   float:right;
@@ -1844,10 +1851,17 @@ body {
 }
 
 .griddle-container {
+  height: 75vh;
   border: none !important;
   overflow-x: auto;
   width: 100%;
   margin-bottom: 16px;
+
+  thead {
+    span.glyphicon.glyphicon-info-sign {
+      margin-left: 5px;
+    }
+  }
 }
 
 .filter-datepicker {
@@ -2002,7 +2016,7 @@ body {
     border-collapse: separate;
     border-spacing: 2px;
     table-layout: auto !important;
-
+  
     box-shadow: rgba(0,2,4,0.15) 0 1px 6px inset; // хз как сделать тень над background ячеек (td)
     //border: 1px solid #d9dada;
 
@@ -3123,13 +3137,6 @@ div.none {
   }
 }
 
-.griddle-container {
-  thead {
-    span.glyphicon.glyphicon-info-sign {
-      margin-left: 5px;
-    }
-  }
-}
 
 .textarea-field textarea{
   resize: vertical;

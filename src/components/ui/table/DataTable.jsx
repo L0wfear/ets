@@ -636,7 +636,7 @@ export default class DataTable extends React.Component {
     return (
       <Div className={tableClassName}>
         <Div className="some-header" hidden={noHeader}>
-          <div style={{ display: 'flex', 'justifyContent': 'space-between' }}>
+          
             <div>
               {noTitle ? '' : title}
             </div>
@@ -669,7 +669,7 @@ export default class DataTable extends React.Component {
               }
               {this.props.children}
             </div>
-          </div>
+          
           {!noFilter &&
             <Filter
               show={this.state.filterModalIsOpen}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Col } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import EtsSelect from 'components/ui/input/EtsSelect';
 import Div from 'components/ui/Div.jsx';
@@ -7,18 +7,64 @@ import Form from 'components/compositions/Form.jsx';
 import _ from 'lodash';
 import connectToStores from 'flummox/connect';
 import MissionTemplatesJournal from 'components/missions/mission_template/MissionTemplatesJournal.jsx';
+import MissionFormWrap from 'components/missions/mission/MissionFormWrap.jsx';
+import './main.scss';
+
+const disabledProps = {
+  date_start: true,
+  date_end: true,
+  passes_count: true,
+  mission_source_id: true,
+};
+
+const mosk_technical_operations = [
+  {
+    id: 1,
+    tk_operation_name: 'Vova3',
+    num_exec: 3,
+  },
+  {
+    id: 2,
+    tk_operation_name: 'Vova2',
+    num_exec: 2,
+  },
+  {
+    id: 3,
+    tk_operation_name: 'Evg1',
+    num_exec: 1,
+  },
+];
 
 class FaxogrammMissionsForm extends Form {
 
   constructor(props) {
     super(props);
+    const { formState: { technical_operations, order_date, order_date_to } } = props;
+    const technical_operations_reduce = technical_operations.reduce((newObj, d) => {
+      if (!newObj[d.id]) {
+        newObj[d.id] = d;
+      }
+      return newObj;
+    }, {});
 
     this.state = {
+      showFormCreateMission: false,
+      externalData: {
+        date_start: order_date,
+        date_end: order_date_to,
+        TECH_OPERATIONS: Object.values(technical_operations_reduce).map(({ id, tk_operation_name, num_exec }) => ({ value: id, label: tk_operation_name, passes_count: num_exec })),
+      },
     };
   }
-
+  handleClickOnCM = () => this.setState({ showFormCreateMission: true });
+  onHideCM = () => this.setState({ showFormCreateMission: false });
+  externalHanldeChanges = {
+    handleGetPassesCount: id => this.state.externalData.TECH_OPERATIONS.find(d => d.value === id).passes_count,
+  }
   render() {
     const state = this.props.formState;
+    const { externalData = {} } = this.state;
+    const { showFormCreateMission = false } = this.state;
     const payload = { faxogramm_id: state.id };
     const ASSIGN_OPTIONS = [
       { value: 'assign_to_active', label: 'Добавить в активный ПЛ' },
@@ -34,6 +80,9 @@ class FaxogrammMissionsForm extends Form {
         </Modal.Header>
 
         <ModalBody>
+          <div className="btn-container-faxogramms-create-mission">
+            <Button onClick={this.handleClickOnCM}>Создать задание без шаблона</Button>
+          </div>
           <MissionTemplatesJournal
             payload={payload}
             renderOnly
@@ -55,6 +104,15 @@ class FaxogrammMissionsForm extends Form {
           </Div>
           <Button disabled={!state.missionJournalState || !_.keys(state.missionJournalState.checkedElements).length} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
         </Modal.Footer>
+        <MissionFormWrap
+          fromFaxogrammMissionForm
+          disabledProps={disabledProps}
+          showForm={showFormCreateMission}
+          onFormHide={this.onHideCM}
+          element={null}
+          externalData={externalData}
+          externalHanldeChanges={this.externalHanldeChanges}
+        />
 
       </Modal>
     );

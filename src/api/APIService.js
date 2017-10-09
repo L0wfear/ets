@@ -1,7 +1,7 @@
 import { getWarningNotification } from 'utils/notifications';
 import RequestWarningError from 'utils/errors/RequestWarningError';
 import urljoin from 'url-join';
-import { getJSON, postJSON, deleteJSON, putJSON } from './adapter.js';
+import { getJSON, postJSON, deleteJSON, putJSON, patchJSON } from './adapter.js';
 import { getBlob, postBlob } from './adapterBlob.js';
 import { mocks } from './mocks';
 
@@ -93,6 +93,13 @@ export default class APIService {
     const url = this.url;
     this.resetPath();
     return putJSON(url, payload, type).then(r => this.processResponse(r, callback));
+  }
+
+  patch(payload = {}, callback, type = 'form') {
+    this.log('PATCH');
+    const url = this.url;
+    this.resetPath();
+    return patchJSON(url, payload, type).then(r => this.processResponse(r, callback));
   }
 
   delete(payload = {}, callback, type = 'form') {

@@ -111,6 +111,10 @@ export function putJSON(url, data, type = 'form') {
   return httpMethod(url, data, 'PUT', type);
 }
 
+export function patchJSON(url, data, type = 'form') {
+  return httpMethod(url, data, 'PATCH', type);
+}
+
 export function deleteJSON(url, data, type = 'form') {
   return httpMethod(url, data, 'DELETE', type);
 }

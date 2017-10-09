@@ -150,7 +150,7 @@ export default class RepairActions extends Actions {
     };
 
     const path = parsePutPath(programVersion, 'put', formState);
-    return Repair.path(path).put(
+    return Repair.path(path).patch(
       payload,
       this.getRepairListByType.bind(null, 'programRegistry'),
       'json',

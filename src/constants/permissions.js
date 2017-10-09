@@ -268,7 +268,6 @@ const PERMISSIONS = {
       'update': 'autobase_company.update',
       'delete': 'autobase_company.delete',
     },
-    
   },
   repair: {
     'list': 'repair_program.list',

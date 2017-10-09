@@ -55,8 +55,9 @@ export default class ProgramRegistryForm extends Form {
     this.setState({ makeVersionIsVisible: false });
     this.handleChange('files', undefined);
   }
+
   handleMakeVersionClick = () => {
-    this.props.makeVersion().then(() => this.hideMakeVersionForm());
+    this.props.makeVersion().then(() => this.setState({ makeVersionIsVisible: false }));
   }
   sendToApply = () => {
     this.setState({ mainButtonEnable: false });

@@ -89,12 +89,14 @@ class FaxogrammMissionsFormWrap extends FormWrap {
           } catch (er) {
             cancel = true;
           }
+          const { interval = [getToday9am(), getTomorrow9am()] } = state;
+
           if (!cancel) {
             const newPayload = {
               mission_source_id: '4',
               faxogramm_id: payload.id,
-              date_start: state.interval[0],
-              date_end: state.interval[1],
+              date_start: interval[0],
+              date_end: interval[1],
               assign_to_waybill: payload.assign_to_waybill,
             };
             await createMissions(element, newPayload);

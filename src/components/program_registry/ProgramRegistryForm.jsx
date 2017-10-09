@@ -24,7 +24,7 @@ const TextMakeVersion = (
     <Col md={12} style={{ marginBottom: 5 }}>После создания новой версии программы ремонта, текущая версия станет недействующей и недоступной для ввода данных.</Col>
     <Col md={12} style={{ marginBottom: 5 }}>Если Вы уверены, что хотите продолжить, то необходимо приложить скан-копию документа, на основании которого создается новая версия.</Col>
   </Row>
-)
+);
 
 @loadingOverlay
 @connectToStores(['repair', 'objects'])
@@ -57,12 +57,12 @@ export default class ProgramRegistryForm extends Form {
   }
 
   handleMakeVersionClick = () => {
-    this.props.makeVersion().then(() => this.setState({ makeVersionIsVisible: false }));
+    this.props.onSubmitFiles().then(this.props.makeVersion).then(() => this.setState({ makeVersionIsVisible: false }));
   }
   sendToApply = () => {
     this.setState({ mainButtonEnable: false });
     this.props.sendToApply().then(() => {
-      this.setState({ mainButtonEnable: true })
+      this.setState({ mainButtonEnable: true });
     });
   }
   render() {

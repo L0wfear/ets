@@ -201,7 +201,17 @@ class ProgramRegistryFormWrap extends FormWrap {
     });
   }
   onSubmitAndContinue = () => this.onSubmitWithouContinue(false);
+  onSubmitFiles = () => {
+    const callback = this.context.flux.getActions('repair').programVersionPutOnlyFiles;
 
+    return this.defSendFromState(callback).then(() => {
+      if (close) {
+        this.props.onFormHide();
+      } else {
+        this.updateVersionList(this.props.element.id, this.state.activeVersionId);
+      }
+    });
+  }
   getFrowmStateAndErrorAndCanSave(elementOld = null) {
     let element = {};
     if (elementOld !== null) {
@@ -313,7 +323,7 @@ class ProgramRegistryFormWrap extends FormWrap {
 
     const canSave = isPermitted && this.state.canSave && saveButtonEnability;
     const isPermittedByStatus = this.checkIsPermittedByStatus(this.state.formState.status);
-    
+
     return (
       <ProgramRegistryForm
         formState={this.state.formState}
@@ -338,6 +348,7 @@ class ProgramRegistryFormWrap extends FormWrap {
         sendToApply={this.sendToApply}
         onSubmit={this.onSubmitWithouContinue}
         onSubmitAndContinue={this.onSubmitAndContinue}
+        onSubmitFiles={this.onSubmitFiles}
 
         applyVersion={this.applyVersion}
         canselVersion={this.canselVersion}

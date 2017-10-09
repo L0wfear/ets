@@ -143,7 +143,19 @@ export default class RepairActions extends Actions {
       'json',
     );
   }
+  programVersionPutOnlyFiles(formState) {
+    const { programVersion } = REPAIR;
+    const payload = {
+      files: [...formState.files],
+    };
 
+    const path = parsePutPath(programVersion, 'put', formState);
+    return Repair.path(path).put(
+      payload,
+      this.getRepairListByType.bind(null, 'programRegistry'),
+      'json',
+    );
+  }
   programVersionCreateVersion(formState) {
     const payload = {
       ...formState,

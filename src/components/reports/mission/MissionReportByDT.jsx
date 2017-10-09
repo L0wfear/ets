@@ -3,6 +3,11 @@ import connectToStores from 'flummox/connect';
 import Table from 'components/ui/table/DataTable.jsx';
 import ElementsList from 'components/ElementsList.jsx';
 // 78
+const delRouteCheckUnitRender = {
+  'м.': 1000,
+  'кв. м.': 1,
+  'раз': 1,
+};
 
 const VALUE_FOR_FIXED = {
   TWO_F: {
@@ -34,6 +39,8 @@ const VALUE_FOR_FIXED = {
   floatFixed: (data, val) => parseFloat(data).toFixed(val),
   intFixed: (data, val) => parseInt(data, val),
 };
+
+const getDelForUnitRender = name => delRouteCheckUnitRender[name] ? delRouteCheckUnitRender[name] : 1;
 
 const checkFixed = (data, key) => {
   const clone = [...data];
@@ -84,7 +91,7 @@ const getTableMeta = (props) => {
       },
       {
         name: 'route_with_speed',
-        displayName: 'Контроль (км)**',
+        displayName: `Контроль (${props.data[0] && props.data[0].route_check_unit})**`,
         type: 'string',
         filter: false,
       },
@@ -114,7 +121,7 @@ const MissionReportByDTTable = (props) => {
       </div>
     ),
     check_value: meta => <div>{ `${checkFixed([meta.data, meta.rowData.route_check_unit], 'TWO_F').join(' ')}` }</div>,
-    route_with_speed: meta => <div>{`${VALUE_FOR_FIXED.floatFixed(meta.rowData.traveled / 1000, 3)} / ${VALUE_FOR_FIXED.floatFixed(meta.rowData.traveled_high_speed / 1000, 3)}`}</div>,
+    route_with_speed: meta => <div>{`${VALUE_FOR_FIXED.floatFixed(meta.rowData.traveled / (getDelForUnitRender(meta.rowData.route_check_unit)), 3)} / ${VALUE_FOR_FIXED.floatFixed(meta.rowData.traveled_high_speed / (getDelForUnitRender(meta.rowData.route_check_unit)), 3)}`}</div>,
   };
 
   if (!(props.data && props.data.length)) {

@@ -3,6 +3,13 @@ import connectToStores from 'flummox/connect';
 import Table from 'components/ui/table/DataTable.jsx';
 import ElementsList from 'components/ElementsList.jsx';
 
+const delRouteCheckUnitRender = {
+  'м.': 1000,
+  'к': 1,
+  'кв. м.': 1,
+  'раз': 1,
+};
+
 const VALUE_FOR_FIXED = {
   TWO_F: {
     val: 2,
@@ -33,6 +40,8 @@ const VALUE_FOR_FIXED = {
   floatFixed: (data, val) => parseFloat(data).toFixed(val),
   intFixed: (data, val) => parseInt(data, val),
 };
+
+const getDelForUnitRender = name => delRouteCheckUnitRender[name] ? delRouteCheckUnitRender[name] : 1;
 
 const checkFixed = (data, key) => {
   const clone = [...data];
@@ -83,7 +92,7 @@ const getTableMeta = (props) => {
       },
       {
         name: 'route_with_speed',
-        displayName: 'Контроль (км.)**',
+        displayName: `Контроль (${props.data[0] && props.data[0].route_check_unit})**`,
         type: 'string',
         filter: false,
       },
@@ -98,22 +107,22 @@ const MissionReportByODHTable = (props) => {
   const tableMeta = getTableMeta(props);
 
   const renderers = {
-    traveled_percentage: data => (
+    traveled_percentage: ({ data, rowData }) => (
       <div>
-        {`${checkFixed([data.rowData.traveled, data.rowData.route_check_unit], 'TEN_I').join(' ')}`}
+        {`${checkFixed([rowData.traveled, rowData.route_check_unit], 'TEN_I').join(' ')}`}
         <br />
-        {`(${`${parseFloat(parseFloat(data.data) * 100).toFixed(0)}%`})`}
+        {`(${`${parseFloat(parseFloat(data) * 100).toFixed(0)}%`})`}
       </div>
     ),
-    left_percentage: data => (
+    left_percentage: ({ data, rowData }) => (
       <div>
-        {`${checkFixed([data.rowData.left, data.rowData.route_check_unit], 'TEN_I').join(' ')}`}
+        {`${checkFixed([rowData.left, rowData.route_check_unit], 'TEN_I').join(' ')}`}
         <br />
-        {`(${`${VALUE_FOR_FIXED.floatFixed(data.data * 100, 0)}%`})`}
+        {`(${`${VALUE_FOR_FIXED.floatFixed(data * 100, 0)}%`})`}
       </div>
     ),
-    check_value: meta => <div>{ `${checkFixed([meta.data, meta.rowData.route_check_unit], 'TWO_F').join(' ')}` }</div>,
-    route_with_speed: meta => <div>{`${VALUE_FOR_FIXED.floatFixed(meta.rowData.traveled / 1000, 3)} / ${VALUE_FOR_FIXED.floatFixed(meta.rowData.traveled_high_speed / 1000, 3)}`}</div>,
+    check_value: ({ data, rowData }) => <div>{ `${checkFixed([data, rowData.route_check_unit], 'TWO_F').join(' ')}` }</div>,
+    route_with_speed: ({ rowData }) => <div>{`${VALUE_FOR_FIXED.floatFixed(rowData.traveled / (getDelForUnitRender(rowData.route_check_unit)), 3)} / ${VALUE_FOR_FIXED.floatFixed(rowData.traveled_high_speed / (getDelForUnitRender(rowData.route_check_unit)), 3)}`}</div>,
   };
 
   if (!(props.data && props.data.length)) {

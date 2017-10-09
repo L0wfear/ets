@@ -168,7 +168,7 @@ class ProgramRegistryFormWrap extends FormWrap {
 
     return this.defSendFromState(callback, { program_id: this.props.element.id }).then(() => {
       global.NOTIFICATION_SYSTEM.notify('Версия создана', 'success');
-      return this.updateVersionList(this.props.element.id, this.state.activeVersionId);
+      return this.updateVersionList(this.props.element.id);
     }).then(() => {
       console.log('version is update');
     }).catch(() => {

@@ -92,9 +92,12 @@ class ProgramRegistryFormWrap extends FormWrap {
     });
   }
 
-  async defSendFromState(callback) {
-    let { formState } = this.state;
-
+  async defSendFromState(callback, formStateOtherProps, outFormState = false) {
+    let formState = outFormState || this.state.formState;
+    formState = {
+      ...formState,
+      ...formStateOtherProps,
+    };
     Object.entries(formState).forEach(([key, val]) => {
       if (typeof val === 'string') {
         formState[key] = val.trim();
@@ -169,8 +172,6 @@ class ProgramRegistryFormWrap extends FormWrap {
     return this.defSendFromState(callback, { program_id: this.props.element.id }).then(() => {
       global.NOTIFICATION_SYSTEM.notify('Версия создана', 'success');
       return this.updateVersionList(this.props.element.id);
-    }).then(() => {
-      console.log('version is update');
     }).catch(() => {
       global.NOTIFICATION_SYSTEM.notify('Ошибка создания версии', 'error');
     });
@@ -182,8 +183,6 @@ class ProgramRegistryFormWrap extends FormWrap {
     return this.defSendFromState(callback).then(() => {
       global.NOTIFICATION_SYSTEM.notify('Запрос на согласование отправлен', 'success');
       return this.updateVersionList(this.props.element.id, this.state.activeVersionId);
-    }).then(() => {
-      console.log('version is update');
     }).catch(() => {
       global.NOTIFICATION_SYSTEM.notify('Запрос на согласование не отправлен', 'error');
     });
@@ -201,15 +200,11 @@ class ProgramRegistryFormWrap extends FormWrap {
     });
   }
   onSubmitAndContinue = () => this.onSubmitWithouContinue(false);
-  onSubmitFiles = () => {
+  onSubmitFiles = (fileState) => {
     const callback = this.context.flux.getActions('repair').programVersionPutOnlyFiles;
 
-    return this.defSendFromState(callback).then(() => {
-      if (close) {
-        this.props.onFormHide();
-      } else {
-        this.updateVersionList(this.props.element.id, this.state.activeVersionId);
-      }
+    return this.defSendFromState(callback, {}, fileState).then(() => {
+      this.updateVersionList(this.props.element.id, this.state.activeVersionId);
     });
   }
   getFrowmStateAndErrorAndCanSave(elementOld = null) {
@@ -233,8 +228,6 @@ class ProgramRegistryFormWrap extends FormWrap {
     this.defSendFromState(callback).then(() => {
       global.NOTIFICATION_SYSTEM.notify('Версия согласована', 'success');
       return this.updateVersionList(this.props.element.id, this.state.activeVersionId);
-    }).then(() => {
-      console.log('version is update');
     }).catch(() => {
       global.NOTIFICATION_SYSTEM.notify('Ошибка согласования версии', 'error');
     });
@@ -244,8 +237,6 @@ class ProgramRegistryFormWrap extends FormWrap {
     this.defSendFromState(callback).then(() => {
       global.NOTIFICATION_SYSTEM.notify('Версия отменена', 'success');
       return this.updateVersionList(this.props.element.id, this.state.activeVersionId);
-    }).then(() => {
-      console.log('version is update');
     }).catch(() => {
       global.NOTIFICATION_SYSTEM.notify('Ошибка отмены версии', 'error');
     });
@@ -262,8 +253,6 @@ class ProgramRegistryFormWrap extends FormWrap {
     this.defSendFromState(callback).then(() => {
       global.NOTIFICATION_SYSTEM.notify('Версия закрыта', 'success');
       return this.updateVersionList(this.props.element.id, this.state.activeVersionId);
-    }).then(() => {
-      console.log('version is update');
     }).catch(() => {
       global.NOTIFICATION_SYSTEM.notify('Ошибка закрытия версии', 'error');
     });

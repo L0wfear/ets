@@ -56,8 +56,16 @@ export default class ProgramRegistryForm extends Form {
     this.handleChange('files', undefined);
   }
 
-  handleMakeVersionClick = () => {
-    this.props.onSubmitFiles().then(this.props.makeVersion).then(() => this.setState({ makeVersionIsVisible: false }));
+  handleMakeVersionClick = (fileState) => {
+    const stateForPatchFile = {
+      ...fileState,
+      id: this.props.activeVersionId,
+    };
+    return this.props.onSubmitFiles(stateForPatchFile).then(() => {
+      this.props.makeVersion();
+    }).then(() => {
+      this.setState({ makeVersionIsVisible: false });
+    });
   }
   sendToApply = () => {
     this.setState({ mainButtonEnable: false });
@@ -98,18 +106,14 @@ export default class ProgramRegistryForm extends Form {
 
     return (
       <div>
-        {makeVersionIsVisible &&
-          <MakeVersionFrom
-            title={'Создание новой версии'}
-            TextBody={TextMakeVersion}
-            show={makeVersionIsVisible}
-            state={state}
-            onHide={this.hideMakeVersionForm}
-            onSubmit={this.handleMakeVersionClick}
-            handleChange={this.handleChange}
-            btName={'Загрузить файл и создать версию'}
-          />
-        }
+        <MakeVersionFrom
+          title={'Создание новой версии'}
+          TextBody={TextMakeVersion}
+          btName={'Загрузить файл и создать версию'}
+          show={makeVersionIsVisible}
+          onHide={this.hideMakeVersionForm}
+          onSubmit={this.handleMakeVersionClick}
+        />
         <Modal {...this.props} show={this.props.show && !makeVersionIsVisible} bsSize="lg" backdrop="static">
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>

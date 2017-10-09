@@ -164,7 +164,7 @@ export default class RepairActions extends Actions {
   }
 
   async programVersionSendToReview(formState) {
-    return await this.programVersionSendFor('send_to_review', formState);
+    return await this.programVersionSendFor('send_to_review', formState, true);
   }
   async programVersionSendToApply(formState) {
     return await this.programVersionSendFor('accept', formState);
@@ -176,13 +176,21 @@ export default class RepairActions extends Actions {
     return await this.programVersionSendFor('close', formState);
   }
 
-  programVersionSendFor(type, formState) {
+  programVersionSendFor(type, formState, withForm) {
     const { programVersion } = REPAIR;
-    const payload = {};
+    const payload = {
+      ...formState,
+    };
+
+    ['plan_date_start', 'plan_date_end', 'fact_date_start', 'fact_date_end'].forEach((key) => {
+      if (payload[key]) {
+        payload[key] = createValidDate(payload[key]);
+      }
+    });
 
     const path = parsePutPath(programVersion, 'put', formState);
     return Repair.path(`${path}/${type}`).put(
-      payload,
+      withForm ? payload : {},
       this.getRepairListByType.bind(null, 'programRegistry'),
       'json',
     );

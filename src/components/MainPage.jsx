@@ -112,10 +112,6 @@ export default class MainPage extends React.Component {
   hideFormTp = () => this.setState({ showFormTp: false });
   showFormTp = () => this.setState({ showFormTp: true });
 
-  hideFormRule = () => {
-    this.context.history.pushState(null, this.props.location.pathname.split('/').slice(0, -1).join('/'));
-  }
-
   renderEmptyHeader() {
     return (
       <Navbar justified>
@@ -129,7 +125,6 @@ export default class MainPage extends React.Component {
   }
 
   renderHeader() {
-
     const {
       user,
       countUserNotificationInfo = 0,
@@ -208,13 +203,9 @@ export default class MainPage extends React.Component {
             show={this.state.showFormTp}
             onHide={this.hideFormTp}
           />
-          <ModalRule
-            show={path.includes('showFormRule')}
-            onHide={this.hideFormRule}
-          />
           {this.props.children}
           <LoadingOverlay main />
-          {!path.includes('showFormRule') && <NotificationModal />}
+          {<NotificationModal />}
         </div>
 
         <div className="app-footer">

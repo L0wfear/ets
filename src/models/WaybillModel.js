@@ -100,6 +100,34 @@ export const waybillSchema = {
       type: 'number',
       float: 3,
     },
+    {
+      key: 'downtime_hours_work',
+      title: 'Работа',
+      required: false,
+      type: 'number',
+      float: 1,
+    },
+    {
+      key: 'downtime_hours_duty',
+      title: 'Работа',
+      required: false,
+      type: 'number',
+      float: 1,
+    },
+    {
+      key: 'downtime_hours_dinner',
+      title: 'Работа',
+      required: false,
+      type: 'number',
+      float: 1,
+    },
+    {
+      key: 'downtime_hours_repair',
+      title: 'Работа',
+      required: false,
+      type: 'number',
+      float: 1,
+    },
   ],
   dependencies: {
     'odometr_start': [
@@ -126,6 +154,46 @@ export const waybillSchema = {
       {
         type: 'gt',
         field: 'plan_departure_date',
+      },
+    ],
+    downtime_hours_work: [
+      {
+        validator: (value) => {
+          if (value && value.match(/^\d{4,}/)) {
+            return 'Поле "Работа" должно быть меньше 1000';
+          }
+          return false;
+        },
+      },
+    ],
+    downtime_hours_duty: [
+      {
+        validator: (value) => {
+          if (value && value.match(/^\d{4,}/)) {
+            return 'Поле "Дежурство" должно быть меньше 1000';
+          }
+          return false;
+        },
+      },
+    ],
+    downtime_hours_dinner: [
+      {
+        validator: (value) => {
+          if (value && value.match(/^\d{4,}/)) {
+            return 'Поле "Обед" должно быть меньше 1000';
+          }
+          return false;
+        },
+      },
+    ],
+    downtime_hours_repair: [
+      {
+        validator: (value) => {
+          if (value && value.match(/^\d{4,}/)) {
+            return 'Поле "Ремонт" должно быть меньше 1000';
+          }
+          return false;
+        },
       },
     ],
   },

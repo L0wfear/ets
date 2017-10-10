@@ -900,7 +900,59 @@ class WaybillForm extends Form {
               </Col>
             </Div>
           </Row>
-
+          <Row>
+            <Col md={12}>
+              <h4>Простои на линии, ч.</h4>
+            </Col>
+            <Row>
+              <Div style={{ paddingLeft: 15 }}>
+                <Col md={4}>
+                  <Field
+                    type="string"
+                    label="Работа"
+                    disabled={IS_CLOSED}
+                    value={state.downtime_hours_work}
+                    onChange={this.handleChange.bind(this, 'downtime_hours_work')}
+                    error={errors.downtime_hours_work}
+                  />
+                </Col>
+                <Col md={4}>
+                  <Field
+                    type="string"
+                    label="Дежурство"
+                    disabled={IS_CLOSED}
+                    value={state.downtime_hours_duty}
+                    onChange={this.handleChange.bind(this, 'downtime_hours_duty')}
+                    error={errors.downtime_hours_duty}
+                  />
+                </Col>
+              </Div>
+            </Row>
+            <Row>
+              <Div style={{ paddingLeft: 15 }}>
+                <Col md={4}>
+                  <Field
+                    type="string"
+                    label="Обед"
+                    disabled={IS_CLOSED}
+                    value={state.downtime_hours_dinner}
+                    onChange={this.handleChange.bind(this, 'downtime_hours_dinner')}
+                    error={errors.downtime_hours_dinner}
+                  />
+                </Col>
+                <Col md={4}>
+                  <Field
+                    type="string"
+                    label="Ремонт"
+                    disabled={IS_CLOSED}
+                    value={state.downtime_hours_repair}
+                    onChange={this.handleChange.bind(this, 'downtime_hours_repair')}
+                    error={errors.downtime_hours_repair}
+                  />
+                </Col>
+              </Div>
+            </Row>
+          </Row>
           <Row>
             <Col md={8} />
           </Row>

@@ -91,7 +91,7 @@ const getTableMeta = (props) => {
       },
       {
         name: 'route_with_speed',
-        displayName: `Контроль (${props.data[0] && props.data[0].route_check_unit})**`,
+        displayName: `Контроль (${props.data[0] && (props.data[0].route_check_unit === 'м.' ? 'км.' : props.data[0].route_check_unit)})**`,
         type: 'string',
         filter: false,
       },

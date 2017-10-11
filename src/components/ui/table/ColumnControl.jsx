@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Modal, Button, Glyphicon, Input } from 'react-bootstrap';
+import { Button, Glyphicon } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import cx from 'classnames';
 import Div from '../Div.jsx';
@@ -33,10 +33,14 @@ export default class ColumnControl extends Component {
       }
       return (
         <div key={i} style={{ marginLeft: 20 }}>
-          <span onClick={this.checkboxChange.bind(this, option.name)} style={{ cursor: 'pointer' }}>
-            <Input readOnly type="checkbox" checked={this.props.values.indexOf(option.name) === -1} />
-            <span style={{ bottom: -2, position: 'relative' }}>{option.displayName}</span>
-          </span>
+            <div className="form-group"  style={{ cursor: 'pointer' }}>
+              <div className="checkbox">
+                <label className="control-label">
+                  <input readOnly type="checkbox" checked={this.props.values.indexOf(option.name) === -1} onClick={this.checkboxChange.bind(this, option.name)} />
+                  <span style={{ bottom: -2, position: 'relative' }}>{option.displayName}</span>
+                </label>
+              </div>
+            </div>
         </div>
       );
     });

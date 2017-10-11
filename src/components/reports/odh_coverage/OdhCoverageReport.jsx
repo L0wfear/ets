@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Glyphicon, Dropdown, MenuItem as BootstrapMenuItem, Input } from 'react-bootstrap';
+import { Button, Glyphicon, Dropdown, MenuItem as BootstrapMenuItem, FormControl } from 'react-bootstrap';
 import { autobind } from 'core-decorators';
 import { connectToStores, FluxContext, bindable } from 'utils/decorators';
 import { getToday859am, getYesterday9am, getDate9am, getNextDay859am, getFormattedDateTime } from 'utils/dates';
@@ -92,8 +92,13 @@ export default class OdhCoverageReport extends Component {
         <OdhCoverageReportTable data={odhCoverageReport}>
           <div className="daily-cleaning-report-period">
             Период формирования:
-            <Input type="text" readOnly value={getFormattedDateTime(date_start)} /> —
-            <Input type="text" readOnly value={getFormattedDateTime(date_end)} />
+            <div className="form-group">
+              <FormControl type="text" readOnly value={getFormattedDateTime(date_start)} />
+            </div>
+            <span> — </span>
+            <div className="form-group">
+              <FormControl type="text" readOnly value={getFormattedDateTime(date_end)} />
+            </div>
           </div>
           <Dropdown id="dropdown-print" pullRight>
             <Dropdown.Toggle noCaret bsSize="small">

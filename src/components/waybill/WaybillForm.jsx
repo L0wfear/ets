@@ -1,7 +1,7 @@
 import React from 'react';
 import { autobind } from 'core-decorators';
 import connectToStores from 'flummox/connect';
-import { Modal, Input, Row, Col, Button, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
+import { Modal, FormControl, Row, Col, Button, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
 import _ from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
@@ -807,8 +807,14 @@ class WaybillForm extends Form {
             <Col md={4}>
               <Div hidden={!state.car_id}>
                 <Div className="equipment-fuel-checkbox" hidden={!state.car_id}>
-                  <Input type="checkbox" checked={!!state.equipment_fuel} disabled={IS_ACTIVE || IS_CLOSED} onClick={this.handleEquipmentFuelChange.bind(this, !!!state.equipment_fuel)} />
-                  <label>Показать расход топлива для оборудования</label>
+                  <div className="form-group">
+                    <div className="checkbox">
+                      <label className="">
+                        <input type="checkbox" checked={!!state.equipment_fuel} disabled={IS_ACTIVE || IS_CLOSED} onClick={this.handleEquipmentFuelChange.bind(this, !!!state.equipment_fuel)} />
+                        <label style={{ cursor: IS_ACTIVE || IS_CLOSED ? 'default' : 'pointer', fontWeight: 800 }}>Показать расход топлива для оборудования</label>
+                      </label>
+                    </div>
+                  </div>
                 </Div>
                 <Div hidden={!state.equipment_fuel}>
                   <h4> Топливо для оборудования</h4>

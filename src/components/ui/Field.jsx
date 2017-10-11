@@ -1,6 +1,6 @@
 import React from 'react';
 import { autobind } from 'core-decorators';
-import { Input } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 import cx from 'classnames';
 
 import { onChangeWithKeys } from 'components/compositions/hoc';
@@ -27,7 +27,10 @@ function StringField(props) {
 
   return !readOnly ?
     <Div hidden={hidden} style={wrapStyle || {}}>
-      <Input type="text" disabled={disabled} className={inputClassName} {...props} />
+      <div className="form-group">
+        { label && <label className="control-label"><span>{label}</span></label>}
+        <FormControl type="text" disabled={disabled} className={inputClassName} {...props} />
+      </div>
       <Div hidden={!error} className="error">{error}</Div>
     </Div> :
     <Div hidden={hidden} className={className}>
@@ -104,7 +107,10 @@ export default class Field extends React.Component {
     const inputClassName = cx({ 'has-error': error });
     return (
       <Div hidden={this.props.hidden}>
-        <Input type="number" className={inputClassName} {...this.props} />
+        <div className="form-group">
+          { this.props.label && <label className="control-label"><span>{this.props.label}</span></label>}
+          <FormControl type="number" className={inputClassName} {...this.props} />
+        </div>
         <Div hidden={!error} className="error">{error}</Div>
       </Div>
     );

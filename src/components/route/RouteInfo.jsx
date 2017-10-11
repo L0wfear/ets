@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { autobind } from 'core-decorators';
-import { Row, Col, Input } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import { connectToStores } from 'utils/decorators';
 import _ from 'lodash';
 import Div from 'components/ui/Div.jsx';
@@ -92,7 +92,13 @@ export default class RouteInfo extends Component {
               <Div style={{ marginTop: 20 }} hidden={route.type !== 'points'}>
                 {route.object_list.map((o, i) => {
                   const label = `Пункт назначения №${i + 1} ${o.name ? `(${o.name})` : ''}`;
-                  return <Input key={i} label={label} />;
+                  return (
+                    <div key={i} className="form-group">
+                      <label className="">
+                        <span>{label}</span>
+                      </label>
+                    </div>
+                  );
                 })}
               </Div>
             </Col>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as Input from 'react-bootstrap/lib/Input';
+import { FormControl } from 'react-bootstrap';
 import * as R from 'ramda';
 
 import { IPropsDatePicker } from 'components/ui/@types/DatePicker.h';
@@ -23,8 +23,8 @@ interface IStateExtendedInput {
 }
 
 class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedInput> {
-  handleFirstInput: (index: number, event: React.SyntheticEvent<EventTarget>) => void;
-  handleSecondInput: (index: number, event: React.SyntheticEvent<EventTarget>) => void;
+  handleFirstInput: (event: React.SyntheticEvent<EventTarget>) => void;
+  handleSecondInput: (event: React.SyntheticEvent<EventTarget>) => void;
 
   constructor() {
     super();
@@ -82,19 +82,23 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
   renderNumber() {
     return (
       <div className="inputs">
-        <Input
-          type="number"
-          min="0"
-          value={this.props.value[0]}
-          onChange={this.handleFirstInput}
-        />
-        {this.props.interval &&
-          <Input
+        <div className="form-group">
+          <FormControl
             type="number"
             min="0"
-            value={this.props.value[1]}
-            onChange={this.handleSecondInput}
+            value={this.props.value[0]}
+            onChange={this.handleFirstInput}
           />
+        </div>
+        {this.props.interval &&
+          <div className="form-group">
+            <FormControl
+              type="number"
+              min="0"
+              value={this.props.value[1]}
+              onChange={this.handleSecondInput}
+            />
+          </div>
         }
       </div>
     );
@@ -102,17 +106,21 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
   renderString() {
     return (
       <div className="inputs">
-        <Input
-          type="text"
-          value={this.props.value[0]}
-          onChange={this.handleFirstInput}
-        />
-        {this.props.interval &&
-          <Input
+        <div className="form-group">
+          <FormControl
             type="text"
-            value={this.props.value[1]}
-            onChange={this.handleSecondInput}
+            value={this.props.value[0]}
+            onChange={this.handleFirstInput}
           />
+        </div>
+        {this.props.interval &&
+          <div className="form-group">
+            <FormControl
+              type="text"
+              value={this.props.value[1]}
+              onChange={this.handleSecondInput}
+            />
+          </div>
         }
       </div>
     );

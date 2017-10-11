@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { autobind } from 'core-decorators';
 import Table from 'components/ui/table/Table.jsx';
-import { Input, Button } from 'react-bootstrap';
+import { FormControl, Button } from 'react-bootstrap';
 import EtsSelect from 'components/ui/input/EtsSelect';
 import Div from 'components/ui/Div.jsx';
 import { isEmpty } from 'utils/functions';
@@ -111,7 +111,12 @@ export default class Taxes extends Component {
           value: FACT_VALUE,
           disabled: typeof FUEL_RATE === 'undefined' || typeof OPERATION === 'undefined' || this.props.readOnly,
         };
-        return <Input {...factValueProps} onChange={this.handleFactValueChange.bind(this, index)} />;
+        return (
+          <div className="form-group">
+            { false && <label className="control-label"><span>{'label'}</span></label>}
+            <FormControl {...factValueProps} onChange={this.handleFactValueChange.bind(this, index)} />
+          </div>
+        );
       },
     };
 

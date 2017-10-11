@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import _ from 'lodash';
 import { autobind } from 'core-decorators';
 import connectToStores from 'flummox/connect';
-import { Row, Col, Input, Button, Glyphicon } from 'react-bootstrap';
+import { Row, Col, FormControl, Button, Glyphicon } from 'react-bootstrap';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import { polyState } from 'constants/polygons.js';
@@ -265,7 +265,14 @@ class RouteCreating extends Component {
           <Col md={3}>
             <div style={{ overflowY: 'auto', height: 510 }}>
               <Div hidden={route.type !== 'mixed'} className="odh-container">
-                <Input type="checkbox" label="Выбрать все" disabled={!ODHS.length} checked={!fail_list.length} onChange={this.handleCheckbox.bind(this, 'odh', ODHS.map(o => o.value).join(','))} />
+                <div className="form-group">
+                  <div className="checkbox">
+                    <label className="">
+                      <input type="checkbox" label="Выбрать все" disabled={!ODHS.length} checked={!fail_list.length} onChange={this.handleCheckbox.bind(this, 'odh', ODHS.map(o => o.value).join(','))} />
+                      <span>Выбрать все</span>
+                    </label>
+                  </div>
+                </div>
                 <Field
                   type="select"
                   label="Список выбранных ОДХ"
@@ -277,7 +284,14 @@ class RouteCreating extends Component {
                 />
               </Div>
               <Div hidden={route.type !== 'simple_dt'} className="odh-container">
-                <Input type="checkbox" disabled={!DTS.length} label="Выбрать все" checked={!fail_list.length} onChange={this.handleCheckbox.bind(this, 'dt', DTS.map(o => o.value).join(','))} />
+                <div className="form-group">
+                  <div className="checkbox">
+                    <label className="">
+                      <input type="checkbox" disabled={!DTS.length} label="Выбрать все" checked={!fail_list.length} onChange={this.handleCheckbox.bind(this, 'dt', DTS.map(o => o.value).join(','))} />
+                      <span>Выбрать все</span>
+                    </label>
+                  </div>
+                </div>
                 <Field
                   type="select"
                   label="Список выбранных ДТ"
@@ -303,7 +317,10 @@ class RouteCreating extends Component {
                   const label = `Пункт назначения №${i + 1} ${o.name ? `( ${o.name} )` : ''}`;
                   return (
                     <Div className="destination-point" key={i}>
-                      <Input type="text" label={label} value={o.name} onChange={this.onObjectNameChange.bind(this, i)} />
+                      <div className="form-group">
+                        <label className=""><span>{label}</span></label>
+                        <FormControl type="text" label={label} value={o.name} onChange={this.onObjectNameChange.bind(this, i)} />
+                      </div>
                       <Button className="inline-block" onClick={this.removeObject.bind(this, i)}><Glyphicon glyph="remove" /></Button>
                     </Div>
                   );

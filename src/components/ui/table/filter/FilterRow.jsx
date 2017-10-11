@@ -1,12 +1,12 @@
 import React, { PropTypes } from 'react';
 import { autobind } from 'core-decorators';
-import { Input } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 import _ from 'lodash';
 
 import FilterInput from 'components/ui/input/FilterInput/FilterInput';
 import EtsSelect from 'components/ui/input/EtsSelect';
-import Div from '../../Div.jsx';
 import IntervalPicker from 'components/ui/input/IntervalPicker';
+import Div from 'components/ui/Div.jsx';
 
 @autobind
 export default class FilterRow extends React.Component {
@@ -37,7 +37,11 @@ export default class FilterRow extends React.Component {
     const { name, displayName, type, labelFunction,
       availableOptions, onChange, onMultiChange, tableData } = this.props;
     let { value } = this.props;
-    let input = <Input type="text" value={value} onChange={onChange} />;
+    let input = (
+      <div className="form-group">
+        <FormControl type="text" value={value} onChange={onChange} />
+      </div>
+    );
     if (type) {
       if (type === 'select' || type === 'multiselect' || type === 'advanced-select-like') {
         let options = availableOptions || _(tableData)

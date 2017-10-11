@@ -115,9 +115,13 @@ export default class CurrentMission extends DashboardCardMedium {
     const { flux } = this.context;
     this.setState({ customCardLoading: true });
     this.props.openSubitemsList(this.state.selectedItem === null);
-    const missionData = await flux.getActions('missions').getMissionData(id).then(r => r.result);
-    this.setState({ selectedMission: missionData, customCardLoading: false });
-    document.getElementById('dashboard-time').scrollIntoView();
+    const missionData = await flux.getActions('missions').getMissionData(id);
+    if (missionData.warnings) {
+      global.NOTIFICATION_SYSTEM.notify(missionData.warnings[0], 'error');
+    } else {
+      this.setState({ selectedMission: missionData.result, customCardLoading: false });
+      document.getElementById('dashboard-time').scrollIntoView();
+    }
   }
 
   missionAction() {

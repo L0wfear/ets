@@ -172,30 +172,21 @@ export default class PointsStore extends Store {
     const points = Object.assign({}, this.state.points);
 
     // TODO отрефакторить механизм обработки получения точек для 1 БНСО
-
-    for (const key in update) {
-      const pointUpdate = update[key];
-
-      // если информация в обновлении устарела - ничего не делаем
-      if (key in points &&
-        points[key].timestamp > pointUpdate.timestamp) {
+    Object.entries(update).forEach(([key, value]) => {
+      if (points[key] && (points[key].timestamp > value.timestamp)) {
         console.warn('got old info for point!');
-        continue;
+      } else {
+        points[key] = Object.assign({}, points[key], value);
       }
+    });
 
-      points[key] = Object.assign({}, points[key], pointUpdate);
-
-      // TODO разобраться что это такое
-      // HACK
-      // whatever...
-      /* if (points[key].speed !== 0 && this.state.points[key] && this.state.points[key].speed === 0) {
-        points[key].coords = this.state.points[key].coords;
-      }*/
-    }
-
-    const state = Object.assign({}, {
-      points,
-    }, this.countDimensions(points));
+    const state = Object.assign(
+      {},
+      {
+        points,
+      },
+      this.countDimensions(points),
+    );
 
     this.setState(state);
   }
@@ -224,13 +215,12 @@ export default class PointsStore extends Store {
       0: 0,
       1: 0,
     };
-    for (const key in points) {
-      const point = points[key];
-      if (this.isPointVisible(point)) {
-        byStatus[point.status]++;
-        byConnectionStatus[point.connection_status]++;
+    Object.entries(points).forEach(([, value]) => {
+      if (this.isPointVisible(value)) {
+        byStatus[value.status] += 1;
+        byConnectionStatus[value.connection_status] += 1;
       }
-    }
+    });
 
     return {
       byStatus,

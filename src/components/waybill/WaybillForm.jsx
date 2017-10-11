@@ -113,6 +113,7 @@ class WaybillForm extends Form {
     this.getMissionsByCarAndDates(formState, false);
     await flux.getActions('objects').getCars();
     await flux.getActions('employees').getEmployees();
+    flux.getActions('objects').getWorkMode();
 
     this.getWaybillDrivers();
 
@@ -388,6 +389,7 @@ class WaybillForm extends Form {
       employeesList = [],
       missionsList = [],
       appConfig,
+      workModeOptions,
     } = this.props;
 
     let taxesControl = false;
@@ -539,7 +541,19 @@ class WaybillForm extends Form {
                 />
               </Col>
             </Div>
-
+            <Col md={6}>
+              <Field
+                type="select"
+                label="Режим работы"
+                error={errors.work_mode_id}
+                clearable
+                hidden={!(IS_CREATING || IS_DRAFT)}
+                disabled={IS_ACTIVE || IS_CLOSED}
+                options={workModeOptions}
+                value={state.work_mode_id}
+                onChange={this.handleChange.bind(this, 'work_mode_id')}
+              />
+            </Col>
             <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
               <Col md={3}>
                 <Field
@@ -623,7 +637,7 @@ class WaybillForm extends Form {
                 value={trailer ? `${trailer.gov_number} [${trailer.special_model_name || ''}${trailer.special_model_name ? '/' : ''}${trailer.model_name || ''}]` : 'Н/Д'}
               />
             </Col>
-            <Col md={12}>
+            <Col md={(IS_CREATING || IS_DRAFT) ? 12 : 6}>
               <Field
                 type="select"
                 label="Водитель (возможен поиск по табельному номеру)"
@@ -641,6 +655,15 @@ class WaybillForm extends Form {
                 readOnly
                 hidden={IS_CREATING || IS_DRAFT}
                 value={this.employeeFIOLabelFunction(state.driver_id, true)}
+              />
+            </Col>
+            <Col md={6}>
+              <Field
+                type="string"
+                label="Режим работы"
+                readOnly
+                hidden={IS_CREATING || IS_DRAFT}
+                value={state.work_mode_text}
               />
             </Col>
           </Row>

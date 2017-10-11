@@ -20,6 +20,7 @@ import {
   CleaningRateService,
   UserActionLogService,
   Country,
+  WorkMode,
 } from 'api/Services';
 
 import {
@@ -76,6 +77,10 @@ export default class ObjectsActions extends Actions {
 
   getWorkKinds() {
     return WorkKindsService.get();
+  }
+
+  getWorkMode() {
+    return WorkMode.get();
   }
 
   getFaxogramms(limit, offset, sort_by, filter, create_date_from, create_date_to) {

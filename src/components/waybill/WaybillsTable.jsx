@@ -103,6 +103,14 @@ export const getTableMeta = ({
         type: 'string',
       },
       {
+        name: 'work_mode_text',
+        displayName: 'Режим работы',
+        type: 'string',
+        filter: {
+          type: 'advanced-string-like',
+        },
+      },
+      {
         name: 'plan_departure_date',
         displayName: 'Выезд план',
         type: 'datetime',

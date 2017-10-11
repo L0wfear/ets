@@ -47,12 +47,13 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getUserActionLog, this.handleGetUserActionLog);
     this.register(objectsActions.getMedicalStats, this.handleGetMedicalStats);
     this.register(objectsActions.getCountry, this.handleGetCountry);
+    this.register(objectsActions.getWorkMode, this.handleGetWorkMode);
 
     this.register(companyStructreActions.getCompanyStructure, this.handleGetCompanyStructure);
     this.register(companyStructreActions.createCompanyElement, this.handleGetCompanyStructureAfterCUD);
     this.register(companyStructreActions.updateCompanyElement, this.handleGetCompanyStructureAfterCUD);
     this.register(companyStructreActions.deleteCompanyElement, this.handleGetCompanyStructureAfterCUD);
-    
+
     this.register(technicalOperationsActions.getTechnicalOperations, this.handleGetTechOperations);
     this.register(technicalOperationsActions.updateTechnicalOperation, this.handleGetTechOperations);
     this.register(technicalOperationsActions.getTechnicalOperationsObjects, this.handleGetTechnicalOperationsObjects);
@@ -93,6 +94,9 @@ export default class ObjectsStore extends Store {
       technicalOperationsObjectsIndex: {},
 
       faxogrammsTotalCount: 0,
+
+      workMode: [],
+      workModeOptions: [],
     };
   }
 
@@ -237,6 +241,13 @@ export default class ObjectsStore extends Store {
     this.setState({
       countryList: rows,
       countryOptions: rows.map(one => ({ value: one.id, label: one.short_name })),
+    });
+  }
+
+  handleGetWorkMode({ result: { rows = [] } }) {
+    this.setState({
+      workMode: rows,
+      workModeOptions: rows.map(({ id, name }) => ({ value: id, label: name })),
     });
   }
 }

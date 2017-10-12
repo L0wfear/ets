@@ -24,9 +24,13 @@ const getTableMeta = (props) => {
         name: 'work_kind_name',
         displayName: 'Вид работ',
         type: 'number',
+        /*
         filter: {
           type: 'advanced-number',
         },
+        */
+        filter: false,
+        display: false,
       },
       {
         name: 'name',

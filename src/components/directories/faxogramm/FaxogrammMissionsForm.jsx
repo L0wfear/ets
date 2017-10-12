@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Modal, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import EtsSelect from 'components/ui/input/EtsSelect';
@@ -17,12 +18,19 @@ const disabledProps = {
   mission_source_id: true,
 };
 
-
 class FaxogrammMissionsForm extends Form {
 
   constructor(props) {
     super(props);
-    const { formState: { technical_operations, order_date, order_date_to } } = props;
+
+    this.state = {
+      showFormCreateMission: false,
+    };
+  }
+  async componentDidMount() {
+    await this.context.flux.getActions('technicalOperation').getTechnicalOperations();
+    const { technicalOperationsList = [] } = this.props;
+    const { formState: { technical_operations, order_date, order_date_to } } = this.props;
     const technical_operations_reduce = technical_operations.reduce((newObj, d) => {
       if (!newObj[d.id]) {
         newObj[d.id] = d;
@@ -30,14 +38,29 @@ class FaxogrammMissionsForm extends Form {
       return newObj;
     }, {});
 
-    this.state = {
-      showFormCreateMission: false,
-      externalData: {
-        date_start: order_date,
-        date_end: order_date_to,
-        TECH_OPERATIONS: Object.values(technical_operations_reduce).map(({ id, tk_operation_name, num_exec }) => ({ value: id, label: tk_operation_name, passes_count: num_exec })),
-      },
+    const TECH_OPERATIONS = technicalOperationsList.reduce((arr, t) => {
+      const id = t.id;
+
+      if (technical_operations_reduce[id]) {
+        arr.push({
+          value: id,
+          label: t.name,
+          passes_count: technical_operations_reduce[id].num_exec,
+        });
+      }
+
+      return arr;
+    },
+    []);
+    const externalData = {
+      date_start: order_date,
+      date_end: order_date_to,
+      TECH_OPERATIONS,
     };
+
+    this.setState({
+      externalData,
+    });
   }
   handleClickOnCM = () => this.setState({ showFormCreateMission: true });
   onHideCM = () => this.setState({ showFormCreateMission: false });
@@ -70,6 +93,7 @@ class FaxogrammMissionsForm extends Form {
             payload={payload}
             renderOnly
             onListStateChange={this.handleChange.bind(this, 'missionJournalState')}
+            technicalOperationsList={this.props.technicalOperationsList || []}
           />
         </ModalBody>
 

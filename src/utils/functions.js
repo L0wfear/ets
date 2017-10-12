@@ -6,6 +6,15 @@
 import { isPlainObject, every, includes } from 'lodash';
 
 /**
+ * Example
+ * isFourDigitGovNumberRegexp.text(valString);
+ * Discription
+ * Если в номере есть 4 числа, то ест одометр
+ * DITETSSUP-347 (1 пункт)
+ */
+const isFourDigitGovNumberRegexp = /\d{4}/;
+
+/**
  * Example:
  * const a = 1, b = 2, c = 3;
  * a === 1 || b === 1 || c === 1 // true
@@ -102,8 +111,8 @@ export function printData(blob) {
  * @return {boolean} hasOdometer - есть ли одометр
  */
 export function hasOdometer(carStateNumber) {
-  if (carStateNumber && carStateNumber[0]) {
-    return isNaN(carStateNumber[0]);
+  if (carStateNumber) {
+    return isFourDigitGovNumberRegexp.test(carStateNumber);
   }
   return null;
 }
@@ -149,8 +158,6 @@ export function resizeBase64(base64) {
     image.src = base64;
   });
 }
-
-const isFourDigitGovNumberRegexp = /\d{4}/;
 
 export const isThreeDigitGovNumber = number => !isFourDigitGovNumberRegexp.test(number);
 export const isFourDigitGovNumber = number => isFourDigitGovNumberRegexp.test(number);

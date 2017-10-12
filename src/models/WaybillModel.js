@@ -133,7 +133,7 @@ export const waybillSchema = {
     'odometr_start': [
       {
         validator: (value, formData) => {
-          if (hasOdometer(formData.gov_number) && isEmpty(value)) {
+          if (!hasOdometer(formData.gov_number) && isEmpty(value)) {
             return 'Поле "Одометр.Выезд" должно быть заполнено';
           }
           return false;
@@ -143,7 +143,7 @@ export const waybillSchema = {
     'motohours_start': [
       {
         validator: (value, formData) => {
-          if (!hasOdometer(formData.gov_number) && isEmpty(value)) {
+          if (hasOdometer(formData.gov_number) && isEmpty(value)) {
             return 'Поле "Счетчик моточасов.Выезд" должно быть заполнено';
           }
           return false;

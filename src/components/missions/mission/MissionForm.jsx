@@ -107,7 +107,6 @@ export class MissionForm extends Form {
     let { selectedRoute } = this.state;
     let { technicalOperationsList, routesList, carsList } = this.props;
     let TECH_OPERATIONS = [];
-    const payloadForGetMission = {};
 
     if (!isEmpty(mission.route_id)) {
       selectedRoute = await routesActions.getRouteById(mission.route_id, false);
@@ -126,11 +125,11 @@ export class MissionForm extends Form {
       TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
     } else {
       TECH_OPERATIONS = this.props.externalData.TECH_OPERATIONS;
-      payloadForGetMission.faxogramm_only = true;
     }
-    await missionsActions.getMissionSources(payloadForGetMission);
+    await missionsActions.getMissionSources();
+
     if (this.props.fromFaxogrammMissionForm) {
-      this.handleChange('mission_source_id', this.props.missionSourcesList[0].id);
+      this.handleChange('mission_source_id', (this.props.missionSourcesList.find(d => d.auto) || this.props.missionSourcesList[0]).id);
     }
     this.setState({
       carsList,
@@ -204,7 +203,8 @@ export class MissionForm extends Form {
     } = this.props;
     const { TECH_OPERATIONS = [], routesList = [], carsList = [] } = this.state;
 
-    const MISSION_SOURCES = missionSourcesList.map(({ id, name }) => ({ value: id, label: name }));
+    let MISSION_SOURCES = missionSourcesList.map(({ id, name, auto }) => ({ value: id, label: name, disabled: auto }));
+   
     const ASSIGN_OPTIONS = [
       { value: 'assign_to_active', label: 'Добавить в активный ПЛ' },
       { value: 'assign_to_new_draft', label: 'Создать черновик ПЛ' },

@@ -2,7 +2,7 @@ export const loginErrorNotification = {
   title: 'Ошибка',
   message: 'Ошибка авторизации: время действия сессии истекло',
   level: 'error',
-  dismissible: false,
+  dismissible: true,
   position: 'tc',
   autoDismiss: 0,
   action: {
@@ -18,7 +18,7 @@ export const missionsCreationSuccessNotification = {
   title: 'Формирование заданий',
   message: 'Задания сформированы успешно',
   level: 'success',
-  dismissible: false,
+  dismissible: true,
   position: 'tc',
   autoDismiss: 0,
 };
@@ -28,7 +28,7 @@ export function getErrorNotification(error) {
     title: 'Ошибка',
     message: `Ошибка инициализации приложения: (${error})`,
     level: 'error',
-    dismissible: false,
+    dismissible: true,
     position: 'tc',
     autoDismiss: 0,
     action: {
@@ -68,7 +68,7 @@ const missionCreateSuccessNotification = {
   title: '',
   message: 'Задание создано успешно',
   level: 'success',
-  dismissible: false,
+  dismissible: true,
   position: 'tc',
   autoDismiss: 0,
 };

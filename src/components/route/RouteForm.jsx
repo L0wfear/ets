@@ -91,7 +91,7 @@ export default class RouteForm extends Form {
   async componentDidMount() {
     const { flux } = this.context;
     const { formState } = this.props;
-    const technicalOperationsResponse = await flux.getActions('technicalOperation').getTechnicalOperations();
+    const technicalOperationsResponse = await flux.getActions('technicalOperation').getTechnicalOperations(true);
     let technicalOperationsList = technicalOperationsResponse.result;
 
     if (formState.technical_operation_id && !formState.copy) {

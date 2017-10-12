@@ -441,7 +441,7 @@ class WaybillForm extends Form {
 
     const car = carsIndex[state.car_id];
     const trailer = carsIndex[state.trailer_id];
-    const CAR_HAS_ODOMETER = state.gov_number ? hasOdometer(state.gov_number) : null;
+    const CAR_HAS_ODOMETER = state.gov_number ? !hasOdometer(state.gov_number) : null;
 
     let title = '';
 

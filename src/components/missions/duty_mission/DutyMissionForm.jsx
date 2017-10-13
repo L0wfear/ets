@@ -174,7 +174,7 @@ export class DutyMissionForm extends Form {
     } = this.state;
 
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
-    const MISSION_SOURCES = missionSourcesList.map(({ id, name }) => ({ value: id, label: name }));
+    const MISSION_SOURCES = missionSourcesList.map(({ id, name, auto }) => ({ value: id, label: name, disabled: auto }));
     const ROUTES = routesList.map(({ id, name }) => ({ value: id, label: name }));
     const EMPLOYEES = employeesList.map(d => ({
       value: d.id,

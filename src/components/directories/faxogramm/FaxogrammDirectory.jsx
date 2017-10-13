@@ -128,9 +128,6 @@ class FaxogrammDirectory extends ElementsList {
           {...this.props}
           {...this.getAdditionalProps()}
         >
-          {/*
-            <Button onClick={this.showForm} disabled={this.state.selectedElement === null || faxogramm.order_status_id !== 2}>Создать задания</Button>
-          */}
           <Button onClick={this.showForm} disabled={this.state.selectedElement === null}>Создать задания</Button>
           <Button onClick={this.saveFaxogramm} disabled={this.state.selectedElement === null}><Glyphicon glyph="download-alt" /></Button>
         </FaxogrammsTable>

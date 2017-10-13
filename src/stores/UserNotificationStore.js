@@ -93,7 +93,8 @@ export default class UserNotificationStore extends Store {
 
   handleChangesUserNotificationsCount({ count = 0 }) {
     const { countNotReadNum, setNewCount } = this.state;
-    const newCountNotReadNum = this.changeNotification(count, countNotReadNum);
+    const newCountNotReadNumPrev = this.changeNotification(count, countNotReadNum);
+    const newCountNotReadNum = newCountNotReadNumPrev < 0 ? 0 : newCountNotReadNumPrev;
     setNewCount(newCountNotReadNum);
 
     this.setState({

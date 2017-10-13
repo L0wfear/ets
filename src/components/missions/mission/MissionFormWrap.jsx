@@ -29,6 +29,7 @@ export default class MissionFormWrap extends FormWrap {
         mission.date_start = props.externalData.date_start;
         mission.date_end = props.externalData.date_end;
         mission.passes_count = props.externalData.passes_count;
+        mission.faxogramm_id = props.externalData.faxogramm_id;
       }
       const formErrors = this.validate(mission, {});
       this.setState({

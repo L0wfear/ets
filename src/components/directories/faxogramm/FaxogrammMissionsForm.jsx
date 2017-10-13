@@ -30,7 +30,8 @@ class FaxogrammMissionsForm extends Form {
   async componentDidMount() {
     await this.context.flux.getActions('technicalOperation').getTechnicalOperations();
     const { technicalOperationsList = [] } = this.props;
-    const { formState: { technical_operations, order_date, order_date_to } } = this.props;
+    const { formState: { technical_operations, order_date, order_date_to, id } } = this.props;
+
     const technical_operations_reduce = technical_operations.reduce((newObj, d) => {
       if (!newObj[d.id]) {
         newObj[d.id] = d;
@@ -55,6 +56,7 @@ class FaxogrammMissionsForm extends Form {
     const externalData = {
       date_start: order_date,
       date_end: order_date_to,
+      faxogramm_id: id,
       TECH_OPERATIONS,
     };
 

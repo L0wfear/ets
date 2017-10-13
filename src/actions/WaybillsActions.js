@@ -125,8 +125,8 @@ export default class WaybillsActions extends Actions {
     delete payload.car_special_model_name;
     delete payload.car_model_name;
     delete payload.garage_number;
-    
-    if (hasOdometer(payload.gov_number)) {
+
+    if (!hasOdometer(payload.gov_number)) {
       delete payload.motohours_start;
     } else {
       delete payload.odometr_start;
@@ -168,7 +168,7 @@ export default class WaybillsActions extends Actions {
     delete payload.all_missions_completed_or_failed;
     _.mapKeys(payload, (v, k) => isEmpty(v) ? delete payload[k] : undefined);
 
-    if (hasOdometer(payload.gov_number)) {
+    if (!hasOdometer(payload.gov_number)) {
       delete payload.motohours_start;
     } else {
       delete payload.odometr_start;

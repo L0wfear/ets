@@ -90,6 +90,7 @@ export default (props) => {
     externalChangeSort={props.changeSort}
     initialSort={'create_date'}
     initialSortAscending={false}
+    className="faxogramm"
     {...props}
   />);
 };

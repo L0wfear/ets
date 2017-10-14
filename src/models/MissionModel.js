@@ -51,6 +51,12 @@ export const missionSchema = {
       type: 'datetime',
       required: true,
     },
+    {
+      key: 'norm_id',
+      title: 'Норматив',
+      type: 'string',
+      required: true,
+    },
   ],
   dependencies: {
     'date_end': [

@@ -1,11 +1,15 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
 import { autobind } from 'core-decorators';
-import { Modal, Row, Col, Button, Dropdown, Glyphicon, MenuItem } from 'react-bootstrap';
+import { Modal, Row, Col, Button, Dropdown, Glyphicon, MenuItem,
+  FormGroup, InputGroup, ControlLabel, FormControl,
+} from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import RouteInfo from 'components/route/RouteInfo.jsx';
 import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
 import Field from 'components/ui/Field.jsx';
+import Preloader from 'components/ui//Preloader.jsx';
+
 import EtsSelect from 'components/ui/input/EtsSelect';
 import Div from 'components/ui/Div.jsx';
 import moment from 'moment';
@@ -14,6 +18,7 @@ import Form from 'components/compositions/Form.jsx';
 import _ from 'lodash';
 import CarAvailableIcon from 'assets/images/car_available.png';
 import CarNotAvailableIcon from 'assets/images/car_not_available.png';
+import { getWarningNotification } from 'utils/notifications.js';
 
 @autobind
 export class MissionForm extends Form {
@@ -27,6 +32,7 @@ export class MissionForm extends Form {
       carsList: [],
       routesList: [],
       technicalOperationsList: [],
+      queryToGetNormGo: false,
     };
   }
 
@@ -35,6 +41,7 @@ export class MissionForm extends Form {
     const { flux } = this.context;
     if (v) {
       flux.getActions('routes').getRouteById(v, false).then((r) => {
+        this.checkNorm({ dataName: 'object_type', dataValue: r.object_type });
         this.setState({ selectedRoute: r });
       });
     } else {
@@ -44,6 +51,7 @@ export class MissionForm extends Form {
 
   async handleCarIdChange(v) {
     this.handleChange('car_id', v);
+    this.checkNorm({ dataName: 'func_type_id', dataValue: v });
 
     if (this.props.formState.status) {
       this.handleChange('technical_operation_id', undefined);
@@ -60,6 +68,7 @@ export class MissionForm extends Form {
 
   async handleTechnicalOperationChange(v) {
     this.handleChange('technical_operation_id', v);
+    this.checkNorm({ dataName: 'technical_operation_id', dataValue: v });
     this.handleRouteIdChange(undefined);
 
     if (!this.props.formState.status && !this.props.fromWaybill) {
@@ -137,6 +146,9 @@ export class MissionForm extends Form {
       routesList,
       selectedRoute,
     });
+    setTimeout(() => {
+      this.checkNorm({});
+    }, 100);
   }
 
   createNewRoute() {
@@ -191,6 +203,102 @@ export class MissionForm extends Form {
       </div>
     );
   }
+  handleChangeDateStart = (v) => {
+    this.handleChange('date_start', v);
+    this.checkNorm({ dataName: 'date_start', dataValue: v });
+  }
+
+  checkNorm = ({ dataName, dataValue, iHaveHere = false }) => {
+    /*
+  technical_operation_id
+  this.state.selectedRoute.object_type
+  work_type_id = 1; // наряд задания - 0
+  func_type_id = CARS.type_id
+  start_date = validONLYDATA(formState.date_start)
+  end_date = validONLYDATA(formState.date_start)
+  actual_seasons = 1 // ??
+  __
+  get norm_text
+  norm_id
+  */
+    const payload = {
+      work_type_id: 1,
+      actual_seasons: 1,
+    };
+
+    if (dataName !== 'technical_operation_id') {
+      const { technical_operation_id } = this.props.formState;
+      if (!technical_operation_id) {
+        return;
+      }
+      payload.technical_operation_id = technical_operation_id;
+    } else {
+      payload.technical_operation_id = dataValue;
+    }
+
+    if (dataName !== 'object_type') {
+      const selectedRoute = this.state.selectedRoute || {};
+      const { object_type } = selectedRoute;
+
+      if (!object_type) {
+        return;
+      }
+      payload.object_type = object_type;
+    } else {
+      payload.object_type = dataValue;
+    }
+
+    if (dataName !== 'date_start') {
+      const { date_start } = this.props.formState;
+      if (!date_start) {
+        return;
+      }
+      payload.start_date = date_start;
+      payload.end_date = date_start;
+    } else {
+      payload.start_date = dataValue;
+      payload.end_date = dataValue;
+    }
+    const { carsList } = this.state;
+    if (dataName !== 'func_type_id') {
+      const { car_id } = this.props.formState;
+      if (!car_id) {
+        return;
+      }
+      payload.func_type_id = carsList.find(car => car.asuods_id === car_id).type_id;
+    } else {
+      payload.func_type_id = carsList.find(car => car.asuods_id === dataValue).type_id;
+    }
+    this.setState({ queryToGetNormGo: true });
+
+    this.context.flux.getActions('missions')
+    .getCleaningByType({ type: 'norm', payload })
+    .then((r) => {
+      const { result: { rows = [] } } = r;
+      if (!rows[0]) {
+        if (!iHaveHere) {
+          const timeOutGetNorm = setTimeout(() => this.checkNorm({ iHaveHere: true }), 3 * 1000);
+          this.setState({ timeOutGetNorm, queryToGetNormGo: false });
+        } else {
+          this.setState({ iCantGetNomative: true, queryToGetNormGo: false });
+        }
+      } else {
+        const { norm_text, id } = rows[0];
+        this.handleChange('norm_text', norm_text);
+        this.handleChange('norm_id', id);
+        this.setState({ queryToGetNormGo: false });
+      }
+    }).catch((ans) => {
+      global.NOTIFICATION_SYSTEM.notify(getWarningNotification(ans.warning));
+
+      if (!iHaveHere) {
+        const timeOutGetNorm = setTimeout(() => this.checkNorm({ iHaveHere: true }), 3 * 1000);
+        this.setState({ timeOutGetNorm, queryToGetNormGo: false });
+      } else {
+        this.setState({ iCantGetNomative: true, queryToGetNormGo: false });
+      }
+    });
+  }
 
   render() {
     const state = this.props.formState;
@@ -203,8 +311,8 @@ export class MissionForm extends Form {
     } = this.props;
     const { TECH_OPERATIONS = [], routesList = [], carsList = [] } = this.state;
 
-    let MISSION_SOURCES = missionSourcesList.map(({ id, name, auto }) => ({ value: id, label: name, disabled: auto }));
-   
+    const MISSION_SOURCES = missionSourcesList.map(({ id, name, auto }) => ({ value: id, label: name, disabled: auto }));
+
     const ASSIGN_OPTIONS = [
       { value: 'assign_to_active', label: 'Добавить в активный ПЛ' },
       { value: 'assign_to_new_draft', label: 'Создать черновик ПЛ' },
@@ -216,6 +324,7 @@ export class MissionForm extends Form {
         value: c.asuods_id,
         available: c.available,
         label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`,
+        type_id: c.type_id,
       }));
 
     const route = this.state.selectedRoute;
@@ -275,8 +384,38 @@ export class MissionForm extends Form {
         </Modal.Header>
 
         <ModalBody>
-
           <Row>
+            {!this.props.fromFaxogrammMissionForm &&
+            <Col md={12}>
+              <FormGroup
+                controlId="norm_text"
+              >
+                <ControlLabel>Норматив</ControlLabel>
+                { this.state.queryToGetNormGo ?
+                  <Preloader type="field" />
+                  :
+                  <InputGroup>
+                    <FormControl
+                      disabled
+                      value={
+                        state.norm_text ||
+                        (this.state.iCantGetNomative && 'Произошла ошибка получения норматива. Повторите попытку через несколько секунд. Для этого нажмите на кнопку справа') ||
+                        'Заполните обязательные поля для получения норматива'
+                      }
+                      type="string"
+                    />
+                    <InputGroup.Addon>
+                      <Glyphicon
+                        glyph={state.norm_text ? 'ok' : this.state.iCantGetNomative ? 'repeat' : 'pencil'}
+                        onClick={() => this.state.iCantGetNomative && this.checkNorm({ iHaveHere: true })}
+                      />
+                    </InputGroup.Addon>
+                    <FormControl.Feedback />
+                  </InputGroup>
+                }
+              </FormGroup>
+            </Col>
+            }
             <Col md={6}>
               <Field
                 type="select"
@@ -307,7 +446,7 @@ export class MissionForm extends Form {
                   disabled={IS_DISPLAY || disabledProps.date_start}
                   min={this.props.fromWaybill && this.props.waybillStartDate ? this.props.waybillStartDate : null}
                   max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
-                  onChange={this.handleChange.bind(this, 'date_start')}
+                  onChange={this.handleChangeDateStart}
                 />
               </Div>
             </Col>

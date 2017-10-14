@@ -21,7 +21,7 @@ export default class MissionFormWrap extends FormWrap {
   }
   createAction = (formState) => {
     return this.context.flux.getActions('missions').createMission(formState, false).then(() => {
-      if (!this.props.fromWaybill) {
+      if (!this.props.fromWaybill && !this.props.fromFaxogrammMissionForm) {
         this.props.refreshTableList();
       }
     });

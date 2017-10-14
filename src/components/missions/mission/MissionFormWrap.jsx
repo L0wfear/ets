@@ -15,7 +15,16 @@ export default class MissionFormWrap extends FormWrap {
     super(props);
 
     this.schema = missionSchema;
-    this.createAction = formState => context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill);
+    /* DITETS-2152 fixed callBack on createMission */
+    // If all good and u see it -> remove
+    // this.createAction = formState => context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill && this.props.refreshTableList);
+  }
+  createAction = (formState) => {
+    return this.context.flux.getActions('missions').createMission(formState, false).then(() => {
+      if (!this.props.fromWaybill) {
+        this.props.refreshTableList();
+      }
+    });
   }
 
   componentWillReceiveProps(props) {

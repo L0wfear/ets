@@ -31,6 +31,7 @@ export class MissionForm extends Form {
       showRouteForm: false,
       carsList: [],
       routesList: [],
+      MUNICIPAL_FACILITY_OPTIONS: [],
       technicalOperationsList: [],
       queryToGetNormGo: false,
     };
@@ -159,13 +160,23 @@ export class MissionForm extends Form {
       setTimeout(() => {
         const {
           norm_id = false,
+          date_start,
         } = this.props.formState;
+        const payloadMF = {
+          norm_id,
+          start_date: date_start,
+          end_date: date_start,
+        };
         if (norm_id) {
           this.context.flux.getActions('missions')
           .getCleaningByTypeInActiveMission({ type: 'norm', norm_id }).then((ans) => {
             this.setState({
               norm_text: ans.result.row[0].norm_text,
             });
+          });
+          this.context.flux.getActions('missions').getCleaningMunicipalFacilityList(payloadMF).then((r) => {
+            const MUNICIPAL_FACILITY_OPTIONS = r.result.rows.map(({ municipal_facility_id, municipal_facility_name }) => ({ value: municipal_facility_id, label: municipal_facility_name }));
+            this.setState({ MUNICIPAL_FACILITY_OPTIONS });
           });
         } else {
           this.checkNorm({ forsUpdate: true });
@@ -325,6 +336,15 @@ export class MissionForm extends Form {
         this.handleChange('norm_text', norm_text);
         this.handleChange('norm_id', id);
         this.setState({ queryToGetNormGo: false });
+        const payloadMF = {
+          norm_id: id,
+          start_date: payload.start_date,
+          end_date: payload.end_date,
+        };
+        this.context.flux.getActions('missions').getCleaningMunicipalFacilityList(payloadMF).then((res) => {
+          const MUNICIPAL_FACILITY_OPTIONS = res.result.rows.map(({municipal_facility_id, municipal_facility_name }) => ({ value: municipal_facility_id, label: municipal_facility_name }));
+          this.setState({ MUNICIPAL_FACILITY_OPTIONS });
+        });
       }
     }).catch((ans) => {
       if (typeof ans === 'object') {
@@ -350,7 +370,12 @@ export class MissionForm extends Form {
       disabledProps = {},
       fromFaxogrammMissionForm = false,
     } = this.props;
-    const { TECH_OPERATIONS = [], routesList = [], carsList = [] } = this.state;
+    const {
+      MUNICIPAL_FACILITY_OPTIONS = [],
+      TECH_OPERATIONS = [],
+      routesList = [],
+      carsList = [],
+    } = this.state;
 
     const MISSION_SOURCES = missionSourcesList.map(({ id, name, auto }) => ({ value: id, label: name, disabled: auto }));
 
@@ -576,6 +601,19 @@ export class MissionForm extends Form {
                 onChange={this.handleStructureIdChange}
               />
             </Col>}
+            { !this.porps.fromFaxogrammMissionForm &&
+              <Col md={12}>
+                <Field
+                  type="select"
+                  label="Элемент ОГХ"
+                  error={errors.municipal_facility_id}
+                  disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY || isEmpty(state.norm_id))}
+                  options={MUNICIPAL_FACILITY_OPTIONS}
+                  value={state.municipal_facility_id}
+                  onChange={this.handleChange.bind(this, 'municipal_facility_id')}
+                />
+              </Col>
+            }
           </Row>
 
           <Row>

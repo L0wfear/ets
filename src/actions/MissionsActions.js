@@ -350,4 +350,9 @@ export default class MissionsActions extends Actions {
     };
     return Cleaning.path(type).get(payload, false, 'json');
   }
+  getCleaningByTypeInActiveMission({ type, norm_id }) {
+
+    return Cleaning.path(`${type}/${norm_id}`).get({}, false, 'json');
+    
+  }
 }

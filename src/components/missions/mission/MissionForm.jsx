@@ -15,7 +15,7 @@ import Div from 'components/ui/Div.jsx';
 import moment from 'moment';
 import { isEmpty } from 'utils/functions';
 import Form from 'components/compositions/Form.jsx';
-import _ from 'lodash';
+import _, { cloneDeep } from 'lodash';
 import CarAvailableIcon from 'assets/images/car_available.png';
 import CarNotAvailableIcon from 'assets/images/car_not_available.png';
 import { getWarningNotification } from 'utils/notifications.js';
@@ -76,7 +76,7 @@ export class MissionForm extends Form {
     if (!this.props.formState.status && !this.props.fromWaybill) {
       this.handleChange('car_id', undefined);
       this.checkNorm({ dataName: 'func_type_id', dataValue: null });
-    
+
       const carsList = await this.context.flux.getActions('cars')
                                             .getCarsByTechnicalOperation(v);
       this.setState({ carsList });
@@ -104,7 +104,7 @@ export class MissionForm extends Form {
     if (!_.find(carsList, c => c.asuods_id === this.props.formState.car_id)) {
       this.handleChange('car_id', null);
       this.checkNorm({ dataName: 'func_type_id', dataValue: null });
-    }    
+    }
     if (!_.find(routesList, r => r.id === this.props.formState.route_id)) {
       this.handleChange('route_id', null);
       this.handleRouteIdChange(undefined);
@@ -148,15 +148,30 @@ export class MissionForm extends Form {
     if (this.props.fromFaxogrammMissionForm) {
       this.handleChange('mission_source_id', (this.props.missionSourcesList.find(d => d.auto) || this.props.missionSourcesList[0]).id);
     }
+
     this.setState({
       carsList,
       TECH_OPERATIONS,
       routesList,
       selectedRoute,
     });
-    setTimeout(() => {
-      this.checkNorm({});
-    }, 100);
+    if (!this.props.fromFaxogrammMissionForm) {
+      setTimeout(() => {
+        const {
+          norm_id = false,
+        } = this.props.formState;
+        if (norm_id) {
+          this.context.flux.getActions('missions')
+          .getCleaningByTypeInActiveMission({ type: 'norm', norm_id }).then((ans) => {
+            this.setState({
+              norm_text: ans.result.row[0].norm_text,
+            });
+          });
+        } else {
+          this.checkNorm({ forsUpdate: true });
+        }
+      }, 100);
+    }
   }
 
   createNewRoute() {
@@ -232,7 +247,7 @@ export class MissionForm extends Form {
   norm_id
   */
     if (!dataValue && !forsUpdate) {
-      this.setState({ iCantGetNomative: false, norm_text: undefined, norm_id: null })
+      this.setState({ iCantGetNomative: false, norm_text: undefined, norm_id: null });
       return;
     }
     const payload = {
@@ -243,7 +258,7 @@ export class MissionForm extends Form {
     if (dataName !== 'technical_operation_id') {
       const { technical_operation_id } = this.props.formState;
       if (!technical_operation_id) {
-        this.setState({ iCantGetNomative: false, norm_text: undefined, norm_id: null })
+        this.setState({ iCantGetNomative: false, norm_text: undefined, norm_id: null });
         return;
       }
       payload.technical_operation_id = technical_operation_id;
@@ -256,7 +271,7 @@ export class MissionForm extends Form {
       const { type } = selectedRoute;
 
       if (!type) {
-        this.setState({ iCantGetNomative: false, norm_text: undefined, norm_id: null })
+        this.setState({ iCantGetNomative: false, norm_text: undefined, norm_id: null });
         return;
       }
       payload.object_type = type;
@@ -267,7 +282,7 @@ export class MissionForm extends Form {
     if (dataName !== 'date_start') {
       const { date_start } = this.props.formState;
       if (!date_start) {
-        this.setState({ iCantGetNomative: false, norm_text: undefined, norm_id: null })
+        this.setState({ iCantGetNomative: false, norm_text: undefined, norm_id: null });
         return;
       }
       payload.start_date = date_start;
@@ -280,12 +295,22 @@ export class MissionForm extends Form {
     if (dataName !== 'func_type_id') {
       const { car_id } = this.props.formState;
       if (!car_id) {
-        this.setState({ iCantGetNomative: false, norm_text: undefined, norm_id: null })
+        this.setState({ iCantGetNomative: false, norm_text: undefined, norm_id: null });
         return;
       }
-      payload.func_type_id = carsList.find(car => car.asuods_id === car_id).type_id;
+      const selecterCar = carsList.find(car => car.asuods_id === car_id);
+      if (!selecterCar) {
+        this.setState({ iCantGetNomative: false, norm_text: undefined, norm_id: null });
+        return;
+      }
+      payload.func_type_id = selecterCar.type_id;
     } else {
-      payload.func_type_id = carsList.find(car => car.asuods_id === dataValue).type_id;
+      const selecterCar = carsList.find(car => car.asuods_id === dataValue);
+      if (!selecterCar) {
+        this.setState({ iCantGetNomative: false, norm_text: undefined, norm_id: null });
+        return;
+      }
+      payload.func_type_id = selecterCar.type_id;
     }
     this.setState({ queryToGetNormGo: true });
 
@@ -294,12 +319,7 @@ export class MissionForm extends Form {
     .then((r) => {
       const { result: { rows = [] } } = r;
       if (!rows[0]) {
-        if (!iHaveHere) {
-          const timeOutGetNorm = setTimeout(() => this.checkNorm({ iHaveHere: true, forsUpdate: true }), 3 * 1000);
-          this.setState({ timeOutGetNorm, queryToGetNormGo: false });
-        } else {
-          this.setState({ iCantGetNomative: true, queryToGetNormGo: false });
-        }
+        this.setState({ queryToGetNormGo: false, iCantGetNomative: true });
       } else {
         const { norm_text, id } = rows[0];
         this.handleChange('norm_text', norm_text);

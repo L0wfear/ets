@@ -54,7 +54,8 @@ export const missionSchema = {
     {
       key: 'norm_id',
       title: 'Норматив',
-      type: 'string',
+      type: 'number',
+      integer: true,
       required: true,
     },
   ],

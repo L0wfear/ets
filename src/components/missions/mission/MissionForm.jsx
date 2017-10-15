@@ -15,7 +15,7 @@ import Div from 'components/ui/Div.jsx';
 import moment from 'moment';
 import { isEmpty } from 'utils/functions';
 import Form from 'components/compositions/Form.jsx';
-import _, { cloneDeep } from 'lodash';
+import _ from 'lodash';
 import CarAvailableIcon from 'assets/images/car_available.png';
 import CarNotAvailableIcon from 'assets/images/car_not_available.png';
 import { getWarningNotification } from 'utils/notifications.js';
@@ -41,7 +41,7 @@ export class MissionForm extends Form {
     const { flux } = this.context;
     if (v) {
       flux.getActions('routes').getRouteById(v, false).then((r) => {
-        this.checkNorm({ dataName: 'object_type', dataValue: r.type });
+        this.checkNorm({ dataName: 'object_type', dataValue: r.object_type });
         this.setState({ selectedRoute: r });
       });
     } else {
@@ -127,7 +127,7 @@ export class MissionForm extends Form {
     if (!isEmpty(mission.route_id)) {
       selectedRoute = await routesActions.getRouteById(mission.route_id, false);
     }
-    this.checkNorm({ dataName: 'object_type', dataValue: (selectedRoute && selectedRoute.type) || null });
+    this.checkNorm({ dataName: 'object_type', dataValue: (selectedRoute && selectedRoute.object_type) || null });
 
     if (!isEmpty(mission.technical_operation_id)) {
       carsList = await this.context.flux.getActions('cars').getCarsByTechnicalOperation(mission.technical_operation_id);
@@ -199,7 +199,7 @@ export class MissionForm extends Form {
       const createdRouteId = result.createdRoute.result[0].id;
       this.handleChange('route_id', createdRouteId);
       const selectedRoute = await routesActions.getRouteById(createdRouteId);
-      this.checkNorm({ dataName: 'object_type', dataValue: selectedRoute.type });
+      this.checkNorm({ dataName: 'object_type', dataValue: selectedRoute.object_type });
       const routesList = await routesActions.getRoutesByTechnicalOperation(this.props.formState.technical_operation_id);
       Object.assign(stateChangeObject, {
         showRouteForm: false,
@@ -268,13 +268,13 @@ export class MissionForm extends Form {
 
     if (dataName !== 'object_type') {
       const selectedRoute = this.state.selectedRoute || {};
-      const { type } = selectedRoute;
+      const { object_type } = selectedRoute;
 
-      if (!type) {
+      if (!object_type) {
         this.setState({ iCantGetNomative: false, norm_text: undefined, norm_id: null });
         return;
       }
-      payload.object_type = type;
+      payload.object_type = object_type;
     } else {
       payload.object_type = dataValue;
     }

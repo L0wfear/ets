@@ -97,6 +97,7 @@ class RouteFormWrap extends FormWrap {
         resetState={this.resetFormState}
         fromMission={this.props.fromMission}
         structureId={this.props.structureId}
+        fromFaxogrammMissionForm={this.props.fromFaxogrammMissionForm}
         {...this.state}
       />
       : null;

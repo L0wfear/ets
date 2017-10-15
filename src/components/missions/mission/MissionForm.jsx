@@ -633,6 +633,7 @@ export class MissionForm extends Form {
           onFormHide={this.onFormHide}
           showForm={this.state.showRouteForm}
           fromMission
+          fromFaxogrammMissionForm={this.props.fromFaxogrammMissionForm}
           structureId={state.structure_id}
         />
       </Modal>

@@ -41,11 +41,12 @@ export class MissionForm extends Form {
     const { flux } = this.context;
     if (v) {
       flux.getActions('routes').getRouteById(v, false).then((r) => {
-        this.checkNorm({ dataName: 'object_type', dataValue: r.object_type });
+        this.checkNorm({ dataName: 'object_type', dataValue: r.type });
         this.setState({ selectedRoute: r });
       });
     } else {
       this.setState({ selectedRoute: null });
+      this.checkNorm({ dataName: 'object_type', dataValue: null });
     }
   }
 
@@ -55,6 +56,7 @@ export class MissionForm extends Form {
 
     if (this.props.formState.status) {
       this.handleChange('technical_operation_id', undefined);
+      this.checkNorm({ dataName: 'technical_operation_id', dataValue: null });
       this.handleRouteIdChange(undefined);
       try {
         const technicalOperationsList = await this.context.flux.getActions('technicalOperation')
@@ -73,6 +75,8 @@ export class MissionForm extends Form {
 
     if (!this.props.formState.status && !this.props.fromWaybill) {
       this.handleChange('car_id', undefined);
+      this.checkNorm({ dataName: 'func_type_id', dataValue: null });
+    
       const carsList = await this.context.flux.getActions('cars')
                                             .getCarsByTechnicalOperation(v);
       this.setState({ carsList });
@@ -97,7 +101,10 @@ export class MissionForm extends Form {
   handleStructureIdChange(v) {
     const carsList = this.props.carsList.filter(c => !v || c.is_common || c.company_structure_id === v);
     const routesList = this.state.routesList.filter(r => !v || r.structure_id === v);
-    if (!_.find(carsList, c => c.asuods_id === this.props.formState.car_id)) this.handleChange('car_id', null);
+    if (!_.find(carsList, c => c.asuods_id === this.props.formState.car_id)) {
+      this.handleChange('car_id', null);
+      this.checkNorm({ dataName: 'func_type_id', dataValue: null });
+    }    
     if (!_.find(routesList, r => r.id === this.props.formState.route_id)) {
       this.handleChange('route_id', null);
       this.handleRouteIdChange(undefined);
@@ -120,6 +127,7 @@ export class MissionForm extends Form {
     if (!isEmpty(mission.route_id)) {
       selectedRoute = await routesActions.getRouteById(mission.route_id, false);
     }
+    this.checkNorm({ dataName: 'object_type', dataValue: (selectedRoute && selectedRoute.type) || null });
 
     if (!isEmpty(mission.technical_operation_id)) {
       carsList = await this.context.flux.getActions('cars').getCarsByTechnicalOperation(mission.technical_operation_id);
@@ -176,6 +184,7 @@ export class MissionForm extends Form {
       const createdRouteId = result.createdRoute.result[0].id;
       this.handleChange('route_id', createdRouteId);
       const selectedRoute = await routesActions.getRouteById(createdRouteId);
+      this.checkNorm({ dataName: 'object_type', dataValue: selectedRoute.type });
       const routesList = await routesActions.getRoutesByTechnicalOperation(this.props.formState.technical_operation_id);
       Object.assign(stateChangeObject, {
         showRouteForm: false,
@@ -183,6 +192,7 @@ export class MissionForm extends Form {
         routesList,
       });
     } else {
+      this.checkNorm({ dataName: 'object_type', dataValue: null });
       Object.assign(stateChangeObject, {
         showRouteForm: false,
         selectedRoute: null,
@@ -208,7 +218,7 @@ export class MissionForm extends Form {
     this.checkNorm({ dataName: 'date_start', dataValue: v });
   }
 
-  checkNorm = ({ dataName, dataValue, iHaveHere = false }) => {
+  checkNorm = ({ dataName, dataValue, iHaveHere = false, forsUpdate = false }) => {
     /*
   technical_operation_id
   this.state.selectedRoute.object_type
@@ -221,6 +231,10 @@ export class MissionForm extends Form {
   get norm_text
   norm_id
   */
+    if (!dataValue && !forsUpdate) {
+      this.setState({ iCantGetNomative: false, norm_text: undefined, norm_id: null })
+      return;
+    }
     const payload = {
       work_type_id: 1,
       actual_seasons: 1,
@@ -229,6 +243,7 @@ export class MissionForm extends Form {
     if (dataName !== 'technical_operation_id') {
       const { technical_operation_id } = this.props.formState;
       if (!technical_operation_id) {
+        this.setState({ iCantGetNomative: false, norm_text: undefined, norm_id: null })
         return;
       }
       payload.technical_operation_id = technical_operation_id;
@@ -238,12 +253,13 @@ export class MissionForm extends Form {
 
     if (dataName !== 'object_type') {
       const selectedRoute = this.state.selectedRoute || {};
-      const { object_type } = selectedRoute;
+      const { type } = selectedRoute;
 
-      if (!object_type) {
+      if (!type) {
+        this.setState({ iCantGetNomative: false, norm_text: undefined, norm_id: null })
         return;
       }
-      payload.object_type = object_type;
+      payload.object_type = type;
     } else {
       payload.object_type = dataValue;
     }
@@ -251,6 +267,7 @@ export class MissionForm extends Form {
     if (dataName !== 'date_start') {
       const { date_start } = this.props.formState;
       if (!date_start) {
+        this.setState({ iCantGetNomative: false, norm_text: undefined, norm_id: null })
         return;
       }
       payload.start_date = date_start;
@@ -263,6 +280,7 @@ export class MissionForm extends Form {
     if (dataName !== 'func_type_id') {
       const { car_id } = this.props.formState;
       if (!car_id) {
+        this.setState({ iCantGetNomative: false, norm_text: undefined, norm_id: null })
         return;
       }
       payload.func_type_id = carsList.find(car => car.asuods_id === car_id).type_id;
@@ -277,7 +295,7 @@ export class MissionForm extends Form {
       const { result: { rows = [] } } = r;
       if (!rows[0]) {
         if (!iHaveHere) {
-          const timeOutGetNorm = setTimeout(() => this.checkNorm({ iHaveHere: true }), 3 * 1000);
+          const timeOutGetNorm = setTimeout(() => this.checkNorm({ iHaveHere: true, forsUpdate: true }), 3 * 1000);
           this.setState({ timeOutGetNorm, queryToGetNormGo: false });
         } else {
           this.setState({ iCantGetNomative: true, queryToGetNormGo: false });
@@ -289,10 +307,13 @@ export class MissionForm extends Form {
         this.setState({ queryToGetNormGo: false });
       }
     }).catch((ans) => {
-      global.NOTIFICATION_SYSTEM.notify(getWarningNotification(ans.warning));
+      if (typeof ans === 'object') {
+        const { warning = 'Проихошла непредвиженная ошибка получения норматива' } = ans;
+        global.NOTIFICATION_SYSTEM.notify(getWarningNotification(warning));
+      }
 
       if (!iHaveHere) {
-        const timeOutGetNorm = setTimeout(() => this.checkNorm({ iHaveHere: true }), 3 * 1000);
+        const timeOutGetNorm = setTimeout(() => this.checkNorm({ iHaveHere: true, forsUpdate: true }), 3 * 1000);
         this.setState({ timeOutGetNorm, queryToGetNormGo: false });
       } else {
         this.setState({ iCantGetNomative: true, queryToGetNormGo: false });
@@ -404,11 +425,12 @@ export class MissionForm extends Form {
                       }
                       type="string"
                     />
-                    <InputGroup.Addon>
-                      <Glyphicon
-                        glyph={state.norm_text ? 'ok' : this.state.iCantGetNomative ? 'repeat' : 'pencil'}
-                        onClick={() => this.state.iCantGetNomative && this.checkNorm({ iHaveHere: true })}
-                      />
+                    <InputGroup.Addon onClick={() => this.state.iCantGetNomative && this.checkNorm({ iHaveHere: true, forsUpdate: true })}>
+                      <div style={{ cursor: this.state.iCantGetNomative ? 'pointer' : 'not-allowed' }}>
+                        <Glyphicon
+                          glyph={state.norm_text ? 'ok' : this.state.iCantGetNomative ? 'repeat' : 'pencil'}
+                        />
+                      </div>
                     </InputGroup.Addon>
                     <FormControl.Feedback />
                   </InputGroup>

@@ -19,10 +19,10 @@ const NavDropdown = enhanceWithPermissions(BootstrapNavDropdown);
 
 interface IPropsReportsNavItem extends IPropsNavbarItem {}
 
-const ReportsNavItem: React.SFC<IPropsReportsNavItem> = ({ path }) => {
-  return <NavDropdown oneOfPermissions={[PERMISSIONS.reportAll.list]} title="Отчеты" id="nav-dropdown-3">
+const ReportsNavItem: React.SFC<IPropsReportsNavItem> = ({ path }) => 
+  <NavDropdown oneOfPermissions={PERMISSIONS.reportAll.list} title="Отчеты" id="nav-dropdown-3">
     <NavDropdown title="Оперативные отчеты" id="nav-dropdown-3-1">
-      <MenuItem permissions={[PERMISSIONS.reportAll.route_odh_coverage_report]} active={path === '/route-odh-coverage-report'} href="#/route-odh-coverage-report">Покрытие ОДХ маршрутами</MenuItem>
+      <MenuItem permissions={[PERMISSIONS.reportAll.route_odh_coverage_report.list]} active={path === '/route-odh-coverage-report'} href="#/route-odh-coverage-report">Покрытие ОДХ маршрутами</MenuItem>
       <MenuItem permissions={[PERMISSIONS.reportAll.car_travel_report.list]} active={path === '/mission-reports'} href="#/mission-reports">Прохождение заданий</MenuItem>
       <MenuItem permissions={[PERMISSIONS.reportAll.car_usage_report_with_track_report.list]} active={path === '/car-usage-report'} href="#/car-usage-report">Статистика выхода техники</MenuItem>
       <MenuItem permissions={[PERMISSIONS.reportAll.track_events_report.list]} active={path === '/track-events-reports'} href="#/track-events-reports">Отчет по возможным сливам топлива</MenuItem>
@@ -49,6 +49,5 @@ const ReportsNavItem: React.SFC<IPropsReportsNavItem> = ({ path }) => {
     }
     <MenuItem permissions={[PERMISSIONS.reportAll.analytical_reports.list]} active={path === '/analytics'} href="#/analytics">Аналитика</MenuItem>
   </NavDropdown>;
-};
 
 export default ReportsNavItem;

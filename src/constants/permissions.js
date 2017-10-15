@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 const PERMISSIONS = {
   'waybill': {
     'list': 'waybill.list',
@@ -231,9 +229,9 @@ const PERMISSIONS = {
   'administration': 'administration',
 };
 
-const NSI_LIST_PERMISSIONS = _(PERMISSIONS.nsi).map(v => v.list).value();
-const MISSIONS_LIST_PERMISSIONS = _(PERMISSIONS.missions).map(v => v.list).value();
-const REPORT_LIST_PERMISSIONS = _(PERMISSIONS.reportAll).map(v => v.list).value();
+const NSI_LIST_PERMISSIONS = Object.values(PERMISSIONS.nsi).map(v => v.list);
+const MISSIONS_LIST_PERMISSIONS = Object.values(PERMISSIONS.missions).map(v => v.list);
+const REPORT_LIST_PERMISSIONS = Object.values(PERMISSIONS.reportAll).map(v => v.list);
 
 PERMISSIONS.nsi.list = NSI_LIST_PERMISSIONS;
 PERMISSIONS.missions.list = MISSIONS_LIST_PERMISSIONS;

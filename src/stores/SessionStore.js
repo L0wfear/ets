@@ -71,7 +71,7 @@ export default class SessionStore extends Store {
       ...userNotification,
       ...getSpecificPermissions(currentUser),
     ];
-
+    console.log(currentUser.permissions)
     localStorage.setItem(global.SESSION_KEY, JSON.stringify(session));
     localStorage.setItem(global.CURRENT_USER, JSON.stringify(currentUser));
     this.flux.getStore('dashboard').resetState();

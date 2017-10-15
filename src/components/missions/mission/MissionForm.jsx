@@ -177,10 +177,11 @@ export class MissionForm extends Form {
         if (norm_id) {
           this.context.flux.getActions('missions')
           .getCleaningByTypeInActiveMission({ type: 'norm', norm_id }).then((ans) => {
-            this.handleChange('norm', ans.result.rows[0].norm_text)
+            this.handleChange('norm', ans.result.rows[0].norm_text);
           });
           this.context.flux.getActions('missions').getCleaningMunicipalFacilityList(payloadMF).then((r) => {
-            const MUNICIPAL_FACILITY_OPTIONS = r.result.rows.map(({ municipal_facility_id, municipal_facility_name }) => ({ value: municipal_facility_id, label: municipal_facility_name }));
+            const { rows = [] } = r.result;
+            const MUNICIPAL_FACILITY_OPTIONS = rows.map(({ municipal_facility_id, municipal_facility_name }) => ({ value: municipal_facility_id, label: municipal_facility_name }));
             this.setState({ MUNICIPAL_FACILITY_OPTIONS });
           });
         } else {
@@ -342,7 +343,8 @@ export class MissionForm extends Form {
           end_date: payload.end_date,
         };
         this.context.flux.getActions('missions').getCleaningMunicipalFacilityList(payloadMF).then((res) => {
-          const MUNICIPAL_FACILITY_OPTIONS = res.result.rows.map(({municipal_facility_id, municipal_facility_name }) => ({ value: municipal_facility_id, label: municipal_facility_name }));
+          const { rows: rowsMF } = res.result;
+          const MUNICIPAL_FACILITY_OPTIONS = rowsMF.map(({ municipal_facility_id, municipal_facility_name }) => ({ value: municipal_facility_id, label: municipal_facility_name }));
           this.setState({ MUNICIPAL_FACILITY_OPTIONS });
         });
       }

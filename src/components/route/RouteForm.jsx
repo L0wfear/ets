@@ -15,13 +15,16 @@ export default class RouteForm extends Form {
 
   constructor(props) {
     super(props);
+    const ROUTE_TYPE_OPTIONS = [
+      { value: 'mixed', label: 'Выбор из ОДХ' },
+      { value: 'simple_dt', label: 'Выбор из ДТ' },
+    ];
+    if (!this.props.fromFaxogrammMissionForm) {
+      ROUTE_TYPE_OPTIONS.push({ value: 'points', label: 'Выбор пунктов назначения' });
+    }
 
     this.state = {
-      ROUTE_TYPE_OPTIONS: [
-        { value: 'mixed', label: 'Выбор из ОДХ' },
-        { value: 'simple_dt', label: 'Выбор из ДТ' },
-        { value: 'points', label: 'Выбор пунктов назначения' },
-      ],
+      ROUTE_TYPE_OPTIONS,
       routeTypeDisabled: true,
     };
     this.handleClickSelectFromODH = this.handleClickSelectFromODH.bind(this);
@@ -47,9 +50,11 @@ export default class RouteForm extends Form {
           }
           break;
         case 'ПН':
-          route_type_options.push({ value: 'points', label: 'Выбор пунктов назначения' });
-          if (!routeTypeValue && routeTypeValue !== 'mixed') {
-            routeTypeValue = 'points';
+          if( !this.props.fromFaxogrammMissionForm) {
+            route_type_options.push({ value: 'points', label: 'Выбор пунктов назначения' });
+            if (!routeTypeValue && routeTypeValue !== 'mixed') {
+              routeTypeValue = 'points';
+            }
           }
           break;
         case 'ДТ':

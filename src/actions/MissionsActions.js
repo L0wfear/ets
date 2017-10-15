@@ -1,7 +1,7 @@
 import { Actions } from 'flummox';
 import _ from 'lodash';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
-import { createValidDateTime } from 'utils/dates';
+import { createValidDateTime, createValidDate } from 'utils/dates';
 import { isEmpty, flattenObject } from 'utils/functions';
 import {
   MissionReportsService,
@@ -17,6 +17,7 @@ import {
   DutyMissionPrintService,
   MissionDataService,
   CarDutyMissionService,
+  Cleaning,
 } from 'api/missions';
 
 export const parseFilterObject = filter => _.mapKeys(
@@ -341,5 +342,23 @@ export default class MissionsActions extends Actions {
     };
     return MissionLastReportService.get(payload);
   }
-
+  getCleaningByType({ type, payload: outerPyload }) {
+    const payload = {
+      ...outerPyload,
+      start_date: createValidDate(outerPyload.start_date),
+      end_date: createValidDate(outerPyload.end_date),
+    };
+    return Cleaning.path(type).get(payload, false, 'json');
+  }
+  getCleaningByTypeInActiveMission({ type, norm_id }) {
+    return Cleaning.path(`${type}/${norm_id}`).get({}, false, 'json');
+  }
+  getCleaningMunicipalFacilityList(outerPyload) {
+    const payload = {
+      ...outerPyload,
+      start_date: createValidDate(outerPyload.start_date),
+      end_date: createValidDate(outerPyload.end_date),
+    };
+    return Cleaning.path('municipal_facility').get(payload, false, 'json');
+  }
 }

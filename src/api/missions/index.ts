@@ -11,3 +11,6 @@ export const DutyMissionTemplateService = ETS_API_FACTORY.createApiServiceAdapte
 export const MissionPrintService = ETS_API_FACTORY.createApiServiceAdapter('plate_mission', {});
 export const DutyMissionPrintService = ETS_API_FACTORY.createApiServiceAdapter('plate_duty_mission', {});
 export const MissionDataService = ETS_API_FACTORY.createApiServiceAdapter('mission_data', {});
+
+/* DITETS-2142 */
+export const Cleaning = ETS_API_FACTORY.createApiServiceAdapter('cleaning', {});

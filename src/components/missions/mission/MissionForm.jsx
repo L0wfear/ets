@@ -84,7 +84,7 @@ export class MissionForm extends Form {
     }
 
     if (this.props.fromFaxogrammMissionForm) {
-      const norm_id = this.props.externalHanldeChanges.handleGetNormId(v);
+      const { norm_id, MUNICIPAL_FACILITY_OPTIONS } = this.props.externalHanldeChanges.handleGetNormId(v);
       this.context.flux.getActions('missions')
         .getCleaningByTypeInActiveMission({ type: 'norm', norm_id })
         .then((ans) => {
@@ -92,6 +92,7 @@ export class MissionForm extends Form {
         });
       this.handleChange('passes_count', this.props.externalHanldeChanges.handleGetPassesCount(v));
       this.handleChange('norm_id', norm_id);
+      this.setState({ MUNICIPAL_FACILITY_OPTIONS });
     }
 
     try {

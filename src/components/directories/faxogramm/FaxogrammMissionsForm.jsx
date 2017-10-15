@@ -38,26 +38,35 @@ class FaxogrammMissionsForm extends Form {
       }
       return newObj;
     }, {});
+    const technical_operations_reduce_by_municipal_facility = technical_operations.reduce((newObj, d) => {
+      if (!newObj[d.municipal_facility_id]) {
+        newObj[d.municipal_facility_id] = d;
+      }
+      return newObj;
+    }, {});
 
     const TECH_OPERATIONS = technicalOperationsList.reduce((arr, t) => {
-      const id = t.id;
+      const tid = t.id;
 
-      if (technical_operations_reduce[id]) {
+      if (technical_operations_reduce[tid]) {
         arr.push({
-          value: id,
+          value: tid,
           label: t.name,
-          passes_count: technical_operations_reduce[id].num_exec,
+          passes_count: technical_operations_reduce[tid].num_exec,
+          norm_id: technical_operations_reduce[tid].norm_id,
         });
       }
 
       return arr;
     },
     []);
+
     const externalData = {
       date_start: order_date,
       date_end: order_date_to,
       faxogramm_id: id,
       TECH_OPERATIONS,
+      MUNICIPAL_FACILITY_OPTIONS: Object.values(technical_operations_reduce_by_municipal_facility).map(({ elem, municipal_facility_id }) => ({ value: municipal_facility_id, label: elem })),
     };
 
     this.setState({
@@ -68,6 +77,7 @@ class FaxogrammMissionsForm extends Form {
   onHideCM = () => this.setState({ showFormCreateMission: false });
   externalHanldeChanges = {
     handleGetPassesCount: id => this.state.externalData.TECH_OPERATIONS.find(d => d.value === id).passes_count,
+    handleGetNormId: id => this.state.externalData.TECH_OPERATIONS.find(d => d.value === id).norm_id,
   }
   render() {
     const state = this.props.formState;

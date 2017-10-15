@@ -84,7 +84,14 @@ export class MissionForm extends Form {
     }
 
     if (this.props.fromFaxogrammMissionForm) {
+      const norm_id = this.props.externalHanldeChanges.handleGetNormId(v);
+      this.context.flux.getActions('missions')
+        .getCleaningByTypeInActiveMission({ type: 'norm', norm_id })
+        .then((ans) => {
+          this.handleChange('norm_text', ans.result.rows[0].norm_text);
+        });
       this.handleChange('passes_count', this.props.externalHanldeChanges.handleGetPassesCount(v));
+      this.handleChange('norm_id', norm_id);
     }
 
     try {
@@ -170,9 +177,7 @@ export class MissionForm extends Form {
         if (norm_id) {
           this.context.flux.getActions('missions')
           .getCleaningByTypeInActiveMission({ type: 'norm', norm_id }).then((ans) => {
-            this.setState({
-              norm_text: ans.result.row[0].norm_text,
-            });
+            this.handleChange('norm', ans.result.rows[0].norm_text)
           });
           this.context.flux.getActions('missions').getCleaningMunicipalFacilityList(payloadMF).then((r) => {
             const MUNICIPAL_FACILITY_OPTIONS = r.result.rows.map(({ municipal_facility_id, municipal_facility_name }) => ({ value: municipal_facility_id, label: municipal_facility_name }));
@@ -182,6 +187,9 @@ export class MissionForm extends Form {
           this.checkNorm({ forsUpdate: true });
         }
       }, 100);
+    } else {
+      const { MUNICIPAL_FACILITY_OPTIONS } = this.props.externalData;
+      this.setState({ MUNICIPAL_FACILITY_OPTIONS });
     }
   }
 
@@ -245,18 +253,10 @@ export class MissionForm extends Form {
   }
 
   checkNorm = ({ dataName, dataValue, iHaveHere = false, forsUpdate = false }) => {
-    /*
-  technical_operation_id
-  this.state.selectedRoute.object_type
-  work_type_id = 1; // наряд задания - 0
-  func_type_id = CARS.type_id
-  start_date = validONLYDATA(formState.date_start)
-  end_date = validONLYDATA(formState.date_start)
-  actual_seasons = 1 // ??
-  __
-  get norm_text
-  norm_id
-  */
+    if (this.props.fromFaxogrammMissionForm) {
+      return;
+    }
+
     if (!dataValue && !forsUpdate) {
       this.setState({ iCantGetNomative: false, norm_text: undefined, norm_id: null });
       return;
@@ -441,7 +441,6 @@ export class MissionForm extends Form {
         </div>);
     }
 
-
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
 
@@ -451,7 +450,6 @@ export class MissionForm extends Form {
 
         <ModalBody>
           <Row>
-            {!this.props.fromFaxogrammMissionForm &&
             <Col md={12}>
               <FormGroup
                 controlId="norm_text"
@@ -482,7 +480,6 @@ export class MissionForm extends Form {
                 }
               </FormGroup>
             </Col>
-            }
             <Col md={6}>
               <Field
                 type="select"
@@ -601,19 +598,17 @@ export class MissionForm extends Form {
                 onChange={this.handleStructureIdChange}
               />
             </Col>}
-            { !this.porps.fromFaxogrammMissionForm &&
-              <Col md={12}>
-                <Field
-                  type="select"
-                  label="Элемент ОГХ"
-                  error={errors.municipal_facility_id}
-                  disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY || isEmpty(state.norm_id))}
-                  options={MUNICIPAL_FACILITY_OPTIONS}
-                  value={state.municipal_facility_id}
-                  onChange={this.handleChange.bind(this, 'municipal_facility_id')}
-                />
-              </Col>
-            }
+            <Col md={12}>
+              <Field
+                type="select"
+                label="Элемент ОГХ"
+                error={errors.municipal_facility_id}
+                disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY || isEmpty(state.norm_id))}
+                options={MUNICIPAL_FACILITY_OPTIONS}
+                value={state.municipal_facility_id}
+                onChange={this.handleChange.bind(this, 'municipal_facility_id')}
+              />
+            </Col>
           </Row>
 
           <Row>

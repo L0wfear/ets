@@ -53,6 +53,56 @@ const PERMISSIONS = {
     'create': 'report.create',
     'list': 'report.list',
   },
+  reportAll: {
+    route_odh_coverage_report: {
+      list: 'route_odh_coverage_report.list',
+    },
+    car_travel_report: {
+      list: 'car_travel_report.list',
+    },
+    car_usage_report_with_track_report: {
+      list: 'car_usage_report_with_track_report.list',
+    },
+    track_events_report: {
+      list: 'track_events_report.list',
+    },
+    brigade_efficiency_report: {
+      list: 'brigade_efficiency_report.list',
+    },
+    employee_efficiency_report: {
+      list: 'employee_efficiency_report.list',
+    },
+    mission_progress_report: {
+      list: 'mission_progress_report.list',
+    },
+    autobase_long_repair_report: {
+      list: 'autobase_long_repair_report.list',
+    },
+    autobase_tech_maintenance_schedule_report: {
+      list: 'autobase_tech_maintenance_schedule_report.list',
+    },
+    autobase_inquiry_expiring_date_report: {
+      list: 'autobase_inquiry_expiring_date_report.list',
+    },
+    fuel_consumption_report: {
+      list: 'fuel_consumption_report.list',
+    },
+    fuel_consumption_summary_report: {
+      list: 'fuel_consumption_summary_report',
+    },
+    cleaning_status_report: {
+      list: 'cleaning_status_report.list',
+    },
+    cleaning_status_cafap_report: {
+      list: 'cleaning_status_cafap_report.list',
+    },
+    cleaning_status_tech_op_report: {
+      list: 'cleaning_status_tech_op_report.list',
+    },
+    analytical_reports: {
+      list: 'analytical_reports.list',
+    },
+  },
   'odh_coverage_report': 'odh_coverage_report',
   'dt_coverage_report': 'dt_coverage_report',
   'route': {
@@ -183,8 +233,10 @@ const PERMISSIONS = {
 
 const NSI_LIST_PERMISSIONS = _(PERMISSIONS.nsi).map(v => v.list).value();
 const MISSIONS_LIST_PERMISSIONS = _(PERMISSIONS.missions).map(v => v.list).value();
+const REPORT_LIST_PERMISSIONS = _(PERMISSIONS.reportAll).map(v => v.list).value();
 
 PERMISSIONS.nsi.list = NSI_LIST_PERMISSIONS;
 PERMISSIONS.missions.list = MISSIONS_LIST_PERMISSIONS;
+PERMISSIONS.reportAll.list = REPORT_LIST_PERMISSIONS;
 
 export default PERMISSIONS;

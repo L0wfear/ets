@@ -71,14 +71,33 @@ class FaxogrammMissionsForm extends Form {
 
     this.setState({
       externalData,
+      technical_operations_reduce_by_municipal_facility,
     });
   }
   handleClickOnCM = () => this.setState({ showFormCreateMission: true });
   onHideCM = () => this.setState({ showFormCreateMission: false });
   externalHanldeChanges = {
     handleGetPassesCount: id => this.state.externalData.TECH_OPERATIONS.find(d => d.value === id).passes_count,
-    handleGetNormId: id => this.state.externalData.TECH_OPERATIONS.find(d => d.value === id).norm_id,
+    handleGetNormId: (id) => {
+      const { technical_operations_reduce_by_municipal_facility = {} } = this.state;
+      const norm_id = (this.state.externalData.TECH_OPERATIONS.find(d => d.value === id) || {}).norm_id;
+
+      const MUNICIPAL_FACILITY_OPTIONS = Object.values(technical_operations_reduce_by_municipal_facility).reduce((arr, { elem, municipal_facility_id, norm_id: to_norm_id }) => {
+        if (norm_id === to_norm_id) {
+          arr.push({ value: municipal_facility_id, label: elem });
+        }
+        return arr;
+      },
+      []
+      );
+
+      return {
+        norm_id,
+        MUNICIPAL_FACILITY_OPTIONS,
+      };
+    },
   }
+
   render() {
     const state = this.props.formState;
     const { externalData = {} } = this.state;

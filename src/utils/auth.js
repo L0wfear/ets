@@ -4,12 +4,12 @@ export const requireAuth = flux => (nextState, replaceState) => {
   console.log('requireAuth', nexttate.location.pathname )
   
   if (!flux.getStore('session').isLoggedIn() || !flux.getStore('session').getCurrentUser().role) {
-    console.log('requireAuth', 'iAmNotLogined' nexttate.location.pathname )
+    console.log('requireAuth', 'iAmNotLogined', nexttate.location.pathname )
   
     replaceState({ nextPathname: nextState.location.pathname }, '/login');
     return;
   }
-  console.log('requireAuth', 'iAmLogined' nexttate.location.pathname )
+  console.log('requireAuth', 'iAmLogined', nexttate.location.pathname )
   
   if (routToPer[nextState.location.pathname]) {
     console.log('requireAuth secondIf', routToPer[nextState.location.pathname], nexttate.location.pathname )

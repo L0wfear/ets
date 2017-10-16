@@ -350,7 +350,7 @@ export class DutyMissionForm extends Form {
 
 
           <Row>
-            <Col md={state.order_number != null ? 3 : 6}>
+            <Col md={6}>
               <Field type="select" label="Источник получения задания" error={errors.mission_source_id}
                 disabled={IS_DISPLAY || readOnly}
                 options={MISSION_SOURCES}
@@ -359,14 +359,6 @@ export class DutyMissionForm extends Form {
               />
               { IS_CREATING && <span style={{ opacity: 0.5 }}>{'Задания на основе факсограмм необходимо создавать во вкладке "НСИ"-"Реестр факсограмм".'}</span> }
             </Col>
-            {state.order_number != null && <Col md={3}>
-              <Field
-                type="string"
-                label="Номер факсограммы"
-                readOnly
-                value={state.order_number}
-              />
-            </Col>}
             <Col md={6}>
               <Field
                 type="string"
@@ -380,7 +372,16 @@ export class DutyMissionForm extends Form {
           </Row>
 
           <Row>
-            <Col md={6} />
+            <Col md={6}>
+              { state.order_number !== null &&
+                <Field
+                  type="string"
+                  label="Номер факсограммы"
+                  readOnly
+                  value={state.order_number}
+                />
+              }
+            </Col>
             <Col md={6}>
               <Field type="select" label="Задание на ТС" error={errors.car_mission_id}
                 disabled={IS_DISPLAY || readOnly}

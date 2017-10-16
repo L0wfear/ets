@@ -89,9 +89,9 @@ class FaxogrammMissionsFormWrap extends FormWrap {
           } catch (er) {
             cancel = true;
           }
-          const { interval = [getToday9am(), getTomorrow9am()] } = state;
-
           if (!cancel) {
+            const { interval = [getToday9am(), getTomorrow9am()] } = state;
+          
             const newPayload = {
               mission_source_id: '4',
               faxogramm_id: payload.id,

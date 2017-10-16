@@ -4,6 +4,7 @@ import _ from 'lodash';
 import Div from 'components/ui/Div.jsx';
 import { getDefaultMissionTemplate, getDefaultMissionsCreationTemplate } from 'stores/MissionsStore.js';
 import { isEmpty } from 'utils/functions';
+import { getToday9am, getTomorrow9am } from 'utils/dates.js';
 import { validateField } from 'utils/validate/validateField.js';
 import { missionTemplateSchema } from 'models/MissionTemplateModel.js';
 import { missionsCreationTemplateSchema } from 'models/MissionsCreationTemplateModel.js';
@@ -132,11 +133,13 @@ export default class MissionFormWrap extends FormWrap {
               cancel = true;
             }
             if (!cancel) {
+              const { interval = [getToday9am(), getTomorrow9am()] } = state;
+              
               const newPayload = {
                 mission_source_id: payload.mission_source_id,
                 passes_count: payload.passes_count,
-                date_start: state.interval[0],
-                date_end: state.interval[1],
+                date_start: interval[0],
+                date_end: interval[1],
                 assign_to_waybill: payload.assign_to_waybill,
               };
               await createMissions(element, newPayload);

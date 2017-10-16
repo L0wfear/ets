@@ -39,8 +39,10 @@ class FaxogrammMissionsForm extends Form {
       return newObj;
     }, {});
     const technical_operations_reduce_by_municipal_facility = technical_operations.reduce((newObj, d) => {
-      if (!newObj[d.municipal_facility_id]) {
-        newObj[d.municipal_facility_id] = d;
+      if (!newObj[d.norm_id]) {
+        newObj[d.norm_id] = [{ value: d.municipal_facility_id, label: d.elem }];
+      } else {
+        newObj[d.norm_id].push({ value: d.municipal_facility_id, label: d.elem });
       }
       return newObj;
     }, {});
@@ -82,14 +84,7 @@ class FaxogrammMissionsForm extends Form {
       const { technical_operations_reduce_by_municipal_facility = {} } = this.state;
       const norm_id = (this.state.externalData.TECH_OPERATIONS.find(d => d.value === id) || {}).norm_id;
 
-      const MUNICIPAL_FACILITY_OPTIONS = Object.values(technical_operations_reduce_by_municipal_facility).reduce((arr, { elem, municipal_facility_id, norm_id: to_norm_id }) => {
-        if (norm_id === to_norm_id) {
-          arr.push({ value: municipal_facility_id, label: elem });
-        }
-        return arr;
-      },
-      []
-      );
+      const MUNICIPAL_FACILITY_OPTIONS = technical_operations_reduce_by_municipal_facility[norm_id];
 
       return {
         norm_id,

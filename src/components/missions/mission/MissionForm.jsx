@@ -92,6 +92,7 @@ export class MissionForm extends Form {
         });
       this.handleChange('passes_count', this.props.externalHanldeChanges.handleGetPassesCount(v));
       this.handleChange('norm_id', norm_id);
+      this.handleChange('municipal_facility_id', null);
       this.setState({ MUNICIPAL_FACILITY_OPTIONS });
     }
 
@@ -347,6 +348,7 @@ export class MissionForm extends Form {
           const { rows: rowsMF } = res.result;
           const MUNICIPAL_FACILITY_OPTIONS = rowsMF.map(({ municipal_facility_id, municipal_facility_name }) => ({ value: municipal_facility_id, label: municipal_facility_name }));
           this.setState({ MUNICIPAL_FACILITY_OPTIONS });
+          this.handleChange('municipal_facility_id', null);
         });
       }
     }).catch((ans) => {

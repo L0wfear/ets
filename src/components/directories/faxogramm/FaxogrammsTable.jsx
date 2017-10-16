@@ -48,14 +48,15 @@ const getTableMeta = (props) => {
         cssClassName: 'width60',
       },
       {
-        name: 'order_status_id',
+        name: 'status_name',
         displayName: 'Статус',
         type: 'string',
         filter: {
           type: 'multiselect',
           options: [
-            { label: 'Опубликовано', value: 2 },
-            { label: 'Отменено', value: 3 },
+            { label: 'Опубликовано', value: 'published' },
+            { label: 'Отменено', value: 'cancelled' },
+            { label: 'Частично отменено', value: 'partially_cancelled' },
           ],
         },
       },

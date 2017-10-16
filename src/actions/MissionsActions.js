@@ -106,13 +106,14 @@ export default class MissionsActions extends Actions {
     return MissionSourceService.get(payload);
   }
 
-  createMission(mission, callback) {
+  createMission(mission, callback, { fromFaxogramm }) {
     const payload = _.clone(mission);
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
     payload.hidden = false;
+
     if (typeof payload.assign_to_waybill === 'undefined') payload.assign_to_waybill = 'not_assign';
-    if (!callback) payload.assign_to_waybill = 'not_assign';
+    if (!callback && !fromFaxogramm) payload.assign_to_waybill = 'not_assign';
     return MissionService.post(payload, callback, 'json');
   }
 

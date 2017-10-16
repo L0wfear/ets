@@ -1,7 +1,34 @@
+import { routToPer } from 'constants/routerAndPermission.ts';
+
 export const requireAuth = flux => (nextState, replaceState) => {
   if (!flux.getStore('session').isLoggedIn() || !flux.getStore('session').getCurrentUser().role) {
     replaceState({ nextPathname: nextState.location.pathname }, '/login');
     return;
+  }
+  if (routToPer[nextState.location.pathname]) {
+    if (!flux.getStore('session').getPermission(routToPer[nextState.location.pathname].p, true)) {
+      const sessionRedirect = flux.getStore('session').getStableRedirect();
+      if (sessionRedirect) {
+        replaceState({ nextPathname: nextState.location.pathname }, sessionRedirect);
+        return;
+      }
+      const routeVal = Object.entries(routToPer).reduce((obj, [key, rTp]) => {
+        if (!obj.lvl || obj.lvl > rTp.lvl) {
+          if (flux.getStore('session').getPermission(rTp.p, true)) {
+            obj = {
+              lvl: rTp.lvl,
+              path: key,
+            };
+          }
+        }
+        return obj;
+      }, {});
+
+      if (routeVal) {
+        replaceState({ nextPathname: nextState.location.pathname }, routeVal.path);
+        return;
+      }
+    }
   }
 };
 

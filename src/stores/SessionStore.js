@@ -63,7 +63,7 @@ export default class SessionStore extends Store {
 
     currentUser = new User(currentUser);
     setUserContext(currentUser);
-
+    console.log(currentUser)
     this.state = {
       currentUser,
       isOkrug: currentUser.okrug_id !== null,
@@ -97,6 +97,7 @@ export default class SessionStore extends Store {
       return obj;
     }, {});
     currentUser.stableRedirect = routeVal.path;
+    console.log(currentUser.stableRedirect);
 
     localStorage.setItem(global.SESSION_KEY, JSON.stringify(session));
     localStorage.setItem(global.CURRENT_USER, JSON.stringify(currentUser));

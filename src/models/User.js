@@ -27,6 +27,7 @@ export default class User extends Model {
       fio: 'string',
       okrug_id: 'integer',
       okrug_name: 'string',
+      stableRedirect: 'string',
     };
   }
 
@@ -53,6 +54,7 @@ export default class User extends Model {
     this.permissions = user.permissions || [];
     this.okrug_id = user.okrug_id;
     this.okrug_name = user.okrug_name;
+    this.stableRedirect = user.stableRedirect || '/monitor';
   }
 
   getCompanyMapConfig = () => {

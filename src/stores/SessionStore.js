@@ -1,8 +1,9 @@
 import { Store } from 'flummox';
 
-import { autobase, repair, userNotification, getFullAccess } from 'api/mocks/permissions';
+import { userNotification, getFullAccess } from 'api/mocks/permissions';
 import { clear } from 'utils/cache';
 import { setUserContext } from 'config/raven';
+import { routToPer } from 'constants/routerAndPermission.ts';
 import createFio from '../utils/create-fio.js';
 import { User } from '../models';
 
@@ -23,6 +24,19 @@ export const getSpecificPermissions = (user) => {
   }
 
   return permissions;
+};
+
+const getPermission = ({ permissions = [], permissionName, some = 1 }) => {
+  if (!Array.isArray(permissionName)) {
+    if (!some) {
+      return permissions.includes(permissionName);
+    }
+    return permissions.some(p => p.includes(permissionName));
+  }
+  if (!some) {
+    return !permissionName.some(pN => !permissions.includes(pN));
+  }
+  return permissionName.some(pN => permissions.includes(pN));
 };
 
 export default class SessionStore extends Store {
@@ -67,11 +81,22 @@ export default class SessionStore extends Store {
     // Здесь можно вставлять моковые пермишины
     currentUser.permissions = [
       ...currentUser.permissions,
-      ...autobase,
-      ...repair,
       ...userNotification,
       ...getSpecificPermissions(currentUser),
     ];
+
+    const routeVal = Object.entries(routToPer).reduce((obj, [key, rTp]) => {
+      if (!obj.lvl || obj.lvl > rTp.lvl) {
+        if (getPermission({ permissions: currentUser.permissions, permissionName: rTp.p, some: true })) {
+          obj = {
+            lvl: rTp.lvl,
+            path: key,
+          };
+        }
+      }
+      return obj;
+    }, {});
+    currentUser.stableRedirect = routeVal.path;
 
     localStorage.setItem(global.SESSION_KEY, JSON.stringify(session));
     localStorage.setItem(global.CURRENT_USER, JSON.stringify(currentUser));
@@ -108,20 +133,11 @@ export default class SessionStore extends Store {
     return this.state.session;
   }
 
-  getPermission(permissionName) {
+  getPermission(permissionName, some = false) {
     const { permissions = [] } = this.state.currentUser;
-
-    if (!Array.isArray(permissionName)) {
-      return permissions.includes(permissionName);
-    }
-    const permissionsReduce = permissions.reduce(
-      (obj, onePermission) => {
-        obj[onePermission] = onePermission;
-        return obj;
-      },
-      {},
-    );
-
-    return permissionName.reduce((bool, permission) => bool && !!permissionsReduce[permission], true);
+    return getPermission({ permissions, permissionName, some });
+  }
+  getStableRedirect() {
+    return this.state.currentUser.stableRedirect;
   }
 }

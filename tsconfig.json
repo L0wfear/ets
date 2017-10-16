@@ -18,6 +18,7 @@
       "dom",
       "es2015",
       "es2015.promise",
+      "es2017",
       "es7"
     ],
     "baseUrl": "src",

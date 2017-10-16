@@ -1,6 +1,6 @@
 import React from 'react';
 import { withProps } from 'recompose';
-import { Router, Route, Redirect } from 'react-router';
+import { Router, Route } from 'react-router';
 import { createHashHistory } from 'history';
 
 // TODO сделать модуль containers по аналогии с другими модулями
@@ -33,8 +33,7 @@ const routes = (props) => {
 
   return (
     <Router history={history}>
-      <Redirect from="/" to="monitor" />
-      <Route path="/" component={App}>
+      <Route component={App}>
         <Route path="monitor/:isFirst" component={MonitorPage} onEnter={requireAuth} />
         <Route path="monitor" component={MonitorPage} onEnter={requireAuth} />
         <Route path="dashboard" component={DashboardPage} onEnter={requireAuth} />
@@ -55,6 +54,7 @@ const routes = (props) => {
         <Route path="notification-registry" component={UserNotificationList} onEnter={requireAuth} />
         {/* Страница логина */}
         <Route path="login" component={LoginPage} onEnter={checkLoggedIn} />
+        <Route path="*" onEnter={checkLoggedIn} />
       </Route>
     </Router>
   );

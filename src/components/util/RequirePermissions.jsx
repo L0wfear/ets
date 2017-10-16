@@ -38,7 +38,7 @@ export default function enhanceWithPermissions(ComposedComponent) {
       }
       // В случае если достаточно наличия хоть одного доступа
       if (oneOfPermissions.length) {
-        return userPermissions.filter(up => oneOfPermissions.indexOf(up) + 1).length;
+        return userPermissions.some(up => oneOfPermissions.includes(up));
       }
 
       // В случае если требуемые права не указаны

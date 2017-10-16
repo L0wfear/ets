@@ -84,7 +84,8 @@ export class MissionForm extends Form {
     }
 
     if (this.props.fromFaxogrammMissionForm) {
-      const { norm_id, MUNICIPAL_FACILITY_OPTIONS } = this.props.externalHanldeChanges.handleGetNormId(v);
+      const { norm_id, MUNICIPAL_FACILITY_OPTIONS, date_start, date_end } = this.props.externalHanldeChanges.handleGetNormId(v);
+      
       this.context.flux.getActions('missions')
         .getCleaningByTypeInActiveMission({ type: 'norm', norm_id })
         .then((ans) => {
@@ -93,6 +94,8 @@ export class MissionForm extends Form {
       this.handleChange('passes_count', this.props.externalHanldeChanges.handleGetPassesCount(v));
       this.handleChange('norm_id', norm_id);
       this.handleChange('municipal_facility_id', null);
+      this.handleChange('date_start', date_start);
+      this.handleChange('date_end', date_end);
       this.setState({ MUNICIPAL_FACILITY_OPTIONS });
     }
 
@@ -512,7 +515,7 @@ export class MissionForm extends Form {
                   label="Время выполнения:"
                   error={errors.date_start}
                   date={state.date_start}
-                  disabled={IS_DISPLAY || disabledProps.date_start}
+                  disabled={IS_DISPLAY || disabledProps.date_start || this.props.fromFaxogrammMissionForm}
                   min={this.props.fromWaybill && this.props.waybillStartDate ? this.props.waybillStartDate : null}
                   max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
                   onChange={this.handleChangeDateStart}
@@ -526,7 +529,7 @@ export class MissionForm extends Form {
                   label=""
                   error={errors.date_end}
                   date={state.date_end}
-                  disabled={IS_DISPLAY || disabledProps.date_end}
+                  disabled={IS_DISPLAY || disabledProps.date_end || this.props.fromFaxogrammMissionForm}
                   min={state.date_start}
                   max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
                   onChange={this.handleChange.bind(this, 'date_end')}

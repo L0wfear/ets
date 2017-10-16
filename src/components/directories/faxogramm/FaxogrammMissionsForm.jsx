@@ -38,7 +38,7 @@ class FaxogrammMissionsForm extends Form {
       }
       return newObj;
     }, {});
-    const technical_operations_reduce_by_municipal_facility = technical_operations.reduce((newObj, d) => {
+    const municipalByNormId = technical_operations.reduce((newObj, d) => {
       if (!newObj[d.norm_id]) {
         newObj[d.norm_id] = [{ value: d.municipal_facility_id, label: d.elem }];
       } else {
@@ -56,6 +56,8 @@ class FaxogrammMissionsForm extends Form {
           label: t.name,
           passes_count: technical_operations_reduce[tid].num_exec,
           norm_id: technical_operations_reduce[tid].norm_id,
+          date_start: t.date_from || order_date,
+          date_end: t.date_to || order_date_to,
         });
       }
 
@@ -68,12 +70,12 @@ class FaxogrammMissionsForm extends Form {
       date_end: order_date_to,
       faxogramm_id: id,
       TECH_OPERATIONS,
-      MUNICIPAL_FACILITY_OPTIONS: Object.values(technical_operations_reduce_by_municipal_facility).map(({ elem, municipal_facility_id }) => ({ value: municipal_facility_id, label: elem })),
+      MUNICIPAL_FACILITY_OPTIONS: [],
     };
 
     this.setState({
       externalData,
-      technical_operations_reduce_by_municipal_facility,
+      municipalByNormId,
     });
   }
   handleClickOnCM = () => this.setState({ showFormCreateMission: true });
@@ -81,12 +83,19 @@ class FaxogrammMissionsForm extends Form {
   externalHanldeChanges = {
     handleGetPassesCount: id => this.state.externalData.TECH_OPERATIONS.find(d => d.value === id).passes_count,
     handleGetNormId: (id) => {
-      const { technical_operations_reduce_by_municipal_facility = {} } = this.state;
-      const norm_id = (this.state.externalData.TECH_OPERATIONS.find(d => d.value === id) || {}).norm_id;
+      const { municipalByNormId = {} } = this.state;
 
-      const MUNICIPAL_FACILITY_OPTIONS = technical_operations_reduce_by_municipal_facility[norm_id];
+      const techOperation = this.state.externalData.TECH_OPERATIONS.find(d => d.value === id) || {};
+      const {
+        norm_id,
+        date_start = null,
+        date_end = null,
+      } = techOperation;
+      const MUNICIPAL_FACILITY_OPTIONS = municipalByNormId[norm_id];
 
       return {
+        date_start,
+        date_end,
         norm_id,
         MUNICIPAL_FACILITY_OPTIONS,
       };

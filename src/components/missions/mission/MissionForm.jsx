@@ -560,7 +560,7 @@ export class MissionForm extends Form {
                 value={state.mission_source_id }
                 onChange={this.handleChange.bind(this, 'mission_source_id')}
               />
-              { IS_CREATING && <span style={{ opacity: 0.5 }}>{'Задания на основе факсограмм необходимо создавать во вкладке "НСИ"-"Реестр факсограмм".'}</span> }
+              { IS_CREATING && !fromFaxogrammMissionForm && <span style={{ opacity: 0.5 }}>{'Задания на основе факсограмм необходимо создавать во вкладке "НСИ"-"Реестр факсограмм".'}</span> }
             </Col>
             {state.order_number != null && <Col md={2}>
               <Field

@@ -21,7 +21,21 @@ interface IPropsReportsNavItem extends IPropsNavbarItem {}
 
 const ReportsNavItem: React.SFC<IPropsReportsNavItem> = ({ path }) => 
   <NavDropdown oneOfPermissions={PERMISSIONS.reportAll.list} title="Отчеты" id="nav-dropdown-3">
-    <NavDropdown title="Оперативные отчеты" id="nav-dropdown-3-1">
+    <NavDropdown
+      oneOfPermissions={[
+        'route_odh_coverage_report.list',
+        'car_travel_report.list',
+        'car_usage_report_with_track_report.list',
+        'track_events_report.list',
+        'brigade_efficiency_report.list',
+        'employee_efficiency_report.list',
+        'mission_progress_report.list',
+        'autobase_long_repair_report.list',
+        'autobase_tech_maintenance_schedule_report.list',
+        'autobase_inquiry_expiring_date_report.list',
+      ]}
+      title="Оперативные отчеты" id="nav-dropdown-3-1"
+    >
       <MenuItem permissions={[PERMISSIONS.reportAll.route_odh_coverage_report.list]} active={path === '/route-odh-coverage-report'} href="#/route-odh-coverage-report">Покрытие ОДХ маршрутами</MenuItem>
       <MenuItem permissions={[PERMISSIONS.reportAll.car_travel_report.list]} active={path === '/mission-reports'} href="#/mission-reports">Прохождение заданий</MenuItem>
       <MenuItem permissions={[PERMISSIONS.reportAll.car_usage_report_with_track_report.list]} active={path === '/car-usage-report'} href="#/car-usage-report">Статистика выхода техники</MenuItem>
@@ -33,7 +47,16 @@ const ReportsNavItem: React.SFC<IPropsReportsNavItem> = ({ path }) =>
       <MenuItem permissions={[PERMISSIONS.reportAll.autobase_tech_maintenance_schedule_report.list]} active={path === '/tech-maintenance-schedule'} href="#/tech-maintenance-schedule">График проведения технического обслуживания транспортных средств</MenuItem>
       <MenuItem permissions={[PERMISSIONS.reportAll.autobase_inquiry_expiring_date_report.list]} active={path === '/inquiry-expiring-date'} href="#/inquiry-expiring-date">Перечень справок, по которым подходит дата окончания действия</MenuItem>
     </NavDropdown>
-    <NavDropdown title="Регламентированные отчеты" id="nav-dropdown-3-2">
+    <NavDropdown
+      oneOfPermissions={[
+        'fuel_consumption_report.list',
+        'fuel_consumption_summary_report.list',
+        'cleaning_status_report.list',
+        'cleaning_status_cafap_report.list',
+        'cleaning_status_tech_op_report.list',
+      ]}
+      title="Регламентированные отчеты" id="nav-dropdown-3-2"
+    >
       <MenuItem permissions={[PERMISSIONS.reportAll.fuel_consumption_report.list]} active={path === '/fuel-consumption-report'} href="#/fuel-consumption-report">Расход топлива</MenuItem>
       <MenuItem permissions={[PERMISSIONS.reportAll.fuel_consumption_summary_report.list]} active={path === '/fuel-consumption-summary-report'} href="#/fuel-consumption-summary-report">Сводный отчет расхода топлива</MenuItem>
       <MenuItem permissions={[PERMISSIONS.reportAll.cleaning_status_report.list]} active={path === '/daily-cleaning-reports-ets'} href="#/daily-cleaning-reports-ets">Статус по уборке</MenuItem>

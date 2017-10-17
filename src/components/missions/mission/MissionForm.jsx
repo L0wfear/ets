@@ -71,6 +71,7 @@ export class MissionForm extends Form {
 
   async handleTechnicalOperationChange(v) {
     this.handleChange('technical_operation_id', v);
+    this.handleChange('municipal_facility_id', null);
     this.checkNorm({ dataName: 'technical_operation_id', dataValue: v });
     this.handleRouteIdChange(undefined);
 
@@ -84,20 +85,13 @@ export class MissionForm extends Form {
     }
 
     if (this.props.fromFaxogrammMissionForm) {
-      const { norm_id, MUNICIPAL_FACILITY_OPTIONS, date_start, date_end } = this.props.externalHanldeChanges.handleGetNormId(v);
-      
-      this.context.flux.getActions('missions')
-        .getCleaningByTypeInActiveMission({ type: 'norm', norm_id })
-        .then((ans) => {
-          this.handleChange('norm_text', ans.result.rows[0].norm_text);
-        });
+      const { date_start, date_end } = this.props.externalHanldeChanges.handleGetNormId(v);
+
       this.handleChange('passes_count', this.props.externalHanldeChanges.handleGetPassesCount(v));
-      this.handleChange('norm_id', norm_id);
-      this.handleChange('municipal_facility_id', null);
       this.handleChange('date_start', date_start);
       this.handleChange('date_end', date_end);
-      this.setState({ MUNICIPAL_FACILITY_OPTIONS });
     }
+    
 
     try {
       const routesList = await this.context.flux.getActions('routes')
@@ -168,35 +162,31 @@ export class MissionForm extends Form {
       routesList,
       selectedRoute,
     });
-    if (!this.props.fromFaxogrammMissionForm) {
-      setTimeout(() => {
-        const {
-          norm_id = false,
-          date_start,
-        } = this.props.formState;
-        const payloadMF = {
-          norm_id,
-          start_date: date_start,
-          end_date: date_start,
-        };
-        if (norm_id) {
-          this.context.flux.getActions('missions')
-          .getCleaningByTypeInActiveMission({ type: 'norm', norm_id }).then((ans) => {
-            this.handleChange('norm', ans.result.rows[0].norm_text);
-          });
-          this.context.flux.getActions('missions').getCleaningMunicipalFacilityList(payloadMF).then((r) => {
-            const { rows = [] } = r.result;
-            const MUNICIPAL_FACILITY_OPTIONS = rows.map(({ municipal_facility_id, municipal_facility_name }) => ({ value: municipal_facility_id, label: municipal_facility_name }));
-            this.setState({ MUNICIPAL_FACILITY_OPTIONS });
-          });
-        } else {
-          this.checkNorm({ forsUpdate: true });
-        }
-      }, 100);
-    } else {
-      const { MUNICIPAL_FACILITY_OPTIONS } = this.props.externalData;
-      this.setState({ MUNICIPAL_FACILITY_OPTIONS });
-    }
+    setTimeout(() => {
+      const {
+        norm_id = false,
+        date_start,
+      } = this.props.formState;
+      const payloadMF = {
+        norm_id,
+        start_date: date_start,
+        end_date: date_start,
+      };
+      if (norm_id) {
+        this.context.flux.getActions('missions')
+        .getCleaningByTypeInActiveMission({ type: 'norm', norm_id }).then((ans) => {
+          this.handleChange('norm', ans.result.rows[0].norm_text);
+        });
+        this.context.flux.getActions('missions').getCleaningMunicipalFacilityList(payloadMF).then((r) => {
+          const { rows = [] } = r.result;
+          const MUNICIPAL_FACILITY_OPTIONS = rows.map(({ municipal_facility_id, municipal_facility_name }) => ({ value: municipal_facility_id, label: municipal_facility_name }));
+          this.setState({ MUNICIPAL_FACILITY_OPTIONS });
+        });
+      } else {
+        this.checkNorm({ forsUpdate: true });
+      }
+    }, 100);
+
   }
 
   createNewRoute() {
@@ -259,10 +249,6 @@ export class MissionForm extends Form {
   }
 
   checkNorm = ({ dataName, dataValue, iHaveHere = false, forsUpdate = false }) => {
-    if (this.props.fromFaxogrammMissionForm) {
-      return;
-    }
-
     if (!dataValue && !forsUpdate) {
       this.setState({ iCantGetNomative: false, norm_text: undefined, norm_id: null });
       return;

@@ -38,14 +38,6 @@ class FaxogrammMissionsForm extends Form {
       }
       return newObj;
     }, {});
-    const municipalByNormId = technical_operations.reduce((newObj, d) => {
-      if (!newObj[d.norm_id]) {
-        newObj[d.norm_id] = [{ value: d.municipal_facility_id, label: d.elem }];
-      } else {
-        newObj[d.norm_id].push({ value: d.municipal_facility_id, label: d.elem });
-      }
-      return newObj;
-    }, {});
 
     const TECH_OPERATIONS = technicalOperationsList.reduce((arr, t) => {
       const tid = t.id;
@@ -63,7 +55,6 @@ class FaxogrammMissionsForm extends Form {
       return arr;
     },
     []);
-
     const externalData = {
       date_start: order_date,
       date_end: order_date_to,
@@ -74,7 +65,6 @@ class FaxogrammMissionsForm extends Form {
 
     this.setState({
       externalData,
-      municipalByNormId,
     });
   }
   handleClickOnCM = () => this.setState({ showFormCreateMission: true });
@@ -82,21 +72,15 @@ class FaxogrammMissionsForm extends Form {
   externalHanldeChanges = {
     handleGetPassesCount: id => this.state.externalData.TECH_OPERATIONS.find(d => d.value === id).passes_count,
     handleGetNormId: (id) => {
-      const { municipalByNormId = {} } = this.state;
-
       const techOperation = this.state.externalData.TECH_OPERATIONS.find(d => d.value === id) || {};
       const {
-        norm_id,
         date_start = null,
         date_end = null,
       } = techOperation;
-      const MUNICIPAL_FACILITY_OPTIONS = municipalByNormId[norm_id];
-      
+
       return {
         date_start,
         date_end,
-        norm_id,
-        MUNICIPAL_FACILITY_OPTIONS,
       };
     },
   }

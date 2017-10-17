@@ -54,7 +54,7 @@ export default class User extends Model {
     this.permissions = user.permissions || [];
     this.okrug_id = user.okrug_id;
     this.okrug_name = user.okrug_name;
-    this.stableRedirect = user.stableRedirect || '/monitor';
+    this.stableRedirect = user.stableRedirect || '/login';
   }
 
   getCompanyMapConfig = () => {

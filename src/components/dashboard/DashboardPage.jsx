@@ -3,7 +3,6 @@ import _ from 'lodash';
 import { autobind } from 'core-decorators';
 import { Row, Col } from 'react-bootstrap';
 import Div from 'components/ui/Div.jsx';
-import ModalRule from 'components/modalTP/ModalRule.tsx';
 
 import cx from 'classnames';
 import { FluxContext, connectToStores } from 'utils/decorators';
@@ -50,7 +49,7 @@ export default class DashboardPage extends React.Component {
   componentWillUnmount() {
     clearInterval(this.componentsUpdateInterval);
     clearInterval(this.currentMissionsUpdateInterval);
-    Object.values(this.componentsInterval).forEach(clearInterval)
+    Object.values(this.componentsInterval).forEach(clearInterval);
     document.getElementsByTagName('html')[0].classList.remove('overflow-scroll');
   }
 
@@ -91,10 +90,10 @@ export default class DashboardPage extends React.Component {
       loadingComponents.push(key);
     }
     this.setState({ loadingComponents });
-    this.context.flux.getActions('dashboard').getDashboardComponent(key).then(({ key }) => {
-      const { loadingComponents } = this.state;
-      loadingComponents.splice(loadingComponents.indexOf(key), 1);
-      setTimeout(() => this.setState({ loadingComponents }), 500);
+    this.context.flux.getActions('dashboard').getDashboardComponent(key).then(({ key: dashboardKey }) => {
+      const { loadingComponents: dashboardLoadingComponents } = this.state;
+      dashboardLoadingComponents.splice(dashboardLoadingComponents.indexOf(dashboardKey), 1);
+      setTimeout(() => this.setState({ dashboardLoadingComponents }), 500);
     }).catch(() => {
     });
   }

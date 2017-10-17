@@ -55,6 +55,15 @@ class FaxogrammMissionsForm extends Form {
       return arr;
     },
     []);
+
+    const MUNICIPAL_BY_NORM_ID = technical_operations.reduce((newObj, d) => {
+      if (!newObj[d.norm_id]) {
+        newObj[d.norm_id] = [{ value: d.municipal_facility_id, label: d.elem }];
+      } else {
+        newObj[d.norm_id].push({ value: d.municipal_facility_id, label: d.elem });
+      }
+      return newObj;
+    }, {});
     const externalData = {
       date_start: order_date,
       date_end: order_date_to,
@@ -65,6 +74,7 @@ class FaxogrammMissionsForm extends Form {
 
     this.setState({
       externalData,
+      MUNICIPAL_BY_NORM_ID,
     });
   }
   handleClickOnCM = () => this.setState({ showFormCreateMission: true });
@@ -82,6 +92,10 @@ class FaxogrammMissionsForm extends Form {
         date_start,
         date_end,
       };
+    },
+    getMunicipalByNormId: (id) => {
+      const { MUNICIPAL_BY_NORM_ID = [] } = this.state;
+      return MUNICIPAL_BY_NORM_ID[id] || [];
     },
   }
 

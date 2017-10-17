@@ -91,7 +91,6 @@ export class MissionForm extends Form {
       this.handleChange('date_start', date_start);
       this.handleChange('date_end', date_end);
     }
-    
 
     try {
       const routesList = await this.context.flux.getActions('routes')
@@ -186,7 +185,6 @@ export class MissionForm extends Form {
         this.checkNorm({ forsUpdate: true });
       }
     }, 100);
-
   }
 
   createNewRoute() {
@@ -342,7 +340,7 @@ export class MissionForm extends Form {
       }
     }).catch((ans) => {
       if (typeof ans === 'object') {
-        const { warning = 'Проихошла непредвиженная ошибка получения норматива' } = ans;
+        const { warning = 'Произошла непредвиженная ошибка получения норматива' } = ans;
         global.NOTIFICATION_SYSTEM.notify(getWarningNotification(warning));
       }
 

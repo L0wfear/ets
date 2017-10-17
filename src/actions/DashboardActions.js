@@ -1,5 +1,4 @@
 import { Actions } from 'flummox';
-import moment from 'moment';
 import {
   DashboardService,
 } from 'api/Services';
@@ -38,7 +37,7 @@ const external_applications = { // мок
       },
     ],
   },
-}
+};
 
 export default class DashboardActions extends Actions {
   getDashboardComponent(key) {

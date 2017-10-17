@@ -8,7 +8,8 @@ export const requireAuth = flux => (nextState, replaceState) => {
   if (routToPer[nextState.location.pathname]) {
     if (!flux.getStore('session').getPermission(routToPer[nextState.location.pathname].p, true)) {
       const sessionRedirect = flux.getStore('session').getStableRedirect();
-      if (sessionRedirect) {
+
+      if (sessionRedirect && sessionRedirect !== '/login') {
         replaceState({ nextPathname: nextState.location.pathname }, sessionRedirect);
         return;
       }

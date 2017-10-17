@@ -663,7 +663,7 @@ class WaybillForm extends Form {
                 label="Режим работы"
                 readOnly
                 hidden={IS_CREATING || IS_DRAFT}
-                value={state.work_mode_text}
+                value={state.work_mode_name}
               />
             </Col>
           </Row>

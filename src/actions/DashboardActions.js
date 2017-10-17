@@ -1,5 +1,4 @@
 import { Actions } from 'flummox';
-import moment from 'moment';
 import {
   DashboardService,
 } from 'api/Services';
@@ -38,16 +37,13 @@ const external_applications = { // мок
       },
     ],
   },
-}
+};
 
 export default class DashboardActions extends Actions {
   getDashboardComponent(key) {
     let payload = {};
-    if (key === 'published') {
-      payload = Object.assign(payload, {
-        status: 'cancelled',
-        date: moment().format('YYYY-MM-DDTHH:mm:ss'),
-      });
+    if (key === 'faxogramms') {
+      payload = Object.assign(payload, {});
     }
     if (key.includes('waybill_')) {
       const path = key.replace(/_/, '/');

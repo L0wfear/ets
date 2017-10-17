@@ -38,18 +38,9 @@ class FaxogrammMissionsForm extends Form {
       }
       return newObj;
     }, {});
-    const municipalByNormId = technical_operations.reduce((newObj, d) => {
-      if (!newObj[d.norm_id]) {
-        newObj[d.norm_id] = [{ value: d.municipal_facility_id, label: d.elem }];
-      } else {
-        newObj[d.norm_id].push({ value: d.municipal_facility_id, label: d.elem });
-      }
-      return newObj;
-    }, {});
 
     const TECH_OPERATIONS = technicalOperationsList.reduce((arr, t) => {
       const tid = t.id;
-      console.log(t)
       if (technical_operations_reduce[tid]) {
         arr.push({
           value: tid,
@@ -65,8 +56,14 @@ class FaxogrammMissionsForm extends Form {
     },
     []);
 
-    console.log(TECH_OPERATIONS)
-
+    const MUNICIPAL_BY_NORM_ID = technical_operations.reduce((newObj, d) => {
+      if (!newObj[d.norm_id]) {
+        newObj[d.norm_id] = [{ value: d.municipal_facility_id, label: d.elem }];
+      } else {
+        newObj[d.norm_id].push({ value: d.municipal_facility_id, label: d.elem });
+      }
+      return newObj;
+    }, {});
     const externalData = {
       date_start: order_date,
       date_end: order_date_to,
@@ -77,7 +74,7 @@ class FaxogrammMissionsForm extends Form {
 
     this.setState({
       externalData,
-      municipalByNormId,
+      MUNICIPAL_BY_NORM_ID,
     });
   }
   handleClickOnCM = () => this.setState({ showFormCreateMission: true });
@@ -85,23 +82,20 @@ class FaxogrammMissionsForm extends Form {
   externalHanldeChanges = {
     handleGetPassesCount: id => this.state.externalData.TECH_OPERATIONS.find(d => d.value === id).passes_count,
     handleGetNormId: (id) => {
-      const { municipalByNormId = {} } = this.state;
-
       const techOperation = this.state.externalData.TECH_OPERATIONS.find(d => d.value === id) || {};
       const {
-        norm_id,
         date_start = null,
         date_end = null,
       } = techOperation;
-      const MUNICIPAL_FACILITY_OPTIONS = municipalByNormId[norm_id];
-      console.log(date_start, date_end)
-      
+
       return {
         date_start,
         date_end,
-        norm_id,
-        MUNICIPAL_FACILITY_OPTIONS,
       };
+    },
+    getMunicipalByNormId: (id) => {
+      const { MUNICIPAL_BY_NORM_ID = [] } = this.state;
+      return MUNICIPAL_BY_NORM_ID[id] || [];
     },
   }
 

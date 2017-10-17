@@ -663,7 +663,7 @@ class WaybillForm extends Form {
                 label="Режим работы"
                 readOnly
                 hidden={IS_CREATING || IS_DRAFT}
-                value={state.work_mode_text}
+                value={state.work_mode_name}
               />
             </Col>
           </Row>
@@ -697,32 +697,62 @@ class WaybillForm extends Form {
               <Div hidden={CAR_HAS_ODOMETER}>
                 <Col md={4}>
                   <h4>Счетчик моточасов</h4>
-                  <Field type="number" label="Выезд, м/ч" error={errors.motohours_start}
-                    value={state.motohours_start} disabled={IS_ACTIVE || IS_CLOSED} onChange={this.handleChange.bind(this, 'motohours_start')}
+                  <Field
+                    type="number"
+                    label="Выезд, м/ч"
+                    error={errors.motohours_start}
+                    value={state.motohours_start}
+                    disabled={IS_ACTIVE || IS_CLOSED}
+                    onChange={this.handleChange.bind(this, 'motohours_start')}
                   />
 
-                  <Field type="number" label="Возврат, м/ч" error={errors.motohours_end}
-                    value={state.motohours_end} hidden={!(IS_ACTIVE || IS_CLOSED)} disabled={IS_CLOSED && !this.state.canEditIfClose} onChange={this.handleChange.bind(this, 'motohours_end')}
+                  <Field
+                    type="number"
+                    label="Возврат, м/ч"
+                    error={errors.motohours_end}
+                    value={state.motohours_end}
+                    hidden={!(IS_ACTIVE || IS_CLOSED)}
+                    disabled={IS_CLOSED && !this.state.canEditIfClose}
+                    onChange={this.handleChange.bind(this, 'motohours_end')}
                   />
 
-                  <Field type="number" label="Пробег, м/ч"
-                    value={state.motohours_diff} hidden={!(IS_ACTIVE || IS_CLOSED)} disabled
+                  <Field
+                    type="number"
+                    label="Пробег, м/ч"
+                    value={state.motohours_diff}
+                    hidden={!(IS_ACTIVE || IS_CLOSED)}
+                    disabled
                   />
                 </Col>
               </Div>
               <Div>
                 <Col md={4}>
                   <h4>Счетчик моточасов оборудования</h4>
-                  <Field type="number" label="Выезд, м/ч" error={errors.motohours_equip_start}
-                    value={state.motohours_equip_start} disabled={IS_ACTIVE || IS_CLOSED} onChange={this.handleChange.bind(this, 'motohours_equip_start')}
+                  <Field
+                    type="number"
+                    label="Выезд, м/ч"
+                    error={errors.motohours_equip_start}
+                    value={state.motohours_equip_start}
+                    disabled={IS_ACTIVE || IS_CLOSED}
+                    onChange={this.handleChange.bind(this, 'motohours_equip_start')}
                   />
 
-                  <Field type="number" label="Возврат, м/ч" error={errors.motohours_equip_end}
-                    value={state.motohours_equip_end} hidden={!(IS_ACTIVE || IS_CLOSED)} disabled={IS_CLOSED && !this.state.canEditIfClose} onChange={this.handleChange.bind(this, 'motohours_equip_end')}
+                  <Field
+                    type="number"
+                    label="Возврат, м/ч"
+                    error={errors.motohours_equip_end}
+                    value={state.motohours_equip_end}
+                    hidden={!(IS_ACTIVE || IS_CLOSED)}
+                    disabled={IS_CLOSED && !this.state.canEditIfClose}
+                    onChange={this.handleChange.bind(this, 'motohours_equip_end')}
                   />
 
-                  <Field type="number" label="Пробег, м/ч"
-                    value={state.motohours_equip_diff} hidden={!(IS_ACTIVE || IS_CLOSED)} disabled
+                  <Field
+                    type="number"
+                    label="Пробег, м/ч"
+                    value={state.motohours_equip_diff}
+                    hidden={!(IS_ACTIVE || IS_CLOSED)}
+                    disabled
                   />
                 </Col>
               </Div>
@@ -730,8 +760,10 @@ class WaybillForm extends Form {
               <Div>
                 <Col md={4}>
                   <h4> Топливо </h4>
-
-                  <Field type="select" label="Тип топлива" error={errors.fuel_type}
+                  <Field
+                    type="select"
+                    label="Тип топлива"
+                    error={errors.fuel_type}
                     disabled={IS_ACTIVE || IS_CLOSED}
                     options={FUEL_TYPES}
                     value={state.fuel_type}
@@ -742,7 +774,9 @@ class WaybillForm extends Form {
                     type="number"
                     label="Выезд, л"
                     error={errors.fuel_start}
-                    value={state.fuel_start} disabled={IS_ACTIVE || IS_CLOSED} onChange={this.handleChange.bind(this, 'fuel_start')}
+                    value={state.fuel_start}
+                    disabled={IS_ACTIVE || IS_CLOSED}
+                    onChange={this.handleChange.bind(this, 'fuel_start')}
                   />
 
                   <Field
@@ -750,21 +784,27 @@ class WaybillForm extends Form {
                     label="Выдать, л"
                     error={errors.fuel_to_give}
                     value={state.fuel_to_give}
-                    disabled={(IS_ACTIVE || IS_CLOSED)} onChange={this.handleChange.bind(this, 'fuel_to_give')}
+                    disabled={(IS_ACTIVE || IS_CLOSED)}
+                    onChange={this.handleChange.bind(this, 'fuel_to_give')}
                   />
 
                   <Field
                     type="number"
                     label="Выдано, л"
                     error={errors.fuel_given}
-                    value={state.fuel_given} hidden={!(IS_ACTIVE || IS_CLOSED)} disabled={IS_CLOSED && !this.state.canEditIfClose} onChange={this.handleChange.bind(this, 'fuel_given')}
+                    value={state.fuel_given}
+                    hidden={!(IS_ACTIVE || IS_CLOSED)}
+                    disabled={IS_CLOSED && !this.state.canEditIfClose}
+                    onChange={this.handleChange.bind(this, 'fuel_given')}
                   />
 
                   <Field
                     type="number"
                     label="Возврат, л"
                     error={errors.fuel_end}
-                    value={state.fuel_end} hidden={!(IS_ACTIVE || IS_CLOSED)} disabled
+                    value={state.fuel_end}
+                    hidden={!(IS_ACTIVE || IS_CLOSED)}
+                    disabled
                   />
 
                 </Col>

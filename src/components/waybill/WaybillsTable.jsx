@@ -103,7 +103,7 @@ export const getTableMeta = ({
         type: 'string',
       },
       {
-        name: 'work_mode_text',
+        name: 'work_mode_name',
         displayName: 'Режим работы',
         type: 'string',
         filter: {

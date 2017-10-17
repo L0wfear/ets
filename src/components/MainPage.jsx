@@ -13,7 +13,6 @@ import config from 'config';
 import { autobind } from 'core-decorators';
 import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
 import ModalTP from 'components/modalTP/ModalTP.tsx';
-import ModalRule from 'components/modalTP/ModalRule.tsx';
 import { FluxContext, HistoryContext } from 'utils/decorators';
 import PERMISSIONS from 'constants/permissions';
 import enhanceWithPermissions from './util/RequirePermissions.jsx';
@@ -172,7 +171,7 @@ export default class MainPage extends React.Component {
               <MenuItem href={`${config.docs}Руководство-окружного-пользователя.docx`}>Руководство окружного пользователя</MenuItem>
               <MenuItem href={`${config.docs}Общие_рекомендации_по_обращению.docx`}>Общие рекомендации по обращению</MenuItem>
               <MenuItem href={`${config.docs}Руководство-Инженер ТО.docx`}>Руководство инженера ТО</MenuItem>
-              </NavDropdown>
+            </NavDropdown>
             <NavItem className="navbar-user">
               <div className="navbar-user__avatar">
                 <img role="presentation" src={defaultUser} className="navbar-user__avatar-img" />

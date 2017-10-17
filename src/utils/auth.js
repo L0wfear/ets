@@ -36,9 +36,8 @@ export const requireAuth = flux => (nextState, replaceState) => {
 export const checkLoggedIn = flux => (nextState, replaceState) => {
   const user = flux.getStore('session').getCurrentUser();
   const { role, okrug_id } = user;
-  console.log('s', nextState.location.pathname )
+
   if (flux.getStore('session').isLoggedIn() && role) {
-    console.log('sd')
     if (['dispatcher', 'master'].indexOf(role) > -1 && okrug_id === null) {
       replaceState({}, '/dashboard');
     } else {

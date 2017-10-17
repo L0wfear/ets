@@ -49,7 +49,6 @@ class FaxogrammMissionsForm extends Form {
 
     const TECH_OPERATIONS = technicalOperationsList.reduce((arr, t) => {
       const tid = t.id;
-      console.log(t)
       if (technical_operations_reduce[tid]) {
         arr.push({
           value: tid,
@@ -64,8 +63,6 @@ class FaxogrammMissionsForm extends Form {
       return arr;
     },
     []);
-
-    console.log(TECH_OPERATIONS)
 
     const externalData = {
       date_start: order_date,
@@ -94,7 +91,6 @@ class FaxogrammMissionsForm extends Form {
         date_end = null,
       } = techOperation;
       const MUNICIPAL_FACILITY_OPTIONS = municipalByNormId[norm_id];
-      console.log(date_start, date_end)
       
       return {
         date_start,

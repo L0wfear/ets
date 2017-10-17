@@ -43,9 +43,9 @@ const external_applications = { // мок
 export default class DashboardActions extends Actions {
   getDashboardComponent(key) {
     let payload = {};
-    if (key === 'published') {
+    if (key === 'faxogramms') {
       payload = Object.assign(payload, {
-        status: 'cancelled',
+        status: 'published',
         date: moment().format('YYYY-MM-DDTHH:mm:ss'),
       });
     }

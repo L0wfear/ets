@@ -12,8 +12,6 @@ import MissionFormWrap from 'components/missions/mission/MissionFormWrap.jsx';
 import './main.scss';
 
 const disabledProps = {
-  date_start: true,
-  date_end: true,
   passes_count: true,
   mission_source_id: true,
 };
@@ -49,6 +47,7 @@ class FaxogrammMissionsForm extends Form {
           norm_id: technical_operations_reduce[tid].norm_id,
           date_start: technical_operations_reduce[tid].date_from || order_date,
           date_end: technical_operations_reduce[tid].date_to || order_date_to,
+          timeFaxogramm: !technical_operations_reduce[tid].date_from,
         });
       }
 
@@ -75,6 +74,9 @@ class FaxogrammMissionsForm extends Form {
     this.setState({
       externalData,
       MUNICIPAL_BY_NORM_ID,
+      date_start: order_date,
+      date_end: order_date_to,
+      timeFaxogramm: true,
     });
   }
   handleClickOnCM = () => this.setState({ showFormCreateMission: true });
@@ -86,8 +88,14 @@ class FaxogrammMissionsForm extends Form {
       const {
         date_start = null,
         date_end = null,
+        timeFaxogramm = false,
       } = techOperation;
 
+      this.setState({
+        date_start,
+        date_end,
+        timeFaxogramm,
+      })
       return {
         date_start,
         date_end,
@@ -151,6 +159,9 @@ class FaxogrammMissionsForm extends Form {
           element={null}
           externalData={externalData}
           externalHanldeChanges={this.externalHanldeChanges}
+          faxogrammStartDate={this.state.date_start}
+          faxogrammEndDate={this.state.date_end}
+          timeFaxogramm={this.state.timeFaxogramm}
         />
 
       </Modal>

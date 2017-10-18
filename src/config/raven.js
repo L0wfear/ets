@@ -7,12 +7,12 @@ const ACTIVE = process.env.NODE_ENV === 'production';
 const SENTRY_KEYS_BY_STAND = {
   'stage': '79c9fa1b267c454ca680692b9d2d4d25', // http://172.17.31.73:9000/sentry/ets-frontend-dev/
   'prod': 'bde014009c3f4c80bd3e840296fd94c9', // http://172.17.31.73:9000/sentry/ets-frontend-prod/
-  'dev': '6abe791fb4544929a9845cebb7a194df',
+  'dev': 'aa6710a11a65405bbad39136e062c3af',
 };
 const SENTRY_PROJECTS_BY_STAND = {
   'stage': 7,
   'prod': 8,
-  'dev': 7,
+  'dev': 12,
 };
 const SENTRY_HOST_BY_STAND = {
   'stage': 'ets.tech.mos.ru/sentry',

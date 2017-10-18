@@ -16,7 +16,7 @@ export const routeSchema = {
       key: 'object_list',
       title: 'Геоданные маршрута',
       type: 'array',
-      required: true,
+      required: false,
     },
     {
       key: 'draw_object_list',
@@ -25,4 +25,26 @@ export const routeSchema = {
       required: false,
     },
   ],
+  dependencies: {
+    'object_list': [
+      {
+        validator: (value, formData) => {
+          if (value.length === 0 && formData.draw_object_list.length === 0) {
+            return 'Поле "Геоданные маршрута" должно быть заполнено';
+          }
+          return false;
+        },
+      },
+    ],
+    'draw_object_list': [
+      {
+        validator: (value, formData) => {
+          if (value.length === 0 && formData.object_list.length === 0) {
+            return 'Поле "Геоданные маршрута" должно быть заполнено';
+          }
+          return false;
+        },
+      },
+    ],
+  },
 };

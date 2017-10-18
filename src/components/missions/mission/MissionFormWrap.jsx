@@ -39,6 +39,10 @@ export default class MissionFormWrap extends FormWrap {
         mission.date_end = props.externalData.date_end;
         mission.passes_count = props.externalData.passes_count;
         mission.faxogramm_id = props.externalData.faxogramm_id;
+        this.setState({
+          fixed_date_start: props.externalData.date_start,
+          fixed_date_end: props.externalData.date_end,
+        });
       }
       const formErrors = this.validate(mission, {});
       this.setState({
@@ -77,6 +81,15 @@ export default class MissionFormWrap extends FormWrap {
 
       if (moment(formState.date_end).toDate().getTime() > moment(this.props.waybillEndDate).toDate().getTime()) {
         formErrors.date_end = 'Дата не должна выходить за пределы путевого листа';
+      }
+    }
+    if ((this.props.fromFaxogrammMissionForm && this.props.faxogrammStartDate) || (this.props.fromFaxogrammMissionForm && this.props.faxogrammEndDate)) {
+      if (moment(formState.date_start).toDate().getTime() < moment(this.props.faxogrammStartDate).toDate().getTime()) {
+        formErrors.date_start = `Дата не должна выходить за пределы ${this.props.timeFaxogramm ? 'факсограммы' : 'технической операции'}`;
+      }
+
+      if (moment(formState.date_end).toDate().getTime() > moment(this.props.faxogrammEndDate).toDate().getTime()) {
+        formErrors.date_end = `Дата не должна выходить за пределы ${this.props.timeFaxogramm ? 'факсограммы' : 'технической операции'}`;
       }
     }
 

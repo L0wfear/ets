@@ -158,6 +158,7 @@ export class MissionForm extends Form {
     this.setState({
       carsList,
       TECH_OPERATIONS,
+      technicalOperationsList,
       routesList,
       selectedRoute,
     });

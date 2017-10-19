@@ -1,0 +1,16 @@
+.check-version-notification {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 50;
+
+  &>.text-version-container {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    &>.one-text-version {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}

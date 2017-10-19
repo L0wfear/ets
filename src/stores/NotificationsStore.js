@@ -113,7 +113,7 @@ export default class NotificationsStore extends Store {
     this.register(missionsActions.createMissions, this.handleMissionsCreate);
     this.register(reportsActions.getOdhCoverageReport, this.handleGetCoverageReport);
     this.register(reportsActions.getDtCoverageReport, this.handleGetCoverageReport);
-    this.register(repairActions.stateProgram, this.handleSave2); // для справочника государственных программ ремонта
+    this.register(repairActions.stateProgram, this.handleSaveForStateProgram); // для справочника государственных программ ремонта
 
 
     this.state = {
@@ -151,7 +151,7 @@ export default class NotificationsStore extends Store {
     global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
   }
 
-  handleSave2() {
+  handleSaveForStateProgram() {
     global.NOTIFICATION_SYSTEM.notify('Запись успешно добавлена', 'success');
   }
 

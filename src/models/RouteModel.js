@@ -39,7 +39,6 @@ export const routeSchema = {
     'draw_object_list': [
       {
         validator: (value, formData) => {
-          console.log(value)
           if ((!value || value.length === 0) && (!formData.object_list || formData.object_list.length === 0)) {
             return 'Поле "Геоданные маршрута" должно быть заполнено';
           }

@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { getServerErrorNotification } from 'utils/notifications';
 import { checkInternalErrors } from 'utils/raven';
+import getNotifyCheckVersion from './notify_check_version/notifyCheckVersion';
 
 let headers = {};
 
@@ -86,6 +87,23 @@ function httpMethod(url, data = {}, method, type, params = {}) {
       try {
         checkInternalErrors(responseBody);
         checkResponse(url, r, responseBody, method);
+
+        const servV = r.headers.get('ets-frontend-version') || '0.15.20';
+        const currV = process.env.VERSION;
+        if (servV && (servV.split('.')[2] > +currV.split('.')[2])) {
+          global.NOTIFICATION_SYSTEM.notifyWithObject({
+            title: 'Вышла новая версия',
+            level: 'warning',
+            position: 'br',
+            dismissible: false,
+            autoDismiss: 0,
+            uid: 'versionWarn',
+            children: getNotifyCheckVersion({
+              currV: process.env.VERSION,
+              nextV: servV,
+            }),
+          });
+        }
       } catch (e) {
         return new Promise((res, rej) => rej());
       }

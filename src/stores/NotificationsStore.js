@@ -35,7 +35,7 @@ export default class NotificationsStore extends Store {
         actions: repairActions,
         actionNames: [
           'contractor',
-          'stateProgram',
+       // 'stateProgram',
           'programRegistry',
           'programVersionPut',
         ],
@@ -60,7 +60,7 @@ export default class NotificationsStore extends Store {
         actions: missionsActions,
         actionNames: [
           'createDutyMissionTemplate',
-          // 'updateMission',
+          'updateMission',
           'updateMissionTemplate',
           'createDutyMissions',
           'updateDutyMissionTemplate',
@@ -113,6 +113,8 @@ export default class NotificationsStore extends Store {
     this.register(missionsActions.createMissions, this.handleMissionsCreate);
     this.register(reportsActions.getOdhCoverageReport, this.handleGetCoverageReport);
     this.register(reportsActions.getDtCoverageReport, this.handleGetCoverageReport);
+    this.register(repairActions.stateProgram, this.handleSave2); // для справочника государственных программ ремонта
+
 
     this.state = {
       operationsCount: 0,
@@ -148,6 +150,11 @@ export default class NotificationsStore extends Store {
   handleSave() {
     global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
   }
+
+  handleSave2() {
+    global.NOTIFICATION_SYSTEM.notify('Запись успешно добавлена', 'success');
+  }
+
   handleRemove() {
     global.NOTIFICATION_SYSTEM.notify('Запись успешно удалена', 'success');
   }

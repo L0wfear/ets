@@ -20,6 +20,7 @@ import geoObjects from './GeoObjectsStore.js';
 import autobase from './AutobaseStore.js';
 import userNotifications from './UserNotificationStore.js';
 import repair from './RepairStore';
+import stream from './StreamStore';
 
 export {
   dashboard,
@@ -40,4 +41,5 @@ export {
   autobase,
   userNotifications,
   repair,
+  stream,
 };

@@ -28,7 +28,7 @@ class FaxogrammMissionsForm extends Form {
   async componentDidMount() {
     await this.context.flux.getActions('technicalOperation').getTechnicalOperations();
     const { technicalOperationsList = [] } = this.props;
-    const { formState: { technical_operations, order_date, order_date_to, id } } = this.props;
+    const { formState: { technical_operations = [], order_date, order_date_to, id } } = this.props;
 
     const technical_operations_reduce = technical_operations.reduce((newObj, d) => {
       if (!newObj[d.id]) {

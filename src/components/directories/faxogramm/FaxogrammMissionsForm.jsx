@@ -64,8 +64,8 @@ class FaxogrammMissionsForm extends Form {
       return newObj;
     }, {});
     const externalData = {
-      date_start: order_date,
-      date_end: order_date_to,
+      date_start: null,
+      date_end: null,
       faxogramm_id: id,
       TECH_OPERATIONS,
       MUNICIPAL_FACILITY_OPTIONS: [],

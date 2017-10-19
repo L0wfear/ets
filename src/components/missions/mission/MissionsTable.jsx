@@ -44,6 +44,7 @@ const getTableMeta = (props) => {
           type: 'multiselect',
           options: [
             { label: 'Регламентные работы', value: 'Регламентные работы' },
+            { label: 'Заявка', value: 'Заявка' },
             { label: 'Факсограмма', value: 'Факсограмма' },
           ],
         },
@@ -135,7 +136,7 @@ const getTableMeta = (props) => {
 export default (props) => {
   const renderers = {
     rowNumber: ({ data }) => <span>{props.rowNumberOffset + data}</span>,
-    mission_source_name: ({ data, rowData: { order_number } }) => <span>{`${data} ${order_number || ''}`}</span>,
+    mission_source_name: ({ rowData: { mission_source_text } }) => <span>{mission_source_text}</span>,
     status: ({ data }) => <div>{MISSION_STATUS_LABELS[data]}</div>,
     date_start: ({ data }) => <DateFormatter date={data} time />,
     date_end: ({ data }) => <DateFormatter date={data} time />,

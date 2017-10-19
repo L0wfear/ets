@@ -197,7 +197,7 @@ export default class MainPage extends React.Component {
           <Col md={6}>
             {this.state.user.company_name}
           </Col>
-          <Col md={3} pullRight>
+          <Col md={3}>
             <span style={{ position: 'absolute', right: 20 }}>
               {VERSION_DESCRIPTION}
             </span>

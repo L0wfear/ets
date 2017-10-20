@@ -84,20 +84,9 @@ export class MissionForm extends Form {
       this.setState({ carsList });
     }
 
-    if (this.props.fromFaxogrammMissionForm) {
-      const { date_start, date_end } = this.props.externalHanldeChanges.handleGetNormId(v);
-
-      this.handleChange('passes_count', this.props.externalHanldeChanges.handleGetPassesCount(v));
-      this.handleChange('date_start', date_start);
-      this.handleChange('date_end', date_end);
-    }
-
     try {
       const routesList = await this.context.flux.getActions('routes')
                                               .getRoutesByTechnicalOperation(v);
-      if (routesList.length === 1) {
-        this.handleRouteIdChange(routesList[0].id);
-      }
       this.setState({ routesList });
     } catch (e) {
       console.error(e);
@@ -248,6 +237,10 @@ export class MissionForm extends Form {
   }
 
   checkNorm = ({ dataName, dataValue, iHaveHere = false, forsUpdate = false }) => {
+    if (this.props.fromFaxogrammMissionForm) {
+      return;
+    }
+
     if (!dataValue && !forsUpdate) {
       this.setState({ iCantGetNomative: false, norm_text: undefined, norm_id: null });
       return;
@@ -443,36 +436,33 @@ export class MissionForm extends Form {
 
         <ModalBody>
           <Row>
-            <Col md={12}>
-              <FormGroup
-                controlId="norm_text"
-              >
-                <ControlLabel>Норматив</ControlLabel>
-                { this.state.queryToGetNormGo ?
-                  <Preloader type="field" />
-                  :
-                  <InputGroup>
-                    <FormControl
-                      disabled
-                      value={
-                        state.norm_text ||
-                        (this.state.iCantGetNomative && 'Произошла ошибка получения норматива. Повторите попытку через несколько секунд. Для этого нажмите на кнопку справа') ||
-                        'Заполните обязательные поля для получения норматива'
-                      }
-                      type="string"
-                    />
-                    <InputGroup.Addon onClick={() => this.state.iCantGetNomative && this.checkNorm({ iHaveHere: true, forsUpdate: true })}>
-                      <div style={{ cursor: this.state.iCantGetNomative ? 'pointer' : 'not-allowed' }}>
-                        <Glyphicon
-                          glyph={state.norm_text ? 'ok' : this.state.iCantGetNomative ? 'repeat' : 'pencil'}
-                        />
-                      </div>
-                    </InputGroup.Addon>
-                    <FormControl.Feedback />
-                  </InputGroup>
-                }
-              </FormGroup>
+            <Col md={9}>
+              <Field
+                type="select"
+                label="Технологическая операция"
+                error={errors.technical_operation_id}
+                disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY || isEmpty(state.car_id))}
+                options={TECH_OPERATIONS}
+                value={state.technical_operation_id}
+                onChange={this.handleTechnicalOperationChange}
+                clearable={false}
+              />
             </Col>
+            {STRUCTURE_FIELD_VIEW && <Col md={3}>
+              <Field type="select"
+                label="Подразделение"
+                error={errors.structure_id}
+                disabled={STRUCTURE_FIELD_READONLY || this.props.fromWaybill || (!IS_CREATING && !IS_POST_CREATING_NOT_ASSIGNED) || !IS_CREATING}
+                clearable={STRUCTURE_FIELD_DELETABLE}
+                options={STRUCTURES}
+                emptyValue={null}
+                placeholder={''}
+                value={state.structure_id}
+                onChange={this.handleStructureIdChange}
+              />
+            </Col>}
+          </Row>
+          <Row>
             <Col md={6}>
               <Field
                 type="select"
@@ -522,6 +512,43 @@ export class MissionForm extends Form {
               </Div>
             </Col>
           </Row>
+          <Row>
+            <Col md={12}>
+              <Field
+                type="select"
+                label="Маршрут"
+                error={errors.route_id}
+                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.car_id}
+                options={ROUTES}
+                value={state.route_id}
+                onChange={this.handleRouteIdChange}
+              />
+              <Div hidden={state.route_id}>
+                <Button onClick={this.createNewRoute} disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.technical_operation_id}>Создать новый</Button>
+              </Div>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={12}>
+              <Div hidden={route ? route.id == null : true} className="mission-form-map-wrapper">
+                <RouteInfo route={this.state.selectedRoute} mapOnly />
+              </Div>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col md={12}>
+              <Field
+                type="select"
+                label="Элемент ОГХ"
+                error={errors.municipal_facility_id}
+                disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || !state.route_id || this.props.fromFaxogrammMissionForm}
+                options={MUNICIPAL_FACILITY_OPTIONS}
+                value={state.municipal_facility_id}
+                onChange={this.handleChange.bind(this, 'municipal_facility_id')}
+              />
+            </Col>
+          </Row>
 
           <Row>
             <Col md={3}>
@@ -565,69 +592,6 @@ export class MissionForm extends Form {
               />
             </Col>
           </Row>
-
-          <Row>
-            <Col md={9}>
-              <Field
-                type="select"
-                label="Технологическая операция"
-                error={errors.technical_operation_id}
-                disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY || isEmpty(state.car_id))}
-                options={TECH_OPERATIONS}
-                value={state.technical_operation_id}
-                onChange={this.handleTechnicalOperationChange}
-              />
-            </Col>
-            {STRUCTURE_FIELD_VIEW && <Col md={3}>
-              <Field type="select"
-                label="Подразделение"
-                error={errors.structure_id}
-                disabled={STRUCTURE_FIELD_READONLY || this.props.fromWaybill || (!IS_CREATING && !IS_POST_CREATING_NOT_ASSIGNED) || !IS_CREATING}
-                clearable={STRUCTURE_FIELD_DELETABLE}
-                options={STRUCTURES}
-                emptyValue={null}
-                placeholder={''}
-                value={state.structure_id}
-                onChange={this.handleStructureIdChange}
-              />
-            </Col>}
-            <Col md={12}>
-              <Field
-                type="select"
-                label="Элемент ОГХ"
-                error={errors.municipal_facility_id}
-                disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY || isEmpty(state.norm_id))}
-                options={MUNICIPAL_FACILITY_OPTIONS}
-                value={state.municipal_facility_id}
-                onChange={this.handleChange.bind(this, 'municipal_facility_id')}
-              />
-            </Col>
-          </Row>
-
-          <Row>
-            <Col md={12}>
-              <Field
-                type="select"
-                label="Маршрут"
-                error={errors.route_id}
-                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.technical_operation_id}
-                options={ROUTES}
-                value={state.route_id}
-                onChange={this.handleRouteIdChange}
-              />
-              <Div hidden={state.route_id}>
-                <Button onClick={this.createNewRoute} disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.technical_operation_id}>Создать новый</Button>
-              </Div>
-            </Col>
-          </Row>
-          <Row>
-            <Col md={12}>
-              <Div hidden={route ? route.id == null : true} className="mission-form-map-wrapper">
-                <RouteInfo route={this.state.selectedRoute} mapOnly />
-              </Div>
-            </Col>
-          </Row>
-
         </ModalBody>
 
         <Modal.Footer>

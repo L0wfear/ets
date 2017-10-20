@@ -7,6 +7,8 @@ import Div from 'components/ui/Div.jsx';
 import { saveData } from 'utils/functions';
 import { getToday0am, getToday2359 } from 'utils/dates';
 import { autobind } from 'core-decorators';
+import MissionFormWrap from 'components/missions/mission/MissionFormWrap.jsx';
+
 import FaxogrammsDatepicker from './FaxogrammsDatepicker.jsx';
 import FaxogrammMissionsFormWrap from './FaxogrammMissionsFormWrap.jsx';
 import FaxogrammsTable from './FaxogrammsTable.jsx';
@@ -14,7 +16,11 @@ import FaxogrammInfoTable from './FaxogrammInfoTable.jsx';
 import FaxogrammOperationInfoTable from './FaxogrammOperationInfoTable.jsx';
 
 const MAX_ITEMS_PER_PAGE = 15;
+const disabledProps = {
+  mission_source_id: true,
+};
 
+// простите меня за это
 @autobind
 class FaxogrammDirectory extends ElementsList {
 
@@ -30,11 +36,13 @@ class FaxogrammDirectory extends ElementsList {
       showForm: false,
       sortBy: ['order_number:desc'],
       filter: {},
+      showFormCreateMission: false,
     };
   }
 
   componentDidMount() {
     super.componentDidMount();
+    this.context.flux.getActions('technicalOperation').getTechnicalOperations();
     const { id } = this.props.routeParams;
 
     this.getFaxogramms();
@@ -47,7 +55,6 @@ class FaxogrammDirectory extends ElementsList {
       });
     }
   }
-  
 
   async componentWillUpdate(nextProps, nextState) {
     if (
@@ -146,11 +153,46 @@ class FaxogrammDirectory extends ElementsList {
     });
   }
 
+  handleClickOnCM = () => {
+    const { id } = this.state.selectedElement;
+    const TECH_OPERATIONS = [
+      {
+        value: this.state.fInfoselectedElement.id,
+        label: this.state.fInfoselectedElement.tk_operation_name,
+      },
+    ];
+    const MUNICIPAL_FACILITY_OPTIONS = [
+      {
+        value: this.state.fInfoselectedElement.municipal_facility_id,
+        label: this.state.fInfoselectedElement.element,
+      },
+    ];
+
+    this.setState({
+      ...this.state,
+      showFormCreateMission: true,
+      externalData: {
+        faxogramm_id: id,
+        TECH_OPERATIONS,
+        MUNICIPAL_FACILITY_OPTIONS,
+        to_data: this.state.fInfoselectedElement,
+      },
+    });
+  }
+  onHideCM = () => this.setState({ showFormCreateMission: false });
+  fInfoRowSelected = ({ props }) => {
+    this.setState({ fInfoselectedElement: props.data });
+  }
+
   render() {
     const { faxogrammsList = [] } = this.props;
     const faxogramm = this.state.selectedElement || {};
     const faxogrammInfoData = [{ id: 0, order_info: faxogramm.order_info }];
-
+    const {
+      showFormCreateMission = false,
+      externalData = {},
+    } = this.state;
+    const { num_exec = 0 } = this.state.fInfoselectedElement || {}
     return (
       <div className="ets-page-wrap" ref={node => (this.node = node)}>
         <FaxogrammsDatepicker handleChange={this.handleChange} {...this.state} />
@@ -162,7 +204,7 @@ class FaxogrammDirectory extends ElementsList {
           {...this.props}
           {...this.getAdditionalProps()}
         >
-          <Button onClick={this.showForm} disabled={this.state.selectedElement === null || faxogramm.status === 'cancelled'}>Создать задания</Button>
+          <Button onClick={this.handleClickOnCM} disabled={!num_exec}>Создать задание</Button>
           <Button onClick={this.saveFaxogramm} disabled={this.state.selectedElement === null}><Glyphicon glyph="download-alt" /></Button>
         </FaxogrammsTable>
         <FaxogrammMissionsFormWrap
@@ -179,6 +221,9 @@ class FaxogrammDirectory extends ElementsList {
               <FaxogrammOperationInfoTable
                 noHeader
                 preventNoDataMessage
+                selected={this.state.fInfoselectedElement}
+                selectField={'order_operation_id'}
+                onRowSelected={this.fInfoRowSelected}
                 data={faxogramm.technical_operations || []}
               />
             </Col>
@@ -191,6 +236,17 @@ class FaxogrammDirectory extends ElementsList {
             </Col>
           </Row>
         </Div>
+        <MissionFormWrap
+          fromFaxogrammMissionForm
+          disabledProps={disabledProps}
+          showForm={showFormCreateMission}
+          onFormHide={this.onHideCM}
+          element={null}
+          externalData={externalData}
+          faxogrammStartDate={this.state.date_start}
+          faxogrammEndDate={this.state.date_end}
+          timeFaxogramm={this.state.timeFaxogramm}
+        />
       </div>
     );
   }

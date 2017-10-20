@@ -8,109 +8,11 @@ import Form from 'components/compositions/Form.jsx';
 import _ from 'lodash';
 import connectToStores from 'flummox/connect';
 import MissionTemplatesJournal from 'components/missions/mission_template/MissionTemplatesJournal.jsx';
-import MissionFormWrap from 'components/missions/mission/MissionFormWrap.jsx';
 import './main.scss';
 
-const disabledProps = {
-  passes_count: true,
-  mission_source_id: true,
-};
-
 class FaxogrammMissionsForm extends Form {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      showFormCreateMission: false,
-    };
-  }
-  async componentDidMount() {
-    await this.context.flux.getActions('technicalOperation').getTechnicalOperations();
-    const { technicalOperationsList = [] } = this.props;
-    const { formState: { technical_operations = [], order_date, order_date_to, id } } = this.props;
-
-    const technical_operations_reduce = technical_operations.reduce((newObj, d) => {
-      if (!newObj[d.id]) {
-        newObj[d.id] = d;
-      }
-      return newObj;
-    }, {});
-
-    const TECH_OPERATIONS = technicalOperationsList.reduce((arr, t) => {
-      const tid = t.id;
-      if (technical_operations_reduce[tid]) {
-        arr.push({
-          value: tid,
-          label: t.name,
-          passes_count: technical_operations_reduce[tid].num_exec,
-          norm_id: technical_operations_reduce[tid].norm_id,
-          date_start: technical_operations_reduce[tid].date_from || order_date,
-          date_end: technical_operations_reduce[tid].date_to || order_date_to,
-          timeFaxogramm: !technical_operations_reduce[tid].date_from,
-        });
-      }
-
-      return arr;
-    },
-    []);
-
-    const MUNICIPAL_BY_NORM_ID = technical_operations.reduce((newObj, d) => {
-      if (!newObj[d.norm_id]) {
-        newObj[d.norm_id] = [{ value: d.municipal_facility_id, label: d.elem }];
-      } else {
-        newObj[d.norm_id].push({ value: d.municipal_facility_id, label: d.elem });
-      }
-      return newObj;
-    }, {});
-    const externalData = {
-      date_start: null,
-      date_end: null,
-      faxogramm_id: id,
-      TECH_OPERATIONS,
-      MUNICIPAL_FACILITY_OPTIONS: [],
-    };
-
-    this.setState({
-      externalData,
-      MUNICIPAL_BY_NORM_ID,
-      date_start: order_date,
-      date_end: order_date_to,
-      timeFaxogramm: true,
-    });
-  }
-  handleClickOnCM = () => this.setState({ showFormCreateMission: true });
-  onHideCM = () => this.setState({ showFormCreateMission: false });
-  externalHanldeChanges = {
-    handleGetPassesCount: id => this.state.externalData.TECH_OPERATIONS.find(d => d.value === id).passes_count,
-    handleGetNormId: (id) => {
-      const techOperation = this.state.externalData.TECH_OPERATIONS.find(d => d.value === id) || {};
-      const {
-        date_start = null,
-        date_end = null,
-        timeFaxogramm = false,
-      } = techOperation;
-
-      this.setState({
-        date_start,
-        date_end,
-        timeFaxogramm,
-      })
-      return {
-        date_start,
-        date_end,
-      };
-    },
-    getMunicipalByNormId: (id) => {
-      const { MUNICIPAL_BY_NORM_ID = [] } = this.state;
-      return MUNICIPAL_BY_NORM_ID[id] || [];
-    },
-  }
-
   render() {
     const state = this.props.formState;
-    const { externalData = {} } = this.state;
-    const { showFormCreateMission = false } = this.state;
     const payload = { faxogramm_id: state.id };
     const ASSIGN_OPTIONS = [
       { value: 'assign_to_active', label: 'Добавить в активный ПЛ' },
@@ -126,9 +28,6 @@ class FaxogrammMissionsForm extends Form {
         </Modal.Header>
 
         <ModalBody>
-          <div className="btn-container-faxogramms-create-mission">
-            <Button onClick={this.handleClickOnCM}>Создать задание без шаблона</Button>
-          </div>
           <MissionTemplatesJournal
             payload={payload}
             renderOnly
@@ -151,19 +50,6 @@ class FaxogrammMissionsForm extends Form {
           </Div>
           <Button disabled={!state.missionJournalState || !_.keys(state.missionJournalState.checkedElements).length} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
         </Modal.Footer>
-        <MissionFormWrap
-          fromFaxogrammMissionForm
-          disabledProps={disabledProps}
-          showForm={showFormCreateMission}
-          onFormHide={this.onHideCM}
-          element={null}
-          externalData={externalData}
-          externalHanldeChanges={this.externalHanldeChanges}
-          faxogrammStartDate={this.state.date_start}
-          faxogrammEndDate={this.state.date_end}
-          timeFaxogramm={this.state.timeFaxogramm}
-        />
-
       </Modal>
     );
   }

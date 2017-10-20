@@ -1,14 +1,11 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
 import { autobind } from 'core-decorators';
-import { Modal, Row, Col, Button, Dropdown, Glyphicon, MenuItem,
-  FormGroup, InputGroup, ControlLabel, FormControl,
-} from 'react-bootstrap';
+import { Modal, Row, Col, Button, Dropdown, Glyphicon, MenuItem } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import RouteInfo from 'components/route/RouteInfo.jsx';
 import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
 import Field from 'components/ui/Field.jsx';
-import Preloader from 'components/ui//Preloader.jsx';
 
 import EtsSelect from 'components/ui/input/EtsSelect';
 import Div from 'components/ui/Div.jsx';
@@ -16,9 +13,9 @@ import moment from 'moment';
 import { isEmpty } from 'utils/functions';
 import Form from 'components/compositions/Form.jsx';
 import _ from 'lodash';
-import CarAvailableIcon from 'assets/images/car_available.png';
-import CarNotAvailableIcon from 'assets/images/car_not_available.png';
 import { getWarningNotification } from 'utils/notifications.js';
+
+import SelectorCars from './form_components/SelectorCars';
 
 @autobind
 export class MissionForm extends Form {
@@ -51,7 +48,7 @@ export class MissionForm extends Form {
     }
   }
 
-  async handleCarIdChange(v) {
+  async handleCarIdChange(name, v) {
     this.handleChange('car_id', v);
     this.checkNorm({ dataName: 'func_type_id', dataValue: v });
 
@@ -75,18 +72,19 @@ export class MissionForm extends Form {
     this.checkNorm({ dataName: 'technical_operation_id', dataValue: v });
     this.handleRouteIdChange(undefined);
 
-    if (!this.props.formState.status && !this.props.fromWaybill) {
+    if (!this.props.formState.status) {
       this.handleChange('car_id', undefined);
       this.checkNorm({ dataName: 'func_type_id', dataValue: null });
 
-      const carsList = await this.context.flux.getActions('cars')
-                                            .getCarsByTechnicalOperation(v);
-      this.setState({ carsList });
+      this.context.flux.getActions('cars').getCarsByTechnicalOperation(v);
     }
 
     try {
       const routesList = await this.context.flux.getActions('routes')
                                               .getRoutesByTechnicalOperation(v);
+      if (routesList.length === 1) {
+        this.handleRouteIdChange(routesList[0].id);
+      }
       this.setState({ routesList });
     } catch (e) {
       console.error(e);
@@ -220,27 +218,12 @@ export class MissionForm extends Form {
     this.setState(stateChangeObject);
   }
 
-  renderCarOptions(o) {
-    return (
-      <div>
-        {o.available ?
-          <img role="presentation" height="20" src={CarAvailableIcon} style={{ marginRight: 10, marginTop: -2 }} /> :
-          <img role="presentation" height="20" src={CarNotAvailableIcon} style={{ marginRight: 10, marginTop: -2 }} />
-        }
-        {o.label}
-      </div>
-    );
-  }
   handleChangeDateStart = (v) => {
     this.handleChange('date_start', v);
     this.checkNorm({ dataName: 'date_start', dataValue: v });
   }
 
   checkNorm = ({ dataName, dataValue, iHaveHere = false, forsUpdate = false }) => {
-    if (this.props.fromFaxogrammMissionForm) {
-      return;
-    }
-
     if (!dataValue && !forsUpdate) {
       this.setState({ iCantGetNomative: false, norm_text: undefined, norm_id: null });
       return;
@@ -346,6 +329,23 @@ export class MissionForm extends Form {
       }
     });
   }
+  /**
+   *
+   * @todo вынести
+   */
+  getSelectorCars({ state = {}, errors = {}, onChange, IS_CREATING, IS_POST_CREATING_ASSIGNED, IS_POST_CREATING_NOT_ASSIGNED, IS_DISPLAY }) {
+    return (
+      <SelectorCars
+        formState={state}
+        formErrors={errors}
+        onChange={onChange}
+        disabled={IS_POST_CREATING_ASSIGNED ||
+          IS_POST_CREATING_NOT_ASSIGNED ||
+          IS_DISPLAY ||
+          (IS_CREATING && isEmpty(state.technical_operation_id))}
+      />
+    );
+  }
 
   render() {
     const state = this.props.formState;
@@ -360,7 +360,6 @@ export class MissionForm extends Form {
       MUNICIPAL_FACILITY_OPTIONS = [],
       TECH_OPERATIONS = [],
       routesList = [],
-      carsList = [],
     } = this.state;
 
     const MISSION_SOURCES = missionSourcesList.map(({ id, name, auto }) => ({ value: id, label: name, disabled: auto }));
@@ -370,14 +369,6 @@ export class MissionForm extends Form {
       { value: 'assign_to_new_draft', label: 'Создать черновик ПЛ' },
       { value: 'assign_to_available_draft', label: 'Добавить в черновик ПЛ' },
     ];
-    const CARS = carsList
-      .filter(c => !state.structure_id || c.is_common || c.company_structure_id === state.structure_id)
-      .map(c => ({
-        value: c.asuods_id,
-        available: c.available,
-        label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`,
-        type_id: c.type_id,
-      }));
 
     const route = this.state.selectedRoute;
     const routes = routesList.filter(r => !state.structure_id || r.structure_id === state.structure_id);
@@ -445,41 +436,36 @@ export class MissionForm extends Form {
                 options={TECH_OPERATIONS}
                 value={state.technical_operation_id}
                 onChange={this.handleTechnicalOperationChange}
-                clearable={false}
               />
             </Col>
-            {STRUCTURE_FIELD_VIEW && <Col md={3}>
-              <Field type="select"
-                label="Подразделение"
-                error={errors.structure_id}
-                disabled={STRUCTURE_FIELD_READONLY || this.props.fromWaybill || (!IS_CREATING && !IS_POST_CREATING_NOT_ASSIGNED) || !IS_CREATING}
-                clearable={STRUCTURE_FIELD_DELETABLE}
-                options={STRUCTURES}
-                emptyValue={null}
-                placeholder={''}
-                value={state.structure_id}
-                onChange={this.handleStructureIdChange}
-              />
-            </Col>}
+            { STRUCTURE_FIELD_VIEW &&
+              <Col md={3}>
+                <Field
+                  type="select"
+                  label="Подразделение"
+                  error={errors.structure_id}
+                  disabled={STRUCTURE_FIELD_READONLY || this.props.fromWaybill || (!IS_CREATING && !IS_POST_CREATING_NOT_ASSIGNED) || !IS_CREATING}
+                  clearable={STRUCTURE_FIELD_DELETABLE}
+                  options={STRUCTURES}
+                  emptyValue={null}
+                  placeholder={''}
+                  value={state.structure_id}
+                  onChange={this.handleStructureIdChange}
+                />
+              </Col>
+            }
           </Row>
           <Row>
             <Col md={6}>
-              <Field
-                type="select"
-                label="Транспортное средство"
-                error={errors.car_id}
-                className="white-space-pre-wrap"
-                disabled={IS_POST_CREATING_ASSIGNED ||
-                  IS_POST_CREATING_NOT_ASSIGNED ||
-                  IS_DISPLAY ||
-                  this.props.fromWaybill ||
-                  (IS_CREATING && isEmpty(state.technical_operation_id))}
-                options={CARS}
-                optionRenderer={this.renderCarOptions}
-                value={state.car_id}
-                onChange={this.handleCarIdChange}
-              />
-
+              {this.getSelectorCars({
+                state,
+                errors,
+                IS_CREATING,
+                IS_POST_CREATING_ASSIGNED,
+                IS_POST_CREATING_NOT_ASSIGNED,
+                IS_DISPLAY,
+                onChange: this.handleCarIdChange.bind(this),
+              })}
             </Col>
 
             <Col md={3}>
@@ -518,7 +504,7 @@ export class MissionForm extends Form {
                 type="select"
                 label="Маршрут"
                 error={errors.route_id}
-                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.car_id}
+                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.technical_operation_id}
                 options={ROUTES}
                 value={state.route_id}
                 onChange={this.handleRouteIdChange}
@@ -535,21 +521,19 @@ export class MissionForm extends Form {
               </Div>
             </Col>
           </Row>
-
           <Row>
             <Col md={12}>
               <Field
                 type="select"
                 label="Элемент ОГХ"
                 error={errors.municipal_facility_id}
-                disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || !state.route_id || this.props.fromFaxogrammMissionForm}
+                disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY || isEmpty(state.norm_id))}
                 options={MUNICIPAL_FACILITY_OPTIONS}
                 value={state.municipal_facility_id}
                 onChange={this.handleChange.bind(this, 'municipal_facility_id')}
               />
             </Col>
           </Row>
-
           <Row>
             <Col md={3}>
               <Field
@@ -592,6 +576,12 @@ export class MissionForm extends Form {
               />
             </Col>
           </Row>
+
+          
+
+         
+
+
         </ModalBody>
 
         <Modal.Footer>

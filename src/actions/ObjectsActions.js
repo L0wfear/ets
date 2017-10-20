@@ -82,6 +82,9 @@ export default class ObjectsActions extends Actions {
   getWorkMode() {
     return WorkMode.get();
   }
+  getFaxogrammById(id) {
+    return FaxogrammService.get({ id });
+  }
 
   getFaxogramms(limit, offset, sort_by, filter, create_date_from, create_date_to) {
     const filterValues = _.cloneDeep(filter);

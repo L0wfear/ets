@@ -25,11 +25,20 @@ import WaybillFooter from './form/WaybillFooter';
 import MissionFormWrap from '../missions/mission/MissionFormWrap.jsx';
 import { getDefaultMission } from '../../stores/MissionsStore.js';
 import enhanceWithPermissions from '../util/RequirePermissions.jsx';
+import config from '../../config';
+import ReconnectingWebSocket from '../../vendor/ReconnectingWebsocket.js';
 
 const Div = enhanceWithPermissions(DivForEnhance);
 
 const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
-
+const DICT_STATUS_GLONASS = {
+  true: 'Исправен',
+  false: 'Датчик ГЛОНАСС не исправен',
+};
+const DICT_ERRORS_GLONASS = {
+  true: '',
+  false: 'Выполненные работы не будут учтены в системе',
+};
 @autobind
 class WaybillForm extends Form {
 
@@ -46,9 +55,16 @@ class WaybillForm extends Form {
       selectedMission: null,
       canEditIfClose: null,
       loadingFields: {},
+      carsTrackState: {},
     };
 
     this.employeeFIOLabelFunction = () => {};
+  }
+  componentWillUnmount() {
+    if (typeof this.ws !== 'undefined') {
+      this.ws.close();
+      this.ws = null;
+    }
   }
 
   componentWillReceiveProps(props) {
@@ -74,10 +90,50 @@ class WaybillForm extends Form {
       }
     }
   }
+  handleUpdatePoints = (data) => {
+    const carsTrackState = {
+      ...this.state.carsTrackState,
+      ...Object.values(data).reduce((newObj, value) => Object.assign(newObj, ({ [value.id]: value.timestamp })), {}),
+    };
+    const [state = {}] = [this.props.formState];
+
+    const IS_CREATING = !state.status;
+    const IS_DRAFT = state.status && state.status === 'draft';
+    if (IS_CREATING || IS_DRAFT) {
+      const { car_id = false, is_bnso_broken: is_bnso_broken_old = '' } = state;
+
+      if (car_id){
+        const { timestamp = '' } = carsTrackState[car_id] || {};
+        const is_bnso_broken = ((+(new Date()) / 1000) - timestamp) > 60 * 60;
+        if (is_bnso_broken !== is_bnso_broken_old) {
+          this.handleChange('is_bnso_broken', (((+(new Date()) / 1000) - timestamp) > 60 * 60));
+        }
+      }
+    }
+
+    this.setState({ carsTrackState });
+  }
 
   async componentDidMount() {
-    const { flux } = this.context;
     const { formState } = this.props;
+    const { flux } = this.context;
+
+    const IS_CREATING = !formState.status;
+    const IS_DRAFT = formState.status && formState.status === 'draft';
+
+    if (IS_CREATING || IS_DRAFT) {
+      const token = this.context.flux.getStore('session').getSession();
+      const wsUrl = `${config.ws}?token=${token}`;
+      this.ws = new ReconnectingWebSocket(wsUrl, null);
+      try {
+        this.ws.onmessage = ({ data }) => {
+          this.handleUpdatePoints(JSON.parse(data));
+        };
+      } catch (e) {
+        global.NOTIFICATION_SYSTEM.notify('Ошибка подключения к потоку', 'error');
+      }
+    }
+
     this.employeeFIOLabelFunction = employeeFIOLabelFunction(flux);
 
     if (formState.status === 'active') {
@@ -250,14 +306,28 @@ class WaybillForm extends Form {
       gov_number: selectedCar.gov_number,
     };
     if (!isEmpty(car_id)) {
+      const [state = {}] = [this.props.formState];
+      const { carsTrackState = {} } = this.state;
+      const { timestamp = '' } = carsTrackState[car_id] || {};
       const lastCarUsedWaybillObject = await flux.getActions('waybills').getLastClosedWaybill(car_id);
       const lastCarUsedWaybill = lastCarUsedWaybillObject.result;
       const additionalFields = this.getFieldsToChangeBasedOnLastWaybill(lastCarUsedWaybill);
+
+      const IS_CREATING = !state.status;
+      const IS_DRAFT = state.status && state.status === 'draft';
 
       fieldsToChange = {
         ...fieldsToChange,
         ...additionalFields,
       };
+
+      if (IS_CREATING || IS_DRAFT) {
+        fieldsToChange = {
+          ...fieldsToChange,
+          is_bnso_broken: ((+(new Date()) / 1000) - timestamp) > 60 * 60,
+        };
+      }
+
     } else {
       /**
        * Если ТС не выбрано, то и ранее выбранного водителя не должно быть.
@@ -373,6 +443,11 @@ class WaybillForm extends Form {
     }
   }
 
+  handleSubmit = () => {
+    delete this.props.formState.is_bnso_broken;
+    this.props.onSubmit();
+  }
+
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
@@ -393,7 +468,8 @@ class WaybillForm extends Form {
     } = this.props;
 
     let taxesControl = false;
-    
+    let is_active_car_id = -1;
+
     const getCarsByStructId = getCars(state.structure_id);
     const getTrailersByStructId = getTrailers(state.structure_id);
 
@@ -442,6 +518,16 @@ class WaybillForm extends Form {
     const car = carsIndex[state.car_id];
     const trailer = carsIndex[state.trailer_id];
     const CAR_HAS_ODOMETER = state.gov_number ? !hasOdometer(state.gov_number) : null;
+
+    if (state.car_id) {
+      const { carsTrackState = {} } = this.state;
+      const { timestamp = '' } = carsTrackState[state.car_id] || {};
+      if (((+(new Date()) / 1000) - timestamp) < 60 * 60) {
+        is_active_car_id = 1;
+      } else {
+        is_active_car_id = 0;
+      }
+    }
 
     let title = '';
 
@@ -636,6 +722,14 @@ class WaybillForm extends Form {
                 hidden={IS_CREATING || IS_DRAFT}
                 value={trailer ? `${trailer.gov_number} [${trailer.special_model_name || ''}${trailer.special_model_name ? '/' : ''}${trailer.model_name || ''}]` : 'Н/Д'}
               />
+            </Col>
+            <Col md={12}>
+              <Field
+                label="Исправность датчика ГЛОНАСС"
+                value={typeof state.is_bnso_broken === 'boolean' ? (!state.is_bnso_broken ? 'Исправен' : 'Датчик ГЛОНАСС не исправен') : ''}
+                error={typeof state.is_bnso_broken === 'boolean' && state.is_bnso_broken ? 'Выполненные работы не будут учтены в системе' : ''}
+                disabled
+              />              
             </Col>
             <Col md={(IS_CREATING || IS_DRAFT) ? 12 : 6}>
               <Field

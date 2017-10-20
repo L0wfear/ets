@@ -8,5 +8,6 @@ declare module NodeJS  {
       notify(text: string | object, type?: string, position?: string);
     };
     SESSION_KEY: string;
+    window: any;
   }
 }

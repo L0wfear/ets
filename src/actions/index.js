@@ -21,6 +21,7 @@ import odh from './ODHActions.js';
 import autobase from './AutobaseAction.js';
 import repair from './RepairAction';
 import userNotifications from './UserNotificationActions.js';
+import stream from './StreamAction';
 
 export {
   cars,
@@ -42,4 +43,5 @@ export {
   autobase,
   userNotifications,
   repair,
+  stream,
 };

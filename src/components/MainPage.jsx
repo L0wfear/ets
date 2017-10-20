@@ -15,10 +15,12 @@ import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
 import ModalTP from 'components/modalTP/ModalTP.tsx';
 import { FluxContext, HistoryContext } from 'utils/decorators';
 import PERMISSIONS from 'constants/permissions';
+import NotificationBage from 'components/notifications/NotificationBadge.tsx';
+import NotificationFaxogramm from 'components/modal_notification/NotificationFaxogramm.tsx';
+
 import enhanceWithPermissions from './util/RequirePermissions.jsx';
 import defaultUser from '../assets/images/avatar-default.png';
 import getLoginPage from './loginPage.tsx';
-import NotificationModal from '../components/modal_notification/NotificationFaxogramm.tsx';
 
 import MissionsNavItem from './navbar/MissionsNavItem';
 import NsiNavItem from './navbar/nsi';
@@ -59,29 +61,20 @@ export default class MainPage extends React.Component {
 
     this.state = {
       user: {},
-      countUserNotificationInfo: 0,
       showFormTp: false,
     };
   }
 
   componentWillMount() {
-    this.intiCheckCountUN();
-
     this.setState({
       user: this.context.flux.getStore('session').getCurrentUser(),
     });
   }
 
   componentWillReceiveProps() {
-    this.intiCheckCountUN();
-
     this.setState({
       user: this.context.flux.getStore('session').getCurrentUser(),
     });
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.checkUsNotifInterval);
   }
 
   @autobind
@@ -93,21 +86,6 @@ export default class MainPage extends React.Component {
     });
   }
 
-  intiCheckCountUN() {
-    const path = this.props.location.pathname;
-
-    if (!this.checkUsNotifInterval && (path !== '/login')) {
-      this.checkCountUserNotificationInfo();
-      this.checkUsNotifInterval = setInterval(() => this.checkCountUserNotificationInfo(), 1000 * 60 * 60);
-    }
-  }
-  async checkCountUserNotificationInfo() {
-    const { flux } = this.context;
-
-    await flux.getActions('userNotifications').getUserNotificationInfo({
-      setNewCount: countUserNotificationInfo => this.setState({ countUserNotificationInfo }),
-    });
-  }
   hideFormTp = () => this.setState({ showFormTp: false });
   showFormTp = () => this.setState({ showFormTp: true });
 
@@ -126,7 +104,6 @@ export default class MainPage extends React.Component {
   renderHeader() {
     const {
       user,
-      countUserNotificationInfo = 0,
     } = this.state;
     const path = this.props.location.pathname;
     const isOkrug = user.okrug_id !== null;
@@ -160,7 +137,7 @@ export default class MainPage extends React.Component {
             <NavItem hidden={isOkrug} permissions={[PERMISSIONS.company_structure.list]} active={path === '/company-structure'} href="#/company-structure">Структура предприятия</NavItem>
             <NavItem permissions={[PERMISSIONS.repair.list]} active={path === '/program-registry'} href="#/program-registry">Планирование ремонтных работ</NavItem>
 
-            <NavItem includesPartOfText={['_notification.list']}title="Уведомления пользователей" active={path === '/notification-registry'} href="#/notification-registry"><span>Уведомления <Badge>{countUserNotificationInfo}</Badge></span></NavItem>
+            <NavItem includesPartOfText={['_notification.list']} title="Уведомления пользователей" active={path === '/notification-registry'} href="#/notification-registry"><span>Уведомления <NotificationBage /></span></NavItem>
             <NavItem hidden={isOkrug} permissions={[PERMISSIONS.administration]} title="Администрирование" href={`http://213.79.88.5/${process.env.STAND !== 'prod' ? 'ets-test/' : ''}admin`}><Glyphicon glyph="list-alt" /></NavItem>
           </Nav>
 
@@ -204,7 +181,7 @@ export default class MainPage extends React.Component {
           />
           {this.props.children}
           <LoadingOverlay main />
-          {<NotificationModal />}
+          <NotificationFaxogramm />
         </div>
 
         <div className="app-footer">
@@ -214,7 +191,7 @@ export default class MainPage extends React.Component {
           <Col md={6}>
             {this.state.user.company_name}
           </Col>
-          <Col md={3} pullRight>
+          <Col md={3}>
             <span style={{ position: 'absolute', right: 20 }}>
               {VERSION_DESCRIPTION}
             </span>

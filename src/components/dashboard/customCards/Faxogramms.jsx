@@ -1,5 +1,6 @@
 import React from 'react';
 import { Glyphicon, Button } from 'react-bootstrap';
+import { Link } from 'react-router';
 
 import { FaxogrammService } from 'api/Services';
 import Div from 'components/ui/Div.jsx';
@@ -50,7 +51,7 @@ export default class Faxogramms extends DashboardCardMedium {
         </Div>
         <Div className="text-right">
           {canViewPDF ? <Button className="dashboard-card-action-button" onClick={(e) => { e.preventDefault(); this.showPDFViewModal(data); }}><Glyphicon glyph="info-sign" /></Button> : ''}
-          {canCreateMission ? <Button className="dashboard-card-action-button" onClick={(e) => { e.preventDefault(); this.showFaxogrammForm(data); }}>Сформировать задания</Button> : ''}
+          {canCreateMission ? <Link to={`/faxogramms/${data.id}`}><Button className="dashboard-card-action-button">Сформировать задания</Button></Link> : ''}
         </Div>
         <PDFViewModal
           blob={this.state.blob}

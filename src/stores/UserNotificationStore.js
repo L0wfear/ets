@@ -60,6 +60,7 @@ export default class UserNotificationStore extends Store {
     this.state = {
       notificationPopupList: [],
       userNotificationList: [],
+      countNotRead: 0,
     };
   }
   handleGetNotificationsPopup({ result: { rows = [] } }) {
@@ -82,28 +83,25 @@ export default class UserNotificationStore extends Store {
     this.setState({ userNotificationList: result.rows });
   }
 
-  handleGetUserNotificationInfo({ result, setNewCount }) {
+  handleGetUserNotificationInfo({ result }) {
     const { rows: { not_read_num = 0 } } = result;
     this.setState({
-      countNotReadNum: not_read_num,
-      setNewCount,
+      countNotRead: not_read_num,
     });
-    setNewCount(not_read_num);
   }
 
   handleChangesUserNotificationsCount({ count = 0 }) {
-    const { countNotReadNum, setNewCount } = this.state;
-    const newCountNotReadNumPrev = this.changeNotification(count, countNotReadNum);
+    const { countNotRead } = this.state;
+    const newCountNotReadNumPrev = this.changeNotification(count, countNotRead);
     const newCountNotReadNum = newCountNotReadNumPrev < 0 ? 0 : newCountNotReadNumPrev;
-    setNewCount(newCountNotReadNum);
 
     this.setState({
-      countNotReadNum: newCountNotReadNum,
+      countNotRead: newCountNotReadNum,
     });
   }
 
-  changeNotification(count, countNotReadNum) {
+  changeNotification(count, countNotRead) {
     if (count === 'is_read_all') return 0;
-    return countNotReadNum + count;
+    return countNotRead + count;
   }
 }

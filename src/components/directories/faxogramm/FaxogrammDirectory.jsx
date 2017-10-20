@@ -22,7 +22,6 @@ class FaxogrammDirectory extends ElementsList {
     super(props);
 
     this.mainListName = 'faxogrammsList';
-
     this.state = {
       page: 0,
       selectedElement: null,
@@ -36,9 +35,19 @@ class FaxogrammDirectory extends ElementsList {
 
   componentDidMount() {
     super.componentDidMount();
+    const { id } = this.props.routeParams;
 
     this.getFaxogramms();
+    if (id) {
+      this.getOneFaxogramm(id).then(({ result }) => {
+        this.setState({
+          selectedElement: result[0],
+          showForm: true,
+        })
+      });
+    }
   }
+  
 
   async componentWillUpdate(nextProps, nextState) {
     if (
@@ -83,6 +92,9 @@ class FaxogrammDirectory extends ElementsList {
       this.state.create_date_to,
     );
   }
+  getOneFaxogramm(id) {
+    return this.context.flux.getActions('objects').getFaxogrammById(id);
+  }
 
   saveFaxogramm() {
     const { flux } = this.context;
@@ -110,6 +122,28 @@ class FaxogrammDirectory extends ElementsList {
 
   handleChange(field, value) {
     this.setState({ [field]: value }, () => this.getFaxogramms());
+  }
+
+  /**
+   * @override
+   */
+  onFormHide() {
+    this.props.history.push('/faxogramms');
+    this.setState({
+      showForm: false,
+      selectedElement: null,
+    });
+  }
+
+  /**
+   * @override
+   */
+  showForm = () => {
+    const { id } = this.state.selectedElement;
+    this.props.history.push(`/faxogramms/${id}`);
+    this.setState({
+      showForm: true,
+    });
   }
 
   render() {

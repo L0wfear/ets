@@ -1,6 +1,8 @@
 const routerAndPermission = {
   monitor: {
     path: '/monitor',
+    entyity: 'monitor',
+    noDotList: true,
     permissions: {
       list: 'monitor',
     },
@@ -9,12 +11,16 @@ const routerAndPermission = {
     children: {
       odhCoverageReport: {
         path: '/odh_coverage_report',
+        entyity: 'odh_coverage_report',
+        noDotList: true,
         permissions: {
           list: 'odh_coverage_report',
         },
       },
       dtCoverageReport: {
         path: '/dt_coverage_report',
+        entyity: 'dt_coverage_report',
+        noDotList: true,
         permissions: {
           list: 'dt_coverage_report',
         },
@@ -23,12 +29,16 @@ const routerAndPermission = {
   },
   dashboard: {
     path: '/dashboard',
+    entyity: 'dashboard',
+    noDotList: true,
     permissions: {
       list: 'dashboard',
     },
   },
   waybillJournal: {
     path: '/waybill-journal',
+    entyity: 'waybill',
+    noDotList: false,
     permissions: {
       list: 'waybill.list',
       create: 'waybill.create',
@@ -43,6 +53,8 @@ const routerAndPermission = {
     children: {
       'mission-journal': {
         path: '/mission-templates-journal',
+        entyity: 'mission',
+        noDotList: false,
         permissions: {
           list: 'mission.list',
           create: 'mission.create',
@@ -53,6 +65,8 @@ const routerAndPermission = {
       },
       'mission-templates-journal': {
         path: '/mission-templates-journal',
+        entyity: 'mission_template',
+        noDotList: false,
         permissions: {
           list: 'mission_template.list',
           create: 'mission_template.create',
@@ -63,6 +77,8 @@ const routerAndPermission = {
       },
       'duty-missions-journal': {
         path: '/duty-missions-journal',
+        entyity: 'duty_mission',
+        noDotList: false,
         permissions: {
           list: 'duty_mission.list',
           create: 'duty_mission.create',
@@ -73,6 +89,8 @@ const routerAndPermission = {
       },
       'duty-mission-templates-journal': {
         path: '/duty-mission-templates-journal',
+        entyity: 'duty_mission_template',
+        noDotList: false,
         permissions: {
           list: 'duty_mission_template.list',
           create: 'duty_mission_template.create',
@@ -87,6 +105,8 @@ const routerAndPermission = {
     children: {
       employees: {
         path: '/employees',
+        entyity: 'employee',
+        noDotList: false,
         permissions: {
           list: 'employee.list',
           create: 'employee.create',
@@ -97,6 +117,8 @@ const routerAndPermission = {
       },
       faxogramms: {
         path: '/faxogramms',
+        entyity: 'faxogramm',
+        noDotList: false,
         permissions: {
           list: 'faxogramm.list',
           create: 'faxogramm.create',
@@ -106,7 +128,9 @@ const routerAndPermission = {
         },
       },
       technicalOperation: {
-        path: '/hzItremove',
+        path: '/technical-operations',
+        entyity: 'technical_operation',
+        noDotList: false,
         permissions: {
           list: 'technical_operation.list',
           create: 'technical_operation.create',
@@ -119,6 +143,8 @@ const routerAndPermission = {
         children: {
           carFuncTypes: {
             path: '/car-func-types',
+            entyity: 'type',
+            noDotList: false,
             permissions: {
               list: 'type.list',
               create: 'type.create',
@@ -129,6 +155,8 @@ const routerAndPermission = {
           },
           cars: {
             path: '/cars',
+            entyity: 'car',
+            noDotList: false,
             permissions: {
               list: 'car.list',
               create: 'car.create',
@@ -139,6 +167,8 @@ const routerAndPermission = {
           },
           batteryRegistry: {
             path: '/battery-registry',
+            entyity: 'autobase_battery',
+            noDotList: false,
             permissions: {
               list: 'autobase_battery.list',
               create: 'autobase_battery.create',
@@ -149,6 +179,8 @@ const routerAndPermission = {
           },
           batteryBrand: {
             path: '/battery-brand',
+            entyity: 'autobase_battery_brand',
+            noDotList: false,
             permissions: {
               list: 'autobase_battery_brand.list',
               create: 'autobase_battery_brand.create',
@@ -159,6 +191,8 @@ const routerAndPermission = {
           },
           batteryManufacturer: {
             path: '/battery-manufacturer',
+            entyity: 'autobase_battery_manufacturer',
+            noDotList: false,
             permissions: {
               list: 'autobase_battery_manufacturer.list',
               create: 'autobase_battery_manufacturer.create',
@@ -169,6 +203,8 @@ const routerAndPermission = {
           },
           tire: {
             path: '/tire',
+            entyity: 'autobase_tire',
+            noDotList: false,
             permissions: {
               list: 'autobase_tire.list',
               create: 'autobase_tire.create',
@@ -179,6 +215,8 @@ const routerAndPermission = {
           },
           tireModel: {
             path: '/tire-model',
+            entyity: 'autobase_tire_model',
+            noDotList: false,
             permissions: {
               list: 'autobase_tire_model.list',
               create: 'autobase_tire_model.create',
@@ -189,6 +227,8 @@ const routerAndPermission = {
           },
           sparePart: {
             path: '/spare-part',
+            entyity: 'autobase_spare_part',
+            noDotList: false,
             permissions: {
               list: 'autobase_spare_part.list',
               create: 'autobase_spare_part.create',
@@ -199,6 +239,8 @@ const routerAndPermission = {
           },
           techMaintenanceOrderRegistry: {
             path: '/tech-maintenance-order-registry',
+            entyity: 'autobase_tech_maintenance_order',
+            noDotList: false,
             permissions: {
               list: 'autobase_tech_maintenance_order.list',
               create: 'autobase_tech_maintenance_order.create',
@@ -209,6 +251,8 @@ const routerAndPermission = {
           },
           techInspection: {
             path: '/tech-inspection',
+            entyity: 'autobase_tech_inspection',
+            noDotList: false,
             permissions: {
               list: 'autobase_tech_inspection.list',
               create: 'autobase_tech_inspection.create',
@@ -219,6 +263,8 @@ const routerAndPermission = {
           },
           insurancePolicy: {
             path: '/insurance-policy',
+            entyity: 'autobase_insurance_policy',
+            noDotList: false,
             permissions: {
               list: 'autobase_insurance_policy.list',
               create: 'autobase_insurance_policy.create',
@@ -229,6 +275,8 @@ const routerAndPermission = {
           },
           repairCompany: {
             path: '/repair-company',
+            entyity: 'autobase_company',
+            noDotList: false,
             permissions: {
               list: 'autobase_company.list',
               create: 'autobase_company.create',
@@ -243,6 +291,8 @@ const routerAndPermission = {
         children: {
           contractor: {
             path: '/repair-company',
+            entyity: 'repair_contractor',
+            noDotList: false,
             permissions: {
               list: 'repair_contractor.list',
               create: 'repair_contractor.create',
@@ -253,6 +303,8 @@ const routerAndPermission = {
           },
           stateProgram: {
             path: '/state-programy',
+            entyity: 'repair_state_program',
+            noDotList: false,
             permissions: {
               list: 'repair_state_program.list',
               create: 'repair_state_program.create',
@@ -263,6 +315,8 @@ const routerAndPermission = {
           },
           objectPropertyList: {
             path: '/object-property-list',
+            entyity: 'ets_object_properties',
+            noDotList: false,
             permissions: {
               list: 'ets_object_properties.list',
               create: 'ets_object_properties.create',
@@ -277,6 +331,8 @@ const routerAndPermission = {
         children: {
           contramaterialConsumptionRatector: {
             path: '/material-consumption-rate',
+            entyity: 'material_consumption_rate',
+            noDotList: false,
             permissions: {
               list: 'material_consumption_rate.list',
               create: 'material_consumption_rate.create',
@@ -287,6 +343,8 @@ const routerAndPermission = {
           },
           fuelRates: {
             path: '/fuel-rates',
+            entyity: 'fuel_consumption_rate',
+            noDotList: false,
             permissions: {
               list: 'fuel_consumption_rate.list',
               create: 'fuel_consumption_rate.create',
@@ -297,6 +355,8 @@ const routerAndPermission = {
           },
           maintenanceRate: {
             path: '/maintenance-rate',
+            entyity: 'maintenance_rate',
+            noDotList: false,
             permissions: {
               list: 'maintenance_rate.list',
               create: 'maintenance_rate.create',
@@ -311,6 +371,8 @@ const routerAndPermission = {
         children: {
           odh: {
             path: '/odh',
+            entyity: 'odh',
+            noDotList: false,
             permissions: {
               list: 'odh.list',
               create: 'odh.create',
@@ -321,6 +383,8 @@ const routerAndPermission = {
           },
           dt: {
             path: '/dt',
+            entyity: 'dt',
+            noDotList: false,
             permissions: {
               list: 'dt.list',
               create: 'dt.create',
@@ -331,6 +395,8 @@ const routerAndPermission = {
           },
           ssp: {
             path: '/ssp',
+            entyity: 'ssp',
+            noDotList: false,
             permissions: {
               list: 'ssp.list',
               create: 'ssp.create',
@@ -341,6 +407,8 @@ const routerAndPermission = {
           },
           msp: {
             path: '/msp',
+            entyity: 'msp',
+            noDotList: false,
             permissions: {
               list: 'msp.list',
               create: 'msp.create',
@@ -351,6 +419,8 @@ const routerAndPermission = {
           },
           fuelingWater: {
             path: '/fueling-water',
+            entyity: 'fueling_water',
+            noDotList: false,
             permissions: {
               list: 'fueling_water.list',
               create: 'fueling_water.create',
@@ -361,6 +431,8 @@ const routerAndPermission = {
           },
           carpool: {
             path: '/carpool',
+            entyity: 'carpool',
+            noDotList: false,
             permissions: {
               list: 'carpool.list',
               create: 'carpool.create',
@@ -371,6 +443,8 @@ const routerAndPermission = {
           },
           dangerZones: {
             path: '/danger-zones',
+            entyity: 'danger_zone',
+            noDotList: false,
             permissions: {
               list: 'danger_zone.list',
               create: 'danger_zone.create',
@@ -381,6 +455,8 @@ const routerAndPermission = {
           },
           pgm: {
             path: '/pgm',
+            entyity: 'pgm',
+            noDotList: false,
             permissions: {
               list: 'pgm.list',
               create: 'pgm.create',
@@ -391,6 +467,8 @@ const routerAndPermission = {
           },
           snowStorage: {
             path: '/snow-storage',
+            entyity: 'snow_storage',
+            noDotList: false,
             permissions: {
               list: 'snow_storage.list',
               create: 'snow_storage.create',
@@ -401,6 +479,8 @@ const routerAndPermission = {
           },
           bridges: {
             path: '/bridges',
+            entyity: 'bridges',
+            noDotList: false,
             permissions: {
               list: 'bridges.list',
               create: 'bridges.create',
@@ -411,6 +491,8 @@ const routerAndPermission = {
           },
           pedestrianTunnels: {
             path: '/pedestrian-tunnels',
+            entyity: 'pedestrian_tunnels',
+            noDotList: false,
             permissions: {
               list: 'pedestrian_tunnels.list',
               create: 'pedestrian_tunnels.create',
@@ -421,6 +503,8 @@ const routerAndPermission = {
           },
           pedestrianTunnelExits: {
             path: '/pedestrian-tunnel-exits',
+            entyity: 'pedestrian_tunnel_exits',
+            noDotList: false,
             permissions: {
               list: 'pedestrian_tunnel_exits.list',
               create: 'pedestrian_tunnel_exits.create',
@@ -431,6 +515,8 @@ const routerAndPermission = {
           },
           fountains: {
             path: '/fountains',
+            entyity: 'fountains',
+            noDotList: false,
             permissions: {
               list: 'fountains.list',
               create: 'fountains.create',
@@ -445,6 +531,8 @@ const routerAndPermission = {
         children: {
           cleaningRate: {
             path: '/cleaning-rate',
+            entyity: 'cleaning_rate',
+            noDotList: false,
             permissions: {
               list: 'cleaning_rate.list',
               create: 'cleaning_rate.create',
@@ -455,6 +543,8 @@ const routerAndPermission = {
           },
           odhNorm: {
             path: '/odh-norm',
+            entyity: 'odh_norm',
+            noDotList: false,
             permissions: {
               list: 'odh_norm.list',
               create: 'odh_norm.create',
@@ -465,6 +555,8 @@ const routerAndPermission = {
           },
           maintenanceWork: {
             path: '/maintenance-work',
+            entyity: 'maintenance_work',
+            noDotList: false,
             permissions: {
               list: 'maintenance_work.list',
               create: 'maintenance_work.create',
@@ -475,6 +567,8 @@ const routerAndPermission = {
           },
           fuelOperations: {
             path: '/fuel-operations',
+            entyity: 'fuel_operation',
+            noDotList: false,
             permissions: {
               list: 'fuel_operation.list',
               create: 'fuel_operation.create',
@@ -485,6 +579,8 @@ const routerAndPermission = {
           },
           odhNormDataSummer: {
             path: '/odh-norm-data-summer',
+            entyity: 'odh_norm_data_summer',
+            noDotList: false,
             permissions: {
               list: 'odh_norm_data_summer.list',
               create: 'odh_norm_data_summer.create',
@@ -495,6 +591,8 @@ const routerAndPermission = {
           },
           efficiency: {
             path: '/efficiency',
+            entyity: 'efficiency',
+            noDotList: false,
             permissions: {
               list: 'efficiency.list',
               create: 'efficiency.create',
@@ -507,6 +605,8 @@ const routerAndPermission = {
       },
       medicalStats: {
         path: '/medical-stats',
+        entyity: 'medical_stats',
+        noDotList: false,
         permissions: {
           list: 'medical_stats.list',
           create: 'medical_stats.create',
@@ -517,6 +617,8 @@ const routerAndPermission = {
       },
       userActionLog: {
         path: '/user-action-log',
+        entyity: 'user_action_log',
+        noDotList: false,
         permissions: {
           list: 'user_action_log.list',
         },
@@ -529,6 +631,8 @@ const routerAndPermission = {
         children: {
           routeOdhCoverageReport: {
             path: '/route-odh-coverage-report',
+            entyity: 'route_odh_coverage_report',
+            noDotList: false,
             permissions: {
               list: 'route_odh_coverage_report.list',
               create: 'route_odh_coverage_report.create',
@@ -539,6 +643,8 @@ const routerAndPermission = {
           },
           missionReports: {
             path: '/mission-reports',
+            entyity: 'car_travel_report',
+            noDotList: false,
             permissions: {
               list: 'car_travel_report.list',
               create: 'car_travel_report.create',
@@ -549,6 +655,8 @@ const routerAndPermission = {
           },
           carUsageReportWithTrack: {
             path: '/car-usage-report-with-track',
+            entyity: 'car_usage_report_with_track_report',
+            noDotList: false,
             permissions: {
               list: 'car_usage_report_with_track_report.list',
               create: 'car_usage_report_with_track_report.create',
@@ -559,6 +667,8 @@ const routerAndPermission = {
           },
           trackEventsReports: {
             path: '/track-events-reports',
+            entyity: 'track_events_report',
+            noDotList: false,
             permissions: {
               list: 'track_events_report.list',
               create: 'track_events_report.create',
@@ -569,6 +679,8 @@ const routerAndPermission = {
           },
           brigadeEfficiencyReport: {
             path: '/brigade-efficiency-report',
+            entyity: 'brigade_efficiency_report',
+            noDotList: false,
             permissions: {
               list: 'brigade_efficiency_report.list',
               create: 'brigade_efficiency_report.create',
@@ -579,6 +691,8 @@ const routerAndPermission = {
           },
           employeeEfficiencyReport: {
             path: '/employee-efficiency-report',
+            entyity: 'employee_efficiency_report',
+            noDotList: false,
             permissions: {
               list: 'employee_efficiency_report.list',
               create: 'employee_efficiency_report.create',
@@ -589,6 +703,8 @@ const routerAndPermission = {
           },
           missionProgressReport: {
             path: '/mission-progress-report',
+            entyity: 'autobase_long_repair_report',
+            noDotList: false,
             permissions: {
               list: 'mission_progress_report.list',
               create: 'mission_progress_report.create',
@@ -599,6 +715,8 @@ const routerAndPermission = {
           },
           longRepair: {
             path: '/long-repair',
+            entyity: 'autobase_long_repair_report',
+            noDotList: false,
             permissions: {
               list: 'autobase_long_repair_report.list',
               create: 'autobase_long_repair_report.create',
@@ -609,6 +727,8 @@ const routerAndPermission = {
           },
           techMaintenanceSchedule: {
             path: '/tech-maintenance-schedule',
+            entyity: 'autobase_tech_maintenance_schedule_report',
+            noDotList: false,
             permissions: {
               list: 'autobase_tech_maintenance_schedule_report.list',
               create: 'autobase_tech_maintenance_schedule_report.create',
@@ -619,6 +739,8 @@ const routerAndPermission = {
           },
           inquiryExpiringDate: {
             path: '/inquiry-expiring-date',
+            entyity: 'autobase_inquiry_expiring_date_report',
+            noDotList: false,
             permissions: {
               list: 'autobase_inquiry_expiring_date_report.list',
               create: 'autobase_inquiry_expiring_date_report.create',
@@ -633,6 +755,8 @@ const routerAndPermission = {
         children: {
           fuelСonsumptionReport: {
             path: '/fuel-consumption-report',
+            entyity: 'fuel_consumption_report',
+            noDotList: false,
             permissions: {
               list: 'fuel_consumption_report.list',
               create: 'fuel_consumption_report.create',
@@ -643,6 +767,8 @@ const routerAndPermission = {
           },
           fuelConsumptionSummaryReport: {
             path: '/fuel-consumption-summary-report',
+            entyity: 'fuel_consumption_summary_report',
+            noDotList: false,
             permissions: {
               list: 'fuel_consumption_summary_report.list',
               create: 'fuel_consumption_summary_report.create',
@@ -653,6 +779,8 @@ const routerAndPermission = {
           },
           dailyCleaningReportsEts: {
             path: '/daily-cleaning-reports-ets',
+            entyity: 'cleaning_status_report',
+            noDotList: false,
             permissions: {
               list: 'cleaning_status_report.list',
               create: 'cleaning_status_report.create',
@@ -663,6 +791,8 @@ const routerAndPermission = {
           },
           dailyCleaningReportsCafap: {
             path: '/daily-cleaning-reports-cafap',
+            entyity: 'cleaning_status_cafap_report',
+            noDotList: false,
             permissions: {
               list: 'cleaning_status_cafap_report.list',
               create: 'cleaning_status_cafap_report.create',
@@ -673,6 +803,8 @@ const routerAndPermission = {
           },
           cleaningStatusTechOpReport: {
             path: '/cleaning-status-tech-op-report',
+            entyity: 'cleaning_status_tech_op_report',
+            noDotList: false,
             permissions: {
               list: 'cleaning_status_tech_op_report.list',
               create: 'cleaning_status_tech_op_report.create',
@@ -685,6 +817,8 @@ const routerAndPermission = {
       },
       analytics: {
         path: '/efficiency',
+        entyity: 'analytical_reports',
+        noDotList: false,
         permissions: {
           list: 'analytical_reports.list',
           create: 'analytical_reports.create',
@@ -697,18 +831,24 @@ const routerAndPermission = {
   },
   routeList: {
     path: '/routes-list',
+    entyity: 'route',
+    noDotList: false,
     permissions: {
       list: 'route.list',
     },
   },
   companyStructure: {
     path: '/company-structure',
+    entyity: 'company_structure',
+    noDotList: false,
     permissions: {
       list: 'company_structure.list',
     },
   },
   notificationRegistry: {
     path: '/notification-registry',
+    entyity: '',
+    noDotList: false,
     permissions: {
       list: [
         'insurance_policy_notification.list',
@@ -722,6 +862,8 @@ const routerAndPermission = {
   },
   programRegistry: {
     path: '/program-registry',
+    entyity: 'repair_program',
+    noDotList: false,
     permissions: {
       list: 'repair_program.list',
     },

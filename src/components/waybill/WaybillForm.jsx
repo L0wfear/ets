@@ -776,7 +776,7 @@ class WaybillForm extends Form {
 
                   <Field
                     type="number"
-                    label="Возврат, км"
+                    label="Возвращение в гараж, км"
                     error={errors.odometr_end}
                     value={state.odometr_end} hidden={!(IS_ACTIVE || IS_CLOSED)} disabled={IS_CLOSED && !this.state.canEditIfClose} onChange={this.handleChange.bind(this, 'odometr_end')}
                   />
@@ -802,7 +802,7 @@ class WaybillForm extends Form {
 
                   <Field
                     type="number"
-                    label="Возврат, м/ч"
+                    label="Возвращение в гараж, м/ч"
                     error={errors.motohours_end}
                     value={state.motohours_end}
                     hidden={!(IS_ACTIVE || IS_CLOSED)}
@@ -833,7 +833,7 @@ class WaybillForm extends Form {
 
                   <Field
                     type="number"
-                    label="Возврат, м/ч"
+                    label="Возвращение в гараж, м/ч"
                     error={errors.motohours_equip_end}
                     value={state.motohours_equip_end}
                     hidden={!(IS_ACTIVE || IS_CLOSED)}

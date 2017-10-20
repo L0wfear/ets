@@ -79,14 +79,6 @@ export class MissionForm extends Form {
       this.context.flux.getActions('cars').getCarsByTechnicalOperation(v);
     }
 
-    if (this.props.fromFaxogrammMissionForm) {
-      const { date_start, date_end } = this.props.externalHanldeChanges.handleGetNormId(v);
-
-      this.handleChange('passes_count', this.props.externalHanldeChanges.handleGetPassesCount(v));
-      this.handleChange('date_start', date_start);
-      this.handleChange('date_end', date_end);
-    }
-
     try {
       const routesList = await this.context.flux.getActions('routes')
                                               .getRoutesByTechnicalOperation(v);

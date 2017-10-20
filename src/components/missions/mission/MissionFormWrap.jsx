@@ -35,9 +35,14 @@ export default class MissionFormWrap extends FormWrap {
       }
       if (props.fromFaxogrammMissionForm) {
         mission.mission_source_id = 1;
-        mission.date_start = props.externalData.date_start;
-        mission.date_end = props.externalData.date_end;
-        mission.passes_count = props.externalData.passes_count;
+        mission.date_start = props.externalData.to_data.date_from;
+        mission.date_end = props.externalData.to_data.date_to;
+        mission.passes_count = props.externalData.to_data.num_exec;
+        mission.norm_id = props.externalData.to_data.norm_id;
+        mission.municipal_facility_id = props.externalData.to_data.municipal_facility_id;
+        mission.technical_operation_id = props.externalData.to_data.id;
+        mission.order_operation_id = props.externalData.to_data.order_operation_id;
+        
         mission.faxogramm_id = props.externalData.faxogramm_id;
         this.setState({
           fixed_date_start: props.externalData.date_start,
@@ -84,12 +89,14 @@ export default class MissionFormWrap extends FormWrap {
       }
     }
     if ((this.props.fromFaxogrammMissionForm && this.props.faxogrammStartDate) || (this.props.fromFaxogrammMissionForm && this.props.faxogrammEndDate)) {
-      if (moment(formState.date_start).toDate().getTime() < moment(this.props.faxogrammStartDate).toDate().getTime()) {
-        formErrors.date_start = `Дата не должна выходить за пределы ${this.props.timeFaxogramm ? 'факсограммы' : 'технической операции'}`;
+      const date_start = this.props.externalData.to_data.date_from;
+      const date_end = this.props.externalData.to_data.date_to;
+      if (moment(date_start).toDate().getTime() < moment(this.props.faxogrammStartDate).toDate().getTime()) {
+        formErrors.date_start = 'Дата не должна выходить за пределы технической операции';
       }
 
-      if (moment(formState.date_end).toDate().getTime() > moment(this.props.faxogrammEndDate).toDate().getTime()) {
-        formErrors.date_end = `Дата не должна выходить за пределы ${this.props.timeFaxogramm ? 'факсограммы' : 'технической операции'}`;
+      if (moment(date_end).toDate().getTime() > moment(this.props.faxogrammEndDate).toDate().getTime()) {
+        formErrors.date_end = 'Дата не должна выходить за пределы технической операции';
       }
     }
 
@@ -121,7 +128,6 @@ export default class MissionFormWrap extends FormWrap {
       waybillEndDate: this.props.waybillEndDate,
       disabledProps: this.props.disabledProps || {},
       externalData: this.props.externalData || {},
-      externalHanldeChanges: this.props.externalHanldeChanges || {},
       fromFaxogrammMissionForm: this.props.fromFaxogrammMissionForm || false,
     };
 

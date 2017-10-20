@@ -1,4 +1,5 @@
 import { Store } from 'flummox';
+import get from 'lodash/get';
 import { notifications } from 'utils/notifications';
 
 export default class NotificationsStore extends Store {
@@ -35,10 +36,13 @@ export default class NotificationsStore extends Store {
         actions: repairActions,
         actionNames: [
           'contractor',
-       // 'stateProgram',
+          'stateProgram',
           'programRegistry',
           'programVersionPut',
         ],
+        actionNotifications: {
+          'stateProgram': 'Запись успешно добавлена',
+        },
       },
       {
         actions: objectsActions,
@@ -98,8 +102,9 @@ export default class NotificationsStore extends Store {
 
     saveNotificationQueue.forEach(opts =>
       opts.actionNames.forEach(name =>
-        this.register(opts.actions[name], this.handleSave)
+        this.register(opts.actions[name], this.handleSave.bind(null, get(opts, ['actionNotifications', name], 'Данные успешно сохранены')))
     ));
+
     removeNotificationQueue.forEach(opts =>
       opts.actionNames.forEach(name =>
         this.register(opts.actions[name], this.handleRemove)
@@ -113,7 +118,6 @@ export default class NotificationsStore extends Store {
     this.register(missionsActions.createMissions, this.handleMissionsCreate);
     this.register(reportsActions.getOdhCoverageReport, this.handleGetCoverageReport);
     this.register(reportsActions.getDtCoverageReport, this.handleGetCoverageReport);
-    this.register(repairActions.stateProgram, this.handleSaveForStateProgram); // для справочника государственных программ ремонта
 
 
     this.state = {
@@ -147,12 +151,8 @@ export default class NotificationsStore extends Store {
     global.NOTIFICATION_SYSTEM.notify('Отчет обновлен', 'info');
   }
 
-  handleSave() {
-    global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
-  }
-
-  handleSaveForStateProgram() {
-    global.NOTIFICATION_SYSTEM.notify('Запись успешно добавлена', 'success');
+  handleSave(text) {
+    global.NOTIFICATION_SYSTEM.notify(text, 'success');
   }
 
   handleRemove() {

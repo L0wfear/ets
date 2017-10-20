@@ -63,17 +63,19 @@ export default class FormWrap extends Component {
 
   inheritedComponentWillReceiveProps() {}
 
-  validate(formState, errors) {
+  validate(state, errors) {
     if (typeof this.schema === 'undefined') return errors;
 
-    const formErrors = { ...errors };
     const schema = this.schema;
+    const formState = { ...state };
 
-    schema.properties.forEach((prop) => {
-      formErrors[prop.key] = validateField(prop, formState[prop.key], formState, this.schema);
-    });
-
-    return formErrors;
+    return schema.properties.reduce((formErrors, prop) => {
+      const { key } = prop;
+      formErrors[key] = validateField(prop, formState[key], formState, this.schema);
+      return formErrors;
+    },
+      { ...errors },
+    );
   }
 
   handleFormStateChange(field, e) {

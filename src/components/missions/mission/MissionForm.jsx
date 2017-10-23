@@ -1,14 +1,11 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
 import { autobind } from 'core-decorators';
-import { Modal, Row, Col, Button, Dropdown, Glyphicon, MenuItem,
-  FormGroup, InputGroup, ControlLabel, FormControl,
-} from 'react-bootstrap';
+import { Modal, Row, Col, Button, Dropdown, Glyphicon, MenuItem } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import RouteInfo from 'components/route/RouteInfo.jsx';
 import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
 import Field from 'components/ui/Field.jsx';
-import Preloader from 'components/ui//Preloader.jsx';
 
 import EtsSelect from 'components/ui/input/EtsSelect';
 import Div from 'components/ui/Div.jsx';
@@ -54,7 +51,6 @@ export class MissionForm extends Form {
   async handleCarIdChange(v) {
     this.handleChange('car_id', v);
     this.checkNorm({ dataName: 'func_type_id', dataValue: v });
-
     if (this.props.formState.status) {
       this.handleChange('technical_operation_id', undefined);
       this.checkNorm({ dataName: 'technical_operation_id', dataValue: null });
@@ -115,7 +111,7 @@ export class MissionForm extends Form {
     const missionsActions = flux.getActions('missions');
     const isTemplate = this.props.template || false;
 
-    let { selectedRoute } = this.state;
+    let { selectedRoute, MUNICIPAL_FACILITY_OPTIONS } = this.state;
     let { technicalOperationsList, routesList, carsList } = this.props;
     let TECH_OPERATIONS = [];
 
@@ -137,6 +133,8 @@ export class MissionForm extends Form {
       TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
     } else {
       TECH_OPERATIONS = this.props.externalData.TECH_OPERATIONS;
+      routesList = this.props.externalData.routesList;
+      MUNICIPAL_FACILITY_OPTIONS = this.props.externalData.MUNICIPAL_FACILITY_OPTIONS;
     }
     await missionsActions.getMissionSources();
 
@@ -147,10 +145,13 @@ export class MissionForm extends Form {
     this.setState({
       carsList,
       TECH_OPERATIONS,
+      MUNICIPAL_FACILITY_OPTIONS,
       technicalOperationsList,
       routesList,
       selectedRoute,
     });
+    // простите
+    // нужно было сделать срочно
     setTimeout(() => {
       const {
         norm_id = false,
@@ -168,7 +169,7 @@ export class MissionForm extends Form {
         });
         this.context.flux.getActions('missions').getCleaningMunicipalFacilityList(payloadMF).then((r) => {
           const { rows = [] } = r.result;
-          const MUNICIPAL_FACILITY_OPTIONS = rows.map(({ municipal_facility_id, municipal_facility_name }) => ({ value: municipal_facility_id, label: municipal_facility_name }));
+          MUNICIPAL_FACILITY_OPTIONS = rows.map(({ municipal_facility_id, municipal_facility_name }) => ({ value: municipal_facility_id, label: municipal_facility_name }));
           this.setState({ MUNICIPAL_FACILITY_OPTIONS });
         });
       } else {
@@ -441,7 +442,7 @@ export class MissionForm extends Form {
                 type="select"
                 label="Технологическая операция"
                 error={errors.technical_operation_id}
-                disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY || isEmpty(state.car_id))}
+                disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY || isEmpty(state.car_id)) || this.props.fromFaxogrammMissionForm}
                 options={TECH_OPERATIONS}
                 value={state.technical_operation_id}
                 onChange={this.handleTechnicalOperationChange}
@@ -449,7 +450,8 @@ export class MissionForm extends Form {
               />
             </Col>
             {STRUCTURE_FIELD_VIEW && <Col md={3}>
-              <Field type="select"
+              <Field
+                type="select"
                 label="Подразделение"
                 error={errors.structure_id}
                 disabled={STRUCTURE_FIELD_READONLY || this.props.fromWaybill || (!IS_CREATING && !IS_POST_CREATING_NOT_ASSIGNED) || !IS_CREATING}
@@ -569,7 +571,7 @@ export class MissionForm extends Form {
                 error={errors.mission_source_id}
                 disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || disabledProps.mission_source_id}
                 options={MISSION_SOURCES}
-                value={state.mission_source_id }
+                value={state.mission_source_id}
                 onChange={this.handleChange.bind(this, 'mission_source_id')}
               />
               { IS_CREATING && !fromFaxogrammMissionForm && <span style={{ opacity: 0.5 }}>{'Задания на основе факсограмм необходимо создавать во вкладке "НСИ"-"Реестр факсограмм".'}</span> }

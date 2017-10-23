@@ -164,8 +164,11 @@ export class MissionForm extends Form {
       };
       if (norm_id) {
         this.context.flux.getActions('missions')
-        .getCleaningByTypeInActiveMission({ type: 'norm', norm_id }).then((ans) => {
-          this.handleChange('norm', ans.result.rows[0].norm_text);
+        .getCleaningByTypeInActiveMission({ type: 'norm_registry', norm_id }).then((ans) => {
+          this.handleChange('norm_text', ans.result.rows[0].norm_text);
+          if (this.props.fromFaxogrammMissionForm) {
+            this.changeAvailableCarInCarList(ans.result.rows.map(d => d.func_type_id));
+          }
         });
         this.context.flux.getActions('missions').getCleaningMunicipalFacilityList(payloadMF).then((r) => {
           const { rows = [] } = r.result;
@@ -176,6 +179,10 @@ export class MissionForm extends Form {
         this.checkNorm({ forsUpdate: true });
       }
     }, 100);
+  }
+  changeAvailableCarInCarList(typeCarsList) {
+    const { carsList = [] } = this.state;
+    this.setState({ carsList: carsList.filter(d => typeCarsList.includes(d.type_id)) });
   }
 
   createNewRoute() {
@@ -311,7 +318,7 @@ export class MissionForm extends Form {
     this.setState({ queryToGetNormGo: true });
 
     this.context.flux.getActions('missions')
-    .getCleaningByType({ type: 'norm', payload })
+    .getCleaningByType({ type: 'norm_registry', payload })
     .then((r) => {
       const { result: { rows = [] } } = r;
       if (!rows[0]) {

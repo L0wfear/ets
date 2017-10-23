@@ -82,6 +82,15 @@ const missionsByCarAndDateUpdateNotification = {
   autoDismiss: 0,
 };
 
+const missionFuelRateByCarUpdateNotification = {
+  title: '',
+  message: 'Для выбранной марки/модели ТС нет данных по нормам расхода топлива',
+  level: 'info',
+  dismissible: true,
+  position: 'tr',
+  autoDismiss: 0,
+};
+
 export const saveDataSuccessNotification = {
   title: '',
   message: 'Данные успешно сохранены',
@@ -102,6 +111,7 @@ export const reassignMissionSuccessNotification = {
 
 export const notifications = {
   missionCreateSuccessNotification,
+  missionFuelRateByCarUpdateNotification,
   missionsCreationSuccessNotification,
   missionsByCarAndDateUpdateNotification,
 };

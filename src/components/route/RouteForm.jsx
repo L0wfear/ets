@@ -18,10 +18,8 @@ export default class RouteForm extends Form {
     const ROUTE_TYPE_OPTIONS = [
       { value: 'mixed', label: 'Выбор из ОДХ' },
       { value: 'simple_dt', label: 'Выбор из ДТ' },
+      { value: 'points', label: 'Выбор пунктов назначения' },
     ];
-    if (!this.props.fromFaxogrammMissionForm) {
-      ROUTE_TYPE_OPTIONS.push({ value: 'points', label: 'Выбор пунктов назначения' });
-    }
 
     this.state = {
       ROUTE_TYPE_OPTIONS,
@@ -50,11 +48,9 @@ export default class RouteForm extends Form {
           }
           break;
         case 'ПН':
-          if( !this.props.fromFaxogrammMissionForm) {
-            route_type_options.push({ value: 'points', label: 'Выбор пунктов назначения' });
-            if (!routeTypeValue && routeTypeValue !== 'mixed') {
-              routeTypeValue = 'points';
-            }
+          route_type_options.push({ value: 'points', label: 'Выбор пунктов назначения' });
+          if (!routeTypeValue && routeTypeValue !== 'mixed') {
+            routeTypeValue = 'points';
           }
           break;
         case 'ДТ':
@@ -115,6 +111,12 @@ export default class RouteForm extends Form {
       technicalOperationsList = technicalOperationsList.filter(to =>
          to.objects.find(o => o.id === getObjectIdByType(formState.type))
       );
+    }
+    if (this.props.fromFaxogrammMissionForm) {
+      const {
+        route_type,
+      } = this.props.externalData;
+      this.handleChange('type', route_type);
     }
 
     this.setState({ technicalOperationsList });
@@ -202,7 +204,7 @@ export default class RouteForm extends Form {
                   options={ROUTE_TYPE_OPTIONS}
                   value={state.type !== 'mixed' ? state.type : 'mixed'}
                   clearable={false}
-                  disabled={this.state.routeTypeDisabled || state.copy}
+                  disabled={this.state.routeTypeDisabled || state.copy || this.props.fromFaxogrammMissionForm}
                   onChange={this.handleTypeChange}
                 />
               </Col>

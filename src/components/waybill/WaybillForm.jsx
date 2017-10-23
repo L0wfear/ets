@@ -1,7 +1,7 @@
 import React from 'react';
 import { autobind } from 'core-decorators';
 import connectToStores from 'flummox/connect';
-import { Modal, FormControl, Row, Col, Button, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
+import { Modal, Row, Col, Button } from 'react-bootstrap';
 import _ from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
@@ -31,14 +31,7 @@ import ReconnectingWebSocket from '../../vendor/ReconnectingWebsocket.js';
 const Div = enhanceWithPermissions(DivForEnhance);
 
 const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
-const DICT_STATUS_GLONASS = {
-  true: 'Исправен',
-  false: 'Датчик ГЛОНАСС не исправен',
-};
-const DICT_ERRORS_GLONASS = {
-  true: '',
-  false: 'Выполненные работы не будут учтены в системе',
-};
+
 @autobind
 class WaybillForm extends Form {
 
@@ -56,6 +49,7 @@ class WaybillForm extends Form {
       canEditIfClose: null,
       loadingFields: {},
       carsTrackState: {},
+      fuelRateAllList: [],
     };
 
     this.employeeFIOLabelFunction = () => {};
@@ -132,6 +126,8 @@ class WaybillForm extends Form {
       } catch (e) {
         global.NOTIFICATION_SYSTEM.notify('Ошибка подключения к потоку', 'error');
       }
+
+      flux.getActions('fuelRates').getFuelRates().then(({ result = [] } ) => this.setState({ fuelRateAllList: result.map(d => d.car_model_id) }));
     }
 
     this.employeeFIOLabelFunction = employeeFIOLabelFunction(flux);
@@ -306,9 +302,15 @@ class WaybillForm extends Form {
       gov_number: selectedCar.gov_number,
     };
     if (!isEmpty(car_id)) {
+
       const [state = {}] = [this.props.formState];
-      const { carsTrackState = {} } = this.state;
+      const { carsTrackState = {}, fuelRateAllList = [] } = this.state;
       const { timestamp = '' } = carsTrackState[car_id] || {};
+
+      if (!fuelRateAllList.includes(selectedCar.model_id)) {
+        global.NOTIFICATION_SYSTEM.notify(notifications.missionFuelRateByCarUpdateNotification);
+      }
+
       const lastCarUsedWaybillObject = await flux.getActions('waybills').getLastClosedWaybill(car_id);
       const lastCarUsedWaybill = lastCarUsedWaybillObject.result;
       const additionalFields = this.getFieldsToChangeBasedOnLastWaybill(lastCarUsedWaybill);

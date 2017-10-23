@@ -155,25 +155,33 @@ class FaxogrammDirectory extends ElementsList {
 
   handleClickOnCM = () => {
     const { id } = this.state.selectedElement;
+    const {
+      id: to_id,
+      tk_operation_name = 'Значение не определено',
+      route_type = '',
+      municipal_facility_id,
+      element = 'Значение не определено',
+    } = this.state.fOperationSelectedElement;
 
     const TECH_OPERATIONS = [
       {
-        value: this.state.fInfoselectedElement.id,
-        label: this.state.fInfoselectedElement.tk_operation_name,
+        value: to_id,
+        label: tk_operation_name,
       },
     ];
     const MUNICIPAL_FACILITY_OPTIONS = [
       {
-        value: this.state.fInfoselectedElement.municipal_facility_id,
-        label: this.state.fInfoselectedElement.element,
+        value: municipal_facility_id,
+        label: element,
       },
     ];
     const externalData = {
       faxogramm_id: id,
       TECH_OPERATIONS,
       MUNICIPAL_FACILITY_OPTIONS,
-      to_data: this.state.fInfoselectedElement,
+      to_data: this.state.fOperationSelectedElement,
       routesList: [],
+      route_type,
     };
 
     this.setState({
@@ -182,19 +190,27 @@ class FaxogrammDirectory extends ElementsList {
       externalData,
     });
     this.context.flux.getActions('routes')
-    .getRoutesByTechnicalOperation(this.state.fInfoselectedElement.id)
-      .then(routesList => this.setState({ externalData: { ...externalData, routesList } }))
+    .getRoutesByTechnicalOperation(to_id)
+      .then(routesList =>
+        this.setState(
+          {
+            externalData: {
+              ...externalData,
+              routesList: routesList.filter(d => route_type ? (d.object_type === route_type) : true),
+            },
+          }
+        ))
       .catch(e => console.error(e));
   }
   onHideCM = () => this.setState({ showFormCreateMission: false });
   fInfoRowSelected = ({ props }) => {
-    this.setState({ fInfoselectedElement: props.data });
+    this.setState({ fOperationSelectedElement: props.data });
   }
   faxogrammSelectElement = (dataFromGriddle) => {
     const { id: newId } = dataFromGriddle.props.data;
     const { id: oldId } = this.state.selectedElement || {};
     if (oldId !== newId) {
-      this.setState({ fInfoselectedElement: null });
+      this.setState({ fOperationSelectedElement: null });
     }
     this.selectElement(dataFromGriddle);
   }
@@ -207,7 +223,7 @@ class FaxogrammDirectory extends ElementsList {
       showFormCreateMission = false,
       externalData = {},
     } = this.state;
-    const { num_exec = 0 } = this.state.fInfoselectedElement || {};
+    const { num_exec = 0 } = this.state.fOperationSelectedElement || {};
 
     return (
       <div className="ets-page-wrap" ref={node => (this.node = node)}>
@@ -237,7 +253,7 @@ class FaxogrammDirectory extends ElementsList {
               <FaxogrammOperationInfoTable
                 noHeader
                 preventNoDataMessage
-                selected={this.state.fInfoselectedElement}
+                selected={this.state.fOperationSelectedElement}
                 selectField={'order_operation_id'}
                 onRowSelected={this.fInfoRowSelected}
                 data={faxogramm.technical_operations || []}

@@ -86,6 +86,9 @@ class RouteFormWrap extends FormWrap {
 
   render() {
     const props = this.props;
+    const {
+      externalDataFromfaxogramm = {},
+    } = this.props;
 
     return props.showForm ?
       <RouteForm
@@ -98,6 +101,7 @@ class RouteFormWrap extends FormWrap {
         fromMission={this.props.fromMission}
         structureId={this.props.structureId}
         fromFaxogrammMissionForm={this.props.fromFaxogrammMissionForm}
+        externalData={externalDataFromfaxogramm}
         {...this.state}
       />
       : null;

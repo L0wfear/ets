@@ -363,6 +363,7 @@ export class MissionForm extends Form {
       missionSourcesList = [],
       disabledProps = {},
       fromFaxogrammMissionForm = false,
+      externalData = {},
     } = this.props;
     const {
       MUNICIPAL_FACILITY_OPTIONS = [],
@@ -633,6 +634,7 @@ export class MissionForm extends Form {
           showForm={this.state.showRouteForm}
           fromMission
           fromFaxogrammMissionForm={this.props.fromFaxogrammMissionForm}
+          externalDataFromfaxogramm={externalData}
           structureId={state.structure_id}
         />
       </Modal>

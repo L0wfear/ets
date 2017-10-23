@@ -51,7 +51,7 @@ class FaxogrammDirectory extends ElementsList {
         this.setState({
           selectedElement: result[0],
           showForm: true,
-        })
+        });
       });
     }
   }
@@ -183,6 +183,14 @@ class FaxogrammDirectory extends ElementsList {
   fInfoRowSelected = ({ props }) => {
     this.setState({ fInfoselectedElement: props.data });
   }
+  faxogrammSelectElement = (dataFromGriddle) => {
+    const { id: newId } = dataFromGriddle.props.data;
+    const { id: oldId } = this.state.selectedElement || {};
+    if (oldId !== newId) {
+      this.setState({ fInfoselectedElement: null });
+    }
+    this.selectElement(dataFromGriddle);
+  }
 
   render() {
     const { faxogrammsList = [] } = this.props;
@@ -198,7 +206,7 @@ class FaxogrammDirectory extends ElementsList {
         <FaxogrammsDatepicker handleChange={this.handleChange} {...this.state} />
         <FaxogrammsTable
           data={faxogrammsList}
-          onRowSelected={this.selectElement}
+          onRowSelected={this.faxogrammSelectElement}
           selected={this.state.selectedElement}
           selectField={'id'}
           {...this.props}

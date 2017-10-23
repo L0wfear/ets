@@ -21,7 +21,7 @@ export default class StateProgramList extends CheckableElementsList {
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
-    
+
     flux.getActions('repair').getRepairListByType('stateProgram');
     flux.getActions('repair').getRepairListByType('stateProgramStatus');
   }

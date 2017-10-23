@@ -2,6 +2,9 @@
   & .griddle .griddle-container{
     height: auto;
   }
+  & .griddle-body table tbody tr.selected-row > td{
+    background-color: $colorHalfGreen !important;
+  }
 }
 
 .width-fuel-report-small {

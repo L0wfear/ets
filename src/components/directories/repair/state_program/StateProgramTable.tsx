@@ -14,7 +14,7 @@ export function tableMeta({
     cols: [
       {
         name: 'name',
-        displayName: 'Наименование гос. программы',
+        displayName: 'Наименование государственной программы',
         type: 'select',
         filter: {
           type: 'multiselect',

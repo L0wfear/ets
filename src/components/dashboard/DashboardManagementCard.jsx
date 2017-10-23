@@ -59,7 +59,7 @@ export default class MasterManagementCard extends React.Component {
           </Div>
           <Div permissions={['faxogramm.list']} className="dashboard-btn-wrapper container-button-create-cz">
             <Button bsSize="small" onClick={this.props.goToFaxogramm}>
-              Создать централизованное задание
+              Исполнение централизованного задания
             </Button>
           </Div>
           <Div permissions={['mission.create']} className="dashboard-btn-wrapper">

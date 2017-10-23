@@ -290,7 +290,7 @@ const routerAndPermission = {
       planeWorkOnContentObjects: {
         children: {
           contractor: {
-            path: '/repair-company',
+            path: '/contractor',
             entyity: 'repair_contractor',
             noDotList: false,
             permissions: {

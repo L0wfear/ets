@@ -155,6 +155,7 @@ class FaxogrammDirectory extends ElementsList {
 
   handleClickOnCM = () => {
     const { id } = this.state.selectedElement;
+
     const TECH_OPERATIONS = [
       {
         value: this.state.fInfoselectedElement.id,
@@ -167,17 +168,23 @@ class FaxogrammDirectory extends ElementsList {
         label: this.state.fInfoselectedElement.element,
       },
     ];
+    const externalData = {
+      faxogramm_id: id,
+      TECH_OPERATIONS,
+      MUNICIPAL_FACILITY_OPTIONS,
+      to_data: this.state.fInfoselectedElement,
+      routesList: [],
+    };
 
     this.setState({
       ...this.state,
       showFormCreateMission: true,
-      externalData: {
-        faxogramm_id: id,
-        TECH_OPERATIONS,
-        MUNICIPAL_FACILITY_OPTIONS,
-        to_data: this.state.fInfoselectedElement,
-      },
+      externalData,
     });
+    this.context.flux.getActions('routes')
+    .getRoutesByTechnicalOperation(this.state.fInfoselectedElement.id)
+      .then(routesList => this.setState({ externalData: { ...externalData, routesList } }))
+      .catch(e => console.error(e));
   }
   onHideCM = () => this.setState({ showFormCreateMission: false });
   fInfoRowSelected = ({ props }) => {
@@ -200,7 +207,8 @@ class FaxogrammDirectory extends ElementsList {
       showFormCreateMission = false,
       externalData = {},
     } = this.state;
-    const { num_exec = 0 } = this.state.fInfoselectedElement || {}
+    const { num_exec = 0 } = this.state.fInfoselectedElement || {};
+
     return (
       <div className="ets-page-wrap" ref={node => (this.node = node)}>
         <FaxogrammsDatepicker handleChange={this.handleChange} {...this.state} />

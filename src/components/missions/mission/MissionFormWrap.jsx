@@ -11,13 +11,10 @@ import MissionForm from './MissionForm.jsx';
 
 export default class MissionFormWrap extends FormWrap {
 
-  constructor(props, context) {
+  constructor(props) {
     super(props);
 
     this.schema = missionSchema;
-    /* DITETS-2152 fixed callBack on createMission */
-    // If all good and u see it -> remove
-    // this.createAction = formState => context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill && this.props.refreshTableList);
   }
   createAction = (formState) => {
     return this.context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill || this.props.fromFaxogrammMissionForm).then(() => {
@@ -42,7 +39,7 @@ export default class MissionFormWrap extends FormWrap {
         mission.municipal_facility_id = props.externalData.to_data.municipal_facility_id;
         mission.technical_operation_id = props.externalData.to_data.id;
         mission.order_operation_id = props.externalData.to_data.order_operation_id;
-        
+
         mission.faxogramm_id = props.externalData.faxogramm_id;
         this.setState({
           fixed_date_start: props.externalData.date_start,
@@ -113,7 +110,11 @@ export default class MissionFormWrap extends FormWrap {
       data.image = routeImageBase64Data;
 
       flux.getActions('missions').printMission(data).then(({ blob }) => {
-        print_form_type === 1 ? saveData(blob, `Задание №${f.number}.pdf`) : printData(blob);
+        if (print_form_type === 1) {
+          saveData(blob, `Задание №${f.number}.pdf`);
+        } else {
+          printData(blob);
+        }
       });
     });
     global.map.render();

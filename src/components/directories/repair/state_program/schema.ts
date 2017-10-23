@@ -4,7 +4,7 @@ export const formValidationSchema: IValidationSchema = {
   properties: [
     {
       key: 'name',
-      title: 'Наименование гос. программы',
+      title: 'Наименование государственной программы',
       type: 'string',
       required: true,
     },

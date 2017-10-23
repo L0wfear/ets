@@ -154,7 +154,11 @@ class FaxogrammDirectory extends ElementsList {
   }
 
   handleClickOnCM = () => {
-    const { id } = this.state.selectedElement;
+    const {
+      id,
+      order_date,
+      order_date_to,
+    } = this.state.selectedElement;
     const {
       id: to_id,
       tk_operation_name = 'Значение не определено',
@@ -180,6 +184,10 @@ class FaxogrammDirectory extends ElementsList {
       TECH_OPERATIONS,
       MUNICIPAL_FACILITY_OPTIONS,
       to_data: this.state.fOperationSelectedElement,
+      faxogramm_date: {
+        order_date,
+        order_date_to,
+      },
       routesList: [],
       route_type,
     };

@@ -17,10 +17,11 @@ export default class MissionFormWrap extends FormWrap {
     this.schema = missionSchema;
   }
   createAction = (formState) => {
-    return this.context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill || this.props.fromFaxogrammMissionForm).then(() => {
+    return this.context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill || this.props.fromFaxogrammMissionForm).then((r) => {
       if (!this.props.fromWaybill && !this.props.fromFaxogrammMissionForm) {
         this.props.refreshTableList();
       }
+      return r;
     });
   }
 

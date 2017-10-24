@@ -21,20 +21,16 @@ const getTableMeta = (props) => {
   const tableMeta = {
     cols: [
       {
-        name: 'work_kind_name',
-        displayName: 'Вид работ',
-        type: 'number',
-        /*
-        filter: {
-          type: 'advanced-number',
-        },
-        */
-        filter: false,
-        display: false,
-      },
-      {
         name: 'name',
         displayName: 'Наименование',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
+      },
+      {
+        name: 'municipal_facility_name',
+        displayName: 'Элемент',
         type: 'string',
         filter: {
           type: 'multiselect',
@@ -48,6 +44,30 @@ const getTableMeta = (props) => {
           type: 'multiselect',
         },
         cssClassName: 'width80',
+      },
+      {
+        name: 'work_type_name',
+        displayName: 'Способ уборки',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
+      },
+      {
+        name: 'conditions',
+        displayName: 'Условия',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
+      },
+      {
+        name: 'norm_period',
+        displayName: 'Число операций в сутки (норматив)',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
       },
       {
         name: 'max_speed',

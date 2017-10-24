@@ -1,10 +1,14 @@
 import { Actions } from 'flummox';
 import _ from 'lodash';
-import { TechnicalOperationService, TechnicalOperationObjectsService, TechnicalOperationTypesService } from 'api/Services';
+import { TechnicalOperationService, TechnicalOperationObjectsService, TechnicalOperationTypesService, TechnicalOperationRegistryService } from 'api/Services';
 import { isEmpty } from 'utils/functions';
 
 function getTechnicalOperations(payload = {}) {
   return TechnicalOperationService.get(payload).then(r => ({ result: r.result.rows }));
+}
+
+function getTechnicalOperationsRegistry(payload = {}) {
+  return TechnicalOperationRegistryService.get(payload).then(r => ({ result: r.result.rows }));
 }
 
 export default class TechnicalOperationsActions extends Actions {
@@ -22,6 +26,12 @@ export default class TechnicalOperationsActions extends Actions {
       actual_seasons: all ? 0 : 1,
     };
     return getTechnicalOperations(payload);
+  }
+  getTechnicalOperationsRegistry(all) {
+    const payload = {
+      actual_seasons: !!all,
+    };
+    return getTechnicalOperationsRegistry(payload);
   }
 
   async getTechnicalOperationsByCarId(car_id) {

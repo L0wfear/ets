@@ -17,10 +17,11 @@ export default class MissionFormWrap extends FormWrap {
     this.schema = missionSchema;
   }
   createAction = (formState) => {
-    return this.context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill || this.props.fromFaxogrammMissionForm).then(() => {
+    return this.context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill || this.props.fromFaxogrammMissionForm).then((r) => {
       if (!this.props.fromWaybill && !this.props.fromFaxogrammMissionForm) {
         this.props.refreshTableList();
       }
+      return r;
     });
   }
 
@@ -86,14 +87,18 @@ export default class MissionFormWrap extends FormWrap {
       }
     }
     if (this.props.fromFaxogrammMissionForm && this.props.externalData.to_data) {
-      const date_start = this.props.externalData.to_data.date_from || this.props.externalData.order_date;
       const date_end = this.props.externalData.to_data.date_to || this.props.externalData.order_date_to;
-      if (moment(formState.date_start).toDate().getTime() < moment(date_start).toDate().getTime()) {
-        formErrors.date_start = 'Дата не должна выходить за пределы технической операции';
-      }
+      const { num_exec = 0 } = this.props.externalData.to_data;
 
       if (moment(formState.date_end).toDate().getTime() > moment(date_end).toDate().getTime()) {
-        formErrors.date_end = 'Дата не должна выходить за пределы технической операции';
+        formErrors.date_end = 'Дата не должна выходить за пределы действия поручения';
+      }
+
+      if (formState.passes_count > num_exec) {
+        formErrors.passes_count = '"Кол-во проходов" не должно превышать значение "Кол-во проходов" из поручения';
+      }
+      if (formState.passes_count <= 0) {
+        formErrors.passes_count = '"Кол-во проходов" должно быть больше нуля';
       }
     }
 

@@ -5,7 +5,6 @@ import Div from 'components/ui/Div.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import { getWarningNotification } from 'utils/notifications';
 import {
-  hasOdometer,
   saveData,
 } from 'utils/functions';
 import { waybillSchema, waybillClosingSchema } from 'models/WaybillModel.js';
@@ -129,6 +128,23 @@ export default class WaybillFormWrap extends FormWrap {
     }
   }
 
+  validateWaybillDate = ({ from_handlePrint, from_handleClose }) => {
+    const { formState: { plan_departure_date, fact_departure_date } } = this.state;
+
+    if (from_handlePrint) {
+      if (+(new Date()) - +(new Date(plan_departure_date)) > 5 * 60 * 1000) {
+        return false;
+      }
+    }
+    if (from_handleClose) {
+      if (+(new Date()) - +(new Date(fact_departure_date)) > 5 * 60 * 1000) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   handleFieldsChange(formState) {
     let { formErrors } = this.state;
     const newState = {};
@@ -211,13 +227,6 @@ export default class WaybillFormWrap extends FormWrap {
       formState = calculateWaybillMetersDiff(formState, field, value);
     });
 
-    /*
-    if (hasOdometer(fields.gov_number)) {
-      delete formState.motohours_start;
-    } else {
-      delete formState.odometr_start;
-    }
-    */
     this.handleFieldsChange(formState);
   }
 
@@ -228,7 +237,11 @@ export default class WaybillFormWrap extends FormWrap {
    * @param {number 1|2} print_form_type - Идентификатор печатной формы
    * @return {undefined}
    */
-  handlePrint(printonly, print_form_type ) {
+  handlePrint(printonly, print_form_type) {
+    if (!this.validateWaybillDate({ from_handlePrint: true })) {
+      global.NOTIFICATION_SYSTEM.notify(getWarningNotification('"Выезд план." не может быть меньше текущего времени минус 5 минут'));
+      return;
+    }
     const { flux } = this.context;
     const { formState } = this.state;
 
@@ -241,7 +254,11 @@ export default class WaybillFormWrap extends FormWrap {
           saveData(blob, fileName);
         });
     };
-    printonly ? callback() : this.handleFormSubmit(formState, callback);
+    if (printonly) {
+      callback();
+    } else {
+      this.handleFormSubmit(formState, callback);
+    }
   }
 
   /**
@@ -334,6 +351,10 @@ export default class WaybillFormWrap extends FormWrap {
     const prevStatus = formState.status;
     if (!taxesControl) {
       global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Необходимо заполнить нормы для расчета топлива!'));
+      return;
+    }
+    if (!this.validateWaybillDate({ from_handleClose: true })) {
+      global.NOTIFICATION_SYSTEM.notify(getWarningNotification('"Выезд факт." не может быть меньше текущего времени минус 5 минут'));
       return;
     }
     confirmDialog({

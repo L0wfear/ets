@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Glyphicon, Dropdown, MenuItem as BootstrapMenuItem, Input } from 'react-bootstrap';
+import { Glyphicon, Dropdown, MenuItem as BootstrapMenuItem, FormControl } from 'react-bootstrap';
 import { autobind } from 'core-decorators';
 import { connectToStores, FluxContext, bindable } from 'utils/decorators';
 import { getNextDay859am, getToday9am, getFormattedDateTime } from 'utils/dates';
@@ -91,8 +91,13 @@ export default class DtCoverageReport extends Component {
         <DtCoverageReportTable data={dtCoverageReport}>
           <div className="daily-cleaning-report-period">
             Период формирования:
-            <Input type="text" readOnly value={getFormattedDateTime(date_start)} /> —
-            <Input type="text" readOnly value={getFormattedDateTime(date_end)} />
+            <div className="form-group">
+              <FormControl type="text" value={getFormattedDateTime(date_start)} readOnly />
+            </div>
+            <span> — </span>
+            <div className="form-group">
+              <FormControl type="text" value={getFormattedDateTime(date_end)} readOnly />
+            </div>
           </div>
           <Dropdown id="dropdown-print" pullRight>
             <Dropdown.Toggle noCaret bsSize="small">

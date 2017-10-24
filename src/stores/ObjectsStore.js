@@ -56,6 +56,7 @@ export default class ObjectsStore extends Store {
     this.register(companyStructreActions.deleteCompanyElement, this.handleGetCompanyStructureAfterCUD);
 
     this.register(technicalOperationsActions.getTechnicalOperations, this.handleGetTechOperations);
+    this.register(technicalOperationsActions.getTechnicalOperationsRegistry, this.handleGetTechOperationsRegistry);
     this.register(technicalOperationsActions.updateTechnicalOperation, this.handleGetTechOperations);
     this.register(technicalOperationsActions.getTechnicalOperationsObjects, this.handleGetTechnicalOperationsObjects);
     this.register(technicalOperationsActions.getTechnicalOperationsTypes, this.handleGetTechnicalOperationsTypes);
@@ -72,6 +73,7 @@ export default class ObjectsStore extends Store {
       specialModelsList: [],
       fuelTypes: [],
       technicalOperationsList: [],
+      technicalOperationsRegistryList: [],
       workKindsList: [],
       faxogrammsList: [],
       technicalOperationsObjectsList: [],
@@ -186,6 +188,9 @@ export default class ObjectsStore extends Store {
 
   handleGetTechOperations(techOperations) {
     this.setState({ technicalOperationsList: techOperations.result });
+  }
+  handleGetTechOperationsRegistry(techOperations) {
+    this.setState({ technicalOperationsRegistryList: techOperations.result });
   }
 
   handleGetWorkKinds({ result: { rows = [] } }) {

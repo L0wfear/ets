@@ -45,6 +45,7 @@ export const FuelConsumptionRateService = ETS_API_FACTORY.createApiServiceAdapte
 export const FuelOperationsService = ETS_API_FACTORY.createApiServiceAdapter('fuel_operations', {});
 export const WorkKindsService = ETS_API_FACTORY.createApiServiceAdapter('work_kind', {});
 export const TechnicalOperationService = ETS_API_FACTORY.createApiServiceAdapter('technical_operation', {});
+export const TechnicalOperationRegistryService = ETS_API_FACTORY.createApiServiceAdapter('technical_operation_registry', {});
 export const AuthService = ETS_API_FACTORY.createApiServiceAdapter('auth', {});
 export const AuthCheckService = ETS_API_FACTORY.createApiServiceAdapter('auth_check', {});
 export const TechnicalOperationObjectsService = ETS_API_FACTORY.createApiServiceAdapter('technical_operation_objects', {});

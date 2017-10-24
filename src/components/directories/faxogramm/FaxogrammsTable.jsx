@@ -2,17 +2,17 @@ import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 
-const getTableMeta = (props) => {
+const getTableMeta = () => {
   const tableMeta = {
     cols: [
       {
         name: 'order_number',
         displayName: 'Номер',
-        type: 'number',
+        type: 'string',
         cssClassName: 'width120',
         filter: {
-          type: 'advanced-number',
-        }
+          type: 'multiselect',
+        },
       },
       {
         name: 'create_date',

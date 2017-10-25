@@ -29,11 +29,24 @@ export default class MissionRejectForm extends Component {
       car_id: null,
       date_start: null,
       date_end: null,
+      norm_type_id: '',
     };
   }
 
-  componentWillMount() {
-    this.context.flux.getActions('objects').getCars();
+  componentDidMount() {
+    const { flux } = this.context;
+    const { norm_id } = this.props.mission;
+    console.log('mission norm_id', norm_id);
+    flux.getActions('objects').getCars();
+
+    flux.getActions('missions')
+      .getCleaningByTypeInActiveMission({ type: 'norm_registry', norm_id }).then(({ result: { rows } }) => {
+        const { func_type_id: norm_type_id } = (rows[0] || {});
+        console.log('norm func_type_id', norm_type_id);
+
+        this.setState({ norm_type_id });
+      })
+      .catch(() => this.setState({ norm_type_id: '' }));
   }
 
   componentWillReceiveProps(props) {
@@ -149,8 +162,22 @@ export default class MissionRejectForm extends Component {
   render() {
     const { state, props } = this;
     const errors = {};
+    const { norm_type_id } = state;
     if (!state.comment) errors.comment = 'Поле должно быть обязательно заполнено';
-    const CARS = (props.carsList && props.mission) ? props.carsList.map(e => ({ value: e.asuods_id, label: e.gov_number })).filter(e => e.label !== props.mission.car_gov_number) : [];
+
+    let CARS = [];
+
+    if (props.carsList && props.mission) {
+      const { mission: car_gov_number } = props;
+
+      CARS = props.carsList.reduce((carOptions, { asuods_id, gov_number, type_id: car_type_id }) => {
+        if ((asuods_id !== car_gov_number) && (car_type_id === norm_type_id)) {
+          carOptions.push({ value: asuods_id, label: gov_number });
+        }
+        return carOptions;
+      }, []);
+    }
+
     const title = props.mission ? `Задание, ТС: ${props.mission.car_gov_number}` : '';
     const missions = this.state.data ? this.state.data.missions : null;
     const datePickers = missions && missions.map((mission, i) =>

@@ -232,11 +232,13 @@ export default class MissionsJournal extends CheckableElementsList {
           refreshTableList={this.refreshList}
           {...this.props}
         />
-        <MissionRejectForm
-          show={this.state.showMissionRejectForm}
-          onReject={this.onReject}
-          mission={this.state.selectedElement}
-        />
+        {this.state.showMissionRejectForm &&
+          <MissionRejectForm
+            show={this.state.showMissionRejectForm}
+            onReject={this.onReject}
+            mission={this.state.selectedElement}
+          />
+        }
         <MissionInfoFormWrap
           onFormHide={() => this.setState({ showMissionInfoForm: false })}
           showForm={this.state.showMissionInfoForm}

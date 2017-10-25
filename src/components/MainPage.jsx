@@ -3,14 +3,12 @@ import { Link } from 'react-router';
 import {
   Col,
   Navbar, Nav, Glyphicon,
-  Badge,
   NavItem as BootstrapNavItem,
   NavDropdown as BootstrapNavDropdown,
   MenuItem as BootstrapMenuItem,
 } from 'react-bootstrap';
 
 import config from 'config';
-import { autobind } from 'core-decorators';
 import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
 import ModalTP from 'components/modalTP/ModalTP.tsx';
 import { FluxContext, HistoryContext } from 'utils/decorators';
@@ -77,8 +75,7 @@ export default class MainPage extends React.Component {
     });
   }
 
-  @autobind
-  logout() {
+  logout = () => {
     const { flux, history } = this.context;
     flux.getActions('session').logout().then(() => {
       history.pushState(null, '/login');

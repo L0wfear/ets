@@ -11,8 +11,19 @@
 @import './version-notifications.scss';
 @import url('https://fonts.googleapis.com/css?family=Roboto:900,700,500,400');
 
+html, body {
+  height: 100%;
+}
+.app {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 body {
   color: #000;
+}
+.app-content {
+  justify-self: flex-start;
 }
 
 // NOTE Почему-то численное значение, переопределяемое в бутстрапе не делает текст жирным в некоторых браузерах.
@@ -1553,23 +1564,8 @@ body.application {
 /** APP NAVIGATION */
 
 .app-navigation {
-  //position:relative;
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
   z-index:1030;
-  //.navbar {
-  //  border-bottom:2px solid #ccc;
-  //}
-}
-
-body {
-  padding-top: 84px; // for fixed .app-navigation
-}
-
-.app-content {
-  margin-top: -21px;
+  width: 100%;
 }
 
 /** ETS TABLE */

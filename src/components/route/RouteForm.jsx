@@ -112,12 +112,6 @@ export default class RouteForm extends Form {
          to.objects.find(o => o.id === getObjectIdByType(formState.type))
       );
     }
-    if (this.props.fromFaxogrammMissionForm) {
-      const {
-        route_type,
-      } = this.props.externalData;
-      this.handleChange('type', route_type);
-    }
 
     this.setState({ technicalOperationsList });
   }

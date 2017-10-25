@@ -597,6 +597,7 @@ export class MissionForm extends Form {
                 type="string"
                 label="Комментарий"
                 value={state.comment}
+                disabled={state.status === 'fail' || state.status === 'complete'}
                 onChange={this.handleChange.bind(this, 'comment')}
                 error={errors.comment}
               />

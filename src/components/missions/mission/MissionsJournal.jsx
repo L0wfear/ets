@@ -258,7 +258,7 @@ export default class MissionsJournal extends CheckableElementsList {
     return (
       <div className="container-button-create-cz">
         <Button bsSize="small" bsStyle="success" onClick={this.gotoFaxogramm} permissions={['faxogramm.list']} disabled={false}>
-          <Glyphicon glyph="plus" /> Создать централизованное задание
+          <Glyphicon glyph="plus" /> Исполнение централизованного задания
         </Button>
       </div>
     );

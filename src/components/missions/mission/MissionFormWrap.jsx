@@ -33,8 +33,8 @@ export default class MissionFormWrap extends FormWrap {
       }
       if (props.fromFaxogrammMissionForm) {
         mission.mission_source_id = 1;
-        mission.date_start = props.externalData.to_data.date_from || this.props.externalData.order_date;
-        mission.date_end = props.externalData.to_data.date_to || this.props.externalData.order_date_to;
+        mission.date_start = props.externalData.to_data.date_from || this.props.externalData.faxogramm_date.order_date;
+        mission.date_end = props.externalData.to_data.date_to || this.props.externalData.faxogramm_date.order_date_to;
         mission.passes_count = props.externalData.to_data.num_exec;
         mission.norm_id = props.externalData.to_data.norm_id;
         mission.municipal_facility_id = props.externalData.to_data.municipal_facility_id;
@@ -87,7 +87,7 @@ export default class MissionFormWrap extends FormWrap {
       }
     }
     if (this.props.fromFaxogrammMissionForm && this.props.externalData.to_data) {
-      const date_end = this.props.externalData.to_data.date_to || this.props.externalData.order_date_to;
+      const date_end = this.props.externalData.to_data.date_to || this.props.externalData.faxogramm_date.order_date_to;
       const { num_exec = 0 } = this.props.externalData.to_data;
 
       if (moment(formState.date_end).toDate().getTime() > moment(date_end).toDate().getTime()) {

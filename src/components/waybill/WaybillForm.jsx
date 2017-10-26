@@ -22,11 +22,10 @@ import { notifications } from 'utils/notifications';
 import Form from '../compositions/Form.jsx';
 import Taxes from './Taxes.jsx';
 import WaybillFooter from './form/WaybillFooter';
+import BsnoStatus from './form/BsnoStatus';
 import MissionFormWrap from '../missions/mission/MissionFormWrap.jsx';
 import { getDefaultMission } from '../../stores/MissionsStore.js';
 import enhanceWithPermissions from '../util/RequirePermissions.jsx';
-import config from '../../config';
-import ReconnectingWebSocket from '../../vendor/ReconnectingWebsocket.js';
 
 const Div = enhanceWithPermissions(DivForEnhance);
 
@@ -84,29 +83,6 @@ class WaybillForm extends Form {
       }
     }
   }
-  handleUpdatePoints = (data) => {
-    const carsTrackState = {
-      ...this.state.carsTrackState,
-      ...Object.values(data).reduce((newObj, value) => Object.assign(newObj, ({ [value.id]: value.timestamp })), {}),
-    };
-    const [state = {}] = [this.props.formState];
-
-    const IS_CREATING = !state.status;
-    const IS_DRAFT = state.status && state.status === 'draft';
-    if (IS_CREATING || IS_DRAFT) {
-      const { car_id = false, is_bnso_broken: is_bnso_broken_old = '' } = state;
-
-      if (car_id){
-        const { timestamp = '' } = carsTrackState[car_id] || {};
-        const is_bnso_broken = ((+(new Date()) / 1000) - timestamp) > 60 * 60;
-        if (is_bnso_broken !== is_bnso_broken_old) {
-          this.handleChange('is_bnso_broken', (((+(new Date()) / 1000) - timestamp) > 60 * 60));
-        }
-      }
-    }
-
-    this.setState({ carsTrackState });
-  }
 
   async componentDidMount() {
     const { formState } = this.props;
@@ -116,18 +92,7 @@ class WaybillForm extends Form {
     const IS_DRAFT = formState.status && formState.status === 'draft';
 
     if (IS_CREATING || IS_DRAFT) {
-      const token = this.context.flux.getStore('session').getSession();
-      const wsUrl = `${config.ws}?token=${token}`;
-      this.ws = new ReconnectingWebSocket(wsUrl, null);
-      try {
-        this.ws.onmessage = ({ data }) => {
-          this.handleUpdatePoints(JSON.parse(data));
-        };
-      } catch (e) {
-        global.NOTIFICATION_SYSTEM.notify('Ошибка подключения к потоку', 'error');
-      }
-
-      flux.getActions('fuelRates').getFuelRates().then(({ result = [] } ) => this.setState({ fuelRateAllList: result.map(d => d.car_model_id) }));
+      flux.getActions('fuelRates').getFuelRates().then(({ result = [] }) => this.setState({ fuelRateAllList: result.map(d => d.car_model_id) }));
     }
 
     this.employeeFIOLabelFunction = employeeFIOLabelFunction(flux);
@@ -726,12 +691,12 @@ class WaybillForm extends Form {
               />
             </Col>
             <Col md={12}>
-              <Field
-                label="Исправность датчика ГЛОНАСС"
-                value={typeof state.is_bnso_broken === 'boolean' ? (!state.is_bnso_broken ? 'Исправен' : 'Датчик ГЛОНАСС не исправен') : ''}
-                error={typeof state.is_bnso_broken === 'boolean' && state.is_bnso_broken ? 'Выполненные работы не будут учтены в системе' : ''}
-                disabled
-              />              
+              <BsnoStatus
+                okStatus={IS_CREATING || IS_DRAFT}
+                is_bnso_broken={state.is_bnso_broken}
+                car_id={state.car_id}
+                handleChange={this.handleChange}
+              />
             </Col>
             <Col md={(IS_CREATING || IS_DRAFT) ? 12 : 6}>
               <Field

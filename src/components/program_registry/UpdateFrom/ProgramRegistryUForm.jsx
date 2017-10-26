@@ -17,7 +17,7 @@ import { FileField } from 'components/ui/input/fields';
 
 import Form from 'components/compositions/Form.jsx';
 
-import MakeVersionFrom from './WorkForm/MakeVersionFrom.tsx';
+import MakeVersionFrom from './MakeVersionFrom.tsx';
 
 const TextMakeVersion = (
   <Row>

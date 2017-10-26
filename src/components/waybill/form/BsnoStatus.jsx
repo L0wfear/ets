@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Raven from 'raven-js';
 
 import { FluxContext } from 'utils/decorators';
 import Field from 'components/ui/Field.jsx';
@@ -32,6 +33,15 @@ class BsnoStaus extends React.Component {
         ws.onmessage = ({ data }) => {
           this.handleUpdatePoints(JSON.parse(data));
         };
+        ws.onclose = (event) => {
+          if (event.code === 1006) {
+            Raven.captureException(new Error('1006: A connection was closed abnormally (that is, with no close frame being sent). A low level WebSocket error.'));
+          }
+          // console.warn('WEBSOCKET - Потеряно соединение с WebSocket, пытаемся переподключиться');
+        };
+        ws.onerror = () => {
+          // console.error('WEBSOCKET - Ошибка WebSocket');
+        };
       } catch (e) {
         global.NOTIFICATION_SYSTEM.notify('Ошибка подключения к потоку', 'error');
       }
@@ -41,6 +51,14 @@ class BsnoStaus extends React.Component {
       };
     }
   }
+
+  componentWillUnmount() {
+    const { ws } = this.state;
+    if (typeof ws !== 'undefined' && ws !== null) {
+      ws.close();
+      this.setState({ ws: null });
+    }
+  }    
 
   handleUpdatePoints = (data) => {
     const carsTrackState = {

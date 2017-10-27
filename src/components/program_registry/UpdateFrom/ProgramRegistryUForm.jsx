@@ -17,6 +17,7 @@ import { FileField } from 'components/ui/input/fields';
 
 import Form from 'components/compositions/Form.jsx';
 
+import * as InsideComponents from './inside_components';
 import MakeVersionFrom from './MakeVersionFrom.tsx';
 
 const TextMakeVersion = (
@@ -294,6 +295,15 @@ export default class ProgramRegistryForm extends Form {
                   isLoading={this.props.onOverlayLoading}
                   disabled={!isPermitted || !isPermittedByStatus || !is_active}
                 />
+              </Col>
+            </Row>
+            <Row>
+              <Col md={12}>
+                {state.id &&
+                  <InsideComponents.ProgramRemark
+                    program_version_id={state.id}
+                  />
+                }
               </Col>
             </Row>
           </Div>

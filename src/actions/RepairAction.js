@@ -207,4 +207,30 @@ export default class RepairActions extends Actions {
       'json',
     );
   }
+
+  /* DITETS-2014 */
+  programRemark(method, formState) {
+    const payload = {
+      ...formState,
+    };
+    const { programRemark } = REPAIR;
+
+    const path = parsePutPath(programRemark, method, formState);
+
+    return Repair.path(path)[method](
+      payload,
+      false,
+      'json',
+    );
+  }
+
+  removeProgramRemark(id) {
+    const { programRemark } = REPAIR;
+
+    return Repair.path(`${programRemark}/${id}`).delete(
+      {},
+      false,
+      'json',
+    );
+  }
 }

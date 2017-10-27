@@ -85,7 +85,7 @@ const missionsByCarAndDateUpdateNotification = {
 const missionFuelRateByCarUpdateNotification = {
   title: '',
   message: 'Для выбранной марки/модели ТС нет данных по нормам расхода топлива',
-  level: 'info',
+  level: 'warning',
   dismissible: true,
   position: 'tr',
   autoDismiss: 0,

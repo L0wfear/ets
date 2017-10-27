@@ -36,17 +36,17 @@ export default class MissionRejectForm extends Component {
   componentDidMount() {
     const { flux } = this.context;
     const { norm_id } = this.props.mission;
-    console.log('mission norm_id', norm_id);
     flux.getActions('objects').getCars();
 
-    flux.getActions('missions')
-      .getCleaningByTypeInActiveMission({ type: 'norm_registry', norm_id }).then(({ result: { rows } }) => {
-        const { func_type_id: norm_type_id } = (rows[0] || {});
-        console.log('norm func_type_id', norm_type_id);
+    if (norm_id) {
+      flux.getActions('missions')
+        .getCleaningByTypeInActiveMission({ type: 'norm_registry', norm_id }).then(({ result: { rows } }) => {
+          const { func_type_id: norm_type_id } = (rows[0] || {});
 
-        this.setState({ norm_type_id });
-      })
-      .catch(() => this.setState({ norm_type_id: '' }));
+          this.setState({ norm_type_id });
+        })
+        .catch(() => this.setState({ norm_type_id: '' }));
+    }
   }
 
   componentWillReceiveProps(props) {

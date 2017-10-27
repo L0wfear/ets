@@ -2,7 +2,7 @@ import { Actions } from 'flummox';
 import { createValidDateTime, createValidDate } from 'utils/dates';
 import _ from 'lodash';
 import {
-  hasOdometer,
+  hasMotohours,
   isEmpty,
 } from 'utils/functions';
 import {
@@ -126,10 +126,10 @@ export default class WaybillsActions extends Actions {
     delete payload.car_model_name;
     delete payload.garage_number;
 
-    if (!hasOdometer(payload.gov_number)) {
-      delete payload.motohours_start;
-    } else {
+    if (hasMotohours(payload.gov_number)) {
       delete payload.odometr_start;
+    } else {
+      delete payload.motohours_start;
     }
 
     _.mapKeys(payload, (v, k) => isEmpty(v) ? payload[k] = null : undefined);
@@ -168,10 +168,10 @@ export default class WaybillsActions extends Actions {
     delete payload.all_missions_completed_or_failed;
     _.mapKeys(payload, (v, k) => isEmpty(v) ? delete payload[k] : undefined);
 
-    if (!hasOdometer(payload.gov_number)) {
-      delete payload.motohours_start;
-    } else {
+    if (hasMotohours(payload.gov_number)) {
       delete payload.odometr_start;
+    } else {
+      delete payload.motohours_start;
     }
 
     if (isEmpty(payload.mission_id_list)) {

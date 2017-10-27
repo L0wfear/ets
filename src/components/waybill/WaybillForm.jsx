@@ -10,9 +10,7 @@ import DivForEnhance from 'components/ui/Div.jsx';
 import {
   isNotNull,
   isEmpty,
-  hasOdometer,
-  isThreeDigitGovNumber,
-  isFourDigitGovNumber,
+  hasMotohours,
   isEqualOr,
 } from 'utils/functions';
 import { driverHasLicense, driverHasSpecialLicense, getCars, getDrivers, getTrailers, validateTaxesControl } from './utils';
@@ -239,8 +237,8 @@ class WaybillForm extends Form {
         if (driver === null) return;
 
         const { gov_number } = formState;
-        const hasLicense = isThreeDigitGovNumber(gov_number) && driverHasLicense(driver);
-        const hasSpecialLicense = isFourDigitGovNumber(gov_number) && driverHasSpecialLicense(driver);
+        const hasLicense = hasMotohours(gov_number) && driverHasLicense(driver);
+        const hasSpecialLicense = !hasMotohours(gov_number) && driverHasSpecialLicense(driver);
 
         if (hasLicense || hasSpecialLicense) {
           this.props.handleFormChange('driver_id', newDriverId);
@@ -470,7 +468,7 @@ class WaybillForm extends Form {
 
     const car = carsIndex[state.car_id];
     const trailer = carsIndex[state.trailer_id];
-    const CAR_HAS_ODOMETER = state.gov_number ? !hasOdometer(state.gov_number) : null;
+    const CAR_HAS_ODOMETER = state.gov_number ? !hasMotohours(state.gov_number) : null;
 
     let title = '';
 

@@ -105,12 +105,13 @@ export function printData(blob) {
 }
 
 /**
- * Проверяет наличие одометра у ТС по гос.номеру
- * если гос. номер начинается с буквы - одометр есть
+ * DITETS-2173 - описание в комментариях
+ * Проверяет наличие "Счетчика моточасов" у ТС по гос.номеру
+ * если в гос. номер есть 4 числа - "Счетчик моточасов" присутствует
  * @param {string} carStateNumber - гос.номер
- * @return {boolean} hasOdometer - есть ли одометр
+ * @return {boolean} hasMotohours - есть ли "Счетчик моточасов"
  */
-export function hasOdometer(carStateNumber) {
+export function hasMotohours(carStateNumber) {
   if (carStateNumber) {
     return isFourDigitGovNumberRegexp.test(carStateNumber);
   }
@@ -158,9 +159,6 @@ export function resizeBase64(base64) {
     image.src = base64;
   });
 }
-
-export const isThreeDigitGovNumber = number => !isFourDigitGovNumberRegexp.test(number);
-export const isFourDigitGovNumber = number => isFourDigitGovNumberRegexp.test(number);
 
 /**
  * Flattens object shallow

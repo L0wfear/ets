@@ -14,8 +14,7 @@ import { ExtDiv } from 'components/ui/Div.jsx';
 import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 import Form from 'components/compositions/Form.jsx';
 import {
-  isThreeDigitGovNumber,
-  isFourDigitGovNumber,
+  hasMotohours,
 } from 'utils/functions';
 
 @loadingOverlay
@@ -139,7 +138,7 @@ export default class TechMaintForm extends Form {
               />
             </Col>
             <Col md={12}>
-              <ExtDiv hidden={!isThreeDigitGovNumber(state.gov_number)}>
+              <ExtDiv hidden={!hasMotohours(state.gov_number)}>
                 <Field
                   type="number"
                   label="Пробег на момент ТО, км"
@@ -152,7 +151,7 @@ export default class TechMaintForm extends Form {
               </ExtDiv>
             </Col>
             <Col md={12}>
-              <ExtDiv hidden={!isFourDigitGovNumber(state.gov_number)}>
+              <ExtDiv hidden={hasMotohours(state.gov_number)}>
                 <Field
                   type="number"
                   label="Счетчик м/ч на момент ТО, м/ч"

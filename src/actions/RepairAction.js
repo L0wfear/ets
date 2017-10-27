@@ -214,22 +214,25 @@ export default class RepairActions extends Actions {
       ...formState,
     };
     const { programRemark } = REPAIR;
+    const {
+      program_version_id,
+    } = formState;
 
     const path = parsePutPath(programRemark, method, formState);
 
     return Repair.path(path)[method](
       payload,
-      false,
+      this.getRepairListByType.bind(null, 'programRemarkRegistry', { program_version_id }),
       'json',
     );
   }
 
-  removeProgramRemark(id) {
+  removeProgramRemark(id, { program_version_id }) {
     const { programRemark } = REPAIR;
 
     return Repair.path(`${programRemark}/${id}`).delete(
       {},
-      false,
+      this.getRepairListByType.bind(null, 'programRemarkRegistry', { program_version_id }),
       'json',
     );
   }

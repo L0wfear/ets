@@ -12,7 +12,7 @@ class ProgramRemarkFormWrap extends FormWrap {
     this.schema = formValidationSchema;
     this.preventDefaultNotification = true;
 
-    this.updateAction = context.flux.getActions('autobase').programRemark.bind(null, 'put');
+    this.updateAction = context.flux.getActions('repair').programRemark.bind(null, 'put');
   }
   createAction = (formState) => {
     const {
@@ -24,7 +24,7 @@ class ProgramRemarkFormWrap extends FormWrap {
       program_version_id,
     };
 
-    return this.context.flux.getActions('autobase').programRemark('post', newFormState);
+    return this.context.flux.getActions('repair').programRemark('post', newFormState);
   }
 
   render() {

@@ -9,28 +9,31 @@ import DateFormatter from 'components/ui/DateFormatter';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
+const status_name = {
+  created: 'Создано',
+  fixed: 'Выполнено',
+  rejected: 'Отклонено',
+};
+
+
 export function tableMeta({
 } = {}): IDataTableSchema {
   const meta: IDataTableSchema = {
     cols: [
       {
-        name: 'supplied_at',
+        name: 'created_at',
         displayName: 'Дата создания',
         type: 'date',
-        filter: {
-          type: 'date',
-        },
+        filter: false,
       },
       {
-        name: 'group_name',
+        name: 'remark',
         displayName: 'Замечание',
         type: 'string',
-        filter: {
-          type: 'multiselect',
-        },
+        filter: false,
       },
       {
-        name: 'number',
+        name: 'comment',
         displayName: 'Комментарий',
         type: 'string',
         filter: {
@@ -38,20 +41,16 @@ export function tableMeta({
         },
       },
       {
-        name: 'name',
+        name: 'fio',
         displayName: 'ФИО',
         type: 'string',
-        filter: {
-          type: 'multiselect',
-        },
+        filter: false,
       },
       {
-        name: 'measure_unit_name',
+        name: 'status',
         displayName: 'Статус',
         type: 'string',
-        filter: {
-          type: 'multiselect',
-        },
+        filter: false,
       },
     ],
   };
@@ -61,7 +60,8 @@ export function tableMeta({
 
 const Table: React.SFC<any> = props  => {
   const renderers: ISchemaRenderer = {
-    supplied_at: ({ data }) => (<DateFormatter date={data} />),
+    created_at: ({ data }) => (<DateFormatter date={data} />),
+    status: ({ data }) => <span>{status_name[data]}</span>,
   };
 
   return (
@@ -71,6 +71,7 @@ const Table: React.SFC<any> = props  => {
       renderers={renderers}
       tableMeta={tableMeta(props)}
       noFilter
+      className="auto-height-table"
       {...props}
     />
   );

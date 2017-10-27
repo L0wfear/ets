@@ -21,15 +21,17 @@ export const ButtonChangeStatus = ({ permissions, onClick, disabled, buttonName 
 @connectToStores(['repair', 'session'])
 @staticProps({
   entity: 'program_remark_registry',
-  listName: 'programRemarkRegistry',
-//  formComponent: ProgramRemarkFormWrap,
-//  tableComponent: ProgramRemarkTable,
+  listName: 'programRemarkRegistryList',
+  formComponent: ProgramRemarkFormWrap,
+  tableComponent: ProgramRemarkTable,
   operations: [],
 })
 export default class ProgramRemarkList extends CheckableElementsList {
-  constructor(props, context) {
-    super(props);
-    this.removeElementAction = context.flux.getActions('repair').removeProgramRemark;
+  removeElementAction = (id) => {
+    const {
+      program_version_id,
+    } = this.props;
+    return this.context.flux.getActions('repair').removeProgramRemark(id, { program_version_id });
   }
 
   rejectRemarks = () => {

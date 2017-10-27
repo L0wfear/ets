@@ -87,11 +87,17 @@ export default class MissionFormWrap extends FormWrap {
       }
     }
     if (this.props.fromFaxogrammMissionForm && this.props.externalData.to_data) {
+      const date_start = this.props.externalData.to_data.date_from || this.props.externalData.faxogramm_date.order_date;
       const date_end = this.props.externalData.to_data.date_to || this.props.externalData.faxogramm_date.order_date_to;
       const { num_exec = 0 } = this.props.externalData.to_data;
 
+      const borderName = this.props.externalData.to_data.date_from ? 'поручения' : 'факсограммы';
+
+      if (moment(formState.date_start).toDate().getTime() < moment(date_start).toDate().getTime()) {
+        formErrors.date_start = `Дата не должна выходить за пределы действия ${borderName}`;
+      }
       if (moment(formState.date_end).toDate().getTime() > moment(date_end).toDate().getTime()) {
-        formErrors.date_end = 'Дата не должна выходить за пределы действия поручения';
+        formErrors.date_end = `Дата не должна выходить за пределы действия ${borderName}`;
       }
 
       if (formState.passes_count > num_exec) {

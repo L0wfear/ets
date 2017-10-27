@@ -1,7 +1,8 @@
-import TechnicalOperationFormWrap from './TechnicalOperationFormWrap.jsx';
-import TechnicalOperationsTable from './TechnicalOperationsTable.jsx';
 import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
+
+import TechnicalOperationFormWrap from './TechnicalOperationFormWrap.jsx';
+import TechnicalOperationsTable from './TechnicalOperationsTable.jsx';
 
 @connectToStores(['objects'])
 @exportable({ entity: 'technical_operation' })

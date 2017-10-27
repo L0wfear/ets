@@ -58,7 +58,6 @@ class BsnoStaus extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log(this)
     const { ws } = this.state;
     if (typeof ws !== 'undefined' && ws !== null) {
       ws.close();

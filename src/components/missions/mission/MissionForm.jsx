@@ -372,7 +372,12 @@ export class MissionForm extends Form {
       carsList = [],
     } = this.state;
 
-    const MISSION_SOURCES = missionSourcesList.map(({ id, name, auto }) => ({ value: id, label: name, disabled: auto }));
+    const MISSION_SOURCES = missionSourcesList.reduce((newArr, { id, name, auto }) => {
+      if (!auto || state.mission_source_id === id) {
+        newArr.push({ value: id, label: name });
+      }
+      return newArr;
+    }, []);
 
     const ASSIGN_OPTIONS = [
       { value: 'assign_to_active', label: 'Добавить в активный ПЛ' },

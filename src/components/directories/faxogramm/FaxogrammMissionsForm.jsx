@@ -32,7 +32,6 @@ class FaxogrammMissionsForm extends Form {
             payload={payload}
             renderOnly
             onListStateChange={this.handleChange.bind(this, 'missionJournalState')}
-            technicalOperationsList={this.props.technicalOperationsList || []}
           />
         </ModalBody>
 

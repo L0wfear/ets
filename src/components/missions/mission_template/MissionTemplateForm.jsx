@@ -98,7 +98,7 @@ class MissionTemplateForm extends MissionForm {
               />
               <Field
                 type="number"
-                label="Количество проходов"
+                label="Количество циклов"
                 error={errors.passes_count}
                 value={state.passes_count}
                 onChange={this.handleChange.bind(this, 'passes_count')} min="0"

@@ -15,7 +15,6 @@ const status_name = {
   rejected: 'Отклонено',
 };
 
-
 export function tableMeta({
 } = {}): IDataTableSchema {
   const meta: IDataTableSchema = {
@@ -36,9 +35,7 @@ export function tableMeta({
         name: 'comment',
         displayName: 'Комментарий',
         type: 'string',
-        filter: {
-          type: 'multiselect',
-        },
+        filter: false,
       },
       {
         name: 'fio',
@@ -72,6 +69,7 @@ const Table: React.SFC<any> = props  => {
       tableMeta={tableMeta(props)}
       noFilter
       className="auto-height-table"
+      griddleHidden={!props.displayTable}
       {...props}
     />
   );

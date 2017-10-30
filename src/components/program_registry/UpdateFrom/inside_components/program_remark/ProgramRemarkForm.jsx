@@ -2,12 +2,10 @@ import React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 
 import ModalBody from 'components/ui/Modal';
-import { connectToStores } from 'utils/decorators';
 import Div from 'components/ui/Div.jsx';
 import { ExtField } from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
 
-@connectToStores(['autobase'])
 export default class SparePartForm extends Form {
   handleSubmitWrap = () => this.handleSubmit();
 
@@ -21,6 +19,7 @@ export default class SparePartForm extends Form {
     ];
     const {
       isPermitted = false,
+      program_version_status,
     } = this.props;
 
     return (
@@ -41,6 +40,20 @@ export default class SparePartForm extends Form {
                 disabled={!isPermitted}
               />
             </Col>
+            { program_version_status === 'rejected' &&
+              <Col md={12}>
+                <ExtField
+                  type="text"
+                  label="Комментарий"
+                  value={state.note}
+                  error={errors.note}
+                  onChange={this.handleChange}
+                  boundKeys={['note']}
+                  disabled={!isPermitted}
+                />
+              </Col>
+            }
+            
           </Row>
         </Div>
         <ModalBody />

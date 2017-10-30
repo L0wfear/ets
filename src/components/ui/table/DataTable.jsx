@@ -616,6 +616,7 @@ export default class DataTable extends React.Component {
       selectField, title, noTitle, noFilter,
       enableSort, noDataMessage, className, noHeader,
       refreshable, columnControl, highlight, serverPagination, externalChangeSort,
+      griddleHidden = false,
     } = this.props;
     const { initialSort, initialSortAscending, columnControlValues, isHierarchical } = this.state;
 
@@ -636,7 +637,7 @@ export default class DataTable extends React.Component {
     return (
       <Div className={tableClassName}>
         <Div className="some-header" hidden={noHeader}>
-        <div style={{ display: 'flex', 'justifyContent': 'space-between' }}>
+          <div style={{ display: 'flex', 'justifyContent': 'space-between' }}>
             <div>
               {noTitle ? '' : title}
             </div>
@@ -683,23 +684,25 @@ export default class DataTable extends React.Component {
           }
         </Div>
         {/* lowerCaseSorting - сортировка в этом компоненте, а не в griddle.getDataForRender */}
-        <Griddle
-          results={results}
-          enableSort={enableSort}
-          initialSort={initialSort}
-          initialSortAscending={initialSortAscending}
-          columnMetadata={columnMetadata}
-          columns={tableCols}
-          resultsPerPage={15}
-          useCustomPagerComponent
-          externalChangeSort={externalChangeSort || this.handleChangeSort}
-          customPagerComponent={serverPagination ? <Div /> : Paginator}
-          onRowClick={!isHierarchical ? onRowSelected : null}
-          rowMetadata={rowMetadata}
-          onKeyPress={this.handleKeyPress}
-          noDataMessage={noDataMessage || noFilter ? '' : 'Нет данных'}
-          lowerCaseSorting
-        />
+        <Div hidden={griddleHidden}>
+          <Griddle
+            results={results}
+            enableSort={enableSort}
+            initialSort={initialSort}
+            initialSortAscending={initialSortAscending}
+            columnMetadata={columnMetadata}
+            columns={tableCols}
+            resultsPerPage={15}
+            useCustomPagerComponent
+            externalChangeSort={externalChangeSort || this.handleChangeSort}
+            customPagerComponent={serverPagination ? <Div /> : Paginator}
+            onRowClick={!isHierarchical ? onRowSelected : null}
+            rowMetadata={rowMetadata}
+            onKeyPress={this.handleKeyPress}
+            noDataMessage={noDataMessage || noFilter ? '' : 'Нет данных'}
+            lowerCaseSorting
+          />
+        </Div>
       </Div>
     );
   }

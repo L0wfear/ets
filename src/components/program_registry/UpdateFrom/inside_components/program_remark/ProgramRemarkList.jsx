@@ -202,26 +202,30 @@ export default class ProgramRemarkList extends CheckableElementsList {
    */
   getButtons = () => {
     const entity = this.constructor.entity;
+    const {
+      program_version_status,
+    } = this.props;
+
     const buttons = [
       <ButtonDelete
         buttonName={'Удалить'}
         key={0}
         onClick={this.removeCheckedElements}
-        disabled={this.checkDisabledDelete()}
-        permissions={[`${entity}.delete`]}
+        disabled={this.checkDisabledDelete() || program_version_status !== 'sent_on_review'}
+        permissions={['repair_program_version.review']}
       />,
       <ButtonChangeStatus
         buttonName={'Отклонено'}
         key={1}
         onClick={this.rejectRemarksCheckedElements}
-        disabled={this.checkDisabledDelete()}
+        disabled={this.checkDisabledDelete() || program_version_status !== 'rejected'}
         permissions={[`${entity}.update`]}
       />,
       <ButtonChangeStatus
         buttonName={'Исправлено'}
         key={2}
         onClick={this.fixRemarksCheckedElements}
-        disabled={this.checkDisabledDelete()}
+        disabled={this.checkDisabledDelete() || program_version_status !== 'rejected'}
         permissions={[`${entity}.update`]}
       />,
       <ButtonCreate
@@ -229,6 +233,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
         key={3}
         onClick={this.createElement}
         permissions={['repair_program_version.review']}
+        disabled={program_version_status !== 'sent_on_review'}
       />,
     ];
 
@@ -244,31 +249,13 @@ export default class ProgramRemarkList extends CheckableElementsList {
     flux.getActions('repair').getRepairListByType('programRemarkRegistry', { program_version_id });
   }
 
-  render() {
-    const table = this.getTable();
-    const forms = this.getForms();
-    const additionalRender = this.additionalRender();
-    const preloader = this.state.exportFetching && <Preloader type="mainpage" />;
+  getAdditionalProps = () => {
     const {
       program_version_status,
     } = this.props;
 
-    return (
-      <div className="ets-page-wrap" ref={node => (this.node = node)}>
-        {
-          program_version_status === 'rejected' || (program_version_status !== 'draft' && this.props.programRemarkRegistryList.length !== 0)
-          ?
-            <div>
-              {table}
-              {additionalRender}
-              {forms}
-              {preloader}
-            </div>
-          :
-            null
-        }
-      </div>
-    );
+    return {
+      displayTable: program_version_status === 'rejected' || (program_version_status !== 'draft' && this.props.programRemarkRegistryList.length !== 0),
+    };
   }
-
 }

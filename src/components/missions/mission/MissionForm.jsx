@@ -150,35 +150,31 @@ export class MissionForm extends Form {
       routesList,
       selectedRoute,
     });
-    // простите
-    // нужно было сделать срочно
-    setTimeout(() => {
-      const {
-        norm_id = false,
-        date_start,
-      } = this.props.formState;
+
+    const {
+      norm_id = false,
+      date_start,
+    } = this.props.formState;
+
+    if (norm_id) {
       const payloadMF = {
         norm_id,
         start_date: date_start,
         end_date: date_start,
       };
-      if (norm_id) {
-        this.context.flux.getActions('missions')
-        .getCleaningByTypeInActiveMission({ type: 'norm_registry', norm_id }).then((ans) => {
-          this.handleChange('norm_text', ans.result.rows[0].norm_text);
-          if (this.props.fromFaxogrammMissionForm) {
-            this.changeAvailableCarInCarList(ans.result.rows.map(d => d.func_type_id));
-          }
-        });
-        this.context.flux.getActions('missions').getCleaningMunicipalFacilityList(payloadMF).then((r) => {
-          const { rows = [] } = r.result;
-          MUNICIPAL_FACILITY_OPTIONS = rows.map(({ municipal_facility_id, municipal_facility_name }) => ({ value: municipal_facility_id, label: municipal_facility_name }));
-          this.setState({ MUNICIPAL_FACILITY_OPTIONS });
-        });
-      } else {
-        this.checkNorm({ forsUpdate: true });
-      }
-    }, 100);
+      this.context.flux.getActions('missions')
+      .getCleaningByTypeInActiveMission({ type: 'norm_registry', norm_id }).then((ans) => {
+        this.handleChange('norm_text', ans.result.rows[0].norm_text);
+        if (this.props.fromFaxogrammMissionForm) {
+          this.changeAvailableCarInCarList(ans.result.rows.map(d => d.func_type_id));
+        }
+      });
+      this.context.flux.getActions('missions').getCleaningMunicipalFacilityList(payloadMF).then((r) => {
+        const { rows = [] } = r.result;
+        MUNICIPAL_FACILITY_OPTIONS = rows.map(({ municipal_facility_id, municipal_facility_name }) => ({ value: municipal_facility_id, label: municipal_facility_name }));
+        this.setState({ MUNICIPAL_FACILITY_OPTIONS });
+      });
+    }
   }
   changeAvailableCarInCarList(typeCarsList) {
     const { carsList = [] } = this.state;
@@ -255,7 +251,7 @@ export class MissionForm extends Form {
     }
     const payload = {
       work_type_id: 1,
-      actual_seasons: true,
+      actual_seasons: 1,
     };
 
     if (dataName !== 'technical_operation_id') {

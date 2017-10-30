@@ -23,7 +23,7 @@ export default class TechnicalOperationsActions extends Actions {
 
   getTechnicalOperations(all) {
     const payload = {
-      actual_seasons: all ? 0 : 1,
+      actual_seasons: !!all,
     };
     return getTechnicalOperations(payload);
   }
@@ -39,7 +39,7 @@ export default class TechnicalOperationsActions extends Actions {
     if (isEmpty(car_id)) {
       delete payload.car_id;
     }
-    payload.actual_seasons = 1;
+    payload.actual_seasons = true;
     const response = await TechnicalOperationService.get(payload);
     return response.result.rows || [];
   }
@@ -48,7 +48,7 @@ export default class TechnicalOperationsActions extends Actions {
     const payload = {
       needs_brigade: true,
     };
-    payload.actual_seasons = 1;
+    payload.actual_seasons = true;
     const response = await TechnicalOperationService.get(payload);
     return response.result.rows || [];
   }
@@ -78,7 +78,7 @@ export default class TechnicalOperationsActions extends Actions {
     if (objects.length) {
       payload.objects = objects;
     }
-    payload.actual_seasons = 1;
+    payload.actual_seasons = true;
     const response = await TechnicalOperationService.get(payload);
     return response.result.rows || [];
   }
@@ -91,6 +91,7 @@ export default class TechnicalOperationsActions extends Actions {
     delete payload.work_kind_name;
     delete payload.check_type_name;
     delete payload.object_name;
+    delete payload.object_text;
     return TechnicalOperationService.put(payload, getTechnicalOperations, 'json');
   }
 

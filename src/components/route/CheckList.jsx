@@ -12,13 +12,13 @@ export default function ODHList(props) {
   const { error = false } = props;
   const LIST = list.map((odh, index) => {
     const speed_type = odh.state === polyState.IDLE ? 'холостой' : 'рабочий';
-    return <li key={index}>{`${odh.name || odh.odh_name || odh.object_name} (${speed_type} ход)`}</li>;
+    return <li key={index}>{`${odh.name || odh.odh_name || odh.objects_text} (${speed_type} ход)`}</li>;
   });
   const DRAW_LIST = uniqBy(draw_list, o => o.name + o.state).map((odh, index) => {
     const speed_type = odh.state === polyState.IDLE ? 'холостой' : 'рабочий';
-    return <li key={index}>{`${odh.name || odh.odh_name || odh.object_name} (${speed_type} ход)`}</li>;
+    return <li key={index}>{`${odh.name || odh.odh_name || odh.objects_text} (${speed_type} ход)`}</li>;
   });
-  const FAIL = fail_list.map((odh, index) => <li key={index}>{`${odh.name || odh.odh_name || odh.object_name}`}</li>);
+  const FAIL = fail_list.map((odh, index) => <li key={index}>{`${odh.name || odh.odh_name || odh.objects_text}`}</li>);
 
   return (
     <Div>

@@ -102,7 +102,7 @@ export interface ITechnicalOperationType extends IResponseRowObject<number> {
   max_speed: number;
   name: string;
   needs_brigade: boolean;
-  object_name: string;
+  objects_text: string;
   objects: INamedObject;
   season_id: number;
   season_name: string;

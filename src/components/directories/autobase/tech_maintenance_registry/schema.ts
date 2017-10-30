@@ -5,8 +5,7 @@ import { IValidationSchema } from 'components/ui/form/@types/validation.h';
 
 import { getRequiredFieldMessage } from 'utils/validate';
 import {
-  isThreeDigitGovNumber,
-  isFourDigitGovNumber,
+  hasMotohours,
 } from 'utils/functions';
 
 export const formValidationSchema: IValidationSchema = {
@@ -132,7 +131,7 @@ export const formValidationSchema: IValidationSchema = {
           if (
             (fact_date_start || fact_date_end) &&
             !value &&
-            isThreeDigitGovNumber(gov_number)
+            !hasMotohours(gov_number)
           ) {
             return getRequiredFieldMessage('Пробег на момент ТО, км');
           }
@@ -147,7 +146,7 @@ export const formValidationSchema: IValidationSchema = {
           if (
             (fact_date_start || fact_date_end) &&
             !value &&
-            isFourDigitGovNumber(gov_number)
+            hasMotohours(gov_number)
           ) {
             return getRequiredFieldMessage('Счетчик м/ч на момент ТО, м/ч');
           }

@@ -87,7 +87,7 @@ const getTableMeta = (props) => {
       },
       {
         name: 'passes_count',
-        displayName: 'Количество проходов',
+        displayName: 'Количество циклов',
         type: 'number',
         filter: {
           type: 'advanced-string',

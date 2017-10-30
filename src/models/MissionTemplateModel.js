@@ -8,7 +8,7 @@ export const missionTemplateSchema = {
     },
     {
       key: 'passes_count',
-      title: 'Количество проходов',
+      title: 'Количество циклов',
       type: 'number',
       required: true,
       integer: true,

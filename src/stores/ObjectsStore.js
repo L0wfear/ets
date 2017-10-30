@@ -152,7 +152,6 @@ export default class ObjectsStore extends Store {
     this.setState({ carsList, carsIndex });
   }
   handleGetCarsByTechnicalOperation(result) {
-    console.log(result)
     this.setState({ carListBuyTO: result });
   }
 

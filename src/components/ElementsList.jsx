@@ -192,9 +192,6 @@ class ElementsList extends React.Component {
       body: 'Вы уверены, что хотите удалить выбранный элемент?',
     })
     .then(() => {
-      console.log('ElementList.jsx /', 'this', this, 'this.state.selectedElement', this.state.selectedElement, 'поле', this.state.selectedElement[this.selectField]);
-      console.log('ElementList.jsx /','removeCallback', removeCallback);
-      console.log('----------------------------------------');
       this.removeElementAction(this.state.selectedElement[this.selectField], removeCallback);
       this.setState({ selectedElement: null });
     })

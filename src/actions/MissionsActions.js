@@ -106,7 +106,7 @@ export default class MissionsActions extends Actions {
     return MissionSourceService.get(payload);
   }
 
-  createMission(mission, defaultAssign ) {
+  createMission(mission, defaultAssign) {
     const payload = _.clone(mission);
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
@@ -119,8 +119,6 @@ export default class MissionsActions extends Actions {
 
   removeMission(id, callback) {
     const payload = { id };
-    console.log('MissionsActions.js/', 'MissionService', MissionService, 'payload', payload, 'callback', callback);
-    console.log('---------------------------------------------------------------------');
     return MissionService.delete(payload, callback, 'json');
   }
 

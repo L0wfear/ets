@@ -77,7 +77,6 @@ export default class MissionsJournal extends CheckableElementsList {
     }
   }
   async refreshList(state = this.state) {
-    console.log('++++++++++++refreshList+++++++++++++++++');
     const pageOffset = state.page * MAX_ITEMS_PER_PAGE;
     const missions = await this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, pageOffset, state.sortBy, state.filter);
 
@@ -178,8 +177,6 @@ export default class MissionsJournal extends CheckableElementsList {
   }
 
   removeCheckedElements() {
-    console.log('MissionsJournal.jsx/','this в removeCheckedElements', this);
-    console.log('---------------------------------------------------------------------');
     if (typeof this.removeElementAction !== 'function') return;
 
     if (Object.keys(this.state.checkedElements).length !== 0) {
@@ -189,27 +186,106 @@ export default class MissionsJournal extends CheckableElementsList {
 
       _.forEach(this.state.checkedElements, (mission) => {
         if (mission.status === 'not_assigned') {
-          console.log('mission', mission);
-          this.removeElementAction(mission.id, false);
+          this.removeElementAction(mission.id, this.removeElementCallback);
         } else {
           isNotDeleted = true;
         }
       });
 
-      if (isNotDeleted) {
+     /* if (isNotDeleted) {
         global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Удалились только задания со статусом "Не назначено"!'));
       } else {
         global.NOTIFICATION_SYSTEM.notify('Данные успешно удалены', 'success');
       }
-      
-      setTimeout(this.refreshList, 1000);
-      //this.refreshList();
+
+      confirmDialog({
+        title: 'Внимание',
+        body: 'Вы уверены, что хотите удалить выбранный элемент?',
+      })
+    .then(() => {
+      global.NOTIFICATION_SYSTEM.notify('Данные успешно удалены', 'success');
+      this.refreshList();
       this.setState({
         checkedElements: {},
         selectedElement: null,
       });
+    })
+    .catch(() => {});
+*/
     } else {
       this.removeElement();
+    }
+  }
+  removeCheckedElements = () => {
+    this.defActionFunc({
+      bodyConfirmDialog: 'Вы уверены, что хотите удалить выбранные элементы?',
+      callbackForCheckedElement: this.removeElementAction,
+      callBackForOneElement: this.removeElement,
+      notifyText: 'Данные успешно удалены',
+    });
+  }
+  removeElement = () => {
+    return confirmDialog({
+      title: 'Внимание',
+      body: 'Вы уверены, что хотите удалить выбранные элементы?',
+    })
+    .then(() => {
+      const {
+        selectedElement = {},
+      } = this.state;
+      const id = selectedElement[this.selectField];
+
+      return this.removeElementAction(id).then(() => {
+        this.setState({
+          checkedElements: {},
+          selectedElement: null,
+        });
+        global.NOTIFICATION_SYSTEM.notify('Данные успешно удалены');
+      });
+    })
+    .catch(() => {});
+  }
+
+  defActionFunc = ({
+    bodyConfirmDialog,
+    callbackForCheckedElement,
+    callBackForOneElement,
+    notifyText,
+  }) => {
+    const {
+      checkedElements = {},
+    } = this.state;
+
+    const checkElList = Object.values(checkedElements);
+    const countCheckEl = checkElList.length;
+
+    if (countCheckEl !== 0) {
+      confirmDialog({
+        title: 'Внимание',
+        body: bodyConfirmDialog,
+      })
+      .then(() => {
+        const elList = Array(countCheckEl).fill(false);
+
+        checkElList.forEach((el, i) => {
+          callbackForCheckedElement(el[this.selectField]).then(() => {
+            elList[i] = true;
+            if (!elList.some(elD => !elD)) {
+              this.refreshList();
+              global.NOTIFICATION_SYSTEM.notify(notifyText);
+            }
+          });
+        });
+        this.setState({
+          checkedElements: {},
+          selectedElement: null,
+        });
+      })
+      .catch(() => {});
+    } else {
+      callBackForOneElement().then(() => {
+        this.refreshList();
+      });
     }
   }
 
@@ -237,7 +313,8 @@ export default class MissionsJournal extends CheckableElementsList {
           refreshTableList={this.refreshList}
           {...this.props}
         />
-        {this.state.showMissionRejectForm &&
+        {
+          this.state.showMissionRejectForm &&
           <MissionRejectForm
             show={this.state.showMissionRejectForm}
             onReject={this.onReject}

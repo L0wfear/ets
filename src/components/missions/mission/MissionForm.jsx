@@ -255,7 +255,7 @@ export class MissionForm extends Form {
     }
     const payload = {
       work_type_id: 1,
-      actual_seasons: 1,
+      actual_seasons: true,
     };
 
     if (dataName !== 'technical_operation_id') {

@@ -302,6 +302,7 @@ export default class ProgramRegistryForm extends Form {
                 {state.id &&
                   <InsideComponents.ProgramRemark
                     program_version_id={state.id}
+                    program_version_status={state.status}
                   />
                 }
               </Col>

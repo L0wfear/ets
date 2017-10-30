@@ -227,12 +227,30 @@ export default class RepairActions extends Actions {
     );
   }
 
-  removeProgramRemark(id, { program_version_id }) {
+  removeProgramRemark(id) {
     const { programRemark } = REPAIR;
 
     return Repair.path(`${programRemark}/${id}`).delete(
       {},
-      this.getRepairListByType.bind(null, 'programRemarkRegistry', { program_version_id }),
+      false,
+      'json',
+    );
+  }
+  rejectRemarks(id) {
+    const { programRemark } = REPAIR;
+
+    return Repair.path(`${programRemark}/${id}/reject`).put(
+      {},
+      false,
+      'json',
+    );
+  }
+  fixRemarks(id) {
+    const { programRemark } = REPAIR;
+
+    return Repair.path(`${programRemark}/${id}/fix`).put(
+      {},
+      false,
       'json',
     );
   }

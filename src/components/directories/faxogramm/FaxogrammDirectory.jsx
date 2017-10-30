@@ -42,7 +42,7 @@ class FaxogrammDirectory extends ElementsList {
 
   componentDidMount() {
     super.componentDidMount();
-    this.context.flux.getActions('technicalOperation').getTechnicalOperations();
+//    this.context.flux.getActions('technicalOperation').getTechnicalOperations();
     const { id } = this.props.routeParams;
 
     this.getFaxogramms();

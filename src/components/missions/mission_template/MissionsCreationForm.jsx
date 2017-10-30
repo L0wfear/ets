@@ -21,7 +21,13 @@ class MissionsCreationForm extends Form {
 
     const { missionSourcesList = [] } = this.props;
 
-    const MISSION_SOURCES = missionSourcesList.map(({ id, name, auto }) => ({ value: id, label: name, disabled: auto }));
+    const MISSION_SOURCES = missionSourcesList.reduce((newArr, { id, name, auto }) => {
+      if (!auto || state.mission_source_id === id) {
+        newArr.push({ value: id, label: name });
+      }
+      return newArr;
+    }, []);
+
     const ASSIGN_OPTIONS = [
       { value: 'assign_to_active', label: 'Добавить в активный ПЛ' },
       { value: 'assign_to_new_draft', label: 'Создать черновик ПЛ' },
@@ -65,7 +71,7 @@ class MissionsCreationForm extends Form {
             <Col md={12}>
               <Field
                 type="number"
-                label="Количество проходов"
+                label="Количество циклов"
                 error={errors.passes_count}
                 value={state.passes_count}
                 onChange={this.handleChange.bind(this, 'passes_count')}

@@ -1,4 +1,4 @@
-import { isEmpty, hasOdometer } from 'utils/functions';
+import { isEmpty, hasMotohours } from 'utils/functions';
 
 export const waybillSchema = {
   properties: [
@@ -133,7 +133,7 @@ export const waybillSchema = {
     'odometr_start': [
       {
         validator: (value, formData) => {
-          if (!hasOdometer(formData.gov_number) && isEmpty(value)) {
+          if (!hasMotohours(formData.gov_number) && isEmpty(value)) {
             return 'Поле "Одометр.Выезд" должно быть заполнено';
           }
           return false;
@@ -143,7 +143,7 @@ export const waybillSchema = {
     'motohours_start': [
       {
         validator: (value, formData) => {
-          if (hasOdometer(formData.gov_number) && isEmpty(value)) {
+          if (hasMotohours(formData.gov_number) && isEmpty(value)) {
             return 'Поле "Счетчик моточасов.Выезд" должно быть заполнено';
           }
           return false;

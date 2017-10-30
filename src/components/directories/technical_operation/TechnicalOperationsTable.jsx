@@ -1,23 +1,29 @@
 import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 
-const getTableMeta = (props) => {
-  const CAR_TYPES = props.typesList.map(({ asuods_id, full_name }) => ({ value: asuods_id, label: full_name }));
-  const OBJECT = [
-    {
-      value: 1,
-      label: 'ОДХ',
-    },
-    {
-      value: 2,
-      label: 'ДТ',
-    },
-    {
-      value: 3,
-      label: 'ПН',
-    },
-  ];
 
+const OBJECT = [
+  {
+    value: 1,
+    label: 'ОДХ',
+  },
+  {
+    value: 2,
+    label: 'ДТ',
+  },
+  {
+    value: 3,
+    label: 'ПН',
+  },
+];
+
+/*
+  Элменты дублируются, из-за особенностей сортировки строки (Не можем отсортировать то, что получаем в renderers)
+*/
+const getTableMeta = ({
+  ELEMENTS = [],
+  CAR_TYPES = [],
+} = {}) => {
   const tableMeta = {
     cols: [
       {
@@ -29,12 +35,20 @@ const getTableMeta = (props) => {
         },
       },
       {
-        name: 'municipal_facility_name',
+        name: 'elements',
         displayName: 'Элемент',
+        display: false,
         type: 'string',
         filter: {
           type: 'multiselect',
+          options: ELEMENTS,
         },
+      },
+      {
+        name: 'elements_text',
+        displayName: 'Элемент',
+        type: 'string',
+        filter: false,
       },
       {
         name: 'season_name',
@@ -78,7 +92,7 @@ const getTableMeta = (props) => {
         },
       },
       {
-        name: 'check_type_name',
+        name: 'check_type_names',
         displayName: 'Тип проверки',
         type: 'string',
         filter: {
@@ -88,12 +102,19 @@ const getTableMeta = (props) => {
       {
         name: 'objects',
         displayName: 'Объект',
+        display: false,
         type: 'string',
         filter: {
           type: 'multiselect',
           options: OBJECT,
           strict: true,
         },
+      },
+      {
+        name: 'objects_text',
+        displayName: 'Объект',
+        type: 'string',
+        filter: false,
         cssClassName: 'width60',
       },
       {
@@ -117,11 +138,18 @@ const getTableMeta = (props) => {
       {
         name: 'car_func_types',
         displayName: 'Типы ТС',
+        display: false,
         type: 'string',
         filter: {
           type: 'multiselect',
           options: CAR_TYPES,
         },
+      },
+      {
+        name: 'car_func_types_text',
+        displayName: 'Типы ТС',
+        type: 'string',
+        filter: false,
       },
     ],
   };
@@ -131,16 +159,8 @@ const getTableMeta = (props) => {
 
 export default (props) => {
   const renderers = {
-    car_func_types: ({ data }) => {
-      const dataAsString = data.map(d => d.name).join(', ');
-      return <div>{dataAsString}</div>;
-    },
-    objects: ({ data }) => {
-      const dataAsString = data.map(d => d.name).join(', ');
-      return <div>{dataAsString}</div>;
-    },
-    needs_brigade: ({ data }) => <input type="checkbox" disabled checked={!!data} />,
-    use_in_reports: ({ data }) => <input type="checkbox" disabled checked={!!data} />,
+    needs_brigade: ({ data: value }) => <input type="checkbox" disabled checked={!!value} />,
+    use_in_reports: ({ data: value }) => <input type="checkbox" disabled checked={!!value} />,
   };
 
   return (<Table

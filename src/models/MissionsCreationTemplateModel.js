@@ -2,7 +2,7 @@ export const missionsCreationTemplateSchema = {
   properties: [
     {
       key: 'passes_count',
-      title: 'Количество проходов',
+      title: 'Количество циклов',
       type: 'number',
       required: false,
       min: 0,

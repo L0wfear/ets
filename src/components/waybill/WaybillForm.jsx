@@ -10,9 +10,7 @@ import DivForEnhance from 'components/ui/Div.jsx';
 import {
   isNotNull,
   isEmpty,
-  hasOdometer,
-  isThreeDigitGovNumber,
-  isFourDigitGovNumber,
+  hasMotohours,
   isEqualOr,
 } from 'utils/functions';
 import { driverHasLicense, driverHasSpecialLicense, getCars, getDrivers, getTrailers, validateTaxesControl } from './utils';
@@ -47,7 +45,6 @@ class WaybillForm extends Form {
       selectedMission: null,
       canEditIfClose: null,
       loadingFields: {},
-      carsTrackState: {},
       fuelRateAllList: [],
     };
 
@@ -240,8 +237,8 @@ class WaybillForm extends Form {
         if (driver === null) return;
 
         const { gov_number } = formState;
-        const hasLicense = isThreeDigitGovNumber(gov_number) && driverHasLicense(driver);
-        const hasSpecialLicense = isFourDigitGovNumber(gov_number) && driverHasSpecialLicense(driver);
+        const hasLicense = hasMotohours(gov_number) && driverHasLicense(driver);
+        const hasSpecialLicense = !hasMotohours(gov_number) && driverHasSpecialLicense(driver);
 
         if (hasLicense || hasSpecialLicense) {
           this.props.handleFormChange('driver_id', newDriverId);
@@ -269,8 +266,7 @@ class WaybillForm extends Form {
     if (!isEmpty(car_id)) {
 
       const [state = {}] = [this.props.formState];
-      const { carsTrackState = {}, fuelRateAllList = [] } = this.state;
-      const { timestamp = '' } = carsTrackState[car_id] || {};
+      const { fuelRateAllList = [] } = this.state;
 
       if (!fuelRateAllList.includes(selectedCar.model_id)) {
         global.NOTIFICATION_SYSTEM.notify(notifications.missionFuelRateByCarUpdateNotification);
@@ -280,21 +276,10 @@ class WaybillForm extends Form {
       const lastCarUsedWaybill = lastCarUsedWaybillObject.result;
       const additionalFields = this.getFieldsToChangeBasedOnLastWaybill(lastCarUsedWaybill);
 
-      const IS_CREATING = !state.status;
-      const IS_DRAFT = state.status && state.status === 'draft';
-
       fieldsToChange = {
         ...fieldsToChange,
         ...additionalFields,
       };
-
-      if (IS_CREATING || IS_DRAFT) {
-        fieldsToChange = {
-          ...fieldsToChange,
-          is_bnso_broken: ((+(new Date()) / 1000) - timestamp) > 60 * 60,
-        };
-      }
-
     } else {
       /**
        * Если ТС не выбрано, то и ранее выбранного водителя не должно быть.
@@ -435,7 +420,6 @@ class WaybillForm extends Form {
     } = this.props;
 
     let taxesControl = false;
-    let is_active_car_id = -1;
 
     const getCarsByStructId = getCars(state.structure_id);
     const getTrailersByStructId = getTrailers(state.structure_id);
@@ -484,17 +468,7 @@ class WaybillForm extends Form {
 
     const car = carsIndex[state.car_id];
     const trailer = carsIndex[state.trailer_id];
-    const CAR_HAS_ODOMETER = state.gov_number ? !hasOdometer(state.gov_number) : null;
-
-    if (state.car_id) {
-      const { carsTrackState = {} } = this.state;
-      const { timestamp = '' } = carsTrackState[state.car_id] || {};
-      if (((+(new Date()) / 1000) - timestamp) < 60 * 60) {
-        is_active_car_id = 1;
-      } else {
-        is_active_car_id = 0;
-      }
-    }
+    const CAR_HAS_ODOMETER = state.gov_number ? !hasMotohours(state.gov_number) : null;
 
     let title = '';
 
@@ -736,7 +710,7 @@ class WaybillForm extends Form {
                   <h4>Одометр</h4>
                   <Field
                     type="number"
-                    label="Выезд, км"
+                    label="Выезд из гаража, км"
                     error={errors.odometr_start}
                     value={state.odometr_start} disabled={IS_ACTIVE || IS_CLOSED} onChange={this.handleChange.bind(this, 'odometr_start')}
                   />
@@ -760,7 +734,7 @@ class WaybillForm extends Form {
                   <h4>Счетчик моточасов</h4>
                   <Field
                     type="number"
-                    label="Выезд, м/ч"
+                    label="Выезд из гаража, м/ч"
                     error={errors.motohours_start}
                     value={state.motohours_start}
                     disabled={IS_ACTIVE || IS_CLOSED}
@@ -791,7 +765,7 @@ class WaybillForm extends Form {
                   <h4>Счетчик моточасов оборудования</h4>
                   <Field
                     type="number"
-                    label="Выезд, м/ч"
+                    label="Выезд из гаража, м/ч"
                     error={errors.motohours_equip_start}
                     value={state.motohours_equip_start}
                     disabled={IS_ACTIVE || IS_CLOSED}

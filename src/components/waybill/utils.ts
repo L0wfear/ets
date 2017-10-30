@@ -4,8 +4,7 @@ import { IVehicle } from 'api/@types/services/index.h';
 
 import {
   isNotEqualAnd,
-  isThreeDigitGovNumber,
-  isFourDigitGovNumber,
+  hasMotohours,
 } from 'utils/functions';
 
 const VALID_VEHICLES_TYPES = {
@@ -56,10 +55,12 @@ const isNotEmpty = value => isNotEqualAnd([undefined, null, ''], value);
 export const driverHasLicense = ({ drivers_license }) => isNotEmpty(drivers_license);
 export const driverHasSpecialLicense = ({ special_license }) => isNotEmpty(special_license);
 
+const hasOdometr = number => !hasMotohours(number);
+
 export const getDrivers = (gnumber = '', driversList) => {
   const licenceSwitcher = R.cond([
-    [isThreeDigitGovNumber, R.always(driverHasLicense)],
-    [isFourDigitGovNumber, R.always(driverHasSpecialLicense)],
+    [hasMotohours, R.always(driverHasLicense)],
+    [hasOdometr, R.always(driverHasSpecialLicense)],
     [R.T, R.always(R.identity)],
   ]);
 

@@ -119,6 +119,8 @@ export default class MissionsActions extends Actions {
 
   removeMission(id, callback) {
     const payload = { id };
+    console.log('MissionsActions.js/', 'MissionService', MissionService, 'payload', payload, 'callback', callback);
+    console.log('---------------------------------------------------------------------');
     return MissionService.delete(payload, callback, 'json');
   }
 

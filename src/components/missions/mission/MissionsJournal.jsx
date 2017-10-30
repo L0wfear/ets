@@ -77,6 +77,7 @@ export default class MissionsJournal extends CheckableElementsList {
     }
   }
   async refreshList(state = this.state) {
+    console.log('++++++++++++refreshList+++++++++++++++++');
     const pageOffset = state.page * MAX_ITEMS_PER_PAGE;
     const missions = await this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, pageOffset, state.sortBy, state.filter);
 
@@ -177,6 +178,8 @@ export default class MissionsJournal extends CheckableElementsList {
   }
 
   removeCheckedElements() {
+    console.log('MissionsJournal.jsx/','this в removeCheckedElements', this);
+    console.log('---------------------------------------------------------------------');
     if (typeof this.removeElementAction !== 'function') return;
 
     if (Object.keys(this.state.checkedElements).length !== 0) {
@@ -186,6 +189,7 @@ export default class MissionsJournal extends CheckableElementsList {
 
       _.forEach(this.state.checkedElements, (mission) => {
         if (mission.status === 'not_assigned') {
+          console.log('mission', mission);
           this.removeElementAction(mission.id, false);
         } else {
           isNotDeleted = true;
@@ -197,8 +201,9 @@ export default class MissionsJournal extends CheckableElementsList {
       } else {
         global.NOTIFICATION_SYSTEM.notify('Данные успешно удалены', 'success');
       }
-
-      this.refreshList();
+      
+      setTimeout(this.refreshList, 1000);
+      //this.refreshList();
       this.setState({
         checkedElements: {},
         selectedElement: null,

@@ -640,7 +640,7 @@ class WaybillForm extends Form {
                 className="white-space-pre-wrap"
                 readOnly
                 hidden={IS_CREATING || IS_DRAFT}
-                value={car ? `${car.gov_number} [${car.special_model_name || ''}${car.special_model_name ? '/' : ''}${car.model_name || ''}]` : 'Н/Д'}
+                value={car ? `${car.gov_number} [${car.special_model_name || ''}${car.special_model_name ? '/' : ''}${car.model_name || ''}${car.type_name ? '/' : ''}${car.type_name || ''}]` : 'Н/Д'}
               />
             </Col>
             <Col md={6}>

@@ -13,7 +13,7 @@ import {
   hasMotohours,
   isEqualOr,
 } from 'utils/functions';
-import { driverHasLicense, driverHasSpecialLicense, getCars, getDrivers, getTrailers, validateTaxesControl } from './utils';
+import { driverHasLicense, driverHasSpecialLicense, getCars, getDrivers, getTrailers, validateTaxesControl, checkDateMission } from './utils';
 
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { notifications } from 'utils/notifications';
@@ -93,7 +93,7 @@ class WaybillForm extends Form {
     }
 
     this.employeeFIOLabelFunction = employeeFIOLabelFunction(flux);
-
+    flux.getActions('missions').getMissionSources();
     if (formState.status === 'active') {
       const car = _.find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
       const fuel_correction_rate = car.fuel_correction_rate || 1;
@@ -141,11 +141,58 @@ class WaybillForm extends Form {
     if (value === null) {
       return;
     }
-
-    this.getWaybillDrivers({
+    const {
+      notAvailableMissions = [],
+    } = this.state;
+    const {
+      missionsList = [],
+      missionSourcesList = [],
+      formState: {
+        mission_id_list = [],
+        plan_departure_date = this.props.formState.plan_departure_date,
+        plan_arrival_date = this.props.formState.plan_arrival_date,
+      } = {},
+    } = this.props;
+    const dateWaybill = {
+      plan_departure_date,
+      plan_arrival_date,
       [field]: value,
-    });
-    this.handleChange(field, value);
+    };
+
+    const idFaxogramm = (missionSourcesList.find(({ auto }) => auto) || {}).id;
+    const missionsWithSourceFaxogramm = missionsList.concat(...notAvailableMissions).reduce((missions, { id, number, mission_source_id, date_end, date_start }) => {
+      if (!missions[id] && mission_id_list.includes(id) && checkDateMission({ date_end, date_start, dateWaybill }) && idFaxogramm === mission_source_id ) {
+        missions[id] = number;
+      }
+      return missions;
+    },
+    {});
+
+    const missionsNum = Object.values(missionsWithSourceFaxogramm).map(num => `задание ${num}`);
+
+    if (missionsNum.length !== 0) {
+      confirmDialog({
+        title: 'Внимание!',
+        body: (
+          <div>
+            <p>{`Привязанные ${missionsNum.join(', ')} будут исключены из ПЛ, поскольку выходят за период действия ПЛ.`}</p>
+            <p>Вы уверены, что хотите продолжить?</p>
+          </div>
+        ),
+      })
+      .then(() => {
+        this.getWaybillDrivers({
+          [field]: value,
+        });
+        this.handleChange(field, value);
+      })
+      .catch(() => {});
+    } else {
+      this.getWaybillDrivers({
+        [field]: value,
+      });
+      this.handleChange(field, value);
+    }
   }
   async getWaybillDrivers({
     plan_departure_date = this.props.formState.plan_departure_date,

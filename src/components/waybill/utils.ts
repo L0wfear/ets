@@ -1,4 +1,5 @@
 import * as R from 'ramda';
+import * as moment from 'moment';
 
 import { IVehicle } from 'api/@types/services/index.h';
 
@@ -38,7 +39,7 @@ const vehicleMapper = R.map<IVehicle, any>(c => ({
   value: c.asuods_id,
   model_id: c.model_id,
   gov_number: c.gov_number,
-  label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`,
+  label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}${c.type_name ? '/' : ''}${c.type_name || ''}]`,
 }));
 
 export const getCars = structure_id => R.pipe(
@@ -92,4 +93,15 @@ export function validateTaxesControl(taxes: Array<Array<any>>): boolean {
         t && t.OPERATION !== undefined,
       ).includes(false),
     ).includes(true);
+}
+
+export function checkDateMission({ date_start, date_end, dateWaybill: { plan_departure_date, plan_arrival_date } }) {
+  if (
+    moment(date_end).format(`${global.APP_DATE_FORMAT} HH:mm`) < moment(plan_departure_date).format(`${global.APP_DATE_FORMAT} HH:mm`)
+    ||
+    moment(plan_arrival_date).format(`${global.APP_DATE_FORMAT} HH:mm`) < moment(date_start).format(`${global.APP_DATE_FORMAT} HH:mm`)
+  ) {
+    return true;
+  }
+  return false;
 }

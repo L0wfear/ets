@@ -10,8 +10,7 @@ import TechnicalOperationsTable from './TechnicalOperationsTable.jsx';
   entity: 'technical_operation',
   listName: 'technicalOperationsRegistryList',
   tableComponent: TechnicalOperationsTable,
-  formComponent: TechnicalOperationFormWrap,
-  operations: ['READ', 'UPDATE'],
+  operations: ['UPDATE'],
 })
 export default class TechOperationsDirectory extends ElementsList {
 

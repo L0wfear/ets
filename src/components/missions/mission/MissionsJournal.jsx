@@ -197,13 +197,14 @@ export default class MissionsJournal extends CheckableElementsList {
       } = this.state;
       const id = selectedElement[this.selectField];
 
-      return this.removeElementAction(id).then(() => {
+      return this.removeElementAction(id, false).then(() => {
         this.setState({
           checkedElements: {},
           selectedElement: null,
         });
         global.NOTIFICATION_SYSTEM.notify('Данные успешно удалены');
-      });
+      })
+      .catch(() => global.NOTIFICATION_SYSTEM.notify('Произошла ошибка при удалении', 'error'));
     })
     .catch(() => {});
   }
@@ -230,7 +231,14 @@ export default class MissionsJournal extends CheckableElementsList {
         const elList = Array(countCheckEl).fill(false);
 
         checkElList.forEach((el, i) => {
-          callbackForCheckedElement(el[this.selectField]).then(() => {
+          callbackForCheckedElement(el[this.selectField], false).then(() => {
+            elList[i] = true;
+            if (!elList.some(elD => !elD)) {
+              this.refreshList();
+              global.NOTIFICATION_SYSTEM.notify(notifyText);
+            }
+          })
+          .catch(() => {
             elList[i] = true;
             if (!elList.some(elD => !elD)) {
               this.refreshList();

@@ -106,7 +106,7 @@ export default class MissionsActions extends Actions {
     return MissionSourceService.get(payload);
   }
 
-  createMission(mission, defaultAssign ) {
+  createMission(mission, defaultAssign) {
     const payload = _.clone(mission);
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);

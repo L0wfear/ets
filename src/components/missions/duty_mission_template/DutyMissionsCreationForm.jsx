@@ -15,7 +15,12 @@ class MissionsCreationForm extends Form {
 
     const { missionSourcesList = [] } = this.props;
 
-    const MISSION_SOURCES = missionSourcesList.map(({ id, name, auto }) => ({ value: id, label: name, disabled: auto }));
+    const MISSION_SOURCES = missionSourcesList.reduce((newArr, { id, name, auto }) => {
+      if (!auto || state.mission_source_id === id) {
+        newArr.push({ value: id, label: name });
+      }
+      return newArr;
+    }, []);
 
     console.log('form state is ', state);
 

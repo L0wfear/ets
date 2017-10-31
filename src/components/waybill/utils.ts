@@ -39,7 +39,7 @@ const vehicleMapper = R.map<IVehicle, any>(c => ({
   value: c.asuods_id,
   model_id: c.model_id,
   gov_number: c.gov_number,
-  label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`,
+  label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}${c.type_name ? '/' : ''}${c.type_name || ''}]`,
 }));
 
 export const getCars = structure_id => R.pipe(

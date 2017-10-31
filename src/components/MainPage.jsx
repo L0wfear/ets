@@ -7,6 +7,7 @@ import {
   NavDropdown as BootstrapNavDropdown,
   MenuItem as BootstrapMenuItem,
 } from 'react-bootstrap';
+import moment from 'moment';
 
 import config from 'config';
 import { autobind } from 'core-decorators';
@@ -183,7 +184,11 @@ export default class MainPage extends React.Component {
             onHide={this.hideFormTp}
           />
           <ModalRule
-            show={path.includes('showFormRule')}
+            show={
+              path.includes('showFormRule') &&
+              moment(new Date()).format(`${global.APP_DATE_FORMAT} HH:mm`) > moment('2017-11-01T00:00:00').format(`${global.APP_DATE_FORMAT} HH:mm`) &&
+              moment(new Date()).format(`${global.APP_DATE_FORMAT} HH:mm`) < moment('2017-11-01T18:00:00').format(`${global.APP_DATE_FORMAT} HH:mm`)
+            }
             onHide={this.hideFormRule}
           />
           {this.props.children}

@@ -76,6 +76,7 @@ export default class MissionsJournal extends CheckableElementsList {
       this.refreshList(nextState);
     }
   }
+
   async refreshList(state = this.state) {
     const pageOffset = state.page * MAX_ITEMS_PER_PAGE;
     const missions = await this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, pageOffset, state.sortBy, state.filter);
@@ -111,7 +112,8 @@ export default class MissionsJournal extends CheckableElementsList {
   checkDisabledDelete() {
     return (
       super.checkDisabledDelete() ||
-      (this.state.selectedElement && this.state.selectedElement.status !== 'not_assigned')
+      (this.state.selectedElement && this.state.selectedElement.status !== 'not_assigned') ||
+      (Object.values(this.state.checkedElements).some(el => el.status !== 'not_assigned'))
     );
   }
 

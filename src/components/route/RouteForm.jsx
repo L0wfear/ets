@@ -9,6 +9,12 @@ import { connectToStores } from 'utils/decorators';
 import RouteCreating from './RouteCreating.jsx';
 import Form from '../compositions/Form.jsx';
 
+const dictRouteTypes = {
+  mixed: 'ОДХ',
+  points: 'ПН',
+  simple_dt: 'ДТ',
+};
+
 @connectToStores(['objects', 'geoObjects'])
 @autobind
 export default class RouteForm extends Form {
@@ -40,6 +46,9 @@ export default class RouteForm extends Form {
     const route_type_options = [];
 
     technicalOperation.objects.forEach((obj) => {
+      if (!!this.props.fromMission && !this.props.available_route_types.find(name => dictRouteTypes[name] === obj.name)) {
+        return;
+      }
       switch (obj.name) {
         case 'ОДХ':
           route_type_options.push({ value: 'mixed', label: 'Выбор из ОДХ' });

@@ -12,6 +12,9 @@ function getTechnicalOperationsRegistry(payload = {}) {
 }
 
 export default class TechnicalOperationsActions extends Actions {
+  getOneTechOperationByNormId({ norm_id }) {
+    return TechnicalOperationRegistryService.get({ norm_id }, false, 'json');
+  }
 
   getTechnicalOperationsObjects() {
     return TechnicalOperationObjectsService.get();

@@ -8,6 +8,7 @@ import {
   NavDropdown as BootstrapNavDropdown,
   MenuItem as BootstrapMenuItem,
 } from 'react-bootstrap';
+import moment from 'moment';
 
 import config from 'config';
 import { autobind } from 'core-decorators';

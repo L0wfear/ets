@@ -101,7 +101,7 @@ class WaybillForm extends Form {
         const fuelRates = r.result.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date }));
         flux.getActions('fuelRates').getFuelOperations().then((fuelOperations) => {
           const operations = _.filter(fuelOperations.result, op => _.find(fuelRates, fr => fr.operation_id === op.id));
-          flux.getActions('fuelRates').getEquipmentFuelRatesByCarModel(formState.car_id).then((equipmentFuelRatesResponse) => {
+          flux.getActions('fuelRates').getEquipmentFuelRatesByCarModel({ car_id: formState.car_id, datetime: formState.date_create }).then((equipmentFuelRatesResponse) => {
             const equipmentFuelRates = equipmentFuelRatesResponse.result.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date }));
             flux.getActions('fuelRates').getFuelOperations().then((equipmentFuelOperations) => {
               const equipmentOperations = _.filter(equipmentFuelOperations.result, op => _.find(equipmentFuelRates, fr => fr.operation_id === op.id));

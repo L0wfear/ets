@@ -121,62 +121,105 @@ export default class MissionsJournal extends CheckableElementsList {
     const mission = _.cloneDeep(this.state.selectedElement);
     mission.status = 'complete';
     await this.context.flux.getActions('missions').updateMission(mission, false);
-    global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
+    this.setState({
+      checkedElements: {},
+      selectedElement: null,
+    });
+    global.NOTIFICATION_SYSTEM.notify('Данные успешно обновлены', 'success');
     this.refreshList(this.state);
   }
 
   rejectMission() {
-    this.setState({ showMissionRejectForm: true });
+    this.setState({
+      showMissionRejectForm: true,
+    });
   }
 
   completeCheckedElements() {
-    let error = false;
-    if (Object.keys(this.state.checkedElements).length !== 0) {
-      _.forEach(this.state.checkedElements, async (mission) => {
-        if (mission.status === 'assigned') {
-          const updatedMission = _.cloneDeep(mission);
-          updatedMission.status = 'complete';
-          await this.context.flux.getActions('missions').updateMission(updatedMission, false);
-        } else error = true;
-      });
+    const checkElList = Object.values(this.state.checkedElements);
+    const countCheckEl = checkElList.length;
 
-      this.refreshList(this.state);
-      this.setState({ checkedElements: {} });
-      if (error) {
-        global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Выполненые" можно только назначенные задания!'));
-      } else {
-        global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
-      }
+    if (countCheckEl !== 0) {
+      const elList = Array(countCheckEl).fill(false);
+
+      checkElList.forEach((mission, i) => {
+        const updatedMission = _.cloneDeep(mission);
+        updatedMission.status = 'complete';
+        
+        this.context.flux.getActions('missions').updateMission(updatedMission, false).then(() => {
+          elList[i] = true;
+          if (!elList.some(elD => !elD)) {
+            this.refreshList();
+            global.NOTIFICATION_SYSTEM.notify('Данные успешно обновлены');
+          }
+        })
+        .catch(() => {
+          elList[i] = true;
+          if (!elList.some(elD => !elD)) {
+            this.refreshList();
+            global.NOTIFICATION_SYSTEM.notify('Произошла ошибка при обновлении данных');
+          }
+        });
+      });
+      this.setState({
+        checkedElements: {},
+        selectedElement: null,
+      });
     } else {
       this.completeMission();
     }
   }
 
   rejectCheckedElements() {
-    let error = false;
-    if (Object.keys(this.state.checkedElements).length !== 0) {
-      _.forEach(this.state.checkedElements, async (mission) => {
+    const checkElList = Object.values(this.state.checkedElements);
+    const countCheckEl = checkElList.length;
+
+    
+    if (countCheckEl !== 0) {
+      const elList = Array(countCheckEl).fill(false);
+
+      checkElList.forEach((mission, i) => {
+        const updatedMission = _.cloneDeep(mission);
+        updatedMission.status = 'fail';
         if (mission.status === 'assigned') {
           const reason = prompt(`Введите причину для задания №${mission.number}`, '');
+
           if (reason) {
-            const updatedMission = _.cloneDeep(mission);
-            updatedMission.status = 'fail';
             updatedMission.comment = reason;
-            await this.context.flux.getActions('missions').updateMission(updatedMission, false);
+
+            
+            this.context.flux.getActions('missions').updateMission(updatedMission, false).then(() => {
+              elList[i] = true;
+              if (!elList.some(elD => !elD)) {
+                this.refreshList();
+                global.NOTIFICATION_SYSTEM.notify('Данные успешно обновлены');
+              }
+            })
+            .catch(() => {
+              elList[i] = true;
+              if (!elList.some(elD => !elD)) {
+                this.refreshList();
+                global.NOTIFICATION_SYSTEM.notify('Произошла ошибка при обновлении данных');
+              }
+            });
           }
-        } else error = true;
+        }
       });
-      this.refreshList(this.state);
-      this.setState({ checkedElements: {} });
-      if (error) {
-        global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Невыполненые" можно только назначенные задания!'));
-      } else {
-        global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
-      }
+      this.setState({
+        checkedElements: {},
+        selectedElement: null,
+      });
     } else {
       this.rejectMission();
+      this.refreshList().then(() => {
+        this.setState({
+          checkedElements: {},
+          selectedElement: null,
+        });
+      });
     }
   }
+
 
   removeCheckedElements = () => {
     this.defActionFunc({

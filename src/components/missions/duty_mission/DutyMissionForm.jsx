@@ -184,6 +184,7 @@ export class DutyMissionForm extends Form {
       employeesList = [],
       missionsList = [],
       readOnly = false,
+      fromFaxogrammMissionForm = false,
     } = this.props;
     const {
       technicalOperationsList = [],
@@ -266,7 +267,7 @@ export class DutyMissionForm extends Form {
                 type="select"
                 label="Технологическая операция"
                 error={errors.technical_operation_id}
-                disabled={IS_DISPLAY || !!state.route_id || readOnly}
+                disabled={IS_DISPLAY || !!state.route_id || readOnly || fromFaxogrammMissionForm}
                 options={TECH_OPERATIONS}
                 value={state.technical_operation_id}
                 onChange={this.handleTechnicalOperationChange.bind(this)}
@@ -341,7 +342,7 @@ export class DutyMissionForm extends Form {
                 id={'municipal_facility_id'}
                 errors={errors}
                 state={state}
-                disabled={IS_DISPLAY || !!state.route_id || readOnly}
+                disabled={IS_DISPLAY || !!state.route_id || readOnly || fromFaxogrammMissionForm}
                 handleChange={this.handleChange.bind(this)}
                 getDataByNormId={this.getDataByNormId}
                 technicalOperationsList={technicalOperationsList}

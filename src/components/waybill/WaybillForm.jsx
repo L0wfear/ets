@@ -525,7 +525,7 @@ class WaybillForm extends Form {
     }
 
     if (IS_ACTIVE) {
-      title = 'Закрыть путевой лист';
+      title = 'Активный путевой лист';
     }
 
     if (IS_CLOSED) {
@@ -938,7 +938,7 @@ class WaybillForm extends Form {
                 {(new Date(origFormState.fact_arrival_date).getTime() > new Date(state.fact_arrival_date).getTime()) && (state.status === 'active') && (
                   <div style={{ color: 'red' }}>{`Задания: ${OUTSIDEMISSIONS.map(m => `№${m.number}`).join(', ')} не входят в интервал путевого листа. После сохранения путевого листа время задания будет уменьшено и приравнено к времени "Возвращение факт." данного путевого листа`}</div>
                 )}
-                <Button style={{ marginTop: 10 }} onClick={this.createMission} disabled={isEmpty(state.car_id) || IS_CLOSED}>Создать задание</Button>
+                <Button style={{ marginTop: 10 }} onClick={this.createMission} disabled={isEmpty(state.car_id) || IS_CLOSED || (IS_ACTIVE && state.fact_arrival_date)}>Создать задание</Button>
                 <MissionFormWrap
                   onFormHide={this.onMissionFormHide}
                   showForm={this.state.showMissionForm}

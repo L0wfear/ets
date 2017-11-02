@@ -1,9 +1,9 @@
 import Raven from 'raven-js';
 
-const ACTIVE = process.env.NODE_ENV === 'production';
-// stage // http://79c9fa1b267c454ca680692b9d2d4d25@172.17.31.73:9000/7
-// prod // http://bde014009c3f4c80bd3e840296fd94c9@172.17.31.73:9000/8
-// dev // http://6abe791fb4544929a9845cebb7a194df@46.161.0.203/7
+const ACTIVE = true;
+// stage // http://9cf00c5af7804d79ae36357a8eabeeb3@46.161.0.203/13
+// prod // http://a882c1df2e384264bed48402cff3fa25@46.161.0.203/8
+// dev // http://aa6710a11a65405bbad39136e062c3af@46.161.0.203/12
 const SENTRY_KEYS_BY_STAND = {
   'stage': '79c9fa1b267c454ca680692b9d2d4d25', // http://172.17.31.73:9000/sentry/ets-frontend-dev/
   'prod': 'bde014009c3f4c80bd3e840296fd94c9', // http://172.17.31.73:9000/sentry/ets-frontend-prod/

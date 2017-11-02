@@ -1,5 +1,5 @@
 const PROTO = window.location.host.includes('localhost') ? 'https:' : window.location.protocol;
-const WS_PROTO = 'ws:';
+const WS_PROTO = 'wss:';
 
 const DOC_URL = {
   dev: `${PROTO}//dev-ets.gost-group.com/docs/`,

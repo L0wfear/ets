@@ -8,6 +8,7 @@ import { saveData } from 'utils/functions';
 import { getToday0am, getToday2359 } from 'utils/dates';
 import { autobind } from 'core-decorators';
 import MissionFormWrap from 'components/missions/mission/MissionFormWrap.jsx';
+import DutyMissionFormWrap from 'components/missions/duty_mission/DutyMissionFormWrap';
 
 import FaxogrammsDatepicker from './FaxogrammsDatepicker.jsx';
 import FaxogrammMissionsFormWrap from './FaxogrammMissionsFormWrap.jsx';
@@ -37,11 +38,17 @@ class FaxogrammDirectory extends ElementsList {
       sortBy: ['order_number:desc'],
       filter: {},
       showFormCreateMission: false,
+      showFormCreateDutyMission: false,
+      dmElement: {},
+      initDutyMission: {},
+      fOperationSelectedElement: {},
     };
   }
 
   componentDidMount() {
     super.componentDidMount();
+    this.context.flux.getActions('missions').getMissionSources();
+
     const { id } = this.props.routeParams;
 
     this.getFaxogramms();
@@ -210,6 +217,32 @@ class FaxogrammDirectory extends ElementsList {
       .catch(e => console.error(e));
   }
   onHideCM = () => this.setState({ showFormCreateMission: false });
+  handleClickOnCDM = () => {
+    const newPropsState = {
+      showFormCreateDutyMission: true,
+    };
+    const { fOperationSelectedElement: { id: technical_operation_id, date_from, date_to, municipal_facility_id } } = this.state;
+    const { selectedElement: { id: faxogramm_id, order_date, order_date_to, order_number } } = this.state;
+    const { missionSourcesList = [] } = this.props;
+
+    const dmElement = {
+      technical_operation_id,
+      municipal_facility_id,
+      faxogramm_id,
+      order_number,
+      plan_date_start: date_from || order_date,
+      plan_date_end: date_to || order_date_to,
+      mission_source_id: (missionSourcesList.find(({ auto }) => auto) || {}).id,
+    };
+    const initDutyMission = { ...dmElement };
+
+    newPropsState.dmElement = dmElement;
+    newPropsState.initDutyMission = initDutyMission;
+
+    this.setState({ ...newPropsState });
+  }
+  onHideCDM = () => this.setState({ showFormCreateDutyMission: false });
+
   fInfoRowSelected = ({ props }) => {
     this.setState({ fOperationSelectedElement: props.data });
   }
@@ -221,6 +254,16 @@ class FaxogrammDirectory extends ElementsList {
     }
     this.selectElement(dataFromGriddle);
   }
+  checkDisabledCM = () => {
+    const { num_exec = 0 } = this.state.fOperationSelectedElement || {};
+    const faxogramm = this.state.selectedElement || {};
+
+    return !num_exec || faxogramm.status === 'cancelled';
+  }
+  checkDisabledCDM = () => {
+    const { work_type_name = '' } = this.state.fOperationSelectedElement || {};
+    return !((work_type_name === null) || work_type_name === 'Ручные' || work_type_name === 'Комбинированный');
+  }
 
   render() {
     const { faxogrammsList = [] } = this.props;
@@ -228,9 +271,11 @@ class FaxogrammDirectory extends ElementsList {
     const faxogrammInfoData = [{ id: 0, order_info: faxogramm.order_info }];
     const {
       showFormCreateMission = false,
+      showFormCreateDutyMission = false,
       externalData = {},
+      dmElement = {},
+      initDutyMission = {},
     } = this.state;
-    const { num_exec = 0 } = this.state.fOperationSelectedElement || {};
 
     return (
       <div className="ets-page-wrap" ref={node => (this.node = node)}>
@@ -243,7 +288,8 @@ class FaxogrammDirectory extends ElementsList {
           {...this.props}
           {...this.getAdditionalProps()}
         >
-          <Button onClick={this.handleClickOnCM} disabled={!num_exec || faxogramm.status === 'cancelled'}>Создать задание</Button>
+          <Button onClick={this.handleClickOnCM} disabled={this.checkDisabledCM()}>Создать задание</Button>
+          <Button onClick={this.handleClickOnCDM} disabled={this.checkDisabledCDM()}>Создать наряд-задание</Button>
           <Button onClick={this.saveFaxogramm} disabled={this.state.selectedElement === null}><Glyphicon glyph="download-alt" /></Button>
         </FaxogrammsTable>
         <FaxogrammMissionsFormWrap
@@ -255,7 +301,7 @@ class FaxogrammDirectory extends ElementsList {
         <Paginator currentPage={this.state.page} maxPage={Math.ceil(this.props.faxogrammsTotalCount / MAX_ITEMS_PER_PAGE)} setPage={page => this.setState({ page })} firstLastButtons />
         <Div hidden={this.state.selectedElement === null}>
           <Row>
-            <h4 style={{ marginLeft: 20, fontWeight: 'bold' }}>Расшифровка факсограммы</h4>
+            <h4 style={{ marginLeft: 20, fontWeight: 'bold' }}>Расшифровка централизованного задания</h4>
             <Col md={8}>
               <FaxogrammOperationInfoTable
                 noHeader
@@ -286,9 +332,16 @@ class FaxogrammDirectory extends ElementsList {
           faxogrammEndDate={this.state.date_end}
           timeFaxogramm={this.state.timeFaxogramm}
         />
+        <DutyMissionFormWrap
+          fromFaxogrammMissionForm
+          showForm={showFormCreateDutyMission}
+          onFormHide={this.onHideCDM}
+          element={dmElement}
+          initDutyMission={initDutyMission}
+        />
       </div>
     );
   }
 }
 
-export default connectToStores(FaxogrammDirectory, ['objects']);
+export default connectToStores(FaxogrammDirectory, ['objects', 'missions']);

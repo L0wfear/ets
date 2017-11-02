@@ -60,7 +60,6 @@ const MainInfoTab: React.SFC<IPropsMainInfoTab> = props =>
           label="Подразделение"
           options={props.companyElements}
           value={props.state.company_structure_id}
-          clearable={false}
           onChange={props.onChange}
           boundKeys={['company_structure_id']}
           disabled={!props.isPermitted}

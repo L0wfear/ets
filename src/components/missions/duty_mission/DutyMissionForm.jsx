@@ -10,8 +10,10 @@ import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import { isEmpty } from 'utils/functions';
 import Form from 'components/compositions/Form.jsx';
+import InsideField from 'components/missions/duty_mission/inside_fields/index';
 
 import { FormTitle, onlyActiveEmployeeNotification } from './utils';
+
 
 export class DutyMissionForm extends Form {
 
@@ -22,6 +24,7 @@ export class DutyMissionForm extends Form {
       selectedRoute: null,
       showRouteForm: false,
       routesList: [],
+      available_route_types: [],
     };
   }
 
@@ -38,14 +41,18 @@ export class DutyMissionForm extends Form {
   }
 
   async handleTechnicalOperationChange(v) {
+    const {
+      flux,
+    } = this.context;
+
     this.handleChange('technical_operation_id', v);
     this.handleChange('route_id', undefined);
     if (!isEmpty(this.props.formState.car_mission_id)) {
       this.handleChange('car_mission_id', 0);
     }
-    this.context.flux.getActions('missions').getMissions(v);
+    flux.getActions('missions').getMissions(v);
 
-    const routesList = await this.context.flux.getActions('routes')
+    const routesList = await flux.getActions('routes')
       .getRoutesByTechnicalOperation(v);
     if (routesList.length === 1) {
       this.handleRouteIdChange(routesList[0].id);
@@ -158,6 +165,16 @@ export class DutyMissionForm extends Form {
   componentWillReceiveProps(props) {
   }
 
+  getDataByNormId = (norm_id) => {
+    this.context.flux.getActions('technicalOperation').getOneTechOperationByNormId({ norm_id }).then(({ result: { rows: [to_data = {}] } }) => {
+      const {
+        route_types: available_route_types = [],
+      } = to_data;
+      this.setState({ available_route_types });
+    });
+    this.handleChange('norm_id', norm_id);
+  }
+
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
@@ -167,10 +184,12 @@ export class DutyMissionForm extends Form {
       employeesList = [],
       missionsList = [],
       readOnly = false,
+      fromFaxogrammMissionForm = false,
     } = this.props;
     const {
       technicalOperationsList = [],
       routesList = [],
+      available_route_types = [],
     } = this.state;
 
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
@@ -248,7 +267,7 @@ export class DutyMissionForm extends Form {
                 type="select"
                 label="Технологическая операция"
                 error={errors.technical_operation_id}
-                disabled={IS_DISPLAY || !!state.route_id || readOnly}
+                disabled={IS_DISPLAY || !!state.route_id || readOnly || fromFaxogrammMissionForm}
                 options={TECH_OPERATIONS}
                 value={state.technical_operation_id}
                 onChange={this.handleTechnicalOperationChange.bind(this)}
@@ -317,7 +336,19 @@ export class DutyMissionForm extends Form {
 
 
           </Row>
-
+          <Row>
+            <Col md={12}>
+              <InsideField.MunicipalFacility
+                id={'municipal_facility_id'}
+                errors={errors}
+                state={state}
+                disabled={IS_DISPLAY || !!state.route_id || readOnly || fromFaxogrammMissionForm}
+                handleChange={this.handleChange.bind(this)}
+                getDataByNormId={this.getDataByNormId}
+                technicalOperationsList={technicalOperationsList}
+              />
+            </Col>
+          </Row>
           <Row>
             <Col md={6}>
               <Field
@@ -358,12 +389,12 @@ export class DutyMissionForm extends Form {
           <Row>
             <Col md={6}>
               <Field type="select" label="Источник получения задания" error={errors.mission_source_id}
-                disabled={IS_DISPLAY || readOnly}
+                disabled={IS_DISPLAY || readOnly || this.props.fromFaxogrammMissionForm}
                 options={MISSION_SOURCES}
                 value={state.mission_source_id}
                 onChange={this.handleChange.bind(this, 'mission_source_id')}
               />
-              { IS_CREATING && <span style={{ opacity: 0.5 }}>{'Задания на основе факсограмм необходимо создавать во вкладке "НСИ"-"Реестр факсограмм".'}</span> }
+              { IS_CREATING && this.props.fromFaxogrammMissionForm && <span style={{ opacity: 0.5 }}>{'Задания на основе централизованных заданий необходимо создавать во вкладке "НСИ"-"Реестр централизованных заданий".'}</span> }
             </Col>
             <Col md={6}>
               <Field
@@ -382,7 +413,7 @@ export class DutyMissionForm extends Form {
               { state.order_number !== null &&
                 <Field
                   type="string"
-                  label="Номер факсограммы"
+                  label="Номер централизованного задания"
                   readOnly
                   value={state.order_number}
                 />
@@ -438,6 +469,7 @@ export class DutyMissionForm extends Form {
           onFormHide={this.onFormHide.bind(this)}
           showForm={this.state.showRouteForm}
           structureId={state.structure_id}
+          available_route_types={available_route_types}
           fromMission
         />
       </Modal>

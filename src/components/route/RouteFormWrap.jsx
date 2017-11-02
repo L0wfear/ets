@@ -90,10 +90,25 @@ class RouteFormWrap extends FormWrap {
     }
     this.setState({ formErrors });
   }
+  additionalProps() {
+    const { fromMission = false } = this.props;
+
+    if (fromMission) {
+      const {
+        available_route_types = {},
+      } = this.props;
+
+      return {
+        available_route_types,
+      };
+    }
+    return {
+    };
+  }
 
   render() {
     const props = this.props;
-    
+
     return props.showForm ?
       <RouteForm
         formState={this.state.formState}
@@ -106,6 +121,7 @@ class RouteFormWrap extends FormWrap {
         structureId={this.props.structureId}
         fromFaxogrammMissionForm={this.props.fromFaxogrammMissionForm}
         {...this.state}
+        {...this.additionalProps()}
       />
       : null;
   }

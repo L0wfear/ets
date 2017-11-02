@@ -1,5 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import _ from 'lodash';
+import moment from 'moment';
+
 import Div from 'components/ui/Div.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import { getDefaultDutyMission } from 'stores/MissionsStore.js';
@@ -39,6 +41,38 @@ class DutyMissionFormWrap extends FormWrap {
   }
 
   /**
+   * Валидация формы
+   * Если миссия создаётся из реестра централизованных заданий, то идёт проверка на даты на графницы поручения(централизованных заданий)
+   * @override
+   */
+  validate(state, errors) {
+    const formErrors = super.validate(state, errors);
+
+    if (this.props.fromFaxogrammMissionForm && this.props.initDutyMission.plan_date_start) {
+      const {
+        initDutyMission: {
+          plan_date_start: init_pds,
+          plan_date_end: init_pde,
+        } = {},
+      } = this.props;
+      const {
+        initDutyMission: {
+          plan_date_start: new_pds,
+          plan_date_end: new_pde,
+        } = {},
+      } = state;
+
+      if (moment(new_pds).toDate().getTime() < moment(init_pds).toDate().getTime()) {
+        formErrors.plan_date_start = 'Дата не должна выходить за пределы действия поручения';
+      }
+      if (moment(new_pde).toDate().getTime() > moment(init_pde).toDate().getTime()) {
+        formErrors.plan_date_end = 'Дата не должна выходить за пределы действия поручения';
+      }
+    }
+
+    return formErrors;
+  }
+  /**
    * @override
    * @param {*} formState
    */
@@ -65,6 +99,7 @@ class DutyMissionFormWrap extends FormWrap {
         onHide={this.props.onFormHide}
         fromWaybill={this.props.fromWaybill}
         readOnly={this.props.readOnly}
+        fromFaxogrammMissionForm={!!this.props.fromFaxogrammMissionForm}
         {...this.state}
       />
     </Div>);

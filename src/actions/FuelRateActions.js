@@ -21,16 +21,24 @@ export default class FuelRateActions extends Actions {
     return getFuelRates();
   }
 
-  getFuelRatesByCarModel(car_id) {
-    const payload = { car_id };
+  getFuelRatesByCarModel({ car_id, datetime }) {
+    const payload = {
+      car_id,
+    };
+    if (datetime) {
+      payload.datetime = datetime;
+    }
     return getFuelRates(payload);
   }
 
-  getEquipmentFuelRatesByCarModel(car_id) {
+  getEquipmentFuelRatesByCarModel({ car_id, datetime }) {
     const payload = {
       car_id,
       for_equipment: 1,
     };
+    if (datetime) {
+      payload.datetime = datetime;
+    }
     return getFuelRates(payload);
   }
 

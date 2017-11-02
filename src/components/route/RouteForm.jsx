@@ -9,6 +9,12 @@ import { connectToStores } from 'utils/decorators';
 import RouteCreating from './RouteCreating.jsx';
 import Form from '../compositions/Form.jsx';
 
+const dictRouteTypes = {
+  mixed: 'ОДХ',
+  points: 'ПН',
+  simple_dt: 'ДТ',
+};
+
 @connectToStores(['objects', 'geoObjects'])
 @autobind
 export default class RouteForm extends Form {
@@ -40,6 +46,9 @@ export default class RouteForm extends Form {
     const route_type_options = [];
 
     technicalOperation.objects.forEach((obj) => {
+      if (!!this.props.fromMission && !this.props.available_route_types.find(name => dictRouteTypes[name] === obj.name)) {
+        return;
+      }
       switch (obj.name) {
         case 'ОДХ':
           route_type_options.push({ value: 'mixed', label: 'Выбор из ОДХ' });
@@ -82,17 +91,10 @@ export default class RouteForm extends Form {
     this.handleChange('draw_object_list', []);
   }
 
-  async getTechnicalOperationsByType(type) {
-    const { flux } = this.context;
-
-    const technicalOperationsList = await flux.getActions('technicalOperation').getTechnicalOperationsByObjectsType(type);
-    this.setState({ technicalOperationsList });
-  }
-
   async componentDidMount() {
     const { flux } = this.context;
     const { formState } = this.props;
-    const technicalOperationsResponse = await flux.getActions('technicalOperation').getTechnicalOperations(true);
+    const technicalOperationsResponse = await flux.getActions('technicalOperation').getTechnicalOperations();
     let technicalOperationsList = technicalOperationsResponse.result;
 
     if (formState.technical_operation_id && !formState.copy) {
@@ -106,7 +108,6 @@ export default class RouteForm extends Form {
 
     const getObjectIdByType = type => OBJECTS_BY_TYPE[type] || 1;
 
-    // this.getTechnicalOperationsByType(formState.type);
     if (formState.copy) {
       technicalOperationsList = technicalOperationsList.filter(to =>
          to.objects.find(o => o.id === getObjectIdByType(formState.type))
@@ -194,7 +195,7 @@ export default class RouteForm extends Form {
               <Col md={STRUCTURE_FIELD_VIEW ? 3 : 4}>
                 <Field
                   type="select"
-                  label="Способ построения маршрута"
+                  label="Тип объекта"
                   options={ROUTE_TYPE_OPTIONS}
                   value={state.type !== 'mixed' ? state.type : 'mixed'}
                   clearable={false}

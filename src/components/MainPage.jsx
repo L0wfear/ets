@@ -7,10 +7,13 @@ import {
   NavDropdown as BootstrapNavDropdown,
   MenuItem as BootstrapMenuItem,
 } from 'react-bootstrap';
+import moment from 'moment';
 
 import config from 'config';
 import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
 import ModalTP from 'components/modalTP/ModalTP.tsx';
+import ModalRule from 'components/modalTP/ModalRule.tsx';
+
 import { FluxContext, HistoryContext } from 'utils/decorators';
 import PERMISSIONS from 'constants/permissions';
 import NotificationBage from 'components/notifications/NotificationBadge.tsx';

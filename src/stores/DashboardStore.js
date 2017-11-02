@@ -27,7 +27,7 @@ const dashboardComponents = [
   {
     id: 9,
     key: 'faxogramms',
-    itemsTitle: 'Расшифровка факсограммы',
+    itemsTitle: 'Расшифровка централизованных заданий',
   },
   {
     id: 12,

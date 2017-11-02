@@ -128,23 +128,6 @@ export default class WaybillFormWrap extends FormWrap {
     }
   }
 
-  validateWaybillDate = ({ from_handlePrint, from_handleClose }) => {
-    const { formState: { plan_departure_date, fact_departure_date } } = this.state;
-
-    if (from_handlePrint) {
-      if (+(new Date()) - +(new Date(plan_departure_date)) > 5 * 60 * 1000) {
-        return false;
-      }
-    }
-    if (from_handleClose) {
-      if (+(new Date()) - +(new Date(fact_departure_date)) > 5 * 60 * 1000) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
   handleFieldsChange(formState) {
     let { formErrors } = this.state;
     const newState = {};
@@ -238,10 +221,6 @@ export default class WaybillFormWrap extends FormWrap {
    * @return {undefined}
    */
   handlePrint(printonly, print_form_type) {
-    if (!this.validateWaybillDate({ from_handlePrint: true })) {
-      global.NOTIFICATION_SYSTEM.notify(getWarningNotification('"Выезд план." не может быть меньше текущего времени минус 5 минут'));
-      return;
-    }
     const { flux } = this.context;
     const { formState } = this.state;
 
@@ -353,15 +332,12 @@ export default class WaybillFormWrap extends FormWrap {
       global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Необходимо заполнить нормы для расчета топлива!'));
       return;
     }
-    if (!this.validateWaybillDate({ from_handleClose: true })) {
-      global.NOTIFICATION_SYSTEM.notify(getWarningNotification('"Выезд факт." не может быть меньше текущего времени минус 5 минут'));
-      return;
-    }
+
     confirmDialog({
       title: 'Внимание: После закрытия путевого листа редактирование полей будет запрещено.',
       body: 'Вы уверены, что хотите закрыть окно?',
     })
-    .then((async) () => {
+    .then(async () => {
       try {
         formState.status = 'closed';
         await this.context.flux.getActions('waybills').updateWaybill(formState);

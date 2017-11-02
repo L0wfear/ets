@@ -13,7 +13,7 @@ export default (props) => {
   };
 
   return (<Table
-    title="Реестр факсограмм"
+    title="Реестр централизованных заданий"
     results={props.data}
     tableMeta={tableMeta}
     {...props}

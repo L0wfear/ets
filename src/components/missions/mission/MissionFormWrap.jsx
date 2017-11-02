@@ -91,7 +91,7 @@ export default class MissionFormWrap extends FormWrap {
       const date_end = this.props.externalData.to_data.date_to || this.props.externalData.faxogramm_date.order_date_to;
       const { num_exec = 0 } = this.props.externalData.to_data;
 
-      const borderName = this.props.externalData.to_data.date_from ? 'поручения' : 'факсограммы';
+      const borderName = 'поручения';
 
       if (moment(formState.date_start).toDate().getTime() < moment(date_start).toDate().getTime()) {
         formErrors.date_start = `Дата не должна выходить за пределы действия ${borderName}`;

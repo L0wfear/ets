@@ -85,7 +85,7 @@ export default (props) => {
   };
 
   return (<Table
-    title="Реестр факсограмм"
+    title="Реестр централизованных заданий (факсограмм)"
     results={props.data}
     renderers={renderers}
     tableMeta={getTableMeta(props)}

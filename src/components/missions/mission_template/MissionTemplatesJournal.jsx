@@ -158,7 +158,7 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
     return {
       structures,
       noHeader: this.props.renderOnly,
-      noDataMessage: this.props.payload.faxogramm_id ? 'Для выбранной факсограммы нет подходящих шаблонов заданий' : null,
+      noDataMessage: this.props.payload.faxogramm_id ? 'Для выбранной централизованного задания нет подходящих шаблонов заданий' : null,
       data: missionTemplatesList,
     };
   }

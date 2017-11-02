@@ -45,7 +45,7 @@ const getTableMeta = (props) => {
           options: [
             { label: 'Регламентные работы', value: 'Регламентные работы' },
             { label: 'Заявка', value: 'Заявка' },
-            { label: 'Факсограмма', value: 'Факсограмма' },
+            { label: 'Централизованное задание', value: 'Централизованное задание' },
           ],
         },
         cssClassName: 'width150',

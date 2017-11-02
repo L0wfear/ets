@@ -301,7 +301,7 @@ class FaxogrammDirectory extends ElementsList {
         <Paginator currentPage={this.state.page} maxPage={Math.ceil(this.props.faxogrammsTotalCount / MAX_ITEMS_PER_PAGE)} setPage={page => this.setState({ page })} firstLastButtons />
         <Div hidden={this.state.selectedElement === null}>
           <Row>
-            <h4 style={{ marginLeft: 20, fontWeight: 'bold' }}>Расшифровка факсограммы</h4>
+            <h4 style={{ marginLeft: 20, fontWeight: 'bold' }}>Расшифровка централизованного задания</h4>
             <Col md={8}>
               <FaxogrammOperationInfoTable
                 noHeader

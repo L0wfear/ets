@@ -91,17 +91,10 @@ export default class RouteForm extends Form {
     this.handleChange('draw_object_list', []);
   }
 
-  async getTechnicalOperationsByType(type) {
-    const { flux } = this.context;
-
-    const technicalOperationsList = await flux.getActions('technicalOperation').getTechnicalOperationsByObjectsType(type);
-    this.setState({ technicalOperationsList });
-  }
-
   async componentDidMount() {
     const { flux } = this.context;
     const { formState } = this.props;
-    const technicalOperationsResponse = await flux.getActions('technicalOperation').getTechnicalOperations(true);
+    const technicalOperationsResponse = await flux.getActions('technicalOperation').getTechnicalOperations();
     let technicalOperationsList = technicalOperationsResponse.result;
 
     if (formState.technical_operation_id && !formState.copy) {
@@ -115,7 +108,6 @@ export default class RouteForm extends Form {
 
     const getObjectIdByType = type => OBJECTS_BY_TYPE[type] || 1;
 
-    // this.getTechnicalOperationsByType(formState.type);
     if (formState.copy) {
       technicalOperationsList = technicalOperationsList.filter(to =>
          to.objects.find(o => o.id === getObjectIdByType(formState.type))

@@ -17,7 +17,7 @@ export default class TechOperationsDirectory extends ElementsList {
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
-    flux.getActions('technicalOperation').getTechnicalOperationsRegistry(true).then((ans) => {
+    flux.getActions('technicalOperation').getTechnicalOperationsRegistry().then((ans) => {
       const {
         result = [],
       } = ans;

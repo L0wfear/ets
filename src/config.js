@@ -1,4 +1,4 @@
-const PROTO = window.location.host.includes('localhost') ? 'https:' : window.location.protocol;
+const PROTO = window.location.host.includes('localhost') ? `http${process.env.STAND === 'dev' ? '' : 's'}:` : window.location.protocol;
 const WS_PROTO = 'wss:';
 
 const DOC_URL = {

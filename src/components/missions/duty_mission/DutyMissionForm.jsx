@@ -389,12 +389,12 @@ export class DutyMissionForm extends Form {
           <Row>
             <Col md={6}>
               <Field type="select" label="Источник получения задания" error={errors.mission_source_id}
-                disabled={IS_DISPLAY || readOnly}
+                disabled={IS_DISPLAY || readOnly || this.props.fromFaxogrammMissionForm}
                 options={MISSION_SOURCES}
                 value={state.mission_source_id}
                 onChange={this.handleChange.bind(this, 'mission_source_id')}
               />
-              { IS_CREATING && <span style={{ opacity: 0.5 }}>{'Задания на основе факсограмм необходимо создавать во вкладке "НСИ"-"Реестр факсограмм".'}</span> }
+              { IS_CREATING && !this.props.fromFaxogrammMissionForm && <span style={{ opacity: 0.5 }}>{'Задания на основе факсограмм необходимо создавать во вкладке "НСИ"-"Реестр факсограмм".'}</span> }
             </Col>
             <Col md={6}>
               <Field

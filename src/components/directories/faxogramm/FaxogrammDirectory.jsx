@@ -47,6 +47,8 @@ class FaxogrammDirectory extends ElementsList {
 
   componentDidMount() {
     super.componentDidMount();
+    this.context.flux.getActions('missions').getMissionSources();
+
     const { id } = this.props.routeParams;
 
     this.getFaxogramms();
@@ -220,14 +222,17 @@ class FaxogrammDirectory extends ElementsList {
       showFormCreateDutyMission: true,
     };
     const { fOperationSelectedElement: { id: technical_operation_id, date_from, date_to, municipal_facility_id } } = this.state;
-    const { selectedElement: { id: faxogramm_id, order_date, order_date_to } } = this.state;
+    const { selectedElement: { id: faxogramm_id, order_date, order_date_to, order_number } } = this.state;
+    const { missionSourcesList = [] } = this.props;
 
     const dmElement = {
       technical_operation_id,
       municipal_facility_id,
       faxogramm_id,
+      order_number,
       plan_date_start: date_from || order_date,
       plan_date_end: date_to || order_date_to,
+      mission_source_id: (missionSourcesList.find(({ auto }) => auto) || {}).id,
     };
     const initDutyMission = { ...dmElement };
 
@@ -339,4 +344,4 @@ class FaxogrammDirectory extends ElementsList {
   }
 }
 
-export default connectToStores(FaxogrammDirectory, ['objects']);
+export default connectToStores(FaxogrammDirectory, ['objects', 'missions']);

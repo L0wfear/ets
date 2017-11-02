@@ -203,7 +203,7 @@ export default class RouteForm extends Form {
               <Col md={STRUCTURE_FIELD_VIEW ? 3 : 4}>
                 <Field
                   type="select"
-                  label="Способ построения маршрута"
+                  label="Тип объекта"
                   options={ROUTE_TYPE_OPTIONS}
                   value={state.type !== 'mixed' ? state.type : 'mixed'}
                   clearable={false}

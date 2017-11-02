@@ -102,7 +102,7 @@ export default class MissionRejectForm extends Component {
       mission = mission.result.rows[0];
       mission.status = 'fail';
       mission.comment = this.state.comment;
-      resolve = await this.context.flux.getActions('missions').updateMission(mission);
+      resolve = await this.context.flux.getActions('missions').updateMission(mission, false);
     } else {
       switch (this.state.data.mark) {
         case 'create':

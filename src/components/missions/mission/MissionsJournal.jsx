@@ -6,7 +6,6 @@ import { Button as BootstrapButton, Glyphicon, ButtonToolbar } from 'react-boots
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import MissionInfoFormWrap from 'components/dashboard/MissionInfoFormWrap.jsx';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
-import { getWarningNotification } from 'utils/notifications';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
 
@@ -145,7 +144,7 @@ export default class MissionsJournal extends CheckableElementsList {
       checkElList.forEach((mission, i) => {
         const updatedMission = _.cloneDeep(mission);
         updatedMission.status = 'complete';
-        
+
         this.context.flux.getActions('missions').updateMission(updatedMission, false).then(() => {
           elList[i] = true;
           if (!elList.some(elD => !elD)) {
@@ -174,7 +173,6 @@ export default class MissionsJournal extends CheckableElementsList {
     const checkElList = Object.values(this.state.checkedElements);
     const countCheckEl = checkElList.length;
 
-    
     if (countCheckEl !== 0) {
       const elList = Array(countCheckEl).fill(false);
 
@@ -187,7 +185,6 @@ export default class MissionsJournal extends CheckableElementsList {
           if (reason) {
             updatedMission.comment = reason;
 
-            
             this.context.flux.getActions('missions').updateMission(updatedMission, false).then(() => {
               elList[i] = true;
               if (!elList.some(elD => !elD)) {
@@ -211,12 +208,6 @@ export default class MissionsJournal extends CheckableElementsList {
       });
     } else {
       this.rejectMission();
-      this.refreshList().then(() => {
-        this.setState({
-          checkedElements: {},
-          selectedElement: null,
-        });
-      });
     }
   }
 
@@ -303,8 +294,15 @@ export default class MissionsJournal extends CheckableElementsList {
   }
 
   onReject(refresh) {
-    this.setState({ showMissionRejectForm: false });
-    refresh && this.refreshList(this.state);
+    const newPropsState = {
+      showMissionRejectForm: false,
+    };
+    if (refresh) {
+      this.refreshList(this.state);
+      newPropsState.checkedElements = {};
+      newPropsState.selectedElement = null;
+    }
+    this.setState({ ...newPropsState });
   }
 
   async mapView(id) {

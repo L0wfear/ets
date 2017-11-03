@@ -1,34 +1,65 @@
-const PROTO = window.location.host.includes('localhost') ? `http${process.env.STAND === 'dev' ? '' : 's'}:` : window.location.protocol;
+/**
+ * При разработке не имеем доступ к протоколу, хосту и всему прочему, если не хардкод
+ */
+const amDeveloper = window.location.host.includes('localhost');
+
+const PROTO = window.location.protocol;
+const HOST = window.location.host;
+const PATHNAME = window.location.pathname;
+
 const WS_PROTO = 'wss:';
 
 const DOC_URL = {
-  dev: `${PROTO}//dev-ets.gost-group.com/docs/`,
-  stage: `${PROTO}//ets.mos.ru/ets-stage/docs/`,
-  prod: `${PROTO}//ets.mos.ru/docs/`,
+  develop: {
+    dev: 'http://dev-ets.gost-group.com/docs/',
+    stage: 'https://ets.mos.ru/ets-stage/docs/',
+    prod: 'https://ets.mos.ru/docs/',
+  },
+  origin: {
+    dev: 'http://dev-ets.gost-group.com/docs/',
+    stage: `${PROTO}//${HOST}${PATHNAME}docs/`,
+    prod: `${PROTO}//${HOST}${PATHNAME}/docs/`,
+  },
 };
 
 const config = {
-  ws: `${WS_PROTO}//ods.mos.ru/ssd/city-dashboard/stream`,
-  images: `http://ods.mos.ru/ssd/ets/data/images/`,
-  docs: DOC_URL[process.env.STAND],
+  develop: {
+    ws: `${WS_PROTO}//ods.mos.ru/ssd/city-dashboard/stream`,
+    images: 'http://ods.mos.ru/ssd/ets/data/images/',
+    docs: DOC_URL.develop[process.env.STAND],
+  },
+  origin: {
+    ws: `${WS_PROTO}//ods.mos.ru/ssd/city-dashboard/stream`,
+    images: 'http://ods.mos.ru/ssd/ets/data/images/',
+    docs: DOC_URL.origin[process.env.STAND],
+  },
 };
 
 const STANDS = {
-  stage: `${PROTO}//ets.mos.ru/ets-stage/services`,
-  prod: `${PROTO}//ets.mos.ru/services`,
-  dev: `${PROTO}//dev-ets.gost-group.com/services`,
+  develop: {
+    stage: 'https://ets.mos.ru/ets-stage/services',
+    prod: 'https://ets.mos.ru/services',
+    dev: 'http://dev-ets.gost-group.com/services',
+  },
+  origin: {
+    stage: `${PROTO}//${HOST}${PATHNAME}services`,
+    prod: `${PROTO}//${HOST}${PATHNAME}services`,
+    dev: 'http://dev-ets.gost-group.com/services',
+  },
 };
 
+const configs = {};
+const pathToConfig = amDeveloper ? 'develop' : 'origin';
+
 try {
-  const HOST = process.env.APIHOST;
   const STAND = process.env.STAND;
-  if (HOST) {
-    config.backend = `${PROTO}//${process.env.APIHOST}`;
-  } else if (STAND) {
-    config.backend = STANDS[STAND] || STANDS.dev;
-  }
+
+  configs.ws = config[pathToConfig].ws;
+  configs.images = config[pathToConfig].images;
+  configs.docs = config[pathToConfig].docs;
+  configs.backend = STANDS[pathToConfig][STAND] || STANDS[pathToConfig].dev;
 } catch (e) {
   console.log(e);
 }
 
-export default config;
+export default configs;

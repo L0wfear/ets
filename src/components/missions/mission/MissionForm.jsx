@@ -30,7 +30,7 @@ export class MissionForm extends Form {
       carsList: [],
       routesList: [],
       technicalOperationsList: [],
-      queryToGetNormGo: false,
+      car_func_types_ids: [],
     };
   }
 
@@ -238,6 +238,7 @@ export class MissionForm extends Form {
       technicalOperationsList = [],
       selectedRoute: route = null,
       available_route_types = [],
+      car_func_types_ids = [],
     } = this.state;
 
     const MISSION_SOURCES = missionSourcesList.reduce((newArr, { id, name, auto }) => {
@@ -253,7 +254,7 @@ export class MissionForm extends Form {
       { value: 'assign_to_available_draft', label: 'Добавить в черновик ПЛ' },
     ];
     const CARS = carsList
-      .filter(c => !state.structure_id || c.is_common || c.company_structure_id === state.structure_id)
+      .filter(c => !state.structure_id || c.is_common || c.company_structure_id === state.structure_id && car_func_types_ids.includes(c.type_id))
       .map(c => ({
         value: c.asuods_id,
         available: c.available,

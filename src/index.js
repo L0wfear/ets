@@ -8,7 +8,7 @@ import 'babel-polyfill';
 import 'whatwg-fetch';
 // require('babel-core/register');
 /* 3rd party js */
-import '!script!openlayers/dist/ol.js';
+import '!script-loader!openlayers/dist/ol.js';
 import 'ol3-popup/src/ol3-popup.js';
 import './assets/main.scss';
 /* Старт приложения */

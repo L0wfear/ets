@@ -394,7 +394,7 @@ export class DutyMissionForm extends Form {
                 value={state.mission_source_id}
                 onChange={this.handleChange.bind(this, 'mission_source_id')}
               />
-              { IS_CREATING && this.props.fromFaxogrammMissionForm && <span style={{ opacity: 0.5 }}>{'Задания на основе централизованных заданий необходимо создавать во вкладке "НСИ"-"Реестр централизованных заданий".'}</span> }
+              { IS_CREATING && this.props.fromFaxogrammMissionForm && <span className="help-block-mission-source">{'Задания на основе централизованных заданий необходимо создавать во вкладке "НСИ"-"Реестр централизованных заданий".'}</span> }
             </Col>
             <Col md={6}>
               <Field

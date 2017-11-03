@@ -1,7 +1,10 @@
 import { Actions } from 'flummox';
 import { isEmpty } from 'utils/functions';
 import { createValidDateTime, createValidDate } from 'utils/dates';
-import _ from 'lodash';
+import {
+  clone,
+  cloneDeep,
+} from 'lodash';
 import {
   FaxogrammService,
   WorkKindsService,
@@ -71,7 +74,7 @@ export default class ObjectsActions extends Actions {
   }
 
   updateOrganizations(formState) {
-    const payload = _.clone(formState);
+    const payload = clone(formState);
     return CompanyService.path(formState.id).put(payload, this.getOrganizations, 'json');
   }
 
@@ -87,7 +90,7 @@ export default class ObjectsActions extends Actions {
   }
 
   getFaxogramms(limit, offset, sort_by, filter, create_date_from, create_date_to) {
-    const filterValues = _.cloneDeep(filter);
+    const filterValues = cloneDeep(filter);
     Object.keys(filterValues).forEach((k) => {
       if (Array.isArray(filterValues[k])) {
         filterValues[`${k}__in`] = filterValues[k];

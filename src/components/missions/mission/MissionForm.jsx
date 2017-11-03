@@ -415,13 +415,13 @@ export class MissionForm extends Form {
                 type="select"
                 label="Маршрут"
                 error={errors.route_id}
-                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.car_id}
+                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.car_id || !state.municipal_facility_id}
                 options={ROUTES}
                 value={state.route_id}
                 onChange={this.handleRouteIdChange}
               />
               <Div hidden={state.route_id}>
-                <Button onClick={this.createNewRoute} disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.technical_operation_id}>Создать новый</Button>
+                <Button onClick={this.createNewRoute} disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.municipal_facility_id}>Создать новый</Button>
               </Div>
             </Col>
           </Row>

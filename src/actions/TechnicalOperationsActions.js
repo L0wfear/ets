@@ -1,5 +1,5 @@
 import { Actions } from 'flummox';
-import _ from 'lodash';
+import { cloneDeep } from 'lodash';
 import { TechnicalOperationService, TechnicalOperationObjectsService, TechnicalOperationTypesService, TechnicalOperationRegistryService } from 'api/Services';
 import { isEmpty } from 'utils/functions';
 
@@ -80,7 +80,7 @@ export default class TechnicalOperationsActions extends Actions {
   }
 
   updateTechnicalOperation(data) {
-    const payload = _.cloneDeep(data);
+    const payload = cloneDeep(data);
     payload.needs_brigade = !!payload.needs_brigade;
     payload.use_in_reports = !!payload.use_in_reports;
     delete payload.season_name;

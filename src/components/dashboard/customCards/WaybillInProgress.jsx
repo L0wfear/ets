@@ -1,5 +1,9 @@
 import React from 'react';
-import _ from 'lodash';
+import {
+  groupBy,
+  sortBy,
+  flatten,
+} from 'lodash';
 import moment from 'moment';
 import cx from 'classnames';
 import Div from 'components/ui/Div.jsx';
@@ -8,14 +12,14 @@ import WaybillClosed from './WaybillClosed.jsx';
 export default class WaybillInProgress extends WaybillClosed {
 
   renderSubitems(subItems) {
-    let si = _.groupBy(subItems, e => moment(e.data.create_date).format(global.APP_DATE_FORMAT));
-    si = _.sortBy(si, ar => -moment(ar[0].data.create_date).unix());
+    let si = groupBy(subItems, e => moment(e.data.create_date).format(global.APP_DATE_FORMAT));
+    si = sortBy(si, ar => -moment(ar[0].data.create_date).unix());
     si = si.map((ar) => {
       ar[0].data.groupStart = true;
       ar[ar.length - 1].data.groupEnd = true;
       return ar;
     });
-    si = _.flatten(si);
+    si = flatten(si);
     subItems = si;
 
     return (
@@ -42,13 +46,13 @@ export default class WaybillInProgress extends WaybillClosed {
         <Div key={i} className={itemClassName} >
           {typeof item.value !== 'undefined'
             ?
-            <Div className="dashboard-card-item-inner-singlevalue" onClick={this.selectItem.bind(this, i)}>
-              {item.value}
-            </Div>
+              <Div className="dashboard-card-item-inner-singlevalue" onClick={this.selectItem.bind(this, i)}>
+                {item.value}
+              </Div>
             :
-            <Div className="dashboard-card-item-inner" onClick={this.selectItem.bind(this, i)}>
-              {item.title}
-            </Div>
+              <Div className="dashboard-card-item-inner" onClick={this.selectItem.bind(this, i)}>
+                {item.title}
+              </Div>
           }
           {
             typeof this.renderCollapsibleSubitems === 'function' ? this.renderCollapsibleSubitems(item, i) : ''

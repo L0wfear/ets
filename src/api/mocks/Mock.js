@@ -1,4 +1,4 @@
-import map from 'lodash/map';
+import { map } from 'lodash';
 
 const ERROR_METHOD_NOT_ALLOWED = {
   message: 'Method not allowed',

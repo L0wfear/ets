@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ODHNormDataSummerForm from './ODHNormDataSummerForm.jsx';
 import FormWrap from '../../compositions/FormWrap.jsx';
 import { schema as odhNormDataSummerSchema, defaultElement } from 'models/ODHNormDataSummer.js';

@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
-import ElementsList from 'components/ElementsList.jsx';
-import ODHNormDataSummerFormWrap from './ODHNormDataSummerFormWrap.jsx';
-import ODHNormDataSummerTable from './ODHNormDataSummerTable.jsx';
 import { connectToStores, staticProps } from 'utils/decorators';
+
+import ElementsList from 'components/ElementsList.jsx';
+
+import ODHNormDataSummerFormWrap from 'components/directories/odh_norm_data_summer/ODHNormDataSummerFormWrap.jsx';
+import ODHNormDataSummerTable from 'components/directories/odh_norm_data_summer/ODHNormDataSummerTable.jsx';
 
 @connectToStores(['odh'])
 @staticProps({
@@ -13,13 +14,6 @@ import { connectToStores, staticProps } from 'utils/decorators';
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 export default class ODHNormDataSummerList extends ElementsList {
-
-  constructor(props, context) {
-    super(props);
-    // DELETE пока не используется
-    // this.removeElementAction = context.flux.getActions('employees').deleteODHNorm;
-  }
-
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;

@@ -1,6 +1,6 @@
 import { Actions } from 'flummox';
 import { createValidDate } from 'utils/dates';
-import _ from 'lodash';
+import { clone, mapKeys } from 'lodash';
 import {
   FuelConsumptionRateService,
   FuelOperationsService,
@@ -43,13 +43,13 @@ export default class FuelRateActions extends Actions {
   }
 
   createFuelRate(rate) {
-    const payload = _.clone(rate);
+    const payload = clone(rate);
     delete payload.car_model_name;
     delete payload.car_special_model_name;
 
     payload.order_date = createValidDate(payload.order_date);
 
-    _.mapKeys(payload, (v, k) => {
+    mapKeys(payload, (v, k) => {
       if (isEmpty(v)) {
         payload[k] = 'null';
       }

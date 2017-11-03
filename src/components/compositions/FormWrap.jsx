@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
+import {
+  cloneDeep,
+  omit,
+} from 'lodash';
 import { autobind } from 'core-decorators';
 
 import { validateField } from 'utils/validate/validateField.js';
@@ -46,9 +49,9 @@ export default class FormWrap extends Component {
     if (props.showForm && (props.showForm !== this.props.showForm)) {
       let element = {};
       if (props.element !== null) {
-        element = _.cloneDeep(props.element);
+        element = cloneDeep(props.element);
       } else {
-        element = !isEmpty(this.defaultElement) ? _.cloneDeep(this.defaultElement) : {};
+        element = !isEmpty(this.defaultElement) ? cloneDeep(this.defaultElement) : {};
       }
       const formErrors = this.validate(element, {});
 
@@ -126,7 +129,7 @@ export default class FormWrap extends Component {
     const uniqueField = this.uniqueField || 'id';
     let { formState } = this.state;
     let result = null;
-    Object.entries(formState).forEach(([key, val])=> {
+    Object.entries(formState).forEach(([key, val]) => {
       if (typeof val === 'string') {
         formState[key] = val.trim();
       }
@@ -143,7 +146,7 @@ export default class FormWrap extends Component {
         }
 
         if (typeof p.isSubmitted === 'function') {
-          formState = p.isSubmitted(formState) ? formState : _.omit(formState, p.key);
+          formState = p.isSubmitted(formState) ? formState : omit(formState, p.key);
         }
       });
     }

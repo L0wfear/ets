@@ -1,6 +1,6 @@
 import { Actions } from 'flummox';
 import { createValidDateTime } from 'utils/dates';
-import _ from 'lodash';
+import { cloneDeep } from 'lodash';
 import {
   CoverageReportService,
   AnalyticsService,
@@ -10,7 +10,7 @@ import {
 
 export default class ReportsActions extends Actions {
   getAnalytics(data) {
-    const payload = _.cloneDeep(data);
+    const payload = cloneDeep(data);
     payload.date_from = createValidDateTime(payload.date_from);
     payload.date_to = createValidDateTime(payload.date_to);
 
@@ -18,7 +18,7 @@ export default class ReportsActions extends Actions {
   }
 
   getCoverageReport(state) {
-    const payload = _.cloneDeep(state);
+    const payload = cloneDeep(state);
     delete payload.companyStructureList;
     delete payload.coverageReport;
     if (!payload.structure_id) payload.structure_id = null;

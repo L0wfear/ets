@@ -2,7 +2,7 @@ import { Actions } from 'flummox';
 import { EmployeeService, DriverService, WaybillDriverService, ForemanService } from 'api/Services';
 import { createValidDate, createValidDateTime } from 'utils/dates';
 import { isEmpty } from 'utils/functions';
-import _ from 'lodash';
+import { clone, mapKeys } from 'lodash';
 
 function getEmployees(payload = {}) {
   return EmployeeService.get(payload).then(r => ({ result: r.result.rows }));
@@ -37,7 +37,7 @@ export default class EmployeesActions extends Actions {
   }
 
   updateEmployee(formState) {
-    const payload = _.clone(formState);
+    const payload = clone(formState);
     payload.birthday = createValidDate(payload.birthday);
     payload.medical_certificate_date = createValidDate(payload.medical_certificate_date);
     delete payload.position_name;
@@ -46,7 +46,7 @@ export default class EmployeesActions extends Actions {
     delete payload.full_name;
     payload.active = !!payload.active;
 
-    _.mapKeys(payload, (v, k) => {
+    mapKeys(payload, (v, k) => {
       if (isEmpty(v)) {
         payload[k] = null;
       }
@@ -55,13 +55,13 @@ export default class EmployeesActions extends Actions {
   }
 
   createEmployee(formState) {
-    const payload = _.clone(formState);
+    const payload = clone(formState);
     payload.birthday = createValidDate(payload.birthday);
     payload.medical_certificate_date = createValidDate(payload.medical_certificate_date);
     delete payload.position_name;
     delete payload.position_key;
     payload.active = !!payload.active;
-    _.mapKeys(payload, (v, k) => isEmpty(v) ? (payload[k] = null) : undefined);
+    mapKeys(payload, (v, k) => isEmpty(v) ? (payload[k] = null) : undefined);
     return EmployeeService.post(payload, getEmployees, 'json');
   }
 

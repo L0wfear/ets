@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { mapKeys } from 'lodash';
 import { getServerErrorNotification } from 'utils/notifications';
 import { checkInternalErrors } from 'utils/raven';
 import getNotifyCheckVersion from './notify_check_version/notifyCheckVersion';
@@ -15,7 +15,7 @@ export function getHeaders() {
 
 export function toFormData(data) {
   const formData = new FormData();
-  _.mapKeys(data, (v, k) => {
+  mapKeys(data, (v, k) => {
     formData.append(k, v);
   });
   return formData;

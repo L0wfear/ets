@@ -3,9 +3,9 @@ import {
   ODHNormService,
   ODHNormDataSummerService,
   EfficiencyService,
-  MeasureUnitService
+  MeasureUnitService,
 } from 'api/Services';
-import _ from 'lodash';
+import { clone } from 'lodash';
 
 function getODHNorm() {
   return ODHNormService.get().then(r => ({ result: r.result.rows }));
@@ -18,12 +18,12 @@ export default class ODHActions extends Actions {
   }
 
   updateODHNorm(formState) {
-    const payload = _.clone(formState);
+    const payload = clone(formState);
     return ODHNormService.path(formState.id).put(payload, getODHNorm, 'json');
   }
 
   createODHNorm(formState) {
-    const payload = _.clone(formState);
+    const payload = clone(formState);
     // if (typeof payload.consumable_material === 'undefined') payload.consumable_material = false;
     return ODHNormService.post(payload, getODHNorm, 'json');
   }
@@ -36,23 +36,18 @@ export default class ODHActions extends Actions {
     return ODHNormDataSummerService.get();
   }
 
-  deleteODHNormDataSummer() {
-    const payload = _.clone(formState);
-    return ODHNormDataSummerService.delete(payload, true, 'json');
-  }
-
   updateODHNormDataSummer(formState) {
-    const payload = _.clone(formState);
+    const payload = clone(formState);
     return ODHNormDataSummerService.put(payload, true, 'json');
   }
 
   createODHNormDataSummer(formState) {
-    const payload = _.clone(formState);
+    const payload = clone(formState);
     return ODHNormDataSummerService.post(payload, true, 'json');
   }
 
-  async getMeasureUnits() {
-    return await MeasureUnitService.get();
+  getMeasureUnits() {
+    return MeasureUnitService.get();
   }
 
   getEfficiency() {
@@ -60,12 +55,12 @@ export default class ODHActions extends Actions {
   }
 
   updateEfficiency(formState) {
-    const payload = _.clone(formState);
+    const payload = clone(formState);
     return EfficiencyService.path(formState.id).put(payload, true, 'json');
   }
 
   createEfficiency(formState) {
-    const payload = _.clone(formState);
+    const payload = clone(formState);
     return EfficiencyService.post(payload, true, 'json');
   }
 

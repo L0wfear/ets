@@ -25,33 +25,117 @@ module.exports = {
     filename: '[name].js',
   },
   module: {
-    loaders: [
-      { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['react-hot', 'babel-loader'] },
-      { test: /\.tsx?$/, exclude: /node_modules/, loaders: ['react-hot', 'babel-loader', 'ts-loader'] },
-      { test: /\.json$/, loader: 'json-loader' },
-      { test: /\.(jpe?g|png|gif)$/, loader: 'url-loader?limit=1000000&name=images/[name].[ext]' },
-      { test: /\.(eot|woff|woff2|ttf|svg)(\?v=\d+\.\d+\.\d+)?/, loader: 'url-loader?limit=100000&name=fonts/[name].[ext]' },
-      { test: /^((?!\.module).)*\.s?css$/, loaders: ['style', 'css-loader?sourceMap', 'resolve-url', 'sass-loader?sourceMap'] },
+    rules: [
+      {
+        test: /\.jsx?$/, 
+        exclude: /node_modules/,
+        use: [
+          'react-hot-loader',
+          'babel-loader',
+        ],
+      },
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        use: [
+          'react-hot-loader',
+          'babel-loader',
+          'ts-loader',
+        ],
+      },
+      {
+        test: /\.(jpe?g|png|gif)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 1000000,
+              mimetype: 'images/[name].[ext]'
+            },
+          }
+        ],
+      },
+      {
+        test: /\.(eot|woff|woff2|ttf|svg)(\?v=\d+\.\d+\.\d+)?/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 100000,
+              mimetype: 'fonts/[name].[ext]',
+            },
+          },
+        ],
+      },
+      { 
+        test: /^((?!\.module).)*\.s?css$/,
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+            }
+          },
+          {
+            loader: 'resolve-url-loader',
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+        ],
+      },
       {
         test: /\.module\.s?css$/,
-        loaders: [
-          'style',
-          'css-loader?sourceMap&modules&importLoaders=2&localIdentName=[path]___[name]__[local]___[hash:base64:5]',
-          'resolve-url',
-          'sass-loader?sourceMap'
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+              modules: true,
+              importLoaders: 2,
+              localIdentName: '[path]___[name]__[local]___[hash:base64:5]',
+            },
+          },
+          {
+            loader: 'resolve-url-loader',
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
         ]
       },
-      { test: /ol-base\.js/, loader: 'imports?define=>false' },
+      {
+        test: /ol-base\.js/,
+        use: [
+          {
+            loader: 'imports-loader',
+            options: {
+              define: false,
+            },
+          },
+        ],
+      },
     ],
   },
   resolve: {
-    root: __dirname,
     alias,
-    modulesDirectories: [
-      'src',
-      'node_modules',
+    modules: [
+      path.resolve(__dirname, '..', 'src'),
+      path.resolve(__dirname, '..', 'node_modules'),
     ],
-    extensions: ['', '.json', '.js', '.jsx', '.ts', '.tsx'],
+    extensions: ['.json', '.js', '.jsx', '.ts', '.tsx'],
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
@@ -64,7 +148,7 @@ module.exports = {
         VERSION: JSON.stringify(version)
       },
     }),
-    new webpack.NoErrorsPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       __CLIENT__: true,
       __SERVER__: false,

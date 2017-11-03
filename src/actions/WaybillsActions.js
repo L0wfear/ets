@@ -1,6 +1,10 @@
 import { Actions } from 'flummox';
 import { createValidDateTime, createValidDate } from 'utils/dates';
-import _ from 'lodash';
+import {
+  cloneDeep,
+  clone,
+  mapKeys,
+ } from 'lodash';
 import {
   hasMotohours,
   isEmpty,
@@ -13,10 +17,13 @@ import {
   RootService,
 } from 'api/Services';
 
+
+const updateFieldsToTest = ['fuel_given', 'equipment_fuel_given'];
+
 export default class WaybillsActions extends Actions {
 
   getWaybills(limit = 15, offset = 0, sort_by = ['number:desc'], filter = {}) {
-    const filterValues = _.cloneDeep(filter);
+    const filterValues = cloneDeep(filter);
     Object.keys(filterValues).forEach((k) => {
       if (Array.isArray(filterValues[k])) {
         filterValues[`${k}__in`] = filterValues[k];
@@ -67,7 +74,7 @@ export default class WaybillsActions extends Actions {
   }
 
   getWaybillJournalReport(state) {
-    const payload = _.cloneDeep(state);
+    const payload = cloneDeep(state);
     return WaybillJournalReportService.postBlob(payload);
   }
 
@@ -87,7 +94,7 @@ export default class WaybillsActions extends Actions {
   }
 
   updateWaybill(waybill) {
-    const payload = _.clone(waybill);
+    const payload = clone(waybill);
     payload.plan_departure_date = createValidDateTime(payload.plan_departure_date);
     payload.plan_arrival_date = createValidDateTime(payload.plan_arrival_date);
     payload.equipment_fuel = +payload.equipment_fuel;
@@ -108,7 +115,7 @@ export default class WaybillsActions extends Actions {
       payload.equipment_tax_data = equipment_tax_data;
     }
 
-    _.each(['fuel_given', 'equipment_fuel_given'], (key) => {
+    updateFieldsToTest.forEach((key) => {
       if (!isEmpty(payload[key])) {
         payload[key] = parseFloat(payload[key]).toFixed(3);
       }
@@ -132,7 +139,11 @@ export default class WaybillsActions extends Actions {
       delete payload.motohours_start;
     }
 
-    _.mapKeys(payload, (v, k) => isEmpty(v) ? payload[k] = null : undefined);
+    mapKeys(payload, (v, k) => {
+      if (isEmpty(v)) {
+        payload[k] = null;
+      }
+    });
 
     if (isEmpty(payload.motohours_equip_start)) {
       payload.motohours_equip_start = null;
@@ -155,7 +166,7 @@ export default class WaybillsActions extends Actions {
    * @return {promise} POST WaybillService
    */
   createWaybill(waybill) {
-    const payload = _.clone(waybill);
+    const payload = clone(waybill);
     payload.plan_departure_date = createValidDateTime(payload.plan_departure_date);
     payload.plan_arrival_date = createValidDateTime(payload.plan_arrival_date);
     payload.fact_departure_date = createValidDateTime(payload.plan_departure_date);
@@ -166,7 +177,7 @@ export default class WaybillsActions extends Actions {
     delete payload.car_model_name;
     delete payload.garage_number;
     delete payload.all_missions_completed_or_failed;
-    _.mapKeys(payload, (v, k) => isEmpty(v) ? delete payload[k] : undefined);
+    mapKeys(payload, (v, k) => isEmpty(v) ? delete payload[k] : undefined);
 
     if (hasMotohours(payload.gov_number)) {
       delete payload.odometr_start;

@@ -160,61 +160,32 @@ class FaxogrammDirectory extends ElementsList {
   }
 
   handleClickOnCM = () => {
-    const {
-      id,
-      order_date,
-      order_date_to,
-    } = this.state.selectedElement;
-    const {
-      id: to_id,
-      tk_operation_name = 'Значение не определено',
-      route_type = '',
-      municipal_facility_id,
-      element = 'Значение не определено',
-    } = this.state.fOperationSelectedElement;
+    const newPropsState = {
+      showFormCreateMission: true,
+    };
+    const { fOperationSelectedElement: { id: technical_operation_id, date_from, date_to, municipal_facility_id, order_operation_id, norm_id, num_exec: passes_count } } = this.state;
+    const { selectedElement: { id: faxogramm_id, order_date, order_date_to, order_number } } = this.state;
+    const { missionSourcesList = [] } = this.props;
 
-    const TECH_OPERATIONS = [
-      {
-        value: to_id,
-        label: tk_operation_name,
-      },
-    ];
-    const MUNICIPAL_FACILITY_OPTIONS = [
-      {
-        value: municipal_facility_id,
-        label: element,
-      },
-    ];
-    const externalData = {
-      faxogramm_id: id,
-      TECH_OPERATIONS,
-      MUNICIPAL_FACILITY_OPTIONS,
-      to_data: this.state.fOperationSelectedElement,
-      faxogramm_date: {
-        order_date,
-        order_date_to,
-      },
-      routesList: [],
-      route_type,
+    const mElement = {
+      technical_operation_id,
+      municipal_facility_id,
+      faxogramm_id,
+      order_number,
+      order_operation_id,
+      passes_count,
+      norm_id,
+      date_start: date_from || order_date,
+      date_end: date_to || order_date_to,
+      mission_source_id: (missionSourcesList.find(({ auto }) => auto) || {}).id,
     };
 
-    this.setState({
-      ...this.state,
-      showFormCreateMission: true,
-      externalData,
-    });
-    this.context.flux.getActions('routes')
-    .getRoutesByTechnicalOperation(to_id)
-      .then(routesList =>
-        this.setState(
-          {
-            externalData: {
-              ...externalData,
-              routesList: routesList.filter(d => route_type ? (d.object_type === route_type) : true),
-            },
-          }
-        ))
-      .catch(e => console.error(e));
+    const initMission = { ...mElement };
+
+    newPropsState.mElement = mElement;
+    newPropsState.initDutyMission = initMission;
+
+    this.setState({ ...newPropsState });
   }
   onHideCM = () => this.setState({ showFormCreateMission: false });
   handleClickOnCDM = () => {
@@ -273,6 +244,7 @@ class FaxogrammDirectory extends ElementsList {
       showFormCreateMission = false,
       showFormCreateDutyMission = false,
       externalData = {},
+      mElement = {},
       dmElement = {},
       initDutyMission = {},
     } = this.state;
@@ -323,14 +295,10 @@ class FaxogrammDirectory extends ElementsList {
         </Div>
         <MissionFormWrap
           fromFaxogrammMissionForm
-          disabledProps={disabledProps}
           showForm={showFormCreateMission}
           onFormHide={this.onHideCM}
-          element={null}
-          externalData={externalData}
-          faxogrammStartDate={this.state.date_start}
-          faxogrammEndDate={this.state.date_end}
-          timeFaxogramm={this.state.timeFaxogramm}
+          element={mElement}
+          initDutyMission={initDutyMission}
         />
         <DutyMissionFormWrap
           fromFaxogrammMissionForm

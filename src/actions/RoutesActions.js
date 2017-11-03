@@ -1,5 +1,8 @@
 import { Actions } from 'flummox';
-import _ from 'lodash';
+import {
+  cloneDeep,
+  each,
+} from 'lodash';
 import {
   RouteService,
   RouteReportsService,
@@ -98,7 +101,7 @@ export default class RoutesActions extends Actions {
   }
 
   async createRoute(route, isTemplate = 0) {
-    const payload = _.cloneDeep(route);
+    const payload = cloneDeep(route);
     const params = {
       is_template: +isTemplate,
     };
@@ -118,12 +121,12 @@ export default class RoutesActions extends Actions {
   }
 
   updateRoute(route) {
-    const payload = _.cloneDeep(route);
+    const payload = cloneDeep(route);
     delete payload.polys;
     delete payload.odh_list;
     delete payload.odh_fail_list;
     delete payload.draw_odh_list;
-    _.each(payload.object_list, o => delete o.shape);
+    each(payload.object_list, o => delete o.shape);
     return RouteService.put(payload, null, 'json');
   }
 

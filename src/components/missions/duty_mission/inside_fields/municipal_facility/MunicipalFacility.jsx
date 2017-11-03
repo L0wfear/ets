@@ -1,52 +1,10 @@
-import * as React from 'react';
+import MunicipalFacilityMission from 'components/missions/mission/inside_fields/municipal_facility/MunicipalFacility.jsx';
 
-import { FluxContext } from 'utils/decorators';
+class MunicipalFacility extends MunicipalFacilityMission {
 
-import Field from 'components/ui/Field.jsx';
-
-const getStateByProps = (props) => {
-  const {
-    state: {
-      [props.id]: value,
-      technical_operation_id,
-      plan_date_start,
-    } = {},
-    errors: {
-      [props.id]: error,
-    },
-  } = props;
-
-
-  return {
-    technical_operation_id,
-    plan_date_start,
-    value,
-    error,
-  };
-};
-
-@FluxContext
-class MunicipalFacility extends React.Component {
-
-  static get propTypes() {
-    return {
-      disabled: React.PropTypes.bool,
-      handleChange: React.PropTypes.func,
-      getDataByNormId: React.PropTypes.func,
-      technicalOperationsList: React.PropTypes.arrayOf(React.PropTypes.object),
-    };
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      forseUpdateIsWas: false,
-      MUNICIPAL_FACILITY_OPTIONS: [],
-      myDisable: true,
-      ...getStateByProps(props),
-    };
-  }
-
+  /**
+   * @override
+   */
   componentWillReceiveProps(props) {
     const {
       technical_operation_id: old_toi,
@@ -58,34 +16,32 @@ class MunicipalFacility extends React.Component {
       technical_operation_id: new_toi,
       plan_date_start: new_pds,
       value: new_v,
-    } = getStateByProps(props);
+      error: new_err,
+    } = this.getStateByProps(props);
     const {
       technicalOperationsList: newTechOperationsList = [],
     } = props;
 
     const newState = {
       value: new_v,
+      error: new_err,
     };
     if (!forseUpdateIsWas && newTechOperationsList.length > 0 && new_toi) {
       forseUpdate = true;
     }
 
-    if ((!!new_toi && new_pds && (old_toi !== new_toi || old_pds !== new_pds) && new_v) || forseUpdate) {
+    if ((!!new_toi && !!new_pds && (old_toi !== new_toi || old_pds !== new_pds) && forseUpdateIsWas) || forseUpdate) {
       const {
         norm_ids = [],
       } = (newTechOperationsList.find(({ id }) => id === new_toi) || {});
 
-      const outerPyload = {
+      const outerPayload = {
         norm_ids: norm_ids.join(','),
         start_date: new_pds,
         end_date: new_pds,
       };
-      this.context.flux.getActions('missions').getCleaningMunicipalFacilityList(outerPyload).then(({ result: { rows = [] } = {} }) => {
-        this.setState({
-          myDisable: false,
-          MUNICIPAL_FACILITY_OPTIONS: rows.map(({ municipal_facility_id: value, municipal_facility_name: label, norm_id }) => ({ value, label, norm_id })),
-        });
-      });
+      this.getCleaningMunicipalFacilityList(outerPayload);
+
       newState.technical_operation_id = new_toi;
       newState.plan_date_start = new_pds;
       newState.forseUpdateIsWas = true;
@@ -96,38 +52,27 @@ class MunicipalFacility extends React.Component {
     this.setState({ ...newState });
   }
 
-  handleChange = (value) => {
+  /**
+   * @override
+   */
+  getStateByProps = (props) => {
     const {
-      MUNICIPAL_FACILITY_OPTIONS = [],
-    } = this.state;
-    this.props.handleChange('municipal_facility_id', value);
-    if (value) {
-      this.props.getDataByNormId(MUNICIPAL_FACILITY_OPTIONS.find(({ value: m_value }) => m_value === value).norm_id);
-    }
-  }
+      state: {
+        [props.id]: value,
+        technical_operation_id,
+        plan_date_start,
+      } = {},
+      errors: {
+        [props.id]: error,
+      },
+    } = props;
 
-  render() {
-    const {
-      disabled = false,
-    } = this.props;
-    const {
+    return {
+      technical_operation_id,
+      plan_date_start,
       value,
       error,
-      MUNICIPAL_FACILITY_OPTIONS,
-      myDisable,
-    } = this.state;
-
-    return (
-      <Field
-        type="select"
-        label="Элемент"
-        error={error}
-        disabled={disabled || myDisable}
-        options={MUNICIPAL_FACILITY_OPTIONS}
-        value={value}
-        onChange={this.handleChange}
-      />
-    );
+    };
   }
 }
 

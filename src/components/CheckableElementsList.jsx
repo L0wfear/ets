@@ -1,9 +1,11 @@
 import React, { PropTypes } from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
 import { autobind } from 'core-decorators';
-import cloneDeep from 'lodash/cloneDeep';
-import each from 'lodash/each';
-import find from 'lodash/find';
+import {
+  cloneDeep,
+  each,
+  find,
+} from 'lodash';
 import ElementsList from './ElementsList.jsx';
 import { ButtonCreate, ButtonRead, ButtonDelete } from './ui/buttons/CRUD';
 

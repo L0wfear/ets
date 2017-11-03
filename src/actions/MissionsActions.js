@@ -1,5 +1,5 @@
 import { Actions } from 'flummox';
-import _ from 'lodash';
+import { mapKeys, clone, cloneDeep, keys } from 'lodash';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import { createValidDateTime, createValidDate } from 'utils/dates';
 import { isEmpty, flattenObject } from 'utils/functions';
@@ -20,9 +20,9 @@ import {
   Cleaning,
 } from 'api/missions';
 
-export const parseFilterObject = filter => _.mapKeys(
+export const parseFilterObject = filter => mapKeys(
   flattenObject(filter),
-  (value, key) => _.isArray(value) ? `${key}__in` : key,
+  (value, key) => Array.isArray(value) ? `${key}__in` : key,
 );
 
 export default class MissionsActions extends Actions {
@@ -48,7 +48,9 @@ export default class MissionsActions extends Actions {
   }
 
   getMissionReassignationParameters(payload) {
-    if (!payload.car_id) return;
+    if (!payload.car_id) {
+      return new Promise((res, rej) => rej('empty car_id'));
+    }
     return MissionReassignationService.get(payload);
   }
 
@@ -69,9 +71,7 @@ export default class MissionsActions extends Actions {
 
     // возвращает статусы задания, которые мы будем искать, в зависимости от статуса ПЛ
     // если у ПЛ нет статуса, то нужны исключительно неназначенные задания!
-    const getMissionFilterStatus = waybillStatus => waybillStatus ? undefined : 'not_assigned';
-
-    const status = getMissionFilterStatus(waybillStatus);
+    const status = waybillStatus ? undefined : 'not_assigned';
 
     if (!isEmpty(car_id)) {
       payload.car_id = car_id;
@@ -107,7 +107,7 @@ export default class MissionsActions extends Actions {
   }
 
   createMission(mission, defaultAssign) {
-    const payload = _.clone(mission);
+    const payload = clone(mission);
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
     payload.hidden = false;
@@ -123,7 +123,7 @@ export default class MissionsActions extends Actions {
   }
 
   updateMission(mission, autoUpdate = true) {
-    const payload = _.cloneDeep(mission);
+    const payload = cloneDeep(mission);
     payload.date_start = createValidDateTime(payload.date_start);
     payload.date_end = createValidDateTime(payload.date_end);
     delete payload.number;
@@ -136,7 +136,7 @@ export default class MissionsActions extends Actions {
   }
 
   printMission(data) {
-    const payload = _.cloneDeep(data);
+    const payload = cloneDeep(data);
 
     return MissionPrintService.postBlob(payload);
   }
@@ -157,18 +157,18 @@ export default class MissionsActions extends Actions {
   }
 
   createMissionTemplate(missionTemplate) {
-    const payload = _.clone(missionTemplate);
+    const payload = clone(missionTemplate);
     delete payload.company_id;
     delete payload.number;
     return MissionTemplateService.post(payload, null, 'json');
   }
 
   createMissions(missionTemplates, missionsCreationTemplate) {
-    const missionsCreationTemplateCopy = _.clone(missionsCreationTemplate);
+    const missionsCreationTemplateCopy = clone(missionsCreationTemplate);
     const date_start = createValidDateTime(missionsCreationTemplateCopy.date_start);
     const date_end = createValidDateTime(missionsCreationTemplateCopy.date_end);
-    const queries = _.keys(missionTemplates).map(key => missionTemplates[key]).map((query) => {
-      const payload = _.clone(query);
+    const queries = keys(missionTemplates).map(key => missionTemplates[key]).map((query) => {
+      const payload = clone(query);
       payload.date_start = date_start;
       payload.date_end = date_end;
       payload.mission_source_id = missionsCreationTemplateCopy.mission_source_id;
@@ -194,7 +194,7 @@ export default class MissionsActions extends Actions {
   }
 
   updateMissionTemplate(missionTemplate) {
-    const payload = _.cloneDeep(missionTemplate);
+    const payload = cloneDeep(missionTemplate);
     delete payload.number;
     delete payload.company_id;
     return MissionTemplateService.put(payload, null, 'json');
@@ -223,7 +223,7 @@ export default class MissionsActions extends Actions {
   }
 
   createDutyMission(mission) {
-    const payload = _.cloneDeep(mission);
+    const payload = cloneDeep(mission);
     payload.plan_date_start = createValidDateTime(payload.plan_date_start);
     payload.plan_date_end = createValidDateTime(payload.plan_date_end);
     payload.fact_date_start = createValidDateTime(payload.fact_date_start);
@@ -233,7 +233,7 @@ export default class MissionsActions extends Actions {
   }
 
   updateDutyMission(mission, autoUpdate = true) {
-    const payload = _.cloneDeep(mission);
+    const payload = cloneDeep(mission);
     delete payload.number;
     delete payload.technical_operation_name;
     delete payload.route_name;
@@ -269,12 +269,12 @@ export default class MissionsActions extends Actions {
   }
 
   createDutyMissionTemplate(mission) {
-    const payload = _.cloneDeep(mission);
+    const payload = cloneDeep(mission);
     return DutyMissionTemplateService.post(payload, null, 'json');
   }
 
   updateDutyMissionTemplate(mission) {
-    const payload = _.cloneDeep(mission);
+    const payload = cloneDeep(mission);
     delete payload.number;
     delete payload.technical_operation_name;
     delete payload.route_name;
@@ -287,11 +287,11 @@ export default class MissionsActions extends Actions {
   }
 
   createDutyMissions(dutyMissionTemplates, dutyMissionsCreationTemplate) {
-    const dutyMissionsCreationTemplateCopy = _.clone(dutyMissionsCreationTemplate);
+    const dutyMissionsCreationTemplateCopy = clone(dutyMissionsCreationTemplate);
     const date_start = createValidDateTime(dutyMissionsCreationTemplateCopy.date_start);
     const date_end = createValidDateTime(dutyMissionsCreationTemplateCopy.date_end);
     const queries = Object.keys(dutyMissionTemplates).map(key => dutyMissionTemplates[key]).map((query) => {
-      const payload = _.cloneDeep(query);
+      const payload = cloneDeep(query);
       payload.status = 'not_assigned';
       payload.plan_date_start = date_start;
       payload.plan_date_end = date_end;

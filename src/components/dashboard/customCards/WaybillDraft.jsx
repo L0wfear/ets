@@ -1,21 +1,25 @@
 import React from 'react';
 import cx from 'classnames';
 import moment from 'moment';
-import _ from 'lodash';
+import {
+  groupBy,
+  sortBy,
+  flatten,
+} from 'lodash';
 import Div from 'components/ui/Div.jsx';
 import WaybillClosed from './WaybillClosed.jsx';
 
 export default class WaybillDraft extends WaybillClosed {
 
   renderSubitems(subItems) {
-    let si = _.groupBy(subItems, e => moment(e.data.waybill_date_create).format(global.APP_DATE_FORMAT));
-    si = _.sortBy(si, ar => -moment(ar[0].data.waybill_date_create).unix());
+    let si = groupBy(subItems, e => moment(e.data.waybill_date_create).format(global.APP_DATE_FORMAT));
+    si = sortBy(si, ar => -moment(ar[0].data.waybill_date_create).unix());
     si = si.map((ar) => {
       ar[0].data.groupStart = true;
       ar[ar.length - 1].data.groupEnd = true;
       return ar;
     });
-    si = _.flatten(si);
+    si = flatten(si);
     subItems = si;
 
     return (

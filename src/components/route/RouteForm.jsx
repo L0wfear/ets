@@ -199,7 +199,7 @@ export default class RouteForm extends Form {
                   options={ROUTE_TYPE_OPTIONS}
                   value={state.type !== 'mixed' ? state.type : 'mixed'}
                   clearable={false}
-                  disabled={this.state.routeTypeDisabled || state.copy || this.props.fromFaxogrammMissionForm}
+                  disabled={this.state.routeTypeDisabled || state.copy}
                   onChange={this.handleTypeChange}
                 />
               </Col>

@@ -46,6 +46,7 @@ export class DutyMissionForm extends Form {
     } = this.context;
 
     this.handleChange('technical_operation_id', v);
+    this.handleChange('municipal_facility_id', null);
     this.handleChange('route_id', undefined);
     if (!isEmpty(this.props.formState.car_mission_id)) {
       this.handleChange('car_mission_id', 0);
@@ -94,6 +95,10 @@ export class DutyMissionForm extends Form {
   async componentDidMount() {
     const mission = this.props.formState;
     const { flux } = this.context;
+    const {
+      norm_id,
+    } = mission;
+
     const technicalOperationsActions = flux.getActions('technicalOperation');
     const routesActions = flux.getActions('routes');
     const missionsActions = flux.getActions('missions');
@@ -101,6 +106,10 @@ export class DutyMissionForm extends Form {
 
     let { selectedRoute } = this.state;
     let { routesList } = this.props;
+
+    if (norm_id) {
+      this.getDataByNormId(norm_id);
+    }
 
     if (!isEmpty(mission.route_id)) {
       selectedRoute = await routesActions.getRouteById(mission.route_id);
@@ -394,7 +403,7 @@ export class DutyMissionForm extends Form {
                 value={state.mission_source_id}
                 onChange={this.handleChange.bind(this, 'mission_source_id')}
               />
-              { IS_CREATING && this.props.fromFaxogrammMissionForm && <span className="help-block-mission-source">{'Задания на основе централизованных заданий необходимо создавать во вкладке "НСИ"-"Реестр централизованных заданий".'}</span> }
+              { IS_CREATING && !this.props.fromFaxogrammMissionForm && <span className="help-block-mission-source">{'Задания на основе централизованных заданий необходимо создавать во вкладке "НСИ"-"Реестр централизованных заданий".'}</span> }
             </Col>
             <Col md={6}>
               <Field
@@ -410,7 +419,7 @@ export class DutyMissionForm extends Form {
 
           <Row>
             <Col md={6}>
-              { state.order_number !== null &&
+              { !!state.order_number &&
                 <Field
                   type="string"
                   label="Номер централизованного задания"

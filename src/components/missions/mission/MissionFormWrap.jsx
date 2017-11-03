@@ -31,22 +31,6 @@ export default class MissionFormWrap extends FormWrap {
       if (mission.structure_id == null) {
         mission.structure_id = this.context.flux.getStore('session').getCurrentUser().structure_id;
       }
-      if (props.fromFaxogrammMissionForm) {
-        mission.mission_source_id = 1;
-        mission.date_start = props.externalData.to_data.date_from || props.externalData.faxogramm_date.order_date;
-        mission.date_end = props.externalData.to_data.date_to || props.externalData.faxogramm_date.order_date_to;
-        mission.passes_count = props.externalData.to_data.num_exec;
-        mission.norm_id = props.externalData.to_data.norm_id;
-        mission.municipal_facility_id = props.externalData.to_data.municipal_facility_id;
-        mission.technical_operation_id = props.externalData.to_data.id;
-        mission.order_operation_id = props.externalData.to_data.order_operation_id;
-
-        mission.faxogramm_id = props.externalData.faxogramm_id;
-        this.setState({
-          fixed_date_start: props.externalData.date_start,
-          fixed_date_end: props.externalData.date_end,
-        });
-      }
       const formErrors = this.validate(mission, {});
       this.setState({
         formState: mission,
@@ -86,24 +70,33 @@ export default class MissionFormWrap extends FormWrap {
         formErrors.date_end = 'Дата не должна выходить за пределы путевого листа';
       }
     }
-    if (this.props.fromFaxogrammMissionForm && this.props.externalData.to_data) {
-      const date_start = this.props.externalData.to_data.date_from || this.props.externalData.faxogramm_date.order_date;
-      const date_end = this.props.externalData.to_data.date_to || this.props.externalData.faxogramm_date.order_date_to;
-      const { num_exec = 0 } = this.props.externalData.to_data;
 
-      const borderName = 'поручения';
+    if (this.props.fromFaxogrammMissionForm && this.props.initDutyMission.date_start) {
+      const {
+        initDutyMission: {
+          date_start: init_ds,
+          date_end: init_de,
+          passes_count: init_pc,
+        } = {},
+      } = this.props;
+      const {
+        initDutyMission: {
+          date_start: new_ds,
+          date_end: new_de,
+          passes_count: new_pc,
+        } = {},
+      } = formState;
 
-      if (moment(formState.date_start).toDate().getTime() < moment(date_start).toDate().getTime()) {
-        formErrors.date_start = `Дата не должна выходить за пределы действия ${borderName}`;
+      if (moment(new_ds).toDate().getTime() < moment(init_ds).toDate().getTime()) {
+        formErrors.date_start = 'Дата не должна выходить за пределы действия поручения';
       }
-      if (moment(formState.date_end).toDate().getTime() > moment(date_end).toDate().getTime()) {
-        formErrors.date_end = `Дата не должна выходить за пределы действия ${borderName}`;
+      if (moment(new_de).toDate().getTime() > moment(init_de).toDate().getTime()) {
+        formErrors.date_end = 'Дата не должна выходить за пределы действия поручения';
       }
-
-      if (formState.passes_count > num_exec) {
+      if (new_pc > init_pc) {
         formErrors.passes_count = '"Кол-во проходов" не должно превышать значение "Кол-во проходов" из поручения';
       }
-      if (formState.passes_count <= 0) {
+      if (new_pc <= 0) {
         formErrors.passes_count = '"Кол-во проходов" должно быть больше нуля';
       }
     }
@@ -139,7 +132,6 @@ export default class MissionFormWrap extends FormWrap {
       waybillStartDate: this.props.waybillStartDate,
       waybillEndDate: this.props.waybillEndDate,
       disabledProps: this.props.disabledProps || {},
-      externalData: this.props.externalData || {},
       fromFaxogrammMissionForm: this.props.fromFaxogrammMissionForm || false,
     };
 

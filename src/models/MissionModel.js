@@ -58,6 +58,12 @@ export const missionSchema = {
       integer: true,
       required: true,
     },
+    {
+      key: 'municipal_facility_id',
+      title: 'Элемент',
+      type: 'number',
+      required: true,
+    },
   ],
   dependencies: {
     'date_end': [

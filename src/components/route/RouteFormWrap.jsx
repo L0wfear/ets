@@ -20,13 +20,6 @@ class RouteFormWrap extends FormWrap {
       let formState = null;
       if (props.element !== null) {
         formState = _.cloneDeep(props.element);
-        // на скорую руку
-        if (props.fromFaxogrammMissionForm) {
-          const {
-            route_type,
-          } = props.externalDataFromfaxogramm;
-          formState.type = route_type;
-        }
         formState.draw_odh_list = _.cloneDeep(formState.draw_object_list);
         formState.polys = formState.type === 'simple_dt' ? _.cloneDeep(props.dtPolys) : _.cloneDeep(props.odhPolys);
         _.each(formState.object_list.filter(o => !!o.object_id), (o) => {

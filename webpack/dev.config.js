@@ -39,7 +39,6 @@ module.exports = {
         exclude: /node_modules/,
         use: [
           'react-hot-loader',
-          'babel-loader',
           'ts-loader',
         ],
       },

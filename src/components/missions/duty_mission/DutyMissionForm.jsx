@@ -480,6 +480,7 @@ export class DutyMissionForm extends Form {
           structureId={state.structure_id}
           available_route_types={available_route_types}
           fromMission
+          notTemplate
         />
       </Modal>
     );

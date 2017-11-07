@@ -88,7 +88,7 @@ class RouteFormWrap extends FormWrap {
 
     if (fromMission) {
       const {
-        available_route_types = {},
+        available_route_types = [],
       } = this.props;
 
       return {
@@ -111,6 +111,7 @@ class RouteFormWrap extends FormWrap {
         onHide={this.props.onFormHide}
         resetState={this.resetFormState}
         fromMission={this.props.fromMission}
+        notTemplate={this.props.notTemplate}
         structureId={this.props.structureId}
         fromFaxogrammMissionForm={this.props.fromFaxogrammMissionForm}
         {...this.state}

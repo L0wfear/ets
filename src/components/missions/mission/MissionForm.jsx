@@ -511,6 +511,7 @@ export class MissionForm extends Form {
           onFormHide={this.onFormHide}
           showForm={this.state.showRouteForm}
           fromMission
+          notTemplate
           fromFaxogrammMissionForm={this.props.fromFaxogrammMissionForm}
           available_route_types={available_route_types}
           structureId={state.structure_id}

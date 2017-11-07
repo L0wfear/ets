@@ -2,6 +2,12 @@ import React from 'react';
 import connectToStores from 'flummox/connect';
 import { autobind } from 'core-decorators';
 import { Modal, Row, Col, Button, Dropdown, Glyphicon, MenuItem } from 'react-bootstrap';
+import {
+  find,
+  uniqBy,
+  isEmpty as lodashIsEmpty,
+} from 'lodash';
+
 import ModalBody from 'components/ui/Modal';
 import RouteInfo from 'components/route/RouteInfo.jsx';
 import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
@@ -12,10 +18,8 @@ import Div from 'components/ui/Div.jsx';
 import moment from 'moment';
 import { isEmpty } from 'utils/functions';
 import Form from 'components/compositions/Form.jsx';
-import _ from 'lodash';
 import CarAvailableIcon from 'assets/images/car_available.png';
 import CarNotAvailableIcon from 'assets/images/car_not_available.png';
-import { getWarningNotification } from 'utils/notifications.js';
 import InsideField from 'components/missions/mission/inside_fields/index';
 
 @autobind
@@ -69,10 +73,10 @@ export class MissionForm extends Form {
   handleStructureIdChange(v) {
     const carsList = this.props.carsList.filter(c => !v || c.is_common || c.company_structure_id === v);
     const routesList = this.state.routesList.filter(r => !v || r.structure_id === v);
-    if (!_.find(carsList, c => c.asuods_id === this.props.formState.car_id)) {
+    if (!find(carsList, c => c.asuods_id === this.props.formState.car_id)) {
       this.handleChange('car_id', null);
     }
-    if (!_.find(routesList, r => r.id === this.props.formState.route_id)) {
+    if (!find(routesList, r => r.id === this.props.formState.route_id)) {
       this.handleChange('route_id', null);
       this.handleRouteIdChange(undefined);
     }
@@ -253,8 +257,9 @@ export class MissionForm extends Form {
       { value: 'assign_to_new_draft', label: 'Создать черновик ПЛ' },
       { value: 'assign_to_available_draft', label: 'Добавить в черновик ПЛ' },
     ];
+
     const CARS = carsList
-      .filter(c => !state.structure_id || c.is_common || c.company_structure_id === state.structure_id && car_func_types_ids.includes(c.type_id))
+      .filter(c => (!state.structure_id || c.is_common || c.company_structure_id === state.structure_id) && (lodashIsEmpty(car_func_types_ids) ? true : car_func_types_ids.includes(c.type_id)))
       .map(c => ({
         value: c.asuods_id,
         available: c.available,
@@ -270,7 +275,7 @@ export class MissionForm extends Form {
       routes.find(item => item.value === route.id) === undefined
     ) ? routes.concat([route]) : routes;
 
-    const ROUTES = _.uniqBy(
+    const ROUTES = uniqBy(
       filteredRoutes.map(({ id, name }) => ({ value: id, label: name })),
       'value',
     );
@@ -287,7 +292,7 @@ export class MissionForm extends Form {
     if (currentStructureId !== null && STRUCTURES.length === 1 && currentStructureId === STRUCTURES[0].value) {
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_READONLY = true;
-    } else if (currentStructureId !== null && STRUCTURES.length > 1 && _.find(STRUCTURES, el => el.value === currentStructureId)) {
+    } else if (currentStructureId !== null && STRUCTURES.length > 1 && find(STRUCTURES, el => el.value === currentStructureId)) {
       STRUCTURE_FIELD_VIEW = true;
     } else if (currentStructureId === null && STRUCTURES.length > 1) {
       STRUCTURE_FIELD_VIEW = true;
@@ -421,7 +426,7 @@ export class MissionForm extends Form {
                 onChange={this.handleRouteIdChange}
               />
               <Div hidden={state.route_id}>
-                <Button onClick={this.createNewRoute} disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.municipal_facility_id}>Создать новый</Button>
+                <Button onClick={this.createNewRoute} disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.car_id || !state.municipal_facility_id}>Создать новый</Button>
               </Div>
             </Col>
           </Row>

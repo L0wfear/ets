@@ -45,18 +45,6 @@ class FaxogrammDirectory extends ElementsList {
   componentDidMount() {
     super.componentDidMount();
     this.context.flux.getActions('missions').getMissionSources();
-
-    const { id } = this.props.routeParams;
-
-    this.getFaxogramms();
-    if (id) {
-      this.getOneFaxogramm(id).then(({ result }) => {
-        this.setState({
-          selectedElement: result[0],
-          showForm: true,
-        });
-      });
-    }
   }
 
   async componentWillUpdate(nextProps, nextState) {
@@ -132,28 +120,6 @@ class FaxogrammDirectory extends ElementsList {
 
   handleChange(field, value) {
     this.setState({ [field]: value }, () => this.getFaxogramms());
-  }
-
-  /**
-   * @override
-   */
-  onFormHide = () => {
-    this.props.history.push('/faxogramms');
-    this.setState({
-      showForm: false,
-      selectedElement: null,
-    });
-  }
-
-  /**
-   * @override
-   */
-  showForm = () => {
-    const { id } = this.state.selectedElement;
-    this.props.history.push(`/faxogramms/${id}`);
-    this.setState({
-      showForm: true,
-    });
   }
 
   handleClickOnCM = () => {
@@ -264,12 +230,6 @@ class FaxogrammDirectory extends ElementsList {
           <Button onClick={this.handleClickOnCDM} disabled={this.checkDisabledCDM()}>Создать наряд-задание</Button>
           <Button onClick={this.saveFaxogramm} disabled={this.state.selectedElement === null}><Glyphicon glyph="download-alt" /></Button>
         </FaxogrammsTable>
-        <FaxogrammMissionsFormWrap
-          onFormHide={this.onFormHide}
-          showForm={this.state.showForm}
-          element={this.state.selectedElement}
-          {...this.props}
-        />
         <Paginator currentPage={this.state.page} maxPage={Math.ceil(this.props.faxogrammsTotalCount / MAX_ITEMS_PER_PAGE)} setPage={page => this.setState({ page })} firstLastButtons />
         <Div hidden={this.state.selectedElement === null}>
           <Row>

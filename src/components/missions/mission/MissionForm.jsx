@@ -222,7 +222,6 @@ export class MissionForm extends Form {
 
       this.setState({ available_route_types });
     });
-    this.handleRouteIdChange(undefined);
     this.handleChange('norm_id', norm_id);
   }
 
@@ -313,6 +312,8 @@ export class MissionForm extends Form {
         </div>);
     }
 
+    console.log(state)
+    
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
 

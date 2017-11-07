@@ -45,11 +45,11 @@ export default class RouteForm extends Form {
 
     const route_type_options = [];
 
-    technicalOperation.objects.forEach((obj) => {
-      if (!!this.props.fromMission && !this.props.available_route_types.find(name => dictRouteTypes[name] === obj.name)) {
+    technicalOperation.objects.forEach(({ name: obj_name }) => {
+      if (!!this.props.fromMission && !this.props.available_route_types.find(name => dictRouteTypes[name] === obj_name)) {
         return;
       }
-      switch (obj.name) {
+      switch (obj_name) {
         case 'ОДХ':
           route_type_options.push({ value: 'mixed', label: 'Выбор из ОДХ' });
           if (!routeTypeValue) {
@@ -66,6 +66,14 @@ export default class RouteForm extends Form {
           route_type_options.push({ value: 'simple_dt', label: 'Выбор из ДТ' });
           if (!routeTypeValue && routeTypeValue !== 'mixed') {
             routeTypeValue = 'simple_dt';
+          }
+          break;
+        case 'Отсутствует объект': 
+          route_type_options.push({ value: 'mixed', label: 'Выбор из ОДХ' });
+          route_type_options.push({ value: 'points', label: 'Выбор пунктов назначения' });
+          route_type_options.push({ value: 'simple_dt', label: 'Выбор из ДТ' });
+          if (!routeTypeValue) {
+            routeTypeValue = 'mixed';
           }
           break;
         default:

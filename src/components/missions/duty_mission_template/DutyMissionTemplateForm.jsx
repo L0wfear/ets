@@ -23,7 +23,7 @@ class MissionTemplateForm extends DutyMissionForm {
     let title = 'Задание';
 
     if (IS_CREATING) {
-      title = 'Создание шаблона задания';
+      title = 'Создание шаблона наряд-задания';
     }
 
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;

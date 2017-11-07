@@ -441,7 +441,7 @@ export class MissionForm extends Form {
             <Col md={3}>
               <Field
                 type="number"
-                label="Кол-во проходов"
+                label="Кол-во циклов"
                 error={errors.passes_count}
                 disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || fromFaxogrammMissionForm}
                 value={state.passes_count}

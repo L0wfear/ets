@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import _ from 'lodash';
 import Div from 'components/ui/Div.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
@@ -15,11 +15,11 @@ class DutyMissionFormWrap extends FormWrap {
     this.schema = dutyMissionSchema;
     this.defaultElement = getDefaultDutyMission();
     this.defaultElement.structure_id = context.flux.getStore('session').getCurrentUser().structure_id;
-    this.createAction = (async) (formState) => {
-      await context.flux.getActions('missions').createDutyMission(formState);
-      context.flux.getActions('missions').getDutyMissions();
-    };
   }
+  createAction = formState =>
+    this.context.flux.getActions('missions').createDutyMission(formState).then(() => {
+      this.props.refreshTableList();
+    });
 
   async handleFormPrint() {
     const mission = _.cloneDeep(this.state.formState);

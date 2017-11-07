@@ -18,7 +18,7 @@ class DutyMissionFormWrap extends FormWrap {
   }
   createAction = formState =>
     this.context.flux.getActions('missions').createDutyMission(formState).then(() => {
-      this.props.refreshTableList();
+      return this.props.refreshTableList();
     });
 
   async handleFormPrint() {
@@ -34,6 +34,7 @@ class DutyMissionFormWrap extends FormWrap {
 
     const id = mission.id ? mission.id : response.result && response.result[0] ? response.result[0].id : null;
     await this.context.flux.getActions('missions').printDutyMission(id).then(({ blob }) => { saveData(blob, `Печатная форма наряд-задания №${id}.pdf`); });
+    await this.props.refreshTableList();
     this.context.flux.getActions('missions').getDutyMissions();
     this.props.onFormHide();
   }

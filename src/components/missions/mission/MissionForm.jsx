@@ -312,8 +312,6 @@ export class MissionForm extends Form {
         </div>);
     }
 
-    console.log(state)
-    
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
 

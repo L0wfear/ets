@@ -157,7 +157,7 @@ class FaxogrammDirectory extends ElementsList {
     const newPropsState = {
       showFormCreateDutyMission: true,
     };
-    const { fOperationSelectedElement: { id: technical_operation_id, date_from, date_to, municipal_facility_id } } = this.state;
+    const { fOperationSelectedElement: { id: technical_operation_id, date_from, date_to, municipal_facility_id, order_operation_id, norm_id } } = this.state;
     const { selectedElement: { id: faxogramm_id, order_date, order_date_to, order_number } } = this.state;
     const { missionSourcesList = [] } = this.props;
 
@@ -165,8 +165,10 @@ class FaxogrammDirectory extends ElementsList {
       ...getDefaultDutyMission(),
       technical_operation_id,
       municipal_facility_id,
+      order_operation_id,
       faxogramm_id,
       order_number,
+      norm_id,      
       plan_date_start: date_from || order_date,
       plan_date_end: date_to || order_date_to,
       mission_source_id: (missionSourcesList.find(({ auto }) => auto) || {}).id,

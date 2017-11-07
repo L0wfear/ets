@@ -45,6 +45,7 @@ class FaxogrammDirectory extends ElementsList {
   componentDidMount() {
     super.componentDidMount();
     this.context.flux.getActions('missions').getMissionSources();
+    this.getFaxogramms();
   }
 
   async componentWillUpdate(nextProps, nextState) {

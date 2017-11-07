@@ -9,6 +9,7 @@ import { getToday0am, getToday2359 } from 'utils/dates';
 import { autobind } from 'core-decorators';
 import MissionFormWrap from 'components/missions/mission/MissionFormWrap.jsx';
 import DutyMissionFormWrap from 'components/missions/duty_mission/DutyMissionFormWrap';
+import { getDefaultMission, getDefaultDutyMission } from 'stores/MissionsStore.js';
 
 import FaxogrammsDatepicker from './FaxogrammsDatepicker.jsx';
 import FaxogrammMissionsFormWrap from './FaxogrammMissionsFormWrap.jsx';
@@ -17,11 +18,7 @@ import FaxogrammInfoTable from './FaxogrammInfoTable.jsx';
 import FaxogrammOperationInfoTable from './FaxogrammOperationInfoTable.jsx';
 
 const MAX_ITEMS_PER_PAGE = 15;
-const disabledProps = {
-  mission_source_id: true,
-};
 
-// простите меня за это
 @autobind
 class FaxogrammDirectory extends ElementsList {
 
@@ -140,7 +137,7 @@ class FaxogrammDirectory extends ElementsList {
   /**
    * @override
    */
-  onFormHide() {
+  onFormHide = () => {
     this.props.history.push('/faxogramms');
     this.setState({
       showForm: false,
@@ -168,6 +165,7 @@ class FaxogrammDirectory extends ElementsList {
     const { missionSourcesList = [] } = this.props;
 
     const mElement = {
+      ...getDefaultMission(),
       technical_operation_id,
       municipal_facility_id,
       faxogramm_id,
@@ -188,6 +186,7 @@ class FaxogrammDirectory extends ElementsList {
     this.setState({ ...newPropsState });
   }
   onHideCM = () => this.setState({ showFormCreateMission: false });
+
   handleClickOnCDM = () => {
     const newPropsState = {
       showFormCreateDutyMission: true,
@@ -197,6 +196,7 @@ class FaxogrammDirectory extends ElementsList {
     const { missionSourcesList = [] } = this.props;
 
     const dmElement = {
+      ...getDefaultDutyMission(),
       technical_operation_id,
       municipal_facility_id,
       faxogramm_id,
@@ -204,6 +204,7 @@ class FaxogrammDirectory extends ElementsList {
       plan_date_start: date_from || order_date,
       plan_date_end: date_to || order_date_to,
       mission_source_id: (missionSourcesList.find(({ auto }) => auto) || {}).id,
+      status: 'not_assigned',
     };
     const initDutyMission = { ...dmElement };
 
@@ -243,7 +244,6 @@ class FaxogrammDirectory extends ElementsList {
     const {
       showFormCreateMission = false,
       showFormCreateDutyMission = false,
-      externalData = {},
       mElement = {},
       dmElement = {},
       initDutyMission = {},

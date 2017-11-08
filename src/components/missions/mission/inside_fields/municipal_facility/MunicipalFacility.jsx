@@ -64,7 +64,7 @@ class MunicipalFacility extends React.Component {
         end_date: new_ds,
       };
 
-      this.getCleaningMunicipalFacilityList(outerPayload);
+      this.getCleaningMunicipalFacilityList(outerPayload, new_v);
 
       newState.technical_operation_id = new_toi;
       newState.date_start = new_ds;
@@ -76,8 +76,11 @@ class MunicipalFacility extends React.Component {
     this.setState({ ...newState });
   }
 
-  getCleaningMunicipalFacilityList = (outerPayload) => {
+  getCleaningMunicipalFacilityList = (outerPayload, new_v) => {
     this.context.flux.getActions('missions').getCleaningMunicipalFacilityList(outerPayload).then(({ result: { rows = [] } = {} }) => {
+      if (new_v) {
+        this.props.getDataByNormId(rows.find(({ municipal_facility_id }) => municipal_facility_id === new_v).norm_id);
+      }
       this.setState({
         myDisable: false,
         MUNICIPAL_FACILITY_OPTIONS: rows.map(({ municipal_facility_id: value, municipal_facility_name: label, norm_id }) => ({ value, label, norm_id })),

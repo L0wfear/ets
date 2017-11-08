@@ -40,7 +40,7 @@ class MunicipalFacility extends MunicipalFacilityMission {
         start_date: new_pds,
         end_date: new_pds,
       };
-      this.getCleaningMunicipalFacilityList(outerPayload);
+      this.getCleaningMunicipalFacilityList(outerPayload, new_v);
 
       newState.technical_operation_id = new_toi;
       newState.plan_date_start = new_pds;

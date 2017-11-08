@@ -45,18 +45,7 @@ class FaxogrammDirectory extends ElementsList {
   componentDidMount() {
     super.componentDidMount();
     this.context.flux.getActions('missions').getMissionSources();
-
-    const { id } = this.props.routeParams;
-
     this.getFaxogramms();
-    if (id) {
-      this.getOneFaxogramm(id).then(({ result }) => {
-        this.setState({
-          selectedElement: result[0],
-          showForm: true,
-        });
-      });
-    }
   }
 
   async componentWillUpdate(nextProps, nextState) {
@@ -134,28 +123,6 @@ class FaxogrammDirectory extends ElementsList {
     this.setState({ [field]: value }, () => this.getFaxogramms());
   }
 
-  /**
-   * @override
-   */
-  onFormHide = () => {
-    this.props.history.push('/faxogramms');
-    this.setState({
-      showForm: false,
-      selectedElement: null,
-    });
-  }
-
-  /**
-   * @override
-   */
-  showForm = () => {
-    const { id } = this.state.selectedElement;
-    this.props.history.push(`/faxogramms/${id}`);
-    this.setState({
-      showForm: true,
-    });
-  }
-
   handleClickOnCM = () => {
     const newPropsState = {
       showFormCreateMission: true,
@@ -191,7 +158,7 @@ class FaxogrammDirectory extends ElementsList {
     const newPropsState = {
       showFormCreateDutyMission: true,
     };
-    const { fOperationSelectedElement: { id: technical_operation_id, date_from, date_to, municipal_facility_id } } = this.state;
+    const { fOperationSelectedElement: { id: technical_operation_id, date_from, date_to, municipal_facility_id, order_operation_id, norm_id } } = this.state;
     const { selectedElement: { id: faxogramm_id, order_date, order_date_to, order_number } } = this.state;
     const { missionSourcesList = [] } = this.props;
 
@@ -199,8 +166,10 @@ class FaxogrammDirectory extends ElementsList {
       ...getDefaultDutyMission(),
       technical_operation_id,
       municipal_facility_id,
+      order_operation_id,
       faxogramm_id,
       order_number,
+      norm_id,      
       plan_date_start: date_from || order_date,
       plan_date_end: date_to || order_date_to,
       mission_source_id: (missionSourcesList.find(({ auto }) => auto) || {}).id,
@@ -264,12 +233,6 @@ class FaxogrammDirectory extends ElementsList {
           <Button onClick={this.handleClickOnCDM} disabled={this.checkDisabledCDM()}>Создать наряд-задание</Button>
           <Button onClick={this.saveFaxogramm} disabled={this.state.selectedElement === null}><Glyphicon glyph="download-alt" /></Button>
         </FaxogrammsTable>
-        <FaxogrammMissionsFormWrap
-          onFormHide={this.onFormHide}
-          showForm={this.state.showForm}
-          element={this.state.selectedElement}
-          {...this.props}
-        />
         <Paginator currentPage={this.state.page} maxPage={Math.ceil(this.props.faxogrammsTotalCount / MAX_ITEMS_PER_PAGE)} setPage={page => this.setState({ page })} firstLastButtons />
         <Div hidden={this.state.selectedElement === null}>
           <Row>

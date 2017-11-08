@@ -12,7 +12,8 @@ const nsiRoutes = (props) => {
       {/* НСИ - Реестры и справочники */}
       <Route path="employees" component={directories.employees} onEnter={requireAuth} />
       <Route path="faxogramms" component={directories.faxogramm} onEnter={requireAuth} />
-      <Route path="faxogramms/:id" component={directories.faxogramm} onEnter={requireAuth} />
+      <Route path="faxogramms/:idFaxogramm" component={directories.faxogramm} onEnter={requireAuth} />
+      <Route path="faxogramms/:idFaxogramm/:idTo" component={directories.faxogramm} onEnter={requireAuth} />
       <Route path="fuel-rates" component={directories.fuelRates} onEnter={requireAuth} />
       <Route path="fuel-operations" component={directories.fuelOperations} onEnter={requireAuth} />
       <Route path="companies" component={directories.organizations} onEnter={requireAuth} />

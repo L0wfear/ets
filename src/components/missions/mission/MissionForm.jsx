@@ -99,10 +99,6 @@ export class MissionForm extends Form {
       selectedRoute = await routesActions.getRouteById(mission.route_id, false);
     }
 
-    if (!isEmpty(mission.technical_operation_id)) {
-      carsList = await this.context.flux.getActions('cars').getCarsByTechnicalOperation(mission.technical_operation_id);
-    }
-
     if (!isEmpty(mission.id)) {
       routesList = await routesActions.getRoutesByMissionId(mission.id, isTemplate);
     }
@@ -129,10 +125,6 @@ export class MissionForm extends Form {
     if (norm_id) {
       this.getDataByNormId(norm_id);
     }
-  }
-  changeAvailableCarInCarList(typeCarsList) {
-    const { carsList = [] } = this.state;
-    this.setState({ carsList: carsList.filter(d => typeCarsList.includes(d.type_id)) });
   }
 
   createNewRoute() {
@@ -208,8 +200,9 @@ export class MissionForm extends Form {
           car_func_types = [],
         } = to_data;
         const car_func_types_ids = car_func_types.map(({ id }) => id);
-
-        this.context.flux.getActions('cars').getCarsByTechnicalOperation(technical_operation_id)
+        // Костыль
+        // Уберётся после релиза 14 версии
+        this.context.flux.getActions('cars').getCarsByTechnicalOperation(!lodashIsEmpty(car_func_types_ids) ? technical_operation_id : undefined)
         .then((carsList) => {
           this.setState({ carsList, car_func_types_ids });
         });
@@ -222,7 +215,6 @@ export class MissionForm extends Form {
 
       this.setState({ available_route_types });
     });
-    this.handleRouteIdChange(undefined);
     this.handleChange('norm_id', norm_id);
   }
 
@@ -440,7 +432,7 @@ export class MissionForm extends Form {
             <Col md={3}>
               <Field
                 type="number"
-                label="Кол-во проходов"
+                label="Кол-во циклов"
                 error={errors.passes_count}
                 disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || fromFaxogrammMissionForm}
                 value={state.passes_count}
@@ -510,6 +502,7 @@ export class MissionForm extends Form {
           onFormHide={this.onFormHide}
           showForm={this.state.showRouteForm}
           fromMission
+          notTemplate
           fromFaxogrammMissionForm={this.props.fromFaxogrammMissionForm}
           available_route_types={available_route_types}
           structureId={state.structure_id}

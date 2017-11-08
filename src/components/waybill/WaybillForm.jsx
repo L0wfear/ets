@@ -150,7 +150,7 @@ class WaybillForm extends Form {
     }
     const {
       notAvailableMissions = [],
-      missionsList = [],
+      missionsList: oldMissionsList = [],
     } = this.state;
     const {
       missionSourcesList = [],
@@ -165,6 +165,8 @@ class WaybillForm extends Form {
       plan_arrival_date,
       [field]: value,
     };
+
+    const missionsList = [...oldMissionsList];
 
     const idFaxogramm = (missionSourcesList.find(({ auto }) => auto) || {}).id;
     const missionsWithSourceFaxogramm = missionsList.concat(...notAvailableMissions).reduce((missions, { id, number, mission_source_id, date_end, date_start }) => {
@@ -201,7 +203,7 @@ class WaybillForm extends Form {
       this.handleChange(field, value);
     }
   }
-  async getWaybillDrivers({
+  getWaybillDrivers({
     plan_departure_date = this.props.formState.plan_departure_date,
     plan_arrival_date = this.props.formState.plan_arrival_date,
   } = {}) {
@@ -209,7 +211,7 @@ class WaybillForm extends Form {
     const IS_DRAFT = this.props.formState.status && this.props.formState.status === 'draft';
 
     if (IS_CREATING || IS_DRAFT) {
-      await this.context.flux.getActions('employees').getWaybillDrivers({
+      this.context.flux.getActions('employees').getWaybillDrivers({
         company_id: this.props.formState.company_id,
         date_from: plan_departure_date,
         date_to: plan_arrival_date,
@@ -220,7 +222,7 @@ class WaybillForm extends Form {
     const { flux } = this.context;
     const {
       missionsList: oldMissionsList = [],
-    } = this.props;
+    } = this.state;
     const {
       car_id,
       fact_departure_date,

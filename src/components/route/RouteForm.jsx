@@ -46,7 +46,7 @@ export default class RouteForm extends Form {
     const route_type_options = [];
 
     technicalOperation.objects.forEach(({ name: obj_name }) => {
-      if (!!this.props.fromMission && !this.props.available_route_types.find(name => dictRouteTypes[name] === obj_name)) {
+      if (!!this.props.fromMission && !!this.props.notTemplate && !this.props.available_route_types.find(name => dictRouteTypes[name] === obj_name)) {
         return;
       }
       switch (obj_name) {

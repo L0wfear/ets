@@ -84,6 +84,7 @@ class MunicipalFacility extends MunicipalFacilityMission {
       plan_date_start,
       value,
       error,
+      norm_id,
     };
   }
 }

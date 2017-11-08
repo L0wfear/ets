@@ -117,6 +117,7 @@ class MunicipalFacility extends React.Component {
       date_start,
       value,
       error,
+      norm_id,
     };
   };
 

@@ -309,6 +309,10 @@ export class MissionForm extends Form {
           { !fromFaxogrammMissionForm && <span style={{ marginLeft: 10, color: 'red' }}>Данное задание не будет учитываться по централизованным заданям</span>}
         </div>);
     }
+    // Старые задания нельзя редактирвоать
+    const {
+      is_new,
+    } = state;
 
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
@@ -324,7 +328,7 @@ export class MissionForm extends Form {
                 type="select"
                 label="Технологическая операция"
                 error={errors.technical_operation_id}
-                disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromFaxogrammMissionForm}
+                disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromFaxogrammMissionForm || !is_new}
                 options={TECH_OPERATIONS}
                 value={state.technical_operation_id}
                 onChange={this.handleTechnicalOperationChange}
@@ -336,7 +340,7 @@ export class MissionForm extends Form {
                 type="select"
                 label="Подразделение"
                 error={errors.structure_id}
-                disabled={STRUCTURE_FIELD_READONLY || this.props.fromWaybill || (!IS_CREATING && !IS_POST_CREATING_NOT_ASSIGNED) || !IS_CREATING}
+                disabled={STRUCTURE_FIELD_READONLY || this.props.fromWaybill || (!IS_CREATING && !IS_POST_CREATING_NOT_ASSIGNED) || !IS_CREATING || !is_new}
                 clearable={STRUCTURE_FIELD_DELETABLE}
                 options={STRUCTURES}
                 emptyValue={null}
@@ -352,7 +356,7 @@ export class MissionForm extends Form {
                 id={'municipal_facility_id'}
                 errors={errors}
                 state={state}
-                disabled={(!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY)) || this.props.fromFaxogrammMissionForm}
+                disabled={(!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY)) || this.props.fromFaxogrammMissionForm || !is_new}
                 handleChange={this.handleChange.bind(this)}
                 getDataByNormId={this.getDataByNormId}
                 technicalOperationsList={technicalOperationsList}
@@ -372,7 +376,8 @@ export class MissionForm extends Form {
                   IS_DISPLAY ||
                   this.props.fromWaybill ||
                   (IS_CREATING && isEmpty(state.technical_operation_id)) ||
-                  isEmpty(state.municipal_facility_id)
+                  isEmpty(state.municipal_facility_id) ||
+                  !is_new
                 }
                 options={CARS}
                 optionRenderer={this.renderCarOptions}
@@ -389,7 +394,7 @@ export class MissionForm extends Form {
                   label="Время выполнения:"
                   error={errors.date_start}
                   date={state.date_start}
-                  disabled={IS_DISPLAY}
+                  disabled={IS_DISPLAY || !is_new}
                   min={this.props.fromWaybill && this.props.waybillStartDate ? this.props.waybillStartDate : null}
                   max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
                   onChange={this.handleChangeDateStart}
@@ -403,7 +408,7 @@ export class MissionForm extends Form {
                   label=""
                   error={errors.date_end}
                   date={state.date_end}
-                  disabled={IS_DISPLAY}
+                  disabled={IS_DISPLAY || !is_new}
                   min={state.date_start}
                   max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
                   onChange={this.handleChange.bind(this, 'date_end')}
@@ -417,7 +422,7 @@ export class MissionForm extends Form {
                 type="select"
                 label="Маршрут"
                 error={errors.route_id}
-                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.car_id || !state.municipal_facility_id}
+                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.car_id || !state.municipal_facility_id || !is_new}
                 options={ROUTES}
                 value={state.route_id}
                 onChange={this.handleRouteIdChange}
@@ -440,7 +445,7 @@ export class MissionForm extends Form {
                 type="number"
                 label="Кол-во циклов"
                 error={errors.passes_count}
-                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || fromFaxogrammMissionForm}
+                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || fromFaxogrammMissionForm || !is_new}
                 value={state.passes_count}
                 onChange={this.handleChange.bind(this, 'passes_count')}
                 min={0}
@@ -451,7 +456,7 @@ export class MissionForm extends Form {
                 type="select"
                 label="Источник получения задания"
                 error={errors.mission_source_id}
-                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || fromFaxogrammMissionForm}
+                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || fromFaxogrammMissionForm || !is_new}
                 options={MISSION_SOURCES}
                 value={state.mission_source_id}
                 onChange={this.handleChange.bind(this, 'mission_source_id')}
@@ -471,7 +476,7 @@ export class MissionForm extends Form {
                 type="string"
                 label="Комментарий"
                 value={state.comment}
-                disabled={state.status === 'fail' || state.status === 'complete'}
+                disabled={state.status === 'fail' || state.status === 'complete' || !is_new}
                 onChange={this.handleChange.bind(this, 'comment')}
                 error={errors.comment}
               />

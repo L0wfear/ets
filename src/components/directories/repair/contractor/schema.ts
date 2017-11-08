@@ -13,8 +13,7 @@ export const formValidationSchema: IValidationSchema = {
     {
       key: 'inn',
       title: 'ИНН',
-      type: 'number',
-      integer: true,
+      type: 'string',
       required: true,
       minLength: 12,
       maxLength: 12,
@@ -22,8 +21,7 @@ export const formValidationSchema: IValidationSchema = {
     {
       key: 'kpp',
       title: 'КПП',
-      type: 'number',
-      integer: true,
+      type: 'string',
       required: true,
       minLength: 9,
       maxLength: 9,
@@ -31,8 +29,7 @@ export const formValidationSchema: IValidationSchema = {
     {
       key: 'ogrn',
       title: 'ОГРН',
-      type: 'number',
-      integer: true,
+      type: 'string',
       required: true,
       minLength: 15,
       maxLength: 15,
@@ -40,8 +37,7 @@ export const formValidationSchema: IValidationSchema = {
     {
       key: 'okpo',
       title: 'ОКПО',
-      type: 'number',
-      integer: true,
+      type: 'string',
       required: true,
       minLength: 10,
       maxLength: 10,
@@ -81,8 +77,7 @@ export const formValidationSchema: IValidationSchema = {
     {
       key: 'bik',
       title: 'БИК',
-      type: 'number',
-      integer: true,
+      type: 'string',
       required: true,
       minLength: 20,
       maxLength: 20,

@@ -356,6 +356,7 @@ export class MissionForm extends Form {
                 handleChange={this.handleChange.bind(this)}
                 getDataByNormId={this.getDataByNormId}
                 technicalOperationsList={technicalOperationsList}
+                fromFaxogrammMissionForm={!!fromFaxogrammMissionForm}
               />
             </Col>
           </Row>

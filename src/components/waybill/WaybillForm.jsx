@@ -156,8 +156,8 @@ class WaybillForm extends Form {
       missionSourcesList = [],
       formState: {
         mission_id_list = [],
-        plan_departure_date = this.props.formState.plan_departure_date,
-        plan_arrival_date = this.props.formState.plan_arrival_date,
+        plan_departure_date,
+        plan_arrival_date,
       } = {},
     } = this.props;
     const dateWaybill = {
@@ -467,6 +467,56 @@ class WaybillForm extends Form {
     } else {
       this.handleChange('structure_id', v);
     }
+  }
+
+  handleClose = (taxesControl) => {
+    const {
+      notAvailableMissions = [],
+      missionsList: oldMissionsList = [],
+    } = this.state;
+    const {
+      missionSourcesList = [],
+      formState: {
+        mission_id_list = [],
+        fact_departure_date,
+        fact_arrival_date,
+      } = {},
+    } = this.props;
+    const errors = {
+      notSourceFaxogramm: {
+        cf_list: [],
+      },
+    };
+
+    const missionsList = uniqBy([...oldMissionsList].concat(...notAvailableMissions), 'id');
+
+    mission_id_list.forEach((m) => {
+      const dataMission = missionsList.find(({ id }) => m === id);
+      const {
+        mission_source_id: msi,
+        date_start: ds,
+        date_end: de,
+        status,
+        number,
+      } = dataMission;
+
+      const isFaxogrammSource = !!(missionSourcesList.find(({ id: id_mission_source }) => id_mission_source === msi) || {}).auto;
+      if (!isFaxogrammSource) {
+        if (status === 'complete' || status === 'fail') {
+          errors.notSourceFaxogramm.cf_list.push(number);
+        }
+        console.log(status)
+      } else {
+
+      }
+
+      if (!isEmpty(errors.notSourceFaxogramm.cf_list)) {
+        global.NOTIFICATION_SYSTEM.notify('aler', 'error');
+        return;
+      }
+    });
+
+    // this.props.handleClose(taxesControl);
   }
 
   handleSubmit = () => {
@@ -1147,7 +1197,7 @@ class WaybillForm extends Form {
             taxesControl={taxesControl}
             refresh={this.refresh}
             handleSubmit={this.handleSubmit}
-            handleClose={this.props.handleClose}
+            handleClose={this.handleClose}
             handlePrint={this.props.handlePrint}
           />
         </Modal.Footer>

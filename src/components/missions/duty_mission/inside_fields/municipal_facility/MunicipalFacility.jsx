@@ -17,9 +17,11 @@ class MunicipalFacility extends MunicipalFacilityMission {
       plan_date_start: new_pds,
       value: new_v,
       error: new_err,
+      norm_id,
     } = this.getStateByProps(props);
     const {
       technicalOperationsList: newTechOperationsList = [],
+      fromFaxogrammMissionForm,
     } = props;
 
     const newState = {
@@ -38,10 +40,16 @@ class MunicipalFacility extends MunicipalFacilityMission {
 
       if (is_new) {
         const outerPayload = {
-          norm_ids: norm_ids.join(','),
           start_date: new_pds,
           end_date: new_pds,
         };
+
+        if (fromFaxogrammMissionForm) {
+          outerPayload.norm_ids = norm_id;
+        } else {
+          outerPayload.norm_ids = norm_ids.join(',');
+        }
+
         this.getCleaningMunicipalFacilityList(outerPayload, new_v);
       }
 
@@ -64,6 +72,7 @@ class MunicipalFacility extends MunicipalFacilityMission {
         [props.id]: value,
         technical_operation_id,
         plan_date_start,
+        norm_id,
       } = {},
       errors: {
         [props.id]: error,

@@ -12,6 +12,7 @@ class MunicipalFacility extends React.Component {
       state: React.PropTypes.object,
       errors: React.PropTypes.object,
       disabled: React.PropTypes.bool,
+      fromFaxogrammMissionForm: React.PropTypes.bool,
       handleChange: React.PropTypes.func,
       getDataByNormId: React.PropTypes.func,
       technicalOperationsList: React.PropTypes.arrayOf(React.PropTypes.object),
@@ -40,9 +41,11 @@ class MunicipalFacility extends React.Component {
       date_start: new_ds,
       value: new_v,
       error: new_err,
+      norm_id,
     } = this.getStateByProps(props);
     const {
       technicalOperationsList: newTechOperationsList = [],
+      fromFaxogrammMissionForm,
     } = props;
 
     const newState = {
@@ -61,10 +64,15 @@ class MunicipalFacility extends React.Component {
 
       if (is_new) {
         const outerPayload = {
-          norm_ids: norm_ids.join(','),
           start_date: new_ds,
           end_date: new_ds,
         };
+
+        if (fromFaxogrammMissionForm) {
+          outerPayload.norm_ids = norm_id;
+        } else {
+          outerPayload.norm_ids = norm_ids.join(',');
+        }
 
         this.getCleaningMunicipalFacilityList(outerPayload, new_v);
       }
@@ -81,7 +89,7 @@ class MunicipalFacility extends React.Component {
 
   getCleaningMunicipalFacilityList = (outerPayload, new_v) => {
     this.context.flux.getActions('missions').getCleaningMunicipalFacilityList(outerPayload).then(({ result: { rows = [] } = {} }) => {
-      if (new_v) {
+      if (new_v && !this.props.fromFaxogrammMissionForm) {
         this.props.getDataByNormId(rows.find(({ municipal_facility_id }) => municipal_facility_id === new_v).norm_id);
       }
       this.setState({
@@ -97,6 +105,7 @@ class MunicipalFacility extends React.Component {
         [props.id]: value,
         technical_operation_id,
         date_start,
+        norm_id,
       } = {},
       errors: {
         [props.id]: error,

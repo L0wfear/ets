@@ -9,11 +9,11 @@ export default (props) => {
       <Col md={3} />
       <Col md={6} className="faxogramms-date-range">
         <Div className="inline-block faxogramms-date">
-          <Datepicker date={props.create_date_from} onChange={props.handleChange.bind(null, 'create_date_from')} />
+          <Datepicker date={props.dateFrom} onChange={props.handleChange.bind(null, 'dateFrom')} />
         </Div>
         <Div className="date-divider">—</Div>
         <Div className="inline-block">
-          <Datepicker date={props.create_date_to} onChange={props.handleChange.bind(null, 'create_date_to')} />
+          <Datepicker date={props.dateTo} onChange={props.handleChange.bind(null, 'dateTo')} />
         </Div>
       </Col>
     </Row>

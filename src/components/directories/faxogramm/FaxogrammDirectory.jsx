@@ -25,12 +25,24 @@ class FaxogrammDirectory extends ElementsList {
   constructor(props) {
     super(props);
 
+    const {
+      location: {
+        query: {
+          dateFrom = getToday0am(),
+          dateTo = getToday2359(),
+        } = {},
+      } = {},
+      routeParams: {
+        idFaxogramm = '',
+      } = {},
+    } = this.props;
+
     this.mainListName = 'faxogrammsList';
     this.state = {
       page: 0,
       selectedElement: null,
-      create_date_from: getToday0am(),
-      create_date_to: getToday2359(),
+      dateFrom,
+      dateTo,
       showForm: false,
       sortBy: ['order_number:desc'],
       filter: {},
@@ -39,13 +51,29 @@ class FaxogrammDirectory extends ElementsList {
       dmElement: {},
       initDutyMission: {},
       fOperationSelectedElement: {},
+      haveMax: !idFaxogramm,
     };
   }
 
   componentDidMount() {
     super.componentDidMount();
     this.context.flux.getActions('missions').getMissionSources();
-    this.getFaxogramms();
+    const {
+      routeParams: {
+        idFaxogramm = '',
+      } = {},
+    } = this.props;
+
+    const outerIdFax = Number.parseInt(idFaxogramm, 0);
+
+    this.getFaxogramms(!idFaxogramm).then(({ result = [] }) => {
+      if (!isNaN(outerIdFax)) {
+        const selectedElement = result.find(({ id }) => id === outerIdFax);
+        if (selectedElement) {
+          this.setState({ selectedElement });
+        }
+      }
+    });
   }
 
   async componentWillUpdate(nextProps, nextState) {
@@ -60,8 +88,8 @@ class FaxogrammDirectory extends ElementsList {
         pageOffset,
         nextState.sortBy,
         nextState.filter,
-        this.state.create_date_from,
-        this.state.create_date_to,
+        this.state.dateFrom,
+        this.state.dateTo,
       );
 
       const { total_count } = objects;
@@ -74,26 +102,34 @@ class FaxogrammDirectory extends ElementsList {
           offset,
           nextState.sortBy,
           nextState.filter,
-          this.state.create_date_from,
-          this.state.create_date_to,
+          this.state.dateFrom,
+          this.state.dateTo,
         );
       }
     }
   }
 
-  getFaxogramms() {
+  inheritedComponentWillReceiveProps = (props) => {
+    const {
+      routeParams: {
+        idFaxogramm = '',
+      } = {},
+    } = props;
+    const outerIdFax = Number.parseInt(idFaxogramm, 0);
+
+    const selectedElement = this.props.faxogrammsList.find(({ id }) => id === outerIdFax) || null;
+    this.setState({ selectedElement });
+  }
+
+  getFaxogramms = (haveMax = this.state.haveMax) =>
     this.context.flux.getActions('objects').getFaxogramms(
-      MAX_ITEMS_PER_PAGE,
+      haveMax ? MAX_ITEMS_PER_PAGE : 10000,
       this.state.page * MAX_ITEMS_PER_PAGE,
       this.state.sortBy,
       this.state.filter,
-      this.state.create_date_from,
-      this.state.create_date_to,
+      this.state.dateFrom,
+      this.state.dateTo,
     );
-  }
-  getOneFaxogramm(id) {
-    return this.context.flux.getActions('objects').getFaxogrammById(id);
-  }
 
   saveFaxogramm() {
     const { flux } = this.context;
@@ -103,6 +139,9 @@ class FaxogrammDirectory extends ElementsList {
   }
 
   getAdditionalProps() {
+    const {
+      haveMax,
+    } = this.state;
     // const { structures } = this.context.flux.getStore('session').getCurrentUser();
     const changeSort = (field, direction) => this.setState({ sortBy: `${field}:${direction ? 'asc' : 'desc'}` });
     const changeFilter = (filter) => {
@@ -111,15 +150,22 @@ class FaxogrammDirectory extends ElementsList {
         this.state.page * MAX_ITEMS_PER_PAGE,
         this.state.sortBy,
         filter,
-        this.state.create_date_from,
-        this.state.create_date_to,
+        this.state.dateFrom,
+        this.state.dateTo,
       );
       this.setState({ filter });
     };
-    return { changeSort, changeFilter, filterValues: this.state.filter };
+
+    return {
+      changeSort,
+      changeFilter,
+      filterValues: this.state.filter,
+      haveMax,
+    };
   }
 
   handleChange(field, value) {
+    this.props.history.pushState(null, '/faxogramms');
     this.setState({ [field]: value }, () => this.getFaxogramms());
   }
 
@@ -216,6 +262,7 @@ class FaxogrammDirectory extends ElementsList {
       mElement = {},
       dmElement = {},
       initDutyMission = {},
+      haveMax,
     } = this.state;
 
     return (
@@ -233,8 +280,11 @@ class FaxogrammDirectory extends ElementsList {
           <Button onClick={this.handleClickOnCDM} disabled={this.checkDisabledCDM()}>Создать наряд-задание</Button>
           <Button onClick={this.saveFaxogramm} disabled={this.state.selectedElement === null}><Glyphicon glyph="download-alt" /></Button>
         </FaxogrammsTable>
-        <Paginator currentPage={this.state.page} maxPage={Math.ceil(this.props.faxogrammsTotalCount / MAX_ITEMS_PER_PAGE)} setPage={page => this.setState({ page })} firstLastButtons />
-        <Div hidden={this.state.selectedElement === null}>
+        {
+          haveMax &&
+          <Paginator currentPage={this.state.page} maxPage={Math.ceil(this.props.faxogrammsTotalCount / MAX_ITEMS_PER_PAGE)} setPage={page => this.setState({ page })} firstLastButtons />
+        }
+          <Div hidden={this.state.selectedElement === null}>
           <Row>
             <h4 style={{ marginLeft: 20, fontWeight: 'bold' }}>Расшифровка централизованного задания</h4>
             <Col md={8}>

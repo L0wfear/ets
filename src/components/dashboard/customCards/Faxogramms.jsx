@@ -6,7 +6,6 @@ import { FaxogrammService } from 'api/Services';
 import Div from 'components/ui/Div.jsx';
 import { FluxContext } from 'utils/decorators';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
-import FaxogrammMissionsFormWrap from '../../directories/faxogramm/FaxogrammMissionsFormWrap.jsx';
 import PDFViewModal from './PDFViewModal.jsx';
 
 @FluxContext
@@ -16,15 +15,10 @@ export default class Faxogramms extends DashboardCardMedium {
     super(props);
 
     this.state = Object.assign(this.state, {
-      showFaxogrammForm: false,
       showPDFViewModal: false,
     });
   }
 
-  showFaxogrammForm(data) {
-    this.props.openSubitemsList(true);
-    this.setState({ showFaxogrammForm: true, faxogramm: data });
-  }
 
   async showPDFViewModal(data) {
     const url = await this.context.flux.getActions('objects').getFaxogrammPDFUrl(data.id);
@@ -43,6 +37,13 @@ export default class Faxogramms extends DashboardCardMedium {
     const canViewPDF = this.context.flux.getStore('session').getPermission('faxogramm.read');
     const canCreateMission = this.context.flux.getStore('session').getPermission('mission.create');
 
+    const {
+      meta: {
+        date_to = '',
+        date_from = '',
+      } = {},
+    } = this.props;
+
     return (
       <Div>
         <Div style={{ marginTop: 10 }}>
@@ -51,7 +52,7 @@ export default class Faxogramms extends DashboardCardMedium {
         </Div>
         <Div className="text-right">
           {canViewPDF ? <Button className="dashboard-card-action-button" onClick={(e) => { e.preventDefault(); this.showPDFViewModal(data); }}><Glyphicon glyph="info-sign" /></Button> : ''}
-          {canCreateMission ? <Link to={`/faxogramms/${data.id}`}><Button className="dashboard-card-action-button">Сформировать задания</Button></Link> : ''}
+          {canCreateMission ? <Link to={`/faxogramms/${data.id}?dateFrom=${date_from}&dateTo=${date_to}`}><Button className="dashboard-card-action-button">Сформировать задания</Button></Link> : ''}
         </Div>
         <PDFViewModal
           blob={this.state.blob}
@@ -64,12 +65,7 @@ export default class Faxogramms extends DashboardCardMedium {
 
   renderCustomCardForm() {
     return (
-      <FaxogrammMissionsFormWrap
-        onFormHide={() => this.setState({ showFaxogrammForm: false })}
-        showForm={this.state.showFaxogrammForm}
-        element={this.state.faxogramm}
-        {...this.props}
-      />
+      <div />
     );
   }
 

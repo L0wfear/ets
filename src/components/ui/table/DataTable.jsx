@@ -616,6 +616,7 @@ export default class DataTable extends React.Component {
       selectField, title, noTitle, noFilter,
       enableSort, noDataMessage, className, noHeader,
       refreshable, columnControl, highlight, serverPagination, externalChangeSort,
+      haveMax = true,
     } = this.props;
     const { initialSort, initialSortAscending, columnControlValues, isHierarchical } = this.state;
 
@@ -636,7 +637,7 @@ export default class DataTable extends React.Component {
     return (
       <Div className={tableClassName}>
         <Div className="some-header" hidden={noHeader}>
-        <div style={{ display: 'flex', 'justifyContent': 'space-between' }}>
+          <div style={{ display: 'flex', 'justifyContent': 'space-between' }}>
             <div>
               {noTitle ? '' : title}
             </div>
@@ -690,7 +691,7 @@ export default class DataTable extends React.Component {
           initialSortAscending={initialSortAscending}
           columnMetadata={columnMetadata}
           columns={tableCols}
-          resultsPerPage={15}
+          resultsPerPage={haveMax ? 15 : 10000}
           useCustomPagerComponent
           externalChangeSort={externalChangeSort || this.handleChangeSort}
           customPagerComponent={serverPagination ? <Div /> : Paginator}

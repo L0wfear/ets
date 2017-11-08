@@ -56,15 +56,18 @@ class MunicipalFacility extends React.Component {
     if ((!!new_toi && new_ds && (old_toi !== new_toi || old_ds !== new_ds) && forseUpdateIsWas) || forseUpdate) {
       const {
         norm_ids = [],
+        is_new,
       } = (newTechOperationsList.find(({ id }) => id === new_toi) || {});
 
-      const outerPayload = {
-        norm_ids: norm_ids.join(','),
-        start_date: new_ds,
-        end_date: new_ds,
-      };
+      if (is_new) {
+        const outerPayload = {
+          norm_ids: norm_ids.join(','),
+          start_date: new_ds,
+          end_date: new_ds,
+        };
 
-      this.getCleaningMunicipalFacilityList(outerPayload, new_v);
+        this.getCleaningMunicipalFacilityList(outerPayload, new_v);
+      }
 
       newState.technical_operation_id = new_toi;
       newState.date_start = new_ds;

@@ -98,6 +98,7 @@ export class DutyMissionForm extends Form {
     const {
       norm_id,
     } = mission;
+    let TECH_OPERATIONS = [];
 
     const technicalOperationsActions = flux.getActions('technicalOperation');
     const routesActions = flux.getActions('routes');
@@ -123,9 +124,19 @@ export class DutyMissionForm extends Form {
     missionsActions.getMissionSources();
     flux.getActions('employees').getEmployees({ 'active': true });
     const technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsWithBrigades();
+    const {
+      is_new,
+    } = mission;
+    if (is_new) {
+      TECH_OPERATIONS = technicalOperationsList.filter(({ is_new: is_new_to }) => !!is_new_to).map(({ id, name }) => ({ value: id, label: name }));
+    } else {
+      TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
+    }
+
     this.setState({
       selectedRoute,
       technicalOperationsList,
+      TECH_OPERATIONS,
       routesList,
     });
   }
@@ -196,12 +207,12 @@ export class DutyMissionForm extends Form {
       fromFaxogrammMissionForm = false,
     } = this.props;
     const {
-      technicalOperationsList = [],
+      TECH_OPERATIONS = [],
       routesList = [],
       available_route_types = [],
+      technicalOperationsList = [],
     } = this.state;
 
-    const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
     const MISSION_SOURCES = missionSourcesList.reduce((newArr, { id, name, auto }) => {
       if (!auto || state.mission_source_id === id) {
         newArr.push({ value: id, label: name });

@@ -53,15 +53,7 @@ export class MissionForm extends Form {
   async handleCarIdChange(v) {
     this.handleChange('car_id', v);
     if (this.props.formState.status) {
-      this.handleChange('technical_operation_id', undefined);
       this.handleRouteIdChange(undefined);
-      try {
-        const technicalOperationsList = await this.context.flux.getActions('technicalOperation')
-                                                             .getTechnicalOperationsByCarId(v);
-        this.setState({ technicalOperationsList });
-      } catch (e) {
-        console.error(e);
-      }
     }
   }
 
@@ -92,7 +84,7 @@ export class MissionForm extends Form {
     const isTemplate = this.props.template || false;
 
     let { selectedRoute } = this.state;
-    let { technicalOperationsList, routesList, carsList } = this.props;
+    let { routesList, carsList } = this.props;
     let TECH_OPERATIONS = [];
 
     if (!isEmpty(mission.route_id)) {
@@ -103,8 +95,21 @@ export class MissionForm extends Form {
       routesList = await routesActions.getRoutesByMissionId(mission.id, isTemplate);
     }
 
-    technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsByCarId(mission.car_id);
-    TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
+    /**
+     * DITETS-2359
+     * GET /technical_operation?only=new
+     * GET /technical_operation?only=old
+     */
+    const { result: technicalOperationsList } = await technicalOperationsActions.getTechnicalOperations();
+    const {
+      is_new,
+    } = mission;
+    if (is_new) {
+      TECH_OPERATIONS = technicalOperationsList.filter(({ is_new: is_new_to }) => !!is_new_to).map(({ id, name }) => ({ value: id, label: name }));
+    } else {
+      TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
+    }
+
     await missionsActions.getMissionSources();
 
     this.setState({

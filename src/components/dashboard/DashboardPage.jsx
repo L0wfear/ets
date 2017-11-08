@@ -132,6 +132,7 @@ export default class DashboardPage extends React.Component {
                 <DashboardCard
                   title={c.title}
                   items={c.items}
+                  meta={c.meta}
                   dashboardKey={c.key}
                   itemsTitle={c.itemsTitle}
                   loading={this.state.loadingComponents.indexOf(c.key) > -1}

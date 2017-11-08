@@ -179,8 +179,17 @@ class WaybillForm extends Form {
 
     const missionsNum = Object.values(missionsWithSourceFaxogramm).map(num => `задание ${num}`);
 
-    if (missionsNum.length !== 0) {
-      confirmDialog({
+    this.confirmDialogChangeDate(missionsNum).then(() => {
+      this.getWaybillDrivers({
+        [field]: value,
+      });
+      this.handleChange(field, value);
+    }).catch(() => {});
+  }
+
+  confirmDialogChangeDate(missionsNum) {
+    if (missionsNum.length) {
+      return confirmDialog({
         title: 'Внимание!',
         body: (
           <div>
@@ -188,21 +197,11 @@ class WaybillForm extends Form {
             <p>Вы уверены, что хотите продолжить?</p>
           </div>
         ),
-      })
-      .then(() => {
-        this.getWaybillDrivers({
-          [field]: value,
-        });
-        this.handleChange(field, value);
-      })
-      .catch(() => {});
-    } else {
-      this.getWaybillDrivers({
-        [field]: value,
       });
-      this.handleChange(field, value);
     }
+    return new Promise(res => res());
   }
+
   getWaybillDrivers({
     plan_departure_date = this.props.formState.plan_departure_date,
     plan_arrival_date = this.props.formState.plan_arrival_date,

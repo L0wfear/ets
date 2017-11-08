@@ -120,6 +120,7 @@ export function getDefaultMission(date_start = getToday9am(), date_end = getTomo
     assign_to_waybill: 'assign_to_new_draft',
     mission_source_id: 3,
     passes_count: 1,
+    is_new: true,
   };
 }
 
@@ -133,6 +134,7 @@ export function getDefaultDutyMission() {
     brigade_employee_id_list: [],
     comment: '',
     car_mission_id: 0,
+    is_new: true,
   };
 }
 

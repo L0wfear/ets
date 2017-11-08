@@ -8,7 +8,9 @@ import {
   map,
   find,
   uniqBy,
+  isEmpty as lodashIsEmpty,
 } from 'lodash';
+import moment from 'moment';
 
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
@@ -478,8 +480,8 @@ class WaybillForm extends Form {
       missionSourcesList = [],
       formState: {
         mission_id_list = [],
-        fact_departure_date,
-        fact_arrival_date,
+        fact_departure_date: fdd,
+        fact_arrival_date: fad,
       } = {},
     } = this.props;
     const errors = {
@@ -487,6 +489,8 @@ class WaybillForm extends Form {
         cf_list: [],
       },
     };
+    const fddMoment = moment(fdd).format(`${global.APP_DATE_FORMAT} HH:mm`);
+    const fadMoment = moment(fad).format(`${global.APP_DATE_FORMAT} HH:mm`);
 
     const missionsList = uniqBy([...oldMissionsList].concat(...notAvailableMissions), 'id');
 
@@ -499,24 +503,38 @@ class WaybillForm extends Form {
         status,
         number,
       } = dataMission;
+      const dsMoment = moment(ds).format(`${global.APP_DATE_FORMAT} HH:mm`);
+      const deMoment = moment(de).format(`${global.APP_DATE_FORMAT} HH:mm`);
 
       const isFaxogrammSource = !!(missionSourcesList.find(({ id: id_mission_source }) => id_mission_source === msi) || {}).auto;
       if (!isFaxogrammSource) {
         if (status === 'complete' || status === 'fail') {
-          errors.notSourceFaxogramm.cf_list.push(number);
+          if (!(dsMoment >= fddMoment && fadMoment >= deMoment)) {
+            errors.notSourceFaxogramm.cf_list.push(number);
+          }
         }
-        console.log(status)
-      } else {
-
-      }
-
-      if (!isEmpty(errors.notSourceFaxogramm.cf_list)) {
-        global.NOTIFICATION_SYSTEM.notify('aler', 'error');
-        return;
+      } else if (status === 'complete' || status === 'fail') {
+        if (!(dsMoment >= fddMoment && fadMoment >= deMoment)) {
+          // errors.notSourceFaxogramm.cf_list.push(number);
+        }
+      } else if (status === 'assigned') {
+        if (dsMoment >= fadMoment || fddMoment >= deMoment) {
+          // errors.notSourceFaxogramm.cf_list.push(number);
+        } else {
+          
+        }
       }
     });
-
-    // this.props.handleClose(taxesControl);
+    if (!lodashIsEmpty(errors.notSourceFaxogramm.cf_list)) {
+      global.NOTIFICATION_SYSTEM.notify(
+        `Время выполнения привязанного к ПЛ закрытого задания: 
+          № ${errors.notSourceFaxogramm.cf_list.join(', ')}
+          выходит за пределы фактических сроков выполнения ПЛ. Необходимо скорректировать фактические даты ПЛ`,
+        'error',
+      );
+      return;
+    }
+    this.props.handleClose(taxesControl);
   }
 
   handleSubmit = () => {

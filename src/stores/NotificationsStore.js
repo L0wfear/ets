@@ -42,6 +42,7 @@ export default class NotificationsStore extends Store {
         ],
         actionNotifications: {
           'stateProgram': 'Запись успешно добавлена',
+          'contractor': 'Запись успешно добавлена',
         },
       },
       {

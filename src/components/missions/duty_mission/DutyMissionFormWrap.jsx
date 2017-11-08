@@ -61,10 +61,8 @@ class DutyMissionFormWrap extends FormWrap {
         } = {},
       } = this.props;
       const {
-        initDutyMission: {
-          plan_date_start: new_pds,
-          plan_date_end: new_pde,
-        } = {},
+        plan_date_start: new_pds,
+        plan_date_end: new_pde,
       } = state;
 
       if (moment(new_pds).toDate().getTime() < moment(init_pds).toDate().getTime()) {

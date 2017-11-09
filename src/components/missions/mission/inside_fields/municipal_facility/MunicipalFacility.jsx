@@ -89,7 +89,7 @@ class MunicipalFacility extends React.Component {
 
   getCleaningMunicipalFacilityList = (outerPayload, new_v) => {
     this.context.flux.getActions('missions').getCleaningMunicipalFacilityList(outerPayload).then(({ result: { rows = [] } = {} }) => {
-      if (new_v && !this.props.fromFaxogrammMissionForm) {
+      if (new_v) {
         this.props.getDataByNormId(rows.find(({ municipal_facility_id }) => municipal_facility_id === new_v).norm_id);
       }
       this.setState({

@@ -113,6 +113,14 @@ export default class CarActions extends Actions {
     return VectorObjectService.get(payload);
   }
 
+  getCarsByNormId({ norm_id }) {
+    const payload = {
+      norm_id,
+    };
+
+    return CarService.get(payload);
+  }
+
   async getCarsByTechnicalOperation(technical_operation_id) {
     const payload = {};
     if (!isEmpty(technical_operation_id)) {

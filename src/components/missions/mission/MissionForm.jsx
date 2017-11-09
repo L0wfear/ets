@@ -188,7 +188,7 @@ export class MissionForm extends Form {
     this.handleChange('date_start', v);
   }
   getDataByNormId = (norm_id) => {
-    this.context.flux.getActions('technicalOperation').getOneTechOperationByNormId({ norm_id }).then(({ result: { rows: [to_data = {}] } }) => {
+    this.context.flux.getActions('technicalOperation').getOneTechOperationByNormId({ norm_id }).then(({ result: [to_data = {}] }) => {
       const {
         route_types: available_route_types = [],
       } = to_data;

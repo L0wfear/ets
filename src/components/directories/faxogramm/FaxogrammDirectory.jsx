@@ -173,8 +173,25 @@ class FaxogrammDirectory extends ElementsList {
     const newPropsState = {
       showFormCreateMission: true,
     };
-    const { fOperationSelectedElement: { id: technical_operation_id, date_from, date_to, municipal_facility_id, order_operation_id, norm_id, num_exec: passes_count } } = this.state;
-    const { selectedElement: { id: faxogramm_id, order_date, order_date_to, order_number } } = this.state;
+    const {
+      fOperationSelectedElement: {
+        num_exec: passes_count,
+        id: technical_operation_id,
+        date_from,
+        date_to,
+        municipal_facility_id,
+        order_operation_id,
+        norm_id,
+      },
+    } = this.state;
+    const {
+      selectedElement: {
+        id: faxogramm_id,
+        order_date,
+        order_date_to,
+        order_number,
+      },
+    } = this.state;
     const { missionSourcesList = [] } = this.props;
 
     const mElement = {
@@ -196,7 +213,10 @@ class FaxogrammDirectory extends ElementsList {
     newPropsState.mElement = mElement;
     newPropsState.initDutyMission = initMission;
 
-    this.setState({ ...newPropsState });
+    this.setState({
+      ...this.state,
+      ...newPropsState,
+    });
   }
   onHideCM = () => this.setState({ showFormCreateMission: false });
 
@@ -204,8 +224,23 @@ class FaxogrammDirectory extends ElementsList {
     const newPropsState = {
       showFormCreateDutyMission: true,
     };
-    const { fOperationSelectedElement: { id: technical_operation_id, date_from, date_to, municipal_facility_id, order_operation_id, norm_id } } = this.state;
-    const { selectedElement: { id: faxogramm_id, order_date, order_date_to, order_number } } = this.state;
+    const {
+      fOperationSelectedElement: {
+        id: technical_operation_id,
+        date_from,
+        date_to,
+        municipal_facility_id,
+        order_operation_id, norm_id,
+      },
+    } = this.state;
+    const {
+      selectedElement: {
+        id: faxogramm_id,
+        order_date,
+        order_date_to,
+        order_number,
+      },
+    } = this.state;
     const { missionSourcesList = [] } = this.props;
 
     const dmElement = {
@@ -226,7 +261,10 @@ class FaxogrammDirectory extends ElementsList {
     newPropsState.dmElement = dmElement;
     newPropsState.initDutyMission = initDutyMission;
 
-    this.setState({ ...newPropsState });
+    this.setState({
+      ...this.state,
+      ...newPropsState,
+    });
   }
   onHideCDM = () => this.setState({ showFormCreateDutyMission: false });
 
@@ -284,7 +322,7 @@ class FaxogrammDirectory extends ElementsList {
           haveMax &&
           <Paginator currentPage={this.state.page} maxPage={Math.ceil(this.props.faxogrammsTotalCount / MAX_ITEMS_PER_PAGE)} setPage={page => this.setState({ page })} firstLastButtons />
         }
-          <Div hidden={this.state.selectedElement === null}>
+        <Div hidden={this.state.selectedElement === null}>
           <Row>
             <h4 style={{ marginLeft: 20, fontWeight: 'bold' }}>Расшифровка централизованного задания</h4>
             <Col md={8}>

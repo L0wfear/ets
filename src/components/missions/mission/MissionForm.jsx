@@ -445,7 +445,7 @@ export class MissionForm extends Form {
                 type="number"
                 label="Кол-во циклов"
                 error={errors.passes_count}
-                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || fromFaxogrammMissionForm || !is_new}
+                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !is_new}
                 value={state.passes_count}
                 onChange={this.handleChange.bind(this, 'passes_count')}
                 min={0}

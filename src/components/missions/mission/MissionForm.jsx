@@ -268,7 +268,7 @@ export class MissionForm extends Form {
         type_id: c.type_id,
       }));
 
-      const routes = routesList.filter(r => !state.structure_id || r.structure_id === state.structure_id);
+    const routes = routesList.filter(r => !state.structure_id || r.structure_id === state.structure_id);
 
     const filteredRoutes = (
       route !== null &&

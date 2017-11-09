@@ -1,7 +1,10 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button, Glyphicon } from 'react-bootstrap';
-import last from 'lodash/last';
+import {
+  last,
+  uniqBy,
+ } from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
 import RouteInfo from 'components/route/RouteInfo.jsx';
@@ -222,6 +225,7 @@ export class DutyMissionForm extends Form {
       routesList = [],
       available_route_types = [],
       technicalOperationsList = [],
+      selectedRoute: route = null,
     } = this.state;
 
     const MISSION_SOURCES = missionSourcesList.reduce((newArr, { id, name, auto }) => {
@@ -231,7 +235,18 @@ export class DutyMissionForm extends Form {
       return newArr;
     }, []);
 
-    const ROUTES = routesList.map(({ id, name }) => ({ value: id, label: name }));
+    const routes = routesList.filter(r => !state.structure_id || r.structure_id === state.structure_id);
+
+    const filteredRoutes = (
+      route !== null &&
+      route.id !== undefined &&
+      routes.find(item => item.value === route.id) === undefined
+    ) ? routes.concat([route]) : routes;
+
+    const ROUTES = uniqBy(
+      filteredRoutes.map(({ id, name }) => ({ value: id, label: name })),
+      'value',
+    );
     const EMPLOYEES = employeesList.map(d => ({
       value: d.id,
       label: `${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''} ${!d.active ? '(Неактивный сотрудник)' : ''}`,
@@ -258,7 +273,6 @@ export class DutyMissionForm extends Form {
       title = 'Создание наряд-задания';
     }
 
-    const route = this.state.selectedRoute;
     const IS_DISPLAY = !!state.status && state.status !== 'not_assigned';
 
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;

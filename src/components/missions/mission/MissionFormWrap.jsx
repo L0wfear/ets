@@ -76,19 +76,26 @@ export default class MissionFormWrap extends FormWrap {
         initDutyMission: {
           date_start: init_ds,
           date_end: init_de,
+          passes_count: init_pc,
         } = {},
       } = this.props;
       const {
         date_start: new_ds,
         date_end: new_de,
+        passes_count: new_pc,
       } = formState;
 
       if (moment(new_ds).toDate().getTime() < moment(init_ds).toDate().getTime()) {
         formErrors.date_start = 'Дата не должна выходить за пределы действия поручения';
       }
-      
       if (moment(new_de).toDate().getTime() > moment(init_de).toDate().getTime()) {
         formErrors.date_end = 'Дата не должна выходить за пределы действия поручения';
+      }
+      if (new_pc > init_pc) {
+        formErrors.passes_count = '"Кол-во проходов" не должно превышать значение "Кол-во проходов" из поручения';
+      }
+      if (new_pc <= 0) {
+        formErrors.passes_count = '"Кол-во проходов" должно быть больше нуля';
       }
     }
 

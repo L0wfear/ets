@@ -58,11 +58,13 @@ class DutyMissionFormWrap extends FormWrap {
         initDutyMission: {
           plan_date_start: init_pds,
           plan_date_end: init_pde,
+          passes_count: init_pc,
         } = {},
       } = this.props;
       const {
         plan_date_start: new_pds,
         plan_date_end: new_pde,
+        passes_count: new_pc,
       } = state;
 
       if (moment(new_pds).toDate().getTime() < moment(init_pds).toDate().getTime()) {
@@ -70,6 +72,12 @@ class DutyMissionFormWrap extends FormWrap {
       }
       if (moment(new_pde).toDate().getTime() > moment(init_pde).toDate().getTime()) {
         formErrors.plan_date_end = 'Дата не должна выходить за пределы действия поручения';
+      }
+      if (new_pc > init_pc) {
+        formErrors.passes_count = '"Кол-во проходов" не должно превышать значение "Кол-во проходов" из поручения';
+      }
+      if (new_pc <= 0) {
+        formErrors.passes_count = '"Кол-во проходов" должно быть больше нуля';
       }
     }
 

@@ -116,7 +116,7 @@ export class DutyMissionForm extends Form {
       selectedRoute = await routesActions.getRouteById(mission.route_id);
     }
 
-    if (!isEmpty(mission.technical_operation_id)) {
+    if (!isEmpty(mission.id)) {
       routesList = await routesActions.getRoutesByDutyMissionId(mission.id, isTemplate);
     }
 
@@ -157,7 +157,7 @@ export class DutyMissionForm extends Form {
     });
   }
 
-  async onFormHide(isSubmitted, result) {
+  onFormHide = async (isSubmitted, result) => {
     const { flux } = this.context;
     const routesActions = flux.getActions('routes');
 
@@ -185,14 +185,25 @@ export class DutyMissionForm extends Form {
   componentWillReceiveProps(props) {
   }
 
-  getDataByNormId = (norm_id) => {
-    this.context.flux.getActions('technicalOperation').getOneTechOperationByNormId({ norm_id }).then(({ result: [to_data = {}] }) => {
-      const {
-        route_types: available_route_types = [],
-      } = to_data;
-      this.setState({ available_route_types });
-    });
+  getDataByNormId = async (norm_id) => {
     this.handleChange('norm_id', norm_id);
+    const {
+      result: [
+        to_data = {},
+      ] = [],
+    } = await this.context.flux.getActions('technicalOperation').getOneTechOperationByNormId({ norm_id })
+    const {
+      formState: {
+        technical_operation_id = -1,
+      } = {},
+    } = this.props;
+
+    const {
+      route_types: available_route_types = [],
+    } = to_data;
+
+    const routesList = await this.context.flux.getActions('routes').getRoutesByTechnicalOperation(technical_operation_id)
+    this.setState({ routesList, available_route_types });
   }
 
   render() {
@@ -487,7 +498,7 @@ export class DutyMissionForm extends Form {
 
         <RouteFormWrap
           element={route}
-          onFormHide={this.onFormHide.bind(this)}
+          onFormHide={this.onFormHide}
           showForm={this.state.showRouteForm}
           structureId={state.structure_id}
           available_route_types={available_route_types}

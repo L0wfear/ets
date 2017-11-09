@@ -75,7 +75,7 @@ export class MissionForm extends Form {
     this.handleChange('structure_id', v);
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     const mission = this.props.formState;
     const { flux } = this.context;
     const technicalOperationsActions = flux.getActions('technicalOperation');
@@ -93,6 +93,14 @@ export class MissionForm extends Form {
 
     if (!isEmpty(mission.id)) {
       routesList = await routesActions.getRoutesByMissionId(mission.id, isTemplate);
+      console.log('hello', routesList)
+    }
+
+    const {
+      norm_id,
+    } = mission;
+    if (norm_id) {
+      await this.getDataByNormId(norm_id);
     }
 
     /**
@@ -101,6 +109,7 @@ export class MissionForm extends Form {
      * GET /technical_operation?only=old
      */
     const { result: technicalOperationsList } = await technicalOperationsActions.getTechnicalOperations();
+
     const {
       is_new,
     } = mission;
@@ -119,17 +128,6 @@ export class MissionForm extends Form {
       routesList,
       selectedRoute,
     });
-  }
-
-  componentDidMount() {
-    const {
-      formState: {
-        norm_id,
-      } = {},
-    } = this.props;
-    if (norm_id) {
-      this.getDataByNormId(norm_id);
-    }
   }
 
   createNewRoute() {
@@ -187,40 +185,47 @@ export class MissionForm extends Form {
   handleChangeDateStart = (v) => {
     this.handleChange('date_start', v);
   }
-  getDataByNormId = (norm_id) => {
-    this.context.flux.getActions('technicalOperation').getOneTechOperationByNormId({ norm_id }).then(({ result: [to_data = {}] }) => {
-      const {
-        route_types: available_route_types = [],
-      } = to_data;
-
-      const {
-        formState: {
-          technical_operation_id = -1,
-        } = {},
-      } = this.props;
-
-      if (!this.props.formState.status && !this.props.fromWaybill) {
-        this.handleChange('car_id', undefined);
-        const {
-          car_func_types = [],
-        } = to_data;
-        const car_func_types_ids = car_func_types.map(({ id }) => id);
-        // Костыль
-        // Уберётся после релиза 14 версии
-        this.context.flux.getActions('cars').getCarsByTechnicalOperation(!lodashIsEmpty(car_func_types_ids) ? technical_operation_id : undefined)
-        .then((carsList) => {
-          this.setState({ carsList, car_func_types_ids });
-        });
-      }
-
-      this.context.flux.getActions('routes').getRoutesByTechnicalOperation(technical_operation_id)
-      .then((ans) => {
-        this.setState({ routesList: ans });
-      });
-
-      this.setState({ available_route_types });
-    });
+  getDataByNormId = async (norm_id) => {
     this.handleChange('norm_id', norm_id);
+
+    const {
+      result: [
+        to_data = {},
+      ],
+    } = await this.context.flux.getActions('technicalOperation').getOneTechOperationByNormId({ norm_id })
+
+    const {
+      route_types: available_route_types = [],
+    } = to_data;
+
+    const {
+      formState: {
+        technical_operation_id = -1,
+      } = {},
+    } = this.props;
+
+    if (!this.props.formState.status && !this.props.fromWaybill) {
+      this.handleChange('car_id', undefined);
+      const {
+        car_func_types = [],
+      } = to_data;
+      const car_func_types_ids = car_func_types.map(({ id }) => id);
+      // Костыль
+      // Уберётся после релиза 14 версии
+
+      this.context.flux.getActions('cars').getCarsByNormId({ norm_id })
+      .then(({ result: { rows: carsList } }) => {
+        this.setState({ carsList, car_func_types_ids });
+      });
+    }
+
+    this.context.flux.getActions('routes').getRoutesByTechnicalOperation(technical_operation_id)
+    .then((routesList) => {
+    console.log('1', routesList)
+      this.setState({ routesList });
+    });
+
+    this.setState({ available_route_types });
   }
 
   render() {
@@ -263,7 +268,7 @@ export class MissionForm extends Form {
         type_id: c.type_id,
       }));
 
-    const routes = routesList.filter(r => !state.structure_id || r.structure_id === state.structure_id);
+      const routes = routesList.filter(r => !state.structure_id || r.structure_id === state.structure_id);
 
     const filteredRoutes = (
       route !== null &&

@@ -30,7 +30,8 @@ export const routeSchema = {
       {
         validator: (value, formData) => {
           if ((!value || value.length === 0) && (!formData.draw_object_list || formData.draw_object_list.length === 0)) {
-            return 'Поле "Геоданные маршрута" должно быть заполнено';
+            if (formData.type === 'mixed') return 'Поле "Список выбранных ОДХ" должно быть заполнено';
+            if (formData.type === 'simple_dt') return 'Поле "Список выбранных ДТ" должно быть заполнено';
           }
           return false;
         },

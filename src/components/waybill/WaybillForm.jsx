@@ -329,8 +329,8 @@ class WaybillForm extends Form {
       return;
     }
 
-    const departure_date = fact_departure_date || plan_departure_date;
-    const arrival_date = fact_arrival_date || plan_arrival_date;
+    const departure_date = status === 'active' ? fact_departure_date : plan_departure_date;
+    const arrival_date = status === 'active' ? fact_arrival_date : plan_arrival_date;
 
     flux.getActions('missions').getMissionsByCarAndDates(
       car_id,

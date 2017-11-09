@@ -38,6 +38,98 @@ const Div = enhanceWithPermissions(DivForEnhance);
 
 const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
+const checkErrorDate = ({ fromFaxogramm: { cf_list: fax_cf_list, confirmDialogList: fax_confirmDialogList }, notFromFaxogramm: { cf_list: not_fax_cf_list } }) => {
+  if (!lodashIsEmpty(fax_cf_list)) {
+    global.NOTIFICATION_SYSTEM.notify(`
+      Время выполнения привязанного к ПЛ закрытого задания: 
+      № ${fax_cf_list.join(', ')}, выходит за пределы фактических сроков выполнения ПЛ. Необходимо скорректировать фактические даты ПЛ
+    `, 'error', 'tr');
+    return new Promise((res, rej) => rej());
+  }
+  if (!lodashIsEmpty(fax_confirmDialogList)) {
+    return confirmDialog({
+      title: 'Внимание!',
+      body: (
+        <div>
+          <p>{`Привязанные задания № ${fax_confirmDialogList.join(', ')} будут исключены из ПЛ, поскольку выходят за период действия ПЛ`}</p>
+          <p>Вы уверены, что хотите продолжить?</p>
+        </div>
+      ),
+    });
+  }
+  if (!lodashIsEmpty(not_fax_cf_list)) {
+    global.NOTIFICATION_SYSTEM.notify(`
+      Время выполнения привязанного к ПЛ закрытого задания: 
+      № ${not_fax_cf_list.join(', ')}, выходит за пределы фактических сроков выполнения ПЛ. Необходимо скорректировать фактические даты ПЛ
+    `, 'error', 'tr');
+    return new Promise((res, rej) => rej());
+  }
+  return new Promise(res => res());
+};
+const checkMissionSelectBeforeClose = (mission_id_list, missionsList, missionSourcesList) => {
+  const arrayQuerySync = [...mission_id_list].fill(false);
+  const missionsData = [...mission_id_list].map(() => ({}));
+
+  const checkAQS = () => !arrayQuerySync.some(f => !f);
+
+  return new Promise((res) => {
+    mission_id_list.forEach((m, i) => {
+      const dataMission = missionsList.find(({ id }) => m === id);
+      const {
+        mission_source_id: msi,
+        date_start: date_start_mission,
+        date_end: date_end_mission,
+        status,
+        number,
+        order_id,
+        order_operation_id,
+      } = dataMission;
+
+      missionsData[i] = {
+        date_start_mission,
+        date_end_mission,
+        status,
+        number,
+        isFaxogrammSource: false,
+      };
+
+      const isFaxogrammSource = !!(missionSourcesList.find(({ id: id_mission_source }) => id_mission_source === msi) || {}).auto;
+      if (isFaxogrammSource) {
+        this.context.flux.getActions('objects').getFaxogrammById(order_id).then(({ result: [faxogramm] }) => {
+          const {
+            order_date: order_date_faxogramm,
+            order_date_to: order_date_to_faxogramm,
+            technical_operations = [],
+          } = faxogramm;
+
+          const toMission = technical_operations.find(({ id: to_id }) => to_id === order_operation_id) || {};
+          const {
+            date_from: date_from_to,
+            date_to: date_to_to,
+          } = toMission;
+
+          missionsData[i] = {
+            ...missionsData[i],
+            isFaxogrammSource,
+            date_from: date_from_to || order_date_faxogramm,
+            date_to: date_to_to || order_date_to_faxogramm,
+          };
+
+          arrayQuerySync[i] = true;
+          if (checkAQS()) {
+            res(missionsData);
+          }
+        });
+      } else {
+        arrayQuerySync[i] = true;
+        if (checkAQS()) {
+          res(missionsData);
+        }
+      }
+    });
+  });
+};
+
 @autobind
 class WaybillForm extends Form {
 
@@ -471,22 +563,28 @@ class WaybillForm extends Form {
     }
   }
 
-  handleClose = (taxesControl) => {
+  handleClose = async (taxesControl) => {
     const {
       notAvailableMissions = [],
       missionsList: oldMissionsList = [],
     } = this.state;
+
     const {
-      missionSourcesList = [],
       formState: {
         mission_id_list = [],
         fact_departure_date: fdd,
         fact_arrival_date: fad,
       } = {},
+      missionSourcesList = [],
     } = this.props;
+
     const errors = {
-      notSourceFaxogramm: {
+      notFromFaxogramm: {
         cf_list: [],
+      },
+      fromFaxogramm: {
+        cf_list: [],
+        confirmDialogList: [],
       },
     };
     const fddMoment = moment(fdd).format(`${global.APP_DATE_FORMAT} HH:mm`);
@@ -494,47 +592,45 @@ class WaybillForm extends Form {
 
     const missionsList = uniqBy([...oldMissionsList].concat(...notAvailableMissions), 'id');
 
-    mission_id_list.forEach((m) => {
-      const dataMission = missionsList.find(({ id }) => m === id);
+    const missionsData = await checkMissionSelectBeforeClose(mission_id_list, missionsList, missionSourcesList);
+
+    missionsData.forEach((mission) => {
       const {
-        mission_source_id: msi,
-        date_start: ds,
-        date_end: de,
+        date_start_mission: dsm,
+        date_end_mission: dem,
         status,
         number,
-      } = dataMission;
-      const dsMoment = moment(ds).format(`${global.APP_DATE_FORMAT} HH:mm`);
-      const deMoment = moment(de).format(`${global.APP_DATE_FORMAT} HH:mm`);
+        isFaxogrammSource,
+      } = mission;
 
-      const isFaxogrammSource = !!(missionSourcesList.find(({ id: id_mission_source }) => id_mission_source === msi) || {}).auto;
-      if (!isFaxogrammSource) {
-        if (status === 'complete' || status === 'fail') {
-          if (!(dsMoment >= fddMoment && fadMoment >= deMoment)) {
-            errors.notSourceFaxogramm.cf_list.push(number);
+      const dsmMoment = moment(dsm).format(`${global.APP_DATE_FORMAT} HH:mm`);
+      const demMoment = moment(dem).format(`${global.APP_DATE_FORMAT} HH:mm`);
+
+      if (!(fddMoment <= dsmMoment && demMoment >= fadMoment)) {
+        if (isFaxogrammSource) {
+          if (status === 'complete' || status === 'fail') {
+            errors.fromFaxogramm.cf_list.push(number);
+          } else if (status === 'assigned') {
+            const {
+              date_from: df_to,
+              date_to: dt_to,
+            } = mission;
+
+            const dfToMoment = moment(df_to).format(`${global.APP_DATE_FORMAT} HH:mm`);
+            const dtToMoment = moment(dt_to).format(`${global.APP_DATE_FORMAT} HH:mm`);
+
+            if (dtToMoment < fddMoment || fadMoment < dfToMoment) {
+              errors.fromFaxogramm.confirmDialogList.push(number);
+            }
           }
-        }
-      } else if (status === 'complete' || status === 'fail') {
-        if (!(dsMoment >= fddMoment && fadMoment >= deMoment)) {
-          // errors.notSourceFaxogramm.cf_list.push(number);
-        }
-      } else if (status === 'assigned') {
-        if (dsMoment >= fadMoment || fddMoment >= deMoment) {
-          // errors.notSourceFaxogramm.cf_list.push(number);
-        } else {
-          
+        } else if (status === 'complete' || status === 'fail') {
+          errors.notFromFaxogramm.cf_list.push(number);
         }
       }
     });
-    if (!lodashIsEmpty(errors.notSourceFaxogramm.cf_list)) {
-      global.NOTIFICATION_SYSTEM.notify(
-        `Время выполнения привязанного к ПЛ закрытого задания: 
-          № ${errors.notSourceFaxogramm.cf_list.join(', ')}
-          выходит за пределы фактических сроков выполнения ПЛ. Необходимо скорректировать фактические даты ПЛ`,
-        'error',
-      );
-      return;
-    }
-    this.props.handleClose(taxesControl);
+    checkErrorDate(errors).then(() => {
+      this.props.handleClose(taxesControl);
+    }).catch(() => {});
   }
 
   handleSubmit = () => {

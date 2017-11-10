@@ -33,15 +33,6 @@ export const tableMeta = ({
         },
       },
       {
-        name: 'tire_manufacturer_name',
-        displayName: 'Производитель',
-        type: 'string',
-        orderNum: 1,
-        filter: {
-          type: 'multiselect',
-        },
-      },
-      {
         name: 'tire_size_name',
         displayName: 'Размер',
         type: 'string',

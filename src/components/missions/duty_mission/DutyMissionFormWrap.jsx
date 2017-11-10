@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import _ from 'lodash';
 import moment from 'moment';
 
@@ -17,11 +17,13 @@ class DutyMissionFormWrap extends FormWrap {
     this.schema = dutyMissionSchema;
     this.defaultElement = getDefaultDutyMission();
     this.defaultElement.structure_id = context.flux.getStore('session').getCurrentUser().structure_id;
-    this.createAction = (async) (formState) => {
-      await context.flux.getActions('missions').createDutyMission(formState);
-      context.flux.getActions('missions').getDutyMissions();
-    };
   }
+  createAction = formState =>
+    this.context.flux.getActions('missions').createDutyMission(formState).then(() => {
+      if (!this.props.fromFaxogrammMissionForm) {
+        return this.props.refreshTableList();
+      }
+    });
 
   async handleFormPrint() {
     const mission = _.cloneDeep(this.state.formState);
@@ -36,6 +38,9 @@ class DutyMissionFormWrap extends FormWrap {
 
     const id = mission.id ? mission.id : response.result && response.result[0] ? response.result[0].id : null;
     await this.context.flux.getActions('missions').printDutyMission(id).then(({ blob }) => { saveData(blob, `Печатная форма наряд-задания №${id}.pdf`); });
+    if (!this.props.fromFaxogrammMissionForm) {
+      await this.props.refreshTableList();
+    }
     this.context.flux.getActions('missions').getDutyMissions();
     this.props.onFormHide();
   }
@@ -53,13 +58,13 @@ class DutyMissionFormWrap extends FormWrap {
         initDutyMission: {
           plan_date_start: init_pds,
           plan_date_end: init_pde,
+          passes_count: init_pc,
         } = {},
       } = this.props;
       const {
-        initDutyMission: {
-          plan_date_start: new_pds,
-          plan_date_end: new_pde,
-        } = {},
+        plan_date_start: new_pds,
+        plan_date_end: new_pde,
+        passes_count: new_pc,
       } = state;
 
       if (moment(new_pds).toDate().getTime() < moment(init_pds).toDate().getTime()) {
@@ -67,6 +72,12 @@ class DutyMissionFormWrap extends FormWrap {
       }
       if (moment(new_pde).toDate().getTime() > moment(init_pde).toDate().getTime()) {
         formErrors.plan_date_end = 'Дата не должна выходить за пределы действия поручения';
+      }
+      if (new_pc > init_pc) {
+        formErrors.passes_count = '"Кол-во проходов" не должно превышать значение "Кол-во проходов" из поручения';
+      }
+      if (new_pc <= 0) {
+        formErrors.passes_count = '"Кол-во проходов" должно быть больше нуля';
       }
     }
 
@@ -98,7 +109,7 @@ class DutyMissionFormWrap extends FormWrap {
         show={this.props.showForm}
         onHide={this.props.onFormHide}
         fromWaybill={this.props.fromWaybill}
-        readOnly={this.props.readOnly}
+        readOnly={this.props.readOnly || !this.state.formState.is_new}
         fromFaxogrammMissionForm={!!this.props.fromFaxogrammMissionForm}
         {...this.state}
       />

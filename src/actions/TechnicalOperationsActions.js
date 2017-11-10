@@ -1,19 +1,27 @@
 import { Actions } from 'flummox';
 import { cloneDeep } from 'lodash';
-import { TechnicalOperationService, TechnicalOperationObjectsService, TechnicalOperationTypesService, TechnicalOperationRegistryService } from 'api/Services';
+import {
+  TechnicalOperationObjectsService,
+  TechnicalOperationTypesService,
+  TechnicalOperationRegistryService,
+} from 'api/Services';
+import {
+  Cleaning,
+} from 'api/missions';
+
 import { isEmpty } from 'utils/functions';
 
 function getTechnicalOperations(payload = {}) {
-  return TechnicalOperationService.get(payload).then(r => ({ result: r.result.rows }));
+  return TechnicalOperationRegistryService.get(payload).then(r => ({ result: r.result.rows }));
 }
 
 function getTechnicalOperationsRegistry(payload = {}) {
-  return TechnicalOperationRegistryService.get(payload).then(r => ({ result: r.result.rows }));
+  return Cleaning.path('norm_registry').get(payload).then(r => ({ result: r.result.rows }));
 }
 
 export default class TechnicalOperationsActions extends Actions {
   getOneTechOperationByNormId({ norm_id }) {
-    return TechnicalOperationRegistryService.get({ norm_id }, false, 'json');
+    return getTechnicalOperationsRegistry({ norm_id }, false, 'json');
   }
 
   getTechnicalOperationsObjects() {
@@ -38,7 +46,7 @@ export default class TechnicalOperationsActions extends Actions {
     if (isEmpty(car_id)) {
       delete payload.car_id;
     }
-    const response = await TechnicalOperationService.get(payload);
+    const response = await TechnicalOperationRegistryService.get(payload);
     return response.result.rows || [];
   }
 
@@ -46,7 +54,7 @@ export default class TechnicalOperationsActions extends Actions {
     const payload = {
       needs_brigade: true,
     };
-    const response = await TechnicalOperationService.get(payload);
+    const response = await TechnicalOperationRegistryService.get(payload);
     return response.result.rows || [];
   }
 
@@ -75,7 +83,7 @@ export default class TechnicalOperationsActions extends Actions {
     if (objects.length) {
       payload.objects = objects;
     }
-    const response = await TechnicalOperationService.get(payload);
+    const response = await TechnicalOperationRegistryService.get(payload);
     return response.result.rows || [];
   }
 
@@ -88,7 +96,7 @@ export default class TechnicalOperationsActions extends Actions {
     delete payload.check_type_name;
     delete payload.object_name;
     delete payload.object_text;
-    return TechnicalOperationService.put(payload, getTechnicalOperations, 'json');
+    return TechnicalOperationRegistryService.put(payload, getTechnicalOperations, 'json');
   }
 
 }

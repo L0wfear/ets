@@ -617,6 +617,7 @@ export default class DataTable extends React.Component {
       enableSort, noDataMessage, className, noHeader,
       refreshable, columnControl, highlight, serverPagination, externalChangeSort,
       griddleHidden = false,
+      haveMax = true,
     } = this.props;
     const { initialSort, initialSortAscending, columnControlValues, isHierarchical } = this.state;
 
@@ -692,7 +693,7 @@ export default class DataTable extends React.Component {
             initialSortAscending={initialSortAscending}
             columnMetadata={columnMetadata}
             columns={tableCols}
-            resultsPerPage={15}
+            resultsPerPage={haveMax ? 15 : 10000}
             useCustomPagerComponent
             externalChangeSort={externalChangeSort || this.handleChangeSort}
             customPagerComponent={serverPagination ? <Div /> : Paginator}

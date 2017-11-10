@@ -2,7 +2,15 @@ import React from 'react';
 import { autobind } from 'core-decorators';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
-import _ from 'lodash';
+import {
+  isEqual,
+  filter,
+  map,
+  find,
+  uniqBy,
+  isEmpty as lodashIsEmpty,
+} from 'lodash';
+import moment from 'moment';
 
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
@@ -29,6 +37,98 @@ import enhanceWithPermissions from '../util/RequirePermissions.jsx';
 const Div = enhanceWithPermissions(DivForEnhance);
 
 const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
+
+const checkErrorDate = ({ fromFaxogramm: { cf_list: fax_cf_list, confirmDialogList: fax_confirmDialogList }, notFromFaxogramm: { cf_list: not_fax_cf_list } }) => {
+  if (!lodashIsEmpty(fax_cf_list)) {
+    global.NOTIFICATION_SYSTEM.notify(`
+      Время выполнения привязанного к ПЛ закрытого задания: 
+      № ${fax_cf_list.join(', ')}, выходит за пределы фактических сроков выполнения ПЛ. Необходимо скорректировать фактические даты ПЛ
+    `, 'error', 'tr');
+    return new Promise((res, rej) => rej());
+  }
+  if (!lodashIsEmpty(fax_confirmDialogList)) {
+    return confirmDialog({
+      title: 'Внимание!',
+      body: (
+        <div>
+          <p>{`Привязанные задания № ${fax_confirmDialogList.join(', ')} будут исключены из ПЛ, поскольку выходят за период действия ПЛ`}</p>
+          <p>Вы уверены, что хотите продолжить?</p>
+        </div>
+      ),
+    });
+  }
+  if (!lodashIsEmpty(not_fax_cf_list)) {
+    global.NOTIFICATION_SYSTEM.notify(`
+      Время выполнения привязанного к ПЛ закрытого задания: 
+      № ${not_fax_cf_list.join(', ')}, выходит за пределы фактических сроков выполнения ПЛ. Необходимо скорректировать фактические даты ПЛ
+    `, 'error', 'tr');
+    return new Promise((res, rej) => rej());
+  }
+  return new Promise(res => res());
+};
+const checkMissionSelectBeforeClose = (mission_id_list, missionsList, missionSourcesList) => {
+  const arrayQuerySync = [...mission_id_list].fill(false);
+  const missionsData = [...mission_id_list].map(() => ({}));
+
+  const checkAQS = () => !arrayQuerySync.some(f => !f);
+
+  return new Promise((res) => {
+    mission_id_list.forEach((m, i) => {
+      const dataMission = missionsList.find(({ id }) => m === id);
+      const {
+        mission_source_id: msi,
+        date_start: date_start_mission,
+        date_end: date_end_mission,
+        status,
+        number,
+        order_id,
+        order_operation_id,
+      } = dataMission;
+
+      missionsData[i] = {
+        date_start_mission,
+        date_end_mission,
+        status,
+        number,
+        isFaxogrammSource: false,
+      };
+
+      const isFaxogrammSource = !!(missionSourcesList.find(({ id: id_mission_source }) => id_mission_source === msi) || {}).auto;
+      if (isFaxogrammSource) {
+        this.context.flux.getActions('objects').getFaxogrammById(order_id).then(({ result: [faxogramm] }) => {
+          const {
+            order_date: order_date_faxogramm,
+            order_date_to: order_date_to_faxogramm,
+            technical_operations = [],
+          } = faxogramm;
+
+          const toMission = technical_operations.find(({ id: to_id }) => to_id === order_operation_id) || {};
+          const {
+            date_from: date_from_to,
+            date_to: date_to_to,
+          } = toMission;
+
+          missionsData[i] = {
+            ...missionsData[i],
+            isFaxogrammSource,
+            date_from: date_from_to || order_date_faxogramm,
+            date_to: date_to_to || order_date_to_faxogramm,
+          };
+
+          arrayQuerySync[i] = true;
+          if (checkAQS()) {
+            res(missionsData);
+          }
+        });
+      } else {
+        arrayQuerySync[i] = true;
+        if (checkAQS()) {
+          res(missionsData);
+        }
+      }
+    });
+  });
+};
 
 @autobind
 class WaybillForm extends Form {
@@ -67,15 +167,15 @@ class WaybillForm extends Form {
 
     // при смене планируемых дат или ТС запрашиваются новые доступные задания
     if (currentState.car_id !== nextState.car_id ||
-        !_.isEqual(currentState.plan_arrival_date, nextState.plan_arrival_date) ||
-        !_.isEqual(currentState.plan_departure_date, nextState.plan_departure_date)) {
+        !isEqual(currentState.plan_arrival_date, nextState.plan_arrival_date) ||
+        !isEqual(currentState.plan_departure_date, nextState.plan_departure_date)) {
       this.getMissionsByCarAndDates(nextState);
     }
 
     if (currentState.status === 'active') {
       if (currentState.car_id !== nextState.car_id ||
-          !_.isEqual(currentState.fact_arrival_date, nextState.fact_arrival_date) ||
-          !_.isEqual(currentState.fact_departure_date, nextState.fact_departure_date)) {
+          !isEqual(currentState.fact_arrival_date, nextState.fact_arrival_date) ||
+          !isEqual(currentState.fact_departure_date, nextState.fact_departure_date)) {
         this.getCarDistance(nextState);
         this.getMissionsByCarAndDates(nextState);
       }
@@ -96,16 +196,16 @@ class WaybillForm extends Form {
     this.employeeFIOLabelFunction = employeeFIOLabelFunction(flux);
     flux.getActions('missions').getMissionSources();
     if (formState.status === 'active') {
-      const car = _.find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
+      const car = find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
       const fuel_correction_rate = car.fuel_correction_rate || 1;
       flux.getActions('fuelRates').getFuelRatesByCarModel({ car_id: formState.car_id, datetime: formState.date_create }).then((r) => {
         const fuelRates = r.result.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date }));
         flux.getActions('fuelRates').getFuelOperations().then((fuelOperations) => {
-          const operations = _.filter(fuelOperations.result, op => _.find(fuelRates, fr => fr.operation_id === op.id));
+          const operations = filter(fuelOperations.result, op => find(fuelRates, fr => fr.operation_id === op.id));
           flux.getActions('fuelRates').getEquipmentFuelRatesByCarModel({ car_id: formState.car_id, datetime: formState.date_create }).then((equipmentFuelRatesResponse) => {
             const equipmentFuelRates = equipmentFuelRatesResponse.result.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date }));
             flux.getActions('fuelRates').getFuelOperations().then((equipmentFuelOperations) => {
-              const equipmentOperations = _.filter(equipmentFuelOperations.result, op => _.find(equipmentFuelRates, fr => fr.operation_id === op.id));
+              const equipmentOperations = filter(equipmentFuelOperations.result, op => find(equipmentFuelRates, fr => fr.operation_id === op.id));
               this.setState({ fuelRates, operations, fuel_correction_rate, equipmentFuelRates, equipmentOperations });
             });
           });
@@ -144,14 +244,14 @@ class WaybillForm extends Form {
     }
     const {
       notAvailableMissions = [],
+      missionsList: oldMissionsList = [],
     } = this.state;
     const {
-      missionsList = [],
       missionSourcesList = [],
       formState: {
         mission_id_list = [],
-        plan_departure_date = this.props.formState.plan_departure_date,
-        plan_arrival_date = this.props.formState.plan_arrival_date,
+        plan_departure_date,
+        plan_arrival_date,
       } = {},
     } = this.props;
     const dateWaybill = {
@@ -160,9 +260,11 @@ class WaybillForm extends Form {
       [field]: value,
     };
 
+    const missionsList = [...oldMissionsList];
+
     const idFaxogramm = (missionSourcesList.find(({ auto }) => auto) || {}).id;
     const missionsWithSourceFaxogramm = missionsList.concat(...notAvailableMissions).reduce((missions, { id, number, mission_source_id, date_end, date_start }) => {
-      if (!missions[id] && mission_id_list.includes(id) && checkDateMission({ date_end, date_start, dateWaybill }) && idFaxogramm === mission_source_id ) {
+      if (!missions[id] && mission_id_list.includes(id) && checkDateMission({ date_end, date_start, dateWaybill }) && idFaxogramm === mission_source_id) {
         missions[id] = number;
       }
       return missions;
@@ -171,8 +273,17 @@ class WaybillForm extends Form {
 
     const missionsNum = Object.values(missionsWithSourceFaxogramm).map(num => `задание ${num}`);
 
-    if (missionsNum.length !== 0) {
-      confirmDialog({
+    this.confirmDialogChangeDate(missionsNum).then(() => {
+      this.getWaybillDrivers({
+        [field]: value,
+      });
+      this.handleChange(field, value);
+    }).catch(() => {});
+  }
+
+  confirmDialogChangeDate(missionsNum) {
+    if (missionsNum.length) {
+      return confirmDialog({
         title: 'Внимание!',
         body: (
           <div>
@@ -180,22 +291,12 @@ class WaybillForm extends Form {
             <p>Вы уверены, что хотите продолжить?</p>
           </div>
         ),
-      })
-      .then(() => {
-        this.getWaybillDrivers({
-          [field]: value,
-        });
-        this.handleChange(field, value);
-      })
-      .catch(() => {});
-    } else {
-      this.getWaybillDrivers({
-        [field]: value,
       });
-      this.handleChange(field, value);
     }
+    return new Promise(res => res());
   }
-  async getWaybillDrivers({
+
+  getWaybillDrivers({
     plan_departure_date = this.props.formState.plan_departure_date,
     plan_arrival_date = this.props.formState.plan_arrival_date,
   } = {}) {
@@ -203,7 +304,7 @@ class WaybillForm extends Form {
     const IS_DRAFT = this.props.formState.status && this.props.formState.status === 'draft';
 
     if (IS_CREATING || IS_DRAFT) {
-      await this.context.flux.getActions('employees').getWaybillDrivers({
+      this.context.flux.getActions('employees').getWaybillDrivers({
         company_id: this.props.formState.company_id,
         date_from: plan_departure_date,
         date_to: plan_arrival_date,
@@ -212,31 +313,52 @@ class WaybillForm extends Form {
   }
   getMissionsByCarAndDates(formState, notificate = true) {
     const { flux } = this.context;
-    const departure_date = formState.fact_departure_date || formState.plan_departure_date;
-    const arrival_date = formState.fact_arrival_date || formState.plan_arrival_date;
-    const oldMissions = this.props.missionsList;
+    const {
+      missionsList: oldMissionsList = [],
+    } = this.state;
+    const {
+      car_id,
+      fact_departure_date,
+      plan_departure_date,
+      fact_arrival_date,
+      plan_arrival_date,
+      mission_id_list: currentMissions,
+      status,
+    } = formState;
+    if (!car_id) {
+      return;
+    }
+
+    const departure_date = status === 'active' ? fact_departure_date : plan_departure_date;
+    const arrival_date = status === 'active' ? fact_arrival_date : plan_arrival_date;
+
     flux.getActions('missions').getMissionsByCarAndDates(
-      formState.car_id,
+      car_id,
       departure_date,
       arrival_date,
-      formState.status
-    ).then((response) => {
-      const availableMissions = response && response.result ? response.result.rows.map(el => el.id) : [];
-      const currentMissions = formState.mission_id_list;
+      status
+    ).then(({
+      result: {
+        rows: newMissionsList = [],
+      } = {},
+    }) => {
+      const missionsList = uniqBy(oldMissionsList.concat(...newMissionsList), 'id');
+      const availableMissions = missionsList.map(el => el.id);
       let newMissions = [];
-      if (formState.status === 'active') {
+      if (status === 'active') {
         newMissions = currentMissions;
         let { notAvailableMissions = [] } = this.state;
         notAvailableMissions = notAvailableMissions
           .concat(currentMissions
             .filter(el => !availableMissions.includes(el) && !notAvailableMissions.find(m => m.id === el))
-            .map(id => oldMissions.find(el => el.id === id))
+            .map(id => oldMissionsList.find(el => el.id === id))
           )
           .filter(m => m);
         this.setState({ notAvailableMissions });
       } else {
         newMissions = currentMissions.filter(el => availableMissions.includes(el));
       }
+      this.setState({ missionsList });
       this.props.handleFormChange('mission_id_list', newMissions);
       notificate && global.NOTIFICATION_SYSTEM.notify(notifications.missionsByCarAndDateUpdateNotification);
     });
@@ -251,7 +373,7 @@ class WaybillForm extends Form {
       this.setState({ loadingFields });
       return;
     }
-    const car = _.find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
+    const car = find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
     loadingFields.distance = true;
     loadingFields.consumption = true;
     this.setState({ loadingFields });
@@ -259,17 +381,17 @@ class WaybillForm extends Form {
       .then(({ distance, consumption }) => {
         this.props.handleFormChange('distance', parseFloat(distance / 1000).toFixed(3));
         this.props.handleFormChange('consumption', consumption !== null ? parseFloat(consumption).toFixed(3) : null);
-        const { loadingFields } = this.state;
-        loadingFields.distance = false;
-        loadingFields.consumption = false;
-        this.setState({ loadingFields });
+        const { loadingFields: then_loadingFields } = this.state;
+        then_loadingFields.distance = false;
+        then_loadingFields.consumption = false;
+        this.setState({ loadingFields: then_loadingFields });
       })
       .catch(() => {
         // this.props.handleFormChange('distance', parseFloat(distance / 100).toFixed(2));
-        const { loadingFields } = this.state;
-        loadingFields.distance = false;
-        loadingFields.consumption = false;
-        this.setState({ loadingFields });
+        const { loadingFields: catch_loadingFields } = this.state;
+        catch_loadingFields.distance = false;
+        catch_loadingFields.consumption = false;
+        this.setState({ loadingFields: catch_loadingFields });
       });
   }
 
@@ -312,8 +434,6 @@ class WaybillForm extends Form {
       gov_number: selectedCar.gov_number,
     };
     if (!isEmpty(car_id)) {
-
-      const [state = {}] = [this.props.formState];
       const { fuelRateAllList = [] } = this.state;
 
       if (!fuelRateAllList.includes(selectedCar.model_id)) {
@@ -436,11 +556,81 @@ class WaybillForm extends Form {
 
   handleStructureIdChange(v) {
     const carsList = this.props.carsList.filter(c => v == null ? true : (c.company_structure_id === v || c.is_common));
-    if (!_.find(carsList, c => c.asuods_id === this.props.formState.car_id)) {
+    if (!find(carsList, c => c.asuods_id === this.props.formState.car_id)) {
       this.props.handleMultipleChange({ car_id: '', driver_id: '', structure_id: v });
     } else {
       this.handleChange('structure_id', v);
     }
+  }
+
+  handleClose = async (taxesControl) => {
+    const {
+      notAvailableMissions = [],
+      missionsList: oldMissionsList = [],
+    } = this.state;
+
+    const {
+      formState: {
+        mission_id_list = [],
+        fact_departure_date: fdd,
+        fact_arrival_date: fad,
+      } = {},
+      missionSourcesList = [],
+    } = this.props;
+
+    const errors = {
+      notFromFaxogramm: {
+        cf_list: [],
+      },
+      fromFaxogramm: {
+        cf_list: [],
+        confirmDialogList: [],
+      },
+    };
+    const fddMoment = moment(fdd).format(`${global.APP_DATE_FORMAT} HH:mm`);
+    const fadMoment = moment(fad).format(`${global.APP_DATE_FORMAT} HH:mm`);
+
+    const missionsList = uniqBy([...oldMissionsList].concat(...notAvailableMissions), 'id');
+
+    const missionsData = await checkMissionSelectBeforeClose(mission_id_list, missionsList, missionSourcesList);
+
+    missionsData.forEach((mission) => {
+      const {
+        date_start_mission: dsm,
+        date_end_mission: dem,
+        status,
+        number,
+        isFaxogrammSource,
+      } = mission;
+
+      const dsmMoment = moment(dsm).format(`${global.APP_DATE_FORMAT} HH:mm`);
+      const demMoment = moment(dem).format(`${global.APP_DATE_FORMAT} HH:mm`);
+
+      if (!(fddMoment <= dsmMoment && demMoment >= fadMoment)) {
+        if (isFaxogrammSource) {
+          if (status === 'complete' || status === 'fail') {
+            errors.fromFaxogramm.cf_list.push(number);
+          } else if (status === 'assigned') {
+            const {
+              date_from: df_to,
+              date_to: dt_to,
+            } = mission;
+
+            const dfToMoment = moment(df_to).format(`${global.APP_DATE_FORMAT} HH:mm`);
+            const dtToMoment = moment(dt_to).format(`${global.APP_DATE_FORMAT} HH:mm`);
+
+            if (dtToMoment < fddMoment || fadMoment < dfToMoment) {
+              errors.fromFaxogramm.confirmDialogList.push(number);
+            }
+          }
+        } else if (status === 'complete' || status === 'fail') {
+          errors.notFromFaxogramm.cf_list.push(number);
+        }
+      }
+    });
+    checkErrorDate(errors).then(() => {
+      this.props.handleClose(taxesControl);
+    }).catch(() => {});
   }
 
   handleSubmit = () => {
@@ -455,6 +645,7 @@ class WaybillForm extends Form {
       loadingFields,
       origFormState = {},
       notAvailableMissions = [],
+      missionsList = [],
     } = this.state;
 
     const {
@@ -462,7 +653,6 @@ class WaybillForm extends Form {
       carsIndex = {},
       waybillDriversList = [],
       employeesList = [],
-      missionsList = [],
       appConfig,
       workModeOptions,
     } = this.props;
@@ -475,7 +665,7 @@ class WaybillForm extends Form {
     const CARS = getCarsByStructId(carsList);
     const TRAILERS = getTrailersByStructId(carsList);
 
-    const FUEL_TYPES = _.map(appConfig.enums.FUEL_TYPE, (v, k) => ({ value: k, label: v }));
+    const FUEL_TYPES = map(appConfig.enums.FUEL_TYPE, (v, k) => ({ value: k, label: v }));
 
     // const DRIVERS = waybillDriversList.map((d) => {
     //   const personnel_number = d.personnel_number ? `[${d.personnel_number}] ` : '';
@@ -500,7 +690,7 @@ class WaybillForm extends Form {
     if (currentStructureId !== null && STRUCTURES.length === 1 && currentStructureId === STRUCTURES[0].value) {
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_READONLY = true;
-    } else if (currentStructureId !== null && STRUCTURES.length > 1 && _.find(STRUCTURES, el => el.value === currentStructureId)) {
+    } else if (currentStructureId !== null && STRUCTURES.length > 1 && find(STRUCTURES, el => el.value === currentStructureId)) {
       STRUCTURE_FIELD_VIEW = true;
     } else if (currentStructureId === null && STRUCTURES.length > 1) {
       STRUCTURE_FIELD_VIEW = true;
@@ -1121,7 +1311,7 @@ class WaybillForm extends Form {
             taxesControl={taxesControl}
             refresh={this.refresh}
             handleSubmit={this.handleSubmit}
-            handleClose={this.props.handleClose}
+            handleClose={this.handleClose}
             handlePrint={this.props.handlePrint}
           />
         </Modal.Footer>

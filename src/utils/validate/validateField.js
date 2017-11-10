@@ -1,3 +1,7 @@
+import {
+  find,
+} from 'lodash';
+
 // import * as string from './validateString';
 // import * as text from './validateText';
 import * as number from './validateNumber.js';
@@ -45,7 +49,7 @@ function validateFieldByType(config, value, formData) {
 
 function validateFieldByDependencyType(type, config, value, dependentFieldConfig, dependentFieldValue, formData, schema) {
   if (typeof type === 'undefined') {
-    return undefined;
+    return undefined; 
   }
   const validator = dependencyValidators[type];
 
@@ -82,7 +86,7 @@ export function validateField(config, value, formData, schema) {
           return undefined;
         }
         // We need to check dependent field to work on comparisons
-        const dependentFieldConfig = _.find(schema.properties, object => object.key === field);
+        const dependentFieldConfig = find(schema.properties, object => object.key === field);
         if (typeof dependentFieldConfig === 'undefined') {
           throw new Error(`Dependent field "${field}" for key "${config.key}" was not found in schema`);
         }

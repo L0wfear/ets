@@ -362,7 +362,4 @@ export default class MissionsActions extends Actions {
     };
     return Cleaning.path('municipal_facility').get(payload, false, 'json');
   }
-  getCleaningDataByNormId({ norm_id }) {
-    return Cleaning.path(`norm_registry/${norm_id}`).get({}, false, 'json');
-  }
 }

@@ -1,5 +1,8 @@
 import React from 'react';
-import _ from 'lodash';
+import {
+  find,
+  isEmpty,
+} from 'lodash';
 import { autobind } from 'core-decorators';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
@@ -8,12 +11,6 @@ import Div from 'components/ui/Div.jsx';
 import { connectToStores } from 'utils/decorators';
 import RouteCreating from './RouteCreating.jsx';
 import Form from '../compositions/Form.jsx';
-
-const dictRouteTypes = {
-  mixed: 'ОДХ',
-  points: 'ПН',
-  simple_dt: 'ДТ',
-};
 
 @connectToStores(['objects', 'geoObjects'])
 @autobind
@@ -41,28 +38,31 @@ export default class RouteForm extends Form {
   }
 
   setRouteTypeOptionsBasedOnTechnicalOperation(technical_operation_id, technicalOperationsList = this.props.technicalOperationsList, routeTypeValue = null, resetState = true) {
-    const technicalOperation = _.find(technicalOperationsList, o => o.id === technical_operation_id);
-
+    const technicalOperation = find(technicalOperationsList, o => o.id === technical_operation_id);
     const route_type_options = [];
+    let {
+      route_types = [],
+    } = technicalOperation;
 
-    technicalOperation.objects.forEach((obj) => {
-      if (!!this.props.fromMission && !this.props.available_route_types.find(name => dictRouteTypes[name] === obj.name)) {
-        return;
-      }
-      switch (obj.name) {
-        case 'ОДХ':
+    if (!!this.props.fromMission && !!this.props.notTemplate) {
+      route_types = route_types.filter(name => this.props.available_route_types.includes(name));
+    }
+
+    route_types.forEach((obj) => {
+      switch (obj) {
+        case 'mixed':
           route_type_options.push({ value: 'mixed', label: 'Выбор из ОДХ' });
           if (!routeTypeValue) {
             routeTypeValue = 'mixed';
           }
           break;
-        case 'ПН':
+        case 'points':
           route_type_options.push({ value: 'points', label: 'Выбор пунктов назначения' });
           if (!routeTypeValue && routeTypeValue !== 'mixed') {
             routeTypeValue = 'points';
           }
           break;
-        case 'ДТ':
+        case 'simple_dt':
           route_type_options.push({ value: 'simple_dt', label: 'Выбор из ДТ' });
           if (!routeTypeValue && routeTypeValue !== 'mixed') {
             routeTypeValue = 'simple_dt';
@@ -138,7 +138,7 @@ export default class RouteForm extends Form {
     if (currentStructureId !== null && STRUCTURES.length === 1 && currentStructureId === STRUCTURES[0].value) {
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_READONLY = true;
-    } else if (currentStructureId !== null && STRUCTURES.length > 1 && _.find(STRUCTURES, el => el.value === currentStructureId)) {
+    } else if (currentStructureId !== null && STRUCTURES.length > 1 && find(STRUCTURES, el => el.value === currentStructureId)) {
       STRUCTURE_FIELD_VIEW = true;
     } else if (currentStructureId === null && STRUCTURES.length > 1) {
       STRUCTURE_FIELD_VIEW = true;

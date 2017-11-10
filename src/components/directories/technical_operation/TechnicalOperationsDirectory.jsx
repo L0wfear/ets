@@ -5,7 +5,7 @@ import TechnicalOperationFormWrap from './TechnicalOperationFormWrap.jsx';
 import TechnicalOperationsTable from './TechnicalOperationsTable.jsx';
 
 @connectToStores(['objects'])
-@exportable({ entity: 'technical_operation' })
+@exportable({ entity: 'technical_operation_registry' })
 @staticProps({
   entity: 'technical_operation',
   listName: 'technicalOperationsRegistryList',

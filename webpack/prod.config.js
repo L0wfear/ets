@@ -163,6 +163,7 @@ module.exports = {
     new ExtractTextPlugin('./css/[name].[hash].css'),
     new HtmlWebpackPlugin({
       title: 'ЕТС',
+      version: JSON.stringify(versionUtils.version),
       template: path.resolve(__dirname, 'templates', 'index.hbs')
     }),
     function () {

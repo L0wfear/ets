@@ -62,7 +62,6 @@ export const missionSchema = {
       key: 'municipal_facility_id',
       title: 'Элемент',
       type: 'number',
-      required: true,
     },
   ],
   dependencies: {
@@ -70,6 +69,18 @@ export const missionSchema = {
       {
         type: 'gt',
         field: 'date_start',
+      },
+    ],
+    'municipal_facility_id': [
+      {
+        validator: (value, { is_new }) => {
+          if (is_new) {
+            if (!value) {
+              return 'Поле "Элемент" должно быть заполнено';
+            }
+          }
+          return undefined;
+        },
       },
     ],
   },

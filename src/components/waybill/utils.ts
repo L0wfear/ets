@@ -39,6 +39,7 @@ const trailerFilter = structure_id => R.pipe(
   R.filter<any>(c => c.is_trailer),
 );
 
+// <IVehicle, any>
 const vehicleMapper = R.map<any, any>(c => ({
   value: c.asuods_id,
   model_id: c.model_id,

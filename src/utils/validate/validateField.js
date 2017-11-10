@@ -49,14 +49,14 @@ function validateFieldByType(config, value, formData) {
 
 function validateFieldByDependencyType(type, config, value, dependentFieldConfig, dependentFieldValue, formData, schema) {
   if (typeof type === 'undefined') {
-    return undefined;
+    return undefined; 
   }
   const validator = dependencyValidators[type];
 
   return validator ? validator.validate(config, value, dependentFieldConfig, dependentFieldValue, formData, schema) : undefined;
 }
 
-function validateField(config, value, formData, schema) {
+export function validateField(config, value, formData, schema) {
   // console.warn(`VALIDATING ${config.key} with data = ${value}`);
 
   const error = validateFieldByType(config, value, formData);
@@ -102,8 +102,3 @@ function validateField(config, value, formData, schema) {
 
   return error;
 }
-
-export default {
-  validateField,
-};
-

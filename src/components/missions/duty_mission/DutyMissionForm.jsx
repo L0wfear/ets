@@ -4,6 +4,7 @@ import { Modal, Row, Col, Button, Glyphicon } from 'react-bootstrap';
 import {
   last,
   uniqBy,
+  isEmpty as lodashIsEmpty,
  } from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
@@ -296,6 +297,8 @@ export class DutyMissionForm extends Form {
       ? []
       : state.brigade_employee_id_list.filter(b => b.id || b.employee_id).map(b => b.id || b.employee_id).join(',');
 
+    const sourceIsFaxogramm = lodashIsEmpty(state.order_operation_id);
+
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
 
@@ -312,7 +315,7 @@ export class DutyMissionForm extends Form {
                 type="select"
                 label="Технологическая операция"
                 error={errors.technical_operation_id}
-                disabled={IS_DISPLAY || !!state.route_id || readOnly || fromFaxogrammMissionForm}
+                disabled={IS_DISPLAY || !!state.route_id || readOnly || fromFaxogrammMissionForm || sourceIsFaxogramm}
                 options={TECH_OPERATIONS}
                 value={state.technical_operation_id}
                 onChange={this.handleTechnicalOperationChange.bind(this)}
@@ -387,7 +390,7 @@ export class DutyMissionForm extends Form {
                 id={'municipal_facility_id'}
                 errors={errors}
                 state={state}
-                disabled={IS_DISPLAY || !!state.route_id || readOnly || fromFaxogrammMissionForm}
+                disabled={IS_DISPLAY || !!state.route_id || readOnly || fromFaxogrammMissionForm || sourceIsFaxogramm}
                 handleChange={this.handleChange.bind(this)}
                 getDataByNormId={this.getDataByNormId}
                 technicalOperationsList={technicalOperationsList}
@@ -435,7 +438,7 @@ export class DutyMissionForm extends Form {
           <Row>
             <Col md={6}>
               <Field type="select" label="Источник получения задания" error={errors.mission_source_id}
-                disabled={IS_DISPLAY || readOnly || this.props.fromFaxogrammMissionForm}
+                disabled={IS_DISPLAY || readOnly || this.props.fromFaxogrammMissionForm || sourceIsFaxogramm}
                 options={MISSION_SOURCES}
                 value={state.mission_source_id}
                 onChange={this.handleChange.bind(this, 'mission_source_id')}

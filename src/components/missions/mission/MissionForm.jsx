@@ -319,6 +319,8 @@ export class MissionForm extends Form {
       is_new,
     } = state;
 
+    const sourceIsFaxogramm = lodashIsEmpty(state.order_operation_id);
+
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
 
@@ -333,7 +335,7 @@ export class MissionForm extends Form {
                 type="select"
                 label="Технологическая операция"
                 error={errors.technical_operation_id}
-                disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromFaxogrammMissionForm || !is_new}
+                disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromFaxogrammMissionForm || !is_new || sourceIsFaxogramm}
                 options={TECH_OPERATIONS}
                 value={state.technical_operation_id}
                 onChange={this.handleTechnicalOperationChange}
@@ -361,7 +363,7 @@ export class MissionForm extends Form {
                 id={'municipal_facility_id'}
                 errors={errors}
                 state={state}
-                disabled={(!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY)) || this.props.fromFaxogrammMissionForm || !is_new}
+                disabled={(!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY)) || this.props.fromFaxogrammMissionForm || !is_new || sourceIsFaxogramm}
                 handleChange={this.handleChange.bind(this)}
                 getDataByNormId={this.getDataByNormId}
                 technicalOperationsList={technicalOperationsList}
@@ -461,7 +463,7 @@ export class MissionForm extends Form {
                 type="select"
                 label="Источник получения задания"
                 error={errors.mission_source_id}
-                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || fromFaxogrammMissionForm || !is_new}
+                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || fromFaxogrammMissionForm || !is_new || sourceIsFaxogramm}
                 options={MISSION_SOURCES}
                 value={state.mission_source_id}
                 onChange={this.handleChange.bind(this, 'mission_source_id')}

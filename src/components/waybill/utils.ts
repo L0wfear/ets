@@ -20,9 +20,10 @@ const vehicleFilter = (structure_id: string) => R.filter<IVehicle>(c =>
   c.company_structure_id === structure_id,
 );
 
+// IVehaicle
 const carFilter = structure_id => R.pipe(
   vehicleFilter(structure_id),
-  R.filter<IVehicle>(c =>
+  R.filter<any>(c =>
     !c.is_trailer ||
     [
       VALID_VEHICLES_TYPES.COMPRESSOR,
@@ -30,12 +31,13 @@ const carFilter = structure_id => R.pipe(
     ].includes (c.type_id),
   ),
 );
+// IVehaicle
 const trailerFilter = structure_id => R.pipe(
   vehicleFilter(structure_id),
-  R.filter<IVehicle>(c => c.is_trailer),
+  R.filter<any>(c => c.is_trailer),
 );
-
-const vehicleMapper = R.map<IVehicle, any>(c => ({
+// <IVehicle, any>
+const vehicleMapper = R.map<any, any>(c => ({
   value: c.asuods_id,
   gov_number: c.gov_number,
   label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`,

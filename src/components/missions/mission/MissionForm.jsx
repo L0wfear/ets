@@ -319,7 +319,7 @@ export class MissionForm extends Form {
       is_new,
     } = state;
 
-    const sourceIsFaxogramm = lodashIsEmpty(state.order_operation_id);
+    const sourceIsFaxogramm = !lodashIsEmpty(state.order_operation_id);
 
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">

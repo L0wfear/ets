@@ -297,7 +297,7 @@ export class DutyMissionForm extends Form {
       ? []
       : state.brigade_employee_id_list.filter(b => b.id || b.employee_id).map(b => b.id || b.employee_id).join(',');
 
-    const sourceIsFaxogramm = lodashIsEmpty(state.order_operation_id);
+    const sourceIsFaxogramm = !lodashIsEmpty(state.order_operation_id);
 
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">

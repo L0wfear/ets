@@ -1,5 +1,5 @@
 import { Store } from 'flummox';
-import { getToday9am, getTomorrow9am } from 'utils/dates';
+import { getTomorrow9am } from 'utils/dates';
 
 export default class WaybillsStore extends Store {
 
@@ -26,7 +26,7 @@ export function getDefaultBill() {
   // TODO change fuel type to default from app config
   return {
     status: null,
-    plan_departure_date: getToday9am(),
+    plan_departure_date: new Date(),
     plan_arrival_date: getTomorrow9am(),
     driver_id: null,
     car_id: '',

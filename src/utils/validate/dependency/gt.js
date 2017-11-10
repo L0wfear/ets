@@ -7,7 +7,7 @@ const fixedValidators = [
     validator(config, value, dependentFieldConfig, dependentFieldValue) {
       const MUST_BE_GREATER_THAN = `"${config.title || config.key}" должно быть больше "${dependentFieldConfig.title}"`;
       if (isEmpty(value) || isEmpty(dependentFieldValue)) {
-        return;
+        return false;
       }
       if (config.type === 'date' || config.type === 'datetime') {
         if (moment(value).toDate().getTime() <= moment(dependentFieldValue).toDate().getTime()) {

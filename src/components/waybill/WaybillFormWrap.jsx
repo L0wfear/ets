@@ -108,11 +108,6 @@ export default class WaybillFormWrap extends FormWrap {
               canSave: !_.filter(formErrors, (v, k) => ['fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length,
               canClose: !_.filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length,
             });
-          } else {
-            this.setState({
-              formState: waybill,
-              formErrors: {},
-            });
           }
         } else if (props.element.status === 'draft') {
           this.schema = waybillSchema;

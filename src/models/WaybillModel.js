@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import { isEmpty, hasMotohours } from 'utils/functions';
 
 export const waybillSchema = {
@@ -130,6 +132,20 @@ export const waybillSchema = {
     },
   ],
   dependencies: {
+    'plan_departure_date': [
+      {
+        validator: (value) => {
+          const nowDateInUS = (new Date()).getTime();
+          const valueInUS = moment(value).toDate().getTime();
+
+          if (nowDateInUS - valueInUS > 5 * 60 * 1000) {
+            return 'Значение "Выезд. план" не может быть меньше текущего времени минус 5 минут';
+          }
+
+          return false;
+        },
+      },
+    ],
     'odometr_start': [
       {
         validator: (value, formData) => {
@@ -281,12 +297,6 @@ const closingProperties = [
 
 const closingDependencies = {
   ...waybillSchema.dependencies,
-  'fact_arrival_date': [
-    {
-      type: 'gt',
-      field: 'fact_departure_date',
-    },
-  ],
   'motohours_end': [
     {
       type: 'gte',
@@ -303,6 +313,26 @@ const closingDependencies = {
     {
       type: 'gte',
       field: 'odometr_start',
+    },
+  ],
+  'fact_departure_date': [
+    {
+      validator(value, { plan_departure_date }) {
+        if (moment(value).toDate().getTime() < moment(plan_departure_date).toDate().getTime()) {
+          return '"Выезд факт." должно быть не раньше "Выезда план."';
+        }
+        return false;
+      },
+    },
+  ],
+  'fact_arrival_date': [
+    {
+      validator(value, { plan_arrival_date }) {
+        if (moment(value).toDate().getTime() > moment(plan_arrival_date).toDate().getTime()) {
+          return '"Возвращение факт." должно быть не позже "Возвращение план."';
+        }
+        return false;
+      },
     },
   ],
   'distance': [

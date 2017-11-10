@@ -16,7 +16,7 @@ const FileListItem: React.SFC<any> = ({
   url,
 }) =>
   <Col style={{ marginBottom: 10 }} md={12}>
-    <a href={url} target="_blanc">{decodeURI(name)}</a>
+    <a href={url} target="_blanc">{name}</a>
     <Button
       bsClass="close"
       bsSize="xsmall"

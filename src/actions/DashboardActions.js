@@ -44,7 +44,7 @@ export default class DashboardActions extends Actions {
     let payload = {};
     if (key === 'faxogramms') {
       // debug: true return 5 orders
-      payload = Object.assign(payload, { debug: true });
+      payload = Object.assign(payload, {});
     }
     if (key.includes('waybill_')) {
       const path = key.replace(/_/, '/');

@@ -101,8 +101,8 @@ export default class DashboardPage extends React.Component {
   openSubitemsList(key, clear) {
     this.setState({ itemOpenedKey: clear ? null : key });
   }
-  goToFaxogramm = () => {
-    this.props.history.push('/faxogramms');
+  goToOrders = () => {
+    this.props.history.push('/orders');
   }
 
   render() {
@@ -158,7 +158,7 @@ export default class DashboardPage extends React.Component {
           <Col md={3}>
             <DashboardManagementCard
               refreshCard={this.refreshCard}
-              goToFaxogramm={this.goToFaxogramm}
+              goToOrders={this.goToOrders}
             />
           </Col>
         </Row>

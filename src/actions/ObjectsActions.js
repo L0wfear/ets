@@ -6,7 +6,7 @@ import {
   cloneDeep,
 } from 'lodash';
 import {
-  FaxogrammService,
+  OrderService,
   WorkKindsService,
   CarService,
   CustomersService,
@@ -85,11 +85,11 @@ export default class ObjectsActions extends Actions {
   getWorkMode() {
     return WorkMode.get();
   }
-  getFaxogrammById(id) {
-    return FaxogrammService.get({ id });
+  getOrderById(id) {
+    return OrderService.get({ id });
   }
 
-  getFaxogramms(limit, offset, sort_by, filter, create_date_from, create_date_to) {
+  getOrders(limit, offset, sort_by, filter, create_date_from, create_date_to) {
     const filterValues = cloneDeep(filter);
     Object.keys(filterValues).forEach((k) => {
       if (Array.isArray(filterValues[k])) {
@@ -105,15 +105,18 @@ export default class ObjectsActions extends Actions {
       sort_by,
       filter: JSON.stringify(filterValues),
     };
-    return FaxogrammService.get(payload);
+    return OrderService.get(payload);
+  }
+  resetOrder() {
+    return {};
   }
 
-  saveFaxogramm(id) {
-    return FaxogrammService.path(id).getBlob();
+  saveOrder(id) {
+    return OrderService.path(id).getBlob();
   }
 
-  getFaxogrammPDFUrl(id) {
-    const URL = `${FaxogrammService.getUrl()}/${id}`;
+  getOrderPDFUrl(id) {
+    const URL = `${OrderService.getUrl()}/${id}`;
     return URL;
   }
 

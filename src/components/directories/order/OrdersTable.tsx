@@ -1,9 +1,17 @@
-import React from 'react';
-import Table from 'components/ui/table/DataTable.jsx';
-import DateFormatter from 'components/ui/DateFormatter.jsx';
+import * as React from 'react';
 
-const getTableMeta = () => {
-  const tableMeta = {
+import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
+import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';
+import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
+
+import DataTableComponent from 'components/ui/table/DataTable';
+import DateFormatter from 'components/ui/DateFormatter';
+
+const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
+
+export function tableMeta({
+} = {}): IDataTableSchema {
+  const meta: IDataTableSchema = {
     cols: [
       {
         name: 'order_number',
@@ -60,42 +68,35 @@ const getTableMeta = () => {
           ],
         },
       },
-      // {
-      //   name: 'pgm_deny',
-      //   displayName: 'ПГМ',
-      //   type: 'number',
-      //   filter: {
-      //     type: 'multiselect',
-      //   },
-      //   cssClassName: 'width120',
-      // },
     ],
   };
 
-  return tableMeta;
-};
+  return meta;
+}
 
-
-export default (props) => {
-  const renderers = {
+const Table: React.SFC<any> = props  => {
+  const renderers: ISchemaRenderer = {
     order_date: ({ data }) => <DateFormatter date={data} time empty={'Не указано'} />,
     order_date_to: ({ data }) => <DateFormatter date={data} time empty={'Не указано'} />,
     create_date: ({ data }) => <DateFormatter date={data} time empty={'Не указано'} />,
     pgm_deny: ({ data }) => <div>{data === 1 ? 'Не применять' : 'Применять'}</div>,
   };
 
-  return (<Table
-    title="Реестр централизованных заданий (факсограмм)"
-    results={props.data}
-    renderers={renderers}
-    tableMeta={getTableMeta(props)}
-    serverPagination
-    enumerated={false}
-    externalFilter={props.changeFilter}
-    externalChangeSort={props.changeSort}
-    initialSort={'create_date'}
-    initialSortAscending={false}
-    className="faxogramm"
-    {...props}
-  />);
+  return (
+    <DataTable
+      title="Реестр централизованных заданий (факсограмм)"
+      results={props.data}
+      renderers={renderers}
+      tableMeta={tableMeta(props)}
+      serverPagination
+      enumerated={false}
+      externalFilter={props.changeFilter}
+      externalChangeSort={props.changeSort}
+      initialSort={'create_date'}
+      initialSortAscending={false}
+      className="order"
+      {...props}
+    />);
 };
+
+export default Table;

@@ -20,7 +20,7 @@ class DutyMissionFormWrap extends FormWrap {
   }
   createAction = formState =>
     this.context.flux.getActions('missions').createDutyMission(formState).then(() => {
-      if (!this.props.fromFaxogrammMissionForm) {
+      if (!this.props.fromOrder) {
         return this.props.refreshTableList();
       }
     });
@@ -38,7 +38,7 @@ class DutyMissionFormWrap extends FormWrap {
 
     const id = mission.id ? mission.id : response.result && response.result[0] ? response.result[0].id : null;
     await this.context.flux.getActions('missions').printDutyMission(id).then(({ blob }) => { saveData(blob, `Печатная форма наряд-задания №${id}.pdf`); });
-    if (!this.props.fromFaxogrammMissionForm) {
+    if (!this.props.fromOrder) {
       await this.props.refreshTableList();
     }
     this.context.flux.getActions('missions').getDutyMissions();
@@ -53,7 +53,7 @@ class DutyMissionFormWrap extends FormWrap {
   validate(state, errors) {
     const formErrors = super.validate(state, errors);
 
-    if (this.props.fromFaxogrammMissionForm && this.props.initDutyMission.plan_date_start) {
+    if (this.props.fromOrder && this.props.initDutyMission && this.props.initDutyMission.plan_date_start) {
       const {
         initDutyMission: {
           plan_date_start: init_pds,
@@ -110,7 +110,7 @@ class DutyMissionFormWrap extends FormWrap {
         onHide={this.props.onFormHide}
         fromWaybill={this.props.fromWaybill}
         readOnly={this.props.readOnly || !this.state.formState.is_new}
-        fromFaxogrammMissionForm={!!this.props.fromFaxogrammMissionForm}
+        fromOrder={!!this.props.fromOrder}
         {...this.state}
       />
     </Div>);

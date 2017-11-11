@@ -3,23 +3,20 @@ import { Link } from 'react-router';
 import {
   Col,
   Navbar, Nav, Glyphicon,
-  Badge,
   NavItem as BootstrapNavItem,
   NavDropdown as BootstrapNavDropdown,
   MenuItem as BootstrapMenuItem,
 } from 'react-bootstrap';
-import moment from 'moment';
 
 import config from 'config';
 import { autobind } from 'core-decorators';
 import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
 import ModalTP from 'components/modalTP/ModalTP.tsx';
-import ModalRule from 'components/modalTP/ModalRule.tsx';
 
 import { FluxContext, HistoryContext } from 'utils/decorators';
 import PERMISSIONS from 'constants/permissions';
 import NotificationBage from 'components/notifications/NotificationBadge.tsx';
-import NotificationFaxogramm from 'components/modal_notification/NotificationFaxogramm.tsx';
+import NotifiactionOrders from 'components/modal_notification/NotifiactionOrders.tsx';
 
 import enhanceWithPermissions from './util/RequirePermissions.jsx';
 import defaultUser from '../assets/images/avatar-default.png';
@@ -184,7 +181,7 @@ export default class MainPage extends React.Component {
           />
           {this.props.children}
           <LoadingOverlay main />
-          <NotificationFaxogramm />
+          <NotifiactionOrders />
         </div>
 
         <div className="app-footer">

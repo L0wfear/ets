@@ -93,7 +93,6 @@ export class MissionForm extends Form {
 
     if (!isEmpty(mission.id)) {
       routesList = await routesActions.getRoutesByMissionId(mission.id, isTemplate);
-      console.log('hello', routesList)
     }
 
     const {
@@ -221,7 +220,6 @@ export class MissionForm extends Form {
 
     this.context.flux.getActions('routes').getRoutesByTechnicalOperation(technical_operation_id)
     .then((routesList) => {
-    console.log('1', routesList)
       this.setState({ routesList });
     });
 
@@ -234,7 +232,7 @@ export class MissionForm extends Form {
 
     const {
       missionSourcesList = [],
-      fromFaxogrammMissionForm = false,
+      fromOrder = false,
     } = this.props;
     const {
       TECH_OPERATIONS = [],
@@ -311,7 +309,7 @@ export class MissionForm extends Form {
       title = (
         <div>
           <span>Создание задания</span>
-          { !fromFaxogrammMissionForm && <span style={{ marginLeft: 10, color: 'red' }}>Данное задание не будет учитываться по централизованным заданям</span>}
+          { !fromOrder && <span style={{ marginLeft: 10, color: 'red' }}>Данное задание не будет учитываться по централизованным заданям</span>}
         </div>);
     }
     // Старые задания нельзя редактирвоать
@@ -319,7 +317,7 @@ export class MissionForm extends Form {
       is_new,
     } = state;
 
-    const sourceIsFaxogramm = !lodashIsEmpty(state.order_operation_id);
+    const sourceIsOrder = !lodashIsEmpty(state.order_operation_id);
 
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
@@ -335,7 +333,7 @@ export class MissionForm extends Form {
                 type="select"
                 label="Технологическая операция"
                 error={errors.technical_operation_id}
-                disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromFaxogrammMissionForm || !is_new || sourceIsFaxogramm}
+                disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromOrder || !is_new || sourceIsOrder}
                 options={TECH_OPERATIONS}
                 value={state.technical_operation_id}
                 onChange={this.handleTechnicalOperationChange}
@@ -363,11 +361,11 @@ export class MissionForm extends Form {
                 id={'municipal_facility_id'}
                 errors={errors}
                 state={state}
-                disabled={(!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY)) || this.props.fromFaxogrammMissionForm || !is_new || sourceIsFaxogramm}
+                disabled={(!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY)) || this.props.fromOrder || !is_new || sourceIsOrder}
                 handleChange={this.handleChange.bind(this)}
                 getDataByNormId={this.getDataByNormId}
                 technicalOperationsList={technicalOperationsList}
-                fromFaxogrammMissionForm={!!fromFaxogrammMissionForm}
+                fromOrder={!!fromOrder}
               />
             </Col>
           </Row>
@@ -463,12 +461,12 @@ export class MissionForm extends Form {
                 type="select"
                 label="Источник получения задания"
                 error={errors.mission_source_id}
-                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || fromFaxogrammMissionForm || !is_new || sourceIsFaxogramm}
+                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || fromOrder || !is_new || sourceIsOrder}
                 options={MISSION_SOURCES}
                 value={state.mission_source_id}
                 onChange={this.handleChange.bind(this, 'mission_source_id')}
               />
-              { IS_CREATING && !fromFaxogrammMissionForm && <span className="help-block-mission-source">{'Задания на основе централизованных заданий необходимо создавать во вкладке "НСИ"-"Реестр централизованных заданий".'}</span> }
+              { IS_CREATING && !fromOrder && <span className="help-block-mission-source">{'Задания на основе централизованных заданий необходимо создавать во вкладке "НСИ"-"Реестр централизованных заданий".'}</span> }
             </Col>
             {state.order_number != null && <Col md={2}>
               <Field
@@ -521,7 +519,7 @@ export class MissionForm extends Form {
           showForm={this.state.showRouteForm}
           fromMission
           notTemplate
-          fromFaxogrammMissionForm={this.props.fromFaxogrammMissionForm}
+          fromOrder={this.props.fromOrder}
           available_route_types={available_route_types}
           structureId={state.structure_id}
         />

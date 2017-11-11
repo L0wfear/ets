@@ -43,7 +43,8 @@ export default class DashboardActions extends Actions {
   getDashboardComponent(key) {
     let payload = {};
     if (key === 'faxogramms') {
-      payload = Object.assign(payload, {});
+      // debug: true return 5 orders
+      payload = Object.assign(payload, { debug: true });
     }
     if (key.includes('waybill_')) {
       const path = key.replace(/_/, '/');

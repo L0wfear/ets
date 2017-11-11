@@ -65,10 +65,9 @@ export default class LoadingStore extends Store {
       objectsActions.getSpecialModels,
       objectsActions.getCustomers,
       objectsActions.getWorkKinds,
-      objectsActions.getFaxogramms,
-      objectsActions.getFaxogramm,
+      objectsActions.getOrders,
 
-      objectsActions.saveFaxogramm,
+      objectsActions.saveOrder,
       objectsActions.getMaintenanceWork,
       objectsActions.getCleaningRate,
       objectsActions.getUserActionLog,

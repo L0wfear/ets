@@ -12,7 +12,7 @@ class MunicipalFacility extends React.Component {
       state: React.PropTypes.object,
       errors: React.PropTypes.object,
       disabled: React.PropTypes.bool,
-      fromFaxogrammMissionForm: React.PropTypes.bool,
+      fromOrder: React.PropTypes.bool,
       handleChange: React.PropTypes.func,
       getDataByNormId: React.PropTypes.func,
       technicalOperationsList: React.PropTypes.arrayOf(React.PropTypes.object),
@@ -45,7 +45,7 @@ class MunicipalFacility extends React.Component {
     } = this.getStateByProps(props);
     const {
       technicalOperationsList: newTechOperationsList = [],
-      fromFaxogrammMissionForm,
+      fromOrder,
     } = props;
 
     const newState = {
@@ -68,7 +68,7 @@ class MunicipalFacility extends React.Component {
           end_date: new_ds,
         };
 
-        if (fromFaxogrammMissionForm) {
+        if (fromOrder) {
           outerPayload.norm_ids = norm_id;
         } else {
           outerPayload.norm_ids = norm_ids.join(',');

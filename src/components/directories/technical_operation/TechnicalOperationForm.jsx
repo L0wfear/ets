@@ -21,9 +21,7 @@ export default class TechnicalOperationForm extends Form {
 
   handleObjectsChange(v) {
     const data = v.split(',');
-    const objects = this.props.technicalOperationsObjectsList.filter((obj) => {
-      return data.indexOf(obj.id.toString()) > -1;
-    });
+    const objects = this.props.technicalOperationsObjectsList.filter((obj) => data.includes(obj.id.toString()));
     this.props.handleFormChange('objects', objects);
   }
 

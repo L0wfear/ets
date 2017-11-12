@@ -132,7 +132,7 @@ const PERMISSIONS = {
       'update': 'technical_operation.update',
       'delete': 'technical_operation.delete',
     },
-    'faxogramm': {
+    'orders': {
       'list': 'faxogramm.list',
       'create': 'faxogramm.create',
       'read': 'faxogramm.read',

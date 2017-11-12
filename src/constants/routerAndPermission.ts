@@ -115,8 +115,8 @@ const routerAndPermission = {
           delete: 'employee.delete',
         },
       },
-      faxogramms: {
-        path: '/faxogramms',
+      orders: {
+        path: '/orders',
         entyity: 'faxogramm',
         noDotList: false,
         permissions: {

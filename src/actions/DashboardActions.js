@@ -43,6 +43,7 @@ export default class DashboardActions extends Actions {
   getDashboardComponent(key) {
     let payload = {};
     if (key === 'faxogramms') {
+      // debug: true return 5 orders
       payload = Object.assign(payload, {});
     }
     if (key.includes('waybill_')) {

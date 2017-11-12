@@ -10,7 +10,7 @@ import { connectToStores } from 'utils/decorators';
 import NotificationModal from '../../components/modal_notification/NotificationModal';
 
 @connectToStores(['userNotifications'])
-class NotifiactionFaxogramm extends NotificationModal {
+class NotifiactionOrders extends NotificationModal {
   constructor(props) {
     super(props);
 
@@ -88,4 +88,4 @@ class NotifiactionFaxogramm extends NotificationModal {
   }
 }
 
-export default NotifiactionFaxogramm;
+export default NotifiactionOrders;

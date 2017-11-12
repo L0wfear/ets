@@ -38,7 +38,7 @@ const Div = enhanceWithPermissions(DivForEnhance);
 
 const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
-const checkErrorDate = ({ fromFaxogramm: { cf_list: fax_cf_list, confirmDialogList: fax_confirmDialogList }, notFromFaxogramm: { cf_list: not_fax_cf_list } }) => {
+const checkErrorDate = ({ fromOrder: { cf_list: fax_cf_list, confirmDialogList: fax_confirmDialogList }, notFromOrder: { cf_list: not_fax_cf_list } }) => {
   if (!lodashIsEmpty(fax_cf_list)) {
     global.NOTIFICATION_SYSTEM.notify(`
       Время выполнения привязанного к ПЛ закрытого задания: 
@@ -90,17 +90,17 @@ const checkMissionSelectBeforeClose = (mission_id_list, missionsList, missionSou
         date_end_mission,
         status,
         number,
-        isFaxogrammSource: false,
+        isOrderSource: false,
       };
 
-      const isFaxogrammSource = !!(missionSourcesList.find(({ id: id_mission_source }) => id_mission_source === msi) || {}).auto;
-      if (isFaxogrammSource) {
-        this.context.flux.getActions('objects').getFaxogrammById(order_id).then(({ result: [faxogramm] }) => {
+      const isOrderSource = !!(missionSourcesList.find(({ id: id_mission_source }) => id_mission_source === msi) || {}).auto;
+      if (isOrderSource) {
+        this.context.flux.getActions('objects').getOrderById(order_id).then(({ result: [order] }) => {
           const {
-            order_date: order_date_faxogramm,
-            order_date_to: order_date_to_faxogramm,
+            order_date,
+            order_date_to,
             technical_operations = [],
-          } = faxogramm;
+          } = order;
 
           const toMission = technical_operations.find(({ id: to_id }) => to_id === order_operation_id) || {};
           const {
@@ -110,9 +110,9 @@ const checkMissionSelectBeforeClose = (mission_id_list, missionsList, missionSou
 
           missionsData[i] = {
             ...missionsData[i],
-            isFaxogrammSource,
-            date_from: date_from_to || order_date_faxogramm,
-            date_to: date_to_to || order_date_to_faxogramm,
+            isOrderSource,
+            date_from: date_from_to || order_date,
+            date_to: date_to_to || order_date_to,
           };
 
           arrayQuerySync[i] = true;
@@ -262,16 +262,16 @@ class WaybillForm extends Form {
 
     const missionsList = [...oldMissionsList];
 
-    const idFaxogramm = (missionSourcesList.find(({ auto }) => auto) || {}).id;
-    const missionsWithSourceFaxogramm = missionsList.concat(...notAvailableMissions).reduce((missions, { id, number, mission_source_id, date_end, date_start }) => {
-      if (!missions[id] && mission_id_list.includes(id) && checkDateMission({ date_end, date_start, dateWaybill }) && idFaxogramm === mission_source_id) {
+    const idOrder = (missionSourcesList.find(({ auto }) => auto) || {}).id;
+    const missionsWithSourceOrder = missionsList.concat(...notAvailableMissions).reduce((missions, { id, number, mission_source_id, date_end, date_start }) => {
+      if (!missions[id] && mission_id_list.includes(id) && checkDateMission({ date_end, date_start, dateWaybill }) && idOrder === mission_source_id) {
         missions[id] = number;
       }
       return missions;
     },
     {});
 
-    const missionsNum = Object.values(missionsWithSourceFaxogramm).map(num => `задание ${num}`);
+    const missionsNum = Object.values(missionsWithSourceOrder).map(num => `задание ${num}`);
 
     this.confirmDialogChangeDate(missionsNum).then(() => {
       this.getWaybillDrivers({
@@ -579,10 +579,10 @@ class WaybillForm extends Form {
     } = this.props;
 
     const errors = {
-      notFromFaxogramm: {
+      notFromOrder: {
         cf_list: [],
       },
-      fromFaxogramm: {
+      fromOrder: {
         cf_list: [],
         confirmDialogList: [],
       },
@@ -600,16 +600,16 @@ class WaybillForm extends Form {
         date_end_mission: dem,
         status,
         number,
-        isFaxogrammSource,
+        isOrderSource,
       } = mission;
 
       const dsmMoment = moment(dsm).format(`${global.APP_DATE_FORMAT} HH:mm`);
       const demMoment = moment(dem).format(`${global.APP_DATE_FORMAT} HH:mm`);
 
       if (!(fddMoment <= dsmMoment && demMoment >= fadMoment)) {
-        if (isFaxogrammSource) {
+        if (isOrderSource) {
           if (status === 'complete' || status === 'fail') {
-            errors.fromFaxogramm.cf_list.push(number);
+            errors.fromOrder.cf_list.push(number);
           } else if (status === 'assigned') {
             const {
               date_from: df_to,
@@ -620,11 +620,11 @@ class WaybillForm extends Form {
             const dtToMoment = moment(dt_to).format(`${global.APP_DATE_FORMAT} HH:mm`);
 
             if (dtToMoment < fddMoment || fadMoment < dfToMoment) {
-              errors.fromFaxogramm.confirmDialogList.push(number);
+              errors.fromOrder.confirmDialogList.push(number);
             }
           }
         } else if (status === 'complete' || status === 'fail') {
-          errors.notFromFaxogramm.cf_list.push(number);
+          errors.notFromOrder.cf_list.push(number);
         }
       }
     });

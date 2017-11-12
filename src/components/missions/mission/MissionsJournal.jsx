@@ -345,14 +345,14 @@ export default class MissionsJournal extends CheckableElementsList {
       </div>,
     ];
   }
-  gotoFaxogramm = () => {
-    this.props.history.push('/faxogramms');
+  goToOrders = () => {
+    this.props.history.push('/orders');
   }
 
   getbuttonAddCZ() {
     return (
       <div className="container-button-create-cz">
-        <Button bsSize="small" bsStyle="success" onClick={this.gotoFaxogramm} permissions={['faxogramm.list']} disabled={false}>
+        <Button bsSize="small" bsStyle="success" onClick={this.goToOrders} permissions={['faxogramm.list']} disabled={false}>
           <Glyphicon glyph="plus" /> Исполнение централизованного задания
         </Button>
       </div>

@@ -17,7 +17,7 @@ export default class MasterManagementCard extends React.Component {
     return {
       hidden: PropTypes.bool,
       refreshCard: PropTypes.func.isRequired,
-      goToFaxogramm: PropTypes.func.isRequired,
+      goToOrders: PropTypes.func.isRequired,
     };
   }
 
@@ -58,7 +58,7 @@ export default class MasterManagementCard extends React.Component {
             </Button>
           </Div>
           <Div permissions={['faxogramm.list']} className="dashboard-btn-wrapper container-button-create-cz">
-            <Button bsSize="small" onClick={this.props.goToFaxogramm}>
+            <Button bsSize="small" onClick={this.props.goToOrders}>
               Исполнение централизованного задания
             </Button>
           </Div>

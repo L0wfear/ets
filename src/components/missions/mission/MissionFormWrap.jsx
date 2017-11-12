@@ -17,8 +17,8 @@ export default class MissionFormWrap extends FormWrap {
     this.schema = missionSchema;
   }
   createAction = (formState) => {
-    return this.context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill || this.props.fromFaxogrammMissionForm).then((r) => {
-      if (!this.props.fromWaybill && !this.props.fromFaxogrammMissionForm) {
+    return this.context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill || this.props.fromOrder).then((r) => {
+      if (!this.props.fromWaybill && !this.props.fromOrder) {
         this.props.refreshTableList();
       }
       return r;
@@ -71,9 +71,9 @@ export default class MissionFormWrap extends FormWrap {
       }
     }
 
-    if (this.props.fromFaxogrammMissionForm && this.props.initDutyMission.date_start) {
+    if (this.props.fromOrder && this.props.initMission && this.props.initMission.date_start) {
       const {
-        initDutyMission: {
+        initMission: {
           date_start: init_ds,
           date_end: init_de,
           passes_count: init_pc,
@@ -130,7 +130,7 @@ export default class MissionFormWrap extends FormWrap {
       waybillStartDate: this.props.waybillStartDate,
       waybillEndDate: this.props.waybillEndDate,
       disabledProps: this.props.disabledProps || {},
-      fromFaxogrammMissionForm: this.props.fromFaxogrammMissionForm || false,
+      fromOrder: this.props.fromOrder || false,
     };
 
     return (

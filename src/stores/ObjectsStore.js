@@ -13,7 +13,7 @@ export default class ObjectsStore extends Store {
 
     this.register(carActions.updateCarAdditionalInfo, this.handleGetCars);
     this.register(carActions.getTrack, this.handleGetTrack);
-    this.register(carActions.getCarsByTechnicalOperation, this.handleGetCarsByTechnicalOperation)
+    this.register(carActions.getCarsByTechnicalOperation, this.handleGetCarsByTechnicalOperation);
 
     this.register(objectsActions.getCars, this.handleGetCars);
     this.register(objectsActions.getModels, this.handleGetModels);
@@ -25,7 +25,8 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getWorkKinds, this.handleGetWorkKinds);
     this.register(objectsActions.getOrganizations, this.handleGetOrganizations);
     this.register(objectsActions.updateOrganizations, this.handleUpdateOrganizations);
-    this.register(objectsActions.getFaxogramms, this.handleGetFaxogramms);
+    this.register(objectsActions.getOrders, this.handlegetOrders);
+    this.register(objectsActions.resetOrder, this.handlegetOrders);
     this.register(objectsActions.getPositions, this.handleGetPositions);
     this.register(objectsActions.getConfig, this.handleGetConfig);
     this.register(objectsActions.getMaterialConsumptionRate, this.handleGetMaterialConsumptionRate);
@@ -75,7 +76,7 @@ export default class ObjectsStore extends Store {
       technicalOperationsList: [],
       technicalOperationsRegistryList: [],
       workKindsList: [],
-      faxogrammsList: [],
+      OrdersList: [],
       technicalOperationsObjectsList: [],
       technicalOperationsTypesList: [],
       companyStructureList: [],
@@ -97,16 +98,15 @@ export default class ObjectsStore extends Store {
       typesIndex: {},
       technicalOperationsObjectsIndex: {},
 
-      faxogrammsTotalCount: 0,
+      ordersTotalCount: 0,
 
       workMode: [],
       workModeOptions: [],
     };
   }
 
-  handleGetTechnicalOperationsObjects(technicalOperationsObjects) {
-    const result = technicalOperationsObjects.result;
-    _.each(result, (obj) => {
+  handleGetTechnicalOperationsObjects({ result: { rows = [] } = {} }) {
+    rows.forEach((obj) => {
       if (obj.short_name === 'ОДХ') {
         obj.type = 'mixed';
       } else if (obj.short_name === 'ДТ') {
@@ -115,7 +115,7 @@ export default class ObjectsStore extends Store {
         obj.type = 'points';
       }
     });
-    this.setState({ technicalOperationsObjectsList: result });
+    this.setState({ technicalOperationsObjectsList: rows });
   }
 
   handleGetTechnicalOperationsTypes(technicalOperationsTypes) {
@@ -200,8 +200,8 @@ export default class ObjectsStore extends Store {
     this.setState({ organizations: organizations.result });
   }
 
-  handleGetFaxogramms(faxogramms) {
-    this.setState({ faxogrammsList: faxogramms.result, faxogrammsTotalCount: faxogramms.total_count });
+  handlegetOrders({ result: OrdersList = [], total_count: ordersTotalCount = 0 }) {
+    this.setState({ OrdersList, ordersTotalCount });
   }
 
   handleGetPositions({ result: { rows = [] } }) {

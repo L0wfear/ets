@@ -113,7 +113,7 @@ class RouteFormWrap extends FormWrap {
         fromMission={this.props.fromMission}
         notTemplate={this.props.notTemplate}
         structureId={this.props.structureId}
-        fromFaxogrammMissionForm={this.props.fromFaxogrammMissionForm}
+        fromOrder={this.props.fromOrder}
         {...this.state}
         {...this.additionalProps()}
       />

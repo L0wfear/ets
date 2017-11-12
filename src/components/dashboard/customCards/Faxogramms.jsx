@@ -2,7 +2,7 @@ import React from 'react';
 import { Glyphicon, Button } from 'react-bootstrap';
 import { Link } from 'react-router';
 
-import { FaxogrammService } from 'api/Services';
+import { OrderService } from 'api/Services';
 import Div from 'components/ui/Div.jsx';
 import { FluxContext } from 'utils/decorators';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
@@ -21,8 +21,8 @@ export default class Faxogramms extends DashboardCardMedium {
 
 
   async showPDFViewModal(data) {
-    const url = await this.context.flux.getActions('objects').getFaxogrammPDFUrl(data.id);
-    const { blob } = await FaxogrammService.path(data.id).getBlob();
+    const url = await this.context.flux.getActions('objects').getOrderPDFUrl(data.id);
+    const { blob } = await OrderService.path(data.id).getBlob();
     if (blob === null) {
       return;
     }
@@ -52,7 +52,7 @@ export default class Faxogramms extends DashboardCardMedium {
         </Div>
         <Div className="text-right">
           {canViewPDF ? <Button className="dashboard-card-action-button" onClick={(e) => { e.preventDefault(); this.showPDFViewModal(data); }}><Glyphicon glyph="info-sign" /></Button> : ''}
-          {canCreateMission ? <Link to={`/faxogramms/${data.id}?dateFrom=${date_from}&dateTo=${date_to}`}><Button className="dashboard-card-action-button">Сформировать задания</Button></Link> : ''}
+          {canCreateMission ? <Link to={`/orders/${data.id}?dateFrom=${date_from}&dateTo=${date_to}`}><Button className="dashboard-card-action-button">Сформировать задания</Button></Link> : ''}
         </Div>
         <PDFViewModal
           blob={this.state.blob}

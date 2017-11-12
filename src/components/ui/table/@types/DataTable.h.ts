@@ -13,4 +13,6 @@ export interface IPropsDataTable<TResultObject> {
   usePagination?: boolean;
   selectField?: string;
   selected?: TResultObject;
+  noHeader?: boolean;
+  preventNoDataMessage?: boolean;
 }

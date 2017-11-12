@@ -21,7 +21,7 @@ class MunicipalFacility extends MunicipalFacilityMission {
     } = this.getStateByProps(props);
     const {
       technicalOperationsList: newTechOperationsList = [],
-      fromFaxogrammMissionForm,
+      fromOrder,
     } = props;
 
     const newState = {
@@ -44,7 +44,7 @@ class MunicipalFacility extends MunicipalFacilityMission {
           end_date: new_pds,
         };
 
-        if (fromFaxogrammMissionForm) {
+        if (fromOrder) {
           outerPayload.norm_ids = norm_id;
         } else {
           outerPayload.norm_ids = norm_ids.join(',');

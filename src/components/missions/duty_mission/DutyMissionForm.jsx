@@ -219,7 +219,7 @@ export class DutyMissionForm extends Form {
       employeesList = [],
       missionsList = [],
       readOnly = false,
-      fromFaxogrammMissionForm = false,
+      fromOrder = false,
     } = this.props;
     const {
       TECH_OPERATIONS = [],
@@ -297,7 +297,7 @@ export class DutyMissionForm extends Form {
       ? []
       : state.brigade_employee_id_list.filter(b => b.id || b.employee_id).map(b => b.id || b.employee_id).join(',');
 
-    const sourceIsFaxogramm = !lodashIsEmpty(state.order_operation_id);
+    const sourceIsOrder = !lodashIsEmpty(state.order_operation_id);
 
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
@@ -315,7 +315,7 @@ export class DutyMissionForm extends Form {
                 type="select"
                 label="Технологическая операция"
                 error={errors.technical_operation_id}
-                disabled={IS_DISPLAY || !!state.route_id || readOnly || fromFaxogrammMissionForm || sourceIsFaxogramm}
+                disabled={IS_DISPLAY || !!state.route_id || readOnly || fromOrder || sourceIsOrder}
                 options={TECH_OPERATIONS}
                 value={state.technical_operation_id}
                 onChange={this.handleTechnicalOperationChange.bind(this)}
@@ -390,11 +390,11 @@ export class DutyMissionForm extends Form {
                 id={'municipal_facility_id'}
                 errors={errors}
                 state={state}
-                disabled={IS_DISPLAY || !!state.route_id || readOnly || fromFaxogrammMissionForm || sourceIsFaxogramm}
+                disabled={IS_DISPLAY || !!state.route_id || readOnly || fromOrder || sourceIsOrder}
                 handleChange={this.handleChange.bind(this)}
                 getDataByNormId={this.getDataByNormId}
                 technicalOperationsList={technicalOperationsList}
-                fromFaxogrammMissionForm={!!fromFaxogrammMissionForm}
+                fromOrder={!!fromOrder}
               />
             </Col>
           </Row>
@@ -438,12 +438,12 @@ export class DutyMissionForm extends Form {
           <Row>
             <Col md={6}>
               <Field type="select" label="Источник получения задания" error={errors.mission_source_id}
-                disabled={IS_DISPLAY || readOnly || this.props.fromFaxogrammMissionForm || sourceIsFaxogramm}
+                disabled={IS_DISPLAY || readOnly || this.props.fromOrder || sourceIsOrder}
                 options={MISSION_SOURCES}
                 value={state.mission_source_id}
                 onChange={this.handleChange.bind(this, 'mission_source_id')}
               />
-              { IS_CREATING && !this.props.fromFaxogrammMissionForm && <span className="help-block-mission-source">{'Задания на основе централизованных заданий необходимо создавать во вкладке "НСИ"-"Реестр централизованных заданий".'}</span> }
+              { IS_CREATING && !this.props.fromOrder && <span className="help-block-mission-source">{'Задания на основе централизованных заданий необходимо создавать во вкладке "НСИ"-"Реестр централизованных заданий".'}</span> }
             </Col>
             <Col md={6}>
               <Field

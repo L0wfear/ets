@@ -5,7 +5,7 @@
 import carTypes from './car_types/CarTypesDirectory.jsx';
 import cars from './cars/CarsList.jsx';
 import employees from './employees/EmployeesList.jsx';
-import faxogramm from './faxogramm/FaxogrammDirectory.jsx';
+import order from './order/OrderList.tsx';
 import fuelOperations from './fuel_operations/FuelOperationsDirectory.jsx';
 import fuelRates from './fuel_rates/FuelRatesDirectory.jsx';
 import odhNorm from './odh_norm/ODHNormList.jsx';
@@ -28,7 +28,7 @@ export {
   carTypes,
   cars,
   employees,
-  faxogramm,
+  order,
   odhNorm,
   odhNormDataSummer,
   efficiency,

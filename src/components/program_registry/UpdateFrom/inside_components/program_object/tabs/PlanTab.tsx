@@ -1,9 +1,79 @@
 import * as React from 'react';
-import { Col } from 'react-bootstrap';
+import { Col, Button } from 'react-bootstrap';
+import connectToStores from 'flummox/connect';
+
+import TablePrev from './TablePrev';
 
 import { ExtField } from 'components/ui/Field.jsx';
 
+const PlanTabTableHeader = [
+  {
+    key: 'object_property_id',
+    title: 'Элеменеn ДТ',
+    style: {
+      minWidth: 200,
+    },
+  },
+  {
+    key: 'value',
+    title: 'Характеристика',
+  },
+  {
+    key: 'measure_unit_name',
+    title: 'Ед. измерения',
+  },
+  {
+    key: 'plan',
+    title: 'План',
+  },
+];
+
 class PlanTab extends React.Component<any, any> {
+  handleClickAddEl = () => {
+    this.props.pushElement();
+  }
+  getButtons = () => {
+    return (
+      <div>
+        <Button onClick={this.handleClickAddEl} >Добавить элемент</Button>
+      </div>
+    );
+  }
+  handleChangeTable = (numRow, field, value) => {
+    const {
+      state: {
+        elements = [],
+      },
+      objectPropertyList = [],
+    } = this.props;
+
+    let newValueOfF = value;
+
+    if (typeof value === 'object') {
+      const {
+        target: {
+          value: eValue,
+        },
+      } = value;
+
+      newValueOfF = eValue;
+    }
+
+    const newElements = elements.map((d, i) => {
+      if (i === numRow) {
+        const { measure_unit_name } = objectPropertyList.find(({ id }) => id === newValueOfF);
+        return {
+          ...d,
+          [field]: newValueOfF,
+          measure_unit_name,
+        };
+      }
+      return { ...d };
+    });
+
+    this.props.handleChange('elements', newElements);
+  }
+
   render() {
     const {
       isPermitted,
@@ -11,9 +81,26 @@ class PlanTab extends React.Component<any, any> {
         plan_date_start,
         plan_date_end,
         note,
+        elements = [],
       },
+      objectPropertyList = [],
       errors,
     } = this.props;
+
+    const mainPropsFields = {
+      object_property_id: {
+        type: 'select',
+        options: objectPropertyList.map(({ id: value, name: label }) => ({ value, label })),
+      },
+      value: {
+      },
+      measure_unit_name: {
+        readOnly: true,
+      },
+      plan: {
+
+      },
+    };
 
     return (
       <div>
@@ -52,6 +139,16 @@ class PlanTab extends React.Component<any, any> {
           </div>
         </Col>
         <Col md={12}>
+          <TablePrev
+            title={'Элементы ДТ, запланированные к ремонту'}
+            headerData={PlanTabTableHeader}
+            buttons={this.getButtons()}
+            bodyData={elements}
+            mainPropsFields={mainPropsFields}
+            handleChange={this.handleChangeTable}
+          />
+        </Col>
+        <Col md={12}>
           <ExtField
             type="string"
             value={note}
@@ -67,4 +164,4 @@ class PlanTab extends React.Component<any, any> {
   }
 }
 
-export default PlanTab;
+export default connectToStores(PlanTab, ['repair']);

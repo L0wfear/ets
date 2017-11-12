@@ -1,7 +1,7 @@
 import { Actions } from 'flummox';
 
 import { createValidDate } from 'utils/dates';
-import { Repair } from 'api/Services';
+import { Repair, ObjectProperty } from 'api/Services';
 import REPAIR from '../constants/repair';
 
 const parsePutPath = (entity, method, formState, idKey = 'id') => `${entity}/${method === 'put' ? formState[idKey] : ''}`;
@@ -20,6 +20,10 @@ export default class RepairActions extends Actions {
       data: response,
       ...other,
     };
+  }
+
+  getObjectProperty() {
+    return ObjectProperty.get();
   }
 
   async getAllVersionsById(id) {

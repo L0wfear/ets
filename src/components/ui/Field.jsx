@@ -19,7 +19,8 @@ function StringField(props) {
   if (isLoading) {
     return (
       <Div hidden={hidden}>
-        <label style={{ paddingTop: 5 }}>{label}</label><br />
+        {label && (<label style={{ paddingTop: 5 }}>{label}</label>)}
+        {label && <br />}
         <Preloader type="field" />
       </Div>
     );
@@ -34,7 +35,11 @@ function StringField(props) {
       <Div hidden={!error} className="error">{error}</Div>
     </Div> :
     <Div hidden={hidden} className={className}>
-      <label style={{ paddingTop: 5, paddingRight: 5 }}>{label}</label>
+      { label && 
+        (
+          <label style={{ paddingTop: 5, paddingRight: 5 }}>{label}</label>
+        )
+      }
       {!inline && <br />}
       {value}
     </Div>;

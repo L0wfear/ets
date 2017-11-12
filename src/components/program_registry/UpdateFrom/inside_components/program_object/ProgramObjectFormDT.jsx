@@ -1,6 +1,5 @@
 import React from 'react';
 import { Row, Col, Modal, Button, Nav, NavItem } from 'react-bootstrap';
-import { isEmpty } from 'lodash';
 import connectToStores from 'flummox/connect';
 
 import { tabable } from 'components/compositions/hoc';
@@ -28,13 +27,14 @@ class ProgramObjectFormDT extends Form {
 
   constructor(props) {
     super(props);
-    
+
     this.state = {
       manual: false,
     };
   }
 
   componentDidMount() {
+    this.context.flux.getActions('repair').getObjectProperty();
     this.context.flux.getActions('geoObjects').getGeozoneByTypeWithGeometry('dt').then((ans) => {
       const {
         formState: {
@@ -121,6 +121,25 @@ class ProgramObjectFormDT extends Form {
     }
   }
 
+  pushElement = () => {
+    const {
+      formState: {
+        elements = [],
+      },
+    } = this.props;
+    const newElements = [
+      ...elements,
+      {
+        id_element: null,
+        value: null,
+        object_property_id: null,
+        plan: null,
+      },
+    ];
+
+    this.handleChange('elements', newElements);
+  }
+
   render() {
     const [
       state,
@@ -149,7 +168,7 @@ class ProgramObjectFormDT extends Form {
     const CONTRACTOR_OPTIONS = contractorList.map(({ id: value, name: label }) => ({ value, label }));
 
     return (
-      <Modal {...this.props} bsSize="lg" backdrop="static">
+      <Modal {...this.props} dialogClassName="modal-xlg" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">{'Создание замечания'}</Modal.Title>
         </Modal.Header>
@@ -255,6 +274,7 @@ class ProgramObjectFormDT extends Form {
                     errors={errors}
                     objectList={dtPolys}
                     handleChange={this.handleChange}
+                    pushElement={this.pushElement}
                   />
                 </TabContent>
                 <TabContent eventKey={OBJ_TAB_INDEX.FACT} tabKey={tabKey}>

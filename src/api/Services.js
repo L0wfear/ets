@@ -100,4 +100,6 @@ export const UserNotificationService = ETS_API_FACTORY.createApiServiceAdapter('
 export const UserNotificationInfoService = ETS_API_FACTORY.createApiServiceAdapter('notification_info', {});
 
 
+export const ObjectProperty = ETS_API_FACTORY.createApiServiceAdapter('object_property', {});
+
 export { reports };

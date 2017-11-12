@@ -207,4 +207,51 @@ export default class RepairActions extends Actions {
       'json',
     );
   }
+
+  /* DITETS-2014 */
+  programRemark(method, formState) {
+    const payload = {
+      ...formState,
+    };
+    const { programRemark } = REPAIR;
+    const {
+      program_version_id,
+    } = formState;
+
+    const path = parsePutPath(programRemark, method, formState);
+
+    return Repair.path(path)[method](
+      payload,
+      this.getRepairListByType.bind(null, 'programRemarkRegistry', { program_version_id }),
+      'json',
+    );
+  }
+
+  removeProgramRemark(id) {
+    const { programRemark } = REPAIR;
+
+    return Repair.path(`${programRemark}/${id}`).delete(
+      {},
+      false,
+      'json',
+    );
+  }
+  rejectRemarks(id) {
+    const { programRemark } = REPAIR;
+
+    return Repair.path(`${programRemark}/${id}/reject`).put(
+      {},
+      false,
+      'json',
+    );
+  }
+  fixRemarks(id) {
+    const { programRemark } = REPAIR;
+
+    return Repair.path(`${programRemark}/${id}/fix`).put(
+      {},
+      false,
+      'json',
+    );
+  }
 }

@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { groupBy, flatten, get } from 'lodash';
+import { groupBy, flatten, get, cloneDeep, omit } from 'lodash';
 import { autobind } from 'core-decorators';
 import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
 import cx from 'classnames';
@@ -119,6 +119,12 @@ export default class CarInfo extends Component {
     if (notTillNow) {
       state.from_dt = state.from_dt_ = getStartOfToday();
       state.to_dt = state.to_dt_ = new Date();
+    }
+    if (!this.props.car.marker.track) {
+      const errorData = cloneDeep(this.props.car);
+      errorData.marker = omit(errorData.marker, ['contains', 'map', 'point', 'renderLarge', 'renderSmall', 'store', 'vectorLayer', '_animation', '_reactMap'])
+      console.warn(JSON.stringify(errorData));
+      return;
     }
 
     const track = this.props.car.marker.track;

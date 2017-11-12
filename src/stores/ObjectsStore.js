@@ -105,9 +105,8 @@ export default class ObjectsStore extends Store {
     };
   }
 
-  handleGetTechnicalOperationsObjects(technicalOperationsObjects) {
-    const result = technicalOperationsObjects.result;
-    _.each(result, (obj) => {
+  handleGetTechnicalOperationsObjects({ result: { rows = [] } = {} }) {
+    rows.forEach((obj) => {
       if (obj.short_name === 'ОДХ') {
         obj.type = 'mixed';
       } else if (obj.short_name === 'ДТ') {
@@ -116,7 +115,7 @@ export default class ObjectsStore extends Store {
         obj.type = 'points';
       }
     });
-    this.setState({ technicalOperationsObjectsList: result });
+    this.setState({ technicalOperationsObjectsList: rows });
   }
 
   handleGetTechnicalOperationsTypes(technicalOperationsTypes) {

@@ -2409,7 +2409,19 @@ div.none {
   .route-odhs-on-map {
     border: none;
   }
+}
 
+.object-tab-plan {
+  position: relative;
+  min-height: 500px;
+  .openlayers-container {
+    height: 492px;
+    margin-top: 11px;
+    order: 1px solid #ccc;
+  }
+  .route-odhs-on-map {
+    border: none;
+  }
 }
 .overflow-scroll {
   overflow-y:scroll;

@@ -7,5 +7,6 @@ export default {
   repairType: 'repair_type',
   programVersion: 'program_version',
   programRemarkRegistry: 'program_remark_registry',
+  objects: 'objects',
   programRemark: 'program_remark',
 };

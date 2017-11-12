@@ -1,5 +1,6 @@
-import ProgramRemark from './program_remark/ProgramRemarkList';
-
+import ProgramRemarkList from 'components/program_registry/UpdateFrom/inside_components/program_remark/ProgramRemarkList';
+import ProgramObjectList from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectList';
 export {
-  ProgramRemark,
+  ProgramRemarkList,
+  ProgramObjectList,
 };

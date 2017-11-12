@@ -254,4 +254,38 @@ export default class RepairActions extends Actions {
       'json',
     );
   }
+
+  /* DITETS-2388 */
+  programObject(method, formState) {
+    const payload = {
+      ...formState,
+      plan_shape_json: JSON.stringify(Object.values(formState.polys)[0].shape),
+      plan_date_start: createValidDate(formState.plan_date_start),
+      plan_date_end: createValidDate(formState.plan_date_end),
+    };
+    delete payload.polys;
+
+    const { objects } = REPAIR;
+    const {
+      program_version_id,
+    } = formState;
+
+    const path = parsePutPath(objects, method, formState);
+
+    return Repair.path(path)[method](
+      payload,
+      this.getRepairListByType.bind(null, 'objects', { program_version_id }),
+      'json',
+    );
+  }
+
+  removeProgramObject(id) {
+    const { objects } = REPAIR;
+
+    return Repair.path(`${objects}/${id}`).delete(
+      {},
+      false,
+      'json',
+    );
+  }
 }

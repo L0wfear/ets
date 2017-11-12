@@ -9,12 +9,6 @@ import DateFormatter from 'components/ui/DateFormatter';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
-const status_name = {
-  created: 'Создано',
-  fixed: 'Выполнено',
-  rejected: 'Отклонено',
-};
-
 export function tableMeta({
 } = {}): IDataTableSchema {
   const meta: IDataTableSchema = {
@@ -26,26 +20,44 @@ export function tableMeta({
         filter: false,
       },
       {
-        name: 'remark',
-        displayName: 'Замечание',
+        name: 'name',
+        displayName: 'Объект',
         type: 'string',
         filter: false,
       },
       {
-        name: 'comment',
-        displayName: 'Комментарий',
+        name: 'contractor_name',
+        displayName: 'Подрядчик',
         type: 'string',
         filter: false,
       },
       {
-        name: 'fio',
-        displayName: 'ФИО',
+        name: 'plan_date_start',
+        displayName: 'План. Начало',
         type: 'string',
         filter: false,
       },
       {
-        name: 'status',
-        displayName: 'Статус',
+        name: 'plan_date_end',
+        displayName: 'План. Окончание',
+        type: 'string',
+        filter: false,
+      },
+      {
+        name: 'fact_date_start',
+        displayName: 'Факт. Начало',
+        type: 'string',
+        filter: false,
+      },
+      {
+        name: 'fact_date_end',
+        displayName: 'Факт. Окончание',
+        type: 'string',
+        filter: false,
+      },
+      {
+        name: 'percent',
+        displayName: 'Процент Выполнения',
         type: 'string',
         filter: false,
       },
@@ -58,18 +70,21 @@ export function tableMeta({
 const Table: React.SFC<any> = props  => {
   const renderers: ISchemaRenderer = {
     created_at: ({ data }) => (<DateFormatter date={data} />),
-    status: ({ data }) => <span>{status_name[data]}</span>,
+    plan_date_start: ({ data }) => (<DateFormatter date={data} />),
+    plan_date_end: ({ data }) => (<DateFormatter date={data} />),
+    fact_date_start: ({ data }) => (<DateFormatter date={data} />),
+    fact_date_end: ({ data }) => (<DateFormatter date={data} />),
   };
 
   return (
     <DataTable
-      title="Замечания"
+      title="Объекты"
       results={props.data}
       renderers={renderers}
       tableMeta={tableMeta(props)}
       noFilter
+      className="program-object"
       griddleHidden={!props.displayTable}
-      className="program-remark"
       {...props}
     />
   );

@@ -160,17 +160,22 @@ class ProgramObjectFormDT extends Form {
     } = this.state;
 
     const {
+      id,
       info: {
         total_area = null,
       } = {},
     } = state;
+
+    const IS_CREATE = !!id;
+
+    const title = IS_CREATE ? 'Просмотр замечания (ДТ)' : 'Создание замечания (ДТ)';
 
     const CONTRACTOR_OPTIONS = contractorList.map(({ id: value, name: label }) => ({ value, label }));
 
     return (
       <Modal {...this.props} dialogClassName="modal-xlg" backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{'Создание замечания'}</Modal.Title>
+          <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
         </Modal.Header>
         <Div style={{ padding: 15 }}>
           <Row>

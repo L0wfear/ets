@@ -1,0 +1,111 @@
+import * as React from 'react';
+import { Row, Col } from 'react-bootstrap';
+
+import EtsSelect from 'components/ui/input/EtsSelect';
+
+import OrdeHistoryTable from 'components/directories/order/order_history/OrdeHistoryTable';
+import OrderInfoTable from 'components/directories/order/order_assignment/OrderInfoTable';
+
+const EtsSelectTSX: any = EtsSelect;
+
+class HistoryOrder extends React.Component<any, any> {
+  state: any = {
+    activeData: {},
+  };
+  componentDidMount() {
+    const {
+      data,
+    } = this.props;
+
+    const [activeData] = data;
+
+    this.setState({
+      haveData: !!activeData,
+      activeList: !!activeData ? 1 : null,
+      activeData,
+      VERSION_OPTIONS: data.map((d, i) => ({ value: i + 1, label: `Версия ${i + 1} (неактуальная)`})),
+    });
+  }
+
+  getEmptyMes() {
+    return (
+    <div>
+      <Col md={12}  style={{ height: 100 }}>
+        <span>Для выбранного централизованного задания предыдущих версий нет.</span>
+      </Col>
+    </div>
+    );
+  }
+  handleChangeVersion = num => {
+    const {
+      data,
+    } = this.props;
+
+    this.setState({
+      ...this.state,
+      activeData: data.slice(num - 1, num)[0],
+      activeList: num,
+    });
+  }
+  getTables() {
+    const {
+      activeData: {
+        technical_operations: data = [],
+        order_info,
+      },
+    } = this.state;
+    return (
+      <div>
+        <Col md={8}>
+          <OrdeHistoryTable
+            noHeader
+            preventNoDataMessage
+            data={data}
+          />
+        </Col>
+        <Col md={4}>
+          <OrderInfoTable
+            noHeader
+            preventNoDataMessage
+            data={[{ id: 0, order_info }]}
+          />
+       </Col>
+      </div>
+    )
+  }
+  render() {
+    const {
+      haveData,
+      activeList,
+      VERSION_OPTIONS,
+    } = this.state;
+
+    return (
+      <Row>
+        <Col md={12}>
+          <h4 style={{ marginLeft: 20, fontWeight: 'bold' }}>Расшифровка централизованного задания</h4>
+        </Col>
+        <Col md={12}>
+          <Col md={3}><div>Версия централизованного задания</div></Col>
+          <Col md={3}>
+            <EtsSelectTSX
+              type="select"
+              options={VERSION_OPTIONS}
+              value={activeList}
+              clearable={false}
+              onChange={this.handleChangeVersion}
+            />
+          </Col>
+        </Col>
+        {
+          haveData ?
+          this.getTables()
+          :
+          this.getEmptyMes()
+        }
+      </Row>
+    );
+  }
+}
+
+export default HistoryOrder;

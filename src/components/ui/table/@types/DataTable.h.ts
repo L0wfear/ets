@@ -15,4 +15,5 @@ export interface IPropsDataTable<TResultObject> {
   selected?: TResultObject;
   noHeader?: boolean;
   preventNoDataMessage?: boolean;
+  className?: string;
 }

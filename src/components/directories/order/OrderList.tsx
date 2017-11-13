@@ -460,7 +460,7 @@ class FaxogrammList extends React.Component<any, any> {
           />
         }
         {
-          showHistoryComponent &&
+          showHistoryComponent && faxSE &&
           <HistoryOrderList
             data={historyOrder}
           />

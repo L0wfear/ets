@@ -12,7 +12,7 @@ export function tableMeta({
   const meta: IDataTableSchema = {
     cols: [
       {
-        name: 'tech_op_name',
+        name: 'tk_operation_name',
         displayName: 'Операция',
         type: 'string',
       },
@@ -22,12 +22,12 @@ export function tableMeta({
         type: 'string',
       },
       {
-        name: 'municipal_facility_name',
+        name: 'elem',
         displayName: 'Элемент',
         type: 'string',
       },
       {
-        name: 'num_execution',
+        name: 'num_exec',
         displayName: 'Количество выполнений',
         type: 'string',
       },

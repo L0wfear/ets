@@ -130,9 +130,9 @@ class ProgramObjectFormDT extends Form {
     const newElements = [
       ...elements,
       {
-        id_element: null,
-        value: null,
         object_property_id: null,
+        value: null,
+        measure_unit_name: null,
         plan: null,
       },
     ];
@@ -298,18 +298,20 @@ class ProgramObjectFormDT extends Form {
                 </Col>
                 <Col md={6}>
                   <input
-                  type='radio'
-                  checked={!manual}
-                  onChange={this.setManualOnFalse}
-                />Отрисовать весь объект
+                    type='radio'
+                    checked={!manual}
+                    onChange={this.setManualOnFalse}
+                  />Отрисовать весь объект
                 </Col>
-                <Col md={6}>
-                  <input
-                  type='radio'
-                    checked={manual}
-                    onChange={this.setManualOnTrue}
-                  />Отрисовать границы ремонта
-                </Col>
+                { false &&
+                  <Col md={6}>
+                    <input
+                      type='radio'
+                      checked={manual}
+                      onChange={this.setManualOnTrue}
+                    />Отрисовать границы ремонта
+                  </Col>
+                }
                 <Col md={12}>
                   <MapField
                     state={state}

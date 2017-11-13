@@ -1,7 +1,11 @@
 import React from 'react';
 import { autobind } from 'core-decorators';
 import connectToStores from 'flummox/connect';
-import _ from 'lodash';
+import {
+  cloneDeep,
+  each,
+  filter,
+} from 'lodash';
 import { routeSchema } from 'models/RouteModel.js';
 import RouteForm from './RouteForm.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';
@@ -19,10 +23,17 @@ class RouteFormWrap extends FormWrap {
     if (props.showForm && props.showForm !== this.props.showForm) {
       let formState = null;
       if (props.element !== null) {
-        formState = _.cloneDeep(props.element);
-        formState.draw_odh_list = _.cloneDeep(formState.draw_object_list);
-        formState.polys = formState.type === 'simple_dt' ? _.cloneDeep(props.dtPolys) : _.cloneDeep(props.odhPolys);
-        _.each(formState.object_list.filter(o => !!o.object_id), (o) => {
+
+        formState = cloneDeep(props.element);
+
+        if (!formState.id) {
+          formState.is_new = true;
+          formState.created_at = new Date();
+        }
+
+        formState.draw_odh_list = cloneDeep(formState.draw_object_list);
+        formState.polys = formState.type === 'simple_dt' ? cloneDeep(props.dtPolys) : cloneDeep(props.odhPolys);
+        each(formState.object_list.filter(o => !!o.object_id), (o) => {
           if (formState.polys[o.object_id]) formState.polys[o.object_id].state = o.state;
         });
       } else {
@@ -32,7 +43,7 @@ class RouteFormWrap extends FormWrap {
       const formErrors = this.validate(formState, {});
       this.setState({
         formState,
-        canSave: !_.filter(formErrors).length,
+        canSave: !filter(formErrors).length,
         formErrors,
       });
     }
@@ -40,7 +51,7 @@ class RouteFormWrap extends FormWrap {
 
   resetFormState() {
     const { formState } = this.state;
-    formState.polys = formState.type === 'simple_dt' ? _.cloneDeep(this.props.dtPolys) : _.cloneDeep(this.props.odhPolys);
+    formState.polys = formState.type === 'simple_dt' ? cloneDeep(this.props.dtPolys) : cloneDeep(this.props.odhPolys);
     formState.object_list = [];
     formState.draw_object_list = [];
     this.setState({ formState });

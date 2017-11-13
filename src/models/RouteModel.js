@@ -7,6 +7,11 @@ export const routeSchema = {
       required: true,
     },
     {
+      key: 'municipal_facility_id',
+      title: 'Элемент',
+      type: 'number',
+    },
+    {
       key: 'name',
       title: 'Название',
       type: 'string',
@@ -26,6 +31,18 @@ export const routeSchema = {
     },
   ],
   dependencies: {
+    'municipal_facility_id': [
+      {
+        validator: (value, { is_new }) => {
+          if (is_new) {
+            if (!value) {
+              return 'Поле "Элемент" должно быть заполнено';
+            }
+          }
+          return false;
+        },
+      },
+    ],
     'object_list': [
       {
         validator: (value, formData) => {

@@ -134,9 +134,13 @@ export const waybillSchema = {
   dependencies: {
     'plan_departure_date': [
       {
-        validator: (value) => {
+        validator: (value, { status }) => {
           const nowDateInUS = (new Date()).getTime();
           const valueInUS = moment(value).toDate().getTime();
+
+          if (status === 'active' || status === 'closed') {
+            return false;
+          }
 
           if (nowDateInUS - valueInUS > 5 * 60 * 1000) {
             return 'Значение "Выезд. план" не может быть меньше текущего времени минус 5 минут';

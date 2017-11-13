@@ -7,7 +7,7 @@ import DashboardCardMedium from '../DashboardCardMedium.jsx';
 export default class OdhNotCoveredByRoutes extends DashboardCardMedium {
 
   static contextTypes = {
-    history: React.PropTypes.object,
+    history: React.PropTypes.any,
     flux: React.PropTypes.object,
   }
 

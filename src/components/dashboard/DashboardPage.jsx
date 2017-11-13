@@ -19,7 +19,7 @@ export default class DashboardPage extends React.Component {
   static get propTypes() {
     return {
       componentsList: PropTypes.arrayOf(PropTypes.object),
-      history: PropTypes.Object,
+      history: PropTypes.any,
     };
   }
 

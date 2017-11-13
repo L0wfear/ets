@@ -88,6 +88,9 @@ export default class ObjectsActions extends Actions {
   getOrderById(id) {
     return OrderService.get({ id });
   }
+  getOrderHistoryById(id) {
+    return OrderService.path(`${id}/history/`).get();
+  }
 
   getOrders(limit, offset, sort_by, filter, create_date_from, create_date_to) {
     const filterValues = cloneDeep(filter);

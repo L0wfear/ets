@@ -13,6 +13,8 @@ import OrdersTable from 'components/directories/order/OrdersTable';
 import OrderFormWrap from 'components/directories/order/OrderFormWrap';
 
 import OrderAssignmentsList from 'components/directories/order/order_assignment/OrderAssignmentsList';
+import HistoryOrderList from 'components/directories/order/order_history/HistoryOrderList';
+
 import { getDefaultMission, getDefaultDutyMission } from 'stores/MissionsStore.js';
 
 const PaginatorTsx: any = Paginator;
@@ -48,6 +50,8 @@ class FaxogrammList extends React.Component<any, any> {
       selectedElementFaxogramm: null,
       selectedElementAssignment: null,
       missionData: {},
+      showHistoryComponent: false,
+      historyOrder: [],
     };
   }
   componentDidMount() {
@@ -155,10 +159,14 @@ class FaxogrammList extends React.Component<any, any> {
     };
 
     this.getOrders({ [field]: value });
+    const showHistoryComponent = false;
 
     this.setState({
       ...this.state,
       pageOptions,
+      selectedElementFaxogramm: null,
+      selectedElementAssignment: null,
+      showHistoryComponent,
     });
   }
   getOrders = ({
@@ -177,11 +185,22 @@ class FaxogrammList extends React.Component<any, any> {
       dateFrom,
       dateTo,
     )
+  getOrderHistory = id => this.context.flux.getActions('objects').getOrderHistoryById(id);
+  showOrderHistory = ({ result: { rows = [] } = {} }) => {
+    this.setState({
+      ...this.state,
+      showHistoryComponent: true,
+      historyOrder: rows,
+    });
+  }
 
   onRowSelectedFaxogramm = ({ props: { data: selectedElementFaxogramm } }) => {
+    const { id } = selectedElementFaxogramm;
+    this.getOrderHistory(id).then(this.showOrderHistory);
     this.setState({
       ...this.state,
       selectedElementFaxogramm,
+      showHistoryComponent: false,
     });
   }
   onRowSelectedAssignment = ({ props: { data: selectedElementAssignment } }) => {
@@ -194,7 +213,8 @@ class FaxogrammList extends React.Component<any, any> {
   checkDisabledCM = () => {
     const sEF = this.state.selectedElementFaxogramm;
     const sEA = this.state.selectedElementAssignment;
-    if (!sEA) {
+
+    if (!sEA || !sEF) {
       return true;
     }
     const {
@@ -398,11 +418,16 @@ class FaxogrammList extends React.Component<any, any> {
       selectedElementAssignment: assSE,
       missionData = {},
       dutyMissionData = {},
+      showHistoryComponent,
+      historyOrder,
     } = this.state;
 
     const {
       OrdersList = [],
     } = this.props;
+
+    const canCreateMission = this.context.flux.getStore('session').getPermission('mission.create');
+    const canCreateDutyMission = this.context.flux.getStore('session').getPermission('duty_mission.create');
 
     return (
       <div className="ets-page-wrap">
@@ -419,8 +444,8 @@ class FaxogrammList extends React.Component<any, any> {
           {...this.props}
           {...this.getAdditionalProps()}
         >
-          <Button onClick={this.handleClickOnCM} disabled={this.checkDisabledCM()}>Создать задание</Button>
-          <Button onClick={this.handleClickOnCDM} disabled={this.checkDisabledCDM()}>Создать наряд-задание</Button>
+          { canCreateMission && <Button onClick={this.handleClickOnCM} disabled={this.checkDisabledCM()}>Создать задание</Button> }
+          { canCreateDutyMission && <Button onClick={this.handleClickOnCDM} disabled={this.checkDisabledCDM()}>Создать наряд-задание</Button> }
           <Button onClick={this.saveOrder} disabled={faxSE === null}><Glyphicon glyph="download-alt" /></Button>
         </OrdersTable>
         {
@@ -434,12 +459,18 @@ class FaxogrammList extends React.Component<any, any> {
             onRowSelectedAssignment={this.onRowSelectedAssignment}
           />
         }
+        {
+          showHistoryComponent && faxSE &&
+          <HistoryOrderList
+            data={historyOrder}
+          />
+        }
         <OrderFormWrap
           missionData={missionData}
           dutyMissionData={dutyMissionData}
           onHideCM={this.onHideCM}
           onHideCDM={this.onHideCDM}
-          />
+        />
       </div>
     );
   }

@@ -30,6 +30,7 @@ const Table: React.SFC<any> = props  => {
       tableMeta={tableMeta()}
       noHeader={props.noHeader}
       preventNoDataMessage={props.preventNoDataMessage}
+      className="order"
     />
   );
 };

@@ -16,6 +16,7 @@ class MunicipalFacility extends React.Component {
       handleChange: React.PropTypes.func,
       getDataByNormId: React.PropTypes.func,
       technicalOperationsList: React.PropTypes.arrayOf(React.PropTypes.object),
+      clearable: React.PropTypes.bool,
     };
   }
 
@@ -134,6 +135,7 @@ class MunicipalFacility extends React.Component {
   render() {
     const {
       disabled = false,
+      clearable = true,
     } = this.props;
     const {
       value,
@@ -151,6 +153,7 @@ class MunicipalFacility extends React.Component {
         options={MUNICIPAL_FACILITY_OPTIONS}
         value={value}
         onChange={this.handleChange}
+        clearable={clearable}
       />
     );
   }

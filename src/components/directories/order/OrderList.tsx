@@ -214,7 +214,7 @@ class FaxogrammList extends React.Component<any, any> {
     const sEF = this.state.selectedElementFaxogramm;
     const sEA = this.state.selectedElementAssignment;
 
-    if (!sEA) {
+    if (!sEA || !sEF) {
       return true;
     }
     const {

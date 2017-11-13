@@ -22,8 +22,18 @@ export default class RepairActions extends Actions {
     };
   }
 
-  getObjectProperty() {
-    return ObjectProperty.get();
+  async getObjectProperty(data, other) {
+    const payload = {
+      ...data,
+    };
+
+    const response = await ObjectProperty.get(payload);
+
+    return {
+      type: 'objectProperty',
+      data: response,
+      ...other,
+    };
   }
 
   async getAllVersionsById(id) {

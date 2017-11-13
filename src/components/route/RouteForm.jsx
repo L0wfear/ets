@@ -127,7 +127,7 @@ export default class RouteForm extends Form {
     this.props.onSubmit(isTemplate);
   }
 
-  getDataByNormId = () => true;
+  getDataByNormId = norm_id => this.handleChange('norm_id', norm_id);
 
   render() {
     const state = this.props.formState;

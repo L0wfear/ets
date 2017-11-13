@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   find,
-  isEmpty,
 } from 'lodash';
 import { autobind } from 'core-decorators';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
@@ -11,6 +10,8 @@ import Div from 'components/ui/Div.jsx';
 import { connectToStores } from 'utils/decorators';
 import RouteCreating from './RouteCreating.jsx';
 import Form from '../compositions/Form.jsx';
+
+import MunicipalFacility from './inside_fields/MunicipalFacility';
 
 @connectToStores(['objects', 'geoObjects'])
 @autobind
@@ -81,6 +82,11 @@ export default class RouteForm extends Form {
 
   handleTechChange(v) {
     this.handleChange('technical_operation_id', v);
+    const { technicalOperationsList = [] } = this.state;
+
+    this.setState({
+      route_types: technicalOperationsList.find(({ id }) => id === v).route_types,
+    });
     if (!this.props.formState.copy) {
       this.setRouteTypeOptionsBasedOnTechnicalOperation(v);
     }
@@ -121,13 +127,17 @@ export default class RouteForm extends Form {
     this.props.onSubmit(isTemplate);
   }
 
+  getDataByNormId = () => true;
+
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
 
     const { ROUTE_TYPE_OPTIONS, technicalOperationsList = [] } = this.state;
-    const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
-
+    let TECH_OPERATIONS = technicalOperationsList.map(({ id, name, is_new }) => ({ value: id, label: name, is_new }));
+    if (!state.id) {
+      TECH_OPERATIONS = TECH_OPERATIONS.filter(({ is_new }) => !!is_new);
+    }
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
     const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
 
@@ -158,26 +168,40 @@ export default class RouteForm extends Form {
         <ModalBody>
 
           <Row>
-            <Col md={STRUCTURE_FIELD_VIEW ? 3 : 4}>
+            <Col md={STRUCTURE_FIELD_VIEW ? 2 : 3}>
               <Field type="string" label="Название маршрута" value={state.name} onChange={v => this.handleChange('name', v)} error={errors.name} />
             </Col>
 
             <Div hidden={this.props.forceTechnicalOperation}>
-              <Col md={STRUCTURE_FIELD_VIEW ? 3 : 4}>
-                <Field
-                  type="select"
-                  label="Технологическая операция"
-                  options={TECH_OPERATIONS}
-                  value={state.technical_operation_id}
-                  onChange={this.handleTechChange}
-                  disabled={this.props.fromMission || state.id}
-                  clearable={false}
-                  error={errors.technical_operation_id}
-                />
+              <Col md={STRUCTURE_FIELD_VIEW ? 6 : 7}>
+                <Col md={6}>
+                  <Field
+                    type="select"
+                    label="Технологическая операция"
+                    options={TECH_OPERATIONS}
+                    value={state.technical_operation_id}
+                    onChange={this.handleTechChange}
+                    disabled={this.props.fromMission || state.id}
+                    clearable={false}
+                    error={errors.technical_operation_id}
+                  />
+                </Col>
+                <Col md={6}>
+                  <MunicipalFacility
+                    id={'municipal_facility_id'}
+                    errors={errors}
+                    state={state}
+                    disabled={this.props.fromMission || state.id}
+                    handleChange={this.handleChange.bind(this)}
+                    getDataByNormId={this.getDataByNormId}
+                    clearable={false}
+                    technicalOperationsList={technicalOperationsList}
+                  />
+                </Col>
               </Col>
             </Div>
             <Div hidden={!STRUCTURE_FIELD_VIEW}>
-              <Col md={3}>
+              <Col md={2}>
                 <Field
                   type="select"
                   label="Подразделение"
@@ -192,7 +216,7 @@ export default class RouteForm extends Form {
               </Col>
             </Div>
             <Div hidden={this.props.forceRouteType}>
-              <Col md={STRUCTURE_FIELD_VIEW ? 3 : 4}>
+              <Col md={2}>
                 <Field
                   type="select"
                   label="Тип объекта"

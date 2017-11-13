@@ -135,6 +135,7 @@ export class MissionForm extends Form {
         name: '',
         polys: this.props.geozonePolys,
         technical_operation_id: this.props.formState.technical_operation_id,
+        municipal_facility_id: this.props.formState.municipal_facility_id,
         structure_id: this.props.formState.structure_id,
         object_list: [],
       };

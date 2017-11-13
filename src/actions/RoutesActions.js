@@ -147,6 +147,8 @@ export default class RoutesActions extends Actions {
     const payload = {
       technical_operation_id: route.technical_operation_id,
       object_list: route.draw_object_list,
+      municipal_facility_id: route.is_new ? route.municipal_facility_id : null,
+      norm_id: route.is_new ? route.norm_id : null,
     };
     return RouteValidateService.post(payload, false, 'json');
   }

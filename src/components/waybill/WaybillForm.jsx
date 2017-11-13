@@ -270,10 +270,22 @@ class WaybillForm extends Form {
       return missions;
     },
     {});
-
+console.log(missionsWithSourceOrder)
+console.log(mission_id_list)
     const missionsNum = Object.values(missionsWithSourceOrder).map(num => `задание ${num}`);
-
+    const missionIds = Object.keys(missionsWithSourceOrder);
+    
     this.confirmDialogChangeDate(missionsNum).then(() => {
+      if (missionIds.length) {
+        const newMission_id_list = mission_id_list.filter(id => !missionsWithSourceOrder[id]);
+        console.log(newMission_id_list)
+        this.handleChange('mission_id_list', newMission_id_list);
+        const newMissionList = oldMissionsList.filter(({ id }) => !missionsWithSourceOrder[id]);
+        this.setState({
+          ...this.state,
+          missionsList: newMissionList,
+        });
+      }
       this.getWaybillDrivers({
         [field]: value,
       });

@@ -66,7 +66,7 @@ const checkErrorDate = ({ fromOrder: { cf_list: fax_cf_list, confirmDialogList: 
   }
   return new Promise(res => res());
 };
-const checkMissionSelectBeforeClose = (mission_id_list, missionsList, missionSourcesList) => {
+const checkMissionSelectBeforeClose = (mission_id_list, missionsList, missionSourcesList, objectActions) => {
   const arrayQuerySync = [...mission_id_list].fill(false);
   const missionsData = [...mission_id_list].map(() => ({}));
 
@@ -95,7 +95,7 @@ const checkMissionSelectBeforeClose = (mission_id_list, missionsList, missionSou
 
       const isOrderSource = !!(missionSourcesList.find(({ id: id_mission_source }) => id_mission_source === msi) || {}).auto;
       if (isOrderSource) {
-        this.context.flux.getActions('objects').getOrderById(order_id).then(({ result: [order] }) => {
+        objectActions.getOrderById(order_id).then(({ result: [order] }) => {
           const {
             order_date,
             order_date_to,
@@ -602,8 +602,9 @@ class WaybillForm extends Form {
     const fadMoment = moment(fad).format(`${global.APP_DATE_FORMAT} HH:mm`);
 
     const missionsList = uniqBy([...oldMissionsList].concat(...notAvailableMissions), 'id');
+    const objectActions = this.context.flux.getActions('objects');
 
-    const missionsData = await checkMissionSelectBeforeClose(mission_id_list, missionsList, missionSourcesList);
+    const missionsData = await checkMissionSelectBeforeClose(mission_id_list, missionsList, missionSourcesList, objectActions);
 
     missionsData.forEach((mission) => {
       const {

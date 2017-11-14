@@ -10,7 +10,7 @@ class TablePrev extends React.Component<any, any> {
 
     const rowChange = {
       ...bodyData[numRow],
-    }
+    };
 
     if (typeof value === 'object') {
       const {
@@ -29,6 +29,7 @@ class TablePrev extends React.Component<any, any> {
 
   render() {
     const {
+      isPermitted,
       title = '',
       buttons = null,
       headerData = [],
@@ -37,7 +38,7 @@ class TablePrev extends React.Component<any, any> {
     } = this.props;
     return (
       <div style={{
-        height: 100 + bodyData.length * 65,
+        height: 150 + bodyData.length * 68,
       }}>
         <div style={{
           display: 'flex',
@@ -53,7 +54,7 @@ class TablePrev extends React.Component<any, any> {
               <tr>
                 {
                   headerData.map(({ title: titleTH }, i) => (
-                    <th key={i} >{titleTH}</th>
+                    <th key={i} style={{ textAlign: 'centre' }}>{titleTH}</th>
                   ))
                 }
               </tr>
@@ -70,6 +71,7 @@ class TablePrev extends React.Component<any, any> {
                               value={row[key]}
                               onChange={this.props.handleChange}
                               boundKeys={[numRow, key]}
+                              disabled={!isPermitted}
                             />
                           </td>
                       ))

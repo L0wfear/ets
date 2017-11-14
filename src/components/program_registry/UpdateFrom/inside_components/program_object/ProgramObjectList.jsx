@@ -137,6 +137,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
         program_version_id,
         contractor_number,
         contractor_id,
+        elements: [],
       },
     });
   }
@@ -155,6 +156,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
         program_version_id,
         contractor_number,
         contractor_id,
+        elements: [],
       },
     });
   }

@@ -30,6 +30,7 @@ class ProgramObjectFormDT extends Form {
 
     this.state = {
       manual: false,
+      selectedObj: {},
     };
   }
 
@@ -52,7 +53,7 @@ class ProgramObjectFormDT extends Form {
       } = ans;
 
 
-      const OBJECT_OPTIONS = rows.map(({ yard_id: value, object_address: label, total_area, id }) => ({ value, label, total_area, id }));
+      const OBJECT_OPTIONS = rows.map(({ yard_id: value, object_address: label, total_area, id, name }) => ({ value, label, total_area, id, name }));
 
       if (asuods_id) {
         const {
@@ -74,6 +75,7 @@ class ProgramObjectFormDT extends Form {
           this.handleChange('polys', polys);
         }
       }
+
       this.setState({ OBJECT_OPTIONS });
 
       return ans;
@@ -93,12 +95,13 @@ class ProgramObjectFormDT extends Form {
           asuods_id,
         },
         dtPolys = {},
+        objectPropertyList = [],
       } = this.props;
       const {
         OBJECT_OPTIONS = [],
       } = this.state;
 
-      const { id: object_id, label: object_address, total_area } = OBJECT_OPTIONS.find(({ value: yard_id }) => yard_id === asuods_id) || {};
+      const { id: object_id, label: object_address, total_area, name } = OBJECT_OPTIONS.find(({ value: yard_id }) => yard_id === asuods_id) || {};
 
       if (object_id) {
         const polys = {
@@ -110,13 +113,29 @@ class ProgramObjectFormDT extends Form {
             shape: dtPolys[object_id].shape,
           },
         };
+        const selectedObj = dtPolys[object_id];
+
+        const elements = this.props.formState.elements.map((d) => {
+          const newD = { ...d };
+          const { original_name } = objectPropertyList.find(({ object_property_id }) => object_property_id === d.id);
+          newD.value = selectedObj.data[original_name];
+          return newD;
+        });
+
         this.handleChange('polys', polys);
+        this.handleChange('elements', elements);
+        this.setState({
+          ...this.state,
+          selectedObj,
+        });
       }
+
       const info = {
         ...this.props.formState.info,
         total_area,
       };
 
+      this.handleChange('name', name);
       this.handleChange('info', info);
     }
   }
@@ -134,6 +153,8 @@ class ProgramObjectFormDT extends Form {
         value: null,
         measure_unit_name: null,
         plan: null,
+        fact: null,
+        warranty_up_to: null,
       },
     ];
 
@@ -157,18 +178,20 @@ class ProgramObjectFormDT extends Form {
     const {
       OBJECT_OPTIONS = [],
       manual,
+      selectedObj,
     } = this.state;
 
     const {
       id,
+      asuods_id,
       info: {
         total_area = null,
       } = {},
     } = state;
 
-    const IS_CREATE = !!id;
+    const IS_CREATE = !!!id;
 
-    const title = IS_CREATE ? 'Просмотр замечания (ДТ)' : 'Создание замечания (ДТ)';
+    const title = IS_CREATE ? 'Создание замечания (ДТ)' : 'Просмотр замечания (ДТ)';
 
     const CONTRACTOR_OPTIONS = contractorList.map(({ id: value, name: label }) => ({ value, label }));
 
@@ -194,7 +217,7 @@ class ProgramObjectFormDT extends Form {
             <Col md={6}>
               <ExtField
                 type="select"
-                label="Информация об объекте"
+                label="Наименование объекта"
                 error={errors.asuods_id}
                 options={OBJECT_OPTIONS}
                 value={state.asuods_id}
@@ -205,122 +228,124 @@ class ProgramObjectFormDT extends Form {
               />
             </Col>
           </Row>
-          <div>
-            <Row>
-              <Col md={12}>
-                <label>Информаци об объекте</label>
-              </Col>
-              <Col md={8}>
-                <Row>
-                  <Col md={6}>
-                    <Col md={9}>Общая площадь по паспорту, кв.м:</Col>
-                    <Col md={3}>{total_area}</Col>
-                  </Col>
-                  <Col md={6}>
-                    <Col md={9}>Площадь проезда, км.м:</Col>
-                    <Col md={3}>{0}</Col>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={6}>
-                    <Col md={9}>Площадь пешеходной дорожки, км.м:</Col>
-                    <Col md={3}>{0}</Col>
-                  </Col>
-                  <Col md={6}>
-                    <Col md={9}>Площадь тротуаров, км.м:</Col>
-                    <Col md={3}>{0}</Col>
-                  </Col>
-                </Row>
-              </Col>
-              <Col md={4}>
-                <Col md={6}>Заказчик</Col>
-                <Col md={6}>{0}</Col>
-              </Col>
-            </Row>
-            <Row>
-              <Col md={12}>
-                <label>Подрядчик</label>
-              </Col>
-              <Col md={6}>
-                <span>Номер контракта</span>
-                <ExtField
-                  type="string"
-                  value={state.contractor_number}
-                  error={errors.name}
-                  onChange={this.handleChange}
-                  boundKeys={['contractor_number']}
-                  disabled={false}
-                />
-              </Col>
-              <Col md={6}>
-                <span>Подрядчик</span>
-                <ExtField
-                  type="select"
-                  error={errors.contractor_id}
-                  options={CONTRACTOR_OPTIONS}
-                  value={state.contractor_id}
-                  onChange={this.handleChange}
-                  boundKeys={['contractor_id']}
-                  disabled={false}
-                  clearable={false}
-                />
-              </Col>
-            </Row>
-            <Nav bsStyle="tabs" activeKey={tabKey} onSelect={this.props.handleTabSelect} id="refs-car-tabs">
-              <NavItem eventKey={OBJ_TAB_INDEX.PLAN}>План</NavItem>
-              <NavItem eventKey={OBJ_TAB_INDEX.FACT} >Факт</NavItem>
-            </Nav>
-            <Row>
-              <Col md={6}>
-                <TabContent eventKey={OBJ_TAB_INDEX.PLAN} tabKey={tabKey}>
-                  <PlanTab
-                    isPermitted={true}
-                    state={state}
-                    errors={errors}
-                    objectList={dtPolys}
-                    handleChange={this.handleChange}
-                    pushElement={this.pushElement}
-                  />
-                </TabContent>
-                <TabContent eventKey={OBJ_TAB_INDEX.FACT} tabKey={tabKey}>
-                  <FactTab
-                    isPermitted={true}
-                    state={state}
-                    errors={errors}
-                    objectList={dtPolys}
-                    handleChange={this.handleChange}
-                  />
-                </TabContent>
-              </Col>
-              <Col md={6}>
+            <div>
+              <Row>
                 <Col md={12}>
-                  <label>Отрисовка границ ремонта</label>
+                  <label>Информаця об объекте</label>
+                </Col>
+                <Col md={8}>
+                  <Row>
+                    <Col md={6}>
+                      <Col md={9}>Общая площадь по паспорту, кв.м:</Col>
+                      <Col md={3}>{total_area}</Col>
+                    </Col>
+                    <Col md={6}>
+                      <Col md={9}>Площадь проезда, км.м:</Col>
+                      <Col md={3}>{0}</Col>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md={6}>
+                      <Col md={9}>Площадь пешеходной дорожки, км.м:</Col>
+                      <Col md={3}>{0}</Col>
+                    </Col>
+                    <Col md={6}>
+                      <Col md={9}>Площадь тротуаров, км.м:</Col>
+                      <Col md={3}>{0}</Col>
+                    </Col>
+                  </Row>
+                </Col>
+                <Col md={4}>
+                  <Col md={6}>Заказчик</Col>
+                  <Col md={6}>{0}</Col>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={12}>
+                  <label>Подрядчик</label>
                 </Col>
                 <Col md={6}>
-                  <input
-                    type='radio'
-                    checked={!manual}
-                    onChange={this.setManualOnFalse}
-                  />Отрисовать весь объект
+                  <span>Номер контракта</span>
+                  <ExtField
+                    type="string"
+                    value={state.contractor_number}
+                    error={errors.name}
+                    onChange={this.handleChange}
+                    boundKeys={['contractor_number']}
+                    disabled={false || !asuods_id}
+                  />
                 </Col>
-                { false &&
+                <Col md={6}>
+                  <span>Подрядчик</span>
+                  <ExtField
+                    type="select"
+                    error={errors.contractor_id}
+                    options={CONTRACTOR_OPTIONS}
+                    value={state.contractor_id}
+                    onChange={this.handleChange}
+                    boundKeys={['contractor_id']}
+                    disabled={false || !asuods_id}
+                    clearable={false}
+                  />
+                </Col>
+              </Row>
+              <Nav bsStyle="tabs" activeKey={tabKey} onSelect={this.props.handleTabSelect} id="refs-car-tabs">
+                <NavItem eventKey={OBJ_TAB_INDEX.PLAN}>План</NavItem>
+                <NavItem eventKey={OBJ_TAB_INDEX.FACT} >Факт</NavItem>
+              </Nav>
+              <Row>
+                <Col md={7}>
+                  <TabContent eventKey={OBJ_TAB_INDEX.PLAN} tabKey={tabKey}>
+                    <PlanTab
+                      isPermitted={!(false || !asuods_id)}
+                      state={state}
+                      errors={errors}
+                      objectList={dtPolys}
+                      handleChange={this.handleChange}
+                      pushElement={this.pushElement}
+                      selectedObj={selectedObj}
+                    />
+                  </TabContent>
+                  <TabContent eventKey={OBJ_TAB_INDEX.FACT} tabKey={tabKey}>
+                    <FactTab
+                      isPermitted={!(false || !asuods_id)}
+                      state={state}
+                      errors={errors}
+                      objectList={dtPolys}
+                      handleChange={this.handleChange}
+                      selectedObj={selectedObj}
+                    />
+                  </TabContent>
+                </Col>
+                <Col md={5}>
+                  <Col md={12}>
+                    <label>Отрисовка границ ремонта</label>
+                  </Col>
                   <Col md={6}>
                     <input
                       type='radio'
-                      checked={manual}
-                      onChange={this.setManualOnTrue}
-                    />Отрисовать границы ремонта
+                      checked={!manual}
+                      onChange={this.setManualOnFalse}
+                    />Отрисовать весь объект
                   </Col>
-                }
-                <Col md={12}>
-                  <MapField
-                    state={state}
-                    manualDraw={manual}
-                  />
+                  { false &&
+                    <Col md={4}>
+                      <input
+                        type='radio'
+                        checked={manual}
+                        onChange={this.setManualOnTrue}
+                      />Отрисовать границы ремонта
+                    </Col>
+                  }
+                  <Col md={12}>
+                    <MapField
+                      state={state}
+                      manualDraw={manual}
+                    />
+                  </Col>
                 </Col>
-              </Col>
-            </Row>
-          </div>
+              </Row>
+            </div>
         </Div>
         <ModalBody />
         <Modal.Footer>

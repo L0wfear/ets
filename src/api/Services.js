@@ -3,8 +3,12 @@ import ETS_API_FACTORY from './EtsAPIServiceFactory';
 
 import * as reports from './reports';
 
+const amDeveloper = window.location.host.includes('localhost');
+const PROTO = window.location.protocol;
+const protocol = amDeveloper ? 'https:' : PROTO;
+
 const CITY_DASHBOARD_API_FACTORY = new ApiServiceFactory({
-  apiUrl: `http://ods.mos.ru/ssd/tracks-caching${process.env.STAND !== 'prod' ? '-dev' : ''}`,
+  apiUrl: `${protocol}//ods.mos.ru/ssd/tracks-caching${process.env.STAND !== 'prod' ? '-dev' : ''}`,
 });
 
 export const TrackDistanceService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('get_length');

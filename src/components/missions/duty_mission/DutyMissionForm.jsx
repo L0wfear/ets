@@ -56,14 +56,6 @@ export class DutyMissionForm extends Form {
       this.handleChange('car_mission_id', 0);
     }
     flux.getActions('missions').getMissions(v);
-
-    const routesList = await flux.getActions('routes')
-      .getRoutesByTechnicalOperation(v);
-    if (routesList.length === 1) {
-      this.handleRouteIdChange(routesList[0].id);
-    }
-
-    this.setState({ routesList });
   }
   isActiveEmployee(id) {
     return this.props.employeesList

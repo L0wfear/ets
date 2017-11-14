@@ -31,6 +31,9 @@ export default class NotificationsStore extends Store {
           'tire',
           'cloneTire',
         ],
+        actionNotifications: {
+          'batteryManufacturer': 'Новая запись успешно добавлена',
+        },
       },
       {
         actions: repairActions,

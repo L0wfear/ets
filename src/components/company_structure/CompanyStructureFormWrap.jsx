@@ -38,6 +38,7 @@ export default class CompanyStructureFormWrap extends FormWrap {
           handleFormChange={this.handleFormStateChange}
           show={this.props.showForm}
           onHide={this.props.onFormHide}
+          nameOfForm={this.props.nameOfForm}
           {...this.state}
         />
       </Div>

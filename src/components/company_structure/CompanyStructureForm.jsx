@@ -40,7 +40,7 @@ class CompanyStructureForm extends Form {
       <Modal {...this.props} backdrop="static">
 
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">Создание подразделения</Modal.Title>
+          <Modal.Title id="contained-modal-title-lg">{this.props.nameOfForm}</Modal.Title>
         </Modal.Header>
         <ModalBody>
           <Row>

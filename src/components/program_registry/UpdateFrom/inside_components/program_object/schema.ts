@@ -11,13 +11,13 @@ export const formValidationSchema: IValidationSchema = {
     },
     {
       key: 'plan_date_start',
-      title: 'Информация об объекте',
+      title: 'Плановая дата начала',
       type: 'date',
       required: true,
     },
     {
       key: 'plan_date_end',
-      title: 'Информация об объекте',
+      title: 'Плановая дата окончания',
       type: 'date',
       required: true,
     },

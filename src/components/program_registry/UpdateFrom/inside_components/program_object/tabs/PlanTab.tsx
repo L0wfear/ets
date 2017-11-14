@@ -33,9 +33,17 @@ class PlanTab extends React.Component<any, any> {
     this.props.pushElement();
   }
   getButtons = () => {
+    const {
+      objectPropertyList = [],
+      state: {
+        elements = [],
+      },
+    } = this.props;
+
+    const disabled = !this.props.isPermitted || (elements.length >= objectPropertyList.length);
     return (
       <div>
-        <Button onClick={this.handleClickAddEl} >Добавить элемент</Button>
+        <Button disabled={disabled} onClick={this.handleClickAddEl} >Добавить элемент</Button>
       </div>
     );
   }
@@ -45,6 +53,7 @@ class PlanTab extends React.Component<any, any> {
         elements = [],
       },
       objectPropertyList = [],
+      selectedObj,
     } = this.props;
 
     let newValueOfF = value;
@@ -64,9 +73,12 @@ class PlanTab extends React.Component<any, any> {
         const newLine = { ...d };
 
         if (field === 'object_property_id') {
-          const { measure_unit_name = null } = objectPropertyList.find(({ id }) => id === newValueOfF) || {};
+          const { measure_unit_name = null, original_name = null } = objectPropertyList.find(({ id }) => id === newValueOfF) || {};
 
           newLine.measure_unit_name = measure_unit_name;
+          if (original_name) {
+            newLine.value = selectedObj.data[original_name.toLocaleLowerCase()];
+          }
         }
         return {
           ...newLine,
@@ -98,12 +110,12 @@ class PlanTab extends React.Component<any, any> {
         options: objectPropertyList.map(({ id: value, name: label }) => ({ value, label })),
       },
       value: {
+        disabled: true,
       },
       measure_unit_name: {
-        readOnly: true,
+        disabled: true,
       },
       plan: {
-
       },
     };
 
@@ -138,7 +150,7 @@ class PlanTab extends React.Component<any, any> {
                 error={errors.plan_date_end}
                 onChange={this.props.handleChange}
                 boundKeys={['plan_date_end']}
-                disabled={false}
+                disabled={!isPermitted}
               />
             </div>
           </div>
@@ -151,17 +163,18 @@ class PlanTab extends React.Component<any, any> {
             bodyData={elements}
             mainPropsFields={mainPropsFields}
             handleChange={this.handleChangeTable}
+            isPermitted={isPermitted}
           />
         </Col>
         <Col md={12}>
           <ExtField
-            type="string"
+            type="text"
             value={note}
             label={"Примечание"}
             error={errors.name}
             onChange={this.props.handleChange}
             boundKeys={['note']}
-            disabled={false}
+            disabled={!isPermitted}
           />
         </Col>
       </div>

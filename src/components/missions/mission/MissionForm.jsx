@@ -310,7 +310,7 @@ export class MissionForm extends Form {
       title = (
         <div>
           <span>Создание задания</span>
-          { !fromOrder && <span style={{ marginLeft: 10, color: 'red' }}>Данное задание не будет учитываться по централизованным заданям</span>}
+          { !fromOrder && <span style={{ marginLeft: 10, color: 'red' }}>Данное задание не будет учитываться по централизованным заданиям</span>}
         </div>);
     }
     // Старые задания нельзя редактирвоать

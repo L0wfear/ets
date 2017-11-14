@@ -61,11 +61,16 @@ class PlanTab extends React.Component<any, any> {
 
     const newElements = elements.map((d, i) => {
       if (i === numRow) {
-        const { measure_unit_name } = objectPropertyList.find(({ id }) => id === newValueOfF);
+        const newLine = { ...d };
+
+        if (field === 'object_property_id') {
+          const { measure_unit_name = null } = objectPropertyList.find(({ id }) => id === newValueOfF) || {};
+
+          newLine.measure_unit_name = measure_unit_name;
+        }
         return {
-          ...d,
+          ...newLine,
           [field]: newValueOfF,
-          measure_unit_name,
         };
       }
       return { ...d };

@@ -37,7 +37,7 @@ class TablePrev extends React.Component<any, any> {
     } = this.props;
     return (
       <div style={{
-        height: 100 + bodyData.length * 150,
+        height: 100 + bodyData.length * 65,
       }}>
         <div style={{
           display: 'flex',
@@ -46,38 +46,41 @@ class TablePrev extends React.Component<any, any> {
           {title && <div>{title}</div>}
           {buttons && <div>{buttons}</div>}
         </div>
-        <Table responsive>
-          <thead>
-            <tr>
+        {
+          !!bodyData.length &&
+          <Table bsClass="overflow-visible table" responsive>
+            <thead>
+              <tr>
+                {
+                  headerData.map(({ title: titleTH }, i) => (
+                    <th key={i} >{titleTH}</th>
+                  ))
+                }
+              </tr>
+            </thead>
+            <tbody>
               {
-                headerData.map(({ title: titleTH }, i) => (
-                  <th key={i} >{titleTH}</th>
+                bodyData.map((row, numRow) => (
+                  <tr key={numRow}>
+                    {
+                      headerData.map(({ key, style }, numOne) => (
+                          <td key={numOne} style={{ ...style }}>
+                            <ExtField
+                              {...mainPropsFields[key]}
+                              value={row[key]}
+                              onChange={this.props.handleChange}
+                              boundKeys={[numRow, key]}
+                            />
+                          </td>
+                      ))
+                    }
+                  </tr>
                 ))
               }
-            </tr>
-          </thead>
-          <tbody>
-            {
-              bodyData.map((row, numRow) => (
-                <tr key={numRow}>
-                  {
-                    headerData.map(({ key, style }, numOne) => (
-                      <td key={numOne} style={{ ...style }}>
-                        <ExtField
-                          {...mainPropsFields[key]}
-                          value={row[key]}
-                          onChange={this.props.handleChange}
-                          boundKeys={[numOne, key]}
-                        />
-                      </td>
-                    ))
-                  }
-                </tr>
-              ))
-            }
-          </tbody>
-        </Table>
-      </div>
+            </tbody>
+          </Table>
+        }
+        </div>
     );
   }
 }

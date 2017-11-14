@@ -159,16 +159,19 @@ export default class FormWrap extends Component {
           this.setState({
             saveButtonLabel: SAVE_BUTTON_LABEL_PROGRESS,
             saveButtonEnability: false,
+            canSave: false,
           });
           result = await this.createAction(formState);
           this.setState({
             saveButtonLabel: SAVE_BUTTON_LABEL_DEFAULT,
             saveButtonEnability: true,
+            canSave: true,
           });
         } catch (e) {
           this.setState({
             saveButtonLabel: SAVE_BUTTON_LABEL_DEFAULT,
             saveButtonEnability: true,
+            canSave: true,
           });
           console.warn(e);
           return;
@@ -182,16 +185,19 @@ export default class FormWrap extends Component {
           this.setState({
             saveButtonLabel: SAVE_BUTTON_LABEL_PROGRESS,
             saveButtonEnability: false,
+            canSave: false,
           });
           result = await this.updateAction(formState);
           this.setState({
             saveButtonLabel: SAVE_BUTTON_LABEL_DEFAULT,
             saveButtonEnability: true,
+            canSave: true,
           });
         } catch (e) {
           this.setState({
             saveButtonLabel: SAVE_BUTTON_LABEL_DEFAULT,
             saveButtonEnability: true,
+            canSave: true,
           });
           console.warn(e);
           return;

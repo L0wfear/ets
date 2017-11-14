@@ -74,7 +74,7 @@ export const tableMeta = ({
         type: 'string',
         orderNum: 6,
         filter: {
-          type: 'string',
+          type: 'multiselect',
         },
       },
       {

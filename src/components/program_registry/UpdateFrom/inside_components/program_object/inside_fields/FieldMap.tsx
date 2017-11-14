@@ -24,23 +24,21 @@ class MapField extends React.Component<any, any> {
     // click
   }
   onPointAdd = () => {
-
+    // test
   }
   onDrawFeatureAdd = () => {
-
+    // test
   }
   onDrawFeatureClick = () => {
-
+    // test
   }
   removeLastDrawFeature = () => {
-
+    // test
   }
-  
+
   render() {
     const {
-      state: {
-        polys = {},
-      },
+      polys = {},
       manualDraw,
     } = this.props;
     const { manual } = this.state;

@@ -7,7 +7,10 @@ import Div from 'components/ui/Div.jsx';
 import Datepicker from 'components/ui/input/DatePicker';
 import { getFormattedDateTime, createValidDateTime } from 'utils/dates';
 import { reassignMissionSuccessNotification } from 'utils/notifications.js';
-import _ from 'lodash';
+import {
+  cloneDeep,
+  isEmpty,
+} from 'lodash';
 
 @connectToStores(['objects', 'missions'])
 @FluxContext
@@ -117,7 +120,7 @@ export default class MissionRejectForm extends Component {
           break;
         case 'update':
           if (this.state.data.missions) {
-            const missions = _.cloneDeep(this.state.data.missions);
+            const missions = cloneDeep(this.state.data.missions);
             payload = {
               car_id: this.state.car_id,
               mission_id: this.state.mission_id,
@@ -166,17 +169,14 @@ export default class MissionRejectForm extends Component {
     if (!state.comment) errors.comment = 'Поле должно быть обязательно заполнено';
 
     let CARS = [];
+    const { mission: { car_gov_number: mCar_gov_number } } = props;
 
-    if (props.carsList && props.mission) {
-      const { mission: car_gov_number } = props;
-
-      CARS = props.carsList.reduce((carOptions, { asuods_id, gov_number, type_id: car_type_id }) => {
-        if ((asuods_id !== car_gov_number) && norm_type_ids.includes(car_type_id)) {
-          carOptions.push({ value: asuods_id, label: gov_number });
-        }
-        return carOptions;
-      }, []);
-    }
+    CARS = props.carsList.reduce((carOptions, { car_gov_number, asuods_id, gov_number, type_id: car_type_id }) => {
+      if ((mCar_gov_number !== car_gov_number) && (!isEmpty(norm_type_ids) ? norm_type_ids.includes(car_type_id) : true)) {
+        carOptions.push({ value: asuods_id, label: gov_number });
+      }
+      return carOptions;
+    }, []);
 
     const title = props.mission ? `Задание, ТС: ${props.mission.car_gov_number}` : '';
     const missions = this.state.data ? this.state.data.missions : null;

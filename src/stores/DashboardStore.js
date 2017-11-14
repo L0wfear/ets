@@ -18,7 +18,7 @@ const dashboardComponents = [
   },
   {
     id: 5,
-    key: 'odh_not_covered_by_routes',
+    key: 'odh_not_covered_by_routes_false',
   },
   {
     id: 8,

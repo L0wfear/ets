@@ -74,7 +74,7 @@ class TablePrev extends React.Component<any, any> {
             <tbody>
               {
                 bodyData.map((row, numRow) => (
-                  <tr onClick={this.handleClick} className={selectedRow === numRow ? 'sm-active' : ''}key={numRow}>
+                  <tr onClick={this.handleClick} className={selectedRow === numRow ? 'sm-active' : null}key={numRow}>
                     {
                       headerData.map(({ key, style }, numOne) => (
                           <td key={numOne} style={{ ...style(row[key], row) }}>

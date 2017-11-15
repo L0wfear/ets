@@ -16,7 +16,7 @@ const TableMeta: ITableMetaInfo = [
     title: 'Элеменет ДТ',
     style: value => ({
       minWidth: 200,
-      backgroundColor: !value || value < 0 ? 'red' : 'inherit',
+      backgroundColor: !value || value < 0 ? '#ff7777' : null,
     }),
     tabIncludes: [OBJ_TAB_INDEX.FACT, OBJ_TAB_INDEX.PLAN],
   },
@@ -37,7 +37,7 @@ const TableMeta: ITableMetaInfo = [
     title: 'План',
     tabIncludes: [OBJ_TAB_INDEX.FACT, OBJ_TAB_INDEX.PLAN],
     style: value => ({
-      backgroundColor: !value || value < 0 ? 'red' : 'inherit',
+      backgroundColor: !value || value < 0 ? '#ff7777' : null,
     }),
   },
   {
@@ -45,7 +45,6 @@ const TableMeta: ITableMetaInfo = [
     title: 'Факт',
     style: value => ({
       maxWidth: 100,
-      backgroundColor: !value || value < 0 ? 'red' : 'inherit',
     }),
     tabIncludes: [OBJ_TAB_INDEX.FACT],
   },

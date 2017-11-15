@@ -45,6 +45,12 @@ class ProgramObjectFormWrap extends FormWrap {
     const schema = this.schema;
     const formState = { ...state };
 
+    Object.keys(errors).forEach((key) => {
+      if (key.includes('element')) {
+        delete errors[key];
+      }
+    });
+
     let newFormErrors = schema.properties.reduce((formErrors, prop) => {
       const { key } = prop;
       formErrors[key] = validateField(prop, formState[key], formState, this.schema);

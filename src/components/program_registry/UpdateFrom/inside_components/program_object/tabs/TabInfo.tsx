@@ -149,6 +149,7 @@ class PlanTab extends React.Component<any, any> {
       object_property_id: {
         type: 'select',
         options: objectPropertyList.map(({ id: value, name: label }) => ({ value, label, disabled: selectedElements.includes(value) })),
+        disabled: typeTab === OBJ_TAB_INDEX.FACT,
       },
       value: {
         type: 'string',

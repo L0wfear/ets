@@ -2,7 +2,7 @@ import React from 'react';
 import { Row, Col, Modal, Button, Nav, NavItem } from 'react-bootstrap';
 import connectToStores from 'flummox/connect';
 
-import { OBJ_TAB_INDEX } from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormDT.h';
+import { OBJ_TAB_INDEX, ELEMENT_NULL_OBJECT } from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormDT.h';
 
 import { tabable } from 'components/compositions/hoc';
 
@@ -23,21 +23,32 @@ class ProgramObjectFormDT extends Form {
 
   constructor(props) {
     super(props);
+    const {
+      formState: {
+        id,
+      },
+    } = props;
 
     this.state = {
       manual: false,
       showPercentForm: false,
       selectedObj: {},
+      IS_CREATING: !id,
     };
   }
 
-  componentDidMount() {
-    this.context.flux.getActions('repair').getObjectProperty();
+  async componentDidMount() {
+    const {
+      IS_CREATING,
+    } = this.state;
+    const { data: { result: { rows: objectPropertyList } } } = await this.context.flux.getActions('repair').getObjectProperty();
     this.context.flux.getActions('geoObjects').getGeozoneByTypeWithGeometry('dt').then((ans) => {
       const {
         formState: {
           asuods_id = null,
           type_slug: type,
+          plan_shape_json,
+          elements = [],
         },
       } = this.props;
 
@@ -49,28 +60,35 @@ class ProgramObjectFormDT extends Form {
         },
       } = ans;
 
-
       const OBJECT_OPTIONS = rows.map(({ yard_id: value, object_address: label, total_area, id, name }) => ({ value, label, total_area, id, name }));
 
-      if (asuods_id) {
-        const {
-          dtPolys = {},
-        } = this.props;
-
+      if (!IS_CREATING) {
         const { id: object_id, label: object_address } = OBJECT_OPTIONS.find(({ value: yard_id }) => yard_id === asuods_id) || {};
+        const selectedObj = {
+          data: rows.find(({ id }) => id === object_id),
+        };
 
-        if (object_id) {
-          const polys = {
-            [object_id]: {
-              name: object_address,
-              object_id,
-              state: 2,
-              type,
-              shape: dtPolys[object_id].shape,
-            },
-          };
-          this.handleChange('polys', polys);
-        }
+        const polys = {
+          [object_id]: {
+            name: object_address,
+            object_id,
+            state: 2,
+            type,
+            shape: plan_shape_json,
+          },
+        };
+
+        const newElements = elements.map(d => (
+          {
+            ...d,
+            measure_unit_name: (objectPropertyList.find(({ id }) => id === d.object_property_id) || {}).measure_unit_name,
+          }
+        ));
+        this.setState({ selectedObj });
+        this.props.handleMultiChange({
+          polys,
+          elements: newElements,
+        });
       }
 
       this.setState({ OBJECT_OPTIONS });
@@ -81,7 +99,6 @@ class ProgramObjectFormDT extends Form {
   setManualOnFalse = () => this.setState({ manual: false });
   setManualOnTrue = () => this.setState({ manual: false });
 
-
   showPercentForm = () => this.setState({ showPercentForm: true });
   hidePercentForm = () => this.setState({ showPercentForm: false });
 
@@ -89,56 +106,55 @@ class ProgramObjectFormDT extends Form {
   handleChangeInfoObject = (field, value) => {
     this.handleChange(field, value);
 
-    if (value) {
-      const {
-        formState: {
-          type_slug: type,
-          asuods_id,
-        },
-        dtPolys = {},
-        objectPropertyList = [],
-      } = this.props;
-      const {
-        OBJECT_OPTIONS = [],
-      } = this.state;
+    const {
+      formState: {
+        type_slug: type,
+        asuods_id,
+      },
+      dtPolys = {},
+      objectPropertyList = [],
+    } = this.props;
+    const {
+      OBJECT_OPTIONS = [],
+    } = this.state;
 
-      const { id: object_id, label: object_address, total_area, name } = OBJECT_OPTIONS.find(({ value: yard_id }) => yard_id === asuods_id) || {};
+    const {
+      name,
+      id: object_id,
+      label: object_address,
+      total_area: info_total_area,
+    } = OBJECT_OPTIONS.find(({ value: yard_id }) => yard_id === asuods_id) || {};
 
-      if (object_id) {
-        const polys = {
-          [object_id]: {
-            name: object_address,
-            object_id,
-            state: 2,
-            type,
-            shape: dtPolys[object_id].shape,
-          },
-        };
-        const selectedObj = dtPolys[object_id];
+    const polys = {
+      [object_id]: {
+        name: object_address,
+        object_id,
+        state: 2,
+        type,
+        shape: dtPolys[object_id].shape,
+      },
+    };
 
-        const elements = this.props.formState.elements.map((d) => {
-          const newD = { ...d };
-          const { original_name } = objectPropertyList.find(({ object_property_id }) => object_property_id === d.id);
-          newD.value = selectedObj.data[original_name];
-          return newD;
-        });
+    const selectedObj = dtPolys[object_id];
 
-        this.handleChange('polys', polys);
-        this.handleChange('elements', elements);
-        this.setState({
-          ...this.state,
-          selectedObj,
-        });
-      }
+    const elements = this.props.formState.elements.map((d) => {
+      const newD = { ...d };
+      const { original_name } = objectPropertyList.find(({ object_property_id }) => object_property_id === d.id);
+      newD.value = selectedObj.data[original_name];
+      return newD;
+    });
 
-      const info = {
-        ...this.props.formState.info,
-        total_area,
-      };
-
-      this.handleChange('name', name);
-      this.handleChange('info', info);
-    }
+    const info = {
+      ...this.props.formState.info,
+      total_area: info_total_area,
+    };
+    this.setState({ selectedObj });
+    this.props.handleMultiChange({
+      info,
+      polys,
+      elements,
+      name,
+    });
   }
 
   pushElement = () => {
@@ -149,14 +165,7 @@ class ProgramObjectFormDT extends Form {
     } = this.props;
     const newElements = [
       ...elements,
-      {
-        object_property_id: null,
-        value: null,
-        measure_unit_name: null,
-        plan: null,
-        fact: null,
-        warranty_up_to: null,
-      },
+      { ...ELEMENT_NULL_OBJECT },
     ];
 
     this.handleChange('elements', newElements);
@@ -181,6 +190,7 @@ class ProgramObjectFormDT extends Form {
       manual,
       showPercentForm,
       selectedObj,
+      IS_CREATING,
     } = this.state;
 
     const {
@@ -191,9 +201,7 @@ class ProgramObjectFormDT extends Form {
       } = {},
     } = state;
 
-    const IS_CREATE = !id;
-
-    const title = IS_CREATE ? 'Создание замечания (ДТ)' : 'Просмотр замечания (ДТ)';
+    const title = IS_CREATING ? 'Создание замечания (ДТ)' : 'Просмотр замечания (ДТ)';
 
     const CONTRACTOR_OPTIONS = contractorList.map(({ id: value, name: label }) => ({ value, label }));
 
@@ -213,7 +221,7 @@ class ProgramObjectFormDT extends Form {
                 value={state.asuods_id}
                 onChange={this.handleChangeInfoObject}
                 boundKeys={['asuods_id']}
-                disabled={false}
+                disabled={!IS_CREATING}
                 clearable={false}
               />
             </Col>
@@ -333,7 +341,7 @@ class ProgramObjectFormDT extends Form {
           </div>
         </Div>
         {
-          !IS_CREATE && showPercentForm && false &&
+          !IS_CREATING && showPercentForm && false &&
             <PercentModal
               id={id}
             />

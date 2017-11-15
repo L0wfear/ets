@@ -8,13 +8,18 @@ export default class RepairStore extends Store {
 
     const repairActions = flux.getActions('repair');
     this.register(repairActions.getRepairListByType, this.handleGetList);
+    this.register(repairActions.getObjectProperty, this.handleGetList);
     this.register(repairActions.setActiveList, this.handleChangeListActive);
 
-    this.state = this.getDefaultState();
+    this.state = {
+      ...this.getDefaultState(),
+      objectPropertyList: [],
+      RepairOptions: {},
+    };
   }
 
   getDefaultState() {
-    return Object.keys(REPAIR).reduce((obj, type) => Object.assign(obj, { [`${type}List`]: [] }), { RepairOptions: {} });
+    return Object.keys(REPAIR).reduce((obj, type) => Object.assign(obj, { [`${type}List`]: [] }), {});
   }
   handleChangeListActive({ listName, listNameTrue }) {
     const list = this.state[listNameTrue];

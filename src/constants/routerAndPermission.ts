@@ -314,7 +314,7 @@ const routerAndPermission = {
             },
           },
           objectPropertyList: {
-            path: '/object-property-list',
+            path: '/object-property',
             entyity: 'ets_object_properties',
             noDotList: false,
             permissions: {

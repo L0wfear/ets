@@ -17,7 +17,11 @@ import { FileField } from 'components/ui/input/fields';
 
 import Form from 'components/compositions/Form.jsx';
 
-import MakeVersionFrom from './WorkForm/MakeVersionFrom.tsx';
+import {
+  ProgramRemarkList,
+  ProgramObjectList,
+} from './inside_components';
+import MakeVersionFrom from './MakeVersionFrom.tsx';
 
 const TextMakeVersion = (
   <Row>
@@ -295,6 +299,22 @@ export default class ProgramRegistryForm extends Form {
                   disabled={!isPermitted || !isPermittedByStatus || !is_active}
                 />
               </Col>
+            </Row>
+            <Row>
+              {state.id &&
+                <Col md={12}>
+                  <ProgramObjectList
+                    program_version_id={state.id}
+                    program_version_status={state.status}
+                    contract_number={state.contract_number}
+                    contractor_id={state.contractor_id}
+                  />
+                  <ProgramRemarkList
+                    program_version_id={state.id}
+                    program_version_status={state.status}
+                  />
+                </Col>
+              }
             </Row>
           </Div>
           <ModalBody />

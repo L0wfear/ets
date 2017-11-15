@@ -28,6 +28,12 @@ export const validationSchema: IValidationSchema = {
 export const meta: IDataTableSchema = {
   cols: [
     {
+      name: 'car_id',
+      displayName: 'Рег. номер ТС',
+      type: 'select',
+      cssClassName: 'width200',
+    },
+    {
       name: 'installed_at',
       displayName: 'Дата монтажа',
       type: 'date',
@@ -38,11 +44,6 @@ export const meta: IDataTableSchema = {
       displayName: 'Дата демонтажа',
       type: "date",
       cssClassName: 'width200',
-    },
-    {
-      name: 'car_id',
-      displayName: 'Рег. номер ТС',
-      type: 'select',
     },
   ],
 };

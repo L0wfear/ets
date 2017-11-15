@@ -1,4 +1,4 @@
-.order {
+.order, .program-remark, .program-object {
   & .griddle .griddle-container{
     height: auto;
   }
@@ -74,4 +74,8 @@ th.width-fuel-report-xlarge {
       }
     }
   }
+}
+
+.overflow-visible {
+  overflow-x: visible;
 }

@@ -29,7 +29,7 @@ class ObjectPropertyList extends ElementsList {
     super.componentDidMount();
     const { flux } = this.context;
 
-    await flux.getActions('repair').getRepairListByType('objectProperty', { object_type: 'odh' }, { name: 'odh' });
+    await flux.getActions('repair').getObjectProperty({ object_type: 'odh' }, { name: 'odh' });
     flux.getActions('repair').setActiveList('objectPropertyList', 'objectPropertyOdhList');
   }
 
@@ -49,7 +49,7 @@ class ObjectPropertyList extends ElementsList {
       if (!iHaveType[typeData]) {
         iHaveType[typeData] = true;
 
-        await flux.getActions('repair').getRepairListByType('objectProperty', { object_type: typeData }, { name: typeData });
+        await flux.getActions('repair').getObjectProperty({ object_type: typeData }, { name: typeData });
 
         this.setState({ iHaveType });
       }

@@ -263,7 +263,7 @@ export default class ProgramRegistryForm extends Form {
               <Col md={6}>
                 <ExtField
                   type="string"
-                  label="№ договора"
+                  label="№ контракта"
                   value={state.contract_number}
                   error={errors.contract_number}
                   onChange={this.handleChange}

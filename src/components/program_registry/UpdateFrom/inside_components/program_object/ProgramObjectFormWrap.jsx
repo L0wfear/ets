@@ -16,6 +16,27 @@ class ProgramObjectFormWrap extends FormWrap {
   createAction = formState => this.context.flux.getActions('repair').programObject('post', formState);
   updateAction = formState => this.context.flux.getActions('repair').programObject('put', formState);
 
+  handleMultiChange = (fields) => {
+    let formErrors = { ...this.state.formErrors };
+    const formState = { ...this.state.formState };
+    const newState = {};
+
+    Object.entries(fields).forEach(([field, e]) => {
+      const value = e !== undefined && e !== null && !!e.target ? e.target.value : e;
+      console.info('Form changed', field, value);
+      formState[field] = value;
+    });
+
+    formErrors = this.validate(formState, formErrors);
+
+    newState.canSave = Object.values(formErrors).reduce((boolean, oneError) => boolean && !oneError, true);
+
+    newState.formState = formState;
+    newState.formErrors = formErrors;
+
+    this.setState(newState);
+  }
+
   getFormDt() {
     const { entity, isPermitted = false } = this.props;
     const { saveButtonEnability = true } = this.state;
@@ -32,6 +53,7 @@ class ProgramObjectFormWrap extends FormWrap {
         canSave={canSave}
         onSubmit={this.handleFormSubmit.bind(this)}
         handleFormChange={this.handleFormStateChange.bind(this)}
+        handleMultiChange={this.handleMultiChange}
         show={this.props.showForm}
         onHide={this.props.onFormHide}
       />

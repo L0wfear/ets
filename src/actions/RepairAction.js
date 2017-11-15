@@ -36,6 +36,26 @@ export default class RepairActions extends Actions {
     };
   }
 
+  getDataAboutObjectById(id) {
+    const trueType = REPAIR.progress;
+    const payload = {
+      object_id: id,
+    };
+    return Repair.path(trueType).get(payload).then(({ result: { rows: [objData] } }) => objData);
+  }
+
+  postDataToUpdateObject({ id }) {
+    const trueType = REPAIR.progress;
+    console.log('hello')
+    const payload = {
+      object_id: id,
+      reviewed_at: createValidDate(new Date()),
+      percent: 1,
+      comment: '123123',
+    };
+    return Repair.path(trueType).post(payload, false, 'json');
+  }
+
   async getAllVersionsById(id) {
     const { programVersion } = REPAIR;
     const payload = {

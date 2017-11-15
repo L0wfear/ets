@@ -176,8 +176,8 @@ export default class ProgramRemarkList extends CheckableElementsList {
         buttonName={'Удалить'}
         key={0}
         onClick={this.removeCheckedElements}
-        disabled={this.checkDisabledDelete() || true}
-        permissions={['repair_program_version.review']}
+        disabled={this.checkDisabledDelete()}
+        permissions={[`${entity}.delete`]}
       />,
       <ButtonRead
         buttonName={'Посмотреть'}

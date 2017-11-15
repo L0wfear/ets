@@ -8,5 +8,6 @@ export default {
   programVersion: 'program_version',
   programRemarkRegistry: 'program_remark_registry',
   objects: 'objects',
+  progress: 'progress',
   programRemark: 'program_remark',
 };

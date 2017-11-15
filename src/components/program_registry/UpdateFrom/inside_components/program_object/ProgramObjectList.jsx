@@ -125,7 +125,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
     const {
       program_version_id,
       contract_number,
-      contract_id: contractor_id,
+      contractor_id,
     } = this.props;
 
     this.setState({
@@ -144,7 +144,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
     const {
       program_version_id,
       contract_number,
-      contract_id: contractor_id,
+      contractor_id,
     } = this.props;
 
     this.setState({

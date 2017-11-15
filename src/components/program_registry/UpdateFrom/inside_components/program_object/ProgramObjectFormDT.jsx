@@ -271,7 +271,7 @@ class ProgramObjectFormDT extends Form {
                   error={errors.name}
                   onChange={this.handleChange}
                   boundKeys={['contract_number']}
-                  disabled={false || !asuods_id}
+                  disabled={false}
                 />
               </Col>
               <Col style={{ marginBottom: 20 }} md={6}>
@@ -283,8 +283,7 @@ class ProgramObjectFormDT extends Form {
                   value={state.contractor_id}
                   onChange={this.handleChange}
                   boundKeys={['contractor_id']}
-                  disabled={false || !asuods_id}
-                  clearable={false}
+                  disabled={false}
                 />
               </Col>
             </Row>

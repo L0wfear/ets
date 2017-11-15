@@ -197,7 +197,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
         key={3}
         onClick={this.createODH}
         disabled
-        permissions={[`${entity}.update`]}
+        permissions={[`${entity}.false`]}
       />,
     ];
 

@@ -38,7 +38,7 @@ export default class MissionRejectForm extends Component {
 
   componentDidMount() {
     const { flux } = this.context;
-    const { norm_id, datetime } = this.props.mission;
+    const { norm_id, date_start: datetime } = this.props.mission;
     flux.getActions('objects').getCars();
 
     if (norm_id) {

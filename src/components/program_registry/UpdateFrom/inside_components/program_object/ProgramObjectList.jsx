@@ -60,8 +60,8 @@ export default class ProgramRemarkList extends CheckableElementsList {
   /**
    * @override
    */
-  removeElement = () => {
-    return confirmDialog({
+  removeElement = () =>
+    confirmDialog({
       title: 'Внимание',
       body: bodyConfirmDialogs.remove(1),
     })
@@ -77,7 +77,6 @@ export default class ProgramRemarkList extends CheckableElementsList {
       });
     })
     .catch(() => {});
-  }
 
   defActionFunc = ({
     bodyConfirmDialog,
@@ -125,7 +124,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
   createDT = () => {
     const {
       program_version_id,
-      contract_number: contractor_number,
+      contract_number,
       contract_id: contractor_id,
     } = this.props;
 
@@ -135,7 +134,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
       selectedElement: {
         type_slug: 'dt',
         program_version_id,
-        contractor_number,
+        contract_number,
         contractor_id,
         elements: [],
       },
@@ -144,7 +143,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
   createODH = () => {
     const {
       program_version_id,
-      contract_number: contractor_number,
+      contract_number,
       contract_id: contractor_id,
     } = this.props;
 
@@ -154,7 +153,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
       selectedElement: {
         type_slug: 'odh',
         program_version_id,
-        contractor_number,
+        contract_number,
         contractor_id,
         elements: [],
       },
@@ -167,9 +166,6 @@ export default class ProgramRemarkList extends CheckableElementsList {
    */
   getButtons = () => {
     const entity = this.constructor.entity;
-    const {
-      program_version_status,
-    } = this.props;
 
     const buttons = [
       <ButtonDelete
@@ -213,9 +209,9 @@ export default class ProgramRemarkList extends CheckableElementsList {
     flux.getActions('repair').getRepairListByType('objects', { program_version_id });
   }
 
-  getAdditionalProps = () => {
-    return {
+  getAdditionalProps = () => (
+    {
       displayTable: true,
-    };
-  }
+    }
+  )
 }

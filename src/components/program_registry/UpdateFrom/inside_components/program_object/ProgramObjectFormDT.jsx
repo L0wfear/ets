@@ -179,6 +179,7 @@ class ProgramObjectFormDT extends Form {
       this.props.formState,
       this.props.formErrors,
     ];
+
     const {
       tabKey,
       contractorList = [],
@@ -204,7 +205,6 @@ class ProgramObjectFormDT extends Form {
     const title = IS_CREATING ? 'Создание замечания (ДТ)' : 'Просмотр замечания (ДТ)';
 
     const CONTRACTOR_OPTIONS = contractorList.map(({ id: value, name: label }) => ({ value, label }));
-
     return (
       <Modal {...this.props} dialogClassName="modal-xlg" backdrop="static">
         <Modal.Header closeButton>
@@ -266,10 +266,10 @@ class ProgramObjectFormDT extends Form {
                 <span>Номер контракта</span>
                 <ExtField
                   type="string"
-                  value={state.contractor_number}
+                  value={state.contract_number}
                   error={errors.name}
                   onChange={this.handleChange}
-                  boundKeys={['contractor_number']}
+                  boundKeys={['contract_number']}
                   disabled={false || !asuods_id}
                 />
               </Col>

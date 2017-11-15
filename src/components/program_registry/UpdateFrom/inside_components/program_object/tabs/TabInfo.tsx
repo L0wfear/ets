@@ -14,10 +14,10 @@ const TableMeta: ITableMetaInfo = [
   {
     key: 'object_property_id',
     title: 'Элеменет ДТ',
-    style: value => ({
-      minWidth: 200,
-      backgroundColor: !value || value < 0 ? '#ff7777' : null,
-    }),
+    style: (numRow, row, errors) => ({
+        minWidth: 200,
+        backgroundColor: errors[`element_${numRow}_object_property_id`] ? '#ff7777' : null,
+      }),
     tabIncludes: [OBJ_TAB_INDEX.FACT, OBJ_TAB_INDEX.PLAN],
   },
   {
@@ -36,15 +36,18 @@ const TableMeta: ITableMetaInfo = [
     key: 'plan',
     title: 'План',
     tabIncludes: [OBJ_TAB_INDEX.FACT, OBJ_TAB_INDEX.PLAN],
-    style: value => ({
-      backgroundColor: !value || value < 0 ? '#ff7777' : null,
-    }),
+    style: (numRow, row, errors) => {
+      return {
+        backgroundColor: errors[`element_${numRow}_plan`] ? '#ff7777' : null,
+      };
+    },
   },
   {
     key: 'fact',
     title: 'Факт',
-    style: value => ({
+    style: (numRow, row, errors) => ({
       maxWidth: 100,
+      backgroundColor: errors[`element_${numRow}_fact`] ? '#ff7777' : null,
     }),
     tabIncludes: [OBJ_TAB_INDEX.FACT],
   },
@@ -289,6 +292,7 @@ class PlanTab extends React.Component<any, any> {
             handleChange={this.handleChangeTable}
             handleRowClick={this.handleRowClick}
             isPermitted={isPermitted}
+            errors={errors}
           />
         </Col>
         <Col md={12}>

@@ -4,7 +4,7 @@ interface IOneHeadTableMetaStyle {
   backgroundColor?: string | void;
 }
 
-type styleFunc = (num: number | string, arr: any[]) => IOneHeadTableMetaStyle | void;
+type styleFunc = (numRow: number | string, row: any[], errors: any[]) => IOneHeadTableMetaStyle | void;
 
 interface IOneTableOrigin {
   key: string;

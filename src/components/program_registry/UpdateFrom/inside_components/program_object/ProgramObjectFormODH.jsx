@@ -2,20 +2,19 @@ import React from 'react';
 import { Row, Col, Modal, Button, Nav, NavItem } from 'react-bootstrap';
 import connectToStores from 'flummox/connect';
 
-import { OBJ_TAB_INDEX } from './ProgramObjectFormDT.h';
 
 import { tabable } from 'components/compositions/hoc';
 
 import Form from 'components/compositions/Form.jsx';
 
 import Div from 'components/ui/Div.jsx';
-import Field, { ExtField } from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/Field.jsx';
 import ModalBody from 'components/ui/Modal';
 
-import TabContent from 'components/ui/containers/TabContent';
 import TabInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/TabInfo.tsx';
 import MapField from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_fields/FieldMap.tsx';
 
+import { OBJ_TAB_INDEX } from './ProgramObjectFormDT.h';
 
 class ProgramObjectFormDT extends Form {
   static defaultProps = {
@@ -213,113 +212,113 @@ class ProgramObjectFormDT extends Form {
               />
             </Col>
           </Row>
-            <div>
-              <Row>
-                <Col md={12}>
-                  <label>Информаця об объекте</label>
-                </Col>
-                <Col md={8}>
-                  <Row>
-                    <Col md={6}>
-                      <Col md={9}>Общая площадь по паспорту, кв.м:</Col>
-                      <Col md={3}>{total_area}</Col>
-                    </Col>
-                    <Col md={6}>
-                      <Col md={9}>Площадь проезда, км.м:</Col>
-                      <Col md={3}>{0}</Col>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col md={6}>
-                      <Col md={9}>Площадь пешеходной дорожки, км.м:</Col>
-                      <Col md={3}>{0}</Col>
-                    </Col>
-                    <Col md={6}>
-                      <Col md={9}>Площадь тротуаров, км.м:</Col>
-                      <Col md={3}>{0}</Col>
-                    </Col>
-                  </Row>
-                </Col>
-                <Col md={4}>
-                  <Col md={6}>Заказчик</Col>
-                  <Col md={6}>{0}</Col>
-                </Col>
-              </Row>
-              <Row>
-                <Col md={12}>
-                  <label>Подрядчик</label>
-                </Col>
-                <Col md={6}>
-                  <span>Номер контракта</span>
-                  <ExtField
-                    type="string"
-                    value={state.contractor_number}
-                    error={errors.name}
-                    onChange={this.handleChange}
-                    boundKeys={['contractor_number']}
-                    disabled={false || !asuods_id}
-                  />
-                </Col>
-                <Col md={6}>
-                  <span>Подрядчик</span>
-                  <ExtField
-                    type="select"
-                    error={errors.contractor_id}
-                    options={CONTRACTOR_OPTIONS}
-                    value={state.contractor_id}
-                    onChange={this.handleChange}
-                    boundKeys={['contractor_id']}
-                    disabled={false || !asuods_id}
-                    clearable={false}
-                  />
-                </Col>
-              </Row>
-              <Nav bsStyle="tabs" activeKey={tabKey} onSelect={this.props.handleTabSelect} id="refs-car-tabs">
-                <NavItem eventKey={OBJ_TAB_INDEX.PLAN}>План</NavItem>
-                <NavItem eventKey={OBJ_TAB_INDEX.FACT} >Факт</NavItem>
-              </Nav>
-              <Row>
-                <Col md={7}>
-                  <TabInfo
-                    isPermitted={!(false || !asuods_id)}
-                    whatSelectedTab={tabKey}
-                    state={state}
-                    errors={errors}
-                    objectList={dtPolys}
-                    handleChange={this.handleChange}
-                    pushElement={this.pushElement}
-                    selectedObj={selectedObj}
-                  />
-                </Col>
-                <Col md={5}>
-                  <Col md={12}>
-                    <label>Отрисовка границ ремонта</label>
+          <div>
+            <Row>
+              <Col md={12}>
+                <label>Информаця об объекте</label>
+              </Col>
+              <Col md={8}>
+                <Row>
+                  <Col md={6}>
+                    <Col md={9}>Общая площадь по паспорту, кв.м:</Col>
+                    <Col md={3}>{total_area}</Col>
                   </Col>
                   <Col md={6}>
-                    <input
-                      type='radio'
-                      checked={!manual}
-                      onChange={this.setManualOnFalse}
-                    />Отрисовать весь объект
+                    <Col md={9}>Площадь проезда, км.м:</Col>
+                    <Col md={3}>{0}</Col>
                   </Col>
-                  { false &&
-                    <Col md={4}>
-                      <input
-                        type='radio'
-                        checked={manual}
-                        onChange={this.setManualOnTrue}
-                      />Отрисовать границы ремонта
-                    </Col>
-                  }
-                  <Col md={12}>
-                    <MapField
-                      state={state}
-                      manualDraw={manual}
-                    />
+                </Row>
+                <Row>
+                  <Col md={6}>
+                    <Col md={9}>Площадь пешеходной дорожки, км.м:</Col>
+                    <Col md={3}>{0}</Col>
                   </Col>
+                  <Col md={6}>
+                    <Col md={9}>Площадь тротуаров, км.м:</Col>
+                    <Col md={3}>{0}</Col>
+                  </Col>
+                </Row>
+              </Col>
+              <Col md={4}>
+                <Col md={6}>Заказчик</Col>
+                <Col md={6}>{0}</Col>
+              </Col>
+            </Row>
+            <Row>
+              <Col md={12}>
+                <label>Подрядчик</label>
+              </Col>
+              <Col md={6}>
+                <span>Номер контракта</span>
+                <ExtField
+                  type="string"
+                  value={state.contract_number}
+                  error={errors.name}
+                  onChange={this.handleChange}
+                  boundKeys={['contract_number']}
+                  disabled={false || !asuods_id}
+                />
+              </Col>
+              <Col md={6}>
+                <span>Подрядчик</span>
+                <ExtField
+                  type="select"
+                  error={errors.contractor_id}
+                  options={CONTRACTOR_OPTIONS}
+                  value={state.contractor_id}
+                  onChange={this.handleChange}
+                  boundKeys={['contractor_id']}
+                  disabled={false || !asuods_id}
+                  clearable={false}
+                />
+              </Col>
+            </Row>
+            <Nav bsStyle="tabs" activeKey={tabKey} onSelect={this.props.handleTabSelect} id="refs-car-tabs">
+              <NavItem eventKey={OBJ_TAB_INDEX.PLAN}>План</NavItem>
+              <NavItem eventKey={OBJ_TAB_INDEX.FACT} >Факт</NavItem>
+            </Nav>
+            <Row>
+              <Col md={7}>
+                <TabInfo
+                  isPermitted={!(false || !asuods_id)}
+                  whatSelectedTab={tabKey}
+                  state={state}
+                  errors={errors}
+                  objectList={dtPolys}
+                  handleChange={this.handleChange}
+                  pushElement={this.pushElement}
+                  selectedObj={selectedObj}
+                />
+              </Col>
+              <Col md={5}>
+                <Col md={12}>
+                  <label>Отрисовка границ ремонта</label>
                 </Col>
-              </Row>
-            </div>
+                <Col md={6}>
+                  <input
+                    type="radio"
+                    checked={!manual}
+                    onChange={this.setManualOnFalse}
+                  />Отрисовать весь объект
+                </Col>
+                { false &&
+                  <Col md={4}>
+                    <input
+                      type="radio"
+                      checked={manual}
+                      onChange={this.setManualOnTrue}
+                    />Отрисовать границы ремонта
+                  </Col>
+                }
+                <Col md={12}>
+                  <MapField
+                    state={state}
+                    manualDraw={manual}
+                  />
+                </Col>
+              </Col>
+            </Row>
+          </div>
         </Div>
         <ModalBody />
         <Modal.Footer>

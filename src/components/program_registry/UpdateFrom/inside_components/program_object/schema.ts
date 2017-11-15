@@ -29,3 +29,59 @@ export const formValidationSchema: IValidationSchema = {
     },
   ],
 };
+
+export const elementsValidationSchema: IValidationSchema = {
+  properties: [
+    {
+      key: 'object_property_id',
+      title: 'Информация об объекте',
+      type: 'number',
+      integer: true,
+      required: true,
+    },
+    {
+      key: 'plan',
+      title: 'План',
+      type: 'number',
+      integer: true,
+      required: true,
+      maxLength: 128,
+    },
+    {
+      key: 'fact',
+      title: 'Факт',
+      type: 'number',
+      integer: true,
+      required: false,
+      maxLength: 128,
+    },
+    {
+      key: 'warranty_up_to',
+      title: 'Плановая дата окончания',
+      type: 'date',
+      required: false,
+    },
+  ],
+  dependencies: {
+    plan: [
+      {
+        validator(value = null) {
+          if (!!value && value < 0) {
+            return 'error';
+          }
+          return '';
+        },
+      },
+    ],
+    fact: [
+      {
+        validator(value = null) {
+          if (!!value && value < 0) {
+            return 'error';
+          }
+          return '';
+        },
+      },
+    ],
+  },
+};

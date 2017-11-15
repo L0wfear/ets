@@ -38,12 +38,12 @@ export default class MissionRejectForm extends Component {
 
   componentDidMount() {
     const { flux } = this.context;
-    const { norm_id } = this.props.mission;
+    const { norm_id, datetime } = this.props.mission;
     flux.getActions('objects').getCars();
 
     if (norm_id) {
       flux.getActions('missions')
-        .getCleaningByTypeInActiveMission({ type: 'norm_registry', norm_id }).then(({ result: { rows: [norm_data] } }) => {
+        .getCleaningByTypeInActiveMission({ type: 'norm_registry', norm_id, datetime }).then(({ result: { rows: [norm_data] } }) => {
           const norm_type_ids = norm_data.map(({ id }) => id);
 
           this.setState({ norm_type_ids });

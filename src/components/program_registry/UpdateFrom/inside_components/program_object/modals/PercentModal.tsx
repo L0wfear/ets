@@ -2,15 +2,14 @@ import * as React from 'react';
 
 import { FluxContext } from 'utils/decorators';
 
-import { ITableMetaPercent } from 'components/program_registry/UpdateFrom/inside_components/program_object/modals/Table.h';
 
-const TableMeta: ITableMetaPercent = [
+const TableMeta: any = [
   {
     key: 'reviewed_at',
     title: 'Дата осмотра',
-    style: {
+    style: (value) => ({
       minWidth: 200,
-    },
+    }),
   },
   {
     key: 'percent',

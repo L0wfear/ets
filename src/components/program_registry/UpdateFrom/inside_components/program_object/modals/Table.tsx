@@ -77,7 +77,7 @@ class TablePrev extends React.Component<any, any> {
                   <tr onClick={this.handleClick} className={selectedRow === numRow ? 'sm-active' : ''}key={numRow}>
                     {
                       headerData.map(({ key, style }, numOne) => (
-                          <td key={numOne} style={{ ...style }}>
+                          <td key={numOne} style={{ ...style(row[key], row) }}>
                             <ExtField
                               {...mainPropsFields[key]}
                               value={row[key]}

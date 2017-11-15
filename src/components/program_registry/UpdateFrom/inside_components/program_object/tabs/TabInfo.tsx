@@ -14,38 +14,46 @@ const TableMeta: ITableMetaInfo = [
   {
     key: 'object_property_id',
     title: 'Элеменет ДТ',
-    style: {
+    style: value => ({
       minWidth: 200,
-    },
+      backgroundColor: !value || value < 0 ? 'red' : 'inherit',
+    }),
     tabIncludes: [OBJ_TAB_INDEX.FACT, OBJ_TAB_INDEX.PLAN],
   },
   {
     key: 'value',
     title: 'Характеристика',
     tabIncludes: [OBJ_TAB_INDEX.FACT, OBJ_TAB_INDEX.PLAN],
+    style: () => null,
   },
   {
     key: 'measure_unit_name',
     title: 'Ед. измерения',
     tabIncludes: [OBJ_TAB_INDEX.FACT, OBJ_TAB_INDEX.PLAN],
+    style: () => null,
   },
   {
     key: 'plan',
     title: 'План',
     tabIncludes: [OBJ_TAB_INDEX.FACT, OBJ_TAB_INDEX.PLAN],
+    style: value => ({
+      backgroundColor: !value || value < 0 ? 'red' : 'inherit',
+    }),
   },
   {
     key: 'fact',
     title: 'Факт',
-    style: {
+    style: value => ({
       maxWidth: 100,
-    },
+      backgroundColor: !value || value < 0 ? 'red' : 'inherit',
+    }),
     tabIncludes: [OBJ_TAB_INDEX.FACT],
   },
   {
     key: 'warranty_up_to',
     title: 'Гарантийные обязательства до',
     tabIncludes: [OBJ_TAB_INDEX.FACT],
+    style: () => null,
   },
 ];
 

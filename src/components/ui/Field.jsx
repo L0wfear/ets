@@ -19,8 +19,7 @@ function StringField(props) {
   if (isLoading) {
     return (
       <Div hidden={hidden}>
-        {label && (<label style={{ paddingTop: 5 }}>{label}</label>)}
-        {label && <br />}
+        <label style={{ paddingTop: 5 }}>{label}</label>)<br />
         <Preloader type="field" />
       </Div>
     );
@@ -35,11 +34,7 @@ function StringField(props) {
       <Div hidden={!error} className="error">{error}</Div>
     </Div> :
     <Div hidden={hidden} className={className}>
-      { label && 
-        (
-          <label style={{ paddingTop: 5, paddingRight: 5 }}>{label}</label>
-        )
-      }
+      <label style={{ paddingTop: 5, paddingRight: 5 }}>{label}</label>
       {!inline && <br />}
       {value}
     </Div>;
@@ -126,7 +121,7 @@ export default class Field extends React.Component {
     const dateClassName = cx({ 'has-error': error });
     return (
       <Div hidden={this.props.hidden} style={{ marginBottom: 15 }}>
-        {label && <label style={{ minHeight: 15 }}>{label}</label>}
+        <label style={{ minHeight: 15 }}>{label}</label>
         <DatePicker {...this.props} date={date || value} className={dateClassName} />
         <Div hidden={!error} className="error" style={{ marginTop: 4 }}>{error}</Div>
       </Div>
@@ -154,7 +149,7 @@ export default class Field extends React.Component {
     const selectClassName = cx({ 'has-error': error });
     return (
       <Div hidden={this.props.hidden} className={className} style={{ marginBottom: 15 }}>
-        {label && <label>{label}</label>}
+        <label>{label}</label>
         <EtsSelect {...this.props} disabled={readOnly || this.props.disabled} className={selectClassName} />
         <Div hidden={!error} className="error" style={{ marginTop: 4 }}>{error}</Div>
       </Div>

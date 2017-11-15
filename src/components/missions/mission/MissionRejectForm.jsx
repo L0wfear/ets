@@ -32,7 +32,7 @@ export default class MissionRejectForm extends Component {
       car_id: null,
       date_start: null,
       date_end: null,
-      norm_type_ids: [],
+      car_func_types: [],
     };
   }
 
@@ -44,11 +44,11 @@ export default class MissionRejectForm extends Component {
     if (norm_id) {
       flux.getActions('missions')
         .getCleaningByTypeInActiveMission({ type: 'norm_registry', norm_id, datetime }).then(({ result: { rows: [norm_data] } }) => {
-          const norm_type_ids = norm_data.map(({ id }) => id);
+          const car_func_types = norm_data.car_func_types.map(({ id }) => id);
 
-          this.setState({ norm_type_ids });
+          this.setState({ car_func_types });
         })
-        .catch(() => this.setState({ norm_type_ids: [] }));
+        .catch(() => this.setState({ car_func_types: [] }));
     }
   }
 
@@ -165,14 +165,14 @@ export default class MissionRejectForm extends Component {
   render() {
     const { state, props } = this;
     const errors = {};
-    const { norm_type_ids } = state;
+    const { car_func_types } = state;
     if (!state.comment) errors.comment = 'Поле должно быть обязательно заполнено';
 
     let CARS = [];
     const { mission: { car_gov_number: mCar_gov_number } } = props;
 
     CARS = props.carsList.reduce((carOptions, { car_gov_number, asuods_id, gov_number, type_id: car_type_id }) => {
-      if ((mCar_gov_number !== car_gov_number) && (!isEmpty(norm_type_ids) ? norm_type_ids.includes(car_type_id) : true)) {
+      if ((mCar_gov_number !== car_gov_number) && (!isEmpty(car_func_types) ? car_func_types.includes(car_type_id) : true)) {
         carOptions.push({ value: asuods_id, label: gov_number });
       }
       return carOptions;

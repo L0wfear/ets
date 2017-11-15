@@ -308,6 +308,7 @@ export default class ProgramRegistryForm extends Form {
                     program_version_status={state.status}
                     contract_number={state.contract_number}
                     contractor_id={state.contractor_id}
+                    repair_type_name={state.repair_type_name}
                   />
                   <ProgramRemarkList
                     program_version_id={state.id}

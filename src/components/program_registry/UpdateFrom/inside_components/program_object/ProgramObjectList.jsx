@@ -166,6 +166,9 @@ export default class ProgramRemarkList extends CheckableElementsList {
    */
   getButtons = () => {
     const entity = this.constructor.entity;
+    const {
+      repair_type_name,
+    } = this.props;
 
     const buttons = [
       <ButtonDelete
@@ -187,6 +190,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
         key={2}
         onClick={this.createDT}
         permissions={[`${entity}.update`]}
+        disabled={repair_type_name !== 'Капитальный'}
       />,
       <ButtonCreate
         buttonName={'Добавить ОДХ'}

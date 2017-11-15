@@ -28,7 +28,7 @@ function StringField(props) {
   return !readOnly ?
     <Div hidden={hidden} style={wrapStyle || {}}>
       <div className="form-group">
-        { label && <label className="control-label"><span>{label}</span></label>}
+        <label className="control-label"><span>{label}</span></label>
         <FormControl type="text" disabled={disabled} className={inputClassName} {...props} />
       </div>
       <Div hidden={!error} className="error">{error}</Div>
@@ -108,7 +108,7 @@ export default class Field extends React.Component {
     return (
       <Div hidden={this.props.hidden}>
         <div className="form-group">
-          { this.props.label && <label className="control-label"><span>{this.props.label}</span></label>}
+          <label className="control-label"><span>{this.props.label}</span></label>
           <FormControl type="number" className={inputClassName} {...this.props} />
         </div>
         <Div hidden={!error} className="error">{error}</Div>

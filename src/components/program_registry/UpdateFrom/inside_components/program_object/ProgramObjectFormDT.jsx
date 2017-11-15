@@ -1,6 +1,7 @@
 import React from 'react';
 import { Row, Col, Modal, Button, Nav, NavItem } from 'react-bootstrap';
 import connectToStores from 'flummox/connect';
+import moment from 'moment';
 
 import { OBJ_TAB_INDEX, ELEMENT_NULL_OBJECT } from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormDT.h';
 
@@ -99,7 +100,7 @@ class ProgramObjectFormDT extends Form {
   setManualOnFalse = () => this.setState({ manual: false });
   setManualOnTrue = () => this.setState({ manual: false });
 
-  showPercentForm = () => this.setState({ showPercentForm: true });
+  showPercentForm = () => this.setState({ showPercentForm: false });
   hidePercentForm = () => this.setState({ showPercentForm: false });
 
   handleSubmitWrap = () => this.handleSubmit();
@@ -259,13 +260,13 @@ class ProgramObjectFormDT extends Form {
               </Col>
             </Row>
             <Row>
-              <Col md={12}>
-                <span style={{ fontWeight: 600, marginBottom: 10 }}>Подрядчик</span>
+              <Col md={12} style={{ fontWeight: 600, marginBottom: 5 }}>
+                <span >Подрядчик</span>
               </Col>
               <Col md={6}>
-                <span>Номер контракта</span>
                 <ExtField
                   type="string"
+                  label="Номер контракта"
                   value={state.contract_number}
                   error={errors.name}
                   onChange={this.handleChange}
@@ -274,9 +275,9 @@ class ProgramObjectFormDT extends Form {
                 />
               </Col>
               <Col style={{ marginBottom: 20 }} md={6}>
-                <span>Подрядчик</span>
                 <ExtField
                   type="select"
+                  label="Подрядчик"
                   error={errors.contractor_id}
                   options={CONTRACTOR_OPTIONS}
                   value={state.contractor_id}
@@ -303,7 +304,7 @@ class ProgramObjectFormDT extends Form {
                 <Col md={3}>
                   <div className="pr-object-data">
                     <span>Процент выполнения</span>
-                    <span>{state.percent}</span>
+                    <span>{moment(state.reviewed_at).format(global.APP_DATE_FORMAT)}</span>
                   </div>
                 </Col>
                 <Col md={2} xsOffset={1}>

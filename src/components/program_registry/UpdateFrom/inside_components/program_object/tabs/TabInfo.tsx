@@ -252,15 +252,17 @@ class PlanTab extends React.Component<any, any> {
         </Col>
         <Col md={12}>
           <Col md={5}>
-            <ExtField
-              type={'date'}
-              date={state[date_from]}
-              time={false}
-              error={errors[date_from]}
-              onChange={this.props.handleChange}
-              boundKeys={[date_from]}
-              disabled={!isPermitted}
-            />
+            <div className="no-label">
+              <ExtField
+                type={'date'}
+                date={state[date_from]}
+                time={false}
+                error={errors[date_from]}
+                onChange={this.props.handleChange}
+                boundKeys={[date_from]}
+                disabled={!isPermitted}
+              />
+            </div>
           </Col>
           <Col md={2}>
             <div style={{
@@ -270,15 +272,17 @@ class PlanTab extends React.Component<any, any> {
             }}>—</div>
           </Col>
           <Col md={5}>
-            <ExtField
-              type={'date'}
-              date={state[date_to]}
-              time={false}
-              error={errors[date_to]}
-              onChange={this.props.handleChange}
-              boundKeys={[date_to]}
-              disabled={!isPermitted}
-            />
+            <div className="no-label">
+              <ExtField
+                type={'date'}
+                date={state[date_to]}
+                time={false}
+                error={errors[date_to]}
+                onChange={this.props.handleChange}
+                boundKeys={[date_to]}
+                disabled={!isPermitted}
+              />
+            </div>
           </Col>
         </Col>
         <Col md={12}>

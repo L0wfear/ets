@@ -51,7 +51,7 @@ class TablePrev extends React.Component<any, any> {
 
     return (
       <div style={{
-        height: 60 + bodyData.length * 68,
+        height: 100 + bodyData.length * 68,
       }}>
         <div style={{
           display: 'flex',

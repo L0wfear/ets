@@ -217,7 +217,7 @@ class ProgramObjectFormDT extends Form {
             <Col md={6}>
               <ExtField
                 type="select"
-                label="Наименование ДТ"
+                label="Наименование объекта"
                 error={errors.asuods_id}
                 options={OBJECT_OPTIONS}
                 value={state.asuods_id}

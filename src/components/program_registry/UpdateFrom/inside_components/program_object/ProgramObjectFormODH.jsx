@@ -187,7 +187,7 @@ class ProgramObjectFormDT extends Form {
 
     const IS_CREATE = !!!id;
 
-    const title = IS_CREATE ? 'Создание замечания (ДТ)' : 'Просмотр замечания (ДТ)';
+    const title = IS_CREATE ? 'Создание замечания (ДТ)' : 'Карточка дворовой территории капитального ремонта';
 
     const CONTRACTOR_OPTIONS = contractorList.map(({ id: value, name: label }) => ({ value, label }));
 

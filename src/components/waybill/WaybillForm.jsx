@@ -200,14 +200,15 @@ class WaybillForm extends Form {
       const fuel_correction_rate = car.fuel_correction_rate || 1;
       flux.getActions('fuelRates').getFuelRatesByCarModel({ car_id: formState.car_id, datetime: formState.date_create }).then((r) => {
         const fuelRates = r.result.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date }));
+
         flux.getActions('fuelRates').getFuelOperations().then((fuelOperations) => {
           const operations = filter(fuelOperations.result, op => find(fuelRates, fr => fr.operation_id === op.id));
+
           flux.getActions('fuelRates').getEquipmentFuelRatesByCarModel({ car_id: formState.car_id, datetime: formState.date_create }).then((equipmentFuelRatesResponse) => {
             const equipmentFuelRates = equipmentFuelRatesResponse.result.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date }));
-            flux.getActions('fuelRates').getFuelOperations().then((equipmentFuelOperations) => {
-              const equipmentOperations = filter(equipmentFuelOperations.result, op => find(equipmentFuelRates, fr => fr.operation_id === op.id));
-              this.setState({ fuelRates, operations, fuel_correction_rate, equipmentFuelRates, equipmentOperations });
-            });
+
+            const equipmentOperations = filter(fuelOperations.result, op => find(equipmentFuelRates, fr => fr.operation_id === op.id));
+            this.setState({ fuelRates, operations, fuel_correction_rate, equipmentFuelRates, equipmentOperations });
           });
         });
       });

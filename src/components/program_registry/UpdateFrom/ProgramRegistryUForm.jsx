@@ -31,15 +31,15 @@ const TextMakeVersion = (
 );
 
 const getTitleByStatus = (status) => {
-  switch(status) {
+  switch (status) {
     case 'draft': return 'Программа ремонта. Черновик';
     case 'sent_on_review': return 'Программа ремонта. Отправлена на согласование';
     case 'accepted': return 'Программа ремонта. Согласована';
     case 'rejected': return 'Программа ремонта. Не согласована';
     case 'closed': return 'Программа ремонта. Выполнена';
-    default: return 'Программа ремонта. Редактирование'
+    default: return 'Программа ремонта. Редактирование';
   }
-}
+};
 
 @loadingOverlay
 @connectToStores(['repair', 'objects'])

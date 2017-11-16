@@ -1,15 +1,11 @@
 import * as React from 'react';
-import { Button as BootstrapButton } from 'react-bootstrap';
 
 import { connectToStores, staticProps } from 'utils/decorators';
-import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { ButtonCreate, ButtonRead, ButtonDelete } from 'components/ui/buttons/CRUD';
 
 import ProgramObjectTable from './ProgramObjectTable';
 import ProgramObjectFormWrap from './ProgramObjectFormWrap';
-
-const Button = enhanceWithPermissions(BootstrapButton);
 
 const bodyConfirmDialogs = {
   remove(countCheckedElement) {
@@ -168,6 +164,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
     const entity = this.constructor.entity;
     const {
       repair_type_name,
+      program_version_status,
     } = this.props;
 
     const buttons = [
@@ -190,7 +187,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
         key={2}
         onClick={this.createDT}
         permissions={[`${entity}.update`]}
-        disabled={repair_type_name !== 'Капитальный'}
+        disabled={program_version_status === 'accepted' || repair_type_name !== 'Капитальный'}
       />,
       <ButtonCreate
         buttonName={'Добавить ОДХ'}

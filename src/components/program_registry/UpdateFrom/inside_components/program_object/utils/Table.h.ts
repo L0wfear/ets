@@ -1,10 +1,10 @@
 interface IOneHeadTableMetaStyle {
   minWidth?: number | string;
   maxWidth?: number | string;
-  backgroundColor: string;
+  backgroundColor?: string | void;
 }
 
-type styleFunc = (num: number | string, arr: any[]) => IOneHeadTableMetaStyle;
+type styleFunc = (numRow: number | string, row: any[], errors: any[]) => IOneHeadTableMetaStyle | void;
 
 interface IOneTableOrigin {
   key: string;

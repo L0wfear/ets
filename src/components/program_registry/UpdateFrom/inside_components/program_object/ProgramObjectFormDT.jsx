@@ -1,6 +1,7 @@
 import React from 'react';
 import { Row, Col, Modal, Button, Nav, NavItem } from 'react-bootstrap';
 import connectToStores from 'flummox/connect';
+import moment from 'moment';
 
 import { OBJ_TAB_INDEX, ELEMENT_NULL_OBJECT } from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormDT.h';
 
@@ -14,7 +15,6 @@ import ModalBody from 'components/ui/Modal';
 
 import TabInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/TabInfo.tsx';
 import MapInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/MapInfo.tsx';
-import PercentModal from 'components/program_registry/UpdateFrom/inside_components/program_object/modals/PercentModal.tsx';
 
 class ProgramObjectFormDT extends Form {
   static defaultProps = {
@@ -179,10 +179,12 @@ class ProgramObjectFormDT extends Form {
       this.props.formState,
       this.props.formErrors,
     ];
+
     const {
       tabKey,
       contractorList = [],
       dtPolys = [],
+      isPermitted,
     } = this.props;
 
     const {
@@ -195,13 +197,14 @@ class ProgramObjectFormDT extends Form {
 
     const {
       id,
+      name,
       asuods_id,
       info: {
         total_area = null,
       } = {},
     } = state;
 
-    const title = IS_CREATING ? 'Создание замечания (ДТ)' : 'Просмотр замечания (ДТ)';
+    const title = IS_CREATING ? 'Создание карточки ДТ капитального ремонта.' : `Карточка ДТ капитального ремонта. Объект: ${name}. ID ${asuods_id}`;
 
     const CONTRACTOR_OPTIONS = contractorList.map(({ id: value, name: label }) => ({ value, label }));
 
@@ -221,7 +224,7 @@ class ProgramObjectFormDT extends Form {
                 value={state.asuods_id}
                 onChange={this.handleChangeInfoObject}
                 boundKeys={['asuods_id']}
-                disabled={!IS_CREATING}
+                disabled={!IS_CREATING || !isPermitted}
                 clearable={false}
               />
             </Col>
@@ -229,16 +232,16 @@ class ProgramObjectFormDT extends Form {
           <div>
             <Row style={{ marginBottom: 20 }}>
               <Col md={12}>
-                <span style={{ fontWeight: 600 }}>Информаця об объекте</span>
+                <span style={{ fontWeight: 600 }}>Информация об объекте</span>
               </Col>
               <Col md={8}>
                 <Row>
                   <Col md={6}>
-                    <Col md={9}>Общая площадь по паспорту, кв.м:</Col>
+                    <Col md={9}>Общая площадь по паспорту, кв.м.:</Col>
                     <Col md={3}>{total_area}</Col>
                   </Col>
                   <Col md={6}>
-                    <Col md={9}>Площадь проезда, км.м:</Col>
+                    <Col md={9}>Площадь проезда, км.м.:</Col>
                     <Col md={3}>{0}</Col>
                   </Col>
                 </Row>
@@ -259,31 +262,30 @@ class ProgramObjectFormDT extends Form {
               </Col>
             </Row>
             <Row>
-              <Col md={12}>
-                <span style={{ fontWeight: 600, marginBottom: 10 }}>Подрядчик</span>
+              <Col md={12} style={{ fontWeight: 600, marginBottom: 5 }}>
+                <span >Подрядчик</span>
               </Col>
               <Col md={6}>
-                <span>Номер контракта</span>
                 <ExtField
                   type="string"
-                  value={state.contractor_number}
+                  label="Номер контракта"
+                  value={state.contract_number}
                   error={errors.name}
                   onChange={this.handleChange}
-                  boundKeys={['contractor_number']}
-                  disabled={false || !asuods_id}
+                  boundKeys={['contract_number']}
+                  disabled={!isPermitted}
                 />
               </Col>
               <Col style={{ marginBottom: 20 }} md={6}>
-                <span>Подрядчик</span>
                 <ExtField
                   type="select"
+                  label="Подрядчик"
                   error={errors.contractor_id}
                   options={CONTRACTOR_OPTIONS}
                   value={state.contractor_id}
                   onChange={this.handleChange}
                   boundKeys={['contractor_id']}
-                  disabled={false || !asuods_id}
-                  clearable={false}
+                  disabled={!isPermitted}
                 />
               </Col>
             </Row>
@@ -291,8 +293,7 @@ class ProgramObjectFormDT extends Form {
               <NavItem eventKey={OBJ_TAB_INDEX.PLAN}>План</NavItem>
               <NavItem eventKey={OBJ_TAB_INDEX.FACT} >Факт</NavItem>
             </Nav>
-            {
-              tabKey === OBJ_TAB_INDEX.FACT &&
+            <Div hidden={tabKey !== OBJ_TAB_INDEX.FACT}>
               <Row style={{ marginBottom: 20 }}>
                 <Col md={3}>
                   <div className="pr-object-data">
@@ -303,7 +304,7 @@ class ProgramObjectFormDT extends Form {
                 <Col md={3}>
                   <div className="pr-object-data">
                     <span>Процент выполнения</span>
-                    <span>{state.percent}</span>
+                    <span>{moment(state.reviewed_at).format(global.APP_DATE_FORMAT)}</span>
                   </div>
                 </Col>
                 <Col md={2} xsOffset={1}>
@@ -316,11 +317,11 @@ class ProgramObjectFormDT extends Form {
                   </Col>
                 </Col>
               </Row>
-            }
+            </Div>
             <Row>
               <Col md={7}>
                 <TabInfo
-                  isPermitted={!(false || !asuods_id)}
+                  isPermitted={!(!asuods_id || !isPermitted)}
                   whatSelectedTab={tabKey}
                   state={state}
                   errors={errors}
@@ -340,12 +341,12 @@ class ProgramObjectFormDT extends Form {
             </Row>
           </div>
         </Div>
-        {
-          !IS_CREATING && showPercentForm && false &&
-            <PercentModal
-              id={id}
-            />
-        }
+        <Div hidden={!showPercentForm}>
+          {/* Здесь форма процентов */ }
+          {/*
+            onHide={this.hidePercentForm};
+          */ }
+          </Div>
         <ModalBody />
         <Modal.Footer>
           <Button disabled={!this.props.canSave} onClick={this.handleSubmitWrap}>Сохранить</Button>

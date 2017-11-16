@@ -152,12 +152,21 @@ class FaxogrammList extends React.Component<any, any> {
   }
 
   handleChange = (field, value) => {
-    this.props.history.pushState(null, '/orders');
+    const {
+      routeParams: {
+        idOrder = '',
+      } = {},
+    } = this.props;
+    if (!!idOrder) {
+      this.props.history.pushState(null, '/orders');
+    }
     const pageOptions = {
       ...this.state.pageOptions,
       [field]: value,
     };
 
+    console.log(field, value)
+    console.log(pageOptions)
     this.getOrders({ [field]: value });
     const showHistoryComponent = false;
 
@@ -421,7 +430,7 @@ class FaxogrammList extends React.Component<any, any> {
       showHistoryComponent,
       historyOrder,
     } = this.state;
-
+    console.log(this.state)
     const {
       OrdersList = [],
     } = this.props;

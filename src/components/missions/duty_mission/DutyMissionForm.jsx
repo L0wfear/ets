@@ -56,14 +56,6 @@ export class DutyMissionForm extends Form {
       this.handleChange('car_mission_id', 0);
     }
     flux.getActions('missions').getMissions(v);
-
-    const routesList = await flux.getActions('routes')
-      .getRoutesByTechnicalOperation(v);
-    if (routesList.length === 1) {
-      this.handleRouteIdChange(routesList[0].id);
-    }
-
-    this.setState({ routesList });
   }
   isActiveEmployee(id) {
     return this.props.employeesList
@@ -485,7 +477,7 @@ export class DutyMissionForm extends Form {
                 type="select"
                 label="Маршрут"
                 error={errors.route_id}
-                disabled={IS_DISPLAY || !state.technical_operation_id || readOnly}
+                disabled={IS_DISPLAY || !state.municipal_facility_id || readOnly}
                 options={ROUTES}
                 value={state.route_id}
                 onChange={this.handleRouteIdChange.bind(this)}
@@ -493,7 +485,7 @@ export class DutyMissionForm extends Form {
               <Div hidden={state.route_id}>
                 <Button
                   onClick={this.createNewRoute.bind(this)}
-                  disabled={IS_DISPLAY || !state.technical_operation_id || readOnly}
+                  disabled={IS_DISPLAY || !state.municipal_facility_id || readOnly}
                 >Создать новый</Button>
               </Div>
             </Col>

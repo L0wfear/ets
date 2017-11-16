@@ -195,15 +195,18 @@ class ProgramObjectFormDT extends Form {
     } = this.state;
 
     const {
+      id,
+      name,
       asuods_id,
       info: {
         total_area = null,
       } = {},
     } = state;
 
-    const title = IS_CREATING ? 'Создание замечания (ДТ)' : 'Карточка дворовой территории капитального ремонта';
+    const title = IS_CREATING ? 'Создание карточки ДТ капитального ремонта.' : `Карточка ДТ капитального ремонта. Объект: ${name}. ID ${asuods_id}`;
 
     const CONTRACTOR_OPTIONS = contractorList.map(({ id: value, name: label }) => ({ value, label }));
+
     return (
       <Modal {...this.props} dialogClassName="modal-xlg" backdrop="static">
         <Modal.Header closeButton>

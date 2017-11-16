@@ -39,7 +39,7 @@ export default function getMapIcon(name = 'drugoe', zoom = 1) {
     cached = false;
   }
 
-
+  console.log(icons)
   if (!cached) {
     const line = 20 * DEVICE_PIXEL_RATIO * zoom;
     const canvas = document.createElement('canvas');
@@ -63,10 +63,14 @@ export function getIcon(id) {
 
 function loadIcon(name, data) {
   const img = new Image();
-  img.onload = function setName() {
+  img.onload = function setName(...arg) {
+    console.log('2')
+    console.log(name)
+    console.log(...arg)
     icons[name] = img;
   };
   img.src = data;
+  console.log('1', data)
 }
 
 // @todo load with forEach from ICON_MAP

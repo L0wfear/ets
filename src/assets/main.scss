@@ -2086,6 +2086,39 @@ body.application {
 
 }
 
+.custom-table {
+  cursor: pointer;
+  & .sm-active {
+    &>td {
+      background-color: $colorLightGreen;
+    }
+  }
+  & td {
+    &>div {
+      margin: 0 !important;
+    }
+    & label {
+      display: none !important;
+    }
+  }
+  & .form-group {
+    margin: 0;
+  }
+  & .Select {
+    margin: 0,
+  }
+}
+.no-label {
+  & label {
+    display: none;
+  }
+}
+
+.pr-object-data {
+  display: flex;
+  justify-content: space-between;
+}
+
 div.none {
   display: none !important;
 }

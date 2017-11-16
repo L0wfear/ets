@@ -27,6 +27,16 @@ class TablePrev extends React.Component<any, any> {
     this.props.handleChangeInTable(rowChange);
   }
 
+  handleClick = e => {
+    const {
+      currentTarget: {
+        rowIndex,
+      },
+    } = e;
+
+    this.props.handleRowClick(rowIndex);
+  }
+
   render() {
     const {
       isPermitted,
@@ -34,11 +44,14 @@ class TablePrev extends React.Component<any, any> {
       buttons = null,
       headerData = [],
       bodyData = [],
+      selectedRow = null,
       mainPropsFields = {},
+      errors,
     } = this.props;
+
     return (
       <div style={{
-        height: 150 + bodyData.length * 68,
+        height: 100 + bodyData.length * 68,
       }}>
         <div style={{
           display: 'flex',
@@ -49,12 +62,12 @@ class TablePrev extends React.Component<any, any> {
         </div>
         {
           !!bodyData.length &&
-          <Table bsClass="overflow-visible table" responsive>
+          <Table bsClass="custom-table overflow-visible table" responsive>
             <thead>
               <tr>
                 {
                   headerData.map(({ title: titleTH }, i) => (
-                    <th key={i} style={{ textAlign: 'centre' }}>{titleTH}</th>
+                    <th key={i} style={{ textAlign: 'center' }}>{titleTH}</th>
                   ))
                 }
               </tr>
@@ -62,16 +75,16 @@ class TablePrev extends React.Component<any, any> {
             <tbody>
               {
                 bodyData.map((row, numRow) => (
-                  <tr key={numRow}>
+                  <tr onClick={this.handleClick} className={selectedRow === numRow ? 'sm-active' : null}key={numRow}>
                     {
                       headerData.map(({ key, style }, numOne) => (
-                          <td key={numOne} style={{ ...style }}>
+                          <td key={numOne} style={{ ...style(numRow, row, errors) }}>
                             <ExtField
                               {...mainPropsFields[key]}
                               value={row[key]}
                               onChange={this.props.handleChange}
                               boundKeys={[numRow, key]}
-                              disabled={!isPermitted}
+                              disabled={!isPermitted || mainPropsFields[key].disabled}
                             />
                           </td>
                       ))

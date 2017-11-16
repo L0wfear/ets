@@ -33,14 +33,18 @@ class CompanyStructureForm extends Form {
       parent_type_is_dek = companyStructureLinearList.find(d => d.id === parent_id).type === 2;
     }
     if (!parent_id || !parent_type_is_dek) {
-      STRUCTURE_TYPES.push({ value: 2, label: 'ДЭК' })
+      STRUCTURE_TYPES.push({ value: 2, label: 'ДЭК' });
     }
+    const IS_CREATING = !state.id;
+
+    let title = 'Изменение сотрудника';
+    if (IS_CREATING) title = 'Создание сотрудника';
 
     return (
       <Modal {...this.props} backdrop="static">
 
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">Создание подразделения</Modal.Title>
+          <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
         </Modal.Header>
         <ModalBody>
           <Row>

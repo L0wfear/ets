@@ -423,11 +423,11 @@ class OrderList extends React.Component<any, any> {
       showHistoryComponent,
       historyOrder,
     } = this.state;
-    console.log(this.state)
+
     const {
       OrdersList = [],
     } = this.props;
-    console.log(faxSE)
+
     const canCreateMission = this.context.flux.getStore('session').getPermission('mission.create');
     const canCreateDutyMission = this.context.flux.getStore('session').getPermission('duty_mission.create');
 

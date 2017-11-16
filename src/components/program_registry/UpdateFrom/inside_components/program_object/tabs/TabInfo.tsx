@@ -5,8 +5,8 @@ import { createValidDate } from 'utils/dates';
 
 import { OBJ_TAB_INDEX } from '../ProgramObjectFormDT.h';
 
-import TablePrev from 'components/program_registry/UpdateFrom/inside_components/program_object/modals/Table';
-import { ITableMetaInfo } from 'components/program_registry/UpdateFrom/inside_components/program_object/modals/Table.h';
+import Table from 'components/program_registry/UpdateFrom/inside_components/program_object/utils/Table';
+import { ITableMetaInfo } from 'components/program_registry/UpdateFrom/inside_components/program_object/utils/Table.h';
 
 import { ExtField } from 'components/ui/Field.jsx';
 
@@ -59,32 +59,77 @@ const TableMeta: ITableMetaInfo = [
   },
 ];
 
+const Buttons: React.SFC<any> = props => {
+  const {
+    objectPropertyList = [],
+    state: {
+      elements = [],
+    },
+    isPermitted,
+    selectedRow = null,
+  } = props;
+
+  const disabled = !isPermitted || (elements.length >= objectPropertyList.length);
+
+  return (
+    <div>
+      <Button disabled={disabled} onClick={props.handleClickAddEl} >Добавить элемент</Button>
+      <Button disabled={selectedRow === null} onClick={props.handleClickOnRemove} >Удалить</Button>
+    </div>
+  );
+};
+
+const getFieldProps = props => {
+  const {
+    typeTab,
+    state: {
+      elements = [],
+    },
+    objectPropertyList = [],
+  } = props;
+
+  const selectedElements = elements.reduce((arr, { num, object_property_id }) => {
+    if (!!object_property_id) {
+      arr.push(object_property_id);
+    }
+    return arr;
+  }, []);
+
+  return {
+    object_property_id: {
+      type: 'select',
+      options: objectPropertyList.map(({ id: value, name: label }) => ({ value, label, disabled: selectedElements.includes(value) })),
+      disabled: typeTab === OBJ_TAB_INDEX.FACT,
+    },
+    value: {
+      type: 'string',
+      disabled: true,
+    },
+    measure_unit_name: {
+      type: 'string',
+      disabled: true,
+    },
+    plan: {
+      type: 'string',
+      disabled: typeTab === OBJ_TAB_INDEX.FACT,
+    },
+    fact: {
+      type: 'string',
+    },
+    warranty_up_to: {
+      type: 'date',
+      time: false,
+    },
+  };
+};
+
 class PlanTab extends React.Component<any, any> {
   state = {
     selectedRow: null,
   };
-  handleClickAddEl = () => {
-    this.props.pushElement();
-  }
-  getButtons = () => {
-    const {
-      objectPropertyList = [],
-      state: {
-        elements = [],
-      },
-    } = this.props;
 
-    const disabled = !this.props.isPermitted || (elements.length >= objectPropertyList.length);
-
-    return (
-      <div>
-        <Button disabled={disabled} onClick={this.handleClickAddEl} >Добавить элемент</Button>
-        <Button disabled={this.state.selectedRow === null} onClick={this.handleClickOnRemove} >Удалить</Button>
-      </div>
-    );
-  }
   handleChangeTable = (numRow, field, e) => {
-    const value = e !== undefined && e !== null && !!e.target ? e.target.value : e;
+    const valueNew = e !== undefined && e !== null && !!e.target ? e.target.value : e;
 
     const {
       state: {
@@ -95,36 +140,36 @@ class PlanTab extends React.Component<any, any> {
     } = this.props;
 
     const newElements = elements.map((d, i) => {
-      if (i === numRow) {
-        const newLine = { ...d };
-
-        if (field === 'object_property_id') {
-          const { measure_unit_name = null, original_name = null } = objectPropertyList.find(({ id }) => id === value) || {};
-
-          newLine.measure_unit_name = measure_unit_name;
-          newLine.value = selectedObj.data[original_name];
-
-          return {
-            ...newLine,
-            object_property_id: value,
-          };
-        }
-        if (field === 'warranty_up_to') {
-          newLine.warranty_up_to = createValidDate(value);
-          return {
-            ...newLine,
-            warranty_up_to: createValidDate(value),
-          };
-        }
-        return {
-          ...newLine,
-          [field]: value,
-        };
+      if (i !== numRow) {
+        return { ...d };
       }
-      return { ...d };
+      const newLine = { ...d };
+
+      if (field === 'object_property_id') {
+        const { measure_unit_name = null, original_name = null } = objectPropertyList.find(({ id }) => id === valueNew) || {};
+
+        newLine.measure_unit_name = measure_unit_name;
+        newLine.value = selectedObj.data[original_name];
+        newLine.object_property_id = valueNew;
+
+        return { ...newLine };
+      }
+      if (field === 'warranty_up_to') {
+        newLine.warranty_up_to = createValidDate(valueNew);
+        return { ...newLine };
+      }
+
+      return {
+        ...newLine,
+        [field]: valueNew,
+      };
     });
 
     this.props.handleChange('elements', newElements);
+  }
+
+  handleClickAddEl = () => {
+    this.props.pushElement();
   }
   handleClickOnRemove = () => {
     const {
@@ -137,56 +182,22 @@ class PlanTab extends React.Component<any, any> {
     } = this.props;
 
     const newElement = elements.filter((d, i) => i !== selectedRow);
+
     this.props.handleChange('elements', newElement);
     this.setState({ selectedRow: null });
   }
-  getFieldProps(typeTab) {
-    const {
-      state: {
-        elements = [],
-      },
-      objectPropertyList = [],
-    } = this.props;
-
-    const selectedElements = elements.reduce((arr, { num, object_property_id }) => {
-      if (!!object_property_id) {
-        arr.push(object_property_id);
-      }
-      return arr;
-    }, []);
-
-    return {
-      object_property_id: {
-        type: 'select',
-        options: objectPropertyList.map(({ id: value, name: label }) => ({ value, label, disabled: selectedElements.includes(value) })),
-        disabled: typeTab === OBJ_TAB_INDEX.FACT,
-      },
-      value: {
-        type: 'string',
-        disabled: true,
-      },
-      measure_unit_name: {
-        type: 'string',
-        disabled: true,
-      },
-      plan: {
-        type: 'string',
-        disabled: typeTab === OBJ_TAB_INDEX.FACT,
-      },
-      fact: {
-        type: 'string',
-      },
-      warranty_up_to: {
-        type: 'date',
-        time: false,
-      },
-    };
+  handleRowClick = index => {
+    this.setState({ selectedRow: index - 1 });
   }
 
   getDataByTypeTab: any = () => {
     const {
       whatSelectedTab,
+      state,
+      objectPropertyList,
+      isPermitted,
     } = this.props;
+    const { selectedRow } = this.state;
 
     switch (whatSelectedTab) {
       case OBJ_TAB_INDEX.PLAN: return {
@@ -194,9 +205,18 @@ class PlanTab extends React.Component<any, any> {
         date_from: 'plan_date_start',
         date_to: 'plan_date_end',
         titleTable: 'Элементы ДТ, запланированные к ремонту',
-        buttons: this.getButtons(),
+        buttons: (
+          <Buttons
+            state={state}
+            objectPropertyList={objectPropertyList}
+            isPermitted={isPermitted}
+            selectedRow={selectedRow}
+            handleClickAddEl={this.handleClickAddEl}
+            handleClickOnRemove={this.handleClickOnRemove}
+          />
+        ),
         tableMeta: TableMeta.filter(({ tabIncludes }) => tabIncludes.includes(OBJ_TAB_INDEX.PLAN)),
-        fieldProps: this.getFieldProps((OBJ_TAB_INDEX.PLAN)),
+        fieldProps: getFieldProps({ state, objectPropertyList, typeTab: OBJ_TAB_INDEX.PLAN }),
       };
       case OBJ_TAB_INDEX.FACT: return {
         label: 'Фактические даты проведения ромента',
@@ -205,7 +225,7 @@ class PlanTab extends React.Component<any, any> {
         titleTable: 'Элементы ДТ, фактически отремонтированные',
         buttons: null,
         tableMeta: TableMeta.filter(({ tabIncludes }) => tabIncludes.includes(OBJ_TAB_INDEX.FACT)),
-        fieldProps: this.getFieldProps((OBJ_TAB_INDEX.FACT)),
+        fieldProps: getFieldProps({ state, objectPropertyList, typeTab: OBJ_TAB_INDEX.PLAN }),
       };
       default: return {
         label: null,
@@ -217,10 +237,6 @@ class PlanTab extends React.Component<any, any> {
         fieldProps: {},
       };
     }
-  }
-
-  handleRowClick = index => {
-    this.setState({ selectedRow: index - 1 });
   }
 
   render() {
@@ -286,7 +302,7 @@ class PlanTab extends React.Component<any, any> {
           </Col>
         </Col>
         <Col md={12}>
-          <TablePrev
+          <Table
             title={titleTable}
             headerData={tableMeta}
             buttons={buttons}

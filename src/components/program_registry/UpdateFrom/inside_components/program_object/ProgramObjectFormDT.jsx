@@ -15,7 +15,6 @@ import ModalBody from 'components/ui/Modal';
 
 import TabInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/TabInfo.tsx';
 import MapInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/MapInfo.tsx';
-import PercentModal from 'components/program_registry/UpdateFrom/inside_components/program_object/modals/PercentModal.tsx';
 
 class ProgramObjectFormDT extends Form {
   static defaultProps = {
@@ -100,7 +99,7 @@ class ProgramObjectFormDT extends Form {
   setManualOnFalse = () => this.setState({ manual: false });
   setManualOnTrue = () => this.setState({ manual: false });
 
-  showPercentForm = () => this.setState({ showPercentForm: false });
+  showPercentForm = () => this.setState({ showPercentForm: true });
   hidePercentForm = () => this.setState({ showPercentForm: false });
 
   handleSubmitWrap = () => this.handleSubmit();
@@ -196,7 +195,6 @@ class ProgramObjectFormDT extends Form {
     } = this.state;
 
     const {
-      id,
       asuods_id,
       info: {
         total_area = null,
@@ -291,8 +289,7 @@ class ProgramObjectFormDT extends Form {
               <NavItem eventKey={OBJ_TAB_INDEX.PLAN}>План</NavItem>
               <NavItem eventKey={OBJ_TAB_INDEX.FACT} >Факт</NavItem>
             </Nav>
-            {
-              tabKey === OBJ_TAB_INDEX.FACT &&
+            <Div hidden={tabKey !== OBJ_TAB_INDEX.FACT}>
               <Row style={{ marginBottom: 20 }}>
                 <Col md={3}>
                   <div className="pr-object-data">
@@ -316,7 +313,7 @@ class ProgramObjectFormDT extends Form {
                   </Col>
                 </Col>
               </Row>
-            }
+            </Div>
             <Row>
               <Col md={7}>
                 <TabInfo
@@ -340,12 +337,12 @@ class ProgramObjectFormDT extends Form {
             </Row>
           </div>
         </Div>
-        {
-          !IS_CREATING && showPercentForm && false &&
-            <PercentModal
-              id={id}
-            />
-        }
+        <Div hidden={!showPercentForm}>
+          {/* Здесь форма процентов */ }
+          {/*
+            onHide={this.hidePercentForm};
+          */ }
+          </Div>
         <ModalBody />
         <Modal.Footer>
           <Button disabled={!this.props.canSave} onClick={this.handleSubmitWrap}>Сохранить</Button>

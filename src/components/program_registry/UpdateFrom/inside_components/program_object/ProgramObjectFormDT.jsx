@@ -228,16 +228,16 @@ class ProgramObjectFormDT extends Form {
           <div>
             <Row style={{ marginBottom: 20 }}>
               <Col md={12}>
-                <span style={{ fontWeight: 600 }}>Информаця об объекте</span>
+                <span style={{ fontWeight: 600 }}>Информация об объекте</span>
               </Col>
               <Col md={8}>
                 <Row>
                   <Col md={6}>
-                    <Col md={9}>Общая площадь по паспорту, кв.м:</Col>
+                    <Col md={9}>Общая площадь по паспорту, кв.м.:</Col>
                     <Col md={3}>{total_area}</Col>
                   </Col>
                   <Col md={6}>
-                    <Col md={9}>Площадь проезда, км.м:</Col>
+                    <Col md={9}>Площадь проезда, км.м.:</Col>
                     <Col md={3}>{0}</Col>
                   </Col>
                 </Row>

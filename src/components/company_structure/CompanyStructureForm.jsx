@@ -33,7 +33,7 @@ class CompanyStructureForm extends Form {
       parent_type_is_dek = companyStructureLinearList.find(d => d.id === parent_id).type === 2;
     }
     if (!parent_id || !parent_type_is_dek) {
-      STRUCTURE_TYPES.push({ value: 2, label: 'ДЭК' })
+      STRUCTURE_TYPES.push({ value: 2, label: 'ДЭК' });
     }
     const IS_CREATING = !state.id;
 

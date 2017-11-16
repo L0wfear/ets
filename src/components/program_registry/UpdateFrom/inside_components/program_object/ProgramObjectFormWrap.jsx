@@ -77,7 +77,7 @@ class ProgramObjectFormWrap extends FormWrap {
   }
 
   getFormDt() {
-    const { entity, isPermitted = false } = this.props;
+    const { entity, isPermitted = true } = this.props;
     const { saveButtonEnability = true } = this.state;
     const canSave = isPermitted && this.state.canSave && saveButtonEnability;
 
@@ -88,13 +88,13 @@ class ProgramObjectFormWrap extends FormWrap {
         formErrors={this.state.formErrors}
         permissions={[`${entity}.update`]}
         addPermissionProp
-        isPermitted={isPermitted}
         canSave={canSave}
         onSubmit={this.handleFormSubmit.bind(this)}
         handleFormChange={this.handleFormStateChange.bind(this)}
         handleMultiChange={this.handleMultiChange}
         show={this.props.showForm}
         onHide={this.props.onFormHide}
+        isPermitted={isPermitted && (this.props.program_version_status !== 'accepted')}
       />
     );
   }

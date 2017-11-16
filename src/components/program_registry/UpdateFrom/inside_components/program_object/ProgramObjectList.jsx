@@ -156,16 +156,6 @@ export default class ProgramRemarkList extends CheckableElementsList {
     });
   }
 
-  checkDisabledDelete = () => {
-    const {
-      program_version_status,
-    } = this.props;
-    return (
-      super.checkDisabledDelete() ||
-      program_version_status === 'accepted'
-    );
-  }
-
   /**
    * @override
    */
@@ -181,7 +171,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
         buttonName={'Удалить'}
         key={0}
         onClick={this.removeCheckedElements}
-        disabled={this.checkDisabledDelete()}
+        disabled={this.checkDisabledDelete() || program_version_status === 'accepted'}
         permissions={[`${entity}.delete`]}
       />,
       <ButtonRead

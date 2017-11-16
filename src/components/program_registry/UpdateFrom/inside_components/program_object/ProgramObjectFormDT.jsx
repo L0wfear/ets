@@ -184,6 +184,7 @@ class ProgramObjectFormDT extends Form {
       tabKey,
       contractorList = [],
       dtPolys = [],
+      isPermitted,
     } = this.props;
 
     const {
@@ -223,7 +224,7 @@ class ProgramObjectFormDT extends Form {
                 value={state.asuods_id}
                 onChange={this.handleChangeInfoObject}
                 boundKeys={['asuods_id']}
-                disabled={!IS_CREATING}
+                disabled={!IS_CREATING || !isPermitted}
                 clearable={false}
               />
             </Col>
@@ -272,7 +273,7 @@ class ProgramObjectFormDT extends Form {
                   error={errors.name}
                   onChange={this.handleChange}
                   boundKeys={['contract_number']}
-                  disabled={false}
+                  disabled={!isPermitted}
                 />
               </Col>
               <Col style={{ marginBottom: 20 }} md={6}>
@@ -284,7 +285,7 @@ class ProgramObjectFormDT extends Form {
                   value={state.contractor_id}
                   onChange={this.handleChange}
                   boundKeys={['contractor_id']}
-                  disabled={false}
+                  disabled={!isPermitted}
                 />
               </Col>
             </Row>
@@ -320,7 +321,7 @@ class ProgramObjectFormDT extends Form {
             <Row>
               <Col md={7}>
                 <TabInfo
-                  isPermitted={!(false || !asuods_id)}
+                  isPermitted={!(!asuods_id || !isPermitted)}
                   whatSelectedTab={tabKey}
                   state={state}
                   errors={errors}

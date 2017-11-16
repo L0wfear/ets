@@ -32,7 +32,7 @@ export default class CompanyStructure extends ElementsList {
     const { companyStructureLinearList = [] } = this.props;
     const selectedElement = companyStructureLinearList.find(el => el.id ? el.id === id : el[this.selectField] === id);
     
-    this.setState({ showForm: true, selectedElement, nameOfForm: 'Редактирование подразделения' });
+    this.setState({ showForm: true, selectedElement });
   }
 
   deleteElement = (id, e) => {
@@ -41,11 +41,6 @@ export default class CompanyStructure extends ElementsList {
     if (confirm('Вы уверены, что хотите удалить выбранный элемент?')) {
       this.context.flux.getActions('companyStructure').deleteCompanyElement(id);
     }
-  }
-
-  changeNameOfForm = () => {
-    this.setState({ nameOfForm: 'Создание подразделения' });
-    this.createElement();
   }
 
   render() {
@@ -59,13 +54,12 @@ export default class CompanyStructure extends ElementsList {
           onActionDelete={this.deleteElement}
           entity={this.entity}
         >
-          <Button bsSize="small" permissions={[`${this.entity}.create`]} onClick={this.changeNameOfForm}><Glyphicon glyph="plus" /> Добавить подразделение</Button>
+          <Button bsSize="small" permissions={[`${this.entity}.create`]} onClick={this.createElement}><Glyphicon glyph="plus" /> Добавить подразделение</Button>
         </CompanyStructureTable>
         <CompanyStructureFormWrap
           onFormHide={this.onFormHide}
           element={this.state.selectedElement}
           showForm={this.state.showForm}
-          nameOfForm={this.state.nameOfForm}
           {...this.props}
         />
       </div>

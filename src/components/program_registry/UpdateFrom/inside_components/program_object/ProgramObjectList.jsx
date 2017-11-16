@@ -1,15 +1,11 @@
 import * as React from 'react';
-import { Button as BootstrapButton } from 'react-bootstrap';
 
 import { connectToStores, staticProps } from 'utils/decorators';
-import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { ButtonCreate, ButtonRead, ButtonDelete } from 'components/ui/buttons/CRUD';
 
 import ProgramObjectTable from './ProgramObjectTable';
 import ProgramObjectFormWrap from './ProgramObjectFormWrap';
-
-const Button = enhanceWithPermissions(BootstrapButton);
 
 const bodyConfirmDialogs = {
   remove(countCheckedElement) {
@@ -60,8 +56,8 @@ export default class ProgramRemarkList extends CheckableElementsList {
   /**
    * @override
    */
-  removeElement = () => {
-    return confirmDialog({
+  removeElement = () =>
+    confirmDialog({
       title: 'Внимание',
       body: bodyConfirmDialogs.remove(1),
     })
@@ -77,7 +73,6 @@ export default class ProgramRemarkList extends CheckableElementsList {
       });
     })
     .catch(() => {});
-  }
 
   defActionFunc = ({
     bodyConfirmDialog,
@@ -125,8 +120,8 @@ export default class ProgramRemarkList extends CheckableElementsList {
   createDT = () => {
     const {
       program_version_id,
-      contract_number: contractor_number,
-      contract_id: contractor_id,
+      contract_number,
+      contractor_id,
     } = this.props;
 
     this.setState({
@@ -135,7 +130,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
       selectedElement: {
         type_slug: 'dt',
         program_version_id,
-        contractor_number,
+        contract_number,
         contractor_id,
         elements: [],
       },
@@ -144,8 +139,8 @@ export default class ProgramRemarkList extends CheckableElementsList {
   createODH = () => {
     const {
       program_version_id,
-      contract_number: contractor_number,
-      contract_id: contractor_id,
+      contract_number,
+      contractor_id,
     } = this.props;
 
     this.setState({
@@ -154,13 +149,12 @@ export default class ProgramRemarkList extends CheckableElementsList {
       selectedElement: {
         type_slug: 'odh',
         program_version_id,
-        contractor_number,
+        contract_number,
         contractor_id,
         elements: [],
       },
     });
   }
-
 
   /**
    * @override
@@ -168,6 +162,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
   getButtons = () => {
     const entity = this.constructor.entity;
     const {
+      repair_type_name,
       program_version_status,
     } = this.props;
 
@@ -176,7 +171,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
         buttonName={'Удалить'}
         key={0}
         onClick={this.removeCheckedElements}
-        disabled={this.checkDisabledDelete()}
+        disabled={this.checkDisabledDelete() || program_version_status === 'accepted'}
         permissions={[`${entity}.delete`]}
       />,
       <ButtonRead
@@ -191,13 +186,14 @@ export default class ProgramRemarkList extends CheckableElementsList {
         key={2}
         onClick={this.createDT}
         permissions={[`${entity}.update`]}
+        disabled={program_version_status === 'accepted' || repair_type_name !== 'Капитальный'}
       />,
       <ButtonCreate
         buttonName={'Добавить ОДХ'}
         key={3}
         onClick={this.createODH}
         disabled
-        permissions={[`${entity}.update`]}
+        permissions={[`${entity}.false`]}
       />,
     ];
 
@@ -213,9 +209,9 @@ export default class ProgramRemarkList extends CheckableElementsList {
     flux.getActions('repair').getRepairListByType('objects', { program_version_id });
   }
 
-  getAdditionalProps = () => {
-    return {
+  getAdditionalProps = () => (
+    {
       displayTable: true,
-    };
-  }
+    }
+  )
 }

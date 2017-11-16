@@ -32,6 +32,20 @@ function calculateWaybillMetersDiff(waybill, field, value) {
   return waybill;
 }
 
+const checkInfoFromAns = ({ info = [] }) => {
+  info.forEach((oneInfo) => {
+    global.NOTIFICATION_SYSTEM.notify({
+      title: '',
+      message: oneInfo,
+      level: 'info',
+      dismissible: true,
+      position: 'tr',
+      autoDismiss: 0,
+    });
+  });
+};
+
+
 @FluxContext
 @autobind
 export default class WaybillFormWrap extends FormWrap {
@@ -107,6 +121,11 @@ export default class WaybillFormWrap extends FormWrap {
               canPrint: false,
               canSave: !_.filter(formErrors, (v, k) => ['fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length,
               canClose: !_.filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length,
+            });
+          } else {
+            this.setState({
+              formState: waybill,
+              formErrors: {},
             });
           }
         } else if (props.element.status === 'draft') {
@@ -250,6 +269,7 @@ export default class WaybillFormWrap extends FormWrap {
       if (typeof callback === 'function') {
         formState.status = 'draft';
         const r = await flux.getActions('waybills').createWaybill(formState);
+
         // TODO сейчас возвращается один ПЛ
         const id = _.max(r.result, res => res.id).id;
         try {
@@ -272,7 +292,8 @@ export default class WaybillFormWrap extends FormWrap {
       } else {
         formState.status = 'draft';
         try {
-          await flux.getActions('waybills').createWaybill(formState);
+          const r = await flux.getActions('waybills').createWaybill(formState);
+          checkInfoFromAns(r);
         } catch (e) {
           console.log(e);
           return;
@@ -285,7 +306,8 @@ export default class WaybillFormWrap extends FormWrap {
         formState.fact_departure_date = formState.plan_departure_date;
         formState.fact_arrival_date = formState.plan_arrival_date;
         try {
-          await flux.getActions('waybills').updateWaybill(formState);
+          const r = await flux.getActions('waybills').updateWaybill(formState);
+          checkInfoFromAns(r);
         } catch (e) {
           return;
         }
@@ -293,7 +315,8 @@ export default class WaybillFormWrap extends FormWrap {
         (await this.props.onCallback()) && this.props.onCallback();
       } else {
         try {
-          await flux.getActions('waybills').updateWaybill(formState);
+          const r = await flux.getActions('waybills').updateWaybill(formState);
+          checkInfoFromAns(r);
         } catch (e) {
           return;
         }

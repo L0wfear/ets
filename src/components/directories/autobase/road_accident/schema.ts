@@ -39,7 +39,7 @@ export const formValidationSchema: IValidationSchema = {
     },
     {
       key: 'comment',
-      title: 'Примечание прохождения',
+      title: 'Примечание',
       type: 'string',
       maxLength: 2048,
     },

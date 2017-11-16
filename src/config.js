@@ -25,12 +25,12 @@ const DOC_URL = {
 const config = {
   develop: {
     ws: `${WS_PROTO}//ods.mos.ru/ssd/city-dashboard/stream`,
-    images: 'http://ods.mos.ru/ssd/ets/data/images/',
+    images: 'https://ods.mos.ru/ssd/ets/data/images/',
     docs: DOC_URL.develop[process.env.STAND],
   },
   origin: {
     ws: `${WS_PROTO}//ods.mos.ru/ssd/city-dashboard/stream`,
-    images: 'http://ods.mos.ru/ssd/ets/data/images/',
+    images: `${PROTO}//ods.mos.ru/ssd/ets/data/images/`,
     docs: DOC_URL.origin[process.env.STAND],
   },
 };

@@ -296,6 +296,8 @@ export default class RepairActions extends Actions {
       plan_shape_json: JSON.stringify(Object.values(formState.polys)[0].shape),
       plan_date_start: createValidDate(formState.plan_date_start),
       plan_date_end: createValidDate(formState.plan_date_end),
+      fact_date_start: createValidDate(formState.fact_date_start),
+      fact_date_end: createValidDate(formState.fact_date_end),
     };
     delete payload.polys;
 

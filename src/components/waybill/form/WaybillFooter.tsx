@@ -39,7 +39,7 @@ const WaybillFooter: React.SFC<IPropsWaybillFooter> = props =>
         </Dropdown.Menu>
       </Dropdown>&nbsp;
     </Div>
-    <Div permissions={['waybill.update_closed']} className={'inline-block'} hidden={props.state.status === 'closed' && !props.state.canEditIfClose}>
+    <Div oneOfPermissions={['waybill.update_closed', 'waybill.update']} className={'inline-block'} hidden={props.state.status === 'closed' && !props.state.canEditIfClose}>
       <Button onClick={props.handleSubmit} disabled={!props.canSave && !props.state.canEditIfClose}>Сохранить</Button>
     </Div>
     <Div className={'inline-block'} style={{ marginLeft: 4 }} hidden={props.state.status === 'closed' || !(props.formState.status && props.formState.status === 'active')}>

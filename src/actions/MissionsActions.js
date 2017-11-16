@@ -351,8 +351,8 @@ export default class MissionsActions extends Actions {
     };
     return Cleaning.path(type).get(payload, false, 'json');
   }
-  getCleaningByTypeInActiveMission({ type, norm_id }) {
-    return Cleaning.path(`${type}/${norm_id}`).get({}, false, 'json');
+  getCleaningByTypeInActiveMission({ type, norm_id, datetime }) {
+    return Cleaning.path(`${type}/${norm_id}`).get({ datetime }, false, 'json');
   }
   getCleaningMunicipalFacilityList(outerPyload) {
     const payload = {

@@ -2086,6 +2086,39 @@ body.application {
 
 }
 
+.custom-table {
+  cursor: pointer;
+  & .sm-active {
+    &>td {
+      background-color: $colorLightGreen;
+    }
+  }
+  & td {
+    &>div {
+      margin: 0 !important;
+    }
+    & label {
+      display: none !important;
+    }
+  }
+  & .form-group {
+    margin: 0;
+  }
+  & .Select {
+    margin: 0,
+  }
+}
+.no-label {
+  & label {
+    display: none;
+  }
+}
+
+.pr-object-data {
+  display: flex;
+  justify-content: space-between;
+}
+
 div.none {
   display: none !important;
 }
@@ -2409,7 +2442,19 @@ div.none {
   .route-odhs-on-map {
     border: none;
   }
+}
 
+.object-tab-plan {
+  position: relative;
+  min-height: 500px;
+  .openlayers-container {
+    height: 492px;
+    margin-top: 11px;
+    order: 1px solid #ccc;
+  }
+  .route-odhs-on-map {
+    border: none;
+  }
 }
 .overflow-scroll {
   overflow-y:scroll;
@@ -2788,7 +2833,9 @@ div.none {
     width: 1240px !important;
   }
 }
-
+.modal-xlg {
+  width: 95% !important;
+}
 
 .route-creating {
   .openlayers-container {

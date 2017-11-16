@@ -19,7 +19,7 @@ function StringField(props) {
   if (isLoading) {
     return (
       <Div hidden={hidden}>
-        <label style={{ paddingTop: 5 }}>{label}</label><br />
+        <label style={{ paddingTop: 5 }}>{label}</label>)<br />
         <Preloader type="field" />
       </Div>
     );
@@ -28,7 +28,7 @@ function StringField(props) {
   return !readOnly ?
     <Div hidden={hidden} style={wrapStyle || {}}>
       <div className="form-group">
-        { label && <label className="control-label"><span>{label}</span></label>}
+        <label className="control-label"><span>{label}</span></label>
         <FormControl type="text" disabled={disabled} className={inputClassName} {...props} />
       </div>
       <Div hidden={!error} className="error">{error}</Div>
@@ -108,7 +108,7 @@ export default class Field extends React.Component {
     return (
       <Div hidden={this.props.hidden}>
         <div className="form-group">
-          { this.props.label && <label className="control-label"><span>{this.props.label}</span></label>}
+          <label className="control-label"><span>{this.props.label}</span></label>
           <FormControl type="number" className={inputClassName} {...this.props} />
         </div>
         <Div hidden={!error} className="error">{error}</Div>
@@ -117,12 +117,12 @@ export default class Field extends React.Component {
   }
 
   renderDate() {
-    const { error, label = '', readOnly = false } = this.props;
+    const { error, label = '', readOnly = false, date, value } = this.props;
     const dateClassName = cx({ 'has-error': error });
     return (
       <Div hidden={this.props.hidden} style={{ marginBottom: 15 }}>
         <label style={{ minHeight: 15 }}>{label}</label>
-        <DatePicker {...this.props} className={dateClassName} />
+        <DatePicker {...this.props} date={date || value} className={dateClassName} />
         <Div hidden={!error} className="error" style={{ marginTop: 4 }}>{error}</Div>
       </Div>
     );

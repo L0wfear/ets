@@ -17,7 +17,11 @@ import { FileField } from 'components/ui/input/fields';
 
 import Form from 'components/compositions/Form.jsx';
 
-import MakeVersionFrom from './WorkForm/MakeVersionFrom.tsx';
+import {
+  ProgramRemarkList,
+  ProgramObjectList,
+} from './inside_components';
+import MakeVersionFrom from './MakeVersionFrom.tsx';
 
 const TextMakeVersion = (
   <Row>
@@ -25,6 +29,17 @@ const TextMakeVersion = (
     <Col md={12} style={{ marginBottom: 5 }}>Если Вы уверены, что хотите продолжить, то необходимо приложить скан-копию документа, на основании которого создается новая версия.</Col>
   </Row>
 );
+
+const getTitleByStatus = (status) => {
+  switch (status) {
+    case 'draft': return 'Программа ремонта. Черновик';
+    case 'sent_on_review': return 'Программа ремонта. Отправлена на согласование';
+    case 'accepted': return 'Программа ремонта. Согласована';
+    case 'rejected': return 'Программа ремонта. Не согласована';
+    case 'closed': return 'Программа ремонта. Выполнена';
+    default: return 'Программа ремонта. Редактирование';
+  }
+};
 
 @loadingOverlay
 @connectToStores(['repair', 'objects'])
@@ -101,9 +116,10 @@ export default class ProgramRegistryForm extends Form {
 
     const {
       is_active = false,
+      status = 'draft',
     } = state;
-    const title = 'Создание программы ремонта';
 
+    const title = getTitleByStatus(status);
     return (
       <div>
         <MakeVersionFrom
@@ -259,7 +275,7 @@ export default class ProgramRegistryForm extends Form {
               <Col md={6}>
                 <ExtField
                   type="string"
-                  label="№ договора"
+                  label="№ контракта"
                   value={state.contract_number}
                   error={errors.contract_number}
                   onChange={this.handleChange}
@@ -295,6 +311,23 @@ export default class ProgramRegistryForm extends Form {
                   disabled={!isPermitted || !isPermittedByStatus || !is_active}
                 />
               </Col>
+            </Row>
+            <Row>
+              {state.id &&
+                <Col md={12}>
+                  <ProgramObjectList
+                    program_version_id={state.id}
+                    program_version_status={state.status}
+                    contract_number={state.contract_number}
+                    contractor_id={state.contractor_id}
+                    repair_type_name={state.repair_type_name}
+                  />
+                  <ProgramRemarkList
+                    program_version_id={state.id}
+                    program_version_status={state.status}
+                  />
+                </Col>
+              }
             </Row>
           </Div>
           <ModalBody />

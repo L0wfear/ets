@@ -9,7 +9,6 @@ import {
 } from 'react-bootstrap';
 
 import config from 'config';
-import { autobind } from 'core-decorators';
 import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
 import ModalTP from 'components/modalTP/ModalTP.tsx';
 
@@ -77,8 +76,7 @@ export default class MainPage extends React.Component {
     });
   }
 
-  @autobind
-  logout() {
+  logout = () => {
     const { flux, history } = this.context;
     flux.getActions('session').logout().then(() => {
       history.pushState(null, '/login');

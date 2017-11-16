@@ -1,7 +1,7 @@
 import { Actions } from 'flummox';
 
 import { createValidDate } from 'utils/dates';
-import { Repair } from 'api/Services';
+import { Repair, ObjectProperty } from 'api/Services';
 import REPAIR from '../constants/repair';
 
 const parsePutPath = (entity, method, formState, idKey = 'id') => `${entity}/${method === 'put' ? formState[idKey] : ''}`;
@@ -20,6 +20,40 @@ export default class RepairActions extends Actions {
       data: response,
       ...other,
     };
+  }
+
+  async getObjectProperty(data, other) {
+    const payload = {
+      ...data,
+    };
+
+    const response = await ObjectProperty.get(payload);
+
+    return {
+      type: 'objectProperty',
+      data: response,
+      ...other,
+    };
+  }
+
+  getDataAboutObjectById(id) {
+    const trueType = REPAIR.progress;
+    const payload = {
+      object_id: id,
+    };
+    return Repair.path(trueType).get(payload).then(({ result: { rows: [objData] } }) => objData);
+  }
+
+  postDataToUpdateObject({ id }) {
+    const trueType = REPAIR.progress;
+    console.log('hello')
+    const payload = {
+      object_id: id,
+      reviewed_at: createValidDate(new Date()),
+      percent: 1,
+      comment: '123123',
+    };
+    return Repair.path(trueType).post(payload, false, 'json');
   }
 
   async getAllVersionsById(id) {
@@ -204,6 +238,89 @@ export default class RepairActions extends Actions {
     return Repair.path(`${path}/${type}`).put(
       withForm ? payload : {},
       this.getRepairListByType.bind(null, 'programRegistry'),
+      'json',
+    );
+  }
+
+  /* DITETS-2014 */
+  programRemark(method, formState) {
+    const payload = {
+      ...formState,
+    };
+    const { programRemark } = REPAIR;
+    const {
+      program_version_id,
+    } = formState;
+
+    const path = parsePutPath(programRemark, method, formState);
+
+    return Repair.path(path)[method](
+      payload,
+      this.getRepairListByType.bind(null, 'programRemarkRegistry', { program_version_id }),
+      'json',
+    );
+  }
+
+  removeProgramRemark(id) {
+    const { programRemark } = REPAIR;
+
+    return Repair.path(`${programRemark}/${id}`).delete(
+      {},
+      false,
+      'json',
+    );
+  }
+  rejectRemarks(id) {
+    const { programRemark } = REPAIR;
+
+    return Repair.path(`${programRemark}/${id}/reject`).put(
+      {},
+      false,
+      'json',
+    );
+  }
+  fixRemarks(id) {
+    const { programRemark } = REPAIR;
+
+    return Repair.path(`${programRemark}/${id}/fix`).put(
+      {},
+      false,
+      'json',
+    );
+  }
+
+  /* DITETS-2388 */
+  programObject(method, formState) {
+    const payload = {
+      ...formState,
+      plan_shape_json: JSON.stringify(Object.values(formState.polys)[0].shape),
+      plan_date_start: createValidDate(formState.plan_date_start),
+      plan_date_end: createValidDate(formState.plan_date_end),
+      fact_date_start: createValidDate(formState.fact_date_start),
+      fact_date_end: createValidDate(formState.fact_date_end),
+    };
+    delete payload.polys;
+
+    const { objects } = REPAIR;
+    const {
+      program_version_id,
+    } = formState;
+
+    const path = parsePutPath(objects, method, formState);
+
+    return Repair.path(path)[method](
+      payload,
+      this.getRepairListByType.bind(null, 'objects', { program_version_id }),
+      'json',
+    );
+  }
+
+  removeProgramObject(id) {
+    const { objects } = REPAIR;
+
+    return Repair.path(`${objects}/${id}`).delete(
+      {},
+      false,
       'json',
     );
   }

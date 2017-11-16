@@ -2,7 +2,7 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import REPAIR from 'constants/repair';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import ProgramRegistryTable from './ProgramRegistryTable.tsx';
-import ProgramRegistryFormWrap from './ProgramRegistryFormWrap';
+import ProgramRegistrySwitch from './ProgramRegistrySwitch.tsx';
 
 @connectToStores(['repair', 'session'])
 @exportable({ entity: `repair/${REPAIR.programRegistry}` })
@@ -10,7 +10,7 @@ import ProgramRegistryFormWrap from './ProgramRegistryFormWrap';
   entity: 'repair_program',
   listName: 'programRegistryList',
   tableComponent: ProgramRegistryTable,
-  formComponent: ProgramRegistryFormWrap,
+  formComponent: ProgramRegistrySwitch,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
   selectField: 'version_id',
 })

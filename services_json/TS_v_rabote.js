@@ -1,4 +1,4 @@
-// /GET http://ods.mos.ru/ssd/ets/services/dashboard/car_in_work_overall/
+// /GET https://ods.mos.ru/ssd/ets/services/dashboard/car_in_work_overall/
 response:
 {
   errors: [],

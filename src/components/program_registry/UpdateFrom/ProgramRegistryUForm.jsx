@@ -30,6 +30,17 @@ const TextMakeVersion = (
   </Row>
 );
 
+const getTitleByStatus = (status) => {
+  switch(status) {
+    case 'draft': return 'Программа ремонта. Черновик';
+    case 'sent_on_review': return 'Программа ремонта. Отправлена на согласование';
+    case 'accepted': return 'Программа ремонта. Согласована';
+    case 'rejected': return 'Программа ремонта. Не согласована';
+    case 'closed': return 'Программа ремонта. Выполнена';
+    default: return 'Программа ремонта. Редактирование'
+  }
+}
+
 @loadingOverlay
 @connectToStores(['repair', 'objects'])
 export default class ProgramRegistryForm extends Form {
@@ -105,9 +116,10 @@ export default class ProgramRegistryForm extends Form {
 
     const {
       is_active = false,
+      status = 'draft',
     } = state;
-    const title = 'Создание программы ремонта';
 
+    const title = getTitleByStatus(status);
     return (
       <div>
         <MakeVersionFrom

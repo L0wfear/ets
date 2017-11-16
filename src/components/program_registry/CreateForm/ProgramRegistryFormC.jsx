@@ -35,10 +35,8 @@ export default class ProgramRegistryForm extends Form {
         repairTypeOptions = [],
       },
     } = this.props;
-    const IS_CREATING = !state.id;
 
-    let title = 'Изменение записи';
-    if (IS_CREATING) title = 'Создание записи';
+    const title = 'Создание программы ремонта';
 
     return (
       <Modal {...this.props} backdrop="static">

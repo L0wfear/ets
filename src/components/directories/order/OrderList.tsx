@@ -22,7 +22,7 @@ const PaginatorTsx: any = Paginator;
 const MAX_ITEMS_PER_PAGE = 15;
 
 @FluxContext
-class FaxogrammList extends React.Component<any, any> {
+class OrderList extends React.Component<any, any> {
   context: any;
   constructor(props) {
     super(props);
@@ -47,7 +47,7 @@ class FaxogrammList extends React.Component<any, any> {
         filter: {},
         haveMax: !idOrder,
       },
-      selectedElementFaxogramm: null,
+      selectedElementOrder: null,
       selectedElementAssignment: null,
       missionData: {},
       showHistoryComponent: false,
@@ -66,11 +66,11 @@ class FaxogrammList extends React.Component<any, any> {
 
     this.getOrders({ countPerPage: !!outerIdFax ? 10000 : MAX_ITEMS_PER_PAGE }).then(({ result = [] }) => {
       if (!isNaN(outerIdFax)) {
-        const selectedElementFaxogramm = result.find(({ id }) => id === outerIdFax);
-        if (selectedElementFaxogramm) {
+        const selectedElementOrder = result.find(({ id }) => id === outerIdFax);
+        if (selectedElementOrder) {
           this.setState({
             ...this.state,
-            selectedElementFaxogramm,
+            selectedElementOrder,
           });
         }
       }
@@ -140,11 +140,12 @@ class FaxogrammList extends React.Component<any, any> {
     } = props;
     const outerIdFax = Number.parseInt(idOrder, 0);
 
-    const selectedElementFaxogramm = this.props.OrdersList.find(({ id }) => id === outerIdFax) || null;
-    this.setState({
-      ...this.state,
-      selectedElementFaxogramm,
-    });
+    if (outerIdFax) {
+      const selectedElementOrder = this.props.OrdersList.find(({ id }) => id === outerIdFax) || null;
+      this.setState({
+        selectedElementOrder,
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -165,15 +166,13 @@ class FaxogrammList extends React.Component<any, any> {
       [field]: value,
     };
 
-    console.log(field, value)
-    console.log(pageOptions)
     this.getOrders({ [field]: value });
     const showHistoryComponent = false;
 
     this.setState({
       ...this.state,
       pageOptions,
-      selectedElementFaxogramm: null,
+      selectedElementOrder: null,
       selectedElementAssignment: null,
       showHistoryComponent,
     });
@@ -197,30 +196,28 @@ class FaxogrammList extends React.Component<any, any> {
   getOrderHistory = id => this.context.flux.getActions('objects').getOrderHistoryById(id);
   showOrderHistory = ({ result: { rows = [] } = {} }) => {
     this.setState({
-      ...this.state,
       showHistoryComponent: true,
       historyOrder: rows,
     });
   }
 
-  onRowSelectedFaxogramm = ({ props: { data: selectedElementFaxogramm } }) => {
-    const { id } = selectedElementFaxogramm;
+  onRowSelectedOrder = ({ props: { data: selectedElementOrder } }) => {
+    const { id } = selectedElementOrder;
     this.getOrderHistory(id).then(this.showOrderHistory);
     this.setState({
       ...this.state,
-      selectedElementFaxogramm,
+      selectedElementOrder,
       showHistoryComponent: false,
     });
   }
   onRowSelectedAssignment = ({ props: { data: selectedElementAssignment } }) => {
     this.setState({
-      ...this.state,
       selectedElementAssignment,
     });
   }
 
   checkDisabledCM = () => {
-    const sEF = this.state.selectedElementFaxogramm;
+    const sEF = this.state.selectedElementOrder;
     const sEA = this.state.selectedElementAssignment;
 
     if (!sEA || !sEF) {
@@ -249,15 +246,14 @@ class FaxogrammList extends React.Component<any, any> {
         order_operation_id,
         norm_id,
       },
-    } = this.state;
-    const {
-      selectedElementFaxogramm: {
+      selectedElementOrder: {
         id: faxogramm_id,
         order_date,
         order_date_to,
         order_number,
       },
     } = this.state;
+
     const { missionSourcesList = [] } = this.props;
 
     const mElement = {
@@ -280,13 +276,11 @@ class FaxogrammList extends React.Component<any, any> {
     missionData.initMission = initMission;
 
     this.setState({
-      ...this.state,
       missionData,
     });
   }
   onHideCM = () =>
     this.setState({
-      ...this.state,
       missionData: {
         showForm: false,
       },
@@ -317,15 +311,14 @@ class FaxogrammList extends React.Component<any, any> {
         municipal_facility_id,
         order_operation_id, norm_id,
       },
-    } = this.state;
-    const {
-      selectedElementFaxogramm: {
+      selectedElementOrder: {
         id: faxogramm_id,
         order_date,
         order_date_to,
         order_number,
       },
     } = this.state;
+
     const { missionSourcesList = [] } = this.props;
 
     const dmElement = {
@@ -361,7 +354,7 @@ class FaxogrammList extends React.Component<any, any> {
 
   saveOrder = () => {
     const {
-      selectedElementFaxogramm: {
+      selectedElementOrder: {
         id,
       },
     } = this.state;
@@ -370,7 +363,7 @@ class FaxogrammList extends React.Component<any, any> {
       .then(({ blob, fileName }) => saveData(blob, fileName));
   }
 
-  setPageFaxogrammTable = page => {
+  setPageOrderTable = page => {
     const pageOptions = {
       ...this.state.pageOptions,
       page,
@@ -423,7 +416,7 @@ class FaxogrammList extends React.Component<any, any> {
         dateTo,
         haveMax,
       },
-      selectedElementFaxogramm: faxSE,
+      selectedElementOrder: faxSE,
       selectedElementAssignment: assSE,
       missionData = {},
       dutyMissionData = {},
@@ -434,7 +427,7 @@ class FaxogrammList extends React.Component<any, any> {
     const {
       OrdersList = [],
     } = this.props;
-
+    console.log(faxSE)
     const canCreateMission = this.context.flux.getStore('session').getPermission('mission.create');
     const canCreateDutyMission = this.context.flux.getStore('session').getPermission('duty_mission.create');
 
@@ -447,7 +440,7 @@ class FaxogrammList extends React.Component<any, any> {
         />
         <OrdersTable
           data={OrdersList}
-          onRowSelected={this.onRowSelectedFaxogramm}
+          onRowSelected={this.onRowSelectedOrder}
           selected={faxSE}
           selectField={'id'}
           {...this.props}
@@ -459,7 +452,7 @@ class FaxogrammList extends React.Component<any, any> {
         </OrdersTable>
         {
           haveMax &&
-          <PaginatorTsx currentPage={this.state.pageOptions.page} maxPage={Math.ceil(this.props.ordersTotalCount / MAX_ITEMS_PER_PAGE)} setPage={this.setPageFaxogrammTable} firstLastButtons />
+          <PaginatorTsx currentPage={this.state.pageOptions.page} maxPage={Math.ceil(this.props.ordersTotalCount / MAX_ITEMS_PER_PAGE)} setPage={this.setPageOrderTable} firstLastButtons />
         }
         { faxSE &&
           <OrderAssignmentsList
@@ -485,4 +478,4 @@ class FaxogrammList extends React.Component<any, any> {
   }
 }
 
-export default connectToStores(FaxogrammList, ['objects', 'missions']);
+export default connectToStores(OrderList, ['objects', 'missions']);

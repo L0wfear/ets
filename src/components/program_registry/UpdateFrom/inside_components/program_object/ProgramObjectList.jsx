@@ -156,6 +156,15 @@ export default class ProgramRemarkList extends CheckableElementsList {
     });
   }
 
+  checkDisabledDelete = () => {
+    const {
+      program_version_status,
+    } = this.props;
+    return (
+      super.checkDisabledDelete() ||
+      program_version_status === 'accepted'
+    );
+  }
 
   /**
    * @override

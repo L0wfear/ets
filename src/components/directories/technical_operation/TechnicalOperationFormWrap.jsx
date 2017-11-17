@@ -20,7 +20,7 @@ export default class TechnicalOperationFormWrap extends FormWrap {
     return (
       <Div hidden={!this.props.showForm}>
         <TechnicalOperationForm
-          permissions={['technical_operation.false']}
+          permissions={['technical_operation.update']}
           addPermissionProp={true}
           formState={this.state.formState}
           onSubmit={this.handleFormSubmit.bind(this)}

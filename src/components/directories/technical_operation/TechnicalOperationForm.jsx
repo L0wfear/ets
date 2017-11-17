@@ -12,10 +12,17 @@ const seasonsList = [{ id: 1, name: 'Лето' }, { id: 2, name: 'Зима' }, {
 @connectToStores(['objects', 'employees', 'missions', 'routes'])
 export default class TechnicalOperationForm extends Form {
 
-  handleCarFuncTypesChange(v) {
-    const data = v.split(',');
+  handleCarFuncTypesChange = (v) => {
+    const data = v.split(',').map(d => +d);
+
     const { typesList = [] } = this.props;
-    const types = typesList.filter(ct => data.indexOf(ct.id.toString()) > -1);
+
+    // не спрашивайте почему нельзя было сразу прислать поле asuods_id, не id а
+    // я не знаю
+    const types = data.map(d => typesList.find(({ asuods_id }) => d === asuods_id)).map(d => ({
+      ...d,
+      id: d.asuods_id,
+    }));
     this.props.handleFormChange('car_func_types', types);
   }
 
@@ -142,7 +149,7 @@ export default class TechnicalOperationForm extends Form {
                 multi
                 value={_.uniq(state.car_func_types.map(cft => cft.id)).join(',')}
                 options={CAR_TYPES}
-                onChange={this.handleCarFuncTypesChange.bind(this)}
+                onChange={this.handleCarFuncTypesChange}
                 disabled={!isPermitted}
               />
             </Col>

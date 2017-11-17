@@ -15,17 +15,17 @@ const FileListItem: React.SFC<any> = ({
   name,
   url,
 }) =>
-  <Col style={{ marginBottom: 10 }} key={index} md={12}>
-    <a href={url} target="_blanc">{decodeURI(name)}</a>
-    <Button
-      bsClass="close"
-      bsSize="xsmall"
-      onClick={onFileRemove}
-      boundKeys={[index]}
-      disabled={disabled}
-    ><span>×</span>
-    </Button>
-  </Col>;
+    <Col style={{ marginBottom: 10 }} md={12}>
+      <a href={url} target="_blanc">{name}</a>
+      <Button
+        bsClass="close"
+        bsSize="xsmall"
+        onClick={onFileRemove}
+        boundKeys={[index]}
+        disabled={disabled}
+      ><span>×</span>
+      </Button>
+    </Col>;
 
 class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
   fileInputNode: HTMLInputElement;
@@ -38,7 +38,10 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
     this.fileInputNode.click();
   }
   render() {
-    const { buttonName = 'Добавить файл', errorClassName = '', value = [], multiple = false } = this.props;
+    const {
+      buttonName = 'Добавить файл', errorClassName = '', value = [], multiple = false,
+      showFileList = true,
+    } = this.props;
     const inputClass = cx(errorClassName);
     const inputStyle = { display: 'none' };
     // NOTE Funny mock 🐈
@@ -51,6 +54,7 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
       .map(file => file === null ? serverErrorFile : file)
       .map(({ name = 'Без названия', url, base64 } = serverErrorFile, i) =>
         <FileListItem
+          key={i}
           index={i}
           url={url || base64}
           name={name}
@@ -61,7 +65,7 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
 
     return (
       <div>
-        <Row>{fileList}</Row>
+        { showFileList && <Row>{fileList}</Row> }
           <BootstrapButton
             disabled={this.props.disabled}
             onClick={this.handleFilePick}

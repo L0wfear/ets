@@ -278,6 +278,12 @@ const carFormSchema: IValidationSchema = {
       type: 'string',
       maxLength: 4000,
     },
+    {
+      key: 'company_structure_id',
+      title: 'Подразделение',
+      type: 'number',
+      integer: true,
+    },
     ...carFormPassportGibdd.properties,
     ...carFormPassportGtn.properties,
   ],

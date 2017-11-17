@@ -241,17 +241,17 @@ class ProgramObjectFormDT extends Form {
                     <Col md={3}>{total_area}</Col>
                   </Col>
                   <Col md={6}>
-                    <Col md={9}>Площадь проезда, км.м.:</Col>
+                    <Col md={9}>Площадь проезда, кв.м.:</Col>
                     <Col md={3}>{0}</Col>
                   </Col>
                 </Row>
                 <Row>
                   <Col md={6}>
-                    <Col md={9}>Площадь пешеходной дорожки, км.м:</Col>
+                    <Col md={9}>Площадь пешеходной дорожки, кв.м.:</Col>
                     <Col md={3}>{0}</Col>
                   </Col>
                   <Col md={6}>
-                    <Col md={9}>Площадь тротуаров, км.м:</Col>
+                    <Col md={9}>Площадь тротуаров, кв.м.:</Col>
                     <Col md={3}>{0}</Col>
                   </Col>
                 </Row>

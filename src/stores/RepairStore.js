@@ -11,11 +11,18 @@ export default class RepairStore extends Store {
     this.register(repairActions.getObjectProperty, this.handleGetList);
     this.register(repairActions.setActiveList, this.handleChangeListActive);
 
+    this.register(repairActions.getDataAboutObjectById, this.handlerGetDataAboutObjectById)
+    this.register(repairActions.cleartDataAboutObjectById, this.handlerGetDataAboutObjectById)
+
     this.state = {
       ...this.getDefaultState(),
       objectPropertyList: [],
       RepairOptions: {},
+      dataOboutObjectbyIdList: [],
     };
+  }
+  handlerGetDataAboutObjectById({ result: { rows: dataOboutObjectbyIdList } }) {
+    this.setState({ dataOboutObjectbyIdList });
   }
 
   getDefaultState() {

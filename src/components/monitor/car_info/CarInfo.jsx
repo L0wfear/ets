@@ -36,8 +36,15 @@ const SensorColorLegend = ({ colors }) => {
     </div>
   ));
 
+  const lastItem = (
+    <div style={itemStyle} >
+      <div style={{ ...rectStyle, backgroundColor: sensorTrackColor[0] }} />
+      <span>{'нет датчиков в работе'}</span>
+    </div>
+  );
+
   return (
-    <div>{items}</div>
+    <div>{items}{lastItem}</div>
   );
 };
 

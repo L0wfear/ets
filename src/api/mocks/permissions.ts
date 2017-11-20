@@ -13,7 +13,4 @@ export function getFullAccess(entity, permission = ['L', 'C', 'R', 'U', 'D']) {
 }
 export const userNotification: string[] = [
   ...getFullAccess('userNotification'),
-  ...getFullAccess('program_remark_registry'),
-  ...getFullAccess('repair_program', ['L', 'C', 'R', 'U', 'D', 'REW']),
-  ...getFullAccess('repair_program_version'),
 ];

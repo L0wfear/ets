@@ -60,8 +60,8 @@ export function tableMeta({
 }
 
 const renderers: ISchemaRenderer = {
-  reviewed_at: ({ data }) => (<DateFormatter date={data} />),
-  see_at: ({ data }) => (<DateFormatter date={data} />),
+  reviewed_at: ({ data }) => (<DateFormatter date={data} time={true} />),
+  created_at: ({ data }) => (<DateFormatter date={data} time={true}/>),
 };
 
 const Table: React.SFC<any> = props  => {

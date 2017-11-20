@@ -46,7 +46,6 @@ export default class RepairActions extends Actions {
 
   postDataToUpdateObject({ id }) {
     const trueType = REPAIR.progress;
-    console.log('hello')
     const payload = {
       object_id: id,
       reviewed_at: createValidDate(new Date()),

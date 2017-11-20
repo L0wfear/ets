@@ -39,7 +39,6 @@ export default function getMapIcon(name = 'drugoe', zoom = 1) {
     cached = false;
   }
 
-  console.log(icons)
   if (!cached) {
     const line = 20 * DEVICE_PIXEL_RATIO * zoom;
     const canvas = document.createElement('canvas');

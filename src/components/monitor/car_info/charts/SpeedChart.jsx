@@ -56,7 +56,7 @@ const SpeedChartSFC = props => {
     d.data = d.data.map((v, i) => [timestamps[i], v]);
     return d;
   });
-  console.log(data)
+
   return (
     <LineChart
       name="speedChart"

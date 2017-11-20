@@ -178,6 +178,7 @@ export default class EmployeeForm extends Form {
                 disabled={!isPermitted}
                 onChange={this.handleChange}
                 boundKeys={['position_id']}
+                clearable={false}
               />
             </Col>
             <Col md={6}>

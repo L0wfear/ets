@@ -11,7 +11,13 @@ const fixedValidators = [
       if (!data || (data && !data.length)) {
         return undefined;
       }
-      return typeof data !== 'string' ? `Поле ${config.title || config.key} должно быть строкой` : undefined;
+      if (typeof data !== 'string') {
+        return `Поле ${config.title || config.key} должно быть строкой`;
+      }
+      if (data.length !== data.trimLeft().length) {
+        return `Поле ${config.title || config.key} не должно начинаться c пробела`;
+      }
+      return undefined;
     },
   },
   {

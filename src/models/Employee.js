@@ -15,6 +15,12 @@ export const schema = {
       required: true,
     },
     {
+      key: 'personnel_number',
+      title: 'Табельный номер',
+      type: 'number',
+      integer: true,
+    },
+    {
       key: 'position_id',
       title: 'Должность',
       type: 'number',

@@ -16,6 +16,8 @@ import ModalBody from 'components/ui/Modal';
 import TabInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/TabInfo.tsx';
 import MapInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/MapInfo.tsx';
 
+import { PercentModalList } from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components'
+
 class ProgramObjectFormDT extends Form {
   static defaultProps = {
     tabKey: OBJ_TAB_INDEX.PLAN,
@@ -203,10 +205,14 @@ class ProgramObjectFormDT extends Form {
         total_area = null,
       } = {},
     } = state;
-
     const title = IS_CREATING ? 'Создание карточки ДТ капитального ремонта.' : `Карточка ДТ капитального ремонта. Объект: ${name}. ID ${asuods_id}`;
 
     const CONTRACTOR_OPTIONS = contractorList.map(({ id: value, name: label }) => ({ value, label }));
+    const buttonPercentProps = {
+      className: !id ? undefined : 'active',
+      disabled: !id,
+      onClick: this.showPercentForm,
+    };
 
     return (
       <Modal {...this.props} dialogClassName="modal-xlg" backdrop="static">
@@ -309,7 +315,7 @@ class ProgramObjectFormDT extends Form {
                 </Col>
                 <Col md={2} xsOffset={1}>
                   <Col md={12}>
-                    <Button className="active" onClick={this.showPercentForm}>
+                    <Button { ...buttonPercentProps }>
                       <div style={{ width: 200, textAlign: 'center' }}>
                         %
                       </div>
@@ -342,11 +348,11 @@ class ProgramObjectFormDT extends Form {
           </div>
         </Div>
         <Div hidden={!showPercentForm}>
-          {/* Здесь форма процентов */ }
-          {/*
-            onHide={this.hidePercentForm};
-          */ }
-          </Div>
+          <PercentModalList
+            object_id={id}
+            onHide={this.hidePercentForm}
+          />
+        </Div>
         <ModalBody />
         <Modal.Footer>
           <Button disabled={!this.props.canSave} onClick={this.handleSubmitWrap}>Сохранить</Button>

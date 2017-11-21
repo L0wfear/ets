@@ -34,7 +34,7 @@ const SpeedChartSFC = props => {
       color: sensorOptions.color,
       data: timestamps.map((t) => {
         const s = values.find(v => v[0] === t);
-        if (s && s[1]) {
+        if (s && s[1] !== undefined) {
           return s[1];
         }
         return null;
@@ -56,7 +56,7 @@ const SpeedChartSFC = props => {
     d.data = d.data.map((v, i) => [timestamps[i], v]);
     return d;
   });
-  console.log(data)
+
   return (
     <LineChart
       name="speedChart"

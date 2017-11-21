@@ -4,7 +4,7 @@ export const formValidationSchema: IValidationSchema = {
   properties: [
     {
       key: 'asuods_id',
-      title: 'Информация об объекте',
+      title: 'Наименование ДТ',
       type: 'number',
       integer: true,
       required: true,
@@ -34,7 +34,7 @@ export const elementsValidationSchema: IValidationSchema = {
   properties: [
     {
       key: 'object_property_id',
-      title: 'Информация об объекте',
+      title: 'Элеменет ДТ',
       type: 'number',
       integer: true,
       required: true,

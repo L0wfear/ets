@@ -1,6 +1,6 @@
 import { Actions } from 'flummox';
 
-import { createValidDate } from 'utils/dates';
+import { createValidDate, createValidDateTime } from 'utils/dates';
 import { Repair, ObjectProperty } from 'api/Services';
 import REPAIR from '../constants/repair';
 
@@ -37,23 +37,29 @@ export default class RepairActions extends Actions {
   }
 
   getDataAboutObjectById(id) {
-    const trueType = REPAIR.progress;
+    const { progress } = REPAIR;
     const payload = {
       object_id: id,
     };
-    return Repair.path(trueType).get(payload).then(({ result: { rows: [objData] } }) => objData);
-  }
 
-  postDataToUpdateObject({ id }) {
-    const trueType = REPAIR.progress;
-    console.log('hello')
+    return Repair.path(progress).get(payload);
+  }
+  cleartDataAboutObjectById() {
+    return new Promise(res => res({ resolve: { rows: [] } }));
+  }
+  postDataToUpdateObjectPercent(formState) {
+    const { progress } = REPAIR;
     const payload = {
-      object_id: id,
-      reviewed_at: createValidDate(new Date()),
-      percent: 1,
-      comment: '123123',
+      ...formState,
+      reviewed_at: createValidDateTime(formState.reviewed_at),
     };
-    return Repair.path(trueType).post(payload, false, 'json');
+
+    return Repair.path(progress).post(payload, false, 'json');
+  }
+  removePercent(id) {
+    const { progress } = REPAIR;
+
+    return Repair.path(`${progress}/${id}`).delete({}, false, 'json');
   }
 
   async getAllVersionsById(id) {

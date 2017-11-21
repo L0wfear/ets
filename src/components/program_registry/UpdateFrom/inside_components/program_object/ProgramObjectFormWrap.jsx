@@ -136,8 +136,10 @@ class ProgramObjectFormWrap extends FormWrap {
       default: error = true;
     }
     if (error) {
-      setTimeout(() => this.props.onFormHide(), 0);
-      console.log('нет типа объекта');
+      new Promise(res => res()).then(() => {
+        console.log('нет типа объекта');
+        this.props.onFormHide();
+      });
     }
     return <div>as</div>;
   }

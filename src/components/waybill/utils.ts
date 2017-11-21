@@ -65,8 +65,8 @@ const hasOdometr = number => !hasMotohours(number);
 
 export const getDrivers = (gnumber = '', driversList) => {
   const licenceSwitcher = R.cond([
-    [hasMotohours, R.always(driverHasLicense)],
-    [hasOdometr, R.always(driverHasSpecialLicense)],
+    [hasOdometr, R.always(driverHasLicense)],
+    [hasMotohours, R.always(driverHasSpecialLicense)],
     [R.T, R.always(R.identity)],
   ]);
 

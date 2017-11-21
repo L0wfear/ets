@@ -21,15 +21,11 @@ class MonitorPage extends Component {
     getTypes: PropTypes.func,
   }
 
-  state = {
-    availableGpsCodes: [],
-  }
-
   async componentDidMount() {
     this.props.getTypes();
     const { flux } = this.context;
     flux.getActions('points').createConnection();
-    flux.getActions('objects').getCars().then(({ result: carsList }) => this.setState({ availableGpsCodes: carsList.map(({ gps_code }) => gps_code) }));
+    flux.getActions('objects').getCars();
   }
 
   componentWillUnmount() {
@@ -38,10 +34,8 @@ class MonitorPage extends Component {
   }
 
   render() {
-    if (!this.props.typesList.length || !this.state.availableGpsCodes.length) return <div>Загрузка...</div>;
-    const {
-      availableGpsCodes,
-    } = this.state;
+    if (!this.props.typesList.length) return <div>Загрузка...</div>;
+
     return (
       <div
         style={{
@@ -57,12 +51,7 @@ class MonitorPage extends Component {
         <FluxComponent
           connectToStores={{
             points: store => ({
-              points: Object.entries(store.state.points).reduce((accPoints, [key, value]) => {
-                if (availableGpsCodes.includes(key)) {
-                  accPoints[key] = value;
-                }
-                return accPoints;
-              }, {}),
+              points: store.state.points,
               selected: store.getSelectedPoint(),
             }),
             settings: store => ({

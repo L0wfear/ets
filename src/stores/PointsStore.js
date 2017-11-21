@@ -43,6 +43,7 @@ export default class PointsStore extends Store {
     this.flux = flux;
 
     const pointsActions = flux.getActions('points');
+    const objectsActions = flux.getActions('objects');
     const loginActions = flux.getActions('session');
     this.register(pointsActions.updatePoints, this.handleUpdatePoints);
     this.register(pointsActions.setFilter, this.handleSetFilter);
@@ -52,7 +53,8 @@ export default class PointsStore extends Store {
     this.register(pointsActions.closeConnection, this._handleCloseConnection);
     this.register(pointsActions.setSingleCarTrack, this.handleSetSingleCarTrack);
     this.register(pointsActions.setSingleCarTrackDates, this.handleSetSingleCarTrackDates);
-
+    this.register(objectsActions.getCars, this.handleGetCars);
+    
     this.register(loginActions.login, this.handleLogin);
 
     let currentUser;
@@ -66,6 +68,7 @@ export default class PointsStore extends Store {
     this.initialState = {
       selected: null,
       points: {},
+      availableGpsCodes: [],
       filter: {
         status: statuses.map(s => s.id),
         type: [],
@@ -89,6 +92,15 @@ export default class PointsStore extends Store {
     };
 
     this.state = _.cloneDeep(this.initialState);
+  }
+
+  handleGetCars({ result: carsList = [] }) {
+    this.setState({ availableGpsCodes: carsList.reduce((newArr, { gps_code }) => {
+      if (gps_code) {
+        newArr.push(gps_code);
+      }
+      return newArr;
+    }, []) });
   }
 
   /**
@@ -169,11 +181,14 @@ export default class PointsStore extends Store {
     if (this.isRenderPaused()) {
       return;
     }
-    const points = Object.assign({}, this.state.points);
+    const {
+      availableGpsCodes = [],
+    } = this.state;
 
+    const points = Object.assign({}, this.state.points);
     // TODO отрефакторить механизм обработки получения точек для 1 БНСО
     Object.entries(update).forEach(([key, value]) => {
-      if (points[key] && (points[key].timestamp > value.timestamp)) {
+      if (points[key] && (points[key].timestamp > value.timestamp && availableGpsCodes.includes(key))) {
         console.warn('got old info for point!');
       } else {
         points[key] = Object.assign({}, points[key], value);

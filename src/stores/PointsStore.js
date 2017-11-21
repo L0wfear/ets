@@ -43,6 +43,7 @@ export default class PointsStore extends Store {
     this.flux = flux;
 
     const pointsActions = flux.getActions('points');
+    const objectsActions = flux.getActions('objects');
     const loginActions = flux.getActions('session');
     this.register(pointsActions.updatePoints, this.handleUpdatePoints);
     this.register(pointsActions.setFilter, this.handleSetFilter);
@@ -52,6 +53,7 @@ export default class PointsStore extends Store {
     this.register(pointsActions.closeConnection, this._handleCloseConnection);
     this.register(pointsActions.setSingleCarTrack, this.handleSetSingleCarTrack);
     this.register(pointsActions.setSingleCarTrackDates, this.handleSetSingleCarTrackDates);
+    this.register(objectsActions.getCars, this.handleGetCars);
 
     this.register(loginActions.login, this.handleLogin);
 
@@ -66,6 +68,7 @@ export default class PointsStore extends Store {
     this.initialState = {
       selected: null,
       points: {},
+      availableGpsCodes: [],
       filter: {
         status: statuses.map(s => s.id),
         type: [],
@@ -89,6 +92,15 @@ export default class PointsStore extends Store {
     };
 
     this.state = _.cloneDeep(this.initialState);
+  }
+
+  handleGetCars({ result: carsList = [] }) {
+    this.setState({ availableGpsCodes: carsList.reduce((newArr, { gps_code }) => {
+      if (gps_code) {
+        newArr.push(gps_code);
+      }
+      return newArr;
+    }, []) });
   }
 
   /**
@@ -169,33 +181,28 @@ export default class PointsStore extends Store {
     if (this.isRenderPaused()) {
       return;
     }
+    const {
+      availableGpsCodes = [],
+    } = this.state;
+
     const points = Object.assign({}, this.state.points);
 
     // TODO отрефакторить механизм обработки получения точек для 1 БНСО
-
-    for (const key in update) {
-      const pointUpdate = update[key];
-
-      // если информация в обновлении устарела - ничего не делаем
-      if (key in points &&
-        points[key].timestamp > pointUpdate.timestamp) {
+    Object.entries(update).forEach(([key, value]) => {
+      if (points[key] && (points[key].timestamp > value.timestamp)) {
         console.warn('got old info for point!');
-        continue;
+      } else if (availableGpsCodes.includes(key)) {
+        points[key] = Object.assign({}, points[key], value);
       }
+    });
 
-      points[key] = Object.assign({}, points[key], pointUpdate);
-
-      // TODO разобраться что это такое
-      // HACK
-      // whatever...
-      /* if (points[key].speed !== 0 && this.state.points[key] && this.state.points[key].speed === 0) {
-        points[key].coords = this.state.points[key].coords;
-      }*/
-    }
-
-    const state = Object.assign({}, {
-      points,
-    }, this.countDimensions(points));
+    const state = Object.assign(
+      {},
+      {
+        points,
+      },
+      this.countDimensions(points),
+    );
 
     this.setState(state);
   }

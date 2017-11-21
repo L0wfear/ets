@@ -21,10 +21,10 @@ class MonitorPage extends Component {
     getTypes: PropTypes.func,
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.props.getTypes();
     const { flux } = this.context;
-    flux.getActions('objects').getCars();
+    await flux.getActions('objects').getCars();
     flux.getActions('points').createConnection();
   }
 

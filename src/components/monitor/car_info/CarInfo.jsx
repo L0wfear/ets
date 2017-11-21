@@ -14,21 +14,21 @@ import config from '../../../config.js';
 import Charts from './Charts.jsx';
 import VehicleInfo from './VehicleInfo.jsx';
 
+const rectStyle = {
+  width: 30,
+  height: 10,
+  display: 'inline-block',
+  marginRight: 10,
+  border: '1px solid black',
+};
+
+const itemStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  cursor: 'default',
+};
+
 const SensorColorLegend = ({ colors }) => {
-  const rectStyle = {
-    width: 30,
-    height: 10,
-    display: 'inline-block',
-    marginRight: 10,
-    border: '1px solid black',
-  };
-
-  const itemStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    cursor: 'default',
-  };
-
   const items = colors.map((color, i) => (
     <div style={itemStyle} key={i}>
       <div style={{ ...rectStyle, backgroundColor: color }} />
@@ -36,7 +36,7 @@ const SensorColorLegend = ({ colors }) => {
     </div>
   ));
 
-  const lastItem = (
+  items.push(
     <div style={itemStyle} >
       <div style={{ ...rectStyle, backgroundColor: sensorTrackColor[0] }} />
       <span>{'нет датчиков в работе'}</span>
@@ -44,7 +44,7 @@ const SensorColorLegend = ({ colors }) => {
   );
 
   return (
-    <div>{items}{lastItem}</div>
+    <div>{items}</div>
   );
 };
 

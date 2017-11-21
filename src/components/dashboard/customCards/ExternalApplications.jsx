@@ -1,14 +1,10 @@
 import React from 'react';
 import { autobind } from 'core-decorators';
 import Div from 'components/ui/Div.jsx';
-import { Panel as BootstrapPanel, Collapse, Glyphicon, Fade, Well, Button } from 'react-bootstrap';
-import { getFormattedDateTimeSeconds } from 'utils/dates';
+import { Panel as BootstrapPanel, Collapse, Glyphicon, Fade, Well } from 'react-bootstrap';
 import cx from 'classnames';
-import moment from 'moment';
-import { isEmpty } from 'utils/functions';
 import { wrappedRef } from 'utils/decorators';
 // TODO move to HOC
-import Preloader from 'components/ui/Preloader.jsx';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
 import DashboardCardHeader from '../DashboardCardHeader.jsx';
 import DashboardItemChevron from '../DashboardItemChevron.jsx';
@@ -37,7 +33,6 @@ export default class ExternalApplications extends DashboardCardMedium {
   }
 
   selectMission(title) {
-    const { flux } = this.context;
     this.setState({ customCardLoading: true });
     // flux.getActions('missions').getMissionData(id).then((res) => {
     //   this.setState({ selectedMission: res.result, customCardLoading: false });

@@ -135,14 +135,11 @@ export const waybillSchema = {
     'plan_departure_date': [
       {
         validator: (value, { status }) => {
-          const nowDateInUS = (new Date()).getTime();
-          const valueInUS = moment(value).toDate().getTime();
-
+          // а надо ли?
           if (status === 'active' || status === 'closed') {
             return false;
           }
-
-          if (nowDateInUS - valueInUS > 5 * 60 * 1000) {
+          if (moment(new Date()).diff(moment(value), 'minutes') > 5) {
             return 'Значение "Выезд. план" не может быть меньше текущего времени минус 5 минут';
           }
 
@@ -322,7 +319,7 @@ const closingDependencies = {
   'fact_departure_date': [
     {
       validator(value, { plan_departure_date }) {
-        if (moment(value).toDate().getTime() < moment(plan_departure_date).toDate().getTime()) {
+        if (moment(value).diff(moment(plan_departure_date), 'minutes') < 0) {
           return '"Выезд факт." должно быть не раньше "Выезда план."';
         }
         return false;
@@ -332,8 +329,16 @@ const closingDependencies = {
   'fact_arrival_date': [
     {
       validator(value, { plan_arrival_date }) {
-        if (moment(value).toDate().getTime() > moment(plan_arrival_date).toDate().getTime()) {
+        if (moment(value).diff(moment(plan_arrival_date), 'minutes') > 0) {
           return '"Возвращение факт." должно быть не позже "Возвращение план."';
+        }
+        return false;
+      },
+    },
+    {
+      validator(value, { fact_departure_date }) {
+        if (moment(value).diff(moment(fact_departure_date), 'minutes') <= 0) {
+          return '"Возвращение факт." должно быть позже "Выезд факт."';
         }
         return false;
       },

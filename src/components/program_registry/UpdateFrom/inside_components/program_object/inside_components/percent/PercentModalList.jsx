@@ -1,0 +1,113 @@
+import * as React from 'react';
+import { Modal, Button } from 'react-bootstrap';
+import moment from 'moment';
+import { isEmpty } from 'lodash';
+
+import { connectToStores, staticProps } from 'utils/decorators';
+import ElementsList from 'components/ElementsList.jsx';
+import ModalBody from 'components/ui/Modal';
+
+import PercentModalTable from './PercentModalTable';
+import PercentModalFormWrap from './PercentModalFormWrap';
+
+@connectToStores(['repair', 'session'])
+@staticProps({
+  entity: 'repair_program_version',
+  listName: 'dataOboutObjectbyIdList',
+  tableComponent: PercentModalTable,
+  formComponent: PercentModalFormWrap,
+  operations: ['LIST', 'CREATE', 'READ', 'DELETE'],
+})
+export default class PercentModalList extends ElementsList {
+  constructor(props, context) {
+    super(props);
+    this.keyPressDisabled = true;
+
+    this.removeElementAction = context.flux.getActions('repair').removePercent;
+  }
+  componentDidMount() {
+    super.componentDidMount();
+    const { flux } = this.context;
+    const {
+      object_id: id,
+    } = this.props;
+    flux.getActions('repair').getDataAboutObjectById(id).then((ans) => {
+      const {
+        result: {
+          rows = [],
+        } = {},
+      } = ans;
+      const { other = {} } = this.state;
+      other.minPercent = Math.max(...rows.map(({ percent }) => percent));
+      other.minReviewedAt = isEmpty(rows) ? moment().year(1900) : moment.max(rows.map(({ reviewed_at }) => moment(reviewed_at)));
+
+      this.setState({ other });
+
+      return ans;
+    });
+  }
+
+  /**
+   * @override
+   */
+  checkDisabledDelete() {
+    if (!super.checkDisabledDelete()) {
+      const {
+        selectedElement: {
+          created_at,
+        },
+      } = this.state;
+
+      return moment().diff(created_at, 'days') > 0;
+    }
+    return true;
+  }
+  /**
+   * @override
+   */
+  getForms() {
+    const FormComponent = this.constructor.formComponent;
+    const forms = [];
+
+    if (!FormComponent) {
+      return forms;
+    }
+    const {
+      other,
+    } = this.state;
+
+    forms.push(
+      <FormComponent
+        key={forms.length}
+        onFormHide={this.onFormHide}
+        showForm={this.state.showForm}
+        element={this.state.selectedElement}
+        setNewSelectedElement={this.setNewSelectedElement}
+        entity={this.entity}
+        onCallback={this.formCallback}
+        meta={this.constructor.formMeta}
+        renderers={this.constructor.formRenderers}
+        permissions={[`${this.entity}.read`]}
+        other={other}
+        {...this.props}
+      />
+    );
+
+    return forms;
+  }
+
+  render() {
+    return (
+      <Modal {...this.props} show dialogClassName="modal-xlg" backdrop="static">
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-lg">{'Проставление процента выполнения работ'}</Modal.Title>
+        </Modal.Header>
+        { super.render() }
+        <ModalBody />
+        <Modal.Footer>
+          <Button onClick={this.onHide}>Закрыть</Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+}

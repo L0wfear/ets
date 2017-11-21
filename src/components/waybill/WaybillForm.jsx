@@ -1321,6 +1321,7 @@ class WaybillForm extends Form {
             canClose={this.props.canClose}
             formState={this.props.formState}
             state={state}
+            canEditIfClose={!!this.state.canEditIfClose}
             taxesControl={taxesControl}
             refresh={this.refresh}
             handleSubmit={this.handleSubmit}

@@ -174,7 +174,7 @@ export default class RouteForm extends Form {
 
             <Div hidden={this.props.forceTechnicalOperation}>
               <Col md={STRUCTURE_FIELD_VIEW ? 6 : 7}>
-                <Col md={6}>
+                <Col md={6} style={{ zIndex: 10001 }}>
                   <Field
                     type="select"
                     label="Технологическая операция"

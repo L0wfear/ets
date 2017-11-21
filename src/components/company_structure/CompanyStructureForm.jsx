@@ -37,8 +37,8 @@ class CompanyStructureForm extends Form {
     }
     const IS_CREATING = !state.id;
 
-    let title = 'Изменение сотрудника';
-    if (IS_CREATING) title = 'Создание сотрудника';
+    let title = 'Изменение подразделения';
+    if (IS_CREATING) title = 'Создание подразделения';
 
     return (
       <Modal {...this.props} backdrop="static">

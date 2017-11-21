@@ -54,7 +54,7 @@ export default class PointsStore extends Store {
     this.register(pointsActions.setSingleCarTrack, this.handleSetSingleCarTrack);
     this.register(pointsActions.setSingleCarTrackDates, this.handleSetSingleCarTrackDates);
     this.register(objectsActions.getCars, this.handleGetCars);
-    
+
     this.register(loginActions.login, this.handleLogin);
 
     let currentUser;
@@ -188,9 +188,9 @@ export default class PointsStore extends Store {
     const points = Object.assign({}, this.state.points);
     // TODO отрефакторить механизм обработки получения точек для 1 БНСО
     Object.entries(update).forEach(([key, value]) => {
-      if (points[key] && (points[key].timestamp > value.timestamp && availableGpsCodes.includes(key))) {
+      if (points[key] && (points[key].timestamp > value.timestamp)) {
         console.warn('got old info for point!');
-      } else {
+      } else if (availableGpsCodes.includes(key)) {
         points[key] = Object.assign({}, points[key], value);
       }
     });

@@ -7,6 +7,18 @@ import { ExtField } from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
 
 export default class SparePartForm extends Form {
+  state = {
+    iСustomer: true,
+  }
+  componentDidMount() {
+    const {
+      entity,
+    } = this.props;
+
+    const iСustomer = this.context.flux.getStore('session').getPermission(`${entity}.update`);
+
+    this.setState({ iСustomer });
+  }
   handleSubmitWrap = () => this.handleSubmit();
 
   render() {
@@ -21,6 +33,9 @@ export default class SparePartForm extends Form {
       isPermitted = false,
       program_version_status,
     } = this.props;
+    const { iСustomer } = this.state;
+
+    const statusIsChanged = state.status !== 'created';
 
     return (
       <Modal {...this.props} backdrop="static">
@@ -37,10 +52,10 @@ export default class SparePartForm extends Form {
                 error={errors.remark}
                 onChange={this.handleChange}
                 boundKeys={['remark']}
-                disabled={!isPermitted}
+                disabled={!isPermitted || statusIsChanged || iСustomer || program_version_status !== 'sent_on_review'}
               />
             </Col>
-            { program_version_status === 'rejected' &&
+            { iСustomer && program_version_status === 'rejected' &&
               <Col md={12}>
                 <ExtField
                   type="text"
@@ -49,11 +64,10 @@ export default class SparePartForm extends Form {
                   error={errors.note}
                   onChange={this.handleChange}
                   boundKeys={['note']}
-                  disabled={!isPermitted}
+                  disabled={!isPermitted || statusIsChanged || !iСustomer }
                 />
               </Col>
             }
-            
           </Row>
         </Div>
         <ModalBody />

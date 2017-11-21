@@ -34,6 +34,7 @@ class ProgramRemarkFormWrap extends FormWrap {
 
     return this.props.showForm ?
       <ProgramRemarkForm
+        entity={entity}
         formState={this.state.formState}
         program_version_status={this.props.program_version_status}
         formErrors={this.state.formErrors}

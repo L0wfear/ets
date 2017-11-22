@@ -1189,6 +1189,29 @@ body.application {
   }
 }
 
+.app-toolbar-show-fuelleak {
+  position: absolute;
+  width: 175px;
+  padding: 1px 16px;
+
+  .checkbox {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  
+  &.active {
+    width: 310px;
+  }
+  & .inline-date-fuelleak {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &>label {
+      padding: 0;
+    }
+  }
+}
+
 .zoombox-control {
   background-position: 2px 3px !important;
   background-image: url('images/icon-zoombox.png') !important;

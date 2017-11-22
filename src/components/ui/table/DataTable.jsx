@@ -672,7 +672,6 @@ export default class DataTable extends React.Component {
               {this.props.children}
             </div>
           </div>
-
           {!noFilter &&
             <Filter
               show={this.state.filterModalIsOpen}

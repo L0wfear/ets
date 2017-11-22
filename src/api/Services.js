@@ -97,6 +97,9 @@ export const Repair = ETS_API_FACTORY.createApiServiceAdapter('repair', {});
 /* DITETS-2079 */
 export const WorkMode = ETS_API_FACTORY.createApiServiceAdapter('work_mode', {});
 
+/* DITETS-2080 */
+export const FuelEvent = ETS_API_FACTORY.createApiServiceAdapter('fuel_event', {});
+
 // список стран
 export const Country = ETS_API_FACTORY.createApiServiceAdapter('country', {});
 

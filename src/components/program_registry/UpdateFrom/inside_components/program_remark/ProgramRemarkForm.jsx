@@ -49,10 +49,10 @@ export default class SparePartForm extends Form {
                 <ExtField
                   type="text"
                   label="Комментарий"
-                  value={state.note}
-                  error={errors.note}
+                  value={state.comment}
+                  error={errors.comment}
                   onChange={this.handleChange}
-                  boundKeys={['note']}
+                  boundKeys={['comment']}
                   disabled={!isPermitted || statusIsChanged || !iСustomer}
                 />
               </Col>

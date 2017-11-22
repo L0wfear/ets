@@ -16,7 +16,7 @@ import ModalBody from 'components/ui/Modal';
 import TabInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/TabInfo.tsx';
 import MapInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/MapInfo.tsx';
 
-import { PercentModalList } from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components'
+import { PercentModalList } from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components';
 
 class ProgramObjectFormDT extends Form {
   static defaultProps = {
@@ -318,7 +318,7 @@ class ProgramObjectFormDT extends Form {
                 </Col>
                 <Col md={2} xsOffset={1}>
                   <Col md={12}>
-                    <Button { ...buttonPercentProps }>
+                    <Button {...buttonPercentProps}>
                       <div style={{ width: 200, textAlign: 'center' }}>
                         %
                       </div>

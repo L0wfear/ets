@@ -82,9 +82,10 @@ export class MissionForm extends Form {
     const routesActions = flux.getActions('routes');
     const missionsActions = flux.getActions('missions');
     const isTemplate = this.props.template || false;
+    const { carsList } = this.props;
 
     let { selectedRoute } = this.state;
-    let { routesList, carsList } = this.props;
+    let { routesList } = this.props;
     let TECH_OPERATIONS = [];
 
     if (!isEmpty(mission.route_id)) {
@@ -131,7 +132,14 @@ export class MissionForm extends Form {
 
   createNewRoute() {
     this.context.flux.getActions('geoObjects').getGeozones().then(() => {
+      const {
+        formState: {
+          norm_id,
+        },
+      } = this.props;
+
       const newR = {
+        norm_id,
         name: '',
         polys: this.props.geozonePolys,
         technical_operation_id: this.props.formState.technical_operation_id,
@@ -192,7 +200,7 @@ export class MissionForm extends Form {
       result: [
         to_data = {},
       ],
-    } = await this.context.flux.getActions('technicalOperation').getOneTechOperationByNormId({ norm_id })
+    } = await this.context.flux.getActions('technicalOperation').getOneTechOperationByNormId({ norm_id });
 
     const {
       route_types: available_route_types = [],
@@ -367,7 +375,7 @@ export class MissionForm extends Form {
                 handleChange={this.handleChange.bind(this)}
                 getDataByNormId={this.getDataByNormId}
                 technicalOperationsList={technicalOperationsList}
-                fromOrder={!!fromOrder}
+                getNormIdFromState={!!fromOrder || !IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromOrder || !is_new || sourceIsOrder}
               />
             </Col>
           </Row>

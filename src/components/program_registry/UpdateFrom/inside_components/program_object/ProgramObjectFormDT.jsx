@@ -43,7 +43,9 @@ class ProgramObjectFormDT extends Form {
     const {
       IS_CREATING,
     } = this.state;
-    const { data: { result: { rows: objectPropertyList } } } = await this.context.flux.getActions('repair').getObjectProperty();
+
+    const { data: { result: { rows: objectPropertyList } } } = await this.context.flux.getActions('repair').getObjectProperty({ object_type: 'odh' });
+
     this.context.flux.getActions('geoObjects').getGeozoneByTypeWithGeometry('dt').then((ans) => {
       const {
         formState: {
@@ -98,6 +100,7 @@ class ProgramObjectFormDT extends Form {
       return ans;
     });
   }
+
   setManualOnFalse = () => this.setState({ manual: false });
   setManualOnTrue = () => this.setState({ manual: false });
 

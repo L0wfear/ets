@@ -72,6 +72,7 @@ const Table: React.SFC<any> = props  => {
       results={props.data}
       renderers={renderers}
       tableMeta={tableMeta(props)}
+      className={'table-percent'}
       {...props}
     />
   );

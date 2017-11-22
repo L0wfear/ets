@@ -9,5 +9,11 @@ export const formValidationSchema: IValidationSchema = {
       required: true,
       maxLength: 1024,
     },
+    {
+      key: 'comment',
+      title: 'Комментарий',
+      type: 'string',
+      maxLength: 1024 * 4,
+    },
   ],
 };

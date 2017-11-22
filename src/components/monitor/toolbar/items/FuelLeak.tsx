@@ -31,11 +31,11 @@ class FuelLeak extends React.Component<any, any> {
       }
       this.getData({ date_from: date_from || getStartOfToday(), date_to: date_to || new Date() });
     }
-    console.log('select type', GEOOBJECTS_TYPES.leak);
-    // возможно не верно
-    // выбираешь что отображать
-    // this.props.flux.getActions('geoObjects').setSelectedPolysType(GEOOBJECTS_TYPES.leak);
+
+    console.log('select type=', GEOOBJECTS_TYPES.leak); // leak
+    this.props.flux.getActions('geoObjects').setSelectedPolysType(GEOOBJECTS_TYPES.leak); // leak - работает
   }
+
   setShowGeoobjects = e => {
     this.setState({
       showDateInterval: !this.state.showDateInterval,
@@ -45,6 +45,7 @@ class FuelLeak extends React.Component<any, any> {
   }
 
   handleChange = (key, val) => {
+   //key=  date_from val= Fri Nov 17 2017 00:00:00 
     const newDataInState = {
       [key]: val,
     };
@@ -70,16 +71,15 @@ class FuelLeak extends React.Component<any, any> {
 
   getData({ date_from, date_to }) {
     const type = '';
-    const servicesApi = 'FuelEvent';
+    //const servicesApi = 'FuelEvent';
     const payload = {
       date_from: createValidDateTime(date_from),
       date_to: createValidDateTime(date_to),
-      type: 'leak',
     };
-    console.log(type, servicesApi, payload);
+   // console.log('type = ', type, 'servicesAp =', servicesApi, 'payload=', payload); // всё корректно показывает
+
     // запрос на получение данных по сливам
-    // getGeozoneByTypeWithGeometryNoJSONShape - её нет, можешь назвать по другому
-    // this.props.flux.getActions('geoObjects').getGeozoneByTypeWithGeometryNoJSONShape(type, servicesApi, payload);
+     this.props.flux.getActions('geoObjects').getGeozoneByTypeWithGeometryNoJSONShape(type, payload);
   }
 
   render() {

@@ -1233,7 +1233,7 @@ class WaybillForm extends Form {
             <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
               <Col md={8}>
                 <Field
-                  type="string"
+                  type="text"
                   label="Комментарий"
                   disabled={IS_CLOSED}
                   value={state.comment}

@@ -128,7 +128,7 @@ export default class MissionsJournal extends CheckableElementsList {
     this.refreshList(this.state);
   }
 
-  rejectMission() {
+  rejectMission = () => {
     this.setState({
       showMissionRejectForm: true,
     });
@@ -170,45 +170,7 @@ export default class MissionsJournal extends CheckableElementsList {
   }
 
   rejectCheckedElements() {
-    const checkElList = Object.values(this.state.checkedElements);
-    const countCheckEl = checkElList.length;
-
-    if (countCheckEl !== 0) {
-      const elList = Array(countCheckEl).fill(false);
-
-      checkElList.forEach((mission, i) => {
-        const updatedMission = _.cloneDeep(mission);
-        updatedMission.status = 'fail';
-        if (mission.status === 'assigned') {
-          const reason = prompt(`Введите причину для задания №${mission.number}`, '');
-
-          if (reason) {
-            updatedMission.comment = reason;
-
-            this.context.flux.getActions('missions').updateMission(updatedMission, false).then(() => {
-              elList[i] = true;
-              if (!elList.some(elD => !elD)) {
-                this.refreshList();
-                global.NOTIFICATION_SYSTEM.notify('Данные успешно обновлены');
-              }
-            })
-            .catch(() => {
-              elList[i] = true;
-              if (!elList.some(elD => !elD)) {
-                this.refreshList();
-                global.NOTIFICATION_SYSTEM.notify('Произошла ошибка при обновлении данных');
-              }
-            });
-          }
-        }
-      });
-      this.setState({
-        checkedElements: {},
-        selectedElement: null,
-      });
-    } else {
-      this.rejectMission();
-    }
+    this.rejectMission();
   }
 
 
@@ -330,6 +292,7 @@ export default class MissionsJournal extends CheckableElementsList {
             show={this.state.showMissionRejectForm}
             onReject={this.onReject}
             mission={this.state.selectedElement}
+            missions={this.state.checkedElements}
           />
         }
         <MissionInfoFormWrap

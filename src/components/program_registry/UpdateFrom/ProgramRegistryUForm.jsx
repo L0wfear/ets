@@ -300,7 +300,7 @@ export default class ProgramRegistryForm extends Form {
                 <ExtField
                   type="text"
                   label="Примечание"
-                  value={state.note}
+                  value={state.note ? state.note : ''}
                   onChange={this.handleChange}
                   error={errors.note}
                   boundKeys={['note']}

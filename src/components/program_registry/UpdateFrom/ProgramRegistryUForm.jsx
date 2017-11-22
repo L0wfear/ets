@@ -44,9 +44,19 @@ const getTitleByStatus = (status) => {
 @loadingOverlay
 @connectToStores(['repair', 'objects'])
 export default class ProgramRegistryForm extends Form {
-  state = {
-    makeVersionIsVisible: false,
-    mainButtonEnable: true,
+  constructor(props, context) {
+    super(props);
+    const {
+      entity,
+    } = props;
+
+    const iСustomer = context.flux.getStore('session').getPermission(`${entity}.update`);
+
+    this.state = {
+      iСustomer,
+      makeVersionIsVisible: false,
+      mainButtonEnable: true,
+    };
   }
   componentDidMount() {
     const { flux } = this.context;
@@ -112,6 +122,7 @@ export default class ProgramRegistryForm extends Form {
     const {
       makeVersionIsVisible = false,
       mainButtonEnable = true,
+      iСustomer,
     } = this.state;
 
     const {
@@ -323,6 +334,7 @@ export default class ProgramRegistryForm extends Form {
                     repair_type_name={state.repair_type_name}
                   />
                   <ProgramRemarkList
+                    iСustomer={iСustomer}
                     program_version_id={state.id}
                     program_version_status={state.status}
                   />

@@ -137,7 +137,7 @@ export default class GeoObjectsStore extends Store {
     console.log('****type', type);
     const polys = {};
     rows.forEach((geozone) => {
-      console.log('*****geozone.shape', geozone.shape);
+      // console.log('*****geozone.shape', geozone.shape);
       const shape = (geozone.shape.constructor === String) ? JSON.parse(geozone.shape) : geozone.shape;
       geozone.featureType = type || geozone.type;
       delete geozone.shape;
@@ -174,11 +174,15 @@ export default class GeoObjectsStore extends Store {
   }
 
   handleSelectFeature(selectedFeature = false) {
+    console.log('--------selectedFeature', selectedFeature);
+    console.log('this.state.selectedFeature', this.state.selectedFeature);
     if (selectedFeature !== null) {
       if (this.state.selectedFeature !== null) {
-        const featureId = get(this.state, 'selectedFeature.global_id', null) || get(this.state, 'selectedFeature.id', null);
-        const newFeatureId = get(selectedFeature, 'global_id', null) || get(selectedFeature, 'id', null);
-
+        console.log('при переключении на другую точку слива топлива');
+        const featureId = get(this.state, 'selectedFeature.global_id', null) || get(this.state, 'selectedFeature.id', null) || get(this.state, 'selectedFeature.sensor_id', null);
+        console.log('featureId', featureId);
+        const newFeatureId = get(selectedFeature, 'global_id', null) || get(selectedFeature, 'id', null) || get(selectedFeature, 'sensor_id', null);
+        console.log('newFeatureId', newFeatureId);
         const typePrev = this.state.selectedFeature.featureType;
         const polysByTypePrev = `${typePrev}Polys`;
         const polysPrev = this.state[polysByTypePrev];
@@ -194,10 +198,15 @@ export default class GeoObjectsStore extends Store {
           [polysByType]: polys,
         });
       } else {
-        const newFeatureId = get(selectedFeature, 'global_id', null) || get(selectedFeature, 'id', null);
+        console.log('первоначально попадаем сюда при нажатии на точку слива топлива');
+        const newFeatureId = get(selectedFeature, 'global_id', null) || get(selectedFeature, 'id', null) || get(selectedFeature, 'sensor_id', null);
+        console.log('newFeatureId', newFeatureId);
         const type = selectedFeature.featureType;
+        console.log('type', type);
         const polysByType = `${type}Polys`;
+        console.log('polysByType', polysByType);
         const polys = this.state[polysByType];
+        console.log('polys', polys);
         polys[newFeatureId].selected = true;
         this.setState({
           selectedFeature,
@@ -205,10 +214,15 @@ export default class GeoObjectsStore extends Store {
         });
       }
     } else if (this.state.selectedFeature !== null) {
-      const featureId = get(this.state, 'selectedFeature.global_id', null) || get(this.state, 'selectedFeature.id', null);
+      console.log('при снятии чекбокса');
+      const featureId = get(this.state, 'selectedFeature.global_id', null) || get(this.state, 'selectedFeature.id', null) || get(this.state, 'selectedFeature.sensor_id', null);
+      console.log('featureId', featureId);
       const type = this.state.selectedFeature.featureType;
+      console.log('type', type);
       const polysByType = `${type}Polys`;
+      console.log('polysByType', polysByType);
       const polys = this.state[polysByType];
+      console.log('polys', polys);
       delete polys[featureId].selected;
       this.setState({
         selectedFeature,

@@ -20,9 +20,9 @@ export default class RouteForm extends Form {
   constructor(props) {
     super(props);
     const ROUTE_TYPE_OPTIONS = [
-      { value: 'mixed', label: 'Выбор из ОДХ' },
-      { value: 'simple_dt', label: 'Выбор из ДТ' },
-      { value: 'points', label: 'Выбор пунктов назначения' },
+      { value: 'mixed', label: 'ОДХ' },
+      { value: 'simple_dt', label: 'ДТ' },
+      { value: 'points', label: 'Пункты назначения' },
     ];
 
     this.state = {
@@ -52,19 +52,19 @@ export default class RouteForm extends Form {
     route_types.forEach((obj) => {
       switch (obj) {
         case 'mixed':
-          route_type_options.push({ value: 'mixed', label: 'Выбор из ОДХ' });
+          route_type_options.push({ value: 'mixed', label: 'ОДХ' });
           if (!routeTypeValue) {
             routeTypeValue = 'mixed';
           }
           break;
         case 'points':
-          route_type_options.push({ value: 'points', label: 'Выбор пунктов назначения' });
+          route_type_options.push({ value: 'points', label: 'Пункты назначения' });
           if (!routeTypeValue && routeTypeValue !== 'mixed') {
             routeTypeValue = 'points';
           }
           break;
         case 'simple_dt':
-          route_type_options.push({ value: 'simple_dt', label: 'Выбор из ДТ' });
+          route_type_options.push({ value: 'simple_dt', label: 'ДТ' });
           if (!routeTypeValue && routeTypeValue !== 'mixed') {
             routeTypeValue = 'simple_dt';
           }

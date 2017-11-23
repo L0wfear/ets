@@ -171,8 +171,7 @@ class WaybillForm extends Form {
         !isEqual(currentState.plan_departure_date, nextState.plan_departure_date)) {
       this.getMissionsByCarAndDates(nextState);
     }
-
-    if (currentState.status === 'active') {
+    if (currentState.status === 'active' && moment(nextState.fact_departure_date).diff(nextState.fact_arrival_date, 'minutes') <= 0) {
       if (currentState.car_id !== nextState.car_id ||
           !isEqual(currentState.fact_arrival_date, nextState.fact_arrival_date) ||
           !isEqual(currentState.fact_departure_date, nextState.fact_departure_date)) {

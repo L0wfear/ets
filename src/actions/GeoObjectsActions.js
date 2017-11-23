@@ -69,5 +69,9 @@ export default class GeoObjectsActions extends Actions {
       ...formState
     };
     const response = await services[serviceName].path(`${type}/leak`).get(payload);
+    return {
+      type: GEOOBJECTS_TYPES[type],
+      data: response,
+    };
   }
 }

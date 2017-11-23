@@ -16,6 +16,8 @@ export default class GeoObjectsStore extends Store {
     this.register(geoObjectsActions.setSelectedPolysType, this.handleSetSelectedPolysType);
 
     this.register(geoObjectsActions.getGeozoneByTypeWithGeometry, this.handleGetGeozonesByTypeWithGeometry);
+    // this.register(geoObjectsActions.getGeozoneByTypeWithGeometryNoJSONShape, this.handleGetGeozonesByTypeWithGeometry.bind(this, 'leak'));
+    this.register(geoObjectsActions.getGeozoneByTypeWithGeometryNoJSONShape, this.handleGetGeozonesByTypeWithGeometry);
     this.register(geoObjectsActions.getGeozoneByType, this.handleGetGeozonesByType);
 
     this.state = {
@@ -125,21 +127,29 @@ export default class GeoObjectsStore extends Store {
     this.setState({ geozonePolys, dtPolys, odhPolys });
   }
 
-  handleGetGeozonesByTypeWithGeometry(response) {
-    const { type, data = {} } = response;
+  handleGetGeozonesByTypeWithGeometry(response /* , nameOfType*/) {
+    // console.log('nameOfType', nameOfType);
+    console.log('+++++response', response);
+    const { data = {} } = response;
+    // const type = response.type || nameOfType;
     const { rows = [] } = data.result;
+    const type = response.type || rows[0].type;
+    console.log('****type', type);
     const polys = {};
     rows.forEach((geozone) => {
-      const shape = JSON.parse(geozone.shape);
-      geozone.featureType = type;
+      console.log('*****geozone.shape', geozone.shape);
+      const shape = (geozone.shape.constructor === String) ? JSON.parse(geozone.shape) : geozone.shape;
+      geozone.featureType = type || geozone.type;
       delete geozone.shape;
-      polys[geozone.global_id || geozone.id] = Object.assign({}, {
+      polys[geozone.global_id || geozone.id || geozone.sensor_id] = Object.assign({}, {
         shape,
         data: geozone,
         state: 1,
       });
     });
+    console.log('******polys', polys);
     const polysByType = `${type}Polys`;
+    console.log('******polysByType', polysByType);
 
     this.setState({
       [polysByType]: polys,

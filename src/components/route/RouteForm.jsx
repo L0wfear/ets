@@ -85,8 +85,10 @@ export default class RouteForm extends Form {
     const { technicalOperationsList = [] } = this.state;
 
     this.setState({
+      vector: false,
       route_types: technicalOperationsList.find(({ id }) => id === v).route_types,
     });
+    this.handleChange('draw_object_list', []);
     if (!this.props.formState.copy) {
       this.setRouteTypeOptionsBasedOnTechnicalOperation(v);
     }

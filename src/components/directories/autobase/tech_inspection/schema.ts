@@ -16,7 +16,7 @@ export const formValidationSchema: IValidationSchema = {
       title: 'Номер диагностической карты',
       type: 'number',
       required: true,
-      equalLength: 21,
+      maxLength: 21,
       integer: true,
     },
     {

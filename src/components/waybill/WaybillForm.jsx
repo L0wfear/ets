@@ -194,7 +194,7 @@ class WaybillForm extends Form {
     this.setState({ loadingFields });
     flux.getActions('cars').getInfoFromCar(car.gps_code, formState.fact_departure_date, formState.fact_arrival_date)
       .then(({ distance, consumption }) => {
-        this.props.handleFormChange('distance', parseFloat(distance / 1000).toFixed(3));
+        this.props.handleFormChange('distance', distance);
         this.props.handleFormChange('consumption', consumption !== null ? parseFloat(consumption).toFixed(3) : null);
         const { loadingFields } = this.state;
         loadingFields.distance = false;
@@ -851,7 +851,7 @@ class WaybillForm extends Form {
                   type="string"
                   label="Пройдено по Глонасс, км"
                   error={errors.distance}
-                  value={state.distance || state.track_length}
+                  value={state.distance ? parseFloat(state.distance / 1000).toFixed(3) : parseFloat(state.track_length / 1000).toFixed(3)}
                   isLoading={loadingFields.distance}
                   disabled
                 />

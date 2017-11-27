@@ -369,7 +369,7 @@ export default class WaybillFormWrap extends FormWrap {
           handleMultipleChange={this.handleMultipleChange}
           show={this.props.showForm}
           onHide={this.props.onFormHide}
-          entity={entity}
+          entity={entity || 'waybill'}
           {...this.state}
         />
       </Div>

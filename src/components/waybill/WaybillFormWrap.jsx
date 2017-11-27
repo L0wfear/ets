@@ -32,20 +32,6 @@ function calculateWaybillMetersDiff(waybill, field, value) {
   return waybill;
 }
 
-const checkInfoFromAns = ({ info = [] }) => {
-  info.forEach((oneInfo) => {
-    global.NOTIFICATION_SYSTEM.notify({
-      title: '',
-      message: oneInfo,
-      level: 'info',
-      dismissible: true,
-      position: 'tr',
-      autoDismiss: 0,
-    });
-  });
-};
-
-
 @FluxContext
 @autobind
 export default class WaybillFormWrap extends FormWrap {
@@ -292,8 +278,7 @@ export default class WaybillFormWrap extends FormWrap {
       } else {
         formState.status = 'draft';
         try {
-          const r = await flux.getActions('waybills').createWaybill(formState);
-          checkInfoFromAns(r);
+          await flux.getActions('waybills').createWaybill(formState);
         } catch (e) {
           console.log(e);
           return;
@@ -306,8 +291,7 @@ export default class WaybillFormWrap extends FormWrap {
         formState.fact_departure_date = formState.plan_departure_date;
         formState.fact_arrival_date = formState.plan_arrival_date;
         try {
-          const r = await flux.getActions('waybills').updateWaybill(formState);
-          checkInfoFromAns(r);
+          await flux.getActions('waybills').updateWaybill(formState);
         } catch (e) {
           return;
         }
@@ -315,8 +299,7 @@ export default class WaybillFormWrap extends FormWrap {
         (await this.props.onCallback()) && this.props.onCallback();
       } else {
         try {
-          const r = await flux.getActions('waybills').updateWaybill(formState);
-          checkInfoFromAns(r);
+          await flux.getActions('waybills').updateWaybill(formState);
         } catch (e) {
           return;
         }

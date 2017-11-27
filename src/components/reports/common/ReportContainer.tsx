@@ -236,7 +236,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     this.setState({ exportFetching: false });
   }
 
-  makeTableSchema(schemaMakers = {}, tableMetaInfo: IReportTableMeta) {
+  makeTableSchema(schemaMakers = {}, additionalSchemaMakers = [], tableMetaInfo: IReportTableMeta) {
     const cols = tableMetaInfo.fields.map(field => {
       const fieldName = Object.keys(field)[0];
       const fieldValue = field[fieldName];
@@ -253,7 +253,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       const finalSchema = renderer(initialSchema, this.props);
 
       return finalSchema;
-    });
+    }).concat(...additionalSchemaMakers);
 
     return { cols };
   }
@@ -266,12 +266,13 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       schemaMakers,
       tableMetaInfo,
       summaryTableMetaInfo,
+      additionalSchemaMakers,
     } = this.props;
 
     const Header: React.ComponentClass<IPropsReportHeaderCommon> = this.props.headerComponent;
 
-    const tableMeta = this.makeTableSchema(schemaMakers, tableMetaInfo);
-    const summaryTableMeta = this.makeTableSchema({}, { fields: summaryTableMetaInfo });
+    const tableMeta = this.makeTableSchema(schemaMakers, additionalSchemaMakers, tableMetaInfo);
+    const summaryTableMeta = this.makeTableSchema({}, [], { fields: summaryTableMetaInfo });
 
     const moveUpIsPermitted = 'higher' in this.props.meta.levels;
     const isListEmpty = this.props.list.length === 0;

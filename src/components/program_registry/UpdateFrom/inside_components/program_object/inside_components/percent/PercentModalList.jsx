@@ -105,7 +105,7 @@ export default class PercentModalList extends ElementsList {
         { super.render() }
         <ModalBody />
         <Modal.Footer>
-          <Button onClick={this.onHide}>Закрыть</Button>
+          <Button onClick={this.props.onHide}>Закрыть</Button>
         </Modal.Footer>
       </Modal>
     );

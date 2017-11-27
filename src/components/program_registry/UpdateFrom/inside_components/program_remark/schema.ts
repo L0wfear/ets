@@ -4,10 +4,16 @@ export const formValidationSchema: IValidationSchema = {
   properties: [
     {
       key: 'remark',
-      title: 'Номер поставки',
+      title: 'Замечание',
       type: 'string',
       required: true,
       maxLength: 1024,
+    },
+    {
+      key: 'comment',
+      title: 'Комментарий',
+      type: 'string',
+      maxLength: 1024 * 4,
     },
   ],
 };

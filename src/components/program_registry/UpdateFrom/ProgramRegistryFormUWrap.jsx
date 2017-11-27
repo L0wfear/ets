@@ -276,6 +276,7 @@ class ProgramRegistryFormWrap extends FormWrap {
   render() {
     const {
       isPermitted = false,
+      entity,
     } = this.props;
     const {
       saveButtonEnability = true,
@@ -292,7 +293,8 @@ class ProgramRegistryFormWrap extends FormWrap {
       <ProgramRegistryForm
         formState={this.state.formState}
         formErrors={this.state.formErrors}
-        permissions={['repair_program_version.update']}
+        permissions={[`${entity}.update`]}
+        entity={entity}
         addPermissionProp
         isPermittedByStatus={isPermittedByStatus}
         canSave={canSave}

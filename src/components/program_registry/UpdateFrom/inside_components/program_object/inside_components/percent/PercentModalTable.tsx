@@ -47,7 +47,7 @@ export function tableMeta({
       },
       {
         name: 'comment',
-        displayName: 'Группа',
+        displayName: 'Комментарий',
         type: 'string',
         filter: {
           type: 'multiselect',
@@ -64,17 +64,15 @@ const renderers: ISchemaRenderer = {
   created_at: ({ data }) => (<DateFormatter date={data} time={true}/>),
 };
 
-const Table: React.SFC<any> = props  => {
-  return (
+const Table: React.SFC<any> = props  =>
     <DataTable
       title="Проставление процента выполнения работ"
       noFilter={true}
       results={props.data}
       renderers={renderers}
       tableMeta={tableMeta(props)}
+      className={'table-percent'}
       {...props}
-    />
-  );
-};
+    />;
 
 export default Table;

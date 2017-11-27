@@ -171,8 +171,7 @@ class WaybillForm extends Form {
         !isEqual(currentState.plan_departure_date, nextState.plan_departure_date)) {
       this.getMissionsByCarAndDates(nextState);
     }
-
-    if (currentState.status === 'active') {
+    if (currentState.status === 'active' && moment(nextState.fact_departure_date).diff(nextState.fact_arrival_date, 'minutes') <= 0) {
       if (currentState.car_id !== nextState.car_id ||
           !isEqual(currentState.fact_arrival_date, nextState.fact_arrival_date) ||
           !isEqual(currentState.fact_departure_date, nextState.fact_departure_date)) {
@@ -391,7 +390,7 @@ class WaybillForm extends Form {
     this.setState({ loadingFields });
     flux.getActions('cars').getInfoFromCar(car.gps_code, formState.fact_departure_date, formState.fact_arrival_date)
       .then(({ distance, consumption }) => {
-        this.props.handleFormChange('distance', parseFloat(distance / 1000).toFixed(3));
+        this.props.handleFormChange('distance', distance);
         this.props.handleFormChange('consumption', consumption !== null ? parseFloat(consumption).toFixed(3) : null);
         const { loadingFields: then_loadingFields } = this.state;
         then_loadingFields.distance = false;
@@ -662,6 +661,7 @@ class WaybillForm extends Form {
     } = this.state;
 
     const {
+      entity,
       carsList = [],
       carsIndex = {},
       waybillDriversList = [],
@@ -689,8 +689,6 @@ class WaybillForm extends Form {
     const driversEnability = state.car_id !== null && state.car_id !== '';
 
     const DRIVERS = getDrivers(state.gov_number, waybillDriversList);
-
-
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false }));
     const OUTSIDEMISSIONS = notAvailableMissions.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false, number, className: 'yellow' }));
 
@@ -1141,7 +1139,9 @@ class WaybillForm extends Form {
                 {(new Date(origFormState.fact_arrival_date).getTime() > new Date(state.fact_arrival_date).getTime()) && (state.status === 'active') && (
                   <div style={{ color: 'red' }}>{`Задания: ${OUTSIDEMISSIONS.map(m => `№${m.number}`).join(', ')} не входят в интервал путевого листа. После сохранения путевого листа время задания будет уменьшено и приравнено к времени "Возвращение факт." данного путевого листа`}</div>
                 )}
-                <Button style={{ marginTop: 10 }} onClick={this.createMission} disabled={isEmpty(state.car_id) || IS_CLOSED || (IS_ACTIVE && state.fact_arrival_date)}>Создать задание</Button>
+                <Div permissions={['mission.create']}>
+                  <Button style={{ marginTop: 10 }} onClick={this.createMission} disabled={isEmpty(state.car_id) || IS_CLOSED || (IS_ACTIVE && state.fact_arrival_date)}>Создать задание</Button>
+                </Div>
                 <MissionFormWrap
                   onFormHide={this.onMissionFormHide}
                   showForm={this.state.showMissionForm}
@@ -1216,7 +1216,7 @@ class WaybillForm extends Form {
                   type="string"
                   label="Пройдено по Глонасс, км"
                   error={errors.distance}
-                  value={state.distance || state.track_length}
+                  value={state.distance ? parseFloat(state.distance / 1000).toFixed(3) : parseFloat(state.track_length / 1000).toFixed(3)}
                   isLoading={loadingFields.distance}
                   disabled
                 />
@@ -1235,7 +1235,7 @@ class WaybillForm extends Form {
             <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
               <Col md={8}>
                 <Field
-                  type="string"
+                  type="text"
                   label="Комментарий"
                   disabled={IS_CLOSED}
                   value={state.comment}
@@ -1321,11 +1321,13 @@ class WaybillForm extends Form {
             canClose={this.props.canClose}
             formState={this.props.formState}
             state={state}
+            canEditIfClose={!!this.state.canEditIfClose}
             taxesControl={taxesControl}
             refresh={this.refresh}
             handleSubmit={this.handleSubmit}
             handleClose={this.handleClose}
             handlePrint={this.props.handlePrint}
+            entity={entity}
           />
         </Modal.Footer>
 

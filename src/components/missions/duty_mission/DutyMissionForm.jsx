@@ -2,6 +2,7 @@ import React from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button, Glyphicon } from 'react-bootstrap';
 import {
+  find,
   last,
   uniqBy,
   isEmpty as lodashIsEmpty,
@@ -138,8 +139,15 @@ export class DutyMissionForm extends Form {
   }
 
   createNewRoute() {
-    this.context.flux.getActions('geoObjects').getGeozones().then((v) => {
+    this.context.flux.getActions('geoObjects').getGeozones().then(() => {
+      const {
+        formState: {
+          norm_id,
+        },
+      } = this.props;
+
       const newR = {
+        norm_id,
         name: '',
         polys: this.props.geozonePolys,
         technical_operation_id: this.props.formState.technical_operation_id,
@@ -179,16 +187,13 @@ export class DutyMissionForm extends Form {
     this.setState(stateChangeObject);
   }
 
-  componentWillReceiveProps(props) {
-  }
-
   getDataByNormId = async (norm_id) => {
     this.handleChange('norm_id', norm_id);
     const {
       result: [
         to_data = {},
       ] = [],
-    } = await this.context.flux.getActions('technicalOperation').getOneTechOperationByNormId({ norm_id })
+    } = await this.context.flux.getActions('technicalOperation').getOneTechOperationByNormId({ norm_id });
     const {
       formState: {
         technical_operation_id = -1,
@@ -199,7 +204,7 @@ export class DutyMissionForm extends Form {
       route_types: available_route_types = [],
     } = to_data;
 
-    const routesList = await this.context.flux.getActions('routes').getRoutesByTechnicalOperation(technical_operation_id)
+    const routesList = await this.context.flux.getActions('routes').getRoutesByTechnicalOperation(technical_operation_id);
     this.setState({ routesList, available_route_types });
   }
 
@@ -279,7 +284,7 @@ export class DutyMissionForm extends Form {
     if (currentStructureId !== null && STRUCTURES.length === 1 && currentStructureId === STRUCTURES[0].value) {
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_READONLY = true;
-    } else if (currentStructureId !== null && STRUCTURES.length > 1 && _.find(STRUCTURES, el => el.value === currentStructureId)) {
+    } else if (currentStructureId !== null && STRUCTURES.length > 1 && find(STRUCTURES, el => el.value === currentStructureId)) {
       STRUCTURE_FIELD_VIEW = true;
     } else if (currentStructureId === null && STRUCTURES.length > 1) {
       STRUCTURE_FIELD_VIEW = true;
@@ -387,7 +392,7 @@ export class DutyMissionForm extends Form {
                 handleChange={this.handleChange.bind(this)}
                 getDataByNormId={this.getDataByNormId}
                 technicalOperationsList={technicalOperationsList}
-                fromOrder={!!fromOrder}
+                getNormIdFromState={!!fromOrder || IS_DISPLAY || !!state.route_id || readOnly || fromOrder || sourceIsOrder}
               />
             </Col>
           </Row>

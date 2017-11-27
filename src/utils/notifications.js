@@ -127,6 +127,16 @@ export function getWarningNotification(message) {
   };
 }
 
+export function getInfoNotification(message) {
+  return {
+    title: 'Ифнормация',
+    message: `${message}`,
+    level: 'info',
+    dismissible: true,
+    position: 'tr',
+    autoDismiss: 0,
+  }
+}
 export function noItemsInfoNotification(msg = 'По данному запросу нет записей') {
   global.NOTIFICATION_SYSTEM.notify(msg, 'info');
 }

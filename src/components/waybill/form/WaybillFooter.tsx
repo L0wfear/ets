@@ -14,7 +14,9 @@ interface IPropsWaybillFooter {
   canClose: boolean;
   formState: any;
   state: any;
+  canEditIfClose: boolean;
   taxesControl: any;
+  entity: string;
   refresh(): void;
   handleSubmit(): void;
   handleClose(taxes: any): void;
@@ -26,7 +28,7 @@ const WaybillFooter: React.SFC<IPropsWaybillFooter> = props =>
     <Div className={'inline-block'} style={{ marginRight: 5 }} hidden={!(props.isCreating || props.isDraft)}>
       <Button title="Обновить" onClick={props.refresh} disabled={isEmpty(props.state.car_id)}><Glyphicon glyph="refresh" /></Button>
     </Div>
-    <Div className="inline-block">
+    <Div className="inline-block" permissions={(props.state.status !== 'closed' && props.state.status !== 'active') ? [`${props.entity}.update`] : undefined}>
       <Dropdown id="waybill-print-dropdown" dropup disabled={!props.canSave} onSelect={props.handlePrint.bind(null, props.state.status !== 'draft' && !props.isCreating)}>
         <Dropdown.Toggle disabled={!props.canSave}>
           <Glyphicon glyph="download-alt" /> {props.state.status === 'closed' || props.state.status === 'active' ? 'Просмотр' : 'Выдать'}
@@ -39,7 +41,7 @@ const WaybillFooter: React.SFC<IPropsWaybillFooter> = props =>
         </Dropdown.Menu>
       </Dropdown>&nbsp;
     </Div>
-    <Div oneOfPermissions={['waybill.update_closed', 'waybill.update']} className={'inline-block'} hidden={props.state.status === 'closed' && !props.state.canEditIfClose}>
+    <Div oneOfPermissions={['waybill.update_closed', 'waybill.update']} className={'inline-block'} hidden={props.state.status === 'closed' && !props.canEditIfClose}>
       <Button onClick={props.handleSubmit} disabled={!props.canSave && !props.state.canEditIfClose}>Сохранить</Button>
     </Div>
     <Div className={'inline-block'} style={{ marginLeft: 4 }} hidden={props.state.status === 'closed' || !(props.formState.status && props.formState.status === 'active')}>

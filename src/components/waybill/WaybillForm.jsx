@@ -194,7 +194,7 @@ class WaybillForm extends Form {
     this.setState({ loadingFields });
     flux.getActions('cars').getInfoFromCar(car.gps_code, formState.fact_departure_date, formState.fact_arrival_date)
       .then(({ distance, consumption }) => {
-        this.props.handleFormChange('distance', parseFloat(distance / 1000).toFixed(3));
+        this.props.handleFormChange('distance', distance);
         this.props.handleFormChange('consumption', consumption !== null ? parseFloat(consumption).toFixed(3) : null);
         const { loadingFields } = this.state;
         loadingFields.distance = false;
@@ -378,7 +378,7 @@ class WaybillForm extends Form {
     const { loadingFields, origFormState = {}, notAvailableMissions = [] } = this.state;
     const { appConfig } = this.props;
     let taxesControl = false;
-    const { carsList = [], carsIndex = {}, waybillDriversList = [], employeesList = [], missionsList = [] } = this.props;
+    const { carsList = [], carsIndex = {}, waybillDriversList = [], employeesList = [], missionsList = [], entity } = this.props;
 
     const getCarsByStructId = getCars(state.structure_id);
     const getTrailersByStructId = getTrailers(state.structure_id);
@@ -780,7 +780,9 @@ class WaybillForm extends Form {
                 {(new Date(origFormState.fact_arrival_date).getTime() > new Date(state.fact_arrival_date).getTime()) && (state.status === 'active') && (
                   <div style={{ color: 'red' }}>{`Задания: ${OUTSIDEMISSIONS.map(m => `№${m.number}`).join(', ')} не входят в интервал путевого листа. После сохранения путевого листа время задания будет уменьшено и приравнено к времени "Возвращение факт." данного путевого листа`}</div>
                 )}
-                <Button style={{ marginTop: 10 }} onClick={this.createMission} disabled={isEmpty(state.car_id) || IS_CLOSED}>Создать задание</Button>
+                <Div permissions={['mission.create']}>
+                  <Button style={{ marginTop: 10 }} onClick={this.createMission} disabled={isEmpty(state.car_id) || IS_CLOSED}>Создать задание</Button>
+                </Div>
                 <MissionFormWrap
                   onFormHide={this.onMissionFormHide}
                   showForm={this.state.showMissionForm}
@@ -849,7 +851,7 @@ class WaybillForm extends Form {
                   type="string"
                   label="Пройдено по Глонасс, км"
                   error={errors.distance}
-                  value={state.distance || state.track_length}
+                  value={state.distance ? parseFloat(state.distance / 1000).toFixed(3) : parseFloat(state.track_length / 1000).toFixed(3)}
                   isLoading={loadingFields.distance}
                   disabled
                 />
@@ -908,6 +910,7 @@ class WaybillForm extends Form {
             handleSubmit={this.handleSubmit}
             handleClose={this.props.handleClose}
             handlePrint={this.props.handlePrint}
+            entity={entity}
           />
         </Modal.Footer>
 

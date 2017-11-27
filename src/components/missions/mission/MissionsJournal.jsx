@@ -1,19 +1,26 @@
 import React from 'react';
 import { autobind } from 'core-decorators';
 import _ from 'lodash';
-import { Button, Glyphicon, ButtonToolbar } from 'react-bootstrap';
+import {
+  ButtonToolbar,
+  Button as BootstrapButton,
+  Glyphicon,
+} from 'react-bootstrap';
 
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import MissionInfoFormWrap from 'components/dashboard/MissionInfoFormWrap.jsx';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { getWarningNotification } from 'utils/notifications';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
 
 import Paginator from 'components/ui/Paginator.jsx';
 import MissionsTable from './MissionsTable.jsx';
 import MissionPrintForm from './MissionPrintForm';
 import MissionFormWrap from './MissionFormWrap.jsx';
 import MissionRejectForm from './MissionRejectForm.jsx';
+
+const Button = enhanceWithPermissions(BootstrapButton);
 
 @connectToStores(['missions', 'objects', 'employees', 'routes'])
 @exportable({ entity: 'mission' })
@@ -253,8 +260,8 @@ export default class MissionsJournal extends CheckableElementsList {
     // TODO отображение 2 кнопорей в зависимости от прав
     buttons.push(
       <ButtonToolbar key={buttons.length}>
-        <Button bsSize="small" onClick={this.completeCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</Button>
-        <Button bsSize="small" onClick={this.rejectCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</Button>
+        <Button bsSize="small" permissions={[`${this.entity}.update`]} onClick={this.completeCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</Button>
+        <Button bsSize="small" permissions={[`${this.entity}.update`]} onClick={this.rejectCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</Button>
       </ButtonToolbar>
     );
 

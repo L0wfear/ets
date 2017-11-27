@@ -371,6 +371,8 @@ export default class WaybillFormWrap extends FormWrap {
   }
 
   render() {
+    const { entity } = this.props;
+
     return (
       <Div hidden={!this.props.showForm}>
         <WaybillForm
@@ -382,6 +384,7 @@ export default class WaybillFormWrap extends FormWrap {
           handleMultipleChange={this.handleMultipleChange}
           show={this.props.showForm}
           onHide={this.props.onFormHide}
+          entity={entity}
           {...this.state}
         />
       </Div>

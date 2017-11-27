@@ -661,6 +661,7 @@ class WaybillForm extends Form {
     } = this.state;
 
     const {
+      entity,
       carsList = [],
       carsIndex = {},
       waybillDriversList = [],
@@ -1138,7 +1139,9 @@ class WaybillForm extends Form {
                 {(new Date(origFormState.fact_arrival_date).getTime() > new Date(state.fact_arrival_date).getTime()) && (state.status === 'active') && (
                   <div style={{ color: 'red' }}>{`Задания: ${OUTSIDEMISSIONS.map(m => `№${m.number}`).join(', ')} не входят в интервал путевого листа. После сохранения путевого листа время задания будет уменьшено и приравнено к времени "Возвращение факт." данного путевого листа`}</div>
                 )}
-                <Button style={{ marginTop: 10 }} onClick={this.createMission} disabled={isEmpty(state.car_id) || IS_CLOSED || (IS_ACTIVE && state.fact_arrival_date)}>Создать задание</Button>
+                <Div permissions={['mission.create']}>
+                  <Button style={{ marginTop: 10 }} onClick={this.createMission} disabled={isEmpty(state.car_id) || IS_CLOSED || (IS_ACTIVE && state.fact_arrival_date)}>Создать задание</Button>
+                </Div>
                 <MissionFormWrap
                   onFormHide={this.onMissionFormHide}
                   showForm={this.state.showMissionForm}
@@ -1324,6 +1327,7 @@ class WaybillForm extends Form {
             handleSubmit={this.handleSubmit}
             handleClose={this.handleClose}
             handlePrint={this.props.handlePrint}
+            entity={entity}
           />
         </Modal.Footer>
 

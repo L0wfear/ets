@@ -1,7 +1,11 @@
 import React from 'react';
 import { autobind } from 'core-decorators';
 import _ from 'lodash';
-import { Button as BootstrapButton, Glyphicon, ButtonToolbar } from 'react-bootstrap';
+import {
+  ButtonToolbar,
+  Button as BootstrapButton,
+  Glyphicon,
+} from 'react-bootstrap';
 
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import MissionInfoFormWrap from 'components/dashboard/MissionInfoFormWrap.jsx';
@@ -336,8 +340,8 @@ export default class MissionsJournal extends CheckableElementsList {
     // TODO отображение 2 кнопорей в зависимости от прав
     buttons.push(
       <ButtonToolbar key={buttons.length}>
-        <BootstrapButton bsSize="small" onClick={this.completeCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</BootstrapButton>
-        <BootstrapButton bsSize="small" onClick={this.rejectCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</BootstrapButton>
+        <Button bsSize="small" permissions={[`${this.entity}.update`]} onClick={this.completeCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</Button>
+        <Button bsSize="small" permissions={[`${this.entity}.update`]} onClick={this.rejectCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</Button>
       </ButtonToolbar>
     );
 

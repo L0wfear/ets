@@ -50,6 +50,7 @@ export default class Track {
     this.typesIndex = reactMapProps.typesIndex;
     // TODO придумать что-то с этими контекстами
     this.ctx = owner._reactMap.canvas.getContext('2d');
+    console.log('----Track.js-----this.ctx в Track', this.ctx); // иконка машины при зумировании карты
     this.owner = owner;
 
     this.points = null;
@@ -75,6 +76,8 @@ export default class Track {
 
     this.continuousUpdating = true;
     this.onUpdateCallback = () => {};
+    console.log('-----Track.js------fuelIcons', this.fuelIcons);
+    
   }
 
   isLoaded() {

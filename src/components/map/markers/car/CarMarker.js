@@ -8,6 +8,7 @@ import {
 } from 'constants/CarIcons.js';
 import CoordsAnimation from './CoordsAnimation.js';
 import { getSmallIcon, getBigIcon } from 'assets/icons/car.js';
+// import getMapIcon from 'assets/icons/leaks/leakIcon.js'; // работает :)
 import Marker from '../BaseMarker.js';
 import Track from '../../Track.js';
 
@@ -187,7 +188,7 @@ export default class CarMarker extends Marker {
     const map = this.map;
     const zoom = map.getView().getZoom();
 
-    return zoom < ZOOM_LARGE_ICONS && !options.selected ? this.renderSmall(options) : this.renderLarge(options);
+    return zoom < ZOOM_LARGE_ICONS && !options.selected ? this.renderSmall(options) : this.renderLarge(options); // ТС кружки или иконки при зумировании или клике на точку
   }
 
   getZoomRatio() {
@@ -198,6 +199,7 @@ export default class CarMarker extends Marker {
   }
 
   renderSmall = (options) => {
+    // console.log('попали в renderSmall');
     const point = this.point;
     const zoomRatio = this.getZoomRatio();
     const radius = this.radius = SMALL_ICON_RADIUS * zoomRatio * DEVICE_PIXEL_RATIO;
@@ -253,12 +255,14 @@ export default class CarMarker extends Marker {
    * @return {[type]} [description]
    */
   renderLarge = (options = {}) => {
+    console.log('попали в renderLarge');
     const point = this.point;
-    const color = getStatusById(point.status).color;
+    const color = getStatusById(point.status).color; // цвет кружочков для ТС на карте 
     const direction = point.direction;
     const typesIndex = this._reactMap.props.typesIndex;
     const type = typesIndex[point.car ? point.car.type_id : 5];
     const icon = type && type.icon;
+    // const icon = 'neizvesten';
     const radius = this.radius = (LARGE_ICON_RADIUS + 6);
 
     const angle = (Math.PI * direction) / 180;
@@ -313,8 +317,9 @@ export default class CarMarker extends Marker {
       context.lineWidth = 3;
       context.stroke();
     }
-
-    return getBigIcon(icon);
+    
+    return getBigIcon(icon);  // в big.js  getMapIcon(name = 'drugoe' , потому что передаётся icon=undefined
+   // return getMapIcon(1); // работает :)
   }
 
   setPoint(point) {

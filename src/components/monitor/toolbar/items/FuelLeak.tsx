@@ -17,7 +17,7 @@ class FuelLeak extends React.Component<any, any> {
   };
 
   selectAllGeoobjects = ({ target: { checked } }) => {
-    console.log('PROPS В FUEL' , this.props);
+    // console.log('PROPS В FUEL' , this.props);
     const {
       date_from,
       date_to,

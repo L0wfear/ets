@@ -5,12 +5,12 @@ import CarMarker from './markers/car/CarMarker.js';
 import { PROJECTION, ArcGisLayer, projectToPixel } from './MskAdapter.js';
 import { polyStyles } from 'constants/polygons.js';
 import { pointStyles } from 'constants/points.js';
+import { leakIcon } from 'constants/leakIcon.js';
 import { getVectorArrowStyle } from 'constants/vectors.js';
 import { GeoJSON, defaultZoom } from 'utils/ol';
 import { swapCoords } from 'utils/geo';
 
 import Measure from './controls/measure/measure.jsx';
-import getMapIcon from 'assets/icons/leaks/leakIcon.js';
 
 let POLYS_LAYER = null;
 // TODO move to settings
@@ -292,6 +292,12 @@ export default class OpenLayersMap extends Component {
           } else {
             feature.setStyle(polyStyles.geoobject);
           }
+        } else if (poly.shape && poly.data.type === 'leak') {
+          if(poly.selected) {
+            feature.setStyle(leakIcon['geoobject-selected']);
+          } else {
+            feature.setStyle(leakIcon.geoobject);
+          }
         } else { // Если точка
           if (poly.selected) {
             feature.setStyle(pointStyles['geoobject-selected']);
@@ -320,14 +326,6 @@ export default class OpenLayersMap extends Component {
 
     map.addLayer(polysLayer);
 
-    if(_.some(polys, (poli) => {
-      console.log('//////Map.js////lodash', poli, 'тип', poli.data.type);
-      return poli.data.type === 'leak';
-    })) {
-      console.log('getMapIcon для Сливы');
-      // CarMarker.prototype.getImage('leak');
-      return getMapIcon(1);
-    }
   }
 
   renderCanvas(canvas, extent) {

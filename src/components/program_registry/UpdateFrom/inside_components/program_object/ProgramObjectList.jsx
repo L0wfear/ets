@@ -132,7 +132,12 @@ export default class ProgramRemarkList extends CheckableElementsList {
         program_version_id,
         contract_number,
         contractor_id,
+        object_list: [],
+        draw_object_list: [],
         elements: [],
+        plan_shape_json: {
+          manual: false,
+        },
       },
     });
   }
@@ -152,6 +157,9 @@ export default class ProgramRemarkList extends CheckableElementsList {
         contract_number,
         contractor_id,
         elements: [],
+        plan_shape_json: {
+          manual: false,
+        },
       },
     });
   }

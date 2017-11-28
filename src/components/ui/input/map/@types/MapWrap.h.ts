@@ -61,6 +61,7 @@ export interface IPropsIHandleDrawFeatureClick {
 }
 export type IObjectsType = 'mixed' | 'simple_dt' | 'points';
 export type IObjectList = IOneobject[];
+export type IStartDraw = () => void;
 export type IHandleFeatureClick = (obj: IPropsHandleFeatureClick) => void;
 export type IHandlePointAdd = (obj: IPropsHandlePointAdd) => void;
 export type IHandleDrawFeatureAdd = (obj: IPropsHandleDrawFeatureAdd) => void;
@@ -70,16 +71,18 @@ export type IPolys = object | IPolysArray;
 export type IDrawObjectList = IOneDrawObject[];
 
 export interface IMapWrapProps {
+  disabled?: boolean;
   objectsType: IObjectsType;
   objectList: IObjectList;
+  startDraw?: IStartDraw;
   handleFeatureClick: IHandleFeatureClick;
-  handlePointAdd: IHandlePointAdd;
+  handlePointAdd?: IHandlePointAdd;
   handleDrawFeatureAdd: IHandleDrawFeatureAdd;
   handleDrawFeatureClick: IHandleDrawFeatureClick;
   handleRemoveLastDrawFeature: IHandleRemoveLastDrawFeature;
   polys?: IPolys;
-  drawObjectList?: IDrawObjectList;
-  manual?: boolean;
+  drawObjectList: IDrawObjectList;
+  manual: boolean;
 }
 
 export interface IMapWrapState {

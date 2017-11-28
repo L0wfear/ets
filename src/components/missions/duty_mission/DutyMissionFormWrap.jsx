@@ -20,7 +20,7 @@ class DutyMissionFormWrap extends FormWrap {
   }
   createAction = formState =>
     this.context.flux.getActions('missions').createDutyMission(formState).then(() => {
-      if (!this.props.fromOrder) {
+      if (!this.props.fromOrder && !this.props.fromDashboard) {
         return this.props.refreshTableList();
       }
     });
@@ -38,7 +38,7 @@ class DutyMissionFormWrap extends FormWrap {
 
     const id = mission.id ? mission.id : response.result && response.result[0] ? response.result[0].id : null;
     await this.context.flux.getActions('missions').printDutyMission(id).then(({ blob }) => { saveData(blob, `Печатная форма наряд-задания №${id}.pdf`); });
-    if (!this.props.fromOrder) {
+    if (!this.props.fromOrder && !this.props.fromDashboard) {
       await this.props.refreshTableList();
     }
     this.context.flux.getActions('missions').getDutyMissions();
@@ -91,7 +91,11 @@ class DutyMissionFormWrap extends FormWrap {
     return new Promise(async (resolve, reject) => {
       try {
         await this.context.flux.getActions('missions').updateDutyMission(formState, false);
-        await this.props.refreshTableList();
+        try {
+          await this.props.refreshTableList();
+        } catch(e) {
+          // ну а вдруг
+        }
         resolve();
       } catch (error) {
         reject(error);

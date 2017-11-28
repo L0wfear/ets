@@ -89,6 +89,7 @@ export default class MasterManagementCard extends React.Component {
           onFormHide={this.onDutyMissionFormHide}
           showForm={this.state.showDutyMissionForm}
           element={null}
+          fromDashboard
         />
       </Div>
     );

@@ -15,7 +15,7 @@ const getTableMeta = (props) => {
       },
       {
         name: 'name',
-        displayName: 'Название',
+        displayName: 'Наименование',
         type: 'string',
         filter: {
           type: 'multiselect',
@@ -51,7 +51,15 @@ const getTableMeta = (props) => {
       {
         name: 'technical_operation_name',
         displayName: 'Технологическая операция',
-        type: 'number',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
+      },
+      {
+        name: 'municipal_facility_name',
+        displayName: 'Элемент',
+        type: 'string',
         filter: {
           type: 'multiselect',
         },

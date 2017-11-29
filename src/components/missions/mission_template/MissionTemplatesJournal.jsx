@@ -132,7 +132,7 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
         bsSize="small"
         onClick={this.createMissions}
         disabled={!canCreateMission}
-      >Сформировать задание</Button>,
+      >Сформировать децентрализованное задание</Button>,
       <Button
         key={buttons.length + 2}
         bsSize="small"

@@ -30,8 +30,16 @@ const checkIsPermittedByStatus = (status) => {
       return true;
   }
 };
-// РЕФАКТОРИНГ
-// Писалось на скорую руку ( отмазка )
+const checkIsPermittedByStatusForContractorLine = (status) => {
+  switch (status) {
+    case 'sent_on_review':
+    case 'closed':
+      return false;
+    default:
+      return true;
+  }
+};
+
 class ProgramRegistryFormWrap extends FormWrap {
   constructor(props) {
     super(props);
@@ -279,6 +287,7 @@ class ProgramRegistryFormWrap extends FormWrap {
       entity,
     } = this.props;
     const {
+      formState,
       saveButtonEnability = true,
       fromCreating = false,
       versionOptions = [],
@@ -286,17 +295,21 @@ class ProgramRegistryFormWrap extends FormWrap {
       permissionForButton = {},
     } = this.state;
 
+    const { status } = formState;
+
     const canSave = isPermitted && this.state.canSave && saveButtonEnability;
-    const isPermittedByStatus = checkIsPermittedByStatus(this.state.formState.status);
+    const isPermittedByStatus = checkIsPermittedByStatus(status);
+    const isPermittetForContractorL = checkIsPermittedByStatusForContractorLine(status);
 
     return (
       <ProgramRegistryForm
-        formState={this.state.formState}
+        formState={formState}
         formErrors={this.state.formErrors}
         permissions={[`${entity}.update`]}
         entity={entity}
         addPermissionProp
         isPermittedByStatus={isPermittedByStatus}
+        isPermittetForContractorL={isPermittetForContractorL}
         canSave={canSave}
         handleFormChange={this.handleFormStateChangeWrap}
         show={this.props.showForm}

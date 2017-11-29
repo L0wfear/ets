@@ -485,7 +485,7 @@ class WaybillForm extends Form {
                     type="select"
                     label="Подразделение"
                     error={errors.structure_id}
-                    disabled={STRUCTURE_FIELD_READONLY || !IS_CREATING}
+                    disabled={STRUCTURE_FIELD_READONLY || !(IS_CREATING || IS_DRAFT)}
                     clearable={STRUCTURE_FIELD_DELETABLE}
                     options={STRUCTURES}
                     emptyValue={null}

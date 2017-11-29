@@ -333,6 +333,7 @@ export default class ProgramRegistryForm extends Form {
                     contract_number={state.contract_number}
                     contractor_id={state.contractor_id}
                     repair_type_name={state.repair_type_name}
+                    updateVersionOuter={this.props.updateVersionOuter}
                   />
                   <ProgramRemarkList
                     iСustomer={iСustomer}

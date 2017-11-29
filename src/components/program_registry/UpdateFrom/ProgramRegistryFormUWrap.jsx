@@ -281,6 +281,17 @@ class ProgramRegistryFormWrap extends FormWrap {
     });
   }
 
+  updateVersionOuter = () => {
+    const {
+      element: {
+        id,
+      },
+    } = this.props;
+    const { activeVersionId } = this.state;
+
+    return this.updateVersionList({ id, activeVersionId });
+  }
+
   render() {
     const {
       isPermitted = false,
@@ -332,6 +343,8 @@ class ProgramRegistryFormWrap extends FormWrap {
         applyVersion={this.applyVersion}
         canselVersion={this.canselVersion}
         closeVersion={this.closeVersion}
+
+        updateVersionOuter={this.updateVersionOuter}
       />
     );
   }

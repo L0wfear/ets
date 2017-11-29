@@ -35,7 +35,7 @@ class PercentModalFormWrap extends FormWrap {
     const {
       object_id: id,
     } = this.props;
-
+    this.props.updateVersionOuter();
     this.context.flux.getActions('repair').getDataAboutObjectById(id);
 
     return ans;

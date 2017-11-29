@@ -478,6 +478,7 @@ class ProgramObjectFormDT extends Form {
           <PercentModalList
             object_id={id}
             onHide={this.hidePercentForm}
+            updateVersionOuter={this.props.updateVersionOuter}
           />
         </Div>
         <ModalBody />

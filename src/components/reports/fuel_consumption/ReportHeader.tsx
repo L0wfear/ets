@@ -7,7 +7,7 @@ import {
 } from 'components/reports/common/@types/ReportHeaderWrapper.h';
 
 import Datepicker from 'components/ui/input/DatePicker';
-import { getToday9am, getTomorrow9am, createValidDate } from 'utils/dates';
+import { getToday9am, getTomorrow9am, createValidDateTime } from 'utils/dates';
 import { bindable } from 'utils/decorators';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
@@ -15,39 +15,39 @@ import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
 const DatePicker: any = bindable(Datepicker);
 
 interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
-  date_from: string;
-  date_to: string;
+  date_start: string;
+  date_end: string;
 }
 
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
   getState() {
     const {
-      date_from = getToday9am(),
-      date_to = getTomorrow9am(),
+      date_start = getToday9am(),
+      date_end = getTomorrow9am(),
     } = this.props;
 
     return {
-      date_from,
-      date_to,
+      date_start,
+      date_end,
     };
   }
   handleSubmit = () => {
     const {
-      date_from,
-      date_to,
+      date_start,
+      date_end,
     } = this.getState();
 
     this.props.onClick({
-      date_from: createValidDate(date_from),
-      date_to: createValidDate(date_to),
+      date_start: createValidDateTime(date_start),
+      date_end: createValidDateTime(date_end),
     });
   }
   render() {
     const { readOnly } = this.props;
 
     const {
-      date_from,
-      date_to,
+      date_start,
+      date_end,
     } = this.getState();
 
     return (
@@ -59,19 +59,17 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
           <Row>
             <Col md={3}>
               <DatePicker
-                date={date_from}
-                time={false}
+                date={date_start}
                 onChange={this.props.handleChange}
-                bindOnChange={'date_from'}
+                bindOnChange={'date_start'}
                 disabled={readOnly}
               />
             </Col>
             <Col md={3}>
               <DatePicker
-                date={date_to}
-                time={false}
+                date={date_end}
                 onChange={this.props.handleChange}
-                bindOnChange={'date_to'}
+                bindOnChange={'date_end'}
                 disabled={readOnly}
               />
             </Col>

@@ -32,7 +32,9 @@ export default class DrawMap extends PolyMap {
 
     map.setTarget(container);
 
-    this.enableInteractions();
+    if (!this.props.disabled) {
+      this.enableInteractions();
+    }
 
     this.renderPolygons(this.props.polys);
 
@@ -187,6 +189,9 @@ export default class DrawMap extends PolyMap {
   addPoint() {
     this.draw.setActive(true);
     this.drawSetToEnd = false;
+    if (typeof this.props.startDraw === 'function') {
+      this.props.startDraw();
+    }
     // const objectList = this.props.objectsType === 'mixed' ? this.props.draw_object_list : this.props.object_list;
     // const startObject = _.last(objectList);
     // const start = [startObject.begin.x_msk, startObject.begin.y_msk];
@@ -210,7 +215,7 @@ export default class DrawMap extends PolyMap {
 
     return (
       <div ref={node => (this._container = node)} className="openlayers-container">
-        <Div hidden={this.props.objectsType === 'points' || !objectList.length}>
+        <Div hidden={this.props.disabled || this.props.objectsType === 'points' || !objectList.length}>
           <button className="continue-route-button" onClick={this.addPoint}><Glyphicon glyph="pencil" /></button>
           <button className="delete-last-point-button" onClick={this.removeLastPoint}><Glyphicon glyph="remove" /></button>
         </Div>

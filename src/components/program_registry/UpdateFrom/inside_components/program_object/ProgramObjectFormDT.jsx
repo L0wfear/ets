@@ -2,6 +2,7 @@ import React from 'react';
 import { Row, Col, Modal, Button, Nav, NavItem } from 'react-bootstrap';
 import connectToStores from 'flummox/connect';
 import moment from 'moment';
+import { cloneDeep, isEmpty } from 'lodash';
 
 import { OBJ_TAB_INDEX, ELEMENT_NULL_OBJECT } from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormDT.h';
 
@@ -17,6 +18,15 @@ import TabInfo from 'components/program_registry/UpdateFrom/inside_components/pr
 import MapInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/MapInfo.tsx';
 
 import { PercentModalList } from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components';
+
+const getObjectsType = (slug) => {
+  switch (slug) {
+    case 'dt': return 'simple_dt';
+    case 'mixed': return 'mixed';
+    default: return 'simple_dt';
+  }
+};
+const log = {};
 
 class ProgramObjectFormDT extends Form {
   static defaultProps = {
@@ -36,6 +46,7 @@ class ProgramObjectFormDT extends Form {
       showPercentForm: false,
       selectedObj: {},
       IS_CREATING: !id,
+      dtPolys: {},
     };
   }
 
@@ -51,77 +62,168 @@ class ProgramObjectFormDT extends Form {
         formState: {
           asuods_id = null,
           type_slug: type,
-          plan_shape_json,
+          plan_shape_json: {
+            manual,
+            dtPolys: dtPolysOut,
+            draw_object_list = [],
+            object_list,
+          },
           elements = [],
         },
+        dtPolys: dtPolysOrigal = {},
       } = this.props;
 
-      const {
-        data: {
-          result: {
-            rows = [],
-          },
-        },
-      } = ans;
+      const changesState = { manual };
+      changesState.dtPolys = cloneDeep(dtPolysOrigal);
 
-      const OBJECT_OPTIONS = rows.map(({ yard_id: value, object_address: label, total_area, id, name }) => ({ value, label, total_area, id, name }));
+      changesState.OBJECT_OPTIONS = Object.values(changesState.dtPolys).map(({ data: { yard_id: value, object_address: label, total_area, id, name } }) => ({ value, label, total_area, id, name }));
 
       if (!IS_CREATING) {
-        const { id: object_id, label: object_address } = OBJECT_OPTIONS.find(({ value: yard_id }) => yard_id === asuods_id) || {};
-        const selectedObj = {
-          data: rows.find(({ id }) => id === object_id),
-        };
+        const changesFormState = {};
+        if (manual) {
+          changesFormState.draw_object_list = draw_object_list;
+          changesFormState.objectsType = getObjectsType('mixed');
+        } else {
+          changesFormState.object_list = object_list;
+          changesFormState.objectsType = getObjectsType(type);
+        }
+        changesState.dtPolys = dtPolysOut;
 
-        const polys = {
-          [object_id]: {
-            name: object_address,
-            object_id,
-            state: 2,
-            type,
-            shape: plan_shape_json,
-          },
-        };
+        const { id: object_id } = changesState.OBJECT_OPTIONS.find(({ value: yard_id }) => yard_id === asuods_id) || {};
 
-        const newElements = elements.map(d => (
-          {
-            ...d,
-            measure_unit_name: (objectPropertyList.find(({ id }) => id === d.object_property_id) || {}).measure_unit_name,
-          }
-        ));
-        this.setState({ selectedObj });
-        this.props.handleMultiChange({
-          polys,
-          elements: newElements,
-        });
+        changesState.selectedObj = changesState.dtPolys[object_id];
+
+        changesFormState.elements = elements.map(d => ({
+          ...d,
+          measure_unit_name: (objectPropertyList.find(({ id }) => id === d.object_property_id) || {}).measure_unit_name,
+        }));
+        this.props.handleMultiChange({ ...changesFormState });
+        this.setState({ ...changesState });
       }
-
-      this.setState({ OBJECT_OPTIONS });
-
       return ans;
     });
   }
 
-  setManualOnFalse = () => this.setState({ manual: false });
-  setManualOnTrue = () => this.setState({ manual: false });
+  setManualOnFalse = () => {
+    const { formState: { draw_object_list = [] } } = this.props;
+    const { dtPolys: dtPolysOld } = this.props;
+    const { object_list, object_list: [selectedShape] } = log;
+
+    const dtPolys = cloneDeep(dtPolysOld);
+
+    dtPolys[selectedShape.object_id].state = selectedShape.state;
+    console.log(dtPolys[selectedShape.object_id])
+    
+    log.draw_object_list = cloneDeep(draw_object_list);
+
+    this.props.handleMultiChange({
+      draw_object_list,
+      object_list,
+      objectsType: log.objectsType,
+    });
+    this.setState({ manual: false, dtPolys });
+  }
+  setManualOnTrue = () => {
+    const { formState: { objectsType, object_list, object_list: [selectedShape] } } = this.props;
+    const { dtPolys: dtPolysOld } = this.props;
+
+    const dtPolys = {
+      [selectedShape.object_id]: {
+        ...dtPolysOld[selectedShape.object_id]
+      },
+    };
+
+    log.object_list = cloneDeep(object_list);
+    log.objectsType = objectsType;
+
+    this.props.handleMultiChange({
+      object_list,
+      draw_object_list: log.draw_object_list || [],
+      objectsType: getObjectsType('mixed'),
+    });
+    this.setState({ manual: true, dtPolys });
+  }
 
   showPercentForm = () => this.setState({ showPercentForm: true });
   hidePercentForm = () => this.setState({ showPercentForm: false });
 
-  handleSubmitWrap = () => this.handleSubmit();
+  handleSubmitWrap = () => {
+    const { manual, IS_CREATING } = this.state;
+    if (IS_CREATING) {
+      const { dtPolys } = this.state;
+
+      const plan_shape_json = {
+        manual,
+      };
+
+      if (manual) {
+        const { formState: { draw_object_list } } = this.props;
+
+        plan_shape_json.dtPolys = dtPolys;
+        plan_shape_json.draw_object_list = draw_object_list;
+      } else {
+        const { formState: { object_list, object_list: [selectedShape] } } = this.props;
+        const { object_id } = selectedShape;
+
+        plan_shape_json.dtPolys = { [object_id]: dtPolys[object_id] };
+        plan_shape_json.object_list = object_list;
+      }
+      this.handleChange('plan_shape_json', plan_shape_json);
+    }
+    return new Promise(() => this.handleSubmit());
+  }
+  handleFeatureClick = ({ id: object_id }) => {
+    const { dtPolys } = this.state;
+    const { data: { yard_id: asuods_id } } = dtPolys[object_id];
+
+    this.handleChangeInfoObject('asuods_id', asuods_id);
+  }
+
+  startDraw = () => {
+    this.handleChange('draw_object_list', []);
+  }
+  handleDrawFeatureAdd = ({ drawObjectNew }) => {
+    const { formState: { draw_object_list = [] } } = this.props;
+
+    draw_object_list.push(drawObjectNew);
+
+    this.handleChange('draw_object_list', draw_object_list);
+  }
+  handleDrawFeatureClick = ({ index, nextState }) => {
+    const { formState: { draw_object_list: draw_object_list_old = [] } } = this.props;
+    const draw_object_list = cloneDeep(draw_object_list_old);
+
+    draw_object_list[index].state = nextState;
+
+    this.handleChange('draw_object_list', draw_object_list);
+  }
+  handleRemoveLastDrawFeature = () => {
+    const { formState: { draw_object_list: draw_object_list_old = [] } } = this.props;
+    const draw_object_list = cloneDeep(draw_object_list_old);
+    draw_object_list.pop();
+
+    this.handleChange('draw_object_list', draw_object_list);
+  }
+
   handleChangeInfoObject = (field, value) => {
-    this.handleChange(field, value);
+    const asuods_id = value;
 
     const {
       formState: {
-        type_slug: type,
-        asuods_id,
+        type_slug,
+        object_list: object_list_old,
+        info: info_old,
+        elements: elements_old,
       },
-      dtPolys = {},
       objectPropertyList = [],
     } = this.props;
+
     const {
       OBJECT_OPTIONS = [],
+      dtPolys: dtPolysOld = {},
     } = this.state;
+
+    const dtPolys = cloneDeep(dtPolysOld);
 
     const {
       name,
@@ -130,36 +232,43 @@ class ProgramObjectFormDT extends Form {
       total_area: info_total_area,
     } = OBJECT_OPTIONS.find(({ value: yard_id }) => yard_id === asuods_id) || {};
 
-    const polys = {
-      [object_id]: {
-        name: object_address,
-        object_id,
-        state: 2,
-        type,
-        shape: dtPolys[object_id].shape,
-      },
-    };
+    if (!isEmpty(object_list_old)) {
+      const [{ object_id: object_id_old }] = object_list_old;
+
+      if (object_id_old === object_id) {
+        return;
+      }
+
+      dtPolys[object_id_old].state = 1;
+    }
+    dtPolys[object_id].state = 2;
 
     const selectedObj = dtPolys[object_id];
 
-    const elements = this.props.formState.elements.map((d) => {
-      const newD = { ...d };
-      const { original_name } = objectPropertyList.find(({ object_property_id }) => object_property_id === d.id);
-      newD.value = selectedObj.data[original_name];
-      return newD;
-    });
-
-    const info = {
-      ...this.props.formState.info,
-      total_area: info_total_area,
-    };
-    this.setState({ selectedObj });
-    this.props.handleMultiChange({
-      info,
-      polys,
-      elements,
+    const changeObject = {
+      asuods_id,
       name,
-    });
+      elements: elements_old.map((d) => {
+        const newD = { ...d };
+        const { original_name } = objectPropertyList.find(({ object_property_id }) => object_property_id === d.id);
+        newD.value = selectedObj.data[original_name];
+        return newD;
+      }),
+      info: {
+        ...info_old,
+        total_area: info_total_area,
+      },
+      objectsType: getObjectsType(type_slug),
+      object_list: [{
+        name: object_address,
+        object_id,
+        state: dtPolys[object_id].state,
+        type: type_slug,
+      }],
+    };
+
+    this.setState({ selectedObj, dtPolys });
+    this.props.handleMultiChange({ ...changeObject });
   }
 
   pushElement = () => {
@@ -188,7 +297,6 @@ class ProgramObjectFormDT extends Form {
     const {
       tabKey,
       contractorList = [],
-      dtPolys = [],
       isPermitted,
     } = this.props;
 
@@ -198,6 +306,7 @@ class ProgramObjectFormDT extends Form {
       showPercentForm,
       selectedObj,
       IS_CREATING,
+      dtPolys = {},
     } = this.state;
 
     const {
@@ -207,7 +316,11 @@ class ProgramObjectFormDT extends Form {
       info: {
         total_area = null,
       } = {},
+      objectsType,
+      object_list: objectList,
+      draw_object_list: drawObjectList,
     } = state;
+
     const title = IS_CREATING ? 'Создание карточки ДТ капитального ремонта.' : `Карточка ДТ капитального ремонта. Объект: ${name}. ID ${asuods_id}`;
 
     const CONTRACTOR_OPTIONS = contractorList.map(({ id: value, name: label }) => ({ value, label }));
@@ -342,10 +455,21 @@ class ProgramObjectFormDT extends Form {
               </Col>
               <Col md={5}>
                 <MapInfo
+                  handleFeatureClick={this.handleFeatureClick}
                   manual={manual}
-                  polys={state.polys}
+                  polys={dtPolys}
+                  objectList={objectList}
+                  objectsType={objectsType}
+                  startDraw={this.startDraw}
+                  drawObjectList={drawObjectList}
                   setManualOnTrue={this.setManualOnTrue}
-                />
+                  setManualOnFalse={this.setManualOnFalse}
+                  isPermitted={asuods_id && !isPermitted && IS_CREATING}
+                  isPermittedMap={IS_CREATING && isPermitted}
+                  handleDrawFeatureAdd={this.handleDrawFeatureAdd}
+                  handleDrawFeatureClick={this.handleDrawFeatureClick}
+                  handleRemoveLastDrawFeature={this.handleRemoveLastDrawFeature}
+                  />
               </Col>
             </Row>
           </div>

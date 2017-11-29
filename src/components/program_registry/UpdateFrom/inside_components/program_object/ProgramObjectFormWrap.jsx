@@ -5,7 +5,6 @@ import enhanceWithPermissions from 'components/util/RequirePermissions';
 import { validateField } from 'utils/validate/validateField.js';
 
 import ProgramObjectFormDT from './ProgramObjectFormDT';
-import ProgramObjectFormODH from './ProgramObjectFormODH';
 import { formValidationSchema, elementsValidationSchema } from './schema';
 
 class ProgramObjectFormWrap extends FormWrap {
@@ -105,7 +104,7 @@ class ProgramObjectFormWrap extends FormWrap {
     const canSave = isPermitted && this.state.canSave && saveButtonEnability;
 
     return (
-      <ProgramObjectFormODH
+      <ProgramObjectFormDT
         formState={this.state.formState}
         program_version_status={this.props.program_version_status}
         formErrors={this.state.formErrors}

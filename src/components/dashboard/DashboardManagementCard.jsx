@@ -78,6 +78,7 @@ export default class MasterManagementCard extends React.Component {
           onCallback={this.onWaybillFormHide}
           showForm={this.state.showWaybillForm}
           element={null}
+          entity={'waybill'}
         />
         <MissionFormWrap
           onFormHide={this.onMissionFormHide}
@@ -88,6 +89,7 @@ export default class MasterManagementCard extends React.Component {
           onFormHide={this.onDutyMissionFormHide}
           showForm={this.state.showDutyMissionForm}
           element={null}
+          fromDashboard
         />
       </Div>
     );

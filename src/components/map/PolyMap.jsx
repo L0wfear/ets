@@ -3,7 +3,6 @@ import { polyState, polyStyles } from 'constants/polygons.js';
 import { getVectorArrowStyle } from 'constants/vectors.js';
 import { getPolyStyle, GeoJSON } from 'utils/ol';
 import each from 'lodash/each';
-import uniqBy from 'lodash/uniqBy';
 import { PROJECTION, ArcGisLayer } from './MskAdapter.js';
 
 let POLYS_LAYER = null;
@@ -69,8 +68,9 @@ export default class PolyMap extends Component {
     this.popup = new ol.Overlay.Popup();
     map.addOverlay(this.popup);
 
-    this.enableInteractions();
-
+    if (!this.props.disabled) {
+      this.enableInteractions();
+    }
     this.renderPolygons(this.props.polys, true);
 
     if (this.props.objectsType === 'mixed') {

@@ -103,7 +103,7 @@ export default class OpenLayersMap extends Component {
       zoom: null,
     };
   }
-  
+
   setMeasureActive = measureActive => this.setState({ measureActive });
 
   /**

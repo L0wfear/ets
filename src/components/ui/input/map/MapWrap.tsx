@@ -31,6 +31,12 @@ class MapWrap extends React.Component<IMapWrapProps, IMapWrapState> {
     };
   }
 
+  startDraw = () => {
+    if (typeof this.props.startDraw === 'function') {
+      this.props.startDraw();
+    }
+  }
+
   onFeatureClick = feature => {
     const { id, name, state } = feature.getProperties();
     const { polys } = this.props;
@@ -43,6 +49,7 @@ class MapWrap extends React.Component<IMapWrapProps, IMapWrapState> {
       } catch (e) {
         /* tslint:disable:no-console */
         console.warn('define handleFeatureClick in father');
+        console.warn(e);
         /* tslint:enable */
       }
     }
@@ -127,6 +134,7 @@ class MapWrap extends React.Component<IMapWrapProps, IMapWrapState> {
     } = this.state;
 
     const {
+      disabled = false,
       objectsType,
       manual,
       polys,
@@ -137,23 +145,26 @@ class MapWrap extends React.Component<IMapWrapProps, IMapWrapState> {
     if (manual) {
       return (
         <DrawMapTSX
+          disabled={disabled}
+          polys={polys}
+          object_list={objectList}
+          objectsType={objectsType}
+          startDraw={this.startDraw}
           onPointAdd={this.onPointAdd}
+          draw_object_list={drawObjectList}
           onDrawFeatureAdd={this.onDrawFeatureAdd}
           onDrawFeatureClick={this.onDrawFeatureClick}
           removeLastDrawFeature={this.removeLastDrawFeature}
-          object_list={objectList}
-          draw_object_list={drawObjectList}
-          polys={polys}
-          objectsType={objectsType}
         />
       );
     }
 
     return (
       <PolyMapTSX
+        disabled={disabled}
         zoom={zoom}
-        center={center}
         polys={polys}
+        center={center}
         objectsType={objectsType}
         draw_object_list={drawObjectList}
         onFeatureClick={this.onFeatureClick}

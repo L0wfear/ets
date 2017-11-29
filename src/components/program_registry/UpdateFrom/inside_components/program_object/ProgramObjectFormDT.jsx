@@ -99,6 +99,8 @@ class ProgramObjectFormDT extends Form {
         }));
         this.props.handleMultiChange({ ...changesFormState });
         this.setState({ ...changesState });
+      } else {
+        this.setState({ ...changesState });
       }
       return ans;
     });
@@ -112,8 +114,7 @@ class ProgramObjectFormDT extends Form {
     const dtPolys = cloneDeep(dtPolysOld);
 
     dtPolys[selectedShape.object_id].state = selectedShape.state;
-    console.log(dtPolys[selectedShape.object_id])
-    
+
     log.draw_object_list = cloneDeep(draw_object_list);
 
     this.props.handleMultiChange({
@@ -129,7 +130,7 @@ class ProgramObjectFormDT extends Form {
 
     const dtPolys = {
       [selectedShape.object_id]: {
-        ...dtPolysOld[selectedShape.object_id]
+        ...dtPolysOld[selectedShape.object_id],
       },
     };
 
@@ -469,7 +470,7 @@ class ProgramObjectFormDT extends Form {
                   handleDrawFeatureAdd={this.handleDrawFeatureAdd}
                   handleDrawFeatureClick={this.handleDrawFeatureClick}
                   handleRemoveLastDrawFeature={this.handleRemoveLastDrawFeature}
-                  />
+                />
               </Col>
             </Row>
           </div>

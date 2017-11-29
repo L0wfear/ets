@@ -46,7 +46,7 @@ class ProgramObjectFormDT extends Form {
       showPercentForm: false,
       selectedObj: {},
       IS_CREATING: !id,
-      dtPolys: {},
+      polys: {},
     };
   }
 
@@ -55,9 +55,7 @@ class ProgramObjectFormDT extends Form {
       IS_CREATING,
     } = this.state;
 
-    const { data: { result: { rows: objectPropertyList } } } = await this.context.flux.getActions('repair').getObjectProperty({ object_type: 'odh' });
-
-    this.context.flux.getActions('geoObjects').getGeozoneByTypeWithGeometry('dt').then((ans) => {
+    this.context.flux.getActions('repair').getObjectProperty({ object_type: 'odh' }).then(({ data: { result: { rows: objectPropertyList } } }) => {
       const {
         formState: {
           asuods_id = null,
@@ -70,15 +68,11 @@ class ProgramObjectFormDT extends Form {
           },
           elements = [],
         },
-        dtPolys: dtPolysOrigal = {},
       } = this.props;
 
-      const changesState = { manual };
-      changesState.dtPolys = cloneDeep(dtPolysOrigal);
-
-      changesState.OBJECT_OPTIONS = Object.values(changesState.dtPolys).map(({ data: { yard_id: value, object_address: label, total_area, id, name } }) => ({ value, label, total_area, id, name }));
-
       if (!IS_CREATING) {
+        const changesState = { manual };
+
         const changesFormState = {};
         if (manual) {
           changesFormState.draw_object_list = draw_object_list;
@@ -88,6 +82,7 @@ class ProgramObjectFormDT extends Form {
           changesFormState.objectsType = getObjectsType(type);
         }
         changesState.dtPolys = dtPolysOut;
+        changesState.OBJECT_OPTIONS = Object.values(changesState.dtPolys).map(({ data: { yard_id: value, object_address: label, total_area, id, name } }) => ({ value, label, total_area, id, name }));
 
         const { id: object_id } = changesState.OBJECT_OPTIONS.find(({ value: yard_id }) => yard_id === asuods_id) || {};
 
@@ -100,9 +95,21 @@ class ProgramObjectFormDT extends Form {
         this.props.handleMultiChange({ ...changesFormState });
         this.setState({ ...changesState });
       } else {
-        this.setState({ ...changesState });
+        this.context.flux.getActions('geoObjects').getGeozoneByTypeWithGeometry('dt').then((ans) => {
+          const {
+            dtPolys: dtPolysOrigal = {},
+          } = this.props;
+
+          const changesState = { manual };
+          changesState.dtPolys = cloneDeep(dtPolysOrigal);
+
+          changesState.OBJECT_OPTIONS = Object.values(changesState.dtPolys).map(({ data: { yard_id: value, object_address: label, total_area, id, name } }) => ({ value, label, total_area, id, name }));
+
+          this.setState({ ...changesState });
+
+          return ans;
+        });
       }
-      return ans;
     });
   }
 
@@ -455,22 +462,24 @@ class ProgramObjectFormDT extends Form {
                 />
               </Col>
               <Col md={5}>
-                <MapInfo
-                  handleFeatureClick={this.handleFeatureClick}
-                  manual={manual}
-                  polys={dtPolys}
-                  objectList={objectList}
-                  objectsType={objectsType}
-                  startDraw={this.startDraw}
-                  drawObjectList={drawObjectList}
-                  setManualOnTrue={this.setManualOnTrue}
-                  setManualOnFalse={this.setManualOnFalse}
-                  isPermitted={asuods_id && !isPermitted && IS_CREATING}
-                  isPermittedMap={IS_CREATING && isPermitted}
-                  handleDrawFeatureAdd={this.handleDrawFeatureAdd}
-                  handleDrawFeatureClick={this.handleDrawFeatureClick}
-                  handleRemoveLastDrawFeature={this.handleRemoveLastDrawFeature}
-                />
+                <Div hidden={!IS_CREATING && isEmpty(dtPolys)} >
+                  <MapInfo
+                    handleFeatureClick={this.handleFeatureClick}
+                    manual={manual}
+                    polys={dtPolys}
+                    objectList={objectList}
+                    objectsType={objectsType}
+                    startDraw={this.startDraw}
+                    drawObjectList={drawObjectList}
+                    setManualOnTrue={this.setManualOnTrue}
+                    setManualOnFalse={this.setManualOnFalse}
+                    isPermitted={asuods_id && !isPermitted && IS_CREATING}
+                    isPermittedMap={IS_CREATING && isPermitted}
+                    handleDrawFeatureAdd={this.handleDrawFeatureAdd}
+                    handleDrawFeatureClick={this.handleDrawFeatureClick}
+                    handleRemoveLastDrawFeature={this.handleRemoveLastDrawFeature}
+                  />
+                </Div>
               </Col>
             </Row>
           </div>

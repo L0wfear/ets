@@ -19,19 +19,23 @@ import PercentModalFormWrap from './PercentModalFormWrap';
   operations: ['LIST', 'CREATE', 'READ', 'DELETE'],
 })
 export default class PercentModalList extends ElementsList {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
     this.keyPressDisabled = true;
-
-    this.removeElementAction = context.flux.getActions('repair').removePercent;
   }
+
+  removeElementAction = id => this.context.flux.getActions('repair').removePercent(id).then(this.checkMinVals);
+
   componentDidMount() {
     super.componentDidMount();
-    const { flux } = this.context;
+    this.checkMinVals();
+  }
+
+  checkMinVals = () => {
     const {
       object_id: id,
     } = this.props;
-    flux.getActions('repair').getDataAboutObjectById(id).then((ans) => {
+    this.context.flux.getActions('repair').getDataAboutObjectById(id).then((ans) => {
       const {
         result: {
           rows = [],
@@ -89,6 +93,7 @@ export default class PercentModalList extends ElementsList {
         renderers={this.constructor.formRenderers}
         permissions={[`${this.entity}.read`]}
         other={other}
+        checkMinVals={this.checkMinVals}
         {...this.props}
       />
     );

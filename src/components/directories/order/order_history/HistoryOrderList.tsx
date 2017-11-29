@@ -86,15 +86,15 @@ class HistoryOrder extends React.Component<any, any> {
       VERSION_OPTIONS,
       historytableIsOpen,
     } = this.state;
-//glyphicon-menu-down
+
     return (
       <Row>
         <Panel>
-          <Col md={12} onClick={this.toggleHistoryTable} style={{ marginBottom: 10, cursor: 'pointer' }}>
-            <h2 style={{ display: 'flex', justifyContent: 'space-between', margin: 0 }}>
+          <Col md={12} onClick={this.toggleHistoryTable} style={{ marginBottom: historytableIsOpen ? 10 : 0, cursor: 'pointer' }}>
+            <h4 style={{ display: 'flex', justifyContent: 'space-between', margin: 0 }}>
               <span>Версионность централизованного задания</span>
               <Glyphicon glyph={historytableIsOpen ? 'menu-up' : 'menu-down'} />
-            </h2>
+            </h4>
           </Col>
           { historytableIsOpen &&
             <div>

@@ -41,7 +41,6 @@ class DutyMissionFormWrap extends FormWrap {
     if (!this.props.fromOrder && !this.props.fromDashboard) {
       await this.props.refreshTableList();
     }
-    this.context.flux.getActions('missions').getDutyMissions();
     this.props.onFormHide();
   }
 

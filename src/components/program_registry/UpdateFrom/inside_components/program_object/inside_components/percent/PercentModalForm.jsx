@@ -41,7 +41,7 @@ export default class SparePartForm extends Form {
                 type="date"
                 label="Дата осмотра"
                 date={state.reviewed_at}
-                error={errors.reviewed_at}
+                error={IS_CREATING ? errors.reviewed_at : null}
                 onChange={this.handleChange}
                 boundKeys={['reviewed_at']}
                 disabled={!isPermitted || !IS_CREATING}
@@ -50,7 +50,7 @@ export default class SparePartForm extends Form {
                 type="string"
                 label="Процент выполнения"
                 value={state.percent}
-                error={errors.percent}
+                error={IS_CREATING ? errors.percent : null}
                 onChange={this.handleChange}
                 boundKeys={['percent']}
                 disabled={!isPermitted || !IS_CREATING}
@@ -64,13 +64,14 @@ export default class SparePartForm extends Form {
                 boundKeys={['comment']}
                 disabled={!isPermitted || !IS_CREATING}
               />
-              
             </Col>
           </Row>
         </Div>
         <ModalBody />
         <Modal.Footer>
-          <Button disabled={!this.props.canSave} onClick={this.handleSubmitWrap}>Сохранить</Button>
+          <Div hidden={!IS_CREATING} >
+            <Button disabled={!this.props.canSave} onClick={this.handleSubmitWrap}>Сохранить</Button>
+          </Div>
         </Modal.Footer>
       </Modal>
     );

@@ -176,7 +176,7 @@ export const waybillSchema = {
     downtime_hours_work: [
       {
         validator: (value) => {
-          if (value && value.match(/^\d{4,}/)) {
+          if (value && parseFloat(value).toFixed(1).match(/^\d{4,}/)) {
             return 'Поле "Работа" должно быть меньше 1000';
           }
           return false;
@@ -186,7 +186,7 @@ export const waybillSchema = {
     downtime_hours_duty: [
       {
         validator: (value) => {
-          if (value && value.match(/^\d{4,}/)) {
+          if (value && parseFloat(value).toFixed(1).match(/^\d{4,}/)) {
             return 'Поле "Дежурство" должно быть меньше 1000';
           }
           return false;
@@ -196,7 +196,7 @@ export const waybillSchema = {
     downtime_hours_dinner: [
       {
         validator: (value) => {
-          if (value && value.match(/^\d{4,}/)) {
+          if (value && parseFloat(value).toFixed(1).match(/^\d{4,}/)) {
             return 'Поле "Обед" должно быть меньше 1000';
           }
           return false;
@@ -206,7 +206,7 @@ export const waybillSchema = {
     downtime_hours_repair: [
       {
         validator: (value) => {
-          if (value && value.match(/^\d{4,}/)) {
+          if (value && parseFloat(value).toFixed(1).match(/^\d{4,}/)) {
             return 'Поле "Ремонт" должно быть меньше 1000';
           }
           return false;

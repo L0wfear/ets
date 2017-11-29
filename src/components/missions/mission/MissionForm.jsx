@@ -113,8 +113,36 @@ export class MissionForm extends Form {
     const {
       is_new,
     } = mission;
-    if (is_new) {
-      TECH_OPERATIONS = technicalOperationsList.filter(({ is_new: is_new_to }) => !!is_new_to).map(({ id, name }) => ({ value: id, label: name }));
+
+    if (this.props.fromWaybill && mission.type_id) {
+      TECH_OPERATIONS = technicalOperationsList.reduce((newArr, to) => {
+        const {
+          is_new: is_new_to,
+          id: value,
+          name: label,
+          car_func_types,
+        } = to;
+
+        if (is_new_to && car_func_types.find(({ id }) => id === mission.type_id)) {
+          newArr.push({ value, label });
+        }
+
+        return newArr;
+      }, []);
+    } else if (is_new) {
+      TECH_OPERATIONS = technicalOperationsList.reduce((newArr, to) => {
+        const {
+          is_new: is_new_to,
+          id: value,
+          name: label,
+        } = to;
+
+        if (is_new_to) {
+          newArr.push({ value, label });
+        }
+
+        return newArr;
+      }, []);
     } else {
       TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
     }
@@ -218,8 +246,6 @@ export class MissionForm extends Form {
         car_func_types = [],
       } = to_data;
       const car_func_types_ids = car_func_types.map(({ id }) => id);
-      // Костыль
-      // Уберётся после релиза 14 версии
 
       this.context.flux.getActions('cars').getCarsByNormId({ norm_id })
       .then(({ result: { rows: carsList } }) => {

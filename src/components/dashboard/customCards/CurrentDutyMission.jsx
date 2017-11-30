@@ -63,7 +63,7 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
       mission = mission.result.rows[0];
       mission.status = 'fail';
       mission.comment = reason;
-      this.context.flux.getActions('missions').updateDutyMission(mission);
+      await this.context.flux.getActions('missions').updateDutyMission(mission);
     }
     this.selectItem(null);
     this.props.refreshCard();

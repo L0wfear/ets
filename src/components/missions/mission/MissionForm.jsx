@@ -241,7 +241,10 @@ export class MissionForm extends Form {
     } = this.props;
 
     if (!this.props.formState.status && !this.props.fromWaybill) {
-      this.handleChange('car_id', undefined);
+      if (!this.state.isTemplate) {
+        this.handleChange('car_id', undefined);
+      }
+
       const {
         car_func_types = [],
       } = to_data;

@@ -155,7 +155,7 @@ export function getDefaultMissionTemplate() {
   return {
     description: '',
     passes_count: 1,
-    created_at: new Date(),
+    date_create: new Date(),
   };
 }
 

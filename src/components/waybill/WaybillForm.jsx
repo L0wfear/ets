@@ -701,7 +701,7 @@ class WaybillForm extends Form {
 
     const driversEnability = state.car_id !== null && state.car_id !== '';
 
-    const DRIVERS = getDrivers(state.gov_number, waybillDriversList);
+    const DRIVERS = getDrivers({ car_id: state.car_id, gov_number: state.gov_number }, waybillDriversList);
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false }));
     const OUTSIDEMISSIONS = notAvailableMissions.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false, number, className: 'yellow' }));
 

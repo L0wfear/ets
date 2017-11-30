@@ -69,7 +69,7 @@ const checkShowByStatusAndDataLengthAndUser = (status, length, iСustomer) => {
 };
 
 const renderers: ISchemaRenderer = {
-  created_at: ({ data }) => (<DateFormatter date={data} />),
+  created_at: ({ data }) => (<DateFormatter date={data} time={true} />),
   status: ({ data }) => <span>{status_name[data]}</span>,
 };
 

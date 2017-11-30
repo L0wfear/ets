@@ -527,9 +527,22 @@ class WaybillForm extends Form {
   }
 
   createMission() {
-    const newMission = getDefaultMission(this.props.formState.plan_departure_date, this.props.formState.plan_arrival_date);
-    newMission.car_id = this.props.formState.car_id;
-    newMission.structure_id = this.props.formState.structure_id;
+    const {
+      carsList = [],
+      formState: {
+        car_id,
+        structure_id,
+        plan_arrival_date,
+        plan_departure_date,
+      },
+    } = this.props;
+
+    const { type_id } = carsList.find(({ asuods_id }) => asuods_id === car_id) || { type_id: null };
+
+    const newMission = getDefaultMission(plan_departure_date, plan_arrival_date);
+    newMission.car_id = car_id;
+    newMission.type_id = type_id;
+    newMission.structure_id = structure_id;
     this.setState({ showMissionForm: true, selectedMission: newMission });
   }
 
@@ -688,7 +701,7 @@ class WaybillForm extends Form {
 
     const driversEnability = state.car_id !== null && state.car_id !== '';
 
-    const DRIVERS = getDrivers(state.gov_number, waybillDriversList);
+    const DRIVERS = getDrivers({ car_id: state.car_id, gov_number: state.gov_number }, waybillDriversList);
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false }));
     const OUTSIDEMISSIONS = notAvailableMissions.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false, number, className: 'yellow' }));
 
@@ -775,7 +788,7 @@ class WaybillForm extends Form {
                     type="select"
                     label="Подразделение"
                     error={errors.structure_id}
-                    disabled={STRUCTURE_FIELD_READONLY || !IS_CREATING}
+                    disabled={STRUCTURE_FIELD_READONLY || !(IS_CREATING || IS_DRAFT)}
                     clearable={STRUCTURE_FIELD_DELETABLE}
                     options={STRUCTURES}
                     emptyValue={null}

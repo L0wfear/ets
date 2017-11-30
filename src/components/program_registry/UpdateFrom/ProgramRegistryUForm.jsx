@@ -110,6 +110,7 @@ export default class ProgramRegistryForm extends Form {
     const {
       isPermitted = false,
       isPermittedByStatus = false,
+      isPermittetForContractorL = false,
       RepairOptions: {
         stateProgramOptions = [],
         contractorOptions = [],
@@ -280,7 +281,7 @@ export default class ProgramRegistryForm extends Form {
                   value={state.contractor_id}
                   onChange={this.handleChange}
                   boundKeys={['contractor_id']}
-                  disabled={!isPermitted || !isPermittedByStatus || !is_active}
+                  disabled={!isPermitted || !isPermittetForContractorL || !is_active}
                 />
               </Col>
               <Col md={6}>
@@ -291,7 +292,7 @@ export default class ProgramRegistryForm extends Form {
                   error={errors.contract_number}
                   onChange={this.handleChange}
                   boundKeys={['contract_number']}
-                  disabled={!isPermitted || !isPermittedByStatus || !is_active}
+                  disabled={!isPermitted || !isPermittetForContractorL || !is_active}
                 />
               </Col>
             </Row>
@@ -332,6 +333,7 @@ export default class ProgramRegistryForm extends Form {
                     contract_number={state.contract_number}
                     contractor_id={state.contractor_id}
                     repair_type_name={state.repair_type_name}
+                    updateVersionOuter={this.props.updateVersionOuter}
                   />
                   <ProgramRemarkList
                     iСustomer={iСustomer}

@@ -158,8 +158,11 @@ export default class MissionsActions extends Actions {
 
   createMissionTemplate(missionTemplate) {
     const payload = clone(missionTemplate);
+    payload.created_at = createValidDate(payload.created_at);
+
     delete payload.company_id;
     delete payload.number;
+
     return MissionTemplateService.post(payload, null, 'json');
   }
 
@@ -195,8 +198,11 @@ export default class MissionsActions extends Actions {
 
   updateMissionTemplate(missionTemplate) {
     const payload = cloneDeep(missionTemplate);
+    payload.created_at = createValidDate(payload.created_at);
+
     delete payload.number;
     delete payload.company_id;
+
     return MissionTemplateService.put(payload, null, 'json');
   }
 

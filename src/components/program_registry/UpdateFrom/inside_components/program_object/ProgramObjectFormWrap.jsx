@@ -94,6 +94,7 @@ class ProgramObjectFormWrap extends FormWrap {
         show={this.props.showForm}
         onHide={this.props.onFormHide}
         isPermitted={isPermitted && (this.props.program_version_status !== 'accepted')}
+        updateVersionOuter={this.props.updateVersionOuter}
       />
     );
   }

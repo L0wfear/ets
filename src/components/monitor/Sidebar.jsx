@@ -4,6 +4,14 @@ import cx from 'classnames';
 import Div from 'components/ui/Div.jsx';
 import CarInfo from './car_info/CarInfo.jsx';
 import FeatureInfo from './FeatureInfo.jsx';
+import { GEOOBJECTS_TYPES } from 'constants/geoobjects';
+
+const hideSidebarForSomeFeature = type => {
+  switch (type) {
+    case 'leak': return true;
+    default: return false;
+  }
+};
 
 export default class Sidebar extends Component {
   static get propTypes() {
@@ -13,6 +21,7 @@ export default class Sidebar extends Component {
       flux: PropTypes.object,
     };
   }
+
   close = () => {
     const { selected, selectedFeature } = this.props;
     let store;
@@ -35,7 +44,7 @@ export default class Sidebar extends Component {
     const notSelected = !selected && !selectedFeature;
 
     return (
-      <Div hidden={notSelected} className={dashboardClassName}>
+      <Div hidden={notSelected || (selectedFeature ? hideSidebarForSomeFeature(selectedFeature.type) : false)} className={dashboardClassName}>
         <span className="monitor-sidebar-close" onClick={this.close}>×</span>
         {selected &&
           <CarInfo car={selected} flux={flux} onclose={this.close} />
@@ -43,7 +52,6 @@ export default class Sidebar extends Component {
         {selectedFeature &&
           <FeatureInfo feature={selectedFeature} />
         }
-        {notSelected && <div />}
       </Div>
     );
   }

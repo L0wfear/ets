@@ -66,7 +66,7 @@ export default class GeoObjectsActions extends Actions {
 
   async getGeozoneByTypeWithGeometryNoJSONShape(type, formState, serviceName = 'FuelEvent') {
     const payload = {
-      ...formState
+      ...formState,
     };
     const response = await services[serviceName].path(`${type}/leak`).get(payload);
     return {

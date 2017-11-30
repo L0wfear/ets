@@ -11,6 +11,7 @@ import { GeoJSON, defaultZoom } from 'utils/ol';
 import { swapCoords } from 'utils/geo';
 
 import Measure from './controls/measure/measure.jsx';
+import { leaks } from '../monitor/FeatureInfo.jsx';
 
 let POLYS_LAYER = null;
 // TODO move to settings
@@ -104,7 +105,7 @@ export default class OpenLayersMap extends Component {
       zoom: null,
     };
   }
-  
+
   setMeasureActive = measureActive => this.setState({ measureActive });
 
   /**
@@ -257,7 +258,7 @@ export default class OpenLayersMap extends Component {
       map.forEachFeatureAtPixel(pixel, (feature, layer) => {
         const id = feature.getId();
         if (!id || (!!id && !id.match('measure'))) {
-          this.props.onFeatureClick(feature, ev, this);
+          this.props.onFeatureClick(feature, ev, this);      
         }
       });
     }
@@ -274,7 +275,6 @@ export default class OpenLayersMap extends Component {
     // let styleFunction = polyStyles[polyState.SELECTABLE];
 
     if (showPolygons) {
-      console.log('///Map.js///polys', polys);
       _.each(polys, (poly, key) => {
         const feature = new ol.Feature({
           geometry: GeoJSON.readGeometry(poly.shape),
@@ -283,7 +283,6 @@ export default class OpenLayersMap extends Component {
           state: poly.state,
           data: poly.data,
         });
-        // console.log('///Map.js/// feature', feature);
         if (poly.shape && poly.shape.type === 'LineString') {
           feature.setStyle(getVectorArrowStyle(feature));
         } else if (poly.shape && poly.shape.type !== 'Point') {
@@ -295,6 +294,7 @@ export default class OpenLayersMap extends Component {
         } else if (poly.shape && poly.data.type === 'leak') {
           if(poly.selected) {
             feature.setStyle(leakIcon['geoobject-selected']);
+            this.popup.show(poly.shape.coordinates, leaks('leak', poly.data));
           } else {
             feature.setStyle(leakIcon.geoobject);
           }
@@ -319,8 +319,6 @@ export default class OpenLayersMap extends Component {
     //   polysLayerObject.style = styleFunction;
     // }
     const polysLayer = new ol.layer.Vector(polysLayerObject);
-    // console.log('///Map.js/// polysLayerObject ', polysLayerObject);
-    // console.log('///Map.js/// polysLayer', polysLayer);
 
     POLYS_LAYER = polysLayer;
 
@@ -383,7 +381,11 @@ export default class OpenLayersMap extends Component {
     }
 
     // TODO remove this
-    if (!selected) {
+   // if (!selected) {
+   //  this.hidePopup();
+   // }
+
+    if (!this.props.selectedFeature) {
       this.hidePopup();
     }
 
@@ -482,7 +484,6 @@ export default class OpenLayersMap extends Component {
   }
 
   render() {
-   // console.log('///Map.js///this.props', this.props);
     return (
       <div key="olmap">
         <div ref={node => (this._container = node)} className="openlayers-container" />

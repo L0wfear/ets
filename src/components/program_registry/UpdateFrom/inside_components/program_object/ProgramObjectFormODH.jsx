@@ -22,13 +22,14 @@ import { PercentModalList } from 'components/program_registry/UpdateFrom/inside_
 const getObjectsType = (slug) => {
   switch (slug) {
     case 'dt': return 'simple_dt';
+    case 'odh':
     case 'mixed': return 'mixed';
     default: return 'simple_dt';
   }
 };
 const log = {};
 
-class ProgramObjectFormDT extends Form {
+class ProgramObjectFormodh extends Form {
   static defaultProps = {
     tabKey: OBJ_TAB_INDEX.PLAN,
   }
@@ -62,7 +63,7 @@ class ProgramObjectFormDT extends Form {
           type_slug: type,
           plan_shape_json: {
             manual,
-            dtPolys: dtPolysOut,
+            odhPolys: odhPolysOut,
             draw_object_list = [],
             object_list,
           },
@@ -81,12 +82,12 @@ class ProgramObjectFormDT extends Form {
           changesFormState.object_list = object_list;
           changesFormState.objectsType = getObjectsType(type);
         }
-        changesState.dtPolys = dtPolysOut;
-        changesState.OBJECT_OPTIONS = Object.values(changesState.dtPolys).map(({ data: { yard_id: value, object_address: label, total_area, id, name } }) => ({ value, label, total_area, id, name }));
+        changesState.odhPolys = odhPolysOut;
+        changesState.OBJECT_OPTIONS = Object.values(changesState.odhPolys).map(({ data: { id: value, name: label, total_area, id, name } }) => ({ value, label, total_area, id, name }));
 
-        const { id: object_id } = changesState.OBJECT_OPTIONS.find(({ value: yard_id }) => yard_id === asuods_id) || {};
+        const { id: object_id } = changesState.OBJECT_OPTIONS.find(({ value: id }) => id === asuods_id) || {};
 
-        changesState.selectedObj = changesState.dtPolys[object_id];
+        changesState.selectedObj = changesState.odhPolys[object_id];
 
         changesFormState.elements = elements.map(d => ({
           ...d,
@@ -95,15 +96,15 @@ class ProgramObjectFormDT extends Form {
         this.props.handleMultiChange({ ...changesFormState });
         this.setState({ ...changesState });
       } else {
-        this.context.flux.getActions('geoObjects').getGeozoneByTypeWithGeometry('dt').then((ans) => {
+        this.context.flux.getActions('geoObjects').getGeozoneByTypeWithGeometry('odh').then((ans) => {
           const {
-            dtPolys: dtPolysOrigal = {},
+            odhPolys: odhPolysOrigal = {},
           } = this.props;
 
           const changesState = { manual };
-          changesState.dtPolys = cloneDeep(dtPolysOrigal);
-
-          changesState.OBJECT_OPTIONS = Object.values(changesState.dtPolys).map(({ data: { yard_id: value, object_address: label, total_area, id, name } }) => ({ value, label, total_area, id, name }));
+          changesState.odhPolys = cloneDeep(odhPolysOrigal);
+          console.log(odhPolysOrigal)
+          changesState.OBJECT_OPTIONS = Object.values(changesState.odhPolys).map(({ data: { id: value, name: label, total_area, id, name } }) => ({ value, label, total_area, id, name }));
 
           this.setState({ ...changesState });
 
@@ -115,12 +116,12 @@ class ProgramObjectFormDT extends Form {
 
   setManualOnFalse = () => {
     const { formState: { draw_object_list = [] } } = this.props;
-    const { dtPolys: dtPolysOld } = this.props;
+    const { odhPolys: odhPolysOld } = this.props;
     const { object_list, object_list: [selectedShape] } = log;
 
-    const dtPolys = cloneDeep(dtPolysOld);
+    const odhPolys = cloneDeep(odhPolysOld);
 
-    dtPolys[selectedShape.object_id].state = selectedShape.state;
+    odhPolys[selectedShape.object_id].state = selectedShape.state;
 
     log.draw_object_list = cloneDeep(draw_object_list);
 
@@ -129,15 +130,15 @@ class ProgramObjectFormDT extends Form {
       object_list,
       objectsType: log.objectsType,
     });
-    this.setState({ manual: false, dtPolys });
+    this.setState({ manual: false, odhPolys });
   }
   setManualOnTrue = () => {
     const { formState: { objectsType, object_list, object_list: [selectedShape] } } = this.props;
-    const { dtPolys: dtPolysOld } = this.props;
+    const { odhPolys: odhPolysOld } = this.props;
 
-    const dtPolys = {
+    const odhPolys = {
       [selectedShape.object_id]: {
-        ...dtPolysOld[selectedShape.object_id],
+        ...odhPolysOld[selectedShape.object_id],
       },
     };
 
@@ -149,7 +150,7 @@ class ProgramObjectFormDT extends Form {
       draw_object_list: log.draw_object_list || [],
       objectsType: getObjectsType('mixed'),
     });
-    this.setState({ manual: true, dtPolys });
+    this.setState({ manual: true, odhPolys });
   }
 
   showPercentForm = () => this.setState({ showPercentForm: true });
@@ -158,7 +159,7 @@ class ProgramObjectFormDT extends Form {
   handleSubmitWrap = () => {
     const { manual, IS_CREATING } = this.state;
     if (IS_CREATING) {
-      const { dtPolys } = this.state;
+      const { odhPolys } = this.state;
 
       const plan_shape_json = {
         manual,
@@ -167,13 +168,13 @@ class ProgramObjectFormDT extends Form {
       if (manual) {
         const { formState: { draw_object_list } } = this.props;
 
-        plan_shape_json.dtPolys = dtPolys;
+        plan_shape_json.odhPolys = odhPolys;
         plan_shape_json.draw_object_list = draw_object_list;
       } else {
         const { formState: { object_list, object_list: [selectedShape] } } = this.props;
         const { object_id } = selectedShape;
 
-        plan_shape_json.dtPolys = { [object_id]: dtPolys[object_id] };
+        plan_shape_json.odhPolys = { [object_id]: odhPolys[object_id] };
         plan_shape_json.object_list = object_list;
       }
       this.handleChange('plan_shape_json', plan_shape_json);
@@ -181,8 +182,8 @@ class ProgramObjectFormDT extends Form {
     return new Promise(() => this.handleSubmit());
   }
   handleFeatureClick = ({ id: object_id }) => {
-    const { dtPolys } = this.state;
-    const { data: { yard_id: asuods_id } } = dtPolys[object_id];
+    const { odhPolys } = this.state;
+    const { data: { id: asuods_id } } = odhPolys[object_id];
 
     this.handleChangeInfoObject('asuods_id', asuods_id);
   }
@@ -228,17 +229,16 @@ class ProgramObjectFormDT extends Form {
 
     const {
       OBJECT_OPTIONS = [],
-      dtPolys: dtPolysOld = {},
+      odhPolys: odhPolysOld = {},
     } = this.state;
 
-    const dtPolys = cloneDeep(dtPolysOld);
+    const odhPolys = cloneDeep(odhPolysOld);
 
     const {
-      name,
       id: object_id,
-      label: object_address,
+      label: name,
       total_area: info_total_area,
-    } = OBJECT_OPTIONS.find(({ value: yard_id }) => yard_id === asuods_id) || {};
+    } = OBJECT_OPTIONS.find(({ value: id }) => id === asuods_id) || {};
 
     if (!isEmpty(object_list_old)) {
       const [{ object_id: object_id_old }] = object_list_old;
@@ -247,11 +247,11 @@ class ProgramObjectFormDT extends Form {
         return;
       }
 
-      dtPolys[object_id_old].state = 1;
+      odhPolys[object_id_old].state = 1;
     }
-    dtPolys[object_id].state = 2;
+    odhPolys[object_id].state = 2;
 
-    const selectedObj = dtPolys[object_id];
+    const selectedObj = odhPolys[object_id];
 
     const changeObject = {
       asuods_id,
@@ -268,14 +268,14 @@ class ProgramObjectFormDT extends Form {
       },
       objectsType: getObjectsType(type_slug),
       object_list: [{
-        name: object_address,
+        name,
         object_id,
-        state: dtPolys[object_id].state,
+        state: odhPolys[object_id].state,
         type: type_slug,
       }],
     };
 
-    this.setState({ selectedObj, dtPolys });
+    this.setState({ selectedObj, odhPolys });
     this.props.handleMultiChange({ ...changeObject });
   }
 
@@ -314,7 +314,7 @@ class ProgramObjectFormDT extends Form {
       showPercentForm,
       selectedObj,
       IS_CREATING,
-      dtPolys = {},
+      odhPolys = {},
     } = this.state;
 
     const {
@@ -455,18 +455,18 @@ class ProgramObjectFormDT extends Form {
                   whatSelectedTab={tabKey}
                   state={state}
                   errors={errors}
-                  objectList={dtPolys}
+                  objectList={odhPolys}
                   handleChange={this.handleChange}
                   pushElement={this.pushElement}
                   selectedObj={selectedObj}
                 />
               </Col>
               <Col md={5}>
-                <Div hidden={!IS_CREATING && isEmpty(dtPolys)} >
+                <Div hidden={!IS_CREATING && isEmpty(odhPolys)} >
                   <MapInfo
                     handleFeatureClick={this.handleFeatureClick}
                     manual={manual}
-                    polys={dtPolys}
+                    polys={odhPolys}
                     objectList={objectList}
                     objectsType={objectsType}
                     startDraw={this.startDraw}
@@ -501,5 +501,5 @@ class ProgramObjectFormDT extends Form {
 }
 
 
-export default tabable(connectToStores(ProgramObjectFormDT, ['repair', 'geoObjects']));
+export default tabable(connectToStores(ProgramObjectFormodh, ['repair', 'geoObjects']));
 

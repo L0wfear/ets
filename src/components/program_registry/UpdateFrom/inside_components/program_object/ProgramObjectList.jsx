@@ -146,6 +146,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
       program_version_id,
       contract_number,
       contractor_id,
+      repair_type_name,
     } = this.props;
 
     this.setState({
@@ -160,6 +161,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
         plan_shape_json: {
           manual: false,
         },
+        repair_type_name,
       },
     });
   }
@@ -200,8 +202,8 @@ export default class ProgramRemarkList extends CheckableElementsList {
         buttonName={'Добавить ОДХ'}
         key={3}
         onClick={this.createODH}
-        disabled
-        permissions={[`${entity}.false`]}
+        disabled={program_version_status === 'accepted'}
+        permissions={[`${entity}.update`]}
       />,
     ];
 

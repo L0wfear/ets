@@ -5,6 +5,8 @@ import enhanceWithPermissions from 'components/util/RequirePermissions';
 import { validateField } from 'utils/validate/validateField.js';
 
 import ProgramObjectFormDT from './ProgramObjectFormDT';
+import ProgramObjectFormODH from './ProgramObjectFormODH';
+
 import { formValidationSchema, elementsValidationSchema } from './schema';
 
 class ProgramObjectFormWrap extends FormWrap {
@@ -60,16 +62,14 @@ class ProgramObjectFormWrap extends FormWrap {
 
     newFormErrors = {
       ...newFormErrors,
-      ...state.elements.reduce((obj, el, i) => {
-        obj = {
-          ...elementsValidationSchema.properties.reduce((elErrors, prop) => {
-            const { key } = prop;
-            elErrors[`element_${i}_${key}`] = validateField(prop, el[key], el, elementsValidationSchema);
-            return elErrors;
-          }, {}),
-        };
-        return obj;
-      }, {}),
+      ...state.elements.reduce((obj, el, i) => ({
+        ...obj,
+        ...elementsValidationSchema.properties.reduce((elErrors, prop) => {
+          const { key } = prop;
+          elErrors[`element_${i}_${key}`] = validateField(prop, el[key], el, elementsValidationSchema);
+          return elErrors;
+        }, {}),
+      }), {}),
     };
 
     return newFormErrors;
@@ -105,18 +105,20 @@ class ProgramObjectFormWrap extends FormWrap {
     const canSave = isPermitted && this.state.canSave && saveButtonEnability;
 
     return (
-      <ProgramObjectFormDT
+      <ProgramObjectFormODH
         formState={this.state.formState}
         program_version_status={this.props.program_version_status}
         formErrors={this.state.formErrors}
         permissions={[`${entity}.update`]}
         addPermissionProp
-        isPermitted={isPermitted}
         canSave={canSave}
         onSubmit={this.handleFormSubmit.bind(this)}
         handleFormChange={this.handleFormStateChange.bind(this)}
+        handleMultiChange={this.handleMultiChange}
         show={this.props.showForm}
         onHide={this.props.onFormHide}
+        isPermitted={isPermitted && (this.props.program_version_status !== 'accepted')}
+        updateVersionOuter={this.props.updateVersionOuter}
       />
     );
   }

@@ -16,15 +16,14 @@ export default class DashboardPageHeader extends React.Component {
   componentDidMount() {
     moment.locale('ru');
     this.context.flux.getActions('dashboard').getMoscowTime().then(({ date }) => {
+      this.timeInterval = setInterval(this.updateClock.bind(this), 1000);
+      this.dateInterval = setInterval(this.updateDate.bind(this), 1000 * 60);
+
       this.setState({
         time: moment(date).format('HH:mm:ss'),
         date: moment(date).format('DD MMMM YYYY'),
       });
     });
-    this.updateClock();
-    this.updateDate();
-    this.timeInterval = setInterval(this.updateClock.bind(this), 1000);
-    this.dateInterval = setInterval(this.updateDate.bind(this), 1000 * 60);
   }
 
   componentWillUnmount() {

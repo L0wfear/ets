@@ -75,23 +75,24 @@ export default class GeoObjectsStore extends Store {
   }
 
   handleSetSelectedPolysType(type) {
+    console.log('клац! type =', type);
     if (type === null) {
-      this.setState({ selectedPolysTypes: [] });
-      this.handleSelectFeature(null);
+    //  this.setState({ selectedPolysTypes: [] }); // при клике на 'Объекты' политики очищались, а на карте пропадали активированные чекбоксом гео объекты
+     // this.handleSelectFeature(null);
       return;
     }
-    const { selectedPolysTypes } = this.state;
-    const typeIndex = selectedPolysTypes.indexOf(type);
-
+    const { selectedPolysTypes } = this.state; // [] при первом клике
+    const typeIndex = selectedPolysTypes.indexOf(type);  // -1 при активации чекбокса
     if (typeIndex > -1) {
-      selectedPolysTypes.splice(typeIndex, 1);
+      selectedPolysTypes.splice(typeIndex, 1);  // после снятия чекбокса удаляется из политик тип данных
+    
       if (this.state.selectedFeature) {
         if (this.state.selectedFeature.featureType === type) {
           this.handleSelectFeature(null);
         }
       }
     } else {
-      selectedPolysTypes.push(type);
+      selectedPolysTypes.push(type);  // пополняется объект политик при активации чекбокса
     }
 
     this.setState({ selectedPolysTypes });
@@ -161,7 +162,7 @@ export default class GeoObjectsStore extends Store {
     const { selectedPolysTypes } = this.state;
     const polys = {};
    selectedPolysTypes.map(type => Object.assign(polys, this.state[`${type}Polys`]));
-   console.log('*** попали сюда getSelectedPolys()***polys', polys);
+   console.log('*** getSelectedPolys()***polys', polys);
     return polys;
   }
 
@@ -211,7 +212,7 @@ export default class GeoObjectsStore extends Store {
   }
 
   getSelectedFeature() {
-    console.log('***попали сюда getSelectedFeature', this.state.selectedFeature);
+    console.log('***getSelectedFeature', this.state.selectedFeature);
     return this.state.selectedFeature;
   }
 

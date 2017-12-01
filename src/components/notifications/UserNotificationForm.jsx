@@ -1,5 +1,6 @@
 import React from 'react';
 import { Modal, Row, Col } from 'react-bootstrap';
+import * as queryString from 'query-string';
 
 import ModalBody from 'components/ui/Modal';
 import { connectToStores } from 'utils/decorators';
@@ -110,7 +111,7 @@ export default class UserNotificationForm extends Form {
     }
   }
   handleClick = (pathComponent, query) => {
-    this.props.history.replaceState(null, `/${pathComponent}`, query);
+    this.props.history.push(`/${pathComponent}?${queryString.stringify(query)}`);
   }
   getDataForUserNotification(type, state) {
     if (TYPE_CODE.carITR.includes(type)) {

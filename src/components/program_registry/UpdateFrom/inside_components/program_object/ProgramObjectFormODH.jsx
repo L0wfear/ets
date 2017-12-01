@@ -103,7 +103,7 @@ class ProgramObjectFormodh extends Form {
 
           const changesState = { manual };
           changesState.odhPolys = cloneDeep(odhPolysOrigal);
-          console.log(odhPolysOrigal)
+
           changesState.OBJECT_OPTIONS = Object.values(changesState.odhPolys).map(({ data: { id: value, name: label, total_area, id, name } }) => ({ value, label, total_area, id, name }));
 
           this.setState({ ...changesState });

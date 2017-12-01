@@ -2,6 +2,8 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button, Glyphicon } from 'react-bootstrap';
+import { withRouter } from 'react-router-dom';
+import * as queryString from 'query-string';
 import {
   omit,
   isEqual,
@@ -40,19 +42,33 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
   componentDidMount() {
     // Так как стор один на все отчёты, необходимо его чистить в начале.
     this.props.setInitialState();
-    if (Object.keys(this.props.location.query).length > 0) {
-      this.getReportData(this.props.location.query);
+    const { location: { search } } = this.props;
+    const searchObject = queryString.parse(search);
+
+    if (Object.keys(searchObject).length > 0) {
+      this.getReportData(searchObject);
     } else {
       this.getTableMetaInfo();
     }
   }
 
   async componentWillReceiveProps(nextProps: IPropsReportContainer) {
-    const { query } = this.props.location;
-    const nextQuery = nextProps.location.query;
+    const {
+      location: {
+        search,
+      },
+    } = this.props;
+    const {
+      location: {
+        search: search_next,
+      },
+    } = nextProps;
+
+    const searchObject = queryString.parse(search);
+    const searchNextxObject = queryString.parse(search_next);
 
     // Если урл поменялся и он не пустой, то делаем запрос данных.
-    if (!isEqual(query, nextQuery)) {
+    if (!isEqual(searchObject, searchNextxObject)) {
       /**
        * Первый запрос с кнопки меняет урл, поэтому происходит повторный запрос.
        * Данная проверка исключает такую ситуацию.
@@ -62,8 +78,8 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         return;
       }
 
-      if (Object.keys(nextQuery).length > 0) {
-        await this.getReportData(nextQuery);
+      if (Object.keys(searchNextxObject).length > 0) {
+        await this.getReportData(searchNextxObject);
         this.setState({ filterResetting: true });
       } else {
         this.getTableMetaInfo();
@@ -126,11 +142,16 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
   }
 
   handleReportSubmit = async (headerData: object) => {
-    const locationQuery = this.props.location.query;
+    const {
+      location: {
+        search,
+      },
+    } = this.props;
+    const searchObject = queryString.parse(search);
 
     try {
       // Если урл пустой, то делаем запрос на основе параметров из хедера.
-      if (Object.keys(locationQuery).length === 0) {
+      if (Object.keys(searchObject).length === 0) {
         const data = await this.getReportData(headerData);
 
         if (data.result.rows.length === 0) {
@@ -146,7 +167,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
          * Сделано синхронно, чтобы на момент изменения просов с урлом стейт был уже обновлён.
          */
         this.setState(prevState => {
-          this.props.history.pushState(null, this.props.reportUrl, query);
+          this.props.history.push(`${this.props.reportUrl}?${queryString.stringify(query)}`);
 
           return {
             fetchedBySubmitButton: true,
@@ -161,7 +182,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
        */
       const newQuery = {
         ...headerData,
-        ...pick(locationQuery, this.props.meta.levels.current.filter),
+        ...pick(searchObject, this.props.meta.levels.current.filter),
         level: this.props.meta.levels.current.level,
       };
 
@@ -169,11 +190,11 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
        * Не пишем историю при одинаковых запросах.
        * Соотвественно новый запрос на сервер будет игнорирован.
        */
-      if (isEqual(locationQuery, newQuery)) {
+      if (isEqual(searchObject, newQuery)) {
         return;
       }
 
-      this.props.history.pushState(null, this.props.reportUrl, newQuery);
+      this.props.history.push(`${this.props.reportUrl}?${queryString.stringify(newQuery)}`);
     } catch (error) {
       console.error(error);
       global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${error}`));
@@ -193,10 +214,15 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       .reduce((prev, next) => ({ ...prev, ...next }));
 
     const currentLevelFilters = this.props.meta.levels.current.filter;
-    const headerState = this.props.location.query;
+    const {
+      location: {
+        search,
+      },
+    } = this.props;
+    const searchObject = queryString.parse(search);
 
     const query = {
-      ...headerState,
+      ...searchObject,
       level: lowerLevel,
       ...lowerLevelSelectors,
     };
@@ -205,7 +231,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     const filteredQuery = omit(query, filterDifference);
 
     this.setState(prevState => {
-      this.props.history.pushState(null, this.props.reportUrl, filteredQuery);
+      this.props.history.push(`${this.props.reportUrl}?${queryString.stringify(filteredQuery)}`);
 
       return {
         fetchedByMoveDownButton: true,
@@ -218,21 +244,33 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
   handleMoveUp = () => {
     const higherLevel = this.props.meta.levels.higher.level;
     const currentLevelSelectors = this.props.meta.levels.current.filter;
-    const headerState = this.props.location.query;
+    const {
+      location: {
+        search,
+      },
+    } = this.props;
+    const searchObject = queryString.parse(search);
 
     const query = {
-      ...headerState,
+      ...searchObject,
       level: higherLevel,
     };
 
     const filteredQuery = omit(query, currentLevelSelectors);
 
-    this.props.history.pushState(null, this.props.reportUrl, filteredQuery);
+    this.props.history.push(`${this.props.reportUrl}?${queryString.stringify(filteredQuery)}`);
   }
 
   handleReportPrint = async () => {
+    const {
+      location: {
+        search,
+      },
+    } = this.props;
+    const searchObject = queryString.parse(search);
+
     this.setState({ exportFetching: true });
-    await this.props.export(this.props.location.query);
+    await this.props.export(searchObject);
     this.setState({ exportFetching: false });
   }
 
@@ -313,7 +351,12 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
      * которые должны быть в специальном для каждого элемента ввода формате.
      */
     const stateMaker = this.props.headerStateMaker || identity;
-    const queryState = stateMaker(this.props.location.query);
+    const {
+      location: {
+        search,
+      },
+    } = this.props;
+    const queryState = stateMaker(queryString.parse(search));
 
     const mergedTableMetaInfo = {
       ...tableMetaInfo,
@@ -367,7 +410,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => bindActionCreators<any>(reportActionCreators, dispatch);
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ReportContainer);
+)(ReportContainer));

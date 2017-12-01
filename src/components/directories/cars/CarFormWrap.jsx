@@ -1,4 +1,5 @@
 import React from 'react';
+import * as queryString from 'query-string';
 
 import { unpackObjectData } from 'api/utils';
 import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
@@ -39,8 +40,16 @@ class CarFormWrap extends FormWrap {
     }
   }
   handleFormHide = () => {
-    if (Object.keys(this.props.location.query).length > 0) {
-      this.props.history.replaceState(null, this.props.location.pathname, {});
+    const {
+      location: {
+        search,
+      },
+    } = this.props;
+
+    const searchObject = queryString.parse(search);
+
+    if (Object.keys(searchObject).length > 0) {
+      this.props.history.push(this.props.match.url);
     }
     this.props.onFormHide();
   }

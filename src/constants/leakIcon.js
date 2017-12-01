@@ -1,4 +1,4 @@
-// тут задаются стили кружочков при отображении геообъектов на карте
+// тут задаются стили иконок пунктов слива топлива
 export const leakIcon = {
   'geoobject': new ol.style.Style({
     image: new ol.style.Icon({

@@ -62,11 +62,9 @@ class ShowGeoobjectsCheckbox extends React.Component<any, any> {
   }
 
   selectAllGeoobjects(checked) {
-    console.log('PROPS В SHOWGEO' , this.props);
     const { selectedPolysTypes, userPermissions = [] } = this.props;
     const geoobjectTypes = getGeoobjectTypes(userPermissions);
     const geoObjectList = GEOOBJECTS_LIST.filter(gormostFilter(userPermissions));
-   // console.log('geoObjectList', geoObjectList); // 0:"dt"1:"odh"2:"ssp"3:"msp"4:"carpool"5:"fueling_water"6:"danger_zone"7:"pgm_store"8:"snow_storage"
 
     geoObjectList
       .filter(type => checked

@@ -21,7 +21,6 @@ export default class Sidebar extends Component {
       flux: PropTypes.object,
     };
   }
-
   close = () => {
     const { selected, selectedFeature } = this.props;
     let store;

@@ -8,7 +8,6 @@ import {
 } from 'constants/CarIcons.js';
 import CoordsAnimation from './CoordsAnimation.js';
 import { getSmallIcon, getBigIcon } from 'assets/icons/car.js';
-// import getMapIcon from 'assets/icons/leaks/leakIcon.js'; // работает :)
 import Marker from '../BaseMarker.js';
 import Track from '../../Track.js';
 
@@ -255,14 +254,12 @@ export default class CarMarker extends Marker {
    * @return {[type]} [description]
    */
   renderLarge = (options = {}) => {
-   // console.log('попали в renderLarge');
     const point = this.point;
     const color = getStatusById(point.status).color; // цвет кружочков для ТС на карте 
     const direction = point.direction;
     const typesIndex = this._reactMap.props.typesIndex;
     const type = typesIndex[point.car ? point.car.type_id : 5];
     const icon = type && type.icon;
-    // const icon = 'neizvesten';
     const radius = this.radius = (LARGE_ICON_RADIUS + 6);
 
     const angle = (Math.PI * direction) / 180;
@@ -318,8 +315,7 @@ export default class CarMarker extends Marker {
       context.stroke();
     }
     
-    return getBigIcon(icon);  // в big.js  getMapIcon(name = 'drugoe' , потому что передаётся icon=undefined
-   // return getMapIcon(1); // работает :)
+    return getBigIcon(icon);  // в big.js  getMapIcon(name = 'drugoe' ), потому что передаётся icon=undefined
   }
 
   setPoint(point) {

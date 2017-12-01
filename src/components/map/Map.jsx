@@ -323,7 +323,6 @@ export default class OpenLayersMap extends Component {
     POLYS_LAYER = polysLayer;
 
     map.addLayer(polysLayer);
-
   }
 
   renderCanvas(canvas, extent) {

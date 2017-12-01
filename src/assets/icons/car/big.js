@@ -51,6 +51,7 @@ export default function getMapIcon(name = 'drugoe', zoom = 1) {
     iconCache[name][zoom] = canvas;
     return canvas;
   }
+
   return iconCache[name][zoom];
 }
 

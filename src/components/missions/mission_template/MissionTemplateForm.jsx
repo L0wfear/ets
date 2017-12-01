@@ -13,6 +13,14 @@ import InsideField from 'components/missions/mission_template/inside_fields/inde
 import { MissionForm } from '../mission/MissionForm.jsx';
 
 class MissionTemplateForm extends MissionForm {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      ...this.state,
+      isTemplate: true,
+    };
+  }
 
   render() {
     const state = this.props.formState;

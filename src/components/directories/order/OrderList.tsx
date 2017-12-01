@@ -159,7 +159,7 @@ class OrderList extends React.Component<any, any> {
       } = {},
     } = this.props;
     if (!!idOrder) {
-      this.props.history.pushState(null, '/orders');
+      this.props.history.push('/orders');
     }
     const pageOptions = {
       ...this.state.pageOptions,

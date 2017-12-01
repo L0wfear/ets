@@ -2,6 +2,7 @@ import { Actions } from 'flummox';
 import moment from 'moment';
 import {
   DashboardService,
+  TimeMoscowService,
 } from 'api/Services';
 
 const external_applications = { // мок
@@ -63,6 +64,10 @@ export default class DashboardActions extends Actions {
       .path(key)
       .get(payload)
       .then(component => ({ component, key }));
+  }
+
+  getMoscowTime() {
+    return TimeMoscowService.get().then(({ result }) => result);
   }
 
 }

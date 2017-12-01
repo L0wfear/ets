@@ -93,4 +93,7 @@ export const Country = ETS_API_FACTORY.createApiServiceAdapter('country', {});
 
 export const UserNotificationService = ETS_API_FACTORY.createApiServiceAdapter('notification_registry', {});
 
+/* московское время */
+export const TimeMoscowService = ETS_API_FACTORY.createApiServiceAdapter('time', {});
+
 export { reports };

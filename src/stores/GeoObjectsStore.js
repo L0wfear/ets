@@ -85,13 +85,15 @@ export default class GeoObjectsStore extends Store {
     const typeIndex = selectedPolysTypes.indexOf(type);  // -1 при активации чекбокса
     if (typeIndex > -1) {
       selectedPolysTypes.splice(typeIndex, 1);  // после снятия чекбокса удаляется из политик тип данных
+      console.log('##this.state.selectedFeature = ', this.state.selectedFeature);
     
       if (this.state.selectedFeature) {
-        if (this.state.selectedFeature.featureType === type) {
+        if (this.state.selectedFeature.featureType === type) { // если снимаем флажок с того типа объекта, один из которых выделен на карте, что логично
           this.handleSelectFeature(null);
         }
       }
     } else {
+      console.log('пополняем объект политик');
       selectedPolysTypes.push(type);  // пополняется объект политик при активации чекбокса
     }
 
@@ -127,7 +129,7 @@ export default class GeoObjectsStore extends Store {
     this.setState({ geozonePolys, dtPolys, odhPolys });
   }
 
-  handleGetGeozonesByTypeWithGeometry(response) {  // обрабатываются данные для 'Сливы', полученные с сервера
+  handleGetGeozonesByTypeWithGeometry(response) {  // обрабатываются данные гео объектов, полученные с сервера
     const { data = {} } = response;
     const { rows = [] } = data.result;
     const type = response.type || rows[0].type;

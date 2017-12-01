@@ -384,8 +384,13 @@ export default class OpenLayersMap extends Component {
    //  this.hidePopup();
    // }
 
-    if (!this.props.selectedFeature) {
-      this.hidePopup();
+
+    const isLeak = _.some(this.props.polys, (poly) => {
+      return poly.data.type === 'leak';
+    });
+
+    if (!isLeak) {
+       this.hidePopup();
     }
 
     return canvas;

@@ -90,6 +90,7 @@ class ProgramRegistrySwitcher extends React.Component<any, any> {
         getFrowmStateAndErrorAndCanSave={getFrowmStateAndErrorAndCanSave}
         validate={validate}
         {...this.props}
+        entity={'repair_program_version'}
       />
     );
   }

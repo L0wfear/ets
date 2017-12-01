@@ -70,6 +70,7 @@ class MissionInfoForm extends Form {
     const { formState } = this.props;
     const { mission_data, car_data, report_data, route_data } = formState;
     const { flux } = this.context;
+    await flux.getActions('objects').getCars();
     flux.getActions('points').createConnection();
     flux.getActions('points').setSingleCarTrack(car_data.gov_number);
     flux.getActions('points').setSingleCarTrackDates([mission_data.date_start, mission_data.date_end]);
@@ -85,7 +86,6 @@ class MissionInfoForm extends Form {
     }
     this.setState({ missionReport, selectedObjects, route });
     flux.getActions('objects').getTypes();
-    flux.getActions('objects').getCars();
   }
 
   componentWillUnmount() {

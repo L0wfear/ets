@@ -67,33 +67,16 @@ function loadIcon(name, data) {
   img.src = data;
 }
 
-// webpack-dev-server и url-loader не дружат с svg
-// Если это тут, то проблема не решена
-if (__DEVELOPMENT__) {
-  loadIcon('greider', require('./greider.png'));
-  loadIcon('musorovoz', require('./musorovoz.png'));
-  loadIcon('podmetalka', require('./podmetalka.png'));
-  loadIcon('pogruzchik', require('./pogruzchik.png'));
-  loadIcon('polivalka', require('./polivalka.png'));
-  loadIcon('reagent', require('./reagent.png'));
-  loadIcon('reagent_tverd', require('./reagent_tverd.png'));
-  loadIcon('samosval', require('./samosval.png'));
-  loadIcon('traktor', require('./traktor.png'));
-  loadIcon('trotuar', require('./trotuar.png'));
-  loadIcon('drugoe', require('./drugoe.png'));
-  loadIcon('neizvesten', require('./neizvesten.png'));
-} else {
-  loadIcon('greider', require('./greider.svg'));
-  loadIcon('musorovoz', require('./musorovoz.svg'));
-  loadIcon('podmetalka', require('./podmetalka.svg'));
-  loadIcon('pogruzchik', require('./pogruzchik.svg'));
-  loadIcon('polivalka', require('./polivalka.svg'));
-  loadIcon('reagent', require('./reagent.svg'));
-  loadIcon('reagent_tverd', require('./reagent_tverd.svg'));
-  loadIcon('samosval', require('./samosval.svg'));
-  loadIcon('traktor', require('./traktor.svg'));
-  loadIcon('trotuar', require('./trotuar.svg'));
-  loadIcon('drugoe', require('./drugoe.svg'));
-  loadIcon('neizvesten', require('./neizvesten.svg'));
-}
+loadIcon('greider', require('./greider.svg'));
+loadIcon('musorovoz', require('./musorovoz.svg'));
+loadIcon('podmetalka', require('./podmetalka.svg'));
+loadIcon('pogruzchik', require('./pogruzchik.svg'));
+loadIcon('polivalka', require('./polivalka.svg'));
+loadIcon('reagent', require('./reagent.svg'));
+loadIcon('reagent_tverd', require('./reagent_tverd.svg'));
+loadIcon('samosval', require('./samosval.svg'));
+loadIcon('traktor', require('./traktor.svg'));
+loadIcon('trotuar', require('./trotuar.svg'));
+loadIcon('drugoe', require('./drugoe.svg'));
+loadIcon('neizvesten', require('./neizvesten.svg'));
 

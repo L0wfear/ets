@@ -7,18 +7,6 @@ import { ExtField } from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
 
 export default class SparePartForm extends Form {
-  state = {
-    iСustomer: true,
-  }
-  componentDidMount() {
-    const {
-      entity,
-    } = this.props;
-
-    const iСustomer = this.context.flux.getStore('session').getPermission(`${entity}.update`);
-
-    this.setState({ iСustomer });
-  }
   handleSubmitWrap = () => this.handleSubmit();
 
   render() {
@@ -29,13 +17,14 @@ export default class SparePartForm extends Form {
       this.props.formState,
       this.props.formErrors,
     ];
+
     const {
       isPermitted = false,
       program_version_status,
+      iСustomer,
     } = this.props;
-    const { iСustomer } = this.state;
 
-    const statusIsChanged = state.status !== 'created';
+    const statusIsChanged = state.status ? state.status !== 'created' : false;
 
     return (
       <Modal {...this.props} backdrop="static">
@@ -55,24 +44,26 @@ export default class SparePartForm extends Form {
                 disabled={!isPermitted || statusIsChanged || iСustomer || program_version_status !== 'sent_on_review'}
               />
             </Col>
-            { iСustomer && program_version_status === 'rejected' &&
+            <Div hidden={!iСustomer || program_version_status !== 'rejected'}>
               <Col md={12}>
                 <ExtField
                   type="text"
                   label="Комментарий"
-                  value={state.note}
-                  error={errors.note}
+                  value={state.comment}
+                  error={errors.comment}
                   onChange={this.handleChange}
-                  boundKeys={['note']}
-                  disabled={!isPermitted || statusIsChanged || !iСustomer }
+                  boundKeys={['comment']}
+                  disabled={!isPermitted || statusIsChanged || !iСustomer}
                 />
               </Col>
-            }
+            </Div>
           </Row>
         </Div>
         <ModalBody />
         <Modal.Footer>
-          <Button disabled={!this.props.canSave} onClick={this.handleSubmitWrap}>Сохранить</Button>
+          <Div hidden={iСustomer && (!iСustomer || program_version_status !== 'rejected')}>
+            <Button disabled={!this.props.canSave} onClick={this.handleSubmitWrap}>Сохранить</Button>
+          </Div>
         </Modal.Footer>
       </Modal>
     );

@@ -1,13 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import { autobind } from 'core-decorators';
+import { withRouter } from 'react-router-dom';
 
 @autobind
-export default class LoginPage extends Component {
+class LoginPage extends Component {
 
   static get contextTypes() {
     return {
       flux: PropTypes.object.isRequired,
-      history: PropTypes.object,
       loadData: PropTypes.func,
     };
   }
@@ -33,9 +33,9 @@ export default class LoginPage extends Component {
     flux.getActions('session').login(user).then((data) => {
       this.context.loadData();
       if (['dispatcher', 'master'].indexOf(data.payload.role) > -1 && data.payload.okrug_id === null) {
-        this.context.history.pushState(null, '/dashboard');
+        this.props.history.push('/dashboard');
       } else {
-        this.context.history.pushState(null, '/monitor');
+        this.props.history.push('/monitor');
       }
     });
   }
@@ -52,26 +52,31 @@ export default class LoginPage extends Component {
     const disabled = login.length === 0 || password.length === 0;
 
     return (
-      <form onSubmit={this.onSigninClick}>
-        <div className="form-signin">
-          <div className="ets-header">ЕТС</div>
-          <div className="form-content">
-            <label>Система мониторинга</label>
-            <input type="text" className="form-control" placeholder="Логин" value={login} onChange={this.handleChange.bind(this, 'login')} />
-            <input type="password" className="form-control" placeholder="Пароль" value={password} onChange={this.handleChange.bind(this, 'password')} />
-            <button role="button" className="btn btn-lg btn-primary btn-block" disabled={disabled} onClick={this.onSigninClick}>Войти</button>
-            <div className="tp-messange">
-              <span>
-              Служба технической поддержки</span>
-              <a href="mailto:ETS_support@mos.ru">ETS_support@mos.ru</a>
-              <a href="tel:84951501193">8(495) 150-11-93</ a>
+      <div className="loginpage">
+        <div className="wrap">
+          <form onSubmit={this.onSigninClick}>
+            <div className="form-signin">
+              <div className="ets-header">ЕТС</div>
+              <div className="form-content">
+                <label>Система мониторинга</label>
+                <input type="text" className="form-control" placeholder="Логин" value={login} onChange={this.handleChange.bind(this, 'login')} />
+                <input type="password" className="form-control" placeholder="Пароль" value={password} onChange={this.handleChange.bind(this, 'password')} />
+                <button role="button" className="btn btn-lg btn-primary btn-block" disabled={disabled} onClick={this.onSigninClick}>Войти</button>
+                <div className="tp-messange">
+                  <span>
+                  Служба технической поддержки</span>
+                  <a href="mailto:ETS_support@mos.ru">ETS_support@mos.ru</a>
+                  <a href="tel:84951501193">8(495) 150-11-93</ a>
+                </div>
+                <hr />
+                <div className="dit-logo" />
+              </div>
             </div>
-            <hr />
-            <div className="dit-logo" />
-          </div>
+          </form>
         </div>
-      </form>
+      </div>
     );
   }
-
 }
+
+export default withRouter(LoginPage);

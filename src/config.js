@@ -1,8 +1,6 @@
 /**
  * При разработке не имеем доступ к протоколу, хосту и всему прочему, если не хардкод
  */
-const amDeveloper = window.location.host.includes('localhost');
-
 const PROTO = window.location.protocol;
 const HOST = window.location.host;
 const PATHNAME = window.location.pathname;
@@ -49,7 +47,7 @@ const STANDS = {
 };
 
 const configs = {};
-const pathToConfig = amDeveloper ? 'develop' : 'origin';
+const pathToConfig = __DEVELOPMENT__ ? 'develop' : 'origin';
 
 try {
   const STAND = process.env.STAND;

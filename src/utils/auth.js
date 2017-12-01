@@ -1,16 +1,20 @@
 import { routToPer } from 'constants/routerAndPermission.ts';
 
+const isPermittedRoute = ({ match, history, flux }) => {
+};
+
+/*
 export const requireAuth = flux => (nextState, replaceState) => {
   if (!flux.getStore('session').isLoggedIn() || !flux.getStore('session').getCurrentUser().role) {
-    replaceState({ nextPathname: nextState.location.pathname }, '/login');
+    replaceState({ nextPathname: nextState.match.url }, '/login');
     return;
   }
-  if (routToPer[nextState.location.pathname]) {
-    if (!flux.getStore('session').getPermission(routToPer[nextState.location.pathname].p, true)) {
+  if (routToPer[nextState.match.url]) {
+    if (!flux.getStore('session').getPermission(routToPer[nextState.match.url].p, true)) {
       const sessionRedirect = flux.getStore('session').getStableRedirect();
 
       if (sessionRedirect && sessionRedirect !== '/login') {
-        replaceState({ nextPathname: nextState.location.pathname }, sessionRedirect);
+        replaceState({ nextPathname: nextState.match.url }, sessionRedirect);
         return;
       }
       const routeVal = Object.entries(routToPer).reduce((obj, [key, rTp]) => {
@@ -26,24 +30,12 @@ export const requireAuth = flux => (nextState, replaceState) => {
       }, {});
 
       if (routeVal) {
-        replaceState({ nextPathname: nextState.location.pathname }, routeVal.path);
+        replaceState({ nextPathname: nextState.match.url }, routeVal.path);
         return;
       }
     }
   }
 };
+*/
 
-export const checkLoggedIn = flux => (nextState, replaceState) => {
-  const user = flux.getStore('session').getCurrentUser();
-  const { role, okrug_id } = user;
-
-  if (flux.getStore('session').isLoggedIn() && role) {
-    if (['dispatcher', 'master'].indexOf(role) > -1 && okrug_id === null) {
-      replaceState({}, '/dashboard');
-    } else {
-      replaceState({}, '/monitor');
-    }
-  } else if (nextState.location.pathname !== '/login') {
-    replaceState({}, '/login');
-  }
-};
+export default isPermittedRoute;

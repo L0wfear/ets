@@ -1,7 +1,9 @@
-import React from 'react';
-import Div from 'components/ui/Div.jsx';
-import { Button } from 'react-bootstrap';
 import cx from 'classnames';
+import React from 'react';
+import { Button } from 'react-bootstrap';
+import * as queryString from 'query-string';
+
+import Div from 'components/ui/Div.jsx';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
 
 export default class OdhNotCoveredByRoutes extends DashboardCardMedium {
@@ -13,7 +15,8 @@ export default class OdhNotCoveredByRoutes extends DashboardCardMedium {
 
   action(technical_operation_id) {
     console.log(technical_operation_id);
-    this.context.history.pushState(null, `/routes-list/?technical_operation_id=${technical_operation_id}`);
+    const query = queryString.stringify({ technical_operation_id });
+    this.context.history.push(`/routes-list/?${query}`);
   }
 
   renderCustomCardData() {

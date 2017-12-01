@@ -3,7 +3,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 
 import Flux from 'config/flux';
-import routes from 'components/indexRoute';
+import App from 'components/App.tsx';
 import createStore from 'redux/create';
 
 const flux = new Flux();
@@ -15,7 +15,7 @@ const appNode = document.getElementById('container');
  */
 const app = (
   <Provider store={createStore()}>
-    {routes({ flux })}
+    <App flux={flux} />
   </Provider>
 );
 

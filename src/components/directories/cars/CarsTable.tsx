@@ -71,8 +71,15 @@ export function tableMeta({
         },
       },
       {
+        name: 'full_model_name',
+        displayName: 'Марка шасси ТС',
+        type: 'string',
+        filter: false,
+      },
+      {
         name: 'model_name',
         displayName: 'Марка шасси ТС',
+        display: false,
         type: 'string',
         filter: {
           type: 'multiselect',

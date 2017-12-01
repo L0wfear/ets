@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, Button, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import connectToStores from 'flummox/connect';
+import * as queryString from 'query-string';
 
 import { tabable } from 'components/compositions/hoc';
 import ModalBody from 'components/ui/Modal';
@@ -63,8 +64,16 @@ class CarForm extends Form {
     }
   }
   async componentDidMount() {
-    if (Object.keys(this.props.location.query).length > 0) {
-      this.props.handleTabSelect(this.props.location.query.active_tab);
+    const {
+      location: {
+        search,
+      },
+    } = this.props;
+
+    const searchObject = queryString.parse(search);
+
+    if (Object.keys(searchObject).length > 0) {
+      this.props.handleTabSelect(searchObject);
     }
     const nextState = this.props.formState;
     const linear = true;
@@ -85,8 +94,16 @@ class CarForm extends Form {
     flux.getActions('autobase').getAutobaseListByType('techMaint', payload);
   }
   handleSave = () => {
-    if (Object.keys(this.props.location.query).length > 0) {
-      this.props.history.replaceState(null, this.props.location.pathname, {});
+    const {
+      location: {
+        search,
+      },
+    } = this.props;
+
+    const searchObject = queryString.parse(search);
+
+    if (Object.keys(searchObject).length > 0) {
+      this.props.history.push(this.props.match.url);
     }
 
     if (this.props.tabKey !== CAR_TAB_INDEX.main_info) {

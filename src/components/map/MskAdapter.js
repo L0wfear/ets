@@ -7,7 +7,7 @@ const TILES_URL = '//gisoiv.mos.ru/IntegrationGIS/SpatialProcessor/IIS/egko/MapS
 const TILE_SIZE = MapServerConfig.tileInfo.rows;
 const ORIGIN = MapServerConfig.tileInfo.origin;
 const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
-const evergisTokenService = new EverGisTokenService();
+let evergisTokenService = null;
 
 export function projectToPixel(map, coordinates) {
   let x;
@@ -45,6 +45,9 @@ for (let i = 0, till = MapServerConfig.tileInfo.lods.length; i < till; i++) {
 }
 
 function tileUrl(tileCoord) {
+  if (!evergisTokenService) {
+    evergisTokenService = new EverGisTokenService()
+  }
   const z = tileCoord[0];
   const x = tileCoord[1];
   const y = -tileCoord[2] - 1;

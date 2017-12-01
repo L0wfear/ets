@@ -1,5 +1,11 @@
 import { IDataTableSchema, ISchemaRenderer } from './schema.h';
 
+type IFilterValue = string | number | string[] | number[];
+
+export interface IFilterValues {
+  [key: string]: IFilterValue;
+}
+
 export interface IPropsDataTable<TResultObject> {
   title?: string;
   tableMeta?: IDataTableSchema;
@@ -16,4 +22,5 @@ export interface IPropsDataTable<TResultObject> {
   noHeader?: boolean;
   preventNoDataMessage?: boolean;
   className?: string;
+  filterValue?: IFilterValues;
 }

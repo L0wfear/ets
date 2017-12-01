@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
+import { withRouter, Link } from 'react-router-dom';
 import {
   Col,
   Navbar, Nav, Glyphicon,
@@ -12,14 +12,15 @@ import config from 'config';
 import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
 import ModalTP from 'components/modalTP/ModalTP.tsx';
 
-import { FluxContext, HistoryContext } from 'utils/decorators';
+import getRouters from 'components/indexRoute.jsx';
+
+import { FluxContext } from 'utils/decorators';
 import PERMISSIONS from 'constants/permissions';
 import NotificationBage from 'components/notifications/NotificationBadge.tsx';
 import NotifiactionOrders from 'components/modal_notification/NotifiactionOrders.tsx';
 
 import enhanceWithPermissions from './util/RequirePermissions.jsx';
 import defaultUser from '../assets/images/avatar-default.png';
-import getLoginPage from './loginPage.tsx';
 
 import MissionsNavItem from './navbar/MissionsNavItem';
 import NsiNavItem from './navbar/nsi';
@@ -45,13 +46,12 @@ const NavItem = enhanceWithPermissions(BootstrapNavItem);
 const NavDropdown = enhanceWithPermissions(BootstrapNavDropdown);
 
 @FluxContext
-@HistoryContext
-export default class MainPage extends React.Component {
+class MainApp extends React.Component {
 
   static get propTypes() {
     return {
-      location: PropTypes.object,
-      children: PropTypes.node,
+      match: PropTypes.object,
+      history: PropTypes.object,
     };
   }
 
@@ -77,9 +77,9 @@ export default class MainPage extends React.Component {
   }
 
   logout = () => {
-    const { flux, history } = this.context;
+    const { flux } = this.context;
     flux.getActions('session').logout().then(() => {
-      history.pushState(null, '/login');
+      this.props.history.push('/login');
       clearInterval(this.checkUsNotifInterval);
     });
   }
@@ -103,7 +103,7 @@ export default class MainPage extends React.Component {
     const {
       user,
     } = this.state;
-    const path = this.props.location.pathname;
+    const path = this.props.match.url;
     const isOkrug = user.okrug_id !== null;
     const defaultProps = { isOkrug, path };
 
@@ -164,10 +164,6 @@ export default class MainPage extends React.Component {
   }
 
   render() {
-    const path = this.props.location.pathname;
-    if (path === '/login') {
-      return getLoginPage(this.props);
-    }
     return (
       <div className="app">
         <div className="app-navigation">{this.renderHeader()}</div>
@@ -177,7 +173,7 @@ export default class MainPage extends React.Component {
             show={this.state.showFormTp}
             onHide={this.hideFormTp}
           />
-          {this.props.children}
+          {getRouters(this.props)}
           <LoadingOverlay main />
           <NotifiactionOrders />
         </div>
@@ -200,3 +196,6 @@ export default class MainPage extends React.Component {
   }
 
 }
+
+
+export default withRouter(MainApp);

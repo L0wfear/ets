@@ -3,6 +3,7 @@ import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
 import _ from 'lodash';
 import cx from 'classnames';
 import connectToStores from 'flummox/connect';
+import * as queryString from 'query-string';
 
 import Div from 'components/ui/Div.jsx';
 import Filter from 'components/ui/table/filter/Filter.jsx';
@@ -44,9 +45,12 @@ class RoutesList extends Component {
     flux.getActions('technicalOperation').getTechnicalOperationsObjects();
     flux.getActions('geoObjects').getGeozones();
 
-    if (this.props.location.query) {
+    const { location: { search } } = this.props;
+    const searchObject = queryString.parse(search);
+
+    if (searchObject) {
       const filterValues = {};
-      _.mapKeys(this.props.location.query, (v, k) => {
+      _.mapKeys(searchObject, (v, k) => {
         filterValues[k] = [v];
       });
       this.setState({ filterValues });

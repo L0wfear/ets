@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import find from 'lodash/find';
 import { autobind } from 'core-decorators';
 import { Button, Glyphicon } from 'react-bootstrap';
+import * as queryString from 'query-string';
 
 import Preloader from 'components/ui/Preloader';
 import { FluxContext } from 'utils/decorators';
@@ -330,10 +331,12 @@ class ElementsList extends React.Component {
     let basicProps = {
       data: this.props[listName],
     };
-    if (this.props.location && this.props.location.query && !this.preventUrlFilters) {
+    const { location: { search } } = this.props;
+    const searchObject = queryString.parse(search);
+    if (this.props.location && search && !this.preventUrlFilters) {
       basicProps = {
         ...basicProps,
-        filterValues: this.props.location.query,
+        filterValues: searchObject,
       };
     }
     return basicProps;

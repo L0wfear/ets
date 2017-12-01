@@ -1,6 +1,6 @@
 import React from 'react';
 import { Glyphicon, Button } from 'react-bootstrap';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import { OrderService } from 'api/Services';
 import Div from 'components/ui/Div.jsx';

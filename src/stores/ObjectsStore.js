@@ -159,9 +159,9 @@ export default class ObjectsStore extends Store {
     this.setState({ track });
   }
 
-  handleGetModels({ result: { row = [] } }) {
-    const modelsIndex = _.keyBy(row, 'id');
-    this.setState({ modelsList: row, modelsIndex });
+  handleGetModels({ result: { rows = [] } }) {
+    const modelsIndex = _.keyBy(rows, 'id');
+    this.setState({ modelsList: rows, modelsIndex });
   }
 
   handleGetSpecialModels({ result }) {

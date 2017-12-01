@@ -5,8 +5,7 @@ export const formValidationSchema: IValidationSchema = {
     {
       key: 'reviewed_at',
       title: 'Дата осмотра',
-      type: 'number',
-      max: 100,
+      type: 'date',
       required: true,
     },
     {

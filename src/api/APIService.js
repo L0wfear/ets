@@ -1,4 +1,4 @@
-import { getWarningNotification } from 'utils/notifications';
+import { getInfoNotification, getWarningNotification } from 'utils/notifications';
 import RequestWarningError from 'utils/errors/RequestWarningError';
 import urljoin from 'url-join';
 import { getJSON, postJSON, deleteJSON, putJSON, patchJSON } from './adapter.js';
@@ -26,6 +26,7 @@ export default class APIService {
 
     this.logFunction = method => console.info(`API SERVICE ${method} ${this.url}`);
     this.warningNotificationFunction = warning => global.NOTIFICATION_SYSTEM.notify(getWarningNotification(warning));
+    this.infoNotificationFunction = info => global.NOTIFICATION_SYSTEM.notify(getInfoNotification(info));
   }
 
   processResponse(r, callback) {
@@ -39,6 +40,16 @@ export default class APIService {
       } else if (r.warnings && r.warnings.message || typeof r.warnings === 'string') {
         !r.warnings.hidden && this.warningNotificationFunction(r.warnings.message || r.warnings);
         throw new RequestWarningError(r.warnings);
+      }
+    }
+    if (r.info && r.info.length) {
+      // Show warnings
+      if (Array.isArray(r.info)) {
+        r.info.forEach((i) => {
+          !i.hidden && this.infoNotificationFunction(i.message || i);
+        });
+      } else if (r.info && r.info.message || typeof r.info === 'string') {
+        !r.info.hidden && this.infoNotificationFunction(r.info.message || r.info);
       }
     }
     if (typeof callback === 'function') {

@@ -27,16 +27,13 @@ class PercentModalFormWrap extends FormWrap {
 
   createAction = formState => this.context.flux.getActions('repair').postDataToUpdateObjectPercent(formState).then((ans) => {
     global.NOTIFICATION_SYSTEM.notify({
-      message: 'Удаление сохраненной записи возможно в течении дня создания.', 
+      message: 'Удаление сохраненной записи возможно в течении дня создания.',
       level: 'info',
       position: 'tr',
     });
 
-    const {
-      object_id: id,
-    } = this.props;
-
-    this.context.flux.getActions('repair').getDataAboutObjectById(id);
+    this.props.updateVersionOuter();
+    this.props.checkMinVals();
 
     return ans;
   })

@@ -82,9 +82,10 @@ export class MissionForm extends Form {
     const routesActions = flux.getActions('routes');
     const missionsActions = flux.getActions('missions');
     const isTemplate = this.props.template || false;
+    const { carsList } = this.props;
 
     let { selectedRoute } = this.state;
-    let { routesList, carsList } = this.props;
+    let { routesList } = this.props;
     let TECH_OPERATIONS = [];
 
     if (!isEmpty(mission.route_id)) {
@@ -112,8 +113,36 @@ export class MissionForm extends Form {
     const {
       is_new,
     } = mission;
-    if (is_new) {
-      TECH_OPERATIONS = technicalOperationsList.filter(({ is_new: is_new_to }) => !!is_new_to).map(({ id, name }) => ({ value: id, label: name }));
+
+    if (this.props.fromWaybill && mission.type_id) {
+      TECH_OPERATIONS = technicalOperationsList.reduce((newArr, to) => {
+        const {
+          is_new: is_new_to,
+          id: value,
+          name: label,
+          car_func_types,
+        } = to;
+
+        if (is_new_to && car_func_types.find(({ id }) => id === mission.type_id)) {
+          newArr.push({ value, label });
+        }
+
+        return newArr;
+      }, []);
+    } else if (is_new) {
+      TECH_OPERATIONS = technicalOperationsList.reduce((newArr, to) => {
+        const {
+          is_new: is_new_to,
+          id: value,
+          name: label,
+        } = to;
+
+        if (is_new_to) {
+          newArr.push({ value, label });
+        }
+
+        return newArr;
+      }, []);
     } else {
       TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
     }
@@ -131,7 +160,14 @@ export class MissionForm extends Form {
 
   createNewRoute() {
     this.context.flux.getActions('geoObjects').getGeozones().then(() => {
+      const {
+        formState: {
+          norm_id,
+        },
+      } = this.props;
+
       const newR = {
+        norm_id,
         name: '',
         polys: this.props.geozonePolys,
         technical_operation_id: this.props.formState.technical_operation_id,
@@ -192,7 +228,7 @@ export class MissionForm extends Form {
       result: [
         to_data = {},
       ],
-    } = await this.context.flux.getActions('technicalOperation').getOneTechOperationByNormId({ norm_id })
+    } = await this.context.flux.getActions('technicalOperation').getOneTechOperationByNormId({ norm_id });
 
     const {
       route_types: available_route_types = [],
@@ -205,13 +241,14 @@ export class MissionForm extends Form {
     } = this.props;
 
     if (!this.props.formState.status && !this.props.fromWaybill) {
-      this.handleChange('car_id', undefined);
+      if (!this.state.isTemplate) {
+        this.handleChange('car_id', undefined);
+      }
+
       const {
         car_func_types = [],
       } = to_data;
       const car_func_types_ids = car_func_types.map(({ id }) => id);
-      // Костыль
-      // Уберётся после релиза 14 версии
 
       this.context.flux.getActions('cars').getCarsByNormId({ norm_id })
       .then(({ result: { rows: carsList } }) => {
@@ -367,7 +404,7 @@ export class MissionForm extends Form {
                 handleChange={this.handleChange.bind(this)}
                 getDataByNormId={this.getDataByNormId}
                 technicalOperationsList={technicalOperationsList}
-                fromOrder={!!fromOrder}
+                getNormIdFromState={!!fromOrder || !IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromOrder || !is_new || sourceIsOrder}
               />
             </Col>
           </Row>

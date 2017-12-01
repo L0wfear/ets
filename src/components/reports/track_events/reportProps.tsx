@@ -33,6 +33,8 @@ const ShowMapButtonSFC = props =>
 const ShowMapButton: any = bindable(ShowMapButtonSFC);
 
 export const renderers = handleMapVisibility => ({
+  okrug_name: ({ data }) => <div>{data || '-'}</div>,
+  district_name: ({ data }) => <div>{data || '-'}</div>,
   coords_msk: meta =>
     <ShowMapButton
       onClick={handleMapVisibility}

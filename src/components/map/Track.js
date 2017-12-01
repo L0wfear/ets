@@ -9,7 +9,6 @@ import { TRACK_COLORS, TRACK_LINE_OPACITY, TRACK_LINE_WIDTH, TRACK_POINT_RADIUS,
 import { getTrackSensorColor } from 'constants/sensors.js';
 import { getTrackPointByColor } from 'assets/icons/track/points.js';
 import ParkingIconSVG from 'assets/icons/track/parking.svg';
-import ParkingIconPNG from 'assets/icons/track/parking.png';
 
 import FuelIcon1 from 'assets/icons/track/oil-01.png';
 import FuelIcon2 from 'assets/icons/track/oil-02.png';
@@ -61,11 +60,7 @@ export default class Track {
     this.events = {};
 
     this.parkingIcon = new Image();
-    if (__DEVELOPMENT__) {
-      this.parkingIcon.src = ParkingIconPNG;
-    } else {
-      this.parkingIcon.src = ParkingIconSVG;
-    }
+    this.parkingIcon.src = ParkingIconSVG;
 
     this.fuelIcons = {};
     this.fuelIcons.leak = new Image();

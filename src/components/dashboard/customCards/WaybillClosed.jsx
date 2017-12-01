@@ -52,6 +52,7 @@ export default class WaybillClosed extends DashboardCardMedium {
         onFormHide={this.onFormHide.bind(this)}
         showForm={this.state.showWaybillForm}
         element={this.state.selectedWaybill}
+        entity={'waybill'}
         {...this.props}
       />
     );

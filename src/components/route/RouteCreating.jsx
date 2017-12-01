@@ -5,9 +5,9 @@ import connectToStores from 'flummox/connect';
 import { Row, Col, FormControl, Button, Glyphicon } from 'react-bootstrap';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
+import MapWrap from 'components/ui/input/map/MapWrap.tsx';
+
 import { polyState } from 'constants/polygons.js';
-import DrawMap from '../map/DrawMap.jsx';
-import PolyMap from '../map/PolyMap.jsx';
 import CheckList from './CheckList.jsx';
 
 @autobind
@@ -21,6 +21,7 @@ class RouteCreating extends Component {
       manual: PropTypes.bool,
       odhPolys: PropTypes.object,
       dtPolys: PropTypes.object,
+      formErrors: PropTypes.object,
     };
   }
 
@@ -48,80 +49,6 @@ class RouteCreating extends Component {
 
       this.setState({ bridgesPolys });
     }
-  }
-
-  onFeatureClick(feature) {
-    const { id, name, state } = feature.getProperties();
-
-    const polys = _.cloneDeep(this.props.route.polys);
-
-    if (state) {
-      let nextState;
-
-      if (state === polyState.SELECTABLE) {
-        nextState = polyState.ENABLED;
-      } else if (state === polyState.ENABLED) {
-        nextState = polyState.IDLE;
-      } else if (state === polyState.IDLE) {
-        nextState = polyState.SELECTABLE;
-      }
-      if (!polys[id]) return;
-      polys[id].state = nextState;
-      this.props.onChange('polys', polys);
-      this.setODH(id, name, nextState);
-    }
-  }
-
-  onDrawFeatureClick(feature) {
-    const { id, state } = feature.getProperties();
-
-    const { draw_object_list = [] } = this.props.route;
-    const objectIndex = _.findIndex(draw_object_list, o => o.id === id);
-    if (state) {
-      let nextState;
-
-      if (state === polyState.ENABLED) {
-        nextState = polyState.IDLE;
-      } else if (state === polyState.IDLE) {
-        nextState = polyState.ENABLED;
-      }
-
-      if (objectIndex > -1) {
-        draw_object_list[objectIndex].state = nextState;
-      }
-    }
-
-    this.props.onChange('draw_object_list', draw_object_list);
-  }
-
-  onDrawFeatureAdd(feature, coordinates, distance) {
-    const { id } = feature.getProperties();
-    const { draw_object_list = [] } = this.props.route;
-
-    const routeHasObject = _.find(draw_object_list, o =>
-       o.begin.x_msk === coordinates[0][0] && o.begin.y_msk === coordinates[0][1]
-    );
-
-    if (!routeHasObject) {
-      draw_object_list.push({
-        begin: { x_msk: coordinates[0][0], y_msk: coordinates[0][1] },
-        end: { x_msk: coordinates[1][0], y_msk: coordinates[1][1] },
-        state: 2,
-        id,
-        distance,
-      });
-    }
-
-    this.props.onChange('draw_object_list', draw_object_list);
-  }
-
-  onPointAdd(coordinates) {
-    const { object_list = [] } = this.props.route;
-    object_list.push({
-      coordinates,
-      name: '',
-    });
-    this.props.onChange('object_list', object_list);
   }
 
   onGeozoneSelectChange(type, v) {
@@ -177,20 +104,15 @@ class RouteCreating extends Component {
     }
     flux.getActions('routes').validateRoute(this.props.route).then((r) => {
       const result = r.result;
+
       const draw_odh_list = result.odh_validate_result.filter(res => res.status !== 'fail').map(o => ({
         name: o.odh_name,
-        object_id: o.obj_id,
+        object_id: o.odh_id,
         state: 2,
         type: 'odh',
       }));
       this.props.onChange('draw_odh_list', draw_odh_list);
     });
-  }
-
-  removeLastDrawFeature() {
-    const { draw_object_list = [] } = this.props.route;
-    draw_object_list.splice(-1, 1);
-    this.props.onChange('draw_object_list', draw_object_list);
   }
 
   handleCheckbox(type, v, e) {
@@ -222,6 +144,63 @@ class RouteCreating extends Component {
     this.props.onChange('object_list', object_list);
   }
 
+  handleFeatureClick = ({ id, name, nextState }) => {
+    const {
+      route: {
+        polys: polysOld,
+      },
+    } = this.props;
+
+    const polys = _.cloneDeep(polysOld);
+
+    polys[id].state = nextState;
+
+    this.props.onChange('polys', polys);
+    this.setODH(id, name, nextState);
+  }
+  handlePointAdd = ({ newPointObject }) => {
+    const {
+      route: {
+        object_list: object_list_old = [],
+      } = {},
+    } = this.props;
+    const object_list = _.cloneDeep(object_list_old);
+
+    object_list.push(newPointObject);
+
+    this.props.onChange('object_list', object_list);
+  }
+  handleDrawFeatureAdd = ({ drawObjectNew }) => {
+    const { draw_object_list = [] } = this.props.route;
+
+    draw_object_list.push(drawObjectNew);
+
+    this.props.onChange('draw_object_list', draw_object_list);
+  }
+  handleDrawFeatureClick = ({ index, nextState }) => {
+    const {
+      route: {
+        draw_object_list: draw_object_list_old,
+      },
+    } = this.props;
+    const draw_object_list = _.cloneDeep(draw_object_list_old);
+
+    draw_object_list[index].state = nextState;
+
+    this.props.onChange('draw_object_list', draw_object_list);
+  }
+  handleRemoveLastDrawFeature = () => {
+    const {
+      route: {
+        draw_object_list: draw_object_list_old,
+      },
+    } = this.props;
+    const draw_object_list = _.cloneDeep(draw_object_list_old);
+    draw_object_list.pop();
+
+    this.props.onChange('draw_object_list', draw_object_list);
+  }
+
   render() {
     const [errors = []] = [this.props.formErrors];
 
@@ -233,7 +212,7 @@ class RouteCreating extends Component {
       polys = {},
     } = route;
     const [draw_list = []] = [route.draw_odh_list];
-    const Map = this.props.manual ? DrawMap : PolyMap;
+
     const MapPolys = Object.assign({}, bridgesPolys, polys);
     const list = object_list.filter(o => o.type) || [];
     const polysRT = route.type === 'simple_dt' ? this.props.dtPolys : this.props.odhPolys;
@@ -246,19 +225,17 @@ class RouteCreating extends Component {
         <Row>
           <Col md={9}>
             <Div className="route-creating">
-              <Map
-                onFeatureClick={this.onFeatureClick}
-                onPointAdd={this.onPointAdd}
-                onDrawFeatureAdd={this.onDrawFeatureAdd}
-                onDrawFeatureClick={this.onDrawFeatureClick}
-                removeLastDrawFeature={this.removeLastDrawFeature}
-                zoom={this.state.zoom}
-                center={this.state.center}
-                object_list={object_list}
-                draw_object_list={draw_object_list}
-                polys={MapPolys}
+              <MapWrap
                 objectsType={route.type}
-                manualDraw={this.props.manual}
+                manual={this.props.manual}
+                polys={MapPolys}
+                objectList={object_list}
+                drawObjectList={draw_object_list}
+                handleFeatureClick={this.handleFeatureClick}
+                handlePointAdd={this.handlePointAdd}
+                handleDrawFeatureAdd={this.handleDrawFeatureAdd}
+                handleDrawFeatureClick={this.handleDrawFeatureClick}
+                handleRemoveLastDrawFeature={this.handleRemoveLastDrawFeature}
               />
             </Div>
           </Col>

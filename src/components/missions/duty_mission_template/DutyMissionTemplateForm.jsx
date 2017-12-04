@@ -73,7 +73,10 @@ class MissionTemplateForm extends DutyMissionForm {
 
           <Row>
             <Col md={6}>
-              <Field type="select" label="Технологическая операция" error={errors.technical_operation_id}
+              <Field
+                type="select"
+                label="Технологическая операция"
+                error={errors.technical_operation_id}
                 options={TECH_OPERATIONS}
                 disabled={!!state.route_id}
                 value={state.technical_operation_id}
@@ -118,7 +121,10 @@ class MissionTemplateForm extends DutyMissionForm {
               />
             </Col>
             <Col md={6}>
-              <Field type="select" label="Бригада" error={errors.brigade_employee_id_list}
+              <Field
+                type="select"
+                label="Бригада"
+                error={errors.brigade_employee_id_list}
                 multi
                 disabled={false}
                 options={EMPLOYEES}
@@ -129,7 +135,10 @@ class MissionTemplateForm extends DutyMissionForm {
           </Row>
           <Row>
             <Col md={6}>
-              <Field type="select" label="Маршрут" error={errors.route_id}
+              <Field
+                type="select"
+                label="Маршрут"
+                error={errors.route_id}
                 options={ROUTES}
                 value={state.route_id}
                 disabled={!state.technical_operation_id}
@@ -141,7 +150,8 @@ class MissionTemplateForm extends DutyMissionForm {
               </Div>
             </Col>
             {STRUCTURE_FIELD_VIEW && <Col md={6}>
-              <Field type="select"
+              <Field
+                type="select"
                 label="Подразделение"
                 error={errors.structure_id}
                 disabled={STRUCTURE_FIELD_READONLY}
@@ -169,7 +179,8 @@ class MissionTemplateForm extends DutyMissionForm {
           </Div>
         </Modal.Footer>
 
-        <RouteFormWrap element={route}
+        <RouteFormWrap
+          element={route}
           onFormHide={this.onFormHide.bind(this)}
           showForm={this.state.showRouteForm}
           structureId={state.structure_id}

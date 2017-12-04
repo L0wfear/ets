@@ -128,7 +128,7 @@ export default class MissionFormWrap extends FormWrap {
             }
             if (!cancel) {
               const { interval = [getToday9am(), getTomorrow9am()] } = state;
-              
+
               const newPayload = {
                 mission_source_id: payload.mission_source_id,
                 passes_count: payload.passes_count,

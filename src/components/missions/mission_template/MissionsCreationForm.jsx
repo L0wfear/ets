@@ -44,18 +44,18 @@ class MissionsCreationForm extends Form {
         </Modal.Header>
 
         <ModalBody>
-        <Div style={{marginBottom: '20px'}} >
-          <Row>
-            <Col md={6}>
-              <label>Время выполнения</label>
-              <Div>c <Datepicker date={state.date_start} onChange={this.handleChange.bind(this, 'date_start')} /></Div>
-            </Col>
-            <Col md={6}>
-              <label style={{ minHeight: 15 }} />
-              <Div>по <Datepicker date={state.date_end} onChange={this.handleChange.bind(this, 'date_end')} /></Div>
-            </Col>
-          </Row>
-        </Div>
+          <Div style={{ marginBottom: 20 }} >
+            <Row>
+              <Col md={6}>
+                <label>Время выполнения</label>
+                <Div>c <Datepicker date={state.date_start} onChange={this.handleChange.bind(this, 'date_start')} /></Div>
+              </Col>
+              <Col md={6}>
+                <label style={{ minHeight: 15 }} />
+                <Div>по <Datepicker date={state.date_end} onChange={this.handleChange.bind(this, 'date_end')} /></Div>
+              </Col>
+            </Row>
+          </Div>
           <Row>
             <Col md={12}>
               <Field
@@ -68,7 +68,7 @@ class MissionsCreationForm extends Form {
               />
               <span className="help-block-mission-source">{'Задания на основе централизованных заданий необходимо создавать во вкладке "НСИ"-"Реестр централизованных заданий".'}</span>
             </Col>
-          </Row>  
+          </Row>
           <Row>
             <Col md={12}>
               <Field

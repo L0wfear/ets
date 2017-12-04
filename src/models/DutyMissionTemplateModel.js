@@ -1,4 +1,4 @@
-export const dutyMissionTemplateSchema = {
+const dutyMissionTemplateSchema = {
   properties: [
     {
       key: 'technical_operation_id',
@@ -25,4 +25,8 @@ export const dutyMissionTemplateSchema = {
       required: false,
     },
   ],
+};
+
+export default {
+  dutyMissionTemplateSchema,
 };

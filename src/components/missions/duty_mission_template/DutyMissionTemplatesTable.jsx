@@ -87,9 +87,8 @@ const getTableMeta = ({
   return tableMeta;
 };
 
-export default (props) => {
+const DataTable = (props) => {
   const {
-    employeesList = [],
     structures = [],
     flux,
   } = props;
@@ -111,3 +110,10 @@ export default (props) => {
     />
   );
 };
+
+DataTable.propTypes = {
+  structures: React.PropTypes.array,
+  flux: React.PropTypes.object,
+};
+
+export default DataTable;

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import { autobind } from 'core-decorators';
 import { Button } from 'react-bootstrap';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
@@ -72,7 +72,7 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
    */
   getButtons() {
     const buttons = super.getButtons();
-    // TODO отображение Сформировать наряд-задание в зависимости от прав 
+    // TODO отображение Сформировать наряд-задание в зависимости от прав
     buttons.push(
       <Button
         key={buttons.length + 1}

@@ -140,6 +140,8 @@ export function getDefaultDutyMission() {
 
 export function getDefaultDutyMissionTemplate() {
   return {
+    date_create: new Date(),
+    is_new: true,
   };
 }
 
@@ -156,6 +158,7 @@ export function getDefaultMissionTemplate() {
     description: '',
     passes_count: 1,
     date_create: new Date(),
+    is_new: true,
   };
 }
 

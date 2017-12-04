@@ -26,7 +26,7 @@ export default class MissionFormWrap extends FormWrap {
       if (props.formType === 'ViewForm') {
         this.schema = missionTemplateSchema;
         const mission = props.element === null ? getDefaultMissionTemplate() : _.clone(props.element);
-        mission.is_new = true;
+
         const formErrors = this.validate(mission, {});
         if (mission.structure_id == null) {
           mission.structure_id = this.context.flux.getStore('session').getCurrentUser().structure_id;
@@ -40,7 +40,7 @@ export default class MissionFormWrap extends FormWrap {
         this.schema = missionsCreationTemplateSchema;
         const defaultMissionsCreationTemplate = getDefaultMissionsCreationTemplate();
         const formErrors = this.validate(defaultMissionsCreationTemplate, {});
-        
+
         this.setState({
           formState: defaultMissionsCreationTemplate,
           canSave: !_.filter(formErrors).length, // false,

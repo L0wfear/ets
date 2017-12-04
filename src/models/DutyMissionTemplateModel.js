@@ -13,6 +13,12 @@ export const dutyMissionTemplateSchema = {
       required: true,
     },
     {
+      key: 'foreman_id',
+      title: 'Бригадир',
+      type: 'array',
+      required: true,
+    },
+    {
       key: 'comment',
       title: 'Комментарий',
       type: 'string',

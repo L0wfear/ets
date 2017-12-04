@@ -36,8 +36,6 @@ export default class DashboardPageHeader extends React.Component {
         backDate: null,
       });
     });
-    this.timeInterval = setInterval(this.updateClock.bind(this), 1000);
-    this.dateInterval = setInterval(this.updateDate.bind(this), 1000 * 60);
   }
 
   componentWillUnmount() {

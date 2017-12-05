@@ -183,7 +183,15 @@ export default class ProgramRegistryForm extends Form {
                   readOnly
                 />
               </Col>
-              <Col md={6}>
+              <Col md={3}>
+                <ExtField
+                  type="string"
+                  label="Тип объектов ремонта"
+                  value={state.object_type_name}
+                  readOnly
+                />
+              </Col>
+              <Col md={3}>
                 <ExtField
                   type="string"
                   label="Заказчик"
@@ -330,6 +338,7 @@ export default class ProgramRegistryForm extends Form {
                   <ProgramObjectList
                     program_version_id={state.id}
                     program_version_status={state.status}
+                    object_type_id={state.object_type_id}
                     contract_number={state.contract_number}
                     contractor_id={state.contractor_id}
                     repair_type_name={state.repair_type_name}

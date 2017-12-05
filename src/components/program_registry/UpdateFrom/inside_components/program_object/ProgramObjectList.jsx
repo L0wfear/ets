@@ -19,7 +19,7 @@ const notifyTexts = {
   },
 };
 
-@connectToStores(['repair', 'session'])
+@connectToStores(['repair', 'objects', 'session'])
 @staticProps({
   entity: 'repair_program_version',
   listName: 'objectsList',
@@ -174,7 +174,11 @@ export default class ProgramRemarkList extends CheckableElementsList {
     const {
       repair_type_name,
       program_version_status,
+      technicalOperationsObjectsList = [],
+      object_type_id,
     } = this.props;
+
+    const slugTypeObjectPr = (technicalOperationsObjectsList.find(({ id }) => id === object_type_id) || {}).slug;
 
     const buttons = [
       <ButtonDelete
@@ -191,21 +195,30 @@ export default class ProgramRemarkList extends CheckableElementsList {
         disabled={this.checkDisabledRead()}
         permissions={[`${entity}.update`]}
       />,
-      <ButtonCreate
-        buttonName={'Добавить ДТ'}
-        key={2}
-        onClick={this.createDT}
-        permissions={[`${entity}.update`]}
-        disabled={program_version_status === 'accepted' || repair_type_name !== 'Капитальный'}
-      />,
-      <ButtonCreate
-        buttonName={'Добавить ОДХ'}
-        key={3}
-        onClick={this.createODH}
-        disabled={program_version_status === 'accepted'}
-        permissions={[`${entity}.false`]}
-      />,
     ];
+
+    if (slugTypeObjectPr === 'dt') {
+      buttons.push(
+        <ButtonCreate
+          buttonName={'Добавить ДТ'}
+          key={2}
+          onClick={this.createDT}
+          permissions={[`${entity}.update`]}
+          disabled={program_version_status === 'accepted' || repair_type_name !== 'Капитальный'}
+        />
+      );
+    }
+    if (slugTypeObjectPr === 'odh') {
+      buttons.push(
+        <ButtonCreate
+          buttonName={'Добавить ОДХ'}
+          key={3}
+          onClick={this.createODH}
+          disabled={program_version_status === 'accepted'}
+          permissions={[`${entity}.false`]}
+        />
+      );
+    }
 
     return buttons;
   }
@@ -217,6 +230,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
 
     const { flux } = this.context;
     flux.getActions('repair').getRepairListByType('objects', { program_version_id });
+    flux.getActions('technicalOperation').getTechnicalOperationsObjects();
   }
 
   getAdditionalProps = () => (

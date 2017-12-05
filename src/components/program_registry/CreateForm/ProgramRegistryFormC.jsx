@@ -8,13 +8,16 @@ import Div from 'components/ui/Div.jsx';
 import { ExtField } from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
 
-@connectToStores(['repair'])
+const PermittedSlug = ['dt', 'odh'];
+
+@connectToStores(['repair', 'objects'])
 export default class ProgramRegistryForm extends Form {
   componentDidMount() {
     const { flux } = this.context;
 
     flux.getActions('repair').getRepairListByType('stateProgram', { status: 'active' }, { makeOptions: true, selectListMapper: defaultSelectListMapper });
     flux.getActions('repair').getRepairListByType('repairType', {}, { makeOptions: true, selectListMapper: defaultSelectListMapper });
+    flux.getActions('technicalOperation').getTechnicalOperationsObjects();
   }
 
   handleSubmitWrap = (...arg) => this.handleSubmit(...arg);
@@ -34,7 +37,22 @@ export default class ProgramRegistryForm extends Form {
         stateProgramOptions = [],
         repairTypeOptions = [],
       },
+      technicalOperationsObjectsList = [],
     } = this.props;
+
+    const OBJECTS = technicalOperationsObjectsList.reduce((arr, object) => {
+      const {
+        id: value,
+        full_name: label,
+        slug,
+      } = object;
+
+      if (PermittedSlug.includes(slug)) {
+        arr.push({ value, label });
+      }
+
+      return arr;
+    }, []);
 
     const title = 'Создание программы ремонта';
 
@@ -74,6 +92,17 @@ export default class ProgramRegistryForm extends Form {
                 value={state.repair_type_id}
                 onChange={this.handleChange}
                 boundKeys={['repair_type_id']}
+                disabled={!isPermitted}
+                clearable={false}
+              />
+              <ExtField
+                type="select"
+                label="Тип объекта ремонта"
+                error={errors.object_type_id}
+                options={OBJECTS}
+                value={state.object_type_id}
+                onChange={this.handleChange}
+                boundKeys={['object_type_id']}
                 disabled={!isPermitted}
                 clearable={false}
               />

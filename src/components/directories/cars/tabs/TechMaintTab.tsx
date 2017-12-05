@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Row, Col } from 'react-bootstrap';
-import { get } from lodash;
+import { get } from 'lodash';
 
 import { IBaseForm } from 'components/ui/@types/Form.h';
 import { IVehicle } from 'api/@types/services/index.h';

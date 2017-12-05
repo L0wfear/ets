@@ -24,6 +24,12 @@ export const formValidationSchema: IValidationSchema = {
       required: true,
     },
     {
+      key: 'object_type_id',
+      title: 'Тип объекта ремонта',
+      type: 'number',
+      required: true,
+    },
+    {
       key: 'plan_date_start',
       title: 'План. Начало',
       type: 'date',

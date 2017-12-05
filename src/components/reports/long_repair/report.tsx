@@ -77,6 +77,7 @@ const additionalSchemaMakers: IDataTableColSchema[] = [
   {
     name: 'additionalFilter#1',
     displayName: 'Тип ремонта',
+    display: false,
     filter: {
       type: 'select',
       filterFunction(value, lineData) {

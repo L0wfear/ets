@@ -10,44 +10,51 @@ import { ITableMetaInfo } from 'components/program_registry/UpdateFrom/inside_co
 
 import { ExtField } from 'components/ui/Field.jsx';
 
+const nullFunc = () => null;
+
 const TableMeta: ITableMetaInfo = [
   {
     key: 'object_property_id',
     title: 'Элеменет ДТ',
     style: (numRow, row, errors) => ({
         minWidth: 200,
-        backgroundColor: errors[`element_${numRow}_object_property_id`] ? '#ff7777' : null,
       }),
+    otherProps: (numRow, row, errors) => ({
+      className: errors[`element_${numRow}_object_property_id`] ? 'has-error' : null,
+    }),
     tabIncludes: [OBJ_TAB_INDEX.FACT, OBJ_TAB_INDEX.PLAN],
   },
   {
     key: 'value',
     title: 'Характеристика',
     tabIncludes: [OBJ_TAB_INDEX.FACT, OBJ_TAB_INDEX.PLAN],
-    style: () => null,
+    style: nullFunc,
+    otherProps: nullFunc,
   },
   {
     key: 'measure_unit_name',
     title: 'Ед. измерения',
     tabIncludes: [OBJ_TAB_INDEX.FACT, OBJ_TAB_INDEX.PLAN],
-    style: () => null,
+    style: nullFunc,
+    otherProps: nullFunc,
   },
   {
     key: 'plan',
     title: 'План',
     tabIncludes: [OBJ_TAB_INDEX.FACT, OBJ_TAB_INDEX.PLAN],
-    style: (numRow, row, errors) => {
-      return {
-        backgroundColor: errors[`element_${numRow}_plan`] ? '#ff7777' : null,
-      };
-    },
+    style: nullFunc,
+    otherProps: (numRow, row, errors) => ({
+      className: errors[`element_${numRow}_plan`] ? 'has-error' : null,
+    }),
   },
   {
     key: 'fact',
     title: 'Факт',
     style: (numRow, row, errors) => ({
       maxWidth: 100,
-      backgroundColor: errors[`element_${numRow}_fact`] ? '#ff7777' : null,
+    }),
+    otherProps: (numRow, row, errors) => ({
+      className: errors[`element_${numRow}_fact`] ? 'has-error' : null,
     }),
     tabIncludes: [OBJ_TAB_INDEX.FACT],
   },
@@ -55,7 +62,8 @@ const TableMeta: ITableMetaInfo = [
     key: 'warranty_up_to',
     title: 'Гарантийные обязательства до',
     tabIncludes: [OBJ_TAB_INDEX.FACT],
-    style: () => null,
+    style: nullFunc,
+    otherProps: nullFunc,
   },
 ];
 
@@ -319,7 +327,7 @@ class PlanTab extends React.Component<any, any> {
           <ExtField
             type="text"
             value={note}
-            label={"Примечание"}
+            label={'Примечание'}
             error={errors.name}
             onChange={this.props.handleChange}
             boundKeys={['note']}

@@ -151,12 +151,6 @@ class WaybillForm extends Form {
 
     this.employeeFIOLabelFunction = () => {};
   }
-  componentWillUnmount() {
-    if (typeof this.ws !== 'undefined') {
-      this.ws.close();
-      this.ws = null;
-    }
-  }
 
   componentWillReceiveProps(props) {
     const currentState = this.props.formState;

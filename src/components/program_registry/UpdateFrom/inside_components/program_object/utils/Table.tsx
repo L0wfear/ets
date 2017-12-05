@@ -77,7 +77,7 @@ class TablePrev extends React.Component<any, any> {
                 bodyData.map((row, numRow) => (
                   <tr onClick={this.handleClick} className={selectedRow === numRow ? 'sm-active' : null}key={numRow}>
                     {
-                      headerData.map(({ key, style }, numOne) => (
+                      headerData.map(({ key, style, otherProps }, numOne) => (
                           <td key={numOne} style={{ ...style(numRow, row, errors) }}>
                             <ExtField
                               {...mainPropsFields[key]}
@@ -85,6 +85,7 @@ class TablePrev extends React.Component<any, any> {
                               onChange={this.props.handleChange}
                               boundKeys={[numRow, key]}
                               disabled={!isPermitted || mainPropsFields[key].disabled}
+                              {...otherProps(numRow, row, errors)}
                             />
                           </td>
                       ))

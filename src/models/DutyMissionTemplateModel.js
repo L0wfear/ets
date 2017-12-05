@@ -7,6 +7,12 @@ const dutyMissionTemplateSchema = {
       required: true,
     },
     {
+      key: 'municipal_facility_id',
+      title: 'Элемент',
+      type: 'number',
+      required: true,
+    },
+    {
       key: 'route_id',
       title: 'Маршрут',
       type: 'number',

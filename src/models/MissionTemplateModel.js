@@ -7,6 +7,12 @@ export const missionTemplateSchema = {
       required: true,
     },
     {
+      key: 'municipal_facility_id',
+      title: 'Элемент',
+      type: 'number',
+      required: true,
+    },
+    {
       key: 'passes_count',
       title: 'Количество циклов',
       type: 'number',

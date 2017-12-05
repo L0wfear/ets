@@ -19,7 +19,7 @@ const notifyTexts = {
   },
 };
 
-@connectToStores(['repair', 'session'])
+@connectToStores(['repair', 'objects', 'session'])
 @staticProps({
   entity: 'repair_program_version',
   listName: 'objectsList',

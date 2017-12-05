@@ -299,10 +299,10 @@ export default class RepairActions extends Actions {
   programObject(method, formState) {
     const payload = {
       ...formState,
-      plan_date_start: createValidDate(formState.plan_date_start),
-      plan_date_end: createValidDate(formState.plan_date_end),
-      fact_date_start: createValidDate(formState.fact_date_start),
-      fact_date_end: createValidDate(formState.fact_date_end),
+      plan_date_start: createValidDateTime(formState.plan_date_start),
+      plan_date_end: createValidDateTime(formState.plan_date_end),
+      fact_date_start: createValidDateTime(formState.fact_date_start),
+      fact_date_end: createValidDateTime(formState.fact_date_end),
     };
     delete payload.object_list;
     delete payload.draw_object_list;

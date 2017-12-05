@@ -36,6 +36,7 @@ export default class FilterRow extends React.Component {
   render() {
     const { name, displayName, type, labelFunction,
       availableOptions, onChange, onMultiChange, tableData } = this.props;
+
     let { value } = this.props;
     let input = (
       <div className="form-group">

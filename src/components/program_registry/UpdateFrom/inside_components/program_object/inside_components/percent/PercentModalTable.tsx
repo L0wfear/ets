@@ -72,6 +72,7 @@ const Table: React.SFC<any> = props  =>
       renderers={renderers}
       tableMeta={tableMeta(props)}
       className={'table-percent'}
+      enumerated={false}
       {...props}
     />;
 

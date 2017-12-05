@@ -66,8 +66,10 @@ class MonitorPage extends Component {
               center: store.getCurrentUser().getCompanyMapConfig().coordinates,
             }),
             geoObjects: store => ({
-              polys: store.getSelectedPolys(),
-              selectedFeature: store.getSelectedFeature(),
+              polysObjects: store.getSelectedPolys('polysObjects'),
+              polysFuels: store.getSelectedPolys('polysFuels'),
+              selectedFeatureObjects: store.getSelectedFeature('selectedFeatureObjects'),
+              selectedFeatureFuels: store.getSelectedFeature('selectedFeatureFuels'),
             }),
           }}
         >

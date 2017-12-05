@@ -1,12 +1,14 @@
 import * as React from 'react';
-import { Button, Glyphicon } from 'react-bootstrap';
+import { Button as BootstrapButton, Glyphicon } from 'react-bootstrap';
 import connectToStores from 'flummox/connect';
 
 import { getToday0am, getToday2359 } from 'utils/dates';
 import { FluxContext } from 'utils/decorators';
 import { saveData } from 'utils/functions';
 
+import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
 import Paginator from 'components/ui/Paginator.jsx';
+import Div from 'components/ui/Div.jsx';
 
 import OrdersDatepicker from 'components/directories/order/OrdersDatepicker';
 import OrdersTable from 'components/directories/order/OrdersTable';
@@ -20,6 +22,8 @@ import { getDefaultMission, getDefaultDutyMission } from 'stores/MissionsStore.j
 const PaginatorTsx: any = Paginator;
 
 const MAX_ITEMS_PER_PAGE = 15;
+
+const Button = enhanceWithPermissions(BootstrapButton);
 
 @FluxContext
 class OrderList extends React.Component<any, any> {
@@ -428,9 +432,6 @@ class OrderList extends React.Component<any, any> {
       OrdersList = [],
     } = this.props;
 
-    const canCreateMission = this.context.flux.getStore('session').getPermission('mission.create');
-    const canCreateDutyMission = this.context.flux.getStore('session').getPermission('duty_mission.create');
-
     return (
       <div className="ets-page-wrap">
         <OrdersDatepicker
@@ -446,27 +447,25 @@ class OrderList extends React.Component<any, any> {
           {...this.props}
           {...this.getAdditionalProps()}
         >
-          { canCreateMission && <Button onClick={this.handleClickOnCM} disabled={this.checkDisabledCM()}>Создать задание</Button> }
-          { canCreateDutyMission && <Button onClick={this.handleClickOnCDM} disabled={this.checkDisabledCDM()}>Создать наряд-задание</Button> }
+          <Button permissions={['mission.create']} onClick={this.handleClickOnCM} disabled={this.checkDisabledCM()}>Создать задание</Button>
+          <Button permissions={['duty_mission.create']} onClick={this.handleClickOnCDM} disabled={this.checkDisabledCDM()}>Создать наряд-задание</Button>
           <Button onClick={this.saveOrder} disabled={faxSE === null}><Glyphicon glyph="download-alt" /></Button>
         </OrdersTable>
-        {
-          haveMax &&
+        <Div hidden={!haveMax} >
           <PaginatorTsx currentPage={this.state.pageOptions.page} maxPage={Math.ceil(this.props.ordersTotalCount / MAX_ITEMS_PER_PAGE)} setPage={this.setPageOrderTable} firstLastButtons />
-        }
-        { faxSE &&
+        </Div>
+        <Div hidden={!faxSE} >
           <OrderAssignmentsList
             seleted={assSE}
             dataSource={faxSE}
             onRowSelectedAssignment={this.onRowSelectedAssignment}
           />
-        }
-        {
-          showHistoryComponent && faxSE &&
+        </Div>
+        <Div hidden={!showHistoryComponent || !faxSE}>
           <HistoryOrderList
             data={historyOrder}
           />
-        }
+        </Div>
         <OrderFormWrap
           missionData={missionData}
           dutyMissionData={dutyMissionData}

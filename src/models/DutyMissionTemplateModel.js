@@ -1,4 +1,4 @@
-export const dutyMissionTemplateSchema = {
+const dutyMissionTemplateSchema = {
   properties: [
     {
       key: 'technical_operation_id',
@@ -13,10 +13,20 @@ export const dutyMissionTemplateSchema = {
       required: true,
     },
     {
+      key: 'foreman_id',
+      title: 'Бригадир',
+      type: 'array',
+      required: true,
+    },
+    {
       key: 'comment',
       title: 'Комментарий',
       type: 'string',
       required: false,
     },
   ],
+};
+
+export default {
+  dutyMissionTemplateSchema,
 };

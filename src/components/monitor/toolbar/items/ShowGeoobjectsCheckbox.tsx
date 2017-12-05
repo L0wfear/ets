@@ -5,14 +5,14 @@ import { GEOOBJECTS_TYPES, GEOOBJECTS_TYPES_LABELS, GEOOBJECTS_LIST, GORMOST_GEO
 
 export interface IPropsGeoObjectListItem {
   key: number;
-  polysObjects: any[];
+  selectedPolysTypes: any[];
   type: string;
   onChange(e): void;
 }
 
 const GeoObjectListItem: React.SFC<IPropsGeoObjectListItem> = ({
   key,
-  polysObjects,
+  selectedPolysTypes,
   type,
   onChange,
 }) =>
@@ -21,7 +21,7 @@ const GeoObjectListItem: React.SFC<IPropsGeoObjectListItem> = ({
     <label style={{ fontSize: 13, fontWeight: 200 }}>
       <input
         type="checkbox"
-        checked={polysObjects.indexOf(GEOOBJECTS_TYPES[type]) > -1}
+        checked={selectedPolysTypes.indexOf(GEOOBJECTS_TYPES[type]) > -1}
         onChange={onChange}
       />
       {GEOOBJECTS_TYPES_LABELS[type]}
@@ -42,9 +42,9 @@ const getGeoobjectTypes = userPermissions => Object.keys(GEOOBJECTS_TYPES)
 @connectToStores('session')
 class ShowGeoobjectsCheckbox extends React.Component<any, any> {
   setSelectedPolysType(type) {
-    const { polysObjects, userPermissions = [] } = this.props;
+    const { selectedPolysTypes, userPermissions = [] } = this.props;
     const geoobjectTypes = getGeoobjectTypes(userPermissions);
-    const alreadyChecked = polysObjects.indexOf(geoobjectTypes[type]) > -1;
+    const alreadyChecked = selectedPolysTypes.indexOf(geoobjectTypes[type]) > -1;
 
     if (!alreadyChecked) {
       if (GORMOST_GEOOBJECTS_LIST.includes(type)) {
@@ -62,18 +62,18 @@ class ShowGeoobjectsCheckbox extends React.Component<any, any> {
   }
 
   selectAllGeoobjects(checked) {
-    const { polysObjects, userPermissions = [] } = this.props;
+    const { selectedPolysTypes, userPermissions = [] } = this.props;
     const geoobjectTypes = getGeoobjectTypes(userPermissions);
     const geoObjectList = GEOOBJECTS_LIST.filter(gormostFilter(userPermissions));
 
     geoObjectList
       .filter(type => checked
-        ? polysObjects.indexOf(geoobjectTypes[type]) === -1
-        : polysObjects.indexOf(geoobjectTypes[type]) > -1)
+        ? selectedPolysTypes.indexOf(geoobjectTypes[type]) === -1
+        : selectedPolysTypes.indexOf(geoobjectTypes[type]) > -1)
       .forEach(type => this.setSelectedPolysType(type));
   }
   render() {
-    const { polysObjects, userPermissions = [] } = this.props;
+    const { selectedPolysTypes, userPermissions = [] } = this.props;
     const showGeoobjectsList = this.props.showGeoobjects;
     const geoObjectList = GEOOBJECTS_LIST.filter(gormostFilter(userPermissions));
     const geoobjectTypes = getGeoobjectTypes(userPermissions);
@@ -82,11 +82,11 @@ class ShowGeoobjectsCheckbox extends React.Component<any, any> {
       listStyle.display = 'none';
     }
 
-    const allSelected = polysObjects.length === Object.keys(geoobjectTypes).length - 1;
+    const allSelected = selectedPolysTypes.length === Object.keys(geoobjectTypes).length - 1;
     const geoObjectsList = geoObjectList.map((type, index) =>
       <GeoObjectListItem
         key={index}
-        polysObjects={polysObjects}
+        selectedPolysTypes={selectedPolysTypes}
         type={type}
         onChange={() => this.setSelectedPolysType(type)}
       />,

@@ -31,7 +31,7 @@ class Toolbar extends Component {
 
   static get propTypes() {
     return {
-      polysObjects: PropTypes.array,
+      selectedPolysTypes: PropTypes.array,
       filter: PropTypes.object,
     };
   }
@@ -62,7 +62,7 @@ class Toolbar extends Component {
   }
 
   render() {
-    const { polysObjects, filter } = this.props;
+    const { selectedPolysTypes, filter } = this.props;
     const filters = filter;
     const pointsStore = this.context.flux.getStore('points');
     const storeState = pointsStore.state;
@@ -102,7 +102,7 @@ class Toolbar extends Component {
               marker={() => this._pointsStore.getSelectedMarker()}
             />
             <ShowPlatesCheckbox />
-            <ShowGeoobjectsCheckbox polysObjects={polysObjects} />
+            <ShowGeoobjectsCheckbox selectedPolysTypes={selectedPolysTypes} />
             <FuelLeak />
           </FluxComponent>
         </div>

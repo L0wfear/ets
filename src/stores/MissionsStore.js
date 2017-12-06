@@ -142,6 +142,7 @@ export function getDefaultDutyMissionTemplate() {
   return {
     date_create: new Date(),
     is_new: true,
+    brigade_employee_id_list: [],
   };
 }
 

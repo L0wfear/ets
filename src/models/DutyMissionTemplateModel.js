@@ -21,8 +21,14 @@ const dutyMissionTemplateSchema = {
     {
       key: 'foreman_id',
       title: 'Бригадир',
-      type: 'array',
+      type: 'number',
       required: true,
+    },
+    {
+      key: 'brigade_employee_id_list',
+      title: 'Бригада',
+      type: 'array',
+      required: false,
     },
     {
       key: 'comment',
@@ -33,6 +39,4 @@ const dutyMissionTemplateSchema = {
   ],
 };
 
-export default {
-  dutyMissionTemplateSchema,
-};
+export default dutyMissionTemplateSchema;

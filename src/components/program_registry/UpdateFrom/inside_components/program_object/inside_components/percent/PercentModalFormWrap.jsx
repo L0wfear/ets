@@ -32,7 +32,7 @@ class PercentModalFormWrap extends FormWrap {
       position: 'tr',
     });
 
-    this.props.updateVersionOuter();
+    this.props.updateObjectData();
     this.props.checkMinVals();
 
     return ans;

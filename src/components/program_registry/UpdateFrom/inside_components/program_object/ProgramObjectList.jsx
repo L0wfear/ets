@@ -224,13 +224,8 @@ export default class ProgramRemarkList extends CheckableElementsList {
   }
 
   init() {
-    const {
-      program_version_id,
-    } = this.props;
-
-    const { flux } = this.context;
-    flux.getActions('repair').getRepairListByType('objects', { program_version_id });
-    flux.getActions('technicalOperation').getTechnicalOperationsObjects();
+    this.props.updateObjectData();
+    this.context.flux.getActions('technicalOperation').getTechnicalOperationsObjects();
   }
 
   getAdditionalProps = () => (

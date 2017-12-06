@@ -98,6 +98,16 @@ export default class ProgramRegistryForm extends Form {
       this.setState({ mainButtonEnable: true });
     });
   }
+  updateObjectData = () => {
+    const {
+      formState: {
+        id: program_version_id,
+      },
+    } = this.props;
+
+    this.props.updateVersionOuter();
+    return this.context.flux.getActions('repair').getRepairListByType('objects', { program_version_id });
+  }
   render() {
     const [
       state,
@@ -342,7 +352,7 @@ export default class ProgramRegistryForm extends Form {
                     contract_number={state.contract_number}
                     contractor_id={state.contractor_id}
                     repair_type_name={state.repair_type_name}
-                    updateVersionOuter={this.props.updateVersionOuter}
+                    updateObjectData={this.updateObjectData}
                   />
                   <ProgramRemarkList
                     iСustomer={iСustomer}

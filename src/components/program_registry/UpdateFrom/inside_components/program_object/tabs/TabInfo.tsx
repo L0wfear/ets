@@ -275,8 +275,8 @@ class PlanTab extends React.Component<any, any> {
           <label>{label}</label>
         </Col>
         <Col md={12}>
-          <Col md={5}>
-            <div className="no-label">
+          <div style={{ display: 'flex', alignItems: 'baseline', textAlign: 'center' }}>
+            <div className="no-label" style={{ width: 'calc(50% - 20px)' }}>
               <ExtField
                 type={'date'}
                 date={state[date_from]}
@@ -287,16 +287,10 @@ class PlanTab extends React.Component<any, any> {
                 disabled={!isPermitted}
               />
             </div>
-          </Col>
-          <Col md={2}>
             <div style={{
-              width: '100%',
-              textAlign: 'center',
-              marginTop: 5,
+             width: 40,
             }}>—</div>
-          </Col>
-          <Col md={5}>
-            <div className="no-label">
+            <div className="no-label" style={{ width: 'calc(50% - 20px)' }}>
               <ExtField
                 type={'date'}
                 date={state[date_to]}
@@ -307,7 +301,7 @@ class PlanTab extends React.Component<any, any> {
                 disabled={!isPermitted}
               />
             </div>
-          </Col>
+          </div>
         </Col>
         <Col md={12}>
           <Table

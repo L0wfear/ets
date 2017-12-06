@@ -49,6 +49,7 @@ export default class LoadingStore extends Store {
       repairActions.rejectRemarks,
       repairActions.fixRemarks,
       repairActions.postDataToUpdateObjectPercent,
+      repairActions.getDataAboutObjectById,
       repairActions.removePercent,
 
       waybillsActions.deleteWaybill,

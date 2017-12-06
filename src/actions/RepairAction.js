@@ -306,7 +306,7 @@ export default class RepairActions extends Actions {
     };
     delete payload.object_list;
     delete payload.draw_object_list;
-    
+
     const { objects } = REPAIR;
     const {
       program_version_id,

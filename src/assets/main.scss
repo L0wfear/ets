@@ -2834,8 +2834,10 @@ div.none {
     width: 1240px !important;
   }
 }
-.modal-xlg {
-  width: 95% !important;
+@media (min-width: 1540px) {
+  .modal-lg {
+    width: 1440px !important;
+  }
 }
 
 .route-creating {

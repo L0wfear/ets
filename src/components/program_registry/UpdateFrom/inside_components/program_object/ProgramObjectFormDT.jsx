@@ -339,7 +339,7 @@ class ProgramObjectFormDT extends Form {
     };
 
     return (
-      <Modal {...this.props} dialogClassName="modal-xlg" backdrop="static">
+      <Modal {...this.props} bsSize="lg" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
         </Modal.Header>
@@ -364,31 +364,26 @@ class ProgramObjectFormDT extends Form {
               <Col md={12}>
                 <span style={{ fontWeight: 600 }}>Информация об объекте</span>
               </Col>
-              <Col md={8}>
+              <Col md={6}>
                 <Row>
-                  <Col md={6}>
-                    <Col md={9}>Общая площадь по паспорту, кв.м.:</Col>
-                    <Col md={3}>{total_area}</Col>
+                  <Col md={12}>
+                    Общая площадь по паспорту, кв.м.: {total_area}
                   </Col>
-                  <Col md={6}>
-                    <Col md={9}>Площадь проезда, кв.м.:</Col>
-                    <Col md={3}>{0}</Col>
+                  <Col md={12}>
+                    Площадь проезда, кв.м.: {0}
                   </Col>
                 </Row>
                 <Row>
-                  <Col md={6}>
-                    <Col md={9}>Площадь пешеходной дорожки, кв.м.:</Col>
-                    <Col md={3}>{0}</Col>
+                  <Col md={12}>
+                    Площадь пешеходной дорожки, кв.м.: {0}
                   </Col>
-                  <Col md={6}>
-                    <Col md={9}>Площадь тротуаров, кв.м.:</Col>
-                    <Col md={3}>{0}</Col>
+                  <Col md={12}>
+                    Площадь тротуаров, кв.м.: {0}
                   </Col>
                 </Row>
               </Col>
-              <Col md={4}>
-                <Col md={6}>Заказчик</Col>
-                <Col md={6}>{0}</Col>
+              <Col md={6}>
+                Заказчик {'-'}
               </Col>
             </Row>
             <Row>

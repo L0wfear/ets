@@ -120,7 +120,9 @@ export class DutyMissionForm extends Form {
     missionsActions.getMissions(mission.technical_operation_id);
     missionsActions.getMissionSources();
     flux.getActions('employees').getEmployees({ 'active': true });
-    const technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsWithBrigades();
+    const technicalOperationsListOr = await technicalOperationsActions.getTechnicalOperationsWithBrigades();
+    const technicalOperationsList = technicalOperationsListOr.filter(({ is_new, norm_ids }) => !is_new || (is_new && !norm_ids.some(n => n === null)));
+
     const {
       is_new,
     } = mission;

@@ -33,6 +33,10 @@ const schemaMakers: ISchemaMaker = {
 const renderers: ISchemaRenderer = {
   latest_tech_maintenance_date: ({ data }) => <DateFormatter date={data} time={false} />,
 };
+const tableProps = {
+  initialSort: 'next_tech_maintenance_odometer_left',
+  initialSortAscending: true,
+};
 
 const reportProps: IReportProps = {
   title: 'График проведения технического обслуживания транспортных средств',
@@ -43,6 +47,7 @@ const reportProps: IReportProps = {
   renderers,
   enumerated: true,
   schemaMakers,
+  tableProps,
 };
 
 const ExportableReportContainer = exportable({

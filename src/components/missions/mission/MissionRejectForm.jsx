@@ -46,7 +46,7 @@ export default class MissionRejectForm extends Component {
     this.state = {
       missionList,
       mIndex,
-      comment: `Задание №: ${missionList[mIndex].number} было отменено по причине: `,
+      comment: '',
       ...this.getPropsMission(missionList, mIndex),
       car_id: null,
       car_func_types: [],
@@ -101,8 +101,6 @@ export default class MissionRejectForm extends Component {
       mIndex,
     } = this.state;
 
-    const { carsList } = this.props;
-
     const mission_id = missionList[mIndex].mission_id || missionList[mIndex].id;
     const payload = {
       car_id,
@@ -110,12 +108,11 @@ export default class MissionRejectForm extends Component {
     };
     const result = await this.context.flux.getActions('missions').getMissionReassignationParameters(payload);
     const data = result ? result.result : null;
-    const newCar = carsList.find(({ asuods_id }) => asuods_id === car_id);
 
     this.setState({
       car_id,
       data,
-      comment: `Задание №: ${missionList[mIndex].number} было было переназначено на ТС ${newCar.gov_number} по причине: `
+      comment: '',
     });
   }
 
@@ -181,7 +178,7 @@ export default class MissionRejectForm extends Component {
       } else {
         this.setState({
           needUpdateParent: true,
-          comment: `Задание №: ${missionList[mIndex - 1].number} было отменено по причине: `,
+          comment: '',
           car_id: null,
           mIndex: mIndex - 1,
           ...this.getPropsMission(missionList, mIndex - 1),
@@ -207,7 +204,7 @@ export default class MissionRejectForm extends Component {
       this.props.onReject(needUpdateParent);
     } else {
       this.setState({
-        comment: `Задание №: ${missionList[mIndex - 1].number} было отменено по причине: `,
+        comment: '',
         car_id: null,
         mIndex: mIndex - 1,
         ...this.getPropsMission(missionList, mIndex - 1),

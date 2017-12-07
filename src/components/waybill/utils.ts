@@ -61,7 +61,7 @@ const isNotEmpty = value => isNotEqualAnd([undefined, null, ''], value);
 export const driverHasLicense = ({ drivers_license }) => isNotEmpty(drivers_license);
 export const driverHasSpecialLicense = ({ special_license }) => isNotEmpty(special_license);
 
-const hasOdometr = ({ gov_number }) => !hasMotohours(gov_number);
+const hasOdometr = gov_number => !hasMotohours(gov_number);
 
 export const getDrivers = (state: any = {}, driversList) => {
   const licenceSwitcher = R.cond([
@@ -70,7 +70,7 @@ export const getDrivers = (state: any = {}, driversList) => {
     [R.T, R.always(R.identity)],
   ]);
 
-  const driverFilter = licenceSwitcher(state);
+  const driverFilter = licenceSwitcher(state.gov_number);
 
   return driversList
     .filter(d => (!d.prefer_car ? true : d.prefer_car === state.car_id) && driverFilter(d))

@@ -140,8 +140,8 @@ export default class DataTable extends React.Component {
       globalCheckboxState: false,
       isHierarchical: props.isHierarchical,
       firstUseExternalInitialSort: true,
-      initialSort: '',
-      initialSortAscending: false,
+      initialSort: this.props.initialSort,
+      initialSortAscending: this.props.initialSortAscending,
     };
   }
 

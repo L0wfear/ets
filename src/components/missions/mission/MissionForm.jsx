@@ -108,7 +108,8 @@ export class MissionForm extends Form {
      * GET /technical_operation?only=new
      * GET /technical_operation?only=old
      */
-    const { result: technicalOperationsList } = await technicalOperationsActions.getTechnicalOperations();
+    const { result: technicalOperationsListOr } = await technicalOperationsActions.getTechnicalOperations();
+    const technicalOperationsList = technicalOperationsListOr.filter(({ is_new, norm_ids }) => !is_new || (is_new && !norm_ids.some(n => n === null)));
 
     const {
       is_new,

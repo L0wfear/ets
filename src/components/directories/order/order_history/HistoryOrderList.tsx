@@ -98,8 +98,8 @@ class HistoryOrder extends React.Component<any, any> {
             </h4>
           </Col>
           <Div hidden={!historytableIsOpen} >
-            <Col style={{ marginBottom: -15 }} md={12}>
-              <Col md={3}><div>Версия централизованного задания</div></Col>
+            <Col style={{ marginBottom: -15, display: 'flex' }} md={12}>
+              <div>Версия централизованного задания</div>
               <Col md={3}>
                 <EtsSelectTSX
                   type="select"

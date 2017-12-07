@@ -14,26 +14,23 @@ const serviceUrl = 'autobase/reports/long_repair';
 const reportUrl = 'long-repair';
 const serviceName = 'LongRepair';
 
-const testEndRepairWithLongTime20 = (invers, lineData) => {
+const testEndRepairWithLongTime20 = lineData => {
   const {
     fact_date_start,
     fact_date_end,
-    status,
   } = lineData;
 
   const ansTest = moment(fact_date_end).diff(moment(fact_date_start), 'days') > 20;
-  const isComplited = status === 'Пройден';
 
-  return (invers ? !isComplited : isComplited) && ansTest;
+  return ansTest;
 };
 
-const testEndRepairWithFactMorePlan = (invers, lineData) => {
+const testEndRepairWithFactMorePlan = lineData => {
   const {
     fact_date_start,
     fact_date_end,
     plan_date_start,
     plan_date_end,
-    status,
   } = lineData;
 
   const factDiff = moment(fact_date_end).diff(moment(fact_date_start), 'minutes');
@@ -41,9 +38,42 @@ const testEndRepairWithFactMorePlan = (invers, lineData) => {
 
   const ansTest = factDiff > planDiff;
 
-  const isComplited = status === 'Пройден';
+  return ansTest;
+};
 
-  return (invers ? !isComplited : isComplited) && ansTest;
+const testEndRepairWithLongTime20NotEndFact = lineData => {
+  const {
+    fact_date_start,
+    fact_date_end,
+  } = lineData;
+
+  if (fact_date_end) {
+    return false;
+  }
+
+  const ansTest = moment().diff(moment(fact_date_start), 'days') > 20;
+
+  return ansTest;
+};
+
+const testEndRepairWithFactMorePlanNotEndFact = lineData => {
+  const {
+    fact_date_start,
+    fact_date_end,
+    plan_date_start,
+    plan_date_end,
+  } = lineData;
+
+  if (fact_date_end) {
+    return false;
+  }
+
+  const factDiff = moment().diff(moment(fact_date_start), 'minutes');
+  const planDiff = moment(plan_date_end).diff(moment(plan_date_start), 'minutes');
+
+  const ansTest = factDiff > planDiff;
+
+  return ansTest;
 };
 
 const schemaMakers: ISchemaMaker = {
@@ -83,10 +113,10 @@ const additionalSchemaMakers: IDataTableColSchema[] = [
       filterFunction(value, lineData) {
         switch (value) {
           case 1: return true;
-          case 2: return testEndRepairWithLongTime20(false, lineData);
-          case 3: return testEndRepairWithFactMorePlan(false, lineData);
-          case 4: return testEndRepairWithLongTime20(true, lineData);
-          case 5: return testEndRepairWithFactMorePlan(true, lineData);
+          case 2: return testEndRepairWithLongTime20(lineData);
+          case 3: return testEndRepairWithFactMorePlan(lineData);
+          case 4: return testEndRepairWithLongTime20NotEndFact(lineData);
+          case 5: return testEndRepairWithFactMorePlanNotEndFact(lineData);
           default: return true;
         }
      },

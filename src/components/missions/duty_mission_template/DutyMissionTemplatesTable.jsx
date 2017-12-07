@@ -45,10 +45,11 @@ const getTableMeta = ({
       },
       {
         name: 'brigade_employee_id_list',
-        displayName: 'Бригада',
+        displayName: 'Бригадаsss',
         type: 'string',
         filter: {
           type: 'multiselect',
+          some: true,
           options: employeesList.map(({ id: value }) => ({
             value,
             label: employeeFIOLabelFunction(flux)(value),
@@ -95,14 +96,22 @@ const DataTable = (props) => {
 
   const renderers = ({
     structure_id: ({ data }) => <div>{(structures.find(s => s.id === data) || { data: '' }).name}</div>,
-    brigade_employee_id_list: ({ data }) => <div>{data.map(({ employee_id }) => employeeFIOLabelFunction(flux)(employee_id)).join(', ')}</div>,
+    brigade_employee_id_list: ({ data }) => <div>{data.map((employee_id => employeeFIOLabelFunction(flux)(employee_id))).join(', ') }</div>,
   });
+
+  const data = props.data.reduce((arr, d) => {
+    arr.push({
+      ...d,
+      brigade_employee_id_list: d.brigade_employee_id_list.map(({ employee_id }) => employee_id),
+    });
+    return arr;
+  }, []);
 
   return (
     <Table
       title="Шаблоны наряд-заданий"
       renderers={renderers}
-      results={props.data}
+      results={data}
       tableMeta={getTableMeta(props)}
       initialSort={'number'}
       initialSortAscending={false}

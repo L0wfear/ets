@@ -20,6 +20,14 @@ const schemaMakers: ISchemaMaker = {
       type: 'date',
     },
   }),
+  next_tech_maintenance_odometer_left: schema => ({
+    ...schema,
+    type: 'number',
+  }),
+  next_tech_maintenance_motohours_left: schema => ({
+    ...schema,
+    type: 'number',
+  }),
 };
 
 const renderers: ISchemaRenderer = {

@@ -406,6 +406,8 @@ export class MissionForm extends Form {
                 getDataByNormId={this.getDataByNormId}
                 technicalOperationsList={technicalOperationsList}
                 getNormIdFromState={!!fromOrder || !IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromOrder || !is_new || sourceIsOrder}
+                fromWaybill={this.props.fromWaybill}
+                type_id={state.type_id}
               />
             </Col>
           </Row>

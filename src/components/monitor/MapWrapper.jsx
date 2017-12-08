@@ -17,12 +17,12 @@ export default class MapWrapper extends React.Component {
 
   onFeatureClick(feature) {
     const featureData = feature.getProperties().data;
-    const fuelOrObject = (featureData.featureType === 'leak') ? 'selectedFeatureLeak' : 'selectedFeature';
+    const nameOfSelected = (featureData.featureType === 'leak') ? 'selectedFeatureLeak' : 'selectedFeature';
     const { flux } = this.props;
     const pointsStore = flux.getStore('points');
     const geoObjectsStore = flux.getStore('geoObjects');
     pointsStore.handleSelectPoint(false);
-    geoObjectsStore.handleSelectFeature(featureData, fuelOrObject);
+    geoObjectsStore.handleSelectFeature(featureData, nameOfSelected);
   }
 
   render() {

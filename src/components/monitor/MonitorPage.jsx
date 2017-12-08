@@ -66,8 +66,8 @@ class MonitorPage extends Component {
               center: store.getCurrentUser().getCompanyMapConfig().coordinates,
             }),
             geoObjects: store => ({
-              selectedPolysTypes: store.getSelectedPolys('selectedPolysTypes'),
-              selectedPolysTypesLeak: store.getSelectedPolys('selectedPolysTypesLeak'),
+              polys: store.getSelectedPolys('selectedPolysTypes'),
+              polysLeak: store.getSelectedPolys('selectedPolysTypesLeak'),
               selectedFeature: store.getSelectedFeature('selectedFeature'),
               selectedFeatureLeak: store.getSelectedFeature('selectedFeatureLeak'),
             }),

@@ -40,6 +40,7 @@ export default class OpenLayersMap extends Component {
       typesIndex: PropTypes.object,
       points: PropTypes.object,
       polys: PropTypes.object,
+      polysLeak: PropTypes.object,
       showPolygons: PropTypes.bool,
       showTrack: PropTypes.bool,
       onFeatureClick: PropTypes.func,
@@ -125,11 +126,19 @@ export default class OpenLayersMap extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+
     const hasPoints = nextProps.points !== undefined;
     const hasPolys = nextProps.polys !== undefined;
+    const hasPolysLeak = nextProps.polysLeak !== undefined;
+
     const polysHasChanged = hasPolys && !_.isEqual(this.props.polys, nextProps.polys);
+    const polysHasChangedLeak = hasPolysLeak && !_.isEqual(this.props.polysLeak, nextProps.polysLeak);
+
     const showPolygonsChanged = hasPolys && nextProps.showPolygons !== this.props.showPolygons;
+    const showLeakChanged = hasPolysLeak && nextProps.showPolygons !== this.props.showPolygons;
+
     const selectedFeatureChanged = !_.isEqual(this.props.selectedFeature, nextProps.selectedFeature);
+    const selectedLeakChanged = !_.isEqual(this.props.selectedFeatureLeak, nextProps.selectedFeatureLeak);
     const selectedCarChanged = !_.isEqual(this.props.selected, nextProps.selected);
 
     if (selectedCarChanged && nextProps.selected !== null) {
@@ -144,7 +153,13 @@ export default class OpenLayersMap extends Component {
     }
 
     if (hasPolys && (polysHasChanged || showPolygonsChanged || selectedFeatureChanged)) {
-      this.renderPolygons(nextProps.polys, nextProps.showPolygons);
+     // this.renderPolygons(Object.assign({}, nextProps.polys, nextProps.polysLeak), nextProps.showPolygons);
+      this.renderPolygons(nextProps);
+    }
+
+    if (hasPolysLeak && (polysHasChangedLeak || showLeakChanged || selectedLeakChanged)) {
+      // this.renderPolygons(Object.assign({}, nextProps.polys, nextProps.polysLeak), nextProps.showPolygons);
+      this.renderPolygons(nextProps);
     }
   }
 
@@ -209,7 +224,7 @@ export default class OpenLayersMap extends Component {
     clickedMarker.onClick();
 
     this._pointsStore.handleSelectPoint(clickedMarker.point);
-    this._geoObjectsStore.handleSelectFeature(null);
+    this._geoObjectsStore.handleSelectFeature(null, 'selectedFeature');
     // прячем попап трэка
     this.hidePopup();
   }
@@ -268,7 +283,16 @@ export default class OpenLayersMap extends Component {
     this.popup.hide();
   }
 
-  renderPolygons(polys = {}, showPolygons) { // отображает геоданные в виде кружочков,линий и других слоев поверх карты
+  /**
+   *  Отображает геоданные в виде кружочков, линий и других слоев поверх карты.
+   */
+ // renderPolygons(polys = {}, showPolygons) {
+
+  renderPolygons(nextProps) {
+    const polys = Object.assign({}, nextProps.polys, nextProps.polysLeak);
+    const showPolygons = { nextProps };
+
+    console.log('polys в renderPolygons', polys);
     const map = this.map;
 
     const vectorSource = new ol.source.Vector();
@@ -319,7 +343,7 @@ export default class OpenLayersMap extends Component {
     //   polysLayerObject.style = styleFunction;
     // }
     const polysLayer = new ol.layer.Vector(polysLayerObject);
-
+    
     POLYS_LAYER = polysLayer;
 
     map.addLayer(polysLayer);
@@ -384,12 +408,11 @@ export default class OpenLayersMap extends Component {
    //  this.hidePopup();
    // }
 
-
-    const isLeak = _.some(this.props.polys, (poly) => {
+    const isNeedPopUp = _.some(this.props.polysLeak, (poly) => {
       return poly.data.type === 'leak';
     });
 
-    if (!isLeak) {
+    if (!isNeedPopUp) {
        this.hidePopup();
     }
 

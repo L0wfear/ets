@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import { connectToStores } from 'utils/decorators';
 
-import { GEOOBJECTS_TYPES } from 'constants/geoobjects';
 import { getStartOfToday, createValidDateTime } from 'utils/dates';
 
 import { ExtField } from 'components/ui/Field.jsx';
@@ -32,7 +31,7 @@ class FuelLeak extends React.Component<any, any> {
       this.getData({ date_from: date_from || getStartOfToday(), date_to: date_to || new Date() });
     }
 
-    this.props.flux.getActions('geoObjects').setSelectedPolysType(GEOOBJECTS_TYPES.leak);
+    this.props.flux.getActions('geoObjects').setSelectedPolysType('leak');
   }
 
   setShowGeoobjects = e => {
@@ -75,7 +74,7 @@ class FuelLeak extends React.Component<any, any> {
     };
 
     // запрос на получение данных по сливам
-    this.props.flux.getActions('geoObjects').getGeozoneByTypeWithGeometryNoJSONShape(type, payload);
+    this.props.flux.getActions('geoObjects').getGeozoneByTypeWithGeometryLeak(type, payload);
   }
 
   render() {

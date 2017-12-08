@@ -13,7 +13,6 @@ export const GEOOBJECTS_TYPES = {
   'pedestrian_tunnels': 'pedestrian_tunnels',
   'pedestrian_tunnel_exits': 'pedestrian_tunnel_exits',
   'fountains': 'fountains',
-  'leak': 'leak',
 };
 
 export const GEOOBJECTS_TYPES_LABELS = {

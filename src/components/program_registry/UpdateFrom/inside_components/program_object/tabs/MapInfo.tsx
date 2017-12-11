@@ -54,19 +54,21 @@ class MapInfo extends React.Component<IPropsMapInfo, any> {
           <Col md={12}>
             <label>Отрисовка границ ремонта</label>
           </Col>
-          <Col md={6} onClick={this.setManualOnFalse} style={{ cursor: isPermitted ? 'pointer' : 'not-allowed' }}>
-            <input
-              disabled={!isPermitted}
-              type="radio"
-              checked={!manual}
-            />Отрисовать весь объект
-          </Col>
-          <Col md={6} onClick={this.setManualOnTrue} style={{ cursor: isPermitted ? 'pointer' : 'not-allowed' }}>
-            <input
-              disabled={!isPermitted}
-              type="radio"
-              checked={manual}
-            />Отрисовать границы ремонта
+          <Col md={12} style={{ marginBottom: 15 }}>
+            <Col md={6} onClick={this.setManualOnFalse} style={{ display: 'flex', cursor: isPermitted ? 'pointer' : 'not-allowed' }}>
+              <input
+                disabled={!isPermitted}
+                type="radio"
+                checked={!manual}
+              />Отрисовать весь объект
+            </Col>
+            <Col md={6} onClick={this.setManualOnTrue} style={{ display: 'flex', cursor: isPermitted ? 'pointer' : 'not-allowed' }}>
+              <input
+                disabled={!isPermitted}
+                type="radio"
+                checked={manual}
+              />Отрисовать границы ремонта
+            </Col>
           </Col>
           <Col md={12}>
             <div style={{ minHeight: 500 }}>

@@ -12,7 +12,7 @@ import Form from 'components/compositions/Form.jsx';
 
 import { connectToStores } from 'utils/decorators';
 
-function getFio(f, i ,o ) {
+function getFio(f, i, o) {
   let fio = f;
   if (i) {
     fio = `${fio} ${i[0]}.`;

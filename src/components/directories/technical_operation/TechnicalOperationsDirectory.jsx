@@ -1,7 +1,6 @@
 import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 
-import TechnicalOperationFormWrap from './TechnicalOperationFormWrap.jsx';
 import TechnicalOperationsTable from './TechnicalOperationsTable.jsx';
 
 @connectToStores(['objects'])
@@ -25,7 +24,7 @@ export default class TechOperationsDirectory extends ElementsList {
       const ELEMENTS = Object.entries(result.reduce((newObj, { elements = [] }) => {
         elements.forEach(({ id, name }) => {
           if (id && name) {
-            newObj[id] = name;
+            newObj[name] = name;
           }
         });
 
@@ -44,7 +43,7 @@ export default class TechOperationsDirectory extends ElementsList {
 
       const CAR_TYPES = Object.entries(rows.reduce((newObj, { asuods_id, short_name }) => {
         if (asuods_id && short_name) {
-          newObj[asuods_id] = short_name;
+          newObj[short_name] = short_name;
         }
 
         return newObj;

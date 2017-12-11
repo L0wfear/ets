@@ -1,7 +1,6 @@
 import { withHandlers, compose, withState } from 'recompose';
 import { createValidDate, createValidDateTime } from 'utils/dates';
 
-
 export const onChangeWithKeys = withHandlers({
   onChange: ({ onChange, boundKeys = []}) => e => onChange(...boundKeys, e),
 });

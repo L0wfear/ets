@@ -137,7 +137,7 @@ export default class PointsStore extends Store {
    * @private
    */
   _handleCloseConnection() {
-    if (typeof this.ws !== 'undefined') {
+    if (typeof this.ws !== 'undefined' && this.ws !== null) {
       this.ws.close();
       this.ws = null;
     }

@@ -10,44 +10,51 @@ import { ITableMetaInfo } from 'components/program_registry/UpdateFrom/inside_co
 
 import { ExtField } from 'components/ui/Field.jsx';
 
+const nullFunc = () => null;
+
 const TableMeta: ITableMetaInfo = [
   {
     key: 'object_property_id',
     title: 'Элеменет ДТ',
     style: (numRow, row, errors) => ({
         minWidth: 200,
-        backgroundColor: errors[`element_${numRow}_object_property_id`] ? '#ff7777' : null,
       }),
+    otherProps: (numRow, row, errors) => ({
+      className: errors[`element_${numRow}_object_property_id`] ? 'has-error' : null,
+    }),
     tabIncludes: [OBJ_TAB_INDEX.FACT, OBJ_TAB_INDEX.PLAN],
   },
   {
     key: 'value',
     title: 'Характеристика',
     tabIncludes: [OBJ_TAB_INDEX.FACT, OBJ_TAB_INDEX.PLAN],
-    style: () => null,
+    style: nullFunc,
+    otherProps: nullFunc,
   },
   {
     key: 'measure_unit_name',
     title: 'Ед. измерения',
     tabIncludes: [OBJ_TAB_INDEX.FACT, OBJ_TAB_INDEX.PLAN],
-    style: () => null,
+    style: nullFunc,
+    otherProps: nullFunc,
   },
   {
     key: 'plan',
     title: 'План',
     tabIncludes: [OBJ_TAB_INDEX.FACT, OBJ_TAB_INDEX.PLAN],
-    style: (numRow, row, errors) => {
-      return {
-        backgroundColor: errors[`element_${numRow}_plan`] ? '#ff7777' : null,
-      };
-    },
+    style: nullFunc,
+    otherProps: (numRow, row, errors) => ({
+      className: errors[`element_${numRow}_plan`] ? 'has-error' : null,
+    }),
   },
   {
     key: 'fact',
     title: 'Факт',
     style: (numRow, row, errors) => ({
       maxWidth: 100,
-      backgroundColor: errors[`element_${numRow}_fact`] ? '#ff7777' : null,
+    }),
+    otherProps: (numRow, row, errors) => ({
+      className: errors[`element_${numRow}_fact`] ? 'has-error' : null,
     }),
     tabIncludes: [OBJ_TAB_INDEX.FACT],
   },
@@ -55,7 +62,8 @@ const TableMeta: ITableMetaInfo = [
     key: 'warranty_up_to',
     title: 'Гарантийные обязательства до',
     tabIncludes: [OBJ_TAB_INDEX.FACT],
-    style: () => null,
+    style: nullFunc,
+    otherProps: nullFunc,
   },
 ];
 
@@ -267,8 +275,8 @@ class PlanTab extends React.Component<any, any> {
           <label>{label}</label>
         </Col>
         <Col md={12}>
-          <Col md={5}>
-            <div className="no-label">
+          <div style={{ display: 'flex', alignItems: 'baseline', textAlign: 'center' }}>
+            <div className="no-label" style={{ width: 'calc(50% - 20px)' }}>
               <ExtField
                 type={'date'}
                 date={state[date_from]}
@@ -279,16 +287,10 @@ class PlanTab extends React.Component<any, any> {
                 disabled={!isPermitted}
               />
             </div>
-          </Col>
-          <Col md={2}>
             <div style={{
-              width: '100%',
-              textAlign: 'center',
-              marginTop: 5,
+             width: 40,
             }}>—</div>
-          </Col>
-          <Col md={5}>
-            <div className="no-label">
+            <div className="no-label" style={{ width: 'calc(50% - 20px)' }}>
               <ExtField
                 type={'date'}
                 date={state[date_to]}
@@ -299,7 +301,7 @@ class PlanTab extends React.Component<any, any> {
                 disabled={!isPermitted}
               />
             </div>
-          </Col>
+          </div>
         </Col>
         <Col md={12}>
           <Table
@@ -319,7 +321,7 @@ class PlanTab extends React.Component<any, any> {
           <ExtField
             type="text"
             value={note}
-            label={"Примечание"}
+            label={'Примечание'}
             error={errors.name}
             onChange={this.props.handleChange}
             boundKeys={['note']}

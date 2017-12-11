@@ -1,7 +1,10 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
-import { isEmpty as lodashIsEmpty } from 'lodash';
+import {
+  uniqBy,
+  isEmpty as lodashIsEmpty,
+} from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
@@ -25,7 +28,14 @@ class MissionTemplateForm extends MissionForm {
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
-    const { available_route_types, car_func_types_ids, TECH_OPERATIONS, technicalOperationsList = [], routesList = [], carsList = [] } = this.state;
+    const {
+      available_route_types,
+      car_func_types_ids, TECH_OPERATIONS,
+      technicalOperationsList = [],
+      routesList = [],
+      carsList = [],
+      selectedRoute: route = null,
+    } = this.state;
 
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
     const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
@@ -44,9 +54,19 @@ class MissionTemplateForm extends MissionForm {
       STRUCTURE_FIELD_DELETABLE = true;
     }
 
-    const ROUTES = routesList
-      .filter(route => route.technical_operation_id === state.technical_operation_id)
-      .map(({ id, name }) => ({ value: id, label: name }));
+    const routes = routesList.filter(r => r.structure_id === state.structure_id);
+
+    const filteredRoutes = (
+      route !== null &&
+      route.id !== undefined &&
+      routes.find(item => item.value === route.id) === undefined
+    ) ? routes.concat([route]) : routes;
+
+    const ROUTES = uniqBy(
+      filteredRoutes.map(({ id, name }) => ({ value: id, label: name })),
+      'value',
+    );
+
     let newCarList = carsList;
 
     if (lodashIsEmpty(car_func_types_ids)) {
@@ -62,8 +82,6 @@ class MissionTemplateForm extends MissionForm {
     if (IS_CREATING) {
       title = 'Создание шаблона задания';
     }
-
-    const route = this.state.selectedRoute;
 
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">

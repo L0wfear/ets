@@ -5,23 +5,12 @@ import Div from 'components/ui/Div.jsx';
 import { getDefaultMissionTemplate, getDefaultMissionsCreationTemplate } from 'stores/MissionsStore.js';
 import { isEmpty } from 'utils/functions';
 import { getToday9am, getTomorrow9am } from 'utils/dates.js';
-import { validateField } from 'utils/validate/validateField.js';
 import { missionTemplateSchema } from 'models/MissionTemplateModel.js';
 import { missionsCreationTemplateSchema } from 'models/MissionsCreationTemplateModel.js';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import IntervalPicker from 'components/ui/input/IntervalPicker';
 import MissionTemplateForm from './MissionTemplateForm.jsx';
 import MissionsCreationForm from './MissionsCreationForm.jsx';
-
-const validateMissionsCreationTemplate = (mission, errors) => {
-  const missionsCreationTemplateErrors = _.clone(errors);
-
-  _.each(missionsCreationTemplateSchema.properties, (prop) => {
-    missionsCreationTemplateErrors[prop.key] = validateField(prop, mission[prop.key], mission, missionsCreationTemplateSchema);
-  });
-
-  return missionsCreationTemplateErrors;
-};
 
 @autobind
 export default class MissionFormWrap extends FormWrap {
@@ -35,8 +24,9 @@ export default class MissionFormWrap extends FormWrap {
   componentWillReceiveProps(props) {
     if (props.showForm && props.showForm !== this.props.showForm) {
       if (props.formType === 'ViewForm') {
+        this.schema = missionTemplateSchema;
         const mission = props.element === null ? getDefaultMissionTemplate() : _.clone(props.element);
-        mission.is_new = true;
+
         const formErrors = this.validate(mission, {});
         if (mission.structure_id == null) {
           mission.structure_id = this.context.flux.getStore('session').getCurrentUser().structure_id;
@@ -47,11 +37,14 @@ export default class MissionFormWrap extends FormWrap {
           formErrors,
         });
       } else {
+        this.schema = missionsCreationTemplateSchema;
         const defaultMissionsCreationTemplate = getDefaultMissionsCreationTemplate();
+        const formErrors = this.validate(defaultMissionsCreationTemplate, {});
+
         this.setState({
           formState: defaultMissionsCreationTemplate,
-          canSave: true,
-          formErrors: validateMissionsCreationTemplate(defaultMissionsCreationTemplate, {}),
+          canSave: !_.filter(formErrors).length, // false,
+          formErrors,
         });
       }
     }
@@ -135,7 +128,7 @@ export default class MissionFormWrap extends FormWrap {
             }
             if (!cancel) {
               const { interval = [getToday9am(), getTomorrow9am()] } = state;
-              
+
               const newPayload = {
                 mission_source_id: payload.mission_source_id,
                 passes_count: payload.passes_count,

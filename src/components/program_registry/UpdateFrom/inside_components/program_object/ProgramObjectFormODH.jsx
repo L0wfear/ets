@@ -434,7 +434,7 @@ class ProgramObjectFormodh extends Form {
                 <Col md={3}>
                   <div className="pr-object-data">
                     <span>Дата осмотра</span>
-                    <span>{moment(state.updated_at).format(`${global.APP_DATE_FORMAT} HH:mm`)}</span>
+                    <span>{moment(state.reviewed_at).format(`${global.APP_DATE_FORMAT} HH:mm`)}</span>
                   </div>
                 </Col>
                 <Col md={2} xsOffset={1}>
@@ -488,7 +488,7 @@ class ProgramObjectFormodh extends Form {
           <PercentModalList
             object_id={id}
             onHide={this.hidePercentForm}
-            updateVersionOuter={this.props.updateVersionOuter}
+            updateObjectData={this.props.updateObjectData}
           />
         </Div>
         <ModalBody />

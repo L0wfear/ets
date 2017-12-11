@@ -1,7 +1,13 @@
 import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 
-const getTableMeta = (props) => {
+import { employeeFIOLabelFunction } from 'utils/labelFunctions';
+
+const getTableMeta = ({
+  employeesList = [],
+  structures = [],
+  flux,
+} = {}) => {
   const tableMeta = {
     cols: [
       {
@@ -19,6 +25,35 @@ const getTableMeta = (props) => {
         type: 'string',
         filter: {
           type: 'multiselect',
+        },
+      },
+      {
+        name: 'municipal_facility_name',
+        displayName: 'Элемент',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
+      },
+      {
+        name: 'foreman_fio',
+        displayName: 'Бригадир',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
+      },
+      {
+        name: 'brigade_employee_id_list',
+        displayName: 'Бригадаsss',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+          some: true,
+          options: employeesList.map(({ id: value }) => ({
+            value,
+            label: employeeFIOLabelFunction(flux)(value),
+          })),
         },
       },
       {
@@ -43,9 +78,9 @@ const getTableMeta = (props) => {
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: props.structures.map(({ id, name }) => ({ value: id, label: name })),
+          options: structures.map(({ id, name }) => ({ value: id, label: name })),
         },
-        display: props.structures.length,
+        display: structures.length,
       },
     ],
   };
@@ -53,15 +88,41 @@ const getTableMeta = (props) => {
   return tableMeta;
 };
 
+const DataTable = (props) => {
+  const {
+    structures = [],
+    flux,
+  } = props;
 
-export default props =>
-  <Table
-    title="Шаблоны наряд-заданий"
-    renderers={{ structure_id: ({ data }) => <div>{props.structures.find(s => s.id === data) ? props.structures.find(s => s.id === data).name : ''}</div> }}
-    results={props.data}
-    tableMeta={getTableMeta(props)}
-    initialSort={'number'}
-    initialSortAscending={false}
-    {...props}
-  />
-;
+  const renderers = ({
+    structure_id: ({ data }) => <div>{(structures.find(s => s.id === data) || { data: '' }).name}</div>,
+    brigade_employee_id_list: ({ data }) => <div>{data.map((employee_id => employeeFIOLabelFunction(flux)(employee_id))).join(', ') }</div>,
+  });
+
+  const data = props.data.reduce((arr, d) => {
+    arr.push({
+      ...d,
+      brigade_employee_id_list: d.brigade_employee_id_list.map(({ employee_id }) => employee_id),
+    });
+    return arr;
+  }, []);
+
+  return (
+    <Table
+      title="Шаблоны наряд-заданий"
+      renderers={renderers}
+      results={data}
+      tableMeta={getTableMeta(props)}
+      initialSort={'number'}
+      initialSortAscending={false}
+      {...props}
+    />
+  );
+};
+
+DataTable.propTypes = {
+  structures: React.PropTypes.array,
+  flux: React.PropTypes.object,
+};
+
+export default DataTable;

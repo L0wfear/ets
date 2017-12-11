@@ -75,6 +75,36 @@ class ProgramObjectFormWrap extends FormWrap {
     return newFormErrors;
   }
 
+  updateObjectData = () => {
+    this.props.updateObjectData().then((ans) => {
+      const {
+        formState: {
+          id,
+        },
+      } = this.state;
+
+      const {
+        data: {
+          result: {
+            rows = [],
+          },
+        },
+      } = ans;
+
+      const {
+        percent = 1,
+        reviewed_at = 2,
+      } = rows.find(d => d.id === id);
+
+      this.handleMultiChange({
+        percent,
+        reviewed_at,
+      });
+
+      return ans;
+    });
+  }
+
   getFormDt() {
     const { entity, isPermitted = true } = this.props;
     const { saveButtonEnability = true } = this.state;
@@ -94,7 +124,7 @@ class ProgramObjectFormWrap extends FormWrap {
         show={this.props.showForm}
         onHide={this.props.onFormHide}
         isPermitted={isPermitted && (this.props.program_version_status !== 'accepted')}
-        updateVersionOuter={this.props.updateVersionOuter}
+        updateObjectData={this.updateObjectData}
       />
     );
   }
@@ -118,7 +148,7 @@ class ProgramObjectFormWrap extends FormWrap {
         show={this.props.showForm}
         onHide={this.props.onFormHide}
         isPermitted={isPermitted && (this.props.program_version_status !== 'accepted')}
-        updateVersionOuter={this.props.updateVersionOuter}
+        updateObjectData={this.updateObjectData}
       />
     );
   }

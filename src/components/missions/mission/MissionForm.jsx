@@ -108,7 +108,8 @@ export class MissionForm extends Form {
      * GET /technical_operation?only=new
      * GET /technical_operation?only=old
      */
-    const { result: technicalOperationsList } = await technicalOperationsActions.getTechnicalOperations();
+    const { result: technicalOperationsListOr } = await technicalOperationsActions.getTechnicalOperations();
+    const technicalOperationsList = technicalOperationsListOr.filter(({ is_new, norm_ids }) => !is_new || (is_new && !norm_ids.some(n => n === null)));
 
     const {
       is_new,
@@ -405,6 +406,8 @@ export class MissionForm extends Form {
                 getDataByNormId={this.getDataByNormId}
                 technicalOperationsList={technicalOperationsList}
                 getNormIdFromState={!!fromOrder || !IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromOrder || !is_new || sourceIsOrder}
+                fromWaybill={this.props.fromWaybill}
+                type_id={state.type_id}
               />
             </Col>
           </Row>

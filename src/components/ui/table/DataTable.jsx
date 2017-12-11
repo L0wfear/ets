@@ -140,8 +140,8 @@ export default class DataTable extends React.Component {
       globalCheckboxState: false,
       isHierarchical: props.isHierarchical,
       firstUseExternalInitialSort: true,
-      initialSort: '',
-      initialSortAscending: false,
+      initialSort: this.props.initialSort,
+      initialSortAscending: this.props.initialSortAscending,
     };
   }
 
@@ -212,6 +212,10 @@ export default class DataTable extends React.Component {
     if (!this.state.isHierarchical) return true;
 
     return !_.isEqual(nextProps.results, this.props.results);
+  }
+
+  getFilterTypeByKey(key) {
+    return getFilterTypeByKey(key, this.props.tableMeta);
   }
 
   closeFilter() {
@@ -382,10 +386,6 @@ export default class DataTable extends React.Component {
     };
   }
 
-  getFilterTypeByKey(key) {
-    return getFilterTypeByKey(key, this.props.tableMeta);
-  }
-
   shouldBeRendered(obj) {
     if (this.props.externalFilter) return true;
     const { filterValues } = this.state;
@@ -431,10 +431,14 @@ export default class DataTable extends React.Component {
             isValid = false;
           }
         } else if (IS_ARRAY) {
+          const a = this.props.tableMeta.cols.find(e => e.name === key);
           if (Array.isArray(obj[key])) {
-            const a = this.props.tableMeta.cols.find(e => e.name === key);
             if (a.filter.strict) {
               if (!(obj[key].every(el => el.id && value.indexOf(el.id.toString()) > -1) && obj[key].length === value.length)) {
+                isValid = false;
+              }
+            } else if (a.filter.some) {
+              if (!obj[key].some(el => value.every(val => el.toString().includes(val)))) {
                 isValid = false;
               }
             } else if (!(obj[key].find(el => el.id && value.indexOf(el.id.toString()) > -1))) {
@@ -442,6 +446,10 @@ export default class DataTable extends React.Component {
             }
           } else if (typeof obj[key] === 'boolean') {
             if (value.map(v => typeof v === 'string' ? v === 'true' || v === '1' : !!parseInt(v, 10)).indexOf(obj[key]) === -1) {
+              isValid = false;
+            }
+          } else if (a.filter.some) {
+            if (value.findIndex(d => obj[key].toString().toLowerCase().includes(d.toLowerCase()))) {
               isValid = false;
             }
           } else if (value.findIndex(d => d.toLowerCase() === obj[key].toString().toLowerCase()) === -1) {
@@ -559,7 +567,7 @@ export default class DataTable extends React.Component {
     }
     return 0;
   }
-  // max string - яяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяя 
+  // max string - яяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяя
   // или как?
   // поменять, если знаешь что вместо
   checkForCorrect(val) {

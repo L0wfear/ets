@@ -8,7 +8,7 @@ import ReportContainer from 'components/reports/common/ReportContainer';
 import ReportHeader from './ReportHeader';
 import Title from './Title';
 
-const serviceUrl = 'car_usage_report_with_track';
+const serviceUrl = 'car_usage_report';
 const reportUrl = 'car-usage-report-with-track';
 const serviceName = 'CarUsageReportWithTrack';
 

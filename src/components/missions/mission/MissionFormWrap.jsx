@@ -11,11 +11,23 @@ import MissionForm from './MissionForm.jsx';
 
 export default class MissionFormWrap extends FormWrap {
 
-  constructor(props, context) {
+  constructor(props) {
     super(props);
 
     this.schema = missionSchema;
-    this.createAction = formState => context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill);
+  }
+
+  createAction = (formState) => {
+    return this.context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill || this.props.fromOrder).then((r) => {
+      if (!this.props.fromWaybill && !this.props.fromOrder && !this.props.fromDashboard) {
+        try {
+          // this.props.refreshTableList();
+        } catch (e) {
+          // function refreshTableList not in father modules
+        }
+      }
+      return r;
+    });
   }
 
   componentWillReceiveProps(props) {

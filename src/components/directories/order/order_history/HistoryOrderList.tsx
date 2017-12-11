@@ -91,7 +91,7 @@ class HistoryOrder extends React.Component<any, any> {
     return (
       <Row>
         <Panel>
-          <Col md={12} onClick={this.toggleHistoryTable} style={{ marginBottom: historytableIsOpen ? 10 : 0, cursor: 'pointer' }}>
+          <Col md={12} onClick={this.toggleHistoryTable} style={{ marginBottom: historytableIsOpen ? 20 : 0, cursor: 'pointer' }}>
             <h4 style={{ display: 'flex', justifyContent: 'space-between', margin: 0 }}>
               <span>Версионность централизованного задания</span>
               <Glyphicon glyph={historytableIsOpen ? 'menu-up' : 'menu-down'} />

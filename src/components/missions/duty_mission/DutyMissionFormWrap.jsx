@@ -23,6 +23,7 @@ class DutyMissionFormWrap extends FormWrap {
       if (!this.props.fromOrder && !this.props.fromDashboard) {
         return this.props.refreshTableList();
       }
+      return Promise.resolve();
     });
 
   async handleFormPrint() {

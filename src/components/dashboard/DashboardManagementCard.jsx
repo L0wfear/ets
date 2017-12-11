@@ -79,10 +79,12 @@ export default class MasterManagementCard extends React.Component {
           showForm={this.state.showWaybillForm}
           element={null}
           entity={'waybill'}
+          fromDashboard
         />
         <MissionFormWrap
           onFormHide={this.onMissionFormHide}
           showForm={this.state.showMissionForm}
+          fromDashboard
           element={null}
         />
         <DutyMissionFormWrap

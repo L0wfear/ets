@@ -17,6 +17,8 @@ class MunicipalFacility extends React.Component {
       getDataByNormId: React.PropTypes.func,
       technicalOperationsList: React.PropTypes.arrayOf(React.PropTypes.object),
       clearable: React.PropTypes.bool,
+      fromWaybill: React.PropTypes.bool,
+      type_id: React.PropTypes.number,
     };
   }
 
@@ -93,9 +95,25 @@ class MunicipalFacility extends React.Component {
       if (new_v) {
         this.props.getDataByNormId(rows.find(({ municipal_facility_id }) => municipal_facility_id === new_v).norm_id);
       }
+      let MUNICIPAL_FACILITY_OPTIONS = rows.map(({ municipal_facility_id: value, municipal_facility_name: label, norm_id }) => ({ value, label, norm_id }));
+
+      if (this.props.fromWaybill) {
+        MUNICIPAL_FACILITY_OPTIONS = rows.reduce((arr, element) => {
+          if (element.car_func_types.find(({ id }) => id === this.props.type_id)) {
+            const {
+              municipal_facility_id,
+              municipal_facility_name,
+              norm_id,
+            } = element;
+            arr.push({ value: municipal_facility_id, label: municipal_facility_name, norm_id });
+          }
+
+          return arr;
+        }, []);
+      }
       this.setState({
         myDisable: false,
-        MUNICIPAL_FACILITY_OPTIONS: rows.map(({ municipal_facility_id: value, municipal_facility_name: label, norm_id }) => ({ value, label, norm_id })),
+        MUNICIPAL_FACILITY_OPTIONS,
       });
     });
   }

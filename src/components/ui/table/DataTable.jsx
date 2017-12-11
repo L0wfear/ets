@@ -437,6 +437,10 @@ export default class DataTable extends React.Component {
               if (!(obj[key].every(el => el.id && value.indexOf(el.id.toString()) > -1) && obj[key].length === value.length)) {
                 isValid = false;
               }
+            } else if (a.filter.some) {
+              if (!obj[key].some(el => value.every(val => el.toString().includes(val)))) {
+                isValid = false;
+              }
             } else if (!(obj[key].find(el => el.id && value.indexOf(el.id.toString()) > -1))) {
               isValid = false;
             }

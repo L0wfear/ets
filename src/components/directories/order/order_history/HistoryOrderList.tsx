@@ -32,7 +32,7 @@ class HistoryOrder extends React.Component<any, any> {
   getEmptyMes() {
     return (
     <div>
-      <Col md={12}>
+      <Col md={12} style={{ marginTop: 20 }}>
         <span>Для выбранного централизованного задания предыдущих версий нет.</span>
       </Col>
     </div>

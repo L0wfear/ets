@@ -82,7 +82,7 @@ export default class GeoObjectsStore extends Store {
     const nameOfSelectedPolys = (type === 'leak') ? 'selectedPolysTypesLeak' : 'selectedPolysTypes';
     const nameOfSelectedFeature = (type === 'leak') ? 'selectedFeatureLeak' : 'selectedFeature';
     if (type === null) {
-    //  this.setState({ selectedPolysTypes: [] }); // при клике на 'Объекты' политики очищались, а на карте пропадали активированные чекбоксом гео объекты
+    //  this.setState({ selectedPolysTypes: [] });
      // this.handleSelectFeature(null);
       return;
     }
@@ -92,7 +92,6 @@ export default class GeoObjectsStore extends Store {
     if (typeIndex > -1) {
       selectedPolys.splice(typeIndex, 1);  // после снятия чекбокса удаляется из политик объект того типа данных, с которого снимается флажок
     const stateSelectedFeature = this.state[nameOfSelectedFeature];
-    console.log('****stateSelectedFeature и тип', stateSelectedFeature, type);
       if (stateSelectedFeature) {
         if (stateSelectedFeature.featureType === type) { // если снимаем флажок с того типа объекта, который выделен на карте
           this.handleSelectFeature(null, nameOfSelectedFeature);
@@ -178,7 +177,6 @@ export default class GeoObjectsStore extends Store {
   handleSelectFeature(featureData = false, nameOfSelected) {
 
     const stateSelectedFeature = this.state[nameOfSelected];
-    console.log('@@@@stateSelectedFeature', stateSelectedFeature); // не вызывается хендлер, если выделен гео объект, то снятие selected с иконок слива не происходит - баг
     if (featureData !== null) {
       if (stateSelectedFeature !== null) { // при переключении выбранного объекта на карте
 
@@ -227,7 +225,6 @@ export default class GeoObjectsStore extends Store {
   }
 
   getSelectedFeature(nameOfSelected) {
-
     return this.state[nameOfSelected];
   }
 

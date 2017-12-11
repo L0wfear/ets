@@ -91,7 +91,7 @@ class ShowGeoobjectsCheckbox extends React.Component<any, any> {
         onChange={() => this.setSelectedPolysType(type)}
       />,
     );
-    
+
     return (
       <div className="app-toolbar-fill app-toolbar-show-geoobjects" >
         <div className="checkbox">

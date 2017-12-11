@@ -315,7 +315,7 @@ export default class CarMarker extends Marker {
       context.stroke();
     }
     
-    return getBigIcon(icon);  // в big.js  getMapIcon(name = 'drugoe' ), потому что передаётся icon=undefined
+    return getBigIcon(icon);
   }
 
   setPoint(point) {

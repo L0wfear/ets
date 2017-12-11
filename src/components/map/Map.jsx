@@ -126,7 +126,6 @@ export default class OpenLayersMap extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-
     const hasPoints = nextProps.points !== undefined;
     const hasPolys = nextProps.polys !== undefined;
     const hasPolysLeak = nextProps.polysLeak !== undefined;
@@ -153,12 +152,10 @@ export default class OpenLayersMap extends Component {
     }
 
     if (hasPolys && (polysHasChanged || showPolygonsChanged || selectedFeatureChanged)) {
-     // this.renderPolygons(Object.assign({}, nextProps.polys, nextProps.polysLeak), nextProps.showPolygons);
       this.renderPolygons(nextProps);
     }
 
     if (hasPolysLeak && (polysHasChangedLeak || showLeakChanged || selectedLeakChanged)) {
-      // this.renderPolygons(Object.assign({}, nextProps.polys, nextProps.polysLeak), nextProps.showPolygons);
       this.renderPolygons(nextProps);
     }
   }
@@ -273,7 +270,7 @@ export default class OpenLayersMap extends Component {
       map.forEachFeatureAtPixel(pixel, (feature, layer) => {
         const id = feature.getId();
         if (!id || (!!id && !id.match('measure'))) {
-          this.props.onFeatureClick(feature, ev, this);      
+          this.props.onFeatureClick(feature, ev, this);
         }
       });
     }
@@ -316,7 +313,7 @@ export default class OpenLayersMap extends Component {
             feature.setStyle(polyStyles.geoobject);
           }
         } else if (poly.shape && poly.data.type === 'leak') {
-          if(poly.selected) {
+          if (poly.selected) {
             feature.setStyle(leakIcon['geoobject-selected']);
             this.popup.show(poly.shape.coordinates, leaks('leak', poly.data));
           } else {
@@ -343,7 +340,6 @@ export default class OpenLayersMap extends Component {
     //   polysLayerObject.style = styleFunction;
     // }
     const polysLayer = new ol.layer.Vector(polysLayerObject);
-    
     POLYS_LAYER = polysLayer;
 
     map.addLayer(polysLayer);
@@ -403,17 +399,10 @@ export default class OpenLayersMap extends Component {
       this.enableInteractions();
     }
 
-    // TODO remove this
-   // if (!selected) {
-   //  this.hidePopup();
-   // }
-
-    const isNeedPopUp = _.some(this.props.polysLeak, (poly) => {
-      return poly.data.type === 'leak';
-    });
+    const isNeedPopUp = _.some(this.props.polysLeak, poly => poly.data.type === 'leak');
 
     if (!isNeedPopUp) {
-       this.hidePopup();
+      this.hidePopup();
     }
 
     return canvas;

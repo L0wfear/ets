@@ -14,7 +14,7 @@ export const CleaningStatusTechOpReportService = ETS_API_FACTORY.createApiServic
   'cleaning_status_tech_op_report', {},
 );
 export const CarUsageReportWithTrack = ETS_API_FACTORY.createApiServiceAdapter(
-  'car_usage_report_with_track',
+  'car_usage_report',
   {},
 );
 export const TrackEventsReportService = ETS_API_FACTORY.createApiServiceAdapter('track_events', {});

@@ -250,9 +250,11 @@ class OrderList extends React.Component<any, any> {
   }
   checkDisabledCMЕtemplate = () => {
     const {
+      status = 'cancelled',
       technical_operations = [],
     } = (this.state.selectedElementOrder || {});
-    return !technical_operations.some(({ num_exec }) => num_exec > 0);
+
+    return status === 'cancelled' || !technical_operations.some(({ num_exec }) => num_exec > 0);
   }
   checkDisabledCDMTemplate = () => {
     const {
@@ -385,9 +387,10 @@ class OrderList extends React.Component<any, any> {
 
     const {
       work_type_name = null,
+      num_exec,
     } = sEA;
 
-    return !((work_type_name === null) || work_type_name === 'Ручные' || work_type_name === 'Комбинированный');
+    return !((work_type_name === null || work_type_name === 'Ручные' || work_type_name === 'Комбинированный') && num_exec > 0);
   }
 
   handleClickOnCDM = () => {

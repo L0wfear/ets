@@ -28,6 +28,14 @@ export const getTableMeta = ({
         },
       },
       {
+        name: 'technical_operation_name',
+        displayName: 'Технологическая операция',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
+      },
+      {
         name: 'municipal_facility_name',
         displayName: 'Элемент',
         type: 'string',
@@ -57,21 +65,6 @@ export const getTableMeta = ({
         },
       },
       {
-        name: 'technical_operation_name',
-        displayName: 'Технологическая операция',
-        type: 'string',
-        filter: {
-          type: 'multiselect',
-        },
-      },
-      {
-        name: 'comment',
-        displayName: 'Комментарий',
-        type: 'string',
-        filter: false,
-        cssClassName: 'width300',
-      },
-      {
         name: 'structure_id',
         displayName: 'Подразделение',
         cssClassName: 'width80',
@@ -81,6 +74,13 @@ export const getTableMeta = ({
           options: structures.map(({ id, name }) => ({ value: id, label: name })),
         },
         display: structures.length,
+      },
+      {
+        name: 'comment',
+        displayName: 'Комментарий',
+        type: 'string',
+        filter: false,
+        cssClassName: 'width300',
       },
     ],
   };

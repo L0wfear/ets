@@ -45,7 +45,7 @@ export const getTableMeta = ({
       },
       {
         name: 'brigade_employee_id_list',
-        displayName: 'Бригадаsss',
+        displayName: 'Бригада',
         type: 'string',
         filter: {
           type: 'multiselect',

@@ -147,7 +147,7 @@ export default class DashboardPage extends React.Component {
       );
     });
     const path = this.props.location.pathname;
-    console.log(this.props);
+
     return (
       <Div className="ets-page-wrap dashboard-page">
         <ModalRule

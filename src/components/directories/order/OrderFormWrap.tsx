@@ -1,6 +1,10 @@
 import * as React from 'react';
+
+import Div from 'components/ui/Div.jsx';
+
 import MissionFormWrap from 'components/missions/mission/MissionFormWrap.jsx';
 import DutyMissionFormWrap from 'components/missions/duty_mission/DutyMissionFormWrap';
+import OrderMissionTemplate from 'components/directories/order/forms/OrderMissionTemplate/OrderMissionTemplateList';
 
 // todo
 // Описать интерфейсы форм
@@ -20,6 +24,13 @@ class OrderMissionController extends React.Component<any, any> {
         dmElement,
         initDutyMission,
       },
+      missionTemplateData: {
+        typeClick,
+        showForm: sfMTemlate = false,
+        technical_operations = [],
+        orderDates = {},
+        mission_source_id,
+      },
     } = this.props;
 
     return (
@@ -38,6 +49,16 @@ class OrderMissionController extends React.Component<any, any> {
           element={dmElement}
           initDutyMission={initDutyMission}
         />
+        <Div hidden={!sfMTemlate} >
+          <OrderMissionTemplate
+            showForm={sfMTemlate}
+            onFormHide={this.props.onHideCMTemplate}
+            technical_operations={technical_operations}
+            orderDates={orderDates}
+            typeClick={typeClick}
+            mission_source_id={mission_source_id}
+          />
+        </Div>
       </div>
     );
   }

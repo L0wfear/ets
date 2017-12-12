@@ -3,10 +3,10 @@ import Table from 'components/ui/table/DataTable.jsx';
 
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 
-const getTableMeta = ({
+export const getTableMeta = ({
   employeesList = [],
   structures = [],
-  flux,
+  flux = null,
 } = {}) => {
   const tableMeta = {
     cols: [
@@ -52,7 +52,7 @@ const getTableMeta = ({
           some: true,
           options: employeesList.map(({ id: value }) => ({
             value,
-            label: employeeFIOLabelFunction(flux)(value),
+            label: flux && employeeFIOLabelFunction(flux)(value),
           })),
         },
       },

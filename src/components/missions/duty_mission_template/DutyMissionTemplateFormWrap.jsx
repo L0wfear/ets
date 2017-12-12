@@ -13,6 +13,9 @@ import dutyMissionTemplateSchema from 'models/DutyMissionTemplateModel.js';
 import dutyMissionsCreationTemplateSchema from 'models/DutyMissionsCreationTemplateModel.js';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 
+export const createDutyMissions = async (flux, element, payload) =>
+  flux.getActions('missions').createDutyMissions(element, payload);
+
 class DutyMissionTemplateFormWrap extends FormWrap {
   constructor(props) {
     super(props);
@@ -58,7 +61,7 @@ class DutyMissionTemplateFormWrap extends FormWrap {
       }
       this.props.onFormHide();
     } else {
-      flux.getActions('missions').createDutyMissions(this.props.missions, formState).then(() => {
+      createDutyMissions(flux, this.props.missions, formState).then(() => {
         this.props.onFormHide(true);
       });
     }

@@ -25,6 +25,13 @@ const MAX_ITEMS_PER_PAGE = 15;
 
 const Button = enhanceWithPermissions(BootstrapButton);
 
+/**
+ * @todo
+ * path to stateless component
+ * - внешний state на redux
+ * - композиция
+ * - папка utils со всеми лишними функциями
+ */
 @FluxContext
 class OrderList extends React.Component<any, any> {
   context: any;
@@ -54,12 +61,17 @@ class OrderList extends React.Component<any, any> {
       selectedElementOrder: null,
       selectedElementAssignment: null,
       missionData: {},
+      missionTemplateData: {},
+      dutyMissionData: {},
       showHistoryComponent: false,
       historyOrder: [],
     };
   }
   componentDidMount() {
-    this.context.flux.getActions('missions').getMissionSources();
+    const { flux } = this.context;
+    flux.getActions('missions').getMissionSources();
+    flux.getActions('employees').getEmployees({ active: true });
+
     const {
       routeParams: {
         idOrder = '',
@@ -236,6 +248,18 @@ class OrderList extends React.Component<any, any> {
 
     return !num_exec || status === 'cancelled';
   }
+  checkDisabledCMЕtemplate = () => {
+    const {
+      technical_operations = [],
+    } = (this.state.selectedElementOrder || {});
+    return !technical_operations.some(({ num_exec }) => num_exec > 0);
+  }
+  checkDisabledCDMTemplate = () => {
+    const {
+      technical_operations = [],
+    } = (this.state.selectedElementOrder || {});
+    return this.checkDisabledCMЕtemplate() || !(technical_operations.some(({ num_exec, work_type_name }) => (num_exec > 0) && (work_type_name === 'Ручные' || work_type_name === 'Комбинированный')));
+  }
   handleClickOnCM = () => {
     const missionData: any = {
       showForm: true,
@@ -283,9 +307,72 @@ class OrderList extends React.Component<any, any> {
       missionData,
     });
   }
+  handleClickOnCMTemplate = () => {
+    const { missionSourcesList = [] } = this.props;
+
+    const missionTemplateData: any = {
+      showForm: true,
+      typeClick: 'missionTemplate',
+      mission_source_id: (missionSourcesList.find(({ auto }) => auto) || {}).id,
+    };
+
+    const {
+      selectedElementOrder: {
+        technical_operations = [],
+        order_date,
+        order_date_to,
+      },
+    } = this.state;
+
+    missionTemplateData.technical_operations = technical_operations;
+
+    missionTemplateData.orderDates = {
+      order_date,
+      order_date_to,
+    };
+
+    this.setState({
+      missionTemplateData,
+    });
+  }
+  handleClickOnCDMTemplate = () => {
+    const { missionSourcesList = [] } = this.props;
+
+    const missionTemplateData: any = {
+      showForm: true,
+      typeClick: 'missionDutyTemplate',
+      mission_source_id: (missionSourcesList.find(({ auto }) => auto) || {}).id,
+    };
+
+    const {
+      selectedElementOrder: {
+        technical_operations = [],
+        order_date,
+        order_date_to,
+      },
+    } = this.state;
+
+    missionTemplateData.technical_operations = technical_operations;
+
+    missionTemplateData.orderDates = {
+      order_date,
+      order_date_to,
+    };
+
+    this.setState({
+      missionTemplateData,
+    });
+  }
+
   onHideCM = () =>
     this.setState({
       missionData: {
+        showForm: false,
+      },
+    })
+    onHideCMTemplate = () =>
+    this.setState({
+      missionTemplateData: {
         showForm: false,
       },
     })
@@ -424,6 +511,7 @@ class OrderList extends React.Component<any, any> {
       selectedElementAssignment: assSE,
       missionData = {},
       dutyMissionData = {},
+      missionTemplateData = {},
       showHistoryComponent,
       historyOrder,
     } = this.state;
@@ -448,7 +536,9 @@ class OrderList extends React.Component<any, any> {
           {...this.getAdditionalProps()}
         >
           <Button permissions={['mission.create']} onClick={this.handleClickOnCM} disabled={this.checkDisabledCM()}>Создать задание</Button>
+          <Button permissions={['mission_template.create']} onClick={this.handleClickOnCMTemplate} disabled={this.checkDisabledCMЕtemplate()}>Создать задание по шаблону</Button>
           <Button permissions={['duty_mission.create']} onClick={this.handleClickOnCDM} disabled={this.checkDisabledCDM()}>Создать наряд-задание</Button>
+          <Button permissions={['mission_template.create']} onClick={this.handleClickOnCDMTemplate} disabled={this.checkDisabledCDMTemplate()}>Создать наряд-задание по шаблону</Button>
           <Button onClick={this.saveOrder} disabled={faxSE === null}><Glyphicon glyph="download-alt" /></Button>
         </OrdersTable>
         <Div hidden={!haveMax} >
@@ -468,9 +558,11 @@ class OrderList extends React.Component<any, any> {
         </Div>
         <OrderFormWrap
           missionData={missionData}
+          missionTemplateData={missionTemplateData}
           dutyMissionData={dutyMissionData}
           onHideCM={this.onHideCM}
           onHideCDM={this.onHideCDM}
+          onHideCMTemplate={this.onHideCMTemplate}
         />
       </div>
     );

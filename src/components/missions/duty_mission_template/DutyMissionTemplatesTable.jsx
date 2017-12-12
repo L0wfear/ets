@@ -55,6 +55,7 @@ export const getTableMeta = ({
         name: 'brigade_employee_id_list',
         displayName: 'Бригада',
         type: 'string',
+        display: false,
         filter: {
           type: 'multiselect',
           some: true,
@@ -63,6 +64,12 @@ export const getTableMeta = ({
             label: flux && employeeFIOLabelFunction(flux)(value),
           })),
         },
+      },
+      {
+        name: 'brigade_employee_names',
+        displayName: 'Бригада',
+        type: 'string',
+        filter: false,
       },
       {
         name: 'structure_id',
@@ -88,41 +95,24 @@ export const getTableMeta = ({
   return tableMeta;
 };
 
-const DataTable = (props) => {
-  const {
-    structures = [],
-    flux,
-  } = props;
+export const getRenderers = props => ({
+  structure_id: ({ data }) => <div>{(props.structures.find(s => s.id === data) || { data: '' }).name}</div>,
+});
 
-  const renderers = ({
-    structure_id: ({ data }) => <div>{(structures.find(s => s.id === data) || { data: '' }).name}</div>,
-    brigade_employee_id_list: ({ data }) => <div>{data.map((employee_id => employeeFIOLabelFunction(flux)(employee_id))).join(', ') }</div>,
-  });
-
-  const data = props.data.reduce((arr, d) => {
-    arr.push({
-      ...d,
-      brigade_employee_id_list: d.brigade_employee_id_list.map(({ employee_id }) => employee_id),
-    });
-    return arr;
-  }, []);
-
-  return (
-    <Table
-      title="Шаблоны наряд-заданий"
-      renderers={renderers}
-      results={data}
-      tableMeta={getTableMeta(props)}
-      initialSort={'number'}
-      initialSortAscending={false}
-      {...props}
-    />
-  );
-};
+const DataTable = props => (
+  <Table
+    title="Шаблоны наряд-заданий"
+    renderers={getRenderers(props)}
+    results={props.data}
+    tableMeta={getTableMeta(props)}
+    initialSort={'number'}
+    initialSortAscending={false}
+    {...props}
+  />
+);
 
 DataTable.propTypes = {
-  structures: React.PropTypes.array,
-  flux: React.PropTypes.object,
+  data: React.PropTypes.object,
 };
 
 export default DataTable;

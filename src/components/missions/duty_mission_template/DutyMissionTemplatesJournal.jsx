@@ -3,6 +3,8 @@ import { autobind } from 'core-decorators';
 import { Button } from 'react-bootstrap';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { connectToStores, staticProps } from 'utils/decorators';
+import { employeeFIOLabelFunction } from 'utils/labelFunctions';
+
 import DutyMissionTemplateFormWrap from './DutyMissionTemplateFormWrap.jsx';
 import DutyMissionTemplatesTable from './DutyMissionTemplatesTable.jsx';
 
@@ -22,6 +24,7 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
     this.removeElementAction = context.flux.getActions('missions').removeDutyMissionTemplate;
     this.state = Object.assign(this.state, {
       formType: 'ViewForm',
+      listData: [],
     });
   }
 
@@ -30,9 +33,18 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
     const { flux } = this.context;
     const { payload = {} } = this.props;
     flux.getActions('technicalOperation').getTechnicalOperations();
-    flux.getActions('missions').getDutyMissionTemplates(payload);
     flux.getActions('missions').getMissionSources();
-    flux.getActions('employees').getEmployees({ 'active': true });
+
+    flux.getActions('missions').getDutyMissionTemplates(payload).then(({ result }) => {
+      flux.getActions('employees').getEmployees({ 'active': true }).then((() => {
+        this.setState({
+          listData: result.map(r => ({
+            ...r,
+            brigade_employee_names: (r.brigade_employee_id_list || []).map(({ employee_id }) => employeeFIOLabelFunction(flux)(employee_id)).join(', '),
+          })),
+        });
+      }));
+    });
   }
 
   showForm() {
@@ -88,10 +100,12 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
   }
 
   getAdditionalProps() {
+    const { listData = [] } = this.state;
+
     const { structures } = this.context.flux.getStore('session').getCurrentUser();
     const technicalOperationIdsList = this.props.technicalOperationsList.map(item => item.id);
 
-    const dutyMissionTemplatesList = this.props.dutyMissionTemplatesList
+    const dutyMissionTemplatesList = listData
       .filter(mission => technicalOperationIdsList.includes(mission.technical_operation_id));
 
     return {

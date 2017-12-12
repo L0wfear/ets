@@ -52,7 +52,7 @@ export const getTableMeta = ({
         },
       },
       {
-        name: 'brigade_employee_id_list',
+        name: 'brigade_employee_id_list_array',
         displayName: 'Бригада',
         type: 'string',
         display: false,

@@ -37,7 +37,7 @@ export default class WaybillClosed extends DashboardCardMedium {
     );
   }
 
-  onFormHide = () => {
+  onWaybillFormHide = () => {
     this.props.refreshCard('waybill_draft');
     this.props.refreshCard('waybill_in_progress');
     this.props.refreshCard('waybill_completed');

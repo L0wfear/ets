@@ -340,7 +340,7 @@ export default class WaybillFormWrap extends FormWrap {
       title: 'Внимание: После закрытия путевого листа редактирование полей будет запрещено.',
       body: 'Вы уверены, что хотите закрыть окно?',
     })
-    .then((async) () => {
+    .then(async () => {
       try {
         formState.status = 'closed';
         await this.context.flux.getActions('waybills').updateWaybill(formState);

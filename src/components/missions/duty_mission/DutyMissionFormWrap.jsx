@@ -21,6 +21,14 @@ class DutyMissionFormWrap extends FormWrap {
     };
   }
 
+  createAction = formState =>
+    this.context.flux.getActions('missions').createDutyMission(formState).then(() => {
+      if (!this.props.fromOrder && !this.props.fromDashboard) {
+        return this.context.flux.getActions('missions').getDutyMissions();
+      }
+      return Promise.resolve();
+    });
+
   async handleFormPrint() {
     const mission = _.cloneDeep(this.state.formState);
 

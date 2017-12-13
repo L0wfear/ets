@@ -32,11 +32,10 @@ export const formValidationSchema: IValidationSchema = {
     {
       key: 'number',
       title: 'Номер',
-      type: 'number',
+      type: 'string',
       maxLength: 128,
       required: true,
       min: 0,
-      integer: true,
     },
     {
       key: 'date_start',

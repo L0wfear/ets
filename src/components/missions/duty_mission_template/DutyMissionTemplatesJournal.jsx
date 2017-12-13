@@ -18,33 +18,36 @@ import DutyMissionTemplatesTable from './DutyMissionTemplatesTable.jsx';
 @autobind
 export default class DutyMissionTemplatesJournal extends CheckableElementsList {
 
-  constructor(props, context) {
+  constructor(props) {
     super(props);
 
-    this.removeElementAction = context.flux.getActions('missions').removeDutyMissionTemplate;
     this.state = Object.assign(this.state, {
       formType: 'ViewForm',
       listData: [],
     });
   }
+  removeElementAction = id => this.context.flux.getActions('missions').removeDutyMissionTemplate(id).then(this.updateTable);
 
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
-    const { payload = {} } = this.props;
+
     flux.getActions('technicalOperation').getTechnicalOperations();
     flux.getActions('missions').getMissionSources();
+    flux.getActions('employees').getEmployees({ 'active': true }).then(this.updateTable);
+  }
 
-    flux.getActions('missions').getDutyMissionTemplates(payload).then(({ result }) => {
-      flux.getActions('employees').getEmployees({ 'active': true }).then((() => {
-        this.setState({
-          listData: result.map(r => ({
-            ...r,
-            brigade_employee_id_list_array: (r.brigade_employee_id_list || []).map(({ employee_id }) => employee_id),
-            brigade_employee_names: (r.brigade_employee_id_list || []).map(({ employee_id }) => employeeFIOLabelFunction(flux)(employee_id)).join(', '),
-          })),
-        });
-      }));
+  updateTable = () => {
+    const { flux } = this.context;
+
+    return flux.getActions('missions').getDutyMissionTemplates({}).then(({ result }) => {
+      this.setState({
+        listData: result.map(r => ({
+          ...r,
+          brigade_employee_id_list_array: (r.brigade_employee_id_list || []).map(({ employee_id }) => employee_id),
+          brigade_employee_names: (r.brigade_employee_id_list || []).map(({ employee_id }) => employeeFIOLabelFunction(flux)(employee_id)).join(', '),
+        })),
+      });
     });
   }
 
@@ -76,6 +79,7 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
         element={this.state.selectedElement}
         formType={this.state.formType}
         missions={this.state.checkedElements}
+        updateTable={this.updateTable}
       />,
     ];
   }

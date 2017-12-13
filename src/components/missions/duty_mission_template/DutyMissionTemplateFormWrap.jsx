@@ -49,16 +49,22 @@ class DutyMissionTemplateFormWrap extends FormWrap {
     }
   }
 
-  handleFormSubmit() {
+  async handleFormSubmit() {
     const { flux } = this.context;
     const { formState } = this.state;
 
     if (this.props.formType === 'ViewForm') {
-      if (isEmpty(formState.id)) {
-        flux.getActions('missions').createDutyMissionTemplate(formState);
-      } else {
-        flux.getActions('missions').updateDutyMissionTemplate(formState);
+      try {
+        if (isEmpty(formState.id)) {
+          await flux.getActions('missions').createDutyMissionTemplate(formState);
+        } else {
+          await flux.getActions('missions').updateDutyMissionTemplate(formState);
+        }
+      } catch (e) {
+        return;
       }
+      this.props.updateTable();
+
       this.props.onFormHide();
     } else {
       createDutyMissions(flux, this.props.missions, formState).then(() => {

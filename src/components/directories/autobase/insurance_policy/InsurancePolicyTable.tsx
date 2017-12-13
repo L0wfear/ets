@@ -48,9 +48,9 @@ export function tableMeta({
       {
         name: 'number',
         displayName: 'Номер',
-        type: 'number',
+        type: 'string',
         filter: {
-          type: 'advanced-number',
+          type: 'advanced-string',
         },
       },
       {

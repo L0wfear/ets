@@ -104,7 +104,7 @@ export default class InsurancePolicyForm extends Form {
                 disabled={!isPermitted}
               />
               <ExtField
-                type={'number'}
+                type={'string'}
                 label={'Номер'}
                 value={state.number}
                 error={errors.number}

@@ -254,6 +254,7 @@ export default class CarMarker extends Marker {
    * @return {[type]} [description]
    */
   renderLarge = (options = {}) => {
+    console.log('##### props в care', this.props);
     const point = this.point;
     const color = getStatusById(point.status).color; // цвет кружочков для ТС на карте 
     const direction = point.direction;

@@ -119,8 +119,10 @@ export default class OpenLayersMap extends Component {
     // Оставлю это здесь. так делать не надо, канвас начинает адово тупить
     // this.triggerRenderEventKey = map.on('postcompose', this.triggerRender.bind(this));
     // this.triggerRender();
-    this.popup = new ol.Overlay.Popup();
-    map.addOverlay(this.popup);
+    this.popupCar = new ol.Overlay.Popup();
+    this.popupLeak = new ol.Overlay.Popup();
+    map.addOverlay(this.popupCar);
+    map.addOverlay(this.popupLeak);
 
     this.enableInteractions();
   }
@@ -215,7 +217,7 @@ export default class OpenLayersMap extends Component {
     });
     // console.log( 'trackpoint  found', possibleTrackPoint);
     const makePopupFn = await track.getTrackPointTooltip(this.props.flux, possibleTrackPoint, prevPoint, nextPoint, event);
-    this.popup.show(pointCoords, makePopupFn());
+    this.popupCar.show(pointCoords, makePopupFn());
   }
   handleCarSelect(clickedMarker) {
     clickedMarker.onClick();
@@ -223,7 +225,7 @@ export default class OpenLayersMap extends Component {
     this._pointsStore.handleSelectPoint(clickedMarker.point);
     this._geoObjectsStore.handleSelectFeature(null, 'selectedFeature');
     // прячем попап трэка
-    this.hidePopup();
+    this.hidePopup('popupCar');
   }
   getSelectedCar(coordinate) {
     // по какому маркеру кликнули?
@@ -276,8 +278,8 @@ export default class OpenLayersMap extends Component {
     }
   }
 
-  hidePopup() {
-    this.popup.hide();
+  hidePopup(obj) {
+    this[obj].hide();
   }
 
   /**
@@ -315,7 +317,7 @@ export default class OpenLayersMap extends Component {
         } else if (poly.shape && poly.data.type === 'leak') {
           if (poly.selected) {
             feature.setStyle(leakIcon['geoobject-selected']);
-            this.popup.show(poly.shape.coordinates, leaks('leak', poly.data));
+            this.popupLeak.show(poly.shape.coordinates, leaks('leak', poly.data));
           } else {
             feature.setStyle(leakIcon.geoobject);
           }
@@ -400,9 +402,10 @@ export default class OpenLayersMap extends Component {
     }
 
     const isNeedPopUp = _.some(this.props.polysLeak, poly => poly.data.type === 'leak');
+    console.log('####isNeedPopUp', isNeedPopUp);
 
     if (!isNeedPopUp) {
-      this.hidePopup();
+      this.hidePopup('popupLeak');
     }
 
     return canvas;

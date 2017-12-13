@@ -11,7 +11,9 @@ export interface IPropsDataTable<TResultObject> {
   tableMeta?: IDataTableSchema;
   results: TResultObject[];
   renderers?: ISchemaRenderer;
-  onRowSelected?(IDataTableSelectedRow): void;
+  onRowSelected?(IDataTableSelectedRow): any;
+  onRowChecked?(any): any;
+  onAllRowsChecked?(any): any;
   enumerated?: boolean;
   enableSort?: boolean;
   initialSort?: boolean | string;
@@ -23,4 +25,7 @@ export interface IPropsDataTable<TResultObject> {
   preventNoDataMessage?: boolean;
   className?: string;
   filterValue?: IFilterValues;
+  multiSelection?: boolean;
+
+  checked?: any;
 }

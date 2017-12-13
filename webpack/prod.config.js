@@ -90,13 +90,12 @@ module.exports = {
         to: 'images'
       },
       {
-        from: path.join(__dirname, '..', 'webpack', 'otherToDist', 'roboto.txt'),
+        from: path.join(__dirname, '..', 'webpack', 'otherToDist', 'robots.txt'),
       },
       {
         from: path.join(__dirname, '..', 'webpack', 'otherToDist', 'construct'),
         to: 'construct'
       },
-
     ]),
     new ExtractTextPlugin('./css/[name].[hash].css'),
     new HtmlWebpackPlugin({

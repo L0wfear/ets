@@ -3,6 +3,8 @@ import { autobind } from 'core-decorators';
 import { Button } from 'react-bootstrap';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { connectToStores, staticProps } from 'utils/decorators';
+import { employeeFIOLabelFunction } from 'utils/labelFunctions';
+
 import DutyMissionTemplateFormWrap from './DutyMissionTemplateFormWrap.jsx';
 import DutyMissionTemplatesTable from './DutyMissionTemplatesTable.jsx';
 
@@ -16,23 +18,37 @@ import DutyMissionTemplatesTable from './DutyMissionTemplatesTable.jsx';
 @autobind
 export default class DutyMissionTemplatesJournal extends CheckableElementsList {
 
-  constructor(props, context) {
+  constructor(props) {
     super(props);
 
-    this.removeElementAction = context.flux.getActions('missions').removeDutyMissionTemplate;
     this.state = Object.assign(this.state, {
       formType: 'ViewForm',
+      listData: [],
     });
   }
+  removeElementAction = id => this.context.flux.getActions('missions').removeDutyMissionTemplate(id).then(this.updateTable);
 
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
-    const { payload = {} } = this.props;
+
     flux.getActions('technicalOperation').getTechnicalOperations();
-    flux.getActions('missions').getDutyMissionTemplates(payload);
     flux.getActions('missions').getMissionSources();
-    flux.getActions('employees').getEmployees({ 'active': true });
+    flux.getActions('employees').getEmployees({ 'active': true }).then(this.updateTable);
+  }
+
+  updateTable = () => {
+    const { flux } = this.context;
+
+    return flux.getActions('missions').getDutyMissionTemplates({}).then(({ result }) => {
+      this.setState({
+        listData: result.map(r => ({
+          ...r,
+          brigade_employee_id_list_array: (r.brigade_employee_id_list || []).map(({ employee_id }) => employee_id),
+          brigade_employee_names: (r.brigade_employee_id_list || []).map(({ employee_id }) => employeeFIOLabelFunction(flux)(employee_id)).join(', '),
+        })),
+      });
+    });
   }
 
   showForm() {
@@ -63,6 +79,7 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
         element={this.state.selectedElement}
         formType={this.state.formType}
         missions={this.state.checkedElements}
+        updateTable={this.updateTable}
       />,
     ];
   }
@@ -88,10 +105,12 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
   }
 
   getAdditionalProps() {
+    const { listData = [] } = this.state;
+
     const { structures } = this.context.flux.getStore('session').getCurrentUser();
     const technicalOperationIdsList = this.props.technicalOperationsList.map(item => item.id);
 
-    const dutyMissionTemplatesList = this.props.dutyMissionTemplatesList
+    const dutyMissionTemplatesList = listData
       .filter(mission => technicalOperationIdsList.includes(mission.technical_operation_id));
 
     return {

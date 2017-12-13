@@ -50,10 +50,10 @@ export default class ProgramRegistryForm extends Form {
       entity,
     } = props;
 
-    const iСustomer = context.flux.getStore('session').getPermission(`${entity}.update`);
+    const iNotСustomer = context.flux.getStore('session').getPermission(`${entity}.review`);
 
     this.state = {
-      iСustomer,
+      iNotСustomer,
       makeVersionIsVisible: false,
       mainButtonEnable: true,
     };
@@ -133,7 +133,7 @@ export default class ProgramRegistryForm extends Form {
     const {
       makeVersionIsVisible = false,
       mainButtonEnable = true,
-      iСustomer,
+      iNotСustomer,
     } = this.state;
 
     const {
@@ -355,7 +355,7 @@ export default class ProgramRegistryForm extends Form {
                     updateObjectData={this.updateObjectData}
                   />
                   <ProgramRemarkList
-                    iСustomer={iСustomer}
+                    iNotСustomer={iNotСustomer}
                     program_version_id={state.id}
                     program_version_status={state.status}
                   />

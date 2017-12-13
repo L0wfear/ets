@@ -13,6 +13,7 @@ import DutyMissionTemplateTable from 'components/directories/order/forms/OrderMi
 
 import { createMissions } from 'components/missions/mission_template/MissionTemplateFormWrap.jsx';
 import { createDutyMissions } from 'components/missions/duty_mission_template/DutyMissionTemplateFormWrap.jsx';
+import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 
 const ASSIGN_OPTIONS = [
   { value: 'assign_to_active', label: 'Добавить в активный ПЛ' },
@@ -110,7 +111,12 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
 
     switch (typeClick) {
       case 'missionTemplate': return flux.getActions('missions').getMissionTemplates(payload);
-      case 'missionDutyTemplate': return flux.getActions('missions').getDutyMissionTemplates(payload);
+      case 'missionDutyTemplate': return flux.getActions('missions').getDutyMissionTemplates(payload).then(({ result }) => ({
+        result: result.map(r => ({
+          ...r,
+          brigade_employee_names: (r.brigade_employee_id_list || []).map(({ employee_id }) => employeeFIOLabelFunction(flux)(employee_id)).join(', '),
+        })),
+      }));
       default: Promise.reject({ error: 'no typeClick' });
     }
   }

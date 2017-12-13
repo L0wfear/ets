@@ -4,8 +4,6 @@ import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
 import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';
 import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 
-import { employeeFIOLabelFunction } from 'utils/labelFunctions';
-
 import { getTableMeta as getMissionTempalteTableMeta } from 'components/missions/duty_mission_template/DutyMissionTemplatesTable.jsx';
 import DataTableComponent from 'components/ui/table/DataTable';
 import DateFormatter from 'components/ui/DateFormatter';
@@ -44,28 +42,23 @@ const getRenders = props => {
     date_from: ({ data }) => (<DateFormatter date={data} time={true} />),
     date_to: ({ data }) => (<DateFormatter date={data} time={true} />),
     structure_id: ({ data }) => <div>{props.structures.find(s => s.id === data) ? props.structures.find(s => s.id === data).name : ''}</div>,
-    brigade_employee_id_list: ({ data }) => <div>{data.map((({ employee_id }) => employeeFIOLabelFunction(props.flux)(employee_id))).join(', ') }</div>,
   };
   return renderers;
 };
 
-const Table: React.SFC<any> = props  => {
-  const data = props.data.map(d => ({ ...d }));
-
-  return (
-    <DataTable
-      multiSelection={true}
-      noFilter={true}
-      results={data}
-      renderers={getRenders(props)}
-      tableMeta={getTableMeta(props)}
-      onRowSelected={props.onRowSelected}
-      onRowChecked={props.onRowChecked}
-      onAllRowsChecked={props.onAllRowsChecked}
-      selected={props.selected}
-      checked={props.checked}
-    />
-  );
-};
+const Table: React.SFC<any> = props  => (
+  <DataTable
+    multiSelection={true}
+    noFilter={true}
+    results={props.data}
+    renderers={getRenders(props)}
+    tableMeta={getTableMeta(props)}
+    onRowSelected={props.onRowSelected}
+    onRowChecked={props.onRowChecked}
+    onAllRowsChecked={props.onAllRowsChecked}
+    selected={props.selected}
+    checked={props.checked}
+  />
+);
 
 export default Table;

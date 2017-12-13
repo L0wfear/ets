@@ -56,12 +56,12 @@ export function tableMeta({
 }
 
 // назови лучше
-const checkShowByStatusAndDataLengthAndUser = (status, length, iСustomer) => {
+const checkShowByStatusAndDataLengthAndUser = (status, length, iNotСustomer) => {
   if (status === 'draft') {
     return false;
   }
 
-  if (length > 0 || (status === 'sent_on_review' && !iСustomer)) {
+  if (length > 0 || (status === 'sent_on_review' && iNotСustomer)) {
     return true;
   }
 
@@ -74,7 +74,7 @@ const renderers: ISchemaRenderer = {
 };
 
 const Table: React.SFC<any> = props  => {
-  const showTable = checkShowByStatusAndDataLengthAndUser(props.program_version_status, props.data.length, props.iСustomer);
+  const showTable = checkShowByStatusAndDataLengthAndUser(props.program_version_status, props.data.length, props.iNotСustomer);
 
   return showTable ?
     <DataTable

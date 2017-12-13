@@ -15,20 +15,12 @@ import UserActionLogTable from './UserActionLogTable.jsx';
 })
 export default class UserActionLogList extends ElementsList {
 
-  state = {
-    date_start: getToday0am(),
-    date_end: getToday2359(),
-  }
-
-  exportPayload = {
-    date_start: createValidDateTime(this.state.date_start),
-    date_end: createValidDateTime(this.state.date_end),
-  };
-
-  async componentDidMount() {
-    super.componentDidMount();
-    const { flux } = this.context;
-    await flux.getActions('objects').getUserActionLog(this.state);
+  init() {
+    const state = {
+      date_start: getToday0am(),
+      date_end: getToday2359(),
+    };
+    this.setState(state);
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -37,8 +29,12 @@ export default class UserActionLogList extends ElementsList {
         date_start: createValidDateTime(nextState.date_start),
         date_end: createValidDateTime(nextState.date_end),
       };
-      this.context.flux.getActions('objects').getUserActionLog(nextState);
+      this.getUserActionLog(nextState);
     }
+  }
+
+  getUserActionLog(state) {
+    this.context.flux.getActions('objects').getUserActionLog(state);
   }
 
   additionalRender() {

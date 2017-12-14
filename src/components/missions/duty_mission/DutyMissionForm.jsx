@@ -236,7 +236,7 @@ export class DutyMissionForm extends Form {
       return newArr;
     }, []);
 
-    const routes = routesList.filter(r => !state.structure_id || r.structure_id === state.structure_id);
+    const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id) && state.is_new ? r.is_new : true);
 
     const filteredRoutes = (
       route !== null &&

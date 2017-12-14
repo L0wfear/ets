@@ -54,7 +54,7 @@ class MissionTemplateForm extends MissionForm {
       STRUCTURE_FIELD_DELETABLE = true;
     }
 
-    const routes = routesList.filter(r => r.structure_id === state.structure_id);
+    const routes = routesList.filter(r => r.structure_id === state.structure_id && r.is_new);
 
     const filteredRoutes = (
       route !== null &&

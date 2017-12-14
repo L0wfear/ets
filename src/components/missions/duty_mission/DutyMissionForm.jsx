@@ -8,6 +8,8 @@ import {
   isEmpty as lodashIsEmpty,
  } from 'lodash';
 
+import { checkRouteByNew } from 'components/missions/mission/MissionForm.jsx';
+
 import ModalBody from 'components/ui/Modal';
 import RouteInfo from 'components/route/RouteInfo.jsx';
 import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
@@ -18,7 +20,6 @@ import Form from 'components/compositions/Form.jsx';
 import InsideField from 'components/missions/duty_mission/inside_fields/index';
 
 import { FormTitle, onlyActiveEmployeeNotification } from './utils';
-
 
 export class DutyMissionForm extends Form {
 
@@ -236,7 +237,7 @@ export class DutyMissionForm extends Form {
       return newArr;
     }, []);
 
-    const routes = routesList.filter(r => !state.structure_id || r.structure_id === state.structure_id);
+    const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id) && checkRouteByNew(state, r));
 
     const filteredRoutes = (
       route !== null &&

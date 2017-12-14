@@ -9,8 +9,8 @@ import ReportHeader from './ReportHeader';
 import Title from './Title';
 
 const serviceUrl = 'car_usage_report';
-const reportUrl = 'car-usage-report-with-track';
-const serviceName = 'CarUsageReportWithTrack';
+const reportUrl = 'car-usage-report';
+const serviceName = 'CarUsageReport';
 
 const schemaMakers = {};
 

@@ -150,6 +150,7 @@ const Table: React.SFC<any> = props  => {
       tableMeta={tableMeta(props)}
       renderers={renderers}
       initialSort={'full_name'}
+      initialSortAscending={true}
       {...props}
     />
   );

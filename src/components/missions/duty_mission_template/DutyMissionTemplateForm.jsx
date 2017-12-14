@@ -1,7 +1,9 @@
 import * as React from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
-import { find } from 'lodash';
+import { find, uniqBy } from 'lodash';
+
+import { checkRouteByNew } from 'components/missions/mission/MissionForm.jsx';
 
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
@@ -24,9 +26,21 @@ class MissionTemplateForm extends DutyMissionForm {
       technicalOperationsList = [],
       routesList = [],
       TECH_OPERATIONS = [],
+      selectedRoute: route = null,
     } = this.state;
 
-    const ROUTES = routesList.map(({ id, name }) => ({ value: id, label: name }));
+    const routes = routesList.filter(r => r.structure_id === state.structure_id && checkRouteByNew(state, r));
+
+    const filteredRoutes = (
+      route !== null &&
+      route.id !== undefined &&
+      routes.find(item => item.value === route.id) === undefined
+    ) ? routes.concat([route]) : routes;
+
+    const ROUTES = uniqBy(
+      filteredRoutes.map(({ id, name }) => ({ value: id, label: name })),
+      'value',
+    );
 
     const IS_CREATING = true;
 
@@ -57,7 +71,6 @@ class MissionTemplateForm extends DutyMissionForm {
       STRUCTURE_FIELD_DELETABLE = true;
     }
 
-    const route = this.state.selectedRoute;
     const brigade_employee_id_list = !state.brigade_employee_id_list
     ? []
     : state.brigade_employee_id_list.filter(b => b.id || b.employee_id).map(b => b.id || b.employee_id).join(',');

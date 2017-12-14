@@ -6,6 +6,8 @@ import {
   isEmpty as lodashIsEmpty,
 } from 'lodash';
 
+import { checkRouteByNew } from 'components/missions/mission/MissionForm.jsx';
+
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
@@ -54,7 +56,7 @@ class MissionTemplateForm extends MissionForm {
       STRUCTURE_FIELD_DELETABLE = true;
     }
 
-    const routes = routesList.filter(r => r.structure_id === state.structure_id);
+    const routes = routesList.filter(r => r.structure_id === state.structure_id && checkRouteByNew(state, r));
 
     const filteredRoutes = (
       route !== null &&

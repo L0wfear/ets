@@ -23,13 +23,14 @@ class MissionTemplateForm extends DutyMissionForm {
       employeesList = [],
     } = this.props;
     const {
+      available_route_types = [],
       technicalOperationsList = [],
       routesList = [],
       TECH_OPERATIONS = [],
       selectedRoute: route = null,
     } = this.state;
 
-    const routes = routesList.filter(r => r.structure_id === state.structure_id && checkRouteByNew(state, r));
+    const routes = routesList.filter(r => r.structure_id === state.structure_id && checkRouteByNew(state, r, available_route_types));
 
     const filteredRoutes = (
       route !== null &&
@@ -198,6 +199,7 @@ class MissionTemplateForm extends DutyMissionForm {
           showForm={this.state.showRouteForm}
           structureId={state.structure_id}
           fromMission
+          available_route_types={available_route_types}
         />
 
       </Modal>

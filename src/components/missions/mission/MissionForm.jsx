@@ -22,6 +22,24 @@ import CarAvailableIcon from 'assets/images/car_available.png';
 import CarNotAvailableIcon from 'assets/images/car_not_available.png';
 import InsideField from 'components/missions/mission/inside_fields/index';
 
+export const checkRouteByNew = (state, route) => {
+  const { is_new = true } = state;
+
+  if (is_new) {
+    const {
+      is_new: route_is_new,
+      norm_id: route_norm_id,
+      municipal_facility_id: route_municipal_facility_id,
+    } = route;
+
+    if (route_is_new && route_norm_id === state.norm_id && route_municipal_facility_id === state.municipal_facility_id) {
+      return true;
+    }
+    return false;
+  }
+  return true;
+};
+
 @autobind
 export class MissionForm extends Form {
 
@@ -305,7 +323,7 @@ export class MissionForm extends Form {
         type_id: c.type_id,
       }));
 
-    const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id) && state.is_new ? r.is_new : true);
+    const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id) && checkRouteByNew(state, r));
 
     const filteredRoutes = (
       route !== null &&

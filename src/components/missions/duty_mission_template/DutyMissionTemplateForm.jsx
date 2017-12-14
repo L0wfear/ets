@@ -3,6 +3,8 @@ import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import { find, uniqBy } from 'lodash';
 
+import { checkRouteByNew } from 'components/missions/mission/MissionForm.jsx';
+
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
@@ -27,7 +29,7 @@ class MissionTemplateForm extends DutyMissionForm {
       selectedRoute: route = null,
     } = this.state;
 
-    const routes = routesList.filter(r => r.structure_id === state.structure_id && r.is_new);
+    const routes = routesList.filter(r => r.structure_id === state.structure_id && checkRouteByNew(state, r));
 
     const filteredRoutes = (
       route !== null &&

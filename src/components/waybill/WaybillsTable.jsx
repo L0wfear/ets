@@ -10,7 +10,7 @@ function waybillMissionsCompleteStatusLabelFunction(status) {
 
 export const getTableMeta = ({
   employeeFIOLabelFunction = () => {},
-  waybillDriversList = [],
+  driversList = [],
   carsList = [],
   employeesList = [],
   structures = [],
@@ -68,7 +68,7 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: waybillDriversList.map(e => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
+          options: driversList.map(e => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
         },
       },
       {

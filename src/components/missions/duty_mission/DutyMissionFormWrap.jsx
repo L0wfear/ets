@@ -27,6 +27,32 @@ class DutyMissionFormWrap extends FormWrap {
       return Promise.resolve();
     });
 
+  componentWillReceiveProps(props) {
+    if (props.showForm && (props.showForm !== this.props.showForm)) {
+      const mission = props.element === null ? getDefaultDutyMission() : _.clone(props.element);
+     // console.log('mission в DutyMissonFormWrap', mission);
+      const ordersActions = this.context.flux.getActions('objects');
+      const {
+       order_id,
+       faxogramm_id,
+        } = mission;
+
+      const id = faxogramm_id || order_id;
+      if (id) {
+       // ordersActions.getOrderById(id).then(result => console.log('result', result)); // удалить
+        ordersActions.getOrderById(id).then(({ result: [order] }) => {
+          const formErrors = this.validate(mission, {}, { order });
+          this.setState({
+            formState: mission,
+            canSave: !_.filter(this.validate(mission, {})).length,
+            formErrors,
+            order,
+          });
+        });
+      }
+    }
+  }
+
   async handleFormPrint() {
     const mission = _.cloneDeep(this.state.formState);
 
@@ -54,33 +80,108 @@ class DutyMissionFormWrap extends FormWrap {
   validate(state, errors) {
     const formErrors = super.validate(state, errors);
 
-    if (this.props.fromOrder && this.props.initDutyMission && this.props.initDutyMission.plan_date_start) {
-      const {
-        initDutyMission: {
-          plan_date_start: init_pds,
-          plan_date_end: init_pde,
-          passes_count: init_pc,
-        } = {},
-      } = this.props;
-      const {
-        plan_date_start: new_pds,
-        plan_date_end: new_pde,
-        passes_count: new_pc,
-      } = state;
+    const {
+      order = {},
+    } = this.state;
 
-      if (moment(new_pds).toDate().getTime() < moment(init_pds).toDate().getTime()) {
-        formErrors.plan_date_start = 'Дата не должна выходить за пределы действия поручения';
+    const {
+      initDutyMission: {
+        plan_date_start: initDutyMissionPlaneDateStart,
+        plan_date_end: initDutyMissionPlaneDateEnd,
+        passes_count: initDutyMissionPassesCount,
+      } = {},
+    } = this.props;  // факсограмма или поручение
+
+    const {
+      plan_date_start: dutyMissionPlaneDateStart,
+      plan_date_end: dutyMissionPlaneDateEnd,
+      fact_date_start: dutyMissionFactDateStart,
+      fact_date_end: dutyMissionFactDateEnd,
+      passes_count: dutyMissionPassesCount,
+      order_operation_id,
+    } = state; // наряд-задание
+
+    const {
+      order_date,
+      order_date_to,
+      technical_operations = [],
+    } = order;  // техническая операция
+
+    const {
+      technicalOperationsDateStart = order_date,
+      technicalOperationsDateEnd = order_date_to,
+    } = technical_operations.find(({ id }) => id === order_operation_id) || {};
+
+    const checkTimeStamps = (a, b, c, errorMessage) => {
+      if (moment(a).diff(moment(b), 'minutes') < 0) {
+        formErrors[c] = errorMessage;
       }
-      if (moment(new_pde).toDate().getTime() > moment(init_pde).toDate().getTime()) {
-        formErrors.plan_date_end = 'Дата не должна выходить за пределы действия поручения';
-      }
-      if (new_pc > init_pc) {
+    };
+
+    // const error1 = 'Дата не должна выходить за пределы действия поручения';
+   // const error2 = 'Дата не должна выходить за пределы путевого листа';
+   // const error3 = 'Дата не должна выходить за пределы действия тех.операции';
+  const convertDate = (date) =>
+    `${date.slice(8,10)}.${date.slice(5,7)}.${date.slice(0,4)} ${date.slice(11,16)}`;
+
+    formErrors.plan_date_start = '';
+    formErrors.plan_date_end = '';
+
+
+    if (this.props.fromOrder && this.props.initDutyMission && this.props.initDutyMission.plan_date_start) {
+
+      const error1 = `Дата начала должна быть позже ${convertDate(initDutyMissionPlaneDateStart)}, но раньше ${convertDate(initDutyMissionPlaneDateEnd)}, чтобы не выходить за пределы действия поручения`;
+      const error2 = `Дата окончания должна быть раньше ${convertDate(initDutyMissionPlaneDateEnd)} и позже даты начала, чтобы не выходить за пределы действия поручения`;
+
+      console.log('план начало задания', dutyMissionPlaneDateStart);
+      console.log('план окончание задания', dutyMissionPlaneDateEnd);
+      console.log('факт начало задания', dutyMissionFactDateStart);
+      console.log('факт окончание задания', dutyMissionFactDateEnd);
+      console.log('начало поручения', initDutyMissionPlaneDateStart);
+      console.log('окончание окончание поручения', initDutyMissionPlaneDateEnd);
+
+      checkTimeStamps(dutyMissionPlaneDateStart, initDutyMissionPlaneDateStart, 'plan_date_start', error1);
+      checkTimeStamps(initDutyMissionPlaneDateEnd, dutyMissionPlaneDateEnd, 'plan_date_end', error2);
+
+     // checkTimeStamps(dutyMissionPlaneDateStart, initDutyMissionPlaneDateStart, 'plan_date_start', error1);
+     // checkTimeStamps(initDutyMissionPlaneDateEnd, dutyMissionPlaneDateEnd, 'plan_date_end', error1);
+     // checkTimeStamps(dutyMissionFactDateStart, dutyMissionPlaneDateStart, 'plan_date_start', error2);
+     // checkTimeStamps(dutyMissionPlaneDateEnd, dutyMissionFactDateEnd, 'plan_date_end', error2);
+
+      if (dutyMissionPassesCount > initDutyMissionPassesCount) {
         formErrors.passes_count = '"Кол-во проходов" не должно превышать значение "Кол-во проходов" из поручения';
       }
-      if (new_pc <= 0) {
+      if (dutyMissionPassesCount <= 0) {
         formErrors.passes_count = '"Кол-во проходов" должно быть больше нуля';
       }
     }
+
+
+    if (!this.props.fromWaybill && !this.props.fromOrder && !_.isEmpty(order)) {
+
+      const error3 = `Дата начала должна быть между ${convertDate(technicalOperationsDateStart)}  и  ${convertDate(dutyMissionFactDateStart)}, указанное Вами время находится за пределами действия тех.операции`;
+      const error4 = `Дата начала должна быть между ${convertDate(technicalOperationsDateStart)}  и  ${convertDate(dutyMissionFactDateStart)}, указанное Вами время позже фактического начала выполнения задания`;
+      const error5 = `Дата окончания должна быть между ${convertDate(dutyMissionFactDateEnd)}  и  ${convertDate(technicalOperationsDateEnd)}, указанное Вами время находится за пределами действия тех.операции`;
+      const error6 = `Дата окончания должна быть между ${convertDate(dutyMissionFactDateEnd)}  и  ${convertDate(technicalOperationsDateEnd)}, указанное Вами время раньше фактического окончания выполнения задания`;
+
+      console.log('план начало задания', dutyMissionPlaneDateStart);
+      console.log('план окончание задания', dutyMissionPlaneDateEnd);
+      console.log('факт начало задания', dutyMissionFactDateStart);
+      console.log('факт окончание задания', dutyMissionFactDateEnd);
+      console.log('начало тех.операции', technicalOperationsDateStart);
+      console.log('окончание тех.операции', technicalOperationsDateEnd);
+
+      checkTimeStamps(dutyMissionPlaneDateStart, technicalOperationsDateStart, 'plan_date_start', error3);
+      checkTimeStamps(dutyMissionFactDateStart, dutyMissionPlaneDateStart, 'plan_date_start', error4);
+      checkTimeStamps(technicalOperationsDateEnd, dutyMissionPlaneDateEnd, 'plan_date_end', error5);
+      checkTimeStamps(dutyMissionPlaneDateEnd, dutyMissionFactDateEnd, 'plan_date_end', error6);
+
+     // checkTimeStamps(dutyMissionPlaneDateStart, technicalOperationsDateStart, 'plan_date_start', error3);
+     // checkTimeStamps(technicalOperationsDateEnd, dutyMissionPlaneDateEnd, 'plan_date_end', error3);
+     // checkTimeStamps(dutyMissionFactDateStart, dutyMissionPlaneDateStart, 'plan_date_start', error2);
+     // checkTimeStamps(dutyMissionPlaneDateEnd, dutyMissionFactDateEnd, 'plan_date_end', error2);
+    }
+
 
     return formErrors;
   }

@@ -104,7 +104,9 @@ export class DutyMissionForm extends Form {
     let { selectedRoute } = this.state;
     let { routesList } = this.props;
 
-    this.getDataByNormId(norm_id);
+    if (norm_id) {
+      this.getDataByNormId(norm_id);
+    }
 
     if (!isEmpty(mission.route_id)) {
       selectedRoute = await routesActions.getRouteById(mission.route_id);

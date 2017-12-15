@@ -30,7 +30,6 @@ class DutyMissionFormWrap extends FormWrap {
   componentWillReceiveProps(props) {
     if (props.showForm && (props.showForm !== this.props.showForm)) {
       const mission = props.element === null ? getDefaultDutyMission() : _.clone(props.element);
-     // console.log('mission в DutyMissonFormWrap', mission);
       const ordersActions = this.context.flux.getActions('objects');
       const {
        order_id,
@@ -39,7 +38,6 @@ class DutyMissionFormWrap extends FormWrap {
 
       const id = faxogramm_id || order_id;
       if (id) {
-       // ordersActions.getOrderById(id).then(result => console.log('result', result)); // удалить
         ordersActions.getOrderById(id).then(({ result: [order] }) => {
           const formErrors = this.validate(mission, {}, { order });
           this.setState({
@@ -112,41 +110,34 @@ class DutyMissionFormWrap extends FormWrap {
       technicalOperationsDateEnd = order_date_to,
     } = technical_operations.find(({ id }) => id === order_operation_id) || {};
 
-    const checkTimeStamps = (a, b, c, errorMessage) => {
+    /**
+   * Задает правильный интервал введенного пользователем времени в форме при создании наряд-задания, привязанного как в факсограмме, так и к технологической операции
+   * @param {string} a,b - две временные отметки
+   * @param {string} с - свойство объекта formErrors
+   * @param {string} d - текст ошибки
+   */
+    const checkTimeStamps = (a, b, c, errorMessage) => { // сравнивает 2 отметки времени (a  и b) и выводит текст ошибки 
       if (moment(a).diff(moment(b), 'minutes') < 0) {
         formErrors[c] = errorMessage;
       }
     };
 
-    // const error1 = 'Дата не должна выходить за пределы действия поручения';
-   // const error2 = 'Дата не должна выходить за пределы путевого листа';
-   // const error3 = 'Дата не должна выходить за пределы действия тех.операции';
-  const convertDate = (date) =>
-    `${date.slice(8,10)}.${date.slice(5,7)}.${date.slice(0,4)} ${date.slice(11,16)}`;
+    /**
+   * Конвертирует время в читабельный формат для текста ошибок
+   */
+    const convertDate = date =>
+     `${date.slice(8, 10)}.${date.slice(5, 7)}.${date.slice(0, 4)} ${date.slice(11, 16)}`;
 
     formErrors.plan_date_start = '';
     formErrors.plan_date_end = '';
 
 
     if (this.props.fromOrder && this.props.initDutyMission && this.props.initDutyMission.plan_date_start) {
-
       const error1 = `Дата начала должна быть позже ${convertDate(initDutyMissionPlaneDateStart)}, но раньше ${convertDate(initDutyMissionPlaneDateEnd)}, чтобы не выходить за пределы действия поручения`;
       const error2 = `Дата окончания должна быть раньше ${convertDate(initDutyMissionPlaneDateEnd)} и позже даты начала, чтобы не выходить за пределы действия поручения`;
 
-      console.log('план начало задания', dutyMissionPlaneDateStart);
-      console.log('план окончание задания', dutyMissionPlaneDateEnd);
-      console.log('факт начало задания', dutyMissionFactDateStart);
-      console.log('факт окончание задания', dutyMissionFactDateEnd);
-      console.log('начало поручения', initDutyMissionPlaneDateStart);
-      console.log('окончание окончание поручения', initDutyMissionPlaneDateEnd);
-
       checkTimeStamps(dutyMissionPlaneDateStart, initDutyMissionPlaneDateStart, 'plan_date_start', error1);
       checkTimeStamps(initDutyMissionPlaneDateEnd, dutyMissionPlaneDateEnd, 'plan_date_end', error2);
-
-     // checkTimeStamps(dutyMissionPlaneDateStart, initDutyMissionPlaneDateStart, 'plan_date_start', error1);
-     // checkTimeStamps(initDutyMissionPlaneDateEnd, dutyMissionPlaneDateEnd, 'plan_date_end', error1);
-     // checkTimeStamps(dutyMissionFactDateStart, dutyMissionPlaneDateStart, 'plan_date_start', error2);
-     // checkTimeStamps(dutyMissionPlaneDateEnd, dutyMissionFactDateEnd, 'plan_date_end', error2);
 
       if (dutyMissionPassesCount > initDutyMissionPassesCount) {
         formErrors.passes_count = '"Кол-во проходов" не должно превышать значение "Кол-во проходов" из поручения';
@@ -158,28 +149,15 @@ class DutyMissionFormWrap extends FormWrap {
 
 
     if (!this.props.fromWaybill && !this.props.fromOrder && !_.isEmpty(order)) {
-
       const error3 = `Дата начала должна быть между ${convertDate(technicalOperationsDateStart)}  и  ${convertDate(dutyMissionFactDateStart)}, указанное Вами время находится за пределами действия тех.операции`;
       const error4 = `Дата начала должна быть между ${convertDate(technicalOperationsDateStart)}  и  ${convertDate(dutyMissionFactDateStart)}, указанное Вами время позже фактического начала выполнения задания`;
       const error5 = `Дата окончания должна быть между ${convertDate(dutyMissionFactDateEnd)}  и  ${convertDate(technicalOperationsDateEnd)}, указанное Вами время находится за пределами действия тех.операции`;
       const error6 = `Дата окончания должна быть между ${convertDate(dutyMissionFactDateEnd)}  и  ${convertDate(technicalOperationsDateEnd)}, указанное Вами время раньше фактического окончания выполнения задания`;
 
-      console.log('план начало задания', dutyMissionPlaneDateStart);
-      console.log('план окончание задания', dutyMissionPlaneDateEnd);
-      console.log('факт начало задания', dutyMissionFactDateStart);
-      console.log('факт окончание задания', dutyMissionFactDateEnd);
-      console.log('начало тех.операции', technicalOperationsDateStart);
-      console.log('окончание тех.операции', technicalOperationsDateEnd);
-
       checkTimeStamps(dutyMissionPlaneDateStart, technicalOperationsDateStart, 'plan_date_start', error3);
       checkTimeStamps(dutyMissionFactDateStart, dutyMissionPlaneDateStart, 'plan_date_start', error4);
       checkTimeStamps(technicalOperationsDateEnd, dutyMissionPlaneDateEnd, 'plan_date_end', error5);
       checkTimeStamps(dutyMissionPlaneDateEnd, dutyMissionFactDateEnd, 'plan_date_end', error6);
-
-     // checkTimeStamps(dutyMissionPlaneDateStart, technicalOperationsDateStart, 'plan_date_start', error3);
-     // checkTimeStamps(technicalOperationsDateEnd, dutyMissionPlaneDateEnd, 'plan_date_end', error3);
-     // checkTimeStamps(dutyMissionFactDateStart, dutyMissionPlaneDateStart, 'plan_date_start', error2);
-     // checkTimeStamps(dutyMissionPlaneDateEnd, dutyMissionFactDateEnd, 'plan_date_end', error2);
     }
 
 

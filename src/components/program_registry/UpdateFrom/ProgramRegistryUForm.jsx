@@ -353,11 +353,13 @@ export default class ProgramRegistryForm extends Form {
                     contractor_id={state.contractor_id}
                     repair_type_name={state.repair_type_name}
                     updateObjectData={this.updateObjectData}
+                    isPermittedByStatus={isPermittedByStatus}
                   />
                   <ProgramRemarkList
                     iNotСustomer={iNotСustomer}
                     program_version_id={state.id}
                     program_version_status={state.status}
+                    isPermittedByStatus={isPermittedByStatus}
                   />
                 </Col>
               }

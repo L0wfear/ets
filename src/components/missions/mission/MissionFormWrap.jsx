@@ -13,6 +13,7 @@ import { getDefaultMission } from 'stores/MissionsStore.js';
 import { saveData, printData, resizeBase64 } from 'utils/functions';
 import { missionSchema } from 'models/MissionModel.js';
 import MissionForm from './MissionForm.jsx';
+import MissionFormOld from './MissionFormOld.jsx';
 
 export default class MissionFormWrap extends FormWrap {
 
@@ -245,14 +246,23 @@ export default class MissionFormWrap extends FormWrap {
 
     return (
       <Div hidden={!this.props.showForm}>
-        <MissionForm
-          formState={this.state.formState}
-          onSubmit={this.handleFormSubmit.bind(this)}
-          handleFormChange={this.handleFormStateChange.bind(this)}
-          handlePrint={this.handlePrint.bind(this)}
-          {...props}
-          {...this.state}
-        />
+        <Div hidden={!this.state.formState.is_new} >
+          <MissionForm
+            formState={this.state.formState}
+            onSubmit={this.handleFormSubmit.bind(this)}
+            handleFormChange={this.handleFormStateChange.bind(this)}
+            handlePrint={this.handlePrint.bind(this)}
+            {...props}
+            {...this.state}
+          />
+        </Div>
+        <Div hidden={this.state.formState.is_new} >
+          <MissionFormOld
+            formState={this.state.formState}
+            {...props}
+            {...this.state}
+          />
+        </Div>
       </Div>
     );
   }

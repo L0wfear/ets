@@ -8,8 +8,6 @@ import {
   isEmpty as lodashIsEmpty,
  } from 'lodash';
 
-import { checkRouteByNew } from 'components/missions/mission/MissionForm.jsx';
-
 import ModalBody from 'components/ui/Modal';
 import RouteInfo from 'components/route/RouteInfo.jsx';
 import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
@@ -106,9 +104,7 @@ export class DutyMissionForm extends Form {
     let { selectedRoute } = this.state;
     let { routesList } = this.props;
 
-    if (norm_id) {
-      this.getDataByNormId(norm_id);
-    }
+    this.getDataByNormId(norm_id);
 
     if (!isEmpty(mission.route_id)) {
       selectedRoute = await routesActions.getRouteById(mission.route_id);
@@ -174,7 +170,7 @@ export class DutyMissionForm extends Form {
       const createdRouteId = result.createdRoute.result[0].id;
       this.handleChange('route_id', createdRouteId);
       const selectedRoute = await routesActions.getRouteById(createdRouteId);
-      const routesList = await routesActions.getRoutesByTechnicalOperation(this.props.formState.technical_operation_id);
+      const routesList = await routesActions.getRoutesByNormId(this.props.formState.technical_operation_id);
       Object.assign(stateChangeObject, {
         showRouteForm: false,
         selectedRoute,
@@ -197,17 +193,12 @@ export class DutyMissionForm extends Form {
         to_data = {},
       ] = [],
     } = await this.context.flux.getActions('technicalOperation').getOneTechOperationByNormId({ norm_id });
-    const {
-      formState: {
-        technical_operation_id = -1,
-      } = {},
-    } = this.props;
 
     const {
       route_types: available_route_types = [],
     } = to_data;
 
-    const routesList = await this.context.flux.getActions('routes').getRoutesByTechnicalOperation(technical_operation_id);
+    const routesList = await this.context.flux.getActions('routes').getRoutesByNormId(norm_id);
     this.setState({ routesList, available_route_types });
   }
 
@@ -237,7 +228,7 @@ export class DutyMissionForm extends Form {
       return newArr;
     }, []);
 
-    const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id) && checkRouteByNew(state, r, available_route_types));
+    const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id));
 
     const filteredRoutes = (
       route !== null &&

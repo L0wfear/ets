@@ -211,7 +211,7 @@ export class MissionForm extends Form {
       const createdRouteId = result.createdRoute.result[0].id;
       this.handleChange('route_id', createdRouteId);
       const selectedRoute = await routesActions.getRouteById(createdRouteId);
-      const routesList = await routesActions.getRoutesByTechnicalOperation(this.props.formState.technical_operation_id);
+      const routesList = await routesActions.getRoutesByNormId(this.props.formState.norm_id);
       Object.assign(stateChangeObject, {
         showRouteForm: false,
         selectedRoute,
@@ -254,12 +254,6 @@ export class MissionForm extends Form {
       route_types: available_route_types = [],
     } = to_data;
 
-    const {
-      formState: {
-        technical_operation_id = -1,
-      } = {},
-    } = this.props;
-
     if (!this.props.formState.status && !this.props.fromWaybill) {
       if (!this.state.isTemplate) {
         this.handleChange('car_id', undefined);
@@ -276,7 +270,7 @@ export class MissionForm extends Form {
       });
     }
 
-    this.context.flux.getActions('routes').getRoutesByTechnicalOperation(technical_operation_id)
+    this.context.flux.getActions('routes').getRoutesByNormId(norm_id)
     .then((routesList) => {
       this.setState({ routesList });
     });
@@ -324,9 +318,7 @@ export class MissionForm extends Form {
         type_id: c.type_id,
       }));
 
-      console.log(available_route_types)
-      console.log(routesList)
-      const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id) && checkRouteByNew(state, r, available_route_types));
+    const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id) && checkRouteByNew(state, r, available_route_types));
 
     const filteredRoutes = (
       route !== null &&
@@ -374,9 +366,6 @@ export class MissionForm extends Form {
         </div>);
     }
     // Старые задания нельзя редактирвоать
-    const {
-      is_new,
-    } = state;
 
     const sourceIsOrder = !lodashIsEmpty(state.order_operation_id);
 
@@ -394,7 +383,7 @@ export class MissionForm extends Form {
                 type="select"
                 label="Технологическая операция"
                 error={errors.technical_operation_id}
-                disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromOrder || !is_new || sourceIsOrder}
+                disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromOrder || sourceIsOrder}
                 options={TECH_OPERATIONS}
                 value={state.technical_operation_id}
                 onChange={this.handleTechnicalOperationChange}
@@ -406,7 +395,7 @@ export class MissionForm extends Form {
                 type="select"
                 label="Подразделение"
                 error={errors.structure_id}
-                disabled={STRUCTURE_FIELD_READONLY || this.props.fromWaybill || (!IS_CREATING && !IS_POST_CREATING_NOT_ASSIGNED) || !IS_CREATING || !is_new}
+                disabled={STRUCTURE_FIELD_READONLY || this.props.fromWaybill || (!IS_CREATING && !IS_POST_CREATING_NOT_ASSIGNED) || !IS_CREATING}
                 clearable={STRUCTURE_FIELD_DELETABLE}
                 options={STRUCTURES}
                 emptyValue={null}
@@ -422,11 +411,11 @@ export class MissionForm extends Form {
                 id={'municipal_facility_id'}
                 errors={errors}
                 state={state}
-                disabled={(!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY)) || this.props.fromOrder || !is_new || sourceIsOrder}
+                disabled={(!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY)) || this.props.fromOrder || sourceIsOrder}
                 handleChange={this.handleChange.bind(this)}
                 getDataByNormId={this.getDataByNormId}
                 technicalOperationsList={technicalOperationsList}
-                getNormIdFromState={!!fromOrder || !IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromOrder || !is_new || sourceIsOrder}
+                getNormIdFromState={!!fromOrder || !IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromOrder || sourceIsOrder}
                 fromWaybill={this.props.fromWaybill}
                 type_id={state.type_id}
               />
@@ -444,8 +433,7 @@ export class MissionForm extends Form {
                   IS_DISPLAY ||
                   this.props.fromWaybill ||
                   (IS_CREATING && isEmpty(state.technical_operation_id)) ||
-                  isEmpty(state.municipal_facility_id) ||
-                  !is_new
+                  isEmpty(state.municipal_facility_id)
                 }
                 options={CARS}
                 optionRenderer={this.renderCarOptions}
@@ -462,7 +450,7 @@ export class MissionForm extends Form {
                   label="Время выполнения:"
                   error={errors.date_start}
                   date={state.date_start}
-                  disabled={(IS_DISPLAY || !is_new) && !IS_ASSIGNED}
+                  disabled={(IS_DISPLAY) && !IS_ASSIGNED}
                   min={this.props.fromWaybill && this.props.waybillStartDate ? this.props.waybillStartDate : null}
                   max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
                   onChange={this.handleChangeDateStart}
@@ -476,7 +464,7 @@ export class MissionForm extends Form {
                   label=""
                   error={errors.date_end}
                   date={state.date_end}
-                  disabled={(IS_DISPLAY || !is_new) && !IS_ASSIGNED}
+                  disabled={(IS_DISPLAY) && !IS_ASSIGNED}
                   min={state.date_start}
                   max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
                   onChange={this.handleChange.bind(this, 'date_end')}
@@ -490,7 +478,7 @@ export class MissionForm extends Form {
                 type="select"
                 label="Маршрут"
                 error={errors.route_id}
-                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.car_id || !state.municipal_facility_id || !is_new}
+                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.car_id || !state.municipal_facility_id}
                 options={ROUTES}
                 value={state.route_id}
                 onChange={this.handleRouteIdChange}
@@ -513,7 +501,7 @@ export class MissionForm extends Form {
                 type="number"
                 label="Кол-во циклов"
                 error={errors.passes_count}
-                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !is_new}
+                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY}
                 value={state.passes_count}
                 onChange={this.handleChange.bind(this, 'passes_count')}
                 min={0}
@@ -524,7 +512,7 @@ export class MissionForm extends Form {
                 type="select"
                 label="Источник получения задания"
                 error={errors.mission_source_id}
-                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || fromOrder || !is_new || sourceIsOrder}
+                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || fromOrder || sourceIsOrder}
                 options={MISSION_SOURCES}
                 value={state.mission_source_id}
                 onChange={this.handleChange.bind(this, 'mission_source_id')}
@@ -544,7 +532,7 @@ export class MissionForm extends Form {
                 type="string"
                 label="Комментарий"
                 value={state.comment}
-                disabled={state.status === 'fail' || state.status === 'complete' || !is_new}
+                disabled={state.status === 'fail' || state.status === 'complete'}
                 onChange={this.handleChange.bind(this, 'comment')}
                 error={errors.comment}
               />

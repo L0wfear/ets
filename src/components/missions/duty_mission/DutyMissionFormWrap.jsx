@@ -8,6 +8,7 @@ import { getDefaultDutyMission } from 'stores/MissionsStore.js';
 import { saveData } from 'utils/functions';
 import { dutyMissionSchema } from 'models/DutyMissionModel.js';
 import DutyMissionForm from './DutyMissionForm.jsx';
+import DutyMissionFormOld from './DutyMissionFormOld.jsx';
 
 class DutyMissionFormWrap extends FormWrap {
 
@@ -104,20 +105,38 @@ class DutyMissionFormWrap extends FormWrap {
   }
 
   render() {
-    return 	(<Div hidden={!this.props.showForm}>
-      <DutyMissionForm
-        formState={this.state.formState}
-        onSubmit={this.handleFormSubmit.bind(this)}
-        onPrint={this.handleFormPrint.bind(this)}
-        handleFormChange={this.handleFormStateChange.bind(this)}
-        show={this.props.showForm}
-        onHide={this.props.onFormHide}
-        fromWaybill={this.props.fromWaybill}
-        readOnly={this.props.readOnly || !this.state.formState.is_new}
-        fromOrder={!!this.props.fromOrder}
-        {...this.state}
-      />
-    </Div>);
+    return (
+      <Div hidden={!this.props.showForm}>
+        <Div hidden={!this.state.formState.is_new} >
+          <DutyMissionForm
+            formState={this.state.formState}
+            onSubmit={this.handleFormSubmit.bind(this)}
+            onPrint={this.handleFormPrint.bind(this)}
+            handleFormChange={this.handleFormStateChange.bind(this)}
+            show={this.props.showForm}
+            onHide={this.props.onFormHide}
+            fromWaybill={this.props.fromWaybill}
+            readOnly={this.props.readOnly || !this.state.formState.is_new}
+            fromOrder={!!this.props.fromOrder}
+            {...this.state}
+          />
+        </Div>
+        <Div hidden={this.state.formState.is_new} >
+          <DutyMissionFormOld
+            formState={this.state.formState}
+            onSubmit={this.handleFormSubmit.bind(this)}
+            onPrint={this.handleFormPrint.bind(this)}
+            handleFormChange={this.handleFormStateChange.bind(this)}
+            show={this.props.showForm}
+            onHide={this.props.onFormHide}
+            fromWaybill={this.props.fromWaybill}
+            readOnly={this.props.readOnly || !this.state.formState.is_new}
+            fromOrder={!!this.props.fromOrder}
+            {...this.state}
+          />
+        </Div>
+      </Div>
+    );
   }
 
 }

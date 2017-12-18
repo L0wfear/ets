@@ -1,11 +1,11 @@
 import * as React from 'react';
 import _ from 'lodash';
-import moment from 'moment';
 
 import Div from 'components/ui/Div.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import { getDefaultDutyMission } from 'stores/MissionsStore.js';
 import { saveData } from 'utils/functions';
+import { diffDates } from 'utils/dates.js';
 import { dutyMissionSchema } from 'models/DutyMissionModel.js';
 import DutyMissionForm from './DutyMissionForm.jsx';
 import DutyMissionFormOld from './DutyMissionFormOld.jsx';
@@ -76,77 +76,12 @@ class DutyMissionFormWrap extends FormWrap {
    * @override
    */
   validate(state, errors) {
-    const formErrors = super.validate(state, errors);
-
-    const {
-      order = {},
-    } = this.state;
-
-    const {
-      initDutyMission: {
-        plan_date_start: initDutyMissionPlaneDateStart,
-        plan_date_end: initDutyMissionPlaneDateEnd,
-        passes_count: initDutyMissionPassesCount,
-      } = {},
-    } = this.props;  // факсограмма или поручение
-
-    const {
-      plan_date_start: dutyMissionPlaneDateStart,
-      plan_date_end: dutyMissionPlaneDateEnd,
-      fact_date_start: dutyMissionFactDateStart,
-      fact_date_end: dutyMissionFactDateEnd,
-      passes_count: dutyMissionPassesCount,
-      order_operation_id,
-    } = state; // наряд-задание
-
-    const {
-      order_date,
-      order_date_to,
-      technical_operations = [],
-    } = order;  // техническая операция
-
-    const {
-      technicalOperationsDateStart = order_date,
-      technicalOperationsDateEnd = order_date_to,
-    } = technical_operations.find(({ id }) => id === order_operation_id) || {};
-
-    /**
-   * Задает правильный интервал введенного пользователем времени в форме при создании наряд-задания, привязанного как в факсограмме, так и к технологической операции
-   * @param {string} a,b - две временные отметки
-   * @param {string} с - свойство объекта formErrors
-   * @param {string} d - текст ошибки
-   */
-    const checkTimeStamps = (a, b, c, errorMessage) => { // сравнивает 2 отметки времени (a  и b) и выводит текст ошибки 
-      if (moment(a).diff(moment(b), 'minutes') < 0) {
-        formErrors[c] = errorMessage;
-      }
-    };
-
-    /**
-   * Конвертирует время в читабельный формат для текста ошибок
-   */
-    const convertDate = date =>
-     `${date.slice(8, 10)}.${date.slice(5, 7)}.${date.slice(0, 4)} ${date.slice(11, 16)}`;
-
-    formErrors.plan_date_start = '';
-    formErrors.plan_date_end = '';
-
+    let formErrors = super.validate(state, errors);
 
     if (this.props.fromOrder && this.props.initDutyMission && this.props.initDutyMission.plan_date_start) {
-      const error1 = `Дата начала должна быть позже ${convertDate(initDutyMissionPlaneDateStart)}, но раньше ${convertDate(initDutyMissionPlaneDateEnd)}, чтобы не выходить за пределы действия поручения`;
-      const error2 = `Дата окончания должна быть раньше ${convertDate(initDutyMissionPlaneDateEnd)} и позже даты начала, чтобы не выходить за пределы действия поручения`;
-
-      checkTimeStamps(dutyMissionPlaneDateStart, initDutyMissionPlaneDateStart, 'plan_date_start', error1);
-      checkTimeStamps(initDutyMissionPlaneDateEnd, dutyMissionPlaneDateEnd, 'plan_date_end', error2);
-
-      if (dutyMissionPassesCount > initDutyMissionPassesCount) {
-        formErrors.passes_count = '"Кол-во проходов" не должно превышать значение "Кол-во проходов" из поручения';
-      }
-      if (dutyMissionPassesCount <= 0) {
-        formErrors.passes_count = '"Кол-во проходов" должно быть больше нуля';
-      }
+      const ansError = this.checkDataFromOerder(this.props.initDutyMission, state);
+      formErrors = { ...formErrors, ...ansError };
     }
-
 
     if (!this.props.fromWaybill && !this.props.fromOrder && !_.isEmpty(order)) {
       const error3 = `Дата начала должна быть между ${convertDate(technicalOperationsDateStart)}  и  ${convertDate(dutyMissionFactDateStart)}, указанное Вами время находится за пределами действия тех.операции`;
@@ -163,6 +98,30 @@ class DutyMissionFormWrap extends FormWrap {
 
     return formErrors;
   }
+
+  checkDataFromOerder(initDutyMission, state) {
+    const {
+      plan_date_start: init_pds,
+      plan_date_end: init_pde,
+      passes_count: init_pc,
+    } = initDutyMission;
+    const {
+      plan_date_start: new_pds,
+      plan_date_end: new_pde,
+      passes_count: new_pc,
+    } = state;
+
+    const ansError = {
+      plan_date_start: diffDates(new_pds, init_pds) < 0 ? 'Дата не должна выходить за пределы действия поручения (факсограммы)' : '',
+      plan_date_end: diffDates(new_pde, init_pde) > 0 ? 'Дата не должна выходить за пределы действия поручения (факсограммы)' : '',
+    };
+
+    ansError.passes_count = new_pc > init_pc ? '"Кол-во проходов" не должно превышать значение "Кол-во проходов" из поручения' : '';
+    ansError.passes_count = new_pc <= 0 ? '"Кол-во проходов" должно быть больше нуля' : '';
+
+    return ansError;
+  }
+
   /**
    * @override
    * @param {*} formState
@@ -173,7 +132,7 @@ class DutyMissionFormWrap extends FormWrap {
         await this.context.flux.getActions('missions').updateDutyMission(formState, false);
         try {
           await this.props.refreshTableList();
-        } catch(e) {
+        } catch (e) {
           // ну а вдруг
         }
         resolve();

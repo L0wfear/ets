@@ -75,8 +75,8 @@ class DutyMissionFormWrap extends FormWrap {
     } = state;
 
     const ansError = {
-      plan_date_start: diffDates(new_pds, init_pds) < 0 ? 'Дата не должна выходить за пределы действия поручения' : '',
-      plan_date_end: diffDates(new_pde, init_pde) > 0 ? 'Дата не должна выходить за пределы действия поручения' : '',
+      plan_date_start: diffDates(new_pds, init_pds) < 0 ? 'Дата не должна выходить за пределы действия поручения (факсограммы)' : '',
+      plan_date_end: diffDates(new_pde, init_pde) > 0 ? 'Дата не должна выходить за пределы действия поручения (факсограммы)' : '',
     };
 
     ansError.passes_count = new_pc > init_pc ? '"Кол-во проходов" не должно превышать значение "Кол-во проходов" из поручения' : '';

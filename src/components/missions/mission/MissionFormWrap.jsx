@@ -203,8 +203,8 @@ export default class MissionFormWrap extends FormWrap {
     date_to = date_to || order_date_to;
 
     const ansError = {
-      date_start: diffDates(new_ds, date_from) < 0 ? 'Дата не должна выходить за пределы поручения' : '',
-      date_end: diffDates(new_de, date_to) > 0 ? 'Дата не должна выходить за пределы поручения' : '',
+      date_start: diffDates(new_ds, date_from) < 0 ? 'Дата не должна выходить за пределы поручения (факсограммы)' : '',
+      date_end: diffDates(new_de, date_to) > 0 ? 'Дата не должна выходить за пределы поручения (факсограммы)' : '',
     };
 
     return ansError;

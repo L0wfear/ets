@@ -18,6 +18,7 @@ class OrderMissionController extends React.Component<any, any> {
         showForm: sfM = false,
         mElement,
         initMission,
+        order,
       },
       dutyMissionData: {
         showForm: sfDM = false,
@@ -40,6 +41,7 @@ class OrderMissionController extends React.Component<any, any> {
           showForm={sfM}
           onFormHide={this.props.onHideCM}
           element={mElement}
+          order={order}
           initMission={initMission}
         />
         <DutyMissionFormWrapTSX

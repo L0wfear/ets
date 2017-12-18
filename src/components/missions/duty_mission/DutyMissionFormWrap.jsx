@@ -79,45 +79,78 @@ class DutyMissionFormWrap extends FormWrap {
     let formErrors = super.validate(state, errors);
 
     if (this.props.fromOrder && this.props.initDutyMission && this.props.initDutyMission.plan_date_start) {
-      const ansError = this.checkDataFromOerder(this.props.initDutyMission, state);
+      const ansError = this.checkDataFromOrder(this.props.initDutyMission, state);
       formErrors = { ...formErrors, ...ansError };
     }
 
-    if (!this.props.fromWaybill && !this.props.fromOrder && !_.isEmpty(order)) {
-      const error3 = `Дата начала должна быть между ${convertDate(technicalOperationsDateStart)}  и  ${convertDate(dutyMissionFactDateStart)}, указанное Вами время находится за пределами действия тех.операции`;
-      const error4 = `Дата начала должна быть между ${convertDate(technicalOperationsDateStart)}  и  ${convertDate(dutyMissionFactDateStart)}, указанное Вами время позже фактического начала выполнения задания`;
-      const error5 = `Дата окончания должна быть между ${convertDate(dutyMissionFactDateEnd)}  и  ${convertDate(technicalOperationsDateEnd)}, указанное Вами время находится за пределами действия тех.операции`;
-      const error6 = `Дата окончания должна быть между ${convertDate(dutyMissionFactDateEnd)}  и  ${convertDate(technicalOperationsDateEnd)}, указанное Вами время раньше фактического окончания выполнения задания`;
-
-      checkTimeStamps(dutyMissionPlaneDateStart, technicalOperationsDateStart, 'plan_date_start', error3);
-      checkTimeStamps(dutyMissionFactDateStart, dutyMissionPlaneDateStart, 'plan_date_start', error4);
-      checkTimeStamps(technicalOperationsDateEnd, dutyMissionPlaneDateEnd, 'plan_date_end', error5);
-      checkTimeStamps(dutyMissionPlaneDateEnd, dutyMissionFactDateEnd, 'plan_date_end', error6);
+    if (!this.props.fromWaybill && !this.props.fromOrder && !_.isEmpty(this.state.order)) {
+      const ansError = this.checkDataByOrderDefault(this.state.order, state);
+      formErrors = { ...formErrors, ...ansError };
     }
-
 
     return formErrors;
   }
 
-  checkDataFromOerder(initDutyMission, state) {
+  checkDataFromOrder(initDutyMission, state) {
     const {
       plan_date_start: init_pds,
       plan_date_end: init_pde,
       passes_count: init_pc,
     } = initDutyMission;
+
     const {
       plan_date_start: new_pds,
       plan_date_end: new_pde,
       passes_count: new_pc,
     } = state;
 
+
+    console.log(`поручение c ${init_pds} по ${init_pde}
+            плановое время с ${new_pds} по ${new_pde}`);
+
     const ansError = {
-      plan_date_start: diffDates(new_pds, init_pds) < 0 ? 'Дата не должна выходить за пределы действия поручения (факсограммы)' : '',
-      plan_date_end: diffDates(new_pde, init_pde) > 0 ? 'Дата не должна выходить за пределы действия поручения (факсограммы)' : '',
+      plan_date_start: diffDates(new_pds, init_pds) < 0 || diffDates(new_pds, init_pde) > 0 ? 'Дата не должна выходить за пределы действия поручения (факсограммы)' : '',
+      plan_date_end: diffDates(new_pde, init_pde) > 0 || diffDates(new_pde, init_pds) < 0 ? 'Дата не должна выходить за пределы действия поручения (факсограммы)' : '',
     };
 
     ansError.passes_count = new_pc > init_pc ? '"Кол-во проходов" не должно превышать значение "Кол-во проходов" из поручения' : '';
     ansError.passes_count = new_pc <= 0 ? '"Кол-во проходов" должно быть больше нуля' : '';
+
+    return ansError;
+  }
+
+  checkDataByOrderDefault(order, state) {
+    const {
+      plan_date_start: new_ds,
+      plan_date_end: new_de,
+      fact_date_start: new_fds,
+      fact_date_end: new_fde,
+      order_operation_id,
+    } = state;
+
+    const {
+      order_date,
+      order_date_to,
+      technical_operations = [],
+    } = order;
+
+    let {
+      date_from = order_date,
+      date_to = order_date_to,
+    } = technical_operations.find(({ order_operation_id: to_order_operation_id }) => to_order_operation_id === order_operation_id) || {};
+    date_from = date_from || order_date;
+    date_to = date_to || order_date_to;
+
+    console.log(`тех операция c ${date_from} по ${date_to}
+        запланированное время с ${new_ds} по ${new_de}
+            фактическое время с ${new_fds} по ${new_fde}`);
+
+    const ansError = {
+      plan_date_start: diffDates(new_ds, date_from) < 0 || diffDates(new_ds, date_to) > 0 ? 'Дата не должна выходить за пределы тех. операции' : '',
+      plan_date_end: diffDates(new_de, date_to) > 0 || diffDates(new_de, date_from) < 0 ? 'Дата не должна выходить за пределы тех. операции' : '',
+      fact_date_start: diffDates(new_fds, new_ds) < 0 ? 'Дата не должна выходить за пределы запланированного времени' : '',
+      fact_date_end: diffDates(new_fde, new_de) > 0 ? 'Дата не должна выходить за пределы запланированного времени' : '',
+    };
 
     return ansError;
   }

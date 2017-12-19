@@ -103,7 +103,7 @@ class ProgramObjectFormDT extends Form {
           const changesState = { manual };
           changesState.dtPolys = cloneDeep(dtPolysOrigal);
 
-          changesState.OBJECT_OPTIONS = Object.values(changesState.dtPolys).map(({ data: { yard_id: value, object_address: label, total_area, id, name } }) => ({ value, label, total_area, id, name }));
+          changesState.OBJECT_OPTIONS = Object.values(changesState.dtPolys).map(({ data: { yard_id: value, object_address: label, total_area, id, name, company_name } }) => ({ value, label, company_name, total_area, id, name }));
 
           this.setState({ ...changesState });
 
@@ -238,6 +238,7 @@ class ProgramObjectFormDT extends Form {
       id: object_id,
       label: object_address,
       total_area: info_total_area,
+      company_name: info_company_name,
     } = OBJECT_OPTIONS.find(({ value: yard_id }) => yard_id === asuods_id) || {};
 
     if (!isEmpty(object_list_old)) {
@@ -265,6 +266,7 @@ class ProgramObjectFormDT extends Form {
       info: {
         ...info_old,
         total_area: info_total_area,
+        company_name: info_company_name,
       },
       objectsType: getObjectsType(type_slug),
       object_list: [{
@@ -325,6 +327,7 @@ class ProgramObjectFormDT extends Form {
       asuods_id,
       info: {
         total_area = null,
+        company_name = null,
       } = {},
       objectsType,
       object_list: objectList,
@@ -386,7 +389,7 @@ class ProgramObjectFormDT extends Form {
                 </Row>
               </Col>
               <Col md={6}>
-                Заказчик {'-'}
+                Заказчик: {company_name}
               </Col>
             </Row>
             <Row>

@@ -19,15 +19,14 @@ export default class RoutesActions extends Actions {
     return RouteService.get(payload);
   }
 
-  async getRoutesByTechnicalOperation(technical_operation_id) {
-    const payload = { technical_operation_id };
+  getRoutesByNormId(norm_id) {
+    const payload = { norm_id };
 
-    if (!technical_operation_id) {
-      delete payload.technical_operation_id;
+    if (!norm_id) {
+      delete payload.norm_id;
     }
 
-    const response = await RouteService.get(payload);
-    return response.result || [];
+    return RouteService.get(payload).then(({ result = [] }) => result);
   }
 
   async getRoutesByDutyMissionId(id, isTemplate) {

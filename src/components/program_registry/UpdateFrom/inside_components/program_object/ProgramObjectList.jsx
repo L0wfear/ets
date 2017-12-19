@@ -176,6 +176,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
       program_version_status,
       technicalOperationsObjectsList = [],
       object_type_id,
+      isPermittedByStatus,
     } = this.props;
 
     const slugTypeObjectPr = (technicalOperationsObjectsList.find(({ id }) => id === object_type_id) || {}).slug;
@@ -185,14 +186,14 @@ export default class ProgramRemarkList extends CheckableElementsList {
         buttonName={'Удалить'}
         key={0}
         onClick={this.removeCheckedElements}
-        disabled={this.checkDisabledDelete() || program_version_status === 'accepted'}
+        disabled={this.checkDisabledDelete() || program_version_status === 'accepted' || !isPermittedByStatus}
         permissions={[`${entity}.delete`]}
       />,
       <ButtonRead
         buttonName={'Посмотреть'}
         key={1}
         onClick={this.showForm}
-        disabled={this.checkDisabledRead()}
+        disabled={this.checkDisabledRead() || !isPermittedByStatus}
         permissions={[`${entity}.update`]}
       />,
     ];
@@ -204,7 +205,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
           key={2}
           onClick={this.createDT}
           permissions={[`${entity}.update`]}
-          disabled={program_version_status === 'accepted' || repair_type_name !== 'Капитальный'}
+          disabled={program_version_status === 'accepted' || repair_type_name !== 'Капитальный' || !isPermittedByStatus}
         />
       );
     }
@@ -214,7 +215,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
           buttonName={'Добавить ОДХ'}
           key={3}
           onClick={this.createODH}
-          disabled={program_version_status === 'accepted'}
+          disabled={program_version_status === 'accepted' || !isPermittedByStatus}
           permissions={[`${entity}.false`]}
         />
       );

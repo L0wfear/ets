@@ -1,13 +1,14 @@
 import * as React from 'react';
 import _ from 'lodash';
-import moment from 'moment';
 
 import Div from 'components/ui/Div.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import { getDefaultDutyMission } from 'stores/MissionsStore.js';
 import { saveData } from 'utils/functions';
+import { diffDates } from 'utils/dates.js';
 import { dutyMissionSchema } from 'models/DutyMissionModel.js';
 import DutyMissionForm from './DutyMissionForm.jsx';
+import DutyMissionFormOld from './DutyMissionFormOld.jsx';
 
 class DutyMissionFormWrap extends FormWrap {
 
@@ -51,38 +52,39 @@ class DutyMissionFormWrap extends FormWrap {
    * @override
    */
   validate(state, errors) {
-    const formErrors = super.validate(state, errors);
+    let formErrors = super.validate(state, errors);
 
     if (this.props.fromOrder && this.props.initDutyMission && this.props.initDutyMission.plan_date_start) {
-      const {
-        initDutyMission: {
-          plan_date_start: init_pds,
-          plan_date_end: init_pde,
-          passes_count: init_pc,
-        } = {},
-      } = this.props;
-      const {
-        plan_date_start: new_pds,
-        plan_date_end: new_pde,
-        passes_count: new_pc,
-      } = state;
-
-      if (moment(new_pds).toDate().getTime() < moment(init_pds).toDate().getTime()) {
-        formErrors.plan_date_start = 'Дата не должна выходить за пределы действия поручения';
-      }
-      if (moment(new_pde).toDate().getTime() > moment(init_pde).toDate().getTime()) {
-        formErrors.plan_date_end = 'Дата не должна выходить за пределы действия поручения';
-      }
-      if (new_pc > init_pc) {
-        formErrors.passes_count = '"Кол-во проходов" не должно превышать значение "Кол-во проходов" из поручения';
-      }
-      if (new_pc <= 0) {
-        formErrors.passes_count = '"Кол-во проходов" должно быть больше нуля';
-      }
+      const ansError = this.checkDataFromOerder(this.props.initDutyMission, state);
+      formErrors = { ...formErrors, ...ansError };
     }
 
     return formErrors;
   }
+
+  checkDataFromOerder(initDutyMission, state) {
+    const {
+      plan_date_start: init_pds,
+      plan_date_end: init_pde,
+      passes_count: init_pc,
+    } = initDutyMission;
+    const {
+      plan_date_start: new_pds,
+      plan_date_end: new_pde,
+      passes_count: new_pc,
+    } = state;
+
+    const ansError = {
+      plan_date_start: diffDates(new_pds, init_pds) < 0 ? 'Дата не должна выходить за пределы действия поручения (факсограммы)' : '',
+      plan_date_end: diffDates(new_pde, init_pde) > 0 ? 'Дата не должна выходить за пределы действия поручения (факсограммы)' : '',
+    };
+
+    ansError.passes_count = new_pc > init_pc ? '"Кол-во проходов" не должно превышать значение "Кол-во проходов" из поручения' : '';
+    ansError.passes_count = new_pc <= 0 ? '"Кол-во проходов" должно быть больше нуля' : '';
+
+    return ansError;
+  }
+
   /**
    * @override
    * @param {*} formState
@@ -93,7 +95,7 @@ class DutyMissionFormWrap extends FormWrap {
         await this.context.flux.getActions('missions').updateDutyMission(formState, false);
         try {
           await this.props.refreshTableList();
-        } catch(e) {
+        } catch (e) {
           // ну а вдруг
         }
         resolve();
@@ -104,20 +106,38 @@ class DutyMissionFormWrap extends FormWrap {
   }
 
   render() {
-    return 	(<Div hidden={!this.props.showForm}>
-      <DutyMissionForm
-        formState={this.state.formState}
-        onSubmit={this.handleFormSubmit.bind(this)}
-        onPrint={this.handleFormPrint.bind(this)}
-        handleFormChange={this.handleFormStateChange.bind(this)}
-        show={this.props.showForm}
-        onHide={this.props.onFormHide}
-        fromWaybill={this.props.fromWaybill}
-        readOnly={this.props.readOnly || !this.state.formState.is_new}
-        fromOrder={!!this.props.fromOrder}
-        {...this.state}
-      />
-    </Div>);
+    return (
+      <Div hidden={!this.props.showForm}>
+        <Div hidden={!this.state.formState.is_new} >
+          <DutyMissionForm
+            formState={this.state.formState}
+            onSubmit={this.handleFormSubmit.bind(this)}
+            onPrint={this.handleFormPrint.bind(this)}
+            handleFormChange={this.handleFormStateChange.bind(this)}
+            show={this.props.showForm}
+            onHide={this.props.onFormHide}
+            fromWaybill={this.props.fromWaybill}
+            readOnly={this.props.readOnly || !this.state.formState.is_new}
+            fromOrder={!!this.props.fromOrder}
+            {...this.state}
+          />
+        </Div>
+        <Div hidden={this.state.formState.is_new} >
+          <DutyMissionFormOld
+            formState={this.state.formState}
+            onSubmit={this.handleFormSubmit.bind(this)}
+            onPrint={this.handleFormPrint.bind(this)}
+            handleFormChange={this.handleFormStateChange.bind(this)}
+            show={this.props.showForm}
+            onHide={this.props.onFormHide}
+            fromWaybill={this.props.fromWaybill}
+            readOnly={this.props.readOnly || !this.state.formState.is_new}
+            fromOrder={!!this.props.fromOrder}
+            {...this.state}
+          />
+        </Div>
+      </Div>
+    );
   }
 
 }

@@ -125,6 +125,7 @@ class ProgramObjectFormWrap extends FormWrap {
         onHide={this.props.onFormHide}
         isPermitted={isPermitted && (this.props.program_version_status !== 'accepted')}
         updateObjectData={this.updateObjectData}
+        isPermittedByStatus={this.props.isPermittedByStatus}
       />
     );
   }
@@ -149,6 +150,7 @@ class ProgramObjectFormWrap extends FormWrap {
         onHide={this.props.onFormHide}
         isPermitted={isPermitted && (this.props.program_version_status !== 'accepted')}
         updateObjectData={this.updateObjectData}
+        isPermittedByStatus={this.props.isPermittedByStatus}
       />
     );
   }

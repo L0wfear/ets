@@ -6,6 +6,7 @@ import { isEmpty } from 'lodash';
 import { connectToStores, staticProps } from 'utils/decorators';
 import ElementsList from 'components/ElementsList.jsx';
 import ModalBody from 'components/ui/Modal';
+import { ButtonCreate, ButtonRead, ButtonDelete } from 'components/ui/buttons/CRUD';
 
 import PercentModalTable from './PercentModalTable';
 import PercentModalFormWrap from './PercentModalFormWrap';
@@ -49,6 +50,53 @@ export default class PercentModalList extends ElementsList {
 
       return ans;
     });
+  }
+
+  /**
+   * @override
+   */
+  getButtons(propsButton = {}) {
+    const { isPermittedByStatus } = this.props;
+
+    // Операции, заданные в статической переменной operations класса-наследника
+    const entity = this.constructor.entity;
+    const buttons = [];
+
+    const {
+      BCbuttonName = 'Создать',
+      BRbuttonName = 'Просмотреть',
+      BDbuttonName = 'Удалить',
+    } = propsButton;
+
+    buttons.push(
+      <ButtonCreate
+        buttonName={BCbuttonName}
+        key={buttons.length}
+        onClick={this.createElement}
+        permissions={[`${entity}.create`]}
+        disabled={!isPermittedByStatus}
+      />
+    );
+    buttons.push(
+      <ButtonRead
+        buttonName={BRbuttonName}
+        key={buttons.length}
+        onClick={this.showForm}
+        disabled={this.checkDisabledRead() || !isPermittedByStatus}
+        permissions={[`${entity}.read`]}
+      />
+    );
+    buttons.push(
+      <ButtonDelete
+        buttonName={BDbuttonName}
+        key={buttons.length}
+        onClick={this.removeElement}
+        disabled={this.checkDisabledDelete() || !isPermittedByStatus}
+        permissions={[`${entity}.delete`]}
+      />
+    );
+    
+    return buttons;
   }
 
   /**

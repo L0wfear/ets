@@ -23,13 +23,14 @@ class MissionTemplateForm extends DutyMissionForm {
       employeesList = [],
     } = this.props;
     const {
+      available_route_types = [],
       technicalOperationsList = [],
       routesList = [],
       TECH_OPERATIONS = [],
       selectedRoute: route = null,
     } = this.state;
 
-    const routes = routesList.filter(r => r.structure_id === state.structure_id && checkRouteByNew(state, r));
+    const routes = routesList.filter(r => r.structure_id === state.structure_id && checkRouteByNew(state, r, available_route_types));
 
     const filteredRoutes = (
       route !== null &&
@@ -154,12 +155,12 @@ class MissionTemplateForm extends DutyMissionForm {
                 error={errors.route_id}
                 options={ROUTES}
                 value={state.route_id}
-                disabled={!state.technical_operation_id}
+                disabled={!state.municipal_facility_id}
                 onChange={this.handleRouteIdChange.bind(this)}
                 clearable
               />
               <Div hidden={state.route_id}>
-                <Button onClick={this.createNewRoute.bind(this)} disabled={!state.technical_operation_id}>Создать новый</Button>
+                <Button onClick={this.createNewRoute.bind(this)} disabled={!state.municipal_facility_id}>Создать новый</Button>
               </Div>
             </Col>
             {STRUCTURE_FIELD_VIEW && <Col md={6}>
@@ -198,6 +199,7 @@ class MissionTemplateForm extends DutyMissionForm {
           showForm={this.state.showRouteForm}
           structureId={state.structure_id}
           fromMission
+          available_route_types={available_route_types}
         />
 
       </Modal>

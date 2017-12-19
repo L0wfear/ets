@@ -305,7 +305,8 @@ class ProgramObjectFormDT extends Form {
     const {
       tabKey,
       contractorList = [],
-      isPermitted,
+      isPermitted: isPermittedDefault,
+      isPermittedByStatus,
     } = this.props;
 
     const {
@@ -330,6 +331,7 @@ class ProgramObjectFormDT extends Form {
     } = state;
 
     const title = IS_CREATING ? 'Создание карточки ДТ капитального ремонта.' : `Карточка ДТ капитального ремонта. Объект: ${name}. ID ${asuods_id}`;
+    const isPermitted = isPermittedDefault && isPermittedByStatus;
 
     const CONTRACTOR_OPTIONS = contractorList.map(({ id: value, name: label }) => ({ value, label }));
     const buttonPercentProps = {
@@ -484,11 +486,12 @@ class ProgramObjectFormDT extends Form {
             object_id={id}
             onHide={this.hidePercentForm}
             updateObjectData={this.props.updateObjectData}
+            isPermittedByStatus={isPermittedByStatus}
           />
         </Div>
         <ModalBody />
         <Modal.Footer>
-          <Button disabled={!this.props.canSave} onClick={this.handleSubmitWrap}>Сохранить</Button>
+          <Button disabled={!this.props.canSave} onClick={isPermitted ? this.handleSubmitWrap : this.props.onHide}>{isPermitted ? 'Сохранить' : 'Закрыть'}</Button>
         </Modal.Footer>
       </Modal>
     );

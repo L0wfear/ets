@@ -55,6 +55,20 @@ export default class PercentModalList extends ElementsList {
   /**
    * @override
    */
+  createElement = () => {
+    const { object_id } = this.props;
+
+    this.setState({
+      showForm: true,
+      selectedElement: {
+        object_id,
+      },
+    });
+  }
+
+  /**
+   * @override
+   */
   getButtons(propsButton = {}) {
     const { isPermittedByStatus } = this.props;
 
@@ -95,7 +109,7 @@ export default class PercentModalList extends ElementsList {
         permissions={[`${entity}.delete`]}
       />
     );
-    
+
     return buttons;
   }
 

@@ -324,7 +324,7 @@ export class DutyMissionForm extends Form {
                     <Field
                       type="date"
                       label="Время выполнения, планируемое:"
-                      error={errors.plan_date_start || errors.fact_date_start}
+                      error={errors.plan_date_start || errors.plan_date}
                       date={state.plan_date_start}
                       disabled={IS_DISPLAY || readOnly}
                       onChange={this.handleChange.bind(this, 'plan_date_start')}
@@ -336,7 +336,7 @@ export class DutyMissionForm extends Form {
                     <Field
                       type="date"
                       label=""
-                      error={errors.plan_date_end || errors.fact_date_end}
+                      error={errors.plan_date_end}
                       date={state.plan_date_end}
                       disabled={IS_DISPLAY || readOnly}
                       min={state.plan_date_start}

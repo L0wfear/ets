@@ -47,6 +47,14 @@ class DutyMissionFormWrap extends FormWrap {
             order,
           });
         });
+      } else {
+        const formErrors = this.validate(mission, {});
+
+        this.setState({
+          formState: mission,
+          canSave: !_.filter(formErrors).length,
+          formErrors,
+        });
       }
     }
   }
@@ -108,9 +116,15 @@ class DutyMissionFormWrap extends FormWrap {
     console.log(`поручение c ${init_pds} по ${init_pde}
             плановое время с ${new_pds} по ${new_pde}`);
 
+    const validInterval = diffDates(new_pds, init_pds) > 0 &&
+                          diffDates(new_pds, init_pde) < 0 &&
+                          diffDates(new_pde, init_pds) > 0 &&
+                          diffDates(new_pde, init_pde) < 0;
+
     const ansError = {
       plan_date_start: diffDates(new_pds, init_pds) < 0 || diffDates(new_pds, init_pde) > 0 ? 'Дата не должна выходить за пределы действия поручения (факсограммы)' : '',
       plan_date_end: diffDates(new_pde, init_pde) > 0 || diffDates(new_pde, init_pds) < 0 ? 'Дата не должна выходить за пределы действия поручения (факсограммы)' : '',
+      plan_date: validInterval && diffDates(new_pds, new_pde) > 0 ? 'Время начала не должно быть позже времени окончания работ' : '',
     };
 
     ansError.passes_count = new_pc > init_pc ? '"Кол-во проходов" не должно превышать значение "Кол-во проходов" из поручения' : '';
@@ -146,10 +160,8 @@ class DutyMissionFormWrap extends FormWrap {
             фактическое время с ${new_fds} по ${new_fde}`);
 
     const ansError = {
-      plan_date_start: diffDates(new_ds, date_from) < 0 || diffDates(new_ds, date_to) > 0 ? 'Дата не должна выходить за пределы тех. операции' : '',
-      plan_date_end: diffDates(new_de, date_to) > 0 || diffDates(new_de, date_from) < 0 ? 'Дата не должна выходить за пределы тех. операции' : '',
-      fact_date_start: diffDates(new_fds, new_ds) < 0 ? 'Дата не должна выходить за пределы запланированного времени' : '',
-      fact_date_end: diffDates(new_fde, new_de) > 0 ? 'Дата не должна выходить за пределы запланированного времени' : '',
+      plan_date_start: diffDates(new_ds, date_from) < 0 || diffDates(new_ds, date_to) > 0 ? 'Дата не должна выходить за пределы действия поручения (факсограммы)' : '',
+      plan_date_end: diffDates(new_de, date_to) > 0 || diffDates(new_de, date_from) < 0 ? 'Дата не должна выходить за пределы действия поручения (факсограммы)' : '',
     };
 
     return ansError;

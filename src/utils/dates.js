@@ -28,12 +28,12 @@ export function getStartOfToday() {
 }
 
 export function createValidDate(date) {
-  if (!date && !isNaN(date.getTime())) return null;
+  if (!date) return null;
   return moment(date).format('YYYY-MM-DD');
 }
 
 export function createValidDateTime(date) {
-  if (!date && !isNaN(date.getTime())) return null;
+  if (!date) return null;
   return moment(date).format('YYYY-MM-DDTHH:mm:ss');
 }
 

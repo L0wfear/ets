@@ -223,12 +223,12 @@ class ProgramObjectFormDT extends Form {
         info: info_old,
         elements: elements_old,
       },
+      dtPolys: dtPolysOld = {},
       objectPropertyList = [],
     } = this.props;
 
     const {
       OBJECT_OPTIONS = [],
-      dtPolys: dtPolysOld = {},
     } = this.state;
 
     const dtPolys = cloneDeep(dtPolysOld);
@@ -273,9 +273,10 @@ class ProgramObjectFormDT extends Form {
         state: dtPolys[object_id].state,
         type: type_slug,
       }],
+      draw_object_list: [],
     };
 
-    this.setState({ selectedObj, dtPolys });
+    this.setState({ selectedObj, dtPolys, manual: false });
     this.props.handleMultiChange({ ...changeObject });
   }
 

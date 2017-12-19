@@ -55,7 +55,7 @@ class ProgramObjectFormDT extends Form {
       IS_CREATING,
     } = this.state;
 
-    this.context.flux.getActions('repair').getObjectProperty({ object_type: 'odh' }).then(({ data: { result: { rows: objectPropertyList } } }) => {
+    this.context.flux.getActions('repair').getObjectProperty({ object_type: 'dt' }).then(({ data: { result: { rows: objectPropertyList } } }) => {
       const {
         formState: {
           asuods_id = null,

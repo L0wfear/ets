@@ -112,10 +112,6 @@ class DutyMissionFormWrap extends FormWrap {
       passes_count: new_pc,
     } = state;
 
-
-    console.log(`поручение c ${init_pds} по ${init_pde}
-            плановое время с ${new_pds} по ${new_pde}`);
-
     const validInterval = diffDates(new_pds, init_pds) > 0 &&
                           diffDates(new_pds, init_pde) < 0 &&
                           diffDates(new_pde, init_pds) > 0 &&
@@ -154,10 +150,6 @@ class DutyMissionFormWrap extends FormWrap {
     } = technical_operations.find(({ order_operation_id: to_order_operation_id }) => to_order_operation_id === order_operation_id) || {};
     date_from = date_from || order_date;
     date_to = date_to || order_date_to;
-
-    console.log(`тех операция c ${date_from} по ${date_to}
-        запланированное время с ${new_ds} по ${new_de}
-            фактическое время с ${new_fds} по ${new_fde}`);
 
     const ansError = {
       plan_date_start: diffDates(new_ds, date_from) < 0 || diffDates(new_ds, date_to) > 0 ? 'Дата не должна выходить за пределы действия поручения (факсограммы)' : '',

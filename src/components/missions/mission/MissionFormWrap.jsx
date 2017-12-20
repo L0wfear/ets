@@ -129,7 +129,7 @@ export default class MissionFormWrap extends FormWrap {
       order = othOrder,
     } = this.state;
 
-    if ((this.props.fromWaybill && this.props.waybillStartDate) || (this.props.fromWaybill && this.props.waybillEndDate)) {
+    if (this.props.fromWaybill && (this.props.waybillStartDate || this.props.waybillEndDate)) {
       formErrors = {
         ...formErrors,
         date_start: diffDates(formState.date_start, this.props.waybillStartDate) < 0 ? 'Дата не должна выходить за пределы путевого листа' : '',

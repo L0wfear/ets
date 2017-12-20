@@ -100,8 +100,9 @@ export default class ObjectsActions extends Actions {
     return FaxogrammService.get(payload);
   }
 
-  saveFaxogramm(id) {
-    return FaxogrammService.path(id).getBlob();
+  saveFaxogramm(id, data) {
+    const payload = { ...data };
+    return FaxogrammService.path(id).getBlob(payload);
   }
 
   getFaxogrammPDFUrl(id) {

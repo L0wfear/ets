@@ -1,6 +1,6 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
-import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
+import { DropdownButton, MenuItem, Button, Glyphicon, Row, Col } from 'react-bootstrap';
 import ElementsList from 'components/ElementsList.jsx';
 import Paginator from 'components/ui/Paginator.jsx';
 import Div from 'components/ui/Div.jsx';
@@ -14,6 +14,12 @@ import FaxogrammInfoTable from './FaxogrammInfoTable.jsx';
 import FaxogrammOperationInfoTable from './FaxogrammOperationInfoTable.jsx';
 
 const MAX_ITEMS_PER_PAGE = 15;
+
+const TypeDownload = {
+  old: '1',
+  new: '2',
+};
+const marginLeft = { marginLeft: 10 };
 
 @autobind
 class FaxogrammDirectory extends ElementsList {
@@ -84,10 +90,16 @@ class FaxogrammDirectory extends ElementsList {
     );
   }
 
-  saveFaxogramm() {
+  saveFaxogramm(typeSave) {
     const { flux } = this.context;
     const faxogramm = this.state.selectedElement;
-    flux.getActions('objects').saveFaxogramm(faxogramm.id)
+
+    const payload = {};
+    if (typeSave === TypeDownload.new) {
+      payload.format = 'xls';
+    }
+
+    flux.getActions('objects').saveFaxogramm(faxogramm.id, payload)
       .then(({ blob, fileName }) => saveData(blob, fileName));
   }
 
@@ -112,6 +124,14 @@ class FaxogrammDirectory extends ElementsList {
     this.setState({ [field]: value }, () => this.getFaxogramms());
   }
 
+  seclectDownload = (e, [eventName]) => {
+    switch (eventName) {
+      case TypeDownload.old: return this.saveFaxogramm(TypeDownload.old);
+      case TypeDownload.new: return this.saveFaxogramm(TypeDownload.new);
+      default: return null;
+    }
+  }
+
   render() {
     const { faxogrammsList = [] } = this.props;
     const faxogramm = this.state.selectedElement || {};
@@ -129,7 +149,12 @@ class FaxogrammDirectory extends ElementsList {
           {...this.getAdditionalProps()}
         >
           <Button onClick={this.showForm} disabled={this.state.selectedElement === null || faxogramm.order_status_id !== 2}>Создать задания</Button>
-          <Button onClick={this.saveFaxogramm} disabled={this.state.selectedElement === null}><Glyphicon glyph="download-alt" /></Button>
+          <div style={marginLeft} >
+            <DropdownButton onSelect={this.seclectDownload} pullRight title={<Glyphicon glyph="download-alt" />} id="bg-nested-dropdown">
+              <MenuItem eventKey={TypeDownload.old} disabled={this.state.selectedElement === null}>Скан-копия факсограммы</MenuItem>
+              <MenuItem eventKey={TypeDownload.new} disabled={this.state.selectedElement === null}>Расшифровка централизованного задания</MenuItem>
+            </DropdownButton>
+          </div>
         </FaxogrammsTable>
         <FaxogrammMissionsFormWrap
           onFormHide={this.onFormHide}

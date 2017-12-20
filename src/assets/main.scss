@@ -2848,6 +2848,11 @@ div.none {
   text-align: right;
 }
 
+.text-right-flex {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
 .odh-list {
   ul {
     padding-left: 0;

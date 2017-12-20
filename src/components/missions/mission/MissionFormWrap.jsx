@@ -186,6 +186,7 @@ export default class MissionFormWrap extends FormWrap {
       date_start: new_ds,
       date_end: new_de,
       order_operation_id,
+      passes_count: new_pc,
     } = state;
 
     const {
@@ -197,6 +198,7 @@ export default class MissionFormWrap extends FormWrap {
     let {
       date_from = order_date,
       date_to = order_date_to,
+      num_exec: order_pc,
     } = technical_operations.find(({ order_operation_id: to_order_operation_id }) => to_order_operation_id === order_operation_id) || {};
     date_from = date_from || order_date;
     date_to = date_to || order_date_to;
@@ -205,6 +207,8 @@ export default class MissionFormWrap extends FormWrap {
       date_start: diffDates(new_ds, date_from) < 0 || diffDates(new_ds, date_to) > 0 ? 'Дата не должна выходить за пределы поручения (факсограммы)' : '',
       date_end: diffDates(new_de, date_to) > 0 || diffDates(new_de, date_from) < 0 ? 'Дата не должна выходить за пределы поручения (факсограммы)' : errors.date_end,
     };
+
+    ansError.passes_count = new_pc > order_pc ? 'Поле "Кол-во циклов" должно быть не больше Кол-ва выполнений поручения (факсограммы)' : errors.passes_count;
 
     return ansError;
   }

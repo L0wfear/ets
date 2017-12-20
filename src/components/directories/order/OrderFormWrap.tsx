@@ -17,13 +17,11 @@ class OrderMissionController extends React.Component<any, any> {
       missionData: {
         showForm: sfM = false,
         mElement,
-        initMission,
         order: m_order,
       },
       dutyMissionData: {
         showForm: sfDM = false,
         dmElement,
-        initDutyMission,
         order: dm_order,
       },
       missionTemplateData: {

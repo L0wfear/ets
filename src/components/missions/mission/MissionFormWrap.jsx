@@ -67,7 +67,6 @@ export default class MissionFormWrap extends FormWrap {
           const formErrors = this.validate(mission, {}, { order });
 
           this.setState({
-            formState: mission,
             canSave: !filter(formErrors).length,
             formErrors,
             order,
@@ -146,7 +145,7 @@ export default class MissionFormWrap extends FormWrap {
     if (!this.props.fromWaybill && !isEmpty(order)) {
       formErrors = {
         ...formErrors,
-        ...this.checkDataByOrderDefault(order, formState),
+        ...this.checkDataByOrderDefault(order, formState, errors),
       };
     }
 
@@ -182,7 +181,7 @@ export default class MissionFormWrap extends FormWrap {
     return ansError;
   }
 
-  checkDataByOrderDefault(order, state) {
+  checkDataByOrderDefault(order, state, errors) {
     const {
       date_start: new_ds,
       date_end: new_de,
@@ -204,7 +203,7 @@ export default class MissionFormWrap extends FormWrap {
 
     const ansError = {
       date_start: diffDates(new_ds, date_from) < 0 || diffDates(new_ds, date_to) > 0 ? 'Дата не должна выходить за пределы поручения (факсограммы)' : '',
-      date_end: diffDates(new_de, date_to) > 0 || diffDates(new_de, date_from) < 0 ? 'Дата не должна выходить за пределы поручения (факсограммы)' : '',
+      date_end: diffDates(new_de, date_to) > 0 || diffDates(new_de, date_from) < 0 ? 'Дата не должна выходить за пределы поручения (факсограммы)' : errors.date_end,
     };
 
     return ansError;

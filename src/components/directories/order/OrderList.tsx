@@ -415,6 +415,7 @@ class OrderList extends React.Component<any, any> {
         order_operation_id,
         norm_id,
       },
+      selectedElementOrder: order,
       selectedElementOrder: {
         id: faxogramm_id,
         order_date,
@@ -442,6 +443,7 @@ class OrderList extends React.Component<any, any> {
 
     dutyMissionData.dmElement = dmElement;
     dutyMissionData.initDutyMission = initDutyMission;
+    dutyMissionData.order = order;
 
     this.setState({
       ...this.state,

@@ -1,5 +1,10 @@
 import * as React from 'react';
-import _ from 'lodash';
+import {
+  clone,
+  cloneDeep,
+  filter,
+  isEmpty,
+} from 'lodash';
 
 import Div from 'components/ui/Div.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
@@ -29,30 +34,43 @@ class DutyMissionFormWrap extends FormWrap {
 
   componentWillReceiveProps(props) {
     if (props.showForm && (props.showForm !== this.props.showForm)) {
-      const mission = props.element === null ? getDefaultDutyMission() : _.clone(props.element);
+      const mission = props.element === null ? getDefaultDutyMission() : clone(props.element);
       const ordersActions = this.context.flux.getActions('objects');
+
       const {
        order_id,
        faxogramm_id,
-        } = mission;
+      } = mission;
 
       const id = faxogramm_id || order_id;
       if (id) {
         ordersActions.getOrderById(id).then(({ result: [order] }) => {
           const formErrors = this.validate(mission, {}, { order });
+
           this.setState({
-            formState: mission,
-            canSave: !_.filter(this.validate(mission, {})).length,
+            canSave: !filter(formErrors).length,
             formErrors,
             order,
           });
+        });
+      }
+
+      if (props.fromOrder) {
+        const { order } = props;
+
+        const formErrors = this.validate(mission, {}, { order });
+        this.setState({
+          formState: mission,
+          canSave: !filter(formErrors).length,
+          formErrors,
+          order,
         });
       } else {
         const formErrors = this.validate(mission, {});
 
         this.setState({
           formState: mission,
-          canSave: !_.filter(formErrors).length,
+          canSave: !filter(formErrors).length,
           formErrors,
         });
       }
@@ -60,7 +78,7 @@ class DutyMissionFormWrap extends FormWrap {
   }
 
   async handleFormPrint() {
-    const mission = _.cloneDeep(this.state.formState);
+    const mission = cloneDeep(this.state.formState);
 
     let response;
 
@@ -83,58 +101,30 @@ class DutyMissionFormWrap extends FormWrap {
    * Если миссия создаётся из реестра централизованных заданий, то идёт проверка на даты на графницы поручения(централизованных заданий)
    * @override
    */
-  validate(state, errors) {
-    let formErrors = super.validate(state, errors);
+  validate(formState, errors, otherData = {}) {
+    let formErrors = super.validate(formState, errors);
 
-    if (this.props.fromOrder && this.props.initDutyMission && this.props.initDutyMission.plan_date_start) {
-      const ansError = this.checkDataFromOrder(this.props.initDutyMission, state);
-      formErrors = { ...formErrors, ...ansError };
-    }
+    const {
+      order: othOrder = {},
+    } = otherData;
+    const {
+      order = othOrder,
+    } = this.state;
 
-    if (!this.props.fromWaybill && !this.props.fromOrder && !_.isEmpty(this.state.order)) {
-      const ansError = this.checkDataByOrderDefault(this.state.order, state);
-      formErrors = { ...formErrors, ...ansError };
+    if (!isEmpty(order)) {
+      formErrors = {
+        ...formErrors,
+        ...this.checkDataByOrderDefault(order, formState, formErrors),
+      };
     }
 
     return formErrors;
   }
 
-  checkDataFromOrder(initDutyMission, state) {
-    const {
-      plan_date_start: init_pds,
-      plan_date_end: init_pde,
-      passes_count: init_pc,
-    } = initDutyMission;
-
-    const {
-      plan_date_start: new_pds,
-      plan_date_end: new_pde,
-      passes_count: new_pc,
-    } = state;
-
-    const validInterval = diffDates(new_pds, init_pds) > 0 &&
-                          diffDates(new_pds, init_pde) < 0 &&
-                          diffDates(new_pde, init_pds) > 0 &&
-                          diffDates(new_pde, init_pde) < 0;
-
-    const ansError = {
-      plan_date_start: diffDates(new_pds, init_pds) < 0 || diffDates(new_pds, init_pde) > 0 ? 'Дата не должна выходить за пределы действия поручения (факсограммы)' : '',
-      plan_date_end: diffDates(new_pde, init_pde) > 0 || diffDates(new_pde, init_pds) < 0 ? 'Дата не должна выходить за пределы действия поручения (факсограммы)' : '',
-      plan_date: validInterval && diffDates(new_pds, new_pde) > 0 ? 'Время начала не должно быть позже времени окончания работ' : '',
-    };
-
-    ansError.passes_count = new_pc > init_pc ? '"Кол-во проходов" не должно превышать значение "Кол-во проходов" из поручения' : '';
-    ansError.passes_count = new_pc <= 0 ? '"Кол-во проходов" должно быть больше нуля' : '';
-
-    return ansError;
-  }
-
-  checkDataByOrderDefault(order, state) {
+  checkDataByOrderDefault(order, state, errors) {
     const {
       plan_date_start: new_ds,
       plan_date_end: new_de,
-      fact_date_start: new_fds,
-      fact_date_end: new_fde,
       order_operation_id,
     } = state;
 
@@ -148,11 +138,12 @@ class DutyMissionFormWrap extends FormWrap {
       date_from = order_date,
       date_to = order_date_to,
     } = technical_operations.find(({ order_operation_id: to_order_operation_id }) => to_order_operation_id === order_operation_id) || {};
+
     date_from = date_from || order_date;
     date_to = date_to || order_date_to;
 
     const ansError = {
-      plan_date_start: diffDates(new_ds, date_from) < 0 || diffDates(new_ds, date_to) > 0 ? 'Дата не должна выходить за пределы действия поручения (факсограммы)' : '',
+      plan_date_start: diffDates(new_ds, date_from) < 0 || diffDates(new_ds, date_to) > 0 ? 'Дата не должна выходить за пределы действия поручения (факсограммы)' : errors.plan_date_start,
       plan_date_end: diffDates(new_de, date_to) > 0 || diffDates(new_de, date_from) < 0 ? 'Дата не должна выходить за пределы действия поручения (факсограммы)' : '',
     };
 
@@ -190,7 +181,6 @@ class DutyMissionFormWrap extends FormWrap {
             handleFormChange={this.handleFormStateChange.bind(this)}
             show={this.props.showForm}
             onHide={this.props.onFormHide}
-            fromWaybill={this.props.fromWaybill}
             readOnly={this.props.readOnly || !this.state.formState.is_new}
             fromOrder={!!this.props.fromOrder}
             {...this.state}
@@ -204,7 +194,6 @@ class DutyMissionFormWrap extends FormWrap {
             handleFormChange={this.handleFormStateChange.bind(this)}
             show={this.props.showForm}
             onHide={this.props.onFormHide}
-            fromWaybill={this.props.fromWaybill}
             readOnly={this.props.readOnly || !this.state.formState.is_new}
             fromOrder={!!this.props.fromOrder}
             {...this.state}

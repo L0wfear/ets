@@ -9,14 +9,20 @@ export const dutyMissionSchema = {
       required: true,
     },
     {
+      key: 'plan_date_start',
+      title: 'Плановая дата начала',
+      type: 'date',
+      required: false,
+    },
+    {
       key: 'fact_date_start',
-      title: 'Технологическая операция',
+      title: 'Фактическая дата начала',
       type: 'date',
       required: false,
     },
     {
       key: 'fact_date_end',
-      title: 'Технологическая операция',
+      title: 'Фактическая дата окнчания',
       type: 'date',
       required: false,
     },
@@ -46,26 +52,36 @@ export const dutyMissionSchema = {
     },
   ],
   dependencies: {
+    plan_date_start: [
+      {
+        validator: (value, { plan_date_end }) => {
+          if (value && plan_date_end && diffDates(value, plan_date_end) >= 0) {
+            return 'Дата планируемого начала должна быть раньше даты планируемого окончания';
+          }
+          return '';
+        },
+      },
+    ],
     fact_date_start: [
       {
-        validator: (value, { fact_date_end, plan_date_start, plan_date_end }) => {
-          const validInterval = diffDates(value, plan_date_start) > 0 &&
-                                diffDates(value, plan_date_end) < 0 &&
-                                diffDates(fact_date_end, plan_date_start) > 0 &&
-                                diffDates(fact_date_end, plan_date_end) < 0;
+        validator: (value, { plan_date_start, plan_date_end, status }) => {
+          const pbs = status && (status === 'assigned' || status === 'complete');
+          const validInterval = diffDates(value, plan_date_start) < 0 ||
+                                diffDates(value, plan_date_end) > 0;
 
-          if (value && fact_date_end && validInterval && diffDates(value, fact_date_end) >= 0) {
-            return 'Время начала не должно быть позже времени окончания работ';
+          if (value && pbs && validInterval) {
+            return 'Фактическая дата начала не должна выходить за границы плановых дат';
           }
           return undefined;
         },
       },
       {
-        validator: (value, { plan_date_start, plan_date_end, status }) => {
+        validator: (value, { fact_date_end }) => {
           const pbs = status && (status === 'assigned' || status === 'complete');
+          const validInterval = diffDates(value, fact_date_end) <= 0;
 
-          if (pbs && value && (diffDates(value, plan_date_start) < 0 || diffDates(value, plan_date_end) > 0)) {
-            return 'фактическое время начала работ должно входить в интрервал запланируемого времени';
+          if (value && pbs && validInterval) {
+            return 'Фактическая дата начала не должна быть позже фактичекой даты окончания';
           }
           return undefined;
         },
@@ -75,9 +91,11 @@ export const dutyMissionSchema = {
       {
         validator: (value, { plan_date_start, plan_date_end, status }) => {
           const pbs = status && (status === 'assigned' || status === 'complete');
+          const validInterval = diffDates(value, plan_date_start) < 0 ||
+                                diffDates(value, plan_date_end) > 0;
 
-          if (pbs && value && (diffDates(value, plan_date_end) > 0 || diffDates(value, plan_date_start) < 0)) {
-            return 'фактическое время окончания работ должно входить в интрервал запланируемого времени';
+          if (value && pbs && validInterval) {
+            return 'Фактическая дата окончания не должна выходить за границы плановых дат';
           }
           return undefined;
         },

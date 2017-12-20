@@ -42,10 +42,7 @@ const getTableMeta = (props) => {
         type: 'number',
         filter: {
           type: 'multiselect',
-          options: [
-            { label: 'Регламентные работы', value: 'Регламентные работы' },
-            { label: 'Факсограмма', value: 'Факсограмма' },
-          ],
+          options: props.missionSourcesList.map(({ name }) => ({ value: name, label: name })),
         },
         cssClassName: 'width150',
       },

@@ -9,9 +9,17 @@ import { ExtField } from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
 
 const PermittedSlug = ['dt', 'odh'];
+function setTypeOptionsBySlug(slug, allOptions) {
+  switch (slug) {
+    case 'dt': return allOptions.filter(({ label }) => label === 'Капитальный');
+    case 'odh': return allOptions;
+    default: return [];
+  }
+}
 
 @connectToStores(['repair', 'objects'])
 export default class ProgramRegistryForm extends Form {
+  state = { REPAIR_TYPES_OPTIONS: [] };
   componentDidMount() {
     const { flux } = this.context;
 
@@ -21,7 +29,24 @@ export default class ProgramRegistryForm extends Form {
   }
 
   handleSubmitWrap = (...arg) => this.handleSubmit(...arg);
+  handleChangeObjectType = (fieldName, val) => {
+    const {
+      technicalOperationsObjectsList = [],
+      RepairOptions: {
+        repairTypeOptions = [],
+      } = {},
+    } = this.props;
 
+    const { slug } = technicalOperationsObjectsList.find(({ id }) => id === val);
+    const REPAIR_TYPES_OPTIONS = setTypeOptionsBySlug(slug, repairTypeOptions);
+
+    this.setState({
+      REPAIR_TYPES_OPTIONS,
+    });
+
+    this.handleChange(fieldName, val);
+    this.handleChange('repair_type_id', null);
+  }
   render() {
     const [
       state,
@@ -35,10 +60,12 @@ export default class ProgramRegistryForm extends Form {
       isPermitted = false,
       RepairOptions: {
         stateProgramOptions = [],
-        repairTypeOptions = [],
       },
       technicalOperationsObjectsList = [],
     } = this.props;
+    const {
+      REPAIR_TYPES_OPTIONS = [],
+    } = this.state;
 
     const OBJECTS = technicalOperationsObjectsList.reduce((arr, object) => {
       const {
@@ -86,24 +113,24 @@ export default class ProgramRegistryForm extends Form {
               />
               <ExtField
                 type="select"
-                label="Тип ремонта"
-                error={errors.repair_type_id}
-                options={repairTypeOptions}
-                value={state.repair_type_id}
-                onChange={this.handleChange}
-                boundKeys={['repair_type_id']}
+                label="Тип объекта ремонта"
+                error={errors.object_type_id}
+                options={OBJECTS}
+                value={state.object_type_id}
+                onChange={this.handleChangeObjectType}
+                boundKeys={['object_type_id']}
                 disabled={!isPermitted}
                 clearable={false}
               />
               <ExtField
                 type="select"
-                label="Тип объекта ремонта"
-                error={errors.object_type_id}
-                options={OBJECTS}
-                value={state.object_type_id}
+                label="Тип ремонта"
+                error={errors.repair_type_id}
+                options={REPAIR_TYPES_OPTIONS}
+                value={state.repair_type_id}
                 onChange={this.handleChange}
-                boundKeys={['object_type_id']}
-                disabled={!isPermitted}
+                boundKeys={['repair_type_id']}
+                disabled={!isPermitted || !state.object_type_id}
                 clearable={false}
               />
               <ExtField

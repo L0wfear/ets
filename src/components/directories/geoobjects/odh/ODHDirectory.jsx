@@ -9,7 +9,6 @@ import schema from './ODHSchema';
 @staticProps({
   path: 'geozones',
   entity: 'odh',
-  schema,
   listName: 'odhsList',
   tableComponent: ODHTable,
   formComponent: OdhFormWrap,

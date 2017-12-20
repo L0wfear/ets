@@ -292,7 +292,7 @@ const closingProperties = [
     title: 'Комментарий',
     type: 'string',
     required: false,
-    maxLength: 256,
+    maxLength: 200,
   },
 ];
 

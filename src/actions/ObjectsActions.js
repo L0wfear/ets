@@ -114,8 +114,9 @@ export default class ObjectsActions extends Actions {
     return {};
   }
 
-  saveOrder(id) {
-    return OrderService.path(id).getBlob();
+  saveOrder(id, data) {
+    const payload = { ...data };
+    return OrderService.path(id).getBlob(payload);
   }
 
   getOrderPDFUrl(id) {

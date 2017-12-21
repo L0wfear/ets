@@ -207,13 +207,24 @@ export class MissionForm extends Form {
   async onFormHide(isSubmitted, result) {
     const { flux } = this.context;
     const routesActions = flux.getActions('routes');
+    const {
+      formState: {
+        technical_operation_id,
+        municipal_facility_id,
+      },
+    } = this.props;
+    const { available_route_types = [] } = this.state;
 
     const stateChangeObject = {};
     if (isSubmitted === true) {
       const createdRouteId = result.createdRoute.result[0].id;
       this.handleChange('route_id', createdRouteId);
       const selectedRoute = await routesActions.getRouteById(createdRouteId);
-      const routesList = await routesActions.getRoutesByNormId(this.props.formState.norm_id);
+      const routesList = await routesActions.getRoutesBySomeData({
+        municipal_facility_id,
+        technical_operation_id,
+        type: available_route_types.join(','),
+      });
       Object.assign(stateChangeObject, {
         showRouteForm: false,
         selectedRoute,
@@ -271,8 +282,18 @@ export class MissionForm extends Form {
         this.setState({ carsList, car_func_types_ids });
       });
     }
+    const {
+      formState: {
+        technical_operation_id,
+        municipal_facility_id,
+      },
+    } = this.props;
 
-    this.context.flux.getActions('routes').getRoutesByNormId(norm_id)
+    this.context.flux.getActions('routes').getRoutesBySomeData({
+      municipal_facility_id,
+      technical_operation_id,
+      type: available_route_types.join(','),
+    })
     .then((routesList) => {
       this.setState({ routesList });
     });
@@ -413,7 +434,7 @@ export class MissionForm extends Form {
                 id={'municipal_facility_id'}
                 errors={errors}
                 state={state}
-                disabled={(!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY)) || this.props.fromOrder || sourceIsOrder  }
+                disabled={(!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY)) || this.props.fromOrder || sourceIsOrder}
                 handleChange={this.handleChange.bind(this)}
                 getDataByNormId={this.getDataByNormId}
                 technicalOperationsList={technicalOperationsList}

@@ -73,9 +73,13 @@ export class MissionForm extends Form {
     }
   }
 
-  async handleTechnicalOperationChange(v) {
+  handleTechnicalOperationChange(v) {
     this.handleChange('technical_operation_id', v);
     this.handleChange('municipal_facility_id', null);
+    this.handleRouteIdChange(undefined);
+  }
+  handleChangeMF = (name, value) => {
+    this.handleChange(name, value);
     this.handleRouteIdChange(undefined);
   }
 
@@ -442,7 +446,7 @@ export class MissionForm extends Form {
                 errors={errors}
                 state={state}
                 disabled={(!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY)) || this.props.fromOrder || sourceIsOrder}
-                handleChange={this.handleChange.bind(this)}
+                handleChange={this.handleChangeMF}
                 getDataByNormId={this.getDataByNormId}
                 technicalOperationsList={technicalOperationsList}
                 getNormIdFromState={!!fromOrder || !IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromOrder || sourceIsOrder}

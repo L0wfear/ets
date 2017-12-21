@@ -4,11 +4,13 @@
 
 declare module NodeJS  {
   interface Global {
+    NODE_ENV: string;
     NOTIFICATION_SYSTEM: {
       notify(text: string | object, type?: string, position?: string);
     };
     SESSION_KEY: string;
     window: any;
     APP_DATE_FORMAT: string;
+    CURRENT_USER: string;
   }
 }

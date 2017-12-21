@@ -18,10 +18,11 @@ class MunicipalFacility extends MunicipalFacilityMission {
       value: new_v,
       error: new_err,
       norm_id,
+      error_plan_date_start,
     } = this.getStateByProps(props);
     const {
       technicalOperationsList: newTechOperationsList = [],
-      fromOrder,
+      getNormIdFromState,
     } = props;
 
     const newState = {
@@ -32,7 +33,7 @@ class MunicipalFacility extends MunicipalFacilityMission {
       forseUpdate = true;
     }
 
-    if ((!!new_toi && !!new_pds && (old_toi !== new_toi || old_pds !== new_pds) && forseUpdateIsWas) || forseUpdate) {
+    if (!error_plan_date_start && ((!!new_toi && !!new_pds && (old_toi !== new_toi || old_pds !== new_pds) && forseUpdateIsWas) || forseUpdate)) {
       const {
         norm_ids = [],
         is_new,
@@ -44,7 +45,7 @@ class MunicipalFacility extends MunicipalFacilityMission {
           end_date: new_pds,
         };
 
-        if (fromOrder) {
+        if (getNormIdFromState) {
           outerPayload.norm_ids = norm_id;
         } else {
           outerPayload.norm_ids = norm_ids.join(',');
@@ -76,12 +77,14 @@ class MunicipalFacility extends MunicipalFacilityMission {
       } = {},
       errors: {
         [props.id]: error,
+        plan_date_start: error_plan_date_start,
       },
     } = props;
 
     return {
       technical_operation_id,
       plan_date_start,
+      error_plan_date_start,
       value,
       error,
       norm_id,

@@ -27,16 +27,13 @@ class PercentModalFormWrap extends FormWrap {
 
   createAction = formState => this.context.flux.getActions('repair').postDataToUpdateObjectPercent(formState).then((ans) => {
     global.NOTIFICATION_SYSTEM.notify({
-      message: 'Удаление сохраненной записи возможно в течении дня создания.', 
+      message: 'Удаление сохраненной записи возможно в течении дня создания.',
       level: 'info',
       position: 'tr',
     });
 
-    const {
-      object_id: id,
-    } = this.props;
-
-    this.context.flux.getActions('repair').getDataAboutObjectById(id);
+    this.props.updateObjectData();
+    this.props.checkMinVals();
 
     return ans;
   })
@@ -77,7 +74,7 @@ class PercentModalFormWrap extends FormWrap {
   }
 
   render() {
-    const { entity, isPermitted = false } = this.props;
+    const { entity, isPermitted = false, isPermittedByStatus } = this.props;
     const { saveButtonEnability = true } = this.state;
     const canSave = isPermitted && this.state.canSave && saveButtonEnability;
 
@@ -93,6 +90,7 @@ class PercentModalFormWrap extends FormWrap {
         handleFormChange={this.handleFormStateChange.bind(this)}
         show={this.props.showForm}
         onHide={this.props.onFormHide}
+        isPermittedByStatus={isPermittedByStatus}
       />
       : null;
   }

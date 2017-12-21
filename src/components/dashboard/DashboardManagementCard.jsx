@@ -31,7 +31,7 @@ export default class MasterManagementCard extends React.Component {
     };
   }
 
-  onWaybillFormHide() {
+  onWaybillFormHide = () => {
     this.props.refreshCard('waybill_draft');
     this.props.refreshCard('waybill_in_progress');
     this.props.refreshCard('waybill_completed');
@@ -78,16 +78,20 @@ export default class MasterManagementCard extends React.Component {
           onCallback={this.onWaybillFormHide}
           showForm={this.state.showWaybillForm}
           element={null}
+          entity={'waybill'}
+          fromDashboard
         />
         <MissionFormWrap
           onFormHide={this.onMissionFormHide}
           showForm={this.state.showMissionForm}
+          fromDashboard
           element={null}
         />
         <DutyMissionFormWrap
           onFormHide={this.onDutyMissionFormHide}
           showForm={this.state.showDutyMissionForm}
           element={null}
+          fromDashboard
         />
       </Div>
     );

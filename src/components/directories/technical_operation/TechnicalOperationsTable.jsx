@@ -4,15 +4,15 @@ import Table from 'components/ui/table/DataTable.jsx';
 
 const OBJECT = [
   {
-    value: 1,
+    value: 'ОДХ',
     label: 'ОДХ',
   },
   {
-    value: 2,
+    value: 'ДТ',
     label: 'ДТ',
   },
   {
-    value: 3,
+    value: 'ПН',
     label: 'ПН',
   },
 ];
@@ -35,20 +35,14 @@ const getTableMeta = ({
         },
       },
       {
-        name: 'elements',
-        displayName: 'Элемент',
-        display: false,
-        type: 'string',
-        filter: {
-          type: 'multiselect',
-          options: ELEMENTS,
-        },
-      },
-      {
         name: 'elements_text',
         displayName: 'Элемент',
         type: 'string',
-        filter: false,
+        filter: {
+          type: 'multiselect',
+          some: true,
+          options: ELEMENTS,
+        },
       },
       {
         name: 'season_name',
@@ -100,21 +94,14 @@ const getTableMeta = ({
         },
       },
       {
-        name: 'objects',
+        name: 'objects_text',
         displayName: 'Объект',
-        display: false,
         type: 'string',
         filter: {
           type: 'multiselect',
           options: OBJECT,
-          strict: true,
+          some: true,
         },
-      },
-      {
-        name: 'objects_text',
-        displayName: 'Объект',
-        type: 'string',
-        filter: false,
         cssClassName: 'width60',
       },
       {
@@ -136,20 +123,14 @@ const getTableMeta = ({
         },
       },
       {
-        name: 'car_func_types',
-        displayName: 'Типы ТС',
-        display: false,
-        type: 'string',
-        filter: {
-          type: 'multiselect',
-          options: CAR_TYPES,
-        },
-      },
-      {
         name: 'car_func_types_text',
         displayName: 'Типы ТС',
         type: 'string',
-        filter: false,
+        filter: {
+          type: 'multiselect',
+          some: true,
+          options: CAR_TYPES,
+        },
       },
     ],
   };
@@ -157,18 +138,18 @@ const getTableMeta = ({
   return tableMeta;
 };
 
-export default (props) => {
-  const renderers = {
-    needs_brigade: ({ data: value }) => <input type="checkbox" disabled checked={!!value} />,
-    use_in_reports: ({ data: value }) => <input type="checkbox" disabled checked={!!value} />,
-  };
+const renderers = {
+  needs_brigade: ({ data: value }) => <input type="checkbox" disabled checked={!!value} />,
+  use_in_reports: ({ data: value }) => <input type="checkbox" disabled checked={!!value} />,
+};
 
-  return (<Table
+export default props => (
+  <Table
     title="Реестр технологических операций"
     results={props.data}
     tableMeta={getTableMeta(props)}
     renderers={renderers}
     initialSort={'id'}
     {...props}
-  />);
-};
+  />
+);

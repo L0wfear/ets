@@ -158,8 +158,11 @@ export default class MissionsActions extends Actions {
 
   createMissionTemplate(missionTemplate) {
     const payload = clone(missionTemplate);
+    payload.created_at = createValidDate(payload.created_at);
+
     delete payload.company_id;
     delete payload.number;
+
     return MissionTemplateService.post(payload, null, 'json');
   }
 
@@ -195,8 +198,11 @@ export default class MissionsActions extends Actions {
 
   updateMissionTemplate(missionTemplate) {
     const payload = cloneDeep(missionTemplate);
+    payload.created_at = createValidDate(payload.created_at);
+
     delete payload.number;
     delete payload.company_id;
+
     return MissionTemplateService.put(payload, null, 'json');
   }
 
@@ -270,11 +276,17 @@ export default class MissionsActions extends Actions {
 
   createDutyMissionTemplate(mission) {
     const payload = cloneDeep(mission);
+    payload.created_at = createValidDate(payload.created_at);
+    payload.brigade_employee_id_list = payload.brigade_employee_id_list.map(b => b.id || b.employee_id);
+
     return DutyMissionTemplateService.post(payload, null, 'json');
   }
 
   updateDutyMissionTemplate(mission) {
     const payload = cloneDeep(mission);
+    payload.created_at = createValidDate(payload.created_at);
+    payload.brigade_employee_id_list = payload.brigade_employee_id_list.map(b => b.id || b.employee_id);
+
     delete payload.number;
     delete payload.technical_operation_name;
     delete payload.route_name;
@@ -302,6 +314,7 @@ export default class MissionsActions extends Actions {
       if (!isEmpty(dutyMissionsCreationTemplateCopy.faxogramm_id)) {
         payload.faxogramm_id = dutyMissionsCreationTemplateCopy.faxogramm_id;
       }
+
       delete payload.company_id;
       delete payload.id;
       delete payload.number;

@@ -17,10 +17,14 @@ export default class SparePartForm extends Form {
       this.props.formState,
       this.props.formErrors,
     ];
+
     const {
       isPermitted = false,
       program_version_status,
+      iNotСustomer,
     } = this.props;
+
+    const statusIsChanged = state.status ? state.status !== 'created' : false;
 
     return (
       <Modal {...this.props} backdrop="static">
@@ -37,28 +41,29 @@ export default class SparePartForm extends Form {
                 error={errors.remark}
                 onChange={this.handleChange}
                 boundKeys={['remark']}
-                disabled={!isPermitted}
+                disabled={!isPermitted || statusIsChanged || !iNotСustomer || program_version_status !== 'sent_on_review'}
               />
             </Col>
-            { program_version_status === 'rejected' &&
+            <Div hidden={iNotСustomer || program_version_status !== 'rejected'}>
               <Col md={12}>
                 <ExtField
                   type="text"
                   label="Комментарий"
-                  value={state.note}
-                  error={errors.note}
+                  value={state.comment}
+                  error={errors.comment}
                   onChange={this.handleChange}
-                  boundKeys={['note']}
-                  disabled={!isPermitted}
+                  boundKeys={['comment']}
+                  disabled={!isPermitted || statusIsChanged || iNotСustomer}
                 />
               </Col>
-            }
-            
+            </Div>
           </Row>
         </Div>
         <ModalBody />
         <Modal.Footer>
-          <Button disabled={!this.props.canSave} onClick={this.handleSubmitWrap}>Сохранить</Button>
+          <Div hidden={!iNotСustomer && (iNotСustomer || program_version_status !== 'rejected')}>
+            <Button disabled={!this.props.canSave} onClick={this.handleSubmitWrap}>Сохранить</Button>
+          </Div>
         </Modal.Footer>
       </Modal>
     );

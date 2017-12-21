@@ -31,6 +31,7 @@ export default class FutureMissions extends DashboardCardMedium {
         onFormHide={() => this.setState({ showMissionForm: false })}
         showForm={this.state.showMissionForm}
         element={this.state.selectedMission}
+        fromDashboard
         {...this.props}
       />
     );

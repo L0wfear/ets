@@ -140,8 +140,8 @@ export default class DataTable extends React.Component {
       globalCheckboxState: false,
       isHierarchical: props.isHierarchical,
       firstUseExternalInitialSort: true,
-      initialSort: '',
-      initialSortAscending: false,
+      initialSort: this.props.initialSort,
+      initialSortAscending: this.props.initialSortAscending,
     };
   }
 
@@ -212,6 +212,10 @@ export default class DataTable extends React.Component {
     if (!this.state.isHierarchical) return true;
 
     return !_.isEqual(nextProps.results, this.props.results);
+  }
+
+  getFilterTypeByKey(key) {
+    return getFilterTypeByKey(key, this.props.tableMeta);
   }
 
   closeFilter() {
@@ -382,10 +386,6 @@ export default class DataTable extends React.Component {
     };
   }
 
-  getFilterTypeByKey(key) {
-    return getFilterTypeByKey(key, this.props.tableMeta);
-  }
-
   shouldBeRendered(obj) {
     if (this.props.externalFilter) return true;
     const { filterValues } = this.state;
@@ -393,67 +393,89 @@ export default class DataTable extends React.Component {
     // если в результате isValid === false, то объект не рендерится в таблице
     // проверка берется по this.state.filterValues
     let isValid = true;
+    const {
+      tableMeta: {
+        cols = [],
+      },
+    } = this.props;
 
     Object.entries(filterValues).forEach(([key, value]) => {
-      if (obj[key] === null) {
-        isValid = false;
-        return;
-      }
+      if (key.includes('additionalFilter')) {
+        try {
+          const { filter: { filterFunction } } = cols.find(d => d.name === key);
+          isValid = filterFunction(value, obj);
+        } catch (e) {
+          console.warn(`Ошибка при поиске кастомной функции фильтрации ${key}`, e);
+        }
+      } else {
+        if (obj[key] === null && !key.includes('additionalFilter')) {
+          isValid = false;
+          return;
+        }
 
-      const IS_ARRAY = Array.isArray(value);
+        const IS_ARRAY = Array.isArray(value);
 
-      if (/(timestamp|date|birthday)/.test(key) && !IS_ARRAY) {
-        if (moment(obj[key]).format(global.APP_DATE_FORMAT) !== moment(value).format(global.APP_DATE_FORMAT)) {
-          isValid = false;
-        }
-      } else if (key.indexOf('date') > -1 && IS_ARRAY && this.getFilterTypeByKey(key) !== 'date_interval') {
-        if (value.indexOf(moment(obj[key]).format(global.APP_DATE_FORMAT)) === -1) {
-          isValid = false;
-        }
-      } else if (key.indexOf('date') > -1 && IS_ARRAY && this.getFilterTypeByKey(key) === 'date_interval') {
-        const intervalPickerDate1 = moment(value[0]).toDate().getTime() || 0;
-        const intervalPickerDate2 = moment(value[1]).toDate().getTime() || Infinity;
-        const valueDate = moment(obj[key]).toDate().getTime();
-        if (!(intervalPickerDate1 < valueDate && valueDate < intervalPickerDate2)) {
-          isValid = false;
-        }
-      } else if (IS_ARRAY) {
-        if (Array.isArray(obj[key])) {
+        if (/(timestamp|date|birthday)/.test(key) && !IS_ARRAY) {
+          if (moment(obj[key]).format(global.APP_DATE_FORMAT) !== moment(value).format(global.APP_DATE_FORMAT)) {
+            isValid = false;
+          }
+        } else if (key.indexOf('date') > -1 && IS_ARRAY && this.getFilterTypeByKey(key) !== 'date_interval') {
+          if (value.indexOf(moment(obj[key]).format(global.APP_DATE_FORMAT)) === -1) {
+            isValid = false;
+          }
+        } else if (key.indexOf('date') > -1 && IS_ARRAY && this.getFilterTypeByKey(key) === 'date_interval') {
+          const intervalPickerDate1 = moment(value[0]).toDate().getTime() || 0;
+          const intervalPickerDate2 = moment(value[1]).toDate().getTime() || Infinity;
+          const valueDate = moment(obj[key]).toDate().getTime();
+          if (!(intervalPickerDate1 < valueDate && valueDate < intervalPickerDate2)) {
+            isValid = false;
+          }
+        } else if (IS_ARRAY) {
           const a = this.props.tableMeta.cols.find(e => e.name === key);
-          if (a.filter.strict) {
-            if (!(obj[key].every(el => el.id && value.indexOf(el.id.toString()) > -1) && obj[key].length === value.length)) {
+          if (Array.isArray(obj[key])) {
+            if (a.filter.strict) {
+              if (!(obj[key].every(el => el.id && value.indexOf(el.id.toString()) > -1) && obj[key].length === value.length)) {
+                isValid = false;
+              }
+            } else if (a.filter.some) {
+              if (!obj[key].some(el => value.every(val => el.toString().includes(val)))) {
+                isValid = false;
+              }
+            } else if (!(obj[key].find(el => el.id && value.indexOf(el.id.toString()) > -1))) {
               isValid = false;
             }
-          } else if (!(obj[key].find(el => el.id && value.indexOf(el.id.toString()) > -1))) {
+          } else if (typeof obj[key] === 'boolean') {
+            if (value.map(v => typeof v === 'string' ? v === 'true' || v === '1' : !!parseInt(v, 10)).indexOf(obj[key]) === -1) {
+              isValid = false;
+            }
+          } else if (a.filter.some) {
+            if (value.findIndex(d => obj[key].toString().toLowerCase().includes(d.toLowerCase()))) {
+              isValid = false;
+            }
+          } else if (value.findIndex(d => d.toLowerCase() === obj[key].toString().toLowerCase()) === -1) {
             isValid = false;
           }
-        } else if (typeof obj[key] === 'boolean') {
-          if (value.map(v => typeof v === 'string' ? v === 'true' || v === '1' : !!parseInt(v, 10)).indexOf(obj[key]) === -1) {
-            isValid = false;
-          }
-        } else if (value.findIndex(d => d.toLowerCase() === obj[key].toString().toLowerCase()) === -1) {
+          /**
+           * Фильтр: строка
+           * Значение: массив строк
+           */
+        } else if (isStringArrayData(value, obj[key], key, this.props.tableMeta)) {
+          isValid = stringArrayDataMatching(value, obj[key]);
+          /**
+           * Фильтр: селект лист из чисел
+           * Значение: массив чисел
+           */
+        } else if (isNumberSelectArrayData(value, obj[key], key, this.props.tableMeta)) {
+          isValid = numberArrayDataMatching(value, obj[key]);
+        } else if (_.isPlainObject(value) && Object.keys(value).length > 0) {
+          const metaCol = this.props.tableMeta.cols.find(item => item.name === key);
+          const filterType = _.get(metaCol, 'filter.type', '');
+          isValid = parseAdvancedFilter(value, key, obj[key], filterType);
+        } else if (typeof obj[key] === 'string') {
+          isValid = stringArrayDataMatching(value, [obj[key]]);
+        } else if (obj[key] !== value) {
           isValid = false;
         }
-        /**
-         * Фильтр: строка
-         * Значение: массив строк
-         */
-      } else if (isStringArrayData(value, obj[key], key, this.props.tableMeta)) {
-        isValid = stringArrayDataMatching(value, obj[key]);
-        /**
-         * Фильтр: селект лист из чисел
-         * Значение: массив чисел
-         */
-      } else if (isNumberSelectArrayData(value, obj[key], key, this.props.tableMeta)) {
-        isValid = numberArrayDataMatching(value, obj[key]);
-      } else if (_.isPlainObject(value) && Object.keys(value).length > 0) {
-        const metaCol = this.props.tableMeta.cols.find(item => item.name === key);
-        const filterType = _.get(metaCol, 'filter.type', '');
-        isValid = parseAdvancedFilter(value, key, obj[key], filterType);
-      } else if (typeof obj[key] === 'string') {
-        isValid = stringArrayDataMatching(value, [obj[key]]);
-      } else if (obj[key] !== value) {
-        isValid = false;
       }
     });
 
@@ -545,7 +567,7 @@ export default class DataTable extends React.Component {
     }
     return 0;
   }
-  // max string - яяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяя 
+  // max string - яяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяя
   // или как?
   // поменять, если знаешь что вместо
   checkForCorrect(val) {

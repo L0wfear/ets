@@ -20,10 +20,22 @@ const schemaMakers: ISchemaMaker = {
       type: 'date',
     },
   }),
+  next_tech_maintenance_odometer_left: schema => ({
+    ...schema,
+    type: 'number',
+  }),
+  next_tech_maintenance_motohours_left: schema => ({
+    ...schema,
+    type: 'number',
+  }),
 };
 
 const renderers: ISchemaRenderer = {
   latest_tech_maintenance_date: ({ data }) => <DateFormatter date={data} time={false} />,
+};
+const tableProps = {
+  initialSort: 'next_tech_maintenance_odometer_left',
+  initialSortAscending: true,
 };
 
 const reportProps: IReportProps = {
@@ -35,6 +47,7 @@ const reportProps: IReportProps = {
   renderers,
   enumerated: true,
   schemaMakers,
+  tableProps,
 };
 
 const ExportableReportContainer = exportable({

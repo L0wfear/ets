@@ -1,3 +1,5 @@
+import * as queryString from 'query-string';
+
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import ElementsList from 'components/ElementsList.jsx';
 import EmployeeFormWrap from './EmployeeFormWrap.jsx';
@@ -28,8 +30,11 @@ export default class EmployeesList extends ElementsList {
     await flux.getActions('objects').getPositions();
     flux.getActions('companyStructure').getCompanyStructure(linear, descendants_by_user);
 
-    if (this.props.location.query.employee_id) {
-      const employee_id = parseInt(this.props.location.query.employee_id, 10);
+    const { location: { search } } = this.props;
+    const searchObject = queryString.parse(search);
+
+    if (searchObject.employee_id) {
+      const employee_id = parseInt(searchObject.employee_id, 10);
       const selectedElement = employees.result.find(employee => employee.id === employee_id);
 
       // NOTE Так надо, потому что открыть форму можно только через стейт родительского класса

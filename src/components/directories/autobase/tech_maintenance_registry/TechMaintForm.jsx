@@ -49,6 +49,7 @@ export default class TechMaintForm extends Form {
 
     let title = 'Изменение записи';
     if (IS_CREATING) title = 'Создание записи';
+    console.log(errors)
 
     return (
       <Modal {...this.props} backdrop="static">
@@ -138,7 +139,7 @@ export default class TechMaintForm extends Form {
               />
             </Col>
             <Col md={12}>
-              <ExtDiv hidden={!hasMotohours(state.gov_number)}>
+              <ExtDiv hidden={hasMotohours(state.gov_number)}>
                 <Field
                   type="number"
                   label="Пробег на момент ТО, км"
@@ -151,7 +152,7 @@ export default class TechMaintForm extends Form {
               </ExtDiv>
             </Col>
             <Col md={12}>
-              <ExtDiv hidden={hasMotohours(state.gov_number)}>
+              <ExtDiv hidden={!hasMotohours(state.gov_number)}>
                 <Field
                   type="number"
                   label="Счетчик м/ч на момент ТО, м/ч"

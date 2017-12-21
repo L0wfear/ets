@@ -1,5 +1,6 @@
 import React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
+import { get } from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
 import { loadingOverlay } from 'components/ui/LoadingOverlay';
@@ -10,6 +11,17 @@ import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 import Form from 'components/compositions/Form.jsx';
 
 import { connectToStores } from 'utils/decorators';
+
+function getFio(f, i, o) {
+  let fio = f;
+  if (i) {
+    fio = `${fio} ${i[0]}.`;
+  }
+  if (o) {
+    fio = `${fio} ${o[0]}.`;
+  }
+  return fio;
+}
 
 @loadingOverlay
 @connectToStores(['autobase', 'employees', 'objects'])
@@ -43,7 +55,15 @@ export default class BaseRoadAccidentFrom extends Form {
 
     const fields = cols.reduce((obj, val) => Object.assign(obj, { [val.key]: val }), {});
 
-    const DRIVER_LIST_OPTION = driversList.map(el => ({ value: el.id, label: `${el.last_name} ${el.first_name[0]}.${el.middle_name ? el.middle_name[0] : ''}. | ${el.drivers_emplds}` }));
+    const DRIVER_LIST_OPTION = driversList.map((el, i) => {
+      const value = get(el, 'id', i);
+      const last_name = get(el, 'last_name', null);
+      const first_name = get(el, 'first_name', null);
+      const middle_name = get(el, 'middle_name', null);
+      const drivers_emplds = get(el, 'drivers_emplds', null);
+
+      return { value, label: `${getFio(last_name, first_name, middle_name)} | ${drivers_emplds}` };
+    });
 
     const IS_CREATING = !state.id;
 

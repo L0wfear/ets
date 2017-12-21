@@ -134,16 +134,15 @@ export function tableMeta({
   return meta;
 }
 
+const renderers: ISchemaRenderer = {
+  full_name: ({ rowData }) => <span>{`${rowData.last_name || ''} ${rowData.first_name || ''} ${rowData.middle_name || ''}`}</span>,
+  birthday: ({ data }) => <DateFormatter date={data} />,
+  active: ({ data }) => <div>{data === true ? 'Работает' : 'Не работает'}</div>,
+  medical_certificate_date: ({ data }) => <DateFormatter date={data} />,
+  is_common: ({ data }) => <input type="checkbox" disabled checked={!!data} />,
+};
+
 const Table: React.SFC<any> = props  => {
-
-  const renderers: ISchemaRenderer = {
-    full_name: ({ rowData }) => <span>{`${rowData.last_name || ''} ${rowData.first_name || ''} ${rowData.middle_name || ''}`}</span>,
-    birthday: ({ data }) => <DateFormatter date={data} />,
-    active: ({ data }) => <div>{data === true ? 'Работает' : 'Не работает'}</div>,
-    medical_certificate_date: ({ data }) => <DateFormatter date={data} />,
-    is_common: ({ data }) => <input type="checkbox" disabled checked={!!data} />,
-  };
-
   return (
     <DataTable
       title="Реестр сотрудников"
@@ -151,6 +150,7 @@ const Table: React.SFC<any> = props  => {
       tableMeta={tableMeta(props)}
       renderers={renderers}
       initialSort={'full_name'}
+      initialSortAscending={true}
       {...props}
     />
   );

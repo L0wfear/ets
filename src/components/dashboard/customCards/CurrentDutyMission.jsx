@@ -63,7 +63,7 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
       mission = mission.result.rows[0];
       mission.status = 'fail';
       mission.comment = reason;
-      this.context.flux.getActions('missions').updateDutyMission(mission);
+      await this.context.flux.getActions('missions').updateDutyMission(mission);
     }
     this.selectItem(null);
     this.props.refreshCard();
@@ -95,7 +95,7 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
     const selectedItemIndex = this.state.selectedItem;
     const selectedDutyMissionIndex = this.state.selectedDutyMission;
     if (isEmpty(selectedItemIndex) || isEmpty(selectedDutyMissionIndex)) return <div />;
-    const selectedItem = this.props.items[selectedItemIndex].subItems[selectedDutyMissionIndex] || null;
+    const selectedItem = this.props.items[selectedItemIndex] ? this.props.items[selectedItemIndex].subItems[selectedDutyMissionIndex] || null : null;
     const data = selectedItem !== null ? selectedItem.data || {} : {};
 
     return (
@@ -139,7 +139,9 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
   render() {
     const selectedItemIndex = this.state.selectedItem;
     const selectedItem = this.props.items[selectedItemIndex] || null;
-    const subItems = selectedItem !== null ? selectedItem.subItems || [] : [];
+    const {
+      subItems = [],
+    } = selectedItem || {};
     const data = selectedItem !== null ? selectedItem.data || {} : {};
     const items = this.props.items.map((item, i) => {
       const itemClassName = cx('dashboard-card-item-inner', { 'pointer': (item.data) || (item.subItems && item.subItems.length) || (this.action) });

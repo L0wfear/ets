@@ -1,4 +1,6 @@
 import React from 'react';
+import * as queryString from 'query-string';
+
 import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
 import { schema as employeeSchema, defaultElement } from 'models/Employee.js';
 import BaseEmployeeForm from './EmployeeForm.jsx';
@@ -18,8 +20,16 @@ export default class EmployeeFormWrap extends FormWrap {
     this.updateAction = context.flux.getActions('employees').updateEmployee;
   }
   handleFormHide = () => {
-    if (Object.keys(this.props.location.query).length > 0) {
-      this.props.history.replaceState(null, this.props.location.pathname, {});
+    const {
+      location: {
+        search,
+      },
+    } = this.props;
+
+    const searchObject = queryString.parse(search);
+
+    if (Object.keys(searchObject).length > 0) {
+      this.props.history.push(this.props.match.url);
     }
     this.props.onFormHide();
   }

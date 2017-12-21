@@ -21,14 +21,19 @@ type FieldTypes =
   'date' |
   'datetime' |
   'advanced-number'|
-  'number';
+  'advanced-string' |
+  'number' |
+  'customFilter';
 
 export type ILabelFunction = (data: number|string) => string;
+
+type ITypeCustomFilterFunc = (value: any, lineData: any) => boolean;
 
 interface IDataTableColFilter {
   type: FieldTypes;
   options?: IReactSelectOption[];
   labelFunction?: ILabelFunction;
+  filterFunction?: ITypeCustomFilterFunc;
 }
 
 export interface IDataTableColSchema {

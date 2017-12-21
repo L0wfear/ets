@@ -19,7 +19,7 @@ const notifyTexts = {
   },
 };
 
-@connectToStores(['repair', 'session'])
+@connectToStores(['repair', 'objects', 'session'])
 @staticProps({
   entity: 'repair_program_version',
   listName: 'objectsList',
@@ -132,7 +132,12 @@ export default class ProgramRemarkList extends CheckableElementsList {
         program_version_id,
         contract_number,
         contractor_id,
+        object_list: [],
+        draw_object_list: [],
         elements: [],
+        plan_shape_json: {
+          manual: false,
+        },
       },
     });
   }
@@ -141,6 +146,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
       program_version_id,
       contract_number,
       contractor_id,
+      repair_type_name,
     } = this.props;
 
     this.setState({
@@ -152,6 +158,10 @@ export default class ProgramRemarkList extends CheckableElementsList {
         contract_number,
         contractor_id,
         elements: [],
+        plan_shape_json: {
+          manual: false,
+        },
+        repair_type_name,
       },
     });
   }
@@ -164,49 +174,59 @@ export default class ProgramRemarkList extends CheckableElementsList {
     const {
       repair_type_name,
       program_version_status,
+      technicalOperationsObjectsList = [],
+      object_type_id,
+      isPermittedByStatus,
     } = this.props;
+
+    const slugTypeObjectPr = (technicalOperationsObjectsList.find(({ id }) => id === object_type_id) || {}).slug;
 
     const buttons = [
       <ButtonDelete
         buttonName={'Удалить'}
         key={0}
         onClick={this.removeCheckedElements}
-        disabled={this.checkDisabledDelete() || program_version_status === 'accepted'}
+        disabled={this.checkDisabledDelete() || program_version_status === 'accepted' || !isPermittedByStatus}
         permissions={[`${entity}.delete`]}
       />,
       <ButtonRead
         buttonName={'Посмотреть'}
         key={1}
         onClick={this.showForm}
-        disabled={this.checkDisabledRead()}
+        disabled={this.checkDisabledRead() || !isPermittedByStatus}
         permissions={[`${entity}.update`]}
-      />,
-      <ButtonCreate
-        buttonName={'Добавить ДТ'}
-        key={2}
-        onClick={this.createDT}
-        permissions={[`${entity}.update`]}
-        disabled={program_version_status === 'accepted' || repair_type_name !== 'Капитальный'}
-      />,
-      <ButtonCreate
-        buttonName={'Добавить ОДХ'}
-        key={3}
-        onClick={this.createODH}
-        disabled
-        permissions={[`${entity}.false`]}
       />,
     ];
+
+    if (slugTypeObjectPr === 'dt') {
+      buttons.push(
+        <ButtonCreate
+          buttonName={'Добавить ДТ'}
+          key={2}
+          onClick={this.createDT}
+          permissions={[`${entity}.update`]}
+          disabled={program_version_status === 'accepted' || repair_type_name !== 'Капитальный' || !isPermittedByStatus}
+        />
+      );
+    }
+    if (slugTypeObjectPr === 'odh') {
+      buttons.push(
+        <ButtonCreate
+          buttonName={'Добавить ОДХ'}
+          key={3}
+          onClick={this.createODH}
+          disabled={program_version_status === 'accepted' || !isPermittedByStatus}
+          permissions={[`${entity}.false`]}
+        />
+      );
+    }
 
     return buttons;
   }
 
   init() {
-    const {
-      program_version_id,
-    } = this.props;
-
-    const { flux } = this.context;
-    flux.getActions('repair').getRepairListByType('objects', { program_version_id });
+    this.props.updateObjectData();
+    this.context.flux.getActions('technicalOperation').getTechnicalOperationsObjects();
   }
 
   getAdditionalProps = () => (

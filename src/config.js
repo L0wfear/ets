@@ -1,8 +1,6 @@
 /**
  * При разработке не имеем доступ к протоколу, хосту и всему прочему, если не хардкод
  */
-const amDeveloper = window.location.host.includes('localhost');
-
 const PROTO = window.location.protocol;
 const HOST = window.location.host;
 const PATHNAME = window.location.pathname;
@@ -12,13 +10,13 @@ const WS_PROTO = 'wss:';
 const DOC_URL = {
   develop: {
     dev: 'http://dev-ets.gost-group.com/docs/',
-    stage: 'https://ets.mos.ru/ets-stage/docs/',
-    prod: 'https://ets.mos.ru/docs/',
+    stage: 'https://ets.mos.ru/ets-stage2/docs/',
+    prod: 'http://ets2.mos.ru/docs/',
   },
   origin: {
     dev: 'http://dev-ets.gost-group.com/docs/',
     stage: `${PROTO}//${HOST}${PATHNAME}docs/`,
-    prod: `${PROTO}//${HOST}${PATHNAME}/docs/`,
+    prod: `${PROTO}//${HOST}${PATHNAME}docs/`,
   },
 };
 
@@ -37,8 +35,8 @@ const config = {
 
 const STANDS = {
   develop: {
-    stage: 'https://ets.mos.ru/ets-stage/services',
-    prod: 'https://ets.mos.ru/services',
+    stage: 'https://ets.mos.ru/ets-stage2/services',
+    prod: 'https://ets2.mos.ru/services',
     dev: 'http://dev-ets.gost-group.com/services',
   },
   origin: {
@@ -49,7 +47,7 @@ const STANDS = {
 };
 
 const configs = {};
-const pathToConfig = amDeveloper ? 'develop' : 'origin';
+const pathToConfig = __DEVELOPMENT__ ? 'develop' : 'origin';
 
 try {
   const STAND = process.env.STAND;

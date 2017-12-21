@@ -55,13 +55,28 @@ export function tableMeta({
   return meta;
 }
 
-const Table: React.SFC<any> = props  => {
-  const renderers: ISchemaRenderer = {
-    created_at: ({ data }) => (<DateFormatter date={data} />),
-    status: ({ data }) => <span>{status_name[data]}</span>,
-  };
+// назови лучше
+const checkShowByStatusAndDataLengthAndUser = (status, length, iNotСustomer) => {
+  if (status === 'draft') {
+    return false;
+  }
 
-  return (
+  if (length > 0 || (status === 'sent_on_review' && iNotСustomer)) {
+    return true;
+  }
+
+  return false;
+};
+
+const renderers: ISchemaRenderer = {
+  created_at: ({ data }) => (<DateFormatter date={data} time={true} />),
+  status: ({ data }) => <span>{status_name[data]}</span>,
+};
+
+const Table: React.SFC<any> = props  => {
+  const showTable = checkShowByStatusAndDataLengthAndUser(props.program_version_status, props.data.length, props.iNotСustomer);
+
+  return showTable ?
     <DataTable
       title="Замечания"
       results={props.data}
@@ -72,7 +87,8 @@ const Table: React.SFC<any> = props  => {
       className="program-remark"
       {...props}
     />
-  );
+    :
+    <div></div>;
 };
 
 export default Table;

@@ -12,11 +12,13 @@ class MunicipalFacility extends React.Component {
       state: React.PropTypes.object,
       errors: React.PropTypes.object,
       disabled: React.PropTypes.bool,
-      fromOrder: React.PropTypes.bool,
+      getNormIdFromState: React.PropTypes.bool,
       handleChange: React.PropTypes.func,
       getDataByNormId: React.PropTypes.func,
       technicalOperationsList: React.PropTypes.arrayOf(React.PropTypes.object),
       clearable: React.PropTypes.bool,
+      fromWaybill: React.PropTypes.bool,
+      type_id: React.PropTypes.number,
     };
   }
 
@@ -43,10 +45,11 @@ class MunicipalFacility extends React.Component {
       value: new_v,
       error: new_err,
       norm_id,
+      error_date_start,
     } = this.getStateByProps(props);
     const {
       technicalOperationsList: newTechOperationsList = [],
-      fromOrder,
+      getNormIdFromState,
     } = props;
 
     const newState = {
@@ -57,7 +60,7 @@ class MunicipalFacility extends React.Component {
       forseUpdate = true;
     }
 
-    if ((!!new_toi && new_ds && (old_toi !== new_toi || old_ds !== new_ds) && forseUpdateIsWas) || forseUpdate) {
+    if (!error_date_start && ((!!new_toi && new_ds && (old_toi !== new_toi || old_ds !== new_ds) && forseUpdateIsWas) || forseUpdate)) {
       const {
         norm_ids = [],
         is_new,
@@ -69,7 +72,7 @@ class MunicipalFacility extends React.Component {
           end_date: new_ds,
         };
 
-        if (fromOrder) {
+        if (getNormIdFromState) {
           outerPayload.norm_ids = norm_id;
         } else {
           outerPayload.norm_ids = norm_ids.join(',');
@@ -93,9 +96,25 @@ class MunicipalFacility extends React.Component {
       if (new_v) {
         this.props.getDataByNormId(rows.find(({ municipal_facility_id }) => municipal_facility_id === new_v).norm_id);
       }
+      let MUNICIPAL_FACILITY_OPTIONS = rows.map(({ municipal_facility_id: value, municipal_facility_name: label, norm_id }) => ({ value, label, norm_id }));
+
+      if (this.props.fromWaybill) {
+        MUNICIPAL_FACILITY_OPTIONS = rows.reduce((arr, element) => {
+          if (element.car_func_types.find(({ id }) => id === this.props.type_id)) {
+            const {
+              municipal_facility_id,
+              municipal_facility_name,
+              norm_id,
+            } = element;
+            arr.push({ value: municipal_facility_id, label: municipal_facility_name, norm_id });
+          }
+
+          return arr;
+        }, []);
+      }
       this.setState({
         myDisable: false,
-        MUNICIPAL_FACILITY_OPTIONS: rows.map(({ municipal_facility_id: value, municipal_facility_name: label, norm_id }) => ({ value, label, norm_id })),
+        MUNICIPAL_FACILITY_OPTIONS,
       });
     });
   }
@@ -110,6 +129,7 @@ class MunicipalFacility extends React.Component {
       } = {},
       errors: {
         [props.id]: error,
+        date_start: error_date_start,
       },
     } = props;
 
@@ -119,6 +139,7 @@ class MunicipalFacility extends React.Component {
       value,
       error,
       norm_id,
+      error_date_start,
     };
   };
 

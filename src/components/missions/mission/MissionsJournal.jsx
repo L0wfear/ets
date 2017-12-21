@@ -1,7 +1,11 @@
 import React from 'react';
 import { autobind } from 'core-decorators';
 import _ from 'lodash';
-import { Button as BootstrapButton, Glyphicon, ButtonToolbar } from 'react-bootstrap';
+import {
+  ButtonToolbar,
+  Button as BootstrapButton,
+  Glyphicon,
+} from 'react-bootstrap';
 
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import MissionInfoFormWrap from 'components/dashboard/MissionInfoFormWrap.jsx';
@@ -64,6 +68,7 @@ export default class MissionsJournal extends CheckableElementsList {
     flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, 0, this.state.sortBy, this.state.filter);
     flux.getActions('objects').getCars();
     flux.getActions('technicalOperation').getTechnicalOperations();
+    flux.getActions('missions').getMissionSources();
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -128,7 +133,7 @@ export default class MissionsJournal extends CheckableElementsList {
     this.refreshList(this.state);
   }
 
-  rejectMission() {
+  rejectMission = () => {
     this.setState({
       showMissionRejectForm: true,
     });
@@ -170,45 +175,7 @@ export default class MissionsJournal extends CheckableElementsList {
   }
 
   rejectCheckedElements() {
-    const checkElList = Object.values(this.state.checkedElements);
-    const countCheckEl = checkElList.length;
-
-    if (countCheckEl !== 0) {
-      const elList = Array(countCheckEl).fill(false);
-
-      checkElList.forEach((mission, i) => {
-        const updatedMission = _.cloneDeep(mission);
-        updatedMission.status = 'fail';
-        if (mission.status === 'assigned') {
-          const reason = prompt(`Введите причину для задания №${mission.number}`, '');
-
-          if (reason) {
-            updatedMission.comment = reason;
-
-            this.context.flux.getActions('missions').updateMission(updatedMission, false).then(() => {
-              elList[i] = true;
-              if (!elList.some(elD => !elD)) {
-                this.refreshList();
-                global.NOTIFICATION_SYSTEM.notify('Данные успешно обновлены');
-              }
-            })
-            .catch(() => {
-              elList[i] = true;
-              if (!elList.some(elD => !elD)) {
-                this.refreshList();
-                global.NOTIFICATION_SYSTEM.notify('Произошла ошибка при обновлении данных');
-              }
-            });
-          }
-        }
-      });
-      this.setState({
-        checkedElements: {},
-        selectedElement: null,
-      });
-    } else {
-      this.rejectMission();
-    }
+    this.rejectMission();
   }
 
 
@@ -330,6 +297,7 @@ export default class MissionsJournal extends CheckableElementsList {
             show={this.state.showMissionRejectForm}
             onReject={this.onReject}
             mission={this.state.selectedElement}
+            missions={this.state.checkedElements}
           />
         }
         <MissionInfoFormWrap
@@ -373,8 +341,8 @@ export default class MissionsJournal extends CheckableElementsList {
     // TODO отображение 2 кнопорей в зависимости от прав
     buttons.push(
       <ButtonToolbar key={buttons.length}>
-        <BootstrapButton bsSize="small" onClick={this.completeCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</BootstrapButton>
-        <BootstrapButton bsSize="small" onClick={this.rejectCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</BootstrapButton>
+        <Button bsSize="small" permissions={[`${this.entity}.update`]} onClick={this.completeCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</Button>
+        <Button bsSize="small" permissions={[`${this.entity}.update`]} onClick={this.rejectCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</Button>
       </ButtonToolbar>
     );
 

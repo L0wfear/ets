@@ -28,12 +28,13 @@ class ProgramRemarkFormWrap extends FormWrap {
   }
 
   render() {
-    const { entity, isPermitted = false } = this.props;
+    const { entity, isPermitted = false, iNotСustomer } = this.props;
     const { saveButtonEnability = true } = this.state;
     const canSave = isPermitted && this.state.canSave && saveButtonEnability;
 
     return this.props.showForm ?
       <ProgramRemarkForm
+        entity={entity}
         formState={this.state.formState}
         program_version_status={this.props.program_version_status}
         formErrors={this.state.formErrors}
@@ -45,6 +46,7 @@ class ProgramRemarkFormWrap extends FormWrap {
         handleFormChange={this.handleFormStateChange.bind(this)}
         show={this.props.showForm}
         onHide={this.props.onFormHide}
+        iNotСustomer={iNotСustomer}
       />
       : null;
   }

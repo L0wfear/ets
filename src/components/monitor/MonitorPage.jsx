@@ -24,8 +24,8 @@ class MonitorPage extends Component {
   async componentDidMount() {
     this.props.getTypes();
     const { flux } = this.context;
+    await flux.getActions('objects').getCars();
     flux.getActions('points').createConnection();
-    flux.getActions('objects').getCars();
   }
 
   componentWillUnmount() {

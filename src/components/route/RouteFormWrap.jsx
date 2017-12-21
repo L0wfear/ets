@@ -23,7 +23,6 @@ class RouteFormWrap extends FormWrap {
     if (props.showForm && props.showForm !== this.props.showForm) {
       let formState = null;
       if (props.element !== null) {
-
         formState = cloneDeep(props.element);
 
         if (!formState.id) {

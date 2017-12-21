@@ -1,7 +1,9 @@
 import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 
-const getTableMeta = (props) => {
+export const getTableMeta = ({ structures = [], data = [] }) => {
+  const structure_id_list = data.map(({ structure_id }) => structure_id);
+
   const tableMeta = {
     cols: [
       {
@@ -15,7 +17,7 @@ const getTableMeta = (props) => {
       },
       {
         name: 'name',
-        displayName: 'Название',
+        displayName: 'Наименование',
         type: 'string',
         filter: {
           type: 'multiselect',
@@ -51,16 +53,18 @@ const getTableMeta = (props) => {
       {
         name: 'technical_operation_name',
         displayName: 'Технологическая операция',
-        type: 'number',
+        type: 'string',
         filter: {
           type: 'multiselect',
         },
       },
       {
-        name: 'comment',
-        displayName: 'Комментарий',
+        name: 'municipal_facility_name',
+        displayName: 'Элемент',
         type: 'string',
-        filter: false,
+        filter: {
+          type: 'multiselect',
+        },
       },
       {
         name: 'structure_id',
@@ -69,9 +73,15 @@ const getTableMeta = (props) => {
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: props.structures.map(({ id, name }) => ({ value: id, label: name })),
+          options: structures.filter(({ id }) => structure_id_list.includes(id)).map(({ id, name }) => ({ value: id, label: name })),
         },
-        display: props.structures.length,
+        display: structures.length,
+      },
+      {
+        name: 'comment',
+        displayName: 'Комментарий',
+        type: 'string',
+        filter: false,
       },
     ],
   };
@@ -82,7 +92,7 @@ const getTableMeta = (props) => {
 export default (props) => {
   const renderers = {
     structure_id: ({ data }) => <div>{props.structures.find(s => s.id === data) ? props.structures.find(s => s.id === data).name : ''}</div>,
-  }
+  };
   return (
     <Table
       title="Шаблоны заданий"

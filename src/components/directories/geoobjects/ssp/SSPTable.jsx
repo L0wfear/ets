@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
+import { YES_NO_SELECT_OPTIONS_INT } from 'constants/dictionary';
 
 export const tableMeta = props => ({
   cols: [
@@ -42,14 +43,28 @@ export const tableMeta = props => ({
         type: 'advanced-number',
       },
     },
+    {
+      name: 'is_mobile',
+      displayName: 'Мобильность',
+      type: 'string',
+      filter: {
+        type: 'multiselect',
+        options: YES_NO_SELECT_OPTIONS_INT,
+      },
+    },
   ],
 });
+
+const renderers = {
+  is_mobile: ({ data }) => <input type="checkbox" disabled checked={!!data} />,
+};
 
 export default props => (
   <Table
     title="Стационарные снегоплавильные пункты"
     results={props.data}
     tableMeta={tableMeta(props)}
+    renderers={renderers}
     {...props}
   />
 );

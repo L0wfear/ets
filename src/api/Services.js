@@ -106,4 +106,7 @@ export const UserNotificationInfoService = ETS_API_FACTORY.createApiServiceAdapt
 
 export const ObjectProperty = ETS_API_FACTORY.createApiServiceAdapter('object_property', {});
 
+/* московское время */
+export const TimeMoscowService = ETS_API_FACTORY.createApiServiceAdapter('time', {});
+
 export { reports };

@@ -1,20 +1,43 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
+import {
+  uniqBy,
+  isEmpty as lodashIsEmpty,
+} from 'lodash';
+
+import { checkRouteByNew } from 'components/missions/mission/MissionForm.jsx';
+
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import RouteInfo from 'components/route/RouteInfo.jsx';
 import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
 import { isEmpty } from 'utils/functions';
+import InsideField from 'components/missions/mission_template/inside_fields/index';
 import { MissionForm } from '../mission/MissionForm.jsx';
 
 class MissionTemplateForm extends MissionForm {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      ...this.state,
+      isTemplate: true,
+    };
+  }
 
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
-    const { technicalOperationsList = [], routesList = [], carsList = [] } = this.state;
+    const {
+      car_func_types_ids, TECH_OPERATIONS,
+      technicalOperationsList = [],
+      routesList = [],
+      carsList = [],
+      selectedRoute: route = null,
+      available_route_types = [],
+    } = this.state;
 
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
     const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
@@ -33,13 +56,26 @@ class MissionTemplateForm extends MissionForm {
       STRUCTURE_FIELD_DELETABLE = true;
     }
 
-    const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
+    const routes = routesList.filter(r => r.structure_id === state.structure_id && checkRouteByNew(state, r, available_route_types));
 
-    const ROUTES = routesList
-      .filter(route => route.technical_operation_id === state.technical_operation_id)
-      .map(({ id, name }) => ({ value: id, label: name }));
+    const filteredRoutes = (
+      route !== null &&
+      route.id !== undefined &&
+      routes.find(item => item.value === route.id) === undefined
+    ) ? routes.concat([route]) : routes;
 
-    const CARS = carsList.map(c => ({ value: c.asuods_id, label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}${c.type_name ? '/' : ''}${c.type_name || ''}]` }));
+    const ROUTES = uniqBy(
+      filteredRoutes.map(({ id, name }) => ({ value: id, label: name })),
+      'value',
+    );
+
+    let newCarList = carsList;
+
+    if (lodashIsEmpty(car_func_types_ids)) {
+      newCarList = newCarList.filter(({ type_id }) => car_func_types_ids.includes(type_id));
+    }
+
+    const CARS = newCarList.map(c => ({ value: c.asuods_id, label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}${c.type_name ? '/' : ''}${c.type_name || ''}]` }));
 
     const IS_CREATING = true;
 
@@ -48,8 +84,6 @@ class MissionTemplateForm extends MissionForm {
     if (IS_CREATING) {
       title = 'Создание шаблона задания';
     }
-
-    const route = this.state.selectedRoute;
 
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
@@ -85,6 +119,20 @@ class MissionTemplateForm extends MissionForm {
             </Col>}
           </Row>
           <Row>
+            <Col md={12}>
+              <InsideField.MunicipalFacility
+                id={'municipal_facility_id'}
+                errors={errors}
+                state={state}
+                disabled={!!state.route_id}
+                handleChange={this.handleChange.bind(this)}
+                getDataByNormId={this.getDataByNormId}
+                technicalOperationsList={technicalOperationsList}
+                getNormIdFromState={!IS_CREATING}
+              />
+            </Col>
+          </Row>
+          <Row>
             <Col md={6}>
               <Field
                 type="select"
@@ -92,7 +140,7 @@ class MissionTemplateForm extends MissionForm {
                 error={errors.car_id}
                 className="white-space-pre-wrap"
                 options={CARS}
-                disabled={isEmpty(state.technical_operation_id)}
+                disabled={isEmpty(state.technical_operation_id) || isEmpty(state.municipal_facility_id)}
                 value={state.car_id}
                 onChange={this.handleChange.bind(this, 'car_id')}
               />
@@ -153,6 +201,7 @@ class MissionTemplateForm extends MissionForm {
           showForm={this.state.showRouteForm}
           structureId={state.structure_id}
           fromMission
+          available_route_types={available_route_types}
         />
 
       </Modal>

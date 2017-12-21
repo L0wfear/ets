@@ -1,12 +1,14 @@
 import * as React from 'react';
-import { Button, Glyphicon } from 'react-bootstrap';
+import { DropdownButton, MenuItem, Button as BootstrapButton, Glyphicon } from 'react-bootstrap';
 import connectToStores from 'flummox/connect';
 
 import { getToday0am, getToday2359 } from 'utils/dates';
 import { FluxContext } from 'utils/decorators';
 import { saveData } from 'utils/functions';
 
+import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
 import Paginator from 'components/ui/Paginator.jsx';
+import Div from 'components/ui/Div.jsx';
 
 import OrdersDatepicker from 'components/directories/order/OrdersDatepicker';
 import OrdersTable from 'components/directories/order/OrdersTable';
@@ -21,6 +23,22 @@ const PaginatorTsx: any = Paginator;
 
 const MAX_ITEMS_PER_PAGE = 15;
 
+const TypeDownload = {
+  old: '1',
+  new: '2',
+};
+const marginLeft = { marginLeft: 10 };
+
+const Button = enhanceWithPermissions(BootstrapButton);
+const title: any = <Glyphicon glyph="download-alt" />;
+
+/**
+ * @todo
+ * path to stateless component
+ * - внешний state на redux
+ * - композиция
+ * - папка utils со всеми лишними функциями
+ */
 @FluxContext
 class OrderList extends React.Component<any, any> {
   context: any;
@@ -50,12 +68,17 @@ class OrderList extends React.Component<any, any> {
       selectedElementOrder: null,
       selectedElementAssignment: null,
       missionData: {},
+      missionTemplateData: {},
+      dutyMissionData: {},
       showHistoryComponent: false,
       historyOrder: [],
     };
   }
   componentDidMount() {
-    this.context.flux.getActions('missions').getMissionSources();
+    const { flux } = this.context;
+    flux.getActions('missions').getMissionSources();
+    flux.getActions('employees').getEmployees({ active: true });
+
     const {
       routeParams: {
         idOrder = '',
@@ -159,7 +182,7 @@ class OrderList extends React.Component<any, any> {
       } = {},
     } = this.props;
     if (!!idOrder) {
-      this.props.history.pushState(null, '/orders');
+      this.props.history.push('/orders');
     }
     const pageOptions = {
       ...this.state.pageOptions,
@@ -232,6 +255,20 @@ class OrderList extends React.Component<any, any> {
 
     return !num_exec || status === 'cancelled';
   }
+  checkDisabledCMЕtemplate = () => {
+    const {
+      status = 'cancelled',
+      technical_operations = [],
+    } = (this.state.selectedElementOrder || {});
+
+    return status === 'cancelled' || !technical_operations.some(({ num_exec }) => num_exec > 0);
+  }
+  checkDisabledCDMTemplate = () => {
+    const {
+      technical_operations = [],
+    } = (this.state.selectedElementOrder || {});
+    return this.checkDisabledCMЕtemplate() || !(technical_operations.some(({ num_exec, work_type_name }) => (num_exec > 0) && (work_type_name === 'Ручные' || work_type_name === 'Комбинированный')));
+  }
   handleClickOnCM = () => {
     const missionData: any = {
       showForm: true,
@@ -246,6 +283,7 @@ class OrderList extends React.Component<any, any> {
         order_operation_id,
         norm_id,
       },
+      selectedElementOrder: order,
       selectedElementOrder: {
         id: faxogramm_id,
         order_date,
@@ -274,14 +312,78 @@ class OrderList extends React.Component<any, any> {
 
     missionData.mElement = mElement;
     missionData.initMission = initMission;
+    missionData.order = order;
 
     this.setState({
       missionData,
     });
   }
+  handleClickOnCMTemplate = () => {
+    const { missionSourcesList = [] } = this.props;
+
+    const missionTemplateData: any = {
+      showForm: true,
+      typeClick: 'missionTemplate',
+      mission_source_id: (missionSourcesList.find(({ auto }) => auto) || {}).id,
+    };
+
+    const {
+      selectedElementOrder: {
+        technical_operations = [],
+        order_date,
+        order_date_to,
+      },
+    } = this.state;
+
+    missionTemplateData.technical_operations = technical_operations;
+
+    missionTemplateData.orderDates = {
+      order_date,
+      order_date_to,
+    };
+
+    this.setState({
+      missionTemplateData,
+    });
+  }
+  handleClickOnCDMTemplate = () => {
+    const { missionSourcesList = [] } = this.props;
+
+    const missionTemplateData: any = {
+      showForm: true,
+      typeClick: 'missionDutyTemplate',
+      mission_source_id: (missionSourcesList.find(({ auto }) => auto) || {}).id,
+    };
+
+    const {
+      selectedElementOrder: {
+        technical_operations = [],
+        order_date,
+        order_date_to,
+      },
+    } = this.state;
+
+    missionTemplateData.technical_operations = technical_operations;
+
+    missionTemplateData.orderDates = {
+      order_date,
+      order_date_to,
+    };
+
+    this.setState({
+      missionTemplateData,
+    });
+  }
+
   onHideCM = () =>
     this.setState({
       missionData: {
+        showForm: false,
+      },
+    })
+    onHideCMTemplate = () =>
+    this.setState({
+      missionTemplateData: {
         showForm: false,
       },
     })
@@ -294,9 +396,10 @@ class OrderList extends React.Component<any, any> {
 
     const {
       work_type_name = null,
+      num_exec,
     } = sEA;
 
-    return !((work_type_name === null) || work_type_name === 'Ручные' || work_type_name === 'Комбинированный');
+    return !((work_type_name === null || work_type_name === 'Ручные' || work_type_name === 'Комбинированный') && num_exec > 0);
   }
 
   handleClickOnCDM = () => {
@@ -309,8 +412,10 @@ class OrderList extends React.Component<any, any> {
         date_from,
         date_to,
         municipal_facility_id,
-        order_operation_id, norm_id,
+        order_operation_id,
+        norm_id,
       },
+      selectedElementOrder: order,
       selectedElementOrder: {
         id: faxogramm_id,
         order_date,
@@ -338,6 +443,7 @@ class OrderList extends React.Component<any, any> {
 
     dutyMissionData.dmElement = dmElement;
     dutyMissionData.initDutyMission = initDutyMission;
+    dutyMissionData.order = order;
 
     this.setState({
       ...this.state,
@@ -352,14 +458,19 @@ class OrderList extends React.Component<any, any> {
       },
     })
 
-  saveOrder = () => {
+  saveOrder = typeSave => {
     const {
       selectedElementOrder: {
         id,
       },
     } = this.state;
 
-    this.context.flux.getActions('objects').saveOrder(id)
+    const payload: any = {};
+    if (typeSave === TypeDownload.new) {
+      payload.format = 'xls';
+    }
+
+    this.context.flux.getActions('objects').saveOrder(id, payload)
       .then(({ blob, fileName }) => saveData(blob, fileName));
   }
 
@@ -409,6 +520,19 @@ class OrderList extends React.Component<any, any> {
     };
   }
 
+  seclectDownload = eventName => {
+    switch (eventName) {
+      case TypeDownload.old:
+        this.saveOrder(TypeDownload.old);
+        return;
+      case TypeDownload.new:
+        this.saveOrder(TypeDownload.new);
+        return;
+    }
+
+    return undefined;
+  }
+
   render() {
     const {
       pageOptions: {
@@ -420,6 +544,7 @@ class OrderList extends React.Component<any, any> {
       selectedElementAssignment: assSE,
       missionData = {},
       dutyMissionData = {},
+      missionTemplateData = {},
       showHistoryComponent,
       historyOrder,
     } = this.state;
@@ -427,9 +552,6 @@ class OrderList extends React.Component<any, any> {
     const {
       OrdersList = [],
     } = this.props;
-
-    const canCreateMission = this.context.flux.getStore('session').getPermission('mission.create');
-    const canCreateDutyMission = this.context.flux.getStore('session').getPermission('duty_mission.create');
 
     return (
       <div className="ets-page-wrap">
@@ -446,32 +568,39 @@ class OrderList extends React.Component<any, any> {
           {...this.props}
           {...this.getAdditionalProps()}
         >
-          { canCreateMission && <Button onClick={this.handleClickOnCM} disabled={this.checkDisabledCM()}>Создать задание</Button> }
-          { canCreateDutyMission && <Button onClick={this.handleClickOnCDM} disabled={this.checkDisabledCDM()}>Создать наряд-задание</Button> }
-          <Button onClick={this.saveOrder} disabled={faxSE === null}><Glyphicon glyph="download-alt" /></Button>
+          <Button permissions={['mission.create']} onClick={this.handleClickOnCM} disabled={this.checkDisabledCM()}>Создать задание</Button>
+          <Button permissions={['mission_template.create']} onClick={this.handleClickOnCMTemplate} disabled={this.checkDisabledCMЕtemplate()}>Создать задание по шаблону</Button>
+          <Button permissions={['duty_mission.create']} onClick={this.handleClickOnCDM} disabled={this.checkDisabledCDM()}>Создать наряд-задание</Button>
+          <Button permissions={['mission_template.create']} onClick={this.handleClickOnCDMTemplate} disabled={this.checkDisabledCDMTemplate()}>Создать наряд-задание по шаблону</Button>
+          <div style={marginLeft} >
+            <DropdownButton onSelect={this.seclectDownload} pullRight title={title} id="bg-nested-dropdown">
+              <MenuItem eventKey={TypeDownload.old} disabled={faxSE === null}>Скан-копия факсограммы</MenuItem>
+              {/* <MenuItem eventKey={TypeDownload.new} disabled={faxSE === null}>Расшифровка централизованного задания</MenuItem> */}
+            </DropdownButton>
+          </div>
         </OrdersTable>
-        {
-          haveMax &&
+        <Div hidden={!haveMax} >
           <PaginatorTsx currentPage={this.state.pageOptions.page} maxPage={Math.ceil(this.props.ordersTotalCount / MAX_ITEMS_PER_PAGE)} setPage={this.setPageOrderTable} firstLastButtons />
-        }
-        { faxSE &&
+        </Div>
+        <Div hidden={!faxSE} >
           <OrderAssignmentsList
             seleted={assSE}
             dataSource={faxSE}
             onRowSelectedAssignment={this.onRowSelectedAssignment}
           />
-        }
-        {
-          showHistoryComponent && faxSE &&
+        </Div>
+        <Div hidden={!showHistoryComponent || !faxSE}>
           <HistoryOrderList
             data={historyOrder}
           />
-        }
+        </Div>
         <OrderFormWrap
           missionData={missionData}
+          missionTemplateData={missionTemplateData}
           dutyMissionData={dutyMissionData}
           onHideCM={this.onHideCM}
           onHideCDM={this.onHideCDM}
+          onHideCMTemplate={this.onHideCMTemplate}
         />
       </div>
     );

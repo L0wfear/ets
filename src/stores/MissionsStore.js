@@ -140,6 +140,9 @@ export function getDefaultDutyMission() {
 
 export function getDefaultDutyMissionTemplate() {
   return {
+    date_create: new Date(),
+    is_new: true,
+    brigade_employee_id_list: [],
   };
 }
 
@@ -155,6 +158,8 @@ export function getDefaultMissionTemplate() {
   return {
     description: '',
     passes_count: 1,
+    date_create: new Date(),
+    is_new: true,
   };
 }
 
@@ -165,5 +170,6 @@ export function getDefaultMissionsCreationTemplate() {
     assign_to_waybill: 'assign_to_new_draft',
     mission_source_id: 3,
     passes_count: 1,
+    is_new: true,
   };
 }

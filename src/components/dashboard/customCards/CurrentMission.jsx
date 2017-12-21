@@ -212,11 +212,13 @@ export default class CurrentMission extends DashboardCardMedium {
             </Div> : ''}
           </ul>
         </Div>
-        {this.state.showMissionRejectForm && <MissionRejectForm
-          show={this.state.showMissionRejectForm}
-          onReject={this.onReject}
-          mission={data}
-        />}
+        {this.state.showMissionRejectForm &&
+          <MissionRejectForm
+            show={this.state.showMissionRejectForm}
+            onReject={this.onReject}
+            mission={data}
+          />
+        }
       </Div>
     );
   }

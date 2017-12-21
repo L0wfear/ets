@@ -1,22 +1,24 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 
-export const tableMeta = props => ({
+export const tableMeta = ({
+  isOkrug = false,
+}) => ({
   cols: [
     {
       name: 'company_name',
       displayName: 'Учреждение',
       type: 'text',
-      display: props ? props.isOkrug : false,
-      filter: props && props.isOkrug ? { type: 'multiselect' } : false,
+      display: isOkrug,
+      filter: isOkrug ? { type: 'multiselect' } : false,
     },
     {
       name: 'timestamp',
       displayName: 'Дата действия',
-      type: 'text',
+      type: 'date',
       filter: {
-        type: 'datetime',
+        type: 'date',
       },
     },
     {
@@ -46,9 +48,9 @@ export const tableMeta = props => ({
     {
       name: 'entity_number',
       displayName: 'Номер документа',
-      type: 'text',
+      type: 'number',
       filter: {
-        type: 'string',
+        type: 'advanced-number',
       },
     },
     {
@@ -62,11 +64,11 @@ export const tableMeta = props => ({
   ],
 });
 
-const UserActionLogTable = (props) => {
-  const renderers = {
-    timestamp: ({ data }) => <DateFormatter date={data} time />,
-  };
+const renderers = {
+  timestamp: ({ data }) => <DateFormatter date={data} time />,
+};
 
+const UserActionLogTable = (props) => {
   return (<Table
     title="Журнал действий пользователей"
     initialSort="timestamp"
@@ -76,6 +78,10 @@ const UserActionLogTable = (props) => {
     renderers={renderers}
     {...props}
   />);
+};
+
+UserActionLogTable.propTypes = {
+  data: React.PropTypes.array,
 };
 
 export default UserActionLogTable;

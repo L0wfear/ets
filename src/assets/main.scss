@@ -1766,6 +1766,7 @@ body.application {
 
 .Select-control, .form-control {
   border-radius:0px !important;
+  overflow: visible;
 }
 
 .taxi-calc-block  {
@@ -2833,8 +2834,10 @@ div.none {
     width: 1240px !important;
   }
 }
-.modal-xlg {
-  width: 95% !important;
+@media (min-width: 1540px) {
+  .modal-lg {
+    width: 1440px !important;
+  }
 }
 
 .route-creating {
@@ -2911,6 +2914,12 @@ div.none {
   text-align: right;
 }
 
+.text-right-flex {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+}
 .odh-list {
   ul {
     padding-left: 0;

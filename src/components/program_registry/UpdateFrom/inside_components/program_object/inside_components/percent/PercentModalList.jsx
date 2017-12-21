@@ -6,6 +6,7 @@ import { isEmpty } from 'lodash';
 import { connectToStores, staticProps } from 'utils/decorators';
 import ElementsList from 'components/ElementsList.jsx';
 import ModalBody from 'components/ui/Modal';
+import { ButtonCreate, ButtonRead, ButtonDelete } from 'components/ui/buttons/CRUD';
 
 import PercentModalTable from './PercentModalTable';
 import PercentModalFormWrap from './PercentModalFormWrap';
@@ -19,19 +20,23 @@ import PercentModalFormWrap from './PercentModalFormWrap';
   operations: ['LIST', 'CREATE', 'READ', 'DELETE'],
 })
 export default class PercentModalList extends ElementsList {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
     this.keyPressDisabled = true;
-
-    this.removeElementAction = context.flux.getActions('repair').removePercent;
   }
+
+  removeElementAction = id => this.context.flux.getActions('repair').removePercent(id).then(this.checkMinVals);
+
   componentDidMount() {
     super.componentDidMount();
-    const { flux } = this.context;
+    this.checkMinVals();
+  }
+
+  checkMinVals = () => {
     const {
       object_id: id,
     } = this.props;
-    flux.getActions('repair').getDataAboutObjectById(id).then((ans) => {
+    this.context.flux.getActions('repair').getDataAboutObjectById(id).then((ans) => {
       const {
         result: {
           rows = [],
@@ -45,6 +50,67 @@ export default class PercentModalList extends ElementsList {
 
       return ans;
     });
+  }
+
+  /**
+   * @override
+   */
+  createElement = () => {
+    const { object_id } = this.props;
+
+    this.setState({
+      showForm: true,
+      selectedElement: {
+        object_id,
+      },
+    });
+  }
+
+  /**
+   * @override
+   */
+  getButtons(propsButton = {}) {
+    const { isPermittedByStatus } = this.props;
+
+    // Операции, заданные в статической переменной operations класса-наследника
+    const entity = this.constructor.entity;
+    const buttons = [];
+
+    const {
+      BCbuttonName = 'Создать',
+      BRbuttonName = 'Просмотреть',
+      BDbuttonName = 'Удалить',
+    } = propsButton;
+
+    buttons.push(
+      <ButtonCreate
+        buttonName={BCbuttonName}
+        key={buttons.length}
+        onClick={this.createElement}
+        permissions={[`${entity}.create`]}
+        disabled={!isPermittedByStatus}
+      />
+    );
+    buttons.push(
+      <ButtonRead
+        buttonName={BRbuttonName}
+        key={buttons.length}
+        onClick={this.showForm}
+        disabled={this.checkDisabledRead() || !isPermittedByStatus}
+        permissions={[`${entity}.read`]}
+      />
+    );
+    buttons.push(
+      <ButtonDelete
+        buttonName={BDbuttonName}
+        key={buttons.length}
+        onClick={this.removeElement}
+        disabled={this.checkDisabledDelete() || !isPermittedByStatus}
+        permissions={[`${entity}.delete`]}
+      />
+    );
+
+    return buttons;
   }
 
   /**
@@ -89,6 +155,7 @@ export default class PercentModalList extends ElementsList {
         renderers={this.constructor.formRenderers}
         permissions={[`${this.entity}.read`]}
         other={other}
+        checkMinVals={this.checkMinVals}
         {...this.props}
       />
     );
@@ -98,14 +165,14 @@ export default class PercentModalList extends ElementsList {
 
   render() {
     return (
-      <Modal {...this.props} show dialogClassName="modal-xlg" backdrop="static">
+      <Modal {...this.props} show bsSize="lg" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">{'Проставление процента выполнения работ'}</Modal.Title>
         </Modal.Header>
         { super.render() }
         <ModalBody />
         <Modal.Footer>
-          <Button onClick={this.onHide}>Закрыть</Button>
+          <Button onClick={this.props.onHide}>Закрыть</Button>
         </Modal.Footer>
       </Modal>
     );

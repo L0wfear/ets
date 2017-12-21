@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Panel, Glyphicon } from 'react-bootstrap';
 
 import EtsSelect from 'components/ui/input/EtsSelect';
+import Div from 'components/ui/Div.jsx';
 
 import OrdeHistoryTable from 'components/directories/order/order_history/OrdeHistoryTable';
 import OrderInfoTable from 'components/directories/order/order_assignment/OrderInfoTable';
@@ -24,13 +25,14 @@ class HistoryOrder extends React.Component<any, any> {
       activeList: !!activeData ? 1 : null,
       activeData,
       VERSION_OPTIONS: data.map((d, i) => ({ value: i + 1, label: `Версия ${i + 1} (неактуальная)`})),
+      historytableIsOpen: false,
     });
   }
 
   getEmptyMes() {
     return (
     <div>
-      <Col md={12}  style={{ height: 100 }}>
+      <Col md={12} style={{ marginTop: 20 }}>
         <span>Для выбранного централизованного задания предыдущих версий нет.</span>
       </Col>
     </div>
@@ -46,6 +48,11 @@ class HistoryOrder extends React.Component<any, any> {
       activeData: data.slice(num - 1, num)[0],
       activeList: num,
     });
+  }
+  toggleHistoryTable = () => {
+    const { historytableIsOpen } = this.state;
+
+    this.setState({ historytableIsOpen: !historytableIsOpen });
   }
   getTables() {
     const {
@@ -69,40 +76,48 @@ class HistoryOrder extends React.Component<any, any> {
             preventNoDataMessage
             data={[{ id: 0, order_info }]}
           />
-       </Col>
+        </Col>
       </div>
-    )
+    );
   }
   render() {
     const {
       haveData,
       activeList,
       VERSION_OPTIONS,
+      historytableIsOpen,
     } = this.state;
 
     return (
       <Row>
-        <Col md={12}>
-          <h4 style={{ marginLeft: 20, fontWeight: 'bold' }}>Расшифровка централизованного задания</h4>
-        </Col>
-        <Col md={12}>
-          <Col md={3}><div>Версия централизованного задания</div></Col>
-          <Col md={3}>
-            <EtsSelectTSX
-              type="select"
-              options={VERSION_OPTIONS}
-              value={activeList}
-              clearable={false}
-              onChange={this.handleChangeVersion}
-            />
+        <Panel>
+          <Col md={12} onClick={this.toggleHistoryTable} style={{ marginBottom: historytableIsOpen ? 20 : 0, cursor: 'pointer' }}>
+            <h4 style={{ display: 'flex', justifyContent: 'space-between', margin: 0 }}>
+              <span>Версионность централизованного задания</span>
+              <Glyphicon glyph={historytableIsOpen ? 'menu-up' : 'menu-down'} />
+            </h4>
           </Col>
-        </Col>
-        {
-          haveData ?
-          this.getTables()
-          :
-          this.getEmptyMes()
-        }
+          <Div hidden={!historytableIsOpen} >
+            <Col style={{ marginBottom: -15, display: 'flex' }} md={12}>
+              <div>Версия централизованного задания</div>
+              <Col md={3}>
+                <EtsSelectTSX
+                  type="select"
+                  options={VERSION_OPTIONS}
+                  value={activeList}
+                  clearable={false}
+                  onChange={this.handleChangeVersion}
+                />
+              </Col>
+            </Col>
+            {
+              haveData ?
+              this.getTables()
+              :
+              this.getEmptyMes()
+            }
+          </Div>
+        </Panel>
       </Row>
     );
   }

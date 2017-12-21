@@ -71,7 +71,7 @@ export class MissionForm extends Form {
 
   async handleCarIdChange(v) {
     this.handleChange('car_id', v);
-    if (this.props.formState.status && this.props.formState.status !== 'not_assigned') {
+    if (this.props.formState.status) {
       this.handleRouteIdChange(undefined);
     }
   }
@@ -354,8 +354,7 @@ export class MissionForm extends Form {
 
 
     const IS_CREATING = !state.status;
-    const IS_NOT_ASSIGNED = state.status === 'not_assigned';
-    const IS_POST_CREATING_NOT_ASSIGNED = IS_NOT_ASSIGNED || this.props.fromWaybill;
+    const IS_POST_CREATING_NOT_ASSIGNED = state.status === 'not_assigned' || this.props.fromWaybill;
     const IS_ASSIGNED = state.status === 'assigned';
     const IS_POST_CREATING_ASSIGNED = IS_ASSIGNED && isDeferred;
     const IS_DISPLAY = !IS_CREATING && !(IS_POST_CREATING_NOT_ASSIGNED || IS_POST_CREATING_ASSIGNED);// (!!state.status && state.status !== 'not_assigned') || (!isDeferred && !IS_CREATING);
@@ -386,7 +385,7 @@ export class MissionForm extends Form {
                 type="select"
                 label="Технологическая операция"
                 error={errors.technical_operation_id}
-                disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromOrder || sourceIsOrder || IS_NOT_ASSIGNED}
+                disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromOrder || sourceIsOrder }
                 options={TECH_OPERATIONS}
                 value={state.technical_operation_id}
                 onChange={this.handleTechnicalOperationChange}
@@ -398,7 +397,7 @@ export class MissionForm extends Form {
                 type="select"
                 label="Подразделение"
                 error={errors.structure_id}
-                disabled={STRUCTURE_FIELD_READONLY || this.props.fromWaybill || (!IS_CREATING && !IS_POST_CREATING_NOT_ASSIGNED) || !IS_CREATING  || IS_NOT_ASSIGNED}
+                disabled={STRUCTURE_FIELD_READONLY || this.props.fromWaybill || (!IS_CREATING && !IS_POST_CREATING_NOT_ASSIGNED) || !IS_CREATING  }
                 clearable={STRUCTURE_FIELD_DELETABLE}
                 options={STRUCTURES}
                 emptyValue={null}
@@ -414,7 +413,7 @@ export class MissionForm extends Form {
                 id={'municipal_facility_id'}
                 errors={errors}
                 state={state}
-                disabled={(!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY)) || this.props.fromOrder || sourceIsOrder  || IS_NOT_ASSIGNED}
+                disabled={(!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY)) || this.props.fromOrder || sourceIsOrder  }
                 handleChange={this.handleChange.bind(this)}
                 getDataByNormId={this.getDataByNormId}
                 technicalOperationsList={technicalOperationsList}
@@ -452,7 +451,7 @@ export class MissionForm extends Form {
                   label="Время выполнения:"
                   error={errors.date_start}
                   date={state.date_start}
-                  disabled={((IS_DISPLAY) && !IS_ASSIGNED) || IS_NOT_ASSIGNED}
+                  disabled={((IS_DISPLAY) && !IS_ASSIGNED) }
                   min={this.props.fromWaybill && this.props.waybillStartDate ? this.props.waybillStartDate : null}
                   max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
                   onChange={this.handleChangeDateStart}
@@ -466,7 +465,7 @@ export class MissionForm extends Form {
                   label=""
                   error={errors.date_end}
                   date={state.date_end}
-                  disabled={((IS_DISPLAY) && !IS_ASSIGNED) || IS_NOT_ASSIGNED}
+                  disabled={((IS_DISPLAY) && !IS_ASSIGNED) }
                   min={state.date_start}
                   max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
                   onChange={this.handleChange.bind(this, 'date_end')}
@@ -480,13 +479,13 @@ export class MissionForm extends Form {
                 type="select"
                 label="Маршрут"
                 error={errors.route_id}
-                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.car_id || !state.municipal_facility_id  || IS_NOT_ASSIGNED}
+                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.car_id || !state.municipal_facility_id  }
                 options={ROUTES}
                 value={state.route_id}
                 onChange={this.handleRouteIdChange}
               />
               <Div hidden={state.route_id}>
-                <Button onClick={this.createNewRoute} disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.car_id || !state.municipal_facility_id || IS_NOT_ASSIGNED}>Создать новый</Button>
+                <Button onClick={this.createNewRoute} disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.car_id || !state.municipal_facility_id }>Создать новый</Button>
               </Div>
             </Col>
           </Row>
@@ -503,7 +502,7 @@ export class MissionForm extends Form {
                 type="number"
                 label="Кол-во циклов"
                 error={errors.passes_count}
-                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || IS_NOT_ASSIGNED}
+                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY }
                 value={state.passes_count}
                 onChange={this.handleChange.bind(this, 'passes_count')}
                 min={0}
@@ -514,7 +513,7 @@ export class MissionForm extends Form {
                 type="select"
                 label="Источник получения задания"
                 error={errors.mission_source_id}
-                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || fromOrder || sourceIsOrder || IS_NOT_ASSIGNED}
+                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || fromOrder || sourceIsOrder }
                 options={MISSION_SOURCES}
                 value={state.mission_source_id}
                 onChange={this.handleChange.bind(this, 'mission_source_id')}
@@ -534,7 +533,7 @@ export class MissionForm extends Form {
                 type="string"
                 label="Комментарий"
                 value={state.comment}
-                disabled={state.status === 'fail' || state.status === 'complete' || IS_NOT_ASSIGNED}
+                disabled={state.status === 'fail' || state.status === 'complete' }
                 onChange={this.handleChange.bind(this, 'comment')}
                 error={errors.comment}
               />

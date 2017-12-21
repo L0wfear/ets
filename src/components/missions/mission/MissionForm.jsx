@@ -107,6 +107,8 @@ export class MissionForm extends Form {
     let { routesList } = this.props;
     let TECH_OPERATIONS = [];
 
+    await missionsActions.getMissionSources();
+
     if (!isEmpty(mission.route_id)) {
       selectedRoute = await routesActions.getRouteById(mission.route_id, false);
     }
@@ -121,7 +123,8 @@ export class MissionForm extends Form {
     if (norm_id) {
       await this.getDataByNormId(norm_id);
       carsList = await this.context.flux.getActions('cars').getCarsByNormId({ norm_id })
-        .then(({ result: { rows = [] } }) => rows );
+        .then(({ result: { rows = [] } }) => rows);
+
     }
 
     /**
@@ -132,11 +135,18 @@ export class MissionForm extends Form {
     const { result: technicalOperationsListOr } = await technicalOperationsActions.getTechnicalOperations();
     const technicalOperationsList = technicalOperationsListOr.filter(({ is_new, norm_ids }) => !is_new || (is_new && !norm_ids.some(n => n === null)));
 
+    let type_id = 0;
+    if (mission.status === 'not_assigned') {
+      type_id = (carsList.find(({ asuods_id }) => asuods_id === mission.car_id) || {}).type_id;
+      this.handleChange('type_id', type_id);
+    }
+
     const {
       is_new,
+      type_id: m_type_id = type_id,
     } = mission;
 
-    if (this.props.fromWaybill && mission.type_id) {
+    if ((this.props.fromWaybill || mission.status === 'not_assigned') && m_type_id) {
       TECH_OPERATIONS = technicalOperationsList.reduce((newArr, to) => {
         const {
           is_new: is_new_to,
@@ -145,7 +155,7 @@ export class MissionForm extends Form {
           car_func_types,
         } = to;
 
-        if (is_new_to && car_func_types.find(({ id }) => id === mission.type_id)) {
+        if (is_new_to && car_func_types.find(({ id }) => id === m_type_id)) {
           newArr.push({ value, label });
         }
 
@@ -169,7 +179,6 @@ export class MissionForm extends Form {
       TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
     }
 
-    await missionsActions.getMissionSources();
 
     this.setState({
       carsList,

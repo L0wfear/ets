@@ -27,13 +27,10 @@ export const checkRouteByNew = (state, route, available_route_types = []) => {
 
   if (is_new) {
     const {
-      type,
       is_new: route_is_new,
-      norm_id: route_norm_id,
-      municipal_facility_id: route_municipal_facility_id,
     } = route;
 
-    if (route_is_new && route_norm_id === state.norm_id && route_municipal_facility_id === state.municipal_facility_id && available_route_types.includes(type)) {
+    if (route_is_new) {
       return true;
     }
     return false;

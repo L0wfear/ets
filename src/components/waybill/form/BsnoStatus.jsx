@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Raven from 'raven-js';
+import { diffDates } from 'utils/dates.js';
 
 import { FluxContext } from 'utils/decorators';
 import Field from 'components/ui/Field.jsx';
@@ -13,7 +14,7 @@ class BsnoStaus extends React.Component {
   static get propTypes() {
     return {
       okStatus: React.PropTypes.bool,
-      car_id: React.PropTypes.number,
+      gps_code: React.PropTypes.string,
       is_bnso_broken: React.PropTypes.bool,
       handleChange: React.PropTypes.func,
     };
@@ -46,12 +47,12 @@ class BsnoStaus extends React.Component {
         global.NOTIFICATION_SYSTEM.notify('Ошибка подключения к потоку', 'error');
       }
       this.state = {
-        carsTrackState: [],
+        carsTrackState: {},
         ws,
       };
     } else {
       this.state = {
-        carsTrackState: [],
+        carsTrackState: {},
         ws: null,
       };
     }
@@ -63,7 +64,7 @@ class BsnoStaus extends React.Component {
       ws.close();
       this.setState({ ws: null });
     }
-  }    
+  }
 
   handleUpdatePoints = (data) => {
     const carsTrackState = {
@@ -75,13 +76,14 @@ class BsnoStaus extends React.Component {
       okStatus = false,
     } = this.props;
     if (okStatus) {
-      const { car_id = 0, is_bnso_broken: is_bnso_broken_old = '' } = this.props;
+      const { gps_code = 0, is_bnso_broken: is_bnso_broken_old = '' } = this.props;
 
-      if (car_id) {
-        const { timestamp = 0 } = carsTrackState[car_id] || {};
-        const is_bnso_broken = ((+(new Date()) / 1000) - timestamp) > 60 * 60;
+      if (gps_code) {
+        const timestamp = carsTrackState[gps_code] || 0;
+        const is_bnso_broken = diffDates(new Date(), timestamp * 1000, 'hours') !== 0;
+
         if (is_bnso_broken !== is_bnso_broken_old) {
-          this.props.handleChange('is_bnso_broken', (((+(new Date()) / 1000) - timestamp) > 60 * 60));
+          this.props.handleChange('is_bnso_broken', is_bnso_broken);
         }
       }
     }
@@ -97,7 +99,7 @@ class BsnoStaus extends React.Component {
     const is_bnso_broken_isBoolean = typeof is_bnso_broken === 'boolean';
 
     let value = '';
-    const error = is_bnso_broken_isBoolean && is_bnso_broken ? 'Выполненные работы не будут учтены в системе' : ''
+    const error = is_bnso_broken_isBoolean && is_bnso_broken ? 'Выполненные работы не будут учтены в системе' : '';
 
     if (is_bnso_broken_isBoolean) {
       if (!is_bnso_broken) {
@@ -109,6 +111,7 @@ class BsnoStaus extends React.Component {
 
     return (
       <Field
+        type="string"
         label="Исправность датчика ГЛОНАСС"
         value={value}
         error={error}

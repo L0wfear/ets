@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button as BootstrapButton, Glyphicon } from 'react-bootstrap';
+import { DropdownButton, MenuItem, Button as BootstrapButton, Glyphicon } from 'react-bootstrap';
 import connectToStores from 'flummox/connect';
 
 import { getToday0am, getToday2359 } from 'utils/dates';
@@ -23,7 +23,14 @@ const PaginatorTsx: any = Paginator;
 
 const MAX_ITEMS_PER_PAGE = 15;
 
+const TypeDownload = {
+  old: '1',
+  new: '2',
+};
+const marginLeft = { marginLeft: 10 };
+
 const Button = enhanceWithPermissions(BootstrapButton);
+const title: any = <Glyphicon glyph="download-alt" />;
 
 /**
  * @todo
@@ -408,6 +415,7 @@ class OrderList extends React.Component<any, any> {
         order_operation_id,
         norm_id,
       },
+      selectedElementOrder: order,
       selectedElementOrder: {
         id: faxogramm_id,
         order_date,
@@ -435,6 +443,7 @@ class OrderList extends React.Component<any, any> {
 
     dutyMissionData.dmElement = dmElement;
     dutyMissionData.initDutyMission = initDutyMission;
+    dutyMissionData.order = order;
 
     this.setState({
       ...this.state,
@@ -449,14 +458,19 @@ class OrderList extends React.Component<any, any> {
       },
     })
 
-  saveOrder = () => {
+  saveOrder = typeSave => {
     const {
       selectedElementOrder: {
         id,
       },
     } = this.state;
 
-    this.context.flux.getActions('objects').saveOrder(id)
+    const payload: any = {};
+    if (typeSave === TypeDownload.new) {
+      payload.format = 'xls';
+    }
+
+    this.context.flux.getActions('objects').saveOrder(id, payload)
       .then(({ blob, fileName }) => saveData(blob, fileName));
   }
 
@@ -506,6 +520,19 @@ class OrderList extends React.Component<any, any> {
     };
   }
 
+  seclectDownload = eventName => {
+    switch (eventName) {
+      case TypeDownload.old:
+        this.saveOrder(TypeDownload.old);
+        return;
+      case TypeDownload.new:
+        this.saveOrder(TypeDownload.new);
+        return;
+    }
+
+    return undefined;
+  }
+
   render() {
     const {
       pageOptions: {
@@ -545,7 +572,12 @@ class OrderList extends React.Component<any, any> {
           <Button permissions={['mission_template.create']} onClick={this.handleClickOnCMTemplate} disabled={this.checkDisabledCMЕtemplate()}>Создать задание по шаблону</Button>
           <Button permissions={['duty_mission.create']} onClick={this.handleClickOnCDM} disabled={this.checkDisabledCDM()}>Создать наряд-задание</Button>
           <Button permissions={['mission_template.create']} onClick={this.handleClickOnCDMTemplate} disabled={this.checkDisabledCDMTemplate()}>Создать наряд-задание по шаблону</Button>
-          <Button onClick={this.saveOrder} disabled={faxSE === null}><Glyphicon glyph="download-alt" /></Button>
+          <div style={marginLeft} >
+            <DropdownButton onSelect={this.seclectDownload} pullRight title={title} id="bg-nested-dropdown">
+              <MenuItem eventKey={TypeDownload.old} disabled={faxSE === null}>Скан-копия факсограммы</MenuItem>
+              {/* <MenuItem eventKey={TypeDownload.new} disabled={faxSE === null}>Расшифровка централизованного задания</MenuItem> */}
+            </DropdownButton>
+          </div>
         </OrdersTable>
         <Div hidden={!haveMax} >
           <PaginatorTsx currentPage={this.state.pageOptions.page} maxPage={Math.ceil(this.props.ordersTotalCount / MAX_ITEMS_PER_PAGE)} setPage={this.setPageOrderTable} firstLastButtons />

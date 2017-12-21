@@ -324,7 +324,7 @@ export class DutyMissionForm extends Form {
                     <Field
                       type="date"
                       label="Время выполнения, планируемое:"
-                      error={errors.plan_date_start}
+                      error={errors.plan_date_start || errors.plan_date}
                       date={state.plan_date_start}
                       disabled={IS_DISPLAY || readOnly}
                       onChange={this.handleChange.bind(this, 'plan_date_start')}

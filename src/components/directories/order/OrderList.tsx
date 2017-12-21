@@ -332,6 +332,7 @@ class OrderList extends React.Component<any, any> {
         technical_operations = [],
         order_date,
         order_date_to,
+        id: faxogramm_id,
       },
     } = this.state;
 
@@ -340,6 +341,7 @@ class OrderList extends React.Component<any, any> {
     missionTemplateData.orderDates = {
       order_date,
       order_date_to,
+      faxogramm_id,
     };
 
     this.setState({
@@ -360,6 +362,7 @@ class OrderList extends React.Component<any, any> {
         technical_operations = [],
         order_date,
         order_date_to,
+        id: faxogramm_id,
       },
     } = this.state;
 
@@ -368,6 +371,7 @@ class OrderList extends React.Component<any, any> {
     missionTemplateData.orderDates = {
       order_date,
       order_date_to,
+      faxogramm_id,
     };
 
     this.setState({

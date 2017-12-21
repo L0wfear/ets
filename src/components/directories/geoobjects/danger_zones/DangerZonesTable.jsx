@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
-
 export const tableMeta = props => ({
   cols: [
     {
@@ -44,10 +43,13 @@ export const tableMeta = props => ({
     },
   ],
 });
+const renderers = {
+  roadway_area: ({ data }) => (<div> {parseFloat(data).toFixed(2)} </div>),
+  sidewalk_area: ({ data }) => (<div> {parseFloat(data).toFixed(2)} </div>),
+  sidelines_area: ({ data }) => (<div> {parseFloat(data).toFixed(2)} </div>),
+};
 
 export default (props) => {
-  const renderers = {};
-
   return (<Table
     title="Особо опасные места"
     results={props.data}

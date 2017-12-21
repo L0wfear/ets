@@ -3,7 +3,6 @@ import DangerZonesTable, { tableMeta } from './DangerZonesTable.jsx';
 import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
-import schema from './schema';
 
 
 @connectToStores(['geoObjects', 'session'])
@@ -11,7 +10,6 @@ import schema from './schema';
 @staticProps({
   path: 'geozones',
   entity: 'danger_zone',
-  schema,
   listName: 'dangerZonesList',
   tableComponent: DangerZonesTable,
   formComponent: GeoObjectsMapModal,

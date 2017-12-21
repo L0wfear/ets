@@ -19,12 +19,10 @@ export default class RoutesActions extends Actions {
     return RouteService.get(payload);
   }
 
-  getRoutesByNormId(norm_id) {
-    const payload = { norm_id };
-
-    if (!norm_id) {
-      delete payload.norm_id;
-    }
+  getRoutesBySomeData(data) {
+    const payload = {
+      ...data,
+    };
 
     return RouteService.get(payload).then(({ result = [] }) => result);
   }

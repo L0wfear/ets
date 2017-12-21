@@ -126,6 +126,7 @@ const getTableMeta = ({
         name: 'car_func_types_text',
         displayName: 'Типы ТС',
         type: 'string',
+        cssClassName: 'width1000',
         filter: {
           type: 'multiselect',
           some: true,

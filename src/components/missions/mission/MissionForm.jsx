@@ -452,6 +452,7 @@ export class MissionForm extends Form {
                 error={errors.car_id}
                 className="white-space-pre-wrap"
                 disabled={IS_POST_CREATING_ASSIGNED ||
+                  state.status === 'not_assigned' ||
                   IS_DISPLAY ||
                   this.props.fromWaybill ||
                   (IS_CREATING && isEmpty(state.technical_operation_id)) ||

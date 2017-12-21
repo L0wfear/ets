@@ -749,6 +749,7 @@ class WaybillForm extends Form {
     if (IS_DRAFT && state.driver_id !== undefined && DRIVERS.every(d => d.value !== state.driver_id)) {
       DRIVERS.push({ label: this.employeeFIOLabelFunction(state.driver_id), value: state.driver_id });
     }
+    const { gps_code } = carsList.find(({ asuods_id }) => asuods_id === state.car_id) || {};
 
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
@@ -924,7 +925,7 @@ class WaybillForm extends Form {
               <BsnoStatus
                 okStatus={IS_CREATING || IS_DRAFT}
                 is_bnso_broken={state.is_bnso_broken}
-                car_id={state.car_id}
+                gps_code={gps_code}
                 handleChange={this.handleChange}
               />
             </Col>

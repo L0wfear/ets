@@ -79,6 +79,7 @@ export class MissionForm extends Form {
   async handleTechnicalOperationChange(v) {
     this.handleChange('technical_operation_id', v);
     this.handleChange('municipal_facility_id', null);
+    this.handleRouteIdChange(undefined);
   }
 
   handleStructureIdChange(v) {

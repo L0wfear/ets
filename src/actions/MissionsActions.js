@@ -375,4 +375,12 @@ export default class MissionsActions extends Actions {
     };
     return Cleaning.path('municipal_facility').get(payload, false, 'json');
   }
+  getCleaningMunicipalFacilityAllList(outerPyload) {
+    const payload = {
+      start_date: createValidDate(outerPyload.start_date || new Date()),
+      end_date: createValidDate(outerPyload.end_date || new Date()),
+    };
+
+    return Cleaning.path('municipal_facility').get(payload, false, 'json');
+  }
 }

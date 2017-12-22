@@ -3,7 +3,7 @@ const WS_PROTO = 'ws:';
 
 const DOC_URL = {
   dev: `${PROTO}//dev-ets.gost-group.com/docs/`,
-  stage: `${PROTO}//ets.tech.mos.ru/ets-stage/docs/`,
+  stage: `${PROTO}//ets.mos.ru/ets-stage/docs/`,
   prod: `${PROTO}//ets.tech.mos.ru/ets-study/docs/`,
 };
 
@@ -14,7 +14,7 @@ const config = {
 };
 
 const STANDS = {
-  stage: `${PROTO}//ets.tech.mos.ru/ets-stage/services`,
+  stage: `${PROTO}//ets.mos.ru/ets-stage/services`,
   prod: `${PROTO}//ets.tech.mos.ru/ets-study/services`,
   dev: `${PROTO}//dev-ets.gost-group.com/services`,
 };

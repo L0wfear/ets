@@ -25,7 +25,7 @@ class HistoryOrder extends React.Component<any, any> {
       haveData: !!activeData,
       activeList: !!activeData ? 1 : null,
       activeData,
-      VERSION_OPTIONS: data.map((d, i) => ({ value: i + 1, label: `Версия ${moment(d.create_date).format(`${global.APP_DATE_FORMAT} HH:mm`)}`})),
+      VERSION_OPTIONS: data.map((d, i) => ({ value: i + 1, label: `Версия ${moment(d.synced_timestamp).format(`${global.APP_DATE_FORMAT} HH:mm`)}`})),
       historytableIsOpen: false,
     });
   }

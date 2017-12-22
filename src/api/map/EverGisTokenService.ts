@@ -3,7 +3,7 @@
  */
 
 export function getEverGisToken(): Promise<string> {
-  const tokenUrl = `http://gisoiv.mos.ru/IntegrationGIS/SpatialProcessor/Strategis.JsClient/ApiLogin.aspx?authId=505741D8-C667-440D-9CA0-32FD1FF6AF88&userName=jspublic&password=jspublic&ts=${new Date().getTime()}`;
+  const tokenUrl = `http${/s/.test(window.location.protocol) ? 's' : ''}://gisoiv.mos.ru/IntegrationGIS/SpatialProcessor/Strategis.JsClient/ApiLogin.aspx?authId=505741D8-C667-440D-9CA0-32FD1FF6AF88&userName=jspublic&password=jspublic&ts=${new Date().getTime()}`;
   return fetch(tokenUrl).then(response => response.json()).then(data => encodeURIComponent(data.token));
 }
 

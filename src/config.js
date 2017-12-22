@@ -1,5 +1,5 @@
 const PROTO = window.location.protocol;
-const WS_PROTO = 'ws:';
+const WS_PROTO = `ws${/s/.test(window.location.protocol) ? 's' : ''}:`;
 
 const DOC_URL = {
   dev: `${PROTO}//dev-ets.gost-group.com/docs/`,

@@ -14,6 +14,7 @@ import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import { isEmpty } from 'utils/functions';
+import { getPermittetEmployeeForBrigade } from 'components/missions/utils/utils.ts';
 import Form from 'components/compositions/Form.jsx';
 import InsideField from 'components/missions/duty_mission/inside_fields/index';
 
@@ -268,10 +269,8 @@ export class DutyMissionForm extends Form {
       filteredRoutes.map(({ id, name }) => ({ value: id, label: name })),
       'value',
     );
-    const EMPLOYEES = employeesList.map(d => ({
-      value: d.id,
-      label: `${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''} ${!d.active ? '(Неактивный сотрудник)' : ''}`,
-    }));
+    const EMPLOYEES = getPermittetEmployeeForBrigade(employeesList);
+
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({
       id,
       value: id,

@@ -42,11 +42,7 @@ const getTableMeta = (props) => {
         type: 'number',
         filter: {
           type: 'multiselect',
-          options: [
-            { label: 'Регламентные работы', value: 'Регламентные работы' },
-            { label: 'Заявка', value: 'Заявка' },
-            { label: 'Централизованное задание', value: 'Централизованное задание' },
-          ],
+          options: props.missionSourcesList.map(({ name }) => ({ value: name, label: name })),
         },
         cssClassName: 'width150',
       },
@@ -102,6 +98,22 @@ const getTableMeta = (props) => {
           type: 'multiselect',
           options: props.technicalOperationsList.map(({ name }) => ({ value: name, label: name })),
         },
+      },
+      {
+        name: 'municipal_facility_id',
+        displayName: 'Элемент',
+        type: 'number',
+        display: false,
+        filter: {
+          type: 'multiselect',
+          options: props.municipalFacilityList.map(({ municipal_facility_id, municipal_facility_name }) => ({ value: municipal_facility_id, label: municipal_facility_name })),
+        },
+      },
+      {
+        name: 'municipal_facility_name',
+        displayName: 'Элемент',
+        type: 'number',
+        filter: false,
       },
       {
         name: 'comment',

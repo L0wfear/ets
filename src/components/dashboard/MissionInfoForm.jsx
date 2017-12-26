@@ -61,6 +61,7 @@ class MissionInfoForm extends Form {
       missionReport: [],
       selectedObjects: [],
       selectedElementId: null,
+      selectedPointNum: null,
       selectedPoint: null,
       parkingCount: 0,
     };
@@ -84,6 +85,7 @@ class MissionInfoForm extends Form {
     if (report_data.check_unit) {
       _.each(missionReport, mr => (mr.route_check_unit = report_data.check_unit));
     }
+
     this.setState({ missionReport, selectedObjects, route });
     flux.getActions('objects').getTypes();
   }
@@ -95,6 +97,9 @@ class MissionInfoForm extends Form {
 
   handleSelectedElementChange(id) {
     this.setState({ selectedElementId: id });
+  }
+  handleSelectedPointChange(selectedPointNum) {
+    this.setState({ selectedPointNum });
   }
 
   handlePointChange(point) {
@@ -109,11 +114,17 @@ class MissionInfoForm extends Form {
 
   render() {
     const state = this.props.formState;
-    const { car_data, report_data, route_data,
-      technical_operation_data } = state;
+    const {
+      car_data,
+      report_data,
+      route_data,
+      technical_operation_data,
+    } = state;
+
     const routeType = route_data.type;
     const { route = {} } = this.state;
     const { geozonePolys = {} } = this.props;
+
     const { object_list = [], draw_object_list = [] } = route;
     const polys = _(_.cloneDeep(object_list))
       .map((object) => {
@@ -178,6 +189,7 @@ class MissionInfoForm extends Form {
                   maxSpeed={technical_operation_data.max_speed}
                   selectedObjects={this.state.selectedObjects}
                   selectedPoly={geozonePolys[this.state.selectedElementId]}
+                  selectedPoint={Object.values(polys).find(({ customId }) => customId === this.state.selectedPointNum)}
                   car_gov_number={car_data.gov_number}
                 />
 
@@ -193,7 +205,7 @@ class MissionInfoForm extends Form {
                   <MissionReportByDT renderOnly enumerated={false} selectedReportDataDTS={this.state.missionReport} onElementChange={this.handleSelectedElementChange} selectField={'object_id'} />
                 </Div>
                 <Div hidden={routeType !== 'points'}>
-                  <MissionReportByPoints renderOnly enumerated={false} selectedReportDataPoints={this.state.missionReport} />
+                  <MissionReportByPoints renderOnly enumerated={false} selectedReportDataPoints={this.state.missionReport} onElementChange={this.handleSelectedPointChange} selectedField={'customId'} />
                 </Div>
               </Div>
               <Div hidden={this.state.missionReport && this.state.missionReport.length > 0}>

@@ -162,7 +162,7 @@ class MissionReportByDT extends ElementsList {
     }
   }
 
-  selectElement(el) {
+  selectElement = (el) => {
     super.selectElement(el);
     if (typeof this.props.onElementChange === 'function') {
       this.props.onElementChange(el.props.data[this.selectField]);
@@ -175,7 +175,7 @@ class MissionReportByDT extends ElementsList {
     return (
       <MissionReportByDTTable
         noHeader={renderOnly}
-        onRowSelected={this.selectElement.bind(this)}
+        onRowSelected={this.selectElement}
         selected={this.state.selectedElement}
         selectField={this.selectField}
         data={this.props.selectedReportDataDTS || []}

@@ -30,7 +30,7 @@ class MissionsStore extends Store {
     this.register(missionsActons.createDutyMissionTemplate, this.handleGetDutyMissionTemplates);
     this.register(missionsActons.updateDutyMissionTemplate, this.handleGetDutyMissionTemplates);
     this.register(missionsActons.removeDutyMissionTemplate, this.handleGetDutyMissionTemplates);
-
+    this.register(missionsActons.getCleaningMunicipalFacilityAllList, this.handleGetCleaningMunicipalFacilityAllList);
 
     this.state = {
       missionsList: [],
@@ -41,7 +41,11 @@ class MissionsStore extends Store {
       dutyMissionsList: [],
       carDutyMissionList: [],
       dutyMissionTemplatesList: [],
+      municipalFacilityList: [],
     };
+  }
+  handleGetCleaningMunicipalFacilityAllList({ result: { rows: municipalFacilityList = [] } }) {
+    this.setState({ municipalFacilityList });
   }
 
   handleGetMissions(missions) {

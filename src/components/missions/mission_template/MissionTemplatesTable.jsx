@@ -1,7 +1,9 @@
 import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 
-export const getTableMeta = ({ structures = [] }) => {
+export const getTableMeta = ({ structures = [], data = [] }) => {
+  const structure_id_list = data.map(({ structure_id }) => structure_id);
+
   const tableMeta = {
     cols: [
       {
@@ -65,21 +67,21 @@ export const getTableMeta = ({ structures = [] }) => {
         },
       },
       {
-        name: 'comment',
-        displayName: 'Комментарий',
-        type: 'string',
-        filter: false,
-      },
-      {
         name: 'structure_id',
         displayName: 'Подразделение',
         cssClassName: 'width80',
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: structures.map(({ id, name }) => ({ value: id, label: name })),
+          options: structures.filter(({ id }) => structure_id_list.includes(id)).map(({ id, name }) => ({ value: id, label: name })),
         },
         display: structures.length,
+      },
+      {
+        name: 'comment',
+        displayName: 'Комментарий',
+        type: 'string',
+        filter: false,
       },
     ],
   };

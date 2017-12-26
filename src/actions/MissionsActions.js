@@ -142,7 +142,22 @@ export default class MissionsActions extends Actions {
   }
 
   getMissionData(mission_id) {
-    return MissionDataService.path(mission_id).get();
+    return MissionDataService.path(mission_id).get().then((ans) => {
+      const {
+        result: {
+          report_data: {
+            entries,
+          },
+        },
+      } = ans;
+      if (entries) {
+        ans.result.report_data.entries.forEach((data, i) => { data.customId = i; });
+      }
+      // todo 
+      // убрать
+      // для гибридной карты
+      return ans;
+    });
   }
 
 
@@ -373,6 +388,14 @@ export default class MissionsActions extends Actions {
       start_date: createValidDate(outerPyload.start_date),
       end_date: createValidDate(outerPyload.end_date),
     };
+    return Cleaning.path('municipal_facility').get(payload, false, 'json');
+  }
+  getCleaningMunicipalFacilityAllList(outerPyload) {
+    const payload = {
+      start_date: createValidDate(outerPyload.start_date || new Date()),
+      end_date: createValidDate(outerPyload.end_date || new Date()),
+    };
+
     return Cleaning.path('municipal_facility').get(payload, false, 'json');
   }
 }

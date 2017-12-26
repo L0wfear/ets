@@ -1,7 +1,10 @@
 import * as React from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
-import { find } from 'lodash';
+import { find, uniqBy } from 'lodash';
+
+import { checkRouteByNew } from 'components/missions/mission/MissionForm.jsx';
+import { getPermittetEmployeeForBrigade } from 'components/missions/utils/utils.ts';
 
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
@@ -21,12 +24,25 @@ class MissionTemplateForm extends DutyMissionForm {
       employeesList = [],
     } = this.props;
     const {
+      available_route_types = [],
       technicalOperationsList = [],
       routesList = [],
       TECH_OPERATIONS = [],
+      selectedRoute: route = null,
     } = this.state;
 
-    const ROUTES = routesList.map(({ id, name }) => ({ value: id, label: name }));
+    const routes = routesList.filter(r => r.structure_id === state.structure_id && checkRouteByNew(state, r, available_route_types));
+
+    const filteredRoutes = (
+      route !== null &&
+      route.id !== undefined &&
+      routes.find(item => item.value === route.id) === undefined
+    ) ? routes.concat([route]) : routes;
+
+    const ROUTES = uniqBy(
+      filteredRoutes.map(({ id, name }) => ({ value: id, label: name })),
+      'value',
+    );
 
     const IS_CREATING = true;
 
@@ -38,10 +54,8 @@ class MissionTemplateForm extends DutyMissionForm {
 
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
     const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
-    const EMPLOYEES = employeesList.map(d => ({
-      value: d.id,
-      label: `${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''} ${!d.active ? '(Неактивный сотрудник)' : ''}`,
-    }));
+    const EMPLOYEES = getPermittetEmployeeForBrigade(employeesList);
+
 
     let STRUCTURE_FIELD_VIEW = false;
     let STRUCTURE_FIELD_READONLY = false;
@@ -57,7 +71,6 @@ class MissionTemplateForm extends DutyMissionForm {
       STRUCTURE_FIELD_DELETABLE = true;
     }
 
-    const route = this.state.selectedRoute;
     const brigade_employee_id_list = !state.brigade_employee_id_list
     ? []
     : state.brigade_employee_id_list.filter(b => b.id || b.employee_id).map(b => b.id || b.employee_id).join(',');
@@ -141,12 +154,12 @@ class MissionTemplateForm extends DutyMissionForm {
                 error={errors.route_id}
                 options={ROUTES}
                 value={state.route_id}
-                disabled={!state.technical_operation_id}
+                disabled={!state.municipal_facility_id}
                 onChange={this.handleRouteIdChange.bind(this)}
                 clearable
               />
               <Div hidden={state.route_id}>
-                <Button onClick={this.createNewRoute.bind(this)} disabled={!state.technical_operation_id}>Создать новый</Button>
+                <Button onClick={this.createNewRoute.bind(this)} disabled={!state.municipal_facility_id}>Создать новый</Button>
               </Div>
             </Col>
             {STRUCTURE_FIELD_VIEW && <Col md={6}>
@@ -185,6 +198,7 @@ class MissionTemplateForm extends DutyMissionForm {
           showForm={this.state.showRouteForm}
           structureId={state.structure_id}
           fromMission
+          available_route_types={available_route_types}
         />
 
       </Modal>

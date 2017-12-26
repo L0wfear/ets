@@ -353,11 +353,13 @@ export default class ProgramRegistryForm extends Form {
                     contractor_id={state.contractor_id}
                     repair_type_name={state.repair_type_name}
                     updateObjectData={this.updateObjectData}
+                    isPermittedByStatus={isPermittedByStatus}
                   />
                   <ProgramRemarkList
                     iNotСustomer={iNotСustomer}
                     program_version_id={state.id}
                     program_version_status={state.status}
+                    isPermittedByStatus={isPermittedByStatus}
                   />
                 </Col>
               }
@@ -369,7 +371,7 @@ export default class ProgramRegistryForm extends Form {
               <Col md={12}>
                 {[
                   this.getButton(0, this.props.handleExportVersion, <Glyphicon glyph="download-alt" />, false && permissionForButton.exportPDF),
-                  this.getButton(1, this.showMakeVersionForm, 'Создать версию', permissionForButton.createVersion, this.props.canSave && state.status === 'accepted' && mainButtonEnable),
+                  this.getButton(1, this.showMakeVersionForm, 'Создать версию', permissionForButton.createVersion, this.props.canSave && state.status === 'accepted' && state.is_active && mainButtonEnable),
                   this.getButton(2, this.sendToApply, 'Сохранить и отправить на согласование', permissionForButton.sendToApply, this.props.canSave && (state.status === 'draft' || state.status === 'rejected') && mainButtonEnable),
                   this.getButton(3, this.props.onSubmit, 'Сохранить', permissionForButton.onSubmit, this.props.canSave && (state.status === 'draft' || state.status === 'rejected' || state.status === 'accepted') && mainButtonEnable),
                   this.getButton(4, this.props.onSubmitAndContinue, 'Сохранить и продолжить', permissionForButton.onSubmitAndContinue, this.props.canSave && (state.status === 'draft' || state.status === 'rejected' || state.status === 'accepted') && mainButtonEnable),

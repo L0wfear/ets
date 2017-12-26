@@ -21,6 +21,19 @@ const fixedValidators = [
     },
   },
   {
+    name: 'trimSpace',
+    validator(config, data) {
+      if (typeof data !== 'string') {
+        return undefined;
+      }
+      if (data.trim() !== data) {
+        return 'Поле не должно начинаться и закачиваться пробелом';
+      }
+
+      return undefined;
+    },
+  },
+  {
     name: 'length',
     validator(config, data) {
       if (typeof data !== 'string') {

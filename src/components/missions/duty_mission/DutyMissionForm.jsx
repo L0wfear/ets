@@ -14,11 +14,11 @@ import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import { isEmpty } from 'utils/functions';
+import { getPermittetEmployeeForBrigade } from 'components/missions/utils/utils.ts';
 import Form from 'components/compositions/Form.jsx';
 import InsideField from 'components/missions/duty_mission/inside_fields/index';
 
 import { FormTitle, onlyActiveEmployeeNotification } from './utils';
-
 
 export class DutyMissionForm extends Form {
 
@@ -167,13 +167,24 @@ export class DutyMissionForm extends Form {
   onFormHide = async (isSubmitted, result) => {
     const { flux } = this.context;
     const routesActions = flux.getActions('routes');
+    const {
+      formState: {
+        technical_operation_id,
+        municipal_facility_id,
+      },
+    } = this.props;
+    const { available_route_types = [] } = this.state;
 
     const stateChangeObject = {};
     if (isSubmitted === true) {
       const createdRouteId = result.createdRoute.result[0].id;
       this.handleChange('route_id', createdRouteId);
       const selectedRoute = await routesActions.getRouteById(createdRouteId);
-      const routesList = await routesActions.getRoutesByTechnicalOperation(this.props.formState.technical_operation_id);
+      const routesList = await routesActions.getRoutesBySomeData({
+        municipal_facility_id,
+        technical_operation_id,
+        type: available_route_types.join(','),
+      });
       Object.assign(stateChangeObject, {
         showRouteForm: false,
         selectedRoute,
@@ -196,18 +207,28 @@ export class DutyMissionForm extends Form {
         to_data = {},
       ] = [],
     } = await this.context.flux.getActions('technicalOperation').getOneTechOperationByNormId({ norm_id });
-    const {
-      formState: {
-        technical_operation_id = -1,
-      } = {},
-    } = this.props;
 
     const {
       route_types: available_route_types = [],
     } = to_data;
 
-    const routesList = await this.context.flux.getActions('routes').getRoutesByTechnicalOperation(technical_operation_id);
-    this.setState({ routesList, available_route_types });
+    const {
+      formState: {
+        technical_operation_id,
+        municipal_facility_id,
+      },
+    } = this.props;
+
+    this.context.flux.getActions('routes').getRoutesBySomeData({
+      municipal_facility_id,
+      technical_operation_id,
+      type: available_route_types.join(','),
+    })
+    .then((routesList) => {
+      this.setState({ routesList });
+    });
+
+    this.setState({ available_route_types });
   }
 
   render() {
@@ -236,7 +257,7 @@ export class DutyMissionForm extends Form {
       return newArr;
     }, []);
 
-    const routes = routesList.filter(r => !state.structure_id || r.structure_id === state.structure_id);
+    const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id));
 
     const filteredRoutes = (
       route !== null &&
@@ -248,10 +269,8 @@ export class DutyMissionForm extends Form {
       filteredRoutes.map(({ id, name }) => ({ value: id, label: name })),
       'value',
     );
-    const EMPLOYEES = employeesList.map(d => ({
-      value: d.id,
-      label: `${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''} ${!d.active ? '(Неактивный сотрудник)' : ''}`,
-    }));
+    const EMPLOYEES = getPermittetEmployeeForBrigade(employeesList);
+
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({
       id,
       value: id,
@@ -330,7 +349,7 @@ export class DutyMissionForm extends Form {
                     <Field
                       type="date"
                       label="Время выполнения, планируемое:"
-                      error={errors.plan_date_start}
+                      error={errors.plan_date_start || errors.plan_date}
                       date={state.plan_date_start}
                       disabled={IS_DISPLAY || readOnly}
                       onChange={this.handleChange.bind(this, 'plan_date_start')}

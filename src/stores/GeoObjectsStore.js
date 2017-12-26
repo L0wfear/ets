@@ -62,7 +62,6 @@ export default class GeoObjectsStore extends Store {
       fuelingWaterStationPolys: {},
       carpoolPolys: {},
 
-     
       selectedPolysTypes: [],
       selectedPolysTypesLeak: [],
 
@@ -79,8 +78,22 @@ export default class GeoObjectsStore extends Store {
   }
 
   handleSetSelectedPolysType(type) {
-    const nameOfSelectedPolys = (type === 'leak') ? 'selectedPolysTypesLeak' : 'selectedPolysTypes';
-    const nameOfSelectedFeature = (type === 'leak') ? 'selectedFeatureLeak' : 'selectedFeature';
+    const nameOfSelectedPolys = (() => {
+      switch (type) {
+        case 'leak': return 'selectedPolysTypesLeak';
+        default: return 'selectedPolysTypes';
+      }
+    })(type);
+
+    const nameOfSelectedFeature = (() => {
+      switch (type) {
+        case 'leak': return 'selectedFeatureLeak';
+        default: return 'selectedFeature';
+      }
+    })(type);
+
+   // const nameOfSelectedPolys = (type === 'leak') ? 'selectedPolysTypesLeak' : 'selectedPolysTypes';
+   // const nameOfSelectedFeature = (type === 'leak') ? 'selectedFeatureLeak' : 'selectedFeature';
     if (type === null) {
     //  this.setState({ selectedPolysTypes: [] });
      // this.handleSelectFeature(null);
@@ -91,7 +104,7 @@ export default class GeoObjectsStore extends Store {
     const typeIndex = selectedPolys.indexOf(type);  // -1 при активации чекбокса
     if (typeIndex > -1) {
       selectedPolys.splice(typeIndex, 1);  // после снятия чекбокса удаляется из политик объект того типа данных, с которого снимается флажок
-    const stateSelectedFeature = this.state[nameOfSelectedFeature];
+      const stateSelectedFeature = this.state[nameOfSelectedFeature];
       if (stateSelectedFeature) {
         if (stateSelectedFeature.featureType === type) { // если снимаем флажок с того типа объекта, который выделен на карте
           this.handleSelectFeature(null, nameOfSelectedFeature);
@@ -165,40 +178,36 @@ export default class GeoObjectsStore extends Store {
   }
 
   getSelectedPolys(nameOfSelected) {
-
     const selectedPolysTypes = this.state[nameOfSelected];
     const polys = {};
     selectedPolysTypes.map(type => Object.assign(polys, this.state[`${type}Polys`]));
-   // console.log('*** getSelectedPolys()***polys', polys);
     return polys;
   }
 
 
   handleSelectFeature(featureData = false, nameOfSelected) {
-
-    const stateSelectedFeature = this.state[nameOfSelected];
+    const stateSelectedFeature = this.state[nameOfSelected]; // данные предыдущего выделенного элемента
     if (featureData !== null) {
-      if (stateSelectedFeature !== null) { // при переключении выбранного объекта на карте
-
+      if (stateSelectedFeature !== null) {
+      // при переключении выбранного объекта на карте
         const featureId = get(this.state, `${nameOfSelected}.global_id`, null) || get(this.state, `${nameOfSelected}.id`, null) || get(this.state, `${nameOfSelected}.sensor_id`, null);
         const newFeatureId = get(featureData, 'global_id', null) || get(featureData, 'id', null) || get(featureData, 'sensor_id', null);
-        const type = featureData.featureType;     
+        const type = featureData.featureType;
         const typePrev = this.state[nameOfSelected].featureType;
         const polysByTypePrev = `${typePrev}Polys`;
         const polysPrev = this.state[polysByTypePrev];
         const polysByType = `${type}Polys`;
         const polys = this.state[polysByType];
-               
-          polys[newFeatureId].selected = true;
-          delete polysPrev[featureId].selected; 
-          this.setState({
-            [nameOfSelected]: featureData,
-            [polysByTypePrev]: polysPrev,
-            [polysByType]: polys,
-          });
-       
-      } else { // при активации первого флажка
 
+        polys[newFeatureId].selected = true;
+        delete polysPrev[featureId].selected;
+        this.setState({
+          [nameOfSelected]: featureData,
+          [polysByTypePrev]: polysPrev,
+          [polysByType]: polys,
+        });
+      } else {
+      // при первом клике на карте на один из выбранных чекбоксом элементов
         const newFeatureId = get(featureData, 'global_id', null) || get(featureData, 'id', null) || get(featureData, 'sensor_id', null);
         const type = featureData.featureType;
         const polysByType = `${type}Polys`;

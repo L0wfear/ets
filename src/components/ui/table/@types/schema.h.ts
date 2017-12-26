@@ -21,6 +21,7 @@ type FieldTypes =
   'date' |
   'datetime' |
   'advanced-number'|
+  'advanced-string' |
   'number' |
   'customFilter';
 

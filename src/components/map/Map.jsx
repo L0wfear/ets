@@ -221,7 +221,6 @@ export default class OpenLayersMap extends Component {
   }
   handleCarSelect(clickedMarker) {
     clickedMarker.onClick();
-
     this._pointsStore.handleSelectPoint(clickedMarker.point);
     this._geoObjectsStore.handleSelectFeature(null, 'selectedFeature');
     // прячем попап трэка
@@ -264,15 +263,16 @@ export default class OpenLayersMap extends Component {
     }
 
     clickedMarker = this.getSelectedCar(coordinate);
-    if (clickedMarker) {
+    if (clickedMarker) { // если кликнуть на машину
       this._pointsStore.handleSelectPoint(clickedMarker.point);
     }
 
-    if (typeof this.props.onFeatureClick === 'function') {
+    if (typeof this.props.onFeatureClick === 'function') {     
       map.forEachFeatureAtPixel(pixel, (feature, layer) => {
         const id = feature.getId();
+        const isNeedCloseSidebar = feature.O.data.featureType !== 'leak';
         if (!id || (!!id && !id.match('measure'))) {
-          this.props.onFeatureClick(feature, ev, this);
+          this.props.onFeatureClick(feature, isNeedCloseSidebar, ev, this);
         }
       });
     }
@@ -291,7 +291,6 @@ export default class OpenLayersMap extends Component {
     const polys = Object.assign({}, nextProps.polys, nextProps.polysLeak);
     const showPolygons = { nextProps };
 
-    console.log('polys в renderPolygons', polys);
     const map = this.map;
 
     const vectorSource = new ol.source.Vector();
@@ -401,10 +400,9 @@ export default class OpenLayersMap extends Component {
       this.enableInteractions();
     }
 
-    const isNeedPopUp = _.some(this.props.polysLeak, poly => poly.data.type === 'leak');
-    console.log('####isNeedPopUp', isNeedPopUp);
+    const isNeedPopUp = (nameOfPolys, type) => _.some(this.props[nameOfPolys], poly => poly.data.type === type);
 
-    if (!isNeedPopUp) {
+    if (!isNeedPopUp('polysLeak', 'leak')) {
       this.hidePopup('popupLeak');
     }
 

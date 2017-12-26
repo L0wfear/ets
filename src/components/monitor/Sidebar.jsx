@@ -33,7 +33,14 @@ export default class Sidebar extends Component {
       store.handleSelectPoint(false);
     } else if (selectedFeature) {
       store = this.props.flux.getStore('geoObjects');
-      const nameOfSelectedFeature = (selectedFeature.featureType === 'leak') ? 'selectedFeatureLeak' : 'selectedFeature';
+
+      const nameOfSelectedFeature = ((type) => {
+        switch (type) {
+          case 'leak': return 'selectedFeatureLeak';
+          default: return 'selectedFeature';
+        }
+      })(selectedFeature.featureType);
+
       store.handleSelectFeature(null, nameOfSelectedFeature);
     }
   }

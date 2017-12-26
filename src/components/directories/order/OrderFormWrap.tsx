@@ -17,12 +17,12 @@ class OrderMissionController extends React.Component<any, any> {
       missionData: {
         showForm: sfM = false,
         mElement,
-        initMission,
+        order: m_order,
       },
       dutyMissionData: {
         showForm: sfDM = false,
         dmElement,
-        initDutyMission,
+        order: dm_order,
       },
       missionTemplateData: {
         typeClick,
@@ -40,14 +40,14 @@ class OrderMissionController extends React.Component<any, any> {
           showForm={sfM}
           onFormHide={this.props.onHideCM}
           element={mElement}
-          initMission={initMission}
+          order={m_order}
         />
         <DutyMissionFormWrapTSX
           fromOrder={true}
           showForm={sfDM}
           onFormHide={this.props.onHideCDM}
           element={dmElement}
-          initDutyMission={initDutyMission}
+          order={dm_order}
         />
         <Div hidden={!sfMTemlate} >
           <OrderMissionTemplate

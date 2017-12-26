@@ -7,6 +7,7 @@ interface IValidationSchemaProperties<TValue, TFormData> {
   maxLength?: number;
   minLength?: number;
   equalLength?: number;
+  trimSpace?: boolean;
   max?: number;
   min?: number;
   isSubmitted?(value: TValue, formData: TFormData): boolean;

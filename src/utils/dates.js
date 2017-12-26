@@ -155,3 +155,11 @@ export const getCurrentSeason = (summerStart = null, summerEnd = null) => {
 
   return 'winter';
 };
+
+/**
+ * @param {date | string} dataA - date start compare
+ * @param {date | string} dataB - date end compare
+ * @param {string} typeDiff - type compare (see moment .diff())
+ */
+export const diffDates = (dataA, dataB, typeDiff = 'seconds') =>
+  moment(dataA).diff(moment(dataB), typeDiff);

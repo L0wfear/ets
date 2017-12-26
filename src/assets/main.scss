@@ -2325,6 +2325,13 @@ div.none {
   width: 300px !important;
   text-align: justify !important;
 }
+.width1000 {
+  width: 1000px !important;
+}
+.width1000justify {
+  width: 1000px !important;
+  text-align: justify !important;
+}
 .width60 {
   width: 60px !important;
 }
@@ -2937,6 +2944,12 @@ div.none {
   text-align: right;
 }
 
+.text-right-flex {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+}
 .odh-list {
   ul {
     padding-left: 0;

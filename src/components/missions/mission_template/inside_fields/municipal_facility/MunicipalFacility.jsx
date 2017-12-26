@@ -68,7 +68,6 @@ class MunicipalFacility extends MunicipalFacilityMission {
         [props.id]: value,
         technical_operation_id,
         norm_id,
-        date_create,
       } = {},
       errors: {
         [props.id]: error,
@@ -80,7 +79,7 @@ class MunicipalFacility extends MunicipalFacilityMission {
       value,
       error,
       norm_id,
-      date_create,
+      date_create: new Date(),
     };
   }
 }

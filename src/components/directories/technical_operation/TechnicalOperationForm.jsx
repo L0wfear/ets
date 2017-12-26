@@ -43,7 +43,13 @@ export default class TechnicalOperationForm extends Form {
     const state = this.props.formState;
     const errors = this.props.formErrors;
     const title = 'Тех. операция';
-    const { workKindsList = [], typesList = [], technicalOperationsObjectsList = [], technicalOperationsTypesList = [], isPermitted = false } = this.props;
+    const {
+      workKindsList = [],
+      typesList = [],
+      technicalOperationsObjectsList = [],
+      technicalOperationsTypesList = [],
+    } = this.props;
+    const isPermitted = false;
 
     const WORK_KINDS = workKindsList.map(({ id, name }) => ({ value: id, label: name }));
     const SEASONS = seasonsList.map(({ id, name }) => ({ value: id, label: name }));

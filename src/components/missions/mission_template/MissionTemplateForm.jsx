@@ -6,6 +6,8 @@ import {
   isEmpty as lodashIsEmpty,
 } from 'lodash';
 
+import { checkRouteByNew } from 'components/missions/mission/MissionForm.jsx';
+
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
@@ -29,12 +31,12 @@ class MissionTemplateForm extends MissionForm {
     const state = this.props.formState;
     const errors = this.props.formErrors;
     const {
-      available_route_types,
       car_func_types_ids, TECH_OPERATIONS,
       technicalOperationsList = [],
       routesList = [],
       carsList = [],
       selectedRoute: route = null,
+      available_route_types = [],
     } = this.state;
 
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
@@ -54,7 +56,7 @@ class MissionTemplateForm extends MissionForm {
       STRUCTURE_FIELD_DELETABLE = true;
     }
 
-    const routes = routesList.filter(r => r.structure_id === state.structure_id);
+    const routes = routesList.filter(r => r.structure_id === state.structure_id && checkRouteByNew(state, r, available_route_types));
 
     const filteredRoutes = (
       route !== null &&

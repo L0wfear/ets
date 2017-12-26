@@ -45,6 +45,7 @@ class MunicipalFacility extends React.Component {
       value: new_v,
       error: new_err,
       norm_id,
+      error_date_start,
     } = this.getStateByProps(props);
     const {
       technicalOperationsList: newTechOperationsList = [],
@@ -59,7 +60,7 @@ class MunicipalFacility extends React.Component {
       forseUpdate = true;
     }
 
-    if ((!!new_toi && new_ds && (old_toi !== new_toi || old_ds !== new_ds) && forseUpdateIsWas) || forseUpdate) {
+    if (!error_date_start && ((!!new_toi && new_ds && (old_toi !== new_toi || old_ds !== new_ds) && forseUpdateIsWas) || forseUpdate)) {
       const {
         norm_ids = [],
         is_new,
@@ -128,6 +129,7 @@ class MunicipalFacility extends React.Component {
       } = {},
       errors: {
         [props.id]: error,
+        date_start: error_date_start,
       },
     } = props;
 
@@ -137,6 +139,7 @@ class MunicipalFacility extends React.Component {
       value,
       error,
       norm_id,
+      error_date_start,
     };
   };
 

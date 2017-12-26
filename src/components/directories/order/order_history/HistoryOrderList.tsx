@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Row, Col, Panel, Glyphicon } from 'react-bootstrap';
+import * as moment from 'moment';
 
 import EtsSelect from 'components/ui/input/EtsSelect';
 import Div from 'components/ui/Div.jsx';
@@ -24,7 +25,7 @@ class HistoryOrder extends React.Component<any, any> {
       haveData: !!activeData,
       activeList: !!activeData ? 1 : null,
       activeData,
-      VERSION_OPTIONS: data.map((d, i) => ({ value: i + 1, label: `Версия ${i + 1} (неактуальная)`})),
+      VERSION_OPTIONS: data.map((d, i) => ({ value: i + 1, label: `Версия ${moment(d.synced_timestamp).format(`${global.APP_DATE_FORMAT} HH:mm`)}`})),
       historytableIsOpen: false,
     });
   }

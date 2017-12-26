@@ -7,7 +7,7 @@ export const defaultZoom = new ol.control.Zoom({
   delta: 1,
 });
 
-export function getPointStyle(fillColor, radius, strokeColor = 'white', strokeWidth = 2) {
+export function getPointStyle(fillColor, radius = 7, strokeColor = 'white', strokeWidth = 2) {
   return new ol.style.Style({
     image: new ol.style.Circle({
       radius,

@@ -7,7 +7,10 @@ export const getTableMeta = ({
   employeesList = [],
   structures = [],
   flux = null,
+  data,
 } = {}) => {
+  const structure_id_list = data.map(({ structure_id }) => structure_id);
+
   const tableMeta = {
     cols: [
       {
@@ -78,7 +81,7 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: structures.map(({ id, name }) => ({ value: id, label: name })),
+          options: structures.filter(({ id }) => structure_id_list.includes(id)).map(({ id, name }) => ({ value: id, label: name })),
         },
         display: structures.length,
       },

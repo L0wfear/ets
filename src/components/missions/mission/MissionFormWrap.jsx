@@ -11,8 +11,10 @@ import FormWrap from 'components/compositions/FormWrap.jsx';
 import { validateField } from 'utils/validate/validateField.js';
 import { getDefaultMission } from 'stores/MissionsStore.js';
 import { saveData, printData, resizeBase64 } from 'utils/functions';
+import { diffDates } from 'utils/dates.js';
 import { missionSchema } from 'models/MissionModel.js';
 import MissionForm from './MissionForm.jsx';
+import MissionFormOld from './MissionFormOld.jsx';
 
 export default class MissionFormWrap extends FormWrap {
 
@@ -23,7 +25,7 @@ export default class MissionFormWrap extends FormWrap {
   }
 
   createAction = formState =>
-    this.context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill || this.props.fromOrder).then((r) => {
+    this.context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill || !!this.props.fromOrder).then((r) => {
       if (!this.props.fromWaybill && !this.props.fromOrder && !this.props.fromDashboard) {
         try {
           this.props.refreshTableList();
@@ -48,34 +50,48 @@ export default class MissionFormWrap extends FormWrap {
       if (mission.structure_id == null) {
         mission.structure_id = this.context.flux.getStore('session').getCurrentUser().structure_id;
       }
+
       if (status === 'assigned') {
         waybillsActions.getWaybill(mission.waybill_id).then(({ result: inWaybill }) => {
-          this.setState({ ...this.state, inWaybill });
           const formErrors = this.validate(mission, {}, { inWaybill });
+
           this.setState({
-            formState: mission,
-            canSave: !filter(this.validate(mission, {})).length,
+            canSave: !filter(formErrors).length,
             formErrors,
+            inWaybill,
           });
         });
       }
       if (order_id) {
         ordersActions.getOrderById(order_id).then(({ result: [order] }) => {
-          this.setState({ ...this.state, order });
           const formErrors = this.validate(mission, {}, { order });
+
           this.setState({
-            formState: mission,
-            canSave: !filter(this.validate(mission, {})).length,
+            canSave: !filter(formErrors).length,
             formErrors,
+            order,
           });
         });
       }
-      const formErrors = this.validate(mission, {});
-      this.setState({
-        formState: mission,
-        canSave: !filter(this.validate(mission, {})).length,
-        formErrors,
-      });
+      if (props.fromOrder) {
+        const { order } = props;
+
+        const formErrors = this.validate(mission, {}, { order });
+        this.setState({
+          formState: mission,
+          canSave: !filter(formErrors).length,
+          formErrors,
+          order,
+        });
+      } else {
+        const formErrors = this.validate(mission, {});
+
+        this.setState({
+          formState: mission,
+          canSave: !filter(formErrors).length,
+          formErrors,
+        });
+      }
     }
   }
   /**
@@ -99,10 +115,8 @@ export default class MissionFormWrap extends FormWrap {
   }
 
   validate(formState, errors, otherData = {}) {
-    const formErrors = clone(errors);
-    each(missionSchema.properties, (prop) => {
-      formErrors[prop.key] = validateField(prop, formState[prop.key], formState, missionSchema);
-    });
+    let formErrors = super.validate(formState, errors);
+
     const {
       inWaybill: othInWaybill = {},
       order: othOrder = {},
@@ -112,104 +126,101 @@ export default class MissionFormWrap extends FormWrap {
       order = othOrder,
     } = this.state;
 
-    if ((this.props.fromWaybill && this.props.waybillStartDate) || (this.props.fromWaybill && this.props.waybillEndDate)) {
-      if (moment(formState.date_start).toDate().getTime() < moment(this.props.waybillStartDate).toDate().getTime()) {
+    if (this.props.fromWaybill && (this.props.waybillStartDate || this.props.waybillEndDate)) {
+      if (diffDates(formState.date_start, this.props.waybillStartDate) < 0) {
         formErrors.date_start = 'Дата не должна выходить за пределы путевого листа';
       }
-
-      if (moment(formState.date_end).toDate().getTime() > moment(this.props.waybillEndDate).toDate().getTime()) {
+      if (diffDates(formState.date_end, this.props.waybillEndDate) < 0) {
         formErrors.date_end = 'Дата не должна выходить за пределы путевого листа';
       }
     }
 
-    if (this.props.fromOrder && this.props.initMission && this.props.initMission.date_start) {
-      const {
-        initMission: {
-          date_start: init_ds,
-          date_end: init_de,
-          passes_count: init_pc,
-        } = {},
-      } = this.props;
-      const {
-        date_start: new_ds,
-        date_end: new_de,
-        passes_count: new_pc,
-      } = formState;
-
-      if (moment(new_ds).toDate().getTime() < moment(init_ds).toDate().getTime()) {
-        formErrors.date_start = 'Дата не должна выходить за пределы действия поручения';
-      }
-      if (moment(new_de).toDate().getTime() > moment(init_de).toDate().getTime()) {
-        formErrors.date_end = 'Дата не должна выходить за пределы действия поручения';
-      }
-      if (new_pc > init_pc) {
-        formErrors.passes_count = '"Кол-во проходов" не должно превышать значение "Кол-во проходов" из поручения';
-      }
-      if (new_pc <= 0) {
-        formErrors.passes_count = '"Кол-во проходов" должно быть больше нуля';
-      }
-    }
-
     if (!this.props.fromWaybill && !this.props.fromOrder && !isEmpty(inWaybill)) {
-      const {
-        status,
-        plan_departure_date: pdd,
-        plan_arrival_date: pad,
-        fact_departure_date: fdd,
-        fact_arrival_date: fad,
-      } = inWaybill;
-
-      const {
-        date_start: new_ds,
-        date_end: new_de,
-      } = formState;
-
-      if (status === 'draft') {
-        if (moment(new_ds).toDate().getTime() < moment(pdd).toDate().getTime()) {
-          formErrors.date_start = 'Дата не должна выходить за пределы путевого листа';
-        }
-  
-        if (moment(new_de).toDate().getTime() > moment(pad).toDate().getTime()) {
-          formErrors.date_end = 'Дата не должна выходить за пределы путевого листа';
-        }
-      }
-      if (status === 'active') {
-        if (moment(new_ds).toDate().getTime() < moment(fdd).toDate().getTime()) {
-          formErrors.date_start = 'Дата не должна выходить за пределы путевого листа';
-        }
-
-        if (moment(new_de).toDate().getTime() > moment(fad).toDate().getTime()) {
-          formErrors.date_end = 'Дата не должна выходить за пределы путевого листа';
-        }
-      }
+      formErrors = {
+        ...formErrors,
+        ...this.checkDataByWaybillDefault(inWaybill, formState),
+      };
     }
-    if (!this.props.fromWaybill && !this.props.fromOrder && !isEmpty(order)) {
-      const {
-        date_start: new_ds,
-        date_end: new_de,
-        order_operation_id,
-      } = formState;
-
-      const {
-        order_date,
-        order_date_to,
-        technical_operations = [],        
-      } = order;
-      const {
-        date_from = order_date,
-        date_to = order_date_to,
-      } = technical_operations.find(({ id }) => id === order_operation_id) || {};
-
-      if (moment(new_ds).toDate().getTime() < moment(date_from).toDate().getTime()) {
-        formErrors.date_start = 'Дата не должна выходить за пределы поручения';
-      }
-
-      if (moment(new_de).toDate().getTime() > moment(date_to).toDate().getTime()) {
-        formErrors.date_end = 'Дата не должна выходить за пределы поручения';
-      }
+    if (!this.props.fromWaybill && !isEmpty(order)) {
+      formErrors = {
+        ...formErrors,
+        ...this.checkDataByOrderDefault(order, formState),
+      };
     }
 
     return formErrors;
+  }
+
+  checkDataByWaybillDefault(inWaybill, state) {
+    const {
+      status,
+      plan_departure_date: pdd,
+      plan_arrival_date: pad,
+      fact_departure_date: fdd,
+      fact_arrival_date: fad,
+    } = inWaybill;
+
+    const {
+      date_start: new_ds,
+      date_end: new_de,
+    } = state;
+
+    const ansError = {};
+
+    if (status === 'draft') {
+      if (diffDates(new_ds, pdd) < 0) {
+        ansError.date_start = 'Дата не должна выходить за пределы путевого листа';
+      }
+      if (diffDates(new_de, pad) < 0) {
+        ansError.date_end = 'Дата не должна выходить за пределы путевого листа';
+      }
+    }
+
+    if (status === 'active') {
+      if (diffDates(new_ds, fdd) < 0) {
+        ansError.date_start = 'Дата не должна выходить за пределы путевого листа';
+      }
+      if (diffDates(new_de, fad) < 0) {
+        ansError.date_end = 'Дата не должна выходить за пределы путевого листа';
+      }
+    }
+
+    return ansError;
+  }
+
+  checkDataByOrderDefault(order, state) {
+    const {
+      date_start: new_ds,
+      date_end: new_de,
+      order_operation_id,
+      passes_count: new_pc,
+    } = state;
+
+    const {
+      order_date,
+      order_date_to,
+      technical_operations = [],        
+    } = order;
+
+    const {
+      date_from = order_date,
+      date_to = order_date_to,
+      num_exec: order_pc,
+    } = technical_operations.find(({ order_operation_id: to_order_operation_id }) => to_order_operation_id === order_operation_id) || {};
+
+    const ansError = {};
+
+    if (diffDates(new_ds, date_from || order_date) < 0 || diffDates(new_ds, date_to || order_date_to) > 0) {
+      ansError.date_start = 'Дата не должна выходить за пределы поручения (факсограммы)';
+    }
+    if (diffDates(new_de, date_to || order_date_to) > 0 || diffDates(new_de, date_from || order_date) < 0) {
+      ansError.date_end = 'Дата не должна выходить за пределы поручения (факсограммы)';
+    }
+    if (Number.parseInt(new_pc, 0) > order_pc) {
+      ansError.passes_count = 'Поле "Кол-во циклов" должно быть не больше Кол-ва выполнений поручения (факсограммы)';
+    }
+
+    return ansError;
   }
 
   handlePrint(ev, print_form_type = 1) {
@@ -245,14 +256,23 @@ export default class MissionFormWrap extends FormWrap {
 
     return (
       <Div hidden={!this.props.showForm}>
-        <MissionForm
-          formState={this.state.formState}
-          onSubmit={this.handleFormSubmit.bind(this)}
-          handleFormChange={this.handleFormStateChange.bind(this)}
-          handlePrint={this.handlePrint.bind(this)}
-          {...props}
-          {...this.state}
-        />
+        <Div hidden={!this.state.formState.is_new} >
+          <MissionForm
+            formState={this.state.formState}
+            onSubmit={this.handleFormSubmit.bind(this)}
+            handleFormChange={this.handleFormStateChange.bind(this)}
+            handlePrint={this.handlePrint.bind(this)}
+            {...props}
+            {...this.state}
+          />
+        </Div>
+        <Div hidden={this.state.formState.is_new} >
+          <MissionFormOld
+            formState={this.state.formState}
+            {...props}
+            {...this.state}
+          />
+        </Div>
       </Div>
     );
   }

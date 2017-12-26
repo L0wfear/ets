@@ -63,6 +63,11 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     flux.getActions('missions').getMissionSources();
     flux.getActions('missions').getCarDutyMissions();
     flux.getActions('employees').getForemans();
+    const outerPayload = {
+      start_date: new Date(),
+      end_date: new Date(),
+    };
+    this.context.flux.getActions('missions').getCleaningMunicipalFacilityAllList(outerPayload);
   }
 
   async refreshList(state = this.state) {

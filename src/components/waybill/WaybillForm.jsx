@@ -10,7 +10,6 @@ import {
   uniqBy,
   isEmpty as lodashIsEmpty,
 } from 'lodash';
-import moment from 'moment';
 
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
@@ -21,6 +20,7 @@ import {
   hasMotohours,
   isEqualOr,
 } from 'utils/functions';
+import { diffDates } from 'utils/dates.js';
 
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { notifications } from 'utils/notifications';
@@ -165,7 +165,7 @@ class WaybillForm extends Form {
         !isEqual(currentState.plan_departure_date, nextState.plan_departure_date)) {
       this.getMissionsByCarAndDates(nextState);
     }
-    if (currentState.status === 'active' && moment(nextState.fact_departure_date).diff(nextState.fact_arrival_date, 'minutes') <= 0) {
+    if (currentState.status === 'active' && diffDates(nextState.fact_departure_date, nextState.fact_arrival_date, 'minutes') <= 0) {
       if (currentState.car_id !== nextState.car_id ||
           !isEqual(currentState.fact_arrival_date, nextState.fact_arrival_date) ||
           !isEqual(currentState.fact_departure_date, nextState.fact_departure_date)) {
@@ -605,8 +605,6 @@ class WaybillForm extends Form {
         confirmDialogList: [],
       },
     };
-    const fddMoment = moment(fdd).format(`${global.APP_DATE_FORMAT} HH:mm`);
-    const fadMoment = moment(fad).format(`${global.APP_DATE_FORMAT} HH:mm`);
 
     const missionsList = uniqBy([...oldMissionsList].concat(...notAvailableMissions), 'id');
     const objectActions = this.context.flux.getActions('objects');
@@ -622,10 +620,7 @@ class WaybillForm extends Form {
         isOrderSource,
       } = mission;
 
-      const dsmMoment = moment(dsm).format(`${global.APP_DATE_FORMAT} HH:mm`);
-      const demMoment = moment(dem).format(`${global.APP_DATE_FORMAT} HH:mm`);
-
-      if (!(fddMoment <= dsmMoment && demMoment >= fadMoment)) {
+      if (!(diffDates(fdd, dsm) <= 0 && diffDates(dem, fad) <= 0)) {
         if (isOrderSource) {
           if (status === 'complete' || status === 'fail') {
             errors.fromOrder.cf_list.push(number);
@@ -635,10 +630,7 @@ class WaybillForm extends Form {
               date_to: dt_to,
             } = mission;
 
-            const dfToMoment = moment(df_to).format(`${global.APP_DATE_FORMAT} HH:mm`);
-            const dtToMoment = moment(dt_to).format(`${global.APP_DATE_FORMAT} HH:mm`);
-
-            if (dtToMoment < fddMoment || fadMoment < dfToMoment) {
+            if (diffDates(dt_to, fdd) <= 0 || diffDates(fad, df_to) <= 0) {
               errors.fromOrder.confirmDialogList.push(number);
             }
           }
@@ -749,6 +741,7 @@ class WaybillForm extends Form {
     if (IS_DRAFT && state.driver_id !== undefined && DRIVERS.every(d => d.value !== state.driver_id)) {
       DRIVERS.push({ label: this.employeeFIOLabelFunction(state.driver_id), value: state.driver_id });
     }
+    const { gps_code } = carsList.find(({ asuods_id }) => asuods_id === state.car_id) || {};
 
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
@@ -924,7 +917,7 @@ class WaybillForm extends Form {
               <BsnoStatus
                 okStatus={IS_CREATING || IS_DRAFT}
                 is_bnso_broken={state.is_bnso_broken}
-                car_id={state.car_id}
+                gps_code={gps_code}
                 handleChange={this.handleChange}
               />
             </Col>

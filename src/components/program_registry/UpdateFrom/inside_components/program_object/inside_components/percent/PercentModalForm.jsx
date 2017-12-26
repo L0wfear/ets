@@ -21,8 +21,11 @@ export default class SparePartForm extends Form {
     ];
 
     const {
-      isPermitted = false,
+      isPermitted: isPermittedOuter = false,
+      isPermittedByStatus,
     } = this.props;
+
+    const isPermitted = isPermittedOuter && isPermittedByStatus;
 
     const IS_CREATING = !state.id;
 

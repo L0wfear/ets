@@ -67,6 +67,13 @@ export default class HybridMap extends Map {
     if (nextProps.selectedPoly !== undefined && nextProps.showSelectedElement !== this.props.showSelectedElement) {
       this.renderSelectedPoly(nextProps.selectedPoly, nextProps.showSelectedElement);
     }
+    if (nextProps.selectedPoint !== undefined && !_.isEqual(this.props.selectedPoint, nextProps.selectedPoint)) {
+      this.renderSelectedPoint(nextProps.selectedPoint, nextProps.showSelectedElement);
+    }
+
+    if (nextProps.selectedPoint !== undefined && nextProps.showSelectedElement !== this.props.showSelectedElement) {
+      this.renderSelectedPoint(nextProps.selectedPoint, nextProps.showSelectedElement);
+    }
   }
 
   renderPolygons(polys = {}, showPolygons) {
@@ -152,6 +159,35 @@ export default class HybridMap extends Map {
     this.selectedPolysLayer = new ol.layer.Vector({
       source: vectorSource,
       style: getPolyStyle('#e67e22'),
+    });
+
+    map.addLayer(this.selectedPolysLayer);
+  }
+
+  renderSelectedPoint(selectedPoint, showSelectedElement) {
+    const vectorSource = new ol.source.Vector();
+    const { map } = this;
+
+    if (!showSelectedElement) {
+      return !!this.selectedPolysLayer && map.removeLayer(this.selectedPolysLayer);
+    }
+
+    const feature = new ol.Feature({
+      geometry: GeoJSON.readGeometry(selectedPoint.shape),
+      name: selectedPoint.object_name,
+    });
+
+    vectorSource.addFeature(feature);
+
+    const extent = feature.getGeometry().getExtent();
+    extent[0] !== Infinity && map.getView().fit(extent);
+    map.getView().setZoom(7);
+
+    !!this.selectedPolysLayer && map.removeLayer(this.selectedPolysLayer);
+
+    this.selectedPolysLayer = new ol.layer.Vector({
+      source: vectorSource,
+      style: getPointStyle('#e67e22'),
     });
 
     map.addLayer(this.selectedPolysLayer);

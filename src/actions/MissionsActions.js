@@ -142,7 +142,22 @@ export default class MissionsActions extends Actions {
   }
 
   getMissionData(mission_id) {
-    return MissionDataService.path(mission_id).get();
+    return MissionDataService.path(mission_id).get().then((ans) => {
+      const {
+        result: {
+          report_data: {
+            entries,
+          },
+        },
+      } = ans;
+      if (entries) {
+        ans.result.report_data.entries.forEach((data, i) => { data.customId = i; });
+      }
+      // todo 
+      // убрать
+      // для гибридной карты
+      return ans;
+    });
   }
 
 

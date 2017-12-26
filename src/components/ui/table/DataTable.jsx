@@ -306,7 +306,9 @@ export default class DataTable extends React.Component {
       };
       if (col.type === 'string') {
         const callbackF = (typeof renderers[col.name] === 'function' && renderers[col.name]) || false;
-        metaObject.customComponent = props => this.cutString(callbackF, props);
+        if (!col.fullString) {
+          metaObject.customComponent = props => this.cutString(callbackF, props);
+        }
       } else if (typeof renderers[col.name] === 'function') {
         metaObject.customComponent = renderers[col.name];
       }

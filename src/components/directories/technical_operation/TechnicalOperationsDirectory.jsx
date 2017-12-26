@@ -5,7 +5,7 @@ import TechnicalOperationsTable from 'components/directories/technical_operation
 import TechnicalOperationFormWrap from 'components/directories/technical_operation/TechnicalOperationFormWrap.jsx';
 
 @connectToStores(['objects'])
-@exportable({ entity: 'technical_operation_registry' })
+@exportable({ entity: 'cleaning/norm_registry' })
 @staticProps({
   entity: 'technical_operation',
   listName: 'technicalOperationsRegistryList',

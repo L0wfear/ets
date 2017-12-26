@@ -27,13 +27,10 @@ export const checkRouteByNew = (state, route, available_route_types = []) => {
 
   if (is_new) {
     const {
-      type,
       is_new: route_is_new,
-      norm_id: route_norm_id,
-      municipal_facility_id: route_municipal_facility_id,
     } = route;
 
-    if (route_is_new && route_norm_id === state.norm_id && route_municipal_facility_id === state.municipal_facility_id && available_route_types.includes(type)) {
+    if (route_is_new) {
       return true;
     }
     return false;
@@ -76,9 +73,14 @@ export class MissionForm extends Form {
     }
   }
 
-  async handleTechnicalOperationChange(v) {
+  handleTechnicalOperationChange(v) {
     this.handleChange('technical_operation_id', v);
     this.handleChange('municipal_facility_id', null);
+    this.handleRouteIdChange(undefined);
+  }
+  handleChangeMF = (name, value) => {
+    this.handleChange(name, value);
+    this.handleRouteIdChange(undefined);
   }
 
   handleStructureIdChange(v) {
@@ -427,7 +429,7 @@ export class MissionForm extends Form {
                 type="select"
                 label="Подразделение"
                 error={errors.structure_id}
-                disabled={STRUCTURE_FIELD_READONLY || this.props.fromWaybill || (!IS_CREATING && !IS_POST_CREATING_NOT_ASSIGNED) || !IS_CREATING  }
+                disabled={STRUCTURE_FIELD_READONLY || this.props.fromWaybill || (!IS_CREATING && !this.props.fromWaybill) || !IS_CREATING  }
                 clearable={STRUCTURE_FIELD_DELETABLE}
                 options={STRUCTURES}
                 emptyValue={null}
@@ -444,7 +446,7 @@ export class MissionForm extends Form {
                 errors={errors}
                 state={state}
                 disabled={(!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY)) || this.props.fromOrder || sourceIsOrder}
-                handleChange={this.handleChange.bind(this)}
+                handleChange={this.handleChangeMF}
                 getDataByNormId={this.getDataByNormId}
                 technicalOperationsList={technicalOperationsList}
                 getNormIdFromState={!!fromOrder || !IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromOrder || sourceIsOrder}

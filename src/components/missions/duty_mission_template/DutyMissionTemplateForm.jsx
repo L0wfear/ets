@@ -4,6 +4,7 @@ import { Modal, Row, Col, Button } from 'react-bootstrap';
 import { find, uniqBy } from 'lodash';
 
 import { checkRouteByNew } from 'components/missions/mission/MissionForm.jsx';
+import { getPermittetEmployeeForBrigade } from 'components/missions/utils/utils.ts';
 
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
@@ -53,10 +54,8 @@ class MissionTemplateForm extends DutyMissionForm {
 
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
     const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
-    const EMPLOYEES = employeesList.map(d => ({
-      value: d.id,
-      label: `${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''} ${!d.active ? '(Неактивный сотрудник)' : ''}`,
-    }));
+    const EMPLOYEES = getPermittetEmployeeForBrigade(employeesList);
+
 
     let STRUCTURE_FIELD_VIEW = false;
     let STRUCTURE_FIELD_READONLY = false;

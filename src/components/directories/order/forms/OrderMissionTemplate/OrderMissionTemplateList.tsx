@@ -31,12 +31,14 @@ function getFilterDateOrder(technical_operations, { order_date, order_date_to })
       date_from = order_date,
       date_to = order_date_to,
       num_exec,
+      order_operation_id,
     } = to;
 
     newObj[norm_id] = {
       date_to,
       date_from,
       num_exec,
+      order_operation_id,
     };
 
     return newObj;
@@ -52,6 +54,7 @@ function getMissionListByFilter(missionsList, filterData, typeClick) {
         date_to,
         date_from,
         num_exec,
+        order_operation_id,
       } = filterData[norm_id];
 
       if (passes_count <= num_exec || typeClick === 'missionDutyTemplate') {
@@ -59,6 +62,7 @@ function getMissionListByFilter(missionsList, filterData, typeClick) {
           ...m,
           date_to,
           date_from,
+          order_operation_id,
         });
       }
     }
@@ -132,6 +136,10 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     } = this.state;
     const {
       mission_source_id,
+      orderDates: {
+        faxogramm_id,
+      },
+      technical_operations: [],
       typeClick,
     } = this.props;
 
@@ -149,14 +157,18 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
         date_end,
         assign_to_waybill,
       };
+      const newElement = {
+        ...value,
+        faxogramm_id,
+      };
 
       if (typeClick === 'missionDutyTemplate') {
         delete externalPayload.assign_to_waybill;
       }
 
       switch (typeClick) {
-        case 'missionTemplate': return createMissions(this.context.flux, { [id]: value }, externalPayload);
-        case 'missionDutyTemplate': return createDutyMissions(this.context.flux, { [id]: value }, externalPayload);
+        case 'missionTemplate': return createMissions(this.context.flux, { [id]: newElement }, externalPayload);
+        case 'missionDutyTemplate': return createDutyMissions(this.context.flux, { [id]: newElement }, externalPayload);
         default: return Promise.reject({ error: 'no typeClick' });
       }
     });

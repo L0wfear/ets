@@ -16,7 +16,6 @@ const TypeDownload = {
 
 @FluxContext
 export default class Faxogramms extends DashboardCardMedium {
-
   constructor(props) {
     super(props);
 
@@ -24,7 +23,6 @@ export default class Faxogramms extends DashboardCardMedium {
       showPDFViewModal: false,
     });
   }
-
 
   async showPDFViewModal(data) {
     const url = await this.context.flux.getActions('objects').getOrderPDFUrl(data.id);
@@ -35,7 +33,7 @@ export default class Faxogramms extends DashboardCardMedium {
     this.setState({ showPDFViewModal: true, url });
   }
 
-  saveFaxogramm(typeSave) {
+  saveOrder(typeSave) {
     const { flux } = this.context;
     const selectedItemIndex = this.state.selectedItem;
     const selectedItem = this.props.items[selectedItemIndex] || null;
@@ -46,14 +44,14 @@ export default class Faxogramms extends DashboardCardMedium {
       payload.format = 'xls';
     }
 
-    flux.getActions('objects').saveFaxogramm(data.id, payload)
+    flux.getActions('objects').saveOrder(data.id, payload)
       .then(({ blob, fileName }) => saveData(blob, fileName));
   }
 
-  seclectDownload = (e, [eventName]) => {
+  seclectDownload = (eventName) => {
     switch (eventName) {
-      case TypeDownload.old: return this.saveFaxogramm(TypeDownload.old);
-      case TypeDownload.new: return this.saveFaxogramm(TypeDownload.new);
+      case TypeDownload.old: return this.saveOrder(TypeDownload.old);
+      case TypeDownload.new: return this.saveOrder(TypeDownload.new);
       default: return null;
     }
   }
@@ -83,7 +81,7 @@ export default class Faxogramms extends DashboardCardMedium {
           <div className="dashboard-card-action-button">
             <DropdownButton onSelect={this.seclectDownload} title={<Glyphicon glyph="download-alt" />} id="bg-nested-dropdown">
               <MenuItem eventKey={TypeDownload.old}>Скан-копия факсограммы</MenuItem>
-              <MenuItem eventKey={TypeDownload.new}>Расшифровка централизованного задания</MenuItem>
+              {/* <MenuItem eventKey={TypeDownload.new}>Расшифровка централизованного задания</MenuItem> */}
             </DropdownButton>
           </div>
           {canViewPDF ? <Button className="dashboard-card-action-button" onClick={(e) => { e.preventDefault(); this.showPDFViewModal(data); }}><Glyphicon glyph="info-sign" /></Button> : ''}

@@ -14,6 +14,7 @@ import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import { isEmpty } from 'utils/functions';
+import { getPermittetEmployeeForBrigade } from 'components/missions/utils/utils.ts';
 import Form from 'components/compositions/Form.jsx';
 import InsideField from 'components/missions/duty_mission/inside_fields/index';
 
@@ -166,13 +167,24 @@ export class DutyMissionForm extends Form {
   onFormHide = async (isSubmitted, result) => {
     const { flux } = this.context;
     const routesActions = flux.getActions('routes');
+    const {
+      formState: {
+        technical_operation_id,
+        municipal_facility_id,
+      },
+    } = this.props;
+    const { available_route_types = [] } = this.state;
 
     const stateChangeObject = {};
     if (isSubmitted === true) {
       const createdRouteId = result.createdRoute.result[0].id;
       this.handleChange('route_id', createdRouteId);
       const selectedRoute = await routesActions.getRouteById(createdRouteId);
-      const routesList = await routesActions.getRoutesByNormId(this.props.formState.technical_operation_id);
+      const routesList = await routesActions.getRoutesBySomeData({
+        municipal_facility_id,
+        technical_operation_id,
+        type: available_route_types.join(','),
+      });
       Object.assign(stateChangeObject, {
         showRouteForm: false,
         selectedRoute,
@@ -200,8 +212,23 @@ export class DutyMissionForm extends Form {
       route_types: available_route_types = [],
     } = to_data;
 
-    const routesList = await this.context.flux.getActions('routes').getRoutesByNormId(norm_id);
-    this.setState({ routesList, available_route_types });
+    const {
+      formState: {
+        technical_operation_id,
+        municipal_facility_id,
+      },
+    } = this.props;
+
+    this.context.flux.getActions('routes').getRoutesBySomeData({
+      municipal_facility_id,
+      technical_operation_id,
+      type: available_route_types.join(','),
+    })
+    .then((routesList) => {
+      this.setState({ routesList });
+    });
+
+    this.setState({ available_route_types });
   }
 
   render() {
@@ -242,10 +269,8 @@ export class DutyMissionForm extends Form {
       filteredRoutes.map(({ id, name }) => ({ value: id, label: name })),
       'value',
     );
-    const EMPLOYEES = employeesList.map(d => ({
-      value: d.id,
-      label: `${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''} ${!d.active ? '(Неактивный сотрудник)' : ''}`,
-    }));
+    const EMPLOYEES = getPermittetEmployeeForBrigade(employeesList);
+
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({
       id,
       value: id,
@@ -324,7 +349,7 @@ export class DutyMissionForm extends Form {
                     <Field
                       type="date"
                       label="Время выполнения, планируемое:"
-                      error={errors.plan_date_start}
+                      error={errors.plan_date_start || errors.plan_date}
                       date={state.plan_date_start}
                       disabled={IS_DISPLAY || readOnly}
                       onChange={this.handleChange.bind(this, 'plan_date_start')}

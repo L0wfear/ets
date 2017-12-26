@@ -100,6 +100,22 @@ const getTableMeta = (props) => {
         },
       },
       {
+        name: 'municipal_facility_id',
+        displayName: 'Элемент',
+        type: 'number',
+        display: false,
+        filter: {
+          type: 'multiselect',
+          options: props.municipalFacilityList.map(({ municipal_facility_id, municipal_facility_name }) => ({ value: municipal_facility_id, label: municipal_facility_name })),
+        },
+      },
+      {
+        name: 'municipal_facility_name',
+        displayName: 'Элемент',
+        type: 'number',
+        filter: false,
+      },
+      {
         name: 'comment',
         displayName: 'Комментарий',
         type: 'string',

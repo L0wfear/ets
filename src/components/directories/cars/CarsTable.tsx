@@ -166,18 +166,18 @@ export function tableMeta({
   return meta;
 }
 
-const Table: React.SFC<any> = props  => {
-  const renderers = {
-    condition: ({ data }) => <div>{getCondition(data)}</div>,
-    fuel_correction_rate: ({ data }) => <div>{data ? parseFloat(data).toFixed(2) : ''}</div>,
-    garage_number: ({ data }) => <div>{data && data !== 'null' ? data : ''}</div>,
-    model_name: ({ data }) => <div className="white-space-pre-wrap">{data}</div>,
-    is_common: ({ data }) => <input type="checkbox" disabled checked={!!data} />,
-    company_name_customer: ({ rowData }) => <span>{rowData.company_name}</span>,
-    company_name_contractor: ({ rowData }) => <span>{rowData.company_name}</span>,
-    equipment_sensors_types_ids: ({ rowData }) => <span>{rowData.equipment_sensors_str}</span>,
-  };
+const renderers = {
+  condition: ({ data }) => <div>{getCondition(data)}</div>,
+  fuel_correction_rate: ({ data }) => <div>{data ? parseFloat(data).toFixed(2) : ''}</div>,
+  garage_number: ({ data }) => <div>{data && data !== 'null' ? data : ''}</div>,
+  model_name: ({ data }) => <div className="white-space-pre-wrap">{data}</div>,
+  is_common: ({ data }) => <input type="checkbox" disabled checked={!!data} />,
+  company_name_customer: ({ rowData }) => <span>{rowData.company_name}</span>,
+  company_name_contractor: ({ rowData }) => <span>{rowData.company_name}</span>,
+  equipment_sensors_types_ids: ({ rowData }) => <span>{rowData.equipment_sensors_str}</span>,
+};
 
+const Table: React.SFC<any> = props  => {
   return (
     <DataTable
       title="Реестр транспортных средств"

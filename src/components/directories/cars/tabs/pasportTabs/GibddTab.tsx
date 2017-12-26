@@ -31,6 +31,15 @@ class GntTab extends React.Component<IPropsPassportInfoTab, {}> {
         <Col md={6}>
           <Field
             type="string"
+            label="Серия и номер паспорта"
+            value={state.passport_gibdd_seria_number}
+            error={errors.passport_gibdd_seria_number}
+            onChange={onChange}
+            boundKeys={['passport_gibdd_seria_number']}
+            disabled={!isPermitted}
+          />
+          <Field
+            type="string"
             label="VIN (Идентификационный номер)"
             value={state.passport_gibdd_vin}
             error={errors.passport_gibdd_vin}

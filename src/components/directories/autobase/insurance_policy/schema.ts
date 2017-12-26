@@ -55,7 +55,8 @@ export const formValidationSchema: IValidationSchema = {
       type: 'number',
       maxLength: 128,
       min: 0,
-      integer: true,
+      integer: false,
+      float: 2,
     },
     {
       key: 'note',

@@ -1,12 +1,18 @@
 import React from 'react';
-import { Glyphicon, Button } from 'react-bootstrap';
+import { DropdownButton, MenuItem, Glyphicon, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import { OrderService } from 'api/Services';
 import Div from 'components/ui/Div.jsx';
 import { FluxContext } from 'utils/decorators';
+import { saveData } from 'utils/functions';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
 import PDFViewModal from './PDFViewModal.jsx';
+
+const TypeDownload = {
+  old: '1',
+  new: '2',
+};
 
 @FluxContext
 export default class Faxogramms extends DashboardCardMedium {
@@ -27,6 +33,29 @@ export default class Faxogramms extends DashboardCardMedium {
       return;
     }
     this.setState({ showPDFViewModal: true, url });
+  }
+
+  saveFaxogramm(typeSave) {
+    const { flux } = this.context;
+    const selectedItemIndex = this.state.selectedItem;
+    const selectedItem = this.props.items[selectedItemIndex] || null;
+    const data = selectedItem !== null ? selectedItem.data || {} : {};
+
+    const payload = {};
+    if (typeSave === TypeDownload.new) {
+      payload.format = 'xls';
+    }
+
+    flux.getActions('objects').saveFaxogramm(data.id, payload)
+      .then(({ blob, fileName }) => saveData(blob, fileName));
+  }
+
+  seclectDownload = (e, [eventName]) => {
+    switch (eventName) {
+      case TypeDownload.old: return this.saveFaxogramm(TypeDownload.old);
+      case TypeDownload.new: return this.saveFaxogramm(TypeDownload.new);
+      default: return null;
+    }
   }
 
   renderCustomCardData() {
@@ -50,7 +79,13 @@ export default class Faxogramms extends DashboardCardMedium {
           <h5>Доп. информация</h5>
           <p>{data.order_info}</p>
         </Div>
-        <Div className="text-right">
+        <Div className="text-right-flex">
+          <div className="dashboard-card-action-button">
+            <DropdownButton onSelect={this.seclectDownload} title={<Glyphicon glyph="download-alt" />} id="bg-nested-dropdown">
+              <MenuItem eventKey={TypeDownload.old}>Скан-копия факсограммы</MenuItem>
+              <MenuItem eventKey={TypeDownload.new}>Расшифровка централизованного задания</MenuItem>
+            </DropdownButton>
+          </div>
           {canViewPDF ? <Button className="dashboard-card-action-button" onClick={(e) => { e.preventDefault(); this.showPDFViewModal(data); }}><Glyphicon glyph="info-sign" /></Button> : ''}
           {canCreateMission ? <Link to={`/orders/${data.id}?dateFrom=${date_from}&dateTo=${date_to}`}><Button className="dashboard-card-action-button">Сформировать задания</Button></Link> : ''}
         </Div>

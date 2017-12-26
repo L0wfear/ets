@@ -5,8 +5,9 @@ import Div from 'components/ui/Div.jsx';
 import CarInfo from './car_info/CarInfo.jsx';
 import FeatureInfo from './FeatureInfo.jsx';
 import { GEOOBJECTS_TYPES } from 'constants/geoobjects';
+import { nameOfFeature } from 'utils/geo';
 
-const hideSidebarForSomeFeature = type => {
+const hideSidebarForSomeFeature = (type) => {
   switch (type) {
     case 'leak': return true;
     default: return false;
@@ -34,12 +35,7 @@ export default class Sidebar extends Component {
     } else if (selectedFeature) {
       store = this.props.flux.getStore('geoObjects');
 
-      const nameOfSelectedFeature = ((type) => {
-        switch (type) {
-          case 'leak': return 'selectedFeatureLeak';
-          default: return 'selectedFeature';
-        }
-      })(selectedFeature.featureType);
+      const nameOfSelectedFeature = nameOfFeature(selectedFeature.featureType, 'forSelect');
 
       store.handleSelectFeature(null, nameOfSelectedFeature);
     }

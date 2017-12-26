@@ -1,5 +1,6 @@
 import { Store } from 'flummox';
 import get from 'lodash/get';
+import { nameOfFeature } from 'utils/geo';
 
 export default class GeoObjectsStore extends Store {
 
@@ -78,28 +79,11 @@ export default class GeoObjectsStore extends Store {
   }
 
   handleSetSelectedPolysType(type) {
-    const nameOfSelectedPolys = (() => {
-      switch (type) {
-        case 'leak': return 'selectedPolysTypesLeak';
-        default: return 'selectedPolysTypes';
-      }
-    })(type);
-
-    const nameOfSelectedFeature = (() => {
-      switch (type) {
-        case 'leak': return 'selectedFeatureLeak';
-        default: return 'selectedFeature';
-      }
-    })(type);
-
-   // const nameOfSelectedPolys = (type === 'leak') ? 'selectedPolysTypesLeak' : 'selectedPolysTypes';
-   // const nameOfSelectedFeature = (type === 'leak') ? 'selectedFeatureLeak' : 'selectedFeature';
+    const nameOfSelectedPolys = nameOfFeature(type, 'forPolys');
+    const nameOfSelectedFeature = nameOfFeature(type, 'forSelect');
     if (type === null) {
-    //  this.setState({ selectedPolysTypes: [] });
-     // this.handleSelectFeature(null);
       return;
     }
-
     const selectedPolys = this.state[nameOfSelectedPolys]; // [] при первом клике
     const typeIndex = selectedPolys.indexOf(type);  // -1 при активации чекбокса
     if (typeIndex > -1) {

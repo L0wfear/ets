@@ -3,6 +3,14 @@ import { IValidationSchema } from 'components/ui/form/@types/validation.h';
 const carFormPassportGibdd: IValidationSchema = {
   properties: [
     {
+      key: 'passport_gibdd_seria_number',
+      title: 'Серия и номер паспорта',
+      type: 'string',
+      minLength: 10,
+      maxLength: 10,
+      trimSpace: true,
+    },
+    {
       key: 'passport_gibdd_address',
       title: 'Адрес',
       type: 'string',

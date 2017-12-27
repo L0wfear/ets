@@ -21,6 +21,7 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
 
     this.state = Object.assign(this.state, {
       showCurrentDutyMissionForm: false,
+      dutyMissionToRejectList: [],
     });
 
     this.canView = context.flux.getStore('session').getPermission('duty_mission.read');
@@ -57,18 +58,28 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
   }
 
   async rejectMission(id) {
-    const reason = prompt('Введите причину', '');
-    if (reason) {
-      let mission = await this.context.flux.getActions('missions').getDutyMissionById(id);
-      mission = mission.result.rows[0];
-      mission.status = 'fail';
-      mission.comment = reason;
-      await this.context.flux.getActions('missions').updateDutyMission(mission);
-    }
+    const mission = await this.context.flux.getActions('missions').getDutyMissionById(id).then(({ result: { rows: [m] } }) => m);
+    this.setState({
+      dutyMissionToRejectList: [mission],
+    });
     this.selectItem(null);
     this.props.refreshCard();
   }
-
+  handleRejectAll = (allQuery, needUpdate) => {
+    Promise.all(allQuery).then(() => {
+      if (needUpdate) {
+        this.props.refreshCard();
+      }
+      this.setState({
+        dutyMissionToRejectList: [],
+      });
+    })
+    .catch(() => {
+      this.setState({
+        dutyMissionToRejectList: [],
+      });
+    });
+  }
   renderSubitems() {
     return this.renderSelectedMission();
   }
@@ -178,6 +189,12 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
 
     return (
       <Div md={12}>
+        <Div hidden={this.state.dutyMissionToRejectList.length === 0} >
+          <DutyMissionFormReject
+            rejectedDutyMission={this.state.dutyMissionToRejectList}
+            onRejectAll={this.handleRejectAll}
+          />
+        </Div>
         <Panel className="dashboard-card" header={Header} bsStyle="success" wrappedRef={node => (this._card = node)}>
           <Div className="dashboard-card-items">
             {firstItems}

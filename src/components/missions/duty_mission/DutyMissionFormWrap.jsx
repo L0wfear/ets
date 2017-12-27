@@ -144,10 +144,10 @@ class DutyMissionFormWrap extends FormWrap {
 
     const ansError = {};
 
-    if (diffDates(new_ds, date_from) < 0 || diffDates(new_ds, date_to)) {
+    if (diffDates(new_ds, date_from) < 0 || diffDates(new_ds, date_to) > 0) {
       ansError.plan_date_start = 'Дата не должна выходить за пределы действия поручения (факсограммы)';
     }
-    if (diffDates(new_de, date_to) > 0 || diffDates(new_de, date_from)) {
+    if (diffDates(new_de, date_to) > 0 || diffDates(new_de, date_from) < 0) {
       ansError.plan_date_end = 'Дата не должна выходить за пределы действия поручения (факсограммы)';
     }
 

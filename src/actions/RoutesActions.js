@@ -65,7 +65,11 @@ export default class RoutesActions extends Actions {
 
     if (route) {
       if (route.type === 'points') {
-        route.object_list.forEach((el) => {
+        route.object_list.forEach((el, i) => {
+          // todo
+          // заставить бэк выдавать id
+          el.customId = i;
+
           if (!el.shape && el.coordinates) {
             el.shape = {
               type: 'Point',

@@ -9,6 +9,9 @@ import { getWarningNotification } from 'utils/notifications';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import { extractTableMeta, getServerSortingField, toServerFilteringObject } from 'components/ui/table/utils';
 import Paginator from 'components/ui/Paginator.jsx';
+import DutyMissionFormReject from 'components/missions/duty_mission/DutyMissionFormReject.jsx';
+import Div from 'components/ui/Div';
+
 import DutyMissionsTable, { getTableMeta } from './DutyMissionsTable.jsx';
 import DutyMissionFormWrap from './DutyMissionFormWrap.jsx';
 
@@ -42,6 +45,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       page: 0,
       sortBy: ['number:desc'],
       filter: {},
+      dutyMissionToRejectList: [],
     };
   }
 
@@ -99,38 +103,36 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     mission.status = 'complete';
     this.context.flux.getActions('missions').updateDutyMission(mission);
     this.refreshList(this.state);
-  }
-
-  rejectMission() {
-    const reason = prompt('Введите причину', '');
-    if (reason) {
-      const mission = _.cloneDeep(this.state.selectedElement);
-      mission.status = 'fail';
-      mission.comment = reason;
-      this.context.flux.getActions('missions').updateDutyMission(mission);
-      this.refreshList(this.state);
-    }
+    this.setState({
+      selectedElement: null,
+      checkedElements: {},
+    });
   }
 
   completeCheckedElements() {
     if (Object.keys(this.state.checkedElements).length !== 0) {
       let hasNotAssigned = false;
-      _.forEach(this.state.checkedElements, (mission) => {
+
+      const querysToCompleted = Object.values(this.state.checkedElements).map((mission) => {
         if (mission.status === 'assigned') {
           const updatedMission = _.cloneDeep(mission);
           updatedMission.status = 'complete';
-          this.context.flux.getActions('missions').updateDutyMission(updatedMission);
-          this.refreshList(this.state);
-        } else {
-          hasNotAssigned = true;
+          return this.context.flux.getActions('missions').updateDutyMission(updatedMission);
+        }
+        hasNotAssigned = true;
+        return Promise.resolve();
+      });
+
+      Promise.all(querysToCompleted).then(() => {
+        this.refreshList(this.state);
+        this.setState({
+          selectedElement: null,
+          checkedElements: {},
+        });
+        if (hasNotAssigned) {
+          global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Выполненые" можно только назначенные наряд-задания!'));
         }
       });
-      this.setState({
-        checkedElements: {},
-      });
-      if (hasNotAssigned) {
-        global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Выполненые" можно только назначенные наряд-задания!'));
-      }
     } else {
       this.completeMission();
     }
@@ -139,27 +141,53 @@ export default class DutyMissionsJournal extends CheckableElementsList {
   rejectCheckedElements() {
     if (Object.keys(this.state.checkedElements).length !== 0) {
       let hasNotAssigned = false;
-      _.forEach(this.state.checkedElements, (mission) => {
+
+      const dutyMissionToRejectList = Object.values(this.state.checkedElements).reduce((newArr, mission) => {
         if (mission.status === 'assigned') {
-          const reason = prompt(`Введите причину для наряд-задания №${mission.number}`, '');
-          if (reason) {
-            const updatedMission = _.cloneDeep(mission);
-            updatedMission.status = 'fail';
-            updatedMission.comment = reason;
-            this.context.flux.getActions('missions').updateDutyMission(updatedMission);
-            this.refreshList(this.state);
-          }
+          newArr.push(mission);
         } else {
           hasNotAssigned = true;
         }
+        return newArr;
+      }, []);
+
+      this.setState({
+        dutyMissionToRejectList,
+        selectedElement: null,
+        checkedElements: {},
       });
-      this.setState({ checkedElements: {} });
+
       if (hasNotAssigned) {
         global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Невыполненые" можно только назначенные наряд-задания!'));
       }
     } else {
-      this.rejectMission();
+      const mission = this.state.selectedElement;
+      if (mission.status === 'assigned') {
+        this.setState({
+          dutyMissionToRejectList: [mission],
+          selectedElement: null,
+          checkedElements: {},
+        });
+      } else {
+        global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Невыполненые" можно только назначенные наряд-задания!'));
+      }
     }
+  }
+
+  handleRejectAll = (allQuery, needUpdate) => {
+    Promise.all(allQuery).then(() => {
+      if (needUpdate) {
+        this.refreshList(this.state);
+      }
+      this.setState({
+        dutyMissionToRejectList: [],
+      });
+    })
+    .catch(() => {
+      this.setState({
+        dutyMissionToRejectList: [],
+      });
+    });
   }
 
   removeCheckedElements() {
@@ -195,7 +223,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     buttons.push(
       <ButtonToolbar key={buttons.length}>
         <Button bsSize="small" onClick={this.completeCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</Button>
-        <Button bsSize="small" onClick={this.rejectCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</Button>
+        <Button bsSize="small" onClick={this.rejectCheckedElements} ><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</Button>
         {/* <Button bsSize="small" onClick={this.handleSubmit}><Glyphicon glyph="download-alt" /></Button>*/}
       </ButtonToolbar>
     );
@@ -233,13 +261,20 @@ export default class DutyMissionsJournal extends CheckableElementsList {
   }
 
   additionalRender() {
-    return (
+    return [
       <Paginator
         currentPage={this.state.page}
         maxPage={Math.ceil(this.props.totalCount / MAX_ITEMS_PER_PAGE)}
         setPage={page => this.setState({ page })}
         firstLastButtons
-      />
-    );
+      />,
+      <Div hidden={this.state.dutyMissionToRejectList.length === 0} >
+        <DutyMissionFormReject
+          rejectedDutyMission={this.state.dutyMissionToRejectList}
+          onRejectAll={this.handleRejectAll}
+        />
+      </Div>,
+
+    ];
   }
 }

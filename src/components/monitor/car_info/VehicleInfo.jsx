@@ -52,19 +52,20 @@ export default class VehicleInfo extends Component {
   render() {
     const { car = {}, missions = [] } = this.props;
     const { marker = {} } = car;
-    const parkings = !!marker.track ? marker.track : [];
+    const { parkings = [] } = marker.track || {};
 
     let missionsRender = (
       <div style={{ textAlign: 'left', overflow: 'hidden', textOverflow: 'ellipsis' }}>
         {missions.map((mission) => {
           const missionStart = makeUnixTime(mission.date_start);
           const missionEnd = makeUnixTime(mission.date_end);
-          const parkingTime = parkings.length ? parkings.map((p) => {
+          const parkingTime = parkings.map((p) => {
             const start = p.start_point.timestamp > missionStart ? p.start_point.timestamp : missionStart;
             const end = p.end_point.timestamp < missionEnd ? p.end_point.timestamp : missionEnd;
             if (end < start) return 0;
             return end - start;
-          }).reduce((a, b) => a + b) : 0;
+          }).reduce((a, b) => a + b, 0);
+
           return (
             <div key={mission.id}>
               <span

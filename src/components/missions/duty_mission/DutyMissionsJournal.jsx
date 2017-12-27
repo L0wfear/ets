@@ -99,6 +99,10 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     mission.status = 'complete';
     this.context.flux.getActions('missions').updateDutyMission(mission);
     this.refreshList(this.state);
+    this.setState({
+      selectedElement: null,
+      checkedElements: {},
+    });
   }
 
   rejectMission() {
@@ -109,28 +113,37 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       mission.comment = reason;
       this.context.flux.getActions('missions').updateDutyMission(mission);
       this.refreshList(this.state);
+      this.setState({
+        selectedElement: null,
+        checkedElements: {},
+      });
     }
   }
 
   completeCheckedElements() {
     if (Object.keys(this.state.checkedElements).length !== 0) {
       let hasNotAssigned = false;
-      _.forEach(this.state.checkedElements, (mission) => {
+
+      const querysToCompleted = Object.values(this.state.checkedElements).map((mission) => {
         if (mission.status === 'assigned') {
           const updatedMission = _.cloneDeep(mission);
           updatedMission.status = 'complete';
-          this.context.flux.getActions('missions').updateDutyMission(updatedMission);
-          this.refreshList(this.state);
-        } else {
-          hasNotAssigned = true;
+          return this.context.flux.getActions('missions').updateDutyMission(updatedMission);
+        }
+        hasNotAssigned = true;
+        return Promise.resolve();
+      });
+
+      Promise.all(querysToCompleted).then(() => {
+        this.refreshList(this.state);
+        this.setState({
+          selectedElement: null,
+          checkedElements: {},
+        });
+        if (hasNotAssigned) {
+          global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Выполненые" можно только назначенные наряд-задания!'));
         }
       });
-      this.setState({
-        checkedElements: {},
-      });
-      if (hasNotAssigned) {
-        global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Выполненые" можно только назначенные наряд-задания!'));
-      }
     } else {
       this.completeMission();
     }
@@ -139,24 +152,32 @@ export default class DutyMissionsJournal extends CheckableElementsList {
   rejectCheckedElements() {
     if (Object.keys(this.state.checkedElements).length !== 0) {
       let hasNotAssigned = false;
-      _.forEach(this.state.checkedElements, (mission) => {
+
+      const querysToCompleted = Object.values(this.state.checkedElements).map((mission) => {
         if (mission.status === 'assigned') {
           const reason = prompt(`Введите причину для наряд-задания №${mission.number}`, '');
+
           if (reason) {
             const updatedMission = _.cloneDeep(mission);
             updatedMission.status = 'fail';
             updatedMission.comment = reason;
-            this.context.flux.getActions('missions').updateDutyMission(updatedMission);
-            this.refreshList(this.state);
+            return this.context.flux.getActions('missions').updateDutyMission(updatedMission);
           }
-        } else {
-          hasNotAssigned = true;
+        }
+        hasNotAssigned = true;
+        return Promise.resolve();
+      });
+
+      Promise.all(querysToCompleted).then(() => {
+        this.refreshList(this.state);
+        this.setState({
+          selectedElement: null,
+          checkedElements: {},
+        });
+        if (hasNotAssigned) {
+          global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Невыполненые" можно только назначенные наряд-задания!'));
         }
       });
-      this.setState({ checkedElements: {} });
-      if (hasNotAssigned) {
-        global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Невыполненые" можно только назначенные наряд-задания!'));
-      }
     } else {
       this.rejectMission();
     }

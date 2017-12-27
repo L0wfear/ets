@@ -50,6 +50,7 @@ export interface IVehiclePassport  extends IVehiclePassportGibdd, IVehiclePasspo
 }
 
 export interface IVehiclePassportGibdd {
+  passport_gibdd_seria_number: string;
   passport_gibdd_vin: number;
   passport_gibdd_func_type_id: number;
   passport_gibdd_category_id: number;

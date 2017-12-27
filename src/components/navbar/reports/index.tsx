@@ -27,9 +27,6 @@ const ReportsNavItem: React.SFC<IPropsReportsNavItem> = ({ path }) =>
         'car_travel_report.list',
         'car_usage_report_with_track_report.list',
         'track_events_report.list',
-        'brigade_efficiency_report.list',
-        'employee_efficiency_report.list',
-        'mission_progress_report.list',
         'autobase_long_repair_report.list',
         'autobase_tech_maintenance_schedule_report.list',
         'autobase_inquiry_expiring_date_report.list',
@@ -40,9 +37,6 @@ const ReportsNavItem: React.SFC<IPropsReportsNavItem> = ({ path }) =>
       <MenuItem permissions={[PERMISSIONS.reportAll.car_travel_report.false]} active={path === '/mission-reports'} href="#/mission-reports">Прохождение заданий</MenuItem>
       <MenuItem permissions={[PERMISSIONS.reportAll.car_usage_report_with_track_report.list]} active={path === '/car-usage-report-with-track'} href="#/car-usage-report-with-track">Статистика выхода техники</MenuItem>
       <MenuItem permissions={[PERMISSIONS.reportAll.track_events_report.list]} active={path === '/track-events-reports'} href="#/track-events-reports">Отчет по возможным сливам топлива</MenuItem>
-      <MenuItem permissions={[PERMISSIONS.reportAll.brigade_efficiency_report.list]} active={path === '/brigade-efficiency-report'} href="#/brigade-efficiency-report">Работа бригад по ручной уборке</MenuItem>
-      <MenuItem permissions={[PERMISSIONS.reportAll.employee_efficiency_report.list]} active={path === '/employee-efficiency-report'} href="#/employee-efficiency-report">Работа сотрудников по ручной уборке</MenuItem>
-      <MenuItem permissions={[PERMISSIONS.reportAll.mission_progress_report.list]} active={path === '/mission-progress-report'} href="#/mission-progress-report">Отчет по уборке территорий</MenuItem>
       <MenuItem permissions={[PERMISSIONS.reportAll.autobase_long_repair_report.list]} active={path === '/long-repair'} href="#/long-repair">Отчет по транспортным средствам, простаивающим длительное время в ремонтной зоне</MenuItem>
       <MenuItem permissions={[PERMISSIONS.reportAll.autobase_tech_maintenance_schedule_report.list]} active={path === '/tech-maintenance-schedule'} href="#/tech-maintenance-schedule">График проведения технического обслуживания транспортных средств</MenuItem>
       <MenuItem permissions={[PERMISSIONS.reportAll.autobase_inquiry_expiring_date_report.list]} active={path === '/inquiry-expiring-date'} href="#/inquiry-expiring-date">Перечень справок, по которым подходит дата окончания действия</MenuItem>
@@ -51,17 +45,11 @@ const ReportsNavItem: React.SFC<IPropsReportsNavItem> = ({ path }) =>
       oneOfPermissions={[
         'fuel_consumption_report.list',
         'fuel_consumption_summary_report.list',
-        'cleaning_status_report.list',
-        'cleaning_status_cafap_report.list',
-        'cleaning_status_tech_op_report.list',
       ]}
       title="Регламентированные отчеты" id="nav-dropdown-3-2"
     >
       <MenuItem permissions={[PERMISSIONS.reportAll.fuel_consumption_report.list]} active={path === '/fuel-consumption-report'} href="#/fuel-consumption-report">Расход топлива</MenuItem>
       <MenuItem permissions={[PERMISSIONS.reportAll.fuel_consumption_summary_report.list]} active={path === '/fuel-consumption-summary-report'} href="#/fuel-consumption-summary-report">Сводный отчет расхода топлива</MenuItem>
-      <MenuItem permissions={[PERMISSIONS.reportAll.cleaning_status_report.list]} active={path === '/daily-cleaning-reports-ets'} href="#/daily-cleaning-reports-ets">Статус по уборке</MenuItem>
-      <MenuItem permissions={[PERMISSIONS.reportAll.cleaning_status_cafap_report.list]} active={path === '/daily-cleaning-reports-cafap'} href="#/daily-cleaning-reports-cafap">Статус по уборке (ЦАФАП)</MenuItem>
-      <MenuItem permissions={[PERMISSIONS.reportAll.cleaning_status_tech_op_report.list]} active={path === '/cleaning-status-tech-op-report'} href="#/cleaning-status-tech-op-report">Статус по выполнению городских заданий</MenuItem>
     </NavDropdown>
     {
       // <NavDropdown title="Графические отчеты" id="nav-dropdown-3-3">

@@ -7,6 +7,8 @@ import { getFormattedDateTimeSeconds } from 'utils/dates';
 import cx from 'classnames';
 import { isEmpty } from 'utils/functions';
 import { FluxContext, wrappedRef } from 'utils/decorators';
+import DutyMissionFormReject from 'components/missions/duty_mission/DutyMissionFormReject.jsx';
+
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
 import DashboardCardHeader from '../DashboardCardHeader.jsx';
 import DashboardItemChevron from '../DashboardItemChevron.jsx';

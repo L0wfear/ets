@@ -98,14 +98,16 @@ export default class ProgramRegistryForm extends Form {
       this.setState({ mainButtonEnable: true });
     });
   }
-  updateObjectData = () => {
+  updateObjectData = (needVersionUpdate = true) => {
     const {
       formState: {
         id: program_version_id,
       },
     } = this.props;
 
-    this.props.updateVersionOuter();
+    if (needVersionUpdate) {
+      this.props.updateVersionOuter();
+    }
     return this.context.flux.getActions('repair').getRepairListByType('objects', { program_version_id });
   }
   render() {

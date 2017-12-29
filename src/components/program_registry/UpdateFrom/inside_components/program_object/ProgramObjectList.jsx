@@ -37,6 +37,15 @@ export default class ProgramRemarkList extends CheckableElementsList {
     this.updateAction = context.flux.getActions('repair').getRepairListByType.bind(this, 'objects', { program_version_id });
   }
 
+  inheritedComponentWillReceiveProps(props) {
+    const { program_version_id: new_version } = props;
+    const { program_version_id: old_version } = this.props;
+
+    if (new_version !== old_version) {
+      this.init(false);
+    }
+  }
+
   removeElementAction = (id) => {
     const {
       program_version_id,
@@ -224,8 +233,8 @@ export default class ProgramRemarkList extends CheckableElementsList {
     return buttons;
   }
 
-  init() {
-    this.props.updateObjectData();
+  init(needVersionUpdate) {
+    this.props.updateObjectData(needVersionUpdate);
     this.context.flux.getActions('technicalOperation').getTechnicalOperationsObjects();
   }
 

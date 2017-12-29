@@ -173,7 +173,10 @@ export default class RouteForm extends Form {
 
           <Row>
             <Col md={STRUCTURE_FIELD_VIEW ? 2 : 3}>
-              <Field type="string" label="Название маршрута" value={state.name} onChange={v => this.handleChange('name', v)} error={errors.name} />
+              <Field type="string" label="Название маршрута" 
+                     value={state.name} 
+                     onChange={v => this.handleChange('name', v)} 
+                     error={errors.name} />
             </Col>
 
             <Div hidden={this.props.forceTechnicalOperation}>

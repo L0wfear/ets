@@ -93,6 +93,8 @@ export default class SessionStore extends Store {
   handleLogout(message) {
     localStorage.removeItem(global.SESSION_KEY);
     localStorage.removeItem(global.CURRENT_USER);
+    localStorage.removeItem(global.ERROR_GPS);
+
     this.setState({
       session: null,
       sessionError: message || null,
@@ -122,6 +124,15 @@ export default class SessionStore extends Store {
     );
 
     return permissionName.reduce((bool, permission) => bool && !!permissionsReduce[permission], true);
+  }
+
+  seeNotifyProblemGPS() {
+    const { isSee = false } = JSON.parse(localStorage.getItem(global.ERROR_GPS)) || {};
+    if (!isSee) {
+      localStorage.setItem(global.ERROR_GPS, JSON.stringify({ isSee: true }));
+      return false;
+    }
+    return true;
   }
 
 }

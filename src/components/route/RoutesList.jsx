@@ -11,6 +11,21 @@ import FilterButton from 'components/ui/table/filter/FilterButton.jsx';
 import RouteInfo from './RouteInfo.jsx';
 import RouteFormWrap from './RouteFormWrap.jsx';
 
+const getTypeRoute = (type) => {
+  switch (type) {
+    case 'mixed':
+    case 'simple':
+    case 'vector':
+      return 'Маршруты по ОДХ';
+    case 'simple_dt':
+      return 'Маршруты по ДТ';
+    case 'points':
+      return 'Маршруты по пунктам назначения';
+    default:
+      return 'error';
+  }
+};
+
 class RoutesList extends Component {
 
   static get propTypes() {
@@ -38,12 +53,22 @@ class RoutesList extends Component {
     };
   }
 
-  componentWillMount() {
+  async componentDidMount() {
     const { flux } = this.context;
-    flux.getActions('routes').getRoutes();
-    flux.getActions('technicalOperation').getTechnicalOperations();
+    const STRUCTURES = this.getStructures();
+
     flux.getActions('technicalOperation').getTechnicalOperationsObjects();
     flux.getActions('geoObjects').getGeozones();
+
+    await flux.getActions('technicalOperation').getTechnicalOperations();
+    const { technicalOperationsList = [] } = this.props;
+
+    const routesList = await flux.getActions('routes').getRoutes().then(({ result }) => result);
+    routesList.forEach((r) => {
+      r.technical_operation_name = _.get(technicalOperationsList.find(t => t.id === r.technical_operation_id), 'name');
+      r.structure_name = _.get(STRUCTURES.find(t => t.value === r.structure_id), 'label');
+      r.type_name = getTypeRoute(r.type);
+    });
 
     const { location: { search } } = this.props;
     const searchObject = queryString.parse(search);
@@ -53,7 +78,9 @@ class RoutesList extends Component {
       _.mapKeys(searchObject, (v, k) => {
         filterValues[k] = [v];
       });
-      this.setState({ filterValues });
+      this.setState({ filterValues, routesList });
+    } else {
+      this.setState({ routesList });
     }
   }
 
@@ -62,21 +89,6 @@ class RoutesList extends Component {
       showForm: false,
       selectedRoute: null,
     });
-  }
-
-  getTypeRoute(type) {
-    switch (type) {
-      case 'mixed':
-      case 'simple':
-      case 'vector':
-        return 'Маршруты по ОДХ';
-      case 'simple_dt':
-        return 'Маршруты по ДТ';
-      case 'points':
-        return 'Маршруты по пунктам назначения';
-      default:
-        return 'error';
-    }
   }
 
   getStructures() {
@@ -89,7 +101,7 @@ class RoutesList extends Component {
     const STRUCTURES = this.getStructures();
     const { technicalOperationsList = [] } = this.props;
 
-    const type = this.getTypeRoute(selectedRouter.type);
+    const type = getTypeRoute(selectedRouter.type);
     const structure_name = type + _.get(STRUCTURES.find(t => t.value === selectedRouter.structure_id), 'label') || 'Без подразделения';
     const technical_operation_name = structure_name + _.get(technicalOperationsList.find(t => t.id === selectedRouter.technical_operation_id), 'name');
 
@@ -224,17 +236,20 @@ class RoutesList extends Component {
   }
 
   render() {
-    const { routesList = [] } = this.props;
+    const { routesList = [] } = this.state;
     const { technicalOperationsList = [], technicalOperationsObjectsList = [] } = this.props;
     const route = this.state.selectedRoute;
 
-    const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
+    const TECH_OPERATIONS = _.uniqBy(
+      technicalOperationsList.map(({ name }) => ({ value: name, label: name })),
+      'value'
+    );
     const OBJECTS = technicalOperationsObjectsList.map(({ type, full_name }) => ({ value: type, label: full_name }));
     const STRUCTURES = this.getStructures();
 
     let filterOptions = [
       {
-        name: 'technical_operation_id',
+        name: 'technical_operation_name',
         displayName: 'Тех. операция',
         filter: {
           type: 'multiselect',
@@ -264,11 +279,6 @@ class RoutesList extends Component {
 
     let ROUTES = _.cloneDeep(routesList).filter(r => this.shouldBeRendered(r));
     ROUTES = _.sortBy(ROUTES, o => o.name.toLowerCase());
-    ROUTES.forEach((r) => {
-      r.structure_name = _.get(STRUCTURES.find(t => t.value === r.structure_id), 'label');
-      r.type_name = this.getTypeRoute(r.type);
-      r.technical_operation_name = _.get(technicalOperationsList.find(t => t.id === r.technical_operation_id), 'name');
-    });
     ROUTES = ROUTES.filter(r => r.technical_operation_name).sort((a, b) => a.technical_operation_name.toLowerCase().localeCompare(b.technical_operation_name.toLowerCase()));
 
     ROUTES = _.groupBy(ROUTES, r => r.type_name);

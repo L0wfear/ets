@@ -1,3 +1,5 @@
+import { makeReactMessange } from '/home/uoiasfy/all/chch/ets-frontend/src/utils/helpMessangeWarning.jsx';
+
 export const loginErrorNotification = {
   title: 'Ошибка',
   message: 'Ошибка авторизации: время действия сессии истекло',
@@ -119,11 +121,11 @@ export const notifications = {
 export function getWarningNotification(message) {
   return {
     title: 'Внимание',
-    message: `${message}`,
     level: 'warning',
     dismissible: true,
     position: 'tr',
     autoDismiss: 0,
+    children: makeReactMessange(message),
   };
 }
 

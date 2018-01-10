@@ -1,5 +1,6 @@
 import { Store } from 'flummox';
 import get from 'lodash/get';
+import { nameOfFeature } from 'utils/geo';
 
 export default class GeoObjectsStore extends Store {
 
@@ -16,6 +17,7 @@ export default class GeoObjectsStore extends Store {
     this.register(geoObjectsActions.setSelectedPolysType, this.handleSetSelectedPolysType);
 
     this.register(geoObjectsActions.getGeozoneByTypeWithGeometry, this.handleGetGeozonesByTypeWithGeometry);
+    this.register(geoObjectsActions.getGeozoneByTypeWithGeometryLeak, this.handleGetGeozonesByTypeWithGeometry);
     this.register(geoObjectsActions.getGeozoneByType, this.handleGetGeozonesByType);
 
     this.state = {
@@ -62,7 +64,10 @@ export default class GeoObjectsStore extends Store {
       carpoolPolys: {},
 
       selectedPolysTypes: [],
+      selectedPolysTypesLeak: [],
+
       selectedFeature: null,
+      selectedFeatureLeak: null,
     };
   }
 
@@ -74,26 +79,26 @@ export default class GeoObjectsStore extends Store {
   }
 
   handleSetSelectedPolysType(type) {
+    const nameOfSelectedPolys = nameOfFeature(type, 'forPolys');
+    const nameOfSelectedFeature = nameOfFeature(type, 'forSelect');
     if (type === null) {
-      this.setState({ selectedPolysTypes: [] });
-      this.handleSelectFeature(null);
       return;
     }
-    const { selectedPolysTypes } = this.state;
-    const typeIndex = selectedPolysTypes.indexOf(type);
-
+    const selectedPolys = this.state[nameOfSelectedPolys]; // [] при первом клике
+    const typeIndex = selectedPolys.indexOf(type);  // -1 при активации чекбокса
     if (typeIndex > -1) {
-      selectedPolysTypes.splice(typeIndex, 1);
-      if (this.state.selectedFeature) {
-        if (this.state.selectedFeature.featureType === type) {
-          this.handleSelectFeature(null);
+      selectedPolys.splice(typeIndex, 1);  // после снятия чекбокса удаляется из политик объект того типа данных, с которого снимается флажок
+      const stateSelectedFeature = this.state[nameOfSelectedFeature];
+      if (stateSelectedFeature) {
+        if (stateSelectedFeature.featureType === type) { // если снимаем флажок с того типа объекта, который выделен на карте
+          this.handleSelectFeature(null, nameOfSelectedFeature);
         }
       }
     } else {
-      selectedPolysTypes.push(type);
+      selectedPolys.push(type);  // пополняется объект политик при активации чекбокса
     }
 
-    this.setState({ selectedPolysTypes });
+    this.setState({ nameOfSelectedPolys });
   }
 
   handleGetGeozones({ result }) {
@@ -125,15 +130,16 @@ export default class GeoObjectsStore extends Store {
     this.setState({ geozonePolys, dtPolys, odhPolys });
   }
 
-  handleGetGeozonesByTypeWithGeometry(response) {
-    const { type, data = {} } = response;
+  handleGetGeozonesByTypeWithGeometry(response) {  // данные гео объектов, полученные с сервера, записываются в отдельные свойства this.state
+    const { data = {} } = response;
     const { rows = [] } = data.result;
+    const type = response.type || rows[0].type;
     const polys = {};
     rows.forEach((geozone) => {
-      const shape = JSON.parse(geozone.shape);
-      geozone.featureType = type;
+      const shape = (geozone.shape.constructor === String) ? JSON.parse(geozone.shape) : geozone.shape;
+      geozone.featureType = type || geozone.type;
       delete geozone.shape;
-      polys[geozone.global_id || geozone.id] = Object.assign({}, {
+      polys[geozone.global_id || geozone.id || geozone.sensor_id] = Object.assign({}, {
         shape,
         data: geozone,
         state: 1,
@@ -155,62 +161,64 @@ export default class GeoObjectsStore extends Store {
     });
   }
 
-  getSelectedPolys() {
-    const { selectedPolysTypes } = this.state;
+  getSelectedPolys(nameOfSelected) {
+    const selectedPolysTypes = this.state[nameOfSelected];
     const polys = {};
     selectedPolysTypes.map(type => Object.assign(polys, this.state[`${type}Polys`]));
-
     return polys;
   }
 
-  handleSelectFeature(selectedFeature = false) {
-    if (selectedFeature !== null) {
-      if (this.state.selectedFeature !== null) {
-        const featureId = get(this.state, 'selectedFeature.global_id', null) || get(this.state, 'selectedFeature.id', null);
-        const newFeatureId = get(selectedFeature, 'global_id', null) || get(selectedFeature, 'id', null);
 
-        const typePrev = this.state.selectedFeature.featureType;
+  handleSelectFeature(featureData = false, nameOfSelected) {
+    const stateSelectedFeature = this.state[nameOfSelected]; // данные предыдущего выделенного элемента
+    if (featureData !== null) {
+      if (stateSelectedFeature !== null) {
+      // при переключении выбранного объекта на карте
+        const featureId = get(this.state, `${nameOfSelected}.global_id`, null) || get(this.state, `${nameOfSelected}.id`, null) || get(this.state, `${nameOfSelected}.sensor_id`, null);
+        const newFeatureId = get(featureData, 'global_id', null) || get(featureData, 'id', null) || get(featureData, 'sensor_id', null);
+        const type = featureData.featureType;
+        const typePrev = this.state[nameOfSelected].featureType;
         const polysByTypePrev = `${typePrev}Polys`;
         const polysPrev = this.state[polysByTypePrev];
-        delete polysPrev[featureId].selected;
-
-        const type = selectedFeature.featureType;
         const polysByType = `${type}Polys`;
         const polys = this.state[polysByType];
+
         polys[newFeatureId].selected = true;
+        delete polysPrev[featureId].selected;
         this.setState({
-          selectedFeature,
+          [nameOfSelected]: featureData,
           [polysByTypePrev]: polysPrev,
           [polysByType]: polys,
         });
       } else {
-        const newFeatureId = get(selectedFeature, 'global_id', null) || get(selectedFeature, 'id', null);
-        const type = selectedFeature.featureType;
+      // при первом клике на карте на один из выбранных чекбоксом элементов
+        const newFeatureId = get(featureData, 'global_id', null) || get(featureData, 'id', null) || get(featureData, 'sensor_id', null);
+        const type = featureData.featureType;
         const polysByType = `${type}Polys`;
         const polys = this.state[polysByType];
         polys[newFeatureId].selected = true;
         this.setState({
-          selectedFeature,
+          [nameOfSelected]: featureData,
           [polysByType]: polys,
         });
       }
-    } else if (this.state.selectedFeature !== null) {
-      const featureId = get(this.state, 'selectedFeature.global_id', null) || get(this.state, 'selectedFeature.id', null);
-      const type = this.state.selectedFeature.featureType;
+    } else if (stateSelectedFeature !== null) { // при снятии флажка у чекбокса  и закрытии сайд-бара
+      const featureId = get(this.state, `${nameOfSelected}.global_id`, null) || get(this.state, `${nameOfSelected}.id`, null) || get(this.state, `${nameOfSelected}.sensor_id`, null);
+      const type = stateSelectedFeature.featureType;
       const polysByType = `${type}Polys`;
       const polys = this.state[polysByType];
       delete polys[featureId].selected;
       this.setState({
-        selectedFeature,
+        [nameOfSelected]: featureData,
         [polysByType]: polys,
       });
     } else {
-      this.setState({ selectedFeature });
+      this.setState({ [nameOfSelected]: featureData });
     }
   }
 
-  getSelectedFeature() {
-    return this.state.selectedFeature;
+  getSelectedFeature(nameOfSelected) {
+    return this.state[nameOfSelected];
   }
 
 }

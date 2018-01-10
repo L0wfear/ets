@@ -187,7 +187,7 @@ export default class CarMarker extends Marker {
     const map = this.map;
     const zoom = map.getView().getZoom();
 
-    return zoom < ZOOM_LARGE_ICONS && !options.selected ? this.renderSmall(options) : this.renderLarge(options);
+    return zoom < ZOOM_LARGE_ICONS && !options.selected ? this.renderSmall(options) : this.renderLarge(options); // ТС кружки или иконки при зумировании или клике на точку
   }
 
   getZoomRatio() {
@@ -254,7 +254,7 @@ export default class CarMarker extends Marker {
    */
   renderLarge = (options = {}) => {
     const point = this.point;
-    const color = getStatusById(point.status).color;
+    const color = getStatusById(point.status).color; // цвет кружочков для ТС на карте 
     const direction = point.direction;
     const typesIndex = this._reactMap.props.typesIndex;
     const type = typesIndex[point.car ? point.car.type_id : 5];

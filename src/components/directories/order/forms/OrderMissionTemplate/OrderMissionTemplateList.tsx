@@ -28,15 +28,15 @@ function getFilterDateOrder(technical_operations, { order_date, order_date_to })
   return technical_operations.reduce((newObj, to) => {
     const {
       norm_id,
-      date_from = order_date,
-      date_to = order_date_to,
+      date_from,
+      date_to,
       num_exec,
       order_operation_id,
     } = to;
 
     newObj[norm_id] = {
-      date_to,
-      date_from,
+      date_to: date_to || order_date,
+      date_from: date_from || order_date_to,
       num_exec,
       order_operation_id,
     };

@@ -1,3 +1,4 @@
+// тут задаются стили кружочков при отображении геообъектов на карте
 export const pointStyles = {
   'geoobject': new ol.style.Style({
     image: new ol.style.Circle({

@@ -4,6 +4,7 @@ import DateFormatter from 'components/ui/DateFormatter';
 import { WorkingHours } from 'components/directories/geoobjects/fountains/FountainsTable'
 import Panel from 'components/ui/Panel';
 import { GEOOBJECTS_TYPES_LABELS_SINGLE } from 'constants/geoobjects';
+import moment from 'moment';
 
 const DTFeature = ({ feature }) =>
   <div>
@@ -119,6 +120,25 @@ const Fountains = ({ feature }) =>
     <h5>Телефон эксплуатирующей организации</h5>{feature.operation_organization_phone}
     <h5>Электронная почта эксплуатирующей организации</h5>{feature.operation_organization_email}
   </div>;
+
+export const leaks = (feature, data) => {
+  const started_at = moment(data.started_at).format(`${global.APP_DATE_FORMAT} HH:mm`);
+  const finished_at = moment(data.finished_at).format(`${global.APP_DATE_FORMAT} HH:mm`);
+  return (
+  `
+    <pre style="line-height: 0.3">
+    <div class="header">Cлив топлива
+    
+
+    </div>
+      <p><b>Рег. номер ТС: </b> ${data.gov_number}</p>
+      <p><b>Датчик: </b> ${data.sensor_id}</p>
+      <p><b>Кол-во: </b> ${data.value} л</p>
+      <p><b>Дата и время: </b> ${started_at} </p>
+      <p><b>Потраченное время:</b> ${data.duration} </p>
+    </pre>    
+  `
+  )};
 
 export default class FeatureInfo extends Component {
 

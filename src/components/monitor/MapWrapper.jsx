@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import Map from 'components/map/Map.jsx';
 import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
-
+import { nameOfFeature } from 'utils/geo';
 @connect(
   state => state.types
 )
@@ -15,13 +15,17 @@ export default class MapWrapper extends React.Component {
     };
   }
 
-  onFeatureClick(feature) {
+  onFeatureClick(feature, isNeedCloseSidebar) {
     const featureData = feature.getProperties().data;
+
+    const nameOfSelectedFeature = nameOfFeature(featureData.featureType, 'forSelect');
     const { flux } = this.props;
     const pointsStore = flux.getStore('points');
     const geoObjectsStore = flux.getStore('geoObjects');
-    pointsStore.handleSelectPoint(false);
-    geoObjectsStore.handleSelectFeature(featureData);
+    if (isNeedCloseSidebar) {
+      pointsStore.handleSelectPoint(false);
+    }
+    geoObjectsStore.handleSelectFeature(featureData, nameOfSelectedFeature);
   }
 
   render() {

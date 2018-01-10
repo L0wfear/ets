@@ -22,6 +22,8 @@ export const getSpecificPermissions = (user) => {
     permissions.push(...getFullAccess('pedestrian_tunnel_exits'));
     permissions.push(...getFullAccess('fountains'));
   }
+  /* DITETS-2080 */
+  permissions.push(...getFullAccess('leak'));
 
   return permissions;
 };

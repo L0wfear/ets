@@ -103,7 +103,7 @@ class ShowGeoobjectsCheckbox extends React.Component<any, any> {
           />
           <label
             style={{ fontSize: 13, fontWeight: 200, paddingLeft: 0, marginLeft: 20 }}
-            onClick={() => this.setShowGeoobjects(!this.props.showGeoobjects)}
+            onClick={() => this.setShowGeoobjects(!this.props.showGeoobjects)} /* треугольничек */
           >
             Объекты
             <span style={{ fontSize: 10, marginLeft: 3 }}>{this.props.showGeoobjects ? ' \u25BC' : ' \u25BA'}</span>

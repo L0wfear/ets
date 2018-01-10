@@ -5,11 +5,13 @@ import CarMarker from './markers/car/CarMarker.js';
 import { PROJECTION, ArcGisLayer, projectToPixel } from './MskAdapter.js';
 import { polyStyles } from 'constants/polygons.js';
 import { pointStyles } from 'constants/points.js';
+import { leakIcon } from 'constants/leakIcon.js';
 import { getVectorArrowStyle } from 'constants/vectors.js';
 import { GeoJSON, defaultZoom } from 'utils/ol';
 import { swapCoords } from 'utils/geo';
 
 import Measure from './controls/measure/measure.jsx';
+import { leaks } from '../monitor/FeatureInfo.jsx';
 
 let POLYS_LAYER = null;
 // TODO move to settings
@@ -38,6 +40,7 @@ export default class OpenLayersMap extends Component {
       typesIndex: PropTypes.object,
       points: PropTypes.object,
       polys: PropTypes.object,
+      polysLeak: PropTypes.object,
       showPolygons: PropTypes.bool,
       showTrack: PropTypes.bool,
       onFeatureClick: PropTypes.func,
@@ -116,8 +119,10 @@ export default class OpenLayersMap extends Component {
     // Оставлю это здесь. так делать не надо, канвас начинает адово тупить
     // this.triggerRenderEventKey = map.on('postcompose', this.triggerRender.bind(this));
     // this.triggerRender();
-    this.popup = new ol.Overlay.Popup();
-    map.addOverlay(this.popup);
+    this.popupCar = new ol.Overlay.Popup();
+    this.popupLeak = new ol.Overlay.Popup();
+    map.addOverlay(this.popupCar);
+    map.addOverlay(this.popupLeak);
 
     this.enableInteractions();
   }
@@ -125,9 +130,16 @@ export default class OpenLayersMap extends Component {
   componentWillReceiveProps(nextProps) {
     const hasPoints = nextProps.points !== undefined;
     const hasPolys = nextProps.polys !== undefined;
+    const hasPolysLeak = nextProps.polysLeak !== undefined;
+
     const polysHasChanged = hasPolys && !_.isEqual(this.props.polys, nextProps.polys);
+    const polysHasChangedLeak = hasPolysLeak && !_.isEqual(this.props.polysLeak, nextProps.polysLeak);
+
     const showPolygonsChanged = hasPolys && nextProps.showPolygons !== this.props.showPolygons;
+    const showLeakChanged = hasPolysLeak && nextProps.showPolygons !== this.props.showPolygons;
+
     const selectedFeatureChanged = !_.isEqual(this.props.selectedFeature, nextProps.selectedFeature);
+    const selectedLeakChanged = !_.isEqual(this.props.selectedFeatureLeak, nextProps.selectedFeatureLeak);
     const selectedCarChanged = !_.isEqual(this.props.selected, nextProps.selected);
 
     if (selectedCarChanged && nextProps.selected !== null) {
@@ -142,7 +154,11 @@ export default class OpenLayersMap extends Component {
     }
 
     if (hasPolys && (polysHasChanged || showPolygonsChanged || selectedFeatureChanged)) {
-      this.renderPolygons(nextProps.polys, nextProps.showPolygons);
+      this.renderPolygons(nextProps);
+    }
+
+    if (hasPolysLeak && (polysHasChangedLeak || showLeakChanged || selectedLeakChanged)) {
+      this.renderPolygons(nextProps);
     }
   }
 
@@ -201,15 +217,14 @@ export default class OpenLayersMap extends Component {
     });
     // console.log( 'trackpoint  found', possibleTrackPoint);
     const makePopupFn = await track.getTrackPointTooltip(this.props.flux, possibleTrackPoint, prevPoint, nextPoint, event);
-    this.popup.show(pointCoords, makePopupFn());
+    this.popupCar.show(pointCoords, makePopupFn());
   }
   handleCarSelect(clickedMarker) {
     clickedMarker.onClick();
-
     this._pointsStore.handleSelectPoint(clickedMarker.point);
-    this._geoObjectsStore.handleSelectFeature(null);
+    this._geoObjectsStore.handleSelectFeature(null, 'selectedFeature');
     // прячем попап трэка
-    this.hidePopup();
+    this.hidePopup('popupCar');
   }
   getSelectedCar(coordinate) {
     // по какому маркеру кликнули?
@@ -248,25 +263,34 @@ export default class OpenLayersMap extends Component {
     }
 
     clickedMarker = this.getSelectedCar(coordinate);
-    if (clickedMarker) {
+    if (clickedMarker) { // если кликнуть на машину
       this._pointsStore.handleSelectPoint(clickedMarker.point);
     }
 
-    if (typeof this.props.onFeatureClick === 'function') {
+    if (typeof this.props.onFeatureClick === 'function') {     
       map.forEachFeatureAtPixel(pixel, (feature, layer) => {
         const id = feature.getId();
+        const isNeedCloseSidebar = feature.O.data.featureType !== 'leak';
         if (!id || (!!id && !id.match('measure'))) {
-          this.props.onFeatureClick(feature, ev, this);
+          this.props.onFeatureClick(feature, isNeedCloseSidebar, ev, this);
         }
       });
     }
   }
 
-  hidePopup() {
-    this.popup.hide();
+  hidePopup(obj) {
+    this[obj].hide();
   }
 
-  renderPolygons(polys = {}, showPolygons) {
+  /**
+   *  Отображает геоданные в виде кружочков, линий и других слоев поверх карты.
+   */
+ // renderPolygons(polys = {}, showPolygons) {
+
+  renderPolygons(nextProps) {
+    const polys = Object.assign({}, nextProps.polys, nextProps.polysLeak);
+    const showPolygons = { nextProps };
+
     const map = this.map;
 
     const vectorSource = new ol.source.Vector();
@@ -289,6 +313,13 @@ export default class OpenLayersMap extends Component {
           } else {
             feature.setStyle(polyStyles.geoobject);
           }
+        } else if (poly.shape && poly.data.type === 'leak') {
+          if (poly.selected) {
+            feature.setStyle(leakIcon['geoobject-selected']);
+            this.popupLeak.show(poly.shape.coordinates, leaks('leak', poly.data));
+          } else {
+            feature.setStyle(leakIcon.geoobject);
+          }
         } else { // Если точка
           if (poly.selected) {
             feature.setStyle(pointStyles['geoobject-selected']);
@@ -310,7 +341,6 @@ export default class OpenLayersMap extends Component {
     //   polysLayerObject.style = styleFunction;
     // }
     const polysLayer = new ol.layer.Vector(polysLayerObject);
-
     POLYS_LAYER = polysLayer;
 
     map.addLayer(polysLayer);
@@ -370,9 +400,10 @@ export default class OpenLayersMap extends Component {
       this.enableInteractions();
     }
 
-    // TODO remove this
-    if (!selected) {
-      this.hidePopup();
+    const isNeedPopUp = (nameOfPolys, type) => _.some(this.props[nameOfPolys], poly => poly.data.type === type);
+
+    if (!isNeedPopUp('polysLeak', 'leak')) {
+      this.hidePopup('popupLeak');
     }
 
     return canvas;

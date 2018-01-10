@@ -44,3 +44,20 @@ export function hasTrackPointsChanged(currentPoints, nextPoints) {
 
   return false;
 }
+
+export const nameOfFeature = (type, forWhat) => {
+  if (forWhat === 'forSelect') {
+    switch (type) {
+      case 'leak': return 'selectedFeatureLeak';
+      default: return 'selectedFeature';
+    }
+  }
+
+  if (forWhat === 'forPolys') {
+    switch (type) {
+      case 'leak': return 'selectedPolysTypesLeak';
+      default: return 'selectedPolysTypes';
+    }
+  }
+  return null;
+}

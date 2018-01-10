@@ -130,7 +130,7 @@ export default class MissionFormWrap extends FormWrap {
       if (diffDates(formState.date_start, this.props.waybillStartDate) < 0) {
         formErrors.date_start = 'Дата не должна выходить за пределы путевого листа';
       }
-      if (diffDates(formState.date_end, this.props.waybillEndDate) < 0) {
+      if (diffDates(formState.date_end, this.props.waybillEndDate) > 0) {
         formErrors.date_end = 'Дата не должна выходить за пределы путевого листа';
       }
     }
@@ -171,7 +171,7 @@ export default class MissionFormWrap extends FormWrap {
       if (diffDates(new_ds, pdd) < 0) {
         ansError.date_start = 'Дата не должна выходить за пределы путевого листа';
       }
-      if (diffDates(new_de, pad) < 0) {
+      if (diffDates(new_de, pad) > 0) {
         ansError.date_end = 'Дата не должна выходить за пределы путевого листа';
       }
     }
@@ -180,7 +180,7 @@ export default class MissionFormWrap extends FormWrap {
       if (diffDates(new_ds, fdd) < 0) {
         ansError.date_start = 'Дата не должна выходить за пределы путевого листа';
       }
-      if (diffDates(new_de, fad) < 0) {
+      if (diffDates(new_de, fad) > 0) {
         ansError.date_end = 'Дата не должна выходить за пределы путевого листа';
       }
     }

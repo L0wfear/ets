@@ -172,7 +172,7 @@ class MissionTemplateForm extends MissionForm {
                 error={errors.route_id}
                 options={ROUTES}
                 value={state.route_id}
-                disabled={!state.technical_operation_id}
+                disabled={!state.car_id}
                 onChange={this.handleRouteIdChange.bind(this)}
                 clearable
               />

@@ -71,35 +71,6 @@ class MainApp extends React.Component {
     });
   }
 
-  componentDidMount() {
-    if (this.context.flux.getStore('session').isLoggedIn()) {
-      const isSee = this.context.flux.getStore('session').seeNotifyProblemGPS();
-
-      if (!isSee) {
-        global.NOTIFICATION_SYSTEM.notifyWithObject({
-          title: 'Уважаемые пользователи !',
-          level: 'warning',
-          position: 'tr',
-          dismissible: false,
-          autoDismiss: 0,
-          uid: 'error_gps',
-          children: (
-            <div>
-              <p>В настоящий момент наблюдаются проблемы с передачей данных с датчиков ГЛОНАСС.</p>
-              <p>О сроках решения проблемы будет сообщено дополнительно</p>
-              <p
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row-reverse',
-                }}
-              ><Button onClick={this.closeError}>Закрыть</Button></p>
-            </div>
-          ),
-        });
-      }
-    }
-  }
-
   componentWillReceiveProps() {
     this.setState({
       user: this.context.flux.getStore('session').getCurrentUser(),

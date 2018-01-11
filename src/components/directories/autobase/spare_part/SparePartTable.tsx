@@ -56,9 +56,9 @@ export function tableMeta({
       {
         name: 'quantity',
         displayName: 'Количество',
-        type: 'string',
+        type: 'number',
         filter: {
-          type: 'string',
+          type: 'multiselect',
         },
       },
       {

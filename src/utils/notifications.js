@@ -1,4 +1,4 @@
-import { makeReactMessange } from '/home/uoiasfy/all/chch/ets-frontend/src/utils/helpMessangeWarning.jsx';
+import { makeReactMessange } from 'utils/helpMessangeWarning.jsx';
 
 export const loginErrorNotification = {
   title: 'Ошибка',

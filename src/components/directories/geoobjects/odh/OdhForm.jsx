@@ -107,7 +107,7 @@ export default class OdhForm extends Form {
               />
               <ExtField
                 type="select"
-                label="Учреждение"
+                label="Подразделение"
                 value={state.company_structure_id}
                 error={errors.company_structure_id}
                 options={COMPANY_ELEMENTS}

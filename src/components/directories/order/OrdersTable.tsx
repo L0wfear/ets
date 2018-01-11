@@ -27,7 +27,7 @@ export function tableMeta({
         displayName: 'Дата создания',
         type: 'datetime',
         filter: {
-          type: 'date',
+          type: 'datetime',
         },
       },
       {
@@ -35,7 +35,7 @@ export function tableMeta({
         displayName: 'Начало действия',
         type: 'datetime',
         filter: {
-          type: 'date',
+          type: 'datetime',
         },
       },
       {
@@ -43,7 +43,7 @@ export function tableMeta({
         displayName: 'Окончание действия',
         type: 'datetime',
         filter: {
-          type: 'date',
+          type: 'datetime',
         },
       },
       {

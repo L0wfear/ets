@@ -13,7 +13,7 @@ export const routeSchema = {
     },
     {
       key: 'name',
-      title: 'Название',
+      title: 'Название маршрута',
       type: 'string',
       required: true,
     },

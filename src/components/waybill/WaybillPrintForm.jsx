@@ -7,6 +7,7 @@ import Field from 'components/ui/Field.jsx';
 import Datepicker from 'components/ui/input/DatePicker';
 import { getToday9am, getTomorrow9am, makeDate } from 'utils/dates';
 import { saveData } from 'utils/functions';
+import Preloader from 'components/ui/Preloader.jsx';
 
 class WaybillPrintForm extends Component {
 
@@ -25,27 +26,47 @@ class WaybillPrintForm extends Component {
       year: new Date().getYear() + 1900,
       date_from: getToday9am(),
       date_to: getTomorrow9am(),
+      DISABLE_SUBMIT: false,
     };
   }
 
   @autobind
   async handleSubmit() {
+    global.NOTIFICATION_SYSTEM.notifyWithObject({
+      title: 'Загрузка печатной формы',
+      level: 'info',
+      position: 'tr',
+      dismissible: false,
+      autoDismiss: 0,
+      uid: 'waybilPrintForm',
+      children: (
+        <div>
+          <p>Формирование печатной формы</p>
+        </div>
+      ),
+    });
     if (this.props.show === 1) {
       const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
         'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+      this.setState({ DISABLE_SUBMIT: true });
       await this.context.flux.getActions('waybills')
         .getWaybillJournalReport(this.state)
         .then(({ blob }) => { saveData(blob, `Отчет по журналу ПЛ за ${MONTHS[this.state.month - 1]} ${this.state.year}.xls`); });
     } else {
+      this.setState({ DISABLE_SUBMIT: true });
       await this.context.flux.getActions('waybills')
         .getWaybillsReport(this.state)
         .then(({ blob }) => { saveData(blob, `Отчет по выработке ТС за ${makeDate(this.state.date_from)} - ${makeDate(this.state.date_to)}.xls`); });
     }
+
+    global.NOTIFICATION_SYSTEM.removeNotification('waybilPrintForm');
+
     this.setState({
       month: new Date().getMonth() + 1,
       year: new Date().getYear() + 1900,
       date_from: getToday9am(),
       date_to: getTomorrow9am(),
+      DISABLE_SUBMIT: false,
     }, () => this.props.hide());
   }
 
@@ -65,7 +86,8 @@ class WaybillPrintForm extends Component {
       date_from: !this.state.date_from ? 'Поле обязательно для заполнения' : '',
       date_to: !this.state.date_to ? 'Поле обязательно для заполнения' : '',
     };
-    const DISABLE_SUBMIT = this.props.show === 1 ? !!(errors.month || errors.year) : !!(errors.date_to || errors.date_from);
+    const DISABLE_SUBMIT = (this.props.show === 1 ? !!(errors.month || errors.year) : !!(errors.date_to || errors.date_from));
+
     return (
       <Modal {...this.props} show={!!this.props.show} bsSize="small">
 
@@ -86,6 +108,7 @@ class WaybillPrintForm extends Component {
                 clearable={false}
                 onChange={v => this.handleChange('month', v)}
                 error={errors.month}
+                disabled={this.state.DISABLE_SUBMIT}
               />
               <br />
               <Field
@@ -96,6 +119,7 @@ class WaybillPrintForm extends Component {
                 clearable={false}
                 onChange={v => this.handleChange('year', v)}
                 error={errors.year}
+                disabled={this.state.DISABLE_SUBMIT}
               />
             </div>
             :
@@ -113,7 +137,7 @@ class WaybillPrintForm extends Component {
 
         <Modal.Footer>
           <Div className="inline-block">
-            <Button disabled={DISABLE_SUBMIT} onClick={this.handleSubmit}>ОК</Button>
+            <Button disabled={DISABLE_SUBMIT || this.state.DISABLE_SUBMIT} onClick={this.handleSubmit}>{'OK'}</Button>
             <Button onClick={this.props.hide}>Отмена</Button>
           </Div>
         </Modal.Footer>

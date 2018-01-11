@@ -21,6 +21,10 @@ class AppNotificationSystem extends React.Component {
     this._notificationSystem.addNotification(notification);
   }
 
+  removeNotification(id) {
+    this._notificationSystem.removeNotification(id);
+  }
+
   /**
    * показать обычное сообщение
    * @param text

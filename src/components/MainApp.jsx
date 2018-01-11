@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import {
   Col,
+  Button,
   Navbar, Nav, Glyphicon,
   NavItem as BootstrapNavItem,
   NavDropdown as BootstrapNavDropdown,
@@ -68,6 +69,35 @@ class MainApp extends React.Component {
     this.setState({
       user: this.context.flux.getStore('session').getCurrentUser(),
     });
+  }
+
+  componentDidMount() {
+    if (this.context.flux.getStore('session').isLoggedIn()) {
+      const isSee = this.context.flux.getStore('session').seeNotifyProblemGPS();
+
+      if (!isSee) {
+        global.NOTIFICATION_SYSTEM.notifyWithObject({
+          title: 'Уважаемые пользователи !',
+          level: 'warning',
+          position: 'tr',
+          dismissible: false,
+          autoDismiss: 0,
+          uid: 'error_gps',
+          children: (
+            <div>
+              <p>В настоящий момент наблюдаются проблемы с передачей данных с датчиков ГЛОНАСС.</p>
+              <p>О сроках решения проблемы будет сообщено дополнительно</p>
+              <p
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row-reverse',
+                }}
+              ><Button onClick={this.closeError}>Закрыть</Button></p>
+            </div>
+          ),
+        });
+      }
+    }
   }
 
   componentWillReceiveProps() {

@@ -43,7 +43,7 @@ class TechMaintFormWrap extends FormWrap {
   render() {
     const { entity } = this.props;
     const { saveButtonEnability = true } = this.state;
-    const { company_id = null, can_edit = 'false' } = this.state.formState;
+    const { company_id = null, can_edit = false } = this.state.formState;
     const userCompanyId = this.props.currentUser.company_id;
     const isBelongToUserCompany = company_id === null || company_id === userCompanyId;
     const canSave = this.props.isPermitted && this.state.canSave && saveButtonEnability && (isBelongToUserCompany || can_edit === true);

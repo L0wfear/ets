@@ -21,7 +21,7 @@ export default class OdhForm extends Form {
       <Modal {...this.props} backdrop="static">
 
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">Реестр ОДХ</Modal.Title>
+          <Modal.Title id="contained-modal-title-lg">Объект дорожного хозяйства</Modal.Title>
         </Modal.Header>
 
         <ModalBody>

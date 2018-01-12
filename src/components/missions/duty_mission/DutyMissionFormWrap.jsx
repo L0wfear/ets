@@ -75,6 +75,11 @@ class DutyMissionFormWrap extends FormWrap {
         });
       }
     }
+    if (!props.showForm && (props.showForm !== this.props.showForm)) {
+      this.setState({
+        order: {},
+      });
+    }
   }
 
   async handleFormPrint() {

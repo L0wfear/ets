@@ -53,7 +53,7 @@ export default class MissionFormWrap extends FormWrap {
 
       if (status === 'assigned') {
         waybillsActions.getWaybill(mission.waybill_id).then(({ result: inWaybill }) => {
-          const formErrors = this.validate(mission, {}, { inWaybill });
+          const formErrors = this.validate(mission, {}, { с });
 
           this.setState({
             canSave: !filter(formErrors).length,
@@ -92,6 +92,12 @@ export default class MissionFormWrap extends FormWrap {
           formErrors,
         });
       }
+    }
+    if (!props.showForm && (props.showForm !== this.props.showForm)) {
+      this.setState({
+        order: {},
+        inWaybill: {},
+      });
     }
   }
   /**

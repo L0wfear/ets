@@ -35,6 +35,7 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
     const route = await this.context.flux.getActions('routes').getRouteById(data.duty_mission_route_id);
     this.setState({ showCurrentDutyMissionForm: true, selectedDutyMission: data, route });
   }
+  hideCurrentDutyMissionForm = () => this.setState({ showCurrentDutyMissionForm: false });
 
   selectItem(i) {
     const item = this.props.items[i];
@@ -134,18 +135,30 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
 
   renderCustomCardForm() {
     if (!this.state.selectedDutyMission || !this.state.route) return (<div />);
+
+    const {
+      route,
+      selectedDutyMission: {
+        duty_mission_number,
+        foreman_fio,
+      },
+      showCurrentDutyMissionForm,
+    } = this.state;
+
     return (
-      <Modal bsSize="large" show={this.state.showCurrentDutyMissionForm} onHide={() => this.setState({ showCurrentDutyMissionForm: false })} backdrop="static">
+      <Div hidden={!showCurrentDutyMissionForm} >
+        <Modal bsSize="large" show onHide={this.hideCurrentDutyMissionForm} backdrop="static">
 
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">Бригадир {this.state.selectedDutyMission.foreman_fio}</Modal.Title>
-        </Modal.Header>
+          <Modal.Header closeButton>
+            <Modal.Title id="contained-modal-title-lg">{`Наряд-задание № ${duty_mission_number}  бригадир ${foreman_fio}`}</Modal.Title>
+          </Modal.Header>
 
-        <ModalBody>
-          <RouteInfo route={this.state.route} mapOnly />
-        </ModalBody>
+          <ModalBody>
+            <RouteInfo route={route} mapOnly />
+          </ModalBody>
 
-      </Modal>
+        </Modal>
+      </Div>
     );
   }
 

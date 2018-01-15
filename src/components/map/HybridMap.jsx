@@ -251,7 +251,7 @@ export default class HybridMap extends Map {
             }
           });
           const makePopupFn = await track.getTrackPointTooltip(this.props.flux, possibleTrackPoint, prevPoint, nextPoint);
-          this.popup.show(pointCoords, makePopupFn());
+          this.popupCar.show(pointCoords, makePopupFn());
           return;
         }
       }

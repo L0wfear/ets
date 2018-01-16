@@ -21,6 +21,7 @@ import Form from 'components/compositions/Form.jsx';
 import CarAvailableIcon from 'assets/images/car_available.png';
 import CarNotAvailableIcon from 'assets/images/car_not_available.png';
 import InsideField from 'components/missions/mission/inside_fields/index';
+import { getKindTaskIds } from 'components/missions/utils/utils.ts';
 
 export const checkRouteByNew = (state, route, available_route_types = []) => {
   const { is_new = true } = state;
@@ -121,20 +122,22 @@ export class MissionForm extends Form {
 
     const {
       norm_id,
+      id,
     } = mission;
     if (norm_id) {
       await this.getDataByNormId(norm_id);
       carsList = await this.context.flux.getActions('cars').getCarsByNormId({ norm_id })
         .then(({ result: { rows = [] } }) => rows);
-
     }
+
+    const kind_task_ids = getKindTaskIds(id, this.props.fromOrder);
 
     /**
      * DITETS-2359
      * GET /technical_operation?only=new
      * GET /technical_operation?only=old
      */
-    const { result: technicalOperationsListOr } = await technicalOperationsActions.getTechnicalOperations();
+    const { result: technicalOperationsListOr } = await technicalOperationsActions.getTechnicalOperations({ kind_task_ids });
     const technicalOperationsList = technicalOperationsListOr.filter(({ is_new, norm_ids }) => !is_new || (is_new && !norm_ids.some(n => n === null)));
 
     let type_id = 0;
@@ -183,6 +186,7 @@ export class MissionForm extends Form {
 
 
     this.setState({
+      kind_task_ids,
       carsList,
       TECH_OPERATIONS,
       technicalOperationsList,
@@ -328,6 +332,7 @@ export class MissionForm extends Form {
       selectedRoute: route = null,
       available_route_types = [],
       car_func_types_ids = [],
+      kind_task_ids,
     } = this.state;
 
     const MISSION_SOURCES = missionSourcesList.reduce((newArr, { id, name, auto }) => {
@@ -452,6 +457,7 @@ export class MissionForm extends Form {
                 getNormIdFromState={!!fromOrder || !IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromOrder || sourceIsOrder}
                 fromWaybill={this.props.fromWaybill}
                 type_id={state.type_id}
+                kind_task_ids={kind_task_ids}
               />
             </Col>
           </Row>

@@ -32,8 +32,8 @@ export default class TechnicalOperationsActions extends Actions {
     return TechnicalOperationTypesService.get();
   }
 
-  getTechnicalOperations() {
-    const payload = {};
+  getTechnicalOperations(data) {
+    const payload = { ...data };
     return getTechnicalOperations(payload);
   }
   getTechnicalOperationsRegistry() {
@@ -50,9 +50,10 @@ export default class TechnicalOperationsActions extends Actions {
     return response.result.rows || [];
   }
 
-  async getTechnicalOperationsWithBrigades() {
+  async getTechnicalOperationsWithBrigades(data) {
     const payload = {
       needs_brigade: true,
+      ...data,
     };
     const response = await TechnicalOperationRegistryService.get(payload);
     return response.result.rows || [];

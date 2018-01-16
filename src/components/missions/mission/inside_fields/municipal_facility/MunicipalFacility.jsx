@@ -19,6 +19,7 @@ class MunicipalFacility extends React.Component {
       clearable: React.PropTypes.bool,
       fromWaybill: React.PropTypes.bool,
       type_id: React.PropTypes.number,
+      kind_task_ids: React.PropTypes.any,
     };
   }
 
@@ -37,6 +38,7 @@ class MunicipalFacility extends React.Component {
       technical_operation_id: old_toi,
       date_start: old_ds,
       forseUpdateIsWas,
+      kind_task_ids,
     } = this.state;
     let forseUpdate = false;
     const {
@@ -70,6 +72,7 @@ class MunicipalFacility extends React.Component {
         const outerPayload = {
           start_date: new_ds,
           end_date: new_ds,
+          kind_task_ids,
         };
 
         if (getNormIdFromState) {
@@ -131,6 +134,7 @@ class MunicipalFacility extends React.Component {
         [props.id]: error,
         date_start: error_date_start,
       },
+      kind_task_ids,
     } = props;
 
     return {
@@ -140,6 +144,7 @@ class MunicipalFacility extends React.Component {
       error,
       norm_id,
       error_date_start,
+      kind_task_ids,
     };
   };
 

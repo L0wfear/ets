@@ -43,10 +43,10 @@ class TechMaintFormWrap extends FormWrap {
   render() {
     const { entity } = this.props;
     const { saveButtonEnability = true } = this.state;
-    const { company_id = null } = this.state.formState;
+    const { company_id = null, can_edit = false } = this.state.formState;
     const userCompanyId = this.props.currentUser.company_id;
     const isBelongToUserCompany = company_id === null || company_id === userCompanyId;
-    const canSave = this.props.isPermitted && this.state.canSave && saveButtonEnability && isBelongToUserCompany;
+    const canSave = this.props.isPermitted && this.state.canSave && saveButtonEnability && (isBelongToUserCompany || can_edit === true);
 
     return this.props.showForm ?
       <TechMaintForm
@@ -55,7 +55,7 @@ class TechMaintFormWrap extends FormWrap {
         permissions={[`${entity}.update`]}
         addPermissionProp
         canSave={canSave}
-        isPermitted={this.props.isPermitted && isBelongToUserCompany}
+        isPermitted={this.props.isPermitted && (isBelongToUserCompany || can_edit === true)}
         onSubmit={this.handleFormSubmit}
         handleFormChange={this.handleFormStateChange}
         show={this.props.showForm}

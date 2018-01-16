@@ -84,6 +84,8 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
     ];
   }
 
+  canCreateMission = () => this.state.selectedElement !== null && this.state.selectedElement.kind_task_ids.includes(3);
+
   /**
    * @override
    */
@@ -95,7 +97,7 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
         key={buttons.length + 1}
         bsSize="small"
         onClick={this.createDutyMissions.bind(this)}
-        disabled={!this.hasCheckedElements()}
+        disabled={!this.canCreateMission()}
       >
         Сформировать наряд-задание
       </Button>

@@ -22,10 +22,10 @@ class RepairFormWrap extends FormWrap {
   render() {
     const { entity, car_id = -1, isPermitted = false } = this.props;
     const { saveButtonEnability = true } = this.state;
-    const { company_id = null } = this.state.formState;
+    const { company_id = null, can_edit = false } = this.state.formState;
     const userCompanyId = this.props.currentUser.company_id;
     const isBelongToUserCompany = company_id === null || company_id === userCompanyId;
-    const canSave = isPermitted && this.state.canSave && saveButtonEnability && isBelongToUserCompany;
+    const canSave = isPermitted && this.state.canSave && saveButtonEnability && (isBelongToUserCompany || can_edit === true);
 
     return this.props.showForm ?
       <RepairForm
@@ -35,7 +35,7 @@ class RepairFormWrap extends FormWrap {
         car_id={car_id}
         permissions={[`${entity}.update`]}
         addPermissionProp
-        isPermitted={isPermitted && isBelongToUserCompany}
+        isPermitted={isPermitted && (isBelongToUserCompany || can_edit === true)}
         canSave={canSave}
         onSubmit={this.handleFormSubmit.bind(this)}
         handleFormChange={this.handleFormStateChange.bind(this)}

@@ -75,12 +75,12 @@ export default class ProgramRegistryForm extends Form {
       } = object;
 
       if (PermittedSlug.includes(slug)) {
-        arr.push({ value, label });
+        arr.push({ value, label, slug });
       }
 
       return arr;
     }, []);
-
+    console.log(OBJECTS)
     const title = 'Создание программы ремонта';
 
     return (
@@ -137,6 +137,7 @@ export default class ProgramRegistryForm extends Form {
                 type="date"
                 label="План. Начало"
                 date={state.plan_date_start}
+                time={false}
                 error={errors.plan_date_start}
                 onChange={this.handleChange}
                 boundKeys={['plan_date_start']}
@@ -146,6 +147,7 @@ export default class ProgramRegistryForm extends Form {
                 type="date"
                 label="План. Завершение"
                 date={state.plan_date_end}
+                time={false}
                 error={errors.plan_date_end}
                 onChange={this.handleChange}
                 boundKeys={['plan_date_end']}

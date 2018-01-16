@@ -34,6 +34,11 @@ export default class TechnicalOperationsActions extends Actions {
 
   getTechnicalOperations(data) {
     const payload = { ...data };
+
+    if (!payload.kind_task_ids) {
+      delete payload.kind_task_ids;
+    }
+
     return getTechnicalOperations(payload);
   }
   getTechnicalOperationsRegistry() {
@@ -55,6 +60,11 @@ export default class TechnicalOperationsActions extends Actions {
       needs_brigade: true,
       ...data,
     };
+
+    if (!payload.kind_task_ids) {
+      delete payload.kind_task_ids;
+    }
+
     const response = await TechnicalOperationRegistryService.get(payload);
     return response.result.rows || [];
   }

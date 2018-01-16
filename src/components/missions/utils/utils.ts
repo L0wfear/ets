@@ -22,3 +22,13 @@ export function getPermittetEmployeeForBrigade(employeesList) {
     return opt;
   }, []);
 }
+
+export const getKindTaskIds = (id, fromOrder) => {
+  if (!id) {
+    if (fromOrder) {
+      return '2,3';
+    } else {
+      return '3';
+    }
+  }
+}

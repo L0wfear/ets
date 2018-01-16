@@ -14,7 +14,7 @@ import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import { isEmpty } from 'utils/functions';
-import { getPermittetEmployeeForBrigade } from 'components/missions/utils/utils.ts';
+import { getKindTaskIds, getPermittetEmployeeForBrigade } from 'components/missions/utils/utils.ts';
 import Form from 'components/compositions/Form.jsx';
 import InsideField from 'components/missions/duty_mission/inside_fields/index';
 
@@ -93,6 +93,7 @@ export class DutyMissionForm extends Form {
     const mission = this.props.formState;
     const { flux } = this.context;
     const {
+      id,
       norm_id,
     } = mission;
     let TECH_OPERATIONS = [];
@@ -117,10 +118,12 @@ export class DutyMissionForm extends Form {
       routesList = await routesActions.getRoutesByDutyMissionId(mission.id, isTemplate);
     }
 
+    const kind_task_ids = getKindTaskIds(id, this.props.fromOrder);
+
     missionsActions.getMissions(mission.technical_operation_id);
     missionsActions.getMissionSources();
     flux.getActions('employees').getEmployees({ 'active': true });
-    const technicalOperationsListOr = await technicalOperationsActions.getTechnicalOperationsWithBrigades();
+    const technicalOperationsListOr = await technicalOperationsActions.getTechnicalOperationsWithBrigades({ kind_task_ids });
     const technicalOperationsList = technicalOperationsListOr.filter(({ is_new, norm_ids }) => !is_new || (is_new && !norm_ids.some(n => n === null)));
 
     const {
@@ -133,6 +136,7 @@ export class DutyMissionForm extends Form {
     }
 
     this.setState({
+      kind_task_ids,
       selectedRoute,
       technicalOperationsList,
       TECH_OPERATIONS,
@@ -248,6 +252,7 @@ export class DutyMissionForm extends Form {
       available_route_types = [],
       technicalOperationsList = [],
       selectedRoute: route = null,
+      kind_task_ids,
     } = this.state;
 
     const MISSION_SOURCES = missionSourcesList.reduce((newArr, { id, name, auto }) => {
@@ -414,6 +419,7 @@ export class DutyMissionForm extends Form {
                 getDataByNormId={this.getDataByNormId}
                 technicalOperationsList={technicalOperationsList}
                 getNormIdFromState={!!fromOrder || IS_DISPLAY || !!state.route_id || readOnly || fromOrder || sourceIsOrder}
+                kind_task_ids={kind_task_ids}
               />
             </Col>
           </Row>

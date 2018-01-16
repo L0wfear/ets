@@ -388,6 +388,11 @@ export default class MissionsActions extends Actions {
       start_date: createValidDate(outerPyload.start_date),
       end_date: createValidDate(outerPyload.end_date),
     };
+
+    if (!payload.kind_task_ids) {
+      delete payload.kind_task_ids;
+    }
+
     return Cleaning.path('municipal_facility').get(payload, false, 'json');
   }
   getCleaningMunicipalFacilityAllList(outerPyload) {

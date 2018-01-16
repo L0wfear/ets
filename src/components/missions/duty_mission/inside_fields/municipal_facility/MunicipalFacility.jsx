@@ -10,6 +10,7 @@ class MunicipalFacility extends MunicipalFacilityMission {
       technical_operation_id: old_toi,
       plan_date_start: old_pds,
       forseUpdateIsWas,
+      kind_task_ids,
     } = this.state;
     let forseUpdate = false;
     const {
@@ -43,6 +44,7 @@ class MunicipalFacility extends MunicipalFacilityMission {
         const outerPayload = {
           start_date: new_pds,
           end_date: new_pds,
+          kind_task_ids,
         };
 
         if (getNormIdFromState) {
@@ -74,6 +76,7 @@ class MunicipalFacility extends MunicipalFacilityMission {
         technical_operation_id,
         plan_date_start,
         norm_id,
+        kind_task_ids,
       } = {},
       errors: {
         [props.id]: error,
@@ -88,6 +91,7 @@ class MunicipalFacility extends MunicipalFacilityMission {
       value,
       error,
       norm_id,
+      kind_task_ids,
     };
   }
 }

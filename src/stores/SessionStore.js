@@ -1,4 +1,5 @@
 import { Store } from 'flummox';
+import moment from 'moment';
 
 import { autobase, userNotification, getFullAccess } from 'api/mocks/permissions';
 import { clear } from 'utils/cache';
@@ -93,7 +94,7 @@ export default class SessionStore extends Store {
   handleLogout(message) {
     localStorage.removeItem(global.SESSION_KEY);
     localStorage.removeItem(global.CURRENT_USER);
-    localStorage.removeItem(global.ERROR_GPS);
+    localStorage.removeItem(global.ERROR_ASUODS);
 
     this.setState({
       session: null,
@@ -126,13 +127,18 @@ export default class SessionStore extends Store {
     return permissionName.reduce((bool, permission) => bool && !!permissionsReduce[permission], true);
   }
 
-  seeNotifyProblemGPS() {
-    const { isSee = false } = JSON.parse(localStorage.getItem(global.ERROR_GPS)) || {};
-    if (!isSee) {
-      localStorage.setItem(global.ERROR_GPS, JSON.stringify({ isSee: true }));
-      return false;
+  isSeeNotifyProblem() {
+    if (moment(new Date()).diff(new Date(2018, 0, 16, 17, 0, 0), 'seconds') < 0) {
+      const { isSee = false } = JSON.parse(localStorage.getItem(global.ERROR_ASUODS)) || {};
+      if (!isSee) {
+        return false;
+      }
+      return true;
     }
+    this.setAsSee();
     return true;
   }
-
+  setAsSee() {
+    localStorage.setItem(global.ERROR_ASUODS, JSON.stringify({ isSee: true }));
+  }
 }

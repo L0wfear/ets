@@ -71,20 +71,19 @@ export default class MainPage extends React.Component {
 
   componentDidMount() {
     if (this.context.flux.getStore('session').isLoggedIn()) {
-      const isSee = this.context.flux.getStore('session').seeNotifyProblemGPS();
+      const isSee = this.context.flux.getStore('session').isSeeNotifyProblem();
 
       if (!isSee) {
         global.NOTIFICATION_SYSTEM.notifyWithObject({
           title: 'Уважаемые пользователи !',
-          level: 'warning',
+          level: 'success',
           position: 'tr',
           dismissible: false,
           autoDismiss: 0,
-          uid: 'error_gps',
+          uid: 'error_asuods',
           children: (
             <div>
-              <p>В настоящий момент наблюдаются проблемы с передачей данных с датчиков ГЛОНАСС.</p>
-              <p>О сроках решения проблемы будет сообщено дополнительно</p>
+              <p>Уведомляем вас, что сегодня с 17:00 по 17:40 система будет находится на плановом тех. обслуживании и будет недоступна.</p>
               <p
                 style={{
                   display: 'flex',
@@ -105,7 +104,8 @@ export default class MainPage extends React.Component {
   }
 
   closeError = () => {
-    global.NOTIFICATION_SYSTEM.removeNotification('error_gps');
+    global.NOTIFICATION_SYSTEM.removeNotification('error_asuods');
+    this.context.flux.getStore('session').setAsSee();
   }
 
   @autobind

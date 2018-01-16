@@ -12,6 +12,7 @@ global.SESSION_KEY = `ets-session-${process.env.STAND}`;
 global.CURRENT_USER = `current-user-${process.env.STAND}`;
 
 global.ERROR_GPS = `error-gps${global.SESSION_KEY}`;
+global.ERROR_ASUODS = `error-asuods${global.SESSION_KEY}`;
 
 class App extends Component {
 

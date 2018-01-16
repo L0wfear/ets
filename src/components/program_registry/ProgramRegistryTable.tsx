@@ -101,10 +101,10 @@ export function tableMeta({
 
 const Table: React.SFC<any> = props  => {
   const renderers: ISchemaRenderer = {
-    plan_date_start: ({ data }) => (<DateFormatter date={data} />),
-    plan_date_end: ({ data }) => (<DateFormatter date={data} />),
-    fact_date_start: ({ data }) => (<DateFormatter date={data} />),
-    fact_date_end: ({ data }) => (<DateFormatter date={data} />),
+    plan_date_start: ({ data }) => (<DateFormatter date={data} time />),
+    plan_date_end: ({ data }) => (<DateFormatter date={data} time />),
+    fact_date_start: ({ data }) => (<DateFormatter date={data} time />),
+    fact_date_end: ({ data }) => (<DateFormatter date={data} time />),
   };
 
   return (

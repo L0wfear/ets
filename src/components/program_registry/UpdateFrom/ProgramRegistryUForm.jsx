@@ -229,7 +229,6 @@ export default class ProgramRegistryForm extends Form {
                   type="date"
                   label="Плановые сроки:"
                   date={state.plan_date_start}
-                  time={false}
                   error={errors.plan_date_start}
                   onChange={this.handleChange}
                   boundKeys={['plan_date_start']}
@@ -240,7 +239,6 @@ export default class ProgramRegistryForm extends Form {
                 <ExtField
                   type="date"
                   date={state.plan_date_end}
-                  time={false}
                   error={errors.plan_date_end}
                   onChange={this.handleChange}
                   boundKeys={['plan_date_end']}
@@ -262,7 +260,6 @@ export default class ProgramRegistryForm extends Form {
                   type="date"
                   label="Фактические сроки:"
                   date={state.fact_date_start}
-                  time={false}
                   error={errors.fact_date_start}
                   onChange={this.handleChange}
                   boundKeys={['fact_date_start']}
@@ -273,7 +270,6 @@ export default class ProgramRegistryForm extends Form {
                 <ExtField
                   type="date"
                   date={state.fact_date_end}
-                  time={false}
                   error={errors.fact_date_end}
                   onChange={this.handleChange}
                   boundKeys={['fact_date_end']}

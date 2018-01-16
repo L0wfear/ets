@@ -190,30 +190,44 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     });
   }
 
-  removeCheckedElements() {
+  async removeCheckedElements() {
     if (typeof this.removeElementAction !== 'function') return;
 
     if (Object.keys(this.state.checkedElements).length !== 0) {
-      if (!confirm('Вы уверены, что хотите удалить выбранные элементы?')) return;
-      let isNotDeleted = false;
+      try {
+        await (confirmDialog({
+          title: 'Внимание',
+          body: 'Вы уверены, что хотите удалить выбранный(-ые) элемент(ы) ?',
+        }));
 
-      _.forEach(this.state.checkedElements, (mission) => {
-        if (mission.status === 'not_assigned') {
-          this.removeElementAction(mission.id);
+        let isNotDeleted = false;
+
+        _.forEach(this.state.checkedElements, (mission) => {
+          if (mission.status === 'not_assigned') {
+            this.removeElementAction(mission.id);
+          } else {
+            isNotDeleted = true;
+          }
+        });
+
+        if (isNotDeleted) {
+          global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Удалились только задания со статусом "Не назначено"!'));
         } else {
-          isNotDeleted = true;
+          global.NOTIFICATION_SYSTEM.notify('Данные успешно удалены');
         }
-      });
 
-      if (isNotDeleted) {
-        global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Удалились только задания со статусом "Не назначено"!'));
+        this.refreshList();
+
+        this.setState({
+          checkedElements: {},
+          selectedElement: null,
+        });
+      } catch (err) {
+      console.log(err);
       }
-      this.setState({
-        checkedElements: {},
-        selectedElement: null,
-      });
     } else {
-      this.removeElement();
+      await this.removeElement();
+      this.refreshList();
     }
   }
 

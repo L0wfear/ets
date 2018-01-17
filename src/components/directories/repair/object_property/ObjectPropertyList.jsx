@@ -7,7 +7,7 @@ import ElementsList from 'components/ElementsList.jsx';
 import ObjectPropertyTable from './ObjectPropertyTable.tsx';
 
 @connectToStores(['repair', 'session'])
-@exportable({ entity: `repair/${REPAIR.objectProperty}` })
+@exportable({ entity: `${REPAIR.objectProperty}` })
 @staticProps({
   entity: 'ets_object_properties',
   listName: 'objectPropertyList',
@@ -82,7 +82,7 @@ export default class ObjectProperty extends Component {
         <div className="cleaning-rate-header">
           <ButtonGroup>
             <Button id="odh" active={typeData === 'odh'} onClick={this.setNewType}>ОДХ</Button>
-            <Button id="yard" active={typeData === 'yard'} onClick={this.setNewType}>ДТ</Button>
+            <Button id="dt" active={typeData === 'dt'} onClick={this.setNewType}>ДТ</Button>
           </ButtonGroup>
         </div>
         <ObjectPropertyList typeData={typeData} />

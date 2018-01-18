@@ -92,7 +92,7 @@ export default class ObjectsActions extends Actions {
     return OrderService.path(`${id}/history/`).get();
   }
 
-  getOrders(limit, offset, sort_by, filter, create_date_from, create_date_to) {
+  getOrders(limit, offset, sort_by, filter, date_start, date_end) {
     const filterValues = cloneDeep(filter);
     Object.keys(filterValues).forEach((k) => {
       if (Array.isArray(filterValues[k])) {
@@ -100,9 +100,10 @@ export default class ObjectsActions extends Actions {
         delete filterValues[k];
       }
     });
-    filterValues.create_date__gte = createValidDateTime(create_date_from);
-    filterValues.create_date__lte = createValidDateTime(create_date_to);
+
     const payload = {
+      date_start: createValidDateTime(date_start),
+      date_end: createValidDateTime(date_end),
       limit,
       offset,
       sort_by,

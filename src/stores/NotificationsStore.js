@@ -101,6 +101,12 @@ export default class NotificationsStore extends Store {
           'removeProgramRegistry',
         ],
       },
+      {
+        actions: missionsActions,
+        actionNames: [
+          'removeDutyMission',    // // почему-то не работает handleRemove 
+        ],
+      },
     ];
 
     saveNotificationQueue.forEach(opts =>

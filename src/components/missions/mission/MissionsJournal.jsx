@@ -96,7 +96,7 @@ export default class MissionsJournal extends CheckableElementsList {
 
     if (resultCount === 0 && total_count > 0) {
       const offset = (Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1) * MAX_ITEMS_PER_PAGE;
-      this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, offset, state.sortBy, state.filter);
+      await this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, offset, state.sortBy, state.filter);
     }
   }
 
@@ -184,87 +184,39 @@ export default class MissionsJournal extends CheckableElementsList {
     this.rejectMission();
   }
 
+/*
+  async removeCheckedElements() {  // с этим методом не всегда корректно обновляется таблица, то есть записей уже нет, а в таблице видны - приходится F5 нажимать
+    // используется метод класса CheckableElementsList, который вроде как корректро рендерит таблицу
+    if (typeof this.removeElementAction !== 'function') return;
 
-  removeCheckedElements = () => {
-    this.defActionFunc({
-      bodyConfirmDialog: 'Вы уверены, что хотите удалить выбранные элементы?',
-      callbackForCheckedElement: this.removeElementAction,
-      callBackForOneElement: this.removeElement,
-      notifyText: 'Данные успешно удалены',
-    });
-  }
-  removeElement = () => {
-    return confirmDialog({
-      title: 'Внимание',
-      body: 'Вы уверены, что хотите удалить выбранные элементы?',
-    })
-    .then(() => {
-      const {
-        selectedElement = {},
-      } = this.state;
-      const id = selectedElement[this.selectField];
+    if (Object.keys(this.state.checkedElements).length !== 0) {
+      try {
+        await (confirmDialog({
+          title: 'Внимание',
+          body: 'Вы уверены, что хотите удалить выбранный(-ые) элемент(ы) ?',
+        }));
 
-      return this.removeElementAction(id, false).then(() => {
+        _.forEach(this.state.checkedElements, async (mission) => {
+          await this.removeElementAction(mission.id); // а можно ли реализовать отправку на бэк не по одной записи (id) для удаления, а объекта ?
+        });
+
+        await this.refreshList();
+
         this.setState({
           checkedElements: {},
           selectedElement: null,
         });
+
         global.NOTIFICATION_SYSTEM.notify('Данные успешно удалены');
-      })
-      .catch(() => global.NOTIFICATION_SYSTEM.notify('Произошла ошибка при удалении', 'error'));
-    })
-    .catch(() => {});
-  }
-
-  defActionFunc = ({
-    bodyConfirmDialog,
-    callbackForCheckedElement,
-    callBackForOneElement,
-    notifyText,
-  }) => {
-    const {
-      checkedElements = {},
-    } = this.state;
-
-    const checkElList = Object.values(checkedElements);
-    const countCheckEl = checkElList.length;
-
-    if (countCheckEl !== 0) {
-      confirmDialog({
-        title: 'Внимание',
-        body: bodyConfirmDialog,
-      })
-      .then(() => {
-        const elList = Array(countCheckEl).fill(false);
-
-        checkElList.forEach((el, i) => {
-          callbackForCheckedElement(el[this.selectField], false).then(() => {
-            elList[i] = true;
-            if (!elList.some(elD => !elD)) {
-              this.refreshList();
-              global.NOTIFICATION_SYSTEM.notify(notifyText);
-            }
-          })
-          .catch(() => {
-            elList[i] = true;
-            if (!elList.some(elD => !elD)) {
-              this.refreshList();
-              global.NOTIFICATION_SYSTEM.notify(notifyText);
-            }
-          });
-        });
-        this.setState({
-          checkedElements: {},
-          selectedElement: null,
-        });
-      })
-      .catch(() => {});
+      } catch (err) {
+        console.log(err);
+      }
     } else {
-      callBackForOneElement().then(() => {
-        this.refreshList();
-      });
+      await this.removeElement();
+      this.refreshList();
     }
   }
+*/
 
   onReject(refresh) {
     const newPropsState = {

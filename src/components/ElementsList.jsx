@@ -195,7 +195,6 @@ class ElementsList extends React.Component {
     .then(() => {
       this.removeElementAction(this.state.selectedElement[this.selectField], removeCallback);
       this.setState({ selectedElement: null });
-      global.NOTIFICATION_SYSTEM.notify('Данные успешно удалены');
     })
     .catch(() => {});
   }

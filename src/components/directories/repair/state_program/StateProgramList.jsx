@@ -18,6 +18,7 @@ export default class StateProgramList extends CheckableElementsList {
   constructor(props, context) {
     super(props);
     this.removeElementAction = context.flux.getActions('repair').removeStateProgram;
+    this.removeCheckedElements = this.removeCheckedElements.bind(this);
   }
   componentDidMount() {
     super.componentDidMount();
@@ -32,16 +33,11 @@ export default class StateProgramList extends CheckableElementsList {
     await this.context.flux.getActions('repair').getRepairListByType('stateProgramStatus');
   }
 
-  removeCheckedElements = () => {
-    this.defActionFunc();
-  };
+/*
+  async removeCheckedElements() { // этот метод рабочий, но используется метод класса CheckableElementsList
+    if (typeof this.removeElementAction !== 'function') return;
 
-  async defActionFunc() {
-    const {
-      checkedElements = {},
-    } = this.state;
-
-    if (Object.values(checkedElements).length !== 0) {
+    if (Object.keys(this.state.checkedElements).length !== 0) {
       try {
         await (confirmDialog({
           title: 'Внимание',
@@ -49,11 +45,10 @@ export default class StateProgramList extends CheckableElementsList {
         }));
 
 
-        _.forEach(checkedElements, (el) => {
-          this.removeElementAction(el.id);
+        _.forEach(this.state.checkedElements, async (repair) => {
+          await this.removeElementAction(repair.id);
         });
 
-       // global.NOTIFICATION_SYSTEM.notify('Данные успешно удалены');
         this.refreshList();
 
         this.setState({
@@ -68,4 +63,5 @@ export default class StateProgramList extends CheckableElementsList {
       this.refreshList();
     }
   }
+*/
 }

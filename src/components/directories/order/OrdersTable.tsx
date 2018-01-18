@@ -25,26 +25,22 @@ export function tableMeta({
       {
         name: 'create_date',
         displayName: 'Дата создания',
-        type: 'datetime',
+        type: 'date',
         filter: {
-          type: 'datetime',
+          type: 'date',
         },
       },
       {
         name: 'order_date',
         displayName: 'Начало действия',
         type: 'datetime',
-        filter: {
-          type: 'datetime',
-        },
+        filter: false,
       },
       {
         name: 'order_date_to',
         displayName: 'Окончание действия',
         type: 'datetime',
-        filter: {
-          type: 'datetime',
-        },
+        filter: false,
       },
       {
         name: 'order_type_name',
@@ -92,7 +88,7 @@ const Table: React.SFC<any> = props  => {
       enumerated={false}
       externalFilter={props.changeFilter}
       externalChangeSort={props.changeSort}
-      initialSort={'order_date'}
+      initialSort={'create_date'}
       initialSortAscending={false}
       className="order"
       {...props}

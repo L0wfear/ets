@@ -69,7 +69,7 @@ export default class DashboardPage extends React.Component {
     const components = flux.getStore('dashboard').getComponentsByPermissions();
     components.forEach((c) => {
       if (c.key !== this.state.itemOpenedKey) {
-        this.componentsInterval[c.key] = setTimeout(this.refreshCard.bind(this, c.key), 1000 * Math.round(Math.random() * 21));
+        this.componentsInterval[c.key] = setTimeout(this.refreshCard.bind(this, c.key), 2000 * Math.round(Math.random() * 21));
       }
     });
   }

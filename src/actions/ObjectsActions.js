@@ -101,9 +101,6 @@ export default class ObjectsActions extends Actions {
       }
     });
 
-    filterValues.create_date__gte = createValidDateTime(date_start);
-    filterValues.create_date__lte = createValidDateTime(date_end);
-
     const payload = {
       date_start: createValidDateTime(date_start),
       date_end: createValidDateTime(date_end),

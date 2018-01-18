@@ -17,7 +17,7 @@ const OperationalReportsNavItem: React.SFC<IPropsOperationalReportsNavItem> = ({
   <NavDropdown title="Оперативные отчеты" id="nav-dropdown-3-1">
     <MenuItem active={path === '/route-odh-coverage-report'} href="#/route-odh-coverage-report">Покрытие ОДХ маршрутами</MenuItem>
     <MenuItem active={path === '/mission-reports'} href="#/mission-reports">Прохождение заданий</MenuItem>
-    <MenuItem active={path === '/car-usage-report-with-track'} href="#/car-usage-report-with-track">Статистика выхода техники</MenuItem>
+    <MenuItem active={path === '/car-usage-report'} href="#/car-usage-report">Статистика выхода техники</MenuItem>
     <MenuItem active={path === '/track-events-reports'} href="#/track-events-reports">Отчет по возможным сливам топлива</MenuItem>
     <MenuItem active={path === '/brigade-efficiency-report'} href="#/brigade-efficiency-report">Работа бригад по ручной уборке</MenuItem>
     <MenuItem active={path === '/employee-efficiency-report'} href="#/employee-efficiency-report">Работа сотрудников по ручной уборке</MenuItem>

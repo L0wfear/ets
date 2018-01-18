@@ -200,6 +200,7 @@ class OrderList extends React.Component<any, any> {
       showHistoryComponent,
     });
   }
+
   getOrders = ({
     countPerPage = MAX_ITEMS_PER_PAGE,
     page = this.state.pageOptions.page,
@@ -207,15 +208,18 @@ class OrderList extends React.Component<any, any> {
     filter = this.state.pageOptions.filter,
     dateFrom = this.state.pageOptions.dateFrom,
     dateTo = this.state.pageOptions.dateTo,
-  }) =>
-    this.context.flux.getActions('objects').getOrders(
+  }) => {
+    this.setState({ selectedElementOrder: null });
+
+    return this.context.flux.getActions('objects').getOrders(
       countPerPage,
       page,
       sortBy,
       filter,
       dateFrom,
       dateTo,
-    )
+    );
+  }
   getOrderHistory = id => this.context.flux.getActions('objects').getOrderHistoryById(id);
   showOrderHistory = ({ result: { rows = [] } = {} }) => {
     this.setState({

@@ -132,7 +132,6 @@ const getTableMeta = ({
 };
 
 const renderers = {
-  needs_brigade: ({ data: value }) => <input type="checkbox" disabled checked={!!value} />,
   use_in_reports: ({ data: value }) => <input type="checkbox" disabled checked={!!value} />,
 };
 

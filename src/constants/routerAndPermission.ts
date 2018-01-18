@@ -654,7 +654,7 @@ const routerAndPermission = {
             },
           },
           carUsageReportWithTrack: {
-            path: '/car-usage-report-with-track',
+            path: '/car-usage-report',
             entyity: 'car_usage_report_with_track_report',
             noDotList: false,
             permissions: {

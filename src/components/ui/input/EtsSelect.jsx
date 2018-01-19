@@ -3,6 +3,19 @@ import Select from 'react-select';
 import { isString, isNumber } from 'lodash';
 
 export const defaultSelectListMapper = ({ id, name }) => ({ value: id, label: name });
+export const onChangeSelectLegacy = (sValue) => {
+  let newValue = null;
+
+  if (sValue) {
+    if (Array.isArray(sValue)) {
+      newValue = sValue.map(({ value }) => value);
+    } else {
+      newValue = sValue.value;
+    }
+  }
+
+  return newValue;
+};
 
 const defaultSortingFunction = (a, b) => {
   if (isNumber(a.label)) {
@@ -15,6 +28,9 @@ const defaultSortingFunction = (a, b) => {
 
   return a.label - b.label;
 };
+
+// c обновлением до 1.2.1 появилась возможность ассинхронных опций
+// @todo разобраться
 
 export default class EstSelect extends Component {
 
@@ -54,7 +70,7 @@ export default class EstSelect extends Component {
       fieldName,
     } = this.props;
 
-    this.props.onChange(linearValue === '' ? emptyValue : linearValue, objectValue);
+    this.props.onChange(onChangeSelectLegacy(linearValue === '' ? emptyValue : linearValue, objectValue));
   }
   render() {
     const {

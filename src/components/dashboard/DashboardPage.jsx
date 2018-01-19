@@ -39,7 +39,7 @@ export default class DashboardPage extends React.Component {
     );
     this.currentMissionsUpdateInterval = setInterval(
       this.refreshComponentCurrentMission.bind(this),
-      (1000 * 60)
+      (1000 * (3 * 60))
     );
 
     document.getElementsByTagName('html')[0].classList.add('overflow-scroll');
@@ -69,18 +69,23 @@ export default class DashboardPage extends React.Component {
     const components = flux.getStore('dashboard').getComponentsByPermissions();
     components.forEach((c) => {
       if (c.key !== this.state.itemOpenedKey) {
-        this.componentsInterval[c.key] = setTimeout(this.refreshCard.bind(this, c.key), 2000 * Math.round(Math.random() * 21));
+        this.componentsInterval[c.key] = setTimeout(this.refreshCard.bind(this, c.key), 1000 * Math.round(Math.random() * 21));
       }
     });
   }
 
   refreshComponentCurrentMission() {
     const { flux } = this.context;
-    const components = flux.getStore('dashboard').getComponentsByPermissions(['current_missions'], []);
-    components.forEach(c => c.key !== this.state.itemOpenedKey ? this.refreshCard(c.key) : null);
+    const components = flux.getStore('dashboard').getComponentsByPermissions(['current_missions', 'car_in_work_overall'], []);
+    components.forEach((c) => {
+      if (c.key !== this.state.itemOpenedKey) {
+        this.componentsInterval[c.key] = setTimeout(this.refreshCard.bind(this, c.key), 1000 * Math.round(Math.random() * 21));
+      }
+    });
   }
 
   refreshCard(key, id, forcedKey) {
+
     if (key === 'external_applications') return;
     if (typeof forcedKey === 'string' && forcedKey.indexOf('_') > -1) {
       key = forcedKey;
@@ -132,6 +137,7 @@ export default class DashboardPage extends React.Component {
                 <DashboardCard
                   title={c.title}
                   items={c.items}
+                  count={c.count}
                   dashboardKey={c.key}
                   itemsTitle={c.itemsTitle}
                   loading={this.state.loadingComponents.indexOf(c.key) > -1}

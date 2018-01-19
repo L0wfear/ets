@@ -96,7 +96,6 @@ export default class RouteForm extends Form {
 
   handleClickSelectFromODH() {
     this.setState({ vector: false });
-    this.handleChange('draw_object_list', []);
   }
 
   async componentDidMount() {

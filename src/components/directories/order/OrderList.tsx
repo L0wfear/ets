@@ -109,7 +109,7 @@ class OrderList extends React.Component<any, any> {
         filter: currFilter,
       },
     } = this.state;
-    console.log(nextProps)
+
     const {
       pageOptions: {
         page: nextPage,

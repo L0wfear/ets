@@ -189,15 +189,15 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       });
     });
   }
-/*
-  async removeCheckedElements() {  // этот метод рабочий, но используется метод класса CheckableElementsList
+
+  async removeCheckedElements() {
     if (typeof this.removeElementAction !== 'function') return;
 
     if (Object.keys(this.state.checkedElements).length !== 0) {
       try {
         await (confirmDialog({
           title: 'Внимание',
-          body: 'Вы уверены, что хотите удалить выбранный(-ые) элемент(ы) ?',
+          body: 'Вы уверены, что хотите удалить выбранные элементы ?',
         }));
 
         let isNotDeleted = false;
@@ -213,7 +213,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
         if (isNotDeleted) {
           global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Удалились только задания со статусом "Не назначено"!'));
         } else {
-       //   global.NOTIFICATION_SYSTEM.notify('Данные успешно удалены'); // почему-то не работает handleRemove в NotificationStore
+          global.NOTIFICATION_SYSTEM.notify('Данные успешно удалены');
         }
 
         this.refreshList();
@@ -223,14 +223,14 @@ export default class DutyMissionsJournal extends CheckableElementsList {
           selectedElement: null,
         });
       } catch (err) {
-      console.log(err);
+        // отмена
       }
     } else {
       await this.removeElement();
       this.refreshList();
     }
   }
-*/
+
   getButtons() {
     const buttons = super.getButtons();
     // TODO отображение 2 кнопорей в зависимости от прав

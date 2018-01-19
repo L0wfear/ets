@@ -39,11 +39,11 @@ export default class CompanyStructure extends ElementsList {
     try {
       await (confirmDialog({
         title: 'Внимание',
-        body: 'Вы уверены, что хотите удалить выбранный элемент?',
+        body: 'Вы уверены, что хотите удалить выбранные элементы?',
       }));
       this.context.flux.getActions('companyStructure').deleteCompanyElement(id);
     } catch (err) {
-      console.log(err);
+      // отмена
     }
   }
 

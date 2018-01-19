@@ -187,7 +187,7 @@ class RoutesList extends Component {
       flux.getActions('routes').removeRoute(this.state.selectedRoute);
       this.setState({ selectedRoute: null });
     } catch (err) {
-      console.log(err);
+      // отмена
     }
   }
 

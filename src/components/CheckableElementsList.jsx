@@ -158,7 +158,7 @@ export default class CheckableElementsList extends ElementsList {
       try {
         await (confirmDialog({
           title: 'Внимание',
-          body: '*Вы уверены, что хотите удалить выбранный(-ые) элемент(ы) ?',
+          body: '*Вы уверены, что хотите удалить выбранные элементы ?',
         }));
 
         const removeCallback = this.removeElementCallback || (() => {});
@@ -170,7 +170,7 @@ export default class CheckableElementsList extends ElementsList {
           selectedElement: null,
         });
       } catch (err) {
-        console.log(err);
+        // отмена
       }
     } else {
       this.removeElement();

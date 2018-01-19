@@ -109,7 +109,7 @@ class OrderList extends React.Component<any, any> {
         filter: currFilter,
       },
     } = this.state;
-
+    console.log(nextProps)
     const {
       pageOptions: {
         page: nextPage,
@@ -503,7 +503,6 @@ class OrderList extends React.Component<any, any> {
       },
     })
   changeFilter = filter => {
-      this.getOrders({ filter });
       this.setState({
         ...this.state,
         pageOptions: {

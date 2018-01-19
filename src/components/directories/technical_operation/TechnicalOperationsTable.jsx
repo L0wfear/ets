@@ -105,15 +105,6 @@ const getTableMeta = ({
         cssClassName: 'width60',
       },
       {
-        name: 'needs_brigade',
-        displayName: 'С участием РКУ',
-        type: 'boolean',
-        filter: {
-          type: 'multiselect',
-          labelFunction: data => data ? 'Да' : 'Нет',
-        },
-      },
-      {
         name: 'use_in_reports',
         displayName: 'Учет в отчетах',
         type: 'boolean',
@@ -141,7 +132,6 @@ const getTableMeta = ({
 };
 
 const renderers = {
-  needs_brigade: ({ data: value }) => <input type="checkbox" disabled checked={!!value} />,
   use_in_reports: ({ data: value }) => <input type="checkbox" disabled checked={!!value} />,
 };
 

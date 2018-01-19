@@ -503,7 +503,6 @@ class OrderList extends React.Component<any, any> {
       },
     })
   changeFilter = filter => {
-      this.getOrders({ filter });
       this.setState({
         ...this.state,
         pageOptions: {

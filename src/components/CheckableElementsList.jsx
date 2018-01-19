@@ -156,21 +156,21 @@ export default class CheckableElementsList extends ElementsList {
 
     if (Object.keys(this.state.checkedElements).length !== 0) {
       try {
-      await (confirmDialog({
-        title: 'Внимание',
-        body: '*Вы уверены, что хотите удалить выбранный(-ые) элемент(ы) ?',
-      }));
+        await (confirmDialog({
+          title: 'Внимание',
+          body: '*Вы уверены, что хотите удалить выбранный(-ые) элемент(ы) ?',
+        }));
 
-      const removeCallback = this.removeElementCallback || (() => {});
-      each(this.state.checkedElements, (element) => {
-        this.removeElementAction(element[this.selectField], removeCallback);
-      });
-      this.setState({
-        checkedElements: {},
-        selectedElement: null,
-      });
+        const removeCallback = this.removeElementCallback || (() => {});
+        each(this.state.checkedElements, (element) => {
+          this.removeElementAction(element[this.selectField], removeCallback);
+        });
+        this.setState({
+          checkedElements: {},
+          selectedElement: null,
+        });
       } catch (err) {
-      console.log(err);
+        console.log(err);
       }
     } else {
       this.removeElement();

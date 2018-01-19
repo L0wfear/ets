@@ -104,7 +104,7 @@ export default class NotificationsStore extends Store {
       {
         actions: missionsActions,
         actionNames: [
-          'removeDutyMission',    // // почему-то не работает handleRemove 
+          'removeDutyMission',    // // почему-то не работает handleRemove
         ],
       },
     ];

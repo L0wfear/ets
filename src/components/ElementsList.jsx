@@ -429,7 +429,7 @@ class ElementsList extends React.Component {
     const table = this.getTable();
     const forms = this.getForms();
     const additionalRender = this.additionalRender();
-    const preloader = this.state.exportFetching && <Preloader type="mainpage"/>;
+    const preloader = this.state.exportFetching && <Preloader type="mainpage" />;
 
     return (
       <div className="ets-page-wrap" ref={node => (this.node = node)}>

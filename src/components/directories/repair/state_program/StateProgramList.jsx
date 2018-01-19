@@ -1,7 +1,7 @@
-import _ from 'lodash';
+// import _ from 'lodash';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import REPAIR from 'constants/repair';
-import CheckableElementsList from 'components/CheckableElementsList.jsx'
+import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import StateProgramTable from './StateProgramTable.tsx';
 import StateProgramFormWrap from './StateProgramFormWrap';
 

@@ -43,7 +43,7 @@ export default class CompanyStructure extends ElementsList {
       }));
       this.context.flux.getActions('companyStructure').deleteCompanyElement(id);
     } catch (err) {
-     console.log(err);
+      console.log(err);
     }
   }
 

@@ -184,6 +184,7 @@ export default class MissionsJournal extends CheckableElementsList {
     this.rejectMission();
   }
 
+
   removeCheckedElements = () => {
     this.defActionFunc({
       bodyConfirmDialog: 'Вы уверены, что хотите удалить выбранные элементы?',
@@ -192,6 +193,7 @@ export default class MissionsJournal extends CheckableElementsList {
       notifyText: 'Данные успешно удалены',
     });
   }
+
   removeElement = () => {
     return confirmDialog({
       title: 'Внимание',
@@ -264,7 +266,6 @@ export default class MissionsJournal extends CheckableElementsList {
       });
     }
   }
-
 
   onReject(refresh) {
     const newPropsState = {

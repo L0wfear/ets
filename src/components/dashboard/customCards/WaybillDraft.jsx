@@ -11,9 +11,9 @@ import WaybillClosed from './WaybillClosed.jsx';
 
 export default class WaybillDraft extends WaybillClosed {
 
-  renderSubitems(subItems) {
-    let si = groupBy(subItems, e => moment(e.data.waybill_date_create).format(global.APP_DATE_FORMAT));
-    si = sortBy(si, ar => -moment(ar[0].data.waybill_date_create).unix());
+  renderSubitems({ subItems }) {
+    let si = _.groupBy(subItems, e => moment(e.data.waybill_date_create).format(global.APP_DATE_FORMAT));
+    si = _.sortBy(si, ar => -moment(ar[0].data.waybill_date_create).unix());
     si = si.map((ar) => {
       ar[0].data.groupStart = true;
       ar[ar.length - 1].data.groupEnd = true;
@@ -35,28 +35,45 @@ export default class WaybillDraft extends WaybillClosed {
     );
   }
 
-  renderItems() {
-    const canView = this.context.flux.getStore('session').getPermission('waybill.read');
+  selectItem(i) {
+    const {
+      count,
+    } = this.props;
 
-    return this.props.items.map((item, i) => {
-      const itemClassName = cx('dashboard-card-item', { 'pointer': (item.data) || (item.subItems && item.subItems.length) || (this.action), 'no-pointer-events': !canView });
-      return (
-        <Div key={i} className={itemClassName} >
-          {typeof item.value !== 'undefined' ?
-            <Div className="dashboard-card-item-inner-singlevalue" onClick={this.selectItem.bind(this, i)}>
-              {item.value}
-            </Div>
-            :
-            <Div className="dashboard-card-item-inner" onClick={this.selectItem.bind(this, i)}>
-              {item.title}
-            </Div>
-          }
-          {
-            typeof this.renderCollapsibleSubitems === 'function' ? this.renderCollapsibleSubitems(item, i) : ''
-          }
+    this.setState({ selectedItem: null });
+    setTimeout(() => {
+      if (!!count) {
+        if (typeof i === 'number') {
+          this.context.flux.getActions('dashboard').getWaybillDraft().then(waybillSubItems => this.setState({ waybillSubItems }));
+        }
+        this.props.openSubitemsList(i === null);
+      }
+    }, 50);
+  }
+
+  renderItems() {
+    const {
+      count,
+      title,
+    } = this.props;
+
+    const canView = this.context.flux.getStore('session').getPermission(['waybill.read']);
+    const itemClassName = cx('dashboard-card-item', { 'pointer': true, 'no-pointer-events': !canView });
+
+    return (
+      <Div className={itemClassName} >
+        <Div hidden={!count} >
+          <Div className="dashboard-card-item-inner-singlevalue" onClick={this.selectItem.bind(this, 0)}>
+            {count}
+          </Div>
         </Div>
-      );
-    });
+        <Div hidden={count}>
+          <Div className="dashboard-card-item-inner" onClick={this.selectItem.bind(this, 0)}>
+            {title}
+          </Div>
+        </Div>
+      </Div>
+    );
   }
 
 }

@@ -23,7 +23,9 @@ export default class WaybillClosed extends DashboardCardMedium {
     this.state = Object.assign(this.state, {
       selectedWaybill: null,
       showWaybillForm: false,
-      waybillSubItems: [],
+      waybillSubItems: {
+        subItems: [],
+      },
     });
   }
 
@@ -35,7 +37,7 @@ export default class WaybillClosed extends DashboardCardMedium {
     });
   }
 
-  renderSubitems(subItems) {
+  renderSubitems({ subItems }) {
     return (
       <ul>
         {subItems.map((item, i) => (
@@ -110,7 +112,7 @@ export default class WaybillClosed extends DashboardCardMedium {
   }
 
   render() {
-    const { waybillSubItems = [] } = this.state;
+    const { waybillSubItems = {}, waybillSubItems: { subItems = [] } = {} } = this.state;
 
     const items = this.renderItems();
     let styleObject = {
@@ -125,7 +127,6 @@ export default class WaybillClosed extends DashboardCardMedium {
       styleObject = {};
     }
     const Header = <DashboardCardHeader title={this.props.title} loading={this.props.loading} onClick={this.refreshCard} />;
-
     // отрефакторить
     return (
       <Div md={12}>
@@ -136,10 +137,10 @@ export default class WaybillClosed extends DashboardCardMedium {
           <Div className="dashboard-card-overlay" hidden={!this.props.loading} />
         </Panel>
 
-        <DashboardItemChevron direction={this.props.direction} hidden={waybillSubItems.length === 0 || !this.props.itemOpened} />
+        <DashboardItemChevron direction={this.props.direction} hidden={subItems.length === 0 || !this.props.itemOpened} />
 
-        <Div style={styleObject} hidden={(waybillSubItems.length === 0) || !this.props.itemOpened} className={cx('dashboard-card-info', { active: waybillSubItems.length > 0 && this.props.itemOpened })} >
-          <Fade in={waybillSubItems.length !== null && this.props.itemOpened}>
+        <Div style={styleObject} hidden={(subItems.length === 0) || !this.props.itemOpened} className={cx('dashboard-card-info', { active: subItems.length > 0 && this.props.itemOpened })} >
+          <Fade in={subItems.length !== null && this.props.itemOpened}>
             <Well>
               <Div className="card-glyph-remove" onClick={this.selectItem.bind(this, null)}>
                 <Glyphicon glyph="remove" />

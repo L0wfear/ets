@@ -35,8 +35,8 @@ function getFilterDateOrder(technical_operations, { order_date, order_date_to })
     } = to;
 
     newObj[norm_id] = {
-      date_to: date_to || order_date,
-      date_from: date_from || order_date_to,
+      date_to: date_to || order_date_to,
+      date_from: date_from || order_date,
       num_exec,
       order_operation_id,
     };

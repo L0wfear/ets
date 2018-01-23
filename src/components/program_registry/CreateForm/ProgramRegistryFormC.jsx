@@ -80,7 +80,7 @@ export default class ProgramRegistryForm extends Form {
 
       return arr;
     }, []);
-    console.log(OBJECTS)
+
     const title = 'Создание программы ремонта';
 
     return (

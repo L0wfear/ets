@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { DropdownButton, MenuItem, Button as BootstrapButton, Glyphicon } from 'react-bootstrap';
 import connectToStores from 'flummox/connect';
+import * as queryString from 'query-string';
 
 import { getToday0am, getToday2359 } from 'utils/dates';
 import { FluxContext } from 'utils/decorators';
@@ -44,17 +45,13 @@ class OrderList extends React.Component<any, any> {
   context: any;
   constructor(props) {
     super(props);
+    const { location: { search } } = this.props;
     const {
-      location: {
-        query: {
-          dateFrom = getToday0am(),
-          dateTo = getToday2359(),
-        } = {},
-      } = {},
-      routeParams: {
-        idOrder = '',
-      } = {},
-    } = this.props;
+      dateFrom = getToday0am(),
+      dateTo = getToday2359(),
+    } = queryString.parse(search);
+
+    const { match: { params: { idOrder = '' } } } = this.props;
 
     this.state = {
       pageOptions: {
@@ -79,12 +76,7 @@ class OrderList extends React.Component<any, any> {
     flux.getActions('missions').getMissionSources();
     flux.getActions('employees').getEmployees({ active: true });
 
-    const {
-      routeParams: {
-        idOrder = '',
-      } = {},
-    } = this.props;
-
+    const { match: { params: { idOrder = '' } } } = this.props;
     const outerIdFax = Number.parseInt(idOrder, 0);
 
     this.getOrders({ countPerPage: !!outerIdFax ? 10000 : MAX_ITEMS_PER_PAGE }).then(({ result = [] }) => {
@@ -156,11 +148,8 @@ class OrderList extends React.Component<any, any> {
     }
   }
   componentWillReceiveProps(props) {
-    const {
-      routeParams: {
-        idOrder = '',
-      } = {},
-    } = props;
+    const { match: { params: { idOrder = '' } } } = this.props;
+
     const outerIdFax = Number.parseInt(idOrder, 0);
 
     if (outerIdFax) {
@@ -176,11 +165,8 @@ class OrderList extends React.Component<any, any> {
   }
 
   handleChange = (field, value) => {
-    const {
-      routeParams: {
-        idOrder = '',
-      } = {},
-    } = this.props;
+    const { match: { params: { idOrder = '' } } } = this.props;
+
     if (!!idOrder) {
       this.props.history.push('/orders');
     }

@@ -8,7 +8,7 @@ import * as directories from './index.js';
 
 const nsiRoutes = props => [
   <Route path="/employees" component={directories.employees} />,
-  <Route path="/orders" component={directories.order} />,
+  <Route exact path="/orders" component={directories.order} />,
   <Route path="/orders/:idOrder" component={directories.order} />,
   <Route path="/fuel-rates" component={directories.fuelRates} />,
   <Route path="/fuel-operations" component={directories.fuelOperations} />,

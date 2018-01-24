@@ -82,6 +82,7 @@ export default class RouteForm extends Form {
 
   handleTechChange(v) {
     this.handleChange('technical_operation_id', v);
+    this.handleChange('municipal_facility_id', null);
     const { technicalOperationsList = [] } = this.state;
 
     this.setState({

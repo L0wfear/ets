@@ -75,8 +75,11 @@ export class DutyMissionForm extends Form {
     this.props.handleFormChange('foreman_id', value);
   }
 
+  // Можно принять второй параметр
+  // Туда попадает вся опция
+  // И не искать каждый раз всех
   handleBrigadeIdListChange(v) {
-    const data = v.split(',');
+    const data = v;
     const lastEmployee = last(data);
 
     if (lastEmployee !== '' && !this.isActiveEmployee(lastEmployee)) {
@@ -85,7 +88,16 @@ export class DutyMissionForm extends Form {
     }
 
     const { employeesList = [] } = this.props;
-    const brigade_employee_id_list = employeesList.filter(e => data.indexOf(e.id.toString()) > -1);
+    // временно (надеюсь)
+    const brigade_employee_id_list = data.reduce((newArr, id) => {
+      const br = employeesList.find(({ id: e_id }) => id === e_id);
+      if (br) {
+        newArr.push(br);
+      }
+
+      return newArr;
+    }, []);
+
     this.props.handleFormChange('brigade_employee_id_list', brigade_employee_id_list);
   }
 

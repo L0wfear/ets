@@ -14,6 +14,7 @@ export const getTableMeta = ({
   carsList = [],
   employeesList = [],
   structures = [],
+  workMode = [],
 } = {}) => {
   const tableMeta = {
     cols: [
@@ -107,7 +108,8 @@ export const getTableMeta = ({
         displayName: 'Режим работы',
         type: 'string',
         filter: {
-          type: 'advanced-string-like',
+          type: 'multiselect',
+          options: workMode.map(({ name }) => ({ value: name, label: name })),
         },
       },
       {

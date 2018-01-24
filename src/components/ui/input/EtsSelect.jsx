@@ -63,14 +63,14 @@ export default class EstSelect extends Component {
     }
   }
 
-  handleChange = (linearValue, objectValue) => {
+  handleChange = (objectValue) => {
     const {
       emptyValue = '',
       selectType = false,
       fieldName,
     } = this.props;
 
-    this.props.onChange(onChangeSelectLegacy(linearValue === '' ? emptyValue : linearValue, objectValue));
+    this.props.onChange(onChangeSelectLegacy(objectValue === '' ? emptyValue : objectValue, objectValue), objectValue);
   }
   render() {
     const {

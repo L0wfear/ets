@@ -183,18 +183,18 @@ class ElementsList extends React.Component {
   @autobind
   removeElement() {
     if (typeof this.removeElementAction !== 'function' || this.state.selectedElement === null) {
-      return;
+      return Promise.reject();
     }
 
     const removeCallback = this.removeElementCallback || (() => {});
 
-    confirmDialog({
+    return confirmDialog({
       title: 'Внимание',
       body: 'Вы уверены, что хотите удалить выбранный элемент?',
     })
     .then(() => {
-      this.removeElementAction(this.state.selectedElement[this.selectField], removeCallback);
       this.setState({ selectedElement: null });
+      return this.removeElementAction(this.state.selectedElement[this.selectField], removeCallback);
     })
     .catch(() => {});
   }
@@ -429,7 +429,7 @@ class ElementsList extends React.Component {
     const table = this.getTable();
     const forms = this.getForms();
     const additionalRender = this.additionalRender();
-    const preloader = this.state.exportFetching && <Preloader type="mainpage"/>;
+    const preloader = this.state.exportFetching && <Preloader type="mainpage" />;
 
     return (
       <div className="ets-page-wrap" ref={node => (this.node = node)}>

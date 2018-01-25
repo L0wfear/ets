@@ -177,11 +177,17 @@ class RoutesList extends Component {
     });
   }
 
-  deleteRoute = () => {
-    if (confirm('Вы уверены, что хотите удалить выбранный маршрут?')) {
+  deleteRoute = async () => {
+    try {
+      await confirmDialog({
+        title: 'Внимание',
+        body: 'Вы уверены, что хотите удалить выбранный маршрут?',
+      });
       const { flux } = this.context;
       flux.getActions('routes').removeRoute(this.state.selectedRoute);
       this.setState({ selectedRoute: null });
+    } catch (err) {
+      // отмена
     }
   }
 

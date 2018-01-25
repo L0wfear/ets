@@ -22,6 +22,7 @@ export default class SparePartForm extends Form {
       isPermitted = false,
       program_version_status,
       iNotСustomer,
+      iСustomer,
     } = this.props;
 
     const statusIsChanged = state.status ? state.status !== 'created' : false;
@@ -41,7 +42,7 @@ export default class SparePartForm extends Form {
                 error={errors.remark}
                 onChange={this.handleChange}
                 boundKeys={['remark']}
-                disabled={!isPermitted || statusIsChanged || !iNotСustomer || program_version_status !== 'sent_on_review'}
+                disabled={!isPermitted || statusIsChanged || iСustomer || program_version_status !== 'sent_on_review'}
               />
             </Col>
             <Div hidden={iNotСustomer || program_version_status !== 'rejected'}>
@@ -61,7 +62,7 @@ export default class SparePartForm extends Form {
         </Div>
         <ModalBody />
         <Modal.Footer>
-          <Div hidden={!iNotСustomer && (iNotСustomer || program_version_status !== 'rejected')}>
+          <Div hidden={iСustomer && (iNotСustomer || program_version_status !== 'rejected')}>
             <Button disabled={!this.props.canSave} onClick={this.handleSubmitWrap}>Сохранить</Button>
           </Div>
         </Modal.Footer>

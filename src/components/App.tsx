@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { withProps } from 'recompose';
+import requireAuth from 'utils/auth.js';
 
 import { AuthCheckService } from 'api/Services';
 import { loginErrorNotification, getErrorNotification } from 'utils/notifications';
@@ -26,9 +27,9 @@ const getLoginPage = props => {
     const { role, okrug_id } = user;
 
     if (['dispatcher', 'master'].indexOf(role) > -1 && okrug_id === null) {
-      return <Redirect to="/dashboard" />;
+      return <Redirect to={requireAuth(flux, '/dashboard')} />;
     } else {
-      return <Redirect to="/monitor" />;
+      return <Redirect to={requireAuth(flux, '/monitor')} />;
     }
   } else {
     return <Login {...props} />;
@@ -38,13 +39,17 @@ const getLoginPage = props => {
 const getMainApp = props => {
   const {
     flux,
+    match: { url },
   } = props;
+  const permittedPath = requireAuth(flux, url);
 
   if (!flux.getStore('session').isLoggedIn()) {
     return <Redirect to="/login" />;
-  } else {
-    return <MainApp {...props} />;
+  } else if (url !== permittedPath) {
+    return <Redirect to={permittedPath} />;
   }
+
+  return <MainApp {...props} />;
 };
 
 class App extends React.Component <any, any> {

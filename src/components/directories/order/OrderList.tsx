@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { DropdownButton, MenuItem, Button as BootstrapButton, Glyphicon } from 'react-bootstrap';
 import connectToStores from 'flummox/connect';
+import * as queryString from 'query-string';
 
 import { getToday0am, getToday2359 } from 'utils/dates';
 import { FluxContext } from 'utils/decorators';
 import { saveData } from 'utils/functions';
+import { diffDates } from 'utils/dates.js';
 
 import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
 import Paginator from 'components/ui/Paginator.jsx';
@@ -44,17 +46,13 @@ class OrderList extends React.Component<any, any> {
   context: any;
   constructor(props) {
     super(props);
+    const { location: { search } } = this.props;
     const {
-      location: {
-        query: {
-          dateFrom = getToday0am(),
-          dateTo = getToday2359(),
-        } = {},
-      } = {},
-      routeParams: {
-        idOrder = '',
-      } = {},
-    } = this.props;
+      dateFrom = getToday0am(),
+      dateTo = getToday2359(),
+    } = queryString.parse(search);
+
+    const { match: { params: { idOrder = '' } } } = this.props;
 
     this.state = {
       pageOptions: {
@@ -79,12 +77,7 @@ class OrderList extends React.Component<any, any> {
     flux.getActions('missions').getMissionSources();
     flux.getActions('employees').getEmployees({ active: true });
 
-    const {
-      routeParams: {
-        idOrder = '',
-      } = {},
-    } = this.props;
-
+    const { match: { params: { idOrder = '' } } } = this.props;
     const outerIdFax = Number.parseInt(idOrder, 0);
 
     this.getOrders({ countPerPage: !!outerIdFax ? 10000 : MAX_ITEMS_PER_PAGE }).then(({ result = [] }) => {
@@ -156,11 +149,8 @@ class OrderList extends React.Component<any, any> {
     }
   }
   componentWillReceiveProps(props) {
-    const {
-      routeParams: {
-        idOrder = '',
-      } = {},
-    } = props;
+    const { match: { params: { idOrder = '' } } } = this.props;
+
     const outerIdFax = Number.parseInt(idOrder, 0);
 
     if (outerIdFax) {
@@ -176,11 +166,8 @@ class OrderList extends React.Component<any, any> {
   }
 
   handleChange = (field, value) => {
-    const {
-      routeParams: {
-        idOrder = '',
-      } = {},
-    } = this.props;
+    const { match: { params: { idOrder = '' } } } = this.props;
+
     if (!!idOrder) {
       this.props.history.push('/orders');
     }
@@ -256,16 +243,18 @@ class OrderList extends React.Component<any, any> {
     const {
       num_exec = 0,
     } = sEA;
+    const dateTo = sEA.date_to || sEF.order_date_to;
 
-    return !num_exec || status === 'cancelled';
+    return !num_exec || diffDates(new Date(), dateTo) > 0 || status === 'cancelled';
   }
   checkDisabledCMЕtemplate = () => {
     const {
       status = 'cancelled',
       technical_operations = [],
+      order_date_to = null,
     } = (this.state.selectedElementOrder || {});
 
-    return status === 'cancelled' || !technical_operations.some(({ num_exec }) => num_exec > 0);
+    return status === 'cancelled' || diffDates(new Date(), order_date_to, 'minutes') > 0 || !technical_operations.some(({ num_exec }) => num_exec > 0);
   }
   checkDisabledCDMTemplate = () => {
     const {
@@ -406,8 +395,9 @@ class OrderList extends React.Component<any, any> {
       work_type_name = null,
       num_exec,
     } = sEA;
+    const dateTo = sEA.date_to || this.state.selectedElementOrder.order_date_to;
 
-    return !((work_type_name === null || work_type_name === 'Ручные' || work_type_name === 'Комбинированный') && num_exec > 0);
+    return !((work_type_name === null || work_type_name === 'Ручные' || work_type_name === 'Комбинированный') && num_exec > 0) || diffDates(new Date(), dateTo) > 0;
   }
 
   handleClickOnCDM = () => {
@@ -503,7 +493,6 @@ class OrderList extends React.Component<any, any> {
       },
     })
   changeFilter = filter => {
-      this.getOrders({ filter });
       this.setState({
         ...this.state,
         pageOptions: {

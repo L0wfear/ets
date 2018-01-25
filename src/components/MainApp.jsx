@@ -71,10 +71,43 @@ class MainApp extends React.Component {
     });
   }
 
+  componentDidMount() {
+    if (this.context.flux.getStore('session').isLoggedIn()) {
+      const isSee = this.context.flux.getStore('session').isSeeNotifyProblem();
+
+      if (!isSee) {
+        global.NOTIFICATION_SYSTEM.notifyWithObject({
+          title: 'Уважаемые пользователи !',
+          level: 'success',
+          position: 'tr',
+          dismissible: false,
+          autoDismiss: 0,
+          uid: 'error_asuods',
+          children: (
+            <div>
+              <p>Уведомляем вас, что сегодня с 14:30 по 15:00 система будет находиться на плановом тех. обслуживании и будет недоступна.</p>
+              <p
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row-reverse',
+                }}
+              ><Button onClick={this.closeError}>Закрыть</Button></p>
+            </div>
+          ),
+        });
+      }
+    }
+  }
+
   componentWillReceiveProps() {
     this.setState({
       user: this.context.flux.getStore('session').getCurrentUser(),
     });
+  }
+
+  closeError = () => {
+    global.NOTIFICATION_SYSTEM.removeNotification('error_asuods');
+    this.context.flux.getStore('session').setAsSee();
   }
 
   logout = () => {

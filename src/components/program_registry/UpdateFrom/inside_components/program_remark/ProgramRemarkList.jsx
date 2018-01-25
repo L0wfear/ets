@@ -249,13 +249,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
     flux.getActions('repair').getRepairListByType('programRemarkRegistry', { program_version_id });
   }
 
-  getAdditionalProps = () => {
-    const {
-      program_version_status,
-    } = this.props;
-
-    return {
-      displayTable: program_version_status === 'rejected' || (program_version_status !== 'draft' && this.props.programRemarkRegistryList.length !== 0),
-    };
-  }
+  getAdditionalProps = () => ({
+    displayTable: this.props.programRemarkRegistryList.length !== 0,
+  });
 }

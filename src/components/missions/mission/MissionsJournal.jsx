@@ -193,6 +193,7 @@ export default class MissionsJournal extends CheckableElementsList {
       notifyText: 'Данные успешно удалены',
     });
   }
+
   removeElement = () => {
     return confirmDialog({
       title: 'Внимание',

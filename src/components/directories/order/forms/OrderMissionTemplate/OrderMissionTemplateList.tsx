@@ -14,6 +14,7 @@ import DutyMissionTemplateTable from 'components/directories/order/forms/OrderMi
 import { createMissions } from 'components/missions/mission_template/MissionTemplateFormWrap.jsx';
 import { createDutyMissions } from 'components/missions/duty_mission_template/DutyMissionTemplateFormWrap.jsx';
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
+import { diffDates } from 'utils/dates.js';
 
 const ASSIGN_OPTIONS = [
   { value: 'assign_to_active', label: 'Добавить в активный ПЛ' },
@@ -57,8 +58,8 @@ function getMissionListByFilter(missionsList, filterData, typeClick) {
         order_operation_id,
       } = filterData[norm_id];
 
-      if (passes_count <= num_exec || typeClick === 'missionDutyTemplate') {
-        arr.push({
+      if (passes_count <= num_exec && diffDates(new Date(), date_to, 'minutes') < 0) {
+          arr.push({
           ...m,
           date_to,
           date_from,
@@ -81,6 +82,7 @@ interface IStateOrderMissionTemplate {
   selectedElement: void | any;
   checkedElements: ICheckedElements;
   structures: any[];
+  timeInterval: number | NodeJS.Timer;
 }
 
 @connectToStores(['missions', 'session', 'employees'])
@@ -92,6 +94,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     selectedElement: undefined,
     checkedElements: {},
     structures: [],
+    timeInterval: null,
   };
 
   componentDidMount() {
@@ -103,8 +106,30 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
 
     this.getMissionsList().then(({ result = [] }) => {
       const missionsList = getMissionListByFilter(result, filterData, typeClick);
+      const date = (new Date()).getTime();
 
-      this.setState({ missionsList, structures });
+      const timeInterval = setTimeout(this.checkMissionsList, new Date(date - (date % 60000) + 60 * 1000).getTime() - date + 1000);
+
+      this.setState({ missionsList, structures, timeInterval });
+    });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.timeInterval);
+  }
+
+  checkMissionsList = () => {
+    const { missionsList: old_missionsList } = this.state;
+    const timeInterval = setInterval(this.checkMissionsList, 60 * 1000);
+    const missionsList = old_missionsList.filter(({ date_to }) => diffDates(new Date(), date_to) < 0);
+
+    /* tslint:disable:no-console */
+    console.log('check on date end');
+    /* tslint:enable */
+
+    this.setState({
+      missionsList,
+      timeInterval,
     });
   }
 
@@ -225,6 +250,11 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     return isEmpty(checkedElements);
   }
 
+  onFormHide = () => {
+    this.componentWillUnmount();
+    this.props.onFormHide();
+  }
+
   render() {
     const {
       assign_to_waybill,
@@ -249,7 +279,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     }
 
     return (
-      <ModalTSX show={showForm} onHide={this.props.onFormHide} bsSize="lg">
+      <ModalTSX show={showForm} onHide={this.onFormHide} bsSize="lg">
         <RB.Modal.Header closeButton>
           <RB.Modal.Title id="contained-modal-title-lg">{title}</RB.Modal.Title>
         </RB.Modal.Header>

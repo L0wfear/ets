@@ -179,10 +179,10 @@ class RoutesList extends Component {
 
   deleteRoute = async () => {
     try {
-      await (confirmDialog({
+      await confirmDialog({
         title: 'Внимание',
         body: 'Вы уверены, что хотите удалить выбранный маршрут?',
-      }));
+      });
       const { flux } = this.context;
       flux.getActions('routes').removeRoute(this.state.selectedRoute);
       this.setState({ selectedRoute: null });

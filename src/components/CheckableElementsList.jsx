@@ -156,10 +156,10 @@ export default class CheckableElementsList extends ElementsList {
 
     if (Object.keys(this.state.checkedElements).length !== 0) {
       try {
-        await (confirmDialog({
+        await confirmDialog({
           title: 'Внимание',
           body: 'Вы уверены, что хотите удалить выбранные элементы?',
-        }));
+        });
 
         const removeCallback = this.removeElementCallback || (() => {});
         each(this.state.checkedElements, (element) => {

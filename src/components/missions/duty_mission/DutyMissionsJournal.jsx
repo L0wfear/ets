@@ -195,28 +195,29 @@ export default class DutyMissionsJournal extends CheckableElementsList {
 
     if (Object.keys(this.state.checkedElements).length !== 0) {
       try {
-        await (confirmDialog({
+        await confirmDialog({
           title: 'Внимание',
           body: 'Вы уверены, что хотите удалить выбранные элементы ?',
-        }));
+        });
 
         let isNotDeleted = false;
 
-        _.forEach(this.state.checkedElements, async (mission) => {
+        const allQuery = Object.values(this.state.checkedElements).map((mission) => {
           if (mission.status === 'not_assigned') {
-            await this.removeElementAction(mission.id);
+            return this.removeElementAction(mission.id);
           } else {
             isNotDeleted = true;
+            return Promise.resolve();
           }
         });
+        await Promise.all(allQuery);
+        this.refreshList();
 
         if (isNotDeleted) {
           global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Удалились только задания со статусом "Не назначено"!'));
         } else {
           global.NOTIFICATION_SYSTEM.notify('Данные успешно удалены');
         }
-
-        this.refreshList();
 
         this.setState({
           checkedElements: {},
@@ -226,8 +227,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
         // отмена
       }
     } else {
-      await this.removeElement();
-      this.refreshList();
+      this.removeElement().then(() => this.refreshList());
     }
   }
 

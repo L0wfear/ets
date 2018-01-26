@@ -1,5 +1,6 @@
 import React from 'react';
 import { Glyphicon } from 'react-bootstrap';
+import { get, uniqBy } from 'lodash';
 
 import { MISSION_STATUS_LABELS } from 'constants/dictionary';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
@@ -69,6 +70,16 @@ const getTableMeta = (props) => {
         filter: {
           type: 'multiselect',
           options: props.carsList.map(e => ({ label: e.gov_number, value: e.gov_number })),
+        },
+        cssClassName: 'width120',
+      },
+      {
+        name: 'type_name',
+        displayName: 'Тип техники',
+        type: 'number',
+        filter: {
+          type: 'multiselect',
+          options: uniqBy(props.carsList.map(e => ({ label: e.type_name, value: e.type_name })), 'value'),
         },
         cssClassName: 'width120',
       },

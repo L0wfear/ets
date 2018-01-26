@@ -257,7 +257,7 @@ export default class ObjectsStore extends Store {
   handleGetWorkMode({ result: { rows = [] } }) {
     this.setState({
       workMode: rows,
-      workModeOptions: rows.map(({ id, name, start_time, end_time }) => ({ value: id, label: `${name} (${start_time} - ${end_time})` })),
+      workModeOptions: rows.map(({ id, name, start_time, end_time }) => ({ value: id, label: `${name} (${start_time} - ${end_time})`, name })),
     });
   }
 }

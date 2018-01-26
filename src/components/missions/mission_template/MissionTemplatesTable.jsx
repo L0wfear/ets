@@ -31,6 +31,15 @@ const getTableMeta = (props) => {
         cssClassName: 'width120',
       },
       {
+        name: 'car_type_name',
+        displayName: 'Тип техники',
+        type: 'number',
+        filter: {
+          type: 'multiselect',
+        },
+        cssClassName: 'width120',
+      },
+      {
         name: 'route_name',
         displayName: 'Маршрут',
         type: 'number',

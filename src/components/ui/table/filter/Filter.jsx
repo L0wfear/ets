@@ -32,7 +32,7 @@ export default class Filter extends React.Component {
   }
 
   // TODO сделано для adv...-select-like
-  // из-за с проблем с именем 
+  // из-за с проблем с именем
   // переделать
   getName(name, type) {
     switch (type) {

@@ -73,7 +73,7 @@ class CarForm extends Form {
     const searchObject = queryString.parse(search);
 
     if (Object.keys(searchObject).length > 0) {
-      this.props.handleTabSelect(searchObject);
+      this.props.handleTabSelect(searchObject.active_tab);
     }
     const nextState = this.props.formState;
     const linear = true;

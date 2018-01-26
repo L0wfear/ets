@@ -270,7 +270,7 @@ export default class OpenLayersMap extends Component {
     if (typeof this.props.onFeatureClick === 'function') {     
       map.forEachFeatureAtPixel(pixel, (feature, layer) => {
         const id = feature.getId();
-        const isNeedCloseSidebar = feature.O.data.featureType !== 'leak';
+        const isNeedCloseSidebar = feature.get('data').featureType !== 'leak';
         if (!id || (!!id && !id.match('measure'))) {
           this.props.onFeatureClick(feature, isNeedCloseSidebar, ev, this);
         }

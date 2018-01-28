@@ -250,7 +250,7 @@ export default class CurrentMission extends DashboardCardMedium {
         <Div key={i} className="dashboard-card-item">
           <Div className={itemClassName} onClick={this.selectItem.bind(this, i)}>
             {title}
-            <span title='Кол-во заданий в статусе "Назначено" / Общее кол-во заданий на текущую тех.операцию'>
+            <span title="Общее кол-во заданий на текущую тех.операцию">
               {status}
             </span>
           </Div>

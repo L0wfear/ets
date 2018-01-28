@@ -31,4 +31,4 @@ export const getKindTaskIds = (id, fromOrder) => {
       return '3';
     }
   }
-}
+};

@@ -130,8 +130,8 @@ export class MissionForm extends Form {
         .then(({ result: { rows = [] } }) => rows);
     }
 
-    const kind_task_ids = getKindTaskIds(id, this.props.fromOrder);
-
+    // const kind_task_ids = getKindTaskIds(id, this.props.fromOrder);
+    const kind_task_ids = getKindTaskIds(id, false);
     /**
      * DITETS-2359
      * GET /technical_operation?only=new

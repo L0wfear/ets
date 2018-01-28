@@ -130,7 +130,8 @@ export class DutyMissionForm extends Form {
       routesList = await routesActions.getRoutesByDutyMissionId(mission.id, isTemplate);
     }
 
-    const kind_task_ids = getKindTaskIds(id, this.props.fromOrder);
+    // const kind_task_ids = getKindTaskIds(id, this.props.fromOrder);
+    const kind_task_ids = getKindTaskIds(id, false);
 
     missionsActions.getMissions(mission.technical_operation_id);
     missionsActions.getMissionSources();

@@ -23,7 +23,7 @@ import CarNotAvailableIcon from 'assets/images/car_not_available.png';
 import InsideField from 'components/missions/mission/inside_fields/index';
 import { getKindTaskIds } from 'components/missions/utils/utils.ts';
 
-export const checkRouteByNew = (state, route, available_route_types = []) => {
+export const checkRouteByNew = (state, route) => {
   const { is_new = true } = state;
 
   if (is_new) {
@@ -541,7 +541,7 @@ export class MissionForm extends Form {
                 type="number"
                 label="Кол-во циклов"
                 error={errors.passes_count}
-                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY }
+                disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY}
                 value={state.passes_count}
                 onChange={this.handleChange.bind(this, 'passes_count')}
                 min={0}

@@ -63,14 +63,6 @@ export const missionSchema = {
       title: 'Элемент',
       type: 'number',
     },
-    {
-      key: 'passes_count',
-      title: 'Кол-во циклов',
-      type: 'number',
-      required: false,
-      min: 0,
-      max: 10,
-    },
   ],
   dependencies: {
     'date_end': [

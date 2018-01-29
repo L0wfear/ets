@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   find,
+  union,
 } from 'lodash';
 import { autobind } from 'core-decorators';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
@@ -38,16 +39,14 @@ export default class RouteForm extends Form {
     this.props.resetState();
   }
 
-  setRouteTypeOptionsBasedOnTechnicalOperation(technical_operation_id, technicalOperationsList = this.props.technicalOperationsList, routeTypeValue = null, resetState = true) {
-    const technicalOperation = find(technicalOperationsList, o => o.id === technical_operation_id);
+  changeRouteTypesAvailable(route_types_out) {
+    let route_types = union([...route_types_out]);
     const route_type_options = [];
-    let {
-      route_types = [],
-    } = technicalOperation;
-
     if (!!this.props.fromMission && !!this.props.notTemplate) {
       route_types = route_types.filter(name => this.props.available_route_types.includes(name));
     }
+
+    let { formState: { type: routeTypeValue } } = this.props;
 
     route_types.forEach((obj) => {
       switch (obj) {
@@ -77,7 +76,6 @@ export default class RouteForm extends Form {
     this.setState({ ROUTE_TYPE_OPTIONS: route_type_options, routeTypeDisabled: !routeTypeValue });
     this.props.fromMission && this.handleTypeChange(routeTypeValue);
     this.props.handleFormChange('type', routeTypeValue);
-    resetState && this.props.resetState();
   }
 
   handleTechChange(v) {
@@ -89,9 +87,7 @@ export default class RouteForm extends Form {
       route_types: technicalOperationsList.find(({ id }) => id === v).route_types,
     });
     this.handleChange('draw_object_list', []);
-    if (!this.props.formState.copy) {
-      this.setRouteTypeOptionsBasedOnTechnicalOperation(v);
-    }
+    this.handleChange('municipal_facility_id', null);
   }
 
   handleClickSelectFromODH() {
@@ -103,10 +99,6 @@ export default class RouteForm extends Form {
     const { formState } = this.props;
     const technicalOperationsResponse = await flux.getActions('technicalOperation').getTechnicalOperations();
     let technicalOperationsList = technicalOperationsResponse.result;
-
-    if (formState.technical_operation_id && !formState.copy) {
-      this.setRouteTypeOptionsBasedOnTechnicalOperation(formState.technical_operation_id, technicalOperationsList, formState.type, false);
-    }
 
     const OBJECTS_BY_TYPE = {
       points: 3,
@@ -128,7 +120,15 @@ export default class RouteForm extends Form {
     this.props.onSubmit(isTemplate);
   }
 
-  getDataByNormId = norm_id => this.handleChange('norm_id', norm_id);
+  getDataByNormId = (data) => {
+    if (!data) {
+      this.handleChange('norm_id', data);
+      return;
+    }
+    this.handleChange('norm_id', data.norm_id);
+
+    this.changeRouteTypesAvailable(data.route_types);
+  }
 
   render() {
     const state = this.props.formState;
@@ -232,7 +232,7 @@ export default class RouteForm extends Form {
                   options={ROUTE_TYPE_OPTIONS}
                   value={state.type !== 'mixed' ? state.type : 'mixed'}
                   clearable={false}
-                  disabled={this.state.routeTypeDisabled || state.copy}
+                  disabled={this.state.routeTypeDisabled || !state.municipal_facility_id || state.copy}
                   onChange={this.handleTypeChange}
                 />
               </Col>

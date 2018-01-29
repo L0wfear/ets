@@ -225,7 +225,7 @@ class MissionInfoForm extends Form {
               {getDataTraveledYet([...traveled_high_speedCheck_unit, report_data.time_high_speed])}
             </li>
             <li><b>Общее время стоянок:</b>
-              {!isNaN(parseInt(this.state.parkingCount, 0) ? secondsToTime(this.state.parkingCount) : 'Рассчитывается...'}
+              {!isNaN(parseInt(this.state.parkingCount, 0)) ? secondsToTime(this.state.parkingCount) : 'Рассчитывается...' }
             </li>
             <li><b>Общий пробег с работающим оборудованием:</b>
               {`${sensor_traveled_working ? getDataTraveledYet(sensor_traveled_workingAndCheck_unit) : 'Данные будут отображены после выполнения задания'}`}

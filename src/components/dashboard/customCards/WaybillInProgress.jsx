@@ -60,12 +60,12 @@ export default class WaybillInProgress extends WaybillClosed {
 
     return (
       <Div className={itemClassName} >
-        <Div hidden={!count} >
+        <Div hidden={typeof count !== 'number'} >
           <Div className="dashboard-card-item-inner-singlevalue" onClick={this.selectItem.bind(this, 0)}>
             {count}
           </Div>
         </Div>
-        <Div hidden={count}>
+        <Div hidden={typeof count === 'number'} >
           <Div className="dashboard-card-item-inner" onClick={this.selectItem.bind(this, 0)}>
             {title}
           </Div>

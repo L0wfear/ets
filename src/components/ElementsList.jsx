@@ -193,8 +193,10 @@ class ElementsList extends React.Component {
       body: 'Вы уверены, что хотите удалить выбранный элемент?',
     })
     .then(() => {
+      const query = this.removeElementAction(this.state.selectedElement[this.selectField], removeCallback);
+
       this.setState({ selectedElement: null });
-      return this.removeElementAction(this.state.selectedElement[this.selectField], removeCallback);
+      return query;
     })
     .catch(() => {});
   }

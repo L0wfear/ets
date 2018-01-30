@@ -10,6 +10,8 @@ import {
 } from 'react-bootstrap';
 import moment from 'moment';
 
+import Div from 'components/ui/Div.jsx';
+
 import config from 'config';
 import { autobind } from 'core-decorators';
 import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
@@ -64,8 +66,11 @@ export default class MainPage extends React.Component {
   }
 
   componentWillMount() {
+    const user = this.context.flux.getStore('session').getCurrentUser();
+
     this.setState({
-      user: this.context.flux.getStore('session').getCurrentUser(),
+      user,
+      needShowHrefOnNewProd: [10227244, 102266640].includes(user.company_id),
     });
   }
 
@@ -231,7 +236,18 @@ export default class MainPage extends React.Component {
 
         <div className="app-footer">
           <Col md={3}>
-            <a className="tp" onClick={this.showFormTp}>Техническая поддержка</a>
+            <Div hidden={this.state.needShowHrefOnNewProd}>
+              <Col md={12}>
+                <a className="tp" onClick={this.showFormTp}>Техническая поддержка</a>
+              </Col>
+            </Div>
+            <Div hidden={!this.state.needShowHrefOnNewProd}>
+              <Col md={6}>
+                <a className="tp" onClick={this.showFormTp}>Техническая поддержка</a>
+              </Col>              <Col md={6}>
+                <a className="tp not-red" href='https://ets2.mos.ru' >Переход на новую версию</a>
+              </Col>
+            </Div>
           </Col>
           <Col md={6}>
             {this.state.user.company_name}

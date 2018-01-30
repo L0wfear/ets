@@ -25,7 +25,7 @@ export default class WaybillClosed extends DashboardCardMedium {
     });
   }
 
-  renderSubitems({ subItems }) {
+  renderSubitems(subItems) {
     return (
       <ul>
         {subItems.map((item, i) => (

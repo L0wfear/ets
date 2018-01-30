@@ -183,12 +183,17 @@ export default class PointsStore extends Store {
     }
     const {
       availableGpsCodes = [],
+      selected = null,
     } = this.state;
 
     const points = Object.assign({}, this.state.points);
 
     // TODO отрефакторить механизм обработки получения точек для 1 БНСО
     Object.entries(update).forEach(([key, value]) => {
+      if (selected && update[key].id === selected.id) {
+        points[key].status = update[key].status;
+        this.setState({ selected: points[key] });
+      }
       if (points[key] && (points[key].timestamp > value.timestamp)) {
         console.warn('got old info for point!');
       } else if (availableGpsCodes.includes(key)) {

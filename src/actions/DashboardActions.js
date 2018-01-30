@@ -53,7 +53,7 @@ export default class DashboardActions extends Actions {
     if (key.includes('waybill_')) {
       const path = key.replace(/_/, '/');
       return DashboardService
-        .path(`${path}/count`)
+        .path(path)
         .get(payload)
         .then(component => ({ component, key }));
     }
@@ -64,34 +64,6 @@ export default class DashboardActions extends Actions {
       .path(key)
       .get(payload)
       .then(component => ({ component, key }));
-  }
-
-  getWaybillInProgress() {
-    return DashboardService
-      .path('waybill/in_progress')
-      .get()
-      .then(({ result: { items: [subitemsData = {}] } }) => subitemsData);
-  }
-
-  getWaybillCompleted() {
-    return DashboardService
-      .path('waybill/completed')
-      .get()
-      .then(({ result: { items: [subitemsData = {}] } }) => subitemsData);
-  }
-
-  getWaybillDraft() {
-    return DashboardService
-      .path('waybill/draft')
-      .get()
-      .then(({ result: { items: [subitemsData = {}] } }) => subitemsData);
-  }
-
-  getWaybillClosed() {
-    return DashboardService
-      .path('waybill/closed')
-      .get()
-      .then(({ result: { items: [subitemsData = {}] } }) => subitemsData);
   }
 
   getMoscowTime() {

@@ -187,17 +187,16 @@ export default class PointsStore extends Store {
     } = this.state;
 
     const points = Object.assign({}, this.state.points);
-
+    let newSelected = selected;
     // TODO отрефакторить механизм обработки получения точек для 1 БНСО
     Object.entries(update).forEach(([key, value]) => {
-      if (selected && update[key].id === selected.id) {
-        points[key].status = update[key].status;
-        this.setState({ selected: points[key] });
-      }
       if (points[key] && (points[key].timestamp > value.timestamp)) {
         console.warn('got old info for point!');
       } else if (availableGpsCodes.includes(key)) {
         points[key] = Object.assign({}, points[key], value);
+      }
+      if (selected && value.id === selected.id) {
+        newSelected = points[key];
       }
     });
 
@@ -208,8 +207,10 @@ export default class PointsStore extends Store {
       },
       this.countDimensions(points),
     );
-
-    this.setState(state);
+    this.setState({
+      ...state,
+      selected: newSelected,
+    });
   }
 
   /**

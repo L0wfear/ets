@@ -42,6 +42,10 @@ export default class RouteForm extends Form {
   changeRouteTypesAvailable(route_types_out) {
     let route_types = union([...route_types_out]);
     const route_type_options = [];
+
+    // C текущего момента это спорный вопрос
+    // Здесь тоже появилась проверка на доступные типы объектов
+    // Нужно чекнуть надо ли это
     if (!!this.props.fromMission && !!this.props.notTemplate) {
       route_types = route_types.filter(name => this.props.available_route_types.includes(name));
     }
@@ -74,17 +78,14 @@ export default class RouteForm extends Form {
     });
 
     this.setState({ ROUTE_TYPE_OPTIONS: route_type_options, routeTypeDisabled: !routeTypeValue });
-    this.props.fromMission && this.handleTypeChange(routeTypeValue);
-    this.props.handleFormChange('type', routeTypeValue);
+    this.handleTypeChange(route_type_options.find(({ value }) => value === routeTypeValue) ? routeTypeValue : route_type_options[0].value);
   }
 
   handleTechChange(v) {
     this.handleChange('technical_operation_id', v);
-    const { technicalOperationsList = [] } = this.state;
 
     this.setState({
       vector: false,
-      route_types: technicalOperationsList.find(({ id }) => id === v).route_types,
     });
     this.handleChange('draw_object_list', []);
     this.handleChange('municipal_facility_id', null);

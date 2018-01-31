@@ -194,9 +194,9 @@ export default class PointsStore extends Store {
         console.warn('got old info for point!');
       } else if (availableGpsCodes.includes(key)) {
         points[key] = Object.assign({}, points[key], value);
-      }
-      if (selected && value.id === selected.id) {
-        newSelected = points[key];
+        if (selected && value.id === selected.id) {
+          newSelected = points[key];
+        }
       }
     });
 

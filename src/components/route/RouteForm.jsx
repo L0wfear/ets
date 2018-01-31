@@ -205,7 +205,7 @@ export default class RouteForm extends Form {
                     getDataByNormId={this.getDataByNormId}
                     clearable={false}
                     technicalOperationsList={technicalOperationsList}
-                    getNormIdFromState={this.props.fromMission || state.id}
+                    getNormIdFromState={this.props.fromMission}
                   />
                 </Col>
               </Col>

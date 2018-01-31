@@ -398,7 +398,7 @@ export class DutyMissionForm extends Form {
                 error={errors.route_id}
                 disabled={IS_DISPLAY || !state.technical_operation_id || readOnly}
                 options={ROUTES}
-                value={state.route_id}
+                value={state.route_name}
                 onChange={this.handleRouteIdChange.bind(this)}
               />
               <Div hidden={state.route_id}>

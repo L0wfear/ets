@@ -47,6 +47,12 @@ export const MISSION_STATUS_LABELS = {
   fail: 'Не выполнено',
 };
 
+export const ORDER_STATUS_LABELS = {
+  published: 'Опубликовано',
+  cancelled: 'Отменено',
+  partially_cancelled: 'Частично отменено',
+};
+
 export const GEOZONE_OBJECTS = [
   { value: 'odh', label: 'Объект дорожного хозяйства' },
   { value: 'dt', label: 'Дворовая территория' },

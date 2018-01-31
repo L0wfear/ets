@@ -6,6 +6,7 @@ import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 
 import DataTableComponent from 'components/ui/table/DataTable';
 import DateFormatter from 'components/ui/DateFormatter';
+import { ORDER_STATUS_LABELS } from 'constants/dictionary';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
@@ -52,15 +53,15 @@ export function tableMeta({
         cssClassName: 'width60',
       },
       {
-        name: 'status_name',
+        name: 'status',
         displayName: 'Статус',
         type: 'string',
         filter: {
           type: 'multiselect',
           options: [
-            { label: 'Опубликовано', value: 'Опубликовано' },
-            { label: 'Отменено', value: 'Отменено' },
-            { label: 'Частично отменено', value: 'Частично отменено' },
+            { label: 'Опубликовано', value: 'published' },
+            { label: 'Отменено', value: 'cancelled' },
+            { label: 'Частично отменено', value: 'partially_cancelled' },
           ],
         },
       },
@@ -74,6 +75,7 @@ const Table: React.SFC<any> = props  => {
   const renderers: ISchemaRenderer = {
     order_date: ({ data }) => <DateFormatter date={data} time empty={'Не указано'} />,
     order_date_to: ({ data }) => <DateFormatter date={data} time empty={'Не указано'} />,
+    status: ({ data }) => <div>{ORDER_STATUS_LABELS[data]}</div>,
     create_date: ({ data }) => <DateFormatter date={data} time empty={'Не указано'} />,
     pgm_deny: ({ data }) => <div>{data === 1 ? 'Не применять' : 'Применять'}</div>,
   };

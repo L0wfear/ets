@@ -25,7 +25,7 @@ export default class Sidebar extends Component {
   close = () => {
     const { selected, selectedFeature } = this.props;
     let store;
-    if (selected) {
+    if (selected && selected.marker.track) {
       store = this.props.flux.getStore('points');
       selected.marker.track.sensorsState = {
         equipment: [],

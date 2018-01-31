@@ -54,7 +54,10 @@ export default class HybridMap extends Map {
   componentDidMount() {
     super.componentDidMount();
 
-    this.renderPolygons(this.props.polys, true);
+    this.renderPolygons({
+      polys: this.props.polys,
+      showPolygons: true,
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -76,7 +79,12 @@ export default class HybridMap extends Map {
     }
   }
 
-  renderPolygons(polys = {}, showPolygons) {
+  renderPolygons(props) {
+    const {
+      polys = {},
+      showPolygons,
+    } = props;
+
     const map = this.map;
 
     const vectorSource = new ol.source.Vector();
@@ -84,6 +92,7 @@ export default class HybridMap extends Map {
 
     if (showPolygons) {
       _.each(polys, (poly, key) => {
+
         const feature = new ol.Feature({
           geometry: GeoJSON.readGeometry(poly.shape),
           name: poly.name,

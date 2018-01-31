@@ -282,11 +282,6 @@ export default class OpenLayersMap extends Component {
     this[obj].hide();
   }
 
-  /**
-   *  Отображает геоданные в виде кружочков, линий и других слоев поверх карты.
-   */
- // renderPolygons(polys = {}, showPolygons) {
-
   renderPolygons(nextProps) {
     const polys = Object.assign({}, nextProps.polys, nextProps.polysLeak);
     const showPolygons = { nextProps };

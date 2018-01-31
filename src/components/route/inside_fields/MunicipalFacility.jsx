@@ -12,7 +12,6 @@ class MunicipalFacility extends MunicipalFacilityMission {
       technical_operation_id: new_toi,
       value: new_v,
       error: new_err,
-      created_at: date,
       norm_id,
     } = this.getStateByProps(props);
 
@@ -38,8 +37,8 @@ class MunicipalFacility extends MunicipalFacilityMission {
 
       if (is_new) {
         const outerPayload = {
-          start_date: date,
-          end_date: date,
+          start_date: new Date(),
+          end_date: new Date(),
         };
 
         if (getNormIdFromState) {
@@ -87,7 +86,6 @@ class MunicipalFacility extends MunicipalFacilityMission {
       state: {
         [props.id]: value,
         technical_operation_id,
-        created_at,
         norm_id,
       } = {},
       errors: {
@@ -97,7 +95,6 @@ class MunicipalFacility extends MunicipalFacilityMission {
 
     return {
       technical_operation_id,
-      created_at,
       value,
       error,
       norm_id,

@@ -58,9 +58,9 @@ export function tableMeta({
         filter: {
           type: 'multiselect',
           options: [
-            { label: 'Опубликовано', value: 'published' },
-            { label: 'Отменено', value: 'cancelled' },
-            { label: 'Частично отменено', value: 'partially_cancelled' },
+            { label: 'Опубликовано', value: 'Опубликовано' },
+            { label: 'Отменено', value: 'Отменено' },
+            { label: 'Частично отменено', value:  'Частично отменено' },
           ],
         },
       },

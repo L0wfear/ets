@@ -100,7 +100,7 @@ export class DutyMissionForm extends Form {
     }
 
     if (!isEmpty(mission.technical_operation_id)) {
-      routesList = await routesActions.getRoutesByDutyMissionId(mission.id, isTemplate);
+      routesList = Array.of(selectedRoute) || await routesActions.getRoutesByDutyMissionId(mission.id, isTemplate);
     }
 
     missionsActions.getMissions(mission.technical_operation_id);
@@ -398,7 +398,7 @@ export class DutyMissionForm extends Form {
                 error={errors.route_id}
                 disabled={IS_DISPLAY || !state.technical_operation_id || readOnly}
                 options={ROUTES}
-                value={state.route_name}
+                value={state.route_id}
                 onChange={this.handleRouteIdChange.bind(this)}
               />
               <Div hidden={state.route_id}>

@@ -33,7 +33,9 @@ export default class MissionRejectForm extends Component {
   }
 
   componentWillMount() {
-    this.context.flux.getActions('objects').getCars();
+    if (this.props.fromDashboard) {
+      this.context.flux.getActions('objects').getCars();
+    }
   }
 
   componentWillReceiveProps(props) {
@@ -46,6 +48,10 @@ export default class MissionRejectForm extends Component {
         result: null,
       });
     }
+    if (props.show !== this.props.show && props.show === true) {
+      this.context.flux.getActions('objects').getCars();
+    }
+
     if (props.mission) {
       const mission_id = props.mission.mission_id || props.mission.id;
       const date_start = props.mission.mission_date_start || props.mission.date_start;

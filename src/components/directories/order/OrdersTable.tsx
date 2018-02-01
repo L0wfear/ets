@@ -10,6 +10,8 @@ import { ORDER_STATUS_LABELS } from 'constants/dictionary';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
+const STATUS_OPTIONS = Object.entries(ORDER_STATUS_LABELS).map(([value, label]) => ({ value, label }));
+
 export function tableMeta({
 } = {}): IDataTableSchema {
   const meta: IDataTableSchema = {
@@ -58,11 +60,7 @@ export function tableMeta({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: [
-            { label: 'Опубликовано', value: 'published' },
-            { label: 'Отменено', value: 'cancelled' },
-            { label: 'Частично отменено', value: 'partially_cancelled' },
-          ],
+          options: STATUS_OPTIONS,
         },
       },
     ],

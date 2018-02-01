@@ -12,6 +12,14 @@ import DashboardItemChevron from '../DashboardItemChevron.jsx';
 const Panel = wrappedRef(BootstrapPanel);
 
 export default class OdhNotCoveredByMissions extends DashboardCardMedium {
+  renderSubitems(subItems) {
+    return (
+      <ul>
+        {subItems.map((item, i) => <li key={i}>{`${item.name} (${item.left_passes})`}</li>)}
+      </ul>
+    );
+  }
+
   selectItem(i) {
     this.setState({ selectedItem: null });
     setTimeout(() => {

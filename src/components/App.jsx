@@ -11,6 +11,9 @@ global.APP_DATE_FORMAT = 'DD.MM.YYYY';
 global.SESSION_KEY = `ets-session-${process.env.STAND}`;
 global.CURRENT_USER = `current-user-${process.env.STAND}`;
 
+global.ERROR_GPS = `error-gps${global.SESSION_KEY}`;
+global.ERROR_ASUODS = `error-ruslan${global.SESSION_KEY}`;
+
 class App extends Component {
 
   static get propTypes() {

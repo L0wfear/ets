@@ -234,11 +234,32 @@ export default class WaybillFormWrap extends FormWrap {
 
     const currentWaybillId = formState.id;
 
+    this.setState({ canSave: false });
+    global.NOTIFICATION_SYSTEM.notifyWithObject({
+      title: 'Загрузка печатной формы',
+      level: 'info',
+      position: 'tc',
+      dismissible: false,
+      autoDismiss: 0,
+      uid: 'waybilPrintCurrForm',
+      children: (
+        <div>
+          <p>Формирование печатной формы</p>
+        </div>
+      ),
+    });
+
     const callback = (createdWaybillId) => {
       const waybill_id = createdWaybillId || currentWaybillId;
       flux.getActions('waybills').printWaybill(print_form_type, waybill_id)
         .then(({ blob, fileName }) => {
           saveData(blob, fileName);
+          global.NOTIFICATION_SYSTEM.removeNotification('waybilPrintCurrForm');
+          this.setState({ canSave: true });
+        })
+        .catch(() => {
+          global.NOTIFICATION_SYSTEM.removeNotification('waybilPrintCurrForm');
+          this.setState({ canSave: true });
         });
     };
     printonly ? callback() : this.handleFormSubmit(formState, callback);

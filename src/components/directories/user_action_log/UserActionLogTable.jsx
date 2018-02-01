@@ -14,9 +14,9 @@ export const tableMeta = props => ({
     {
       name: 'timestamp',
       displayName: 'Дата действия',
-      type: 'text',
+      type: 'date',
       filter: {
-        type: 'datetime',
+        type: 'date',
       },
     },
     {
@@ -46,9 +46,9 @@ export const tableMeta = props => ({
     {
       name: 'entity_number',
       displayName: 'Номер документа',
-      type: 'text',
+      type: 'number',
       filter: {
-        type: 'string',
+        type: 'advanced-number',
       },
     },
     {

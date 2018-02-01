@@ -112,7 +112,7 @@ export default class OdhNotCoveredByMissions extends DashboardCardMedium {
               <Div className="card-glyph-remove" onClick={this.selectItem.bind(this, null)}>
                 <Glyphicon glyph="remove" />
               </Div>
-              <h5>{!!selectedItem ? `Список ${selectedItem.object_type_name}` : ''}</h5>
+              <h5>{!!selectedItem ? `Список ${selectedItem.object_type}` : ''}</h5>
               <div style={{ marginTop: 15 }} />
               {this.renderSubitems(sub_items)}
               {typeof this.renderCustomCardData === 'function' ? this.renderCustomCardData() : null}

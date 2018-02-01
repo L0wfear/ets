@@ -12,6 +12,14 @@ import DashboardItemChevron from '../DashboardItemChevron.jsx';
 const Panel = wrappedRef(BootstrapPanel);
 
 export default class OdhNotCoveredByMissions extends DashboardCardMedium {
+  renderSubitems(subItems) {
+    return (
+      <ul>
+        {subItems.map((item, i) => <li key={i}>{`${item.name} (${item.left_passes})`}</li>)}
+      </ul>
+    );
+  }
+
   selectItem(i) {
     this.setState({ selectedItem: null });
     setTimeout(() => {
@@ -104,7 +112,7 @@ export default class OdhNotCoveredByMissions extends DashboardCardMedium {
               <Div className="card-glyph-remove" onClick={this.selectItem.bind(this, null)}>
                 <Glyphicon glyph="remove" />
               </Div>
-              <h5>{!!selectedItem ? `Список ${selectedItem.object_type_name}` : ''}</h5>
+              <h5>{!!selectedItem ? `Список ${selectedItem.object_type}` : ''}</h5>
               <div style={{ marginTop: 15 }} />
               {this.renderSubitems(sub_items)}
               {typeof this.renderCustomCardData === 'function' ? this.renderCustomCardData() : null}

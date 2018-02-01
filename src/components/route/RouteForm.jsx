@@ -33,7 +33,7 @@ export default class RouteForm extends Form {
     this.handleClickSelectFromODH = this.handleClickSelectFromODH.bind(this);
   }
 
-  handleTypeChange(v) {
+  handleTypeChange(v, ...arg) {
     this.setState({ vector: false });
     this.handleChange('type', v);
     this.props.resetState();
@@ -77,8 +77,8 @@ export default class RouteForm extends Form {
       }
     });
 
-    this.setState({ ROUTE_TYPE_OPTIONS: route_type_options, routeTypeDisabled: !routeTypeValue });
-    this.handleTypeChange(route_type_options.find(({ value }) => value === routeTypeValue) ? routeTypeValue : route_type_options[0].value);
+    this.setState({ ROUTE_TYPE_OPTIONS: route_type_options, routeTypeDisabled: !routeTypeValue, vector: false });
+    this.handleChange('type', route_type_options.find(({ value }) => value === routeTypeValue) ? routeTypeValue : route_type_options[0].value);
   }
 
   handleTechChange(v) {

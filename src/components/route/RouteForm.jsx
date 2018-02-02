@@ -50,26 +50,27 @@ export default class RouteForm extends Form {
       route_types = route_types.filter(name => this.props.available_route_types.includes(name));
     }
 
-    let { formState: { type: routeTypeValue } } = this.props;
+    const { formState: { type: routeTypeValue } } = this.props;
+    let routeTypeValue_new = routeTypeValue;
 
     route_types.forEach((obj) => {
       switch (obj) {
         case 'mixed':
           route_type_options.push({ value: 'mixed', label: 'ОДХ' });
-          if (!routeTypeValue) {
-            routeTypeValue = 'mixed';
+          if (!routeTypeValue_new) {
+            routeTypeValue_new = 'mixed';
           }
           break;
         case 'points':
           route_type_options.push({ value: 'points', label: 'Пункты назначения' });
-          if (!routeTypeValue && routeTypeValue !== 'mixed') {
-            routeTypeValue = 'points';
+          if (!routeTypeValue_new && routeTypeValue !== 'mixed') {
+            routeTypeValue_new = 'points';
           }
           break;
         case 'simple_dt':
           route_type_options.push({ value: 'simple_dt', label: 'ДТ' });
-          if (!routeTypeValue && routeTypeValue !== 'mixed') {
-            routeTypeValue = 'simple_dt';
+          if (!routeTypeValue_new && routeTypeValue_new !== 'mixed') {
+            routeTypeValue_new = 'simple_dt';
           }
           break;
         default:
@@ -77,8 +78,13 @@ export default class RouteForm extends Form {
       }
     });
 
-    this.setState({ ROUTE_TYPE_OPTIONS: route_type_options, routeTypeDisabled: !routeTypeValue, vector: false });
-    this.handleChange('type', route_type_options.find(({ value }) => value === routeTypeValue) ? routeTypeValue : route_type_options[0].value);
+    const type = route_type_options.find(({ value }) => value === routeTypeValue_new) ? routeTypeValue_new : route_type_options[0].value;
+    this.setState({ ROUTE_TYPE_OPTIONS: route_type_options, routeTypeDisabled: !routeTypeValue_new, vector: false });
+    this.handleChange('type', type);
+
+    if (type !== routeTypeValue) {
+      this.props.resetState();
+    }
   }
 
   handleTechChange(v) {

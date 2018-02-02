@@ -109,7 +109,10 @@ export class DutyMissionForm extends Form {
       }
       if (!isDisabledRouteField) {
         routesList = await routesActions.getRoutesByDutyMissionId(mission.id, isTemplate);
-        routesList.concat(selectedRoute);
+        const findSelectedRoute_in_routesList = routesList.find(v => v.id === selectedRoute.id);
+        if (!findSelectedRoute_in_routesList) {
+          routesList.push(selectedRoute);
+        }
       }
     }
 

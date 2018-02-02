@@ -185,7 +185,7 @@ export default class CarActions extends Actions {
       car_id,
       point_timestamp,
     };
-    return CarInfoService.get(payload).then(({ result: { mission = [] } }) => mission);
+    return CarInfoService.get(payload).then(({ result: { missions = [] } }) => missions);
   }
 
 }

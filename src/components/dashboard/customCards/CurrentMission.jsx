@@ -212,6 +212,7 @@ export default class CurrentMission extends DashboardCardMedium {
           show={this.state.showMissionRejectForm}
           onReject={this.onReject}
           mission={data}
+          fromDashboard
         />}
       </Div>
     );

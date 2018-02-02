@@ -100,7 +100,20 @@ export class DutyMissionForm extends Form {
     }
 
     if (!isEmpty(mission.technical_operation_id)) {
-      routesList = await routesActions.getRoutesByDutyMissionId(mission.id, isTemplate);
+      const isDisabledRouteField = (!!this.props.formState.status && this.props.formState.status !== 'not_assigned') ||
+                                   !this.props.formState.technical_operation_id ||
+                                   this.props.readOnly;
+
+      if (isDisabledRouteField) {
+        routesList = Array.of(selectedRoute);
+      }
+      if (!isDisabledRouteField) {
+        routesList = await routesActions.getRoutesByDutyMissionId(mission.id, isTemplate);
+        const findSelectedRoute_in_routesList = routesList.find(v => v.id === selectedRoute.id);
+        if (!findSelectedRoute_in_routesList) {
+          routesList.push(selectedRoute);
+        }
+      }
     }
 
     missionsActions.getMissions(mission.technical_operation_id);

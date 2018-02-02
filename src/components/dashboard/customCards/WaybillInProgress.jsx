@@ -7,7 +7,7 @@ import WaybillClosed from './WaybillClosed.jsx';
 
 export default class WaybillInProgress extends WaybillClosed {
 
-  renderSubitems({ subItems }) {
+  renderSubitems(subItems) {
     let si = _.groupBy(subItems, e => moment(e.data.create_date).format(global.APP_DATE_FORMAT));
     si = _.sortBy(si, ar => -moment(ar[0].data.create_date).unix());
     si = si.map((ar) => {
@@ -19,7 +19,7 @@ export default class WaybillInProgress extends WaybillClosed {
     subItems = si;
 
     return (
-      <ul className="waybill-progress">
+      <ul>
         {subItems.map((item, i) => (<div key={i}>
           {item.data.groupStart ? <center><span style={{ fontWeight: 'bold' }}>{moment(item.data.create_date).format(global.APP_DATE_FORMAT)}</span></center> : ''}
           <li key={i} onClick={this.action.bind(this, item)}>
@@ -33,45 +33,29 @@ export default class WaybillInProgress extends WaybillClosed {
     );
   }
 
-  selectItem(i) {
-    const {
-      count,
-    } = this.props;
-
-    this.setState({ selectedItem: null });
-    setTimeout(() => {
-      if (!!count) {
-        if (typeof i === 'number') {
-          this.context.flux.getActions('dashboard').getWaybillInProgress().then(waybillSubItems => this.setState({ waybillSubItems }));
-        }
-        this.props.openSubitemsList(i === null);
-      }
-    }, 50);
-  }
-
   renderItems() {
-    const {
-      count,
-      title,
-    } = this.props;
-
     const canView = this.context.flux.getStore('session').getPermission(['waybill.read', 'waybill.list']);
-    const itemClassName = cx('dashboard-card-item', { 'pointer': true, 'no-pointer-events': !canView });
 
-    return (
-      <Div className={itemClassName} >
-        <Div hidden={!count} >
-          <Div className="dashboard-card-item-inner-singlevalue" onClick={this.selectItem.bind(this, 0)}>
-            {count}
-          </Div>
+    return this.props.items.map((item, i) => {
+      const itemClassName = cx('dashboard-card-item', { 'pointer': (item.data) || (item.subItems && item.subItems.length) || (this.action), 'no-pointer-events': !canView });
+      return (
+        <Div key={i} className={itemClassName} >
+          {typeof item.value !== 'undefined'
+            ?
+            <Div className="dashboard-card-item-inner-singlevalue" onClick={this.selectItem.bind(this, i)}>
+              {item.value}
+            </Div>
+            :
+            <Div className="dashboard-card-item-inner" onClick={this.selectItem.bind(this, i)}>
+              {item.title}
+            </Div>
+          }
+          {
+            typeof this.renderCollapsibleSubitems === 'function' ? this.renderCollapsibleSubitems(item, i) : ''
+          }
         </Div>
-        <Div hidden={count}>
-          <Div className="dashboard-card-item-inner" onClick={this.selectItem.bind(this, 0)}>
-            {title}
-          </Div>
-        </Div>
-      </Div>
-    );
+      );
+    });
   }
 
 }

@@ -104,7 +104,7 @@ export default class DashboardStore extends Store {
     return this.getComponentsByPermissions(dashboardComponentsKeyList, []);
   }
 
-  getComponentsByPermissions(goodUpdateKeyList = dashboardComponentsKeyList, reduntUpdateList = ['current_missions', 'car_in_work_overall']) {
+  getComponentsByPermissions(goodUpdateKeyList = dashboardComponentsKeyList, reduntUpdateList = ['current_missions']) {
     const { permissions = [] } = this.flux.getStore('session').getCurrentUser();
 
     const dashboardPermissions = permissions

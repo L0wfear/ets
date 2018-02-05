@@ -52,6 +52,7 @@ export default class RouteForm extends Form {
 
     const { formState: { type: routeTypeValue } } = this.props;
     let routeTypeValue_new = routeTypeValue;
+    
 
     route_types.forEach((obj) => {
       switch (obj) {
@@ -78,7 +79,14 @@ export default class RouteForm extends Form {
       }
     });
 
-    const type = route_type_options.find(({ value }) => value === routeTypeValue_new) ? routeTypeValue_new : route_type_options[0].value;
+    let type;
+    if (route_type_options.find(({ value }) => value === routeTypeValue_new)) {
+      type = routeTypeValue_new;
+    }
+    if (route_type_options[0]) {
+      type = route_type_options[0].value;
+    }
+
     this.setState({ ROUTE_TYPE_OPTIONS: route_type_options, routeTypeDisabled: !routeTypeValue_new, vector: false });
     this.handleChange('type', type);
 

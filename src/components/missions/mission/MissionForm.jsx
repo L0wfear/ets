@@ -119,6 +119,9 @@ export class MissionForm extends Form {
     if (!isEmpty(mission.id)) {
       routesList = await routesActions.getRoutesByMissionId(mission.id, isTemplate);
     }
+    if (!isEmpty(mission.norm_id)) {
+      routesList = await routesActions.getRoutesBySomeData(mission.norm_id, isTemplate);
+    }
 
     const {
       norm_id,
@@ -137,8 +140,7 @@ export class MissionForm extends Form {
      * GET /technical_operation?only=new
      * GET /technical_operation?only=old
      */
-    const { result: technicalOperationsListOr } = await technicalOperationsActions.getTechnicalOperations({ kind_task_ids });
-    const technicalOperationsList = technicalOperationsListOr.filter(({ is_new, norm_ids }) => !is_new || (is_new && !norm_ids.some(n => n === null)));
+    const { result: technicalOperationsList } = await technicalOperationsActions.getTechnicalOperations();
 
     let type_id = 0;
     if (mission.status === 'not_assigned') {
@@ -356,7 +358,6 @@ export class MissionForm extends Form {
         label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}${c.type_name ? '/' : ''}${c.type_name || ''}]`,
         type_id: c.type_id,
       }));
-
     const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id) && checkRouteByNew(state, r, available_route_types));
 
     const filteredRoutes = (

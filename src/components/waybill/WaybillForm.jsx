@@ -18,6 +18,7 @@ import {
   isNotNull,
   isEmpty,
   hasMotohours,
+  isThreeDigitGovNumber,
   isEqualOr,
 } from 'utils/functions';
 import { diffDates } from 'utils/dates.js';
@@ -412,8 +413,8 @@ class WaybillForm extends Form {
         if (driver === null) return;
 
         const { gov_number } = formState;
-        const hasLicense = hasMotohours(gov_number) && driverHasLicense(driver);
-        const hasSpecialLicense = !hasMotohours(gov_number) && driverHasSpecialLicense(driver);
+        const hasLicense = isThreeDigitGovNumber(gov_number) && driverHasLicense(driver);
+        const hasSpecialLicense = hasMotohours(gov_number) && driverHasSpecialLicense(driver);
 
         if (hasLicense || hasSpecialLicense) {
           this.props.handleFormChange('driver_id', newDriverId);

@@ -724,7 +724,7 @@ export default class DataTable extends React.Component {
             onRowClick={!isHierarchical ? onRowSelected : null}
             rowMetadata={rowMetadata}
             onKeyPress={this.handleKeyPress}
-            noDataMessage={noDataMessage || noFilter ? '' : 'Нет данных'}
+            noDataMessage={noDataMessage || 'Нет данных'}
             lowerCaseSorting
           />
         </Div>

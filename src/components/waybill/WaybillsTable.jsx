@@ -28,7 +28,7 @@ export const getTableMeta = ({
       },
       {
         name: 'status',
-        displayName: 'Статус',
+        displayName: 'Статус ПЛ',
         type: 'string',
         filter: {
           type: 'multiselect',

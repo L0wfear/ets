@@ -119,14 +119,6 @@ export function hasMotohours(carStateNumber) {
   return null;
 }
 
-
-export function isThreeDigitGovNumber(carStateNumber) {
-  if (carStateNumber) {
-    return isThreeDigitGovNumberRegexp.test(carStateNumber);
-  }
-  return null;
-}
-
 /**
  * преобразовывает hex цвет в rgba с нужной прозрачностью
  * @param hex

@@ -147,7 +147,7 @@ export default class SessionStore extends Store {
   }
 
   isSeeNotifyProblem() {
-    if (moment(new Date()).diff(new Date(2018, 0, 19, 14, 31, 0), 'seconds') < 0) {
+    if (moment(new Date()).diff(new Date(2018, 1, 8, 11, 59, 59), 'seconds') < 0) {      
       const { isSee = false } = JSON.parse(localStorage.getItem(global.ERROR_ASUODS)) || {};
       if (!isSee) {
         return false;

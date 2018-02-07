@@ -154,10 +154,11 @@ export default class SessionStore extends Store {
       }
       return true;
     }
-    this.setAsSee();
+    this.setAsSee(false);
     return true;
   }
-  setAsSee() {
-    localStorage.setItem(global.ERROR_ASUODS, JSON.stringify({ isSee: true }));
+  setAsSee(flag) {
+    localStorage.setItem(global.ERROR_ASUODS, JSON.stringify({ isSee: flag }));
   }
+
 }

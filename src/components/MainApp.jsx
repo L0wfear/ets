@@ -111,7 +111,7 @@ class MainApp extends React.Component {
 
   closeError = () => {
     global.NOTIFICATION_SYSTEM.removeNotification('error_asuods');
-    this.context.flux.getStore('session').setAsSee();
+    this.context.flux.getStore('session').setAsSee(true);
   }
 
   logout = () => {

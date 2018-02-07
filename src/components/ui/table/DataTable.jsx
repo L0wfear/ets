@@ -595,6 +595,7 @@ export default class DataTable extends React.Component {
     const { tableMeta, renderers, onRowSelected, selected,
       selectField, title, noTitle, noFilter,
       enableSort, noDataMessage, className, noHeader,
+      noCustomButton = false,
       refreshable, columnControl, highlight, serverPagination, externalChangeSort,
     } = this.props;
     const { initialSort, initialSortAscending, columnControlValues, isHierarchical } = this.state;
@@ -647,7 +648,7 @@ export default class DataTable extends React.Component {
                   <Glyphicon glyph="refresh" />
                 </Button>
               }
-              {this.props.children}
+              {!noCustomButton && this.props.children}
             </div>
           </div>
           {!noFilter &&

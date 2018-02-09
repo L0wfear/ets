@@ -11,6 +11,11 @@ import { MissionForm } from '../mission/MissionForm.jsx';
 
 class MissionTemplateForm extends MissionForm {
 
+
+  handleStructureIdChange = (v) => {
+    super.handleStructureIdChange.call(this, v);
+  }
+
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
@@ -80,7 +85,7 @@ class MissionTemplateForm extends MissionForm {
                 options={STRUCTURES}
                 emptyValue={null}
                 value={state.structure_id}
-                onChange={this.handleChange.bind(this, 'structure_id')}
+                onChange={this.handleStructureIdChange}
               />
             </Col>}
           </Row>

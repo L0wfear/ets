@@ -110,10 +110,9 @@ export default class MainPage extends React.Component {
       user: this.context.flux.getStore('session').getCurrentUser(),
     });
   }
-
   closeError = () => {
     global.NOTIFICATION_SYSTEM.removeNotification('error_asuods');
-    this.context.flux.getStore('session').setAsSee();
+    this.context.flux.getStore('session').setAsSee(true);
   }
 
   @autobind

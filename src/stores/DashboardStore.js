@@ -21,6 +21,10 @@ const dashboardComponents = [
     key: 'odh_not_covered_by_routes',
   },
   {
+    id: 6,
+    key: 'odh_covered_by_routes',
+  },
+  {
     id: 8,
     key: 'car_in_work_overall',
   },

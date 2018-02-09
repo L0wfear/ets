@@ -10,6 +10,8 @@ import {
 } from 'react-bootstrap';
 import moment from 'moment';
 
+import Div from 'components/ui/Div.jsx';
+
 import config from 'config';
 import { autobind } from 'core-decorators';
 import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
@@ -64,8 +66,11 @@ export default class MainPage extends React.Component {
   }
 
   componentWillMount() {
+    const user = this.context.flux.getStore('session').getCurrentUser();
+
     this.setState({
-      user: this.context.flux.getStore('session').getCurrentUser(),
+      user,
+      needShowHrefOnNewProd: [10227244, 102266640].includes(user.company_id),
     });
   }
 
@@ -83,7 +88,10 @@ export default class MainPage extends React.Component {
           uid: 'error_asuods',
           children: (
             <div>
-              <p>Уведомляем вас, что сегодня с 14:30 по 15:00 система будет находиться на плановом тех. обслуживании и будет недоступна.</p>
+              <p>
+              С 09:00ч 10.02.2018 по 09:00ч. 11.02.2018 запланировано проведение регламентных работ. 
+              В системе ЕТС будет наблюдаться задержка в подсчете процента прохождения заданий. 
+              Данные будут обработаны в полном объеме в течении суток, после завершения работ.</p>
               <p
                 style={{
                   display: 'flex',
@@ -102,10 +110,9 @@ export default class MainPage extends React.Component {
       user: this.context.flux.getStore('session').getCurrentUser(),
     });
   }
-
   closeError = () => {
     global.NOTIFICATION_SYSTEM.removeNotification('error_asuods');
-    this.context.flux.getStore('session').setAsSee();
+    this.context.flux.getStore('session').setAsSee(true);
   }
 
   @autobind
@@ -231,7 +238,18 @@ export default class MainPage extends React.Component {
 
         <div className="app-footer">
           <Col md={3}>
-            <a className="tp" onClick={this.showFormTp}>Техническая поддержка</a>
+            <Div hidden={this.state.needShowHrefOnNewProd}>
+              <Col md={12}>
+                <a className="tp" onClick={this.showFormTp}>Техническая поддержка</a>
+              </Col>
+            </Div>
+            <Div hidden={!this.state.needShowHrefOnNewProd}>
+              <Col md={6}>
+                <a className="tp" onClick={this.showFormTp}>Техническая поддержка</a>
+              </Col>              <Col md={6}>
+                <a className="tp not-red" href='https://ets2.mos.ru' >Переход на новую версию</a>
+              </Col>
+            </Div>
           </Col>
           <Col md={6}>
             {this.state.user.company_name}

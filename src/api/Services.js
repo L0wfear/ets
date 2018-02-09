@@ -4,7 +4,7 @@ import ETS_API_FACTORY from './EtsAPIServiceFactory';
 import * as reports from './reports';
 
 const CITY_DASHBOARD_API_FACTORY = new ApiServiceFactory({
-  apiUrl: `http://ods.mos.ru/ssd/tracks-caching${process.env.STAND !== 'prod' ? '-dev' : ''}`,
+  apiUrl: `http${/s/.test(window.location.protocol) ? 's' : ''}://ods.mos.ru/ssd/tracks-caching${process.env.STAND !== 'prod' ? '-dev' : ''}`,
 });
 
 export const TrackDistanceService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('get_length');

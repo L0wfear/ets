@@ -186,16 +186,13 @@ export class DutyMissionForm extends Form {
       const createdRouteId = result.createdRoute.result[0].id;
       this.handleChange('route_id', createdRouteId);
       const selectedRoute = await routesActions.getRouteById(createdRouteId);
-<<<<<<< HEAD
+
       const routesList = await routesActions.getRoutesBySomeData({
         municipal_facility_id,
         technical_operation_id,
         type: available_route_types.join(','),
       });
-=======
-      let routesList = await routesActions.getRoutesByTechnicalOperation(this.props.formState.technical_operation_id);
-      routesList.push(selectedRoute);
->>>>>>> DITETS-2984
+
       Object.assign(stateChangeObject, {
         showRouteForm: false,
         selectedRoute,

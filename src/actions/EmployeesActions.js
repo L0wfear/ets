@@ -51,7 +51,7 @@ export default class EmployeesActions extends Actions {
         payload[k] = null;
       }
     });
-    return EmployeeService.put(payload, getEmployees, 'json');
+    return EmployeeService.path(`${payload.id}`).put(payload, getEmployees, 'json');
   }
 
   createEmployee(formState) {
@@ -67,7 +67,7 @@ export default class EmployeesActions extends Actions {
 
   deleteEmployee(id) {
     const payload = { id };
-    return EmployeeService.delete(payload, getEmployees, 'json');
+    return EmployeeService.path(`${id}`).delete(payload, getEmployees, 'json');
   }
 
 }

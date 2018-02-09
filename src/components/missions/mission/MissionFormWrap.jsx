@@ -18,11 +18,10 @@ export default class MissionFormWrap extends FormWrap {
   }
 
   createAction = (formState) => {
-    const notFromOriginalMission = Boolean(this.props.fromWaybill || this.props.fromOrder);
-    return this.context.flux.getActions('missions').createMission(formState, notFromOriginalMission).then((r) => {
+    return this.context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill || !!this.props.fromOrder).then((r) => {
       if (!this.props.fromWaybill && !this.props.fromOrder && !this.props.fromDashboard) {
         try {
-          this.props.refreshTableList();
+          // this.props.refreshTableList();
         } catch (e) {
           // function refreshTableList not in father modules
         }

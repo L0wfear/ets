@@ -112,7 +112,7 @@ export default class MissionsActions extends Actions {
     payload.hidden = false;
     if (typeof payload.assign_to_waybill === 'undefined') payload.assign_to_waybill = 'not_assign';
     if (!callback) payload.assign_to_waybill = 'not_assign';
-    return MissionService.post(payload, callback, 'json');
+    return MissionService.post(payload, false, 'json');
   }
 
   removeMission(id, callback) {

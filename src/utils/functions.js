@@ -12,7 +12,6 @@ import { isPlainObject, every, includes } from 'lodash';
  * Если в номере есть 4 числа, то ест одометр
  * DITETSSUP-347 (1 пункт)
  */
-const isThreeDigitGovNumberRegexp = /\d{3}/;
 const isFourDigitGovNumberRegexp = /\d{4}/;
 
 /**

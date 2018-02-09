@@ -126,19 +126,18 @@ export default class SessionStore extends Store {
 
     return permissionName.reduce((bool, permission) => bool && !!permissionsReduce[permission], true);
   }
-
   isSeeNotifyProblem() {
-    if (moment(new Date()).diff(new Date(2018, 0, 19, 14, 31, 0), 'seconds') < 0) {
+    if (moment(new Date()).diff(new Date(2018, 1, 11, 8, 59, 59), 'seconds') < 0) {      
       const { isSee = false } = JSON.parse(localStorage.getItem(global.ERROR_ASUODS)) || {};
       if (!isSee) {
         return false;
       }
       return true;
     }
-    this.setAsSee();
+    this.setAsSee(false);
     return true;
   }
-  setAsSee() {
-    localStorage.setItem(global.ERROR_ASUODS, JSON.stringify({ isSee: true }));
+  setAsSee(flag) {
+    localStorage.setItem(global.ERROR_ASUODS, JSON.stringify({ isSee: flag }));
   }
 }

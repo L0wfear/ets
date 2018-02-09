@@ -102,6 +102,14 @@ const getTableMeta = (props) => {
         cssClassName: 'width120',
       },
       {
+        name: 'current_percentage',
+        displayName: 'Процент выполнения задания (%)',
+        type: 'number',
+        sortable: false,
+        filter: false,
+        cssClassName: 'width120',
+      },
+      {
         name: 'technical_operation_name',
         displayName: 'Технологическая операция',
         type: 'number',
@@ -158,6 +166,7 @@ const getTableMeta = (props) => {
 
 export default (props) => {
   const renderers = {
+    current_percentage: ({ data }) => <span>{Math.floor(data) || '-'}</span>,
     rowNumber: ({ data }) => <span>{props.rowNumberOffset + data}</span>,
     mission_source_name: ({ rowData: { mission_source_text } }) => <span>{mission_source_text}</span>,
     status: ({ data }) => <div>{MISSION_STATUS_LABELS[data]}</div>,

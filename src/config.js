@@ -14,10 +14,9 @@ const config = {
 };
 
 const STANDS = {
-  stage: `https://ets.tech.mos.ru/ets-stage/services`,
-
-  prod: `http://ets.tech.mos.ru/ets-study/services`,
-  dev: `http://dev-ets.gost-group.com/services`,
+  stage: `https://ets.mos.ru/ets-stage/services`,
+  prod: `https://ets.tech.mos.ru/ets-study/services`,
+  dev: `https://dev-ets.gost-group.com/services`,
 };
 
 try {

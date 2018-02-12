@@ -241,7 +241,6 @@ class WaybillForm extends Form {
   }
 
   async onCarChange(car_id, cars) {
-    debugger;
     const selectedCar = cars[0] || {};
     const { flux } = this.context;
 

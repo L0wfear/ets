@@ -14,8 +14,8 @@ const config = {
 };
 
 const STANDS = {
-  stage: `https://ets.mos.ru/ets-stage/services`,
-  prod: `https://ets.tech.mos.ru/ets-study/services`,
+  stage: `https://ets.mos.ru/ets-stage/services`, /* `https://ets.tech.mos.ru/ets-study/services`, */ /* ну не работает с этим адресом! */
+  prod: `https://ets.mos.ru/ets-stage/services`,
   dev: `https://dev-ets.gost-group.com/services`,
 };
 

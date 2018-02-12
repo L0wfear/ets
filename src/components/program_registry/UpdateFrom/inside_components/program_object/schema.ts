@@ -34,7 +34,7 @@ export const elementsValidationSchema: IValidationSchema = {
   properties: [
     {
       key: 'object_property_id',
-      title: 'Элеменет ДТ',
+      title: 'Элемент ДТ',
       type: 'number',
       integer: true,
       required: true,

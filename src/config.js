@@ -1,5 +1,10 @@
-const PROTO = window.location.protocol;
+// const PROTO_FOR_STAGE = (window.location.host === 'localhost') ? 'https:' : window.location.protocol;
+// const PROTO_FOR_PROD = (window.location.host === 'localhost') ? 'http:' : window.location.protocol;
+
 const WS_PROTO = `ws${/s/.test(window.location.protocol) ? 's' : ''}:`;
+const HOST = process.env.APIHOST;
+const STAND = process.env.STAND;
+const PROTO = (STAND === 'prod') ? 'http:' : (STAND === 'stage') ? 'https:' : 'http:';
 
 const DOC_URL = {
   dev: `${PROTO}//dev-ets.gost-group.com/docs/`,
@@ -14,14 +19,12 @@ const config = {
 };
 
 const STANDS = {
-  stage: `https://ets.mos.ru/ets-stage/services`, /* `https://ets.tech.mos.ru/ets-study/services`, */ /* ну не работает с этим адресом! */
-  prod: `https://ets.mos.ru/ets-stage/services`,
-  dev: `https://dev-ets.gost-group.com/services`,
+  stage: `${PROTO}//ets.mos.ru/ets-stage/services`,
+  prod: `${PROTO}//ets.tech.mos.ru/ets-study/services`,
+  dev: `${PROTO}//dev-ets.gost-group.com/services`,
 };
 
 try {
-  const HOST = process.env.APIHOST;
-  const STAND = process.env.STAND;
   if (HOST) {
     config.backend = `${PROTO}//${process.env.APIHOST}`;
   } else if (STAND) {

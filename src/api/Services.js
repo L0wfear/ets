@@ -2,9 +2,10 @@ import ApiServiceFactory from './ApiServiceFactory.js';
 import ETS_API_FACTORY from './EtsAPIServiceFactory';
 
 import * as reports from './reports';
+import { PROTO_FOR_ODS_MOS_RU } from '../config.js';
 
 const CITY_DASHBOARD_API_FACTORY = new ApiServiceFactory({
-  apiUrl: `http${/s/.test(window.location.protocol) ? 's' : ''}://ods.mos.ru/ssd/tracks-caching${process.env.STAND !== 'prod' ? '-dev' : ''}`,
+  apiUrl: `${PROTO_FOR_ODS_MOS_RU}//ods.mos.ru/ssd/tracks-caching${process.env.STAND !== 'prod' ? '-dev' : ''}`,
 });
 
 export const TrackDistanceService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('get_length');

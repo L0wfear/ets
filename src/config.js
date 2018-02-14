@@ -10,7 +10,7 @@ const WS_PROTO = `ws${/s/.test(window.location.protocol) ? 's' : ''}:`;
 const DOC_URL = {
   dev: 'http://dev-ets.gost-group.com/docs/',
   stage: `${PROTO_FOR_STAGE}//${DOMAIN_FOR_STAGE}/ets-stage/docs/`,
-  prod: 'https://ets.mos.ru/ets-study/services',
+  prod: 'http://ets.tech.mos.ru/ets-study/docs',
 };
 
 const config = {
@@ -22,7 +22,7 @@ const config = {
 const STANDS = {
   dev: 'http://dev-ets.gost-group.com/services',
   stage: `${PROTO_FOR_STAGE}//${DOMAIN_FOR_STAGE}/ets-stage/services`,
-  prod: 'https://ets.mos.ru/ets-study/services',
+  prod: 'http://ets.tech.mos.ru/ets-study/services',
 };
 
 try {

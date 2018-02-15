@@ -303,6 +303,9 @@ class WaybillForm extends Form {
       if (isNotNull(lastCarUsedWaybill.motohours_equip_end)) {
         fieldsToChange.motohours_equip_start = lastCarUsedWaybill.motohours_equip_end;
       }
+      if (isNotNull(lastCarUsedWaybill.fuel_type)) {
+        fieldsToChange.fuel_type = lastCarUsedWaybill.fuel_type;
+      }
     } else {
       fieldsToChange.fuel_start = 0;
       fieldsToChange.odometr_start = 0;

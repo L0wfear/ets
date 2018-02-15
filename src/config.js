@@ -13,7 +13,7 @@ const WS_PROTO = `ws${/s/.test(window.location.protocol) ? 's' : ''}:`;
 const DOC_URL = {
   dev: 'http://dev-ets.gost-group.com/docs/',
   stage: `${PROTO_FOR_STAGE}//${DOMAIN_FOR_STAGE}/ets-stage/docs/`,
-  prod: `${PROTO_FOR_PROD}//${DOMAIN_FOR_PROD}/ets-study/services/docs`,
+  prod: `${PROTO_FOR_PROD}//${DOMAIN_FOR_PROD}/ets-study/docs/`,
 };
 
 const config = {

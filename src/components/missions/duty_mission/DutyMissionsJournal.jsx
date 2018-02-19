@@ -237,7 +237,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     buttons.push(
       <ButtonToolbar key={buttons.length}>
         <Button bsSize="small" onClick={this.completeCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</Button>
-        <Button bsSize="small" onClick={this.rejectCheckedElements} ><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</Button>
+        <Button bsSize="small" onClick={this.rejectCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</Button>
         {/* <Button bsSize="small" onClick={this.handleSubmit}><Glyphicon glyph="download-alt" /></Button>*/}
       </ButtonToolbar>
     );

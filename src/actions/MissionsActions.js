@@ -153,7 +153,7 @@ export default class MissionsActions extends Actions {
       if (entries) {
         ans.result.report_data.entries.forEach((data, i) => { data.customId = i; });
       }
-      // todo 
+      // todo
       // убрать
       // для гибридной карты
       return ans;

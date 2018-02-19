@@ -1,5 +1,4 @@
 var path = require('path');
-/*
 var versiony = require('./versionyFour');
 var package = path.join(__dirname, '..', '..', 'package.json');
 var minor = process.env.MINOR || false;
@@ -13,4 +12,3 @@ if (major) {
 } else {
   versiony.from(package).patch().to(package).end();
 }
-*/

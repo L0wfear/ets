@@ -1,6 +1,5 @@
 import React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
-import * as queryString from 'query-string';
 
 import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 import { connectToStores } from 'utils/decorators';
@@ -13,21 +12,8 @@ import Form from '../../compositions/Form.jsx';
 
 @connectToStores(['objects'])
 export default class EmployeeForm extends Form {
-  handleSave = () => {
-    const {
-      location: {
-        search,
-      },
-    } = this.props;
+  handleSave = () => this.handleSubmit();
 
-    const searchObject = queryString.parse(search);
-
-    if (Object.keys(searchObject).length > 0) {
-      this.props.history.push(this.props.match.url);
-    }
-
-    this.handleSubmit();
-  }
   render() {
     const [state, errors] = [this.props.formState, this.props.formErrors];
     const {

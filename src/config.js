@@ -23,7 +23,6 @@ const config = {
 };
 
 const STANDS = {
-
   dev: 'http://dev-ets.gost-group.com/services',
   stage: `${PROTO_FOR_STAGE}//${DOMAIN_FOR_STAGE}/ets-stage/services`,
   prod: `${PROTO_FOR_PROD}//${DOMAIN_FOR_PROD}/ets-study/services`,

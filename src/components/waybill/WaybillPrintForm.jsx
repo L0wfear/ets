@@ -7,7 +7,6 @@ import Field from 'components/ui/Field.jsx';
 import Datepicker from 'components/ui/input/DatePicker';
 import { getToday9am, getTomorrow9am, makeDate } from 'utils/dates';
 import { saveData } from 'utils/functions';
-import Preloader from 'components/ui/Preloader.jsx';
 
 class WaybillPrintForm extends Component {
 

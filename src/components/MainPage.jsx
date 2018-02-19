@@ -45,6 +45,11 @@ const MenuItem = enhanceWithPermissions(BootstrapMenuItem);
 const NavItem = enhanceWithPermissions(BootstrapNavItem);
 const NavDropdown = enhanceWithPermissions(BootstrapNavDropdown);
 
+const styleNotificationInfo = {
+  display: 'flex',
+  flexDirection: 'row-reverse',
+};
+
 @FluxContext
 @HistoryContext
 export default class MainPage extends React.Component {
@@ -85,19 +90,16 @@ export default class MainPage extends React.Component {
           position: 'tr',
           dismissible: false,
           autoDismiss: 0,
-          uid: 'error_asuods',
+          uid: 'gotoets2',
           children: (
             <div>
               <p>
-              С 09:00ч 10.02.2018 по 09:00ч. 11.02.2018 запланировано проведение регламентных работ. 
-              В системе ЕТС будет наблюдаться задержка в подсчете процента прохождения заданий. 
-              Данные будут обработаны в полном объеме в течении суток, после завершения работ.</p>
-              <p
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row-reverse',
-                }}
-              ><Button onClick={this.closeError}>Закрыть</Button></p>
+                Уведомляем, что с 21.02.2018 Система будет доступна по адресу <a href="https://ets.mos.ru">ets.mos.ru</a>.
+              </p>
+              <p>
+                Просим обратить на это внимание при работе в системе.
+              </p>
+                <p style={styleNotificationInfo}><Button onClick={this.closeError}>Закрыть</Button></p>
             </div>
           ),
         });
@@ -111,7 +113,7 @@ export default class MainPage extends React.Component {
     });
   }
   closeError = () => {
-    global.NOTIFICATION_SYSTEM.removeNotification('error_asuods');
+    global.NOTIFICATION_SYSTEM.removeNotification('gotoets2');
     this.context.flux.getStore('session').setAsSee(true);
   }
 

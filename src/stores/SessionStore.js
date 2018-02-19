@@ -95,6 +95,7 @@ export default class SessionStore extends Store {
     localStorage.removeItem(global.SESSION_KEY);
     localStorage.removeItem(global.CURRENT_USER);
     localStorage.removeItem(global.ERROR_ASUODS);
+    localStorage.removeItem(global.ERROR_GO_TO_ETS2);
 
     this.setState({
       session: null,
@@ -127,8 +128,8 @@ export default class SessionStore extends Store {
     return permissionName.reduce((bool, permission) => bool && !!permissionsReduce[permission], true);
   }
   isSeeNotifyProblem() {
-    if (moment(new Date()).diff(new Date(2018, 1, 11, 8, 59, 59), 'seconds') < 0) {      
-      const { isSee = false } = JSON.parse(localStorage.getItem(global.ERROR_ASUODS)) || {};
+    if (moment(new Date()).diff(new Date(2018, 12, 22, 0, 0, 1), 'seconds') < 0) {
+      const { isSee = false } = JSON.parse(localStorage.getItem(global.ERROR_GO_TO_ETS2)) || {};
       if (!isSee) {
         return false;
       }
@@ -138,6 +139,6 @@ export default class SessionStore extends Store {
     return true;
   }
   setAsSee(flag) {
-    localStorage.setItem(global.ERROR_ASUODS, JSON.stringify({ isSee: flag }));
+    localStorage.setItem(global.ERROR_GO_TO_ETS2, JSON.stringify({ isSee: flag }));
   }
 }

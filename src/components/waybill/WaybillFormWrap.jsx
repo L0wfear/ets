@@ -5,7 +5,6 @@ import Div from 'components/ui/Div.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import { getWarningNotification } from 'utils/notifications';
 import {
-  hasOdometer,
   saveData,
 } from 'utils/functions';
 import { waybillSchema, waybillClosingSchema } from 'models/WaybillModel.js';

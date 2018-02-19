@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { autobind } from 'core-decorators';
 import Div from 'components/ui/Div.jsx';
 import { Modal, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
@@ -7,7 +6,6 @@ import Field from 'components/ui/Field.jsx';
 import Datepicker from 'components/ui/input/DatePicker';
 import { getToday9am, getTomorrow9am, makeDate } from 'utils/dates';
 import { saveData } from 'utils/functions';
-import Preloader from 'components/ui/Preloader.jsx';
 
 class WaybillPrintForm extends Component {
 
@@ -30,8 +28,7 @@ class WaybillPrintForm extends Component {
     };
   }
 
-  @autobind
-  async handleSubmit() {
+  handleSubmit = async () => {
     global.NOTIFICATION_SYSTEM.notifyWithObject({
       title: 'Загрузка печатной формы',
       level: 'info',
@@ -70,8 +67,7 @@ class WaybillPrintForm extends Component {
     }, () => this.props.hide());
   }
 
-  @autobind
-  handleChange(field, value) {
+  handleChange = (field, value) => {
     this.setState({ [field]: value });
   }
 

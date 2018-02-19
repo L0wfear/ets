@@ -25,10 +25,10 @@ export default class EmployeesList extends ElementsList {
     const descendants_by_user = true;
 
     const { flux } = this.context;
+    flux.getActions('companyStructure').getCompanyStructure(linear, descendants_by_user);
     const employees = await flux.getActions('employees').getEmployees();
     await flux.getActions('objects').getCars();
     await flux.getActions('objects').getPositions();
-    flux.getActions('companyStructure').getCompanyStructure(linear, descendants_by_user);
 
     const { location: { search } } = this.props;
     const searchObject = queryString.parse(search);

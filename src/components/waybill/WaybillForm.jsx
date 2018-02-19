@@ -273,7 +273,6 @@ class WaybillForm extends Form {
       if (missionIds.length) {
         const newMission_id_list = mission_id_list.filter(id => !missionsWithSourceOrder[id]);
         const newMissionList = oldMissionsList.filter(({ id }) => !missionsWithSourceOrder[id]);
-        
         this.handleChange('mission_id_list', newMission_id_list);
         this.setState({
           ...this.state,
@@ -348,7 +347,7 @@ class WaybillForm extends Form {
         rows: newMissionsList = [],
       } = {},
     }) => {
-      const missionsList = uniqBy(oldMissionsList.concat(...newMissionsList), 'id');
+      const missionsList = uniqBy(newMissionsList, 'id');
       const availableMissions = missionsList.map(el => el.id);
       let newMissions = [];
       if (status === 'active') {

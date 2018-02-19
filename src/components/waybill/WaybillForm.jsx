@@ -24,6 +24,7 @@ import { diffDates } from 'utils/dates.js';
 
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { notifications } from 'utils/notifications';
+import { isNumeric } from 'utils/validate/dataTypes';
 
 import { driverHasLicense, driverHasSpecialLicense, getCars, getDrivers, getTrailers, validateTaxesControl, checkDateMission } from './utils';
 import Form from '../compositions/Form.jsx';
@@ -51,7 +52,7 @@ const checkErrorDate = ({ fromOrder: { cf_list: fax_cf_list, confirmDialogList: 
       title: 'Внимание!',
       body: (
         <div>
-          <p>{`Привязанные задания № ${fax_confirmDialogList.join(', ')} будут исключены из ПЛ, поскольку выходят за период действия ПЛ`}</p>
+          <p>{`Привязанные задания № ${fax_confirmDialogList.join(', ')} будут исключены из ПЛ, поскольку период действия централизованного задания, по которому задания созданы, выходит за плановый период действия ПЛ.`}</p>
           <p>Вы уверены, что хотите продолжить?</p>
         </div>
       ),
@@ -412,8 +413,8 @@ class WaybillForm extends Form {
         if (driver === null) return;
 
         const { gov_number } = formState;
-        const hasLicense = hasMotohours(gov_number) && driverHasLicense(driver);
-        const hasSpecialLicense = !hasMotohours(gov_number) && driverHasSpecialLicense(driver);
+        const hasLicense = !hasMotohours(gov_number) && driverHasLicense(driver);
+        const hasSpecialLicense = hasMotohours(gov_number) && driverHasSpecialLicense(driver);
 
         if (hasLicense || hasSpecialLicense) {
           this.props.handleFormChange('driver_id', newDriverId);
@@ -498,6 +499,13 @@ class WaybillForm extends Form {
       }
       if (isNotNull(lastCarUsedWaybill.motohours_equip_end)) {
         fieldsToChange.motohours_equip_start = lastCarUsedWaybill.motohours_equip_end;
+      }
+
+      if (isNotNull(lastCarUsedWaybill.fuel_type)) {
+        fieldsToChange.fuel_type = lastCarUsedWaybill.fuel_type;
+      }
+      if (isNotNull(lastCarUsedWaybill.mission_id_list)) {
+        fieldsToChange.mission_id_list = [...lastCarUsedWaybill.mission_id_list];
       }
     } else {
       fieldsToChange.fuel_start = 0;
@@ -742,6 +750,10 @@ class WaybillForm extends Form {
       DRIVERS.push({ label: this.employeeFIOLabelFunction(state.driver_id), value: state.driver_id });
     }
     const { gps_code } = carsList.find(({ asuods_id }) => asuods_id === state.car_id) || {};
+
+    const distanceOrTrackOrNodata = isNumeric(parseInt(state.distance, 10)) ? parseFloat(state.distance / 1000).toFixed(3) :
+                                    isNumeric(parseInt(state.track_length, 10)) ? parseFloat(state.track_length / 1000).toFixed(3) :
+                                    'Нет данных';
 
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
@@ -1216,7 +1228,7 @@ class WaybillForm extends Form {
                   type="string"
                   label="Пройдено по Глонасс, км"
                   error={errors.distance}
-                  value={state.distance ? parseFloat(state.distance / 1000).toFixed(3) : parseFloat(state.track_length / 1000).toFixed(3)}
+                  value={distanceOrTrackOrNodata}
                   isLoading={loadingFields.distance}
                   disabled
                 />

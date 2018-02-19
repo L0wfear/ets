@@ -572,7 +572,7 @@ class OrderList extends React.Component<any, any> {
           <div style={marginLeft} >
             <DropdownButton onSelect={this.seclectDownload} pullRight title={title} id="bg-nested-dropdown">
               <MenuItem eventKey={TypeDownload.old} disabled={faxSE === null}>Скан-копия факсограммы</MenuItem>
-              {/* <MenuItem eventKey={TypeDownload.new} disabled={faxSE === null}>Расшифровка централизованного задания</MenuItem> */}
+              {<MenuItem eventKey={TypeDownload.new} disabled={faxSE === null}>Расшифровка централизованного задания</MenuItem>}
             </DropdownButton>
           </div>
         </OrdersTable>

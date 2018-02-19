@@ -28,7 +28,7 @@ export default class RoutesActions extends Actions {
   }
 
   async getRoutesByDutyMissionId(id, isTemplate) {
-    const payload = isTemplate ? { duty_mission_template_id: id } : { duty_mission_id: id };
+    const payload = isTemplate ? { duty_mission_template_id: id } : { duty_mission_id: id, is_template: false };
 
     if (!id) {
       delete payload.duty_mission_id;

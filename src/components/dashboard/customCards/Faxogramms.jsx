@@ -81,7 +81,7 @@ export default class Faxogramms extends DashboardCardMedium {
           <div className="dashboard-card-action-button">
             <DropdownButton onSelect={this.seclectDownload} title={<Glyphicon glyph="download-alt" />} id="bg-nested-dropdown">
               <MenuItem eventKey={TypeDownload.old}>Скан-копия факсограммы</MenuItem>
-              {/* <MenuItem eventKey={TypeDownload.new}>Расшифровка централизованного задания</MenuItem> */}
+              {<MenuItem eventKey={TypeDownload.new}>Расшифровка централизованного задания</MenuItem>}
             </DropdownButton>
           </div>
           {canViewPDF ? <Button className="dashboard-card-action-button" onClick={(e) => { e.preventDefault(); this.showPDFViewModal(data); }}><Glyphicon glyph="info-sign" /></Button> : ''}

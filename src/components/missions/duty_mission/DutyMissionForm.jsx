@@ -128,6 +128,7 @@ export class DutyMissionForm extends Form {
 
     if (!isEmpty(mission.id)) {
       routesList = await routesActions.getRoutesByDutyMissionId(mission.id, isTemplate);
+
     }
 
     // const kind_task_ids = getKindTaskIds(id, this.props.fromOrder);
@@ -197,11 +198,13 @@ export class DutyMissionForm extends Form {
       const createdRouteId = result.createdRoute.result[0].id;
       this.handleChange('route_id', createdRouteId);
       const selectedRoute = await routesActions.getRouteById(createdRouteId);
+
       const routesList = await routesActions.getRoutesBySomeData({
         municipal_facility_id,
         technical_operation_id,
         type: available_route_types.join(','),
       });
+
       Object.assign(stateChangeObject, {
         showRouteForm: false,
         selectedRoute,

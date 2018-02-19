@@ -15,7 +15,7 @@ const nullFunc = () => null;
 const TableMeta: ITableMetaInfo = [
   {
     key: 'object_property_id',
-    title: 'Элеменет ДТ',
+    title: 'Элемент ДТ',
     style: (numRow, row, errors) => ({
         minWidth: 200,
       }),

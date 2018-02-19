@@ -20,11 +20,7 @@ export default class EmployeeFormWrap extends FormWrap {
     this.updateAction = context.flux.getActions('employees').updateEmployee;
   }
   handleFormHide = () => {
-    const {
-      location: {
-        search,
-      },
-    } = this.props;
+    const { location: { search } } = this.props;
 
     const searchObject = queryString.parse(search);
 
@@ -33,6 +29,20 @@ export default class EmployeeFormWrap extends FormWrap {
     }
     this.props.onFormHide();
   }
+  handleFormSubmit = () => {
+    super.handleFormSubmit().then(() => {
+      const { location: { search } } = this.props;
+
+      const searchObject = queryString.parse(search);
+
+      if (Object.keys(searchObject).length > 0) {
+        this.props.history.push(this.props.match.url);
+      }
+    });
+  }
+
+  handleFormStateChange = (...arg) => super.handleFormStateChange(...arg);
+
   render() {
     return this.props.showForm ?
       <EmployeeForm
@@ -41,12 +51,10 @@ export default class EmployeeFormWrap extends FormWrap {
         permissions={['employee.update']}
         addPermissionProp
         canSave={this.state.canSave}
-        onSubmit={this.handleFormSubmit.bind(this)}
-        handleFormChange={this.handleFormStateChange.bind(this)}
+        onSubmit={this.handleFormSubmit}
+        handleFormChange={this.handleFormStateChange}
         show={this.props.showForm}
         onHide={this.handleFormHide}
-        location={this.props.location}
-        history={this.props.history}
       />
       : null;
   }

@@ -1,0 +1,89 @@
+{
+  "_from": "versiony@^1.4.0",
+  "_id": "versiony@1.4.2",
+  "_inBundle": false,
+  "_integrity": "sha1-/LWhf+dbMFlcpSSLyhD0XnSaQr0=",
+  "_location": "/versiony",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "versiony@^1.4.0",
+    "name": "versiony",
+    "escapedName": "versiony",
+    "rawSpec": "^1.4.0",
+    "saveSpec": null,
+    "fetchSpec": "^1.4.0"
+  },
+  "_requiredBy": [
+    "#DEV:/"
+  ],
+  "_resolved": "https://registry.npmjs.org/versiony/-/versiony-1.4.2.tgz",
+  "_shasum": "fcb5a17fe75b30595ca5248bca10f45e749a42bd",
+  "_spec": "versiony@^1.4.0",
+  "_where": "/home/uoiasfy/all/chch/ets-frontend",
+  "author": {
+    "name": "Radu Brehar",
+    "email": "radu@jslog.com"
+  },
+  "bugs": {
+    "url": "https://github.com/ciena-blueplanet/versiony/issues"
+  },
+  "bundleDependencies": false,
+  "contributors": [
+    {
+      "name": "Matthew Dahl",
+      "url": "https://github.com/sandersky"
+    },
+    {
+      "name": "Adam Meadows",
+      "url": "https://github.com/job13er"
+    }
+  ],
+  "dependencies": {},
+  "deprecated": false,
+  "description": "A module to increment version number for your code/module. Support for npm/bower/custom files.",
+  "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "chai": "^3.5.0",
+    "eslint": "^3.19.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.3.0",
+    "eslint-plugin-mocha": "^4.9.0",
+    "eslint-plugin-node": "^5.0.0",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.4.2",
+    "promise": "^7.1.1",
+    "sinon": "^2.3.2",
+    "sinon-chai": "^2.10.0"
+  },
+  "homepage": "https://github.com/ciena-blueplanet/versiony#readme",
+  "keywords": [
+    "version",
+    "manager",
+    "version manager",
+    "bump",
+    "package.json",
+    "bower version",
+    "bower",
+    "version"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "versiony",
+  "pr-bumper": {
+    "coverage": 83.89
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ciena-blueplanet/versiony.git"
+  },
+  "scripts": {
+    "lint": "eslint *.js tests/**/*.js",
+    "test": "npm run lint && npm run utest",
+    "utest": "istanbul cover _mocha -R tests --report lcov --report json-summary"
+  },
+  "version": "1.4.2"
+}

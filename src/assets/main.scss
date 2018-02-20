@@ -3064,6 +3064,9 @@ div.none {
       color: red;
       font-weight: bold;
       cursor: pointer;
+      &.not-red {
+        color: white;
+      }
     }
 
 }

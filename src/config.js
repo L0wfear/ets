@@ -14,7 +14,7 @@ const DOC_URL = {
     prod: 'http://ets2.mos.ru/docs/',
   },
   origin: {
-    dev: 'http://dev-ets.gost-group.com/docs/',
+    dev: 'http://dev2-ets.gost-group.com/docs/',
     stage: `${PROTO}//${HOST}${PATHNAME}docs/`,
     prod: `${PROTO}//${HOST}${PATHNAME}docs/`,
   },

@@ -37,6 +37,11 @@ class MissionTemplateForm extends MissionForm {
     }
   }
 
+
+  handleStructureIdChange = (v) => {
+    super.handleStructureIdChange.call(this, v);
+  }
+
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;

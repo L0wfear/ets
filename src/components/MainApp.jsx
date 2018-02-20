@@ -9,6 +9,8 @@ import {
   MenuItem as BootstrapMenuItem,
 } from 'react-bootstrap';
 
+import Div from 'components/ui/Div.jsx';
+
 import config from 'config';
 import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
 import ModalTP from 'components/modalTP/ModalTP.tsx';
@@ -46,6 +48,11 @@ const MenuItem = enhanceWithPermissions(BootstrapMenuItem);
 const NavItem = enhanceWithPermissions(BootstrapNavItem);
 const NavDropdown = enhanceWithPermissions(BootstrapNavDropdown);
 
+const styleNotificationInfo = {
+  display: 'flex',
+  flexDirection: 'row-reverse',
+};
+
 @FluxContext
 class MainApp extends React.Component {
 
@@ -66,8 +73,11 @@ class MainApp extends React.Component {
   }
 
   componentWillMount() {
+    const user = this.context.flux.getStore('session').getCurrentUser();
+
     this.setState({
-      user: this.context.flux.getStore('session').getCurrentUser(),
+      user,
+      needShowHrefOnNewProd: [10227244, 102266640].includes(user.company_id),
     });
   }
 
@@ -82,20 +92,16 @@ class MainApp extends React.Component {
           position: 'tr',
           dismissible: false,
           autoDismiss: 0,
-          uid: 'error_asuods',
+          uid: 'gotoets2',
           children: (
             <div>
-              <p> 08.02.2018 с 00:00ч по 12:00ч запланировано проведение регламентных работ.
-                  В системе ЕТС будет наблюдаться задержка в подсчете процента прохождения заданий.
-                  Данные будут обработаны в полном объеме в ближайшие сутки.
+              <p>
+                Уведомляем, что с 21.02.2018 Система будет доступна по адресу <a href="https://ets.mos.ru">ets.mos.ru</a>.
               </p>
-
-              <p
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row-reverse',
-                }}
-              ><Button onClick={this.closeError}>Закрыть</Button></p>
+              <p>
+                Просим обратить на это внимание при работе в системе.
+              </p>
+                <p style={styleNotificationInfo}><Button onClick={this.closeError}>Закрыть</Button></p>
             </div>
           ),
         });
@@ -108,9 +114,8 @@ class MainApp extends React.Component {
       user: this.context.flux.getStore('session').getCurrentUser(),
     });
   }
-
   closeError = () => {
-    global.NOTIFICATION_SYSTEM.removeNotification('error_asuods');
+    global.NOTIFICATION_SYSTEM.removeNotification('gotoets2');
     this.context.flux.getStore('session').setAsSee(true);
   }
 
@@ -218,7 +223,18 @@ class MainApp extends React.Component {
 
         <div className="app-footer">
           <Col md={3}>
-            <a className="tp" onClick={this.showFormTp}>Техническая поддержка</a>
+            <Div hidden={this.state.needShowHrefOnNewProd}>
+              <Col md={12}>
+                <a className="tp" onClick={this.showFormTp}>Техническая поддержка</a>
+              </Col>
+            </Div>
+            <Div hidden={!this.state.needShowHrefOnNewProd}>
+              <Col md={6}>
+                <a className="tp" onClick={this.showFormTp}>Техническая поддержка</a>
+              </Col>              <Col md={6}>
+                <a className="tp not-red" href='https://ets2.mos.ru' >Переход на новую версию</a>
+              </Col>
+            </Div>
           </Col>
           <Col md={6}>
             {this.state.user.company_name}

@@ -175,7 +175,7 @@ class WaybillForm extends Form {
         newMissions = currentMissions.filter(el => availableMissions.includes(el));
       }
       this.props.handleFormChange('mission_id_list', newMissions);
-      notificate && global.NOTIFICATION_SYSTEM.notify(notifications.missionsByCarAndDateUpdateNotification);
+      availableMissions.length > 0 && notificate && global.NOTIFICATION_SYSTEM.notify(notifications.missionsByCarAndDateUpdateNotification);
     });
   }
 

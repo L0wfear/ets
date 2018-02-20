@@ -1,5 +1,5 @@
 var path = require('path');
-var versiony = require('versiony');
+var versiony = require('./versionyFour');
 var package = path.join(__dirname, '..', '..', 'package.json');
 var minor = process.env.MINOR || false;
 var major = process.env.MAJOR || false;

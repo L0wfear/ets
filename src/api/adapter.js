@@ -88,9 +88,9 @@ function httpMethod(url, data = {}, method, type, params = {}) {
         checkInternalErrors(responseBody);
         checkResponse(url, r, responseBody, method);
 
-        const servV = r.headers.get('ets-frontend-version') || '0.15.20';
+        const servV = r.headers.get('ets-frontend-version');
         const currV = process.env.VERSION;
-        if (servV && (servV.split('.')[2] > +currV.split('.')[2])) {
+        if (servV && ((servV.split('.')[3] > +currV.split('.')[3]) || (servV.split('.')[2] > +currV.split('.')[2]))) {
           global.NOTIFICATION_SYSTEM.notifyWithObject({
             title: 'Вышла новая версия',
             level: 'warning',

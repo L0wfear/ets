@@ -179,7 +179,7 @@ class MainApp extends React.Component {
             <NavItem permissions={[PERMISSIONS.repair.list]} active={path === '/program-registry'} href="#/program-registry">Планирование ремонтных работ</NavItem>
 
             <NavItem includesPartOfText={['_notification.list']} title="Уведомления пользователей" active={path === '/notification-registry'} href="#/notification-registry"><span>Уведомления <NotificationBage /></span></NavItem>
-            <NavItem hidden={isOkrug} permissions={[PERMISSIONS.administration]} title="Администрирование" href={`http://213.79.88.5/${process.env.STAND !== 'prod' ? 'ets-test/' : ''}admin`}><Glyphicon glyph="list-alt" /></NavItem>
+            <NavItem hidden={isOkrug} permissions={[PERMISSIONS.administration]} title="Администрирование" href={`http://213.79.88.5/${process.env.STAND !== 'prod' ? 'ets-stage2/' : ''}admin`}><Glyphicon glyph="list-alt" /></NavItem>
           </Nav>
 
           <Nav pullRight>

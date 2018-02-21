@@ -2567,6 +2567,9 @@ div.none {
   }
   .dashboard-card {
     z-index: 1000;
+    &.no-margin-bottom {
+      margin-bottom: 0;
+    }
   }
   .card-chevron-right {
     position: absolute;

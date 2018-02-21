@@ -131,7 +131,11 @@ export default class DashboardPage extends React.Component {
               <Col key={j} md={4} className={cardClassname}>
                 <DashboardCard
                   title={c.title}
+                  title_centralized={c.title_centralized}
+                  title_decentralized={c.title_decentralized}
                   items={c.items}
+                  items_centralized={c.items_centralized}
+                  items_decentralized={c.items_decentralized}
                   meta={c.meta}
                   dashboardKey={c.key}
                   itemsTitle={c.itemsTitle}

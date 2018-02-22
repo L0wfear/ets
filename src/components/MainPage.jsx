@@ -16,7 +16,6 @@ import config from 'config';
 import { autobind } from 'core-decorators';
 import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
 import ModalTP from 'components/modalTP/ModalTP.tsx';
-import ModalRule from 'components/modalTP/ModalRule.tsx';
 import { FluxContext, HistoryContext } from 'utils/decorators';
 import PERMISSIONS from 'constants/permissions';
 import enhanceWithPermissions from './util/RequirePermissions.jsx';
@@ -225,14 +224,6 @@ export default class MainPage extends React.Component {
           <ModalTP
             show={this.state.showFormTp}
             onHide={this.hideFormTp}
-          />
-          <ModalRule
-            show={
-              path.includes('showFormRule') &&
-              moment(new Date()).format(`${global.APP_DATE_FORMAT} HH:mm`) > moment('2017-11-01T00:00:00').format(`${global.APP_DATE_FORMAT} HH:mm`) &&
-              moment(new Date()).format(`${global.APP_DATE_FORMAT} HH:mm`) < moment('2017-11-01T18:00:00').format(`${global.APP_DATE_FORMAT} HH:mm`)
-            }
-            onHide={this.hideFormRule}
           />
           {this.props.children}
           <LoadingOverlay main />

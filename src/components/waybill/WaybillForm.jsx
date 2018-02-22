@@ -430,8 +430,7 @@ class WaybillForm extends Form {
     });
   }
 
-  async onCarChange(car_id, cars) {
-    const selectedCar = cars[0] || {};
+  async onCarChange(car_id, selectedCar = {}) {
     const { flux } = this.context;
 
     let fieldsToChange = {
@@ -720,7 +719,7 @@ class WaybillForm extends Form {
     const car = carsIndex[state.car_id];
     const trailer = carsIndex[state.trailer_id];
     const CAR_HAS_ODOMETER = state.gov_number ? !hasMotohours(state.gov_number) : null;
-
+    console.log(state, CAR_HAS_ODOMETER)
     let title = '';
 
     if (IS_CREATING) {
@@ -749,7 +748,7 @@ class WaybillForm extends Form {
     const distanceOrTrackOrNodata = isNumeric(parseInt(state.distance, 10)) ? parseFloat(state.distance / 1000).toFixed(3) :
                                     isNumeric(parseInt(state.track_length, 10)) ? parseFloat(state.track_length / 1000).toFixed(3) :
                                     'Нет данных';
-
+    console.log(errors)
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
 

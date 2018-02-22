@@ -25,6 +25,12 @@ const ASSIGN_OPTIONS = [
 const ModalTSX: any = RB.Modal;
 const EtsSelectTSX: any = EtsSelect;
 
+export const typeTemplate = {
+  missionDutyTemplate: 'missionDutyTemplate',
+  missionTemplate: 'missionTemplate',
+};
+
+
 function getFilterDateOrder(technical_operations, { order_date, order_date_to }) {
   return technical_operations.reduce((newObj, to) => {
     const {
@@ -58,7 +64,7 @@ function getMissionListByFilter(missionsList, filterData, typeClick) {
         order_operation_id,
       } = filterData[norm_id];
 
-      if (passes_count <= num_exec && diffDates(new Date(), date_to, 'minutes') < 0) {
+      if ((typeClick === typeTemplate.missionDutyTemplate || passes_count <= num_exec) && diffDates(new Date(), date_to, 'minutes') < 0) {
           arr.push({
           ...m,
           date_to,
@@ -139,8 +145,8 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     const payload = {};
 
     switch (typeClick) {
-      case 'missionTemplate': return flux.getActions('missions').getMissionTemplates(payload);
-      case 'missionDutyTemplate': return flux.getActions('missions').getDutyMissionTemplates(payload).then(({ result }) => ({
+      case typeTemplate.missionTemplate: return flux.getActions('missions').getMissionTemplates(payload);
+      case typeTemplate.missionDutyTemplate: return flux.getActions('missions').getDutyMissionTemplates(payload).then(({ result }) => ({
         result: result.map(r => ({
           ...r,
           brigade_employee_names: (r.brigade_employee_id_list || []).map(({ employee_id }) => employeeFIOLabelFunction(flux)(employee_id)).join(', '),
@@ -187,13 +193,13 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
         faxogramm_id,
       };
 
-      if (typeClick === 'missionDutyTemplate') {
+      if (typeClick === typeTemplate.missionDutyTemplate) {
         delete externalPayload.assign_to_waybill;
       }
 
       switch (typeClick) {
-        case 'missionTemplate': return createMissions(this.context.flux, { [id]: newElement }, externalPayload);
-        case 'missionDutyTemplate': return createDutyMissions(this.context.flux, { [id]: newElement }, externalPayload);
+        case typeTemplate.missionTemplate: return createMissions(this.context.flux, { [id]: newElement }, externalPayload);
+        case typeTemplate.missionDutyTemplate: return createDutyMissions(this.context.flux, { [id]: newElement }, externalPayload);
         default: return Promise.reject({ error: 'no typeClick' });
       }
     });
@@ -271,10 +277,10 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
 
     let title = '';
 
-    if (typeClick === 'missionTemplate') {
+    if (typeClick === typeTemplate.missionTemplate) {
       title = 'Создание заданий';
     }
-    if (typeClick === 'missionDutyTemplate') {
+    if (typeClick === typeTemplate.missionDutyTemplate) {
       title = 'Создание наряд-заданий';
     }
 
@@ -285,7 +291,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
         </RB.Modal.Header>
 
         <ModalBody>
-          <Div hidden={typeClick !== 'missionTemplate'} >
+          <Div hidden={typeClick !== typeTemplate.missionTemplate} >
             <MissionTemplateTable
               data={missionsList}
               selected={selectedElement}
@@ -298,7 +304,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
               structures={structures}
             />
           </Div>
-          <Div hidden={typeClick !== 'missionDutyTemplate'} >
+          <Div hidden={typeClick !== typeTemplate.missionDutyTemplate} >
             <DutyMissionTemplateTable
               data={missionsList}
               selected={selectedElement}
@@ -313,7 +319,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
           </Div>
         </ModalBody>
         <RB.Modal.Footer>
-          <Div hidden={typeClick === 'missionDutyTemplate'} className="inline-block assignToWaybillCheck" style={{ width: '300px', textAlign: 'left !important', height: '22px', marginRight: '20px' }}>
+          <Div hidden={typeClick === typeTemplate.missionDutyTemplate} className="inline-block assignToWaybillCheck" style={{ width: '300px', textAlign: 'left !important', height: '22px', marginRight: '20px' }}>
             <EtsSelectTSX
               type="select"
               options={ASSIGN_OPTIONS}

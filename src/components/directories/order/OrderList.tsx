@@ -20,6 +20,7 @@ import OrderAssignmentsList from 'components/directories/order/order_assignment/
 import HistoryOrderList from 'components/directories/order/order_history/HistoryOrderList';
 
 import { getDefaultMission, getDefaultDutyMission } from 'stores/MissionsStore.js';
+import { typeTemplate } from 'components/directories/order/forms/OrderMissionTemplate/OrderMissionTemplateList';
 
 const PaginatorTsx: any = Paginator;
 
@@ -316,7 +317,7 @@ class OrderList extends React.Component<any, any> {
 
     const missionTemplateData: any = {
       showForm: true,
-      typeClick: 'missionTemplate',
+      typeClick: typeTemplate.missionTemplate,
       mission_source_id: (missionSourcesList.find(({ auto }) => auto) || {}).id,
     };
 
@@ -346,7 +347,7 @@ class OrderList extends React.Component<any, any> {
 
     const missionTemplateData: any = {
       showForm: true,
-      typeClick: 'missionDutyTemplate',
+      typeClick: typeTemplate.missionDutyTemplate,
       mission_source_id: (missionSourcesList.find(({ auto }) => auto) || {}).id,
     };
 

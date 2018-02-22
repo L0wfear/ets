@@ -9,9 +9,12 @@ import { isEmpty } from 'utils/functions';
 import { FluxContext, wrappedRef } from 'utils/decorators';
 import DutyMissionFormReject from 'components/missions/duty_mission/DutyMissionFormReject.jsx';
 
-import DashboardCardMedium from '../DashboardCardMedium.jsx';
-import DashboardCardHeader from '../DashboardCardHeader.jsx';
-import DashboardItemChevron from '../DashboardItemChevron.jsx';
+import DashboardCardMedium from 'components/dashboard/DashboardCardMedium.jsx';
+import DashboardCardHeader from 'components/dashboard/DashboardCardHeader.jsx';
+import DashboardItemChevron from 'components/dashboard/DashboardItemChevron.jsx';
+
+import ItemsCentralized from 'components/dashboard/customCards/CurrentDutyMissionItems/ItemsCentralized';
+import ItemsDecentralized from 'components/dashboard/customCards/CurrentDutyMissionItems/ItemsDecentralized';
 
 const Panel = wrappedRef(BootstrapPanel);
 
@@ -24,6 +27,7 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
     this.state = Object.assign(this.state, {
       showCurrentDutyMissionForm: false,
       dutyMissionToRejectList: [],
+      selectetdType: null,
     });
 
     this.canView = context.flux.getStore('session').getPermission('duty_mission.read');
@@ -37,16 +41,17 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
   }
   hideCurrentDutyMissionForm = () => this.setState({ showCurrentDutyMissionForm: false });
 
-  selectItem(i) {
-    const item = this.props.items[i];
+  selectItem = (key, i) => {
+    const item = (key && this.props[key][i]) || null;
+
     if ((item && item.subItems && item.subItems.length) || i === null || (item && item.data)) {
       const { selectedItem } = this.state;
-      this.setState({ selectedItem: selectedItem === i ? null : i });
+      this.setState({ selectetdType: key, selectedItem: selectedItem === i ? null : i });
       this.props.openSubitemsList(true);
     }
   }
 
-  selectedDutyMission(i) {
+  selectedDutyMission = (i) => {
     this.setState({ selectedDutyMission: i });
     this.props.openSubitemsList(this.state.selectedItem === null);
   }
@@ -56,7 +61,7 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
     mission = mission.result.rows[0];
     mission.status = 'complete';
     await this.context.flux.getActions('missions').updateDutyMission(mission);
-    this.selectItem(null);
+    this.selectItem(this.state.selectetdType, null);
     this.props.refreshCard();
   }
 
@@ -65,7 +70,7 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
     this.setState({
       dutyMissionToRejectList: [mission],
     });
-    this.selectItem(null);
+    this.selectItem(this.state.selectetdType, null);
     this.props.refreshCard();
   }
   handleRejectAll = (allQuery, needUpdate) => {
@@ -108,8 +113,10 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
   renderCustomCardData() {
     const selectedItemIndex = this.state.selectedItem;
     const selectedDutyMissionIndex = this.state.selectedDutyMission;
+    const selectetdType = this.state.selectetdType;
+
     if (isEmpty(selectedItemIndex) || isEmpty(selectedDutyMissionIndex)) return <div />;
-    const selectedItem = this.props.items[selectedItemIndex] ? this.props.items[selectedItemIndex].subItems[selectedDutyMissionIndex] || null : null;
+    const selectedItem = selectetdType && this.props[selectetdType][selectedItemIndex] ? this.props[selectetdType][selectedItemIndex].subItems[selectedDutyMissionIndex] || null : null;
     const data = selectedItem !== null ? selectedItem.data || {} : {};
 
     return (
@@ -162,29 +169,15 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
     );
   }
 
+  Header = <DashboardCardHeader title={this.props.title} loading={this.props.loading} onClick={this.refreshCard} />
+
   render() {
     const selectedItemIndex = this.state.selectedItem;
-    const selectedItem = this.props.items[selectedItemIndex] || null;
-    const {
-      subItems = [],
-    } = selectedItem || {};
+    const selectetdType = this.state.selectetdType;
+    const selectedItem = (selectetdType && this.props[selectetdType][selectedItemIndex]) || null;
+    const { subItems = [] } = selectedItem || {};
     const data = selectedItem !== null ? selectedItem.data || {} : {};
-    const items = this.props.items.map((item, i) => {
-      const itemClassName = cx('dashboard-card-item-inner', { 'pointer': (item.data) || (item.subItems && item.subItems.length) || (this.action) });
-      const status = item.title.split('').reverse().join('').split(' ')[0].split('').reverse().join('');
-      const title = item.title.split(status)[0];
-      return (<Div key={i} className="dashboard-card-item">
-        <Div className={itemClassName} onClick={this.selectItem.bind(this, i)}>
-          {title}
-          <span title='Кол-во заданий в статусе "Назначено" / Общее кол-во заданий на текущую тех.операцию'>
-            {status}
-          </span>
-        </Div>
-        {
-          typeof this.renderCollapsibleSubitems === 'function' ? this.renderCollapsibleSubitems(item, i) : ''
-        }
-      </Div>);
-    });
+
     let styleObject = {
       width: this.state.cardWidth, marginLeft: this.state.cardWidth + 30,
     };
@@ -196,39 +189,28 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
     if (!this.state.cardWidth) {
       styleObject = {};
     }
-    const firstItems = items.slice(0, 2);
-    const otherItems = items.slice(2, items.length);
     // let dashboardCardClass = cx('dashboard-card', {'visibilityHidden'});
-    const Header = <DashboardCardHeader title={this.props.title} loading={this.props.loading} onClick={this.refreshCard.bind(this)} />;
     // отрефакторить
-
     return (
       <Div md={12}>
-        <Div hidden={this.state.dutyMissionToRejectList.length === 0} >
-          <DutyMissionFormReject
-            rejectedDutyMission={this.state.dutyMissionToRejectList}
-            onRejectAll={this.handleRejectAll}
-          />
-        </Div>
-        <Panel className="dashboard-card" header={Header} bsStyle="success" wrappedRef={node => (this._card = node)}>
+
+        <Panel className="dashboard-card" header={this.Header} bsStyle="success" wrappedRef={node => (this._card = node)}>
           <Div className="dashboard-card-items">
-            {firstItems}
-            <Collapse in={this.state.fullListOpen}>
-              <Div>
-                {otherItems}
-              </Div>
-            </Collapse>
+            <ItemsCentralized
+              items={this.props.items_centralized}
+              title={this.props.title_centralized}
+              selectItem={this.selectItem}
+              selectMission={this.selectedDutyMission}
+              selectedItem={selectetdType === 'items_centralized' ? this.state.selectedItem : null}
+            />
+            <ItemsDecentralized
+              items={this.props.items_decentralized}
+              title={this.props.title_decentralized}
+              selectItem={this.selectItem}
+              selectMission={this.selectedDutyMission}
+              selectedItem={selectetdType === 'items_decentralized' ? this.state.selectedItem : null}
+            />
           </Div>
-
-          <Div className="menu-down-block" hidden={otherItems.length === 0}>
-            <Div style={{ textAlign: 'center' }} hidden={this.state.fullListOpen}>
-              <Glyphicon glyph="menu-down" className="pointer" onClick={this.toggleFullList.bind(this)} />
-            </Div>
-            <Div style={{ textAlign: 'center' }} hidden={!this.state.fullListOpen}>
-              <Glyphicon glyph="menu-up" className="pointer" onClick={this.toggleFullList.bind(this)} />
-            </Div>
-          </Div>
-
           <Div className="dashboard-card-overlay" hidden={!this.props.loading} />
         </Panel>
 
@@ -238,7 +220,7 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
           <Fade in={selectedItem !== null && this.props.itemOpened}>
             <div>
               <Well>
-                <Div className="card-glyph-remove" onClick={this.selectItem.bind(this, null)}>
+                <Div className="card-glyph-remove" onClick={this.selectItem.bind(this, selectetdType, null)}>
                   <Glyphicon glyph="remove" />
                 </Div>
                 <h5>{this.props.itemsTitle || (selectedItem !== null ? selectedItem.title : '')}</h5>
@@ -248,6 +230,12 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
               </Well>
             </div>
           </Fade>
+        </Div>
+        <Div hidden={this.state.dutyMissionToRejectList.length === 0} >
+          <DutyMissionFormReject
+            rejectedDutyMission={this.state.dutyMissionToRejectList}
+            onRejectAll={this.handleRejectAll}
+          />
         </Div>
         {typeof this.renderCustomCardForm === 'function' ? this.renderCustomCardForm() : null}
 

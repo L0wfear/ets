@@ -281,7 +281,7 @@ export default class CurrentMission extends DashboardCardMedium {
         <Div style={styleObject} hidden={(subItems.length === 0 && !data) || !this.props.itemOpened} className={cx('dashboard-card-info', { active: selectedItem !== null && this.props.itemOpened })} >
           <Fade in={selectedItem !== null && this.props.itemOpened}>
             <Well>
-              <Div className="card-glyph-remove" onClick={this.selectItem.bind(this, null, null)}>
+              <Div className="card-glyph-remove" onClick={this.selectItem.bind(this, selectetdType, null)}>
                 <Glyphicon glyph="remove" />
               </Div>
               <h5>{this.props.itemsTitle || (selectedItem !== null ? selectedItem.title : '')}</h5>

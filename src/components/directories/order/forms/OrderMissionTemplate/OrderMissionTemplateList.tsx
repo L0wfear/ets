@@ -41,12 +41,14 @@ function getFilterDateOrder(technical_operations, { order_date, order_date_to })
       order_operation_id,
     } = to;
 
-    newObj[norm_id] = {
-      date_to: date_to || order_date_to,
-      date_from: date_from || order_date,
-      num_exec,
-      order_operation_id,
-    };
+    if (diffDates(new Date(), date_to || order_date_to) < 0) {
+      newObj[norm_id] = {
+        date_to: date_to || order_date_to,
+        date_from: date_from || order_date,
+        num_exec,
+        order_operation_id,
+      };
+    }
 
     return newObj;
   }, {});

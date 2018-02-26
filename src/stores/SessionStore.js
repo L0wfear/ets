@@ -128,7 +128,7 @@ export default class SessionStore extends Store {
     return permissionName.reduce((bool, permission) => bool && !!permissionsReduce[permission], true);
   }
   isSeeNotifyProblem() {
-    if (moment(new Date()).diff(new Date(2018, 1, 28, 16, 0, 1), 'seconds') < 0) {
+    if (moment(new Date()).diff(new Date(2018, 1, 27, 16, 0, 1), 'seconds') < 0) {
       const { isSee = false } = JSON.parse(localStorage.getItem(global.ERROR_IN_COD)) || {};
       if (!isSee) {
         return false;

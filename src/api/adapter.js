@@ -32,6 +32,16 @@ function checkResponse(url, response, body, method) {
   if (response.status === 500) {
     // global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`/${method} ${serviceName}, код ответа 500`));
     throw new Error('Server responded with 500');
+  } else if (response.status === 422) {
+    global.NOTIFICATION_SYSTEM.notify({
+      title: 'Ошибка',
+      message: 'Неправильно заполнены фильтры',
+      level: 'error',
+      dismissible: true,
+      position: 'tr',
+      autoDismiss: 0,
+    });
+    throw new Error('Server responded with 422');
   } else if (body && body.errors && body.errors.length) {
     const error = `ERROR /${method} ${usedUrl}`;
     console.error(error);

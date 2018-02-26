@@ -96,10 +96,7 @@ class MainApp extends React.Component {
           children: (
             <div>
               <p>
-                Уведомляем, что с 21.02.2018 Система будет доступна по адресу <a href="https://ets.mos.ru">ets.mos.ru</a>.
-              </p>
-              <p>
-                Просим обратить на это внимание при работе в системе.
+                На 27.02.2018 с 13:00 до 16:00 запланированы регламентные работы в ЦОД. В указанное время могут наблюдаться сбои в работе системы ЕТС.
               </p>
                 <p style={styleNotificationInfo}><Button onClick={this.closeError}>Закрыть</Button></p>
             </div>

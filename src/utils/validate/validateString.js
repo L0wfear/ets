@@ -27,7 +27,7 @@ const fixedValidators = [
         return undefined;
       }
       if (data.trim() !== data) {
-        return 'Поле не должно начинаться и закачиваться пробелом';
+        return `Поле "${config.title || config.key}" не должно начинаться и закачиваться пробелом`;
       }
 
       return undefined;

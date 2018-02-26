@@ -11,8 +11,8 @@ global.APP_DATE_FORMAT = 'DD.MM.YYYY';
 global.SESSION_KEY = `ets-session-${process.env.STAND}`;
 global.CURRENT_USER = `current-user-${process.env.STAND}`;
 
-global.ERROR_ASUODS = `error-ruslan${global.SESSION_KEY}`;
 global.ERROR_GO_TO_ETS2 = `error-gotoets2${global.SESSION_KEY}`;
+global.ERROR_IN_COD = `error-in_cod${global.SESSION_KEY}`;
 
 class App extends Component {
 

@@ -77,7 +77,7 @@ const missionCreateSuccessNotification = {
 
 const missionsByCarAndDateUpdateNotification = {
   title: '',
-  message: 'Доступные для выбранного ТС и интервала времени задания изменены',
+  message: 'Список заданий обновлён',
   level: 'info',
   dismissible: true,
   position: 'tr',

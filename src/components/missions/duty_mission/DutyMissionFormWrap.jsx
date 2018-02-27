@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import _ from 'lodash';
 import Div from 'components/ui/Div.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import { getDefaultDutyMission } from 'stores/MissionsStore.js';
 import { saveData } from 'utils/functions';
-import { dutyMissionSchema } from 'models/DutyMissionModel.js';
+import dutyMissionSchema from 'models/DutyMissionModel.js';
 import DutyMissionForm from './DutyMissionForm.jsx';
 
 class DutyMissionFormWrap extends FormWrap {
@@ -15,7 +15,7 @@ class DutyMissionFormWrap extends FormWrap {
     this.schema = dutyMissionSchema;
     this.defaultElement = getDefaultDutyMission();
     this.defaultElement.structure_id = context.flux.getStore('session').getCurrentUser().structure_id;
-    this.createAction = (async) (formState) => {
+    this.createAction = async (formState) => {
       await context.flux.getActions('missions').createDutyMission(formState);
       context.flux.getActions('missions').getDutyMissions();
     };
@@ -29,7 +29,7 @@ class DutyMissionFormWrap extends FormWrap {
       return Promise.resolve();
     });
 
-  async handleFormPrint() {
+  handleFormPrint = async () => {
     const mission = _.cloneDeep(this.state.formState);
 
     let response;
@@ -63,19 +63,21 @@ class DutyMissionFormWrap extends FormWrap {
   }
 
   render() {
-    return 	(<Div hidden={!this.props.showForm}>
-      <DutyMissionForm
-        formState={this.state.formState}
-        onSubmit={this.handleFormSubmit.bind(this)}
-        onPrint={this.handleFormPrint.bind(this)}
-        handleFormChange={this.handleFormStateChange.bind(this)}
-        show={this.props.showForm}
-        onHide={this.props.onFormHide}
-        fromWaybill={this.props.fromWaybill}
-        readOnly={this.props.readOnly}
-        {...this.state}
-      />
-    </Div>);
+    return (
+      <Div hidden={!this.props.showForm}>
+        <DutyMissionForm
+          formState={this.state.formState}
+          onSubmit={this.handleFormSubmit.bind(this)}
+          onPrint={this.handleFormPrint}
+          handleFormChange={this.handleFormStateChange.bind(this)}
+          show={this.props.showForm}
+          onHide={this.props.onFormHide}
+          fromWaybill={this.props.fromWaybill}
+          readOnly={this.props.readOnly}
+          {...this.state}
+        />
+      </Div>
+    );
   }
 
 }

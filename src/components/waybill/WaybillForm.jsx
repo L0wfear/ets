@@ -458,6 +458,9 @@ class WaybillForm extends Form {
     }
 
     taxesControl = validateTaxesControl([state.tax_data, state.equipment_tax_data]);
+    const allTaxes = [...state.tax_data, ...state.equipment_tax_data];
+    const taxesTotal = allTaxes.reduce((summ, { FUEL_RATE, FACT_VALUE }) => summ + (FUEL_RATE * FACT_VALUE), 0);
+    const taxeTotalHidden = allTaxes.length === 0;
 
     if (IS_DRAFT && state.driver_id !== undefined && DRIVERS.every(d => d.value !== state.driver_id)) {
       DRIVERS.push({ label: this.employeeFIOLabelFunction(state.driver_id), value: state.driver_id });
@@ -774,6 +777,15 @@ class WaybillForm extends Form {
                 baseFactValue={state.motohours_equip_diff}
                 type={'motohours'}
               />
+              <Div>
+                <Field
+                  type="number"
+                  label="Общий расход топлива, л"
+                  value={taxesTotal}
+                  hidden={taxeTotalHidden}
+                  disabled
+                />
+              </Div>
               <Div className="task-container">
                 <h4>Задание</h4>
                 <Field

@@ -210,9 +210,6 @@ export default class PointsStore extends Store {
           ...value,
           company_structure_id: companyStructureByGspCode[key],
         };
-        if (companyStructureByGspCode[key]) {
-          console.log(points[key])
-        }
         if (selected && value.id === selected.id) {
           newSelected = points[key];
         }

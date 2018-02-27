@@ -8,8 +8,8 @@ import LoadingPage from './LoadingPage.jsx';
 global.NODE_ENV = process.env.NODE_ENV;
 /* Глобальный формат даты для всех дейтпикеров и строк */
 global.APP_DATE_FORMAT = 'DD.MM.YYYY';
-global.SESSION_KEY = `ets-session-${process.env.STAND}`;
-global.CURRENT_USER = `current-user-${process.env.STAND}`;
+global.SESSION_KEY = `ets-session-${process.env.STAND}2`;
+global.CURRENT_USER = `current-user-${process.env.STAND}2`;
 
 global.ERROR_GO_TO_ETS2 = `error-gotoets2${global.SESSION_KEY}`;
 global.ERROR_IN_COD = `error-in_cod${global.SESSION_KEY}`;

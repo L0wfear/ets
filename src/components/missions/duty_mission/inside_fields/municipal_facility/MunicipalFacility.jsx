@@ -10,7 +10,6 @@ class MunicipalFacility extends MunicipalFacilityMission {
       technical_operation_id: old_toi,
       plan_date_start: old_pds,
       forseUpdateIsWas,
-      kind_task_ids,
     } = this.state;
     let forseUpdate = false;
     const {
@@ -20,6 +19,7 @@ class MunicipalFacility extends MunicipalFacilityMission {
       error: new_err,
       norm_id,
       error_plan_date_start,
+      kind_task_ids,
     } = this.getStateByProps(props);
     const {
       technicalOperationsList: newTechOperationsList = [],

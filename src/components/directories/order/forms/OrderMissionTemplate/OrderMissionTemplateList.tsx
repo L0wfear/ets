@@ -91,6 +91,7 @@ interface IStateOrderMissionTemplate {
   checkedElements: ICheckedElements;
   structures: any[];
   timeInterval: number | NodeJS.Timer;
+  canSubmit: boolean;
 }
 
 @connectToStores(['missions', 'session', 'employees'])
@@ -103,6 +104,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     checkedElements: {},
     structures: [],
     timeInterval: null,
+    canSubmit: true,
   };
 
   componentDidMount() {
@@ -176,6 +178,8 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       typeClick,
     } = this.props;
 
+    this.setState({ canSubmit: false });
+
     const queryList = Object.entries(checkedElements).map(([id, value]) => {
       const {
         date_from: date_start,
@@ -210,6 +214,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       this.setState({
         selectedElement: undefined,
         checkedElements: {},
+        canSubmit: true,
       });
     });
   }
@@ -253,9 +258,10 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
   checkDisabledSubmit = () => {
     const {
       checkedElements,
+      canSubmit,
     } = this.state;
 
-    return isEmpty(checkedElements);
+    return canSubmit && isEmpty(checkedElements);
   }
 
   onFormHide = () => {

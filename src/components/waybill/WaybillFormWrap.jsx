@@ -5,8 +5,8 @@ import Div from 'components/ui/Div.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import { getWarningNotification } from 'utils/notifications';
 import {
-  hasOdometer,
   saveData,
+  printData,
 } from 'utils/functions';
 import { waybillSchema, waybillClosingSchema } from 'models/WaybillModel.js';
 import { FluxContext } from 'utils/decorators';
@@ -376,6 +376,14 @@ export default class WaybillFormWrap extends FormWrap {
     .catch(() => {});
   }
 
+  handlePrintFromMiniButton = (ev, print_form_type = 'plate_special') => {
+    const { formState: { id: waybill_id } } = this.state;
+
+    this.context.flux.getActions('waybills').printWaybill(print_form_type, waybill_id)
+      .then(({ blob }) => printData(blob))
+      .catch(() => {});
+  }
+
   render() {
     const { entity } = this.props;
 
@@ -391,6 +399,7 @@ export default class WaybillFormWrap extends FormWrap {
           show={this.props.showForm}
           onHide={this.props.onFormHide}
           entity={entity || 'waybill'}
+          handlePrintFromMiniButton={this.handlePrintFromMiniButton}
           {...this.state}
         />
       </Div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { autobind } from 'core-decorators';
 import connectToStores from 'flummox/connect';
-import { Modal, Input, Row, Col, Button, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
+import { Modal, Input, Row, Col, Button } from 'react-bootstrap';
 import _ from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
@@ -15,10 +15,11 @@ import {
   isFourDigitGovNumber,
   isEqualOr,
 } from 'utils/functions';
-import { driverHasLicense, driverHasSpecialLicense, getCars, getDrivers, getTrailers, validateTaxesControl } from './utils';
 
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { notifications } from 'utils/notifications';
+
+import { driverHasLicense, driverHasSpecialLicense, getCars, getDrivers, getTrailers, validateTaxesControl } from './utils';
 import Form from '../compositions/Form.jsx';
 import Taxes from './Taxes.jsx';
 import WaybillFooter from './form/WaybillFooter';
@@ -29,6 +30,12 @@ import enhanceWithPermissions from '../util/RequirePermissions.jsx';
 const Div = enhanceWithPermissions(DivForEnhance);
 
 const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
+const getGoOnGLONASS = ({ distance, track_length }) => {
+  if (distance) return parseFloat(distance / 1000).toFixed(3);
+  if (isNaN(parseFloat(track_length))) return 'Нет данных';
+
+  return parseFloat(track_length / 1000).toFixed(3);
+};
 
 @autobind
 class WaybillForm extends Form {
@@ -854,7 +861,7 @@ class WaybillForm extends Form {
                   type="string"
                   label="Пройдено по Глонасс, км"
                   error={errors.distance}
-                  value={state.distance ? parseFloat(state.distance / 1000).toFixed(3) : parseFloat(state.track_length / 1000).toFixed(3)}
+                  value={getGoOnGLONASS(state)}
                   isLoading={loadingFields.distance}
                   disabled
                 />

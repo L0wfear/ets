@@ -38,7 +38,6 @@ class MunicipalFacility extends React.Component {
       technical_operation_id: old_toi,
       date_start: old_ds,
       forseUpdateIsWas,
-      kind_task_ids,
     } = this.state;
     let forseUpdate = false;
     const {
@@ -48,6 +47,7 @@ class MunicipalFacility extends React.Component {
       error: new_err,
       norm_id,
       error_date_start,
+      kind_task_ids,
     } = this.getStateByProps(props);
     const {
       technicalOperationsList: newTechOperationsList = [],

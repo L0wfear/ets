@@ -127,11 +127,11 @@ function pad(num) {
   return (`0${num}`).slice(-2);
 }
 export function secondsToTime(secs) {
-  let minutes = Math.floor(secs / 60);
-  secs = secs % 60;
-  const hours = Math.floor(minutes / 60);
-  minutes = minutes % 60;
-  return `${pad(hours)}:${pad(minutes)}:${pad(secs)}`;
+  let m_minutes = Math.floor(secs / 60);
+  const m_secs = secs % 60;
+  const m_hours = Math.floor(m_minutes / 60);
+  m_minutes %= 60;
+  return `${pad(m_hours)}:${pad(m_minutes)}:${pad(m_secs)}`;
 }
 
 export const getCurrentSeason = (summerStart = null, summerEnd = null) => {
@@ -155,3 +155,11 @@ export const getCurrentSeason = (summerStart = null, summerEnd = null) => {
 
   return 'winter';
 };
+
+/**
+ * @param {date | string} dataA - date start compare
+ * @param {date | string} dataB - date end compare
+ * @param {string} typeDiff - type compare (see moment .diff())
+ */
+export const diffDates = (dataA, dataB, typeDiff = 'seconds') =>
+  moment(dataA).diff(moment(dataB), typeDiff);

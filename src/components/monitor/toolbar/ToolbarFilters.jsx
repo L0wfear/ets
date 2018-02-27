@@ -10,6 +10,7 @@ export default class ToolbarFilters extends Component {
   static propTypes = {
     typesList: PropTypes.array.isRequired,
     typesIndex: PropTypes.object.isRequired,
+    companyStructureLinearList: PropTypes.array.isRequired,
     filters: PropTypes.object,
     haveFilters: PropTypes.bool,
     store: PropTypes.object,
@@ -19,8 +20,9 @@ export default class ToolbarFilters extends Component {
      * Предотвращаем постоянное передёргивания мульти-селекта в начальное состояние.
      */
     const shouldUpdate = (
-      this.props.typesIndex && nextProps.typesIndex &&
-      Object.keys(this.props.typesIndex).length !== Object.keys(nextProps.typesIndex).length
+      (this.props.typesIndex && nextProps.typesIndex &&
+      Object.keys(this.props.typesIndex).length !== Object.keys(nextProps.typesIndex).length)||
+      this.props.companyStructureLinearList.length !== nextProps.companyStructureLinearList.length
     );
 
     return shouldUpdate;
@@ -30,6 +32,7 @@ export default class ToolbarFilters extends Component {
     const { flux } = this.props.store;
     const filters = [];
     const carTypes = toArray(this.props.typesIndex).map(t => ({ title: t.short_name, ...t }));
+    const STRUCTURE_OPTIONS = this.props.companyStructureLinearList.map(t => ({ title: t.name, ...t }));
 
     filters.push(
       <Filter
@@ -38,6 +41,18 @@ export default class ToolbarFilters extends Component {
         valueField={'asuods_id'}
         title="Тип техники"
         options={carTypes}
+        search
+        itemComponent={TypeComponent}
+        valueComponent={TypeComponent}
+      />
+    );
+    filters.push(
+      <Filter
+        key={'structureFilter'}
+        name="structure"
+        valueField={'id'}
+        title="Подразделение"
+        options={STRUCTURE_OPTIONS}
         search
         itemComponent={TypeComponent}
         valueComponent={TypeComponent}

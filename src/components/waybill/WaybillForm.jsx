@@ -459,7 +459,7 @@ class WaybillForm extends Form {
 
     taxesControl = validateTaxesControl([state.tax_data, state.equipment_tax_data]);
 
-    if (IS_DRAFT && state.driver_id !== undefined && DRIVERS.every(d => d.value !== state.driver_id)) {
+    if (IS_DRAFT && state.driver_id && !DRIVERS.some(d => d.value === state.driver_id)) {
       DRIVERS.push({ label: this.employeeFIOLabelFunction(state.driver_id), value: state.driver_id });
     }
 

@@ -31,7 +31,7 @@ const WaybillFooter: React.SFC<IPropsWaybillFooter> = props =>
     </Div>
     <Div className="inline-block" permissions={(props.state.status !== 'closed' && props.state.status !== 'active') ? [`${props.entity}.plate`] : undefined}>
       <Dropdown id="waybill-print-dropdown" dropup disabled={!props.canSave} onSelect={props.handlePrintFromMiniButton}>
-        <Dropdown.Toggle>
+        <Dropdown.Toggle disabled={!props.canSave}>
           <Glyphicon glyph="print" />
         </Dropdown.Toggle>
         <Dropdown.Menu>

@@ -457,8 +457,13 @@ class WaybillForm extends Form {
       title = 'Создание нового путевого листа';
     }
 
-    taxesControl = validateTaxesControl([state.tax_data, state.equipment_tax_data]);
-    const allTaxes = [...state.tax_data, ...state.equipment_tax_data];
+    const {
+      tax_data = [],
+      equipment_tax_data = [],
+    } = state;
+
+    taxesControl = validateTaxesControl([tax_data, equipment_tax_data]);
+    const allTaxes = [...tax_data, ...equipment_tax_data];
     const taxesTotal = allTaxes.reduce((summ, { FUEL_RATE, FACT_VALUE }) => summ + (FUEL_RATE * FACT_VALUE), 0);
     const taxeTotalHidden = allTaxes.length === 0;
 

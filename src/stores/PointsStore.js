@@ -21,6 +21,7 @@ export default class PointsStore extends Store {
    * @property {object} filter - настройки фильтрации точек
    * @property {array}  filter.status - выбранные для фильтрации статусы
    * @property {array}  filter.type - выбранные для фильтрации типы ТС
+   * @property {array}  filter.structure - выбранные для фильтрации структуры ТС
    * @property {array}  filter.owner - выбранные для фильтрации организации-владельцы ТС
    * @property {object} byStatus - количество точек со статусами
    * @property {object} byConnectionStatus - количество точек не на связи/на связи
@@ -69,9 +70,11 @@ export default class PointsStore extends Store {
       selected: null,
       points: {},
       availableGpsCodes: [],
+      companyStructureByGspCode: [],
       filter: {
         status: statuses.map(s => s.id),
         type: [],
+        structure: [],
         owner: [],
       },
       byStatus: {
@@ -95,12 +98,20 @@ export default class PointsStore extends Store {
   }
 
   handleGetCars({ result: carsList = [] }) {
-    this.setState({ availableGpsCodes: carsList.reduce((newArr, { gps_code }) => {
-      if (gps_code) {
-        newArr.push(gps_code);
-      }
-      return newArr;
-    }, []) });
+    this.setState({
+      availableGpsCodes: carsList.reduce((newArr, { gps_code }) => {
+        if (gps_code) {
+          newArr.push(gps_code);
+        }
+        return newArr;
+      }, []),
+      companyStructureByGspCode: carsList.reduce((newObj, { company_structure_id, gps_code }) => {
+        if (gps_code) {
+          newObj[gps_code] = company_structure_id;
+        }
+        return newObj;
+      }, []),
+    });
   }
 
   /**
@@ -183,6 +194,7 @@ export default class PointsStore extends Store {
     }
     const {
       availableGpsCodes = [],
+      companyStructureByGspCode = {},
       selected = null,
     } = this.state;
 
@@ -193,7 +205,11 @@ export default class PointsStore extends Store {
       if (points[key] && (points[key].timestamp > value.timestamp)) {
         console.warn('got old info for point!');
       } else if (availableGpsCodes.includes(key)) {
-        points[key] = Object.assign({}, points[key], value);
+        points[key] = {
+          ...points[key],
+          ...value,
+          company_structure_id: companyStructureByGspCode[key],
+        };
         if (selected && value.id === selected.id) {
           newSelected = points[key];
         }
@@ -402,6 +418,14 @@ export default class PointsStore extends Store {
         return false;
       }
     }
+    // Фильтрация по струтуре подразделения ТС
+    if (filter.structure && filter.structure.length > 0) {
+      visible = visible && point.car && filter.structure.includes(point.company_structure_id);
+      if (!visible) {
+        return false;
+      }
+    }
+
     // Фильтрация по организации-владельцу ТС
     if (filter.owner && filter.owner.length > 0) {
       visible = visible && point.car && filter.owner.indexOf(Number(point.car.owner_id)) !== -1;

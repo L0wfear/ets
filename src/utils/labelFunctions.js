@@ -28,4 +28,4 @@ export const employeeFIOLabelFunction = flux => (employeeId, fullFlag = false) =
   }
 
   return result;
-}
+};

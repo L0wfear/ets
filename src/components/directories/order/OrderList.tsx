@@ -222,6 +222,7 @@ class OrderList extends React.Component<any, any> {
     this.setState({
       ...this.state,
       selectedElementOrder,
+      selectedElementAssignment: null,
       showHistoryComponent: false,
     });
   }

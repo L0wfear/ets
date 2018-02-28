@@ -462,7 +462,7 @@ class WaybillForm extends Form {
     const taxesTotal = allTaxes.reduce((summ, { FUEL_RATE, FACT_VALUE }) => summ + (FUEL_RATE * FACT_VALUE), 0);
     const taxeTotalHidden = allTaxes.length === 0;
 
-    if (IS_DRAFT && state.driver_id !== undefined && DRIVERS.every(d => d.value !== state.driver_id)) {
+    if (IS_DRAFT && state.driver_id && !DRIVERS.some(d => d.value === state.driver_id)) {
       DRIVERS.push({ label: this.employeeFIOLabelFunction(state.driver_id), value: state.driver_id });
     }
 

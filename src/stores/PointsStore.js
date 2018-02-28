@@ -60,7 +60,7 @@ export default class PointsStore extends Store {
     let currentUser;
 
     try {
-      currentUser = JSON.parse(localStorage.getItem(global.CURRENT_USER)) || {};
+      currentUser = JSON.parse(localStorage.getItem(global.CURRENT_USER2)) || {};
     } catch (e) {
       currentUser = {};
     }

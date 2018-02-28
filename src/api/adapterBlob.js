@@ -6,7 +6,7 @@ function urlencode(jsonObject) {
 }
 
 function httpMethodBlob(url, data, method) {
-  const token = JSON.parse(window.localStorage.getItem(global.SESSION_KEY));
+  const token = JSON.parse(window.localStorage.getItem(global.SESSION_KEY2));
 
   const options = {
     method,

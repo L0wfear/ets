@@ -9,6 +9,7 @@ export interface IPropsFileInput {
   maxSize?: number;
   maxSizePerFile?: number;
   showFileList: boolean;
+  id?: any;
   onChange(e: React.ChangeEvent<HTMLInputElement> | File[] | IFileWrapper[]): void;
   isLoading?(callback: (indicator: boolean, error?: any) => void): void;
 }

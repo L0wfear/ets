@@ -188,7 +188,9 @@ export default class RouteForm extends Form {
           <Row>
             <Col md={STRUCTURE_FIELD_VIEW ? 2 : 3}>
               <Field
-                type="string" label="Название маршрута"
+                id="route-name"
+                type="string"
+                label="Название маршрута"
                 value={state.name}
                 onChange={v => this.handleChange('name', v)}
                 error={errors.name}
@@ -199,6 +201,7 @@ export default class RouteForm extends Form {
               <Col md={STRUCTURE_FIELD_VIEW ? 6 : 7}>
                 <Col md={6} style={{ zIndex: 10001 }}>
                   <Field
+                    id="route-technical-operation-id"
                     type="select"
                     label="Технологическая операция"
                     options={TECH_OPERATIONS}
@@ -227,6 +230,7 @@ export default class RouteForm extends Form {
             <Div hidden={!STRUCTURE_FIELD_VIEW}>
               <Col md={2}>
                 <Field
+                  id="route-structure-id"
                   type="select"
                   label="Подразделение"
                   error={errors.structure_id}
@@ -242,6 +246,7 @@ export default class RouteForm extends Form {
             <Div hidden={this.props.forceRouteType}>
               <Col md={2}>
                 <Field
+                  id="type"
                   type="select"
                   label="Тип объекта"
                   options={ROUTE_TYPE_OPTIONS}
@@ -259,12 +264,14 @@ export default class RouteForm extends Form {
               <Col md={12}>
                 <Div hidden={state.type !== 'mixed'} className="vector-toggle">
                   <Button
+                    id="manual"
                     onClick={() => this.setState({ vector: true })}
                     className={this.state.vector && 'active'}
                   >
                     Вручную
                   </Button>
                   <Button
+                    id="select-from-odh"
                     onClick={this.handleClickSelectFromODH}
                     className={!this.state.vector && 'active'}
                   >
@@ -284,14 +291,10 @@ export default class RouteForm extends Form {
         </ModalBody>
 
         <Modal.Footer>
-          {this.props.fromMission ?
-            <div>
-              <Button disabled={!canSave} onClick={this.handleSubmit.bind(this, 1)}>Сохранить как шаблон</Button>
-              <Button disabled={!canSave} onClick={this.handleSubmit.bind(this, 0)}>{state.id ? 'Сохранить' : 'Создать'}</Button>
-            </div>
-            :
-            <Button disabled={!canSave} onClick={this.handleSubmit.bind(this, 1)}>Сохранить как шаблон</Button>
-          }
+          <div>
+            <Button id="route-submit-tempalte" disabled={!canSave} onClick={this.handleSubmit.bind(this, 1)}>Сохранить как шаблон</Button>
+            {this.props.fromMission && <Button id="route-submit" disabled={!canSave} onClick={this.handleSubmit.bind(this, 0)}>{state.id ? 'Сохранить' : 'Создать'}</Button>}
+          </div>
         </Modal.Footer>
 
       </Modal>

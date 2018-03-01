@@ -62,7 +62,7 @@ export default class FilterRow extends React.Component {
           }
           input = <EtsSelect options={options} value={value} onChange={onChange} />;
         } else if (type === 'multiselect') {
-          if (value && !!value.length) value = value.filter(v => _.find(options, o => `${o.value}` === v));
+          if (value && !!value.length) value = value.filter(v => _.find(options, o => o.valuуe === v));
           input = (
             <Div className="filter-multiselect-container">
               <EtsSelect options={options} multi delimiter={'$'} value={value} onChange={onMultiChange} />

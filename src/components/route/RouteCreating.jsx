@@ -265,6 +265,7 @@ class RouteCreating extends Component {
               <Div hidden={route.type !== 'mixed'} className="odh-container">
                 <Input type="checkbox" label="Выбрать все" disabled={!ODHS.length} checked={!fail_list.length} onChange={this.handleCheckbox.bind(this, 'odh', ODHS.map(o => o.value).join(','))} />
                 <Field
+                  id="odh"
                   type="select"
                   label="Список выбранных ОДХ"
                   multi
@@ -274,8 +275,9 @@ class RouteCreating extends Component {
                 />
               </Div>
               <Div hidden={route.type !== 'simple_dt'} className="odh-container">
-                <Input type="checkbox" disabled={!DTS.length} label="Выбрать все" checked={!fail_list.length} onChange={this.handleCheckbox.bind(this, 'dt', DTS.map(o => o.value).join(','))} />
+                <Input id="route-select-all" type="checkbox" disabled={!DTS.length} label="Выбрать все" checked={!fail_list.length} onChange={this.handleCheckbox.bind(this, 'dt', DTS.map(o => o.value).join(','))} />
                 <Field
+                  id="object_list_ids"
                   type="select"
                   label="Список выбранных ДТ"
                   multi

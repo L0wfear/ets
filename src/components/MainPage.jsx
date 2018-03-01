@@ -8,8 +8,6 @@ import {
   NavDropdown as BootstrapNavDropdown,
   MenuItem as BootstrapMenuItem,
 } from 'react-bootstrap';
-import moment from 'moment';
-
 import Div from 'components/ui/Div.jsx';
 
 import config from 'config';
@@ -150,38 +148,38 @@ export default class MainPage extends React.Component {
 
         <Navbar.Header>
           <Navbar.Brand>
-            <Link to="/">ЕТС</Link>
+            <Link id="link-main-page" to="/">ЕТС</Link>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
 
         <Navbar.Collapse>
           <Nav>
-            <NavItem permissions={[PERMISSIONS.monitor]} active={path === '/monitor'} href="#/monitor">Карта</NavItem>
-            <NavDropdown hidden={isOkrug} oneOfPermissions={[PERMISSIONS.odh_coverage_report, PERMISSIONS.dt_coverage_report]} title="Оперативная обстановка" id="nav-dropdown-1">
-              <MenuItem permissions={[PERMISSIONS.odh_coverage_report]} active={path === '/odh_coverage_report'} href="#/odh_coverage_report">Отчет по посещению ОДХ</MenuItem>
-              <MenuItem permissions={[PERMISSIONS.dt_coverage_report]} active={path === '/dt_coverage_report'} href="#/dt_coverage_report">Отчет по посещению ДТ</MenuItem>
+            <NavItem id="link-monitor" permissions={[PERMISSIONS.monitor]} active={path === '/monitor'} href="#/monitor">Карта</NavItem>
+            <NavDropdown id="show-coverage-report" hidden={isOkrug} oneOfPermissions={[PERMISSIONS.odh_coverage_report, PERMISSIONS.dt_coverage_report]} title="Оперативная обстановка">
+              <MenuItem id="link-odh_coverage_report" permissions={[PERMISSIONS.odh_coverage_report]} active={path === '/odh_coverage_report'} href="#/odh_coverage_report">Отчет по посещению ОДХ</MenuItem>
+              <MenuItem id="link-dt_coverage_report" permissions={[PERMISSIONS.dt_coverage_report]} active={path === '/dt_coverage_report'} href="#/dt_coverage_report">Отчет по посещению ДТ</MenuItem>
             </NavDropdown>
-            <NavItem hidden={isOkrug} permissions={[PERMISSIONS.dashboard]} active={path === '/dashboard'} href="#/dashboard">Рабочий стол</NavItem>
-            <NavItem hidden={isOkrug} permissions={[PERMISSIONS.waybill.list]} active={path === '/waybill-journal'} href="#/waybill-journal">Путевые листы</NavItem>
+            <NavItem id="link-dashboard" hidden={isOkrug} permissions={[PERMISSIONS.dashboard]} active={path === '/dashboard'} href="#/dashboard">Рабочий стол</NavItem>
+            <NavItem id="link-waybill-journal" hidden={isOkrug} permissions={[PERMISSIONS.waybill.list]} active={path === '/waybill-journal'} href="#/waybill-journal">Путевые листы</NavItem>
 
             <MissionsNavItem {...defaultProps} />
             <NsiNavItem {...defaultProps} />
             <ReportsNavItem {...defaultProps} />
 
-            <NavItem hidden={isOkrug} permissions={[PERMISSIONS.route.list]} active={path === '/routes-list'} href="#/routes-list">Маршруты</NavItem>
-            <NavItem hidden={isOkrug} permissions={[PERMISSIONS.company_structure.list]} active={path === '/company-structure'} href="#/company-structure">Структура предприятия</NavItem>
-            <NavItem title="Уведомления пользователей" active={path === '/notification-registry'} href="#/notification-registry"><div style={{ fontSize: 18 }}><Glyphicon glyph="exclamation-sign" /></div></NavItem>
-            <NavItem hidden={isOkrug} permissions={[PERMISSIONS.administration]} title="Администрирование" href={`http://213.79.88.5/${process.env.STAND !== 'prod' ? 'ets-stage/' : ''}admin`}><Glyphicon glyph="list-alt" /></NavItem>
+            <NavItem id="link-routes-list" hidden={isOkrug} permissions={[PERMISSIONS.route.list]} active={path === '/routes-list'} href="#/routes-list">Маршруты</NavItem>
+            <NavItem id="link-company-structure" hidden={isOkrug} permissions={[PERMISSIONS.company_structure.list]} active={path === '/company-structure'} href="#/company-structure">Структура предприятия</NavItem>
+            <NavItem id="link-notification-registry" title="Уведомления пользователей" active={path === '/notification-registry'} href="#/notification-registry"><div style={{ fontSize: 18 }}><Glyphicon glyph="exclamation-sign" /></div></NavItem>
+            <NavItem id="link-admin" hidden={isOkrug} permissions={[PERMISSIONS.administration]} title="Администрирование" href={`http://213.79.88.5/${process.env.STAND !== 'prod' ? 'ets-stage/' : ''}admin`}><Glyphicon glyph="list-alt" /></NavItem>
           </Nav>
 
           <Nav pullRight>
-            <NavDropdown title="Руководство пользователей" id="nav-dropdown-4">
-              <MenuItem href={`${config.docs}Руководство-мастера.docx`}>Руководство Мастера</MenuItem>
-              <MenuItem href={`${config.docs}Руководство-диспетчера.docx`}>Руководство Диспетчера</MenuItem>
-              <MenuItem href={`${config.docs}Руководство-окружного-пользователя.docx`}>Руководство окружного пользователя</MenuItem>
-              <MenuItem href={`${config.docs}Общие_рекомендации_по_обращению.docx`}>Общие рекомендации по обращению</MenuItem>
-              <MenuItem href={`${config.docs}Руководство-Инженер ТО.docx`}>Руководство инженера ТО</MenuItem>
+            <NavDropdown id="show-guide" title="Руководство пользователей">
+              <MenuItem id="link-master" href={`${config.docs}Руководство-мастера.docx`}>Руководство Мастера</MenuItem>
+              <MenuItem id="link-dispather" href={`${config.docs}Руководство-диспетчера.docx`}>Руководство Диспетчера</MenuItem>
+              <MenuItem id="link-okrug" href={`${config.docs}Руководство-окружного-пользователя.docx`}>Руководство окружного пользователя</MenuItem>
+              <MenuItem id="link-report" href={`${config.docs}Общие_рекомендации_по_обращению.docx`}>Общие рекомендации по обращению</MenuItem>
+              <MenuItem id="link-engineer" href={`${config.docs}Руководство-Инженер ТО.docx`}>Руководство инженера ТО</MenuItem>
               </NavDropdown>
             <NavItem className="navbar-user">
               <div className="navbar-user__avatar">
@@ -192,7 +190,7 @@ export default class MainPage extends React.Component {
                 <div className="navbar-user__data-name">{user.fio}</div>
               </div>
             </NavItem>
-            <NavItem onClick={this.logout}>Выйти</NavItem>
+            <NavItem id="link-login" onClick={this.logout}>Выйти</NavItem>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

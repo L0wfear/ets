@@ -556,9 +556,8 @@ class WaybillForm extends Form {
     this.props.handleMultipleChange(fieldsToChange);
   }
 
-  handleMissionsChange(v) {
+  handleMissionsChange(newFormData) {
     const { formState } = this.props;
-    const newFormData = !isEmpty(v) ? v.split(',').map(d => parseInt(d, 10)) : [];
     const oldFormData = formState.mission_id_list;
     const IS_CREATING = !formState.status;
 
@@ -719,7 +718,7 @@ class WaybillForm extends Form {
     const car = carsIndex[state.car_id];
     const trailer = carsIndex[state.trailer_id];
     const CAR_HAS_ODOMETER = state.gov_number ? !hasMotohours(state.gov_number) : null;
-    console.log(state, CAR_HAS_ODOMETER)
+
     let title = '';
 
     if (IS_CREATING) {

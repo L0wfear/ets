@@ -687,10 +687,11 @@ class WaybillForm extends Form {
 
 
     const driversEnability = state.car_id !== null && state.car_id !== '';
+    const countMissionMoreOne = state.mission_id_list.length > 1;
 
     const DRIVERS = getDrivers({ car_id: state.car_id, gov_number: state.gov_number }, waybillDriversList);
-    const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false }));
-    const OUTSIDEMISSIONS = notAvailableMissions.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: false, number, className: 'yellow' }));
+    const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: countMissionMoreOne }));
+    const OUTSIDEMISSIONS = notAvailableMissions.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: countMissionMoreOne, number, className: 'yellow' }));
 
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
     const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
@@ -747,7 +748,7 @@ class WaybillForm extends Form {
     const distanceOrTrackOrNodata = isNumeric(parseInt(state.distance, 10)) ? parseFloat(state.distance / 1000).toFixed(3) :
                                     isNumeric(parseInt(state.track_length, 10)) ? parseFloat(state.track_length / 1000).toFixed(3) :
                                     'Нет данных';
-    console.log(errors)
+
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
 

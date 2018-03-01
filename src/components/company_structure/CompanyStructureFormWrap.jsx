@@ -22,26 +22,18 @@ export const companyStructureSchema = {
 
 export default class CompanyStructureFormWrap extends FormWrap {
 
-  constructor(props, context) {
+  constructor(props) {
     super(props);
     this.schema = companyStructureSchema;
   }
 
   createAction = formState =>
     this.context.flux.getActions('companyStructure').createCompanyElement(formState)
-    .then(() => {
-      const linear = true;
-      this.context.flux.getActions('companyStructure').getCompanyStructure();
-      this.context.flux.getActions('companyStructure').getCompanyStructure(linear);
-    })
+    .then(() => this.props.refreshState());
 
   updateAction = formState =>
     this.context.flux.getActions('companyStructure').updateCompanyElement(formState)
-    .then(() => {
-      const linear = true;
-      this.context.flux.getActions('companyStructure').getCompanyStructure();
-      this.context.flux.getActions('companyStructure').getCompanyStructure(linear);
-    });
+    .then(() => this.props.refreshState());
 
   render() {
     return (

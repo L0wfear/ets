@@ -19,11 +19,20 @@ export default class CompanyStructure extends ElementsList {
 
   componentDidMount() {
     super.componentDidMount();
+    this.refreshState();
+  }
+
+  refreshState = () => {
     const linear = true;
 
     const { flux } = this.context;
-    flux.getActions('companyStructure').getCompanyStructure();
-    flux.getActions('companyStructure').getCompanyStructure(linear);
+
+    const query = [
+      flux.getActions('companyStructure').getCompanyStructure(),
+      flux.getActions('companyStructure').getCompanyStructure(linear),
+    ];
+
+    return Promise.all(query);
   }
 
   editElement = (id, e) => {
@@ -41,7 +50,7 @@ export default class CompanyStructure extends ElementsList {
         title: 'Внимание',
         body: 'Вы уверены, что хотите удалить выбранные элементы?',
       });
-      this.context.flux.getActions('companyStructure').deleteCompanyElement(id);
+      this.context.flux.getActions('companyStructure').deleteCompanyElement(id).then(() => this.refreshState());
     } catch (err) {
       // отмена
     }
@@ -64,6 +73,7 @@ export default class CompanyStructure extends ElementsList {
           onFormHide={this.onFormHide}
           element={this.state.selectedElement}
           showForm={this.state.showForm}
+          refreshState={this.refreshState}
           {...this.props}
         />
       </div>

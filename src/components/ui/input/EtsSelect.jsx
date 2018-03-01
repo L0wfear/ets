@@ -67,13 +67,15 @@ export default class EstSelect extends Component {
     const sortedOptions = options.sort(sortingFunction);
 
     return (
-      <Select
-        {...this.props}
-        onChange={this.handleChange}
-        options={sortedOptions}
-        placeholder={placeholder}
-        noResultsText={noResultsText}
-      />
+      <div id={this.props.id}>
+        <Select
+          {...this.props}
+          onChange={this.handleChange}
+          options={sortedOptions}
+          placeholder={placeholder}
+          noResultsText={noResultsText}
+        />
+      </div>
     );
   }
 }

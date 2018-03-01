@@ -218,18 +218,20 @@ class MissionInfoForm extends Form {
           <Div>
             * - расстояние, учитываемое при прохождении задания<br />
             ** - пройдено с рабочей скоростью / пройдено с превышением рабочей скорости<br />
-            <li><b>Пройдено с рабочей скоростью:</b>
-              {getDataTraveledYet([...traveled_rawAndCheck_unit, report_data.time_work_speed])}
-            </li>
-            <li><b>Пройдено с превышением рабочей скорости:</b>
-              {getDataTraveledYet([...traveled_high_speedCheck_unit, report_data.time_high_speed])}
-            </li>
-            <li><b>Общее время стоянок:</b>
-              {!isNaN(parseInt(this.state.parkingCount, 0)) ? secondsToTime(this.state.parkingCount) : 'Рассчитывается...' }
-            </li>
-            <li><b>Общий пробег с работающим оборудованием:</b>
-              {`${sensor_traveled_working ? getDataTraveledYet(sensor_traveled_workingAndCheck_unit) : 'Данные будут отображены после выполнения задания'}`}
-            </li>
+            <ul style={{ listStyleType: 'none' }}>
+              <li style={{ color: 'red' }}><b>Пройдено с рабочей скоростью:&nbsp;</b>
+                {getDataTraveledYet([...traveled_rawAndCheck_unit, report_data.time_work_speed])}
+              </li>
+              <li style={{ color: 'green' }}><b>Пройдено с превышением рабочей скорости:&nbsp;</b>
+                {getDataTraveledYet([...traveled_high_speedCheck_unit, report_data.time_high_speed])}
+              </li>
+              <li><b>Общее время стоянок: </b>
+                {!isNaN(parseInt(this.state.parkingCount, 0)) ? secondsToTime(this.state.parkingCount) : 'Рассчитывается...' }
+              </li>
+              <li><b>Общий пробег с работающим оборудованием: </b>
+                {`${sensor_traveled_working ? getDataTraveledYet(sensor_traveled_workingAndCheck_unit) : 'Данные будут отображены после выполнения задания.'}`}
+              </li>
+            </ul>
           </Div>
 
         </ModalBody>

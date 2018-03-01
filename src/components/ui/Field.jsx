@@ -13,7 +13,7 @@ import Preloader from './Preloader.jsx';
 
 function StringField(props) {
   const { error, label = '', readOnly = false, disabled = false, className = '',
-    value, wrapStyle, hidden, isLoading, inline = false } = props;
+    value, wrapStyle, hidden, isLoading, inline = false, id } = props;
   const inputClassName = cx({ 'has-error': error });
 
   if (isLoading) {
@@ -36,12 +36,12 @@ function StringField(props) {
     <Div hidden={hidden} className={className}>
       <label style={{ paddingTop: 5, paddingRight: 5 }}>{label}</label>
       {!inline && <br />}
-      {value}
+      <span id={id} >{value}</span>
     </Div>;
 }
 
 function TextAreaField(props) {
-  const { error, label = '', readOnly = false, disabled = false, value, hidden, rows = 5, textAreaStyle = {} } = props;
+  const { error, label = '', readOnly = false, disabled = false, value, hidden, rows = 5, textAreaStyle = {}, id } = props;
 
   const wrapperClassName = cx({
     'textarea-field': true,
@@ -52,6 +52,7 @@ function TextAreaField(props) {
     <Div hidden={hidden} className={wrapperClassName}>
       <label>{label}</label>
       <textarea
+        id={id}
         style={textAreaStyle}
         className="form-control form-group"
         rows={rows}
@@ -92,6 +93,7 @@ export default class Field extends React.Component {
       <Div hidden={this.props.hidden}>
         <label>{label}</label>
         <input
+          id={this.props.id}
           type="checkbox"
           style={{ fontSize: '20px', marginLeft: '5px' }}
           checked={this.props.value}
@@ -146,11 +148,11 @@ export default class Field extends React.Component {
   }
 
   renderSelect() {
-    const { error, label = '', className = '', readOnly = false } = this.props;
+    const { error, label = '', className = '', readOnly = false, id } = this.props;
     const selectClassName = cx({ 'has-error': error });
     return (
       <Div hidden={this.props.hidden} className={className} style={{ marginBottom: 15 }}>
-        <label>{label}</label>
+        <label id={id}>{label}</label>
         <EtsSelect {...this.props} disabled={readOnly || this.props.disabled} className={selectClassName} />
         <Div hidden={!error} className="error" style={{ marginTop: 4 }}>{error}</Div>
       </Div>

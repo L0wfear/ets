@@ -251,6 +251,7 @@ class RouteCreating extends Component {
                   </div>
                 </div>
                 <Field
+                  id="odh"
                   type="select"
                   label="Список выбранных ОДХ"
                   multi
@@ -263,13 +264,14 @@ class RouteCreating extends Component {
               <Div hidden={route.type !== 'simple_dt'} className="odh-container">
                 <div className="form-group">
                   <div className="checkbox">
-                    <label className="">
-                      <input type="checkbox" disabled={!DTS.length} label="Выбрать все" checked={!fail_list.length} onChange={this.handleCheckbox.bind(this, 'dt', DTS.map(o => o.value).join(','))} />
+                    <label htmlFor="route-select-all">
+                      <input id="route-select-all" type="checkbox" disabled={!DTS.length} label="Выбрать все" checked={!fail_list.length} onChange={this.handleCheckbox.bind(this, 'dt', DTS.map(o => o.value).join(','))} />
                       <span>Выбрать все</span>
                     </label>
                   </div>
                 </div>
                 <Field
+                  id="object_list_ids"
                   type="select"
                   label="Список выбранных ДТ"
                   multi

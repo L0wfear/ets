@@ -23,7 +23,7 @@ export default function ODHList(props) {
   return (
     <Div>
       <Div hidden={!checkRoute}>
-        <Button disabled={!!error} onClick={checkRoute} style={{ marginTop: 11 }}>Проверить маршрут</Button>
+        <Button id="check-routes" disabled={!!error} onClick={checkRoute} style={{ marginTop: 11 }}>Проверить маршрут</Button>
       </Div>
       <Div hidden={!list.length} className="odh-list">
         <h4>Список {name} {DRAW_LIST.length ? '(Выбор из ОДХ)' : ''}</h4>

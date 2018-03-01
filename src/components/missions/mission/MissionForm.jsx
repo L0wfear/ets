@@ -420,6 +420,7 @@ export class MissionForm extends Form {
           <Row>
             <Col md={9}>
               <Field
+                id="technical-operation-id"
                 type="select"
                 label="Технологическая операция"
                 error={errors.technical_operation_id}
@@ -432,6 +433,7 @@ export class MissionForm extends Form {
             </Col>
             {STRUCTURE_FIELD_VIEW && <Col md={3}>
               <Field
+                id="m-structure-id"
                 type="select"
                 label="Подразделение"
                 error={errors.structure_id}
@@ -465,6 +467,7 @@ export class MissionForm extends Form {
           <Row>
             <Col md={6}>
               <Field
+                id="car-id"
                 type="select"
                 label="Транспортное средство"
                 error={errors.car_id}
@@ -487,6 +490,7 @@ export class MissionForm extends Form {
               <label style={{ position: 'absolute', right: -7, top: 31, fontWeight: 400 }}>—</label>
               <Div>
                 <Field
+                  id="date-start"
                   type="date"
                   label="Время выполнения:"
                   error={errors.date_start}
@@ -501,6 +505,7 @@ export class MissionForm extends Form {
             <Col md={3}>
               <Div>
                 <Field
+                  id="date_end"
                   type="date"
                   label=""
                   error={errors.date_end}
@@ -516,6 +521,7 @@ export class MissionForm extends Form {
           <Row>
             <Col md={12}>
               <Field
+                id="m-route-id"
                 type="select"
                 label="Маршрут"
                 error={errors.route_id}
@@ -525,7 +531,7 @@ export class MissionForm extends Form {
                 onChange={this.handleRouteIdChange}
               />
               <Div hidden={state.route_id}>
-                <Button onClick={this.createNewRoute} disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.car_id || !state.municipal_facility_id }>Создать новый</Button>
+                <Button id="create-route" onClick={this.createNewRoute} disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.car_id || !state.municipal_facility_id }>Создать новый</Button>
               </Div>
             </Col>
           </Row>
@@ -539,6 +545,7 @@ export class MissionForm extends Form {
           <Row>
             <Col md={3}>
               <Field
+                id="passes-count"
                 type="number"
                 label="Кол-во циклов"
                 error={errors.passes_count}
@@ -550,6 +557,7 @@ export class MissionForm extends Form {
             </Col>
             <Col md={3}>
               <Field
+                id="m-source-id"
                 type="select"
                 label="Источник получения задания"
                 error={errors.mission_source_id}
@@ -562,6 +570,7 @@ export class MissionForm extends Form {
             </Col>
             {state.order_number != null && <Col md={2}>
               <Field
+                id="order-number"
                 type="string"
                 label="Номер централизованного задания"
                 readOnly
@@ -570,6 +579,7 @@ export class MissionForm extends Form {
             </Col>}
             <Col md={state.order_number != null ? 4 : 6}>
               <Field
+                id="m-comment"
                 type="string"
                 label="Комментарий"
                 value={state.comment}
@@ -584,6 +594,7 @@ export class MissionForm extends Form {
         <Modal.Footer>
           <Div className="inline-block assignToWaybillCheck" style={{ width: '300px', textAlign: 'left !important', height: '22px', marginRight: '20px' }} hidden={!!state.status || this.props.fromWaybill}>
             <EtsSelect
+              id="assign-to-waybill"
               type="select"
               options={ASSIGN_OPTIONS}
               value={state.assign_to_waybill}
@@ -594,14 +605,14 @@ export class MissionForm extends Form {
           <Div className="inline-block">
             <Dropdown id="waybill-print-dropdown" dropup disabled={!state.status || !this.props.canSave || !state.route_id} onSelect={this.props.handlePrint}>
               <Dropdown.Toggle disabled={!state.status || !this.props.canSave || !state.route_id}>
-                <Glyphicon glyph="print" />
+                <Glyphicon id="m-print" glyph="print" />
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <MenuItem eventKey={1}>Экспорт в файл</MenuItem>
                 <MenuItem eventKey={2}>Печать</MenuItem>
               </Dropdown.Menu>
             </Dropdown>
-            <Button onClick={this.handleSubmit} disabled={!this.props.canSave}>Сохранить</Button>
+            <Button id="m-submit" onClick={this.handleSubmit} disabled={!this.props.canSave}>Сохранить</Button>
           </Div>
         </Modal.Footer>
 

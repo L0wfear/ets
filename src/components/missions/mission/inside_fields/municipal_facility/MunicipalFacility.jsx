@@ -9,6 +9,7 @@ class MunicipalFacility extends React.Component {
 
   static get propTypes() {
     return {
+      id: React.PropTypes.string,
       state: React.PropTypes.object,
       errors: React.PropTypes.object,
       disabled: React.PropTypes.bool,
@@ -172,6 +173,7 @@ class MunicipalFacility extends React.Component {
 
     return (
       <Field
+        id={this.props.id}
         type="select"
         label="Элемент"
         error={error}

@@ -762,6 +762,7 @@ class WaybillForm extends Form {
             <Div>
               {IS_CLOSED || IS_ACTIVE ? <Col md={3}>
                 <Field
+                  id="activated-by-employee-name"
                   type="string"
                   label="Выдан"
                   readOnly
@@ -769,6 +770,7 @@ class WaybillForm extends Form {
                   value={state.activated_by_employee_name}
                 />
                 <Field
+                  id="closed-by-employee-name"
                   type="string"
                   label="Закрыт"
                   readOnly
@@ -779,6 +781,7 @@ class WaybillForm extends Form {
               <Col md={!IS_CLOSED && !IS_ACTIVE ? 6 : 3}>
                 {STRUCTURE_FIELD_VIEW &&
                   <Field
+                    id="waybill-structure-id"
                     type="select"
                     label="Подразделение"
                     error={errors.structure_id}
@@ -790,6 +793,7 @@ class WaybillForm extends Form {
                     onChange={this.handleStructureIdChange}
                   />}
                 <Field
+                  id="accompanying-person-id"
                   type="select"
                   label="Сопровождающий"
                   error={errors.accompanying_person_id}
@@ -804,6 +808,7 @@ class WaybillForm extends Form {
             <Div hidden={!(IS_CREATING || IS_DRAFT)}>
               <Col md={3}>
                 <Field
+                  id="plan-departure-date"
                   type="date"
                   label="Выезд план."
                   error={errors.plan_departure_date}
@@ -815,6 +820,7 @@ class WaybillForm extends Form {
             <Div hidden={!(IS_CREATING || IS_DRAFT)}>
               <Col md={3}>
                 <Field
+                  id="plan-arrival-date"
                   type="date"
                   label="Возвращение план."
                   error={errors.plan_arrival_date}
@@ -840,6 +846,7 @@ class WaybillForm extends Form {
             <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
               <Col md={3}>
                 <Field
+                  id="plan-departure-date"
                   type="date"
                   label="Выезд план."
                   error={errors.plan_departure_date}
@@ -848,6 +855,7 @@ class WaybillForm extends Form {
                   onChange={() => true}
                 />
                 <Field
+                  id="fact-departure-date"
                   type="date"
                   label="Выезд факт."
                   error={errors.fact_departure_date}
@@ -858,6 +866,7 @@ class WaybillForm extends Form {
               </Col>
               <Col md={3}>
                 <Field
+                  id="plan-arrival-date"
                   type="date"
                   label="Возвращение план."
                   error={errors.plan_arrival_date}
@@ -866,6 +875,7 @@ class WaybillForm extends Form {
                   onChange={() => true}
                 />
                 <Field
+                  id="fact-arrival-date"
                   type="date"
                   label="Возвращение факт."
                   error={errors.fact_arrival_date}
@@ -880,6 +890,7 @@ class WaybillForm extends Form {
           <Row>
             <Col md={6}>
               <Field
+                id="car-id"
                 type="select"
                 label="Транспортное средство (поиск по рег. номер ТС)"
                 error={errors.car_id}
@@ -891,6 +902,7 @@ class WaybillForm extends Form {
               />
 
               <Field
+                id="car-gov-number"
                 type="string"
                 label="Транспортное средство"
                 className="white-space-pre-wrap"
@@ -901,6 +913,7 @@ class WaybillForm extends Form {
             </Col>
             <Col md={6}>
               <Field
+                id="trailer-id"
                 type="select"
                 label="Прицеп"
                 error={errors.trailer_id}
@@ -912,6 +925,7 @@ class WaybillForm extends Form {
               />
 
               <Field
+                id="trailer-gov-number"
                 type="string"
                 label="Прицеп"
                 className="white-space-pre-wrap"
@@ -930,6 +944,7 @@ class WaybillForm extends Form {
             </Col>
             <Col md={(IS_CREATING || IS_DRAFT) ? 12 : 6}>
               <Field
+                id="driver-id"
                 type="select"
                 label="Водитель (возможен поиск по табельному номеру)"
                 error={driversEnability ? errors.driver_id : undefined}
@@ -941,6 +956,7 @@ class WaybillForm extends Form {
               />
 
               <Field
+                id="driver-fio"
                 type="string"
                 label="Водитель"
                 readOnly
@@ -965,23 +981,32 @@ class WaybillForm extends Form {
                 <Col md={4}>
                   <h4>Одометр</h4>
                   <Field
+                    id="odometr-start"
                     type="number"
                     label="Выезд из гаража, км"
                     error={errors.odometr_start}
-                    value={state.odometr_start} disabled={IS_ACTIVE || IS_CLOSED} onChange={this.handleChange.bind(this, 'odometr_start')}
+                    value={state.odometr_start} disabled={IS_ACTIVE || IS_CLOSED}
+                    onChange={this.handleChange.bind(this, 'odometr_start')}
                   />
 
                   <Field
+                    id="odometr-end"
                     type="number"
                     label="Возвращение в гараж, км"
                     error={errors.odometr_end}
-                    value={state.odometr_end} hidden={!(IS_ACTIVE || IS_CLOSED)} disabled={IS_CLOSED && !this.state.canEditIfClose} onChange={this.handleChange.bind(this, 'odometr_end')}
+                    value={state.odometr_end}
+                    hidden={!(IS_ACTIVE || IS_CLOSED)}
+                    disabled={IS_CLOSED && !this.state.canEditIfClose}
+                    onChange={this.handleChange.bind(this, 'odometr_end')}
                   />
 
                   <Field
+                    id="odometr-diff"
                     type="number"
                     label="Пробег, км"
-                    value={state.odometr_diff} hidden={!(IS_ACTIVE || IS_CLOSED)} disabled
+                    value={state.odometr_diff}
+                    hidden={!(IS_ACTIVE || IS_CLOSED)}
+                    disabled
                   />
                 </Col>
               </Div>
@@ -989,6 +1014,7 @@ class WaybillForm extends Form {
                 <Col md={4}>
                   <h4>Счетчик моточасов</h4>
                   <Field
+                    id="motohours-start"
                     type="number"
                     label="Выезд из гаража, м/ч"
                     error={errors.motohours_start}
@@ -998,6 +1024,7 @@ class WaybillForm extends Form {
                   />
 
                   <Field
+                    id="motohours-end"
                     type="number"
                     label="Возвращение в гараж, м/ч"
                     error={errors.motohours_end}
@@ -1008,6 +1035,7 @@ class WaybillForm extends Form {
                   />
 
                   <Field
+                    id="motohours_diff"
                     type="number"
                     label="Пробег, м/ч"
                     value={state.motohours_diff}
@@ -1020,6 +1048,7 @@ class WaybillForm extends Form {
                 <Col md={4}>
                   <h4>Счетчик моточасов оборудования</h4>
                   <Field
+                    id="motohours-equip-start"
                     type="number"
                     label="Выезд из гаража, м/ч"
                     error={errors.motohours_equip_start}
@@ -1029,6 +1058,7 @@ class WaybillForm extends Form {
                   />
 
                   <Field
+                    id="motohours-equip-end"
                     type="number"
                     label="Возвращение в гараж, м/ч"
                     error={errors.motohours_equip_end}
@@ -1039,6 +1069,7 @@ class WaybillForm extends Form {
                   />
 
                   <Field
+                    id="motohours-equip-diff"
                     type="number"
                     label="Пробег, м/ч"
                     value={state.motohours_equip_diff}
@@ -1052,6 +1083,7 @@ class WaybillForm extends Form {
                 <Col md={4}>
                   <h4> Топливо </h4>
                   <Field
+                    id="fuel-type"
                     type="select"
                     label="Тип топлива"
                     error={errors.fuel_type}
@@ -1062,6 +1094,7 @@ class WaybillForm extends Form {
                   />
 
                   <Field
+                    id="fuel_start"
                     type="number"
                     label="Выезд, л"
                     error={errors.fuel_start}
@@ -1071,6 +1104,7 @@ class WaybillForm extends Form {
                   />
 
                   <Field
+                    id="fuel-to-give"
                     type="number"
                     label="Выдать, л"
                     error={errors.fuel_to_give}
@@ -1080,6 +1114,7 @@ class WaybillForm extends Form {
                   />
 
                   <Field
+                    id="fuel-given"
                     type="number"
                     label="Выдано, л"
                     error={errors.fuel_given}
@@ -1090,6 +1125,7 @@ class WaybillForm extends Form {
                   />
 
                   <Field
+                    id="fuel-end"
                     type="number"
                     label="Возврат, л"
                     error={errors.fuel_end}
@@ -1133,6 +1169,7 @@ class WaybillForm extends Form {
               <Div className="task-container">
                 <h4>Задание</h4>
                 <Field
+                  id="mission-id-list"
                   type="select"
                   error={errors.mission_id_list}
                   multi
@@ -1147,7 +1184,14 @@ class WaybillForm extends Form {
                   <div style={{ color: 'red' }}>{`Задания: ${OUTSIDEMISSIONS.map(m => `№${m.number}`).join(', ')} не входят в интервал путевого листа. После сохранения путевого листа время задания будет уменьшено и приравнено к времени "Возвращение факт." данного путевого листа`}</div>
                 )}
                 <Div permissions={['mission.create']}>
-                  <Button style={{ marginTop: 10 }} onClick={this.createMission} disabled={isEmpty(state.car_id) || IS_CLOSED || (IS_ACTIVE && state.fact_arrival_date)}>Создать задание</Button>
+                  <Button
+                    id="create-mission"
+                    style={{ marginTop: 10 }}
+                    onClick={this.createMission}
+                    disabled={isEmpty(state.car_id) || IS_CLOSED || (IS_ACTIVE && state.fact_arrival_date)}
+                  >
+                    Создать задание
+                  </Button>
                 </Div>
                 <MissionFormWrap
                   onFormHide={this.onMissionFormHide}
@@ -1165,8 +1209,8 @@ class WaybillForm extends Form {
                 <Div className="equipment-fuel-checkbox" hidden={!state.car_id}>
                   <div className="form-group">
                     <div className="checkbox">
-                      <label className="">
-                        <input type="checkbox" checked={!!state.equipment_fuel} disabled={IS_ACTIVE || IS_CLOSED} onClick={this.handleEquipmentFuelChange.bind(this, !!!state.equipment_fuel)} />
+                      <label htmlFor="show-fuel-consumption">
+                        <input id="show-fuel-consumption" type="checkbox" checked={!!state.equipment_fuel} disabled={IS_ACTIVE || IS_CLOSED} onClick={this.handleEquipmentFuelChange.bind(this, !!!state.equipment_fuel)} />
                         <label style={{ cursor: IS_ACTIVE || IS_CLOSED ? 'default' : 'pointer', fontWeight: 800 }}>Показать расход топлива для оборудования</label>
                       </label>
                     </div>
@@ -1175,6 +1219,7 @@ class WaybillForm extends Form {
                 <Div hidden={!state.equipment_fuel}>
                   <h4> Топливо для оборудования</h4>
                   <Field
+                    id="equipment-fuel-type"
                     type="select"
                     label="Тип топлива"
                     error={errors.equipment_fuel_type}
@@ -1184,6 +1229,7 @@ class WaybillForm extends Form {
                     onChange={this.handleChange.bind(this, 'equipment_fuel_type')}
                   />
                   <Field
+                    id="equipment-fuel-start"
                     type="number"
                     label="Выезд, л"
                     error={errors.equipment_fuel_start}
@@ -1192,6 +1238,7 @@ class WaybillForm extends Form {
                     onChange={this.handleChange.bind(this, 'equipment_fuel_start')}
                   />
                   <Field
+                    id="equipment-fuel-to-give"
                     type="number"
                     label="Выдать, л"
                     error={errors.equipment_fuel_to_give}
@@ -1200,6 +1247,7 @@ class WaybillForm extends Form {
                     onChange={this.handleChange.bind(this, 'equipment_fuel_to_give')}
                   />
                   <Field
+                    id="equipment-fuel-given"
                     type="number"
                     label="Выдано, л"
                     error={errors.equipment_fuel_given}
@@ -1209,6 +1257,7 @@ class WaybillForm extends Form {
                     onChange={this.handleChange.bind(this, 'equipment_fuel_given')}
                   />
                   <Field
+                    id="equipment-fuel-end"
                     type="number"
                     label="Возврат, л"
                     error={errors.equipment_fuel_end}
@@ -1220,6 +1269,7 @@ class WaybillForm extends Form {
               </Div>
               <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
                 <Field
+                  id="distance-by-glonass"
                   type="string"
                   label="Пройдено по Глонасс, км"
                   error={errors.distance}
@@ -1230,6 +1280,7 @@ class WaybillForm extends Form {
               </Div>
               <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
                 <Field
+                  id="consumption"
                   type="string"
                   label="Расход по ДУТ, л"
                   error={errors.consumption}
@@ -1242,6 +1293,7 @@ class WaybillForm extends Form {
             <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
               <Col md={8}>
                 <Field
+                  id="waybill-comment"
                   type="text"
                   label="Комментарий"
                   disabled={IS_CLOSED}
@@ -1252,6 +1304,7 @@ class WaybillForm extends Form {
               </Col>
               <Col md={4}>
                 <Field
+                  id="failed-medical-stat-types"
                   type="string"
                   label="Непройденные мед. осмотры"
                   disabled

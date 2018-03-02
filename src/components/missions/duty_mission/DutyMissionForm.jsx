@@ -37,21 +37,27 @@ export class DutyMissionForm extends Form {
     }
   }
 
-  async handleTechnicalOperationChange(v) {
-    this.handleChange('technical_operation_id', v);
-    this.handleChange('route_id', undefined);
-    if (!isEmpty(this.props.formState.car_mission_id)) {
-      this.handleChange('car_mission_id', 0);
-    }
-    this.context.flux.getActions('missions').getMissions(v);
+  // Зачем тут таймаут?
+  // В текущей версии react-select стоит снятие фокуса через 0.05 секунды
+  // Но через 0.05 секунды он не может найти элемент и в консоль падает ошибка
+  // С версии 2.0.15.00 используется другая версия react-select и там этой ошибки нет
+  handleTechnicalOperationChange(v) {
+    setTimeout(async () => {
+      this.handleChange('technical_operation_id', v);
+      this.handleChange('route_id', undefined);
+      if (!isEmpty(this.props.formState.car_mission_id)) {
+        this.handleChange('car_mission_id', 0);
+      }
+      this.context.flux.getActions('missions').getMissions(v);
 
-    const routesList = await this.context.flux.getActions('routes')
-      .getRoutesByTechnicalOperation(v);
-    if (routesList.length === 1) {
-      this.handleRouteIdChange(routesList[0].id);
-    }
+      const routesList = await this.context.flux.getActions('routes')
+        .getRoutesByTechnicalOperation(v);
+      if (routesList.length === 1) {
+        this.handleRouteIdChange(routesList[0].id);
+      }
 
-    this.setState({ routesList });
+      this.setState({ routesList });
+    }, 60);
   }
   isActiveEmployee(id) {
     return this.props.employeesList

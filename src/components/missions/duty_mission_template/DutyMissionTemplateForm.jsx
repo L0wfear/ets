@@ -16,7 +16,11 @@ import RouteFormWrap from '../../route/RouteFormWrap.jsx';
 import { DutyMissionForm } from '../duty_mission/DutyMissionForm.jsx';
 
 class MissionTemplateForm extends DutyMissionForm {
-
+  handleChangeStructureId = (v) => {
+    this.handleChange('brigade_employee_id_list', []);
+    this.handleChange('foreman_id', null);
+    this.handleChange('structure_id', v);
+  }
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
@@ -54,8 +58,7 @@ class MissionTemplateForm extends DutyMissionForm {
 
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
     const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
-    const EMPLOYEES = getPermittetEmployeeForBrigade(employeesList);
-
+    const EMPLOYEES = getPermittetEmployeeForBrigade(employeesList).filter(d => (!state.structure_id || (d.company_structure_id === state.structure_id)));
 
     let STRUCTURE_FIELD_VIEW = false;
     let STRUCTURE_FIELD_READONLY = false;
@@ -172,7 +175,7 @@ class MissionTemplateForm extends DutyMissionForm {
                 options={STRUCTURES}
                 emptyValue={null}
                 value={state.structure_id}
-                onChange={this.handleChange.bind(this, 'structure_id')}
+                onChange={this.handleChangeStructureId}
               />
             </Col>}
           </Row>

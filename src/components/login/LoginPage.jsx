@@ -52,14 +52,14 @@ export default class LoginPage extends Component {
     const disabled = login.length === 0 || password.length === 0;
 
     return (
-      <form onSubmit={this.onSigninClick}>
+      <form id="form-login" onSubmit={this.onSigninClick}>
         <div className="form-signin">
           <div className="ets-header">ЕТС</div>
           <div className="form-content">
             <label>Система мониторинга</label>
-            <input type="text" className="form-control" placeholder="Логин" value={login} onChange={this.handleChange.bind(this, 'login')} />
-            <input type="password" className="form-control" placeholder="Пароль" value={password} onChange={this.handleChange.bind(this, 'password')} />
-            <button role="button" className="btn btn-lg btn-primary btn-block" disabled={disabled} onClick={this.onSigninClick}>Войти</button>
+            <input id="login" type="text" className="form-control" placeholder="Логин" value={login} onChange={this.handleChange.bind(this, 'login')} />
+            <input id="password" type="password" className="form-control" placeholder="Пароль" value={password} onChange={this.handleChange.bind(this, 'password')} />
+            <button id="submit" role="button" className="btn btn-lg btn-primary btn-block" disabled={disabled} onClick={this.onSigninClick}>Войти</button>
             <div className="tp-messange">
               <span>
               Служба технической поддержки</span>

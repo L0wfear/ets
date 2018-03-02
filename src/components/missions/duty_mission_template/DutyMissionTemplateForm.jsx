@@ -12,7 +12,11 @@ import RouteFormWrap from '../../route/RouteFormWrap.jsx';
 import { DutyMissionForm } from '../duty_mission/DutyMissionForm.jsx';
 
 class MissionTemplateForm extends DutyMissionForm {
-
+  handleChangeStructureId = (v) => {
+    this.handleChange('brigade_employee_id_list', []);
+    this.handleChange('foreman_id', null);
+    this.handleChange('structure_id', v);
+  }
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
@@ -35,10 +39,17 @@ class MissionTemplateForm extends DutyMissionForm {
 
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
     const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
-    const EMPLOYEES = employeesList.map(d => ({
-      value: d.id,
-      label: `${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''} ${!d.active ? '(Неактивный сотрудник)' : ''}`,
-    }));
+
+    const EMPLOYEES = employeesList.reduce((arr, d) => {
+      if (!state.structure_id || (d.company_structure_id === state.structure_id)) {
+        arr.push({
+          value: d.id,
+          label: `${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''} ${!d.active ? '(Неактивный сотрудник)' : ''}`,
+        });
+      }
+
+      return arr;
+    }, []);
 
     let STRUCTURE_FIELD_VIEW = false;
     let STRUCTURE_FIELD_READONLY = false;
@@ -101,7 +112,10 @@ class MissionTemplateForm extends DutyMissionForm {
               />
             </Col>
             <Col md={6}>
-              <Field type="select" label="Бригада" error={errors.brigade_employee_id_list}
+              <Field
+                type="select"
+                label="Бригада"
+                error={errors.brigade_employee_id_list}
                 multi
                 disabled={false}
                 options={EMPLOYEES}
@@ -112,7 +126,10 @@ class MissionTemplateForm extends DutyMissionForm {
           </Row>
           <Row>
             <Col md={6}>
-              <Field type="select" label="Маршрут" error={errors.route_id}
+              <Field
+                type="select"
+                label="Маршрут"
+                error={errors.route_id}
                 options={ROUTES}
                 value={state.route_id}
                 disabled={!state.technical_operation_id}
@@ -132,7 +149,7 @@ class MissionTemplateForm extends DutyMissionForm {
                 options={STRUCTURES}
                 emptyValue={null}
                 value={state.structure_id}
-                onChange={this.handleChange.bind(this, 'structure_id')}
+                onChange={this.handleChangeStructureId}
               />
             </Col>}
           </Row>

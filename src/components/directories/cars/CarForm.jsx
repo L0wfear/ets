@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, Button, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import connectToStores from 'flummox/connect';
+import { changeCompanyStructureIdNotyfication } from 'utils/notifications';
 
 import { tabable } from 'components/compositions/hoc';
 import ModalBody from 'components/ui/Modal';
@@ -85,6 +86,13 @@ class CarForm extends Form {
 
     this.setState({ companyStructureList });
   }
+  handleChangeMainInfoTab = (key, value) => {
+    if (key === 'company_structure_id') {
+      global.NOTIFICATION_SYSTEM.notify(changeCompanyStructureIdNotyfication);
+    }
+
+    this.handleChange(key, value);
+  }
   handleSave = () => {
     if (Object.keys(this.props.location.query).length > 0) {
       this.props.history.replaceState(null, this.props.location.pathname, {});
@@ -161,7 +169,7 @@ class CarForm extends Form {
               errors={errors}
               companyElements={COMPANY_ELEMENTS}
               isPermitted={isPermitted}
-              onChange={this.handleChange}
+              onChange={this.handleChangeMainInfoTab}
             />
           </TabContent>
 

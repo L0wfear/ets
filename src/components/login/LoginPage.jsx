@@ -60,7 +60,7 @@ class LoginPage extends Component {
               <div className="form-content">
                 <label>Система мониторинга</label>
                 <input id="login" type="text" className="form-control" placeholder="Логин" value={login} onChange={this.handleChange.bind(this, 'login')} />
-                <input id="passwork" type="password" className="form-control" placeholder="Пароль" value={password} onChange={this.handleChange.bind(this, 'password')} />
+                <input id="password" type="password" className="form-control" placeholder="Пароль" value={password} onChange={this.handleChange.bind(this, 'password')} />
                 <button id="submit" role="button" className="btn btn-lg btn-primary btn-block" disabled={disabled} onClick={this.onSigninClick}>Войти</button>
                 <div className="tp-messange">
                   <span>

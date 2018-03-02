@@ -30,6 +30,7 @@ export default class Faxogramms extends DashboardCardMedium {
     this.props.openSubitemsList(true);
     this.setState({ showFaxogrammForm: true, faxogramm: data });
   }
+  hideFaxogrammForm = () => this.setState({ showFaxogrammForm: false });
 
   async showPDFViewModal(data) {
     const url = await this.context.flux.getActions('objects').getFaxogrammPDFUrl(data.id);
@@ -97,12 +98,16 @@ export default class Faxogramms extends DashboardCardMedium {
   }
 
   renderCustomCardForm() {
+    const {
+      showFaxogrammForm = false,
+      faxogramm = null,
+    } = this.state;
+
     return (
       <FaxogrammMissionsFormWrap
-        onFormHide={() => this.setState({ showFaxogrammForm: false })}
-        showForm={this.state.showFaxogrammForm}
-        element={this.state.faxogramm}
-        {...this.props}
+        onFormHide={this.hideFaxogrammForm}
+        showForm={showFaxogrammForm}
+        element={faxogramm}
       />
     );
   }

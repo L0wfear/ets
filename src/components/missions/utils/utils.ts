@@ -16,6 +16,7 @@ export function getPermittetEmployeeForBrigade(employeesList) {
       opt.push({
         value: e.id,
         label: createFio(e, true),
+        company_structure_id: e.company_structure_id,
       });
     }
 

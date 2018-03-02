@@ -1,21 +1,19 @@
-import React, { Component } from 'react';
-import { get } from 'lodash';
+import React from 'react';
 
 import Table from 'components/ui/table/DataTable.jsx';
-import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 
 export const tableMeta = ({
-  companyStructureList = [],
   isOkrug = false,
+  isKgh = false,
  } = {}) => (
   {
     cols: [
       {
         name: 'company_name',
-        displayName: 'Учреждение',
-        type: 'text',
-        display: isOkrug,
-        filter: isOkrug ? { type: 'multiselect' } : false,
+        displayName: isKgh ? 'Наименование ГБУ' : 'Учреждение',
+        type: 'string',
+        display: isOkrug || isKgh,
+        filter: (isOkrug || isKgh) ? { type: 'multiselect' } : false,
       },
       {
         name: 'name',
@@ -114,33 +112,30 @@ export const tableMeta = ({
         },
       },
       {
-        name: 'company_structure_id',
+        name: 'company_structure_name',
         displayName: 'Подразделение',
         type: 'text',
         filter: {
           type: 'multiselect',
-          options: companyStructureList.map(defaultSelectListMapper),
         },
       },
     ],
   }
 );
 
-const ODHTable = (props) => {
-  const { companyStructureList = [] } = props;
+const renderers = {
+  company_structure_name: ({ data }) => <div>{data || '---'}</div>,
+};
 
-  const renderers = {
-    company_structure_id: ({ data }) => <div>{get(companyStructureList.find(s => s.id === data), 'name', '---')}</div>,
-  };
-
-  return (<Table
+const ODHTable = props => (
+  <Table
     title="Реестр ОДХ"
     results={props.data}
     tableMeta={tableMeta(props)}
     renderers={renderers}
     initialSort={'name'}
     {...props}
-  />);
-};
+  />
+);
 
 export default ODHTable;

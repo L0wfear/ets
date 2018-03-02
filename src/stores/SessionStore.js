@@ -22,6 +22,7 @@ export const getSpecificPermissions = (user) => {
     permissions.push(...getFullAccess('pedestrian_tunnel_exits'));
     permissions.push(...getFullAccess('fountains'));
   }
+  permissions.push('nsi_company_column_show');
 
   return permissions;
 };
@@ -54,6 +55,7 @@ export default class SessionStore extends Store {
     this.state = {
       currentUser,
       isOkrug: currentUser.okrug_id !== null,
+      isKgh: currentUser.permissions.includes('nsi_company_column_show'),
       session: storedSession,
       userPermissions: currentUser.permissions,
     };
@@ -79,10 +81,12 @@ export default class SessionStore extends Store {
     this.flux.getStore('reports').resetState();
     setUserContext(currentUser);
     currentUser = new User(currentUser);
+
     this.setState({
       currentUser,
       session,
       isOkrug: data.payload.okrug_id !== null,
+      isKgh: currentUser.permissions.includes('nsi_company_column_show'),
       userPermissions: currentUser.permissions,
     });
   }

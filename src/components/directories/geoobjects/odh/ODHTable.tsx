@@ -10,15 +10,16 @@ const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent
 
 export function tableMeta({
   isOkrug = false,
+  isKgh = false,
 } = {}): IDataTableSchema {
   const meta: IDataTableSchema = {
     cols: [
       {
         name: 'company_name',
-        displayName: 'Учреждение',
-        type: 'text',
-        display: isOkrug,
-        filter: isOkrug ? { type: 'multiselect' } : false,
+        displayName: isKgh ? 'Наименование ГБУ' : 'Учреждение',
+        type: 'string',
+        display: isOkrug || isKgh,
+        filter: (isOkrug || isKgh) ? { type: 'multiselect' } : false,
       },
       {
         name: 'name',
@@ -129,20 +130,21 @@ export function tableMeta({
 
   return meta;
 }
-const Table: React.SFC<any> = props  => {
-  const renderers: ISchemaRenderer = {
-    auto_footway_area: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
-    cleaning_area: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
-    distance: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
-    footway_area: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
-    footway_length: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
-    gutters_length: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
-    manual_footway_area: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
-    roadway_area: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
-    snow_area: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
-    total_area: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
-  };
 
+const renderers: ISchemaRenderer = {
+  auto_footway_area: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
+  cleaning_area: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
+  distance: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
+  footway_area: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
+  footway_length: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
+  gutters_length: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
+  manual_footway_area: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
+  roadway_area: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
+  snow_area: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
+  total_area: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
+};
+
+const Table: React.SFC<any> = props  => {
   return (
     <DataTable
       title="Реестр ОДХ"
@@ -156,4 +158,3 @@ const Table: React.SFC<any> = props  => {
 };
 
 export default Table;
-;

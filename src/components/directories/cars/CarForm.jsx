@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, Button, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import connectToStores from 'flummox/connect';
+import { changeCompanyStructureIdNotyfication } from 'utils/notifications';
 import * as queryString from 'query-string';
 
 import { tabable } from 'components/compositions/hoc';
@@ -93,6 +94,13 @@ class CarForm extends Form {
     flux.getActions('autobase').getAutobaseListByType('actualTiresOnCar', payload);
     flux.getActions('autobase').getAutobaseListByType('techMaint', payload);
   }
+  handleChangeMainInfoTab = (key, value) => {
+    if (key === 'company_structure_id') {
+      global.NOTIFICATION_SYSTEM.notify(changeCompanyStructureIdNotyfication);
+    }
+
+    this.handleChange(key, value);
+  }
   handleSave = () => {
     const {
       location: {
@@ -178,7 +186,7 @@ class CarForm extends Form {
               errors={errors}
               companyElements={COMPANY_ELEMENTS}
               isPermitted={isPermitted}
-              onChange={this.handleChange}
+              onChange={this.handleChangeMainInfoTab}
             />
           </TabContent>
 

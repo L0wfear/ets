@@ -111,6 +111,15 @@ export const reassignMissionSuccessNotification = {
   autoDismiss: 0,
 };
 
+export const changeCompanyStructureIdNotyfication = {
+  title: '',
+  message: 'Обращаем Ваше внимание, что для корректной работы системы после изменения подразделения, соответствующие правки необходимо внести в маршрутах, шаблонах заданий и наряд-заданий, в которых использовался данный объект',
+  level: 'info',
+  dismissible: true,
+  position: 'tr',
+  autoDismiss: 0,
+};
+
 export const notifications = {
   missionCreateSuccessNotification,
   missionFuelRateByCarUpdateNotification,
